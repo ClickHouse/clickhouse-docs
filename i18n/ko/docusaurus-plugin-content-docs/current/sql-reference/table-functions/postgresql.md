@@ -7,13 +7,9 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-
-
 # postgresql Table Function \{#postgresql-table-function\}
 
 원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 수행할 수 있습니다.
-
-
 
 ## 구문 \{#syntax\}
 
@@ -36,8 +32,6 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 인수는 [named collections](operations/named-collections.md)을 사용하여 전달할 수도 있습니다. 이 경우 `host`와 `port`는 개별적으로 지정해야 합니다. 이 방식은 프로덕션 환경에서 사용하는 것을 권장합니다.
 
-
-
 ## 반환 값 \{#returned_value\}
 
 원본 PostgreSQL 테이블과 동일한 컬럼을 가진 테이블 객체입니다.
@@ -45,8 +39,6 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 :::note
 `INSERT` 쿼리에서 테이블 함수 `postgresql(...)`와 컬럼 이름 목록이 포함된 테이블 이름을 구분하려면 `FUNCTION` 또는 `TABLE FUNCTION` 키워드를 사용해야 합니다. 아래 예제를 참고하십시오.
 :::
-
-
 
 ## 구현 세부사항 \{#implementation-details\}
 
@@ -104,7 +96,7 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-일반 인자를 사용하여 ClickHouse에서 데이터 조회:
+일반 인수를 사용하여 ClickHouse에서 데이터 조회:
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
@@ -142,7 +134,7 @@ SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'p
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-기본이 아닌 스키마 사용:
+기본 스키마가 아닌 스키마 사용:
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -161,7 +153,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 ## 관련 항목 \{#related\}
 
 - [The PostgreSQL table engine](../../engines/table-engines/integrations/postgresql.md)
-- [Using PostgreSQL as a dictionary source](/sql-reference/dictionaries#postgresql)
+- [Using PostgreSQL as a dictionary source](/sql-reference/statements/create/dictionary/sources#postgresql)
 
 ### PeerDB를 사용한 Postgres 데이터 복제 또는 마이그레이션 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

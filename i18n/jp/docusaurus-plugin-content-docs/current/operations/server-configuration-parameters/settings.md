@@ -40,12 +40,14 @@ ClickHouse における設定ファイルの詳細については、[""Configura
 | `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行するのに権限が必要か、また任意のユーザーが実行できるかどうかを設定します。true に設定した場合、このクエリには、通常テーブルと同様に `GRANT SELECT ON system.<table>` が必要になります。例外として、いくつかの system テーブル（`tables`、`columns`、`databases` と、`one`、`contributors` などの一部の定数テーブル）は依然として全ユーザーがアクセス可能です。また、`SHOW USERS` のような `SHOW` 権限が付与されている場合、対応する system テーブル（すなわち `system.users`）にはアクセスできます。 | `true`  |
 | `settings_constraints_replace_previous`         | ある設定に対する settings profile 内の制約が、その設定に対して以前に定義された制約（他のプロファイル内で定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効化します。                                                                                                                                                                                                | `true`  |
 | `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に、権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                               | `false` |
+| `throw_on_unmatched_row_policies`               | テーブルに行ポリシーが存在するものの、そのいずれも現在のユーザー向けではない場合に、そのテーブルからの読み取りで例外をスローするかどうかを設定します。                                                                                                                                                                                                                                                                                | `false` |
 | `users_without_row_policies_can_read_rows`      | 許可する行ポリシーを持たないユーザーが、`SELECT` クエリを使用して行を読み取れるかどうかを設定します。例えば、ユーザー A と B がいて、行ポリシーが A のみに対して定義されている場合、この設定が true であれば、ユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はいかなる行も閲覧できません。                                                                                                                                                                             | `true`  |
 
 例:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -927,7 +929,7 @@ ZooKeeper 上のテーブルへのパス。
 
 関連項目:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **例**
 
@@ -4957,6 +4959,10 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+早期メモリ制限チェックを無視するUSERをカンマ区切りで指定するリストです。USERがこのリストに含まれていない場合、合計メモリ使用量が制限を超えるとクエリは拒否されます。
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

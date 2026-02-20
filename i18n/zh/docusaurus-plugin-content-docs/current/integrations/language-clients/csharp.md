@@ -42,9 +42,6 @@ import connection_details_csharp from '@site/static/images/_snippets/connection-
 
 `ClickHouse.Driver` 支持以下 .NET 版本：
 
-* .NET Framework 4.6.2
-* .NET Framework 4.8
-* .NET Standard 2.1
 * .NET 6.0
 * .NET 8.0
 * .NET 9.0
@@ -355,8 +352,8 @@ using ClickHouse.Driver;
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("id", 1L);
-parameters.Add("name", "Alice");
+parameters.AddParameter("id", 1L);
+parameters.AddParameter("name", "Alice");
 
 await client.ExecuteNonQueryAsync(
     "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
@@ -413,7 +410,7 @@ var options = new InsertOptions
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("max_id", 100L);
+parameters.AddParameter("max_id", 100L);
 
 var reader = await client.ExecuteReaderAsync(
     "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
@@ -683,7 +680,7 @@ while (reader.Read())
 3. **在 SQL 类型提示中指定时区。** 当向非 UTC 的列传递带有 `Unspecified` DateTime 值的参数时，在 SQL 中包含时区信息：
    ```csharp
    var parameters = new ClickHouseParameterCollection();
-   parameters.Add("dt", myDateTime);
+   parameters.AddParameter("dt", myDateTime);
 
    await client.ExecuteNonQueryAsync(
        "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",

@@ -7,7 +7,7 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# MySQL テーブルエンジン \{#mysql-table-engine\}
+# MySQL table engine \{#mysql-table-engine\}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
@@ -62,6 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
+
 ## 使用例 \{#usage-example\}
 
 MySQL でテーブルを作成します:
@@ -87,7 +88,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-通常の引数を使って ClickHouse にテーブルを作成する：
+通常の引数指定を用いて ClickHouse にテーブルを作成します:
 
 ```sql
 CREATE TABLE mysql_table
@@ -115,7 +116,7 @@ CREATE TABLE mysql_table
 ENGINE = MySQL(creds, table='test')
 ```
 
-MySQL テーブルからのデータ取得：
+MySQL テーブルからデータを取得する：
 
 ```sql
 SELECT * FROM mysql_table
@@ -126,6 +127,7 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
+
 
 ## 設定 \{#mysql-settings\}
 
@@ -196,4 +198,4 @@ SELECT * FROM mysql_table
 ## 関連項目 \{#see-also\}
 
 - [MySQL テーブル関数](../../../sql-reference/table-functions/mysql.md)
-- [MySQL を辞書のソースとして使用する](/sql-reference/dictionaries#mysql)
+- [MySQL を辞書のソースとして使用する](/sql-reference/statements/create/dictionary/sources#mysql)

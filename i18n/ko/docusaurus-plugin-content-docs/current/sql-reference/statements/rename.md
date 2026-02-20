@@ -47,7 +47,7 @@ RENAME TABLE [db1.]name1 TO [db2.]name2 [,...] [ON CLUSTER cluster]
 RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-또는 더 간단한 SQL을 사용할 수 있습니다:
+또는 더 간단한 SQL 문을 사용할 수 있습니다:
 
 ```sql
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
@@ -65,4 +65,4 @@ RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 
 **관련 문서**
 
-* [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [Dictionaries](./create/dictionary/index.md)

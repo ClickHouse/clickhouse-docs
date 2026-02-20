@@ -245,7 +245,7 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 ## SHOW DICTIONARIES \{#show-dictionaries\}
 
-`SHOW DICTIONARIES` 문은 [Dictionaries](../../sql-reference/dictionaries/index.md) 목록을 표시합니다.
+`SHOW DICTIONARIES` 문은 [Dictionaries](./create/dictionary/index.md) 목록을 표시합니다.
 
 ### 구문 \{#syntax-4\}
 

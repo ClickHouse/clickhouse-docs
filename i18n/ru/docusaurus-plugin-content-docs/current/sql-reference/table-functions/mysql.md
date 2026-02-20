@@ -18,6 +18,7 @@ doc_type: 'reference'
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
+
 ## Аргументы \{#arguments\}
 
 | Аргумент              | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -47,6 +48,7 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 ```sql
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
+
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -143,10 +145,11 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
+
 ## См. также \{#related\}
 
 - [Движок таблицы MySQL](../../engines/table-engines/integrations/mysql.md)
-- [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)
+- [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

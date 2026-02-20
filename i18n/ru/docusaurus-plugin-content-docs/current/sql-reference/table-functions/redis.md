@@ -17,6 +17,7 @@ doc_type: 'reference'
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
+
 ## Аргументы \{#arguments\}
 
 | Argument    | Description                                                                                                |
@@ -59,7 +60,8 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
+
 ## См. также \{#related\}
 
 - [Табличный движок `Redis`](/engines/table-engines/integrations/redis.md)
-- [Использование Redis в качестве источника словаря](/sql-reference/dictionaries/index.md#redis)
+- [Использование Redis в качестве источника словаря](/sql-reference/statements/create/dictionary/sources#redis)

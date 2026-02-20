@@ -7,18 +7,15 @@ doc_type: 'landing-page'
 keywords: ['路线图', '未来特性', '开发计划', '即将发布版本', '产品方向']
 ---
 
-
-
 ## 当前路线图 \{#current-roadmap\}
 
 当前路线图已发布，并开放讨论：
 
-- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
-
-
+- [2026](https://github.com/ClickHouse/ClickHouse/issues/93288)
 
 ## 历史路线图 \{#previous-roadmaps\}
 
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)

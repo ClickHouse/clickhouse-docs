@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md).
+Перезагружает все [внутренние словари](./create/dictionary/index.md).
 По умолчанию внутренние словари отключены.
 Всегда возвращает `Ok.` независимо от результата обновления внутреннего словаря.
 

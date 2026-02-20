@@ -955,6 +955,39 @@ SELECT modulo(5, 2)
 1
 ```
 
+## moduloLegacy \{#moduloLegacy\}
+
+도입된 버전: v1.1
+
+나눗셈의 나머지를 계산합니다. C++의 `%` 연산자를 사용하는 레거시 modulo 구현으로, 음수 인수에 대해 음수 결과를 반환할 수 있습니다. 이 함수는 기존 테이블 파티션 로직과의 하위 호환성을 위해 제공됩니다. 표준 동작을 사용하려면 `modulo` 또는 `positiveModulo`를 사용하십시오.
+
+**문법**
+
+```sql
+moduloLegacy(a, b)
+```
+
+**인수**
+
+* `a` — 피제수입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `b` — 제수입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+
+**반환 값**
+
+나머지를 반환합니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+
+**예제**
+
+**기본 사용 예**
+
+```sql title=Query
+SELECT moduloLegacy(10, 3)
+```
+
+```response title=Response
+1
+```
+
 ## moduloOrNull \{#moduloOrNull\}
 
 도입 버전: v25.5

@@ -27,7 +27,7 @@ doc_type: 'reference'
 * [Vector similarity index](../engines/table-engines/mergetree-family/annindexes.md) 캐시.
 * [Text index](../engines/table-engines/mergetree-family/textindexes.md#caching) 캐시.
 * [Avro format](/interfaces/formats/Avro) 스키마 캐시.
-* [Dictionaries](../sql-reference/dictionaries/index.md) 데이터 캐시.
+* [Dictionaries](../sql-reference/statements/create/dictionary/index.md) 데이터 캐시.
 * 스키마 추론 캐시.
 * S3, Azure, 로컬 및 기타 디스크용 [Filesystem cache](storing-data.md).
 * [Userspace page cache](/operations/userspace-page-cache)

@@ -17,6 +17,7 @@ doc_type: 'reference'
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
+
 ## 引数 \{#arguments\}
 
 | 引数        | 説明                                                                                                      |
@@ -59,7 +60,8 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
+
 ## 関連項目 \{#related\}
 
 - [`Redis` テーブルエンジン](/engines/table-engines/integrations/redis.md)
-- [辞書のデータソースとして `Redis` を使用する](/sql-reference/dictionaries/index.md#redis)
+- [辞書のデータソースとして `Redis` を使用する](/sql-reference/statements/create/dictionary/sources#redis)

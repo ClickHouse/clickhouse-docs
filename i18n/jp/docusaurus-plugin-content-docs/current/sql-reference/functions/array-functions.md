@@ -4758,6 +4758,76 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 ```
 
 
+## kql_array_sort_asc \{#kql_array_sort_asc\}
+
+導入バージョン: v23.10
+
+1つ以上の配列を昇順にソートします。最初の配列がソートされ、そのソート順に合わせて後続の配列も並べ替えられます。NULL 値は末尾に配置されます。これは KQL (Kusto Query Language) 互換の関数です。
+
+**構文**
+
+```sql
+kql_array_sort_asc(array1[, array2, ..., nulls_last])
+```
+
+**引数**
+
+* `array1` — ソートする配列。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 省略可能。`array1` のソート順に従って並べ替える追加の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 省略可能。NULL を最後に配置するかどうかを示すブール値。デフォルトは true。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+昇順にソートされた配列のタプルを返します。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**使用例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT kql_array_sort_asc([3, 1, 2])
+```
+
+```response title=Response
+([1, 2, 3])
+```
+
+
+## kql_array_sort_desc \{#kql_array_sort_desc\}
+
+導入バージョン: v23.10
+
+1 つ以上の配列を降順にソートします。最初の配列がソートされ、そのソート結果に合わせて 2 番目以降の配列の要素が並べ替えられます。NULL 値は末尾に配置されます。これは KQL (Kusto Query Language) 互換の関数です。
+
+**構文**
+
+```sql
+kql_array_sort_desc(array1[, array2, ..., nulls_last])
+```
+
+**引数**
+
+* `array1` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 省略可能な追加の配列で、`array1` のソート順に従って並べ替えられます。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — NULL 値を末尾に配置するかどうかを示す省略可能なブール値。デフォルトは true。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+降順にソートされた配列を要素とするタプルを返します。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT kql_array_sort_desc([3, 1, 2])
+```
+
+```response title=Response
+([3, 2, 1])
+```
+
+
 ## length \{#length\}
 
 導入バージョン: v1.1

@@ -9,10 +9,10 @@ doc_type: 'reference'
 # 用于处理字典的函数 \{#functions-for-working-with-dictionaries\}
 
 :::note
-对于使用 [DDL 查询](../../sql-reference/statements/create/dictionary.md) 创建的字典，`dict_name` 参数必须完整写为 `<database>.<dict_name>`。否则，将使用当前数据库。
+对于使用 [DDL 查询](../statements/create/dictionary/index.md) 创建的字典，`dict_name` 参数必须完整写为 `<database>.<dict_name>`。否则，将使用当前数据库。
 :::
 
-有关连接和配置字典的更多信息，请参阅 [Dictionaries](../../sql-reference/dictionaries/index.md)。
+有关连接和配置字典的更多信息，请参阅 [Dictionaries](../statements/create/dictionary/index.md)。
 
 ## 示例字典 \{#example-dictionary\}
 

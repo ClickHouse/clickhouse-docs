@@ -229,7 +229,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 **См. также**
 
 * [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
-* [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#mysql)
+* [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources#mysql)
 
 
 ## Связанные материалы \{#related-content\}

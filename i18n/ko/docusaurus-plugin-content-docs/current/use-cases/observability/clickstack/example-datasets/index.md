@@ -15,3 +15,4 @@ keywords: ['ClickStack 샘플 데이터셋', 'ClickStack 데모 데이터', '관
 | [Sample Data](sample-data.md) | 데모 환경의 로그, 트레이스, 메트릭이 포함된 샘플 데이터셋을 로드합니다 |
 | [Local Data](local-data.md) | 로컬 시스템의 메트릭과 로그를 수집해 분석을 위해 ClickStack으로 전송합니다 |
 | [Remote Demo Data](remote-demo-data.md) | 원격 데모 클러스터에 연결해 문제를 살펴봅니다 |
+| [Session Replay Demo](session-replay.md) | 세션 리플레이를 위해 데모 웹 애플리케이션을 계측하고 ClickStack에서 상호 작용을 확인합니다 |

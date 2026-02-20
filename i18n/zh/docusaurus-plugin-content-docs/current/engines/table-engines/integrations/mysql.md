@@ -62,6 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
+
 ## 使用示例 \{#usage-example\}
 
 在 MySQL 中创建表：
@@ -87,7 +88,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-使用常规参数在 ClickHouse 中创建表：
+使用普通参数在 ClickHouse 中创建表：
 
 ```sql
 CREATE TABLE mysql_table
@@ -126,6 +127,7 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
+
 
 ## 设置 \{#mysql-settings\}
 
@@ -196,4 +198,4 @@ SELECT * FROM mysql_table
 ## 另请参阅 \{#see-also\}
 
 - [MySQL 表函数](../../../sql-reference/table-functions/mysql.md)
-- [将 MySQL 用作字典源](/sql-reference/dictionaries#mysql)
+- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources#mysql)

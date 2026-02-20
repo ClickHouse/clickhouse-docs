@@ -129,4 +129,4 @@ SELECT * FROM mongodb(
 ## 関連項目 \{#related\}
 
 - [`MongoDB` テーブルエンジン](engines/table-engines/integrations/mongodb.md)
-- [MongoDB を辞書のソースとして使用する](sql-reference/dictionaries/index.md#mongodb)
+- [MongoDB を辞書のソースとして使用する](../statements/create/dictionary/sources.md#mongodb)

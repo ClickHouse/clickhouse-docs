@@ -27,7 +27,7 @@ BYOC는 대규모 배포를 위해 특별히 설계되었으며, 고객은 약�
 
 * AWS (GA)
 * GCP (Private Preview). 관심이 있다면 [여기](https://clickhouse.com/cloud/bring-your-own-cloud)에서 대기자 명단에 등록하십시오.
-* Azure (Roadmap). 관심이 있다면 [여기](https://clickhouse.com/cloud/bring-your-own-cloud)에서 대기자 명단에 등록하십시오.
+* Azure (Private Preview). 관심이 있다면 [여기](https://clickhouse.com/cloud/bring-your-own-cloud)에서 대기자 명단에 등록하십시오.
 
 **지원되는 클라우드 리전:**
 [지원 리전](https://clickhouse.com/docs/cloud/reference/supported-regions) 문서에 나열된 모든 **퍼블릭 리전**은 BYOC 배포에 사용할 수 있습니다. 프라이빗 리전은 현재 지원되지 않습니다.

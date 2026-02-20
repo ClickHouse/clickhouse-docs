@@ -27,7 +27,7 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 
 * AWS (GA)
 * GCP (Private Preview)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
-* Azure (Roadmap)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
+* Azure (Private Preview)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 
 **対応しているクラウドリージョン:**
 [サポート対象リージョン](https://clickhouse.com/docs/cloud/reference/supported-regions) ドキュメントに記載されているすべての**パブリックリージョン**が、BYOC デプロイメントで利用可能です。プライベートリージョンは現在サポートされていません。

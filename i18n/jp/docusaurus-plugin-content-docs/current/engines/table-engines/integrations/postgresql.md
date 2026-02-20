@@ -229,7 +229,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 **関連情報**
 
 * [`postgresql` テーブル関数](../../../sql-reference/table-functions/postgresql.md)
-* [PostgreSQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)
+* [PostgreSQL をディクショナリのソースとして使用する](/sql-reference/statements/create/dictionary/sources#mysql)
 
 
 ## 関連コンテンツ \{#related-content\}

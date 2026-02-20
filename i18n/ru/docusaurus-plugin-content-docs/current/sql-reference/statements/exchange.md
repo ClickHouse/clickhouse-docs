@@ -104,4 +104,4 @@ EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 
 **См. также**
 
-* [Справочники](../../sql-reference/dictionaries/index.md)
+* [Справочники](./create/dictionary/index.md)

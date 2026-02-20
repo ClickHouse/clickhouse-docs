@@ -957,6 +957,39 @@ SELECT modulo(5, 2)
 1
 ```
 
+## moduloLegacy \{#moduloLegacy\}
+
+導入バージョン: v1.1
+
+除算の余りを計算します。これはレガシーな modulo の実装で、C++ の `%` 演算子を使用しており、負の引数に対して負の結果を返す場合があります。この関数は、従来のテーブルのパーティションロジックとの後方互換性のために存在します。標準的な動作には `modulo` または `positiveModulo` を使用してください。
+
+**構文**
+
+```sql
+moduloLegacy(a, b)
+```
+
+**引数**
+
+* `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `b` — 除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+
+**戻り値**
+
+除算の剰余を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+
+**使用例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT moduloLegacy(10, 3)
+```
+
+```response title=Response
+1
+```
+
 ## moduloOrNull \{#moduloOrNull\}
 
 導入: v25.5

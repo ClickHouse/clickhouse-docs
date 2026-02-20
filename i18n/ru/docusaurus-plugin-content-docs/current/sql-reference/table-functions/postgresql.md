@@ -17,6 +17,7 @@ doc_type: 'reference'
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
+
 ## Аргументы \{#arguments\}
 
 | Аргумент      | Описание                                                                  |
@@ -67,7 +68,8 @@ SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgr
 SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
 ```
 
-Поддерживаются приоритеты реплик для источника словаря PostgreSQL. Чем больше число в отображении, тем ниже приоритет. Наивысший приоритет — `0`.
+Поддерживаются приоритеты реплик для источника словаря PostgreSQL. Чем больше значение в отображении (map), тем ниже приоритет. Наивысший приоритет — `0`.
+
 
 ## Примеры \{#examples\}
 
@@ -94,7 +96,7 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-Выбор данных из ClickHouse с использованием простых аргументов:
+Выбор данных из ClickHouse с использованием позиционных аргументов:
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
@@ -132,7 +134,7 @@ SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'p
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-Использование нестандартной схемы:
+Использование схемы, отличной от схемы по умолчанию:
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -147,10 +149,11 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
+
 ## Связанные материалы \{#related\}
 
 - [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
-- [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#postgresql)
+- [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources#postgresql)
 
 ### Репликация или миграция данных Postgres с помощью PeerDB \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-すべての [内部Dictionary](../../sql-reference/dictionaries/index.md) を再読み込みします。
+すべての [内部Dictionary](./create/dictionary/index.md) を再読み込みします。
 デフォルトでは、内部Dictionaryは無効化されています。
 内部Dictionaryの更新結果に関係なく、常に `Ok.` を返します。
 

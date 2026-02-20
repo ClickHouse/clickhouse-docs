@@ -588,7 +588,7 @@ LIMIT 5
 
 ## Dictionary の使用 \{#using-dictionaries\}
 
-[Dictionaries](/sql-reference/dictionaries) は ClickHouse の[重要な機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部の[ソース](/sql-reference/dictionaries#dictionary-sources)からのデータを、インメモリの[key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーのルックアップクエリ向けに最適化します。
+[Dictionaries](/sql-reference/statements/create/dictionary) は ClickHouse の[重要な機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部の[ソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources)からのデータを、インメモリの[key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーのルックアップクエリ向けに最適化します。
 
 <Image img={observability_12} alt="オブザーバビリティと Dictionary" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-ClickHouse で低レイテンシな IP ルックアップを行うために、Geo IP データのキーから属性へのマッピングをインメモリで保持する Dictionary を利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/dictionaries#ip_trie) が用意されています。次のクエリでは、このレイアウトを用い、上記のテーブルをソースとする Dictionary を定義します。
+ClickHouse で低レイテンシな IP ルックアップを行うために、Geo IP データのキーから属性へのマッピングをインメモリで保持する Dictionary を利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/statements/create/dictionary/layouts/ip-trie) が用意されています。次のクエリでは、このレイアウトを用い、上記のテーブルをソースとする Dictionary を定義します。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -741,7 +741,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-Dictionary から行を取得し、このデータセットがルックアップに利用できることを確認できます。
+Dictionary から行を選択し、このデータセットがルックアップに利用可能であることを確認できます。
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [ユーザーエージェント文字列](https://en.wikipedia.org/wiki/User_agent)のパースは、古典的な正規表現の問題であり、ログやトレースを基盤とするデータセットで一般的に必要とされる処理です。ClickHouse は Regular Expression Tree Dictionary を用いて、ユーザーエージェントを効率的にパースできます。
 
-正規表現ツリー Dictionary は、ClickHouse オープンソース版では YAMLRegExpTree dictionary source type を使用して定義されます。この型では、正規表現ツリーを含む YAML ファイルへのパスを指定します。独自の正規表現 Dictionary を使用したい場合は、必要な構造の詳細が[こちら](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)に記載されています。以下では、[uap-core](https://github.com/ua-parser/uap-core) を用いたユーザーエージェントのパースと、サポートされている CSV 形式用 Dictionary の読み込みに焦点を当てます。このアプローチは OSS と ClickHouse Cloud の両方で利用可能です。
+正規表現ツリー Dictionary は、ClickHouse オープンソース版では YAMLRegExpTree dictionary source type を使用して定義されます。この型では、正規表現ツリーを含む YAML ファイルへのパスを指定します。独自の正規表現 Dictionary を使用したい場合は、必要な構造の詳細が[こちら](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source)に記載されています。以下では、[uap-core](https://github.com/ua-parser/uap-core) を用いたユーザーエージェントのパースと、サポートされている CSV 形式用 Dictionary の読み込みに焦点を当てます。このアプローチは OSS と ClickHouse Cloud の両方で利用可能です。
 
 :::note
-以下の例では、2024年6月時点での uap-core におけるユーザーエージェントパース用正規表現の最新スナップショットを使用しています。随時更新される最新のファイルは[こちら](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)から取得できます。下記で使用する CSV ファイルにロードするには、[こちら](/sql-reference/dictionaries#collecting-attribute-values)の手順に従ってください。
+以下の例では、2024年6月時点での uap-core におけるユーザーエージェントパース用正規表現の最新スナップショットを使用しています。随時更新される最新のファイルは[こちら](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)から取得できます。下記で使用する CSV ファイルにロードするには、[こちら](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values)の手順に従ってください。
 :::
 
 以下の Memory テーブルを作成します。これらは、デバイス、ブラウザ、オペレーティングシステムをパースするための正規表現を保持します。
@@ -927,7 +927,7 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-これらの Dictionary をロードしたら、サンプルの user-agent 文字列を与えて、新しい Dictionary 抽出機能をテストできます。
+これらの Dictionary をロードしたら、サンプルの user-agent 文字列を入力して、新しい Dictionary 抽出機能をテストできます。
 
 
 ```sql
@@ -1030,8 +1030,8 @@ Os:     ('Other','0','0','0')
 Dictionary に関するさらなる例や詳細については、次の記事を参照してください。
 
 - [Dictionary の高度なトピック](/dictionary#advanced-dictionary-topics)
-- 「Using Dictionaries to Accelerate Queries」(https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Dictionaries](/sql-reference/dictionaries)
+- [「Using Dictionaries to Accelerate Queries」](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+- [Dictionaries](/sql-reference/statements/create/dictionary)
 
 ## クエリの高速化 \{#accelerating-queries\}
 

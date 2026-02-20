@@ -169,7 +169,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) странами с наибольшим количеством сотовых вышек являются США, Германия и Россия.
 
-Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/dictionaries/index.md) для расшифровки этих значений.
+Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/statements/create/dictionary/index.md) для расшифровки этих значений.
+
 
 ## Сценарий использования: использование геоданных \{#use-case\}
 

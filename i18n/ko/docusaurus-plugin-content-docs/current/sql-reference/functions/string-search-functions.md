@@ -940,7 +940,7 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-도입 버전: v
+도입 버전: v20.1
 
 `tokenbf_v1` 인덱스를 사용하여 `haystack` 내에서 `needle`을 대소문자를 구분하지 않고 검색합니다.
 
@@ -959,7 +959,7 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-도입된 버전: v
+도입된 버전: v23.1
 
 `tokenbf_v1` 인덱스를 사용하여 `haystack`에서 `needle`을 대소문자를 구분하지 않고 검색합니다. `needle`의 형식이 올바르지 않은 경우 null을 반환합니다.
 

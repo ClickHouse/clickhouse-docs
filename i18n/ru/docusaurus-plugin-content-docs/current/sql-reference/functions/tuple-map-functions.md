@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-Введено в: v
+Введено в: v23.4
 
 Извлекает пары ключ-значение из произвольной строки. Строка не обязана строго соответствовать формату пар ключ-значение;
 
@@ -60,14 +60,14 @@ doc_type: 'reference'
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Одинарная кавычка как символ обрамления**
+**Одинарная кавычка как символ кавычек**
 
 ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
             SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
-            Идентификатор запроса: 0e22bf6b-9844-414a-99dc-32bf647abd5e
+            Query id: 0e22bf6b-9844-414a-99dc-32bf647abd5e
 
             ┌─kv───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
             │ {'name':'neymar','age':'31','team':'psg','nationality':'brazil','last_key':'last_value'}                                 │
@@ -173,7 +173,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-Введена в: v
+Введена в: v23.4
 
 Та же функция, что и `extractKeyValuePairs`, но с поддержкой экранирования.
 

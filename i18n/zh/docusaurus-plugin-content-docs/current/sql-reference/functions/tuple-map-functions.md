@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-引入版本：v
+引入版本：v23.4
 
 从任意字符串中提取键值对。该字符串不需要完全符合键值对格式。
 
@@ -53,14 +53,14 @@ doc_type: 'reference'
 
             SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
 
-            查询 id: f9e0ca6f-3178-4ee2-aa2c-a5517abb9cee
+            Query id: f9e0ca6f-3178-4ee2-aa2c-a5517abb9cee
 
             ┌─kv──────────────────────────────────────────────────────────────────────┐
             │ {'name':'neymar','age':'31','team':'psg','nationality':'brazil'}        │
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**将单引号用作引号字符**
+**将单引号用作引用符号**
 
 ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -173,7 +173,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-引入版本: v
+引入版本: v23.4
 
 与 `extractKeyValuePairs` 相同,但支持转义。
 

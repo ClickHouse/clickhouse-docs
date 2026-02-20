@@ -7,13 +7,9 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
 # odbc Table Function \{#odbc-table-function\}
 
 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)를 통해 연결된 테이블을 반환합니다.
-
-
 
 ## 구문 \{#syntax\}
 
@@ -37,8 +33,6 @@ odbc(named_collection)
 ODBC 연결을 안전하게 구현하기 위해 ClickHouse는 별도의 프로그램인 `clickhouse-odbc-bridge`를 사용합니다. ODBC 드라이버를 `clickhouse-server`에서 직접 로드하면 드라이버 문제로 인해 ClickHouse 서버가 중단될 수 있습니다. ClickHouse는 필요할 때 `clickhouse-odbc-bridge`를 자동으로 시작합니다. ODBC 브리지 프로그램은 `clickhouse-server`와 동일한 패키지에 포함되어 설치됩니다.
 
 외부 테이블에서 `NULL` 값을 가진 필드는 기본 데이터 타입의 기본값으로 변환됩니다. 예를 들어, 원격 MySQL 테이블 필드의 형이 `INT NULL`인 경우, 이는 ClickHouse `Int32` 데이터 타입의 기본값인 0으로 변환됩니다.
-
-
 
 ## 사용 예시 \{#usage-example\}
 
@@ -120,5 +114,5 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 
 ## 관련 항목 \{#see-also\}
 
-- [ODBC 사전](/sql-reference/dictionaries#dbms)
+- [ODBC 사전](/sql-reference/statements/create/dictionary/sources#dbms)
 - [ODBC 테이블 엔진](/engines/table-engines/integrations/odbc).

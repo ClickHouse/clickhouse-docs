@@ -946,7 +946,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-도입된 버전: v
+도입된 버전: v25.2
 
 현재 쿼리 ID를 반환합니다.
 
@@ -1698,7 +1698,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-도입 버전: v
+도입 버전: v23.10
 
 지정된 SQL 쿼리를 포맷팅한 버전(여러 줄이 될 수 있음)을 반환합니다. 구문 분석 오류가 발생하면 예외를 던집니다.
 [example:multiline]
@@ -1735,7 +1735,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-도입된 버전: v
+도입된 버전: v23.11
 
 지정된 SQL 쿼리를 서식화한 문자열을 반환하며, 이 문자열은 여러 줄로 구성될 수 있습니다. 구문 분석 오류가 발생한 경우 NULL을 반환합니다.
 [example:multiline]
@@ -1772,9 +1772,9 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-도입 버전: v
+도입 버전: v23.10
 
-formatQuery()와 유사하지만, 반환되는 형식화된 문자열에는 개행 문자가 포함되지 않습니다. 파싱 오류가 발생하면 예외를 던집니다.
+formatQuery()와 유사하지만, 반환되는 포맷된 문자열에는 개행 문자가 포함되지 않습니다. 파싱 오류가 발생하면 예외를 던집니다.
 [example:multiline]
 
 **구문**
@@ -1805,7 +1805,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-도입 버전: v
+도입 버전: v23.11
 
 formatQuery()와 유사하지만, 반환되는 포맷된 문자열에는 줄 바꿈이 포함되지 않습니다. 구문 분석 오류가 발생한 경우 NULL을 반환합니다.
 [example:multiline]
@@ -2246,7 +2246,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-도입 버전: v
+도입 버전: v25.1
 
 지정된 데이터베이스에서 허용되는 최대 테이블 이름 길이를 반환합니다.
 
@@ -2526,7 +2526,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-도입된 버전: v
+도입된 버전: v23.3
 
 식 또는 식별자, 그리고 하위 컬럼 이름을 나타내는 상수 문자열을 인수로 받습니다.
 
@@ -3627,7 +3627,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 
 ## nested \{#nested\}
 
-도입 버전: v
+도입 버전: v23.2
 
 이 FUNCTION은 ClickHouse 엔진 내부에서 사용되며, 직접 사용하도록 설계되지 않았습니다.
 
@@ -4722,7 +4722,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-도입 버전: v
+도입 버전: v23.8
 
 ClickHouse 테이블 구조를 CapnProto 형식의 스키마로 변환하는 함수입니다.
 

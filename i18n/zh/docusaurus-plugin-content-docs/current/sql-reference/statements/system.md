@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-重新加载所有[内部字典](../../sql-reference/dictionaries/index.md)。
+重新加载所有[内部字典](./create/dictionary/index.md)。
 默认情况下，内部字典处于禁用状态。
 无论内部字典更新结果如何，此命令始终返回 `Ok.`。
 

@@ -7,13 +7,9 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-
-
 # mysql Table Function \{#mysql-table-function\}
 
 원격 MySQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.
-
-
 
 ## 구문 \{#syntax\}
 
@@ -65,11 +61,9 @@ MySQL의 일부 데이터 타입은 서로 다른 ClickHouse 타입으로 매핑
 `INSERT` 쿼리에서 테이블 함수 `mysql(...)`와 컬럼 이름 목록이 있는 테이블 이름을 구분하려면 `FUNCTION` 또는 `TABLE FUNCTION` 키워드를 사용해야 합니다. 아래 예시를 참고하십시오.
 :::
 
-
-
 ## 예제 \{#examples\}
 
-MySQL의 테이블 예:
+MySQL 테이블:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -111,7 +105,7 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
-교체 및 삽입:
+대체 및 삽입:
 
 ```sql
 INSERT INTO FUNCTION mysql('localhost:3306', 'test', 'test', 'bayonet', '123', 1) (int_id, float) VALUES (1, 3);
@@ -154,7 +148,7 @@ WHERE id > (SELECT max(id) FROM mysql_copy);
 ## 관련 항목 \{#related\}
 
 - ['MySQL' 테이블 엔진](../../engines/table-engines/integrations/mysql.md)
-- [MySQL을 딕셔너리 소스로 사용하는 방법](/sql-reference/dictionaries#mysql)
+- [MySQL을 딕셔너리 소스로 사용하는 방법](/sql-reference/statements/create/dictionary/sources#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

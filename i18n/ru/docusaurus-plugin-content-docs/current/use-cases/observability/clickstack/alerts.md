@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'Поиск с ClickStack'
+title: 'Оповещения с ClickStack'
 sidebar_label: 'Оповещения'
 pagination_prev: null
 pagination_next: null
@@ -24,14 +24,12 @@ import remove_chart_alert from '@site/static/images/use-cases/observability/remo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+ClickStack включает встроенную поддержку оповещений, позволяя командам в реальном времени обнаруживать и оперативно реагировать на проблемы в логах, метриках и трейсах.
 
-## Оповещения в ClickStack \{#alerting-in-clickstack\}
-
-ClickStack включает встроенную поддержку оповещений, позволяя командам в реальном времени выявлять проблемы в логах, метриках и трейсах и оперативно на них реагировать.
-
-Оповещения могут создаваться напрямую в интерфейсе HyperDX и интегрироваться с популярными системами уведомлений, такими как Slack и PagerDuty.
+Оповещения могут создаваться непосредственно в интерфейсе HyperDX и интегрироваться с популярными системами уведомлений, такими как Slack и PagerDuty.
 
 Механизм оповещений бесшовно работает со всеми вашими данными в ClickStack, помогая отслеживать состояние системы, выявлять регрессии производительности и мониторить ключевые бизнес-события.
+
 
 ## Типы оповещений \{#types-of-alerts\}
 

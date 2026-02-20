@@ -7,13 +7,9 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-
-
 # redis 테이블 함수 \{#redis-table-function\}
 
 이 테이블 함수는 ClickHouse를 [Redis](https://redis.io/)와 통합할 수 있게 합니다.
-
-
 
 ## 구문 \{#syntax\}
 
@@ -39,13 +35,9 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 현재 `redis` table function에서는 [Named collections](/operations/named-collections.md)를 지원하지 않습니다.
 
-
-
 ## 반환 값 \{#returned_value\}
 
 Redis 키를 key로 사용하고, 나머지 컬럼을 하나의 Redis value로 묶은 테이블 객체입니다.
-
-
 
 ## 사용 예제 \{#usage-example\}
 
@@ -72,4 +64,4 @@ INSERT INTO TABLE FUNCTION redis(
 ## 관련 항목 \{#related\}
 
 - [`Redis` 테이블 엔진](/engines/table-engines/integrations/redis.md)
-- [Redis를 딕셔너리 소스로 사용하기](/sql-reference/dictionaries/index.md#redis)
+- [Redis를 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources#redis)

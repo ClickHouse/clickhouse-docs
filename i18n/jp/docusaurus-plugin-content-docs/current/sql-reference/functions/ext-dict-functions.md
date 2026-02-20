@@ -9,10 +9,10 @@ doc_type: 'reference'
 # 辞書を扱う関数 \{#functions-for-working-with-dictionaries\}
 
 :::note
-[DDL クエリ](../../sql-reference/statements/create/dictionary.md)で作成された辞書の場合、`dict_name` パラメーターは `<database>.<dict_name>` のように完全修飾名で指定する必要があります。省略した場合は、現在のデータベースが使用されます。
+[DDL クエリ](../statements/create/dictionary/index.md)で作成された辞書の場合、`dict_name` パラメーターは `<database>.<dict_name>` のように完全修飾名で指定する必要があります。省略した場合は、現在のデータベースが使用されます。
 :::
 
-辞書の接続と設定の方法については、[辞書](../../sql-reference/dictionaries/index.md)を参照してください。
+辞書の接続と設定の方法については、[辞書](../statements/create/dictionary/index.md)を参照してください。
 
 ## 例となる辞書 \{#example-dictionary\}
 

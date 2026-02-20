@@ -588,7 +588,7 @@ LIMIT 5
 
 ## 딕셔너리 사용하기 \{#using-dictionaries\}
 
-[Dictionaries](/sql-reference/dictionaries)는 ClickHouse의 [주요 기능](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)으로, 다양한 내부 및 외부 [소스](/sql-reference/dictionaries#dictionary-sources)에서 가져온 데이터를 메모리 상의 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하며, 초저지연 조회 쿼리에 최적화되어 있습니다.
+[Dictionaries](/sql-reference/statements/create/dictionary)는 ClickHouse의 [주요 기능](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)으로, 다양한 내부 및 외부 [소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)에서 가져온 데이터를 메모리 상의 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하며, 초저지연 조회 쿼리에 최적화되어 있습니다.
 
 <Image img={observability_12} alt="Observability and dictionaries" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-ClickHouse에서 저지연 IP 조회를 수행하기 위해 Geo IP 데이터를 메모리에 저장하는 딕셔너리를 활용하여 키 -&gt; 속성 매핑을 구성합니다. ClickHouse는 네트워크 프리픽스(CIDR 블록)를 좌표와 국가 코드에 매핑하기 위한 `ip_trie` [딕셔너리 구조](/sql-reference/dictionaries#ip_trie)를 제공합니다. 다음 쿼리는 이 구조와 위의 테이블을 소스로 사용하는 딕셔너리를 정의합니다.
+ClickHouse에서 저지연 IP 조회를 수행하기 위해 Geo IP 데이터를 메모리에 저장하는 딕셔너리를 활용하여 키 -&gt; 속성 매핑을 구성합니다. ClickHouse는 네트워크 프리픽스(CIDR 블록)를 좌표와 국가 코드에 매핑하기 위한 `ip_trie` [딕셔너리 구조](/sql-reference/statements/create/dictionary/layouts/ip-trie)를 제공합니다. 다음 쿼리는 이 구조와 위의 테이블을 소스로 사용하는 딕셔너리를 정의합니다.
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [User agent 문자열](https://en.wikipedia.org/wiki/User_agent)의 파싱은 고전적인 정규 표현식 문제로, 로그 및 트레이스 기반 데이터셋에서 흔히 요구되는 작업입니다. ClickHouse는 Regular Expression Tree 딕셔너리를 사용하여 user agent를 효율적으로 파싱합니다.
 
-정규 표현식 트리 딕셔너리는 ClickHouse 오픈 소스에서 `YAMLRegExpTree` 딕셔너리 소스 타입을 사용해 정의되며, 정규 표현식 트리가 포함된 YAML 파일의 경로를 지정합니다. 사용자 정의 정규 표현식 딕셔너리를 사용하려는 경우, 필요한 구조에 대한 자세한 내용은 [여기](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)에서 확인할 수 있습니다. 아래에서는 [uap-core](https://github.com/ua-parser/uap-core)를 사용한 user agent 파싱에 초점을 맞추고, 지원되는 CSV 형식으로 딕셔너리를 로드합니다. 이 접근 방식은 OSS와 ClickHouse Cloud 모두에서 호환됩니다.
+정규 표현식 트리 딕셔너리는 ClickHouse 오픈 소스에서 `YAMLRegExpTree` 딕셔너리 소스 타입을 사용해 정의되며, 정규 표현식 트리가 포함된 YAML 파일의 경로를 지정합니다. 사용자 정의 정규 표현식 딕셔너리를 사용하려는 경우, 필요한 구조에 대한 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source)에서 확인할 수 있습니다. 아래에서는 [uap-core](https://github.com/ua-parser/uap-core)를 사용한 user agent 파싱에 초점을 맞추고, 지원되는 CSV 형식으로 딕셔너리를 로드합니다. 이 접근 방식은 OSS와 ClickHouse Cloud 모두에서 호환됩니다.
 
 :::note
-아래 예제에서는 2024년 6월 기준 최신 uap-core user agent 파싱용 정규 표현식 스냅샷을 사용합니다. 가끔씩 업데이트되는 최신 파일은 [여기](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)에서 확인할 수 있습니다. 아래에서 사용하는 CSV 파일로 로드하려면 [여기](/sql-reference/dictionaries#collecting-attribute-values)의 단계를 따르면 됩니다.
+아래 예제에서는 2024년 6월 기준 최신 uap-core user agent 파싱용 정규 표현식 스냅샷을 사용합니다. 가끔씩 업데이트되는 최신 파일은 [여기](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)에서 확인할 수 있습니다. 아래에서 사용하는 CSV 파일로 로드하려면 [여기](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values)의 단계를 따르면 됩니다.
 :::
 
 다음 Memory 테이블을 생성하십시오. 이 테이블들은 디바이스, 브라우저 및 운영 체제를 파싱하기 위한 정규 표현식을 저장합니다.
@@ -875,7 +875,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-이 테이블들은 `url` 테이블 함수를 사용하여 아래의 공개적으로 호스팅된 CSV 파일에서 데이터를 채울 수 있습니다.
+이 테이블들은 `url` 테이블 함수를 사용하여 아래의 공개로 호스팅되는 CSV 파일에서 데이터를 불러올 수 있습니다.
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -1031,7 +1031,7 @@ Os:     ('Other','0','0','0')
 
 - [고급 딕셔너리 주제](/dictionary#advanced-dictionary-topics)
 - [「Using Dictionaries to Accelerate Queries」](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [딕셔너리](/sql-reference/dictionaries)
+- [딕셔너리](/sql-reference/statements/create/dictionary)
 
 ## 쿼리 가속화 \{#accelerating-queries\}
 
