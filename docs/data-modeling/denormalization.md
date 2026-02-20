@@ -37,7 +37,7 @@ In general, we would recommend denormalizing in the following cases:
 
 All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
 
-The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink.
+The denormalization work can be handled in either ClickHouse or upstream e.g. using [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md).
 
 ## Avoid denormalization on frequently updated data {#avoid-denormalization-on-frequently-updated-data}
 
@@ -371,4 +371,4 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 
 ### Streaming {#streaming}
 
-You may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.
+You may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.
