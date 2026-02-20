@@ -126,6 +126,12 @@ The correlation works in the other direction too. When viewing a trace in the **
 
 <Image img={trace_to_replay} alt="Session replay trace view" size="lg"/>
 
+## How session data is stored {#data-storage}
+
+Session replay data is stored in a dedicated [`hyperdx_sessions`](/use-cases/observability/clickstack/ingesting-data/schemas#sessions) table in ClickHouse, separate from logs and traces. Each session event is a row with a `Body` field containing the event payload and a `LogAttributes` map storing the event metadata. The `Body` and `LogAttributes` columns together hold the details of the actual session events that are used to reconstruct the replay.
+
+For the full table schema information, see [Tables and schemas used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+
 ## Try it out {#try-it-out}
 
 There are two ways to see session replay in action:
