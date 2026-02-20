@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'Search with ClickStack'
+title: 'Alerts with ClickStack'
 sidebar_label: 'Alerts'
 pagination_prev: null
 pagination_next: null
@@ -23,8 +23,6 @@ import multiple_search_alerts from '@site/static/images/use-cases/observability/
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-## Alerting in ClickStack {#alerting-in-clickstack}
 
 ClickStack includes built-in support for alerting, enabling teams to detect and respond to issues in real time across logs, metrics, and traces.
 
