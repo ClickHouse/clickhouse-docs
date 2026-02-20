@@ -1,7 +1,8 @@
 ---
 slug: /integrations/prometheus
-sidebar_label: 'Prometheus'
-title: 'Prometheus'
+sidebar_label: 'Prometheus endpoint'
+sidebar_position: 4
+title: 'Prometheus-compatible metrics endpoint'
 description: 'Export ClickHouse metrics to Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -308,3 +309,10 @@ instances:
 <br />
 
 <Image img={prometheus_datadog} size="md" alt="Prometheus Datadog Integration" />
+
+## Related pages {#related}
+
+- [Monitoring overview](/cloud/monitoring) — Compare all monitoring approaches for ClickHouse Cloud
+- [Cloud Console monitoring](/cloud/monitoring/cloud-console) — Built-in dashboards that require no external tools
+- [Community and partner integrations](/cloud/monitoring/integrations) — Datadog agent integration and community solutions
+- [Querying system tables](/cloud/monitoring/system-tables) — Direct SQL access to system metrics
