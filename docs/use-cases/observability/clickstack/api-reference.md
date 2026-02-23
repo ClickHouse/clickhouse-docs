@@ -108,20 +108,20 @@ curl -H "Authorization: Bearer <YOUR_API_KEY>" \
 
 All Managed ClickStack API requests are sent to the ClickHouse Cloud API:
 
-```
+```bash
 https://api.clickhouse.cloud/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/clickstack/<resource>
 ```
 
 You can find your **Organization ID** in the ClickHouse Cloud console under **Organization → Organization details**. Your **Service ID** is visible in the service URL or on the service details page.
 
-### Example: List dashboards
+### Example: List dashboards {#list-dashboards-managed}
 
 ```bash
 curl --user $KEY_ID:$KEY_SECRET \
   https://api.clickhouse.cloud/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/clickstack/dashboards
 ```
 
-### Example: Create an alert
+### Example: Create an alert {#create-alert-managed}
 
 ```bash
 curl -X POST --user $KEY_ID:$KEY_SECRET \
@@ -148,24 +148,24 @@ curl -X POST --user $KEY_ID:$KEY_SECRET \
 
 All Open Source ClickStack API requests are sent to the HyperDX API server on port `8000`:
 
-```
+```bash
 http://<YOUR_HYPERDX_HOST>:8000/api/v2/<resource>
 ```
 
 For example, with a default local deployment:
 
-```
+```bash
 http://localhost:8000/api/v2/dashboards
 ```
 
-### Example: List dashboards
+### Example: List dashboards {#list-dashboards-oss}
 
 ```bash
 curl -H "Authorization: Bearer <YOUR_API_KEY>" \
   http://localhost:8000/api/v2/dashboards
 ```
 
-### Example: Create an alert
+### Example: Create an alert {#create-alert-oss}
 
 ```bash
 curl -X POST \
@@ -188,7 +188,7 @@ curl -X POST \
   http://localhost:8000/api/v2/alerts
 ```
 
-### Example: Query chart series data
+### Example: Query chart series data {#query-series-data}
 
 ```bash
 curl -X POST \
