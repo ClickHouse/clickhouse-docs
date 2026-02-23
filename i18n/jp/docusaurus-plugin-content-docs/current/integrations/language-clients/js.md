@@ -279,6 +279,7 @@ interface ClickHouseClient {
 `query` 内で FORMAT 句は指定せず、代わりに `format` パラメータを使用してください。
 :::
 
+
 #### 結果セットおよび行の抽象化 \{#result-set-and-row-abstractions\}
 
 `ResultSet` は、アプリケーション内でのデータ処理を容易にするための、いくつかの便利なメソッドを提供します。
@@ -327,7 +328,7 @@ interface Row {
 }
 ```
 
-**例:** (Node.js/Web) `JSONEachRow` 形式の結果データセットを返すクエリで、ストリーム全体を読み取り、その内容を JS オブジェクトとしてパースします。\
+**例:** (Node.js/Web) `JSONEachRow` 形式の結果データセットを返すクエリで、ストリーム全体を読み取り、その内容を JS オブジェクトとしてパースします。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts)。
 
 ```ts
@@ -362,6 +363,7 @@ await new Promise((resolve, reject) => {
 
 **例:** (`Node.js` のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と置き換えて使用できます。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
+
 
 ```ts
 const resultSet = await client.query({
@@ -441,6 +443,7 @@ interface ClickHouseClient {
 空の配列が insert メソッドに渡された場合、insert 文はサーバーに送信されません。その代わり、メソッドは直ちに `{ query_id: '...', executed: false }` で resolve されます。このとき、メソッドのパラメータで `query_id` が指定されていなければ、結果では空文字列となります。クライアント側で生成されたランダムな UUID を返してしまうと、そのような `query_id` を持つクエリは `system.query_log` テーブルに存在しないため、かえって混乱を招く可能性があるためです。
 
 insert 文がサーバーに送信された場合、`executed` フラグは `true` になります。
+
 
 #### Node.js における insert メソッドとストリーミング \{#insert-method-and-streaming-in-nodejs\}
 
@@ -544,6 +547,7 @@ await client.insert({
 
 詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts)を参照してください。
 
+
 **例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts)。
 
 ```ts
@@ -580,6 +584,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```
 
 これは今後変更される可能性があります。あわせてこちらも参照してください: [すべてのクライアントメソッドに共通の基本パラメーター](./js.md#base-parameters-for-all-client-methods)。
+
 
 ### Command メソッド \{#command-method\}
 
@@ -651,6 +656,7 @@ await client.command({
 `abort_signal` によってリクエストがキャンセルされても、そのステートメントがサーバー側で実行されなかったことが保証されるわけではありません。
 :::
 
+
 ### Exec メソッド \{#exec-method\}
 
 `query`/`insert` に収まらないカスタムクエリがあり、
@@ -690,6 +696,7 @@ export interface QueryResult {
   query_id: string
 }
 ```
+
 
 ### Ping \{#ping\}
 
@@ -747,6 +754,7 @@ const result = await client.ping({ select: true, /* query_id, abort_signal, http
 ```
 
 `ping` メソッドでは、標準的な `query` メソッドのパラメータのほとんどを指定できます。詳細は `PingParamsWithSelectQuery` の型定義を参照してください。
+
 
 ### Close（Node.js のみ） \{#close-nodejs-only\}
 
@@ -883,6 +891,7 @@ await client.insert({
 ```
 
 ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)を参照してください。
+
 
 ### Decimal* 型の注意事項 \{#decimal-types-caveats\}
 
@@ -1164,6 +1173,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 この場合、`keep_alive_timeout` は 10 秒なので、アイドル中のソケットをデフォルトより少し長く開いたままにしておくために、`keep_alive.idle_socket_ttl` を 9000 や 9500 ミリ秒まで増やしてみることができます。「Socket hang-up」エラーが発生しないか注意して監視し、このエラーが、クライアントより先にサーバー側が接続を切断していることを示すので、エラーが出なくなるまで値を下げて調整してください。
 
+
 #### トラブルシューティング \{#troubleshooting\}
 
 最新バージョンのクライアントを使用していても `socket hang up` エラーが発生する場合、この問題を解決するためには次のような選択肢があります。
@@ -1222,6 +1232,7 @@ const client = createClient({
 ```
 
 `readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) を参照してください。
+
 
 ### パス名付きプロキシ \{#proxy-with-a-pathname\}
 

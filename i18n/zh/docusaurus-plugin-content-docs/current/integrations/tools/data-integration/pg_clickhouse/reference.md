@@ -249,7 +249,7 @@ FOREIGN TABLE](#create-foreign-table) 所支持的选项。
  );
 ```
 
-因此，在查询中必须正确使用引号，例如：
+因此，查询语句中必须正确加上引号，例如：
 
 ```sql
  SELECT id, "Name", "updatedAt" FROM test;
@@ -647,7 +647,7 @@ SET pg_clickhouse.session_settings = '';
 SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 ```
 
-或者使用用单引号包裹的值以避免对空格和逗号进行转义；也可以考虑使用 [dollar quoting]，从而无需使用双引号：
+或者使用单引号包裹的值以避免对空格和逗号进行转义；也可以考虑使用 [dollar quoting]，从而无需使用双引号：
 
 ```sql
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;

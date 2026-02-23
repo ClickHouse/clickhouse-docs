@@ -13,6 +13,7 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
+
 # Amazon DocumentDB ソースセットアップガイド \{#amazon-documentdb-source-setup-guide\}
 
 ## サポートされている DocumentDB バージョン \{#supported-documentdb-versions\}
@@ -27,17 +28,17 @@ ClickPipes は DocumentDB バージョン 5.0 に対応しています。
 
 1. 左ペインで `Parameter groups` をクリックし、DocumentDB クラスターで使用されているパラメーターグループを探します（デフォルトのパラメーターグループを使用している場合は、変更するために先に新しいパラメーターグループを作成する必要があります）。
 
-<Image img={docdb_select_parameter_group} alt="パラメーターグループを選択" size="lg" border />
+<Image img={docdb_select_parameter_group} alt="パラメーターグループを選択" size="lg" border/>
 
 2. `change_stream_log_retention_duration` を検索し、それを選択して `259200`（72 時間）に編集します。
 
-<Image img={docdb_modify_parameter_group} alt="パラメーターグループを変更" size="lg" border />
+<Image img={docdb_modify_parameter_group} alt="パラメーターグループを変更" size="lg" border/>
 
 3. `Apply Changes` をクリックして、変更したパラメーターグループを直ちに DocumentDB クラスターに適用します。パラメーターグループのステータスが `applying` に変わり、その後、変更が適用されると `in-sync` になることを確認できます。
 
-<Image img={docdb_apply_parameter_group} alt="パラメーターグループを適用" size="lg" border />
+<Image img={docdb_apply_parameter_group} alt="パラメーターグループを適用" size="lg" border/>
 
-<Image img={docdb_parameter_group_status} alt="パラメーターグループのステータス" size="lg" border />
+<Image img={docdb_parameter_group_status} alt="パラメーターグループのステータス" size="lg" border/>
 
 ### AWS CLI から変更ストリームログの保持期間を更新する \{#update-change-stream-log-retention-via-aws-cli\}
 
@@ -49,11 +50,12 @@ ClickPipes は DocumentDB バージョン 5.0 に対応しています。
 aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --query "Parameters[?ParameterName=='change_stream_log_retention_duration'].{Name:ParameterName,Value:ParameterValue}"
 ```
 
-変更ストリームのログ保持期間を72時間に設定するには、次のようにします。
+変更ストリームログの保持期間を 72 時間に設定するには、次のようにします。
 
 ```shell
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```
+
 
 ## データベースユーザーを設定する \{#configure-database-user\}
 
@@ -70,6 +72,7 @@ db.getSiblingDB("admin").createUser({
 :::note
 必ず `clickpipes_user` と `some_secure_password` を希望するユーザー名とパスワードに置き換えてください。
 :::
+
 
 ## 次のステップ \{#whats-next\}
 

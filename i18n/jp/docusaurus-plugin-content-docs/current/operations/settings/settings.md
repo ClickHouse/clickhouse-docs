@@ -437,16 +437,6 @@ delta-kernel の書き込み機能を有効にします。
 
 Iceberg テーブルに対して 'OPTIMIZE' を明示的に使用できるようにします。
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-Iceberg テーブルに対する `insert` クエリの実行を許可します。
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -635,6 +625,16 @@ YTsaurus との統合向けの実験的なテーブルエンジンです。
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Hyperscan ライブラリを使用する関数の利用を許可します。コンパイル時間が長くなったり、リソース使用量が過剰になったりする可能性を避ける場合は無効にします。
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Insert into iceberg was moved to Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Iceberg テーブルに対する `insert` クエリの実行を許可します。
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -1756,6 +1756,14 @@ String から Dynamic への変換時に型推論を使用します。
 
 String から Variant への変換時に型推論を行います。
 
+## check_named_collection_dependencies \{#check_named_collection_dependencies\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "NAMED COLLECTION を削除しても依存テーブルが壊れないことを確認するための新しい設定です。"}]}]}/>
+
+DROP NAMED COLLECTION を実行しても、それに依存するテーブルが壊れないことを確認します。
+
 ## check_query_single_value_result \{#check_query_single_value_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2270,7 +2278,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -3021,7 +3029,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3340,9 +3348,9 @@ BLOB ストレージの操作情報を system.blob_storage_log テーブルに�
 
 **別名**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "The text index is now GA"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
 
 true に設定すると、テキスト索引を使用できるようになります。
 
@@ -3623,7 +3631,7 @@ true に設定すると、スカラーサブクエリによる大きなスカラ
 
 この設定を無効化すると、親の WITH 句での宣言は、現在のスコープで宣言されたものと同じスコープとして扱われます。
 
-これは、新しいアナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
+これは、アナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8041,6 +8049,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "新しい設定"}]}]}/>
+
+ZooKeeper リクエストに対してトレースを開始する確率（親トレースの有無にかかわらず）。
+
+可能な値:
+
+- 'auto' - `opentelemetry_start_trace_probability` 設定と同じ
+- 0 — トレースは無効
+- 0 ～ 1 — 確率（例: 1.0 = 常に有効）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -8756,6 +8778,16 @@ CAP_SYS_NICE ケーパビリティが必要で、それがない場合は何も�
 
 ハッシュベースの結合アルゴリズムが適用される場合、このしきい値は（右側テーブルのサイズの推定値が利用可能な場合にのみ）、`hash` と `parallel_hash` のどちらを使用するかを決定するために使用されます。
 右側テーブルのサイズがこのしきい値を下回ると分かっている場合は、前者が使用されます。
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "RIGHT/FULL `parallel_hash` 結合において、結合されなかった行を並列処理できる新しい設定。"}]}]}/>
+
+RIGHT および FULL JOIN の実行中に、右テーブルの結合されなかった行を複数スレッドで並列処理できるようにします。
+この設定により、大規模なテーブルで `parallel_hash` 結合アルゴリズムを使用する場合の非結合フェーズを高速化できます。
+無効化されている場合、結合されなかった行は単一スレッドで処理されます。
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 
@@ -9628,7 +9660,7 @@ EXPLAIN PLAN におけるステップの説明の最大の長さ。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、新しいアナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、アナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタをマージできるようにします。
 
@@ -11485,19 +11517,6 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Paimon テーブル関数で Paimon のパーティションプルーニングを使用します
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Parquet ファイルメタデータのキャッシュを有効にします。"}]}]}/>
-
-有効にすると、Parquet フォーマットは Parquet メタデータキャッシュを利用できます。
-
-設定可能な値:
-
-- 0 - 無効
-- 1 - 有効
 
 ## use_primary_key \{#use_primary_key\}
 

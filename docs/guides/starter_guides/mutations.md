@@ -57,7 +57,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      ```
 
 :::note
-It is not possible to update columns that are part of the primary or sorting key.
+It isn't possible to update columns that are part of the primary or sorting key.
 :::
 
 ## Deleting data {#deleting-data}
@@ -90,7 +90,7 @@ View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for
 
 ## Lightweight deletes {#lightweight-deletes}
 
-Another option for deleting rows is to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
+Another option for deleting rows is to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you don't have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
 
 ``` sql
 DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]

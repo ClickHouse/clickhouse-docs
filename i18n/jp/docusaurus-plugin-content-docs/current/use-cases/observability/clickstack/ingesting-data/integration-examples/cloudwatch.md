@@ -21,7 +21,6 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使用した AWS CloudWatch Logs の監視 \{#cloudwatch-clickstack\}
 
 :::note[要点まとめ]
@@ -69,8 +68,8 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
 
   OpenTelemetry CollectorはClickStackのOTLPエンドポイントにデータを送信します。このエンドポイントには認証が必要です。
 
-  1. ClickStack の URL（例: [http://localhost:8080](http://localhost:8080)）から HyperDX を開きます
-  2. 必要に応じてアカウントを作成するかログインしてください
+  1. ClickStack の URL (例: http://localhost:8080) で HyperDX を開きます
+  2. 必要に応じてアカウントを作成するか、ログインしてください
   3. **Team Settings → API Keys** に移動してください
   4. **インジェスト API key** をコピーしてください
 
@@ -174,7 +173,7 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
         exporters: [otlphttp]
   ```
 
-  **例2: プレフィックスによるログループの自動検出**
+  **例2: プレフィックスによるログ・グループの自動検出**
 
   この設定は、プレフィックス `/aws/lambda` で始まる最大100個のロググループからログを自動検出して収集します:
 
@@ -211,11 +210,11 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
   **設定パラメータ：**
 
   * `region`: ロググループが配置されている AWS リージョン
-  * `poll_interval`: 新しいログをチェックする間隔（例: `1m`、`5m`）
+  * `poll_interval`: 新しいログの有無を確認する間隔（例: `1m`、`5m`）
   * `max_events_per_request`: 1 回のリクエストで取得するログイベントの最大数
   * `groups.autodiscover.limit`: 自動検出するロググループ数の上限
   * `groups.autodiscover.prefix`: プレフィックスでロググループをフィルタリングする
-  * `groups.named`: 収集対象とするロググループ名を明示的に指定します
+  * `groups.named`: 収集対象とするロググループ名を明示的に指定
 
   その他の設定オプションについては、[CloudWatch receiverのドキュメント](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/awscloudwatchreceiver)を参照してください。
 
@@ -268,9 +267,9 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
 
   コレクターが起動したら:
 
-  1. [http://localhost:8080](http://localhost:8080)（または ClickStack の URL）で HyperDX を開きます
+  1. http://localhost:8080 (または ClickStack の URL) で HyperDX を開きます
   2. **Logs** ビューへ移動します
-  3. ログが表示されるまで 1～2 分待ちます（ポーリング間隔に応じます）
+  3. ログが表示されるまで 1～2 分待ちます（設定したポーリング間隔により異なります）
   4. CloudWatch のロググループ内のログを検索する
 
   <Image img={log_search_view} alt="ログ検索ビュー" />
@@ -280,7 +279,7 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
   * `ResourceAttributes['aws.region']`: AWS リージョン（例: &quot;us-east-1&quot;）
   * `ResourceAttributes['cloudwatch.log.group.name']`: CloudWatch Logs のロググループ名
   * `ResourceAttributes['cloudwatch.log.stream']`: ログストリームの名前
-  * `Body`: 実際のログメッセージ本文
+  * `Body`: 実際のログメッセージの内容
 
   <Image img={error_log_column_values} alt="エラーログのカラム値" />
 </VerticalStepper>
@@ -418,7 +417,6 @@ aws logs filter-log-events \
   --max-items 5
 ```
 
-
 ### 古いログしか表示されない、または最新のログが表示されない
 
 **CloudWatch receiver はデフォルトで「現在時刻」から処理を開始します:**
@@ -439,7 +437,6 @@ docker run --rm ...
 
 レシーバーは新しいチェックポイントを作成し、現在時刻以降のログを取得します。
 
-
 ### セキュリティトークンが無効 / 認証情報の有効期限切れ
 
 一時的な認証情報（AWS SSO、引き受けたロールなど）を使用している場合、一定時間が経過すると有効期限が切れます。
@@ -459,7 +456,6 @@ export AWS_SECRET_ACCESS_KEY="your-secret"
 docker restart <container-id>
 ```
 
-
 ### レイテンシーが高い、または直近のログが欠けている
 
 **ポーリング間隔を短くする:**
@@ -471,7 +467,6 @@ logs:
 ```
 
 **注記:** ポーリング間隔を短く設定すると AWS API 呼び出し回数が増え、CloudWatch API のコストが増加する可能性があります。
-
 
 ### コレクターがメモリを使いすぎている
 
@@ -491,7 +486,6 @@ groups:
   autodiscover:
     limit: 50  # Reduce from 100 to 50
 ```
-
 
 ## 次のステップ {#next-steps}
 

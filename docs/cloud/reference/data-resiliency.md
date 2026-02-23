@@ -13,7 +13,7 @@ import restore_backup from '@site/static/images/cloud/guides/restore_backup.png'
 # Data resiliency {#clickhouse-cloud-data-resiliency}
 
 This page covers the disaster recovery recommendations for ClickHouse Cloud, and guidance for customers to recover from an outage.
-ClickHouse Cloud does not currently support automatic failover, or automatic syncing across multiple geographical regions.
+ClickHouse Cloud doesn't currently support automatic failover, or automatic syncing across multiple geographical regions.
 
 :::tip
 Customers should perform periodic backup restore testing to understand the specific RTO for their service size and configuration.
@@ -27,7 +27,7 @@ It is helpful to cover some definitions first.
 
 **RTO (Recovery Time Objective)**: The maximum allowable downtime before normal operations must resume following an outage. Example: An RTO of 30 mins means that in the event of a failure, the team is able to restore data and applications and get normal operations going within 30 mins.
 
-**Database Backups and Snapshots**: Backups provide durable long-term storage with a separate copy of the data. Snapshots do not create an additional copy of the data, are usually faster, and provide better RPOs.
+**Database Backups and Snapshots**: Backups provide durable long-term storage with a separate copy of the data. Snapshots don't create an additional copy of the data, are usually faster, and provide better RPOs.
 
 ## Database backups {#database-backups}
 
@@ -47,7 +47,7 @@ Cross-cloud backup export support is coming soon.
 Applicable data transfer charges will apply for cross-region, and cross-cloud backups.
 
 :::note
-This feature is not currently available in PCI/ HIPAA services
+This feature isn't currently available in PCI/ HIPAA services
 :::
 
 3. **Configurable backups**
@@ -107,7 +107,7 @@ To restore from an existing backup
 ### Primary region downtime {#primary-region-downtime}
 
 Customers in the Enterprise Tier can [export backups](/cloud/manage/backups/export-backups-to-own-cloud-account) to their own cloud provider bucket.
-If you are concerned about regional failures, we recommend exporting backups to a different region.
+If you're concerned about regional failures, we recommend exporting backups to a different region.
 Keep in mind that cross-region data transfer charges will apply.
 
 If the primary region goes down, the backup in another region can be restored to a new service in a different region.

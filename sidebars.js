@@ -644,6 +644,7 @@ const sidebars = {
               collapsible: true,
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/overview',
+                'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/get-started',
               ],
             },
           ],
@@ -1240,7 +1241,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index', 'sql-reference/dictionaries/index'],
+          items: ['dictionary/index'],
         },
         {
           type: 'category',
@@ -1921,6 +1922,7 @@ const sidebars = {
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
+        'use-cases/observability/clickstack/session-replay',
         {
           type: 'category',
           label: 'Managing ClickStack',

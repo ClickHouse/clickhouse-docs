@@ -131,6 +131,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 Настройка [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) позволяет разбирать поля [DateTime](../../sql-reference/data-types/datetime.md) в широком диапазоне форматов. Например, будет распознан формат ISO-8601 без секунд, такой как &#39;2000-01-01 01:02&#39;. Без этой настройки разрешён только фиксированный формат DateTime.
 
+
 ## Денормализация данных \{#denormalize-data\}
 
 Данные представлены в нескольких таблицах в [нормализованной форме](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms). Это означает, что вам нужно выполнять [JOIN](/sql-reference/statements/select/join), если вы хотите, например, получить названия блюд из пунктов меню.

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Произвольный экземпляр MongoDB'
-description: 'Настройка любого экземпляра MongoDB в качестве источника для ClickPipes'
+sidebar_label: 'Универсальный MongoDB'
+description: 'Настройте любой экземпляр MongoDB в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/generic
-title: 'Руководство по настройке произвольного источника MongoDB'
+title: 'Руководство по настройке источника Generic MongoDB'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -14,21 +14,21 @@ integration:
 
 :::info
 
-Если вы используете MongoDB Atlas, обратитесь к специальному руководству [здесь](./atlas).
+Если вы используете MongoDB Atlas, см. отдельное руководство [здесь](./atlas).
 
 :::
 
-## Включение хранения oplog \{#enable-oplog-retention\}
+## Включите хранение oplog \{#enable-oplog-retention\}
 
-Для репликации требуется минимальный срок хранения oplog в 24 часа. Рекомендуется устанавливать срок хранения oplog на 72 часа или больше, чтобы избежать его усечения до завершения начального снимка.
+Для репликации требуется минимальное время хранения oplog в 24 часа. Мы рекомендуем установить время хранения oplog на 72 часа или дольше, чтобы гарантировать, что oplog не будет усечён до завершения первоначального снимка.
 
-Вы можете проверить текущий срок хранения oplog, выполнив следующую команду в оболочке MongoDB (для выполнения этой команды у вас должна быть роль `clusterMonitor`):
+Вы можете проверить текущее время хранения oplog, выполнив следующую команду в оболочке MongoDB (для этого у вас должна быть роль `clusterMonitor`):
 
 ```javascript
 db.getSiblingDB("admin").serverStatus().oplogTruncation.oplogMinRetentionHours
 ```
 
-Чтобы установить время хранения oplog на 72 часа, выполните следующую команду на каждом узле набора реплик от имени пользователя с правами администратора:
+Чтобы установить период хранения журнала oplog на 72 часа, выполните следующую команду на каждом узле в наборе реплик от имени пользователя с правами администратора:
 
 ```javascript
 db.adminCommand({
@@ -37,12 +37,12 @@ db.adminCommand({
 })
 ```
 
-Подробнее о команде `replSetResizeOplog` и хранении журнала операций (oplog) см. [документацию MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
+Дополнительные сведения о команде `replSetResizeOplog` и политике хранения oplog см. в [документации MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
 
 
-## Настройте пользователя базы данных \{#configure-database-user\}
+## Настройка пользователя базы данных \{#configure-database-user\}
 
-Подключитесь к экземпляру MongoDB как пользователь с правами администратора и выполните следующую команду, чтобы создать пользователя для MongoDB CDC ClickPipes:
+Подключитесь к экземпляру MongoDB под учетной записью администратора и выполните следующую команду, чтобы создать пользователя для ClickPipes MongoDB CDC:
 
 ```javascript
 db.getSiblingDB("admin").createUser({
@@ -53,11 +53,13 @@ db.getSiblingDB("admin").createUser({
 ```
 
 :::note
+
 Обязательно замените `clickpipes_user` и `some_secure_password` на выбранные вами имя пользователя и пароль.
+
 :::
 
 
 ## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра MongoDB в ClickHouse Cloud.
-Обязательно сохраните параметры подключения, которые вы использовали при настройке MongoDB, так как они понадобятся вам в процессе создания ClickPipe.
+Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра MongoDB, так как они понадобятся вам в процессе создания ClickPipe.

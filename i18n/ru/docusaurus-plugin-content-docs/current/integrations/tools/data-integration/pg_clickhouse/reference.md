@@ -258,7 +258,7 @@ FOREIGN TABLE](#create-foreign-table).
  ORDER BY id;
 ```
 
-`IMPORT FOREIGN SCHEMA` создаёт следующую внешнюю таблицу:`
+`IMPORT FOREIGN SCHEMA` создаёт следующую внешнюю таблицу:
 
 ```sql
  CREATE TABLE test
@@ -269,7 +269,7 @@ FOREIGN TABLE](#create-foreign-table).
  );
 ```
 
-Поэтому в запросах необходимо корректно использовать кавычки, например:
+Поэтому в запросах такие имена нужно правильно заключать в кавычки, например:
 
 ```sql
  SELECT id, "Name", "updatedAt" FROM test;

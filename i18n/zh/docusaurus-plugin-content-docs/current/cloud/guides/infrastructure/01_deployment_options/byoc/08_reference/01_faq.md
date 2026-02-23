@@ -21,16 +21,16 @@ doc_type: 'reference'
 <details>
 <summary>BYOC 支持哪些区域？</summary>
 
-BYOC 支持的[区域](/cloud/reference/supported-regions#aws-regions )与 ClickHouse Cloud 相同。
+我们文档中[受支持区域](https://clickhouse.com/docs/cloud/reference/supported-regions)列表里的所有**公共区域**都可用于 BYOC 部署。不支持私有区域。
 
 </details>
 
 <details>
 <summary>会有一些资源开销吗？运行除 ClickHouse 实例之外的服务需要哪些资源？</summary>
 
-除了 ClickHouse 实例（ClickHouse 服务器和 ClickHouse Keeper）之外，我们还运行诸如 `clickhouse-operator`、`aws-cluster-autoscaler`、Istio 等服务，以及我们的监控栈。
+除了 ClickHouse 实例本身（ClickHouse 服务器和 ClickHouse Keeper）之外，我们还运行 `clickhouse-operator`、`aws-cluster-autoscaler`、Istio 等辅助服务，以及监控栈。
 
-目前，我们在一个专用节点组中使用三个 m5.xlarge 节点（每个可用区一个）来运行这些工作负载。
+这些共享组件的资源消耗相对稳定，不会随着 ClickHouse 服务的数量或规模线性增长。作为粗略参考，在 AWS 中，我们通常使用一个包含大约四个 `4xlarge` EC2 实例的专用节点组来运行这些工作负载。
 
 </details>
 

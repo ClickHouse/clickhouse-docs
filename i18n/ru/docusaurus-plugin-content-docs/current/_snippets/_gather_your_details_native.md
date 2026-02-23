@@ -19,4 +19,4 @@ import Image from '@theme/IdealImage';
 
 <Image img={connection_details_native} size="md" alt="Сведения о подключении по Native TCP к ClickHouse Cloud" border />
 
-Если вы используете самостоятельно управляемый ClickHouse, параметры подключения задаются вашим администратором ClickHouse.
+Если вы используете самоуправляемый ClickHouse, параметры подключения задаются вашим администратором ClickHouse.

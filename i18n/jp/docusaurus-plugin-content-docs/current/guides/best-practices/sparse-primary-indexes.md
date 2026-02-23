@@ -730,7 +730,7 @@ ClickHouse がサンプルクエリ（UserID が 749.927.693 のインターネ�
 
 <a name="query-on-url" />
 
-ここでは、URL &quot;[http://public&#95;search](http://public\&#95;search)&quot; を最も頻繁にクリックしたユーザーの上位 10 件を求めるクエリを使用します。
+ここでは、URL &quot;http://public&#95;search&quot; を最も頻繁にクリックしたユーザーの上位 10 件を求めるクエリを使用します。
 
 ```sql
 SELECT UserID, count(UserID) AS Count
@@ -765,7 +765,7 @@ Processed 8.81 million rows,
 
 クライアントの出力から、[URL カラムが複合主キーの一部である](#a-table-with-a-primary-key)にもかかわらず、ClickHouse がほぼ全表スキャンを実行しかけたことがわかります。ClickHouse は、このテーブルの 887 万行のうち 881 万行を読み取っています。
 
-[trace&#95;logging](/operations/server-configuration-parameters/settings#logger) が有効になっている場合、ClickHouse サーバーのログファイルには、URL カラムの値が &quot;[http://public&#95;search](http://public\&#95;search)&quot; である行を含む可能性があるグラニュールを特定するために、ClickHouse が 1083 個の URL 索引マークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">汎用排除検索</a>を使用したことが記録されます。
+[trace&#95;logging](/operations/server-configuration-parameters/settings#logger) が有効になっている場合、ClickHouse サーバーのログファイルには、URL カラムの値が &quot;http://public&#95;search&quot; である行を含む可能性があるグラニュールを特定するために、ClickHouse が 1083 個の URL 索引マークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">汎用排除検索</a>を使用したことが記録されます。
 
 ```response
 ...Executor): Key condition: (column 1 in ['http://public_search',
@@ -781,7 +781,7 @@ Processed 8.81 million rows,
 
 上のサンプルトレースログからわかるように、1083 個の granule のうち 1076 個が（マークを通じて）選択され、その中に一致する URL 値を持つ行が含まれている可能性があると判断されています。
 
-その結果、実際に URL 値 &quot;[http://public&#95;search](http://public\&#95;search)&quot; を含む行を特定するために、合計 881 万行が（10 本のストリームを使って並列に）ClickHouse エンジンへストリーミングされることになります。
+その結果、実際に URL 値 &quot;http://public&#95;search&quot; を含む行を特定するために、合計 881 万行が（10 本のストリームを使って並列に）ClickHouse エンジンへストリーミングされることになります。
 
 しかし後で見るように、その選択された 1076 個の granule のうち、実際に一致する行を含んでいるのは 39 個の granule にすぎません。
 
@@ -934,7 +934,7 @@ INSERT INTO hits_URL_UserID
 SELECT * FROM hits_UserID_URL;
 ```
 
-レスポンスは以下のとおりです：
+レスポンスは次のとおりです。
 
 ```response
 Ok.
@@ -942,7 +942,7 @@ Ok.
 0 rows in set. Elapsed: 2.898 sec. Processed 8.87 million rows, 838.84 MB (3.06 million rows/s., 289.46 MB/s.)
 ```
 
-最後に、テーブルを最適化します：
+最後に、テーブルを最適化します。
 
 ```sql
 OPTIMIZE TABLE hits_URL_UserID FINAL;
@@ -956,7 +956,7 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 <Image img={sparsePrimaryIndexes11} size="md" alt="スパースな主キーインデックス 11" background="white" />
 
-これにより、URL カラムでフィルタリングするサンプルクエリの実行を大幅に高速化し、URL &quot;[http://public&#95;search](http://public\&#95;search)&quot; を最も頻繁にクリックしたユーザーのトップ 10 を算出できるようになります。
+これにより、URL カラムでフィルタリングするサンプルクエリの実行を大幅に高速化し、URL &quot;http://public&#95;search&quot; を最も頻繁にクリックしたユーザーのトップ 10 を算出できるようになります。
 
 ```sql
 SELECT UserID, count(UserID) AS Count
@@ -1262,7 +1262,7 @@ ClickHouse サーバーログファイル内の対応するトレースログか
 
 ### 要約 \{#summary\}
 
-[複合プライマリキー (UserID, URL) を持つテーブル](#a-table-with-a-primary-key) のプライマリインデックスは、[UserID でフィルタするクエリ](#the-primary-index-is-used-for-selecting-granules) の高速化には非常に有用でした。しかし、そのインデックスは、URL カラムも複合プライマリキーの一部であるにもかかわらず、[URL でフィルタするクエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) の高速化にはほとんど役立っていませんでした。
+[複合プライマリキー (UserID, URL) を持つテーブル](#a-table-with-a-primary-key) のプライマリインデックスは、[UserID でフィルタするクエリ](#the-primary-index-is-used-for-selecting-granules) の高速化には非常に有用でした。しかし、そのインデックスは、URL カラムも複合プライマリキーの一部であるにもかかわらず、[URL でフィルタするクエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) の高速化にはほとんど役立っていません。
 
 逆もまた同様です。
 [複合プライマリキー (URL, UserID) を持つテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables) のプライマリインデックスは、[URL でフィルタするクエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) の高速化には寄与していましたが、[UserID でフィルタするクエリ](#the-primary-index-is-used-for-selecting-granules) にはあまり効果がありませんでした。
@@ -1371,7 +1371,7 @@ ENGINE = MergeTree
 PRIMARY KEY (IsRobot, UserID, URL);
 ```
 
-そして、このテーブルにも、前のテーブルに投入したものと同じ 887 万行のデータを投入します。
+そして、このテーブルにも、前のテーブルと同じ 887 万行のデータを投入します:
 
 
 ```sql
@@ -1427,7 +1427,7 @@ FROM hits_IsRobot_UserID_URL
 WHERE UserID = 112304
 ```
 
-応答は次のとおりです：
+レスポンスは次のようになります:
 
 ```response
 ┌─count()─┐

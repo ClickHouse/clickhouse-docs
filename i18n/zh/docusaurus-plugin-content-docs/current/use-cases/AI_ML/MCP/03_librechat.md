@@ -28,7 +28,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   1. 访问 [docker.com](https://www.docker.com/products/docker-desktop)
   2. 下载适用于您操作系统的 Docker Desktop
-  3. 请按照您所使用操作系统的安装说明安装 Docker
+  3. 请根据您所使用的操作系统的说明安装 Docker
   4. 打开 Docker Desktop，并确保其正在运行。
 
   <br />
@@ -52,7 +52,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   cp .env.example .env
   ```
 
-  使用您喜欢的文本编辑器打开 `.env` 文件。您将看到许多流行的 LLM 提供商的配置部分,包括 OpenAI、Anthropic、AWS Bedrock 等,例如:
+  使用您喜欢的文本编辑器打开 `.env` 文件。您将看到许多流行的 LLM 提供商的配置部分，例如 OpenAI、Anthropic、AWS Bedrock 等：
 
   ```text title=".venv"
   #============#
@@ -110,9 +110,9 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
         - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
   ```
 
-  如果您想探索自己的数据,可以使用您自己的 ClickHouse Cloud 服务的
+  如果您想探索自己的数据，您可以使用自己 ClickHouse Cloud 服务的
   [主机地址、用户名和密码](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
-  来进行连接。
+  进行连接。
 
   <Link to="https://cloud.clickhouse.com/">
     <CardHorizontal
@@ -145,7 +145,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
       url: http://host.docker.internal:8001/sse
   ```
 
-  这将配置 LibreChat 以连接到运行在 Docker 上的 MCP 服务器。
+  这会使 LibreChat 连接到在 Docker 中运行的 MCP 服务器。
 
   找到以下行:
 
@@ -153,31 +153,31 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
   ```
 
-  为简化操作,我们暂时移除身份验证要求:
+  为简化操作，我们暂时取消身份验证要求：
 
   ```text title="librechat.yaml"
   socialLogins: []
   ```
 
-  ## 使用 Ollama 添加本地 LLM(可选)
+  ## 使用 Ollama 添加本地 LLM（可选）
 
   ### 安装 Ollama
 
   前往 [Ollama 网站](https://ollama.com/download) 并为您的系统安装 Ollama。
 
-  安装完成后,您可以像这样运行模型:
+  安装完成后，您可以按如下方式运行模型：
 
   ```bash
   ollama run qwen3:32b
   ```
 
-  如果本地机器上不存在该模型,此操作将拉取该模型。
+  如果本地尚未存在该模型，该命令会自动将其拉取到本机。
 
   有关模型列表,请参阅 [Ollama library](https://ollama.com/library)
 
   ### 在 librechat.yaml 中配置 Ollama
 
-  模型下载完成后,在 `librechat.yaml` 中进行配置:
+  模型下载完成后，在 `librechat.yaml` 中对其进行配置：
 
   ```text title="librechat.yaml"
   custom:
@@ -200,7 +200,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   ## 启动所有服务
 
-  在 LibreChat 项目文件夹的根目录下，运行以下命令来启动服务：
+  在 LibreChat 项目文件夹的根目录下，运行以下命令以启动服务：
 
   ```bash
   docker compose up

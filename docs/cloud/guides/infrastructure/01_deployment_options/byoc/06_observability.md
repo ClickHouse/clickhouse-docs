@@ -59,7 +59,7 @@ https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com
 ```
 
 :::note
-The Prometheus stack URL is only accessible via private network connections and does not require authentication. Access is restricted to networks that can reach your BYOC VPC through VPC peering or other private connectivity options.
+The Prometheus stack URL is only accessible via private network connections and doesn't require authentication. Access is restricted to networks that can reach your BYOC VPC through VPC peering or other private connectivity options.
 :::
 
 ### Integrating with Your Monitoring Tools {#prometheus-stack-integration}
@@ -97,7 +97,7 @@ scrape_configs:
 
 ## ClickHouse service Prometheus Integration {#direct-prometheus-integration}
 
-ClickHouse services expose a Prometheus-compatible metrics endpoint that you can scrape directly using your own Prometheus instance. This approach provides ClickHouse-specific metrics but does not include Kubernetes or supporting service metrics.
+ClickHouse services expose a Prometheus-compatible metrics endpoint that you can scrape directly using your own Prometheus instance. This approach provides ClickHouse-specific metrics but doesn't include Kubernetes or supporting service metrics.
 
 ### Accessing the Metrics Endpoint {#metrics-endpoint}
 

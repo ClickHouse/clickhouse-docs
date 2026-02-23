@@ -514,29 +514,29 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
   请注意：
 
-  * 使用元组来表示嵌套结构，而不是使用点号表示法
-  * 根据该映射选用了合适的 ClickHouse 类型：
+  * 使用元组而非点号表示法来表示嵌套结构
+  * 根据该映射选择了合适的 ClickHouse 类型：
     * `keyword` → `String`
     * `date` → `DateTime`
     * `boolean` → `UInt8`
     * `long` → `Int64`
     * `ip` → `Array(Variant(IPv4, IPv6))`。我们在这里使用 [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant)，因为该字段同时包含 [`IPv4`](/sql-reference/data-types/ipv4) 和 [`IPv6`](/sql-reference/data-types/ipv6)。
-    * `object` → `JSON`，用于结构不可预知的 syslog 对象。
-  * 列 `host.ip` 和 `host.mac` 被显式声明为 `Array` 类型，这不同于 Elasticsearch 中所有类型本质上都被视为数组。
-  * 添加了一个基于时间戳和主机名的 `ORDER BY` 子句，以提高按时间查询的效率
+    * `object` → `JSON`，用于结构不固定的 syslog 对象。
+  * 列 `host.ip` 和 `host.mac` 被显式声明为 `Array` 类型，这不同于 Elasticsearch，在其中所有类型本质上都被视为数组。
+  * 基于时间戳和主机名添加了一个 `ORDER BY` 子句，以提高基于时间的查询效率
   * 使用针对日志数据优化的 `MergeTree` 作为引擎类型
 
   **[推荐](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)采用静态定义架构并在必要时选择性使用 JSON 类型的方法。**
 
   这种严格的架构具有以下优势：
 
-  * **数据验证** – 通过强制使用严格的架构，可以在特定结构之外避免列数量爆炸的风险。
+  * **数据验证** – 通过强制使用严格的架构，可以将列爆炸的风险限制在少数特定结构中。
   * **避免列爆炸的风险**：尽管 JSON 类型可以扩展到潜在的数千个列，其中子列会被存储为独立的列，但这可能导致列文件数量出现“爆炸式增长”——生成过多列文件，从而影响性能。为缓解这一问题，JSON 底层使用的 [Dynamic 类型](/sql-reference/data-types/dynamic) 提供了一个 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) 参数，用于限制以独立列文件形式存储的唯一路径数量。一旦达到阈值，后续路径会存储在一个共享的列文件中，并使用紧凑的编码格式，从而在支持灵活数据摄取的同时，保持性能和存储效率。不过，访问这个共享列文件的性能不如访问独立列。另请注意，JSON 列可以与 [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths) 一起使用。通过类型提示（type hint）定义的列可以提供与独立列相同的性能。
-  * **更简单地查看路径和数据类型**：尽管 JSON 类型支持使用[自省函数](/sql-reference/data-types/newjson#introspection-functions)来确定已推断出的类型和路径，但对于静态结构，例如通过 `DESCRIBE` 进行查看通常会更加简单。
+  * **更容易检查路径和类型**：尽管 JSON 类型支持使用[自省函数](/sql-reference/data-types/newjson#introspection-functions)来确定已推断出的类型和路径，但对于静态结构，例如通过 `DESCRIBE` 进行查看通常会更加简单。
 
   <br />
 
-  或者,用户也可以直接创建一个包含单个 `JSON` 列的表。
+  或者,您也可以直接创建一个包含单个 `JSON` 列的表。
 
   ```sql
   SET enable_json_type = 1;
@@ -567,11 +567,11 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
   `elasticdump` 为数据迁移提供了以下优势：
 
-  * 它直接与 Elasticsearch 的 REST API 交互，确保数据被正确导出。
-  * 在导出过程中通过 Point-in-Time（PIT）API 保持数据一致性，从而在特定时间点创建一致的数据快照。
-  * 将数据直接导出为 JSON 格式，并可以流式方式传输到 ClickHouse 客户端以插入数据。
+  * 它直接与 Elasticsearch 的 REST API 交互，从而确保数据正确导出。
+  * 在导出过程中通过 Point-in-Time（PIT）API 保持数据一致性，并在特定时间点创建一致的数据快照。
+  * 将数据直接导出为 JSON 格式，并可通过流式方式传输到 ClickHouse 客户端进行插入。
 
-  在可能的情况下,我们建议将 ClickHouse、Elasticsearch 和 `elastic dump` 部署在同一可用区或数据中心内,以减少网络出口流量并提高吞吐量。
+  在可能的情况下,我们建议将 ClickHouse、Elasticsearch 和 `elastic dump` 部署在同一可用区或数据中心内,以减少网络出口流量并最大化吞吐量。
 
   ### 安装 ClickHouse 客户端
 
@@ -597,23 +597,23 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
   --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONEachRow"
   ```
 
-  注意 `elasticdump` 的以下标志用法：
+  注意 `elasticdump` 的以下标志用法:
 
-  * `type=data` - 将响应限制为仅包含 Elasticsearch 文档内容。
-  * `input-index` - 我们的 Elasticsearch 输入索引。
-  * `output=$` - 将所有结果重定向到标准输出 (stdout)。
-  * `sourceOnly` 标志，确保在响应中省略元数据字段。
-  * `searchAfter` 标志用于通过 [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) 对结果进行高效分页。
-  * `pit=true`，以确保使用 [Point-in-Time（PIT）API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time) 进行多次查询时的结果保持一致。
+  * `type=data` - 将响应限制为仅返回 Elasticsearch 中的文档内容。
+  * `input-index` - 我们在 Elasticsearch 中的输入索引。
+  * `output=$` - 将所有结果重定向到标准输出（stdout）。
+  * `sourceOnly` 标志，用于确保在响应中省略元数据字段。
+  * `searchAfter` 标志用于通过 [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) 实现对结果的高效分页。
+  * `pit=true`，以确保在使用 [Point-in-Time（PIT）API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time) 执行多次查询时，各次查询的结果保持一致。
 
   <br />
 
-  此处的 ClickHouse 客户端参数（凭据除外）：
+  此处的 ClickHouse 客户端参数(凭据除外):
 
-  * `max_insert_block_size=1000` - 一旦达到该行数，ClickHouse 客户端就会发送数据。增大该值可以提升吞吐量，但代价是组装一个数据块所需时间变长——从而延长数据在 ClickHouse 中变得可见的延迟。
-  * `min_insert_block_size_bytes=0` - 禁用服务端按字节数阈值对块进行合并（block squashing）。
-  * `min_insert_block_size_rows=1000` - 在服务端合并由客户端发送的块。在这里，我们将其设置为与 `max_insert_block_size` 相同，使行能够立即可见。增大该值可以提升吞吐量。
-  * `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - 以 [JSONEachRow 格式](/integrations/data-formats/json/other-formats) 插入数据。对于像 `logs_system_syslog` 这样 schema 定义清晰的表，这种方式是合适的。
+  * `max_insert_block_size=1000` - 一旦累计到该行数，ClickHouse 客户端就会发送数据。增大该值可以提升吞吐量，但代价是组装一个数据块所需时间变长，从而增加数据在 ClickHouse 中变得可见之前的等待时间。
+  * `min_insert_block_size_bytes=0` - 关闭服务端基于字节数的块合并机制。
+  * `min_insert_block_size_rows=1000` - 在服务端对来自客户端的块进行合并。在这里，我们将其设置为与 `max_insert_block_size` 相同，使行能够立即可见。增大该值可以提升吞吐量。
+  * `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - 以 [JSONEachRow 格式](/integrations/data-formats/json/other-formats) 插入数据。对于像 `logs_system_syslog` 这样 schema 定义清晰的表，这种方式非常合适。
 
   <br />
 
@@ -628,7 +628,7 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
   --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONAsObject"
   ```
 
-  有关更多详细信息，请参阅[&quot;将 JSON 读取为对象&quot;](/integrations/data-formats/json/other-formats#reading-json-as-an-object)。
+  有关更多详细信息,请参阅[&quot;将 JSON 读取为对象&quot;](/integrations/data-formats/json/other-formats#reading-json-as-an-object)。
   :::
 
   ### 转换数据(可选)

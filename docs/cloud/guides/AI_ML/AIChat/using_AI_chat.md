@@ -41,8 +41,8 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 ## Accept the data usage consent (first run) {#consent}
 
-1. On first use you are prompted with a consent dialog describing data handling and third‑party LLM sub-processors.
-2. Review and accept to proceed. If you decline, the panel will not open.
+1. On first use you're prompted with a consent dialog describing data handling and third‑party LLM sub-processors.
+2. Review and accept to proceed. If you decline, the panel won't open.
 
 <Image img={img_consent} alt="Consent dialog" size="md"/>
 

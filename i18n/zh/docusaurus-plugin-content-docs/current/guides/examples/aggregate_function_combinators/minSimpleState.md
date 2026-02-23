@@ -71,7 +71,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 (4, 'East', 8);
 ```
 
-这些读数会由物化视图自动处理。我们来检查一下
+这些读数会由 materialized view 自动处理。我们来检查一下
 当前状态：
 
 ```sql
@@ -104,7 +104,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
     (4, 'East', 2);
 ```
 
-在写入新数据后查看更新的极值：
+在写入新数据后查看最新的极值：
 
 ```sql
 SELECT
@@ -144,6 +144,7 @@ ORDER BY location_id;
 
 现在可以看到预期的结果：
 
+
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
@@ -157,7 +158,9 @@ ORDER BY location_id;
 使用 `SimpleState` 时，就不需要再使用 `Merge` 组合器来合并部分聚合状态。
 :::
 
+
 ## 另请参阅 \{#see-also\}
+
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

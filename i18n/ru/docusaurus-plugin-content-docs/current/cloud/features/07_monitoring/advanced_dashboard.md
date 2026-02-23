@@ -1,6 +1,6 @@
 ---
 description: 'Расширенная панель мониторинга в ClickHouse Cloud'
-keywords: ['мониторинг', 'наблюдаемость', 'расширенная панель мониторинга', 'панель мониторинга', 'панель мониторинга наблюдаемости']
+keywords: ['мониторинг', 'обсервабилити', 'расширенная панель мониторинга', 'панель мониторинга', 'панель мониторинга обсервабилити']
 sidebar_label: 'Расширенная панель мониторинга'
 sidebar_position: 45
 slug: /cloud/manage/monitor/advanced-dashboard
@@ -27,6 +27,7 @@ import Image from '@theme/IdealImage';
 Расширенная панель мониторинга доступна как в ClickHouse OSS (Open Source Software),
 так и в ClickHouse Cloud. В этой статье мы покажем, как использовать расширенную панель мониторинга в
 ClickHouse Cloud.
+
 
 ## Доступ к расширенной панели мониторинга \{#accessing-the-advanced-dashboard\}
 
@@ -169,7 +170,7 @@ CPU или память. Однако важно отслеживать эти �
 пика, в таблице `system.query_log`.
 
 Например, можно выполнить запрос, который покажет все запросы, выполненные между 11:00
-и 11:10 в определённый день, чтобы понять, какие запросы читают слишком много строк:
+и 11:00 в определённый день, чтобы понять, какие запросы читают слишком много строк:
 
 ```sql title="Query"
 SELECT
@@ -208,76 +209,74 @@ ORDER BY
 LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
-```
 
 Row 2:
 ──────
 type:              QueryFinish
-event&#95;time:        2024-12-23 11:26:50
-query&#95;duration&#95;ms: 7325
+event_time:        2024-12-23 11:26:50
+query_duration_ms: 7325
 query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;no&#95;pk
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_no_pk
 WHERE
-product&#95;category = &#39;Home&#39;
+    product_category = 'Home'
 GROUP BY
-month,
-product&#95;id
+    month,
+    product_id
 ORDER BY
-month DESC,
-product&#95;id ASC
+    month DESC,
+    product_id ASC
 LIMIT 20
-read&#95;rows:         150957260
-tables:            [&#39;default.amazon&#95;reviews&#95;no&#95;pk&#39;]
+read_rows:         150957260
+tables:            ['default.amazon_reviews_no_pk']
 
 Row 3:
 ──────
 type:              QueryFinish
-event&#95;time:        2024-12-23 11:24:10
-query&#95;duration&#95;ms: 3270
+event_time:        2024-12-23 11:24:10
+query_duration_ms: 3270
 query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;pk
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_pk
 WHERE
-product&#95;category = &#39;Home&#39;
+    product_category = 'Home'
 GROUP BY
-month,
-product&#95;id
+    month,
+    product_id
 ORDER BY
-month DESC,
-product&#95;id ASC
+    month DESC,
+    product_id ASC
 LIMIT 20
-read&#95;rows:         6242304
-tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
+read_rows:         6242304
+tables:            ['default.amazon_reviews_pk']
 
 Row 4:
 ──────
 type:              QueryFinish
-event&#95;time:        2024-12-23 11:28:10
-query&#95;duration&#95;ms: 2786
+event_time:        2024-12-23 11:28:10
+query_duration_ms: 2786
 query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;pk
+    toStartOfMonth(review_date) AS month,
+    any(product_title),
+    avg(star_rating) AS avg_stars
+FROM amazon_reviews_pk
 WHERE
-product&#95;category = &#39;Home&#39;
+    product_category = 'Home'
 GROUP BY
-month,
-product&#95;id
+    month,
+    product_id
 ORDER BY
-month DESC,
-product&#95;id ASC
+    month DESC,
+    product_id ASC
 LIMIT 20
-read&#95;rows:         6242304
-tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
+read_rows:         6242304
+tables:            ['default.amazon_reviews_pk']
 ```
 
-В данном примере видно, что один и тот же запрос выполняется для двух 
-таблиц `amazon_reviews_no_pk` и `amazon_reviews_pk`. Можно сделать вывод, что 
-выполнялось тестирование варианта первичного ключа для таблицы `amazon_reviews`.
-```
+В этом примере мы видим, что один и тот же запрос выполняется над двумя
+таблицами `amazon_reviews_no_pk` и `amazon_reviews_pk`. Можно сделать вывод, что
+кто-то тестировал вариант с первичным ключом для таблицы `amazon_reviews`.

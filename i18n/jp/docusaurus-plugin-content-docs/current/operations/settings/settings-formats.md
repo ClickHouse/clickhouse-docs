@@ -1524,6 +1524,14 @@ JSON カラムのパース時に、各カラムで作成できる動的サブカ
 
 Arrow 出力フォーマット用の圧縮方式。サポートされるコーデック：lz4_frame、zstd、none（非圧縮）
 
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "既定では、Date を単純な UInt16 ではなく Arrow の DATE32 として書き込みます。"}]}]}/>
+
+Date の値を、32 ビットの Arrow DATE32 型（読み取り時は Date32）に変換するのではなく、単純な 16 ビット整数（読み取り時は UInt16）として書き込みます。
+
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

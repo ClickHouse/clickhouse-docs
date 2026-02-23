@@ -44,7 +44,7 @@ Once configured you can navigate to [Grafana Explore](https://grafana.com/docs/g
 
 ## Logs {#logs}
 
-If adhering to the Grafana requirements for logs, you can select `Query Type: Log` in the query builder and click `Run Query`. The query builder will formulate a query to list the logs and ensure they are rendered e.g.
+If adhering to the Grafana requirements for logs, you can select `Query Type: Log` in the query builder and click `Run Query`. The query builder will formulate a query to list the logs and ensure they're rendered e.g.
 
 ```sql
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000

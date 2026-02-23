@@ -40,6 +40,9 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## February 20, 2026 {#february-20-2026}
+- **ClickPipes:** Reverse private endpoints in an inactive state will now be automatically removed after a defined grace period. This ensures unused or misconfigured endpoints are not persisted indefinitely in the backend. See the automatic clean up [documentation](/integrations/clickpipes/aws-privatelink#automatic-cleanup) for more details.
+
 ## February 13, 2026 {#february-13-2026}
 - [BigQuery Connector](/integrations/clickpipes/bigquery/overview) is now in Private Preview. Read this [blogpost](https://clickhouse.com/blog/bigquery-clickpipe-private-preview) for more details and join the [waitlist](https://clickhouse.com/cloud/clickpipes/bigquery-connector) for access.
 - We are pleased to announce support for PCI deployments for Google Cloud. Regions supported: 
@@ -1524,7 +1527,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 
 ### General changes {#general-changes-5}
 
-- Added support for [dictionaries](/sql-reference/dictionaries/index.md) from local ClickHouse table and HTTP sources
+- Added support for [dictionaries](/sql-reference/statements/create/dictionary) from local ClickHouse table and HTTP sources
 - Introduced support for the Mumbai [region](/cloud/reference/supported-regions)
 
 ### Console changes {#console-changes-30}

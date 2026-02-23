@@ -191,7 +191,7 @@ To help you get started monitoring Node.js application performance, we provide a
 <Image img={example_dashboard} alt="Example dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -209,7 +209,7 @@ curl -X POST http://localhost:4318/v1/traces \
   -d @nodejs-traces-sample.json
 ```
 
-This is a known issue that occurs when using the demo approach via curl and does not affect instrumented production applications.
+This is a known issue that occurs when using the demo approach via curl and doesn't affect instrumented production applications.
 
 ### No traces appearing in HyperDX {#no-traces}
 
