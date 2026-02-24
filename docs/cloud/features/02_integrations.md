@@ -41,13 +41,13 @@ Using the UI:
 
 | Name | Open Table Format Supported | Support | Version |
 |------|-----------------------------|---------|---------|
-| AWS Glue Catalog | Iceberg | Cloud & Core | 25.10+ |
-| Lakekeeper | Iceberg  | Core | 26.1+ |
-| Microsoft OneLake | Iceberg | Cloud & Core | 25.12+ |
-| Nessie | Iceberg | Core | 26.1+ |
+| AWS Glue Catalog | Iceberg | Cloud & [Core](/use-cases/data-lake/glue-catalog) | 25.10+ |
+| Lakekeeper | Iceberg  | [Core](/use-cases/data-lake/lakekeeper-catalog) | 26.1+ |
+| Microsoft OneLake | Iceberg | Cloud & [Core](/use-cases/data-lake/onelake-catalog) | 25.12+ |
+| Nessie | Iceberg | [Core](/use-cases/data-lake/nessie-catalog) | 26.1+ |
 | Polaris/Open Catalog | Iceberg | Core | 26.1+ |
-| REST catalog | Iceberg | Core | |
-| Unity Catalog | Iceberg (UniForm-enabled and managed), Delta | Cloud (Iceberg only) & Core | 25.10+ |
+| REST catalog | Iceberg | [Core](/use-cases/data-lake/rest-catalog) | |
+| Unity Catalog | Iceberg (UniForm-enabled and managed), Delta | Cloud (Iceberg only) & [Core](/use-cases/data-lake/unity-catalog) | 25.10+ |
 
 
 ## Managed integration pipelines for ClickHouse Cloud {#clickpipes}
