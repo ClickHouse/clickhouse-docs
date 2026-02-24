@@ -23,25 +23,31 @@ import Mongodbsvg from '@site/static/images/integrations/logos/mongodb.svg';
 import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
 import clickpipes_stack from '@site/static/images/integrations/data-ingestion/clickpipes/clickpipes_stack.png';
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
+import data_catalogs_ui from '@site/static/images/cloud/features/data-catalogs-ui.png';
 import Image from '@theme/IdealImage';
 
 ClickHouse Cloud allows you to connect the tools and services that you love.
 
-## Data Catalog Integrations {#data-catalog-integrations}
+## Data Catalog Integrations {#data-catalog-integrations} (beta)
 
-ClickHouse Cloud can connect directly to your open table format data catalogs, giving you access to your data lake tables without duplicating data. By integrating, your catalog's tables will appear as queryable databases inside ClickHouse. Setup is available via SQL command (DataLakeEngine) and via the ClickHouse Cloud UI on the Data Sources UI.
+ClickHouse Cloud can connect directly to your open table format data catalogs, giving you access to your data lake tables without duplicating data. By integrating, your catalog's tables will appear as queryable databases inside ClickHouse. Setup is available via SQL command ([DataLakeCatalog](/engines/database-engines/datalakecatalog)) and via the ClickHouse Cloud UI on the Data Sources tab.
 
-Using the UI allows:
-- Simplifies setup using fields consistent with Data Catalog vocabulary 
+Using the UI:
+- Simplifies setup with a form using fields consistent with your Data Catalog objects 
 - One interface into active data catalog integrations
-- Tests connection and credentials when saving connection
+- Tests connection and credentials when saving to validate connection was successful
 
-| Name | Open Table Format Supported | Support |
-|------|-----------------------------|---------|
-| AWS Glue | Iceberg | Cloud & Core |
-| Microsoft OneLake | Iceberg | Cloud & Core |
-| Unity Catalog | Iceberg (UniForm-enabled and managed) | Cloud & Core |
+<Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>
 
+| Name | Open Table Format Supported | Support | Version |
+|------|-----------------------------|---------|---------|
+| AWS Glue Catalog | Iceberg | Cloud & Core | 25.10+ |
+| Lakekeeper | Iceberg  | Core | 26.1+ |
+| Microsoft OneLake | Iceberg | Cloud & Core | 25.12+ |
+| Nessie | Iceberg | Core | 26.1+ |
+| Polaris/Open Catalog | Iceberg | Core | 26.1+ |
+| REST catalog | Iceberg | Core | |
+| Unity Catalog | Iceberg (UniForm-enabled and managed), Delta | Cloud (Iceberg only) & Core | 25.10+ |
 
 
 ## Managed integration pipelines for ClickHouse Cloud {#clickpipes}
