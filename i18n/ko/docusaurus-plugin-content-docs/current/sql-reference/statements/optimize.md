@@ -19,6 +19,10 @@ doc_type: 'reference'
 OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION ID 'partition_id'] [FINAL | FORCE] [DEDUPLICATE [BY expression]]
 ```
 
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
 `OPTIMIZE` 쿼리는 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 패밀리(여기에는 [materialized views](/sql-reference/statements/create/view#materialized-view) 포함)와 [Buffer](../../engines/table-engines/special/buffer.md) 엔진에서 지원됩니다. 다른 테이블 엔진은 지원되지 않습니다.
 
 `OPTIMIZE`를 [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) 테이블 엔진 패밀리와 함께 사용하는 경우, ClickHouse는 머지 작업을 생성하고 모든 레플리카에서 실행이 완료되기를 기다리거나([alter&#95;sync](/operations/settings/settings#alter_sync) 설정이 `2`로 설정된 경우), 현재 레플리카에서만 기다립니다([alter&#95;sync](/operations/settings/settings#alter_sync) 설정이 `1`로 설정된 경우).
@@ -33,6 +37,55 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 :::note
 `alter_sync`가 `2`로 설정되어 있고, 일부 레플리카가 `replication_wait_for_inactive_replica_timeout` 설정으로 지정된 시간보다 더 오래 비활성 상태인 경우, `UNFINISHED` 예외가 발생합니다.
 :::
+
+## DRY RUN \{#dry-run\}
+
+`DRY RUN` 절은 지정한 파트의 머지 작업을 결과를 커밋하지 않고 시뮬레이션합니다. 머지된 파트는 임시 위치에 기록한 뒤 검증되고, 그 후 폐기됩니다. 원래 파트와 테이블 데이터는 변경되지 않습니다.
+
+다음과 같은 경우에 유용합니다:
+
+* ClickHouse 버전 간 머지의 정확성을 테스트할 때
+* 머지 관련 버그를 결정론적으로 재현할 때
+* 머지 성능을 벤치마크할 때
+
+`DRY RUN`은 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 계열 테이블에서만 지원됩니다. 파트 이름 목록과 함께 `PARTS` 키워드를 지정해야 합니다. 지정된 모든 파트는 존재하고 활성 상태이며, 동일한 파티션에 속해야 합니다.
+
+`DRY RUN`은 `FINAL` 및 `PARTITION`과 함께 사용할 수 없습니다. `DEDUPLICATE`(선택적인 컬럼 지정 가능) 및 `CLEANUP`( `ReplacingMergeTree` 테이블에 대해)과는 함께 사용할 수 있습니다.
+
+**구문**
+
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
+기본적으로 병합 결과로 생성된 파트는 [`CHECK TABLE`](/sql-reference/statements/check-table) 쿼리와 유사한 방식으로 검증됩니다. 이 동작은 [optimize&#95;dry&#95;run&#95;check&#95;part](/operations/settings/settings#optimize_dry_run_check_part) 설정(기본적으로 활성화됨)에 의해 제어됩니다. 이 설정을 비활성화하면 검증을 건너뛰게 되며, 병합 자체를 벤치마킹하는 데 유용할 수 있습니다.
+
+**예시**
+
+```sql
+CREATE TABLE dry_run_example (key UInt64, value String) ENGINE = MergeTree ORDER BY key;
+
+INSERT INTO dry_run_example VALUES (1, 'a'), (2, 'b');
+INSERT INTO dry_run_example VALUES (1, 'c'), (4, 'd');
+
+-- Simulate merging using two parts
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0';
+
+-- Simulate merging with deduplication
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0' DEDUPLICATE;
+
+-- Parts and data remain unchanged after DRY RUN
+SELECT name, rows FROM system.parts
+WHERE database = currentDatabase() AND table = 'dry_run_example' AND active
+ORDER BY name;
+```
+
+```response
+┌─name────────┬─rows─┐
+│ all_1_1_0   │    2 │
+│ all_2_2_0   │    2 │
+└─────────────┴──────┘
+```
 
 ## BY 표현식 \{#by-expression\}
 
@@ -105,7 +158,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE` \{#deduplicate\}
 
-중복 제거에 사용할 컬럼을 지정하지 않으면, 모든 컬럼이 사용됩니다. 행은 모든 컬럼의 값이 이전 행의 해당 값과 모두 동일한 경우에만 제거됩니다:
+중복 제거 기준 컬럼이 지정되지 않으면 모든 컬럼이 사용됩니다. 모든 컬럼의 값이 바로 이전 행의 해당 컬럼 값과 모두 동일한 경우에만 해당 행이 제거됩니다:
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE;

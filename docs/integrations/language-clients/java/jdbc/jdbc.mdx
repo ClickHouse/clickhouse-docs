@@ -157,6 +157,40 @@ jdbc:ch:http://localhost:8123/?user=default&password=password&client_name=my-app
 ```
 Note: no need to url encode JDBC URL or properties, they will be automatically encoded.
 
+### Client Identification {#client-identification}
+
+There are two ways to identify application originated a request: set `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME` via 
+connection properties or use `java.sql.Connection#setClientInfo(String name, String value)` method.
+
+```java showLineNumbers
+Properties properties = new Properties();
+properties.setProperty(ClientConfigProperties.CLIENT_NAME.getKey(), "my-app-01");
+Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", properties);
+```
+
+```java showLineNumbers
+conn.setClientInfo(com.clickhouse.jdbc.ClientInfoProperties.APPLICATION_NAME.getKey(), "my-app-01");
+```
+
+Both ways will result in the following `http_user_agent` value in the query log:
+```
+my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+```
+
+### Operation Identification {#operation-identification}
+
+JDBC Driver generates `query_id` for each operation (Currently it is included in server exceptions). 
+
+To set `log_comment` for an operation use `com.clickhouse.jdbc.StatementImpl#getLocalSettings` method. This requires 
+`Statement` or `PreparedStatement` to be cast to `com.clickhouse.jdbc.StatementImpl` first. 
+
+```java showLineNumbers
+StatementImpl stmt = (StatementImpl) conn.createStatement();
+stmt.getLocalSettings().logComment("some-comment");
+```
+
+**Note:** this approach work for single threaded uses of statement because `localSettings` is shared between threads.
+
 ## Supported data types {#supported-data-types}
 
 JDBC Driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).

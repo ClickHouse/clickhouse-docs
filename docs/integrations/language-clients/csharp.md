@@ -41,9 +41,6 @@ Both APIs share the same underlying HTTP connection pool and can be used togethe
 
 `ClickHouse.Driver` supports the following .NET versions:
 
-* .NET Framework 4.6.2
-* .NET Framework 4.8
-* .NET Standard 2.1
 * .NET 6.0
 * .NET 8.0
 * .NET 9.0

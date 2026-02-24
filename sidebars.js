@@ -1922,6 +1922,7 @@ const sidebars = {
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
+        'use-cases/observability/clickstack/session-replay',
         {
           type: 'category',
           label: 'Managing ClickStack',

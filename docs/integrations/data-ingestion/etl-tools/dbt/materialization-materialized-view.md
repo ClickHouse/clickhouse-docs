@@ -2,9 +2,9 @@
 sidebar_label: 'Materialization: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'Specific documentation for the the materialized_view materialization'
-keywords: ['clickhouse', 'dbt', 'materialized view', 'refreshable', 'external target table', 'catchup']
-title: 'Materialized Views'
+description: 'Specific documentation for the materialized_view materialization'
+keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
+title: 'Materialization: materialized_view'
 doc_type: 'guide'
 ---
 
@@ -278,13 +278,53 @@ To change the target:
 1. Update the `materialization_target_table()` call
 2. Run `dbt run --full-refresh -s your_mv_model`
 
-### Behavior comparison between implicit and explicit target approaches{#explicit-target-behavior}
+### Troubleshooting common issues {#explicit-target-troubleshooting}
 
-| Operation | Implicit target | Explicit target |
-| --- | --- | --- |
-| First dbt run | All resources created | All resources created |
-| Next dbt run |  **Individual resources cannot be managed, all happen together:**<br /><br />**target table**: <br /> changes managed with the `on_schema_change` setting. By default it has the setting `ignore` so new columns are not processed.<br /><br />**MVs**: all updated with `alter table modify query` operations | **Changes can be applied individually:<br /><br />target table**: <br />automatic detection to know if they are target tables from dbt defined MVs. If they are, the columns evolution is managed by default with the `mv_on_schema_change` setting with `fail` value so it will fail if columns changes. We added this default value as a protection layer<br /><br />**MVs**: Their SQL gets updated with `alter table modify query` operations. |
-| dbt run --full-refresh | **Individual resources cannot be managed, all happen together:<br /><br />target table**: <br />target table recreated empty. `catchup` available to configure a backfill with the SQL of all the MVs together. `catchup` is `True` by default<br /><br />**MVs**: all get recreated. | **Changes will be applied individually:<br /><br />target table:** will be recreated as usual.<br /><br />**MVs**: drop and recreate. `catchup` available for an initial backfill. `catchup` is `True` by default. <br /><br />**Note: During the process, the target table will be empty or partially loaded until the MVs are recreated. To avoid this, check the next section about how to iterate the target table.**|
+#### Target table is empty while/after `run` is executed {#target-table-empty}
+There are a few reasons why this can happen:
+- Materialized views may be configured with `catchup=False` or the target table may be configured with `repopulate_from_mvs_on_full_refresh=False`, so no backfill is executed when the materialized views are created or when the target table is recreated. This is the expected behavior, so if you want to reinsert the data using the materialized views SQL, make sure to set `catchup=True` in the materialized view (this is the default value) or `repopulate_from_mvs_on_full_refresh=True` in the target table. Make sure you are not activating both at the same time to avoid duplicates. Check the [configuration section](#explicit-target-configuration) for more details.
+- While a `dbt run --full-refresh` is executed, if the materialized views use the `catchup=True` default, the target will get recreated and the MVs will reinsert the data sequentially. To avoid this situation, check the [Full refresh with explicit targets](#explicit-target-full-refresh)
+
+#### `dbt run --full-refresh` in a target table with `repopulate_from_mvs_on_full_refresh=True` uses the logic from old materialized view versions, not from the SQL that is currently in the project {#full-refresh-with-repopulate-from-mvs-on-full-refresh}
+`repopulate_from_mvs_on_full_refresh=True` uses the existing MV SQL that's already defined in ClickHouse. To make sure the new materialized view definition is used, do a `dbt run` for each materialized view before doing a `dbt run --full-refresh` in the target table.
+
+#### There's duplicate data after a run is executed {#duplicate-data}
+Possible reasons:
+- Both `catchup=True` on the materialized view(s) and `repopulate_from_mvs_on_full_refresh=True` on the target table may be enabled: Keep only one of them depending on the operations you want to run. Check the [configuration section](#explicit-target-configuration) for more details.
+- Target table is not defined with `WHERE 0`: target table should be created empty, but the internal query may insert data if the `WHERE 0` is not included. Make sure the clause is included.
+
+#### Data loss during active ingestion after a `dbt run --full-refresh` is executed {#data-loss-active-ingestion}
+Some rows from the source table are missing in the target table after a `dbt run --full-refresh` is executed.
+ClickHouse materialized views act as insert triggers — they only capture data while they exist. During a full refresh, there is a brief window where the MV is dropped and recreated (the "blind window"). Any rows inserted into the source table during this window are not captured. Check the [Behavior during active ingestion](#behavior-during-active-ingestion) section for more details.
+
+### Debugging techniques {#debugging-techniques}
+
+#### Check the current target of an MV in ClickHouse {#check-mv-target}
+
+Query `system.tables` to see where a materialized view is writing:
+
+```sql
+SELECT
+    name as mv_name,
+    replaceRegexpOne(
+        create_table_query,
+        '.*TO\\s+`?([^`\\s(]+)`?\\.`?([^`\\s(]+)`?.*',
+        '\\1.\\2'
+    ) AS target_table
+FROM system.tables
+WHERE database = 'your_schema'
+  AND engine = 'MaterializedView'
+```
+
+#### Check if dbt recognizes a table as a materialized view target {#check-dbt-recognition}
+During a dbt run, look for this log message:
+
+>Table `<table_name>` is used as a target by a dbt-managed materialized view. Defaulting mv_on_schema_change to "fail" to prevent data loss.
+
+If this message appears, dbt has detected that the table is targeted by at least one dbt-managed materialized view. If you expect this message but don't see it, verify that:
+- The materialized view model defines `{{ materialization_target_table(ref('your_target')) }}` correctly
+- The materialized view model has `materialized='materialized_view'` in its config
+- Both the materialized view and the target table have been run at least once
 
 ### Migrating from implicit to explicit target {#migration-implicit-to-explicit}
 
@@ -348,23 +388,33 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 **3. Iterate them as needed following the instructions in the [explicit target](#explicit-target) section.**
 
-## Behavior during active ingestion {#behavior-during-active-ingestion}
+## Behavior comparison between implicit and explicit target approaches{#behavior-comparison}
 
-Because ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the MV. This is referred to as the MV being "blind."
+### How they behave in general {#general-behavior}
 
-Additionally, the **catch-up** (both from the MV's `catchup` or from the target table's `repopulate_from_mvs_on_full_refresh`) process runs an `INSERT INTO ... SELECT` using the MV's SQL. If inserts into the source table are happening at the same time, the catch-up query may include rows that the MV has already processed (or will process right after being created), potentially causing **duplicate data** in the target table. Using a deduplicating engine such as `ReplacingMergeTree` on the target table mitigates this risk.
+| Operation | Implicit target | Explicit target |
+| --- | --- | --- |
+| First dbt run | All resources created | All resources created |
+| Next dbt run |  **Individual resources cannot be managed, all happen together:**<br /><br />**target table**: <br /> changes managed with the `on_schema_change` setting. By default, it has the setting `ignore`, so new columns are not processed.<br /><br />**Materialized views**: all updated with `alter table modify query` operations | **Changes can be applied individually:<br /><br />target table**: <br />automatic detection to know if they are target tables from dbt defined materialized views. If they are, the column evolution is managed by default with the `mv_on_schema_change` setting with `fail` value, so it will fail if column changes. We added this default value as a protection layer<br /><br />**Materialized views**: Their SQL gets updated with `alter table modify query` operations. |
+| dbt run --full-refresh | **Individual resources cannot be managed, all happen together:<br /><br />target table**: <br />target table recreated empty. `catchup` available to configure a backfill with the SQL of all the materialized views together. `catchup` is `True` by default<br /><br />**Materialized views**: all get recreated. | **Changes will be applied individually:<br /><br />target table:** will be recreated as usual.<br /><br />**Materialized views**: drop and recreate. `catchup` available for an initial backfill. `catchup` is `True` by default. <br /><br />**Note: During the process, the target table will be empty or partially loaded until the materialized views are recreated. To avoid this, check the next section about how to iterate the target table.**|
+
+### Behavior during active ingestion {#behavior-during-active-ingestion}
+
+When iterating your models, you need to be aware of how the different operations interact with the data being inserted:
+- As ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the materialized view. This is referred to as the materialized view being "blind".
+- The different `catchup` processes are all based on `INSERT INTO ... SELECT` operations using the materialized views SQL and are independent of how the materialized views work. Once the `INSERT` starts, new data is not captured by it, but it will be captured by the attached materialized view.
 
 The following table summarizes the safety of each operation when inserts are actively happening on the source table.
 
-### Implicit target operations {#ingestion-implicit-target}
+#### Implicit target operations {#ingestion-implicit-target}
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create MV(s) | ⚠️ **MV is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The MV is updated atomically. |
-| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop MV(s)<br/>4. Exchange tables<br/>5. Recreate MV(s) | ⚠️ **MV is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
+| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create materialized view(s) | ⚠️ **Materialized view is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
+| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The materialized view is updated atomically. |
+| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop materialized view(s)<br/>4. Exchange tables<br/>5. Recreate materialized view(s) | ⚠️ **Materialized view is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
 
-### Explicit target operations {#ingestion-explicit-target}
+#### Explicit target operations {#ingestion-explicit-target}
 
 **Materialized view models:**
 

@@ -5,8 +5,15 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Feb 2026 10:18:39 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 20 Feb 2026 13:34:20 -0600</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ClickHouse Cloud - February 20, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</link>
+      <description>- ClickPipes:: Reverse private endpoints in an inactive state will now be automatically removed after a defined grace period. This ensures unused or misconfigured endpoints are not persisted indefinitely in the backend. See the automatic clean up documentation for more details.</description>
+      <pubDate>Fri, 20 Feb 2026 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</guid>
+    </item>
     <item>
       <title>ClickHouse Cloud - February 13, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#february-13-2026</link>

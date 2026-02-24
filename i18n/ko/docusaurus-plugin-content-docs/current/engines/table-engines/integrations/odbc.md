@@ -141,5 +141,5 @@ SELECT * FROM odbc_t
 
 ## 함께 보기 \{#see-also\}
 
-- [ODBC 사전](/sql-reference/dictionaries#mysql)
+- [ODBC 사전](/sql-reference/statements/create/dictionary/sources#mysql)
 - [ODBC 테이블 함수](../../../sql-reference/table-functions/odbc.md)

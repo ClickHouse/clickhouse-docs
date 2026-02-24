@@ -272,7 +272,42 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 </Tabs>
 <br/>
 
-### Server Settings
+### Client Identification {#client-identification}
+
+There are two fields in a query log that identify application originated a request: `client_name` and `http_user_agent`. Native TCP protocol uses 
+`client_name` to identify application. HTTP protocol uses `http_user_agent` to identify application. Client builder has method `setClientName` correct values 
+for both protocols. 
+The field `http_user_agent` is set according to `User-Agent` header common format: `application-name[/version] [(operating-system; architecture; ...)]`. 
+This set of values is repeated for each layer: application, client library, http client library. What is set by `setClientName` method comes first in the list. 
+
+For example:
+```java showLineNumbers
+client.setClientName("my-app-01/1.0");
+```
+will result in the following `http_user_agent` value:
+```
+my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+```
+
+Application can set own http header `User-Agent` to identify itself. But part `clickhouse-java-v2/0.9.6-SNAPSHOT` will be appended to the end of the header.
+
+### Operation Identification {#operation-identification}
+
+Query log has another two fields `query_id` and `log_comment` that can be used to identify an operation and add additional information to the query log.
+
+`query_id` is a unique identifier of an operation. It can be set by application by calling `setQueryId` method of the `QuerySettings` class.
+```java showLineNumbers
+QuerySettings querySettings = new QuerySettings();
+querySettings.setQueryId("some-query-id");
+```
+
+`log_comment` is a comment that can be added to the query log. It can be set by application by calling `logComment` method of the `QuerySettings` class.
+```java showLineNumbers
+QuerySettings querySettings = new QuerySettings();
+querySettings.logComment("some-comment");
+```
+
+### Server Settings {#server-settings}
 
 Server side settings can be set on the client level once while creation (see `serverSetting` method of the `Builder`) and on operation level (see `serverSetting` for operation settings class).
 

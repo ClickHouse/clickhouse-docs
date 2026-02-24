@@ -606,6 +606,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный табличный движок для интеграции с YTsaurus.
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для включения функции fuzzQuery."}]}]}/>
+
+Включает функцию `fuzzQuery`, которая применяет случайные мутации AST к строке запроса.
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -632,9 +642,11 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 <BetaBadge/>
 
+**Псевдонимы**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Разрешает выполнение запросов `insert` в Iceberg.
 
@@ -1071,9 +1083,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
 
 Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
 Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
@@ -1121,6 +1133,32 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 - 'path' — использовать FlightDescriptor::Path (значение по умолчанию, работает с большинством серверов Arrow Flight)
 - 'command' — использовать FlightDescriptor::Command с запросом SELECT (требуется для Dremio)
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр, позволяющий выполнять фаззинг для всех типов запросов, а не только на чтение."}]}]}/>
+
+Если значение `false` (по умолчанию), серверный AST fuzzer (управляется `ast_fuzzer_runs`) выполняет фаззинг только запросов на чтение (SELECT, EXPLAIN, SHOW, DESCRIBE, EXISTS). При значении `true` выполняется фаззинг всех типов запросов, включая DDL и INSERT.
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable server-side AST fuzzer."}]}]}/>
+
+Включает серверный AST-фаззер, который запускает случайные запросы после каждого обычного запроса и отбрасывает их результаты.
+
+- 0: отключено (по умолчанию).
+- Значение между 0 и 1 (исключая границы): вероятность запуска одного фаззированного запроса.
+- Значение >= 1: количество фаззированных запросов, выполняемых на каждый обычный запрос.
+
+Фаззер накапливает фрагменты AST из всех запросов во всех сессиях, со временем порождая всё более интересные мутации. Фаззированные запросы, завершившиеся с ошибкой, незаметно отбрасываются; их результаты никогда не возвращаются клиенту.
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -3350,8 +3388,6 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 ## enable_full_text_index \{#enable_full_text_index\}
 
-<BetaBadge/>
-
 **Псевдонимы**: `allow_experimental_full_text_index`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -5341,6 +5377,30 @@ SELECT * FROM x_dist ORDER BY number ASC;
 Профили можно выгружать с помощью SYSTEM JEMALLOC FLUSH PROFILE, что можно использовать для анализа выделения памяти.
 Выборки также могут сохраняться в system.trace_log с помощью конфигурации jemalloc_collect_global_profile_samples_in_trace_log или с настройкой запроса jemalloc_collect_profile_samples_in_trace_log.
 См. [Профилирование выделений](/operations/allocation-profiling).
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр для агрегации по количеству аллокаций вместо байтов в свернутом формате профиля кучи jemalloc"}]}]}/>
+
+При использовании формата вывода `collapsed` для профиля кучи jemalloc агрегирование выполняется по количеству аллокаций вместо байтов. Если значение равно false (по умолчанию), каждый стек взвешивается по количеству живых байтов; если true — по количеству живых аллокаций.
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "Новая настройка, управляющая форматом вывода таблицы system.jemalloc_profile_text. Возможные значения: 'raw', 'symbolized', 'collapsed'"}]}]}/>
+
+Формат вывода профиля кучи jemalloc в таблице system.jemalloc_profile_text. Возможные значения: 'raw' (сырой профиль), 'symbolized' (формат jeprof с символами) или 'collapsed' (формат FlameGraph).
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка, управляющая тем, включать ли inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что замедляет символизацию; при отключении они пропускаются для более быстрого вывода"}]}]}/>
+
+Определяет, нужно ли включать inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что может существенно замедлить процесс символизации; при отключении они пропускаются. Влияет только на форматы вывода 'symbolized' и 'collapsed'.
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -8219,6 +8279,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 В настоящий момент эта настройка требует `optimize_skip_unused_shards` (причина в том, что однажды она может быть включена по умолчанию, и корректная работа будет гарантирована только в том случае, если данные вставлялись через distributed таблицу, то есть распределены в соответствии с sharding_key).
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Когда настройка включена, `OPTIMIZE ... DRY RUN` проверяет получившуюся объединённую часть с помощью `checkDataPart`. Если проверка не проходит, генерируется исключение.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -11139,14 +11207,6 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0.2"},{"label": "Новая настройка"}]}]}/>
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
-
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "Новая настройка."}]}]}/>
-
-Для тестирования позволяет включать или отключать использование bloom-фильтра в текстовом индексе.
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 

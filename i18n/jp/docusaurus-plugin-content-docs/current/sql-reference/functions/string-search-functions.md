@@ -938,7 +938,7 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-導入バージョン: v
+導入バージョン: v20.1
 
 tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文字を区別せずに検索します。
 
@@ -957,7 +957,7 @@ tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-導入バージョン: v
+導入バージョン: v23.1
 
 `tokenbf_v1` 索引を使用して、haystack 内で needle を大文字小文字を区別せずに検索します。needle が不正な形式の場合は null を返します。
 

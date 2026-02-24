@@ -4753,6 +4753,76 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 ```
 
 
+## kql_array_sort_asc \{#kql_array_sort_asc\}
+
+引入于：v23.10
+
+按升序对一个或多个数组进行排序。第一个数组会被排序，后续数组会根据第一个数组的排序结果进行重排。Null 值会被放在末尾。此函数用于与 KQL（Kusto Query Language）保持兼容。
+
+**语法**
+
+```sql
+kql_array_sort_asc(array1[, array2, ..., nulls_last])
+```
+
+**参数**
+
+* `array1` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 可选。需要根据 `array1` 的排序结果一同重排的附加数组。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 可选。布尔值，指示是否应将 null 放在最后。默认值为 true。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回按升序排序后的数组组成的元组。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT kql_array_sort_asc([3, 1, 2])
+```
+
+```response title=Response
+([1, 2, 3])
+```
+
+
+## kql_array_sort_desc \{#kql_array_sort_desc\}
+
+引入版本：v23.10
+
+按降序对一个或多个数组进行排序。第一个数组会被排序，后续数组会根据第一个数组排序后的顺序进行重排。NULL 值会被放在末尾。这是一个用于兼容 KQL（Kusto Query Language）的函数。
+
+**语法**
+
+```sql
+kql_array_sort_desc(array1[, array2, ..., nulls_last])
+```
+
+**参数**
+
+* `array1` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 可选的额外数组，将根据 `array1` 的排序顺序进行重排。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 可选布尔值，指示是否应将 `null` 排在最后，默认值为 `true`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回按降序排序的数组的元组。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT kql_array_sort_desc([3, 1, 2])
+```
+
+```response title=Response
+([3, 2, 1])
+```
+
+
 ## length \{#length\}
 
 自 v1.1 起引入

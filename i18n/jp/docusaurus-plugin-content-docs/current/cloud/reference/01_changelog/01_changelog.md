@@ -43,6 +43,10 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026年2月20日 \{#february-20-2026\}
+
+- **ClickPipes:** 非アクティブ状態のリバースプライベートエンドポイントは、設定された猶予期間の後に自動的に削除されるようになりました。これにより、未使用または誤って構成されたエンドポイントがバックエンドに無期限に残り続けることを防ぎます。詳細については、自動クリーンアップに関する[ドキュメント](/integrations/clickpipes/aws-privatelink#automatic-cleanup)を参照してください。
+
 ## 2026年2月13日 \{#february-13-2026\}
 
 - [BigQuery Connector](/integrations/clickpipes/bigquery/overview) がプライベートプレビューとして利用可能になりました。詳細についてはこの[ブログ記事](https://clickhouse.com/blog/bigquery-clickpipe-private-preview)を参照し、アクセスを希望される方は[ウェイトリスト](https://clickhouse.com/cloud/clickpipes/bigquery-connector)にご登録ください。
@@ -1608,7 +1612,7 @@ ClickHouse Cloud は、SOC2 Type II 準拠、本番ワークロード向けの�
 
 ### 一般的な変更 \{#general-changes-5\}
 
-- ローカルの ClickHouse テーブルおよび HTTP ソースからの[辞書](/sql-reference/dictionaries/index.md)のサポートを追加
+- ローカルの ClickHouse テーブルおよび HTTP ソースからの[辞書](/sql-reference/statements/create/dictionary)のサポートを追加
 - ムンバイ[リージョン](/cloud/reference/supported-regions)のサポートを追加
 
 ### コンソールの変更 \{#console-changes-30\}

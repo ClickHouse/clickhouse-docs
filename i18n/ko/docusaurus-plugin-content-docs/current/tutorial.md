@@ -142,7 +142,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
      ") SETTINGS input_format_try_infer_datetimes = 0
      ```
 
-  2. `INSERT`가 완료될 때까지 기다리십시오. 150 MB 용량의 데이터를 다운로드하는 데 잠시 시간이 걸릴 수 있습니다.
+  2. `INSERT`가 완료될 때까지 기다리십시오. 150MB 분량의 데이터를 다운로드하는 데 잠시 시간이 걸릴 수 있습니다.
 
   3. INSERT가 완료되면 정상적으로 완료되었는지 확인합니다:
 
@@ -150,13 +150,13 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
      SELECT count() FROM trips
      ```
 
-     이 쿼리를 실행하면 1,999,657개의 행이 반환되어야 합니다.
+     이 쿼리는 1,999,657개의 행을 반환해야 합니다.
 
   ## 데이터 분석하기
 
   데이터를 분석하기 위해 몇 가지 쿼리를 실행하세요. 다음 예제를 살펴보거나 직접 SQL 쿼리를 작성해 보세요.
 
-  * 평균 팁 금액 계산:
+  * 평균 팁 금액을 계산합니다:
 
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
@@ -188,7 +188,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
       <summary>예상 출력</summary>
 
       <p>
-        `passenger_count` 값은 0부터 9까지입니다:
+        `passenger_count` 값은 0부터 9까지의 범위를 가집니다:
 
         ```response
         ┌─passenger_count─┬─average_total_amount─┐
@@ -238,7 +238,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
       </p>
     </details>
 
-  * 각 여행의 소요 시간을 분 단위로 계산한 다음, 결과를 소요 시간(분)별로 그룹화합니다.
+  * 각 여행의 소요 시간을 분 단위로 계산한 다음, 소요 시간별로 결과를 그룹화합니다:
 
     ```sql
     SELECT
@@ -270,7 +270,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
       </p>
     </details>
 
-  * 동네별로 하루 중 각 시간대별 픽업 건수를 표시합니다:
+  * 동네별로 시간대별 픽업 건수를 표시합니다:
 
     ```sql
     SELECT
@@ -327,7 +327,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
       </p>
     </details>
 
-  7. LaGuardia 또는 JFK 공항행 승차 기록을 조회하십시오:
+  7. LaGuardia 또는 JFK 공항행 택시 운행 기록을 조회하십시오:
 
      ```sql
      SELECT
@@ -369,7 +369,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
 
   ## 딕셔너리 생성하기
 
-  딕셔너리는 메모리에 저장된 key-value 쌍의 매핑입니다. 자세한 내용은 [딕셔너리](/sql-reference/dictionaries/index.md)를 참조하세요.
+  딕셔너리는 메모리에 저장된 key-value 쌍의 매핑입니다. 자세한 내용은 [딕셔너리](/sql-reference/statements/create/dictionary)를 참조하세요.
 
   ClickHouse 서비스의 테이블과 연결된 딕셔너리를 생성하세요.
   테이블과 딕셔너리는 뉴욕시의 각 지역별로 하나의 행을 포함하는 CSV 파일을 기반으로 합니다.
@@ -403,23 +403,23 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
   ```
 
   :::note
-  `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어 S3 버킷으로의 불필요한 트래픽을 방지합니다. 다른 경우에는 다르게 구성할 수 있습니다. 자세한 내용은 [LIFETIME을 사용하여 딕셔너리 데이터 새로고침](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)을 참조하십시오.
+  `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어 S3 버킷으로의 불필요한 트래픽을 방지합니다. 다른 경우에는 다르게 구성할 수 있습니다. 자세한 내용은 [LIFETIME을 사용하여 딕셔너리 데이터 새로고침](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)을 참조하십시오.
   :::
 
-  3. 올바르게 동작하는지 확인합니다. 다음 쿼리는 265개의 행, 즉 각 동네마다 하나의 행을 반환해야 합니다.
+  3. 정상적으로 동작하는지 확인합니다. 다음 쿼리는 265개의 행, 즉 각 지역마다 하나의 행을 반환해야 합니다:
      ```sql
      SELECT * FROM taxi_zone_dictionary
      ```
 
-  4. 딕셔너리에서 값을 조회하려면 `dictGet` 함수([또는 그 변형 함수](./sql-reference/functions/ext-dict-functions.md))를 사용합니다. 딕셔너리 이름, 조회하려는 값의 컬럼 이름, 그리고 키(이 예제에서는 `taxi_zone_dictionary`의 `LocationID` 컬럼)를 인수로 전달합니다.
+  4. 딕셔너리에서 값을 조회하려면 `dictGet` 함수([또는 그 변형 함수](./sql-reference/functions/ext-dict-functions.md))를 사용합니다. 딕셔너리 이름, 조회하려는 값의 컬럼, 그리고 키 값(이 예제에서는 `taxi_zone_dictionary`의 `LocationID` 컬럼)을 인수로 전달합니다.
 
-     예를 들어, 다음 쿼리는 `LocationID`가 132인 `Borough`를 반환하며, 이는 JFK 공항에 해당합니다.
+     예를 들어, 다음 쿼리는 `LocationID`가 132인 `Borough`를 반환하는데, 이는 JFK 공항에 해당합니다.
 
      ```sql
      SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
      ```
 
-     JFK는 퀸즈에 있습니다. 값을 조회하는 데 걸리는 시간은 사실상 0초임을 알 수 있습니다:
+     JFK는 퀸즈에 있습니다. 값을 조회하는 데 걸리는 시간은 사실상 0에 가깝습니다:
 
      ```response
      ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -434,7 +434,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
      SELECT dictHas('taxi_zone_dictionary', 132)
      ```
 
-  6. 다음 쿼리는 딕셔너리에서 `LocationID`에 4567 값이 없으므로 0을 반환합니다.
+  6. 다음 쿼리는 딕셔너리에서 `LocationID`의 값으로 4567이 존재하지 않으므로 0을 반환합니다.
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 4567)
      ```
@@ -451,7 +451,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
      ORDER BY total DESC
      ```
 
-     이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는 택시 운행 횟수를 자치구별로 합산합니다. 결과는 다음과 같으며, 승차 지역(pickup neighborhood)이 알려지지 않은 운행이 상당히 많다는 점을 확인할 수 있습니다.
+     이 쿼리는 LaGuardia 또는 JFK 공항에서 종료되는 택시 운행 횟수를 자치구별로 합산합니다. 결과는 다음과 같으며, 승차 지역(pickup neighborhood)이 알려지지 않은 운행이 상당히 많다는 점을 확인할 수 있습니다.
 
      ```response
      ┌─total─┬─borough_name──┐
@@ -471,7 +471,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
 
   `taxi_zone_dictionary`와 `trips` 테이블을 조인하는 쿼리를 작성하세요.
 
-  1. 먼저 앞에서 살펴본 공항 쿼리와 비슷하게 동작하는 간단한 `JOIN`부터 시작합니다:
+  1. 앞에서 살펴본 공항 쿼리와 비슷하게 동작하는 간단한 `JOIN`부터 시작합니다:
 
      ```sql
      SELECT

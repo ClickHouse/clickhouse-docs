@@ -7,12 +7,7 @@ title: '텍스트 인덱스를 활용한 전문 검색'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
@@ -35,7 +30,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: I, have, two, dogs, and, a, cat
 ```
 
-일반적으로 검색 시 대소문자를 구분하지 않으므로 토큰을 소문자로 변환합니다:
+일반적으로는 대소문자를 구분하지 않고 검색하므로 토큰을 모두 소문자로 변환합니다:
 
 ```result
 1: the, cat, likes, mice
@@ -43,7 +38,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: i, have, two, dogs, and, a, cat
 ```
 
-또한 거의 모든 행에 나타나는 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
+또한 거의 모든 행에서 등장하므로 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
 
 ```result
 1: cat, likes, mice
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-반환합니다
-
-```text
-25.4
-```
-
-또는 26.2보다 작은 값을 사용하는 경우 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
+`26.2`보다 작은 값(예: `25.4`)을 반환하면 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
 :::
 
-텍스트 인덱스는 다음 구문을 사용하여 [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) 컬럼( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수 사용)을 대상으로 정의할 수 있습니다:
+텍스트 인덱스는 [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) 컬럼([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수 사용)에 대해 다음 구문을 사용하여 정의할 수 있습니다:
 
 ```sql
 CREATE TABLE table
@@ -147,13 +136,13 @@ ALTER TABLE table
 
 ```
 
-이미 존재하는 테이블에 인덱스를 추가하는 경우, 기존 테이블 파트에 대해 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 대신 느린 전수 검색(brute-force scan)으로 처리됩니다.
+이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 전수 검색(brute-force scan)으로 수행됩니다.
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
-텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오
+텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오.
 
 ```sql
 ALTER TABLE table DROP INDEX text_idx;

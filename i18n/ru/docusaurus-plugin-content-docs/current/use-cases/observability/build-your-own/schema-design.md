@@ -588,7 +588,7 @@ LIMIT 5
 
 ## Использование словарей \{#using-dictionaries\}
 
-[Словари](/sql-reference/dictionaries) — это [ключевая возможность](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) ClickHouse, обеспечивающая хранимое в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных внутренних и внешних [источников](/sql-reference/dictionaries#dictionary-sources), оптимизированное для сверхнизкой задержки при выполнении запросов поиска.
+[Словари](/sql-reference/statements/create/dictionary) — это [ключевая возможность](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) ClickHouse, обеспечивающая хранимое в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных внутренних и внешних [источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для сверхнизкой задержки при выполнении запросов поиска.
 
 <Image img={observability_12} alt="Обсервабилити и словари" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-Чтобы выполнять низкозадержечные IP‑поиски в ClickHouse, мы будем использовать словари для хранения сопоставления ключей с атрибутами наших Geo IP‑данных в памяти. ClickHouse предоставляет структуру словаря `ip_trie` [структура словаря](/sql-reference/dictionaries#ip_trie) для сопоставления наших сетевых префиксов (CIDR‑блоков) с координатами и кодами стран. Следующий запрос определяет словарь, используя эту структуру и приведённую выше таблицу в качестве источника.
+Чтобы выполнять низкозадержечные IP‑поиски в ClickHouse, мы будем использовать словари для хранения сопоставления ключей с атрибутами наших Geo IP‑данных в памяти. ClickHouse предоставляет структуру словаря `ip_trie` [структура словаря](/sql-reference/statements/create/dictionary/layouts/ip-trie) для сопоставления наших сетевых префиксов (CIDR‑блоков) с координатами и кодами стран. Следующий запрос определяет словарь, используя эту структуру и приведённую выше таблицу в качестве источника.
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 Разбор [строк User-Agent](https://en.wikipedia.org/wiki/User_agent) — это классическая задача на регулярные выражения и типичное требование для наборов данных на основе логов и трассировок. ClickHouse обеспечивает эффективный разбор строк User-Agent с использованием Regular Expression Tree Dictionaries.
 
-Словари на основе дерева регулярных выражений определяются в ClickHouse open-source с использованием типа источника словаря YAMLRegExpTree, который указывает путь к YAML-файлу, содержащему дерево регулярных выражений. Если вы хотите использовать собственный словарь регулярных выражений, подробности о требуемой структуре можно найти [здесь](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source). Далее мы сосредоточимся на разборе User-Agent с использованием [uap-core](https://github.com/ua-parser/uap-core) и загрузим наш словарь в поддерживаемом формате CSV. Этот подход совместим как с OSS, так и с ClickHouse Cloud.
+Словари на основе дерева регулярных выражений определяются в ClickHouse open-source с использованием типа источника словаря YAMLRegExpTree, который указывает путь к YAML-файлу, содержащему дерево регулярных выражений. Если вы хотите использовать собственный словарь регулярных выражений, подробности о требуемой структуре можно найти [здесь](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source). Далее мы сосредоточимся на разборе User-Agent с использованием [uap-core](https://github.com/ua-parser/uap-core) и загрузим наш словарь в поддерживаемом формате CSV. Этот подход совместим как с OSS, так и с ClickHouse Cloud.
 
 :::note
-В примерах ниже мы используем снимки актуальных регулярных выражений uap-core для разбора User-Agent по состоянию на июнь 2024 года. Актуальный файл, который периодически обновляется, можно найти [здесь](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). Вы можете выполнить шаги, описанные [здесь](/sql-reference/dictionaries#collecting-attribute-values), чтобы загрузить данные в CSV-файл, используемый ниже.
+В примерах ниже мы используем снимки актуальных регулярных выражений uap-core для разбора User-Agent по состоянию на июнь 2024 года. Актуальный файл, который периодически обновляется, можно найти [здесь](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). Вы можете выполнить шаги, описанные [здесь](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values), чтобы загрузить данные в CSV-файл, используемый ниже.
 :::
 
 Создайте следующие таблицы движка Memory. Они будут хранить наши регулярные выражения для разбора устройств, браузеров и операционных систем.
@@ -875,7 +875,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-Эти таблицы можно заполнить данными из следующих публично доступных CSV‑файлов с помощью табличной функции URL:
+Эти таблицы можно заполнить данными из следующих публично размещённых CSV‑файлов с помощью табличной функции url:
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -1031,7 +1031,7 @@ Os:     ('Other','0','0','0')
 
 - [Расширенные темы по словарям](/dictionary#advanced-dictionary-topics)
 - [«Использование словарей для ускорения запросов»](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Словари](/sql-reference/dictionaries)
+- [Словари](/sql-reference/statements/create/dictionary)
 
 ## Ускорение запросов \{#accelerating-queries\}
 

@@ -74,6 +74,266 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+## globalIn \{#globalIn\}
+
+導入バージョン: v1.1
+
+`in` と同様ですが、分散クエリではグローバルな Set 配布を行います。Set はすべてのリモートサーバーに送信されます。
+
+**構文**
+
+```sql
+globalIn(x, set)
+```
+
+**引数**
+
+* `x` — 確認する値。 - `set` — 値の集合。
+
+**戻り値**
+
+x が set に含まれている場合は 1、そうでない場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalInIgnoreSet \{#globalInIgnoreSet\}
+
+導入バージョン: v1.1
+
+`in` と同様ですが、分散クエリにおいて Set をグローバルに配布します。Set はすべてのリモートサーバーに送信されます。
+これは、Set を作成することなく型解析に使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+globalIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定対象の値。 - `set` — 値の Set。
+
+**返り値**
+
+x が set に含まれている場合は 1、そうでない場合は 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotIn \{#globalNotIn\}
+
+導入バージョン: v1.1
+
+`notIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
+
+**構文**
+
+```sql
+globalNotIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定対象の値。 - `set` — 値の集合。
+
+**戻り値**
+
+x が set に含まれていない場合は 1 を返し、含まれている場合は 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
+
+導入バージョン: v1.1
+
+`notIn` と同様ですが、分散クエリでグローバルな Set 配布を使用します。Set はすべてのリモートサーバーに送信されます。
+これは、Set を作成することなく型解析を行うために使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+globalNotIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の集合。
+
+**戻り値**
+
+x が set に含まれていなければ 1 を、そうでなければ 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint) 型
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotNullIn \{#globalNotNullIn\}
+
+導入バージョン: v1.1
+
+`notNullIn` と同様ですが、分散クエリにおいてグローバル Set の分散を使用します。Set はすべてのリモートサーバーに送信されます。
+
+**構文**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の集合。
+
+**戻り値**
+
+`x` が `set` に含まれていない場合は 1、そうでない場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
+
+導入バージョン: v1.1
+
+`notNullIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
+これは、Set を作成せずに型解析を行うために使用される IgnoreSet 版です。
+
+**構文**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の集合。
+
+**戻り値**
+
+x が set に含まれていない場合は 1、それ以外の場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNullIn \{#globalNullIn\}
+
+導入: v1.1
+
+`nullIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
+
+**構文**
+
+```sql
+globalNullIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定する値。 - `set` — 値の集合。
+
+**戻り値**
+
+x が set に含まれている場合は 1、それ以外の場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
+
+導入バージョン: v1.1
+
+`nullIn` と同じですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
+これは、型解析用に Set を作成せずに使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+globalNullIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定する値。 - `set` — 値の集合。
+
+**返り値**
+
+x が set に含まれている場合は 1 を返し、そうでない場合は 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
 ## greater \{#greater\}
 
 導入バージョン: v1.1
@@ -142,6 +402,72 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 ┌─greaterOrEquals(2, 1)─┬─greaterOrEquals(2, 2)─┬─greaterOrEquals(1, 2)─┐
 │                     1 │                     1 │                     0 │
 └───────────────────────┴───────────────────────┴───────────────────────┘
+```
+
+## in \{#in\}
+
+導入: v1.1
+
+左オペランドが右オペランドの集合に含まれているかどうかを判定します。含まれていれば 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値はスキップされます（Set に含まれないものとして扱われます）。
+
+**構文**
+
+```sql
+in(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。
+* `set` — 値の集合。
+
+**返り値**
+
+`x` が `set` 内に含まれている場合は 1 を、そうでない場合は 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## inIgnoreSet \{#inIgnoreSet\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの Set の要素かどうかをチェックします。要素であれば 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値はスキップされ（Set に含まれないものとして扱われ）ます。
+これは、Set を作成せずに型解析のために使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+in(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の集合を表す Set。
+
+**戻り値**
+
+x が Set に含まれていれば 1、含まれていなければ 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
 ```
 
 ## isDistinctFrom \{#isDistinctFrom\}
@@ -338,6 +664,203 @@ SELECT 1 != 2, 1 != 1;
 ┌─notEquals(1, 2)─┬─notEquals(1, 1)─┐
 │               1 │               0 │
 └─────────────────┴─────────────────┘
+```
+
+## notIn \{#notIn\}
+
+導入: v1.1
+
+左オペランドが右オペランドの集合に属していないかどうかを判定します。集合に含まれていなければ 1 を返し、含まれていれば 0 を返します。左オペランド内の NULL 値はスキップされます。
+
+**構文**
+
+```sql
+notIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。
+* `set` — 値の Set。
+
+**戻り値**
+
+x が set に含まれていない場合は 1、含まれている場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notInIgnoreSet \{#notInIgnoreSet\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの Set に含まれて「いない」かどうかを判定します。Set に含まれていなければ 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値は無視されます。
+これは、Set を作成せずに型解析を行うために使用される IgnoreSet バリアントです。
+
+**構文**
+
+```sql
+notIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の集合。
+
+**戻り値**
+
+`x` が `set` に含まれていない場合は 1、含まれている場合は 0 を返します。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notNullIn \{#notNullIn\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの Set の要素に含まれて「いない」ことをチェックします。`notIn` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
+
+**構文**
+
+```sql
+notNullIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定対象の値。
+* `set` — 値の集合。
+
+**返り値**
+
+x が set に含まれていなければ 1、含まれていれば 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## notNullInIgnoreSet \{#notNullInIgnoreSet\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの集合に含まれていないことをチェックします。`notIn` と異なり、NULL 値はスキップされません。NULL は集合要素と比較され、NULL = NULL は true と評価されます。
+これは、Set を作成せずに型解析を行うために使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+notNullIn(x, set)
+```
+
+**引数**
+
+* `x` — チェックする値。 - `set` — 値の Set。
+
+**戻り値**
+
+x が Set に含まれていなければ 1、含まれていれば 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## nullIn \{#nullIn\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの Set の要素であるかどうかを判定します。`in` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
+
+**構文**
+
+```sql
+nullIn(x, set)
+```
+
+**引数**
+
+* `x` — 判定する値。 - `set` — 値の集合。
+
+**返り値**
+
+x が set に含まれている場合は 1、含まれていない場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用方法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## nullInIgnoreSet \{#nullInIgnoreSet\}
+
+導入バージョン: v1.1
+
+左オペランドが右オペランドの Set のメンバーかどうかをチェックします。`in` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
+これは、Set を作成せずに型解析を行うために使用される IgnoreSet のバリアントです。
+
+**構文**
+
+```sql
+nullIn(x, set)
+```
+
+**引数**
+
+* `x` — チェック対象の値。 - `set` — 値の Set。
+
+**戻り値**
+
+x が set に含まれている場合は 1、そうでない場合は 0 を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使用例**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
 ```
 
 {/*AUTOGENERATED_END*/ }

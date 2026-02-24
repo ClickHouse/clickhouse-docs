@@ -70,9 +70,9 @@ import TabItem from '@theme/TabItem';
     如果您在应用程序中使用 JDBC 驱动程序，且该应用程序需要将 jar 添加到 classpath，则需要从以下地址下载 jar 文件：
 
     * 从 [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) 下载并将其添加到 classpath 中
-      * 从版本 `0.9.4` 开始，提供了构建产物 https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all
-      * 使用限定符 `all` 以获取包含所有已打包（shaded）依赖的 JAR。
-    * 或从官方仓库[此处](https://github.com/ClickHouse/clickhouse-java/releases)获取
+      * 从版本 `0.9.4` 开始，新增了构件 https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all
+      * 使用限定符 `all` 以获取包含所有打包（shaded）依赖的 jar。
+    * 或从官方仓库[此处](https://github.com/ClickHouse/clickhouse-java/releases)下载
 
     ## 配置 \{#configuration\}
 
@@ -94,10 +94,10 @@ import TabItem from '@theme/TabItem';
 
     关于 URL 语法，有以下几点需要注意：
 
-    * URL 中**只能**包含一个 endpoint
-    * 当使用的协议不是默认的 HTTP 协议时，应显式指定协议
+    * URL 中 **只能** 指定一个 endpoint
+    * 当所用协议不是默认的 HTTP 时，应显式指定协议
     * 如果端口不是默认的 &#39;8123&#39;，则必须显式指定。
-    * 驱动程序不会根据端口来推断协议，你需要显式指定协议
+    * 驱动程序不会根据端口推断协议，因此必须显式指定协议
     * 如果已指定协议，则无需设置 `ssl` 参数。
 
     ### 连接属性 \{#connection-properties\}
@@ -109,14 +109,14 @@ import TabItem from '@theme/TabItem';
     | 属性                                  | 默认值      | 描述                                                                                 |
     | ----------------------------------- | -------- | ---------------------------------------------------------------------------------- |
     | `disable_frameworks_detection`      | `true`   | 禁用基于 User-Agent 的框架识别                                                              |
-    | `jdbc_ignore_unsupported_values`    | `false`  | 在不影响驱动工作的情况下抑制 `SQLFeatureNotSupportedException` 异常                                |
+    | `jdbc_ignore_unsupported_values`    | `false`  | 在不影响驱动正常工作的情况下抑制抛出 `SQLFeatureNotSupportedException` 异常                            |
     | `clickhouse.jdbc.v1`                | `false`  | 使用旧版 JDBC 实现，而不是新版实现                                                               |
     | `default_query_settings`            | `null`   | 允许在执行查询时传递默认查询设置                                                                   |
-    | `jdbc_resultset_auto_close`         | `true`   | 在关闭 `Statement` 时自动关闭 `ResultSet`                                                  |
+    | `jdbc_resultset_auto_close`         | `true`   | 当 `Statement` 关闭时自动关闭 `ResultSet`                                                  |
     | `beta.row_binary_for_simple_insert` | `false`  | 使用基于 `RowBinary` writer 的 `PreparedStatement` 实现，仅适用于 `INSERT INTO ... VALUES` 查询。 |
     | `jdbc_resultset_auto_close`         | `true`   | `Statement` 关闭时自动关闭 `ResultSet`                                                    |
-    | `jdbc_use_max_result_rows`          | `false`  | 启用后，将使用服务器端属性 `max_result_rows` 来限制查询返回的行数。启用该选项时，会覆盖用户设置的溢出模式。详细信息请参见 JavaDoc。    |
-    | `jdbc_sql_parser`                   | `JAVACC` | 配置要使用的 SQL 解析器类型。可选值为：`ANTLR4`、`ANTLR4_PARAMS_PARSER`、`JAVACC`。                    |
+    | `jdbc_use_max_result_rows`          | `false`  | 启用后，将使用服务器属性 `max_result_rows` 来限制查询返回的行数。启用该选项时，会覆盖用户配置的溢出模式。详细信息请参见 JavaDoc。     |
+    | `jdbc_sql_parser`                   | `JAVACC` | 配置要使用的 SQL 解析器。可选值为：`ANTLR4`、`ANTLR4_PARAMS_PARSER`、`JAVACC`。                      |
 
     :::note 服务器设置
 
@@ -155,6 +155,39 @@ import TabItem from '@theme/TabItem';
 
     注意:无需对 JDBC URL 或属性进行 URL 编码,系统将自动进行编码。
 
+    ### 客户端标识 \{#client-identification\}
+
+    有两种方式可以标识发起请求的应用程序：通过连接属性设置 `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME`，或使用 `java.sql.Connection#setClientInfo(String name, String value)` 方法。
+
+    ```java showLineNumbers
+    Properties properties = new Properties();
+    properties.setProperty(ClientConfigProperties.CLIENT_NAME.getKey(), "my-app-01");
+    Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", properties);
+    ```
+
+    ```java showLineNumbers
+    conn.setClientInfo(com.clickhouse.jdbc.ClientInfoProperties.APPLICATION_NAME.getKey(), "my-app-01");
+    ```
+
+    两种方式都会在查询日志中生成以下 `http_user_agent` 值：
+
+    ```
+    my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+    ```
+
+    ### 操作标识 \{#operation-identification\}
+
+    JDBC 驱动程序会为每个操作生成 `query_id`（目前该信息包含在服务器异常中）。
+
+    要为某个操作设置 `log_comment`，请使用 `com.clickhouse.jdbc.StatementImpl#getLocalSettings` 方法。这需要先将 `Statement` 或 `PreparedStatement` 强制转换为 `com.clickhouse.jdbc.StatementImpl`。
+
+    ```java showLineNumbers
+    StatementImpl stmt = (StatementImpl) conn.createStatement();
+    stmt.getLocalSettings().logComment("some-comment");
+    ```
+
+    **注意：** 此方法适用于语句的单线程使用场景，因为 `localSettings` 在线程间是共享的。
+
     ## 支持的数据类型 \{#supported-data-types\}
 
     JDBC 驱动支持与底层 [Java 客户端](/integrations/java#supported-data-types)相同的数据格式。
@@ -168,7 +201,7 @@ import TabItem from '@theme/TabItem';
 
     有几种方法可以更改映射:
 
-    * `ResultSet#getObject(columnIndex, class)` - 该方法会尝试将值转换为指定的 `class` 类型。此类转换存在一定限制。详细情况请参阅各节说明。
+    * `ResultSet#getObject(columnIndex, class)` - 该方法会尝试将该值转换为指定的 `class` 类型。此类转换存在一定限制。详细情况请参阅各节说明。
 
     **数值类型**
 
@@ -194,13 +227,13 @@ import TabItem from '@theme/TabItem';
     | Decimal256    | DECIMAL  | java.math.BigDecimal |
     | Bool          | BOOLEAN  | java.lang.Boolean    |
 
-    * 数值类型之间可以相互转换。因此，可以将 `Int8` 作为 `Float64` 获取，反之亦然。:
+    * 数值类型之间可以相互转换。因此，可以将 `Int8` 读取为 `Float64`，反之亦然：
       * `rs.getObject(1, Float64.class)` 将返回 `Int8` 列的 `Float64` 值。
       * `rs.getLong(1)` 将返回 `Int8` 列的 `Long` 值。
       * 如果值在 `Byte` 的取值范围内，`rs.getByte(1)` 可以返回 `Int16` 列的 `Byte` 值。
-    * 由于存在数据损坏风险，不建议将更宽类型转换为更窄类型。
-    * `Bool` 类型也可以作为数值使用。
-    * 所有数值类型都可以读取为 `java.lang.String`。
+    * 由于存在数据损坏风险，不建议进行从更宽类型到更窄类型的转换，以免产生数据损坏。
+    * `Bool` 类型也可以当作数值类型使用。
+    * 所有数值类型都可以作为 `java.lang.String` 读取。
 
     **字符串类型**
 
@@ -209,8 +242,8 @@ import TabItem from '@theme/TabItem';
     | String        | VARCHAR | java.lang.String |
     | FixedString   | VARCHAR | java.lang.String |
 
-    * `String` 只能被读取为 `java.lang.String` 或 `byte[]` 类型。
-    * `FixedString` 在读取时会保持原样，并在末尾用零字节补齐到该列的长度。（例如，将 `'John'` 存储为 `FixedString(10)` 时，读取结果为 `'John\0\0\0\0\0\0\0\0\0'`。）
+    * `String` 只能以 `java.lang.String` 或 `byte[]` 的形式读取。
+    * `FixedString` 读取时按原样返回，并在末尾用零字节补齐至该列的长度。（例如，将 `'John'` 定义为 `FixedString(10)` 时，读取结果为 `'John\0\0\0\0\0\0\0\0\0'`。）
 
     **枚举类型**
 
@@ -220,9 +253,9 @@ import TabItem from '@theme/TabItem';
     | Enum16        | OTHER   | java.lang.String |
 
     * `Enum8` 和 `Enum16` 默认映射为 `java.lang.String`。
-    * 枚举值可以通过相应的数值型 getter 方法，或使用 `getObject(columnIndex, Integer.class)` 方法，以数值形式读取。
-    * `Enum16` 在内部映射为 short，而 `Enum8` 映射为 byte。应避免将 `Enum16` 按 byte 读取，否则有导致数据损坏的风险。
-    * 可以在 `PreparedStatement` 中将枚举值设置为字符串值或数值。
+    * 枚举值可以通过相应的数值型 getter 方法或使用 `getObject(columnIndex, Integer.class)` 方法读取为数值。
+    * `Enum16` 在内部映射为 short 类型，而 `Enum8` 映射为 byte 类型。应避免将 `Enum16` 以 byte 形式读取，否则存在数据损坏风险。
+    * 可以在 `PreparedStatement` 中以字符串或数值形式设置枚举值。
 
     **日期/时间类型**
 
@@ -235,13 +268,13 @@ import TabItem from '@theme/TabItem';
     | Time          | TIME      | java.sql.Time      |
     | Time64        | TIME      | java.sql.Time      |
 
-    * 日期/时间类型会映射为 `java.sql` 类型,以便更好地兼容 JDBC。但仍然可以通过调用 `ResultSet#getObject(columnIndex, Class<T>)`,并将相应的类作为第二个参数来获取 `java.time.LocalDate`、`java.time.LocalDateTime`、`java.time.LocalTime`。
-      * `rs.getObject(1, java.time.LocalDate.class)` 将返回 `Date` 列中对应的 `java.time.LocalDate` 值。
-      * `rs.getObject(1, java.time.LocalDateTime.class)` 将返回 `DateTime` 列中对应的 `java.time.LocalDateTime` 值。
-      * `rs.getObject(1, java.time.LocalTime.class)` 将返回 `Time` 列中对应的 `java.time.LocalTime` 值。
-    * `Date`、`Date32`、`Time`、`Time64` 不受服务器的时区影响。
-    * `DateTime`、`DateTime64` 受服务器时区或会话时区影响。
-    * `DateTime` 和 `DateTime64` 可以通过 `getObject(colIndex, ZonedDateTime.class)` 以 `ZonedDateTime` 的形式获取。
+    * 日期/时间类型会映射为 `java.sql` 类型，以便与 JDBC 有更好的兼容性。不过，仍然可以通过调用 `ResultSet#getObject(columnIndex, Class<T>)`，并将相应的类作为第二个参数传入，来获取 `java.time.LocalDate`、`java.time.LocalDateTime`、`java.time.LocalTime`。
+      * `rs.getObject(1, java.time.LocalDate.class)` 将返回 `Date` 列的 `java.time.LocalDate` 值。
+      * `rs.getObject(1, java.time.LocalDateTime.class)` 将返回 `DateTime` 列的 `java.time.LocalDateTime` 值。
+      * `rs.getObject(1, java.time.LocalTime.class)` 将返回 `Time` 列的 `java.time.LocalTime` 值。
+    * `Date`, `Date32`, `Time`, `Time64` 不会受到服务器时区的影响。
+    * `DateTime`、`DateTime64` 会受到服务器时区或会话时区的影响。
+    * `DateTime` 和 `DateTime64` 可以通过 `getObject(colIndex, ZonedDateTime.class)` 获取为 `ZonedDateTime` 对象。
 
     **嵌套类型**
 
@@ -252,13 +285,13 @@ import TabItem from '@theme/TabItem';
     | Map           | JAVA&#95;OBJECT | java.util.Map             |
     | Nested        | ARRAY           | java.sql.Array            |
 
-    * `Array` 默认会映射为 `java.sql.Array`，以保证与 JDBC 的兼容性。这也能提供关于返回的数组值的更多信息，有助于进行类型推断。
-    * `Array` 实现了 `getResultSet()` 方法，以返回内容与原始数组相同的 `java.sql.ResultSet` 对象。
-    * 集合类型不应被读取为 `java.lang.String`，因为这样无法正确表示数据（例如：数组中的字符串值不会被加引号）。
-    * `Map` 映射为 `JAVA_OBJECT`，因为其值只能通过 `getObject(columnIndex, Class<T>)` 方法读取。
+    * `Array` 默认会映射为 `java.sql.Array`，以保证与 JDBC 的兼容性。这样也能提供更多关于返回数组值的信息，有助于进行类型推断。
+    * `Array` 实现了 `getResultSet()` 方法，以返回一个内容与原始数组相同的 `java.sql.ResultSet`。
+    * 集合类型不应被读取为 `java.lang.String`，因为那并不是一种有效的数据表示方式（例如：数组中的字符串值不会被加上引号）。
+    * `Map` 映射为 `JAVA_OBJECT`，因为其中的值只能通过 `getObject(columnIndex, Class<T>)` 方法读取。
       * `Map` 不是 `java.sql.Struct`，因为它没有具名列。
-    * `Tuple` 映射为 `Object[]`，因为它可以包含不同类型的元素，使用 `List` 作为映射类型是不合法的。
-    * `Tuple` 可以通过 `getObject(columnIndex, Array.class)` 方法读取为 `Array` 类型。在这种情况下，`Array#baseTypeName` 将返回该 `Tuple` 列的定义。
+    * `Tuple` 映射为 `Object[]`，因为它可以包含不同类型的元素，使用 `List` 进行映射是无效的。
+    * `Tuple` 可以通过 `getObject(columnIndex, Array.class)` 方法被读取为 `Array` 类型。在这种情况下，`Array#baseTypeName` 会返回 `Tuple` 列的定义。
 
     **写入数组**
 
@@ -267,8 +300,8 @@ import TabItem from '@theme/TabItem';
 
     该方法接受两个参数：
 
-    * `typeName` - 数组元素的类型名称。例如 `Array(Int32)` -&gt; `"Int32"`。
-    * `elements` - 数组中的实际元素。例如 `[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`。
+    * `typeName` - 数组元素类型的名称。例如 `Array(Int32)` -&gt; `"Int32"`。
+    * `elements` - 数组的实际元素。例如 `[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`。
 
     Tuple 可以表示为 `Object[]` 或 `java.sql.Struct`（请参阅下文中关于如何写入 Tuple 的说明）。
 
@@ -406,8 +439,8 @@ import TabItem from '@theme/TabItem';
 
     该方法接受两个参数：
 
-    * `typeName` - 嵌套元素类型的名称。例如 `Nested(Tuple(Int32, String))` -&gt; `"Nested(Tuple(Int32, String))"`。
-    * `elements` - 实际的嵌套元素本身。例如 `[1, 'test']` -&gt; `new Object[] {1, 'test'}`。
+    * `typeName` - 嵌套元素的类型名称。例如 `Nested(Tuple(Int32, String))` -&gt; `"Nested(Tuple(Int32, String))"`。
+    * `elements` - 实际的嵌套元素。例如 `[1, 'test']` -&gt; `new Object[] {1, 'test'}`。
 
     **示例**
 
@@ -460,8 +493,8 @@ import TabItem from '@theme/TabItem';
 
     **Nullable 和 LowCardinality 类型**
 
-    * `Nullable` 和 `LowCardinality` 是用于封装其他类型的特殊类型。
-    * `Nullable` 会影响 `ResultSetMetaData` 中类型名称的返回方式
+    * `Nullable` 和 `LowCardinality` 是包装其他类型的特殊类型。
+    * `Nullable` 会影响 `ResultSetMetaData` 返回的类型名称
 
     **特殊类型**
 
@@ -474,10 +507,10 @@ import TabItem from '@theme/TabItem';
     | AggregateFunction       | OTHER   | （二进制表示）               |
     | SimpleAggregateFunction | （封装类型）  | （封装类）                 |
 
-    * `UUID` 不是 JDBC 标准类型，但它是 JDK 的一部分。默认情况下，通过 `getObject()` 方法会返回一个 `java.util.UUID` 实例。
-    * 可以使用 `getObject(columnIndex, String.class)` 方法以 `String` 形式对 `UUID` 进行读写。
+    * `UUID` 不是 JDBC 标准类型，但它是 JDK 的一部分。默认情况下，调用 `getObject()` 方法会返回一个 `java.util.UUID` 实例。
+    * 可以使用 `getObject(columnIndex, String.class)` 方法，以 `String` 形式读取和写入 `UUID`。
     * `IPv4` 和 `IPv6` 不是 JDBC 标准类型，但它们是 JDK 的一部分。默认情况下，调用 `getObject()` 方法时会返回 `java.net.Inet4Address` 和 `java.net.Inet6Address` 实例。
-    * 通过 `getObject(columnIndex, String.class)` 方法，`IPv4` 和 `IPv6` 可以以 `String` 形式进行读写。
+    * 通过 `getObject(columnIndex, String.class)` 方法，可以将 `IPv4` 和 `IPv6` 作为 `String` 进行读写。
 
     ### 处理日期、时间和时区 \{#handling-dates-times-and-timezones\}
 
@@ -603,7 +636,7 @@ import TabItem from '@theme/TabItem';
 
     在 Linux 上，仅配置等效设置可能无法解决问题。由于 Linux 处理套接字 keep-alive 设置的方式不同，需要执行额外的步骤。请按照以下步骤操作：
 
-    1. 在 `/etc/sysctl.conf` 或其他相关配置文件中调整以下 Linux 内核参数：
+    1. 在 `/etc/sysctl.conf` 或其他相关的配置文件中调整以下 Linux 内核参数：
 
     * `net.inet.tcp.keepidle`: 60000
     * `net.inet.tcp.keepintvl`: 45000
@@ -612,7 +645,7 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60（可以考虑将该值从默认值 300 秒适当调低）
+    * `net.ipv4.tcp_keepalive_time`: 60（可考虑将该值从默认的 300 秒降低）
 
     2. 修改内核参数后，运行以下命令以使更改生效：
 
@@ -633,28 +666,28 @@ import TabItem from '@theme/TabItem';
     | 功能                              | V1（旧版） | V2（新版）          |
     | ------------------------------- | ------ | --------------- |
     | 事务支持                            | 部分支持   | 不支持             |
-    | 响应中列重命名                         | 部分支持   | 不支持             |
+    | 响应中的列重命名                        | 部分支持   | 不支持             |
     | 多语句 SQL                         | 不支持    | 不允许             |
     | 命名参数                            | 支持     | 不支持（JDBC 规范未定义） |
     | 使用 `PreparedStatement` 进行流式数据传输 | 支持     | 不支持             |
 
-    * JDBC V2 采用了更轻量的实现，因此移除了部分功能。
-      * JDBC V2 不支持流式数据传输，因为该特性既不是 JDBC 规范的一部分，也不是 Java 标准的一部分。
-    * JDBC V2 需要显式配置，不提供任何故障转移相关的默认设置。
+    * JDBC V2 为了更加轻量化而实现，因此移除了一些功能。
+      * JDBC V2 不支持流式数据传输，因为该功能既不在 JDBC 规范中定义，也未在 Java 中定义。
+    * JDBC V2 需要显式配置，不提供任何故障转移默认配置。
       * 协议应在 URL 中显式指定，不进行基于端口号的隐式协议推断。
 
     ### 配置更改 \{#configuration-changes\}
 
     仅有两个枚举:
 
-    * `com.clickhouse.jdbc.DriverProperties` - 驱动程序自身的配置属性。
-    * `com.clickhouse.client.api.ClientConfigProperties` - 客户端的配置属性。关于客户端配置变更，详见 [Java Client 文档](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config)。
+    * `com.clickhouse.jdbc.DriverProperties` - 驱动程序特有的配置属性。
+    * `com.clickhouse.client.api.ClientConfigProperties` - 客户端配置属性。客户端配置变更详见 [Java Client 文档](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config)。
 
     连接属性按以下方式解析:
 
-    * URL 首先会被解析以提取属性，这些属性会覆盖所有其他属性。
-    * 驱动属性不会被传递给客户端。
-    * 端点信息（主机、端口、协议）从 URL 中解析而来。
+    * 会首先从 URL 中解析出属性，这些属性将覆盖所有其他属性。
+    * 驱动程序属性不会传递给客户端。
+    * 端点（主机、端口、协议）从 URL 中解析得到。
 
     示例：
 
@@ -676,7 +709,7 @@ import TabItem from '@theme/TabItem';
 
     **数值类型**
 
-    | ClickHouse 类型 | 是否与 V1 兼容 | JDBC 类型（V2） | Java 类（V2）           | JDBC 类型（V1） | Java 类（V1）                                |
+    | ClickHouse 类型 | 与 V1 的兼容性 | JDBC 类型（V2） | Java 类（V2）           | JDBC 类型（V1） | Java 类（V1）                                |
     | ------------- | --------- | ----------- | -------------------- | ----------- | ----------------------------------------- |
     | Int8          | ✅         | TINYINT     | java.lang.Byte       | TINYINT     | java.lang.Byte                            |
     | Int16         | ✅         | SMALLINT    | java.lang.Short      | SMALLINT    | java.lang.Short                           |
@@ -698,7 +731,7 @@ import TabItem from '@theme/TabItem';
     | Decimal256    | ✅         | DECIMAL     | java.math.BigDecimal | DECIMAL     | java.math.BigDecimal                      |
     | Bool          | ✅         | BOOLEAN     | java.lang.Boolean    | BOOLEAN     | java.lang.Boolean                         |
 
-    * 主要区别在于,现在会将无符号类型映射为 Java 类型,以提高可移植性。
+    * 最大的区别在于，将无符号类型映射为 Java 类型，以提高可移植性。
 
     **字符串类型**
 
@@ -708,22 +741,22 @@ import TabItem from '@theme/TabItem';
     | FixedString   | ✅         | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
 
     * `FixedString` 在两个版本中均按原样读取。例如，对于 `'John'`，`FixedString(10)` 会被读取为 `'John\0\0\0\0\0\0\0\0\0'`。
-    * 当使用 `PreparedStatement#setBytes` 时，会先将该值转换为 `unhex('<hex_string>')`，然后按 `String` 类型读取。
+    * 当使用 `PreparedStatement#setBytes` 时，会被转换为 `unhex('<hex_string>')`，然后作为 `String` 类型读取。
     * 字符串以 UTF-8 编码存储。
 
     **日期/时间类型**
 
-    | ClickHouse 类型 | 是否与 V1 兼容 | JDBC 类型（V2） | Java 类（V2）         | JDBC 类型（V1） | Java 类（V1）               |
+    | ClickHouse 类型 | 是否与 V1 兼容 | JDBC 类型（V2） | Java 类（V2）         | JDBC 类型（V1） | Java 类（V1)               |
     | ------------- | --------- | ----------- | ------------------ | ----------- | ------------------------ |
     | Date          | ❌         | DATE        | java.sql.Date      | DATE        | java.time.LocalDate      |
     | Date32        | ❌         | DATE        | java.sql.Date      | DATE        | java.time.LocalDate      |
     | DateTime      | ❌         | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP   | java.time.OffsetDateTime |
     | DateTime64    | ❌         | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP   | java.time.OffsetDateTime |
     | Time          | ✅         | TIME        | java.sql.Time      | 新类型/不支持     | 新类型/不支持                  |
-    | Time64        | ✅         | TIME        | java.sql.Time      | 新类型/不支持     | 新类型 / 不支持                |
+    | Time64        | ✅         | TIME        | java.sql.Time      | 新类型/未支持     | 新类型 / 未支持                |
 
-    * `Time` 和 `Time64` 仅在 V2 中作为新增类型得到支持。
-    * `DateTime` 和 `DateTime64` 被映射为 `java.sql.Timestamp`，以实现更好的 JDBC 兼容性。
+    * `Time` 和 `Time64` 仅作为新类型在 V2 中受支持。
+    * `DateTime` 和 `DateTime64` 映射到 `java.sql.Timestamp` 类型，以提高与 JDBC 的兼容性。
 
     **枚举类型**
 
@@ -742,15 +775,15 @@ import TabItem from '@theme/TabItem';
     | Map           | ❌         | JAVA&#95;OBJECT | java.util.Map  | STRUCT      | java.util.Map     |
     | Nested        | ❌         | ARRAY           | java.sql.Array | STRUCT      | java.sql.Struct   |
 
-    * 在 V2 中，`Array` 默认映射为 `java.sql.Array`，以便与 JDBC 保持兼容。这也能提供更多关于返回数组值的信息，有利于进行类型推断。
-    * 在 V2 中，`Array` 实现了 `getResultSet()` 方法，以返回一个内容与原始数组相同的 `java.sql.ResultSet` 对象。
+    * 在 V2 中，`Array` 默认映射为 `java.sql.Array`，以便与 JDBC 保持兼容。这样做也能提供更多关于返回数组值的信息，有助于进行类型推断。
+    * 在 V2 中，`Array` 实现了 `getResultSet()` 方法，用于返回一个内容与原始数组相同的 `java.sql.ResultSet`。
     * V1 对 `Map` 使用 `STRUCT`，但始终返回 `java.util.Map` 对象。V2 通过将 `Map` 映射为 `JAVA_OBJECT` 解决了这一问题。
-    * V1 将 `Tuple` 映射为 `STRUCT`，但始终返回 `List<Object>` 对象。V2 将 `Tuple` 映射为 `OTHER`，并默认返回 `Object[]` 数组。
-    * V2 引入了 `com.clickhouse.data.Tuple#Tuple` 用于写入 Tuple 值。它简化了判断某个值是 Tuple 还是数组的过程。
-    * `PreparedStatement#setBytes` 和 `ResultSet#getBytes` 不能与集合类型一起使用。这些方法是专为处理二进制字符串而设计的。
-    * 通常会使用 `java.sql.Array` 来写入和读取 Array 类型。JDBC 驱动对这一点提供了完整支持。
-    * 在 V2 中，`Nested` 被映射为 `Array`，并将其表示为元组数组。
-    * V2 对 `java.sql.Struct` 提供了部分支持，由于它与 Array 类型非常相似，本身不支持键值对。`Struct` 可用于写入 `Tuple` 类型的值。
+    * V1 将 `Tuple` 映射为 `STRUCT`，但始终返回 `List&lt;Object&gt;`。V2 将 `Tuple` 映射为 `OTHER`，并默认返回 `Object[]`。
+    * V2 引入了 `com.clickhouse.data.Tuple#Tuple` 用于写入 Tuple。这样可以更容易判断某个值是 Tuple 还是数组。
+    * `PreparedStatement#setBytes` 和 `ResultSet#getBytes` 不能用于集合类型。这些方法是专为处理二进制字符串而设计的。
+    * 通常使用 `java.sql.Array` 来写入和读取 Array 类型。JDBC 驱动对此提供了完整支持。
+    * 在 V2 中，`Nested` 被映射为 `Array`，并将其呈现为由元组组成的数组。
+    * V2 对 `java.sql.Struct` 提供了部分支持，因为它与 Array 类型非常相似，而且不支持键值对。`Struct` 可用于写入 `Tuple` 类型的值。
 
     **地理类型**
 
@@ -763,7 +796,7 @@ import TabItem from '@theme/TabItem';
 
     **Nullable 和 LowCardinality 类型**
 
-    * `Nullable` 和 `LowCardinality` 是包装其他类型的特殊类型。
+    * `Nullable` 和 `LowCardinality` 是用于封装其他类型的特殊类型。
     * 在 V2 中，这些类型没有变化。
 
     **特殊类型**
@@ -776,20 +809,20 @@ import TabItem from '@theme/TabItem';
     | UUID                    | ✅         | OTHER       | java.util.UUID        | VARCHAR     | java.util.UUID        |
     | IPv4                    | ✅         | OTHER       | java.net.Inet4Address | VARCHAR     | java.net.Inet4Address |
     | IPv6                    | ✅         | OTHER       | java.net.Inet6Address | VARCHAR     | java.net.Inet6Address |
-    | Dynamic                 | ❌         | OTHER       | java.lang.Object      | 不支持         | 不支持                   |
-    | Variant                 | ❌         | OTHER       | java.lang.Object      | 不支持         | 不支持                   |
+    | Dynamic                 | ❌         | OTHER       | java.Object           | 不支持         | 不支持                   |
+    | Variant                 | ❌         | OTHER       | java.Object           | 不支持         | 不支持                   |
 
-    * V1 使用 `VARCHAR` 作为 `UUID` 的 JDBC 类型，但始终返回 `java.util.UUID` 对象。V2 通过将 `UUID` 映射为 `OTHER`，并同样返回 `java.util.UUID` 对象来修复此问题。
-    * V1 对 `IPv4` 和 `IPv6` 使用 `VARCHAR` 类型，但始终返回 `java.net.Inet4Address` 和 `java.net.Inet6Address` 对象。V2 通过将 `IPv4` 和 `IPv6` 映射为 JDBC 类型 `OTHER`，并返回 `java.net.Inet4Address` 和 `java.net.Inet6Address` 对象以此修复该问题。
+    * V1 使用 `VARCHAR` 作为 `UUID` 的 JDBC 类型，但始终返回 `java.util.UUID` 对象。V2 通过将 `UUID` 映射为 `OTHER`，并仍然返回 `java.util.UUID` 对象来修复此问题。
+    * V1 对 `IPv4` 和 `IPv6` 使用 `VARCHAR` 类型，但始终返回 `java.net.Inet4Address` 和 `java.net.Inet6Address` 对象。V2 通过将 `IPv4` 和 `IPv6` 映射为 JDBC 类型 `OTHER`，并返回 `java.net.Inet4Address` 和 `java.net.Inet6Address` 对象来修复此问题。
     * `Dynamic` 和 `Variant` 是 V2 中新增的类型，在 V1 中不支持。
-    * `JSON` 基于 `Dynamic` 类型，因此仅在 V2 中受支持。
+    * `JSON` 基于 `Dynamic` 类型，因此仅在 V2 中提供支持。
     * 可以通过 `getBytes(columnIndex)` 方法将 IPv4 和 IPv6 的值读取为 `byte[]`。不过，建议针对这些类型使用专门的类。
     * V2 不支持以数值形式读取 IP 地址，因为在 InetAddress 类中完成该转换的实现更为合理。
 
     ### 数据库元数据变更 \{#database-metadata-changes\}
 
-    * V2 仅使用 `Schema` 一词来表示数据库。`Catalog` 一词保留供将来使用。
-    * V2 会在 `DatabaseMetaData.supportsTransactions()` 和 `DatabaseMetaData.supportsSavepoints()` 中返回 `false`。这一行为将在后续版本的开发中进行调整。
+    * V2 仅使用 `Schema` 这一术语来表示数据库，将 `Catalog` 术语保留作今后使用。
+    * V2 会在 `DatabaseMetaData.supportsTransactions()` 和 `DatabaseMetaData.supportsSavepoints()` 中返回 `false`。这一行为将在后续版本中进行调整。
   </Version>
 
   <Version>
@@ -881,12 +914,12 @@ import TabItem from '@theme/TabItem';
 
     | 属性                         | 默认值     | 说明                                                                                                                                                                                                                                                                                                                                                                   |
     | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `continueBatchOnError`     | `false` | 是否在发生错误时继续执行后续批处理操作                                                                                                                                                                                                                                                                                                                                                  |
+    | `continueBatchOnError`     | `false` | 出错后是否继续执行后续批处理                                                                                                                                                                                                                                                                                                                                                       |
     | `createDatabaseIfNotExist` | `false` | 当目标数据库不存在时是否自动创建                                                                                                                                                                                                                                                                                                                                                     |
     | `custom_http_headers`      |         | 以逗号分隔的自定义 HTTP 请求头，例如：`User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                          |
-    | `custom_http_params`       |         | 用逗号分隔的自定义 HTTP 查询参数，例如：`extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                              |
-    | `nullAsDefault`            | `0`     | `0` - 按原样处理 null 值，在向非 Nullable 列插入 null 时抛出异常；`1` - 按原样处理 null 值，并在插入时禁用 null 检查；`2` - 将 null 替换为相应数据类型的默认值（对查询和插入均生效）                                                                                                                                                                                                                                              |
-    | `jdbcCompliance`           | `true`  | 是否支持标准的同步 UPDATE/DELETE 操作以及伪事务                                                                                                                                                                                                                                                                                                                                      |
+    | `custom_http_params`       |         | 以逗号分隔的自定义 HTTP 查询参数，例如：`extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                              |
+    | `nullAsDefault`            | `0`     | `0` - 按原样处理 null 值，在向非 Nullable 列插入 null 时抛出异常；`1` - 按原样处理 null 值，并在插入时禁用 null 检查机制；`2` - 将 null 替换为相应数据类型的默认值（对查询和插入均生效）                                                                                                                                                                                                                                            |
+    | `jdbcCompliance`           | `true`  | 是否启用对标准同步 UPDATE/DELETE 操作和伪事务的支持                                                                                                                                                                                                                                                                                                                                    |
     | `typeMappings`             |         | 自定义 ClickHouse 数据类型与 Java 类之间的映射关系，该配置会同时影响 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) 和 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) 的返回结果。例如：`UInt128=java.lang.String,UInt256=java.lang.String` |
     | `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) 是否应在处理 Array / Tuple 时返回 java.sql.Array / java.sql.Struct。                                                                                                                                                                                                         |
 
@@ -899,8 +932,8 @@ import TabItem from '@theme/TabItem';
     :::note
 
     * AggregatedFunction - :warning: 不支持通过 `SELECT * FROM table ...` 查询
-    * Decimal - 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以保持一致性
-    * Enum - 既可以按字符串也可以按整数处理
+    * Decimal - 在 21.9 及更高版本中使用 `SET output_format_decimal_trailing_zeros=1` 以保持一致性
+    * Enum - 既可以作为字符串，也可以作为整数来处理
     * UInt64 - 在 client-v1 中映射为 `long` 类型
       :::
 
@@ -966,7 +999,7 @@ import TabItem from '@theme/TabItem';
     }
     ```
 
-    * [input 表函数文档](/sql-reference/table-functions/input/)，并在可能的情况下优先使用该函数
+    * [input 表函数文档](/sql-reference/table-functions/input/)，尽可能使用该函数
 
     ### 使用占位符插入数据 \{#insert-with-placeholders\}
 
@@ -1076,16 +1109,16 @@ import TabItem from '@theme/TabItem';
 
     ## SSL 属性 \{#ssl-properties\}
 
-    | 名称                   | 默认值    | 可选值          | 说明                                      |
-    | -------------------- | ------ | ------------ | --------------------------------------- |
-    | `ssl`                | false  | true, false  | 是否为此连接启用 SSL/TLS                        |
-    | `sslmode`            | strict | strict, none | 是否校验 SSL/TLS 证书                         |
-    | `sslrootcert`        |        |              | SSL/TLS 根证书文件路径                         |
-    | `sslcert`            |        |              | SSL/TLS 证书文件路径                          |
-    | `sslkey`             |        |              | PKCS#8 格式的 RSA 私钥                       |
-    | `key_store_type`     |        | JKS, PKCS12  | 指定 `KeyStore`/`TrustStore` 文件的类型或格式     |
-    | `trust_store`        |        |              | `TrustStore` 文件的路径                      |
-    | `key_store_password` |        |              | 用于访问 `KeyStore` 配置中指定的 `KeyStore` 文件的密码 |
+    | 名称                   | 默认值    | 可选值          | 说明                                     |
+    | -------------------- | ------ | ------------ | -------------------------------------- |
+    | `ssl`                | false  | true, false  | 是否为该连接启用 SSL/TLS 加密                    |
+    | `sslmode`            | strict | strict, none | 是否验证 SSL/TLS 证书                        |
+    | `sslrootcert`        |        |              | SSL/TLS 根证书的文件路径                       |
+    | `sslcert`            |        |              | SSL/TLS 证书的文件路径                        |
+    | `sslkey`             |        |              | PKCS#8 格式的 RSA 私钥                      |
+    | `key_store_type`     |        | JKS, PKCS12  | 指定 `KeyStore`/`TrustStore` 文件的类型或格式    |
+    | `trust_store`        |        |              | `TrustStore` 文件路径                      |
+    | `key_store_password` |        |              | 用于访问 `KeyStore` 配置中指定 `KeyStore` 文件的密码 |
 
     这些属性可确保您的 Java 应用程序通过加密连接与 ClickHouse 服务器进行通信,从而提高数据传输过程中的安全性。
 
@@ -1129,7 +1162,7 @@ import TabItem from '@theme/TabItem';
 
     ### Linux \{#v07-linux\}
 
-    在 Linux 上,仅配置等效设置可能无法解决问题。由于 Linux 处理套接字 keep-alive 设置的方式不同,需要执行额外的步骤。请按照以下步骤操作:
+    在 Linux 上，仅配置等效设置可能无法解决问题。由于 Linux 处理套接字 keep-alive 设置的方式不同，需要执行额外的步骤。请按照以下步骤操作：
 
     1. 在 `/etc/sysctl.conf` 或其他相关配置文件中调整以下 Linux 内核参数：
 
@@ -1140,9 +1173,9 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60（可以考虑将该值从默认的 300 秒下调）
+    * `net.ipv4.tcp_keepalive_time`: 60（可以考虑将该值从默认的 300 秒降低）
 
-    2. 修改内核参数后，运行以下命令以使更改生效：
+    2. 修改内核参数后，通过运行以下命令应用更改：
 
     ```shell
     sudo sysctl -p

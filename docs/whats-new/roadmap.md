@@ -11,10 +11,11 @@ keywords: ['roadmap', 'future features', 'development plans', 'upcoming releases
 
 The current roadmap is published for open discussion:
 
-- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
+- [2026](https://github.com/ClickHouse/ClickHouse/issues/93288)
 
 ## Previous roadmaps {#previous-roadmaps}
 
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)

@@ -431,7 +431,7 @@ y: 993
 
 ### スキーマの進化 \{#iceberg-writes-schema-evolution\}
 
-ClickHouse では、タプル・配列・マップ以外の単純な型を持つカラムの追加・削除・変更が可能です。
+ClickHouse では、タプル・配列・マップ以外の単純な型を持つカラムの追加・削除・変更・リネームが可能です。
 
 ### 例 \{#example-iceberg-writes-evolution\}
 
@@ -490,7 +490,29 @@ Row 1:
 ──────
 x: Ivanov
 y: 993
+
+ALTER TABLE iceberg_writes_example RENAME COLUMN y TO value;
+SHOW CREATE TABLE iceberg_writes_example;
+
+   ┌─statement─────────────────────────────────────────────────┐
+1. │ CREATE TABLE default.iceberg_writes_example              ↴│
+   │↳(                                                        ↴│
+   │↳    `x` Nullable(String),                                ↴│
+   │↳    `value` Nullable(Int64)                              ↴│
+   │↳)                                                        ↴│
+   │↳ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/') │
+   └───────────────────────────────────────────────────────────┘
+
+SELECT *
+FROM iceberg_writes_example
+FORMAT VERTICAL;
+
+Row 1:
+──────
+x: Ivanov
+value: 993
 ```
+
 
 ### コンパクション \{#iceberg-writes-compaction\}
 

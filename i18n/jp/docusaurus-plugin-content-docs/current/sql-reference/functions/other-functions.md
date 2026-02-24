@@ -946,7 +946,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-導入バージョン: v
+導入バージョン: v25.2
 
 現在のクエリ ID を返します。
 
@@ -1698,7 +1698,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-導入バージョン: v
+導入バージョン: v23.10
 
 指定した SQL クエリを整形し、場合によっては複数行にしたものを返します。パースエラーが発生した場合は例外をスローします。
 [example:multiline]
@@ -1735,7 +1735,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-導入バージョン: v
+導入バージョン: v23.11
 
 指定された SQL クエリを、必要に応じて複数行に整形した形式で返します。構文解析エラーが発生した場合は NULL を返します。
 [example:multiline]
@@ -1772,7 +1772,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-導入バージョン: v
+導入バージョン: v23.10
 
 formatQuery() と同様ですが、返される整形済み文字列には改行が含まれません。パースエラーが発生した場合は例外をスローします。
 [example:multiline]
@@ -1805,7 +1805,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-導入バージョン: v
+導入バージョン: v23.11
 
 formatQuery() と同様ですが、返される整形済み文字列には改行が含まれません。構文解析エラーが発生した場合は NULL を返します。
 [example:multiline]
@@ -2019,6 +2019,37 @@ SELECT
 │      12345 │ 205 minutes and 45 seconds                                      │
 │  432546534 │ 7209108 minutes and 54 seconds                                  │
 └────────────┴─────────────────────────────────────────────────────────────────┘
+```
+
+## fuzzQuery \{#fuzzQuery\}
+
+導入バージョン: v26.2
+
+指定されたクエリ文字列をパースし、AST に対してランダムな変異（ファジング）を適用します。ファジング後のクエリを文字列として返します。非決定的であり、呼び出すたびに異なる結果が返される可能性があります。`allow_fuzz_query_functions = 1` が必要です。
+
+**構文**
+
+```sql
+fuzzQuery(query)
+```
+
+**引数**
+
+* `query` — ファジングされる SQL クエリ。[String](../../sql-reference/data-types/string.md)
+
+**戻り値**
+
+ファジングされたクエリ文字列 [`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的な例**
+
+```sql title=Query
+SET allow_fuzz_query_functions = 1; SELECT fuzzQuery('SELECT 1');
+```
+
+```response title=Response
 ```
 
 ## generateRandomStructure \{#generateRandomStructure\}
@@ -2246,7 +2277,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-導入バージョン: v
+導入バージョン: v25.1
 
 指定したデータベースにおけるテーブル名の最大文字数を返します。
 
@@ -2526,7 +2557,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-導入バージョン: v
+導入バージョン: v23.3
 
 式または識別子と、サブカラム名を表す定数文字列を受け取ります。
 
@@ -3627,7 +3658,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 
 ## nested \{#nested\}
 
-導入バージョン: v
+導入バージョン: v23.2
 
 これは ClickHouse エンジン内部で使用される関数であり、ユーザーが直接使用することは想定されていません。
 
@@ -4722,7 +4753,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-導入バージョン: v
+導入バージョン: v23.8
 
 ClickHouse テーブルの構造を CapnProto 形式のスキーマに変換する関数
 
