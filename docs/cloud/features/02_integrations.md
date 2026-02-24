@@ -27,6 +27,23 @@ import Image from '@theme/IdealImage';
 
 ClickHouse Cloud allows you to connect the tools and services that you love.
 
+## Data Catalog Integrations {#data-catalog-integrations}
+
+ClickHouse Cloud can connect directly to your open table format data catalogs, giving you access to your data lake tables without duplicating data. By integrating, your catalog's tables will appear as queryable databases inside ClickHouse. Setup is available via SQL command (DataLakeEngine) and via the ClickHouse Cloud UI on the Data Sources UI.
+
+Using the UI allows:
+- Simplifies setup using fields consistent with Data Catalog vocabulary 
+- One interface into active data catalog integrations
+- Tests connection and credentials when saving connection
+
+| Name | Open Table Format Supported | Support |
+|------|-----------------------------|---------|
+| AWS Glue | Iceberg | Cloud & Core |
+| Microsoft OneLake | Iceberg | Cloud & Core |
+| Unity Catalog | Iceberg (UniForm-enabled and managed) | Cloud & Core |
+
+
+
 ## Managed integration pipelines for ClickHouse Cloud {#clickpipes}
 
 ClickPipes is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons.
