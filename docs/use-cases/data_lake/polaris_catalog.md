@@ -20,7 +20,7 @@ etc.). In this guide, we will walk you through the steps to query your data
 using ClickHouse and the [Apache Polaris Catalog](https://polaris.apache.org/releases/1.1.0/getting-started/using-polaris/#setup).
 
 :::note
-This integration uses the Iceberg table format and connects to Polaris via the REST catalog API.
+This integration uses the Iceberg table format and connects to Polaris via the REST catalog API. 
 :::
 
 ## Prerequisites {#prerequisites}
@@ -32,6 +32,7 @@ To connect to the Polaris catalog, you will need:
 - Catalog credentials (client ID and client secret)
 - The OAuth tokens URI for your Polaris instance
 - Storage endpoint for the object store where your Iceberg data lives (for example, S3)
+- ClickHouse version 26.1+ 
 
 ## Creating a connection between Polaris and ClickHouse {#connecting}
 
