@@ -17,6 +17,7 @@ doc_type: 'reference'
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
+
 ## 引数 \{#arguments\}
 
 | Argument              | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -46,6 +47,7 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 ```sql
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
+
 
 ## 返される値 \{#returned_value\}
 
@@ -103,7 +105,7 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
-置換および挿入:
+置換と挿入:
 
 ```sql
 INSERT INTO FUNCTION mysql('localhost:3306', 'test', 'test', 'bayonet', '123', 1) (int_id, float) VALUES (1, 3);
@@ -142,10 +144,11 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
+
 ## 関連項目 \{#related\}
 
 - [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
-- [MySQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)
+- [MySQL をディクショナリのソースとして使用する](/sql-reference/statements/create/dictionary/sources#mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

@@ -386,7 +386,7 @@ dictionaries에 대한 설정 파일의 경로입니다.
 
 함께 보기:
 
-* 「[Dictionaries](../../sql-reference/dictionaries/index.md)」.
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **예제**
 
@@ -1903,12 +1903,14 @@ PostgreSQL 프로토콜을 사용하여 클라이언트와 통신하는 포트�
 | `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` 쿼리에 권한이 필요한지, 그리고 모든 사용자가 실행할 수 있는지 여부를 설정합니다. true로 설정하면, 이 쿼리는 비 시스템 테이블과 마찬가지로 `GRANT SELECT ON system.<table>` 권한이 필요합니다. 예외: 일부 시스템 테이블(`tables`, `columns`, `databases` 및 `one`, `contributors` 같은 일부 상수 테이블)은 여전히 모든 사용자에게 접근 가능합니다. 또한 `SHOW USERS`와 같은 `SHOW` 권한이 부여된 경우, 해당하는 시스템 테이블(예: `system.users`)에 접근할 수 있습니다. | `true`  |
 | `settings_constraints_replace_previous`         | 특정 SETTING에 대해 설정 프로필(SETTINGS PROFILE) 내에서 정의된 제약 조건이, 해당 SETTING에 대해 다른 프로필에서 이전에 정의된 제약 조건의 동작을 취소할지 여부를 설정합니다. 여기에는 새 제약 조건에서 설정하지 않은 필드도 포함됩니다. 또한 `changeable_in_readonly` 제약 조건 유형을 활성화합니다.                                                                                                                                                             | `true`  |
 | `table_engines_require_grant`                   | 특정 테이블 엔진을 사용하는 테이블 생성에 권한이 필요한지 여부를 설정합니다.                                                                                                                                                                                                                                                                                                                    | `false` |
+| `throw_on_unmatched_row_policies`               | 테이블에 ROW POLICY가 존재하지만 현재 사용자에게 해당하는 ROW POLICY가 하나도 없는 경우, 해당 테이블을 읽을 때 예외를 발생시킬지 여부를 설정합니다.                                                                                                                                                                                                                                                                  | `false` |
 | `users_without_row_policies_can_read_rows`      | 허용적인 ROW POLICY가 없는 사용자도 `SELECT` 쿼리를 사용해 행을 읽을 수 있는지 여부를 설정합니다. 예를 들어, 사용자 A와 B가 있고 ROW POLICY가 A에만 정의되어 있는 경우, 이 설정이 true이면 사용자 B는 모든 행을 볼 수 있습니다. 이 설정이 false이면 사용자 B는 어떤 행도 볼 수 없습니다.                                                                                                                                                                      | `true`  |
 
 Example:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>

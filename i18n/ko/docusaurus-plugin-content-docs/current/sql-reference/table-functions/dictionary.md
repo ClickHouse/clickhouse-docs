@@ -7,13 +7,9 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-
-
 # dictionary 테이블 함수 \{#dictionary-table-function\}
 
-[dictionary](../../sql-reference/dictionaries/index.md) 데이터를 ClickHouse 테이블로 표시합니다. [Dictionary](../../engines/table-engines/special/dictionary.md) 엔진과 같은 방식으로 동작합니다.
-
-
+[dictionary](../statements/create/dictionary/index.md) 데이터를 ClickHouse 테이블로 표시합니다. [Dictionary](../../engines/table-engines/special/dictionary.md) 엔진과 같은 방식으로 동작합니다.
 
 ## 구문 \{#syntax\}
 
@@ -26,13 +22,9 @@ dictionary('dict')
 
 - `dict` — 딕셔너리의 이름입니다. [String](../../sql-reference/data-types/string.md).
 
-
-
 ## 반환값 \{#returned_value\}
 
 ClickHouse 테이블이 반환됩니다.
-
-
 
 ## 예제 \{#examples\}
 

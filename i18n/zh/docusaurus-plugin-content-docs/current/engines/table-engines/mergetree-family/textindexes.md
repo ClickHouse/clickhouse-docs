@@ -7,12 +7,7 @@ title: '使用文本索引的全文搜索'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 使用文本索引进行全文搜索 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 文本索引（也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)）可以对文本数据进行快速全文搜索。
 文本索引存储从词元到包含该词元的行号的映射关系。
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-返回值
-
-```text
-25.4
-```
-
-或者如果设置为任何小于 26.2 的值，则需要再配置三个额外的设置才能使用文本索引：
+如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置三个设置项才能使用文本索引：
 
 ```sql
 SET enable_full_text_index = true;
@@ -125,7 +114,7 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
-或者，可以为现有表添加一个文本索引：
+或者，要为现有表添加一个文本索引：
 
 ```sql
 ALTER TABLE table
@@ -147,7 +136,7 @@ ALTER TABLE table
 
 ```
 
-如果你向已有表添加一个索引，我们建议为该表中已有的分区片段物化该索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会退回到较慢的穷举扫描）。
+如果你向已有表添加一个索引，我们建议为表中现有的分区片段物化此索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会回退到较慢的穷举扫描方式）。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;

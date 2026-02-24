@@ -7,12 +7,7 @@ title: 'テキストインデックスによる全文検索'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # テキストインデックスによる全文検索 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 テキストインデックス（[inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます）は、テキストデータに対する高速な全文検索を可能にします。
 テキストインデックスは、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
@@ -43,7 +38,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: i, have, two, dogs, and, a, cat
 ```
 
-また、「I」「the」「and」など、ほぼすべての行に含まれるフィラーワードも削除します。
+また、「I」「the」「and」などの、ほぼすべての行に出現する語も削除します。
 
 ```result
 1: cat, likes, mice
@@ -51,7 +46,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: have, two, dogs, cat
 ```
 
-テキスト索引には（概念的には）次のような情報が含まれます。
+（概念的には）テキスト索引には次のような情報が含まれます。
 
 ```result
 afraid : [2]
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-返り値
-
-```text
-25.4
-```
-
-または値を 26.2 より小さくする場合は、テキスト索引を使用するために、さらに 3 つの設定を行う必要があります。
+`26.2` 未満の値（例: `25.4`）が返ってきた場合は、テキスト索引を使用するために、追加で 3 つの設定を行う必要があります。
 
 ```sql
 SET enable_full_text_index = true;
@@ -147,7 +136,7 @@ ALTER TABLE table
 
 ```
 
-既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します（そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックします）。
+既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します（そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックしてしまいます）。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;

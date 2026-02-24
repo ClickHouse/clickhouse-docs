@@ -606,6 +606,16 @@ YTsaurus와 통합하기 위한 실험적 테이블 엔진입니다.
 
 YTsaurus 통합을 위한 실험적 테이블 엔진입니다.
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "fuzzQuery 함수를 활성화할 수 있는 새로운 설정입니다."}]}]}/>
+
+쿼리 문자열에 무작위 AST 뮤테이션을 적용하는 `fuzzQuery` 함수를 사용할 수 있도록 허용합니다.
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -632,9 +642,11 @@ Hyperscan 라이브러리를 사용하는 함수를 허용합니다. 잠재적�
 
 <BetaBadge/>
 
+**별칭**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "「INSERT INTO iceberg」 기능이 Beta 단계로 전환되었습니다."}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "새 설정입니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "「INSERT INTO iceberg」 기능이 Beta 단계로 전환되었습니다."}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "새 설정입니다."}]}]}/>
 
 Iceberg 테이블에 대한 `insert` 쿼리 실행을 허용합니다.
 
@@ -1071,9 +1083,9 @@ Join 모드에서 패치 파트를 적용할 때 사용하는 임시 캐시의 �
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final을 기본값으로 활성화합니다. 25.8에서는 #87303 이전에 이미 이렇게 동작했습니다"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "row policy와 PREWHERE를 *MergeTree 테이블에 대한 FINAL 처리 이후에 적용할지 여부를 제어하는 새로운 설정입니다"}]}]}/>
 
 이 설정을 활성화하면 *MergeTree 테이블에 대해 FINAL 처리가 완료된 후에 ROW POLICY와 PREWHERE가 적용됩니다. (특히 ReplacingMergeTree에 해당합니다)
 비활성화하면 ROW POLICY는 FINAL 이전에 적용되며, 이 경우 ReplacingMergeTree 또는 유사한 엔진에서 중복 제거에 사용되어야 하는 행을
@@ -1121,6 +1133,32 @@ Arrow Flight 요청에 사용할 디스크립터(descriptor) 유형입니다. 'p
 
 - 'path' — FlightDescriptor::Path를 사용합니다(기본값, 대부분의 Arrow Flight 서버에서 동작).
 - 'command' — SELECT 쿼리와 함께 FlightDescriptor::Command를 사용합니다(Dremio에서 필요).
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "읽기 전용 쿼리만이 아니라 모든 쿼리 유형에 대해 퍼징을 허용하는 새로운 설정입니다."}]}]}/>
+
+false(기본값)인 경우, 서버 측 AST 퍼저(`ast_fuzzer_runs`로 제어됨)는 읽기 전용 쿼리(SELECT, EXPLAIN, SHOW, DESCRIBE, EXISTS)만 퍼징합니다. true인 경우, DDL 및 INSERT를 포함한 모든 쿼리 유형을 퍼징합니다.
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable server-side AST fuzzer."}]}]}/>
+
+각 일반 쿼리 이후에 결과를 폐기하는 무작위화된 쿼리를 실행하는 서버 측 AST fuzzer를 활성화합니다.
+
+- 0: 비활성화(기본값)입니다.
+- 0과 1 사이의 값(양끝 불포함): 단일 퍼징된 쿼리를 실행할 확률입니다.
+- 1 이상인 값: 일반 쿼리 하나당 실행할 퍼징된 쿼리 개수입니다.
+
+fuzzer는 모든 세션의 모든 쿼리에서 AST 조각을 축적하여 시간이 지남에 따라 점점 더 흥미로운 뮤테이션을 생성합니다. 실패한 퍼징된 쿼리는 조용히 폐기되며, 결과는 클라이언트에 반환되지 않습니다.
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -3348,8 +3386,6 @@ blob storage 연산 정보를 system.blob_storage_log 테이블에 기록합니�
 
 ## enable_full_text_index \{#enable_full_text_index\}
 
-<BetaBadge/>
-
 **별칭**: `allow_experimental_full_text_index`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -5338,6 +5374,30 @@ INTERSECT 쿼리에서 기본 모드를 설정합니다. 가능한 값은 빈 �
 프로파일은 SYSTEM JEMALLOC FLUSH PROFILE을 사용하여 플러시할 수 있으며, 메모리 할당 분석에 사용할 수 있습니다.
 샘플은 설정 jemalloc_collect_global_profile_samples_in_trace_log 또는 쿼리 설정 jemalloc_collect_profile_samples_in_trace_log을 사용하여 system.trace_log에 저장할 수도 있습니다.
 자세한 내용은 [Allocation Profiling](/operations/allocation-profiling)을 참조하십시오.
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "jemalloc 힙 프로파일의 collapsed 형식에서 바이트 대신 할당 횟수로 집계하는 새로운 설정"}]}]}/>
+
+jemalloc 힙 프로파일에서 'collapsed' 출력 형식을 사용할 때 바이트 수 대신 할당 횟수로 집계합니다. false(기본값)인 경우 각 스택은 현재 살아 있는 바이트 수를 기준으로 가중되고, true인 경우 현재 살아 있는 할당 횟수를 기준으로 가중됩니다.
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "system.jemalloc_profile_text 테이블의 출력 형식을 제어하기 위한 새로운 설정입니다. 가능한 값: 'raw', 'symbolized', 'collapsed'"}]}]}/>
+
+system.jemalloc_profile_text 테이블에서 jemalloc 힙 프로파일의 출력 형식을 지정하는 설정입니다. 'raw'(원시 프로파일), 'symbolized'(심볼이 포함된 jeprof 형식), 'collapsed'(FlameGraph 형식) 중 하나로 설정할 수 있습니다.
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "jemalloc heap 프로파일을 심볼화할 때 inline frame 포함 여부를 제어하는 새로운 설정입니다. 활성화하면 inline frame이 포함되어 심볼화가 느려질 수 있고, 비활성화하면 더 빠른 출력을 위해 inline frame이 건너뛰어집니다"}]}]}/>
+
+jemalloc heap 프로파일을 심볼화할 때 inline frame을 포함할지 여부입니다. 활성화하면 inline frame이 포함되어 심볼화 과정이 크게 느려질 수 있고, 비활성화하면 inline frame이 건너뛰어집니다. "symbolized" 및 "collapsed" 출력 형식에만 영향을 줍니다.
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -8193,6 +8253,14 @@ DISTINCT에 사용된 일부 컬럼이 정렬 순서의 접두사(앞부분)를 
 :::note
 현재 이 설정은 `optimize_skip_unused_shards`가 활성화되어 있어야 합니다. 이는 이 설정이 언젠가 기본적으로 활성화될 수 있으며, 그 경우 데이터가 Distributed 테이블(즉, 데이터가 sharding_key에 따라 분산됨)을 통해 입력된 경우에만 올바르게 동작하기 때문입니다.
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "새 설정입니다."}]}]}/>
+
+이 설정이 활성화되면 `OPTIMIZE ... DRY RUN`은 `checkDataPart`를 사용하여 병합 결과 파트를 검증합니다. 검증에 실패하면 예외가 발생합니다.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -11109,14 +11177,6 @@ TCP에서 keepalive probe를 전송하기 시작하기 전에 연결이 유휴 �
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0.2"},{"label": "New setting"}]}]}/>
 
 역색인 텍스트 인덱스에서 생성된 힌트를 사용할 수 있는 필터의 최대 선택도입니다.
-
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "새로운 설정입니다."}]}]}/>
-
-테스트를 위해 텍스트 인덱스에서 블룸 필터 사용 여부를 설정합니다.
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 

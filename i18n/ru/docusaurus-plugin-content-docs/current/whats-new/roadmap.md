@@ -7,18 +7,15 @@ doc_type: 'landing-page'
 keywords: ['дорожная карта', 'будущие возможности', 'планы разработки', 'предстоящие релизы', 'направление развития продукта']
 ---
 
-
-
 ## Текущая дорожная карта \{#current-roadmap\}
 
 Текущая дорожная карта доступна для открытого обсуждения:
 
-- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
-
-
+- [2026](https://github.com/ClickHouse/ClickHouse/issues/93288)
 
 ## Предыдущие дорожные карты \{#previous-roadmaps\}
 
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)

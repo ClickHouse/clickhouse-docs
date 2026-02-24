@@ -954,6 +954,39 @@ SELECT modulo(5, 2)
 1
 ```
 
+## moduloLegacy \{#moduloLegacy\}
+
+引入版本：v1.1
+
+计算除法的余数。这是使用 C++ `%` 运算符的遗留取模实现，对于负参数可能返回负结果。此函数用于与旧的表分区逻辑保持向后兼容。对于常规行为，请使用 `modulo` 或 `positiveModulo`。
+
+**语法**
+
+```sql
+moduloLegacy(a, b)
+```
+
+**参数**
+
+* `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+* `b` — 除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+
+**返回值**
+
+返回除法余数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT moduloLegacy(10, 3)
+```
+
+```response title=Response
+1
+```
+
 ## moduloOrNull \{#moduloOrNull\}
 
 引入版本：v25.5

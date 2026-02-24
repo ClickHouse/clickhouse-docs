@@ -73,10 +73,10 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 ```
 
 :::note
-ClickHouse Cloud에서는 `PERMANENTLY` 절을 사용해야 합니다(예: `DETACH TABLE &lt;table&gt; PERMANENTLY`). 이 절을 사용하지 않으면 클러스터가 재시작될 때(예: 업그레이드 중) 테이블이 다시 연결됩니다.
+ClickHouse Cloud에서는 `PERMANENTLY` 절을 사용해야 합니다(예: `DETACH TABLE <table> PERMANENTLY`). 이 절을 사용하지 않으면 클러스터가 재시작될 때(예: 업그레이드 중) 테이블이 다시 연결됩니다.
 :::
 
 **함께 보기**
 
 * [Materialized View](/sql-reference/statements/create/view#materialized-view)
-* [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [Dictionaries](./create/dictionary/index.md)

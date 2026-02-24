@@ -7,18 +7,15 @@ doc_type: 'landing-page'
 keywords: ['로드맵', '향후 기능', '개발 계획', '예정된 릴리스', '제품 방향']
 ---
 
-
-
 ## 현재 로드맵 \{#current-roadmap\}
 
 현재 로드맵은 공개 논의를 위해 게시되어 있습니다:
 
-- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
-
-
+- [2026](https://github.com/ClickHouse/ClickHouse/issues/93288)
 
 ## 이전 로드맵 \{#previous-roadmaps\}
 
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)

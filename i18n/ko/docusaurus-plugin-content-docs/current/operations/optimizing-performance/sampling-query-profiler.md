@@ -52,7 +52,7 @@ SETTINGS allow_introspection_functions = 1
 
 * `addressToLine`, `addressToLineWithInlines`, `addressToSymbol`, `demangle` [introspection 함수](../../sql-reference/functions/introspection.md)를 사용하여 ClickHouse 코드에서 FUNCTION 이름과 위치를 확인합니다. 특정 쿼리에 대한 프로파일을 얻으려면 `trace_log` 테이블의 데이터를 집계해야 합니다. 개별 FUNCTION별로 또는 전체 스택 트레이스 단위로 데이터를 집계할 수 있습니다.
 
-`trace_log` 정보를 시각화해야 한다면 [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph)와 [speedscope](https://github.com/laplab/clickhouse-speedscope)를 사용해 보십시오.
+`trace_log` 정보를 시각화해야 한다면 [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph)와 [speedscope](https://www.speedscope.app)를 사용해 보십시오.
 
 ## 예시 \{#example\}
 

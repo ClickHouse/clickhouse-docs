@@ -74,6 +74,269 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+## globalIn \{#globalIn\}
+
+도입된 버전: v1.1
+
+`in`과 동일하지만, 분산 쿼리에서 글로벌 Set 분산 방식을 사용합니다. 이 Set은 모든 원격 서버로 전송됩니다.
+
+**구문**
+
+```sql
+globalIn(x, set)
+```
+
+**인수(Arguments)**
+
+* `x` — 검사할 값입니다.
+* `set` — 값들의 Set입니다.
+
+**반환 값(Returned value)**
+
+`x`가 Set에 포함되어 있으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시(Examples)**
+
+**기본 사용법(Basic usage)**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalInIgnoreSet \{#globalInIgnoreSet\}
+
+도입: v1.1
+
+`in`과 동일하지만, 분산 쿼리에서 전역 Set 분산(global set distribution)을 사용합니다. 이때 Set은 모든 원격 서버로 전송됩니다.
+이 함수는 Set을 생성하지 않고 타입 분석에만 사용하는 IgnoreSet의 변형입니다.
+
+**구문**
+
+```sql
+globalIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값의 집합입니다.
+
+**반환 값**
+
+x가 집합에 포함되면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotIn \{#globalNotIn\}
+
+도입 버전: v1.1
+
+`notIn`과 같지만, 분산 쿼리에서 전역 Set 분산 방식을 사용합니다. 이 Set은 모든 원격 서버로 전송됩니다.
+
+**구문**
+
+```sql
+globalNotIn(x, set)
+```
+
+**인수**
+
+* `x` — 검사할 값입니다. - `set` — 값들의 Set입니다.
+
+**반환 값**
+
+`x`가 Set에 없으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예제**
+
+**기본 사용 예**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
+
+도입 버전: v1.1
+
+`notIn`과 동일하지만, 분산 쿼리에서 글로벌 Set 분산 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
+이는 Set을 생성하지 않고 데이터 타입 분석을 위해 사용되는 IgnoreSet의 변형입니다.
+
+**구문**
+
+```sql
+globalNotIn(x, set)
+```
+
+**인자**
+
+* `x` — 확인할 값입니다. - `set` — 값들의 집합(Set)입니다.
+
+**반환 값**
+
+x가 Set에 속하지 않으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotNullIn \{#globalNotNullIn\}
+
+도입 버전: v1.1
+
+`notNullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분산 방식을 사용합니다. Set은 모든 원격 서버에 전송됩니다.
+
+**구문**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값들의 Set입니다.
+
+**반환 값**
+
+x가 Set에 포함되어 있지 않으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
+
+도입 버전: v1.1
+
+`notNullIn`과 동일하지만, 분산 쿼리에서 global set 분산 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
+이 함수는 Set을 실제로 생성하지 않고 형식 분석(타입 분석)에 사용하는 IgnoreSet 변형입니다.
+
+**구문**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**인수**
+
+* `x` — 검사할 값입니다. - `set` — 값들의 집합입니다.
+
+**반환 값**
+
+x가 집합에 포함되지 않으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNullIn \{#globalNullIn\}
+
+도입된 버전: v1.1
+
+`nullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분배 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
+
+**구문**
+
+```sql
+globalNullIn(x, set)
+```
+
+**인수**
+
+* `x` — 검사할 값.
+* `set` — 값으로 구성된 Set(집합).
+
+**반환 값**
+
+`x`가 Set에 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
+
+도입 버전: v1.1
+
+`nullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분산을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
+이 IgnoreSet 변형은 Set을 생성하지 않고 타입 분석에 사용됩니다.
+
+**구문**
+
+```sql
+globalNullIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다.
+* `set` — 값들의 집합입니다.
+
+**반환값**
+
+x가 집합에 포함되어 있으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예제**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
 ## greater \{#greater\}
 
 도입된 버전: v1.1
@@ -142,6 +405,71 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 ┌─greaterOrEquals(2, 1)─┬─greaterOrEquals(2, 2)─┬─greaterOrEquals(1, 2)─┐
 │                     1 │                     1 │                     0 │
 └───────────────────────┴───────────────────────┴───────────────────────┘
+```
+
+## in \{#in\}
+
+도입된 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자인 Set에 포함되어 있는지 확인합니다. 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자에 있는 NULL 값은 건너뛰며(Set에 포함되지 않은 것으로 간주합니다).
+
+**구문**
+
+```sql
+in(x, set)
+```
+
+**Arguments**
+
+* `x` — 검사할 값. - `set` — 값의 Set.
+
+**Returned value**
+
+`x`가 Set에 포함되면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Basic usage**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## inIgnoreSet \{#inIgnoreSet\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자인 Set에 포함되어 있는지 확인합니다. 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자에서 NULL 값은 건너뛰며(해당 Set에 포함되지 않은 것으로 간주함) 처리합니다.
+이 함수는 Set을 생성하지 않고 형식 분석에 사용하는 IgnoreSet 변형입니다.
+
+**구문**
+
+```sql
+in(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값들의 집합입니다.
+
+**반환 값**
+
+x가 집합에 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
 ```
 
 ## isDistinctFrom \{#isDistinctFrom\}
@@ -338,6 +666,201 @@ SELECT 1 != 2, 1 != 1;
 ┌─notEquals(1, 2)─┬─notEquals(1, 1)─┐
 │               1 │               0 │
 └─────────────────┴─────────────────┘
+```
+
+## notIn \{#notIn\}
+
+도입된 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자 Set의 요소가 아닌지 확인합니다. Set에 포함되지 않으면 1을 반환하고, 포함되어 있으면 0을 반환합니다. 왼쪽 피연산자의 NULL 값은 무시됩니다.
+
+**구문**
+
+```sql
+notIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값들의 Set입니다.
+
+**반환 값**
+
+`x`가 Set에 포함되지 않으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notInIgnoreSet \{#notInIgnoreSet\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자인 Set의 요소가 아닌지 확인합니다. Set에 포함되어 있지 않으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자의 NULL 값은 무시됩니다.
+Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet 변형입니다.
+
+**문법**
+
+```sql
+notIn(x, set)
+```
+
+**Arguments**
+
+* `x` — 검사할 값입니다. - `set` — 값들의 Set입니다.
+
+**Returned value**
+
+x가 set에 포함되지 않으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**기본 사용**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notNullIn \{#notNullIn\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되지 않는지 확인합니다. `notIn`과는 달리 NULL 값이 건너뛰어지지 않습니다. NULL은 Set의 요소들과 비교되며, NULL = NULL 비교는 true로 평가됩니다.
+
+**구문**
+
+```sql
+notNullIn(x, set)
+```
+
+**인수**
+
+* `x` — 검사할 값입니다. - `set` — 값들의 Set입니다.
+
+**반환 값**
+
+x가 set에 포함되지 않으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## notNullInIgnoreSet \{#notNullInIgnoreSet\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자 Set의 요소가 아닌지 확인합니다. `notIn`과는 달리 NULL 값도 건너뛰지 않습니다. NULL은 Set의 요소와 비교되며, NULL = NULL은 true로 평가됩니다.
+이는 Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet 변형입니다.
+
+**Syntax**
+
+```sql
+notNullIn(x, set)
+```
+
+**인자**
+
+* `x` — 확인할 값. - `set` — 값들의 집합(Set).
+
+**반환 값**
+
+x가 Set에 속하지 않으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## nullIn \{#nullIn\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되어 있는지 확인합니다. `in`과 달리 NULL 값이 무시되지 않습니다. NULL은 Set의 요소와 비교되며, `NULL = NULL` 표현식은 true로 평가됩니다.
+
+**문법**
+
+```sql
+nullIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값들로 구성된 Set입니다.
+
+**반환 값**
+
+x가 Set에 포함되어 있으면 1, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## nullInIgnoreSet \{#nullInIgnoreSet\}
+
+도입 버전: v1.1
+
+왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되는지 확인합니다. `in`과 달리 NULL 값은 건너뛰지 않습니다. NULL은 Set의 요소와 비교되며, NULL = NULL 비교 결과는 true가 됩니다.
+이는 Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet의 변형입니다.
+
+**구문**
+
+```sql
+nullIn(x, set)
+```
+
+**인수**
+
+* `x` — 확인할 값입니다. - `set` — 값의 집합입니다.
+
+**반환 값**
+
+`x`가 `set`에 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
 ```
 
 {/*AUTOGENERATED_END*/ }
