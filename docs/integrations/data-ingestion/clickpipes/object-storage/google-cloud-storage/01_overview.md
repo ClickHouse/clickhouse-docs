@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
+import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
@@ -32,13 +33,74 @@ By default, the GCS ClickPipe will load all files matched by a pattern from the 
 
 ### Continuous ingestion {#continuous-ingestion}
 
-When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the GCS ClickPipe relies on the implicit [lexicographical order](#continuous-ingestion-lexicographical-order) of files.
+When continuous ingestion is enabled, ClickPipes continuously ingests data from the specified path. To determine ingestion order, the GCS ClickPipe relies on the implicit [lexicographical order](#continuous-ingestion-lexicographical-order) of files, by default. It can also be configured to ingest files in [any order](#continuous-ingestion-any-order) using a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) subscription [configured to provide notifications for the bucket](https://docs.cloud.google.com/storage/docs/reporting-changes#command-line).
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
 The GCS ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
 In this mode, the GCS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
+
+#### Any order (Pub/Sub) {#continuous-ingestion-any-order}
+
+:::note
+Unordered mode is **not** supported for public buckets. It requires **Service Account** authentication and a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) subscription connected to the bucket.
+:::
+
+It's possible to configure a GCS ClickPipe to ingest files that don't have an implicit order by setting up a [Google Cloud Pub/Sub](https://docs.cloud.google.com/storage/docs/pubsub-notifications) subscription that receives notifications from the bucket. This allows ClickPipes to listen for object created events and ingest any new files regardless of the file naming convention.
+
+In this mode, the GCS ClickPipe does an initial load of **all files** in the selected path, and then listens for object notifications via the Pub/Sub subscription that match the path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**. It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the selected path.
+
+##### Setting up Pub/Sub notifications {#pubsub-setup}
+
+To use unordered mode, you need to configure automatic notifications from your GCS bucket to a Pub/Sub topic. First, create a Pub/Sub topic and subscription, then set up notifications for the bucket (For more details, see [Google Cloud's documentation](https://docs.cloud.google.com/storage/docs/pubsub-notifications)):
+
+To create the notification:
+```bash
+# Create a Pub/Sub notification for new objects in the bucket
+gcloud storage buckets notifications create "gs://${YOUR_BUCKET_NAME}" \
+    --topic="projects/${YOUR_PROJECT_ID}/topics/${YOUR_TOPIC_NAME}" \
+    --event-types="OBJECT_FINALIZE" \
+    --payload-format="json"
+```
+
+##### Granting permissions to the service account {#pubsub-permissions}
+
+Unordered mode requires **Service Account** authentication. The service account used by ClickPipes must have the following permissions:
+
+1. **Read objects from the GCS bucket** — to fetch the data files.
+2. **Read messages from the Pub/Sub subscription** — to receive object notifications.
+3. **Get the Pub/Sub subscription** — to verify the subscription exists and retrieve its metadata.
+
+Grant these permissions using the following `gcloud` commands:
+
+```bash
+# 1. Grant read access to the GCS bucket
+gcloud storage buckets add-iam-policy-binding "gs://${YOUR_BUCKET_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+# 2. Grant read access to the Pub/Sub subscription
+gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/pubsub.subscriber"
+
+# 3. Grant permission to get the Pub/Sub subscription metadata
+gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/pubsub.viewer"
+```
+
+##### Configuring the ClickPipe {#pubsub-clickpipe-config}
+
+When creating a GCS ClickPipe with unordered mode, select **Service Account** as the authentication method, select continuous ingest mode, select any order, and provide the Pub/Sub subscription path in the following format:
+
+```text
+projects/${YOUR_PROJECT_ID}/subscriptions/${YOUR_SUBSCRIPTION_NAME}
+```
+
+<Image img={gcs_subscription_input} alt="Unordered mode for GCS" size="lg" border/>
+<br/>
 
 ### File pattern matching {#file-pattern-matching}
 
@@ -88,11 +150,18 @@ The GCS ClickPipe supports public and private buckets. [Requester Pays](https://
 
 The [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer) role must be granted at the bucket level. This role contains the [`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) and [`storage.objects.get](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM permissions, which allow ClickPipes to list and fetch objects in the specified bucket.
 
+#### Pub/Sub subscription {#pubsub-subscription}
+
+When using [unordered mode](#continuous-ingestion-any-order), the service account must have the following roles on the Pub/Sub subscription:
+
+* [`roles/pubsub.subscriber`](https://cloud.google.com/pubsub/docs/access-control#roles) — to receive and acknowledge messages.
+* [`roles/pubsub.viewer`](https://cloud.google.com/pubsub/docs/access-control#roles) — to get subscription metadata.
+
 ### Authentication {#authentication}
 
-:::note
-Service account authentication isn't currently supported.
-:::
+#### Service Account {#service-account}
+
+Service Account authentication is required when using [unordered mode](#continuous-ingestion-any-order) with Pub/Sub. Select **Service Account** as the authentication method and upload the service account key JSON file.
 
 #### HMAC credentials {#hmac-credentials}
 
