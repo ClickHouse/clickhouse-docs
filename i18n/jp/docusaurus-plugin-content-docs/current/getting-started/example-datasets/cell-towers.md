@@ -168,7 +168,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 上記のクエリおよび [MCC リスト](https://en.wikipedia.org/wiki/Mobile_country_code) に基づくと、基地局数が最も多い国は米国、ドイツ、ロシアです。
 
-これらの値をデコードするために、ClickHouse で [Dictionary](../../sql-reference/dictionaries/index.md) を作成することを検討してもよいでしょう。
+これらの値をデコードするために、ClickHouse で [Dictionary](../../sql-reference/statements/create/dictionary/index.md) を作成することを検討してもよいでしょう。
+
 
 ## ユースケース：地理データの活用 \{#use-case\}
 

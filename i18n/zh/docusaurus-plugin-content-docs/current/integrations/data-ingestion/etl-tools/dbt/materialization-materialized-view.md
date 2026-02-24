@@ -3,8 +3,8 @@ sidebar_label: '物化: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
 description: '关于 materialized_view 物化方式的专用文档'
-keywords: ['ClickHouse', 'dbt', 'materialized view', '可刷新', '外部目标表', '补齐']
-title: 'Materialized Views'
+keywords: ['ClickHouse', 'dbt', 'materialized_view', '可刷新', 'Materialized Views', '补齐']
+title: '物化: materialized_view'
 doc_type: 'guide'
 ---
 
@@ -292,13 +292,62 @@ GROUP BY event_date, event_type
 1. 更新 `materialization_target_table()` 调用
 2. 运行 `dbt run --full-refresh -s your_mv_model`
 
-### 隐式目标与显式目标方法的行为对比\{#explicit-target-behavior\}
+### 常见问题排查 \{#explicit-target-troubleshooting\}
 
-| Operation | 隐式目标 | 显式目标 |
-| --- | --- | --- |
-| First dbt run | 创建所有资源 | 创建所有资源 |
-| Next dbt run |  **无法单独管理资源，所有操作将一并执行：**<br /><br />**target table**：<br /> 通过 `on_schema_change` 设置来管理变更。默认为 `ignore`，因此新列不会被处理。<br /><br />**MVs**：全部通过 `alter table modify query` 操作进行更新 | **可以按资源单独应用变更：<br /><br />target table**：<br />自动检测它们是否为由 dbt 定义的 MVs 对应的 target tables。若是，则列结构的演进默认由 `mv_on_schema_change` 设置（值为 `fail`）来管理，因此如果列发生变化将会失败。我们将此默认值设置为一层保护机制。<br /><br />**MVs**：其 SQL 会通过 `alter table modify query` 操作进行更新。 |
-| dbt run --full-refresh | **无法单独管理资源，所有操作将一并执行：<br /><br />target table**：<br />target table 会被重新创建为空表。可通过 `catchup` 配置，使用所有 MVs 的 SQL 一起进行回填。`catchup` 默认为 `True`。<br /><br />**MVs**：全部被重新创建。 | **变更将按资源单独应用：<br /><br />target table：**将按常规方式重新创建。<br /><br />**MVs**：先 drop 再重新创建。`catchup` 可用于初始回填。`catchup` 默认为 `True`。<br /><br />**注意：在此过程中，在 MVs 重新创建之前，target table 将为空或仅部分加载。为避免这种情况，请查看下一节关于如何迭代 target table 的内容。**|
+#### 在执行 `run` 期间或之后目标表为空 \{#target-table-empty\}
+
+出现这种情况可能有以下几种原因：
+
+- materialized view 可能被配置为 `catchup=False`，或者目标表被配置为 `repopulate_from_mvs_on_full_refresh=False`，因此在创建 materialized view 或重建目标表时不会执行回填。这是预期行为，因此如果希望使用 materialized view 的 SQL 重新插入数据，请确保在 materialized view 中设置 `catchup=True`（默认值），或者在目标表中设置 `repopulate_from_mvs_on_full_refresh=True`。注意不要同时启用这两个设置，以避免产生重复数据。更多详情请查看[配置部分](#explicit-target-configuration)。
+- 当执行 `dbt run --full-refresh` 时，如果 materialized view 使用默认的 `catchup=True`，目标表会被重建，这些 materialized view 会依次重新插入数据。为避免这种情况，请查看[对显式目标执行 Full refresh](#explicit-target-full-refresh)。
+
+#### 在目标表中执行 `dbt run --full-refresh` 且设置 `repopulate_from_mvs_on_full_refresh=True` 时，会使用旧版本 materialized view 的逻辑，而不是项目中当前的 SQL 定义 \{#full-refresh-with-repopulate-from-mvs-on-full-refresh\}
+
+`repopulate_from_mvs_on_full_refresh=True` 会使用 ClickHouse 中已存在的 materialized view SQL 定义。要确保使用新的 materialized view 定义，请先对每个 materialized view 执行一次 `dbt run`，然后再对目标表执行 `dbt run --full-refresh`。
+
+#### 在执行一次 run 之后出现重复数据 \{#duplicate-data\}
+
+可能原因：
+
+- materialized view 上设置了 `catchup=True`，并且目标表上设置了 `repopulate_from_mvs_on_full_refresh=True`：根据你希望执行的操作，仅保留其中一个。有关更多细节，请查看[配置章节](#explicit-target-configuration)。
+- 目标表未使用 `WHERE 0` 定义：目标表应在创建时为空，但如果未包含 `WHERE 0`，内部查询可能会插入数据。请确保包含该子句。
+
+#### 在执行 `dbt run --full-refresh` 后进行活跃摄取时的数据丢失 \{#data-loss-active-ingestion\}
+
+在执行 `dbt run --full-refresh` 之后，源表中的部分行在目标表中缺失。
+ClickHouse materialized view 的作用类似于 insert 触发器——它们只会在自身存在期间捕获数据。在完整刷新过程中，会有一个短暂的时间窗口，MV 会被删除并重新创建（“盲窗口”）。在此窗口期间插入到源表中的任何行都不会被捕获。有关更多详情，请参见[活跃摄取期间的行为](#behavior-during-active-ingestion)一节。
+
+### 调试方法 \{#debugging-techniques\}
+
+#### 检查 ClickHouse 中当前 MV 的写入目标 \{#check-mv-target\}
+
+查询 `system.tables`，以查看 materialized view 当前写入到哪里：
+
+```sql
+SELECT
+    name as mv_name,
+    replaceRegexpOne(
+        create_table_query,
+        '.*TO\\s+`?([^`\\s(]+)`?\\.`?([^`\\s(]+)`?.*',
+        '\\1.\\2'
+    ) AS target_table
+FROM system.tables
+WHERE database = 'your_schema'
+  AND engine = 'MaterializedView'
+```
+
+
+#### 检查 dbt 是否将某个表识别为 materialized view 目标 \{#check-dbt-recognition\}
+
+在执行 dbt run 时，留意如下日志条目：
+
+>Table `<table_name>` is used as a target by a dbt-managed materialized view. Defaulting mv_on_schema_change to "fail" to prevent data loss.
+
+如果出现这条消息，说明 dbt 已检测到该表被至少一个由 dbt 管理的 materialized view 作为目标使用。如果你预期会看到这条消息但实际没有，请确认以下事项：
+
+- materialized view 模型是否正确地定义了 `{{ materialization_target_table(ref('your_target')) }}` 
+- materialized view 模型在其配置中是否包含 `materialized='materialized_view'`
+- materialized view 和其目标表是否都已经至少运行过一次
 
 ### 从隐式目标迁移到显式目标 \{#migration-implicit-to-explicit\}
 
@@ -367,23 +416,34 @@ select a, b, c from {{ source('raw', 'table_2') }}
 **3. 按需根据[显式目标](#explicit-target)部分中的说明进行迭代。**
 
 
-## 活跃摄取期间的行为 \{#behavior-during-active-ingestion\}
+## 隐式目标与显式目标方法的行为对比\{#behavior-comparison\}
 
-由于 ClickHouse 的 materialized view 充当**插入触发器（insert trigger）**，它们只会在自身存在期间捕获数据。如果在某个时间窗口内（例如在执行 `--full-refresh` 期间）一个 materialized view 被删除并重新创建，那么在该窗口中插入到源表的任何行都**不会**被该 MV 处理。这种情况被称为 MV 处于“盲区”（blind）状态。
+### 它们的一般行为方式 \{#general-behavior\}
 
-另外，**追赶（catch-up）**过程（无论是通过 MV 的 `catchup`，还是通过目标表的 `repopulate_from_mvs_on_full_refresh`）都会使用 MV 的 SQL 运行一条 `INSERT INTO ... SELECT`。如果此时源表上也在发生插入操作，则追赶查询可能会包含那些 MV 已经处理过的行（或将在 MV 创建后立即处理的行），从而可能在目标表中造成**重复数据**。在目标表上使用例如 `ReplacingMergeTree` 这样的去重引擎可以降低此风险。
+| Operation | 隐式 target | 显式 target |
+| --- | --- | --- |
+| First dbt run | 创建所有资源 | 创建所有资源 |
+| Next dbt run |  **资源无法单独管理，所有变更一次性执行：**<br /><br />**target table**：<br /> 使用 `on_schema_change` 设置来管理变更。默认值为 `ignore`，因此新列不会被处理。<br /><br />**Materialized views**：全部通过 `alter table modify query` 操作进行更新 | **变更可以单独应用：<br /><br />target table**：<br />自动检测其是否为由 dbt 定义的 materialized views 的 target table。如果是，则列演进默认通过 `mv_on_schema_change` 设置为 `fail` 来管理，因此在列发生变更时会报错。我们将此默认值作为一层保护机制。<br /><br />**Materialized views**：其 SQL 会通过 `alter table modify query` 操作进行更新。 |
+| dbt run --full-refresh | **资源无法单独管理，所有变更一次性执行：<br /><br />target table**：<br />target table 会被重新创建为空表。可以通过 `catchup` 配置，使用所有 materialized views 的 SQL 一次性进行回填。`catchup` 的默认值为 `True`。<br /><br />**Materialized views**：全部会被重新创建。 | **变更将被单独应用：<br /><br />target table：** 将按常规方式被重新创建。<br /><br />**Materialized views**：先 drop 再重新创建。`catchup` 可用于初始回填。`catchup` 的默认值为 `True`。<br /><br />**注意：在此过程中，在 materialized views 重新创建完成之前，target table 将为空或仅部分加载。为避免这种情况，请查看下一节关于如何迭代 target table 的内容。**|
+
+### 活跃摄取期间的行为 \{#behavior-during-active-ingestion\}
+
+在迭代你的模型时，需要了解不同操作如何与正在插入的数据交互：
+
+- 由于 ClickHouse 的 materialized view 充当**插入触发器（insert trigger）**，它们只会在自身存在期间捕获数据。如果在某个时间窗口内（例如在执行 `--full-refresh` 期间）一个 materialized view 被删除并重新创建，那么在该窗口中插入到源表的任何行都**不会**被该 materialized view 处理。这种情况被称为该 materialized view 处于“盲区”（blind）状态。
+- 各种不同的 `catchup` 过程都基于使用 materialized view 的 SQL 执行的 `INSERT INTO ... SELECT` 操作，并且独立于 materialized view 的工作方式。一旦 `INSERT` 开始执行，新的数据将不会被该 `INSERT` 捕获，但会被已附加的 materialized view 捕获。
 
 下表总结了在源表上存在持续插入时，各类操作的安全性。
 
-### 隐式目标操作 \{#ingestion-implicit-target\}
+#### 隐式目标操作 \{#ingestion-implicit-target\}
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. 创建目标表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 创建物化视图（MV） | ⚠️ **在步骤 1 到 3 之间，MV 处于“盲区”。** 在此时间窗口内插入到源表的任何行都不会被捕获。 |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 安全。MV 会以原子方式更新。 |
-| `dbt run --full-refresh` | 1. 创建备份表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 删除 MV<br/>4. 交换表<br/>5. 重新创建 MV | ⚠️ **在重新创建期间，MV 处于“盲区”。** 在步骤 3 到 5 之间插入到源表的数据不会出现在新的目标表中。 |
+| First `dbt run` | 1. 创建目标表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 创建 materialized view | ⚠️ **在步骤 1 到 3 之间，materialized view 处于“盲区”。** 在此时间窗口内插入到源表的任何行都不会被捕获。 |
+| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 安全。materialized view 会以原子方式更新。 |
+| `dbt run --full-refresh` | 1. 创建备份表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 删除 materialized view<br/>4. 交换表<br/>5. 重新创建 materialized view | ⚠️ **在重新创建期间，materialized view 处于“盲区”。** 在步骤 3 到 5 之间插入到源表的数据不会出现在新的目标表中。 |
 
-### 显式目标操作 \{#ingestion-explicit-target\}
+#### 显式目标操作 \{#ingestion-explicit-target\}
 
 **materialized view 模型：**
 

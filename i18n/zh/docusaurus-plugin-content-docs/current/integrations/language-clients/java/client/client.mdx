@@ -34,8 +34,8 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ## 设置 \{#setup\}
 
     * Maven Central（项目页面）：https://mvnrepository.com/artifact/com.clickhouse/client-v2
-    * 每夜构建版本（仓库链接）：https://central.sonatype.com/repository/maven-snapshots/
-    * 旧版 Nightly 构建仓库（仓库链接）：https://s01.oss.sonatype.org/content/repositories/snapshots/
+    * Nightly 构建版本（仓库链接）：https://central.sonatype.com/repository/maven-snapshots/
+    * 旧版每夜构建仓库（仓库链接）：https://s01.oss.sonatype.org/content/repositories/snapshots/
 
     <br />
 
@@ -107,7 +107,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
             .build();
     ```
 
-    通过 SSL 客户端证书进行身份验证需要设置用户名、启用 SSL 身份验证、设置客户端证书和客户端密钥,方法是分别调用 `setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)` 和 `setClientKey(String)`：
+    通过 SSL 客户端证书进行身份验证需要设置用户名、启用 SSL 身份验证、设置客户端证书和客户端密钥，方法是分别调用 `setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)` 和 `setClientKey(String)`：
 
     ```java showLineNumbers
     Client client = new Client.Builder()
@@ -122,10 +122,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     请使用诸如 [openssl](https://docs.openssl.org/master/man1/openssl/) 之类的工具来验证证书和密钥：
 
-    * 检查私钥完整性：`openssl rsa -in [key-file.key] -check -noout`
-    * 检查客户端证书中的 CN 是否与相应的 USER 匹配：
+    * 检查密钥完整性：`openssl rsa -in [key-file.key] -check -noout`
+    * 检查客户端证书中的 CN 是否与对应的 USER 一致：
       * 从用户证书中获取 CN - `openssl x509 -noout -subject -in [user.cert]`
-      * 确认数据库中已设置相同的值：`select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（查询会输出 `auth_params` 字段，其内容类似 ` {"common_names":["some_user"]}`）
+      * 确认在数据库中已设置相同的值：`select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（查询结果中的 `auth_params` 字段内容类似于 ` {"common_names":["some_user"]}`）
 
     :::
 
@@ -155,9 +155,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="身份验证" label="身份验证">
         | Method                                               | Arguments                             | Description                                   | Default   | Key                   |
         | ---------------------------------------------------- | ------------------------------------- | --------------------------------------------- | --------- | --------------------- |
-        | `setUsername(String username)`                       | `username` - 用于认证的用户名                 | 为将通过后续配置选择的认证方式设置用户名                          | `default` | `user`                |
-        | `setPassword(String password)`                       | `password` - 机密值                      | 为密码认证设置机密值，并实际选择密码认证作为认证方式                    | -         | `password`            |
-        | `setAccessToken(String accessToken)`                 | `accessToken` - 访问令牌字符串               | 设置访问令牌，以通过相应的认证方式进行身份验证                       | -         | `access_token`        |
+        | `setUsername(String username)`                       | `username` - 用于身份验证的用户名               | 为将在后续配置中选定的身份验证方式设置用户名                        | `default` | `user`                |
+        | `setPassword(String password)`                       | `password` - 机密值                      | 为密码认证设置机密值，并实际将密码认证设为所使用的身份验证方式               | -         | `password`            |
+        | `setAccessToken(String accessToken)`                 | `accessToken` - 访问令牌字符串               | 设置访问令牌，以通过对应的认证方式进行身份验证                       | -         | `access_token`        |
         | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - 启用 SSL 认证的标志 | 将 SSL 客户端证书设置为一种认证方式。                         | -         | `ssl_authentication`  |
         | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - 启用/禁用的标志             | 设置在用户密码认证中是否应使用基本 HTTP 认证。可解决包含特殊字符的密码所导致的问题。 | `true`    | `http_use_basic_auth` |
         | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - 编码后的 Bearer 令牌        | 指定是否使用 Bearer 认证以及要使用的令牌。令牌将按原样发送。            | -         | `bearer_token`        |
@@ -175,13 +175,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="套接字" label="套接字选项">
-        | Method                               | Arguments            | Description                                                         | Default | Key                  |
-        | ------------------------------------ | -------------------- | ------------------------------------------------------------------- | ------- | -------------------- |
-        | `setSocketRcvbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 接收缓冲区。该缓冲区位于 JVM 内存之外（堆外内存）。                          | `8196`  | `socket_rcvbuf`      |
-        | `setSocketSndbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 发送缓冲区。该缓冲区位于 JVM 内存之外（堆外内存）。                          | `8196`  | `socket_sndbuf`      |
-        | `setSocketKeepAlive(boolean value)`  | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_KEEPALIVE` 选项。TCP Keep Alive 启用用于检查连接是否存活的机制。 | -       | `socket_keepalive`   |
-        | `setSocketTcpNodelay(boolean value)` | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_NODELAY` 选项。该 TCP 选项会使 socket 尽可能立即发送数据。      | -       | `socket_tcp_nodelay` |
-        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - 秒数 | 为客户端创建的每个 TCP socket 设置延迟关闭时间（linger time）。                         | -       | `socket_linger`      |
+        | Method                               | Arguments            | Description                                                          | Default | Key                  |
+        | ------------------------------------ | -------------------- | -------------------------------------------------------------------- | ------- | -------------------- |
+        | `setSocketRcvbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 接收缓冲区。该缓冲区位于 JVM 内存之外（堆外内存）。                           | `8196`  | `socket_rcvbuf`      |
+        | `setSocketSndbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 发送缓冲区。该缓冲区位于 JVM 内存之外（堆外内存）。                           | `8196`  | `socket_sndbuf`      |
+        | `setSocketKeepAlive(boolean value)`  | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_KEEPALIVE` 选项。启用 TCP Keep-Alive 机制，用于检查连接是否存活。 | -       | `socket_keepalive`   |
+        | `setSocketTcpNodelay(boolean value)` | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_NODELAY` 选项。该 TCP 选项会使 socket 尽可能立即发送数据。       | -       | `socket_tcp_nodelay` |
+        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - 秒数 | 设置由客户端创建的每个 TCP socket 的延迟关闭时间（linger time）。                         | -       | `socket_linger`      |
       </TabItem>
 
       <TabItem value="压缩" label="压缩">
@@ -208,13 +208,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="代理" label="代理">
-        | 方法                                                | 参数                                                       | 描述                   | 默认值 | 键                                        |
-        | ------------------------------------------------- | -------------------------------------------------------- | -------------------- | --- | ---------------------------------------- |
-        | `addProxy(ProxyType type, String host, int port)` | `type` - 代理类型<br />`host` - 代理主机名或 IP<br />`port` - 代理端口 | 设置用于与服务器通信的代理。       | -   | `proxy_type`, `proxy_host`, `proxy_port` |
-        | `setProxyCredentials(String user, String pass)`   | `user` - 代理用户名<br />`pass` - 密码                          | 设置用于通过代理进行身份验证的用户凭据。 | -   | `proxy_user`, `proxy_password`           |
+        | 方法                                                | 参数                                                       | 描述             | 默认值 | 键                                        |
+        | ------------------------------------------------- | -------------------------------------------------------- | -------------- | --- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - 代理类型<br />`host` - 代理主机名或 IP<br />`port` - 代理端口 | 设置代理，用于与服务器通信。 | -   | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - 代理用户名<br />`pass` - 密码                          | 设置用于代理认证的用户凭据。 | -   | `proxy_user`, `proxy_password`           |
       </TabItem>
 
-      <TabItem value="http" label="HTTP 与请求头">
+      <TabItem value="http" label="HTTP 与头部">
         | Method                                      | Arguments                              | Description                    | Default | Key    |
         | ------------------------------------------- | -------------------------------------- | ------------------------------ | ------- | ------ |
         | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 用于启用/禁用的标志位                | 设置是否应记住 HTTP cookie 并将其发送回服务器。 | -       | -      |
@@ -224,10 +224,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="服务器设置" label="服务器设置">
-        | Method                                          | Arguments                         | Description                                                                               | Default | Key    |
-        | ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------- | ------- | ------ |
-        | `serverSetting(String name, String value)`      | `name` - 设置名称<br />`value` - 设置值  | 设置随每个查询一起发送到服务器的设置。单次操作的设置可以覆盖它。[设置列表](/operations/settings/query-level)                  | `none`  | `none` |
-        | `serverSetting(String name, Collection values)` | `name` - 设置名称<br />`values` - 设置值 | 设置随每个查询一起发送到服务器的、包含多个值的设置，例如 [roles](/interfaces/http#setting-role-with-query-parameters) | `none`  | `none` |
+        | 方法                                              | 参数                                | 描述                                                                                        | 默认值    | 键      |
+        | ----------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------- | ------ | ------ |
+        | `serverSetting(String name, String value)`      | `name` - 设置名称<br />`value` - 设置值  | 设置随每个查询一起发送到服务器的设置。单次操作的设置可以覆盖它。[设置列表](/operations/settings/query-level)                  | `none` | `none` |
+        | `serverSetting(String name, Collection values)` | `name` - 设置名称<br />`values` - 设置值 | 设置随每个查询一起发送到服务器的、包含多个值的设置，例如 [roles](/interfaces/http#setting-role-with-query-parameters) | `none` | `none` |
       </TabItem>
 
       <TabItem value="时区" label="时区">
@@ -255,6 +255,44 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     </Tabs>
 
     <br />
+
+    ### 客户端标识 \{#client-identification\}
+
+    查询日志中有两个字段用于标识发起请求的应用程序：`client_name` 和 `http_user_agent`。原生 TCP 协议使用 `client_name` 来标识应用程序，HTTP 协议使用 `http_user_agent` 来标识应用程序。Client builder 提供了 `setClientName` 方法，可为两种协议设置正确的值。
+    `http_user_agent` 字段按照 `User-Agent` 请求头的通用格式进行设置：`application-name[/version] [(operating-system; architecture; ...)]`。
+    该组值会在每一层（应用程序、客户端库、HTTP 客户端库）中重复出现。通过 `setClientName` 方法设置的内容在列表中排在最前面。
+
+    例如：
+
+    ```java showLineNumbers
+    client.setClientName("my-app-01/1.0");
+    ```
+
+    将产生以下 `http_user_agent` 值：
+
+    ```
+    my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+    ```
+
+    应用程序可以设置自定义 HTTP 请求头 `User-Agent` 来标识自身。但 `clickhouse-java-v2/0.9.6-SNAPSHOT` 部分将被追加到该请求头的末尾。
+
+    ### 操作标识 \{#operation-identification\}
+
+    查询日志还有另外两个字段 `query_id` 和 `log_comment`，可用于标识某个操作并向查询日志中添加附加信息。
+
+    `query_id` 是操作的唯一标识符。应用程序可通过调用 `QuerySettings` 类的 `setQueryId` 方法来设置该标识符。
+
+    ```java showLineNumbers
+    QuerySettings querySettings = new QuerySettings();
+    querySettings.setQueryId("some-query-id");
+    ```
+
+    `log_comment` 是可以添加到查询日志中的注释。应用程序可以通过调用 `QuerySettings` 类的 `logComment` 方法来设置该注释。
+
+    ```java showLineNumbers
+    QuerySettings querySettings = new QuerySettings();
+    querySettings.logComment("some-comment");
+    ```
 
     ### 服务器设置 \{#server-settings\}
 
@@ -285,7 +323,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### 自定义 HTTP 请求头 \{#custom-http-header\}
 
-    可以为所有操作(客户端级别)或单个操作(操作级别)设置自定义 HTTP 头。
+    可以为所有操作（客户端级别）或单个操作（操作级别）设置自定义 HTTP 头。
 
     ```java showLineNumbers
 
@@ -295,7 +333,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ```
 
-    当通过 `setOption` 方法设置选项时(无论是 `Client.Builder` 还是操作设置类),自定义请求头名称应以 `http_header_` 为前缀。此时,可以使用 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 方法。
+    当通过 `setOption` 方法设置选项时（无论是 `Client.Builder` 还是操作设置类），自定义请求头名称应以 `http_header_` 为前缀。此时，可以使用 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 方法。
 
     ## 常用术语定义 \{#common-definitions\}
 
@@ -303,9 +341,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     [支持的格式](/interfaces/formats) 的枚举类型，包含 ClickHouse 支持的所有格式。
 
-    * `raw` - 需要由用户自行对原始数据进行转码
-    * `full` - 客户端可自行完成数据转码，并接受原始数据流
-    * `-` - 表示 ClickHouse 不支持针对该格式执行此操作
+    * `raw` - 由用户负责对原始数据进行转码
+    * `full` - 客户端可以自行对数据进行转码，并接收原始数据流
+    * `-` - ClickHouse 不支持对此格式执行该操作
 
     此客户端版本支持：
 
@@ -478,15 +516,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **配置方法**
 
-    | 方法                                              | 描述                                                    |
-    | ----------------------------------------------- | ----------------------------------------------------- |
-    | `setQueryId(String queryId)`                    | 设置要分配给该操作的查询 ID。默认值：`null`。                           |
-    | `setDeduplicationToken(String token)`           | 设置去重令牌。该令牌将发送到服务器，并可用于标识此查询。默认值：`null`。               |
-    | `setInputStreamCopyBufferSize(int size)`        | 拷贝缓冲区大小。在写入操作期间，该缓冲区用于将用户提供的输入流中的数据复制到输出流。默认值：`8196`。 |
-    | `serverSetting(String name, String value)`      | 为单次操作设置单个服务器端配置项。                                     |
-    | `serverSetting(String name, Collection values)` | 为某个操作设置可包含多个值的单个服务器配置项。集合中的元素应为 `String` 值。           |
-    | `setDBRoles(Collection dbRoles)`                | 设置在执行操作前要启用的数据库角色。集合中的元素应为 `String` 值。                |
-    | `setOption(String option, Object value)`        | 以原始格式设置配置选项。这不是服务器端设置。                                |
+    | 方法                                              | 描述                                                  |
+    | ----------------------------------------------- | --------------------------------------------------- |
+    | `setQueryId(String queryId)`                    | 设置将要分配给该操作的查询 ID。默认值：`null`。                        |
+    | `setDeduplicationToken(String token)`           | 设置去重令牌。该令牌将发送到服务器，并可用于标识该查询。默认值：`null`。             |
+    | `setInputStreamCopyBufferSize(int size)`        | 复制缓冲区大小。写入操作时，该缓冲区用于将用户提供的输入流中的数据复制到输出流。默认值：`8196`。 |
+    | `serverSetting(String name, String value)`      | 为单次操作设置单个服务器端配置项。                                   |
+    | `serverSetting(String name, Collection values)` | 为某个操作设置可包含多个值的单个服务器配置项。集合中的元素应为 `String` 值。         |
+    | `setDBRoles(Collection dbRoles)`                | 设置在执行操作前要应用的数据库角色。集合中的元素应为 `String` 值。              |
+    | `setOption(String option, Object value)`        | 以原始格式设置配置选项。这不是服务器端设置。                              |
 
     ### InsertResponse \{#insertresponse\}
 
@@ -496,10 +534,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     应尽快关闭此对象以释放连接，因为在完全读取完前一个响应的所有数据之前，该连接无法被重用。
     :::
 
-    | 方法                              | 说明                                          |
-    | ------------------------------- | ------------------------------------------- |
-    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                           |
-    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 由应用程序（通过操作设置）指定或由服务器生成。 |
+    | 方法                              | 说明                                           |
+    | ------------------------------- | -------------------------------------------- |
+    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                            |
+    | `String getQueryId()`           | 返回分配给该操作的查询 ID，该 ID 由应用程序（通过操作设置）指定，或由服务器生成。 |
 
     ## 查询 API \{#query-api\}
 
@@ -572,7 +610,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **返回值**
 
-    `QueryResponse` 类型的 Future——包含结果数据集以及诸如服务器端指标之类的附加信息。使用完数据集后应关闭 Response 对象。
+    `QueryResponse` 类型的 Future - 结果数据集及服务器端指标等附加信息。使用完数据集后应关闭 Response 对象。
 
     **示例**
 
@@ -644,39 +682,39 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **配置方法**
 
-    | 方法                                                | 说明                                                                                                  |
-    | ------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-    | `setQueryId(String queryId)`                      | 为该操作设置要分配的查询 ID。                                                                                    |
-    | `setFormat(ClickHouseFormat format)`              | 设置响应格式。完整列表请参见 `RowBinaryWithNamesAndTypes`。                                                        |
-    | `setMaxExecutionTime(Integer maxExecutionTime)`   | 在服务器端设置该操作的最大执行时间。不会影响读取超时设置。                                                                       |
-    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | 请求服务器在发送响应前等待查询完成。                                                                                  |
-    | `setUseServerTimeZone(Boolean useServerTimeZone)` | 将使用服务器时区（参见客户端配置）来解析操作结果中的日期/时间类型。默认值为 `false`。                                                     |
-    | `setUseTimeZone(String timeZone)`                 | 请求服务器在时间转换时使用 `timeZone`。参见 [session&#95;timezone](/operations/settings/settings#session_timezone)。 |
-    | `serverSetting(String name, String value)`        | 为单次操作设置单个服务器配置项。                                                                                    |
-    | `serverSetting(String name, Collection values)`   | 为某个操作设置包含多个值的单个服务器配置项。集合中的元素必须是 `String` 类型的值。                                                      |
-    | `setDBRoles(Collection dbRoles)`                  | 设置在执行操作前要应用的数据库角色。集合中的元素应为 `String` 值。                                                              |
-    | `setOption(String option, Object value)`          | 以原始格式设置配置选项。这不是服务器级设置。                                                                              |
+    | 方法                                                | 说明                                                                                                    |
+    | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                      | 设置要分配给该操作的查询 ID。                                                                                      |
+    | `setFormat(ClickHouseFormat format)`              | 设置响应数据格式。完整列表请参见 `RowBinaryWithNamesAndTypes`。                                                        |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | 在服务器端设置该操作的最大执行时间。不会影响读取超时设置。                                                                         |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | 请求服务器在发送响应前等待查询完成。                                                                                    |
+    | `setUseServerTimeZone(Boolean useServerTimeZone)` | 服务端时区（参见客户端配置）将用于解析操作结果中的日期/时间类型。默认值为 `false`。                                                        |
+    | `setUseTimeZone(String timeZone)`                 | 请求服务器在进行时间转换时使用 `timeZone`。参见 [session&#95;timezone](/operations/settings/settings#session_timezone)。 |
+    | `serverSetting(String name, String value)`        | 为单次操作设置单个服务器端设置。                                                                                      |
+    | `serverSetting(String name, Collection values)`   | 为某个操作设置包含多个值的单个服务器配置项。集合中的元素应为 `String` 类型的值。                                                         |
+    | `setDBRoles(Collection dbRoles)`                  | 设置在执行操作前要启用的数据库角色。集合中的元素应为 `String` 值。                                                                |
+    | `setOption(String option, Object value)`          | 以原始格式设置配置选项。这不是服务器端设置。                                                                                |
 
     ### QueryResponse \{#queryresponse\}
 
     用于保存查询执行结果的响应对象。仅当客户端从服务器收到响应时才可用。
 
     :::note
-    应尽快关闭此对象以释放连接，因为在完全读取完上一个响应的所有数据之前，连接无法被重用。
+    应尽快关闭此对象以释放连接，因为在完全读取完前一个响应的所有数据之前，该连接无法被重用。
     :::
 
-    | 方法                              | 说明                                          |
-    | ------------------------------- | ------------------------------------------- |
-    | `ClickHouseFormat getFormat()`  | 返回响应数据的编码格式。                                |
-    | `InputStream getInputStream()`  | 返回按指定格式编码的未压缩数据字节流。                         |
-    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                           |
-    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 由应用程序（通过操作设置）指定或由服务器生成。 |
-    | `TimeZone getTimeZone()`        | 返回用于解析响应中 Date/DateTime 类型的时区。              |
+    | 方法                              | 说明                                           |
+    | ------------------------------- | -------------------------------------------- |
+    | `ClickHouseFormat getFormat()`  | 返回响应数据所使用的编码格式。                              |
+    | `InputStream getInputStream()`  | 返回以指定格式编码的未压缩数据字节流。                          |
+    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                            |
+    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 由应用程序（通过操作设置）指定，或由服务器生成。 |
+    | `TimeZone getTimeZone()`        | 返回在解析响应中的 Date/DateTime 类型时应使用的时区。           |
 
     ### 示例 \{#examples\}
 
-    * 示例代码可在该[代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)中找到
-    * 参考 Spring Service 的[实现示例](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
+    * 示例代码可在[代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)中获取
+    * 参考 Spring Service 的[实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
 
     ## 通用 API \{#common-api\}
 
@@ -705,7 +743,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     从 SQL 语句中获取 schema 信息。
 
-    **方法签名**
+    **签名**
 
     ```java
     TableSchema getTableSchemaFromQuery(String sql)
@@ -717,7 +755,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **返回值**
 
-    返回一个与 `sql` 表达式匹配列的 `TableSchema` 对象。
+    返回一个列与 `sql` 表达式匹配的 `TableSchema` 对象。
 
     ### TableSchema \{#tableschema\}
 
@@ -726,7 +764,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     为 Java 类编译一个序列化/反序列化层，以便在基于 `schema` 进行数据读写时使用。该方法将为 getter/setter 方法对及其对应的列创建序列化器和反序列化器。
     列的匹配是通过从方法名中提取列名来完成的。例如，`getFirstName` 将对应列 `first_name` 或 `firstname`。
 
-    **方法签名**
+    **签名**
 
     ```java
     void register(Class<?> clazz, TableSchema schema)
@@ -748,17 +786,18 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     完整示例代码存放在代码仓库的 &#39;example` [文件夹](https://github.com/ClickHouse/clickhouse-java/tree/main/examples) 中：
 
-    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例集。
-    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 演示如何在 Spring Boot 应用中使用客户端的示例。
-    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 示例，演示如何在 Ktor（Kotlin）应用中使用该客户端。
+    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例代码集。
+    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 展示如何在 Spring Boot 应用中使用该客户端的示例。
+    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 示例，用于展示如何在 Ktor（Kotlin）应用程序中使用该客户端。
 
     ## 读取数据 \{#reading-data\}
 
     读取数据的常用方式有两种：
 
-    * `query()` 方法会返回底层的 `QueryResponse` 对象，该对象包含承载数据的 `InputStream`。通常与 `ClickHouseBinaryFormatReader` 组合使用以进行流式读取，但也可以配合任何其他自定义 reader 实现使用。`QueryResponse` 还提供对结果集元数据和指标的访问能力。
-    * `queryAll()` 方法并使用 `GenericRecord` 以便按行方便访问数据。在这种情况下，整个结果集会被一次性加载到内存中。
-    * `queryRecords()` 方法返回 `com.clickhouse.client.api.query.Records` —— 一个用于迭代 `GenericRecord` 对象的迭代器。该方法采用流式处理方式（不会将全部数据加载到内存中），并利用 `GenericRecord` 来访问数据。
+    * `query()` 方法会返回底层的 `QueryResponse` 对象，该对象包含携带数据的 `InputStream`。通常与 `ClickHouseBinaryFormatReader` 组合使用以进行流式读取，但也可以配合任何其他自定义读取器实现使用。`QueryResponse` 还提供对结果集元数据和指标的访问能力。
+    * `queryAll()` 方法结合 `GenericRecord` 使用，可方便地按行访问数据。在这种情况下，整个结果集会被加载到内存中。
+    * `queryRecords()` 方法返回 `com.clickhouse.client.api.query.Records` —— 一种用于遍历 `GenericRecord` 对象的迭代器。该方法采用流式处理方式
+      （不会将数据加载到内存中），并使用 `GenericRecord` 来访问数据。
 
     **注意：** 流式方法需要快速读取，否则可能导致服务器写入超时，因为数据是直接从网络流中读取的。
 
@@ -766,10 +805,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **`ClickHouseBinaryFormatReader` 方法**
 
-    * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为类型灵活读取的默认选项。支持嵌套数组。
-    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适用于由与基本类型兼容的值构成的一维数组。
-    * `getStringArray(...)` - 用于 `Array(String)`（以及以名称形式表示的枚举值）。
-    * `getObjectArray(...)` - 适用于任意 `Array(...)` 元素类型（包括嵌套数组）的通用选项。用于读取包含 Nullable 值以及嵌套数组的数组。
+    * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为灵活类型读取的默认方式。支持嵌套数组。
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适用于由与 Java 原始类型兼容的值组成的一维数组。
+    * `getStringArray(...)` - 用于 `Array(String)`（以及以名称表示的枚举值）。
+    * `getObjectArray(...)` - 适用于任意 `Array(...)` 元素类型（包括嵌套数组）的通用方法。用于读取包含 Nullable 值或嵌套数组的数组。
 
     所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
     基于名称的方法每次调用都需要执行一次索引查找。
@@ -791,13 +830,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **`GenericRecord` 方法**
 
-    * `getList(...)` - 将任意 `Array(...)` 解析为 `List<T>`。适合作为灵活类型读取的默认选项，支持嵌套数组。
+    * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为进行灵活类型读取时的默认选择。支持嵌套数组。
     * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适用于由与原始类型兼容的值组成的一维数组。
-    * `getStringArray(...)` - 用于 `Array(String)`（以及以名称表示的枚举类型值）。
-    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型（包括嵌套数组）的通用选项。用于读取包含 Nullable 值以及嵌套数组的数组。
+    * `getStringArray(...)` - 用于 `Array(String)`（以及以名称表示的枚举值）。
+    * `getObjectArray(...)` - 适用于任意 `Array(...)` 元素类型（包括嵌套数组）的通用选项。可用于读取包含 Nullable 值及嵌套数组的数组。
 
-    对于所有方法，都提供基于索引和基于名称的重载。索引从 1 开始。基于索引的重载直接访问列。
-    基于名称的方法每次都需要进行索引查找。
+    所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
+    基于名称的方法每次调用都需要执行一次索引查找。
 
     ````java
     try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
@@ -1101,14 +1140,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    * 只需调用一个方法，无需单独创建请求对象。
-    * 请求体数据流会在所有数据复制完成后自动关闭。
-    * 现已提供新的低级 API：`com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`。`com.clickhouse.client.api.DataStreamWriter` 专为实现自定义数据写入逻辑而设计，例如从队列中读取数据。
+    * 只需要调用一个方法，无需另外创建请求对象。
+    * 当所有数据复制完成后，请求体数据流会自动关闭。
+    * 现已提供新的底层 API：`com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`。`com.clickhouse.client.api.DataStreamWriter` 用于实现自定义数据写入逻辑，例如用于从队列读取数据。
 
     ### 读取数据
 
-    * 默认情况下，数据以 `RowBinaryWithNamesAndTypes` 格式读取。当需要进行数据绑定时，目前仅支持该格式。
-    * 可以使用 `List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` 方法将数据读取为一组记录。该方法会将数据读入内存并释放连接，无需额外处理。`GenericRecord` 提供对数据的访问能力，并实现了一些类型转换。
+    * 默认情况下，数据以 `RowBinaryWithNamesAndTypes` 格式读取。在需要进行数据绑定时，目前仅支持该格式。
+    * 可以使用 `List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` 方法将数据读取为一组记录。该方法会将数据读取到内存并自动释放连接，无需额外处理。`GenericRecord` 提供对数据的访问能力，并实现了一些类型转换。
 
     ```java
     Collection<GenericRecord> records = client.queryAll("SELECT * FROM table");
@@ -1301,8 +1340,8 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     另外，您也可以通过以下几种方式禁用压缩。
 
-    1. 在连接 URL 中将 `compress` 设置为 `0` 即可禁用压缩：`http://localhost:8123/default?compress=0`
-    2. 在客户端配置中禁用：
+    1. 通过在连接 URL 中将 `compress` 设置为 `0` 来禁用压缩：`http://localhost:8123/default?compress=0`
+    2. 通过客户端配置禁用：
 
     ```java showLineNumbers
     ClickHouseClient client = ClickHouseClient.builder()
@@ -1397,40 +1436,40 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     以下选项用于自动发现相关配置：
 
-    | 属性                              | 默认值     | 描述                                                          |
-    | ------------------------------- | ------- | ----------------------------------------------------------- |
-    | auto&#95;discovery              | `false` | 客户端是否应从 system 表以及/或 clickhouse-keeper/zookeeper 中自动发现更多节点。 |
-    | node&#95;discovery&#95;interval | `0`     | 以毫秒为单位的节点发现间隔，值为零或负数表示仅进行一次发现。                              |
-    | node&#95;discovery&#95;limit    | `100`   | 单次可发现的最大节点数；设置为零或负值表示不限制。                                   |
+    | 属性                              | 默认值     | 描述                                                            |
+    | ------------------------------- | ------- | ------------------------------------------------------------- |
+    | auto&#95;discovery              | `false` | 客户端是否应从 system 系统表以及/或 clickhouse-keeper/zookeeper 中自动发现更多节点。 |
+    | node&#95;discovery&#95;interval | `0`     | 节点发现的时间间隔（毫秒），值为 0 或负数表示仅执行一次发现。                              |
+    | node&#95;discovery&#95;limit    | `100`   | 单次可发现的最大节点数；设置为 0 或负值表示不限制。                                   |
 
     ### 负载均衡
 
     Java 客户端根据负载均衡策略选择 ClickHouse 节点来发送请求。通常,负载均衡策略负责以下事项:
 
     1. 从托管的节点列表中获取一个节点。
-    2. 管理节点的状态。
-    3. （可选）调度一个用于节点发现的后台进程（如果已启用自动发现），并执行健康检查。
+    2. 管理节点状态。
+    3. （可选）为节点发现（在启用自动发现的情况下）安排后台进程，并执行健康检查。
 
     以下是配置负载均衡的选项列表：
 
-    | 属性                            | 默认值                                      | 描述                                                                                                                                                                                                                                                    |
-    | ----------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | load&#95;balancing&#95;policy | `""`                                     | 负载均衡策略可以是以下之一： <li>`firstAlive` - 请求将被发送到受管节点列表中第一个健康节点</li><li>`random` - 请求将被发送到受管节点列表中随机选取的一个节点 </li><li>`roundRobin` - 请求将按照轮询方式依次发送到受管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的全限定类名 - 自定义负载均衡策略</li>如果未指定该策略，请求将被发送到受管节点列表中的第一个节点 |
-    | load&#95;balancing&#95;tags   | `""`                                     | 用于筛选节点的负载均衡标签。只有具有指定标签的节点才会接收请求。                                                                                                                                                                                                                      |
-    | health&#95;check&#95;interval | `0`                                      | 健康检查的时间间隔（毫秒）。值为 0 或负数表示只执行一次检查。                                                                                                                                                                                                                      |
-    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | 健康检查方法。可以是以下之一： <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 协议特定的检查，通常更快</li>                                                                                                   |
-    | node&#95;check&#95;interval   | `0`                                      | 以毫秒为单位的节点检查间隔，负数将被视为 0。仅当自上次检查以来已过去指定的时间时，才会检查节点状态。<br />`health_check_interval` 和 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，对节点列表（全部节点或故障节点）执行状态检查，而 `node_check_interval` 则指定针对某个特定节点，自上次检查以来在再次检查前至少需要经过的时间间隔。               |
-    | check&#95;all&#95;nodes       | `false`                                  | 是否对所有节点执行健康检查，还是仅对故障节点执行检查。                                                                                                                                                                                                                           |
+    | 属性                            | 默认值                                      | 描述                                                                                                                                                                                                                                                     |
+    | ----------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | load&#95;balancing&#95;policy | `""`                                     | 负载均衡策略可以是以下之一： <li>`firstAlive` - 请求将被发送到受管节点列表中第一个健康节点</li><li>`random` - 请求将被发送到受管节点列表中随机选取的一个节点 </li><li>`roundRobin` - 请求将按照轮询方式依次发送到受管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完整限定类名 - 自定义负载均衡策略</li>如果未指定该策略，请求将被发送到受管节点列表中的第一个节点 |
+    | load&#95;balancing&#95;tags   | `""`                                     | 用于筛选节点的负载均衡标签。只有具有指定标签的节点才会接收请求。                                                                                                                                                                                                                       |
+    | health&#95;check&#95;interval | `0`                                      | 健康检查的时间间隔（毫秒）。值为 0 或负数表示只执行一次检查。                                                                                                                                                                                                                       |
+    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | 健康检查方法。可以是以下之一： <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 基于协议的检查，通常更快</li>                                                                                                    |
+    | node&#95;check&#95;interval   | `0`                                      | 以毫秒为单位的节点检查间隔，负数将被视为 0。仅当自上次检查以来已过去指定的时间时，才会检查该节点的状态。<br />`health_check_interval` 和 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，对节点列表（全部节点或故障节点）执行状态检查，而 `node_check_interval` 则指定针对某个特定节点，自上次检查以来在再次检查前至少需要经过的时间间隔。              |
+    | check&#95;all&#95;nodes       | `false`                                  | 是否对所有节点执行健康检查，还是仅对故障节点执行检查。                                                                                                                                                                                                                            |
 
     ### 故障转移和重试
 
     Java 客户端提供一些配置选项，用于配置故障转移和失败查询的重试行为：
 
-    | 参数                                 | 默认值    | 说明                                                                                                                          |
-    | ---------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-    | failover                           | `0`    | 针对单个请求允许执行故障转移的最大次数。值为 0 或负数表示不进行故障转移。发生故障转移时，客户端会根据负载均衡策略将失败的请求发送到其他节点，以从故障中恢复。                                            |
-    | retry                              | `0`    | 单个请求允许重试的最大次数。为零或负值时表示不进行重试。重试时，请求会发送到同一节点，并且仅当 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时才会执行重试。                                |
-    | repeat&#95;on&#95;session&#95;lock | `true` | 当会话被锁定时，是否重复执行直到会话超时（超时时间由 `session_timeout` 或 `connect_timeout` 决定）。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会重试该失败请求。 |
+    | 参数                                 | 默认值    | 说明                                                                                                                            |
+    | ---------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------- |
+    | failover                           | `0`    | 针对单个请求允许执行故障转移的最大次数。值为 0 或负数表示不进行故障转移。发生故障转移时，客户端会根据负载均衡策略将失败的请求发送到其他节点，以从故障中恢复。                                              |
+    | retry                              | `0`    | 单个请求允许重试的最大次数。为零或负值时表示不进行重试。发生重试时，请求会发送到同一节点，并且仅在 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时才会进行重试                                 |
+    | repeat&#95;on&#95;session&#95;lock | `true` | 当会话被锁定时，是否重复执行直到会话超时（超时时间由 `session_timeout` 或 `connect_timeout` 决定）。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会对该失败请求进行重试 |
 
     ### 添加自定义 HTTP 请求头
 

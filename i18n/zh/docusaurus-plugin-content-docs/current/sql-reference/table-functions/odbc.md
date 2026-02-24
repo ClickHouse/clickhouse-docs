@@ -19,6 +19,7 @@ odbc(datasource, external_table)
 odbc(named_collection)
 ```
 
+
 ## 参数 \{#arguments\}
 
 | 参数            | 描述                                                            |
@@ -65,7 +66,7 @@ USERNAME = clickhouse
 PASSWORD = clickhouse
 ```
 
-可以使用 unixODBC 安装中提供的 `isql` 工具来检查连接。
+可以使用 unixODBC 安装提供的 `isql` 工具来验证连接。
 
 ```bash
 $ isql -v mysqlconn
@@ -110,7 +111,8 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
+
 ## 另请参阅 \{#see-also\}
 
-- [ODBC 字典](/sql-reference/dictionaries#dbms)
+- [ODBC 字典](/sql-reference/statements/create/dictionary/sources#dbms)
 - [ODBC 表引擎](/engines/table-engines/integrations/odbc).

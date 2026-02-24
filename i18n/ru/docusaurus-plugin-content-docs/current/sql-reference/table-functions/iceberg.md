@@ -431,7 +431,7 @@ y: 993
 
 ### Эволюция схемы \{#iceberg-writes-schema-evolution\}
 
-ClickHouse позволяет добавлять, удалять или изменять столбцы с простыми типами данных (не `tuple`, не `array`, не `map`).
+ClickHouse позволяет добавлять, удалять, изменять или переименовывать столбцы с простыми типами данных (не `tuple`, не `array`, не `map`).
 
 ### Пример \{#example-iceberg-writes-evolution\}
 
@@ -490,7 +490,29 @@ Row 1:
 ──────
 x: Ivanov
 y: 993
+
+ALTER TABLE iceberg_writes_example RENAME COLUMN y TO value;
+SHOW CREATE TABLE iceberg_writes_example;
+
+   ┌─statement─────────────────────────────────────────────────┐
+1. │ CREATE TABLE default.iceberg_writes_example              ↴│
+   │↳(                                                        ↴│
+   │↳    `x` Nullable(String),                                ↴│
+   │↳    `value` Nullable(Int64)                              ↴│
+   │↳)                                                        ↴│
+   │↳ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/') │
+   └───────────────────────────────────────────────────────────┘
+
+SELECT *
+FROM iceberg_writes_example
+FORMAT VERTICAL;
+
+Row 1:
+──────
+x: Ivanov
+value: 993
 ```
+
 
 ### Компакция \{#iceberg-writes-compaction\}
 

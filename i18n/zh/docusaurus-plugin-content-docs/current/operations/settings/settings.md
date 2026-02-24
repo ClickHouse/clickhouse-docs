@@ -604,6 +604,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 用于集成 YTsaurus 的实验性表引擎。
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "用于启用 fuzzQuery 函数的新设置。"}]}]}/>
+
+启用 `fuzzQuery` 函数，对查询字符串应用随机 AST 变异。
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -631,9 +641,11 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 <BetaBadge/>
 
+**别名**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 允许执行向 Iceberg 插入数据的 `insert` 查询。
 
@@ -1068,9 +1080,9 @@ Cloud 默认值：`1`。
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用 apply_row_policy_after_final，就像在 25.8（#87303 之前）中的行为一样"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
 
 启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE（尤其适用于 ReplacingMergeTree）。
 禁用时，会在 FINAL 之前应用 ROW POLICY，这在策略过滤掉本应在 ReplacingMergeTree 或类似引擎中用于去重的行时，可能导致结果不同。
@@ -1117,6 +1129,32 @@ Cloud 默认值：`1`。
 
 - 'path' — 使用 FlightDescriptor::Path（默认值，适用于大多数 Arrow Flight 服务器）
 - 'command' — 使用带有 SELECT 查询的 FlightDescriptor::Command（Dremio 必需）
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "用于允许对所有查询类型进行模糊测试，而不仅仅是只读查询的新设置。"}]}]}/>
+
+当为 false（默认）时，服务端 AST fuzzer（由 `ast_fuzzer_runs` 控制）只会对只读查询（SELECT、EXPLAIN、SHOW、DESCRIBE、EXISTS）进行模糊测试。为 true 时，包括 DDL 和 INSERT 在内的所有查询类型都会进行模糊测试。
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable server-side AST fuzzer."}]}]}/>
+
+启用服务端 AST fuzzer，它会在每个正常查询之后运行随机化的查询，并丢弃其结果。
+
+- 0：禁用（默认）。
+- 介于 0 和 1 之间的值（不包含 0 和 1）：运行单个模糊查询的概率。
+- 大于或等于 1 的值：每个正常查询要运行的模糊查询数量。
+
+Fuzzer 会从所有会话中的所有查询累积 AST 片段，随着时间推移生成越来越有趣的变异。执行失败的模糊查询会被静默丢弃；其结果永远不会返回给客户端。
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -3345,8 +3383,6 @@ FORMAT PrettyCompactMonoBlock
 
 ## enable_full_text_index \{#enable_full_text_index\}
 
-<BetaBadge/>
-
 **别名**: `allow_experimental_full_text_index`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -5335,6 +5371,30 @@ SELECT * FROM x_dist ORDER BY number ASC;
 可以使用 `SYSTEM JEMALLOC FLUSH PROFILE` 刷新分析数据，以便进行内存分配分析。
 采样数据也可以通过配置 `jemalloc_collect_global_profile_samples_in_trace_log` 或通过查询设置 `jemalloc_collect_profile_samples_in_trace_log` 存储到 `system.trace_log` 中。
 参见 [Allocation Profiling](/operations/allocation-profiling)。
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新的设置，用于在折叠的 jemalloc 堆分析格式中按分配次数而不是字节进行聚合"}]}]}/>
+
+当 jemalloc 堆分析使用 `collapsed` 输出格式时，按分配次数而不是字节进行聚合。为 false（默认）时，每个调用栈按存活字节数加权；为 true 时，则按存活分配次数加权。
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "用于控制 system.jemalloc_profile_text 表输出格式的新设置。可选值：'raw'、'symbolized'、'collapsed'"}]}]}/>
+
+system.jemalloc_profile_text 表中 jemalloc 堆分析（heap profile）的输出格式。可能的取值为：'raw'（原始 profile）、'symbolized'（带符号信息的 jeprof 格式）、或 'collapsed'（FlameGraph 格式）。
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "用于控制在对 jemalloc 堆分析进行符号化时是否包含内联帧的新设置。启用时，将包含内联帧，但会以符号化速度变慢为代价；禁用时，将跳过内联帧以获得更快的输出"}]}]}/>
+
+在对 jemalloc 堆分析进行符号化时，是否包含内联帧。启用时，将包含内联帧，这可能会显著降低符号化过程的速度；禁用时，则会跳过内联帧。仅影响 `symbolized` 和 `collapsed` 两种输出格式。
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -8183,6 +8243,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 目前该设置依赖于 `optimize_skip_unused_shards`（原因在于：未来某个时候它可能会默认启用，而它只有在数据通过 Distributed 表插入、即数据按照 sharding_key 分布的情况下才能正确工作）。
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+启用后，`OPTIMIZE ... DRY RUN` 会使用 `checkDataPart` 验证合并生成的 part。如果检查失败，将抛出异常。
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -11098,14 +11166,6 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0.2"},{"label": "新设置"}]}]}/>
 
 用于决定是否使用由倒排文本索引构建的提示时，过滤器的最大选择性。
-
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "新增设置。"}]}]}/>
-
-用于测试时，启用或禁用在文本索引中使用布隆过滤器。
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
