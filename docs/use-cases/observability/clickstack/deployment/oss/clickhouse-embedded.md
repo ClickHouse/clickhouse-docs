@@ -10,6 +10,8 @@ keywords: ['ClickStack embedded', 'ClickHouse embedded', 'ClickStack ClickHouse 
 ---
 
 import Image from '@theme/IdealImage';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import authenticate from '@site/static/images/clickstack/deployment/embedded/authenticate.png';
 import create_source from '@site/static/images/clickstack/deployment/embedded/create-source.png';
 
@@ -36,6 +38,9 @@ This embedded version is **not designed for production use**. The following feat
 
 ### Start ClickHouse {#start-clickhouse}
 
+<Tabs groupId="install-method">
+<TabItem value="docker" label="Docker" default>
+
 Pull and run the ClickHouse server image with a password set:
 
 ```shell
@@ -50,11 +55,27 @@ docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 click
 ```
 :::
 
+</TabItem>
+<TabItem value="binary" label="Binary">
+
+Download and start ClickHouse:
+
+```shell
+curl https://clickhouse.com/ | sh
+
+./clickhouse server
+```
+
+The `default` user has no password when running from the binary.
+
+</TabItem>
+</Tabs>
+
 ### Navigate to the ClickStack UI {#navigate-to-clickstack-ui}
 
 Open [http://localhost:8123](http://localhost:8123) in your browser and click **ClickStack**.
 
-Enter your credentials — if using the example above, the username is `default` and the password is `password`.
+Enter your credentials. If using the Docker example above, the username is `default` and the password is `password`. If using the binary, the username is `default` with no password.
 
 <Image img={authenticate} alt="Authenticate" size="lg"/>
 
