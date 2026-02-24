@@ -41,6 +41,10 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
+### Required PAT token permissions {#required-pat-token-permissions}
+
+When using a PAT for read access, the token must have permissions that allow ClickHouse to list and read Unity Catalog metadata. Ensure that the PAT has at least the `EXTERNAL USE SCHEMA` [privilege](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges) on each schema you want to query.
+
 ## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.
