@@ -187,23 +187,32 @@ For more detailed instructions, see the [Example Guide](https://github.com/Click
 ### DataStream API Connection Options {#datastream-api-connection-options}
 #### Clickhouse Client Options {#client-options}
 
-| Parameters | Description                    | Default Value | Required |
-|------------|--------------------------------|---------------|----------|
-| `url`      | Fully qualified Clickhouse URL | N/A           | Yes      |
-| `username` | ClickHouse database username   | N/A           | Yes      |
-| `password` | ClickHouse database password   | N/A           | Yes      |
-| `database` | ClickHouse database name       | N/A           | Yes      |
-| `table`    | ClickHouse table name          | N/A           | Yes      |
+| Parameters                  | Description                                                                                                                                        | Default Value | Required |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------|
+| `url`                       | Fully qualified Clickhouse URL                                                                                                                     | N/A           | Yes      |
+| `username`                  | ClickHouse database username                                                                                                                       | N/A           | Yes      |
+| `password`                  | ClickHouse database password                                                                                                                       | N/A           | Yes      |
+| `database`                  | ClickHouse database name                                                                                                                           | N/A           | Yes      |
+| `table`                     | ClickHouse table name                                                                                                                              | N/A           | Yes      |
+| `options`                   | Map of Java client configuration options                                                                                                           | Empty map     | No       |
+| `serverSettings`            | Map of ClickHouse server session settings                                                                                                          | Empty map     | No       |
+| `enableJsonSupportAsString` | ClickHouse server setting to expect a JSON formatted String for the [JSON data type](https://clickhouse.com/docs/sql-reference/data-types/newjson) | true          | No       |
 
-Additional options can be passed to the client as a `Map<String, String>`.
-All available client options are listed in [ClientConfigProperties.java](https://github.com/ClickHouse/clickhouse-java/blob/main/client-v2/src/main/java/com/clickhouse/client/api/ClientConfigProperties.java).
+`options` and `serverSettings` should be passed to the client as `Map<String, String>`. An empty map for either will use client or server defaults, respectively.
+
+:::note
+All available Java client options are listed in [ClientConfigProperties.java](https://github.com/ClickHouse/clickhouse-java/blob/main/client-v2/src/main/java/com/clickhouse/client/api/ClientConfigProperties.java) and [this documentation page](https://clickhouse.com/docs/integrations/language-clients/java/client#configuration).
+
+All available server session settings are listed in [this documentation page](https://clickhouse.com/docs/operations/settings/settings).
+:::
+
 For example:
 
 <Tabs groupId="client_options_example">
 <TabItem value="Java" label="Java" default>
 
 ```java
-Map<String, String> additionalProperties = Map.of(
+Map<String, String> javaClientOptions = Map.of(
     ClientConfigProperties.CA_CERTIFICATE.getKey(), "<my_CA_cert>",
     ClientConfigProperties.SSL_CERTIFICATE.getKey(), "<my_SSL_cert>",
     ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE.getKey(), "30000",
@@ -216,7 +225,7 @@ ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
     password,
     database,
     tableName,
-    additionalProperties,
+    javaClientOptions,
     Map.of(), // serverSettings
     false // enableJsonSupportAsString
 );
