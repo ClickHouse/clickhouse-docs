@@ -1646,7 +1646,7 @@ HSTS 的失效时间（秒）。
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 此设置用于实现代码版本迁移：从旧代码版本（同步和异步插入各自独立去重，行为完全不同且不透明）迁移到新代码版本（插入的数据会在同步和异步插入之间统一去重）。
 默认值为 `old_separate_hashes`，这意味着 ClickHouse 会为同步和异步插入使用不同的去重哈希（行为与之前相同）。
