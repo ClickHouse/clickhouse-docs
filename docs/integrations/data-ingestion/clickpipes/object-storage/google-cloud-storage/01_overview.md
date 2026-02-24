@@ -41,7 +41,7 @@ The GCS ClickPipe assumes files are added to a bucket in lexicographical order, 
 
 In this mode, the GCS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
 
-#### Any order (Pub/Sub) {#continuous-ingestion-any-order}
+#### Any order {#continuous-ingestion-any-order}
 
 :::note
 Unordered mode is **not** supported for public buckets. It requires **Service Account** authentication and a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) subscription connected to the bucket.
@@ -53,7 +53,7 @@ In this mode, the GCS ClickPipe does an initial load of **all files** in the sel
 
 ##### Setting up Pub/Sub notifications {#pubsub-setup}
 
-To use unordered mode, you need to configure automatic notifications from your GCS bucket to a Pub/Sub topic. First, create a Pub/Sub topic and subscription, then set up notifications for the bucket (For more details, see [Google Cloud's documentation](https://docs.cloud.google.com/storage/docs/pubsub-notifications)):
+To use unordered mode, you need to configure automatic notifications from your GCS bucket to a Pub/Sub topic. Follow the [official documentation](https://docs.cloud.google.com/storage/docs/pubsub-notifications) for Pub/Sub notifications to create a Pub/Sub topic and subscription, then set up notifications for the bucket.
 
 To create the notification:
 ```bash
@@ -93,7 +93,9 @@ gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
 
 ##### Configuring the ClickPipe {#pubsub-clickpipe-config}
 
-When creating a GCS ClickPipe with unordered mode, select **Service Account** as the authentication method, select continuous ingest mode, select any order, and provide the Pub/Sub subscription path in the following format:
+In the ClickHouse Cloud console, navigate to **Data Sources > Create ClickPipe**, then choose Google Cloud Storage. Enter the details to connect to your GCS bucket, using **Service Account** as the authentication method, and upload the service account key JSON file. Next, click **Incoming data**.
+
+Toggle on **Continuous ingestion**, where you’ll see the new **Any order** ingestion option. Then, input the Pub/Sub subscription path in the following format:
 
 ```text
 projects/${YOUR_PROJECT_ID}/subscriptions/${YOUR_SUBSCRIPTION_NAME}
@@ -161,7 +163,7 @@ When using [unordered mode](#continuous-ingestion-any-order), the service accoun
 
 #### Service account {#service-account}
 
-Service Account authentication is required when using [unordered mode](#continuous-ingestion-any-order) with Pub/Sub. Select **Service Account** as the authentication method and upload the service account key JSON file.
+Service Account authentication is required when using [unordered mode](#continuous-ingestion-any-order) with Pub/Sub notifications. Select **Service Account** as the authentication method and upload the service account key JSON file.
 
 #### HMAC credentials {#hmac-credentials}
 
