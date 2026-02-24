@@ -66,7 +66,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 | [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
@@ -93,6 +92,9 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
 | [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
+| [ast_fuzzer_runs](/operations/settings/settings#ast_fuzzer_runs) | `0` |
+| [ast_fuzzer_any_query](/operations/settings/settings#ast_fuzzer_any_query) | `0` |
+| [allow_fuzz_query_functions](/operations/settings/settings#allow_fuzz_query_functions) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
 | [automatic_parallel_replicas_mode](/operations/settings/settings#automatic_parallel_replicas_mode) | `0` |
