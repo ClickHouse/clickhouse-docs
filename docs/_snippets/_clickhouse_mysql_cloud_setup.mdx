@@ -51,7 +51,7 @@ ClickHouse Cloud automatically creates a `mysql4<subdomain>` user that shares th
 The `<subdomain>` portion corresponds to the first part of your ClickHouse Cloud hostname.
 
 This username format is required for compatibility with tools that establish secure connections but don't include [SNI (Server Name Indication)](https://www.cloudflare.com/learning/ssl/what-is-sni) data in their TLS handshake.
-Without SNI information, the system cannot perform proper internal routing, so the subdomain hint embedded in the username provides the necessary routing information.
+Without SNI information, the system can't perform proper internal routing, so the subdomain hint embedded in the username provides the necessary routing information.
 The MySQL console client is an example of a tool that requires this.
 
 :::tip

@@ -115,7 +115,7 @@ SELECT * FROM trips LIMIT 1000;
 
 <Image img={results} size="lg" border alt="Results in a dataframe" />
 
-Now, you are able to view the results in a dataframe. I would like to visualize the most expensive drop-offs from a given pickup location. marimo provides several UI components to help you. I will use a dropdown to select the location and altair for charting.
+Now, you're able to view the results in a dataframe. I would like to visualize the most expensive drop-offs from a given pickup location. marimo provides several UI components to help you. I will use a dropdown to select the location and altair for charting.
 
 <Image img={dropdown_cell_chart} size="lg" border alt="Combination of dropdown, table and chart" />
 

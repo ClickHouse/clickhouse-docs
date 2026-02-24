@@ -37,8 +37,6 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 | **对象存储（Object storage）**      | 该层为所有数据文件和元数据提供可扩展、持久且具成本效益的存储。负责以开放格式实现数据的物理持久化，使多个工具和系统能够直接访问这些数据。                                                                                                                                                                                                   |
 | **客户端应用（Client applications）** | 各类连接到湖仓以查询数据、可视化洞察或构建数据产品的工具和应用。这些可以包括 BI 工具、数据科学笔记本、自定义应用以及 ETL/ELT 工具。                                                                                                                                                                                                     |
 
-
-
 ## 数据湖仓有哪些优势？ \{#benefits-of-the-data-lakehouse\}
 
 与传统数据仓库和数据湖直接对比时，数据湖仓架构具备多项显著优势：
@@ -63,8 +61,6 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 | 4 | **治理能力**                | 湖仓在行/列级别提供细粒度访问控制和审计功能，从而弥补基础数据湖在安全控制方面的不足。                                                                                                                                                  |
 | 5 | **BI 工具支持**             | 湖仓提供 SQL 接口和相关优化，使其能够兼容标准 BI 工具；而原始数据湖通常需要额外的处理层才能进行可视化。                                                                                                                               |
 
-
-
 ## ClickHouse 在数据湖仓架构中扮演什么角色？ \{#where-does-clickhouse-fit-in-the-data-lakehouse-architecture\}
 
 ClickHouse 是现代数据湖仓生态系统中的一款强大的分析查询引擎，为组织在大规模数据分析方面提供了高性能选项。凭借卓越的查询速度和高效率，ClickHouse 成为极具吸引力的选择。
@@ -74,8 +70,6 @@ ClickHouse 是现代数据湖仓生态系统中的一款强大的分析查询引
 对于更复杂的数据管理需求，ClickHouse 可以与 Apache Iceberg、Delta Lake 或 Apache Hudi 等开放表格式集成。这种集成使 ClickHouse 能够利用这些格式的高级特性，同时依然提供其广为人知的卓越查询性能。组织既可以直接集成这些表格式，也可以通过 AWS Glue、Unity 或其他元数据目录服务进行连接。
 
 通过在湖仓架构中引入 ClickHouse 作为查询引擎，组织可以在保持湖仓方法所强调的灵活性与开放性的同时，对其数据湖运行极其快速的分析查询。这种组合在不牺牲湖仓模型核心优势（包括组件可互换性、开放格式以及统一数据管理）的前提下，提供了专用分析型数据库级别的性能特性。
-
-
 
 ## 混合架构：两全其美 \{#hybrid-architecture-the-best-of-both-worlds\}
 

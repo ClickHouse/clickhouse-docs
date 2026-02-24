@@ -850,7 +850,7 @@ GROUP BY UserId
 ORDER BY last_activity DESC
 ```
 
-虽然这在语法上是正确的，但会产生非预期的结果——该视图只会对 `comments` 表的插入操作触发。比如：
+虽然这在语法上是正确的，但会产生非预期的结果——该视图只会在向 `comments` 表插入数据时被触发。例如：
 
 
 ```sql
@@ -893,7 +893,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-为了解决这个问题，我们可以为每个 SELECT 语句简单地创建一个 materialized view：
+为了解决这个问题，我们只需为每个 SELECT 语句创建一个 materialized view 即可：
 
 ```sql
 DROP TABLE user_activity_mv;
@@ -963,11 +963,11 @@ GROUP BY UserId
 
 ## 并行处理 vs 顺序处理 \{#materialized-views-parallel-vs-sequential\}
 
-如前面的示例所示，一张表可以作为多个 Materialized View 的源表。这些视图的执行顺序取决于 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing) 这一设置项。
+如前面的示例所示,一张表可以作为多个 Materialized View 的源表。这些视图的执行顺序取决于 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing) 这一设置项。
 
-默认情况下，该设置项的值为 `0`（`false`），这意味着 Materialized View 会按 `uuid` 顺序依次执行。
+默认情况下,该设置项的值为 `0`(`false`),这意味着 Materialized View 会按 `uuid` 顺序依次执行。
 
-例如，考虑下面的 `source` 表和 3 个 Materialized View，它们各自将行发送到同一个 `target` 表中：
+例如,考虑下面的 `source` 表和 3 个 Materialized View,它们各自将行发送到同一个 `target` 表中:
 
 ```sql
 CREATE TABLE source
@@ -1012,9 +1012,9 @@ AS SELECT
 FROM source;
 ```
 
-请注意，每个视图在将其行插入到 `target` 表之前都会暂停 1 秒，并在插入的数据中包含其名称和插入时间。
+请注意,每个视图在将其行插入到 `target` 表之前都会暂停 1 秒,并在插入的数据中包含其名称和插入时间。
 
-向表 `source` 插入一行大约需要 3 秒，且各个视图会依次顺序执行：
+向表 `source` 插入一行大约需要 3 秒,且各个视图会依次顺序执行:
 
 ```sql
 INSERT INTO source VALUES ('test')
@@ -1022,7 +1022,7 @@ INSERT INTO source VALUES ('test')
 1 row in set. Elapsed: 3.786 sec.
 ```
 
-我们可以通过执行一条 `SELECT` 查询来确认每一行是否已经到达：
+我们可以通过执行一条 `SELECT` 查询来确认每一行是否已经到达:
 
 ```sql
 SELECT
@@ -1060,7 +1060,7 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-另一方面，来看一下在启用 `parallel_view_processing=1` 时插入一行会发生什么。启用该设置后，视图将被并行执行，行写入目标表的顺序无法得到保证：
+另一方面,来看一下在启用 `parallel_view_processing=1` 时插入一行会发生什么。启用该设置后,视图将被并行执行,行写入目标表的顺序无法得到保证:
 
 ```sql
 TRUNCATE target;
@@ -1086,8 +1086,7 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-
-尽管目前来自各个 VIEW 的行到达顺序是相同的，但这一点并无任何保证——从每行插入时间几乎相同这一点就可以看出。另请注意插入性能的提升。
+尽管在本例中各视图的行到达顺序相同,但这并不能得到保证——从各行插入时间的相近程度就可以看出这一点。同时请注意插入性能的提升。
 
 ### 何时使用并行处理 \{#materialized-views-when-to-use-parallel\}
 

@@ -27,7 +27,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
   </iframe>
 </div>
 
-> 注意：视频中展示的策略较为宽松，仅用于快速上手。请参阅下文基于最小权限原则的 IAM 指南。
+> 注意：视频中展示的策略权限较为宽松，仅用于快速入门。请参阅下文基于最小权限原则的 IAM 指南。
 
 ## 前提条件 \{#prerequisites\}
 
@@ -70,9 +70,9 @@ username=default
 schemas.enable=false
 ```
 
-## 推荐的 IAM 权限（最小权限原则） \{#iam-least-privilege\}
+## 推荐的 IAM 权限（最小必要权限原则） \{#iam-least-privilege\}
 
-仅使用部署所需的最小权限集。先从下面的基线配置开始，只有在实际使用相关服务时才添加对应的可选服务权限。
+尽量仅授予满足你部署需求的最小权限。先从下面的基线权限开始，仅在实际使用到可选服务时再按需添加相应权限。
 
 ```json
 {
@@ -134,30 +134,32 @@ schemas.enable=false
 }
 ```
 
-* 仅在使用 AWS Glue Schema Registry 时使用 Glue 块。
-* 仅在从 Secrets Manager 获取凭证/信任库时使用 Secrets Manager 块。限定 ARN 的作用域。
-* 仅在从 S3 加载工件（例如 truststore）时使用 S3 块。将权限限定到指定 bucket/前缀。
+* 仅在使用 AWS Glue Schema Registry 时使用 Glue 配置块。
+* 仅在从 Secrets Manager 获取凭证/truststore 时使用 Secrets Manager 配置块。请为 ARN 限定作用域。
+* 仅在从 S3 加载构件（例如 truststore 文件）时使用 S3 配置块。请将作用域限定到特定 bucket/prefix。
 
 另请参阅：[Kafka 最佳实践 – IAM](../../clickpipes/kafka/04_best_practices.md#iam)。
 
+
 ## 性能调优 \{#performance-tuning\}
 
-提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
+提高性能的一种方式是通过在 **worker** 配置中添加以下内容来调整批处理大小以及从 Kafka 拉取的记录数量：
 
 ```yml
 consumer.max.poll.records=[NUMBER OF RECORDS]
 consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
 ```
 
-您使用的具体数值会因期望的记录数量和记录大小而有所不同。例如，默认值为：
+您实际配置的具体取值会根据期望的记录数量和记录大小而变化。例如，默认值为：
 
 ```yml
 consumer.max.poll.records=500
 consumer.max.partition.fetch.bytes=1048576
 ```
 
-你可以在官方的 [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) 文档和
-[Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) 文档中查阅更多信息（包括实现细节和其他方面的考量）。
+你可以在官方的 [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) 和
+[Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) 文档中找到更多详细信息（包括实现方面和其他方面的考虑）。
+
 
 ## 关于 MSK Connect 的网络注意事项 \{#notes-on-networking-for-msk-connect\}
 

@@ -14,6 +14,7 @@ import Image from '@theme/IdealImage';
 
 ClickHouse® — высокопроизводительная колоночная система управления базами данных (СУБД) SQL для онлайн-аналитической обработки (OLAP). Она доступна как в виде [программного обеспечения с открытым исходным кодом](https://github.com/ClickHouse/ClickHouse), так и как [облачный сервис](https://clickhouse.com/cloud).
 
+
 ## Что такое аналитика? \{#what-are-analytics\}
 
 Аналитика, также известная как OLAP (Online Analytical Processing), — это SQL‑запросы со сложными вычислениями (например, агрегациями, обработкой строк, арифметикой) по очень большим наборам данных.
@@ -62,6 +63,7 @@ LIMIT 8;
 
 **Колонко-ориентированная СУБД**
 
+
 Поскольку значения каждого столбца хранятся на диске последовательно друг за другом, при выполнении приведённого выше запроса не загружаются лишние данные.
 Поскольку блочное хранение и передача данных с диска в память соответствуют характеру доступа к данным в аналитических запросах, с диска читаются только те столбцы, которые требуются для запроса, что позволяет избежать лишних операций ввода-вывода для неиспользуемых данных. Это [намного быстрее](https://benchmark.clickhouse.com/) по сравнению со строчно-ориентированным хранением, при котором считываются целые строки (включая столбцы, не относящиеся к запросу):
 
@@ -92,103 +94,103 @@ ClickHouse адаптивно выбирает алгоритм соединен
 ClickHouse широко известен своей исключительно высокой скоростью выполнения запросов.
 Чтобы узнать, почему ClickHouse такой быстрый, см. руководство [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx).
 
-<!--
-## Что такое OLAP? \{#what-is-olap\}
-Сценарии OLAP требуют получения ответов в режиме реального времени на основе больших наборов данных для сложных аналитических запросов со следующими характеристиками:
-- Наборы данных могут быть огромными — миллиарды или триллионы строк
-- Данные организованы в таблицы, содержащие множество столбцов
-- Для ответа на конкретный запрос выбирается только несколько столбцов
-- Результаты должны возвращаться за миллисекунды или секунды
+{/*
+  ## What is OLAP?                
+  OLAP scenarios require real-time responses on top of large datasets for complex analytical queries with the following characteristics:
+  - Datasets can be massive - billions or trillions of rows
+  - Data is organized in tables that contain many columns
+  - Only a few columns are selected to answer any particular query
+  - Results must be returned in milliseconds or seconds
 
-## Колонко-ориентированные и строко-ориентированные базы данных \{#column-oriented-vs-row-oriented-databases\}
-В строко-ориентированной СУБД данные хранятся по строкам, при этом все значения, относящиеся к одной строке, физически располагаются рядом.
+  ## Column-oriented vs row-oriented databases                                             
+  In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
 
-В колонко-ориентированной СУБД данные хранятся по столбцам, причем значения одного столбца хранятся вместе.
+  In a column-oriented DBMS, data is stored in columns, with values from the same columns stored together.
 
-## Почему колоночные базы данных лучше работают в OLAP-сценариях \{#why-column-oriented-databases-work-better-in-the-olap-scenario\}
+  ## Why column-oriented databases work better in the OLAP scenario                                                                  
 
-Колоночные базы данных лучше подходят для OLAP-сценариев: они по крайней мере в 100 раз быстрее обрабатывают большинство запросов. Причины подробно рассматриваются ниже, но этот факт проще всего продемонстрировать наглядно:
+  Column-oriented databases are better suited to OLAP scenarios: they're at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
 
-Видите разницу?
+  See the difference?
 
-Далее в статье объясняется, почему колоночные базы данных так хорошо работают в этих сценариях и почему именно ClickHouse [опережает по производительности](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated) другие решения в этой категории.
+  The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated) others in this category.
 
-## Почему ClickHouse настолько быстр? \{#why-is-clickhouse-so-fast\}
+  ## Why is ClickHouse so fast?                             
 
-ClickHouse задействует все доступные системные ресурсы в полной мере, чтобы обрабатывать каждый аналитический запрос как можно быстрее. Это достигается благодаря уникальному сочетанию аналитических возможностей и тщательному вниманию к низкоуровневым деталям, необходимым для реализации самой быстрой OLAP-СУБД.
+  ClickHouse uses all available system resources to their full potential to process each analytical query as fast as possible. This is made possible due to a unique combination of analytical capabilities and attention to the low-level details required to implement the fastest OLAP database.
 
-Полезные материалы для более глубокого изучения этой темы:
-- [Производительность ClickHouse](/concepts/why-clickhouse-is-so-fast)
-- [Отличительные особенности ClickHouse](/about-us/distinctive-features.md)
-- [FAQ: Почему ClickHouse настолько быстр?](/knowledgebase/why-clickhouse-is-so-fast)
+  Helpful articles to dive deeper into this topic include:
+  - [ClickHouse Performance](/concepts/why-clickhouse-is-so-fast)
+  - [Distinctive Features of ClickHouse](/about-us/distinctive-features.md)
+  - [FAQ: Why is ClickHouse so fast?](/knowledgebase/why-clickhouse-is-so-fast)
 
-## Обработка аналитических запросов в реальном времени \{#processing-analytical-queries-in-real-time\}
+  ## Processing analytical queries in real time                                              
 
-В строково-ориентированной СУБД данные хранятся в следующем порядке:
+  In a row-oriented DBMS, data is stored in this order:
 
-| Строка | WatchID     | JavaEnable | Title                | GoodEvent | EventTime           |
-|--------|-------------|------------|----------------------|-----------|---------------------|
-| #0     | 89354350662 | 1          | Investor Relations   | 1         | 2016-05-18 05:19:20 |
-| #1     | 90329509958 | 0          | Contact us           | 1         | 2016-05-18 08:10:20 |
-| #2     | 89953706054 | 1          | Mission              | 1         | 2016-05-18 07:38:00 |
-| #N     | ...         | ...        | ...                  | ...       | ...                 |
+  | Row | WatchID     | JavaEnable | Title              | GoodEvent | EventTime           |
+  |-----|-------------|------------|--------------------|-----------|---------------------|
+  | #0 | 89354350662 | 1          | Investor Relations | 1         | 2016-05-18 05:19:20 |
+  | #1 | 90329509958 | 0          | Contact us         | 1         | 2016-05-18 08:10:20 |
+  | #2 | 89953706054 | 1          | Mission            | 1         | 2016-05-18 07:38:00 |
+  | #N | ...           | ...          | ...                  | ...         | ...                   |
 
-Другими словами, все значения, относящиеся к одной строке, физически хранятся рядом друг с другом.
+  In other words, all the values related to a row are physically stored next to each other.
 
-Примеры строково-ориентированных СУБД: MySQL, Postgres и MS SQL Server.
+  Examples of a row-oriented DBMS are MySQL, Postgres, and MS SQL Server.
 
-В столбцово-ориентированной СУБД данные хранятся так:
+  In a column-oriented DBMS, data is stored like this:
 
-| Строка:     | #0                  | #1                  | #2                  | #N  |
-|-------------|---------------------|---------------------|---------------------|-----|
-| WatchID:    | 89354350662         | 90329509958         | 89953706054         | ... |
-| JavaEnable: | 1                   | 0                   | 1                   | ... |
-| Title:      | Investor Relations  | Contact us          | Mission             | ... |
-| GoodEvent:  | 1                   | 1                   | 1                   | ... |
-| EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | ... |
+  | Row:        | #0                 | #1                 | #2                 | #N |
+  |-------------|---------------------|---------------------|---------------------|-----|
+  | WatchID:    | 89354350662         | 90329509958         | 89953706054         | ...   |
+  | JavaEnable: | 1                   | 0                   | 1                   | ...   |
+  | Title:      | Investor Relations  | Contact us          | Mission             | ...   |
+  | GoodEvent:  | 1                   | 1                   | 1                   | ...   |
+  | EventTime:  | 2016-05-18 05:19:20 | 2016-05-18 08:10:20 | 2016-05-18 07:38:00 | ...   |
 
-Эти примеры показывают только порядок, в котором расположены данные. Значения из разных столбцов хранятся отдельно, а данные из одного и того же столбца хранятся вместе.
+  These examples only show the order that data is arranged in. The values from different columns are stored separately, and data from the same column is stored together.
 
-Примеры столбцово-ориентированных СУБД: Vertica, Paraccel (Actian Matrix и Amazon Redshift), Sybase IQ, Exasol, Infobright, InfiniDB, MonetDB (VectorWise и Actian Vector), LucidDB, SAP HANA, Google Dremel, Google PowerDrill, Druid и kdb+.
+  Examples of a column-oriented DBMS: Vertica, Paraccel (Actian Matrix and Amazon Redshift), Sybase IQ, Exasol, Infobright, InfiniDB, MonetDB (VectorWise and Actian Vector), LucidDB, SAP HANA, Google Dremel, Google PowerDrill, Druid, and kdb+.
 
-Разные порядки хранения данных лучше подходят для разных сценариев. Под сценарием доступа к данным подразумевается, какие запросы выполняются, как часто и в каких соотношениях; сколько данных читается для каждого типа запроса — строк, столбцов и байт; соотношение между чтением и обновлением данных; рабочий объем данных и то, насколько локально они используются; используются ли транзакции и насколько они изолированы; требования к репликации данных и логической целостности; требования к задержкам и пропускной способности для каждого типа запроса и т. д.
+  Different orders for storing data are better suited to different scenarios. The data access scenario refers to what queries are made, how often, and in what proportion; how much data is read for each type of query – rows, columns, and bytes; the relationship between reading and updating data; the working size of the data and how locally it is used; whether transactions are used, and how isolated they're; requirements for data replication and logical integrity; requirements for latency and throughput for each type of query, and so on.
 
-Чем выше нагрузка на систему, тем важнее настроить систему в соответствии с требованиями сценария использования и тем более детальной становится эта настройка. Не существует системы, одинаково хорошо подходящей для существенно разных сценариев. Если система адаптирована к широкому набору сценариев, то при высокой нагрузке она будет обрабатывать все сценарии одинаково плохо или будет хорошо работать только для одного или немногих возможных сценариев.
+  The higher the load on the system, the more important it is to customize the system set up to match the requirements of the usage scenario, and the more fine grained this customization becomes. There is no system that is equally well-suited to significantly different scenarios. If a system is adaptable to a wide set of scenarios, under a high load, the system will handle all the scenarios equally poorly, or will work well for just one or few of possible scenarios.
 
-### Ключевые свойства OLAP-сценария \{#key-properties-of-olap-scenario\}
+  ### Key properties of the OLAP scenario                                   
 
-- Таблицы «широкие», то есть содержат большое количество столбцов.
-- Наборы данных большие, и запросы требуют высокой пропускной способности при обработке одного запроса (до миллиардов строк в секунду на сервер).
-- Значения в столбцах достаточно маленькие: числа и короткие строки (например, 60 байт на URL).
-- Запросы извлекают большое количество строк, но только небольшой поднабор столбцов.
-- Для простых запросов допускаются задержки порядка 50 мс.
-- В каждом запросе участвует одна большая таблица; все остальные таблицы маленькие.
-- Результат запроса значительно меньше исходных данных. Другими словами, данные фильтруются или агрегируются так, что результат помещается в оперативную память одного сервера.
-- Запросы относительно редки (обычно сотни запросов в секунду на сервер или меньше).
-- Вставки выполняются достаточно крупными пакетами (\> 1000 строк), а не по одной строке.
-- Транзакции не нужны.
+  - Таблицы «широкие», то есть содержат большое количество столбцов.
+  - Наборы данных большие, и запросы требуют высокой пропускной способности при обработке одного запроса (до миллиардов строк в секунду на сервер).
+  - Значения в столбцах достаточно маленькие: числа и короткие строки (например, 60 байт на URL).
+  - Запросы извлекают большое количество строк, но только небольшой поднабор столбцов.
+  - Для простых запросов допускаются задержки порядка 50 мс.
+  - В каждом запросе участвует одна большая таблица; все остальные таблицы маленькие.
+  - Результат запроса значительно меньше исходных данных. Другими словами, данные фильтруются или агрегируются так, что результат помещается в оперативную память одного сервера.
+  - Запросы относительно редки (обычно сотни запросов в секунду на сервер или меньше).
+  - Вставки выполняются достаточно крупными пакетами (\> 1000 строк), а не по одной строке.
+  - Транзакции не нужны.
 
-Легко заметить, что OLAP-сценарий сильно отличается от других популярных сценариев (таких как OLTP или Key-Value-доступ). Поэтому не имеет смысла пытаться использовать OLTP- или Key-Value-СУБД для обработки аналитических запросов, если вы хотите получить приемлемую производительность. Например, если вы попытаетесь использовать MongoDB или Redis для аналитики, вы получите очень низкую производительность по сравнению с OLAP-базами данных.
+  Легко заметить, что OLAP-сценарий сильно отличается от других популярных сценариев (таких как OLTP или Key-Value-доступ). Поэтому не имеет смысла пытаться использовать OLTP- или Key-Value-СУБД для обработки аналитических запросов, если вы хотите получить приемлемую производительность. Например, если вы попытаетесь использовать MongoDB или Redis для аналитики, вы получите очень низкую производительность по сравнению с OLAP-базами данных.
 
-### Ввод/вывод \{#inputoutput\}
+  ### Input/output               
 
-1.  Для аналитического запроса требуется прочитать только небольшое количество столбцов таблицы. В столбцовой базе данных можно читать только те данные, которые нужны. Например, если вам нужно 5 столбцов из 100, можно ожидать 20-кратное уменьшение объёма операций ввода-вывода (I/O).
-2.  Поскольку данные читаются пакетами, их легче сжимать. Данные в столбцах также легче сжимать. Это ещё больше снижает объём I/O.
-3.  За счёт уменьшения I/O в системный кэш помещается больше данных.
+  1.  For an analytical query, only a small number of table columns need to be read. In a column-oriented database, you can read just the data you need. For example, if you need 5 columns out of 100, you can expect a 20-fold reduction in I/O.
+  2.  Since data is read in packets, it is easier to compress. Data in columns is also easier to compress. This further reduces the I/O volume.
+  3.  Due to the reduced I/O, more data fits in the system cache.
 
-Например, запрос «подсчитать число записей по каждой рекламной площадке» требует чтения только одного столбца «идентификатор рекламной площадки», который занимает 1 байт в несжатом виде. Если основной трафик был не с рекламных площадок, можно ожидать как минимум 10-кратное сжатие этого столбца. При использовании быстрого алгоритма сжатия распаковка данных возможна со скоростью не менее нескольких гигабайт несжатых данных в секунду. Другими словами, такой запрос может обрабатываться со скоростью порядка нескольких миллиардов строк в секунду на одном сервере. Такая скорость действительно достигается на практике.
+  For example, the query "count the number of records for each advertising platform" requires reading one "advertising platform ID" column, which takes up 1 byte uncompressed. If most of the traffic wasn't from advertising platforms, you can expect at least 10-fold compression of this column. When using a quick compression algorithm, data decompression is possible at a speed of at least several gigabytes of uncompressed data per second. In other words, this query can be processed at a speed of approximately several billion rows per second on a single server. This speed is actually achieved in practice.
 
-### CPU \{#cpu\}
+  ### CPU       
 
-Поскольку выполнение запроса требует обработки большого числа строк, полезно выполнять все операции сразу над целыми векторами, а не над отдельными строками, либо реализовать движок запросов так, чтобы накладные расходы на диспетчеризацию были практически нулевыми. Если этого не сделать, при любой сколько-нибудь приличной дисковой подсистеме интерпретатор запросов неизбежно станет узким местом и будет простаивать CPU. Имеет смысл как хранить данные по столбцам, так и по возможности обрабатывать их по столбцам.
+  Since executing a query requires processing a large number of rows, it helps to dispatch all operations for entire vectors instead of for separate rows, or to implement the query engine so that there is almost no dispatching cost. If you don't do this, with any half-decent disk subsystem, the query interpreter inevitably stalls the CPU. It makes sense to both store data in columns and process it, when possible, by columns.
 
-Сделать это можно двумя способами:
+  There are two ways to do this:
 
-1.  Векторный движок. Все операции пишутся для векторов, а не для отдельных значений. Это означает, что операции не нужно вызывать очень часто, и затраты на диспетчеризацию пренебрежимо малы. Код операции содержит оптимизированный внутренний цикл.
+  1.  A vector engine. All operations are written for vectors, instead of for separate values. This means you don't need to call operations very often, and dispatching costs are negligible. Operation code contains an optimized internal cycle.
 
-2.  Генерация кода. Сгенерированный для запроса код уже включает в себя все косвенные вызовы.
+  2.  Code generation. The code generated for the query has all the indirect calls in it.
 
-В строчно-ориентированных базах данных это, как правило, не делается, так как не имеет смысла при выполнении простых запросов. Однако есть исключения. Например, MemSQL использует генерацию кода для снижения задержек при обработке SQL‑запросов. (Для сравнения, аналитическим СУБД требуется оптимизация пропускной способности, а не задержек.)
+  This isn't done in row-oriented databases, because it doesn't make sense when running simple queries. However, there are exceptions. For example, MemSQL uses code generation to reduce latency when processing SQL queries. (For comparison, analytical DBMSs require optimization of throughput, not latency.)
 
-Обратите внимание, что для эффективности использования CPU язык запросов должен быть декларативным (SQL или MDX) или, по крайней мере, векторным (J, K). Запрос должен содержать только неявные циклы, что позволяет выполнять оптимизацию.
- -->
+  Note that for CPU efficiency, the query language must be declarative (SQL or MDX), or at least a vector (J, K). The query should only contain implicit loops, allowing for optimization.
+  */ }

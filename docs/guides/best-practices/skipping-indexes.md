@@ -20,7 +20,7 @@ Many factors affect ClickHouse query performance. The critical element in most s
 
 Nevertheless, no matter how carefully tuned the primary key, there will inevitably be query use cases that can not efficiently use it. Users commonly rely on ClickHouse for time series type data, but they often wish to analyze that same data according to other business dimensions, such as customer id, website URL, or product number. In that case, query performance can be considerably worse because a full scan of each column value may be required to apply the WHERE clause condition. While ClickHouse is still relatively fast in those circumstances, evaluating millions or billions of individual values will cause "non-indexed" queries to execute much more slowly than those based on the primary key.
 
-In a traditional relational database, one approach to this problem is to attach one or more "secondary" indexes to a table. This is a b-tree structure that permits the database to find all matching rows on disk in O(log(n)) time instead of O(n) time (a table scan), where n is the number of rows. However, this type of secondary index will not work for ClickHouse (or other column-oriented databases) because there are no individual rows on the disk to add to the index.
+In a traditional relational database, one approach to this problem is to attach one or more "secondary" indexes to a table. This is a b-tree structure that permits the database to find all matching rows on disk in O(log(n)) time instead of O(n) time (a table scan), where n is the number of rows. However, this type of secondary index won't work for ClickHouse (or other column-oriented databases) because there are no individual rows on the disk to add to the index.
 
 Instead, ClickHouse provides a different type of index, which in specific circumstances can significantly improve query speed. These structures are labeled "Skip" indexes because they enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
 
@@ -38,7 +38,7 @@ When a user creates a data skipping index, there will be two additional files in
 - `skp_idx_{index_name}.idx`, which contains the ordered expression values
 - `skp_idx_{index_name}.mrk2`, which contains the corresponding offsets into the associated data column files.
 
-If some portion of the WHERE clause filtering condition matches the skip index expression when executing a query and reading the relevant column files, ClickHouse will use the index file data to determine whether each relevant block of data must be processed or can be bypassed (assuming that the block has not already been excluded by applying the primary key). To use a very simplified example, consider the following table loaded with predictable data.
+If some portion of the WHERE clause filtering condition matches the skip index expression when executing a query and reading the relevant column files, ClickHouse will use the index file data to determine whether each relevant block of data must be processed or can be bypassed (assuming that the block hasn't already been excluded by applying the primary key). To use a very simplified example, consider the following table loaded with predictable data.
 
 ```sql
 CREATE TABLE skip_table
@@ -52,7 +52,7 @@ SETTINGS index_granularity=8192;
 INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000);
 ```
 
-When executing a simple query that does not use the primary key, all 100 million entries in the `my_value`
+When executing a simple query that doesn't use the primary key, all 100 million entries in the `my_value`
 column are scanned:
 
 ```sql
@@ -134,11 +134,11 @@ This type of index only works correctly with a scalar or tuple expression -- the
 This lightweight index type accepts a single parameter of the max_size of the value set per block (0 permits
 an unlimited number of discrete values).  This set contains all values in the block (or is empty if the number of values exceeds the max_size).  This index type works well with columns with low cardinality within each set of granules (essentially, "clumped together") but higher cardinality overall.
 
-The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index will not be applied because the index is empty due to exceeding max_size.
+The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index won't be applied because the index is empty due to exceeding max_size.
 
 ### Bloom filter types {#bloom-filter-types}
 
-A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive is not a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
+A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive isn't a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
 
 Because Bloom filters can more efficiently handle testing for a large number of discrete values, they can be appropriate for conditional expressions that produce more values to test. In particular, a Bloom filter index can be applied to arrays, where every value of the array is tested, and to maps, by converting either the keys or values to an array using the mapKeys or mapValues function.
 
@@ -162,7 +162,7 @@ The core purpose of data-skipping indexes is to limit the amount of data analyze
 * the query is processed and the expression is applied to the stored index values to determine whether to exclude the block.
 
 Each type of skip index works on a subset of available ClickHouse functions appropriate to the index implementation listed
-[here](/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
+[here](/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore don't work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
 
 ## Skip index settings {#skip-index-settings}
 
@@ -173,12 +173,12 @@ likely to include most granules, applying the data skipping index incurs an unne
 0 for queries that are unlikely to benefit from any skip indexes.
 * **force_data_skipping_indices** (comma separated list of index names).  This setting can be used to prevent some kinds of inefficient
 queries.  In circumstances where querying a table is too expensive unless a skip index is used, using this setting with one or more index
-names will return an exception for any query that does not use the listed index.  This would prevent poorly written queries from
+names will return an exception for any query that doesn't use the listed index.  This would prevent poorly written queries from
 consuming server resources.
 
 ## Skip index best practices {#skip-best-practices}
 
-Skip indexes are not intuitive, especially for those accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
+Skip indexes aren't intuitive, especially for those accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
 
 Consider the following data distribution:
 
@@ -215,7 +215,7 @@ important for searches.  A set skip index on the error_code column would allow b
 errors and therefore significantly improve error focused queries.
 
 Finally, the key best practice is to test, test, test. Again, unlike b-tree secondary indexes or inverted indexes for searching documents,
-data skipping index behavior is not easily predictable. Adding them to a table incurs a meaningful cost both on data ingest and on queries
+data skipping index behavior isn't easily predictable. Adding them to a table incurs a meaningful cost both on data ingest and on queries
 that for any number of reasons don't benefit from the index. They should always be tested on real world type of data, and testing should
 include variations of the type, granularity size and other parameters. Testing will often reveal patterns and pitfalls that aren't obvious from
 thought experiments alone.

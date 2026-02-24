@@ -39,7 +39,7 @@ In this simple case, our structure is static, our column names are known, and th
 Whereas ClickHouse supports semi-structured data through a JSON type, where key names and their types can be dynamic, this is unnecessary here.
 
 :::note Prefer static schemas where possible
-In cases where your columns have fixed names and types, and new columns are not expected, always prefer a statically defined schema in production.
+In cases where your columns have fixed names and types, and new columns aren't expected, always prefer a statically defined schema in production.
 
 The JSON type is preferred for highly dynamic data, where the names and types of columns are subject to change. This type is also useful in prototyping and data exploration.
 :::
@@ -78,7 +78,7 @@ LIMIT 1
 1 row in set. Elapsed: 1.232 sec.
 ```
 
-Note how we are not required to specify the file format. Instead, we use a glob pattern to read all `*.json.gz` files in the bucket. ClickHouse automatically infers the format is `JSONEachRow` (ndjson) from the file extension and contents. A format can be manually specified through parameter functions in case ClickHouse is unable to detect it.
+Note how we're not required to specify the file format. Instead, we use a glob pattern to read all `*.json.gz` files in the bucket. ClickHouse automatically infers the format is `JSONEachRow` (ndjson) from the file extension and contents. A format can be manually specified through parameter functions in case ClickHouse is unable to detect it.
 
 ```sql
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)

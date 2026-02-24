@@ -23,8 +23,6 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 Пожалуйста, ознакомьтесь с Политикой конфиденциальности ClickHouse, чтобы узнать подробности о том, какие персональные данные собирает ClickHouse и как они могут использоваться.
 
-
-
 ## Самообслуживание \{#self-service\}
 
 По умолчанию ClickHouse предоставляет пользователям возможность просматривать свои персональные данные непосредственно из консоли ClickHouse.
@@ -59,8 +57,6 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 ### Лица без учетной записи \{#individuals-without-an-account\}
 
 Если у вас нет учетной записи, опция самообслуживания, описанная выше, не решила проблему, связанную с вашими персональными данными, и вы хотите направить запрос субъекта данных (Data Subject Access Request) в соответствии с Политикой конфиденциальности, вы можете отправить такой запрос по электронной почте на адрес [privacy@clickhouse.com](mailto:privacy@clickhouse.com).
-
-
 
 ## Подтверждение личности \{#identity-verification\}
 

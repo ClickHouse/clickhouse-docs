@@ -21,16 +21,16 @@ doc_type: 'reference'
 <details>
 <summary>BYOC ではどのリージョンをサポートしていますか？</summary>
 
-BYOC は、ClickHouse Cloud と同じ[リージョン](/cloud/reference/supported-regions#aws-regions )をサポートします。
+ドキュメント [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) に記載されている **パブリックリージョン** はすべて BYOC デプロイメントで利用できます。プライベートリージョンはサポートしていません。
 
 </details>
 
 <details>
 <summary>リソースのオーバーヘッドは発生しますか？ ClickHouse インスタンス以外のサービスを実行するために必要なリソースは何ですか？</summary>
 
-ClickHouse インスタンス（ClickHouse サーバーおよび ClickHouse Keeper）に加えて、`clickhouse-operator`、`aws-cluster-autoscaler`、Istio などのサービスや監視スタックを実行します。
+ClickHouse インスタンス自体（ClickHouse サーバーおよび ClickHouse Keeper）に加えて、`clickhouse-operator`、`aws-cluster-autoscaler`、Istio、監視スタックといった補助サービスも実行します。
 
-現在、これらのワークロードを実行するために、専用ノードグループ内に m5.xlarge ノードを 3 台（各 AZ に 1 台）用意しています。
+これらの共有コンポーネントのリソース消費量は比較的安定しており、ClickHouse サービスの数やサイズに応じて線形に増加するわけではありません。目安として、AWS では通常、これらのワークロードを実行するために、約 4 台の `4xlarge` EC2 インスタンスからなる専用ノードグループを使用します。
 
 </details>
 

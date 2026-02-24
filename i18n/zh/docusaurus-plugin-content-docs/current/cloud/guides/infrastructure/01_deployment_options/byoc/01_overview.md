@@ -43,17 +43,16 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
   - 查看服务及其状态。
 - **托管备份与恢复**
 - **手动纵向和横向扩缩容。**
-- **自动闲置（Auto Idling）**
+- **自动闲置/唤醒（Auto Idling/Wake up）**
 - **Warehouses**：计算-计算分离（Compute-Compute Separation）
 - **通过 Tailscale 实现 Zero Trust 网络。**
 - **监控**：
-  - Cloud 控制台包含内置健康仪表板，用于监控服务健康状况。
-  - 支持 Prometheus 抓取，用于通过 Prometheus、Grafana 和 Datadog 实现集中式监控。有关设置说明，请参阅 [Prometheus 文档](/cloud/reference/byoc/observability#prometheus-access)。
+  - 支持 Prometheus 抓取，用于通过 Prometheus、Grafana 和 Datadog 实现集中式监控。有关设置说明，请参阅 [BYOC Observability](/cloud/reference/byoc/observability)。
 - **VPC 对等连接（VPC Peering）**
-- **集成**：完整列表见[此页面](/integrations)。
 - **安全的 S3 访问**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **集成**：完整列表见[此页面](/integrations)。
 
 ### 计划中的功能（当前不支持） \{#planned-features-currently-unsupported\}
 

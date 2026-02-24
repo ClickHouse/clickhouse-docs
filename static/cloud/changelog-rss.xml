@@ -5,14 +5,33 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Jan 2026 12:20:01 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 20 Feb 2026 13:34:20 -0600</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>ClickHouse Cloud - January 30, 2026</title>
-      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-30-2026</link>
+      <title>ClickHouse Cloud - February 20, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</link>
+      <description>- ClickPipes:: Reverse private endpoints in an inactive state will now be automatically removed after a defined grace period. This ensures unused or misconfigured endpoints are not persisted indefinitely in the backend. See the automatic clean up documentation for more details.</description>
+      <pubDate>Fri, 20 Feb 2026 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - February 13, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#february-13-2026</link>
+      <description>- BigQuery Connector is now in Private Preview. Read this blogpost for more details and join the waitlist for access.
+- We are pleased to announce support for PCI deployments for Google Cloud. Regions supported:
+- GCP europe-west4 (Netherlands)
+- GCP us-central1 (Iowa)
+- GCP us-east1 (South Carolina)
+- Crash report collection preferences can now be configured at the organization level. This setting was previously available only at the service level. When disabled at the organization level, all existing and future services will be opted out automatically.</description>
+      <pubDate>Fri, 13 Feb 2026 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-13-2026</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - January 23, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-23-2026</link>
       <description>- ClickPipes is now available in AWS eu-west-1. For new ClickHouse Cloud services created from January 20 in that region, the matching region will be used for ClickPipes. For older services, ClickPipes defaults to eu-central-1. See the documentation for more details.</description>
-      <pubDate>Fri, 30 Jan 2026 00:00:00 -0600</pubDate>
-      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-30-2026</guid>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-23-2026</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - January 16, 2026</title>

@@ -151,8 +151,8 @@ ADD PROJECTION prj_tip_amount
 ```
 
 После добавления проекции необходимо использовать оператор `MATERIALIZE PROJECTION`,
-чтобы данные в ней были физически отсортированы и перезаписаны в соответствии
-с приведённым выше запросом:
+чтобы данные в ней были физически упорядочены и перезаписаны в соответствии
+с указанным выше запросом:
 
 ```sql
 ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
@@ -188,6 +188,7 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
+
 
 ### Использование проекций для ускорения запросов к данным UK price paid \{#using-projections-to-speed-up-UK-price-paid\}
 
@@ -556,8 +557,8 @@ CREATE TABLE page_views
 ENGINE = MergeTree
 ORDER BY (event_date, id)
 SETTINGS
-  index_granularity = 1, -- одна строка на гранулу
-  max_bytes_to_merge_at_max_space_in_pool = 1; -- отключить слияние
+  index_granularity = 1, -- one row per granule
+  max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
 ```
 
 Затем вставим данные в таблицу:
@@ -603,32 +604,33 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 
 ```response
     ┌─explain────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Выражение ((Project names + Projection))                                               │
- 2. │   Выражение                                                                            │                                                                        
+ 1. │ Expression ((Project names + Projection))                                              │
+ 2. │   Expression                                                                           │                                                                        
  3. │     ReadFromMergeTree (default.page_views)                                             │
- 4. │     Проекции:                                                                          │
- 5. │       Название: region_proj                                                                │
- 6. │         Описание: проекция проанализирована и используется для фильтрации на уровне частей │
- 7. │         Условие: (region in ['us_west', 'us_west'])                                  │
- 8. │         Алгоритм поиска: двоичный поиск                                                │
- 9. │         Части: 3                                                                       │
-10. │         Метки: 3                                                                       │
-11. │         Диапазоны: 3                                                                      │
-12. │         Строки: 3                                                                        │
-13. │         Filtered Части: 2                                                              │
-14. │       Название: user_id_proj                                                               │
-15. │         Описание: проекция проанализирована и используется для фильтрации на уровне частей │
-16. │         Условие: (user_id in [107, 107])                                             │
-17. │         Алгоритм поиска: двоичный поиск                                                │
-18. │         Части: 1                                                                       │
-19. │         Метки: 1                                                                       │
-20. │         Диапазоны: 1                                                                      │
-21. │         Строки: 1                                                                        │
-22. │         Filtered Части: 2                                                              │
+ 4. │     Projections:                                                                       │
+ 5. │       Name: region_proj                                                                │
+ 6. │         Description: Projection has been analyzed and is used for part-level filtering │
+ 7. │         Condition: (region in ['us_west', 'us_west'])                                  │
+ 8. │         Search Algorithm: binary search                                                │
+ 9. │         Parts: 3                                                                       │
+10. │         Marks: 3                                                                       │
+11. │         Ranges: 3                                                                      │
+12. │         Rows: 3                                                                        │
+13. │         Filtered Parts: 2                                                              │
+14. │       Name: user_id_proj                                                               │
+15. │         Description: Projection has been analyzed and is used for part-level filtering │
+16. │         Condition: (user_id in [107, 107])                                             │
+17. │         Search Algorithm: binary search                                                │
+18. │         Parts: 1                                                                       │
+19. │         Marks: 1                                                                       │
+20. │         Ranges: 1                                                                      │
+21. │         Rows: 1                                                                        │
+22. │         Filtered Parts: 2                                                              │
     └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Вывод `EXPLAIN` (показан выше) отображает логический план запроса, сверху вниз:
+Вывод `EXPLAIN` (показан выше) показывает логический план запроса, сверху вниз:
+
 
 | Номер строки | Описание                                                                                               |
 |--------------|--------------------------------------------------------------------------------------------------------|

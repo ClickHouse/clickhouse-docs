@@ -70,7 +70,7 @@ docker rm some-clickhouse-server
 ### Networking {#networking}
 
 :::note
-the predefined user `default` does not have the network access unless the password is set,
+the predefined user `default` doesn't have the network access unless the password is set,
 see "How to create default database and user on starting" and "Managing `default` user" below
 :::
 
@@ -118,7 +118,7 @@ You may also want to mount:
 
 ClickHouse has some advanced functionality, which requires enabling several [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
 
-They are optional and can be enabled using the following [docker command-line arguments](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
+They're optional and can be enabled using the following [docker command-line arguments](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
 
 ```bash
 docker run -d \

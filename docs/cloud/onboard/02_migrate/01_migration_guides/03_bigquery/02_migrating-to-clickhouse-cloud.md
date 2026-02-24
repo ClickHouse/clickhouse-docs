@@ -50,7 +50,7 @@ BigQuery supports exporting data to Google's object store (GCS). For our example
 
 1. Export the 7 tables to GCS. Commands for that are available [here](https://pastila.nl/?014e1ae9/cb9b07d89e9bb2c56954102fd0c37abd#0Pzj52uPYeu1jG35nmMqRQ==).
 
-2. Import the data into ClickHouse Cloud. For that we can use the [gcs table function](/sql-reference/table-functions/gcs). The DDL and import queries are available [here](https://pastila.nl/?00531abf/f055a61cc96b1ba1383d618721059976#Wf4Tn43D3VCU5Hx7tbf1Qw==). Note that because a ClickHouse Cloud instance consists of multiple compute nodes, instead of the `gcs` table function, we are using the [s3Cluster table function](/sql-reference/table-functions/s3Cluster) instead. This function also works with gcs buckets and [utilizes all nodes of a ClickHouse Cloud service](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#parallel-servers) to load the data in parallel.
+2. Import the data into ClickHouse Cloud. For that we can use the [gcs table function](/sql-reference/table-functions/gcs). The DDL and import queries are available [here](https://pastila.nl/?00531abf/f055a61cc96b1ba1383d618721059976#Wf4Tn43D3VCU5Hx7tbf1Qw==). Note that because a ClickHouse Cloud instance consists of multiple compute nodes, instead of the `gcs` table function, we're using the [s3Cluster table function](/sql-reference/table-functions/s3Cluster) instead. This function also works with gcs buckets and [utilizes all nodes of a ClickHouse Cloud service](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#parallel-servers) to load the data in parallel.
 
 <Image img={bigquery_4} size="md" alt="Bulk loading"/>
 
@@ -151,14 +151,14 @@ As described [here](/migrations/bigquery), like in BigQuery, ClickHouse doesn't 
 Similar to clustering in BigQuery, a ClickHouse table's data is stored on disk ordered by the primary key column(s). This sort order is utilized by the query optimizer to prevent resorting, minimize memory usage for joins, and enable short-circuiting for limit clauses.
 In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. Specifically:
 
-- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. Not that these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
+- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. Not that these indexes aren't built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 - Sparse indexing is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) while still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
 <Image img={bigquery_5} size="md" alt="ClickHouse Primary keys"/>
 
 The selected primary key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
-> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they're included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
 ### Choosing an ordering key {#choosing-an-ordering-key}
 
@@ -236,15 +236,15 @@ Ok.
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize `GROUP BY` queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
+- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key isn't in the primary key and you're filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize `GROUP BY` queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
 #### Recommendations {#recommendations}
 
 You should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 
-Important: Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the `ORDER BY` expression.
+Important: Ensure your partitioning key expression doesn't result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, don't partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the `ORDER BY` expression.
 
-> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts_to_throw_insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
+> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts_to_throw_insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This shouldn't happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 
 ## Materialized views vs projections {#materialized-views-vs-projections}
 
@@ -272,7 +272,7 @@ Peak memory usage: 201.93 MiB.
 ```
 
 This query requires all 90m rows to be scanned (albeit quickly) as the `UserId`
-is not the ordering key. Previously, we solved this using a materialized view 
+isn't the ordering key. Previously, we solved this using a materialized view 
 acting as a lookup for the `PostId`. The same problem can be solved with a projection.
 The command below adds a projection with `ORDER BY user_id`.
 
@@ -373,7 +373,7 @@ WHERE UserId = 8592047
 
 ### When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically 
+Projections are an appealing feature for new users as they're automatically 
 maintained as data is inserted. Furthermore, queries can just be sent to a single
 table where the projections are exploited where possible to speed up the response
 time.

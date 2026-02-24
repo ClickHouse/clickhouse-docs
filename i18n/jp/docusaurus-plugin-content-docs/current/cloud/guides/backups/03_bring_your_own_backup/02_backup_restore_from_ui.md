@@ -21,6 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
+
 # ユーザーインターフェイスからのバックアップ／リストア \{#ui-experience\}
 
 ## AWS \{#AWS\}
@@ -109,7 +110,6 @@ ClickHouse CloudサービスがS3バケットに書き込めるように、こ�
   ]
 }
 ```
-
 </VerticalStepper>
 
 #### 2. ClickHouse Cloudでの手順 \{#cloud-steps\}
@@ -153,13 +153,13 @@ ClickHouse Cloudコンソールで以下の手順を実行して外部バケッ�
 
 </VerticalStepper>
 
-### AWSからのバックアップ復元 \{#restoring-backups-from-aws\}
+### AWS からのバックアップの復元 \{#restoring-backups-from-aws\}
 
-AWSからバックアップを復元するには、以下の手順を実行します:
+以下の手順に従って AWS からバックアップを復元します：
 
 <VerticalStepper headerLevel="h5">
 
-##### 復元先の新しいサービスの作成 \{#create-new-service-to-restore-to\}
+##### 復元先の新しいサービスを作成する \{#create-new-service-to-restore-to\}
 
 バックアップを復元する新しいサービスを作成します。
 
@@ -296,17 +296,16 @@ UI内のバックアップリストの上にある`access or restore a backup`�
 :::
 
 :::tip ASYNCコマンド
-大規模なリストアを行う場合、Restoreコマンドの末尾にオプションで`ASYNC`コマンドを追加できます。
-これにより、リストアが非同期で実行されるため、接続が切断されてもリストア処理は継続されます。
-ASYNCコマンドは即座に成功ステータスを返すことに注意が必要です。
-これはリストアが成功したことを意味するものではありません。
-リストアが完了したか、成功または失敗したかを確認するには、`system.backups`テーブルを監視する必要があります。
+大規模な復元を行う場合、復元コマンドの末尾にオプションとして`ASYNC`コマンドを追加することもできます。
+これにより復元が非同期で実行されるため、接続が失われても復元処理は継続されます。
+`ASYNC`コマンドは直ちに成功ステータスを返す点に注意することが重要です。
+これは復元が成功したことを意味するわけではありません。
+復元が完了したかどうか、および成功または失敗したかを確認するには、`system.backups`テーブルを監視する必要があります。
 :::
 
-##### SQLコマンドを実行してバックアップをリストアする \{#gcp-run-sql-command-to-restore-backup\}
+##### バックアップ復元のためのSQLコマンドの実行 \{#gcp-run-sql-command-to-restore-backup\}
 
-新しく作成されたサービスのSQLコンソールからrestoreコマンドを実行し、
-バックアップをリストアします。
+新たに作成したサービスのSQLコンソールから復元コマンドを実行して、バックアップを復元します。
 
 </VerticalStepper>
 

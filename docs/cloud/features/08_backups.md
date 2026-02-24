@@ -48,7 +48,7 @@ ClickHouse Cloud allows you to configure the schedule for your backups for **Sca
 :::note
 The custom schedule will override the default backup policy in ClickHouse Cloud for your given service.
 
-In some rare scenarios, the backup scheduler will not respect the **Start Time** specified for backups. Specifically, this happens if there was a successful backup triggered < 24 hours from the time of the currently scheduled backup. This could happen due to a retry mechanism we have in place for backups. In such instances, the scheduler will skip over the backup for the current day, and will retry the backup the next day at the scheduled time.
+In some rare scenarios, the backup scheduler won't respect the **Start Time** specified for backups. Specifically, this happens if there was a successful backup triggered < 24 hours from the time of the currently scheduled backup. This could happen due to a retry mechanism we have in place for backups. In such instances, the scheduler will skip over the backup for the current day, and will retry the backup the next day at the scheduled time.
 :::
 
 See ["Configure backup schedules"](/cloud/manage/backups/configurable-backups) for steps to configure your backups.
@@ -70,7 +70,7 @@ Any usage where backups are being exported to a
 different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer)
 charges.
 
-Currently, we do not support cross-cloud backups, nor backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
+Currently, we don't support cross-cloud backups, nor backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
 :::
 
 See ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account) for examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
@@ -95,7 +95,7 @@ You can use [SQL commands](/cloud/manage/backups/backup-restore-via-commands) to
 </VerticalStepper>
 
 :::warning
-ClickHouse Cloud will not manage the lifecycle of backups in customer buckets.
+ClickHouse Cloud won't manage the lifecycle of backups in customer buckets.
 Customers are responsible for ensuring that backups in their bucket are managed appropriately for adhering to compliance standards as well as managing cost.
-If the backups are corrupted, they will not be able to be restored.
+If the backups are corrupted, they won't be able to be restored.
 :::

@@ -185,7 +185,5 @@ GROUP BY `table`
 | `HSTORE` | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant)) |
 | `UUID` | [UUID](/sql-reference/data-types/uuid) |
 | `ARRAY<T>` | [ARRAY(T)](/sql-reference/data-types/array) |
-| `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
+| `JSON` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
 | `JSONB` | [String](/sql-reference/data-types/string) |
-
-*\* ClickHouse における JSON の本番環境でのサポートは現在開発中です。現時点では、JSON を String としてマップして [JSON 関数](/sql-reference/functions/json-functions) を使用するか、構造が予測可能な場合には JSON を直接 [Tuples](/sql-reference/data-types/tuple) や [Nested](/sql-reference/data-types/nested-data-structures/nested) にマッピングすることができます。JSON についての詳細は[こちら](/integrations/data-formats/json/overview)を参照してください。*
