@@ -208,6 +208,14 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 使用后台 I/O 池从 MergeTree 表中读取数据。此设置可能会提升 I/O 受限查询的性能。
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "允许在 MergeTree 读取过程中计算子列文件大小以改进读取任务拆分"}]}]}/>
+
+启用后，ClickHouse 会为每个要读取的子列计算其所需文件的大小，以便更准确地计算任务和数据块的大小。
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

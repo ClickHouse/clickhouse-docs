@@ -1652,7 +1652,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 Этот параметр позволяет перейти с версии кода, в которой дедупликация вставок для синхронных и асинхронных операций выполняется по‑разному и непрозрачно, на версию кода, в которой вставляемые данные дедуплицируются единообразно для синхронных и асинхронных вставок.
 Значение по умолчанию — `old_separate_hashes`, что означает, что ClickHouse будет использовать разные хэши дедупликации для синхронных и асинхронных вставок (как и раньше).

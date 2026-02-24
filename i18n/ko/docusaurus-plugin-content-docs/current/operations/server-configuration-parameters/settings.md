@@ -1648,7 +1648,7 @@ ClickHouse HTTP(S) 서버에 접속할 때 기본으로 표시되는 페이지�
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 이 설정은 동기(sync) 및 비동기(async) insert에 대해 서로 완전히 다른 방식으로, 상호 간 중복 제거가 되지 않던 이전 코드 버전에서, 동기와 비동기 insert 전반에 걸쳐 삽입된 데이터가 함께 중복 제거되도록 하는 새로운 코드 버전으로 마이그레이션할 수 있도록 합니다.
 기본값은 `old_separate_hashes`이며, 이는 ClickHouse가 동기 insert와 비동기 insert에 서로 다른 중복 제거 해시를 사용함을 의미합니다(이전과 동일한 동작).

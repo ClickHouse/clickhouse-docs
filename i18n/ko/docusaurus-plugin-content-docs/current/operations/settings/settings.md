@@ -208,6 +208,14 @@ File/S3 엔진과 테이블 함수는 아카이브가 유효한 확장자를 가
 
 백그라운드 I/O 풀을 사용하여 MergeTree 테이블에서 데이터를 읽습니다. 이 설정은 I/O 바운드 쿼리의 성능을 향상시킬 수 있습니다.
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "MergeTree 읽기를 위한 서브컬럼 크기 계산을 허용하여 읽기 태스크 분할을 개선"}]}]}/>
+
+활성화되면 ClickHouse는 태스크 및 블록 크기를 더 정확하게 계산하기 위해 각 서브컬럼 읽기에 필요한 파일 크기를 계산합니다.
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

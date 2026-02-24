@@ -36,7 +36,7 @@ ClickStack と効率的に連携するよう特別に設計された、すぐに
     このコマンドには、接続認証情報があらかじめ埋め込まれています。
 
     :::note[本番環境へのデプロイ]
-    このコマンドはManaged ClickStackへの接続に`default`ユーザーを使用していますが、[本番環境に移行する](/use-cases/observability/clickstack/production#create-a-user)際には専用ユーザーを作成し、設定を変更してください。
+    このコマンドはManaged ClickStackへの接続に`default`ユーザーを使用していますが、[本番環境に移行する](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)際には専用ユーザーを作成し、設定を変更してください。
     :::
 
     このコマンドを1回実行するだけで、ポート4317(gRPC)および4318(HTTP)でOTLPエンドポイントが公開されたClickStackコレクターが起動します。既にOpenTelemetryインストルメンテーションとエージェントを使用している場合は、これらのエンドポイントへのテレメトリデータ送信を直ちに開始できます。
@@ -75,7 +75,7 @@ ClickStack と効率的に連携するよう特別に設計された、すぐに
     <br />
   </TabItem>
 
-  <TabItem value="vector" label="Vector" default>
+  <TabItem value="Vector" label="Vector" default>
     [Vector](https://vector.dev) は、高性能でベンダーに依存しないオブザーバビリティデータパイプラインであり、柔軟性とリソース消費の少なさから、特にログのインジェスト用途で広く利用されています。
 
     ClickStack と併用する場合、Vector ではスキーマ定義をユーザー自身が行う必要があります。これらのスキーマは OpenTelemetry の規約に従ってもよいですし、ユーザー定義イベント構造を表す完全にカスタムなものでも構いません。
@@ -98,7 +98,7 @@ ClickStack と効率的に連携するよう特別に設計された、すぐに
     CREATE DATABASE IF NOT EXISTS logs
     ```
 
-    次に、ログデータの構造に対応したスキーマを持つテーブルを作成します。以下の例では、クラシックな Nginx アクセスログ形式を想定しています。
+    次に、ログデータの構造に合致するスキーマのテーブルを作成します。以下の例では、典型的な Nginx アクセスログ形式を想定しています。
 
     ```sql
     CREATE TABLE logs.nginx_logs
