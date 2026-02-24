@@ -159,7 +159,7 @@ When using [unordered mode](#continuous-ingestion-any-order), the service accoun
 
 ### Authentication {#authentication}
 
-#### Service Account {#service-account}
+#### Service account {#service-account}
 
 Service Account authentication is required when using [unordered mode](#continuous-ingestion-any-order) with Pub/Sub. Select **Service Account** as the authentication method and upload the service account key JSON file.
 
