@@ -4,7 +4,7 @@ title: 'Monitoring Cloudflare Logs with ClickStack'
 sidebar_label: 'Cloudflare Logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Cloudflare Logs with ClickStack'
+description: 'Ingest Cloudflare Logpush data into ClickStack using ClickPipes for continuous, event-driven log ingestion from S3'
 doc_type: 'guide'
 keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'SQS']
 ---
@@ -17,12 +17,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Cloudflare Logs with ClickStack {#cloudflare-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to ingest Cloudflare logs into ClickStack using ClickPipes. You'll configure event-driven ingestion via SQS and set up ClickPipes to continuously ingest logs from S3 into ClickHouse.
+This guide shows you how to ingest Cloudflare logs into ClickStack using ClickPipes. You'll set up event-driven ingestion where Cloudflare Logpush writes to S3, S3 notifies an SQS queue, and ClickPipes continuously ingests new files into ClickHouse.
 
-A demo dataset is available if you want to test before configuring production.
+Unlike most ClickStack integration guides that use the OpenTelemetry Collector, this guide uses [ClickPipes](/integrations/clickpipes) — ClickHouse Cloud's managed ingestion service — to pull data directly from S3.
 
-Time Required: 15-20 minutes
+A demo dataset is available if you want to explore the dashboards before configuring production ingestion.
+
+Time Required: 20-30 minutes
 :::
+
+## Overview {#overview}
+
+Cloudflare [Logpush](https://developers.cloudflare.com/logs/about/) exports detailed request logs — including edge timing, cache status, security events, and bot scores — to destinations like Amazon S3. While Cloudflare's dashboard provides basic analytics, forwarding logs to ClickStack lets you:
+
+- Query edge traffic patterns using ClickHouse SQL
+- Correlate Cloudflare data with application logs, traces, and metrics in a unified platform
+- Retain logs longer than Cloudflare's default retention
+- Build custom dashboards for cache performance, security analysis, and geographic traffic distribution
+
+This guide uses ClickPipes with SQS-based event notifications to achieve continuous, low-latency ingestion. When Cloudflare uploads a new log file to S3, an SQS notification triggers ClickPipes to process the file automatically — with exactly-once semantics and no polling delay.
 
 ## Integration with existing Cloudflare Logpush {#existing-cloudflare}
 
@@ -30,9 +43,9 @@ This section assumes you have Cloudflare Logpush configured to export logs to S3
 
 ### Prerequisites {#prerequisites}
 
-- ClickStack instance running
+- **ClickHouse Cloud service** running (ClickPipes is a Cloud-only feature — not available in ClickStack OSS)
 - Cloudflare Logpush actively writing logs to an S3 bucket
-- AWS permissions to create SQS queues and IAM roles
+- AWS permissions to create SQS queues, S3 event notifications, and IAM roles
 - S3 bucket name and region where Cloudflare writes logs
 
 <VerticalStepper headerLevel="h4">
@@ -46,7 +59,7 @@ Create an SQS queue to receive notifications when Cloudflare uploads new log fil
 2. **Type**: Standard
 3. **Name**: `cloudflare-logs-queue`
 4. Click **Create queue**
-5. Copy the **Queue URL**
+5. Copy the **Queue URL** and **Queue ARN**
 
 **Configure access policy:**
 
@@ -54,21 +67,34 @@ Select your queue → **Access policy** tab → **Edit** → Replace with:
 ```json
 {
   "Version": "2012-10-17",
-  "Statement": [{
-    "Effect": "Allow",
-    "Principal": {"Service": "s3.amazonaws.com"},
-    "Action": "SQS:SendMessage",
-    "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue",
-    "Condition": {
-      "ArnEquals": {
-        "aws:SourceArn": "arn:aws:s3:::YOUR-BUCKET-NAME"
+  "Id": "cloudflare-s3-notifications",
+  "Statement": [
+    {
+      "Sid": "AllowS3ToSendMessage",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Action": "SQS:SendMessage",
+      "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue",
+      "Condition": {
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:s3:::YOUR-BUCKET-NAME"
+        },
+        "StringEquals": {
+          "aws:SourceAccount": "ACCOUNT_ID"
+        }
       }
     }
-  }]
+  ]
 }
 ```
 
 Replace `REGION`, `ACCOUNT_ID`, and `YOUR-BUCKET-NAME` with your values.
+
+:::note
+We strongly recommend configuring a **Dead Letter Queue (DLQ)** for the SQS queue. This makes it easier to debug and retry failed messages. You can add a DLQ in the SQS console under **Dead-letter queue** settings when creating or editing the queue.
+:::
 
 #### Configure S3 event notifications {#s3-notifications}
 
