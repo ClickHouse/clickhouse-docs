@@ -24,8 +24,8 @@ ClickHouse supports six skip index types:
 |------------|-------------|
 | **minmax** | Tracks minimum and maximum values in each granule |
 | **set(N)** | Stores up to N distinct values per granule |
-| **bloom_filter([false_positive_rate])** | Probabilistic filter for existence checks |
 | **text**       | Inverted index over tokenized string data for full text search |
+| **bloom_filter([false_positive_rate])** | Probabilistic filter for existence checks |
 | **ngrambf_v1** | N-gram bloom filter for substring searches |
 | **tokenbf_v1** | Token-based bloom filter for full-text searches |
 
@@ -77,6 +77,26 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 A creation/materialization workflow and the before/after effect are shown in the [basic operation guide](/optimize/skipping-indexes#basic-operation).
 
+## Text index (text) for full text search {#textindex-for-full-text-search}
+
+`text` is an inverted index over tokenized text data.
+Designed specifically for full-text search workloads, enabling efficient and deterministic token and term lookup.
+Recommended for natural language or large-scale text search use cases.
+
+Just see [Full-text Search with Text Indexes](/engines/table-engines/mergetree-family/textindexes) for more details and examples.
+
+```sql
+ALTER TABLE logs ADD INDEX msg_text msg TYPE text(tokenizer = splitByNonAlpha);
+ALTER TABLE logs MATERIALIZE INDEX msg_text;
+
+SELECT count() FROM logs WHERE hasAllTokens(msg, 'exception');
+```
+
+See a more complete observability example [here](/use-cases/observability/schema-design#text-index-for-full-text-search) documentation.
+
+The text index is totally deterministic and fully tunable in terms of tokenization and text processing at a cost of some more storage consumption compared with bloom filter–based indexes, 
+
+
 ## Generic Bloom filter (scalar) {#generic-bloom-filter-scalar}
 
 The `bloom_filter` index is good for "needle in a haystack" equality/IN membership. It accepts an optional parameter which is the false-positive rate (default 0.025). 
@@ -90,25 +110,6 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
-
-## Text index (text) for full text search {#textindex-for-full-text-search}
-
-`text` is an inverted index over tokenized text data.
-Designed specifically for full-text search workloads, enabling efficient and deterministic token and term lookup.
-Recommended for natural language or large-scale text search use cases.
-
-See the page [Full-text Search with Text Indexes](/engines/table-engines/mergetree-family/textindexes) for more details and multiple examples.
-
-```sql
-ALTER TABLE logs ADD INDEX idx_msg msg TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
-ALTER TABLE logs MATERIALIZE INDEX idx_msg;
-
-SELECT count() FROM logs WHERE hasToken(msg, 'exception');
-```
-
-See a more complete observability example [here](/use-cases/observability/schema-design#text-index-for-full-text-search) documentation.
-
-The text index is totally deterministic and fully tunable in terms of tokenization and text processing at a cost of some more storage consumption compared with bloom filter–based indexes, 
 
 ## N-gram Bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
