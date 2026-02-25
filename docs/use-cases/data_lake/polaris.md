@@ -29,7 +29,7 @@ As this feature is experimental, you will need to enable it using:
 
 To connect to the Polaris catalog, you will need:
 
-- Snowflake Open Catalog (hosted Polaris) or self hosted Polaris Catalog
+- Snowflake Open Catalog (hosted Polaris) or self-hosted Polaris Catalog
 - Your Polaris catalog URI (for example, `https://<account-id>.<region>.aws.snowflakecomputing.com/polaris/api/catalog/v1` or `http://polaris:8181/api/catalog/v1/oauth/tokens`)
 - Catalog credentials (client ID and client secret)
 - The OAuth tokens URI for your Polaris instance
