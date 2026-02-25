@@ -316,14 +316,14 @@ Peak memory usage: 666.82 MiB.
 
 ### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 
-The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
 
 ### Refreshing dictionaries {#refreshing-dictionaries}
 
 We have specified a `LIFETIME` for the dictionary of `MIN 600 MAX 900`. LIFETIME is the update interval for the dictionary, with the values here causing a periodic reload at a random interval between 600 and 900s. This random interval is necessary in order to distribute the load on the dictionary source when updating on a large number of servers. During updates, the old version of a dictionary can still be queried, with only the initial load blocking queries. Note that setting `(LIFETIME(0))` prevents dictionaries from updating.
 Dictionaries can be forcibly reloaded using the `SYSTEM RELOAD DICTIONARY` command.
 
-For database sources such as ClickHouse and Postgres, you can set up a query that will update the dictionaries only if they really changed (the response of the query determines this), rather than at a periodic interval. Further details can be found [here](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+For database sources such as ClickHouse and Postgres, you can set up a query that will update the dictionaries only if they really changed (the response of the query determines this), rather than at a periodic interval. Further details can be found [here](/sql-reference/statements/create/dictionary/lifetime).
 
 ### Other dictionary types {#other-dictionary-types}
 

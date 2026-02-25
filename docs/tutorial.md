@@ -398,7 +398,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   ```
 
   :::note
-  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime).
   :::
 
 3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
