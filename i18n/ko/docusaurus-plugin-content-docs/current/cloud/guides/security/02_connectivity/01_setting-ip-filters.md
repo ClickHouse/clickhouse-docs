@@ -16,8 +16,8 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 
 IP 액세스 목록은 어떤 소스 주소에서의 연결을 허용할지 지정하여 ClickHouse 서비스 또는 API 키로 향하는 트래픽을 필터링합니다. 이 목록은 각 서비스와 각 API 키별로 설정할 수 있습니다. 목록은 서비스 또는 API 키를 생성할 때뿐만 아니라 생성 후에도 구성할 수 있습니다.
 
-:::warning[IP 액세스 목록 생성을 건너뛰지 마십시오]
-ClickHouse Cloud 서비스에 대해 IP 액세스 목록 생성을 건너뛰면 해당 서비스로의 모든 트래픽이 허용되지 않습니다. ClickHouse 서비스의 IP 액세스 목록을 `Allow from anywhere`로 설정하면, 공개 IP를 검색하는 인터넷 크롤러와 스캐너에 의해 유휴 상태의 서비스가 주기적으로 활성 상태로 전환될 수 있으며, 그 결과 예상치 못한 소액의 비용이 발생할 수 있습니다.
+:::warning[서비스의 IP 액세스 목록을 구성하십시오]
+ClickHouse Cloud 서비스를 생성하면 IP 허용 목록의 기본 설정은 `Allow from anywhere`입니다. 가능한 한 빨리 특정 IP 주소 또는 범위로 액세스를 제한할 것을 강력히 권장합니다. 서비스를 `Allow from anywhere`로 설정하면, 공개 IP를 검색하는 인터넷 크롤러와 스캐너에 의해 유휴 상태의 서비스가 주기적으로 활성 상태로 전환될 수 있으며, 그 결과 예상치 못한 비용이 발생할 수 있습니다.
 :::
 
 ## 준비 \{#prepare\}
@@ -36,7 +36,7 @@ IP 액세스 목록은 [PrivateLink](/cloud/security/connectivity/private-networ
 <details>
   <summary>ClickHouse 서비스용 IP 액세스 목록</summary>
 
-  ClickHouse 서비스를 생성할 때 IP Allow list의 기본 설정은 「Allow from nowhere.」입니다. 
+  ClickHouse 서비스를 생성할 때 IP Allow list의 기본 설정은 「Allow from anywhere.」입니다. 
   
   ClickHouse Cloud 서비스 목록에서 서비스를 선택한 다음 **Settings**를 선택합니다. **Security** 섹션에서 IP 액세스 목록을 확인할 수 있습니다. 여기서 Add IPs 버튼을 클릭합니다.
   

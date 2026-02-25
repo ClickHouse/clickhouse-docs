@@ -28,12 +28,12 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 도입 버전: v20.1
 
-ClickHouse 서버의 정규화된 도메인 이름(FQDN, Fully Qualified Domain Name)을 반환합니다.
+ClickHouse 서버의 정규화된 도메인 이름(fully qualified domain name, FQDN)을 반환합니다.
 
 **구문**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **별칭**: `fullHostName`
@@ -2566,6 +2566,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **구문**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **인수**
@@ -3656,39 +3657,6 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-도입 버전: v23.2
-
-이 FUNCTION은 ClickHouse 엔진 내부에서 사용되며, 직접 사용하도록 설계되지 않았습니다.
-
-여러 배열에서 튜플의 배열을 반환합니다.
-
-첫 번째 인수는 결과 튜플(Tuple)의 이름을 결정하는 상수 String 배열이어야 합니다.
-나머지 인수는 모두 동일한 크기의 배열이어야 합니다.
-
-**문법**
-
-```sql
-```
-
-**인수**
-
-* 없음.
-
-**반환값**
-
-**예시**
-
-**중첩**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
 도입된 버전: v20.8
@@ -4760,6 +4728,7 @@ ClickHouse 테이블 구조를 CapnProto 형식의 스키마로 변환하는 함
 **구문**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **인수**
