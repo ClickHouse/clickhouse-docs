@@ -43,6 +43,10 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 20 февраля 2026 г. \{#february-20-2026\}
+
+- **ClickPipes:** Обратные приватные конечные точки в неактивном состоянии теперь будут автоматически удаляться по истечении заданного льготного периода. Это гарантирует, что неиспользуемые или неправильно сконфигурированные конечные точки не будут бесконечно сохраняться в бекенде. Подробнее см. в [документации по автоматической очистке](/integrations/clickpipes/aws-privatelink#automatic-cleanup).
+
 ## 13 февраля 2026 г. \{#february-13-2026\}
 
 - [BigQuery Connector](/integrations/clickpipes/bigquery/overview) теперь доступен в режиме Private Preview. Прочитайте эту [публикацию в блоге](https://clickhouse.com/blog/bigquery-clickpipe-private-preview) для получения дополнительной информации и присоединяйтесь к [листу ожидания](https://clickhouse.com/cloud/clickpipes/bigquery-connector), чтобы получить доступ.
@@ -1608,7 +1612,7 @@ ClickHouse Cloud теперь готов к использованию в про
 
 ### Общие изменения \{#general-changes-5\}
 
-- Добавлена поддержка [словарей](/sql-reference/dictionaries/index.md) на основе локальных таблиц ClickHouse и HTTP-источников
+- Добавлена поддержка [словарей](/sql-reference/statements/create/dictionary) на основе локальных таблиц ClickHouse и HTTP-источников
 - Введена поддержка региона [Мумбаи](/cloud/reference/supported-regions)
 
 ### Изменения в консоли \{#console-changes-30\}

@@ -14,7 +14,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-모든 [내부 딕셔너리](../../sql-reference/dictionaries/index.md)를 다시 로드합니다.
+모든 [내부 딕셔너리](./create/dictionary/index.md)를 다시 로드합니다.
 기본적으로 내부 딕셔너리는 비활성화되어 있습니다.
 내부 딕셔너리 업데이트 결과와 관계없이 항상 `Ok.`를 반환합니다.
 

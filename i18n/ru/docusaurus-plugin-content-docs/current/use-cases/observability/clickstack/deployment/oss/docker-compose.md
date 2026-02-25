@@ -70,7 +70,7 @@ docker compose up
 
 <Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg"/>
 
-Пример использования альтернативного экземпляра ClickHouse приведен в разделе ["Создание подключения к ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
+Пример использования альтернативного экземпляра ClickHouse приведен в разделе ["Использование ClickHouse Cloud"](#using-clickhouse-cloud).
 
 ### Заполните данные подключения \{#complete-connection-details\}
 

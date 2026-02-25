@@ -466,6 +466,18 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Пропускать столбцы с неподдерживаемыми типами при определении схемы для формата CapnProto
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка, которая позволяет разобрать и обработать оставшиеся данные в буфере, если соединение неожиданно закрывается"}]}]}/>
+
+Когда эта опция включена, если соединение неожиданно закрывается, любые оставшиеся данные в буфере будут разобраны и обработаны, а не приведут к ошибке.
+
+:::note
+Включение этой опции отключает параллельный разбор и делает дедупликацию невозможной.
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -971,6 +983,18 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Ограничивает размер блоков, формируемых при разборе данных во входных форматах, в байтах. Используется во входных форматах, основанных на строках, когда блок формируется на стороне ClickHouse.
 0 означает отсутствие ограничения по размеру в байтах.
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для ограничения максимального времени ожидания в миллисекундах до того, как блок будет сформирован входным форматом"}]}]}/>
+
+Ограничивает максимальное время ожидания в миллисекундах перед формированием блока при разборе во входных форматах, ориентированных на строки. Значение 0 означает отсутствие ограничения.
+
+:::note
+Этот параметр работает только в том случае, если включен `input_format_connection_handling`. Установка значения также отключает параллельный разбор и делает дедупликацию невозможной.
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 

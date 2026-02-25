@@ -14,7 +14,7 @@ doc_type: 'reference'
 そのため、このセクションで示す例は、事前に設定を行わない限り、[ClickHouse Fiddle](https://fiddle.clickhouse.com/) やクイックリリース環境および本番デプロイメント環境のデフォルト設定では、例外をスローします。
 :::
 
-参照リストの作成方法については、「[Dictionaries](../dictionaries#embedded-dictionaries)」セクションを参照してください。
+参照リストの作成方法については、「[Dictionaries](../statements/create/dictionary/embedded#embedded-dictionaries)」セクションを参照してください。
 
 ## 複数のジオベース \{#multiple-geobases\}
 
@@ -34,12 +34,13 @@ ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱
 例：
 
 ```sql
-regionToCountry(RegionID) – デフォルト辞書を使用します: /opt/geo/regions_hierarchy.txt
-regionToCountry(RegionID, '') – デフォルト辞書を使用します: /opt/geo/regions_hierarchy.txt
-regionToCountry(RegionID, 'ua') – 'ua'キー用の辞書を使用します: /opt/geo/regions_hierarchy_ua.txt
+regionToCountry(RegionID) – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, '') – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/geo/regions_hierarchy_ua.txt
 ```
 
-### regionToName {#regiontoname}
+
+### regionToName
 
 リージョン ID と geobase を受け取り、対応する言語のリージョン名を表す文字列を返します。指定された ID のリージョンが存在しない場合は、空文字列を返します。
 
@@ -79,7 +80,8 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 └────────────────────────────────────────────┘
 ```
 
-### regionToCity {#regiontocity}
+
+### regionToCity
 
 ジオベースからリージョン ID を受け取ります。このリージョンが都市、または都市の一部である場合は、対応する都市のリージョン ID を返します。それ以外の場合は 0 を返します。
 
@@ -91,12 +93,12 @@ regionToCity(id [, geobase])
 
 **パラメータ**
 
-* `id` — geobase のリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。任意。
+* `id` — geobase のリージョン ID。 [UInt32](../data-types/int-uint)。
+* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。 [String](../data-types/string)。任意。
 
-**返される値**
+**戻り値**
 
-* 対応する都市が存在する場合は、そのリージョン ID。[UInt32](../data-types/int-uint)。
+* 対応する都市が存在する場合は、そのリージョン ID。 [UInt32](../data-types/int-uint)。
 * 存在しない場合は 0。
 
 **例**
@@ -127,7 +129,8 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
-### regionToArea {#regiontoarea}
+
+### regionToArea
 
 地域をエリア（geobase におけるタイプ 5）に変換します。それ以外の点では、この関数は [&#39;regionToCity&#39;](#regiontocity) と同様です。
 
@@ -162,24 +165,25 @@ LIMIT 15
 ```text
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
-│ モスクワおよびモスクワ州                             │
-│ サンクトペテルブルクおよびレニングラード州           │
-│ ベルゴロド州                                         │
-│ イヴァノヴォ州                                       │
-│ カルーガ州                                           │
-│ コストロマ州                                         │
-│ クルスク州                                           │
-│ リペツク州                                           │
-│ オリョール州                                         │
-│ リャザン州                                           │
-│ スモレンスク州                                       │
-│ タンボフ州                                           │
-│ トヴェリ州                                           │
-│ トゥーラ州                                           │
+│ Moscow and Moscow region                             │
+│ St. Petersburg and Leningrad region                  │
+│ Belgorod region                                      │
+│ Ivanovsk region                                      │
+│ Kaluga region                                        │
+│ Kostroma region                                      │
+│ Kursk region                                         │
+│ Lipetsk region                                       │
+│ Orlov region                                         │
+│ Ryazan region                                        │
+│ Smolensk region                                      │
+│ Tambov region                                        │
+│ Tver region                                          │
+│ Tula region                                          │
 └──────────────────────────────────────────────────────┘
 ```
 
-### regionToDistrict {#regiontodistrict}
+
+### regionToDistrict
 
 リージョンを、geobase におけるタイプ 4 の連邦管区に変換します。その他の点では、この関数の動作は &#39;regionToCity&#39; と同じです。
 
@@ -189,10 +193,10 @@ LIMIT 15
 regionToDistrict(id [, geobase])
 ```
 
-**パラメータ**
+**パラメーター**
 
-* `id` — geobase のリージョン ID。 [UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。 [Multiple Geobases](#multiple-geobases) を参照。 [String](../data-types/string)。省略可。
+* `id` — geobase からのリージョン ID。[UInt32](../data-types/int-uint)。
+* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -214,26 +218,27 @@ LIMIT 15
 ```text
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
-│ 中央連邦管区                                 │
-│ 北西連邦管区                               │
-│ 南部連邦管区                                   │
-│ 北カフカース連邦管区                          │
-│ 沿ヴォルガ連邦管区                                │
-│ ウラル連邦管区                                    │
-│ シベリア連邦管区                                │
-│ 極東連邦管区                                │
-│ スコットランド                                                 │
-│ フェロー諸島                                            │
-│ フランデレン地域圏                                           │
-│ ブリュッセル首都圏地域圏                                  │
-│ ワロン地域圏                                                 │
-│ ボスニア・ヘルツェゴビナ連邦                     │
+│ Central federal district                                 │
+│ Northwest federal district                               │
+│ South federal district                                   │
+│ North Caucases federal district                          │
+│ Privolga federal district                                │
+│ Ural federal district                                    │
+│ Siberian federal district                                │
+│ Far East federal district                                │
+│ Scotland                                                 │
+│ Faroe Islands                                            │
+│ Flemish region                                           │
+│ Brussels capital region                                  │
+│ Wallonia                                                 │
+│ Federation of Bosnia and Herzegovina                     │
 └──────────────────────────────────────────────────────────┘
 ```
 
-### regionToCountry {#regiontocountry}
 
-地域を国（geobase のタイプ 3）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
+### regionToCountry
+
+地域を国（geobase におけるタイプ 3）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
 **構文**
 
@@ -241,7 +246,7 @@ LIMIT 15
 regionToCountry(id [, geobase])
 ```
 
-**パラメーター**
+**パラメータ**
 
 * `id` — ジオベース内のリージョン ID。[UInt32](../data-types/int-uint)。
 * `geobase` — 辞書のキー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
@@ -264,22 +269,23 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                             │
-│ 世界                                      │  0 │                                                             │
-│ アメリカ合衆国                                        │  2 │ アメリカ合衆国                                                         │
-│ コロラド州                                   │  2 │ アメリカ合衆国                                                         │
-│ ボルダー郡                             │  2 │ アメリカ合衆国                                                         │
-│ ボルダー                                    │  2 │ アメリカ合衆国                                                         │
-│ 中国                                      │  6 │ 中国                                                       │
-│ 四川省                                    │  6 │ 中国                                                       │
-│ 成都市                                    │  6 │ 中国                                                       │
-│ アメリカ大陸                                    │  0 │                                                             │
-│ 北アメリカ                              │  0 │                                                             │
-│ ユーラシア大陸                                    │  0 │                                                             │
-│ アジア                                       │  0 │                                                             │
+│ World                                      │  0 │                                                             │
+│ USA                                        │  2 │ USA                                                         │
+│ Colorado                                   │  2 │ USA                                                         │
+│ Boulder County                             │  2 │ USA                                                         │
+│ Boulder                                    │  2 │ USA                                                         │
+│ China                                      │  6 │ China                                                       │
+│ Sichuan                                    │  6 │ China                                                       │
+│ Chengdu                                    │  6 │ China                                                       │
+│ America                                    │  0 │                                                             │
+│ North America                              │  0 │                                                             │
+│ Eurasia                                    │  0 │                                                             │
+│ Asia                                       │  0 │                                                             │
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-### regionToContinent {#regiontocontinent}
+
+### regionToContinent
 
 地域を大陸（geobase におけるタイプ1）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
@@ -291,8 +297,8 @@ regionToContinent(id [, geobase])
 
 **パラメータ**
 
-* `id` — geobase のリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[複数の Geobase](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `id` — geobase におけるリージョン ID。[UInt32](../data-types/int-uint)。
+* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -312,22 +318,23 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
-│ 世界                                      │  0 │                                                               │
-│ USA                                        │ 10 │ 北米                                                 │
-│ Colorado                                   │ 10 │ 北米                                                 │
-│ Boulder County                             │ 10 │ 北米                                                 │
-│ Boulder                                    │ 10 │ 北米                                                 │
-│ China                                      │ 12 │ アジア                                                          │
-│ Sichuan                                    │ 12 │ アジア                                                          │
-│ Chengdu                                    │ 12 │ アジア                                                          │
-│ アメリカ大陸                                    │  9 │ アメリカ大陸                                                       │
-│ 北米                              │ 10 │ 北米                                                 │
-│ ユーラシア                                    │ 11 │ ユーラシア                                                       │
-│ アジア                                       │ 12 │ アジア                                                          │
+│ World                                      │  0 │                                                               │
+│ USA                                        │ 10 │ North America                                                 │
+│ Colorado                                   │ 10 │ North America                                                 │
+│ Boulder County                             │ 10 │ North America                                                 │
+│ Boulder                                    │ 10 │ North America                                                 │
+│ China                                      │ 12 │ Asia                                                          │
+│ Sichuan                                    │ 12 │ Asia                                                          │
+│ Chengdu                                    │ 12 │ Asia                                                          │
+│ America                                    │  9 │ America                                                       │
+│ North America                              │ 10 │ North America                                                 │
+│ Eurasia                                    │ 11 │ Eurasia                                                       │
+│ Asia                                       │ 12 │ Asia                                                          │
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### regionToTopContinent {#regiontotopcontinent}
+
+### regionToTopContinent
 
 地域に対応する階層内の最上位の大陸を返します。
 
@@ -360,24 +367,25 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
-│ 世界                                      │  0 │                                                                  │
-│ アメリカ合衆国                                        │  9 │ アメリカ大陸                                                          │
-│ コロラド州                                   │  9 │ アメリカ大陸                                                          │
-│ ボルダー郡                             │  9 │ アメリカ大陸                                                          │
-│ ボルダー                                    │  9 │ アメリカ大陸                                                          │
-│ 中国                                      │ 11 │ ユーラシア大陸                                                          │
-│ 四川省                                    │ 11 │ ユーラシア大陸                                                          │
-│ 成都                                    │ 11 │ ユーラシア大陸                                                          │
-│ アメリカ大陸                                    │  9 │ アメリカ大陸                                                          │
-│ North アメリカ大陸                              │  9 │ アメリカ大陸                                                          │
-│ ユーラシア大陸                                    │ 11 │ ユーラシア大陸                                                          │
-│ アジア                                       │ 11 │ ユーラシア大陸                                                          │
+│ World                                      │  0 │                                                                  │
+│ USA                                        │  9 │ America                                                          │
+│ Colorado                                   │  9 │ America                                                          │
+│ Boulder County                             │  9 │ America                                                          │
+│ Boulder                                    │  9 │ America                                                          │
+│ China                                      │ 11 │ Eurasia                                                          │
+│ Sichuan                                    │ 11 │ Eurasia                                                          │
+│ Chengdu                                    │ 11 │ Eurasia                                                          │
+│ America                                    │  9 │ America                                                          │
+│ North America                              │  9 │ America                                                          │
+│ Eurasia                                    │ 11 │ Eurasia                                                          │
+│ Asia                                       │ 11 │ Eurasia                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-### regionToPopulation {#regiontopopulation}
 
-指定した地域の人口を取得します。人口は geobase 対応のファイルに記録できます。セクション [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries) を参照してください。地域に対して人口が記録されていない場合は 0 を返します。geobase では、子地域には人口が記録されていても、親地域には記録されていない場合があります。
+### regionToPopulation
+
+指定した地域の人口を取得します。人口は geobase 対応のファイルに記録できます。セクション [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries) を参照してください。地域に対して人口が記録されていない場合は 0 を返します。geobase では、子地域には人口が記録されていても、親地域には記録されていない場合があります。
 
 **構文**
 
@@ -423,7 +431,8 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-### regionIn {#regionin}
+
+### regionIn
 
 `lhs` のリージョンが `rhs` のリージョンに属しているかどうかをチェックします。属している場合は 1、属していない場合は 0 の UInt8 型の値を返します。
 
@@ -459,19 +468,20 @@ SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.
 結果：
 
 ```text
-World は World に含まれます
-World は USA に含まれません
-World は Colorado に含まれません
-World は Boulder County に含まれません
-World は Boulder に含まれません
-USA は World に含まれます
-USA は USA に含まれます
-USA は Colorado に含まれません
-USA は Boulder County に含まれません
-USA は Boulder に含まれません    
+World is in World
+World is not in USA
+World is not in Colorado
+World is not in Boulder County
+World is not in Boulder
+USA is in World
+USA is in USA
+USA is not in Colorado
+USA is not in Boulder County
+USA is not in Boulder    
 ```
 
-### regionHierarchy {#regionhierarchy}
+
+### regionHierarchy
 
 `UInt32` 型の数値（geobase のリージョン ID）を受け取ります。指定したリージョンと、その親リージョンをチェーンに沿ってすべて含むリージョン ID の配列を返します。
 
@@ -512,7 +522,7 @@ SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, '
 
 {/* 
   以下のタグ内の内容は、ドキュメントフレームワークのビルド時に
-  system.functions から自動生成されたドキュメントに置き換えられます。
+  system.functions から生成されたドキュメントに置き換えられます。
   これらのタグを変更または削除しないでください。
   詳細は https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md を参照してください。
   */ }

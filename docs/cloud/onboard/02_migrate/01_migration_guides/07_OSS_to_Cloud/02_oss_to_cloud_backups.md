@@ -18,7 +18,7 @@ import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cl
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
 
-# Migrating from Self-Managed ClickHouse to ClickHouse Cloud Using Backup Commands
+# Migrating from self-managed ClickHouse to ClickHouse Cloud using backup commands
 
 ## Overview {#overview-migration-approaches}
 

@@ -402,7 +402,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **Синтаксис**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **Аргументы**
@@ -424,7 +424,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -939,13 +939,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-Добавлена в версии: v
+Добавлена в версии: v20.1
 
 Выполняет регистронезависимый поиск значения `needle` в `haystack` с использованием индекса tokenbf&#95;v1.
 
 **Синтаксис**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **Аргументы**
@@ -958,13 +959,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-Введена в версии: v
+Введена в версии: v23.1
 
 Выполняет поиск `needle` в `haystack` без учета регистра с использованием индекса tokenbf&#95;v1. Возвращает null, если `needle` задано некорректно.
 
 **Синтаксис**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **Аргументы**

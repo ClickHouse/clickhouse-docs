@@ -1093,6 +1093,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+## JSONKey \{#JSONKey\}
+
+引入版本：v20.1
+
+按索引（从 1 开始计数）返回 JSON 对象字段的键名。如果 JSON 以字符串形式传入，函数会先对其进行解析。第二个参数是 JSON 路径，用于在嵌套对象中导航。该函数返回指定位置上的键名。
+
+**语法**
+
+```sql
+JSONKey(json[, indices_or_keys, ...])
+```
+
+**参数**
+
+* `json` — 要解析的 JSON 字符串。[`String`](/sql-reference/data-types/string)
+* `indices_or_keys` — 可选的索引或键列表，用于指定到嵌套元素的路径。每个参数可以是字符串（按键名访问）或整数（按从 1 开始的索引访问）。[`String`](/sql-reference/data-types/string) 或 [`Int*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回 JSON 对象中指定位置的键名。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT JSONKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1);
+```
+
+```response title=Response
+a
+```
+
+
 ## JSONLength \{#JSONLength\}
 
 自 v20.1 版本起引入
@@ -1139,7 +1173,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 **语法**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **别名**: `jsonMergePatch`
@@ -1157,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **用法示例**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response

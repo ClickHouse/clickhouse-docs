@@ -33,7 +33,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 **语法**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **别名**: `fullHostName`
@@ -945,7 +945,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-引入版本：v
+引入版本：v25.2
 
 返回当前查询 ID。
 
@@ -1697,7 +1697,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-引入于：v
+引入于：v23.10
 
 返回给定 SQL 查询的格式化版本，可能为多行格式。解析出错时将抛出异常。
 [example:multiline]
@@ -1734,7 +1734,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-引入于：v
+引入于：v23.11
 
 返回给定 SQL 查询的格式化结果，可能为多行。若解析出错，则返回 NULL。
 [example:multiline]
@@ -1771,7 +1771,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-引入版本：v
+引入版本：v23.10
 
 类似于 formatQuery()，但返回的格式化字符串不包含换行符。解析出错时抛出异常。
 [example:multiline]
@@ -1804,7 +1804,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-引入于：v
+引入于：v23.11
 
 与 formatQuery() 类似，但返回的格式化字符串不包含换行符。若解析出错，则返回 NULL。
 [example:multiline]
@@ -2018,6 +2018,37 @@ SELECT
 │      12345 │ 205 minutes and 45 seconds                                      │
 │  432546534 │ 7209108 minutes and 54 seconds                                  │
 └────────────┴─────────────────────────────────────────────────────────────────┘
+```
+
+## fuzzQuery \{#fuzzQuery\}
+
+引入于：v26.2
+
+解析给定的查询字符串，并对其应用随机的 AST 变异（fuzzing）。返回变异后的查询字符串。该函数是非确定性的：每次调用都可能产生不同结果。需要设置 `allow_fuzz_query_functions = 1`。
+
+**语法**
+
+```sql
+fuzzQuery(query)
+```
+
+**参数**
+
+* `query` — 要进行模糊测试的 SQL 查询。[String](../../sql-reference/data-types/string.md)
+
+**返回值**
+
+模糊后的查询字符串 [`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**基本示例**
+
+```sql title=Query
+SET allow_fuzz_query_functions = 1; SELECT fuzzQuery('SELECT 1');
+```
+
+```response title=Response
 ```
 
 ## generateRandomStructure \{#generateRandomStructure\}
@@ -2245,7 +2276,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-引入版本：v
+引入版本：v25.1
 
 返回指定数据库中表名的最大长度限制。
 
@@ -2525,7 +2556,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-自 v 版本引入。
+自 v23.3 版本引入。
 
 接收一个表达式或标识符，以及一个包含子列名称的常量字符串作为参数。
 
@@ -2534,6 +2565,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **语法**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **参数**
@@ -3624,39 +3656,6 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-引入于：v
-
-这是 ClickHouse 引擎内部使用的 FUNCTION，不应被直接使用。
-
-从多个数组中返回由 `Tuple` 组成的数组。
-
-第一个参数必须是 `String` 类型的常量数组，用于指定结果 `Tuple` 中各元素的名称。
-其他参数必须是大小相同的数组。
-
-**语法**
-
-```sql
-```
-
-**参数**
-
-* 无。
-
-**返回值**
-
-**示例**
-
-**嵌套**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
 引入版本：v20.8
@@ -4721,13 +4720,14 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-引入版本：v
+引入版本：v23.8
 
 用于将 ClickHouse 表结构转换为 CapnProto 格式 schema 的函数
 
 **语法**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **参数**

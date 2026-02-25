@@ -3,16 +3,17 @@ slug: /dictionary
 title: 'Dictionary'
 keywords: ['dictionary', 'dictionaries']
 description: 'Dictionary は、高速なルックアップのためのキー値型データ表現を提供します。'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
+
 # Dictionary \{#dictionary\}
 
-ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
+ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
 
 Dictionary は次の用途に有用です:
 
@@ -87,7 +88,7 @@ Controversial_ratio: 0
 
 #### Dictionary の適用 \{#applying-a-dictionary\}
 
-これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
+これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -105,7 +106,7 @@ GROUP BY table
 
 データは Dictionary 内で非圧縮のまま保存されるため、すべてのカラム（実際にはそうしません）を Dictionary に保存すると仮定すると、少なくとも 4GB のメモリが必要になります。Dictionary はクラスター全体でレプリケートされるため、このメモリ量は *ノードごとに* 確保しておく必要があります。
 
-> 以下の例では、Dictionary 用のデータは ClickHouse テーブルを起点としています。これは最も一般的な Dictionary のソースですが、ファイル、HTTP、さらには [Postgres](/sql-reference/dictionaries#postgresql) を含むデータベースなど、[複数のソース](/sql-reference/dictionaries#dictionary-sources) がサポートされています。後ほど示すように、Dictionary は自動更新が可能であり、頻繁に変更が発生する小規模なデータセットをダイレクトに JOIN で参照可能にする理想的な手段です。
+> 以下の例では、Dictionary 用のデータは ClickHouse テーブルを起点としています。これは最も一般的な Dictionary のソースですが、ファイル、HTTP、さらには [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql) を含むデータベースなど、[複数のソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources) がサポートされています。後ほど示すように、Dictionary は自動更新が可能であり、頻繁に変更が発生する小規模なデータセットをダイレクトに JOIN で参照可能にする理想的な手段です。
 
 Dictionary には、ルックアップを行うためのプライマリキーが必要です。これは概念的にはトランザクションデータベースのプライマリキーと同じで、一意である必要があります。上記のクエリでは、JOIN キーである `PostId` に対してルックアップを行います。Dictionary には、`votes` テーブルから `PostId` ごとの賛成票と反対票の合計が格納されている必要があります。以下は、この Dictionary 用データを取得するクエリです。
 
@@ -319,20 +320,20 @@ Peak memory usage: 666.82 MiB.
 
 ### Dictionary の `LAYOUT` を選択する \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
+`LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
 
 ### Dictionary の更新 \{#refreshing-dictionaries\}
 
 `LIFETIME` を `MIN 600 MAX 900` として Dictionary に指定しています。LIFETIME は Dictionary の更新間隔を表し、ここで指定した値により 600～900 秒のランダムな間隔で定期的に再読み込みが行われます。このランダムな間隔は、多数のサーバーで更新を行う際に、Dictionary のソースへの負荷を分散するために必要です。更新中も Dictionary の旧バージョンに対するクエリは引き続き実行可能であり、クエリがブロックされるのは初回ロード時のみです。`(LIFETIME(0))` を設定すると、Dictionary が更新されなくなる点に注意してください。  
 Dictionary は `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的に再読み込みできます。
 
-ClickHouse や Postgres のようなデータベースソースの場合、クエリのレスポンスに基づいて実際に変更があった場合にのみ Dictionary を更新するように設定でき、一定間隔での更新に代えてこの方式を利用できます。詳細は[こちら](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
+ClickHouse や Postgres のようなデータベースソースの場合、クエリのレスポンスに基づいて実際に変更があった場合にのみ Dictionary を更新するように設定でき、一定間隔での更新に代えてこの方式を利用できます。詳細は[こちら](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)を参照してください。
 
 ### その他の Dictionary タイプ \{#other-dictionary-types\}
 
-ClickHouse では、[Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries)、[Polygon](/sql-reference/dictionaries#polygon-dictionaries)、および [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) の各 Dictionary もサポートしています。
+ClickHouse では、[Hierarchical](/sql-reference/statements/create/dictionary/layouts/hierarchical)、[Polygon](/sql-reference/statements/create/dictionary/layouts/polygon)、および [Regular Expression](/sql-reference/statements/create/dictionary/layouts/regexp-tree) の各 Dictionary もサポートしています。
 
 ### 参考情報 \{#more-reading\}
 
 - [辞書を利用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [辞書の高度な設定](/sql-reference/dictionaries)
+- [辞書の高度な設定](/sql-reference/statements/create/dictionary)

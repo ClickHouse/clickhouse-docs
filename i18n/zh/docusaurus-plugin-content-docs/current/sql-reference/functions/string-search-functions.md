@@ -399,7 +399,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **语法**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **参数**
@@ -421,7 +421,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -935,13 +935,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-引入于：v
+引入于：v20.1
 
 在 haystack 中使用 `tokenbf_v1` 索引对 needle 执行不区分大小写的查找。
 
 **语法**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **参数**
@@ -954,13 +955,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-引入于：v
+引入于：v23.1
 
 使用 `tokenbf_v1` 索引在 haystack 中对 needle 执行不区分大小写的查找。如果 needle 非法，则返回 NULL。
 
 **语法**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **参数**

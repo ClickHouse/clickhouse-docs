@@ -16,8 +16,8 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 
 IP アクセスリストは、どの送信元アドレスからの接続を許可するかを指定することで、ClickHouse の各種サービスまたは API キーへのトラフィックを制限します。これらのリストは、サービスごとおよび API キーごとに設定できます。リストは、サービスや API キーの作成時だけでなく、作成後にも設定・変更できます。
 
-:::warning[IP アクセスリストの作成を省略しないでください]
-ClickHouse Cloud サービスに対して IP アクセスリストを作成しなかった場合、そのサービスには一切のトラフィックが許可されません。ClickHouse サービスの IP アクセスリストを `Allow from anywhere` に設定していると、パブリック IP を探索するインターネットクローラーやスキャナーによって、アイドル状態からアクティブ状態へサービスが定期的に移行させられる可能性があり、その結果として、少額ではあるものの想定外のコストが発生することがあります。
+:::warning[サービス用の IP アクセスリストを必ず設定してください]
+ClickHouse Cloud サービスを作成するとき、IP 許可リストのデフォルト設定は 'Allow from anywhere.' です。できるだけ早く、アクセスを特定の IP アドレスまたは範囲に制限することを強く推奨します。`Allow from anywhere` に設定されたサービスは、パブリック IP を探索するインターネットクローラーやスキャナーによって、アイドル状態からアクティブ状態へ定期的に移行させられる可能性があり、その結果として、想定外のコストが発生することがあります。
 :::
 
 ## 準備 \{#prepare\}
@@ -36,7 +36,7 @@ IP アクセスリストは、[PrivateLink](/cloud/security/connectivity/private
 <details>
   <summary>ClickHouse サービス用の IP アクセスリスト</summary>
 
-  ClickHouse サービスを作成するとき、IP allow list のデフォルト設定は「Allow from nowhere.」です。 
+  ClickHouse サービスを作成するとき、IP allow list のデフォルト設定は「Allow from anywhere.」です。 
   
   ClickHouse Cloud のサービス一覧から対象のサービスを選択し、**Settings** を選択します。**Security** セクションの下に IP アクセスリストが表示されるので、**Add IPs** ボタンをクリックします。
   

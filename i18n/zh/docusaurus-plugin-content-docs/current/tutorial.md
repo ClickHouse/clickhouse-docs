@@ -142,9 +142,9 @@ doc_type: 'guide'
      ") SETTINGS input_format_try_infer_datetimes = 0
      ```
 
-  2. 等待 `INSERT` 完成。下载这 150 MB 的数据可能需要片刻时间。
+  2. 等待 `INSERT` 完成。下载这 150 MB 的数据可能需要一点时间。
 
-  3. 插入完成后，检查其是否成功：
+  3. 插入完成后，验证是否成功：
 
      ```sql
      SELECT count() FROM trips
@@ -156,7 +156,7 @@ doc_type: 'guide'
 
   运行一些查询来分析数据。探索以下示例或尝试你自己的 SQL 查询。
 
-  * 计算小费的平均金额：
+  * 计算平均小费金额：
 
     ```sql
     SELECT round(avg(tip_amount), 2) FROM trips
@@ -174,7 +174,7 @@ doc_type: 'guide'
       </p>
     </details>
 
-  * 根据乘客数量计算人均费用：
+  * 按乘客数量计算平均费用：
 
     ```sql
     SELECT
@@ -369,7 +369,7 @@ doc_type: 'guide'
 
   ## 创建字典
 
-  字典是一种存储在内存中的键值对映射。有关详细信息，请参阅 [字典](/sql-reference/dictionaries/index.md)
+  字典是一种存储在内存中的键值对映射。有关详细信息，请参阅 [字典](/sql-reference/statements/create/dictionary)
 
   在你的 ClickHouse 服务中创建一个与表关联的字典。
   该表和字典基于一个 CSV 文件,该文件为纽约市的每个社区包含一行数据。
@@ -386,7 +386,7 @@ doc_type: 'guide'
   | 4          | 曼哈顿  | Alphabet City           | Yellow Zone      |
   | 5          | 斯塔滕岛 | Arden Heights           | Boro Zone        |
 
-  1. 运行以下 SQL 命令，以创建一个名为 `taxi_zone_dictionary` 的字典，并从 S3 中的 CSV 文件为该字典加载数据。该文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
+  1. 运行以下 SQL 命令，用于创建一个名为 `taxi_zone_dictionary` 的字典，并从 S3 中的 CSV 文件为该字典填充数据。该文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
 
   ```sql
   CREATE DICTIONARY taxi_zone_dictionary
@@ -403,7 +403,7 @@ doc_type: 'guide'
   ```
 
   :::note
-  将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可能会以不同方式进行配置。有关详细信息，请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+  将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可能会以不同方式进行配置。有关详细信息，请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
   :::
 
   3. 验证其是否生效。下面的查询应该返回 265 行结果，每个社区对应一行：
@@ -411,7 +411,7 @@ doc_type: 'guide'
      SELECT * FROM taxi_zone_dictionary
      ```
 
-  4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中获取值。你需要传入字典的名称、要获取的字段名以及键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
+  4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中获取值。你需要传入字典的名称、要获取的值对应的列名以及键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
 
      例如，下面的查询将返回 `LocationID` 为 132 的 `Borough`（对应于 JFK 机场）：
 
@@ -419,7 +419,7 @@ doc_type: 'guide'
      SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
      ```
 
-     JFK 位于 Queens 区。注意，检索该值所需的时间几乎为 0：
+     JFK 位于 Queens 行政区。请注意，检索该值所需的时间几乎为 0：
 
      ```response
      ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -429,12 +429,12 @@ doc_type: 'guide'
      1 rows in set. Elapsed: 0.004 sec.
      ```
 
-  5. 使用 `dictHas` 函数用于检查某个键是否存在于字典中。例如，下面的查询返回 `1`（在 ClickHouse 中表示 &quot;true&quot;）：
+  5. 使用 `dictHas` 函数检查某个键是否存在于字典中。例如，下面的查询返回 `1`（在 ClickHouse 中表示“true”）：
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 132)
      ```
 
-  6. 以下查询返回 0，因为 4567 不是字典中 `LocationID` 的取值之一：
+  6. The following query returns 0 because 4567 不是字典中 `LocationID` 的任何值:
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 4567)
      ```
@@ -451,7 +451,7 @@ doc_type: 'guide'
      ORDER BY total DESC
      ```
 
-     此查询按行政区汇总了在拉瓜迪亚机场或 JFK 机场结束的出租车行程数量。结果如下所示，可以看到有相当多的行程其上车所在街区未知：
+     此查询按行政区汇总了在拉瓜迪亚机场或 JFK 机场结束的出租车行程数量。结果如下所示，可以看到有相当多的行程其上车所在社区未知：
 
      ```response
      ┌─total─┬─borough_name──┐
@@ -471,7 +471,7 @@ doc_type: 'guide'
 
   编写一些查询，将 `taxi_zone_dictionary` 与你的 `trips` 表关联起来。
 
-  1. 从一个简单的 `JOIN` 开始，其作用与前面的机场查询类似：
+  1. 从一个简单的 `JOIN` 开始，其效果与前面的机场查询类似：
 
      ```sql
      SELECT
@@ -500,7 +500,7 @@ doc_type: 'guide'
      ```
 
      :::note
-     请注意，上述 `JOIN` 查询的结果与之前使用 `dictGetOrDefault` 的查询相同（只是未包含 `Unknown` 值）。在底层实现上，ClickHouse 实际上为 `taxi_zone_dictionary` 字典调用了 `dictGet` FUNCTION，但 `JOIN` 语法对 SQL 开发者来说更为熟悉。
+     请注意，上述 `JOIN` 查询的结果与之前使用 `dictGetOrDefault` 的查询相同（只是未包含 `Unknown` 值）。在底层实现上，ClickHouse 实际上为 `taxi_zone_dictionary` 字典调用了 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发者来说更为熟悉。
      :::
 
   2. 此查询返回小费金额最高的 1000 次行程对应的行，然后对每一行与字典执行 inner join：
@@ -514,7 +514,7 @@ doc_type: 'guide'
      LIMIT 1000
      ```
      :::note
-     通常在 ClickHouse 中应尽量避免使用 `SELECT *`。你应该只检索实际需要的列。
+     一般在 ClickHouse 中应尽量避免频繁使用 `SELECT *`。你应该只检索实际需要的列。
      :::
 </VerticalStepper>
 

@@ -288,6 +288,56 @@ ClickHouse가 쿼리를 실행할 때 인덱스를 사용할 수 있는지 확�
 월 단위 파티션 키는 해당 범위에 속하는 날짜를 포함하는 데이터 블록만 읽을 수 있게 합니다. 이 경우 하나의 데이터 블록에는 여러 날짜(최대 한 달 전체)에 대한 데이터가 포함될 수 있습니다. 블록 내부에서는 데이터가 기본 키(primary key)로 정렬되어 있으며, 기본 키의 첫 번째 컬럼에 날짜가 포함되지 않을 수 있습니다. 이러한 이유로, 기본 키 접두어를 지정하지 않고 날짜 조건만 사용하는 쿼리를 실행하면 단일 날짜에 대해 필요한 것보다 더 많은 데이터를 읽게 됩니다.
 
 
+### 기본 키에서 결정적 표현식을 사용하는 인덱스 활용 \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+기본 키에는 컬럼 이름뿐만 아니라 표현식도 포함할 수 있습니다. 이러한 표현식은 단순한 함수 체인으로만 제한되지 않고, 결정적이기만 하면 (예: 중첩된 함수나 복합 표현식 등) 임의의 표현식 트리일 수 있습니다.
+
+표현식은 동일한 입력 값에 대해 항상 동일한 결과를 반환하면 **결정적**입니다(예: `length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()` 등은 결정적이지만 `now()`나 `rand()`는 그렇지 않습니다). 기본 키에 결정적 표현식이 포함되어 있으면 ClickHouse는 쿼리의 상수 값에 해당 표현식을 적용하고, 그 결과를 사용하여 기본 키 인덱스에 대한 조건을 구성할 수 있습니다. 이를 통해 `=`, `IN`, `has()`와 같은 조건에서 데이터 스키핑이 가능해집니다.
+
+일반적인 사용 사례로는 기본 키를 더 compact하게 유지(예: 긴 `String` 대신 해시를 저장)하면서도, 원래 컬럼에 대한 조건이 여전히 인덱스를 사용할 수 있도록 하는 것입니다.
+
+결정적이지만 단사(injective)가 아닌 기본 키의 예시:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+인덱스를 사용할 수 있는 조건식의 예:
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+이러한 경우 ClickHouse는 `length('alice')`(및 다른 상수들)을 한 번만 계산하고, 해당 길이 값을 사용하여 기본 키 인덱스에서 범위를 좁힙니다. 문자열의 길이는 **단사 함수가 아니기 때문에** 서로 다른 `user_id` 문자열이 동일한 길이를 가질 수 있고, 이로 인해 인덱스가 추가로 그래뉼(거짓 양성)을 더 읽을 수 있습니다. 원래의 조건식(`user_id = ...`, `IN` 등)이 데이터를 읽은 이후에도 그대로 적용되므로 결과는 여전히 올바르게 유지됩니다.
+
+결정적 표현식이 동시에 **단사 함수**(사용된 인자 타입에 대해 서로 다른 입력이 동일한 출력을 만들 수 없음)이기도 한 경우, ClickHouse는 부정 형태인 `!=`, `NOT IN`, `NOT has(...)`에 대해서도 인덱스를 효과적으로 사용할 수 있습니다. 예를 들어 `reverse(p)`와 `hex(p)`는 `String`에 대해 단사 함수입니다.
+
+단사인 기본 키의 예:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+보다 복잡한 단사(injective) 함수 표현식도 지원합니다. 예를 들면 다음과 같습니다.
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+인덱스를 사용할 수 있는 예시 조건은 다음과 같습니다:
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### 부분 단조 primary key에서 인덱스 사용 \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 예를 들어, 한 달의 날짜를 생각해 보겠습니다. 한 달 내에서는 [단조 수열](https://en.wikipedia.org/wiki/Monotonic_function)을 이루지만, 더 긴 기간 전체로 보면 단조 수열이 아닙니다. 이는 부분 단조 수열입니다. 사용자가 부분 단조인 primary key로 테이블을 생성하면 ClickHouse는 일반적인 방식으로 희소 인덱스를 생성합니다. 사용자가 이러한 유형의 테이블에서 데이터를 조회하면 ClickHouse는 쿼리 조건을 분석합니다. 사용자가 인덱스의 두 마크 사이 구간의 데이터를 가져오려 하고 이 두 마크가 모두 한 달 안에 속하는 경우, ClickHouse는 쿼리 파라미터와 인덱스 마크 간의 거리를 계산할 수 있으므로 이러한 특정 상황에서는 인덱스를 사용할 수 있습니다.

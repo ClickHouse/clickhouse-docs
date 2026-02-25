@@ -20,14 +20,14 @@ import TabItem from '@theme/TabItem';
 :::
 
 <Tabs groupId="ingestion-sources">
-  <TabItem value="OpenTelemetry" label="OpenTelemetry" default>
+  <TabItem value="open-telemetry" label="OpenTelemetry" default>
     Managed ClickStack로 OpenTelemetry 데이터를 보내기 위해서는 OpenTelemetry Collector 사용이 권장됩니다. Collector는 애플리케이션(및 다른 collector)에서 OpenTelemetry 데이터를 수신하고 이를 ClickHouse Cloud로 전달하는 게이트웨이 역할을 합니다.
 
     Collector가 이미 실행 중이 아니라면 아래 단계를 따라 collector를 시작하십시오. 이미 collector가 있는 경우를 위해 구성 예제도 제공됩니다.
 
     ### Collector 시작 \{#start-a-collector\}
 
-    다음 내용은 **OpenTelemetry Collector의 ClickStack 배포판** 사용을 권장하는 경로를 전제로 합니다. 이 배포판에는 추가 처리 기능이 포함되어 있으며 ClickHouse Cloud에 특화되어 최적화되어 있습니다. 자체 OpenTelemetry Collector를 사용하려는 경우 [&quot;기존 collector 구성&quot;](#configure-existing-collectors)을 참고하십시오.
+    다음 내용은 **OpenTelemetry Collector의 ClickStack 배포판** 사용을 권장하는 경로를 전제로 합니다. 이 배포판에는 추가 처리 기능이 포함되어 있으며 ClickHouse Cloud에 특화되어 최적화되어 있습니다. 자체 OpenTelemetry Collector를 사용하려는 경우 [&quot;기존 collector 구성.&quot;](#configure-existing-collectors)을 참고하십시오.
 
     빠르게 시작하려면 표시된 Docker 명령을 복사하여 실행하십시오.
 
@@ -36,7 +36,7 @@ import TabItem from '@theme/TabItem';
     이 명령에는 연결 자격 증명이 미리 채워져 있어야 합니다.
 
     :::note[프로덕션 배포]
-    이 명령은 Managed ClickStack에 연결하기 위해 `default` 사용자를 사용하지만, [프로덕션으로 전환](/use-cases/observability/clickstack/production#create-a-user)할 때는 전용 사용자를 생성하고 구성을 수정하는 것이 좋습니다.
+    이 명령은 Managed ClickStack에 연결하기 위해 `default` 사용자를 사용하지만, [프로덕션으로 전환](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)할 때는 전용 사용자를 생성하고 구성을 수정하는 것이 좋습니다.
     :::
 
     이 단일 명령을 실행하면 OTLP 엔드포인트를 포트 4317(gRPC)과 4318(HTTP)에 노출하는 ClickStack collector가 시작됩니다. 이미 OpenTelemetry 계측 및 에이전트가 있다면, 즉시 이 엔드포인트로 텔레메트리 데이터를 전송할 수 있습니다.
@@ -55,7 +55,7 @@ import TabItem from '@theme/TabItem';
 
     <Image img={advanced_otel_collector} size="lg" alt="고급 OTel collector 소스" border />
 
-    OpenTelemetry collector 구성에 대한 자세한 내용은 [&quot;OpenTelemetry를 사용한 수집&quot;](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참고하십시오.
+    OpenTelemetry collector 구성에 대한 자세한 내용은 [&quot;OpenTelemetry를 사용한 수집.&quot;](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참고하십시오.
 
     ### 수집 시작(선택 사항) \{#start-ingestion-create-new\}
 
@@ -75,7 +75,7 @@ import TabItem from '@theme/TabItem';
     <br />
   </TabItem>
 
-  <TabItem value="벡터" label="Vector" default>
+  <TabItem value="Vector" label="Vector" default>
     [Vector](https://vector.dev)는 고성능의 벤더 중립적 관측성(observability) 데이터 파이프라인으로, 유연성과 낮은 리소스 사용량 덕분에 특히 로그 수집(ingestion)에 많이 사용됩니다.
 
     Vector를 ClickStack과 함께 사용할 때는 사용자가 직접 스키마를 정의해야 합니다. 이 스키마는 OpenTelemetry 규약을 따를 수도 있지만, 사용자 정의 이벤트 구조를 표현하는 완전히 사용자 정의 스키마일 수도 있습니다.

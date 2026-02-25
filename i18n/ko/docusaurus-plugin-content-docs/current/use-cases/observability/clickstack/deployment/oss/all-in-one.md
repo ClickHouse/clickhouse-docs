@@ -57,7 +57,7 @@ ClickStack 이미지는 이제 `clickhouse/clickstack-*`(이전에는 `docker.hy
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-다른 ClickHouse 인스턴스를 사용하는 예시는 「[ClickHouse Cloud 연결 생성하기](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)」를 참조하십시오.
+다른 ClickHouse 인스턴스를 사용하는 예시는 「[ClickHouse Cloud 사용하기](#using-clickhouse-cloud)」를 참조하십시오.
 
 ### 데이터 수집 \{#ingest-data\}
 
@@ -118,7 +118,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 `CLICKHOUSE_ENDPOINT`는 포트 `8443`을 포함한 ClickHouse Cloud HTTPS 엔드포인트여야 합니다. 예를 들어 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`와 같습니다.
 
-HyperDX UI에 접속한 후 [`Team Settings`](http://localhost:8080/team)로 이동하여 ClickHouse Cloud 서비스에 대한 연결을 생성하고, 이어서 필요한 소스를 추가합니다. 예시 흐름은 [여기](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)를 참고하십시오.
+HyperDX UI에 접속한 후 [`Team Settings`](http://localhost:8080/team)로 이동하여 ClickHouse Cloud 서비스에 대한 연결을 생성하고, 이어서 필요한 소스를 추가합니다.
 
 
 ## OpenTelemetry collector 구성 \{#configuring-collector\}

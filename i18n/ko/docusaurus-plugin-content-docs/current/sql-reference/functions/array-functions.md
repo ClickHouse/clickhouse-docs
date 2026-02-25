@@ -3498,7 +3498,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **구문**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **인자**
@@ -3523,7 +3523,7 @@ SELECT arraySum([1, 2, 3, 4]);
 10
 ```
 
-**람다 FUNCTION 사용 방법**
+**람다 함수 사용 예시**
 
 ```sql title=Query
 SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
@@ -4742,6 +4742,76 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 
 ```response title=Response
 5
+```
+
+
+## kql_array_sort_asc \{#kql_array_sort_asc\}
+
+도입 버전: v23.10
+
+하나 이상의 배열을 오름차순으로 정렬합니다. 첫 번째 배열이 정렬되며, 이후 배열들은 첫 번째 배열의 정렬된 순서에 맞게 재정렬됩니다. NULL 값은 끝에 배치됩니다. 이는 KQL (Kusto Query Language) 호환성 함수입니다.
+
+**구문**
+
+```sql
+kql_array_sort_asc(array1[, array2, ..., nulls_last])
+```
+
+**인자**
+
+* `array1` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 선택 사항입니다. `array1`의 정렬 순서에 따라 재정렬할 추가 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 선택 사항입니다. null 값을 마지막에 배치할지 여부를 나타내는 불리언입니다. 기본값은 true입니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+오름차순으로 정렬된 배열들의 튜플을 반환합니다. [`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**예시**
+
+**기본 사용 예제**
+
+```sql title=Query
+SELECT kql_array_sort_asc([3, 1, 2])
+```
+
+```response title=Response
+([1, 2, 3])
+```
+
+
+## kql_array_sort_desc \{#kql_array_sort_desc\}
+
+도입 버전: v23.10
+
+하나 이상의 배열을 내림차순으로 정렬합니다. 첫 번째 배열이 정렬되며, 이후 배열들은 첫 번째 배열의 정렬 순서에 맞추어 재정렬됩니다. NULL 값은 끝에 위치합니다. 이는 KQL(Kusto Query Language)과의 호환성을 위한 함수입니다.
+
+**구문**
+
+```sql
+kql_array_sort_desc(array1[, array2, ..., nulls_last])
+```
+
+**인수**
+
+* `array1` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `array2` — `array1`의 정렬 순서에 따라 재정렬할 수 있는 추가 배열입니다(선택 사항). [`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — null 값이 마지막에 나타나야 하는지 여부를 나타내는 선택적 Boolean입니다. 기본값은 true입니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+내림차순으로 정렬된 배열로 구성된 튜플을 반환합니다. [`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**예제**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT kql_array_sort_desc([3, 1, 2])
+```
+
+```response title=Response
+([3, 2, 1])
 ```
 
 

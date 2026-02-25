@@ -7,18 +7,15 @@ doc_type: 'landing-page'
 keywords: ['ロードマップ', '今後の機能', '開発計画', '今後のリリース予定', '製品の方向性']
 ---
 
-
-
 ## 現在のロードマップ \{#current-roadmap\}
 
 現在のロードマップは、オープンな議論のために公開されています。
 
-- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
-
-
+- [2026](https://github.com/ClickHouse/ClickHouse/issues/93288)
 
 ## これまでのロードマップ \{#previous-roadmaps\}
 
+- [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)
 - [2022](https://github.com/ClickHouse/ClickHouse/issues/44767)

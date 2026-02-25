@@ -3519,14 +3519,14 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **Синтаксис**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **Аргументы**
 
 * `func(x[, y1, ..., yN])` — Необязательный параметр. Лямбда‑функция, которая работает с элементами исходного массива (`x`) и массивов условий (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
 * `source_arr` — Исходный массив для обработки. [`Array(T)`](/sql-reference/data-types/array)
-* `cond1_arr, ... , condN_arr` — Необязательный параметр. N массивов условий, передающих дополнительные аргументы лямбда‑функции. [`Array(T)`](/sql-reference/data-types/array)
+* `, cond1_arr, ... , condN_arr]` — Необязательный параметр. N массивов условий, передающих дополнительные аргументы лямбда‑функции. [`Array(T)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 
@@ -4765,6 +4765,76 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 
 ```response title=Response
 5
+```
+
+
+## kql_array_sort_asc \{#kql_array_sort_asc\}
+
+Добавлено в: v23.10
+
+Сортирует один или несколько массивов по возрастанию. Первый массив сортируется, а последующие массивы переупорядочиваются в соответствии с отсортированному порядком первого массива. Значения NULL помещаются в конец. Это функция совместимости с KQL (Kusto Query Language).
+
+**Синтаксис**
+
+```sql
+kql_array_sort_asc(array1[, array2, ..., nulls_last])
+```
+
+**Аргументы**
+
+* `array1` — Массив для сортировки. [`Array(T)`](/sql-reference/data-types/array)
+* `array2` — Необязательный аргумент. Дополнительные массивы, которые нужно упорядочить в соответствии с порядком сортировки `array1`. [`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — Необязательный аргумент. Логическое значение, указывающее, должны ли значения `NULL` располагаться в конце. По умолчанию — `true`. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает кортеж массивов, отсортированных по возрастанию. [`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**Примеры**
+
+**Базовое использование**
+
+```sql title=Query
+SELECT kql_array_sort_asc([3, 1, 2])
+```
+
+```response title=Response
+([1, 2, 3])
+```
+
+
+## kql_array_sort_desc \{#kql_array_sort_desc\}
+
+Введена в: v23.10
+
+Сортирует один или несколько массивов по убыванию. Первый массив сортируется, а последующие массивы переупорядочиваются в соответствии с порядком элементов в первом массиве после сортировки. Значения NULL помещаются в конец. Это функция совместимости с KQL (Kusto Query Language).
+
+**Синтаксис**
+
+```sql
+kql_array_sort_desc(array1[, array2, ..., nulls_last])
+```
+
+**Аргументы**
+
+* `array1` — Массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array)
+* `array2` — Необязательные дополнительные массивы, которые нужно переупорядочить в соответствии с порядком сортировки массива `array1`. [`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — Необязательное булево значение, указывающее, должны ли `NULL`-значения располагаться в конце. Значение по умолчанию — `true`. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает кортеж массивов, отсортированных по убыванию. [`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**Примеры**
+
+**Базовое использование**
+
+```sql title=Query
+SELECT kql_array_sort_desc([3, 1, 2])
+```
+
+```response title=Response
+([3, 2, 1])
 ```
 
 

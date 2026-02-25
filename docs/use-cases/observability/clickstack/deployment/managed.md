@@ -167,7 +167,7 @@ To get started quickly, copy and run the Docker command shown.
 **Modify this command with your service credentials, recorded when you created your service.**
 
 :::note[Deploying to production]
-While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.
+While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed) and modifying your configuration.
 :::
 
 Running this single command starts the ClickStack collector with OTLP endpoints exposed on ports 4317 (gRPC) and 4318 (HTTP). If you already have OpenTelemetry instrumentation and agents, you can immediately begin sending telemetry data to these endpoints. 

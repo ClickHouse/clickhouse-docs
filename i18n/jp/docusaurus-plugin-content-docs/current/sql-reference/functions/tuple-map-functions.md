@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-導入バージョン: v
+導入バージョン: v23.4
 
 任意の文字列からキーと値のペアを抽出します。文字列は 100% キー・バリュー形式で構造化されている必要はありません。
 
@@ -60,14 +60,14 @@ doc_type: 'reference'
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**引用文字としての単一引用符**
+**クオート文字としての単一引用符**
 
 ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
             SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
 
-            クエリ ID: 0e22bf6b-9844-414a-99dc-32bf647abd5e
+            Query id: 0e22bf6b-9844-414a-99dc-32bf647abd5e
 
             ┌─kv───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
             │ {'name':'neymar','age':'31','team':'psg','nationality':'brazil','last_key':'last_value'}                                 │
@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**エスケープシーケンス非対応環境でのエスケープ**
+**エスケープシーケンス非サポート時の挙動**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **別名**: `str_to_map`, `mapFromString`
@@ -173,7 +174,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-導入バージョン: v
+導入バージョン: v23.4
 
 `extractKeyValuePairs` と同じですが、エスケープシーケンスに対応しています。
 
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **引数**
@@ -403,7 +405,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **構文**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **エイリアス**: `mapContains`
