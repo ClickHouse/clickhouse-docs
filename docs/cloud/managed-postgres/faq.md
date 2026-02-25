@@ -63,6 +63,12 @@ You have full superuser access to your Managed Postgres instance, which allows y
 Enhanced RBAC features with console integration are planned for this year.
 :::
 
+## Upgrades {#upgrades}
+
+### How are PostgreSQL version upgrades handled? {#version-upgrades}
+
+Both minor and major version upgrades are performed via failover and typically result in only a few seconds of downtime. You can configure a maintenance window to control when upgrades are applied. For complete details, see the [Upgrades](/cloud/managed-postgres/upgrades) documentation.
+
 ## Migration {#migration}
 
 ### What tools are available for migrating to Managed Postgres? {#migration-tools}
