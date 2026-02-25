@@ -112,7 +112,7 @@ From the ClickHouse Cloud landing page, select the service for which you wish to
 :::important Estimating resources
 This guide assumes you have provisioned sufficient resources to handle the volume of observability data you plan to ingest and query with ClickStack. To estimate the required resources, refer to the [production guide](/use-cases/observability/clickstack/production#estimating-resources). 
 
-If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications are not disrupted, while keeping the datasets accessible from both services.
+If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications aren't disrupted, while keeping the datasets accessible from both services.
 :::
 
 <Image img={select_service} alt="Select service" size="lg"/>
@@ -167,7 +167,7 @@ To get started quickly, copy and run the Docker command shown.
 **Modify this command with your service credentials, recorded when you created your service.**
 
 :::note[Deploying to production]
-While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.
+While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed) and modifying your configuration.
 :::
 
 Running this single command starts the ClickStack collector with OTLP endpoints exposed on ports 4317 (gRPC) and 4318 (HTTP). If you already have OpenTelemetry instrumentation and agents, you can immediately begin sending telemetry data to these endpoints. 
@@ -284,7 +284,7 @@ The configuration above assumes an Nginx-style schema with a `time_local` column
 
 We also recommend updating the `Default SELECT` to explicitly define which columns are returned in the logs view. If additional fields are available, such as service name, log level, or a body column, these can also be configured. The timestamp display column can also be overridden if it differs from the column used in the table's primary key and configured above.
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config#hyperdx).
 
@@ -310,13 +310,38 @@ Once the source is configured, click "Save" and begin exploring your data.
 3. Set the appropriate permission level for each user:
    - **Service Admin → Full Access** - Required for enabling alerts
    - **Service Read Only → Read Only** - Can view observability data and create dashboards
-   - **No access** - Cannot access HyperDX
+   - **No access** - Can't access HyperDX
 
 <Image img={read_only} alt="ClickHouse Cloud Read Only" size="md"/>
 
 :::important Alerts require admin access
 To enable alerts, at least one user with **Service Admin** permissions (mapped to **Full Access** in the SQL Console Access dropdown) must log into HyperDX at least once. This provisions a dedicated user in the database that runs alert queries.
 :::
+
+### Using ClickStack with read-only compute {#clickstack-read-only-compute}
+
+The ClickStack UI can run entirely on a read-only ClickHouse Cloud service. This is the recommended setup when you want to isolate ingestion and query workloads.
+
+#### How ClickStack selects compute {#how-clickstack-selects-compute}
+
+ClickStack UI always connects to the ClickHouse service from where it is launched in the ClickHouse Cloud console.
+
+This means:
+
+* If you open ClickStack from a read-only service, all queries issued by ClickStack UI will run on that read-only compute.
+* If you open ClickStack from a read-write service, ClickStack will use that compute instead.
+
+No additional configuration inside ClickStack is required to enforce read-only behavior.
+
+#### Recommended setup {#recommended-setup}
+
+To run ClickStack on read-only compute:
+
+1. Create or identify a ClickHouse Cloud service in the warehouse configured as read-only.
+2. In the ClickHouse Cloud console, select the read-only service.
+3. Launch ClickStack from the left navigation menu.
+
+Once launched, ClickStack UI will automatically bind to this read-only service.
 
 ### Adding more data sources {#adding-data-sources}
 

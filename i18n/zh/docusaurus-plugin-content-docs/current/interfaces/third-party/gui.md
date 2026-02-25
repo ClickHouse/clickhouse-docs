@@ -44,6 +44,23 @@ doc_type: 'reference'
 
 [ChartDB 源代码](https://github.com/chartdb/chartdb)。
 
+### DataStoria \{#datastoria\}
+
+[DataStoria](https://github.com/FrankChen021/datastoria) 是一款由 AI 驱动的 Web 控制台应用，可在单一界面中集中管理多个 ClickHouse 集群。
+
+功能：
+
+- **AI-Powered Intelligence**：使用自然语言探索数据、优化和修复 SQL 查询，并对数据进行可视化。
+- **Official ClickHouse Agent Skills Integration**：集成 [ClickHouse 官方 Agent Skills 最佳实践](https://github.com/ClickHouse/agent-skills)，向 AI 询问数据库优化方案和建议。
+- **Smart Error Diagnostics**：通过精确的行和列高亮即时定位语法错误，并一键获取 AI 驱动的修复建议。
+- **System Table Inspection**：借助强大的可视化仪表板和过滤器，深入分析 `system.query_log`、`system.query_views_log`、`system.zookeeper`、`system.ddl_distributed_queue`、`system.part_log` 和 `system.processes`，从而快速理解集群状态。
+- **One-Click Explain**：通过可视化 AST 和流水线视图，快速理解查询执行计划。
+- **Dependency Graph**：可视化表之间的关系，并通过 Materialized Views、分布式表以及外部系统追踪数据流向。
+- **Cluster Monitoring**：使用实时指标、合并操作、复制状态、查询性能等信息监控所有节点。
+- **Privacy & Security**：所有 SQL 查询均从浏览器直接发送至 ClickHouse 服务器，确保完全的隐私性。
+
+[DataStoria 文档](https://docs.datastoria.app)。
+
 ### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) 是一款现代的、AI 辅助的跨平台数据库客户端，对 ClickHouse 提供原生支持。
@@ -331,6 +348,19 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - Native RBAC - UI 权限直接来源于 ClickHouse 授权
 
 [ClickLens 源码](https://github.com/ntk148v/clicklens)
+
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com) 是一个专为 **团队** 和 **安全数据访问** 打造的开源 ClickHouse Web 界面。与需要直接数据库凭证的传统客户端不同，CHouse UI 提供强大的 **基于角色的访问控制（RBAC）** 层，使管理员可以在不暴露底层凭证的情况下授予细粒度权限。
+
+关键特性包括：
+
+- **企业级安全** - 服务器端凭证加密、详细审计日志和访问控制规则。
+- **团队协作** - 定义自定义角色（例如，为分析师配置特定表访问）并安全共享查询。
+- **AI 驱动洞察** - 集成 LLM 支持，用于查询优化和可视化解释。
+- **完整工具集** - 提供功能完善的 SQL 编辑器、监控仪表盘、模式（schema）浏览器以及无缝的数据导入/导出功能。
+
+[CHouse UI 源码](https://github.com/daun-gatal/chouse-ui)
 
 ## 商业版 \{#commercial\}
 

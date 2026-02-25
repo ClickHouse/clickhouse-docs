@@ -208,6 +208,14 @@ File/S3 エンジンおよびテーブル関数では、アーカイブに正し
 
 MergeTree テーブルからの読み取りにバックグラウンド I/O プールを使用します。この設定により、I/O がボトルネックとなっているクエリのパフォーマンスが向上する場合があります。
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Allow calculating subcolumns sizes for merge tree reading to improve read tasks splitting"}]}]}/>
+
+有効にすると、ClickHouse は各サブカラムを読み取るために必要なファイルのサイズを計算し、タスクおよびブロックサイズの計算をより適切に行います。
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -437,16 +445,6 @@ delta-kernel の書き込み機能を有効にします。
 
 Iceberg テーブルに対して 'OPTIMIZE' を明示的に使用できるようにします。
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-Iceberg テーブルに対する `insert` クエリの実行を許可します。
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -614,6 +612,16 @@ YTsaurus との統合用の実験的なテーブルエンジンです。
 
 YTsaurus との統合向けの実験的なテーブルエンジンです。
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable the fuzzQuery function."}]}]}/>
+
+`fuzzQuery` 関数を有効にします。この関数は、クエリ文字列に対してランダムな AST の変異を適用します。
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -635,6 +643,18 @@ YTsaurus との統合向けの実験的なテーブルエンジンです。
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Hyperscan ライブラリを使用する関数の利用を許可します。コンパイル時間が長くなったり、リソース使用量が過剰になったりする可能性を避ける場合は無効にします。
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+**別名**: `allow_experimental_insert_into_iceberg`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Insert into iceberg was moved to Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Iceberg テーブルに対する `insert` クエリの実行を許可します。
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -945,18 +965,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-[ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md)、[TRUNCATE](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
+[`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md)、[`TRUNCATE`](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
 
 設定可能な値:
 
 - `0` — 待機しない。
 - `1` — 自身での実行が完了するまで待機する。
 - `2` — すべてのレプリカでの実行が完了するまで待機する。
+- `3` - アクティブなレプリカのみを待機する。
 
 Cloud でのデフォルト値: `1`。
 
 :::note
-`alter_sync` は `Replicated` テーブルにのみ適用され、`Replicated` ではないテーブルに対する ALTER には何も影響しません。
+`alter_sync` は `Replicated` および `SharedMergeTree` テーブルにのみ適用され、`Replicated` または `Shared` ではないテーブルに対する ALTER には何も影響しません。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -1068,9 +1089,9 @@ Join モードでパッチパーツを適用する際に使用する一時キャ
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final をデフォルトで有効化（#87303 以前の 25.8 と同様）"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
 
 有効にすると、*MergeTree テーブルに対して ROW POLICY と PREWHERE が FINAL 処理の後に適用されます（特に ReplacingMergeTree の場合に有用です）。
 無効にすると、ROW POLICY は FINAL の前に適用されます。この場合、ReplacingMergeTree などのエンジンで重複排除に使われるべき行を
@@ -1118,6 +1139,32 @@ Arrow Flight リクエストで使用するディスクリプタの種類。'pat
 
 - 'path' — FlightDescriptor::Path を使用（デフォルト。ほとんどの Arrow Flight サーバーで動作）
 - 'command' — SELECT クエリとともに FlightDescriptor::Command を使用（Dremio では必須）
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "読み取り専用クエリだけでなく、すべてのクエリ種別をファジングできる新しい設定。"}]}]}/>
+
+false（デフォルト）の場合、サーバー側の AST fuzzer（`ast_fuzzer_runs` で制御）は読み取り専用クエリ（SELECT、EXPLAIN、SHOW、DESCRIBE、EXISTS）に対してのみファジングを行います。true の場合、DDL や INSERT を含むすべてのクエリ種別がファジングされます。
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "サーバー側のAST fuzzerを有効化する新しい設定。"}]}]}/>
+
+各通常クエリの後にランダムなクエリを実行し、その結果を破棄するサーバー側のAST fuzzerを有効にします。
+
+- 0：無効（デフォルト）。
+- 0と1の間の値（両端を含まない）：1回の通常クエリに対して、単一のfuzzクエリを実行する確率。
+- 1以上の値：通常クエリ1つあたりに実行するfuzzクエリの回数。
+
+fuzzerは、すべてのセッションにわたるすべてのクエリからASTフラグメントを蓄積し、時間の経過とともにより興味深い変異を生成します。失敗したfuzzクエリはサイレントに破棄され、結果がクライアントに返されることはありません。
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -1755,6 +1802,14 @@ String から Dynamic への変換時に型推論を使用します。
 
 String から Variant への変換時に型推論を行います。
 
+## check_named_collection_dependencies \{#check_named_collection_dependencies\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "NAMED COLLECTION を削除しても依存テーブルが壊れないことを確認するための新しい設定です。"}]}]}/>
+
+DROP NAMED COLLECTION を実行しても、それに依存するテーブルが壊れないことを確認します。
+
 ## check_query_single_value_result \{#check_query_single_value_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2247,7 +2302,9 @@ Decimal 型の算術演算および比較演算におけるオーバーフロー
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "既定で依存する materialized view の重複排除を有効にします。"}]}]}/>
 
 Replicated\* テーブルからデータを受け取る materialized view に対する重複排除チェックを有効または無効にします。
 
@@ -2265,9 +2322,9 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリに対する重複排除を制御するための新しい設定。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -2291,15 +2348,6 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 - force_enable — `INSERT SELECT` クエリに対して重複排除を有効にします。SELECT の結果が安定していない場合は例外がスローされます。
 - enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT の結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
 - enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT の結果が安定していない場合は警告がログに記録されますが、クエリは重複排除ありで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの利用を検討してください。
-
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
-
-データベース名が指定されていない場合に、外部 Dictionary を検索するデータベース。
-空文字列の場合は、現在のデータベースを意味します。指定されたデフォルトデータベースで Dictionary が見つからない場合、ClickHouse は現在のデータベースを使用します。
-
-XML で定義されたグローバル Dictionary から、SQL で定義された Dictionary への移行に役立ちます。
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -3027,7 +3075,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3230,12 +3278,6 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 有効にすると、SELECT FINAL クエリの実行時に、異なるパーティションに属するパーツはマージされません。代わりに、各パーティション内だけでマージが行われます。パーティション化されたテーブルを扱う場合、これによりクエリ性能が大きく向上する可能性があります。
 
-明示的に設定しない場合でも、パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
-
-この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
-
-**デフォルト値:** `false`（ただし、明示的に設定しない場合はテーブル構造に基づいて自動的に有効化されることがあります）
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3266,6 +3308,15 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 `IN` サブクエリで `DISTINCT` を有効にします。これはトレードオフとなる設定です。有効化すると、分散 IN サブクエリで転送される一時テーブルのサイズを大幅に削減し、一意な値のみが送信されるようにすることで、分片間のデータ転送を大幅に高速化できます。
 ただし、この設定を有効にすると、各ノードで重複排除（DISTINCT）を行う必要があるため、追加のマージ処理が発生します。ネットワーク転送がボトルネックとなっており、その追加のマージコストが許容できる場合に、この設定を使用してください。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
+この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -3339,13 +3390,11 @@ BLOB ストレージの操作情報を system.blob_storage_log テーブルに�
 
 ## enable_full_text_index \{#enable_full_text_index\}
 
-<BetaBadge/>
-
 **別名**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "The text index is now GA"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
 
 true に設定すると、テキスト索引を使用できるようになります。
 
@@ -3390,11 +3439,11 @@ HTTP リクエストに対するレスポンスで、データ圧縮を有効ま
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "この最適化を有効にした"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 実行時に右側から収集した JOIN キーの Set を用いて、左側の行をフィルタリングします。
 
@@ -3626,7 +3675,7 @@ true に設定すると、スカラーサブクエリによる大きなスカラ
 
 この設定を無効化すると、親の WITH 句での宣言は、現在のスコープで宣言されたものと同じスコープとして扱われます。
 
-これは、新しいアナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
+これは、アナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -4953,6 +5002,15 @@ MergeTree ファミリーに属するテーブルで動作します。
 
 有効にすると、サーバーは指定した確率で、すべての DROP TABLE クエリを無視します（Memory および JOIN エンジンの場合は、DROP を TRUNCATE に置き換えます）。テスト目的で使用されます。
 
+## ignore_format_null_for_explain \{#ignore_format_null_for_explain\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "FORMAT Null はデフォルトで EXPLAIN クエリでは無視されるようになりました"}]}]}/>
+
+有効にすると、`EXPLAIN` クエリに対する `FORMAT Null` は無視され、代わりにデフォルトの出力フォーマットが使用されます。
+無効にすると、`FORMAT Null` を指定した `EXPLAIN` クエリは出力を生成しません（従来の動作との互換性を維持）。
+
 ## ignore_materialized_views_with_dropped_target_table \{#ignore_materialized_views_with_dropped_target_table\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5322,6 +5380,30 @@ INTERSECT クエリにおけるデフォルトモードを設定します。取�
 プロファイルは、メモリアロケーションの分析に利用できる SYSTEM JEMALLOC FLUSH PROFILE を使ってフラッシュできます。
 サンプルは、設定 `jemalloc_collect_global_profile_samples_in_trace_log` またはクエリ設定 `jemalloc_collect_profile_samples_in_trace_log` を用いて `system.trace_log` に保存することもできます。
 [Allocation Profiling](/operations/allocation-profiling) を参照してください。
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "collapsed 形式の jemalloc ヒーププロファイルで、バイト数ではなく割り当て回数で集計するための新しい設定"}]}]}/>
+
+jemalloc ヒーププロファイルで「collapsed」出力形式を使用する場合に、バイト数ではなく割り当て回数で集計します。false（デフォルト）の場合は各スタックを生存バイト数で重み付けし、true の場合は生存割り当て回数で重み付けします。
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "system.jemalloc_profile_text テーブルの出力形式を制御するための新しい設定。使用可能な値: 'raw', 'symbolized', 'collapsed'"}]}]}/>
+
+system.jemalloc_profile_text テーブル内の jemalloc ヒーププロファイルの出力形式です。'raw'（生のプロファイル）、'symbolized'（シンボル付きの jeprof 形式）、または 'collapsed'（FlameGraph 形式）のいずれかを指定できます。
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "jemalloc ヒーププロファイルをシンボル化する際にインラインフレームを含めるかどうかを制御する新しい設定。有効にすると、インラインフレームが含まれ、その分シンボル化が遅くなります。無効にすると、インラインフレームはスキップされ、より高速に出力されます"}]}]}/>
+
+jemalloc ヒーププロファイルをシンボル化する際にインラインフレームを含めるかどうかを制御します。有効にするとインラインフレームが含まれ、シンボル化処理が大幅に遅くなる可能性があります。無効にするとインラインフレームはスキップされます。`symbolized` および `collapsed` 出力形式にのみ影響します。
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -7279,6 +7361,7 @@ LIMIT によりすぐに完了するクエリについては、より低い `max
 `max_threads` の値が小さいほど、消費されるメモリ量は少なくなります。
 
 `max_threads` 設定のデフォルト値は、ClickHouse に対して利用可能なハードウェアスレッド数に一致します。
+特別なケースとして、CPU コア数が 32 未満で SMT（例: Intel HyperThreading）を有効にした x86 プロセッサでは、ClickHouse はデフォルトで論理コア数（= 物理コア数 × 2）を使用します。
 SMT（例: Intel HyperThreading）がない場合、これは CPU コア数に相当します。
 
 ClickHouse Cloud ユーザーの場合、デフォルト値は `auto(N)` と表示され、N はサービスの vCPU サイズ（例: 2vCPU/8GiB、4vCPU/16GiB など）に対応します。
@@ -8034,6 +8117,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "新しい設定"}]}]}/>
+
+ZooKeeper リクエストに対してトレースを開始する確率（親トレースの有無にかかわらず）。
+
+可能な値:
+
+- 'auto' - `opentelemetry_start_trace_probability` 設定と同じ
+- 0 — トレースは無効
+- 0 ～ 1 — 確率（例: 1.0 = 常に有効）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -8171,6 +8268,14 @@ AND チェーン内で定数を用いた比較条件を補完し、フィルタ�
 :::note
 現在、この設定を有効にするには `optimize_skip_unused_shards` が必要です（その理由は、将来的にこの設定がデフォルトで有効になる可能性があり、その場合に正しく動作するのは、データが Distributed テーブル経由で挿入されている、つまりデータが sharding_key に従って分散されている場合に限られるためです）。
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+有効な場合は、`OPTIMIZE ... DRY RUN` は `checkDataPart` を使用してマージ後のデータパートを検証します。検証に失敗すると、例外がスローされます。
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -8554,18 +8659,18 @@ Possible values:
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 結果:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -8749,6 +8854,16 @@ CAP_SYS_NICE ケーパビリティが必要で、それがない場合は何も�
 
 ハッシュベースの結合アルゴリズムが適用される場合、このしきい値は（右側テーブルのサイズの推定値が利用可能な場合にのみ）、`hash` と `parallel_hash` のどちらを使用するかを決定するために使用されます。
 右側テーブルのサイズがこのしきい値を下回ると分かっている場合は、前者が使用されます。
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "RIGHT/FULL `parallel_hash` 結合において、結合されなかった行を並列処理できる新しい設定。"}]}]}/>
+
+RIGHT および FULL JOIN の実行中に、右テーブルの結合されなかった行を複数スレッドで並列処理できるようにします。
+この設定により、大規模なテーブルで `parallel_hash` 結合アルゴリズムを使用する場合の非結合フェーズを高速化できます。
+無効化されている場合、結合されなかった行は単一スレッドで処理されます。
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 
@@ -9621,7 +9736,7 @@ EXPLAIN PLAN におけるステップの説明の最大の長さ。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、新しいアナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、アナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタをマージできるようにします。
 
@@ -11080,14 +11195,6 @@ TCP が keepalive プローブの送信を開始するまで、その接続が�
 
 反転テキスト索引から構築されたヒントを使用する際のフィルタ選択度の上限値。
 
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]}/>
-
-テスト目的で、テキスト索引における Bloom フィルターの使用を有効または無効にします。
-
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11445,6 +11552,22 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 
 ファイルシステムキャッシュが有効化されていないリモートディスクに対して、ユーザー空間ページキャッシュを使用します。
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "ローカルディスクでユーザー空間ページキャッシュを使用するための新しい設定"}]}]}/>
+
+ローカルディスクから読み取る際にユーザー空間ページキャッシュを使用します。テスト用途を想定しており、実運用環境で性能が向上する可能性は低いです。`local_filesystem_read_method = 'pread'` または `'read'` が必要です。OS のページキャッシュは無効化しません。OS のページキャッシュを無効化するには `min_bytes_to_use_direct_io` を使用できます。`file()` テーブル関数や `File()` テーブルエンジンではなく、通常のテーブルにのみ影響します。
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "オブジェクトストレージのテーブル関数でユーザー空間ページキャッシュを使用するための新しい設定"}]}]}/>
+
+オブジェクトストレージのテーブル関数（s3、azure、hdfs）およびテーブルエンジン（S3、Azure、HDFS）から読み取る際に、ユーザー空間ページキャッシュを使用します。
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11606,11 +11729,11 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "statistics キャッシュを有効化"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 すべてのパーツの統計情報を読み込むオーバーヘッドを回避するために、クエリで statistics キャッシュを使用します
 

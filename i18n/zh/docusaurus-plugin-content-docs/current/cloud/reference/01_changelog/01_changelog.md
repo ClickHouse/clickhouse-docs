@@ -30,6 +30,7 @@ import fast_releases from '@site/static/images/cloud/reference/june-13-fast-rele
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
+import crash_reports_collection from '@site/static/images/cloud/reference/crash-reports-collection.png';
 
 除了本 ClickHouse Cloud 更新日志之外，请参阅 [Cloud Compatibility](/whats-new/cloud-compatibility) 页面。
 
@@ -41,6 +42,21 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 :::
 
+
+## 2026 年 2 月 20 日 \{#february-20-2026\}
+
+- **ClickPipes：** 处于非活动状态的反向私有终端节点现在会在经过指定的宽限期后自动删除。这样可以确保未使用或配置错误的终端节点不会在后端系统中被无限期保留。更多详情请参阅自动清理[文档](/integrations/clickpipes/aws-privatelink#automatic-cleanup)。
+
+## 2026 年 2 月 13 日 \{#february-13-2026\}
+
+- [BigQuery Connector](/integrations/clickpipes/bigquery/overview) 现已进入私有预览阶段。阅读这篇[博客文章](https://clickhouse.com/blog/bigquery-clickpipe-private-preview)了解更多详情，并加入[候补名单](https://clickhouse.com/cloud/clickpipes/bigquery-connector)以申请访问权限。
+- 我们很高兴地宣布，现已在 Google Cloud 上支持 PCI 合规部署。当前支持的区域： 
+  - GCP europe-west4（荷兰）
+  - GCP us-central1（爱荷华）
+  - GCP us-east1（南卡罗来纳）
+- 现在可以在组织级别配置崩溃报告收集设置。此前该设置仅在服务级别可用。当在组织级别禁用后，所有现有和未来的服务将自动停止收集崩溃报告。
+
+<Image img={crash_reports_collection} size="md" alt="崩溃报告收集" />
 
 ## 2026 年 1 月 23 日 \{#january-23-2026\}
 
@@ -1572,7 +1588,7 @@ ClickHouse Cloud 现已达到生产级就绪状态，具备 SOC2 Type II 合规�
 
 ### 常规更改 \{#general-changes-5\}
 
-- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/dictionaries/index.md) 的支持
+- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/statements/create/dictionary) 的支持
 - 引入了对孟买 [region](/cloud/reference/supported-regions) 的支持
 
 ### 控制台更改 \{#console-changes-30\}

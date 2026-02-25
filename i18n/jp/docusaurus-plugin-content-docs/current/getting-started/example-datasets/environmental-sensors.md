@@ -48,6 +48,7 @@ SETTINGS format_csv_delimiter = ';';
 
 2. ClickHouse にデータを保存するために、次の `MergeTree` テーブルを使用します。
 
+
 ```sql
 CREATE TABLE sensors
 (
@@ -121,7 +122,7 @@ SETTINGS
 0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
-4. `sensors` テーブルに必要なストレージ容量を確認します。
+4. `sensors` テーブルに必要なディスク容量がどれくらいか確認します。
 
 ```sql
 SELECT
@@ -138,7 +139,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67T のデータは圧縮されて 310 GiB となり、総行数は 206.9 億行です。
+1.67T のデータは 310 GiB にまで圧縮され、総行数は 206.9 億行です。
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -172,6 +173,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-結果の可視化は次のとおりです。
+結果を可視化したものがこちらです。
+
 
 <Image img={sensors_02} size="md" alt="暑くて蒸し暑い日"/>

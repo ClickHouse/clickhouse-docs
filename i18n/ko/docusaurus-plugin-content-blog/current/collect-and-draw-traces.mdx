@@ -1,0 +1,195 @@
+---
+date: 2025-12-30
+title: 쿼리 트레이스를 수집하고 시각화하는 방법
+tags: ['도구 및 유틸리티']
+keywords: ['쿼리 트레이스', 'OTel', 'Grafana']
+description: "이 가이드는 자가 관리형 ClickHouse에서 내장 기능 또는 Grafana를 사용하여 쿼리 트레이스를 수집하고 시각화하는 방법을 설명합니다. 이는 특히 복잡한 쿼리를 다루면서 EXPLAIN이 제공하는 정보를 넘어 내부 실행 방식을 이해해야 할 때 유용합니다."
+---
+
+import Image from '@theme/IdealImage';
+import trace_visualizer from '@site/static/images/knowledgebase/trace-visualizer-example.png';
+import trace_visualization_grafana from '@site/static/images/knowledgebase/trace-visualization-grafana.png';
+import trace_visualization_diagram from '@site/static/images/knowledgebase/trace-visualization-diagram.png';
+
+{frontMatter.description}
+
+{/* 생략 */}
+
+<br />
+
+<br />
+
+**전제 조건**:
+
+* ClickHouse [구성 파일](/operations/configuration-files)에 대한 이해
+* 실행 중인 [ClickHouse 서버](/install) 인스턴스
+* (선택 사항) 로컬에서 실행 중인 [Grafana 인스턴스](https://grafana.com/docs/grafana/latest/fundamentals/getting-started/)
+
+<VerticalStepper headerLevel="h2">
+  ## `opentelemetry_span_log` 시스템 테이블이 활성화되어 있는지 확인하세요 \{#enable-system-table\}
+
+  `config.xml`의 `opentelemetry_span_log` 섹션을 수정하지 않은 경우 이 단계를 건너뛰어도 됩니다.
+
+  기본 ClickHouse `config.xml` 파일을 열고 다음 섹션을 찾습니다:
+
+  ```yaml
+  <!--
+      OpenTelemetry log contains OpenTelemetry trace spans.
+
+      NOTE: this table does not use standard schema with event_date and event_time!
+  -->
+  <opentelemetry_span_log>
+      <!--
+          The default table creation code is insufficient, this <engine> spec
+          is a workaround. There is no 'event_time' for this log, but two times,
+          start and finish. It is sorted by finish time, to avoid inserting
+          data too far away in the past (probably we can sometimes insert a span
+          that is seconds earlier than the last span in the table, due to a race
+          between several spans inserted in parallel). This gives the spans a
+          global order that we can use to e.g. retry insertion into some external
+          system.
+      -->
+      <engine>
+          engine MergeTree
+          partition by toYYYYMM(finish_date)
+          order by (finish_date, finish_time_us, trace_id)
+      </engine>
+      <database>system</database>
+      <table>opentelemetry_span_log</table>
+      <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+      <max_size_rows>1048576</max_size_rows>
+      <reserved_size_rows>8192</reserved_size_rows>
+      <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+      <flush_on_crash>false</flush_on_crash>
+  </opentelemetry_span_log>
+  ```
+
+  주석 처리되지 않았는지 확인하세요. 주석 처리된 경우 다음 단계에서 `system.opentelemetry_span_log`를 확인할 수 없습니다.
+  ClickHouse 서버가 기본 구성 파일을 사용하지 않는 경우에도 동일한 문제가 발생할 수 있습니다.
+
+  서버 로그에서 다음과 같은 내용을 확인하세요:
+
+  ```text
+  Processing configuration file 'config.xml'.
+  There is no file 'config.xml', will use embedded config.
+  ```
+
+  :::tip
+  표준 설치 시 이 파일은 `/etc/clickhouse-server/config.xml`에 위치합니다
+  :::
+
+  ## OpenTelemetry 추적 활성화하기 \{#enable-otel-tracing\}
+
+  ClickHouse 서버가 실행 중인 상태에서 ClickHouse 클라이언트를 열고 다음 쿼리를 사용하여 트레이스 수집을 활성화하세요:
+
+  ```bash
+  SET opentelemetry_trace_processors=1;
+  ```
+
+  다음 명령을 실행하면 `opentelemetry_span_log` 시스템 테이블을 확인하실 수 있습니다:
+
+  ```sql
+  SHOW TABLES IN system
+  ```
+
+  다음을 실행하세요:
+
+  ```
+  SET opentelemetry_start_trace_probability=1;
+  ```
+
+  실행된 쿼리에 대해 ClickHouse가 트레이스를 시작할 확률을 설정합니다.
+  `1`은 모든 실행된 쿼리에 대해 트레이스가 활성화됨을 의미합니다.
+
+  ## 쿼리 ID 확인하기 \{#obtain-query-id\}
+
+  다음 더미 쿼리를 실행하거나, 추적하려는 쿼리를 실행하세요:
+
+  ```sql
+  SELECT pow(number, 2) FROM numbers(10E4);
+  ```
+
+  쿼리 ID를 복사하세요:
+
+  ```sql
+  :) SELECT pow(number, 2) FROM numbers(10E4);
+
+  SELECT pow(number, 2)
+  FROM numbers(100000.)
+
+  --highlight-next-line
+  Query id: a9241258-a0c4-4776-a00b-e6a1d9bec4a1
+  ```
+
+  ## 트레이스 파일 생성하기 \{#generate-trace-file\}
+
+  이전 단계에서 얻은 쿼리 ID를 대체하여 다음 쿼리를 실행하세요:
+
+  ```sql
+  WITH 'a9241258-a0c4-4776-a00b-e6a1d9bec4a1' AS my_query_id
+  SELECT
+      concat(substring(hostName(), length(hostName()), 1), leftPad(greatest(attribute['clickhouse.thread_id'], attribute['thread_number']), 5, '0')) AS group,
+      operation_name,
+      start_time_us,
+      finish_time_us,
+      sipHash64(operation_name) AS color,
+      attribute
+  FROM system.opentelemetry_span_log
+  WHERE (trace_id IN (
+      SELECT trace_id
+      FROM system.opentelemetry_span_log
+      WHERE (attribute['clickhouse.query_id']) = my_query_id
+  )) AND (operation_name != 'query') AND (operation_name NOT LIKE 'Query%')
+  ORDER BY
+      hostName() ASC,
+      group ASC,
+      parent_span_id ASC,
+      start_time_us ASC
+  INTO OUTFILE 'trace.json'
+  FORMAT JSON
+  SETTINGS output_format_json_named_tuples_as_objects = 1
+  ```
+
+  이 명령은 트레이스를 `trace.json`이라는 파일에 기록합니다.
+  기본적으로 이 파일은 clickhouse-client 또는 clickhouse-local 도구를 실행 중인 현재 작업 디렉터리에 생성됩니다.
+
+  ## 내장 도구를 사용한 트레이스 시각화 \{#visualize-trace-using-built-in-tooling\}
+
+  [https://trace-visualizer.clickhouse.com/](https://trace-visualizer.clickhouse.com/)에서 제공되는 트레이스 시각화 도구를 사용하세요.
+  이전 단계의 `trace.json` 파일을 로드하여 트레이스를 시각화하세요.
+
+  <Image img={trace_visualizer} size="md" alt="ClickHouse 트레이스 시각화 도구 예제" />
+
+  ## Grafana를 사용한 트레이스 시각화 \{#using-grafana\}
+
+  공식 ClickHouse 플러그인을 사용하여 트레이스 데이터를 시각화하고 탐색하려면 Grafana를 권장합니다.
+  이 플러그인은 Trace Panel을 사용하여 트레이스를 시각화할 수 있도록 개선되었습니다.
+  시각화 기능과 Explore 구성 요소로 모두 지원됩니다.
+
+  [&quot;관측성을 위한 Grafana와 ClickHouse 사용&quot;](https://clickhouse.com/docs/observability/grafana)에 설명된 단계를 따라
+  ClickHouse 플러그인으로 Grafana를 설정하십시오.
+
+  Explore 탭에서 다음 쿼리를 실행할 수 있습니다. `trace_id`를 본인의 값으로 교체하세요:
+
+  ```sql
+  SELECT
+      toString(trace_id) AS traceID,
+      toString(span_id) AS spanID,
+      if(toString(parent_span_id)='0', '', toString(parent_span_id)) AS parentSpanID,
+      'ClickHouse' AS serviceName,
+      operation_name AS operationName,
+      start_time_us/1000000 AS startTime,
+      (finish_time_us - start_time_us)/1000 AS duration,
+      arrayMap(key -> map('key', key, 'value', attribute[key]), mapKeys(attribute)) AS serviceTags
+  FROM system.opentelemetry_span_log
+  WHERE trace_id = '68a14b27-a61f-596d-3746-2b03d2530e42' ORDER BY startTime ASC
+  ```
+
+  `Query type`을 `Traces`로 설정하세요:
+
+  <Image img={trace_visualization_grafana} size="md" alt="Grafana에서 ClickHouse 트레이스 시각화" />
+
+  &quot;Run Query&quot;를 클릭하고 트레이스 다이어그램을 확인하세요:
+
+  <Image img={trace_visualization_diagram} size="md" alt="Grafana에서 ClickHouse 트레이스 시각화" />
+</VerticalStepper>

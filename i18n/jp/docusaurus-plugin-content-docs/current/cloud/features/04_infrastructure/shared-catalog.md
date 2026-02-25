@@ -73,6 +73,7 @@ CREATE DATABASE my_database;
 
 ClickHouse Cloud では、データベースに Shared データベースエンジンが自動的に割り当てられます。そのようなデータベース内で stateless エンジンを使用して作成されたテーブルはすべて、自動的に Shared Catalog のレプリケーションおよびコーディネーション機能を利用できます。
 
+
 ## まとめ \{#summary\}
 
 Shared Catalog と Shared データベースエンジンは次の機能を提供します:

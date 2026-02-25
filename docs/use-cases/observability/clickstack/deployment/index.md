@@ -10,7 +10,7 @@ keywords: ['ClickStack', 'observability']
 
 ClickStack provides multiple deployment options to suit various use cases.
 
-Each of the deployment options are summarized below. The [Getting Started Guide](/use-cases/observability/clickstack/getting-started) specifically demonstrates options 1 and 2. They are included here for completeness.
+Each of the deployment options are summarized below. The [Getting Started Guide](/use-cases/observability/clickstack/getting-started) specifically demonstrates options 1 and 2. They're included here for completeness.
 
 | Name             | Description                                                                                                          | Suitable For                                                                                         | Limitations                                                                                                 | Example Link                                                                                                                                      |
 |------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|

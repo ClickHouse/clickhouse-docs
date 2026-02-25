@@ -20,7 +20,7 @@ To understand what can affect your bill, and ways that you can manage your spend
 
 ### Basic: from $66.52 per month {#basic-from-6652-per-month}
 
-Best for: Departmental use cases with smaller data volumes that do not have hard reliability guarantees.
+Best for: Departmental use cases with smaller data volumes that don't have hard reliability guarantees.
 
 **Basic tier service**
 - 1 replica x 8 GiB RAM, 2 vCPU
@@ -182,7 +182,7 @@ Best for: large scale, mission critical deployments that have stringent security
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
 :::note 
-If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
+If you're being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
 :::
 
 ### Where can I find legacy pricing? {#find-legacy-pricing}
@@ -261,7 +261,7 @@ Yes. Usage is consumed with the following payment methods in this order:
 
 ### What controls does ClickHouse Cloud offer to manage costs for Basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
 
-- The [Advanced scaling control](/manage/scaling) lets you control the behavior of pausing/idling during inactivity. Adjusting memory allocation is not supported for Basic services.
+- The [Advanced scaling control](/manage/scaling) lets you control the behavior of pausing/idling during inactivity. Adjusting memory allocation isn't supported for Basic services.
 - Note that the default setting pauses the service after a period of inactivity.
 
 ### If I have multiple services, do I get an invoice per service or a consolidated invoice? {#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice}
@@ -296,7 +296,7 @@ an invoice is generated between 3-Jan and 5-Jan-2025
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates aren't the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
 
 ### Are there any restrictions around the usage of prepaid credits? {#are-there-any-restrictions-around-the-usage-of-prepaid-credits}
 
@@ -325,15 +325,15 @@ By leveraging shared storage in this deployment, users benefit from cost savings
 Compute-compute separation can save you a significant amount of ClickHouse Credits in some cases. 
 A good example is the following setup:
 
-1. You have ETL jobs that are running 24/7 and ingesting data into the service. These ETL jobs do not require a lot of memory so they can run on a small instance with, for example, 32 GiB of RAM.
+1. You have ETL jobs that are running 24/7 and ingesting data into the service. These ETL jobs don't require a lot of memory so they can run on a small instance with, for example, 32 GiB of RAM.
 
-2. A data scientist on the same team that has ad hoc reporting requirements, says they need to run a query that requires a significant amount of memory - 236 GiB, however does not need high availability and can wait and rerun queries if the first run fails.
+2. A data scientist on the same team that has ad hoc reporting requirements, says they need to run a query that requires a significant amount of memory - 236 GiB, however doesn't need high availability and can wait and rerun queries if the first run fails.
 
 In this example you, as an administrator for the database, can do the following:
 
 1. Create a small service with two replicas 16 GiB each - this will satisfy the ETL jobs and provide high availability.
 
-2. For the data scientist, you can create a second service in the same warehouse with only one replica with 236 GiB. You can enable idling for this service so you will not be paying for this service when the data scientist is not using it.
+2. For the data scientist, you can create a second service in the same warehouse with only one replica with 236 GiB. You can enable idling for this service so you won't be paying for this service when the data scientist isn't using it.
 
 Cost estimation (per month) for this example on the **Scale Tier**:
 - Parent service active 24 hours day: 2 replicas x 16 GiB 4 vCPU per replica

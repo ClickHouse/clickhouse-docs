@@ -11,7 +11,8 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# PTY 対応 SSH インターフェース \{#ssh-interface-with-pty\}
+
+# PTY を使用する SSH インターフェース \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
 
@@ -19,15 +20,15 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 序文 \{#preface\}
 
-ClickHouse サーバーは、SSH プロトコルを使って自身への直接接続を受け付けます。任意のクライアントから接続できます。
+ClickHouse サーバーは、SSH プロトコルを使用して自身に直接接続できます。任意のクライアントから接続可能です。
 
-[SSH キーで識別されるデータベースユーザー](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) を作成した後、次のように接続できます。
+[SSH キーで認証されるデータベースユーザー](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) を作成したら、次のようにします。
 
 ```sql
 CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<REDACTED>' TYPE 'ssh-ed25519';
 ```
 
-このキーを使って ClickHouse サーバーに接続できます。このキーを使用すると、clickhouse-client の対話型セッションが動作する疑似端末 (PTY) が開きます。
+このキーを使用して ClickHouse サーバーに接続できます。`clickhouse-client` の対話型セッション用の擬似端末 (PTY) が開きます。
 
 ```bash
 > ssh -i ~/test_ssh/id_ed25519 abcuser@localhost -p 9022
@@ -53,9 +54,10 @@ SSH 経由でのコマンド実行（非対話モード）にも対応してい�
 1
 ```
 
+
 ## サーバー設定 \{#server-configuration\}
 
-SSH サーバー機能を有効にするには、`config.xml` 内で次のセクションのコメントアウトを解除するか、追加する必要があります。
+SSH サーバー機能を有効にするには、`config.xml` 内で次のセクションのコメントアウトを解除するか、追加する必要があります：
 
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
@@ -66,7 +68,7 @@ SSH サーバー機能を有効にするには、`config.xml` 内で次のセク
 </ssh_server>
 ```
 
-ホスト鍵は SSH プロトコルにおいて不可欠な要素です。この鍵の公開鍵部分はクライアント側の `~/.ssh/known_hosts` ファイルに保存され、通常は中間者攻撃を防ぐために用いられます。サーバーに初めて接続すると、次のようなメッセージが表示されます。
+ホストキーは SSH プロトコルにおいて不可欠な要素です。このキーの公開鍵部分はクライアント側の `~/.ssh/known_hosts` ファイルに保存されており、通常は中間者攻撃を防ぐために利用されます。サーバーに初めて接続すると、次のようなメッセージが表示されます。
 
 ```shell
 The authenticity of host '[localhost]:9022 ([127.0.0.1]:9022)' can't be established.
@@ -77,18 +79,19 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 これは実際には「このホストの公開鍵を記憶して、接続を続行しますか？」という意味です。
 
-オプションを指定することで、SSH クライアントにホストの検証を行わないよう指示できます。
+SSH クライアントにオプションを指定することで、ホストの検証を行わないように指示できます。
 
 ```bash
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
+
 ## 組み込みクライアントの設定 \{#configuring-embedded-client\}
 
-通常の `clickhouse-client` と同様に、組み込みクライアントにもオプションを渡すことができますが、いくつか制限があります。
-これは SSH プロトコルで動作するため、ターゲットホストにパラメータを渡す方法は環境変数経由しかありません。
+組み込みクライアントには、通常の `clickhouse-client` と同様にオプションを指定できますが、いくつか制限があります。
+SSH プロトコルを使用しているため、接続先ホストにパラメータを渡す唯一の方法は環境変数を通すことです。
 
-たとえば、`format` を設定するには次のようにします。
+例えば、`format` を設定するには次のようにします。
 
 ```bash
 > ssh -o SetEnv="format=Pretty" -i ~/test_ssh/id_ed25519  abcuser@localhost -p 9022 "SELECT 1"
@@ -99,11 +102,11 @@ ssh -o "StrictHostKeyChecking no" user@host
    └───┘
 ```
 
-この方法で任意のユーザーレベルの設定を変更でき、さらに通常の `clickhouse-client` オプションのほとんどを指定できます（この構成で意味をなさないものを除きます）。
+この方法で任意のユーザーレベルの設定を変更できるほか、ほとんどの一般的な `clickhouse-client` オプションも渡すことができます（このセットアップでは意味をなさないものを除きます）。
 
 重要:
 
-`query` オプションと SSH コマンドの両方が指定された場合、後者の SSH コマンドも実行するクエリのリストに追加されます。
+`query` オプションと SSH コマンドの両方が指定された場合、後者は実行するクエリのリストに追加されます。
 
 ```bash
 ubuntu ip-10-1-13-116@~$ ssh -o SetEnv="format=Pretty query=\"SELECT 2;\"" -i ~/test_ssh/id_ed25519  abcuser@localhost -p 9022 "SELECT 1"

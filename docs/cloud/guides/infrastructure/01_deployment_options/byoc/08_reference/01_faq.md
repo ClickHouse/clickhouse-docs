@@ -21,16 +21,16 @@ Yes. The infrastructure only needs to be provisioned once for every AWS account 
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-BYOC supports the same set of [regions](/cloud/reference/supported-regions#aws-regions ) as ClickHouse Cloud.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't supported.
 
 </details>
 
 <details>
 <summary>Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?</summary>
 
-Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio etc. and our monitoring stack.
+Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio, and the monitoring stack.
 
-Currently, we have three m5.xlarge nodes (one for each AZ) in a dedicated node group to run those workloads.
+The resource consumption of these shared components is relatively stable and doesn't grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads.
 
 </details>
 
@@ -69,7 +69,7 @@ Contact support to schedule maintenance windows. Please expect a minimum of a we
 <details>
 <summary>How does storage communication work between BYOC VPC and S3?</summary>
 
-Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and does not traverse the public internet.
+Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and doesn't traverse the public internet.
 
 </details>
 
@@ -88,6 +88,6 @@ Internal ClickHouse cluster communication within the Customer BYOC VPC uses:
 <details>
 <summary>Does ClickHouse offer an uptime SLA for BYOC?</summary>
 
-No, since the data plane is hosted in the customer's cloud environment, service availability depends on resources not in ClickHouse's control. Therefore, ClickHouse does not offer a formal uptime SLA for BYOC deployments. If you have additional questions, please contact support@clickhouse.com.
+No, since the data plane is hosted in the customer's cloud environment, service availability depends on resources not in ClickHouse's control. Therefore, ClickHouse doesn't offer a formal uptime SLA for BYOC deployments. If you have additional questions, please contact support@clickhouse.com.
 
 </details>

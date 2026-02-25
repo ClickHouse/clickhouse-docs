@@ -283,6 +283,56 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
 
+### 主キー内の決定論的式に対する索引の利用 \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+主キーにはカラム名だけでなく、式を含めることができます。これらの式は単純な関数チェーンに限定されず、決定論的である限り、任意の式ツリー（たとえば、入れ子になった関数や複合式）にすることができます。
+
+式は、同じ入力値に対して常に同じ結果を返す場合に **決定論的** と呼ばれます（例: `length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()`。`now()` や `rand()` はこれに当てはまりません）。主キーに決定論的な式が含まれている場合、ClickHouse はクエリ内の定数値に対してそれらの式を適用し、その結果を用いて主キー索引に対する条件を構築できます。これにより、`=`, `IN`, `has` のような述語に対してデータスキップが可能になります。
+
+一般的なユースケースとしては、主キーをコンパクトに保ちつつ（例: 長い `String` の代わりにハッシュを保存する）、元のカラムに対する述語でも索引を利用できるようにする、というものがあります。
+
+決定論的（だが単射ではない）主キーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+索引を使用できる述語の例：
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+これらの場合、ClickHouse は `length('alice')`（およびその他の定数）を一度だけ計算し、その長さの値を使ってプライマリキー索引内の範囲を絞り込みます。文字列の長さは**単射ではない**ため、異なる `user_id` 文字列が同じ長さになることがあります。そのため、索引が余分な granule（偽陽性）を読み取る可能性があります。元の述語（`user_id = ...`、`IN` など）は読み取り後にも適用されるため、結果の正しさは保たれます。
+
+決定的な式がさらに**単射**（使用されている引数型に対して、異なる入力から同じ出力が生成されない）でもある場合、ClickHouse は `!=`、`NOT IN`、`NOT has(...)` といった否定形に対しても索引を効果的に使用できます。たとえば、`reverse(p)` および `hex(p)` は `String` に対して単射です。
+
+単射なプライマリキーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+より複雑な単射な式もサポートされています。たとえば、次のようなものがあります。
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+索引を利用できる述語の例:
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### 部分的に単調なプライマリキーに対する索引の利用 \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 例として、月の日付を考えます。1 か月という範囲では[単調な数列](https://en.wikipedia.org/wiki/Monotonic_function)ですが、より長い期間では単調ではありません。このようなものは部分的に単調な数列です。ユーザーが部分的に単調なプライマリキーでテーブルを作成すると、ClickHouse は通常どおりスパースな索引を作成します。ユーザーがこの種類のテーブルからデータを取得する際、ClickHouse はクエリ条件を解析します。ユーザーが索引の 2 つのマークの間のデータを取得しようとし、かつその 2 つのマークが同じ 1 か月の範囲内に収まっている場合、ClickHouse はクエリのパラメータと索引マークとの距離を計算できるため、この特定のケースでは索引を使用できます。
@@ -356,6 +406,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) インデックス
 - [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
 - [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`text`]({#text}) インデックス
+- [`vector_similarity`]({#vector-similarity}) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 
@@ -495,7 +547,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 \{#text\}
 
-全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
+トークン化された文字列データに対して倒立索引を構築し、効率的かつ決定論的な全文検索を実現します。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 \{#vector-similarity\}
 
@@ -1080,9 +1132,12 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
+共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること（またはテーブルローカルディスクを使用する場合の `table_disk = true`）が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
+
 :::note キャッシュ設定
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
+
 
 ## 仮想カラム \{#virtual-columns\}
 

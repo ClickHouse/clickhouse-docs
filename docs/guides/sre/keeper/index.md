@@ -26,7 +26,7 @@ By default, ClickHouse Keeper provides the same guarantees as ZooKeeper: lineari
 ClickHouse Keeper supports Access Control Lists (ACLs) the same way as [ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl) does. ClickHouse Keeper supports the same set of permissions and has the identical built-in schemes: `world`, `auth` and `digest`. The digest authentication scheme uses the pair `username:password`, the password is encoded in Base64.
 
 :::note
-External integrations are not supported.
+External integrations aren't supported.
 :::
 
 ### Configuration {#configuration}
@@ -46,8 +46,8 @@ The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the fo
 | `snapshot_storage_path`              | Path to coordination snapshots.                                                                                                                                                                                                                     | -                                                                                                            |
 | `enable_reconfiguration`             | Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).                                                                                                                                                                          | `False`                                                                                                      |
 | `max_memory_usage_soft_limit`        | Soft limit in bytes of keeper max memory usage.                                                                                                                                                                                                     | `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`                                               |
-| `max_memory_usage_soft_limit_ratio`  | If `max_memory_usage_soft_limit` is not set or set to zero, we use this value to define the default soft limit.                                                                                                                                     | `0.9`                                                                                                        |
-| `cgroups_memory_observer_wait_time`  | If `max_memory_usage_soft_limit` is not set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. | `15`                                                                                                         |
+| `max_memory_usage_soft_limit_ratio`  | If `max_memory_usage_soft_limit` isn't set or set to zero, we use this value to define the default soft limit.                                                                                                                                     | `0.9`                                                                                                        |
+| `cgroups_memory_observer_wait_time`  | If `max_memory_usage_soft_limit` isn't set or is set to `0`, we use this interval to observe the amount of physical memory. Once the memory amount changes, we will recalculate Keeper's memory soft limit by `max_memory_usage_soft_limit_ratio`. | `15`                                                                                                         |
 | `http_control`                       | Configuration of [HTTP control](#http-control) interface.                                                                                                                                                                                           | -                                                                                                            |
 | `digest_enabled`                     | Enable real-time data consistency check                                                                                                                                                                                                             | `True`                                                                                                       |
 | `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                                                                            |
@@ -68,8 +68,8 @@ Internal coordination settings are located in the `<keeper_server>.<coordination
 | `session_timeout_ms`               | Max timeout for client session (ms)                                                                                                                                                                                      | `100000`                                                                                                     |
 | `dead_session_check_period_ms`     | How often ClickHouse Keeper checks for dead sessions and removes them (ms)                                                                                                                                               | `500`                                                                                                        |
 | `heart_beat_interval_ms`           | How often a ClickHouse Keeper leader will send heartbeats to followers (ms)                                                                                                                                              | `500`                                                                                                        |
-| `election_timeout_lower_bound_ms`  | If the follower does not receive a heartbeat from the leader in this interval, then it can initiate leader election. Must be less than or equal to  `election_timeout_upper_bound_ms`. Ideally they shouldn't be equal.  | `1000`                                                                                                       |
-| `election_timeout_upper_bound_ms`  | If the follower does not receive a heartbeat from the leader in this interval, then it must initiate leader election.                                                                                                    | `2000`                                                                                                       |
+| `election_timeout_lower_bound_ms`  | If the follower doesn't receive a heartbeat from the leader in this interval, then it can initiate leader election. Must be less than or equal to  `election_timeout_upper_bound_ms`. Ideally they shouldn't be equal.  | `1000`                                                                                                       |
+| `election_timeout_upper_bound_ms`  | If the follower doesn't receive a heartbeat from the leader in this interval, then it must initiate leader election.                                                                                                    | `2000`                                                                                                       |
 | `rotate_log_storage_interval`      | How many log records to store in a single file.                                                                                                                                                                          | `100000`                                                                                                     |
 | `reserved_log_items`               | How many coordination log records to store before compaction.                                                                                                                                                            | `100000`                                                                                                     |
 | `snapshot_distance`                | How often ClickHouse Keeper will create new snapshots (in the number of records in logs).                                                                                                                                | `100000`                                                                                                     |
@@ -174,7 +174,7 @@ echo mntr | nc localhost 9181
 
 Bellow is the detailed 4lw commands:
 
-- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it will not respond at all. A response of `imok` does not necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
+- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it won't respond at all. A response of `imok` doesn't necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
 
 ```response
 imok
@@ -371,7 +371,7 @@ last_snapshot_idx   50
 Sent leadership request to leader.
 ```
 
-- `ftfl`: Lists all feature flags and whether they are enabled for the Keeper instance.
+- `ftfl`: Lists all feature flags and whether they're enabled for the Keeper instance.
 
 ```response
 filtered_list   1
@@ -464,7 +464,7 @@ The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
-Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
+Seamless migration from ZooKeeper to ClickHouse Keeper isn't possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
 
 1. Stop all ZooKeeper nodes.
 
@@ -479,7 +479,7 @@ clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --
 4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.
 
 :::note
-`keeper-converter` tool is not available from the Keeper standalone binary.
+`keeper-converter` tool isn't available from the Keeper standalone binary.
 If you have ClickHouse installed, you can use the binary directly:
 
 ```bash
@@ -499,11 +499,11 @@ so to add/remove a node from the cluster you need to have a quorum. If you lose 
 of starting them again, Raft will stop working and not allow you to reconfigure your cluster using the conventional way.
 
 Nevertheless, ClickHouse Keeper has a recovery mode which allows you to forcefully reconfigure your cluster with only 1 node.
-This should be done only as your last resort if you cannot start your nodes again, or start a new instance on the same endpoint.
+This should be done only as your last resort if you can't start your nodes again, or start a new instance on the same endpoint.
 
 Important things to note before continuing:
-- Make sure that the failed nodes cannot connect to the cluster again.
-- Do not start any of the new nodes until it's specified in the steps.
+- Make sure that the failed nodes can't connect to the cluster again.
+- Don't start any of the new nodes until it's specified in the steps.
 
 After making sure that the above things are true, you need to do following:
 1. Pick a single Keeper node to be your new leader. Be aware that the data of that node will be used for the entire cluster, so we recommend using a node with the most up-to-date state.
@@ -569,9 +569,9 @@ To use a disk for state file, `keeper_server.state_storage_disk` config should b
 Moving files between disks is safe and there is no risk of losing data if Keeper stops in the middle of transfer.
 Until the file is completely moved to the new disk, it's not deleted from the old one.
 
-Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.
+Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) can't satisfy some guarantees for all types of disks.
 Right now, only disks of type `local` support persistent sync.
-If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.
+If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` isn't used.
 If `latest_log_storage_disk` is used, it should always be a `local` disk.
 If `force_sync` is disabled, disks of all types can be used in any setup.
 
@@ -900,7 +900,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     └────┴─────────┘
     ```
 
-6. You can create a `Distributed` table to represent the data on the two shards. Tables with the `Distributed` table engine do not store any data of their own, but allow distributed query processing on multiple servers. Reads hit all the shards, and writes can be distributed across the shards. Run the following query on `chnode1`:
+6. You can create a `Distributed` table to represent the data on the two shards. Tables with the `Distributed` table engine don't store any data of their own, but allow distributed query processing on multiple servers. Reads hit all the shards, and writes can be distributed across the shards. Run the following query on `chnode1`:
     ```sql
     CREATE TABLE db1.dist_table (
         id UInt64,
@@ -994,7 +994,7 @@ example for server 1:
     </macros>
 ```
 :::note
-Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` isn't defined here, it is built-in and there is no need to define.
 :::
 
 2. Create a Database
@@ -1259,7 +1259,7 @@ server.id2 = ...
 ```
 
 - Each server entry is delimited by a newline.
-- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
+- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) doesn't participate in leader elections).
 - `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
   Priority of 0 means server will never be a leader.
 
@@ -1316,9 +1316,9 @@ There are some caveats in Keeper reconfiguration implementation:
   Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
   the only way would be to remove and add server, which again would be misleading.
 
-- You cannot use the returned `znodestat` value.
-- The `from_version` field is not used. All requests with set `from_version` are declined.
-  This is due to the fact `/keeper/config` is a virtual node, which means it is not stored in
+- You can't use the returned `znodestat` value.
+- The `from_version` field isn't used. All requests with set `from_version` are declined.
+  This is due to the fact `/keeper/config` is a virtual node, which means it isn't stored in
   persistent storage, but rather generated on-the-fly with the specified node config for every request.
   This decision was made as to not duplicate data as NuRaft already stores this config.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
@@ -1344,10 +1344,10 @@ To get confident with the process, here's a [sandbox repository](https://github.
 
 While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that are currently not implemented (although development is ongoing):
 
-- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)) does not support returning `Stat` object
-- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat))  does not support [TTL](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/CreateMode.html#PERSISTENT_WITH_TTL)
-- [`addWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#addWatch(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.AddWatchMode)) does not work with [`PERSISTENT`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/AddWatchMode.html#PERSISTENT) watches
-- [`removeWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeWatches(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.Watcher.WatcherType,boolean)) and [`removeAllWatches`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeAllWatches(java.lang.String,org.apache.zookeeper.Watcher.WatcherType,boolean)) are not supported
-- `setWatches` is not supported
-- Creating [`CONTAINER`](https://zookeeper.apache.org/doc/r3.5.1-alpha/api/org/apache/zookeeper/CreateMode.html) type znodes is not supported
-- [`SASL authentication`](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL) is not supported
+- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)) doesn't support returning `Stat` object
+- [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat))  doesn't support [TTL](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/CreateMode.html#PERSISTENT_WITH_TTL)
+- [`addWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#addWatch(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.AddWatchMode)) doesn't work with [`PERSISTENT`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/AddWatchMode.html#PERSISTENT) watches
+- [`removeWatch`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeWatches(java.lang.String,org.apache.zookeeper.Watcher,org.apache.zookeeper.Watcher.WatcherType,boolean)) and [`removeAllWatches`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#removeAllWatches(java.lang.String,org.apache.zookeeper.Watcher.WatcherType,boolean)) aren't supported
+- `setWatches` isn't supported
+- Creating [`CONTAINER`](https://zookeeper.apache.org/doc/r3.5.1-alpha/api/org/apache/zookeeper/CreateMode.html) type znodes isn't supported
+- [`SASL authentication`](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL) isn't supported

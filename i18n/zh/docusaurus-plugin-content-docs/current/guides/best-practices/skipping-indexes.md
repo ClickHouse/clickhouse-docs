@@ -68,13 +68,13 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
-现在添加一个非常基础的跳过索引：
+现在添加一个非常简单的跳过索引：
 
 ```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
 ```
 
-通常情况下，跳过索引只会应用于新插入的数据，因此仅仅添加该索引不会对上述查询产生影响。
+通常情况下，跳过索引只会应用于新插入的数据，因此仅添加该索引不会对上述查询产生影响。
 
 要为已有数据建立索引，请使用以下语句：
 
@@ -82,7 +82,7 @@ ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
 ALTER TABLE skip_table MATERIALIZE INDEX vix;
 ```
 
-使用新建的索引重新执行查询：
+使用新创建的索引重新执行查询：
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
@@ -140,7 +140,7 @@ SET send_logs_level='trace';
 
 这种轻量级索引类型接受一个参数，即每个数据块中值集合的最大大小 `max_size`（0 表示允许无限数量的离散值）。该集合包含数据块中的所有值（如果值的数量超过 `max_size`，则集合为空）。这种索引类型非常适合在每组 granule 内基数较低（本质上是“聚在一起”），但整体基数较高的列。
 
-此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而无法应用索引。
+此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而将不会应用索引。
 
 
 ### Bloom filter 类型 \{#bloom-filter-types\}

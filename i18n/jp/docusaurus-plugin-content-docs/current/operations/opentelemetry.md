@@ -23,6 +23,58 @@ ClickHouse は、[W3C 勧告](https://www.w3.org/TR/trace-context/) で説明さ
 
 * [url](../sql-reference/table-functions/url.md) テーブル関数を使用する場合。この場合、トレースコンテキスト情報は HTTP ヘッダーで送信されます。
 
+## ClickHouse Keeper リクエストのトレース \{#tracing-clickhouse-keeper-requests\}
+
+ClickHouse は、[ClickHouse Keeper](../guides/sre/keeper/index.md) リクエスト（ZooKeeper 互換のコーディネーションサービス）に対する OpenTelemetry によるトレーシングをサポートしています。この機能により、クライアントからのリクエスト送信からサーバー側での処理に至るまで、Keeper オペレーションのライフサイクル全体を詳細に可視化できます。
+
+### Keeper のトレーシングを有効化する \{#enabling-keeper-tracing\}
+
+Keeper リクエストのトレーシングを有効化するには、ZooKeeper/Keeper クライアント設定で次の設定項目を設定します。
+
+```xml
+<clickhouse>
+    <zookeeper>
+        <node>
+            <host>keeper1</host>
+            <port>9181</port>
+        </node>
+        <!-- Enable OpenTelemetry tracing context propagation -->
+        <pass_opentelemetry_tracing_context>true</pass_opentelemetry_tracing_context>
+    </zookeeper>
+</clickhouse>
+```
+
+
+### Keeper のスパン種別 \{#keeper-span-types\}
+
+トレーシングが有効化されている場合、ClickHouse はクライアント側とサーバー側の Keeper 操作の両方に対してスパンを作成します。
+
+**クライアント側スパン:**
+
+- `zookeeper.create` — 新しいノードを作成
+- `zookeeper.get` — ノードのデータを取得
+- `zookeeper.set` — ノードのデータを設定
+- `zookeeper.remove` — ノードを削除
+- `zookeeper.list` — 子ノードを一覧表示
+- `zookeeper.exists` — ノードの存在を確認
+- `zookeeper.multi` — 複数の操作をアトミックに実行
+- `zookeeper.client.requests_queue` — 送信前にリクエストがキューに滞留している時間
+
+**サーバー側スパン (Keeper):**
+
+- `keeper.receive_request` — クライアントからのリクエストを受信して解析
+- `keeper.dispatcher.requests_queue` — ディスパッチャー内でのリクエストのキューイング
+- `keeper.write.pre_commit` — Raft コミット前の書き込みリクエストの前処理
+- `keeper.write.commit` — Raft コミット後の書き込みリクエストの処理
+- `keeper.read.wait_for_write` — 依存する書き込みを待機している読み取りリクエスト
+- `keeper.read.process` — 読み取りリクエストの処理
+- `keeper.dispatcher.responses_queue` — ディスパッチャー内でのレスポンスのキューイング
+- `keeper.send_response` — クライアントへのレスポンス送信
+
+### サンプリングとパフォーマンス \{#sampling-and-performance\}
+
+トレースのオーバーヘッドを抑えるために、Keeper は動的サンプリングを実装しています。サンプリングレートは、リクエストサイズに応じて自動的に 1/10,000 から 1/10 の範囲で調整されます。すべてのリクエスト（サンプリングされたもの／されていないものの両方）について、その処理時間がパフォーマンス監視用のヒストグラムメトリクスに記録されます。
+
 ## ClickHouse 自体のトレース \{#tracing-the-clickhouse-itself\}
 
 ClickHouse は、各クエリおよびクエリ計画や分散クエリなど一部のクエリ実行ステージごとに `trace spans` を作成します。
@@ -63,6 +115,7 @@ FROM system.opentelemetry_span_log
 ```
 
 エラーが発生した場合、そのエラーが発生した対象のログデータの一部は、エラーを通知することなく失われます。データが届かない場合は、サーバーログでエラーメッセージを確認してください。
+
 
 ## 関連コンテンツ \{#related-content\}
 

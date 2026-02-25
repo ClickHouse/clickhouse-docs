@@ -12,7 +12,7 @@ doc_type: 'reference'
 ## Exposing metrics {#expose}
 
 :::note
-If you are using ClickHouse Cloud, you can expose metrics to Prometheus using the [Prometheus Integration](/integrations/prometheus).
+If you're using ClickHouse Cloud, you can expose metrics to Prometheus using the [Prometheus Integration](/integrations/prometheus).
 :::
 
 ClickHouse can expose its own metrics for scraping from Prometheus:

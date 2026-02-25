@@ -18,7 +18,7 @@ This article demonstrates how ClickPipes customers can leverage role-based acces
 :::warning
 For AWS RDS Postgres and Aurora Postgres you can only run `Initial Load Only` ClickPipes due to the limitations of the AWS IAM DB Authentication.
 
-For MySQL and MariaDB, this limitation does not apply, and you can run both `Initial Load Only` and `CDC` ClickPipes.
+For MySQL and MariaDB, this limitation doesn't apply, and you can run both `Initial Load Only` and `CDC` ClickPipes.
 :::
 
 ## Setup {#setup}

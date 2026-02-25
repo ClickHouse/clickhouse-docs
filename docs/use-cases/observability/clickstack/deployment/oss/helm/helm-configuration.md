@@ -165,10 +165,10 @@ spec:
 
 **Path and rewrite configuration:**
 - For Next.js and other SPAs, always use a regex path and rewrite annotation as shown above
-- Do not use just `path: /` without a rewrite, as this will break static asset serving
+- Don't use just `path: /` without a rewrite, as this will break static asset serving
 
 **Mismatched `frontendUrl` and `ingress.host`:**
-- If these do not match, you may experience issues with cookies, redirects, and asset loading
+- If these don't match, you may experience issues with cookies, redirects, and asset loading
 
 **TLS misconfiguration:**
 - Ensure your TLS secret is valid and referenced correctly in the ingress
@@ -214,7 +214,7 @@ hyperdx:
 - The regex path rule allows you to route all OTLP signals (traces, metrics, logs) through a single rule
 
 :::note
-If you do not need to expose the OTEL collector externally, you can skip this configuration. For most users, the general ingress setup is sufficient.
+If you don't need to expose the OTEL collector externally, you can skip this configuration. For most users, the general ingress setup is sufficient.
 :::
 
 ## Troubleshooting ingress {#troubleshooting-ingress}
@@ -243,7 +243,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 - Look for errors like `Unexpected token <` in the console (indicates HTML returned for JS)
 
 **Check for path rewrites:**
-- Ensure the ingress is not stripping or incorrectly rewriting asset paths
+- Ensure the ingress isn't stripping or incorrectly rewriting asset paths
 
 **Clear browser and CDN cache:**
 - After changes, clear your browser cache and any CDN/proxy cache to avoid stale assets

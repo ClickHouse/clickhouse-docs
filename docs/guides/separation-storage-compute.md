@@ -24,10 +24,10 @@ Using ClickHouse backed by S3 is especially useful for use cases where query per
 
 Please note that implementing and managing a separation of storage and compute architecture is more complicated compared to standard ClickHouse deployments. While self-managed ClickHouse allows for separation of storage and compute as discussed in this guide, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which allows you to use ClickHouse in this architecture without configuration using the [`SharedMergeTree` table engine](/cloud/reference/shared-merge-tree).
 
-*This guide assumes you are using  ClickHouse version 22.8 or higher.*
+*This guide assumes you're using  ClickHouse version 22.8 or higher.*
 
 :::warning
-Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.
+Don't configure any AWS/GCS life cycle policy. This isn't supported and could lead to broken tables.
 :::
 
 ## 1. Use S3 as a ClickHouse disk {#1-use-s3-as-a-clickhouse-disk}
@@ -110,7 +110,7 @@ ORDER BY id
 SETTINGS storage_policy = 's3_main';
 ```
 
-Note that we did not have to specify the engine as `S3BackedMergeTree`. ClickHouse automatically converts the engine type internally if it detects the table is using S3 for storage.
+Note that we didn't have to specify the engine as `S3BackedMergeTree`. ClickHouse automatically converts the engine type internally if it detects the table is using S3 for storage.
 
 Show that the table was created with the correct policy:
 
@@ -157,14 +157,14 @@ SELECT * FROM my_s3_table;
 
 In the AWS console, if your data was successfully inserted to S3, you should see that ClickHouse has created new files in your specified bucket.
 
-If everything worked successfully, you are now using ClickHouse with separated storage and compute!
+If everything worked successfully, you're now using ClickHouse with separated storage and compute!
 
 <Image img={s3_bucket_example} size="md" alt="S3 bucket example using separation of compute and storage" border/>
 
 ## 3. Implementing replication for fault tolerance (optional) {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
-Do not configure any AWS/GCS life cycle policy. This is not supported and could lead to broken tables.
+Don't configure any AWS/GCS life cycle policy. This isn't supported and could lead to broken tables.
 :::
 
 For fault tolerance, you can use multiple ClickHouse server nodes distributed across multiple AWS regions, with an S3 bucket for each node.

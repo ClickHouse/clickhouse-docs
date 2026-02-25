@@ -20,11 +20,12 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Architecture](/cloud/reference/byoc/architecture) | Deploy ClickHouse on your own cloud infrastructure |
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
+| [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
 | [BYOC FAQ](/cloud/reference/byoc/reference/faq) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC Observability](/cloud/reference/byoc/observability) | Monitor and observe your BYOC ClickHouse deployment using built-in dashboards and Prometheus metrics |
 | [BYOC Operations and Maintenance](/cloud/reference/byoc/operations) | Deploy ClickHouse on your own cloud infrastructure |
-| [BYOC Privilege](/cloud/reference/byoc/reference/priviledge) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC Privilege](/cloud/reference/byoc/reference/privilege) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook) | This page illustrates methods customers can use to identify potential security events |
 | [ClickHouse Cloud production readiness guide](/cloud/guides/production-readiness) | Guide for organizations transitioning from quick start to enterprise-ready ClickHouse Cloud deployments |
 | [ClickHouse Government](/cloud/infrastructure/clickhouse-government) | Overview of ClickHouse Government offering |
@@ -34,6 +35,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Common access management queries](/cloud/security/common-access-management-queries) | This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns. |
 | [Configure backup schedules](/cloud/manage/backups/configurable-backups) | Guide showing how to configure backups |
 | [Connect to ClickHouse](/cloud/reference/byoc/connect) | Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints |
+| [Connecting ClickHouse Cloud to Azure Blob Storage](/cloud/data-sources/secure-azure) | This article demonstrates how ClickHouse Cloud customers can access their Azure data securely |
 | [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
 | [Customized Setup](/cloud/reference/byoc/onboarding/customization) | Deploy ClickHouse on your own cloud infrastructure |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |

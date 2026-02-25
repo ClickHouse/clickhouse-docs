@@ -27,7 +27,7 @@ These recommendations are based on the following assumptions:
 - Data volume refers to **uncompressed ingest volume** per month and applies to both logs and traces.
 - Query patterns are typical for observability use cases, with most queries targeting **recent data**, usually the last 24 hours.
 - Ingestion is relatively **uniform across the month**. If you expect bursty traffic or spikes, you should provision additional headroom.
-- Storage is handled separately via ClickHouse Cloud object storage and is not a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
+- Storage is handled separately via ClickHouse Cloud object storage and isn't a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
 
 More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
 

@@ -44,7 +44,7 @@ See also: [crates.io page](https://crates.io/crates/clickhouse).
 
 * `lz4` (enabled by default) — enables `Compression::Lz4` and `Compression::Lz4Hc(_)` variants. If enabled, `Compression::Lz4` is used by default for all queries except for `WATCH`.
 * `native-tls` — supports urls with the `HTTPS` schema via `hyper-tls`, which links against OpenSSL.
-* `rustls-tls` — supports urls with the `HTTPS` schema via `hyper-rustls`, which does not link against OpenSSL.
+* `rustls-tls` — supports urls with the `HTTPS` schema via `hyper-rustls`, which doesn't link against OpenSSL.
 * `inserter` — enables `client.inserter()`.
 * `test-util` — adds mocks. See [the example](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs). Use it only in `dev-dependencies`.
 * `watch` — enables `client.watch` functionality. See the corresponding section for details.
@@ -61,7 +61,7 @@ If both are enabled, the `rustls-tls` feature will take precedence.
 The client is compatible with the LTS or newer versions of ClickHouse, as well as ClickHouse Cloud.
 
 ClickHouse server older than v22.6 handles RowBinary [incorrectly in some rare cases](https://github.com/ClickHouse/ClickHouse/issues/37420). 
-You could use v0.11+ and enable `wa-37420` feature to solve this problem. Note: this feature should not be used with newer ClickHouse versions.
+You could use v0.11+ and enable `wa-37420` feature to solve this problem. Note: this feature shouldn't be used with newer ClickHouse versions.
 
 ## Examples {#examples}
 
@@ -220,7 +220,7 @@ inserter.end().await?;
 * All rows between `commit()` calls are inserted in the same `INSERT` statement.
 
 :::warning
-Do not forget to flush if you want to terminate/finalize inserting:
+Don't forget to flush if you want to terminate/finalize inserting:
 ```rust
 inserter.end().await?;
 ```
@@ -291,14 +291,14 @@ let client = Client::default()
 ```
 
 :::danger
-With clustered deployments, due to lack of "sticky sessions", you need to be connected to a _particular cluster node_ in order to properly utilize this feature, cause, for example, a round-robin load-balancer will not guarantee that the consequent requests will be processed by the same ClickHouse node.
+With clustered deployments, due to lack of "sticky sessions", you need to be connected to a _particular cluster node_ in order to properly utilize this feature, cause, for example, a round-robin load-balancer won't guarantee that the consequent requests will be processed by the same ClickHouse node.
 :::
 
 See also: [session_id example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) in the client repo.
 
 ### Custom HTTP headers {#custom-http-headers}
 
-If you are using proxy authentication or need to pass custom headers, you can do it like this:
+If you're using proxy authentication or need to pass custom headers, you can do it like this:
 
 ```rust
 let client = Client::default()
@@ -345,7 +345,7 @@ See also the additional examples:
 :::
 
 * `(U)Int(8|16|32|64|128)` maps to/from corresponding `(u|i)(8|16|32|64|128)` types or newtypes around them.
-* `(U)Int256` are not supported directly, but there is [a workaround for it](https://github.com/ClickHouse/clickhouse-rs/issues/48).
+* `(U)Int256` aren't supported directly, but there is [a workaround for it](https://github.com/ClickHouse/clickhouse-rs/issues/48).
 * `Float(32|64)` maps to/from corresponding `f(32|64)` or newtypes around them.
 * `Decimal(32|64|128)` maps to/from corresponding `i(32|64|128)` or newtypes around them. It's more convenient to use [`fixnum`](https://github.com/loyd/fixnum) or another implementation of signed fixed-point numbers.
 * `Boolean` maps to/from `bool` or newtypes around it.
@@ -549,7 +549,7 @@ struct EventLog {
 ## Known limitations {#known-limitations}
 
 * `Variant`, `Dynamic`, (new) `JSON` data types aren't supported yet.
-* Server-side parameter binding is not supported yet; see [this issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) for tracking.
+* Server-side parameter binding isn't supported yet; see [this issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) for tracking.
 
 ## Contact us {#contact-us}
 

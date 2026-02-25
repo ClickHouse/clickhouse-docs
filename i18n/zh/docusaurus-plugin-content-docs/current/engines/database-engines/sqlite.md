@@ -23,14 +23,31 @@ doc_type: 'reference'
 
 * `db_path` — SQLite 数据库文件路径。
 
-## 支持的数据类型 \{#data_types-support\}
+
+## 数据类型支持 \{#data_types-support\}
+
+下表显示了当 ClickHouse 从 SQLite 自动推断 schema（表结构）时的默认类型映射：
 
 |  SQLite   | ClickHouse                                              |
 |---------------|---------------------------------------------------------|
 | INTEGER       | [Int32](../../sql-reference/data-types/int-uint.md)     |
 | REAL          | [Float32](../../sql-reference/data-types/float.md)      |
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
+| TEXT          | [UUID](../../sql-reference/data-types/uuid.md)          |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
+
+当使用 [SQLite 表引擎](../../engines/table-engines/integrations/sqlite.md) 显式定义带有特定 ClickHouse 类型的表时，以下 ClickHouse 类型可以从 SQLite 的 TEXT 列中解析：
+
+- [Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)
+- [DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md)
+- [UUID](../../sql-reference/data-types/uuid.md)
+- [Enum8, Enum16](../../sql-reference/data-types/enum.md)
+- [Decimal32, Decimal64, Decimal128, Decimal256](../../sql-reference/data-types/decimal.md)
+- [FixedString](../../sql-reference/data-types/fixedstring.md)
+- 所有整数类型（[UInt8, UInt16, UInt32, UInt64, Int8, Int16, Int32, Int64](../../sql-reference/data-types/int-uint.md)）
+- [Float32, Float64](../../sql-reference/data-types/float.md)
+
+SQLite 具有动态类型，其类型访问函数会自动执行类型转换。例如，将一个 TEXT 列按整数读取时，如果文本无法解析为数字，将返回 0。这意味着，如果 ClickHouse 表中定义的类型与底层 SQLite 列的类型不同，值可能会被静默转换，而不是触发错误。
 
 ## 细节与建议 \{#specifics-and-recommendations\}
 
@@ -53,7 +70,7 @@ SHOW TABLES FROM sqlite_db;
 └─────────┘
 ```
 
-显示表：
+显示表的内容：
 
 ```sql
 SELECT * FROM sqlite_db.table1;

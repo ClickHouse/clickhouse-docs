@@ -62,7 +62,7 @@ Choose your partition granularity based on your TTL period:
 
 ## Triggering TTL events {#triggering-ttl-events}
 
-The deleting or aggregating of expired rows is not immediate - it only occurs during table merges. If you have a table that's not actively merging (for whatever reason), there are two settings that trigger TTL events:
+The deleting or aggregating of expired rows isn't immediate - it only occurs during table merges. If you have a table that's not actively merging (for whatever reason), there are two settings that trigger TTL events:
 
 - `merge_with_ttl_timeout`: the minimum delay in seconds before repeating a merge with delete TTL. The default is 14400 seconds (4 hours).
 - `merge_with_recompression_ttl_timeout`: the minimum delay in seconds before repeating a merge with recompression TTL (rules that roll up data before deleting). Default value: 14400 seconds (4 hours).
@@ -155,7 +155,7 @@ Some notes on the `hits` table:
 <CloudNotSupportedBadge/>
 
 :::note
-If you are using ClickHouse Cloud, the steps in the lesson are not applicable. You do not need to worry about moving old data around in ClickHouse Cloud.
+If you're using ClickHouse Cloud, the steps in the lesson aren't applicable. You don't need to worry about moving old data around in ClickHouse Cloud.
 :::
 
 A common practice when working with large amounts of data is to move that data around as it gets older. Here are the steps for implementing a hot/warm/cold architecture in ClickHouse using the `TO DISK` and `TO VOLUME` clauses of the `TTL` command. (By the way, it doesn't have to be a hot and cold thing - you can use TTL to move data around for whatever use case you have.)

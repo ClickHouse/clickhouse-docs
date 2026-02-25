@@ -299,6 +299,7 @@ fmt.Println(v)
 
 **以降のすべてのサンプルでは、特に明記がない限り、ClickHouse の `conn` 変数はすでに作成済みで利用可能であるものとします。**
 
+
 #### 接続設定 \{#connection-settings\}
 
 接続を開く際、`Options` 構造体を使用してクライアントの動作を制御できます。利用可能な設定は次のとおりです。
@@ -435,6 +436,7 @@ v, err := conn.ServerVersion()
 
 追加の TLS パラメータが必要な場合は、アプリケーションコード側で `tls.Config` 構造体の該当フィールドを設定する必要があります。これには、特定の暗号スイートの指定、特定の TLS バージョン (1.2 や 1.3 など) の強制、内部 CA 証明書チェーンの追加、ClickHouse サーバーによって要求される場合のクライアント証明書 (および秘密鍵) の追加など、より高度なセキュリティ構成で利用されるほとんどのオプションが含まれます。
 
+
 ### 認証 \{#authentication\}
 
 接続設定で `Auth` 構造体を指定し、ユーザー名とパスワードを設定します。
@@ -532,6 +534,7 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 クエリに `Context` を渡せることに注意してください。これは、クエリごとの特定の設定を渡すために使用できます。詳しくは [Using Context](#using-context) を参照してください。
 
+
 ### バッチ挿入 \{#batch-insert\}
 
 多数の行を挿入するには、クライアントはバッチ挿入用のセマンティクスを提供します。そのためには、行を追加していくためのバッチを事前に用意する必要があります。最終的にこのバッチは `Send()` メソッド経由で送信されます。バッチは `Send` が実行されるまでメモリ上に保持されます。
@@ -623,6 +626,7 @@ return batch.Send()
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
 各カラム型ごとにサポートされる Go 型の一覧については、[型変換](#type-conversions) を参照してください。
+
 
 ### 行のクエリ実行 \{#querying-rows\}
 
@@ -1952,6 +1956,7 @@ func ConnectDSN() error {
 
 **以降のすべてのサンプルでは、特に断りのない限り、ClickHouse の `conn` 変数はすでに作成されており、利用可能であるものとします。**
 
+
 #### 接続設定 \{#connection-settings-1\}
 
 以下のパラメータを DSN 文字列で指定できます:
@@ -2175,7 +2180,7 @@ func ConnectDSNAuth() error {
 
 ### 実行 \{#execution-1\}
 
-接続を取得したら、Exec メソッドで `sql` ステートメントを実行できます。
+接続を取得したら、Exec メソッドで `sql` 文を実行できます。
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)

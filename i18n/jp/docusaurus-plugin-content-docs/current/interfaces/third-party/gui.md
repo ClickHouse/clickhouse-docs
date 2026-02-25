@@ -44,6 +44,23 @@ Features:
 
 [ChartDB Source Code](https://github.com/chartdb/chartdb).
 
+### DataStoria \{#datastoria\}
+
+[DataStoria](https://github.com/FrankChen021/datastoria) は、複数の ClickHouse クラスターを一元管理できる、AI 搭載の Web コンソールアプリケーションです。
+
+主な機能:
+
+- **AI-Powered Intelligence**: 自然言語でデータを探索し、SQL クエリを最適化・修正し、データを可視化できます。
+- **Official ClickHouse Agent Skills Integration**: [公式ベストプラクティス](https://github.com/ClickHouse/agent-skills) を活用して、AI にデータベース最適化や改善提案を問い合わせることができます。
+- **Smart Error Diagnostics**: 構文エラーを、該当する行とカラムを正確にハイライトして即座に特定し、ワンクリックで AI による修正候補を取得できます。
+- **System Table Inspection**: 強力な可視化ダッシュボードとフィルターを使って、`system.query_log`、`system.query_views_log`、`system.zookeeper`、`system.ddl_distributed_queue`、`system.part_log`、`system.processes` を詳細に調査し、クラスターの状態を素早く把握できます。
+- **One-Click Explain**: 視覚的な AST とパイプラインビューにより、クエリ実行プランを即座に理解できます。
+- **Dependency Graph**: テーブル間の関係を可視化し、Materialized Views、分散テーブル、外部システム間をまたぐデータフローをトレースできます。
+- **Cluster Monitoring**: すべてのノードについて、リアルタイムメトリクス、マージ処理、レプリケーションの状態、クエリパフォーマンスなどを監視できます。
+- **Privacy & Security**: すべての SQL クエリはブラウザから直接 ClickHouse サーバーに送信されるため、完全なプライバシーが確保されます。
+
+[DataStoria ドキュメント](https://docs.datastoria.app).
+
 ### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) は、ネイティブな ClickHouse サポートを備えた、モダンで AI 支援のクロスプラットフォームデータベースクライアントです。
@@ -331,6 +348,19 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - Native RBAC - UI の権限は ClickHouse の GRANT から直接派生
 
 [ClickLens ソースコード](https://github.com/ntk148v/clicklens)
+
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com) は、**チーム** と **セキュアなデータアクセス** のために特化して構築された、オープンソースの ClickHouse Web インターフェイスです。データベースの認証情報への直接アクセスを必要とする従来型クライアントとは異なり、CHouse UI は強力な **Role-Based Access Control (RBAC)** レイヤーを実装しており、管理者は基盤となるシークレットを開示することなく、きめ細かい権限を付与できます。
+
+主な特長は次のとおりです:
+
+- **エンタープライズグレードのセキュリティ** - サーバーサイドでの認証情報の暗号化、詳細な監査ログ、アクセスルールを提供。
+- **チームコラボレーション** - カスタムロール（例: アナリスト向けの特定テーブルへのアクセス）を定義し、クエリを安全に共有可能。
+- **AI を活用したインサイト** - クエリ最適化や視覚的な説明のための LLM 統合サポート。
+- **フル機能のツールキット** - 堅牢な SQL エディタ、監視ダッシュボード、スキーマエクスプローラ、シームレスなデータインポート/エクスポート機能を備えています。
+
+[CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
 
 ## 商用 \{#commercial\}
 

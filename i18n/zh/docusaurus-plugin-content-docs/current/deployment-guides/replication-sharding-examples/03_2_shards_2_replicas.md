@@ -50,12 +50,12 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   mkdir cluster_2S_2R
   cd cluster_2S_2R
 
-  # 创建 clickhouse-keeper 目录
+  # Create clickhouse-keeper directories
   for i in {01..03}; do
     mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
   done
 
-  # 创建 clickhouse-server 目录
+  # Create clickhouse-server directories
   for i in {01..04}; do
     mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
   done
@@ -286,11 +286,11 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   ```xml
   <remote_servers>
-     <!-- 集群名称（不应包含点） -->
+     <!-- cluster name (should not contain dots) -->
     <cluster_2S_2R>
         <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
         <shard>
-            <!-- 可选。是否仅向一个副本写入数据。默认值：false（向所有副本写入数据）。 -->
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
             <internal_replication>true</internal_replication>
             <replica>
                 <host>clickhouse-01</host>
@@ -349,7 +349,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   #### 宏配置
 
-  此外，`<macros>` 配置段用于定义复制表的参数替换。这些宏参数列在 `system.macros` 表中，允许在查询中使用 `{shard}` 和 `{replica}` 等替换变量。
+  此外,`<macros>` 配置段用于定义复制表的参数替换。这些宏参数列在 `system.macros` 表中,允许在查询中使用 `{shard}` 和 `{replica}` 等替换变量。
 
   ```xml
   <macros>
@@ -403,7 +403,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   在此示例中,为简化配置,默认用户未设置密码。
-  在生产环境中,不建议采用此配置。
+  在实际应用中,不建议采用此配置。
 
   :::note
   在此示例中,集群中所有节点的 `users.xml` 文件都相同。
@@ -454,7 +454,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   要验证集群是否正在运行,请连接到任意一个节点并运行以下查询。连接到第一个节点的命令如下:
 
   ```bash
-  # 连接到任意节点
+  # Connect to any node
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
@@ -477,7 +477,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+     ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
   1. │ cluster_2S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
   2. │ cluster_2S_2R │         1 │           2 │ clickhouse-03 │ 9000 │
   3. │ cluster_2S_2R │         2 │           1 │ clickhouse-02 │ 9000 │
@@ -495,7 +495,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
+     ┌─name───────┬─value─┬─path────────┐
   1. │ task_queue │       │ /clickhouse │
   2. │ sessions   │       │ /clickhouse │
   3. │ keeper     │       │ /           │
@@ -521,14 +521,14 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   docker exec -it clickhouse-04 clickhouse-client
   ```
 
-  您可以在每个主机的 clickhouse-client 中运行以下查询,确认除默认数据库外尚未创建任何数据库:
+  您可以在各主机的 clickhouse-client 中运行以下查询,以确认除默认数据库外尚未创建任何数据库:
 
   ```sql title="Query"
   SHOW DATABASES;
   ```
 
   ```response title="Response"
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -553,7 +553,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -602,7 +602,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   引擎的工作方式与普通的 `MergeTree` 表引擎相同,但它还会对数据进行复制。
   它需要指定两个参数:
 
-  * `zoo_path`：Keeper/ZooKeeper 中表元数据的路径。
+  * `zoo_path`：表元数据在 Keeper/ZooKeeper 中的路径。
   * `replica_name`: 该表的副本名称。
 
   <br />
@@ -615,28 +615,28 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   其中：
 
-  * `{database}` 和 `{table}` 会自动被替换。
-  * `{shard}` 和 `{replica}` 是宏，之前已经在每个 ClickHouse 节点的 `config.xml` 文件中[进行了定义](#macros-config-explanation)。
+  * `{database}` 和 `{table}` 会被自动替换。
+  * `{shard}` 和 `{replica}` 是在每个 ClickHouse 节点的 `config.xml` 文件中[预先定义](#macros-config-explanation)的宏。
 
-  您可以在各主机的客户端上运行以下查询，以确认表已在集群中创建：
+  您可以在各主机的客户端上运行以下查询,以确认表已在集群中创建:
 
   ```sql title="Query"
   SHOW TABLES IN uk;
   ```
 
   ```response title="Response"
-  ┌─name────────────────┐
+     ┌─name────────────────┐
   1. │ uk_price_paid_local │
      └─────────────────────┘
   ```
 
   ## 向分布式表插入数据
 
-  向表中插入数据时,不能使用 `ON CLUSTER`,因为它不适用于 DML(数据操作语言)查询,如 `INSERT`、`UPDATE` 和 `DELETE`。 要插入数据,需要使用 [`Distributed`](/engines/table-engines/special/distributed) 表引擎。
+  向表中插入数据时,不能使用 `ON CLUSTER`,因为它不适用于 DML(数据操作语言)查询,如 `INSERT`、`UPDATE` 和 `DELETE`。要插入数据,需要使用 [`Distributed`](/engines/table-engines/special/distributed) 表引擎。
   如[指南](/architecture/horizontal-scaling)中所述,在设置具有 2 个分片和 1 个副本的集群时,分布式表是指能够访问位于不同主机上的分片的表,使用 `Distributed` 表引擎定义。
   分布式表作为集群中所有分片的统一接口。
 
-  从任意主机客户端执行以下查询,基于上一步创建的复制表来创建分布式表:
+  从任意主机客户端执行以下查询,基于上一步创建的副本表来创建分布式表:
 
   ```sql
   CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -647,13 +647,13 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   现在您将在每个主机的 `uk` 数据库中看到以下表:
 
   ```sql
-  ┌─name──────────────────────┐
+     ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │
      └───────────────────────────┘
   ```
 
-  可以使用以下查询从任何主机客户端向 `uk_price_paid_distributed` 表插入数据:
+  可以使用以下查询从任意主机客户端向 `uk_price_paid_distributed` 表插入数据:
 
   ```sql
   INSERT INTO uk.uk_price_paid_distributed
@@ -704,12 +704,12 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021万
+     ┌──count()─┐
+  1. │ 30212555 │ -- 30.21 million
      └──────────┘
 
      ┌──count()─┐
-  1. │ 15105983 │ -- 1510万
+  1. │ 15105983 │ -- 15.11 million
      └──────────┘
   ```
 </VerticalStepper>

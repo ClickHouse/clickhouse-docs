@@ -31,6 +31,7 @@ assert result.result_set[1][0] == 'first_value2'
 
 Обратите внимание, что экземпляры `QueryContext` не являются потокобезопасными, однако в многопоточной среде можно получить их копию, вызвав метод `QueryContext.updated_copy`.
 
+
 ## Потоковые запросы \{#streaming-queries\}
 
 Клиент ClickHouse Connect предоставляет несколько методов для получения данных в виде потока (реализовано как генератор Python):
@@ -375,7 +376,7 @@ set_read_format('IPv*', 'string')
 set_read_format('Date*', 'int')
 ```
 
-* Для всего запроса целиком, используя необязательный аргумент-словарь `query_formats`. В этом случае любой столбец (или подстолбец) указанных типов данных будет использовать настроенный формат.
+* Для всего запроса целиком, используя необязательный аргумент-словарь `query_formats`. В этом случае любой столбец (или подстолбец) указанных типа(ов) данных будет использовать настроенный формат.
 
 ```python
 # Return any UUID column as a string
@@ -388,6 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
+
 
 ### Параметры формата чтения (типы Python) \{#read-format-options-python-types\}
 

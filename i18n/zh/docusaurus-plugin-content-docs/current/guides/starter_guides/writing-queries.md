@@ -43,7 +43,7 @@ ORDER BY timestamp
 FORMAT TabSeparated
 ```
 
-在上述查询中，结果以制表符分隔的形式输出：
+在上述查询中，结果以制表符分隔的格式返回：
 
 ```response
 Query id: 3604df1c-acfd-4117-9c56-f86c69721121
