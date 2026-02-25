@@ -94,6 +94,6 @@ CREATE TABLE my_clickhouse_table
 ENGINE = MergeTree
 ORDER BY id;
 
-INSERT INTO my_local_table
+INSERT INTO my_clickhouse_table
 SELECT * FROM polaris_catalog.`polaris_db.my_iceberg_table`;
 ```
