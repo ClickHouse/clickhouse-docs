@@ -3498,7 +3498,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **구문**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **인자**
@@ -3523,7 +3523,7 @@ SELECT arraySum([1, 2, 3, 4]);
 10
 ```
 
-**람다 FUNCTION 사용 방법**
+**람다 함수 사용 예시**
 
 ```sql title=Query
 SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);

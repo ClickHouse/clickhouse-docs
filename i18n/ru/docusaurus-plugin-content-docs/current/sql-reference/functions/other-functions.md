@@ -33,7 +33,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 **Синтаксис**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **Псевдонимы**: `fullHostName`
@@ -2568,6 +2568,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **Синтаксис**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **Аргументы**
@@ -3658,39 +3659,6 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-Появилась в версии: v23.2
-
-Эта функция используется внутри движка ClickHouse и не предназначена для прямого использования.
-
-Возвращает массив кортежей, сформированный из нескольких массивов.
-
-Первый аргумент должен быть константным массивом строк, задающим имена результирующего `Tuple`.
-Остальные аргументы должны быть массивами одинакового размера.
-
-**Синтаксис**
-
-```sql
-```
-
-**Аргументы**
-
-* нет.
-
-**Возвращаемое значение**
-
-**Примеры**
-
-**Вложенные**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
 Введена в: v20.8
@@ -4762,6 +4730,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 **Синтаксис**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **Аргументы**

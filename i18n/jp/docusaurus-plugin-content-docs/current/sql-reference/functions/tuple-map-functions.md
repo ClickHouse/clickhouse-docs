@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**エスケープシーケンス非対応環境でのエスケープ**
+**エスケープシーケンス非サポート時の挙動**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **別名**: `str_to_map`, `mapFromString`
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **引数**
@@ -403,7 +405,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **構文**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **エイリアス**: `mapContains`

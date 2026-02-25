@@ -1173,7 +1173,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 **構文**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **別名**: `jsonMergePatch`
@@ -1191,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **使用例**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response

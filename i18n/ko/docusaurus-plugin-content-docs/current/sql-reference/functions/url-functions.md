@@ -1027,6 +1027,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 **구문(Syntax)**
 
 ```sql
+firstSignificantSubdomain(url)
 ```
 
 **인수**
@@ -1121,6 +1122,7 @@ RFC 1034에 따라 「첫 번째 유의미한 서브도메인(first significant 
 **구문**
 
 ```sql
+firstSignificantSubdomainRFC(url)
 ```
 
 **인수**

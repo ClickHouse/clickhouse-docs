@@ -3511,7 +3511,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **構文**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **引数**

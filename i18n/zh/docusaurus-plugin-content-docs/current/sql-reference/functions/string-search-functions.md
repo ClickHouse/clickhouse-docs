@@ -399,7 +399,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **语法**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **参数**
@@ -421,7 +421,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -942,6 +942,7 @@ SELECT hasToken('clickhouse test', 'test')
 **语法**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **参数**
@@ -961,6 +962,7 @@ SELECT hasToken('clickhouse test', 'test')
 **语法**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **参数**

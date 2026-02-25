@@ -403,7 +403,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **구문**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **인자**
@@ -425,7 +425,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -947,6 +947,7 @@ SELECT hasToken('clickhouse test', 'test')
 **구문**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **인수**
@@ -966,6 +967,7 @@ SELECT hasToken('clickhouse test', 'test')
 **구문**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **인수**
