@@ -54,7 +54,7 @@ QStudio is available at https://www.timestored.com/qstudio/download/
     Password: `XXXXXXXXXXX`
  4. Click Add
 
-If QStudio detects that you do not have the ClickHouse JDBC driver installed, it will offer to download them for you:
+If QStudio detects that you don't have the ClickHouse JDBC driver installed, it will offer to download them for you:
 
 ## 4. Query ClickHouse {#4-query-clickhouse}
 

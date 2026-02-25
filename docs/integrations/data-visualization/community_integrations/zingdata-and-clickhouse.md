@@ -55,7 +55,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     <Image size="md" img={zing_02} alt="ClickHouse connection configuration form in Zing Data with fields for server, port, database, username and password" border />
     <br/>
 
-5. If the connection is successful, Zing will proceed you to table selection. Select the required tables and click on **Save**. If Zing cannot connect to your data source, you'll see a message asking your to check your credentials and retry. If even after checking your credentials and retrying you still experience issues, <a id="contact_link" href="mailto:hello@getzingdata.com">reach out to Zing support here.</a>
+5. If the connection is successful, Zing will proceed you to table selection. Select the required tables and click on **Save**. If Zing can't connect to your data source, you'll see a message asking your to check your credentials and retry. If even after checking your credentials and retrying you still experience issues, <a id="contact_link" href="mailto:hello@getzingdata.com">reach out to Zing support here.</a>
 
     <Image size="md" img={zing_03} alt="Zing Data table selection interface showing available ClickHouse tables with checkboxes" border />
     <br/>

@@ -25,8 +25,8 @@ ClickHouseは、**データスキッピングインデックス**と呼ばれる
 
 * **minmax**: ブロックごとに式の最小値と最大値を追跡します。緩くソートされたデータの範囲クエリに最適です。
 * **set(N)**: 各ブロックに対して指定されたサイズNまでの値のセットを追跡します。ブロックごとにカーディナリティが低い列に効果的です。
-* **bloom_filter**: 値がブロックに存在するかどうかを確率的に判定し、セットメンバーシップの高速な近似フィルタリングを可能にします。ポジティブマッチが必要な「干し草の中の針」を探すクエリの最適化に効果的です。
-* **tokenbf_v1 / ngrambf_v1**: 文字列内のトークンまたは文字シーケンスを検索するために設計された特殊なBloomフィルターバリアント - ログデータやテキスト検索のユースケースに特に役立ちます。
+* **bloom&#95;filter**: 値がブロックに存在するかどうかを確率的に判定し、セットメンバーシップの高速な近似フィルタリングを可能にします。ポジティブマッチが必要な「干し草の中の針」を探すクエリの最適化に効果的です。
+* **tokenbf&#95;v1 / ngrambf&#95;v1**: 文字列内のトークンまたは文字シーケンスを検索するために設計された特殊なBloomフィルターバリアント - ログデータやテキスト検索のユースケースに特に役立ちます。
 
 強力ですが、スキップインデックスは慎重に使用する必要があります。意味のある数のデータブロックを排除する場合にのみメリットがあり、クエリまたはデータ構造が一致しない場合は実際にオーバーヘッドが発生する可能性があります。ブロックに一致する値が1つでも存在する場合、そのブロック全体をまだ読み取る必要があります。
 
@@ -44,10 +44,12 @@ ClickHouseは、**データスキッピングインデックス**と呼ばれる
 2. `send_logs_level='trace'`や`EXPLAIN indexes=1`などのツールを使用して、インデックスの効果を確認し、影響を評価します。
 3. インデックスのサイズと粒度による影響を常に評価します。粒度サイズを小さくすると、パフォーマンスがある点まで向上し、フィルタリングされてスキャンする必要がある粒度が増えます。ただし、粒度が低くなるとインデックスサイズが増加するため、パフォーマンスも低下する可能性があります。さまざまな粒度データポイントのパフォーマンスとインデックスサイズを測定してください。これは、bloomフィルターインデックスで特に関連しています。
 
-<p/>
+<p />
+
 **適切に使用すると、スキップインデックスは大幅なパフォーマンスの向上をもたらすことができます - 盲目的に使用すると、不必要なコストが追加される可能性があります。**
 
 データスキッピングインデックスに関するより詳細なガイドについては、[こちら](/sql-reference/statements/alter/skipping-index)を参照してください。
+
 
 ## 例 \{#example\}
 
@@ -144,6 +146,7 @@ LIMIT 1
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
 
+
 したがって、これはデータスキッピングインデックスの論理的な選択肢です。数値型であるため、minmaxインデックスが理にかなっています。次の`ALTER TABLE`コマンドを使用してインデックスを追加します - 最初に追加してから、「マテリアライズ」します。
 
 ```sql
@@ -180,7 +183,7 @@ CREATE TABLE stackoverflow.posts
   `ParentId` String,
   `CommunityOwnedDate` DateTime64(3, 'UTC'),
   `ClosedDate` DateTime64(3, 'UTC'),
-  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --ここにインデックス
+  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --index here
 )
 ENGINE = MergeTree
 PARTITION BY toYear(CreationDate)
@@ -189,7 +192,7 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 
 次のアニメーションは、サンプルテーブルのminmaxスキッピングインデックスがどのように構築されるかを示しています。テーブル内の行の各ブロック(粒度)の最小および最大`ViewCount`値を追跡しています:
 
-<Image img={building_skipping_indices} size="lg" alt="Building skipping indices"/>
+<Image img={building_skipping_indices} size="lg" alt="Building skipping indices" />
 
 以前のクエリを繰り返すと、大幅なパフォーマンスの向上が見られます。スキャンされた行数の減少に注意してください:
 
@@ -206,6 +209,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 ```
 
 `EXPLAIN indexes = 1`は、インデックスの使用を確認します。
+
 
 ```sql
 EXPLAIN indexes = 1
@@ -248,11 +252,13 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-また、minmaxスキッピングインデックスが、サンプルクエリの`ViewCount` > 10,000,000述語に一致する可能性のないすべての行ブロックをどのようにプルーニングするかを示すアニメーションも示します:
+また、minmaxスキッピングインデックスが、サンプルクエリの`ViewCount` &gt; 10,000,000述語に一致する可能性のないすべての行ブロックをどのようにプルーニングするかを示すアニメーションも示します:
 
-<Image img={using_skipping_indices} size="lg" alt="Using skipping indices"/>
+<Image img={using_skipping_indices} size="lg" alt="Using skipping indices" />
+
 
 ## 関連ドキュメント \{#related-docs\}
+
 - [データスキッピングインデックスガイド](/optimize/skipping-indexes)
 - [データスキッピングインデックスの例](/optimize/skipping-indexes/examples)
 - [データスキッピングインデックスの操作](/sql-reference/statements/alter/skipping-index)

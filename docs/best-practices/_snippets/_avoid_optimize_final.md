@@ -3,7 +3,7 @@ import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 
 ClickHouse tables using the **MergeTree engine** store data on disk as **immutable parts**, which are created every time data is inserted. 
 
-Each insert creates a new part containing sorted, compressed column files, along with metadata like indexes and checksums. For a detailed description of part structures and how they are formed we recommend this [guide](/parts).
+Each insert creates a new part containing sorted, compressed column files, along with metadata like indexes and checksums. For a detailed description of part structures and how they're formed we recommend this [guide](/parts).
 
 Over time, background processes merge smaller parts into larger ones to reduce fragmentation and improve query performance.
 
@@ -19,7 +19,7 @@ OPTIMIZE TABLE <table> FINAL;
 resource intensive operations which may impact cluster performance.
 
 :::note OPTIMIZE FINAL vs FINAL
-`OPTIMIZE FINAL` is not the same as `FINAL`, which is sometimes necessary to use 
+`OPTIMIZE FINAL` isn't the same as `FINAL`, which is sometimes necessary to use 
 to get results without duplicates, such as with the `ReplacingMergeTree`. Generally,
 `FINAL` is okay to use if your queries are filtering on the same columns as those
 in your primary key.

@@ -42,7 +42,7 @@ To use API keys with [Query API Endpoints](/cloud/get-started/query-endpoints), 
 
   <Image img={image_03} size="md" alt="Create API key form" border/>
 
-4. The next screen will display your Key ID and Key secret. Copy these values and put them somewhere safe, such as a vault. The values will not be displayed after you leave this screen.
+4. The next screen will display your Key ID and Key secret. Copy these values and put them somewhere safe, such as a vault. The values won't be displayed after you leave this screen.
 
   <Image img={image_04} size="md" alt="API key details" border/>
 
@@ -55,7 +55,7 @@ $ KEY_SECRET=mykeysecret
 $ curl --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
 ```
 
-6. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You are able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
+6. Returning to the **API Keys** page, you will see the key name, last four characters of the Key ID, permissions, status, expiration date, and creator. You're able to edit the key name, permissions, and expiration from this screen. Keys may also be disabled or deleted form this screen.
 <br/>
 :::note
 Deleting an API key is a permanent action. Any services using the key will immediately lose access to ClickHouse Cloud.

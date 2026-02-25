@@ -11,6 +11,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
+
 # データの暗号化 \{#data-encryption\}
 
 ## ストレージレベルの暗号化 \{#storage-encryption\}
@@ -104,7 +105,7 @@ ClickHouse Cloud サービスの暗号化に使用されている KMS キーを�
 
 CMEK をセットアップしたら、新しい KMS キーを作成して権限を付与するために、上記の手順に従ってキーをローテーションします。サービス設定に戻り、新しい ARN (AWS) または Key Resource Path (GCP) を貼り付けて設定を保存します。サービスは新しいキーを適用するために再起動されます。
 
-#### KMS キーポーラー \{#kms-key-poller\}
+#### KMS キー ポーラー \{#kms-key-poller\}
 
 CMEK を使用している場合、指定された KMS キーが有効かどうかは 10 分ごとに検証されます。KMS キーへのアクセスができなくなった場合、ClickHouse サービスは停止します。サービスを再開するには、このガイドの手順に従って KMS キーへのアクセスを復旧し、その後サービスを再起動してください。
 

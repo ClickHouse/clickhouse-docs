@@ -36,16 +36,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-リクエストパラメータの説明については、[リクエストの説明](../../../sql-reference/statements/create/table.md)を参照してください。
+リクエストパラメータの詳細については、[リクエストの説明](../../../sql-reference/statements/create/table.md)を参照してください。
+
 
 ### CoalescingMergeTree のパラメータ \{#parameters-of-coalescingmergetree\}
 
 #### Columns \{#columns\}
 
-`columns` - 値が統合されるカラム名のタプルです。省略可能なパラメータです。\
-カラムは数値型である必要があり、パーティションキーまたはソートキーに含まれていてはなりません。
-
-`columns` が指定されていない場合、ClickHouse はソートキーに含まれていないすべてのカラムの値を統合します。
+`columns` - 省略可能なパラメータです。値を統合するカラム名のタプルです。指定したカラムはパーティションキーまたはソートキーに含まれていてはなりません。`columns` が指定されていない場合、ClickHouse はソートキーに含まれていないすべてのカラムの値を統合します。
 
 ### クエリ句 \{#query-clauses\}
 
@@ -111,7 +109,7 @@ SELECT * FROM test_table ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-最終的な正しい結果を得るための推奨クエリ：
+正しい最終結果を得るための推奨クエリ：
 
 ```sql
 SELECT * FROM test_table FINAL ORDER BY key;

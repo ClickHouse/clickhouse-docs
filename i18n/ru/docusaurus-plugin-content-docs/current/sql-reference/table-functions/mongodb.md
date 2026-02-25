@@ -14,8 +14,11 @@ doc_type: 'reference'
 ## Синтаксис \{#syntax\}
 
 ```sql
-mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]]);
+mongodb(uri, collection, structure[, oid_columns]);
+mongodb(named_collection_name[, <arg>=<value>...]);
 ```
+
 
 ## Аргументы \{#arguments\}
 
@@ -45,12 +48,22 @@ mongodb(host:port, database, collection, user, password, structure[, options[, o
 mongodb(uri, collection, structure[, oid_columns])
 ```
 
-| Аргумент      | Описание                                                                                                                      |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `uri`         | Строка подключения.                                                                                                           |
-| `collection`  | Имя удалённой коллекции.                                                                                                      |
-| `structure`   | Схема таблицы ClickHouse, возвращаемой этой функцией.                                                                         |
-| `oid_columns` | Список столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
+| Аргумент      | Описание                                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `uri`         | Строка подключения.                                                                                                  |
+| `collection`  | Имя удалённой коллекции.                                                                                             |
+| `structure`   | Схема таблицы ClickHouse, возвращаемой этой функцией.                                                                |
+| `oid_columns` | Список столбцов, разделённых запятыми, которые следует трактовать как `oid` в предложении WHERE. По умолчанию `_id`. |
+| :::           |                                                                                                                      |
+
+Вы можете передавать аргументы, используя именованную коллекцию:
+
+```sql
+mongodb(_named_collection_[, host][, port][, database][, collection][, user][, password][, structure][, options][, oid_columns])
+-- or
+mongodb(_named_collection_[, uri][, structure][, oid_columns])
+```
+
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -98,7 +111,22 @@ SELECT * FROM mongodb(
 )
 ```
 
+или:
+
+```sql
+CREATE NAMED COLLECTION mongo_creds AS
+       uri='mongodb://test_user:password@127.0.0.1:27017/test?connectionTimeoutMS=10000',
+       collection='default_collection';
+
+SELECT * FROM mongodb(
+        mongo_creds,
+        collection = 'my_collection',
+        structure = 'log_type String, host String, command String'
+)
+```
+
+
 ## См. также \{#related\}
 
 - [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
-- [Использование MongoDB в качестве источника словаря](sql-reference/dictionaries/index.md#mongodb)
+- [Использование MongoDB в качестве источника словаря](../statements/create/dictionary/sources.md#mongodb)

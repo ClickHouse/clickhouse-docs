@@ -375,7 +375,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 ```
 
 
-## dictionaries&#95;config \{#dictionaries_config\}
+## dictionaries_config \{#dictionaries_config\}
 
 辞書の設定ファイルへのパス。
 
@@ -386,7 +386,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 
 参照:
 
-* 「[Dictionaries](../../sql-reference/dictionaries/index.md)」。
+* 「[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)」。
 
 **例**
 
@@ -774,6 +774,8 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 | `async_queue_max_size` | 非同期ロギングを使用する場合に、フラッシュ待ちとしてキュー内に保持されるメッセージ数の最大値。これを超えたメッセージは破棄されます。                       |
 | `console` | コンソールへのロギングを有効にします。有効にするには `1` または `true` を設定します。ClickHouse がデーモンモードで動作していない場合のデフォルトは `1`、それ以外は `0` です。                            |
 | `console_log_level` | コンソール出力用のログレベル。デフォルトは `level` です。                                                                                                                 |
+| `console_shutdown_log_level` | シャットダウンレベル。サーバーのシャットダウン時にコンソールのログレベルを設定するために使用されます。   |
+| `console_startup_log_level` | スタートアップレベル。サーバー起動時にコンソールのログレベルを設定するために使用されます。起動完了後、ログレベルは `console_log_level` 設定に戻されます。                                   |   
 | `count` | ローテーションポリシー: ClickHouse が保持できる履歴ログファイルの最大数。                                                                                        |
 | `errorlog` | エラーログファイルへのパス。                                                                                                                                    |
 | `formatting.type` | コンソール出力用のログ形式。現在は `json` のみサポートされています。                                                                                                 |
@@ -1899,12 +1901,14 @@ PostgreSQL プロトコル経由でクライアントと通信するためのポ
 | `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには system 以外のテーブルと同様に `GRANT SELECT ON system.<table>` が必要です。例外として、いくつかの system テーブル（`tables`、`columns`、`databases`、および `one`、`contributors` のような一部の定数テーブル）は依然として全員がアクセス可能です。また、`SHOW` 権限（例: `SHOW USERS`）が付与されている場合、対応する system テーブル（つまり `system.users`）にはアクセスできます。 | `true`  |
 | `settings_constraints_replace_previous`         | ある設定に対して設定プロファイル内で定義された制約が、その設定に対する以前の制約（他のプロファイルで定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効にします。                                                                                                                                                                                                                        | `true`  |
 | `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                             | `false` |
+| `throw_on_unmatched_row_policies`               | テーブルに行ポリシーが存在するにもかかわらず、現在のユーザーに対応する行ポリシーが 1 つもない場合に、そのテーブルから読み取ろうとしたときに例外をスローするかどうかを設定します。                                                                                                                                                                                                                                                                              | `false` |
 | `users_without_row_policies_can_read_rows`      | パーミッシブな行ポリシーを持たないユーザーが `SELECT` クエリを使用して行を読み取れるかどうかを設定します。たとえば、ユーザー A と B がいて、行ポリシーが A に対してのみ定義されている場合、この設定が true であればユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はどの行も閲覧できません。                                                                                                                                                                                         | `true`  |
 
 例:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -1958,16 +1962,18 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 
 次の設定はサブタグで指定できます:
 
-| Setting                                    | Description                                                                                                                                                      |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper のエンドポイント。複数のエンドポイントを設定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は、ZooKeeper クラスターへの接続を試行するときのノードの順序を指定します。 |
-| `operation_timeout_ms`                     | 1 つの操作の最大タイムアウト (ミリ秒単位)。                                                                                                                                         |
-| `session_timeout_ms`                       | クライアントセッションの最大タイムアウト (ミリ秒単位)。                                                                                                                                    |
-| `root` (optional)                          | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                  |
-| `fallback_session_lifetime.min` (optional) | プライマリが利用できない場合に、フォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で設定します。デフォルト: 3 時間。                                                                     |
-| `fallback_session_lifetime.max` (optional) | プライマリが利用できない場合に、フォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で設定します。デフォルト: 6 時間。                                                                     |
-| `identity` (optional)                      | 要求された znode にアクセスするために ZooKeeper によって要求されるユーザーとパスワード。                                                                                                            |
-| `use_compression` (optional)               | `true` に設定すると、Keeper プロトコルでの圧縮を有効にします。                                                                                                                           |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | ZooKeeper のエンドポイント。複数のエンドポイントを設定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は、ZooKeeper クラスターへの接続を試行するときのノードの順序を指定します。                                                                                                                                        |
+| `operation_timeout_ms`                          | 1 つの操作の最大タイムアウト (ミリ秒単位)。                                                                                                                                                                                                                                                                                |
+| `session_timeout_ms`                            | クライアントセッションの最大タイムアウト (ミリ秒単位)。                                                                                                                                                                                                                                                                           |
+| `root` (optional)                               | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                                                                                                                                                         |
+| `fallback_session_lifetime.min` (optional)      | プライマリが利用できない場合に、フォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で設定します。デフォルト: 3 時間。                                                                                                                                                                                                            |
+| `fallback_session_lifetime.max` (optional)      | プライマリが利用できない場合に、フォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で設定します。デフォルト: 6 時間。                                                                                                                                                                                                            |
+| `identity` (optional)                           | 要求された znode にアクセスするために ZooKeeper によって要求されるユーザーとパスワード。                                                                                                                                                                                                                                                   |
+| `use_compression` (optional)                    | `true` に設定すると、Keeper プロトコルでの圧縮を有効にします。                                                                                                                                                                                                                                                                  |
+| `use_xid_64` (optional)                         | 64 ビットのトランザクション ID を有効にします。拡張トランザクション ID 形式を有効にするには `true` を設定します。デフォルト: `false`。                                                                                                                                                                                                                       |
+| `pass_opentelemetry_tracing_context` (optional) | OpenTelemetry のトレーシングコンテキストを Keeper へのリクエストに伝播させます。有効化すると、Keeper の操作に対してトレーシングスパンが作成され、ClickHouse と Keeper 間での分散トレーシングが可能になります。この設定を有効にするには `use_xid_64` も有効である必要があります。詳細は [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests) を参照してください。デフォルト: `false`。 |
 
 また、ZooKeeper ノードの選択アルゴリズムを選択できる `zookeeper_load_balancing` 設定 (オプション) もあります:
 
@@ -2000,15 +2006,19 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **関連項目**
 
-* [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper プログラマー向けガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse と ZooKeeper 間の通信をセキュアにする（オプション）](/operations/ssl-zookeeper)
 
+- [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper プログラマー向けガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse と ZooKeeper 間の通信をセキュアにする（オプション）](/operations/ssl-zookeeper)
 
 ## use_minimalistic_part_header_in_zookeeper \{#use_minimalistic_part_header_in_zookeeper\}
 

@@ -35,7 +35,7 @@ For Enterprise tier services scaling works as follows:
 - **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.
 - **Vertical scaling**:
   - Standard profiles (1:4) will support vertical autoscaling.
-  - Custom profiles (`highMemory` and `highCPU`) do not support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
+  - Custom profiles (`highMemory` and `highCPU`) don't support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
 
 :::note
 Scaling in ClickHouse Cloud happens in what we call a ["Make Before Break" (MBB)](/cloud/features/mbb) approach.
@@ -43,7 +43,7 @@ This adds one or more replicas of the new size before removing the old replicas,
 By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process.
 It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
 As part of this approach, we wait up to an hour to let any existing queries complete on the older replicas before removing them.
-This balances the need for existing queries to complete, while at the same time ensuring that older replicas do not linger around for too long.
+This balances the need for existing queries to complete, while at the same time ensuring that older replicas don't linger around for too long.
 :::
 
 ### Vertical auto scaling {#vertical-auto-scaling}
@@ -65,7 +65,7 @@ The **larger** of the CPU or memory recommendation is picked, and CPU and memory
 The scaling of ClickHouse Cloud Scale or Enterprise services can be adjusted by organization members with the **Admin** role.  To configure vertical autoscaling, go to the **Settings** tab for your service and adjust the minimum and maximum memory, along with CPU settings as shown below.
 
 :::note
-Single replica services cannot be scaled for all tiers.
+Single replica services can't be scaled for all tiers.
 :::
 
 <Image img={auto_scaling} size="lg" alt="Scaling settings page" border/>
@@ -74,11 +74,11 @@ Set the **Maximum memory** for your replicas at a higher value than the **Minimu
 
 You can also choose to set these values the same, essentially "pinning" the service to a specific configuration. Doing so will immediately force scaling to the desired size you picked.
 
-It's important to note that this will disable any auto scaling on the cluster, and your service will not be protected against increases in CPU or memory usage beyond these settings.
+It's important to note that this will disable any auto scaling on the cluster, and your service won't be protected against increases in CPU or memory usage beyond these settings.
 
 :::note
 For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling.
-Custom profiles will not support vertical autoscaling or manual vertical scaling at launch.
+Custom profiles won't support vertical autoscaling or manual vertical scaling at launch.
 However, these services can be scaled vertically by contacting support.
 :::
 
@@ -88,7 +88,7 @@ However, these services can be scaled vertically by contacting support.
 
 You can use ClickHouse Cloud [public APIs](https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1:organizationId~1services~1:serviceId~1scaling/patch) to scale your service by updating the scaling settings for the service or adjust the number of replicas from the cloud console.
 
-**Scale** and **Enterprise** tiers also support single-replica services. Services once scaled out, can be scaled back in to a minimum of a single replica. Note that single replica services have reduced availability and are not recommended for production usage.
+**Scale** and **Enterprise** tiers also support single-replica services. Services once scaled out, can be scaled back in to a minimum of a single replica. Note that single replica services have reduced availability and aren't recommended for production usage.
 
 :::note
 Services can scale horizontally to a maximum of 20 replicas. If you need additional replicas, please contact our support team.
@@ -121,12 +121,12 @@ Once the service has scaled, the metrics dashboard in the cloud console should s
 <Image img={scaling_memory_allocation} size="md" alt="Scaling memory allocation" border />
 
 ## Automatic idling {#automatic-idling}
-In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive for a certain duration (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
+In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive for a certain duration (i.e. when the service isn't executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you're not billed for compute resources when the service is paused.
 
 ### Adaptive Idling {#adaptive-idling}
 ClickHouse Cloud implements adaptive idling to prevent disruptions while optimizing cost savings. The system evaluates several conditions before transitioning a service to idle. Adaptive idling overrides the idling duration setting when any of the below listed conditions are met:
-- When the number of parts exceeds the maximum idle parts threshold (default: 10,000), the service is not idled so that background maintenance can continue
-- When there are ongoing merge operations, the service is not idled until those merges complete to avoid interrupting critical data consolidation
+- When the number of parts exceeds the maximum idle parts threshold (default: 10,000), the service isn't idled so that background maintenance can continue
+- When there are ongoing merge operations, the service isn't idled until those merges complete to avoid interrupting critical data consolidation
 - Additionally, the service also adapts idle timeouts based on server initialization time:
   - If server initialization time is less than 15 minutes, no adaptive timeout is applied and the customer-configured default idle timeout is used
   - If server initialization time is between 15 and 30 minutes, the idle timeout is set to 15 minutes
@@ -138,7 +138,7 @@ The service may enter an idle state where it suspends refreshes of [refreshable 
 :::
 
 :::danger When not to use automatic idling
-Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out. Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for services that power customer-facing features that are used frequently.
+Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out. Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It isn't recommended for services that power customer-facing features that are used frequently.
 :::
 
 ## Handling spikes in workload {#handling-bursty-workloads}

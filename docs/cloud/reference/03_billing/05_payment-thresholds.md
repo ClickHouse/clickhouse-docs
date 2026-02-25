@@ -28,13 +28,13 @@ In case your credit cards are not RBI-complaint, you must add a new payment meth
 
 In the example below, the Billing UI in cloud console is shown:
 
-<Image img={billing_1} size="md" alt="Where to find billing in the UI" border/>
+<Image img={billing_1} size="sm" alt="Where to find billing in the UI"/>
+
+<Image img={billing_2} size="lg" alt="Bill"/>
 
 As you can see from the above example - there was a threshold invoice sent during the Feb 28-March 31 billing period and then there is another invoice sent during the same billing period for the remaining usage over $10,000.
 
-<Image img={billing_2} size="md" alt="Bill" border/>
-
-## Payment thresholds {#threshholds}
+## Payment threshold notifications {#threshholds-notifications}
 
 If your organization reaches 90% of the payment threshold and is on-track to exceed the payment threshold mid-period, the billing contact email associated with the organization will receive an email notification.
 You will also receive an email notification as well as an invoice when you exceed the payment threshold.

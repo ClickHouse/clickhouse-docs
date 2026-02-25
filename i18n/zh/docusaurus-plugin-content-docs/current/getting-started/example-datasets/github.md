@@ -393,7 +393,7 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 这里的差异由以下几个因素造成：
 
 
-* 重命名操作可能与对文件的其他修改同时发生。这些会在 `file_changes` 中作为单独的事件列出，但时间相同。`argMax` 函数无法区分这些事件——它会选取第一个值。插入记录的自然顺序（这是唯一用来确定正确顺序的依据）在进行 UNION 后无法跨各分支保持一致，因此可能会错误地选中修改事件。例如，下面的 `src/Functions/geometryFromColumn.h` 文件在被重命名为 `src/Functions/geometryConverters.h` 之前有多次修改。我们当前的解决方案可能会将某个 Modify 事件选为最新更改，从而导致 `src/Functions/geometryFromColumn.h` 被保留。
+* 重命名操作可能与对文件的其他修改同时发生。这些会在 file&#95;changes 中作为单独的事件列出，但时间相同。`argMax` 函数无法区分这些事件——它会选取第一个值。插入记录的自然顺序（这是唯一用来确定正确顺序的依据）在进行 UNION 后无法跨各分支保持一致，因此可能会错误地选中修改事件。例如，下面的 `src/Functions/geometryFromColumn.h` 文件在被重命名为 `src/Functions/geometryConverters.h` 之前有多次修改。我们当前的解决方案可能会将某个 Modify 事件选为最新更改，从而导致 `src/Functions/geometryFromColumn.h` 被保留。
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 

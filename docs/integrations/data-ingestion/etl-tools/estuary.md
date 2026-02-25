@@ -19,7 +19,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 [Estuary](https://estuary.dev/) is a right-time data platform that flexibly combines real-time and batch data in simple-to-setup ETL pipelines. With enterprise-grade security and deployment options, Estuary unlocks durable data flows from SaaS, database, and streaming sources to a variety of destinations, including ClickHouse.
 
-Estuary connects with ClickHouse via the Kafka ClickPipe. You do not need to maintain your own Kafka ecosystem with this integration.
+Estuary connects with ClickHouse via the Kafka ClickPipe. You don't need to maintain your own Kafka ecosystem with this integration.
 
 ## Setup guide {#setup-guide}
 

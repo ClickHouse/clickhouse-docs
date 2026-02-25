@@ -196,7 +196,7 @@ LIMIT 1000
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-上記の操作の結果は 16,000 行、すなわち 10,000 + 5000 + 1000 行になります。本来の正しい合計は、元の合計から 1000 行差し引いた値、すなわち 10,000 - 1000 = 9000 行となるはずです。
+上記の操作の結果は 16,000 行、すなわち 10,000 + 5000 + 1000 行になります。ここでの本来の正しい合計は、元の合計から 1000 行を差し引いた値、すなわち 10,000 - 1000 = 9000 行となるはずです。
 
 ```sql
 SELECT count()
@@ -266,7 +266,7 @@ FROM posts_no_part
 LIMIT 1000000
 ```
 
-`FINAL` を使って年ごとの回答数の合計を計算する：
+`FINAL` を使って年ごとの回答数を集計する：
 
 ```sql
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers

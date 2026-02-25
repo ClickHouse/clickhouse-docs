@@ -94,7 +94,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman12} size="md" alt="Test retrieval of organizations" border/>
 
-* The returned results should deliver your organization details with "status": 200. (If you receive a "status" 400 with no organization information your configuration is not correct).
+* The returned results should deliver your organization details with "status": 200. (If you receive a "status" 400 with no organization information your configuration isn't correct).
 
 <Image img={postman13} size="md" alt="Status" border/>
 
@@ -113,7 +113,7 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman16} size="md" alt="Return value" border/>
 
-* The returned results should deliver your organization details with "status": 200. (If you receive a "status" 400 with no organization information your configuration is not correct).
+* The returned results should deliver your organization details with "status": 200. (If you receive a "status" 400 with no organization information your configuration isn't correct).
 
 ### Test "GET service details" {#test-get-service-details}
 
@@ -123,4 +123,4 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman17} size="md" alt="List of services" border/>
 
-* The returned results should deliver a list of your services and their details with "status": 200. (If you receive a "status" 400 with no service(s) information your configuration is not correct).
+* The returned results should deliver a list of your services and their details with "status": 200. (If you receive a "status" 400 with no service(s) information your configuration isn't correct).

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.opentelemetry&#95;span&#95;log \{#systemopentelemetry&#95;span&#95;log\}
+# system.opentelemetry_span_log \{#systemopentelemetry_span_log\}
 
 <SystemTableCloud />
 
@@ -29,6 +29,8 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の開始時刻（マイクロ秒）。
 * `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の終了時刻（マイクロ秒）。
 * `finish_date` ([Date](../../sql-reference/data-types/date.md)) — `trace span` の終了日。
+* `status_code` ([Enum8](../../sql-reference/data-types/enum.md)) — スパンのステータスコード。
+* `status_message` ([String](../../sql-reference/data-types/string.md)) — スパンに関連付けられたエラーメッセージ（存在する場合）。status&#95;code が ERROR でない場合は空です。
 * `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — `trace span` に応じた [Attribute](https://opentelemetry.io/docs/go/instrumentation/#attributes) 名。 [OpenTelemetry](https://opentelemetry.io/) 標準の推奨事項に従って設定されます。
 * `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — `trace span` に応じた Attribute の値。`OpenTelemetry` 標準の推奨事項に従って設定されます。
 

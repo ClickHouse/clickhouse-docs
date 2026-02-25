@@ -209,6 +209,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Использовать фоновый пул ввода-вывода для чтения из таблиц MergeTree. Этот параметр может повысить производительность для запросов, ограниченных скоростью операций ввода-вывода.
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Разрешить вычисление размеров подстолбцов при чтении MergeTree для улучшения разбиения задач чтения"}]}]}/>
+
+При включении ClickHouse будет вычислять размер файлов, необходимых для чтения каждого подстолбца, для более точного расчета размеров задач и блоков чтения.
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -439,16 +447,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает явное использование команды `OPTIMIZE` для таблиц Iceberg.
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-Разрешает выполнение запросов `insert` в Iceberg.
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -616,6 +614,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный табличный движок для интеграции с YTsaurus.
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для включения функции fuzzQuery."}]}]}/>
+
+Включает функцию `fuzzQuery`, которая применяет случайные мутации AST к строке запроса.
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -637,6 +645,18 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает использование функций, которые используют библиотеку Hyperscan. Отключите, чтобы избежать потенциально длительного времени компиляции и чрезмерного использования ресурсов.
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+**Псевдонимы**: `allow_experimental_insert_into_iceberg`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Разрешает выполнение запросов `insert` в Iceberg.
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -947,18 +967,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-Позволяет настроить ожидание выполнения действий на репликах при выполнении запросов [ALTER](../../sql-reference/statements/alter/index.md), [OPTIMIZE](../../sql-reference/statements/optimize.md) или [TRUNCATE](../../sql-reference/statements/truncate.md).
+Позволяет задать поведение ожидания выполнения действий на репликах при выполнении запросов [`ALTER`](../../sql-reference/statements/alter/index.md), [`OPTIMIZE`](../../sql-reference/statements/optimize.md) или [`TRUNCATE`](../../sql-reference/statements/truncate.md).
 
 Возможные значения:
 
 - `0` — Не ждать.
 - `1` — Ждать выполнения на собственной реплике.
 - `2` — Ждать выполнения на всех репликах.
+- `3` — Ждать выполнения только на активных репликах.
 
 Значение по умолчанию в Cloud: `1`.
 
 :::note
-`alter_sync` применим только к таблицам `Replicated`; при ALTER таблиц, не являющихся `Replicated`, он не оказывает эффекта.
+`alter_sync` применим только к таблицам `Replicated` и `SharedMergeTree`; при ALTER таблиц, не являющихся `Replicated` или `Shared`, он не оказывает эффекта.
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -1070,9 +1091,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
 
 Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
 Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
@@ -1120,6 +1141,32 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 - 'path' — использовать FlightDescriptor::Path (значение по умолчанию, работает с большинством серверов Arrow Flight)
 - 'command' — использовать FlightDescriptor::Command с запросом SELECT (требуется для Dremio)
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр, позволяющий выполнять фаззинг для всех типов запросов, а не только на чтение."}]}]}/>
+
+Если значение `false` (по умолчанию), серверный AST fuzzer (управляется `ast_fuzzer_runs`) выполняет фаззинг только запросов на чтение (SELECT, EXPLAIN, SHOW, DESCRIBE, EXISTS). При значении `true` выполняется фаззинг всех типов запросов, включая DDL и INSERT.
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable server-side AST fuzzer."}]}]}/>
+
+Включает серверный AST-фаззер, который запускает случайные запросы после каждого обычного запроса и отбрасывает их результаты.
+
+- 0: отключено (по умолчанию).
+- Значение между 0 и 1 (исключая границы): вероятность запуска одного фаззированного запроса.
+- Значение >= 1: количество фаззированных запросов, выполняемых на каждый обычный запрос.
+
+Фаззер накапливает фрагменты AST из всех запросов во всех сессиях, со временем порождая всё более интересные мутации. Фаззированные запросы, завершившиеся с ошибкой, незаметно отбрасываются; их результаты никогда не возвращаются клиенту.
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -1757,6 +1804,14 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Использовать вывод типов при преобразовании String в Variant.
 
+## check_named_collection_dependencies \{#check_named_collection_dependencies\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка для проверки того, что удаление именованной коллекции не нарушит работу зависящих от неё таблиц."}]}]}/>
+
+Проверяет, что DROP NAMED COLLECTION не нарушит работу таблиц, которые от неё зависят
+
 ## check_query_single_value_result \{#check_query_single_value_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2249,7 +2304,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить дедупликацию для зависимых materialized view по умолчанию."}]}]}/>
 
 Включает или отключает проверку дедупликации для materialized view, получающих данные из таблиц Replicated\*.
 
@@ -2267,9 +2324,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -2293,15 +2350,6 @@ SETTINGS convert_query_to_cnf = true;
 - force_enable — дедупликация включена для запроса `INSERT SELECT`. Если результат SELECT нестабилен, выбрасывается исключение.
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
-
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
-
-База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
-Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
-
-Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -3032,7 +3080,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3235,12 +3283,6 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
 
-Если параметр явно не установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
-
-Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
-
-**Значение по умолчанию:** `false` (но может быть автоматически включено на основе структуры таблицы, если не задано явно)
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3271,6 +3313,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Включает использование `DISTINCT` в подзапросах `IN`. Это компромиссная настройка: её включение может существенно уменьшить размер временных таблиц, передаваемых для распределённых подзапросов IN, и значительно ускорить передачу данных между сегментами за счёт отправки только уникальных значений.
 Однако включение этой настройки добавляет дополнительные операции слияния на каждом узле, поскольку необходимо выполнять дедупликацию (DISTINCT). Используйте эту настройку, когда сетевая передача является узким местом и дополнительные накладные расходы на слияние приемлемы.
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Если параметр установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
+Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -3345,13 +3396,11 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 ## enable_full_text_index \{#enable_full_text_index\}
 
-<BetaBadge/>
-
 **Псевдонимы**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Текстовый индекс был переведён в статус Beta."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Текстовый индекс получил статус GA."}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Текстовый индекс был переведён в статус Beta."}]}]}/>
 
 Если имеет значение true, разрешает использование текстового индекса.
 
@@ -3396,11 +3445,11 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включена эта оптимизация"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Фильтрует левую часть JOIN по множеству ключей, собранных из правой части во время выполнения запроса.
 
@@ -3632,7 +3681,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Если отключено, объявления в родительских предложениях WITH будут рассматриваться так, как если бы они были сделаны в текущей области видимости.
 
-Обратите внимание, что это параметр совместимости для нового анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
+Обратите внимание, что это параметр совместимости для анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -4958,6 +5007,15 @@ Expression ((Projection + Before ORDER BY))
 
 Если параметр включен, сервер будет с указанной вероятностью игнорировать все запросы DROP TABLE (для движков Memory и JOIN он заменит DROP на TRUNCATE). Используется для тестирования.
 
+## ignore_format_null_for_explain \{#ignore_format_null_for_explain\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "FORMAT Null теперь по умолчанию игнорируется для запросов EXPLAIN"}]}]}/>
+
+Если включено, `FORMAT Null` будет игнорироваться для запросов `EXPLAIN`, и вместо него будет использоваться формат вывода по умолчанию.
+Если отключено, запросы `EXPLAIN` с `FORMAT Null` не будут выводить результат (поведение, совместимое с предыдущими версиями).
+
 ## ignore_materialized_views_with_dropped_target_table \{#ignore_materialized_views_with_dropped_target_table\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5327,6 +5385,30 @@ SELECT * FROM x_dist ORDER BY number ASC;
 Профили можно выгружать с помощью SYSTEM JEMALLOC FLUSH PROFILE, что можно использовать для анализа выделения памяти.
 Выборки также могут сохраняться в system.trace_log с помощью конфигурации jemalloc_collect_global_profile_samples_in_trace_log или с настройкой запроса jemalloc_collect_profile_samples_in_trace_log.
 См. [Профилирование выделений](/operations/allocation-profiling).
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр для агрегации по количеству аллокаций вместо байтов в свернутом формате профиля кучи jemalloc"}]}]}/>
+
+При использовании формата вывода `collapsed` для профиля кучи jemalloc агрегирование выполняется по количеству аллокаций вместо байтов. Если значение равно false (по умолчанию), каждый стек взвешивается по количеству живых байтов; если true — по количеству живых аллокаций.
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "Новая настройка, управляющая форматом вывода таблицы system.jemalloc_profile_text. Возможные значения: 'raw', 'symbolized', 'collapsed'"}]}]}/>
+
+Формат вывода профиля кучи jemalloc в таблице system.jemalloc_profile_text. Возможные значения: 'raw' (сырой профиль), 'symbolized' (формат jeprof с символами) или 'collapsed' (формат FlameGraph).
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка, управляющая тем, включать ли inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что замедляет символизацию; при отключении они пропускаются для более быстрого вывода"}]}]}/>
+
+Определяет, нужно ли включать inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что может существенно замедлить процесс символизации; при отключении они пропускаются. Влияет только на форматы вывода 'symbolized' и 'collapsed'.
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -7298,7 +7380,9 @@ SELECT getSetting('max_memory_usage_for_user');
 Например, если необходимое количество записей находится в каждом блоке и `max_threads = 8`, то будет прочитано 8 блоков, хотя было бы достаточно прочитать только один.
 Чем меньше значение `max_threads`, тем меньше потребление памяти.
 
-По умолчанию значение настройки `max_threads` соответствует количеству аппаратных потоков, доступных ClickHouse.
+По умолчанию значение настройки `max_threads` соответствует количеству аппаратных потоков (числу ядер CPU), доступных ClickHouse.
+Для x86‑процессоров с менее чем 32 ядрами CPU и с SMT (например, Intel HyperThreading) в качестве особого случая ClickHouse по умолчанию использует количество логических ядер (= 2 x количество физических ядер).
+
 Без SMT (например, Intel HyperThreading) это соответствует числу ядер CPU.
 
 Для пользователей ClickHouse Cloud значение по умолчанию будет отображаться как `auto(N)`, где N совпадает с размером vCPU вашего сервиса, например 2vCPU/8GiB, 4vCPU/16GiB и т. д.
@@ -8052,6 +8136,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+Вероятность начала трассировки для запроса ZooKeeper — вне зависимости от того, существует родительская трассировка или нет.
+
+Возможные значения:
+
+- 'auto' — равна значению настройки opentelemetry_start_trace_probability
+- 0 — трассировка отключена
+- от 0 до 1 — вероятность (например, 1.0 = всегда включать)
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -8189,6 +8287,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 В настоящий момент эта настройка требует `optimize_skip_unused_shards` (причина в том, что однажды она может быть включена по умолчанию, и корректная работа будет гарантирована только в том случае, если данные вставлялись через distributed таблицу, то есть распределены в соответствии с sharding_key).
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Когда настройка включена, `OPTIMIZE ... DRY RUN` проверяет получившуюся объединённую часть с помощью `checkDataPart`. Если проверка не проходит, генерируется исключение.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -8572,18 +8678,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 Результат:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -8769,6 +8875,16 @@ FROM fuse_tbl
 
 При использовании алгоритма соединения по хэшу это пороговое значение помогает выбрать между `hash` и `parallel_hash` (только если доступна оценка размера правой таблицы).
 Вариант `hash` используется, когда известно, что размер правой таблицы меньше этого порогового значения.
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка для включения параллельной обработки несоединённых строк в RIGHT/FULL JOIN с алгоритмом parallel_hash."}]}]}/>
+
+Разрешает нескольким потокам параллельно обрабатывать несоединённые строки из правой таблицы во время RIGHT и FULL JOIN с алгоритмом parallel_hash.
+Это может ускорить фазу обработки несоединённых строк при использовании алгоритма соединения `parallel_hash` с большими таблицами.
+При отключении несоединённые строки обрабатываются одним потоком.
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 
@@ -9641,7 +9757,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) новым анализатором."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) анализатором."}]}]}/>
 
 Разрешает объединение фильтров в плане запроса.
 
@@ -11100,14 +11216,6 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "Новая настройка."}]}]}/>
-
-Для тестирования позволяет включать или отключать использование bloom-фильтра в текстовом индексе.
-
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11471,6 +11579,22 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать userspace page cache для удалённых дисков, на которых не включён кэш файловой системы.
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования кеша страниц в пространстве пользователя (userspace page cache) для локальных дисков"}]}]}/>
+
+Использовать кеш страниц в пространстве пользователя (userspace page cache) при чтении с локальных дисков. Используется для тестирования; маловероятно, что улучшит производительность на практике. Требует, чтобы local_filesystem_read_method было установлено в 'pread' или 'read'. Не отключает кеш страниц ОС; для этого можно использовать min_bytes_to_use_direct_io. Влияет только на обычные таблицы и не затрагивает функцию таблицы file() или движок таблицы File().
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования пользовательского страничного кэша для табличных функций объектного хранилища"}]}]}/>
+
+Использовать пользовательский страничный кэш при чтении из табличных функций объектного хранилища (s3, azure, hdfs) и Движков таблиц (S3, Azure, HDFS).
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11634,11 +11758,11 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
 

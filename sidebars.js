@@ -348,6 +348,7 @@ const sidebars = {
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/extensions',
         'cloud/managed-postgres/settings',
+        'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/faq',
         {
           type: 'category',
@@ -643,11 +644,11 @@ const sidebars = {
               collapsible: true,
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/overview',
+                'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/get-started',
               ],
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
         {
           type: 'category',
           label: 'ClickPipes for Postgres',
@@ -800,6 +801,16 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/source/documentdb',
               ],
             },
+          ],
+        },
+                {
+          type: 'category',
+          label: 'ClickPipes for BigQuery',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/bigquery/overview',
+            'integrations/data-ingestion/clickpipes/bigquery/get-started',
           ],
         },
         'integrations/data-ingestion/clickpipes/aws-privatelink',
@@ -1066,9 +1077,11 @@ const sidebars = {
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
+          link: { type: 'doc', id: 'integrations/data-ingestion/etl-tools/dbt/index' },
           items: [
-            'integrations/data-ingestion/etl-tools/dbt/index',
             'integrations/data-ingestion/etl-tools/dbt/features-and-configurations',
+            'integrations/data-ingestion/etl-tools/dbt/materializations',
+            'integrations/data-ingestion/etl-tools/dbt/materialization-materialized-view',
             'integrations/data-ingestion/etl-tools/dbt/guides',
           ],
         },
@@ -1228,7 +1241,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index', 'sql-reference/dictionaries/index'],
+          items: ['dictionary/index'],
         },
         {
           type: 'category',
@@ -1310,6 +1323,7 @@ const sidebars = {
           items: ['guides/best-practices/skipping-indexes-examples'],
         },
         'guides/best-practices/prewhere',
+        'guides/lazy-materialization',
         'guides/best-practices/bulkinserts',
         'guides/best-practices/asyncinserts',
         'guides/best-practices/avoidmutations',
@@ -1598,18 +1612,47 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Language integrations',
+      label: 'DataStore API',
       className: 'top-nav-item',
       collapsed: false,
       collapsible: false,
-      link: { type: 'doc', id: 'chdb/install/index' },
+      link: { type: 'doc', id: 'chdb/datastore/index' },
       items: [
-        'chdb/install/python',
-        'chdb/install/nodejs',
-        'chdb/install/go',
-        'chdb/install/rust',
-        'chdb/install/bun',
-        'chdb/install/c',
+        'chdb/datastore/quickstart',
+        'chdb/datastore/factory-methods',
+        'chdb/datastore/query-building',
+        'chdb/datastore/pandas-compat',
+        'chdb/datastore/accessors',
+        'chdb/datastore/aggregation',
+        'chdb/datastore/io',
+        'chdb/datastore/execution-model',
+        'chdb/datastore/class-reference',
+        'chdb/configuration/performance-mode'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Configuration',
+      className: 'top-nav-item',
+      collapsed: false,
+      collapsible: false,
+      link: { type: 'doc', id: 'chdb/configuration/index' },
+      items: [
+        'chdb/configuration/execution-engine',
+        'chdb/configuration/function-config',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Debugging',
+      className: 'top-nav-item',
+      collapsed: false,
+      collapsible: false,
+      link: { type: 'doc', id: 'chdb/debugging/index' },
+      items: [
+        'chdb/debugging/explain',
+        'chdb/debugging/profiling',
+        'chdb/debugging/logging',
       ],
     },
     {
@@ -1620,6 +1663,19 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'chdb/guides/index' },
       items: [
+        {
+          type: 'category',
+          label: 'For pandas Users',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'chdb/guides/migration-from-pandas',
+            'chdb/guides/pandas-cookbook',
+            'chdb/guides/pandas-differences',
+            'chdb/guides/pandas-performance',
+            'chdb/guides/pandas-to-sql',
+          ],
+        },
         'chdb/guides/jupysql',
         'chdb/guides/querying-pandas',
         'chdb/guides/querying-apache-arrow',
@@ -1649,6 +1705,21 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        {
+          type: 'category',
+          label: 'Language bindings',
+          collapsed: false,
+          collapsible: true,
+          link: { type: 'doc', id: 'chdb/install/index' },
+          items: [
+            'chdb/install/python',
+            'chdb/install/nodejs',
+            'chdb/install/go',
+            'chdb/install/rust',
+            'chdb/install/bun',
+            'chdb/install/c',
+          ],
+        },
         {
           type: 'link',
           label: 'JupySQL',
@@ -1685,12 +1756,37 @@ const sidebars = {
         },
         {
           type: 'link',
+          label: 'A Rocket Engine on a Bicycle',
+          href: 'https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle',
+        },
+        {
+          type: 'link',
           label: 'Joining ClickHouse, Inc.',
           href: 'https://clickhouse.com/blog/welcome-chdb-to-clickhouse',
         },
         {
           type: 'link',
-          label: 'Team and dontributors',
+          label: '87x Faster Pandas DataFrames',
+          href: 'https://clickhouse.com/blog/chdb-pandas-dataframes-87x-faster',
+        },
+        {
+          type: 'link',
+          label: 'The Journey to Zero-Copy',
+          href: 'https://clickhouse.com/blog/chdb-journey-to-zero-copy',
+        },
+        {
+          type: 'link',
+          label: 'Kernel Upgrade to v25.8',
+          href: 'https://clickhouse.com/blog/chdb-kernel-update-25.8',
+        },
+        {
+          type: 'link',
+          label: 'chDB Intro Video',
+          href: 'https://www.youtube.com/watch?v=e_yL0dlX6k4',
+        },
+        {
+          type: 'link',
+          label: 'Team and contributors',
           href: 'https://github.com/chdb-io/chdb#contributors',
         },
       ],
@@ -1794,19 +1890,6 @@ const sidebars = {
               collapsible: true,
               items: [
                 {
-                  type: 'category',
-                  label: 'Host Logs',
-                  collapsed: false,
-                  collapsible: true,
-                  items: [
-                    {
-                      type: 'autogenerated',
-                      dirName:
-                        'use-cases/observability/clickstack/ingesting-data/integration-examples/host-logs',
-                    },
-                  ],
-                },
-                {
                   type: 'autogenerated',
                   dirName:
                     'use-cases/observability/clickstack/ingesting-data/integration-examples',
@@ -1839,6 +1922,7 @@ const sidebars = {
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
+        'use-cases/observability/clickstack/session-replay',
         {
           type: 'category',
           label: 'Managing ClickStack',

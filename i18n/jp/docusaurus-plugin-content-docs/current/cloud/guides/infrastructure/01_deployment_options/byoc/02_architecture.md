@@ -62,7 +62,7 @@ ClickHouse Cloud は、お客様のクラウドアカウント内でリソース
 
 これらの権限は、初回のオンボーディングプロセス中に作成するアカウント間 IAM ロール（AWS）またはサービスアカウント（GCP）を通じて付与されます。このロールは最小権限の原則に従い、BYOC の運用に必要な範囲にのみ権限が付与されます。
 
-必要となる具体的な権限の詳細については、[BYOC 権限リファレンス](/cloud/reference/byoc/reference/priviledge)を参照してください。
+必要となる具体的な権限の詳細については、[BYOC 権限リファレンス](/cloud/reference/byoc/reference/privilege)を参照してください。
 
 ### Tailscale プライベートネットワーク接続 \{#tailscale-private-network\}
 

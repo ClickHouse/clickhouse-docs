@@ -99,4 +99,4 @@ ORDER BY name ASC;
 4. │ all_6_11_1  │     1 │ 6459763 │
    └─────────────┴───────┴─────────┘
 ```
-The merge level is incremented by one with each additional merge on the part. A level of 0 indicates this is a new part that has not been merged yet.
+The merge level is incremented by one with each additional merge on the part. A level of 0 indicates this is a new part that hasn't been merged yet.

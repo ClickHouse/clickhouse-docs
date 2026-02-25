@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 使用包含式（inclusive）方法，对数值数据序列在多个不同水平上同时精确计算多个[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-该函数等价于 [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileexactinclusive)，但允许在一次遍历中计算多个分位数水平，这比多次调用单个分位数函数更高效。
+该函数等价于 [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileExactInclusive)，但允许在一次遍历中计算多个分位数水平，这比多次调用单个分位数函数更高效。
 
 此函数使用包含式（inclusive）方法来计算分位数，具体如 [R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) 中所述。
 这等价于 Excel 函数 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed)。

@@ -41,6 +41,10 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
+### Required PAT token permissions {#required-pat-token-permissions}
+
+When using a PAT for read access, the token must have permissions that allow ClickHouse to list and read Unity Catalog metadata. Ensure that the PAT has at least the `EXTERNAL USE SCHEMA` [privilege](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges) along with `SELECT` permission on the table, `USE CATALOG` on its parent catalog, and `USE SCHEMA` on its parent schema.
+
 ## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.
@@ -54,15 +58,6 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 ```
 
 ### Read Iceberg {#read-iceberg}
-
-To access UniForm Iceberg tables:
-
-```sql
-CREATE DATABASE unity
-ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
-SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
-oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
-```
 
 To access managed Iceberg tables:
 

@@ -1,6 +1,6 @@
 ---
 title: 'BYOC 権限'
-slug: /cloud/reference/byoc/reference/priviledge
+slug: /cloud/reference/byoc/reference/privilege
 sidebar_label: '権限'
 keywords: ['BYOC', 'クラウド', '自前クラウド', '権限']
 description: '自前のクラウドインフラストラクチャ上に ClickHouse をデプロイする'

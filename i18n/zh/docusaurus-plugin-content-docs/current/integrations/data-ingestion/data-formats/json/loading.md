@@ -90,6 +90,7 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 
 要加载这些文件中的数据行,可以使用 [`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select):
 
+
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
 Ok.
@@ -116,6 +117,7 @@ FORMAT JSONEachRow
 
 这些示例假定使用 `JSONEachRow` 格式。系统同样支持其他常见的 JSON 格式,加载这些格式的示例请参见[此处](/integrations/data-formats/json/other-formats)。
 
+
 ## 加载半结构化 JSON \{#loading-semi-structured-json\}
 
 前面的示例加载的是结构固定、键名和类型都已知的 JSON。现实中往往并非如此——可以新增键,或者键的类型会发生变化。这在可观测性数据等场景中非常常见。
@@ -139,6 +141,7 @@ ClickHouse 通过专用的 [`JSON`](/sql-reference/data-types/newjson) 类型来
     "nD8CV": "value"
   }
 }
+
 ```
 
 此处的 tags 列是不可预测的,因此我们无法对其进行建模。要加载这些数据,我们可以沿用之前的 schema,但额外提供一个类型为 [`JSON`](/sql-reference/data-types/newjson) 的 `tags` 列:
@@ -191,6 +194,7 @@ LIMIT 2
 
 请注意此处在加载数据时的性能差异。`JSON` 列在插入时需要进行类型推断,并且如果某些列中存在多种类型的值,还需要额外的存储空间。尽管可以通过配置 `JSON` 类型(参见 [Designing JSON schema](/integrations/data-formats/json/schema))来获得与显式声明列相当的性能,但它在开箱即用时被刻意设计为更加灵活。不过,这种灵活性也会带来一定的代价。
 
+
 ### 何时使用 JSON 类型 \{#when-to-use-the-json-type\}
 
 在以下情况下使用 `JSON` 类型:
@@ -199,10 +203,10 @@ LIMIT 2
 * 数据包含**类型各异的值**(例如,同一路径有时为字符串,有时为数字)。
 * 需要灵活的模式(schema),而严格的类型约束不可行。
 
-如果你的数据结构是已知且稳定的,即使数据本身是 JSON 格式,也很少需要使用 `JSON` 类型。特别是当你的数据具有以下特征时:
+如果你的数据结构是已知且稳定的,即便数据本身是 JSON 格式,通常也不需要使用 `JSON` 类型。具体来说,如果你的数据具有:
 
-* **已知键的扁平结构**:使用标准列类型,例如 String。
-* **可预测的嵌套结构**:为这些结构使用 Tuple、Array 或 Nested 类型。
-* **结构可预测但字段类型各异**:可以考虑使用 Dynamic 或 Variant 类型。
+* **键已知的扁平结构**: 使用标准列类型,例如 `String`。
+* **可预期的嵌套结构**: 对此类结构使用 `Tuple`、`Array` 或 `Nested` 类型。
+* **结构可预期但值类型各异**: 可以考虑使用 `Dynamic` 或 `Variant` 类型。
 
-你也可以像上面的示例一样组合使用这些方法:对可预测的顶层键使用静态列,对负载中动态部分使用单个 JSON 列。
+你也可以组合使用这些方法,正如上面的示例中所做的那样: 对可预测的顶层键使用静态列,再使用单个 `JSON` 列来存放负载中动态部分的数据。

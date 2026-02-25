@@ -52,7 +52,7 @@ Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
-`LogAttributes` が利用可能であることを前提として、サイト上でどの URL パスが最も多くの POST リクエストを受けているかを集計するクエリは次のとおりです：
+`LogAttributes` が利用可能な場合、サイト上でどの URL パスが最も多くの POST リクエストを受けているかをカウントするクエリは次のとおりです：
 
 ```sql
 SELECT path(LogAttributes['request_path']) AS path, count() AS c
@@ -588,7 +588,7 @@ LIMIT 5
 
 ## Dictionary の使用 \{#using-dictionaries\}
 
-[Dictionaries](/sql-reference/dictionaries) は ClickHouse の[重要な機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部の[ソース](/sql-reference/dictionaries#dictionary-sources)からのデータを、インメモリの[key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーのルックアップクエリ向けに最適化します。
+[Dictionaries](/sql-reference/statements/create/dictionary) は ClickHouse の[重要な機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部の[ソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources)からのデータを、インメモリの[key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーのルックアップクエリ向けに最適化します。
 
 <Image img={observability_12} alt="オブザーバビリティと Dictionary" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-ClickHouse で低レイテンシな IP ルックアップを行うために、Geo IP データのキーから属性へのマッピングをインメモリで保持する Dictionary を利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/dictionaries#ip_trie) が用意されています。次のクエリでは、このレイアウトを用い、上記のテーブルをソースとする Dictionary を定義します。
+ClickHouse で低レイテンシな IP ルックアップを行うために、Geo IP データのキーから属性へのマッピングをインメモリで保持する Dictionary を利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/statements/create/dictionary/layouts/ip-trie) が用意されています。次のクエリでは、このレイアウトを用い、上記のテーブルをソースとする Dictionary を定義します。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -741,7 +741,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-Dictionary から行を取得し、このデータセットがルックアップに利用できることを確認できます。
+Dictionary から行を選択し、このデータセットがルックアップに利用可能であることを確認できます。
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [ユーザーエージェント文字列](https://en.wikipedia.org/wiki/User_agent)のパースは、古典的な正規表現の問題であり、ログやトレースを基盤とするデータセットで一般的に必要とされる処理です。ClickHouse は Regular Expression Tree Dictionary を用いて、ユーザーエージェントを効率的にパースできます。
 
-正規表現ツリー Dictionary は、ClickHouse オープンソース版では YAMLRegExpTree dictionary source type を使用して定義されます。この型では、正規表現ツリーを含む YAML ファイルへのパスを指定します。独自の正規表現 Dictionary を使用したい場合は、必要な構造の詳細が[こちら](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)に記載されています。以下では、[uap-core](https://github.com/ua-parser/uap-core) を用いたユーザーエージェントのパースと、サポートされている CSV 形式用 Dictionary の読み込みに焦点を当てます。このアプローチは OSS と ClickHouse Cloud の両方で利用可能です。
+正規表現ツリー Dictionary は、ClickHouse オープンソース版では YAMLRegExpTree dictionary source type を使用して定義されます。この型では、正規表現ツリーを含む YAML ファイルへのパスを指定します。独自の正規表現 Dictionary を使用したい場合は、必要な構造の詳細が[こちら](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source)に記載されています。以下では、[uap-core](https://github.com/ua-parser/uap-core) を用いたユーザーエージェントのパースと、サポートされている CSV 形式用 Dictionary の読み込みに焦点を当てます。このアプローチは OSS と ClickHouse Cloud の両方で利用可能です。
 
 :::note
-以下の例では、2024年6月時点での uap-core におけるユーザーエージェントパース用正規表現の最新スナップショットを使用しています。随時更新される最新のファイルは[こちら](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)から取得できます。下記で使用する CSV ファイルにロードするには、[こちら](/sql-reference/dictionaries#collecting-attribute-values)の手順に従ってください。
+以下の例では、2024年6月時点での uap-core におけるユーザーエージェントパース用正規表現の最新スナップショットを使用しています。随時更新される最新のファイルは[こちら](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)から取得できます。下記で使用する CSV ファイルにロードするには、[こちら](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values)の手順に従ってください。
 :::
 
 以下の Memory テーブルを作成します。これらは、デバイス、ブラウザ、オペレーティングシステムをパースするための正規表現を保持します。
@@ -927,7 +927,7 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-これらの Dictionary をロードしたら、サンプルの user-agent 文字列を与えて、新しい Dictionary 抽出機能をテストできます。
+これらの Dictionary をロードしたら、サンプルの user-agent 文字列を入力して、新しい Dictionary 抽出機能をテストできます。
 
 
 ```sql
@@ -1030,8 +1030,8 @@ Os:     ('Other','0','0','0')
 Dictionary に関するさらなる例や詳細については、次の記事を参照してください。
 
 - [Dictionary の高度なトピック](/dictionary#advanced-dictionary-topics)
-- 「Using Dictionaries to Accelerate Queries」(https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Dictionaries](/sql-reference/dictionaries)
+- [「Using Dictionaries to Accelerate Queries」](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+- [Dictionaries](/sql-reference/statements/create/dictionary)
 
 ## クエリの高速化 \{#accelerating-queries\}
 
@@ -1355,13 +1355,13 @@ LIMIT 1000
 
 ClickHouseのプロジェクションを使用すると、1つのテーブルに対して複数の`ORDER BY`句を指定できます。
 
-前のセクションでは、ClickHouseでmaterialized viewを使用して集計の事前計算、行の変換、および異なるアクセスパターンに対するオブザーバビリティクエリの最適化を行う方法について説明しました。
+前のセクションでは、ClickHouseでマテリアライズドビューを使用して、集計の事前計算、行の変換、さまざまなアクセスパターンに対するオブザーバビリティクエリの最適化を行う方法を説明しました。
 
-トレースIDによる検索を最適化するため、materialized viewが挿入を受け取る元のテーブルとは異なる順序キーを持つターゲットテーブルに行を送信する例を示しました。
+トレースIDによる検索を最適化するため、マテリアライズドビューが挿入を受け取る元のテーブルとは異なる順序キーを持つターゲットテーブルに行を送信する例を示しました。
 
-プロジェクションを使用することで同じ問題に対処でき、プライマリキーに含まれないカラムに対するクエリを最適化することが可能です。
+プロジェクションを使用することで同じ問題に対処でき、プライマリキーに含まれないカラムに対するクエリをユーザーが最適化できるようになります。
 
-理論上、この機能を使用することで、テーブルに複数の順序キーを提供できますが、明確な欠点が1つあります。それはデータの重複です。具体的には、各プロジェクションに指定された順序に加えて、メインのプライマリキーの順序でもデータを書き込む必要があります。これにより、挿入処理が遅くなり、ディスク容量の消費量が増加します。
+理論上、この機能はテーブルに複数の並び替えキーを提供するために使用できますが、明確な欠点が1つあります。それはデータの重複です。具体的には、各プロジェクションに指定された順序に加えて、メインのプライマリキーの順序でもデータを書き込む必要があります。これにより、挿入が遅くなり、より多くのディスク領域を消費します。
 
 :::note PROJECTIONとmaterialized viewの比較
 PROJECTIONはmaterialized viewと同様の機能を多く提供しますが、一般的にはmaterialized viewの使用が推奨されるため、PROJECTIONは慎重に使用する必要があります。それぞれの欠点と適切な使用場面を理解しておく必要があります。例えば、PROJECTIONは集計の事前計算に使用できますが、この用途にはmaterialized viewの使用を推奨します。
@@ -1383,8 +1383,8 @@ Ok.
 Peak memory usage: 56.54 MiB.
 ```
 
-:::note パフォーマンス測定にはNullを使用
-ここでは`FORMAT Null`を使用して結果を出力していません。これにより、すべての結果が読み取られますが返されないため、LIMITによるクエリの早期終了を防ぎます。これは全1000万行のスキャンにかかる時間を示すためです。
+:::note パフォーマンス測定には Null を使用
+ここでは `FORMAT Null` を使って結果を出力していません。これによりすべての結果が読み取られるものの返されないため、LIMIT によるクエリの早期終了を防げます。これは 1000 万行すべてをスキャンするのにかかった時間を示すためのものです。
 :::
 
 上記のクエリでは、選択したソートキー `(ServiceName, Timestamp)` による線形スキャンが必要です。ソートキーの末尾に `Status` を追加することで上記のクエリのパフォーマンスを向上させることができますが、PROJECTIONを追加する方法もあります。
@@ -1446,7 +1446,7 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-上記のクエリを再実行すると、追加のストレージを代償としてパフォーマンスが大幅に向上していることが確認できます（測定方法については[&quot;テーブルサイズと圧縮の測定&quot;](#measuring-table-size--compression)を参照してください）。
+上記のクエリを再実行すると、追加のストレージを代償としてパフォーマンスが大幅に向上していることが確認できます(測定方法については[&quot;テーブルサイズと圧縮の測定&quot;](#measuring-table-size--compression)を参照してください)。
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1487,7 +1487,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-`ngram`関数も同様の機能を提供します。第2パラメータで`ngram`のサイズを指定できます:
+`ngram`関数も同様の機能を提供します。第2パラメータとして`ngram`のサイズを指定できます：`
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
@@ -1517,7 +1517,7 @@ WHERE Referer LIKE '%ultra%'
 1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
 ```
 
-ここでは、ngramサイズ3でマッチングする必要があります。そのため、`ngrambf_v1`索引を作成します。
+ここでは、ngramサイズを3にしてマッチングする必要があります。そのため、`ngrambf_v1`索引を作成します。
 
 ```sql
 CREATE TABLE otel_logs_bloom
@@ -1546,6 +1546,7 @@ ORDER BY (Timestamp)
 ```
 
 索引 `ngrambf_v1(3, 10000, 3, 7)` は4つのパラメータを取ります。最後のパラメータ（値7）はシード値を表します。その他のパラメータは、ngramサイズ（3）、値 `m`（フィルタサイズ）、ハッシュ関数の数 `k`（7）を表します。`k` と `m` はチューニングが必要であり、一意のngram/トークンの数とフィルタが真陰性を返す確率（つまり、値がグラニュール内に存在しないことを確認する確率）に基づいて設定されます。これらの値を決定するには、[これらの関数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)を参照することを推奨します。
+
 
 適切にチューニングすれば、ここで得られる高速化効果は非常に大きくなり得ます。
 

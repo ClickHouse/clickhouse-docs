@@ -1,3 +1,4 @@
 *                      @ClickHouse/docs
 /docs/integrations/ @ClickHouse/integrations-ecosystem @ClickHouse/docs
 /docs/integrations/data-ingestion/clickpipes/ @ClickHouse/clickpipes @ClickHouse/docs
+/docs/use-cases/observability/clickstack @gingerwizard

@@ -78,7 +78,7 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
 :::note
 You will need to use a different UUID for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new UUID each day.  
+For example, if you're taking daily backups, you will need to use a new UUID each day.  
 :::
 
 **Incremental Backup**

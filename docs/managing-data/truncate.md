@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['truncate', 'delete data', 'remove data', 'clear table', 'table maintenance']
 ---
 
-Truncate allows the data in a table or database to be removed, while preserving their existence. This is a lightweight operation which cannot be reversed.
+Truncate allows the data in a table or database to be removed, while preserving their existence. This is a lightweight operation which can't be reversed.
 
 import Truncate from '@site/docs/sql-reference/statements/truncate.md';
 

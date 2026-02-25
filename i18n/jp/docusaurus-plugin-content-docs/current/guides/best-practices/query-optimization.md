@@ -24,7 +24,7 @@ import Image from '@theme/IdealImage';
 
 ClickHouseには、クエリがどのように実行されているか、実行のために消費されるリソースを理解するための豊富なツールセットがあります。
 
-このセクションでは、これらのツールとその使い方を見ていきます。
+このセクションでは、これらのツールとその使い方を見ていきます。 
 
 ## 一般的な考慮事項 \{#general-considerations\}
 
@@ -52,7 +52,7 @@ ClickHouseには、クエリがどのように実行されているか、実行�
 
 実際には、多くの[最適化](/concepts/why-clickhouse-is-so-fast)が行われており、このガイドでそれらについてもう少し詳しく説明しますが、今のところ、これらの主要な概念により、ClickHouseがクエリを実行する際に舞台裏で何が起こっているかについて良い理解が得られます。
 
-このハイレベルな理解により、ClickHouseが提供するツールと、クエリパフォーマンスに影響を与えるメトリクスを追跡するためにそれらをどのように使用できるかを調べてみましょう。
+このハイレベルな理解により、ClickHouseが提供するツールと、クエリパフォーマンスに影響を与えるメトリクスを追跡するためにそれらをどのように使用できるかを調べてみましょう。 
 
 ## データセット \{#dataset\}
 
@@ -63,12 +63,12 @@ NYC Taxiデータセットを使用しましょう。これには、NYCのタク
 以下は、テーブルを作成し、S3バケットからデータを挿入するコマンドです。意図的に最適化されていないデータからスキーマを推論していることに注意してください。
 
 ```sql
--- 推論されたスキーマでテーブルを作成
+-- Create table with inferred schema
 CREATE TABLE trips_small_inferred
 ORDER BY () EMPTY
 AS SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 
--- 推論されたスキーマのテーブルにデータを挿入
+-- Insert data into table with inferred schema
 INSERT INTO trips_small_inferred
 SELECT *
 FROM s3Cluster
@@ -78,7 +78,7 @@ FROM s3Cluster
 データから自動的に推論されたテーブルスキーマを見てみましょう。
 
 ```sql
---- 推論されたテーブルスキーマを表示
+--- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
 
 Query id: d97361fd-c050-478e-b831-369469f0784d
@@ -117,7 +117,7 @@ ORDER BY tuple()
 NYC taxiデータセットで実行時間が長い上位5つのクエリを見つけましょう。
 
 ```sql
--- nyc_taxiデータベースから過去1時間の実行時間が長い上位5つのクエリを見つける
+-- Find top 5 long running queries from nyc_taxi database in the last 1 hour
 SELECT
     type,
     event_time,
@@ -220,7 +220,7 @@ tables:            ['nyc_taxi.trips_small_inferred']
 また、最もメモリやCPUを消費しているクエリを調べることで、システムに負荷をかけているクエリを知りたい場合もあるでしょう。
 
 ```sql
--- メモリ使用量順の上位クエリ
+-- Top queries by memory usage
 SELECT
     type,
     event_time,
@@ -242,10 +242,10 @@ LIMIT 30
 この時点で、再現性を向上させるために`enable_filesystem_cache`設定を0に設定してファイルシステムキャッシュをオフにすることが重要です。
 
 ```sql
--- ファイルシステムキャッシュを無効化
+-- Disable filesystem cache
 set enable_filesystem_cache = 0;
 
--- クエリ1を実行
+-- Run query 1
 WITH
   dateDiff('s', pickup_datetime, dropoff_datetime) as trip_time,
   trip_distance / trip_time * 3600 AS speed_mph
@@ -261,7 +261,7 @@ FORMAT JSON
 1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
 Peak memory usage: 440.24 MiB.
 
--- クエリ2を実行
+-- Run query 2
 SELECT
     payment_type,
     COUNT() AS trip_count,
@@ -281,7 +281,7 @@ ORDER BY
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
 
--- クエリ3を実行
+-- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
 FROM nyc_taxi.trips_small_inferred
@@ -295,22 +295,22 @@ Peak memory usage: 451.53 MiB.
 
 読みやすくするためにテーブルにまとめます。
 
-| 名前     | 経過時間   | 処理行数        | ピークメモリ |
-| -------- | ---------- | --------------- | ------------ |
-| クエリ1  | 1.699 sec  | 329.04 million  | 440.24 MiB   |
-| クエリ2  | 1.419 sec  | 329.04 million  | 546.75 MiB   |
-| クエリ3  | 1.414 sec  | 329.04 million  | 451.53 MiB   |
+| 名前   | 経過時間      | 処理行数           | ピークメモリ     |
+| ---- | --------- | -------------- | ---------- |
+| クエリ1 | 1.699 sec | 329.04 million | 440.24 MiB |
+| クエリ2 | 1.419 sec | 329.04 million | 546.75 MiB |
+| クエリ3 | 1.414 sec | 329.04 million | 451.53 MiB |
 
 クエリが何を達成しているかを少し理解しましょう。
 
--   クエリ1は、平均速度が時速30マイルを超える乗車の距離分布を計算します。
--   クエリ2は、週ごとの乗車数と平均コストを見つけます。
--   クエリ3は、データセット内の各乗車の平均時間を計算します。
+* クエリ1は、平均速度が時速30マイルを超える乗車の距離分布を計算します。
+* クエリ2は、週ごとの乗車数と平均コストを見つけます。
+* クエリ3は、データセット内の各乗車の平均時間を計算します。
 
 これらのクエリはいずれも非常に複雑な処理を行っていませんが、クエリが実行されるたびにその場で乗車時間を計算する最初のクエリを除いて、各クエリの実行には1秒以上かかります。これは、ClickHouseの世界では非常に長い時間です。また、これらのクエリのメモリ使用量にも注目できます。各クエリで約400Mbはかなり多くのメモリです。また、各クエリが同じ行数（つまり329.04 million）を読み取っているように見えます。このテーブルに何行あるか簡単に確認しましょう。
 
 ```sql
--- テーブルの行数をカウント
+-- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
 
@@ -321,7 +321,7 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
    └───────────┘
 ```
 
-テーブルには329.04 million行が含まれているため、各クエリはテーブルのフルスキャンを実行しています。
+テーブルには3.2904億行が含まれているため、各クエリはテーブルをフルスキャンしています。
 
 ### Explain文 \{#explain-statement\}
 
@@ -389,9 +389,9 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 12. │             MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59 0 → 1 │
 ```
 
-ここで、クエリの実行に使用されるスレッド数に注目できます：59スレッドで、高い並列化を示しています。これによりクエリが高速化され、より小さなマシンではより長く実行されるでしょう。並列に実行されるスレッドの数は、クエリが使用する大量のメモリを説明できます。
+ここでは、クエリの実行に 59 個のスレッドが使用されていることが分かります。これは高い並列度を示しており、より小さなマシンであればより長い時間がかかるクエリの実行を高速化します。多数のスレッドが並列に実行されていることが、クエリによるメモリ消費量の多さを説明できます。
 
-理想的には、すべての遅いクエリを同じ方法で調査して、不要な複雑なクエリプランを特定し、各クエリによって読み取られる行数と消費されるリソースを理解します。
+理想的には、すべての低速なクエリについて同様の調査を行い、不要に複雑なクエリプランを特定するとともに、各クエリが読み取る行数と消費するリソースを把握するべきです。
 
 ## 方法論 \{#methodology\}
 
@@ -428,7 +428,7 @@ _最後に、外れ値には注意してください。ユーザーがアドホ�
 NULL値を持つ行をカウントするSQLクエリを実行すると、実際にNullable値が必要なテーブルの列を簡単に明らかにできます。
 
 ```sql
--- null値のない列を見つける
+-- Find non-null values columns
 SELECT
     countIf(vendor_id IS NULL) AS vendor_id_nulls,
     countIf(pickup_datetime IS NULL) AS pickup_datetime_nulls,
@@ -476,7 +476,7 @@ LowCardinalityの良い候補である列を決定するための簡単な経験
 次のSQLクエリを使用して、ユニーク値の数が少ない列を見つけることができます。
 
 ```sql
--- low cardinality列を特定
+-- Identify low cardinality columns
 SELECT
     uniq(ratecode_id),
     uniq(pickup_location_id),
@@ -499,12 +499,12 @@ uniq(vendor_id):           3
 
 ### データ型の最適化 \{#optimize-data-type\}
 
-Clickhouseは多数のデータ型をサポートしています。パフォーマンスを最適化し、ディスク上のデータストレージスペースを削減するために、ユースケースに適した最小のデータ型を選択してください。
+ClickHouse は多数のデータ型をサポートしています。パフォーマンスを最適化し、ディスク上のデータの保存容量を削減するために、ユースケースを満たす範囲で可能な限り小さいデータ型を選択してください。 
 
-数値の場合、データセットのmin/max値をチェックして、現在の精度値がデータセットの実態と一致するかどうかを確認できます。
+数値型については、データセット内の min/max 値を確認し、現在の精度（桁数や範囲）がデータセットの実態に合っているかどうかを検証できます。 
 
 ```sql
--- payment_typeフィールドのmin/max値を見つける
+-- Find min/max values for the payment_type field
 SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
@@ -524,7 +524,7 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 最適化されたスキーマを使用する新しいテーブルを作成し、データを再取り込みしましょう。
 
 ```sql
--- 最適化されたデータでテーブルを作成
+-- Create table with optimized data
 CREATE TABLE trips_small_no_pk
 (
     `vendor_id` LowCardinality(String),
@@ -545,21 +545,21 @@ CREATE TABLE trips_small_no_pk
 )
 ORDER BY tuple();
 
--- データを挿入
+-- Insert the data
 INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 ```
 
 改善を確認するために、新しいテーブルを使用して再度クエリを実行します。
 
-| 名前     | 実行1 - 経過時間 | 経過時間   | 処理行数        | ピークメモリ |
-| -------- | ---------------- | ---------- | --------------- | ------------ |
-| クエリ1  | 1.699 sec        | 1.353 sec  | 329.04 million  | 337.12 MiB   |
-| クエリ2  | 1.419 sec        | 1.171 sec  | 329.04 million  | 531.09 MiB   |
-| クエリ3  | 1.414 sec        | 1.188 sec  | 329.04 million  | 265.05 MiB   |
+| 名前   | 実行1 - 経過時間 | 経過時間      | 処理行数           | ピークメモリ     |
+| ---- | ---------- | --------- | -------------- | ---------- |
+| クエリ1 | 1.699 sec  | 1.353 sec | 329.04 million | 337.12 MiB |
+| クエリ2 | 1.419 sec  | 1.171 sec | 329.04 million | 531.09 MiB |
+| クエリ3 | 1.414 sec  | 1.188 sec | 329.04 million | 265.05 MiB |
 
 クエリ時間とメモリ使用量の両方でいくつかの改善が見られます。データスキーマの最適化のおかげで、データを表す総データ量を削減し、メモリ消費の改善と処理時間の短縮につながりました。
 
-テーブルのサイズをチェックして違いを見てみましょう。
+テーブルのサイズをチェックして違いを見てみましょう。 
 
 ```sql
 SELECT
@@ -594,21 +594,21 @@ ClickHouseでは、プライマリキーの[目的](/guides/best-practices/spars
 
 良いプライマリキーのセットを選択することはパフォーマンスにとって重要であり、実際には、特定のクエリセットを高速化するために、異なるテーブルに同じデータを保存し、異なるプライマリキーのセットを使用することが一般的です。
 
-ProjectionやMaterialized viewなど、ClickHouseがサポートする他のオプションを使用すると、同じデータに異なるプライマリキーのセットを使用できます。このブログシリーズの第2部では、これについて詳しく説明します。
+ProjectionやMaterialized viewなど、ClickHouseがサポートする他のオプションを使用すると、同じデータに異なるプライマリキーのセットを使用できます。このブログシリーズの第2部では、これについて詳しく説明します。 
 
 ### プライマリキーの選択 \{#choose-primary-keys\}
 
-正しいプライマリキーのセットを選択することは複雑なトピックであり、最適な組み合わせを見つけるためにはトレードオフと実験が必要になる場合があります。
+正しいプライマリキーのセットを選択することは複雑なトピックであり、最適な組み合わせを見つけるためにはトレードオフと実験が必要になる場合があります。 
 
-今のところ、以下のシンプルなプラクティスに従います：
+今のところ、以下のシンプルなプラクティスに従います： 
 
--   ほとんどのクエリでフィルタリングに使用されるフィールドを使用する
--   最初にカーディナリティの低い列を選択する
--   タイムスタンプデータセットで時刻でフィルタリングすることは非常に一般的であるため、プライマリキーに時間ベースのコンポーネントを検討する
+* ほとんどのクエリでフィルタリングに使用されるフィールドを使用する
+* 最初にカーディナリティの低い列を選択する 
+* タイムスタンプデータセットで時刻でフィルタリングすることは非常に一般的であるため、プライマリキーに時間ベースのコンポーネントを検討する 
 
-私たちの場合、次のプライマリキーを実験します：`passenger_count`、`pickup_datetime`、`dropoff_datetime`。
+私たちの場合、次のプライマリキーを実験します：`passenger_count`、`pickup_datetime`、`dropoff_datetime`。 
 
-passenger_countのカーディナリティは小さく（24のユニーク値）、遅いクエリで使用されています。また、タイムスタンプフィールド（`pickup_datetime`と`dropoff_datetime`）を追加します。これらは頻繁にフィルタリングされる可能性があるためです。
+passenger&#95;countのカーディナリティは小さく（24のユニーク値）、遅いクエリで使用されています。また、タイムスタンプフィールド（`pickup_datetime`と`dropoff_datetime`）を追加します。これらは頻繁にフィルタリングされる可能性があるためです。
 
 プライマリキーを使用して新しいテーブルを作成し、データを再取り込みします。
 
@@ -633,7 +633,7 @@ CREATE TABLE trips_small_pk
 )
 PRIMARY KEY (passenger_count, pickup_datetime, dropoff_datetime);
 
--- データを挿入
+-- Insert the data
 INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
 ```
 

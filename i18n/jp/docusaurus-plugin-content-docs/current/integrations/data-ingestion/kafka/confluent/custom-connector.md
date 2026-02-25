@@ -12,6 +12,7 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
+
 # Confluent Platform と ClickHouse の連携 \{#integrating-confluent-platform-with-clickhouse\}
 
 <div class='vimeo-container'>
@@ -27,7 +28,9 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 </div>
 
 ## 前提条件 \{#prerequisites\}
+
 以下の内容に精通していることを前提とします:
+
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Platform および [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html)。
 
@@ -63,6 +66,7 @@ Confluent Platform 上でトピックを作成するのは比較的容易で、�
 
 <Image img={AddCustomConnectorPlugin} size="md" alt="ClickHouse のカスタムコネクタを追加するための設定を表示している Confluent Platform の UI" border />
 
+
 #### 接続情報を収集する \{#gather-your-connection-details\}
 
 <ConnectionDetails />
@@ -88,6 +92,7 @@ Confluent Platform 上でトピックを作成するのは比較的容易で、�
   "value.converter.schemas.enable": "false"
 }
 ```
+
 
 #### 接続エンドポイントを指定する \{#specify-the-connection-endpoints\}
 

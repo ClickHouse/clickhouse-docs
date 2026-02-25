@@ -11,6 +11,7 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
+
 # 去重策略 \{#deduplication-strategies\}
 
 **去重**是指***删除数据集中重复行***的过程。在 OLTP 数据库中，这很容易实现，因为每一行都有唯一的主键——但代价是写入速度较慢。每次插入前都需要先查找该主键，如果已存在则需要进行替换。
@@ -70,7 +71,7 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 200)
 ```
 
-该表现在包含 4 行数据：
+该表现在共有 4 行：
 
 ```sql
 SELECT *
@@ -111,9 +112,10 @@ FINAL
 用于查找某一列的最新值。
 :::
 
+
 ### 避免使用 FINAL \{#avoiding-final\}
 
-我们再次更新这两条唯一记录的 `views` 列：
+现在再次为这两行唯一数据更新 `views` 列：
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
@@ -121,7 +123,7 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 250)
 ```
 
-该表现在有 6 行，这是因为真正的合并尚未发生（目前只有在我们使用 `FINAL` 时才会在查询时进行合并）。
+该表现在有 6 行，因为实际的合并尚未发生（只进行了在使用 `FINAL` 时的查询时合并）。
 
 ```sql
 SELECT *
@@ -166,6 +168,7 @@ GROUP BY (id, author, comment)
 
 我们的[删除和更新数据培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)在此示例基础上进行了扩展，其中包括如何将 `version` 列与 `ReplacingMergeTree` 一起使用。
 
+
 ## 使用 CollapsingMergeTree 处理频繁的列更新 \{#using-collapsingmergetree-for-updating-columns-frequently\}
 
 更新一列意味着删除一条现有行并用新值替换它。正如前文所示，这类变更在 ClickHouse 中是*最终才生效的*——会在合并过程中完成。如果你需要更新大量行，与其使用 `ALTER TABLE..UPDATE`，往往更高效的做法是直接将新数据与现有数据一并插入。我们可以添加一列，用于标记数据是过期的还是最新的，而且其实已经有一个表引擎很好地实现了这种行为，特别是它还能自动为你删除过期数据。下面来看它是如何工作的。
@@ -200,7 +203,7 @@ INSERT INTO hackernews_views VALUES
    (123, 'ricardo', 0, 1)
 ```
 
-现在假设我们要更改 `views` 列。需要插入两行记录：一行用于抵消现有行，另一行表示该行的新状态：
+现在假设我们要更改 `views` 列。插入两行：一行用于抵消现有行，另一行表示该行的新状态：
 
 ```sql
 INSERT INTO hackernews_views VALUES
@@ -225,7 +228,7 @@ FROM hackernews_views
 └─────┴─────────┴───────┴──────┘
 ```
 
-请注意，添加 `FINAL` 将返回当前状态的那一行：
+请注意，添加 `FINAL` 会返回当前状态行：
 
 ```sql
 SELECT *
@@ -250,6 +253,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 
 :::
+
 
 ## 来自多个线程的实时更新 \{#real-time-updates-from-multiple-threads\}
 
@@ -297,7 +301,7 @@ INSERT INTO hackernews_views_vcmt VALUES
    (3, 'kenny', 1000, 1, 2)
 ```
 
-我们将再次运行之前的那个查询，该查询会根据 `sign` 列的符号巧妙地进行加减运算：
+我们将再次运行之前的查询，它会根据 `sign` 列的取值对数值进行加减运算：
 
 ```sql
 SELECT
@@ -319,7 +323,7 @@ ORDER BY id ASC
 └────┴─────────┴────────────────────────────┘
 ```
 
-强制触发表合并：
+我们来强制执行一次表合并：
 
 ```sql
 OPTIMIZE TABLE hackernews_views_vcmt
@@ -340,6 +344,7 @@ FROM hackernews_views_vcmt
 ```
 
 当你希望在从多个客户端和/或线程插入数据时实现去重时，`VersionedCollapsingMergeTree` 表非常实用。
+
 
 ## 为什么我的行没有被去重？ \{#why-arent-my-rows-being-deduplicated\}
 

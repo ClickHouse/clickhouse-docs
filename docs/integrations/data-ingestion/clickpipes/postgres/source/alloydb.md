@@ -106,7 +106,7 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 ## Configure network access {#configure-network-access}
 
 :::note
-ClickPipes does not support Private Service Connect (PSC) connections. If you do not allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-access) to connect securely. PSC will be supported in the future.
+ClickPipes doesn't support Private Service Connect (PSC) connections. If you don't allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-access) to connect securely. PSC will be supported in the future.
 :::
 
 Next, you must allow connections to your AlloyDB instance from ClickPipes.
@@ -133,7 +133,7 @@ Next, you must allow connections to your AlloyDB instance from ClickPipes.
 </TabItem>
 <TabItem value="ssh-tunnel" label="Use an SSH tunnel">
 
-If you do not allow public access to your AlloyDB instance, you must first set up an SSH bastion host to securely tunnel your connection. To set up an SSH bastion host on Google Cloud Platform:
+If you don't allow public access to your AlloyDB instance, you must first set up an SSH bastion host to securely tunnel your connection. To set up an SSH bastion host on Google Cloud Platform:
 
 1. Create and start a Google Compute Engine (GCE) instance following the [official documentation](https://cloud.google.com/compute/docs/instances/create-start-instance).
    - Ensure the GCE instance is in the same Virtual Private Network (VPC) as your AlloyDB instance.

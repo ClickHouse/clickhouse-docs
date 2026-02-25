@@ -46,9 +46,9 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 テストを並列で実行したり、ランダムな順序で実行したりするオプションもあります。
 
 
-### すべてのテストを実行する \{#running-all-tests\}
+### Fast test を実行する \{#running-fast-tests\}
 
-すべてのテストを実行するには、そこそこの性能を備えたマシンが必要になる場合があります。以下の手順は、100 GB のストレージを備えた `t3.2xlarge` AWS amd64 Ubuntu インスタンスで動作確認されています。
+テストサブセット（「Fast test」）を実行するには、そこそこの性能を備えたマシンが必要になる場合があります。以下の手順は、100 GB のストレージを備えた `t3.2xlarge` AWS amd64 Ubuntu インスタンスで動作確認されています。
 
 1. 前提条件をインストールし、再ログインします。
 
@@ -71,13 +71,59 @@ cd ClickHouse
 python3 -m ci.praktika run "Fast test"
 ```
 
-4. 次のような結果になるはずです
+次のような結果になるはずです
 
 ```sh
 Failed: 0, Passed: 7394, Skipped: 1795
 ```
 
 処理をつきっきりで監視しない場合は、`ssh` 接続が切断された後も実行を継続させるために、`nohup` または `disown` を使用できます。
+
+
+### ステートレステストの実行 \{#running-stateless-tests\}
+
+ステートレステストを実行するには、ある程度高性能なマシンが必要になる場合があります。以下は、200 GB のストレージを搭載した `m7i.8xlarge` AWS amd64 Ubuntu インスタンスで動作確認済みの例です。
+
+1. 必要な前提条件をインストールし、再ログインします。
+
+```sh
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker ubuntu
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
+```
+
+2. ソースコードを取得します。
+
+```sh
+git clone --single-branch https://github.com/ClickHouse/ClickHouse
+cd ClickHouse
+```
+
+3. コードをビルドします。
+
+```sh
+python3 -m ci.praktika run "Build (amd_debug)"
+cp ci/tmp/build/programs/clickhouse ci/tmp
+```
+
+4. 並列実行が可能なステートレスなテストを実行します。
+
+```sh
+python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+```
+
+次のような結果が得られるはずです
+
+```sh
+Failed: 0, Passed: 8497, Skipped: 103
+```
 
 
 ### 新しいテストの追加 \{#adding-a-new-test\}

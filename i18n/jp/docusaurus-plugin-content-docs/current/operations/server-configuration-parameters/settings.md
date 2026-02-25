@@ -40,12 +40,14 @@ ClickHouse における設定ファイルの詳細については、[""Configura
 | `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行するのに権限が必要か、また任意のユーザーが実行できるかどうかを設定します。true に設定した場合、このクエリには、通常テーブルと同様に `GRANT SELECT ON system.<table>` が必要になります。例外として、いくつかの system テーブル（`tables`、`columns`、`databases` と、`one`、`contributors` などの一部の定数テーブル）は依然として全ユーザーがアクセス可能です。また、`SHOW USERS` のような `SHOW` 権限が付与されている場合、対応する system テーブル（すなわち `system.users`）にはアクセスできます。 | `true`  |
 | `settings_constraints_replace_previous`         | ある設定に対する settings profile 内の制約が、その設定に対して以前に定義された制約（他のプロファイル内で定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効化します。                                                                                                                                                                                                | `true`  |
 | `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に、権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                               | `false` |
+| `throw_on_unmatched_row_policies`               | テーブルに行ポリシーが存在するものの、そのいずれも現在のユーザー向けではない場合に、そのテーブルからの読み取りで例外をスローするかどうかを設定します。                                                                                                                                                                                                                                                                                | `false` |
 | `users_without_row_policies_can_read_rows`      | 許可する行ポリシーを持たないユーザーが、`SELECT` クエリを使用して行を読み取れるかどうかを設定します。例えば、ユーザー A と B がいて、行ポリシーが A のみに対して定義されている場合、この設定が true であれば、ユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はいかなる行も閲覧できません。                                                                                                                                                                             | `true`  |
 
 例:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -91,7 +93,7 @@ ClickHouse サーバーが、SQL コマンドによって作成されたユー�
 
 ## allow_impersonate_user \{#allow_impersonate_user\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />IMPERSONATE 機能（EXECUTE AS target_user）の有効化／無効化を行います。
+<SettingsInfoBlock type="Bool" default_value="0" />IMPERSONATE 機能（EXECUTE AS target_user）の有効化／無効化を行います。設定は非推奨です。
 
 ## allow_implicit_no_password \{#allow_implicit_no_password\}
 
@@ -591,7 +593,7 @@ ClickHouse を使い始めたばかりの場合は、これを変更しないこ
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 `concurrent_threads_soft_limit_num` と `concurrent_threads_soft_limit_ratio_to_cores` によって指定される CPU スロットをどのようにスケジューリングするかを決定するポリシーです。制限された数の CPU スロットを同時実行中のクエリ間でどのように分配するかを制御するアルゴリズムです。スケジューラはサーバーを再起動せずに、実行中に変更できます。
 
@@ -927,7 +929,7 @@ ZooKeeper 上のテーブルへのパス。
 
 関連項目:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **例**
 
@@ -1645,6 +1647,17 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 
 <SettingsInfoBlock type="Double" default_value="0.5" />セカンダリ索引の非圧縮キャッシュにおける保護キューのサイズを、キャッシュ全体サイズに対する比率として指定します（SLRU ポリシーの場合）。
 
+## insert_deduplication_version \{#insert_deduplication_version\}
+
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
+
+この設定は、同期および非同期の insert に対する重複排除処理が、互いにまったく異なり不透明な方法で実装されているコードバージョンから、同期および非同期の insert をまたいでデータが重複排除されるコードバージョンへ移行できるようにします。
+デフォルト値は `old_separate_hashes` であり、これは ClickHouse が同期 insert と非同期 insert に対して異なる重複排除ハッシュを使用することを意味します（従来と同じ動作です）。
+後方互換性のため、この値をデフォルト値として使用する必要があります。既存のすべての ClickHouse インスタンスは、破壊的な変更を避けるためにこの値を使用する必要があります。
+`compatible_double_hashes` の値は、ClickHouse が 2 種類の重複排除ハッシュを使用することを意味します。1 つは同期または非同期 insert 用の従来のハッシュで、もう 1 つはすべての insert に対して使用される新しいハッシュです。この値は、既存のインスタンスを新しい動作に安全に移行するために使用する必要があります。
+この値は、移行中に同期または非同期の insert が失われないことを確認するために、一定期間有効にしておく必要があります（`replicated_deduplication_window` および `non_replicated_deduplication_window` 設定を参照してください）。
+最後に、`new_unified_hash` の値は、ClickHouse が同期および非同期 insert に対して新しい重複排除ハッシュのみを使用することを意味します。この値は、新規の ClickHouse インスタンス、またはすでに一定期間 `compatible_double_hashes` の値を使用していたインスタンスで有効化できます。
+
 ## interserver_http_credentials \{#interserver_http_credentials\}
 
 [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)中に他のサーバーへ接続する際に使用されるユーザー名とパスワードです。加えて、サーバーはこれらの認証情報を使って他のレプリカを認証します。
@@ -1998,6 +2011,8 @@ listen ソケットのバックログ（保留中接続キューのサイズ）�
 | `async_queue_max_size` | 非同期ロギングを使用する場合、フラッシュ待ちとしてキューに保持されるメッセージの最大数です。上限を超えたメッセージは破棄されます                       |
 | `console` | コンソールへのロギングを有効にします。有効にするには `1` または `true` を設定します。ClickHouse がデーモンモードで動作していない場合のデフォルトは `1`、それ以外は `0` です                            |
 | `console_log_level` | コンソール出力用のログレベル。デフォルトは `level` です。                                                                                                                 |
+| `console_shutdown_log_level` | サーバーのシャットダウン時のコンソールログレベルを指定します。   |
+| `console_startup_log_level` | サーバー起動時のコンソールログレベルを指定します。起動後、ログレベルは `console_log_level` 設定に戻されます。                                   |   
 | `count` | ローテーションポリシー: ClickHouse によって保持される履歴ログファイルの最大数。                                                                                        |
 | `errorlog` | エラーログファイルへのパス。                                                                                                                                    |
 | `formatting.type` | コンソール出力のログフォーマット。現在は `json` のみがサポートされています。                                                                                                 |
@@ -3453,7 +3468,7 @@ SharedMergeTree のパーツを完全に削除するまでの猶予期間。Clic
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
-共有 MergeTree の古いパーツをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
+共有 MergeTree の parts killer スレッドをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
 
 ## path \{#path\}
 
@@ -4159,6 +4174,18 @@ true に設定すると、サーバー設定が正しいかどうかのチェッ
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+SharedMergeTree のスナップショットパーツを完全に削除する間隔。ClickHouse Cloud でのみ使用可能です
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+共有 MergeTree スナップショットのクリーンアップを行うためのスレッド数です。ClickHouse Cloud でのみ利用可能です。
 
 ## ssh_server \{#ssh_server\}
 
@@ -4933,6 +4960,10 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 ```
 
 
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+早期メモリ制限チェックを無視するUSERをカンマ区切りで指定するリストです。USERがこのリストに含まれていない場合、合計メモリ使用量が制限を超えるとクエリは拒否されます。
+
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />クエリパケット受信時にクライアント情報を検証するかどうかを制御します。
@@ -5026,16 +5057,18 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 
 以下の設定はサブタグで指定できます:
 
-| Setting                                    | Description                                                                                                                                                    |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper のエンドポイント。複数のエンドポイントを指定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は ZooKeeper クラスターへ接続を試行する際のノードの順序を指定します。 |
-| `operation_timeout_ms`                     | 1 回の操作の最大タイムアウト時間 (ミリ秒)。                                                                                                                                       |
-| `session_timeout_ms`                       | クライアントセッションの最大タイムアウト時間 (ミリ秒)。                                                                                                                                  |
-| `root` (optional)                          | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                |
-| `fallback_session_lifetime.min` (optional) | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で指定します。デフォルト: 3 時間。                                                                    |
-| `fallback_session_lifetime.max` (optional) | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で指定します。デフォルト: 6 時間。                                                                    |
-| `identity` (optional)                      | 指定された znode にアクセスするために ZooKeeper が要求するユーザー名およびパスワード。                                                                                                           |
-| `use_compression` (optional)               | true に設定すると Keeper プロトコルで圧縮を有効にします。                                                                                                                            |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | ZooKeeper のエンドポイント。複数のエンドポイントを指定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は ZooKeeper クラスターへ接続を試行する際のノードの順序を指定します。                                                                                                                                          |
+| `operation_timeout_ms`                          | 1 回の操作の最大タイムアウト時間 (ミリ秒)。                                                                                                                                                                                                                                                                                |
+| `session_timeout_ms`                            | クライアントセッションの最大タイムアウト時間 (ミリ秒)。                                                                                                                                                                                                                                                                           |
+| `root` (optional)                               | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                                                                                                                                                         |
+| `fallback_session_lifetime.min` (optional)      | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で指定します。デフォルト: 3 時間。                                                                                                                                                                                                             |
+| `fallback_session_lifetime.max` (optional)      | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で指定します。デフォルト: 6 時間。                                                                                                                                                                                                             |
+| `identity` (optional)                           | 指定された znode にアクセスするために ZooKeeper が要求するユーザー名およびパスワード。                                                                                                                                                                                                                                                    |
+| `use_compression` (optional)                    | true に設定すると Keeper プロトコルで圧縮を有効にします。                                                                                                                                                                                                                                                                     |
+| `use_xid_64` (optional)                         | 64 ビットのトランザクション ID を有効にします。拡張トランザクション ID 形式を有効にするには `true` を設定します。デフォルト: `false`。                                                                                                                                                                                                                       |
+| `pass_opentelemetry_tracing_context` (optional) | OpenTelemetry のトレーシングコンテキストを Keeper リクエストへ伝播させます。有効にすると Keeper の各操作に対してトレーススパンが作成され、ClickHouse と Keeper をまたいだ分散トレーシングが可能になります。この設定を利用するには `use_xid_64` を有効にしておく必要があります。詳細は [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests) を参照してください。デフォルト: `false`。 |
 
 `zookeeper_load_balancing` 設定 (オプション) もあり、ZooKeeper ノード選択のアルゴリズムを指定できます:
 
@@ -5068,15 +5101,19 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **関連項目**
 
-* [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper プログラマーズガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse と ZooKeeper 間のセキュア通信（オプション）](/operations/ssl-zookeeper)
 
+- [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper プログラマーズガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse と ZooKeeper 間のセキュア通信（オプション）](/operations/ssl-zookeeper)
 
 ## zookeeper_log \{#zookeeper_log\}
 

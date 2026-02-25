@@ -15,7 +15,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 :::warning Chart Migration
-If you are currently using the `hdx-oss-v2` chart, please migrate to the `clickstack` chart. The `hdx-oss-v2` chart is in maintenance mode and will no longer receive new features. All new development is focused on the `clickstack` chart, which provides the same functionality with improved naming and better organization.
+If you're currently using the `hdx-oss-v2` chart, please migrate to the `clickstack` chart. The `hdx-oss-v2` chart is in maintenance mode and will no longer receive new features. All new development is focused on the `clickstack` chart, which provides the same functionality with improved naming and better organization.
 :::
 
 The helm chart for ClickStack can be found [here](https://github.com/ClickHouse/ClickStack-helm-charts) and is the **recommended** method for production deployments.
@@ -102,8 +102,6 @@ On clicking `Create`, data sources will be created for the ClickHouse instance d
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
-
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
 
 ### Customizing values (optional) {#customizing-values}
 

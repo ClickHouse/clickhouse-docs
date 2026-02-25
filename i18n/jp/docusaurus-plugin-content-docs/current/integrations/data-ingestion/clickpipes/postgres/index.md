@@ -21,6 +21,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
+
 # Postgres から ClickHouse へのデータ取り込み（CDC を使用） \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
 
 ClickPipes を使用して、ソースの Postgres データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの Postgres データベースは、オンプレミス環境だけでなく、Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase などを含む各種クラウドサービス上にホストすることもできます。
@@ -60,6 +61,7 @@ PgBouncer、RDS Proxy、Supabase Pooler などの Postgres プロキシは、CDC
 ClickHouse Cloud アカウントにログインしていることを確認してください。まだアカウントがない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
 
 [//]: # (   TODO update image here)
+
 1. ClickHouse Cloud コンソールで、対象の ClickHouse Cloud サービスに移動します。
 
 <Image img={cp_service} alt="ClickPipes サービス" size="lg" border/>
@@ -132,10 +134,10 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
    <Image img={select_destination_db} alt="宛先データベースの選択" size="lg" border/>
 
-7. ソースの Postgres データベースから、レプリケーションしたいテーブルを選択できます。テーブルを選択する際、宛先の ClickHouse データベース側でテーブル名を変更したり、特定のカラムを除外したりすることも可能です。
+7. ソース Postgres データベースからレプリケーションしたいテーブルを選択できます。テーブルを選択する際に、宛先の ClickHouse データベース内でテーブル名を変更したり、特定のカラムを除外したりすることもできます。
 
    :::warning
-   ClickHouse での `ordering key` を Postgres の `primary key` と異なる形で定義する場合は、関連する [考慮事項](/integrations/clickpipes/postgres/ordering_keys) をすべて必ず確認してください。
+   ClickHouse で定義するオーダリングキーが Postgres のプライマリキーと異なる場合は、それに関するすべての[考慮事項](/integrations/clickpipes/postgres/ordering_keys)を必ず確認してください。
    :::
 
 ### 権限を確認し ClickPipe を開始する \{#review-permissions-and-start-the-clickpipe\}

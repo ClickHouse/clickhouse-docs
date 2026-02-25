@@ -26,7 +26,7 @@ There are two main ways to control the sync of a Postgres ClickPipe. The ClickPi
 
 ### Sync interval {#interval}
 
-The sync interval of the pipe is the amount of time (in seconds) for which the ClickPipe will pull records from the source database. The time to push what we have to ClickHouse is not included in this interval.
+The sync interval of the pipe is the amount of time (in seconds) for which the ClickPipe will pull records from the source database. The time to push what we have to ClickHouse isn't included in this interval.
 
 The default is **1 minute**.
 Sync interval can be set to any positive integer value, but it is recommended to keep it above 10 seconds.
@@ -60,7 +60,7 @@ This will open a flyout with the sync settings, where you can change the sync in
 ### Tweaking the sync settings to help with replication slot growth {#tweaking}
 
 Let's talk about how to use these settings to handle a large replication slot of a CDC pipe.
-The pushing time to ClickHouse does not scale linearly with the pulling time from the source database. This can be leveraged to reduce the size of a large replication slot.
+The pushing time to ClickHouse doesn't scale linearly with the pulling time from the source database. This can be leveraged to reduce the size of a large replication slot.
 By increasing both the sync interval and pull batch size, the ClickPipe will pull a whole lot of data from the source database in one go, and then push it to ClickHouse.
 
 ### Monitoring sync control behaviour {#monitoring}

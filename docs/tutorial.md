@@ -365,7 +365,7 @@ Run some queries to analyze the data. Explore the following examples or try your
 
 ## Create a dictionary {#create-a-dictionary}
 
-A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/sql-reference/dictionaries/index.md) 
+A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/sql-reference/statements/create/dictionary) 
 
 Create a dictionary associated with a table in your ClickHouse service.
 The table and dictionary are based on a CSV file that contains a row for each neighborhood in New York City. 
@@ -398,7 +398,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   ```
 
   :::note
-  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime).
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime).
   :::
 
 3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
@@ -427,7 +427,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
     SELECT dictHas('taxi_zone_dictionary', 132)
     ```
 
-6. The following query returns 0 because 4567 is not a value of `LocationID` in the dictionary:
+6. The following query returns 0 because 4567 isn't a value of `LocationID` in the dictionary:
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 4567)
     ```
@@ -489,7 +489,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     ```
 
     :::note
-    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values are not included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
+    Notice the output of the above `JOIN` query is the same as the query before it that used `dictGetOrDefault` (except that the `Unknown` values aren't included). Behind the scenes, ClickHouse is actually calling the `dictGet` function for the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more familiar for SQL developers.
     :::
 
 2. This query returns rows for the the 1000 trips with the highest tip amount, then performs an inner join of each row with the dictionary:

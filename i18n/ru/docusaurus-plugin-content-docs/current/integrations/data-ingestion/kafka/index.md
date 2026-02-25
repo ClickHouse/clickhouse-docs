@@ -87,7 +87,7 @@ Kafka Connect — это open source-фреймворк, который рабо
 
 #### Начало работы \{#kafka-table-engine-getting-started\}
 
-Чтобы начать работу с движком таблиц Kafka, см. [справочную документацию](./kafka-table-engine.md).
+Чтобы начать работу с табличным движком Kafka, см. [справочную документацию](./kafka-table-engine.md).
 
 ### Выбор варианта \{#choosing-an-option\}
 
@@ -108,5 +108,7 @@ Kafka Connect — это open source-фреймворк, который рабо
 * **Пользовательский код** - Пользовательский код, использующий Kafka и ClickHouse [клиентские библиотеки](../../language-clients/index.md), может быть подходящим в случаях, когда требуется кастомная обработка событий.
 
 [BYOC]: /cloud/reference/byoc/overview
+
 [Cloud]: /cloud/get-started
+
 [Self-hosted]: ../../../intro.md

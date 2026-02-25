@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'Поиск с ClickStack'
+title: 'Оповещения с ClickStack'
 sidebar_label: 'Оповещения'
 pagination_prev: null
 pagination_next: null
 description: 'Оповещения с ClickStack'
 doc_type: 'guide'
-keywords: ['ClickStack', 'наблюдаемость', 'оповещения', 'поиск-оповещений', 'уведомления', 'пороги', 'slack', 'email', 'pagerduty', 'мониторинг-ошибок', 'мониторинг-производительности', 'пользовательские-события']
+keywords: ['ClickStack', 'обсервабилити', 'оповещения', 'поиск-оповещений', 'уведомления', 'пороги', 'slack', 'email', 'pagerduty', 'мониторинг-ошибок', 'мониторинг-производительности', 'пользовательские-события']
 ---
 
 import Image from '@theme/IdealImage';
@@ -21,15 +21,15 @@ import manage_alerts from '@site/static/images/use-cases/observability/manage_al
 import alerts_view from '@site/static/images/use-cases/observability/alerts_view.png';
 import multiple_search_alerts from '@site/static/images/use-cases/observability/multiple_search_alerts.png';
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
+ClickStack включает встроенную поддержку оповещений, позволяя командам в реальном времени обнаруживать и оперативно реагировать на проблемы в логах, метриках и трейсах.
 
-## Оповещения в ClickStack \{#alerting-in-clickstack\}
-
-ClickStack включает встроенную поддержку оповещений, позволяя командам в реальном времени выявлять проблемы в логах, метриках и трейсах и оперативно на них реагировать.
-
-Оповещения могут создаваться напрямую в интерфейсе HyperDX и интегрироваться с популярными системами уведомлений, такими как Slack и PagerDuty.
+Оповещения могут создаваться непосредственно в интерфейсе HyperDX и интегрироваться с популярными системами уведомлений, такими как Slack и PagerDuty.
 
 Механизм оповещений бесшовно работает со всеми вашими данными в ClickStack, помогая отслеживать состояние системы, выявлять регрессии производительности и мониторить ключевые бизнес-события.
+
 
 ## Типы оповещений \{#types-of-alerts\}
 

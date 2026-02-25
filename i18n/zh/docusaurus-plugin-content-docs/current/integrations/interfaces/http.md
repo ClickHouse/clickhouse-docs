@@ -107,7 +107,7 @@ wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
 1
 ```
 
-在此示例中，我们通过管道将原始 HTTP 请求发送到 netcat：
+在此示例中，我们通过管道将原始 HTTP 请求传递给 netcat：
 
 ```bash title="command"
 echo -ne 'GET /?query=SELECT%201 HTTP/1.0\r\n\r\n' | nc localhost 8123
@@ -143,7 +143,7 @@ $ echo '1' | curl 'http://localhost:8123/?query=SELECT' --data-binary @-
 1
 ```
 
-如果查询的一部分作为参数发送，另一部分通过 POST 发送，那么在这两个分区片段之间会插入一个换行符。
+如果查询的一部分作为参数发送，另一部分通过 POST 发送，那么系统会在这两段数据之间插入一个换行符。
 例如，下面这样将无法工作：
 
 ```bash
@@ -284,7 +284,7 @@ $ curl 'http://localhost:8123/?query=SELECT%20a%20FROM%20t'
 $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-对于不返回数据表的成功请求，将返回空的响应体。
+对于未返回数据表的成功请求，响应体为空。
 
 
 ## 压缩 \{#compression\}
@@ -518,7 +518,7 @@ curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM m
 Code: 62. DB::Exception: Syntax error (Multi-statements are not allowed)
 ```
 
-为克服此限制，请改用 `role` 查询参数：
+为了克服这一限制，请改用 `role` 查询参数：
 
 ```bash
 curl -sS "http://localhost:8123?role=my_role" --data-binary "SELECT * FROM my_table;"

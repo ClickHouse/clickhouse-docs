@@ -71,6 +71,14 @@ We recommend using the latest java client directly if performance/direct access 
     </TabItem>
 </Tabs>
 
+
+If you are using JDBC driver within an application that requires jar to be added to the classpath, you need to add download the jar from:
+- [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) and add it to the classpath
+    - starting from version `0.9.4` there is an artifact https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all
+    - use qualifier `all` to get the jar with all shaded dependencies included.
+- or from official repository [here](https://github.com/ClickHouse/clickhouse-java/releases)
+
+
 ## Configuration {#configuration}
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
@@ -91,14 +99,14 @@ You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` prop
 
 There are a few things to note about the URL syntax:
 - **only** one endpoint is allowed in the URL
-- protocol should be specified when it is not the default one - 'HTTP'
-- port should be specified when it is not the default one '8123'
-- driver do not guess the protocol from the port, you need to specify it explicitly
-- `ssl` parameter is not required when protocol is specified.
+- protocol should be specified when it isn't the default one - 'HTTP'
+- port should be specified when it isn't the default one '8123'
+- driver don't guess the protocol from the port, you need to specify it explicitly
+- `ssl` parameter isn't required when protocol is specified.
 
 ### Connection Properties
 Main configuration parameters are defined in the [java client](/integrations/language-clients/java/client#client-configuration). They should be passed 
-as is to the driver. Driver has some own properties that are not part of the client configuration they are listed below.
+as is to the driver. Driver has some own properties that aren't part of the client configuration they're listed below.
 
 **Driver properties**:
 | Property                         | Default | Description                                                    |
@@ -149,6 +157,40 @@ jdbc:ch:http://localhost:8123/?user=default&password=password&client_name=my-app
 ```
 Note: no need to url encode JDBC URL or properties, they will be automatically encoded.
 
+### Client Identification {#client-identification}
+
+There are two ways to identify application originated a request: set `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME` via 
+connection properties or use `java.sql.Connection#setClientInfo(String name, String value)` method.
+
+```java showLineNumbers
+Properties properties = new Properties();
+properties.setProperty(ClientConfigProperties.CLIENT_NAME.getKey(), "my-app-01");
+Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", properties);
+```
+
+```java showLineNumbers
+conn.setClientInfo(com.clickhouse.jdbc.ClientInfoProperties.APPLICATION_NAME.getKey(), "my-app-01");
+```
+
+Both ways will result in the following `http_user_agent` value in the query log:
+```
+my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+```
+
+### Operation Identification {#operation-identification}
+
+JDBC Driver generates `query_id` for each operation (Currently it is included in server exceptions). 
+
+To set `log_comment` for an operation use `com.clickhouse.jdbc.StatementImpl#getLocalSettings` method. This requires 
+`Statement` or `PreparedStatement` to be cast to `com.clickhouse.jdbc.StatementImpl` first. 
+
+```java showLineNumbers
+StatementImpl stmt = (StatementImpl) conn.createStatement();
+stmt.getLocalSettings().logComment("some-comment");
+```
+
+**Note:** this approach work for single threaded uses of statement because `localSettings` is shared between threads.
+
 ## Supported data types {#supported-data-types}
 
 JDBC Driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).
@@ -191,7 +233,7 @@ There are few ways to change the mapping:
     - `rs.getObject(1, Float64.class)` will return `Float64` value of `Int8` column.
     - `rs.getLong(1)` will return `Long` value of `Int8` column.
     - `rs.getByte(1)` can return `Byte` value of `Int16` column if it fits into `Byte`.
-- conversion from wider to narrower type is not recommend because of data coruption risk.
+- conversion from wider to narrower type isn't recommend because of data coruption risk.
 - `Bool` type acts as number, too.
 - All number types can be read as `java.lang.String`.
 
@@ -235,26 +277,209 @@ There are few ways to change the mapping:
     - `rs.getObject(1, java.time.LocalDate.class)` will return `java.time.LocalDate` value of `Date` column.
     - `rs.getObject(1, java.time.LocalDateTime.class)` will return `java.time.LocalDateTime` value of `DateTime` column.
     - `rs.getObject(1, java.time.LocalTime.class)` will return `java.time.LocalTime` value of `Time` column.
-- `Date`, `Date32`, `Time`, `Time64` is not affected by the timezone of the server. 
+- `Date`, `Date32`, `Time`, `Time64` isn't affected by the timezone of the server. 
 - `DateTime`, `DateTime64` is affected by the timezone of the server or session timezone. 
 - `DateTime` and `DateTime64` can be retrieved as `ZonedDateTime` by using `getObject(colIndex, ZonedDateTime.class)`.
 
 
-**Collection Types**
+**Nested Types**
 
 | ClickHouse Type             | JDBC Type                    | Java Class                  |
 |-----------------------------|------------------------------|-----------------------------|
 | Array                       | ARRAY                        | java.sql.Array              |
-| Tuple                       | OTHER                        | Object[]                    |
+| Tuple                       | OTHER                        | com.clickhouse.data.Tuple              |
 | Map                         | JAVA_OBJECT                  | java.util.Map               |
+| Nested                      | ARRAY                        | java.sql.Array              |
 
 - `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
-- Collection types should not be read as `java.lang.String` because it is not a valid way to represent the data (Ex. there is no quoting for string values in array). 
+- Collection types shouldn't be read as `java.lang.String` because it isn't a valid way to represent the data (Ex. there is no quoting for string values in array). 
 - `Map` is mapped to `JAVA_OBJECT` because value can be read only with `getObject(columnIndex, Class<T>)` method. 
-    - `Map` is not a `java.sql.Struct` because it doesn't have named columns.
-- `Tuple` is mapped to `Object[]` because it can contain different types and using `List` is not valid. 
+    - `Map` isn't a `java.sql.Struct` because it doesn't have named columns.
+- `Tuple` is mapped to `Object[]` because it can contain different types and using `List` isn't valid. 
 - `Tuple` can be read as `Array` by using `getObject(columnIndex, Array.class)` method. In this case `Array#baseTypeName` will return `Tuple` column definition. 
+
+**Writing Arrays**
+
+Use `java.sql.Connection#createArrayOf` to instantiate `java.sql.Array` object. This object is designed to make array handling unified across different databases.
+Connection is required to pass configuration to Array factory method. 
+
+The method accepts two arguments:
+- `typeName` - type name of the array elements. For example `Array(Int32)` -> `"Int32"`.
+- `elements` - actual array elements. For example `[[1, 2, 3], [4, 5, 6]]` -> `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`.
+
+Tuple can be presented as `Object[]` or as `java.sql.Struct` (See how to write tuples bellow).
+
+**Example**
+```java 
+try (Connection conn = ...) {
+    Array array = conn.createArrayOf("Int32", new Integer[][] {{1, 2, 3}, {4, 5, 6}});
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (arr) VALUES (?)")) {
+        ps.setArray(1, array);
+        ps.executeUpdate();
+    }
+}
+```
+
+**Reading Arrays**
+
+Use `ResultSet#getArray(columnIndex)` to read `Array` object. Object can be used to access array of any nested depth. 
+`Array#getResultSet()` method can be used to read array elements in more unified way as `java.sql.ResultSet`. It is useful
+when exact type of array elements is unknown.
+
+**Example**
+```java
+try (Connection conn = ...) {
+    try (PreparedStatement ps = conn.prepareStatement("SELECT ?::Array(Int32)")) {
+        ps.setArray(1, array);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Array array = rs.getArray(1);
+
+                Object[] arr = (Object[]) array;
+                Arrays.stream(arr).forEach(this::handleArrayElement);
+
+                // or by using `ResultSet`
+                ResultSet resultSet = array.getResultSet();
+                while (resultSet.next()) {
+                    // ...
+                }
+            }
+        }
+    } 
+}
+```
+
+**Writing Tuples**
+
+Tuples are mapped to `com.clickhouse.data.Tuple` object and should be written as this object by calling `setObject(columnIndex, tuple)` method.
+It is possible to use `java.sql.Struct` object to write tuples for better portability. 
+
+**Example**
+```java
+try (Connection conn = ...) {
+    Tuple tuple = new Tuple(1, "test", LocalDate.parse("2026-03-02"));
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (tuple) VALUES (?)")) {
+        ps.setObject(1, tuple);
+        ps.executeUpdate();
+    }
+}
+
+try (Connection conn = ...) {
+    Struct struct = conn.createStruct("Tuple(Int32, String, Date)", new Object[] {1, "test", LocalDate.parse("2026-03-02")});
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (tuple) VALUES (?)")) {
+        ps.setStruct(1, struct);
+        ps.executeUpdate();
+    }
+}
+```
+
+**Reading Tuples**
+
+The method `getObject(columnIndex)` will return `Object[]`. Tuples can be read as `java.sql.Array` by using `getObject(columnIndex, Array.class)` method.
+
+
+**Example**
+```java
+try (Connection conn = ...) {
+    try (PreparedStatement stmt = conn.prepareStatement("SELECT ?::Tuple(String, Int32, Date)")) {
+        Array tuple = conn.createArrayOf("Tuple(String, Int32, Date)",  new Object[]{"test", 123, LocalDate.parse("2026-03-02")});
+        stmt.setObject(1, tuple);
+        try (ResultSet rs = stmt.executeQuery()) {
+            rs.next();
+            Array dbTuple = rs.getArray(1);
+            Assert.assertEquals(dbTuple, tuple);
+            Object arr = rs.getObject(1);
+            Assert.assertEquals(arr, tuple.getArray());
+        }
+    }
+}
+
+```
+
+**Writing Maps**
+
+Map can be written only as `java.collections.Map` object because this types requires key-value pairs (`java.sql.Struct` doesn't support key-value pairs).
+
+**Example**
+```java
+try (Connection conn = ...) {
+    Map<String, Integer> map = new HashMap<>();
+    map.put("key1", 1);
+    map.put("key2", 2);
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (map) VALUES (?)")) {
+        ps.setObject(1, map);
+        ps.executeUpdate();
+    }
+}
+```
+
+**Reading Maps**
+
+Map can be read as `java.collections.Map` object by using `getObject(columnIndex, Map.class)` method.
+
+**Example**
+```java
+try (Connection conn = ...) {
+    try (PreparedStatement ps = conn.prepareStatement("SELECT ?::Map(String, Int32)")) {
+        ps.setStruct(1, struct);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Map<String, Integer> map = rs.getObject(1, Map.class);
+                // ...
+            }
+        }
+    }
+}
+```
+
+**Writing Nested**
+
+Use `java.sql.Connection#createStruct` to instantiate `java.sql.Struct` object. This object is designed to make nested handling unified across different databases.
+Connection is required to pass configuration to Struct factory method. 
+
+The method accepts two arguments:
+- `typeName` - type name of the nested elements. For example `Nested(Tuple(Int32, String))` -> `"Nested(Tuple(Int32, String))"`.
+- `elements` - actual nested elements. For example `[1, 'test']` -> `new Object[] {1, 'test'}`.
+
+**Example**
+```java
+try (Connection conn = ...) {
+    Struct struct = conn.createStruct("Nested(Tuple(Int32, String))", new Object[] {1, 'test'});
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (nested) VALUES (?)")) {
+        ps.setStruct(1, struct);
+        ps.executeUpdate();
+    }
+}
+```
+
+**Reading Nested**
+
+Use `ResultSet#getStruct(columnIndex, StructDescriptor)` to read `Nested` object. Object can be used to access nested of any nested depth. 
+`Struct#getResultSet()` method can be used to read nested elements in more unified way as `java.sql.ResultSet`. It is useful
+when exact type of nested elements is unknown.
+
+**Example**
+```java
+try (Connection conn = ...) {
+    try (PreparedStatement ps = conn.prepareStatement("SELECT ?::Nested(Tuple(Int32, String))")) {
+        ps.setStruct(1, struct);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Struct struct = rs.getStruct(1);
+                Object[] tuple = (Object[]) struct;
+                Arrays.stream(tuple).forEach(this::handleTupleElement);
+
+                // or by using `ResultSet`
+                ResultSet resultSet = struct.getResultSet();
+                while (resultSet.next()) {
+                    // ...
+                }
+            }
+        }
+    }
+}
+```
 
 
 **Geo Types**
@@ -282,9 +507,9 @@ There are few ways to change the mapping:
 | AggregateFunction           | OTHER                        | (binary representation)     |
 | SimpleAggregateFunction     | (wrapped type)               | (wrapped class)             |
 
-- `UUID` is not JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
+- `UUID` isn't JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
 - `UUID` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
-- `IPv4` and `IPv6` are not JDBC standard types. However they are part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
+- `IPv4` and `IPv6` aren't JDBC standard types. However they're part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
 - `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
@@ -444,7 +669,7 @@ properties.setProperty("socket_keepalive", "true");
 | Streaming Data With `PreparedStatement` | Supported | Not supported |
 
 - JDBC V2 is implemented to be more lightweight and some features were removed.
-    - Streaming Data is not supported in JDBC V2 because it is not part of the JDBC spec and Java.
+    - Streaming Data isn't supported in JDBC V2 because it isn't part of the JDBC spec and Java.
 - JDBC V2 expects explicit configuration. No failover defaults.
     - Protocol should be specified in the URL. No implicit protocol detection using port numbers.
 
@@ -457,7 +682,7 @@ There are only two enums:
 
 Connection properties are parsed in the following way:
 - URL is parsed first for properties. They override all other properties.
-- Driver properties are not passed to the client.
+- Driver properties aren't passed to the client.
 - Endpoints (host, port, protocol) are parsed from the URL. 
 
 Example:
@@ -479,83 +704,90 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 **Numeric Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Int8                        | No      | TINYINT                    | java.lang.Byte             | TINYINT                    | java.lang.Byte                          |
-| Int16                       | No      | SMALLINT                   | java.lang.Short            | SMALLINT                   | java.lang.Short                         |
-| Int32                       | No      | INTEGER                    | java.lang.Integer          | INTEGER                    | java.lang.Integer                       |
-| Int64                       | No      | BIGINT                     | java.lang.Long             | BIGINT                     | java.lang.Long                          |
-| Int128                      | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
-| Int256                      | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
-| UInt8                       | Yes     | OTHER                      | java.lang.Short            | OTHER                      | com.clickhouse.data.value.UnsignedByte  |
-| UInt16                      | Yes     | OTHER                      | java.lang.Integer          | OTHER                      | com.clickhouse.data.value.UnsignedShort |
-| UInt32                      | Yes     | OTHER                      | java.lang.Long             | OTHER                      | com.clickhouse.data.value.UnsignedInteger |
-| UInt64                      | Yes     | OTHER                      | java.math.BigInteger       | OTHER                      | com.clickhouse.data.value.UnsignedLong  |
-| UInt128                     | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
-| UInt256                     | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
-| Float32                     | No      | REAL                       | java.lang.Float            | REAL                       | java.lang.Float                         |
-| Float64                     | No      | DOUBLE                     | java.lang.Double           | DOUBLE                     | java.lang.Double                        |
-| Decimal32                   | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
-| Decimal64                   | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
-| Decimal128                  | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
-| Decimal256                  | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
-| Bool                        | No      | BOOLEAN                    | java.lang.Boolean          | BOOLEAN                    | java.lang.Boolean                       |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Int8                        | ✅                 | TINYINT                    | java.lang.Byte             | TINYINT                    | java.lang.Byte                          |
+| Int16                       | ✅                 | SMALLINT                   | java.lang.Short            | SMALLINT                   | java.lang.Short                         |
+| Int32                       | ✅                 | INTEGER                    | java.lang.Integer          | INTEGER                    | java.lang.Integer                       |
+| Int64                       | ✅                 | BIGINT                     | java.lang.Long             | BIGINT                     | java.lang.Long                          |
+| Int128                      | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| Int256                      | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| UInt8                       | ❌                 | OTHER                      | java.lang.Short            | OTHER                      | com.clickhouse.data.value.UnsignedByte  |
+| UInt16                      | ❌                 | OTHER                      | java.lang.Integer          | OTHER                      | com.clickhouse.data.value.UnsignedShort |
+| UInt32                      | ❌                 | OTHER                      | java.lang.Long             | OTHER                      | com.clickhouse.data.value.UnsignedInteger |
+| UInt64                      | ❌                 | OTHER                      | java.math.BigInteger       | OTHER                      | com.clickhouse.data.value.UnsignedLong  |
+| UInt128                     | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| UInt256                     | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| Float32                     | ✅                 | REAL                       | java.lang.Float            | REAL                       | java.lang.Float                         |
+| Float64                     | ✅                 | DOUBLE                     | java.lang.Double           | DOUBLE                     | java.lang.Double                        |
+| Decimal32                   | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal64                   | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal128                  | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal256                  | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Bool                        | ✅                 | BOOLEAN                    | java.lang.Boolean          | BOOLEAN                    | java.lang.Boolean                       |
 
 - The biggest differences is that unsigned types are mapped to java types for better portability. 
 
 **String Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| String                      | No      | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
-| FixedString                 | No      | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| String                      | ✅                 | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
+| FixedString                 | ✅                 | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
 
 - `FixedString` is read as is in both versions. For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.
+- When `PreparedStatement#setBytes` is used it will be converted to `unhex('<hex_string>')` and then read as `String`.
+- Strings are stored in UTF-8 encoding.
 
 **Date/Time Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Date                        | Yes     | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
-| Date32                      | Yes     | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
-| DateTime                    | Yes     | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
-| DateTime64                  | Yes     | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
-| Time                        | No      | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
-| Time64                      | No      | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Date                        | ❌                 | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
+| Date32                      | ❌                 | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
+| DateTime                    | ❌                 | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
+| DateTime64                  | ❌                 | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
+| Time                        | ✅                 | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
+| Time64                      | ✅                 | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
 
 - `Time` and `Time64` are supported in V2 only as new types. 
 - `DateTime` and `DateTime64` are mapped to `java.sql.Timestamp` for better compatibility with JDBC.
 
 **Enum Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Enum                        | No      | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
-| Enum8                       | No      | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
-| Enum16                      | No      | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Enum                        | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+| Enum8                       | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+| Enum16                      | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
 
-**Collection Types**
+**Nested Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Array                       | Yes      | ARRAY                      | java.sql.Array            | ARRAY                      | Object[] or array of primitive types   |
-| Tuple                       | Yes      | OTHER                     | Object[]                   | STRUCT                     | java.sql.Struct                        |
-| Map                         | Yes      | JAVA_OBJECT               | java.util.Map              | STRUCT                     | java.util.Map                          |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Array                       | ❌                  | ARRAY                      | java.sql.Array            | ARRAY                      | Object[] or array of primitive types   |
+| Tuple                       | ❌                  | OTHER                     | Object[]                   | STRUCT                     | java.sql.Struct                        |
+| Map                         | ❌                  | JAVA_OBJECT               | java.util.Map              | STRUCT                     | java.util.Map                          |
+| Nested                      | ❌                  | ARRAY                     | java.sql.Array             | STRUCT                     | java.sql.Struct                        |
 
 - In V2 `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - In V2 `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
-- V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`. Besides `STRUCT` is invalid for `Map` because it doesn't have named columns.
-- V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 fixes this by mapping `Tuple` to `OTHER` and returns `Object[]` because using `List` is not valid as different types can be present.
-
+- V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`.
+- V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 maps `Tuple` to `OTHER` and returns `Object[]` by default.
+- V2 introduces `com.clickhouse.data.Tuple#Tuple` to write tuples. It simplifies determining if value is a tuple or and array.
+- `PreparedStatement#setBytes` and `ResultSet#getBytes` cannot be used with collection types. These methods are designed to work with binary strings.
+- Normally `java.sql.Array` is used to write and read Array types. JDBC driver has full support for this.
+- V2 `Nested` is mapped to `Array` and presents it as array of tuples.
+- V2 has partial support for `java.sql.Struct` because it very similar to Array type and doesn't support key-value pairs. `Struct` can be used to write `Tuple` values.
 
 **Geo Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Point                       | No      | OTHER                      | double[]                   | OTHER                      | double[]                                |
-| Ring                        | No      | OTHER                      | double[][]                 | OTHER                      | double[][]                              |
-| Polygon                     | No      | OTHER                      | double[][][]               | OTHER                      | double[][][]                            |
-| MultiPolygon                | No      | OTHER                      | double[][][][]             | OTHER                      | double[][][][]                          |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Point                       | ✅                 | OTHER                      | double[]                   | OTHER                      | double[]                                |
+| Ring                        | ✅                 | OTHER                      | double[][]                 | OTHER                      | double[][]                              |
+| Polygon                     | ✅                 | OTHER                      | double[][][]               | OTHER                      | double[][][]                            |
+| MultiPolygon                | ✅                 | OTHER                      | double[][][][]             | OTHER                      | double[][][][]                          |
 
 **Nullable and LowCardinality Types**
 
@@ -564,21 +796,28 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 **Special Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| JSON                        | Yes     | OTHER                      | java.lang.String           | not supported              | not supported                           |
-| AggregateFunction           | No      | OTHER                      | (binary representation)    | OTHER                      | (binary representation)                 |
-| SimpleAggregateFunction     | No      | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
-| UUID                        | No      | OTHER                      | java.util.UUID             | VARCHAR                    | java.util.UUID                          |
-| IPv4                        | No      | OTHER                      | java.net.Inet4Address      | VARCHAR                    | java.net.Inet4Address                   |
-| IPv6                        | No      | OTHER                      | java.net.Inet6Address      | VARCHAR                    | java.net.Inet6Address                   |
-| Dynamic                     | Yes     | OTHER                      | java.Object                | not supported              | not supported                           |
-| Variant                     | Yes     | OTHER                      | java.Object                | not supported              | not supported                           |
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| JSON                        | ❌                 | OTHER                      | java.lang.String           | not supported              | not supported                           |
+| AggregateFunction           | ✅                 | OTHER                      | (binary representation)    | OTHER                      | (binary representation)                 |
+| SimpleAggregateFunction     | ✅                 | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
+| UUID                        | ✅                 | OTHER                      | java.util.UUID             | VARCHAR                    | java.util.UUID                          |
+| IPv4                        | ✅                 | OTHER                      | java.net.Inet4Address      | VARCHAR                    | java.net.Inet4Address                   |
+| IPv6                        | ✅                 | OTHER                      | java.net.Inet6Address      | VARCHAR                    | java.net.Inet6Address                   |
+| Dynamic                     | ❌                 | OTHER                      | java.Object                | not supported              | not supported                           |
+| Variant                     | ❌                 | OTHER                      | java.Object                | not supported              | not supported                           |
 
 - V1 uses `VARCHAR` for `UUID` but returns `java.util.UUID` object always. V2 fixes this by mapping `UUID` to `OTHER` and returns `java.util.UUID` object.
 - V1 uses `VARCHAR` for `IPv4` and `IPv6` but returns `java.net.Inet4Address` and `java.net.Inet6Address` objects always. V2 fixes this by mapping `IPv4` and `IPv6` to `OTHER` and returns `java.net.Inet4Address` and `java.net.Inet6Address` objects.
 - `Dynamic` and `Variant` are new types in V2. Not supported in V1.
 - `JSON` is based on `Dynamic` type. Therefore it is supported only in V2.
+- IPv4 and IPv6 values can be read as `byte[]` by using `getBytes(columnIndex)` method. However it is recommended to use designated classes for these types.
+- V2 do not support reading IP address as numeric values because convertion is better implementation in InetAddress classes.
+
+### Database Metadata Changes {#database-metadata-changes}
+
+- V2 uses only `Schema` term to name databases. `Catalog` term is reserved for future use.
+- V2 returns `false` for `DatabaseMetaData.supportsTransactions()` and `DatabaseMetaData.supportsSavepoints()`. This will be changed in the future development.
 
 
 </Version>
@@ -634,7 +873,7 @@ Latest JDBC (0.7.2) version uses Client-V1
     </TabItem>
 </Tabs>
 
-Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
+Since version `0.5.0`, we're using Apache HTTP Client that's packed the Client. Since there isn't a shared version of the package, you need to add a logger as a dependency.
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven" >
@@ -681,7 +920,7 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 | Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `continueBatchOnError`     | `false` | Whether to continue batch processing when error occurred                                                                                                                                                                                                                                                                                                                                                                   |
-| `createDatabaseIfNotExist` | `false` | Whether to create database if it does not exist                                                                                                                                                                                                                                                                                                                                                                            |
+| `createDatabaseIfNotExist` | `false` | Whether to create database if it doesn't exist                                                                                                                                                                                                                                                                                                                                                                            |
 | `custom_http_headers`      |         | comma separated custom http headers, for example: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                    |
 | `custom_http_params`       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
 | `nullAsDefault`            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
@@ -696,7 +935,7 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 JDBC Driver supports same data formats as client library does.
 
 :::note
-- AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
+- AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` (in client-v1)
@@ -951,7 +1190,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` don't allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.

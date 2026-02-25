@@ -1,6 +1,6 @@
 ---
 slug: /integrations/misc
-keywords: ['Retool', 'Easypanel', 'Splunk']
+keywords: ['可视化界面', 'GUI', '代理', '第三方集成']
 title: '工具'
 description: '“工具”部分的概览页'
 doc_type: 'landing-page'

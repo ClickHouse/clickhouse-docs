@@ -229,7 +229,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 **另请参阅**
 
 * [`postgresql` 表函数](../../../sql-reference/table-functions/postgresql.md)
-* [将 PostgreSQL 用作字典源](/sql-reference/dictionaries#mysql)
+* [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources#mysql)
 
 
 ## 相关内容 \{#related-content\}
