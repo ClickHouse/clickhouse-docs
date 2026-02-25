@@ -566,7 +566,16 @@ const sidebars = {
             },
             // "integrations/language-clients/java/index",
             'integrations/language-clients/java/client/client',
-            'integrations/language-clients/java/jdbc/jdbc',
+            {
+              type: 'category',
+              label: 'JDBC',
+              collapsed: true,
+              collapsible: true,
+              items: [
+                'integrations/language-clients/java/jdbc/jdbc',
+                'integrations/language-clients/java/date_time_guide',
+              ],
+            },
             'integrations/language-clients/java/r2dbc',
           ],
         },
