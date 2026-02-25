@@ -38,6 +38,9 @@ To connect to the Polaris catalog, you will need:
 
 For Open Catalog, Snowflake's managed Polaris offering, your URI will include `/polaris` while for self-hosted, it may not. 
 
+
+<VerticalStepper>
+
 ## Creating a connection between Polaris and ClickHouse {#connecting}
 
 Create a database that connects ClickHouse to your Polaris catalog:
@@ -97,3 +100,4 @@ ORDER BY id;
 INSERT INTO my_clickhouse_table
 SELECT * FROM polaris_catalog.`polaris_db.my_iceberg_table`;
 ```
+</VerticalStepper>
