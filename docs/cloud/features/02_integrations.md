@@ -25,10 +25,13 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import data_catalogs_ui from '@site/static/images/cloud/features/data-catalogs-ui.png';
 import Image from '@theme/IdealImage';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 ClickHouse Cloud allows you to connect the tools and services that you love.
 
-## Data Catalog Integrations {#data-catalog-integrations} (beta)
+## Data Catalog integrations {#data-catalog-integrations}
+
+<BetaBadge/>
 
 ClickHouse Cloud can connect directly to your open table format data catalogs, giving you access to your data lake tables without duplicating data. By integrating, your catalog's tables will appear as queryable databases inside ClickHouse. Setup is available via SQL command ([DataLakeCatalog](/engines/database-engines/datalakecatalog)) and via the ClickHouse Cloud UI on the Data Sources tab.
 
