@@ -198,6 +198,7 @@ spec:
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
 
+
 ## OTel collector 入口 \{#otel-collector-ingress\}
 
 如果需要通过入口将 OTel collector 的端点（用于 traces、metrics、logs）暴露出去，请使用 `additionalIngresses` 配置。这在需要从集群外部发送遥测数据，或为 collector 使用自定义域名时非常有用。
@@ -233,6 +234,7 @@ hyperdx:
 :::note
 如果不需要将 OTel collector 暴露到集群外部，可以跳过此配置。对于大多数用户，通用的入口配置已经足够。
 :::
+
 
 ## 入口故障排查 \{#troubleshooting-ingress\}
 
@@ -270,6 +272,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **清理浏览器和 CDN 缓存：**
 
 * 变更之后，清理浏览器缓存以及任何 CDN/代理缓存，以避免使用陈旧的资源
+
 
 ## 自定义配置 \{#customizing-values\}
 

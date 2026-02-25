@@ -58,7 +58,7 @@ For example:
 ```shell
 # modify command to mount paths
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -102,9 +102,9 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 Local mode is a way to deploy HyperDX without needing to authenticate. 
 
-**Authentication is not supported**. 
+**Authentication isn't supported**. 
 
-This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
+This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence isn't necessary.
 
 For further details on this deployment model, see ["Local Mode Only"](/use-cases/observability/clickstack/deployment/local-mode-only).
 
@@ -124,7 +124,7 @@ The self-hosted local mode image comes with an OpenTelemetry collector, the Clic
 docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-Unlike the "All in one" image, you will not be promoted to create a user as **local mode does not include authentication**.
+Unlike the "All in one" image, you will not be prompted to create a user as **local mode does not include authentication**.
 
 ### Complete connection credentials {#complete-connection-credentials}
 

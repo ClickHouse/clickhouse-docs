@@ -125,17 +125,17 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       上記の設定は、タイムスタンプとして使用される `time_local` カラムを持つNginx形式のスキーマを前提としています。このカラムは、可能な限りプライマリキーで宣言されたタイムスタンプカラムである必要があります。このカラムは必須です。
 
-      また、`Default SELECT`を更新して、ログビューで返されるカラムを明示的に定義することを推奨します。サービス名、ログレベル、bodyカラムなどの追加フィールドが利用可能な場合は、これらも設定できます。タイムスタンプ表示カラムは、テーブルのプライマリキーで使用されるカラムと異なる場合、上記で設定したカラムを上書きすることもできます。
+      また、`Default SELECT`を更新して、ログビューで返されるカラムを明示的に定義することを推奨します。サービス名、ログレベル、bodyカラムなどの追加フィールドが利用可能な場合は、これらも設定できます。タイムスタンプ表示カラムは、テーブルのプライマリキーで使用されるカラムと異なる場合、上記で設定したものを上書きすることもできます。
 
       上記の例では、データ内に`Body`カラムは存在しません。代わりに、利用可能なフィールドからNginxログ行を再構築するSQL式を使用して定義されています。
 
-      その他の利用可能なオプションについては、[設定リファレンス](/use-cases/observability/clickstack/config)を参照してください。
+      その他のオプションについては、[設定リファレンス](/use-cases/observability/clickstack/config)を参照してください。
 
       ### データを探索する
 
       ログビューに移動してデータを確認し、ClickStackの使用を開始します。
 
-      <Image img={nginx_logs_vector_search} alt="ClickStack での Nginx ログ" size="lg" />
+      <Image img={nginx_logs_vector_search} alt="ClickStack 内の Nginx ログ" size="lg" />
     </VerticalStepper>
   </TabItem>
 
@@ -147,7 +147,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       まずデータベースを作成します。これは [http://localhost:8123/play](http://localhost:8123/play) の [ClickHouse Web ユーザーインターフェース](/interfaces/http#web-ui) から実行できます。デフォルトのユーザー名とパスワード `api:api` を使用します。
 
-      <Image img={play_ui} alt="UI から ClickStack を試す" size="lg" />
+      <Image img={play_ui} alt="Play UI 上の ClickStack" size="lg" />
 
       以下の例では `logs` を使用します:
 
@@ -185,7 +185,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       VectorからClickStackへのインジェストは、コレクターが公開するOTLPエンドポイントをバイパスし、ClickHouseに直接行う必要があります。
 
-      Vectorの設定を変更してClickHouseシンクを含めるようにし、既存のパイプラインからイベントを受信するように`inputs`フィールドを更新します。
+      Vectorの設定を変更してClickHouseシンクを含めるようにし、既存のパイプラインからイベントを受信できるよう`inputs`フィールドを更新します。
 
       この設定は、上流のVectorパイプラインが既に**対象のClickHouseスキーマに合わせてデータを準備済み**であることを前提としています。つまり、フィールドが解析され、正しく命名され、挿入に適した型が付与されている必要があります。生のログ行を解析してClickStackに適したスキーマに正規化する完全な例については、[**以下のNginxの例**](#example-dataset-with-vector)を参照してください。
 
@@ -206,7 +206,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
             password: "api"
       ```
 
-      デフォルトでは、**`json_each_row`** フォーマットの使用を推奨します。このフォーマットは、各イベントを行ごとに単一のJSONオブジェクトとしてエンコードします。これは、ClickStackでJSONデータを取り込む際のデフォルトかつ推奨されるフォーマットであり、文字列としてエンコードされたJSONオブジェクトなどの代替フォーマットよりも優先して使用してください。
+      デフォルトでは、**`json_each_row`** 形式の使用を推奨します。この形式は、各イベントを1行につき1つのJSONオブジェクトとしてエンコードします。これはClickStackでJSONデータを取り込む際のデフォルトかつ推奨される形式であり、文字列としてエンコードされたJSONオブジェクトなどの代替形式よりも優先すべきです。
 
       ClickHouseシンクは**Arrowストリームエンコーディング**もサポートしています(現在ベータ版)。これにより高いスループットを実現できますが、重要な制約があります。データベースとテーブルは静的である必要があり、スキーマは起動時に一度だけ取得されるため、動的ルーティングはサポートされていません。このため、Arrowエンコーディングは、固定された明確に定義されたインジェストパイプラインに最適です。
 
@@ -357,7 +357,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       Managed ClickStackサービスに移動し、左側のメニューから&quot;ClickStack&quot;を選択します。オンボーディングが既に完了している場合は、新しいタブでClickStack UIが起動し、自動的に認証されます。完了していない場合は、オンボーディングを進め、入力ソースとしてVectorを選択した後に「Launch ClickStack」を選択します。
 
-      <Image img={launch_clickstack_vector} alt="Vector 向けに ClickStack を起動する" size="lg" />
+      <Image img={launch_clickstack_vector} alt="Vector 用の ClickStack を起動する" size="lg" />
 
       ### データソースの作成
 
@@ -495,7 +495,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
       ```
 
       :::note
-      上記の例では、ClickStack Open Sourceの`api`ユーザーを使用しています。本番環境では、適切な権限と制限を持つ[専用のインジェストユーザーの作成](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を推奨します。また、上記の設定では、VectorがClickStackと同じホスト上で実行されていることを前提としています。本番環境では、これは異なる可能性が高いです。セキュアなHTTPSポート8443経由でデータを送信することを推奨します。
+      上記の例では、ClickStack Open Sourceの`api`ユーザーを使用しています。本番環境へのデプロイメントでは、適切な権限と制限を持つ[専用のインジェストユーザーの作成](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を推奨します。また、上記の設定では、VectorがClickStackと同じホスト上で実行されていることを前提としています。本番環境へのデプロイメントでは、これは異なる可能性が高いです。セキュアなHTTPSポート8443経由でデータを送信することを推奨します。
       :::
 
       ### Vectorを起動する
@@ -511,11 +511,11 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       `Team -> Sources` からログデータソースを作成します
 
-      <Image img={create_vector_datasource_oss} alt="Vector データソースの作成" size="lg" />
+      <Image img={create_vector_datasource_oss} alt="データソースの作成 - Vector" size="lg" />
 
       この設定は、タイムスタンプとして使用される`time_local`カラムを持つNginxスキーマを想定しています。これはプライマリキーで宣言されているタイムスタンプカラムです。このカラムは必須です。
 
-      また、デフォルトの選択を `time_local, remote_addr, status, request` に指定しており、これによりログビューで返されるカラムを定義しています。
+      また、デフォルトの select を `time_local, remote_addr, status, request` に指定しており、これによりログビューで返されるカラムを定義しています。
 
       上記の例では、`Body`カラムはデータ内に存在しません。代わりに、SQL式として定義されています:
 
@@ -550,7 +550,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
 
       `October 20th, 2025`の検索ビューに移動し、データを探索してClickStackの使用を開始します。
 
-      <Image img={nginx_logs_vector_search} alt="HyperDX の UI" size="lg" />
+      <Image img={nginx_logs_vector_search} alt="HyperDX UI" size="lg" />
     </VerticalStepper>
   </TabItem>
 </Tabs>

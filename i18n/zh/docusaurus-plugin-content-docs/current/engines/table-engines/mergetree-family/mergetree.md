@@ -283,6 +283,56 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 按月分区的分区键可以使查询仅读取包含目标日期范围的数据块。在这种情况下，一个数据块可能包含多个日期的数据（最多可覆盖整个月）。在一个数据块内，数据按主键排序，而主键的首列不一定是日期。正因为如此，如果查询中只包含日期条件而未指定主键前缀，就会为获取某个单一日期而读取比实际需要更多的数据。
 
+### 在主键中对确定性表达式使用索引 \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+主键中不仅可以包含列名，还可以包含表达式。此类表达式不限于简单的函数链：只要是确定性的，它们可以是任意表达式树（例如嵌套函数和复合表达式）。
+
+如果一个表达式对于相同的输入值总是返回相同的结果，则该表达式是**确定性的（deterministic）**（例如：`length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()`；不同于 `now()` 或 `rand()`）。如果主键包含确定性表达式，ClickHouse 可以将这些表达式应用于查询中的常量值，并使用结果在主键索引上构建条件。这样就可以对 `=`, `IN` 和 `has` 等谓词跳过扫描部分数据。
+
+一个常见的用例是使主键保持紧凑（例如存储哈希值而不是很长的 `String`），同时仍然允许对原始列上的谓词使用索引。
+
+确定性（但非单射）的主键示例：
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+可以利用索引的示例谓词：
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+在这些情况下，ClickHouse 会先计算一次 `length('alice')`（以及其他常量），然后使用这些长度值来收窄主键索引中的范围。由于字符串的长度**不是单射的（not injective）**，不同的 `user_id` 字符串可能具有相同的长度，因此索引可能会多读取一些 granule（误报）。查询结果仍然是正确的，因为在读取之后，仍然会应用原始谓词（`user_id = ...`、`IN` 等）。
+
+如果这个确定性表达式同时也是**单射的（injective）**（对于所使用的参数类型，不同输入不可能产生相同输出），那么 ClickHouse 还可以高效地将索引用于其否定形式：`!=`、`NOT IN` 和 `NOT has(...)`。例如，`reverse(p)` 和 `hex(p)` 对于 `String` 是单射的。
+
+一个单射主键的示例：
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+也支持更复杂的单射表达式，例如：
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+可以利用索引的谓词示例：
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### 对部分单调主键使用索引 \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 以一个例子说明：考虑一个月中的日期。在一个月的范围内，它们构成一个[单调序列](https://en.wikipedia.org/wiki/Monotonic_function)，但在更长时间范围内就不是单调的了。这就是一个部分单调序列。如果用户使用部分单调的主键创建表，ClickHouse 仍会照常创建稀疏索引。当用户从这类表中查询数据时，ClickHouse 会分析查询条件。如果用户希望获取索引中两个标记之间的数据，并且这两个索引标记都落在同一个月内，那么在这种特定情况下 ClickHouse 可以使用索引，因为它可以计算查询参数与索引标记之间的距离。
@@ -355,6 +405,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) 索引
 - [`ngrambf_v1`](#n-gram-bloom-filter) 索引
 - [`tokenbf_v1`](#token-bloom-filter) 索引
+- [`text`]({#text}) 索引
+- [`vector_similarity`]({#vector-similarity}) 索引
 
 #### MinMax 跳过索引 \{#minmax\}
 
@@ -494,7 +546,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### 文本索引 \{#text\}
 
-支持全文检索，详见[此处](textindexes.md)。
+在分词后的字符串数据之上构建倒排索引，实现高效且确定性的全文检索。详见[此处](textindexes.md)。
 
 #### 向量相似度 \{#vector-similarity\}
 

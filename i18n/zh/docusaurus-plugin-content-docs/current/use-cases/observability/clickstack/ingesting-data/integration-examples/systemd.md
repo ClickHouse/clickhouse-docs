@@ -19,8 +19,6 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-
 # 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
 
 :::note[TL;DR]
@@ -39,9 +37,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 ## 集成现有系统 \{#existing-systems\}
 
 通过运行带有 journald 接收器的 OpenTelemetry Collector 来监控现有 Linux 系统的 journald 日志，以收集系统日志并通过 OTLP 发送到 ClickStack。
-
-
-如果希望在不修改现有环境的情况下先测试此集成，请跳转到[演示数据集部分](#demo-dataset)。
 
 ##### 先决条件 \{#prerequisites\}
 
@@ -205,7 +200,6 @@ docker compose up -d
 
 <Image img={search_view} alt="日志搜索视图"/>
 
-
 <Image img={log_view} alt="日志视图"/>
 
 </VerticalStepper>
@@ -326,7 +320,6 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={example_dashboard} alt="Example dashboard"/>
 
-
 :::note
 
 对于演示数据集，将时间范围设置为 **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)**（可根据您的本地时区进行调整）。
@@ -348,14 +341,6 @@ WHERE ServiceName = 'systemd-logs'
 "
 ```
 
-
-如果没有查询结果，请检查 Collector 的日志：
-
-```bash
-docker logs otel-collector | grep -i "error\|journald" | tail -20
-```
-
-
 ### journalctl 未找到错误 \{#journalctl-not-found\}
 
 如果你看到 `exec: "journalctl": executable file not found in $PATH`：
@@ -365,6 +350,13 @@ docker logs otel-collector | grep -i "error\|journald" | tail -20
 1. **在主机上安装收集器**：
 
 ```bash
+wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.115.0/otelcol-contrib_0.115.0_linux_amd64.tar.gz
+tar -xzf otelcol-contrib_0.115.0_linux_amd64.tar.gz
+sudo mv otelcol-contrib /usr/local/bin/
+otelcol-contrib --config=otel-config.yaml
+```
+
+2. **使用文本导出方案**（类似 demo），让 `filelog` receiver 读取 journald 导出文件
 
 wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.115.0/otelcol-contrib_0.115.0_linux_amd64.tar.gz
 tar -xzf otelcol-contrib_0.115.0_linux_amd64.tar.gz
@@ -375,4 +367,4 @@ otelcol-contrib --config=otel-config.yaml
 2. **使用文本导出方法**（与演示类似），由 `filelog` 接收器读取 journald 导出的日志
 
 
-## 投入生产环境 \{#going-to-production\}
+## 投入生产环境 {#going-to-production}

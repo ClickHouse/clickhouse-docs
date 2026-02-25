@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.opentelemetry&#95;span&#95;log \{#systemopentelemetry&#95;span&#95;log\}
+# system.opentelemetry_span_log \{#systemopentelemetry_span_log\}
 
 <SystemTableCloud />
 
@@ -29,6 +29,8 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 * `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — время начала `trace span` (в микросекундах).
 * `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — время окончания `trace span` (в микросекундах).
 * `finish_date` ([Date](../../sql-reference/data-types/date.md)) — дата окончания `trace span`.
+* `status_code` ([Enum8](../../sql-reference/data-types/enum.md)) — код статуса спана.
+* `status_message` ([String](../../sql-reference/data-types/string.md)) — сообщение об ошибке, связанное со спаном, при наличии. Пустое, когда `status_code` не равен `ERROR`.
 * `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — имена [атрибутов](https://opentelemetry.io/docs/go/instrumentation/#attributes) для данного `trace span`. Они заполняются в соответствии с рекомендациями стандарта [OpenTelemetry](https://opentelemetry.io/).
 * `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — значения атрибутов для данного `trace span`. Они заполняются в соответствии с рекомендациями стандарта OpenTelemetry.
 

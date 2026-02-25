@@ -36,7 +36,7 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
-The GCS ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name is not lexically greater than the last ingested file.
+The GCS ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
 In this mode, the GCS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
 
@@ -91,7 +91,7 @@ The [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/ac
 ### Authentication {#authentication}
 
 :::note
-Service account authentication is not currently supported.
+Service account authentication isn't currently supported.
 :::
 
 #### HMAC credentials {#hmac-credentials}
@@ -134,7 +134,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ### Scaling {#scaling}
 
-Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
@@ -150,4 +150,4 @@ The GCS ClickPipe uses on the Cloud Storage [XML API](https://docs.cloud.google.
 ### View support {#view-support}
 Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
 
-We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
+We don't create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you're missing data in the materialized view.

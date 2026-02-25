@@ -86,6 +86,7 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
+
 ```sql title="Response"
   ┌─statement───────────────────────────────────────────────┐
 1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │

@@ -52,7 +52,7 @@ SETTINGS allow_introspection_functions = 1
 
 * `addressToLine`、`addressToLineWithInlines`、`addressToSymbol`、`demangle` などの [introspection 関数](../../sql-reference/functions/introspection.md) を使用して、ClickHouse コード内の関数名およびその位置を取得します。特定のクエリについてプロファイルを取得するには、`trace_log` テーブルからデータを集約する必要があります。個々の関数単位、またはスタックトレース全体単位でデータを集約できます。
 
-`trace_log` の情報を可視化する必要がある場合は、[flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) や [speedscope](https://github.com/laplab/clickhouse-speedscope) の使用を検討してください。
+`trace_log` の情報を可視化する必要がある場合は、[flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) や [speedscope](https://www.speedscope.app) の使用を検討してください。
 
 ## 例 \{#example\}
 

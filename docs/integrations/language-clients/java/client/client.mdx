@@ -114,7 +114,7 @@ Client client = new Client.Builder()
 ```
 
 :::note
-SSL Authentication may be hard to troubleshoot on production because many errors from SSL libraries provide not enough information. For example, if client certificate and key do not match then server will terminate connection immediately (in case of HTTP it will be connection initiation stage where no HTTP requests are send so no response is sent).
+SSL Authentication may be hard to troubleshoot on production because many errors from SSL libraries provide not enough information. For example, if client certificate and key don't match then server will terminate connection immediately (in case of HTTP it will be connection initiation stage where no HTTP requests are send so no response is sent).
 
 Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) to verify certificates and keys:
 - check key integrity: `openssl rsa -in [key-file.key] -check -noout`
@@ -127,7 +127,7 @@ Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) t
 ## Configuration {#configuration}
 
 All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear.
-Major configuration parameters are defined in one scope (client or operation) and do not override each other.
+Major configuration parameters are defined in one scope (client or operation) and don't override each other.
 
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
@@ -272,7 +272,42 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 </Tabs>
 <br/>
 
-### Server Settings
+### Client Identification {#client-identification}
+
+There are two fields in a query log that identify application originated a request: `client_name` and `http_user_agent`. Native TCP protocol uses 
+`client_name` to identify application. HTTP protocol uses `http_user_agent` to identify application. Client builder has method `setClientName` correct values 
+for both protocols. 
+The field `http_user_agent` is set according to `User-Agent` header common format: `application-name[/version] [(operating-system; architecture; ...)]`. 
+This set of values is repeated for each layer: application, client library, http client library. What is set by `setClientName` method comes first in the list. 
+
+For example:
+```java showLineNumbers
+client.setClientName("my-app-01/1.0");
+```
+will result in the following `http_user_agent` value:
+```
+my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+```
+
+Application can set own http header `User-Agent` to identify itself. But part `clickhouse-java-v2/0.9.6-SNAPSHOT` will be appended to the end of the header.
+
+### Operation Identification {#operation-identification}
+
+Query log has another two fields `query_id` and `log_comment` that can be used to identify an operation and add additional information to the query log.
+
+`query_id` is a unique identifier of an operation. It can be set by application by calling `setQueryId` method of the `QuerySettings` class.
+```java showLineNumbers
+QuerySettings querySettings = new QuerySettings();
+querySettings.setQueryId("some-query-id");
+```
+
+`log_comment` is a comment that can be added to the query log. It can be set by application by calling `logComment` method of the `QuerySettings` class.
+```java showLineNumbers
+QuerySettings querySettings = new QuerySettings();
+querySettings.logComment("some-comment");
+```
+
+### Server Settings {#server-settings}
 
 Server side settings can be set on the client level once while creation (see `serverSetting` method of the `Builder`) and on operation level (see `serverSetting` for operation settings class).
 
@@ -499,14 +534,14 @@ Configuration options for insert operations.
 | `serverSetting(String name, String value)`   | Sets individual server settings for an operation.                                                                          |
 | `serverSetting(String name, Collection values)` | Sets individual server settings with multiple values for an operation. Items of the collection should be `String` values.  |
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
-| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
+| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This isn't a server setting.                                                  |
 
 ### InsertResponse {#insertresponse}
 
 Response object that holds result of insert operation. It is only available if the client got response from a server.
 
 :::note
-This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection can't be re-used until all data of previous response is fully read.
 :::
 
 | Method                      | Description                                                                                          |
@@ -659,21 +694,21 @@ Configuration options for query operations.
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | `setQueryId(String queryId)`                 | Sets query ID that will be assigned to the operation.                                                                      |
 | `setFormat(ClickHouseFormat format)`         | Sets response format. See `RowBinaryWithNamesAndTypes` for the full list.                                                  |
-| `setMaxExecutionTime(Integer maxExecutionTime)` | Sets operation execution time on server. Will not affect read timeout.                                                    |
+| `setMaxExecutionTime(Integer maxExecutionTime)` | Sets operation execution time on server. Won't affect read timeout.                                                    |
 | `waitEndOfQuery(Boolean waitEndOfQuery)`     | Requests the server to wait for the end of the query before sending a response.                                            |
 | `setUseServerTimeZone(Boolean useServerTimeZone)` | Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`.  |
 | `setUseTimeZone(String timeZone)`            | Requests server to use `timeZone` for time conversion. See [session_timezone](/operations/settings/settings#session_timezone). |
 | `serverSetting(String name, String value)`   | Sets individual server settings for an operation.                                                                          |
 | `serverSetting(String name, Collection values)` | Sets individual server settings with multiple values for an operation. Items of the collection should be `String` values.  |
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
-| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
+| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This isn't a server setting.                                                  |
 
 ### QueryResponse {#queryresponse}
 
 Response object that holds result of query execution. It is only available if the client got a response from a server.
 
 :::note
-This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection can't be re-used until all data of previous response is fully read.
 :::
 
 | Method                              | Description                                                                                          |
@@ -762,6 +797,72 @@ Complete examples code is stored in the repo in a 'example` [folder](https://git
 - [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - main set of examples.
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - example of how to use the client in a Spring Boot application.
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - example of how to use the client in Ktor (Kotlin) application.
+
+
+## Reading Data {#reading-data}
+
+There are two common ways to read data:
+
+- `query()` method that returns low-level `QueryResponse` object that contains `InputStream` with data. Usually combined with `ClickHouseBinaryFormatReader` for streaming reads but 
+can be used with any other custom reader implementation. `QueryResponse` also provides access to the result set metadata and metrics.
+- `queryAll()` method and using `GenericRecord` for convenient row access. In this case the whole result set is loaded into memory.
+- `queryRecords()` method that returns `com.clickhouse.client.api.query.Records` - an iterator for `GenericRecord` objects. This method uses streaming approach 
+(no data is loaded into memory) and utilises `GenericRecord` to access data.
+
+**Note:** streaming approach requires fast read otherwise it may cause server write timeout because data is read directly from the network stream.
+
+### Reading Arrays {#reading-arrays}
+
+**`ClickHouseBinaryFormatReader` Methods**
+
+- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads. Supports nested arrays.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)` - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)` - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
+
+Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
+Name-based methods require index lookup each time.
+
+
+```java
+try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+    while (reader.next() != null) {
+        
+        Object[] uint64 = reader.getObjectArray("uint64_arr"); // Array(UInt64) -> BigInteger[]
+        Object[] arr2d = reader.getObjectArray("arr2d");       // Array(Array(Int64)) -> Object[]
+
+        // nested arrays are returned as nested Object[]:
+        Object[] firstInner = (Object[]) arr2d[0];
+        Long firstValue = (Long) firstInner[0];
+    }
+}
+```
+
+**`GenericRecord` Methods**
+
+- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads. Supports nested arrays.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)` - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)` - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
+
+Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
+Name-based methods require index lookup each time.
+
+```java
+try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+    List<GenericRecord> rows = client.queryAll(
+        "SELECT int_arr, arr2d_nullable FROM test_arrays ORDER BY id");
+
+    for (GenericRecord row : rows) {
+        Object[] intArr = row.getObjectArray("int_arr");                 // Array(Int32) -> Integer[]
+        Object[] arr2d = row.getObjectArray("arr2d_nullable");           // Array(Array(Nullable(Int32)))
+
+        Object[] inner = (Object[]) arr2d[0];
+        Object maybeNull = inner[1]; // may be null
+    }
+}
+
 
 ## Migration Guide {#migration_guide}
 
@@ -1374,7 +1475,7 @@ Here is a list of options to configure load balancing:
 
 | Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it is not specified the request is sent to the first node from the managed node list |
+| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it isn't specified the request is sent to the first node from the managed node list |
 | load_balancing_tags   | `""`                                      | Load balancing tags for filtering out nodes. Requests are sent only to nodes that have the specified tags                                                                                                                                                                                                                                                                                                                                                                                                      |
 | health_check_interval | `0`                                       | Health check interval in milliseconds, zero or negative value means one-time.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Health check method. Can be one of: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - check with `select 1` query</li> <li>`ClickHouseHealthCheckMethod.PING` - protocol-specific check, which is generally faster</li>                                                                                                                                                                                                                                                                                          |

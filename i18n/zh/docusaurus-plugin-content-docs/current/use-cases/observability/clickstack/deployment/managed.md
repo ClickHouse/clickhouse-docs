@@ -108,16 +108,16 @@ import TabItem from '@theme/TabItem';
       在 ClickHouse Cloud 主页中,选择您要启用托管 ClickStack 的服务。
 
       :::important 资源估算
-      本指南假设您已配置足够的资源来处理计划通过 ClickStack 摄取和查询的可观测性数据量。要估算所需资源,请参阅[生产指南](/use-cases/observability/clickstack/production#estimating-resources)。
+      本指南假设您已配置足够的资源来处理计划通过 ClickStack 摄取和查询的可观测性数据量。要估算所需资源,请参阅[生产指南](/use-cases/observability/clickstack/production#estimating-resources).
 
-      如果您的 ClickHouse 服务已经承载现有工作负载(例如实时应用分析),我们建议使用 [ClickHouse Cloud 的 warehouses 功能](/cloud/reference/warehouses)创建子服务,以隔离可观测性工作负载。这样可以确保现有应用程序不受影响,同时保持两个服务都能访问数据集。
+      如果您的 ClickHouse 服务已经承载现有工作负载（例如实时应用分析），我们建议使用 [ClickHouse Cloud 的 warehouses 功能](/cloud/reference/warehouses)创建子服务，以隔离可观测性工作负载。这样可以确保现有应用程序不受影响，同时保持两个服务都能访问数据集。
       :::
 
       <Image img={select_service} alt="选择服务" size="lg" />
 
-      ### 导航到 ClickStack UI
+      ### 进入 ClickStack UI
 
-      从左侧导航菜单中选择 &#39;ClickStack&#39;。您将被重定向到 ClickStack UI,并根据您的 ClickHouse Cloud 权限自动完成身份验证。
+      从左侧导航菜单中选择 &#39;ClickStack&#39;。您将被重定向到 ClickStack UI，并根据您的 ClickHouse Cloud 权限自动完成身份验证。
 
       如果您的服务中已存在 OpenTelemetry 表,系统将自动检测并创建相应的数据源。
 
@@ -127,27 +127,27 @@ import TabItem from '@theme/TabItem';
 
       如果自动检测成功,您将被引导至搜索视图,即可立即开始探索数据。
 
-      <Image img={clickstack_managed_ui} size="lg" alt="ClickStack 界面" />
+      <Image img={clickstack_managed_ui} size="lg" alt="ClickStack UI" />
 
       如果此步骤成功,那么就大功告成了 🎉,否则请继续进行摄取设置。
 
-      ### 设置数据摄取
+      ### 配置摄取
 
       如果自动检测失败,或者您没有现有表,系统将提示您设置数据摄取。
 
-      <Image img={clickstack_ui_setup_ingestion} alt="在 ClickStack UI 中配置摄取" size="lg" />
+      <Image img={clickstack_ui_setup_ingestion} alt="ClickStack UI 摄取设置" size="lg" />
 
       选择&quot;开始摄取&quot;,系统将提示您选择摄取源。托管版 ClickStack 支持 OpenTelemetry 和 [Vector](https://vector.dev/) 作为其主要摄取源。此外,用户也可以使用任何 [ClickHouse Cloud 支持的集成](/integrations),以自定义模式直接向 ClickHouse 发送数据。
 
-      <Image img={select_source_clickstack_ui} size="lg" alt="选择来源 - ClickStack UI" border />
+      <Image img={select_source_clickstack_ui} size="lg" alt="选择摄取源 - ClickStack UI" border />
 
       :::note[推荐使用 OpenTelemetry]
       强烈建议使用 OpenTelemetry 作为摄取格式。
-      它提供了最简单、最优化的体验,并配备了专为与 ClickStack 高效协作而设计的开箱即用架构。
+      它提供了最简单、最优化的体验，并配备了专为与 ClickStack 高效协作而设计的开箱即用架构。
       :::
 
       <Tabs groupId="ingestion-sources-existing">
-        <TabItem value="OpenTelemetry" label="OpenTelemetry" default>
+        <TabItem value="open-telemetry" label="OpenTelemetry" default>
           要将 OpenTelemetry 数据发送到托管的 ClickStack，推荐使用 OpenTelemetry Collector。Collector 充当网关，从您的应用（以及其他 Collector）接收 OpenTelemetry 数据，并将其转发到 ClickHouse Cloud。
 
           如果当前还没有运行中的 Collector，请按照下面的步骤启动一个。如果已经有现有的 Collector，也提供了一个配置示例。
@@ -163,7 +163,7 @@ import TabItem from '@theme/TabItem';
           **使用您在创建服务时记录的服务凭据修改此命令。**
 
           :::note[部署到生产环境]
-          虽然此命令使用 `default` 用户连接到托管 ClickStack，但在[进入生产环境](/use-cases/observability/clickstack/production#create-a-user)时，您应该创建一个专用用户，并相应修改配置。
+          虽然此命令使用 `default` 用户连接到托管 ClickStack，但在[进入生产环境](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)时，您应该创建一个专用用户，并相应修改配置。
           :::
 
           运行这一条命令即可启动 ClickStack Collector，并在 4317（gRPC）和 4318（HTTP）端口上暴露 OTLP 端点。如果您已经有 OpenTelemetry 的埋点和 Agent，可以立即开始向这些端点发送遥测数据。
@@ -195,7 +195,7 @@ import TabItem from '@theme/TabItem';
           <br />
         </TabItem>
 
-        <TabItem value="Vector" label="Vector" default>
+        <TabItem value="vector" label="Vector" default>
           [Vector](https://vector.dev) 是一个高性能、与厂商无关的可观测性数据管道，因其灵活性和低资源占用而在日志摄取场景中尤为流行。
 
           在将 Vector 与 ClickStack 结合使用时，用户需要自行定义 schema。这些 schema 可以遵循 OpenTelemetry 约定，也可以完全自定义，用于表示用户自定义的事件结构。
@@ -218,7 +218,7 @@ import TabItem from '@theme/TabItem';
           CREATE DATABASE IF NOT EXISTS logs
           ```
 
-          然后创建一个表，使其 schema 与日志数据的结构相匹配。下面的示例假定使用的是经典的 Nginx 访问日志格式：
+          然后创建一个表，使其 schema 与你的日志数据结构一致。下面的示例假设使用经典的 Nginx 访问日志格式：
 
           ```sql
           CREATE TABLE logs.nginx_logs
@@ -240,21 +240,21 @@ import TabItem from '@theme/TabItem';
           ORDER BY (toStartOfMinute(time_local), status, remote_addr);
           ```
 
-          你的表必须与 Vector 生成的输出 schema 对齐。根据你的数据需要调整该 schema，并遵循推荐的 [schema 最佳实践](/docs/best-practices/select-data-types)。
+          你的表必须与 Vector 生成的输出 schema 保持一致。根据你的数据需要调整该 schema，并遵循推荐的 [schema 最佳实践](/docs/best-practices/select-data-types)。
 
           强烈建议先了解 ClickHouse 中 [主键](/docs/primary-indexes) 的工作方式，并根据访问模式选择排序键（ordering key）。关于如何选择主键，请参阅 [ClickStack 专用](/use-cases/observability/clickstack/performance_tuning#choosing-a-primary-key) 指南。
 
-          创建好表后，复制显示的配置片段。根据需要调整输入以对接你现有的数据管道，以及目标表和数据库。凭据应已自动填入。
+          创建好表后，复制显示的配置代码片段。根据需要调整输入以对接你现有的数据管道，以及目标表和数据库。凭据应已自动填入。
 
-          <Image img={vector_config_clickstack_ui} size="lg" alt="Vector 配置" />
+          <Image img={vector_config_clickstack_ui} size="lg" alt="Vector configuration" />
 
-          有关使用 Vector 摄取数据的更多示例，请参阅[“使用 Vector 进行摄取”](/use-cases/observability/clickstack/ingesting-data/vector)或 [Vector ClickHouse sink 文档](https://vector.dev/docs/reference/configuration/sinks/clickhouse/)以获取高级选项。
+          有关使用 Vector 摄取数据的更多示例，请参阅[&quot;Ingesting with Vector&quot;](/use-cases/observability/clickstack/ingesting-data/vector)或 [Vector ClickHouse sink 文档](https://vector.dev/docs/reference/configuration/sinks/clickhouse/)以获取高级选项。
 
           <br />
         </TabItem>
       </Tabs>
 
-      ### 导航到 ClickStack UI
+      ### 进入 ClickStack UI
 
       完成摄取设置并开始发送数据后,选择&quot;下一步&quot;。
 

@@ -466,6 +466,18 @@ TSV 格式中 NULL 的自定义表示形式
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to allow parsing and processing remaining data in the buffer if the connection closes unexpectedly"}]}]}/>
+
+启用此选项后，如果连接意外关闭，缓冲区中剩余的任何数据将被解析和处理，而不是视为错误。
+
+:::note
+启用此选项会禁用并行解析，并且无法进行去重。
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -970,6 +982,18 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 限制在解析输入格式数据时生成的数据块大小（以字节为单位）。当在 ClickHouse 端构建数据块时，适用于基于行的输入格式。
 0 表示在字节数上不设上限。
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]}/>
+
+限制在基于行的输入格式解析过程中，在输出一个数据块之前所等待的最大时间（毫秒）。0 表示不限制。
+
+:::note
+此选项仅在启用 `input_format_connection_handling` 时有效。设置该值还会禁用并行解析，并使无法进行去重。
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -1522,6 +1546,14 @@ Parquet 读取器输出的平均块大小（字节）
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "在 Arrow 输出格式中默认使用 lz4 压缩"}]}]}/>
 
 Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zstd、none（不压缩）
+
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "默认将 Date 写为 Arrow DATE32，而不是普通的 UInt16。"}]}]}/>
+
+将 Date 值写为普通的 16 位无符号整数（读取时为 UInt16），而不是转换为 32 位的 Arrow DATE32 类型（读取时为 Date32）。
 
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 

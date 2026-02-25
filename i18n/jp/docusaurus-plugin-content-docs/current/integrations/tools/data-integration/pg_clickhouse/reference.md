@@ -341,8 +341,7 @@ DROP FOREIGN TABLE uact CASCADE;
 
 ## DML SQL リファレンス \{#dml-sql-reference\}
 
-以下の SQL [DML] 文では pg&#95;clickhouse を使用する場合があります。以下の例は、
-[make-logs.sql] によって CREATE で作成されたこれらの ClickHouse テーブルに依存します。
+以下の SQL [DML] 文では pg&#95;clickhouse を使用する場合があります。例は次の ClickHouse テーブルを前提としています。
 
 ```sql
 CREATE TABLE logs (
@@ -552,6 +551,10 @@ try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
 (5 rows)
 ```
 
+:::warning
+パラメータ化された実行を行うと、[underlying bug] が [fixed] された 25.8 より前の ClickHouse バージョンでは、[http driver](#create-server) が DateTime のタイムゾーンを正しく変換できなくなります。PostgreSQL は、`PREPARE` を使用していない場合でも、パラメータ化されたクエリプランを使用することがある点に注意してください。正確なタイムゾーン変換が必要なクエリで、かつ 25.8 以降へのアップグレードが選択肢にない場合は、代わりに [binary driver](#create-server) を使用してください。
+:::
+
 pg&#95;clickhouse は、集約処理を通常どおりプッシュダウンし、その様子は [EXPLAIN](#explain) の verbose 出力から確認できます。
 
 ```pgsql
@@ -657,7 +660,7 @@ SET pg_clickhouse.session_settings = '';
 SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 ```
 
-または、スペースやカンマをエスケープする必要がないように、値をシングルクォートで囲みます。ダブルクォートで囲む必要がないようにするには、[dollar quoting] の使用を検討してください。
+または、スペースやカンマをエスケープせずに済むよう、値をシングルクォートで囲みます。ダブルクォートを二重に記述する必要を避けるために、[dollar quoting] の使用を検討してください。
 
 ```sql
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
@@ -684,7 +687,14 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg&#95;clickhouse は設定を検証せず、クエリごとにそれらをそのまま ClickHouse に渡します。
+pg&#95;clickhouse 自身の動作を妨げる場合には、一部の設定は無視されます。
+対象となる設定は次のとおりです:
+
+* `date_time_output_format`: HTTP ドライバでは「iso」である必要があります
+* `format_tsv_null_representation`: HTTP ドライバではデフォルト値である必要があります
+* `output_format_tsv_crlf_end_of_line` HTTP ドライバではデフォルト値である必要があります
+
+それ以外の場合、pg&#95;clickhouse は設定を検証せず、クエリごとにそれらをそのまま ClickHouse に渡します。
 したがって、ClickHouse の各バージョンで利用可能なすべての設定をサポートします。
 
 pg&#95;clickhouse は `pg_clickhouse.session_settings` を設定する前にロードされている必要があることに注意してください。[shared library preloading] を利用するか、
@@ -742,18 +752,16 @@ shared_preload_libraries = pg_clickhouse
 各セッションのメモリ使用量と読み込みオーバーヘッドを削減するのに有用ですが、ライブラリを更新した場合はクラスターを再起動する必要があります。
 
 
-## 関数と演算子のリファレンス \{#function-and-operator-reference\}
+## データ型 \{#data-types\}
 
-### データ型 \{#data-types\}
-
-pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型にマッピングします：
+pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型にマッピングします。[IMPORT FOREIGN SCHEMA](#import-foreign-schema) はカラムをインポートする際に PostgreSQL カラムで最初に指定されている型を使用し、追加の型は [CREATE FOREIGN TABLE](#create-foreign-table) 文で使用できます：
 
 | ClickHouse |    PostgreSQL    |                 備考                  |
-| -----------|------------------|---------------------------------------|
+|------------|------------------|---------------------------------------|
 | Bool       | boolean          |                                       |
 | Date       | date             |                                       |
 | Date32     | date             |                                       |
-| DateTime   | timestamp        |                                       |
+| DateTime   | timestamptz      |                                       |
 | Decimal    | numeric          |                                       |
 | Float32    | real             |                                       |
 | Float64    | double precision |                                       |
@@ -764,12 +772,128 @@ pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型に
 | Int64      | bigint           |                                       |
 | Int8       | smallint         |                                       |
 | JSON       | jsonb            | HTTP エンジンのみ                     |
-| String     | text             |                                       |
+| String     | text, bytea      |                                       |
 | UInt16     | integer          |                                       |
 | UInt32     | bigint           |                                       |
 | UInt64     | bigint           | 値が BIGINT の最大値を超えるとエラー |
 | UInt8      | smallint         |                                       |
 | UUID       | uuid             |                                       |
+
+追加の注意事項と詳細は以下のとおりです。
+
+### BYTEA \{#bytea\}
+
+ClickHouse は PostgreSQL の [BYTEA] 型に相当する型を提供していませんが、[String] 型に任意のバイト列を格納することができます。一般的に、ClickHouse の文字列は PostgreSQL の [TEXT] にマッピングしますが、バイナリデータを扱う場合は [BYTEA] にマッピングしてください。例：
+
+```sql
+-- Create clickHouse table with String columns.
+SELECT clickhouse_raw_query($$
+    CREATE TABLE bytes (
+        c1 Int8, c2 String, c3 String
+    ) ENGINE = MergeTree ORDER BY (c1);
+$$);
+
+-- Create foreign table with BYTEA columns.
+CREATE FOREIGN TABLE bytes (
+    c1 int,
+    c2 BYTEA,
+    c3 BYTEA
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Insert binary data into the foreign table.
+INSERT INTO bytes
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the results.
+SELECT * FROM bytes;
+```
+
+最後の`SELECT`クエリの出力は以下のとおりです：
+
+```pgsql
+ c1 |                             c2                             |                 c3
+----+------------------------------------------------------------+------------------------------------
+  1 | \x1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | \xae3b28cde02542f81acce8783245430d
+  2 | \x5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | \x23e7c6cacb8383f878ad093b0027d72b
+  3 | \x53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | \x7e969132fc656148b97b6a2ee8bc83c1
+  4 | \x4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | \x8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+ClickHouse のカラムにヌルバイトが含まれている場合、[TEXT] カラムを使用する外部テーブルは正しい値を出力しないことに注意してください。
+
+```sql
+-- Create foreign table with TEXT columns.
+CREATE FOREIGN TABLE texts (
+    c1 int,
+    c2 TEXT,
+    c3 TEXT
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Encode binary data as hex.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+出力結果:
+
+```pgsql
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b
+  3 | 53ac2c1fa83c8f64603fe9568d883331                         | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+2行目と3行目には切り詰められた値が含まれていることに注意してください。これは、PostgreSQLがNUL終端文字列に依存しており、文字列内のNULをサポートしていないためです。
+
+バイナリ値を [TEXT] カラムに挿入しようとすると、成功し、期待どおりに動作します：
+
+```sql
+-- Insert via text columns:
+TRUNCATE texts;
+INSERT INTO texts
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the data.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+テキストのカラムは正しく表示されます：
+
+```pgdsql
+
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b0027d72b
+  3 | 53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+しかし、それらを [BYTEA] として読み取った場合は、以下のようにはなりません：
+
+```pgsql
+# SELECT * FROM bytes;
+ c1 |                                                           c2                                                           |                                   c3
+----+------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------
+  1 | \x5c783162663766306363383231643331313738363136613535613865306335323637373733353339376364646536663431353361396664336437 | \x5c786165336232386364653032353432663831616363653837383332343534333064
+  2 | \x5c783566366539653132636438353932373132653633383031366634623161326537333233306565343064623439386330663062316463383431 | \x5c783233653763366361636238333833663837386164303933623030323764373262
+  3 | \x5c783533616332633166613833633866363436303366653935363864383833333331303037643632383164653333306134623565373238663965 | \x5c783765393639313332666336353631343862393762366132656538626338336331
+  4 | \x5c783465336332653463623735343261343531373361386461633933396464633462633735323032653334326562633736396230663564613266 | \x5c783865663330663434633635343830643132623635306162366232623034323435
+(4 rows)
+```
+
+:::tip
+原則として、エンコードされた文字列には [TEXT] カラム、バイナリデータには [BYTEA] カラムを使用し、これらを入れ替えて使わないでください。
+:::
+
+
+## 関数と演算子のリファレンス \{#function-and-operator-reference\}
 
 ### 関数 \{#functions\}
 
@@ -851,6 +975,7 @@ ClickHouse に自動的にプッシュダウンされます。ただし、一部
 * `btrim`: [trimBoth](https://clickhouse.com/docs/sql-reference/functions/string-functions#trimboth)
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+* `md5`: [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
 
 ### カスタム関数 \{#custom-functions\}
 
@@ -1008,9 +1133,25 @@ Copyright (c) 2025-2026, ClickHouse
     "PostgreSQL ドキュメント: ドル引用符付き文字列定数"
 
 [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
+    "PostgreSQL ドキュメント: 共有ライブラリのプリロード"
 
-"PostgreSQL ドキュメント: 共有ライブラリのプリロード
-  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+[PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
     "PostgreSQL ドキュメント: PREPARE に関する注意事項"
-  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+
+[query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
     "ClickHouse ドキュメント: ClickHouse でのプリペアドステートメントの代替手段"
+
+[underlying bug]: https://github.com/ClickHouse/ClickHouse/issues/85847
+    "ClickHouse/ClickHouse#85847 マルチパートフォームの一部のクエリが settings を読み込まない"
+
+[fixed]: https://github.com/ClickHouse/ClickHouse/pull/85570
+    "ClickHouse/ClickHouse#85570 HTTP の multipart 処理を修正"
+
+[BYTEA]: https://www.postgresql.org/docs/current/datatype-binary.html
+    "PostgreSQL ドキュメント: バイナリデータ型"
+
+[String]: https://clickhouse.com/docs/sql-reference/data-types/string
+    "ClickHouse ドキュメント: String"
+
+[TEXT]: https://www.postgresql.org/docs/current/datatype-character.html
+    "PostgreSQL ドキュメント: 文字データ型"

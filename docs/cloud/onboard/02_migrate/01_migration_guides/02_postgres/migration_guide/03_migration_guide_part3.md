@@ -20,14 +20,14 @@ We recommend users migrating from Postgres read [the guide for modeling data in 
 
 ## Primary (Ordering) Keys in ClickHouse {#primary-ordering-keys-in-clickhouse}
 
-Users coming from OLTP databases often look for the equivalent concept in ClickHouse. On noticing that ClickHouse supports a `PRIMARY KEY` syntax, users might be tempted to define their table schema using the same keys as their source OLTP database. This is not appropriate.
+Users coming from OLTP databases often look for the equivalent concept in ClickHouse. On noticing that ClickHouse supports a `PRIMARY KEY` syntax, users might be tempted to define their table schema using the same keys as their source OLTP database. This isn't appropriate.
 
 ### How are ClickHouse Primary keys different? {#how-are-clickhouse-primary-keys-different}
 
-To understand why using your OLTP primary key in ClickHouse is not appropriate, you should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
+To understand why using your OLTP primary key in ClickHouse isn't appropriate, you should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
 
 - Postgres primary keys are, by definition, unique per row. The use of [B-tree structures](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) allows the efficient lookup of single rows by this key. While ClickHouse can be optimized for the lookup of a single row value, analytics workloads will typically require the reading of a few columns but for many rows. Filters will more often need to identify **a subset of rows** on which an aggregation will be performed.
-- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
+- Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes aren't built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
 - **Sparse indexing** is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) whilst still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. 
 
 For more details, we recommend this [in-depth guide](/guides/best-practices/sparse-primary-indexes).
@@ -38,7 +38,7 @@ For more details, we recommend this [in-depth guide](/guides/best-practices/spar
 
 The selected key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
-> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they're included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
 ### Choosing an ordering key {#choosing-an-ordering-key}
 
@@ -114,15 +114,15 @@ Ok.
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
+- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key isn't in the primary key and you're filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
 ### Recommendations for partitions {#recommendations-for-partitions}
 
 You should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 
-**Important:** Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression.
+**Important:** Ensure your partitioning key expression doesn't result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, don't partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression.
 
-> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a pre-configured limit, then ClickHouse will throw an exception on insert - as a "too many parts" error. This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts.
+> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a pre-configured limit, then ClickHouse will throw an exception on insert - as a "too many parts" error. This shouldn't happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts.
 
 > Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 
@@ -149,7 +149,7 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. 
+This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` isn't the ordering key. 
 Previously, we solved this using a materialized view acting as a lookup for the `PostId`. The same problem can be solved
 with a [projection](/data-modeling/projections). The command below adds a 
 projection for the `ORDER BY user_id`.
@@ -243,7 +243,7 @@ WHERE UserId = 8592047
 
 ### When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically 
+Projections are an appealing feature for new users as they're automatically 
 maintained as data is inserted. Furthermore, queries can just be sent to a single
 table where the projections are exploited where possible to speed up the response
 time.

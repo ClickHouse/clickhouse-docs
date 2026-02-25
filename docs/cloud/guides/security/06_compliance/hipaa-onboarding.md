@@ -64,7 +64,7 @@ This page describes the process for enabling deployment of HIPAA compliant servi
 
 <br />
 
-### Deploy services to HIPAA compliant regions {#deploy-hippa-services}
+### Deploy services to HIPAA compliant regions {#deploy-hipaa-services}
 
 1. Select **New service** in the upper left corner of the home screen in the console
 2. Change the **Region type** to **HIPAA compliant**

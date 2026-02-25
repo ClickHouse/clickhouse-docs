@@ -16,6 +16,7 @@ import createMirror from '@site/static/images/managed-postgres/peerdb/create-mir
 import tablePicker from '@site/static/images/managed-postgres/peerdb/table-picker.png';
 import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-load.png';
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
+import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 
 # PeerDB を使用して Managed Postgres に移行する \{#peerdb-migration\}
@@ -58,6 +59,42 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 <Image img={peers} alt="ピア一覧" size="md" border />
 
+### ソーススキーマダンプの取得 \{#migration-peerdb-source-schema-dump\}
+
+ターゲットデータベースでソースデータベースと同一のスキーマ構成を再現するために、ソースデータベースのスキーマダンプを取得する必要があります。ソースの PostgreSQL データベースについてスキーマのみのダンプを作成するには、`pg_dump` を使用できます。
+
+```shell
+pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
+```
+
+これをターゲットデータベースに適用する前に、ダンプファイルから UNIQUE 制約と索引を事前に削除しておく必要があります。そうしないと、これらの制約によって PeerDB によるターゲットテーブルへのインジェストがブロックされてしまいます。これらは次のコマンドで削除できます。
+
+```shell
+# Preview
+grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
+grep -n "CREATE UNIQUE INDEX" <dump_file_path>
+grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
+
+# Remove
+sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
+```
+
+
+### スキーマダンプをターゲットデータベースに適用する \{#migration-peerdb-apply-schema-dump\}
+
+スキーマダンプファイルをクリーンアップしたら、`psql` で[接続](../connection)し、スキーマダンプファイルを実行してターゲットの ClickHouse Managed Postgres データベースに適用します。
+
+```shell
+psql -h <target_host> -p <target_port> -U <target_username> -d <target_database> -f source_schema.sql
+```
+
+ここではターゲット側で、外部キー制約によって PeerDB へのインジェストがブロックされないようにします。そのために、上記のターゲットピアで使用したターゲットロールを変更し、`session_replication_role` を `replica` に設定します:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = replica;
+```
+
+
 ## ミラーを作成する \{#migration-peerdb-create-mirror\}
 
 次に、ソースとターゲットのピア間でのデータ移行プロセスを定義するミラーを作成します。PeerDB の UI でサイドバーの「Mirrors」をクリックして、「Mirrors」セクションに移動します。新しいミラーを作成するには、`+ New mirror` ボタンをクリックします。
@@ -66,10 +103,20 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 1. 移行内容がわかる名前をミラーに付けます。
 2. ドロップダウンメニューから、先ほど作成したソースとターゲットのピアを選択します。
-3. 初回移行の後もターゲットデータベースをソースと同期させたい場合は、継続的なレプリケーションを有効にすることができます。そうでない場合は、**Advanced settings** で **Initial copy only** を有効にして、1 回限りの移行を実行できます。
+3. 次の点を確認します:
+
+- Soft delete が OFF になっていること。
+- `Advanced settings` を展開します。**Postgres type system is enabled** が有効になっており、**PeerDB columns are disabled** が無効になっていることを確認します。
+
+<Image img={settings} alt="Mirror Settings" size="md" border />
+
 4. 移行したいテーブルを選択します。特定のテーブルだけを選択することも、ソースデータベース内のすべてのテーブルを選択することもできます。
 
 <Image img={tablePicker} alt="Table Picker" size="md" border />
+
+:::info テーブルの選択
+前のステップでスキーマをそのまま移行しているため、ターゲットデータベース内で、宛先テーブル名がソーステーブル名と同一であることを確認してください。
+:::
 
 5. ミラー設定の構成が完了したら、`Create mirror` ボタンをクリックします。
 

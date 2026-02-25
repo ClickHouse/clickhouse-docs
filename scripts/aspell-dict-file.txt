@@ -1090,6 +1090,18 @@ Oleg
 sbyte
 ulong
 ushort
+BatchSize
+BearerToken
+CustomHeaders
+InsertOptions
+JsonReadMode
+JsonWriteMode
+MaxDegreeOfParallelism
+POCOs
+QueryId
+QueryOptions
+ReadStringsAsByteArrays
+MaxExecutionTime
 --docs/whats-new/roadmap.md--
 roadmaps
 --docs/integrations/language-clients/python/index.md--
@@ -1280,3 +1292,6 @@ dtype
 dtypes
 groupby
 skipna
+--docs/cloud/guides/infrastructure/01_deployment_options/byoc/03_onboarding/05_azure_private_preview.md--
+SignalR
+provisioner

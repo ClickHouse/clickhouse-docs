@@ -466,6 +466,18 @@ BSON 形式のスキーマ推論を行う際に、サポートされていない
 
 CapnProto フォーマットでスキーマ推論を行う際に、サポートされていない型のカラムをスキップする
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "接続が予期せず切断された場合でも、バッファ内に残っているデータの解析と処理を許可する新しい設定"}]}]}/>
+
+このオプションを有効にすると、接続が予期せず切断された場合でも、エラーとして扱われるのではなく、バッファ内に残っているデータが解析および処理されます。
+
+:::note
+このオプションを有効にすると、並列解析が無効になり、重複排除を行えなくなります。
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -971,6 +983,18 @@ JSON / JSONCompact / JSONColumnsWithMetadata 入力フォーマットに対し�
 
 入力フォーマットでデータを解析する際に生成されるブロックのサイズを、バイト単位で制限します。ClickHouse 側でブロックを生成する行ベースの入力フォーマットで使用されます。
 0 はバイト数に制限がないことを意味します。
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]}/>
+
+行ベースの入力フォーマットをパースする際に、ブロックが出力されるまでの待機時間の最大値をミリ秒単位で制限します。0 を指定すると無制限になります。
+
+:::note
+このオプションは `input_format_connection_handling` が有効な場合にのみ動作します。値を設定すると並列パースが無効化され、重複排除（deduplication）は行えなくなります。
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -1523,6 +1547,14 @@ JSON カラムのパース時に、各カラムで作成できる動的サブカ
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "Arrow 出力フォーマットでデフォルトの圧縮方式として lz4 を使用"}]}]}/>
 
 Arrow 出力フォーマット用の圧縮方式。サポートされるコーデック：lz4_frame、zstd、none（非圧縮）
+
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "既定では、Date を単純な UInt16 ではなく Arrow の DATE32 として書き込みます。"}]}]}/>
+
+Date の値を、32 ビットの Arrow DATE32 型（読み取り時は Date32）に変換するのではなく、単純な 16 ビット整数（読み取り時は UInt16）として書き込みます。
 
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 

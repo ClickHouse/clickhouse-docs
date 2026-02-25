@@ -102,15 +102,15 @@ Temporal は、シンプルかつ高度で高い耐障害性を備えたアプ�
   * Temporal Cloud（`metrics.temporal.io`）に接続します
   * 60秒ごとにメトリクスを収集します
   * [主要なパフォーマンスメトリクス](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/metrics-reference)を収集します
-  * [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/specs/semconv/resource/#service) に従って、必須の `service.name` リソース属性を**設定します**
-  * 専用パイプライン経由でメトリクスを ClickHouse エクスポーターにルーティングします
+  * **[OpenTelemetry のセマンティック規約](https://opentelemetry.io/docs/specs/semconv/resource/#service) に従って、必須の `service.name` リソース属性を設定します**
+  * 専用のパイプラインを通じてメトリクスを ClickHouse エクスポーターにルーティングします
 
   :::note
 
   * カスタム構成では、新しい receiver、processor、pipeline のみを定義します
   * `memory_limiter` と `batch` プロセッサおよび `clickhouse` エクスポーターは、ClickStack のベース設定内ですでに定義されているため、名前を指定して参照するだけでかまいません。
   * `resource` processor は、OpenTelemetry のセマンティック規約に基づいて、必須の `service.name` 属性を設定します
-  * 複数の Temporal Cloud アカウントを利用する場合は、`service.name` をカスタマイズして区別できるようにします（例: `"temporal-prod"`、`"temporal-dev"`）。
+  * For multiple Temporal cloud accounts, customize `service.name` to distinguish them (e.g., `"temporal-prod"`, `"temporal-dev"`)
     :::
 
   #### ClickStackにカスタム設定を読み込ませる構成
@@ -120,7 +120,7 @@ Temporal は、シンプルかつ高度で高い耐障害性を備えたアプ�
   1. カスタム設定ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
   2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定します
   3. `temporal.key` ファイルを `/etc/otelcol-contrib/temporal.key` パスにマウントします
-  4. ClickStack と Temporal 間でネットワーク接続が確立されていること
+  4. ClickStack と Temporal の間でネットワーク接続が確立されていること
 
   すべてのコマンドは、`temporal-metrics.yaml` および `temporal.key` が格納されているサンプルディレクトリから実行することを前提としています。
 

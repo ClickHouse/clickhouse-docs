@@ -48,16 +48,16 @@ Grafana requires a plugin to connect to ClickHouse, which is easily installed wi
 
 When connecting ClickHouse to a data visualization tool like Grafana, it is recommended to make a read-only user to protect your data from unwanted modifications.
 
-Grafana does not validate that queries are safe. Queries can contain any SQL statement, including `DELETE` and `INSERT`.
+Grafana doesn't validate that queries are safe. Queries can contain any SQL statement, including `DELETE` and `INSERT`.
 
 To configure a read-only user, follow these steps:
 1. Create a `readonly` user profile following the [Creating Users and Roles in ClickHouse](/operations/access-rights) guide.
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go).
-3. If you're using a public ClickHouse instance, it is not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
+3. If you're using a public ClickHouse instance, it isn't recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
 
 ## 3.  Install the ClickHouse plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
 
-Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
+Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you're logged in to Grafana, follow these steps:
 
 1. From the **Connections** page in the sidebar, select the **Add new connection** tab.
 
@@ -85,7 +85,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 - **Server port:** the port for your ClickHouse service. Will be different depending on server configuration and protocol.
 - **Protocol** the protocol used to connect to your ClickHouse service.
 - **Secure connection** enable if your server requires a secure connection.
-- **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured any users, try `default` for the username. It is recommended to [configure a read-only user](#2-making-a-read-only-user).
+- **Username** and **Password**: enter your ClickHouse user credentials. If you haven't configured any users, try `default` for the username. It is recommended to [configure a read-only user](#2-making-a-read-only-user).
 
 For more settings, check the [plugin configuration](./config.md) documentation.
 
@@ -99,12 +99,12 @@ Your data source is now ready to use! Learn more about how to build queries with
 
 For more details on configuration, check the [plugin configuration](./config.md) documentation.
 
-If you're looking for more information that is not included in these docs, check the [plugin repository on GitHub](https://github.com/grafana/clickhouse-datasource).
+If you're looking for more information that isn't included in these docs, check the [plugin repository on GitHub](https://github.com/grafana/clickhouse-datasource).
 
 ## Upgrading plugin versions {#upgrading-plugin-versions}
 
 Starting with v4, configurations and queries are able to be upgraded as new versions are released.
 
-Configurations and queries from v3 are migrated to v4 as they are opened. While the old configurations and dashboards will load in v4, the migration is not persisted until they are saved again in the new version. If you notice any issues when opening an old configuration/query, discard your changes and [report the issue on GitHub](https://github.com/grafana/clickhouse-datasource/issues).
+Configurations and queries from v3 are migrated to v4 as they're opened. While the old configurations and dashboards will load in v4, the migration isn't persisted until they're saved again in the new version. If you notice any issues when opening an old configuration/query, discard your changes and [report the issue on GitHub](https://github.com/grafana/clickhouse-datasource/issues).
 
-The plugin cannot downgrade to previous versions if the configuration/query was created with a newer version.
+The plugin can't downgrade to previous versions if the configuration/query was created with a newer version.

@@ -39,13 +39,9 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 * **避免发生落盘的 JOIN**：JOIN 的中间状态（例如哈希表）可能会变得非常大，以至于不再能放入内存。在这种情况下，ClickHouse 默认会返回内存不足错误。某些 JOIN 算法（见下文），例如 [`grace_hash`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)、[`partial_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3) 和 [`full_sorting_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)，可以将中间状态落盘并继续执行查询。不过仍应谨慎使用这些 JOIN 算法，因为磁盘访问会显著降低 JOIN 处理速度。我们更推荐通过其他方式优化 JOIN 查询，以减少中间状态的大小。
 * **在外连接中使用默认值作为未匹配标记**：左/右/全外连接会包含来自左表/右表/两个表的所有值。如果在另一张表中找不到某个值的 JOIN 伙伴，ClickHouse 会用一个特殊的标记替代该 JOIN 伙伴。SQL 标准要求数据库使用 NULL 作为这种标记。在 ClickHouse 中，这需要将结果列包装为 Nullable，从而带来额外的内存和性能开销。作为替代方案，可以将设置 `join_use_nulls = 0`，并使用结果列数据类型的默认值作为该标记。
 
-
-
 :::note 谨慎使用字典
 在 ClickHouse 中将字典用于 JOIN 时，需要理解：字典在设计上不允许存在重复键。在数据加载过程中，任何重复键都会被静默去重——对于给定键，仅保留最后加载的那个值。此行为使得字典非常适合一对一或多对一的关系场景，此类场景只需要最新或权威值即可。然而，如果将字典用于一对多或多对多关系（例如在关联演员与角色时，一个演员可以拥有多个角色），则会导致静默的数据丢失，因为除了一行匹配记录之外，其余匹配行都会被丢弃。因此，在需要保留所有匹配结果、完全还原关系结构的场景中，字典并不适用。
 :::
-
-
 
 ## 选择合适的 JOIN 算法 \{#choosing-the-right-join-algorithm\}
 

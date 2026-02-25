@@ -18,7 +18,7 @@ This guide explains ClickHouse's approach to these concepts and provides recomme
 
 ## Alternatives to stored procedures in ClickHouse {#alternatives-to-stored-procedures}
 
-ClickHouse does not support traditional stored procedures with control flow logic (`IF`/`ELSE`, loops, etc.).
+ClickHouse doesn't support traditional stored procedures with control flow logic (`IF`/`ELSE`, loops, etc.).
 This is an intentional design decision based on ClickHouse's architecture as an analytical database.
 Loops are discouraged for analytical databases because processing O(n) simple queries is usually slower than processing fewer complex queries.
 
@@ -102,7 +102,7 @@ SELECT format_phone('5551234567');
 
 **Limitations:**
 - No loops or complex control flow
-- Cannot modify data (`INSERT`/`UPDATE`/`DELETE`)
+- Can't modify data (`INSERT`/`UPDATE`/`DELETE`)
 - Recursive functions not allowed
 
 See [`CREATE FUNCTION`](/sql-reference/statements/create/function) for complete syntax.
@@ -411,7 +411,7 @@ SELECT @status, @points;
 :::note Query parameters
 The example below uses query parameters in ClickHouse.
 Skip ahead to ["Alternatives to prepared statements in ClickHouse"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)
-if you are not yet familiar with query parameters in ClickHouse.
+if you're not yet familiar with query parameters in ClickHouse.
 :::
 
 ```python
@@ -788,15 +788,15 @@ SELECT count() FROM {table: Identifier};
 
 <br/>
 For use of query parameters in [language clients](/integrations/language-clients), refer to the documentation for
-the specific language client you are interested in.
+the specific language client you're interested in.
 
 ### Limitations of query parameters {#limitations-of-query-parameters}
 
 Query parameters are **not general text substitutions**. They have specific limitations:
 
-1. They are **primarily intended for SELECT statements** - the best support is in SELECT queries
-2. They **work as identifiers or literals** - they cannot substitute arbitrary SQL fragments
-3. They have **limited DDL support** - they are supported in `CREATE TABLE`, but not in `ALTER TABLE`
+1. They're **primarily intended for SELECT statements** - the best support is in SELECT queries
+2. They **work as identifiers or literals** - they can't substitute arbitrary SQL fragments
+3. They have **limited DDL support** - they're supported in `CREATE TABLE`, but not in `ALTER TABLE`
 
 **What WORKS:**
 ```sql
@@ -870,11 +870,11 @@ ClickHouse's [MySQL interface](/interfaces/mysql) includes minimal support for p
 
 **Key limitations:**
 
-- **Parameter binding is not supported** - You cannot use `?` placeholders with bound parameters
+- **Parameter binding isn't supported** - You can't use `?` placeholders with bound parameters
 - Queries are stored but not parsed during `PREPARE`
 - Implementation is minimal and designed for specific BI tool compatibility
 
-**Example of what does NOT work:**
+**Example of what doesn't work:**
 
 ```sql
 -- This MySQL-style prepared statement with parameters does NOT work in ClickHouse

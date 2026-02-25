@@ -513,7 +513,7 @@ JSON テーブルを参照する新しいデータソースを HyperDX 内に作
 
 </VerticalStepper>
 
-#### 既存データの移行（任意） {#migrating-existing-data}
+#### 既存データの移行（任意）
 
 既存のデータを新しい JSON テーブルに移行するには:
 

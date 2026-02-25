@@ -50,3 +50,9 @@ ALTER USER my_user_name SETTINGS max_threads = 8;
 ```sql
 SELECT getSetting('max_threads');
 ```
+
+:::note
+この方法で設定を指定すると、そのユーザーの現在の設定が上書きされます。つまり、ユーザーに対してほかの設定が適用されていても、それらを `ALTER USER` ステートメント内で指定しなかった場合、それらの設定は失われます。
+
+既存の設定を保持したい場合は、代わりに `ALTER USER ... MODIFY SETTING ...` を使用してください。
+:::

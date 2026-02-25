@@ -499,7 +499,9 @@ Possible values:
 
 ストレージディスクの名前です。storage policy の代わりに指定できます。
 
-## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+## distributed_index_analysis_min_indexes_bytes_to_activate \{#distributed_index_analysis_min_indexes_bytes_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -508,6 +510,8 @@ Possible values:
 分散索引解析を有効にするために必要となる、ディスク上（非圧縮）のデータスキッピング索引および主キー索引の最小サイズ
 
 ## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -549,9 +553,9 @@ Dynamic データ型のシリアライゼーションバージョンを指定し
 
 ## enable_max_bytes_limit_for_min_age_to_force_merge \{#enable_max_bytes_limit_for_min_age_to_force_merge\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の設定が、
@@ -2456,8 +2460,6 @@ ClickHouse は、未定義（ポリシーに含まれていない）のディス
 
 ## shared_merge_tree_activate_coordinated_merges_tasks \{#shared_merge_tree_activate_coordinated_merges_tasks\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.8"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.7"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-4","items": [{"label": "25.6"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-5","items": [{"label": "25.10"},{"label": "0"},{"label": "新しい設定"}]}]}/>
@@ -2490,15 +2492,13 @@ ClickHouse Cloud でのみ利用可能です。
 
 ## shared_merge_tree_enable_automatic_empty_partitions_cleanup \{#shared_merge_tree_enable_automatic_empty_partitions_cleanup\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Enable by default"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 空のパーティションに対応する Keeper エントリのクリーンアップを有効にします。
 
 ## shared_merge_tree_enable_coordinated_merges \{#shared_merge_tree_enable_coordinated_merges\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2507,8 +2507,6 @@ ClickHouse Cloud でのみ利用可能です。
 協調マージ戦略を有効化します
 
 ## shared_merge_tree_enable_keeper_parts_extra_data \{#shared_merge_tree_enable_keeper_parts_extra_data\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2647,8 +2645,6 @@ SMT におけるすべての破損パーツの合計最大サイズ。これを�
 
 ## shared_merge_tree_merge_coordinator_election_check_period_ms \{#shared_merge_tree_merge_coordinator_election_check_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "30000"},{"label": "New setting"}]}]}/>
@@ -2656,8 +2652,6 @@ SMT におけるすべての破損パーツの合計最大サイズ。これを�
 マージコーディネーター選出スレッドの実行間隔
 
 ## shared_merge_tree_merge_coordinator_factor \{#shared_merge_tree_merge_coordinator_factor\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Float" default_value="1.1" />
 
@@ -2667,8 +2661,6 @@ SMT におけるすべての破損パーツの合計最大サイズ。これを�
 
 ## shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms \{#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "10000"},{"label": "New setting"}]}]}/>
@@ -2676,8 +2668,6 @@ SMT におけるすべての破損パーツの合計最大サイズ。これを�
 merge coordinator が最新のメタデータを取得するために ZooKeeper と同期する間隔（ミリ秒）
 
 ## shared_merge_tree_merge_coordinator_max_merge_request_size \{#shared_merge_tree_merge_coordinator_max_merge_request_size\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2687,8 +2677,6 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 
 ## shared_merge_tree_merge_coordinator_max_period_ms \{#shared_merge_tree_merge_coordinator_max_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "10000"},{"label": "New setting"}]}]}/>
@@ -2696,8 +2684,6 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 マージコーディネータースレッドの実行と実行の間隔の最大時間
 
 ## shared_merge_tree_merge_coordinator_merges_prepare_count \{#shared_merge_tree_merge_coordinator_merges_prepare_count\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -2707,8 +2693,6 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 
 ## shared_merge_tree_merge_coordinator_min_period_ms \{#shared_merge_tree_merge_coordinator_min_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "New setting"}]}]}/>
@@ -2717,8 +2701,6 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 
 ## shared_merge_tree_merge_worker_fast_timeout_ms \{#shared_merge_tree_merge_worker_fast_timeout_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="100" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "100"},{"label": "New setting"}]}]}/>
@@ -2726,8 +2708,6 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 即時のアクションの後に自身の状態を更新する必要がある場合に、merge worker スレッドが使用するタイムアウト値。
 
 ## shared_merge_tree_merge_worker_regular_timeout_ms \{#shared_merge_tree_merge_worker_regular_timeout_ms\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 

@@ -50,7 +50,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 
 ## 总结 \{#summary\}
 
-总而言之，在以下场景中使用可刷新物化视图：
+总而言之，在以下场景中使用可刷新materialized view：
 
 - 你需要能够立即获取已缓存的查询结果，并且可以接受数据新鲜度存在轻微延迟。
 - 你需要查询结果集的前 N 条记录（Top N）。
@@ -58,7 +58,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 - 你在执行涉及多个表的复杂 `JOIN` 或反规范化操作，并且在任一源表发生变化时都需要更新。
 - 你在构建批处理工作流、反规范化任务，或创建类似 dbt DAG 的视图依赖关系。
 
-有关可刷新物化视图的示例，请参见[此处](/materialized-view/refreshable-materialized-view)。
+有关可刷新materialized view的示例，请参见[此处](/materialized-view/refreshable-materialized-view)。
 
 ### APPEND 与 REPLACE 模式对比 \{#append-vs-replace-mode\}
 

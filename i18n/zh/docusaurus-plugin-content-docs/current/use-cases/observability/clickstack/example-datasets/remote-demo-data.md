@@ -195,11 +195,11 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   点击 `Results table` 切换至结果视图。使用 `StatusCode` 筛选器和 `Error` 值筛选错误记录。
 
-  <Image img={step_13} alt="步骤 13" size="lg" />
+  <Image img={step_13} alt="第 13 步" size="lg" />
 
   选择一个 `Error: Visa cache full: cannot add new item.` 错误，切换到 `Infrastructure` 选项卡，并将时间跨度扩大到 `1d`。
 
-  <Image img={step_14} alt="步骤 14" size="lg" />
+  <Image img={step_14} alt="第 14 步" size="lg" />
 
   通过关联追踪数据与指标数据,可以看到 `payment` 服务的内存和 CPU 使用率上升,随后骤降至 `0`(可归因于 pod(容器组)重启)——这表明缓存问题引发了资源问题。可以预期这已影响支付完成时间。
 
@@ -234,11 +234,11 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
   * 我们的问题出在支付服务上
   * 缓存已满
   * 这导致资源消耗上升
-  * 该问题导致 Visa 支付无法完成，或者至少会大幅延长支付完成所需时间。
+  * 该问题导致 Visa 支付无法完成，或者至少会显著延长支付完成时间。
 
   <br />
 
-  从左侧菜单中选择 `Chart Explorer`。填写以下值，按图表类型绘制支付完成所需时间：
+  从左侧菜单中选择 `Chart Explorer`。填写以下值，按卡类型绘制支付完成所需时间：
 
   * `数据源`：`跟踪`
   * `Metric`: `最大值`
@@ -267,20 +267,20 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
   * `数据源`：`指标`
   * `Metric`: `最大值`
   * `SQL Column`: `visa_validation_cache.size (gauge)`（只需输入 `cache` 即可自动补全）
-  * `其中：` `ServiceName: payment`
+  * `Where`: `ServiceName: payment`
   * `Group By`: `<empty>`
 
   我们可以看到缓存大小在 4-5 小时内逐渐增加(可能是在软件部署之后),最终达到 `100,000` 的最大值。从 `Sample Matched Events` 中可以看到,我们的错误与缓存达到此限制关联,之后缓存大小被记录为 `0`,响应时间也变为 `0s`。
 
-  <Image img={step_20} alt="步骤 20" size="lg" />
+  <Image img={step_20} alt="第 20 步" size="lg" />
 
   综上所述,通过探索日志、追踪和指标,我们得出以下结论:
 
   * 我们的问题出在支付服务上
-  * 服务行为发生变化（很可能是由一次部署引起），导致 Visa 缓存大小在 4–5 小时内缓慢增长，最终达到 `100,000` 的最大值。
-  * 随着缓存规模不断增加，资源消耗也随之上升——这很可能是由于实现不佳所致
+  * 服务行为发生变化（很可能是由一次部署引起），导致 Visa 缓存在 4–5 小时内缓慢增长，直至达到 `100,000` 的最大容量。
+  * 随着缓存大小的增长，资源消耗随之增加——这很可能是由于实现不佳造成的
   * 随着缓存不断增大，Visa 支付的性能逐渐下降
-  * 在达到最大容量时，缓存会拒绝支付请求，并将自身报告为大小为 `0`。
+  * 在达到最大容量时，缓存会拒绝处理支付请求，并将自身报告为大小为 `0`。
 
   ### 使用会话
 
@@ -296,7 +296,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   搜索 `SpanAttributes.userEmail: Braulio` 以查找客户会话。选择该会话后,左侧将显示该客户会话的浏览器事件和关联 span,右侧将重现用户的浏览器操作过程:
 
-  <Image img={step_22} alt="步骤 22" size="lg" />
+  <Image img={step_22} alt="第 22 步" size="lg" />
 
   ### 回放会话
 
@@ -308,7 +308,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   选择该 span 后,我们可以确认这是由内部错误导致的。通过点击 `Trace` 选项卡并滚动浏览关联的 span,我们能够确认该客户确实受到了缓存问题的影响。
 
-  <Image img={step_24} alt="步骤 24" size="lg" />
+  <Image img={step_24} alt="第 24 步" size="lg" />
 </VerticalStepper>
 
 本示例演示一个电商应用中支付失败的真实事故，展示 ClickStack 如何通过统一的日志、链路追踪、指标和会话回放来帮助定位根因——可查看我们的[其他入门指南](/use-cases/observability/clickstack/sample-datasets)，以更深入地探索特定功能。

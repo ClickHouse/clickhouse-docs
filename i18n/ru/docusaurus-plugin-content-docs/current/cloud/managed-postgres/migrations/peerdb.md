@@ -16,6 +16,7 @@ import createMirror from '@site/static/images/managed-postgres/peerdb/create-mir
 import tablePicker from '@site/static/images/managed-postgres/peerdb/table-picker.png';
 import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-load.png';
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
+import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 
 # Миграция на Managed Postgres с помощью PeerDB \{#peerdb-migration\}
@@ -58,6 +59,42 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 <Image img={peers} alt="Список peers" size="md" border />
 
+### Получение дампа схемы исходной базы данных \{#migration-peerdb-source-schema-dump\}
+
+Чтобы воспроизвести структуру исходной базы данных в целевой, необходимо получить дамп схемы исходной базы. Для этого можно использовать `pg_dump`, чтобы создать дамп только схемы вашей исходной базы данных PostgreSQL:
+
+```shell
+pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
+```
+
+Прежде чем применять дамп к целевой базе данных, необходимо удалить ограничения UNIQUE и индексы из файла дампа, чтобы процесс ингестии данных PeerDB в целевые таблицы не блокировался этими ограничениями и индексами. Их можно удалить с помощью:
+
+```shell
+# Preview
+grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
+grep -n "CREATE UNIQUE INDEX" <dump_file_path>
+grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
+
+# Remove
+sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
+```
+
+
+### Примените дамп схемы к целевой базе данных \{#migration-peerdb-apply-schema-dump\}
+
+После того как вы очистите файл дампа схемы, вы можете применить его к целевой базе данных ClickHouse Managed Postgres, [подключившись](../connection) через `psql` и выполнив команды из файла дампа схемы:
+
+```shell
+psql -h <target_host> -p <target_port> -U <target_username> -d <target_database> -f source_schema.sql
+```
+
+Здесь на целевой стороне мы не хотим, чтобы ингестия PeerDB блокировалась внешними ключевыми ограничениями. Для этого мы можем изменить целевую роль (используемую выше в целевом peer), чтобы установить параметр `session_replication_role` в значение `replica`:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = replica;
+```
+
+
 ## Создайте mirror \{#migration-peerdb-create-mirror\}
 
 Далее необходимо создать mirror, чтобы определить процесс миграции данных между исходным и целевым peers. В интерфейсе PeerDB перейдите в раздел "Mirrors", выбрав пункт "Mirrors" в боковой панели. Чтобы создать новый mirror, нажмите кнопку `+ New mirror`.
@@ -66,10 +103,20 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 1. Задайте вашему mirror имя, которое описывает миграцию.
 2. Выберите исходный и целевой peers, созданные ранее, из раскрывающихся списков.
-3. При необходимости вы можете включить непрерывную репликацию, если хотите поддерживать целевую базу данных синхронизированной с исходной после первоначальной миграции. В противном случае, в разделе **Advanced settings** вы можете включить **Initial copy only**, чтобы выполнить однократную миграцию.
+3. Убедитесь, что:
+
+- Soft delete выключен.
+- Разверните `Advanced settings`. Убедитесь, что **Postgres type system is enabled** и **PeerDB columns are disabled**.
+
+<Image img={settings} alt="Mirror Settings" size="md" border />
+
 4. Выберите таблицы, которые вы хотите перенести. Можно выбрать конкретные таблицы или все таблицы из исходной базы данных.
 
 <Image img={tablePicker} alt="Table Picker" size="md" border />
+
+:::info Selecting tables
+Убедитесь, что имена таблиц в целевой базе данных совпадают с именами таблиц в исходной базе данных, так как на предыдущем шаге мы перенесли схему как есть.
+:::
 
 5. После настройки параметров mirror нажмите кнопку `Create mirror`.
 

@@ -3,16 +3,17 @@ slug: /dictionary
 title: '字典'
 keywords: ['dictionary', 'dictionaries']
 description: '字典以键值对形式表示数据，以支持快速查找。'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
+
 # 字典 \{#dictionary\}
 
-ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
+ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
 字典可用于：
 
@@ -87,7 +88,7 @@ Controversial_ratio: 0
 
 #### 应用字典 \{#applying-a-dictionary\}
 
-为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），你应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
+为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache) 是一个例外），你应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
 
 ```sql
 SELECT table,
@@ -105,7 +106,7 @@ GROUP BY table
 
 数据将在我们的字典中以未压缩形式存储，因此如果要将所有列（实际上我们不会这样做）都存入字典，至少需要 4GB 内存。字典会在集群中进行复制，因此这部分内存需要 *按节点* 预留。
 
-> 在下面的示例中，我们字典的数据来源于一个 ClickHouse 表。虽然这是字典最常见的数据源，但还支持[多种数据源](/sql-reference/dictionaries#dictionary-sources)，包括文件、HTTP 以及包括 [Postgres](/sql-reference/dictionaries#postgresql) 在内的各类数据库。正如我们将展示的那样，字典可以自动刷新，为小型且经常变更的数据集提供了一种理想方式，使其可用于直接进行 join 操作。
+> 在下面的示例中，我们字典的数据来源于一个 ClickHouse 表。虽然这是字典最常见的数据源，但还支持[多种数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)，包括文件、HTTP 以及包括 [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql) 在内的各类数据库。正如我们将展示的那样，字典可以自动刷新，为小型且经常变更的数据集提供了一种理想方式，使其可用于直接进行 join 操作。
 
 我们的字典需要一个用于执行查找的主键。这在概念上与事务型数据库中的主键相同，并且必须唯一。上面的查询需要在 join 键 `PostId` 上执行查找。字典应相应地填充为来自 `votes` 表的每个 `PostId` 的赞成票和反对票总数。下面是获取该字典数据的查询：
 
@@ -117,7 +118,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-要创建该字典，我们需要使用以下 DDL——注意其中使用了上面的查询：
+要创建该字典，需要使用以下 DDL——注意其中使用了上面的查询：
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -290,10 +291,10 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-返回 0 行。耗时：36.830 秒。处理了 2.3898 亿行，2.64 GB（649 万行/秒，71.79 MB/秒）
+0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
-现在我们可以获取大多数帖子发布地的名称：
+现在我们可以获取大多数帖子来源地的名称：
 
 ```sql
 SELECT Location, count() AS c
@@ -310,28 +311,29 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-返回 4 行。用时:0.142 秒。已处理 5982 万行,1.08 GB(420.73 百万行/秒,7.60 GB/秒)。
-内存峰值:666.82 MiB。
+4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
+Peak memory usage: 666.82 MiB.
 ```
+
 
 ## 字典高级主题 \{#advanced-dictionary-topics\}
 
 ### 选择字典 `LAYOUT` \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
+`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
 
 ### 刷新字典 \{#refreshing-dictionaries\}
 
 我们为字典指定了 `LIFETIME MIN 600 MAX 900`。`LIFETIME` 用于控制字典的更新间隔，上述取值会使字典在 600 到 900 秒之间的随机时间间隔内周期性地重新加载。这个随机间隔是必要的，以便在大量服务器进行更新时分散对字典数据源的负载。在更新过程中，旧版本的字典仍然可以被查询，只有初始加载时才会阻塞查询。注意，将 `LIFETIME(0)` 进行设置会禁止字典更新。
 可以使用 `SYSTEM RELOAD DICTIONARY` 命令强制重新加载字典。
 
-对于 ClickHouse 和 Postgres 等数据库数据源，你可以设置一个查询，仅在字典数据确实发生变化时才更新字典（由该查询的响应来决定），而不是按固定周期更新。更多详细信息请参见[此处](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+对于 ClickHouse 和 Postgres 等数据库数据源，你可以设置一个查询，仅在字典数据确实发生变化时才更新字典（由该查询的响应来决定），而不是按固定周期更新。更多详细信息请参见[此处](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
 
 ### 其他字典类型 \{#other-dictionary-types\}
 
-ClickHouse 还支持[层次结构字典](/sql-reference/dictionaries#hierarchical-dictionaries)、[多边形字典](/sql-reference/dictionaries#polygon-dictionaries)和[正则表达式字典](/sql-reference/dictionaries#regexp-tree-dictionary)。
+ClickHouse 还支持[层次结构字典](/sql-reference/statements/create/dictionary/layouts/hierarchical)、[多边形字典](/sql-reference/statements/create/dictionary/layouts/polygon)和[正则表达式字典](/sql-reference/statements/create/dictionary/layouts/regexp-tree)。
 
 ### 延伸阅读 \{#more-reading\}
 
 - [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [字典的高级配置](/sql-reference/dictionaries)
+- [字典的高级配置](/sql-reference/statements/create/dictionary)

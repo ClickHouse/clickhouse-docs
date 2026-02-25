@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md).
+Перезагружает все [внутренние словари](./create/dictionary/index.md).
 По умолчанию внутренние словари отключены.
 Всегда возвращает `Ok.` независимо от результата обновления внутреннего словаря.
 
@@ -105,10 +105,6 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 Очищает кеш метаданных Iceberg.
-
-## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
-
-Очищает кэш метаданных Parquet.
 
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 

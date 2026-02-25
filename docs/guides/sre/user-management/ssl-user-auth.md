@@ -72,7 +72,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::
 
     :::note
-    We recommend using SQL to define users and roles. However, if you are currently defining users and roles in configuration files, the user will look like:
+    We recommend using SQL to define users and roles. However, if you're currently defining users and roles in configuration files, the user will look like:
     ```xml
     <users>
         <cert_user>

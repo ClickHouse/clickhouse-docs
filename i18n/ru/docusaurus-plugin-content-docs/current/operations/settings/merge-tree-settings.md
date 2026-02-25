@@ -528,7 +528,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Имя диска хранения данных. Может быть указано вместо политики хранения.
 
-## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+## distributed_index_analysis_min_indexes_bytes_to_activate \{#distributed_index_analysis_min_indexes_bytes_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -537,6 +539,8 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Минимальные размеры индексов (data skipping и первичного ключа) на диске (в несжатом виде), при которых активируется распределённый анализ индексов
 
 ## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -578,9 +582,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## enable_max_bytes_limit_for_min_age_to_force_merge \{#enable_max_bytes_limit_for_min_age_to_force_merge\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "По умолчанию ограничивает размер частей даже при использовании min_age_to_force_merge_seconds"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -2647,8 +2651,6 @@ ClickHouse сканирует все диски на наличие осирот
 
 ## shared_merge_tree_activate_coordinated_merges_tasks \{#shared_merge_tree_activate_coordinated_merges_tasks\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-3","items": [{"label": "25.7"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-4","items": [{"label": "25.6"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-5","items": [{"label": "25.10"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
@@ -2682,15 +2684,13 @@ shared_merge_tree_enable_coordinated_merges=0, так как это позвол
 
 ## shared_merge_tree_enable_automatic_empty_partitions_cleanup \{#shared_merge_tree_enable_automatic_empty_partitions_cleanup\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включено по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Включает очистку записей в Keeper для пустых партиций.
 
 ## shared_merge_tree_enable_coordinated_merges \{#shared_merge_tree_enable_coordinated_merges\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2699,8 +2699,6 @@ shared_merge_tree_enable_coordinated_merges=0, так как это позвол
 Включает стратегию координированных слияний
 
 ## shared_merge_tree_enable_keeper_parts_extra_data \{#shared_merge_tree_enable_keeper_parts_extra_data\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2840,8 +2838,6 @@ ClickHouse Cloud
 
 ## shared_merge_tree_merge_coordinator_election_check_period_ms \{#shared_merge_tree_merge_coordinator_election_check_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "30000"},{"label": "New setting"}]}]}/>
@@ -2849,8 +2845,6 @@ ClickHouse Cloud
 Время между запусками потока, выполняющего выбор координатора слияний
 
 ## shared_merge_tree_merge_coordinator_factor \{#shared_merge_tree_merge_coordinator_factor\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Float" default_value="1.1" />
 
@@ -2860,8 +2854,6 @@ ClickHouse Cloud
 
 ## shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms \{#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "10000"},{"label": "New setting"}]}]}/>
@@ -2869,8 +2861,6 @@ ClickHouse Cloud
 Как часто координатор слияний должен синхронизироваться с ZooKeeper для получения актуальных метаданных
 
 ## shared_merge_tree_merge_coordinator_max_merge_request_size \{#shared_merge_tree_merge_coordinator_max_merge_request_size\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2880,8 +2870,6 @@ ClickHouse Cloud
 
 ## shared_merge_tree_merge_coordinator_max_period_ms \{#shared_merge_tree_merge_coordinator_max_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "10000"},{"label": "New setting"}]}]}/>
@@ -2889,8 +2877,6 @@ ClickHouse Cloud
 Максимальное время между запусками потока координатора слияния
 
 ## shared_merge_tree_merge_coordinator_merges_prepare_count \{#shared_merge_tree_merge_coordinator_merges_prepare_count\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -2900,8 +2886,6 @@ ClickHouse Cloud
 
 ## shared_merge_tree_merge_coordinator_min_period_ms \{#shared_merge_tree_merge_coordinator_min_period_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "New setting"}]}]}/>
@@ -2910,8 +2894,6 @@ ClickHouse Cloud
 
 ## shared_merge_tree_merge_worker_fast_timeout_ms \{#shared_merge_tree_merge_worker_fast_timeout_ms\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Milliseconds" default_value="100" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "100"},{"label": "New setting"}]}]}/>
@@ -2919,8 +2901,6 @@ ClickHouse Cloud
 Тайм-аут, который поток merge worker использует при необходимости обновить своё состояние после выполнения немедленного действия
 
 ## shared_merge_tree_merge_worker_regular_timeout_ms \{#shared_merge_tree_merge_worker_regular_timeout_ms\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 

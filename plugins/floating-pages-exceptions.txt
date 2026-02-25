@@ -23,3 +23,6 @@ interfaces/grpc
 interfaces/arrowflight
 interfaces/overview
 operations/utilities/clickhouse-keeper-http-api.md
+operations/settings/detach-non-readonly-queries.md
+sql-reference/dictionaries/index.md
+sql-reference/functions/wasm_udf.md

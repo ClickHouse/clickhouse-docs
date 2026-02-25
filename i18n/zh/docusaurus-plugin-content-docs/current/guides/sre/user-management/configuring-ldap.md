@@ -10,6 +10,7 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
+
 # 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射 \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
 
 <SelfManaged />

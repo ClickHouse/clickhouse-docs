@@ -4,7 +4,7 @@ title: 'Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: 'Развертывание ClickStack с помощью Helm — стек обсервабилити ClickHouse'
+description: 'Развертывание ClickStack с помощью Helm — стек обсервабилити для ClickHouse'
 doc_type: 'guide'
 keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с помощью Helm', 'установка HyperDX с помощью Helm', 'Kubernetes-стек обсервабилити', 'развертывание ClickStack в Kubernetes']
 ---
@@ -108,8 +108,6 @@ Helm-чарт для ClickStack можно найти [здесь](https://githu
   Вы можете переопределить стандартное подключение к интегрированному экземпляру ClickHouse. Подробнее см. в разделе [&quot;Использование ClickHouse Cloud&quot;](#using-clickhouse-cloud).
   :::
 
-  Пример использования альтернативного экземпляра ClickHouse см. в разделе [&quot;Создание подключения ClickHouse Cloud&quot;](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
-
   ### Настройка параметров (необязательно)
 
   Настроить параметры можно с помощью флагов `--set`. Например:
@@ -189,7 +187,7 @@ Helm-чарт для ClickStack можно найти [здесь](https://githu
 
   #### Использование секрета
 
-  Чтобы указать ссылку на секрет в `values.yaml`:
+  Чтобы сослаться на секрет в `values.yaml`:
 
   ```yaml
   hyperdx:

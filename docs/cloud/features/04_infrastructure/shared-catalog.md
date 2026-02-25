@@ -32,14 +32,14 @@ All metadata and DDL query history in Shared Catalog is stored centrally in ZooK
 
 ## Shared database engine {#shared-database-engine}
 
-The **Shared database engine** works in conjunction with Shared Catalog to manage databases whose tables use **stateless table engines** such as `SharedMergeTree`. These table engines do not write persistent state to disk and are compatible with dynamic compute environments.
+The **Shared database engine** works in conjunction with Shared Catalog to manage databases whose tables use **stateless table engines** such as `SharedMergeTree`. These table engines don't write persistent state to disk and are compatible with dynamic compute environments.
 
 Shared database engine builds on and improves the behavior of the Replicated database engine while offering additional guarantees and operational benefits.
 
 ### Key benefits {#key-benefits}
 
 - **Atomic CREATE TABLE ... AS SELECT**
-  Table creation and data insertion are executed atomically—either the entire operation completes, or the table is not created at all.
+  Table creation and data insertion are executed atomically—either the entire operation completes, or the table isn't created at all.
 
 - **RENAME TABLE between databases**
   Enables atomic movement of tables across databases:
@@ -58,7 +58,7 @@ Shared database engine builds on and improves the behavior of the Replicated dat
   Unlike the Replicated database engine, which requires all replicas to be online to process a DROP query, Shared Catalog performs centralized metadata deletion. This allows operations to succeed even when some replicas are offline.
 
 - **Automatic metadata replication**
-  Shared Catalog ensures that database definitions are automatically replicated to all servers on startup. Operators do not need to manually configure or synchronize metadata on new instances.
+  Shared Catalog ensures that database definitions are automatically replicated to all servers on startup. Operators don't need to manually configure or synchronize metadata on new instances.
 
 - **Centralized, versioned metadata state**
   Shared Catalog stores a single source of truth in ZooKeeper. When a replica starts, it fetches the latest state and applies the diff to reach consistency. During query execution, the system can wait for other replicas to reach at least the required version of metadata to ensure correctness.

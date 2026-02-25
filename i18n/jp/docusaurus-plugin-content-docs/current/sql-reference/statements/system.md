@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-すべての [内部Dictionary](../../sql-reference/dictionaries/index.md) を再読み込みします。
+すべての [内部Dictionary](./create/dictionary/index.md) を再読み込みします。
 デフォルトでは、内部Dictionaryは無効化されています。
 内部Dictionaryの更新結果に関係なく、常に `Ok.` を返します。
 
@@ -106,10 +106,6 @@ ClickHouse の内部 DNS キャッシュをクリアします。インフラス�
 ## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 Icebergメタデータキャッシュをクリアします。
-
-## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
-
-Parquet メタデータキャッシュをクリアします。
 
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 

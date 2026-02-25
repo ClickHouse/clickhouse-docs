@@ -62,6 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
+
 ## Пример использования \{#usage-example\}
 
 Создайте таблицу в MySQL:
@@ -126,6 +127,7 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
+
 
 ## Настройки \{#mysql-settings\}
 
@@ -196,4 +198,4 @@ SELECT * FROM mysql_table
 ## См. также \{#see-also\}
 
 - [Табличная функция MySQL](../../../sql-reference/table-functions/mysql.md)
-- [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)
+- [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources#mysql)

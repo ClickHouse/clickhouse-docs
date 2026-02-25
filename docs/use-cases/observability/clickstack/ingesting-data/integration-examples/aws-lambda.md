@@ -46,7 +46,7 @@ This section covers configuring your existing AWS Lambda functions to send logs 
 #### Choose the appropriate Rotel Lambda Extension layer {#choose-layer}
 
 Choose the Lambda layer that matches your Lambda runtime architecture. The `{version}` field
-is dependent on the AWS region that you are deploying into. Check the [releases](https://github.com/streamfold/rotel-lambda-extension/releases)
+is dependent on the AWS region that you're deploying into. Check the [releases](https://github.com/streamfold/rotel-lambda-extension/releases)
 page for the latest version numbers that correspond to your region.
 
 | Architecture | ARN                                                                          |
@@ -187,7 +187,7 @@ For Parameter Store:
 ```
 
 :::note
-AWS API calls for secret retrieval add 100-150ms to cold start latency. Secrets are retrieved in batches (up to 10) and only on initialization, so subsequent invocations are not impacted.
+AWS API calls for secret retrieval add 100-150ms to cold start latency. Secrets are retrieved in batches (up to 10) and only on initialization, so subsequent invocations aren't impacted.
 :::
 
 #### Test the integration {#test-integration}

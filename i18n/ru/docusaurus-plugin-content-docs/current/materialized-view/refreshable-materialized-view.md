@@ -19,6 +19,7 @@ import Image from '@theme/IdealImage';
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
+
 ## Когда следует использовать обновляемые материализованные представления? \{#when-should-refreshable-materialized-views-be-used\}
 
 Инкрементные материализованные представления в ClickHouse чрезвычайно мощны и, как правило, масштабируются значительно лучше, чем подход, используемый обновляемыми материализованными представлениями, особенно в случаях, когда необходимо выполнить агрегирование по одной таблице. Поскольку агрегирование вычисляется только для каждого блока данных в момент вставки, а инкрементные состояния сливаются в итоговую таблицу, запрос всегда выполняется только над подмножеством данных. Этот метод масштабируется вплоть до петабайт данных и обычно является предпочтительным.
@@ -47,6 +48,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 Вы также можете отменять, останавливать и запускать обновление представления.
 Дополнительные сведения см. в документации [по управлению обновляемыми материализованными представлениями](/sql-reference/statements/system#refreshable-materialized-views).
 
+
 ## Когда обновляемое материализованное представление обновлялось в последний раз? \{#when-was-a-refreshable-materialized-view-last-refreshed\}
 
 Чтобы узнать время последнего обновления обновляемого материализованного представления, вы можете выполнить запрос к системной таблице [`system.view_refreshes`](/operations/system-tables/view_refreshes), как показано ниже:
@@ -64,9 +66,10 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
+
 ## Как изменить частоту обновления? \{#how-can-i-change-the-refresh-rate\}
 
-Чтобы изменить частоту обновления обновляемого материализованного представления, используйте синтаксис [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement).
+Чтобы изменить частоту обновления refreshable materialized view, используйте синтаксис [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement).
 
 ```sql
 ALTER TABLE table_name_mv
@@ -80,6 +83,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 │ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
+
 
 ## Использование `APPEND` для добавления новых строк \{#using-append-to-add-new-rows\}
 
@@ -160,6 +164,7 @@ GROUP BY ALL;
 
 Затем мы можем выполнить запрос к `events_snapshot`, чтобы получить временной ряд количества для конкретного `uuid`:
 
+
 ```sql
 SELECT *
 FROM events_snapshot
@@ -178,6 +183,7 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
+
 
 ## Примеры \{#examples\}
 
@@ -233,11 +239,12 @@ LEFT JOIN (
 Синтаксис здесь идентичен инкрементальному материализованному представлению, за исключением того, что мы добавляем оператор [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view):
 :::
 
+
 ### IMDb \{#imdb\}
 
-В [руководстве по интеграции dbt и ClickHouse](/integrations/dbt) мы заполнили набор данных IMDb следующими таблицами: `actors`, `directors`, `genres`, `movie_directors`, `movies` и `roles`.
+В руководстве по интеграции [dbt и ClickHouse](/integrations/dbt) мы заполнили набор данных IMDb следующими таблицами: `actors`, `directors`, `genres`, `movie_directors`, `movies` и `roles`.
 
-Затем мы можем написать следующий запрос для вычисления сводной информации по каждому актёру, упорядоченной по числу появлений в фильмах.
+Затем можно использовать следующий запрос для вычисления сводной информации по каждому актёру, упорядоченной по количеству появлений в фильмах.
 
 ```sql
 SELECT
@@ -296,7 +303,8 @@ ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-Теперь можно определить представление:
+Теперь можно создать представление:
+
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -351,7 +359,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-Предположим, мы добавим в наши исходные данные нового актёра по имени «Clicky McClickHouse», который, как выясняется, снялся во множестве фильмов!
+Предположим, мы добавим нового актёра по имени «Clicky McClickHouse» в наши исходные данные, который снялся во множестве фильмов!
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -364,7 +372,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-Менее чем через 60 секунд наша целевая таблица обновляется и отражает активную актёрскую деятельность Клики:
+Не проходит и 60 секунд, как наша целевая таблица обновляется и отражает, насколько плодовито Clicky снимается в кино:
 
 ```sql
 SELECT *
@@ -372,6 +380,7 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
 ```
+
 
 ```text
 ┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐

@@ -40,12 +40,14 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 | `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
 | `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中针对某个设置定义的约束，是否会覆盖该设置上先前的约束（这些先前约束定义在其他 profile 中），包括新约束未显式设置的字段。该选项还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                              | `true`  |
 | `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                    | `false` |
+| `throw_on_unmatched_row_policies`               | 设置在读取表时，如果该表存在 ROW POLICY，但其中没有任何一条适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                         | `false` |
 | `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
 
-示例：
+Example:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -924,7 +926,7 @@ ZooKeeper 中的副本名称。
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **示例**
 
@@ -1644,7 +1646,7 @@ HSTS 的失效时间（秒）。
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 此设置用于实现代码版本迁移：从旧代码版本（同步和异步插入各自独立去重，行为完全不同且不透明）迁移到新代码版本（插入的数据会在同步和异步插入之间统一去重）。
 默认值为 `old_separate_hashes`，这意味着 ClickHouse 会为同步和异步插入使用不同的去重哈希（行为与之前相同）。
@@ -3427,22 +3429,6 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 <SettingsInfoBlock type="Double" default_value="0.5" />用户态页面缓存中受保护队列的大小，占该缓存总大小的比例。
 
-## parquet_metadata_cache_max_entries \{#parquet_metadata_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="5000" />parquet 元数据文件缓存的最大条目数。设置为 0 表示禁用。
-
-## parquet_metadata_cache_policy \{#parquet_metadata_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />Parquet 元数据缓存策略的名称。
-
-## parquet_metadata_cache_size \{#parquet_metadata_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="536870912" />parquet 元数据缓存的最大容量（以字节为单位）。值为 0 表示禁用。
-
-## parquet_metadata_cache_size_ratio \{#parquet_metadata_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />在采用 SLRU 策略时，parquet 元数据缓存中受保护队列的大小，占该缓存总大小的比例。
-
 ## part_log \{#part_log\}
 
 记录与 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 相关的日志事件，例如添加或合并数据。可以使用该日志来模拟合并算法并比较它们的特性，也可以将合并过程可视化。
@@ -4972,6 +4958,10 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 ```
 
 
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+在早期内存限制检查时要忽略的用户的逗号分隔列表。如果用户不在此列表中，当总内存使用量超过限制时，其查询将被拒绝。
+
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />确定在接收到查询数据包时，是否启用客户端信息验证。
@@ -5064,16 +5054,18 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 
 以下设置可以通过子标签进行配置：
 
-| Setting                                    | Description                                                                                                                         |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接到 ZooKeeper 集群时节点的顺序。 |
-| `operation_timeout_ms`                     | 单个操作的最大超时时间（毫秒）。                                                                                                                    |
-| `session_timeout_ms`                       | 客户端会话的最大超时时间（毫秒）。                                                                                                                   |
-| `root` (optional)                          | 作为 ClickHouse 服务器所使用各 znode 的根 znode。                                                                                               |
-| `fallback_session_lifetime.min` (optional) | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最小存活时间下限。以秒为单位设置。默认值：3 小时。                                                                       |
-| `fallback_session_lifetime.max` (optional) | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最大存活时间上限。以秒为单位设置。默认值：6 小时。                                                                       |
-| `identity` (optional)                      | ZooKeeper 访问所请求 znode 所需的用户和密码。                                                                                                     |
-| `use_compression` (optional)               | 如果设置为 true，则在 Keeper 协议中启用压缩。                                                                                                       |
+| Setting                                         | Description                                                                                                                                                                                                                                    |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接到 ZooKeeper 集群时节点的顺序。                                                                                                            |
+| `operation_timeout_ms`                          | 单个操作的最大超时时间（毫秒）。                                                                                                                                                                                                                               |
+| `session_timeout_ms`                            | 客户端会话的最大超时时间（毫秒）。                                                                                                                                                                                                                              |
+| `root` (optional)                               | 作为 ClickHouse 服务器所使用各 znode 的根 znode。                                                                                                                                                                                                          |
+| `fallback_session_lifetime.min` (optional)      | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最小存活时间下限。以秒为单位设置。默认值：3 小时。                                                                                                                                                                                  |
+| `fallback_session_lifetime.max` (optional)      | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最大存活时间上限。以秒为单位设置。默认值：6 小时。                                                                                                                                                                                  |
+| `identity` (optional)                           | ZooKeeper 访问所请求 znode 所需的用户和密码。                                                                                                                                                                                                                |
+| `use_compression` (optional)                    | 如果设置为 true，则在 Keeper 协议中启用压缩。                                                                                                                                                                                                                  |
+| `use_xid_64` (optional)                         | 启用 64 位事务 ID。设置为 `true` 以启用扩展事务 ID 格式。默认值：`false`。                                                                                                                                                                                             |
+| `pass_opentelemetry_tracing_context` (optional) | 启用将 OpenTelemetry 跟踪上下文传递到 Keeper 请求。启用后，会为 Keeper 操作创建跟踪 span，从而在 ClickHouse 与 Keeper 之间实现分布式追踪。需要启用 `use_xid_64`。有关更多详细信息，参见 [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests)。默认值：`false`。 |
 
 还有一个可选的 `zookeeper_load_balancing` 设置，可用于选择 ZooKeeper 节点选择算法：
 
@@ -5106,15 +5098,19 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **另请参阅**
 
-* [复制](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
 
+- [复制](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
 
 ## zookeeper_log \{#zookeeper_log\}
 

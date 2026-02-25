@@ -588,7 +588,7 @@ LIMIT 5
 
 ## 使用字典 \{#using-dictionaries\}
 
-[Dictionaries](/sql-reference/dictionaries) 是 ClickHouse 的[关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供一种内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式，用于表示来自各种内部和外部[数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
+[Dictionaries](/sql-reference/statements/create/dictionary) 是 ClickHouse 的[关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供一种内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式，用于表示来自各种内部和外部[数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
 <Image img={observability_12} alt="Observability and dictionaries" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-为了在 ClickHouse 中进行低延迟的 IP 查询，我们将利用字典在内存中存储 Geo IP 数据的键到属性的映射关系。ClickHouse 提供了一个 `ip_trie` [字典结构](/sql-reference/dictionaries#ip_trie)，用于将网络前缀（CIDR 块）映射到坐标和国家代码。下面的查询使用这种布局，并以上述表作为数据源来定义一个字典。
+为了在 ClickHouse 中进行低延迟的 IP 查询，我们将利用字典在内存中存储 Geo IP 数据的键到属性的映射关系。ClickHouse 提供了一个 `ip_trie` [字典结构](/sql-reference/statements/create/dictionary/layouts/ip-trie)，用于将网络前缀（CIDR 块）映射到坐标和国家代码。下面的查询使用这种布局，并以上述表作为数据源来定义一个字典。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -741,7 +741,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-我们可以从该字典中查询行，以确认此数据集可用于查询：
+我们可以从该字典中查询几行，以确认此数据集可用于查找：
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [User-Agent 字符串](https://en.wikipedia.org/wiki/User_agent) 的解析是一个经典的正则表达式问题，也是基于日志和 trace 的数据集中的常见需求。ClickHouse 通过 Regular Expression Tree Dictionaries 高效解析 User-Agent。
 
-正则表达式树字典在 ClickHouse 开源版本中通过 `YAMLRegExpTree` 字典源类型定义，该类型提供包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，其所需结构的详细信息可以在[这里](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到。下面我们重点介绍使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 User-Agent 解析，并加载适用于受支持 CSV 格式的字典。此方法兼容开源版和 ClickHouse Cloud。
+正则表达式树字典在 ClickHouse 开源版本中通过 `YAMLRegExpTree` 字典源类型定义，该类型提供包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，其所需结构的详细信息可以在[这里](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到。下面我们重点介绍使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 User-Agent 解析，并加载适用于受支持 CSV 格式的字典。此方法兼容开源版和 ClickHouse Cloud。
 
 :::note
-在下面的示例中，我们使用的是 2024 年 6 月的最新 uap-core User-Agent 解析正则表达式快照。最新文件（会不定期更新）可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。你可以按照[这里](/sql-reference/dictionaries#collecting-attribute-values)的步骤，将其加载到下文使用的 CSV 文件中。
+在下面的示例中，我们使用的是 2024 年 6 月的最新 uap-core User-Agent 解析正则表达式快照。最新文件（会不定期更新）可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。你可以按照[这里](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values)的步骤，将其加载到下文使用的 CSV 文件中。
 :::
 
 创建以下 Memory 表。这些表保存用于解析设备、浏览器和操作系统的正则表达式。
@@ -875,7 +875,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-可以使用 `url` 表函数，从以下公开托管的 CSV 文件中填充这些表：
+可以使用 `url` 表函数，从下列公开托管的 CSV 文件中填充这些表：
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -1031,7 +1031,7 @@ Os:     ('Other','0','0','0')
 
 - [字典进阶主题](/dictionary#advanced-dictionary-topics)
 - [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [字典](/sql-reference/dictionaries)
+- [字典](/sql-reference/statements/create/dictionary)
 
 ## 加速查询 \{#accelerating-queries\}
 
@@ -1432,7 +1432,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-需要注意的是,如果通过 `ALTER` 创建 projection,在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步的。您可以使用以下查询来确认此操作的进度,等待 `is_done=1`。
+需要注意的是,如果通过 `ALTER` 创建 PROJECTION,在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步的。您可以使用以下查询来确认此操作的进度,等待 `is_done=1`。
 
 ```sql
 SELECT parts_to_do, is_done, latest_fail_reason
@@ -1487,7 +1487,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-`ngram` 函数提供了类似的功能，可以通过第二个参数指定 `ngram` 的大小：
+`ngram` 函数提供了类似的能力，其中 `ngram` 的大小可以通过第二个参数指定：`
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
@@ -1545,7 +1545,8 @@ ENGINE = MergeTree
 ORDER BY (Timestamp)
 ```
 
-此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要调优,其取值取决于唯一 ngram/token 的数量以及过滤器产生真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要进行调优,其取值依赖于唯一 ngram/token 的个数以及过滤器返回真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+
 
 如果调优得当，性能提升会非常显著：
 

@@ -51,18 +51,6 @@ doc_type: 'reference'
 
 | 名称 | 默认值 |
 |------|--------|
-| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
 | [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
 | [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
@@ -80,8 +68,8 @@ doc_type: 'reference'
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
 
 ## 实验性设置 \{#experimental-settings\}
@@ -91,6 +79,8 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
 | [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
 | [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
+| [distributed&#95;index&#95;analysis&#95;min&#95;indexes&#95;bytes&#95;to&#95;activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_indexes_bytes_to_activate)                                           | `1073741824`            |
+| [distributed&#95;index&#95;analysis&#95;min&#95;parts&#95;to&#95;activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_parts_to_activate)                                                               | `10`                    |
 | [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
 | [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
 | [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |
@@ -103,6 +93,9 @@ doc_type: 'reference'
 | [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
 | [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
 | [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
+| [ast&#95;fuzzer&#95;runs](/operations/settings/settings#ast_fuzzer_runs)                                                                                                                                                            | `0`                     |
+| [ast&#95;fuzzer&#95;any&#95;query](/operations/settings/settings#ast_fuzzer_any_query)                                                                                                                                              | `0`                     |
+| [allow&#95;fuzz&#95;query&#95;functions](/operations/settings/settings#allow_fuzz_query_functions)                                                                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                                      | `0`                     |
 | [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                                          | `0`                     |
 | [automatic&#95;parallel&#95;replicas&#95;mode](/operations/settings/settings#automatic_parallel_replicas_mode)                                                                                                                      | `0`                     |
@@ -135,7 +128,6 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;prql&#95;dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                                                                        | `0`                     |
 | [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                                      | `0`                     |
-| [allow&#95;experimental&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_experimental_insert_into_iceberg)                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                                            | `0`                     |
 | [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                                        | `0`                     |
 | [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | ``                      |
