@@ -18,6 +18,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [HOST {LOCAL | NAME 'name' | REGEXP 'name_regexp' | IP 'address' | LIKE 'pattern'} [,...] | ANY | NONE]
     [VALID UNTIL datetime]
     [IN access_storage_type]
+    [ROLE role [,...]]
     [DEFAULT ROLE role [,...]]
     [DEFAULT DATABASE database | NONE]
     [GRANTEES {user | role | ANY | NONE} [,...] [EXCEPT {user | role} [,...]]]
@@ -221,27 +222,25 @@ CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty'
 
 `mira`는 ClickHouse 서버가 실행 중인 호스트에서 클라이언트 애플리케이션을 시작해야 합니다.
 
-사용자 계정 `john`을 생성하고 해당 계정에 역할을 할당한 뒤, 이 역할들을 기본 역할로 지정하십시오:
+`john` 사용자 계정을 생성하고 역할을 할당합니다:
 
 ```sql
-CREATE USER john DEFAULT ROLE role1, role2;
+CREATE USER john ROLE role1, role2;
 ```
 
-`john` 사용자 계정을 생성하고, 이후 이 사용자에게 부여될 모든 역할을 기본 역할로 설정합니다.
+사용자 계정 `john`을 생성하고 해당 계정에 역할을 할당한 뒤, 그중 일부를 기본 역할로 지정하십시오:
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE role1;
 ```
 
-향후 `john`에게 어떤 역할이 부여되면 자동으로 기본 역할이 됩니다.
-
-사용자 계정 `john`을 생성하고, 앞으로 부여될 역할 중에서 `role1`과 `role2`를 제외한 나머지 모든 역할을 기본 역할로 설정합니다:
+또는
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE ALL EXCEPT role2;
 ```
 
-`john` 사용자 계정을 생성하고, 이 계정의 권한을 `jack` 계정 사용자에게 부여할 수 있도록 설정합니다:
+`john` 사용자 계정을 생성하고, 이 사용자가 자신의 권한을 `jack` 사용자 계정에 부여할 수 있도록 허용합니다:
 
 ```sql
 CREATE USER john GRANTEES jack;

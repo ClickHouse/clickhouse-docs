@@ -172,8 +172,6 @@ hyperdx:
   existingConfigSourcesKey: "sources.json"
 ```
 
-ClickHouse Cloud への接続方法の完全な例については、[「ClickHouse Cloud 接続を作成する」](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection) を参照してください。
-
 
 ## 外部の OTel collector \{#external-otel-collector\}
 

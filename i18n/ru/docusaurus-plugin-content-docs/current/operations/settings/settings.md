@@ -209,6 +209,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Использовать фоновый пул ввода-вывода для чтения из таблиц MergeTree. Этот параметр может повысить производительность для запросов, ограниченных скоростью операций ввода-вывода.
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Разрешить вычисление размеров подстолбцов при чтении MergeTree для улучшения разбиения задач чтения"}]}]}/>
+
+При включении ClickHouse будет вычислять размер файлов, необходимых для чтения каждого подстолбца, для более точного расчета размеров задач и блоков чтения.
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

@@ -1649,7 +1649,7 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 この設定は、同期および非同期の insert に対する重複排除処理が、互いにまったく異なり不透明な方法で実装されているコードバージョンから、同期および非同期の insert をまたいでデータが重複排除されるコードバージョンへ移行できるようにします。
 デフォルト値は `old_separate_hashes` であり、これは ClickHouse が同期 insert と非同期 insert に対して異なる重複排除ハッシュを使用することを意味します（従来と同じ動作です）。
