@@ -16,7 +16,7 @@
     "description": "https://clickhouse.com/legal/agreements/terms-of-service로 연결되는 '서비스 약관' 바닥글 링크의 레이블"
   },
   "copyright": {
-    "message": "© 2016–2025 ClickHouse, Inc.",
+    "message": "© 2016–2026 ClickHouse, Inc.",
     "description": "푸터 저작권 표시"
   }
 }

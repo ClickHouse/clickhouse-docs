@@ -16,7 +16,7 @@
     "description": "页脚中链接到 https://clickhouse.com/legal/agreements/terms-of-service 的“服务条款”标签"
   },
   "copyright": {
-    "message": "© 2016–2025 ClickHouse, Inc.",
+    "message": "© 2016–2026 ClickHouse, Inc.",
     "description": "页脚版权声明"
   }
 }
