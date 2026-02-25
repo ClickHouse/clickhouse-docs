@@ -1028,6 +1028,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 **Синтаксис**
 
 ```sql
+firstSignificantSubdomain(url)
 ```
 
 **Аргументы**
@@ -1122,6 +1123,7 @@ example
 **Синтаксис**
 
 ```sql
+firstSignificantSubdomainRFC(url)
 ```
 
 **Аргументы**

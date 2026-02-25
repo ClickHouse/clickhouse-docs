@@ -1028,6 +1028,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 **構文**
 
 ```sql
+firstSignificantSubdomain(url)
 ```
 
 **引数**
@@ -1122,6 +1123,7 @@ RFC 1034 に基づき「最初の有意なサブドメイン」を返します�
 **構文**
 
 ```sql
+firstSignificantSubdomainRFC(url)
 ```
 
 **引数**

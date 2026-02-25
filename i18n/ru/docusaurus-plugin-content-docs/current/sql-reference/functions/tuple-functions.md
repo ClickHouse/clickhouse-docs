@@ -107,6 +107,7 @@ SELECT flattenTuple(t) FROM tab;
 **Синтаксис**
 
 ```sql
+tuple([t1[, t2[ ...]])
 ```
 
 **Аргументы**
@@ -730,6 +731,7 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1)
 **Синтаксис**
 
 ```sql
+tupleNames(tuple)
 ```
 
 **Аргументы**
