@@ -143,7 +143,7 @@ The cost, performance, and effectiveness of this index is dependent on the cardi
 For workloads that involve natural language or free-form text search (e.g., searching words or phrases in large text columns), ClickHouse provides a **text index** (a real inverted index).
 Text index supports efficient full-text search semantics and tokenized lookups. It is the recommended choice for full-text search queries because it provides deterministic token indexing and better performance for search functions such as `hasAnyToken`, `hasAllTokens` but also optimize all common text search functions.
 
-See the text index documentation for details [here](engines/table-engines/mergetree-family/textindexes.md)
+See the text index documentation for details [here](engines/table-engines/mergetree-family/textindexes.md).
 
 ### Bloom filter types {#bloom-filter-types}
 

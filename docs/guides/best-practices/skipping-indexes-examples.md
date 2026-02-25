@@ -25,7 +25,7 @@ ClickHouse supports six skip index types:
 | **minmax** | Tracks minimum and maximum values in each granule |
 | **set(N)** | Stores up to N distinct values per granule |
 | **bloom_filter([false_positive_rate])** | Probabilistic filter for existence checks |
-| **text**   | Inverted index over tokenized string data for full text search |
+| **text**       | Inverted index over tokenized string data for full text search |
 | **ngrambf_v1** | N-gram bloom filter for substring searches |
 | **tokenbf_v1** | Token-based bloom filter for full-text searches |
 
@@ -93,7 +93,9 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 
 ## Text index (text) for full text search {#textindex-for-full-text-search}
 
-`text` is an inverted index over tokenized text data. Designed specifically for full-text search workloads, enabling efficient and deterministic token and term lookup. Recommended for natural language or large-scale text search use cases where bloom filter–based indexes are insufficient.
+`text` is an inverted index over tokenized text data.
+Designed specifically for full-text search workloads, enabling efficient and deterministic token and term lookup.
+Recommended for natural language or large-scale text search use cases.
 
 See the page [Full-text Search with Text Indexes](/engines/table-engines/mergetree-family/textindexes) for more details and multiple examples.
 
@@ -106,7 +108,13 @@ SELECT count() FROM logs WHERE hasToken(msg, 'exception');
 
 See a more complete observability example [here](/use-cases/observability/schema-design#text-index-for-full-text-search) documentation.
 
+The text index is totally deterministic and fully tunable in terms of tokenization and text processing at a cost of some more storage consumption compared with bloom filter–based indexes, 
+
 ## N-gram Bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
+
+> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
+Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
+Furthermore, they offer limited configurability.
 
 The `ngrambf_v1` index splits strings into n-grams. It works well for `LIKE '%...%'` queries. It supports String/FixedString/Map (via mapKeys/mapValues), as well as tunable size, hash count, and seed. See the documentation for [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for further details.
 
@@ -143,6 +151,10 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for complete tuning guidance.  
 
 ## Token Bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
+
+> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
+Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
+Furthermore, they offer limited configurability.
 
 `tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
