@@ -3519,14 +3519,14 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **Синтаксис**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **Аргументы**
 
 * `func(x[, y1, ..., yN])` — Необязательный параметр. Лямбда‑функция, которая работает с элементами исходного массива (`x`) и массивов условий (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
 * `source_arr` — Исходный массив для обработки. [`Array(T)`](/sql-reference/data-types/array)
-* `cond1_arr, ... , condN_arr` — Необязательный параметр. N массивов условий, передающих дополнительные аргументы лямбда‑функции. [`Array(T)`](/sql-reference/data-types/array)
+* `, cond1_arr, ... , condN_arr]` — Необязательный параметр. N массивов условий, передающих дополнительные аргументы лямбда‑функции. [`Array(T)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 

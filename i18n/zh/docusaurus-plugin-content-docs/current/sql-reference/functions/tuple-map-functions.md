@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**不支持转义序列时的转义序列**
+**在不支持转义序列的情况下处理转义序列**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **语法**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **别名**: `str_to_map`, `mapFromString`
@@ -205,6 +206,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **语法**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **参数**
@@ -402,7 +404,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **语法**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **别名**：`mapContains`

@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**이스케이프 시퀀스 미지원 시 이스케이프 처리**
+**이스케이프 시퀀스를 지원하지 않는 경우**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **구문**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **별칭(Aliases)**: `str_to_map`, `mapFromString`
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **구문**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **인수**
@@ -403,7 +405,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **구문**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **별칭**: `mapContains`

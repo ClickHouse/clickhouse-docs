@@ -41,6 +41,10 @@ Databricks поддерживает несколько форматов данн
 
 * Для клиентов Delta используйте Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
+### Необходимые разрешения PAT-токена \{#required-pat-token-permissions\}
+
+При использовании PAT для доступа на чтение токен должен иметь права, которые позволяют ClickHouse перечислять и читать метаданные Unity Catalog. Убедитесь, что у PAT как минимум есть привилегия `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges)), а также право `SELECT` на таблицу, `USE CATALOG` на родительский каталог и `USE SCHEMA` на родительскую схему.
+
 ## Создание подключения между Unity Catalog и ClickHouse \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
 После настройки Unity Catalog и аутентификации установите подключение между ClickHouse и Unity Catalog.

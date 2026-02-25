@@ -18,6 +18,10 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 
 # JDBC를 사용하여 ClickHouse를 외부 데이터 소스에 연결하기 \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
 
+:::warning
+clickhouse-jdbc-bridge에는 실험적인 코드가 포함되어 있으며 더 이상 지원되지 않습니다. 신뢰성과 보안 측면에서 취약성이 존재할 수 있습니다. 사용 시 발생하는 모든 위험은 전적으로 사용자에게 있습니다.
+:::
+
 :::note
 JDBC를 사용하려면 ClickHouse JDBC Bridge가 필요하므로, 데이터베이스에서 ClickHouse Cloud로 데이터를 스트리밍하기 위해 로컬 머신에서 `clickhouse-local`을 사용해야 합니다. 자세한 내용은 문서의 **Migrate** 섹션에 있는 [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) 페이지를 참조하십시오.
 :::
