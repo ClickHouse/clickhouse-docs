@@ -42,8 +42,8 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 SHOW TABLES FROM unity
 
 ┌─name───────────────────────────────────────────────┐
-│ unity.logs                                      │
-│ unity.single_day_log                            │
+│ unity.logs                                         │
+│ unity.single_day_log                               │
 └────────────────────────────────────────────────────┘
 ```
 

@@ -94,8 +94,8 @@ Once the connection has been established to your catalog, you can list the table
 SHOW TABLES FROM unity
 
 ┌─name───────────────────────────────────────────────┐
-│ unity.logs                                      │
-│ unity.single_day_log                            │
+│ unity.logs                                         │
+│ unity.single_day_log                               │
 └────────────────────────────────────────────────────┘
 
 31 rows in set.
