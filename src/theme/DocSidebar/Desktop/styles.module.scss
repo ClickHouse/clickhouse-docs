@@ -46,6 +46,11 @@
 .sidebarSearchContainer {
   padding: 0 1rem;
   margin-top: 1.5rem;
+  margin-right: 1rem;
+
+  :global(.DocSearch-Button) {
+    width: 100%;
+  }
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {
