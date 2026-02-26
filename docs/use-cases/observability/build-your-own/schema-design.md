@@ -1449,7 +1449,6 @@ You should read and understand the [guide to secondary indices](/optimize/skippi
 
 **In general, they're effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which don't occur in many granules.**
 
-
 ### Text index for full text search {#text-index-for-full-text-search}
 
 For production-grade full text search, ClickHouse provides a specialized [text index](/engines/table-engines/mergetree-family/textindexes).
