@@ -11,7 +11,6 @@ keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3']
 
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
 import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
 import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
@@ -20,6 +19,9 @@ import configure_optional from '@site/static/images/clickstack/cloudflare/config
 import save_source from '@site/static/images/clickstack/cloudflare/save-source.png';
 import search_view from '@site/static/images/clickstack/cloudflare/search-view.png';
 import log_view from '@site/static/images/clickstack/cloudflare/log-view.png';
+import import_dashboard from '@site/static/images/clickstack/cloudflare/import-dashboard.png';
+import finish_import from '@site/static/images/clickstack/cloudflare/finish-import.png';
+import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 # Monitoring Cloudflare Logs with ClickStack {#cloudflare-clickstack}
@@ -32,14 +34,13 @@ A demo dataset is available if you want to explore the dashboards before configu
 
 ## Overview {#overview}
 
-Cloudflare [Logpush](https://developers.cloudflare.com/logs/about/) exports detailed request logs — including edge timing, cache status, security events, and bot scores — to destinations like Amazon S3. While Cloudflare's dashboard provides basic analytics, forwarding logs to ClickStack lets you:
+Cloudflare [Logpush](https://developers.cloudflare.com/logs/about/) exports HTTP request logs to destinations like Amazon S3. Forwarding these logs to ClickStack allows you to:
 
-- Query edge traffic patterns using ClickHouse SQL
-- Correlate Cloudflare data with application logs, traces, and metrics in a unified platform
-- Retain logs longer than Cloudflare's default retention
-- Build custom dashboards for cache performance, security analysis, and geographic traffic distribution
+- Analyze edge traffic, cache performance, and security events alongside your other observability data
+- Query logs using ClickHouse SQL
+- Retain logs beyond Cloudflare's default retention
 
-This guide uses ClickPipes with continuous ingestion to automatically process new Cloudflare log files as they appear in S3 — with exactly-once semantics.
+This guide uses [ClickPipes](/integrations/clickpipes) to continuously ingest Cloudflare log files from S3 into ClickHouse.
 
 ## Integration with existing Cloudflare Logpush {#existing-cloudflare}
 
@@ -102,7 +103,7 @@ ClickPipes ingests Cloudflare logs into a flat table with Cloudflare's native fi
 
 <Image img={add_source} alt="Add source"/>
 
-2. Click **Add source** and configure, you will need to click on `Configure Optional Fields`:
+2. Click **Add source** and configure the following settings. Click **Configure Optional Fields** to access all fields:
 
 <Image img={configure_optional} alt="Configure optional"/>
 
@@ -172,7 +173,17 @@ SELECT count() FROM cloudflare_http_logs;
 -- Should return 5000
 ```
 
-Navigate to the **Search** view in HyperDX, select the **Cloudflare Logs** source, and set the time range to cover the demo data. You should see log entries with request summaries, searchable Cloudflare attributes, and severity levels based on HTTP status codes.
+Navigate to the **Search** view in HyperDX, select the **Cloudflare Logs** source, and set the time range to **2026-02-23 00:00:00 - 2026-02-26 00:00:00**.
+
+You should see log entries with request summaries, searchable Cloudflare attributes, and severity levels based on HTTP status codes.
+
+<Image img={search_view} alt="Search view"/>
+
+<Image img={log_view} alt="Log view"/>
+
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2026-02-24 00:00:00 - 2026-02-25 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
+:::
 
 </VerticalStepper>
 
@@ -190,80 +201,48 @@ Navigate to the **Search** view in HyperDX, select the **Cloudflare Logs** sourc
 
 2. Upload `cloudflare-logs-dashboard.json` → **Finish Import**
 
+<Image img={finish_import} alt="Import dashboard"/>
+
 #### View dashboard {#view-dashboard}
 
-The dashboard includes:
-- Request rate and traffic volume
-- Geographic distribution
-- Cache hit rates
-- Error rates by status code
-- Security events
+<Image img={example_dashboard} alt="Example dashboard"/>
+
+:::note
+For the demo dataset, set the time range to **2026-02-24 00:00:00 - 2026-02-25 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
+:::
 
 </VerticalStepper>
 
 ## Troubleshooting {#troubleshooting}
 
-### No files appearing in S3 {#no-s3-files}
-
-**Verify Cloudflare Logpush is active:**
-- Cloudflare Dashboard → Analytics & Logs → Logs → Check job status
-
-**Generate test traffic:**
-```bash
-curl https://your-cloudflare-domain.com
-```
-
-Wait 2-3 minutes and check S3.
-
-### ClickPipes not processing files {#clickpipes-errors}
-
-**Check IAM permissions:**
-- Verify ClickHouse can access the S3 bucket
-- If using SQS, confirm SQS permissions are correct
-
-**View ClickPipes logs:**
-- ClickHouse Cloud Console → Data Sources → Your ClickPipe → **Logs**
-
 ### Data not appearing in ClickHouse {#no-data}
 
-**Verify table exists:**
+Verify the table was created and contains data:
 ```sql
 SHOW TABLES FROM default LIKE 'cloudflare_http_logs';
+SELECT count() FROM cloudflare_http_logs;
 ```
 
-**Check for schema errors:**
-```sql
-SELECT * FROM system.query_log 
-WHERE type = 'ExceptionWhileProcessing'
-  AND query LIKE '%cloudflare%'
-ORDER BY event_time DESC
-LIMIT 10;
-```
+If the table exists but is empty, check ClickPipes for errors: ClickHouse Cloud Console → **Data Sources** → Your ClickPipe → **Logs**. For authentication issues with private buckets, see the [S3 ClickPipes access control documentation](/docs/integrations/clickpipes/object-storage/s3/overview#access-control).
 
-### SQS not receiving messages {#no-sqs-messages}
+### Logs not appearing in HyperDX {#no-hyperdx}
 
-**Verify S3 event notification:**
-- S3 bucket → Properties → Event notifications → Confirm configuration exists
+If data is in ClickHouse but not visible in HyperDX, check the data source configuration:
 
-**Test SQS policy:**
-```bash
-aws sqs get-queue-attributes \
-  --queue-url YOUR-QUEUE-URL \
-  --attribute-names Policy
-```
+- Verify a source exists for `cloudflare_http_logs` under HyperDX → **Team Settings** → **Sources**
+- Ensure the **Timestamp Column** is set to `toDateTime(EdgeStartTimestamp / 1000000000)` — Cloudflare timestamps are in nanoseconds and need to be converted
+- Verify your time range in HyperDX covers the data. For the demo dataset, use **2026-02-23 00:00:00 - 2026-02-26 00:00:00**
 
 ## Next steps {#next-steps}
 
-- Set up [alerts](/use-cases/observability/clickstack/alerts) for security events
-- Optimize [retention policies](/use-cases/observability/clickstack/ttl) based on data volume
-- Create custom dashboards for specific use cases
+Now that you have Cloudflare logs flowing into ClickStack:
+
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for security events (WAF blocks, bot traffic spikes, error rate thresholds)
+- Optimize [retention policies](/use-cases/observability/clickstack/ttl) based on your data volume
+- Create additional dashboards for specific use cases (API performance, cache optimization, geographic traffic analysis)
 
 ## Going to production {#going-to-production}
 
-For production deployments:
+This guide demonstrates ingesting Cloudflare logs using a public demo dataset. For production deployments, configure Cloudflare Logpush to write to your own S3 bucket and set up ClickPipes with [IAM role-based authentication](/docs/cloud/data-sources/secure-s3) for secure access. Select only the [Logpush fields](https://developers.cloudflare.com/logs/logpush/logpush-job/datasets/zone/http_requests/) you need to reduce storage costs and ingestion volume. Enable daily subfolders in Logpush for better file organization and use `**/*` in your ClickPipes path pattern to match across subdirectories.
 
-- **Choose your ingestion mode**: Lexicographical order works well for Cloudflare's date-based file naming. Consider [SQS-based ingestion](#sqs-ingestion) if you need to handle backfills or out-of-order files.
-- **Select Logpush fields carefully**: Cloudflare offers [many fields](https://developers.cloudflare.com/logs/logpush/logpush-job/datasets/zone/http_requests/) for HTTP requests. Only include the fields you need to reduce storage costs and ingestion volume.
-- **Enable daily subfolders** in Cloudflare Logpush for better organization and use `**/*` in your ClickPipes path pattern.
-- **Configure SQS Dead Letter Queue** for failed message handling if using SQS-based ingestion.
-- **Review partitioning strategy** based on your query patterns.
+See the [S3 ClickPipes documentation](/docs/integrations/clickpipes/object-storage/s3/overview) for advanced configuration options including [SQS-based unordered ingestion](/docs/integrations/clickpipes/object-storage/s3/overview#continuous-ingestion-any-order) for handling backfills and out-of-order files.
