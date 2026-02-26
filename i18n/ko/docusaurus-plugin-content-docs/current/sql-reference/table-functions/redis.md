@@ -64,4 +64,4 @@ INSERT INTO TABLE FUNCTION redis(
 ## 관련 항목 \{#related\}
 
 - [`Redis` 테이블 엔진](/engines/table-engines/integrations/redis.md)
-- [Redis를 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources#redis)
+- [Redis를 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources/redis)

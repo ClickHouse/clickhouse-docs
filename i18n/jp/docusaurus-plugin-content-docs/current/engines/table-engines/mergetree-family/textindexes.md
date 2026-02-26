@@ -204,7 +204,7 @@ Preprocessor 引数の典型的なユースケースには次のようなもの�
 
 1. 小文字化または大文字化を行い、大文字小文字を区別しないマッチングを有効にします。例: [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（以下の最初の例を参照）。
 2. UTF-8 正規化。例: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 不要な文字や部分文字列の削除または変換。例: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](./sql-reference/functions/string-replace-functions.md/#translate)。
+3. 不要な文字や部分文字列の削除または変換。例: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)。
 
 preprocessor 式は、[String](/sql-reference/data-types/string.md) 型または [FixedString](/sql-reference/data-types/fixedstring.md) 型の入力値を、同じ型の値に変換しなければなりません。
 

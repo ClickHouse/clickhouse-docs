@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 `cache`와 유사하지만 데이터는 SSD에, 인덱스는 RAM에 저장합니다. 업데이트 큐와 관련된 모든 캐시 딕셔너리 설정은 SSD 캐시 딕셔너리에도 적용할 수 있습니다.
 
-딕셔너리 키는 [UInt64](../../../data-types/int-uint.md) 타입입니다.
+딕셔너리 키는 [UInt64](/sql-reference/data-types/int-uint.md) 타입입니다.
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -52,4 +52,4 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 
 ## complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
-이 저장소 유형은 복합 [키](../keys-and-fields.md#dictionary-key-and-fields)와 함께 사용하는 것입니다. `ssd_cache`와 유사합니다.
+이 저장소 유형은 복합 [키](../attributes.md#composite-key)와 함께 사용하는 것입니다. `ssd_cache`와 유사합니다.

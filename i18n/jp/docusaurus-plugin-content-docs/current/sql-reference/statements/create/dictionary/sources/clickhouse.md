@@ -52,18 +52,18 @@ import TabItem from '@theme/TabItem';
 
 設定項目:
 
-| Setting            | Description                                                                                                                                              |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `host`             | ClickHouse ホスト。ローカルホストの場合、クエリはネットワーク通信を行わずに処理されます。耐障害性を向上させるには、[Distributed](/engines/table-engines/special/distributed) テーブルを作成し、その後の設定でそれを指定できます。      |
-| `port`             | ClickHouse サーバーのポート。                                                                                                                                     |
-| `user`             | ClickHouse ユーザー名。                                                                                                                                        |
-| `password`         | ClickHouse ユーザーのパスワード。                                                                                                                                   |
-| `db`               | データベース名。                                                                                                                                                 |
-| `table`            | テーブル名。                                                                                                                                                   |
-| `where`            | 選択条件。省略可能。                                                                                                                                               |
-| `invalidate_query` | Dictionary の状態を確認するためのクエリ。省略可能。詳細は「[Refreshing dictionary data using LIFETIME](../lifetime.md#refreshing-dictionary-data-using-lifetime)」セクションを参照してください。 |
-| `secure`           | 接続に SSL を使用します。                                                                                                                                          |
-| `query`            | カスタムクエリ。省略可能。                                                                                                                                            |
+| Setting            | Description                                                                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `host`             | ClickHouse ホスト。ローカルホストの場合、クエリはネットワーク通信を行わずに処理されます。耐障害性を向上させるには、[Distributed](/engines/table-engines/special/distributed) テーブルを作成し、その後の設定でそれを指定できます。 |
+| `port`             | ClickHouse サーバーのポート。                                                                                                                                |
+| `user`             | ClickHouse ユーザー名。                                                                                                                                   |
+| `password`         | ClickHouse ユーザーのパスワード。                                                                                                                              |
+| `db`               | データベース名。                                                                                                                                            |
+| `table`            | テーブル名。                                                                                                                                              |
+| `where`            | 選択条件。省略可能。                                                                                                                                          |
+| `invalidate_query` | Dictionary の状態を確認するためのクエリ。省略可能。詳細は「[Refreshing dictionary data using LIFETIME](../lifetime.md)」セクションを参照してください。                                      |
+| `secure`           | 接続に SSL を使用します。                                                                                                                                     |
+| `query`            | カスタムクエリ。省略可能。                                                                                                                                       |
 
 :::note
 `table` フィールドまたは `where` フィールドは、`query` フィールドと同時には使用できません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず指定する必要があります。

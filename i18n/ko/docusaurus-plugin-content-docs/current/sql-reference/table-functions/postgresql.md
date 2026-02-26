@@ -153,7 +153,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 ## 관련 항목 \{#related\}
 
 - [The PostgreSQL table engine](../../engines/table-engines/integrations/postgresql.md)
-- [Using PostgreSQL as a dictionary source](/sql-reference/statements/create/dictionary/sources#postgresql)
+- [Using PostgreSQL as a dictionary source](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### PeerDB를 사용한 Postgres 데이터 복제 또는 마이그레이션 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

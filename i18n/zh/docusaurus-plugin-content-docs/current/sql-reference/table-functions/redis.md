@@ -64,4 +64,4 @@ INSERT INTO TABLE FUNCTION redis(
 ## 相关 \{#related\}
 
 - [`Redis` 表引擎](/engines/table-engines/integrations/redis.md)
-- [将 Redis 用作字典源](/sql-reference/statements/create/dictionary/sources#redis)
+- [将 Redis 用作字典源](/sql-reference/statements/create/dictionary/sources/redis)

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Dictionary 表引擎 \{#dictionary-table-engine\}
 
-`Dictionary` 引擎将 [dictionary](../../../sql-reference/statements/create/dictionary/index.md) 数据显示为 ClickHouse 表。
+`Dictionary` 引擎将 [dictionary](../../../sql-reference/statements/create/dictionary/overview.md) 数据显示为 ClickHouse 表。
 
 ## 示例 \{#example\}
 

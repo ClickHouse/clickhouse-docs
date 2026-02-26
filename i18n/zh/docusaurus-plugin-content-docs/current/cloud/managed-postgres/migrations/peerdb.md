@@ -63,9 +63,52 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 为了在目标数据库中复刻源数据库的结构，我们需要获取源数据库的模式转储。可以使用 `pg_dump` 为源 PostgreSQL 数据库创建仅包含模式的转储：
 
+<details>
+  <summary>安装 pg&#95;dump</summary>
+
+  **Ubuntu：**
+
+  更新软件包列表：
+
+  ```shell
+  sudo apt update
+  ```
+
+  安装 PostgreSQL 客户端：
+
+  ```shell
+  sudo apt install postgresql-client
+  ```
+
+  **macOS：**
+
+  方法一：使用 Homebrew（推荐）
+
+  如果尚未安装 Homebrew，请先安装：
+
+  ```shell
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+  安装 PostgreSQL：
+
+  ```shell
+  brew install postgresql
+  ```
+
+  验证安装：
+
+  ```shell
+  pg_dump --version
+  ```
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
+
+
+#### 从模式转储中移除唯一约束和索引 \{#migration-peerdb-remove-constraints-indexes\}
 
 在将其应用到目标数据库之前，我们需要从 dump 文件中移除 UNIQUE 约束和索引，以避免这些约束阻止 PeerDB 向目标表摄取数据。可以使用以下方式将它们移除：
 

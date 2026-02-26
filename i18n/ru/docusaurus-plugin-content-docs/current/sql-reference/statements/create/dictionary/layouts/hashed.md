@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Словарь полностью хранится в памяти в виде хеш-таблицы. Словарь может содержать произвольное количество элементов с любыми идентификаторами. На практике количество ключей может достигать десятков миллионов.
 
-Ключ словаря имеет тип [UInt64](../../../data-types/int-uint.md).
+Ключ словаря имеет тип [UInt64](/sql-reference/data-types/int-uint.md).
 
 Поддерживаются все типы источников. При обновлении данные (из файла или таблицы) считываются целиком.
 
@@ -92,7 +92,7 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 
 Аналогичен `hashed`, но использует меньше памяти ценой большего расхода CPU.
 
-Ключ словаря имеет тип [UInt64](../../../data-types/int-uint.md).
+Ключ словаря имеет тип [UInt64](/sql-reference/data-types/int-uint.md).
 
 Пример конфигурации:
 
@@ -125,7 +125,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 ## complex_key_hashed \{#complex_key_hashed\}
 
-Этот тип хранилища используется для составных [ключей](../keys-and-fields.md#dictionary-key-and-fields). По своей работе аналогичен `hashed`.
+Этот тип хранилища используется для составных [ключей](../attributes.md#composite-key). По своей работе аналогичен `hashed`.
 
 Пример конфигурации:
 
@@ -156,7 +156,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 
 ## complex_key_sparse_hashed \{#complex_key_sparse_hashed\}
 
-Этот тип хранилища предназначен для использования с составными [ключами](../keys-and-fields.md#dictionary-key-and-fields). Аналогичен [sparse_hashed](#sparse_hashed).
+Этот тип хранилища предназначен для использования с составными [ключами](../attributes.md#composite-key). Аналогичен [sparse_hashed](#sparse_hashed).
 
 Пример конфигурации:
 

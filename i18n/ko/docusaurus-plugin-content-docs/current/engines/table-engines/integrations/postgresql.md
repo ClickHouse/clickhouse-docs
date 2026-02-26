@@ -229,7 +229,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 **함께 보기**
 
 * [`postgresql` 테이블 함수](../../../sql-reference/table-functions/postgresql.md)
-* [PostgreSQL을 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources#mysql)
+* [PostgreSQL을 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 
 ## 관련 콘텐츠 \{#related-content\}
