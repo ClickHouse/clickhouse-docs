@@ -75,7 +75,6 @@ exceptions:
   - Google Cloud
   - Google Cloud Platform
   - Google Cloud Storage
-  - Pub/Sub
   - HTTP
   - Helm
   - HyperDX
