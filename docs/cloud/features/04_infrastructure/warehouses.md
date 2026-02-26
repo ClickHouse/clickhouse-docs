@@ -28,11 +28,9 @@ Each ClickHouse Cloud service includes:
 
 The initial service you create is the primary service. Subsequently, you can create additional services that have access to the 
 
-
 :::note
 Child single services can scale vertically unlike single parent services.
 :::
-
 
 Compute-compute separation is available for Scale and Enterprise tiers.
 
