@@ -40,6 +40,10 @@ Unity Catalog 配置完成后，必须为 ClickHouse 生成凭证。根据与 Un
 
 * 对于 Delta 客户端，使用个人访问令牌（Personal Access Token，简称 [PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)）。
 
+### 所需的 PAT 令牌权限 \{#required-pat-token-permissions\}
+
+在使用 PAT 进行读取访问时，令牌必须具备相应权限，使 ClickHouse 能够列出并读取 Unity Catalog 元数据。请确保 PAT 至少具有 `EXTERNAL USE SCHEMA` [权限](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges)，以及对目标表的 `SELECT` 权限、其父 catalog 的 `USE CATALOG` 权限和其父 schema 的 `USE SCHEMA` 权限。
+
 ## 在 Unity Catalog 和 ClickHouse 之间创建连接 \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
 完成 Unity Catalog 的配置并设置好身份验证后，就可以建立 Unity Catalog 与 ClickHouse 之间的连接。

@@ -41,6 +41,10 @@ ClickHouse가 Unity Catalog와 상호 작용할 수 있도록 하려면 Unity Ca
 
 * Delta 클라이언트의 경우, Personal Access Token([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat))을 사용하십시오.
 
+### 필요한 PAT 토큰 권한 \{#required-pat-token-permissions\}
+
+읽기 액세스를 위해 PAT를 사용할 때 토큰에는 ClickHouse가 Unity Catalog 메타데이터를 목록으로 조회하고 읽을 수 있도록 허용하는 권한이 있어야 합니다. PAT에 최소한 `EXTERNAL USE SCHEMA` [권한](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges)이 있으며, 이에 더해 테이블에 대한 `SELECT` 권한, 상위 카탈로그에 대한 `USE CATALOG` 권한, 상위 스키마에 대한 `USE SCHEMA` 권한이 부여되어 있는지 확인하십시오.
+
 ## Unity Catalog와 ClickHouse 간 연결 생성 \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
 Unity Catalog를 구성하고 인증을 완료했으면 ClickHouse와 Unity Catalog 간에 연결을 설정합니다.

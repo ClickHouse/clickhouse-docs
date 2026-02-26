@@ -401,7 +401,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **構文**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **引数**
@@ -423,7 +423,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -945,6 +945,7 @@ tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文
 **構文**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **引数**
@@ -964,6 +965,7 @@ tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文
 **構文**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **引数**

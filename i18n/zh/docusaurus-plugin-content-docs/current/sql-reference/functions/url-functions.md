@@ -1028,6 +1028,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 **语法**
 
 ```sql
+firstSignificantSubdomain(url)
 ```
 
 **参数**
@@ -1122,6 +1123,7 @@ example
 **语法**
 
 ```sql
+firstSignificantSubdomainRFC(url)
 ```
 
 **参数**

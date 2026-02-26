@@ -51,8 +51,14 @@ FROM my_table;
 ALTER USER my_user_name SETTINGS max_threads = 8;
 ```
 
-먼저 클라이언트에서 로그아웃한 뒤 다시 로그인하고, 그런 다음 `getSetting` FUNCTION을 사용하여 설정이 정상적으로 적용되었는지 확인할 수 있습니다.
+클라이언트에서 로그아웃했다가 다시 로그인한 다음 `getSetting` 함수를 사용하여 설정이 정상적으로 적용되었는지 확인할 수 있습니다.
 
 ```sql
 SELECT getSetting('max_threads');
 ```
+
+:::note
+이와 같이 설정을 지정하면 사용자의 현재 설정이 모두 덮어씌워집니다. 즉, 사용자에게 적용되어 있던 다른 설정이 있더라도 `ALTER USER` 구문에 지정하지 않으면 해당 설정들은 모두 사라집니다.
+
+기존 설정을 유지하려면 `ALTER USER ... MODIFY SETTING ...`을 사용하십시오.
+:::

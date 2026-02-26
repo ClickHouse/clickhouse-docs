@@ -16,7 +16,7 @@
     "description": "Текст ссылки в футере с надписью «Условия использования», которая ведёт на https://clickhouse.com/legal/agreements/terms-of-service"
   },
   "copyright": {
-    "message": "© 2016&ndash;2025 ClickHouse, Inc.",
+    "message": "© 2016&ndash;2026 ClickHouse, Inc.",
     "description": "Копирайт в нижнем колонтитуле"
   }
 }

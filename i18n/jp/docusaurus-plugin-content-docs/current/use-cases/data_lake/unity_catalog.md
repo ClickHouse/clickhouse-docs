@@ -41,6 +41,10 @@ ClickHouse が Unity カタログと連携できるようにするには、Unity
 
 * Delta クライアントの場合は、Personal Access Token（[PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)）を使用します。
 
+### 必要な PAT トークン権限 \{#required-pat-token-permissions\}
+
+読み取りアクセスに PAT を使用する場合は、トークンに ClickHouse が Unity Catalog のメタデータを一覧表示および読み取るための権限が必要です。PAT に少なくとも `EXTERNAL USE SCHEMA` [権限](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges)が付与されていることに加え、テーブルに対する `SELECT` 権限、その親カタログに対する `USE CATALOG` 権限、およびその親スキーマに対する `USE SCHEMA` 権限があることを確認してください。
+
 ## Unity Catalog と ClickHouse の接続を確立する \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
 Unity Catalog の設定と認証が完了したら、ClickHouse と Unity Catalog の間に接続を確立します。

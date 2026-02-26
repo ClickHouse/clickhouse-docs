@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **Синтаксис**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **Псевдонимы**: `str_to_map`, `mapFromString`
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **Синтаксис**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **Аргументы**
@@ -403,7 +405,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **Синтаксис**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **Псевдонимы**: `mapContains`

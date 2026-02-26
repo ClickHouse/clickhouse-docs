@@ -566,7 +566,7 @@ Dynamic 데이터 타입에 대한 직렬화 버전입니다. 호환성을 위�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 min_age_to_force_merge_seconds가 설정된 경우에도 파트 크기 제한"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge에 대한 최대 바이트 수를 제한하는 새 설정 추가"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "새 설정"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 min_age_to_force_merge_seconds가 설정된 경우에도 파트 크기 제한"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "새 설정"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge에 대한 최대 바이트 수를 제한하는 새 설정 추가"}]}]}/>
 
 `min_age_to_force_merge_seconds` 및
 `min_age_to_force_merge_on_partition_only` 설정이
@@ -2559,9 +2559,9 @@ shared MergeTree에서 merge와 뮤테이션 할당을 중지합니다. ClickHou
 
 ## shared_merge_tree_enable_automatic_empty_partitions_cleanup \{#shared_merge_tree_enable_automatic_empty_partitions_cleanup\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Enable by default"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 빈 파티션의 Keeper 엔트리를 자동으로 정리하는 기능을 활성화합니다.
 

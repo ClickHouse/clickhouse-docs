@@ -107,6 +107,7 @@ SELECT flattenTuple(t) FROM tab;
 **语法**
 
 ```sql
+tuple([t1[, t2[ ...]])
 ```
 
 **参数**
@@ -730,6 +731,7 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1)
 **语法**
 
 ```sql
+tupleNames(tuple)
 ```
 
 **参数**

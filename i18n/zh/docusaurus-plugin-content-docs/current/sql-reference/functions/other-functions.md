@@ -33,7 +33,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 **语法**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **别名**: `fullHostName`
@@ -2565,6 +2565,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **语法**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **参数**
@@ -3655,39 +3656,6 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-引入于：v23.2
-
-这是 ClickHouse 引擎内部使用的 FUNCTION，不应被直接使用。
-
-从多个数组中构造并返回由 `Tuple` 组成的数组。
-
-第一个参数必须是 `String` 类型的常量数组，用于指定结果 `Tuple` 中各元素的名称。
-其他参数必须是大小相同的数组。
-
-**语法**
-
-```sql
-```
-
-**参数**
-
-* 无。
-
-**返回值**
-
-**示例**
-
-**嵌套**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
 引入版本：v20.8
@@ -4759,6 +4727,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 **语法**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **参数**

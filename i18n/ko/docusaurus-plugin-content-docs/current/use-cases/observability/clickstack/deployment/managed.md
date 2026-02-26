@@ -99,7 +99,7 @@ import TabItem from '@theme/TabItem';
     </VerticalStepper>
   </TabItem>
 
-  <TabItem value="선택" label="기존 서비스 사용">
+  <TabItem value="select" label="기존 서비스 사용">
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -131,7 +131,7 @@ import TabItem from '@theme/TabItem';
 
       이 단계가 성공하면 모든 설정이 완료된 것입니다 🎉. 그렇지 않은 경우 수집 설정을 진행하세요.
 
-      ### 수집 설정하기
+      ### 수집 설정
 
       자동 감지가 실패하거나 기존 테이블이 없는 경우, 수집을 설정하라는 메시지가 표시됩니다.
 
@@ -147,7 +147,7 @@ import TabItem from '@theme/TabItem';
       :::
 
       <Tabs groupId="ingestion-sources-existing">
-        <TabItem value="OpenTelemetry" label="OpenTelemetry" default>
+        <TabItem value="open-telemetry" label="OpenTelemetry" default>
           Managed ClickStack로 OpenTelemetry 데이터를 전송하려면 OpenTelemetry Collector 사용이 권장됩니다. Collector는 애플리케이션(및 다른 collector)에서 OpenTelemetry 데이터를 수신하고 이를 ClickHouse Cloud로 전달하는 게이트웨이 역할을 합니다.
 
           Collector가 아직 실행 중이 아니라면 아래 단계를 따라 Collector를 시작하십시오. 이미 Collector를 사용 중인 경우에도 참고할 수 있는 구성 예제가 제공됩니다.
@@ -163,7 +163,7 @@ import TabItem from '@theme/TabItem';
           **서비스를 생성할 때 기록해 둔 서비스 자격 증명으로 이 명령을 수정하십시오.**
 
           :::note[프로덕션 배포]
-          이 명령은 Managed ClickStack에 연결하기 위해 `default` 사용자를 사용하지만, [프로덕션으로 전환](/use-cases/observability/clickstack/production#create-a-user)할 때는 전용 사용자를 생성하고 구성을 수정해야 합니다.
+          이 명령은 Managed ClickStack에 연결하기 위해 `default` 사용자를 사용하지만, [프로덕션으로 전환](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)할 때는 전용 사용자를 생성하고 구성을 수정해야 합니다.
           :::
 
           이 단일 명령을 실행하면 ClickStack Collector가 시작되며, OTLP 엔드포인트가 포트 4317(gRPC)과 4318(HTTP)에 노출됩니다. 이미 OpenTelemetry 계측과 에이전트를 사용 중이라면, 즉시 이 엔드포인트로 텔레메트리 데이터를 전송할 수 있습니다.
@@ -195,7 +195,7 @@ import TabItem from '@theme/TabItem';
           <br />
         </TabItem>
 
-        <TabItem value="vector" label="Vector" default>
+        <TabItem value="Vector" label="Vector" default>
           [Vector](https://vector.dev)는 고성능의 벤더 중립 관측성 데이터 파이프라인으로, 특히 유연성과 낮은 리소스 사용량 덕분에 로그 수집에 널리 사용됩니다.
 
           Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야 합니다. 이러한 스키마는 OpenTelemetry 컨벤션을 따를 수도 있지만, 사용자 정의 이벤트 구조를 전적으로 커스텀 형식으로 표현할 수도 있습니다.
@@ -218,7 +218,7 @@ import TabItem from '@theme/TabItem';
           CREATE DATABASE IF NOT EXISTS logs
           ```
 
-          그런 다음 로그 데이터 구조에 맞는 스키마로 테이블을 생성합니다. 아래 예시는 클래식한 Nginx 액세스 로그 형식을 가정합니다.
+          그런 다음 로그 데이터 구조에 맞는 스키마로 테이블을 생성합니다. 아래 예시는 전형적인 Nginx 액세스 로그 형식을 가정합니다.
 
           ```sql
           CREATE TABLE logs.nginx_logs

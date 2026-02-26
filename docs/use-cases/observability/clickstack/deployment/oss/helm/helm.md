@@ -103,8 +103,6 @@ On clicking `Create`, data sources will be created for the ClickHouse instance d
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
 
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
-
 ### Customizing values (optional) {#customizing-values}
 
 You can customize settings by using `--set` flags. For example:

@@ -208,6 +208,14 @@ File/S3 エンジンおよびテーブル関数では、アーカイブに正し
 
 MergeTree テーブルからの読み取りにバックグラウンド I/O プールを使用します。この設定により、I/O がボトルネックとなっているクエリのパフォーマンスが向上する場合があります。
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Allow calculating subcolumns sizes for merge tree reading to improve read tasks splitting"}]}]}/>
+
+有効にすると、ClickHouse は各サブカラムを読み取るために必要なファイルのサイズを計算し、タスクおよびブロックサイズの計算をより適切に行います。
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

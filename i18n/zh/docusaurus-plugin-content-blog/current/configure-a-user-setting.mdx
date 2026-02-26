@@ -50,3 +50,9 @@ ALTER USER my_user_name SETTINGS max_threads = 8;
 ```sql
 SELECT getSetting('max_threads');
 ```
+
+:::note
+通过这种方式配置设置将会覆盖该用户当前的所有设置；也就是说，如果该用户之前已经应用了其他设置项，但你在 `ALTER USER` 语句中没有显式指定，它们将会丢失。
+
+如果你希望保留现有设置，请改用 `ALTER USER ... MODIFY SETTING ...`。
+:::
