@@ -11580,6 +11580,21 @@ distributed cache가 사용되는 경우 userspace page cache를 사용합니다
 
 Paimon 테이블 함수에서 Paimon 파티션 프루닝을 사용합니다
 
+## use_partition_pruning \{#use_partition_pruning\}
+
+**별칭**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "MergeTree가 파티션 키를 사용해 프루닝(pruning)을 수행할지 제어하는 새 설정입니다. 'use_partition_key'는 이 설정의 별칭입니다."}]}]}/>
+
+MergeTree 테이블에서 쿼리 실행 중 파티션 키를 사용하여 파티션을 프루닝(pruning)합니다.
+
+가능한 값:
+
+- 0 — 비활성화됨.
+- 1 — 활성화됨.
+
 ## use_primary_key \{#use_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

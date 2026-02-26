@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 ## 階層型ディクショナリ \{#hierarchical-dictionaries\}
 
-ClickHouse では、[数値キー](../keys-and-fields.md#numeric-key) を使用した階層型ディクショナリをサポートしています。
+ClickHouse では、[数値キー](../attributes.md#numeric-key) を使用した階層型ディクショナリをサポートしています。
 
 次の階層構造を見てみましょう。
 
@@ -44,7 +44,7 @@ ClickHouse では、[数値キー](../keys-and-fields.md#numeric-key) を使用�
 
 ClickHouse は外部 Dictionary 属性に対して階層プロパティをサポートしています。このプロパティにより、上記で説明したものと同様の階層 Dictionary を構成できます。
 
-[dictGetHierarchy](../../../functions/ext-dict-functions.md#dictGetHierarchy) 関数を使用すると、要素の親階層のチェーンを取得できます。
+[dictGetHierarchy](/sql-reference/functions/ext-dict-functions.md#dictGetHierarchy) 関数を使用すると、要素の親階層のチェーンを取得できます。
 
 この例では、Dictionary の構造は次のようになります。
 

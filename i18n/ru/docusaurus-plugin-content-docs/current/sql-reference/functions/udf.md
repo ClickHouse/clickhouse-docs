@@ -9,8 +9,19 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Пользовательская функция (UDF) \{#executable-user-defined-functions\}
+
+# UDFs — пользовательские функции (User Defined Functions) \{#udfs-user-defined-functions\}
+
+ClickHouse поддерживает несколько типов пользовательских функций (UDF):
+
+- [Executable UDFs](#executable-user-defined-functions) запускают внешнюю программу или скрипт (Python, Bash и т. д.) и передают ей блоки данных через STDIN / STDOUT. Используйте их для интеграции существующего кода или инструментов без перекомпиляции ClickHouse. У них более высокие накладные расходы на один вызов по сравнению с внутрипроцессными вариантами, поэтому они лучше всего подходят для более тяжёлой логики или когда требуется иной рантайм.
+- [SQL UDFs](#sql-user-defined-functions) определяются с помощью `CREATE FUNCTION` целиком в SQL. Они внедряются/разворачиваются в план запроса (без границы между процессами), что делает их лёгкими и удобными для повторного использования логики выражений или упрощения сложных вычисляемых столбцов.
+- [Experimental WebAssembly UDFs](#webassembly-user-defined-functions) выполняют код, скомпилированный в WebAssembly, внутри песочницы в серверном процессе. Они обеспечивают более низкие накладные расходы на один вызов, чем внешние исполняемые файлы, при лучшей изоляции, чем нативные расширения, что делает их подходящими для пользовательских алгоритмов, написанных на языках, которые могут компилироваться в WASM (например, C/C++/Rust).
+
+## Исполняемые пользовательские функции \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
@@ -115,6 +126,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
+
 ### UDF из скрипта на Python \{#udf-python\}
 
 В этом примере мы создаём UDF, который читает значение из `STDIN` и возвращает его в виде строки.
@@ -123,7 +135,7 @@ SELECT test_function_sum(2, 2);
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
-    Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` при стандартных настройках пути).
+    Файл `test_function.xml` (`/etc/clickhouse-server/test_function.xml` при настройках путей по умолчанию).
 
     ```xml title="/etc/clickhouse-server/test_function.xml"
     <functions>
@@ -143,7 +155,7 @@ SELECT test_function_sum(2, 2);
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
-    Файл `test_function.yaml` (`/etc/clickhouse-server/test_function.yaml` при стандартных настройках пути).
+    Файл `test_function.yaml` (`/etc/clickhouse-server/test_function.yaml` при настройках путей по умолчанию).
 
     ```yml title="/etc/clickhouse-server/test_function.yaml"
     functions:
@@ -161,7 +173,7 @@ SELECT test_function_sum(2, 2);
 
 <br />
 
-Создайте файл скрипта `test_function.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function.py` при стандартных настройках пути).
+Создайте файл скрипта `test_function.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function.py` при настройках путей по умолчанию).
 
 ```python
 #!/usr/bin/python3
@@ -180,13 +192,14 @@ SELECT test_function_python(toUInt64(2));
 
 ```text title="Result"
 ┌─test_function_python(2)─┐
-│ Значение 2              │
+│ Value 2                 │
 └─────────────────────────┘
 ```
 
-### Считать два значения из `STDIN` и вернуть их сумму в виде JSON-объекта \{#udf-stdin\}
 
-Создайте `test_function_sum_json` с именованными аргументами и форматом [JSONEachRow](/interfaces/formats/JSONEachRow), используя конфигурацию в формате XML или YAML.
+### Прочитайте два значения из `STDIN` и верните их сумму в виде JSON-объекта \{#udf-stdin\}
+
+Создайте `test_function_sum_json` с именованными аргументами и форматом [JSONEachRow](/interfaces/formats/JSONEachRow), используя конфигурацию в XML или YAML.
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -264,6 +277,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
+
 ### Использование параметров в настройке `command` \{#udf-parameters-in-command\}
 
 Исполняемые пользовательские функции могут принимать константные параметры, задаваемые в настройке `command` (это работает только для пользовательских функций типа `executable`).
@@ -271,7 +285,7 @@ SELECT test_function_sum_json(2, 2);
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
-    Файл `test_function_parameter_python.xml` (`/etc/clickhouse-server/test_function_parameter_python.xml` при настройках пути по умолчанию).
+    Файл `test_function_parameter_python.xml` (`/etc/clickhouse-server/test_function_parameter_python.xml` при использовании путей по умолчанию).
 
     ```xml title="/etc/clickhouse-server/test_function_parameter_python.xml"
     <functions>
@@ -291,7 +305,7 @@ SELECT test_function_sum_json(2, 2);
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
-    Файл `test_function_parameter_python.yaml` (`/etc/clickhouse-server/test_function_parameter_python.yaml` при настройках пути по умолчанию).
+    Файл `test_function_parameter_python.yaml` (`/etc/clickhouse-server/test_function_parameter_python.yaml` при использовании путей по умолчанию).
 
     ```yml title="/etc/clickhouse-server/test_function_parameter_python.yaml"
     functions:
@@ -309,7 +323,7 @@ SELECT test_function_sum_json(2, 2);
 
 <br />
 
-Создайте файл скрипта `test_function_parameter_python.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function_parameter_python.py` при настройках пути по умолчанию).
+Создайте файл скрипта `test_function_parameter_python.py` в каталоге `user_scripts` (`/var/lib/clickhouse/user_scripts/test_function_parameter_python.py` при использовании путей по умолчанию).
 
 ```python
 #!/usr/bin/python3
@@ -328,9 +342,10 @@ SELECT test_function_parameter_python(1)(2);
 
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ Параметр 1, значение 2               │
+│ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
+
 
 ### UDF на основе shell-скрипта \{#udf-shell-script\}
 
@@ -405,6 +420,7 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
+
 ## Обработка ошибок \{#error-handling\}
 
 Некоторые функции могут выбрасывать исключение, если данные некорректны.
@@ -438,5 +454,53 @@ SELECT test_shell(number) FROM numbers(10);
 
 Пользовательские функции на основе лямбда-выражений можно создавать с помощью оператора [CREATE FUNCTION](../statements/create/function.md). Чтобы удалить эти функции, используйте оператор [DROP FUNCTION](../statements/drop.md#drop-function).
 
+## Пользовательские функции WebAssembly \{#webassembly-user-defined-functions\}
+
+<CloudNotSupportedBadge/>
+
+<ExperimentalBadge/>
+
+Пользовательские функции WebAssembly (WASM UDF) позволяют выполнять произвольный код, скомпилированный в формат WebAssembly, внутри процесса сервера ClickHouse.
+
+### Быстрый старт \{#quick-start\}
+
+Включите экспериментальную поддержку WebAssembly в конфигурации ClickHouse:
+
+```xml
+<clickhouse>
+    <allow_experimental_webassembly_udf>true</allow_experimental_webassembly_udf>
+</clickhouse>
+```
+
+Вставьте скомпилированный модуль WASM в системную таблицу:
+
+```sql
+INSERT INTO system.webassembly_modules (name, code)
+SELECT 'my_module', base64Decode('AGFzbQEAAAA...');
+```
+
+Создайте функцию на основе вашего модуля WASM:
+
+```sql
+CREATE FUNCTION my_function
+LANGUAGE WASM
+ABI ROW_DIRECT
+FROM 'my_module'
+ARGUMENTS (x UInt32, y UInt32)
+RETURNS UInt32;
+```
+
+Используйте функцию в запросах:
+
+```sql
+SELECT my_function(10, 20);
+```
+
+
+### Дополнительная информация \{#more-information\}
+
+Обратитесь к документации по пользовательским функциям WebAssembly ([WebAssembly User Defined Functions](wasm_udf.md)) для получения более подробной информации.
+
 ## Связанные материалы \{#related-content\}
+
 - [Пользовательские функции (UDF) в ClickHouse Cloud](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)
