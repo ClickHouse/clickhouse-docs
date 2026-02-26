@@ -1510,7 +1510,7 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
 This query performs a full scan of the Body column.
 
-#### Adding a Text Index
+#### Adding a text index {#adding-a-text-index}
 
 A text index can be added during table creation:
 
@@ -1569,7 +1569,7 @@ Peak memory usage: 15.23 MiB.
 
 The index reduces the scanned data from gigabytes to megabytes and improves performance by approximately `45x`.
 
-#### Using a preprocessor
+#### Using a preprocessor {#using-a-preprocessor}
 
 In this dataset, the Body column contains a JSON-formatted string with multiple key-value pairs (e.g., `msg`, `id`, `ctx`, `attr`, etc.).
 
@@ -1588,7 +1588,6 @@ In this example the preprocessor:
 - Decreases index size
 - Reduces the probability of false positives
 - Improves query performance
-
 
 ```sql
 SELECT count()
@@ -1626,7 +1625,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 ```
 
 Using a preprocessor reduces index size from gigabytes to a few hundred kilobytes — approximately 0.01% of the original size — while also improving query performance.
-
 
 **Other indexes for text search
 
@@ -1811,7 +1809,6 @@ In the examples above, we can see the secondary bloom filter index is 12MB - alm
 Bloom filters can require significant tuning. We recommend following the notes [here](/engines/table-engines/mergetree-family/mergetree#bloom-filter) which can be useful in identifying optimal settings. Bloom filters can also be expensive at insert and merge time. You should evaluate the impact on insert performance prior to adding bloom filters to production.
 
 </details>
-
 
 ### Extracting from maps {#extracting-from-maps}
 
