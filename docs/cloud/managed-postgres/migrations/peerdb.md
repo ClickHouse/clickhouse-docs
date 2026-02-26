@@ -92,6 +92,7 @@ pg_dump --version
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
 
+#### Remove unique constraints and indexes from the schema dump {#migration-peerdb-remove-constraints-indexes}
 Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB ingestion to target tables is not blocked by these constraints. These can be removed using:
 ```shell
 # Preview
