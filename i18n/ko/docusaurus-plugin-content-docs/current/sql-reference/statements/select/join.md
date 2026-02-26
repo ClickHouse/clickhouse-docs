@@ -488,7 +488,7 @@ Set을 반환합니다:
 
 일부 경우에는 `JOIN` 대신 [IN](../../../sql-reference/operators/in.md)을 사용하는 것이 더 효율적입니다.
 
-차원 테이블(광고 캠페인 이름과 같은 차원 속성을 포함하는 상대적으로 작은 테이블)과 조인하기 위해 `JOIN`이 필요한 경우, 오른쪽 테이블에 쿼리마다 다시 접근해야 하므로 `JOIN`은 그다지 편리하지 않을 수 있습니다. 이러한 경우에는 `JOIN` 대신 사용해야 하는 「dictionaries」 기능이 있습니다. 자세한 내용은 [Dictionaries](../../create/dictionary/index.md) 섹션을 참조하십시오.
+차원 테이블(광고 캠페인 이름과 같은 차원 속성을 포함하는 상대적으로 작은 테이블)과 조인하기 위해 `JOIN`이 필요한 경우, 오른쪽 테이블에 쿼리마다 다시 접근해야 하므로 `JOIN`은 그다지 편리하지 않을 수 있습니다. 이러한 경우에는 `JOIN` 대신 사용해야 하는 「dictionaries」 기능이 있습니다. 자세한 내용은 [Dictionaries](/sql-reference/statements/create/dictionary/overview.md) 섹션을 참조하십시오.
 
 ### 메모리 제한 \{#memory-limitations\}
 

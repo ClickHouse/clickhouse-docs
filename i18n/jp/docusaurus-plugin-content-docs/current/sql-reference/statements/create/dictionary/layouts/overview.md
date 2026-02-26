@@ -78,11 +78,11 @@ LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
 
 <br/>
 
-完全な DDL 構文については、[CREATE DICTIONARY](../index.md) も参照してください。
+完全な DDL 構文については、[CREATE DICTIONARY](../overview.md) も参照してください。
 
-レイアウトに `complex-key*` という語を含まない Dictionary は、キーとして [UInt64](../../../data-types/int-uint.md) 型を持ち、`complex-key*` を含む Dictionary は複合キー（任意の型を組み合わせた複雑なキー）を持ちます。
+レイアウトに `complex-key*` という語を含まない Dictionary は、キーとして [UInt64](/sql-reference/data-types/int-uint.md) 型を持ち、`complex-key*` を含む Dictionary は複合キー（任意の型を組み合わせた複雑なキー）を持ちます。
 
-**数値キーの例**（カラム `key_column` は [UInt64](../../../data-types/int-uint.md) 型）:
+**数値キーの例**（カラム `key_column` は [UInt64](/sql-reference/data-types/int-uint.md) 型）:
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -112,7 +112,7 @@ PRIMARY KEY key_column
 
 <br/>
 
-**複合キーの例**（キーは [String](../../../data-types/string.md) 型の要素を 1 つ持つ）:
+**複合キーの例**（キーは [String](/sql-reference/data-types/string.md) 型の要素を 1 つ持つ）:
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -158,4 +158,4 @@ ClickHouse は Dictionary に関連するエラーに対して例外をスロー
 - アクセスしようとしている Dictionary をロードできなかった。
 - `cached` Dictionary へのクエリでエラーが発生した。
 
-[system.dictionaries](../../../../operations/system-tables/dictionaries.md) テーブルで Dictionary の一覧とそのステータスを確認できます。
+[system.dictionaries](/operations/system-tables/dictionaries.md) テーブルで Dictionary の一覧とそのステータスを確認できます。

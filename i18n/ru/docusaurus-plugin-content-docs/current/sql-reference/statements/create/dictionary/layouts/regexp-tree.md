@@ -85,7 +85,7 @@ ClickHouse поддерживает [uap-core](https://github.com/ua-parser/uap-
 
 ### Сбор значений атрибутов \{#collecting-attribute-values\}
 
-Иногда бывает полезно возвращать значения из нескольких регулярных выражений, которые сработали, а не только значение листового узла. В таких случаях можно использовать специализированную функцию [`dictGetAll`](../../../functions/ext-dict-functions.md#dictGetAll). Если узел имеет значение атрибута типа `T`, `dictGetAll` вернёт `Array(T)`, содержащий ноль или более значений.
+Иногда бывает полезно возвращать значения из нескольких регулярных выражений, которые сработали, а не только значение листового узла. В таких случаях можно использовать специализированную функцию [`dictGetAll`](/sql-reference/functions/ext-dict-functions.md#dictGetAll). Если узел имеет значение атрибута типа `T`, `dictGetAll` вернёт `Array(T)`, содержащий ноль или более значений.
 
 По умолчанию количество совпадений, возвращаемых для каждого ключа, не ограничено. Ограничение можно передать в качестве необязательного четвертого аргумента функции `dictGetAll`. Массив заполняется в *топологическом порядке*, что означает, что дочерние узлы идут перед родительскими, а одноуровневые (соседние) узлы следуют порядку в исходном описании.
 
@@ -155,7 +155,7 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 ## Использование словаря дерева регулярных выражений в ClickHouse Cloud \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 Источник [`YAMLRegExpTree`](../sources/yamlregexptree.md) работает в ClickHouse Open Source, но не в ClickHouse Cloud.
-Чтобы использовать словари дерева регулярных выражений в ClickHouse Cloud, сначала локально в ClickHouse Open Source создайте такой словарь из YAML-файла, после чего выгрузите его в CSV-файл с помощью табличной функции `dictionary` и предложения [INTO OUTFILE](../../select/into-outfile.md).
+Чтобы использовать словари дерева регулярных выражений в ClickHouse Cloud, сначала локально в ClickHouse Open Source создайте такой словарь из YAML-файла, после чего выгрузите его в CSV-файл с помощью табличной функции `dictionary` и предложения [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md).
 
 ```sql
 SELECT * FROM dictionary(regexp_dict) INTO OUTFILE('regexp_dict.csv')

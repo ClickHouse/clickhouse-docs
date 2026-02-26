@@ -91,7 +91,7 @@ import TabItem from "@theme/TabItem"
 | `POLYGON_INDEX_CELL` | 또한 위에서 설명한 것과 동일한 옵션으로 그리드를 생성합니다. 각 리프 셀에 대해서는, 해당 셀에 속하는 모든 폴리곤 조각에 대해 인덱스를 구축하여 쿼리에 빠르게 응답할 수 있도록 합니다.                                                                                                 |
 | `POLYGON`            | `POLYGON_INDEX_CELL`과 동일한 의미입니다.                                                                                                                                                                          |
 
-딕셔너리 쿼리는 딕셔너리 작업을 위한 표준 [함수](../../../functions/ext-dict-functions.md)를 사용하여 수행됩니다.
+딕셔너리 쿼리는 딕셔너리 작업을 위한 표준 [함수](/sql-reference/functions/ext-dict-functions.md)를 사용하여 수행됩니다.
 중요한 차이점은 여기서 키가 해당 점을 포함하는 폴리곤을 찾으려는 좌표 점이 된다는 것입니다.
 
 **예시**
@@ -111,7 +111,8 @@ SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, '
 
 **예시**
 
-딕셔너리 설정 또는 해당 DDL 쿼리에서 `store_polygon_key_column = 1`을 활성화하면 SELECT 쿼리를 통해 폴리곤 딕셔너리의 컬럼을 읽을 수 있습니다.
+
+폴리곤 딕셔너리에서 컬럼을 SELECT 쿼리로 읽을 수 있습니다. 이를 위해 딕셔너리 구성이나 해당 DDL 쿼리에서 `store_polygon_key_column = 1`을 설정하십시오.
 
 ```sql title="Query"
 CREATE TABLE polygons_test_table

@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 Executable pool 允许从一组进程中加载数据。
 该字典源不适用于需要从源一次性加载全部数据的字典布局。
 
-当字典[存储](../layouts/#ways-to-store-dictionaries-in-memory)为以下任一布局时，Executable pool 可以工作：
+当字典[存储](../layouts/#storing-dictionaries-in-memory)为以下任一布局时，Executable pool 可以工作：
 
 * `cache`
 * `complex_key_cache`

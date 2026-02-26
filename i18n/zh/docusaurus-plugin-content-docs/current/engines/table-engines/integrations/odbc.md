@@ -141,5 +141,5 @@ SELECT * FROM odbc_t
 
 ## 另请参阅 \{#see-also\}
 
-- [ODBC 字典](/sql-reference/statements/create/dictionary/sources#mysql)
+- [ODBC 字典](/sql-reference/statements/create/dictionary/sources/odbc)
 - [ODBC 表函数](../../../sql-reference/table-functions/odbc.md)

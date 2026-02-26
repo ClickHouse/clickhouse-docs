@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-날짜 범위용 샘플을 사용하려면 [structure](../keys-and-fields.md#dictionary-key-and-fields)에서 `range_min` 및 `range_max` 요소를 정의합니다. 각 요소에는 `name` 및 `type` 요소가 포함되어야 합니다. `type`이 지정되지 않은 경우 기본 타입인 Date가 사용됩니다. `type`은 임의의 숫자 타입일 수 있습니다 (Date / DateTime / UInt64 / Int32 / 기타).
+날짜 범위용 샘플을 사용하려면 [structure](../attributes.md#composite-key)에서 `range_min` 및 `range_max` 요소를 정의합니다. 각 요소에는 `name` 및 `type` 요소가 포함되어야 합니다. `type`이 지정되지 않은 경우 기본 타입인 Date가 사용됩니다. `type`은 임의의 숫자 타입일 수 있습니다 (Date / DateTime / UInt64 / Int32 / 기타).
 
 :::note
 `range_min` 및 `range_max`의 값은 `Int64` 타입 범위에 포함되어야 합니다.
@@ -84,7 +84,7 @@ import TabItem from '@theme/TabItem';
 dictGet('dict_name', 'attr_name', id, date)
 ```
 
-쿼리 예시:
+쿼리 예제:
 
 ```sql
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
@@ -256,7 +256,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 
 ## complex_key_range_hashed \{#complex_key_range_hashed\}
 
-딕셔너리는 메모리에서 정렬된 범위 배열과 각 범위에 대응하는 값들로 구성된 해시 테이블 형태로 저장됩니다(자세한 내용은 [range&#95;hashed](#range_hashed) 참고). 이 저장 방식은 복합 [키](../keys-and-fields.md#dictionary-key-and-fields)에 사용됩니다.
+딕셔너리는 메모리에서 정렬된 범위 배열과 각 범위에 대응하는 값들로 구성된 해시 테이블 형태로 저장됩니다(자세한 내용은 [range&#95;hashed](#range_hashed) 참고). 이 저장 방식은 복합 [키](../attributes.md#composite-key)에 사용됩니다.
 
 구성 예시:
 

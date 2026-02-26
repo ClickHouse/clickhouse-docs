@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 이 레이아웃 유형은 딕셔너리를 저장하는 모든 방식 가운데 가장 뛰어난 성능을 제공합니다.
 :::
 
-딕셔너리 키는 [UInt64](../../../data-types/int-uint.md) 타입이며 값은 `max_array_size` (기본값 — 500,000)로 제한됩니다.
+딕셔너리 키는 [UInt64](/sql-reference/data-types/int-uint.md) 타입이며 값은 `max_array_size` (기본값 — 500,000)로 제한됩니다.
 딕셔너리를 생성할 때 더 큰 키가 발견되면 ClickHouse는 예외를 발생시키고 딕셔너리를 생성하지 않습니다.
 딕셔너리 flat 배열의 초기 크기는 `initial_array_size` 설정(기본값 — 1024)으로 제어됩니다.
 

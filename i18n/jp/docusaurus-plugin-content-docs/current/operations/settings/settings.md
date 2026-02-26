@@ -11586,6 +11586,21 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 
 Paimon テーブル関数で Paimon のパーティションプルーニングを使用します
 
+## use_partition_pruning \{#use_partition_pruning\}
+
+**別名**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "MergeTree がクエリ実行時にパーティションの絞り込みにパーティションキーを使用するかどうかを制御する新しい設定です。'use_partition_key' はこの設定のエイリアスです。"}]}]}/>
+
+MergeTree テーブルに対するクエリ実行時に、パーティションキーを使用してパーティションを絞り込むかどうかを制御します。
+
+可能な値:
+
+- 0 — 無効。
+- 1 — 有効。
+
 ## use_primary_key \{#use_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
