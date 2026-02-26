@@ -12,6 +12,14 @@ keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3']
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
+import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
+import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
+import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
+import add_source from '@site/static/images/clickstack/cloudflare/add-source.png';
+import configure_optional from '@site/static/images/clickstack/cloudflare/configure-optional-fields.png';
+import save_source from '@site/static/images/clickstack/cloudflare/save-source.png';
+import search_view from '@site/static/images/clickstack/cloudflare/search-view.png';
+import log_view from '@site/static/images/clickstack/cloudflare/log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 # Monitoring Cloudflare Logs with ClickStack {#cloudflare-clickstack}
@@ -56,6 +64,8 @@ For full details on ClickPipes S3 authentication and permissions, see the [S3 Cl
 1. ClickHouse Cloud Console → **Data Sources** → **Create ClickPipe**
 2. **Source**: Amazon S3
 
+<Image img={clickpipe_s3} alt="Clickpipe s3"/>
+
 **Connection:**
 - **S3 file path**: Your Cloudflare logs bucket path with a wildcard to match files. If you enabled daily subfolders in Logpush, use `**` to match across subdirectories:
   - No subfolders: `https://your-bucket.s3.us-east-1.amazonaws.com/logs/*`
@@ -68,11 +78,15 @@ Click **Incoming data**, then configure:
 - Toggle on **Continuous ingestion**
 - **Ordering**: Lexicographical order
 
+<Image img={continuous_ingestion} alt="Continuous ingestion"/>
+
 Cloudflare Logpush writes files with date-based naming (e.g., `20250127/...`), which is naturally lexicographical. ClickPipes polls for new files every 30 seconds and ingests any file with a name greater than the last processed file.
 
 **Schema mapping:**
 
 Click **Parse information**. ClickPipes samples your log files and auto-detects the schema. Review the mapped columns and adjust types as needed. Define a **Sorting key** for the destination table — for Cloudflare logs, a good choice is `(EdgeStartTimestamp, ClientCountry, EdgeResponseStatus)`.
+
+<Image img={parse_information} alt="Parse information"/>
 
 Click **Complete Setup**.
 
@@ -80,25 +94,50 @@ Click **Complete Setup**.
 When first created, ClickPipes performs an initial load of **all existing files** in the specified path before switching to continuous polling. If your bucket contains a large backlog of Cloudflare logs, this initial load may take some time.
 :::
 
-#### Verify data in ClickHouse {#verify-data}
+#### Configure HyperDX data source {#configure-source}
 
-Wait a few minutes for initial ingestion (longer if the bucket has existing files), then query:
-```sql
--- Check row count
-SELECT count() FROM cloudflare_http_logs;
+ClickPipes ingests Cloudflare logs into a flat table with Cloudflare's native field names. To view these logs in HyperDX, configure a custom data source that maps Cloudflare columns to HyperDX's log view.
 
--- View recent requests
-SELECT 
-    EdgeStartTimestamp,
-    ClientIP,
-    ClientCountry,
-    ClientRequestMethod,
-    ClientRequestPath,
-    EdgeResponseStatus
-FROM cloudflare_http_logs
-ORDER BY EdgeStartTimestamp DESC
-LIMIT 10;
-```
+1. Open HyperDX → **Team Settings** → **Sources**
+
+<Image img={add_source} alt="Add source"/>
+
+2. Click **Add source** and configure, you will need to click on `Configure Optional Fields`:
+
+<Image img={configure_optional} alt="Configure optional"/>
+
+| Setting | Value |
+|---|---|
+| **Name** | `Cloudflare Logs` |
+| **Source Data Type** | Log |
+| **Database** | `default` |
+| **Table** | `cloudflare_http_logs` |
+| **Timestamp Column** | `toDateTime(EdgeStartTimestamp / 1000000000)` |
+| **Default Select** | `EdgeStartTimestamp, ClientRequestMethod, ClientRequestURI, EdgeResponseStatus, ClientCountry` |
+| **Service Name Expression** | `'cloudflare'` |
+| **Log Level Expression** | `multiIf(EdgeResponseStatus >= 500, 'ERROR', EdgeResponseStatus >= 400, 'WARN', 'INFO')` |
+| **Body Expression** | `concat(ClientRequestMethod, ' ', ClientRequestURI, ' ', toString(EdgeResponseStatus))` |
+| **Log Attributes Expression** | `map('http.method', ClientRequestMethod, 'http.status_code', toString(EdgeResponseStatus), 'http.url', ClientRequestURI, 'client.country', ClientCountry, 'client.ip', ClientIP, 'cache.status', CacheCacheStatus, 'bot.score', toString(BotScore), 'cloudflare.ray_id', RayID, 'cloudflare.colo', EdgeColoCode)` |
+| **Resource Attributes Expression** | `map('cloudflare.zone', ClientRequestHost)` |
+| **Implicit Column Expression** | `concat(ClientRequestMethod, ' ', ClientRequestURI)` |
+
+3. Click **Save Source**
+
+<Image img={save_source} alt="Save source"/>
+
+This maps Cloudflare's native columns directly to HyperDX's log viewer without any data transformation or duplication. The **Body** displays a request summary like `GET /api/v1/users 200`, and all Cloudflare fields are available as searchable attributes.
+
+#### Verify data in HyperDX {#verify-hyperdx}
+
+Navigate to the **Search** view and select the **Cloudflare Logs** source. Set the time range to cover your data. You should see log entries with:
+
+- Request summaries in the Body column (e.g., `GET /api/v1/users 200`)
+- Severity levels color-coded by HTTP status (INFO for 2xx, WARN for 4xx, ERROR for 5xx)
+- Searchable attributes like `http.status_code`, `client.country`, `cache.status`, and `bot.score`
+
+<Image img={search_view} alt="Search view"/>
+
+<Image img={log_view} alt="Log view"/>
 
 </VerticalStepper>
 
@@ -122,20 +161,18 @@ For users who want to test the integration before configuring their production C
 
 The dataset includes 5,000 HTTP request log entries spanning 24 hours with realistic patterns including traffic from multiple countries, cache hits and misses, API and static asset requests, error responses, and security events.
 
+#### Configure HyperDX data source {#configure-demo-source}
+
+Follow the [data source configuration steps](#configure-source) to create a HyperDX source pointing to the `cloudflare_http_logs` table. If you already configured the source in the production integration section, this step is not needed.
+
 #### Verify demo data {#verify-demo}
 
 ```sql
 SELECT count() FROM cloudflare_http_logs;
 -- Should return 5000
-
-SELECT 
-    EdgeResponseStatus,
-    count() as requests
-FROM cloudflare_http_logs
-GROUP BY EdgeResponseStatus
-ORDER BY requests DESC
-LIMIT 10;
 ```
+
+Navigate to the **Search** view in HyperDX, select the **Cloudflare Logs** source, and set the time range to cover the demo data. You should see log entries with request summaries, searchable Cloudflare attributes, and severity levels based on HTTP status codes.
 
 </VerticalStepper>
 
@@ -161,85 +198,6 @@ The dashboard includes:
 - Cache hit rates
 - Error rates by status code
 - Security events
-
-</VerticalStepper>
-
-## Advanced: SQS-based ingestion {#sqs-ingestion}
-
-The default lexicographical ordering works well for Cloudflare Logpush since files are named with date-based prefixes. However, if you need to handle backfills, retries, or files that arrive out of order, you can configure SQS-based event-driven ingestion.
-
-With SQS, S3 sends a notification to an SQS queue whenever Cloudflare uploads a new file, and ClickPipes processes the file immediately regardless of naming order.
-
-<VerticalStepper headerLevel="h4">
-
-#### Create SQS queue {#create-sqs}
-
-1. AWS Console → SQS → **Create queue**
-2. **Type**: Standard
-3. **Name**: `cloudflare-logs-queue`
-4. Click **Create queue**
-5. Copy the **Queue URL**
-
-**Configure access policy:**
-
-Select your queue → **Access policy** tab → **Edit** → Replace with:
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "s3.amazonaws.com"
-      },
-      "Action": "SQS:SendMessage",
-      "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue",
-      "Condition": {
-        "ArnLike": {
-          "aws:SourceArn": "arn:aws:s3:::YOUR-BUCKET-NAME"
-        }
-      }
-    }
-  ]
-}
-```
-
-Replace `REGION`, `ACCOUNT_ID`, and `YOUR-BUCKET-NAME` with your values.
-
-:::note
-We strongly recommend configuring a **Dead Letter Queue (DLQ)** for the SQS queue. This makes it easier to debug and retry failed messages. You can add a DLQ in the SQS console under **Dead-letter queue** settings when creating or editing the queue.
-:::
-
-#### Configure S3 event notifications {#s3-notifications}
-
-1. S3 bucket → **Properties** → **Event notifications** → **Create event notification**
-2. **Name**: `cloudflare-new-file`
-3. **Event types**: ✓ All object create events
-4. **Destination**: SQS queue → Select `cloudflare-logs-queue`
-5. Click **Save changes**
-
-#### Add SQS permissions {#sqs-permissions}
-
-Your IAM role or user needs the following SQS permissions in addition to the standard S3 permissions:
-
-```json
-{
-  "Effect": "Allow",
-  "Action": [
-    "sqs:ReceiveMessage",
-    "sqs:DeleteMessage",
-    "sqs:GetQueueAttributes",
-    "sqs:ListQueues"
-  ],
-  "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue"
-}
-```
-
-#### Update ClickPipes configuration {#update-clickpipes}
-
-When creating or editing your ClickPipe, change the ingestion settings:
-- **Ordering**: Any order
-- **SQS Queue URL**: Paste the Queue URL from the SQS step
 
 </VerticalStepper>
 
