@@ -96,7 +96,6 @@ See a more complete observability example [here](/use-cases/observability/schema
 
 The text index is totally deterministic and fully tunable in terms of tokenization and text processing at a cost of some more storage consumption compared with bloom filter–based indexes, 
 
-
 ## Generic Bloom filter (scalar) {#generic-bloom-filter-scalar}
 
 The `bloom_filter` index is good for "needle in a haystack" equality/IN membership. It accepts an optional parameter which is the false-positive rate (default 0.025). 
