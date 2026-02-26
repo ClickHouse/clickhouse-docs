@@ -14,13 +14,13 @@ doc_type: 'reference'
 
 ## 列 \{#columns\}
 
-- `name` ([String](/docs/en/sql-reference/data-types/string.md)) — failpoint 的名称。
-- `type` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — failpoint 的类型。可能的取值：
+- `name` ([String](../../sql-reference/data-types/string.md)) — failpoint 的名称。
+- `type` ([Enum8](../../sql-reference/data-types/enum.md)) — failpoint 的类型。可能的取值：
   - `'once'` — 触发一次后自动禁用。
   - `'regular'` — 每次命中该 failpoint 时都会触发。
   - `'pauseable_once'` — 阻塞执行一次，直到显式恢复。
   - `'pauseable'` — 每次命中该 failpoint 时都会阻塞执行，直到显式恢复。
-- `enabled` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — 当前 failpoint 是否已启用。`1` 表示启用，`0` 表示禁用。
+- `enabled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 当前 failpoint 是否已启用。`1` 表示启用，`0` 表示禁用。
 
 ## 示例 \{#example\}
 

@@ -9,8 +9,19 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# 用户定义函数（UDF） \{#executable-user-defined-functions\}
+
+# UDFs 用户自定义函数 \{#udfs-user-defined-functions\}
+
+ClickHouse 支持多种类型的用户自定义函数（UDF）：
+
+- [可执行 UDF](#executable-user-defined-functions) 会启动一个外部程序或脚本（Python、Bash 等），并通过 STDIN / STDOUT 以数据块的形式向其进行流式传输。可以使用它们在不重新编译 ClickHouse 的情况下集成现有代码或工具。相比进程内选项，它们的单次调用开销更高，更适合较重的逻辑，或需要不同运行时的场景。
+- [SQL UDF](#sql-user-defined-functions) 使用纯 SQL 的 `CREATE FUNCTION` 定义。它们会被内联/展开到查询计划中（无进程边界），因此非常轻量，适合复用表达式逻辑或简化复杂的计算列。
+- [实验性的 WebAssembly UDF](#webassembly-user-defined-functions) 在服务器进程内的沙箱中运行编译为 WebAssembly 的代码。与外部可执行程序相比，它们具有更低的单次调用开销，同时比本地扩展具有更好的隔离性，适用于使用可编译为 WASM 的语言（例如 C/C++/Rust）编写的自定义算法。
+
+## 可执行用户定义函数 \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
@@ -115,6 +126,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
+
 ### 来自 Python 脚本的 UDF \{#udf-python\}
 
 在本示例中，我们创建一个 UDF，它从 `STDIN` 读取一个值，并将其作为字符串返回。
@@ -180,13 +192,14 @@ SELECT test_function_python(toUInt64(2));
 
 ```text title="Result"
 ┌─test_function_python(2)─┐
-│ 值 2                    │
+│ Value 2                 │
 └─────────────────────────┘
 ```
 
-### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和 \{#udf-stdin\}
 
-使用命名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
+### 从 `STDIN` 读取两个值并以 JSON 对象形式返回它们的和 \{#udf-stdin\}
+
+使用具名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -264,6 +277,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
+
 ### 在 `command` 设置中使用参数 \{#udf-parameters-in-command\}
 
 可执行类型的用户自定义函数可以在 `command` 设置中接受常量参数（这仅适用于 `executable` 类型的用户自定义函数）。
@@ -328,9 +342,10 @@ SELECT test_function_parameter_python(1)(2);
 
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ 参数 1 值 2                          │
+│ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
+
 
 ### 基于 shell 脚本的 UDF \{#udf-shell-script\}
 
@@ -405,6 +420,7 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
+
 ## 错误处理 \{#error-handling\}
 
 如果数据无效，某些函数可能会抛出异常。
@@ -438,5 +454,53 @@ SELECT test_shell(number) FROM numbers(10);
 
 可以使用 [CREATE FUNCTION](../statements/create/function.md) 语句，基于 lambda 表达式创建自定义函数。要删除这些函数，请使用 [DROP FUNCTION](../statements/drop.md#drop-function) 语句。
 
+## WebAssembly 用户自定义函数 \{#webassembly-user-defined-functions\}
+
+<CloudNotSupportedBadge/>
+
+<ExperimentalBadge/>
+
+WebAssembly 用户自定义函数（WASM UDF）允许在 ClickHouse 服务器进程中运行编译为 WebAssembly 的自定义代码。
+
+### 快速入门 \{#quick-start\}
+
+在 ClickHouse 配置中启用 WebAssembly 实验性支持：
+
+```xml
+<clickhouse>
+    <allow_experimental_webassembly_udf>true</allow_experimental_webassembly_udf>
+</clickhouse>
+```
+
+将已编译好的 WASM 模块插入系统表：
+
+```sql
+INSERT INTO system.webassembly_modules (name, code)
+SELECT 'my_module', base64Decode('AGFzbQEAAAA...');
+```
+
+使用 WASM 模块创建一个函数：
+
+```sql
+CREATE FUNCTION my_function
+LANGUAGE WASM
+ABI ROW_DIRECT
+FROM 'my_module'
+ARGUMENTS (x UInt32, y UInt32)
+RETURNS UInt32;
+```
+
+在查询中使用该函数：
+
+```sql
+SELECT my_function(10, 20);
+```
+
+
+### 更多信息 \{#more-information\}
+
+更多信息请参阅 [WebAssembly 用户自定义函数](wasm_udf.md) 文档。
+
 ## 相关内容 \{#related-content\}
+
 - [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Движок таблицы словаря \{#dictionary-table-engine\}
 
-Движок `Dictionary` отображает данные [словаря](../../../sql-reference/statements/create/dictionary/index.md) как таблицу ClickHouse.
+Движок `Dictionary` отображает данные [словаря](../../../sql-reference/statements/create/dictionary/overview.md) как таблицу ClickHouse.
 
 ## Пример \{#example\}
 

@@ -11568,6 +11568,21 @@ Cloud 默认值：`1`
 
 对 Paimon 表函数使用 Paimon 分区裁剪
 
+## use_partition_pruning \{#use_partition_pruning\}
+
+**别名**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "新引入的设置，用于控制 MergeTree 是否使用分区键进行分区裁剪。'use_partition_key' 是该设置的别名。"}]}]}/>
+
+在对 MergeTree 表执行查询时，使用分区键对分区进行裁剪。
+
+可能的取值：
+
+- 0 — 已禁用。
+- 1 — 已启用。
+
 ## use_primary_key \{#use_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

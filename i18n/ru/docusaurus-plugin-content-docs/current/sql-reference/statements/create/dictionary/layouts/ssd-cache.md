@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Аналогичен `cache`, но хранит данные на SSD, а индекс — в RAM. Все настройки словаря типа cache, связанные с очередью обновления, также могут применяться к словарям SSD cache.
 
-Тип ключа словаря — [UInt64](../../../data-types/int-uint.md).
+Тип ключа словаря — [UInt64](/sql-reference/data-types/int-uint.md).
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -52,4 +52,4 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 
 ## complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
-Этот тип хранилища предназначен для использования с составными [ключами](../keys-and-fields.md#dictionary-key-and-fields). Аналогично типу `ssd_cache`.
+Этот тип хранилища предназначен для использования с составными [ключами](../attributes.md#composite-key). Аналогично типу `ssd_cache`.

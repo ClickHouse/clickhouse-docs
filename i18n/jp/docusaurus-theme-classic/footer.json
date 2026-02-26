@@ -16,7 +16,7 @@
     "description": "label=Terms of Service のフッターリンクラベル。https://clickhouse.com/legal/agreements/terms-of-service へのリンク"
   },
   "copyright": {
-    "message": "© 2016&ndash;2026 ClickHouse, Inc.",
+    "message": "© 2016〜2026 ClickHouse, Inc.",
     "description": "フッターの著作権表記"
   }
 }

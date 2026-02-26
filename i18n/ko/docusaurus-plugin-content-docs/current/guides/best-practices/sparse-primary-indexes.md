@@ -23,7 +23,6 @@ import sparsePrimaryIndexes09b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes09c from '@site/static/images/guides/best-practices/sparse-primary-indexes-09c.png';
 import sparsePrimaryIndexes10 from '@site/static/images/guides/best-practices/sparse-primary-indexes-10.png';
 import sparsePrimaryIndexes11 from '@site/static/images/guides/best-practices/sparse-primary-indexes-11.png';
-import sparsePrimaryIndexes12a from '@site/static/images/guides/best-practices/sparse-primary-indexes-12a.png';
 import sparsePrimaryIndexes12b1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-1.png';
 import sparsePrimaryIndexes12b2 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-2.png';
 import sparsePrimaryIndexes12c1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12c-1.png';
@@ -344,7 +343,7 @@ ClickHouse는 <a href="https://clickhouse.com/docs/introduction/distinctive-feat
   - 그다음 `URL`,
   - 마지막으로 `EventTime` 순서입니다:
 
-<Image img={sparsePrimaryIndexes01} size="md" alt="희소 프라이머리 인덱스 01" background="white"/>
+<Image img={sparsePrimaryIndexes01} size="md" alt="희소 프라이머리 인덱스 01" />
 
 `UserID.bin`, `URL.bin`, `EventTime.bin`은 `UserID`, `URL`, `EventTime` 컬럼의 값이 저장되는 디스크 상의 데이터 파일입니다.
 
@@ -367,7 +366,7 @@ ClickHouse는 <a href="https://clickhouse.com/docs/introduction/distinctive-feat
 다음 다이어그램은 테이블의 887만 행(의 컬럼 값)이
 테이블의 DDL 문에서 `index_granularity` 설정(기본값 8192)으로 인해 1083개의 그래뉼로 구성되는 방식을 보여줍니다.
 
-<Image img={sparsePrimaryIndexes02} size="md" alt="희소 프라이머리 인덱스 02" background="white"/>
+<Image img={sparsePrimaryIndexes02} size="md" alt="희소 프라이머리 인덱스 02" />
 
 디스크 상의 물리적 순서를 기준으로 처음 8192개의 행(및 해당 컬럼 값)은 논리적으로 그래뉼 0에 속하고, 그다음 8192개의 행(및 해당 컬럼 값)은 그래뉼 1에 속하는 식으로 계속됩니다.
 
@@ -399,11 +398,11 @@ ClickHouse는 <a href="https://clickhouse.com/docs/introduction/distinctive-feat
 - 첫 번째 인덱스 엔트리(아래 다이어그램의 'mark 0')는 위 다이어그램에서 그래뉼 0의 첫 번째 행의 키 컬럼 값을 저장하고,
 - 두 번째 인덱스 엔트리(아래 다이어그램의 'mark 1')는 위 다이어그램에서 그래뉼 1의 첫 번째 행의 키 컬럼 값을 저장하며, 이런 식으로 계속됩니다.
 
-<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" background="white"/>
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" />
 
 전체적으로, 이 인덱스는 8.87 million 개의 행과 1083개의 그래뉼을 가진 테이블에 대해 총 1083개의 엔트리를 가집니다:
 
-<Image img={sparsePrimaryIndexes03b} size="md" alt="Sparse Primary Indices 03b" background="white"/>
+<Image img={sparsePrimaryIndexes03b} size="md" alt="Sparse Primary Indices 03b" />
 
 :::note
 
@@ -621,7 +620,7 @@ LIMIT 10;
 
 아래 다이어그램은 우리 테이블의 프라이머리 인덱스 파일의 일부를 보여 줍니다.
 
-<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" background="white"/>
+<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" />
 
 위에서 설명했듯이, 인덱스의 1083개 UserID 마크에 대해 이진 검색을 수행하여 마크 176이 식별되었습니다. 따라서 해당 그래뉼 176에는 UserID 컬럼 값이 749.927.693인 행이 포함될 가능성이 있습니다.
 
@@ -643,7 +642,7 @@ ClickHouse에서는 우리 테이블의 모든 그래뉼의 물리적 위치가 
 
 아래 다이어그램은 테이블의 `UserID`, `URL`, `EventTime` 컬럼에 대한 그래뉼의 물리적 위치를 저장하는 세 개의 마크 파일 `UserID.mrk`, `URL.mrk`, `EventTime.mrk`를 보여 줍니다.
 
-<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" background="white"/>
+<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" />
 
 앞서 프라이머리 인덱스가 인덱스 마크를 0부터 번호를 매겨 저장하는 평면적인 비압축 배열 파일(primary.idx)임을 설명했습니다.
 
@@ -692,7 +691,7 @@ ClickHouse가 설계된 아주 대규모 규모에서는 디스크와 메모리�
 
 아래 다이어그램과 이어지는 설명은 예시 쿼리에서 ClickHouse가 UserID.bin 데이터 파일 내에서 그래뉼 176을 어떻게 찾는지를 보여줍니다.
 
-<Image img={sparsePrimaryIndexes06} size="md" alt="희소 프라이머리 인덱스 06" background="white"/>
+<Image img={sparsePrimaryIndexes06} size="md" alt="희소 프라이머리 인덱스 06" />
 
 앞서 이 가이드에서 설명했듯이, ClickHouse는 프라이머리 인덱스 마크 176을 선택했고, 따라서 그래뉼 176을 쿼리와 일치할 수 있는 행을 포함할 가능성이 있는 그래뉼로 선택했습니다.
 
@@ -811,7 +810,7 @@ Processed 8.81 million rows,
 
 UserID의 카디널리티가 낮다고 가정해 보겠습니다. 이 경우 동일한 UserID 값이 여러 테이블 행과 그래뉼, 그리고 인덱스 마크 전반에 걸쳐 분포할 가능성이 높습니다. 동일한 UserID를 가진 인덱스 마크들에 대해서는, 인덱스 마크의 URL 값이 오름차순으로 정렬됩니다(테이블 행이 먼저 UserID, 그다음 URL 순으로 정렬되기 때문입니다). 이는 아래에 설명된 것처럼 효율적인 필터링을 가능하게 합니다:
 
-<Image img={sparsePrimaryIndexes07} size="md" alt="희소 프라이머리 인덱스 06" background="white"/>
+<Image img={sparsePrimaryIndexes07} size="md" alt="희소 프라이머리 인덱스 06" />
 
 위 다이어그램에 있는 추상 샘플 데이터에서 그래뉼 선택 과정에는 세 가지 다른 시나리오가 있습니다:
 
@@ -825,7 +824,7 @@ UserID의 카디널리티가 낮다고 가정해 보겠습니다. 이 경우 동
 
 UserID의 카디널리티가 높은 경우, 동일한 UserID 값이 여러 테이블 행과 그래뉼에 분산될 가능성은 낮습니다. 이는 인덱스 마크에 대한 URL 값이 단조 증가하지 않음을 의미합니다:
 
-<Image img={sparsePrimaryIndexes08} size="md" alt="희소 프라이머리 인덱스 06" background="white"/>
+<Image img={sparsePrimaryIndexes08} size="md" alt="희소 프라이머리 인덱스 06" />
 
 위 다이어그램에서 볼 수 있듯이, URL 값이 W3보다 작은 모든 마크는 해당 그래뉼의 행을 ClickHouse 엔진으로 스트리밍하기 위해 선택됩니다.
 
@@ -857,7 +856,7 @@ ALTER TABLE hits_UserID_URL MATERIALIZE INDEX url_skipping_index;
 
 ClickHouse는 이제 추가 인덱스를 생성하여, 연속된 4개의 [그래뉼](#data-is-organized-into-granules-for-parallel-data-processing) 그룹마다(`ALTER TABLE` 문에서 `GRANULARITY 4` 절을 참고하십시오) 최소 및 최대 URL 값을 저장합니다:
 
-<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" background="white" />
+<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" />
 
 첫 번째 인덱스 엔트리(위 다이어그램의 &#39;mark 0&#39;)는 [테이블의 첫 4개 그래뉼에 속하는 행](#data-is-organized-into-granules-for-parallel-data-processing)에 대한 최소 및 최대 URL 값을 저장합니다.
 
@@ -894,15 +893,15 @@ UserID와 URL의 카디널리티가 비슷하게 높기 때문에, 이 보조 �
 
 다른 프라이머리 키를 가진 **두 번째 테이블**을 생성하는 경우, 쿼리는 해당 쿼리에 가장 적합한 테이블 버전으로 명시적으로 보내야 하며, 두 테이블을 동기 상태로 유지하기 위해 새 데이터는 두 테이블 모두에 명시적으로 INSERT해야 합니다:
 
-<Image img={sparsePrimaryIndexes09a} size="md" alt="희소 프라이머리 인덱스 09a" background="white"/>
+<Image img={sparsePrimaryIndexes09a} size="md" alt="희소 프라이머리 인덱스 09a" />
 
 **materialized view**의 경우, 추가 테이블은 암시적으로 생성되며 두 테이블 간의 데이터 동기화는 자동으로 유지됩니다:
 
-<Image img={sparsePrimaryIndexes09b} size="md" alt="희소 프라이머리 인덱스 09b" background="white"/>
+<Image img={sparsePrimaryIndexes09b} size="md" alt="희소 프라이머리 인덱스 09b" />
 
 그리고 **projection**은 가장 투명한 옵션입니다. 암시적으로 생성되고 숨겨진 추가 테이블을 데이터 변경과 함께 자동으로 동기화할 뿐만 아니라, ClickHouse가 쿼리에 대해 가장 효율적인 테이블 버전을 자동으로 선택하기 때문입니다:
 
-<Image img={sparsePrimaryIndexes09c} size="md" alt="희소 프라이머리 인덱스 09c" background="white"/>
+<Image img={sparsePrimaryIndexes09c} size="md" alt="희소 프라이머리 인덱스 09c" />
 
 다음에서는 여러 개의 프라이머리 인덱스를 생성하고 사용하는 이러한 세 가지 옵션을 실제 예제와 함께 좀 더 자세히 설명합니다.
 
@@ -928,7 +927,7 @@ ORDER BY (URL, UserID, EventTime)
 SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
-[원본 테이블](#a-table-with-a-primary-key)에서 887만 개의 모든 행을 보조 테이블에 삽입합니다:
+[원본 테이블](#a-table-with-a-primary-key)의 모든 887만 개 행을 보조 테이블에 삽입합니다:
 
 ```sql
 INSERT INTO hits_URL_UserID
@@ -951,11 +950,11 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 프라이머리 키에서 컬럼 순서를 변경했기 때문에 이제 삽입된 행은 [원래 테이블](#a-table-with-a-primary-key)과 비교했을 때 디스크에 다른 사전식 순서로 저장되며, 따라서 해당 테이블의 1083개 그래뉼 역시 이전과는 다른 값을 포함하게 됩니다:
 
-<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" background="white" />
+<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" />
 
 다음은 그 결과로 생성된 프라이머리 키입니다:
 
-<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" background="white" />
+<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" />
 
 이제 이를 사용하여 URL 컬럼을 기준으로 필터링하는 예제 쿼리의 실행 속도를 크게 향상시키고, URL 「http://public&#95;search」을 가장 자주 클릭한 상위 10명의 사용자를 계산할 수 있습니다:
 
@@ -1090,7 +1089,7 @@ POPULATE
 AS SELECT * FROM hits_UserID_URL;
 ```
 
-응답은 다음과 같이 표시됩니다.
+응답은 다음과 같습니다.
 
 ```response
 Ok.
@@ -1108,11 +1107,11 @@ Ok.
 * 새로운 행이 소스 테이블 hits&#95;UserID&#95;URL에 삽입되면, 해당 행들은 암시적으로 생성된 테이블에도 자동으로 삽입됩니다.
 * 결과적으로 암시적으로 생성된 테이블은 [명시적으로 생성한 보조 테이블](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)과 동일한 행 순서와 프라이머리 인덱스를 갖게 됩니다.
 
-<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" background="white" />
+<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" />
 
 ClickHouse는 암시적으로 생성된 테이블의 [컬럼 데이터 파일](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), [마크 파일](#mark-files-are-used-for-locating-granules) (*.mrk2), [프라이머리 인덱스](#the-primary-index-has-one-entry-per-granule) (primary.idx)를 ClickHouse 서버의 데이터 디렉터리 내 특수 폴더에 저장합니다:
 
-<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" background="white" />
+<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" />
 
 :::
 
@@ -1198,11 +1197,11 @@ ALTER TABLE hits_UserID_URL
 * 프로젝션의 ORDER BY가 쿼리의 ORDER BY와 일치하더라도, 프로젝션이 ORDER BY를 사용하는 쿼리를 더 효율적으로 만들어 주지는 않는다는 점에 유의하십시오 (https://github.com/ClickHouse/ClickHouse/issues/47333 참조).
 * 결과적으로 암묵적으로 생성된 숨겨진 테이블은 [명시적으로 생성한 세컨더리 테이블](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)과 동일한 행 순서와 프라이머리 인덱스를 가집니다:
 
-<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white" />
+<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" />
 
 ClickHouse는 숨겨진 테이블의 [컬럼 데이터 파일](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), [마크 파일](#mark-files-are-used-for-locating-granules) (*.mrk2), 그리고 [프라이머리 인덱스](#the-primary-index-has-one-entry-per-granule) (primary.idx)를, 아래 스크린샷에서 주황색으로 표시된 특수 폴더에 소스 테이블의 데이터 파일, 마크 파일, 프라이머리 인덱스 파일 옆에 저장합니다:
 
-<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" background="white" />
+<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" />
 
 :::
 
@@ -1462,7 +1461,7 @@ WHERE (table = 'hits_URL_UserID_IsRobot' OR table = 'hits_IsRobot_UserID_URL') A
 ORDER BY Ratio ASC
 ```
 
-다음과 같은 응답이 반환됩니다:
+다음과 같은 결과가 반환됩니다:
 
 ```response
 ┌─Table───────────────────┬─Column─┬─Uncompressed─┬─Compressed─┬─Ratio─┐
@@ -1486,7 +1485,7 @@ ORDER BY Ratio ASC
 
 아래 다이어그램은 키 컬럼이 카디널리티 기준 오름차순으로 정렬된 프라이머리 키에 대해, 디스크 상에서 행이 어떤 순서로 저장되는지를 개략적으로 보여줍니다.
 
-<Image img={sparsePrimaryIndexes14a} size="md" alt="Sparse Primary Indices 14a" background="white" />
+<Image img={sparsePrimaryIndexes14a} size="md" alt="Sparse Primary Indices 14a" />
 
 [테이블의 행 데이터는 프라이머리 키 컬럼 순서에 따라 디스크에 저장된다는 것](#data-is-stored-on-disk-ordered-by-primary-key-columns)을 앞에서 논의했습니다.
 
@@ -1498,7 +1497,7 @@ ORDER BY Ratio ASC
 
 위 다이어그램과 대조적으로, 아래 다이어그램은 키 컬럼이 카디널리티 기준 내림차순으로 정렬된 프라이머리 키에 대해, 디스크 상에서 행이 어떤 순서로 저장되는지를 개략적으로 보여줍니다.
 
-<Image img={sparsePrimaryIndexes14b} size="md" alt="Sparse Primary Indices 14b" background="white" />
+<Image img={sparsePrimaryIndexes14b} size="md" alt="Sparse Primary Indices 14b" />
 
 
 이제 테이블의 행은 먼저 `ch` 값으로 정렬되고, 같은 `ch` 값을 가진 행들끼리는 `cl` 값으로 정렬됩니다.
@@ -1536,7 +1535,7 @@ ClickHouse 위에 구축된 애플리케이션이 ClickHouse 테이블의 단일
 - 콘텐츠가 변경될 때(예: 텍스트 영역에 키 입력으로 텍스트를 입력할 때) 행이 삽입되는 순서와
 - `PRIMARY KEY (hash)`를 사용할 때 삽입된 행들의 데이터가 디스크에 저장되는 순서를 보여줍니다:
 
-<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" background="white"/>
+<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" />
 
 `hash` 컬럼이 프라이머리 키 컬럼으로 사용되기 때문에
 
@@ -1553,7 +1552,7 @@ ClickHouse 위에 구축된 애플리케이션이 ClickHouse 테이블의 단일
 - 콘텐츠가 변경될 때(예: 텍스트 영역에 키 입력으로 텍스트를 입력할 때) 행이 삽입되는 순서와
 - 복합 `PRIMARY KEY (fingerprint, hash)`를 사용할 때 삽입된 행들의 데이터가 디스크에 저장되는 순서를 보여줍니다:
 
-<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" background="white"/>
+<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" />
 
 이제 디스크 상의 행들은 먼저 `fingerprint` 기준으로 정렬되고, 동일한 fingerprint 값을 가진 행들 사이에서는 `hash` 값이 최종 순서를 결정합니다.
 

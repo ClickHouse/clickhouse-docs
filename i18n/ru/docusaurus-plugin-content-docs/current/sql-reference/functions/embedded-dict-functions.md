@@ -14,7 +14,7 @@ doc_type: 'reference'
 Таким образом, примеры, приведённые в этом разделе, по умолчанию будут приводить к исключению в [ClickHouse Fiddle](https://fiddle.clickhouse.com/), а также в быстрых и продукционных развертываниях, если предварительно не выполнить настройку.
 :::
 
-Сведения о создании справочных списков см. в разделе [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries).
+Сведения о создании справочных списков см. в разделе ["Dictionaries"](../statements/create/dictionary/embedded).
 
 ## Несколько геобаз \{#multiple-geobases\}
 
@@ -385,7 +385,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-Возвращает численность населения для региона. Данные о населении могут храниться в файлах geobase. См. раздел [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries). Если численность населения для региона не указана, функция возвращает 0. В geobase численность населения может быть указана для дочерних регионов, но не для родительских.
+Возвращает численность населения для региона. Данные о населении могут храниться в файлах geobase. См. раздел [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded). Если численность населения для региона не указана, функция возвращает 0. В geobase численность населения может быть указана для дочерних регионов, но не для родительских.
 
 **Синтаксис**
 

@@ -85,7 +85,7 @@ ClickHouse は [uap-core](https://github.com/ua-parser/uap-core) をサポート
 
 ### 属性値の収集 \{#collecting-attribute-values\}
 
-複数の正規表現にマッチした場合、葉ノードの値だけでなく、マッチしたそれぞれから値を返したいことがあります。そのようなケースでは、専用の [`dictGetAll`](../../../functions/ext-dict-functions.md#dictGetAll) 関数を使用できます。あるノードが型 `T` の属性値を持つ場合、`dictGetAll` は 0 個以上の値を含む `Array(T)` を返します。
+複数の正規表現にマッチした場合、葉ノードの値だけでなく、マッチしたそれぞれから値を返したいことがあります。そのようなケースでは、専用の [`dictGetAll`](/sql-reference/functions/ext-dict-functions.md#dictGetAll) 関数を使用できます。あるノードが型 `T` の属性値を持つ場合、`dictGetAll` は 0 個以上の値を含む `Array(T)` を返します。
 
 デフォルトでは、1 キーあたりで返されるマッチ数には上限がありません。上限は省略可能な第 4 引数として `dictGetAll` に渡すことができます。配列は *トポロジカル順序* で格納されます。これは、子ノードが親ノードより前に来て、兄弟ノードはソース内の順序に従うことを意味します。
 
@@ -155,7 +155,7 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 ## ClickHouse Cloud で正規表現ツリー Dictionary を使用する \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 [`YAMLRegExpTree`](../sources/yamlregexptree.md) ソースは ClickHouse Open Source では動作しますが、ClickHouse Cloud では動作しません。
-ClickHouse Cloud で regexp ツリー Dictionary を使用するには、まずローカルの ClickHouse Open Source 環境で YAML ファイルから regexp ツリー Dictionary を作成し、その後 `dictionary` テーブル関数と [INTO OUTFILE](../../select/into-outfile.md) 句を使用して、この Dictionary を CSV ファイルにエクスポートします。
+ClickHouse Cloud で regexp ツリー Dictionary を使用するには、まずローカルの ClickHouse Open Source 環境で YAML ファイルから regexp ツリー Dictionary を作成し、その後 `dictionary` テーブル関数と [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md) 句を使用して、この Dictionary を CSV ファイルにエクスポートします。
 
 ```sql
 SELECT * FROM dictionary(regexp_dict) INTO OUTFILE('regexp_dict.csv')

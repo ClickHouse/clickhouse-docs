@@ -78,11 +78,11 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 레이아웃 설정
 
 <br/>
 
-전체 DDL 구문은 [CREATE DICTIONARY](../index.md)를 참조하십시오.
+전체 DDL 구문은 [CREATE DICTIONARY](../overview.md)를 참조하십시오.
 
-레이아웃 이름에 `complex-key*` 단어가 없는 딕셔너리는 [UInt64](../../../data-types/int-uint.md) 타입의 키를 가지며, `complex-key*` 딕셔너리는 복합 키(여러 임의 타입으로 구성된 키)를 가집니다.
+레이아웃 이름에 `complex-key*` 단어가 없는 딕셔너리는 [UInt64](/sql-reference/data-types/int-uint.md) 타입의 키를 가지며, `complex-key*` 딕셔너리는 복합 키(여러 임의 타입으로 구성된 키)를 가집니다.
 
-**숫자형 키 예시**(컬럼 key_column은 [UInt64](../../../data-types/int-uint.md) 타입입니다):
+**숫자형 키 예시**(컬럼 key_column은 [UInt64](/sql-reference/data-types/int-uint.md) 타입입니다):
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -112,7 +112,7 @@ PRIMARY KEY key_column
 
 <br/>
 
-**복합 키 예시**(key는 [String](../../../data-types/string.md) 타입의 요소 하나로 구성됩니다):
+**복합 키 예시**(key는 [String](/sql-reference/data-types/string.md) 타입의 요소 하나로 구성됩니다):
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -158,4 +158,4 @@ ClickHouse는 딕셔너리 관련 오류에 대해 예외를 발생시킵니다.
 - 액세스하려는 딕셔너리를 로드하지 못한 경우
 - `cached` 딕셔너리에 대한 쿼리 오류
 
-[system.dictionaries](../../../../operations/system-tables/dictionaries.md) 테이블에서 딕셔너리 목록과 해당 상태를 조회할 수 있습니다.
+[system.dictionaries](/operations/system-tables/dictionaries.md) 테이블에서 딕셔너리 목록과 해당 상태를 조회할 수 있습니다.
