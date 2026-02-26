@@ -18,7 +18,7 @@ ClickHouse Cloud can connect directly to your open table format data catalogs, g
 Using the UI:
 - Simplifies setup with a form using fields consistent with your Data Catalog objects
 - Provides a single interface for active data catalog integrations
-- Tests connection and credentials when saving to validate that the connection was successful
+- Tests connection and credentials when saving
 
 <Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>
 
