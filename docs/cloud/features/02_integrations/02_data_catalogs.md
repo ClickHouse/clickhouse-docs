@@ -32,4 +32,4 @@ Using the UI:
 | REST catalog | Iceberg | [Core](/use-cases/data-lake/rest-catalog) | 25.10+ |
 | Unity Catalog | Iceberg (UniForm-enabled and managed), Delta | Cloud (Iceberg only) & [Core](/use-cases/data-lake/unity-catalog) | 25.10+ |
 
-We have more catalogs planned including Horizon and S3 tables REST endpoint.
+We have more catalogs planned, including Horizon and S3 tables REST endpoint.
