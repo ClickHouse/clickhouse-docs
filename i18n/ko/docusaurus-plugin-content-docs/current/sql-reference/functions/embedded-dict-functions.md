@@ -14,7 +14,7 @@ doc_type: 'reference'
 따라서 이 섹션에 제시된 예제는 필요한 구성을 먼저 수행하지 않으면 [ClickHouse Fiddle](https://fiddle.clickhouse.com/)과 기본 설정 상태의 빠른 배포 및 프로덕션 배포 환경에서 예외를 발생시킵니다.
 :::
 
-참조 목록 생성에 대한 정보는 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries) 섹션을 참조하십시오.
+참조 목록 생성에 대한 정보는 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded) 섹션을 참조하십시오.
 
 ## 다중 지오베이스 \{#multiple-geobases\}
 
@@ -377,7 +377,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-지역의 인구 수를 가져옵니다. 인구 수는 geobase와 함께 제공되는 파일에 기록될 수 있습니다. 「[Dictionaries](../statements/create/dictionary/embedded#embedded-dictionaries)」 섹션을 참조하십시오. 지역에 대한 인구 수가 기록되어 있지 않으면 0을 반환합니다. geobase에서는 상위 지역에는 인구 수가 기록되어 있지 않고 하위 지역에만 기록되어 있을 수 있습니다.
+지역의 인구 수를 가져옵니다. 인구 수는 geobase와 함께 제공되는 파일에 기록될 수 있습니다. 「[Dictionaries](../statements/create/dictionary/embedded)」 섹션을 참조하십시오. 지역에 대한 인구 수가 기록되어 있지 않으면 0을 반환합니다. geobase에서는 상위 지역에는 인구 수가 기록되어 있지 않고 하위 지역에만 기록되어 있을 수 있습니다.
 
 **구문**
 

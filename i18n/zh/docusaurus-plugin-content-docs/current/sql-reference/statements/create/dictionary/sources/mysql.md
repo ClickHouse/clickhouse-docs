@@ -62,20 +62,20 @@ import TabItem from '@theme/TabItem';
 
 设置字段：
 
-| Setting                   | 描述                                                                                                                         |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `port`                    | MySQL 服务器端口。你可以为所有副本统一指定，或在每个副本配置部分（`<replica>` 内部）单独指定。                                                                   |
-| `user`                    | MySQL USER 名称。你可以为所有副本统一指定，或在每个副本配置部分（`<replica>` 内部）单独指定。                                                                 |
-| `password`                | MySQL USER 的密码。你可以为所有副本统一指定，或在每个副本配置部分（`<replica>` 内部）单独指定。                                                                |
-| `replica`                 | 副本配置部分。可以有多个该配置段。                                                                                                          |
-| `replica/host`            | MySQL 主机地址。                                                                                                                |
-| `replica/priority`        | 副本优先级。在尝试连接时，ClickHouse 会按优先级顺序遍历副本。数字越小，优先级越高。                                                                            |
-| `db`                      | 数据库名称。                                                                                                                     |
-| `table`                   | 表名称。                                                                                                                       |
-| `where`                   | 选择条件。条件语法与 MySQL 中 `WHERE` 子句相同，例如 `id > 10 AND id < 20`。可选。                                                               |
-| `invalidate_query`        | 用于检查字典状态的查询。可选。详见章节 [Refreshing dictionary data using LIFETIME](../lifetime.md#refreshing-dictionary-data-using-lifetime)。 |
-| `fail_on_connection_loss` | 控制服务器在连接丢失时的行为。如果为 `true`，当客户端与服务器之间的连接丢失时会立即抛出异常。如果为 `false`，ClickHouse 服务器会在抛出异常前重试执行该查询三次。请注意，重试会导致响应时间增加。默认值：`false`。  |
-| `query`                   | 自定义查询。可选。                                                                                                                  |
+| Setting                   | 描述                                                                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `port`                    | MySQL 服务器端口。你可以为所有副本统一指定，或在每个副本配置部分（`&lt;replica&gt;` 内部）单独指定。                                                            |
+| `user`                    | MySQL USER 名称。你可以为所有副本统一指定，或在每个副本配置部分（`&lt;replica&gt;` 内部）单独指定。                                                          |
+| `password`                | MySQL USER 的密码。你可以为所有副本统一指定，或在每个副本配置部分（`&lt;replica&gt;` 内部）单独指定。                                                         |
+| `replica`                 | 副本配置部分。可以有多个该配置段。                                                                                                         |
+| `replica/host`            | MySQL 主机地址。                                                                                                               |
+| `replica/priority`        | 副本优先级。在尝试连接时，ClickHouse 会按优先级顺序遍历副本。数字越小，优先级越高。                                                                           |
+| `db`                      | 数据库名称。                                                                                                                    |
+| `table`                   | 表名称。                                                                                                                      |
+| `where`                   | 选择条件。条件语法与 MySQL 中 `WHERE` 子句相同，例如 `id &gt; 10 AND id &lt; 20`。可选。                                                        |
+| `invalidate_query`        | 用于检查字典状态的查询。可选。详见章节 [Refreshing dictionary data using LIFETIME](../lifetime.md)。                                          |
+| `fail_on_connection_loss` | 控制服务器在连接丢失时的行为。如果为 `true`，当客户端与服务器之间的连接丢失时会立即抛出异常。如果为 `false`，ClickHouse 服务器会在抛出异常前重试执行该查询三次。请注意，重试会导致响应时间增加。默认值：`false`。 |
+| `query`                   | 自定义查询。可选。                                                                                                                 |
 
 :::note
 `table` 或 `where` 字段不能与 `query` 字段一起使用。同时，`table` 与 `query` 字段中必须声明其中一个。

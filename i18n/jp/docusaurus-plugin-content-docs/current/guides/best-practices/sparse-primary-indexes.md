@@ -23,7 +23,6 @@ import sparsePrimaryIndexes09b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes09c from '@site/static/images/guides/best-practices/sparse-primary-indexes-09c.png';
 import sparsePrimaryIndexes10 from '@site/static/images/guides/best-practices/sparse-primary-indexes-10.png';
 import sparsePrimaryIndexes11 from '@site/static/images/guides/best-practices/sparse-primary-indexes-11.png';
-import sparsePrimaryIndexes12a from '@site/static/images/guides/best-practices/sparse-primary-indexes-12a.png';
 import sparsePrimaryIndexes12b1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-1.png';
 import sparsePrimaryIndexes12b2 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-2.png';
 import sparsePrimaryIndexes12c1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12c-1.png';
@@ -344,7 +343,7 @@ ClickHouse は<a href="https://clickhouse.com/docs/introduction/distinctive-feat
   - 次に `URL`、
   - そして最後に `EventTime` の順です。
 
-<Image img={sparsePrimaryIndexes01} size="md" alt="スパースなプライマリインデックス 01" background="white"/>
+<Image img={sparsePrimaryIndexes01} size="md" alt="スパースなプライマリインデックス 01" />
 
 `UserID.bin`、`URL.bin`、`EventTime.bin` は、`UserID`、`URL`、`EventTime` カラムの値が格納されているディスク上のデータファイルです。
 
@@ -366,7 +365,7 @@ ClickHouse は<a href="https://clickhouse.com/docs/introduction/distinctive-feat
 
 次の図は、テーブルの 887 万行（のカラム値）がどのように 1083 個のグラニュールに編成されているかを示しています。これは、テーブルの DDL ステートメントに `index_granularity`（デフォルト値の 8192 に設定）が含まれている結果です。
 
-<Image img={sparsePrimaryIndexes02} size="md" alt="スパースなプライマリインデックス 02" background="white"/>
+<Image img={sparsePrimaryIndexes02} size="md" alt="スパースなプライマリインデックス 02" />
 
 最初の（ディスク上の物理順序に基づく）8192 行（のカラム値）は論理的にグラニュール 0 に属し、次の 8192 行（のカラム値）はグラニュール 1 に属し、その後も同様に続きます。
 
@@ -398,11 +397,11 @@ ClickHouse は<a href="https://clickhouse.com/docs/introduction/distinctive-feat
 - 最初のインデックスエントリ（下の図の「mark 0」）は、上の図におけるグラニュール 0 の最初の行のキーカラム値を保持しています。
 - 2 番目のインデックスエントリ（下の図の「mark 1」）は、上の図におけるグラニュール 1 の最初の行のキーカラム値を保持しており、以降も同様です。
 
-<Image img={sparsePrimaryIndexes03a} size="lg" alt="スパースなプライマリインデックス 03a" background="white"/>
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="スパースなプライマリインデックス 03a" />
 
 全体として、このテーブル（887 万行、1083 個のグラニュール）に対して、インデックスには 1083 個のエントリがあります。
 
-<Image img={sparsePrimaryIndexes03b} size="md" alt="スパースなプライマリインデックス 03b" background="white"/>
+<Image img={sparsePrimaryIndexes03b} size="md" alt="スパースなプライマリインデックス 03b" />
 
 :::note
 
@@ -621,7 +620,7 @@ LIMIT 10;
 
 次の図は、このテーブルのプライマリインデックスファイルの一部を示しています。
 
-<Image img={sparsePrimaryIndexes04} size="md" alt="スパースなプライマリインデックス 04" background="white"/>
+<Image img={sparsePrimaryIndexes04} size="md" alt="スパースなプライマリインデックス 04" />
 
 前述のとおり、インデックス内の 1083 個の UserID マークに対して二分探索を行うことで、マーク 176 が特定されました。対応するグラニュール 176 には、UserID カラムの値が 749.927.693 の行が含まれている可能性があります。
 
@@ -643,7 +642,7 @@ ClickHouse では、このテーブルのすべてのグラニュールの物理
 
 次の図は、テーブルの `UserID`、`URL`、`EventTime` カラムのグラニュールの物理的な位置を保存している 3 つのマークファイル `UserID.mrk`、`URL.mrk`、`EventTime.mrk` を示しています。
 
-<Image img={sparsePrimaryIndexes05} size="md" alt="スパースなプライマリインデックス 05" background="white"/>
+<Image img={sparsePrimaryIndexes05} size="md" alt="スパースなプライマリインデックス 05" />
 
 すでに説明したように、プライマリインデックスはフラットな非圧縮配列ファイル（primary.idx）であり、0 から始まる番号付きのインデックスマークを含みます。
 
@@ -692,7 +691,7 @@ mark ファイルによる間接参照により、プライマリインデック
 
 次の図とその後の説明では、サンプルクエリにおいて ClickHouse が UserID.bin データファイル内のグラニュール 176 をどのように特定するかを示します。
 
-<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" />
 
 このガイドの前半で説明したように、ClickHouse はプライマリインデックスマーク 176 を選択し、その結果としてグラニュール 176 を、クエリにマッチする行を含んでいる可能性があるものとして選びました。
 
@@ -811,7 +810,7 @@ Processed 8.81 million rows,
 
 UserID のカーディナリティが低いと仮定します。この場合、同じ UserID の値が複数のテーブル行およびグラニュール、したがって複数のインデックスマークにまたがって出現する可能性が高くなります。同じ UserID を持つインデックスマークについては、（テーブル行がまず UserID、次に URL でソートされているため）インデックスマークにおける URL の値は昇順に並びます。これにより、以下で説明するような効率的なフィルタリングが可能になります:
 
-<Image img={sparsePrimaryIndexes07} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes07} size="md" alt="Sparse Primary Indices 06" />
 
 上の図に示した抽象的なサンプルデータに対するグラニュール選択処理には、3 つの異なるシナリオがあります:
 
@@ -825,7 +824,7 @@ UserID のカーディナリティが低いと仮定します。この場合、�
 
 UserID のカーディナリティが高い場合、同じ UserID の値が複数のテーブル行およびグラニュールに分散している可能性は低くなります。これは、インデックスマークにおける URL 値が単調増加にはならないことを意味します:
 
-<Image img={sparsePrimaryIndexes08} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes08} size="md" alt="Sparse Primary Indices 06" />
 
 上の図から分かるように、URL の値が W3 より小さいすべてのマークは、そのマークに対応するグラニュールの行を ClickHouse エンジンにストリーミングするために選択されています。
 
@@ -856,7 +855,7 @@ ALTER TABLE hits_UserID_URL MATERIALIZE INDEX url_skipping_index;
 
 ClickHouseは、4つの連続した[グラニュール](#data-is-organized-into-granules-for-parallel-data-processing)のグループごとに（上記の`ALTER TABLE`文の`GRANULARITY 4`句に注意してください）、最小および最大のURL値を格納する追加の索引を作成しました:
 
-<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" background="white" />
+<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" />
 
 最初の索引エントリ（上図の&#39;mark 0&#39;）には、[テーブルの最初の4つのグラニュールに属する行](#data-is-organized-into-granules-for-parallel-data-processing)の最小および最大URL値が格納されています。
 
@@ -893,15 +892,15 @@ UserIDとURLの両方が同様に高いカーディナリティを持つため�
 
 異なる primary key を持つ **2 つ目のテーブル**を作成する場合、クエリはそのクエリに最も適したテーブルバージョンに対して明示的に実行する必要があり、新しいデータは両方のテーブルを同期させるために、両方のテーブルへ明示的に挿入しなければなりません:
 
-<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" background="white"/>
+<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" />
 
 **materialized view** を使用する場合、追加テーブルは暗黙的に作成され、両方のテーブル間でデータは自動的に同期されます:
 
-<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" background="white"/>
+<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" />
 
 そして **projection** は最も透過的なオプションです。暗黙的に作成され（かつ非表示の）追加テーブルをデータ変更とともに自動的に同期させるだけでなく、ClickHouse がクエリに対して最も効果的なテーブルバージョンを自動的に選択します:
 
-<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" background="white"/>
+<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" />
 
 以下では、複数の primary index を作成して利用するためのこれら 3 つのオプションについて、より詳しく実例を交えて説明します。
 
@@ -950,11 +949,11 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 主キーのカラムの順序を入れ替えたため、挿入された行は（[元のテーブル](#a-table-with-a-primary-key) と比べて）ディスク上に異なる辞書順で格納されるようになり、その結果、そのテーブルの 1083 個のグラニュールにも以前とは異なる値が含まれるようになりました。
 
-<Image img={sparsePrimaryIndexes10} size="md" alt="スパースな主キーインデックス 10" background="white" />
+<Image img={sparsePrimaryIndexes10} size="md" alt="スパースな主キーインデックス 10" />
 
 これが、結果として得られた主キーです:
 
-<Image img={sparsePrimaryIndexes11} size="md" alt="スパースな主キーインデックス 11" background="white" />
+<Image img={sparsePrimaryIndexes11} size="md" alt="スパースな主キーインデックス 11" />
 
 これにより、URL カラムでフィルタリングするサンプルクエリの実行を大幅に高速化し、URL &quot;http://public&#95;search&quot; を最も頻繁にクリックしたユーザーのトップ 10 を算出できるようになります。
 
@@ -1107,11 +1106,11 @@ Ok.
 * 新しい行がソーステーブル hits&#95;UserID&#95;URL に挿入されると、それらの行は暗黙的に作成されたテーブルにも自動的に挿入されます
 * 実質的に、暗黙的に作成されたテーブルは、[明示的に作成したセカンダリテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables) と同じ行順序とプライマリインデックスを持ちます:
 
-<Image img={sparsePrimaryIndexes12b1} size="md" alt="スパースなプライマリインデックス 12b1" background="white" />
+<Image img={sparsePrimaryIndexes12b1} size="md" alt="スパースなプライマリインデックス 12b1" />
 
 ClickHouse は、暗黙的に作成されたテーブルの [カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin)、[マークファイル](#mark-files-are-used-for-locating-granules) (*.mrk2)、および [プライマリインデックス](#the-primary-index-has-one-entry-per-granule) (primary.idx) を、ClickHouse サーバーのデータディレクトリ内にある特別なフォルダー内に保存します:
 
-<Image img={sparsePrimaryIndexes12b2} size="md" alt="スパースなプライマリインデックス 12b2" background="white" />
+<Image img={sparsePrimaryIndexes12b2} size="md" alt="スパースなプライマリインデックス 12b2" />
 
 :::
 
@@ -1197,11 +1196,11 @@ ALTER TABLE hits_UserID_URL
 * projection の ORDER BY がクエリの ORDER BY と一致していても、projection によって ORDER BY を含むクエリがより効率的になるわけではない点に注意してください（[https://github.com/ClickHouse/ClickHouse/issues/47333](https://github.com/ClickHouse/ClickHouse/issues/47333) を参照）
 * 実質的には、暗黙的に作成される非表示テーブルは、[明示的に作成したセカンダリテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables) と同じ行順序とプライマリインデックスを持ちます:
 
-<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white" />
+<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" />
 
 ClickHouse は、非表示テーブルの [カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns)（*.bin）、[mark ファイル](#mark-files-are-used-for-locating-granules)（*.mrk2）、および [プライマリインデックス](#the-primary-index-has-one-entry-per-granule)（primary.idx）を、ソーステーブルのデータファイル、mark ファイル、プライマリインデックスファイルと並べて、専用のフォルダ（下のスクリーンショットでオレンジ色で示されている）に保存します:
 
-<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" background="white" />
+<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" />
 
 :::
 
@@ -1485,7 +1484,7 @@ ORDER BY Ratio ASC
 
 次の図は、キー列をカーディナリティの昇順で並べた主キーに対して、行がディスク上でどのような順序で並ぶかを概略的に示しています。
 
-<Image img={sparsePrimaryIndexes14a} size="md" alt="スパース主インデックス 14a" background="white" />
+<Image img={sparsePrimaryIndexes14a} size="md" alt="スパース主インデックス 14a" />
 
 [テーブルの行データは主キーのカラム順にディスク上へ格納される](#data-is-stored-on-disk-ordered-by-primary-key-columns)ことについては、すでに述べました。
 
@@ -1496,7 +1495,7 @@ ORDER BY Ratio ASC
 
 これに対して、次の図はキー列をカーディナリティの降順で並べた主キーに対して、行がディスク上でどのような順序で並ぶかを概略的に示しています。
 
-<Image img={sparsePrimaryIndexes14b} size="md" alt="スパース主インデックス 14b" background="white" />
+<Image img={sparsePrimaryIndexes14b} size="md" alt="スパース主インデックス 14b" />
 
 
 これでテーブルの行はまず `ch` の値で並べ替えられ、同じ `ch` の値を持つ行同士は `cl` の値で並べ替えられます。
@@ -1534,7 +1533,7 @@ ClickHouse 上に構築されたアプリケーションが、ClickHouse テー�
 - コンテンツが変更されたときの行の挿入順（たとえばテキストエリアに文字をタイプするキーストロークによる変更）と
 - `PRIMARY KEY (hash)` を使用した場合に、挿入された行のデータがディスク上に並ぶ順序:
 
-<Image img={sparsePrimaryIndexes15a} size="md" alt="スパースなプライマリインデックス 15a" background="white"/>
+<Image img={sparsePrimaryIndexes15a} size="md" alt="スパースなプライマリインデックス 15a" />
 
 `hash` カラムがプライマリキー列として使われているため、
 
@@ -1551,7 +1550,7 @@ ClickHouse 上に構築されたアプリケーションが、ClickHouse テー�
 - コンテンツが変更されたときの行の挿入順（たとえばテキストエリアに文字をタイプするキーストロークによる変更）と
 - 複合 `PRIMARY KEY (fingerprint, hash)` を使用した場合に、挿入された行のデータがディスク上に並ぶ順序:
 
-<Image img={sparsePrimaryIndexes15b} size="md" alt="スパースなプライマリインデックス 15b" background="white"/>
+<Image img={sparsePrimaryIndexes15b} size="md" alt="スパースなプライマリインデックス 15b" />
 
 これにより、ディスク上の行はまず `fingerprint` で並べ替えられ、同じ fingerprint 値を持つ行については、その `hash` 値によって最終的な順序が決まります。
 

@@ -14,13 +14,13 @@ doc_type: 'reference'
 
 ## Столбцы \{#columns\}
 
-- `name` ([String](/docs/en/sql-reference/data-types/string.md)) — Имя failpoint-а.
-- `type` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — Тип failpoint-а. Возможные значения:
+- `name` ([String](../../sql-reference/data-types/string.md)) — Имя failpoint-а.
+- `type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип failpoint-а. Возможные значения:
   - `'once'` — Срабатывает один раз и затем автоматически отключается.
   - `'regular'` — Срабатывает каждый раз при срабатывании failpoint-а.
   - `'pauseable_once'` — Блокирует выполнение один раз до явного возобновления.
   - `'pauseable'` — Блокирует выполнение каждый раз при срабатывании failpoint-а до явного возобновления.
-- `enabled` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — Включен ли в данный момент failpoint. `1` означает включен, `0` — выключен.
+- `enabled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Включен ли в данный момент failpoint. `1` означает включен, `0` — выключен.
 
 ## Пример \{#example\}
 

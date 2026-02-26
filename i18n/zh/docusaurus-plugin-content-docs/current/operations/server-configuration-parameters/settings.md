@@ -75,6 +75,10 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />groupArray 函数的最大数组元素大小（字节）。该限制在序列化时检查，有助于避免状态大小过大。
 
+## allow_experimental_webassembly_udf \{#allow_experimental_webassembly_udf\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />启用 WebAssembly UDF 的实验性支持
+
 ## allow_feature_tier \{#allow_feature_tier\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
@@ -926,7 +930,7 @@ ZooKeeper 中的副本名称。
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)&quot;。
 
 **示例**
 
@@ -1249,6 +1253,12 @@ ZooKeeper 中的副本名称。
 上述所有内容同样适用于 `aes_256_gcm_siv`（但密钥长度必须为 32 字节）。
 :::
 
+
+## enforce_keeper_component_tracking \{#enforce_keeper_component_tracking\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+如果启用该设置，每个 ZooKeeper 请求都必须通过 `Coordination::setCurrentComponent` 设置组件名称。如缺少组件，则会抛出 `LOGICAL_ERROR` 异常。
 
 ## error_log \{#error_log\}
 
@@ -1819,6 +1829,14 @@ ClickHouse 支持在无需同时停止所有副本以更新配置的情况下，
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />要创建的 jemalloc 后台线程最大数量，将其设为 0 时使用 jemalloc 的默认值
+
+## jemalloc_profiler_sampling_rate \{#jemalloc_profiler_sampling_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="19" />
+
+控制 jemalloc 中的 `lg_prof_sample`——分配样本之间平均间隔（以字节为单位）的以 2 为底的对数。
+默认值 19 对应 512 KiB。将其设为更小的值会提高采样频率（更多开销、更多细节），更大的值则会降低采样频率。
+更改此值会调用 `prof.reset`，从而重置所有累积的性能分析统计信息。需要先启用 profiling（`MALLOC_CONF=prof:true`）。
 
 ## keep_alive_timeout \{#keep_alive_timeout\}
 

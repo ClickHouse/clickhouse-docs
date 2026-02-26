@@ -63,9 +63,52 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 대상 데이터베이스에 소스 데이터베이스 구성을 동일하게 반영하려면 소스 데이터베이스의 스키마 덤프를 확보해야 합니다. `pg_dump`를 사용하여 소스 PostgreSQL 데이터베이스의 스키마만 포함된 스키마 전용 덤프를 생성할 수 있습니다:
 
+<details>
+  <summary>pg&#95;dump 설치</summary>
+
+  **Ubuntu:**
+
+  패키지 목록을 업데이트합니다:
+
+  ```shell
+  sudo apt update
+  ```
+
+  PostgreSQL 클라이언트를 설치합니다:
+
+  ```shell
+  sudo apt install postgresql-client
+  ```
+
+  **macOS:**
+
+  방법 1: Homebrew 사용(권장)
+
+  Homebrew가 없는 경우 설치합니다:
+
+  ```shell
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+  PostgreSQL을 설치합니다:
+
+  ```shell
+  brew install postgresql
+  ```
+
+  설치를 확인합니다:
+
+  ```shell
+  pg_dump --version
+  ```
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
+
+
+#### 스키마 덤프에서 고유 제약 조건과 인덱스 제거 \{#migration-peerdb-remove-constraints-indexes\}
 
 대상 데이터베이스에 이를 적용하기 전에 PeerDB가 대상 테이블로 데이터를 수집할 때 이러한 제약으로 인해 차단되지 않도록 덤프 파일에서 UNIQUE 제약 조건과 인덱스를 제거해야 합니다. 이는 다음과 같이 제거할 수 있습니다:
 

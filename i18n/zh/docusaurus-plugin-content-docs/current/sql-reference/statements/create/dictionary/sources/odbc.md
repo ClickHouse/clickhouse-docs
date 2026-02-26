@@ -46,14 +46,14 @@ import TabItem from '@theme/TabItem';
 
 设置字段说明：
 
-| Setting                | Description                                                                                                                   |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `db`                   | 数据库名称。如果在 `<connection_string>` 参数中已经设置了数据库名称，则可以省略。                                                                          |
-| `table`                | 表名，以及（如存在）对应的 schema 名称。                                                                                                      |
-| `connection_string`    | 连接字符串。                                                                                                                        |
-| `invalidate_query`     | 用于检查字典状态的查询。可选。详情参见 [Refreshing dictionary data using LIFETIME](../lifetime.md#refreshing-dictionary-data-using-lifetime) 一节。 |
-| `background_reconnect` | 当连接失败时，在后台重新连接到副本。可选。                                                                                                         |
-| `query`                | 自定义查询。可选。                                                                                                                     |
+| Setting                | Description                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| `db`                   | 数据库名称。如果在 `<connection_string>` 参数中已经设置了数据库名称，则可以省略。                                |
+| `table`                | 表名，以及（如存在）对应的 schema 名称。                                                            |
+| `connection_string`    | 连接字符串。                                                                              |
+| `invalidate_query`     | 用于检查字典状态的查询。可选。详情参见 [Refreshing dictionary data using LIFETIME](../lifetime.md) 一节。 |
+| `background_reconnect` | 当连接失败时，在后台重新连接到副本。可选。                                                               |
+| `query`                | 自定义查询。可选。                                                                           |
 
 :::note
 `table` 和 `query` 字段不能同时使用，并且二者中必须至少声明一个。

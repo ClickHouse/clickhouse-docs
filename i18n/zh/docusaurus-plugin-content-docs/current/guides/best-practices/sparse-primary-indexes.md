@@ -23,7 +23,6 @@ import sparsePrimaryIndexes09b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes09c from '@site/static/images/guides/best-practices/sparse-primary-indexes-09c.png';
 import sparsePrimaryIndexes10 from '@site/static/images/guides/best-practices/sparse-primary-indexes-10.png';
 import sparsePrimaryIndexes11 from '@site/static/images/guides/best-practices/sparse-primary-indexes-11.png';
-import sparsePrimaryIndexes12a from '@site/static/images/guides/best-practices/sparse-primary-indexes-12a.png';
 import sparsePrimaryIndexes12b1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-1.png';
 import sparsePrimaryIndexes12b2 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-2.png';
 import sparsePrimaryIndexes12c1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12c-1.png';
@@ -344,7 +343,7 @@ ClickHouse 是一个<a href="https://clickhouse.com/docs/introduction/distinctiv
   - 然后按 `URL`，
   - 最后按 `EventTime`：
 
-<Image img={sparsePrimaryIndexes01} size="md" alt="稀疏主索引 01" background="white"/>
+<Image img={sparsePrimaryIndexes01} size="md" alt="稀疏主索引 01" />
 
 `UserID.bin`、`URL.bin` 和 `EventTime.bin` 是磁盘上的数据文件，其中分别存储了 `UserID`、`URL` 和 `EventTime` 列的值。
 
@@ -367,7 +366,7 @@ ClickHouse 是一个<a href="https://clickhouse.com/docs/introduction/distinctiv
 下图展示了我们表中 887 万行（其列值）如何组织成 1083 个粒度，
 这是由于表的 DDL 语句中包含的 `index_granularity` 设置（设置为其默认值 8192）所决定的。
 
-<Image img={sparsePrimaryIndexes02} size="md" alt="Sparse Primary Indices 02" background="white"/>
+<Image img={sparsePrimaryIndexes02} size="md" alt="Sparse Primary Indices 02" />
 
 按磁盘物理顺序，最前面的 8192 行（其列值）在逻辑上属于粒度 0，接下来的 8192 行（其列值）属于粒度 1，以此类推。
 
@@ -399,11 +398,11 @@ ClickHouse 是一个<a href="https://clickhouse.com/docs/introduction/distinctiv
 - 第一个索引条目（下图中的“mark 0”）存储的是上图中粒度 0 的第一行的键列值，
 - 第二个索引条目（下图中的“mark 1”）存储的是上图中粒度 1 的第一行的键列值，依此类推。
 
-<Image img={sparsePrimaryIndexes03a} size="lg" alt="稀疏主索引 03a" background="white"/>
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="稀疏主索引 03a" />
 
 总体而言，对于我们的这张包含 887 万行和 1083 个粒度的表，索引共有 1083 个条目：
 
-<Image img={sparsePrimaryIndexes03b} size="md" alt="稀疏主索引 03b" background="white"/>
+<Image img={sparsePrimaryIndexes03b} size="md" alt="稀疏主索引 03b" />
 
 :::note
 
@@ -621,7 +620,7 @@ LIMIT 10;
 
 下图展示了我们这张表的主索引文件的一部分。
 
-<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" background="white"/>
+<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" />
 
 如上文所述，通过在索引中的 1083 个 UserID 标记上执行二分查找，找到了标记 176。与之对应的粒度 176 因此可能包含 `UserID` 列值为 749.927.693 的行。
 
@@ -643,7 +642,7 @@ LIMIT 10;
 
 下图展示了三个标记文件 `UserID.mrk`、`URL.mrk` 和 `EventTime.mrk`，它们存储了表中 `UserID`、`URL` 和 `EventTime` 列的粒度物理位置。
 
-<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" background="white"/>
+<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" />
 
 我们已经讨论过，主索引是一个扁平的未压缩数组文件（primary.idx），其中包含从 0 开始编号的索引标记。
 
@@ -692,7 +691,7 @@ LIMIT 10;
 
 下图及其后面的文字说明了在我们的示例查询中，ClickHouse 是如何在 UserID.bin 数据文件中定位粒度 176 的。
 
-<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" />
 
 我们在本指南前面已经讨论过，ClickHouse 选择了主键索引标记 176，因此选择了粒度 176 作为可能包含与我们的查询匹配行的粒度。
 
@@ -811,7 +810,7 @@ Processed 8.81 million rows,
 
 假设 UserID 具有较低基数。在这种情况下，相同的 UserID 值很可能分布在多个表行和颗粒中，从而跨越多个索引标记。对于具有相同 UserID 的索引标记，其 URL 值是按升序排序的（因为表行首先按 UserID 然后按 URL 排序）。这使得可以按如下方式进行高效过滤：
 
-<Image img={sparsePrimaryIndexes07} size="md" alt="稀疏主索引 06" background="white"/>
+<Image img={sparsePrimaryIndexes07} size="md" alt="稀疏主索引 06" />
 
 对于上图中的抽象示例数据，在颗粒选择过程中有三种不同场景：
 
@@ -825,7 +824,7 @@ Processed 8.81 million rows,
 
 当 UserID 具有较高基数时，相同的 UserID 值分布在多个表行和颗粒上的可能性就很低。这意味着索引标记的 URL 值不再单调递增：
 
-<Image img={sparsePrimaryIndexes08} size="md" alt="稀疏主索引 06" background="white"/>
+<Image img={sparsePrimaryIndexes08} size="md" alt="稀疏主索引 06" />
 
 如上图所示，所有 URL 值小于 W3 的索引标记都会被选中，用于将其关联颗粒中的行流式传入 ClickHouse 引擎。
 
@@ -856,7 +855,7 @@ ALTER TABLE hits_UserID_URL MATERIALIZE INDEX url_skipping_index;
 
 ClickHouse 现在创建了一个额外的索引,该索引为每组 4 个连续的[颗粒](#data-is-organized-into-granules-for-parallel-data-processing)存储最小和最大 URL 值(注意上面 `ALTER TABLE` 语句中的 `GRANULARITY 4` 子句):
 
-<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" background="white" />
+<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" />
 
 第一个索引条目(上图中的 &#39;mark 0&#39;)存储了[属于表中前 4 个颗粒的行](#data-is-organized-into-granules-for-parallel-data-processing)的最小和最大 URL 值。
 
@@ -893,15 +892,15 @@ ClickHouse 现在创建了一个额外的索引,该索引为每组 4 个连续�
 
 当创建一张具有不同主键的**第二张表**时，查询必须显式发送到最适合该查询的表版本，并且为了保持两张表的数据同步，新数据必须显式插入到这两张表中：
 
-<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" background="white"/>
+<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" />
 
 使用 **materialized view** 时，会隐式创建额外的表，并且两张表之间的数据会自动保持同步：
 
-<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" background="white"/>
+<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" />
 
 而 **projection** 是最透明的选项，因为除了会自动将隐式创建（且对用户隐藏）的额外表与数据变更保持同步之外，ClickHouse 还会自动为查询选择最有效的表版本：
 
-<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" background="white"/>
+<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" />
 
 在接下来的内容中，我们将更详细地讨论这三种创建和使用多个主索引的选项，并配以实际示例。
 
@@ -934,7 +933,7 @@ INSERT INTO hits_URL_UserID
 SELECT * FROM hits_UserID_URL;
 ```
 
-返回结果大致如下：
+返回结果如下：
 
 ```response
 Ok.
@@ -950,11 +949,11 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 由于我们调整了主键中列的顺序，插入的行现在在磁盘上的字典序存储顺序（与我们的[原始表](#a-table-with-a-primary-key)相比）也发生了变化，因此该表的 1083 个 granule 中所包含的值也与之前不同：
 
-<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" background="white" />
+<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" />
 
 这是新的主键：
 
-<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" background="white" />
+<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" />
 
 现在可以利用它显著加速我们示例查询的执行：该查询在 URL 列上进行过滤，用于计算在 URL &quot;http://public&#95;search&quot; 上点击次数最多的前 10 个用户：
 
@@ -1107,11 +1106,11 @@ Ok.
 * 如果有新行插入到源表 hits&#95;UserID&#95;URL 中，那么这些行也会自动插入到该隐式创建的表中
 * 实际上，这个隐式创建的表与[我们显式创建的二级表](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)具有相同的行顺序和主索引：
 
-<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" background="white" />
+<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" />
 
 ClickHouse 会将该隐式创建表的[列数据文件](#data-is-stored-on-disk-ordered-by-primary-key-columns)（*.bin）、[mark 文件](#mark-files-are-used-for-locating-granules)（*.mrk2）以及[主索引](#the-primary-index-has-one-entry-per-granule)（primary.idx）存储在 ClickHouse 服务器数据目录中的一个特殊目录中：
 
-<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" background="white" />
+<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" />
 
 :::
 
@@ -1194,14 +1193,14 @@ ALTER TABLE hits_UserID_URL
 * 我们使用 `MATERIALIZE` 关键字，以便立即用源表 [hits&#95;UserID&#95;URL](#a-table-with-a-primary-key) 中的全部 887 万行数据填充隐藏表
 * 如果向源表 hits&#95;UserID&#95;URL 插入新行，这些行也会自动插入到隐藏表中
 * 查询在语法上始终以源表 hits&#95;UserID&#95;URL 为目标，但如果隐藏表的行顺序和主索引能够实现更高效的查询执行，则会优先使用该隐藏表
-* 请注意，投影并不会让使用 ORDER BY 的查询更高效，即使该 ORDER BY 与投影的 ORDER BY 语句完全匹配也是如此（参见 [https://github.com/ClickHouse/ClickHouse/issues/47333](https://github.com/ClickHouse/ClickHouse/issues/47333)）
+* 请注意，投影并不会让使用 ORDER BY 的查询更高效，即使该 ORDER BY 与投影的 ORDER BY 语句完全匹配也是如此（参见 https://github.com/ClickHouse/ClickHouse/issues/47333）
 * 实际上，隐式创建的隐藏表与[我们显式创建的二级表](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)具有相同的行顺序和主索引：
 
-<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white" />
+<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" />
 
 ClickHouse 将隐藏表的[列数据文件](#data-is-stored-on-disk-ordered-by-primary-key-columns)（*.bin）、[mark 文件](#mark-files-are-used-for-locating-granules)（*.mrk2）以及[主索引](#the-primary-index-has-one-entry-per-granule)（primary.idx）存储在一个特殊文件夹中（在下方截图中用橙色标出），该文件夹与源表的数据文件、mark 文件和主索引文件位于同一位置：
 
-<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" background="white" />
+<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" />
 
 :::
 
@@ -1217,7 +1216,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-返回结果如下：
+查询结果如下：
 
 ```response
 ┌─────UserID─┬─Count─┐
@@ -1486,7 +1485,7 @@ ORDER BY Ratio ASC
 
 下图概略展示了主键在磁盘上的行顺序，其中键列按基数升序排列：
 
-<Image img={sparsePrimaryIndexes14a} size="md" alt="稀疏主索引 14a" background="white" />
+<Image img={sparsePrimaryIndexes14a} size="md" alt="稀疏主索引 14a" />
 
 我们已经讨论过[表的行数据在磁盘上是按主键列排序存储的](#data-is-stored-on-disk-ordered-by-primary-key-columns)。
 
@@ -1498,7 +1497,7 @@ ORDER BY Ratio ASC
 
 与上图相对，下图概略展示了主键在磁盘上的行顺序，其中键列按基数降序排列：
 
-<Image img={sparsePrimaryIndexes14b} size="md" alt="稀疏主索引 14b" background="white" />
+<Image img={sparsePrimaryIndexes14b} size="md" alt="稀疏主索引 14b" />
 
 
 现在，表中的行首先按它们的 `ch` 值排序，具有相同 `ch` 值的行再按它们的 `cl` 值排序。
@@ -1536,7 +1535,7 @@ ORDER BY Ratio ASC
 - 当内容发生变化时（例如由于在文本区域中输入按键）行的插入顺序，以及
 - 当使用 `PRIMARY KEY (hash)` 时，插入行的数据在磁盘上的存储顺序：
 
-<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" background="white"/>
+<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" />
 
 由于使用了 `hash` 列作为主键列
 
@@ -1553,7 +1552,7 @@ ORDER BY Ratio ASC
 - 当内容发生变化时（例如由于在文本区域中输入按键）行的插入顺序，以及
 - 当使用复合 `PRIMARY KEY (fingerprint, hash)` 时，插入行的数据在磁盘上的存储顺序：
 
-<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" background="white"/>
+<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" />
 
 现在，磁盘上的行首先按照 `fingerprint` 排序；对于 fingerprint 值相同的行，其 `hash` 值决定最终顺序。
 

@@ -153,7 +153,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 ## 相关 \{#related\}
 
 - [PostgreSQL 表引擎](../../engines/table-engines/integrations/postgresql.md)
-- [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources#postgresql)
+- [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### 使用 PeerDB 复制或迁移 Postgres 数据 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

@@ -198,4 +198,4 @@ SELECT * FROM mysql_table
 ## 另请参阅 \{#see-also\}
 
 - [MySQL 表函数](../../../sql-reference/table-functions/mysql.md)
-- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources#mysql)
+- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)
