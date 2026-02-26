@@ -1449,9 +1449,191 @@ You should read and understand the [guide to secondary indices](/optimize/skippi
 
 **In general, they're effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which don't occur in many granules.**
 
-### Bloom filters for text search {#bloom-filters-for-text-search}
+### Text index for full text search {#text-index-for-full-text-search}
 
-For Observability queries, secondary indices can be useful when you need to perform text searches. Specifically, the ngram and token-based bloom filter indexes [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) and [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) can be used to accelerate searches over String columns with the operators `LIKE`, `IN`, and hasToken. Importantly, the token-based index generates tokens using non-alphanumeric characters as a separator. This means only tokens (or whole words) can be matched at query time. For more granular matching, the [N-gram bloom filter](/optimize/skipping-indexes#bloom-filter-types) can be used. This splits strings into ngrams of a specified size, thus allowing sub-word matching.
+For production-grade full text search, ClickHouse provides a specialized [text index](/engines/table-engines/mergetree-family/textindexes).
+This index builds an inverted index over tokenized text data, enabling fast token-based search queries.
+
+Text indexes are generally available (GA) starting from ClickHouse version 26.2.
+
+They can be defined on the following column types in MergeTree tables: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), and [Map](/sql-reference/data-types/map.md) (via [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) and [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map functions) columns in MergeTree tables. 
+
+A text index requires a `tokenizer` argument in its definition. Optionally, a preprocessor function can be specified to transform the input string before tokenization.
+
+The recommended functions to search in the index are: `hasAnyTokens` and `hasAllTokens`.
+Some traditional string search functions are also automatically optimized when a text index is present. See the documentation for details and supported functions [here](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) and [here](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
+
+In the examples below, we use a structured logs dataset.
+
+```sql
+CREATE TABLE otel_logs
+(
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
+)
+ENGINE = MergeTree
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
+```
+
+Without an index we can use the same functions.
+
+```sql
+SELECT count()
+FROM otel_logs
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: ff0b866c-6df7-47be-9e36-795ef3888169
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
+```
+
+This query performs a full scan of the Body column.
+
+#### Adding a text index {#adding-a-text-index}
+
+A text index can be added during table creation:
+
+```sql
+CREATE TABLE otel_logs_index_body
+(
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8,
+         INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000
+)
+ENGINE = MergeTree
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
+```
+
+Or added later using `ALTER TABLE`:
+
+```sql
+ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
+ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
+```
+
+This creates an inverted index for the Body column using the `splitByNonAlpha` tokenizer.
+
+> Note: A partially materialized index can already be used by queries, but maximum performance improvement is achieved after full materialization.
+
+```sql
+SELECT count()
+FROM otel_logs_index_body
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.013 sec. Processed 20.41 million rows, 20.41 MB (1.59 billion rows/s., 1.59 GB/s.)
+Peak memory usage: 15.23 MiB.
+```
+
+The index reduces the scanned data from gigabytes to megabytes and improves performance by approximately `45x`.
+
+#### Using a preprocessor {#using-a-preprocessor}
+
+In this dataset, the Body column contains a JSON-formatted string with multiple key-value pairs (e.g., `msg`, `id`, `ctx`, `attr`, etc.).
+
+Assume we are only interested in searching within the `msg` field.
+Instead of indexing the entire JSON string, we can define a preprocessor to extract only the `msg` value before tokenization.
+
+For example:
+
+```sql
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+```
+
+In this example the preprocessor:
+
+- Reduces the amount of text that is tokenized and indexed
+- Decreases index size
+- Reduces the probability of false positives
+- Improves query performance
+
+```sql
+SELECT count()
+FROM otel_logs_text_body_preprocessed
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.006 sec. Processed 13.54 million rows, 13.54 MB (2.45 billion rows/s., 2.45 GB/s.)
+Peak memory usage: 1.95 MiB.
+```
+
+Compared to the non-preprocessed index, performance improves by approximately 2×.
+
+Comparing Index Sizes
+
+```sql
+SELECT
+    `table`,
+    formatReadableSize(data_compressed_bytes) AS compressed_size,
+    formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+FROM system.data_skipping_indices
+WHERE startsWith(`table`, 'otel_logs')
+
+Query id: 730e4b77-e697-40b3-a24d-67219ec42075
+
+   ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
+1. │ otel_logs_text_index_body_preprocessed  │ 423.98 KiB      │ 424.29 KiB        │
+2. │ otel_logs_text_index_body               │ 2.76 GiB        │ 2.78 GiB          │
+   └─────────────────────────────────────────┴─────────────────┴───────────────────┘
+```
+
+Using a preprocessor reduces index size from gigabytes to a few hundred kilobytes — approximately 0.01% of the original size — while also improving query performance.
+
+**Other indexes for text search
+
+Further details on secondary skip indices can be found [here](/optimize/skipping-indexes#skip-index-functions).
+
+<details markdown="1">
+
+<summary>Bloom filters for text search</summary>
+
+The ngram and token-based bloom filter indexes [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) and [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) can be used to accelerate searches over String columns with the operators `LIKE`, `IN`, and hasToken. Importantly, the token-based index generates tokens using non-alphanumeric characters as a separator. This means only tokens (or whole words) can be matched at query time. For more granular matching, the [N-gram bloom filter](/optimize/skipping-indexes#bloom-filter-types) can be used. This splits strings into ngrams of a specified size, thus allowing sub-word matching.
 
 To evaluate the tokens that will be produced and therefore, matched, the `tokens` function can be used:
 
@@ -1476,10 +1658,6 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 
 1 row in set. Elapsed: 0.008 sec.
 ```
-
-:::note Inverted indices
-ClickHouse also has experimental support for inverted indices as a secondary index. We don't currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they're production-ready.
-:::
 
 For the purposes of this example we use the structured logs dataset. Suppose we wish to count logs where the `Referer` column contains `ultra`.
 
@@ -1629,7 +1807,7 @@ In the examples above, we can see the secondary bloom filter index is 12MB - alm
 
 Bloom filters can require significant tuning. We recommend following the notes [here](/engines/table-engines/mergetree-family/mergetree#bloom-filter) which can be useful in identifying optimal settings. Bloom filters can also be expensive at insert and merge time. You should evaluate the impact on insert performance prior to adding bloom filters to production.
 
-Further details on secondary skip indices can be found [here](/optimize/skipping-indexes#skip-index-functions).
+</details>
 
 ### Extracting from maps {#extracting-from-maps}
 

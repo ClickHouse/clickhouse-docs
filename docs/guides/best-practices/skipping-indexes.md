@@ -136,6 +136,15 @@ an unlimited number of discrete values).  This set contains all values in the bl
 
 The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index won't be applied because the index is empty due to exceeding max_size.
 
+<!-- vale off -->
+### text {#text}
+<!-- vale on -->
+
+For workloads that involve natural language or free-form text search (e.g., searching words or phrases in large text columns), ClickHouse provides a **text index** (a real inverted index).
+Text index supports efficient full-text search semantics and tokenized lookups. It is the recommended choice for full-text search queries because it provides deterministic token indexing and better performance for search functions such as `hasAnyToken`, `hasAllTokens` but also optimize all common text search functions.
+
+See the text index documentation for details [here](engines/table-engines/mergetree-family/textindexes.md).
+
 ### Bloom filter types {#bloom-filter-types}
 
 A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive isn't a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
