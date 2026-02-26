@@ -114,5 +114,5 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 
 ## 関連項目 \{#see-also\}
 
-- [ODBC 辞書](/sql-reference/statements/create/dictionary/sources#dbms)
+- [ODBC 辞書](/sql-reference/statements/create/dictionary/sources/odbc)
 - [ODBC テーブルエンジン](/engines/table-engines/integrations/odbc)

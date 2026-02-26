@@ -54,22 +54,22 @@ import TabItem from '@theme/TabItem';
 
 设置字段：
 
-| Setting                | Description                                                                                           |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- |
-| `host`                 | PostgreSQL 服务器上的主机地址。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。                                         |
-| `port`                 | PostgreSQL 服务器上的端口。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。                                           |
-| `user`                 | PostgreSQL 用户名。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。                                               |
-| `password`             | PostgreSQL 用户的密码。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。                                             |
-| `replica`              | 副本配置部分。可以包含多个此类部分。                                                                                    |
-| `replica/host`         | PostgreSQL 主机地址。                                                                                      |
-| `replica/port`         | PostgreSQL 端口。                                                                                        |
-| `replica/priority`     | 副本优先级。尝试连接时，ClickHouse 会按优先级顺序遍历副本。数字越小，优先级越高。                                                        |
-| `db`                   | 数据库名称。                                                                                                |
-| `table`                | 表名称。                                                                                                  |
-| `where`                | 选择条件。条件语法与 PostgreSQL 中 `WHERE` 子句相同。例如，`id > 10 AND id < 20`。可选。                                     |
-| `invalidate_query`     | 用于检查字典状态的查询。可选。详情参见章节 [使用 LIFETIME 刷新字典数据](../lifetime.md#refreshing-dictionary-data-using-lifetime)。 |
-| `background_reconnect` | 当连接失败时在后台重新连接到副本。可选。                                                                                  |
-| `query`                | 自定义查询。可选。                                                                                             |
+| Setting                | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| `host`                 | PostgreSQL 服务器上的主机地址。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。     |
+| `port`                 | PostgreSQL 服务器上的端口。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。       |
+| `user`                 | PostgreSQL 用户名。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。           |
+| `password`             | PostgreSQL 用户的密码。可为所有副本统一指定，或者为每个副本单独指定（在 `<replica>` 内）。         |
+| `replica`              | 副本配置部分。可以包含多个此类部分。                                                |
+| `replica/host`         | PostgreSQL 主机地址。                                                  |
+| `replica/port`         | PostgreSQL 端口。                                                    |
+| `replica/priority`     | 副本优先级。尝试连接时，ClickHouse 会按优先级顺序遍历副本。数字越小，优先级越高。                    |
+| `db`                   | 数据库名称。                                                            |
+| `table`                | 表名称。                                                              |
+| `where`                | 选择条件。条件语法与 PostgreSQL 中 `WHERE` 子句相同。例如，`id > 10 AND id < 20`。可选。 |
+| `invalidate_query`     | 用于检查字典状态的查询。可选。详情参见章节 [使用 LIFETIME 刷新字典数据](../lifetime.md)。       |
+| `background_reconnect` | 当连接失败时在后台重新连接到副本。可选。                                              |
+| `query`                | 自定义查询。可选。                                                         |
 
 :::note
 `table` 或 `where` 字段不能与 `query` 字段同时使用，并且必须声明 `table` 或 `query` 字段中的一个。

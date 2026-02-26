@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # 딕셔너리 테이블 엔진 \{#dictionary-table-engine\}
 
-`Dictionary` 엔진은 [딕셔너리](../../../sql-reference/statements/create/dictionary/index.md) 데이터를 ClickHouse 테이블 형태로 보여줍니다.
+`Dictionary` 엔진은 [딕셔너리](../../../sql-reference/statements/create/dictionary/overview.md) 데이터를 ClickHouse 테이블 형태로 보여줍니다.
 
 ## 예시 \{#example\}
 

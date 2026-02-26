@@ -412,8 +412,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) 인덱스
 - [`ngrambf_v1`](#n-gram-bloom-filter) 인덱스
 - [`tokenbf_v1`](#token-bloom-filter) 인덱스
-- [`text`]({#text}) 인덱스
-- [`vector_similarity`]({#vector-similarity}) 인덱스
+- [`text`](#text) 인덱스
+- [`vector_similarity`](#vector-similarity) 인덱스
 
 #### MinMax skip index \{#minmax\}
 

@@ -64,4 +64,4 @@ INSERT INTO TABLE FUNCTION redis(
 ## См. также \{#related\}
 
 - [Табличный движок `Redis`](/engines/table-engines/integrations/redis.md)
-- [Использование Redis в качестве источника словаря](/sql-reference/statements/create/dictionary/sources#redis)
+- [Использование Redis в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/redis)

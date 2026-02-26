@@ -386,7 +386,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)&quot;。
 
 **示例**
 

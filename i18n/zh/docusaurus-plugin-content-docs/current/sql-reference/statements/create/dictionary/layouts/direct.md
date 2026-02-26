@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 字典不存储在内存中，在处理请求时会直接访问数据源。
 
-字典键的类型为 [UInt64](../../../data-types/int-uint.md)。
+字典键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)。
 
 支持除本地文件之外的所有类型的[数据源](../sources/#dictionary-sources)。
 
@@ -44,4 +44,4 @@ LAYOUT(DIRECT())
 
 ## complex_key_direct \{#complex_key_direct\}
 
-这种存储类型用于带有复合[键](../keys-and-fields.md#dictionary-key-and-fields)的字典，与 `direct` 类似。
+这种存储类型用于带有复合[键](../attributes.md#composite-key)的字典，与 `direct` 类似。
