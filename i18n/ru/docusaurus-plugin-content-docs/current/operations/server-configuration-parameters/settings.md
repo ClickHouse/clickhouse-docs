@@ -77,6 +77,10 @@ Example:
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />Максимальный размер элемента массива в байтах для функции groupArray. Этот лимит проверяется при сериализации и позволяет избежать чрезмерного размера состояния.
 
+## allow_experimental_webassembly_udf \{#allow_experimental_webassembly_udf\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />Включает экспериментальную поддержку UDF на WebAssembly
+
 ## allow_feature_tier \{#allow_feature_tier\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
@@ -932,7 +936,7 @@ ClickHouse перезагружает встроенные словари каж
 
 См. также:
 
-* &quot;[Словари](../../sql-reference/statements/create/dictionary/index.md)&quot;.
+* &quot;[Словари](../../sql-reference/statements/create/dictionary/overview.md)&quot;.
 
 **Пример**
 
@@ -1825,6 +1829,14 @@ ClickHouse поддерживает динамическую ротацию ме
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальное количество фоновых потоков jemalloc, которые создаются; установите 0, чтобы использовать значение по умолчанию jemalloc
+
+## jemalloc_profiler_sampling_rate \{#jemalloc_profiler_sampling_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="19" />
+
+Управляет параметром jemalloc `lg_prof_sample` — двоичным логарифмом среднего интервала (в байтах) между выборками выделения памяти.
+Значение по умолчанию 19 соответствует 512 KiB. Меньшее значение увеличивает частоту выборки (больше накладные расходы, более детальная информация), а большее — уменьшает её.
+Изменение этого значения вызывает `prof.reset`, который сбрасывает всю накопленную статистику профилирования. Требуется включённое профилирование (`MALLOC_CONF=prof:true`).
 
 ## keep_alive_timeout \{#keep_alive_timeout\}
 

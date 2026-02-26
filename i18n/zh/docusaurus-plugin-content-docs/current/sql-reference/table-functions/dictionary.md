@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # dictionary 表函数 \{#dictionary-table-function\}
 
-将 [dictionary](../statements/create/dictionary/index.md) 数据以 ClickHouse 表的形式呈现。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
+将 [dictionary](../statements/create/dictionary/overview.md) 数据以 ClickHouse 表的形式呈现。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
 
 ## 语法 \{#syntax\}
 

@@ -75,6 +75,10 @@ ClickHouse サーバーが、SQL コマンドによって作成されたユー�
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />groupArray 関数における配列要素の最大サイズ（バイト単位）。この制限はシリアル化時に検査され、状態のサイズが大きくなりすぎるのを防ぐのに役立ちます。
 
+## allow_experimental_webassembly_udf \{#allow_experimental_webassembly_udf\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />WebAssembly UDF の実験的サポートを有効化します
+
 ## allow_feature_tier \{#allow_feature_tier\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
@@ -929,7 +933,7 @@ ZooKeeper 上のテーブルへのパス。
 
 関連項目:
 
-* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)&quot;。
 
 **例**
 
@@ -1822,6 +1826,14 @@ I/O スレッドプールでスケジュールできるジョブの最大数で�
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />作成する jemalloc のバックグラウンドスレッドの最大数。0 に設定すると jemalloc のデフォルト値に従います
+
+## jemalloc_profiler_sampling_rate \{#jemalloc_profiler_sampling_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="19" />
+
+jemalloc の `lg_prof_sample` を制御します。これは、割り当てサンプル間の平均間隔（バイト単位）の底 2 の対数です。
+デフォルト値の 19 は 512 KiB に対応します。値を小さくするとサンプリング頻度が増加します（オーバーヘッド増加・詳細度向上）。値を大きくするとサンプリング頻度が減少します。
+この値を変更すると、すべての累積プロファイリング統計をリセットする `prof.reset` が呼び出されます。プロファイリングが有効化されている必要があります（`MALLOC_CONF=prof:true`）。
 
 ## keep_alive_timeout \{#keep_alive_timeout\}
 

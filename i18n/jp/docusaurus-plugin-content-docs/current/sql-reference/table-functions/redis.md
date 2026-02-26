@@ -64,4 +64,4 @@ INSERT INTO TABLE FUNCTION redis(
 ## 関連項目 \{#related\}
 
 - [`Redis` テーブルエンジン](/engines/table-engines/integrations/redis.md)
-- [辞書のデータソースとして `Redis` を使用する](/sql-reference/statements/create/dictionary/sources#redis)
+- [辞書のデータソースとして `Redis` を使用する](/sql-reference/statements/create/dictionary/sources/redis)

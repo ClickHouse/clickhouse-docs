@@ -148,7 +148,7 @@ WHERE id > (SELECT max(id) FROM mysql_copy);
 ## 関連項目 \{#related\}
 
 - [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
-- [MySQL をディクショナリのソースとして使用する](/sql-reference/statements/create/dictionary/sources#mysql)
+- [MySQL をディクショナリのソースとして使用する](/sql-reference/statements/create/dictionary/sources/mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

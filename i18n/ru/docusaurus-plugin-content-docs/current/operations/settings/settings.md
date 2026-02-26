@@ -11613,6 +11613,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использует отсечение партиций Paimon для табличных функций Paimon
 
+## use_partition_pruning \{#use_partition_pruning\}
+
+**Псевдонимы**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Новая настройка, управляющая использованием в MergeTree ключа партиции для отсечения. \"use_partition_key\" является псевдонимом этой настройки."}]}]}/>
+
+Использовать ключ партиции для отсечения партиций во время выполнения запроса для таблиц MergeTree.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
+
 ## use_primary_key \{#use_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

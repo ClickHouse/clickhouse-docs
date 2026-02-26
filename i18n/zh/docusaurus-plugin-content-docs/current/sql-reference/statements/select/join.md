@@ -488,7 +488,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 在某些情况下，使用 [IN](../../../sql-reference/operators/in.md) 比使用 `JOIN` 更高效。
 
-如果你需要通过 `JOIN` 与维度表进行关联（这些是相对较小的表，包含维度属性，例如广告活动名称），由于每次查询都会重新访问右表，`JOIN` 可能不是很方便。对于这类场景，应使用 “字典（dictionaries）” 功能来替代 `JOIN`。更多信息请参阅 [Dictionaries](../../create/dictionary/index.md) 章节。
+如果你需要通过 `JOIN` 与维度表进行关联（这些是相对较小的表，包含维度属性，例如广告活动名称），由于每次查询都会重新访问右表，`JOIN` 可能不是很方便。对于这类场景，应使用 “字典（dictionaries）” 功能来替代 `JOIN`。更多信息请参阅 [Dictionaries](/sql-reference/statements/create/dictionary/overview.md) 章节。
 
 ### 内存限制 \{#memory-limitations\}
 

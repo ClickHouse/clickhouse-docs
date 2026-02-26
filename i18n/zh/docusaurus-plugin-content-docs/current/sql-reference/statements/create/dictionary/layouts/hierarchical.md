@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 ## 层级字典 \{#hierarchical-dictionaries\}
 
-ClickHouse 支持具有[数值键](../keys-and-fields.md#numeric-key)的层级字典。
+ClickHouse 支持具有[数值键](../attributes.md#numeric-key)的层级字典。
 
 请看下面的层级结构：
 
@@ -44,7 +44,7 @@ ClickHouse 支持具有[数值键](../keys-and-fields.md#numeric-key)的层级�
 
 ClickHouse 为外部字典属性提供层级特性支持。通过该特性，您可以按如上所述的方式配置层级字典。
 
-[dictGetHierarchy](../../../functions/ext-dict-functions.md#dictGetHierarchy) 函数可用于获取某个元素的父级链。
+[dictGetHierarchy](/sql-reference/functions/ext-dict-functions.md#dictGetHierarchy) 函数可用于获取某个元素的父级链。
 
 在我们的示例中，字典的结构可以如下所示：
 
