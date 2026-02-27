@@ -34,6 +34,15 @@ make
 ./dbgen -s 100
 ```
 
+为了加快速度，你可以使用“分块（chunked）”生成（在多个进程中并行执行）：
+
+```bash
+for i in $(seq 1 8); do
+    ./dbgen -s 100 -C 8 -S $i &
+done
+wait
+```
+
 在规模因子 100 下的各表详细大小：
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |

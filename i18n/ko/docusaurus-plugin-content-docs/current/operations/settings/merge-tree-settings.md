@@ -566,7 +566,7 @@ Dynamic 데이터 타입에 대한 직렬화 버전입니다. 호환성을 위�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 min_age_to_force_merge_seconds가 설정된 경우에도 파트 크기 제한"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "새 설정"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge에 대한 최대 바이트 수를 제한하는 새 설정 추가"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 min_age_to_force_merge_seconds가 설정된 경우에도 파트 크기 제한"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge에 대한 최대 바이트 수를 제한하는 새 설정 추가"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "새 설정"}]}]}/>
 
 `min_age_to_force_merge_seconds` 및
 `min_age_to_force_merge_on_partition_only` 설정이
@@ -2839,6 +2839,14 @@ ClickHouse Cloud에서만 지원됩니다.
 
 가능한 경우 리더에서 가상 파트를 읽도록 합니다. ClickHouse
 Cloud에서만 사용할 수 있습니다.
+
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "새 설정"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "새 설정"}]}]}/>
+
+레플리카가 백그라운드에서 replica set을 업데이트하려고 시도하는 간격입니다.
 
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 

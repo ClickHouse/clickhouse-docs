@@ -8008,7 +8008,11 @@ ClickHouse использует эту настройку при чтении д
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`.
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "Современные отображения типов MySQL включены по умолчанию."}]}]}/>
+
+Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`. Все современные отображения (`decimal`, `datetime64`, `date2Date32`) включены по умолчанию.
 
 - `decimal`: преобразовывать типы `NUMERIC` и `DECIMAL` в `Decimal`, когда это допускает точность.
 - `datetime64`: преобразовывать типы `DATETIME` и `TIMESTAMP` в `DateTime64` вместо `DateTime`, когда точность не равна `0`.

@@ -7988,7 +7988,11 @@ true の場合、スカラーサブクエリは initiator で実行され、`UPD
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-MySQL 型が対応する ClickHouse 型にどのように変換されるかを定義します。`decimal`、`datetime64`、`date2Date32`、`date2String` を任意に組み合わせて指定するカンマ区切りのリストです。
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "最新の MySQL 型マッピングをデフォルトで有効にします。"}]}]}/>
+
+MySQL 型が対応する ClickHouse 型にどのように変換されるかを定義します。`decimal`、`datetime64`、`date2Date32`、`date2String` を任意に組み合わせて指定するカンマ区切りのリストです。すべての最新のマッピング（`decimal`、`datetime64`、`date2Date32`）はデフォルトで有効です。
 
 - `decimal`: 精度が許す場合、`NUMERIC` および `DECIMAL` 型を `Decimal` に変換します。
 - `datetime64`: 精度が `0` でない場合、`DATETIME` および `TIMESTAMP` 型を `DateTime` ではなく `DateTime64` に変換します。

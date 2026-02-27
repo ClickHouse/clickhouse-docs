@@ -34,6 +34,15 @@ make
 ./dbgen -s 100
 ```
 
+속도를 높이기 위해 여러 프로세스에서 실행되는 「청크 단위」 생성 방식을 사용할 수 있습니다.
+
+```bash
+for i in $(seq 1 8); do
+    ./dbgen -s 100 -C 8 -S $i &
+done
+wait
+```
+
 스케일 팩터 100에서의 테이블별 상세 크기:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |

@@ -1473,17 +1473,18 @@ ClickHouse에서 기본 키를 아무리 잘 튜닝해도, 일부 쿼리는 필�
 
 ### 전체 텍스트 검색을 위한 텍스트 인덱스 \{#text-index-for-full-text-search\}
 
-프로덕션 수준의 전체 텍스트 검색을 위해 ClickHouse는 전용 [텍스트 인덱스](/engines/table-engines/mergetree-family/textindexes)를 제공합니다.
+ClickHouse는 전체 텍스트 검색을 위해 전용 [텍스트 인덱스](/engines/table-engines/mergetree-family/textindexes)를 제공합니다.
 이 인덱스는 토크나이즈된 텍스트 데이터에 대해 역인덱스를 구성하여, 토큰 기반 검색 쿼리를 빠르게 실행할 수 있도록 합니다.
 
-텍스트 인덱스는 ClickHouse 버전 26.2부터 일반 제공(GA)됩니다.
+텍스트 인덱스는 ClickHouse 버전 26.2부터 사용할 수 있습니다.
 
 텍스트 인덱스는 MergeTree 테이블에서 다음 컬럼 타입에 대해 정의할 수 있습니다: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) ( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수를 통해) 컬럼입니다.
 
 텍스트 인덱스는 정의 시 `tokenizer` 인자가 필요합니다. 선택적으로, 토크나이즈 전에 입력 문자열을 변환하기 위한 전처리 함수를 지정할 수 있습니다.
 
 인덱스를 검색하기 위한 권장 함수는 `hasAnyTokens` 및 `hasAllTokens`입니다.
-일부 기존 문자열 검색 함수도 텍스트 인덱스가 존재할 때 자동으로 최적화됩니다. 자세한 내용과 지원되는 함수는 [여기](/engines/table-engines/mergetree-family/textindexes#using-a-text-index)와 [여기](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens)에 있는 문서를 참고하십시오.
+일부 기존 문자열 검색 함수도 텍스트 인덱스가 존재할 때 자동으로 최적화됩니다.
+자세한 내용과 지원되는 함수는 [여기](/engines/table-engines/mergetree-family/textindexes#using-a-text-index)와 [여기](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens)에 있는 문서를 참고하십시오.
 
 아래 예제에서는 구조화된 로그 데이터셋을 사용합니다.
 
@@ -1513,7 +1514,7 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-인덱스가 없어도 같은 함수를 사용할 수 있습니다.
+텍스트 인덱스가 없어도 `hasAnyTokens`를 사용할 수 있지만, 쿼리는 Body 컬럼에 대해 느린 전체 스캔을 수행하게 됩니다:
 
 ```sql
 SELECT count()
@@ -1529,12 +1530,10 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-이 쿼리는 Body 컬럼을 전체 스캔하게 됩니다.
-
 
 #### 텍스트 인덱스 추가 \{#adding-a-text-index\}
 
-테이블을 생성할 때 텍스트 인덱스를 추가할 수 있습니다.
+테이블을 생성할 때 Body 컬럼에 대한 텍스트 인덱스를 추가할 수 있습니다.
 
 ```sql
 CREATE TABLE otel_logs_index_body
@@ -1563,16 +1562,15 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-또는 나중에 `ALTER TABLE`을 사용해 추가:
+또는 나중에 `ALTER TABLE` 명령으로 추가할 수 있습니다.
 
 ```sql
 ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
 ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 ```
 
-이는 `splitByNonAlpha` 토크나이저를 사용하여 Body 컬럼에 대한 역 인덱스를 생성합니다.
-
-> 참고: 부분적으로만 구체화된 인덱스도 쿼리에서 사용할 수 있지만, 최대 성능 향상은 완전히 구체화된 이후에 얻을 수 있습니다.
+같은 SELECT 쿼리를 다시 실행하면 텍스트 인덱스를 이용한 조회가 수행됩니다.
+데이터 접근량은 기가바이트에서 메가바이트 수준으로 줄어들고 성능은 약 45배 향상됩니다.
 
 ```sql
 SELECT count()
@@ -1589,8 +1587,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 Peak memory usage: 15.23 MiB.
 ```
 
-인덱스는 스캔되는 데이터를 기가바이트에서 메가바이트 수준으로 줄이고 성능을 약 `45배` 향상시킵니다.
-
 
 #### 전처리기 사용하기 \{#using-a-preprocessor\}
 
@@ -1602,15 +1598,16 @@ Peak memory usage: 15.23 MiB.
 예를 들어:
 
 ```sql
- INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
 이 예제에서 전처리기는 다음을 수행합니다:
 
-* 토큰화되고 인덱싱되는 텍스트의 양을 줄입니다
-* 인덱스 크기를 줄입니다
-* 오탐지(false positive) 발생 가능성을 낮춥니다
-* 쿼리 성능을 향상시킵니다
+* 토큰화되고 인덱싱되는 텍스트의 양을 줄입니다.
+* 인덱스 크기를 줄입니다.
+* 오탐지(false positive) 발생 가능성을 낮춥니다.
+* 쿼리 성능을 향상시킵니다.
 
 ```sql
 SELECT count()
@@ -1629,7 +1626,7 @@ Peak memory usage: 1.95 MiB.
 
 전처리되지 않은 인덱스와 비교하면 성능이 약 2배 향상됩니다.
 
-인덱스 크기 비교
+프리프로세서를 사용하면 인덱스 크기를 기가바이트에서 수백 킬로바이트 수준으로 줄여, 원래 크기의 약 0.01% 수준으로 감소시킬 수 있습니다.
 
 ```sql
 SELECT
@@ -1647,8 +1644,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
    └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-프리프로세서를 사용하면 인덱스 크기를 기가바이트에서 수백 킬로바이트 수준으로 줄여 원래 크기의 약 0.01%로 감소시키고, 쿼리 성능도 향상할 수 있습니다.
-
 **텍스트 검색을 위한 다른 인덱스
 
 보조 스킵 인덱스(secondary skip index)에 대한 자세한 내용은 [여기](/optimize/skipping-indexes#skip-index-functions)를 참조하십시오.
@@ -1656,6 +1651,10 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
 <details markdown="1">
   <summary>텍스트 검색을 위한 블룸 필터</summary>
+
+  :::note
+  `ngrambf_v1` 및 `tokenbf_v1` 인덱스는 전체 텍스트 검색용으로는 더 이상 권장되지 않습니다.
+  :::
 
   ngram 및 토큰 기반 블룸 필터 인덱스인 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types)와 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types)을 사용하면 `LIKE`, `IN`, hasToken 연산자를 사용하는 String 컬럼 검색을 가속화할 수 있습니다. 중요한 점은, 토큰 기반 인덱스가 비영숫자(non-alphanumeric) 문자를 구분자로 사용해 토큰을 생성한다는 것입니다. 이는 쿼리 시점에 오직 토큰(또는 전체 단어)만 일치시킬 수 있음을 의미합니다. 더 세밀한 매칭이 필요하면 [N-gram 블룸 필터](/optimize/skipping-indexes#bloom-filter-types)를 사용할 수 있습니다. 이 필터는 문자열을 지정된 크기의 ngram으로 분할하여 단어 일부에 대한 매칭도 가능하게 합니다.
 

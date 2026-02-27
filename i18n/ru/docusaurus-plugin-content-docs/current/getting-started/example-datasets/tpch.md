@@ -34,6 +34,15 @@ make
 ./dbgen -s 100
 ```
 
+Чтобы ускорить процесс, можно использовать &quot;генерацию по фрагментам&quot; (в нескольких процессах):
+
+```bash
+for i in $(seq 1 8); do
+    ./dbgen -s 100 -C 8 -S $i &
+done
+wait
+```
+
 Подробные размеры таблиц при коэффициенте масштабирования 100:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |

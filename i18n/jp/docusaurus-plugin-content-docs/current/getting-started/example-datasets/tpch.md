@@ -34,6 +34,15 @@ make
 ./dbgen -s 100
 ```
 
+処理を高速化するには、&quot;chunked&quot;（チャンク単位の）生成（複数プロセスによる）を使用できます。
+
+```bash
+for i in $(seq 1 8); do
+    ./dbgen -s 100 -C 8 -S $i &
+done
+wait
+```
+
 スケールファクター 100 の場合の詳細なテーブルサイズ:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |

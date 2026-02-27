@@ -1619,6 +1619,10 @@ ClickHouse HTTP(S) 서버에 접속할 때 기본으로 표시되는 페이지�
 
 <SettingsInfoBlock type="String" default_value="SLRU" />세컨더리 인덱스 마크 캐시에 사용되는 정책 이름입니다.
 
+## index_mark_cache_prewarm_ratio \{#index_mark_cache_prewarm_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.95" />사전 예열(prewarm) 시 인덱스 마크 캐시 전체 크기 중 채울 비율입니다.
+
 ## index_mark_cache_size \{#index_mark_cache_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
