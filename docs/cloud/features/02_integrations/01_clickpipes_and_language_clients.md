@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Integrations'
+sidebar_label: 'ClickPipes & Language Clients'
 slug: /manage/integrations
-title: 'Integrations'
-description: 'Integrations for ClickHouse'
+title: 'ClickPipes & Language Clients'
+description: 'ClickPipes and Language Client integrations for ClickHouse Cloud'
 doc_type: 'landing-page'
-keywords: ['integrations', 'cloud features', 'third-party tools', 'data sources', 'connectors']
+keywords: ['integrations', 'cloud features', 'clickpipes', 'language clients', 'connectors']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
