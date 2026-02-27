@@ -33,8 +33,6 @@ Databricks는 레이크하우스를 위해 여러 데이터 형식을 지원합�
 
 ClickHouse가 Unity Catalog와 상호 작용할 수 있도록 하려면 Unity Catalog가 외부 리더와의 상호 작용을 허용하도록 구성되어 있어야 합니다. 이를 위해 ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) 가이드를 따르십시오.
 
-외부 액세스를 활성화하는 것 외에도, 통합을 구성하는 주체(principal)가 테이블이 포함된 스키마에 대해 `EXTERNAL USE SCHEMA` [권한](https://docs.databricks.com/aws/en/external-access/admin#external-schema)을 가지고 있는지 확인하십시오.
-
 카탈로그 구성이 완료되면 ClickHouse용 자격 증명을 생성해야 합니다. Unity와의 상호 작용 방식에 따라 두 가지 다른 방법을 사용할 수 있습니다:
 
 * Iceberg 클라이언트의 경우, [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m)을 사용하여 인증하십시오.

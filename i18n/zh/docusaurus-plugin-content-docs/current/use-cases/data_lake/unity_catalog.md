@@ -32,8 +32,6 @@ Databricks 为其湖仓（lakehouse）支持多种数据格式。借助 ClickHou
 
 为了允许 ClickHouse 与 Unity Catalog 交互，需要确保已将 Unity Catalog 配置为允许与外部读取方交互。可按照[“Enable external data access to Unity Catalog”](https://docs.databricks.com/aws/en/external-access/admin) 指南进行配置。
 
-除了启用外部访问之外，还要确保用于配置集成的主体（principal）在包含这些表的 schema 上拥有 `EXTERNAL USE SCHEMA` [权限](https://docs.databricks.com/aws/en/external-access/admin#external-schema)。
-
 Unity Catalog 配置完成后，必须为 ClickHouse 生成凭证。根据与 Unity 的交互模式，可以使用两种不同的方法：
 
 * 对于 Iceberg 客户端，使用[服务主体](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m)进行身份验证。
