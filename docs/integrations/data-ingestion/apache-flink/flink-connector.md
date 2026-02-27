@@ -29,7 +29,7 @@ The connector supports Apache Flink's DataStream API. Table API support is [plan
 - Java 11+ (for Flink 1.17+) or 17+ (for Flink 2.0+)
 - Apache Flink 1.17+
 
-## Flink Version Compatibility Matrix {#flink-compatibility-matrix}
+## Flink version compatibility matrix {#flink-compatibility-matrix}
 
 The connector is split into two artifacts to support both Flink 1.17+ and Flink 2.0+. Choose the artifact that matches your desired Flink version:
 
@@ -43,10 +43,12 @@ The connector is split into two artifacts to support both Flink 1.17+ and Flink 
 | 1.18.1        | flink-connector-clickhouse-1.17  | 0.9.5                          | Java 11+      |
 | 1.17.2        | flink-connector-clickhouse-1.17  | 0.9.5                          | Java 11+      |
 
-_Note: the connector has not been tested against Flink versions earlier than 1.17.2
+:::note
+The connector has not been tested against Flink versions earlier than 1.17.2
+:::
 
-## Installation & Setup {#installation--setup}
-### Import as a Dependency {#import-as-a-dependency}
+## Installation & setup {#installation--setup}
+### Import as a dependency {#import-as-a-dependency}
 #### For Flink 2.0+ {#flink-2}
 
 <Tabs>
@@ -175,7 +177,7 @@ More examples and snippets can be found in our tests:
 - [flink-connector-clickhouse-1.17](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-1.17/src/test/java/org/apache/flink/connector/clickhouse/sink)
 - [flink-connector-clickhouse-2.0.0](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-2.0.0/src/test/java/org/apache/flink/connector/clickhouse/sink)
 
-### Quick Start Example {#datastream-quick-start}
+### Quick start example {#datastream-quick-start}
 
 We have created maven-based example for an easy start with the ClickHouse Sink:
 
@@ -184,8 +186,8 @@ We have created maven-based example for an easy start with the ClickHouse Sink:
 
 For more detailed instructions, see the [Example Guide](https://github.com/ClickHouse/flink-connector-clickhouse/blob/main/examples/README.md)
 
-### DataStream API Connection Options {#datastream-api-connection-options}
-#### Clickhouse Client Options {#client-options}
+### DataStream API connection options {#datastream-api-connection-options}
+#### ClickHouse client options {#client-options}
 
 | Parameters                  | Description                                                                                                                                        | Default Value | Required |
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------|
@@ -233,7 +235,7 @@ ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
 </TabItem>
 </Tabs>
 
-#### Sink Options {#sink-options}
+#### Sink options {#sink-options}
 
 The following options come directly from Flink's `AsyncSinkBase`:
 
@@ -254,7 +256,7 @@ The table below provides a quick reference for converting data types when insert
 
 [//]: # (TODO: add a "Flink SQL Type" column once table api support is added )
 
-| Java Type           | ClickHouse Type   | Supported | Serialize Method              |
+| Java Type           | ClickHouse Type   | Supported | Serialization Method          |
 |---------------------|-------------------|-----------|-------------------------------| 
 | `byte`/`Byte`       | `Int8`            | ✅         | `DataWriter.writeInt8`        |
 | `short`/`Short`     | `Int16`           | ✅         | `DataWriter.writeInt16`       |
@@ -301,6 +303,31 @@ Notes:
 * A `ZoneId` must be provided when performing date operations.
 * [Precision and scale](https://clickhouse.com/docs/sql-reference/data-types/decimal#decimal-value-ranges) must be provided when performing decimal operations.
 * In order for ClickHouse to parse a Java String as JSON, you need to enable `enableJsonSupportAsString` in `ClickHouseClientConfig`.
+* The connector requires an `ElementConvertor` to map elements in the input DataStream to ClickHouse payloads. To this end, the connector provides `ClickHouseConvertor` and `POJOConvertor`, which you can use to implement this mapping using the `DataWriter` serialization methods above.
+
+## Supported input formats {#supported-input-formats}
+
+You can find the list of available ClickHouse input formats in [this documentation page](https://clickhouse.com/docs/interfaces/formats#formats-overview) and [ClickHouseFormat.java](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-data/src/main/java/com/clickhouse/data/ClickHouseFormat.java).
+
+To specify the format the connector should use to serialize your DataStream to ClickHouse payloads, use the `setClickHouseFormat` function. For example:
+
+```java
+ClickHouseAsyncSink<String> csvSink = new ClickHouseAsyncSink<>(
+        convertorString,
+        MAX_BATCH_SIZE,
+        MAX_IN_FLIGHT_REQUESTS,
+        MAX_BUFFERED_REQUESTS,
+        MAX_BATCH_SIZE_IN_BYTES,
+        MAX_TIME_IN_BUFFER_MS,
+        MAX_RECORD_SIZE_IN_BYTES,
+        clickHouseClientConfig
+);
+csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
+```
+
+:::note
+By default, the connector will use either [RowBinaryWithDefaults](https://clickhouse.com/docs/interfaces/formats/RowBinaryWithDefaults) or [RowBinary](https://clickhouse.com/docs/interfaces/formats/RowBinary) if `setSupportDefault` in `ClickHouseClientConfig` is explicitly set to true or false, respectively.
+:::
 
 ## Metrics {#metrics}
 
@@ -330,14 +357,19 @@ The connector exposes the following additional metrics on top of Flink's existin
 * The sink does not yet support a dead-letter queue (DLQ) for buffering unprocessable messages. In the meantime, the connector will stop processing at the first row it is unable to handle. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
 * The sink does not yet support creation via Flink's Table API or Flink SQL. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
-## ClickHouse Version Compatibility and Security {#compatibility-and-security}
+## ClickHouse version compatibility and security {#compatibility-and-security}
 
 - The connector is tested against a range of recent ClickHouse versions, including latest and head, via a daily CI workflow. The tested versions are updated periodically as new ClickHouse releases become active. See [here](https://github.com/ClickHouse/flink-connector-clickhouse/blob/main/.github/workflows/tests-nightly.yaml#L15) for the versions the connector is tested against daily.
 - See the [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support) for known security vulnerabilities and how to report a vulnerability.
 - We recommend upgrading the connector continuously to not miss security fixes and new improvements.
 - If you have an issue with migration, please create a GitHub [issue](https://github.com/ClickHouse/flink-connector-clickhouse/issues) and we will respond!
 
-## Contributing and Support {#contributing-and-support}
+## Advanced and recommended usage {#advanced-and-recommended-usage}
+
+- For optimal performance, ensure your DataStream element type is **not** a Generic type - see [here for Flink's type distinction](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class). Non-generic elements will avoid the serialization overhead incurred by Kryo and improve throughput to ClickHouse.
+- We recommend setting `maxBatchSize` to at least 1000 and ideally between 10,000 to 100,000. See [this guide on bulk inserts](https://clickhouse.com/docs/optimize/bulk-inserts) for more information.
+
+## Contributing and support {#contributing-and-support}
 
 If you'd like to contribute to the project or report any issues, we welcome your input!
 Visit our [GitHub repository](https://github.com/ClickHouse/flink-connector-clickhouse) to open an issue, suggest
