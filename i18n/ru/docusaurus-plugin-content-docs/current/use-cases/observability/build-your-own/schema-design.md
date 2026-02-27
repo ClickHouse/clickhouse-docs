@@ -1473,17 +1473,18 @@ Peak memory usage: 27.85 MiB.
 
 ### Текстовый индекс для полнотекстового поиска \{#text-index-for-full-text-search\}
 
-Для полнотекстового поиска промышленного уровня ClickHouse предоставляет специализированный [текстовый индекс](/engines/table-engines/mergetree-family/textindexes).
+ClickHouse предоставляет специализированный [текстовый индекс](/engines/table-engines/mergetree-family/textindexes) для полнотекстового поиска.
 Этот индекс строит инвертированный индекс по токенизированным текстовым данным, обеспечивая быстрый поиск по токенам.
 
-Текстовые индексы доступны в статусе general availability (GA), начиная с версии ClickHouse 26.2.
+Текстовые индексы доступны, начиная с версии ClickHouse 26.2.
 
 Их можно определять для следующих типов столбцов в таблицах MergeTree: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с отображениями [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)).
 
 Текстовый индекс требует указания аргумента `tokenizer` в своём определении. Дополнительно можно задать функцию препроцессинга для преобразования входной строки перед токенизацией.
 
 Рекомендуемые функции для поиска по индексу: `hasAnyTokens` и `hasAllTokens`.
-Некоторые традиционные функции строкового поиска также автоматически оптимизируются при наличии текстового индекса. См. документацию для подробностей и списка поддерживаемых функций [здесь](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) и [здесь](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
+Некоторые традиционные функции строкового поиска также автоматически оптимизируются при наличии текстового индекса.
+См. документацию для подробностей и списка поддерживаемых функций [здесь](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) и [здесь](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
 
 В примерах ниже используется набор данных со структурированными логами.
 
@@ -1513,7 +1514,7 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-Без индекса можно использовать те же функции.
+Мы можем использовать `hasAnyTokens` и без текстового индекса, но запрос выполнит медленное полное сканирование столбца Body:
 
 ```sql
 SELECT count()
@@ -1529,12 +1530,10 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-Этот запрос выполняет полное сканирование по столбцу Body.
-
 
 #### Добавление текстового индекса \{#adding-a-text-index\}
 
-Текстовый индекс можно добавить при создании таблицы:
+Текстовый индекс для столбца Body можно добавить при создании таблицы:
 
 ```sql
 CREATE TABLE otel_logs_index_body
@@ -1563,16 +1562,15 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-Или добавить их позже с помощью `ALTER TABLE`:
+или добавить его позже с помощью `ALTER TABLE`:
 
 ```sql
 ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
 ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 ```
 
-Это создаёт инвертированный индекс для столбца Body с использованием токенизатора `splitByNonAlpha`.
-
-> Примечание: частично материализованный индекс уже может использоваться в запросах, но максимальный прирост производительности достигается после полной материализации.
+Если мы снова выполним тот же SELECT-запрос, будет выполнен поиск по текстовому индексу.
+Объём обрабатываемых данных уменьшится с гигабайт до мегабайт, а производительность улучшится примерно в 45 раз.
 
 ```sql
 SELECT count()
@@ -1589,8 +1587,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 Peak memory usage: 15.23 MiB.
 ```
 
-Индекс уменьшает объём сканируемых данных с гигабайт до мегабайт и повышает производительность примерно в `45` раз.
-
 
 #### Использование препроцессора \{#using-a-preprocessor\}
 
@@ -1602,15 +1598,16 @@ Peak memory usage: 15.23 MiB.
 Например:
 
 ```sql
- INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
 В этом примере препроцессор:
 
-* Уменьшает объём текста, который токенизируется и индексируется
-* Сокращает размер индекса
-* Снижает вероятность ложных срабатываний
-* Улучшает производительность выполнения запросов
+* уменьшает объём текста, который токенизируется и индексируется,
+* сокращает размер индекса,
+* снижает вероятность ложных срабатываний и
+* улучшает производительность выполнения запросов.
 
 ```sql
 SELECT count()
@@ -1629,7 +1626,7 @@ Peak memory usage: 1.95 MiB.
 
 По сравнению с обычным индексом без предварительной обработки производительность увеличивается примерно в 2 раза.
 
-Сравнение размеров индексов
+Использование препроцессора также уменьшает размер индекса с гигабайт до нескольких сотен килобайт — примерно до 0,01 % исходного размера.
 
 ```sql
 SELECT
@@ -1647,8 +1644,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
    └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-Использование препроцессора уменьшает размер индекса с гигабайт до нескольких сотен килобайт — примерно до 0,01 % исходного размера, что также улучшает производительность запросов.
-
 **Другие индексы для полнотекстового поиска
 
 Дополнительные сведения о вторичных пропускающих индексах можно найти [здесь](/optimize/skipping-indexes#skip-index-functions).
@@ -1656,6 +1651,10 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
 <details markdown="1">
   <summary>Фильтры Блума для текстового поиска</summary>
+
+  :::note
+  Индексы `ngrambf_v1` и `tokenbf_v1` больше не рекомендуются для полнотекстового поиска.
+  :::
 
   Индексы фильтров Блума на основе n-грамм и токенов [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) и [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) могут использоваться для ускорения поиска по столбцам типа String с операторами `LIKE`, `IN` и hasToken. Важно отметить, что индекс на основе токенов генерирует токены, используя в качестве разделителей неалфавитно-цифровые символы. Это означает, что при выполнении запроса могут быть найдены только токены (или целые слова). Для более детального поиска можно использовать [фильтр Блума на основе N-грамм](/optimize/skipping-indexes#bloom-filter-types). Он разбивает строки на n-граммы заданного размера, что позволяет выполнять поиск по частям слов.
 

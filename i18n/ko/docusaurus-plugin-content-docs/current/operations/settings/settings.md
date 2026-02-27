@@ -7982,7 +7982,11 @@ WHERE 절에 있는 조건 중 PREWHERE 절로 이동할 수 있는 모든 조�
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-MySQL 타입을 대응하는 ClickHouse 타입으로 어떻게 변환할지 정의합니다. `decimal`, `datetime64`, `date2Date32`, `date2String`을 쉼표로 구분해 임의의 조합으로 지정합니다.
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "기본값으로 최신 MySQL 타입 매핑을 활성화합니다."}]}]}/>
+
+MySQL 타입을 대응하는 ClickHouse 타입으로 어떻게 변환할지 정의합니다. `decimal`, `datetime64`, `date2Date32`, `date2String`을 쉼표로 구분해 임의의 조합으로 지정합니다. 최신 매핑(`decimal`, `datetime64`, `date2Date32`)은 기본적으로 활성화되어 있습니다.
 
 - `decimal`: 정밀도가 허용하는 경우 `NUMERIC` 및 `DECIMAL` 타입을 `Decimal`로 변환합니다.
 - `datetime64`: 정밀도가 `0`이 아닐 때 `DATETIME` 및 `TIMESTAMP` 타입을 `DateTime` 대신 `DateTime64`로 변환합니다.

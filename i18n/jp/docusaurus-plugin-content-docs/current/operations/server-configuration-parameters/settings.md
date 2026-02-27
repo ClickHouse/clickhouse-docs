@@ -1620,6 +1620,10 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 
 <SettingsInfoBlock type="String" default_value="SLRU" />セカンダリ索引マークキャッシュのポリシー名です。
 
+## index_mark_cache_prewarm_ratio \{#index_mark_cache_prewarm_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.95" />プリウォーム時に埋める index mark cache のデータ量の、キャッシュ総サイズに対する割合。
+
 ## index_mark_cache_size \{#index_mark_cache_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />

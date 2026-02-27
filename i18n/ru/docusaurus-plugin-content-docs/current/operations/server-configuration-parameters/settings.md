@@ -1623,6 +1623,10 @@ ClickHouse перезагружает встроенные словари каж
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования меток вторичного индекса.
 
+## index_mark_cache_prewarm_ratio \{#index_mark_cache_prewarm_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.95" />Доля общего объёма кэша меток индекса, которую нужно заполнить при предварительном прогреве.
+
 ## index_mark_cache_size \{#index_mark_cache_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />

@@ -33,8 +33,6 @@ Databricks поддерживает несколько форматов данн
 
 Чтобы разрешить ClickHouse взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен на взаимодействие с внешним клиентом. Этого можно добиться, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
 
-Помимо включения внешнего доступа, убедитесь, что принципал, выполняющий настройку интеграции, имеет привилегию `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema)) для схемы, содержащей таблицы.
-
 После того как ваш каталог будет настроен, необходимо сгенерировать учетные данные для ClickHouse. В зависимости от режима взаимодействия с Unity можно использовать два разных метода:
 
 * Для клиентов Iceberg используйте аутентификацию через [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).

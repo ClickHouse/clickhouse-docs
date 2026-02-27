@@ -551,7 +551,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置
@@ -2729,6 +2729,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "Cloud sync"}]}]}/>
 
 在可能的情况下从 leader 副本读取虚拟分区片段。仅在 ClickHouse Cloud 中可用
+
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "新增设置"}]}]}/>
+
+在后台尝试更新副本集的频率。
 
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
