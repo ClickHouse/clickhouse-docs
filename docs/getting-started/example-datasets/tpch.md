@@ -34,6 +34,15 @@ Then, generate the data. Parameter `-s` specifies the scale factor. For example,
 ./dbgen -s 100
 ```
 
+To speed things up, you can use "chunked" generation (in multiple processes):
+
+```bash
+for i in $(seq 1 8); do
+    ./dbgen -s 100 -C 8 -S $i &
+done
+wait
+```
+
 Detailed table sizes with scale factor 100:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |
