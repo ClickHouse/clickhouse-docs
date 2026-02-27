@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/clickhouse-embedded
-title: 'ClickHouse Embedded'
+title: 'Embedded in ClickHouse'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
