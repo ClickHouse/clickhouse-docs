@@ -1451,17 +1451,18 @@ You should read and understand the [guide to secondary indices](/optimize/skippi
 
 ### Text index for full text search {#text-index-for-full-text-search}
 
-For production-grade full text search, ClickHouse provides a specialized [text index](/engines/table-engines/mergetree-family/textindexes).
+ClickHouse provides a specialized [text index](/engines/table-engines/mergetree-family/textindexes) for full-text search.
 This index builds an inverted index over tokenized text data, enabling fast token-based search queries.
 
-Text indexes are generally available (GA) starting from ClickHouse version 26.2.
+Text indexes are available starting from ClickHouse version 26.2.
 
-They can be defined on the following column types in MergeTree tables: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), and [Map](/sql-reference/data-types/map.md) (via [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) and [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map functions) columns in MergeTree tables. 
+They can be defined on the following column types in MergeTree tables: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), and [Map](/sql-reference/data-types/map.md) (via [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) and [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map functions) columns in MergeTree tables.
 
 A text index requires a `tokenizer` argument in its definition. Optionally, a preprocessor function can be specified to transform the input string before tokenization.
 
 The recommended functions to search in the index are: `hasAnyTokens` and `hasAllTokens`.
-Some traditional string search functions are also automatically optimized when a text index is present. See the documentation for details and supported functions [here](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) and [here](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
+Some traditional string search functions are also automatically optimized when a text index is present.
+See the documentation for details and supported functions [here](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) and [here](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
 
 In the examples below, we use a structured logs dataset.
 
@@ -1491,7 +1492,7 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-Without an index we can use the same functions.
+We can use `hasAnyTokens` also without text index but the query will perform a slow full scan of the Body column:
 
 ```sql
 SELECT count()
@@ -1507,11 +1508,9 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-This query performs a full scan of the Body column.
-
 #### Adding a text index {#adding-a-text-index}
 
-A text index can be added during table creation:
+A text index on the Body column can be added during table creation:
 
 ```sql
 CREATE TABLE otel_logs_index_body
@@ -1540,16 +1539,15 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-Or added later using `ALTER TABLE`:
+or added later using `ALTER TABLE`:
 
 ```sql
 ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
 ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 ```
 
-This creates an inverted index for the Body column using the `splitByNonAlpha` tokenizer.
-
-> Note: A partially materialized index can already be used by queries, but maximum performance improvement is achieved after full materialization.
+If we run the same SELECT query again, it will do a text index lookup.
+The amount of accessed data reduces from gigabytes to megabytes and performance improves by approximately 45x.
 
 ```sql
 SELECT count()
@@ -1566,8 +1564,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 Peak memory usage: 15.23 MiB.
 ```
 
-The index reduces the scanned data from gigabytes to megabytes and improves performance by approximately `45x`.
-
 #### Using a preprocessor {#using-a-preprocessor}
 
 In this dataset, the Body column contains a JSON-formatted string with multiple key-value pairs (e.g., `msg`, `id`, `ctx`, `attr`, etc.).
@@ -1578,15 +1574,16 @@ Instead of indexing the entire JSON string, we can define a preprocessor to extr
 For example:
 
 ```sql
- INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
 In this example the preprocessor:
 
-- Reduces the amount of text that is tokenized and indexed
-- Decreases index size
-- Reduces the probability of false positives
-- Improves query performance
+- reduces the amount of text that is tokenized and indexed,
+- decreases index size,
+- reduces the probability of false positives, and
+- improves query performance.
 
 ```sql
 SELECT count()
@@ -1603,9 +1600,9 @@ Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
 Peak memory usage: 1.95 MiB.
 ```
 
-Compared to the non-preprocessed index, performance improves by approximately 2×.
+Compared to the non-preprocessed index, performance improves by approximately 2x.
 
-Comparing Index Sizes
+Using a preprocessor also reduces index size from gigabytes to a few hundred kilobytes, approximately 0.01% of the original size
 
 ```sql
 SELECT
@@ -1623,8 +1620,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
    └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-Using a preprocessor reduces index size from gigabytes to a few hundred kilobytes — approximately 0.01% of the original size — while also improving query performance.
-
 **Other indexes for text search
 
 Further details on secondary skip indices can be found [here](/optimize/skipping-indexes#skip-index-functions).
@@ -1632,6 +1627,10 @@ Further details on secondary skip indices can be found [here](/optimize/skipping
 <details markdown="1">
 
 <summary>Bloom filters for text search</summary>
+
+:::note
+`ngrambf_v1` and `tokenbf_v1` indexes are no longer recommended for full text search.
+:::
 
 The ngram and token-based bloom filter indexes [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) and [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) can be used to accelerate searches over String columns with the operators `LIKE`, `IN`, and hasToken. Importantly, the token-based index generates tokens using non-alphanumeric characters as a separator. This means only tokens (or whole words) can be matched at query time. For more granular matching, the [N-gram bloom filter](/optimize/skipping-indexes#bloom-filter-types) can be used. This splits strings into ngrams of a specified size, thus allowing sub-word matching.
 
