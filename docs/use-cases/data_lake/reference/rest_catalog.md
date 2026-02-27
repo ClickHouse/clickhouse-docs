@@ -28,8 +28,8 @@ The REST Catalog is a standardized API specification for Iceberg catalogs, suppo
 - **Self-hosted** REST catalog implementations
 
 :::note
-As this feature is experimental, you will need to enable it using:
-`SET allow_experimental_database_iceberg = 1;`
+As this feature is beta, you will need to enable it using:
+`SET allow_database_iceberg = 1;`
 :::
 
 ## Local Development Setup {#local-development-setup}
@@ -99,7 +99,7 @@ docker exec -it clickhouse clickhouse-client
 Then create the database connection to the REST catalog:
 
 ```sql
-SET allow_experimental_database_iceberg = 1;
+SET allow_database_iceberg = 1;
 
 CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://rest:8181/v1', 'admin', 'password')
