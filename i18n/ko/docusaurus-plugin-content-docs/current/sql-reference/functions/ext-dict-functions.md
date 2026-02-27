@@ -9,10 +9,10 @@ doc_type: 'reference'
 # 딕셔너리 작업용 함수 \{#functions-for-working-with-dictionaries\}
 
 :::note
-[DDL 쿼리](../statements/create/dictionary/index.md)로 생성된 딕셔너리의 경우 `dict_name` 매개변수는 `<database>.<dict_name>` 형식으로 완전하게 지정해야 합니다. 그렇지 않으면 현재 데이터베이스가 사용됩니다.
+[DDL 쿼리](../statements/create/dictionary/overview.md)로 생성된 딕셔너리의 경우 `dict_name` 매개변수는 `<database>.<dict_name>` 형식으로 완전하게 지정해야 합니다. 그렇지 않으면 현재 데이터베이스가 사용됩니다.
 :::
 
-딕셔너리 연결 및 설정에 대한 자세한 내용은 [Dictionaries](../statements/create/dictionary/index.md)를 참조하십시오.
+딕셔너리 연결 및 설정에 대한 자세한 내용은 [Dictionaries](../statements/create/dictionary/overview.md)를 참조하십시오.
 
 ## 예시 딕셔너리 \{#example-dictionary\}
 

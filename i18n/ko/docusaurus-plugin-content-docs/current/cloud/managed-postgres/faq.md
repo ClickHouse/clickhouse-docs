@@ -64,6 +64,12 @@ Managed Postgres 인스턴스에 대한 완전한 슈퍼유저(superuser) 권한
 콘솔과 통합된 향상된 RBAC 기능이 올해 안에 제공될 예정입니다.
 :::
 
+## 업그레이드 \{#upgrades\}
+
+### PostgreSQL 버전 업그레이드는 어떻게 처리됩니까? \{#version-upgrades\}
+
+마이너(minor) 및 메이저(major) 버전 업그레이드는 모두 페일오버를 통해 수행되며, 일반적으로 몇 초 정도의 다운타임만 발생합니다. 업그레이드 적용 시점을 제어하기 위해 유지 관리 시간대를 구성할 수 있습니다. 자세한 내용은 [Upgrades](/cloud/managed-postgres/upgrades) 문서를 참조하십시오.
+
 ## 마이그레이션 \{#migration\}
 
 ### Managed Postgres로 마이그레이션할 때 사용할 수 있는 도구는 무엇입니까? \{#migration-tools\}

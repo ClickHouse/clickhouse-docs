@@ -2519,6 +2519,14 @@ Delta Lake で 1 つのデータファイルを挿入する際の行数上限を
 
 Delta Lake のメタデータファイルを system テーブルにログとして記録できるようにします。
 
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "DeltaLake が一貫性を保つために各クエリの前にスキーマを再読み込みするかどうかを制御する新しい設定です。"}]}]}/>
+
+有効にすると、クエリを実行するたびに DeltaLake のメタデータからスキーマを再読み込みし、クエリ解析時に使用されるスキーマと実行時に使用されるスキーマの一貫性を確保します。
+
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -11585,6 +11593,21 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Paimon テーブル関数で Paimon のパーティションプルーニングを使用します
+
+## use_partition_pruning \{#use_partition_pruning\}
+
+**別名**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "MergeTree がクエリ実行時にパーティションの絞り込みにパーティションキーを使用するかどうかを制御する新しい設定です。'use_partition_key' はこの設定のエイリアスです。"}]}]}/>
+
+MergeTree テーブルに対するクエリ実行時に、パーティションキーを使用してパーティションを絞り込むかどうかを制御します。
+
+可能な値:
+
+- 0 — 無効。
+- 1 — 有効。
 
 ## use_primary_key \{#use_primary_key\}
 

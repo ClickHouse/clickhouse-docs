@@ -405,8 +405,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) 索引
 - [`ngrambf_v1`](#n-gram-bloom-filter) 索引
 - [`tokenbf_v1`](#token-bloom-filter) 索引
-- [`text`]({#text}) 索引
-- [`vector_similarity`]({#vector-similarity}) 索引
+- [`text`](#text) 索引
+- [`vector_similarity`](#vector-similarity) 索引
 
 #### MinMax 跳过索引 \{#minmax\}
 

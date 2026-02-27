@@ -14,7 +14,7 @@ doc_type: 'reference'
 因此，本节中展示的示例在 [ClickHouse Fiddle](https://fiddle.clickhouse.com/) 中，以及在快速发布版本和生产环境中的部署中，默认都会抛出异常，除非事先完成相应配置。
 :::
 
-关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries)。
+关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded)。
 
 ## 多个地理库（Geobase） \{#multiple-geobases\}
 
@@ -385,7 +385,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-获取某个区域的人口数。人口数据可以记录在 `geobase` 文件中。参见 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries) 一节。若该区域未记录人口数，则返回 0。在 `geobase` 中，人口可能只记录在子区域，而未记录在父区域。
+获取某个区域的人口数。人口数据可以记录在 `geobase` 文件中。参见 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded) 一节。若该区域未记录人口数，则返回 0。在 `geobase` 中，人口可能只记录在子区域，而未记录在父区域。
 
 **语法**
 

@@ -17,6 +17,22 @@ import Image from '@theme/IdealImage';
 
 # Postgres 版 ClickPipes 常见问题解答（FAQ） \{#clickpipes-for-postgres-faq\}
 
+### 事务回滚会同步到 ClickHouse 吗？ \{#are-transaction-rollbacks-replicated\}
+
+不会。CDC 只会同步已提交的事务。已回滚的事务不会被发送到 ClickHouse。
+
+### 我可以在 ClickHouse 中保留比源 Postgres 更久的数据吗？ \{#retain-data-longer-in-clickhouse\}
+
+可以。源 Postgres 和目标 ClickHouse 具有各自独立的数据保留策略。比如，你可以在 Postgres 中只保留 3 个月的数据，而在 ClickHouse 中保留完整的历史记录。在 Postgres 中删除旧行会生成 DELETE 事件，这些事件会复制到 ClickHouse，因此如果你希望保留历史数据，应当在你的 [publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate) 中排除 DELETE，或者在查询层面进行处理。
+
+### 我如何在数据从 Postgres 流向 ClickHouse 的过程中对其进行丰富？ \{#data-enrichment\}
+
+在 CDC 目标表之上使用 [materialized views](/materialized-view)。ClickHouse 中的 materialized view 充当插入触发器，因此从 Postgres 复制过来的每一行数据，都可以在写入最终目标表之前进行转换、与查找表进行关联，或者通过添加额外列来实现数据丰富。
+
+### 我可以将多个 Postgres 实例的数据复制到一个或多个 ClickHouse 服务中吗？ \{#multi-region-multi-source\}
+
+可以。可以从不同的 Postgres 实例（包括跨 AWS 区域）创建单独的 ClickPipes，将数据复制到一个或多个 ClickHouse 服务中。比如，可以将某个区域的 Postgres 实例数据发送到本地 ClickHouse 集群，以实现低延迟分析，同时将相同数据发送到另一个区域的集中式 ClickHouse 集群，用于汇总报表。请注意，跨区域架构会产生 AWS 跨区域数据传输费用以及额外的网络延迟。
+
 ### 空闲状态如何影响我的 Postgres CDC ClickPipe？ \{#how-does-idling-affect-my-postgres-cdc-clickpipe\}
 
 如果您的 ClickHouse Cloud 服务处于空闲状态，您的 Postgres CDC ClickPipe 仍会继续同步数据；您的服务会在下一次同步间隔到来时被唤醒，以处理新到达的数据。一旦同步完成并再次达到空闲时间阈值，您的服务就会重新进入空闲状态。

@@ -129,4 +129,4 @@ SELECT * FROM mongodb(
 ## 관련 항목 \{#related\}
 
 - [`MongoDB` 테이블 엔진](engines/table-engines/integrations/mongodb.md)
-- [MongoDB를 딕셔너리(Dictionary) 소스로 사용하기](../statements/create/dictionary/sources.md#mongodb)
+- [MongoDB를 딕셔너리(Dictionary) 소스로 사용하기](../statements/create/dictionary/sources/mongodb.md)
