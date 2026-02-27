@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4036 
+personal_ws-1.1 en 4045 
 AArch
 ACLs
 AICPA
@@ -150,7 +150,6 @@ Bugfix
 BuildID
 BuilderBinAarch
 BuilderBinAmd
-bytea
 Bytebase
 CCPA
 CCTOOLS
@@ -225,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -1956,6 +1957,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
