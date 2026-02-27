@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4036 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -150,7 +150,6 @@ Bugfix
 BuildID
 BuilderBinAarch
 BuilderBinAmd
-bytea
 Bytebase
 CCPA
 CCTOOLS
@@ -225,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -249,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -800,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -1956,6 +1959,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
@@ -2037,6 +2041,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake
