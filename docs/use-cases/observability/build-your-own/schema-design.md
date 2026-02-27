@@ -1604,7 +1604,6 @@ Compared to the non-preprocessed index, performance improves by approximately 2x
 
 Using a preprocessor also reduces index size from gigabytes to a few hundred kilobytes, approximately 0.01% of the original size
 
-
 ```sql
 SELECT
     `table`,
