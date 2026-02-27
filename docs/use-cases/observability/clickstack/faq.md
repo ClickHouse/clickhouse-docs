@@ -4,12 +4,12 @@ title: 'ClickStack FAQ'
 sidebar_label: 'FAQ'
 pagination_prev: null
 pagination_next: null
-description: 'Frequently asked questions about ClickStack alerting, dashboards, drilldowns, and metrics discovery.'
+description: 'Frequently asked questions about ClickStack alerting, dashboards, drill-downs, and metrics discovery.'
 doc_type: 'guide'
-keywords: ['ClickStack', 'FAQ', 'alerting', 'dashboards', 'drilldowns', 'metrics discovery']
+keywords: ['ClickStack', 'FAQ', 'alerting', 'dashboards', 'drill-downs', 'metrics discovery']
 ---
 
-This page answers frequently asked questions about ClickStack capabilities, including alerting, dashboards and drilldowns, and metrics discovery.
+This page answers frequently asked questions about ClickStack capabilities, including alerting, dashboards and drill-downs, and metrics discovery.
 
 ## Alerting {#alerting}
 
@@ -47,32 +47,32 @@ Materialized views in ClickStack do not currently support metrics-based alerting
 
 </details>
 
-## Dashboards and drilldowns {#dashboards-and-drilldowns}
+## Dashboards and drill-downs {#dashboards-and-drill-downs}
 
 <details>
 <summary><strong>Does ClickStack support parameterized dashboards or dashboard variables?</strong></summary>
 
 ClickStack supports custom dropdown filters on dashboards, populated by data queried from ClickHouse. These filters allow you to dynamically scope all tiles on a dashboard to a specific value (e.g., a service name, environment, or host).
 
-ClickStack does not currently support reusable dashboard variables in the style of Grafana template variables. Because ClickStack works exclusively with ClickHouse as its data source, drilldown and filtering capabilities can be provided natively without requiring a variable abstraction layer.
+ClickStack does not currently support reusable dashboard variables in the style of Grafana template variables. Because ClickStack works exclusively with ClickHouse as its data source, drill-down and filtering capabilities can be provided natively without requiring a variable abstraction layer.
 
 For details on creating dashboards and applying filters, see [Dashboards](/use-cases/observability/clickstack/dashboards).
 
 </details>
 
 <details>
-<summary><strong>What drilldown capabilities are available?</strong></summary>
+<summary><strong>What drill-down capabilities are available?</strong></summary>
 
-ClickStack supports the following drilldown workflows:
+ClickStack supports the following drill-down workflows:
 
 - [Dashboard-level filtering](/use-cases/observability/clickstack/dashboards#filter-dashboards) — Lucene or SQL filters and time range adjustments applied at the dashboard level propagate to all tiles.
 - Click-to-view events — clicking on data in a dashboard tile and selecting **View Events** navigates to the [Search](/use-cases/observability/clickstack/search) page with relevant filters for log and trace data.
-- [Prebuilt dashboard drilldowns](/use-cases/observability/clickstack/dashboards#presets) — the [Services](/use-cases/observability/clickstack/dashboards#services-dashboard), [ClickHouse](/use-cases/observability/clickstack/dashboards#clickhouse-dashboard), and [Kubernetes](/use-cases/observability/clickstack/dashboards#kubernetes-dashboard) dashboards include richer, built-in drilldown navigation across tabs.
+- [Prebuilt dashboard drill-downs](/use-cases/observability/clickstack/dashboards#presets) — the [Services](/use-cases/observability/clickstack/dashboards#services-dashboard), [ClickHouse](/use-cases/observability/clickstack/dashboards#clickhouse-dashboard), and [Kubernetes](/use-cases/observability/clickstack/dashboards#kubernetes-dashboard) dashboards include richer, built-in drill-down navigation across tabs.
 
-Multi-level drilldowns from one custom dashboard to another (dashboard → dashboard → detail view) are not currently supported.
+Multi-level drill-downs from one custom dashboard to another (dashboard → dashboard → detail view) are not currently supported.
 
 :::note
-The **View Events** drilldown works best with log and trace data. Because metrics data cannot be viewed on the [Search](/use-cases/observability/clickstack/search) page, drilling down from a metrics tile will link to logs from around the selected timeframe instead.
+The **View Events** drill-down works best with log and trace data. Because metrics data cannot be viewed on the [Search](/use-cases/observability/clickstack/search) page, drilling down from a metrics tile will link to logs from around the selected time frame instead.
 :::
 
 </details>
