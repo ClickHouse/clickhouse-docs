@@ -368,6 +368,7 @@ Use the `Client.command` method to send SQL queries to the ClickHouse server tha
 | settings      | dict             | *None*     | See [settings description](#settings-argument).                                                                                                               |
 | use_database  | bool             | True       | Use the client database (specified when creating the client). False means the command will use the default ClickHouse server database for the connected user. |
 | external_data | ExternalData     | *None*     | An `ExternalData` object containing file or binary data to use with the query. See [Advanced Queries (External Data)](advanced-querying.md#external-data)     |
+| transport_settings | dict        | *None*     | Optional dictionary of HTTP headers to include with this request. Each key-value pair is added as an HTTP header (e.g., `{'X-Custom-Header': 'value'}`). Useful for proxy authentication, request tracing, or passing headers required by intermediate infrastructure. |
 
 ### Command examples {#command-examples}
 
@@ -470,6 +471,7 @@ The `Client.query` method is the primary way to retrieve a single "batch" datase
 | use_extended_dtypes | bool             | True       | Use Pandas extended dtypes (like StringArray), and pandas.NA and pandas.NaT for ClickHouse NULL values. Applies only to `query_df` and `query_df_stream` methods.                  |
 | external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](advanced-querying.md#external-data)                            |
 | context             | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](advanced-querying.md#querycontexts)                   |
+| transport_settings  | dict             | *None*     | Optional dictionary of HTTP headers to include with this request. Each key-value pair is added as an HTTP header (e.g., `{'X-Custom-Header': 'value'}`). Useful for proxy authentication, request tracing, or passing headers required by intermediate infrastructure. |
 
 ### Query examples {#query-examples}
 
@@ -625,7 +627,7 @@ For the common use case of inserting multiple records into ClickHouse, there is 
 | column_oriented    | bool                              | False      | If True, the `data` argument is assumed to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.             |
 | settings           | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                               |
 | context            | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments. See [Advanced Inserts (InsertContexts)](advanced-inserting.md#insertcontexts)                          |
-| transport_settings | dict                              | *None*     | Optional dictionary of transport-level settings (HTTP headers, etc.)                                                                                                                          |
+| transport_settings | dict                              | *None*     | Optional dictionary of HTTP headers to include with this request. Each key-value pair is added as an HTTP header (e.g., `{'X-Custom-Header': 'value'}`). Useful for proxy authentication, request tracing, or passing headers required by intermediate infrastructure. |
 
 This method returns a "query summary" dictionary as described under the "command" method. An exception will be raised if the insert fails for any reason.
 
