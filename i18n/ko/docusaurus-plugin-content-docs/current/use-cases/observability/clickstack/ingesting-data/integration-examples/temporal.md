@@ -112,6 +112,8 @@ Temporal은 단순하면서도 정교하고 복원력이 높은 애플리케이�
   * `resource` 프로세서는 OpenTelemetry 시맨틱 컨벤션에 따라 필수 `service.name` 속성 값을 설정합니다
   * 여러 Temporal Cloud 계정이 있는 경우, 이를 구분할 수 있도록 `service.name` 값을 다르게 설정하십시오(예: `"temporal-prod"`, `"temporal-dev"`).
 
+  :::
+
   #### ClickStack에서 사용자 정의 구성 로드 설정하기
 
   기존 ClickStack 배포에서 사용자 정의 수집기 구성을 활성화하려면 다음 작업을 수행하십시오:

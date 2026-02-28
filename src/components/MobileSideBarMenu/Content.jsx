@@ -29,7 +29,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
     // Get current locale from URL
     const getCurrentLocale = () => {
         const pathname = location.pathname;
-        const docsLocaleMatch = pathname.match(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/);
+        const docsLocaleMatch = pathname.match(/^\/docs\/(jp|ja|ko|ru|zh|zh-CN)(?=\/|$)/);
         return docsLocaleMatch ? docsLocaleMatch[1] : 'en';
     };
 
@@ -37,7 +37,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
     const normalizePath = (path) => {
         if (!path) return '';
         // Remove locale prefix from path for comparison
-        return path.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)/, '/docs');
+        return path.replace(/^\/docs\/(jp|ja|ko|ru|zh|zh-CN)/, '/docs');
     };
 
     // Check if the current path exists in the sidebar
@@ -71,7 +71,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
     // Check if we're on a docs root page (should show only top-level menu)
     const isDocsRootPage = () => {
-        const docsRootPaths = ['/docs/', '/docs/jp/', '/docs/ru/', '/docs/zh/'];
+        const docsRootPaths = ['/docs/', '/docs/jp/', '/docs/ko/', '/docs/ru/', '/docs/zh/'];
         return docsRootPaths.includes(location.pathname);
     };
 

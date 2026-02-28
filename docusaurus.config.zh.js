@@ -46,7 +46,6 @@ const config = {
   tagline:
     "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
   url: "https://clickhouse.com",
-  // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/zh/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
