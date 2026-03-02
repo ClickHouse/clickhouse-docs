@@ -1057,7 +1057,7 @@ The logging is an experimental feature and is subject to change in the future.
 :::
 
 The default logger implementation emits log records into `stdout` via `console.debug/info` methods and `stderr` via `console.warn/error` methods.
-You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `OFF`):
+You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `WARN`):
 
 ```typescript
 import type { Logger } from '@clickhouse/client'
@@ -1177,7 +1177,7 @@ In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `
 
 If you're experiencing `socket hang up` errors even when using the latest version of the client, there are the following options to resolve this issue:
 
-* Enable logs with at least `WARN` log level. This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
+* Enable logs with at least `WARN` log level (default). This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
   
   ```ts
   const client = createClient({
