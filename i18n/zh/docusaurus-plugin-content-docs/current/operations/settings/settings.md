@@ -7971,7 +7971,11 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-定义如何将 MySQL 类型转换为对应的 ClickHouse 类型。取值为逗号分隔的列表，可为 `decimal`、`datetime64`、`date2Date32` 或 `date2String` 的任意组合。
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "默认启用现代 MySQL 类型映射。"}]}]}/>
+
+定义如何将 MySQL 类型转换为对应的 ClickHouse 类型。取值为逗号分隔的列表，可为 `decimal`、`datetime64`、`date2Date32` 或 `date2String` 的任意组合。所有现代映射（`decimal`、`datetime64`、`date2Date32`）默认启用。
 
 - `decimal`：在精度允许的情况下，将 `NUMERIC` 和 `DECIMAL` 类型转换为 `Decimal`。
 - `datetime64`：当精度不为 `0` 时，将 `DATETIME` 和 `TIMESTAMP` 类型转换为 `DateTime64` 而不是 `DateTime`。
@@ -8634,7 +8638,9 @@ SELECT * FROM test2;
 
 ## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "该优化已可用于生产环境"}]}]} />
 
 启用将具有相同参数的聚合函数进行合并。它会将包含至少两个参数相同的聚合函数（[sum](/sql-reference/aggregate-functions/reference/sum)、[count](/sql-reference/aggregate-functions/reference/count) 或 [avg](/sql-reference/aggregate-functions/reference/avg)）的查询重写为使用 [sumCount](/sql-reference/aggregate-functions/reference/sumcount)。
 

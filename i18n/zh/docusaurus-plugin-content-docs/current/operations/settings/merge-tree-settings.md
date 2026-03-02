@@ -2730,6 +2730,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 
 在可能的情况下从 leader 副本读取虚拟分区片段。仅在 ClickHouse Cloud 中可用
 
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "新增设置"}]}]}/>
+
+在后台尝试更新副本集的频率。
+
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2834,6 +2842,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 这是表级磁盘，其路径/endpoint 应该指向表数据，而不是数据库数据。仅可用于 s3_plain/s3_plain_rewritable/web。
+
+## table_readonly \{#table_readonly\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于将表标记为只读、禁止插入和修改的新设置"}]}]}/>
+
+如果设置为 `true`，则该表处于只读模式。任何向该表插入数据或修改其内容的操作都会失败。
 
 ## temporary_directories_lifetime \{#temporary_directories_lifetime\}
 

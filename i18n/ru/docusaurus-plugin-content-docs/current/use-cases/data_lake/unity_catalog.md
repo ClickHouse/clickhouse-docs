@@ -15,11 +15,6 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-:::note
-Интеграция с Unity Catalog работает для управляемых и внешних таблиц.
-В настоящее время эта интеграция поддерживается только в AWS.
-:::
-
 ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве описаны шаги для выполнения запросов к вашим данным, управляемым Databricks, с помощью ClickHouse и [Unity Catalog](https://www.databricks.com/product/unity-catalog).
 
 Databricks поддерживает несколько форматов данных для своей lakehouse-платформы. С ClickHouse вы можете выполнять запросы к таблицам Unity Catalog в форматах Delta и Iceberg.
@@ -29,11 +24,10 @@ Databricks поддерживает несколько форматов данн
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
+
 ## Настройка Unity в Databricks \{#configuring-unity-in-databricks\}
 
 Чтобы разрешить ClickHouse взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен на взаимодействие с внешним клиентом. Этого можно добиться, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
-
-Помимо включения внешнего доступа, убедитесь, что принципал, выполняющий настройку интеграции, имеет привилегию `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema)) для схемы, содержащей таблицы.
 
 После того как ваш каталог будет настроен, необходимо сгенерировать учетные данные для ClickHouse. В зависимости от режима взаимодействия с Unity можно использовать два разных метода:
 

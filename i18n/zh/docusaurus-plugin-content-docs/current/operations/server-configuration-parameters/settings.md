@@ -1617,6 +1617,10 @@ HSTS 的失效时间（秒）。
 
 <SettingsInfoBlock type="String" default_value="SLRU" />二级索引标记缓存策略的名称。
 
+## index_mark_cache_prewarm_ratio \{#index_mark_cache_prewarm_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.95" />预热期间需要填充的索引标记缓存总大小比例。
+
 ## index_mark_cache_size \{#index_mark_cache_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />

@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-benchmark \{#clickhouse-benchmark\}
 
 ClickHouse 서버에 연결해 지정한 쿼리를 반복해서 전송합니다.
@@ -65,7 +63,7 @@ clickhouse-benchmark [keys] < queries_file;
 - `--database=DATABASE_NAME` — ClickHouse 데이터베이스 이름입니다. 기본값: `default`.
 - `--user=USERNAME` — ClickHouse 사용자 이름입니다. 기본값: `default`.
 - `--password=PSWD` — ClickHouse 사용자 비밀번호입니다. 기본값: 빈 문자열.
-- `--stacktrace` — 스택 트레이스를 출력합니다. 이 키가 설정되면 `clickhouse-bencmark`는 예외의 스택 트레이스를 출력합니다.
+- `--stacktrace` — 스택 트레이스를 출력합니다. 이 키가 설정되면 `clickhouse-benchmark`는 예외의 스택 트레이스를 출력합니다.
 - `--stage=WORD` — 서버에서의 쿼리 처리 단계입니다. ClickHouse는 지정된 단계에서 쿼리 처리를 중지하고 `clickhouse-benchmark`에 응답을 반환합니다. 가능한 값: `complete`, `fetch_columns`, `with_mergeable_state`. 기본값: `complete`.
 - `--roundrobin` — 서로 다른 `--host`/`--port`에 대해 쿼리를 비교하는 대신, 각 쿼리마다 임의의 `--host`/`--port`를 하나 선택하여 해당 대상으로 쿼리를 전송합니다.
 - `--reconnect=N` — 재연결 동작을 제어합니다. 가능한 값: 0 (재연결 안 함), 1 (쿼리마다 재연결), 또는 N (매 N개의 쿼리마다 재연결). 기본값: 0.
@@ -78,14 +76,10 @@ clickhouse-benchmark [keys] < queries_file;
 
 쿼리에 일부 [settings](/operations/settings/overview)를 적용하려면 `--<session setting name>= SETTING_VALUE` 형식의 키로 전달합니다. 예: `--max_memory_usage=1048576`.
 
-
-
 ## 환경 변수 옵션 \{#clickhouse-benchmark-environment-variable-options\}
 
 사용자 이름, 비밀번호 및 호스트는 환경 변수 `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD`, `CLICKHOUSE_HOST`를 통해 설정할 수 있습니다.  
 명령줄 인수 `--user`, `--password`, `--host`가 설정된 경우 환경 변수보다 우선 적용됩니다.
-
-
 
 ## 출력 \{#clickhouse-benchmark-output\}
 
@@ -136,8 +130,6 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
 `clickhouse-benchmark`는 실행 중인 두 ClickHouse 서버의 성능을 비교할 수 있습니다.
 
 비교 모드를 사용하려면 두 서버의 엔드포인트를 각각 한 쌍의 `--host`, `--port` 키로 지정합니다. 키는 명령줄 인수 목록에서의 순서에 따라 서로 짝지어지며, 첫 번째 `--host`는 첫 번째 `--port`와 매칭되는 식입니다. `clickhouse-benchmark`는 두 서버 모두에 대한 연결을 설정한 다음 쿼리를 전송합니다. 각 쿼리는 무작위로 선택된 서버 중 하나로 전송됩니다. 결과는 표 형태로 표시됩니다.
-
-
 
 ## 예제 \{#clickhouse-benchmark-example\}
 
