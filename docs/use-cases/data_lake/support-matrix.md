@@ -33,25 +33,27 @@ ClickHouse integrates with four lakehouse table formats: [Apache Iceberg](/engin
 | HDFS | ⚠️ | Via [`icebergHDFS()`](/sql-reference/table-functions/iceberg). Deprecated. |
 | Local filesystem | ✅ | Via [`icebergLocal()`](/sql-reference/table-functions/iceberg) |
 | **Access methods** | | |
-| Table function | ✅ | [`iceberg()`](/sql-reference/table-functions/iceberg) with variants per backend |
-| Table engine | ✅ | [`Iceberg`](/engines/table-engines/integrations/iceberg) with variants per backend |
+| Table function | ✅ | [`icebergS3()`](/sql-reference/table-functions/iceberg) with variants per backend |
+| Table engine | ✅ | [`IcebergS3`](/engines/table-engines/integrations/iceberg) with variants per backend |
 | Cluster-distributed reads | ✅ | [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster), [`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster), [`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster) |
 | Named collections | ✅ | [Defining a named collection](/sql-reference/table-functions/iceberg#defining-a-named-collection) |
+|  |  |  |
 | **Read features** | | |
 | Read support | ✅ | Full SELECT support with all ClickHouse SQL functions |
 | Partition pruning | ✅ | See [Partition pruning](/engines/table-engines/integrations/iceberg#partition-pruning). |
 | Hidden partitioning | ✅ | Iceberg transform-based partitioning supported |
-| Partition evolution | ✅ | Changing partition specs over time supported |
+| Partition evolution | ✅ | Reading tables with changing partition specs over time supported |
 | Schema evolution | ✅ | Column addition, removal, and reordering. See [Schema evolution](/engines/table-engines/integrations/iceberg#schema-evolution). |
 | Type promotion / widening | ✅ | `int` → `long`, `float` → `double`, `decimal(P,S)` → `decimal(P',S)` where P' > P. See [Schema evolution](/engines/table-engines/integrations/iceberg#schema-evolution). |
 | Time travel / snapshots | ✅ | Via `iceberg_timestamp_ms` or `iceberg_snapshot_id` settings. See [Time travel](/engines/table-engines/integrations/iceberg#time-travel). |
 | Position deletes | ✅ | See [Processing deleted rows](/engines/table-engines/integrations/iceberg#deleted-rows). |
 | Equality deletes | ✅ | Table engine only, from v25.8+. See [Processing deleted rows](/engines/table-engines/integrations/iceberg#deleted-rows). |
-| Merge-on-read | ✅ | Experimental. Supported for [delete operations](/sql-reference/table-functions/iceberg#deleting-data). |
-| Format versions | ✅ | v1 and v2 supported |
+| Merge-on-read | ⚠️ | Experimental. Supported for [delete operations](/sql-reference/table-functions/iceberg#deleting-data). |
+| Format versions | ⚠️ | v1 and v2 supported. V3 not supported. |
 | Column statistics | ✅ | |
 | Bloom filters / puffin files | ❌ | Bloom filter indexes in puffin files not supported |
 | Virtual columns | ✅ | `_path`, `_file`, `_size`, `_time`, `_etag`. See [Virtual columns](/sql-reference/table-functions/iceberg#virtual-columns). |
+|  |  |  |
 | **Write features** | | |
 | Table creation | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. From v25.7+. See [Creating a table](/sql-reference/table-functions/iceberg#creating-a-table). |
 | INSERT | ✅ | Beta from 26.2. Requires `allow_insert_into_iceberg = 1`. See [Inserting data](/sql-reference/table-functions/iceberg#inserting-data). |
@@ -62,8 +64,9 @@ ClickHouse integrates with four lakehouse table formats: [Apache Iceberg](/engin
 | Copy-on-write | ❌ | Not supported |
 | Expire snapshots | ❌ | Not supported |
 | Remove orphan files | ❌ | Not supported |
-| Writing partitions | ⚠️ | Supported. Writing to tables with evolution not supported. |
-| Altering partitions | ❌ | Not supported |
+| Writing partitions | ✅ | Supported. |
+| Altering partitions | ❌ | The changing of the partioning scheme from ClickHouse is not supported. ClickHouse can write to iceberg tables which have an evolved partitioning. |
+|  |  |  |
 | **Metadata** | | |
 | Branching and tagging | ❌ | Iceberg branch/tag references not supported |
 | Metadata file resolution | ✅ | Support for metadata resolution through catalogs, simple directory listing, using 'version-hint' and specific path. Configurable via `iceberg_metadata_file_path` and `iceberg_metadata_table_uuid`. See [Metadata file resolution](/engines/table-engines/integrations/iceberg#metadata-file-resolution). |
