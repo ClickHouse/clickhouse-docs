@@ -8008,7 +8008,11 @@ ClickHouse использует эту настройку при чтении д
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`.
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "Современные отображения типов MySQL включены по умолчанию."}]}]}/>
+
+Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`. Все современные отображения (`decimal`, `datetime64`, `date2Date32`) включены по умолчанию.
 
 - `decimal`: преобразовывать типы `NUMERIC` и `DECIMAL` в `Decimal`, когда это допускает точность.
 - `datetime64`: преобразовывать типы `DATETIME` и `TIMESTAMP` в `DateTime64` вместо `DateTime`, когда точность не равна `0`.
@@ -8671,7 +8675,9 @@ SELECT * FROM test2;
 
 ## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Оптимизация готова к промышленному использованию"}]}]} />
 
 Включает оптимизацию, которая объединяет агрегатные функции с одинаковым аргументом. Переписывает запрос, если он содержит как минимум две агрегатные функции [sum](/sql-reference/aggregate-functions/reference/sum), [count](/sql-reference/aggregate-functions/reference/count) или [avg](/sql-reference/aggregate-functions/reference/avg) с одинаковым аргументом, в [sumCount](/sql-reference/aggregate-functions/reference/sumcount).
 

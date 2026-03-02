@@ -1473,10 +1473,10 @@ ClickHouse でプライマリキーをどれだけ適切にチューニングし
 
 ### フルテキスト検索のためのテキスト索引 \{#text-index-for-full-text-search\}
 
-本番レベルのフルテキスト検索のために、ClickHouse は専用の[テキスト索引](/engines/table-engines/mergetree-family/textindexes)を提供しています。
+ClickHouse はフルテキスト検索のために専用の[テキスト索引](/engines/table-engines/mergetree-family/textindexes)を提供しています。
 この索引はトークン化されたテキストデータに対して逆インデックスを構築し、トークンベースの検索クエリを高速に実行できるようにします。
 
-テキスト索引は、ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
+テキスト索引は、ClickHouse バージョン 26.2 以降で利用可能です。
 
 MergeTree テーブルでは、次のカラム型のカラムに対して定義できます: [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) と [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) の map 関数経由）。
 
@@ -1513,7 +1513,7 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-索引がなくても、同じ関数をそのまま使えます。
+`hasAnyTokens` もテキスト索引なしで使用できますが、その場合クエリは Body カラムを遅いフルスキャンで処理します。
 
 ```sql
 SELECT count()
@@ -1529,12 +1529,10 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-このクエリでは Body カラムをフルスキャンします。
-
 
 #### テキスト索引の追加 \{#adding-a-text-index\}
 
-テキスト索引はテーブル作成時に追加できます。
+Body カラムに対するテキスト索引は、テーブル作成時に追加できます。
 
 ```sql
 CREATE TABLE otel_logs_index_body
@@ -1570,9 +1568,8 @@ ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAl
 ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 ```
 
-これは、`splitByNonAlpha`トークナイザを使用して `Body` カラムに対する転置索引を作成します。
-
-> 注意: 部分的にマテリアライズされた索引でもクエリから利用できますが、最大のパフォーマンス向上は完全にマテリアライズされた後に得られます。
+同じ SELECT クエリを再度実行すると、テキスト索引を使ったルックアップが行われます。
+アクセスされるデータ量はギガバイトからメガバイトへと削減され、パフォーマンスは約 45x 向上します。
 
 ```sql
 SELECT count()
@@ -1589,8 +1586,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 Peak memory usage: 15.23 MiB.
 ```
 
-索引により、スキャン対象のデータ量はギガバイトからメガバイトへと削減され、パフォーマンスは約 `45x` 向上します。
-
 
 #### プリプロセッサーの使用 \{#using-a-preprocessor\}
 
@@ -1602,7 +1597,8 @@ JSON 文字列全体に索引を作成する代わりに、トークナイズの
 例えば:
 
 ```sql
- INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
 この例では、プリプロセッサーにより次の効果が得られます。
@@ -1629,7 +1625,7 @@ Peak memory usage: 1.95 MiB.
 
 前処理を行っていない索引と比べると、パフォーマンスは約 2 倍向上します。
 
-索引サイズの比較
+プリプロセッサを使用すると、索引サイズもギガバイトから数百キロバイト程度まで（元のサイズのおよそ 0.01%）削減できます。
 
 ```sql
 SELECT
@@ -1647,8 +1643,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
    └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-プリプロセッサを使用すると、索引サイズをギガバイトから数百キロバイト程度（元のサイズのおよそ 0.01%）まで削減できるうえ、クエリのパフォーマンスも向上します。
-
 **テキスト検索用のその他の索引
 
 セカンダリ スキップ索引の詳細については[こちら](/optimize/skipping-indexes#skip-index-functions)を参照してください。
@@ -1656,6 +1650,10 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
 <details markdown="1">
   <summary>テキスト検索用のBloomフィルタ</summary>
+
+  :::note
+  `ngrambf_v1` および `tokenbf_v1` 索引は、全文検索への使用は推奨されなくなりました。
+  :::
 
   ngramおよびトークンベースのブルームフィルタ索引である[`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types)と[`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types)を使用することで、`LIKE`、`IN`、hasToken演算子を用いたStringカラムに対する検索を高速化できます。 重要な点として、トークンベース索引は英数字以外の文字を区切り文字として使用してトークンを生成します。 これは、クエリ実行時にはトークン(または単語全体)のみがマッチング対象となることを意味します。 より細かい粒度でのマッチングが必要な場合は、[N-gramブルームフィルタ](/optimize/skipping-indexes#bloom-filter-types)を使用できます。 これは文字列を指定されたサイズのngramに分割することで、単語内の部分マッチングを可能にします。
 

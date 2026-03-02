@@ -15,11 +15,6 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-:::note
-Unity Catalog との連携は、マネージドテーブルおよび外部テーブルの両方で利用できます。
-この連携は現在、AWS 上でのみサポートされています。
-:::
-
 ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
 
 Databricks はレイクハウス向けに複数のデータ形式をサポートしています。ClickHouse を使用すると、Unity Catalog のテーブルを Delta および Iceberg としてクエリできます。
@@ -29,11 +24,10 @@ Databricks はレイクハウス向けに複数のデータ形式をサポート
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
+
 ## Databricks での Unity の構成 \{#configuring-unity-in-databricks\}
 
 ClickHouse が Unity カタログと連携できるようにするには、Unity Catalog を外部リーダーとの連携を許可するように構成しておく必要があります。これは、[「Unity Catalog への外部データ アクセスを有効にする」](https://docs.databricks.com/aws/en/external-access/admin) ガイドに従うことで実現できます。
-
-外部アクセスを有効にすることに加えて、テーブルを含むスキーマに対して `EXTERNAL USE SCHEMA` [権限](https://docs.databricks.com/aws/en/external-access/admin#external-schema) を、統合を構成するプリンシパルが付与されていることを確認してください。
 
 カタログの構成が完了したら、ClickHouse 用の認証情報を生成する必要があります。Unity との連携モードに応じて、2 つのいずれかの方法を使用できます。
 

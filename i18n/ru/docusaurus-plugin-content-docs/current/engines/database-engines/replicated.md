@@ -33,6 +33,13 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 Для таблиц [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication), если аргументы не заданы, используются значения по умолчанию: `/clickhouse/tables/{uuid}/{shard}` и `{replica}`. Их можно изменить в настройках сервера [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) и [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name). Макрос `{uuid}` раскрывается в UUID таблицы, `{shard}` и `{replica}` раскрываются в значения из конфигурации сервера, а не из аргументов движка базы данных. В будущем можно будет использовать `shard_name` и `replica_name` реплицируемой базы данных.
 
+Также поддерживается вспомогательный кластер ZooKeeper для хранения метаданных реплицируемой базы данных вместо использования кластера ZooKeeper по умолчанию. Реплицируемую базу данных с использованием вспомогательного кластера ZooKeeper можно создать с помощью SQL следующим образом:
+
+```sql
+CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_auxiliary_zookeepers:path', 'shard_name', 'replica_name')
+```
+
+
 ## Особенности и рекомендации \{#specifics-and-recommendations\}
 
 DDL-запросы с базой данных `Replicated` работают аналогично запросам [ON CLUSTER](../../sql-reference/distributed-ddl.md), но с небольшими отличиями.
@@ -94,7 +101,7 @@ FROM system.clusters WHERE cluster='r';
 └─────────┴───────────┴─────────────┴───────────┴──────────────┴──────┴──────────┘
 ```
 
-Создание распределённой таблицы и вставка данных:
+Создание distributed таблицы и вставка данных:
 
 ```sql
 node2 :) CREATE TABLE r.d (n UInt64) ENGINE=Distributed('r','r','rmt', n % 2);
@@ -124,6 +131,7 @@ node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('
 
 Конфигурация кластера будет выглядеть следующим образом:
 
+
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
 │ r       │     1     │      1      │   node3   │  127.0.0.1   │ 9002 │     0    │
@@ -146,6 +154,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 └───────┴───────────────┘
 ```
 
+
 ## Параметры \{#settings\}
 
 Поддерживаются следующие параметры:
@@ -164,7 +173,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 | `default_replica_shard_name`                                                 | `{shard}`                      | Имя шарда реплики в базе данных. Используется при создании базы данных, если аргументы опущены.                                                                             |
 | `default_replica_name`                                                       | `{replica}`                    | Имя реплики в базе данных. Используется при создании базы данных, если аргументы опущены.                                                                                   |
 
-Значения по умолчанию могут быть переопределены в конфигурационном файле.
+Значения по умолчанию могут быть переопределены в конфигурационном файле
 
 ```xml
 <clickhouse>

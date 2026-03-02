@@ -2840,6 +2840,14 @@ ClickHouse Cloud에서만 지원됩니다.
 가능한 경우 리더에서 가상 파트를 읽도록 합니다. ClickHouse
 Cloud에서만 사용할 수 있습니다.
 
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "새 설정"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "새 설정"}]}]}/>
+
+레플리카가 백그라운드에서 replica set을 업데이트하려고 시도하는 간격입니다.
+
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2944,6 +2952,14 @@ Cloud에서만 사용할 수 있습니다.
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 이 설정은 테이블 디스크를 지정하며, 경로/엔드포인트는 데이터베이스 데이터가 아니라 테이블 데이터가 저장된 위치를 가리켜야 합니다. `s3_plain`/`s3_plain_rewritable`/`web`에 대해서만 설정할 수 있습니다.
+
+## table_readonly \{#table_readonly\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "테이블을 읽기 전용으로 표시하여 데이터 삽입 및 변경을 방지하는 새로운 설정"}]}]}/>
+
+true로 설정하면 테이블은 읽기 전용 모드가 됩니다. 데이터를 삽입하거나 테이블을 변경하려는 모든 시도는 실패합니다.
 
 ## temporary_directories_lifetime \{#temporary_directories_lifetime\}
 

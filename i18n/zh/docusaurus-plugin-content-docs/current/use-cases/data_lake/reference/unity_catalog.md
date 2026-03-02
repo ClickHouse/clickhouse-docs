@@ -14,11 +14,6 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-:::note
-与 Unity Catalog 的集成适用于托管表和外部表。
-当前此集成仅在 AWS 上受支持。
-:::
-
 ClickHouse 支持与多个目录（Unity、Glue、Polaris 等）集成。本文将引导您完成使用 ClickHouse 和 [Unity Catalog](https://www.databricks.com/product/unity-catalog) 查询由 Databricks 管理的数据的步骤。
 
 Databricks 为其湖仓（lakehouse）支持多种数据格式。借助 ClickHouse，您可以将 Unity Catalog 中的表以 Delta 和 Iceberg 的形式进行查询。
@@ -28,11 +23,10 @@ Databricks 为其湖仓（lakehouse）支持多种数据格式。借助 ClickHou
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
+
 ## 在 Databricks 中配置 Unity \{#configuring-unity-in-databricks\}
 
 为了允许 ClickHouse 与 Unity Catalog 交互，需要确保已将 Unity Catalog 配置为允许与外部读取方交互。可按照[“Enable external data access to Unity Catalog”](https://docs.databricks.com/aws/en/external-access/admin) 指南进行配置。
-
-除了启用外部访问之外，还要确保用于配置集成的主体（principal）在包含这些表的 schema 上拥有 `EXTERNAL USE SCHEMA` [权限](https://docs.databricks.com/aws/en/external-access/admin#external-schema)。
 
 Unity Catalog 配置完成后，必须为 ClickHouse 生成凭证。根据与 Unity 的交互模式，可以使用两种不同的方法：
 
