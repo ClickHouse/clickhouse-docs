@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Ingest Cloudflare Logpush data into ClickStack using ClickPipes for continuous log ingestion from S3'
 doc_type: 'guide'
-keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3']
+keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'HTTP', 'Logpush']
 ---
 
 import Image from '@theme/IdealImage';
@@ -40,7 +40,19 @@ Cloudflare [Logpush](https://developers.cloudflare.com/logs/about/) exports HTTP
 - Query logs using ClickHouse SQL
 - Retain logs beyond Cloudflare's default retention
 
-This guide uses [ClickPipes](/integrations/clickpipes) to continuously ingest Cloudflare log files from S3 into ClickHouse.
+This guide uses [ClickPipes](/integrations/clickpipes) to continuously ingest Cloudflare log files from S3 into ClickHouse. S3 acts as a durable buffer between Cloudflare and ClickHouse, providing exactly-once semantics and replay capability.
+
+:::note[Alternative: Direct HTTP ingestion]
+Cloudflare Logpush also supports pushing logs to [HTTP endpoints](https://developers.cloudflare.com/logs/get-started/enable-destinations/http/) directly. Since Cloudflare exports logs as newline-delimited JSON (NDJSON) and ClickHouse natively accepts this format via `JSONEachRow`, you can point Logpush directly at your ClickHouse Cloud HTTP interface using the following endpoint URL format:
+
+```
+https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT+JSONEachRow&header_Authorization=Basic+BASE64_CREDENTIALS
+```
+
+Replace `YOUR_CLICKHOUSE_HOST` with your ClickHouse Cloud hostname and `BASE64_CREDENTIALS` with your Base64-encoded credentials (`echo -n 'default:YOUR_PASSWORD' | base64`).
+
+This is simpler to set up (no S3, SQS, or IAM configuration needed), but Cloudflare Logpush [cannot backfill historical data](https://developers.cloudflare.com/logs/logpush/) if delivery fails — so if ClickHouse is unavailable during a push, those logs are permanently lost.
+:::
 
 ## Integration with existing Cloudflare Logpush {#existing-cloudflare}
 
