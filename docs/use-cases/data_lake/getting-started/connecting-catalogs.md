@@ -44,7 +44,7 @@ This integration is currently only supported on AWS.
 
 ### Configuring Unity in Databricks {#configuring-unity-in-databricks}
 
-To allow ClickHouse to interact with the Unity catalog, you need to make sure the Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
+To allow ClickHouse to interact with Unity catalog, you need to make sure your Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
 
 In addition to enabling external access, ensure the principal configuring the integration has the `EXTERNAL USE SCHEMA` [privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema) on the schema containing the tables.
 
