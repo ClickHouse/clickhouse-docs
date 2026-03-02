@@ -1056,7 +1056,7 @@ Configurations parameters are:
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-The default logger implementation emits log records into `stdout` via `console.debug/info/warn/error` methods.
+The default logger implementation emits log records into `stdout` via `console.debug/info` methods and `stderr` via `console.warn/error` methods.
 You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `OFF`):
 
 ```typescript
@@ -1092,7 +1092,7 @@ class MyLogger implements Logger {
 const client = createClient({
   log: {
     LoggerClass: MyLogger,
-    level: ClickHouseLogLevel
+    level: ClickHouseLogLevel.DEBUG,
   }
 })
 ```
