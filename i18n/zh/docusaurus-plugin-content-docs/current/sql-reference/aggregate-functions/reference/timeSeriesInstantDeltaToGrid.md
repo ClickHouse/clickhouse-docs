@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantDeltaToGrid \{#timeSeriesInstantDeltaToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 该聚合函数接收由时间戳和值成对组成的时间序列数据，并在由起始时间戳、结束时间戳和步长所描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 idelta](https://prometheus.io/docs/prometheus/latest/querying/functions/#idelta)。
 对于网格上的每个点，会在指定时间窗口内选取样本用于计算 `idelta`。

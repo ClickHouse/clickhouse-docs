@@ -541,13 +541,9 @@ part UUID를 기반으로 하는 SELECT 쿼리용 실험적 데이터 중복 제
 
 ## allow_experimental_statistics \{#allow_experimental_statistics\}
 
-<ExperimentalBadge/>
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-**별칭(Aliases)**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "설정 이름이 변경되었습니다. 이전 이름은 `allow_experimental_statistic`입니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "통계(Statistics)가 이제 GA(General Availability) 상태입니다."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "설정 이름이 변경되었습니다. 이전 이름은 `allow_experimental_statistic`입니다."}]}]}/>
 
 컬럼에 [통계(statistics)](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)를 정의하고, [통계를 조작](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)할 수 있도록 합니다.
 
@@ -820,9 +816,17 @@ AVX2 명령어 집합을 사용할 수 있는 경우 'JSON*' 함수에서 simdjs
 Sparse 및 Replicated와 같은 특수 직렬화 방식이 적용된 컬럼을 전체 컬럼 표현으로 변환하지 않고 그대로 출력하도록 허용합니다.
 이는 포맷팅 과정에서 불필요한 데이터 복사를 방지하는 데 도움이 됩니다.
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**별칭(Aliases)**: `allow_experimental_statistic`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "통계 기능이 이제 일반 제공(GA) 상태입니다."}]}]}/>
+
+컬럼에 [통계(statistics)](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)를 정의하고, [통계를 조작](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)할 수 있도록 합니다.
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **Aliases**: `allow_statistic_optimize`
 
@@ -2326,7 +2330,7 @@ Replicated\* 테이블(복제된 테이블, Replicated Table)에서 데이터를
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}]}/>
 
 `INSERT INTO`(Replicated\* 테이블 대상)에 대한 블록 단위 중복 제거를 활성화하거나 비활성화합니다.
 이 설정은 `insert_deduplicate` 및 `async_insert_deduplicate` 설정을 재정의합니다.
@@ -6157,9 +6161,9 @@ INSERT 시 skip 인덱스를 생성하고 저장합니다. 비활성화하면 sk
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "auto statistics를 활성화한 후 INSERT 시 통계 materialization을 비활성화합니다."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
 
 활성화된 경우 INSERT 시 통계가 생성되어 함께 삽입됩니다. 비활성화하면 통계는 머지(merge) 작업 동안 또는 명시적인 MATERIALIZE STATISTICS 실행 시 생성 및 저장됩니다.
 
@@ -11743,8 +11747,6 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Enable this optimization by default."}]}]}/>
@@ -11753,8 +11755,6 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 쿼리 최적화를 위해 통계 사용을 허용합니다
 
 ## use_statistics_cache \{#use_statistics_cache\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 

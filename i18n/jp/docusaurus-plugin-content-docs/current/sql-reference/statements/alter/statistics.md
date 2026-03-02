@@ -7,14 +7,7 @@ title: '列統計の操作'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 # 列統計の操作 \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
 
 次の操作が使用できます。
 

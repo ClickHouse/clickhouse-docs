@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumMappedArrays \{#sumMappedArrays\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `key` 배열에 지정된 키에 따라 하나 이상의 `value` 배열을 합산합니다. 정렬된 순서의 키 배열과 해당 키별로 오버플로 없이 합산된 값 배열로 구성된 튜플을 반환합니다.
 

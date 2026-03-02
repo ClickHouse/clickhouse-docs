@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactHigh \{#quantileExactHigh\}
 
-導入バージョン: v20.8
+導入バージョン: v20.8.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と同様に、数値データ列の正確な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
@@ -58,7 +58,7 @@ SELECT quantileExactHigh(number) FROM numbers(10);
 └───────────────────────────┘
 ```
 
-**特定の分位の算出**
+**特定の分位数レベルの計算**
 
 ```sql title=Query
 SELECT quantileExactHigh(0.1)(number) FROM numbers(10);

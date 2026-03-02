@@ -1157,11 +1157,7 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 
 ## カラム統計 \{#column-statistics\}
 
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-`set allow_experimental_statistics = 1` を有効にすると、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリの `COLUMNS` セクション内で統計を宣言します。
+統計は、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラムセクション内で宣言します。
 
 ```sql
 CREATE TABLE tab

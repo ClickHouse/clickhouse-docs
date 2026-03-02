@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-Добавлено в v25.12
+Добавлено в v25.12.0
 
 Вычисляет HMAC (код аутентификации сообщения, основанный на хешировании) для заданного сообщения с использованием указанного алгоритма хеширования и секретного ключа.
 
@@ -99,6 +99,7 @@ HMAC(mode, message, key)
 
 **Аргументы**
 
+
 * `mode` — Имя алгоритма хеширования (регистронезависимое). Поддерживаются: md5, sha1, sha224, sha256, sha384, sha512. [`String`](/sql-reference/data-types/string)
 * `message` — Сообщение, для которого вычисляется код аутентификации. [`String`](/sql-reference/data-types/string)
 * `key` — Секретный ключ для HMAC. [`String`](/sql-reference/data-types/string)
@@ -150,14 +151,14 @@ SELECT
 └─────────────┴───────────┘
 ```
 
-## aes&#95;decrypt&#95;mysql \{#aes&#95;decrypt&#95;mysql\}
+## aes_decrypt_mysql \{#aes_decrypt_mysql\}
 
-Появилась в версии v20.12
+Появилась в версии v20.12.0
 
 Расшифровывает данные, зашифрованные функцией MySQL [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt).
 
 Для одинаковых входных данных возвращает тот же открытый текст, что и [`decrypt`](#decrypt).
-Если `key` или `iv` длиннее, чем должны быть, `aes_decrypt_mysql` ведет себя так же, как функция MySQL [`aes_decrypt`]: «сворачивает» `key` и игнорирует лишние биты `iv`.
+Если `key` или `iv` длиннее, чем должны быть, `aes_decrypt_mysql` ведет себя так же, как функция MySQL `aes_decrypt`: «сворачивает» `key` и игнорирует лишние биты `iv`.
 
 Поддерживает следующие режимы расшифрования:
 
@@ -188,7 +189,7 @@ aes_decrypt_mysql(mode, ciphertext, key[, iv])
 **Расшифровка данных MySQL**
 
 ```sql title=Query
--- Расшифруем данные, которые мы ранее зашифровали с помощью MySQL:
+-- Let's decrypt data we've previously encrypted with MySQL:
 mysql> SET  block_encryption_mode='aes-256-ofb';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -198,20 +199,21 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 +------------------------+
 | 0x24E9E4966469         |
 +------------------------+
-1 строка в наборе (0.00 сек)
+1 row in set (0.00 sec)
 
 SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '123456789101213141516171819202122', 'iviviviviviviviv123456') AS plaintext
 ```
 
 ```response title=Response
 ┌─plaintext─┐
-│ Секрет    │
+│ Secret    │
 └───────────┘
 ```
 
-## aes&#95;encrypt&#95;mysql \{#aes&#95;encrypt&#95;mysql\}
 
-Появилась в версии: v20.12
+## aes_encrypt_mysql \{#aes_encrypt_mysql\}
+
+Появилась в версии: v20.12.0
 
 Шифрует текст тем же способом, что и функция MySQL `AES_ENCRYPT`.
 Полученный шифротекст может быть расшифрован функцией MySQL `AES_DECRYPT`.
@@ -246,7 +248,7 @@ aes_encrypt_mysql(mode, plaintext, key[, iv])
 **Сравнение одинаковых входных данных**
 
 ```sql title=Query
--- При одинаковых входных данных encrypt и aes_encrypt_mysql создают одинаковый шифротекст:
+-- Given equal input encrypt and aes_encrypt_mysql produce the same ciphertext:
 SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') = aes_encrypt_mysql('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') AS ciphertexts_equal;
 ```
 
@@ -259,19 +261,19 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 **Сбой Encrypt при слишком длинном ключе**
 
 ```sql title=Query
--- Но encrypt завершается ошибкой, если ключ или iv длиннее ожидаемого:
+-- But encrypt fails when key or iv is longer than expected:
 SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123');
 ```
 
 ```response title=Response
-Получено исключение от сервера (версия 22.6.1):
-Код: 36. DB::Exception: Получено от localhost:9000. DB::Exception: Недопустимый размер ключа: 33, ожидалось 32: При обработке encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
+Received exception from server (version 22.6.1):
+Code: 36. DB::Exception: Received from localhost:9000. DB::Exception: Invalid key size: 33 expected 32: While processing encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
 ```
 
 **Совместимость с MySQL**
 
 ```sql title=Query
--- aes_encrypt_mysql создаёт вывод, совместимый с MySQL:
+-- aes_encrypt_mysql produces MySQL-compatible output:
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123')) AS ciphertext;
 ```
 
@@ -281,10 +283,10 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-**Более длинный IV приводит к тому же результату**
+**Более длинный IV даёт тот же результат**
 
 ```sql title=Query
--- Обратите внимание, что даже при использовании более длинного IV результат остается тем же
+-- Notice how supplying even longer IV produces the same result
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123456')) AS ciphertext
 ```
 
@@ -294,9 +296,10 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
+
 ## decrypt \{#decrypt\}
 
-Впервые представлена в: v20.12
+Впервые представлена в: v20.12.0
 
 Эта функция расшифровывает двоичную строку, зашифрованную с помощью AES, с использованием следующих режимов:
 
@@ -330,20 +333,20 @@ decrypt(mode, ciphertext, key[, iv, aad])
 **Правильная расшифровка зашифрованных данных**
 
 ```sql title=Query
--- Повторно используем таблицу из примера функции encrypt
+-- Re-using the table from the encrypt function example
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
 ```response title=Response
 ┌─comment──────────────┬─hex(secret)──────────────────────────────────┐
 │ aes-256-gcm          │ A8A3CCBC6426CFEEB60E4EAE03D3E94204C1B09E0254 │
-│ aes-256-gcm с AAD    │ A8A3CCBC6426D9A1017A0A932322F1852260A4AD6837 │
+│ aes-256-gcm with AAD │ A8A3CCBC6426D9A1017A0A932322F1852260A4AD6837 │
 └──────────────────────┴──────────────────────────────────────────────┘
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
-│ aes-256-ofb без IV               │ B4972BDC4459                     │
-│ aes-256-ofb без IV, другой ключ  │ 2FF57C092DC9                     │
-│ aes-256-ofb с IV                 │ 5E6CB398F653                     │
-│ aes-256-cbc без IV               │ 1BC0629A92450D9E73A00E7D02CF4142 │
+│ aes-256-ofb no IV                │ B4972BDC4459                     │
+│ aes-256-ofb no IV, different key │ 2FF57C092DC9                     │
+│ aes-256-ofb with IV              │ 5E6CB398F653                     │
+│ aes-256-cbc no IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
@@ -354,7 +357,7 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 ```
 
 ```response title=Response
--- Обратите внимание, что корректно расшифрована только часть данных, а остальное представляет собой бессмысленный набор символов, так как при шифровании использовались другие значения `mode`, `key` или `iv`.
+-- Notice how only a portion of the data was properly decrypted, and the rest is gibberish since either `mode`, `key`, or `iv` were different upon encryption.
 ┌─comment──────────────┬─plaintext──┐
 │ aes-256-gcm          │ OQ�E
                              �t�7T�\���\�   │
@@ -370,9 +373,10 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
+
 ## encrypt \{#encrypt\}
 
-Добавлена в версии: v20.12
+Добавлена в версии: v20.12.0
 
 Шифрует открытый текст в шифртекст с использованием AES в одном из следующих режимов:
 
@@ -414,20 +418,20 @@ CREATE TABLE encryption_test
 ENGINE = MergeTree;
 
 INSERT INTO encryption_test VALUES
-('aes-256-ofb без IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),
-('aes-256-ofb без IV, другой ключ', encrypt('aes-256-ofb', 'Secret', 'keykeykeykeykeykeykeykeykeykeyke')),
-('aes-256-ofb с IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')),
-('aes-256-cbc без IV', encrypt('aes-256-cbc', 'Secret', '12345678910121314151617181920212'));
+('aes-256-ofb no IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),
+('aes-256-ofb no IV, different key', encrypt('aes-256-ofb', 'Secret', 'keykeykeykeykeykeykeykeykeykeyke')),
+('aes-256-ofb with IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')),
+('aes-256-cbc no IV', encrypt('aes-256-cbc', 'Secret', '12345678910121314151617181920212'));
 
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
 ```response title=Response
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
-│ aes-256-ofb без IV                │ B4972BDC4459                     │
-│ aes-256-ofb без IV, другой ключ │ 2FF57C092DC9                     │
-│ aes-256-ofb с IV              │ 5E6CB398F653                     │
-│ aes-256-cbc без IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
+│ aes-256-ofb no IV                │ B4972BDC4459                     │
+│ aes-256-ofb no IV, different key │ 2FF57C092DC9                     │
+│ aes-256-ofb with IV              │ 5E6CB398F653                     │
+│ aes-256-cbc no IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
@@ -449,9 +453,10 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
 
+
 ## tryDecrypt \{#tryDecrypt\}
 
-Добавлена в: v22.10
+Добавлена в: v22.10.0
 
 Аналогична функции `decrypt`, но возвращает `NULL`, если расшифровка не удалась при использовании неправильного ключа.
 
@@ -478,8 +483,8 @@ tryDecrypt(mode, ciphertext, key[, iv, aad])
 **Создание таблицы и вставка данных**
 
 ```sql title=Query
--- Создадим таблицу, где user_id — уникальный идентификатор пользователя, encrypted — зашифрованное строковое поле, iv — вектор инициализации для расшифровки/шифрования.
--- Предполагается, что пользователи знают свой идентификатор и ключ для расшифровки зашифрованного поля:
+-- Let's create a table where user_id is the unique user id, encrypted is an encrypted string field, iv is an initial vector for decrypt/encrypt.
+-- Assume that users know their id and the key to decrypt the encrypted field:
 CREATE TABLE decrypt_null
 (
     dt DateTime,
@@ -489,13 +494,13 @@ CREATE TABLE decrypt_null
 )
 ENGINE = MergeTree;
 
--- Вставим данные:
+-- Insert some data:
 INSERT INTO decrypt_null VALUES
 ('2022-08-02 00:00:00', 1, encrypt('aes-256-gcm', 'value1', 'keykeykeykeykeykeykeykeykeykey01', 'iv1'), 'iv1'),
 ('2022-09-02 00:00:00', 2, encrypt('aes-256-gcm', 'value2', 'keykeykeykeykeykeykeykeykeykey02', 'iv2'), 'iv2'),
 ('2022-09-02 00:00:01', 3, encrypt('aes-256-gcm', 'value3', 'keykeykeykeykeykeykeykeykeykey03', 'iv3'), 'iv3');
 
--- Попробуем расшифровать с помощью одного ключа
+-- Try decrypt with one key
 SELECT
     dt,
     user_id,

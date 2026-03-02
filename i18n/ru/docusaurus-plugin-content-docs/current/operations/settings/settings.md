@@ -541,13 +541,9 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 ## allow_experimental_statistics \{#allow_experimental_statistics\}
 
-<ExperimentalBadge/>
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-**Псевдонимы**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Параметр был переименован. Предыдущее имя — `allow_experimental_statistic`."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Статистика переведена в статус GA."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "Параметр был переименован. Предыдущее имя — `allow_experimental_statistic`."}]}]}/>
 
 Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
 
@@ -820,9 +816,17 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 Позволяет выводить столбцы со специальными вариантами сериализации, такими как разреженный (Sparse) и Replicated, без преобразования их в полное представление столбца.
 Это позволяет избежать лишнего копирования данных при форматировании вывода.
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**Псевдонимы**: `allow_experimental_statistic`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Статистика теперь в статусе GA"}]}]}/>
+
+Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **Псевдонимы**: `allow_statistic_optimize`
 
@@ -2326,7 +2330,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -6160,9 +6164,9 @@ log_query_views=1
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Отключена материализация статистики при вставке после включения автоматического сбора статистики"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "1"},{"label": "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"}]}]}/>
 
 Определяет, будут ли операторы INSERT создавать и вставлять статистику. Если настройка отключена, статистика будет строиться и сохраняться во время слияний или явным выполнением MATERIALIZE STATISTICS.
 
@@ -11777,8 +11781,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]}/>
@@ -11787,8 +11789,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 Включает использование статистики для оптимизации запросов
 
 ## use_statistics_cache \{#use_statistics_cache\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 

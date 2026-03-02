@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesChangesToGrid \{#timeSeriesChangesToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 聚合函数，接收由时间戳和值组成的时间序列数据对，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 changes](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)。对于网格上的每个点，用于计算 `changes` 的样本会在指定的时间窗口内进行选取和计算。
 

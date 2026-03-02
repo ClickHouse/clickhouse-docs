@@ -1156,11 +1156,7 @@ ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在
 
 ## 列统计信息 \{#column-statistics\}
 
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-在启用 `set allow_experimental_statistics = 1` 时，对于 `*MergeTree*` 系列表，可以在 `CREATE` 查询的列（columns）部分中声明统计信息。
+统计信息的声明位于 `*MergeTree*` 系列表的 `CREATE` 查询的列（columns）部分：
 
 ```sql
 CREATE TABLE tab
@@ -1172,7 +1168,7 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-我们也可以使用 `ALTER` 语句来调整统计信息。
+我们也可以使用 `ALTER` 语句来调整统计信息：
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;

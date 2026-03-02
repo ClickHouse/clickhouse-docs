@@ -1158,11 +1158,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 ## Статистика по столбцам \{#column-statistics\}
 
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
-
-Объявление статистики задаётся в секции `COLUMNS` запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
+Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*`:
 
 ```sql
 CREATE TABLE tab
@@ -1174,7 +1170,7 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-Мы также можем изменять статистику с помощью команд `ALTER`.
+Мы также можем изменять статистику с помощью команд `ALTER`:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;

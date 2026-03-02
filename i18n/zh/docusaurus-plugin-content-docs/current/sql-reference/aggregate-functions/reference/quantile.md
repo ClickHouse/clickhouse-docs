@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算数值数据序列的近似 [`quantile`](https://en.wikipedia.org/wiki/Quantile)。
 

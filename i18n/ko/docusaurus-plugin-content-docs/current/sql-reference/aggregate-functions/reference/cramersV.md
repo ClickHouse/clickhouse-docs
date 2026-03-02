@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## cramersV \{#cramersV\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 [Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V) (때때로 Cramer&#39;s phi라고도 함)은 테이블의 두 컬럼 간 연관성 정도를 측정하는 통계량입니다.
 `cramersV` 함수의 결과는 0(변수들 사이에 연관성이 전혀 없음을 의미)에서 1까지의 값을 가지며, 각 값이 다른 값에 의해 완전히 결정될 때에만 1에 도달할 수 있습니다.
@@ -57,7 +57,7 @@ FROM
 └────────────────┘
 ```
 
-**컬럼 간 높은 상관관계**
+**컬럼 간 높은 연관성**
 
 ```sql title=Query
 SELECT

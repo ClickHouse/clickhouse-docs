@@ -24,7 +24,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## alphaTokens \{#alphaTokens\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `a-z` 및 `A-Z` 범위에 속하는 연속 바이트로 이루어진 부분 문자열을 선택하고, 선택된 부분 문자열로 구성된 배열을 반환합니다.
 
@@ -61,7 +61,7 @@ SELECT alphaTokens('abca1abc');
 
 ## arrayStringConcat \{#arrayStringConcat\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열에 나열된 값들의 문자열 표현을 구분자(separator)를 사이에 두고 연결합니다. 구분자는 선택적 매개변수이며, 지정하지 않을 경우 기본값은 빈 문자열입니다.
 
@@ -96,7 +96,7 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 
 ## extractAllGroupsVertical \{#extractAllGroupsVertical\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 정규 표현식을 사용하여 문자열의 모든 그룹에 대한 일치 항목을 찾고, 배열들의 배열을 반환합니다. 각 내부 배열에는 입력 문자열에서 나타나는 순서대로 각 그룹에서 일치한 조각들이 포함됩니다.
 
@@ -136,7 +136,7 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## ngrams \{#ngrams\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 UTF-8 문자열을 길이가 `N`인 n-그램으로 분할합니다.
 
@@ -169,7 +169,7 @@ SELECT ngrams('ClickHouse', 3);
 
 ## reverseBySeparator \{#reverseBySeparator\}
 
-도입 버전: v26.2
+도입 버전: v26.2.0
 
 지정한 구분자로 구분된 문자열에서 부분 문자열의 순서를 뒤집습니다.
 이 함수는 문자열을 구분자로 분리한 다음, 생성된 파트의 순서를 뒤집고,
@@ -229,7 +229,7 @@ SELECT reverseBySeparator('x::y::z', '::')
 'z::y::x'
 ```
 
-**마침표가 포함된 엣지 케이스**
+**마침표를 포함한 특수 케이스**
 
 ```sql title=Query
 SELECT reverseBySeparator('.a.b.', '.')
@@ -261,7 +261,7 @@ SELECT reverseBySeparator('abcde', '')
 
 ## splitByChar \{#splitByChar\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 정확히 한 글자인 상수 문자열 `separator`로 구분된 문자열을 부분 문자열 배열로 분할합니다.
 문자열의 시작이나 끝에 `separator`가 나타나거나, 여러 개의 `separator`가 연속해서 나타나는 경우에는 빈 부분 문자열도 선택될 수 있습니다.
@@ -308,7 +308,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 
 ## splitByNonAlpha \{#splitByNonAlpha\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 공백 및 문장 부호 문자를 기준으로 문자열을 부분 문자열 배열로 분할합니다.
 
@@ -345,7 +345,7 @@ SELECT splitByNonAlpha('user@domain.com');
 
 ## splitByRegexp \{#splitByRegexp\}
 
-도입 버전: v21.6
+도입 버전: v21.6.0
 
 제공된 정규식을 구분자로 사용하여 문자열을 부분 문자열의 배열로 분할합니다.
 제공된 정규식이 비어 있으면 문자열을 한 글자씩의 문자 배열로 분할합니다.
@@ -405,7 +405,7 @@ SELECT splitByRegexp('', 'abcde');
 
 ## splitByString \{#splitByString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 여러 문자로 구성된 상수 `separator`로 문자열을 분할하여 부분 문자열 배열을 생성합니다.
 문자열 `separator`가 비어 있으면 문자열 `s`를 한 글자씩의 문자 배열로 분할합니다.
@@ -464,7 +464,7 @@ SELECT splitByString('', 'abcde');
 
 ## splitByWhitespace \{#splitByWhitespace\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 공백 문자로 구분된 문자열을 하위 문자열 배열로 분할합니다.
 
@@ -501,7 +501,7 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 ## tokens \{#tokens\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 지정된 tokenizer를 사용하여 문자열을 토큰으로 분할합니다.
 

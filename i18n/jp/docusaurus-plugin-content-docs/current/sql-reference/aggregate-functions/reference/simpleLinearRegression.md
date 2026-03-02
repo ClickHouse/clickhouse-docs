@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## simpleLinearRegression \{#simpleLinearRegression\}
 
-導入: v20.1
+導入: v20.1.0
 
 単回帰（1次元の線形回帰）を実行します。
 

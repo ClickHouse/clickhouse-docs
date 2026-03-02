@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctDynamicTypes \{#distinctDynamicTypes\}
 
-引入版本：v24.9
+引入版本：v24.9.0
 
 计算 [Dynamic](https://clickhouse.com/docs/sql-reference/data-types/dynamic) 列中存储的不同数据类型列表。
 

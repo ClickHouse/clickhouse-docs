@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTiming \{#quantileTiming\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 以给定精度计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

@@ -1,20 +1,13 @@
 ---
 description: '列统计信息管理文档'
-sidebar_label: '统计信息'
+sidebar_label: 'STATISTICS'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
 title: '列统计信息管理'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 # 操作列统计信息 \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
 
 可以执行以下操作：
 

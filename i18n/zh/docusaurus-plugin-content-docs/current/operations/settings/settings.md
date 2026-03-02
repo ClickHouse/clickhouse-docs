@@ -539,13 +539,9 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 ## allow_experimental_statistics \{#allow_experimental_statistics\}
 
-<ExperimentalBadge/>
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-**别名**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。之前的名称为 `allow_experimental_statistic`。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Statistics 现已 GA（正式可用）。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。之前的名称为 `allow_experimental_statistic`。"}]}]}/>
 
 允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
 
@@ -819,9 +815,17 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 允许输出具有 Sparse 和 Replicated 等特殊序列化类型的列，而无需将其转换为完整列表示形式。
 这有助于在格式化期间避免不必要的数据复制。
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**别名**: `allow_experimental_statistic`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "统计信息功能现已 GA（正式发布）"}]}]}/>
+
+允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **别名**: `allow_statistic_optimize`
 
@@ -2322,7 +2326,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -6154,9 +6158,9 @@ log_query_views=1
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "在启用自动统计信息后，禁用在 INSERT 时对统计信息进行物化"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
 
 控制是否在执行 INSERT 时构建并写入统计信息。若禁用，则统计信息会在合并期间或通过显式执行 MATERIALIZE STATISTICS 来构建并存储。
 
@@ -11731,8 +11735,6 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]}/>
@@ -11741,8 +11743,6 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 允许使用统计信息来优化查询
 
 ## use_statistics_cache \{#use_statistics_cache\}
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 

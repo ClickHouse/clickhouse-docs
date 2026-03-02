@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## theilsU \{#theilsU\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 `theilsU` 함수는 테이블의 두 컬럼 간 연관성을 측정하는 값인 [Theil의 U 불확실성 계수](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)를 계산합니다.
 이 값의 범위는 −1.0(100% 부정적 연관성 또는 완전한 반전)부터 +1.0(100% 긍정적 연관성 또는 완전한 일치)까지입니다.

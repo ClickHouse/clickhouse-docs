@@ -14,6 +14,16 @@ doc_type: 'reference'
 ## 기본 사용법 \{#basic\}
 
 ```python
+from pathlib import Path
+Path("sales.csv").write_text("""\
+region,product,category,amount,quantity,price,date,order_id
+East,Widget,Electronics,5200,10,120,2024-01-15,1001
+West,Gadget,Electronics,800,5,160,2024-02-20,1002
+East,Gizmo,Home,6500,3,100,2024-03-10,1003
+North,Widget,Electronics,4500,6,150,2024-06-18,1004
+West,Gadget,Electronics,2000,8,250,2024-09-14,1005
+""")
+
 from chdb import datastore as pd
 
 ds = pd.read_csv("sales.csv")
@@ -226,6 +236,16 @@ Apply: custom_function
 ### 단순 쿼리 \{#example-simple\}
 
 ```python
+from pathlib import Path
+Path("data.csv").write_text("""\
+name,age,city,salary,department
+Alice,25,NYC,55000,Engineering
+Bob,30,LA,65000,Product
+Charlie,35,NYC,80000,Engineering
+Diana,28,SF,70000,Design
+Eve,42,NYC,95000,Product
+""")
+
 ds = pd.read_csv("data.csv")
 ds.filter(ds['age'] > 25).explain()
 ```

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevPopStable \{#stddevPopStable\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 결과는 [varPop](../../../sql-reference/aggregate-functions/reference/varPop.md)의 제곱근과 동일합니다. [stddevPop](../reference/stddevPop.md)과 달리, 이 FUNCTION은 수치적으로 안정적인 알고리즘을 사용합니다. 실행 속도는 더 느리지만 계산 오차는 더 작습니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewSamp \{#skewSamp\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 시퀀스의 [표본 왜도](https://en.wikipedia.org/wiki/Skewness)를 계산합니다.
 

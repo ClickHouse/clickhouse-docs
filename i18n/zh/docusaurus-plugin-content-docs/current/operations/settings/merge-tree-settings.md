@@ -264,7 +264,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## auto_statistics_types \{#auto_statistics_types\}
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "新设置"}]}]}/>
+<SettingsInfoBlock type="String" default_value="minmax, uniq" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "minmax, uniq"},{"label": "默认启用自动统计"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": ""},{"label": "新设置"}]}]}/>
 
 在所有适用列上自动计算的统计类型的逗号分隔列表。
 支持的统计类型：tdigest、countmin、minmax、uniq。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Вычисляет приближённую [`quantile`](https://en.wikipedia.org/wiki/Quantile) для числовой последовательности данных.
 

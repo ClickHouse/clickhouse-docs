@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argMax \{#argMax\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 최대 `val` 값에 해당하는 `arg` 값을 계산합니다. 최대값인 `val`이 동일한 여러 행이 있는 경우, 연관된 `arg` 중 어떤 값이 반환될지는 결정적이지 않습니다.
 `arg`와 `max` 두 부분 모두 [집계 함수](/sql-reference/aggregate-functions/index.md)처럼 동작하며, 처리 과정에서 둘 다 [`Null`을 건너뛰고](/sql-reference/aggregate-functions/index.md#null-processing), `Null`이 아닌 값이 하나라도 있으면 `Null`이 아닌 값을 반환합니다.
@@ -47,7 +47,7 @@ SELECT argMax(user, salary) FROM salary;
 └──────────────────────┘
 ```
 
-**NULL 처리를 포함한 확장 예제**
+**NULL 처리를 포함한 고급 예제**
 
 ```sql title=Query
 CREATE TABLE test
@@ -68,7 +68,7 @@ SELECT argMax(a, b), max(b) FROM test;
 └──────────────┴────────┘
 ```
 
-**인수로 Tuple 사용하기**
+**Tuple을 인수로 사용하기**
 
 ```sql title=Query
 SELECT argMax(a, (b,a)) FROM test;

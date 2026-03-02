@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-引入版本：v23.1
+引入版本：v23.1.0
 
 创建一个由最后的参数值组成的数组。
 例如，`groupArrayLast(1)(x)` 等价于 `[anyLast(x)]`。

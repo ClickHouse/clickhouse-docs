@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## intervalLengthSum \{#intervalLengthSum\}
 
-導入バージョン: v21.7
+導入バージョン: v21.7.0
 
 複数の数値範囲を受け取り、互いに重なり合う部分をすべて結合して 1 つの連続した範囲とみなしたときの、合計の長さを計算します。
 

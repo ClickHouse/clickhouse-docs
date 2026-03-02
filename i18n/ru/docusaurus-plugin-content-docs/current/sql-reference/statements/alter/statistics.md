@@ -7,14 +7,7 @@ title: 'Работа со статистикой столбцов'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 # Управление статистикой столбцов \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
-
-<CloudNotSupportedBadge />
 
 Доступны следующие операции:
 
