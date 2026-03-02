@@ -44,7 +44,7 @@ This integration is currently only supported on AWS.
 
 ### Configuring Unity in Databricks {#configuring-unity-in-databricks}
 
-To allow ClickHouse to interact with the Unity catalog, you need to make sure the Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
+To allow ClickHouse to interact with Unity catalog, you need to make sure your Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
 
 In addition to enabling external access, ensure the principal configuring the integration has the `EXTERNAL USE SCHEMA` [privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema) on the schema containing the tables.
 
@@ -56,7 +56,7 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 ### Connect to the catalog {#connect-catalog}
 
-With the credentials, you can connect to the relevant endpoint to query the files in either Iceberg or Delta.
+With the credentials, you can connect to the relevant endpoint to query the Iceberg or Delta tables.
 
 <Tabs groupId="connection-formats">
 <TabItem value="delta" label="Delta" default>
