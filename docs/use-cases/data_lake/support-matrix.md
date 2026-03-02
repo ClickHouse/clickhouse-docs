@@ -65,7 +65,7 @@ ClickHouse integrates with four lakehouse table formats: [Apache Iceberg](/engin
 | Expire snapshots | ❌ | Not supported |
 | Remove orphan files | ❌ | Not supported |
 | Writing partitions | ✅ | Supported. |
-| Altering partitions | ❌ | The changing of the partioning scheme from ClickHouse is not supported. ClickHouse can write to iceberg tables which have an evolved partitioning. |
+| Altering partitions | ❌ | The changing of the partitioning scheme from ClickHouse is not supported. ClickHouse can write to iceberg tables which have an evolved partitioning. |
 |  |  |  |
 | **Metadata** | | |
 | Branching and tagging | ❌ | Iceberg branch/tag references not supported |
