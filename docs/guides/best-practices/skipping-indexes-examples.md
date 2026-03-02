@@ -112,9 +112,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 
 ## N-gram Bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
-> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
-Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
-Furthermore, they offer limited configurability.
+> Note: With `text` indexes generally availability (GA) starting from ClickHouse version 26.2, `ngrambf_v1` and `tokenbf_v1` indexes are NOT recommended anymore for full text search.
+> Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
+> Furthermore, they offer limited configurability.
+>
+> The `text` index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
 
 The `ngrambf_v1` index splits strings into n-grams. It works well for `LIKE '%...%'` queries. It supports String/FixedString/Map (via mapKeys/mapValues), as well as tunable size, hash count, and seed. See the documentation for [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for further details.
 
