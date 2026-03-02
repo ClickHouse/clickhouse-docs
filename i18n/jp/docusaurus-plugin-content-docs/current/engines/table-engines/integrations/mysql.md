@@ -198,4 +198,4 @@ SELECT * FROM mysql_table
 ## 関連項目 \{#see-also\}
 
 - [MySQL テーブル関数](../../../sql-reference/table-functions/mysql.md)
-- [MySQL を辞書のソースとして使用する](/sql-reference/statements/create/dictionary/sources#mysql)
+- [MySQL を辞書のソースとして使用する](/sql-reference/statements/create/dictionary/sources/mysql)

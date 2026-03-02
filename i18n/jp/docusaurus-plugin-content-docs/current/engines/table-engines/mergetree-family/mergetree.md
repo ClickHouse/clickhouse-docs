@@ -406,8 +406,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) インデックス
 - [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
 - [`tokenbf_v1`](#token-bloom-filter) インデックス
-- [`text`]({#text}) インデックス
-- [`vector_similarity`]({#vector-similarity}) インデックス
+- [`text`](#text) インデックス
+- [`vector_similarity`](#vector-similarity) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 

@@ -26,7 +26,7 @@ Dictionary はメモリ上に、範囲の順序付き配列とそれに対応す
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-日付範囲用のサンプルを使用するには、[structure](../keys-and-fields.md#dictionary-key-and-fields) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` 要素を含める必要があります（`type` が指定されていない場合、デフォルトの型は Date になります）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
+日付範囲用のサンプルを使用するには、[structure](../attributes.md#composite-key) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` 要素を含める必要があります（`type` が指定されていない場合、デフォルトの型は Date になります）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
 
 :::note
 `range_min` と `range_max` の値は `Int64` 型に収まる必要があります。
@@ -256,7 +256,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 
 ## complex_key_range_hashed \{#complex_key_range_hashed\}
 
-Dictionary は、範囲とその対応する値の順序付き配列を持つハッシュテーブルの形式でメモリ上に格納されます（[range&#95;hashed](#range_hashed) を参照）。この種類のストレージ形式は、複合 [キー](../keys-and-fields.md#dictionary-key-and-fields) で使用します。
+Dictionary は、範囲とその対応する値の順序付き配列を持つハッシュテーブルの形式でメモリ上に格納されます（[range&#95;hashed](#range_hashed) を参照）。この種類のストレージ形式は、複合 [キー](../attributes.md#composite-key) で使用します。
 
 設定例:
 

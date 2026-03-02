@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 这种布局类型在所有可用的字典存储方式中性能最佳。
 :::
 
-字典键的类型为 [UInt64](../../../data-types/int-uint.md)，并且键值受 `max_array_size` 限制（默认值为 500,000）。
+字典键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)，并且键值受 `max_array_size` 限制（默认值为 500,000）。
 如果在创建字典时发现更大的键，ClickHouse 会抛出异常并且不会创建该字典。
 字典扁平数组的初始大小由 `initial_array_size` 设置控制（默认值为 1024）。
 

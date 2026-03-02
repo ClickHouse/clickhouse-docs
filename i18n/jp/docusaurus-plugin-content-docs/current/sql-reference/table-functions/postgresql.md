@@ -153,7 +153,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 ## 関連 \{#related\}
 
 - [PostgreSQL テーブルエンジン](../../engines/table-engines/integrations/postgresql.md)
-- [PostgreSQL をディクショナリソースとして使用する](/sql-reference/statements/create/dictionary/sources#postgresql)
+- [PostgreSQL をディクショナリソースとして使用する](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### PeerDB を使用した Postgres データのレプリケーションまたは移行 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

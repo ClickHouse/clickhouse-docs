@@ -198,4 +198,4 @@ SELECT * FROM mysql_table
 ## См. также \{#see-also\}
 
 - [Табличная функция MySQL](../../../sql-reference/table-functions/mysql.md)
-- [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources#mysql)
+- [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/mysql)

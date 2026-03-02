@@ -85,7 +85,7 @@ ClickHouse 支持 [uap-core](https://github.com/ua-parser/uap-core)，你可以�
 
 ### 收集属性值 \{#collecting-attribute-values\}
 
-有时，相比只返回叶子节点的值，返回所有匹配的多个正则表达式的值会更有用。在这种情况下，可以使用专门的 [`dictGetAll`](../../../functions/ext-dict-functions.md#dictGetAll) 函数。如果某个节点具有类型为 `T` 的属性值，`dictGetAll` 将返回一个包含零个或多个值的 `Array(T)`。
+有时，相比只返回叶子节点的值，返回所有匹配的多个正则表达式的值会更有用。在这种情况下，可以使用专门的 [`dictGetAll`](/sql-reference/functions/ext-dict-functions.md#dictGetAll) 函数。如果某个节点具有类型为 `T` 的属性值，`dictGetAll` 将返回一个包含零个或多个值的 `Array(T)`。
 
 默认情况下，每个键返回的匹配数量没有上限。可以将一个上限作为可选的第四个参数传递给 `dictGetAll`。数组按*拓扑顺序*填充，这意味着子节点排在父节点之前，兄弟节点按源数据中的顺序排列。
 
@@ -155,7 +155,60 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 ## 在 ClickHouse Cloud 中使用正则表达式树字典 \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 [`YAMLRegExpTree`](../sources/yamlregexptree.md) 源在 ClickHouse 开源版中可用，但在 ClickHouse Cloud 中不可用。
-要在 ClickHouse Cloud 中使用正则表达式树字典，首先需要在本地的 ClickHouse 开源版中从 YAML 文件创建一个正则表达式树字典，然后使用 `dictionary` 表函数和 [INTO OUTFILE](../../select/into-outfile.md) 子句将该字典导出为 CSV 文件。
+要在 ClickHouse Cloud 中使用正则表达式树字典，首先需要在本地的 ClickHouse 开源版中从 YAML 文件创建一个正则表达式树字典，然后使用 `dictionary` 表函数和 [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md) 子句将该字典导出为 CSV 文件。
+
+SELECT * FROM dictionary(regexp&#95;dict) INTO OUTFILE(&#39;regexp&#95;dict.csv&#39;)
+
+CSV 文件的内容如下：
+
+1,0,&quot;Linux/(\d+[.\d]*).+tlinux&quot;,&quot;[&#39;version&#39;,&#39;name&#39;]&quot;,&quot;[&#39;\1&#39;,&#39;TencentOS&#39;]&quot;
+2,0,&quot;(\d+)/tclwebkit(\d+[.\d]*)&quot;,&quot;[&#39;comment&#39;,&#39;version&#39;,&#39;name&#39;]&quot;,&quot;[&#39;test $1 and $2&#39;,&#39;$1&#39;,&#39;Android&#39;]&quot;
+3,2,&quot;33/tclwebkit&quot;,&quot;[&#39;version&#39;]&quot;,&quot;[&#39;13&#39;]&quot;
+4,2,&quot;3[12]/tclwebkit&quot;,&quot;[&#39;version&#39;]&quot;,&quot;[&#39;12&#39;]&quot;
+5,2,&quot;3[12]/tclwebkit&quot;,&quot;[&#39;version&#39;]&quot;,&quot;[&#39;11&#39;]&quot;
+6,2,&quot;3[12]/tclwebkit&quot;,&quot;[&#39;version&#39;]&quot;,&quot;[&#39;10&#39;]&quot;
+
+导出文件的 schema 如下：
+
+`id UInt64`：RegexpTree 节点的 id。
+`parent_id UInt64`：该节点父节点的 id。
+`regexp String`：正则表达式字符串。
+`keys Array(String)`：用户定义属性的名称。
+`values Array(String)`：用户定义属性的值。
+
+要在 ClickHouse Cloud 中创建该字典，首先根据以下表结构创建表 `regexp_dictionary_source_table`：
+
+CREATE TABLE regexp&#95;dictionary&#95;source&#95;table
+(
+id UInt64,
+parent&#95;id UInt64,
+regexp String,
+keys   Array(String),
+values Array(String)
+) ENGINE=Memory;
+
+然后按如下方式更新本地 CSV 文件：
+
+clickhouse client 
+--host MY&#95;HOST 
+--secure 
+--password MY&#95;PASSWORD 
+--query &quot;
+INSERT INTO regexp&#95;dictionary&#95;source&#95;table
+SELECT * FROM input (&#39;id UInt64, parent&#95;id UInt64, regexp String, keys Array(String), values Array(String)&#39;)
+FORMAT CSV&quot; &lt; regexp&#95;dict.csv
+
+您可以参阅 [Insert Local Files](/integrations/data-ingestion/insert-local-files) 了解更多详情。在初始化源表之后，我们可以基于该源表创建一个 RegexpTree：
+
+CREATE DICTIONARY regexp&#95;dict
+(
+regexp String,
+name String,
+version String
+PRIMARY KEY(regexp)
+SOURCE(CLICKHOUSE(TABLE &#39;regexp&#95;dictionary&#95;source&#95;table&#39;))
+LIFETIME(0)
+LAYOUT(regexp&#95;tree);
 
 ```sql
 SELECT * FROM dictionary(regexp_dict) INTO OUTFILE('regexp_dict.csv')

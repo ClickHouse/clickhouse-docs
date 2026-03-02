@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 ## 계층형 딕셔너리 \{#hierarchical-dictionaries\}
 
-ClickHouse는 [숫자 키](../keys-and-fields.md#numeric-key)를 사용하는 계층형 딕셔너리를 지원합니다.
+ClickHouse는 [숫자 키](../attributes.md#numeric-key)를 사용하는 계층형 딕셔너리를 지원합니다.
 
 다음과 같은 계층 구조를 살펴보십시오:
 
@@ -44,7 +44,7 @@ ClickHouse는 [숫자 키](../keys-and-fields.md#numeric-key)를 사용하는 �
 
 ClickHouse는 외부 딕셔너리 속성에 대해 계층(hierarchical) 속성을 지원합니다. 이 속성을 사용하면 위에서 설명한 것과 유사한 방식으로 계층형 딕셔너리를 구성할 수 있습니다.
 
-[dictGetHierarchy](../../../functions/ext-dict-functions.md#dictGetHierarchy) 함수는 요소의 부모 체인(상위 계층)을 가져올 수 있습니다.
+[dictGetHierarchy](/sql-reference/functions/ext-dict-functions.md#dictGetHierarchy) 함수는 요소의 부모 체인(상위 계층)을 가져올 수 있습니다.
 
 이 예제에서 딕셔너리의 구조는 다음과 같습니다:
 

@@ -205,7 +205,7 @@ Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), 아래 첫 번째 예제 참고).
 2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
-3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](./sql-reference/functions/string-replace-functions.md/#translate)).
+3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate)).
 
 전처리기 표현식은 [String](/sql-reference/data-types/string.md) 또는 [FixedString](/sql-reference/data-types/fixedstring.md) 타입의 입력 값을 동일한 타입의 값으로 변환해야 합니다.
 
@@ -241,7 +241,7 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, 'Foo');
 ```
 
-다음과 같습니다:
+다음과 동일합니다:
 
 ```sql
 CREATE TABLE table
@@ -292,7 +292,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**기타 매개변수(선택 사항)**.
+**기타 인수(선택 사항)**.
 
 
 <details markdown="1">

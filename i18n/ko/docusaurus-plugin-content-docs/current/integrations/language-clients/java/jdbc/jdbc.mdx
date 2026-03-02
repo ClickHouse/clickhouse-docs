@@ -69,7 +69,7 @@ import TabItem from '@theme/TabItem';
 
     클래스패스에 JAR를 추가해야 하는 애플리케이션에서 JDBC 드라이버를 사용하는 경우, 다음 위치에서 JAR를 다운로드하여 추가하십시오:
 
-    * [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)에서 라이브러리를 가져와 클래스패스에 추가하십시오
+    * [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)에서 JAR를 다운로드한 후 클래스패스에 추가하십시오
       * 버전 `0.9.4`부터는 https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all 아티팩트가 제공됩니다.
       * 모든 shaded 의존성이 포함된 JAR 파일을 받으려면 qualifier를 `all`로 지정하십시오.
     * 또는 공식 저장소의 [여기](https://github.com/ClickHouse/clickhouse-java/releases)에서 다운로드할 수 있습니다
@@ -94,10 +94,10 @@ import TabItem from '@theme/TabItem';
 
     URL 구문에 대해 유의할 사항은 다음과 같습니다:
 
-    * URL에는 엔드포인트를 **하나만** 허용합니다
-    * 기본값이 &#39;HTTP&#39;가 아닌 프로토콜을 사용하는 경우 프로토콜을 명시해야 합니다
-    * 기본 포트인 &#39;8123&#39;이 아닌 경우 포트를 명시해야 합니다.
-    * 드라이버는 포트 번호만으로 프로토콜을 추측하지 않으므로 프로토콜을 반드시 명시적으로 지정해야 합니다
+    * URL에는 엔드포인트를 **하나만** 지정할 수 있습니다
+    * 프로토콜이 기본값인 &#39;HTTP&#39;가 아닌 경우에는 프로토콜을 명시해야 합니다
+    * 기본 포트인 8123이 아닐 때는 포트를 명시해야 합니다.
+    * 드라이버는 포트 번호만으로 프로토콜을 유추하지 않으므로 프로토콜을 반드시 명시적으로 지정해야 합니다
     * 프로토콜이 지정된 경우 `ssl` 매개변수는 필요하지 않습니다.
 
     ### 연결 속성(Connection Properties) \{#connection-properties\}
@@ -106,17 +106,17 @@ import TabItem from '@theme/TabItem';
 
     **드라이버 속성**:
 
-    | 속성                                  | 기본값      | 설명                                                                                                                           |
-    | ----------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
-    | `disable_frameworks_detection`      | `true`   | User-Agent 값을 기반으로 한 프레임워크 감지를 비활성화합니다                                                                                       |
-    | `jdbc_ignore_unsupported_values`    | `false`  | 드라이버 동작에 영향을 미치지 않는 경우 `SQLFeatureNotSupportedException`을 발생시키지 않습니다                                                         |
-    | `clickhouse.jdbc.v1`                | `false`  | 새 JDBC 구현 대신 이전 JDBC 구현을 사용하도록 합니다                                                                                           |
-    | `default_query_settings`            | `null`   | 쿼리 실행 시 기본 쿼리 설정을 함께 전달할 수 있도록 합니다                                                                                           |
-    | `jdbc_resultset_auto_close`         | `true`   | `Statement`를 닫을 때 `ResultSet`을 자동으로 닫습니다                                                                                     |
-    | `beta.row_binary_for_simple_insert` | `false`  | `RowBinary` writer를 기반으로 한 `PreparedStatement` 구현을 사용합니다. `INSERT INTO ... VALUES` 형식의 쿼리에서만 사용할 수 있습니다.                     |
-    | `jdbc_resultset_auto_close`         | `true`   | `Statement`가 닫히면 `ResultSet`을 자동으로 닫습니다                                                                                      |
-    | `jdbc_use_max_result_rows`          | `false`  | 서버 속성 `max_result_rows`를 사용해 쿼리 결과로 반환되는 행 수를 제한할 수 있도록 합니다. 활성화되면 사용자가 설정한 overflow 모드보다 우선 적용됩니다. 자세한 내용은 JavaDoc을 참조하십시오. |
-    | `jdbc_sql_parser`                   | `JAVACC` | 사용할 SQL 파서를 설정합니다. 선택 가능한 값은 `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`입니다.                                                  |
+    | 속성                                  | 기본값      | 설명                                                                                                                                     |
+    | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+    | `disable_frameworks_detection`      | `true`   | User-Agent 기반 프레임워크 감지를 비활성화합니다                                                                                                        |
+    | `jdbc_ignore_unsupported_values`    | `false`  | 드라이버 동작에 영향을 주지 않는 경우 `SQLFeatureNotSupportedException`을 발생시키지 않습니다                                                                    |
+    | `clickhouse.jdbc.v1`                | `false`  | 새 JDBC 구현 대신 이전 JDBC 구현을 사용합니다                                                                                                         |
+    | `default_query_settings`            | `null`   | 쿼리 실행 시 기본 쿼리 설정을 함께 전달할 수 있도록 합니다                                                                                                     |
+    | `jdbc_resultset_auto_close`         | `true`   | `Statement`가 닫히면 `ResultSet`을 자동으로 닫습니다                                                                                                |
+    | `beta.row_binary_for_simple_insert` | `false`  | `RowBinary` writer를 기반으로 하는 `PreparedStatement` 구현을 사용합니다. `INSERT INTO ... VALUES` 형식의 쿼리에서만 동작합니다.                                   |
+    | `jdbc_resultset_auto_close`         | `true`   | `Statement`를 닫을 때 `ResultSet`을 자동으로 닫습니다                                                                                               |
+    | `jdbc_use_max_result_rows`          | `false`  | 서버 속성 `max_result_rows`를 사용해 쿼리 결과로 반환되는 행 수를 제한할 수 있도록 합니다. 활성화되면 사용자가 설정한 overflow 모드를 무시하고 이 설정이 우선 적용됩니다. 자세한 내용은 JavaDoc을 참조하십시오. |
+    | `jdbc_sql_parser`                   | `JAVACC` | 사용할 SQL 파서를 설정합니다. 선택 가능한 값은 `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`입니다.                                                            |
 
     :::note 서버 설정
 
@@ -202,7 +202,7 @@ import TabItem from '@theme/TabItem';
 
     매핑을 변경하는 방법은 다음과 같습니다:
 
-    * `ResultSet#getObject(columnIndex, class)` 메서드는 값을 `class` 타입으로 변환하려고 시도합니다. 일부 변환에는 제한 사항이 있습니다. 자세한 내용은 각 섹션을 참조하십시오.
+    * `ResultSet#getObject(columnIndex, class)` 메서드는 값을 지정한 `class` 타입으로 변환하려고 시도합니다. 일부 변환에는 제한이 있습니다. 자세한 내용은 각 섹션을 참조하십시오.
 
     **숫자형 타입(Numeric Types)**
 
@@ -228,12 +228,12 @@ import TabItem from '@theme/TabItem';
     | Decimal256    | DECIMAL  | java.math.BigDecimal |
     | Bool          | BOOLEAN  | java.lang.Boolean    |
 
-    * 숫자형 데이터 타입은 서로 변환 가능합니다. 예를 들어 `Int8` 값을 `Float64`로 읽을 수 있고, 그 반대도 가능합니다.:
+    * 숫자형 데이터 타입은 서로 변환이 가능합니다. 따라서 `Int8` 값을 `Float64`로도 읽을 수 있으며, 그 반대도 가능합니다.:
       * `rs.getObject(1, Float64.class)`는 `Int8` 컬럼의 값을 `Float64` 값으로 반환합니다.
       * `rs.getLong(1)`는 `Int8` 컬럼의 값을 `Long` 값으로 반환합니다.
-      * `rs.getByte(1)`는 `Int16` 컬럼의 값이 `Byte` 범위에 들어가는 경우 `Byte` 값으로 반환할 수 있습니다.
-    * 더 넓은 범위의 타입을 더 좁은 범위의 타입으로 변환하는 것은 데이터가 손상될 위험 때문에 권장되지 않습니다.
-    * `Bool` 타입은 숫자형처럼도 동작합니다.
+      * `rs.getByte(1)`는 `Int16` 컬럼의 값이 `Byte` 범위 내라면 `Byte` 값으로 반환할 수 있습니다.
+    * 더 넓은 범위의 타입을 더 좁은 범위의 타입으로 변환하는 것은 데이터 손상 위험이 있으므로 권장하지 않습니다.
+    * `Bool` 타입은 숫자형으로도 동작합니다.
     * 모든 숫자형 타입은 `java.lang.String`으로 읽을 수 있습니다.
 
     **문자열 타입(String Types)**
@@ -244,7 +244,7 @@ import TabItem from '@theme/TabItem';
     | FixedString   | VARCHAR | java.lang.String |
 
     * `String`은 `java.lang.String` 또는 `byte[]`로만 읽을 수 있습니다.
-    * `FixedString`은 그대로 읽히며, 컬럼 길이에 맞도록 0으로 패딩됩니다. (예를 들어 `'John'`에 대한 `FixedString(10)`은 `'John\0\0\0\0\0\0\0\0\0'`으로 읽힙니다.)
+    * `FixedString`은 값이 있는 그대로 읽히며, 컬럼 길이에 맞게 0으로 채워집니다. (예를 들어 `FixedString(10)` 컬럼에 `'John'`이 저장된 경우 `'John\0\0\0\0\0\0\0\0\0'`으로 읽힙니다.)
 
     **Enum 유형**
 
@@ -253,10 +253,10 @@ import TabItem from '@theme/TabItem';
     | Enum8         | OTHER   | java.lang.String |
     | Enum16        | OTHER   | java.lang.String |
 
-    * `Enum8`과 `Enum16`은 기본적으로 `java.lang.String`으로 매핑됩니다.
-    * Enum 값은 지정된 getter 메서드 또는 `getObject(columnIndex, Integer.class)` 메서드를 사용하여 숫자 값으로 읽을 수 있습니다.
-    * `Enum16`은 내부적으로 `short`에, `Enum8`은 `byte`에 매핑됩니다. 데이터 손상 위험이 있으므로 `Enum16`을 `byte`로 읽는 것은 피해야 합니다.
-    * Enum 값은 `PreparedStatement`에서 문자열 또는 숫자 값으로 설정할 수 있습니다.
+    * `Enum8`과 `Enum16`은 기본적으로 `java.lang.String`에 매핑됩니다.
+    * Enum 값은 전용 getter 메서드나 `getObject(columnIndex, Integer.class)` 메서드를 사용하여 숫자 값으로 읽을 수 있습니다.
+    * `Enum16`은 내부적으로 `short` 타입에, `Enum8`은 `byte` 타입에 매핑됩니다. 데이터 손상 위험이 있으므로 `Enum16`을 `byte`로 읽는 것은 피해야 합니다.
+    * `PreparedStatement`에서 Enum 값을 문자열 또는 숫자 값으로 설정할 수 있습니다.
 
     **날짜/시간 타입(Date/Time Types)**
 
@@ -274,8 +274,8 @@ import TabItem from '@theme/TabItem';
       * `rs.getObject(1, java.time.LocalDateTime.class)`는 `DateTime` 컬럼의 `java.time.LocalDateTime` 값을 반환합니다.
       * `rs.getObject(1, java.time.LocalTime.class)`는 `Time` 컬럼의 `java.time.LocalTime` 값을 반환합니다.
     * `Date`, `Date32`, `Time`, `Time64`는 서버 시간대의 영향을 받지 않습니다.
-    * `DateTime`, `DateTime64`는 서버 또는 세션의 시간대 설정에 영향을 받습니다.
-    * `DateTime` 및 `DateTime64` 값은 `getObject(colIndex, ZonedDateTime.class)`를 사용하여 `ZonedDateTime`으로 가져올 수 있습니다.
+    * `DateTime`, `DateTime64`는 서버 또는 세션의 시간대 설정을 따릅니다.
+    * `DateTime` 및 `DateTime64` 값은 `getObject(colIndex, ZonedDateTime.class)`를 사용하여 `ZonedDateTime`으로 조회할 수 있습니다.
 
     **중첩 타입(Nested Types)**
 
@@ -283,16 +283,16 @@ import TabItem from '@theme/TabItem';
     | ------------- | --------------- | ------------------------- |
     | Array         | ARRAY           | java.sql.Array            |
     | Tuple         | OTHER           | com.clickhouse.data.Tuple |
-    | 맵             | JAVA&#95;OBJECT | java.util.Map             |
+    | Map           | JAVA&#95;OBJECT | java.util.Map             |
     | Nested        | ARRAY           | java.sql.Array            |
 
-    * `Array`는 JDBC와의 호환성을 위해 기본적으로 `java.sql.Array`에 매핑됩니다. 이는 반환된 배열 값의 타입에 대한 정보를 더 잘 제공하여 타입 추론에 유용합니다.
-    * `Array`는 원본 배열과 동일한 내용을 가진 `java.sql.ResultSet`을 반환하는 `getResultSet()` 메서드를 구현합니다.
-    * 컬렉션 타입은 데이터를 올바르게 표현하지 못하므로 `java.lang.String`으로 읽어서는 안 됩니다(예: 배열에서는 문자열 값에 따옴표가 붙지 않습니다).
-    * `Map`은 값을 읽을 수 있는 메서드가 `getObject(columnIndex, Class<T>)`뿐이므로 `JAVA_OBJECT`에 매핑됩니다.
-      * `Map`은 이름이 있는 컬럼이 없으므로 `java.sql.Struct`가 아닙니다.
-    * `Tuple`은 서로 다른 타입을 포함할 수 있으므로 `Object[]`에 매핑되며, `List`를 사용하는 것은 올바르지 않습니다.
-    * `Tuple`은 `getObject(columnIndex, Array.class)` 메서드를 사용해 `Array`로 읽을 수 있습니다. 이 경우 `Array#baseTypeName`은 `Tuple` 컬럼의 정의를 반환합니다.
+    * `Array`는 JDBC와의 호환성을 위해 기본적으로 `java.sql.Array`에 매핑됩니다. 이는 반환되는 배열 값에 대한 정보를 더 많이 제공하기 위한 것이며, 타입 추론에 유용합니다.
+    * `Array`는 원본 배열과 동일한 내용을 담은 `java.sql.ResultSet`을 반환하는 `getResultSet()` 메서드를 구현합니다.
+    * 컬렉션 타입은 데이터를 올바르게 표현하지 못하므로 `java.lang.String`으로 읽어서는 안 됩니다(예: 배열에서는 문자열 값이 따옴표로 감싸지지 않습니다).
+    * `Map`은 값을 `getObject(columnIndex, Class<T>)` 메서드로만 읽을 수 있기 때문에 `JAVA_OBJECT`에 매핑됩니다.
+      * `Map`은 이름이 붙은 컬럼을 가지지 않으므로 `java.sql.Struct`가 아닙니다.
+    * `Tuple`은 서로 다른 타입을 포함할 수 있으므로 `Object[]`에 매핑되고, `List`를 사용하는 것은 유효하지 않습니다.
+    * `Tuple`은 `getObject(columnIndex, Array.class)` 메서드를 사용해 `Array`로 읽을 수 있습니다. 이 경우 `Array#baseTypeName`은 `Tuple` 컬럼 정의를 반환합니다.
 
     **배열 쓰기**
 
@@ -301,8 +301,8 @@ import TabItem from '@theme/TabItem';
 
     이 메서드는 두 개의 인수를 받습니다:
 
-    * `typeName` - 배열 요소의 타입 이름입니다. 예를 들어 `Array(Int32)` -&gt; `"Int32"`입니다.
-    * `elements` - 실제 배열의 요소입니다. 예를 들어 `[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`.
+    * `typeName` - 배열 요소 타입의 이름입니다. 예를 들어 `Array(Int32)` -&gt; `"Int32"`입니다.
+    * `elements` - 배열의 실제 요소들입니다. 예를 들어 `[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`.
 
     Tuple은 `Object[]` 또는 `java.sql.Struct`로 표현할 수 있습니다 (튜플 작성 방법은 아래를 참조하세요).
 
@@ -440,8 +440,8 @@ import TabItem from '@theme/TabItem';
 
     이 메서드는 두 개의 인수를 받습니다:
 
-    * `typeName` - 중첩 요소의 타입 이름을 나타냅니다. 예를 들어 `Nested(Tuple(Int32, String))` -&gt; &quot;Nested(Tuple(Int32, String))&quot;입니다.
-    * `elements` - 실제 중첩 요소입니다. 예를 들어 `[1, 'test']` -&gt; `new Object[] {1, 'test'}`입니다.
+    * `typeName` - 중첩 요소의 타입 이름입니다. 예를 들어 `Nested(Tuple(Int32, String))` -&gt; &quot;Nested(Tuple(Int32, String))&quot;입니다.
+    * `elements` - 중첩 요소의 실제 값입니다. 예를 들어 `[1, 'test']` -&gt; `new Object[] {1, 'test'}`입니다.
 
     **예제**
 
@@ -494,8 +494,8 @@ import TabItem from '@theme/TabItem';
 
     **널 허용 및 LowCardinality 타입**
 
-    * `Nullable` 및 `LowCardinality`는 다른 데이터 타입을 감싸는 특수한 데이터 타입입니다.
-    * `Nullable`은 `ResultSetMetaData`에서 타입 이름이 어떻게 반환되는지에 영향을 줍니다.
+    * `Nullable` 및 `LowCardinality`는 다른 타입을 감싸는 특수 타입입니다.
+    * `Nullable`은 `ResultSetMetaData`에서 타입 이름이 반환되는 방식에 영향을 줍니다.
 
     **특수 유형**
 
@@ -508,20 +508,14 @@ import TabItem from '@theme/TabItem';
     | AggregateFunction       | OTHER    | (이진 표현)               |
     | SimpleAggregateFunction | (래핑된 타입) | (래핑된 클래스)             |
 
-    * `UUID`는 JDBC 표준 타입이 아니지만 JDK에는 포함되어 있습니다. 기본적으로 `getObject()` 메서드는 `java.util.UUID`를 반환합니다.
+    * `UUID`는 JDBC 표준 타입은 아니지만 JDK에는 포함되어 있습니다. 기본적으로 `getObject()` 메서드를 호출하면 `java.util.UUID`가 반환됩니다.
     * `getObject(columnIndex, String.class)` 메서드를 사용하면 `UUID`를 `String` 형식으로 읽거나 쓸 수 있습니다.
-    * `IPv4`와 `IPv6`는 JDBC 표준 타입이 아닙니다. 그러나 JDK에는 포함됩니다. 기본적으로 `getObject()` 메서드를 호출하면 `java.net.Inet4Address` 및 `java.net.Inet6Address`가 반환됩니다.
-    * `IPv4` 및 `IPv6`는 `getObject(columnIndex, String.class)` 메서드를 사용하여 `String`으로 읽거나 쓸 수 있습니다.
+    * `IPv4`와 `IPv6`는 JDBC 표준 타입이 아니지만 JDK에는 포함되어 있습니다. 기본적으로 `getObject()` 메서드는 `java.net.Inet4Address` 및 `java.net.Inet6Address`를 반환합니다.
+    * `IPv4` 및 `IPv6`는 `getObject(columnIndex, String.class)` 메서드를 사용하여 `String`으로 읽고 쓸 수 있습니다.
 
     ### 날짜, 시간 및 시간대 처리하기 \{#handling-dates-times-and-timezones\}
 
-    `java.sql.Date`, `java.sql.Time`, `java.sql.Timestamp`는 시간대(Timezone) 계산을 복잡하게 만들 수 있습니다. 물론 지원되기는 하지만,
-    [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 패키지 사용을 고려하십시오. `ZonedDateTime`과
-    `OffsetDateTime`은 java.sql.Timestamp, java.sql.Date, java.sql.Time을 대신하기에 훌륭한 대안입니다.
-
-    :::note[Date vs DateTime]
-    `Date`는 타임존 없이 저장되며, `DateTime`은 타임존과 함께 저장됩니다. 주의하지 않으면 예상치 못한 결과가 발생할 수 있습니다.
-    :::
+    Date/Time 및 Timestamp 처리 시 발생하기 쉬운 문제와 드라이버의 동작 방식을 설명하는 [Date/Time 가이드](/integrations/language-clients/java/jdbc_date_time_guide)를 참조하십시오.
 
     ## 연결 생성하기 \{#creating-connection\}
 
@@ -647,9 +641,9 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60 (기본값인 300초보다 더 낮은 값으로 설정하는 것을 고려할 수 있습니다)
+    * `net.ipv4.tcp_keepalive_time`: 60 (기본값인 300초보다 낮은 값으로 설정하는 것을 고려할 수 있습니다)
 
-    2. 커널 매개변수를 수정한 후 다음 명령을 실행하여 변경 사항을 적용하십시오:
+    2. 커널 매개변수를 수정한 후, 다음 명령을 실행하여 변경 내용을 적용하십시오:
 
     ```shell
     sudo sysctl -p
@@ -665,32 +659,32 @@ import TabItem from '@theme/TabItem';
 
     ### 주요 변경 사항 \{#key-changes\}
 
-    | 기능                                | V1 (기존)    | V2 (새 버전)                 |
-    | --------------------------------- | ---------- | ------------------------- |
-    | 트랜잭션 지원                           | 부분적으로만 지원됨 | 지원되지 않음                   |
-    | 응답 컬럼 이름 변경                       | 부분적으로만 지원됨 | 지원되지 않음                   |
-    | 다중 문장 SQL(Multi-Statement SQL)    | 지원되지 않음    | 허용되지 않음                   |
-    | 명명된 매개변수                          | 지원됨        | 지원되지 않음(JDBC 사양에 정의되지 않음) |
-    | `PreparedStatement`를 사용한 데이터 스트리밍 | 지원됨        | 지원되지 않음                   |
+    | 기능                                | V1 (기존)    | V2 (새 버전)            |
+    | --------------------------------- | ---------- | -------------------- |
+    | 트랜잭션 지원                           | 부분적으로만 지원됨 | 지원되지 않음              |
+    | 응답 컬럼 이름 변경                       | 부분적으로만 지원됨 | 지원되지 않음              |
+    | 다중 문장 SQL(Multi-Statement SQL)    | 지원되지 않음    | 허용되지 않음              |
+    | 명명된 매개변수                          | 지원됨        | 지원되지 않음(JDBC 사양에 없음) |
+    | `PreparedStatement`를 사용한 데이터 스트리밍 | 지원됨        | 지원되지 않음              |
 
-    * JDBC V2는 보다 경량으로 설계되면서 일부 기능이 제거되었습니다.
-      * 스트리밍 데이터는 JDBC 사양이나 Java 표준에 포함되지 않으므로 JDBC V2에서는 지원되지 않습니다.
-    * JDBC V2는 명시적인 구성이 필요합니다. 장애 조치(failover)에 대한 기본 설정은 없습니다.
+    * JDBC V2는 보다 경량화된 구현을 위해 설계되어 일부 기능이 제거되었습니다.
+      * 스트리밍 데이터는 JDBC 사양과 Java 표준에 포함되지 않아 JDBC V2에서 지원되지 않습니다.
+    * JDBC V2는 명시적 구성이 필요합니다. 장애 조치(failover)에 대한 기본값은 제공되지 않습니다.
       * URL에 프로토콜을 명시해야 합니다. 포트 번호만으로 프로토콜을 암시적으로 감지하는 동작은 허용되지 않습니다.
 
     ### 구성 변경 사항 \{#configuration-changes\}
 
     열거형(enum)은 두 가지만 존재합니다:
 
-    * `com.clickhouse.jdbc.DriverProperties` - 드라이버 자체의 구성 속성입니다.
-    * `com.clickhouse.client.api.ClientConfigProperties` - 클라이언트 구성 속성을 나타냅니다. 클라이언트 구성
+    * `com.clickhouse.jdbc.DriverProperties` - 드라이버 전용 구성 속성입니다.
+    * `com.clickhouse.client.api.ClientConfigProperties` - 클라이언트 구성 속성입니다. 클라이언트 구성
       변경 사항은 [Java 클라이언트 문서](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config)에 설명되어 있습니다.
 
     연결 속성은 다음과 같이 파싱됩니다:
 
-    * 먼저 URL에 지정된 속성을 파싱하며, 이 속성들은 다른 모든 속성보다 우선 적용됩니다.
+    * 먼저 URL에서 속성을 파싱합니다. 이렇게 파싱된 속성은 다른 모든 속성보다 우선 적용됩니다.
     * 드라이버 속성은 클라이언트에 전달되지 않습니다.
-    * 엔드포인트(호스트, 포트, 프로토콜)는 URL에서 파싱됩니다.
+    * 엔드포인트(호스트, 포트, 프로토콜)는 URL에서 추출됩니다.
 
     Example:
 
@@ -712,120 +706,120 @@ import TabItem from '@theme/TabItem';
 
     **숫자형 타입(Numeric Types)**
 
-    | ClickHouse 타입 | V1과의 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)        | JDBC 타입 (V1) | Java 클래스 (V1)                             |
-    | ------------- | ---------- | ------------ | -------------------- | ------------ | ----------------------------------------- |
-    | Int8          | ✅          | TINYINT      | java.lang.Byte       | TINYINT      | java.lang.Byte                            |
-    | Int16         | ✅          | SMALLINT     | java.lang.Short      | SMALLINT     | java.lang.Short                           |
-    | Int32         | ✅          | INTEGER      | java.lang.Integer    | INTEGER      | java.lang.Integer                         |
-    | Int64         | ✅          | BIGINT       | java.lang.Long       | BIGINT       | java.lang.Long                            |
-    | Int128        | ✅          | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | Int256        | ✅          | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | UInt8         | ❌          | OTHER        | java.lang.Short      | OTHER        | com.clickhouse.data.value.UnsignedByte    |
-    | UInt16        | ❌          | OTHER        | java.lang.Integer    | OTHER        | com.clickhouse.data.value.UnsignedShort   |
-    | UInt32        | ❌          | OTHER        | java.lang.Long       | OTHER        | com.clickhouse.data.value.UnsignedInteger |
-    | UInt64        | ❌          | OTHER        | java.math.BigInteger | OTHER        | com.clickhouse.data.value.UnsignedLong    |
-    | UInt128       | ✅          | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | UInt256       | ✅          | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | Float32       | ✅          | REAL         | java.lang.Float      | REAL         | java.lang.Float                           |
-    | Float64       | ✅          | DOUBLE       | java.lang.Double     | DOUBLE       | java.lang.Double                          |
-    | Decimal32     | ✅          | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
-    | Decimal64     | ✅          | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
-    | Decimal128    | ✅          | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
-    | Decimal256    | ✅          | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
-    | Bool          | ✅          | BOOLEAN      | java.lang.Boolean    | BOOLEAN      | java.lang.Boolean                         |
+    | ClickHouse 타입 | V1과 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)        | JDBC 타입 (V1) | Java 클래스 (V1)                             |
+    | ------------- | --------- | ------------ | -------------------- | ------------ | ----------------------------------------- |
+    | Int8          | ✅         | TINYINT      | java.lang.Byte       | TINYINT      | java.lang.Byte                            |
+    | Int16         | ✅         | SMALLINT     | java.lang.Short      | SMALLINT     | java.lang.Short                           |
+    | Int32         | ✅         | INTEGER      | java.lang.Integer    | INTEGER      | java.lang.Integer                         |
+    | Int64         | ✅         | BIGINT       | java.lang.Long       | BIGINT       | java.lang.Long                            |
+    | Int128        | ✅         | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
+    | Int256        | ✅         | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
+    | UInt8         | ❌         | OTHER        | java.lang.Short      | OTHER        | com.clickhouse.data.value.UnsignedByte    |
+    | UInt16        | ❌         | OTHER        | java.lang.Integer    | OTHER        | com.clickhouse.data.value.UnsignedShort   |
+    | UInt32        | ❌         | OTHER        | java.lang.Long       | OTHER        | com.clickhouse.data.value.UnsignedInteger |
+    | UInt64        | ❌         | OTHER        | java.math.BigInteger | OTHER        | com.clickhouse.data.value.UnsignedLong    |
+    | UInt128       | ✅         | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
+    | UInt256       | ✅         | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
+    | Float32       | ✅         | REAL         | java.lang.Float      | REAL         | java.lang.Float                           |
+    | Float64       | ✅         | DOUBLE       | java.lang.Double     | DOUBLE       | java.lang.Double                          |
+    | Decimal32     | ✅         | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
+    | Decimal64     | ✅         | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
+    | Decimal128    | ✅         | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
+    | Decimal256    | ✅         | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
+    | Bool          | ✅         | BOOLEAN      | java.lang.Boolean    | BOOLEAN      | java.lang.Boolean                         |
 
-    * 가장 큰 차이점은 부호 없는 타입을 더 나은 이식성을 위해 Java 타입으로 매핑한다는 점입니다.
+    * 가장 큰 차이점은 부호 없는 타입이 더 나은 이식성을 위해 Java 타입으로 매핑된다는 점입니다.
 
     **문자열 타입(String Types)**
 
-    | ClickHouse 타입 | V1과의 호환성 | JDBC 타입(V2) | Java 클래스(V2)     | JDBC 타입(V1) | Java 클래스(V1)     |
-    | ------------- | -------- | ----------- | ---------------- | ----------- | ---------------- |
-    | String        | ✅        | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
-    | FixedString   | ✅        | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
+    | ClickHouse 타입 | V1과 호환 여부 | JDBC 타입(V2) | Java 클래스(V2)     | JDBC 타입(V1) | Java 클래스(V1)     |
+    | ------------- | --------- | ----------- | ---------------- | ----------- | ---------------- |
+    | String        | ✅         | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
+    | FixedString   | ✅         | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
 
-    * `FixedString`은 두 버전 모두에서 값이 있는 그대로 읽힙니다. 예를 들어 `FixedString(10)` 컬럼에 `'John'`이 저장된 경우 `'John\0\0\0\0\0\0\0\0\0'`으로 읽힙니다.
-    * `PreparedStatement#setBytes`를 사용하면 값이 `unhex('<hex_string>')`로 변환된 후 `String`으로 처리됩니다.
+    * `FixedString`은 두 버전 모두에서 값이 있는 그대로 읽힙니다. 예를 들어 `'John'`이 저장된 `FixedString(10)`은 `'John\0\0\0\0\0\0\0\0\0'`으로 읽힙니다.
+    * `PreparedStatement#setBytes`를 사용하면 값이 `unhex('<hex_string>')`로 변환된 후 `String`으로 읽힙니다.
     * 문자열은 UTF-8 인코딩으로 저장됩니다.
 
     **날짜/시간 타입(Date/Time Types)**
 
-    | ClickHouse 타입 | V1과의 호환성 | JDBC 타입 (V2) | Java 클래스 (V2)      | JDBC 타입 (V1)     | Java 클래스 (V1)            |
-    | ------------- | -------- | ------------ | ------------------ | ---------------- | ------------------------ |
-    | Date          | ❌        | DATE         | java.sql.Date      | DATE             | java.time.LocalDate      |
-    | Date32        | ❌        | DATE         | java.sql.Date      | DATE             | java.time.LocalDate      |
-    | DateTime      | ❌        | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP        | java.time.OffsetDateTime |
-    | DateTime64    | ❌        | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP        | java.time.OffsetDateTime |
-    | Time          | ✅        | TIME         | java.sql.Time      | 새 타입 / 지원되지 않음   | 새 타입 / 지원되지 않음           |
-    | Time64        | ✅        | TIME         | java.sql.Time      | 새로운 타입 / 지원되지 않음 | 새로운 타입 / 지원되지 않음         |
+    | ClickHouse 타입 | V1과 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)      | JDBC 타입 (V1)   | Java 클래스 (V1)            |
+    | ------------- | --------- | ------------ | ------------------ | -------------- | ------------------------ |
+    | Date          | ❌         | DATE         | java.sql.Date      | DATE           | java.time.LocalDate      |
+    | Date32        | ❌         | DATE         | java.sql.Date      | DATE           | java.time.LocalDate      |
+    | DateTime      | ❌         | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP      | java.time.OffsetDateTime |
+    | DateTime64    | ❌         | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP      | java.time.OffsetDateTime |
+    | Time          | ✅         | TIME         | java.sql.Time      | 새 타입 / 지원되지 않음 | 새 타입 / 지원되지 않음           |
+    | Time64        | ✅         | TIME         | java.sql.Time      | 새 타입 / 지원되지 않음 | 새 타입 / 지원되지 않음           |
 
-    * `Time` 및 `Time64`는 V2에서 새로 추가된 타입으로만 지원됩니다.
-    * `DateTime` 및 `DateTime64`는 더 나은 JDBC 호환성을 위해 `java.sql.Timestamp`에 매핑됩니다.
+    * `Time` 및 `Time64`는 V2에서 새로 도입된 타입으로만 지원됩니다.
+    * `DateTime` 및 `DateTime64`는 JDBC와의 호환성을 높이기 위해 `java.sql.Timestamp`에 매핑됩니다.
 
     **Enum 유형**
 
-    | ClickHouse 타입 | V1과의 호환성 | JDBC 타입(V2) | Java 클래스(V2)     | JDBC 타입(V1) | Java 클래스(V1)     |
-    | ------------- | -------- | ----------- | ---------------- | ----------- | ---------------- |
-    | Enum          | ✅        | VARCHAR     | java.lang.String | OTHER       | java.lang.String |
-    | Enum8         | ✅        | VARCHAR     | java.lang.String | OTHER       | java.lang.String |
-    | Enum16        | ✅        | VARCHAR     | java.lang.String | OTHER       | java.lang.String |
+    | ClickHouse 타입 | V1과 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)    | JDBC 타입 (V1) | Java 클래스 (V1)    |
+    | ------------- | --------- | ------------ | ---------------- | ------------ | ---------------- |
+    | Enum          | ✅         | VARCHAR      | java.lang.String | OTHER        | java.lang.String |
+    | Enum8         | ✅         | VARCHAR      | java.lang.String | OTHER        | java.lang.String |
+    | Enum16        | ✅         | VARCHAR      | java.lang.String | OTHER        | java.lang.String |
 
     **중첩 타입(Nested Types)**
 
-    | ClickHouse 타입 | V1과의 호환성 | JDBC 타입(V2)     | Java 클래스(V2)   | JDBC 타입(V1) | Java 클래스(V1)         |
-    | ------------- | -------- | --------------- | -------------- | ----------- | -------------------- |
-    | 배열            | ❌        | ARRAY           | java.sql.Array | ARRAY       | Object[] 또는 기본 타입 배열 |
-    | 튜플            | ❌        | OTHER           | Object[]       | STRUCT      | java.sql.Struct      |
-    | 맵             | ❌        | JAVA&#95;OBJECT | java.util.Map  | STRUCT      | java.util.Map        |
-    | Nested        | ❌        | ARRAY           | java.sql.Array | STRUCT      | java.sql.Struct      |
+    | ClickHouse 타입 | V1과의 호환 여부 | JDBC 타입(V2)     | Java 클래스(V2)   | JDBC 타입(V1) | Java 클래스(V1)         |
+    | ------------- | ---------- | --------------- | -------------- | ----------- | -------------------- |
+    | 배열            | ❌          | ARRAY           | java.sql.Array | ARRAY       | Object[] 또는 기본 타입 배열 |
+    | 튜플            | ❌          | OTHER           | Object[]       | STRUCT      | java.sql.Struct      |
+    | 맵             | ❌          | JAVA&#95;OBJECT | java.util.Map  | STRUCT      | java.util.Map        |
+    | Nested        | ❌          | ARRAY           | java.sql.Array | STRUCT      | java.sql.Struct      |
 
-    * V2에서는 JDBC와의 호환성을 위해 `Array`가 기본적으로 `java.sql.Array`에 매핑됩니다. 또한 이렇게 하면 반환되는 배열 값에 대한 정보를 더 자세히 제공할 수 있어 타입 추론에 유용합니다.
+    * V2에서는 JDBC와의 호환성을 위해 `Array`가 기본적으로 `java.sql.Array`에 매핑됩니다. 이는 반환되는 배열 값의 타입에 대한 정보를 더 풍부하게 제공하여 타입 추론에 유용합니다.
     * V2에서는 `Array`가 `getResultSet()` 메서드를 구현하여 원본 배열과 동일한 내용을 담은 `java.sql.ResultSet`을 반환합니다.
-    * V1은 `Map`에 `STRUCT`를 사용하지만 항상 `java.util.Map` 타입의 객체를 반환합니다. V2에서는 `Map`을 `JAVA_OBJECT`로 매핑하여 이 문제를 해결합니다.
-    * V1은 `Tuple`에 대해 `STRUCT`를 사용하지만 항상 `List<Object>` 객체를 반환합니다. V2는 `Tuple`을 `OTHER`에 매핑하고 기본적으로 `Object[]`를 반환합니다.
-    * V2에서는 튜플을 쓰기 위해 `com.clickhouse.data.Tuple#Tuple`을 도입합니다. 이를 통해 값이 튜플인지 배열인지 여부를 더 쉽게 판별할 수 있습니다.
+    * V1은 `Map`에 대해 `STRUCT`를 사용하지만 항상 `java.util.Map` 객체를 반환합니다. V2에서는 `Map`을 `JAVA_OBJECT`에 매핑하여 이 문제를 해결합니다.
+    * V1은 `Tuple`에 대해 `STRUCT`를 사용하지만 항상 `List<Object>` 타입의 객체를 반환합니다. V2는 `Tuple`을 `OTHER`에 매핑하고 기본적으로 `Object[]` 배열을 반환합니다.
+    * V2에서는 튜플을 작성할 수 있도록 `com.clickhouse.data.Tuple#Tuple`을 도입합니다. 이를 통해 값이 튜플인지 배열인지 여부를 더 쉽게 판별할 수 있습니다.
     * `PreparedStatement#setBytes` 및 `ResultSet#getBytes`는 컬렉션 타입에는 사용할 수 없습니다. 이 메서드는 바이너리 문자열을 처리하도록 설계되었습니다.
-    * 일반적으로 Array 타입을 읽고 쓸 때는 `java.sql.Array`를 사용합니다. JDBC 드라이버는 이에 대해 완전한 지원을 제공합니다.
-    * V2에서 `Nested`는 `Array`에 매핑되며 튜플 배열 형태로 제공됩니다.
-    * V2에서는 `java.sql.Struct`를 부분적으로만 지원합니다. `java.sql.Struct`는 Array 타입과 매우 유사하며 key-value 쌍을 지원하지 않기 때문입니다. `Struct`는 `Tuple` 값을 쓰는 데 사용할 수 있습니다.
+    * 일반적으로 Array 타입을 읽거나 쓸 때에는 `java.sql.Array`를 사용합니다. JDBC 드라이버는 이를 완전히 지원합니다.
+    * V2에서 `Nested`는 `Array`에 매핑되며 튜플들의 배열로 표현됩니다.
+    * V2에서는 `java.sql.Struct`를 부분적으로만 지원합니다. 이는 `java.sql.Struct`가 Array 타입과 매우 유사하고 key-value 쌍을 지원하지 않기 때문입니다. `Struct`는 `Tuple` 값을 쓰는 데 사용할 수 있습니다.
 
     **지리 타입(Geo Types)**
 
-    | ClickHouse 타입 | V1과의 호환성 | JDBC 타입(V2) | Java 클래스(V2)   | JDBC 타입(V1) | Java 클래스(V1)   |
-    | ------------- | -------- | ----------- | -------------- | ----------- | -------------- |
-    | Point         | ✅        | OTHER       | double[]       | OTHER       | double[]       |
-    | Ring          | ✅        | OTHER       | double[][]     | OTHER       | double[][]     |
-    | Polygon       | ✅        | OTHER       | double[][][]   | OTHER       | double[][][]   |
-    | MultiPolygon  | ✅        | OTHER       | double[][][][] | OTHER       | double[][][][] |
+    | ClickHouse 타입 | V1과 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)  | JDBC 타입 (V1) | Java 클래스 (V1)  |
+    | ------------- | --------- | ------------ | -------------- | ------------ | -------------- |
+    | Point         | ✅         | OTHER        | double[]       | OTHER        | double[]       |
+    | Ring          | ✅         | OTHER        | double[][]     | OTHER        | double[][]     |
+    | Polygon       | ✅         | OTHER        | double[][][]   | OTHER        | double[][][]   |
+    | MultiPolygon  | ✅         | OTHER        | double[][][][] | OTHER        | double[][][][] |
 
     **널 허용 및 LowCardinality 타입**
 
-    * `Nullable` 및 `LowCardinality`는 다른 타입을 감싸는 특수 타입입니다.
-    * V2에서는 이러한 타입에 변경 사항이 없습니다.
+    * `Nullable`(널 허용) 및 `LowCardinality`는 다른 타입을 감싸는 특수한 데이터 타입입니다.
+    * V2에서는 이러한 타입에는 변경 사항이 없습니다.
 
     **특수 유형**
 
-    | ClickHouse 타입           | V1과의 호환성 | JDBC 타입 (V2) | Java 클래스 (V2)         | JDBC 타입 (V1) | Java 클래스 (V1)         |
-    | ----------------------- | -------- | ------------ | --------------------- | ------------ | --------------------- |
-    | JSON                    | ❌        | OTHER        | java.lang.String      | 지원되지 않음      | 지원되지 않음               |
-    | AggregateFunction       | ✅        | OTHER        | (이진 표현)               | OTHER        | (이진 표현)               |
-    | SimpleAggregateFunction | ✅        | (래핑된 타입)     | (래핑된 클래스)             | (래핑된 타입)     | (래핑된 클래스)             |
-    | UUID                    | ✅        | OTHER        | java.util.UUID        | VARCHAR      | java.util.UUID        |
-    | IPv4                    | ✅        | OTHER        | java.net.Inet4Address | VARCHAR      | java.net.Inet4Address |
-    | IPv6                    | ✅        | OTHER        | java.net.Inet6Address | VARCHAR      | java.net.Inet6Address |
-    | Dynamic                 | ❌        | OTHER        | java.Object           | 지원되지 않음      | 지원되지 않음               |
-    | Variant                 | ❌        | OTHER        | java.Object           | 지원되지 않음      | 지원되지 않음               |
+    | ClickHouse 타입           | V1과 호환 여부 | JDBC 타입 (V2) | Java 클래스 (V2)         | JDBC 타입 (V1) | Java 클래스 (V1)         |
+    | ----------------------- | --------- | ------------ | --------------------- | ------------ | --------------------- |
+    | JSON                    | ❌         | OTHER        | java.lang.String      | 지원되지 않음      | 지원되지 않음               |
+    | AggregateFunction       | ✅         | OTHER        | (이진 표현)               | OTHER        | (이진 표현)               |
+    | SimpleAggregateFunction | ✅         | (래핑된 타입)     | (래핑된 클래스)             | (래핑된 타입)     | (래핑된 클래스)             |
+    | UUID                    | ✅         | OTHER        | java.util.UUID        | VARCHAR      | java.util.UUID        |
+    | IPv4                    | ✅         | OTHER        | java.net.Inet4Address | VARCHAR      | java.net.Inet4Address |
+    | IPv6                    | ✅         | OTHER        | java.net.Inet6Address | VARCHAR      | java.net.Inet6Address |
+    | Dynamic                 | ❌         | OTHER        | java.Object           | 지원되지 않음      | 지원되지 않음               |
+    | Variant                 | ❌         | OTHER        | java.Object           | 지원되지 않음      | 지원되지 않음               |
 
-    * V1은 `UUID`에 대해 JDBC 타입으로 `VARCHAR`를 사용하지만 항상 `java.util.UUID` 객체를 반환합니다. V2에서는 `UUID`를 `OTHER`로 매핑하여 이를 수정하고 `java.util.UUID` 객체를 반환합니다.
-    * V1은 `IPv4` 및 `IPv6`에 `VARCHAR`를 사용하지만, 항상 `java.net.Inet4Address` 및 `java.net.Inet6Address` 객체를 반환합니다. V2에서는 이를 수정하여 `IPv4` 및 `IPv6`를 `OTHER`로 매핑하고 `java.net.Inet4Address` 및 `java.net.Inet6Address` 객체를 반환합니다.
-    * `Dynamic`과 `Variant`는 V2에서 새로 추가된 타입입니다. V1에서는 지원되지 않습니다.
-    * `JSON`은 `Dynamic` 타입을 기반으로 합니다. 따라서 V2에서만 지원됩니다.
-    * IPv4 및 IPv6 값은 `getBytes(columnIndex)` 메서드를 사용하여 `byte[]`로 읽을 수 있습니다. 그러나 이러한 타입에는 전용 클래스를 사용하는 것이 권장됩니다.
-    * V2에서는 IP 주소를 수치 값으로 읽는 기능을 지원하지 않습니다. IP 주소를 수치 값으로 변환하는 기능은 InetAddress 클래스에서 구현하는 편이 더 적절하기 때문입니다.
+    * V1은 `UUID` 타입에 대해 JDBC 타입으로 `VARCHAR`를 사용하지만 항상 `java.util.UUID` 객체를 반환합니다. V2에서는 `UUID`를 `OTHER`로 매핑하여 이를 수정하고 `java.util.UUID` 객체를 반환합니다.
+    * V1은 `IPv4` 및 `IPv6`에 대해 JDBC 타입으로 `VARCHAR`를 사용하지만, 항상 `java.net.Inet4Address` 및 `java.net.Inet6Address` 객체를 반환합니다. V2에서는 이를 수정하여 `IPv4` 및 `IPv6`의 JDBC 타입을 `OTHER`로 매핑하고 `java.net.Inet4Address` 및 `java.net.Inet6Address` 객체를 반환합니다.
+    * `Dynamic`과 `Variant`는 V2의 새로운 타입입니다. V1에서는 지원되지 않습니다.
+    * `JSON`은 `Dynamic` 타입을 기반으로 하므로 V2에서만 지원됩니다.
+    * IPv4 및 IPv6 값은 `getBytes(columnIndex)` 메서드를 사용하여 `byte[]`로 읽을 수 있습니다. 그러나 이러한 타입에는 전용 클래스를 사용하는 것이 권장합니다.
+    * V2에서는 IP 주소를 숫자 값으로 읽는 기능을 지원하지 않습니다. IP 주소를 숫자 값으로 변환하는 처리는 InetAddress 클래스에서 구현하는 편이 더 바람직하기 때문입니다.
 
     ### 데이터베이스 메타데이터 변경 사항 \{#database-metadata-changes\}
 
-    * V2에서는 데이터베이스를 지칭할 때 `Schema`라는 용어만 사용합니다. `Catalog`라는 용어는 향후 사용을 위해 예약되어 있습니다.
-    * V2는 `DatabaseMetaData.supportsTransactions()` 및 `DatabaseMetaData.supportsSavepoints()`에 대해 `false`를 반환합니다. 이는 향후 개발 과정에서 변경될 예정입니다.
+    * V2에서는 데이터베이스를 가리킬 때 `Schema`라는 용어만을 사용합니다. `Catalog`라는 용어는 향후 사용을 위해 예약되어 있습니다.
+    * V2는 `DatabaseMetaData.supportsTransactions()` 및 `DatabaseMetaData.supportsSavepoints()`에 대해 `false`를 반환합니다. 이는 향후 개발에서 변경될 예정입니다.
   </Version>
 
   <Version>
@@ -851,7 +845,7 @@ import TabItem from '@theme/TabItem';
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
             <version>0.7.2</version>
-            <!-- 모든 의존성이 포함된 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오 -->
+            <!-- 모든 의존성을 포함하는 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오 -->
             <classifier>shaded-all</classifier>
         </dependency>
         ```
@@ -860,7 +854,7 @@ import TabItem from '@theme/TabItem';
       <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // 모든 의존성이 포함된 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오
+        // 모든 의존성을 포함하는 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오
         implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
         ```
       </TabItem>
@@ -868,7 +862,7 @@ import TabItem from '@theme/TabItem';
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // 모든 의존성이 포함된 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오
+        // 모든 의존성을 포함하는 uber JAR를 사용하고, 더 작은 JAR가 필요하면 classifier를 http로 변경하십시오
         implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
         ```
       </TabItem>
@@ -909,22 +903,22 @@ import TabItem from '@theme/TabItem';
 
     **URL 구문**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, 예를 들면:
 
-    * `jdbc:ch://localhost`는 `jdbc:clickhouse:http://localhost:8123`와 동일합니다.
-    * `jdbc:ch:https://localhost`는 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`과 동일합니다
+    * `jdbc:ch://localhost`는 `jdbc:clickhouse:http://localhost:8123`와 같습니다.
+    * `jdbc:ch:https://localhost`는 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`와 동일합니다.
     * `jdbc:ch:grpc://localhost`는 `jdbc:clickhouse:grpc://localhost:9100`와 동일합니다.
 
     **연결 속성(Connection Properties)**:
 
-    | 속성                         | 기본값     | 설명                                                                                                                                                                                                                                                                                                                                                                                                             |
-    | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `continueBatchOnError`     | `false` | 오류 발생 시 배치 작업을 계속 수행할지 여부                                                                                                                                                                                                                                                                                                                                                                                      |
-    | `createDatabaseIfNotExist` | `false` | 데이터베이스가 없으면 새로 생성할지 여부                                                                                                                                                                                                                                                                                                                                                                                         |
-    | `custom_http_headers`      |         | 사용자 정의 HTTP 헤더를 쉼표로 구분해 지정합니다. 예: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                        |
-    | `custom_http_params`       |         | 쉼표로 구분된 사용자 정의 HTTP 쿼리 매개변수. 예: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                               |
-    | `nullAsDefault`            | `0`     | `0` - null 값을 그대로 처리하고, null을 널을 허용하지 않는 컬럼에 삽입하려 하면 예외를 발생시킵니다; `1` - null 값을 그대로 처리하고, 삽입 시 null 값에 대한 검사를 비활성화합니다; `2` - 쿼리와 삽입 작업 모두에서 null을 해당 데이터 타입의 기본값으로 대체합니다                                                                                                                                                                                                                                        |
-    | `jdbcCompliance`           | `true`  | 표준 동기식 UPDATE/DELETE SQL 구문과 가상 트랜잭션(fake transaction) 지원 여부                                                                                                                                                                                                                                                                                                                                                   |
-    | `typeMappings`             |         | ClickHouse 데이터 타입과 Java 클래스 간의 매핑을 사용자 정의할 수 있으며, 이렇게 설정하면 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) 및 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) 두 메서드가 반환하는 결과에 모두 영향을 미칩니다. 예를 들어: `UInt128=java.lang.String,UInt256=java.lang.String` |
-    | `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-)가 Array / Tuple 타입에 대해 java.sql.Array / java.sql.Struct를 반환할지 여부.                                                                                                                                                                                                                                             |
+    | 속성                         | 기본값     | 설명                                                                                                                                                                                                                                                                                                                                                                                            |
+    | -------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `continueBatchOnError`     | `false` | 오류가 발생했을 때 배치 처리를 계속 수행할지 여부                                                                                                                                                                                                                                                                                                                                                                  |
+    | `createDatabaseIfNotExist` | `false` | 데이터베이스가 존재하지 않을 경우 생성할지 여부                                                                                                                                                                                                                                                                                                                                                                    |
+    | `custom_http_headers`      |         | 쉼표로 구분된 사용자 정의 HTTP 헤더. 예: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                              |
+    | `custom_http_params`       |         | 사용자 정의 HTTP 쿼리 매개변수를 쉼표로 구분해 지정합니다. 예: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                       |
+    | `nullAsDefault`            | `0`     | `0` - null 값을 그대로 처리하며, null을 널 허용이 아닌 컬럼에 삽입하려고 하면 예외를 발생시킵니다; `1` - null 값을 그대로 처리하며, 삽입 시 null 체크를 비활성화합니다; `2` - 쿼리와 삽입 작업 모두에서 null을 해당 데이터 타입의 기본값으로 대체합니다                                                                                                                                                                                                                              |
+    | `jdbcCompliance`           | `true`  | 표준 동기식 UPDATE/DELETE 및 가상 트랜잭션(fake transaction)을 지원할지 여부                                                                                                                                                                                                                                                                                                                                     |
+    | `typeMappings`             |         | ClickHouse 데이터 타입과 Java 클래스 간의 매핑을 사용자 정의하며, 이 설정은 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-)과 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-)의 반환 결과 모두에 영향을 미칩니다. 예를 들어: `UInt128=java.lang.String,UInt256=java.lang.String` |
+    | `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-)가 Array / Tuple 타입에 대해 java.sql.Array / java.sql.Struct를 반환하도록 할지 여부.                                                                                                                                                                                                                        |
 
     참고: 자세한 내용은 [JDBC 관련 설정](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java)을 참조하세요.
 
@@ -934,10 +928,10 @@ import TabItem from '@theme/TabItem';
 
     :::note
 
-    * AggregatedFunction - :warning: `SELECT * FROM table ...` 구문을 지원하지 않습니다
-    * Decimal - 일관성을 위해 21.9+ 버전에서 `SET output_format_decimal_trailing_zeros=1`을(를) 설정합니다
-    * Enum - 문자열과 정수형 모두로 취급될 수 있습니다
-    * UInt64 - client-v1에서 `long`에 매핑됩니다
+    * AggregatedFunction - :warning: `SELECT * FROM table ...` 구문은 지원하지 않습니다
+    * Decimal - 일관성을 위해 21.9+ 버전에서는 `SET output_format_decimal_trailing_zeros=1`을(를) 설정합니다
+    * Enum - 문자열과 정수 값 모두로 취급할 수 있습니다
+    * UInt64 - client-v1에서는 `long` 타입으로 매핑됩니다
       :::
 
     ## 연결 생성하기 \{#v07-creating-connection\}
@@ -1002,7 +996,7 @@ import TabItem from '@theme/TabItem';
     }
     ```
 
-    * [input 함수 문서](/sql-reference/table-functions/input/)를 가능한 한 활용하십시오
+    * [input 함수 문서](/sql-reference/table-functions/input/)를 가능하면 참고하십시오
 
     ### 플레이스홀더를 사용한 삽입 \{#insert-with-placeholders\}
 
@@ -1112,16 +1106,16 @@ import TabItem from '@theme/TabItem';
 
     ## SSL 속성 \{#ssl-properties\}
 
-    | 이름                   | 기본값    | 허용 가능한 값     | 설명                                                 |
-    | -------------------- | ------ | ------------ | -------------------------------------------------- |
-    | `ssl`                | false  | true, false  | 연결에 SSL/TLS를 사용할지 여부                               |
-    | `sslmode`            | strict | strict, none | SSL/TLS 인증서를 검증할지 여부                               |
-    | `sslrootcert`        |        |              | SSL/TLS 루트 인증서 파일 경로                               |
-    | `sslcert`            |        |              | SSL/TLS 인증서 파일 경로                                  |
-    | `sslkey`             |        |              | PKCS#8 형식의 RSA 개인 키                                |
-    | `key_store_type`     |        | JKS, PKCS12  | `KeyStore`/`TrustStore` 파일의 유형 또는 형식을 지정합니다.       |
-    | `trust_store`        |        |              | `TrustStore` 파일의 경로                                |
-    | `key_store_password` |        |              | `KeyStore` 구성에서 지정한 `KeyStore` 파일에 접근하는 데 필요한 비밀번호 |
+    | 이름                   | 기본값    | 허용 가능한 값     | 설명                                               |
+    | -------------------- | ------ | ------------ | ------------------------------------------------ |
+    | `ssl`                | false  | true, false  | 연결에 SSL/TLS를 사용할지 여부                             |
+    | `sslmode`            | strict | strict, none | SSL/TLS 인증서를 검증할지 여부                             |
+    | `sslrootcert`        |        |              | SSL/TLS 루트 인증서 경로                                |
+    | `sslcert`            |        |              | SSL/TLS 인증서 경로                                   |
+    | `sslkey`             |        |              | PKCS#8 형식의 RSA 키                                 |
+    | `key_store_type`     |        | JKS, PKCS12  | `KeyStore`/`TrustStore` 파일의 유형 또는 형식을 지정합니다.     |
+    | `trust_store`        |        |              | `TrustStore` 파일 경로                               |
+    | `key_store_password` |        |              | `KeyStore` 구성에 지정된 `KeyStore` 파일에 액세스하는 데 필요한 암호 |
 
     이러한 속성을 사용하면 Java 애플리케이션이 암호화된 연결을 통해 ClickHouse 서버와 통신하여 전송 중 데이터 보안이 강화됩니다.
 
@@ -1176,7 +1170,7 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60 (기본값인 300초보다 더 낮게 설정하는 것을 고려할 수 있습니다)
+    * `net.ipv4.tcp_keepalive_time`: 60 (이 값을 기본값인 300초보다 더 낮게 설정하는 것을 고려할 수 있습니다)
 
     2. 커널 매개변수를 수정한 후, 다음 명령을 실행하여 변경 사항을 적용하십시오:
 

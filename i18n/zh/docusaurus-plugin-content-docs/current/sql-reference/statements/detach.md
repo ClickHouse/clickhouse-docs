@@ -79,4 +79,4 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 **另请参阅**
 
 * [物化视图](/sql-reference/statements/create/view#materialized-view)
-* [字典](./create/dictionary/index.md)
+* [字典](./create/dictionary/overview.md)

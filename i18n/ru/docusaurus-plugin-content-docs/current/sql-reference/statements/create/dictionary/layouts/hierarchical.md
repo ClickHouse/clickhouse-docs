@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 ## Иерархические словари \{#hierarchical-dictionaries\}
 
-ClickHouse поддерживает иерархические словари с [числовым ключом](../keys-and-fields.md#numeric-key).
+ClickHouse поддерживает иерархические словари с [числовым ключом](../attributes.md#numeric-key).
 
 Рассмотрим следующую иерархическую структуру:
 
@@ -44,7 +44,7 @@ ClickHouse поддерживает иерархические словари с
 
 ClickHouse поддерживает иерархическое свойство для атрибутов внешних словарей. Это свойство позволяет настроить иерархический словарь, аналогичный описанному выше.
 
-Функция [dictGetHierarchy](../../../functions/ext-dict-functions.md#dictGetHierarchy) позволяет получить цепочку родительских элементов.
+Функция [dictGetHierarchy](/sql-reference/functions/ext-dict-functions.md#dictGetHierarchy) позволяет получить цепочку родительских элементов.
 
 Для нашего примера структура словаря может быть следующей:
 

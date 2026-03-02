@@ -2521,6 +2521,15 @@ delta lake에서 단일로 삽입되는 각 데이터 파일에 대한 최대 �
 
 Delta Lake 메타데이터 파일을 system 테이블에 기록하도록 설정합니다.
 
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "DeltaLake에서 일관성을 위해 각 쿼리 실행 전에 스키마를 다시 로드할지 제어하는 새로운 설정입니다."}]}]}/>
+
+사용하도록 설정하면 쿼리를 실행할 때마다 DeltaLake 메타데이터에서 스키마를 다시 로드하여
+쿼리 분석 시 사용된 스키마와 실행 시 사용되는 스키마 간의 일관성을 보장합니다.
+
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -11579,6 +11588,21 @@ distributed cache가 사용되는 경우 userspace page cache를 사용합니다
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "새 설정입니다."}]}]}/>
 
 Paimon 테이블 함수에서 Paimon 파티션 프루닝을 사용합니다
+
+## use_partition_pruning \{#use_partition_pruning\}
+
+**별칭**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "MergeTree가 파티션 키를 사용해 프루닝(pruning)을 수행할지 제어하는 새 설정입니다. 'use_partition_key'는 이 설정의 별칭입니다."}]}]}/>
+
+MergeTree 테이블에서 쿼리 실행 중 파티션 키를 사용하여 파티션을 프루닝(pruning)합니다.
+
+가능한 값:
+
+- 0 — 비활성화됨.
+- 1 — 활성화됨.
 
 ## use_primary_key \{#use_primary_key\}
 

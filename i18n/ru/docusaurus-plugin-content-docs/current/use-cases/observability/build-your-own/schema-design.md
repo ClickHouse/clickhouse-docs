@@ -1471,56 +1471,73 @@ Peak memory usage: 27.85 MiB.
 
 **В общем случае они эффективны, когда существует сильная корреляция между первичным ключом и целевым непервичным столбцом/выражением, а пользователи выполняют поиск по редким значениям, то есть по тем, которые встречаются не во многих гранулах.**
 
-### Фильтры Блума для текстового поиска \{#bloom-filters-for-text-search\}
+### Текстовый индекс для полнотекстового поиска \{#text-index-for-full-text-search\}
 
-Для запросов обсервабилити вторичные индексы могут быть полезны при необходимости выполнения текстового поиска. В частности, индексы фильтров Блума на основе n-грамм и токенов [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) и [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) могут использоваться для ускорения поиска по столбцам типа String с операторами `LIKE`, `IN` и hasToken. Важно отметить, что индекс на основе токенов генерирует токены, используя в качестве разделителей неалфавитно-цифровые символы. Это означает, что при выполнении запроса могут быть найдены только токены (или целые слова). Для более детального поиска можно использовать [фильтр Блума на основе N-грамм](/optimize/skipping-indexes#bloom-filter-types). Он разбивает строки на n-граммы заданного размера, что позволяет выполнять поиск по частям слов.
+Для полнотекстового поиска промышленного уровня ClickHouse предоставляет специализированный [текстовый индекс](/engines/table-engines/mergetree-family/textindexes).
+Этот индекс строит инвертированный индекс по токенизированным текстовым данным, обеспечивая быстрый поиск по токенам.
 
-Для оценки токенов, которые будут сгенерированы и затем сопоставлены, используйте функцию `tokens`:
+Текстовые индексы доступны в статусе general availability (GA), начиная с версии ClickHouse 26.2.
 
-```sql
-SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+Их можно определять для следующих типов столбцов в таблицах MergeTree: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с отображениями [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)).
 
-┌─tokens────────────────────────────────────────────┐
-│ ['https','www','zanbil','ir','m','filter','b113'] │
-└───────────────────────────────────────────────────┘
+Текстовый индекс требует указания аргумента `tokenizer` в своём определении. Дополнительно можно задать функцию препроцессинга для преобразования входной строки перед токенизацией.
 
-1 row in set. Elapsed: 0.008 sec.
-```
+Рекомендуемые функции для поиска по индексу: `hasAnyTokens` и `hasAllTokens`.
+Некоторые традиционные функции строкового поиска также автоматически оптимизируются при наличии текстового индекса. См. документацию для подробностей и списка поддерживаемых функций [здесь](/engines/table-engines/mergetree-family/textindexes#using-a-text-index) и [здесь](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens).
 
-Функция `ngram` предоставляет аналогичные возможности, при этом размер `ngram` можно указать вторым параметром:
+В примерах ниже используется набор данных со структурированными логами.
 
 ```sql
-SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
-
-┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.008 sec.
+CREATE TABLE otel_logs
+(
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
+)
+ENGINE = MergeTree
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-:::note Инвертированные индексы
-ClickHouse также имеет экспериментальную поддержку инвертированных индексов в качестве вторичного индекса. В настоящее время мы не рекомендуем их использовать для логов, но ожидаем, что они заменят токен-ориентированные фильтры Блума после выхода в production.
-:::
-
-Для целей данного примера мы используем набор данных структурированных логов. Предположим, что необходимо подсчитать логи, в которых столбец `Referer` содержит `ultra`.
+Без индекса можно использовать те же функции.
 
 ```sql
 SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
+FROM otel_logs
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-┌─count()─┐
-│  114514 │
-└─────────┘
+Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
-1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-Здесь нужно выполнять поиск по n-граммам длины 3. Поэтому создаём индекс `ngrambf_v1`.
+Этот запрос выполняет полное сканирование по столбцу Body.
+
+
+#### Добавление текстового индекса \{#adding-a-text-index\}
+
+Текстовый индекс можно добавить при создании таблицы:
 
 ```sql
-CREATE TABLE otel_logs_bloom
+CREATE TABLE otel_logs_index_body
 (
         `Body` String,
         `Timestamp` DateTime,
@@ -1539,122 +1556,281 @@ CREATE TABLE otel_logs_bloom
         `RequestPage` String,
         `SeverityText` LowCardinality(String),
         `SeverityNumber` UInt8,
-        INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+         INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000
 )
 ENGINE = MergeTree
-ORDER BY (Timestamp)
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-Индекс `ngrambf_v1(3, 10000, 3, 7)` принимает четыре параметра. Последний из них (значение 7) представляет собой начальное значение (seed). Остальные представляют размер n-граммы (3), значение `m` (размер фильтра) и количество хеш-функций `k` (7). Параметры `k` и `m` требуют настройки и будут зависеть от количества уникальных n-грамм/токенов и вероятности того, что фильтр даст истинно отрицательный результат, тем самым подтверждая отсутствие значения в грануле. Рекомендуем использовать [эти функции](/engines/table-engines/mergetree-family/mergetree#bloom-filter) для определения этих значений.
+Или добавить их позже с помощью `ALTER TABLE`:
 
+```sql
+ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
+ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
+```
 
-Если всё настроено правильно, ускорение может быть существенным:
+Это создаёт инвертированный индекс для столбца Body с использованием токенизатора `splitByNonAlpha`.
+
+> Примечание: частично материализованный индекс уже может использоваться в запросах, но максимальный прирост производительности достигается после полной материализации.
 
 ```sql
 SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-┌─count()─┐
-│   182   │
-└─────────┘
+FROM otel_logs_index_body
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
-Peak memory usage: 129.60 KiB.
+Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.013 sec. Processed 20.41 million rows, 20.41 MB (1.59 billion rows/s., 1.59 GB/s.)
+Peak memory usage: 15.23 MiB.
 ```
 
-:::note Только пример
-Приведённое выше предназначено исключительно для иллюстрации. Мы рекомендуем пользователям извлекать структуру из своих логов при вставке данных, а не пытаться оптимизировать текстовый поиск с помощью bloom-фильтров на основе токенов. Тем не менее существуют случаи, когда у пользователей есть трассировки стека или другие большие строки, для которых текстовый поиск может быть полезен из-за менее детерминированной структуры.
-:::
+Индекс уменьшает объём сканируемых данных с гигабайт до мегабайт и повышает производительность примерно в `45` раз.
 
-Несколько общих рекомендаций по использованию bloom-фильтров:
 
-Задача bloom-фильтра — отфильтровать [гранулы](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design), тем самым избегая необходимости загружать все значения для столбца и выполнять линейное сканирование. Оператор `EXPLAIN` с параметром `indexes=1` можно использовать для определения количества пропущенных гранул. Рассмотрите результаты ниже для исходной таблицы `otel_logs_v2` и таблицы `otel_logs_bloom` с bloom-фильтром ngram.
+#### Использование препроцессора \{#using-a-preprocessor\}
+
+В этом наборе данных столбец Body содержит строку в формате JSON с несколькими парами ключ-значение (например, `msg`, `id`, `ctx`, `attr` и т. д.).
+
+Предположим, нас интересует поиск только по полю `msg`.
+Вместо индексирования всей JSON-строки мы можем определить препроцессор, чтобы извлечь только значение `msg` до токенизации.
+
+Например:
 
 ```sql
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_v2)                     │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │
-│               Condition: true                                      │
-│               Parts: 9/9                                           │
-│               Granules: 1278/1278                                  │
-└────────────────────────────────────────────────────────────────────┘
-
-10 rows in set. Elapsed: 0.016 sec.
-
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_bloom)                  │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │ 
-│               Condition: true                                      │
-│               Parts: 8/8                                           │
-│               Granules: 1276/1276                                  │
-│               Skip                                                 │
-│               Name: idx_span_attr_value                            │
-│               Description: ngrambf_v1 GRANULARITY 1                │
-│               Parts: 8/8                                           │
-│               Granules: 517/1276                                   │
-└────────────────────────────────────────────────────────────────────┘
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
 ```
 
-Фильтр Блума, как правило, будет быстрее только в том случае, если он меньше самого столбца. Если он больше, выигрыш в производительности, скорее всего, будет несущественным. Сравните размер фильтра с размером столбца, используя следующие запросы:
+В этом примере препроцессор:
 
+* Уменьшает объём текста, который токенизируется и индексируется
+* Сокращает размер индекса
+* Снижает вероятность ложных срабатываний
+* Улучшает производительность выполнения запросов
+
+```sql
+SELECT count()
+FROM otel_logs_text_body_preprocessed
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.006 sec. Processed 13.54 million rows, 13.54 MB (2.45 billion rows/s., 2.45 GB/s.)
+Peak memory usage: 1.95 MiB.
+```
+
+По сравнению с обычным индексом без предварительной обработки производительность увеличивается примерно в 2 раза.
+
+Сравнение размеров индексов
 
 ```sql
 SELECT
-        name,
-        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
-GROUP BY name
-ORDER BY sum(data_compressed_bytes) DESC
-
-┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
-└─────────┴─────────────────┴───────────────────┴───────┘
-
-1 row in set. Elapsed: 0.018 sec.
-
-SELECT
-        `table`,
-        formatReadableSize(data_compressed_bytes) AS compressed_size,
-        formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+    `table`,
+    formatReadableSize(data_compressed_bytes) AS compressed_size,
+    formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
-WHERE `table` = 'otel_logs_bloom'
+WHERE startsWith(`table`, 'otel_logs')
 
-┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
-│ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
-└─────────────────┴─────────────────┴───────────────────┘
+Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
-1 row in set. Elapsed: 0.004 sec.
+   ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
+1. │ otel_logs_text_index_body_preprocessed  │ 423.98 KiB      │ 424.29 KiB        │
+2. │ otel_logs_text_index_body               │ 2.76 GiB        │ 2.78 GiB          │
+   └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-В приведённых выше примерах видно, что вторичный индекс на основе bloom-фильтра имеет размер 12 МБ — почти в 5 раз меньше, чем сжатый размер самого столбца (56 МБ).
+Использование препроцессора уменьшает размер индекса с гигабайт до нескольких сотен килобайт — примерно до 0,01 % исходного размера, что также улучшает производительность запросов.
 
-Bloom-фильтры могут требовать значительной тонкой настройки. Рекомендуем следовать примечаниям [здесь](/engines/table-engines/mergetree-family/mergetree#bloom-filter), которые помогут определить оптимальные настройки. Bloom-фильтры также могут быть ресурсоёмкими на этапах вставки и слияния данных. Оцените влияние на производительность вставки, прежде чем добавлять bloom-фильтры в продакшн-среду.
+**Другие индексы для полнотекстового поиска
 
 Дополнительные сведения о вторичных пропускающих индексах можно найти [здесь](/optimize/skipping-indexes#skip-index-functions).
 
+
+<details markdown="1">
+  <summary>Фильтры Блума для текстового поиска</summary>
+
+  Индексы фильтров Блума на основе n-грамм и токенов [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) и [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) могут использоваться для ускорения поиска по столбцам типа String с операторами `LIKE`, `IN` и hasToken. Важно отметить, что индекс на основе токенов генерирует токены, используя в качестве разделителей неалфавитно-цифровые символы. Это означает, что при выполнении запроса могут быть найдены только токены (или целые слова). Для более детального поиска можно использовать [фильтр Блума на основе N-грамм](/optimize/skipping-indexes#bloom-filter-types). Он разбивает строки на n-граммы заданного размера, что позволяет выполнять поиск по частям слов.
+
+  Для оценки токенов, которые будут сгенерированы и затем сопоставлены, используйте функцию `tokens`:
+
+  ```sql
+  SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+
+  ┌─tokens────────────────────────────────────────────┐
+  │ ['https','www','zanbil','ir','m','filter','b113'] │
+  └───────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  Функция `ngram` предоставляет аналогичные возможности, при этом размер `ngram` можно указать вторым параметром:
+
+  ```sql
+  SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
+
+  ┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
+  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  Для целей данного примера мы используем набор данных структурированных логов. Предположим, что необходимо подсчитать логи, в которых столбец `Referer` содержит `ultra`.
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─count()─┐
+  │  114514 │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+  ```
+
+  Здесь нужно выполнять поиск по n-граммам длины 3. Поэтому создаём индекс `ngrambf_v1`.
+
+  ```sql
+  CREATE TABLE otel_logs_bloom
+  (
+          `Body` String,
+          `Timestamp` DateTime,
+          `ServiceName` LowCardinality(String),
+          `Status` UInt16,
+          `RequestProtocol` LowCardinality(String),
+          `RunTime` UInt32,
+          `Size` UInt32,
+          `UserAgent` String,
+          `Referer` String,
+          `RemoteUser` String,
+          `RequestType` LowCardinality(String),
+          `RequestPath` String,
+          `RemoteAddress` IPv4,
+          `RefererDomain` String,
+          `RequestPage` String,
+          `SeverityText` LowCardinality(String),
+          `SeverityNumber` UInt8,
+          INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+  )
+  ENGINE = MergeTree
+  ORDER BY (Timestamp)
+  ```
+
+  Индекс `ngrambf_v1(3, 10000, 3, 7)` принимает четыре параметра. Последний из них (значение 7) представляет собой начальное значение (seed). Остальные представляют размер n-граммы (3), значение `m` (размер фильтра) и количество хеш-функций `k` (7). Параметры `k` и `m` требуют настройки и будут зависеть от количества уникальных n-грамм/токенов и вероятности того, что фильтр даст истинно отрицательный результат, тем самым подтверждая отсутствие значения в грануле. Рекомендуем использовать [эти функции](/engines/table-engines/mergetree-family/mergetree#bloom-filter) для определения этих значений.
+
+  При правильной настройке ускорение может быть значительным:
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+  ┌─count()─┐
+  │   182   │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
+  Peak memory usage: 129.60 KiB.
+  ```
+
+  :::note Только для примера
+  Вышесказанное приведено исключительно в иллюстративных целях. Рекомендуем извлекать структуру из логов на этапе вставки, а не пытаться оптимизировать текстовый поиск с помощью токен-ориентированных фильтров Блума. Тем не менее существуют случаи, когда пользователи работают со стек-трейсами или другими большими строками (String), для которых текстовый поиск может быть полезен ввиду менее детерминированной структуры.
+  :::
+
+  Общие рекомендации по использованию фильтров Блума:
+
+  Цель фильтра Блума — отфильтровывать [гранулы](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design), тем самым избегая необходимости загружать все значения столбца и выполнять линейное сканирование. Для определения количества пропущенных гранул можно использовать оператор `EXPLAIN` с параметром `indexes=1`. Рассмотрим результаты для исходной таблицы `otel_logs_v2` и таблицы `otel_logs_bloom` с фильтром Блума на основе n-грамм.
+
+  ```sql
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_v2)                     │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │
+  │               Condition: true                                      │
+  │               Parts: 9/9                                           │
+  │               Granules: 1278/1278                                  │
+  └────────────────────────────────────────────────────────────────────┘
+
+  10 rows in set. Elapsed: 0.016 sec.
+
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_bloom)                  │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │ 
+  │               Condition: true                                      │
+  │               Parts: 8/8                                           │
+  │               Granules: 1276/1276                                  │
+  │               Skip                                                 │
+  │               Name: idx_span_attr_value                            │
+  │               Description: ngrambf_v1 GRANULARITY 1                │
+  │               Parts: 8/8                                           │
+  │               Granules: 517/1276                                   │
+  └────────────────────────────────────────────────────────────────────┘
+  ```
+
+  Фильтр Блума, как правило, даёт прирост производительности только в том случае, если он меньше самого столбца. Если фильтр больше, прирост производительности, скорее всего, будет незначительным. Сравните размер фильтра с размером столбца с помощью следующих запросов:
+
+  ```sql
+  SELECT
+          name,
+          formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+          formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+          round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+  FROM system.columns
+  WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
+  GROUP BY name
+  ORDER BY sum(data_compressed_bytes) DESC
+
+  ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+  │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
+  └─────────┴─────────────────┴───────────────────┴───────┘
+
+  1 row in set. Elapsed: 0.018 sec.
+
+  SELECT
+          `table`,
+          formatReadableSize(data_compressed_bytes) AS compressed_size,
+          formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+  FROM system.data_skipping_indices
+  WHERE `table` = 'otel_logs_bloom'
+
+  ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
+  │ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
+  └─────────────────┴─────────────────┴───────────────────┘
+
+  1 row in set. Elapsed: 0.004 sec.
+  ```
+
+  В приведённых выше примерах видно, что вторичный индекс фильтра Блума занимает 12 МБ — почти в 5 раз меньше сжатого размера самого столбца, составляющего 56 МБ.
+
+  Фильтры Блума могут потребовать значительной настройки. Рекомендуем ознакомиться с примечаниями [здесь](/engines/table-engines/mergetree-family/mergetree#bloom-filter), которые помогут определить оптимальные параметры. Фильтры Блума также могут быть ресурсоёмкими при вставке и слиянии данных. Перед добавлением фильтров Блума в production следует оценить их влияние на производительность вставки.
+</details>
 
 ### Извлечение из типов Map \{#extracting-from-maps\}
 

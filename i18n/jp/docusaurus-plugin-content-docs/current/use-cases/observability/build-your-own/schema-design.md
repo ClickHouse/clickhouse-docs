@@ -1471,56 +1471,73 @@ ClickHouse でプライマリキーをどれだけ適切にチューニングし
 
 **一般的に、プライマリキーと対象となる非プライマリカラム／式との間に強い相関があり、ユーザーがまれな値、すなわち多くのグラニュールには出現しない値を検索している場合に有効です。**
 
-### テキスト検索用のBloomフィルタ \{#bloom-filters-for-text-search\}
+### フルテキスト検索のためのテキスト索引 \{#text-index-for-full-text-search\}
 
-オブザーバビリティクエリにおいて、テキスト検索を実行する必要がある場合、セカンダリ索引が有用です。 具体的には、ngramおよびトークンベースのブルームフィルタ索引である[`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types)と[`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types)を使用することで、`LIKE`、`IN`、hasToken演算子を用いたStringカラムに対する検索を高速化できます。 重要な点として、トークンベース索引は英数字以外の文字を区切り文字として使用してトークンを生成します。 これは、クエリ実行時にはトークン(または単語全体)のみがマッチング対象となることを意味します。 より細かい粒度でのマッチングが必要な場合は、[N-gramブルームフィルタ](/optimize/skipping-indexes#bloom-filter-types)を使用できます。 これは文字列を指定されたサイズのngramに分割することで、単語内の部分マッチングを可能にします。
+本番レベルのフルテキスト検索のために、ClickHouse は専用の[テキスト索引](/engines/table-engines/mergetree-family/textindexes)を提供しています。
+この索引はトークン化されたテキストデータに対して逆インデックスを構築し、トークンベースの検索クエリを高速に実行できるようにします。
 
-生成されマッチングされるトークンを評価するには、`tokens`関数を使用します:
+テキスト索引は、ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
 
-```sql
-SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+MergeTree テーブルでは、次のカラム型のカラムに対して定義できます: [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) と [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) の map 関数経由）。
 
-┌─tokens────────────────────────────────────────────┐
-│ ['https','www','zanbil','ir','m','filter','b113'] │
-└───────────────────────────────────────────────────┘
+テキスト索引を定義する際には `tokenizer` 引数の指定が必須です。オプションとして、トークナイズ前に入力文字列を変換する前処理関数を指定できます。
 
-1 row in set. Elapsed: 0.008 sec.
-```
+索引を検索する際に推奨される関数は、`hasAnyTokens` と `hasAllTokens` です。
+一部の従来型の文字列検索関数も、テキスト索引が存在する場合には自動的に最適化されます。詳細およびサポートされている関数については、[こちら](/engines/table-engines/mergetree-family/textindexes#using-a-text-index)および[こちら](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens)のドキュメントを参照してください。
 
-`ngram`関数も同様の機能を提供します。第2パラメータとして`ngram`のサイズを指定できます：`
+以下の例では、構造化ログのデータセットを用います。
 
 ```sql
-SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
-
-┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.008 sec.
+CREATE TABLE otel_logs
+(
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
+)
+ENGINE = MergeTree
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-:::note 転置索引
-ClickHouseはセカンダリ索引として転置索引の実験的サポートを提供しています。現時点ではログデータセットでの使用を推奨していませんが、本番環境で利用可能になった際にはトークンベースのブルームフィルタに取って代わると想定しています。
-:::
-
-この例では、構造化ログデータセットを使用します。`Referer`カラムに`ultra`が含まれるログの件数を取得したいとします。
+索引がなくても、同じ関数をそのまま使えます。
 
 ```sql
 SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
+FROM otel_logs
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-┌─count()─┐
-│  114514 │
-└─────────┘
+Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
-1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-ここでは、ngramサイズを3にしてマッチングする必要があります。そのため、`ngrambf_v1`索引を作成します。
+このクエリでは Body カラムをフルスキャンします。
+
+
+#### テキスト索引の追加 \{#adding-a-text-index\}
+
+テキスト索引はテーブル作成時に追加できます。
 
 ```sql
-CREATE TABLE otel_logs_bloom
+CREATE TABLE otel_logs_index_body
 (
         `Body` String,
         `Timestamp` DateTime,
@@ -1539,122 +1556,281 @@ CREATE TABLE otel_logs_bloom
         `RequestPage` String,
         `SeverityText` LowCardinality(String),
         `SeverityNumber` UInt8,
-        INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+         INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000
 )
 ENGINE = MergeTree
-ORDER BY (Timestamp)
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-索引 `ngrambf_v1(3, 10000, 3, 7)` は4つのパラメータを取ります。最後のパラメータ（値7）はシード値を表します。その他のパラメータは、ngramサイズ（3）、値 `m`（フィルタサイズ）、ハッシュ関数の数 `k`（7）を表します。`k` と `m` はチューニングが必要であり、一意のngram/トークンの数とフィルタが真陰性を返す確率（つまり、値がグラニュール内に存在しないことを確認する確率）に基づいて設定されます。これらの値を決定するには、[これらの関数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)を参照することを推奨します。
+または `ALTER TABLE` を使用して後から追加できます：
 
+```sql
+ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
+ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
+```
 
-適切にチューニングすれば、ここで得られる高速化効果は非常に大きくなり得ます。
+これは、`splitByNonAlpha`トークナイザを使用して `Body` カラムに対する転置索引を作成します。
+
+> 注意: 部分的にマテリアライズされた索引でもクエリから利用できますが、最大のパフォーマンス向上は完全にマテリアライズされた後に得られます。
 
 ```sql
 SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-┌─count()─┐
-│   182   │
-└─────────┘
+FROM otel_logs_index_body
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
-Peak memory usage: 129.60 KiB.
+Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.013 sec. Processed 20.41 million rows, 20.41 MB (1.59 billion rows/s., 1.59 GB/s.)
+Peak memory usage: 15.23 MiB.
 ```
 
-:::note 例のみ
-上記は説明のための例にすぎません。ユーザーには、トークンベースの bloom filter によるテキスト検索の最適化を試みるのではなく、挿入時にログから構造を抽出することを推奨します。ただし、スタックトレースやその他のサイズの大きな文字列を扱っており、構造があまり決まっていないためにテキスト検索が有用なケースも存在します。
-:::
+索引により、スキャン対象のデータ量はギガバイトからメガバイトへと削減され、パフォーマンスは約 `45x` 向上します。
 
-bloom filter を使用する際の一般的なガイドラインは次のとおりです。
 
-bloom filter の目的は、[グラニュール](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)をフィルタリングし、カラムのすべての値を読み込んで線形走査を行う必要をなくすことです。`indexes=1` というパラメータを指定した `EXPLAIN` 句を使用して、スキップされたグラニュールの数を特定できます。元のテーブル `otel_logs_v2` と、ngram bloom filter を設定したテーブル `otel_logs_bloom` について、以下の応答例を考えてみます。
+#### プリプロセッサーの使用 \{#using-a-preprocessor\}
+
+このデータセットでは、Body カラムには複数のキーと値のペア（例: `msg`、`id`、`ctx`、`attr` など）を含む JSON 形式の文字列が格納されています。
+
+ここでは `msg` フィールドのみを検索対象にしたいとします。
+JSON 文字列全体に索引を作成する代わりに、トークナイズの前に `msg` の値だけを抽出するプリプロセッサーを定義できます。
+
+例えば:
 
 ```sql
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_v2)                     │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │
-│               Condition: true                                      │
-│               Parts: 9/9                                           │
-│               Granules: 1278/1278                                  │
-└────────────────────────────────────────────────────────────────────┘
-
-10 rows in set. Elapsed: 0.016 sec.
-
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_bloom)                  │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │ 
-│               Condition: true                                      │
-│               Parts: 8/8                                           │
-│               Granules: 1276/1276                                  │
-│               Skip                                                 │
-│               Name: idx_span_attr_value                            │
-│               Description: ngrambf_v1 GRANULARITY 1                │
-│               Parts: 8/8                                           │
-│               Granules: 517/1276                                   │
-└────────────────────────────────────────────────────────────────────┘
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
 ```
 
-ブルームフィルターは通常、そのサイズがカラム自体より小さい場合にのみ高速に動作します。カラムより大きい場合は、性能向上はほとんど期待できません。次のクエリを使って、フィルターとカラムのサイズを比較してください。
+この例では、プリプロセッサーにより次の効果が得られます。
 
+* トークン化およびインデックス化されるテキスト量を削減する
+* 索引のサイズを小さくする
+* 誤検知の可能性を減らす
+* クエリのパフォーマンスを向上させる
+
+```sql
+SELECT count()
+FROM otel_logs_text_body_preprocessed
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.006 sec. Processed 13.54 million rows, 13.54 MB (2.45 billion rows/s., 2.45 GB/s.)
+Peak memory usage: 1.95 MiB.
+```
+
+前処理を行っていない索引と比べると、パフォーマンスは約 2 倍向上します。
+
+索引サイズの比較
 
 ```sql
 SELECT
-        name,
-        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
-GROUP BY name
-ORDER BY sum(data_compressed_bytes) DESC
-
-┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
-└─────────┴─────────────────┴───────────────────┴───────┘
-
-1 row in set. Elapsed: 0.018 sec.
-
-SELECT
-        `table`,
-        formatReadableSize(data_compressed_bytes) AS compressed_size,
-        formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+    `table`,
+    formatReadableSize(data_compressed_bytes) AS compressed_size,
+    formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
-WHERE `table` = 'otel_logs_bloom'
+WHERE startsWith(`table`, 'otel_logs')
 
-┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
-│ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
-└─────────────────┴─────────────────┴───────────────────┘
+Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
-1 row in set. Elapsed: 0.004 sec.
+   ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
+1. │ otel_logs_text_index_body_preprocessed  │ 423.98 KiB      │ 424.29 KiB        │
+2. │ otel_logs_text_index_body               │ 2.76 GiB        │ 2.78 GiB          │
+   └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-上記の例では、セカンダリ Bloom フィルター索引が 12MB であり、カラム自体の圧縮後サイズ 56MB と比べてサイズが約 5 分の 1 になっていることがわかります。
+プリプロセッサを使用すると、索引サイズをギガバイトから数百キロバイト程度（元のサイズのおよそ 0.01%）まで削減できるうえ、クエリのパフォーマンスも向上します。
 
-Bloom フィルターには大幅なチューニングが必要になる場合があります。最適な設定を特定するうえで有用なノートが [こちら](/engines/table-engines/mergetree-family/mergetree#bloom-filter) にあるので、これに従うことを推奨します。また、Bloom フィルターは挿入時およびマージ時に高コストになることもあります。本番環境に Bloom フィルターを追加する前に、挿入パフォーマンスへの影響を評価してください。
+**テキスト検索用のその他の索引
 
-セカンダリ スキップ索引の詳細については [こちら](/optimize/skipping-indexes#skip-index-functions) を参照してください。
+セカンダリ スキップ索引の詳細については[こちら](/optimize/skipping-indexes#skip-index-functions)を参照してください。
 
+
+<details markdown="1">
+  <summary>テキスト検索用のBloomフィルタ</summary>
+
+  ngramおよびトークンベースのブルームフィルタ索引である[`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types)と[`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types)を使用することで、`LIKE`、`IN`、hasToken演算子を用いたStringカラムに対する検索を高速化できます。 重要な点として、トークンベース索引は英数字以外の文字を区切り文字として使用してトークンを生成します。 これは、クエリ実行時にはトークン(または単語全体)のみがマッチング対象となることを意味します。 より細かい粒度でのマッチングが必要な場合は、[N-gramブルームフィルタ](/optimize/skipping-indexes#bloom-filter-types)を使用できます。 これは文字列を指定されたサイズのngramに分割することで、単語内の部分マッチングを可能にします。
+
+  生成されマッチングされるトークンを評価するには、`tokens`関数を使用します:
+
+  ```sql
+  SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+
+  ┌─tokens────────────────────────────────────────────┐
+  │ ['https','www','zanbil','ir','m','filter','b113'] │
+  └───────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  `ngram`関数も同様の機能を提供します。第2パラメータとして`ngram`のサイズを指定できます：
+
+  ```sql
+  SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
+
+  ┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
+  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  この例では、構造化ログデータセットを使用します。`Referer`カラムに`ultra`が含まれるログの件数を取得したいとします。
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─count()─┐
+  │  114514 │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+  ```
+
+  ここでは、ngramサイズを3にしてマッチングする必要があります。そのため、`ngrambf_v1`索引を作成します。
+
+  ```sql
+  CREATE TABLE otel_logs_bloom
+  (
+          `Body` String,
+          `Timestamp` DateTime,
+          `ServiceName` LowCardinality(String),
+          `Status` UInt16,
+          `RequestProtocol` LowCardinality(String),
+          `RunTime` UInt32,
+          `Size` UInt32,
+          `UserAgent` String,
+          `Referer` String,
+          `RemoteUser` String,
+          `RequestType` LowCardinality(String),
+          `RequestPath` String,
+          `RemoteAddress` IPv4,
+          `RefererDomain` String,
+          `RequestPage` String,
+          `SeverityText` LowCardinality(String),
+          `SeverityNumber` UInt8,
+          INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+  )
+  ENGINE = MergeTree
+  ORDER BY (Timestamp)
+  ```
+
+  索引 `ngrambf_v1(3, 10000, 3, 7)` は4つのパラメータを取ります。最後のパラメータ（値7）はシード値を表します。その他のパラメータは、ngramサイズ（3）、値 `m`（フィルタサイズ）、ハッシュ関数の数 `k`（7）を表します。`k` と `m` はチューニングが必要であり、一意のngram/トークンの数とフィルタが真陰性を返す確率（つまり、値がグラニュール内に存在しないことを確認する確率）に基づいて設定されます。これらの値を決定するには、[これらの関数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)を参照することを推奨します。
+
+  適切にチューニングされた場合、ここでの高速化は大幅なものになります：
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+  ┌─count()─┐
+  │   182   │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
+  Peak memory usage: 129.60 KiB.
+  ```
+
+  :::note 例示のみ
+  上記は説明目的のみです。トークンベースのブルームフィルタを使用してテキスト検索を最適化しようとするのではなく、挿入時にログから構造を抽出することを推奨します。ただし、スタックトレースやその他の大きなStringを持つ場合など、構造が不確定なためにテキスト検索が有用となるケースも存在します。
+  :::
+
+  ブルームフィルタの使用に関する一般的なガイドライン：
+
+  ブルームフィルタの目的は[グラニュール](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)をフィルタリングすることであり、カラムのすべての値を読み込んで線形スキャンを実行する必要をなくします。`EXPLAIN`句にパラメータ`indexes=1`を指定することで、スキップされたグラニュールの数を確認できます。元のテーブル`otel_logs_v2`とngramブルームフィルタを持つテーブル`otel_logs_bloom`に対する以下のレスポンスを参照してください。
+
+  ```sql
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_v2)                     │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │
+  │               Condition: true                                      │
+  │               Parts: 9/9                                           │
+  │               Granules: 1278/1278                                  │
+  └────────────────────────────────────────────────────────────────────┘
+
+  10 rows in set. Elapsed: 0.016 sec.
+
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_bloom)                  │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │ 
+  │               Condition: true                                      │
+  │               Parts: 8/8                                           │
+  │               Granules: 1276/1276                                  │
+  │               Skip                                                 │
+  │               Name: idx_span_attr_value                            │
+  │               Description: ngrambf_v1 GRANULARITY 1                │
+  │               Parts: 8/8                                           │
+  │               Granules: 517/1276                                   │
+  └────────────────────────────────────────────────────────────────────┘
+  ```
+
+  ブルームフィルタは、カラム自体よりも小さい場合にのみ高速化の効果が得られます。フィルタの方が大きい場合、パフォーマンス上のメリットはほとんど期待できません。以下のクエリを使用して、フィルタのサイズとカラムのサイズを比較してください：
+
+  ```sql
+  SELECT
+          name,
+          formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+          formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+          round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+  FROM system.columns
+  WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
+  GROUP BY name
+  ORDER BY sum(data_compressed_bytes) DESC
+
+  ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+  │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
+  └─────────┴─────────────────┴───────────────────┴───────┘
+
+  1 row in set. Elapsed: 0.018 sec.
+
+  SELECT
+          `table`,
+          formatReadableSize(data_compressed_bytes) AS compressed_size,
+          formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+  FROM system.data_skipping_indices
+  WHERE `table` = 'otel_logs_bloom'
+
+  ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
+  │ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
+  └─────────────────┴─────────────────┴───────────────────┘
+
+  1 row in set. Elapsed: 0.004 sec.
+  ```
+
+  上記の例では、セカンダリブルームフィルタ索引は12MBであり、カラム自体の圧縮サイズ56MBと比較して約5分の1のサイズであることがわかります。
+
+  ブルームフィルタは大幅なチューニングが必要になる場合があります。最適な設定を特定するために、[こちら](/engines/table-engines/mergetree-family/mergetree#bloom-filter)のノートを参照することを推奨します。また、ブルームフィルタはインサート時およびマージ時にコストがかかる場合があります。本番環境にブルームフィルタを追加する前に、インサートパフォーマンスへの影響を評価してください。
+</details>
 
 ### マップからの抽出 \{#extracting-from-maps\}
 

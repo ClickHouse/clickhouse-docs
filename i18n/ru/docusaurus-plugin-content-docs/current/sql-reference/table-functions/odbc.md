@@ -114,5 +114,5 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 
 ## См. также \{#see-also\}
 
-- [Словари ODBC](/sql-reference/statements/create/dictionary/sources#dbms)
+- [Словари ODBC](/sql-reference/statements/create/dictionary/sources/odbc)
 - [Табличный движок ODBC](/engines/table-engines/integrations/odbc).

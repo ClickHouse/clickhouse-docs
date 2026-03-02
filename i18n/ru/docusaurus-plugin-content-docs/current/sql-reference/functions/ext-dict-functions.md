@@ -9,10 +9,10 @@ doc_type: 'reference'
 # Функции для работы со словарями \{#functions-for-working-with-dictionaries\}
 
 :::note
-Для словарей, создаваемых с помощью [DDL‑запросов](../statements/create/dictionary/index.md), параметр `dict_name` должен быть полностью указан в формате `<database>.<dict_name>`. В противном случае используется текущая база данных.
+Для словарей, создаваемых с помощью [DDL‑запросов](../statements/create/dictionary/overview.md), параметр `dict_name` должен быть полностью указан в формате `<database>.<dict_name>`. В противном случае используется текущая база данных.
 :::
 
-Информацию о подключении и настройке словарей см. в разделе [Словари](../statements/create/dictionary/index.md).
+Информацию о подключении и настройке словарей см. в разделе [Словари](../statements/create/dictionary/overview.md).
 
 ## Примеры словарей \{#example-dictionary\}
 

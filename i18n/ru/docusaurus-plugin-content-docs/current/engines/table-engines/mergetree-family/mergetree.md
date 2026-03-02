@@ -406,9 +406,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) индекс
 - [`ngrambf_v1`](#n-gram-bloom-filter) индекс
 - [`tokenbf_v1`](#token-bloom-filter) индекс
-- [`text`]({#text}) индекс
-- [`vector_similarity`]({#vector-similarity}) индекс
-- [`unknown`]({#unknown}) индекс
+- [`text`](#text) индекс
+- [`vector_similarity`](#vector-similarity) индекс
 
 #### Индекс MinMax \{#minmax\}
 

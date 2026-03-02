@@ -513,13 +513,9 @@ try (Connection conn = ...) {
 - `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
-`java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
-you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
-`OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
 
-:::note[Date vs DateTime]
-`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
-:::
+Please read [Date/Time Guide](/integrations/language-clients/java/jdbc_date_time_guide) that explains common pitfalls 
+and logic of the driver when handling Date/Time and Timestamps. 
 
 ## Creating Connection {#creating-connection}
 

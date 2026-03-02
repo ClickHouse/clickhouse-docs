@@ -50,10 +50,49 @@ Now, you should see both the source and target peers listed in the "Peers" secti
 
 ### Obtain source schema dump {#migration-peerdb-source-schema-dump}
 To mirror the setup of the source database in the target database, we need to obtain a schema dump of the source database. You can use `pg_dump` to create a schema-only dump of your source PostgreSQL database:
+
+<details>
+
+<summary>Installing pg_dump</summary>
+
+**Ubuntu:**
+
+Update package lists:
+```shell
+sudo apt update
+```
+
+Install PostgreSQL client:
+```shell
+sudo apt install postgresql-client
+```
+
+**macOS:**
+
+Method 1: Using Homebrew (Recommended)
+
+Install Homebrew if you don't have it:
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install PostgreSQL:
+```shell
+brew install postgresql
+```
+
+Verify installation:
+```shell
+pg_dump --version
+```
+
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
 
+#### Remove unique constraints and indexes from the schema dump {#migration-peerdb-remove-constraints-indexes}
 Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB ingestion to target tables is not blocked by these constraints. These can be removed using:
 ```shell
 # Preview

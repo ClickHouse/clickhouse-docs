@@ -2517,6 +2517,14 @@ ENGINE = Log
 
 启用在 system 系统表中记录 Delta Lake 元数据文件。
 
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新增设置，用于控制 DeltaLake 是否在每次查询前重新加载 schema，以保证一致性。"}]}]}/>
+
+启用后，会在每次查询执行之前从 DeltaLake 元数据中重新加载 schema，以确保查询分析阶段使用的 schema 与执行阶段使用的 schema 保持一致。
+
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -11567,6 +11575,21 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 对 Paimon 表函数使用 Paimon 分区裁剪
+
+## use_partition_pruning \{#use_partition_pruning\}
+
+**别名**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "新引入的设置，用于控制 MergeTree 是否使用分区键进行分区裁剪。'use_partition_key' 是该设置的别名。"}]}]}/>
+
+在对 MergeTree 表执行查询时，使用分区键对分区进行裁剪。
+
+可能的取值：
+
+- 0 — 已禁用。
+- 1 — 已启用。
 
 ## use_primary_key \{#use_primary_key\}
 

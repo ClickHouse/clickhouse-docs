@@ -76,6 +76,10 @@ ClickHouse 서버가 SQL 명령으로 생성된 사용자 및 역할 구성을 �
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />groupArray 함수에서 배열 요소의 최대 크기(바이트 단위)를 지정합니다. 이 제한은 직렬화 시점에 검사되며 상태 크기가 과도하게 커지는 것을 방지하는 데 도움이 됩니다.
 
+## allow_experimental_webassembly_udf \{#allow_experimental_webassembly_udf\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />실험적 WebAssembly UDF 지원을 활성화합니다
+
 ## allow_feature_tier \{#allow_feature_tier\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
@@ -928,7 +932,7 @@ ZooKeeper에 있는 테이블 경로입니다.
 
 참고:
 
-* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;.
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)&quot;.
 
 **예시**
 
@@ -1251,6 +1255,12 @@ DDL 쿼리 실행에 사용되는 프로필입니다
 앞서 언급한 모든 내용은 `aes_256_gcm_siv` 에도 동일하게 적용됩니다 (단, 키는 32바이트 길이여야 합니다).
 :::
 
+
+## enforce_keeper_component_tracking \{#enforce_keeper_component_tracking\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+이 설정을 활성화하면 모든 ZooKeeper 요청에는 `Coordination::setCurrentComponent`를 통해 컴포넌트 이름이 지정되어 있어야 합니다. 컴포넌트 이름이 지정되어 있지 않으면 `LOGICAL_ERROR` 예외를 발생시킵니다.
 
 ## error_log \{#error_log\}
 
@@ -1821,6 +1831,14 @@ SYSTEM JEMALLOC FLUSH PROFILE을 사용하여 프로파일을 플러시하여 �
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />생성할 jemalloc 백그라운드 스레드의 최대 개수입니다. 0으로 설정하면 jemalloc의 기본값이 사용됩니다.
+
+## jemalloc_profiler_sampling_rate \{#jemalloc_profiler_sampling_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="19" />
+
+jemalloc의 `lg_prof_sample` 값을 제어합니다. 이는 할당 샘플 사이의 평균 간격(바이트 단위)에 대한 밑이 2인 로그값입니다.
+기본값 19는 512 KiB에 해당합니다. 더 작은 값으로 설정하면 샘플링 빈도가 증가합니다(오버헤드 증가, 더 많은 세부 정보), 더 큰 값으로 설정하면 샘플링 빈도가 감소합니다.
+이 값을 변경하면 `prof.reset`이 호출되어 누적된 모든 프로파일링 통계가 초기화됩니다. 프로파일링이 활성화되어 있어야 합니다(`MALLOC_CONF=prof:true`).
 
 ## keep_alive_timeout \{#keep_alive_timeout\}
 

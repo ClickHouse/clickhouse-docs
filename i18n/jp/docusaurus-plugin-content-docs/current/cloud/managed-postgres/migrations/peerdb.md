@@ -63,9 +63,52 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 ターゲットデータベースでソースデータベースと同一のスキーマ構成を再現するために、ソースデータベースのスキーマダンプを取得する必要があります。ソースの PostgreSQL データベースについてスキーマのみのダンプを作成するには、`pg_dump` を使用できます。
 
+<details>
+  <summary>pg&#95;dump のインストール</summary>
+
+  **Ubuntu:**
+
+  パッケージリストを更新します。
+
+  ```shell
+  sudo apt update
+  ```
+
+  PostgreSQL クライアントをインストールします。
+
+  ```shell
+  sudo apt install postgresql-client
+  ```
+
+  **macOS:**
+
+  方法 1: Homebrew を使用する (推奨)
+
+  Homebrew がインストールされていない場合はインストールします。
+
+  ```shell
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+  PostgreSQL をインストールします。
+
+  ```shell
+  brew install postgresql
+  ```
+
+  インストールを確認します。
+
+  ```shell
+  pg_dump --version
+  ```
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
+
+
+#### スキーマダンプから UNIQUE 制約と索引を削除する \{#migration-peerdb-remove-constraints-indexes\}
 
 これをターゲットデータベースに適用する前に、ダンプファイルから UNIQUE 制約と索引を事前に削除しておく必要があります。そうしないと、これらの制約によって PeerDB によるターゲットテーブルへのインジェストがブロックされてしまいます。これらは次のコマンドで削除できます。
 

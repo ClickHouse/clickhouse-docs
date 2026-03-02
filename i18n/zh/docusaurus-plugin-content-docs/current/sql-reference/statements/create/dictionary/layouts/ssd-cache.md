@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 类似于 `cache`，但将数据存储在 SSD 上，并将索引存储在 RAM 中。所有与更新队列相关的缓存字典设置均同样适用于 SSD 缓存字典。
 
-字典键的类型为 [UInt64](../../../data-types/int-uint.md)。
+字典键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)。
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -52,4 +52,4 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 
 ## complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
-此类存储用于复合[键](../keys-and-fields.md#dictionary-key-and-fields)。类似于 `ssd_cache`。
+此类存储用于复合[键](../attributes.md#composite-key)。类似于 `ssd_cache`。

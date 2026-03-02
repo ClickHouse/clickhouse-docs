@@ -153,7 +153,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 ## Связанные материалы \{#related\}
 
 - [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
-- [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources#postgresql)
+- [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### Репликация или миграция данных Postgres с помощью PeerDB \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

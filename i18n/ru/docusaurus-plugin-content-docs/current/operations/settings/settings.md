@@ -2521,6 +2521,15 @@ ENGINE = Log
 
 Включает логирование файлов метаданных Delta Lake в системную таблицу.
 
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка, определяющая, будет ли DeltaLake перезагружать схему перед каждым запросом для обеспечения согласованности."}]}]}/>
+
+Если настройка включена, схема перезагружается из метаданных DeltaLake перед выполнением каждого запроса, чтобы обеспечить
+согласованность между схемой, использованной во время анализа запроса, и схемой, использованной во время выполнения.
+
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -11612,6 +11621,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Использует отсечение партиций Paimon для табличных функций Paimon
+
+## use_partition_pruning \{#use_partition_pruning\}
+
+**Псевдонимы**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Новая настройка, управляющая использованием в MergeTree ключа партиции для отсечения. \"use_partition_key\" является псевдонимом этой настройки."}]}]}/>
+
+Использовать ключ партиции для отсечения партиций во время выполнения запроса для таблиц MergeTree.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
 
 ## use_primary_key \{#use_primary_key\}
 
