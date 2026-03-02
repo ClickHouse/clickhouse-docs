@@ -50,7 +50,7 @@ In addition to enabling external access, ensure the principal configuring the in
 
 Once your catalog is configured, you must generate credentials for ClickHouse. Two different methods can be used, depending on your interaction mode with Unity:
 
-* For Iceberg clients, use authentication as a [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
+* For Iceberg clients, authenticate with a [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
@@ -103,13 +103,13 @@ SHOW TABLES FROM unity
 
 ### Exploring table schemas {#exploring-table-schemas}
 
-We can use the standard `SHOW CREATE TABLE` command.
+We can use the standard `SHOW CREATE TABLE` command to see how the tables were  created.
 
 :::note Backticks required
 Note the need to specify the namespace and the table name, surrounded with backticks - ClickHouse doesn't support more than one namespace.
 :::
 
-The following assumes querying the Rest iceberg catalog:
+The following assumes querying the REST iceberg catalog:
 
 ```sql
 SHOW CREATE TABLE unity.`icebench.single_day_log`
