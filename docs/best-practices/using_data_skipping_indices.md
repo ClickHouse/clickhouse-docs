@@ -33,7 +33,6 @@ There are several types of data skipping indexes, each suited to different types
 
 While powerful, skip indexes must be used with care. They only provide benefit when they eliminate a meaningful number of data blocks, and can actually introduce overhead if the query or data structure doesn't align. If even a single matching value exists in a block, that entire block must still be read.
 
-
 **Effective skip index usage often depends on a strong correlation between the indexed column and the table's primary key, or inserting data in a way that groups similar values together.**
 
 In general, data skipping indices are best applied after ensuring proper primary key design and type optimization. They're particularly useful for:
