@@ -1184,7 +1184,9 @@ If you're experiencing `socket hang up` errors even when using the latest versio
     log: { level: ClickHouseLogLevel.WARN },
   })
   ```
-  
+
+* Make sure that the desired configuration is applied to the correct client instance. If you have multiple client instances in your application, double-check that the one you're using for queries has the correct `keep_alive.idle_socket_ttl` value.
+
 * Check your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
 
 * Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200–500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
