@@ -1,5 +1,5 @@
 ---
-title: 'Writing data to lakehouse formats'
+title: 'Writing data to open table formats'
 sidebar_label: 'Writing to data lakes'
 slug: /use-cases/data-lake/getting-started/writing-data
 sidebar_position: 4
@@ -11,7 +11,7 @@ keywords: ['data lake', 'lakehouse', 'write', 'iceberg', 'reverse ETL', 'INSERT 
 doc_type: 'guide'
 ---
 
-In the previous guides, you queried lakehouse tables in place and loaded data into MergeTree for fast analytics. In many architectures, data also needs to flow in the other direction - from ClickHouse back into lakehouse formats. Two common scenarios drive this:
+In the previous guides, you queried open table formats in place and loaded data into MergeTree for fast analytics. In many architectures, data also needs to flow in the other direction - from ClickHouse back into lakehouse formats. Two common scenarios drive this:
 
 - **Offloading to long-term storage** - Data arrives in ClickHouse as a real-time analytics layer, powering dashboards and operational reporting. Once the data ages beyond its real-time window, it can be written out to Iceberg in object storage for durable, cost-effective retention in an interoperable format.
 - **Reverse ETL** - Transformations, aggregations, and enrichment performed inside ClickHouse produce derived datasets that downstream tools and other teams need to consume. Writing these results to Iceberg tables makes them available across the broader data ecosystem.
@@ -19,7 +19,7 @@ In the previous guides, you queried lakehouse tables in place and loaded data in
 In both cases, `INSERT INTO SELECT` lets you move data from ClickHouse tables into Iceberg tables stored in object storage.
 
 :::note
-Writing to lakehouse formats is currently supported for **Iceberg tables only**. Partial support for Delta Lake tables is under development. Tables must not be managed by a catalog.
+Writing to open table formats is currently supported for **Iceberg tables only**. Partial support for Delta Lake tables is under development. Tables must not be managed by a catalog.
 :::
 
 ## Prepare a source dataset {#prepare-source}

@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-In the [previous section](/use-cases/data-lake/getting-started/querying-directly), you queried lakehouse tables by passing storage paths directly. In practice, most organizations manage table metadata through a **data catalog** - a central registry that tracks table locations, schemas, and partitions. When you connect ClickHouse to a catalog using the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine, the entire catalog is exposed as a ClickHouse database. Every table in the catalog appears automatically and can be queried with full ClickHouse SQL - no need to know individual table paths or manage credentials per table.
+In the [previous section](/use-cases/data-lake/getting-started/querying-directly), you queried open table formats by passing storage paths directly. In practice, most organizations manage table metadata through a **data catalog** - a central registry that tracks table locations, schemas, and partitions. When you connect ClickHouse to a catalog using the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine, the entire catalog is exposed as a ClickHouse database. Every table in the catalog appears automatically and can be queried with full ClickHouse SQL - no need to know individual table paths or manage credentials per table.
 
 This guide walks through connecting to [Databricks Unity Catalog](https://www.databricks.com/product/unity-catalog). ClickHouse also supports the following catalogs - refer to each reference guide for full setup instructions:
 

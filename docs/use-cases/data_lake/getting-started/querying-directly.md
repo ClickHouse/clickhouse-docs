@@ -1,5 +1,5 @@
 ---
-title: 'Querying lakehouse formats directly'
+title: 'Querying open table formats directly'
 sidebar_label: 'Direct querying'
 slug: /use-cases/data-lake/getting-started/querying-directly
 sidebar_position: 1
@@ -15,7 +15,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-ClickHouse provides table functions for querying data stored in lakehouse formats directly in object storage. This does not require connecting to an external catalog - it queries the data in place, similar to how AWS Athena reads from S3.
+ClickHouse provides table functions for querying data stored in open table formats directly in object storage. This does not require connecting to an external catalog - it queries the data in place, similar to how AWS Athena reads from S3.
 
 You pass the storage path and credentials directly in the function call, and ClickHouse handles the rest. All ClickHouse SQL syntax and functions are available, and queries benefit from ClickHouse's parallelized execution and [efficient native Parquet reader](/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics).
 

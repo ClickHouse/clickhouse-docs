@@ -6,20 +6,20 @@ sidebar_position: 3
 toc_max_heading_level: 3
 pagination_prev: use-cases/data_lake/getting-started/connecting-catalogs
 pagination_next: use-cases/data_lake/getting-started/writing-data
-description: 'Load data from lakehouse formats into ClickHouse MergeTree tables for dramatically faster analytical queries.'
+description: 'Load data from open table formats into ClickHouse MergeTree tables for dramatically faster analytical queries.'
 keywords: ['data lake', 'lakehouse', 'MergeTree', 'accelerate', 'analytics', 'inverted index', 'full-text index', 'INSERT INTO SELECT']
 doc_type: 'guide'
 ---
 
-In the [previous section](/use-cases/data-lake/getting-started/connecting-catalogs), you connected ClickHouse to a data catalog and queried lakehouse tables directly. While querying data in place is convenient, lakehouse formats are not optimized for the low-latency, high-concurrency workloads that power dashboards and operational reporting. For these use cases, loading data into ClickHouse's [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine delivers dramatically better performance.
+In the [previous section](/use-cases/data-lake/getting-started/connecting-catalogs), you connected ClickHouse to a data catalog and queried open table formats directly. While querying data in place is convenient, lakehouse formats are not optimized for the low-latency, high-concurrency workloads that power dashboards and operational reporting. For these use cases, loading data into ClickHouse's [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine delivers dramatically better performance.
 
-MergeTree offers several advantages over reading lakehouse formats directly:
+MergeTree offers several advantages over reading open table formats directly:
 
 - **[Sparse primary index](/optimize/sparse-primary-indexes)** - Orders data on disk by a chosen key, allowing ClickHouse to skip over large ranges of irrelevant rows during queries.
 - **Enhanced data types** - Native support for types such as [JSON](/sql-reference/data-types/json), [LowCardinality](/sql-reference/data-types/lowcardinality), and [Enum](/sql-reference/data-types/enum), enabling more compact storage and faster processing.
 - **[Skip indices](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** and **[full-text indices](/engines/table-engines/mergetree-family/invertedindexes)** - Secondary index structures that let ClickHouse skip granules that don't match a query's filter predicates, particularly effective for text search workloads.
-- **Fast inserts with automatic compaction** - ClickHouse is designed for high-throughput inserts and automatically merges data parts in the background, analogous to compaction in lakehouse formats.
-- **Optimized for concurrent reads** - MergeTree columnar storage layout, combined with [multiple caching layers](/operations/caches), supports real-time analytical workloads with high concurrency - something lakehouse formats are not designed for.
+- **Fast inserts with automatic compaction** - ClickHouse is designed for high-throughput inserts and automatically merges data parts in the background, analogous to compaction in open table formats.
+- **Optimized for concurrent reads** - MergeTree columnar storage layout, combined with [multiple caching layers](/operations/caches), supports real-time analytical workloads with high concurrency - something open table formats are not designed for.
 
 This guide shows how to load data from a catalog into a MergeTree table using `INSERT INTO SELECT` for faster analytics.
 
