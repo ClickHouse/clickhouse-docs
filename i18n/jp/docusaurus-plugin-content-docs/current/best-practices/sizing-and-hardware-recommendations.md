@@ -164,7 +164,7 @@ ClickHouse の構成は、利用するアプリケーション固有の要件に
     </tr>
 </table>
 
-### ログ用途向け Fortune 500 通信事業者の例 \{#fortune-500-telecom-operator-for-a-logging-use-case\}
+### Fortune 500 に属する大手通信事業者におけるログユースケース \{#fortune-500-telecom-operator-for-a-logging-use-case\}
 
 <table>
     <tr>

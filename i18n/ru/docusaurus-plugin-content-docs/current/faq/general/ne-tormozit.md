@@ -8,8 +8,6 @@ keywords: ['Yandex']
 doc_type: 'reference'
 ---
 
-
-
 # Что означает «Не тормозит»? \{#what-does-ne-tormozit-mean\}
 
 Мы часто получаем этот вопрос, когда люди видят винтажные (лимитированный тираж) футболки ClickHouse. На их передней стороне крупным жирным шрифтом написано **«ClickHouse не тормозит»**.
@@ -22,8 +20,8 @@ doc_type: 'reference'
 
 Итак, что же он означает? Вот несколько вариантов перевода «не тормозит»:
 
-- Если перевести буквально, получится что-то вроде *"ClickHouse does not press the brake pedal"* («ClickHouse не нажимает на педаль тормоза»).
-- Более короткие, но менее точные варианты: *"ClickHouse is not slow"*, *"ClickHouse does not lag"* или просто *"ClickHouse is fast"*.
+- Если перевести буквально, получится что-то вроде *"ClickHouse doesn't press the brake pedal"* («ClickHouse не нажимает на педаль тормоза»).
+- Более короткие, но менее точные варианты: *"ClickHouse isn't slow"*, *"ClickHouse doesn't lag"* или просто *"ClickHouse is fast"*.
 
 Если вы ещё не видели одну из этих футболок вживую, вы можете посмотреть на них онлайн во многих видео, связанных с ClickHouse. Например, в этом:
 

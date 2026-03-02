@@ -21,6 +21,7 @@ import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/g
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
+
 # Private Service Connect \{#private-service-connect\}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
@@ -50,6 +51,7 @@ Private Service Connect (PSC) — это сетевая возможность G
 1. Добавьте идентификатор конечной точки (Endpoint ID) в список разрешённых подключений (allow list) сервиса ClickHouse.
 
 ## Внимание \{#attention\}
+
 ClickHouse пытается группировать ваши сервисы, чтобы повторно использовать один и тот же опубликованный [PSC endpoint](https://cloud.google.com/vpc/docs/private-service-connect) в пределах региона GCP. Однако такая группировка не гарантируется, особенно если вы распределяете свои сервисы между несколькими организациями ClickHouse.
 Если у вас уже настроен PSC для других сервисов в вашей организации ClickHouse, вы часто можете пропустить большинство шагов благодаря этой группировке и перейти непосредственно к заключительному шагу: [добавить «Endpoint ID» в список разрешённых сервисов ClickHouse](#add-endpoint-id-to-services-allow-list).
 
@@ -93,6 +95,7 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 * Вы можете [создать новый ключ](/cloud/manage/openapi) или использовать уже существующий.
   :::
 
+
 ## Получите подключение сервиса GCP (service attachment) и имя DNS для Private Service Connect \{#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect\}
 
 ### Вариант 1: консоль ClickHouse Cloud \{#option-1-clickhouse-cloud-console\}
@@ -119,12 +122,13 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 Запомните значения `endpointServiceId` и `privateDnsHostname`. Они понадобятся на следующих шагах.
 
+
 ## Создание конечной точки сервиса \{#create-service-endpoint\}
 
 :::important
-В этом разделе рассматриваются специфичные для ClickHouse детали настройки ClickHouse через GCP PSC (Private Service Connect). Шаги, связанные с GCP, приведены в качестве справочной информации, чтобы указать, где искать нужные настройки, но со временем они могут меняться без уведомления со стороны облачного провайдера GCP. Пожалуйста, настраивайте GCP в соответствии с вашим конкретным сценарием использования.
+В этом разделе рассматриваются специфичные для ClickHouse детали настройки ClickHouse через GCP PSC (Private Service Connect). Шаги, связанные с GCP, приведены в качестве справочной информации, чтобы указать, где искать нужные настройки, но со временем они могут меняться без уведомления со стороны облачного провайдера GCP. Пожалуйста, настраивайте GCP в соответствии с вашим конкретным сценарием использования.  
 
-Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых конечных точек GCP PSC и DNS-записей.
+Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых конечных точек GCP PSC и DNS-записей.  
 
 По любым вопросам, связанным с задачами по настройке GCP, обращайтесь непосредственно в службу поддержки GCP.
 :::
@@ -211,6 +215,7 @@ output "psc_connection_id" {
 используйте значение `endpointServiceId`<sup>API</sup> или `Service name`<sup>console</sup> из шага [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)
 :::
 
+
 ## Задайте приватное DNS-имя для конечной точки \{#set-private-dns-name-for-endpoint\}
 
 :::note
@@ -278,6 +283,7 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
+
 ## Добавить «Endpoint ID» в список разрешённых для сервиса ClickHouse \{#add-endpoint-id-to-services-allow-list\}
 
 Необходимо добавить Endpoint ID в список разрешённых для каждого экземпляра сервиса, который должен быть доступен через Private Service Connect.
@@ -332,6 +338,7 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
+
 ## Доступ к экземпляру с использованием Private Service Connect \{#accessing-instance-using-private-service-connect\}
 
 Каждый сервис с включённым Private Link имеет две конечные точки: публичную и приватную. Для подключения по Private Link необходимо использовать приватную конечную точку `privateDnsHostname`, значение которой берётся из раздела [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
@@ -359,6 +366,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 В этом примере подключение к хосту `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` будет выполняться через Private Service Connect, тогда как `xxxxxxx.yy-xxxxN.gcp.clickhouse.cloud` будет использовать соединение через интернет.
 
+
 ## Устранение неполадок \{#troubleshooting\}
 
 ### Проверка конфигурации DNS \{#test-dns-setup\}
@@ -375,6 +383,7 @@ Non-authoritative answer:
 Address: 10.128.0.2
 ```
 
+
 ### Сброс соединения удалённой стороной (Connection reset by peer) \{#connection-reset-by-peer\}
 
 * Скорее всего, Endpoint ID не был добавлен в список разрешённых сервисов (allow-list). Повторно выполните шаг [*Add endpoint ID to services allow-list*](#add-endpoint-id-to-services-allow-list).
@@ -385,7 +394,7 @@ Address: 10.128.0.2
 
 OpenSSL должен суметь подключиться (см. CONNECTED в выводе команды). `errno=104` является ожидаемым.
 
-DNS&#95;NAME — используйте `privateDnsHostname` из шага [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
+DNS&#95;NAME — используйте значение `privateDnsHostname` из шага [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
 
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440
@@ -412,6 +421,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
+
 ### Проверка фильтров конечных точек \{#checking-endpoint-filters\}
 
 #### REST API \{#rest-api\}
@@ -422,6 +432,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
   "102600141743718403"
 ]
 ```
+
 
 ### Подключение к удалённой базе данных \{#connecting-to-a-remote-database\}
 

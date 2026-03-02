@@ -28,8 +28,6 @@ ClickHouse Cloud を、コミット契約を通じて [Azure Marketplace](https:
 
 - 特定の契約条件に基づいた ClickHouse からの Private Offer。
 
-
-
 ## サインアップ手順 \{#steps-to-sign-up\}
 
 1. プライベートオファーを確認および承諾するためのリンクが記載されたメールを受け取っているはずです。

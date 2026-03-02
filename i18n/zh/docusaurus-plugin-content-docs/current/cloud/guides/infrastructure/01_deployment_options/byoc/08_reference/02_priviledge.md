@@ -1,6 +1,6 @@
 ---
 title: 'BYOC 权限'
-slug: /cloud/reference/byoc/reference/priviledge
+slug: /cloud/reference/byoc/reference/privilege
 sidebar_label: '权限'
 keywords: ['BYOC', '云', 'bring your own cloud', '权限']
 description: '在您自有的云基础设施上部署 ClickHouse'

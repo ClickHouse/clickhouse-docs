@@ -43,6 +43,7 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
+
 # SQL Console \{#sql-console\}
 
 SQL-консоль — это самый быстрый и простой способ исследовать и выполнять запросы к вашим базам данных в ClickHouse Cloud. Вы можете использовать SQL-консоль, чтобы:
@@ -59,6 +60,7 @@ SQL-консоль — это самый быстрый и простой спо
 Обзор таблиц, содержащихся в вашем экземпляре ClickHouse, можно найти в левой боковой панели. Используйте селектор базы данных в верхней части левой панели, чтобы просмотреть таблицы в определённой базе данных.
 
 <Image img={table_list_and_schema} size="md" alt='список таблиц и схема' />
+
 Таблицы в списке можно развернуть, чтобы просмотреть столбцы и их типы.
 
 <Image img={view_columns} size="md" alt='просмотр столбцов' />
@@ -213,7 +215,7 @@ SQL-консоль позволяет легко делиться запроса
 
 <Image img={sql_console_access_queries} size="md" alt='Доступ к запросам' />
 
-### Ссылка на запрос (постоянные ссылки) \{#linking-to-a-query-permalinks\}
+### Постоянные ссылки на запрос (permalinks) \{#linking-to-a-query-permalinks\}
 
 Сохранённые запросы также получают постоянные ссылки (permalink), что позволяет вам отправлять и получать ссылки на общие запросы и открывать их напрямую.
 
@@ -268,6 +270,7 @@ ORDER BY
 <Image img={tabular_query_results} size="md" alt="Табличные результаты запроса" />
 
 Без визуализации эти результаты трудно интерпретировать. Превратим их в диаграмму.
+
 
 ### Создание диаграмм \{#creating-charts\}
 

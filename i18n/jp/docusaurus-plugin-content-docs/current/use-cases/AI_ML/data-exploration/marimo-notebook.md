@@ -40,6 +40,7 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 ここでは、スターターデータセットの 1 つとして ClickHouse Cloud 上で利用可能な UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
+
 ## セットアップ \{#setup\}
 
 ### データセットの読み込み \{#loading-the-dataset\}
@@ -75,6 +76,7 @@ export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 永続的に設定するには、シェルの設定ファイルに追加してください。
 :::
 
+
 ### Marimo のインストール \{#installing-marimo\}
 
 まず仮想環境を有効にします。
@@ -95,6 +97,7 @@ marimo edit clickhouse_exploration.py
 <Image size="md" img={image_4} alt="Marimo interface" />
 
 Marimo ノートブックは純粋な Python ファイルとして保存されるため、バージョン管理や他者との共有が容易です。
+
 
 ## 依存関係のインストール \{#installing-dependencies\}
 
@@ -122,6 +125,7 @@ result
 直前に実行したセルの下に、次のような結果が表示されるはずです。
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
+
 
 ## データの探索 \{#exploring-the-data\}
 
@@ -174,6 +178,7 @@ df.head()
 この例では、年ごとの平均価格を返し、`town='LONDON'` でフィルタリングしています。
 結果は `df` という変数の DataFrame に保存されます。
 
+
 ### データの可視化 \{#visualizing-the-data\}
 
 データが扱い慣れた形式で利用可能になったので、ロンドンの不動産価格が時間とともにどのように変化したかを見ていきます。
@@ -200,6 +205,7 @@ fig
 <Image size="md" img={image_6} alt="Marimo のデータ可視化" />
 
 Marimo の大きな強みの 1 つは、そのリアクティブな実行モデルです。さまざまな町を動的に選択できるインタラクティブなウィジェットを作成しましょう。
+
 
 ### インタラクティブな町の選択 \{#interactive-town-selection\}
 
@@ -253,9 +259,10 @@ fig_reactive.update_layout(hovermode='x unified')
 fig_reactive
 ```
 
-ドロップダウンから町を選択すると、グラフが動的に更新されるようになりました。
+これで、ドロップダウンから町を選択すると、チャートが動的に更新されます。
 
 <Image size="md" img={image_7} alt="Marimo の動的チャート" />
+
 
 ### インタラクティブな箱ひげ図で価格分布を探索する \{#exploring-price-distributions\}
 
@@ -324,14 +331,14 @@ fig_box.update_layout(
 
 fig_box
 ```
-セルの右上にあるオプションボタンをクリックすると、
-コードを非表示にできます。
-スライダーを動かすと、Marimo のリアクティブ実行機能によりプロットが自動的に更新されます。
 
-<Image size="md" img={image_8} alt="Marimo の動的なチャート"/>
-```
+セルの右上にあるオプションボタンをクリックすると、コードを非表示にできます。
+スライダーを動かすと、Marimo のリアクティブ実行により、プロットが自動的に更新されます。
 
-## まとめ {#summary}
+<Image size="md" img={image_8} alt="Marimo の動的チャート" />
+
+
+## まとめ \{#summary\}
 
 このガイドでは、chDB を使用して Marimo ノートブックから ClickHouse Cloud 上のデータを探索する方法を説明しました。
 UK Property Price データセットを用いて、`remoteSecure()` 関数でリモートの ClickHouse Cloud データに対してクエリを実行し、その結果を直接 Pandas の DataFrame に変換して分析および可視化する手順を示しました。

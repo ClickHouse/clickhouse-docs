@@ -32,7 +32,7 @@ Signing up for ClickHouse Cloud from the cloud provider marketplace is a two ste
 1. You first "subscribe" to ClickHouse Cloud on the cloud providers' marketplace portal.  After you have finished subscribing, you click on "Pay Now" or "Manage on Provider" (depending on the marketplace). This redirects you to ClickHouse Cloud.
 2. On Clickhouse Cloud you either register for a new account, or sign in with an existing account.  Either way, a new ClickHouse Cloud organization will be created for you which is tied to your marketplace billing.
 
-NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
+NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they won't be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
 
 You can switch between organizations from the bottom left menu of the ClickHouse Cloud console.
 
@@ -50,7 +50,7 @@ Your existing services and organizations from any prior ClickHouse Cloud signups
 
 ### I subscribed to ClickHouse Cloud as a marketplace user. How can I unsubscribe?​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-how-can-i-unsubscribe}
 
-Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you will not be paying anything as ClickHouse Cloud doesn't have any recurring fees.
+Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you won't be paying anything as ClickHouse Cloud doesn't have any recurring fees.
 
 If you want to unsubscribe, please navigate to the Cloud Provider console and cancel the subscription renewal there. Once the subscription ends, all existing services will be stopped and you will be prompted to add a credit card. If no card was added, after two weeks all existing services will be deleted.
 
@@ -74,7 +74,7 @@ Marketplace billing follows the calendar month cycle. For example, for usage bet
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates aren't the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
 
 ### Where can I find general billing information​? {#where-can-i-find-general-billing-information}
 
@@ -86,7 +86,7 @@ There is no difference in pricing between marketplace billing and signing up dir
 
 ### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-Yes. Multiple ClickHouse organizations can be configured to bill usage in arrears to the same cloud marketplace billing account (AWS, GCP, or Azure). However, prepaid credits are not shared across organizations by default. If you need to share credits between organizations, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
+Yes. Multiple ClickHouse organizations can be configured to bill usage in arrears to the same cloud marketplace billing account (AWS, GCP, or Azure). However, prepaid credits aren't shared across organizations by default. If you need to share credits between organizations, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
 
 ### If my ClickHouse Organization is billed through a cloud marketplace committed spend agreement will I automatically move to PAYG billing when I run out of credits? {#automatically-move-to-PAYG-when-running-out-of-credit}
 

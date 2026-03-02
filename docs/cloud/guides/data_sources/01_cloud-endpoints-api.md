@@ -15,7 +15,7 @@ import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized
 
 If you need to fetch the list of static IPs, you can use the following ClickHouse Cloud API endpoint: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). This API provides the endpoints for ClickHouse Cloud services, such as ingress/egress IPs and S3 endpoints per region and cloud.
 
-If you are using an integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances. You can use this API to retrieve the public IPs and configure them in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS, or in any other infrastructure egress management system you are using.
+If you're using an integration like the MySQL or PostgreSQL Engine, it is possible that you need to authorize ClickHouse Cloud to access your instances. You can use this API to retrieve the public IPs and configure them in `firewalls` or `Authorized networks` in GCP or in `Security Groups` for Azure, AWS, or in any other infrastructure egress management system you're using.
 
 For example, to allow access from a ClickHouse Cloud service hosted on AWS in the region `ap-south-1`, you can add the `egress_ips` addresses for that region:
 

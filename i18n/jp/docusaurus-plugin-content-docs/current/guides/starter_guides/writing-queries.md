@@ -34,7 +34,7 @@ ORDER BY timestamp
 4 rows in set. Elapsed: 0.008 sec.
 ```
 
-ClickHouse でサポートされている多数の出力フォーマットのいずれかを指定するには、`FORMAT` 句を追加します。([多くのサポートされている出力フォーマット](/interfaces/formats#formats-overview))
+`FORMAT` 句を追加して、[ClickHouse でサポートされている多数の出力フォーマット](/interfaces/formats#formats-overview) のいずれかを指定します：
 
 ```sql
 SELECT *

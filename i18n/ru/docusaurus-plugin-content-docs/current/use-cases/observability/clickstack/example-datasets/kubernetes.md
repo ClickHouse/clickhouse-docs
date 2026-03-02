@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Введение в ClickStack и мониторинг Kubernetes'
 doc_type: 'guide'
-keywords: ['clickstack', 'kubernetes', 'логи', 'наблюдаемость', 'мониторинг контейнеров']
+keywords: ['clickstack', 'kubernetes', 'логи', 'обсервабилити', 'мониторинг контейнеров']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,6 +23,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
+
 ## Предварительные требования \{#prerequisites\}
 
 Для выполнения этого руководства вам потребуется:
@@ -35,12 +36,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 Вы можете следовать этому руководству, используя один из следующих вариантов развертывания:
 
-- **Самостоятельное развертывание (self-hosted)**: Разверните ClickStack полностью внутри вашего кластера Kubernetes, включая:
+- **Open Source ClickStack**: Разверните ClickStack полностью внутри вашего кластера Kubernetes, включая:
   - ClickHouse
   - HyperDX
   - MongoDB (используется для хранения состояния и конфигурации дашбордов)
 
-- **Облачное развертывание (cloud-hosted)**: Используйте **ClickHouse Cloud**, при этом HyperDX управляется вне вашего кластера. Это устраняет необходимость запускать ClickHouse или HyperDX внутри вашего кластера.
+- **Managed ClickStack**, при котором ClickHouse и UI ClickStack (HyperDX) управляются в ClickHouse Cloud. Это устраняет необходимость запускать ClickHouse или HyperDX внутри вашего кластера.
 
 Чтобы имитировать трафик приложения, вы можете дополнительно развернуть форк ClickStack для [**OpenTelemetry Demo Application**](https://github.com/ClickHouse/opentelemetry-demo). Он генерирует телеметрию, включая логи, метрики и трейсы. Если у вас уже есть рабочие нагрузки в кластере, вы можете пропустить этот шаг и отслеживать существующие поды, узлы и контейнеры.
 
@@ -67,7 +68,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   * Автоматическое инструментирование с использованием OTel и SDKS ClickStack для трейсов, метрик и логов.
   * Все сервисы отправляют свою телеметрию в сборщик OpenTelemetry `my-hyperdx-hdx-oss-v2-otel-collector` (не развернут)
-  * [Проброс тегов ресурсов](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) для корреляции логов, метрик и трассировок с помощью переменной окружения `OTEL_RESOURCE_ATTRIBUTES`.
+  * [Проброс ресурсных тегов](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods), чтобы коррелировать логи, метрики и трассировки через переменную окружения `OTEL_RESOURCE_ATTRIBUTES`.
 
   ```shell
   ## download demo Kubernetes manifest file
@@ -120,12 +121,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### Развертывание ClickStack
 
-  После установки Helm-чарта можно развернуть ClickStack в кластере. Можно либо запустить все компоненты, включая ClickHouse и HyperDX, в среде Kubernetes, либо использовать ClickHouse Cloud, где HyperDX также доступен в виде управляемого сервиса.
+  После установки Helm-чарта можно развернуть ClickStack в кластере. Можно либо запустить все компоненты, включая ClickHouse и HyperDX, в среде Kubernetes, либо развернуть только коллектор и использовать управляемый ClickStack для ClickHouse и интерфейса HyperDX.
 
   <br />
 
   <details>
-    <summary>Самостоятельное развертывание</summary>
+    <summary>ClickStack Open Source (самоуправляемое развертывание)</summary>
 
     Следующая команда устанавливает ClickStack в пространство имён `otel-demo`. Helm-чарт разворачивает:
 
@@ -146,11 +147,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     :::warning ClickStack в продакшене
 
-    Этот Helm-чарт также устанавливает ClickHouse и OTel collector. Для продуктивной среды рекомендуется использовать операторы ClickHouse и OTel collector и/или ClickHouse Cloud.
+    Этот Helm-чарт также устанавливает ClickHouse и OTel collector. Для продуктивной среды рекомендуется использовать операторы ClickHouse и OTel collector и/или Managed ClickStack.
 
     Чтобы отключить ClickHouse и OTel collector, задайте следующие значения:
-
-    :::
 
     ```shell
     helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
@@ -160,12 +159,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   </details>
 
   <details>
-    <summary>Использование ClickHouse Cloud</summary>
+    <summary>Управляемый ClickStack</summary>
 
-    Если вы предпочитаете использовать ClickHouse Cloud, вы можете развернуть ClickStack и [отключить включённый в него ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud).
+    Если вы предпочитаете использовать управляемый ClickStack, вы можете развернуть ClickStack и [отключить включённый в него ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud).
 
     :::note
-    На данный момент чарт всегда разворачивает и HyperDX, и MongoDB. Хотя эти компоненты предоставляют альтернативный способ доступа, они не интегрированы с аутентификацией ClickHouse Cloud. В этой модели развертывания они предназначены для администраторов, так как [предоставляют доступ к защищённому ключу ингестии](#retrieve-ingestion-api-key), необходимому для приёма данных через развернутый OTel collector, и не должны быть доступны конечным пользователям.
+    На данный момент чарт всегда разворачивает и HyperDX, и MongoDB. Хотя эти компоненты предоставляют альтернативный способ доступа, они не интегрированы с аутентификацией ClickHouse Cloud. В этой модели развертывания они предназначены для администраторов, так как [предоставляют доступ к защищённому ключу ингестии](#retrieve-ingestion-api-key), необходимому для ингестии данных через развернутый OTel collector, и не должны быть доступны конечным пользователям.
     :::
 
     ```shell
@@ -178,7 +177,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
   </details>
 
-  Чтобы проверить статус развертывания, выполните следующую команду и убедитесь, что все компоненты находятся в состоянии `Running`. Обратите внимание, что при использовании ClickHouse Cloud компонент ClickHouse будет отсутствовать в этом списке:
+  Чтобы проверить статус развертывания, выполните следующую команду и убедитесь, что все компоненты находятся в состоянии `Running`. Обратите внимание, что при использовании управляемого ClickStack компонент ClickHouse будет отсутствовать:
 
   ```shell
   kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -193,7 +192,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   ### Доступ к интерфейсу HyperDX
 
   :::note
-  Даже при использовании ClickHouse Cloud локальный экземпляр HyperDX, развёрнутый в кластере Kubernetes, всё равно необходим. Он предоставляет ключ ингестии, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасный приём данных через развёрнутый OTel collector — возможность, которая в настоящее время недоступна в версии, размещённой в ClickHouse Cloud.
+  Даже при использовании Managed ClickStack локальный экземпляр HyperDX, развёрнутый в кластере Kubernetes, всё равно необходим. Он предоставляет ключ ингестии, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасную ингестию данных через развёрнутый OTel collector — возможность, которая в настоящее время недоступна в Managed ClickStack.
   :::
 
   В целях безопасности сервис использует `ClusterIP` и по умолчанию не доступен извне.
@@ -217,7 +216,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   Ингестия данных в OTel collector, развёрнутый с помощью ClickStack, защищена ключом ингестии.
 
-  Перейдите в [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из раздела `API Keys`. Этот ключ API обеспечивает безопасный приём данных через коллектор OpenTelemetry.
+  Перейдите в [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из раздела `API Keys`. Этот ключ API обеспечивает безопасную ингестию данных через коллектор OpenTelemetry.
 
   <Image img={copy_api_key} alt="Скопировать API-ключ" size="lg" />
 
@@ -247,7 +246,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### Добавьте репозиторий Helm для OpenTelemetry
 
-  Для сбора метрик Kubernetes мы развернём стандартный OTel collector, настроив его на безопасную отправку данных в наш ClickStack collector с использованием указанного выше ключа API для ингестии.
+  Для сбора метрик Kubernetes мы развернём стандартный OTel collector, настроив его на безопасную отправку данных в наш ClickStack collector с использованием указанного выше ключа API для приёма данных.
 
   Для этого необходимо установить Helm-репозиторий OpenTelemetry:
 
@@ -266,7 +265,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   Вместе эти манифесты обеспечивают полную обсервабилити всего стека в кластере — от инфраструктуры до телеметрии на уровне приложений — и отправляют обогащённые данные в ClickStack для централизованного анализа.
 
-  Сначала установите коллектор в виде Deployment:
+  Сначала установите коллектор в виде Развертывания:
 
   ```shell
   # download manifest file
@@ -460,36 +459,20 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### Исследование данных Kubernetes в HyperDX
 
-  Перейдите в интерфейс HyperDX — используя экземпляр, развёрнутый в Kubernetes, или через ClickHouse Cloud.
+  Перейдите в интерфейс HyperDX — используя экземпляр, развёрнутый в Kubernetes, или через Managed ClickStack.
 
   <p />
 
   <details>
-    <summary>Использование ClickHouse Cloud</summary>
+    <summary>Управляемый ClickStack</summary>
 
-    Если вы используете ClickHouse Cloud, просто войдите в свой сервис ClickHouse Cloud и выберите «HyperDX» в левом меню. Аутентификация произойдёт автоматически, и вам не потребуется создавать пользователя.
+    Если вы используете Managed ClickStack, просто войдите в свой сервис ClickHouse Cloud и выберите «ClickStack» в левом меню. Аутентификация произойдёт автоматически, и вам не потребуется создавать пользователя.
 
-    Когда будет предложено создать источник данных, сохраните все значения по умолчанию в модальном окне создания источника, заполнив поле Table значением `otel_logs`, чтобы создать источник логов. Все остальные настройки должны быть автоматически определены, после чего вы сможете нажать `Save New Source`.
-
-    <Image force img={hyperdx_cloud_datasource} alt="Источник данных ClickHouse Cloud HyperDX" size="lg" />
-
-    Вам также потребуется создать источник данных для трассировок и метрик.
-
-    Например, чтобы создать источники для трассировок и метрик OTel, вы можете выбрать `Create New Source` в верхнем меню.
-
-    <Image force img={hyperdx_create_new_source} alt="HyperDX создание нового источника" size="lg" />
-
-    Отсюда выберите требуемый тип источника, а затем соответствующую таблицу, например для трассировок выберите таблицу `otel_traces`. Все настройки должны быть автоматически определены.
-
-    <Image force img={hyperdx_create_trace_datasource} alt="HyperDX создание источника трассировок" size="lg" />
-
-    :::note Корреляция источников
-    Обратите внимание, что различные источники данных в ClickStack — такие как логи и трассировки — могут быть скоррелированы между собой. Для этого требуется дополнительная настройка для каждого источника. Например, в источнике логов вы можете указать соответствующий источник трассировок, и наоборот — в источнике трассировок. Дополнительную информацию см. в разделе «Коррелированные источники».
-    :::
+    Источники данных для логов, метрик и трассировок будут автоматически созданы для вас.
   </details>
 
   <details>
-    <summary>Использование самостоятельного развертывания</summary>
+    <summary>ClickStack с открытым исходным кодом</summary>
 
     Чтобы получить доступ к локально развернутому экземпляру HyperDX, выполните локальную команду `port-forward`, а затем откройте HyperDX по адресу [http://localhost:8080](http://localhost:8080).
 
@@ -501,7 +484,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
 
     :::note ClickStack в продуктивной среде
-    В продуктивной среде мы рекомендуем использовать входной шлюз с TLS, если вы не используете HyperDX в ClickHouse Cloud. Например:
+    В продуктивной среде мы рекомендуем использовать входной шлюз с TLS, если вы не используете Managed ClickStack. Например:
 
     ```shell
     helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \

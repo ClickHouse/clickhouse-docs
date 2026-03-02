@@ -10,6 +10,7 @@ keywords: ['kafka', 'kafka connect', 'jdbc', 'интеграция', 'конве
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
+
 # JDBC connector \{#jdbc-connector\}
 
 :::note
@@ -23,10 +24,13 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 Обратите внимание, что для коннектора JDBC требуется схема (нельзя использовать обычный JSON или CSV с JDBC-коннектором). Хотя схема может быть закодирована в каждом сообщении, [настойчиво рекомендуется использовать Confluent Schema Registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas), чтобы избежать связанных накладных расходов. Предоставленный скрипт вставки автоматически выводит схему из сообщений и добавляет её в реестр — таким образом, этот скрипт может быть повторно использован для других наборов данных. Предполагается, что ключи Kafka имеют тип `String`. Дополнительные сведения о схемах Kafka можно найти [здесь](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 ### Лицензия \{#license\}
+
 JDBC Connector распространяется под [Confluent Community License](https://www.confluent.io/confluent-community-license)
 
 ### Шаги \{#steps\}
+
 #### Соберите данные для подключения \{#gather-your-connection-details\}
+
 <ConnectionDetails />
 
 #### 1. Установите Kafka Connect и коннектор \{#1-install-kafka-connect-and-connector\}
@@ -47,11 +51,11 @@ JDBC Connector распространяется под [Confluent Community Lice
 
 :::
 
-#### 3. Подготовьте конфигурацию \{#3-prepare-configuration\}
+#### 3. Подготовка конфигурации \{#3-prepare-configuration\}
 
-Следуйте [этим инструкциям](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) для настройки Connect, соответствующей вашему типу установки, учитывая различия между автономным и распределённым кластером. При использовании Confluent Cloud актуальна распределённая конфигурация.
+Следуйте [этим инструкциям](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) для настройки Connect в соответствии с вашим типом установки, учитывая различия между standalone и распределённым кластером. При использовании Confluent Cloud следует выбирать распределённую конфигурацию.
 
-Следующие параметры важны для использования JDBC-коннектора с ClickHouse. Полный список параметров можно найти [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html):
+Следующие параметры относятся к использованию коннектора JDBC с ClickHouse. Полный список параметров доступен [здесь](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html):
 
 * `_connection.url_` - должен иметь формат `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>`
 * `connection.user` - пользователь с правами записи в целевую базу данных
@@ -77,9 +81,9 @@ JDBC Connector распространяется под [Confluent Community Lice
 
 Примеры файлов конфигурации для тестового набора данных GitHub можно найти [здесь](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), при условии, что Connect запускается в режиме standalone, а Kafka размещена в Confluent Cloud.
 
-#### 4. Создание таблицы ClickHouse \{#4-create-the-clickhouse-table\}
+#### 4. Создайте таблицу ClickHouse \{#4-create-the-clickhouse-table\}
 
-Убедитесь, что таблица создана, удалив её, если она уже существует из предыдущих примеров. Ниже приведён пример, совместимый с уменьшенным набором данных GitHub. Обратите внимание на отсутствие каких-либо типов Array или Map, которые в настоящее время не поддерживаются:
+Убедитесь, что таблица создана; при необходимости удалите её, если она уже существует после выполнения предыдущих примеров. Ниже приведён пример, совместимый с уменьшенным набором данных Github. Обратите внимание на отсутствие каких-либо типов данных Array или Map, которые в настоящее время не поддерживаются:
 
 ```sql
 CREATE TABLE github
@@ -109,6 +113,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
+
 #### 5. Запустите Kafka Connect \{#5-start-kafka-connect\}
 
 Запустите Kafka Connect в [автономном](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) или [распределённом](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) режиме.
@@ -117,9 +122,10 @@ CREATE TABLE github
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
+
 #### 6. Добавьте данные в Kafka \{#6-add-data-to-kafka\}
 
-Отправьте сообщения в Kafka, используя предоставленные [скрипт и конфигурацию](https://github.com/ClickHouse/kafka-samples/tree/main/producer). Вам нужно будет изменить файл конфигурации github.config, чтобы указать свои учетные данные Kafka. По умолчанию скрипт настроен для работы с Confluent Cloud.
+Отправьте сообщения в Kafka, используя предоставленные [скрипт и конфигурацию](https://github.com/ClickHouse/kafka-samples/tree/main/producer). Вам нужно будет изменить файл конфигурации github.config, чтобы указать свои учетные данные для Kafka. По умолчанию скрипт настроен для работы с Confluent Cloud.
 
 ```bash
 python producer.py -c github.config
@@ -143,7 +149,8 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### Рекомендуемые дополнительные материалы \{#recommended-further-reading\}
+
+### Рекомендуемое дальнейшее чтение \{#recommended-further-reading\}
 
 * [Параметры конфигурации приёмника Kafka (Kafka Sink Configuration Parameters)](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Подробный разбор Kafka Connect – JDBC Source Connector (Kafka Connect Deep Dive – JDBC Source Connector)](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

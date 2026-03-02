@@ -16,24 +16,24 @@ import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
 # MySQL Interface
 
-ClickHouse supports the MySQL wire protocol. This allows certain clients that do not have native ClickHouse connectors leverage the MySQL protocol instead, and it has been validated with the following BI tools:
+ClickHouse supports the MySQL wire protocol. This allows certain clients that don't have native ClickHouse connectors leverage the MySQL protocol instead, and it has been validated with the following BI tools:
 
 - [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
 - [Tableau Online](../integrations/tableau-online)
 - [QuickSight](../integrations/quicksight)
 
-If you are trying other untested clients or integrations, keep in mind that there could be the following limitations:
+If you're trying other untested clients or integrations, keep in mind that there could be the following limitations:
 
 - SSL implementation might not be fully compatible; there could be potential [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) issues.
-- A particular tool might require dialect features (e.g., MySQL-specific functions or settings) that are not implemented yet.
+- A particular tool might require dialect features (e.g., MySQL-specific functions or settings) that aren't implemented yet.
 
-If there is a native driver available (e.g., [DBeaver](../integrations/dbeaver)), it is always preferred to use it instead of the MySQL interface. Additionally, while most of the MySQL language clients should work fine, MySQL interface is not guaranteed to be a drop-in replacement for a codebase with existing MySQL queries.
+If there is a native driver available (e.g., [DBeaver](../integrations/dbeaver)), it is always preferred to use it instead of the MySQL interface. Additionally, while most of the MySQL language clients should work fine, MySQL interface isn't guaranteed to be a drop-in replacement for a codebase with existing MySQL queries.
 
-If your use case involves a particular tool that does not have a native ClickHouse driver, and you would like to use it via the MySQL interface and you found certain incompatibilities - please [create an issue](https://github.com/ClickHouse/ClickHouse/issues) in the ClickHouse repository.
+If your use case involves a particular tool that doesn't have a native ClickHouse driver, and you would like to use it via the MySQL interface and you found certain incompatibilities - please [create an issue](https://github.com/ClickHouse/ClickHouse/issues) in the ClickHouse repository.
 
 ::::note
 To support the SQL dialect of above BI tools better, ClickHouse's MySQL interface implicitly runs SELECT queries with setting [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias).
-This cannot be turned off and it can lead in rare edge cases to different behavior between queries sent to ClickHouse's normal and MySQL query interfaces.
+This can't be turned off and it can lead in rare edge cases to different behavior between queries sent to ClickHouse's normal and MySQL query interfaces.
 ::::
 
 ## Enabling the MySQL Interface On ClickHouse Cloud {#enabling-the-mysql-interface-on-clickhouse-cloud}
@@ -163,7 +163,7 @@ If user password is specified using [SHA256](/sql-reference/functions/hash-funct
 
 Restrictions:
 
-- prepared queries are not supported
+- prepared queries aren't supported
 
 - some data types are sent as strings
 

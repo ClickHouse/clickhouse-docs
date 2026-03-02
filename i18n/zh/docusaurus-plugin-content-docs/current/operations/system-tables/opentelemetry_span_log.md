@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.opentelemetry&#95;span&#95;log \{#systemopentelemetry&#95;span&#95;log\}
+# system.opentelemetry_span_log \{#systemopentelemetry_span_log\}
 
 <SystemTableCloud />
 
@@ -29,6 +29,8 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的开始时间（微秒）。
 * `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的结束时间（微秒）。
 * `finish_date` ([Date](../../sql-reference/data-types/date.md)) — `trace span` 的结束日期。
+* `status_code` ([Enum8](../../sql-reference/data-types/enum.md)) — span 的状态码。
+* `status_message` ([String](../../sql-reference/data-types/string.md)) — 与 span 关联的错误消息（如果有）。当 status&#95;code 不是 ERROR 时为空。
 * `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 与 `trace span` 对应的[属性（Attribute）](https://opentelemetry.io/docs/go/instrumentation/#attributes)名称。根据 [OpenTelemetry](https://opentelemetry.io/) 标准中的建议进行填充。
 * `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 与 `trace span` 对应的属性值。根据 `OpenTelemetry` 标准中的建议进行填充。
 

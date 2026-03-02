@@ -20,7 +20,7 @@ Snowflake offers the type Number for numerics. This requires the user to specify
 precision (total number of digits) and scale (digits to the right of the decimal place)
 up to a total of 38. Integer declarations are synonymous with Number, and simply 
 define a fixed precision and scale where the range is the same. This convenience 
-is possible as modifying the precision (scale is 0 for integers) does not impact the 
+is possible as modifying the precision (scale is 0 for integers) doesn't impact the 
 size of data on disk in Snowflake - the minimal required bytes are used for a 
 numeric range at write time at a micro partition level. The scale does, however,
 impact storage space and is offset with compression. A `Float64` type offers a 
@@ -67,9 +67,9 @@ via the [`Nested`](/sql-reference/data-types/nested-data-structures/nested) type
 allowing users to explicitly map nested structures. This allows codecs and type 
 optimizations to be applied throughout the hierarchy, unlike Snowflake, which 
 requires the user to use the `OBJECT`, `VARIANT`, and `ARRAY` types for the outer
-object and does not allow [explicit internal typing](https://docs.snowflake.com/en/sql-reference/data-types-semistructured#characteristics-of-an-object).
+object and doesn't allow [explicit internal typing](https://docs.snowflake.com/en/sql-reference/data-types-semistructured#characteristics-of-an-object).
 This internal typing also simplifies queries on nested numerics in ClickHouse, 
-which do not need to be cast and can be used in index definitions.
+which don't need to be cast and can be used in index definitions.
 
 In ClickHouse, codecs and optimized types can also be applied to substructures. 
 This provides an added benefit that compression with nested structures remains 

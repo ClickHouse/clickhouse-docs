@@ -143,7 +143,7 @@ FROM s3(
 );
 ```
 
-运行以下命令将该表 `DETACH`。
+运行以下命令以 `DETACH` 该表。
 
 ```sql
 DETACH TABLE nyc_taxi.trips_small;
@@ -155,7 +155,7 @@ DETACH TABLE nyc_taxi.trips_small;
 ATTACH TABLE nyc_taxi.trips_small AS REPLICATED;
 ```
 
-最后，恢复副本元数据：
+最后，恢复副本的元数据：
 
 ```sql
 SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
@@ -324,7 +324,7 @@ ASYNC;
 -- └─────────────────────────────────────┴───────────────────┘
 ```
 
-之后即可使用该备份 ID 来监控备份进度：
+随后可以使用该备份 ID 来监控备份进度：
 
 ```sql
 SELECT * 

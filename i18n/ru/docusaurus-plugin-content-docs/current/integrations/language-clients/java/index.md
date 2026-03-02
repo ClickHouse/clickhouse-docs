@@ -2,7 +2,7 @@
 title: 'Java'
 sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
-description: 'Варианты подключения к ClickHouse из Java-приложений'
+description: 'Варианты подключения к ClickHouse из Java'
 slug: /integrations/java
 doc_type: 'reference'
 integration:
@@ -14,6 +14,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
+
 # Обзор Java‑клиентов \{#java-clients-overview\}
 
 - [Клиент 0.8+](./client/client.mdx)
@@ -22,9 +23,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## ClickHouse client \{#clickhouse-client\}
 
-Java client — это библиотека, реализующая собственный API, который абстрагирует детали сетевого взаимодействия с сервером ClickHouse. В настоящее время поддерживается только HTTP‑интерфейс. Библиотека предоставляет утилиты для работы с различными форматами ClickHouse и другими связанными функциями.
+Java client — это библиотека, реализующая собственный API, который инкапсулирует детали сетевого взаимодействия с сервером ClickHouse. В настоящее время поддерживается только HTTP-интерфейс. Библиотека предоставляет утилиты для работы с различными форматами ClickHouse и другими связанными функциями.
 
-Java Client был разработан ещё в 2015 году. Его кодовая база со временем стала очень сложной для сопровождения, API — запутанным, а дальнейшая оптимизация — затруднительной. Поэтому в 2024 году мы переработали его в новый компонент `client-v2`. У него понятный API, более лёгкая кодовая база, дополнительные улучшения производительности и лучшая поддержка форматов ClickHouse (в основном RowBinary и Native). В ближайшем будущем JDBC будет использовать этот клиент.
+Java client был разработан ещё в 2015 году. Его кодовая база стала очень сложной в сопровождении, API запутан, его дальнейшая оптимизация затруднена. Поэтому в 2024 году мы переработали его в новый компонент `client-v2`. У него понятный API, более лёгкая кодовая база, дополнительные улучшения производительности и более качественная поддержка форматов ClickHouse (в основном RowBinary и Native). В ближайшем будущем JDBC будет использовать этот клиент.
 
 ### Поддерживаемые типы данных \{#supported-data-types\}
 
@@ -86,51 +87,51 @@ Java Client был разработан ещё в 2015 году. Его кодо
 :::note
 
 - AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
-- Decimal — используйте `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для единообразия вывода
-- Enum — может трактоваться и как строка, и как целое число
-- UInt64 — соответствует типу `long` в client-v1
+- Decimal — `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
+- Enum — может рассматриваться и как строка, и как целое число
+- UInt64 — отображается в тип `long` в client-v1
 :::
 
 ### Возможности \{#features\}
 
 Таблица возможностей клиентов:
 
-| Name                                         | Client V2 | Client V1 | Comments
+| Название                                     | Client V2 | Client V1 | Комментарии
 |----------------------------------------------|:---------:|:---------:|:---------:|
-| Http Connection                              |✔       |✔      | |
-| Http Compression (LZ4)                       |✔       |✔      | |
-| Application Controlled Compression           |✔       |✗      | |
-| Server Response Compression - LZ4            |✔       |✔      | |
-| Client Request Compression - LZ4             |✔       |✔      | |
+| HTTP-подключение                             |✔       |✔      | |
+| HTTP-сжатие (LZ4)                            |✔       |✔      | |
+| Сжатие, управляемое приложением              |✔       |✗      | |
+| Сжатие ответов сервера — LZ4                 |✔       |✔      | |
+| Сжатие запросов клиента — LZ4                |✔       |✔      | |
 | HTTPS                                        |✔       |✔      | |
-| Client SSL Cert (mTLS)                       |✔       |✔      | |
-| Http Proxy                                   |✔       |✔      | |
+| Клиентский SSL-сертификат (mTLS)             |✔       |✔      | |
+| HTTP-прокси                                  |✔       |✔      | |
 | POJO SerDe                                   |✔       |✗      | |
-| Connection Pool                              |✔       |✔      | При использовании Apache HTTP Client |
-| Named Parameters                             |✔       |✔      | |
-| Retry on failure                             |✔       |✔      | |
-| Failover                                     |✗       |✔      | |
-| Load-balancing                               |✗       |✔      | |
-| Server auto-discovery                        |✗       |✔      | |
-| Log Comment                                  |✔       |✔      | |
-| Session Roles                                |✔       |✔      | |
-| SSL Client Authentication                    |✔       |✔      | |
-| SNI Configuration                            |✔       |✗      | |
-| Session timezone                             |✔       |✔      | |
+| Пул соединений                               |✔       |✔      | При использовании Apache HTTP Client |
+| Именованные параметры                        |✔       |✔      | |
+| Повтор при сбое                              |✔       |✔      | |
+| Переключение при сбое (failover)             |✗       |✔      | |
+| Балансировка нагрузки                        |✗       |✔      | |
+| Автообнаружение серверов                     |✗       |✔      | |
+| Комментарий в логе                           |✔       |✔      | |
+| Роли сессии                                  |✔       |✔      | |
+| Аутентификация клиента по SSL                |✔       |✔      | |
+| Настройка SNI                                |✔       |✗      | |
+| Часовой пояс сессии                          |✔       |✔      | |
 
-JDBC-драйвер наследует те же возможности, что и базовая реализация клиента. Другие возможности JDBC перечислены на этой [странице](/integrations/language-clients/java/jdbc).
+JDBC-драйвер наследует те же возможности, что и базовая реализация клиента. Другие возможности JDBC перечислены на его [странице](/integrations/language-clients/java/jdbc).
 
 ### Совместимость \{#compatibility\}
 
-- Все проекты в этом репозитории тестируются со всеми [активными LTS-версиями](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) ClickHouse.
+- Все проекты в этом репозитории проходят тестирование со всеми [активными LTS-версиями](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) ClickHouse.
 - [Политика поддержки](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
-- Мы рекомендуем регулярно обновлять клиент, чтобы не пропускать исправления уязвимостей и новые улучшения.
-- Если у вас возникла проблема с миграцией на API v2 — [создайте issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=), и мы вам ответим!
+- Мы рекомендуем постоянно обновлять клиент, чтобы не пропускать исправления безопасности и новые улучшения.
+- Если у вас возникают проблемы с миграцией на API v2 — [создайте issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=), и мы ответим!
 
 ### Логирование \{#logging\}
 
 Наш Java‑клиент использует [SLF4J](https://www.slf4j.org/) для логирования. Вы можете использовать любой совместимый с SLF4J фреймворк для логирования, например `Logback` или `Log4j`.
-Если вы используете Maven, добавьте следующую зависимость в файл `pom.xml`:
+Например, если вы используете Maven, вы можете добавить следующую зависимость в файл `pom.xml`:
 
 ```xml title="pom.xml"
 <dependencies>
@@ -157,9 +158,10 @@ JDBC-драйвер наследует те же возможности, что 
 </dependencies>
 ```
 
+
 #### Настройка логирования \{#configuring-logging\}
 
-Это зависит от используемого фреймворка логирования. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
+Это зависит от используемого вами фреймворка логирования. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
 
 ```xml title="logback.xml"
 <configuration>

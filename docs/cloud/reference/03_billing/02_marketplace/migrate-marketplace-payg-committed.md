@@ -12,7 +12,7 @@ If your ClickHouse organization is currently billed through an active cloud mark
 
 ## Important Notes {#important-notes}
 
-Please note that canceling your marketplace PAYG subscription does not delete your ClickHouse Cloud account - only the billing relationship via the marketplace. Once canceled, our system will stop billing for ClickHouse Cloud services through the marketplace. (Note: this process is not immediate and may take a few minutes to complete).
+Please note that canceling your marketplace PAYG subscription doesn't delete your ClickHouse Cloud account - only the billing relationship via the marketplace. Once canceled, our system will stop billing for ClickHouse Cloud services through the marketplace. (Note: this process isn't immediate and may take a few minutes to complete).
 
 After your marketplace subscription is canceled, if your ClickHouse organization has a credit card on file, we will charge that card at the end of your billing cycle - unless a new marketplace subscription is attached beforehand.
 
@@ -40,7 +40,7 @@ If you want to use a different AWS Account ID for migrating your ClickHouse orga
     - Under "Agreement" click on the "Actions" dropdown or button next to the ClickHouse Cloud listing
     - Select "Cancel subscription"
 
-> **Note:** For help cancelling your subscription (e.g. if the cancel subscription button is not available) please contact [AWS support](https://support.console.aws.amazon.com/support/home#/).
+> **Note:** For help cancelling your subscription (e.g. if the cancel subscription button isn't available) please contact [AWS support](https://support.console.aws.amazon.com/support/home#/).
 
 Next follow these [steps](/cloud/billing/marketplace/aws-marketplace-committed-contract) to configure your ClickHouse organization to the new AWS committed spend contract you accepted.
 
@@ -49,7 +49,7 @@ Next follow these [steps](/cloud/billing/marketplace/aws-marketplace-committed-c
 ### Steps to Cancel GCP PAYG Order {#cancel-gcp-payg}
 
 1. **Go to your [Google Cloud Marketplace Console](https://console.cloud.google.com/marketplace):**
-    - Make sure you are logged in to the correct GCP account and have selected the appropriate project
+    - Make sure you're logged in to the correct GCP account and have selected the appropriate project
 2. **Locate your ClickHouse order:**
     - In the left menu, click "Your Orders"
     - Find the correct ClickHouse order in the list of active orders
@@ -78,5 +78,5 @@ Next, follow these [steps](/cloud/billing/marketplace/azure-marketplace-committe
 ## Requirements for Linking to Committed Spend Contract {#linking-requirements}
 
 > **Note:** In order to link your organization to a marketplace committed spend contract:
-> - The user following the steps must be an admin user of the ClickHouse organization you are attaching the subscription to
+> - The user following the steps must be an admin user of the ClickHouse organization you're attaching the subscription to
 > - All unpaid invoices on the organization must be paid (please reach out to ClickHouse [support](https://clickhouse.com/support/program) for any questions)

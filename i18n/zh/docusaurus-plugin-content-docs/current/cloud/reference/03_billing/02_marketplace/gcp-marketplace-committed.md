@@ -29,8 +29,6 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 - 基于特定合同条款的 ClickHouse 私有优惠。
 
-
-
 ## 注册步骤 \{#steps-to-sign-up\}
 
 1. 您应已收到一封包含链接的电子邮件，用于查看并接受您的私有优惠。
@@ -132,6 +130,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 9. 您应会收到一封确认注册成功的电子邮件：
 
 <br />
+
 <br />
 
 <Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border/>

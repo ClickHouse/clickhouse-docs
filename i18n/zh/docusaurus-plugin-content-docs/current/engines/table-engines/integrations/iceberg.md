@@ -37,6 +37,7 @@ CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
 
+
 ## 引擎参数 \{#engine-arguments\}
 
 参数说明与引擎 `S3`、`AzureBlobStorage`、`HDFS` 和 `File` 中参数的说明相同。\
@@ -69,12 +70,15 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ```
 
+
 ## 别名 \{#aliases\}
 
 表引擎 `Iceberg` 现在是 `IcebergS3` 的别名。
 
 ## 模式演进 \{#schema-evolution\}
-目前，借助 ClickHouse (CH)，可以读取随着时间推移发生模式变更的 Iceberg 表。当前支持读取曾经增加或删除列、以及列顺序发生变化的表。也可以将原本要求非空的列修改为允许为 NULL 的列。此外，还支持对简单类型进行允许的类型转换，即：  
+
+ClickHouse 支持读取其模式随时间演进的 Iceberg 表。当前支持读取曾经增加或删除列、以及列顺序发生变化的表。也可以将原本要求非空的列修改为允许为 NULL 的列。此外，还支持对简单类型进行允许的类型转换，即：  
+
 * int -> long
 * float -> double
 * decimal(P, S) -> decimal(P', S)，其中 P' > P。 
@@ -93,26 +97,29 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 
 ## 处理包含已删除行的表 \{#deleted-rows\}
 
-目前，仅支持带有 [position deletes](https://iceberg.apache.org/spec/#position-delete-files) 的 Iceberg 表。
+ClickHouse 支持读取使用以下删除方法的 Iceberg 表：
 
-以下删除方式**不受支持**：
+- [Position deletes](https://iceberg.apache.org/spec/#position-delete-files)
+- [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)（自 25.8 版本起支持）
 
-* [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)（等值删除）
-* [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入的删除向量）
+以下删除方法**不支持**：
+
+- [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入）
 
 ### 基本用法 \{#basic-usage\}
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
- ```
+```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
- ```
+```
 
-注意：你不能在同一个查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
+注意：在同一条查询语句中不能同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
+
 
 ### 重要注意事项 \{#important-considerations\}
 
@@ -186,9 +193,10 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 * 在 ts1 和 ts2：只显示原来的两列
 * 在 ts3：显示全部三列，且第一行的 price 为 NULL
 
+
 #### 场景 2：历史表结构与当前表结构的差异 \{#scenario-2\}
 
-在当前时刻执行的时间旅行查询，可能会显示与当前表不同的表结构：
+在当前时刻执行的时间旅行查询可能会显示与当前表不同的表结构：
 
 ```sql
 -- Create a table
@@ -228,6 +236,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 
 这是因为 `ALTER TABLE` 不会创建新的快照；对于当前表，Spark 会从最新的元数据文件中读取 `schema_id` 的值，而不是从快照中读取。
 
+
 #### 场景 3：历史与当前表结构差异 \{#scenario-3\}
 
 第二点是在进行时间旅行时，你无法获取表在尚未写入任何数据之前的状态：
@@ -248,6 +257,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 ```
 
 在 ClickHouse 中，其行为与 Spark 保持一致。你可以在概念上将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
+
 
 ## 元数据文件解析 \{#metadata-file-resolution\}
 
@@ -283,13 +293,14 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 
 **注意**：上述所有设置都是引擎级别设置，必须在创建表时进行指定，如下所示：
 
-```sql 
+```sql
 CREATE TABLE example_table ENGINE = Iceberg(
     's3://bucket/path/to/iceberg_table'
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';
 ```
 
 **注意**：虽然 Iceberg Catalog 通常负责元数据解析，但 ClickHouse 中的 `Iceberg` 表引擎会直接将存储在 S3 中的文件解析为 Iceberg 表，这也是为什么理解这些解析规则很重要。
+
 
 ## 数据缓存 \{#data-cache\}
 

@@ -1,6 +1,6 @@
 # Install ClickHouse using tgz archives
 
-> It is recommended to use official pre-compiled `tgz` archives for all Linux distributions, where installation of `deb` or `rpm` packages is not possible.
+> It is recommended to use official pre-compiled `tgz` archives for all Linux distributions, where installation of `deb` or `rpm` packages isn't possible.
 
 <VerticalStepper>
 

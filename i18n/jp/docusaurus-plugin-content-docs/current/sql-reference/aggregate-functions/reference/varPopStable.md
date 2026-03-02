@@ -12,7 +12,7 @@ doc_type: 'reference'
 導入バージョン: v1.1
 
 母分散を返します。
-[`varPop`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varpop) とは異なり、この関数は[数値的に安定な](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。
+[`varPop`](/sql-reference/aggregate-functions/reference/varPop) とは異なり、この関数は[数値的に安定な](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。
 動作は遅くなりますが、計算誤差をより小さく抑えられます。
 
 **構文**

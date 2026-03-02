@@ -12,6 +12,7 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
+
 # Интеграция платформы Confluent с ClickHouse \{#integrating-confluent-platform-with-clickhouse\}
 
 <div class='vimeo-container'>
@@ -27,7 +28,9 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 </div>
 
 ## Предварительные требования \{#prerequisites\}
+
 Мы исходим из того, что вы знакомы со следующим:
+
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Платформой Confluent и [пользовательскими коннекторами (Custom Connectors)](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
 
@@ -51,7 +54,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 Вы можете скачать коннектор из нашего [репозитория](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) — там же вы можете оставлять комментарии и создавать issues!
 
-Перейдите в «Connector Plugins» → «Add plugin» и используйте следующие настройки:
+Перейдите в &quot;Connector Plugins&quot; -&gt; &quot;Add plugin&quot; и используйте следующие настройки:
 
 ```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
@@ -62,6 +65,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 Пример:
 
 <Image img={AddCustomConnectorPlugin} size="md" alt="Интерфейс Confluent Platform с настройками для добавления пользовательского коннектора ClickHouse" border />
+
 
 #### Соберите данные подключения \{#gather-your-connection-details\}
 
@@ -88,6 +92,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
   "value.converter.schemas.enable": "false"
 }
 ```
+
 
 #### Укажите конечные точки подключения \{#specify-the-connection-endpoints\}
 

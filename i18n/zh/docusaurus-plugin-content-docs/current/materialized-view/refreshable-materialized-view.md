@@ -19,6 +19,7 @@ import Image from '@theme/IdealImage';
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
+
 ## 何时应使用可刷新物化视图？ \{#when-should-refreshable-materialized-views-be-used\}
 
 ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图的方案具有更好的可扩展性，尤其是在需要对单个表执行聚合的场景中。通过仅在数据块插入时对每个数据块进行聚合计算，并在最终表中合并这些增量状态，查询始终只在数据的子集上执行。此方法可以扩展到潜在的 PB 级别数据量，通常是首选方法。
@@ -47,6 +48,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 你还可以取消、停止或启动视图。
 有关更多信息，请参阅[管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
 
+
 ## 可刷新物化视图最近一次刷新是什么时候？ \{#when-was-a-refreshable-materialized-view-last-refreshed\}
 
 要查找某个可刷新物化视图最近一次的刷新时间，可以按如下方式查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表：
@@ -60,9 +62,10 @@ FROM system.view_refreshes;
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
-│ database │ table_name_mv    │ 已调度    │ 2024-11-11 12:10:00 │ 2024-11-11 12:10:00 │ 2024-11-11 12:11:00 │   5491132 │       817718 │
+│ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:10:00 │ 2024-11-11 12:10:00 │ 2024-11-11 12:11:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
+
 
 ## 如何修改刷新频率？ \{#how-can-i-change-the-refresh-rate\}
 
@@ -77,15 +80,16 @@ MODIFY REFRESH EVERY 30 SECONDS;
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
-│ database │ table_name_mv    │ 已调度    │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
+│ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
+
 
 ## 使用 `APPEND` 添加新行 \{#using-append-to-add-new-rows\}
 
 `APPEND` 功能允许在表的末尾追加新行，而不是替换整个视图。
 
-此功能的一个用例是捕获某一时间点的数值快照。比如，假设我们有一张 `events` 表，它由来自 [Kafka](https://kafka.apache.org/)、[Redpanda](https://www.redpanda.com/) 或其他流式数据平台的消息流写入。
+此功能的一个用例是捕获某一时间点的数值快照。比如，假设我们有一张 `events` 表，它由来自 [Kafka](https://kafka.apache.org/)、[Redpanda](https://www.redpanda.com/) 或其他流式数据平台的消息流填充。
 
 ```sql
 SELECT *
@@ -145,7 +149,7 @@ ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
-接下来可以创建一个可刷新的物化视图来填充该表：
+接下来可以创建一个可刷新materialized view 来填充该表：
 
 ```sql
 CREATE MATERIALIZED VIEW events_snapshot_mv
@@ -159,6 +163,7 @@ GROUP BY ALL;
 ```
 
 然后我们可以查询 `events_snapshot`，以获取特定 `uuid` 随时间变化的计数：
+
 
 ```sql
 SELECT *
@@ -178,6 +183,7 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
+
 
 ## 示例 \{#examples\}
 
@@ -206,9 +212,9 @@ LEFT JOIN (
 
 然后我们展示了如何将这些数据一次性插入到 `posts_with_links` 表中，但在生产系统中，我们通常希望定期执行此操作。
 
-`posts` 和 `postlinks` 两个表都有可能发生更新。因此，与其尝试使用增量物化视图来实现这个连接操作，不如简单地将该查询按固定时间间隔调度运行，例如每小时运行一次，并将结果存储到 `post_with_links` 表中，这样可能就足够了。
+`posts` 和 `postlinks` 两个表都有可能发生更新。因此，与其尝试使用增量materialized view 来实现这个连接操作，不如简单地将该查询按固定时间间隔调度运行，例如每小时运行一次，并将结果存储到 `post_with_links` 表中，这样可能就足够了。
 
-这正是可刷新物化视图大显身手的场景，我们可以通过以下查询来创建这样一个视图：
+这正是可刷新materialized view 大显身手的场景，我们可以通过以下查询来创建这样一个视图：
 
 ```sql
 CREATE MATERIALIZED VIEW posts_with_links_mv
@@ -233,11 +239,12 @@ LEFT JOIN (
 此处的语法与增量物化视图完全相同，只是我们额外加入了一个 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
 :::
 
+
 ### IMDb \{#imdb\}
 
-在 [dbt 和 ClickHouse 集成指南](/integrations/dbt) 中，我们使用下列表填充了一个 IMDb 数据集：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
+在 [dbt 和 ClickHouse 集成指南](/integrations/dbt) 中，我们准备了一个 IMDb 数据集，并使用以下表：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
 
-然后我们可以编写如下查询，用于统计每位演员的汇总信息，并按出演电影次数从高到低排序。
+然后，我们可以编写如下查询，用于计算每位演员的汇总信息，并按出演电影次数从高到低排序。
 
 ```sql
 SELECT
@@ -296,7 +303,8 @@ ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-现在，我们可以来定义这个视图：
+现在我们可以定义这个视图：
+
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -351,7 +359,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-假设我们在源数据中添加了一位新演员 &quot;Clicky McClickHouse&quot;，并且他恰好出演了很多电影！
+假设我们在源数据中添加了一位名叫 &quot;Clicky McClickHouse&quot; 的新演员，恰好出演了大量电影！
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -364,7 +372,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-不到 60 秒钟后，我们的目标表就已更新，充分体现了 Clicky 在表演方面的高产：
+不到 60 秒，我们的目标表就已更新，充分体现了 Clicky 高产的演艺生涯：
 
 ```sql
 SELECT *
@@ -372,6 +380,7 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
 ```
+
 
 ```text
 ┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐

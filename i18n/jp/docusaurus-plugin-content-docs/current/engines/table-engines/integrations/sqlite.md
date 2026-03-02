@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # SQLite テーブルエンジン \{#sqlite-table-engine\}
 
 <CloudNotSupportedBadge />
@@ -29,6 +30,22 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 * `db_path` — データベースを含む SQLite ファイルへのパス。
 * `table` — SQLite データベース内のテーブル名。
+
+
+## データ型のサポート \{#data-types-support\}
+
+テーブル定義で ClickHouse のカラム型を明示的に指定した場合、SQLite の TEXT 型カラムからは次の ClickHouse 型を解釈できます:
+
+- [Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)
+- [DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)
+- [UUID](../../../sql-reference/data-types/uuid.md)
+- [Enum8, Enum16](../../../sql-reference/data-types/enum.md)
+- [Decimal32, Decimal64, Decimal128, Decimal256](../../../sql-reference/data-types/decimal.md)
+- [FixedString](../../../sql-reference/data-types/fixedstring.md)
+- すべての整数型（[UInt8, UInt16, UInt32, UInt64, Int8, Int16, Int32, Int64](../../../sql-reference/data-types/int-uint.md)）
+- [Float32, Float64](../../../sql-reference/data-types/float.md)
+
+デフォルトの型マッピングについては、[SQLite database engine](../../../engines/database-engines/sqlite.md#data_types-support) を参照してください。
 
 ## 使用例 \{#usage-example\}
 

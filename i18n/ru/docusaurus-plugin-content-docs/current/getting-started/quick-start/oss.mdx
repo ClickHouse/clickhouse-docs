@@ -30,7 +30,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   и загружает соответствующий бинарный файл ClickHouse, собранный из ветки master.
 
   :::note
-  Рекомендуется выполнять приведённую ниже команду из нового пустого подкаталога, так как при первом запуске сервера ClickHouse в каталоге с исполняемым файлом будут созданы конфигурационные файлы.
+  Рекомендуется запускать приведённую ниже команду из нового пустого подкаталога, поскольку при первом запуске сервера ClickHouse в каталоге, где находится исполняемый файл, будут созданы некоторые конфигурационные файлы.
 
   Приведенный ниже скрипт не рекомендуется использовать для установки ClickHouse в production-среде.
   Если вам необходимо установить production-экземпляр ClickHouse, обратитесь к [странице установки](/install).
@@ -43,14 +43,14 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   Вы увидите:
 
   ```
-  Бинарный файл ClickHouse успешно загружен, его можно запустить следующим образом:
+  Successfully downloaded the ClickHouse binary, you can run it as:
       ./clickhouse
 
-  Также его можно установить:
+  You can also install it:
   sudo ./clickhouse install
   ```
 
-  На данном этапе вы можете проигнорировать предложение выполнить команду `install`.
+  На этом этапе можно проигнорировать предложение выполнить команду `install`.
 
   :::note
   Для пользователей Mac: Если вы получаете ошибки о том, что разработчик бинарного файла не может быть проверен, см. [&quot;Исправление ошибки проверки разработчика в MacOS&quot;](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos).
@@ -118,10 +118,10 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ```sql
   INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
-      (101, 'Привет, ClickHouse!',                                 now(),       -1.0    ),
-      (102, 'Вставляйте много строк за один пакет',                     yesterday(), 1.41421 ),
-      (102, 'Сортируйте данные на основе часто используемых запросов', today(),     2.718   ),
-      (101, 'Гранулы — это наименьшие порции читаемых данных',      now() + 5,   3.14159 )
+      (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+      (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+      (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+      (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
   ```
 
   ## Запросы к новой таблице \{#query-your-new-table\}
@@ -138,20 +138,20 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ```text
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-  │     102 │ Вставляйте много строк за один пакет               │ 2022-03-21 00:00:00 │ 1.41421 │
-  │     102 │ Сортируйте данные на основе часто используемых запросов │ 2022-03-22 00:00:00 │   2.718 │
-  │     101 │ Привет, ClickHouse!                                │ 2022-03-22 14:04:09 │      -1 │
-  │     101 │ Гранулы — это наименьшие порции считываемых данных │ 2022-03-22 14:04:14 │ 3.14159 │
+  │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+  │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+  │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+  │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
   └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
-  4 строки в наборе. Прошло: 0.008 сек.
+  4 rows in set. Elapsed: 0.008 sec.
   ```
 
   ## Вставка собственных данных \{#insert-your-own-data\}
 
   Следующий шаг — загрузить ваши данные в ClickHouse. Для приёма данных доступно множество [табличных функций](/sql-reference/table-functions/index.md)
   и [интеграций](/integrations). Примеры приведены на вкладках
-  ниже. Полный список технологий, интегрируемых с ClickHouse, представлен на странице [Интеграции](/integrations).
+  ниже. Полный список технологий, которые интегрируются с ClickHouse, представлен на странице [Интеграции](/integrations).
 
   <Tabs groupId="read_data">
     <TabItem value="S3" label="S3" default>
@@ -190,7 +190,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       SETTINGS input_format_allow_errors_num=25000;
       ```
 
-      Ознакомьтесь с нашей [подборкой материалов документации AWS S3](/integrations/data-ingestion/s3/index.md), где приведена подробная информация и примеры использования S3 с ClickHouse.
+      Ознакомьтесь с нашей [коллекцией страниц документации по AWS S3](/integrations/data-ingestion/s3/index.md), где приведена подробная информация и многочисленные примеры использования S3 с ClickHouse.
 
       <br />
     </TabItem>
@@ -223,8 +223,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       файлы, доступные в интернете:
 
       ```sql
-      --По умолчанию ClickHouse блокирует перенаправления для защиты от SSRF-атак.
-      --URL ниже требует перенаправления, поэтому необходимо установить max_http_get_redirects > 0.
+      --By default, ClickHouse prevents redirects to protect from SSRF attacks.
+      --The URL below requires a redirect, so we must set max_http_get_redirects > 0.
       SET max_http_get_redirects=10;
 
       SELECT *
@@ -259,9 +259,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       └───────────┴─────────────────────────┘
       ```
 
-      Обратите внимание, что ClickHouse определяет имена и типы данных ваших столбцов, анализируя
-      большую выборку строк. Если ClickHouse не может определить формат файла по
-      имени файла, вы можете указать его вторым аргументом:
+      Обратите внимание, что ClickHouse определяет имена и типы данных столбцов, анализируя
+      большой пакет строк. Если ClickHouse не может определить формат файла по его имени,
+      вы можете указать его вторым аргументом:
 
       ```sql
       SELECT count()
@@ -271,7 +271,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      Подробнее см. страницу документации табличной функции [`file`](/sql-reference/table-functions/file).
+      Подробнее см. страницу документации по табличной функции [`file`](/sql-reference/table-functions/file).
 
       <br />
     </TabItem>
@@ -319,7 +319,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="Другие СУБД" label="ODBC/JDBC">
-      ClickHouse может читать данные из любого источника данных ODBC или JDBC:
+      ClickHouse может читать данные из любого ODBC- или JDBC-источника данных:
 
       ```sql
       SELECT *
@@ -347,7 +347,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="озеро данных" label="Озёра данных">
+    <TabItem value="озеро данных" label="Озера данных">
       В ClickHouse есть табличные функции для чтения данных из следующих источников:
 
       * **Hadoop**: интеграция с Apache Hadoop с использованием табличной функции [`hdfs`](/sql-reference/table-functions/hdfs)
@@ -365,13 +365,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
   </Tabs>
 
-  ## Исследование данных \{#explore\}
+  ## Исследование \{#explore\}
 
-  * Ознакомьтесь с разделом [Основные концепции](/managing-data/core-concepts), чтобы познакомиться с основами того, как ClickHouse работает «под капотом».
+  * Ознакомьтесь с разделом [Основные концепции](/managing-data/core-concepts), чтобы разобраться в основных принципах работы ClickHouse «под капотом».
   * Ознакомьтесь с [углублённым руководством](tutorial.md), которое гораздо глубже раскрывает ключевые концепции и возможности ClickHouse.
   * Продолжите обучение, пройдя наши бесплатные онлайн‑курсы в удобное для вас время в [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog).
   * У нас есть список [примеров наборов данных](/getting-started/example-datasets/) с инструкциями по их загрузке.
   * Если ваши данные поступают из внешнего источника, ознакомьтесь с нашей [подборкой руководств по интеграциям](/integrations/) для подключения к очередям сообщений, базам данных, пайплайнам и другим системам.
-  * Если вы используете инструмент визуализации (UI/BI), ознакомьтесь с [руководствами по подключению UI к ClickHouse](/integrations/data-visualization/).
+  * Если вы используете UI/BI‑инструмент визуализации, ознакомьтесь с [руководствами по подключению UI к ClickHouse](/integrations/data-visualization/).
   * Руководство пользователя по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) содержит всю необходимую информацию о первичных ключах и их определении.
 </VerticalStepper>

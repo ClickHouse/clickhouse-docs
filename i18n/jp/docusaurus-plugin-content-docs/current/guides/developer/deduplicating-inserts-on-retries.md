@@ -106,7 +106,7 @@ SET min_insert_block_size_bytes=0;
 SET deduplicate_blocks_in_dependent_materialized_views=1;
 ```
 
-materialized view における重複排除機能を有効化する必要があります。
+materialized view で重複排除を有効化する必要があります。
 
 ```sql
 INSERT INTO dst SELECT
@@ -126,7 +126,7 @@ ORDER BY all;
 └─────┴───────┴───────────┘
 ```
 
-ここでは、`dst` テーブルに 2 つのパーツが挿入されたことが分かります。SELECT からは 2 ブロック、INSERT では 2 つのパーツになります。これらのパーツにはそれぞれ異なるデータが含まれています。
+ここでは、`dst` テーブルに 2 つのパーツが挿入されたことが分かります。SELECT からの 2 ブロックが、INSERT 時には 2 つのパーツになります。これらのパーツにはそれぞれ異なるデータが含まれています。
 
 ```sql
 SELECT

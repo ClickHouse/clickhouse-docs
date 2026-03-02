@@ -47,15 +47,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのレプリカが作成されます。 Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。 組織ティアは、後で「Plans」ページで変更できます。
+  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つの^^replica^^が作成されます。Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。組織ティアは、後で「Plans」ページで変更できます。
 
   必要に応じて、レプリカのスケール範囲となる最小サイズと最大サイズを指定して、サービスリソースをカスタマイズします。準備ができたら、`Create service`を選択します。
 
-  <Image img={scaling_limits} size="md" alt="スケーリング上限" border />
+  <Image img={scaling_limits} size="md" alt="スケーリング制限" border />
 
   <br />
 
-  おめでとうございます！ClickHouse Cloudサービスが稼働し、オンボーディングが完了しました。データの取り込みとクエリの実行方法については、以下をご参照ください。
+  おめでとうございます!ClickHouse Cloudサービスが稼働し、オンボーディングが完了しました。データの取り込みとクエリの実行方法については、以下をご参照ください。
 
   ## ClickHouseに接続する \{#2-connect-to-clickhouse\}
 
@@ -80,7 +80,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   リストには4つのデータベースと、追加したデータベースがあればそれらも表示されます。
 
-  <Image img={show_databases} size="md" alt="SQLコンソール" border />
+  <Image img={show_databases} size="md" alt="SQL コンソール" border />
 
   <br />
 
@@ -94,7 +94,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  ご使用の言語クライアントが表示されない場合は、[インテグレーション](/integrations)のリストを参照してください。
+  ご使用の言語クライアントが表示されない場合は、[インテグレーション](/integrations)の一覧を確認してください。
 
   ## データを追加する \{#3-add-data\}
 
@@ -106,11 +106,11 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   以下の方法でデータをアップロードできます：
 
-  * S3、Postgres、Kafka、GCS などのデータソースからのデータ取り込みを開始するために、ClickPipe をセットアップする
+  * S3、Postgres、Kafka、GCS などのデータソースからデータを取り込み始めるために、ClickPipe を設定する
   * SQL コンソールを使用する
-  * ClickHouse クライアントの使用
-  * ファイルをアップロード - 対応形式は JSON、CSV、TSV です
-  * ファイル URL からデータをアップロードする
+  * ClickHouse クライアントを使用する
+  * ファイルをアップロード - JSON、CSV、TSV 形式に対応しています
+  * ファイルの URL からデータをアップロードする
 
   ### ClickPipes \{#clickpipes\}
 
@@ -145,15 +145,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   上記の例では、`my_first_table`は4つのカラムを持つ[`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md)テーブルです:
 
   * `user_id`: 32ビット符号なし整数（[UInt32](../../sql-reference/data-types/int-uint.md)）
-  * `message`: 他のデータベースシステムで使用される `VARCHAR`、`BLOB`、`CLOB` などの型に相当する [String](../../sql-reference/data-types/string.md) データ型
+  * `message`: 他のデータベースシステムにおける `VARCHAR`、`BLOB`、`CLOB` などの型に代わる [String](../../sql-reference/data-types/string.md) データ型
   * `timestamp`: ある瞬間を表す [DateTime](../../sql-reference/data-types/datetime.md) 値
-  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md))
+  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md)）
 
   :::note テーブルエンジン
   テーブルエンジンは以下を決定します：
 
   * データの保存場所と方法
-  * サポートされるクエリ
+  * サポートされているクエリ
   * データがレプリケーションされているかどうか
 
   <br />
@@ -161,26 +161,26 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   選択可能なテーブルエンジンは多数ありますが、単一ノードのClickHouseサーバー上のシンプルなテーブルには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)が最適な選択となるでしょう。
   :::
 
-  #### プライマリキーの簡単な紹介 \{#a-brief-intro-to-primary-keys\}
+  #### プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
 
-  先に進む前に、ClickHouseにおけるプライマリキーの動作原理を理解しておくことが重要です（プライマリキーの実装は予想外に感じられるかもしれません）：
+  先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です（プライマリキーの実装は、少し意外に感じられるかもしれません）：
 
   * ClickHouse のプライマリキーは、テーブル内の各行に対し&#x3066;***一意ではありません***
 
   ClickHouseテーブルの^^主キー^^は、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、^^主キー^^インデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**^^スパースインデックス^^**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
 
-  ^^プライマリキー^^は`PRIMARY KEY`パラメータを使用して定義できます。`PRIMARY KEY`を指定せずにテーブルを定義した場合、キーは`ORDER BY`句で指定されたタプルになります。`PRIMARY KEY`と`ORDER BY`の両方を指定した場合、^^プライマリキー^^はソート順のサブセットである必要があります。
+  ^^プライマリキー^^は `PRIMARY KEY` パラメータを使用して定義できます。`PRIMARY KEY` を指定せずにテーブルを定義した場合、キーは `ORDER BY` 句で指定されたタプルになります。`PRIMARY KEY` と `ORDER BY` の両方を指定した場合、^^プライマリキー^^はソート順を構成する列のサブセットである必要があります。
 
   ^^プライマリキー^^は^^ソートキー^^でもあり、`(user_id, timestamp)`のタプルです。したがって、各カラムファイルに格納されるデータは、`user_id`、次に`timestamp`の順でソートされます。
 
   ClickHouseの中核概念について詳しく知るには、[&quot;コア概念&quot;](../../managing-data/core-concepts/index.md)を参照してください。
 
-  #### テーブルへのデータの挿入 \{#insert-data-into-your-table\}
+  #### テーブルにデータを挿入する \{#insert-data-into-your-table\}
 
   ClickHouseでは、おなじみの[`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md)コマンドを使用できますが、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)テーブルへの各挿入により、ストレージ内に**パート**が作成されることを理解しておく必要があります。
 
   :::tip ClickHouseのベストプラクティス
-  バッチごとに大量の行を挿入します。数万行から数百万行を一度に挿入してください。ClickHouseはこのような大量のデータを容易に処理できます。また、サービスへの書き込みリクエスト数を減らすことで[コストを削減](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)できます。
+  バッチごとに、数万行から数百万行といった大量の行をまとめて挿入してください。心配はいりません。ClickHouseはこの程度のボリュームであれば容易に処理でき、サービスへの書き込みリクエスト数を減らすことで[コストを削減](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)できます。
   :::
 
   <br />
@@ -199,15 +199,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   `timestamp`カラムは、さまざまな[**Date**](../../sql-reference/data-types/date.md)および[**DateTime**](../../sql-reference/data-types/datetime.md)関数を使用して値が設定されています。ClickHouseには数百の便利な関数があり、[**関数**セクション](/sql-reference/functions/)で確認できます。
   :::
 
-  動作確認を行います:
+  動作したか確認してみましょう:
 
   ```sql
   SELECT * FROM helloworld.my_first_table
   ```
 
-  ### ClickHouseクライアントを使用してデータを追加する \{#add-data-using-the-clickhouse-client\}
+  ### ClickHouseクライアントを使用したデータの追加 \{#add-data-using-the-clickhouse-client\}
 
-  [**clickhouse client**](/interfaces/cli)というコマンドラインツールを使用して、ClickHouse Cloudサービスに接続することもできます。左側のメニューで`Connect`をクリックし、詳細情報にアクセスしてください。ダイアログのドロップダウンから`Native`を選択します:
+  [**clickhouse client**](/interfaces/cli)というコマンドラインツールを使用して、ClickHouse Cloud サービスに接続することもできます。左側のメニューで`Connect`をクリックしてこれらの詳細にアクセスします。ダイアログのドロップダウンから`Native`を選択します:
 
   <Image img={client_details} size="md" alt="ClickHouse クライアントの接続情報" border />
 
@@ -240,7 +240,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   ORDER BY timestamp
   ```
 
-  レスポンスが整形されたテーブル形式で返されることを確認してください:
+  レスポンスが見やすいテーブル形式で返ってくることに注目してください:
 
   ```response
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
@@ -264,7 +264,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   FORMAT TabSeparated
   ```
 
-  上記のクエリでは、出力はタブ区切りで返されます:
+  上記のクエリでは、出力は次のようにタブ区切りで返されます:
 
   ```response
   Query id: 3604df1c-acfd-4117-9c56-f86c69721121
@@ -287,9 +287,9 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   ### ファイルのアップロード \{#upload-a-file\}
 
-  データベースの利用開始時によくあるタスクとして、既存のファイルに保存されているデータの挿入があります。クリックストリームデータを表すサンプルデータをオンラインで提供しており、これを挿入することができます。このデータには、ユーザーID、訪問されたURL、およびイベントのタイムスタンプが含まれています。
+  データベースを使い始めるときによく行う作業の一つは、すでにファイルにあるデータを挿入することです。クリックストリームデータを表すサンプルデータをオンラインで提供しており、これを挿入できます。このデータにはユーザーID、訪問したURL、そしてイベントのタイムスタンプが含まれます。
 
-  `data.csv`という名前のCSVファイルに以下のテキストが含まれているとします:
+  `data.csv`という名前のCSVファイルに以下のテキストが含まれているとします：
 
   ```bash title="data.csv"
   102,This is data in a file,2022-02-22 10:43:28,123.45
@@ -309,7 +309,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
   ```
 
-  2. SQL コンソールからクエリを実行すると、新しい行がテーブルに表示されていることが確認できます：
+  2. Notice the new rows appear in the table now if querying from the SQL console:
 
   <br />
 
@@ -317,6 +317,11 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 </VerticalStepper>
+
+:::tip[IP アクセスリストフィルタリング]
+次に進む前に、IP アクセスリストフィルタリングを設定しておくことを推奨します。
+詳細は「[IP フィルタの設定](/cloud/security/setting-ip-filters)」を参照してください。
+:::
 
 ## 次のステップは？ \{#whats-next\}
 

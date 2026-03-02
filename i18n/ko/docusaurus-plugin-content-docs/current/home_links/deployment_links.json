@@ -1,0 +1,14 @@
+[
+  {
+    "title": "빠른 시작",
+    "description": "몇 분 안에 ClickHouse를 실행하고 샘플 데이터를 탐색한 다음, 자체 솔루션을 구축하십시오",
+    "url": "/docs/quick-start/",
+    "background": "Cloud"
+  },
+  {
+    "title": "튜토리얼과 샘플 데이터셋",
+    "description": "택시 이동 데이터부터 부동산 가격까지 다양한 데이터를 ClickHouse에 적재하고, 고성능 쿼리를 고려해 모델링하는 방법을 알아보십시오",
+    "url": "/docs/getting-started/example-datasets/",
+    "background": "Cloud"
+  }
+]

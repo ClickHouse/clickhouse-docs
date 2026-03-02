@@ -337,7 +337,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
 ```
 
-Note that this allows for files to be renamed and then re-renamed to their original values. First we aggregate `old_path` for a list of deleted files as a result of renaming. We union this with the last operation for every `path`. Finally, we filter this list to those where the final event is not a `Delete`.
+Note that this allows for files to be renamed and then re-renamed to their original values. First we aggregate `old_path` for a list of deleted files as a result of renaming. We union this with the last operation for every `path`. Finally, we filter this list to those where the final event isn't a `Delete`.
 
 [play](https://sql.clickhouse.com?query_id=1OXCKMOH2JVMSHD3NS2WW6)
 
@@ -387,7 +387,7 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 
 The difference here is caused by a few factors:
 
-- A rename can occur alongside other modifications to the file. These are listed as separate events in file_changes but with the same time. The `argMax` function has no way of distinguishing these - it picks the first value. The natural ordering of the inserts (the only means of knowing the correct order) is not maintained across the union so modified events can be selected. For example, below the `src/Functions/geometryFromColumn.h` file has several modifications before being renamed to `src/Functions/geometryConverters.h`. Our current solution may pick a Modify event as the latest change causing `src/Functions/geometryFromColumn.h` to be retained.
+- A rename can occur alongside other modifications to the file. These are listed as separate events in file_changes but with the same time. The `argMax` function has no way of distinguishing these - it picks the first value. The natural ordering of the inserts (the only means of knowing the correct order) isn't maintained across the union so modified events can be selected. For example, below the `src/Functions/geometryFromColumn.h` file has several modifications before being renamed to `src/Functions/geometryConverters.h`. Our current solution may pick a Modify event as the latest change causing `src/Functions/geometryFromColumn.h` to be retained.
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 
@@ -2358,7 +2358,7 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 
 This makes viewing the full history of a file challenging since we don't have a single value connecting all line or file changes.
 
-To address this, we can use User Defined Functions (UDFs). These cannot, currently, be recursive, so to identify the history of a file we must define a series of UDFs which call each other explicitly.
+To address this, we can use User Defined Functions (UDFs). These can't, currently, be recursive, so to identify the history of a file we must define a series of UDFs which call each other explicitly.
 
 This means we can only track renames to a maximum depth - the below example is 5 deep. It is unlikely a file will be renamed more times than this, so for now, this is sufficient.
 

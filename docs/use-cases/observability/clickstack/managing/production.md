@@ -36,7 +36,7 @@ For production deployments, [Managed ClickStack](/use-cases/observability/clicks
 
 ### Secure ingestion {#secure-ingestion-managed}
 
-By default, the ClickStack OpenTelemetry Collector is not secured when deployed outside of the Open Source distributions and does not require authentication on its OTLP ports.
+By default, the ClickStack OpenTelemetry Collector isn't secured when deployed outside of the Open Source distributions and doesn't require authentication on its OTLP ports.
 
 To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. See ["Securing the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) for further details.
 
@@ -57,7 +57,7 @@ These recommendations are based on the following assumptions:
 - Data volume refers to **uncompressed ingest volume** per month and applies to both logs and traces.
 - Query patterns are typical for observability use cases, with most queries targeting **recent data**, usually the last 24 hours.
 - Ingestion is relatively **uniform across the month**. If you expect bursty traffic or spikes, you should provision additional headroom.
-- Storage is handled separately via ClickHouse Cloud object storage and is not a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
+- Storage is handled separately via ClickHouse Cloud object storage and isn't a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
 
 More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
 
@@ -77,7 +77,7 @@ These values are **estimates only** and should be used as an initial baseline. A
 
 #### Isolating observability workloads {#isolating-workloads}
 
-If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, isolating observability traffic is strongly recommended.
+If you're adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, isolating observability traffic is strongly recommended.
 
 Use [**Managed Warehouses**](/cloud/reference/warehouses) to create a **child service** dedicated to ClickStack. This allows you to:
 
@@ -172,7 +172,7 @@ Users managing their own ClickHouse instance should adhere to the following best
 
 #### Security best practices {#self-managed-security}
 
-If you are managing your own ClickHouse instance, it's essential to enable **TLS**, enforce authentication, and follow best practices for hardening access. See [this blog post](https://www.wiz.io/blog/clickhouse-and-wiz) for context on real-world misconfigurations and how to avoid them.
+If you're managing your own ClickHouse instance, it's essential to enable **TLS**, enforce authentication, and follow best practices for hardening access. See [this blog post](https://www.wiz.io/blog/clickhouse-and-wiz) for context on real-world misconfigurations and how to avoid them.
 
 ClickHouse OSS provides robust security features out of the box. However, these require configuration:
 
@@ -198,7 +198,7 @@ The ClickHouse user for the ClickStack UI only needs to be a `readonly` user wit
 - `cancel_http_readonly_queries_on_client_close`
 - `wait_end_of_query`
 
-By default, the `default` user in both OSS and ClickHouse Cloud will have these permissions available however you are recommended to create a new user with these permissions.
+By default, the `default` user in both OSS and ClickHouse Cloud will have these permissions available however you're recommended to create a new user with these permissions.
 
 ### Configure Time To Live (TTL) {#configure-ttl}
 

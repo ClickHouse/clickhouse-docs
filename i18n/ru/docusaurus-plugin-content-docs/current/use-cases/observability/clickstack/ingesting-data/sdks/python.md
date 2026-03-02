@@ -40,13 +40,28 @@ opentelemetry-bootstrap -a install
 
 ### Настройте переменные окружения \{#configure-environment-variables\}
 
-Далее в оболочке необходимо задать следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
+Далее в оболочке необходимо задать следующие переменные окружения, чтобы отправлять телеметрию в ClickStack через коллектор OpenTelemetry:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
+
+```shell
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
+
+</TabItem>
+</Tabs>
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса в приложении HyperDX. Вы можете задать ей любое удобное вам имя.*
 

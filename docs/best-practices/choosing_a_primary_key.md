@@ -25,7 +25,7 @@ Choosing an effective primary key in ClickHouse is crucial for query performance
 Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **You can identify a number of keys from this process, with 4-5 typically sufficient**:
 
 :::note Important
-Ordering keys must be defined on table creation and cannot be added. Additional ordering can be added to a table after (or before) data insertion through a feature known as projections. Be aware these result in data duplication. Further details [here](/sql-reference/statements/alter/projection).
+Ordering keys must be defined on table creation and can't be added. Additional ordering can be added to a table after (or before) data insertion through a feature known as projections. Be aware these result in data duplication. Further details [here](/sql-reference/statements/alter/projection).
 :::
 
 ## Example {#example}
@@ -168,7 +168,7 @@ Additionally, we visualize how the sparse index prunes all row blocks that can't
 <Image img={primary_key} size="lg" alt="Primary key" />
 
 :::note
-All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they're included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 :::
 
 A complete advanced guide on choosing primary keys can be found [here](/guides/best-practices/sparse-primary-indexes).

@@ -230,7 +230,7 @@ GROUP BY
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-按年份汇总的各域名数据：
+每个域名按年份聚合的数据：
 
 ```sql
 SELECT

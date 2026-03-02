@@ -24,7 +24,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
-We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
+We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We don't yet support a system for cross-domain identity management (SCIM) or attribute mapping.
 
 Customers enabling SAML integrations can also designate the default role that will be assigned to new users and adjust session timeout settings.
 
@@ -58,7 +58,7 @@ Create an application within your identity provider and copy the values on the `
 - [Configure Duo SAML](#configure-duo-saml)
 
 :::tip
-ClickHouse does not support identity provider initiated sign-in. To make it easy for your users to access ClickHouse Cloud, set up a bookmark for your users using this sign-in URL format: `https://console.clickhouse.cloud/?connection={orgId}` where the `{orgID}` is your organization ID on the Organization details page.
+ClickHouse doesn't support identity provider initiated sign-in. To make it easy for your users to access ClickHouse Cloud, set up a bookmark for your users using this sign-in URL format: `https://console.clickhouse.cloud/?connection={orgId}` where the `{orgID}` is your organization ID on the Organization details page.
 :::
 
    <Image img={samlSelfServe2} size="lg" alt="Create identity provider application" force/>
@@ -106,7 +106,7 @@ Users configured with a different authentication method will be retained until a
 To assign your first admin user via SAML:
 1. Log out of [ClickHouse Cloud](https://console.clickhouse.cloud).
 2. In your identity provider, assign the admin user to the ClickHouse application(s).
-3. Ask the user to log in via https://console.clickhouse.cloud/?connection={orgId} (shortcut URL). This may be via a bookmark you created in the prior steps. The user will not appear in ClickHouse Cloud until their first login.
+3. Ask the user to log in via https://console.clickhouse.cloud/?connection={orgId} (shortcut URL). This may be via a bookmark you created in the prior steps. The user won't appear in ClickHouse Cloud until their first login.
 4. If the default SAML role is anything other than Admin, the user may need to log out and log back in with their original authentication method to update the new SAML user's role. 
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
    - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
@@ -178,7 +178,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    3. Select SAML 2.0 and click Next.
    
-   4. Enter a name for your application and check the box next to **Do not display application icon to users** then click **Next**. 
+   4. Enter a name for your application and check the box next to **Don't display application icon to users** then click **Next**. 
    
    5. Use the following values to populate the SAML settings screen.
    
@@ -352,14 +352,14 @@ Security is our top priority when it comes to authentication. For this reason, w
 
 - **We only process service provider-initiated authentication flows.** Users must navigate to `https://console.clickhouse.cloud` and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
 
-- **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
+- **We don't automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they're using the same email address.
 
 ## Troubleshooting Common Issues {#troubleshooting-common-issues}
 
 | Error | Cause | Solution | 
 |:------|:------|:---------|
 | There could be a misconfiguration in the system or a service outage | Identity provider initiated login | To resolve this error try using the direct link `https://console.clickhouse.cloud/?connection={organizationid}`. Follow the instructions for your identity provider above to make this the default login method for your users | 
-| You are directed to your identity provider, then back to the login page | The identity provider does not have the email attribute mapping |  Follow the instructions for your identity provider above to configure the user email attribute and log in again | 
-| User is not assigned to this application | The user has not been assigned to the ClickHouse application in the identity provider | Assign the user to the application in the identity provider and log in again |
-| You have multiple ClickHouse organizations integrated with SAML SSO and you are always logged into the same organization, regardless of which link or tile you use | You are still logged in to the first organization | Log out, then log in to the other organization |
-| The URL briefly shows `access denied` | Your email domain does not match the domain we have configured | Reach out to support for assistance resolving this error |
+| You're directed to your identity provider, then back to the login page | The identity provider doesn't have the email attribute mapping |  Follow the instructions for your identity provider above to configure the user email attribute and log in again | 
+| User isn't assigned to this application | The user hasn't been assigned to the ClickHouse application in the identity provider | Assign the user to the application in the identity provider and log in again |
+| You have multiple ClickHouse organizations integrated with SAML SSO and you're always logged into the same organization, regardless of which link or tile you use | You're still logged in to the first organization | Log out, then log in to the other organization |
+| The URL briefly shows `access denied` | Your email domain doesn't match the domain we have configured | Reach out to support for assistance resolving this error |

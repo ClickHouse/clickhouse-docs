@@ -9,15 +9,16 @@ doc_type: 'guide'
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-[リフレッシュ可能なマテリアライズドビュー](/sql-reference/statements/create/view#refreshable-materialized-view) は、指定したクエリの結果を保存して高速に取得し、リソース負荷の高いクエリを何度も実行する必要を減らすという点で、従来の OLTP データベースにおけるマテリアライズドビューと概念的に類似しています。ClickHouse の [インクリメンタルなマテリアライズドビュー](/materialized-view/incremental-materialized-view) とは異なり、この方式では対象となるクエリを全データセットに対して定期的に実行し、その結果がクエリ用のターゲットテーブルに保存されます。この結果セットは理論上、元のデータセットよりも小さくなるため、その後に実行されるクエリを高速化できます。
+[リフレッシャブルmaterialized view](/sql-reference/statements/create/view#refreshable-materialized-view) は、指定したクエリの結果を保存して高速に取得し、リソース負荷の高いクエリを何度も実行する必要を減らすという点で、従来の OLTP データベースにおける materialized view と概念的に類似しています。ClickHouse の [インクリメンタルmaterialized view](/materialized-view/incremental-materialized-view) とは異なり、この方式では対象となるクエリを全データセットに対して定期的に実行し、その結果がクエリ用のターゲットテーブルに保存されます。この結果セットは理論上、元のデータセットよりも小さくなるため、その後に実行されるクエリを高速化できます。
 
-次の図は、リフレッシュ可能なマテリアライズドビューの動作を説明しています：
+次の図は、リフレッシャブルmaterialized view の動作を説明しています：
 
-<Image img={refreshableMaterializedViewDiagram} size="lg" alt="リフレッシュ可能なマテリアライズドビューの図" />
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="リフレッシャブルmaterialized view の図" />
 
 次の動画も参照してください：
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 動画プレイヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+
 
 ## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか \{#when-should-refreshable-materialized-views-be-used\}
 
@@ -45,7 +46,8 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 ビューをキャンセル、停止、開始することもできます。
-詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
+詳細については、[リフレッシャブルmaterialized viewの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
+
 
 ## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ \{#when-was-a-refreshable-materialized-view-last-refreshed\}
 
@@ -64,6 +66,7 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
+
 ## リフレッシュ間隔はどのように変更できますか？ \{#how-can-i-change-the-refresh-rate\}
 
 リフレッシュ可能なマテリアライズドビューのリフレッシュ間隔を変更するには、[`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 構文を使用します。
@@ -80,6 +83,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 │ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
+
 
 ## `APPEND` を使用して新しい行を追加する \{#using-append-to-add-new-rows\}
 
@@ -160,6 +164,7 @@ GROUP BY ALL;
 
 次に、特定の `uuid` について時間経過に伴うカウントを取得するために `events_snapshot` をクエリします：
 
+
 ```sql
 SELECT *
 FROM events_snapshot
@@ -177,12 +182,12 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:13:50 │ fff  │ 6203361 │
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
-
 ```
+
 
 ## 例 \{#examples\}
 
-ここでは、いくつかのサンプルデータセットを使って、リフレッシュ可能なマテリアライズドビューの使用方法を見ていきます。
+ここでは、いくつかのサンプルデータセットを使って、リフレッシャブルmaterialized view の使用方法を見ていきます。
 
 ### Stack Overflow \{#stack-overflow\}
 
@@ -234,11 +239,12 @@ LEFT JOIN (
 ここでの構文はインクリメンタルなマテリアライズドビューと同一ですが、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 句を含めている点が異なります。
 :::
 
+
 ### IMDb \{#imdb\}
 
-[dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを用いて IMDb データセットを用意しました。
+[dbt と ClickHouse の統合ガイド](/integrations/dbt) では、`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles` というテーブルを使って IMDb データセットを作成しました。
 
-次に、各俳優ごとの集計を算出し、出演作品数が多い順に並べるために、次のクエリを実行します。
+次に、以下のクエリを使って各俳優のサマリーを算出し、出演作品数が多い順に並べることができます。
 
 ```sql
 SELECT
@@ -273,14 +279,14 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi  │        544 │                  0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴────────────────────┴───────────────┴────────────────┴─────────────────────┘
 
-5行を取得しました。経過時間: 0.393秒。処理済み: 545万行、86.82 MB (1387万行/秒、221.01 MB/秒)
-ピークメモリ使用量: 1.38 GiB。
+5 rows in set. Elapsed: 0.393 sec. Processed 5.45 million rows, 86.82 MB (13.87 million rows/s., 221.01 MB/s.)
+Peak memory usage: 1.38 GiB.
 ```
 
-結果が返ってくるまでそれほど時間はかかりませんが、さらに処理を高速化し、計算コストも減らしたいとします。
+結果が返ってくるまでそれほど時間はかかりませんが、さらに処理を高速化し、計算コストも削減したいとします。
 このデータセットは常に更新されているとも仮定しましょう。映画は次々と公開され、新しい俳優や監督も登場し続けています。
 
-ここでリフレッシュ可能なマテリアライズドビューの出番です。まずは結果を書き込むためのターゲットテーブルを作成しましょう。
+ここでリフレッシャブルmaterialized viewの出番です。まずは結果を書き込むためのターゲットテーブルを作成しましょう。
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -298,6 +304,7 @@ ORDER BY num_movies
 ```
 
 では、ビューを定義します:
+
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -349,10 +356,10 @@ LIMIT 5
 │  41669 │ Adoor Bhasi  │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
-5行のセット。経過時間: 0.007秒
+5 rows in set. Elapsed: 0.007 sec.
 ```
 
-たとえば、ソースデータに新しい俳優「Clicky McClickHouse」を追加し、この人物が非常に多くの映画に出演しているとします。
+ソースデータに、多くの映画に出演している新しい俳優「Clicky McClickHouse」を追加するとしましょう。
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -365,7 +372,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-60 秒も経たないうちに、ターゲットテーブルが更新され、Clicky の大活躍ぶりが反映されます。
+60秒もしないうちに、ターゲットテーブルは Clicky の出演本数の多さを反映するように更新されます。
 
 ```sql
 SELECT *
@@ -373,6 +380,7 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
 ```
+
 
 ```text
 ┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -383,5 +391,5 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi         │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
-5行のセット。経過時間: 0.006秒。
+5 rows in set. Elapsed: 0.006 sec.
 ```

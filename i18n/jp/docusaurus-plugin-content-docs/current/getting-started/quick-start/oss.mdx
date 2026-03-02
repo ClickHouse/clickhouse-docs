@@ -23,7 +23,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 <VerticalStepper>
   ## ClickHouseのダウンロード \{#download-the-binary\}
 
-  ClickHouseはLinux、FreeBSD、macOS上でネイティブに動作し、Windowsでは[WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。 ClickHouseをローカルにダウンロードする最も簡単な方法は、以下の`curl`コマンドを実行することです。 このコマンドは使用中のオペレーティングシステムがサポートされているかを判定し、masterブランチからビルドされた適切なClickHouseバイナリをダウンロードします。
+  ClickHouseはLinux、FreeBSD、macOS上でネイティブに動作し、Windowsでは[WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。ClickHouseをローカルにダウンロードする最も簡単な方法は、以下の`curl`コマンドを実行することです。このコマンドは使用中のオペレーティングシステムがサポートされているかを判定し、masterブランチからビルドされた適切なClickHouseバイナリをダウンロードします。
 
   :::note
   以下のコマンドは新規の空のサブディレクトリから実行することを推奨します。ClickHouseサーバーの初回起動時に、バイナリが配置されているディレクトリ内に設定ファイルが作成されるためです。
@@ -39,10 +39,10 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   次のように表示されます：
 
   ```
-  ClickHouseバイナリのダウンロードに成功しました。以下のコマンドで実行できます:
+  Successfully downloaded the ClickHouse binary, you can run it as:
       ./clickhouse
 
-  また、以下のコマンドでインストールすることもできます:
+  You can also install it:
   sudo ./clickhouse install
   ```
 
@@ -98,16 +98,16 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらの^^パート^^は後でClickHouseによってバックグラウンドでマージされます。
 
-  ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パート**](/parts)の数を最小限に抑えるため、一度に大量の行（数万行から数百万行）をバルク挿入します。
+  ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行（数万行から数百万行）をバルク挿入します。
 
   このガイドでは、その点についてはひとまず考慮しません。以下のコマンドを実行して、テーブルに数行のデータを挿入してください：
 
   ```sql
   INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
-      (101, 'こんにちは、ClickHouse!',                                 now(),       -1.0    ),
-      (102, 'バッチごとに多数の行を挿入する',                     yesterday(), 1.41421 ),
-      (102, 'よく使用するクエリに基づいてデータをソートする', today(),     2.718   ),
-      (101, 'グラニュールは読み取られるデータの最小チャンク',      now() + 5,   3.14159 )
+      (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+      (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+      (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+      (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
   ```
 
   ## 新しいテーブルをクエリする \{#query-your-new-table\}
@@ -124,13 +124,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ```text
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-  │     102 │ バッチごとに大量の行を挿入する                     │ 2022-03-21 00:00:00 │ 1.41421 │
-  │     102 │ よく使用するクエリに基づいてデータをソートする │ 2022-03-22 00:00:00 │   2.718 │
-  │     101 │ こんにちは、ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
-  │     101 │ グラニュールは読み取られるデータの最小チャンク      │ 2022-03-22 14:04:14 │ 3.14159 │
+  │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+  │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+  │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+  │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
   └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
-  4行が返されました。経過時間: 0.008秒
+  4 rows in set. Elapsed: 0.008 sec.
   ```
 
   ## 独自データの挿入 \{#insert-your-own-data\}
@@ -173,7 +173,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       SETTINGS input_format_allow_errors_num=25000;
       ```
 
-      ClickHouse と S3 の連携方法に関する詳しい説明や多数の利用例については、[AWS S3 に関するドキュメント集](/integrations/data-ingestion/s3/index.md) を参照してください。
+      ClickHouse と S3 の連携方法に関する詳細や多数の利用例については、[AWS S3 に関するドキュメント集](/integrations/data-ingestion/s3/index.md) を参照してください。
 
       <br />
     </TabItem>
@@ -203,11 +203,11 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
     <TabItem value="URL" label="Web">
       [`url` テーブル関数](/sql-reference/table-functions/url) は、
-      Web 経由でアクセス可能なファイルを読み取ります：
+      Web 上でアクセス可能なファイルを読み込みます。
 
       ```sql
-      --デフォルトでは、ClickHouseはSSRF攻撃を防ぐためリダイレクトを無効化しています。
-      --以下のURLはリダイレクトが必要なため、max_http_get_redirects > 0に設定する必要があります。
+      --By default, ClickHouse prevents redirects to protect from SSRF attacks.
+      --The URL below requires a redirect, so we must set max_http_get_redirects > 0.
       SET max_http_get_redirects=10;
 
       SELECT *
@@ -241,7 +241,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       └───────────┴─────────────────────────┘
       ```
 
-      ClickHouse は、多数の行を含むバッチを解析することで、カラム名とデータ型を推論します。ClickHouse がファイル名からファイルフォーマットを判別できない場合は、2 番目の引数として明示的に指定できます。
+      ClickHouse は、大量の行を含むバッチデータを解析することで、カラム名とデータ型を推論します。ClickHouse がファイル名からファイル形式を判別できない場合は、第 2 引数で明示的に指定できます。
 
       ```sql
       SELECT count()
@@ -314,12 +314,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       ```
 
       詳細については、[`odbc` テーブル関数](/sql-reference/table-functions/odbc)
-      および [`jdbc` テーブル関数](/sql-reference/table-functions/jdbc) のドキュメントページを参照してください。
+      および [`jdbc` テーブル関数](/sql-reference/table-functions/jdbc) のドキュメント
+      ページを参照してください。
 
       <br />
     </TabItem>
 
-    <TabItem value="メッセージキュー" label="メッセージキュー">
+    <TabItem value="messagequeue" label="メッセージキュー">
       メッセージキューは、対応するテーブルエンジンを使用して ClickHouse にデータをストリーミングできます。例:
 
       * **Kafka**: [`Kafka` table engine](/engines/table-engines/integrations/kafka) を使用して Kafka と連携します
@@ -341,7 +342,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="その他" label="その他">
-      既存のフレームワークやデータソースを ClickHouse に接続する方法を知るには、[豊富な ClickHouse 連携一覧](/integrations) をご覧ください。
+      既存のフレームワークやデータソースを ClickHouse に接続する方法については、[豊富な ClickHouse 連携一覧](/integrations) をご覧ください。
 
       <br />
     </TabItem>
@@ -352,7 +353,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   * ClickHouse の仕組みの基本を学ぶには、[Core Concepts](/managing-data/core-concepts) セクションを参照してください。
   * ClickHouse の主要なコンセプトや機能を、より踏み込んで解説している [Advanced Tutorial](tutorial.md) もご覧ください。
   * 学習をさらに進めるには、[ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog) が提供する無料のオンデマンドトレーニングコースをご受講ください。
-  * [サンプルデータセット](/getting-started/example-datasets/) と、それらの挿入手順の一覧を用意しています。
+  * We have a list of [サンプルデータセット](/getting-started/example-datasets/) と、それらの挿入手順の一覧を用意しています。
   * データが外部ソースから取り込まれる場合は、メッセージキュー、データベース、パイプラインなどへの接続方法について、[インテグレーションガイド一覧](/integrations/) を参照してください。
   * UI / BI の可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization/) を参照してください。
   * [primary keys](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーの基礎知識と定義方法がすべて網羅されています。

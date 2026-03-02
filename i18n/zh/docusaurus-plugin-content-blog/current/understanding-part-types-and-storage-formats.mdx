@@ -1,0 +1,168 @@
+---
+title: 理解分区片段类型和存储格式
+description: '了解 ClickHouse 中不同的分区片段类型（Wide 与 Compact）和存储格式（Full 与 Packed），以及它们对性能的影响。'
+date: 2026-02-03
+tags: ['核心数据概念']
+keywords: ['紧凑分区片段', '宽分区片段', '完整存储', '打包存储', '分区片段类型', '存储格式']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+<br />
+
+<br />
+
+ClickHouse 使用两个彼此独立的概念来组织分区片段中的数据：
+
+* **分区片段类型**（Wide vs Compact）：定义列数据在分区片段内的存储方式
+* **存储格式**（Full vs Packed）：定义分区片段文件在磁盘上的存储方式
+
+## 分片类型：Wide 与 Compact \{#part-types-wide-vs-compact\}
+
+分片类型决定在数据分片内列数据的组织方式。
+
+| Type | Description | Best for |
+|------|-------------|----------|
+| **Wide** | 每一列都存储在各自独立的文件中，并且每个文件都有自己的 [marks file](/concepts/glossary#mark-file) | 只选择部分列的查询 |
+| **Compact** | 所有列都存储在单个文件中，并共享一个 [marks file](/concepts/glossary#mark-file) | 注重摄取性能以及需要所有列的查询 |
+
+### 各类型的使用条件 \{#when-each-type-is-used\}
+
+Part 类型由以下表级设置控制：
+
+* [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)：将 Part 存储为 Wide 格式所需的最小字节数
+* [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part)：将 Part 存储为 Wide 格式所需的最小行数
+
+如果某个数据 Part 的字节数或行数小于相应的设置值，则该 Part 以 `Compact` 格式存储；否则使用 `Wide` 格式。
+
+### 性能注意事项 \{#performance-considerations\}
+
+**Compact 分区片段：**
+
+* 提升摄取性能
+* 当查询需要所有列时表现最佳
+* 对于小分区片段更高效
+
+**Wide 分区片段：**
+
+* 对只选择部分列的查询更高效
+* 更适用于对部分列进行选择性访问的大型数据集
+
+Compact 到 Wide 的合并比 Wide 到 Wide 的合并更慢，因为 ClickHouse 在 Compact 到 Wide 的转换中使用了[纵向合并](/merges#memory-optimized-merges)算法，而在 Compact 到 Compact 的合并中使用横向算法。如果你希望无论大小都强制使用 Wide 分区片段，可以将 `min_bytes_for_wide_part` 设置为 0。
+
+在以下场景中，这可能会很有用：
+
+1. 当你的表有很多列（例如超过 600 列）且执行大批量插入时，将该值设为 0 可以帮助提升性能
+2. 用于优化像 `system.metric_log` 和 `system.text_log` 这样的系统表的内存使用，这些表在合并期间消耗了过多内存
+3. 当处理插入量很大的表并且你希望优化存储和合并行为时
+4. 当你希望分区片段格式行为保持一致，而不希望基于大小阈值进行格式转换带来的额外开销时
+
+需要注意的是，虽然将该值设为 0 可以改善某些性能特性，但由于 Wide 分区片段格式，可能会向 S3 存储发起更多的 GET 请求。
+
+### 限制 \{#limitations\}
+
+对于紧凑分区片段，不会计算列大小统计数据，这可能会影响监控和优化工作。当查询 `system.parts_columns` 时，紧凑分区片段在 `column_data_compressed_bytes` 和 `column_data_uncompressed_bytes` 中显示为 `0`。更多信息请参阅 [&quot;查找宽或紧凑分区片段的数量和大小&quot;](/knowledgebase/count-parts-by-type)。
+
+## 存储格式：Full 与 Packed（ClickHouse Cloud） \{#storage-formats-full-vs-packed-clickhouse-cloud\}
+
+存储格式决定某个 part 中的文件在磁盘上的物理存放方式。
+
+| 格式 | 描述 | 适用范围 |
+|--------|-------------|--------------|
+| **Full** | 每个文件单独存储在该 part 的目录中 | 开源版与 Cloud |
+| **Packed** | 所有文件被打包存储在一个归档文件中 | 仅适用于 ClickHouse Cloud |
+
+### 完整存储 \{#full-storage\}
+
+在完整存储模式下，每个 part 由多个单独的文件组成，这些文件分别存储在磁盘上。这是开源版 ClickHouse 中唯一且默认的选项。
+
+### Packed 存储（仅适用于 ClickHouse Cloud） \{#packed-storage-clickhouse-cloud-only\}
+
+在 Packed 存储中，所有分区片段文件会被打包到单个归档文件中。这可以显著减少文件操作次数，这对类似 S3 这样的远程存储至关重要，因为每次请求都会带来额外的延迟和成本。
+
+**Packed 存储的优势：**
+
+* 更少的 S3/对象存储 API 调用
+* 降低对协调服务的元数据压力
+* 更低的存储成本（Full 存储可能会显著更昂贵）
+* 在远程存储上对小分区片段具有更好的性能
+
+### 何时会使用 Packed 存储 \{#when-packed-storage-is-used\}
+
+在 ClickHouse Cloud 中，如果满足下列**任一**条件，分区片段会使用 Packed 存储：
+
+* 未压缩字节数 &lt; [`min_bytes_for_full_part_storage`](/operations/settings/merge-tree-settings#min_bytes_for_full_part_storage)
+* 行数 &lt; [`min_rows_for_full_part_storage`](/operations/settings/merge-tree-settings#min_rows_for_full_part_storage)
+* 合并层级 &lt; [`min_level_for_full_part_storage`](/operations/settings/merge-tree-settings#min_level_for_full_part_storage)
+
+:::note 开源
+虽然在开源 ClickHouse 中定义了 `min_bytes_for_full_part_storage`、`min_rows_for_full_part_storage` 和 `min_level_for_full_part_storage` 这些设置，但它们实际上不起作用，因为 Packed 存储的实现仅在 ClickHouse Cloud 中可用。
+:::
+
+`min_level_for_full_part_storage` 设置可用于在 ClickHouse Cloud 环境中同时优化性能和成本，尤其适用于持续有数据插入的表。
+该设置自 ClickHouse 版本 25.10 起可用，并与 `min_level_for_wide_part` 配合使用，为分区片段存储策略提供更全面的控制。
+
+在以下使用场景中，可以考虑将其从默认值（0）修改为其他值：
+
+* 当表以固定节奏进行数据摄取时，初始分区片段会在合并中很快被淘汰，此时一开始就以完整分区片段格式存储会造成浪费
+* 设置该参数可以在插入期间避免昂贵的 S3 PUT 请求。例如，有一项分析表明，生成完整分区片段的插入平均每次产生 31.3 个 PUT 请求，而仅生成 Packed 分区片段的插入平均每次仅产生 2.22 个 PUT 请求
+* 插入操作会更快，尤其是对于包含大量列的表，因为 Packed 存储会将所有数据写入一个文件，而不是为每一列创建单独文件。
+
+推荐配置：
+
+在云环境部署中设置 `min_level_for_full_part_storage = 2`。
+这样可以确保：
+
+* 层级为 0 的分区片段（初始插入）使用 Packed 存储
+* 层级为 1 的分区片段继续使用 Packed 存储
+* 只有层级为 2 及以上的分区片段才使用完整存储格式
+
+:::tip
+对于接收体量很大但写入频率很低、且合并不足的表，应避免使用该设置，因为大体量的初始写入可能从一开始就更适合使用完整分区片段存储。
+:::
+
+## 组合分区片段类型和存储格式 \{#combining-part-types-and-storage-formats\}
+
+这两个概念彼此独立，你可以根据自己使用的是 ClickHouse Cloud 还是开源 ClickHouse，自由选择任意组合：
+
+| Combination | Use case |
+|-------------|----------|
+| Wide + Full | 本地存储上的大型分区片段（开源 ClickHouse 中的默认配置） |
+| Wide + Packed | 云存储上的大型分区片段 |
+| Compact + Full | 本地存储上的小型分区片段 |
+| Compact + Packed | 云存储上的小型分区片段 |
+
+## 查询分区片段信息 \{#querying-part-information\}
+
+你可以使用 [`system.parts`](/operations/system-tables/parts) 表来查看现有分区片段的类型和存储类型：
+
+```sql
+SELECT
+    part_type,
+    part_storage_type,
+    max(level),
+    count(),
+    formatReadableSize(max(data_uncompressed_bytes)),
+    formatReadableSize(min(data_uncompressed_bytes))
+FROM system.parts
+WHERE (database != 'system') AND active
+GROUP BY
+    1,
+    2
+ORDER BY
+    1 ASC,
+    2 ASC
+```
+
+你会看到类似下面的内容：
+
+```response
+   ┌─part_type─┬─part_storage_type─┬─max(level)─┬─count()─┬─formatReadab⋯sed_bytes))─┬─formatReadab⋯sed_bytes))─┐
+1. │ Compact   │ Full              │      12688 │    2456 │ 1023.87 MiB              │ 23.78 MiB                │
+2. │ Compact   │ Packed            │      97383 │   13748 │ 127.77 MiB               │ 1.00 B                   │
+3. │ Wide      │ Full              │       7642 │    2000 │ 1.38 TiB                 │ 30.18 MiB                │
+4. │ Wide      │ Packed            │         10 │     187 │ 110.01 MiB               │ 1.30 KiB                 │
+   └───────────┴───────────────────┴────────────┴─────────┴──────────────────────────┴──────────────────────────┘
+```

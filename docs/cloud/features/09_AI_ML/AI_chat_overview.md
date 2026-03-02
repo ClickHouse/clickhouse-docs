@@ -9,7 +9,7 @@ doc_type: 'reference'
 # Ask AI agent in Cloud
 
 The “Ask AI” agent is a turn-key experience that allows users to trigger complex analysis tasks on top of the data hosted in their ClickHouse Cloud service.
-Instead of writing SQL or navigating dashboards, users can describe what they are looking for in natural language.
+Instead of writing SQL or navigating dashboards, users can describe what they're looking for in natural language.
 The assistant responds with generated queries, visualizations, or summaries, and can incorporate context like active tabs, saved queries, schema details, and dashboards to improve accuracy.
 It’s designed to work as an embedded assistant, helping users move quickly from questions to insights, and from prompts to working dashboards or APIs.
 

@@ -37,18 +37,16 @@ brew install --cask clickhouse
 Самый простой способ убрать исполняемый файл `clickhouse` из карантина:
 
 1. Откройте **System Settings**.
+1. Перейдите в **Privacy &amp; Security**:
 
-2. Перейдите в **Privacy &amp; Security**:
+    <Image img={privacy_default} size="md" alt="Стандартный вид настроек Privacy & Security в macOS" border />
 
-   <Image img={privacy_default} size="md" alt="Стандартный вид настроек Privacy & Security в macOS" border />
+1. Пролистайте окно вниз до сообщения вида _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer"_.
+1. Нажмите **Allow Anyway**.
 
-3. Пролистайте окно вниз до сообщения вида _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer"_.
+    <Image img={privacy_allow} size="md" alt="Настройки Privacy & Security в macOS с кнопкой Allow Anyway" border />
 
-4. Нажмите **Allow Anyway**.
-
-   <Image img={privacy_allow} size="md" alt="Настройки Privacy & Security в macOS с кнопкой Allow Anyway" border />
-
-5. Введите пароль пользователя macOS.
+1. Введите пароль пользователя macOS.
 
 Теперь вы должны иметь возможность запускать команды `clickhouse` в терминале.
 

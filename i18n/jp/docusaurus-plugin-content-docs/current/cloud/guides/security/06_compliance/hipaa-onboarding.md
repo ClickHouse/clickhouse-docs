@@ -65,7 +65,7 @@ ClickHouse のコンプライアンスプログラムおよびサードパーテ
 
 <br />
 
-### HIPAA 準拠リージョンにサービスをデプロイする \{#deploy-hippa-services\}
+### HIPAA 準拠リージョンにサービスをデプロイする \{#deploy-hipaa-services\}
 
 1. コンソールのホーム画面左上で **New service** を選択します。
 2. **Region type** を **HIPAA compliant** に変更します。
@@ -81,8 +81,6 @@ ClickHouse のコンプライアンスプログラムおよびサードパーテ
 HIPAA 準拠クラウドプロバイダーおよびサービスの一覧については、[Supported cloud regions](/cloud/reference/supported-regions) ページを参照してください。
 
 </VerticalStepper>
-
-
 
 ## 既存のサービスを移行する \{#migrate-to-hipaa\}
 

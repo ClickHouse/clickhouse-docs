@@ -27,8 +27,6 @@ import Image from '@theme/IdealImage';
 - 一个已由计费管理员开通购买权限的 GCP 项目。
 - 在 GCP Marketplace 订阅 ClickHouse Cloud 时，您必须使用具有购买权限的账号登录，并选择相应的项目。
 
-
-
 ## 注册步骤 \{#steps-to-sign-up\}
 
 1. 前往 [GCP Marketplace](https://cloud.google.com/marketplace)，搜索 ClickHouse Cloud。请确保已选择正确的 GCP 项目。
@@ -109,6 +107,7 @@ import Image from '@theme/IdealImage';
 9. 您应该会收到一封确认注册的电子邮件：
 
 <br />
+
 <br />
 
 <Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border/>

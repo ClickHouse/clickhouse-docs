@@ -31,6 +31,7 @@ assert result.result_set[1][0] == 'first_value2'
 
 请注意，`QueryContext` 不是线程安全的，但在多线程环境中可以通过调用 `QueryContext.updated_copy` 方法来获取其副本。
 
+
 ## 流式查询 \{#streaming-queries\}
 
 ClickHouse Connect 客户端提供多种以流（实现为 Python 生成器）形式检索数据的方法：
@@ -388,6 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
+
 
 ### 读取格式选项（Python 类型） \{#read-format-options-python-types\}
 

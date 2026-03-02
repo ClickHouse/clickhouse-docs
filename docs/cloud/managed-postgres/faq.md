@@ -33,7 +33,7 @@ For complete details on backup frequency, retention, and how to perform point-in
 
 ### Is Terraform support available for Managed Postgres? {#terraform-support}
 
-Terraform support for Managed Postgres is not currently available. We recommend using the ClickHouse Cloud console to create and manage your instances.
+Terraform support for Managed Postgres isn't currently available. We recommend using the ClickHouse Cloud console to create and manage your instances.
 
 ## Extensions and configuration {#extensions-and-configuration}
 
@@ -62,6 +62,12 @@ You have full superuser access to your Managed Postgres instance, which allows y
 :::note
 Enhanced RBAC features with console integration are planned for this year.
 :::
+
+## Upgrades {#upgrades}
+
+### How are PostgreSQL version upgrades handled? {#version-upgrades}
+
+Both minor and major version upgrades are performed via failover and typically result in only a few seconds of downtime. You can configure a maintenance window to control when upgrades are applied. For complete details, see the [Upgrades](/cloud/managed-postgres/upgrades) documentation.
 
 ## Migration {#migration}
 

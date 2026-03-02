@@ -11,12 +11,13 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
+
 ## Настройка IP-фильтров \{#setting-ip-filters\}
 
 Списки IP-доступа фильтруют трафик к сервисам ClickHouse или по API-ключам, указывая, с каких исходных адресов разрешено подключение. Эти списки настраиваются отдельно для каждого сервиса и для каждого API-ключа. Списки можно задать при создании сервиса или API-ключа, а также изменить позднее.
 
-:::important
-Если вы пропустите создание списка IP-доступа для сервиса ClickHouse Cloud, к этому сервису не будет разрешён никакой трафик. Если для списков IP-доступа сервисов ClickHouse установлено значение `Allow from anywhere`, ваш сервис может периодически переводиться из неактивного состояния в активное интернет-сканерами и краулерами, которые ищут публичные IP-адреса, что может привести к незначительным непредвиденным расходам.
+:::warning[Настройте список IP-доступа для вашего сервиса]
+При создании сервиса ClickHouse Cloud значение по умолчанию для списка разрешённых IP — `Allow from anywhere`. Настоятельно рекомендуется как можно скорее ограничить доступ конкретными IP-адресами или диапазонами. Сервисы с настройкой `Allow from anywhere` могут периодически переводиться из неактивного состояния в активное интернет-сканерами и краулерами, которые ищут публичные IP-адреса, что может привести к непредвиденным расходам.
 :::
 
 ## Подготовка \{#prepare\}
@@ -35,7 +36,7 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 <details>
   <summary>Список доступа по IP-адресам для сервисов ClickHouse</summary>
 
-  При создании сервиса ClickHouse значение по умолчанию для списка разрешённых IP — «Allow from nowhere» (запрещён доступ отовсюду). 
+  При создании сервиса ClickHouse значение по умолчанию для списка разрешённых IP — «Allow from anywhere» (разрешён доступ откуда угодно). 
   
   В списке сервисов ClickHouse Cloud выберите нужный сервис, затем выберите **Settings**. В разделе **Security** вы найдёте список доступа по IP-адресам. Нажмите кнопку **Add IPs**.
   
@@ -46,6 +47,7 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 - Запретить любой доступ к сервису
   
 </details>
+
 <details>
   <summary>Список доступа по IP-адресам для API-ключей</summary>
 
@@ -60,7 +62,7 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 </details>
 
 На этом скриншоте показан список доступа, который разрешает трафик из диапазона IP-адресов с описанием «NY Office range»:
-  
+
 <Image img={ip_filtering_after_provisioning} size="md" alt="Существующий список доступа в ClickHouse Cloud" border/>
 
 ### Возможные действия \{#possible-actions\}
@@ -110,6 +112,7 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
+
 
 ## Ограничения \{#limitations\}
 

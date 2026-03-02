@@ -58,7 +58,7 @@ If you would like to test the integration before configuring your production set
 - AWS credentials with appropriate IAM permissions
 
 :::note
-Unlike file-based log integrations (nginx, Redis), CloudWatch requires running a separate OpenTelemetry Collector that polls the CloudWatch API. This collector cannot run inside ClickStack's all-in-one image as it needs AWS credentials and API access.
+Unlike file-based log integrations (nginx, Redis), CloudWatch requires running a separate OpenTelemetry Collector that polls the CloudWatch API. This collector can't run inside ClickStack's all-in-one image as it needs AWS credentials and API access.
 :::
 
 <VerticalStepper headerLevel="h4">
@@ -217,7 +217,7 @@ For more configuration options, see the [CloudWatch receiver documentation](http
 - Log group names/prefixes → Your actual CloudWatch log groups
 
 :::note
-The CloudWatch receiver only fetches logs from recent time windows (based on `poll_interval`). When first started, it begins from the current time. Historical logs are not retrieved by default.
+The CloudWatch receiver only fetches logs from recent time windows (based on `poll_interval`). When first started, it begins from the current time. Historical logs aren't retrieved by default.
 :::
 
 #### Start the collector {#start-collector}
@@ -359,7 +359,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={example_dashboard} alt="CloudWatch Logs dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-12-07 00:00:00 - 2025-12-08 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-12-07 00:00:00 - 2025-12-08 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -389,7 +389,7 @@ docker compose logs otel-collector
 Common errors:
 - `The security token included in the request is invalid`: Credentials are invalid or expired. For temporary credentials (SSO), ensure `AWS_SESSION_TOKEN` is set.
 - `operation error CloudWatch Logs: FilterLogEvents, AccessDeniedException`: IAM permissions are insufficient
-- `failed to refresh cached credentials, no EC2 IMDS role found`: AWS credentials environment variables are not set
+- `failed to refresh cached credentials, no EC2 IMDS role found`: AWS credentials environment variables aren't set
 - `connection refused`: ClickStack endpoint is unreachable
 
 **Verify CloudWatch log groups exist and have recent logs:**
@@ -409,7 +409,7 @@ aws logs filter-log-events \
 
 **The CloudWatch receiver starts from "now" by default:**
 
-When the collector first starts, it creates a checkpoint at the current time and only fetches logs after that point. Historical logs are not retrieved.
+When the collector first starts, it creates a checkpoint at the current time and only fetches logs after that point. Historical logs aren't retrieved.
 
 **To collect recent historical logs:**
 

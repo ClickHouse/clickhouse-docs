@@ -1,0 +1,167 @@
+---
+title: clickhouse-client에서 프롬프트 변경하기
+description: "이 문서는 ClickHouse 클라이언트와 clickhouse-local 터미널 창에서 프롬프트를 :)에서 접두사가 붙은 :) 형식으로 변경하는 방법을 설명합니다."
+date: 2023-11-16
+tags: ['설정', '네이티브 클라이언트 및 인터페이스']
+keywords: ['ClickHouse 클라이언트', '프롬프트 변경']
+---
+
+import Image from "@theme/IdealImage";
+import prompt_0 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/0_prompt.png";
+import prompt_1 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/1_prompt.png";
+import prompt_2 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/2_prompt.png";
+import prompt_3 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/3_prompt.png";
+import prompt_4 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/4_prompt.png";
+import prompt_5 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/5_prompt.png";
+import prompt_6 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/6_prompt.png";
+import prompt_7 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/7_prompt.png";
+import prompt_8 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/8_prompt.png";
+
+{frontMatter.description}
+
+{/* 생략 */}
+
+터미널 창에서 `clickhouse client`와 clickhouse-local이 표시하는 프롬프트 모양이 마음에 들지 않는 경우, 접두사를 추가하도록 변경할 수 있습니다.
+이 문서에서는 프롬프트를 원하는 형태로 변경하는 방법을 설명합니다.
+
+기본 프롬프트는 로컬 컴퓨터 이름 뒤에 `:) `가 붙은 형태입니다:
+
+<Image img={prompt_0} size="md" alt="기본 ClickHouse client 프롬프트" />
+
+프롬프트에서 사용할 수 있는 변수는 다음과 같습니다: `{user}`, `{host}`
+
+프롬프트를 업데이트하는 방법은 여러 가지가 있으며, 각 방법을 차례로 살펴봅니다.
+
+## --prompt 플래그 \{#--prompt-flag\}
+
+플래그를 변경하는 첫 번째 방법은 `--prompt` 플래그를 사용하는 것입니다.
+
+```bash
+clickhouse --prompt 👉
+```
+
+이렇게 하면 웃는 얼굴 앞에 손가락 이모지가 추가됩니다:
+
+<Image img={prompt_1} size="md" alt="손가락 이모지가 있는 ClickHouse 클라이언트 프롬프트" />
+
+## 설정 파일 - 최상위 \{#config-file---top-level\}
+
+또는 `config.xml` 파일에서 프롬프트 접두사를 지정할 수 있습니다.
+
+```xml
+<config>
+    <prompt>👉 </prompt>
+</config>
+```
+
+```
+clickhouse
+```
+
+<Image img={prompt_2} size="md" alt="구성 파일을 사용하는 ClickHouse 클라이언트 프롬프트" />
+
+원하는 이름의 구성 파일을 사용하고, `-C` 플래그를 사용하여 이를 전달할 수 있습니다.
+
+```xml
+<config>
+    <prompt>🎄 </prompt>
+</config>
+```
+
+```
+clickhouse -C christmas.xml
+```
+
+<Image img={prompt_3} size="md" alt="크리스마스트리 이모지가 있는 ClickHouse 클라이언트 프롬프트" />
+
+설정 파일을 YAML로 사용하는 것이 더 편하신가요?
+그렇게 하셔도 됩니다:
+
+```yaml
+prompt: 🟡
+```
+
+```bash
+clickhouse -C christmas.yaml
+```
+
+<Image img={prompt_4} size="md" alt="노란색 동그라미 이모지가 포함된 ClickHouse 클라이언트 프롬프트" />
+
+## 구성 파일 - connections_credentials \{#config-file---connections_credentials\}
+
+또는 연결 자격 증명별로 프롬프트를 각각 지정할 수 있습니다.
+이는 clickhouse-client를 사용할 때만 유효합니다.
+
+```xml
+<config>
+    <connections_credentials>
+        <connection>
+            <n>prod<n>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[31m[PRODUCTION]\e[0m {user}@prod</prompt>
+        </connection>
+        <connection>
+            <n>dev<n>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[32m[DEVELOPMENT]\e[0m {user}@dev</prompt>
+        </connection>
+    </connections_credentials>
+</config>
+```
+
+이제 `dev` 연결을 사용해 접속을 시도해 보겠습니다.
+
+```bash
+clickhouse client -C connections.xml --connection dev
+```
+
+<Image img={prompt_5} size="md" alt="개발 연결이 설정된 ClickHouse 클라이언트 프롬프트" />
+
+또는 `prod` 환경:
+
+```bash
+clickhouse client -C connections.xml --connection prod
+```
+
+<Image img={prompt_6} size="md" alt="프로덕션 환경에 연결된 ClickHouse 클라이언트 프롬프트" />
+
+다음은 YAML 버전입니다.
+
+```yaml
+connections_credentials:
+  connection:
+    - name: prod
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[35m[PRODUCTION]\e[0m {user}@{host}"
+    - name: dev
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[34m[DEVELOPMENT]\e[0m {user}@{host}"
+```
+
+`dev` 연결 사용:`
+
+```bash
+clickhouse client -C connections.yaml --connection dev
+```
+
+<Image img={prompt_7} size="md" alt="YAML을 사용해 개발용 연결을 설정한 ClickHouse 클라이언트 프롬프트" />
+
+이제 `prod` 환경입니다:
+
+```bash
+clickhouse client -C connections.yaml --connection prod
+```
+
+<Image img={prompt_8} size="md" alt="YAML을 사용해 프로덕션 환경 연결을 구성한 ClickHouse 클라이언트 프롬프트" />

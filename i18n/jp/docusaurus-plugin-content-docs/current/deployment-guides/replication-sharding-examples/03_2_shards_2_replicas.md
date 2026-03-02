@@ -257,32 +257,32 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   <ListenHost />
 
-  ログ設定は `<logger>` ブロックで定義します。この設定例では、1000Mに達するごとに3回までローテーションするデバッグログを出力します:
+  ログ設定は `<logger>` ブロックで定義します。この設定例では、サイズが1000Mに達するたびに最大3世代までローテーションするデバッグログになります:
 
   ```xml
   <logger>
-    <level>debug</level>
-    <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-    <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-    <size>1000M</size>
-    <count>3</count>
+     <level>debug</level>
+     <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+     <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+     <size>1000M</size>
+     <count>3</count>
   </logger>
   ```
 
-  ログ設定の詳細については、デフォルトのClickHouse[設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に含まれているコメントを参照してください。
+  ログ設定の詳細については、デフォルトの ClickHouse [設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)内のコメントを参照してください。
 
   #### クラスター設定
 
-  クラスタの設定は `<remote_servers>` ブロックで設定します。
-  ここでクラスタ名 `cluster_2S_2R` を定義しています。
+  クラスタの設定は `<remote_servers>` ブロックで定義します。
+  ここでクラスタ名 `cluster_2S_2R` が定義されます。
 
-  `<cluster_2S_2R></cluster_2S_2R>` ブロックは、`<shard></shard>` および `<replica></replica>` 設定を使用してクラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリは、`ON CLUSTER` 句を使用してクラスタ全体で実行されるクエリです。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries` 設定で無効化することもできます。
+  `<cluster_2S_2R></cluster_2S_2R>` ブロックは `<shard></shard>` と `<replica></replica>` の設定を使ってクラスタのレイアウトを定義し、`ON CLUSTER` 句を使用してクラスタ全体で実行される分散DDLクエリのテンプレートとして機能します。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries` 設定で無効にすることもできます。
 
-  `internal_replication` を true に設定すると、データはレプリカの1つにのみ書き込まれます。
+  `internal_replication` を true に設定すると、データはレプリカのうち 1 つにのみ書き込まれるようになります。
 
   ```xml
   <remote_servers>
-    <!-- cluster name (should not contain dots) -->
+     <!-- cluster name (should not contain dots) -->
     <cluster_2S_2R>
         <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
         <shard>
@@ -317,7 +317,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   #### Keeper の設定
 
-  `<ZooKeeper>` セクションは、ClickHouse Keeper（または ZooKeeper）の実行場所を ClickHouse に指定します。
+  `<ZooKeeper>` セクションは、ClickHouse Keeper（または ZooKeeper）がどこで動作しているかを ClickHouse に伝えます。
   ClickHouse Keeper クラスタを使用する場合、クラスタの各 `<node>` を指定する必要があります。
   ホスト名とポート番号はそれぞれ `<host>` タグと `<port>` タグを使用して指定します。
 
@@ -346,18 +346,18 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   #### マクロの設定
 
-  また、`<macros>` セクションは、レプリケーテッドテーブルのパラメータ置換を定義するために使用されます。これらは `system.macros` に記載され、クエリ内で `{shard}` や `{replica}` などの置換を使用できます。
+  また、`<macros>` セクションは、レプリケートテーブル向けのパラメータ置換を定義するために使用されます。これらは `system.macros` に一覧表示され、クエリ内で `{shard}` や `{replica}` といった置換を利用できるようになります。
 
   ```xml
   <macros>
-    <shard>01</shard>
-    <replica>01</replica>
+     <shard>01</shard>
+     <replica>01</replica>
   </macros>
   ```
 
   ### ユーザー設定
 
-  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を以下の内容で変更します:
+  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` にある各空の設定ファイル `users.xml` を次の内容に変更します:
 
   ```xml title="/users.d/users.xml"
   <?xml version="1.0"?>
@@ -408,7 +408,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ## ClickHouse Keeperの設定
 
-  次に、コーディネーションに使用されるClickHouse Keeperを設定します。
+  次に、クラスタの調整に使用されるClickHouse Keeperを設定します。
 
   ### Keeperのセットアップ
 
@@ -438,14 +438,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ```bash
   [+] Running 8/8
-  ✔ Network   cluster_2s_2r_default     Created
-  ✔ Container clickhouse-keeper-03      Started
-  ✔ Container clickhouse-keeper-02      Started
-  ✔ Container clickhouse-keeper-01      Started
-  ✔ Container clickhouse-01             Started
-  ✔ Container clickhouse-02             Started
-  ✔ Container clickhouse-04             Started
-  ✔ Container clickhouse-03             Started
+   ✔ Network   cluster_2s_2r_default     Created
+   ✔ Container clickhouse-keeper-03      Started
+   ✔ Container clickhouse-keeper-02      Started
+   ✔ Container clickhouse-keeper-01      Started
+   ✔ Container clickhouse-01             Started
+   ✔ Container clickhouse-02             Started
+   ✔ Container clickhouse-04             Started
+   ✔ Container clickhouse-03             Started
   ```
 
   クラスタが稼働していることを確認するには、いずれかのノードに接続して以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
@@ -455,13 +455,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
-  成功すると、ClickHouseクライアントのプロンプトが表示されます：
+  成功すると、ClickHouseクライアントのプロンプトが表示されます:
 
   ```response
   cluster_2S_2R node 1 :)
   ```
 
-  以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します：
+  以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します:
 
   ```sql title="Query"
   SELECT 
@@ -473,14 +473,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   FROM system.clusters;
   ```
 
-    ```response title="Response"
-    ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+  ```response title="Response"
+     ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
   1. │ cluster_2S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
   2. │ cluster_2S_2R │         1 │           2 │ clickhouse-03 │ 9000 │
   3. │ cluster_2S_2R │         2 │           1 │ clickhouse-02 │ 9000 │
   4. │ cluster_2S_2R │         2 │           2 │ clickhouse-04 │ 9000 │
   5. │ default       │         1 │           1 │ localhost     │ 9000 │
-    └───────────────┴───────────┴─────────────┴───────────────┴──────┘
+     └───────────────┴───────────┴─────────────┴───────────────┴──────┘
   ```
 
   以下のクエリを実行して、ClickHouse Keeperクラスタのステータスを確認します：
@@ -491,18 +491,18 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   WHERE path IN ('/', '/clickhouse')
   ```
 
-    ```response title="Response"
-    ┌─name───────┬─value─┬─path────────┐
+  ```response title="Response"
+     ┌─name───────┬─value─┬─path────────┐
   1. │ task_queue │       │ /clickhouse │
   2. │ sessions   │       │ /clickhouse │
   3. │ keeper     │       │ /           │
   4. │ clickhouse │       │ /           │
-    └────────────┴───────┴─────────────┘
+     └────────────┴───────┴─────────────┘
   ```
 
   <VerifyKeeperStatus />
 
-  これで、2つのシャードと2つのレプリカを持つClickHouseクラスタのセットアップが完了しました。
+  これで、2つの分片と2つのレプリカを持つClickHouseクラスタのセットアップが完了しました。
   次のステップでは、クラスタにテーブルを作成します。
 
   ## データベースを作成する
@@ -518,19 +518,19 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   docker exec -it clickhouse-04 clickhouse-client
   ```
 
-  各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのデータベース以外にデータベースが作成されていないことを確認してください:
+  各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのもの以外のデータベースがまだ作成されていないことを確認してください:
 
   ```sql title="Query"
   SHOW DATABASES;
   ```
 
   ```response title="Response"
-    ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
-    └────────────────────┘
+     └────────────────────┘
   ```
 
   `clickhouse-01` クライアントから、`ON CLUSTER` 句を使用して以下の**分散型** DDL クエリを実行し、`uk` という名前の新しいデータベースを作成します：
@@ -541,26 +541,26 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ON CLUSTER cluster_2S_2R;
   ```
 
-  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されていることを確認できます。
+  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されていることを確認できます:
 
   ```sql
   SHOW DATABASES;
   ```
 
   ```response
-    ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
   #highlight-next-line
   5. │ uk                 │
-    └────────────────────┘
+     └────────────────────┘
   ```
 
   ## クラスタ上にテーブルを作成する
 
-  データベースが作成されたので、次はレプリケーション機能を持つテーブルを作成します。
+  データベースが作成できたので、次にレプリケーション対応のテーブルを作成します。
 
   いずれかのホストクライアントから以下のクエリを実行します:
 
@@ -596,7 +596,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   [`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)エンジンは、通常の`MergeTree`テーブルエンジンと同様に動作しますが、データのレプリケーションも実行します。
   2つのパラメータの指定が必要です:
 
-  * `zoo_path`: テーブルのメタデータが格納されている Keeper/ZooKeeper のパス。
+  * `zoo_path`: Keeper/ZooKeeper 上にあるテーブルメタデータへのパス。
   * `replica_name`: テーブルのレプリカ名。
 
   <br />
@@ -607,9 +607,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   /clickhouse/tables/{shard}/{database}/{table}
   ```
 
-  各項目の説明：
+  各項目の説明:
 
-  * `{database}` と `{table}` は自動的に置き換えられます。
+  * `{database}` と `{table}` は自動的に置換されます。
   * `{shard}` と `{replica}` は、各 ClickHouse ノードの `config.xml` ファイル内であらかじめ[定義](#macros-config-explanation)されたマクロです。
 
   各ホストのクライアントから以下のクエリを実行し、クラスタ全体でテーブルが作成されていることを確認してください:
@@ -619,16 +619,16 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-    ┌─name────────────────┐
+     ┌─name────────────────┐
   1. │ uk_price_paid_local │
-    └─────────────────────┘
+     └─────────────────────┘
   ```
 
   ## 分散テーブルへのデータ挿入
 
-  テーブルへのデータ挿入時には`ON CLUSTER`を使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML（Data Manipulation Language：データ操作言語）クエリには適用されないためです。 データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを利用する必要があります。
-  2シャード1レプリカ構成のクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルとは異なるホスト上に配置されたシャードにアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
-  分散テーブルは、クラスタ内の全シャードに対するインターフェースとして機能します。
+  テーブルへのデータ挿入時には`ON CLUSTER`を使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML（Data Manipulation Language：データ操作言語）クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを利用する必要があります。
+  2分片1レプリカ構成のクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルとは異なるホスト上に配置された分片にアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
+  分散テーブルは、クラスタ内の全分片に対するインターフェースとして機能します。
 
   いずれかのホストクライアントから、以下のクエリを実行して、前のステップで作成した既存のレプリケートテーブルを使用する分散テーブルを作成します:
 
@@ -638,13 +638,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ENGINE = Distributed('cluster_2S_2R', 'uk', 'uk_price_paid_local', rand());
   ```
 
-  各ホストの`uk`データベースに、以下のテーブルが表示されるようになります：
+  各ホストの`uk`データベースに、以下のテーブルが表示されるようになります:
 
   ```sql
-    ┌─name──────────────────────┐
+     ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │
-    └───────────────────────────┘
+     └───────────────────────────┘
   ```
 
   データは、以下のクエリを使用して、いずれかのホストクライアントから `uk_price_paid_distributed` テーブルに挿入できます:
@@ -698,13 +698,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-    ┌──count()─┐
+     ┌──count()─┐
   1. │ 30212555 │ -- 30.21 million
-    └──────────┘
+     └──────────┘
 
-    ┌──count()─┐
+     ┌──count()─┐
   1. │ 15105983 │ -- 15.11 million
-    └──────────┘
+     └──────────┘
   ```
 </VerticalStepper>
 

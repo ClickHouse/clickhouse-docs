@@ -6,5 +6,5 @@ import Image from '@theme/IdealImage';
 <Image img={cp_step1} alt="Select imports" size="lg" border />
 
 :::tip
-Из-за различий в форматах URL и реализациях API у разных провайдеров сервисов объектного хранилища не все S3-совместимые сервисы поддерживаются по умолчанию. Если у вас возникают проблемы с сервисом, который не указан в списке [поддерживаемых источников данных](/integrations/clickpipes/object-storage/s3/overview#supported-data-sources), [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
+Из-за различий в форматах URL и реализациях API у разных провайдеров сервисов объектного хранилища не все S3-совместимые сервисы поддерживаются по умолчанию. Если у вас возникают проблемы с сервисом, который не указан в списке [поддерживаемемых источников данных](/integrations/clickpipes/object-storage/s3/overview#supported-data-sources), [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
 :::

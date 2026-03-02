@@ -1,0 +1,18 @@
+---
+title: ClickHouse는 멀티 리전 레플리케이션을 지원하나요?
+description: "간단히 말하면 「예」입니다. 다만 모든 리전/데이터 센터 간 지연 시간은 두 자릿수 범위로 유지할 것을 권장하며, 그렇지 않으면 분산 합의 프로토콜을 거치면서 쓰기 성능이 저하됩니다."
+date: 2022-04-22
+tags: ['배포 및 스케일링', 'Cloud 관리']
+---
+
+{frontMatter.description}
+
+{/* 생략 */}
+
+## The short answer is &quot;yes&quot; \{#the-short-answer-is-yes\}
+
+짧은 대답은 &quot;예&quot;입니다. 다만, 모든 리전/데이터센터 간 지연 시간을 두 자릿수 수준으로 유지할 것을 권장합니다. 그렇지 않으면 분산 합의 프로토콜을 거치면서 쓰기 성능이 저하됩니다. 예를 들어, 미국 동·서부 간 복제는 대체로 문제없이 동작하지만, 미국과 유럽 간 복제는 그렇지 않을 수 있습니다.
+
+구성 측면에서는 단일 리전 복제 구성과 차이가 없으며, 레플리카용 호스트로 서로 다른 위치에 있는 호스트를 사용하면 됩니다.
+
+자세한 내용은 [데이터 복제에 관한 전체 문서](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication)를 참고하십시오.

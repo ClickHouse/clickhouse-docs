@@ -117,3 +117,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - AWS us-east-1 (Северная Вирджиния)
 - AWS us-east-2 (Огайо)
 - AWS us-west-2 (Орегон)
+- GCP europe-west4 (Нидерланды)
+- GCP us-central1 (Айова)
+- GCP us-east1 (Южная Каролина)

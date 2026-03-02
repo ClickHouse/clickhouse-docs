@@ -821,7 +821,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY UserId
 ```
 
-`badges` または `comments` のいずれかに新しい行が挿入されるたびにこのテーブルを更新したい場合、この問題に対する安直なアプローチとしては、前述の UNION クエリを使って materialized view を作成することが考えられます。
+`badges` または `comments` のいずれかに新しい行が挿入されるたびにこのテーブルを更新したい場合、この問題に対する素朴なアプローチとしては、前述の UNION クエリを使って materialized view を作成することが考えられます。
 
 ```sql
 CREATE MATERIALIZED VIEW user_activity_mv TO user_activity AS
@@ -850,7 +850,7 @@ GROUP BY UserId
 ORDER BY last_activity DESC
 ```
 
-構文的には正しいですが、意図しない結果になります。VIEW は `comments` テーブルへの挿入に対してしかトリガーされません。例えば:
+構文的には正しいですが、意図しない結果になります。この VIEW は `comments` テーブルへの挿入に対してのみトリガーされます。たとえば、
 
 
 ```sql
@@ -893,7 +893,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-この問題を解決するには、各 SELECT 文ごとに materialized view を1つずつ作成します。
+この問題を解決するには、それぞれの SELECT 文に対して materialized view を作成します。
 
 ```sql
 DROP TABLE user_activity_mv;
@@ -1022,7 +1022,7 @@ INSERT INTO source VALUES ('test')
 1 row in set. Elapsed: 3.786 sec.
 ```
 
-`SELECT` 文を実行して、各行が到着していることを確認できます。
+`SELECT` 文を実行して、各ビューから行が到着していることを確認できます:
 
 ```sql
 SELECT
@@ -1041,7 +1041,7 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.015 sec.
 ```
 
-これは各ビューの `uuid` と対応しています:
+これは各 VIEW の `uuid` と対応しています:
 
 ```sql
 SELECT
@@ -1060,7 +1060,7 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-一方で、`parallel_view_processing=1` を有効にした状態で行を挿入するとどうなるかを考えてみます。これを有効にすると、VIEW は並列に実行され、行がターゲットテーブルに挿入される順序については一切保証されません。
+一方で、`parallel_view_processing=1` を有効にした状態で行を挿入するとどうなるかを考えてみます。これを有効にすると、VIEW は並列に実行され、行がターゲットテーブルに到着する順序については一切保証されません。
 
 ```sql
 TRUNCATE target;
@@ -1086,8 +1086,7 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-
-各 VIEW から到着する行の順序は同じですが、保証されているわけではありません。各行の挿入時刻が非常に近いことからもそれが分かります。また、挿入処理のパフォーマンスが向上している点にも注目してください。
+各 VIEW からの行の到着順序は同じですが、これは保証されていません。各行の挿入時刻が近いことからもそれが分かります。また、挿入パフォーマンスが向上していることにも注目してください。
 
 ### 並列処理をいつ有効化するか \{#materialized-views-when-to-use-parallel\}
 

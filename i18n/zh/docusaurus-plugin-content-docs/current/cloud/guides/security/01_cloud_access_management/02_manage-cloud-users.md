@@ -50,8 +50,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 当组织中至少有一个被分配为 Organization Admin 角色的 SAML 用户后，从组织中移除使用其他身份验证方式的用户，以在组织层面强制仅使用 SAML 进行身份验证。
 
-
-
 ## 管理用户角色分配 \{#manage-role-assignments\}
 
 被授予 `Organization Admin` 角色的用户可以随时更新其他用户的权限。
@@ -100,9 +98,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 </VerticalStepper>
 
-
-
 ## 删除用户 \{#remove-user\}
+
 :::note 删除 SAML 用户
 在身份提供商中已从 ClickHouse 应用取消分配的 SAML 用户，将无法登录 ClickHouse Cloud。该用户账号不会从控制台中删除，需要手动移除。
 :::

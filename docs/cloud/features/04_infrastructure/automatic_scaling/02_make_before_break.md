@@ -16,7 +16,7 @@ In this approach, new replicas are added to the cluster before removing old repl
 This is as opposed to the break-first approach, where old replicas would first be removed, before adding new ones.
 
 The MBB approach has several benefits:
-* Since capacity is added to the cluster before removal, the **overall cluster capacity does not go down** unlike with the break-first approach. Of course, unplanned events such as node or disk failures etc. can still happen in a cloud environment.
+* Since capacity is added to the cluster before removal, the **overall cluster capacity doesn't go down** unlike with the break-first approach. Of course, unplanned events such as node or disk failures etc. can still happen in a cloud environment.
 * This approach is especially useful in situations where the cluster is under heavy load as it **prevents existing replicas from being overloaded** as would happen with a break-first approach.
 * Because replicas can be added quickly without having to wait to remove replicas first, this approach leads to a **faster, more responsive** scaling experience.
 
@@ -38,4 +38,4 @@ With MBB, there are some key behaviors that you need to be aware of:
    ClickHouse Cloud has checks in place to restrict the number of replicas that a cluster might accumulate.
 3. With MBB operations, system table data is kept for 30 days. This means every time an MBB operation happens on a cluster, 30 days worth of system table data is replicated from the old replicas to the new ones.
 
-If you are interested in learning more about the mechanics of MBB operations, please look at this [blog post](https://clickhouse.com/blog/make-before-break-faster-scaling-mechanics-for-clickhouse-cloud) from the ClickHouse engineering team.
+If you're interested in learning more about the mechanics of MBB operations, please look at this [blog post](https://clickhouse.com/blog/make-before-break-faster-scaling-mechanics-for-clickhouse-cloud) from the ClickHouse engineering team.

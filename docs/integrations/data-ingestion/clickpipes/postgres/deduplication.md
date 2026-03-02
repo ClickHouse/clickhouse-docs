@@ -23,7 +23,7 @@ ClickPipes uses [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-
 
 ### ReplacingMergeTree {#replacingmergetree}
 
-ClickPipes maps Postgres tables to ClickHouse using the [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) engine. ClickHouse performs best with append-only workloads and does not recommend frequent UPDATEs. This is where ReplacingMergeTree is particularly powerful.
+ClickPipes maps Postgres tables to ClickHouse using the [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) engine. ClickHouse performs best with append-only workloads and doesn't recommend frequent UPDATEs. This is where ReplacingMergeTree is particularly powerful.
 
 With ReplacingMergeTree, updates are modeled as inserts with a newer version (`_peerdb_version`) of the row, while deletes are inserts with a newer version and `_peerdb_is_deleted` marked as true. The ReplacingMergeTree engine deduplicates/merges data in the background, and retains the latest version of the row for a given primary key (id), enabling efficient handling of UPDATEs and DELETEs as versioned inserts.
 
@@ -159,7 +159,7 @@ This section will explore techniques for deduplicating data while keeping the or
 
 #### Views {#views}
 
-[Views](/sql-reference/statements/create/view#normal-view) are a great way to hide the FINAL keyword from the query, as they do not store any data and simply perform a read from another table on each access.
+[Views](/sql-reference/statements/create/view#normal-view) are a great way to hide the FINAL keyword from the query, as they don't store any data and simply perform a read from another table on each access.
 
 Below is an example of creating views for each table of our database in ClickHouse with the FINAL keyword and filter for the deleted rows.
 

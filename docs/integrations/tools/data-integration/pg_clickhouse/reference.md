@@ -61,7 +61,7 @@ Once installed, PostgreSQL tracks two variations of the version:
 
 In practice this means that a release that increments the patch version, e.g.
 from `v0.1.0` to `v0.1.1`, benefits all databases that have loaded `v0.1` and
-do not need to run `ALTER EXTENSION` to benefit from the upgrade.
+don't need to run `ALTER EXTENSION` to benefit from the upgrade.
 
 A release that increments the minor or major versions, on the other hand, will
 be accompanied by SQL upgrade scripts, and all existing database that contain
@@ -139,9 +139,9 @@ The supported options are:
 * `port`: The port to connect to on the ClickHouse server. Defaults as
     follows:
   * 9440 if `driver` is "binary" and `host` is a ClickHouse Cloud host
-  * 9004 if `driver` is "binary" and `host` is not a ClickHouse Cloud host
+  * 9004 if `driver` is "binary" and `host` isn't a ClickHouse Cloud host
   * 8443 if `driver` is "http" and `host` is a ClickHouse Cloud host
-  * 8123 if `driver` is "http" and `host` is not a ClickHouse Cloud host
+  * 8123 if `driver` is "http" and `host` isn't a ClickHouse Cloud host
 
 ### ALTER SERVER {#alter-server}
 
@@ -238,7 +238,7 @@ FOREIGN TABLE](#create-foreign-table).
  names it imports, which double-quotes identifiers with uppercase characters
  or blank spaces. Such table and column names thus must be double-quoted in
  PostgreSQL queries. Names with all lowercase and no blank space characters
- do not need to be quoted.
+ don't need to be quoted.
 
  For example, given this ClickHouse table:
 
@@ -357,7 +357,7 @@ DROP FOREIGN TABLE uact CASCADE;
 ## DML SQL Reference {#dml-sql-reference}
 
 The SQL [DML] expressions below may use pg_clickhouse. Examples depend on
-these ClickHouse tables, created by [make-logs.sql]:
+these ClickHouse tables:
 
 ```sql
 CREATE TABLE logs (
@@ -574,6 +574,15 @@ try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
 (5 rows)
 ```
 
+:::warning
+Parameterized execution prevents the [http driver](#create-server) from
+properly converting DateTime time zones on ClickHouse versions prior to 25.8,
+when the [underlying bug] was [fixed]. Note that sometimes PostgreSQL will use
+a parameterized query plan even without using `PREPARE`. For any queries on
+that require accurate time zone conversion, and where upgrading to 25.8 or
+later is not an option, use the [binary driver](#create-server), instead.
+:::
+
 pg_clickhouse pushes down the aggregations, as usual, as seen in the
 [EXPLAIN](#explain) verbose output:
 
@@ -640,7 +649,7 @@ try=# COPY logs FROM stdin CSV;
 
 > **⚠️ Batch API Limitations**
 >
-> pg_clickhouse has not yet implemented support for the PostgreSQL FDW batch
+> pg_clickhouse hasn't yet implemented support for the PostgreSQL FDW batch
 > insert API. Thus [COPY] currently uses [INSERT](#insert) statements to
 > insert records. This will be improved in a future release.
 
@@ -714,8 +723,16 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg_clickhouse does not validate the settings, but passes them on to ClickHouse
-for every query. It thus supports all settings for each ClickHouse version.
+Some settings will be ignored in cases where they would interfere with the
+operation of pg_clickhouse itself. These include:
+
+* `date_time_output_format`: the http driver requires it to be "iso"
+* `format_tsv_null_representation`: the http driver requires the default
+* `output_format_tsv_crlf_end_of_line` the http driver requires the default
+
+Otherwise, pg_clickhouse does not validate the settings, but passes them on to
+ClickHouse for every query. It thus supports all settings for each ClickHouse
+version.
 
 Note that pg_clickhouse must be loaded before setting
 `pg_clickhouse.session_settings`; either use [shared library preloading] or
@@ -773,19 +790,19 @@ shared_preload_libraries = pg_clickhouse
 Useful to save memory and load overhead for every session, but requires the
 cluster to be restart when the library is updated.
 
-## Function and Operator Reference {#function-and-operator-reference}
-
-### Data Types {#data-types}
+## Data Types {#data-types}
 
 pg_clickhouse maps the following ClickHouse data types to PostgreSQL data
-types:
+types. [IMPORT FOREIGN SCHEMA](#import-foreign-schema) use the first type in
+the PostgreSQL column when importing columns; additional types may be used in
+[CREATE FOREIGN TABLE](#create-foreign-table) statements:
 
 | ClickHouse |    PostgreSQL    |             Notes             |
-| -----------|------------------|-------------------------------|
+|------------|------------------|-------------------------------|
 | Bool       | boolean          |                               |
 | Date       | date             |                               |
 | Date32     | date             |                               |
-| DateTime   | timestamp        |                               |
+| DateTime   | timestamptz      |                               |
 | Decimal    | numeric          |                               |
 | Float32    | real             |                               |
 | Float64    | double precision |                               |
@@ -796,12 +813,135 @@ types:
 | Int64      | bigint           |                               |
 | Int8       | smallint         |                               |
 | JSON       | jsonb            | HTTP engine only              |
-| String     | text             |                               |
+| String     | text, bytea      |                               |
 | UInt16     | integer          |                               |
 | UInt32     | bigint           |                               |
 | UInt64     | bigint           | Errors on values > BIGINT max |
 | UInt8      | smallint         |                               |
 | UUID       | uuid             |                               |
+
+Additional notes and details follow.
+
+### BYTEA {#bytea}
+
+ClickHouse does not provide the equivalent of the PostgreSQL [BYTEA] type, but
+allows any bytes to be stored in [String] type. In general ClickHouse strings
+should be mapped to the PostgreSQL [TEXT], but when using binary data, map it
+to [BYTEA]. Example:
+
+```sql
+-- Create clickHouse table with String columns.
+SELECT clickhouse_raw_query($$
+    CREATE TABLE bytes (
+        c1 Int8, c2 String, c3 String
+    ) ENGINE = MergeTree ORDER BY (c1);
+$$);
+
+-- Create foreign table with BYTEA columns.
+CREATE FOREIGN TABLE bytes (
+    c1 int,
+    c2 BYTEA,
+    c3 BYTEA
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Insert binary data into the foreign table.
+INSERT INTO bytes
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the results.
+SELECT * FROM bytes;
+```
+
+That final `SELECT` query will output:
+
+```pgsql
+ c1 |                             c2                             |                 c3
+----+------------------------------------------------------------+------------------------------------
+  1 | \x1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | \xae3b28cde02542f81acce8783245430d
+  2 | \x5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | \x23e7c6cacb8383f878ad093b0027d72b
+  3 | \x53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | \x7e969132fc656148b97b6a2ee8bc83c1
+  4 | \x4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | \x8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+Note that if there are any nul bytes in the ClickHouse columns, a foreign
+table using [TEXT] columns will not output the proper values:
+
+```sql
+-- Create foreign table with TEXT columns.
+CREATE FOREIGN TABLE texts (
+    c1 int,
+    c2 TEXT,
+    c3 TEXT
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Encode binary data as hex.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+Will output:
+
+```pgsql
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b
+  3 | 53ac2c1fa83c8f64603fe9568d883331                         | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+Note that rows two and three contain truncated values. This is because
+PostgreSQL relies on nul-terminated strings and does not support nuls in its
+strings.
+
+Attempting to insert binary values into [TEXT] columns will succeed and work
+as expected:
+
+```sql
+-- Insert via text columns:
+TRUNCATE texts;
+INSERT INTO texts
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the data.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+The text columns will be correct:
+
+```pgdsql
+
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b0027d72b
+  3 | 53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+But reading them as [BYTEA] will not:
+
+```pgsql
+# SELECT * FROM bytes;
+ c1 |                                                           c2                                                           |                                   c3
+----+------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------
+  1 | \x5c783162663766306363383231643331313738363136613535613865306335323637373733353339376364646536663431353361396664336437 | \x5c786165336232386364653032353432663831616363653837383332343534333064
+  2 | \x5c783566366539653132636438353932373132653633383031366634623161326537333233306565343064623439386330663062316463383431 | \x5c783233653763366361636238333833663837386164303933623030323764373262
+  3 | \x5c783533616332633166613833633866363436303366653935363864383833333331303037643632383164653333306134623565373238663965 | \x5c783765393639313332666336353631343862393762366132656538626338336331
+  4 | \x5c783465336332653463623735343261343531373361386461633933396464633462633735323032653334326562633736396230663564613266 | \x5c783865663330663434633635343830643132623635306162366232623034323435
+(4 rows)
+```
+
+:::tip
+As a rule, only use [TEXT] columns for encoded strings and use [BYTEA] columns
+only for binary data, and never switch between them.
+:::
+
+## Function and Operator Reference {#function-and-operator-reference}
 
 ### Functions {#functions}
 
@@ -883,12 +1023,13 @@ maps the following functions:
 * `btrim`: [trimBoth](https://clickhouse.com/docs/sql-reference/functions/string-functions#trimboth)
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+*   `md5`: [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
 
 ### Custom Functions {#custom-functions}
 
 These custom functions created by `pg_clickhouse` provide foreign query
 pushdown for select ClickHouse functions with no PostgreSQL equivalents. If
-any of these functions cannot be pushed down they will raise an exception.
+any of these functions can't be pushed down they will raise an exception.
 
 * [dictGet](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull)
 
@@ -899,7 +1040,7 @@ data types. For incompatible types the pushdown will fail; if `x` in this
 example is a ClickHouse `UInt64`, ClickHouse will refuse to cast the value.
 
 In order to push down casts to incompatible data types, pg_clickhouse provides
-the following functions. They raise an exception in PostgreSQL if they are not
+the following functions. They raise an exception in PostgreSQL if they're not
 pushed down.
 
 * [toUInt8](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint8)
@@ -922,7 +1063,7 @@ These PostgreSQL aggregate functions pushdown to ClickHouse.
 
 These custom aggregate functions created by `pg_clickhouse` provide foreign
 query pushdown for select ClickHouse aggregate functions with no PostgreSQL
-equivalents. If any of these functions cannot be pushed down they will raise
+equivalents. If any of these functions can't be pushed down they will raise
 an exception.
 
 * [argMax](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/argmax)
@@ -953,7 +1094,7 @@ SELECT quantile(0.25)(a) FROM t1;
 ```
 
 Note that the non-default `ORDER BY` suffixes `DESC` and `NULLS FIRST`
-are not supported and will raise an error.
+aren't supported and will raise an error.
 
 * `percentile_cont(double)`: [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * `quantile(double)`: [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
@@ -1040,8 +1181,18 @@ Copyright (c) 2025-2026, ClickHouse
   [dollar quoting]: https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-DOLLAR-QUOTING
     "PostgreSQL Docs: Dollar-Quoted String Constants"
   [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
-    "PostgreSQL Docs: Shared Library Preloading
+    "PostgreSQL Docs: Shared Library Preloading"
   [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
     "PostgreSQL Docs: PREPARE notes"
   [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
     "ClickHouse Docs: Alternatives to prepared statements in ClickHouse"
+  [underlying bug]: https://github.com/ClickHouse/ClickHouse/issues/85847
+    "ClickHouse/ClickHouse#85847 Some queries in a multipart forms don't read settings"
+  [fixed]: https://github.com/ClickHouse/ClickHouse/pull/85570
+    "ClickHouse/ClickHouse#85570 fix HTTP with multipart"
+  [BYTEA]: https://www.postgresql.org/docs/current/datatype-binary.html
+    "PostgreSQL Docs: Binary Data Types"
+  [String]: https://clickhouse.com/docs/sql-reference/data-types/string
+    "ClickHouse Docs: String"
+  [TEXT]: https://www.postgresql.org/docs/current/datatype-character.html
+    "PostgreSQL Docs: Character Types"

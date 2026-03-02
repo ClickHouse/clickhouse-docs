@@ -198,7 +198,7 @@ Both interfaces encode data using the [native format](/native-protocol/basics.md
 
 ## Installation {#installation}
 
-v1 of the driver is deprecated and will not reach feature updates or support for new ClickHouse types. You should migrate to v2, which offers superior performance.
+v1 of the driver is deprecated and won't reach feature updates or support for new ClickHouse types. You should migrate to v2, which offers superior performance.
 
 To install the 2.x version of the client, add the package to your go.mod file:
 
@@ -251,7 +251,7 @@ The client is released independently of ClickHouse. 2.x represents the current m
 
 The client supports:
 
-- All currently supported versions of ClickHouse as recorded [here](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). As ClickHouse versions are no longer supported they are also no longer actively tested against client releases.
+- All currently supported versions of ClickHouse as recorded [here](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). As ClickHouse versions are no longer supported they're also no longer actively tested against client releases.
 - All versions of ClickHouse 2 years from the release date of the client. Note only LTS versions are actively tested.
 
 #### Golang compatibility {#golang-compatibility}
@@ -267,7 +267,7 @@ All code examples for the ClickHouse Client API can be found [here](https://gith
 
 ### Connecting {#connecting}
 
-The following example, which returns the server version, demonstrates connecting to ClickHouse - assuming ClickHouse is not secured and accessible with the default user.
+The following example, which returns the server version, demonstrates connecting to ClickHouse - assuming ClickHouse isn't secured and accessible with the default user.
 
 Note we use the default native port to connect.
 
@@ -402,7 +402,7 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), `InsecureSkipVerify` can be true, but this is strongly discouraged.
+This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server doesn't have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), `InsecureSkipVerify` can be true, but this is strongly discouraged.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -501,7 +501,7 @@ if err != nil {
 
 ### Execution {#execution}
 
-Arbitrary statements can be executed via the `Exec` method. This is useful for DDL and simple statements. It should not be used for larger inserts or query iterations.
+Arbitrary statements can be executed via the `Exec` method. This is useful for DDL and simple statements. It shouldn't be used for larger inserts or query iterations.
 
 ```go
 conn.Exec(context.Background(), `DROP TABLE IF EXISTS example`)
@@ -586,7 +586,7 @@ return batch.Send()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
 
-Recommendations for ClickHouse apply [here](/guides/inserting-data#best-practices-for-inserts). Batches should not be shared across go-routines - construct a separate batch per routine.
+Recommendations for ClickHouse apply [here](/guides/inserting-data#best-practices-for-inserts). Batches shouldn't be shared across go-routines - construct a separate batch per routine.
 
 From the above example, note the need for variable types to align with the column type when appending rows. While the mapping is usually obvious, this interface tries to be flexible, and types will be converted provided no precision loss is incurred. For example, the following demonstrates inserting a string into a datetime64.
 
@@ -657,7 +657,7 @@ return rows.Err()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_rows.go)
 
-Note in both cases, we are required to pass a pointer to the variables we wish to serialize the respective column values into. These must be passed in the order specified in the `SELECT` statement - by default, the order of column declaration will be used in the event of a `SELECT *` as shown above.
+Note in both cases, we're required to pass a pointer to the variables we wish to serialize the respective column values into. These must be passed in the order specified in the `SELECT` statement - by default, the order of column declaration will be used in the event of a `SELECT *` as shown above.
 
 Similar to insertion, the Scan method requires the target variables to be of an appropriate type. This again aims to be flexible, with types converted where possible, provided no precision loss is possible, e.g., the above example shows a UUID column being read into a string variable. For a full list of supported go types for each Column type, see [Type Conversions](#type-conversions).
 
@@ -814,7 +814,7 @@ for i := 0; i < 1_000; i++ {
 
 ### Type conversions {#type-conversions}
 
-The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. You may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users do not need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion does not allow for precision loss. For example, a uint32 cannot be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
+The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. You may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users don't need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion doesn't allow for precision loss. For example, a uint32 can't be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
 
 The type conversions currently supported for primitive types are captured [here](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md).
 
@@ -832,7 +832,7 @@ Handling of timezone information depends on the ClickHouse type and whether the 
   * At **insert** time the value is sent to ClickHouse in UNIX timestamp format. If no time zone is provided, the client will assume the client's local time zone. `time.Time{}` or `sql.NullTime` will be converted to epoch accordingly.
   * At **select** time the timezone of the column will be used if set when returning a `time.Time` value. If not, the timezone of the server will be used.
 * **Date/Date32**
-  * At **insert** time, the timezone of any date is considered when converting the date to a unix timestamp, i.e., it will be offset by the timezone prior to storage as a date, as Date types have no locale in ClickHouse. If this is not specified in a string value, the local timezone will be used.
+  * At **insert** time, the timezone of any date is considered when converting the date to a unix timestamp, i.e., it will be offset by the timezone prior to storage as a date, as Date types have no locale in ClickHouse. If this isn't specified in a string value, the local timezone will be used.
   * At **select** time, dates are scanned into `time.Time{}` or `sql.NullTime{}` instances will be returned without timezone information.
 
 #### Array {#array}
@@ -1108,7 +1108,7 @@ rows.Close()
 
 [Full Example - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
-If the default value of 1 is used for `flatten_nested`, nested columns are flattened to separate arrays. This requires using nested slices for insertion and retrieval. While arbitrary levels of nesting may work, this is not officially supported.
+If the default value of 1 is used for `flatten_nested`, nested columns are flattened to separate arrays. This requires using nested slices for insertion and retrieval. While arbitrary levels of nesting may work, this isn't officially supported.
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1312,7 +1312,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 Due to Go's lack of a built-in Decimal type, we recommend using the third-party package [github.com/shopspring/decimal](https://github.com/shopspring/decimal) to work with Decimal types natively without modifying your original queries.
 
 :::note
-You may be tempted to use Float instead to avoid third-party dependencies. However, be aware that [Float types in ClickHouse are not recommended when accurate values are required](https://clickhouse.com/docs/sql-reference/data-types/float).
+You may be tempted to use Float instead to avoid third-party dependencies. However, be aware that [Float types in ClickHouse aren't recommended when accurate values are required](https://clickhouse.com/docs/sql-reference/data-types/float).
 
 If you still choose to use Go's built-in Float type on the client side, you must explicitly convert Decimal to Float using the [toFloat64() function](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64) or [its variants](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64OrZero) in your ClickHouse queries. Be aware that this conversion may result in loss of precision.
 :::
@@ -1744,7 +1744,7 @@ rows.Close()
 
 ### Dynamic scanning {#dynamic-scanning}
 
-You may need to read tables for which they do not know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
+You may need to read tables for which they don't know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
 
 ```go
 const query = `
@@ -1883,7 +1883,7 @@ Full details on exploiting tracing can be found under [OpenTelemetry support](/o
 
 ## Database/SQL API {#databasesql-api}
 
-The `database/sql` or "standard" API allows you to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
+The `database/sql` or "standard" API allows you to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which aren't necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
 
 Additionally, this client supports using HTTP as the transport layer - data will still be encoded in the native format for optimal performance.
 
@@ -1893,7 +1893,7 @@ Full code examples for the standard API can be found [here](https://github.com/C
 
 ### Connecting {#connecting-1}
 
-Connection can be achieved either via a DSN string with the format `clickhouse://<host>:<port>?<query_option>=<value>` and `Open` method or via the `clickhouse.OpenDB` method. The latter is not part of the `database/sql` specification but returns a `sql.DB` instance. This method provides functionality such as profiling, for which there are no obvious means of exposing through the `database/sql` specification.
+Connection can be achieved either via a DSN string with the format `clickhouse://<host>:<port>?<query_option>=<value>` and `Open` method or via the `clickhouse.OpenDB` method. The latter isn't part of the `database/sql` specification but returns a `sql.DB` instance. This method provides functionality such as profiling, for which there are no obvious means of exposing through the `database/sql` specification.
 
 ```go
 func Connect() error {
@@ -2168,7 +2168,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
-This method does not support receiving a context - by default, it executes with the background context. You can use `ExecContext` if this is needed - see [Using Context](#using-context).
+This method doesn't support receiving a context - by default, it executes with the background context. You can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
 ### Batch Insert {#batch-insert-1}
 
@@ -2305,7 +2305,7 @@ Unless stated, complex type handling should be the same as the [ClickHouse API](
 
 #### Maps {#maps}
 
-Unlike the ClickHouse API, the standard API requires maps to be strongly typed at scan type. For example, you cannot pass a `map[string]interface{}` for a `Map(String,String)` field and must use a `map[string]string` instead. An `interface{}` variable will always be compatible and can be used for more complex structures. Structs are not supported at read time.
+Unlike the ClickHouse API, the standard API requires maps to be strongly typed at scan type. For example, you can't pass a `map[string]interface{}` for a `Map(String,String)` field and must use a `map[string]string` instead. An `interface{}` variable will always be compatible and can be used for more complex structures. Structs aren't supported at read time.
 
 ```go
 var (
@@ -2579,7 +2579,7 @@ if err := rows.Err(); err != nil {
 
 ### Dynamic scanning {#dynamic-scanning-1}
 
-Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow you to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
+Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow you to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type isn't known.
 
 ```go
 const query = `
@@ -2695,7 +2695,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 ### Open telemetry {#open-telemetry-1}
 
-ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this. This is not supported when HTTP is used as transport.
+ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this. This isn't supported when HTTP is used as transport.
 
 ```go
 var count uint64

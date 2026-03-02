@@ -108,7 +108,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
 
   1. [ClickHouse Cloud](https://console.clickhouse.cloud) からログアウトします。
   2. アイデンティティプロバイダーで、ClickHouse アプリケーションに管理者ユーザーを割り当てます。
-  3. ユーザーに [https://console.clickhouse.cloud/?connection=&#123;orgId&#125;](https://console.clickhouse.cloud/?connection=\{orgId}) （ショートカット URL）からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
+  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId} （ショートカット URL）からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
   4. デフォルトの SAML ロールが Admin 以外である場合、新しい SAML ユーザーのロールを更新するために、ユーザーは一度ログアウトし、元の認証方法でログインし直す必要がある場合があります。
      * メールアドレス + パスワードのアカウントの場合は、`https://console.clickhouse.cloud/?with=email` を使用してください。
      * ソーシャルログインの場合は、該当するボタン（**Continue with Google** または **Continue with Microsoft**）をクリックしてください。
@@ -179,7 +179,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
    
    3. SAML 2.0 を選択し、Next をクリックします。
    
-   4. アプリケーションの名前を入力し、**Do not display application icon to users** の横のチェックボックスをオンにして、**Next** をクリックします。 
+   4. アプリケーションの名前を入力し、**Don't display application icon to users** の横のチェックボックスをオンにして、**Next** をクリックします。 
    
    5. 以下の値を使用してSAML設定画面を入力します。
    

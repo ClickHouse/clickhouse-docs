@@ -188,7 +188,7 @@ Fill in the connection details.
 <br/>
 
 :::note
-If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a self-managed instance), in the `SSLMode` field you should supply `require`.
+If you're using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a self-managed instance), in the `SSLMode` field you should supply `require`.
 
 - `Host` should always have the protocol (i.e. `http://` or `https://`) omitted.
 - `Timeout` is an integer representing seconds. Default value: `30 seconds`.
@@ -215,7 +215,7 @@ Select your previously created data source from the list.
 <br/>
 
 :::note
-If you did not specify credentials during the data source creation, you will be prompted to specify username and password.
+If you didn't specify credentials during the data source creation, you will be prompted to specify username and password.
 :::
 
 <Image size="md" img={powerbi_dsn_credentials} alt="Credentials dialog for the ODBC DSN connection" border />

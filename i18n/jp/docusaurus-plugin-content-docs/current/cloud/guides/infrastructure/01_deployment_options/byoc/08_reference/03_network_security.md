@@ -11,6 +11,19 @@ import Image from '@theme/IdealImage';
 import byoc_tailscale from '@site/static/images/cloud/reference/byoc-tailscale-1.png';
 
 
+## ClickHouse コントロールプレーンとお客様の BYOC VPC 間の接続 \{#connection-between-clickhouse-and-byoc\}
+
+ClickHouse Cloud のコントロールプレーンは、お客様の BYOC デプロイメントを運用およびサポートするために、いくつかの種類の接続を維持しています。
+
+| Purpose | Connection type | Notes |
+|---------|-----------------|-------|
+| **日常運用 — Kubernetes API サーバー** | パブリック (デフォルト、IP フィルタリングあり) または Tailscale | 管理サービスはパブリックネットワーク経由で EKS API サーバーと通信し、IP 許可リストによって制限されます。初回デプロイ後は、任意でこれを Tailscale に切り替えてプライベートアクセスにすることもできます。 |
+| **日常運用 — AWS API** | ClickHouse VPC → AWS | 管理サービスは、ClickHouse Cloud 自身の VPC から AWS (例: EKS、EC2) の API を呼び出します。この通信にお客様の VPC や Tailscale は関与しません。 |
+| **トラブルシューティング — ClickHouse サービス** | Tailscale | ClickHouse エンジニアは、Tailscale 経由で診断のために ClickHouse サービス (例: system テーブル) にアクセスします。 |
+| **トラブルシューティング — Kubernetes API サーバー** | Tailscale | ClickHouse エンジニアは、Tailscale 経由でクラスター診断のために EKS API サーバーにアクセスします。 |
+
+次のセクションでは、トラブルシューティングおよび任意の管理アクセスにおいて **Tailscale** プライベートネットワークがどのように使用されるかを説明します。
+
 ## Tailscale プライベートネットワーク \{#tailscale-private-network\}
 
 Tailscale は、ClickHouse Cloud の管理サービスとお客様が所有するクラウド (BYOC) デプロイメント間に、ゼロトラストのプライベートネットワーク接続を提供します。この安全なチャネルにより、ClickHouse のエンジニアは、パブリックインターネットへのアクセスや複雑な VPN 構成を行うことなく、トラブルシューティングや管理作業を実施できます。

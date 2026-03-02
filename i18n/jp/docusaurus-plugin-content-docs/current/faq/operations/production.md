@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベストプラクティス', 'アップグレード戦略']
 ---
 
-
-
 # 本番環境ではどの ClickHouse バージョンを使うべきか？ \{#which-clickhouse-version-to-use-in-production\}
 
 まず最初に、そもそもなぜこの質問が挙がるのかについて説明します。主な理由は 2 つあります。
@@ -18,8 +16,6 @@ keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベス�
 2.  一部のユーザーは、自分のユースケースに最適なバージョンを見極めるのに時間をかけたくないため、誰か他の人の推奨に従いたいと考えています。
 
 2 つ目の理由の方がより本質的なので、まずはこちらから説明し、その後でさまざまな ClickHouse リリースの中からどれを選ぶべきかを見ていきます。
-
-
 
 ## 本番環境ではどの ClickHouse バージョンがおすすめですか？ \{#which-clickhouse-version-do-you-recommend\}
 
@@ -51,8 +47,6 @@ keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベス�
 4.  重大な問題がなければ、その ClickHouse リリースを本番環境にデプロイし始めても安全なはずです。[カナリアリリース](https://martinfowler.com/bliki/CanaryRelease.html) や [ブルーグリーンデプロイメント](https://martinfowler.com/bliki/BlueGreenDeployment.html) に類似したアプローチを実装する段階的リリースの自動化に投資することで、本番環境での問題のリスクをさらに減らすことができます。
 
 お気付きかもしれませんが、上で説明したアプローチには ClickHouse 固有のものは何もありません。本番環境を真剣に扱う人たちは、依存しているあらゆるインフラストラクチャについて、同じことを行っています。
-
-
 
 ## ClickHouse のリリースをどう選べばよいですか？ \{#how-to-choose-between-clickhouse-releases\}
 

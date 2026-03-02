@@ -32,16 +32,16 @@ Service producers publish their applications to consumers by creating Private Se
 <Image img={gcp_psc_overview} size="lg" alt="Overview of Private Service Connect" border />
 
 :::important
-By default, a ClickHouse service is not available over a Private Service connection even if the PSC connection is approved and established; you need explicitly add the PSC ID to the allow list on an instance level by completing [step](#add-endpoint-id-to-services-allow-list) below.
+By default, a ClickHouse service isn't available over a Private Service connection even if the PSC connection is approved and established; you need explicitly add the PSC ID to the allow list on an instance level by completing [step](#add-endpoint-id-to-services-allow-list) below.
 :::
 
 **Important considerations for using Private Service Connect Global Access**:
 1. Regions utilizing Global Access must belong to the same VPC.
 1. Global Access must be explicitly enabled at the PSC level (refer to the screenshot below).
-1. Ensure that your firewall settings do not block access to PSC from other regions.
+1. Ensure that your firewall settings don't block access to PSC from other regions.
 1. Be aware that you may incur GCP inter-region data transfer charges.
 
-Cross-region connectivity is not supported. The producer and consumer regions must be the same. However, you can connect from other regions within your VPC by enabling [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) at the Private Service Connect (PSC) level.
+Cross-region connectivity isn't supported. The producer and consumer regions must be the same. However, you can connect from other regions within your VPC by enabling [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) at the Private Service Connect (PSC) level.
 
 **Please complete the following to enable GCP PSC**:
 1. Obtain GCP service attachment for Private Service Connect.
@@ -50,7 +50,7 @@ Cross-region connectivity is not supported. The producer and consumer regions mu
 1. Add "Endpoint ID" to ClickHouse service allow list.
 
 ## Attention {#attention}
-ClickHouse attempts to group your services to reuse the same published [PSC endpoint](https://cloud.google.com/vpc/docs/private-service-connect) within the GCP region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
+ClickHouse attempts to group your services to reuse the same published [PSC endpoint](https://cloud.google.com/vpc/docs/private-service-connect) within the GCP region. However, this grouping isn't guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have PSC configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add "Endpoint ID" to ClickHouse service allow list](#add-endpoint-id-to-services-allow-list).
 
 Find Terraform examples [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
@@ -65,7 +65,7 @@ Code examples are provided below to show how to set up Private Service Connect w
 - GCP VPC in customer GCP project: `default`
 :::
 
-You'll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
+You'll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud console or the ClickHouse API. If you're going to use the ClickHouse API, please set the following environment variables before proceeding:
 
 ```shell
 REGION=<Your region code using the GCP format, for example: us-central1>
@@ -122,7 +122,7 @@ Make a note of the `endpointServiceId` and `privateDnsHostname`. You'll use them
 :::important
 This section covers ClickHouse-specific details for configuring ClickHouse via GCP PSC(Private Service Connect). GCP-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the GCP cloud provider. Please consider GCP configuration based on your specific use case.  
 
-Please note that ClickHouse is not responsible for configuring the required GCP PSC endpoints, DNS records.  
+Please note that ClickHouse isn't responsible for configuring the required GCP PSC endpoints, DNS records.  
 
 For any issues related to GCP configuration tasks, contact GCP Support directly.
 :::
@@ -155,7 +155,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 <Image img={gcp_psc_copy_connection_id} size="lg" alt="Copy PSC Connection ID" border />
 
-Copy ***PSC Connection ID***, we are going to use it as ***Endpoint ID*** in the next steps.
+Copy ***PSC Connection ID***, we're going to use it as ***Endpoint ID*** in the next steps.
 
 #### Option 2: Using Terraform {#option-2-using-terraform}
 
@@ -375,7 +375,7 @@ Address: 10.128.0.2
 
 ### Connection reset by peer {#connection-reset-by-peer}
 
-- Most likely, the Endpoint ID was not added to the service allow-list. Revisit the [_Add endpoint ID to services allow-list_ step](#add-endpoint-id-to-services-allow-list).
+- Most likely, the Endpoint ID wasn't added to the service allow-list. Revisit the [_Add endpoint ID to services allow-list_ step](#add-endpoint-id-to-services-allow-list).
 
 ### Test connectivity {#test-connectivity}
 
@@ -423,7 +423,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
 
 ### Connecting to a remote database {#connecting-to-a-remote-database}
 
-Let's say you are trying to use the [MySQL](/sql-reference/table-functions/mysql) or [PostgreSQL](/sql-reference/table-functions/postgresql) table functions in ClickHouse Cloud and connect to your database hosted in GCP. GCP PSC cannot be used to enable this connection securely. PSC is a one-way, unidirectional connection. It allows your internal network or GCP VPC to connect securely to ClickHouse Cloud, but it does not allow ClickHouse Cloud to connect to your internal network.
+Let's say you're trying to use the [MySQL](/sql-reference/table-functions/mysql) or [PostgreSQL](/sql-reference/table-functions/postgresql) table functions in ClickHouse Cloud and connect to your database hosted in GCP. GCP PSC can't be used to enable this connection securely. PSC is a one-way, unidirectional connection. It allows your internal network or GCP VPC to connect securely to ClickHouse Cloud, but it doesn't allow ClickHouse Cloud to connect to your internal network.
 
 According to the [GCP Private Service Connect documentation](https://cloud.google.com/vpc/docs/private-service-connect):
 

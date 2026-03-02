@@ -17,7 +17,7 @@ Data sources will be pre-created for any OpenTelemetry data.
 </TabItem>
 <TabItem value="vector" label="Vector" default>
 
-If you are using Vector, you will need to create your own data sources. You will be prompted to create one on your first login. Below we show an example configuration for a logs data source.
+If you're using Vector, you will need to create your own data sources. You will be prompted to create one on your first login. Below we show an example configuration for a logs data source.
 
 <Image img={create_vector_datasource} alt="Create datasource - vector" size="lg"/>
 
@@ -25,7 +25,7 @@ This configuration assumes an Nginx-style schema with a `time_local` column used
 
 We also recommend updating the `Default SELECT` to explicitly define which columns are returned in the logs view. If additional fields are available, such as service name, log level, or a body column, these can also be configured. The timestamp display column can also be overridden if it differs from the column used in the table's primary key and configured above. 
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 

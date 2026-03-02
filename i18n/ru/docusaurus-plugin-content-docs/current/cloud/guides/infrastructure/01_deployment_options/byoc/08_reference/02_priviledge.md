@@ -1,6 +1,6 @@
 ---
 title: 'Привилегии BYOC'
-slug: /cloud/reference/byoc/reference/priviledge
+slug: /cloud/reference/byoc/reference/privilege
 sidebar_label: 'Привилегии'
 keywords: ['BYOC', 'облако', 'bring your own cloud', 'привилегии']
 description: 'Разверните ClickHouse в собственной облачной инфраструктуре'

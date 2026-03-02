@@ -13,7 +13,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 You may use multiple methods to accept an invitation to join an organization. If this is your first invitation, select the appropriate authentication method for your organization below. 
 
-If this is not your first organization, either sign in with your existing organization then accept the invitation from the lower left hand side of the page OR accept the invitation from your email and sign in with your existing account. 
+If this isn't your first organization, either sign in with your existing organization then accept the invitation from the lower left hand side of the page OR accept the invitation from your email and sign in with your existing account. 
 
 :::note SAML Users
 Organizations using SAML have a unique login per ClickHouse organization. Use the direct link provided by your administrator to log in.
@@ -54,7 +54,7 @@ Users with email + password or social authentication can further secure their ac
 
 ### Obtain a new recovery code {#obtain-recovery-code}
 
-If you previously enrolled in MFA and either did not create or misplaced your recovery code, follow these steps to get a new recovery code:
+If you previously enrolled in MFA and either didn't create or misplaced your recovery code, follow these steps to get a new recovery code:
 1. Go to https://console.clickhouse.cloud
 2. Sign in with your credentials and MFA
 3. Go to your profile in the upper left corner
@@ -107,6 +107,6 @@ If you lost your MFA device or deleted your token, follow these steps to recover
 
 If you lost your MFA device AND recovery code or you lost your MFA device and never obtained a recovery code, follow these steps to request a reset:
 
-**Submit a ticket**: If you are in an organization that has other administrative users, even if you are attempting to access a single user organization, ask a member of your organization assigned the Admin role to log into the organization and submit a support ticket to reset your MFA on your behalf. Once we verify the request is authenticated, we will reset your MFA and notify the Admin. Sign in as usual without MFA and go to your profile settings to enroll a new factor if you wish.
+**Submit a ticket**: If you're in an organization that has other administrative users, even if you're attempting to access a single user organization, ask a member of your organization assigned the Admin role to log into the organization and submit a support ticket to reset your MFA on your behalf. Once we verify the request is authenticated, we will reset your MFA and notify the Admin. Sign in as usual without MFA and go to your profile settings to enroll a new factor if you wish.
 
-**Reset via email**: If you are the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to access the password reset link. Set up a new password then go to your profile settings to enroll a new factor if you wish. 
+**Reset via email**: If you're the only user in the organization, submit a support case via email (support@clickhouse.com) using the email address associated with your account. Once we verify the request is coming from the correct email, we will reset your MFA AND password. Access your email to access the password reset link. Set up a new password then go to your profile settings to enroll a new factor if you wish. 

@@ -41,6 +41,10 @@ Databricks поддерживает несколько форматов данн
 
 * Для клиентов Delta используйте Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
+### Необходимые разрешения PAT-токена \{#required-pat-token-permissions\}
+
+При использовании PAT для доступа на чтение токен должен иметь права, которые позволяют ClickHouse перечислять и читать метаданные Unity Catalog. Убедитесь, что у PAT как минимум есть привилегия `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#grant-a-principal-unity-catalog-privileges)), а также право `SELECT` на таблицу, `USE CATALOG` на родительский каталог и `USE SCHEMA` на родительскую схему.
+
 ## Создание подключения между Unity Catalog и ClickHouse \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
 После настройки Unity Catalog и аутентификации установите подключение между ClickHouse и Unity Catalog.
@@ -54,15 +58,6 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 ```
 
 ### Чтение данных из Iceberg \{#read-iceberg\}
-
-Чтобы получить доступ к таблицам Delta с поддержкой UniForm:
-
-```sql
-CREATE DATABASE unity
-ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
-SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
-oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
-```
 
 Чтобы получить доступ к управляемым таблицам Iceberg:
 

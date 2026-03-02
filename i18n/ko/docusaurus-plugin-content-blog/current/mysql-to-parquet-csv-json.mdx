@@ -1,0 +1,92 @@
+---
+title: ClickHouse를 사용하여 MySQL 데이터를 Parquet, CSV 또는 JSON으로 내보내는 방법
+description: "`clickhouse-local` 도구를 사용하여 MySQL 데이터를 Parquet, CSV 또는 JSON 형식으로 빠르고 효율적으로 내보내는 방법을 알아봅니다."
+date: 2023-03-21
+tags: ['데이터 형식', '데이터 내보내기']
+keywords: ['MySQL', 'Parquet', 'CSV', 'JSON']
+---
+
+{frontMatter.description}
+
+{/* 생략 */}
+
+## ClickHouse를 사용하여 MySQL 데이터를 Parquet, CSV 또는 JSON으로 내보내기 \{#exporting-mysql-data-to-parquet-csv-or-json-using-clickhouse\}
+
+`clickhouse-local` 도구를 사용하면 MySQL에서 데이터를 빠르고 쉽게 읽어 Parquet, CSV, JSON을 포함한 다양한 형식으로 출력할 수 있습니다. 이 절에서는 다음을 수행합니다:
+
+* [`mysql` table function](https://clickhouse.com/docs/sql-reference/table-functions/mysql)을 사용하여 데이터를 읽습니다.
+* `INTO OUTFILE _filename_ FORMAT` 절을 사용하여 원하는 출력 형식을 지정합니다.
+
+`clickhouse-local` 도구는 ClickHouse 바이너리에 포함되어 있습니다. 다음과 같이 다운로드합니다:
+
+```bash
+curl https://clickhouse.com/ | sh
+```
+
+## MySQL을 Parquet 형식으로 내보내기 \{#export-mysql-to-parquet\}
+
+`mysql` 테이블 함수는 MySQL 인스턴스로 전송된 쿼리 결과를 기반으로 테이블을 생성합니다. 예를 들면 다음과 같습니다.
+
+```bash
+SELECT *
+FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+);
+```
+
+`INTO OUTFILE`을 사용하여 이 쿼리의 출력을 파일로 파이프할 수 있습니다. 생성할 파일의 형식을 지정하려면 `FORMAT`을 사용합니다. MySQL 테이블의 전체 내용을 가져와 그 내용을 Parquet 파일로 내보내 보겠습니다.
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.parquet'"
+```
+
+:::note
+출력 파일 이름에 `.parquet` 확장자가 있으므로 ClickHouse는 Parquet 형식을 사용하려는 것으로 간주합니다. 따라서 `FORMAT Parquet` 절은 생략했습니다.
+:::
+
+## MySQL을 CSV로 내보내기 \{#export-mysql-to-csv\}
+
+파일 이름에 `.csv` 확장자를 사용하는 점을 제외하면 Parquet으로 내보낼 때와 동일합니다. ClickHouse는 쉼표로 구분된 형식의 출력을 원한다는 것을 인식하고, 그 형식으로 데이터를 파일에 기록합니다:
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.csv'"
+```
+
+## MySQL을 JSON으로 내보내기 \{#export-mysql-to-json\}
+
+MySQL에서 JSON으로 내보내려면 파일 이름의 확장자만 `jsonl` 또는 `ndjson`으로 변경하면 됩니다:
+
+```bash
+./clickhouse local -q "SELECT * FROM
+   mysql(
+    'localhost:3306',
+    'my_sql_database',
+    'my_sql_table',
+    'user',
+    'password'
+)
+INTO OUTFILE 'my_output_file.ndjson'"
+```
+
+`clickhouse-local` 도구가 단순하면서도 얼마나 강력한지 정말 인상적입니다. MySQL 같은 데이터베이스에서 데이터를 손쉽게 읽어 들인 후 [다양한 출력 형식](https://clickhouse.com/docs/sql-reference/formats/)으로 내보낼 수 있습니다.

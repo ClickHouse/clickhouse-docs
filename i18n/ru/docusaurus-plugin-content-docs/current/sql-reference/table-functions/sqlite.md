@@ -17,6 +17,7 @@ doc_type: 'reference'
 sqlite('db_path', 'table_name')
 ```
 
+
 ## Аргументы \{#arguments\}
 
 - `db_path` — Путь к файлу базы данных SQLite. [String](../../sql-reference/data-types/string.md).
@@ -44,6 +45,8 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
+
 ## См. также \{#related\}
 
 - [SQLite](../../engines/table-engines/integrations/sqlite.md) — движок таблиц
+- [Движок базы данных SQLite](../../engines/database-engines/sqlite.md) — раздел о поддержке типов данных

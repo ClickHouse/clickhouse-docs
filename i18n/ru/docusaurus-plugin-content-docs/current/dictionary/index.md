@@ -3,16 +3,17 @@ slug: /dictionary
 title: 'Словарь'
 keywords: ['словарь', 'словари']
 description: 'Словарь представляет данные в формате ключ-значение для быстрого поиска.'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
+
 # Словарь \{#dictionary\}
 
-Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/dictionaries#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
+Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
 
 Словари полезны для:
 
@@ -87,7 +88,7 @@ Controversial_ratio: 0
 
 #### Применение словаря \{#applying-a-dictionary\}
 
-Чтобы продемонстрировать эти концепции, мы используем словарь для наших данных о голосовании. Поскольку словари обычно хранятся в памяти ([ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) — исключение), вам следует учитывать объём данных. Проверим размер нашей таблицы `votes`:
+Чтобы продемонстрировать эти концепции, мы используем словарь для наших данных о голосовании. Поскольку словари обычно хранятся в памяти ([ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache) — исключение), вам следует учитывать объём данных. Проверим размер нашей таблицы `votes`:
 
 ```sql
 SELECT table,
@@ -105,7 +106,7 @@ GROUP BY table
 
 Данные будут храниться в нашем словаре без сжатия, поэтому нам потребуется как минимум 4 ГБ памяти, если бы мы собирались хранить все столбцы (мы не будем) в словаре. Словарь будет реплицирован по нашему кластеру, поэтому этот объём памяти должен быть зарезервирован *на каждый узел*.
 
-> В примере ниже данные для нашего словаря поступают из таблицы ClickHouse. Хотя это и является наиболее распространённым источником словарей, поддерживается [ряд источников](/sql-reference/dictionaries#dictionary-sources), включая файлы, HTTP и базы данных, в том числе [Postgres](/sql-reference/dictionaries#postgresql). Как мы покажем, словари могут автоматически обновляться, что делает их идеальным способом обеспечить доступность небольших наборов данных, подверженных частым изменениям, для прямых JOIN.
+> В примере ниже данные для нашего словаря поступают из таблицы ClickHouse. Хотя это и является наиболее распространённым источником словарей, поддерживается [ряд источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), включая файлы, HTTP и базы данных, в том числе [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql). Как мы покажем, словари могут автоматически обновляться, что делает их идеальным способом обеспечить доступность небольших наборов данных, подверженных частым изменениям, для прямых JOIN.
 
 Для нашего словаря требуется первичный ключ, по которому будут выполняться обращения. Концептуально это идентично первичному ключу транзакционной базы данных и должно быть уникальным. Наш запрос выше требует обращения по ключу соединения — `PostId`. Словарь, в свою очередь, должен быть заполнен суммарными значениями голосов «за» и «против» по `PostId` из нашей таблицы `votes`. Ниже приведён запрос для получения данных этого словаря:
 
@@ -290,7 +291,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-0 строк в наборе. Затрачено: 36.830 сек. Обработано 238.98 млн строк, 2.64 ГБ (6.49 млн строк/с., 71.79 МБ/с.)
+0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
 Теперь мы можем узнать название места, из которого поступает большинство записей:
@@ -310,28 +311,29 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-Получено 4 строки. Прошло: 0.142 сек. Обработано 59.82 млн строк, 1.08 ГБ (420.73 млн строк/сек., 7.60 ГБ/сек.)
-Пиковое использование памяти: 666.82 МиБ.
+4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
+Peak memory usage: 666.82 MiB.
 ```
+
 
 ## Расширенные темы о словарях \{#advanced-dictionary-topics\}
 
 ### Выбор `LAYOUT` словаря \{#choosing-the-dictionary-layout\}
 
-Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
 
 ### Обновление словарей \{#refreshing-dictionaries\}
 
 Мы указали для словаря `LIFETIME` со значением `MIN 600 MAX 900`. LIFETIME — это интервал обновления словаря; в данном случае значения приводят к периодической перезагрузке через случайный интервал между 600 и 900 секундами. Такой случайный интервал необходим для распределения нагрузки на источник словаря при обновлении на большом числе серверов. Во время обновления старая версия словаря по-прежнему может использоваться в запросах, при этом только начальная загрузка блокирует запросы. Обратите внимание, что задание `(LIFETIME(0))` предотвращает обновление словарей.
 Принудительную перезагрузку словарей можно выполнить с помощью команды `SYSTEM RELOAD DICTIONARY`.
 
-Для источников данных, таких как ClickHouse и Postgres, вы можете настроить запрос, который будет обновлять словари только в том случае, если они действительно изменились (это определяется ответом на запрос), а не с периодическим интервалом. Дополнительные подробности можно найти [здесь](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+Для источников данных, таких как ClickHouse и Postgres, вы можете настроить запрос, который будет обновлять словари только в том случае, если они действительно изменились (это определяется ответом на запрос), а не с периодическим интервалом. Дополнительные подробности можно найти [здесь](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime).
 
 ### Другие типы словарей \{#other-dictionary-types\}
 
-ClickHouse также поддерживает [иерархические](/sql-reference/dictionaries#hierarchical-dictionaries), [многоугольные](/sql-reference/dictionaries#polygon-dictionaries) и [словарі на основе регулярных выражений](/sql-reference/dictionaries#regexp-tree-dictionary) словари.
+ClickHouse также поддерживает [иерархические](/sql-reference/statements/create/dictionary/layouts/hierarchical), [многоугольные](/sql-reference/statements/create/dictionary/layouts/polygon) и [словарі на основе регулярных выражений](/sql-reference/statements/create/dictionary/layouts/regexp-tree) словари.
 
 ### Дополнительные материалы для чтения \{#more-reading\}
 
 - [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Расширенная конфигурация словарей](/sql-reference/dictionaries)
+- [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)

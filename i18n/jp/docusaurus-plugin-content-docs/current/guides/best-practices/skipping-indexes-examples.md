@@ -18,17 +18,19 @@ keywords: ['スキップインデックス', 'データスキップ', 'パフォ
 INDEX name expr TYPE type(...) [GRANULARITY N]
 ```
 
-ClickHouse は 5 種類のスキップインデックスをサポートしています：
+ClickHouse は 6 種類のスキップインデックスをサポートしています：
 
-| Index Type                                          | Description                  |
-| --------------------------------------------------- | ---------------------------- |
-| **minmax**                                          | 各グラニュール内の最小値と最大値を追跡する        |
-| **set(N)**                                          | グラニュールごとに最大 N 個の異なる値を保持する    |
-| **bloom&#95;filter([false&#95;positive&#95;rate])** | 存在チェックのための確率的フィルタ            |
-| **ngrambf&#95;v1**                                  | 部分文字列検索用の N-gram Bloom フィルタ  |
-| **tokenbf&#95;v1**                                  | フルテキスト検索用のトークンベース Bloom フィルタ |
+| Index Type                                          | Description                             |
+| --------------------------------------------------- | --------------------------------------- |
+| **minmax**                                          | 各グラニュール内の最小値と最大値を追跡する                   |
+| **set(N)**                                          | グラニュールごとに最大 N 個の異なる値を保持する               |
+| **text**                                            | トークン化された文字列データに対する転置インデックスで、フルテキスト検索を行う |
+| **bloom&#95;filter([false&#95;positive&#95;rate])** | 存在チェックのための確率的フィルタ                       |
+| **ngrambf&#95;v1**                                  | 部分文字列検索用の N-gram Bloom フィルタ             |
+| **tokenbf&#95;v1**                                  | フルテキスト検索用のトークンベース Bloom フィルタ            |
 
 各セクションではサンプルデータを用いた例を示し、クエリ実行時にインデックスが利用されているかを確認する方法を説明します。
+
 
 ## MinMax インデックス \{#minmax-index\}
 
@@ -60,6 +62,7 @@ SELECT count() FROM events WHERE ts >= now() - 3600;
 
 `EXPLAIN` とプルーニングを用いた[具体例](/best-practices/use-data-skipping-indices-where-appropriate#example)を参照してください。
 
+
 ## Set インデックス \{#set-index\}
 
 ローカル（ブロック単位）のカーディナリティが低い場合に `set` インデックスを使用します。各ブロック内に多数の異なる値が存在する場合には効果がありません。
@@ -76,6 +79,27 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 作成／マテリアライズのワークフローと、その適用前後の効果は、[基本的な操作ガイド](/optimize/skipping-indexes#basic-operation)で確認できます。
 
+
+## Text index (text) による全文検索 \{#textindex-for-full-text-search\}
+
+`text` は、トークン化されたテキストデータに対する倒立索引です。
+全文検索ワークロード向けに特化して設計されたもので、効率的かつ決定論的なトークンおよび単語の検索を可能にします。
+自然言語や大規模テキスト検索のユースケースに推奨されます。
+
+詳細および例については [Full-text Search with Text Indexes](/engines/table-engines/mergetree-family/textindexes) を参照してください。
+
+```sql
+ALTER TABLE logs ADD INDEX msg_text msg TYPE text(tokenizer = splitByNonAlpha);
+ALTER TABLE logs MATERIALIZE INDEX msg_text;
+
+SELECT count() FROM logs WHERE hasAllTokens(msg, 'exception');
+```
+
+より包括的なオブザーバビリティの例は、[こちら](/use-cases/observability/schema-design#text-index-for-full-text-search)のドキュメントを参照してください。
+
+テキスト索引は完全に決定的であり、トークナイゼーションやテキスト処理の観点から完全にチューニング可能ですが、ブルームフィルター ベースの索引と比較すると、より多くのストレージ容量を消費するというコストがあります。
+
+
 ## 汎用 Bloom フィルター（スカラー） \{#generic-bloom-filter-scalar\}
 
 `bloom_filter` インデックスは、「干し草の山から針を探すような」等価比較や IN によるメンバーシップ判定に適しています。偽陽性率（デフォルト 0.025）を指定するオプションのパラメータを受け取ります。
@@ -90,7 +114,12 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
-## 部分文字列検索用の N-gram Bloom フィルター (ngrambf&#95;v1) \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+
+## 部分文字列検索用の N-gram Bloom フィルター (ngrambf_v1) \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+
+> 注意: ClickHouse バージョン 26.2 からテキストインデックスが一般提供 (GA) されたため、全文検索には Bloom filter ベースのインデックスは推奨されません。
+> これらはよりコンパクトですが、確率的な仕組みであるため、残念ながら偽陽性を発生させがちです。
+> さらに、設定可能な項目が限られています。
 
 `ngrambf_v1` インデックスは、文字列を N-gram に分割します。`LIKE '%...%'` クエリに対して有効です。String/FixedString/Map（mapKeys/mapValues 経由）をサポートし、サイズ、ハッシュ数、シードを調整できます。詳細については、[N-gram Bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) のドキュメントを参照してください。
 
@@ -126,7 +155,12 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 チューニングに関する完全なガイダンスについては、[パラメータのドキュメント](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)を参照してください。
 
-## 単語ベース検索用の Token Bloom フィルタ (tokenbf&#95;v1) \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+
+## 単語ベース検索用の Token Bloom フィルタ (tokenbf_v1) \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+
+> 注記: ClickHouse バージョン 26.2 からテキスト索引が一般提供 (GA) されたことに伴い、全文検索用途での Bloom フィルタベースの索引は推奨されません。
+> コンパクトではあるものの、確率的な手法であるため誤検出 (false positive) を引き起こしやすいという問題があります。
+> さらに、設定可能な範囲も限定的です。
 
 `tokenbf_v1` は、英数字以外の文字で区切られたトークンをインデックス化します。[`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` による単語パターン、または `=` / `IN` 演算子と併用して使用することを推奨します。`String`/`FixedString`/`Map` 型をサポートします。
 
@@ -144,6 +178,7 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
 トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#bloom-filters-for-text-search)を参照してください。
+
 
 ## CREATE TABLE 時にインデックスを追加する（複数の例） \{#add-indexes-during-create-table-multiple-examples\}
 
@@ -166,6 +201,7 @@ ENGINE = MergeTree
 ORDER BY u64;
 ```
 
+
 ## 既存データのマテリアライズと検証 \{#materializing-on-existing-data-and-verifying\}
 
 `MATERIALIZE` を使って既存のデータパーツにインデックスを追加し、以下のように `EXPLAIN` やトレースログでプルーニングの動作を確認できます。
@@ -181,6 +217,7 @@ SET send_logs_level = 'trace';
 ```
 
 この[具体的な minmax の例](/best-practices/use-data-skipping-indices-where-appropriate#example)は、EXPLAIN 出力の構造とプルーニング件数を示しています。
+
 
 ## スキップインデックスを使用すべき場合と避けるべき場合 \{#when-use-and-when-to-avoid\}
 
@@ -210,6 +247,7 @@ WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';
 ```
 
+
 ## 注意事項と留意点 \{#notes-and-caveats\}
 
 * スキップインデックスは [MergeTree ファミリーのテーブル](/engines/table-engines/mergetree-family/mergetree) でのみサポートされます。プルーニングはグラニュール／ブロックレベルで行われます。  
@@ -217,6 +255,7 @@ SETTINGS ignore_data_skipping_indices = 'msg_token';
 * Bloom filter およびその他のスキップインデックスは `EXPLAIN` とトレースで検証し、プルーニング効果とインデックスサイズのバランスが取れるように粒度を調整してください。
 
 ## 関連ドキュメント \{#related-docs\}
+
 - [データスキッピングインデックスのガイド](/optimize/skipping-indexes)
 - [ベストプラクティスガイド](/best-practices/use-data-skipping-indices-where-appropriate)
 - [データスキッピングインデックスの操作方法](/sql-reference/statements/alter/skipping-index)

@@ -52,7 +52,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 ## 軽量アップデートの要件 \{#lightweight-update-requirements\}
 
-軽量アップデートは、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) エンジンおよびそれらの [`Replicated`](/engines/table-engines/mergetree-family/replication.md) と [`Shared`](/cloud/reference/shared-merge-tree) バージョンでサポートされています。
+軽量アップデートは、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)、[`VersionedCollapsingMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/versionedcollapsingmergetree) エンジンおよびそれらの [`Replicated`](/engines/table-engines/mergetree-family/replication.md) と [`Shared`](/cloud/reference/shared-merge-tree) バージョンでサポートされています。
 
 軽量アップデートを使用するには、テーブル設定 [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) および [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column) により `_block_number` および `_block_offset` カラムのマテリアライズを有効にする必要があります。
 

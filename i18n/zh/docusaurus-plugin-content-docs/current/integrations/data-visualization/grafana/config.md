@@ -5,9 +5,9 @@ slug: /integrations/grafana/config
 description: 'Grafana 中 ClickHouse 数据源插件的配置选项'
 title: '在 Grafana 中配置 ClickHouse 数据源'
 doc_type: 'guide'
-keywords: ['Grafana 插件配置', '数据源设置', '连接参数', '身份验证配置', '插件选项']
+keywords: ['Grafana 插件配置', '数据源设置', '连接参数', '身份验证设置', '插件选项']
 integration:
-  - support_level: '核心'
+  - support_level: 'core'
   - category: 'data_visualization'
 ---
 
@@ -22,23 +22,24 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # 在 Grafana 中配置 ClickHouse 数据源 \{#configuring-clickhouse-data-source-in-grafana\}
 
 <ClickHouseSupportedBadge/>
 
-修改配置最简单的方式是在 Grafana 的 UI 中的插件配置页面完成，但也可以通过 [使用 YAML 文件预配置数据源](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+修改配置最简单的方式是在 Grafana UI 的插件配置页面中进行操作，但数据源也可以通过 [使用 YAML 文件进行预配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
-本页面展示了 ClickHouse 插件中可用的配置项列表，以及在使用 YAML 预配置数据源时可参考的配置片段。
+本页列出了 ClickHouse 插件中可配置的选项，以及为使用 YAML 预配置数据源的用户提供的配置示例片段。
 
-如需快速了解所有可用选项，可在[此处](#all-yaml-options)查看完整的配置选项列表。
+若需快速浏览所有选项，可以在[此处](#all-yaml-options)找到完整的配置选项列表。
 
-## 通用设置 \{#common-settings\}
+## 常用设置 \{#common-settings\}
 
 示例配置界面：
 
 <Image size="sm" img={config_common} alt="安全原生配置示例" border />
 
-通用设置的 YAML 配置示例：
+常用设置的示例配置 YAML：
 
 ```yaml
 jsonData:
@@ -62,17 +63,18 @@ secureJsonData:
   tlsClientKey:  <string> # TLS client key
 ```
 
-请注意，从 UI 中保存配置时会添加一个 `version` 属性。该属性表示配置保存时所使用的插件版本。
+请注意，通过 UI 保存配置时会新增一个 `version` 属性，该属性表示保存该配置时对应的插件版本。
+
 
 ### HTTP 协议 \{#http-protocol\}
 
-如果选择通过 HTTP 协议连接，将会显示更多设置。
+如果选择通过 HTTP 协议进行连接，将会显示更多配置选项。
 
 <Image size="md" img={config_http} alt="额外的 HTTP 配置选项" border />
 
 #### HTTP path \{#http-path\}
 
-如果 HTTP 服务器是在不同的 URL 路径下对外提供服务，可以在此配置该路径。
+如果你的 HTTP 服务器是通过不同的 URL 路径对外暴露的，可以在此处添加该路径。
 
 ```yaml
 jsonData:
@@ -80,18 +82,19 @@ jsonData:
   path: additional/path/example
 ```
 
-#### 自定义 HTTP 头 \{#custom-http-headers\}
 
-可以为发送到服务器的请求添加自定义 HTTP 头。
+#### 自定义 HTTP 请求头 \{#custom-http-headers\}
 
-HTTP 头可以是明文或安全类型。
-所有头的键都会以明文形式存储，而安全头的值会保存在安全配置中（类似于 `password` 字段）。
+可以为发送到服务器的请求添加自定义请求头。
+
+请求头的值可以是明文或安全类型。
+所有请求头的键都会以明文形式存储，而安全请求头的值会保存在安全配置中（类似于 `password` 字段）。
 
 :::warning 通过 HTTP 传输的安全值
-虽然安全头的值会在配置中安全存储，但如果禁用了安全连接，该值仍会通过 HTTP 发送。
+虽然安全请求头的值会安全地存储在配置中，但如果禁用安全连接，该值仍会通过 HTTP 发送。
 :::
 
-明文 / 安全头的 YAML 示例：
+普通/安全请求头的 YAML 示例：
 
 ```yaml
 jsonData:
@@ -106,11 +109,12 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## 其他配置 \{#additional-settings\}
 
-以下附加配置为可选项。
+## 其他设置 \{#additional-settings\}
 
-<Image size="sm" img={config_additional} alt="附加配置示例" border />
+这些额外设置是可选的。
+
+<Image size="sm" img={config_additional} alt="其他设置示例" border />
 
 YAML 示例：
 
@@ -124,22 +128,23 @@ jsonData:
   validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
+
 ### OpenTelemetry \{#opentelemetry\}
 
-OpenTelemetry (OTel) 已与该插件深度集成。
+OpenTelemetry (OTel) 已深度集成到该插件中。
 可以使用我们的 [exporter 插件](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 将 OpenTelemetry 数据导出到 ClickHouse。
 为获得最佳效果，建议同时为 [logs](#logs) 和 [traces](#traces) 配置 OTel。
 
-还需要配置这些默认设置以启用 [data links](./query-builder.md#data-links)，这是一个可以实现强大可观测性工作流的功能。
+还需要配置这些默认设置以启用 [data links](./query-builder.md#data-links)，这是一项支持强大可观测性工作流的功能。
 
 ### 日志 \{#logs\}
 
-为了加快[日志查询构建](./query-builder.md#logs)，可以为日志查询预先设置默认的数据库 / 表以及列。这样会在查询构建器中预加载一个可直接运行的日志查询，从而在探索页面中浏览日志时提升可观测性分析的效率。
+为了加快[构建日志查询](./query-builder.md#logs)，可以为日志查询设置默认数据库/表以及默认列。这样会在查询构建器中预先填充一条可直接运行的日志查询，从而在可观测性的 Explore 页面中浏览时更加高效。
 
-如果你使用的是 OpenTelemetry，应当启用“**Use OTel**”开关，并将**默认日志表**设置为 `otel_logs`。
-这将自动根据所选的 OTel Schema 版本覆盖默认列配置。
+如果你使用的是 OpenTelemetry，应当启用“**Use OTel**”开关，并将 **default log table** 设置为 `otel_logs`。
+这会自动重写默认列配置，以使用所选的 OTel schema 版本。
 
-虽然日志并不强制要求使用 OpenTelemetry，但将日志与追踪统一为单一数据集，有助于配合[数据关联](./query-builder.md#data-links)实现更顺畅的可观测性工作流。
+虽然日志并不要求依赖 OpenTelemetry，但将日志和 trace 存储在同一数据集中，有助于结合[数据链接](./query-builder.md#data-links)实现更顺畅的可观测性工作流。
 
 日志配置示例界面：
 
@@ -162,19 +167,20 @@ jsonData:
     messageColumn: <string> # the log's message/content.
 ```
 
-### Traces \{#traces\}
 
-为了加快[构建追踪查询](./query-builder.md#traces)的速度，可以为追踪查询设置默认数据库/数据表以及列。这样会在查询构建器中预加载一条可直接运行的追踪搜索查询，从而使在 Explore 页面中浏览可观测性数据更加高效。
+### Trace（追踪） \{#traces\}
 
-如果你使用的是 OpenTelemetry，应启用“**Use OTel**”开关，并将**默认跟踪表**设置为 `otel_traces`。
-这会自动重写默认列，以使用所选的 OTel Schema 版本。
-虽然 OpenTelemetry 并非必需，但在对追踪使用其 Schema 时，此功能效果最佳。
+为了加速[构建追踪查询](./query-builder.md#traces)，你可以为追踪查询设置默认数据库和表，以及默认使用的列。这样会在查询构建器中预加载一条可直接运行的追踪搜索查询，从而在 Explore 页面中进行可观测性浏览时更加高效。
 
-示例追踪配置界面：
+如果你使用的是 OpenTelemetry，应启用“**Use OTel**”开关，并将 **default trace table** 设置为 `otel_traces`。
+这会自动重写默认列配置，以使用所选的 OTel Schema 版本。
+虽然并不强制要求使用 OpenTelemetry，但在基于其 Schema 存储追踪数据时，该功能效果最佳。
 
-<Image size="sm" img={config_traces} alt="Traces 配置" border />
+追踪配置界面示例：
 
-示例追踪配置 YAML：
+<Image size="sm" img={config_traces} alt="Traces config" border />
+
+追踪配置 YAML 示例：
 
 ```yaml
 jsonData:
@@ -198,22 +204,23 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
+
 ### 列别名 \{#column-aliases\}
 
-列别名是一种便捷方式，可以使用不同的名称和类型来查询数据。
-通过使用别名，你可以将嵌套的模式结构扁平化，从而在 Grafana 中更方便地进行选择。
+列别名是一种方便的方法，可以使用不同的名称和类型来查询你的数据。
+通过使用别名，你可以将嵌套的 schema 展平成扁平结构，从而在 Grafana 中更轻松地进行选择。
 
-在以下情况下，你可能会用到别名：
+在以下情况下，别名可能对你有用：
 
-- 你清楚了解自己的模式以及其中大部分嵌套属性/类型
-- 你使用 Map 类型来存储数据
+- 你了解自己的 schema 以及其中大部分嵌套属性和类型
+- 你将数据存储在 Map 类型中
 - 你将 JSON 以字符串形式存储
-- 你经常对所选列应用函数以进行转换
+- 你经常对所选列应用函数来进行转换
 
-#### 表中定义的 ALIAS 列 \{#table-defined-alias-columns\}
+#### 在表中定义的 ALIAS 列 \{#table-defined-alias-columns\}
 
-ClickHouse 内置了列别名功能，并可开箱即用地与 Grafana 配合使用。
-可以在表定义中直接声明别名列。
+ClickHouse 内置列别名功能，并且开箱即用地支持与 Grafana 集成。
+可以直接在表上定义别名列。
 
 ```sql
 CREATE TABLE alias_example (
@@ -224,19 +231,22 @@ CREATE TABLE alias_example (
 
 在上面的示例中，我们创建了一个名为 `TimestampDate` 的别名，用于将纳秒时间戳转换为 `Date` 类型。
 这类数据不像第一列那样存储在磁盘上，而是在查询时计算得到。
-表中定义的别名列在执行 `SELECT *` 时不会被返回，但可以通过服务器设置进行调整。
+表中定义的别名在执行 `SELECT *` 时不会返回，但可以通过服务器设置进行配置。
 
-更多信息请参阅 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
+要了解更多信息，请阅读 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
+
 
 #### 列别名表 \{#column-alias-tables\}
 
-默认情况下，Grafana 会根据 `DESC table` 命令的返回结果提供列建议。
-在某些情况下，您可能希望完全覆盖 Grafana 所识别到的列。
-在选择列时，这有助于在 Grafana 中对您的 schema 进行一定程度的隐藏，对于复杂表结构可以改善用户体验。
+默认情况下，Grafana 会根据 `DESC table` 的响应提供列建议。
+在某些情况下，你可能希望完全覆盖 Grafana 所看到的列。
+在 Grafana 中选择列时，这有助于在一定程度上隐藏表结构细节，视数据表的复杂度而定，可以改善用户体验。
 
-与在表上直接定义别名相比，这种方式的优势在于，您可以轻松更新别名而无需修改表本身。在某些 schema 中，此类定义可能多达数千条，从而使底层表定义变得臃肿不清。同时，它也允许您隐藏希望用户忽略的列。
+与在表上直接定义别名相比，这种方式的优势在于你可以轻松更新别名，而无需修改表本身。
+在某些架构中，这可能会有成千上万条别名条目，进而使底层的表定义显得杂乱。
+它还允许隐藏你希望用户忽略的列。
 
-Grafana 要求别名表具有如下列结构：
+Grafana 要求别名表具有以下列结构：
 
 ```sql
 CREATE TABLE aliases (
@@ -246,7 +256,7 @@ CREATE TABLE aliases (
 )
 ```
 
-下面是如何使用别名表来复现 `ALIAS` 列的行为：
+下面展示如何使用 alias 表来复现 `ALIAS` 列的行为：
 
 ```sql
 CREATE TABLE example_table (
@@ -260,22 +270,23 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 ('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
 ```
 
-然后我们可以在 Grafana 中配置使用此表。请注意，名称可以是任意名称，甚至可以在单独的数据库中定义：
+然后我们就可以将此表配置为供 Grafana 使用。请注意，名称可以是任意的，甚至可以定义在单独的数据库中：
 
-<Image size="md" img={alias_table_config_example} alt="别名表示例配置" border />
+<Image size="md" img={alias_table_config_example} alt="别名表配置示例" border />
 
-现在，Grafana 将使用别名表的结果，而不是 `DESC example_table` 的结果：
+现在 Grafana 将看到别名表的结果，而不是 `DESC example_table` 的结果：
 
-<Image size="md" img={alias_table_select_example} alt="别名表示例查询" border />
+<Image size="md" img={alias_table_select_example} alt="别名表查询示例" border />
 
 这两种类型的别名都可以用于执行复杂的类型转换或 JSON 字段提取。
 
+
 ## 所有 YAML 选项 \{#all-yaml-options\}
 
-以下是该插件提供的全部 YAML 配置选项。
-部分字段给出了示例值，其他字段仅展示字段类型。
+以下是该插件提供的所有可用 YAML 配置选项。
+有些字段包含示例值，而另一些仅展示字段的类型。
 
-有关通过 YAML 预配置数据源的更多信息，请参阅 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+有关使用 YAML 预配置数据源的更多信息，请参阅 [Grafana 文档](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
 ```yaml
 datasources:

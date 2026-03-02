@@ -17,7 +17,7 @@ in the sidebar.
 
 ## Introduction {#introduction}
 
-While [replication](/engines/table-engines/mergetree-family/replication) provides protection from hardware failures, it does not 
+While [replication](/engines/table-engines/mergetree-family/replication) provides protection from hardware failures, it doesn't 
 protect against human errors: accidental deletion of data, deletion of the wrong 
 table or a table on the wrong cluster, and software bugs that result in incorrect 
 data processing or data corruption. 
@@ -25,7 +25,7 @@ data processing or data corruption.
 In many cases mistakes like these will affect all replicas. ClickHouse has built-in
 safeguards to prevent some types of mistakes, for example, by [default](/operations/settings/settings#max_table_size_to_drop) 
 you can't just drop tables with a `MergeTree` family engine containing more than 
-50 Gb of data. However, these safeguards do not cover all possible cases and 
+50 Gb of data. However, these safeguards don't cover all possible cases and 
 problems can still occur.
 
 To effectively mitigate possible human errors, you should carefully prepare a 
@@ -41,7 +41,7 @@ shortcomings.
 
 :::note
 Keep in mind that if you backed something up and never tried to restore it, 
-chances are that the restore will not work properly when you actually need it (or at 
+chances are that the restore won't work properly when you actually need it (or at 
 least it will take longer than the business can tolerate). So whatever backup 
 approach you choose, make sure to automate the restore process as well, and practice
 it on a spare ClickHouse cluster regularly.
@@ -86,7 +86,7 @@ Depending on your needs, you may want to use:
 
 `BACKUP` and `RESTORE` commands can also be marked `ASYNC`. In this case, the 
 backup command returns immediately, and the backup process runs in the background.
-If the commands are not marked `ASYNC`, the backup process is synchronous and
+If the commands aren't marked `ASYNC`, the backup process is synchronous and
 the command blocks until the backup completes.
 
 ## Concurrent vs non-concurrent backups {#concurrent-vs-non-concurrent}
@@ -162,7 +162,7 @@ the cluster's overall setup.
 This functionality only works for configurations managed through SQL commands 
 (referred to as ["SQL-driven Access Control and Account Management"](/operations/access-rights#enabling-access-control)). 
 Access configurations defined in ClickHouse server configuration files (e.g. `users.xml`)
-are not included in backups and cannot be restored through this method.
+aren't included in backups and can't be restored through this method.
 
 ## General syntax {#syntax}
 

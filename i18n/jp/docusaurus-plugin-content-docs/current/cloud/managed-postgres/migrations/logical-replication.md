@@ -44,6 +44,15 @@ dig +short <your-managed-postgres-hostname>
     ```sql
     GRANT rds_replication TO <your-username>;
     ```
+- ターゲットデータベースで使用するロールは、ターゲットデータベースのオブジェクトに対する書き込み権限を持っている必要があります:
+    ```sql
+    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+    GRANT pg_create_subscription TO subscriber_user;
+
+    -- テーブル権限を付与
+    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+    ```
 
 ソースデータベースが次のように構成されていることを確認してください:
 

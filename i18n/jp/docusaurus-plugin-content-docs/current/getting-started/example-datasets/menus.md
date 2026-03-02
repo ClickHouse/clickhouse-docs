@@ -130,6 +130,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定により、[DateTime](../../sql-reference/data-types/datetime.md) フィールドをさまざまなフォーマットでパースできます。例えば、秒なしの ISO-8601 形式である「2000-01-01 01:02」も認識されます。この設定を有効にしない場合、固定形式の DateTime フォーマットのみが許可されます。
 
+
 ## データを非正規化する \{#denormalize-data\}
 
 データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに分かれて格納されています。これは、例えばメニュー項目から料理名をクエリしたい場合などに、[JOIN](/sql-reference/statements/select/join) を実行する必要があるということです。

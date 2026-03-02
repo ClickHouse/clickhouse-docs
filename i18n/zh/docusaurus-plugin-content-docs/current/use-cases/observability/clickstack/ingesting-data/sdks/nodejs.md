@@ -55,7 +55,8 @@ yarn add @hyperdx/node-opentelemetry
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // 在托管版 ClickStack 中可省略
     service: 'my-service'
 });
 ```
@@ -67,7 +68,8 @@ HyperDX.init({
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // 在托管版 ClickStack 中可省略
     service: 'my-service'
 });
 ```
@@ -149,7 +151,8 @@ ClickStack SDK 可以自动捕获应用程序中未捕获的异常和错误，�
 ```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管版 ClickStack 可省略
     service: 'my-service'
 });
 const app = express();
@@ -171,7 +174,8 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管版 ClickStack 可省略
     service: 'my-service'
 });
 
@@ -307,12 +311,20 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>
 
+:::note Managed ClickStack
+在 Managed ClickStack 中，可以省略 `HYPERDX_API_KEY`。
+:::
+
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
+
+:::note Managed ClickStack
+在 Managed ClickStack 中，可以省略 `HYPERDX_API_KEY`。
+:::
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js

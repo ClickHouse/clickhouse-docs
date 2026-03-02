@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 このガイドで扱う統合対象は次のとおりです:
 
 <table>
@@ -21,7 +24,8 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
   </tbody>
 </table>
 
-_ClickStack にログを送信するには、[OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) を経由して送信してください。_
+*ClickStack にログを送信するには、[OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) を経由して送信してください。*
+
 
 ## はじめに \{#getting-started\}
 
@@ -74,9 +78,23 @@ Rails.application.configure do
 end
 ```
 
+
 ### 環境変数を設定する \{#configure-environment-variables\}
 
-以降、ClickStack にテレメトリデータを送信するために、シェルで次の環境変数を設定します。
+以降、OpenTelemetry コレクター経由で ClickStack にテレメトリデータを送信するために、シェルで次の環境変数を設定します。
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="マネージド ClickStack" default>
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack オープンソース" >
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -84,6 +102,9 @@ OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
+
+</TabItem>
+</Tabs>
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内で自分のサービスを識別するために使用されます。任意の名前を設定できます。*
 

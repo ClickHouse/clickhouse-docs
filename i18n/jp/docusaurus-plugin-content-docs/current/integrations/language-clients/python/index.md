@@ -44,7 +44,7 @@ ClickHouse Connect は、幅広い Python アプリケーションとの相互�
 |       3.13.x | ✅ |                 |   |    25.8.x (LTS) | ✅  |             |   |           3.0.x | ✅ |         |   |        |   |
 |              |   |                 |   | 25.9.x (Stable) | ✅  |             |   |                 |   |         |   |        |   |
 
-¹ClickHouse Connect は上記に列挙したプラットフォームに対して明示的にテストされています。さらに、優れた [`cibuildwheel`](https://cibuildwheel.readthedocs.io/en/stable/) プロジェクトでサポートされているすべてのアーキテクチャ向けに、テストされていないバイナリ wheel（C による最適化あり）もビルドされています。最後に、ClickHouse Connect は純粋な Python 実装としても動作するため、ソースからのインストールは比較的新しい Python 環境であればどれでも動作すると考えられます。
+¹ClickHouse Connect は上記に列挙したプラットフォームに対して明示的にテストされています。さらに、優れた [`cibuildwheel`](https://cibuildwheel.readthedocs.io/en/stable/) プロジェクトでサポートされているすべてのアーキテクチャ向けに、テストされていないバイナリ wheel（C による最適化あり）もビルドされています。最後に、ClickHouse Connect は純粋な Python 実装としても動作するため、ソースからのインストールは比較的新しい Python 実装であればどれでも動作すると考えられます。
 
 ²SQLAlchemy のサポートは Core 機能（クエリ、基本的な DDL）に限定されています。ORM 機能はサポートされていません。詳細については [SQLAlchemy 連携サポート](sqlalchemy.md) ドキュメントを参照してください。
 

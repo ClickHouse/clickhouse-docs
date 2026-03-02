@@ -58,8 +58,8 @@ ClickHouse にはデータ分析に利用できる関数が非常に多数用意
   PROPER("darcy-mae") => "Darcy-Mae"
   ```
 * **`RAND()`** *(v0.2.1 で追加)* — 整数値 (UInt32) を返します。例えば `3446222955` のような値です。[`rand()`](/sql-reference/functions/random-functions/#rand) と同等です。
-* **`RANDOM()`** *(v0.2.1 で追加)* — 非公式の Tableau 関数 [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) で、0 以上 1 以下の浮動小数点数を返します。
-* **`RAND_CONSTANT([optional_field])`** *(v0.2.1 で追加されました)* — ランダムな値を持つ定数カラムを生成します。`{RAND()}` の Fixed LOD のようなものですが、より高速です。[`randConstant()`](/sql-reference/functions/random-functions/#randConstant) と等価です。
+* **`RANDOM()`** *(v0.2.1 で追加)* — 非公式の Tableau 関数 [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) で、0 以上 1 未満の浮動小数点数を返します。
+* **`RAND_CONSTANT([optional_field])`** *(v0.2.1 で追加)* — ランダムな値を持つ定数カラムを生成します。`{RAND()}` の Fixed LOD のようなものですが、より高速です。[`randConstant()`](/sql-reference/functions/random-functions/#randConstant) と同等です。
 * **`REAL([my_number])`** — フィールドを float 型（Float64）にキャストします。詳細は[`こちら`](/sql-reference/data-types/decimal/#operations-and-result-type)を参照してください。
 * **`SHA256([my_string])`** *(v0.2.1 で追加)* — 文字列から SHA-256 ハッシュを計算し、その結果のバイト列を FixedString 型の文字列として返します。`HEX()` 関数と組み合わせて、例えば `HEX(SHA256([my_string]))` のように使うと便利です。[`SHA256()`](/sql-reference/functions/hash-functions#SHA256) と同等です。
 * **`SKEWNESS([my_number])`** — 数列の標本歪度を計算します。[`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp) と同等です。

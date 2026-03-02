@@ -41,7 +41,7 @@ Users will receive an email from which they can join the organization. For more 
 
 If your organization is configured for [SAML SSO](/cloud/security/saml-setup) follow these steps to add users to your organization.
 
-1. Add users to your SAML application in your identity provider, the users will not appear in ClickHouse until they have logged in once
+1. Add users to your SAML application in your identity provider, the users won't appear in ClickHouse until they have logged in once
 2. When the user logs in to ClickHouse Cloud they will automatically be assigned the `Member` role which may only log in and has no other access
 3. Follow the instructions in the `Manage user role assignments` below to grant permissions
 
@@ -99,7 +99,7 @@ Save your changes with the `Save changes` button at the bottom of the tab:
 
 ## Remove a user {#remove-user}
 :::note Remove SAML users
-SAML users that have been unassigned from the ClickHouse application in your identity provider are not able to log in to ClickHouse Cloud. The account is not removed from the console and will need to be manually removed.
+SAML users that have been unassigned from the ClickHouse application in your identity provider aren't able to log in to ClickHouse Cloud. The account isn't removed from the console and will need to be manually removed.
 :::
 
 Follow the steps below to remove a user. 

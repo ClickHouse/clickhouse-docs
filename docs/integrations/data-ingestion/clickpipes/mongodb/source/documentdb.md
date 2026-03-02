@@ -21,11 +21,11 @@ ClickPipes supports DocumentDB version 5.0.
 
 ## Configure change stream log retention {#configure-change-stream-log-retention}
 
-By default, Amazon DocumentDB has a 3-hour change stream log retention period, while initial load may take much longer depending on existing data volume in your DocumentDB. We recommend setting the change stream log retention to 72 hours or longer to ensure that it is not truncated before the initial snapshot is completed.
+By default, Amazon DocumentDB has a 3-hour change stream log retention period, while initial load may take much longer depending on existing data volume in your DocumentDB. We recommend setting the change stream log retention to 72 hours or longer to ensure that it isn't truncated before the initial snapshot is completed.
 
 ### Update change stream log retention via AWS Console {#update-change-stream-log-retention-via-aws-console}
 
-1. Click `Parameter groups` in the left panel, find the parameter group used by your DocumentDB cluster (if you are using the default parameter group, you will need to create a new parameter group first in order to modify it).
+1. Click `Parameter groups` in the left panel, find the parameter group used by your DocumentDB cluster (if you're using the default parameter group, you will need to create a new parameter group first in order to modify it).
 <Image img={docdb_select_parameter_group} alt="Select parameter group" size="lg" border/>
 
 2. Search for `change_stream_log_retention_duration`, select and edit it to `259200` (72 hours)

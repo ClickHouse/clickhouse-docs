@@ -22,15 +22,15 @@ CREATE DATABASE IF NOT EXISTS helloworld
 下面名为 `my_first_table` 的表创建在 `helloworld` 数据库中：
 
 ```sql
-CREATE TABLE helloworld.my_first_table
-(
-    user_id UInt32,
-    message String,
-    timestamp DateTime,
-    metric Float32
-)
-ENGINE = MergeTree()
-PRIMARY KEY (user_id, timestamp)
+  CREATE TABLE helloworld.my_first_table
+  (
+      user_id UInt32,
+      message String,
+      timestamp DateTime,
+      metric Float32
+  )
+  ENGINE = MergeTree()
+  PRIMARY KEY (user_id, timestamp)
 ```
 
 在上面的示例中，`my_first_table` 是一个包含四列的 `MergeTree` 表：
@@ -49,6 +49,7 @@ PRIMARY KEY (user_id, timestamp)
 
 可以选择的引擎有很多，但对于单节点 ClickHouse 服务器上的简单表，[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 通常是首选。
 :::
+
 
 ## 主键简介 \{#a-brief-intro-to-primary-keys\}
 

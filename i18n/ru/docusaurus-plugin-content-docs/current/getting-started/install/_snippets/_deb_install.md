@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Установка ClickHouse на Debian/Ubuntu \{#install-from-deb-packages\}
 
-> Рекомендуется использовать официальные предкомпилированные пакеты `deb` для **Debian** или **Ubuntu**.
+> Рекомендуется использовать официальные предварительно скомпилированные пакеты `deb` для **Debian** или **Ubuntu**.
 
 <VerticalStepper>
 
@@ -12,51 +12,50 @@ import TabItem from '@theme/TabItem';
 Чтобы установить ClickHouse, выполните следующие команды:
 
 ```bash
-# Install prerequisite packages
+# Установите необходимые пакеты
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# Download the ClickHouse GPG key and store it in the keyring
+# Скачайте GPG-ключ ClickHouse и сохраните его в хранилище ключей
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# Get the system architecture
+# Определите архитектуру системы
 ARCH=$(dpkg --print-architecture)
 
-# Add the ClickHouse repository to apt sources
+# Добавьте репозиторий ClickHouse в источники apt
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# Update apt package lists
+# Обновите списки пакетов apt
 sudo apt-get update
 ```
 
-- Вы можете заменить `stable` на `lts`, чтобы использовать различные [типы релизов](/knowledgebase/production) в зависимости от ваших потребностей.
+- Вы можете заменить `stable` на `lts`, чтобы использовать другой [тип релиза](/knowledgebase/production) в зависимости от ваших потребностей.
 - Вы можете скачать и установить пакеты вручную с [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/).
 <br/>
 <details>
-<summary>Устаревший метод установки deb-пакетов для дистрибутивов</summary>
+<summary>Устаревший способ установки deb-пакетов через дистрибутивы</summary>
 
 ```bash
-# Install prerequisite packages
+# Установите необходимые пакеты
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# Add the ClickHouse GPG key to authenticate packages
+# Добавьте GPG-ключ ClickHouse для аутентификации пакетов
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# Add the ClickHouse repository to apt sources
+# Добавьте репозиторий ClickHouse в источники apt
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
-
     
-# Update apt package lists
+# Обновите списки пакетов apt
 sudo apt-get update
 
-# Install ClickHouse server and client packages
+# Установите пакеты сервера и клиента ClickHouse
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# Start the ClickHouse server service
+# Запустите службу сервера ClickHouse
 sudo service clickhouse-server start
 
-# Launch the ClickHouse command line client
-clickhouse-client # or "clickhouse-client --password" if you set up a password.
+# Запустите клиент командной строки ClickHouse
+clickhouse-client # или "clickhouse-client --password", если вы задали пароль.
 ```
 
 </details>
@@ -69,7 +68,7 @@ sudo apt-get install -y clickhouse-server clickhouse-client
 
 ## Запуск ClickHouse \{#start-clickhouse-server\}
 
-Чтобы запустить сервер ClickHouse, выполните следующую команду:
+Чтобы запустить сервер ClickHouse, выполните:
 
 ```bash
 sudo service clickhouse-server start
@@ -81,7 +80,7 @@ sudo service clickhouse-server start
 clickhouse-client
 ```
 
-Если вы задали пароль для своего сервера, вам потребуется выполнить:
+Если вы задали пароль для сервера, вам нужно выполнить:
 
 ```bash
 clickhouse-client --password
@@ -90,9 +89,9 @@ clickhouse-client --password
 ## Установка автономного ClickHouse Keeper \{#install-standalone-clickhouse-keeper\}
 
 :::tip
-В производственных средах настоятельно рекомендуется запускать ClickHouse Keeper на выделенных узлах.
-В тестовых средах, если вы решите запускать ClickHouse Server и ClickHouse Keeper на одном сервере,
-то вам не нужно отдельно устанавливать ClickHouse Keeper, так как он включён в ClickHouse Server.
+В продакшн-средах мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных узлах.
+В тестовых средах, если вы решили запускать ClickHouse Server и ClickHouse Keeper на одном сервере,
+то вам не нужно устанавливать ClickHouse Keeper отдельно, так как он включён в состав сервера ClickHouse.
 :::
 
 Чтобы установить `clickhouse-keeper` на автономные серверы ClickHouse Keeper, выполните:

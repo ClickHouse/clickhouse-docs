@@ -58,20 +58,20 @@ On the next screen, click subscribe.
 
 ### Set up your account {#set-up-your-account}
 
-Note that at this point, the setup is not complete and your ClickHouse Cloud organization is not being billed through the marketplace yet. You will now need to click on Set up your account on your marketplace subscription to redirect to ClickHouse Cloud to finish setup.
+Note that at this point, the setup isn't complete and your ClickHouse Cloud organization isn't being billed through the marketplace yet. You will now need to click on Set up your account on your marketplace subscription to redirect to ClickHouse Cloud to finish setup.
 
 <Image img={aws_marketplace_payg_4} alt="Set up your account" border/>
 
 Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account. This step is very important so we can bind your ClickHouse Cloud organization to your AWS Marketplace billing.
 
 :::note[New Clickhouse Cloud Users]
-If you are a new ClickHouse Cloud user, follow the steps below.
+If you're a new ClickHouse Cloud user, follow the steps below.
 :::
 
 <details>
 <summary><strong>Steps for new users</strong></summary>
 
-If you are a new ClickHouse Cloud user, click Register at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the https://console.clickhouse.cloud.
+If you're a new ClickHouse Cloud user, click Register at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the https://console.clickhouse.cloud.
 
 <Image img={aws_marketplace_payg_5} size="md" alt="Clickhouse Cloud sign-up"/>
 
@@ -85,7 +85,7 @@ You will also need to provide some basic information about your business. See th
 
 </details>
 
-If you are an existing ClickHouse Cloud user, simply log in using your credentials.
+If you're an existing ClickHouse Cloud user, simply log in using your credentials.
 
 ### Add the Marketplace Subscription to an Organization {#add-marketplace-subscription}
 
@@ -103,4 +103,4 @@ You can confirm from the organization's billing page in the ClickHouse UI that b
 
 ## Support {#support}
 
-If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
+If you run into any issues, please don't hesitate to contact [our support team](https://clickhouse.com/support/program).

@@ -23,16 +23,16 @@ $$
 
 <br />
 
-ここで:
+Where:
 
-- $x$ はデータセット内の各データポイント
-- $\bar{x}$ はデータセットの算術平均
-- $n$ はデータセット内のデータポイント数
+- $x$ is each individual data point in the data set
+- $\bar{x}$ is the arithmetic mean of the data set
+- $n$ is the number of data points in the data set
 
-この関数は、入力データセットがより大きな母集団からの標本であることを前提としています。母集団全体の分散を計算する場合(完全なデータセットがある場合)は、代わりに[`varPop`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varpop)を使用してください。
+この関数は、入力データセットがより大きな母集団からの標本であることを前提としています。母集団全体の分散を計算する場合(完全なデータセットがある場合)は、代わりに[`varPop`](/sql-reference/aggregate-functions/reference/varPop)を使用してください。
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`varSampStable`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsampstable) function. It works slower but provides a lower computational error.
+This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`varSampStable`](/sql-reference/aggregate-functions/reference/varsampstable) function. It works slower but provides a lower computational error.
 :::
 
 **Syntax**

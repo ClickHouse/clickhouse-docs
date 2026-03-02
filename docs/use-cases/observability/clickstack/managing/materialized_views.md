@@ -59,7 +59,7 @@ This threshold is expected to increase in future releases.
 A single materialized view can compute multiple metrics for different groupings, for example, minimum, maximum, and p95 duration per service name over one-minute buckets. This allows a single view to serve many visualizations rather than just one. Consolidating metrics into shared views is therefore important to maximize the value of each view and ensure it's reused across dashboards and workflows.
 :::
 
-Before proceeding further, you are recommended to familiarize yourself with materialized views in ClickHouse in more depth.
+Before proceeding further, you're recommended to familiarize yourself with materialized views in ClickHouse in more depth.
 See our guide on [Incremental materialized views](/materialized-view/incremental-materialized-view) for additional details.
 
 ## Selecting visualizations for acceleration {#selecting-visualizatons-for-acceleration}
@@ -404,7 +404,7 @@ In summary, backfilling is often not worth the cost and operational risk. It sho
 ### Backfilling approaches {#backfilling-approaches}
 
 :::note Avoid POPULATE
-Using the [POPULATE](/sql-reference/statements/create/view#materialized-view) command is not recommended for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can miss rows inserted into its source table, with the materialized view created after the populate hash is finished. Furthermore, this populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
+Using the [POPULATE](/sql-reference/statements/create/view#materialized-view) command isn't recommended for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can miss rows inserted into its source table, with the materialized view created after the populate hash is finished. Furthermore, this populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
 :::
 
 Suppose you want to backfill a materialized view corresponding to the following aggregation, which computes per-minute metrics grouped by service name and status code:

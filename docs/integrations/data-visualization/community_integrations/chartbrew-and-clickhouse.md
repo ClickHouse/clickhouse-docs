@@ -38,7 +38,7 @@ In this guide, you will connect Chartbrew to ClickHouse, run a SQL query, and cr
 <Image img={chartbrew_01} size="lg" alt="Chartbrew dashboard" />
 
 :::tip Add some data
-If you do not have a dataset to work with, you can add one of the examples. This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset.
+If you don't have a dataset to work with, you can add one of the examples. This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset.
 :::
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}

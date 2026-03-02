@@ -94,13 +94,28 @@ export async function register() {
 
 ### 環境変数を設定する \{#configure-environment-variables\}
 
-トレースを直接 ClickStack に送信する場合は、スパンの送信先を OTel collector に指定するため、Next.js サーバーを起動するときに以下の環境変数を指定する必要があります。
+OpenTelemetry 経由でトレースを直接 ClickStack に送信する場合は、スパンを OTel collector に送るために、Next.js サーバーを起動する際に次の環境変数を指定する必要があります。
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
+```sh copy
+OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+npm run dev
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
 OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
 npm run dev
 ```
+</TabItem>
+</Tabs>
 
-Vercel にデプロイする場合は、上記のすべての環境変数が対象のデプロイメントで設定されていることを確認してください。
+Vercel にデプロイする場合は、デプロイメントで上記のすべての環境変数が設定されていることを確認してください。

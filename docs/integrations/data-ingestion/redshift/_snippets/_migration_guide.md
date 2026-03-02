@@ -21,7 +21,7 @@ From the ClickHouse instance standpoint, you can either:
 3. **[PIVOT](#pivot-data-from-redshift-to-clickhouse-using-s3)** using S3 object storage using an "Unload then load" logic
 
 :::note
-We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.
+We used Redshift as a data source in this tutorial. However, the migration approaches presented here aren't exclusive to Redshift, and similar steps can be derived for any compatible data source.
 :::
 
 ## Push Data from Redshift to ClickHouse {#push-data-from-redshift-to-clickhouse}
@@ -57,7 +57,7 @@ In the pull scenario, the idea is to leverage the ClickHouse JDBC Bridge to conn
 * Requires a ClickHouse JDBC Bridge instance which can turn into a potential scalability bottleneck
 
 :::note
-Even though Redshift is based on PostgreSQL, using the ClickHouse PostgreSQL table function or table engine is not possible since ClickHouse requires PostgreSQL version 9 or above and the Redshift API is based on an earlier version (8.x).
+Even though Redshift is based on PostgreSQL, using the ClickHouse PostgreSQL table function or table engine isn't possible since ClickHouse requires PostgreSQL version 9 or above and the Redshift API is based on an earlier version (8.x).
 :::
 
 ### Tutorial {#tutorial}
@@ -71,7 +71,7 @@ To use this option, you need to set up a ClickHouse JDBC Bridge. ClickHouse JDBC
 Deploy the ClickHouse JDBC Bridge. For more details, see our user guide on [JDBC for External Data sources](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
 
 :::note
-If you are using ClickHouse Cloud, you will need to run your ClickHouse JDBC Bridge on a separate environment and connect to ClickHouse Cloud using the [remoteSecure](/sql-reference/table-functions/remote/) function
+If you're using ClickHouse Cloud, you will need to run your ClickHouse JDBC Bridge on a separate environment and connect to ClickHouse Cloud using the [remoteSecure](/sql-reference/table-functions/remote/) function
 :::
 
 #### Configure your Redshift datasource {#configure-your-redshift-datasource}

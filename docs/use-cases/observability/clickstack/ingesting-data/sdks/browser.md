@@ -65,7 +65,7 @@ You can also include and install the script via a script tag as opposed to
 installing via NPM. This will expose the `HyperDX` global variable and can be
 used in the same way as the NPM package.
 
-This is recommended if your site is not currently built using a bundler.
+This is recommended if your site isn't currently built using a bundler.
 
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>

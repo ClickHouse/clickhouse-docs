@@ -66,7 +66,7 @@ SELECT
 FROM raw_votes;
 ```
 
-Вставьте пример данных:
+Вставим пример данных:
 
 ```sql
 INSERT INTO raw_votes VALUES
@@ -78,7 +78,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Выполните запрос к материализованному представлению с помощью комбинатора `SimpleState`:
+Выполните запрос к materialized view с помощью комбинатора `SimpleState`:
 
 ```sql
 SELECT
@@ -98,6 +98,7 @@ ORDER BY post_id ASC;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
+
 
 ## См. также \{#see-also\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

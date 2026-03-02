@@ -1,11 +1,11 @@
 ---
-sidebar_label: 'Query Builder'
+sidebar_label: 'クエリビルダー'
 sidebar_position: 2
 slug: /integrations/grafana/query-builder
-description: 'ClickHouse Grafana プラグインにおける Query Builder の使用'
+description: 'ClickHouse Grafana プラグインでクエリビルダーを使用する方法'
 title: 'クエリビルダー'
 doc_type: 'guide'
-keywords: ['grafana', 'query builder', 'visualization', 'dashboards', 'plugin']
+keywords: ['grafana', 'クエリビルダー', '可視化', 'ダッシュボード', 'プラグイン']
 integration:
   - support_level: 'core'
   - category: 'data_visualization'
@@ -23,213 +23,216 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # クエリビルダー \{#query-builder\}
 
 <ClickHouseSupportedBadge/>
 
-任意のクエリを ClickHouse プラグインで実行できます。
-クエリビルダーはシンプルなクエリに便利なオプションですが、複雑なクエリには [SQL Editor](#sql-editor) を使用する必要があります。
+任意のクエリは ClickHouse プラグインで実行できます。
+クエリビルダーはシンプルなクエリに便利なオプションですが、複雑なクエリについては [SQL Editor](#sql-editor) を使用する必要があります。
 
-クエリビルダー内のすべてのクエリには[クエリ種別](#query-types)があり、少なくとも 1 つのカラムを選択する必要があります。
+クエリビルダー内のすべてのクエリには [クエリタイプ](#query-types) があり、少なくとも 1 つのカラムを選択する必要があります。
 
-利用可能なクエリ種別は次のとおりです:
+利用可能なクエリタイプは次のとおりです:
 
-- [Table](#table): データをテーブル形式で表示する最も単純なクエリ種別です。集約関数を含むシンプルおよび複雑なクエリの両方に対応できる汎用的なオプションです。
-- [Logs](#logs): ログ向けクエリの構築に最適化されています。[デフォルトを設定](./config.md#logs)した Explore ビューで使用すると最も効果的です。
-- [Time Series](#time-series): 時系列クエリの構築に最適です。専用の時刻カラムを選択し、集約関数を追加できます。
-- [Traces](#traces): トレースの検索・閲覧に最適化されています。[デフォルトを設定](./config.md#traces)した Explore ビューで使用すると最も効果的です。
+- [Table](#table): データをテーブル形式で表示するための最も単純なクエリタイプです。集約関数を含むシンプルおよび複雑なクエリの両方に対する汎用的な選択肢として適しています。
+- [Logs](#logs): ログ用のクエリを構築するために最適化されています。[デフォルトが設定された](./config.md#logs) Explore ビューで最も効果的に機能します。
+- [Time Series](#time-series): 時系列クエリを構築する際に最適です。専用の時間カラムの選択と集約関数の追加が可能です。
+- [Traces](#traces): トレースの検索・閲覧向けに最適化されています。[デフォルトが設定された](./config.md#traces) Explore ビューで最も効果的に機能します。
 - [SQL Editor](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
 
 ## クエリタイプ \{#query-types\}
 
-*クエリタイプ* 設定を変更すると、作成するクエリの種類に合わせてクエリビルダーのレイアウトが変わります。
-クエリタイプは、データを可視化する際に使用されるパネルも決定します。
+*Query Type* 設定を変更すると、作成しているクエリの種類に応じて Query Builder のレイアウトが変更されます。
+また、クエリタイプは、データの可視化に使用されるパネルも決定します。
 
-### テーブル \{#table\}
+### Table \{#table\}
 
-最も柔軟なクエリタイプはテーブルクエリです。これは、シンプルクエリと集約クエリの両方を扱えるように設計された、他のクエリビルダーの汎用的なタイプです。
+最も柔軟なクエリタイプはテーブルクエリです。これは、他のクエリビルダーが扱うシンプルクエリおよび集約クエリのどちらにも対応する汎用的なクエリタイプです。
 
-| フィールド | 説明 |
+| Field | Description |
 |----|----|
-| Builder Mode  | シンプルクエリでは集約関数と Group By を除外し、集約クエリではこれらのオプションを含みます。 |
-| Columns | 選択されたカラム。このフィールドには生のSQLを入力でき、関数やカラムのエイリアスを使用できます。 |
-| Aggregates | [集約関数](/sql-reference/aggregate-functions/index.md) のリスト。関数およびカラムに対してカスタム値を指定できます。Aggregate モードのときのみ表示されます。 |
-| Group By | [GROUP BY](/sql-reference/statements/select/group-by.md) 式のリスト。Aggregate モードのときのみ表示されます。 |
-| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式のリスト。 |
-| Limit | クエリの末尾に [LIMIT](/sql-reference/statements/select/limit.md) 句を追加します。`0` に設定すると除外されます。すべてのデータを表示するために、いくつかの可視化では `0` に設定する必要がある場合があります。 |
-| Filters | `WHERE` 句で適用されるフィルターのリスト。 |
+| Builder Mode  | シンプルクエリでは Aggregates と Group By は使用せず、集約クエリではこれらのオプションを使用します。  |
+| Columns | 選択されたカラム。関数やカラムのエイリアスを指定できるように、生の SQL をこのフィールドに直接入力できます。 |
+| Aggregates | [集約関数](/sql-reference/aggregate-functions/index.md)の一覧。関数およびカラムに対してカスタム値を設定できます。Aggregate モードでのみ表示されます。 |
+| Group By | [GROUP BY](/sql-reference/statements/select/group-by.md) 式の一覧。Aggregate モードでのみ表示されます。 |
+| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式の一覧。 |
+| Limit | クエリの末尾に [LIMIT](/sql-reference/statements/select/limit.md) 文を追加します。`0` に設定された場合は追加されません。いくつかの可視化では、すべてのデータを表示するためにこれを `0` に設定する必要がある場合があります。 |
+| Filters | `WHERE` 句に適用されるフィルターの一覧。 |
 
 <Image size="md" img={demo_table_query} alt="集約テーブルクエリの例" border />
 
-このクエリタイプでは、データはテーブルとしてレンダリングされます。
+このクエリタイプでは、データはテーブルとして表示されます。
 
-### ログ \{#logs\}
+### Logs \{#logs\}
 
-ログクエリタイプは、ログデータのクエリに特化したクエリビルダーを提供します。
-データソースの [ログ設定](./config.md#logs) でデフォルトを構成することで、クエリビルダーにデフォルトのデータベース／テーブルおよびカラムをあらかじめ読み込ませることができます。
-OpenTelemetry を有効にすると、スキーマバージョンに応じてカラムを自動選択することもできます。
+logs クエリ種別は、logs データのクエリに特化したクエリビルダーを提供します。
+クエリビルダーにデフォルトのデータベース/テーブルおよびカラムをあらかじめ読み込ませるための既定値は、データソースの [log 設定](./config.md#logs) で構成できます。
+OpenTelemetry を有効化すると、スキーマバージョンに応じてカラムを自動選択することもできます。
 
-**Time** と **Level** のフィルターはデフォルトで追加され、Time カラムに対する Order By も設定されます。
-これらのフィルターはそれぞれのフィールドに紐づいており、カラムが変更されると更新されます。
-**Level** フィルターはデフォルトでは SQL から除外されており、`IS ANYTHING` オプションから変更すると有効になります。
+**Time** および **Level** フィルターはデフォルトで追加され、Time カラムに対する Order By も設定されます。
+これらのフィルターはそれぞれ対応するフィールドに紐づいており、カラムが変更されると更新されます。
+**Level** フィルターはデフォルトでは SQL から除外されており、`IS ANYTHING` オプションから変更した場合に有効になります。
 
-ログクエリタイプは [データリンク](#data-links) をサポートします。
+logs クエリ種別は [data links](#data-links) をサポートします。
 
-| フィールド | 説明 |
+| Field | Description |
 |----|----|
-| Use OTel | OpenTelemetry 用のカラムを有効にします。選択されているカラムを上書きし、選択した OTel スキーマバージョンで定義されたカラムを使用します（カラム選択は無効になります）。 |
-| Columns | ログ行に追加されるカラム。このフィールドには生のSQLを入力でき、関数やカラムのエイリアスを使用できます。 |
-| Time | ログの主なタイムスタンプカラム。時刻型のカラムを表示しますが、カスタム値／関数も使用できます。 |
-| Log Level | 任意。ログの *レベル* または *重要度*。値は通常 `INFO`、`error`、`Debug` などです。 |
+| Use OTel | OpenTelemetry カラムを有効にします。選択されたカラムを、選択した OTel スキーマバージョンで定義されるカラムで上書きします（カラム選択を無効化します）。 |
+| Columns | ログ行に追加される追加カラム。このフィールドには生の SQL を入力でき、関数の利用やカラムの別名付けが可能です。 |
+| Time | ログの主なタイムスタンプカラム。時刻型に類する型を表示しますが、任意の値や関数も指定できます。 |
+| Log Level | 任意。ログの *level* または *severity*。典型的な値は `INFO`、`error`、`Debug` などです。 |
 | Message | ログメッセージの内容。 |
 | Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式のリスト。 |
-| Limit | クエリの末尾に [LIMIT](/sql-reference/statements/select/limit.md) 句を追加します。`0` に設定すると除外されますが、大規模なログデータセットでは推奨されません。 |
+| Limit | クエリ末尾に [LIMIT](/sql-reference/statements/select/limit.md) 文を付加します。`0` に設定した場合は除外されますが、大規模なログデータセットでは推奨されません。 |
 | Filters | `WHERE` 句で適用されるフィルターのリスト。 |
-| Message Filter | `LIKE %value%` を用いてログを簡便にフィルタリングするためのテキスト入力。入力が空の場合は除外されます。 |
+| Message Filter | `LIKE %value%` を使ってログを簡単にフィルタリングするためのテキスト入力。入力が空の場合は除外されます。 |
 
-<Image size="md" img={demo_logs_query} alt="OTel ログクエリの例" border />
+<Image size="md" img={demo_logs_query} alt="Example OTel logs query" border />
 
 <br/>
-このクエリタイプでは、データはログパネルにレンダリングされ、上部にはログのヒストグラムパネルが表示されます。
 
-クエリで選択された追加カラムは、展開表示したログ行で確認できます:
-<Image size="md" img={demo_logs_query_fields} alt="ログクエリでの追加フィールドの例" border />
+このクエリ種別では、データは logs パネルにレンダリングされ、その上部に logs ヒストグラムパネルが表示されます。
 
-### Time series \{#time-series\}
+クエリで選択された追加カラムは、展開されたログ行で参照できます：
 
-Time series クエリタイプは [table](#table) と似ていますが、時系列データの扱いに特化しています。
+<Image size="md" img={demo_logs_query_fields} alt="Example of extra fields on logs query" border />
 
-2 つのビューはほぼ同じですが、主な違いは次のとおりです。
+### 時系列 \{#time-series\}
 
-- 専用の *Time* フィールドがあること。
-- Aggregate モードでは、Time フィールドに対する Group By とともに、時間間隔マクロが自動的に適用されます。
-- Aggregate モードでは、"Columns" フィールドが非表示になります。
-- **Time** フィールドに対して、時間範囲フィルターと Order By が自動的に追加されます。
+時系列クエリタイプは [table](#table) と似ていますが、時系列データに特化しています。
+
+2つのビューはほぼ同じですが、主に次の点が異なります。
+
+- 専用の *Time* フィールド。
+- Aggregate モードでは、Time フィールドに対する Group By とともに時間間隔マクロが自動的に適用されます。
+- Aggregate モードでは "Columns" フィールドが非表示になります。
+- **Time** フィールドに対して、時間範囲フィルタと Order By が自動的に追加されます。
 
 :::important 可視化でデータが欠けていませんか？
-場合によっては、LIMIT のデフォルト値が `1000` であるため、time series パネルが途中で切れているように見えることがあります。
+デフォルトの制限値が `1000` に設定されているため、ケースによっては時系列パネルが途中で切れているように見える場合があります。
 
 データセットが許す場合は、`LIMIT` 句を `0` に設定して削除してみてください。
 :::
 
-| Field | Description |
+| フィールド | 説明 |
 |----|----|
-| Builder Mode  | Simple クエリでは Aggregate と Group By を除外し、Aggregate クエリではこれらのオプションを含めます。 |
-| Time | クエリにおける主要な時間カラムです。時刻型のカラムが表示されますが、カスタム値や関数も指定できます。 |
-| Columns | 選択されたカラムです。関数やカラムのエイリアスを利用するために、生の SQL をこのフィールドに直接入力できます。Simple モードでのみ表示されます。 |
-| Aggregates | [aggregate functions](/sql-reference/aggregate-functions/index.md) の一覧です。関数名やカラム名にカスタム値を指定できます。Aggregate モードでのみ表示されます。 |
-| Group By | [GROUP BY](/sql-reference/statements/select/group-by.md) 式の一覧です。Aggregate モードでのみ表示されます。 |
-| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式の一覧です。 |
-| Limit | クエリ末尾に [LIMIT](/sql-reference/statements/select/limit.md) 句を追加します。`0` に設定した場合は除外されます。一部の時系列データセットでは、可視化を全期間表示するために `0` が推奨される場合があります。 |
-| Filters | `WHERE` 句に適用されるフィルターの一覧です。 |
+| Builder Mode  | Simple クエリでは Aggregates と Group By を含まず、aggregate クエリではそれらのオプションを含みます。  |
+| Time | クエリの主な時刻カラムです。時刻型に類似した型を表示しますが、カスタム値や関数も指定できます。 |
+| Columns | 選択されたカラムです。このフィールドには生の SQL を入力でき、関数やカラムのエイリアス指定が可能です。Simple モードでのみ表示されます。 |
+| Aggregates | [aggregate functions](/sql-reference/aggregate-functions/index.md) のリストです。関数およびカラムに対してカスタム値を指定できます。Aggregate モードでのみ表示されます。 |
+| Group By | [GROUP BY](/sql-reference/statements/select/group-by.md) 式のリストです。Aggregate モードでのみ表示されます。 |
+| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式のリストです。 |
+| Limit | クエリ末尾に [LIMIT](/sql-reference/statements/select/limit.md) 文を追加します。`0` に設定した場合は除外されます。一部の時系列データセットでは、可視化を完全に表示するために `0` を推奨します。 |
+| Filters | `WHERE` 句に適用されるフィルタのリストです。 |
 
 <Image size="md" img={demo_time_series_query} alt="時系列クエリの例" border />
 
-このクエリタイプでは、データが時系列パネルでレンダリングされます。
+このクエリタイプでは、データは時系列パネルとしてレンダリングされます。
 
-### Traces \{#traces\}
+### トレース \{#traces\}
 
-Trace クエリタイプは、トレースを簡単に検索・閲覧するためのクエリビルダーを提供します。
-OpenTelemetry データ向けに設計されていますが、スキーマが異なる場合でもカラムを選択してトレースをレンダリングできます。
-データソースの [trace configuration](./config.md#traces) でデフォルトを設定しておくと、クエリビルダーにデフォルトのデータベース／テーブルとカラムを事前読み込みできます。デフォルトが設定されている場合、カラム選択はデフォルトで折りたたまれます。
-OpenTelemetry を有効化して、スキーマバージョンに従ってカラムを自動選択させることもできます。
+トレースクエリタイプは、トレースを簡単に検索および表示できるクエリビルダーを提供します。
+これは OpenTelemetry データ向けに設計されていますが、カラムを選択することで、別のスキーマからのトレースを表示することもできます。
+データソースの [trace configuration](./config.md#traces) でデフォルトを設定することで、デフォルトのデータベース／テーブルおよびカラムをあらかじめ読み込んだ状態でクエリビルダーを開くことができます。デフォルトが設定されている場合、カラム選択はデフォルトで折りたたまれます。
+OpenTelemetry を有効にして、スキーマバージョンに応じてカラムを自動選択することもできます。
 
-デフォルトフィルターは、トップレベルの span のみを表示する目的で追加されています。
-Time カラムと Duration Time カラムに対する Order By も含まれます。
-これらのフィルターはそれぞれのフィールドに紐づいており、カラムが変更されると更新されます。
-**Service Name** フィルターはデフォルトでは SQL から除外されており、`IS ANYTHING` 以外のオプションに変更すると有効になります。
+デフォルトのフィルターは、トップレベルの span のみを表示することを意図して追加されています。
+Time カラムおよび Duration Time カラムに対する Order By 句も含まれます。
+これらのフィルターはそれぞれのフィールドに紐付いており、カラムが変更されると更新されます。
+**Service Name** フィルターはデフォルトでは SQL から除外されており、`IS ANYTHING` オプションから変更すると有効になります。
 
-Trace クエリタイプは [data links](#data-links) をサポートします。
+トレースクエリタイプは [data links](#data-links) をサポートしています。
 
-| Field | Description |
+| フィールド | 説明 |
 |----|----|
-| Trace Mode | クエリを Trace Search と Trace ID lookup の間で切り替えます。 |
-| Use OTel | OpenTelemetry 用のカラムを有効化します。選択済みカラムを、選択された OTel スキーマバージョンで定義されたカラムに上書きします（カラム選択を無効化します）。 |
-| Trace ID Column | Trace の ID です。 |
-| Span ID Column | Span ID です。 |
-| Parent Span ID Column | 親 span の ID です。トップレベルのトレースでは通常空になります。 |
-| Service Name Column | Service 名です。 |
-| Operation Name Column | Operation 名です。 |
-| Start Time Column | Trace span における主要な時間カラムです。span の開始時刻を表します。 |
-| Duration Time Column | span の継続時間です。デフォルトでは、Grafana はこれをミリ秒単位の float として想定しています。`Duration Unit` ドロップダウンで指定された単位からの変換が自動的に適用されます。 |
-| Duration Unit | Duration に使用される時間単位です。デフォルトはナノ秒です。選択された単位は、Grafana が要求するミリ秒単位の float に変換されます。 |
-| Tags Column | Span Tags です。特定の Map カラム型を想定しているため、OTel ベースのスキーマを使用していない場合は除外してください。 |
-| Service Tags Column | Service Tags です。特定の Map カラム型を想定しているため、OTel ベースのスキーマを使用していない場合は除外してください。 |
-| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式の一覧です。 |
-| Limit | クエリ末尾に [LIMIT](/sql-reference/statements/select/limit.md) 句を追加します。`0` に設定した場合は除外されますが、大規模な Trace データセットでは推奨されません。 |
-| Filters | `WHERE` 句に適用されるフィルターの一覧です。 |
-| Trace ID | フィルター対象の Trace ID です。Trace ID モードと、Trace ID [data link](#data-links) を開く場合にのみ使用されます。 |
+| Trace Mode | クエリを Trace Search から Trace ID ルックアップに切り替えます。 |
+| Use OTel | OpenTelemetry カラムを有効にします。選択されているカラムを上書きし、選択された OTel スキーマバージョンで定義されたカラムを使用します（カラム選択を無効化します）。 |
+| Trace ID Column | トレースの ID。 |
+| Span ID Column | Span ID。 |
+| Parent Span ID Column | 親 span の ID。トップレベルトレースでは通常空です。 |
+| Service Name Column | サービス名。 |
+| Operation Name Column | オペレーション名。 |
+| Start Time Column | トレース span の主要な時間カラム。span が開始した時刻。 |
+| Duration Time Column | span の継続時間。デフォルトでは Grafana はこれがミリ秒単位の浮動小数点数であることを想定しています。`Duration Unit` ドロップダウンを介して自動的に変換が適用されます。 |
+| Duration Unit | 継続時間に使用される時間の単位。デフォルトはナノ秒です。選択された単位は、Grafana が要求するミリ秒単位の浮動小数点数に変換されます。 |
+| Tags Column | Span Tags。特定の Map カラム型を想定しているため、OTel ベースのスキーマを使用していない場合は除外してください。 |
+| Service Tags Column | Service Tags。特定の Map カラム型を想定しているため、OTel ベースのスキーマを使用していない場合は除外してください。 |
+| Order By | [ORDER BY](/sql-reference/statements/select/order-by.md) 式のリスト。 |
+| Limit | クエリ末尾に [LIMIT](/sql-reference/statements/select/limit.md) 文を追加します。`0` に設定すると除外されますが、大規模なトレースデータセットでは推奨されません。 |
+| Filters | `WHERE` 句に適用されるフィルターのリスト。 |
+| Trace ID | フィルタリングに使用する Trace ID。Trace ID モードおよび Trace ID [data link](#data-links) を開く場合にのみ使用されます。 |
 
 <Image size="md" img={demo_trace_query} alt="OTel トレースクエリの例" border />
 
-このクエリタイプでは、Trace Search モードではテーブルビューでデータがレンダリングされ、Trace ID モードではトレースパネルでレンダリングされます。
+このクエリタイプは、Trace Search モードではテーブルビューでデータを表示し、Trace ID モードではトレースパネルで表示します。
 
 ## SQL エディタ \{#sql-editor\}
 
-クエリビルダーでは扱いきれないような複雑なクエリには、SQL エディタを使用できます。
-生の ClickHouse SQL を記述して実行することで、クエリを完全に制御できます。
+クエリビルダーでは対応できないほど複雑なクエリには、SQL エディタを使用できます。
+これにより、生の ClickHouse SQL を記述して実行できるため、クエリを完全に制御できます。
 
-SQL エディタは、クエリエディタ上部の「SQL Editor」を選択して開きます。
+SQL エディタは、クエリ エディタ上部で「SQL Editor」を選択すると開きます。
 
-このモードでも [マクロ関数](#macros) を使用できます。
+このモードでも [Macro functions](#macros) を使用できます。
 
-クエリの種類を切り替えることで、クエリに最も適した可視化を得ることができます。
-この切り替えはダッシュボードビューでも有効で、特に時系列データで効果があります。
+クエリタイプを切り替えることで、クエリに最も適した可視化を得ることができます。
+この切り替えはダッシュボードビューでも有効であり、特に時系列データで効果があります。
 
-<Image size="md" img={demo_raw_sql_query} alt="生の SQL クエリの例" border />
+<Image size="md" img={demo_raw_sql_query} alt="生の ClickHouse SQL クエリの例" border />
 
 ## データリンク \{#data-links\}
 
 Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
-を使用して、新しいクエリへのリンクを作成できます。
-この機能は ClickHouse プラグインで有効になっており、トレースからログへのリンクおよびその逆方向のリンクに利用できます。[データソースの設定](./config.md#opentelemetry)でログとトレースの両方に対して OpenTelemetry が構成されている場合に、最も有効に機能します。
+は、新しいクエリにリンクするために使用できます。
+この機能は ClickHouse プラグインで有効になっており、トレースからログ、ログからトレースへの相互リンクに利用できます。これは、ログとトレースの双方について [データソースの設定](./config.md#opentelemetry) で OpenTelemetry が構成されている場合に最も効果的に機能します。
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
-  テーブル内のトレースリンクの例
-  <Image size="sm" img={trace_id_in_table} alt="Trace links in table" border />
+  テーブル内でのトレースリンクの例
+  <Image size="sm" img={trace_id_in_table} alt="テーブル内のトレースリンク" border />
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-  ログ内のトレースリンクの例
-  <Image size="md" img={trace_id_in_logs} alt="Trace links in logs" border />
+  ログ内でのトレースリンクの例
+  <Image size="md" img={trace_id_in_logs} alt="ログ内のトレースリンク" border />
 </div>
 
-### データリンクの作成方法 \{#how-to-make-a-data-link\}
+### データリンクを作成する方法 \{#how-to-make-a-data-link\}
 
-クエリ内で `traceID` という名前の列を選択することで、データリンクを作成できます。この名前は大文字小文字を区別せず、"ID" の前にアンダースコアを付けることもサポートします。たとえば、`traceId`、`TraceId`、`TRACE_ID`、`tracE_iD` はすべて有効です。
+クエリ内で `traceID` という名前のカラムを選択することで、データリンクを作成できます。この名前は大文字・小文字を区別せず、"ID" の前にアンダースコアを付けることもできます。たとえば、`traceId`、`TraceId`、`TRACE_ID`、`tracE_iD` はすべて有効です。
 
-[ログ](#logs) または [トレース](#traces) クエリで OpenTelemetry が有効になっている場合、トレース ID 列は自動的に含まれます。
+[log](#logs) クエリまたは [trace](#traces) クエリで OpenTelemetry が有効になっている場合、trace ID カラムが自動的に追加されます。
 
-トレース ID 列を含めることで、「**View Trace**」および「**View Logs**」リンクがデータに付与されます。
+trace ID カラムを含めることで、"**View Trace**" および "**View Logs**" のリンクがデータに関連付けられます。
 
-### リンクの機能 \{#linking-abilities\}
+### リンク機能 \{#linking-abilities\}
 
-データリンクが存在する場合、付与されたトレース ID を使用してトレースおよびログを開くことができます。
+データリンクが設定されていれば、付与されたトレース ID を使用してトレースとログを開くことができます。
 
-「**View Trace**」はトレースを表示する分割パネルを開き、「**View Logs**」はトレース ID でフィルタされたログクエリを開きます。
-リンクが Explore ビューではなくダッシュボードからクリックされた場合、そのリンクは Explore ビューの新しいタブで開かれます。
+「**View Trace**」をクリックするとトレースを表示する分割パネルが開き、「**View Logs**」をクリックすると、そのトレース ID でフィルタされたログクエリが開きます。
+リンクを Explore ビューではなくダッシュボードからクリックした場合、そのリンクは Explore ビューの新しいタブで開かれます。
 
-クエリタイプをまたいでリンクする場合（ログからトレース、またはトレースからログ）、[ログ](./config.md#logs) と [トレース](./config.md#traces) の両方に対してデフォルト設定が構成されている必要があります。同じクエリタイプのリンクを開く場合は、クエリをそのままコピーできるため、デフォルト設定は不要です。
+クエリタイプをまたいで遷移する場合（ログからトレース、またはトレースからログ）、[logs](./config.md#logs) と [traces](./config.md#traces) の両方でデフォルト設定を構成しておく必要があります。同一のクエリタイプへのリンクを開く場合には、クエリをそのままコピーできるため、デフォルト設定は不要です。
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
-  ログクエリ（左パネル）からトレース（右パネル）を表示する例
-  <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
+  ログクエリ（左ペイン）からトレース（右ペイン）を表示する例
+  <Image size="md" img={demo_data_links} alt="データリンクの例" border />
 </div>
 
 ## マクロ \{#macros\}
 
-マクロは、クエリに動的な SQL を追加するための簡単な方法です。
-クエリが ClickHouse サーバーに送信される前に、プラグインがマクロを展開し、完全な式に置き換えます。
+マクロは、クエリに動的な SQL を追加するための簡単な仕組みです。
+クエリが ClickHouse サーバーに送信される前に、プラグインがマクロを展開して完全な式に置き換えます。
 
-SQL Editor と Query Builder の両方で発行したクエリで、マクロを使用できます。
+SQL Editor と Query Builder のどちらから送信されたクエリでもマクロを使用できます。
 
-### マクロの使用方法 \{#using-macros\}
+### マクロの使用 \{#using-macros\}
 
-マクロは、クエリ内の任意の位置に、必要に応じて複数回含めることができます。
+マクロはクエリ内の任意の場所で、必要に応じて複数回使用できます。
 
-`$__timeFilter` マクロの使用例は次のとおりです。
+`$__timeFilter` マクロを使用する例を以下に示します。
 
-入力:
+入力例:
 
 ```sql
 SELECT log_time, log_message
@@ -237,7 +240,7 @@ FROM logs
 WHERE $__timeFilter(log_time)
 ```
 
-最終クエリ結果：
+最終的なクエリ結果：
 
 ```sql
 SELECT log_time, log_message
@@ -245,26 +248,26 @@ FROM logs
 WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 ```
 
-この例では、Grafana ダッシュボードの時間範囲が `log_time` 列に適用されます。
+この例では、Grafana ダッシュボードの時間範囲が `log_time` カラムに適用されます。
 
-プラグインは、波括弧 `{}` を用いた記法にも対応しています。[パラメーター](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用します。
+このプラグインは、中かっこ `{}` を使用する記法にも対応しています。[パラメータ](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用してください。
 
 
-### マクロ一覧 \{#list-of-macros\}
+### List of macros \{#list-of-macros\}
 
 これは、プラグインで利用可能なすべてのマクロの一覧です。
 
-| Macro                                        | Description                                                                                               | Output example                                                                                                    |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `$__dateFilter(columnName)`                  | Grafana パネルの時間範囲を用いて、指定された列に対する [Date](/sql-reference/data-types/date.md) 型の時間範囲フィルターに展開されます。             | `columnName >= toDate('2022-10-21') AND columnName <= toDate('2022-10-23')`                                       |
-| `$__timeFilter(columnName)`                  | Grafana パネルの時間範囲を用いて、指定された列に対する [DateTime](/sql-reference/data-types/datetime.md) 型の時間範囲フィルターに展開されます。     | `columnName >= toDateTime(1415792726) AND time <= toDateTime(1447328726)`                                         |
-| `$__timeFilter_ms(columnName)`               | Grafana パネルの時間範囲を用いて、指定された列に対する [DateTime64](/sql-reference/data-types/datetime64.md) 型の時間範囲フィルターに展開されます。 | `columnName >= fromUnixTimestamp64Milli(1415792726123) AND columnName <= fromUnixTimestamp64Milli(1447328726456)` |
-| `$__dateTimeFilter(dateColumn, timeColumn)`  | 個別の Date 列と DateTime 列を使用して、`$__dateFilter()` と `$__timeFilter()` を組み合わせるための短縮表記です。エイリアスは `$__dt()` です。   | `$__dateFilter(dateColumn) AND $__timeFilter(timeColumn)`                                                         |
-| `$__fromTime`                                | Grafana パネル範囲の開始時刻を [DateTime](/sql-reference/data-types/datetime.md) 型にキャストした値に展開されます。                   | `toDateTime(1415792726)`                                                                                          |
-| `$__fromTime_ms`                             | パネル範囲の開始時刻を [DateTime64](/sql-reference/data-types/datetime64.md) 型にキャストした値に展開されます。                       | `fromUnixTimestamp64Milli(1415792726123)`                                                                         |
-| `$__toTime`                                  | Grafana パネル範囲の終了時刻を [DateTime](/sql-reference/data-types/datetime.md) 型にキャストした値に展開されます。                   | `toDateTime(1447328726)`                                                                                          |
-| `$__toTime_ms`                               | Grafana パネル範囲の終了時刻を [DateTime64](/sql-reference/data-types/datetime64.md) 型にキャストした値に展開されます。               | `fromUnixTimestamp64Milli(1447328726456)`                                                                         |
-| `$__timeInterval(columnName)`                | ウィンドウサイズ（秒）に基づいてインターバルを計算する関数に展開されます。                                                                     | `toStartOfInterval(toDateTime(columnName), INTERVAL 20 second)`                                                   |
-| `$__timeInterval_ms(columnName)`             | ウィンドウサイズ（ミリ秒）に基づいてインターバルを計算する関数に展開されます。                                                                   | `toStartOfInterval(toDateTime64(columnName, 3), INTERVAL 20 millisecond)`                                         |
-| `$__interval_s`                              | ダッシュボードのインターバル（秒）に展開されます。                                                                                 | `20`                                                                                                              |
-| `$__conditionalAll(condition, $templateVar)` | 第 2 引数のテンプレート変数がすべての値を選択していない場合は第 1 引数に、テンプレート変数がすべての値を選択している場合は `1=1` に展開されます。                           | `condition` または `1=1`                                                                                             |
+| Macro                                        | Description                                                                                                                                                                         | Output example                                                                                                    |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `$__dateFilter(columnName)`                  | Grafana パネルのタイムレンジを [Date](/sql-reference/data-types/date.md) として使用し、指定されたカラムに対する時間範囲フィルタに置き換えられます。                                 | `columnName >= toDate('2022-10-21') AND columnName <= toDate('2022-10-23')`                                       |
+| `$__timeFilter(columnName)`                  | Grafana パネルのタイムレンジを [DateTime](/sql-reference/data-types/datetime.md) として使用し、指定されたカラムに対する時間範囲フィルタに置き換えられます。                         | `columnName >= toDateTime(1415792726) AND time <= toDateTime(1447328726)`                                         |
+| `$__timeFilter_ms(columnName)`               | Grafana パネルのタイムレンジを [DateTime64](/sql-reference/data-types/datetime64.md) として使用し、指定されたカラムに対する時間範囲フィルタに置き換えられます。                     | `columnName >= fromUnixTimestamp64Milli(1415792726123) AND columnName <= fromUnixTimestamp64Milli(1447328726456)` |
+| `$__dateTimeFilter(dateColumn, timeColumn)`  | 個別の Date カラムと DateTime カラムを使用して、`$__dateFilter()` と `$__timeFilter()` を組み合わせる短縮形です。エイリアスは `$__dt()` です。                                                                               | `$__dateFilter(dateColumn) AND $__timeFilter(timeColumn)`                                             |
+| `$__fromTime`                                | Grafana パネルの時間範囲の開始時刻を [DateTime](/sql-reference/data-types/datetime.md) にキャストした値に置き換えられます。                                                     | `toDateTime(1415792726)`                                                                                          |
+| `$__fromTime_ms`                             | Grafana パネルの時間範囲の開始時刻を [DateTime64](/sql-reference/data-types/datetime64.md) にキャストした値に置き換えられます。                                                         | `fromUnixTimestamp64Milli(1415792726123)`                                                                         |
+| `$__toTime`                                  | Grafana パネルの時間範囲の終了時刻を [DateTime](/sql-reference/data-types/datetime.md) にキャストした値に置き換えられます。                                                       | `toDateTime(1447328726)`                                                                                          |
+| `$__toTime_ms`                               | Grafana パネルの時間範囲の終了時刻を [DateTime64](/sql-reference/data-types/datetime64.md) にキャストした値に置き換えられます。                                                           | `fromUnixTimestamp64Milli(1447328726456)`                                                                         |
+| `$__timeInterval(columnName)`                | ウィンドウサイズ（秒）に基づいて間隔を計算する関数に置き換えられます。                                                                                                    | `toStartOfInterval(toDateTime(columnName), INTERVAL 20 second)`                                                   |
+| `$__timeInterval_ms(columnName)`             | ウィンドウサイズ（ミリ秒）に基づいて間隔を計算する関数に置き換えられます。                                                                                               | `toStartOfInterval(toDateTime64(columnName, 3), INTERVAL 20 millisecond)`                                         |
+| `$__interval_s`                              | ダッシュボードのインターバル（秒）に置き換えられます。                                                                                                                                      | `20`                                                                                                              |
+| `$__conditionalAll(condition, $templateVar)` | 2 つ目のパラメータの template 変数がすべての値を選択していない場合は 1 つ目のパラメータに、template 変数がすべての値を選択している場合は `1=1` に置き換えられます。 | `condition` または `1=1`                                                                                          |

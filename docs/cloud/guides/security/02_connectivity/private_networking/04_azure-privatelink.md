@@ -54,7 +54,7 @@ ClickHouse Cloud Azure PrivateLink has switched from using resourceGUID to Resou
 :::
 
 ## Attention {#attention}
-ClickHouse attempts to group your services to reuse the same published [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) within the Azure region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
+ClickHouse attempts to group your services to reuse the same published [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) within the Azure region. However, this grouping isn't guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have Private Link configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add the Private Endpoint Resource ID to your service(s) allow list](#add-private-endpoint-id-to-services-allow-list).
 
 Find Terraform examples at the ClickHouse [Terraform Provider repository](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
@@ -109,7 +109,7 @@ Make a note of the `endpointServiceId`. You'll use it in the next step.
 :::important
 This section covers ClickHouse-specific details for configuring ClickHouse via Azure Private Link. Azure-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the Azure cloud provider. Please consider Azure configuration based on your specific use case.  
 
-Please note that ClickHouse is not responsible for configuring the required Azure private endpoints and DNS records.  
+Please note that ClickHouse isn't responsible for configuring the required Azure private endpoints and DNS records.  
 
 For any issues related to Azure configuration tasks, contact Azure Support directly.
 :::
@@ -371,7 +371,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 ## Add the Private Endpoint Resource ID to your service(s) allow list {#add-private-endpoint-id-to-services-allow-list}
 
-By default, a ClickHouse Cloud service is not available over a Private Link connection even if the Private Link connection is approved and established. You need to explicitly add the Private Endpoint Resource ID for each service that should be available using Private Link.
+By default, a ClickHouse Cloud service isn't available over a Private Link connection even if the Private Link connection is approved and established. You need to explicitly add the Private Endpoint Resource ID for each service that should be available using Private Link.
 
 ### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-2}
 
@@ -495,11 +495,11 @@ Address: 10.0.0.4
 
 ### Connection reset by peer {#connection-reset-by-peer}
 
-Most likely, the Private Endpoint Resource ID was not added to the service allow-list. Revisit the [_Add Private Endpoint Resource ID to your services allow-list_ step](#add-private-endpoint-id-to-services-allow-list).
+Most likely, the Private Endpoint Resource ID wasn't added to the service allow-list. Revisit the [_Add Private Endpoint Resource ID to your services allow-list_ step](#add-private-endpoint-id-to-services-allow-list).
 
 ### Private Endpoint is in pending state {#private-endpoint-is-in-pending-state}
 
-Most likely, the Private Endpoint Resource ID was not added to the service allow-list. Revisit the [_Add Private Endpoint Resource ID to your services allow-list_ step](#add-private-endpoint-id-to-services-allow-list).
+Most likely, the Private Endpoint Resource ID wasn't added to the service allow-list. Revisit the [_Add Private Endpoint Resource ID to your services allow-list_ step](#add-private-endpoint-id-to-services-allow-list).
 
 ### Test connectivity {#test-connectivity}
 

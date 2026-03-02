@@ -1,0 +1,1231 @@
+{
+  "theme.NotFound.title": {
+    "message": "페이지를 찾을 수 없습니다",
+    "description": "404 페이지 제목"
+  },
+  "theme.admonition.note": {
+    "message": "참고",
+    "description": "주의 블록(:::note)에 사용되는 기본 레이블"
+  },
+  "theme.admonition.tip": {
+    "message": "팁",
+    "description": "주의 블록(:::tip)에 사용되는 기본 레이블"
+  },
+  "theme.admonition.danger": {
+    "message": "위험",
+    "description": "주의 블록(:::danger)에 사용되는 기본 레이블"
+  },
+  "theme.admonition.info": {
+    "message": "참조",
+    "description": "주의 블록(:::info)에 사용되는 기본 레이블"
+  },
+  "theme.admonition.caution": {
+    "message": "참고",
+    "description": "주의 상자(:::caution)의 기본 레이블"
+  },
+  "theme.admonition.experimental": {
+    "message": "실험적",
+    "description": "실험적 상자(:::experimental)의 기본 레이블"
+  },
+  "theme.admonition.obsolete": {
+    "message": "사용 중단됨",
+    "description": "사용 중단됨 상자(:::obsolete)의 기본 레이블"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "탐색 경로(breadcrumb) 내비게이션",
+    "description": "탐색 경로 내비게이션에 대한 ARIA 레이블"
+  },
+  "theme.docs.DocCard.categoryDescription": {
+    "message": "{count}개 항목",
+    "description": "생성된 인덱스에서 카테고리 카드에 표시되는 기본 설명으로, 포함된 항목의 수를 나타냅니다"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "다른 버전",
+    "description": "모바일 화면에서 탐색 바 버전 드롭다운의 레이블"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "{count}개의 결과 모두 보기",
+    "description": "검색 표시줄의 「전체 보기」 레이블"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "{count}개의 문서를 찾았습니다",
+    "description": "「{count}개의 문서를 찾았습니다」에 대한 복수형 레이블입니다. 한국어에서 지원되는 모든 복수형 형태를 \"|\" 문자로 구분하여 사용하십시오(자세한 내용은 https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html을 참고하십시오)."
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "「{query}」에 대한 검색 결과",
+    "description": "쿼리가 비어 있지 않을 때 사용되는 검색 페이지 제목"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "문서 검색",
+    "description": "쿼리가 비어 있을 때의 검색 페이지 제목"
+  },
+  "theme.SearchPage.inputPlaceholder": {
+    "message": "검색어를 입력하십시오",
+    "description": "검색 페이지 입력 필드의 플레이스홀더 텍스트"
+  },
+  "theme.SearchPage.inputLabel": {
+    "message": "검색",
+    "description": "검색 페이지 검색 필드용 ARIA 레이블"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Algolia로 검색",
+    "description": "Algolia 브랜딩용 ARIA 레이블"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "결과가 없습니다",
+    "description": "검색 결과가 없을 때 표시되는 텍스트"
+  },
+  "theme.SearchPage.fetchingNewResults": {
+    "message": "새 검색 결과를 불러오는 중입니다...",
+    "description": "새 검색 결과를 불러오는 단락"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "최신 블로그 게시물 살펴보기",
+    "description": "블로그 사이드바의 최신 게시물에 대한 ARIA 레이블"
+  },
+  "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
+    "message": "접을 수 있는 사이드바 카테고리 '{label}'을(를) 전환하세요",
+    "description": "접을 수 있는 사이드바 카테고리를 전환하는 ARIA 레이블"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "메인",
+    "description": "메인 내비게이션에 대한 ARIA 레이블"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "언어",
+    "description": "모바일 언어 전환 드롭다운의 레이블"
+  },
+  "theme.blog.post.readMore": {
+    "message": "자세히 읽기",
+    "description": "블로그 게시글 발췌에서 전체 블로그 게시글로 이동하는 링크에 사용되는 레이블입니다"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "{title} 자세히 읽기",
+    "description": "발췌에서 전체 블로그 게시글로 이동하는 링크의 ARIA 레이블입니다"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "1분 소요|{readingTime}분 소요",
+    "description": "\"{readingTime}분 소요\"에 대한 복수형 레이블입니다. 사용하는 언어의 복수형 규칙 수만큼 항목을 추가하십시오(각 항목은 \"|\"로 구분). 자세한 내용은 https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html 을 참고하십시오"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "홈",
+    "description": "이동 경로에서 홈을 나타내는 ARIA 레이블"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "문서 사이드바",
+    "description": "사이드바 내비게이션 ARIA 레이블"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "사이드바 접기",
+    "description": "문서 사이드바를 접는 버튼의 title 속성"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "사이드바 접기",
+    "description": "문서 사이드바를 접는 버튼의 title 속성"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "내비게이션 바 닫기",
+    "description": "모바일 사이드바 닫기 버튼의 ARIA 레이블"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← 메인 메뉴로 돌아가기",
+    "description": "모바일 내비게이션 바 사이드바의 보조 메뉴(주로 문서 사이드바 표시용)에서 메인 메뉴로 돌아갈 때 사용하는 뒤로 가기 버튼 레이블"
+  },
+  "theme.ErrorPageContent.title": {
+    "message": "이 페이지에서 오류가 발생했습니다.",
+    "description": "페이지에 오류가 발생했을 때 표시되는 대체 페이지 제목"
+  },
+  "theme.BackToTopButton.buttonAriaLabel": {
+    "message": "맨 위로 이동",
+    "description": "맨 위로 이동 버튼의 ARIA 레이블"
+  },
+  "theme.blog.title": {
+    "message": "지식 베이스",
+    "description": "기본 블로그 제목 — 기본값은 「지식 베이스」입니다."
+  },
+  "theme.blog.archive.title": {
+    "message": "아카이브",
+    "description": "블로그 아카이브 페이지의 페이지 제목 및 히어로 제목"
+  },
+  "theme.blog.archive.description": {
+    "message": "아카이브",
+    "description": "블로그 아카이브 페이지의 페이지 및 히어로 섹션 설명"
+  },
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "블로그 목록 페이지 내비게이션",
+    "description": "블로그 페이지 매김을 위한 ARIA 레이블"
+  },
+  "theme.blog.paginator.newerEntries": {
+    "message": "새 게시글",
+    "description": "더 최근 블로그 게시글 페이지(이전 페이지)로 이동하는 내비게이션 레이블"
+  },
+  "theme.blog.paginator.olderEntries": {
+    "message": "이전 게시글",
+    "description": "더 이전 블로그 게시글 페이지(다음 페이지)로 이동하는 내비게이션 레이블"
+  },
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "블로그 게시글 페이지 내비게이션",
+    "description": "블로그 게시글 페이지 매김을 위한 ARIA 레이블"
+  },
+  "theme.blog.post.paginator.newerPost": {
+    "message": "새 글",
+    "description": "블로그 게시물에서 새 글/이전 글로 이동하는 버튼 레이블"
+  },
+  "theme.blog.post.paginator.olderPost": {
+    "message": "이전 글",
+    "description": "블로그 게시물에서 이전 글/다음 글로 이동하는 버튼 레이블"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "모든 태그 보기",
+    "description": "태그 목록 페이지로 이동하는 링크 레이블"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "다크 모드와 라이트 모드를 전환합니다(현재 모드: {mode})",
+    "description": "내비게이션 바 색상 모드 전환 토글용 ARIA 레이블"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "다크 모드",
+    "description": "다크 색상 모드의 이름"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "라이트 모드",
+    "description": "라이트 색상 모드 이름"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "1개 항목|{count}개 항목",
+    "description": "생성된 인덱스에서 이 카테고리에 포함된 항목 수를 설명할 때 사용하는 기본 문구"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "문서 페이지",
+    "description": "문서 페이지네이션에 사용되는 ARIA 레이블"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "이전",
+    "description": "이전 문서로 이동하는 데 사용되는 레이블"
+  },
+  "theme.docs.paginator.next": {
+    "message": "다음",
+    "description": "다음 문서로 이동하는 데 사용되는 레이블"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "문서 1개에 태그 지정됨|문서 {count}개에 태그 지정됨",
+    "description": "\"{count} docs tagged\"에 대한 복수형 레이블입니다. 사용하는 언어가 지원하는 복수형 규칙에 맞추어 가능한 한 많은 형태를 \"|\"로 구분하여 작성하십시오(https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html 참조)."
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "「{tagName}」 태그가 지정된 {nDocsTagged}",
+    "description": "문서 태그 페이지 제목"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "이는 {siteTitle} {versionLabel} 버전의 비공개 문서입니다.",
+    "description": "아직 릴리스되지 않은 문서 버전을 보고 있음을 알리는 레이블"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "이 페이지는 더 이상 적극적으로 유지·관리되지 않는 {siteTitle} {versionLabel} 버전에 대한 문서입니다.",
+    "description": "유지·관리되지 않는 문서 버전을 보고 있음을 알리는 레이블"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "최신 문서는 {latestVersionLink}({versionLabel})를 참고하십시오.",
+    "description": "최신 버전을 확인하도록 안내하는 레이블"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "최신 버전",
+    "description": "최신 버전 제안 링크에 사용되는 레이블"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "버전: {versionLabel}"
+  },
+  "theme.common.editThisPage": {
+    "message": "이 페이지 편집하기",
+    "description": "현재 페이지를 편집하는 링크에 사용되는 레이블입니다."
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "{heading}에 대한 직접 링크",
+    "description": "제목으로 이동하는 링크의 제목입니다."
+  },
+  "theme.lastUpdated.atDate": {
+    "message": "{date}에",
+    "description": "페이지가 마지막으로 언제 업데이트되었는지를 나타내는 날짜 부분에 사용되는 텍스트입니다."
+  },
+  "theme.lastUpdated.byUser": {
+    "message": "{user}에 의해",
+    "description": "페이지를 마지막으로 누가 업데이트했는지를 나타내는 부분에 사용되는 문구입니다."
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "마지막 업데이트{atDate}{byUser}",
+    "description": "페이지가 마지막으로 언제, 그리고 누구에 의해 업데이트되었는지를 표시하는 데 사용되는 전체 문장입니다."
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "태그:",
+    "description": "태그 목록 옆에 표시되는 레이블"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "닫기",
+    "description": "공지 바 닫기 버튼의 ARIA 레이블"
+  },
+  "theme.admonition.warning": {
+    "message": "경고",
+    "description": "경고 상자(:::warning)에 사용되는 기본 레이블"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "복사됨",
+    "description": "코드 블록의 복사 버튼 레이블"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "코드를 클립보드에 복사합니다",
+    "description": "코드 복사 버튼의 ARIA 레이블"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "복사",
+    "description": "코드 블록 복사 버튼 레이블"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "자동 줄 바꿈 토글",
+    "description": "코드 블록 행 자동 줄 바꿈 토글 버튼에 사용할 title 속성 값"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "사이드바 범주 「{label}」 확장",
+    "description": "사이드바 범주를 확장하는 ARIA 레이블"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "사이드바 범주 「{label}」 축소",
+    "description": "사이드바 범주를 축소하는 ARIA 레이블"
+  },
+  "theme.NotFound.p1": {
+    "message": "원하는 콘텐츠를 찾을 수 없습니다.",
+    "description": "404 페이지의 첫 번째 단락"
+  },
+  "theme.NotFound.p2": {
+    "message": "원래 URL로 연결된 사이트의 소유자에게 연락해 링크가 끊어졌음을 알려 주십시오.",
+    "description": "404 페이지의 두 번째 단락"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "이 페이지에서",
+    "description": "접이식 TOC 컴포넌트에서 버튼에 사용되는 레이블"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "내비게이션 바 토글",
+    "description": "모바일 내비게이션 햄버거 메뉴 버튼의 ARIA 레이블"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "사이드바 펼치기",
+    "description": "문서 사이드바 펼치기 버튼의 ARIA 레이블과 title 속성"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "사이드바 펼치기",
+    "description": "문서 사이드바 펼치기 버튼의 ARIA 레이블과 title 속성"
+  },
+  "theme.SearchBar.label": {
+    "message": "검색",
+    "description": "검색 버튼의 ARIA 레이블과 placeholder 텍스트입니다"
+  },
+  "theme.SearchModal.searchBox.resetButtonTitle": {
+    "message": "쿼리 지우기",
+    "description": "검색 상자를 초기화하는 버튼의 레이블과 ARIA 레이블입니다"
+  },
+  "theme.SearchModal.searchBox.cancelButtonText": {
+    "message": "취소",
+    "description": "검색 상자 취소 버튼의 레이블과 ARIA 레이블입니다"
+  },
+  "theme.SearchModal.startScreen.recentSearchesTitle": {
+    "message": "최근 검색",
+    "description": "최근 검색 섹션의 제목입니다"
+  },
+  "theme.SearchModal.startScreen.noRecentSearchesText": {
+    "message": "최근 검색이 없습니다",
+    "description": "최근 검색이 없을 때 표시할 텍스트입니다"
+  },
+  "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
+    "message": "이 검색 저장하기",
+    "description": "최근 검색 저장 버튼 레이블"
+  },
+  "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
+    "message": "이 검색을 기록에서 삭제합니다",
+    "description": "최근 검색 제거 버튼 레이블"
+  },
+  "theme.SearchModal.startScreen.favoriteSearchesTitle": {
+    "message": "즐겨찾기",
+    "description": "즐겨찾기 검색의 제목"
+  },
+  "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
+    "message": "이 검색을 즐겨찾기에서 제거합니다",
+    "description": "즐겨찾기 검색 제거 버튼 레이블"
+  },
+  "theme.SearchModal.errorScreen.titleText": {
+    "message": "결과를 불러올 수 없습니다",
+    "description": "검색 모달 오류 화면 제목"
+  },
+  "theme.SearchModal.errorScreen.helpText": {
+    "message": "네트워크 연결 상태를 확인하십시오.",
+    "description": "검색 모달 오류 화면에 표시되는 도움말 텍스트"
+  },
+  "theme.SearchModal.footer.selectText": {
+    "message": "선택",
+    "description": "Enter 키 동작을 설명하는 텍스트"
+  },
+  "theme.SearchModal.footer.selectKeyAriaLabel": {
+    "message": "Enter 키",
+    "description": "선택을 수행하는 Enter 키 버튼용 ARIA 레이블"
+  },
+  "theme.SearchModal.footer.navigateText": {
+    "message": "이동",
+    "description": "Arrow up 키와 Arrow down 키 동작을 설명하는 텍스트"
+  },
+  "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
+    "message": "Arrow up 키",
+    "description": "이동을 수행하는 Arrow up 키 버튼용 ARIA 레이블"
+  },
+  "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
+    "message": "Arrow down 키",
+    "description": "아래쪽 화살표 키로 탐색하는 버튼의 ARIA 레이블입니다."
+  },
+  "theme.SearchModal.footer.closeText": {
+    "message": "닫기",
+    "description": "Escape 키 동작을 설명하는 텍스트입니다."
+  },
+  "theme.SearchModal.footer.closeKeyAriaLabel": {
+    "message": "Escape 키",
+    "description": "모달을 닫는 Escape 키 버튼의 ARIA 레이블입니다."
+  },
+  "theme.SearchModal.footer.searchByText": {
+    "message": "검색 제공:",
+    "description": "검색이 Algolia에 의해 제공됨을 설명하는 텍스트입니다."
+  },
+  "theme.SearchModal.noResultsScreen.noResultsText": {
+    "message": "다음에 대한 결과가 없습니다",
+    "description": "다음 검색어에 대한 결과가 없음을 설명하는 텍스트입니다."
+  },
+  "theme.SearchModal.noResultsScreen.suggestedQueryText": {
+    "message": "다음을 검색해 보십시오",
+    "description": "다음 검색에서 결과가 없을 때 표시할 추천 쿼리 문구입니다."
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
+    "message": "이 쿼리에서 결과가 나와야 한다고 생각하십니까?",
+    "description": "사용자가 결과가 누락되었다고 느낄 때 표시되는 질문 문구입니다."
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
+    "message": "알려 주십시오.",
+    "description": "누락된 결과를 신고하는 링크에 사용할 문구입니다."
+  },
+  "theme.SearchModal.placeholder": {
+    "message": "문서 검색",
+    "description": "DocSearch 팝업 모달의 입력 필드에 표시할 placeholder 텍스트입니다."
+  },
+  "theme.blog.post.plurals": {
+    "message": "게시물 1개|게시물 {count}개",
+    "description": "\"{count} posts\"에 대한 복수형 레이블입니다. 한국어에서는 복수형을 구분하지 않으므로 하나의 형태만 사용하면 됩니다(복수형을 여러 개 사용하는 언어의 경우 \"|\" 문자로 구분합니다. 자세한 내용은 https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html 을 참고하십시오)."
+  },
+  "theme.blog.tagTitle": {
+    "message": "\"{tagName}\" 태그가 지정된 게시글 {nPosts}개",
+    "description": "블로그 태그 페이지의 제목"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - {nPosts}",
+    "description": "블로그 작성자 페이지의 제목"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "작성자",
+    "description": "작성자 페이지의 제목"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "모든 작성자 보기",
+    "description": "블로그 작성자 페이지로 이동하는 링크 레이블"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "이 작성자는 아직 게시한 글이 없습니다.",
+    "description": "블로그 게시물이 0개인 작성자에게 표시되는 텍스트"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "비공개 목록 페이지",
+    "description": "비공개 목록 콘텐츠 배너 제목"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "이 페이지는 비공개 목록 페이지입니다. 검색 엔진에 인덱싱되지 않으며, 직접 링크를 가진 사용자만 접근할 수 있습니다.",
+    "description": "비공개 목록 콘텐츠 배너 메시지"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "초안 페이지",
+    "description": "초안 콘텐츠 배너 제목"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "이 페이지는 초안입니다. 개발 환경에서만 보이며 운영 빌드에서는 포함되지 않습니다.",
+    "description": "임시 콘텐츠용 배너 메시지"
+  },
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "다시 시도",
+    "description": "React 오류 경계에서 오류를 감지했을 때 다시 렌더링을 시도하는 버튼의 레이블"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "본문으로 바로가기",
+    "description": "키보드 Tab/Enter 탐색으로 본문으로 빠르게 이동할 수 있도록 접근성을 위해 사용하는 「본문으로 바로가기」 링크 레이블"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "태그",
+    "description": "태그 목록 페이지 제목"
+  },
+  "topNav.navItems.Products": {
+    "message": "제품"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "사용 사례"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "가격"
+  },
+  "topNav.navItems.Resources": {
+    "message": "리소스"
+  },
+  "topNav.navItems.Docs": {
+    "message": "문서"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "문의"
+  },
+  "topNav.navItems.products.clickhouse_cloud_1": {
+    "message": "ClickHouse를 활용하는 가장 좋은 방법입니다."
+  },
+  "topNav.navItems.products.clickhouse_cloud_2": {
+    "message": "AWS, GCP, Azure에서 사용할 수 있습니다."
+  },
+  "topNav.navItems.products.byoc_1": {
+    "message": "BYOC (Bring Your Own Cloud, 자체 Cloud 사용)"
+  },
+  "topNav.navItems.products.byoc_2": {
+    "message": "완전 관리형 ClickHouse Cloud 서비스"
+  },
+  "topNav.navItems.products.byoc_3": {
+    "message": "AWS 계정에 배포할 수 있습니다."
+  },
+  "topNav.navItems.products.oss": {
+    "message": "오픈 소스 ClickHouse로 데이터베이스를 구축하십시오."
+  },
+  "topNav.navItems.products.integrations": {
+    "message": "100개가 넘는 통합 기능을 확인하십시오."
+  },
+  "topNav.navItems.use_cases.Real-time analytics": {
+    "message": "실시간 분석"
+  },
+  "topNav.navItems.use_cases.Machine learning and GenAI": {
+    "message": "머신러닝 및 생성형 AI"
+  },
+  "topNav.navItems.use_cases.Business intelligence": {
+    "message": "비즈니스 인텔리전스"
+  },
+  "topNav.navItems.use_cases.Logs, events, and traces": {
+    "message": "로그, 이벤트, 트레이스"
+  },
+  "topNav.navItems.use_cases.All use cases": {
+    "message": "모든 사용 사례"
+  },
+  "topNav.navItems.resources.Blog": {
+    "message": "블로그"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "비교"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "동영상"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "데모"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "개요",
+    "description": "시작하기"
+  },
+  "sidebar.dropdownCategories.category.description.Getting Started": {
+    "message": "ClickHouse 사용 방법 익히기",
+    "description": "ClickHouse 사용법 배우기"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "소개",
+    "description": "소개"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+    "message": "ClickHouse 개요",
+    "description": "ClickHouse 소개"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "시작 가이드",
+    "description": "시작 가이드 모음"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
+    "message": "ClickHouse 시작하기",
+    "description": "ClickHouse 학습은 여기서 시작하십시오"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "기본",
+    "description": "개념"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+    "message": "알아두어야 할 핵심 개념",
+    "description": "이해해야 할 핵심 개념"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "마이그레이션 가이드",
+    "description": "마이그레이션 가이드 모음"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+    "message": "데이터베이스를 ClickHouse로 마이그레이션하기",
+    "description": "기존 데이터베이스를 ClickHouse로 마이그레이션하기"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "사용 사례 가이드",
+    "description": "사용 사례 안내서"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+    "message": "대표적인 ClickHouse 사용 사례 안내서",
+    "description": "대표적인 ClickHouse 사용 사례 가이드"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "샘플 데이터 세트",
+    "description": "예제 데이터 세트"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+    "message": "유용한 데이터 세트 및 튜토리얼",
+    "description": "실용적인 데이터 세트 및 튜토리얼"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "Cloud"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "ClickHouse를 배포하는 가장 빠른 방법"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "시작하기"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "ClickHouse Cloud로 빠르게 시작하기"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "Cloud 관리",
+    "description": "Cloud 관리"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
+    "message": "ClickHouse Cloud 서비스 관리",
+    "description": "ClickHouse Cloud 서비스를 관리합니다"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "Cloud API",
+    "description": "Cloud API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
+    "message": "ClickHouse Cloud 자동화",
+    "description": "ClickHouse Cloud 서비스 운영을 자동화합니다"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "Cloud 참고 자료",
+    "description": "Cloud 참고 문서"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
+    "message": "ClickHouse Cloud의 동작 방식 이해",
+    "description": "ClickHouse Cloud의 동작 방식"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "모범 사례",
+    "description": "모범 사례"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
+    "message": "ClickHouse Cloud를 최대한 활용하는 방법",
+    "description": "ClickHouse Cloud 최대 활용"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "보안",
+    "description": "보안"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security.description": {
+    "message": "ClickHouse Cloud 보안 구성",
+    "description": "ClickHouse Cloud 서비스 보안"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "클라우드로 마이그레이션",
+    "description": "Cloud로 마이그레이션"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
+    "message": "데이터베이스를 ClickHouse Cloud로 마이그레이션",
+    "description": "데이터베이스를 ClickHouse Cloud로 마이그레이션"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "데이터 관리",
+    "description": "데이터 관리"
+  },
+  "sidebar.dropdownCategories.category.description.Manage Data": {
+    "message": "ClickHouse에서 데이터 관리",
+    "description": "ClickHouse에서 데이터 관리"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "데이터 기초 개념",
+    "description": "핵심 데이터 개념"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
+    "message": "ClickHouse 내부 개념 살펴보기",
+    "description": "ClickHouse 핵심 내부 개념 이해하기"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "데이터 업데이트",
+    "description": "데이터 업데이트하기"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
+    "message": "ClickHouse에서 데이터 업데이트 및 교체하기",
+    "description": "ClickHouse에서 데이터 수정 및 교체하기"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "데이터 삭제",
+    "description": "데이터 삭제하기"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
+    "message": "ClickHouse에서 데이터 삭제하기",
+    "description": "ClickHouse에서의 데이터 삭제"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "데이터 모델링",
+    "description": "데이터 모델링"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
+    "message": "스키마 및 데이터 모델 최적화",
+    "description": "사용자 스키마 및 데이터 모델 최적화"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "성능 및 최적화",
+    "description": "성능 및 최적화"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
+    "message": "ClickHouse 최적화 가이드",
+    "description": "ClickHouse를 최대한 활용하기 위한 가이드"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "서버 관리",
+    "description": "서버 관리자"
+  },
+  "sidebar.dropdownCategories.category.description.Server Admin": {
+    "message": "ClickHouse 관리 및 배포",
+    "description": "ClickHouse 관리 및 배포"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "배포 및 확장",
+    "description": "배포 및 확장"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
+    "message": "ClickHouse 배포 방식",
+    "description": "ClickHouse 배포 방식"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "보안 및 인증",
+    "description": "보안 및 인증"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
+    "message": "ClickHouse 배포 보안 강화",
+    "description": "ClickHouse 배포 보안"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "구성",
+    "description": "설정"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
+    "message": "ClickHouse 구성하기",
+    "description": "ClickHouse 구성하기"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "도구 및 유틸리티",
+    "description": "도구 및 유틸리티"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
+    "message": "ClickHouse 관리 도구",
+    "description": "ClickHouse 관리 도구"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "시스템 테이블",
+    "description": "시스템 테이블"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
+    "message": "ClickHouse 관리를 위한 메타데이터 테이블",
+    "description": "ClickHouse 운영과 관리를 지원하는 메타데이터 테이블"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "레퍼런스"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "ClickHouse 기능에 대한 참고 문서"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "소개"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "ClickHouse 구문을 학습할 수 있습니다"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "함수"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "데이터 분석에 활용할 수 있는 수백 개의 내장 함수"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "엔진"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "데이터에 가장 적합한 테이블 및 데이터베이스 엔진을 선택합니다"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features": {
+    "message": "추가 기능",
+    "description": "기타 기능"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
+    "message": "기타 ClickHouse 기능 더 알아보기",
+    "description": "추가 ClickHouse 기능 살펴보기"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "통합"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "ClickHouse와 함께 사용할 통합, 클라이언트 및 드라이버"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
+    "message": "모든 통합 보기",
+    "description": "모든 통합 보기"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
+    "message": "ClickHouse를 다른 데이터베이스 및 애플리케이션과 통합하기",
+    "description": "ClickHouse를 다른 데이터베이스 및 애플리케이션과 연동합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
+    "message": "클라이언트 라이브러리",
+    "description": "언어별 클라이언트"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
+    "message": "선호하는 프로그래밍 언어에서 ClickHouse를 사용합니다",
+    "description": "선호하는 프로그래밍 언어로 ClickHouse를 편리하게 활용합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "ClickHouse로 데이터를 수집하는 가장 쉬운 방법"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
+    "message": "네이티브 클라이언트 및 인터페이스",
+    "description": "네이티브 클라이언트 및 인터페이스"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
+    "message": "ClickHouse에 연결할 클라이언트와 인터페이스를 선택합니다",
+    "description": "ClickHouse에 연결할 클라이언트와 인터페이스를 선택합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
+    "message": "데이터 소스",
+    "description": "데이터 소스"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
+    "message": "사용 중인 데이터 소스에서 ClickHouse로 데이터를 로드합니다",
+    "description": "사용하는 소스에서 ClickHouse로 데이터를 수집합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
+    "message": "데이터 시각화",
+    "description": "데이터 시각화"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
+    "message": "ClickHouse를 사용 중인 시각화 도구에 연결합니다",
+    "description": "ClickHouse를 원하는 시각화 도구에 연결합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
+    "message": "데이터 형식",
+    "description": "데이터 포맷"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
+    "message": "ClickHouse에서 지원하는 데이터 포맷 살펴보기",
+    "description": "ClickHouse에서 지원하는 데이터 포맷을 살펴보십시오"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
+    "message": "데이터 수집",
+    "description": "데이터 수집"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
+    "message": "다양한 ELT 도구로 ClickHouse에 데이터를 수집하기",
+    "description": "다양한 ELT 도구로 ClickHouse에 데이터를 수집하십시오"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB는 ClickHouse의 내장형(embedded) 버전입니다"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "chDB 알아보기"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "chDB 시작하기"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "언어별 연동",
+    "description": "언어별 연동"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "언어 클라이언트를 사용하여 chDB에 연결하기",
+    "description": "언어 클라이언트 라이브러리를 사용하여 chDB에 연결하기"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "가이드"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "chDB 사용에 도움이 되는 가이드"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "소개"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "ClickHouse 자세히 알아보기"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "사용 사례"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse 사용 사례"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "변경 로그"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "ClickHouse의 최신 변경 사항을 확인하십시오"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "지원"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "ClickHouse 엔지니어로부터 지원을 받으십시오"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "개발 및 기여",
+    "description": "개발 및 기여"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "ClickHouse에 기여하는 방법을 알아보십시오",
+    "description": "ClickHouse에 기여하는 방법"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "이 문서는 AI의 도움을 받아 번역되었습니다."
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "번역에 문제가 보이나요? 개선할 수 있도록 알려 주십시오."
+  },
+  "Report an issue": {
+    "message": "문제 신고"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "시작하기"
+  },
+  "sidebar.dropdownCategories.category.description.Get started": {
+    "message": "ClickHouse 사용 방법 살펴보기"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction": {
+    "message": "소개"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction.description": {
+    "message": "ClickHouse 소개"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts": {
+    "message": "개념"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts.description": {
+    "message": "알아두어야 할 핵심 개념"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides": {
+    "message": "입문 가이드"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides.description": {
+    "message": "ClickHouse 학습을 여기서 시작하십시오"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices": {
+    "message": "모범 사례"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices.description": {
+    "message": "ClickHouse 모범 사례 준수하기"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides": {
+    "message": "마이그레이션 가이드"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides.description": {
+    "message": "데이터베이스를 ClickHouse로 마이그레이션하기"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides": {
+    "message": "사용 사례 가이드"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides.description": {
+    "message": "ClickHouse 일반 사용 사례 가이드"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets": {
+    "message": "예제 데이터 세트"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets.description": {
+    "message": "유용한 데이터 세트와 튜토리얼"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom": {
+    "message": "팁과 커뮤니티 인사이트"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom.description": {
+    "message": "커뮤니티가 제공하는 팁과 노하우"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features": {
+    "message": "기능"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features.description": {
+    "message": "ClickHouse Cloud에서 제공되는 기능"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides": {
+    "message": "가이드"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides.description": {
+    "message": "ClickHouse Cloud 가이드"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference": {
+    "message": "레퍼런스"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference.description": {
+    "message": "ClickHouse Cloud 레퍼런스 문서"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "데이터 관리"
+  },
+  "sidebar.dropdownCategories.category.description.Manage data": {
+    "message": "ClickHouse에서 데이터를 관리하는 방법"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts": {
+    "message": "핵심 데이터 개념"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts.description": {
+    "message": "ClickHouse 내부 핵심 개념 이해"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data": {
+    "message": "데이터 업데이트"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data.description": {
+    "message": "ClickHouse에서 데이터 업데이트 및 교체"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data": {
+    "message": "데이터 삭제"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data.description": {
+    "message": "ClickHouse에서 데이터 삭제"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling": {
+    "message": "데이터 모델링"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling.description": {
+    "message": "스키마 및 데이터 모델 최적화"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations": {
+    "message": "성능 및 최적화"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations.description": {
+    "message": "ClickHouse 최적화 가이드"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "서버 관리"
+  },
+  "sidebar.dropdownCategories.category.description.Server admin": {
+    "message": "ClickHouse 관리 및 배포"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling": {
+    "message": "배포 및 확장"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling.description": {
+    "message": "ClickHouse 배포 방법"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication": {
+    "message": "보안 및 인증"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication.description": {
+    "message": "ClickHouse 배포 보안 강화"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings": {
+    "message": "설정"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings.description": {
+    "message": "ClickHouse 구성"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities": {
+    "message": "도구 및 유틸리티"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities.description": {
+    "message": "ClickHouse 관리 도구"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables": {
+    "message": "시스템 테이블"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables.description": {
+    "message": "ClickHouse 관리를 위한 메타데이터 테이블"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations": {
+    "message": "모든 통합"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations.description": {
+    "message": "ClickHouse를 다른 데이터베이스 및 애플리케이션과 통합합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients": {
+    "message": "언어별 클라이언트"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients.description": {
+    "message": "선호하는 프로그래밍 언어에서 ClickHouse를 사용합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces": {
+    "message": "네이티브 클라이언트 및 인터페이스"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces.description": {
+    "message": "ClickHouse에 연결할 클라이언트와 인터페이스를 선택합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources": {
+    "message": "데이터 소스"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
+    "message": "원하는 데이터 소스에서 ClickHouse로 데이터를 적재합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization": {
+    "message": "데이터 시각화"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization.description": {
+    "message": "ClickHouse를 원하는 시각화 도구에 연결합니다"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats": {
+    "message": "데이터 포맷"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats.description": {
+    "message": "ClickHouse에서 지원하는 데이터 포맷 살펴보기"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion": {
+    "message": "데이터 수집"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion.description": {
+    "message": "다양한 ELT 도구를 사용해 ClickHouse로 데이터를 수집합니다"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack"
+  },
+  "sidebar.dropdownCategories.category.description.ClickStack": {
+    "message": "ClickStack - ClickHouse 관측성 스택"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started": {
+    "message": "시작하기"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started.description": {
+    "message": "ClickStack 시작하기"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets": {
+    "message": "샘플 데이터 세트"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets.description": {
+    "message": "샘플 데이터 세트로 ClickStack 학습하기"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
+    "message": "아키텍처"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
+    "message": "ClickStack 아키텍처 이해"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
+    "message": "배포"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
+    "message": "ClickStack 배포 모드 선택"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data": {
+    "message": "데이터 수집"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data.description": {
+    "message": "ClickStack으로 데이터 수집"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options": {
+    "message": "구성 옵션"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options.description": {
+    "message": "운영 환경에 ClickStack 배포"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production": {
+    "message": "운영 환경"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
+    "message": "운영 환경에 ClickStack 배포"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples": {
+    "message": "통합 예시"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples.description": {
+    "message": "통합 빠른 시작 가이드"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations": {
+    "message": "프로그래밍 언어 통합"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations.description": {
+    "message": "언어별 클라이언트를 사용해 chDB에 연결합니다"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing": {
+    "message": "개발 및 기여"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing.description": {
+    "message": "ClickHouse에 기여하는 방법을 알아봅니다"
+  },
+  "homepage.hero.description": {
+    "message": "가이드, 레퍼런스 문서, 동영상을 통해 ClickHouse 사용 방법을 학습합니다"
+  },
+  "homepage.hero.quickStart": {
+    "message": "빠른 시작"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Cloud로 시작하기"
+  },
+  "homepage.hero.installLocally": {
+    "message": "로컬에 설치하기"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "OSS 시작하기"
+  },
+  "homepage.search.title": {
+    "message": "문서 검색"
+  },
+  "homepage.connect.title": {
+    "message": "ClickHouse에 연결"
+  },
+  "homepage.connect.description": {
+    "message": "애플리케이션을 몇 분 만에 ClickHouse에 연결할 수 있습니다"
+  },
+  "homepage.connect.viewAll": {
+    "message": "모든 클라이언트 및 드라이버 보기"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL 콘솔"
+  },
+  "homepage.migrate.title": {
+    "message": "ClickHouse로 마이그레이션"
+  },
+  "homepage.migrate.description": {
+    "message": "다른 데이터베이스, 데이터 웨어하우스 및 객체 스토리지에서 데이터 불러오기"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "모든 통합 보기"
+  },
+  "homepage.deploy.title": {
+    "message": "ClickHouse 배포"
+  },
+  "homepage.deploy.description": {
+    "message": "Cloud 또는 자체 인프라 환경에 ClickHouse를 배포합니다"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "노드 배포"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "클러스터 배포"
+  },
+  "homepage.resources.title": {
+    "message": "추가 리소스"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "지원팀에 문의하기"
+  },
+  "homepage.resources.changelog": {
+    "message": "변경 내역"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "샘플 데이터 세트"
+  }
+}

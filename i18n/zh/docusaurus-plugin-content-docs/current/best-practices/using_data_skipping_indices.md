@@ -27,6 +27,7 @@ ClickHouse 提供了一种强大的机制，称为 **数据跳过索引（data s
 * **set(N)**：为每个数据块跟踪至多大小为 N 的值集合。对每块基数较低的列效果显著。
 * **bloom&#95;filter**：以概率方式判断某个值是否存在于块中，从而为集合成员关系提供快速的近似过滤。特别适合优化“在大海捞针”式的查询，即需要找到极少数正匹配结果的场景。
 * **tokenbf&#95;v1 / ngrambf&#95;v1**：专门为在字符串中搜索 token 或字符序列而设计的 Bloom filter 变体——对日志数据或文本搜索场景尤其有用。
+* **text**：在分词后的字符串数据之上构建倒排索引，从而实现高效且确定性的全文搜索。推荐用于自然语言或大规模自由文本列，在这些场景下，相比基于 Bloom filter 的近似方法，更需要精确的 token 查找和可扩展的多词项搜索能力。
 
 尽管功能强大，跳过索引必须谨慎使用。只有在能够过滤掉足够多的数据块时，它们才会带来收益；如果查询模式或数据结构与之不匹配，反而会引入额外开销。一旦某个块中存在哪怕一个匹配值，该整个块仍然必须被读取。
 
@@ -49,6 +50,7 @@ ClickHouse 提供了一种强大的机制，称为 **数据跳过索引（data s
 **在合理使用的情况下，跳过索引可以带来可观的性能提升——而在盲目使用时，则可能增加不必要的成本。**
 
 关于数据跳过索引的更详细指南请参见[此处](/sql-reference/statements/alter/skipping-index)。
+
 
 ## 示例 \{#example\}
 
@@ -145,6 +147,7 @@ LIMIT 1
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
 
+
 因此，这使其成为数据跳过索引的合理选择。鉴于其数值类型，使用 `minmax` 索引是合适的。我们使用以下 `ALTER TABLE` 命令添加索引——先添加它，然后对其进行物化。
 
 ```sql
@@ -208,6 +211,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 运行 `EXPLAIN indexes = 1` 可以确认索引已被使用。
 
+
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
@@ -249,48 +253,13 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-┌─explain────────────────────────────────────────────────────────────┐
-│ 表达式（（Project names + Projection））                           │
-│   聚合                                                             │
-│     表达式（GROUP BY 之前）                                        │
-│       表达式                                                       │
-│         ReadFromMergeTree (stackoverflow.posts)                    │
-│         索引:                                                      │
-│           MinMax                                                   │
-│             键:                                                    │
-│               CreationDate                                         │
-│             条件: (CreationDate in (&#39;1230768000&#39;, +Inf))           │
-│             部分: 123/128                                          │
-│             粒度: 8513/8545                                        │
-│           Partition                                                │
-│             键:                                                    │
-│               toYear(CreationDate)                                 │
-│             条件: (toYear(CreationDate) in [2009, +Inf))           │
-│             部分: 123/123                                          │
-│             粒度: 8513/8513                                        │
-│           PrimaryKey                                               │
-│             键:                                                    │
-│               toDate(CreationDate)                                 │
-│             条件: (toDate(CreationDate) in [14245, +Inf))          │
-│             部分: 123/123                                          │
-│             粒度: 8513/8513                                        │
-│           Skip                                                     │
-│             名称: view&#95;count&#95;idx                                 │
-│             描述: minmax GRANULARITY 1                             │
-│             部分: 5/123                                            │
-│             粒度: 23/8513                                          │
-└────────────────────────────────────────────────────────────────────┘
+我们还通过动画演示了 minmax 跳数索引如何剪枝所有不可能包含示例查询中 `ViewCount` &gt; 10,000,000 谓词匹配项的行块:
 
-29 行记录。耗时: 0.211 秒。
+<Image img={using_skipping_indices} size="lg" alt="使用跳数索引" />
 
-```
-
-我们还通过动画演示了 minmax 跳数索引如何剪枝所有不可能包含示例查询中 `ViewCount` > 10,000,000 谓词匹配项的行块:
-
-<Image img={using_skipping_indices} size="lg" alt="使用跳数索引"/>
-```
 
 ## 相关文档 \{#related-docs\}
+
 - [数据跳过索引指南](/optimize/skipping-indexes)
 - [数据跳过索引示例](/optimize/skipping-indexes/examples)
 - [管理数据跳过索引](/sql-reference/statements/alter/skipping-index)

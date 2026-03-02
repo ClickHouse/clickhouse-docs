@@ -218,44 +218,20 @@
 }
 
 .home-page-section-search {
-  display: flex;
-  flex-direction: row;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--click-color-stroke);
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    padding-top: 2rem;
-    padding-bottom: 2.5rem;
-    padding-right: 2rem;
-    justify-content: space-between;
-  }
-}
-
-.home-page-hero-right-search {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: right;
-  flex: 1;
-  max-width: 465px;
+}
+
+.home-page-search-bar-wrapper {
+  min-width: 0;
+  padding-right: 1rem;
 
   @media (min-width: 768px) {
-    flex-direction: row;
-    flex: 1;
-    justify-content: right;
+    flex: 0.9;
   }
 }
 
-.docs-doc-id-home-page .home-page-section-search p + .home-page-hero-right-search {
-  margin-top: 0 !important;
-}
-
-/* Also target the SearchBar wrapper directly */
-.docs-doc-id-home-page .home-page-hero-right-search {
-  margin-top: 0 !important;
+.home-page-search-bar-wrapper .DocSearch-Button {
+  width: 95%;
 }
 
 .home-page-section:last-of-type {

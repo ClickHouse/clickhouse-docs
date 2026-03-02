@@ -122,11 +122,11 @@ GROUP BY
 ```
 
 :::note
-A common misinterpretation when working with Materialized views is that data is read from the table, This is not how `Materialized views` work; the data forwarded is the inserted block, not the final result in your table.
+A common misinterpretation when working with Materialized views is that data is read from the table, This isn't how `Materialized views` work; the data forwarded is the inserted block, not the final result in your table.
 
-Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data_mv` will not be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
+Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data_mv` won't be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
 
-If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
+If you're using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
 :::
 
 ## Sample data {#sample-data}
@@ -153,11 +153,11 @@ Ok.
 0 rows in set. Elapsed: 0.002 sec.
 ```
 
-We have used a small dataset to be sure we can follow and compare the result with what we are expecting, once your flow is correct with a small data set, you could just move to a large amount of data.
+We have used a small dataset to be sure we can follow and compare the result with what we're expecting, once your flow is correct with a small data set, you could just move to a large amount of data.
 
 ## Results {#results}
 
-If you try to query the target table by selecting the `sumCountViews` field, you will see the binary representation (in some terminals), as the value is not stored as a number but as an AggregateFunction type.
+If you try to query the target table by selecting the `sumCountViews` field, you will see the binary representation (in some terminals), as the value isn't stored as a number but as an AggregateFunction type.
 To get the final result of the aggregation you should use the `-Merge` suffix.
 
 You can see the special characters stored in AggregateFunction with this query:

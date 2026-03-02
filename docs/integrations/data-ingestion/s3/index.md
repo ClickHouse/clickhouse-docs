@@ -170,7 +170,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 LIMIT 10;
 ```
 
-Note that we are not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
+Note that we're not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
 
 Queries additionally support [virtual columns](../sql-reference/table-functions/s3#virtual-columns), like `_path` and `_file`, that provide information regarding the bucket path and filename respectively. For example:
 
@@ -203,7 +203,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 └──────────┘
 ```
 
-While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 is not something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
+While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 isn't something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
 
 ### Using clickhouse-local {#using-clickhouse-local}
 
@@ -312,9 +312,9 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 * `format` — The [format](/interfaces/formats#formats-overview) of the file.
 * `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
-Like any `s3` functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
+Like any `s3` functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema isn't inferred.
 
-This function will be used as part of an `INSERT INTO SELECT` in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. While this table uses the events cluster, the consistency of the nodes used for reads and writes is not a requirement:
+This function will be used as part of an `INSERT INTO SELECT` in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. While this table uses the events cluster, the consistency of the nodes used for reads and writes isn't a requirement:
 
 ```sql
 INSERT INTO default.trips_all
@@ -330,7 +330,7 @@ Inserts will occur against the initiator node. This means that while reads will 
 
 ## S3 table engines {#s3-table-engines}
 
-While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose. The `S3` table engine allows you to not have to specify the bucket URL and credentials over and over again. To address this, ClickHouse provides the S3 table engine.
+While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they're syntactically verbose. The `S3` table engine allows you to not have to specify the bucket URL and credentials over and over again. To address this, ClickHouse provides the S3 table engine.
 
 ```sql
 CREATE TABLE s3_engine_table (name String, value UInt32)
@@ -340,7 +340,7 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 
 * `path` — Bucket URL with a path to the file. Supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/engines/table-engines/integrations/s3#wildcards-in-path).
 * `format` — The[ format](/interfaces/formats#formats-overview) of the file.
-* `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
+* `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials aren't specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
 ### Reading data {#reading-data}
@@ -421,7 +421,7 @@ LIMIT 10;
 
 ### Inserting data {#inserting-data}
 
-The `S3` table engine supports parallel reads. Writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
+The `S3` table engine supports parallel reads. Writes are only supported if the table definition doesn't contain glob patterns. The above table, therefore, would block writes.
 
 To demonstrate writes, create a table that points to a writable S3 bucket:
 
@@ -473,11 +473,11 @@ Both of these settings default to 0 - thus forcing the user to set one of them. 
 
 Some notes about the `S3` table engine:
 
-- Unlike a traditional `MergeTree` family table, dropping an `S3` table will not delete the underlying data.
+- Unlike a traditional `MergeTree` family table, dropping an `S3` table won't delete the underlying data.
 - Full settings for this table type can be found [here](/engines/table-engines/integrations/s3.md/#settings).
 - Be aware of the following caveats when using this engine:
-  * ALTER queries are not supported
-  * SAMPLE operations are not supported
+  * ALTER queries aren't supported
+  * SAMPLE operations aren't supported
   * There is no notion of indexes, i.e. primary or skip.
 
 ## Managing credentials {#managing-credentials}
@@ -519,7 +519,7 @@ In the previous examples, we have passed credentials in the `s3` function or `S3
   * Check performed in **$HOME/.aws**
   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
   * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
-  * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
+  * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) isn't set to true.
   * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
 
 ## Optimizing for performance {#s3-optimizing-performance}
@@ -532,7 +532,7 @@ Internally, the ClickHouse merge tree uses two primary storage formats: [`Wide` 
 
 ## S3 backed MergeTree {#s3-backed-mergetree}
 
-The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
+The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they're limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
 ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on "colder" data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable you to exploit the scalability and cost benefits of S3, and the insert and query performance of the MergeTree engine.
 
@@ -641,7 +641,7 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 
 ### Modifying a table {#modifying-a-table}
 
-Occasionally you may need to modify the storage policy of a specific table. Whilst this is possible, it comes with limitations. The new target policy must contain all of the disks and volumes of the previous policy, i.e., data will not be migrated to satisfy a policy change. When validating these constraints, volumes and disks will be identified by their name, with attempts to violate resulting in an error. However, assuming you use the previous examples, the following changes are valid.
+Occasionally you may need to modify the storage policy of a specific table. Whilst this is possible, it comes with limitations. The new target policy must contain all of the disks and volumes of the previous policy, i.e., data won't be migrated to satisfy a policy change. When validating these constraints, volumes and disks will be identified by their name, with attempts to violate resulting in an error. However, assuming you use the previous examples, the following changes are valid.
 
 ```xml
 <policies>
@@ -670,7 +670,7 @@ Occasionally you may need to modify the storage policy of a specific table. Whil
 ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 ```
 
-Here we reuse the main volume in our new s3_tiered policy and introduce a new hot volume. This uses the default disk, which consists of only one disk configured via the parameter `<path>`. Note that our volume names and disks do not change.  New inserts to our table will reside on the default disk until this reaches move_factor * disk_size - at which data will be relocated to S3.
+Here we reuse the main volume in our new s3_tiered policy and introduce a new hot volume. This uses the default disk, which consists of only one disk configured via the parameter `<path>`. Note that our volume names and disks don't change.  New inserts to our table will reside on the default disk until this reaches move_factor * disk_size - at which data will be relocated to S3.
 
 ### Handling replication {#handling-replication}
 
@@ -681,7 +681,7 @@ Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree`
 The following notes cover the implementation of S3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](#s3-optimizing-performance):
 
 * By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings#max_threads).
-* Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. You will not need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
+* Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. You won't need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
 * Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
 ## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
@@ -731,7 +731,7 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
 The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
-The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/operations/storing-data.md/#using-local-cache) docs.
+The configuration shown above is for ClickHouse version 22.8 or higher, if you're using an older version please see the [storing data](/operations/storing-data.md/#using-local-cache) docs.
 
 For more information about using S3:
 Integrations Guide: [S3 Backed MergeTree](#s3-backed-mergetree)
@@ -817,7 +817,7 @@ You should see something like the following:
 ## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
 
 :::tip
-Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
+Object storage is used by default in ClickHouse Cloud, you don't need to follow this procedure if you're running in ClickHouse Cloud.
 :::
 
 ### Plan the deployment {#plan-the-deployment}
@@ -994,7 +994,7 @@ The above macros are for `chnode1`, on `chnode2` set `replica` to `replica_2`.
 
 In ClickHouse versions 22.7 and lower the setting `allow_remote_fs_zero_copy_replication` is set to `true` by default for S3 and HDFS disks. This setting should be set to `false` for this disaster recovery scenario, and in version 22.8 and higher it is set to `false` by default.
 
-This setting should be false for two reasons: 1) this feature is not production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
+This setting should be false for two reasons: 1) this feature isn't production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -1134,7 +1134,7 @@ When you added the [cluster configuration](#define-a-cluster) a single shard rep
   ```
 - Understand the use of the macros defined earlier
 
-  The macros `shard`, and `replica` were [defined earlier](#define-a-cluster), and in the highlighted line below you can see where the values are substituted on each ClickHouse node.  Additionally, the value `uuid` is used; `uuid` is not defined in the macros as it is generated by the system.
+  The macros `shard`, and `replica` were [defined earlier](#define-a-cluster), and in the highlighted line below you can see where the values are substituted on each ClickHouse node.  Additionally, the value `uuid` is used; `uuid` isn't defined in the macros as it is generated by the system.
   ```sql
   SELECT create_table_query
   FROM system.tables
@@ -1213,7 +1213,7 @@ These tests will verify that data is being replicated across the two servers, an
   536K  /var/lib/clickhouse/disks/s3_disk/store/551
   ```
 
-  Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
+  Check the S3 data in each S3 Bucket (the totals aren't shown, but both buckets have approximately 36 MiB stored after the inserts):
 
 <Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
 

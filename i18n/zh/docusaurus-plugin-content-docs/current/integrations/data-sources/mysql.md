@@ -15,6 +15,7 @@ keywords: ['mysql', '数据库集成', '外部表', '数据源', 'SQL 数据库'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
+
 # 在 ClickHouse 中集成 MySQL \{#integrating-mysql-with-clickhouse\}
 
 本页介绍如何使用 `MySQL` 表引擎从 MySQL 表中读取数据。
@@ -32,39 +33,39 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. 在 MySQL 中创建一个数据库：
 
 ```sql
-CREATE DATABASE db1;
+  CREATE DATABASE db1;
 ```
 
 2. 创建一个表：
 
 ```sql
-CREATE TABLE db1.table1 (
-  id INT,
-  column1 VARCHAR(255)
-);
+  CREATE TABLE db1.table1 (
+    id INT,
+    column1 VARCHAR(255)
+  );
 ```
 
 3. 插入示例数据行：
 
 ```sql
-INSERT INTO db1.table1
-  (id, column1)
-VALUES
-  (1, 'abc'),
-  (2, 'def'),
-  (3, 'ghi');
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
+    (1, 'abc'),
+    (2, 'def'),
+    (3, 'ghi');
 ```
 
 4. 创建一个用于连接到 ClickHouse 的用户：
 
 ```sql
-CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
+  CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
 ```
 
 5. 根据需要授予权限。（在本示例中，为 `mysql_clickhouse` 用户授予了管理员权限。）
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
+  GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 ```
 
 :::note
@@ -72,16 +73,17 @@ GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 有关出站流量的详细信息，请参阅 ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)。
 :::
 
+
 ### 2. 在 ClickHouse 中定义一张表 \{#2-define-a-table-in-clickhouse\}
 
 1. 现在让我们创建一个使用 `MySQL` 表引擎的 ClickHouse 表：
 
 ```sql
-CREATE TABLE mysql_table1 (
-  id UInt64,
-  column1 String
-)
-ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
+  CREATE TABLE mysql_table1 (
+    id UInt64,
+    column1 String
+  )
+  ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
 ```
 
 最少需要的参数为：
@@ -98,71 +100,73 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 请参阅 [MySQL table engine](/engines/table-engines/integrations/mysql.md) 文档页面以获取完整的参数列表。
 :::
 
+
 ### 3. 测试集成 \{#3-test-the-integration\}
 
 1. 在 MySQL 中插入一行示例数据：
 
 ```sql
-INSERT INTO db1.table1
-  (id, column1)
-VALUES
-  (4, 'jkl');
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
+    (4, 'jkl');
 ```
 
-2. 请注意，来自 MySQL 表的现有行已经出现在 ClickHouse 表中，同时还有您刚刚添加的新行：
+2. 请注意，MySQL 表中的现有行以及您刚刚添加的新行，现在都出现在 ClickHouse 表中：
 
 ```sql
-SELECT
-    id,
-    column1
-FROM mysql_table1
+  SELECT
+      id,
+      column1
+  FROM mysql_table1
 ```
 
 此时应能看到 4 行：
 
 ```response
-Query id: 6d590083-841e-4e95-8715-ef37d3e95197
+  Query id: 6d590083-841e-4e95-8715-ef37d3e95197
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-│  4 │ jkl     │
-└────┴─────────┘
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  │  3 │ ghi     │
+  │  4 │ jkl     │
+  └────┴─────────┘
 
-返回 4 行。耗时: 0.044 秒。
+  4 rows in set. Elapsed: 0.044 sec.
 ```
 
 3. 现在向 ClickHouse 表中插入一行数据：
 
 ```sql
-INSERT INTO mysql_table1
-  (id, column1)
-VALUES
-  (5,'mno')
+  INSERT INTO mysql_table1
+    (id, column1)
+  VALUES
+    (5,'mno')
 ```
 
-4. 注意 MySQL 中已出现一条新记录：
+4. 注意 MySQL 中已出现一条新行：
 
 ```bash
-mysql> select id,column1 from db1.table1;
+  mysql> select id,column1 from db1.table1;
 ```
 
 此时应能看到新行：
 
 ```response
-+------+---------+
-| id   | column1 |
-+------+---------+
-|    1 | abc     |
-|    2 | def     |
-|    3 | ghi     |
-|    4 | jkl     |
-|    5 | mno     |
-+------+---------+
-5 rows in set (0.01 sec)
+  +------+---------+
+  | id   | column1 |
+  +------+---------+
+  |    1 | abc     |
+  |    2 | def     |
+  |    3 | ghi     |
+  |    4 | jkl     |
+  |    5 | mno     |
+  +------+---------+
+  5 rows in set (0.01 sec)
 ```
 
-### 总结 \{#summary\}
+
+### 摘要 \{#summary\}
 
 `MySQL` 表引擎允许你连接 ClickHouse 与 MySQL，以实现数据的双向交换。有关更多详细信息，请务必查看 [MySQL 表引擎](/sql-reference/table-functions/mysql.md) 的文档页面。

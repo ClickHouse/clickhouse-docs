@@ -21,7 +21,7 @@ $$
 
 <br />
 
-It is similar to [`covarSamp`](../reference/covarsamp.md) but uses a numerically stable algorithm.
+It is similar to [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) but uses a numerically stable algorithm.
 As a result, `covarSampStable` is slower than `covarSamp` but provides a lower computational error.
 
 **Syntax**

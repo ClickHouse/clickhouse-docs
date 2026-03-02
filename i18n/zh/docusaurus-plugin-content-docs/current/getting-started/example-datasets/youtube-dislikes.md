@@ -138,14 +138,14 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
 
   关于 `INSERT` 命令的说明：
 
-  * 当传入的日期字段可能不是正确格式时，`parseDateTimeBestEffortUSOrZero` 函数非常有用。如果 `fetch_date` 无法被正确解析，就会被设置为 `0`。
-  * `upload_date` 列中包含有效日期，但也包含诸如 &quot;4 hours ago&quot; 之类的字符串——这显然不是有效日期。我们决定将原始值存储在 `upload_date_str` 中，并尝试使用 `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` 对其进行解析。如果解析失败，我们就会得到 `0`。
-  * 我们使用了 `ifNull` 来避免在表中出现 `NULL` 值。如果传入的值为 `NULL`，`ifNull` 函数会将该值设为空字符串。
+  * `parseDateTimeBestEffortUSOrZero` 函数在传入的日期字段可能不是正确格式时非常有用。如果 `fetch_date` 无法被成功解析，则会被设置为 `0`
+  * `upload_date` 列中包含有效日期，但也包含诸如 “4 hours ago” 之类的字符串——这显然不是有效日期。我们决定将原始值存储在 `upload_date_str` 中，并尝试使用 `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` 对其进行解析。如果解析失败，我们就会得到 `0`。
+  * 我们使用了 `ifNull` 来避免在表中出现 `NULL` 值。如果传入的值为 `NULL`，`ifNull` 函数会将该值设置为空字符串。
 
   ### 统计行数
 
   在 ClickHouse Cloud 的 SQL 控制台中打开新标签页(或新的 `clickhouse-client` 窗口),观察计数增长情况。
-  插入 45.6 亿行数据需要一定时间,具体取决于服务器资源。(在默认设置下,大约需要 4.5 小时。)
+  It will take a while to insert 4.56B rows, depending on your server resources. (Without any tweaking of settings, it takes about 4.5 hours.)
 
   ```sql
   SELECT formatReadableQuantity(count())
@@ -154,7 +154,7 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
 
   ```response
   ┌─formatReadableQuantity(count())─┐
-  │ 45.6亿                          │
+  │ 4.56 billion                    │
   └─────────────────────────────────┘
   ```
 
@@ -173,14 +173,14 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
   │      84 │
   └─────────┘
 
-  返回 1 行结果。耗时:0.570 秒。已处理 23.757 万行,5.77 MB(41.654 万行/秒,10.12 MB/秒)
+  1 row in set. Elapsed: 0.570 sec. Processed 237.57 thousand rows, 5.77 MB (416.54 thousand rows/s., 10.12 MB/s.)
   ```
 
   :::note
-  上述查询运行如此迅速,是因为我们将 `uploader` 设置为主键的第一列——因此只需处理 237k 行数据。
+  上述查询运行如此迅速,是因为我们将 `uploader` 设置为主键的第一列——因此只需处理 23.7 万行数据。
   :::
 
-  让我们查看 ClickHouse 视频的点赞和点踩数据：
+  让我们查看 ClickHouse 视频的点赞和点踩数据:
 
   ```sql
   SELECT
@@ -196,18 +196,18 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
 
   ```response
   ┌─title────────────────────────────────────────────────────────────────────────────────────────────────┬─like_count─┬─dislike_count─┐
-  │ ClickHouse v21.11 发布网络研讨会                                                                        │         52 │             3 │
-  │ ClickHouse 简介                                                                                       │         97 │             3 │
+  │ ClickHouse v21.11 Release Webinar                                                                    │         52 │             3 │
+  │ ClickHouse Introduction                                                                              │         97 │             3 │
   │ Casa Modelo Algarve                                                                                  │        180 │             3 │
   │ Профайлер запросов:  трудный путь                                                                    │         33 │             3 │
   │ ClickHouse в Курсометре                                                                              │          4 │             2 │
-  │ 使用 ClickHouse 的 10 个理由                                                                           │         27 │             2 │
+  │ 10 Good Reasons to Use ClickHouse                                                                    │         27 │             2 │
   ...
 
   84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
   ```
 
-  以下是在 `title` 或 `description` 字段中搜索包含 **ClickHouse** 的视频：
+  以下是在 `title` 或 `description` 字段中搜索包含 **ClickHouse** 的视频:
 
   ```sql
   SELECT
@@ -226,16 +226,16 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
   此查询必须处理每一行数据,并解析两列字符串。即便如此,仍可获得每秒 415 万行的良好性能:
 
   ```response
-  返回 1174 行。耗时:1099.368 秒。已处理 45.6 亿行,1.98 TB(每秒 415 万行,每秒 1.80 GB)
+  1174 rows in set. Elapsed: 1099.368 sec. Processed 4.56 billion rows, 1.98 TB (4.15 million rows/s., 1.80 GB/s.)
   ```
 
-  结果如下所示:
+  结果如下所示：
 
   ```response
   ┌─view_count─┬─like_count─┬─dislike_count─┬─url──────────────────────────┬─title──────────────────────────────────────────────────────────────────────────────────────────────────┐
-  │       1919 │         63 │             1 │ https://youtu.be/b9MeoOtAivQ │ ClickHouse v21.10 发布网络研讨会                                                                      │
-  │       8710 │         62 │             4 │ https://youtu.be/PeV1mC2z--M │ 什么是 JDBC DriverManager? | JDBC                                                                     │
-  │       3534 │         62 │             1 │ https://youtu.be/8nWRhK9gw10 │ CLICKHOUSE - 模块化架构                                                                       │
+  │       1919 │         63 │             1 │ https://youtu.be/b9MeoOtAivQ │ ClickHouse v21.10 Release Webinar                                                                      │
+  │       8710 │         62 │             4 │ https://youtu.be/PeV1mC2z--M │ What is JDBC DriverManager? | JDBC                                                                     │
+  │       3534 │         62 │             1 │ https://youtu.be/8nWRhK9gw10 │ CLICKHOUSE - Arquitetura Modular                                                                       │
   ```
 </VerticalStepper>
 

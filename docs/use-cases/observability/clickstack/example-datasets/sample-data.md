@@ -93,7 +93,7 @@ done
 ```
 This simulates OTLP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data does not render):
+Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data doesn't render):
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 
@@ -229,7 +229,7 @@ done
 
 This simulates OTLP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data does not render):
+Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data doesn't render):
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg" />
 

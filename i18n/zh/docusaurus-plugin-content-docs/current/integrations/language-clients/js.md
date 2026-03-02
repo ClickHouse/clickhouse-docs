@@ -279,6 +279,7 @@ interface ClickHouseClient {
 不要在 `query` 中指定 FORMAT 子句，请改用 `format` 参数。
 :::
 
+
 #### 结果集与行抽象 \{#result-set-and-row-abstractions\}
 
 `ResultSet` 为你的应用程序提供了若干便于进行数据处理的辅助方法。
@@ -327,7 +328,7 @@ interface Row {
 }
 ```
 
-**示例：**（Node.js/Web）一个查询，其结果数据集为 `JSONEachRow` 格式，读取整个流并将内容解析为 JS 对象。
+**示例：**（Node.js/Web）一个查询，结果数据集采用 `JSONEachRow` 格式，读取整个流并将内容解析为 JS 对象。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts)。
 
 ```ts
@@ -362,6 +363,7 @@ await new Promise((resolve, reject) => {
 
 **示例：**（仅限 Node.js）通过经典的 `on('data')` 方式，以 `CSV` 格式流式读取查询结果。此方式可与 `for await const` 语法互换使用。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
+
 
 ```ts
 const resultSet = await client.query({
@@ -441,6 +443,7 @@ interface ClickHouseClient {
 如果向 insert 方法传入的是空数组，insert 语句将不会被发送到服务器；相反，该方法会立即返回（resolve）`{ query_id: '...', executed: false }`。如果在这种情况下没有在方法参数中提供 `query_id`，则结果中的该字段将是空字符串，因为返回由客户端生成的随机 UUID 可能会造成困惑——带有该 `query_id` 的查询并不存在于 `system.query_log` 表中。
 
 如果 insert 语句已发送到服务器，则 `executed` 标志将为 `true`。
+
 
 #### Node.js 中的 insert 方法与流式处理 \{#insert-method-and-streaming-in-nodejs\}
 
@@ -527,7 +530,7 @@ await client.insert({
 })
 ```
 
-排除特定列：
+排除某些列：
 
 ```ts
 // Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
@@ -543,6 +546,7 @@ await client.insert({
 ```
 
 有关更多详细信息，请参阅[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts)。
+
 
 **示例**：向一个不同于客户端实例所配置数据库的其他数据库中插入数据。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts)。
 
@@ -580,6 +584,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```
 
 此内容将来可能会有所变动。另请参阅：[所有客户端方法的基础参数](./js.md#base-parameters-for-all-client-methods)。
+
 
 ### 命令方法 \{#command-method\}
 
@@ -651,6 +656,7 @@ await client.command({
 使用 `abort_signal` 取消请求并不能保证服务器未执行该语句。
 :::
 
+
 ### Exec 方法 \{#exec-method\}
 
 如果有某个自定义查询不适用于 `query`/`insert`，并且你关心其返回结果，可以使用 `exec` 作为 `command` 的替代方案。
@@ -689,6 +695,7 @@ export interface QueryResult {
   query_id: string
 }
 ```
+
 
 ### Ping \{#ping\}
 
@@ -745,7 +752,8 @@ if (!result.success) {
 const result = await client.ping({ select: true, /* query_id, abort_signal, http_headers, or any other query params */ });
 ```
 
-`ping` 方法可以使用大多数标准的 `query` 方法参数——参见 `PingParamsWithSelectQuery` 类型定义。
+`ping` 方法允许使用大多数标准的 `query` 方法参数——请参阅 `PingParamsWithSelectQuery` 的类型定义。
+
 
 ### 关闭（仅限 Node.js） \{#close-nodejs-only\}
 
@@ -882,6 +890,7 @@ await client.insert({
 ```
 
 但是，如果你使用的是 `DateTime` 或 `DateTime64` 列，则可以同时使用字符串和 JS Date 对象。在将 `date_time_input_format` 设置为 `best_effort` 时，可以将 JS Date 对象原样传递给 `insert`。有关更多详情，请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)。
+
 
 ### Decimal* 类型注意事项 \{#decimal-types-caveats\}
 
@@ -1161,7 +1170,8 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 < Keep-Alive: timeout=10
 ```
 
-在这种情况下，`keep_alive_timeout` 为 10 秒，你可以尝试将 `keep_alive.idle_socket_ttl` 增加到 9000 甚至 9500 毫秒，以便让空闲 socket 比默认情况下多保持打开一会儿。密切关注可能出现的 &quot;Socket hang-up&quot; 错误，这将表明服务器在客户端之前关闭了连接；如有必要，逐步降低该值，直到错误不再出现为止。
+在这种情况下，`keep_alive_timeout` 为 10 秒，你可以尝试将 `keep_alive.idle_socket_ttl` 增加到 9000 甚至 9500 毫秒，以便让空闲 socket 比默认情况下多保持打开一会儿。密切关注可能出现的 “Socket hang-up” 错误，这将表明服务器在客户端之前关闭了连接；如有必要，逐步降低该值，直到错误不再出现为止。
+
 
 #### 故障排查 \{#troubleshooting\}
 
@@ -1221,6 +1231,7 @@ const client = createClient({
 ```
 
 请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts)，其中更详细地展示了 `readonly=1` 用户的各项限制。
+
 
 ### 带路径名的代理 \{#proxy-with-a-pathname\}
 

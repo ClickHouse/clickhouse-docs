@@ -19,7 +19,7 @@ Client: <build_directory>/programs/clickhouse-client
 Server: <build_directory>/programs/clickhouse-server
 ```
 
-You'll need to create data and metadata folders manually and `chown` them for the desired user. Their paths can be changed in server config (src/programs/server/config.xml), by default they are:
+You'll need to create data and metadata folders manually and `chown` them for the desired user. Their paths can be changed in server config (src/programs/server/config.xml), by default they're:
 
 ```bash
 /var/lib/clickhouse/data/default/

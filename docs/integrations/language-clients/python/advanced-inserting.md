@@ -29,7 +29,7 @@ assert qr.row_count == 4
 assert qr[0][0] == 4
 ```
 
-`InsertContext`s include mutable state that is updated during the insert process, so they are not thread safe.
+`InsertContext`s include mutable state that is updated during the insert process, so they're not thread safe.
 
 ### Write formats {#write-formats}
 Write formats are currently implemented for limited number of types. In most cases ClickHouse Connect will attempt to automatically determine the correct write format for a column by checking the type of the first (non-null) data value. For example, if inserting into a `DateTime` column, and the first insert value of the column is a Python integer, ClickHouse Connect will directly insert the integer value under the assumption that it's actually an epoch second.
@@ -70,12 +70,12 @@ In most cases, it is unnecessary to override the write format for a data type, b
 
 ClickHouse Connect provides specialized insert methods for common data formats:
 
-- `insert_df` -- Insert a Pandas DataFrame. Instead of a Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df` argument that must be a Pandas DataFrame instance. ClickHouse Connect automatically processes the DataFrame as a column oriented datasource, so the `column_oriented` parameter is not required or available.
+- `insert_df` -- Insert a Pandas DataFrame. Instead of a Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df` argument that must be a Pandas DataFrame instance. ClickHouse Connect automatically processes the DataFrame as a column oriented datasource, so the `column_oriented` parameter isn't required or available.
 - `insert_arrow` -- Insert a PyArrow Table. ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database` and `settings` arguments are available in addition to `table` and `arrow_table`.
-- `insert_df_arrow` -- Insert an arrow-backed Pandas DataFrame or a Polars DataFrame. ClickHouse Connect will automatically determine if the DataFrame is a Pandas or Polars type. If Pandas, validation will be performed to ensure that each column's dtype backend is Arrow-based and an error will be raised if any are not.
+- `insert_df_arrow` -- Insert an arrow-backed Pandas DataFrame or a Polars DataFrame. ClickHouse Connect will automatically determine if the DataFrame is a Pandas or Polars type. If Pandas, validation will be performed to ensure that each column's dtype backend is Arrow-based and an error will be raised if any aren't.
 
 :::note
-A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method is not required.
+A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method isn't required.
 :::
 
 #### Pandas DataFrame insert {#pandas-dataframe-insert}
@@ -234,7 +234,7 @@ The `clickhouse_connect.driver.tools` package includes the `insert_file` method 
 | client       | Client          | *Required*        | The `driver.Client` used to perform the insert                                                                            |
 | table        | str             | *Required*        | The ClickHouse table to insert into. The full table name (including database) is permitted.                               |
 | file_path    | str             | *Required*        | The native file system path to the data file                                                                              |
-| fmt          | str             | CSV, CSVWithNames | The ClickHouse Input Format of the file. CSVWithNames is assumed if `column_names` is not provided                        |
+| fmt          | str             | CSV, CSVWithNames | The ClickHouse Input Format of the file. CSVWithNames is assumed if `column_names` isn't provided                        |
 | column_names | Sequence of str | *None*            | A list of column names in the data file. Not required for formats that include column names                               |
 | database     | str             | *None*            | Database of the table. Ignored if the table is fully qualified. If not specified, the insert will use the client database |
 | settings     | dict            | *None*            | See [settings description](driver-api.md#settings-argument).                                                              |

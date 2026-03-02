@@ -230,7 +230,7 @@ ORDER BY company.name
 }
 ```
 
-可以看到下面这一行已成功插入：
+可以看到下面这一行数据已成功插入：
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow

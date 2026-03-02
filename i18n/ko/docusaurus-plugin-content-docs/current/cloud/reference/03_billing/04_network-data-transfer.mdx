@@ -1,0 +1,61 @@
+---
+sidebar_label: '데이터 전송'
+slug: /cloud/manage/network-data-transfer
+title: '데이터 전송'
+description: 'ClickHouse Cloud에서 인그레스 및 이그레스 데이터 전송량이 계측되는 방식을 이해합니다'
+doc_type: 'guide'
+keywords: ['청구', '네트워크 전송', '데이터 이그레스', '비용', '요금']
+---
+
+import NetworkPricing from '@site/i18n/ko/docusaurus-plugin-content-docs/current/cloud/reference/_snippets/_network_transfer_rates.md';
+
+ClickHouse Cloud는 인바운드(ingress) 및 아웃바운드(egress)로 전송되는 데이터를 계량합니다.
+여기에는 ClickHouse Cloud로 들어오고 나가는 모든 데이터뿐만 아니라 리전 내(intra-region)
+및 리전 간(cross-region) 데이터 전송이 포함됩니다. 이 사용량은 서비스 단위로 추적됩니다.
+이 사용량을 기반으로 고객에게 데이터 전송 요금이 부과되며, 이 요금은 월별 청구서에
+추가됩니다.
+
+ClickHouse Cloud에서 부과하는 항목은 다음과 같습니다:
+
+* ClickHouse Cloud에서 공용 인터넷으로 나가는 데이터 egress, 다른 클라우드
+  제공업체의 다른 리전으로의 전송을 포함합니다.
+* 동일 클라우드 제공업체 내에서 다른 리전으로 나가는 데이터 egress.
+
+리전 내 데이터 전송 또는 Private Link/Private Service Connect 사용 및 데이터 전송에는
+요금이 부과되지 않습니다. 다만, 사용자를 적절히 과금하는 능력에 영향을 주는 사용 패턴이
+발견되는 경우, 추가적인 데이터 전송 가격 체계를 도입할 권리를 보유합니다.
+
+참고: Private Link/Private Service Connect 사용에는 클라우드 서비스 제공업체(CSP) 요금이 적용됩니다. 최신 정보는 CSP의 가격 페이지를 참조하십시오.
+
+데이터 전송 요금은 클라우드 서비스 제공업체(CSP)와 리전에 따라 다릅니다.
+공용 인터넷 egress 가격은 출발 리전만을 기준으로 책정됩니다.
+리전 간(inter-region 또는 cross-region) 가격은 출발 리전과 대상 리전 모두에
+의해 결정됩니다.
+
+**데이터 전송 비용을 최소화하기 위한 모범 사례**
+
+데이터를 인그레스하거나 이그레스할 때 데이터 전송 비용을 최소화하기 위해
+유의해야 할 몇 가지 패턴이 있습니다.
+
+1. ClickHouse Cloud로 데이터를 인그레스하거나 이그레스할 때는 가능한 경우
+   압축을 사용하여 전송되는 데이터 양과 그에 따른 비용을 최소화하십시오.
+
+2. 네이티브 프로토콜을 통해 비인라인(non-inlined) 값으로 `INSERT`를 수행하는 경우
+   (예: `INSERT INTO [TABLE] FROM INFILE [FILE] FORMAT NATIVE`), ClickHouse
+   클라이언트는 데이터를 패킹하기 위해 서버에서 메타데이터를 가져옵니다.
+   메타데이터가 `INSERT` 페이로드보다 더 큰 경우, 서버 관점에서는 인그레스보다
+   이그레스가 더 많이 발생하는, 직관에 반하는 상황이 나타날 수 있습니다.
+   이것이 용인되기 어렵다면 `VALUES` 구문으로 데이터를 인라인하거나 HTTP
+   프로토콜 사용을 고려하십시오.
+
+아래 표는 클라우드 제공업체와 리전에 따라 공용 인터넷 또는 리전 간 egress
+데이터 전송 요금이 어떻게 달라지는지를 보여줍니다.
+
+:::note
+ClickHouse Cloud는 리전 간 사용량을 출발 및 대상 리전에 따라 Tier 1부터
+Tier 4까지의 티어 단위로 계량합니다. 아래 표는 각 리전 간 데이터 전송
+조합에 대한 티어를 보여줍니다. ClickHouse Cloud의 Billing usage 화면에서는
+티어별로 구분된 데이터 전송 사용량을 확인할 수 있습니다.
+:::
+
+<NetworkPricing />

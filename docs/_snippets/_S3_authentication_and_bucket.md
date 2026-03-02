@@ -81,7 +81,7 @@ Save the keys somewhere else; this is the only time that the secret access key w
 The bucket name must be unique across AWS, not just the organization, or it will emit an error.
 :::
 
-3. Leave `Block all Public Access` enabled; public access is not needed.
+3. Leave `Block all Public Access` enabled; public access isn't needed.
 
 <Image size="md" img={s3_a} alt="Configuring the S3 bucket settings with public access blocked" border force/>
 

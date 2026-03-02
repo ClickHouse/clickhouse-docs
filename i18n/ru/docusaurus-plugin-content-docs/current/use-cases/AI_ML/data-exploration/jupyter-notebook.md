@@ -235,35 +235,36 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
+
 <details>
   <summary>Чтение из нескольких источников за один шаг</summary>
   Также можно читать данные из нескольких источников за один шаг. Для этого вы можете использовать приведённый ниже запрос с `JOIN`:
 
   ```python
-query = f"""
-SELECT 
-    toYear(date) AS year,
-    avg(price) AS avg_price, housesSold
-FROM remoteSecure(
-'****.europe-west4.gcp.clickhouse.cloud',
-default.pp_complete,
-'{username}',
-'{password}'
-) AS remote
-JOIN (
+  query = f"""
   SELECT 
-    toYear(date) AS year,
-    sum(houses_sold)*1000 AS housesSold
-    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-  WHERE area = 'city of london' AND houses_sold IS NOT NULL
+      toYear(date) AS year,
+      avg(price) AS avg_price, housesSold
+  FROM remoteSecure(
+  '****.europe-west4.gcp.clickhouse.cloud',
+  default.pp_complete,
+  '{username}',
+  '{password}'
+  ) AS remote
+  JOIN (
+    SELECT 
+      toYear(date) AS year,
+      sum(houses_sold)*1000 AS housesSold
+      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+    WHERE area = 'city of london' AND houses_sold IS NOT NULL
+    GROUP BY toYear(date)
+    ORDER BY year
+  ) AS local ON local.year = remote.year
+  WHERE town = 'LONDON'
   GROUP BY toYear(date)
-  ORDER BY year
-) AS local ON local.year = remote.year
-WHERE town = 'LONDON'
-GROUP BY toYear(date)
-ORDER BY year;
-"""
-```
+  ORDER BY year;
+  """
+  ```
 </details>
 
 <Image size="md" img={image_8} alt="предварительный просмотр DataFrame" />
@@ -319,6 +320,7 @@ plt.show()
 Цены, напротив, демонстрировали стабильный и плавный рост: с примерно £150 000 в 1995 году до около £300 000 к 2005 году.
 После 2012 года рост существенно ускорился, резко поднявшись примерно с £400 000 до более чем £1 000 000 к 2019 году.
 В отличие от объёма продаж, цены испытали минимальное влияние кризиса 2008 года и сохранили восходящую тенденцию. Вот это да!
+
 
 ## Итоги \{#summary\}
 

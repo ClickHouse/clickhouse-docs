@@ -37,6 +37,7 @@ CREATE TABLE iceberg_table_local
     ENGINE = IcebergLocal(path_to_table, [,format] [,compression_method])
 ```
 
+
 ## エンジン引数 \{#engine-arguments\}
 
 引数の説明は、それぞれ `S3`、`AzureBlobStorage`、`HDFS` および `File` エンジンにおける引数の説明と同様です。
@@ -69,12 +70,13 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 ```
 
+
 ## エイリアス \{#aliases\}
 
 テーブルエンジン `Iceberg` は、現在は `IcebergS3` のエイリアスになっています。
 
 ## スキーマの進化 \{#schema-evolution\}
-現時点では、CH を用いることで、時間の経過とともにスキーマが変更された Iceberg テーブルを読み取ることができます。現在サポートしているのは、カラムの追加・削除が行われたり、その順序が変更されたテーブルの読み取りです。また、値が必須だったカラムを、NULL を許容するカラムに変更することもできます。加えて、単純型に対しては、以下の許可されている型変換をサポートしています:
+ClickHouse は、時間の経過とともにスキーマが進化した Iceberg テーブルの読み取りをサポートしています。現在サポートしているのは、カラムの追加・削除が行われたり、その順序が変更されたテーブルの読み取りです。また、値が必須だったカラムを、NULL を許容するカラムに変更することもできます。加えて、単純型に対しては、以下の許可されている型変換をサポートしています:
 * int -> long
 * float -> double
 * decimal(P, S) -> decimal(P', S)（P' > P の場合）
@@ -91,28 +93,31 @@ ClickHouse は Iceberg テーブルに対する SELECT クエリの実行時に�
 
 ClickHouse は Iceberg テーブルに対するタイムトラベルをサポートしており、特定のタイムスタンプまたはスナップショット ID を指定して過去のデータをクエリできます。
 
-## 削除行を含むテーブルの処理 \{#deleted-rows\}
+## 削除された行を含むテーブルの処理 \{#deleted-rows\}
 
-現在サポートされているのは、[position deletes](https://iceberg.apache.org/spec/#position-delete-files) を使用する Iceberg テーブルのみです。
+ClickHouse は、次の削除方式を使用する Iceberg テーブルの読み取りに対応しています。
 
-次の削除方式は**サポートされていません**：
+- [位置削除 (Position deletes)](https://iceberg.apache.org/spec/#position-delete-files)
+- [等価削除 (Equality deletes)](https://iceberg.apache.org/spec/#equality-delete-files)（バージョン 25.8 以降でサポート）
 
-* [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
-* [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（v3 で導入）
+以下の削除方式は**サポートされていません**。
+
+- [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors)（v3 で導入）
 
 ### 基本的な使用方法 \{#basic-usage\}
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_timestamp_ms = 1714636800000
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_timestamp_ms = 1714636800000
 ```
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_snapshot_id = 3547395809148285433
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 注意: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
+
 
 ### 重要な考慮事項 \{#important-considerations\}
 
@@ -186,6 +191,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 * ts1 と ts2 の時点: 元の 2 列のみが表示される
 * ts3 の時点: 3 列すべてが表示され、1 行目の price 列は NULL になる
 
+
 #### シナリオ 2: 履歴スキーマと現在のスキーマの差異 \{#scenario-2\}
 
 現在時点を指定したタイムトラベルクエリでは、現在のテーブルとは異なるスキーマが表示される場合があります:
@@ -228,6 +234,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 これは、`ALTER TABLE` が新しいスナップショットを作成せず、現在のテーブルについては Spark がスナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
 
+
 #### シナリオ 3: 過去と現在のスキーマの差異 \{#scenario-3\}
 
 2つ目の制約は、タイムトラベルを行っても、テーブルに最初のデータが書き込まれる前の状態は取得できないという点です。
@@ -248,6 +255,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 ClickHouse における挙動は Spark と同じです。概念的には Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
+
 
 ## メタデータファイルの解決 \{#metadata-file-resolution\}
 
@@ -290,6 +298,7 @@ CREATE TABLE example_table ENGINE = Iceberg(
 ```
 
 **注**: 通常は Iceberg Catalog がメタデータの解決を担当しますが、ClickHouse の `Iceberg` テーブルエンジンは S3 に保存されたファイルを Iceberg テーブルとして直接解釈します。そのため、これらの解決ルールを理解しておくことが重要です。
+
 
 ## データキャッシュ \{#data-cache\}
 

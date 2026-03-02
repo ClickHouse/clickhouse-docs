@@ -27,6 +27,7 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 WITH <identifier> AS <subquery expression>
 ```
 
+
 ### 示例 \{#common-table-expressions-example\}
 
 子查询会被重新执行的情况示例：
@@ -49,6 +50,7 @@ WHERE num IN (SELECT num FROM cte_numbers)
 
 然而，由于我们两次引用了 `cte_numbers`，每次都会生成随机数，因此会看到不同的随机结果，比如 `280501, 392454, 261636, 196227` 等等……
 
+
 ## 通用标量表达式 \{#common-scalar-expressions\}
 
 ClickHouse 允许你在 `WITH` 子句中为任意标量表达式声明别名。
@@ -65,6 +67,7 @@ ClickHouse 会在尽可能接近的作用域中解析任何标识符，这意味
 ```sql
 WITH <expression> AS <identifier>
 ```
+
 
 ### 示例 \{#common-scalar-expressions-examples\}
 
@@ -124,7 +127,7 @@ SELECT file_name FROM generated_names;
    └───────────┘
 ```
 
-**示例 4：** 从 SELECT 子句的列列表中剔除 sum(bytes) 表达式的结果
+**示例 4：** 从 SELECT 子句的列列表中移除 sum(bytes) 表达式的结果
 
 ```sql
 WITH sum(bytes) AS s
@@ -162,6 +165,7 @@ WITH test1 AS (SELECT i + 1, j + 1 FROM test1)
 SELECT * FROM test1;
 ```
 
+
 ## 递归查询 \{#recursive-queries\}
 
 可选的 `RECURSIVE` 修饰符允许 WITH 查询引用其自身的输出。示例：
@@ -184,8 +188,8 @@ SELECT sum(number) FROM test_table;
 ```
 
 :::note
-递归 CTE 依赖于在 **`24.3`** 版本中引入的 [新查询分析器](/operations/analyzer)。如果您使用的是 **`24.3+`** 版本并遇到 **`(UNKNOWN_TABLE)`** 或 **`(UNSUPPORTED_METHOD)`** 异常，说明在您的实例、角色或配置文件上，新分析器被禁用了。要启用分析器，请打开 **`allow_experimental_analyzer`** 设置，或者将 **`compatibility`** 设置更新为更高的版本。
-从 `24.8` 版本开始，新分析器已正式用于生产环境，设置 `allow_experimental_analyzer` 被重命名为 `enable_analyzer`。
+递归 CTE 依赖于在 **`24.3`** 版本中引入的 [查询分析器](/operations/analyzer)。如果您使用的是 **`24.3+`** 版本并遇到 **`(UNKNOWN_TABLE)`** 或 **`(UNSUPPORTED_METHOD)`** 异常，说明在您的实例、角色或配置文件上，分析器被禁用了。要启用分析器，请打开 **`allow_experimental_analyzer`** 设置，或者将 **`compatibility`** 设置更新为更高的版本。
+从 `24.8` 版本开始，分析器已正式用于生产环境，设置 `allow_experimental_analyzer` 被重命名为 `enable_analyzer`。
 :::
 
 递归 `WITH` 查询的一般形式始终是：一个非递归项，接着是 `UNION ALL`，然后是一个递归项，其中只有递归项可以引用该查询自身的输出。递归 CTE 查询的执行方式如下：
@@ -215,7 +219,7 @@ INSERT INTO tree VALUES (0, NULL, 'ROOT'), (1, 0, 'Child_1'), (2, 0, 'Child_2'),
 
 我们可以通过以下查询遍历这棵树：
 
-**示例：** 树的遍历
+**示例：** 树遍历
 
 ```sql
 WITH RECURSIVE search_tree AS (
@@ -239,11 +243,12 @@ SELECT * FROM search_tree;
 └────┴───────────┴───────────┘
 ```
 
+
 ### 搜索顺序 \{#search-order\}
 
-为了生成深度优先的顺序，我们为每一行结果计算一个数组，表示到目前为止已经访问过的行：
+要实现深度优先顺序，我们为每个结果行计算一个记录已访问行的数组：
 
-**示例：** 树遍历的深度优先顺序
+**示例：** 树的深度优先遍历顺序
 
 ```sql
 WITH RECURSIVE search_tree AS (
@@ -292,6 +297,7 @@ SELECT * FROM search_tree ORDER BY depth;
 │  3 │    1 │ Child_1_1 │ [0,1,3] │     2 │
 └────┴──────┴───────────┴─────────┴───────┘
 ```
+
 
 ### 循环检测 \{#cycle-detection\}
 
@@ -355,7 +361,7 @@ Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum r
 
 处理循环的标准方法是构建一个记录已访问节点的数组：
 
-**示例：** 图遍历与环检测
+**示例：** 带循环检测的图遍历
 
 ```sql
 WITH RECURSIVE search_graph AS (
@@ -375,6 +381,7 @@ SELECT * FROM search_graph WHERE is_cycle ORDER BY from;
 │    5 │  1 │ 5 -> 1 │ true     │ [(5,1),(1,4),(4,5),(5,1)] │
 └──────┴────┴────────┴──────────┴───────────────────────────┘
 ```
+
 
 ### 无限查询 \{#infinite-queries\}
 

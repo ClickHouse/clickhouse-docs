@@ -249,7 +249,7 @@ FOREIGN TABLE](#create-foreign-table) 所支持的选项。
  );
 ```
 
-因此，在查询中必须正确使用引号，例如：
+因此，查询语句中必须正确加上引号，例如：
 
 ```sql
  SELECT id, "Name", "updatedAt" FROM test;
@@ -334,7 +334,7 @@ DROP FOREIGN TABLE uact CASCADE;
 
 ## DML SQL 参考 \{#dml-sql-reference\}
 
-下面的 SQL [DML] 表达式可能会使用 pg&#95;clickhouse。示例基于由 [make-logs.sql] 创建的这些 ClickHouse 表：
+下面的 SQL [DML] 表达式可能会使用 pg&#95;clickhouse。示例基于这些 ClickHouse 表：
 
 ```sql
 CREATE TABLE logs (
@@ -543,6 +543,14 @@ try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
 (5 rows)
 ```
 
+:::warning
+在 25.8 之前的 ClickHouse 版本中，参数化执行会导致 [http driver](#create-server)
+无法正确转换 DateTime 的时区；该[底层缺陷][underlying bug] 已在 25.8 中[修复][fixed]。
+请注意，有时即使不使用 `PREPARE`，PostgreSQL 也会使用参数化查询计划。
+对于任何需要精确时区转换但又无法升级到 25.8 或更高版本的查询，请改用
+[binary driver](#create-server)。
+:::
+
 pg&#95;clickhouse 像往常一样执行聚合下推，如在 [EXPLAIN](#explain) 的详细输出中所示：
 
 ```pgsql
@@ -635,7 +643,7 @@ LOAD
 SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
 ```
 
-默认值为 `join_use_nulls 1`。将其设为空字符串以退回到 ClickHouse 服务器端的设置。
+默认值为 `join_use_nulls 1`。将其设为空字符串以回退到 ClickHouse 服务器的设置。
 
 ```sql
 SET pg_clickhouse.session_settings = '';
@@ -647,7 +655,7 @@ SET pg_clickhouse.session_settings = '';
 SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 ```
 
-或者使用用单引号包裹的值以避免对空格和逗号进行转义；也可以考虑使用 [dollar quoting]，从而无需使用双引号：
+或者使用单引号包裹的值以避免对空格和逗号进行转义；也可以考虑使用 [dollar quoting]，从而无需使用双引号：
 
 ```sql
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
@@ -674,7 +682,13 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg&#95;clickhouse 不会验证这些设置，而是在每次查询时将它们传递给 ClickHouse。因此，它支持该 ClickHouse 版本的所有设置。
+在某些情况下，如果某些设置会干扰 pg&#95;clickhouse 本身的运行，这些设置将被忽略。这些设置包括：
+
+* `date_time_output_format`：http 驱动程序要求其为 &quot;iso&quot;
+* `format_tsv_null_representation`：http 驱动程序要求使用默认值
+* `output_format_tsv_crlf_end_of_line`：http 驱动程序要求使用默认值
+
+除此之外，pg&#95;clickhouse 不会验证这些设置，而是在每次查询时将它们传递给 ClickHouse。因此，它支持该 ClickHouse 版本的所有设置。
 
 请注意，必须先加载 pg&#95;clickhouse，然后才能设置
 `pg_clickhouse.session_settings`；可以使用 [shared library preloading]，或者
@@ -733,18 +747,16 @@ shared_preload_libraries = pg_clickhouse
 对于每个会话而言，这有助于节省内存并降低加载开销，但在更新该库时需要重启集群。
 
 
-## 函数与运算符参考 \{#function-and-operator-reference\}
+## 数据类型 \{#data-types\}
 
-### 数据类型 \{#data-types\}
-
-pg_clickhouse 将以下 ClickHouse 数据类型映射到 PostgreSQL 数据类型：
+pg_clickhouse 将以下 ClickHouse 数据类型映射到 PostgreSQL 数据类型。[IMPORT FOREIGN SCHEMA](#import-foreign-schema) 在导入列时使用 PostgreSQL 列中的第一个数据类型；其他类型可以在 [CREATE FOREIGN TABLE](#create-foreign-table) 语句中使用：
 
 | ClickHouse |    PostgreSQL    |                说明                  |
-| -----------|------------------|--------------------------------------|
+|------------|------------------|--------------------------------------|
 | Bool       | boolean          |                                      |
 | Date       | date             |                                      |
 | Date32     | date             |                                      |
-| DateTime   | timestamp        |                                      |
+| DateTime   | timestamptz      |                                      |
 | Decimal    | numeric          |                                      |
 | Float32    | real             |                                      |
 | Float64    | double precision |                                      |
@@ -755,12 +767,128 @@ pg_clickhouse 将以下 ClickHouse 数据类型映射到 PostgreSQL 数据类型
 | Int64      | bigint           |                                      |
 | Int8       | smallint         |                                      |
 | JSON       | jsonb            | 仅适用于 HTTP engine                 |
-| String     | text             |                                      |
+| String     | text, bytea      |                                      |
 | UInt16     | integer          |                                      |
 | UInt32     | bigint           |                                      |
 | UInt64     | bigint           | 当值大于 BIGINT 最大值时会报错      |
 | UInt8      | smallint         |                                      |
 | UUID       | uuid             |                                      |
+
+后续部分将提供更多说明和详细信息。
+
+### BYTEA \{#bytea\}
+
+ClickHouse 不提供与 PostgreSQL [BYTEA] 类型等效的类型，但允许将任意字节存储在 [String] 类型中。通常，ClickHouse 字符串应映射到 PostgreSQL 的 [TEXT] 类型，但在处理二进制数据时，应将其映射到 [BYTEA]。示例：
+
+```sql
+-- Create clickHouse table with String columns.
+SELECT clickhouse_raw_query($$
+    CREATE TABLE bytes (
+        c1 Int8, c2 String, c3 String
+    ) ENGINE = MergeTree ORDER BY (c1);
+$$);
+
+-- Create foreign table with BYTEA columns.
+CREATE FOREIGN TABLE bytes (
+    c1 int,
+    c2 BYTEA,
+    c3 BYTEA
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Insert binary data into the foreign table.
+INSERT INTO bytes
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the results.
+SELECT * FROM bytes;
+```
+
+最终的 `SELECT` 查询将输出：
+
+```pgsql
+ c1 |                             c2                             |                 c3
+----+------------------------------------------------------------+------------------------------------
+  1 | \x1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | \xae3b28cde02542f81acce8783245430d
+  2 | \x5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | \x23e7c6cacb8383f878ad093b0027d72b
+  3 | \x53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | \x7e969132fc656148b97b6a2ee8bc83c1
+  4 | \x4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | \x8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+请注意，如果 ClickHouse 列中存在任何空字节（nul bytes），使用 [TEXT] 列的外部表将无法输出正确的值：
+
+```sql
+-- Create foreign table with TEXT columns.
+CREATE FOREIGN TABLE texts (
+    c1 int,
+    c2 TEXT,
+    c3 TEXT
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Encode binary data as hex.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+将输出：
+
+```pgsql
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b
+  3 | 53ac2c1fa83c8f64603fe9568d883331                         | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+请注意，第二行和第三行包含截断的值。这是因为 PostgreSQL 依赖以 nul 结尾的字符串，且不支持在字符串中包含 nul 字符。
+
+尝试将二进制值插入 [TEXT] 列将会成功并按预期工作：
+
+```sql
+-- Insert via text columns:
+TRUNCATE texts;
+INSERT INTO texts
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the data.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+文本列将正确显示：
+
+```pgdsql
+
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b0027d72b
+  3 | 53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+但是如果将它们读取为 [BYTEA]，则不会：
+
+```pgsql
+# SELECT * FROM bytes;
+ c1 |                                                           c2                                                           |                                   c3
+----+------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------
+  1 | \x5c783162663766306363383231643331313738363136613535613865306335323637373733353339376364646536663431353361396664336437 | \x5c786165336232386364653032353432663831616363653837383332343534333064
+  2 | \x5c783566366539653132636438353932373132653633383031366634623161326537333233306565343064623439386330663062316463383431 | \x5c783233653763366361636238333833663837386164303933623030323764373262
+  3 | \x5c783533616332633166613833633866363436303366653935363864383833333331303037643632383164653333306134623565373238663965 | \x5c783765393639313332666336353631343862393762366132656538626338336331
+  4 | \x5c783465336332653463623735343261343531373361386461633933396464633462633735323032653334326562633736396230663564613266 | \x5c783865663330663434633635343830643132623635306162366232623034323435
+(4 rows)
+```
+
+:::tip
+原则上，只将 [TEXT] 列用于编码字符串，将 [BYTEA] 列用于二进制数据，且不要在两者之间混用。
+:::
+
+
+## 函数与运算符参考 \{#function-and-operator-reference\}
 
 ### 函数 \{#functions\}
 
@@ -839,6 +967,7 @@ SELECT clickhouse_raw_query(
 * `btrim`： [trimBoth](https://clickhouse.com/docs/sql-reference/functions/string-functions#trimboth)
 * `strpos`： [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`： [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+* `md5`： [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
 
 ### 自定义函数 \{#custom-functions\}
 
@@ -995,9 +1124,25 @@ Copyright (c) 2025-2026, ClickHouse
     "PostgreSQL 文档：使用美元符号引用的字符串常量"
 
 [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
+    "PostgreSQL 文档：共享库预加载"
 
-"PostgreSQL 文档：共享库预加载
-  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+[PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
     "PostgreSQL 文档：PREPARE 注意事项"
-  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+
+[query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
     "ClickHouse 文档：ClickHouse 中预处理语句的替代方案"
+
+[underlying bug]: https://github.com/ClickHouse/ClickHouse/issues/85847
+    "ClickHouse/ClickHouse#85847 某些 multipart 表单中的查询不会读取设置"
+
+[fixed]: https://github.com/ClickHouse/ClickHouse/pull/85570
+    "ClickHouse/ClickHouse#85570 修复使用 multipart 的 HTTP"
+
+[BYTEA]: https://www.postgresql.org/docs/current/datatype-binary.html
+    "PostgreSQL 文档：二进制数据类型"
+
+[String]: https://clickhouse.com/docs/sql-reference/data-types/string
+    "ClickHouse 文档：String"
+
+[TEXT]: https://www.postgresql.org/docs/current/datatype-character.html
+    "PostgreSQL 文档：字符类型"

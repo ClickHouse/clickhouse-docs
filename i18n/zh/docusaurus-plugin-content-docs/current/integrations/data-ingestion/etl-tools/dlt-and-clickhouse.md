@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # 将 dlt 连接到 ClickHouse \{#connect-dlt-to-clickhouse\}
 
 <PartnerBadge/>
@@ -22,6 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ```bash
 pip install "dlt[clickhouse]"
 ```
+
 
 ## 设置指南 \{#setup-guide\}
 
@@ -94,7 +96,7 @@ dataset_table_separator = "___"          # Separator for dataset table names fro
 您可以传递类似于 `clickhouse-driver` 库所使用的数据库连接字符串。上述凭据将如下所示:
 
 ```bash
-# keep it at the top of your toml file, before any section starts.
+# 将其放在 toml 文件顶部,在任何 section 开始之前。
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -113,6 +115,7 @@ dlt 库中的写入方式定义了数据应如何写入目标端。写入方式�
 **Append**：这是默认方式。它会将数据追加到目标端已有的数据之后，并忽略 `primary_key` 字段。
 
 ## 数据加载 \{#data-loading\}
+
 根据数据源的不同，会采用最高效的方法将数据加载到 ClickHouse 中：
 
 - 对于本地文件，使用 `clickhouse-connect` 库，通过 `INSERT` 命令将文件直接加载到 ClickHouse 表中。
@@ -136,6 +139,7 @@ dlt 库中的写入方式定义了数据应如何写入目标端。写入方式�
 6. 在某些条件下，`Clickhouse` 在使用 float 或 double 数据类型时可能会产生舍入误差。如果你无法接受舍入误差，请务必使用 decimal 数据类型。例如，将值 12.7001 加载到一个 double 列，并且加载器文件格式设为 `jsonl` 时，将会可预期地产生舍入误差。
 
 ## 支持的列提示 \{#supported-column-hints\}
+
 ClickHouse 支持以下<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">列提示</a>：
 
 - `primary_key` — 将该列标记为主键的一部分。多列都可以使用此提示来创建复合主键。
@@ -159,6 +163,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `merge_tree` - 使用 `MergeTree` 引擎创建表
 * `replicated_merge_tree`（默认）- 使用 `ReplicatedMergeTree` 引擎创建表
 
+
 ## 暂存（staging）支持 \{#staging-support\}
 
 ClickHouse 支持将 Amazon S3、Google Cloud Storage 和 Azure Blob Storage 用作文件暂存目标位置。
@@ -181,6 +186,7 @@ pipeline = dlt.pipeline(
   dataset_name='chess_data'
 )
 ```
+
 
 ### 将 Google Cloud Storage 用作暂存区域 \{#using-google-cloud-storage-as-a-staging-area\}
 
@@ -222,6 +228,7 @@ dlt 会将这些凭据传递给 ClickHouse，由 ClickHouse 处理认证并访�
 
 * 使 filesystem 目标在 s3 兼容模式下与 gcs <a href="https://github.com/dlt-hub/dlt/issues/1272"> 正常工作</a>
 * Google Cloud Storage staging 区域<a href="https://github.com/dlt-hub/dlt/issues/1181"> 支持</a>
+
 
 ### Dbt 支持 \{#dbt-support\}
 

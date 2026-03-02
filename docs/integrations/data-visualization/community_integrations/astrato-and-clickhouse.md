@@ -78,7 +78,7 @@ In our Data View editor, you will see all of your Tables and Schemas in ClickHou
 
 Now that you have your data selected, go to define the **data view**. Click define on the top right of the webpage.
 
-In here, you are able to join data, as well as, **create governed dimensions and measures** - ideal for driving consistency in business logic across various teams.
+In here, you're able to join data, as well as, **create governed dimensions and measures** - ideal for driving consistency in business logic across various teams.
 
 <Image size="lg" img={astrato_4b_clickhouse_data_view_joins} alt="Astrato connect to ClickHouse User Access" border />
 

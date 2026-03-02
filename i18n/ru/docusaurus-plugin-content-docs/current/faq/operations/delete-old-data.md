@@ -37,6 +37,7 @@ SET allow_experimental_lightweight_delete = true;
 
 :::
 
+
 ## ALTER DELETE \{#alter-delete\}
 
 ALTER DELETE удаляет строки с использованием асинхронных пакетных операций. В отличие от DELETE FROM, запросы, выполняемые после ALTER DELETE и до завершения пакетных операций, будут включать строки, предназначенные для удаления. Подробности см. в документации по [ALTER DELETE](/sql-reference/statements/alter/delete.md).

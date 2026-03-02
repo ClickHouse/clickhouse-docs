@@ -36,7 +36,7 @@ Once installed, you can pull a model down to your machine like this:
 ollama pull qwen3:8b
 ```
 
-This will pull the model to your local machine if it is not present.
+This will pull the model to your local machine if it isn't present.
 Once it's downloaded, you can run the model like this:
 
 ```bash

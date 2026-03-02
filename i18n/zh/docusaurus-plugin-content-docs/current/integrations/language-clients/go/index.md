@@ -299,6 +299,7 @@ fmt.Println(v)
 
 **在后续所有示例中，除非特别说明，否则都假定 ClickHouse 的 `conn` 变量已创建并可用。**
 
+
 #### 连接设置 \{#connection-settings\}
 
 在建立连接时，可以使用一个 Options 结构体来控制客户端行为。可用的设置如下：
@@ -435,6 +436,7 @@ v, err := conn.ServerVersion()
 
 如果需要额外的 TLS 参数，应用代码应在 `tls.Config` 结构体中设置相应字段。这可以包括指定密码套件、强制使用特定 TLS 版本（如 1.2 或 1.3）、添加内部 CA 证书链、在 ClickHouse 服务器要求时添加客户端证书（及其私钥），以及大多数用于更高级安全配置的其他选项。
 
+
 ### 认证 \{#authentication\}
 
 在连接配置中通过指定 Auth 结构体来设置用户名和密码。
@@ -532,6 +534,7 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 注意可以将 Context 传递给查询。这可以用于传入特定的查询级别设置——参见[使用 Context](#using-context)。
 
+
 ### 批量插入 \{#batch-insert\}
 
 为了插入大量行，客户端提供了批处理语义。需要先准备一个批处理对象，然后可以向其中追加多行数据。最后通过 `Send()` 方法发送该批处理。在执行 `Send` 之前，批处理会保存在内存中。
@@ -623,6 +626,7 @@ return batch.Send()
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
 若要查看每种列类型所支持的 Go 类型的完整说明，请参阅 [类型转换](#type-conversions)。
+
 
 ### 查询行 \{#querying-rows\}
 
@@ -1951,6 +1955,7 @@ func ConnectDSN() error {
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
 
 **在后续所有示例中，除非特别说明，我们都假定已创建并可以使用名为 `conn` 的 ClickHouse 连接变量。**
+
 
 #### 连接设置 \{#connection-settings-1\}
 

@@ -21,7 +21,7 @@ While [schema inference](/integrations/data-formats/json/inference) can be used 
 The principal task on defining a schema for JSON is to determine the appropriate type for each key's value. We recommended users apply the following rules recursively on each key in the JSON hierarchy to determine the appropriate type for each key.
 
 1. **Primitive types** - If the key's value is a primitive type, irrespective of whether it is part of a sub-object or on the root, ensure you select its type according to general schema [design best practices](/data-modeling/schema-design) and [type optimization rules](/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below, can be modeled as `Array(<type>)` e.g., `Array(String)`.
-2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or an array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys may be provided on some JSON documents. Objects where new keys are added frequently and/or are not predictable should be considered **dynamic**. **The exception here is structures with hundreds or thousands of sub keys which can be considered dynamic for convenience purposes**. 
+2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or an array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys may be provided on some JSON documents. Objects where new keys are added frequently and/or aren't predictable should be considered **dynamic**. **The exception here is structures with hundreds or thousands of sub keys which can be considered dynamic for convenience purposes**. 
 
 To establish whether a value is **static** or **dynamic**, see the relevant sections [**Handling static objects**](/integrations/data-formats/json/schema#handling-static-structures) and [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) below.
 
@@ -82,12 +82,12 @@ To illustrate these rules, we use the following JSON example representing a pers
 Applying these rules:
 
 - The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
-- New keys will not be added to the `address` object (only new address objects), and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
+- New keys won't be added to the `address` object (only new address objects), and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
 - The `tags` column is **dynamic**. We assume new arbitrary tags can be added to this object of any type and structure.
 - The `company` object is **static** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
 
 :::note
-Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
+Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which aren't needed to save both storage and inference overhead.
 :::
 
 ## Handling static structures {#handling-static-structures}
@@ -202,7 +202,7 @@ ORDER BY company.name
 
 ### Handling default values {#handling-default-values}
 
-Even if JSON objects are structured, they are often sparse with only a subset of the known keys provided. Fortunately, the `Tuple` type does not require all columns in the JSON payload. If not provided, default values will be used.
+Even if JSON objects are structured, they're often sparse with only a subset of the known keys provided. Fortunately, the `Tuple` type doesn't require all columns in the JSON payload. If not provided, default values will be used.
 
 Consider our earlier `people` table and the following sparse JSON, missing the keys `suite`, `geo`, `phone_numbers`, and `catchPhrase`.
 
@@ -282,7 +282,7 @@ If you need to differentiate between a value being empty and not provided, the [
 
 While a structured approach is simplest when the JSON keys are static, this approach can still be used if the changes to the schema can be planned, i.e., new keys are known in advance, and the schema can be modified accordingly.
 
-Note that ClickHouse will, by default, ignore JSON keys that are provided in the payload and are not present in the schema. Consider the following modified JSON payload with the addition of a `nickname` key:
+Note that ClickHouse will, by default, ignore JSON keys that are provided in the payload and aren't present in the schema. Consider the following modified JSON payload with the addition of a `nickname` key:
 
 ```json
 {
@@ -327,7 +327,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Columns can be added to a schema using the [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) command. A default can be specified via the `DEFAULT` clause, which will be used if it is not specified during the subsequent inserts. Rows for which this value is not present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified, the default value for the type will be used.
+Columns can be added to a schema using the [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) command. A default can be specified via the `DEFAULT` clause, which will be used if it isn't specified during the subsequent inserts. Rows for which this value isn't present (as they were inserted prior to its creation) will also return this default value. If no `DEFAULT` value is specified, the default value for the type will be used.
 
 For example:
 
@@ -475,7 +475,7 @@ Given the dynamic nature of the `company.labels` column between objects, with re
 - **Single JSON column** - represents the entire schema as a single `JSON` column, allowing all structures to be dynamic beneath this.
 - **Targeted JSON column** - only use the `JSON` type for the `company.labels` column, retaining the structured schema used above for all other columns.
 
-While the first approach [does not align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks. 
+While the first approach [doesn't align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks. 
 
 For production deployments of ClickHouse at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible. 
 
@@ -490,7 +490,7 @@ A strict schema has a number of benefits:
 This approach is useful for prototyping and data engineering tasks. For production, try use `JSON` only for dynamic sub structures where necessary.
 
 :::note Performance considerations
-A single JSON column can be optimized by skipping (not storing) JSON paths that are not required and by using [type hints](#using-type-hints-and-skipping-paths). Type hints allow the user to explicitly define the type for a sub-column, thereby skipping inference and indirection processing at query time. This can be used to deliver the same performance as if an explicit schema was used. See ["Using type hints and skipping paths"](#using-type-hints-and-skipping-paths) for further details.
+A single JSON column can be optimized by skipping (not storing) JSON paths that aren't required and by using [type hints](#using-type-hints-and-skipping-paths). Type hints allow the user to explicitly define the type for a sub-column, thereby skipping inference and indirection processing at query time. This can be used to deliver the same performance as if an explicit schema was used. See ["Using type hints and skipping paths"](#using-type-hints-and-skipping-paths) for further details.
 :::
 
 The schema for a single JSON column here is simple:
@@ -935,7 +935,7 @@ Additionally, by leveraging offsets, ClickHouse ensures that these sub-columns r
 
 However, in scenarios with high-cardinality or highly variable JSON structures—such as telemetry pipelines, logs, or machine-learning feature stores - this behavior can lead to an explosion of column files. Each new unique JSON path results in a new column file, and each type variant under that path results in an additional column file. While this is optimal for read performance, it introduces operational challenges: file descriptor exhaustion, increased memory usage, and slower merges due to a high number of small files.
 
-To mitigate this, ClickHouse introduces the concept of an overflow subcolumn: once the number of distinct JSON paths exceeds a threshold, additional paths are stored in a single shared file using a compact encoded format. This file is still queryable but does not benefit from the same performance characteristics as dedicated subcolumns.
+To mitigate this, ClickHouse introduces the concept of an overflow subcolumn: once the number of distinct JSON paths exceeds a threshold, additional paths are stored in a single shared file using a compact encoded format. This file is still queryable but doesn't benefit from the same performance characteristics as dedicated subcolumns.
 
 <Image img={shared_json_column} size="md" alt="Shared JSON column" />
 

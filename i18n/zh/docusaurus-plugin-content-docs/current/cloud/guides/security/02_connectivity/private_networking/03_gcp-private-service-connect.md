@@ -21,6 +21,7 @@ import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/g
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
+
 # Private Service Connect \{#private-service-connect\}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
@@ -36,6 +37,7 @@ Private Service Connect（PSC）是 Google Cloud 的一项网络功能，允许�
 :::
 
 **使用 Private Service Connect Global Access 的重要注意事项：**
+
 1. 使用 Global Access 的各个区域必须属于同一个 VPC。
 1. 必须在 PSC 级别显式启用 Global Access（参见下方截图）。
 1. 确保你的防火墙设置不会阻止来自其他区域对 PSC 的访问。
@@ -44,6 +46,7 @@ Private Service Connect（PSC）是 Google Cloud 的一项网络功能，允许�
 目前不支持跨区域连接。服务提供方与服务使用方必须位于同一区域。不过，你可以通过在 Private Service Connect（PSC）级别启用 [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access)，从同一 VPC 中的其他区域进行连接。
 
 **请完成以下步骤以启用 GCP PSC：**
+
 1. 获取用于 Private Service Connect 的 GCP service attachment。
 1. 创建服务端点。
 1. 将“Endpoint ID”添加到 ClickHouse Cloud 服务。
@@ -93,6 +96,7 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 * 你可以[创建一个新密钥](/cloud/manage/openapi)或使用现有密钥。
   :::
 
+
 ## 获取用于 Private Service Connect 的 GCP 服务附件和 DNS 名称 \{#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect\}
 
 ### 选项 1：ClickHouse Cloud 控制台 \{#option-1-clickhouse-cloud-console\}
@@ -118,6 +122,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 请记录下 `endpointServiceId` 和 `privateDnsHostname`，在接下来的步骤中你将会用到它们。
+
 
 ## 创建服务端点 \{#create-service-endpoint\}
 
@@ -211,6 +216,7 @@ output "psc_connection_id" {
 使用在[获取用于 Private Service Connect 的 GCP 服务附件](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)步骤中获得的 `endpointServiceId`<sup>API</sup> 或 `Service name`<sup>console</sup>
 :::
 
+
 ## 为端点设置私有 DNS 名称 \{#set-private-dns-name-for-endpoint\}
 
 :::note
@@ -272,11 +278,12 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-为组织添加或移除专用终结点：
+为组织添加或移除 Private Endpoint：
 
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
+
 
 ## 将 &quot;Endpoint ID&quot; 添加到 ClickHouse 服务允许列表 \{#add-endpoint-id-to-services-allow-list\}
 
@@ -332,6 +339,7 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
+
 ## 使用 Private Service Connect 访问实例 \{#accessing-instance-using-private-service-connect\}
 
 每个启用了 Private Link 的服务都有一个公共端点和私有端点。要通过 Private Link 进行连接，您需要使用私有端点，该端点对应于在[获取用于 Private Service Connect 的 GCP 服务附件](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)中获得的 `privateDnsHostname`。
@@ -359,6 +367,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 在此示例中，对主机名 `xxxxxxx.yy-xxxxN.p.gcp.clickhouse.cloud` 的连接会被路由到 Private Service Connect。与此同时，`xxxxxxx.yy-xxxxN.gcp.clickhouse.cloud` 的连接则会通过互联网进行路由。
 
+
 ## 故障排查 \{#troubleshooting\}
 
 ### 测试 DNS 设置 \{#test-dns-setup\}
@@ -374,6 +383,7 @@ Non-authoritative answer:
 ...
 Address: 10.128.0.2
 ```
+
 
 ### 对端重置连接（Connection reset by peer） \{#connection-reset-by-peer\}
 
@@ -412,6 +422,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
+
 ### 检查端点过滤规则 \{#checking-endpoint-filters\}
 
 #### REST API \{#rest-api\}
@@ -422,6 +433,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
   "102600141743718403"
 ]
 ```
+
 
 ### 连接到远程数据库 \{#connecting-to-a-remote-database\}
 

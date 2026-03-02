@@ -17,12 +17,12 @@ import Image from '@theme/IdealImage';
 
 # CDC из DynamoDB в ClickHouse \{#cdc-from-dynamodb-to-clickhouse\}
 
-На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
+На этой странице описано, как настроить CDC (фиксацию изменений данных) из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
 
-1. Начальный снимок данных через S3 ClickPipes
-2. Обновления в реальном времени через Kinesis ClickPipes
+1. Начальный снимок данных через S3 ClickPipes  
+2. Обновления в режиме реального времени через Kinesis ClickPipes
 
-Данные будут приниматься в таблицу `ReplacingMergeTree`. Этот движок таблицы обычно используется в сценариях CDC, чтобы можно было применять операции обновления. Подробнее об этом подходе можно узнать в следующих статьях блога:
+Данные будут приниматься в таблицу на `ReplacingMergeTree`. Этот движок таблицы обычно используется в сценариях CDC, чтобы можно было применять операции обновления. Подробнее об этом подходе можно узнать в следующих статьях блога:
 
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
@@ -106,24 +106,25 @@ ORDER BY id;
 * Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задается через `ORDER BY`)
   * Строки с одним и тем же ключом сортировки будут дедуплироваться на основе столбца `version`.
 
-### Создайте ClickPipe для снимка \{#create-the-snapshot-clickpipe\}
+### Создание ClickPipe для snapshot \{#create-the-snapshot-clickpipe\}
 
-Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage/s3/overview), но используйте следующие настройки:
+Теперь вы можете создать ClickPipe для загрузки snapshot‑данных из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage/s3/overview), но используйте следующие настройки:
 
-* **Ingest path**: вам нужно будет найти путь к экспортированным json‑файлам в S3. Путь будет выглядеть примерно так:
+* **Ingest path**: вам нужно будет найти путь к экспортированным JSON‑файлам в S3. Путь будет выглядеть примерно так:
 
 ```text
 https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
 
-* **Format**: JSONEachRow
-* **Table**: Ваша таблица snapshot (например, `default.snapshot` в примере выше)
+* **Формат**: JSONEachRow
+* **Таблица**: ваша таблица снапшота (например, `default.snapshot` в примере выше)
 
-После создания данные начнут поступать в таблицу snapshot и целевую таблицу. Вам не нужно дожидаться завершения загрузки snapshot, чтобы переходить к следующему шагу.
+После создания данные начнут заполнять таблицу снапшота и целевую таблицу. Вам не нужно дожидаться завершения загрузки снапшота, прежде чем переходить к следующему шагу.
+
 
 ## 4. Создание Kinesis ClickPipe \{#4-create-the-kinesis-clickpipe\}
 
-Теперь мы можем настроить Kinesis ClickPipe для фиксации изменений в реальном времени из потока Kinesis. Следуйте руководству по Kinesis ClickPipe [здесь](/integrations/data-ingestion/clickpipes/kinesis.md), при этом используйте следующие настройки:
+Теперь мы можем настроить Kinesis ClickPipe для фиксации изменений в реальном времени из потока Kinesis. Следуйте руководству по Kinesis ClickPipe [здесь](/integrations/data-ingestion/clickpipes/kinesis/01_overview.md), при этом используйте следующие настройки:
 
 - **Stream**: поток Kinesis, использованный на шаге 1
 - **Table**: ваша целевая таблица (например, `default.destination` в примере выше)

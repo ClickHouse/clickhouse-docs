@@ -18,6 +18,10 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 
 # JDBC を使用して ClickHouse を外部データソースに接続する \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
 
+:::warning
+clickhouse-jdbc-bridge には実験的なコードが含まれており、現在はサポートされていません。信頼性やセキュリティに関する脆弱性を含んでいる可能性があります。自己責任で使用してください。
+:::
+
 :::note
 JDBC を使用するには ClickHouse JDBC Bridge が必要なため、ローカルマシン上で `clickhouse-local` を使用して、データベースから ClickHouse Cloud へデータをストリーミングする必要があります。詳細については、ドキュメントの **Migrate** セクションにある [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) ページを参照してください。
 :::
@@ -61,7 +65,7 @@ cd ~/clickhouse-jdbc-bridge
 wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0.7/clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ```
 
-MySQL に接続するために、名前付きデータソースを作成します。
+MySQL に接続できるよう、名前付きデータソースを作成します。
 
 ```bash
  cd ~/clickhouse-jdbc-bridge

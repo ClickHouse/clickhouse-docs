@@ -42,28 +42,28 @@ SQL 式とラムダ構文を使って関数を作成します。
   <summary>サンプルデータ（例で使用）</summary>
 
   ```sql
--- Create the products table
-CREATE TABLE products (
-    product_id UInt32,
-    product_name String,
-    price Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY product_id;
+  -- Create the products table
+  CREATE TABLE products (
+      product_id UInt32,
+      product_name String,
+      price Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY product_id;
 
--- Insert sample data
-INSERT INTO products (product_id, product_name, price) VALUES
-(1, 'Laptop', 899.99),
-(2, 'Wireless Mouse', 24.99),
-(3, 'USB-C Cable', 12.50),
-(4, 'Monitor', 299.00),
-(5, 'Keyboard', 79.99),
-(6, 'Webcam', 54.95),
-(7, 'Desk Lamp', 34.99),
-(8, 'External Hard Drive', 119.99),
-(9, 'Headphones', 149.00),
-(10, 'Phone Stand', 15.99);
-```
+  -- Insert sample data
+  INSERT INTO products (product_id, product_name, price) VALUES
+  (1, 'Laptop', 899.99),
+  (2, 'Wireless Mouse', 24.99),
+  (3, 'USB-C Cable', 12.50),
+  (4, 'Monitor', 299.00),
+  (5, 'Keyboard', 79.99),
+  (6, 'Webcam', 54.95),
+  (7, 'Desk Lamp', 34.99),
+  (8, 'External Hard Drive', 119.99),
+  (9, 'Headphones', 149.00),
+  (10, 'Phone Stand', 15.99);
+  ```
 </details>
 
 ```sql
@@ -108,6 +108,7 @@ SELECT format_phone('5551234567');
 * 再帰関数は使用できません
 
 完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
+
 
 #### 実行可能 UDF \{#executable-udfs\}
 
@@ -332,80 +333,80 @@ WHERE month = toStartOfMonth(today());
 ここでは、MySQL のストアドプロシージャを、ClickHouse を用いたアプリケーションコードに書き換えた場合の対応関係を、左右の比較で示します。
 
 <Tabs>
-  <TabItem value="mysql" label="MySQL ストアドプロシージャ" default>
+  <TabItem value="MySQL" label="MySQL ストアドプロシージャ" default>
     ```sql
-DELIMITER $$
+    DELIMITER $$
 
-CREATE PROCEDURE process_order(
-    IN p_order_id INT,
-    IN p_customer_id INT,
-    IN p_order_total DECIMAL(10,2),
-    OUT p_status VARCHAR(50),
-    OUT p_loyalty_points INT
-)
-BEGIN
-    DECLARE v_customer_tier VARCHAR(20);
-    DECLARE v_previous_orders INT;
-    DECLARE v_discount DECIMAL(10,2);
+    CREATE PROCEDURE process_order(
+        IN p_order_id INT,
+        IN p_customer_id INT,
+        IN p_order_total DECIMAL(10,2),
+        OUT p_status VARCHAR(50),
+        OUT p_loyalty_points INT
+    )
+    BEGIN
+        DECLARE v_customer_tier VARCHAR(20);
+        DECLARE v_previous_orders INT;
+        DECLARE v_discount DECIMAL(10,2);
 
-    -- Start transaction
-    START TRANSACTION;
+        -- Start transaction
+        START TRANSACTION;
 
-    -- Get customer information
-    SELECT tier, total_orders
-    INTO v_customer_tier, v_previous_orders
-    FROM customers
-    WHERE customer_id = p_customer_id;
+        -- Get customer information
+        SELECT tier, total_orders
+        INTO v_customer_tier, v_previous_orders
+        FROM customers
+        WHERE customer_id = p_customer_id;
 
-    -- Calculate discount based on tier
-    IF v_customer_tier = 'gold' THEN
-        SET v_discount = p_order_total * 0.15;
-    ELSEIF v_customer_tier = 'silver' THEN
-        SET v_discount = p_order_total * 0.10;
-    ELSE
-        SET v_discount = 0;
-    END IF;
+        -- Calculate discount based on tier
+        IF v_customer_tier = 'gold' THEN
+            SET v_discount = p_order_total * 0.15;
+        ELSEIF v_customer_tier = 'silver' THEN
+            SET v_discount = p_order_total * 0.10;
+        ELSE
+            SET v_discount = 0;
+        END IF;
 
-    -- Insert order record
-    INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
-    VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
-            p_order_total - v_discount);
+        -- Insert order record
+        INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
+        VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
+                p_order_total - v_discount);
 
-    -- Update customer statistics
-    UPDATE customers
-    SET total_orders = total_orders + 1,
-        lifetime_value = lifetime_value + (p_order_total - v_discount),
-        last_order_date = NOW()
-    WHERE customer_id = p_customer_id;
+        -- Update customer statistics
+        UPDATE customers
+        SET total_orders = total_orders + 1,
+            lifetime_value = lifetime_value + (p_order_total - v_discount),
+            last_order_date = NOW()
+        WHERE customer_id = p_customer_id;
 
-    -- Calculate loyalty points (1 point per dollar)
-    SET p_loyalty_points = FLOOR(p_order_total - v_discount);
+        -- Calculate loyalty points (1 point per dollar)
+        SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
-    -- Insert loyalty points transaction
-    INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-    VALUES (p_customer_id, p_loyalty_points, NOW(),
-            CONCAT('Order #', p_order_id));
+        -- Insert loyalty points transaction
+        INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+        VALUES (p_customer_id, p_loyalty_points, NOW(),
+                CONCAT('Order #', p_order_id));
 
-    -- Check if customer should be upgraded
-    IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
-        UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
-        SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
-    ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
-        UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
-        SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
-    ELSE
-        SET p_status = 'ORDER_COMPLETE';
-    END IF;
+        -- Check if customer should be upgraded
+        IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
+            UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
+        ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
+            UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
+        ELSE
+            SET p_status = 'ORDER_COMPLETE';
+        END IF;
 
-    COMMIT;
-END$$
+        COMMIT;
+    END$$
 
-DELIMITER ;
+    DELIMITER ;
 
--- Call the stored procedure
-CALL process_order(12345, 5678, 250.00, @status, @points);
-SELECT @status, @points;
-```
+    -- Call the stored procedure
+    CALL process_order(12345, 5678, 250.00, @status, @points);
+    SELECT @status, @points;
+    ```
   </TabItem>
 
   <TabItem value="ClickHouse" label="ClickHouse アプリケーションのコード">
@@ -415,143 +416,143 @@ SELECT @status, @points;
     :::
 
     ```python
-# Python example using clickhouse-connect
-import clickhouse_connect
-from datetime import datetime
-from decimal import Decimal
+    # Python example using clickhouse-connect
+    import clickhouse_connect
+    from datetime import datetime
+    from decimal import Decimal
 
-client = clickhouse_connect.get_client(host='localhost')
+    client = clickhouse_connect.get_client(host='localhost')
 
-def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
-    """
-    Processes an order with business logic that would be in a stored procedure.
-    Returns: (status_message, loyalty_points)
-
-    Note: ClickHouse is optimized for analytics, not OLTP transactions.
-    For transactional workloads, use an OLTP database (PostgreSQL, MySQL)
-    and sync analytics data to ClickHouse for reporting.
-    """
-
-    # Step 1: Get customer information
-    result = client.query(
+    def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
         """
-        SELECT tier, total_orders
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id}
-    )
+        Processes an order with business logic that would be in a stored procedure.
+        Returns: (status_message, loyalty_points)
 
-    if not result.result_rows:
-        raise ValueError(f"Customer {customer_id} not found")
-
-    customer_tier, previous_orders = result.result_rows[0]
-
-    # Step 2: Calculate discount based on tier (business logic in Python)
-    discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
-    discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
-    final_amount = order_total - discount
-
-    # Step 3: Insert order record
-    client.command(
+        Note: ClickHouse is optimized for analytics, not OLTP transactions.
+        For transactional workloads, use an OLTP database (PostgreSQL, MySQL)
+        and sync analytics data to ClickHouse for reporting.
         """
-        INSERT INTO orders (order_id, customer_id, order_total, discount,
-                           final_amount, order_date)
-        VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
-                {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
-        """,
-        parameters={
-            'oid': order_id,
-            'cid': customer_id,
-            'total': float(order_total),
-            'disc': float(discount),
-            'final': float(final_amount)
-        }
-    )
 
-    # Step 4: Calculate new customer statistics
-    new_order_count = previous_orders + 1
-
-    # For analytics databases, prefer INSERT over UPDATE
-    # This uses a ReplacingMergeTree pattern
-    client.command(
-        """
-        INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                              update_time)
-        SELECT
-            customer_id,
-            tier,
-            {new_count: UInt32} AS total_orders,
-            now() AS last_order_date,
-            now() AS update_time
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id, 'new_count': new_order_count}
-    )
-
-    # Step 5: Calculate and record loyalty points
-    loyalty_points = int(final_amount)
-
-    client.command(
-        """
-        INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-        VALUES ({cid: UInt32}, {pts: Int32}, now(),
-                {desc: String})
-        """,
-        parameters={
-            'cid': customer_id,
-            'pts': loyalty_points,
-            'desc': f'Order #{order_id}'
-        }
-    )
-
-    # Step 6: Check for tier upgrade (business logic in Python)
-    status = 'ORDER_COMPLETE'
-
-    if new_order_count >= 10 and customer_tier == 'bronze':
-        # Upgrade to silver
-        client.command(
+        # Step 1: Get customer information
+        result = client.query(
             """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'silver' AS tier, total_orders, last_order_date,
-                now() AS update_time
+            SELECT tier, total_orders
             FROM customers
             WHERE customer_id = {cid: UInt32}
             """,
             parameters={'cid': customer_id}
         )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
 
-    elif new_order_count >= 50 and customer_tier == 'silver':
-        # Upgrade to gold
+        if not result.result_rows:
+            raise ValueError(f"Customer {customer_id} not found")
+
+        customer_tier, previous_orders = result.result_rows[0]
+
+        # Step 2: Calculate discount based on tier (business logic in Python)
+        discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
+        discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
+        final_amount = order_total - discount
+
+        # Step 3: Insert order record
+        client.command(
+            """
+            INSERT INTO orders (order_id, customer_id, order_total, discount,
+                               final_amount, order_date)
+            VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
+                    {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
+            """,
+            parameters={
+                'oid': order_id,
+                'cid': customer_id,
+                'total': float(order_total),
+                'disc': float(discount),
+                'final': float(final_amount)
+            }
+        )
+
+        # Step 4: Calculate new customer statistics
+        new_order_count = previous_orders + 1
+
+        # For analytics databases, prefer INSERT over UPDATE
+        # This uses a ReplacingMergeTree pattern
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
                                   update_time)
             SELECT
-                customer_id, 'gold' AS tier, total_orders, last_order_date,
+                customer_id,
+                tier,
+                {new_count: UInt32} AS total_orders,
+                now() AS last_order_date,
                 now() AS update_time
             FROM customers
             WHERE customer_id = {cid: UInt32}
             """,
-            parameters={'cid': customer_id}
+            parameters={'cid': customer_id, 'new_count': new_order_count}
         )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
 
-    return status, loyalty_points
+        # Step 5: Calculate and record loyalty points
+        loyalty_points = int(final_amount)
 
-# Use the function
-status, points = process_order(
-    order_id=12345,
-    customer_id=5678,
-    order_total=Decimal('250.00')
-)
+        client.command(
+            """
+            INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+            VALUES ({cid: UInt32}, {pts: Int32}, now(),
+                    {desc: String})
+            """,
+            parameters={
+                'cid': customer_id,
+                'pts': loyalty_points,
+                'desc': f'Order #{order_id}'
+            }
+        )
 
-print(f"Status: {status}, Loyalty Points: {points}")
-```
+        # Step 6: Check for tier upgrade (business logic in Python)
+        status = 'ORDER_COMPLETE'
+
+        if new_order_count >= 10 and customer_tier == 'bronze':
+            # Upgrade to silver
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'silver' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
+
+        elif new_order_count >= 50 and customer_tier == 'silver':
+            # Upgrade to gold
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'gold' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
+
+        return status, loyalty_points
+
+    # Use the function
+    status, points = process_order(
+        order_id=12345,
+        customer_id=5678,
+        order_total=Decimal('250.00')
+    )
+
+    print(f"Status: {status}, Loyalty Points: {points}")
+    ```
   </TabItem>
 </Tabs>
 
@@ -790,7 +791,7 @@ SELECT count() FROM {table: Identifier};
 
 [言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、利用したい特定の言語クライアントのドキュメントを参照してください。
 
-### クエリパラメータの制約事項 \{#parameter-syntax\}
+### クエリパラメータの制約事項 \{#limitations-of-query-parameters\}
 
 クエリパラメータは**汎用的なテキスト置換ではありません**。次のような特有の制約があります。
 
@@ -829,6 +830,7 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
 -- ✗ Multiple statements
 {statements: String};  -- NOT SUPPORTED
 ```
+
 
 ### セキュリティのベストプラクティス \{#data-type-examples\}
 
@@ -896,6 +898,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 詳細については、[MySQL インターフェイスのドキュメント](/interfaces/mysql) と [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey) を参照してください。
+
 
 ## 概要 \{#summary\}
 

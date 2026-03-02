@@ -40,6 +40,7 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 我们将使用 UK Property Price 数据集，它是 ClickHouse Cloud 提供的入门数据集之一。
 其中包含 1995 年到 2024 年间英国房屋成交价格相关的数据。
 
+
 ## 设置 \{#setup\}
 
 ### 加载数据集 \{#loading-the-dataset\}
@@ -76,6 +77,7 @@ export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 要使其永久生效，请将它们添加到你的 shell 配置文件中。
 :::
 
+
 ### 安装 Marimo \{#installing-marimo\}
 
 现在激活你的虚拟环境。
@@ -96,6 +98,7 @@ marimo edit clickhouse_exploration.py
 <Image size="md" img={image_4} alt="Marimo 界面" />
 
 Marimo 笔记本以纯 Python 文件的形式存储，便于进行版本控制并与他人共享。
+
 
 ## 安装依赖 \{#installing-dependencies\}
 
@@ -123,6 +126,7 @@ result
 你应该会在刚刚运行的单元格下方看到如下结果：
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
+
 
 ## 探索数据 \{#exploring-the-data\}
 
@@ -175,6 +179,7 @@ df.head()
 在本例中，我们返回的是每年的平均价格，并按 `town='LONDON'` 进行过滤。
 然后将结果以 DataFrame 的形式存储在名为 `df` 的变量中。
 
+
 ### 可视化数据 \{#visualizing-the-data\}
 
 现在我们已经以熟悉的形式获取了数据，接下来来看一下伦敦房产价格是如何随时间变化的。
@@ -201,6 +206,7 @@ fig
 <Image size="md" img={image_6} alt="Marimo 数据可视化" />
 
 Marimo 的一大优势是其响应式执行模型。我们来创建一个交互式控件，以动态选择不同的城镇。
+
 
 ### 交互式城镇选择 \{#interactive-town-selection\}
 
@@ -257,6 +263,7 @@ fig_reactive
 现在，当你从下拉菜单中选择一个城镇时，图表会动态更新：
 
 <Image size="md" img={image_7} alt="Marimo 动态图表" />
+
 
 ### 使用交互式箱线图探索价格分布 \{#exploring-price-distributions\}
 
@@ -326,10 +333,11 @@ fig_box.update_layout(
 fig_box
 ```
 
-如果您选择单元格右上角的选项按钮,即可隐藏代码。
-移动滑块时,图表会自动更新,这得益于 Marimo 的响应式执行机制:
+如果你点击单元格右上角的选项按钮，就可以隐藏代码。
+当你移动滑块时，得益于 Marimo 的响应式执行机制，图表会自动更新：
 
-<Image size="md" img={image_8} alt="Marimo 动态图表"/>
+<Image size="md" img={image_8} alt="Marimo 动态图表" />
+
 
 ## 总结 \{#summary\}
 

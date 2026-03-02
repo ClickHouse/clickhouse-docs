@@ -53,10 +53,10 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 
 ### Assumptions {#assumptions}
 
-* You are familiar with the [MQTT protocol](https://mqtt.org/), which is designed as an extremely lightweight publish/subscribe messaging transport protocol.
-* You are using EMQX or EMQX Cloud for real-time message processing engine, powering event streaming for IoT devices at massive scale.
+* You're familiar with the [MQTT protocol](https://mqtt.org/), which is designed as an extremely lightweight publish/subscribe messaging transport protocol.
+* You're using EMQX or EMQX Cloud for real-time message processing engine, powering event streaming for IoT devices at massive scale.
 * You have prepared a Clickhouse Cloud instance to persist device data.
-* We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
+* We're using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
 
 ## Get your ClickHouse Cloud service {#get-your-clickhouse-cloudservice}
 
@@ -105,7 +105,7 @@ Creating a dedicated MQTT broker on EMQX Cloud is as easy as a few clicks.
 
 EMQX Cloud provides a 14-day free trial for both standard deployment and professional deployment for every account.
 
-Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud) page and click start free to register an account if you are new to EMQX Cloud.
+Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud) page and click start free to register an account if you're new to EMQX Cloud.
 
 <Image img={emqx_cloud_sign_up} size="lg" border alt="EMQX Cloud Signup Page with registration form" />
 
@@ -127,7 +127,7 @@ Now click the panel to go to the cluster view. On this dashboard, you will see t
 
 ### Add client credential {#add-client-credential}
 
-EMQX Cloud does not allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
+EMQX Cloud doesn't allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
 
 Click 'Authentication & ACL' on the left menu and click 'Authentication' in the submenu. Click the 'Add' button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
 

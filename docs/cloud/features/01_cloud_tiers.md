@@ -162,10 +162,10 @@ This page discusses which tiers are right for your specific use case.
 ## Basic {#basic}
 
 - Cost-effective option that supports single-replica deployments.
-- Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees.
+- Ideal for departmental use cases with smaller data volumes that don't have hard reliability guarantees.
 
 :::note
-Services in the basic tier are meant to be fixed in size and do not allow scaling, both automatic and manual. 
+Services in the basic tier are meant to be fixed in size and don't allow scaling, both automatic and manual. 
 You can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 

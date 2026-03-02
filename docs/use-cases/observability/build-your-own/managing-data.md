@@ -154,7 +154,7 @@ We explore both of these in detail below.
 
 ### Query performance {#query-performance}
 
-While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
+While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key isn't in the primary key and you're filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
 
 ## Data management with TTL (Time-to-live) {#data-management-with-ttl-time-to-live}
 
@@ -185,14 +185,14 @@ SETTINGS ttl_only_drop_parts = 1
 By default, data with an expired TTL is removed when ClickHouse [merges data parts](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge.
 
 :::note Scheduled TTLs
-TTLs are not applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
+TTLs aren't applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay, it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
 :::
 
 **Important: We recommend using the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) ** (applied by the default schema). When this setting is enabled, ClickHouse drops a whole part when all rows in it are expired. Dropping whole parts instead of partial cleaning TTL-d rows (achieved through resource-intensive mutations when `ttl_only_drop_parts=0`) allows having shorter `merge_with_ttl_timeout` times and lower impact on system performance. If data is partitioned by the same unit at which you perform TTL expiration e.g. day, parts will naturally only contain data from the defined interval. This will ensure `ttl_only_drop_parts=1` can be efficiently applied.
 
 ### Column level TTL {#column-level-ttl}
 
-The above example expires data at the table level. You can also expire data at the column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
+The above example expires data at the table level. You can also expire data at the column level. As data ages, this can be used to drop columns whose value in investigations doesn't justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that hasn't been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata isn't useful - thus limiting the value in retaining the `Body` column.
 
 Below, we show how the `Body` column can be dropped after 30 days.
 
@@ -208,7 +208,7 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note
-Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
+Specifying a column level TTL requires users to specify their own schema. This can't be specified in the OTel collector.
 :::
 
 ## Recompressing data {#recompressing-data}
@@ -254,7 +254,7 @@ Further details and examples on configuring TTL can be found [here](/engines/tab
 In ClickHouse, you may create storage tiers on different disks, e.g. hot/recent data on SSD and older data backed by S3. This architecture allows less expensive storage to be used for older data, which has higher query SLAs due to its infrequent use in investigations.
 
 :::note Not relevant to ClickHouse Cloud
-ClickHouse Cloud uses a single copy of the data that is backed on S3, with SSD-backed node caches. Storage tiers in ClickHouse Cloud, therefore, are not required.
+ClickHouse Cloud uses a single copy of the data that is backed on S3, with SSD-backed node caches. Storage tiers in ClickHouse Cloud, therefore, aren't required.
 :::
 
 The creation of storage tiers requires users to create disks, which are then used to formulate storage policies, with volumes that can be specified during table creation. Data can be automatically moved between disks based on fill rates, part sizes, and volume priorities. Further details can be found [here](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes).
@@ -269,7 +269,7 @@ In order to avoid downtime during schema changes, users have several options, wh
 
 ### Use default values {#use-default-values}
 
-Columns can be added to the schema using [`DEFAULT` values](/sql-reference/statements/create/table#default). The specified default will be used if it is not specified during the INSERT.
+Columns can be added to the schema using [`DEFAULT` values](/sql-reference/statements/create/table#default). The specified default will be used if it isn't specified during the INSERT.
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
@@ -326,7 +326,7 @@ ALTER TABLE otel_logs_v2
         (ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
-In the above example, we specify the default as the `size` key in `LogAttributes` (this will be 0 if it doesn't exist). This means queries that access this column for rows that do not have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that do not have the value. Querying this table shows the value is populated as expected from the Map:
+In the above example, we specify the default as the `size` key in `LogAttributes` (this will be 0 if it doesn't exist). This means queries that access this column for rows that don't have the value inserted must access the Map and will, therefore, be slower. We could easily also specify this as a constant, e.g. 0, reducing the cost of subsequent queries against rows that don't have the value. Querying this table shows the value is populated as expected from the Map:
 
 ```sql
 SELECT Size

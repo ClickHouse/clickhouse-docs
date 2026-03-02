@@ -36,8 +36,6 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 - 如果你未使用 AWS 托管策略，则必须具备以下权限：
   - IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
 
-
-
 ## 注册步骤 \{#steps-to-sign-up\}
 
 <VerticalStepper headerLevel="h3">

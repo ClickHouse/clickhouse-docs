@@ -70,6 +70,7 @@ ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazo
 您可以在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 
 ## 重要注意事项 \{#considerations\}
+
 ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内复用同一个已发布的[服务端点](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview)。但是，并不能保证一定会完成这种分组，尤其是在您将服务分散在多个 ClickHouse 组织中的情况下。
 
 如果您已经在 ClickHouse 组织中为其他服务配置了 PrivateLink，那么通常可以跳过大部分步骤，直接进行最后一步：将 ClickHouse “Endpoint ID” 添加到 ClickHouse 服务允许列表中。

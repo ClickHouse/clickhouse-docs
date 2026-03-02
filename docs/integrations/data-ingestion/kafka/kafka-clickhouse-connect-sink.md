@@ -105,7 +105,7 @@ The full table of configuration options:
 | `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                                                                                                      | `"60"`                                                   |
 | `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                                                                                                               | `"false"`                                                |
 | `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                                                                                                      | `""`                                                     |
-| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you are passing keys (and not defined in worker config).                                                                                                                 | `"org.apache.kafka.connect.storage.StringConverter"`     |
+| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you're passing keys (and not defined in worker config).                                                                                                                 | `"org.apache.kafka.connect.storage.StringConverter"`     |
 | `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config.                                                                                   | `"org.apache.kafka.connect.json.JsonConverter"`          |
 | `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                                                                                                           | `"false"`                                                |
 | `errors.tolerance`                              | Connector Error Tolerance. Supported: none, all                                                                                                                                                                                    | `"none"`                                                 |
@@ -128,7 +128,7 @@ Each topic requires a dedicated target table in ClickHouse. The target table nam
 
 ### Pre-processing {#pre-processing}
 
-If you need to transform outbound messages before they are sent to ClickHouse Kafka Connect
+If you need to transform outbound messages before they're sent to ClickHouse Kafka Connect
 Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
 
 ### Supported data types {#supported-data-types}
@@ -399,7 +399,7 @@ For detailed JMX metric definitions and Prometheus integration, see the [jmx-exp
 
 ### Limitations {#limitations}
 
-- Deletes are not supported.
+- Deletes aren't supported.
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
@@ -446,7 +446,7 @@ Kafka Connect (the framework) fetches messages from Kafka topics in the backgrou
 
 - **`fetch.min.bytes`**: Minimum amount of data before the framework passes values to the connector (default: 1 byte)
 - **`fetch.max.bytes`**: Maximum amount of data to fetch in a single request (default: 52428800 / 50 MB)
-- **`fetch.max.wait.ms`**: Maximum time to wait before returning data if `fetch.min.bytes` is not met (default: 500 ms)
+- **`fetch.max.wait.ms`**: Maximum time to wait before returning data if `fetch.min.bytes` isn't met (default: 500 ms)
 
 :::note  
 On Confluent Cloud, adjustment of these settings requires opening a support case through Confluent Cloud.  
@@ -767,7 +767,7 @@ Right now the focus is on identifying errors that are transient and can be retri
   - 999 - KEEPER_EXCEPTION
   - 1002 - UNKNOWN_EXCEPTION
 - `SocketTimeoutException` - This is thrown when the socket times out.
-- `UnknownHostException` - This is thrown when the host cannot be resolved.
+- `UnknownHostException` - This is thrown when the host can't be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
 
 #### "All my data is blank/zeroes" {#all-my-data-is-blankzeroes}
@@ -783,7 +783,7 @@ transforms.flatten.delimiter=_
 This will transform your data from a nested JSON to a flattened JSON (using `_` as a delimiter). Fields in the table would then follow the "field1_field2_field3" format (i.e. "before_id", "after_id", etc.).
 
 #### "I want to use my Kafka keys in ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
-Kafka keys are not stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
+Kafka keys aren't stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
 
 ```properties
 transforms=keyToValue

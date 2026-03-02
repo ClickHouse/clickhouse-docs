@@ -16,7 +16,7 @@ doc_type: 'reference'
 Эту меру можно рассматривать как взаимосвязь между двумя переменными, выраженную в процентах от их максимально возможной вариации.
 
 :::note
-Вариант Cramer&#39;s V с коррекцией смещения см.: [cramersVBiasCorrected](./cramersvbiascorrected.md)
+Вариант Cramer&#39;s V с коррекцией смещения см.: [cramersVBiasCorrected](/sql-reference/aggregate-functions/reference/cramersvbiascorrected)
 :::
 
 **Синтаксис**

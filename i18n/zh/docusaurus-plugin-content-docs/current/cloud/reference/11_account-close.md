@@ -24,6 +24,7 @@ doc_type: 'guide'
 ## 关闭前的准备 \{#preparing-for-closure\}
 
 在请求关闭账户之前，请先完成以下步骤以做好相关准备。
+
 1. 从您的服务中导出所有需要保留的数据。
 2. 停止并删除您的服务，以避免账户产生额外费用。
 3. 删除除将提交关闭请求的管理员之外的所有用户，以确保在关闭流程完成期间不会创建新的服务。
@@ -48,7 +49,9 @@ Description: We would appreciate it if you would share a brief note about why yo
 5. 点击“Create new case”
 6. 我们将关闭您的账户，并在完成后向您发送确认邮件。
 
+
 ## 请求删除您的个人数据 \{#request-personal-data-deletion\}
+
 请注意，只有账户管理员可以向 ClickHouse 请求删除个人数据。如果您不是账户管理员，请联系
 您的 ClickHouse 账户管理员，请其代您提交将您从该账户中移除的请求。
 

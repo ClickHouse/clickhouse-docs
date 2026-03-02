@@ -27,8 +27,6 @@ import Image from '@theme/IdealImage';
 - 請求管理者によって購入権限が有効化されている GCP プロジェクト。
 - GCP Marketplace 上で ClickHouse Cloud を購読するには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
 
-
-
 ## サインアップ手順 \{#steps-to-sign-up\}
 
 1. [GCP Marketplace](https://cloud.google.com/marketplace) を開き、ClickHouse Cloud を検索します。対象となるプロジェクトが正しく選択されていることを確認します。
@@ -109,6 +107,7 @@ import Image from '@theme/IdealImage';
 9. サインアップ完了を確認するメールが届くはずです。
 
 <br />
+
 <br />
 
 <Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace の確認メール" border/>

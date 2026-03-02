@@ -60,7 +60,7 @@ edit this query by clicking on the pen icon.
 
 The default charts in the Advanced Dashboard are designed to provide real-time 
 visibility into your ClickHouse system. Below is a list with descriptions for 
-each chart. They are grouped into three categories to help you navigate them.
+each chart. They're grouped into three categories to help you navigate them.
 
 ### ClickHouse specific {#clickhouse-specific}
 
@@ -147,7 +147,7 @@ their impact on your deployment's overall performance.
 
 A sudden change in resource consumption without a change in query throughput can
 indicate more expensive queries being executed. Depending on the type of queries
-you are running, this can be expected, but spotting them from the advanced 
+you're running, this can be expected, but spotting them from the advanced 
 dashboard is good.
 
 Below is an example of CPU usage peaking without significantly changing the 

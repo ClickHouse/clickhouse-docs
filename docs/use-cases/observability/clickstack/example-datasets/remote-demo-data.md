@@ -45,7 +45,7 @@ import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/exam
 This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
 
 :::warning Not supported with Managed ClickStack
-Remote databases are not supported when using Managed ClickStack. This dataset is therefore not supported. 
+Remote databases aren't supported when using Managed ClickStack. This dataset is therefore not supported. 
 :::
 
 It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
@@ -161,7 +161,7 @@ Select the `Infrastructure` tab to view the metrics associated with the underlyi
 
 <Image img={step_7} alt="Step 7" size="lg"/>
 
-The issue does not seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
+The issue doesn't seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
 
 ### Explore a trace {#explore-a-trace}
 
@@ -284,7 +284,7 @@ In summary, by exploring logs, traces and finally metrics we have concluded:
 
 ### Using sessions {#using-sessions}
 
-Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they are valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
+Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they're valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
@@ -306,7 +306,7 @@ If we scroll to the bottom of the spans we can see a `500` error associated with
 
 <Image img={step_23} alt="Step 23" size="lg"/>
 
-Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we are able to confirm the customer indeed was a victim of our cache issue.
+Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we're able to confirm the customer indeed was a victim of our cache issue.
 
 <Image img={step_24} alt="Step 24" size="lg"/>
 

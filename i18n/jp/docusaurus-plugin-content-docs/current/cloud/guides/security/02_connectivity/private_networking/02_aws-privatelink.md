@@ -156,7 +156,7 @@ AWS コンソールを開き、**VPC** → **Endpoints** → **Create endpoints*
 
 PrivateLink を介してリージョンをまたいだ接続を確立したい場合は、「Cross region endpoint」チェックボックスを有効にし、サービスリージョンを指定します。サービスリージョンは、ClickHouse インスタンスが動作しているリージョンです。
 
-「Service name could not be verified.」というエラーが表示された場合は、サポート対象リージョンへの新規リージョン追加を依頼するために、カスタマーサポートにお問い合わせください。
+「Service name couldn't be verified.」というエラーが表示された場合は、サポート対象リージョンへの新規リージョン追加を依頼するために、カスタマーサポートにお問い合わせください。
 
 次に、VPC とサブネットを選択します。
 
@@ -360,7 +360,7 @@ jq .result
 
 ### Connection reset by peer \{#connection-reset-by-peer\}
 
-* 多くの場合、エンドポイント ID がサービスの許可リストに追加されていません。[この手順](#add-endpoint-id-to-services-allow-list)を参照してください。
+- 多くの場合、エンドポイント ID がサービスの許可リストに追加されていません。[この手順](#add-endpoint-id-to-services-allow-list)を参照してください。
 
 ### エンドポイントフィルタの確認 \{#checking-endpoint-filters\}
 

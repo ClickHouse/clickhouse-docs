@@ -144,8 +144,6 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <Image img={azure_marketplace_payg_12} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
 
-
-
 <br />
 
-14. Если у вас возникнут какие-либо проблемы, обращайтесь в [нашу службу поддержки](https://clickhouse.com/support/program).
+14. Если у вас возникнут какие-либо проблемы, не стесняйтесь обратиться в [нашу службу поддержки](https://clickhouse.com/support/program).

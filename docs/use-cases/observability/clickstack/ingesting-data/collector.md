@@ -110,7 +110,7 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
 
-If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+If you're managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
@@ -191,7 +191,7 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-By default, the ClickStack OpenTelemetry Collector is not secured when deployed outside of the Open Source distributions and does not require authentication on its OTLP ports.
+By default, the ClickStack OpenTelemetry Collector isn't secured when deployed outside of the Open Source distributions and doesn't require authentication on its OTLP ports.
 
 To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. For example:
 
@@ -262,7 +262,7 @@ This assumes the collector has been configured to use the database `otel`. This 
 
 ## Processing - filtering, transforming, and enriching {#processing-filtering-transforming-enriching}
 
-Users will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector cannot be modified, we recommend users who need further event filtering and processing either:
+Users will invariably want to filter, transform, and enrich event messages during ingestion. Since the configuration for the ClickStack connector can't be modified, we recommend users who need further event filtering and processing either:
 
 - Deploy their own version of the OTel collector performing filtering and processing, sending events to the ClickStack collector via OTLP for ingestion into ClickHouse.
 - Deploy their own version of the OTel collector and send events directly to ClickHouse using the ClickHouse exporter.
@@ -276,7 +276,7 @@ OpenTelemetry supports the following processing and filtering features you can l
 - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
 - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.
 - [Tail or head sampling](https://opentelemetry.io/docs/concepts/sampling/) if required for traces.
-- [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that are not required if this cannot be done via operator (see below).
+- [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that aren't required if this can't be done via operator (see below).
 - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - essential when working with ClickHouse to ensure data is sent in batches. See ["Optimizing inserts"](#optimizing-inserts).
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
@@ -361,21 +361,21 @@ For this reason, the ClickStack distribution of the OTel collector uses the [bat
 
 Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if you're sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
-If large batches cannot be guaranteed, you can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
+If large batches can't be guaranteed, you can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
 <Image img={observability_6} alt="Async inserts" size="md"/>
 
-With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
+With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data isn't searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
 To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
 Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. You can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
 :::note Consider Adaptive Asynchronous Inserts
-In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
+In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these aren't applicable to high throughput Observability use cases, as seen with ClickHouse.
 :::
 
-Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
+Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse isn't enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
 
 Full details on configuring this feature can be found on this [docs page](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), or with a deep dive [blog post](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
@@ -389,11 +389,11 @@ The objective of this architecture is to offload computationally intensive proce
 
 ### Adding Kafka {#adding-kafka}
 
-Readers may notice the above architectures do not use Kafka as a message queue.
+Readers may notice the above architectures don't use Kafka as a message queue.
 
 Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits: principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message. In Elastic, for example, tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
 
-However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Backpressure from ClickHouse is rare. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs do not need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
+However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Backpressure from ClickHouse is rare. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs don't need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 
@@ -525,5 +525,5 @@ INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
 ```
 
 :::warning
-Recommended only for datasets smaller than ~10 billion rows. Data previously stored with the Map type did not preserve type precision (all values were strings). As a result, this old data will appear as strings in the new schema until it ages out, requiring some casting on the frontend. Type for new data will be preserved with the JSON type.
+Recommended only for datasets smaller than ~10 billion rows. Data previously stored with the Map type didn't preserve type precision (all values were strings). As a result, this old data will appear as strings in the new schema until it ages out, requiring some casting on the frontend. Type for new data will be preserved with the JSON type.
 :::

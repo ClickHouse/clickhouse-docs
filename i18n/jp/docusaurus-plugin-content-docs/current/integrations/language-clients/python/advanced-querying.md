@@ -31,6 +31,7 @@ assert result.result_set[1][0] == 'first_value2'
 
 `QueryContext` はスレッドセーフではありませんが、マルチスレッド環境で使用する場合は、`QueryContext.updated_copy` メソッドを呼び出してコピーを取得できます。
 
+
 ## ストリーミングクエリ \{#streaming-queries\}
 
 ClickHouse Connect Client は、ストリームとしてデータを取得するための複数のメソッド（Python のジェネレーターとして実装されています）を提供します。
@@ -375,7 +376,7 @@ set_read_format('IPv*', 'string')
 set_read_format('Date*', 'int')
 ```
 
-* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型の任意の列（またはサブカラム）には、設定されたフォーマットが適用されます。
+* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型のいずれかのカラム（またはサブカラム）には、設定されたフォーマットが適用されます。
 
 ```python
 # Return any UUID column as a string
@@ -388,6 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
+
 
 ### 読み取りフォーマットオプション（Python 型） \{#read-format-options-python-types\}
 

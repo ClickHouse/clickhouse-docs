@@ -15,7 +15,7 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 The data lakehouse is a convergent architecture that applies database principles
 to data lake infrastructure while maintaining the flexibility and scale of cloud storage systems.
 
-The lakehouse is not just taking a database apart but building database-like 
+The lakehouse isn't just taking a database apart but building database-like 
 capabilities onto a fundamentally different foundation (cloud object storage) 
 that focuses on supporting traditional analytics and modern AI/ML workloads in 
 a unified platform.

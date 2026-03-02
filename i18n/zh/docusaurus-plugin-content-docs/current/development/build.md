@@ -46,13 +46,16 @@ sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm y
 要在 Ubuntu/Debian 上安装 Clang，请使用 LLVM 的自动安装脚本，详见[此页面](https://apt.llvm.org/)。
 
 ```bash
-sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 21
 ```
 
 对于其他 Linux 发行版，请查看是否提供可安装的 LLVM [预编译二进制包](https://releases.llvm.org/download.html)。
 
-截至 2025 年 3 月，需要使用 Clang 19 或更高版本。
+截至 2026 年 2 月，需要使用 Clang 21 或更高版本。
 不支持 GCC 或其他编译器。
+
 
 ## 安装 Rust 编译器（可选） \{#install-the-rust-compiler-optional\}
 

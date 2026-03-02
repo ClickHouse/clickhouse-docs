@@ -53,13 +53,14 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — データパートファイルを含むフォルダへの絶対パス。
 * `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパート内の行数。
 * `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパートのバイト単位のサイズ。
-* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 現在のパートが構成されたパートの名前の配列(マージ後)。
+* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 現在のパートが構成されたパートの名前の配列(マージまたはミューテーション後)。
 * `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮バイトのサイズ。
 * `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られた行数。
 * `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られたバイト数。
 * `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — このスレッドのコンテキストで割り当てられたメモリと解放されたメモリの量の最大差。
 * `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 発生したエラーのコード番号。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 発生したエラーのテキストメッセージ。
+* `mutation_ids` ([Array(String)](../../sql-reference/data-types/array.md)) — イベントタイプが `MutatePartsStart` または `MutateParts` の場合に、ソースパート (`merged_from`) に適用されたミューテーション ID の配列。
 * `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — さまざまなメトリックを測定する ProfileEvents。これらの説明は、テーブル [system.events](/operations/system-tables/events) にあります。
 
 `system.part_log` テーブルは、`MergeTree` テーブルに最初のデータを挿入した後に作成されます。
@@ -100,5 +101,6 @@ read_bytes:              1429206946 -- 1.43 billion
 peak_memory_usage:       303611887 -- 303.61 million
 error:                   0
 exception:
+mutation_ids:
 ProfileEvents:           {'FileOpen':703,'ReadBufferFromFileDescriptorRead':3824,'ReadBufferFromFileDescriptorReadBytes':439601681,'WriteBufferFromFileDescriptorWrite':592,'WriteBufferFromFileDescriptorWriteBytes':438988500,'ReadCompressedBytes':439601681,'CompressedReadBufferBlocks':6314,'CompressedReadBufferBytes':1539835748,'OpenedFileCacheHits':50,'OpenedFileCacheMisses':484,'OpenedFileCacheMicroseconds':222,'IOBufferAllocs':1914,'IOBufferAllocBytes':319810140,'ArenaAllocChunks':8,'ArenaAllocBytes':131072,'MarkCacheMisses':7,'CreatedReadBufferOrdinary':534,'DiskReadElapsedMicroseconds':139058,'DiskWriteElapsedMicroseconds':51639,'AnalyzePatchRangesMicroseconds':28,'ExternalProcessingFilesTotal':1,'RowsReadByMainReader':170857759,'WaitMarksLoadMicroseconds':988,'LoadedMarksFiles':7,'LoadedMarksCount':14,'LoadedMarksMemoryBytes':728,'Merge':2,'MergeSourceParts':14,'MergedRows':3285733,'MergedColumns':4,'GatheredColumns':51,'MergedUncompressedBytes':1429207058,'MergeTotalMilliseconds':2158,'MergeExecuteMilliseconds':2155,'MergeHorizontalStageTotalMilliseconds':145,'MergeHorizontalStageExecuteMilliseconds':145,'MergeVerticalStageTotalMilliseconds':2008,'MergeVerticalStageExecuteMilliseconds':2006,'MergeProjectionStageTotalMilliseconds':5,'MergeProjectionStageExecuteMilliseconds':4,'MergingSortedMilliseconds':7,'GatheringColumnMilliseconds':56,'ContextLock':2091,'PartsLockHoldMicroseconds':77,'PartsLockWaitMicroseconds':1,'RealTimeMicroseconds':2157475,'CannotWriteToWriteBufferDiscard':36,'LogTrace':6,'LogDebug':59,'LoggerElapsedNanoseconds':514040,'ConcurrencyControlSlotsGranted':53,'ConcurrencyControlSlotsAcquired':53}
 ```

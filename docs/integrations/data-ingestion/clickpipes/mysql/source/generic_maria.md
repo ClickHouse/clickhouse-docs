@@ -60,7 +60,7 @@ You NEED to RESTART the MariaDB instance for the changes to take effect.
 
 :::note
 
-Column exclusion is not supported for MariaDB \<= 10.4 because the `binlog_row_metadata` setting wasn't yet introduced.
+Column exclusion isn't supported for MariaDB \<= 10.4 because the `binlog_row_metadata` setting wasn't yet introduced.
 
 :::
 

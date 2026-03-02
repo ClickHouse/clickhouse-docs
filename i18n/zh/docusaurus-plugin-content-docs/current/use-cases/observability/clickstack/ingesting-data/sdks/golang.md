@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry 集成', 'Golang 可观测性', 'Go 链路追踪接入', 'ClickStack Go SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）。通过自动插桩可以自动生成追踪数据，因此无需手动插桩也能从追踪中获得价值。
 
 **本指南集成：**
@@ -22,6 +25,7 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）
     </tr>
   </tbody>
 </table>
+
 
 ## 快速开始 \{#getting-started\}
 
@@ -230,13 +234,29 @@ func main() {
 
 ### 配置环境变量 \{#configure-environment-variables\}
 
-接下来需要在 shell 中配置下列环境变量，以将遥测数据发送到 ClickStack：
+接下来，你需要在 shell 中配置以下环境变量，通过 OpenTelemetry collector 将遥测数据摄取到 ClickStack：
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管 ClickStack" default>
 
 ```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版" >
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-环境变量 `OTEL_EXPORTER_OTLP_HEADERS` 包含可通过 HyperDX 应用的 `Team Settings → API Keys` 获取的 API Key。
+</TabItem>
+</Tabs>
+
+`OTEL_EXPORTER_OTLP_HEADERS` 环境变量包含 API Key，可在 HyperDX 应用的 `Team Settings → API Keys` 中获取。

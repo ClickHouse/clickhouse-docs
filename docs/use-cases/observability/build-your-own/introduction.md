@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 
 This guide is designed for if you're looking to build your own SQL-based Observability solution using ClickHouse, focusing on logs and traces. This covers all aspects of building your own solution including considerations for ingestion, optimizing schemas for your access patterns and extracting structure from unstructured logs.
 
-ClickHouse alone is not an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for you to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
+ClickHouse alone isn't an out-of-the-box solution for Observability. It can, however, be used as a highly efficient storage engine for Observability data, capable of unrivaled compression rates and lightning-fast query response times. In order for you to use ClickHouse within an Observability solution, both a user interface and data collection framework are required. We currently recommend using **Grafana** for visualization of Observability signals and **OpenTelemetry** for data collection (both are officially supported integrations).
 
 <Image img={observability_1} alt="Simple OTel" size="md"/>
 
@@ -53,16 +53,16 @@ SQL-based observability is for you if:
 
 - You or your team(s) are familiar with SQL (or want to learn it)
 - You prefer adhering to open standards like OpenTelemetry to avoid lock-in and achieve extensibility.
-- You are willing to run an ecosystem fueled by open-source innovation from collection to storage and visualization.
+- You're willing to run an ecosystem fueled by open-source innovation from collection to storage and visualization.
 - You envision some growth to medium or large volumes of observability data under management (or even very large volumes)
 - You want to be in control of the TCO (total cost of ownership) and avoid spiraling observability costs.
 - You can't or don't want to get stuck with small data retention periods for your observability data just to manage the costs.
 
 SQL-based observability may not be for you if:
 
-- Learning (or generating!) SQL is not appealing to you or your team(s).
-- You are looking for a packaged, end-to-end observability experience.
-- Your observability data volumes are too small to make any significant difference (e.g. &lt;150 GiB) and are not forecasted to grow.
+- Learning (or generating!) SQL isn't appealing to you or your team(s).
+- You're looking for a packaged, end-to-end observability experience.
+- Your observability data volumes are too small to make any significant difference (e.g. &lt;150 GiB) and aren't forecasted to grow.
 - Your use case is metrics-heavy and needs PromQL. In that case, you can still use ClickHouse for logs and tracing beside Prometheus for metrics, unifying it at the presentation layer with Grafana.
 - You prefer to wait for the ecosystem to mature more and SQL-based observability to get more turnkey.
 

@@ -46,9 +46,9 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 Также есть параметры для запуска тестов параллельно или в случайном порядке.
 
 
-### Запуск всех тестов \{#running-all-tests\}
+### Запуск быстрых тестов \{#running-fast-tests\}
 
-Для запуска всех тестов может потребоваться достаточно мощная машина. Приведённые ниже шаги проверены на экземпляре `t3.2xlarge` AWS amd64 Ubuntu со 100 ГБ хранилища.
+Для запуска подмножества тестов (называемого «Fast test») может потребоваться достаточно мощная машина. Приведённые ниже шаги проверены на экземпляре `t3.2xlarge` AWS amd64 Ubuntu со 100 ГБ хранилища.
 
 1. Установите необходимые зависимости и войдите в систему заново.
 
@@ -71,13 +71,59 @@ cd ClickHouse
 python3 -m ci.praktika run "Fast test"
 ```
 
-4. В итоге вы должны получить
+В итоге вы должны получить
 
 ```sh
 Failed: 0, Passed: 7394, Skipped: 1795
 ```
 
 Если вы планируете оставить выполнение без присмотра, вы можете использовать `nohup` или `disown`, чтобы процесс продолжал работать после разрыва `ssh`-подключения.
+
+
+### Запуск stateless-тестов \{#running-stateless-tests\}
+
+Для запуска stateless-тестов потребуется достаточно мощная машина. Следующее работает на инстансе AWS `m7i.8xlarge` с архитектурой amd64 под управлением Ubuntu и 200 ГБ дискового пространства.
+
+1. Установите необходимые компоненты и вновь войдите в систему.
+
+```sh
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker ubuntu
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
+```
+
+2. Получите исходный код.
+
+```sh
+git clone --single-branch https://github.com/ClickHouse/ClickHouse
+cd ClickHouse
+```
+
+3. Соберите код.
+
+```sh
+python3 -m ci.praktika run "Build (amd_debug)"
+cp ci/tmp/build/programs/clickhouse ci/tmp
+```
+
+4. Запустите stateless-тесты, которые можно запускать параллельно.
+
+```sh
+python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+```
+
+В результате вы должны получить
+
+```sh
+Failed: 0, Passed: 8497, Skipped: 103
+```
 
 
 ### Добавление нового теста \{#adding-a-new-test\}

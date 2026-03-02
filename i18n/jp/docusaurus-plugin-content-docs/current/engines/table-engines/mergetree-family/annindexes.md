@@ -115,8 +115,9 @@ ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
 ClickHouse がインデックス作成中に異なる基数の配列を検出した場合、そのインデックスは破棄され、エラーが返されます。
 
 オプションの GRANULARITY パラメータ `<N>` は、インデックスのグラニュールのサイズを表します（[こちら](../../../optimize/skipping-indexes)を参照）。
-デフォルト値の 1 億はほとんどのユースケースで十分に良好に動作しますが、チューニングすることもできます。
-ただし、チューニングは自分の行っていることの影響を理解している上級ユーザーのみに推奨します（[下記](#differences-to-regular-skipping-indexes)を参照）。
+通常のスキッピング索引では、デフォルトのインデックスグラニュラリティは 1 ですが、ベクトル類似度インデックスでは 1 億がデフォルトのインデックスグラニュラリティとして使用されます。
+この値により、大きなパーツであっても内部的に構築される索引の数が少数に抑えられます。
+インデックスのグラニュラリティを変更することは、自分の行っていることの影響を理解している上級ユーザーにのみ推奨します（[下記](#differences-to-regular-skipping-indexes)を参照）。
 
 ベクトル類似度インデックスは汎用的であり、さまざまな近似検索手法を利用できます。
 実際に使用される手法はパラメータ `<type>` によって指定されます。
@@ -447,6 +448,17 @@ SELECT クエリは、ベクトル類似性索引を利用するために、そ�
 最大キャッシュサイズは、サーバー設定 [vector&#95;similarity&#95;index&#95;cache&#95;size](../../../operations/server-configuration-parameters/settings.md#vector_similarity_index_cache_size) を使用して構成できます。
 デフォルトでは、キャッシュは最大 5 GB まで成長できます。
 
+次のログメッセージ（`system.text_log`）は、ベクトル類似性索引がロードされていることを示します。
+これらのメッセージが異なるベクトル検索クエリに対して繰り返し出現する場合、キャッシュサイズが小さすぎることを意味します。
+
+```text
+2026-02-03 07:39:10.351635 [1386] f0ac5c85-1b1c-4f35-8848-87a1d1aa00ba : VectorSimilarityIndex Start loading vector similarity index
+
+<...>
+
+2026-02-03 07:40:25.217603 [1386] f0ac5c85-1b1c-4f35-8848-87a1d1aa00ba : VectorSimilarityIndex Loaded vector similarity index: max_level = 2, connectivity = 64, size = 1808111, capacity = 1808111, memory_usage = 8.00 GiB, bytes_per_vector = 4096, scalar_words = 1024, nodes = 1808111, edges = 51356964, max_edges = 233395072
+```
+
 :::note
 ベクトル類似性索引キャッシュには、ベクトル索引のグラニュールが保存されます。
 個々のベクトル索引グラニュールがキャッシュサイズより大きい場合、それらはキャッシュされません。
@@ -457,13 +469,14 @@ SELECT クエリは、ベクトル類似性索引を利用するために、そ�
 
 ベクトル類似性索引キャッシュの現在のサイズは、[system.metrics](../../../operations/system-tables/metrics.md) に表示されます。
 
+
 ```sql
 SELECT metric, value
 FROM system.metrics
 WHERE metric = 'VectorSimilarityIndexCacheBytes'
 ```
 
-特定のクエリ ID を持つクエリのキャッシュヒットとキャッシュミスは、[system.query&#95;log](../../../operations/system-tables/query_log.md) から取得できます。
+あるクエリ ID を持つクエリのキャッシュヒットおよびミスは、[system.query&#95;log](../../../operations/system-tables/query_log.md) から取得できます。
 
 ```sql
 SYSTEM FLUSH LOGS query_log;
@@ -474,13 +487,12 @@ WHERE type = 'QueryFinish' AND query_id = '<...>'
 ORDER BY event_time_microseconds;
 ```
 
-本番環境では、すべてのベクトル索引が常にメモリ上に保持されるよう、キャッシュサイズを十分に大きく設定することを推奨します。
+本番環境でのユースケースでは、すべてのベクトル索引が常にメモリ上に保持されるよう、それらを収容できる十分なサイズのキャッシュを確保することを推奨します。
 
-**量子化のチューニング**
+**Quantization のチューニング**
 
-[Quantization](https://huggingface.co/blog/embedding-quantization) は、ベクトルのメモリフットプリント（メモリ使用量）と、ベクトル索引の構築および探索にかかる計算コストを削減するための手法です。
-ClickHouse のベクトル索引は、以下の量子化オプションをサポートしています。
-
+[Quantization](https://huggingface.co/blog/embedding-quantization) は、ベクトルのメモリフットプリントと、ベクトルインデックスの構築および走査にかかる計算コストを削減するための手法です。
+ClickHouse のベクトル索引は、以下の quantization オプションをサポートします。
 
 | Quantization   | Name             | Storage per dimension |
 | -------------- | ---------------- | --------------------- |

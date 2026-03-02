@@ -32,13 +32,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Оба решения успешно протестированы и полностью совместимы с различными API, включая Java, Scala, PySpark и Spark SQL.
 
-### Среды выполнения Spark\{#spark-runtime-environment\}
+### Среды выполнения Spark \{#spark-runtime-environment\}
 
-#### Стандартные среды выполнения Spark\{#standard-spark-runtime\}
+#### Стандартные среды выполнения Spark \{#standard-spark-runtime\}
 
 Коннектор Spark работает из коробки в средах, которые в значительной степени соответствуют эталонной среде выполнения Apache Spark, таких как Amazon EMR или развертывания Spark в Kubernetes.
 
-#### Управляемые платформы Spark\{#managed-spark-platforms\}
+#### Управляемые платформы Spark \{#managed-spark-platforms\}
 
 Такие платформы, как [AWS Glue](./../aws-glue/index.md) и [Databricks](./databricks.md), вводят дополнительные абстракции и поведение, зависящее от среды.
 Хотя основная интеграция остаётся прежней, они могут требовать отдельной конфигурации и дополнительных шагов настройки. Подробности см. на соответствующих страницах документации.
