@@ -164,7 +164,7 @@ This index works only with String, FixedString, and Map datatypes. The input exp
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
 
-> For full-text search workloads, the dedicated **text index** (see [Text index for full-text search](engines/table-engines/mergetree-family/textindexes.md)) is recommended over the deprecated *tokenbf_v1* or *ngrambf_v1*.
+> For full-text search workloads, the dedicated **text index** (see [Text index for full-text search](engines/table-engines/mergetree-family/textindexes.md)) is recommended over the deprecated *tokenbf_v1* or *ngrambf_v1* indexes.
 The text index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
 
 ## Skip index functions {#skip-index-functions}

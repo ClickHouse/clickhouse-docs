@@ -112,11 +112,13 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 
 ## N-gram Bloom filter (ngrambf\_v1) for substring search *(Deprecated)* {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
-> Note: With `text` indexes generally availability (GA) starting from ClickHouse version 26.2, `ngrambf_v1` and `tokenbf_v1` indexes are NOT recommended anymore for full text search.
-> Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
-> Furthermore, they offer limited configurability.
->
-> The `text` index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
+:::note
+With `text` indexes generally availability (GA) starting from ClickHouse version 26.2, `ngrambf_v1` and `tokenbf_v1` indexes are NO longer recommended for full text search.
+Although they are more compact, unfortunately they tend to produce false positives due to their probabilistic nature.
+Furthermore, they offer limited configurability.
+
+The `text` index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
+:::
 
 The `ngrambf_v1` index splits strings into n-grams. It works well for `LIKE '%...%'` queries. It supports String/FixedString/Map (via mapKeys/mapValues), as well as tunable size, hash count, and seed. See the documentation for [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for further details.
 
@@ -154,11 +156,13 @@ See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bl
 
 ## Token Bloom filter (tokenbf\_v1) for word-based search *(Deprecated)* {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
-> Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
-> Furthermore, they offer limited configurability.
->
-> The `text` index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
+:::note
+With text indexes generally availability (GA) starting from ClickHouse version 26.2, `ngrambf_v1` and `tokenbf_v1` indexes are not recommended anymore for full text search.
+Although they are more compact, unfortunately they tend to produce false positives due to their probabilistic nature.
+Furthermore, they offer limited configurability.
+
+The `text` index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
+:::
 
 `tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
