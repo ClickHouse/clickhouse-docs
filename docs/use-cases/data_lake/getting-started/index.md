@@ -27,6 +27,6 @@ For workloads that demand low-latency responses and high concurrency, loading da
 
 ## Writing data back {#writing-data-back}
 
-Data can also flow from ClickHouse back into open table formats. Whether offloading aged data to long-term storage or publishing the results of transformations for downstream consumption, ClickHouse can write to Iceberg tables in object storage.
+Data can also flow from ClickHouse back into open table formats. Whether offloading aged data to long-term storage or publishing the results of transformations for downstream consumption, ClickHouse can write to Iceberg and Delta tables tables in object storage.
 
 - [Writing data to open table formats](/use-cases/data-lake/getting-started/writing-data) - Write raw data and aggregated results from ClickHouse into Iceberg tables using `INSERT INTO SELECT`.
