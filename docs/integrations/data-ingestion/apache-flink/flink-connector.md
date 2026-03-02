@@ -335,7 +335,8 @@ The connector exposes the following additional metrics on top of Flink's existin
 
 | Metric                                  | Description                                                         | Type      | Status |
 |-----------------------------------------|---------------------------------------------------------------------|-----------|--------|
-| `numBytesSend`                          | Total number of bytes sent to ClickHouse                            | Counter   | ✅      |
+| `numBytesSend`                          | Total number of bytes sent to ClickHouse in the request payload.
+Note: This metric measures the serialized data size sent over the network and might differ from ClickHouse's `written_bytes` in `system.query_log`, which reflects the actual bytes written to storage after processing.                            | Counter   | ✅      |
 | `numRecordSend`                         | Total number of records sent to ClickHouse                          | Counter   | ✅      |
 | `numRequestSubmitted`                   | Total number of requests sent (actual number of flushes performed)  | Counter   | ✅      |
 | `numOfDroppedBatches`                   | Total number of batches dropped due to non-retryable failures       | Counter   | ✅      |
