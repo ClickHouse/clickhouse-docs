@@ -14,6 +14,16 @@ DataStore uses Python's standard logging module. This guide shows how to configu
 ## Quick Start {#quick-start}
 
 ```python
+from pathlib import Path
+Path("data.csv").write_text("""\
+name,age,city,salary,department
+Alice,25,NYC,55000,Engineering
+Bob,30,LA,65000,Product
+Charlie,35,NYC,80000,Engineering
+Diana,28,SF,70000,Design
+Eve,42,NYC,95000,Product
+""")
+
 from chdb import datastore as pd
 from chdb.datastore.config import config
 
