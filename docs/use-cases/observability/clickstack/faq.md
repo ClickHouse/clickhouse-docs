@@ -43,7 +43,7 @@ If you need to alert on a complex metric, the recommended approach is to build t
 <details>
 <summary><strong>Can I use materialized views for alerting use cases?</strong></summary>
 
-Materialized views in ClickStack do not currently support metrics-based alerting use cases. For metrics, ClickStack works best with the default [ClickHouse OpenTelemetry metrics schema](/use-cases/observability/clickstack/ingesting-data/schemas). For log-based materialized view use cases, see [Materialized views](/use-cases/observability/clickstack/materialized_views).
+Materialized views are automatically used by ClickStack for alerts where applicable. However, materialized views are not currently supported on OpenTelemetry metrics data sources. For metrics, ClickStack works best with the default [ClickHouse OpenTelemetry metrics schema](/use-cases/observability/clickstack/ingesting-data/schemas). For more on materialized views, see [Materialized views](/use-cases/observability/clickstack/materialized_views).
 
 </details>
 
@@ -66,6 +66,7 @@ For details on creating dashboards and applying filters, see [Dashboards](/use-c
 ClickStack supports the following drill-down workflows:
 
 - [Dashboard-level filtering](/use-cases/observability/clickstack/dashboards#filter-dashboards) — Lucene or SQL filters and time range adjustments applied at the dashboard level propagate to all tiles.
+- Custom dashboard filters — custom dashboards support explicit filter controls that are populated with values from your data, allowing users to scope all tiles without writing queries manually.
 - Click-to-view events — clicking on data in a dashboard tile and selecting **View Events** navigates to the [Search](/use-cases/observability/clickstack/search) page with relevant filters for log and trace data.
 - [Prebuilt dashboard drill-downs](/use-cases/observability/clickstack/dashboards#presets) — the [Services](/use-cases/observability/clickstack/dashboards#services-dashboard), [ClickHouse](/use-cases/observability/clickstack/dashboards#clickhouse-dashboard), and [Kubernetes](/use-cases/observability/clickstack/dashboards#kubernetes-dashboard) dashboards include richer, built-in drill-down navigation across tabs.
 
