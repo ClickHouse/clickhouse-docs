@@ -46,6 +46,7 @@ The following endpoints are available:
 | **Alerts** | Create, list, get, update, and delete alerts |
 | **Charts** | Query time series data (POST only) |
 | **Sources** | List data sources |
+| **Webhooks** | List webhooks |
 
 </TabItem>
 </Tabs>
