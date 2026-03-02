@@ -1,7 +1,7 @@
 ---
 sidebar_label: '指南'
 slug: /integrations/dbt/guides
-sidebar_position: 2
+sidebar_position: 4
 description: '使用 dbt 搭配 ClickHouse 的指南'
 keywords: ['clickhouse', 'dbt', '指南']
 title: '指南'
@@ -19,6 +19,7 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # 指南 \{#guides\}
 
 <ClickHouseSupportedBadge/>
@@ -32,7 +33,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 5. 创建一个快照模型。
 6. 使用物化视图。
 
-这些指南应与其余[文档](/integrations/dbt)以及[功能和配置](/integrations/dbt/features-and-configurations)配合使用。
+这些指南应与其余[文档](/integrations/dbt)、[功能和配置](/integrations/dbt/features-and-configurations)以及[materializations 参考](/integrations/dbt/materializations)配合使用。
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
@@ -139,6 +140,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 
 执行这些操作所需的时间可能会因您的网络带宽而有所不同，但每个操作通常只需几秒钟即可完成。执行以下查询，以统计每位演员的汇总信息（按出演电影次数从多到少排序），并确认数据已成功加载：
 
+
 ```sql
 SELECT id,
        any(actor_name)          AS name,
@@ -182,6 +184,7 @@ LIMIT 5;
 ```
 
 在后续指南中，我们会将此查询转换为一个模型——在 ClickHouse 中将其物化为一个 dbt 视图和表。
+
 
 ## 连接到 ClickHouse \{#connecting-to-clickhouse\}
 
@@ -280,127 +283,132 @@ LIMIT 5;
 
 1. 在 `imdb` 文件夹中，删除目录 `models/example`：
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ rm -rf models/example
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ rm -rf models/example
+   ```
 
 2. 在 `models` 文件夹下创建一个新的 `actors` 目录。我们将在这里创建多个文件，每个文件代表一个 actor 模型：
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ mkdir models/actors
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ mkdir models/actors
+   ```
 
 3. 在 `models/actors` 文件夹中创建 `schema.yml` 和 `actor_summary.sql` 文件。
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ touch models/actors/actor_summary.sql
-    clickhouse-user@clickhouse:~/imdb$ touch models/actors/schema.yml
-    ```
-    文件 `schema.yml` 定义了我们的数据表。这些表随后可以在宏中引用。编辑
-    `models/actors/schema.yml`，使其内容如下：
-    ```yml
-    version: 2
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ touch models/actors/actor_summary.sql
+   clickhouse-user@clickhouse:~/imdb$ touch models/actors/schema.yml
+   ```
 
-    sources:
-    - name: imdb
-      tables:
-      - name: directors
-      - name: actors
-      - name: roles
-      - name: movies
-      - name: genres
-      - name: movie_directors
-    ```
-    `actors_summary.sql` 定义了我们的实际模型。注意，在 config 函数中我们还指定将该模型在 ClickHouse 中实体化为视图。我们的数据表通过 `source` 函数从 `schema.yml` 文件中引用，例如，`source('imdb', 'movies')` 指的是 `imdb` 数据库中的 `movies` 表。编辑 `models/actors/actors_summary.sql`，使其内容如下：
-    ```sql
-    {{ config(materialized='view') }}
+   文件 `schema.yml` 定义了我们的数据表。这些表随后可以在宏中引用。编辑
+   `models/actors/schema.yml`，使其内容如下：
 
-    with actor_summary as (
-    SELECT id,
-        any(actor_name) as name,
-        uniqExact(movie_id)    as num_movies,
-        avg(rank)                as avg_rank,
-        uniqExact(genre)         as genres,
-        uniqExact(director_name) as directors,
-        max(created_at) as updated_at
-    FROM (
-            SELECT {{ source('imdb', 'actors') }}.id as id,
-                    concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
-                    {{ source('imdb', 'movies') }}.id as movie_id,
-                    {{ source('imdb', 'movies') }}.rank as rank,
-                    genre,
-                    concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
-                    created_at
-            FROM {{ source('imdb', 'actors') }}
-                        JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
-                        LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
-                        LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
-                        LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
-                        LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
-            )
-    GROUP BY id
-    )
+   ```yml
+   version: 2
 
-    select *
-    from actor_summary
-    ```
-    注意我们在最终的 actor_summary 中包含了 `updated_at` 列。稍后我们会在增量实体化中使用它。
+   sources:
+   - name: imdb
+     tables:
+     - name: directors
+     - name: actors
+     - name: roles
+     - name: movies
+     - name: genres
+     - name: movie_directors
+   ```
+
+   `actors_summary.sql` 定义了我们的实际模型。注意，在 config 函数中我们还指定将该模型在 ClickHouse 中实体化为视图。我们的数据表通过 `source` 函数从 `schema.yml` 文件中引用，例如，`source('imdb', 'movies')` 指的是 `imdb` 数据库中的 `movies` 表。编辑 `models/actors/actors_summary.sql`，使其内容如下：
+
+   ```sql
+   {{ config(materialized='view') }}
+
+   with actor_summary as (
+   SELECT id,
+       any(actor_name) as name,
+       uniqExact(movie_id)    as num_movies,
+       avg(rank)                as avg_rank,
+       uniqExact(genre)         as genres,
+       uniqExact(director_name) as directors,
+       max(created_at) as updated_at
+   FROM (
+           SELECT {{ source('imdb', 'actors') }}.id as id,
+                   concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
+                   {{ source('imdb', 'movies') }}.id as movie_id,
+                   {{ source('imdb', 'movies') }}.rank as rank,
+                   genre,
+                   concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
+                   created_at
+           FROM {{ source('imdb', 'actors') }}
+                       JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
+                       LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
+                       LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
+                       LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
+                       LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
+           )
+   GROUP BY id
+   )
+
+   select *
+   from actor_summary
+   ```
+
+   注意我们在最终的 actor&#95;summary 中包含了 `updated_at` 列。稍后我们会在增量实体化中使用它。
 
 4. 在 `imdb` 目录下执行命令 `dbt run`。
 
-```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt run
-    15:05:35  Running with dbt=1.1.0
-    15:05:35  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    15:05:35
-    15:05:36  Concurrency: 1 threads (target='dev')
-    15:05:36
-    15:05:36  1 of 1 START view model imdb_dbt.actor_summary.................................. [RUN]
-    15:05:37  1 of 1 OK created view model imdb_dbt.actor_summary............................. [OK in 1.00s]
-    15:05:37
-    15:05:37  Finished running 1 view model in 1.97s.
-    15:05:37
-    15:05:37  Completed successfully
-    15:05:37
-    15:05:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt run
+   15:05:35  Running with dbt=1.1.0
+   15:05:35  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+   15:05:35
+   15:05:36  Concurrency: 1 threads (target='dev')
+   15:05:36
+   15:05:36  1 of 1 START view model imdb_dbt.actor_summary.................................. [RUN]
+   15:05:37  1 of 1 OK created view model imdb_dbt.actor_summary............................. [OK in 1.00s]
+   15:05:37
+   15:05:37  Finished running 1 view model in 1.97s.
+   15:05:37
+   15:05:37  Completed successfully
+   15:05:37
+   15:05:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
 
-5. dbt 会按我们的配置在 ClickHouse 中将该模型表示为一个视图。现在我们可以直接查询这个视图。该视图会在 `imdb_dbt` 数据库中创建——这是由 `clickhouse_imdb` profile 下文件 `~/.dbt/profiles.yml` 中的 schema 参数所决定的。
-
-   ```sql
-    SHOW DATABASES;
-    ```
-
-   ```response
-    +------------------+
-    |name              |
-    +------------------+
-    |INFORMATION_SCHEMA|
-    |default           |
-    |imdb              |
-    |imdb_dbt          |  <---created by dbt!
-    |information_schema|
-    |system            |
-    +------------------+
-    ```
-
-   查询这个视图时，我们即可用更简洁的语法复现之前查询的结果：
+5. dbt 会按照我们的配置在 ClickHouse 中将该模型表示为一个视图。我们现在可以直接查询这个视图。该视图会被创建在 `imdb_dbt` 数据库中——这是由 `~/.dbt/profiles.yml` 文件中 `clickhouse_imdb` profile 下的 schema 参数决定的。
 
    ```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-    ```
+   SHOW DATABASES;
+   ```
 
    ```response
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
-    |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
-    |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
-    |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
-    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
-    +------+------------+----------+------------------+------+---------+-------------------+
-    ```
+   +------------------+
+   |name              |
+   +------------------+
+   |INFORMATION_SCHEMA|
+   |default           |
+   |imdb              |
+   |imdb_dbt          |  <---created by dbt!
+   |information_schema|
+   |system            |
+   +------------------+
+   ```
+
+   通过查询该视图，我们可以用更简洁的语法复现之前查询的结果：
+
+   ```sql
+   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+   ```
+
+   ```response
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
+   |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
+   |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
+   |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
+   |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
+   +------+------------+----------+------------------+------+---------+-------------------+
+   ```
 
 ## 创建表物化 \{#creating-a-table-materialization\}
 
@@ -473,9 +481,9 @@ LIMIT 5;
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-可以继续针对该模型执行其他查询。例如：哪些演员在其参演次数超过 5 次的电影中拥有评分最高的作品？
+    可以随意针对该模型执行其他查询。例如：哪些演员出演次数超过 5 次且其电影的排名最高？
 
-```sql
+    ```sql
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
 
@@ -487,173 +495,174 @@ LIMIT 5;
 
 为了演示本示例，我们将新增演员 “Clicky McClickHouse”，他将出现在惊人的 910 部电影中——确保他出演的电影数量甚至超过了 [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc)。
 
-1. 首先，我们将模型修改为增量物化类型。此调整需要：
+1. 首先，我们将模型修改为增量物化类型。此更改需要：
 
-    1. **unique_key** —— 为确保适配器能够唯一标识行，我们必须提供一个 `unique_key`——在本例中，查询中的 `id` 字段即可满足要求。这确保在物化表中不会出现重复行。有关唯一性约束的更多细节，请参阅[此处](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional)。
-    2. **增量过滤条件（Incremental filter）** —— 我们还需要告诉 dbt，在增量运行时应如何识别哪些行发生了变化。这是通过提供一个增量（delta）表达式来实现的。典型做法是对事件数据使用时间戳；因此我们使用 `updated_at` 时间戳字段。该列在插入行时默认值为 `now()`，从而可以识别出新增记录。此外，我们还需要识别新增演员这一种情况。通过使用 `{{this}}` 变量来表示现有的物化表，可以构造出表达式 `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`。我们将其嵌入 `{% if is_incremental() %}` 条件中，以确保它只在增量运行时使用，而不会在首次创建表时生效。有关为增量模型过滤行的更多详情，请参阅 [dbt 文档中的这段讨论](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run)。
+   1. **unique&#95;key** - 为确保 adapter 能唯一标识行，我们必须提供一个 unique&#95;key——在本例中，来自我们查询的 `id` 字段就足够了。这样可以确保在物化表中不会出现重复行。关于唯一性约束的更多详情，参见[此处](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional)。
 
-    将文件 `actor_summary.sql` 更新如下：
+   2. **Incremental filter** - 我们还需要指定 dbt 在增量运行时应如何识别哪些行已发生变化。这是通过提供一个增量表达式（delta expression）来完成的。通常，这会使用事件数据的时间戳字段；因此我们使用 `updated_at` 时间戳字段。该列在插入行时默认取值为 now()，从而可以识别新增的行。同时，我们还需要识别新增演员这一种情况。使用 `{{this}}` 变量来表示已有的物化表，我们就得到如下表达式：`where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`。我们将其嵌入 `{% if is_incremental() %}` 条件内部，以确保它只在增量运行时生效，而不会在首次构建表时使用。关于为增量模型筛选行的更多详情，请参见 [dbt 文档中的此讨论](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run)。
 
-```sql
-    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
-    with actor_summary as (
-        SELECT id,
-            any(actor_name) as name,
-            uniqExact(movie_id)    as num_movies,
-            avg(rank)                as avg_rank,
-            uniqExact(genre)         as genres,
-            uniqExact(director_name) as directors,
-            max(created_at) as updated_at
-        FROM (
-            SELECT {{ source('imdb', 'actors') }}.id as id,
-                concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
-                {{ source('imdb', 'movies') }}.id as movie_id,
-                {{ source('imdb', 'movies') }}.rank as rank,
-                genre,
-                concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
-                created_at
-        FROM {{ source('imdb', 'actors') }}
-            JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
-            LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
-            LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
-            LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
-            LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
-        )
-        GROUP BY id
-    )
-    select *
-    from actor_summary
+   将 `actor_summary.sql` 文件更新为如下内容：
 
-    {% if is_incremental() %}
+   ```sql
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
+   with actor_summary as (
+       SELECT id,
+           any(actor_name) as name,
+           uniqExact(movie_id)    as num_movies,
+           avg(rank)                as avg_rank,
+           uniqExact(genre)         as genres,
+           uniqExact(director_name) as directors,
+           max(created_at) as updated_at
+       FROM (
+           SELECT {{ source('imdb', 'actors') }}.id as id,
+               concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
+               {{ source('imdb', 'movies') }}.id as movie_id,
+               {{ source('imdb', 'movies') }}.rank as rank,
+               genre,
+               concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
+               created_at
+       FROM {{ source('imdb', 'actors') }}
+           JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
+           LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
+       )
+       GROUP BY id
+   )
+   select *
+   from actor_summary
 
-    -- this filter will only be applied on an incremental run
-    where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
+   {% if is_incremental() %}
 
-    {% endif %}
-    ```
+   -- this filter will only be applied on an incremental run
+   where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
-请注意，我们的模型只会处理对 `roles` 和 `actors` 表的更新和新增记录。若要处理所有表，建议用户将该模型拆分为多个子模型——每个子模型都有自己的增量条件。随后可以引用并关联这些模型。有关模型交叉引用的更多详细信息，请参见[此处](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)。
+   {% endif %}
+   ```
+
+   请注意，我们的模型只会处理对 `roles` 和 `actors` 表的更新和新增记录。若要处理所有表，建议用户将该模型拆分为多个子模型——每个子模型都有自己的增量条件。随后可以引用并关联这些模型。有关模型交叉引用的更多详细信息，请参见[此处](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)。
 
 2. 执行一次 `dbt run` 并确认生成的结果表：
 
    ```response
-    clickhouse-user@clickhouse:~/imdb$  dbt run
-    15:33:34  Running with dbt=1.1.0
-    15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    15:33:34
-    15:33:35  Concurrency: 1 threads (target='dev')
-    15:33:35
-    15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
-    15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
-    15:33:41
-    15:33:41  Finished running 1 incremental model in 7.30s.
-    15:33:41
-    15:33:41  Completed successfully
-    15:33:41
-    15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   clickhouse-user@clickhouse:~/imdb$  dbt run
+   15:33:34  Running with dbt=1.1.0
+   15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+   15:33:34
+   15:33:35  Concurrency: 1 threads (target='dev')
+   15:33:35
+   15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+   15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
+   15:33:41
+   15:33:41  Finished running 1 incremental model in 7.30s.
+   15:33:41
+   15:33:41  Completed successfully
+   15:33:41
+   15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
 
    ```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-    ```
-
-```response
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
-    |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
-    |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
-    |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
-    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
-    +------+------------+----------+------------------+------+---------+-------------------+
-    ```
-
-3. 现在我们向模型中添加数据，用于演示一次增量更新。将我们的演员 “Clicky McClickHouse” 添加到 `actors` 表中：
-
-   ```sql
-    INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
-    ```
-
-4. 让 “Clicky” 在 910 部随机选取的电影中出演：
-
-   ```sql
-    INSERT INTO imdb.roles
-    SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
-    FROM imdb.movies
-    LIMIT 910 OFFSET 10000;
-    ```
-
-5. 通过查询底层源表并绕过所有 dbt 模型，确认他现在确实是出演次数最多的演员：
-
-   ```sql
-    SELECT id,
-        any(actor_name)          as name,
-        uniqExact(movie_id)    as num_movies,
-        avg(rank)                as avg_rank,
-        uniqExact(genre)         as unique_genres,
-        uniqExact(director_name) as uniq_directors,
-        max(created_at)          as updated_at
-    FROM (
-            SELECT imdb.actors.id                                                   as id,
-                    concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
-                    imdb.movies.id as movie_id,
-                    imdb.movies.rank                                                 as rank,
-                    genre,
-                    concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-                    created_at
-            FROM imdb.actors
-                    JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-                    LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-                    LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-                    LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-                    LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-            )
-    GROUP BY id
-    ORDER BY num_movies DESC
-    LIMIT 2;
-    ```
+   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+   ```
 
    ```response
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-    |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    ```
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
+   |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
+   |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
+   |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
+   |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
+   +------+------------+----------+------------------+------+---------+-------------------+
+   ```
 
-6. 执行一次 `dbt run`，并确认我们的模型已经更新且与上述结果一致：
+3. 现在我们将向模型中添加数据，以演示一次增量更新。将我们的演员 &quot;Clicky McClickHouse&quot; 添加到 `actors` 表中：
 
-```response
-    clickhouse-user@clickhouse:~/imdb$  dbt run
-    16:12:16  Running with dbt=1.1.0
-    16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    16:12:16
-    16:12:17  Concurrency: 1 threads (target='dev')
-    16:12:17
-    16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
-    16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.82s]
-    16:12:24
-    16:12:24  Finished running 1 incremental model in 7.79s.
-    16:12:24
-    16:12:24  Completed successfully
-    16:12:24
-    16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```sql
+   INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
+   ```
 
-```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
-    ```
+4. 让 “Clicky” 在随机选取的 910 部电影中主演：
 
-```response
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-    |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-    +------+-------------------+----------+------------------+------+---------+-------------------+
-    ```
+   ```sql
+   INSERT INTO imdb.roles
+   SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
+   FROM imdb.movies
+   LIMIT 910 OFFSET 10000;
+   ```
+
+5. 通过直接对底层源表执行查询，以绕过所有 dbt 模型，确认他现在确实已经是出场次数最多的演员：
+
+   ```sql
+   SELECT id,
+       any(actor_name)          as name,
+       uniqExact(movie_id)    as num_movies,
+       avg(rank)                as avg_rank,
+       uniqExact(genre)         as unique_genres,
+       uniqExact(director_name) as uniq_directors,
+       max(created_at)          as updated_at
+   FROM (
+           SELECT imdb.actors.id                                                   as id,
+                   concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
+                   imdb.movies.id as movie_id,
+                   imdb.movies.rank                                                 as rank,
+                   genre,
+                   concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+                   created_at
+           FROM imdb.actors
+                   JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+                   LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+                   LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+                   LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+                   LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+           )
+   GROUP BY id
+   ORDER BY num_movies DESC
+   LIMIT 2;
+   ```
+
+   ```response
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+   |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   ```
+
+6. 执行一次 `dbt run`，确认我们的模型已更新并与上述结果一致：
+
+   ```response
+   clickhouse-user@clickhouse:~/imdb$  dbt run
+   16:12:16  Running with dbt=1.1.0
+   16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+   16:12:16
+   16:12:17  Concurrency: 1 threads (target='dev')
+   16:12:17
+   16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+   16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.82s]
+   16:12:24
+   16:12:24  Finished running 1 incremental model in 7.79s.
+   16:12:24
+   16:12:24  Completed successfully
+   16:12:24
+   16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
+
+   ```sql
+   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
+   ```
+
+   ```response
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+   |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
+   +------+-------------------+----------+------------------+------+---------+-------------------+
+   ```
 
 ### 内部实现 \{#internals\}
 
@@ -677,28 +686,29 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 这种策略在非常大的模型上可能会遇到挑战。更多细节请参见 [Limitations](/integrations/dbt#limitations)。
 
+
 ### 追加策略（仅插入模式） \{#append-strategy-inserts-only-mode\}
 
-为克服在大数据集上使用增量模型的限制，适配器使用 dbt 配置参数 `incremental_strategy`。该参数可以设置为 `append`。设置后，更新的行会被直接插入到目标表（即 `imdb_dbt.actor_summary`）中，而不会创建临时表。
-注意：仅追加模式要求你的数据是不可变的，或者可以接受重复数据。如果你需要一个支持已修改行的增量表模型，请不要使用此模式！
+为克服增量模型在处理大型数据集时的限制，适配器使用 dbt 配置参数 `incremental_strategy`。该参数可以设置为 `append`。在该模式下，更新的行会被直接插入到目标表（即 `imdb_dbt.actor_summary`）中，而不会创建临时表。
+注意：仅追加模式要求你的数据是不可变的，或者可以接受存在重复数据。如果你需要支持变更行的增量表模型，请不要使用该模式！
 
 为了演示该模式，我们将再添加一位新演员，并使用 `incremental_strategy='append'` 重新执行 dbt run。
 
-1. 在 actor&#95;summary.sql 中配置仅追加模式：
+1. 在 actor_summary.sql 中配置为仅追加模式：
 
    ```sql
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
    ```
 
-2. 我们再添加一位著名演员——Danny DeBito：
+2. 添加另一位著名演员 —— Danny DeBito
 
    ```sql
    INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
    ```
 
-3. 让 Danny 参演随机选取的 920 部电影。
+3. 让 Danny 在 920 部随机电影中出演。
 
-```sql
+   ```sql
    INSERT INTO imdb.roles
    SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
    FROM imdb.movies
@@ -774,9 +784,10 @@ SELECT *
 FROM actor_summary
 -- this filter will only be applied on an incremental run
 WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
-   ```
+```
 
 在本次运行中，只有新增的行会直接添加到 `imdb_dbt.actor_summary` 表中，不会涉及创建新表。
+
 
 ### 删除并插入模式（实验性） \{#deleteinsert-mode-experimental\}
 
@@ -801,6 +812,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 该过程如下图所示：
 
 <Image img={dbt_06} size="lg" alt="轻量级 delete 增量" />
+
 
 ### insert&#95;overwrite 模式（实验性） \{#insert_overwrite-mode-experimental\}
 
@@ -863,40 +875,41 @@ dbt 快照允许随着时间推移记录可变模型的变更。这使得可以�
    where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
    {% endif %}
-   ```
+```
 
 1. 在 snapshots 目录中创建一个名为 `actor_summary` 的文件。
 
    ```bash
-     touch snapshots/actor_summary.sql
-    ```
+    touch snapshots/actor_summary.sql
+   ```
 
 2. 将 actor&#95;summary.sql 文件的内容更新为以下内容：
    ```sql
-    {% snapshot actor_summary_snapshot %}
+   {% snapshot actor_summary_snapshot %}
 
-    {{
-    config(
-    target_schema='snapshots',
-    unique_key='id',
-    strategy='timestamp',
-    updated_at='updated_at',
-    )
-    }}
+   {{
+   config(
+   target_schema='snapshots',
+   unique_key='id',
+   strategy='timestamp',
+   updated_at='updated_at',
+   )
+   }}
 
-    select * from {{ref('actor_summary')}}
+   select * from {{ref('actor_summary')}}
 
-    {% endsnapshot %}
-    ```
+   {% endsnapshot %}
+   ```
 
 关于上述内容，有几点说明：
 
 * `select` 查询定义了你希望随时间进行快照的结果。函数 `ref` 用于引用我们之前创建的 `actor&#95;summary` 模型。
 * 我们需要一个时间戳列来标识记录发生变化。我们的 `updated&#95;at` 列（参见 [Creating an Incremental Table Model](#creating-an-incremental-materialization)）可以在这里使用。参数 `strategy` 表示我们使用时间戳来表示更新，而参数 `updated&#95;at` 指定要使用的列。如果你的模型中没有该列，可以改用 [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy)。这种方式效率要低得多，并且要求用户指定需要比较的列列表。dbt 会比较这些列的当前值与历史值，记录任何变化（如果相同则不执行任何操作）。
 
+
 3. 运行命令 `dbt snapshot`。
 
-```response
+    ```response
     clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     13:26:23  Running with dbt=1.1.0
     13:26:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
@@ -918,112 +931,98 @@ dbt 快照允许随着时间推移记录可变模型的变更。这使得可以�
 4. 对这些数据进行抽样查询时，你会看到 dbt 已经包含了 dbt&#95;valid&#95;from 和 dbt&#95;valid&#95;to 两列。后者的值被设置为 null。后续运行会更新这些值。
 
    ```sql
-    SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-    ```
+   SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
+   ```
 
    ```response
-    +------+----------+------------+----------+-------------------+------------+
-    |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to|
-    +------+----------+------------+----------+-------------------+------------+
-    |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL        |
-    |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|NULL        |
-    |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL        |
-    |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL        |
-    |283127|Tom       |London      |549       |2022-05-25 19:31:47|NULL        |
-    +------+----------+------------+----------+-------------------+------------+
-    ```
+   +------+----------+------------+----------+-------------------+------------+
+   |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to|
+   +------+----------+------------+----------+-------------------+------------+
+   |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL        |
+   |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|NULL        |
+   |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL        |
+   |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL        |
+   |283127|Tom       |London      |549       |2022-05-25 19:31:47|NULL        |
+   +------+----------+------------+----------+-------------------+------------+
+   ```
 
 5. 让我们最喜欢的演员 Clicky McClickHouse 再出演 10 部电影。
 
    ```sql
-    INSERT INTO imdb.roles
-    SELECT now() as created_at, 845466 as actor_id, rand(number) % 412320 as movie_id, 'Himself' as role
-    FROM system.numbers
-    LIMIT 10;
-    ```
+   INSERT INTO imdb.roles
+   SELECT now() as created_at, 845466 as actor_id, rand(number) % 412320 as movie_id, 'Himself' as role
+   FROM system.numbers
+   LIMIT 10;
+   ```
 
 6. 在 `imdb` 目录下重新运行 dbt run 命令。这会更新增量模型。完成后，运行 dbt snapshot 命令来捕获这些变更。
 
    ```response
-    clickhouse-user@clickhouse:~/imdb$ dbt run
-    13:46:14  Running with dbt=1.1.0
-    13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
-    13:46:14
-    13:46:15  Concurrency: 1 threads (target='dev')
-    13:46:15
-    13:46:15  1 of 1 START incremental model imdb_dbt.actor_summary....................... [RUN]
-    13:46:18  1 of 1 OK created incremental model imdb_dbt.actor_summary.................. [OK in 2.76s]
-    13:46:18
-    13:46:18  Finished running 1 incremental model in 3.73s.
-    13:46:18
-    13:46:18  Completed successfully
-    13:46:18
-    13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   clickhouse-user@clickhouse:~/imdb$ dbt run
+   13:46:14  Running with dbt=1.1.0
+   13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
+   13:46:14
+   13:46:15  Concurrency: 1 threads (target='dev')
+   13:46:15
+   13:46:15  1 of 1 START incremental model imdb_dbt.actor_summary....................... [RUN]
+   13:46:18  1 of 1 OK created incremental model imdb_dbt.actor_summary.................. [OK in 2.76s]
+   13:46:18
+   13:46:18  Finished running 1 incremental model in 3.73s.
+   13:46:18
+   13:46:18  Completed successfully
+   13:46:18
+   13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 
-    clickhouse-user@clickhouse:~/imdb$ dbt snapshot
-    13:46:26  Running with dbt=1.1.0
-    13:46:26  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
-    13:46:26
-    13:46:27  Concurrency: 1 threads (target='dev')
-    13:46:27
-    13:46:27  1 of 1 START snapshot snapshots.actor_summary_snapshot...................... [RUN]
-    13:46:31  1 of 1 OK snapshotted snapshots.actor_summary_snapshot...................... [OK in 4.05s]
-    13:46:31
-    13:46:31  Finished running 1 snapshot in 5.02s.
-    13:46:31
-    13:46:31  Completed successfully
-    13:46:31
-    13:46:31  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   clickhouse-user@clickhouse:~/imdb$ dbt snapshot
+   13:46:26  Running with dbt=1.1.0
+   13:46:26  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
+   13:46:26
+   13:46:27  Concurrency: 1 threads (target='dev')
+   13:46:27
+   13:46:27  1 of 1 START snapshot snapshots.actor_summary_snapshot...................... [RUN]
+   13:46:31  1 of 1 OK snapshotted snapshots.actor_summary_snapshot...................... [OK in 4.05s]
+   13:46:31
+   13:46:31  Finished running 1 snapshot in 5.02s.
+   13:46:31
+   13:46:31  Completed successfully
+   13:46:31
+   13:46:31  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
-clickhouse-user@clickhouse:~/imdb$ dbt snapshot
-13:46:26  使用 dbt=1.1.0 运行
-13:46:26  找到 1 个 model、0 个 tests、1 个 snapshot、0 个 analyses、181 个 macros、0 个 operations、0 个 seed files、3 个 sources、0 个 exposures、0 个 metrics
-13:46:26
-13:46:27  并发数: 1 个线程 (target=&#39;dev&#39;)
-13:46:27
-13:46:27  1 / 1 开始执行 snapshot snapshots.actor&#95;summary&#95;snapshot...................... [RUN]
-13:46:31  1 / 1 已完成 snapshot snapshots.actor&#95;summary&#95;snapshot...................... [OK in 4.05s]
-13:46:31
-13:46:31  已在 5.02s 内完成 1 个 snapshot 的运行。
-13:46:31
-13:46:31  执行成功完成
-13:46:31
-13:46:31  完成。PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+7. 如果我们现在查询这个快照，可以看到 Clicky McClickHouse 有 2 行数据。之前的那条记录现在有了一个 dbt&#95;valid&#95;to 值。新的这条记录在 dbt&#95;valid&#95;from 列中记录了相同的值，并且 dbt&#95;valid&#95;to 的值为 null。如果又产生了新的行，这些行也会被追加到快照中。
 
-```sql
-    SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-    ```sql
- SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-```response
-    +------+----------+------------+----------+-------------------+-------------------+
-    |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
-    +------+----------+------------+----------+-------------------+-------------------+
-    |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL               |
-    |845466|Clicky    |McClickHouse|920       |2022-05-25 19:34:37|NULL               |
-    |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|2022-05-25 19:34:37|
-    |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
-    |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
-    +------+----------+------------+----------+-------------------+-------------------+
-    ```response
-+------+----------+------------+----------+-------------------+-------------------+
-|id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
-+------+----------+------------+----------+-------------------+-------------------+
-|845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL               |
-|845466|Clicky    |McClickHouse|920       |2022-05-25 19:34:37|NULL               |
-|845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|2022-05-25 19:34:37|
-|45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
-|621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
-+------+----------+------------+----------+-------------------+-------------------+
+   ```sql
+   SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
+   ```
 
-```bash
-    clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
-    "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
-    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
+   ```response
+   +------+----------+------------+----------+-------------------+-------------------+
+   |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
+   +------+----------+------------+----------+-------------------+-------------------+
+   |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL               |
+   |845466|Clicky    |McClickHouse|920       |2022-05-25 19:34:37|NULL               |
+   |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|2022-05-25 19:34:37|
+   |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
+   |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
+   +------+----------+------------+----------+-------------------+-------------------+
+   ```
+
+有关 dbt snapshots 的更多详细信息，请参阅[此文档](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)。
+
+## Using seeds \{#using-seeds\}
+
+dbt 提供了从 CSV 文件加载数据的功能。该功能并不适合用于加载大型数据库导出，更适用于通常用作代码表和[字典](../../../../sql-reference/dictionaries/index.md)的小文件，例如将国家代码映射到国家名称。作为一个简单示例，我们使用 seed 功能生成并上传一份类型代码列表。
+
+1. 我们从现有数据集中生成一个类型代码列表。在 dbt 目录中，使用 `clickhouse-client` 创建文件 `seeds/genre_codes.csv`：
+
     ```bash
     clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
     "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
     LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
+    ```
+
+2. 执行 `dbt seed` 命令。这将在我们的数据库 `imdb_dbt` 中创建一个新表 `genre_codes`（如我们的 schema 配置所定义），其内容来自我们的 CSV 文件中的行。
+
     ```bash
     clickhouse-user@clickhouse:~/imdb$ dbt seed
     17:03:23  Running with dbt=1.1.0
@@ -1039,41 +1038,13 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     17:03:24  Completed successfully
     17:03:24
     17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
+    ```
+3. 确认这些数据已被加载：
 
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
+    ```sql
+    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+    ```
+
     ```response
     +-------+----+
     |genre  |code|
@@ -1092,6 +1063,6 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
     +-------+----+=
     ```
 
-## 更多信息 {#further-information}
+## 更多信息 \{#further-information\}
 
 前面的指南仅涉及 dbt 功能的基础内容。建议阅读优秀的 [dbt 文档](https://docs.getdbt.com/docs/introduction)。

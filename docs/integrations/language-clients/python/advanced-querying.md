@@ -29,7 +29,7 @@ result = test_client.query(context=qc)
 assert result.result_set[1][0] == 'first_value2'
 ```
 
-Note that `QueryContext`s are not thread safe, but a copy can be obtained in a multi-threaded environment by calling the `QueryContext.updated_copy` method.
+Note that `QueryContext`s aren't thread safe, but a copy can be obtained in a multi-threaded environment by calling the `QueryContext.updated_copy` method.
 
 ## Streaming queries {#streaming-queries}
 
@@ -46,14 +46,14 @@ The ClickHouse Connect Client provides multiple methods for retrieving data as a
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the stream.
 
 ### Data blocks {#data-blocks}
-ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server. These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data, where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data in a similar form.) The size of a block returned from a query is governed by two user settings that can be set at several levels (user profile, user, session, or query). They are:
+ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server. These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data, where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data in a similar form.) The size of a block returned from a query is governed by two user settings that can be set at several levels (user profile, user, session, or query). They're:
 
 - [max_block_size](/operations/settings/settings#max_block_size) -- Limit on the size of the block in rows. Default 65536.
 - [preferred_block_size_bytes](/operations/settings/settings#preferred_block_size_bytes) -- Soft limit on the size of the block in bytes. Default 1,000,0000.
 
 Regardless of the `preferred_block_size_setting`, each block will never be more than `max_block_size` rows. Depending on the type of query, the actual blocks returned can be of any size. For example, queries to a distributed table covering many shards may contain smaller blocks retrieved directly from each shard.
 
-When using one of the Client `query_*_stream` methods, results are returned on a block by block basis. ClickHouse Connect only loads a single block at a time. This allows processing large amounts of data without the need to load all of a large result set into memory. Note the application should be prepared to process any number of blocks and the exact size of each block cannot be controlled.
+When using one of the Client `query_*_stream` methods, results are returned on a block by block basis. ClickHouse Connect only loads a single block at a time. This allows processing large amounts of data without the need to load all of a large result set into memory. Note the application should be prepared to process any number of blocks and the exact size of each block can't be controlled.
 
 ### HTTP data buffer for slow processing {#http-data-buffer-for-slow-processing}
 
@@ -306,10 +306,10 @@ with client.query_df_arrow_stream(
 ```
 
 #### Notes and caveats {#notes-and-caveats}
-- Arrow type mapping: When returning data in Arrow format, ClickHouse maps types to the closest supported Arrow types. Some ClickHouse types do not have a native Arrow equivalent and are returned as raw bytes in Arrow fields (usually `BINARY` or `FIXED_SIZE_BINARY`).
+- Arrow type mapping: When returning data in Arrow format, ClickHouse maps types to the closest supported Arrow types. Some ClickHouse types don't have a native Arrow equivalent and are returned as raw bytes in Arrow fields (usually `BINARY` or `FIXED_SIZE_BINARY`).
   - Examples: `IPv4` is represented as Arrow `UINT32`; `IPv6` and large integers (`Int128/UInt128/Int256/UInt256`) are often represented as `FIXED_SIZE_BINARY`/`BINARY` with raw bytes.
   - In these cases, the DataFrame column will contain byte values backed by the Arrow field; it is up to the client code to interpret/convert those bytes according to ClickHouse semantics.
-- Unsupported Arrow data types (e.g., UUID/ENUM as true Arrow types) are not emitted; values are represented using the closest supported Arrow type (often as binary bytes) for output.
+- Unsupported Arrow data types (e.g., UUID/ENUM as true Arrow types) aren't emitted; values are represented using the closest supported Arrow type (often as binary bytes) for output.
 - Pandas requirement: Arrow‑backed dtypes require pandas 2.x. For older pandas versions, use `query_df` (non‑Arrow) instead.
 - Strings vs binary: The `use_strings` option (when supported by the server setting `output_format_arrow_string_as_string`) controls whether ClickHouse `String` columns are returned as Arrow strings or as binary.
 
@@ -353,7 +353,7 @@ The key takeaway: application code must handle these conversions based on the ca
 
 ## Read formats {#read-formats}
 
-Read formats control the data types of values returned from the client `query`, `query_np`, and `query_df` methods. (The `raw_query` and `query_arrow` do not modify incoming data from ClickHouse, so format control does not apply.) For example, if the read format for a UUID is changed from the default `native` format to the alternative `string` format, a ClickHouse query of `UUID` column will be returned as string values (using the standard 8-4-4-4-12 RFC 1422 format) instead of Python UUID objects.
+Read formats control the data types of values returned from the client `query`, `query_np`, and `query_df` methods. (The `raw_query` and `query_arrow` don't modify incoming data from ClickHouse, so format control doesn't apply.) For example, if the read format for a UUID is changed from the default `native` format to the alternative `string` format, a ClickHouse query of `UUID` column will be returned as string values (using the standard 8-4-4-4-12 RFC 1422 format) instead of Python UUID objects.
 
 The "data type" argument for any formatting function can include wildcards. The format is a single lower case string.
 
@@ -385,13 +385,13 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | ClickHouse Type       | Native Python Type      | Read Formats      | Comments                                                                                                          |
 |-----------------------|-------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------|
 | Int[8-64], UInt[8-32] | int                     | -                 |                                                                                                                   |
-| UInt64                | int                     | signed            | Superset does not currently handle large unsigned UInt64 values                                                   |
+| UInt64                | int                     | signed            | Superset doesn't currently handle large unsigned UInt64 values                                                   |
 | [U]Int[128,256]       | int                     | string            | Pandas and NumPy int values are 64 bits maximum, so these can be returned as strings                              |
 | BFloat16              | float                   | -                 | All Python floats are 64 bits internally                                                                          |
 | Float32               | float                   | -                 | All Python floats are 64 bits internally                                                                          |
 | Float64               | float                   | -                 |                                                                                                                   |
 | Decimal               | decimal.Decimal         | -                 |                                                                                                                   |
-| String                | string                  | bytes             | ClickHouse String columns have no inherent encoding, so they are also used for variable length binary data        |
+| String                | string                  | bytes             | ClickHouse String columns have no inherent encoding, so they're also used for variable length binary data        |
 | FixedString           | bytes                   | string            | FixedStrings are fixed size byte arrays, but sometimes are treated as Python strings                              |
 | Enum[8,16]            | string                  | string, int       | Python enums don't accept empty strings, so all enums are rendered as either strings or the underlying int value. |
 | Date                  | datetime.date           | int               | ClickHouse stores Dates as days since 01/01/1970. This value is available as an int                               |
@@ -446,9 +446,9 @@ There are multiple mechanisms for applying a time zone to ClickHouse DateTime an
 When using time zone aware data types in queries - in particular the Python `datetime.datetime` object -- `clickhouse-connect` applies a client side time zone using the following precedence rules:
 
 1. If the query method parameter `client_tzs` is specified for the query, the specific column time zone is applied
-2. If the ClickHouse column has timezone metadata (i.e., it is a type like DateTime64(3, 'America/Denver')), the ClickHouse column timezone is applied. (Note this timezone metadata is not available to clickhouse-connect for DateTime columns prior to ClickHouse version 23.2)
+2. If the ClickHouse column has timezone metadata (i.e., it is a type like DateTime64(3, 'America/Denver')), the ClickHouse column timezone is applied. (Note this timezone metadata isn't available to clickhouse-connect for DateTime columns prior to ClickHouse version 23.2)
 3. If the query method parameter `query_tz` is specified for the query, the "query timezone" is applied.
-4. If a timezone setting is applied to the query or session, that timezone is applied. (This functionality is not yet released in the ClickHouse server)
+4. If a timezone setting is applied to the query or session, that timezone is applied. (This functionality isn't yet released in the ClickHouse server)
 5. Finally, if the client `apply_server_timezone` parameter has been set to True (the default), the ClickHouse server timezone is applied.
 
 Note that if the applied timezone based on these rules is UTC, `clickhouse-connect` will _always_ return a time zone naive Python `datetime.datetime` object. Additional timezone information can then be added to this timezone naive object by the application code if desired.

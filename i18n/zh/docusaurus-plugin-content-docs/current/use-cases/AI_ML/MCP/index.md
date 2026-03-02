@@ -46,6 +46,10 @@ MCP 采用客户端-服务器架构：
 
 如果您在查找 ClickHouse Cloud 中的远程 MCP 服务器，请参阅页面 ["Cloud 中的远程 MCP 服务器"](/cloud/features/ai-ml/remote-mcp)
 
+:::tip[Agent Skills]
+[ClickHouse Agent Skills 仓库](https://github.com/ClickHouse/agent-skills) 提供了预配置的指令集，用于扩展 AI 编码代理（Claude Code、Cursor、Copilot 等）的特定领域专业能力。该仓库为 ClickHouse 数据库提供技能——涵盖模式（schema）设计、查询优化以及数据摄取模式。
+:::
+
 ## 使用 ClickHouse MCP 服务器的指南 \{#clickhouse-mcp-server-guides\}
 
 以下是一些介绍如何使用 ClickHouse MCP 服务器的指南。

@@ -37,7 +37,7 @@ ClickHouse 不会自动从该表中删除数据。更多详细信息请参阅[�
 * `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 已读取的行数。
 * `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 已读取的字节数。
 * `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 在 `INSERT` 查询中，表示写入的行数。对于其他查询，该列的值为 0。
-* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 对于 `INSERT` 查询，表示写入的字节数。对于其他查询，该列的值为 0。
+* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 在 `INSERT` 查询中，表示写入的字节数。对于其他查询，该列的值为 0。
 * `memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 该线程上下文内已分配内存量与已释放内存量之间的差值。
 * `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在该线程上下文中，已分配内存量与已释放内存量之间的最大差值。
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名。
@@ -47,10 +47,12 @@ ClickHouse 不会自动从该表中删除数据。更多详细信息请参阅[�
 * `is_initial_query` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 查询类型。可能的取值：
   * 1 — 查询由客户端发起。
   * 0 — 查询在执行分布式查询时由其他查询发起。
+* `connection_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 建立连接的客户端 IP 地址。通过代理连接时，该值为代理服务器的地址。
+* `connection_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 客户端用于建立该连接的端口。如果是通过代理连接，则此值为代理的端口。
 * `user` ([String](../../sql-reference/data-types/string.md)) — 发起当前查询的用户名称。
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
-* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于执行查询的 IP 地址。
-* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 客户端用于发起该查询的端口。
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于执行查询的 IP 地址。当通过代理连接且已设置 [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) 时，这里记录的是客户端地址而不是代理地址。
+* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 客户端用于发起该查询的端口。当通过代理连接并启用 [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) 时，这里记录的是客户端的端口，而不是代理的端口。
 * `initial_user` ([String](../../sql-reference/data-types/string.md)) — 运行初始查询的用户的名称（用于分布式查询执行）。
 * `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID（在分布式查询执行中使用）。
 * `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 父查询发起时的 IP 地址。
@@ -58,7 +60,7 @@ ClickHouse 不会自动从该表中删除数据。更多详细信息请参阅[�
 * `interface` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 表示发起该查询的接口。可能的取值：
   * 1 — TCP。
   * 2 — HTTP。
-* `os_user` ([String](../../sql-reference/data-types/string.md)) — 在操作系统中运行 [clickhouse-client](../../interfaces/cli.md) 的用户名。
+* `os_user` ([String](../../sql-reference/data-types/string.md)) — 运行 [clickhouse-client](../../interfaces/cli.md) 的操作系统用户名。
 * `client_hostname` ([String](../../sql-reference/data-types/string.md)) — 运行 [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的机器的主机名。
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的名称。
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的修订号。

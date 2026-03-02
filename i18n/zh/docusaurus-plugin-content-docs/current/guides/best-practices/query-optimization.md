@@ -63,25 +63,25 @@ ClickHouse 提供了一套丰富的工具，帮助你了解查询是如何执行
 下面是从一个 S3 存储桶创建表并插入数据的命令。请注意，我们是有意从数据中推断表结构，这样的做法并未进行优化。
 
 ```sql
--- 创建具有推断架构的表
+-- Create table with inferred schema
 CREATE TABLE trips_small_inferred
 ORDER BY () EMPTY
 AS SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 
--- 向具有推断架构的表中插入数据
+-- Insert data into table with inferred schema
 INSERT INTO trips_small_inferred
 SELECT *
 FROM s3Cluster
 ('default','https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 ```
 
-让我们来看一下根据数据自动推断出的表结构。
+让我们来看一下由数据自动推断得到的表结构。
 
 ```sql
---- 显示推断的表模式
+--- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
 
-查询 ID: d97361fd-c050-478e-b831-369469f0784d
+Query id: d97361fd-c050-478e-b831-369469f0784d
 
 CREATE TABLE nyc_taxi.trips_small_inferred
 (
@@ -117,7 +117,7 @@ ORDER BY tuple()
 让我们在 NYC taxi 数据集上找出执行时间最长的前五条查询。
 
 ```sql
--- 查找 nyc_taxi 数据库在过去 1 小时内运行时间最长的前 5 个查询
+-- Find top 5 long running queries from nyc_taxi database in the last 1 hour
 SELECT
     type,
     event_time,
@@ -131,9 +131,9 @@ ORDER BY query_duration_ms DESC
 LIMIT 5
 FORMAT VERTICAL
 
-查询 ID: e3d48c9f-32bb-49a4-8303-080f59ed1835
+Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
-行 1:
+Row 1:
 ──────
 type:              QueryFinish
 event_time:        2024-11-27 11:12:36
@@ -151,7 +151,7 @@ FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
 
-行 2:
+Row 2:
 ──────
 type:              QueryFinish
 event_time:        2024-11-27 11:11:33
@@ -174,7 +174,7 @@ ORDER BY
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
 
-行 3:
+Row 3:
 ──────
 type:              QueryFinish
 event_time:        2024-11-27 11:12:17
@@ -187,7 +187,7 @@ FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
 
-行 4:
+Row 4:
 ──────
 type:              QueryFinish
 event_time:        2024-11-27 11:12:31
@@ -197,7 +197,7 @@ FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
 
-行 5:
+Row 5:
 ──────
 type:              QueryFinish
 event_time:        2024-11-27 11:12:44
@@ -220,7 +220,7 @@ tables:            ['nyc_taxi.trips_small_inferred']
 你可能还希望了解哪些查询正在给系统带来压力，例如通过找出消耗内存或 CPU 最高的查询来分析。
 
 ```sql
--- 按内存使用量排序的查询
+-- Top queries by memory usage
 SELECT
     type,
     event_time,
@@ -242,10 +242,10 @@ LIMIT 30
 此时，为了提高结果的可复现性，务必将 `enable_filesystem_cache` 设置为 0 来关闭文件系统缓存。
 
 ```sql
--- 禁用文件系统缓存
+-- Disable filesystem cache
 set enable_filesystem_cache = 0;
 
--- 运行查询 1
+-- Run query 1
 WITH
   dateDiff('s', pickup_datetime, dropoff_datetime) as trip_time,
   trip_distance / trip_time * 3600 AS speed_mph
@@ -258,10 +258,10 @@ WHERE
 FORMAT JSON
 
 ----
-返回 1 行。耗时:1.699 秒。已处理 3.2904 亿行,8.88 GB(1.9372 亿行/秒,5.23 GB/秒)
-峰值内存使用量:440.24 MiB。
+1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
+Peak memory usage: 440.24 MiB.
 
--- 运行查询 2
+-- Run query 2
 SELECT
     payment_type,
     COUNT() AS trip_count,
@@ -278,10 +278,10 @@ ORDER BY
     trip_count DESC;
 
 ---
-返回 4 行。耗时:1.419 秒。已处理 3.2904 亿行,5.72 GB(2.3186 亿行/秒,4.03 GB/秒)
-峰值内存使用量:546.75 MiB。
+4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
+Peak memory usage: 546.75 MiB.
 
--- 运行查询 3
+-- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
 FROM nyc_taxi.trips_small_inferred
@@ -289,8 +289,8 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
-返回 1 行。耗时:1.414 秒。已处理 3.2904 亿行,8.88 GB(2.3263 亿行/秒,6.28 GB/秒)
-峰值内存使用量:451.53 MiB。
+1 row in set. Elapsed: 1.414 sec. Processed 329.04 million rows, 8.88 GB (232.63 million rows/s., 6.28 GB/s.)
+Peak memory usage: 451.53 MiB.
 ```
 
 为了便于阅读，将结果汇总在下表中。
@@ -310,27 +310,24 @@ FORMAT JSON
 这些查询本身都没有进行非常复杂的处理，唯一的例外是第一个查询，它在每次执行时都会在查询过程中动态计算行程时间。不过，这些查询中每一个都需要超过一秒钟才能执行完成，而在 ClickHouse 的世界里，这已经是非常长的时间了。我们也可以注意到这些查询的内存使用情况：每个查询大约消耗 400 MB 内存，这已经相当可观。此外，每个查询似乎都读取了相同数量的行（即 3.2904 亿）。我们先快速确认一下这个表中到底有多少行数据。
 
 ```sql
--- 统计表中的行数
+-- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
-```
 
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
-┌───count()─┐
-
-1. │ 329044175 │ -- 约 3.29 亿
+   ┌───count()─┐
+1. │ 329044175 │ -- 329.04 million
    └───────────┘
-
 ```
 
-该表包含 3.2904 亿行数据,因此每个查询都会执行全表扫描。
+该表包含 3.2904 亿行数据，因此每次查询都会对该表执行一次全表扫描。
 
-### Explain 语句 {#explain-statement}
+### Explain 语句 \{#explain-statement\}
 
 现在我们有了一些长时间运行的查询,让我们来了解它们是如何执行的。为此,ClickHouse 支持 [EXPLAIN 语句命令](/sql-reference/statements/explain)。这是一个非常有用的工具,可以提供查询执行各个阶段的详细视图,而无需实际运行查询。虽然对于非 ClickHouse 专家来说可能会感到复杂,但它仍然是深入了解查询执行方式的必备工具。
 
-文档提供了详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句是什么以及如何使用它来分析查询执行。我们不再重复该指南中的内容,而是专注于几个有助于发现查询执行性能瓶颈的命令。
+文档提供了详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句是什么以及如何使用它来分析查询执行。我们不再重复该指南中的内容,而是专注于几个有助于发现查询执行性能瓶颈的命令。 
 
 **Explain indexes = 1**
 
@@ -375,7 +372,7 @@ SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
 
-查询 ID: c7e11e7b-d970-4e35-936c-ecfc24e3b879
+Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
  1. │ (Expression)                                                                        │
@@ -392,11 +389,11 @@ WHERE speed_mph > 30
 12. │             MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59 0 → 1 │
 ```
 
-在这里，我们可以看到用于执行该查询的线程数为 59，这表明其并行度很高。这种高并行性加快了查询执行；在规格更小的机器上执行同样的查询将耗费更长时间。大量并行运行的线程也可以解释该查询占用的高内存。
+在这里，我们可以看到用于执行该查询的线程数量为 59 个，这表明并行度很高。这加快了查询执行速度，而在较小的机器上执行则会耗时更长。大量并行运行的线程数量也可以解释该查询为何会使用如此多的内存。 
 
-理想情况下，应当以同样的方式排查所有慢查询，从而识别不必要的复杂查询计划，并了解每个查询读取的行数及其消耗的资源。
+理想情况下，您应以同样的方式排查所有慢查询，以识别不必要的复杂查询计划，并了解每个查询读取的行数以及其消耗的资源。
 
-## 方法论 {#methodology}
+## 方法论 \{#methodology\}
 
 在生产环境的部署中识别存在问题的查询可能会比较困难，因为在任意时刻，你的 ClickHouse 部署上都可能正在执行大量查询。 
 
@@ -416,7 +413,7 @@ WHERE speed_mph > 30
 
 _最后，要留意离群值；某条查询偶尔运行缓慢是很常见的情况，可能是因为用户尝试执行了一条即席的高开销查询，或者系统因为其他原因处于高压状态。你可以按字段 normalized_query_hash 分组，来识别那些被定期执行的高开销查询。这些通常就是最值得你深入调查的对象。_
 
-## 基础优化 {#basic-optimization}
+## 基础优化 \{#basic-optimization\}
 
 既然我们已经搭好了用于测试的框架，就可以开始进行优化了。
 
@@ -424,7 +421,7 @@ _最后，要留意离群值；某条查询偶尔运行缓慢是很常见的情�
 
 根据你摄取数据的方式，你可能利用了 ClickHouse 的[功能](/interfaces/schema-inference)，基于摄取的数据推断表结构。虽然这在入门阶段非常实用，但如果你希望优化查询性能，就需要重新审视数据表结构，使其尽可能贴合你的具体用例。
 
-### Nullable {#nullable}
+### Nullable \{#nullable\}
 
 如[最佳实践文档](/best-practices/select-data-types#avoid-nullable-columns)中所述，应尽可能避免使用 Nullable 列。经常使用它们很有诱惑力，因为它们可以让数据摄取机制更加灵活，但每次都需要处理一个额外的列，会对性能产生负面影响。
 
@@ -470,9 +467,9 @@ dropoff_location_id_nulls: 0
 
 我们只有两列存在 null 值：`mta_tax` 和 `payment_type`。其余字段不应该使用 `Nullable` 列类型。
 
-### 低基数（Low cardinality） {#low-cardinality}
+### 低基数（Low cardinality） \{#low-cardinality\}
 
-对于 String 类型列，一个简单易行的优化是充分利用 LowCardinality 数据类型。正如低基数[文档](/sql-reference/data-types/lowcardinality)中所述，ClickHouse 会对 LowCardinality 列应用字典编码，从而显著提升查询性能。
+对于 String 类型列，一个简单易行的优化是充分利用 LowCardinality 数据类型。正如低基数[文档](/sql-reference/data-types/lowcardinality)中所述，ClickHouse 会对 LowCardinality 列应用字典编码，从而显著提升查询性能。 
 
 判断哪些列适合作为 LowCardinality 的一个简单经验法则是：任何唯一值少于 10,000 个的列，都是理想候选。
 
@@ -500,11 +497,11 @@ uniq(vendor_id):           3
 
 在基数较低的情况下，这四列 `ratecode_id`、`pickup_location_id`、`dropoff_location_id` 和 `vendor_id` 非常适合使用 LowCardinality 类型。
 
-### 优化数据类型 {#optimize-data-type}
+### 优化数据类型 \{#optimize-data-type\}
 
-ClickHouse 支持大量数据类型。请务必在满足用例需求的前提下选择尽可能小的数据类型，以优化性能并减少磁盘上的数据存储空间。 
+ClickHouse 支持丰富的数据类型。请务必为你的用例选择尽可能小且合适的数据类型，以优化性能并减少磁盘上的数据存储空间。 
 
-对于数值类型，你可以检查数据集中的最小值和最大值，以确认当前的精度是否符合数据集的实际取值范围。
+对于数值类型，你可以在数据集中检查最小值和最大值，以确认当前的数据类型精度是否符合数据集的实际范围。 
 
 ```sql
 -- Find min/max values for the payment_type field
@@ -522,7 +519,7 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
 对于日期，你应选择既符合数据集特性、又最适合支持你计划执行查询的精度。
 
-### 应用这些优化 {#apply-the-optimizations}
+### 应用这些优化 \{#apply-the-optimizations\}
 
 让我们创建一个新表来使用优化后的 schema，并重新摄取这些数据。
 
@@ -587,7 +584,7 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
 新表相比之前的表小了很多。可以看到，该表的磁盘空间占用减少了约 34%（从 7.38 GiB 降至 4.89 GiB）。
 
-## 主键的重要性 {#the-importance-of-primary-keys}
+## 主键的重要性 \{#the-importance-of-primary-keys\}
 
 ClickHouse 中的主键与大多数传统数据库系统中的工作方式不同。在那些系统中，主键用于保证唯一性和数据完整性。任何插入重复主键值的尝试都会被拒绝，并且通常会创建基于 B-tree 或哈希的索引用于快速查找。 
 
@@ -599,7 +596,7 @@ ClickHouse 中的主键与大多数传统数据库系统中的工作方式不同
 
 ClickHouse 支持的其他选项，例如 Projection（投影）或物化视图，可以让你在相同数据上使用不同的主键集合。本系列博客的第二部分将更详细地讨论这一点。 
 
-### 选择主键 {#choose-primary-keys}
+### 选择主键 \{#choose-primary-keys\}
 
 选择正确的主键集合是一个复杂的话题，可能需要权衡和试验，才能找到最佳组合。 
 
@@ -647,16 +644,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">Query 1</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>第 1 次运行</th>
       <th>第 2 次运行</th>
       <th>第 3 次运行</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -664,14 +658,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.353 秒</td>
       <td>0.765 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
     </tr>
-
     <tr>
       <td>峰值内存占用</td>
       <td>440.24 MiB</td>
@@ -684,18 +676,15 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
 <table>
   <thead>
     <tr>
-      <th colspan="4">查询 2</th>
+      <th colspan="4">Query 2</th>
     </tr>
-
     <tr>
-      <th />
-
-      <th>运行 1</th>
-      <th>运行 2</th>
-      <th>运行 3</th>
+      <th></th>
+      <th>第 1 次运行</th>
+      <th>第 2 次运行</th>
+      <th>第 3 次运行</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -703,16 +692,14 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.171 秒</td>
       <td>0.248 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
-      <td>329.04 百万行</td>
-      <td>329.04 百万行</td>
-      <td>41.46 百万行</td>
+      <td>3.2904 亿</td>
+      <td>3.2904 亿</td>
+      <td>4146 万</td>
     </tr>
-
     <tr>
-      <td>峰值内存</td>
+      <td>峰值内存占用</td>
       <td>546.75 MiB</td>
       <td>531.09 MiB</td>
       <td>173.50 MiB</td>
@@ -725,16 +712,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">查询 3</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>运行 1</th>
       <th>运行 2</th>
       <th>运行 3</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -742,14 +726,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188 秒</td>
       <td>0.431 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
       <td>329.04 百万行</td>
       <td>329.04 百万行</td>
       <td>276.99 百万行</td>
     </tr>
-
     <tr>
       <td>峰值内存</td>
       <td>451.53 MiB</td>
@@ -798,7 +780,7 @@ Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
 由于有主键，仅选中了表中的一部分 granule。这一点本身就能大幅提升查询性能，因为 ClickHouse 需要处理的数据量大大减少。
 
-## 下一步 {#next-steps}
+## 下一步 \{#next-steps\}
 
 希望本指南能够帮助你更好地理解如何在 ClickHouse 中分析慢查询，以及如何让它们运行得更快。若想进一步深入这一主题，你可以阅读 [query analyzer](/operations/analyzer) 和 [profiling](/operations/optimizing-performance/sampling-query-profiler)，以更好地理解 ClickHouse 究竟是如何执行你的查询的。
 

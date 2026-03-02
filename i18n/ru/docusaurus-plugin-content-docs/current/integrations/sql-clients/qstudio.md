@@ -1,10 +1,10 @@
 ---
 slug: /integrations/qstudio
 sidebar_label: 'QStudio'
-description: 'QStudio — это бесплатный SQL-инструмент.'
-title: 'Подключите QStudio к ClickHouse'
+description: 'QStudio — это бесплатный SQL-клиент.'
+title: 'Подключение QStudio к ClickHouse'
 doc_type: 'guide'
-keywords: ['qstudio', 'sql-клиент', 'инструмент для работы с базами данных', 'инструмент для выполнения запросов', 'ide']
+keywords: ['qstudio', 'sql-клиент', 'инструмент для работы с базой данных', 'инструмент для выполнения запросов', 'ide']
 integration:
   - support_level: 'community'
   - category: 'sql_client'
@@ -16,17 +16,18 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+
 # Подключение QStudio к ClickHouse \{#connect-qstudio-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-QStudio — это бесплатный SQL GUI, который позволяет запускать SQL-скрипты, удобно просматривать таблицы, строить графики и экспортировать результаты. Он работает на всех операционных системах с любой СУБД.
+QStudio — это бесплатный графический интерфейс SQL-клиента, который позволяет запускать SQL-скрипты, легко просматривать таблицы, строить графики и экспортировать результаты. Он работает на всех операционных системах и с любой базой данных.
 
-QStudio подключается к ClickHouse через JDBC.
+QStudio подключается к ClickHouse по JDBC.
 
-## 1. Соберите параметры подключения к ClickHouse \{#1-gather-your-clickhouse-details\}
+## 1. Соберите сведения о вашем ClickHouse \{#1-gather-your-clickhouse-details\}
 
-QStudio использует JDBC поверх HTTP(S) для подключения к ClickHouse; вам потребуются:
+QStudio использует JDBC поверх HTTP(S) для подключения к ClickHouse. Для этого вам понадобятся:
 
 - endpoint
 - номер порта
@@ -37,26 +38,26 @@ QStudio использует JDBC поверх HTTP(S) для подключен
 
 ## 2. Скачайте QStudio \{#2-download-qstudio\}
 
-QStudio доступен для скачивания по адресу https://www.timestored.com/qstudio/download/
+QStudio доступен по адресу https://www.timestored.com/qstudio/download/
 
-## 3. Добавьте базу данных \{#3-add-a-database\}
+## 3. Добавление базы данных \{#3-add-a-database\}
 
-- Когда вы впервые откроете QStudio, нажмите пункт меню **Server -> Add Server** или кнопку добавления сервера на панели инструментов.
-- Затем задайте следующие параметры:
+- Когда вы впервые откроете QStudio, выберите в меню **Server->Add Server** или нажмите кнопку добавления сервера на панели инструментов.
+- Затем укажите параметры:
 
-<Image img={qstudio_add_connection} size="lg" border alt="Экран настройки подключения базы данных QStudio с параметрами подключения к ClickHouse" />
+<Image img={qstudio_add_connection} size="lg" border alt="Окно настройки подключения к базе данных QStudio с параметрами подключения к ClickHouse" />
 
-1.   Server Type: Clickhouse.com  
-2.   Обратите внимание: в поле Host ОБЯЗАТЕЛЬНО указывайте `https://`  
-     Host: https://abc.def.clickhouse.cloud  
-     Port: 8443  
-3.   Username: default  
-     Password: `XXXXXXXXXXX`  
-4.   Нажмите Add
+1.   Server Type: Clickhouse.com
+2.    Обратите внимание: в Host ОБЯЗАТЕЛЬНО должен быть указан протокол https://
+    Host: https://abc.def.clickhouse.cloud
+    Port: 8443
+3.  Username: default
+    Password: `XXXXXXXXXXX`
+ 4. Нажмите Add
 
-Если QStudio обнаружит, что у вас не установлен JDBC‑драйвер ClickHouse, он предложит загрузить его для вас:
+Если QStudio обнаружит, что у вас не установлен драйвер ClickHouse JDBC, он предложит скачать их для вас:
 
-## 4. Запрос к ClickHouse \{#4-query-clickhouse\}
+## 4. Выполнение запросов к ClickHouse \{#4-query-clickhouse\}
 
 - Откройте редактор запросов и выполните запрос. Вы можете запускать запросы с помощью:
 - Ctrl + E — выполняет выделенный текст
@@ -64,8 +65,8 @@ QStudio доступен для скачивания по адресу https://w
 
 - Пример запроса:
 
-<Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, показывающий выполнение примерного SQL-запроса к базе данных ClickHouse" />
+<Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, демонстрирующий выполнение примерного SQL-запроса в базе данных ClickHouse" />
 
-## Следующие шаги \{#next-steps\}
+## Дальнейшие шаги \{#next-steps\}
 
-Ознакомьтесь с [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, а также с [документацией ClickHouse](https://clickhouse.com/docs), чтобы подробнее узнать о возможностях ClickHouse.
+Подробнее о возможностях QStudio см. на странице [QStudio](https://www.timestored.com/qstudio), а о возможностях ClickHouse — в [документации ClickHouse](https://clickhouse.com/docs).

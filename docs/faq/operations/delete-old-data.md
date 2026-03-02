@@ -16,7 +16,7 @@ The short answer is “yes”. ClickHouse has multiple mechanisms that allow fre
 
 ClickHouse allows to automatically drop values when some condition happens. This condition is configured as an expression based on any columns, usually just static offset for any timestamp column.
 
-The key advantage of this approach is that it does not need any external system to trigger, once TTL is configured, data removal happens automatically in background.
+The key advantage of this approach is that it doesn't need any external system to trigger, once TTL is configured, data removal happens automatically in background.
 
 :::note
 TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.org/wiki/Null_device), but also between different storage systems, like from SSD to HDD.

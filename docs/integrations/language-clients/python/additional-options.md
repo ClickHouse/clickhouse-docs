@@ -14,7 +14,7 @@ ClickHouse Connect provides a number of additional options for advanced use case
 
 ## Global settings {#global-settings}
 
-There are a small number of settings that control ClickHouse Connect behavior globally. They are accessed from the top level `common` package:
+There are a small number of settings that control ClickHouse Connect behavior globally. They're accessed from the top level `common` package:
 
 ```python
 from clickhouse_connect import common
@@ -25,7 +25,7 @@ common.get_setting('invalid_setting_action')
 ```
 
 :::note
-These common settings `autogenerate_session_id`, `product_name`, and `readonly` should _always_ be modified before creating a client with the `clickhouse_connect.get_client` method. Changing these settings after client creation does not affect the behavior of existing clients.
+These common settings `autogenerate_session_id`, `product_name`, and `readonly` should _always_ be modified before creating a client with the `clickhouse_connect.get_client` method. Changing these settings after client creation doesn't affect the behavior of existing clients.
 :::
 
 The following global settings are currently defined:
@@ -69,14 +69,14 @@ To use a SOCKS proxy, you can send a `urllib3` `SOCKSProxyManager` as the `pool_
 
 ## "Old" JSON data type {#old-json-data-type}
 
-The experimental `Object` (or `Object('json')`) data type is deprecated and should be avoided in a production environment. ClickHouse Connect continues to provide limited support for the data type for backward compatibility. Note that this support does not include queries that are expected to return "top level" or "parent" JSON values as dictionaries or the equivalent, and such queries will result in an exception.
+The experimental `Object` (or `Object('json')`) data type is deprecated and should be avoided in a production environment. ClickHouse Connect continues to provide limited support for the data type for backward compatibility. Note that this support doesn't include queries that are expected to return "top level" or "parent" JSON values as dictionaries or the equivalent, and such queries will result in an exception.
 
 ## "New" Variant/Dynamic/JSON datatypes (experimental feature) {#new-variantdynamicjson-datatypes-experimental-feature}
 
 Beginning with the 0.8.0 release, `clickhouse-connect` provides experimental support for the new (also experimental) ClickHouse types Variant, Dynamic, and JSON.
 
 ### Usage notes {#usage-notes}
-- JSON data can be inserted as either a Python dictionary or a JSON string containing a JSON object `{}`. Other forms of JSON data are not supported.
+- JSON data can be inserted as either a Python dictionary or a JSON string containing a JSON object `{}`. Other forms of JSON data aren't supported.
 - Queries using subcolumns/paths for these types will return the type of the sub column.
 - See the main ClickHouse [documentation](https://clickhouse.com/docs) for other usage notes.
 
@@ -86,4 +86,4 @@ Beginning with the 0.8.0 release, `clickhouse-connect` provides experimental sup
 - Due to internal format changes, `clickhouse-connect` is only compatible with Variant types beginning with the ClickHouse 24.7 release
 - Returned JSON objects will only return the `max_dynamic_paths` number of elements (which defaults to 1024). This will be fixed in a future release.
 - Inserts into `Dynamic` columns will always be the String representation of the Python value. This will be fixed in a future release, once https://github.com/ClickHouse/ClickHouse/issues/70395 has been fixed.
-- The implementation for the new types has not been optimized in C code, so performance may be somewhat slower than for simpler, established data types.
+- The implementation for the new types hasn't been optimized in C code, so performance may be somewhat slower than for simpler, established data types.

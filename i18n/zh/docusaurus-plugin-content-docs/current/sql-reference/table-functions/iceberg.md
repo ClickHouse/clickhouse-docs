@@ -29,7 +29,7 @@ icebergLocal(named_collection[, option=value [,..]])
 
 ## 参数 \{#arguments\}
 
-各参数的说明分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 中对应参数的说明一致。
+参数说明分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 的参数说明相同。
 `format` 表示 Iceberg 表中数据文件的格式。
 
 ### 返回值 \{#returned-value\}
@@ -48,7 +48,7 @@ ClickHouse 目前支持通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `
 
 ## 定义命名集合 \{#defining-a-named-collection\}
 
-下面是一个示例，演示如何配置命名集合来存储 URL 和凭证：
+以下是一个命名集合的配置示例，用于存储 URL 和凭据：
 
 ```xml
 <clickhouse>
@@ -69,17 +69,18 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
+
 ## 使用数据目录 \{#iceberg-writes-catalogs\}
 
 Iceberg 表也可以与多种数据目录配合使用，例如 [REST Catalog](https://iceberg.apache.org/rest-catalog-spec/)、[AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html) 和 [Unity Catalog](https://www.unitycatalog.io/)。
 
 :::important
-在使用目录时，大多数用户会希望使用 `DataLakeCatalog` 数据库引擎，它将 ClickHouse 连接到数据目录以发现你的表。你可以使用这个数据库引擎来代替手动使用 `IcebergS3` 表引擎创建每个表。
+在使用目录时，大多数用户更适合使用 `DataLakeCatalog` 数据库引擎。该引擎将 ClickHouse 连接到你的目录，以发现其中的表。你可以使用这个数据库引擎，而无需使用 `IcebergS3` 表引擎手动逐个创建表。
 :::
 
-要配合这些目录使用 Iceberg 表，请创建一个使用 `IcebergS3` 引擎的表，并提供必要的设置。
+要配合目录使用 Iceberg 表，请先创建一个使用 `IcebergS3` 引擎的表，并提供必要的设置。
 
-例如，将 REST Catalog 与 MinIO 存储一起使用：
+例如，将 REST Catalog 与 MinIO 存储一起使用时：
 
 ```sql
 CREATE TABLE `database_name.table_name`
@@ -96,7 +97,7 @@ SETTINGS
   storage_catalog_url="http://rest:8181/v1"
 ```
 
-或者，将 AWS Glue Data Catalog 与 S3 配合使用：
+或者，将 AWS Glue Data Catalog 与 S3 结合使用：
 
 ```sql
 CREATE TABLE `my_database.my_table`  
@@ -113,15 +114,16 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
+
 ## 模式演进 \{#schema-evolution\}
 
-目前，借助 ClickHouse，您可以读取模式随时间发生变化的 Iceberg 表。我们当前支持读取以下情况的表：列被添加或删除，且列的顺序发生变化。您也可以将一个原本要求必须有值的列更改为允许为 NULL 的列。此外，我们支持对简单类型进行允许的类型转换，具体包括：  
+目前，借助 CH，你可以读取其模式随时间发生变化的 Iceberg 表。我们目前支持读取那些列被添加或删除、并且列顺序发生变化的表。你也可以将某个原本不允许为 NULL 的列更改为允许为 NULL 的列。此外，我们支持对简单类型进行类型转换，具体包括： 
 
 * int -> long
 * float -> double
 * decimal(P, S) -> decimal(P', S) 其中 P' > P。
 
-目前尚不支持修改嵌套结构，或更改数组和 Map 中元素的类型。
+目前尚不支持修改嵌套结构，或变更数组和 map 中元素的类型。
 
 ## 分区裁剪 \{#partition-pruning\}
 
@@ -156,11 +158,11 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
 ### 重要注意事项 \{#important-considerations\}
 
-* **快照（Snapshot）** 通常在以下情况下创建：
-* 向表中写入新数据时
-* 执行某种数据压缩（compaction）操作时
+* 通常在以下情况下会创建 **snapshot（快照）**：
+* 有新数据写入到表中
+* 执行了某种数据压缩（compaction）操作
 
-* **模式更改通常不会产生快照** —— 在对经历过模式演进（schema evolution）的表使用时间回溯（time travel）时，这会导致一些重要的行为差异。
+* **模式变更通常不会创建 snapshot（快照）** —— 这在对经历过模式演进的表使用 time travel（时间回溯）时会产生一些重要的行为差异。
 
 ### 示例场景 \{#example-scenarios\}
 
@@ -226,9 +228,9 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 * 在 ts1 和 ts2：只显示原始的两列
 * 在 ts3：显示全部三列，第一行的 price 为 NULL
 
-#### 场景 2：历史与当前模式的差异 \{#scenario-2\}
+#### 场景 2：历史 Schema 与当前 Schema 的差异 \{#scenario-2\}
 
-在当前时刻执行的时间回溯查询，其显示的模式可能与当前表不同：
+在当前时刻执行的时间回溯查询，可能会显示与当前表不同的 Schema：
 
 ```sql
 -- Create a table
@@ -266,11 +268,12 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
     +------------+------------+-----+
 ```
 
-这是因为 `ALTER TABLE` 不会创建新的快照，而 Spark 在处理当前表时，会从最新的元数据文件中读取 `schema_id` 的值，而不是从某个快照中读取。
+这是因为 `ALTER TABLE` 不会创建新的快照；但对于当前表，Spark 会从最新的元数据文件中读取 `schema_id`，而不是从某个快照中获取。
 
-#### 场景 3：历史与当前模式的差异 \{#scenario-3\}
 
-第二个问题是，在进行时间回溯（time travel）时，你无法获取在尚未向表写入任何数据之前的表状态：
+#### 场景 3：历史模式与当前模式的差异 \{#scenario-3\}
+
+第二种情况是，在执行时间穿梭（time travel）时，你无法获取该表在写入任何数据之前的状态：
 
 ```sql
 -- Create a table
@@ -287,11 +290,12 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
   SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
-在 ClickHouse 中，其行为与 Spark 一致。你可以直接将 Spark 的 Select 查询类比为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
+在 ClickHouse 中，其行为与 Spark 一致。你可以把 Spark 的 Select 查询在概念上替换为 ClickHouse 的 Select 查询，二者的工作方式是完全相同的。
+
 
 ## 元数据文件解析 \{#metadata-file-resolution\}
 
-在 ClickHouse 中使用 `iceberg` 表函数时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。下面说明该解析过程是如何进行的：
+在 ClickHouse 中使用 `iceberg` 表函数时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。以下是该解析过程的具体工作方式：
 
 ### 候选文件搜索（按优先级顺序） \{#candidate-search\}
 
@@ -329,7 +333,7 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 ## 元数据缓存 \{#metadata-cache\}
 
-`Iceberg` 表引擎和表函数支持元数据缓存，用于存储 manifest 文件、manifest 列表以及元数据 JSON 的相关信息。该缓存保存在内存中。此功能由 `use_iceberg_metadata_files_cache` 设置项控制，默认启用。
+`Iceberg` 表引擎和表函数支持元数据缓存，用于存储 manifest 文件、manifest 列表以及元数据 JSON 的信息。该缓存存储在内存中。此功能由 `use_iceberg_metadata_files_cache` 设置项控制，默认启用。
 
 ## 别名 \{#aliases\}
 
@@ -350,12 +354,13 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 目前这是一个实验性功能，因此需要先将其手动启用：
 
 ```sql
-SET allow_experimental_insert_into_iceberg = 1;
+SET allow_insert_into_iceberg = 1;
 ```
+
 
 ### 创建表 \{#create-iceberg-table\}
 
-要创建自己的空 Iceberg 表，请使用与读取相同的命令，但需要显式指定表结构（schema）。
+要创建自己的空 Iceberg 表，请使用与读取相同的命令，但需要显式指定模式（schema）。
 写入支持 Iceberg 规范中定义的所有数据格式，例如 Parquet、Avro、ORC。
 
 ### 示例 \{#example-iceberg-writes-create\}
@@ -374,7 +379,7 @@ ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/')
 
 ### INSERT \{#writes-inserts\}
 
-创建新表后，可使用常规的 ClickHouse 语法插入数据。
+创建新表后，可以使用常规的 ClickHouse 语法来插入数据。
 
 ### 示例 \{#example-iceberg-writes-insert\}
 
@@ -398,12 +403,12 @@ y: 993
 
 ### DELETE \{#iceberg-writes-delete\}
 
-ClickHouse 也支持在 merge-on-read 格式下删除多余行。
-此查询将创建一个包含 position delete 文件的新快照。
+在 merge-on-read 格式中删除多余行在 ClickHouse 中同样受支持。
+此查询会创建一个包含 position delete 文件的新快照。
 
-注意：如果您希望将来使用其他 Iceberg 引擎（例如 Spark）读取表，则需要禁用 `output_format_parquet_use_custom_encoder` 和 `output_format_parquet_parallel_encoding` 这两个设置。
-这是因为 Spark 是通过 parquet 字段 ID 来读取这些文件的，而在启用这些设置时，ClickHouse 目前尚不支持写出字段 ID。
-我们计划在未来修复这一行为。
+注意：如果希望将来使用其他 Iceberg 引擎（例如 Spark）读取这些表，则需要禁用 `output_format_parquet_use_custom_encoder` 和 `output_format_parquet_parallel_encoding` 这两个设置项。
+这是因为 Spark 是通过 Parquet 字段 ID 来读取这些文件，而当这些开关启用时，ClickHouse 目前尚不支持写入字段 ID。
+我们计划在未来修复此行为。
 
 ### 示例 \{#example-iceberg-writes-delete\}
 
@@ -422,7 +427,7 @@ y: 993
 
 ### 模式演进 \{#iceberg-writes-schema-evolution\}
 
-ClickHouse 允许对简单类型（非 tuple、非 array、非 map）列执行添加、删除或修改操作。
+ClickHouse 允许对具有简单类型（非 tuple、非 array、非 map）的列执行添加、删除、修改或重命名操作。
 
 ### 示例 \{#example-iceberg-writes-evolution\}
 
@@ -481,11 +486,33 @@ Row 1:
 ──────
 x: Ivanov
 y: 993
+
+ALTER TABLE iceberg_writes_example RENAME COLUMN y TO value;
+SHOW CREATE TABLE iceberg_writes_example;
+
+   ┌─statement─────────────────────────────────────────────────┐
+1. │ CREATE TABLE default.iceberg_writes_example              ↴│
+   │↳(                                                        ↴│
+   │↳    `x` Nullable(String),                                ↴│
+   │↳    `value` Nullable(Int64)                              ↴│
+   │↳)                                                        ↴│
+   │↳ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/') │
+   └───────────────────────────────────────────────────────────┘
+
+SELECT *
+FROM iceberg_writes_example
+FORMAT VERTICAL;
+
+Row 1:
+──────
+x: Ivanov
+value: 993
 ```
 
-### 压缩 \{#iceberg-writes-compaction\}
 
-ClickHouse 支持对 Iceberg 表进行压缩。目前，它可以在更新元数据的同时，将 position delete 文件合并到数据文件中。先前的快照 ID 和时间戳保持不变，因此仍然可以使用相同的值进行时间旅行（time travel）。
+### 合并整理（Compaction） \{#iceberg-writes-compaction\}
+
+ClickHouse 支持对 Iceberg 表进行合并整理（compaction）。当前，它可以在更新元数据的同时，将 position delete 文件合并到数据文件中。先前的快照 ID 和时间戳保持不变，因此仍然可以使用相同的值进行时间旅行（time travel）。
 
 使用方法如下：
 
@@ -503,6 +530,7 @@ Row 1:
 x: Ivanov
 y: 993
 ```
+
 
 ## 另请参阅 \{#see-also\}
 

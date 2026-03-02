@@ -108,7 +108,7 @@ wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
 1
 ```
 
-В этом примере мы перенаправляем сырой HTTP-запрос в netcat:
+В этом примере мы передаём сырой HTTP-запрос в netcat:
 
 ```bash title="command"
 echo -ne 'GET /?query=SELECT%201 HTTP/1.0\r\n\r\n' | nc localhost 8123
@@ -611,7 +611,7 @@ Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while 
 __exception__
 ```
 
-Вот похожий пример, но в формате `CSV`.
+Ниже приведён похожий пример, но в формате `CSV`.
 
 
 ```bash

@@ -95,7 +95,7 @@ $$
 <br/>
 
 For object storage connectors (S3 and GCS),
-only the ClickPipes compute cost is incurred since the ClickPipes pod is not processing data
+only the ClickPipes compute cost is incurred since the ClickPipes pod isn't processing data
 but only orchestrating the transfer which is operated by the underlying ClickHouse service:
 
 $$
@@ -110,6 +110,6 @@ $$
 
 The philosophy behind ClickPipes pricing is
 to cover the operating costs of the platform while offering an easy and reliable way to move data to ClickHouse Cloud.
-From that angle, our market analysis revealed that we are positioned competitively.
+From that angle, our market analysis revealed that we're positioned competitively.
 
 </details>

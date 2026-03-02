@@ -12,7 +12,7 @@ doc_type: 'reference'
 導入バージョン: v22.1
 
 `contingency` 関数は、テーブル内の 2 つの列間の関連性を測定する値である [コンティンジェンシー係数 (contingency coefficient)](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) を計算します。
-計算方法は [`cramersV` 関数](./cramersV.md) と類似していますが、平方根の中の分母が異なります。
+計算方法は [`cramersV` 関数](/sql-reference/aggregate-functions/reference/cramersv) と類似していますが、平方根の中の分母が異なります。
 
 **構文**
 

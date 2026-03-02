@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 When using Vector with ClickStack, users are responsible for defining their own schemas. These schemas may follow OpenTelemetry conventions, but they can also be entirely custom, representing user-defined event structures. In practice, Vector ingestion is most commonly used for **logs**, where users want full control over parsing and enrichment before data is written to ClickHouse.
 
-This guide focuses on onboarding data into ClickStack using Vector for both ClickStack Open Source and Managed ClickStack. For simplicity, it does not cover Vector sources or pipeline configuration in depth. Instead, it focuses on configuring the **sink** that writes data into ClickHouse and ensuring the resulting schema is compatible with ClickStack. 
+This guide focuses on onboarding data into ClickStack using Vector for both ClickStack Open Source and Managed ClickStack. For simplicity, it doesn't cover Vector sources or pipeline configuration in depth. Instead, it focuses on configuring the **sink** that writes data into ClickHouse and ensuring the resulting schema is compatible with ClickStack. 
 
 The only strict requirement for ClickStack, whether using the open-source or managed deployment, is that the data includes a **timestamp column** (or equivalent time field), which can be declared when configuring the data source in the ClickStack UI.
 
@@ -102,7 +102,7 @@ sinks:
 
 By default, we recommend using the **`json_each_row`** format, which encodes each event as a single JSON object per row. This is the default and recommended format for ClickStack when ingesting JSON data, and should be preferred over alternative formats such as JSON objects encoded as strings.
 
-The ClickHouse sink also supports **Arrow stream encoding** (currently in beta). This can offer higher throughput but comes with important constraints: the database and table must be static, as the schema is fetched once at startup, and dynamic routing is not supported. For this reason, Arrow encoding is best suited for fixed, well-defined ingestion pipelines.
+The ClickHouse sink also supports **Arrow stream encoding** (currently in beta). This can offer higher throughput but comes with important constraints: the database and table must be static, as the schema is fetched once at startup, and dynamic routing isn't supported. For this reason, Arrow encoding is best suited for fixed, well-defined ingestion pipelines.
 
 We recommend reviewing the available sink configuration options in the [Vector documentation](https://vector.dev/docs/reference/configuration/sinks/clickhouse):
 
@@ -126,7 +126,7 @@ The configuration above assumes an Nginx-style schema with a `time_local` column
 
 We also recommend updating the `Default SELECT` to explicitly define which columns are returned in the logs view. If additional fields are available, such as service name, log level, or a body column, these can also be configured. The timestamp display column can also be overridden if it differs from the column used in the table's primary key and configured above. 
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 
@@ -210,7 +210,7 @@ sinks:
 
 By default, we recommend using the **`json_each_row`** format, which encodes each event as a single JSON object per row. This is the default and recommended format for ClickStack when ingesting JSON data, and should be preferred over alternative formats such as JSON objects encoded as strings.
 
-The ClickHouse sink also supports **Arrow stream encoding** (currently in beta). This can offer higher throughput but comes with important constraints: the database and table must be static, as the schema is fetched once at startup, and dynamic routing is not supported. For this reason, Arrow encoding is best suited for fixed, well-defined ingestion pipelines.
+The ClickHouse sink also supports **Arrow stream encoding** (currently in beta). This can offer higher throughput but comes with important constraints: the database and table must be static, as the schema is fetched once at startup, and dynamic routing isn't supported. For this reason, Arrow encoding is best suited for fixed, well-defined ingestion pipelines.
 
 We recommend reviewing the available sink configuration options in the [Vector documentation](https://vector.dev/docs/reference/configuration/sinks/clickhouse):
 
@@ -234,7 +234,7 @@ The configuration above assumes an Nginx-style schema with a `time_local` column
 
 We also recommend updating the `Default SELECT` to explicitly define which columns are returned in the logs view. If additional fields are available, such as service name, log level, or a body column, these can also be configured. The timestamp display column can also be overridden if it differs from the column used in the table's primary key and configured above. 
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined using a SQL expression that reconstructs an Nginx log line from the available fields.
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 
@@ -375,7 +375,7 @@ The configuration assumes the Nginx schema with a `time_local` column used as th
 
 We have also specified the default select to be `time_local, remote_addr, status, request`, which defines which columns are returned in the logs view.
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined as the SQL expression:
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined as the SQL expression:
 
 ```sql
 concat(
@@ -527,7 +527,7 @@ The configuration assumes the Nginx schema with a `time_local` column used as th
 
 We have also specified the default select to be `time_local, remote_addr, status, request`, which defines which columns are returned in the logs view.
 
-In the example above, a `Body` column does not exist in the data. Instead, it is defined as the SQL expression:
+In the example above, a `Body` column doesn't exist in the data. Instead, it is defined as the SQL expression:
 
 ```sql
 concat(

@@ -22,7 +22,7 @@ EXECUTE AS target_user subquery;
 
 2 番目の形式（`subquery` を含むもの）は、指定された `subquery` のみを、指定された `target_user` として実行します。
 
-どちらの形式も機能させるには、サーバー設定 [allow&#95;impersonate&#95;user](/operations/server-configuration-parameters/settings#allow_impersonate_user)
+どちらの形式も機能させるには、コンフィグ設定 `access_control_improvements.allow_impersonate_user`
 を `1` に設定し、さらに `IMPERSONATE` 権限が付与されている必要があります。例えば、次のコマンドは
 
 ```sql

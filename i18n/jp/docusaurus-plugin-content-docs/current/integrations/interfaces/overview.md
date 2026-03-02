@@ -32,6 +32,11 @@ ClickHouse サーバーには、パワーユーザー向けの組み込みビジ
 * Play UI: ブラウザで `/play` を開きます。
 * Advanced Dashboard: ブラウザで `/dashboard` を開きます。
 * ClickHouse エンジニア向けバイナリシンボルビューア: ブラウザで `/binary` を開きます。
+* オブザーバビリティ向け ClickStack UI: ブラウザで `/clickstack` を開きます。
+
+:::info[ClickStack]
+このバージョンの ClickStack はローカルでのデバッグや迅速な調査に適していますが、本番環境向けではありません。本番環境対応のフル機能版 ClickStack については、[オープンソース ClickStack](/use-cases/observability/clickstack/getting-started/oss) を参照してください。
+:::
 
 また、ClickHouse を扱うためのサードパーティ製ライブラリも多数存在します:
 

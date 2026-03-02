@@ -60,7 +60,7 @@ ClickHouse 拥有数量庞大的函数可用于数据分析——远远超过 Ta
 * **`RAND()`** *(在 v0.2.1 中新增)* — 返回一个整数 (UInt32) 值，例如 `3446222955`。等价于 [`rand()`](/sql-reference/functions/random-functions/#rand)。
 * **`RANDOM()`** *(在 v0.2.1 中新增)* — 非官方的 [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) Tableau 函数，返回 0 到 1 之间的浮点数。
 * **`RAND_CONSTANT([optional_field])`** *(在 v0.2.1 中添加)* — 生成一个包含随机值的常量列。有点类似 `{RAND()}` 的固定 LOD，但速度更快。等价于 [`randConstant()`](/sql-reference/functions/random-functions/#randConstant)。
-* **`REAL([my_number])`** — 将字段转换为浮点类型（Float64）。更多详情参见[`此处`](/sql-reference/data-types/decimal/#operations-and-result-type)。
+* **`REAL([my_number])`** — 将字段转换为浮点类型（Float64）。更多详情参见 [`此处`](/sql-reference/data-types/decimal/#operations-and-result-type)。
 * **`SHA256([my_string])`** *(在 v0.2.1 中新增)* — 从字符串计算 SHA-256 哈希，并将得到的字节集合作为字符串（FixedString 类型）返回。可方便地与 `HEX()` 函数一起使用，例如 `HEX(SHA256([my_string]))`。等价于 [`SHA256()`](/sql-reference/functions/hash-functions#SHA256)。
 * **`SKEWNESS([my_number])`** — 计算序列的样本偏度。等价于 [`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp)。
 * **`SKEWNESSP([my_number])`** — 计算一组数值的偏度。等价于 [`skewPop()`](/sql-reference/aggregate-functions/reference/skewpop)。

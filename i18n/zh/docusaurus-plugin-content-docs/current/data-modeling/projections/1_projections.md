@@ -105,7 +105,7 @@ CREATE TABLE nyc_taxi.trips_with_projection AS nyc_taxi.trips;
 INSERT INTO nyc_taxi.trips_with_projection SELECT * FROM nyc_taxi.trips;
 ```
 
-要添加投影，我们使用 `ALTER TABLE` 语句配合 `ADD PROJECTION` 语句：
+要添加投影，我们使用 `ALTER TABLE` 语句和 `ADD PROJECTION` 语句：
 
 ```sql
 ALTER TABLE nyc_taxi.trips_with_projection
@@ -123,7 +123,7 @@ ADD PROJECTION prj_tip_amount
 ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
 ```
 
-现在我们已经添加了投影，再来运行一次该查询：
+现在已经添加了投影，我们再运行一次该查询：
 
 ```sql runnable
 SELECT
@@ -153,6 +153,7 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
+
 
 ### 使用投影加速英国房价已付数据查询 \{#using-projections-to-speed-up-UK-price-paid\}
 
@@ -505,8 +506,8 @@ CREATE TABLE page_views
 ENGINE = MergeTree
 ORDER BY (event_date, id)
 SETTINGS
-  index_granularity = 1, -- 每个粒度一行
-  max_bytes_to_merge_at_max_space_in_pool = 1; -- 禁用合并
+  index_granularity = 1, -- one row per granule
+  max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
 ```
 
 然后向表中插入数据：
@@ -550,32 +551,33 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 
 ```response
     ┌─explain────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression ((投影名称 + 投影))                                              │
+ 1. │ Expression ((Project names + Projection))                                              │
  2. │   Expression                                                                           │                                                                        
  3. │     ReadFromMergeTree (default.page_views)                                             │
- 4. │     投影:                                                                       │
- 5. │       名称: region_proj                                                                │
- 6. │         描述: 投影已分析并用于数据分片级别过滤 │
- 7. │         条件: (region in ['us_west', 'us_west'])                                  │
- 8. │         搜索算法: 二分查找                                                │
- 9. │         数据分片: 3                                                                       │
-10. │         标记: 3                                                                       │
-11. │         范围: 3                                                                      │
-12. │         行数: 3                                                                        │
-13. │         已过滤数据分片: 2                                                              │
-14. │       名称: user_id_proj                                                               │
-15. │         描述: 投影已分析并用于数据分片级别过滤 │
-16. │         条件: (user_id in [107, 107])                                             │
-17. │         搜索算法: 二分查找                                                │
-18. │         数据分片: 1                                                                       │
-19. │         标记: 1                                                                       │
-20. │         范围: 1                                                                      │
-21. │         行数: 1                                                                        │
-22. │         已过滤数据分片: 2                                                              │
+ 4. │     Projections:                                                                       │
+ 5. │       Name: region_proj                                                                │
+ 6. │         Description: Projection has been analyzed and is used for part-level filtering │
+ 7. │         Condition: (region in ['us_west', 'us_west'])                                  │
+ 8. │         Search Algorithm: binary search                                                │
+ 9. │         Parts: 3                                                                       │
+10. │         Marks: 3                                                                       │
+11. │         Ranges: 3                                                                      │
+12. │         Rows: 3                                                                        │
+13. │         Filtered Parts: 2                                                              │
+14. │       Name: user_id_proj                                                               │
+15. │         Description: Projection has been analyzed and is used for part-level filtering │
+16. │         Condition: (user_id in [107, 107])                                             │
+17. │         Search Algorithm: binary search                                                │
+18. │         Parts: 1                                                                       │
+19. │         Marks: 1                                                                       │
+20. │         Ranges: 1                                                                      │
+21. │         Rows: 1                                                                        │
+22. │         Filtered Parts: 2                                                              │
     └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 `EXPLAIN` 的输出（如上所示）自上而下展示了逻辑查询计划：
+
 
 | 行号 | 描述                                                                                              |
 |------|---------------------------------------------------------------------------------------------------|

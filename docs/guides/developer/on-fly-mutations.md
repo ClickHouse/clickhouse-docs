@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 ## On-the-fly mutations {#on-the-fly-mutations}
 
-When on-the-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When on-the-fly mutations are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
+When on-the-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When on-the-fly mutations aren't enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
 On-the-fly mutations can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
 
@@ -48,7 +48,7 @@ SET apply_mutations_on_fly = 0;
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 ```
 
-Note that the values of the rows have not yet been updated when we query the new table:
+Note that the values of the rows haven't yet been updated when we query the new table:
 
 ```response
 ┌─id─┬─v─┐
@@ -77,7 +77,7 @@ The `SELECT` query now returns the correct result immediately, without having to
 
 ## Performance impact {#performance-impact}
 
-When on-the-fly mutations are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
+When on-the-fly mutations are enabled, mutations aren't materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
 
 If the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of unmaterialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
 

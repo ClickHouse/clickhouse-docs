@@ -15,7 +15,7 @@ When replicating data from PostgreSQL to ClickHouse, it's important to understan
 
 TOAST (The Oversized-Attribute Storage Technique) is PostgreSQL's mechanism for handling large field values. When a row exceeds the maximum row size (typically 2KB, but this can vary depending on the PostgreSQL version and exact settings), PostgreSQL automatically moves large field values into a separate TOAST table, storing only a pointer in the main table.
 
-It's important to note that during Change Data Capture (CDC), unchanged TOAST columns are not included in the replication stream. This can lead to incomplete data replication if not handled properly.
+It's important to note that during Change Data Capture (CDC), unchanged TOAST columns aren't included in the replication stream. This can lead to incomplete data replication if not handled properly.
 
 During the initial load (snapshot), all column values, including TOAST columns, will be replicated correctly regardless of their size. The limitations described in this guide primarily affect the ongoing CDC process after the initial load.
 
@@ -49,14 +49,14 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 
 Refer to [this blog post](https://xata.io/blog/replica-identity-full-performance) for performance considerations when setting `REPLICA IDENTITY FULL`.
 
-## Replication behavior when REPLICA IDENTITY FULL is not set {#replication-behavior-when-replica-identity-full-is-not-set}
+## Replication behavior when REPLICA IDENTITY FULL isn't set {#replication-behavior-when-replica-identity-full-is-not-set}
 
-If `REPLICA IDENTITY FULL` is not set for a table with TOAST columns, you may encounter the following issues when replicating to ClickHouse:
+If `REPLICA IDENTITY FULL` isn't set for a table with TOAST columns, you may encounter the following issues when replicating to ClickHouse:
 
 1. For INSERT operations, all columns (including TOAST columns) will be replicated correctly.
 
 2. For UPDATE operations:
-   - If a TOAST column is not modified, its value will appear as NULL or empty in ClickHouse.
+   - If a TOAST column isn't modified, its value will appear as NULL or empty in ClickHouse.
    - If a TOAST column is modified, it will be replicated correctly.
 
 3. For DELETE operations, TOAST column values will appear as NULL or empty in ClickHouse.

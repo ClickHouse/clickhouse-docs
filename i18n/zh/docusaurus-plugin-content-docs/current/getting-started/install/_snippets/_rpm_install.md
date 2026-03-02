@@ -1,26 +1,26 @@
-# 在基于 rpm 的发行版上安装 ClickHouse \{#from-rpm-packages\}
+# 在基于 RPM 的发行版上安装 ClickHouse \{#from-rpm-packages\}
 
-> 建议在 **CentOS**、**RedHat** 及其他所有基于 rpm 的 Linux 发行版上使用官方预编译的 `rpm` 软件包。
+> 建议在 **CentOS**、**RedHat** 以及所有其他基于 RPM 的 Linux 发行版上使用官方预编译的 `rpm` 软件包。
 
 <VerticalStepper>
 
-## 配置 RPM 软件源 \{#setup-the-rpm-repository\}
+## 设置 RPM 仓库 \{#setup-the-rpm-repository\}
 
-运行以下命令添加官方软件源：
+通过运行以下命令添加官方仓库：
 
 ```bash
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
 ```
 
-对于使用 `zypper` 包管理器的系统（openSUSE、SLES），请运行：
+对于使用 `zypper` 包管理器的系统（如 openSUSE、SLES），运行：
 
 ```bash
 sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
 sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
-在以下步骤中，您可以根据所使用的包管理器，将 `yum install` 替换为 `zypper install`。
+在后续步骤中，可以根据你使用的包管理器，将 `yum install` 替换为 `zypper install`。
 
 ## 安装 ClickHouse 服务端和客户端 \{#install-clickhouse-server-and-client-1\}
 
@@ -38,9 +38,9 @@ sudo yum install -y clickhouse-server clickhouse-client
 sudo yum install clickhouse-server-22.8.7.34
 ```
 
-## 启动 ClickHouse 服务器 \{#start-clickhouse-server-1\}
+## 启动 ClickHouse 服务端 \{#start-clickhouse-server-1\}
 
-要启动 ClickHouse 服务器，运行以下命令：
+要启动 ClickHouse 服务端，运行：
 
 ```bash
 sudo systemctl enable clickhouse-server
@@ -48,13 +48,13 @@ sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
 ```
 
-要启动 ClickHouse 客户端，请运行：
+要启动 ClickHouse 客户端，运行：
 
 ```sql
 clickhouse-client
 ```
 
-如果已为服务器设置密码，请运行：
+如果你为服务端设置了密码，则需要运行：
 
 ```bash
 clickhouse-client --password
@@ -63,12 +63,12 @@ clickhouse-client --password
 ## 安装独立的 ClickHouse Keeper \{#install-standalone-clickhouse-keeper-1\}
 
 :::tip
-在生产环境中，我们强烈建议在独立节点上运行 ClickHouse Keeper。
+在生产环境中，我们强烈建议在专用节点上运行 ClickHouse Keeper。
 在测试环境中，如果你决定在同一台服务器上同时运行 ClickHouse Server 和 ClickHouse Keeper，
-则无需单独安装 ClickHouse Keeper，因为它已经包含在 ClickHouse Server 中。
+则无需单独安装 ClickHouse Keeper，因为它已包含在 ClickHouse server 中。
 :::
 
-要在独立的 ClickHouse Keeper 服务器上安装 `clickhouse-keeper`，请运行：
+要在独立的 ClickHouse Keeper 服务器上安装 `clickhouse-keeper`，运行：
 
 ```bash
 sudo yum install -y clickhouse-keeper

@@ -104,7 +104,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
     (4, 'East', 2);
 ```
 
-新しいデータを追加した後の最新の極値を表示：
+新しいデータを追加した後の更新された極値を表示します：
 
 ```sql
 SELECT
@@ -143,7 +143,8 @@ GROUP BY location_id, location_name
 ORDER BY location_id;
 ```
 
-これで期待どおりの結果が得られました。
+これで期待どおりの結果が得られます。
+
 
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
@@ -158,7 +159,9 @@ ORDER BY location_id;
 `SimpleState` を使用すると、部分集計状態を結合するために `Merge` コンビネータを使う必要がなくなります。
 :::
 
+
 ## 関連項目 \{#see-also\}
+
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

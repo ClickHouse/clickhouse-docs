@@ -508,9 +508,9 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 可用的 tokenizer：
 
 * `splitByNonAlpha` 使用非字母数字的 ASCII 字符来拆分字符串（另见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)）。
-* `splitByString(S)` 使用用户定义的分隔字符串 `S` 来拆分字符串（另见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)）。可以通过可选参数指定分隔符列表，例如：`tokenizer = splitByString([', ', '; ', '\n', '\\'])`。注意，每个分隔字符串可以由多个字符组成（如示例中的 `', '`）。如果未显式指定（例如 `tokenizer = splitByString`），默认的分隔符列表是单个空格字符 `[' ']`。
-* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram（另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)）。ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokenizer = ngrams(3)`。如果未显式指定（例如 `tokenizer = ngrams`），默认的 ngram 长度为 3。
-* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length`（含）之间的可变长度 n-gram（另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。如果提供参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。与 `ngrams(N)` 相比，`sparseGrams` tokenizer 生成可变长度的 N-gram，从而可以更灵活地表示原始文本。例如，`tokenizer = sparseGrams(3, 5, 4)` 会在内部从输入字符串生成 3、4、5-gram，但只返回 4 和 5-gram。
+* `splitByString(S)` 使用用户定义的分隔字符串 `S` 来拆分字符串（另见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)）。可以通过可选参数指定分隔符列表，例如：`tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`。注意，每个分隔字符串可以由多个字符组成（如示例中的 `', '`）。如果未显式指定，默认的分隔符列表是单个空格字符 `[' ']`。
+* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram（另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)）。ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokens(value, 'ngrams', 3)`。如果未显式指定，默认的 ngram 长度为 3。
+* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length`（含）之间的可变长度 n-gram（另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。如果提供参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。与 `ngrams(N)` 相比，`sparseGrams` tokenizer 生成可变长度的 N-gram，从而可以更灵活地表示原始文本。例如，`tokens(value, 'sparseGrams', 3, 5, 4)` 会在内部从输入字符串生成 3、4、5-gram，但只返回 4 和 5-gram。
 * `array` 不进行任何 tokenization，即每行的值本身就是一个 token（另见函数 [array](/sql-reference/functions/array-functions.md/#array)）。
 
 对于 `splitByString` tokenizer，如果这些 token 并不构成一个 [前缀码](https://en.wikipedia.org/wiki/Prefix_code)，通常希望在匹配时优先选择更长的分隔符。

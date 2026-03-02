@@ -17,6 +17,7 @@ doc_type: 'guide'
 SET apply_mutations_on_fly = 1;
 ```
 
+
 ## 例 \{#example\}
 
 テーブルを作成し、ミューテーションを実行してみましょう。
@@ -75,6 +76,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 │  3 │ c │
 └────┴───┘
 ```
+
 
 ## パフォーマンスへの影響 \{#performance-impact\}
 

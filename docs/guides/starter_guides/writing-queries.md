@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you are already familiar with. For example:
+ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you're already familiar with. For example:
 
 ```sql
 SELECT *

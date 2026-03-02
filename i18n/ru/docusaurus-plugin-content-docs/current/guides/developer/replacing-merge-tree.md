@@ -114,7 +114,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
-Давайте проверим количество строк:
+Проверим количество строк:
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
@@ -126,7 +126,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Теперь обновим нашу статистику по публикациям и ответам. Вместо того чтобы изменять существующие значения, мы вставляем новые копии 5000 строк и увеличиваем их номер версии на единицу (это означает, что в таблице будет существовать 15000 строк). Это можно смоделировать с помощью простого `INSERT INTO SELECT`:
+Теперь обновим нашу статистику по публикациям и ответам. Вместо того чтобы изменять существующие значения, мы вставляем новые копии 5000 строк и увеличиваем их номер версии на единицу (это означает, что в таблице будет существовать 150 строк). Это можно смоделировать с помощью простого `INSERT INTO SELECT`:
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -287,7 +287,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-Повторите те же шаги для таблицы, разбитой на партиции по годам, и снова выполните приведённый выше запрос с `do_not_merge_across_partitions_select_final=1`.
+Повторите те же шаги для таблицы, разбитой на партиции по годам, и затем выполните тот же запрос с `do_not_merge_across_partitions_select_final=1`.
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part

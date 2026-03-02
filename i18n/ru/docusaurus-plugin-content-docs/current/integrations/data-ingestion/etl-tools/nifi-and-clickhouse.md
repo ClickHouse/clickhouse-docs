@@ -65,7 +65,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi03} size="lg" border alt="Диалог выбора Controller Service с выделенным DBCPConnectionPool" />
 
-  4. Только что добавленная служба контроллера `DBCPConnectionPool` по умолчанию будет находиться в состоянии Invalid. Нажмите кнопку с иконкой шестерёнки, чтобы начать настройку
+  4. Только что добавленная служба контроллера `DBCPConnectionPool` по умолчанию будет находиться в статусе Invalid. Нажмите кнопку с иконкой «шестерёнки», чтобы начать настройку
 
      <Image img={nifi04} size="lg" border alt="Список Controller Services с DBCPConnectionPool в состоянии Invalid и выделенной кнопкой с иконкой шестерёнки" />
 
@@ -83,13 +83,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi05} size="lg" border alt="Диалог настройки DBCPConnectionPool с заполненными свойствами" />
 
-  7. Активируйте Controller Service `DBCPConnectionPool`, нажав кнопку с иконкой молнии, а затем кнопку «Enable»
+  7. Активируйте Controller Service `DBCPConnectionPool`, нажав кнопку с изображением молнии, а затем кнопку «Enable»
 
-     <Image img={nifi06} size="lg" border alt="Список Controller Services с выделенной кнопкой с иконкой молнии" />
+     <Image img={nifi06} size="lg" border alt="Список Controller Services с выделенной кнопкой-молнией" />
 
      <br />
 
-     <Image img={nifi07} size="lg" border alt="Диалог подтверждения включения (Enable) Controller Service" />
+     <Image img={nifi07} size="lg" border alt="Диалог подтверждения включения Controller Service (Enable Controller Service)" />
 
   8. Проверьте вкладку Controller Services и убедитесь, что Controller Service включён
 
@@ -99,9 +99,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   1. Добавьте процессор `ExecuteSQL`, а также соответствующие предшествующие и последующие процессоры
 
-     <Image img={nifi09} size="md" border alt="Рабочая область NiFi с процессором ExecuteSQL в составе workflow" />
+     <Image img={nifi09} size="md" border alt="Рабочая область NiFi с процессором ExecuteSQL в составе рабочего процесса" />
 
-  2. В разделе Properties процессора `ExecuteSQL` введите следующие значения
+  2. В разделе &quot;Properties&quot; процессора ​`​ExecuteSQL` введите следующие значения
 
      | Property                            | Value                        | Remark                                                  |
      | ----------------------------------- | ---------------------------- | ------------------------------------------------------- |
@@ -114,11 +114,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   4. Чтобы убедиться, что запрос был успешно обработан, просмотрите один из объектов `FlowFile` в выходной очереди
 
-     <Image img={nifi11} size="lg" border alt="Диалог списка очереди с flowfile, готовыми к проверке" />
+     <Image img={nifi11} size="lg" border alt="Диалог списка очереди, показывающий FlowFile, готовые к проверке" />
 
   5. Переключите вид на &quot;formatted&quot;, чтобы просмотреть результат выходного `FlowFile`
 
-     <Image img={nifi12} size="lg" border alt="Просмотр содержимого FlowFile, отображающий результаты запроса в отформатированном виде" />
+     <Image img={nifi12} size="lg" border alt="Просмотр содержимого FlowFile с результатами запроса в отформатированном виде" />
 
   ## Запись в таблицу с помощью процессоров `MergeRecord` и `PutDatabaseRecord` \{#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor\}
 
@@ -141,7 +141,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      Результат
 
-     <Image img={nifi14} size="sm" border alt="Вывод процессора MergeRecord с объединённым массивом записей" />
+     <Image img={nifi14} size="sm" border alt="Выходные данные процессора MergeRecord с объединённым массивом записей" />
 
   4. В разделе Properties процессора `PutDatabaseRecord` введите следующие значения
 

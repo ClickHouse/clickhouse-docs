@@ -25,12 +25,12 @@ S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as w
 | Name                 | Logo                                                                                      | Details           |
 |----------------------|-------------------------------------------------------------------------------------------|-------------------|
 | **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/>     | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order) by default, but can be configured to [ingest files in any order](#continuous-ingestion-any-order). |
-| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
-| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
-| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
+| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
+| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
+| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
 
 :::tip
-Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that is not listed above, please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that isn't listed above, please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 :::
 
 ## Supported formats {#supported-formats}
@@ -53,7 +53,7 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
-By default, the S3 ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name is not lexically greater than the last ingested file.
+By default, the S3 ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
 In this mode, the S3 ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
 
@@ -198,7 +198,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ### Scaling {#scaling}
 
-Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
@@ -210,10 +210,10 @@ ClickPipes will only attempt to ingest objects that are **10GB or smaller** in s
 
 ### Compatibility {#compatibility}
 
-Despite being S3-compatible, some services use a different URL structure that the S3 ClickPipe might not be able to parse (e.g., Backblaze B2), or require integration with provider-specific queue services for continuous, unordered ingestion. If you're running into issues with a service that is not listed under [Supported data sources](#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+Despite being S3-compatible, some services use a different URL structure that the S3 ClickPipe might not be able to parse (e.g., Backblaze B2), or require integration with provider-specific queue services for continuous, unordered ingestion. If you're running into issues with a service that isn't listed under [Supported data sources](#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### View support {#view-support}
 
 Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
 
-We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
+We don't create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you're missing data in the materialized view.

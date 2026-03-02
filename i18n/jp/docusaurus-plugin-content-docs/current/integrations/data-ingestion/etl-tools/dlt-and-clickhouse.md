@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # dlt を ClickHouse に接続する \{#connect-dlt-to-clickhouse\}
 
 <PartnerBadge/>
@@ -22,6 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ```bash
 pip install "dlt[clickhouse]"
 ```
+
 
 ## セットアップガイド \{#setup-guide\}
 
@@ -94,7 +96,7 @@ ClickHouseサーバーが`http_port`で指定されたポートでHTTP接続を�
 `clickhouse-driver`ライブラリで使用されるものと同様のデータベース接続文字列を渡すこともできます。上記の認証情報は次のようになります。
 
 ```bash
-# keep it at the top of your toml file, before any section starts.
+# tomlファイルの先頭、いずれのセクションよりも前に配置してください。
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -137,6 +139,7 @@ dlt ライブラリの書き込みディスポジションは、データを宛�
 6. `Clickhouse` は、`float` または `double` データ型を使用した場合、特定の条件下で丸め誤差を生じることがあります。丸め誤差が許容できない場合は、必ず `decimal` データ型を使用してください。たとえば、ローダーのファイル形式を `jsonl` に設定した状態で値 12.7001 を `double` カラムにロードすると、必ず丸め誤差が発生します。
 
 ## サポートされているカラムヒント \{#supported-column-hints\}
+
 ClickHouse は、以下の<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">カラムヒント</a>をサポートしています。
 
 - `primary_key` - カラムがプライマリキーの一部であることを示します。複数のカラムにこのヒントを指定して、複合プライマリキーを作成できます。
@@ -160,6 +163,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `merge_tree` - `MergeTree` エンジンを使用してテーブルを作成します
 * `replicated_merge_tree` (デフォルト) - `ReplicatedMergeTree` エンジンを使用してテーブルを作成します
 
+
 ## ステージングサポート \{#staging-support\}
 
 ClickHouse は、ファイルのステージング先として Amazon S3、Google Cloud Storage、Azure Blob Storage をサポートしています。
@@ -182,6 +186,7 @@ pipeline = dlt.pipeline(
   dataset_name='chess_data'
 )
 ```
+
 
 ### ステージング領域として Google Cloud Storage を使用する \{#using-google-cloud-storage-as-a-staging-area\}
 
@@ -223,6 +228,7 @@ dlt はこれらの認証情報を ClickHouse に渡し、認証および GCS �
 
 * filesystem destination を S3 互換モードで GCS と<a href="https://github.com/dlt-hub/dlt/issues/1272">連携できるようにする</a>
 * Google Cloud Storage ステージングエリアの<a href="https://github.com/dlt-hub/dlt/issues/1181">サポート</a>
+
 
 ### dbt サポート \{#dbt-support\}
 

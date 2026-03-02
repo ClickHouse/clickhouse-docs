@@ -35,6 +35,6 @@ This provides an alternative to the default **Results Table** which allows you t
 
 Event patterns are most effective when applied to **narrowed subsets** of your data. For example, filtering down to a single service before enabling event patterns will usually surface more relevant and interesting messages than applying patterns across thousands of services at once.  
 
-They are also particularly powerful for summarizing error messages, where repeated errors with varying IDs or payloads are grouped into concise clusters.  
+They're also particularly powerful for summarizing error messages, where repeated errors with varying IDs or payloads are grouped into concise clusters.  
 
 For a live example, see how event patterns are used in the [Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns).

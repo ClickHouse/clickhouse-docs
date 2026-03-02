@@ -117,7 +117,7 @@ The following ClickHouse data types are currently supported in ClickPipes:
 ### Variant type support {#variant-type-support}
 You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
 in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
-type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` isn't supported.
 
 ### JSON type support {#json-type-support}
 JSON fields that are always a JSON object can be assigned to a JSON destination column.  You will have to manually change the destination
@@ -140,7 +140,7 @@ view).  For such pipes, it may improve ClickPipes performance to delete all the 
 
 ## Limitations {#limitations}
 
-- [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
+- [DEFAULT](/sql-reference/statements/create/table#default) isn't supported.
 - Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Performance {#performance}
@@ -163,9 +163,9 @@ If you have specific low-latency requirements, please [contact us](https://click
 We strongly recommend limiting the number concurrently active shards to match your throughput requirements.  For an "On Demand" Kinesis stream, AWS will automatically assign a matching number of shards based on throughput,
 but for "Provisioned" streams, provisioning too many shards can cause latency as described below, plus have increased costs because Kinesis pricing for such streams is on a "per shard" basis.
 
-If your producer application writes continuously to a large number of active shards, this can cause latency if your pipe is not scaled high enough to efficiently process those shards.  Based on Kinesis throughput limits,
+If your producer application writes continuously to a large number of active shards, this can cause latency if your pipe isn't scaled high enough to efficiently process those shards.  Based on Kinesis throughput limits,
 ClickPipes assigns a specific number of "workers" per replica to read shard data.  For example, at the smallest size, a ClickPipes replica will have 4 of these worker threads.  If the producer is writing
-to more than 4 shards at the same time, data will not be processed from the "extra" shards until a worker thread is available.  In particular, if the pipe is using "enhanced fanout", each worker thread will subscribe to a
+to more than 4 shards at the same time, data won't be processed from the "extra" shards until a worker thread is available.  In particular, if the pipe is using "enhanced fanout", each worker thread will subscribe to a
 single shard for 5 minutes, and is unavailable to read any other shard during that time.  This can cause latency "spikes" of 5 minute multiples.
 
 ### Scaling {#scaling}

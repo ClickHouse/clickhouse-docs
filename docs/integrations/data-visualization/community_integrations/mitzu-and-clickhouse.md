@@ -31,17 +31,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Mitzu is a no-code, warehouse-native product analytics application. Similar to tools like Amplitude, Mixpanel, and PostHog, Mitzu empowers users to analyze product usage data without requiring SQL or Python expertise.
 
-However, unlike these platforms, Mitzu does not duplicate the company's product usage data. Instead, it generates native SQL queries directly on the company's existing data warehouse or lake.
+However, unlike these platforms, Mitzu doesn't duplicate the company's product usage data. Instead, it generates native SQL queries directly on the company's existing data warehouse or lake.
 
 ## Goal {#goal}
 
-In this guide, we are going to cover the following:
+In this guide, we're going to cover the following:
 
 - Warehouse-native product analytics
 - How to integrate Mitzu to ClickHouse
 
 :::tip Example datasets
-If you do not have a data set to use for Mitzu, you can work with NYC Taxi Data.
+If you don't have a data set to use for Mitzu, you can work with NYC Taxi Data.
 This dataset is available in ClickHouse Cloud or [can be loaded with these instructions](/getting-started/example-datasets/nyc-taxi).
 :::
 
@@ -162,7 +162,7 @@ If you encounter a limitation with Mitzu UI, copy the SQL code and continue your
 
 ## Mitzu support {#mitzu-support}
 
-If you are lost, feel free to contact us at [support@mitzu.io](email://support@mitzu.io)
+If you're lost, feel free to contact us at [support@mitzu.io](email://support@mitzu.io)
 
 Or you our Slack community [here](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)
 

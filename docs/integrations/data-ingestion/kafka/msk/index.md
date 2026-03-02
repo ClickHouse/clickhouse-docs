@@ -31,8 +31,8 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 ## Prerequisites {#prerequisites}
 We assume:
-* you are familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
-* you are familiar with Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
+* you're familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
+* you're familiar with Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
 ## The official Kafka connector from ClickHouse with Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
@@ -157,7 +157,7 @@ You can find more details (both implementation and other considerations) in the 
 
 In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster to be in a private subnet with a Private NAT connected for internet access. Instructions on how to set this up are provided below. Note that public subnets are supported but not recommended due to the need to constantly assign an Elastic IP address to your ENI, [AWS provides more details here](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
 
-1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet should not have direct access to the internet.
+1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet shouldn't have direct access to the internet.
 1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
 1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
 1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic.

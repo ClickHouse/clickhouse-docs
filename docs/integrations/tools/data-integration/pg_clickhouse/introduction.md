@@ -44,8 +44,6 @@ factor 1; ✔︎ indicates full pushdown, while a dash indicates a query
 cancellation after 1m. All tests run on a MacBook Pro M4 Max with 36 GB of
 memory.
 
-<!-- cd dev/tpch && make ch && make pg && make run -->
-
 |    Query   | PostgreSQL | pg_clickhouse | Pushdown |
 | ----------:| ----------:| -------------:|:--------:|
 |  [Query 1] |    4693 ms |        268 ms |     ✔︎    |
@@ -58,7 +56,7 @@ memory.
 |  [Query 8] |     342 ms |        156 ms |     ✔︎    |
 |  [Query 9] |    3094 ms |        298 ms |     ✔︎    |
 | [Query 10] |     581 ms |        197 ms |     ✔︎    |
-| [Query 11] |     212 ms |         24 ms |     ✔︎    |
+| [Query 11] |     212 ms |         24 ms |          |
 | [Query 12] |    1116 ms |         84 ms |     ✔︎    |
 | [Query 13] |     958 ms |       1368 ms |          |
 | [Query 14] |     181 ms |         73 ms |     ✔︎    |
@@ -131,7 +129,7 @@ sudo make install
 
 <!-- XXX DSO currently disabled.
 By default `make` dynamically links the `clickhouse-cpp` library (except on
-macOS, where a dynamic `clickhouse-cpp` library is not yet supported). To
+macOS, where a dynamic `clickhouse-cpp` library isn't yet supported). To
 statically compile the ClickHouse library into `pg_clickhouse`, pass
 `CH_BUILD=static`:
 
@@ -150,7 +148,7 @@ make
 sudo make install
 ```
 
-If `curl-config` is not in the path on you host, you can specify the path
+If `curl-config` isn't in the path on you host, you can specify the path
 explicitly:
 
 ```sh

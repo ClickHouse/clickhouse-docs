@@ -103,7 +103,7 @@ ORDER BY (uploader, upload_date)
 The following command streams the records from the S3 files into the `youtube` table.
 
 :::important
-This inserts a lot of data - 4.65 billion rows. If you do not want the entire dataset, simply add a `LIMIT` clause with the desired number of rows.
+This inserts a lot of data - 4.65 billion rows. If you don't want the entire dataset, simply add a `LIMIT` clause with the desired number of rows.
 :::
 
 ```sql
@@ -139,7 +139,7 @@ FROM s3(
 
 Some comments about our `INSERT` command:
 
-- The `parseDateTimeBestEffortUSOrZero` function is handy when the incoming date fields may not be in the proper format. If `fetch_date` does not get parsed properly, it will be set to `0`
+- The `parseDateTimeBestEffortUSOrZero` function is handy when the incoming date fields may not be in the proper format. If `fetch_date` doesn't get parsed properly, it will be set to `0`
 - The `upload_date` column contains valid dates, but it also contains strings like "4 hours ago" - which is certainly not a valid date. We decided to store the original value in `upload_date_str` and attempt to parse it with `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))`. If the parsing fails we just get `0`
 - We used `ifNull` to avoid getting `NULL` values in our table. If an incoming value is `NULL`, the `ifNull` function is setting the value to an empty string
 

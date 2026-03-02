@@ -130,7 +130,7 @@ SELECT * FROM stats ORDER BY key;
 
 自省功能与 [S3Queue 表引擎](/engines/table-engines/integrations/s3queue#introspection) 相同，但有以下几个明显差异：
 
-1. 对于服务器版本 &gt;= 25.1，使用 `system.azure_queue` 用于表示队列的内存状态。对于更早的版本，使用 `system.s3queue`（其中也会包含 `azure` 表的信息）。
+1. 对于服务器版本 &gt;= 25.1，使用 `system.azure_queue_metadata_cache` 用于表示队列的内存状态。对于更早的版本，使用 `system.s3queue_metadata_cache`（其中也会包含 `azure` 表的信息）。
 2. 在主 ClickHouse 配置中启用 `system.azure_queue_log`，例如：
 
 ```xml
@@ -140,7 +140,7 @@ SELECT * FROM stats ORDER BY key;
   </azure_queue_log>
 ```
 
-这个持久化表与 `system.s3queue` 表包含相同的信息，但记录的是已处理和失败的文件。
+这个持久化表与 `system.s3queue_metadata_cache` 表包含相同的信息，但记录的是已处理和失败的文件。
 
 该表具有以下结构：
 

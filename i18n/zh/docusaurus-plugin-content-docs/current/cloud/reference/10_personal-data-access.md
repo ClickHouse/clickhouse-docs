@@ -23,8 +23,6 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 请查阅 ClickHouse 的隐私政策，了解 ClickHouse 收集的个人数据及其可能的使用方式的详细信息。
 
-
-
 ## 自助服务 \{#self-service\}
 
 默认情况下，ClickHouse 允许用户直接在 ClickHouse 控制台中查看其个人数据。
@@ -59,8 +57,6 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 ### 无账户的个人用户 \{#individuals-without-an-account\}
 
 如果您在我们这里没有账户，并且上述自助服务仍未解决您的个人数据问题，同时您希望根据隐私政策提交数据主体访问请求，您可以通过电子邮件将这些请求发送至 [privacy@clickhouse.com](mailto:privacy@clickhouse.com)。
-
-
 
 ## 身份验证 \{#identity-verification\}
 

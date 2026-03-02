@@ -21,6 +21,7 @@ ClickHouse における非同期 INSERT は、クライアント側でバッチ�
 
 このバッチ処理はクライアントからは見えず、ClickHouse が複数のソースからの INSERT トラフィックを効率的にマージするのに役立ちます。ただし、フラッシュが発生するまではデータをクエリすることはできません。重要な点として、INSERT の形状（クエリパターン）と設定の組み合わせごとに複数のバッファが存在し、クラスタではノードごとにバッファが維持されます。これにより、マルチテナント環境全体でのきめ細かな制御が可能になります。INSERT のメカニズム自体は、[同期 INSERT](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default) で説明されているものと同一です。
 
+
 ### 戻り値モードの選択 \{#choosing-a-return-mode\}
 
 非同期 INSERT の挙動は、[`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) 設定によってさらに細かく制御されます。

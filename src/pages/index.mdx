@@ -104,12 +104,14 @@ export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link})
 
 export const SearchClickHouse = ({children, color}) => {
     return (
-        <div className='home-page-section-search'>
-            <p style={{fontWeight: '600', fontSize: '18px', marginTop: '1.5rem', flex: '1'}}>
-                <Translate id="homepage.search.title">Search documentation</Translate>
-            </p>
-            <div className='home-page-hero-right-search'>
-                <SearchBar style="width: 75%"/>
+        <div className='home-page-section home-page-section-search'>
+            <div className='home-page-section-left'>
+                <div style={{fontWeight: '600', fontSize: '18px'}}>
+                    <Translate id="homepage.search.title">Search documentation</Translate>
+                </div>
+            </div>
+            <div className='home-page-search-bar-wrapper'>
+                <SearchBar className='home-page-search-bar'/>
             </div>
         </div>
     )

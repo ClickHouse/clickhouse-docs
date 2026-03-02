@@ -10,6 +10,7 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
+
 # Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
 
 <SelfManaged />
@@ -170,4 +171,5 @@ ClickHouse можно настроить на использование LDAP д
     ```
 
 ## Итоги \{#summary\}
+
 В этой статье были продемонстрированы основы настройки ClickHouse для аутентификации через LDAP-сервер, а также для привязки к роли. Также доступны варианты настройки отдельных пользователей в ClickHouse, при этом аутентифицируя этих пользователей через LDAP без настройки автоматического сопоставления ролей. Модуль LDAP также можно использовать для подключения к Active Directory.

@@ -85,7 +85,7 @@ Kafka Connect 是一个开源框架，作为集中式数据枢纽，用于在 Ka
 * 随开源 ClickHouse 一起提供
 * 支持最常见的序列化格式（JSON、Avro、Protobuf）
 
-#### 入门 \{#kafka-table-engine-getting-started\}
+#### 快速入门 \{#kafka-table-engine-getting-started\}
 
 要开始使用 Kafka 表引擎，请参阅[参考文档](./kafka-table-engine.md)。
 
@@ -108,5 +108,7 @@ Kafka Connect 是一个开源框架，作为集中式数据枢纽，用于在 Ka
 * **自定义代码** - 在需要对事件进行自定义处理的场景中，使用 Kafka 和 ClickHouse [客户端库](../../language-clients/index.md) 的自定义代码可能是合适的选择。
 
 [BYOC]: /cloud/reference/byoc/overview
+
 [Cloud]: /cloud/get-started
+
 [Self-hosted]: ../../../intro.md

@@ -27,6 +27,7 @@ CTE は、参照されるすべての箇所で同一の結果を保証するも�
 WITH <identifier> AS <subquery expression>
 ```
 
+
 ### 例 \{#common-table-expressions-example\}
 
 サブクエリが再実行される場合の例:
@@ -49,6 +50,7 @@ WHERE num IN (SELECT num FROM cte_numbers)
 
 しかし、`cte_numbers` を 2 回参照しているため、そのたびに乱数が生成され、その結果として `280501, 392454, 261636, 196227` などのように毎回異なる乱数結果が表示されます。
 
+
 ## 共通スカラ式 \{#common-scalar-expressions\}
 
 ClickHouse では、`WITH` 句で任意のスカラ式に対するエイリアスを宣言できます。
@@ -63,8 +65,9 @@ ClickHouse は識別子を可能な限り最も近いスコープで解決する
 ### 構文 \{#common-scalar-expressions-syntax\}
 
 ```sql
-WITH <式> AS <識別子>
+WITH <expression> AS <identifier>
 ```
+
 
 ### 例 \{#common-scalar-expressions-examples\}
 
@@ -98,7 +101,7 @@ SELECT gen_name('test', '.sql') as file_name;
 
 次のクエリ例は、束縛されていない識別子が最も近いスコープ内のエンティティに解決されることを示しています。
 ここでは、`gen_name` ラムダ関数本体内で `extension` は束縛されていません。
-`generated_names` が定義および使用されるスコープでは、`extension` は共通スカラー式として `'.txt'` に定義されていますが、`generated_names` サブクエリ内で参照可能であるため、テーブル `extension_list` の列として解決されます。
+`generated_names` が定義および使用されるスコープでは、`extension` は共通スカラ式として `'.txt'` に定義されていますが、`generated_names` サブクエリ内で参照可能であるため、テーブル `extension_list` の列として解決されます。
 
 ```sql
 CREATE TABLE extension_list
@@ -136,10 +139,10 @@ GROUP BY table
 ORDER BY s;
 ```
 
-**例 5:** スカラーサブクエリ結果の使用
+**例 5:** スカラーサブクエリの結果を使う
 
 ```sql
-/* この例は最も大きいテーブルの上位10件を返します */
+/* this example would return TOP 10 of most huge tables */
 WITH
     (
         SELECT sum(bytes)
@@ -161,6 +164,7 @@ LIMIT 10;
 WITH test1 AS (SELECT i + 1, j + 1 FROM test1)
 SELECT * FROM test1;
 ```
+
 
 ## 再帰クエリ \{#recursive-queries\}
 
@@ -184,8 +188,8 @@ SELECT sum(number) FROM test_table;
 ```
 
 :::note
-再帰 CTE は、バージョン **`24.3`** で導入された [新しいクエリアナライザー](/operations/analyzer) に依存しています。バージョン **`24.3+`** を使用していて **`(UNKNOWN_TABLE)`** や **`(UNSUPPORTED_METHOD)`** という例外が発生する場合は、そのインスタンス、ロール、またはプロファイルで新しいアナライザーが無効になっていることを示しています。アナライザーを有効にするには、設定 **`allow_experimental_analyzer`** を有効化するか、**`compatibility`** 設定をより新しいバージョンに更新してください。
-バージョン `24.8` 以降では、新しいアナライザーは本番環境での利用向けに正式採用されており、設定 `allow_experimental_analyzer` は `enable_analyzer` に名称変更されています。
+再帰 CTE は、バージョン **`24.3`** で導入された [クエリアナライザー](/operations/analyzer) に依存しています。バージョン **`24.3+`** を使用していて **`(UNKNOWN_TABLE)`** や **`(UNSUPPORTED_METHOD)`** という例外が発生する場合は、そのインスタンス、ロール、またはプロファイルでアナライザーが無効になっていることを示しています。アナライザーを有効にするには、設定 **`allow_experimental_analyzer`** を有効化するか、**`compatibility`** 設定をより新しいバージョンに更新してください。
+バージョン `24.8` 以降では、アナライザーは本番環境での利用向けに正式採用されており、設定 `allow_experimental_analyzer` は `enable_analyzer` に名称変更されています。
 :::
 
 再帰的な `WITH` クエリの一般的な形式は、常に非再帰項、続いて `UNION ALL`、その後に再帰項という順序になっており、クエリ自身の出力への参照を含めることができるのは再帰項のみです。再帰 CTE クエリは次のように実行されます。
@@ -213,7 +217,7 @@ CREATE TABLE tree
 INSERT INTO tree VALUES (0, NULL, 'ROOT'), (1, 0, 'Child_1'), (2, 0, 'Child_2'), (3, 1, 'Child_1_1');
 ```
 
-それらのツリーを次のようなクエリを使って走査できます。
+この木構造は次のようなクエリで走査できます。
 
 **例:** ツリー走査
 
@@ -239,11 +243,12 @@ SELECT * FROM search_tree;
 └────┴───────────┴───────────┘
 ```
 
+
 ### 探索順序 \{#search-order\}
 
-深さ優先の順序を生成するために、各結果行ごとに、これまでに訪れた行の配列を求めます。
+深さ優先の順序付けを行うには、各結果行ごとに、すでに訪問済みの行の配列を計算します。
 
-**例:** ツリーの深さ優先探索順序
+**例:** 木構造走査の深さ優先順序
 
 ```sql
 WITH RECURSIVE search_tree AS (
@@ -267,7 +272,7 @@ SELECT * FROM search_tree ORDER BY path;
 └────┴───────────┴───────────┴─────────┘
 ```
 
-幅優先の順序付けを行うには、検索の深さを記録する列を追加するのが標準的なアプローチです。
+幅優先の順序付けを行うには、検索の深さを記録するカラムを追加するのが標準的なアプローチです。
 
 **例:** 木構造走査の幅優先順序
 
@@ -292,6 +297,7 @@ SELECT * FROM search_tree ORDER BY depth;
 │  3 │    1 │ Child_1_1 │ [0,1,3] │     2 │
 └────┴──────┴───────────┴─────────┴───────┘
 ```
+
 
 ### サイクル検出 \{#cycle-detection\}
 
@@ -334,7 +340,7 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 └──────┴────┴────────┘
 ```
 
-しかし、そのグラフにサイクルを追加すると、前のクエリは `Maximum recursive CTE evaluation depth` というエラーが発生して失敗します。
+しかし、そのグラフにサイクルを追加すると、前のクエリは `Maximum recursive CTE evaluation depth` エラーで失敗します。
 
 ```sql
 INSERT INTO graph VALUES (5, 1, '5 -> 1');
@@ -350,12 +356,12 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 ```
 
 ```text
-コード: 306. DB::Exception: localhost:9000 から受信。DB::Exception: 再帰 CTE の評価深度の最大値 (1000) を超過しました。評価対象: search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to)。max_recursive_cte_evaluation_depth 設定値の引き上げを検討してください。: RecursiveCTESource の実行中。(TOO_DEEP_RECURSION)
+Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum recursive CTE evaluation depth (1000) exceeded, during evaluation of search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Consider raising max_recursive_cte_evaluation_depth setting.: While executing RecursiveCTESource. (TOO_DEEP_RECURSION)
 ```
 
-サイクルを処理する標準的な方法は、すでに訪問済みのノードを保持する配列を計算することです。
+サイクルを処理する標準的な方法は、既に訪れたノードを保持する配列を構築することです。
 
-**例:** サイクル検出付きグラフ探索
+**例:** サイクル検出付きグラフ走査
 
 ```sql
 WITH RECURSIVE search_graph AS (
@@ -375,6 +381,7 @@ SELECT * FROM search_graph WHERE is_cycle ORDER BY from;
 │    5 │  1 │ 5 -> 1 │ true     │ [(5,1),(1,4),(4,5),(5,1)] │
 └──────┴────┴────────┴──────────┴───────────────────────────┘
 ```
+
 
 ### 無限クエリ \{#infinite-queries\}
 

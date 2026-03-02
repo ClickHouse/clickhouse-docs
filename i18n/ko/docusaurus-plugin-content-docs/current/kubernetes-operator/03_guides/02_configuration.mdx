@@ -1,0 +1,485 @@
+---
+position: 2
+slug: /clickhouse-operator/guides/configuration
+title: '구성'
+keywords: ['kubernetes']
+description: '이 가이드는 ClickHouse Operator를 사용하여 ClickHouse 및 Keeper 클러스터를 구성하는 방법을 설명합니다.'
+doc_type: 'guide'
+---
+
+# ClickHouse Operator 구성 가이드 \{#clickhouse-operator-configuration-guide\}
+
+이 가이드에서는 ClickHouse Operator를 사용하여 ClickHouse 및 Keeper 클러스터를 구성하는 방법을 설명합니다.
+
+## ClickHouseCluster 구성 \{#clickhousecluster-configuration\}
+
+### 기본 설정 \{#basic-configuration\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: my-cluster
+spec:
+  replicas: 3           # Number of replicas per shard
+  shards: 2             # Number of shards
+  keeperClusterRef:
+    name: my-keeper     # Reference to KeeperCluster
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+```
+
+
+### 레플리카와 세그먼트 \{#replicas-and-shards\}
+
+* **Replicas**: 세그먼트당 ClickHouse 인스턴스 수 (고가용성을 위해)
+* **Shards**: 수평 파티션 수 (확장을 위해)
+
+```yaml
+spec:
+  replicas: 3  # Default: 3
+  shards: 2    # Default: 1
+```
+
+`replicas: 3` 및 `shards: 2`로 구성된 클러스터는 총 6개의 ClickHouse 파드를 생성합니다.
+
+
+### Keeper 통합 \{#keeper-integration\}
+
+모든 ClickHouse 클러스터는 조정 작업을 위해 KeeperCluster를 참조해야 합니다:
+
+```yaml
+spec:
+  keeperClusterRef:
+    name: my-keeper  # Name of the KeeperCluster in the same namespace
+```
+
+
+## KeeperCluster 구성 \{#keepercluster-configuration\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: my-keeper
+spec:
+  replicas: 3  # Must be odd: 1, 3, 5, 7, 9, 11, 13, or 15
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+```
+
+
+## 스토리지 구성 \{#storage-configuration\}
+
+영구 스토리지를 설정합니다:
+
+```yaml
+spec:
+  dataVolumeClaimSpec:
+    storageClassName: fast-ssd  # Optional: consider your storage class based on the installed CSI
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Gi
+```
+
+:::note
+사용 중인 스토리지 클래스가 볼륨 확장을 지원하는 경우에만 Operator가 기존 PVC를 수정할 수 있습니다.
+:::
+
+
+## 파드 구성 \{#pod-configuration\}
+
+### 자동 토폴로지 분산 및 어피니티 \{#automatic-topology-spread-and-affinity\}
+
+파드를 여러 가용 영역에 분산하도록 구성합니다:
+
+```yaml
+spec:
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+```
+
+:::note
+Kubernetes 클러스터에 노드가 여러 가용 영역에 충분히 분산되어 있어 분산 제약 조건(spread constraints)을 충족하는지 확인하십시오.
+:::
+
+
+### 수동 구성 \{#manual-configuration\}
+
+임의의 파드 선호/비선호 규칙과 토폴로지 분산 제약 조건을 정의할 수 있습니다.
+
+```yaml
+spec:
+  podTemplate:
+    affinity:
+      <your-affinity-rules-here>
+    topologySpreadConstraints:
+      <your-topology-spread-constraints-here>
+```
+
+
+### 지원되는 파드 템플릿 옵션 전체 목록은 [API Reference](../04_api_reference.mdx#podtemplatespec)를 참조하십시오. \{#see-api-reference04_api_referencemdxpodtemplatespec-for-all-supported-pod-template-options\}
+
+## 컨테이너 구성 \{#container-configuration\}
+
+### 사용자 정의 이미지 \{#custom-image\}
+
+특정 ClickHouse 이미지를 사용하십시오:
+
+```yaml
+spec:
+  containerTemplate:
+    image:
+      repository: clickhouse/clickhouse-server
+      tag: "25.12"
+    imagePullPolicy: IfNotPresent
+```
+
+
+### 컨테이너 리소스 \{#container-resources\}
+
+ClickHouse 컨테이너의 CPU와 메모리를 구성하십시오:
+
+```yaml
+# default values
+spec:
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+```
+
+
+### 환경 변수 \{#environment-variables\}
+
+사용자 정의 환경 변수를 추가하십시오:
+
+```yaml
+spec:
+  containerTemplate:
+    env:
+    - name: CUSTOM_ENV_VAR
+      value: "1"
+```
+
+
+### 볼륨 마운트 \{#volume-mounts\}
+
+추가 볼륨 마운트를 설정합니다:
+
+```yaml
+spec:
+  containerTemplate:
+    volumeMounts:
+    - name: custom-config
+      mountPath: /etc/clickhouse-server/config.d/custom.xml
+      subPath: custom.xml
+```
+
+:::note
+동일한 `mountPath`에 여러 개의 볼륨을 마운트하도록 지정할 수 있습니다.
+Operator는 지정된 모든 마운트를 포함하는 projected 볼륨을 생성합니다.
+:::
+
+
+### 지원되는 Container 템플릿 옵션 전체 목록은 [API Reference](../04_api_reference.mdx#containertemplatespec)를 참조하십시오. \{#see-api-reference04_api_referencemdxcontainertemplatespec-for-all-supported-container-template-options\}
+
+## TLS/SSL 구성 \{#tls-ssl-configuration\}
+
+### 보안 엔드포인트 구성 \{#configure-secure-endpoints\}
+
+TLS 인증서가 포함된 Kubernetes Secret에 대한 참조를 지정하여 보안 엔드포인트를 구성합니다
+
+```yaml
+spec:
+  settings:
+    tls:
+      enabled: true
+      required: true # Insecure ports are disabled if set
+      serverCertSecret:
+        name: <certificate-secret-name>
+```
+
+
+### SSL 인증서 Secret 형식 \{#ssl-certificate-secret-format\}
+
+Secret에는 다음 키가 포함되어야 합니다.
+
+- `tls.crt` - PEM 인코딩된 서버 인증서
+- `tls.key` - PEM 인코딩된 개인 키
+- `ca.crt` - PEM 인코딩된 CA 인증서 체인
+
+:::note
+이 형식은 cert-manager가 생성하는 인증서와 호환됩니다.
+:::
+
+### TLS를 통한 ClickHouse-Keeper 통신 \{#clickhouse-keeper-communication-over-tls\}
+
+KeeperCluster에서 TLS가 활성화된 경우, ClickHouseCluster는 Keeper 노드에 대한 보안 연결을 자동으로 사용합니다.
+
+ClickHouseCluster는 Keeper 노드의 인증서를 검증할 수 있어야 합니다.
+ClickHouseCluster에서 TLS가 활성화된 경우, 검증을 위해 `ca.crt` 번들을 사용합니다. 그렇지 않으면 기본 CA 번들이 사용됩니다.
+
+사용자는 커스텀 CA 번들 참조를 제공할 수 있습니다:
+
+```yaml
+spec:
+    settings:
+        tls:
+          caBundle:
+            name: <ca-certificate-secret-name>
+            key: <ca-certificate-key>
+```
+
+
+## ClickHouse 설정 \{#clickhouse-settings\}
+
+### 기본 USER 비밀번호 \{#default-user-password\}
+
+기본 USER 비밀번호를 설정하십시오:
+
+```yaml
+spec:
+  settings:
+    defaultUserPassword:
+      passwordType: <password-type> # Default: password
+      <secret|configMap>:
+        name: <resource name>
+        key: <password>
+```
+
+:::note
+ConfigMap에 평문 비밀번호를 저장하는 것은 권장되지 않습니다.
+:::
+
+Secret을 생성합니다:
+
+```bash
+kubectl create secret generic clickhouse-password --from-literal=password='your-secure-password'
+```
+
+
+#### 사용자 비밀번호를 위한 ConfigMap 사용 \{#using-configmap-for-user-passwords\}
+
+민감 정보가 아닌 기본 비밀번호는 ConfigMap을 사용하여 설정할 수도 있습니다:
+
+```yaml
+spec:
+  settings:
+    defaultUserPassword:
+      passwordType: password_sha256_hex
+      configMap:
+        name: clickhouse-config
+        key: default_password
+```
+
+
+### 설정에서 사용자 정의 계정 \{#custom-users-in-configuration\}
+
+설정 파일에서 추가 사용자를 구성합니다.
+
+사용자용 ConfigMap과 Secret을 생성합니다:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+data:
+  reader.yaml: |
+    users:
+      reader:
+        password:
+          - '@from_env': READER_PASSWORD
+        profile: default
+        grants:
+          - query: "GRANT SELECT ON *.*"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: reader-password
+data:
+  password: "c2VjcmV0LXBhc3N3b3Jk"  # base64("secret-password")
+
+```
+
+ClickHouseCluster에 사용자 정의 설정을 추가합니다:
+
+```yaml
+spec:
+  podTemplate:
+    volumes:
+      - name: reader-user
+        configMap:
+          name: user-config
+  containerTemplate:
+    env:
+      - name: READER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: reader-password
+            key: password
+    volumeMounts:
+      - mountPath: /etc/clickhouse-server/users.d/
+        name: reader-user
+        readOnly: true
+```
+
+
+### 데이터베이스 동기화 \{#database-sync\}
+
+새 레플리카에 대해 자동 데이터베이스 동기화를 활성화하십시오:
+
+```yaml
+spec:
+  settings:
+    enableDatabaseSync: true  # Default: true
+```
+
+활성화하면 오퍼레이터가 복제된 테이블(Replicated Table)과 통합 테이블을 새 레플리카에 동기화합니다.
+
+
+## 사용자 지정 구성 \{#custom-configuration\}
+
+### 임베디드 추가 설정 \{#embedded-extra-configuration\}
+
+사용자 지정 설정 파일을 마운트하는 대신, ClickHouse에 대한 추가 설정 옵션을 직접 지정할 수 있습니다.
+
+`extraConfig`를 사용하여 ClickHouse 사용자 지정 설정을 추가하십시오:
+
+```yaml
+spec:
+  settings:
+    extraConfig:
+      background_pool_size: 20
+```
+
+
+#### 유용한 링크: \{#useful-links\}
+
+* [YAML 구성 예제](/operations/configuration-files#example-1)
+* [서버 설정 전체 목록](/operations/server-configuration-parameters/settings)
+
+### 임베디드 추가 사용자 구성 \{#embedded-extra-users-configuration\}
+
+`extraUsersConfig`를 사용하여 ClickHouse 사용자 구성을 추가로 지정할 수도 있습니다. 이는 클러스터 스펙에서 사용자, 프로필, QUOTA 및 권한(Grants)을 직접 정의할 때 유용합니다.
+
+```yaml
+spec:
+  settings:
+    extraUsersConfig:
+      users:
+        analyst:
+          password:
+            - '@from_env': ANALYST_PASSWORD
+          profile: "readonly"
+          quota: "default"
+      profiles:
+        readonly:
+          readonly: 1
+          max_memory_usage: 10000000000
+      quotas:
+        default:
+          interval:
+            duration: 3600
+            queries: 1000
+            errors: 100
+```
+
+:::note
+`extraUsersConfig`는 k8s ConfigMap 객체에 저장됩니다. 그 안에 시크릿을 평문으로 저장하지 마십시오.
+:::
+
+
+#### 지원되는 ClickHouse 사용자 구성 옵션 전체는 [문서](/operations/settings/settings-users)를 참고하십시오. \{#see-documentationoperationssettingssettings-users-for-all-supported-clickhouse-users-configuration-options\}
+
+### 구성 예시 \{#configuration-example\}
+
+전체 구성 예제는 다음과 같습니다:
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: sample
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    storageClassName: <storage-class-name>
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "2"
+        memory: "4Gi"
+      limits:
+        cpu: "4"
+        memory: "8Gi"
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: <keeper-certificate-secret>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-user-password
+data:
+  # secret-password
+  password: "..." # sha256 hex of the password
+---
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: sample
+spec:
+  replicas: 2
+  dataVolumeClaimSpec:
+    storageClassName: <storage-class-name>
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 200Gi
+  keeperClusterRef:
+    name: sample
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: clickhouse-cert
+    defaultUserPassword:
+      passwordType: password_sha256_hex
+      configMap:
+        key: password
+        name: default-password
+```

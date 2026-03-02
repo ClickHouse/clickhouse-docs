@@ -4,7 +4,7 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Microsoft OneLake 内のデータをクエリするための手順を説明します。'
+description: 'このガイドでは、Microsoft OneLake 内のデータに対してクエリを実行する手順を順を追って説明します。'
 keywords: ['OneLake', 'データレイク', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,38 +14,41 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ (OneLake、Unity、Glue、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) を使用して、Microsoft OneLake に保存されているデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ（OneLake、Unity、Glue、Polaris など）との統合をサポートしています。本ガイドでは、Microsoft OneLake に保存されたデータを ClickHouse と [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) を使用してクエリする手順を説明します。
 
-Microsoft OneLake は、レイクハウス向けに複数のテーブル形式をサポートしています。ClickHouse では、Iceberg テーブルをクエリできます。
+Microsoft OneLake は、レイクハウス向けに複数のテーブル形式をサポートしています。ClickHouse を使用すると、Iceberg テーブルをクエリできます。
 
 :::note
-この機能はベータ版のため、次の設定を有効にする必要があります。
+この機能はベータ版のため、次の設定で有効化する必要があります:
 `SET allow_database_iceberg = 1;`
 :::
 
+
 ## OneLake の要件の収集 \{#gathering-requirements\}
 
-Microsoft Fabric でテーブルをクエリする前に、次の情報を収集する必要があります。
+Microsoft Fabric でテーブルをクエリする前に、次の情報を収集しておく必要があります。
 
-- OneLake テナント ID（ご利用の Entra ID）
-- アプリケーション (クライアント) ID
+- OneLake テナント ID（Entra ID）
+- アプリケーション（client）ID
 - クライアント シークレット
-- ウェアハウス ID とデータ アイテム ID
+- Warehouse ID と Data Item ID
 
-ウェアハウス ID は Workspace ID です。
-データ アイテム ID については、LakeHouse ID を使用することをお勧めします。
+Warehouse ID は Workspace ID です。
 
-これらの値の確認方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
+Data Item ID については、Lakehouse ID を使用することを推奨します。テストの結果、Warehouse ID では動作しませんでした。
+
+これらの値の確認方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) を参照してください。
 
 ## OneLake と ClickHouse 間の接続を作成する \{#creating-a-connection-between-unity-catalog-and-clickhouse\}
 
-上記の必要な情報が揃ったら、Microsoft OneLake と ClickHouse 間の接続を作成できます。ただし、その前にカタログを有効にする必要があります。
+上記で必要な情報が揃ったので、Microsoft OneLake と ClickHouse の間に接続を確立できますが、その前にカタログを有効にする必要があります。
 
 ```sql
 SET allow_database_iceberg=1
 ```
 
-### OneLakeに接続する \{#connect-onelake\}
+
+### OneLake に接続する \{#connect-onelake\}
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -60,9 +63,10 @@ onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
 
-## ClickHouse を使用した OneLake へのクエリ実行 \{#querying-onelake-using-clickhouse\}
 
-接続が確立できたので、これで OneLake に対してクエリを実行できます。
+## ClickHouse で OneLake をクエリする \{#querying-onelake-using-clickhouse\}
+
+接続が確立できたので、OneLake に対してクエリを実行できるようになりました。
 
 ```sql
 SHOW TABLES FROM onelake_catalog
@@ -78,9 +82,9 @@ Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
    └───────────────────────────────┘
 ```
 
-Iceberg クライアントを使用している場合、Uniform が有効化されている Delta テーブルのみが表示されます。
+Iceberg クライアントを使用している場合、Uniform を有効にした Delta テーブルだけが表示されます。
 
-テーブルをクエリするには、次のようにします:
+テーブルをクエリするには：
 
 ```sql
 SELECT *
@@ -114,11 +118,12 @@ congestion_surcharge:  ᴺᵁᴸᴸ
 source_file:           green_tripdata_2017-05.parquet
 ```
 
-:::note Backticks required
-ClickHouse は複数のネームスペースをサポートしていないため、バッククォート（`）が必要です。
+:::note バッククォートが必須
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォートの使用が必須です。
 :::
 
-テーブルの DDL を確認するには：
+テーブルの DDL を確認するには:
+
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
@@ -154,9 +159,10 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## データレイクから ClickHouse へのデータ読み込み \{#loading-data-from-onelake-into-clickhouse\}
 
-OneLake から ClickHouse にデータを読み込む必要がある場合は、次の手順を実行します。
+OneLake から ClickHouse にデータを読み込む必要がある場合は、次の手順に従います。
 
 ```sql
 CREATE TABLE trips

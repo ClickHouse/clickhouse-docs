@@ -32,7 +32,7 @@ Elastic Stack 和 ClickStack 都涵盖了可观测性平台的核心职能，但
 
 | **角色** | **Elastic Stack** | **ClickStack** | **说明** |
 |--------------------------|--------------------------------------------------|--------------------------------------------------|--------------|
-| **UI 与告警** | **Kibana** — 仪表盘、搜索和告警      | **HyperDX** — 实时 UI、搜索和告警   | 两者都作为用户的主要交互界面，包括可视化和告警管理。HyperDX 为可观测性场景专门构建，并与 OpenTelemetry 语义深度耦合。 |
+| **UI 与告警** | **Kibana** — 仪表盘、搜索和告警      | **ClickStack UI (HyperDX)** — 实时 UI、搜索和告警   | 两者都作为用户的主要交互界面，包括可视化和告警管理。ClickStack UI 为可观测性场景专门构建，并与 OpenTelemetry 语义深度耦合。 |
 | **存储与查询引擎** | **Elasticsearch** — 具倒排索引的 JSON 文档存储 | **ClickHouse** — 带向量化引擎的列式数据库 | Elasticsearch 使用针对搜索优化的倒排索引；ClickHouse 使用列式存储和 SQL，以高速分析结构化和半结构化数据。 |
 | **数据采集** | **Elastic Agent**、**Beats**（如 Filebeat、Metricbeat） | **OpenTelemetry Collector**（边缘 + 网关）     | Elastic 支持自定义 shipper 和由 Fleet 管理的统一代理。ClickStack 依赖 OpenTelemetry，实现与厂商无关的数据采集与处理。 |
 | **应用埋点 SDK** | **Elastic APM agents**（专有）             | **OpenTelemetry SDKs**（由 ClickStack 分发） | Elastic SDK 与 Elastic 技术栈强绑定。ClickStack 基于 OpenTelemetry SDK，在主流语言中支持日志、指标和追踪。 |
@@ -75,7 +75,7 @@ Elasticsearch 使用带有处理器（例如 `enrich`、`rename`、`grok`）的�
 
 Elasticsearch 支持[多种查询语言](https://www.elastic.co/docs/explore-analyze/query-filter/languages)，包括 [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) 和 [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 风格），但对 join 的支持有限——目前仅在 [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join) 中提供**左外连接（left outer join）**。ClickHouse 支持**完整 SQL 语法**，包括[所有连接类型](/sql-reference/statements/select/join#supported-types-of-join)、[窗口函数](/sql-reference/window-functions)、子查询（包括关联子查询）以及 CTE。如果你需要在可观测性信号与业务或基础设施数据之间进行关联分析，这是一个重要优势。
 
-在 ClickStack 中，[HyperDX 提供了兼容 Lucene 的搜索界面](/use-cases/observability/clickstack/search)，便于从现有系统平滑迁移，同时通过 ClickHouse 后端提供完整 SQL 支持。其语法与 [Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 语法类似。要对这套语法进行精确对比，请参阅[《在 ClickStack 和 Elastic 中进行搜索》](/use-cases/observability/clickstack/migration/elastic/search)。
+在 ClickStack 中，[UI 提供了兼容 Lucene 的搜索界面](/use-cases/observability/clickstack/search)，便于从现有系统平滑迁移，同时通过 ClickHouse 后端提供完整 SQL 支持。其语法与 [Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 语法类似。要对这套语法进行精确对比，请参阅[《在 ClickStack 和 Elastic 中进行搜索》](/use-cases/observability/clickstack/migration/elastic/search)。
 
 ### 文件格式和接口 \{#file-formats-and-interfaces\}
 
@@ -253,4 +253,4 @@ ClickHouse 的 Lakehouse 能力不仅仅局限于读取数据：
 - **增量加载**：支持将 Lakehouse 表中的数据持续加载到本地 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中，可使用 [S3Queue](/engines/table-engines/integrations/s3queue) 和 [ClickPipes](/integrations/clickpipes) 等特性。
 - **性能优化**：通过 [cluster functions](/sql-reference/table-functions/cluster) 在 Lakehouse 数据之上执行分布式查询，以提升性能。
 
-这些能力使 ClickHouse 非常适合采用 Lakehouse 架构的组织，既可以利用数据湖的灵活性，又能发挥列式数据库的高性能优势。 
+这些能力使 ClickHouse 非常适合采用 Lakehouse 架构的组织，既可以利用数据湖的灵活性，又能发挥列式数据库的高性能优势。

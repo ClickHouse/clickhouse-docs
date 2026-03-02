@@ -13,14 +13,14 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 # JDBC connector
 
 :::note
-This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps are not supported.
+This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps aren't supported.
 :::
 
 For our examples, we utilize the Confluent distribution of Kafka Connect.
 
-Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who do not have a Kafka environment.
+Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table. We recommend Confluent Cloud, which offers a generous free tier for those who don't have a Kafka environment.
 
-Note that a schema is required for the JDBC Connector (You cannot use plain JSON or CSV with the JDBC connector). Whilst the schema can be encoded in each message; it is [strongly advised to use the Confluent schema registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)y to avoid the associated overhead. The insertion script provided automatically infers a schema from the messages and inserts this to the registry - this script can thus be reused for other datasets. Kafka's keys are assumed to be Strings. Further details on Kafka schemas can be found [here](https://docs.confluent.io/platform/current/schema-registry/index.html).
+Note that a schema is required for the JDBC Connector (You can't use plain JSON or CSV with the JDBC connector). Whilst the schema can be encoded in each message; it is [strongly advised to use the Confluent schema registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)y to avoid the associated overhead. The insertion script provided automatically infers a schema from the messages and inserts this to the registry - this script can thus be reused for other datasets. Kafka's keys are assumed to be Strings. Further details on Kafka schemas can be found [here](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 ### License {#license}
 The JDBC Connector is distributed under the [Confluent Community License](https://www.confluent.io/confluent-community-license)
@@ -39,7 +39,7 @@ For sending data to ClickHouse from Kafka, we use the Sink component of the conn
 
 #### 2. Download and install the JDBC Driver {#2-download-and-install-the-jdbc-driver}
 
-Download and install the ClickHouse JDBC driver `clickhouse-jdbc-<version>-shaded.jar` from [here](https://github.com/ClickHouse/clickhouse-java/releases). Install this into Kafka Connect following the details [here](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers). Other drivers may work but have not been tested.
+Download and install the ClickHouse JDBC driver `clickhouse-jdbc-<version>-shaded.jar` from [here](https://github.com/ClickHouse/clickhouse-java/releases). Install this into Kafka Connect following the details [here](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers). Other drivers may work but haven't been tested.
 
 :::note
 
@@ -64,13 +64,13 @@ The following parameters are relevant to using the JDBC connector with ClickHous
 * `pk.mode` - Not relevant to ClickHouse. Set to none.
 * `auto.create` - Not supported and must be false.
 * `auto.evolve` - We recommend false for this setting although it may be supported in the future.
-* `insert.mode` - Set to "insert". Other modes are not currently supported.
+* `insert.mode` - Set to "insert". Other modes aren't currently supported.
 * `key.converter` - Set according to the types of your keys.
 * `value.converter` - Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats.
 
 If using our sample dataset for testing, ensure the following are set:
 
-* `value.converter.schemas.enable` - Set to false as we utilize a schema registry. Set to true if you are embedding the schema in each message.
+* `value.converter.schemas.enable` - Set to false as we utilize a schema registry. Set to true if you're embedding the schema in each message.
 * `key.converter` - Set to "org.apache.kafka.connect.storage.StringConverter". We utilise String keys.
 * `value.converter` - Set "io.confluent.connect.json.JsonSchemaConverter".
 * `value.converter.schema.registry.url` - Set to the schema server url along with the credentials for the schema server via the parameter `value.converter.schema.registry.basic.auth.user.info`.
@@ -79,7 +79,7 @@ Example configuration files for the Github sample data can be found [here](https
 
 #### 4. Create the ClickHouse table {#4-create-the-clickhouse-table}
 
-Ensure the table has been created, dropping it if it already exists from previous examples. An example compatible with the reduced Github dataset is shown below. Not the absence of any Array or Map types that are not currently not supported:
+Ensure the table has been created, dropping it if it already exists from previous examples. An example compatible with the reduced Github dataset is shown below. Not the absence of any Array or Map types that aren't currently not supported:
 
 ```sql
 CREATE TABLE github
@@ -127,9 +127,9 @@ python producer.py -c github.config
 
 This script can be used to insert any ndjson file into a Kafka topic. This will attempt to infer a schema for you automatically. The sample config provided will only insert 10k messages - [modify here](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/producer/github.config#L25) if required. This configuration also removes any incompatible Array fields from the dataset during insertion to Kafka.
 
-This is required for the JDBC connector to convert messages to INSERT statements. If you are using your own data, ensure you either insert a schema with every message (setting _value.converter.schemas.enable _to true) or ensure your client publishes messages referencing a schema to the registry.
+This is required for the JDBC connector to convert messages to INSERT statements. If you're using your own data, ensure you either insert a schema with every message (setting _value.converter.schemas.enable _to true) or ensure your client publishes messages referencing a schema to the registry.
 
-Kafka Connect should begin consuming messages and inserting rows into ClickHouse. Note that warnings regards "[JDBC Compliant Mode] Transaction is not supported." are expected and can be ignored.
+Kafka Connect should begin consuming messages and inserting rows into ClickHouse. Note that warnings regards "[JDBC Compliant Mode] Transaction isn't supported." are expected and can be ignored.
 
 A simple read on the target table "Github" should confirm data insertion.
 

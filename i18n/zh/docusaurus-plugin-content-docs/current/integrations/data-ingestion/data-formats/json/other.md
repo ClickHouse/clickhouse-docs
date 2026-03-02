@@ -46,7 +46,7 @@ Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-我们可以查询 `tags` 列，可以看到 JSON 已作为字符串被插入：
+我们可以查询 `tags` 列，可以看到该 JSON 是以字符串形式插入的：
 
 ```sql
 SELECT tags

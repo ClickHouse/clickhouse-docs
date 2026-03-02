@@ -120,7 +120,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 3. Mount the `temporal.key` file at `/etc/otelcol-contrib/temporal.key`
 4. Ensure network connectivity between ClickStack and Temporal
 
-All commands assume they are executed from the sample directory as where `temporal-metrics.yaml` and `temporal.key` are stored.
+All commands assume they're executed from the sample directory as where `temporal-metrics.yaml` and `temporal.key` are stored.
 
 ##### Option 1: Docker Compose {#docker-compose}
 

@@ -16,7 +16,7 @@ doc_type: 'reference'
 正確な値を取得するために、渡されたすべての値は配列にまとめられ、その後部分的にソートされます。
 各値は、その値が `weight` 回存在するかのように、その重みを用いてカウントされます。
 アルゴリズムではハッシュテーブルが使用されます。
-このため、渡された値が頻繁に繰り返される場合、この関数は [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) よりも少ないRAMを消費します。
+このため、渡された値が頻繁に繰り返される場合、この関数は [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) よりも少ないRAMを消費します。
 この関数を `quantileExact` の代わりに使用し、重みを 1 に指定できます。
 
 1 つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率になります）。

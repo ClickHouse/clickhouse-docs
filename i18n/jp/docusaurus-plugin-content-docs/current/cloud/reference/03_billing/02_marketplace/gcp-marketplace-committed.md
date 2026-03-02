@@ -29,8 +29,6 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 - 特定の契約条件に基づいて ClickHouse から提示されるプライベートオファー。
 
-
-
 ## サインアップ手順 \{#steps-to-sign-up\}
 
 1. プライベートオファーを確認・同意するためのリンクが記載されたメールを受信しているはずです。

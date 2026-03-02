@@ -298,7 +298,7 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 GRANT ALTER ON my_db.my_table TO my_user;
 ```
 
-最终得到的权限集合：
+最终授予的权限集：
 
 ```sql
 SHOW GRANTS FOR  my_user;
@@ -324,7 +324,7 @@ Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```
 
-权限将被设置为：
+授予结果如下：
 
 ```sql
 SHOW GRANTS FOR my_user;
@@ -510,13 +510,13 @@ Received exception from server (version 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```
 
-5. 通过授予权限测试 alter admin 用户
+5. 通过授予权限测试 ALTER ADMIN 用户
 
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```
 
-6. 使用 ALTER ADMIN 用户登录
+6. 使用 alter admin 用户登录
 
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
@@ -536,7 +536,7 @@ Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 Ok.
 ```
 
-8. 测试：尝试为 alter 管理员用户授予一个其自身不具备、且并非其现有授权子权限的权限。
+8. 测试：由 alter admin 用户尝试授予一个其自身不具备、且并非其现有授权子权限的权限。
 
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;

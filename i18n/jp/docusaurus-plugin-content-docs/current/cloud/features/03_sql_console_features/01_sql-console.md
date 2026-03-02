@@ -43,6 +43,7 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
+
 # SQL コンソール \{#sql-console\}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
@@ -59,6 +60,7 @@ SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し�
 ClickHouse インスタンスに含まれるテーブルの概要は、左側のサイドバーで確認できます。左サイドバー上部のデータベースセレクタを使用して、特定のデータベース内のテーブルを表示します。
 
 <Image img={table_list_and_schema} size="md" alt="テーブル一覧とスキーマ" />
+
 リスト内のテーブルは展開して、カラムと型を表示することもできます。
 
 <Image img={view_columns} size="md" alt="カラムの表示" />
@@ -268,6 +270,7 @@ ORDER BY
 <Image img={tabular_query_results} size="md" alt="表形式のクエリ結果" />
 
 可視化がないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
+
 
 ### チャートの作成 \{#creating-charts\}
 

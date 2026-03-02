@@ -1,0 +1,10 @@
+{
+  "position": 5,
+  "label": "AI 에이전트 라이브러리 통합",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "문서",
+    "id": "use-cases/AI_ML/MCP/ai_agent_libraries/index"
+  }
+}

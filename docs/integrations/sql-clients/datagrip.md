@@ -46,7 +46,7 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 - Switch to the **Drivers** tab and load the ClickHouse driver
 
-  DataGrip does not ship with drivers in order to minimize the download size.  On the **Drivers** tab
+  DataGrip doesn't ship with drivers in order to minimize the download size.  On the **Drivers** tab
   Select **ClickHouse** from the **Complete Support** list, and expand the **+** sign.  Choose the **Latest stable** driver from the **Provided Driver** option:
 
 <Image img={datagrip_1} size="lg" border alt="DataGrip Drivers tab showing ClickHouse driver installation" />

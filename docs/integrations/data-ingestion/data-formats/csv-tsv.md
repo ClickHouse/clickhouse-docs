@@ -69,7 +69,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 In this case, ClickHouse skips the first row while importing data from the file.
 
 :::tip
-Starting from [version](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse will automatically detect headers in CSV files when using the `CSV` format, so it is not necessary to use `CSVWithNames` or `CSVWithNamesAndTypes`.
+Starting from [version](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse will automatically detect headers in CSV files when using the `CSV` format, so it isn't necessary to use `CSVWithNames` or `CSVWithNamesAndTypes`.
 :::
 
 ### CSV files with custom delimiters {#csv-files-with-custom-delimiters}

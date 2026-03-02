@@ -67,7 +67,7 @@ ClickHouse оптимизирован для:
 </details>
 
 ```sql
--- Простая функция вычисления
+-- Simple calculation function
 CREATE FUNCTION calculate_tax AS (price, rate) -> price * rate;
 
 SELECT
@@ -78,10 +78,10 @@ FROM products;
 ```
 
 ```sql
--- Условная логика с использованием if()
+-- Conditional logic using if()
 CREATE FUNCTION price_tier AS (price) ->
-    if(price < 100, 'Эконом',
-       if(price < 500, 'Средний', 'Премиум'));
+    if(price < 100, 'Budget',
+       if(price < 500, 'Mid-range', 'Premium'));
 
 SELECT
     product_name,
@@ -91,14 +91,14 @@ FROM products;
 ```
 
 ```sql
--- Работа со строками
+-- String manipulation
 CREATE FUNCTION format_phone AS (phone) ->
     concat('(', substring(phone, 1, 3), ') ',
            substring(phone, 4, 3), '-',
            substring(phone, 7, 4));
 
 SELECT format_phone('5551234567');
--- Результат: (555) 123-4567
+-- Result: (555) 123-4567
 ```
 
 **Ограничения:**
@@ -108,6 +108,7 @@ SELECT format_phone('5551234567');
 * Рекурсивные функции не допускаются
 
 Полный синтаксис см. в [`CREATE FUNCTION`](/sql-reference/statements/create/function).
+
 
 #### Исполняемые UDF-функции \{#executable-udfs\}
 
@@ -348,16 +349,16 @@ WHERE month = toStartOfMonth(today());
         DECLARE v_previous_orders INT;
         DECLARE v_discount DECIMAL(10,2);
 
-        -- Начало транзакции
+        -- Start transaction
         START TRANSACTION;
 
-        -- Получение информации о клиенте
+        -- Get customer information
         SELECT tier, total_orders
         INTO v_customer_tier, v_previous_orders
         FROM customers
         WHERE customer_id = p_customer_id;
 
-        -- Расчет скидки на основе уровня
+        -- Calculate discount based on tier
         IF v_customer_tier = 'gold' THEN
             SET v_discount = p_order_total * 0.15;
         ELSEIF v_customer_tier = 'silver' THEN
@@ -366,27 +367,27 @@ WHERE month = toStartOfMonth(today());
             SET v_discount = 0;
         END IF;
 
-        -- Вставка записи заказа
+        -- Insert order record
         INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
         VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
                 p_order_total - v_discount);
 
-        -- Обновление статистики клиента
+        -- Update customer statistics
         UPDATE customers
         SET total_orders = total_orders + 1,
             lifetime_value = lifetime_value + (p_order_total - v_discount),
             last_order_date = NOW()
         WHERE customer_id = p_customer_id;
 
-        -- Расчет баллов лояльности (1 балл за доллар)
+        -- Calculate loyalty points (1 point per dollar)
         SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
-        -- Вставка транзакции баллов лояльности
+        -- Insert loyalty points transaction
         INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
         VALUES (p_customer_id, p_loyalty_points, NOW(),
                 CONCAT('Order #', p_order_id));
 
-        -- Проверка необходимости повышения уровня клиента
+        -- Check if customer should be upgraded
         IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
             UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
             SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
@@ -402,7 +403,7 @@ WHERE month = toStartOfMonth(today());
 
     DELIMITER ;
 
-    -- Вызов хранимой процедуры
+    -- Call the stored procedure
     CALL process_order(12345, 5678, 250.00, @status, @points);
     SELECT @status, @points;
     ```
@@ -416,7 +417,7 @@ WHERE month = toStartOfMonth(today());
     :::
 
     ```python
-    # Пример на Python с использованием clickhouse-connect
+    # Python example using clickhouse-connect
     import clickhouse_connect
     from datetime import datetime
     from decimal import Decimal
@@ -425,15 +426,15 @@ WHERE month = toStartOfMonth(today());
 
     def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
         """
-        Обрабатывает заказ с бизнес-логикой, которая обычно реализуется в хранимой процедуре.
-        Возвращает: (status_message, loyalty_points)
+        Processes an order with business logic that would be in a stored procedure.
+        Returns: (status_message, loyalty_points)
 
-        Примечание: ClickHouse оптимизирован для аналитики, а не для OLTP-транзакций.
-        Для транзакционных нагрузок используйте OLTP-базу данных (PostgreSQL, MySQL)
-        и синхронизируйте аналитические данные с ClickHouse для формирования отчётов.
+        Note: ClickHouse is optimized for analytics, not OLTP transactions.
+        For transactional workloads, use an OLTP database (PostgreSQL, MySQL)
+        and sync analytics data to ClickHouse for reporting.
         """
 
-        # Шаг 1: Получение информации о клиенте
+        # Step 1: Get customer information
         result = client.query(
             """
             SELECT tier, total_orders
@@ -444,16 +445,16 @@ WHERE month = toStartOfMonth(today());
         )
 
         if not result.result_rows:
-            raise ValueError(f"Клиент {customer_id} не найден")
+            raise ValueError(f"Customer {customer_id} not found")
 
         customer_tier, previous_orders = result.result_rows[0]
 
-        # Шаг 2: Расчёт скидки на основе уровня (бизнес-логика в Python)
+        # Step 2: Calculate discount based on tier (business logic in Python)
         discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
         discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
         final_amount = order_total - discount
 
-        # Шаг 3: Вставка записи заказа
+        # Step 3: Insert order record
         client.command(
             """
             INSERT INTO orders (order_id, customer_id, order_total, discount,
@@ -470,11 +471,11 @@ WHERE month = toStartOfMonth(today());
             }
         )
 
-        # Шаг 4: Расчёт новой статистики клиента
+        # Step 4: Calculate new customer statistics
         new_order_count = previous_orders + 1
 
-        # Для аналитических баз данных предпочтительнее использовать INSERT вместо UPDATE
-        # Здесь используется паттерн ReplacingMergeTree
+        # For analytics databases, prefer INSERT over UPDATE
+        # This uses a ReplacingMergeTree pattern
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -491,7 +492,7 @@ WHERE month = toStartOfMonth(today());
             parameters={'cid': customer_id, 'new_count': new_order_count}
         )
 
-        # Шаг 5: Расчёт и запись баллов лояльности
+        # Step 5: Calculate and record loyalty points
         loyalty_points = int(final_amount)
 
         client.command(
@@ -507,11 +508,11 @@ WHERE month = toStartOfMonth(today());
             }
         )
 
-        # Шаг 6: Проверка повышения уровня (бизнес-логика в Python)
+        # Step 6: Check for tier upgrade (business logic in Python)
         status = 'ORDER_COMPLETE'
 
         if new_order_count >= 10 and customer_tier == 'bronze':
-            # Повышение до уровня silver
+            # Upgrade to silver
             client.command(
                 """
                 INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -527,7 +528,7 @@ WHERE month = toStartOfMonth(today());
             status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
 
         elif new_order_count >= 50 and customer_tier == 'silver':
-            # Повышение до уровня gold
+            # Upgrade to gold
             client.command(
                 """
                 INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -544,14 +545,14 @@ WHERE month = toStartOfMonth(today());
 
         return status, loyalty_points
 
-    # Использование функции
+    # Use the function
     status, points = process_order(
         order_id=12345,
         customer_id=5678,
         order_total=Decimal('250.00')
     )
 
-    print(f"Статус: {status}, Баллы лояльности: {points}")
+    print(f"Status: {status}, Loyalty Points: {points}")
     ```
   </TabItem>
 </Tabs>
@@ -789,9 +790,9 @@ SELECT count() FROM {table: Identifier};
 
 <br/>
 
-Для использования параметров запроса в [клиентах для языков программирования](/integrations/language-clients) обратитесь к документации по языковому клиенту, который вы используете.
+Для использования параметров запроса в [клиентах для языков программирования](/integrations/language-clients) обратитесь к документации по языковому клиенту, который вас интересует.
 
-### Ограничения параметров запроса \{#parameter-syntax\}
+### Ограничения параметров запроса \{#limitations-of-query-parameters\}
 
 Параметры запроса **не являются универсальным механизмом текстовой подстановки**. У них есть определённые ограничения:
 
@@ -802,13 +803,13 @@ SELECT count() FROM {table: Identifier};
 **Что РАБОТАЕТ:**
 
 ```sql
--- ✓ Значения в предложении WHERE
+-- ✓ Values in WHERE clause
 SELECT * FROM users WHERE id = {user_id: UInt64};
 
--- ✓ Имена таблиц и баз данных
+-- ✓ Table/database names
 SELECT * FROM {db: Identifier}.{table: Identifier};
 
--- ✓ Значения в предложении IN
+-- ✓ Values in IN clause
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
 
 -- ✓ CREATE TABLE
@@ -818,18 +819,19 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 **Что НЕ работает:**
 
 ```sql
--- ✗ Имена столбцов в SELECT (используйте Identifier с осторожностью)
-SELECT {column: Identifier} FROM users;  -- Ограниченная поддержка
+-- ✗ Column names in SELECT (use Identifier carefully)
+SELECT {column: Identifier} FROM users;  -- Limited support
 
--- ✗ Произвольные фрагменты SQL
-SELECT * FROM users {where_clause: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ Arbitrary SQL fragments
+SELECT * FROM users {where_clause: String};  -- NOT SUPPORTED
 
--- ✗ Инструкции ALTER TABLE
-ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ ALTER TABLE statements
+ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
 
--- ✗ Множественные инструкции
-{statements: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ Multiple statements
+{statements: String};  -- NOT SUPPORTED
 ```
+
 
 ### Рекомендации по безопасности \{#data-type-examples\}
 
@@ -880,16 +882,16 @@ def get_user_orders(user_id: int, start_date: str):
 **Пример того, что НЕ работает:**
 
 ```sql
--- Этот подготовленный оператор в стиле MySQL с параметрами НЕ работает в ClickHouse
+-- This MySQL-style prepared statement with parameters does NOT work in ClickHouse
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
-EXECUTE stmt USING @user_id;  -- Привязка параметров не поддерживается
+EXECUTE stmt USING @user_id;  -- Parameter binding not supported
 ```
 
 :::tip
 **Вместо этого используйте родные параметры запросов ClickHouse.** Они обеспечивают полную поддержку привязки параметров, типобезопасность и защиту от SQL-инъекций во всех интерфейсах ClickHouse:
 
 ```sql
--- Нативные параметры запросов ClickHouse (рекомендуется)
+-- ClickHouse native query parameters (recommended)
 SET param_user_id = 12345;
 SELECT * FROM users WHERE id = {user_id: UInt64};
 ```
@@ -897,6 +899,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 :::
 
 Подробнее см. [документацию по интерфейсу MySQL](/interfaces/mysql) и [запись в блоге о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
+
 
 ## Резюме \{#summary\}
 

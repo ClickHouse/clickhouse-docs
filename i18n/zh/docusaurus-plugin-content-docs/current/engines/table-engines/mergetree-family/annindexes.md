@@ -90,7 +90,7 @@ ENGINE = MergeTree
 ORDER BY [...]
 ```
 
-或者，要在已有表上添加一个向量相似度索引：
+或者，可以在现有表上添加一个向量相似度索引：
 
 ```sql
 ALTER TABLE table ADD INDEX <index_name> vectors TYPE vector_similarity(<type>, <distance_function>, <dimensions>) [GRANULARITY <N>];
@@ -115,8 +115,9 @@ ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
 如果 ClickHouse 在创建索引时发现数组的基数不同，则会丢弃该索引并返回错误。
 
 可选的 GRANULARITY 参数 `<N>` 指的是索引粒度的大小（参见[此处](../../../optimize/skipping-indexes)）。
-默认值 1 亿对于大多数用例应该都能有较好的表现，但也可以进行调优。
-我们建议仅由了解相关影响的高级用户进行调优（参见[下文](#differences-to-regular-skipping-indexes)）。
+与默认索引粒度为 1 的常规跳过索引不同，向量相似度索引将 1 亿用作默认索引粒度。
+该值确保即使在大型分区片段上，内部构建的索引数量也较少。
+我们建议仅由了解相关影响的高级用户修改索引粒度（参见[下文](#differences-to-regular-skipping-indexes)）。
 
 向量相似度索引具有通用性，能够适配不同的近似搜索方法。
 实际使用的方法由参数 `<type>` 指定。
@@ -447,6 +448,17 @@ SELECT 查询在使用向量相似度索引时，需要将其加载到主内存�
 缓存的最大大小可以通过服务器 SETTING [vector&#95;similarity&#95;index&#95;cache&#95;size](../../../operations/server-configuration-parameters/settings.md#vector_similarity_index_cache_size) 进行配置。
 默认情况下，缓存最多可以增长到 5 GB。
 
+下面的日志消息（`system.text_log`）表明正在加载向量相似度索引。
+如果针对不同的向量搜索查询反复出现此类消息，则说明缓存大小过小。
+
+```text
+2026-02-03 07:39:10.351635 [1386] f0ac5c85-1b1c-4f35-8848-87a1d1aa00ba : VectorSimilarityIndex Start loading vector similarity index
+
+<...>
+
+2026-02-03 07:40:25.217603 [1386] f0ac5c85-1b1c-4f35-8848-87a1d1aa00ba : VectorSimilarityIndex Loaded vector similarity index: max_level = 2, connectivity = 64, size = 1808111, capacity = 1808111, memory_usage = 8.00 GiB, bytes_per_vector = 4096, scalar_words = 1024, nodes = 1808111, edges = 51356964, max_edges = 233395072
+```
+
 :::note
 向量相似度索引缓存存储的是向量索引粒度。
 如果单个向量索引粒度大于缓存大小，则不会被缓存。
@@ -457,13 +469,14 @@ SELECT 查询在使用向量相似度索引时，需要将其加载到主内存�
 
 向量相似度索引缓存的当前大小可在 [system.metrics](../../../operations/system-tables/metrics.md) 中查看：
 
+
 ```sql
 SELECT metric, value
 FROM system.metrics
 WHERE metric = 'VectorSimilarityIndexCacheBytes'
 ```
 
-具有某个 query id 的查询，其缓存命中和未命中信息可以从 [system.query&#95;log](../../../operations/system-tables/query_log.md) 中获取：
+对于具有某个 query id 的查询，其缓存命中和未命中情况可以从 [system.query&#95;log](../../../operations/system-tables/query_log.md) 中获取：
 
 ```sql
 SYSTEM FLUSH LOGS query_log;
@@ -474,13 +487,12 @@ WHERE type = 'QueryFinish' AND query_id = '<...>'
 ORDER BY event_time_microseconds;
 ```
 
-对于生产环境场景，我们建议将缓存配置得足够大，使所有向量索引始终常驻内存。
+对于生产用例，我们建议将缓存配置得足够大，以便所有向量索引始终都能保留在内存中。
 
-**量化调优**
+**调优量化**
 
-[Quantization](https://huggingface.co/blog/embedding-quantization) 是一种用于减少向量内存占用，并降低构建和遍历向量索引计算开销的技术。
+[量化](https://huggingface.co/blog/embedding-quantization)是一种技术，用于减少向量的内存占用以及构建和遍历向量索引的计算成本。
 ClickHouse 向量索引支持以下量化选项：
-
 
 | Quantization   | Name                         | Storage per dimension |
 | -------------- | ---------------------------- | --------------------- |

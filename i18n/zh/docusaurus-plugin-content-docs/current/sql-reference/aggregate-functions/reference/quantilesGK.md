@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 使用 [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) 算法，对数值数据序列在多个不同分位点上同时计算[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-该函数与 [`quantileGK`](/sql-reference/aggregate-functions/reference/quantilegk) 的工作方式类似，但允许在一次遍历中计算多个分位水平，相比多次分别调用各个分位数函数更加高效。
+该函数与 [`quantileGK`](/sql-reference/aggregate-functions/reference/quantileGK) 的工作方式类似，但允许在一次遍历中计算多个分位水平，相比多次分别调用各个分位数函数更加高效。
 
 Greenwald-Khanna 算法是一种用于在数据流上高效计算分位数的算法。
 该算法由 Michael Greenwald 和 Sanjeev Khanna 于 2001 年提出。
@@ -53,7 +53,7 @@ SELECT quantilesGK(1, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────────────────┘
 ```
 
-**更高精度的分位数估计**
+**更高精度的分位数计算**
 
 ```sql title=Query
 SELECT quantilesGK(100, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);

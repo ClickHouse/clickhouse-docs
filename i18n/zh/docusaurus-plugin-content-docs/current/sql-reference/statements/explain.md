@@ -70,7 +70,31 @@ Union
 
 输出查询的 AST。支持所有类型的查询，而不仅仅是 `SELECT`。
 
+设置：
+
+* `graph` – 以 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言的图形形式输出 AST。默认：0。
+
 示例：
+
+EXPLAIN AST SELECT 1;
+
+SelectWithUnionQuery (children 1)
+ExpressionList (children 1)
+SelectQuery (children 1)
+ExpressionList (children 1)
+Literal UInt64&#95;1
+
+EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
+
+explain
+AlterQuery  t1 (children 1)
+ExpressionList (children 1)
+AlterCommand 27 (children 1)
+Function equals (children 1)
+ExpressionList (children 2)
+Identifier date
+Function today (children 1)
+ExpressionList
 
 ```sql
 EXPLAIN AST SELECT 1;
@@ -99,6 +123,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
+
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
@@ -179,11 +204,14 @@ QUERY id: 0
 
 设置：
 
+* `optimize` — 控制在显示查询计划之前是否对其应用优化。默认值：1。
 * `header` — 为每个步骤打印输出头部信息。默认值：0。
 * `description` — 打印步骤描述。默认值：1。
 * `indexes` — 显示已使用的索引、每个应用索引过滤的分区片段数量以及过滤的粒度数量。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。从 ClickHouse &gt;= v25.9 开始，仅在与 `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` 一起使用时，该语句才会输出有意义的结果。
 * `projections` — 显示所有已分析的投影，以及它们基于投影主键条件在分区片段级别过滤方面的效果。对于每个投影，本部分包含统计信息，例如使用该投影主键进行评估的分区片段、行、标记和范围数量。它还会显示由于该过滤而被跳过的数据分区片段数量，而无需从投影本身读取数据。投影是实际用于读取，还是仅用于过滤分析，可以通过 `description` 字段判断。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。
 * `actions` — 打印关于步骤执行行为的详细信息。默认值：0。
+* `sorting` — 为每个生成已排序输出的计划步骤打印排序描述。默认值：0。
+* `keep_logical_steps` — 保留用于 JOIN 的逻辑计划步骤，而不是将其转换为物理 JOIN 实现。默认值：0。
 * `json` — 以 [JSON](/interfaces/formats/JSON) 格式将查询计划步骤输出为一行。默认值：0。建议使用 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 格式以避免不必要的转义。
 * `input_headers` - 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
 * `column_structure` - 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
@@ -252,7 +280,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-将 `description` 设为 1 时，会向该步骤添加 `Description` 键：
+将 `description` 设置为 1 时，会为该步骤添加 `Description` 键：
 
 ```json
 {
@@ -268,6 +296,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
+
 
 ```json
 [
@@ -302,15 +331,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `indexes` = 1 时，会添加 `Indexes` 键。它包含一个已使用索引的数组。每个索引以 JSON 对象形式描述，具有 `Type` 键（字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`）以及可选键：
+当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键（字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`），以及可选的键：
 
-* `Name` — 索引名称（目前仅用于 `Skip` 索引）。
-* `Keys` — 索引使用的列数组。
+* `Name` — 索引名称（目前仅对 `Skip` 索引使用）。
+* `Keys` — 索引所使用列的数组。
 * `Condition` — 实际使用的条件。
-* `Description` — 索引描述（目前仅用于 `Skip` 索引）。
-* `Parts` — 应用索引之前/之后的分区片段数量。
-* `Granules` — 应用索引之前/之后的粒度数量。
-* `Ranges` — 应用索引之后的粒度区间数量。
+* `Description` — 索引描述（目前仅对 `Skip` 索引使用）。
+* `Parts` — 应用索引前后分区片段的数量。
+* `Granules` — 应用索引前后粒度单元的数量。
+* `Ranges` — 应用索引后粒度单元区间的数量。
 
 示例：
 
@@ -356,16 +385,16 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `projections` = 1 时，会新增 `Projections` 键。它包含一个已分析 projection 的数组。每个 projection 以 JSON 形式描述，包含以下键：
+当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的 PROJECTION 数组。每个 PROJECTION 以包含以下键的 JSON 进行描述：
 
-* `Name` — projection 名称。
-* `Condition` — 使用的 projection 主键条件。
-* `Description` — projection 的使用方式说明（例如 part-level 过滤）。
-* `Selected Parts` — 该 projection 选中的分区片段数量。
-* `Selected Marks` — 选中的 marks 数量。
-* `Selected Ranges` — 选中的 ranges 数量。
+* `Name` — PROJECTION 名称。
+* `Condition` — 使用的 PROJECTION 主键条件。
+* `Description` — 关于该 PROJECTION 使用方式的描述（例如分区片段级过滤）。
+* `Selected Parts` — 该 PROJECTION 选中的分区片段数量。
+* `Selected Marks` — 选中的标记数量。
+* `Selected Ranges` — 选中的范围数量。
 * `Selected Rows` — 选中的行数量。
-* `Filtered Parts` — 由于 part-level 过滤而被跳过的分区片段数量。
+* `Filtered Parts` — 由于分区片段级过滤而被跳过的分区片段数量。
 
 示例：
 
@@ -396,6 +425,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
+
 
 当 `actions` = 1 时，添加的键取决于步骤类型。
 
@@ -504,11 +534,11 @@ Expression ((Project names + Projection))
 
 设置：
 
-* `header` — 为每个输出端口打印头部信息。默认值：0。
-* `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言打印图。默认值：0。
-* `compact` — 当启用 `graph` 设置时，以紧凑模式打印图。默认值：1。
+* `header` — 为每个输出端口输出表头。默认值：0。
+* `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言输出图形。默认值：0。
+* `compact` — 当启用 `graph` 设置时，以紧凑模式输出图形。默认值：1。
 
-当 `compact=0` 且 `graph=1` 时，处理器名称会附加一个包含唯一处理器标识符的后缀。
+当 `compact=0` 且 `graph=1` 时，processor 名称会包含一个带有唯一 processor 标识符的额外后缀。
 
 示例：
 
@@ -531,6 +561,7 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
+
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

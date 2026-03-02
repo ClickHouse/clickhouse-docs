@@ -52,7 +52,7 @@ SETTINGS allow_introspection_functions = 1
 
 * 使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` 等[内省函数](../../sql-reference/functions/introspection.md)，以获取 ClickHouse 代码中的函数名及其位置。要获取某条查询的分析信息，需要对 `trace_log` 表中的数据进行聚合。可以按单个函数或整条堆栈跟踪进行聚合。
 
-如果需要可视化 `trace_log` 信息，可尝试使用 [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) 和 [speedscope](https://github.com/laplab/clickhouse-speedscope)。
+如果需要可视化 `trace_log` 信息，可尝试使用 [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) 和 [speedscope](https://www.speedscope.app)。
 
 ## 示例 \{#example\}
 

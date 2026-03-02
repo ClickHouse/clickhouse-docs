@@ -30,7 +30,7 @@ Enhanced encryption is currently available in AWS and GCP services. Azure is com
 
 ### Transparent Data Encryption (TDE) {#transparent-data-encryption-tde}
 
-TDE must be enabled on service creation. Existing services cannot be encrypted after creation. Once TDE is enabled, it cannot be disabled. All data in the service will remain encrypted. If you want to disable TDE after it has been enabled, you must create a new service and migrate your data there.
+TDE must be enabled on service creation. Existing services can't be encrypted after creation. Once TDE is enabled, it can't be disabled. All data in the service will remain encrypted. If you want to disable TDE after it has been enabled, you must create a new service and migrate your data there.
 
 1. Select `Create new service`
 2. Name the service

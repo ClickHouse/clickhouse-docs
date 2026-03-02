@@ -30,16 +30,16 @@ ClickHouse не удаляет данные из таблицы автомати
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, на котором выполняется запрос.
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — дата, когда поток завершил выполнение запроса.
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время, когда поток завершил выполнение запроса.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — дата и время, когда поток завершил выполнение запроса.
 * `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время, когда поток завершил выполнение запроса, с точностью до микросекунд.
 * `query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время начала выполнения запроса.
 * `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время начала выполнения запроса с микросекундной точностью.
 * `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Длительность выполнения запроса.
 * `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество прочитанных строк.
-* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — количество прочитанных байт.
+* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество прочитанных байт.
 * `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — для запросов `INSERT` количество записанных строк. Для остальных запросов значение столбца равно 0.
-* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — для запросов `INSERT` количество записанных байт. Для других запросов значение столбца равно 0.
-* `memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — разность между объемом выделенной и освобожденной памяти в контексте этого потока.
+* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — для запросов `INSERT` количество записанных байт. Для остальных запросов значение столбца равно 0.
+* `memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — разница между объёмами выделенной и освобождённой памяти в контексте этого потока.
 * `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — Максимальная разница между объёмами выделенной и освобождённой памяти в контексте этого потока.
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока.
 * `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — идентификатор потока операционной системы.
@@ -48,10 +48,12 @@ ClickHouse не удаляет данные из таблицы автомати
 * `is_initial_query` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — тип запроса. Возможные значения:
   * 1 — Запрос был инициирован клиентом.
   * 0 — Запрос был инициирован другим запросом при распределенном выполнении.
+* `connection_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес клиента, с которого было установлено соединение. При подключении через прокси это будет IP-адрес прокси-сервера.
+* `connection_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — клиентский порт, через который было установлено соединение. При подключении через прокси здесь будет порт прокси-сервера.
 * `user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя, инициировавшего текущий запрос.
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса.
-* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, который использовался при выполнении запроса.
-* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — Клиентский порт, использованный для выполнения запроса.
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, который использовался при выполнении запроса. При подключении через прокси и при установленном параметре [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) здесь будет указан адрес клиента, а не прокси-сервера.
+* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — Клиентский порт, использованный для выполнения запроса. При подключении через прокси и включённой настройке [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) здесь указывается порт клиента, а не прокси.
 * `initial_user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя, который выполнил исходный запрос (для распределённого выполнения запроса).
 * `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор исходного запроса (для распределённого выполнения запросов).
 * `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, с которого был запущен родительский запрос.
@@ -65,7 +67,7 @@ ClickHouse не удаляет данные из таблицы автомати
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ревизия клиента [clickhouse-client](../../interfaces/cli.md) или другого TCP-клиента.
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Мажорная версия [clickhouse-client](../../interfaces/cli.md) или другого TCP‑клиента.
 * `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер минорной версии [clickhouse-client](../../interfaces/cli.md) или другого TCP-клиента.
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Патч-компонент версии [clickhouse-client](../../interfaces/cli.md) или другого TCP‑клиента.
+* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер патч-версии [clickhouse-client](../../interfaces/cli.md) или другого TCP‑клиента.
 * `http_method` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — HTTP-метод, инициировавший запрос. Возможные значения:
   * 0 — Запрос был выполнен через TCP-интерфейс.
   * 1 — Использовался метод `GET`.

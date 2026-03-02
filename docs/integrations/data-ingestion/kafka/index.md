@@ -93,9 +93,9 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 | Product | Strengths | Weaknesses |
 |---------|-----------|------------|
-| **ClickPipes for Kafka** | • Scalable architecture for high throughput and low latency<br/>• Built-in monitoring and schema management<br/>• Private networking connections (via PrivateLink)<br/>• Supports SSL/TLS authentication and IAM authorization<br/>• Supports programmatic configuration (Terraform, API endpoints) | • Does not support pushing data to Kafka<br/>• At-least-once semantics |
-| **Kafka Connect Sink** | • Exactly-once semantics<br/>• Allows granular control over data transformation, batching and error handling<br/>• Can be deployed in private networks<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Does not support pushing data to Kafka<br/>• Operationally complex to set up and maintain<br/>• Requires Kafka and Kafka Connect expertise |
-| **Kafka table engine** | • Supports [pushing data to Kafka](./kafka-table-engine.md/#clickhouse-to-kafka)<br/>• Operationally simple to set up | • At-least-once semantics<br/>• Limited horizontal scaling for consumers. Cannot be scaled independently from the ClickHouse server<br/>• Limited error handling and debugging options<br/>• Requires Kafka expertise |
+| **ClickPipes for Kafka** | • Scalable architecture for high throughput and low latency<br/>• Built-in monitoring and schema management<br/>• Private networking connections (via PrivateLink)<br/>• Supports SSL/TLS authentication and IAM authorization<br/>• Supports programmatic configuration (Terraform, API endpoints) | • Doesn't support pushing data to Kafka<br/>• At-least-once semantics |
+| **Kafka Connect Sink** | • Exactly-once semantics<br/>• Allows granular control over data transformation, batching and error handling<br/>• Can be deployed in private networks<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Doesn't support pushing data to Kafka<br/>• Operationally complex to set up and maintain<br/>• Requires Kafka and Kafka Connect expertise |
+| **Kafka table engine** | • Supports [pushing data to Kafka](./kafka-table-engine.md/#clickhouse-to-kafka)<br/>• Operationally simple to set up | • At-least-once semantics<br/>• Limited horizontal scaling for consumers. Can't be scaled independently from the ClickHouse server<br/>• Limited error handling and debugging options<br/>• Requires Kafka expertise |
 
 ### Other options {#other-options}
 

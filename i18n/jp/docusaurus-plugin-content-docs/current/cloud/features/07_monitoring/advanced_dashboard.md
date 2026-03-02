@@ -29,6 +29,7 @@ import Image from '@theme/IdealImage';
 Cloudの両方で利用可能です。この記事では、Cloudでの高度なダッシュボードの
 使用方法を説明します。
 
+
 ## 高度なダッシュボードへのアクセス \{#accessing-the-advanced-dashboard\}
 
 高度なダッシュボードには以下の方法でアクセスできます：
@@ -160,7 +161,7 @@ CPU使用率がピークに達している例です。
 ### 不適切なプライマリキー設計 \{#bad-primary-key-design\}
 
 高度なダッシュボードを使用して発見できるもう1つの問題は、不適切なプライマリキー
-設計です。["ClickHouseにおけるプライマリインデックスの実践的入門"](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)に
+設計です。「[ClickHouseにおけるプライマリインデックスの実践的入門](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)」に
 記載されているように、ユースケースに最適なプライマリキーを選択することで、
 ClickHouseがクエリを実行するために読み取る必要のある行数を減らし、
 パフォーマンスを大幅に向上させることができます。
@@ -170,7 +171,7 @@ ClickHouseがクエリを実行するために読み取る必要のある行数�
 全体的なクエリスループットの一般的な増加と、クエリを実行するために
 大量の行を選択しているクエリの両方を示している可能性があります。
 
-<Image img={SelectedRowsPerSecond} size="lg" alt="リソース集約型クエリ"/>
+<Image img={SelectedRowsPerSecond} size="lg" alt="リソース集約型クエリ" />
 
 タイムスタンプをフィルターとして使用することで、`system.query_log`テーブルで
 ピーク時に実行されたクエリを見つけることができます。
@@ -178,7 +179,7 @@ ClickHouseがクエリを実行するために読み取る必要のある行数�
 例えば、特定の日の午前11時から11時30分の間に実行されたすべてのクエリを
 表示し、どのクエリが多くの行を読み取っているかを理解するクエリを実行します：
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT
     type,
     event_time,
@@ -193,7 +194,7 @@ LIMIT 5
 FORMAT VERTICAL
 ```
 
-```response title="レスポンス"
+```response title="Response"
 Row 1:
 ──────
 type:              QueryFinish
@@ -283,7 +284,6 @@ read_rows:         6242304
 tables:            ['default.amazon_reviews_pk']
 ```
 
-この例では、同じクエリが2つのテーブル`amazon_reviews_no_pk`と
-`amazon_reviews_pk`に対して実行されていることがわかります。
-誰かがテーブル`amazon_reviews`のプライマリキーオプションをテストしていたと
-結論付けることができます。
+この例では、同じクエリが2つのテーブル `amazon_reviews_no_pk` と
+`amazon_reviews_pk` に対して実行されていることがわかります。`amazon_reviews`
+テーブルに対してプライマリキーの設定オプションをテストしていたと結論できます。

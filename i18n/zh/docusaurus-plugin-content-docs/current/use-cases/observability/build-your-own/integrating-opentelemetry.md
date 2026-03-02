@@ -408,7 +408,7 @@ service:
 
 **Important:** 请注意，上述连接字符串同时启用了压缩（lz4）以及异步写入。我们建议始终同时启用这两项。有关异步写入的更多详情，请参见 [Batching](#batching)。压缩应始终显式指定，在较旧版本的 exporter 中默认不会启用。
 
-* **ttl** - 此处的值决定数据保留时长。更多详情见“Managing data”。该值应以小时为单位指定，例如 72h。我们在下面的示例中禁用了生存时间 (TTL)，因为我们的数据来自 2019 年，如果插入则会被 ClickHouse 立即删除。
+* **ttl** - 此处的值决定数据保留时长。更多详情见 “Managing data”。该值应以小时为单位指定，例如 72h。我们在下面的示例中禁用了生存时间 (TTL)，因为我们的数据来自 2019 年，如果插入则会被 ClickHouse 立即删除。
 * **traces&#95;table&#95;name** 和 **logs&#95;table&#95;name** - 决定 logs 和 traces 表的名称。
 * **create&#95;schema** - 决定在启动时是否使用默认 schema 创建表。默认值为 true，便于快速上手。你应将其设为 false 并自行定义 schema。
 * **database** - 目标数据库。

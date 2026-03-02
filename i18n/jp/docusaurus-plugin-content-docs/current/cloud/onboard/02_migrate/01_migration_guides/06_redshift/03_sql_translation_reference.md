@@ -60,6 +60,12 @@ CREATE TABLE some_table(...) SORTKEY (column1, column2)
 CREATE TABLE some_table(...) ENGINE = MergeTree ORDER BY (column1, column2)
 ```
 
+ClickHouse と Redshift の両方には「ソートキー」という概念があり、
+データを保存する際にどのような順序で格納するかを定義します。Redshift では、
+`SORTKEY` 句を使ってソートキーを定義します。
+
+一方、ClickHouse では `ORDER BY` 句を使ってソート順を指定します。
+
 ほとんどの場合、デフォルトの `COMPOUND` 型を使用している前提で、ClickHouse では
 Redshift と同じソートキーのカラムおよび順序を利用できます。Redshift にデータが
 追加された際には、新しく追加されたデータを再ソートし、クエリプランナー用の統計情報を更新するために

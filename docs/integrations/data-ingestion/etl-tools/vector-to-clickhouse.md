@@ -45,7 +45,7 @@ Define a table to store the log events:
 CREATE DATABASE IF NOT EXISTS nginxdb
 ```
 
-2. Insert the entire log event as a single string. Obviously this is not a great format for performing analytics on the log data, but we will figure that part out below using ***materialized views***.
+2. Insert the entire log event as a single string. Obviously this isn't a great format for performing analytics on the log data, but we will figure that part out below using ***materialized views***.
 
 ```sql
 CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
@@ -122,7 +122,7 @@ SELECT * FROM nginxdb.access_logs
 
 ## Parse the Logs {#4-parse-the-logs}
 
-Having the logs in ClickHouse is great, but storing each event as a single string does not allow for much data analysis.
+Having the logs in ClickHouse is great, but storing each event as a single string doesn't allow for much data analysis.
 We'll next look at how to parse the log events using a [materialized view](/materialized-view/incremental-materialized-view).
 
 A **materialized view** functions similarly to an insert trigger in SQL. When rows of data are inserted into a source table, the materialized view makes some transformation of these rows and inserts the results into a target table.
@@ -144,7 +144,7 @@ SELECT splitByWhitespace('192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / 
 ["192.168.208.1","-","-","[12/Oct/2021:15:32:43","+0000]","\"GET","/","HTTP/1.1\"","304","0","\"-\"","\"Mozilla/5.0","(Macintosh;","Intel","Mac","OS","X","10_15_7)","AppleWebKit/537.36","(KHTML,","like","Gecko)","Chrome/93.0.4577.63","Safari/537.36\""]
 ```
 
-A few of the strings have some extra characters, and the user agent (the browser details) did not need to be parsed, but
+A few of the strings have some extra characters, and the user agent (the browser details) didn't need to be parsed, but
 the resulting array is close to what is needed.
 
 Similar to `splitByWhitespace`, the [`splitByRegexp`](/sql-reference/functions/splitting-merging-functions#splitByRegexp) function splits a string into an array based on a regular expression.
@@ -175,7 +175,7 @@ However, if we change the separator from a colon (**:**) to a comma (**,**) then
 SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))
 ```
 
-We are now ready to define the materialized view.
+We're now ready to define the materialized view.
 The definition below includes `POPULATE`, which means the existing rows in **access_logs** will be processed and inserted right away.
 Run the following SQL statement:
 
@@ -225,7 +225,7 @@ SELECT * FROM nginxdb.access_logs_view
 
 :::note
 The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the [`Null`](/engines/table-engines/special/null) table engine.
-The parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.
+The parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data won't be stored in a table.
 :::
 
 </VerticalStepper>

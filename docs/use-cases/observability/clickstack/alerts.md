@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'Search with ClickStack'
+title: 'Alerts with ClickStack'
 sidebar_label: 'Alerts'
 pagination_prev: null
 pagination_next: null
@@ -24,8 +24,6 @@ import remove_chart_alert from '@site/static/images/use-cases/observability/remo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Alerting in ClickStack {#alerting-in-clickstack}
-
 ClickStack includes built-in support for alerting, enabling teams to detect and respond to issues in real time across logs, metrics, and traces.
 
 Alerts can be created directly in the HyperDX interface and integrate with popular notification systems like Slack and PagerDuty.
@@ -46,7 +44,7 @@ To create a search alert:
 
 <VerticalStepper headerLevel="h4">
 
-For an alert to be created for a search, the search must be saved. You can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search is not saved.
+For an alert to be created for a search, the search must be saved. You can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search isn't saved.
 
 #### Open alert creation dialog {#open-dialog}
 
@@ -176,7 +174,7 @@ From this view, you can see all alerts that have been created and are currently 
 This view also displays the alert evaluation history. Alerts are evaluated on a recurring time interval (defined by the period/duration set during alert creation). During each evaluation, HyperDX queries your data to check whether the alert condition is met:
 
 - **Red bar**: The threshold condition was met during this evaluation and the alert fired (notification sent)
-- **Green bar**: The alert was evaluated but the threshold condition was not met (no notification sent)
+- **Green bar**: The alert was evaluated but the threshold condition wasn't met (no notification sent)
 
 Each evaluation is independent - the alert checks the data for that time window and fires only if the condition is true at that moment.
 

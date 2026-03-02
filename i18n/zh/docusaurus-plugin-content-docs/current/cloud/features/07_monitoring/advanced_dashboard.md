@@ -23,6 +23,7 @@ import Image from '@theme/IdealImage';
 
 高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
 
+
 ## 访问高级仪表板 \{#accessing-the-advanced-dashboard\}
 
 可以通过以下路径访问高级仪表板：
@@ -261,73 +262,5 @@ read_rows:         6242304
 tables:            ['default.amazon_reviews_pk']
 ```
 
-第 2 行：
-──────
-type:              QueryFinish
-event&#95;time:        2024-12-23 11:26:50
-query&#95;duration&#95;ms: 7325
-query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;no&#95;pk
-WHERE
-product&#95;category = &#39;Home&#39;
-GROUP BY
-month,
-product&#95;id
-ORDER BY
-month DESC,
-product&#95;id ASC
-LIMIT 20
-read&#95;rows:         150957260
-tables:            [&#39;default.amazon&#95;reviews&#95;no&#95;pk&#39;]
-
-第 3 行：
-──────
-type:              QueryFinish
-event&#95;time:        2024-12-23 11:24:10
-query&#95;duration&#95;ms: 3270
-query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;pk
-WHERE
-product&#95;category = &#39;Home&#39;
-GROUP BY
-month,
-product&#95;id
-ORDER BY
-month DESC,
-product&#95;id ASC
-LIMIT 20
-read&#95;rows:         6242304
-tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
-
-第 4 行：
-──────
-type:              QueryFinish
-event&#95;time:        2024-12-23 11:28:10
-query&#95;duration&#95;ms: 2786
-query:             SELECT
-toStartOfMonth(review&#95;date) AS month,
-any(product&#95;title),
-avg(star&#95;rating) AS avg&#95;stars
-FROM amazon&#95;reviews&#95;pk
-WHERE
-product&#95;category = &#39;Home&#39;
-GROUP BY
-month,
-product&#95;id
-ORDER BY
-month DESC,
-product&#95;id ASC
-LIMIT 20
-read&#95;rows:         6242304
-tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
-
-```
-
-在此示例中,可以看到同一查询针对 `amazon_reviews_no_pk` 和 `amazon_reviews_pk` 两个表执行。由此可以推断,有人正在测试 `amazon_reviews` 表的主键配置选项。
-```
+在这个示例中，我们可以看到同一个查询分别在 `amazon_reviews_no_pk` 和 `amazon_reviews_pk`
+这两个表上执行。可以推断，有人在测试 `amazon_reviews` 表的主键配置。

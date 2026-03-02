@@ -115,6 +115,7 @@ asyncio.run(main())
 
 См. также: [пример run&#95;async](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py).
 
+
 ## Управление идентификаторами сессий ClickHouse \{#managing-clickhouse-session-ids\}
 
 Каждый запрос ClickHouse выполняется в контексте «сессии» ClickHouse. В настоящее время сессии используются для двух целей:
@@ -139,6 +140,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 В качестве альтернативы передайте `autogenerate_session_id=False` напрямую в `get_client(...)`.
 
 В этом случае ClickHouse Connect не отправляет `session_id`, и сервер не будет считать отдельные запросы принадлежащими одному сеансу. Временные таблицы и параметры сеанса не будут сохраняться между запросами.
+
 
 ## Настройка пула HTTP‑подключений \{#customizing-the-http-connection-pool\}
 

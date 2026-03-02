@@ -11,6 +11,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
+
 # Шифрование данных \{#data-encryption\}
 
 ## Шифрование на уровне хранилища \{#storage-encryption\}
@@ -104,7 +105,7 @@ TDE необходимо включить при создании сервиса
 
 После настройки CMEK выполните ротацию ключа, следуя описанным выше процедурам по созданию нового ключа KMS и назначению прав. Вернитесь в настройки сервиса, вставьте новый ARN (AWS) или `Key Resource Path` (GCP) и сохраните настройки. Сервис перезапустится для применения нового ключа.
 
-#### Служба опроса ключей KMS \{#kms-key-poller\}
+#### Компонент опроса ключа KMS \{#kms-key-poller\}
 
 При использовании CMEK валидность предоставленного ключа KMS проверяется каждые 10 минут. Если ключ KMS становится недоступным, служба ClickHouse будет остановлена. Чтобы возобновить работу службы, восстановите доступ к ключу KMS, следуя инструкциям в данном руководстве, а затем перезапустите службу.
 

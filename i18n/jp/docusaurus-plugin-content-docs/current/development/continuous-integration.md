@@ -26,6 +26,7 @@ git push
 
 どうすればよいか分からない場合は、メンテナーに相談してください。
 
+
 ## master とのマージ \{#merge-with-master\}
 
 PR が master にマージ可能であることを確認します。
@@ -98,6 +99,7 @@ python -m ci.praktika run "Style check" --test cpp
 これらのコマンドは `clickhouse/style-test` の Docker イメージを取得して、コンテナ環境でジョブを実行します。
 Python 3 と Docker 以外に必要な依存関係はありません。
 
+
 ## Fast test \{#fast-test\}
 
 通常、これは PR に対して最初に実行されるチェックです。
@@ -114,6 +116,7 @@ python -m ci.praktika run "Fast test" [--test some_test_name]
 これらのコマンドは `clickhouse/fast-test` の Docker イメージを取得し、コンテナ化された環境でジョブを実行します。
 Python 3 と Docker 以外の依存関係は必要ありません。
 
+
 ## ビルドチェック \{#build-check\}
 
 以降の手順で利用するために、さまざまな構成で ClickHouse をビルドします。
@@ -127,6 +130,7 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 Python 3 と Docker 以外に必要な依存関係はありません。
+
 
 #### 利用可能なビルドジョブ \{#available-build-jobs\}
 
@@ -168,13 +172,15 @@ Python 3 と Docker 以外に必要な依存関係はありません。
 
 #### 例 \{#example-run-local\}
 
-ローカルでデバッグビルドを実行するには:
+ローカルで debug ビルドを実行するには、次を実行します：
 
 ```bash
 python -m ci.praktika run "Build (amd_debug)"
 ```
 
 上記の方法がうまくいかない場合は、ビルドログに出力されている cmake オプションを使用し、[一般的なビルド手順](../development/build.md)に従ってください。
+
+
 ## Functional stateless tests \{#functional-stateless-tests\}
 
 さまざまな構成（release、debug、sanitizer 有効など）でビルドされた ClickHouse バイナリに対して [stateless functional tests](tests.md#functional-tests) を実行します。
@@ -195,7 +201,7 @@ python -m ci.praktika run "Build (amd_debug)"
 
 複数のクライアントからステートレスなファンクショナルテストを同時に実行し、同時実行に起因するエラーを検出します。これが失敗した場合は、次を行います。
 
-    * まず他のすべてのテスト失敗を修正する
+* まず他のすべてのテスト失敗を修正する
     * レポートを確認してサーバーログの場所を特定し、エラーの原因となり得る事項がないか確認する
 
 ## 互換性チェック \{#compatibility-check\}
@@ -212,4 +218,4 @@ python -m ci.praktika run "Build (amd_debug)"
 
 クエリのパフォーマンスの変化を測定します。
 これは最も時間のかかるテストで、実行にはおよそ 6 時間弱を要します。
-パフォーマンス テスト レポートの詳細な説明は[こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report)にあります。
+パフォーマンス テスト レポートの詳細な説明は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/scripts/README.md#how-to-read-the-report)にあります。

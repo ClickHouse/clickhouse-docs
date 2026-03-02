@@ -280,7 +280,7 @@ WHERE date >= '2022-10-01 15:20:05'
 ```
 
 :::warning
-サーバー側バインディングは（ClickHouseサーバーによって）`SELECT` クエリに対してのみサポートされています。`ALTER`、`DELETE`、`INSERT`、その他の種類のクエリでは動作しません。この仕様は将来変更される可能性があります。詳細は [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092) を参照してください。
+サーバー側バインディングは（ClickHouseサーバーによって）`SELECT` クエリに対してのみサポートされています。`ALTER`、`DELETE`、`INSERT`、その他の種類のクエリでは動作しません。この仕様は将来変更される可能性があります。詳細は https://github.com/ClickHouse/ClickHouse/issues/42092 を参照してください。
 :::
 
 
@@ -310,7 +310,7 @@ WHERE date >= '2022-10-01 15:20:05'
   AND string ILIKE 'a string with a single quote\''
 ```
 
-* Python のシーケンス（タプル）、Float64、および IPv4Address を使った例
+* Python のシーケンス（タプル）、Float64、および IPv4Address を使用した例
 
 ```python
 import ipaddress
@@ -319,7 +319,7 @@ parameters = (35200.44, ipaddress.IPv4Address(0x443d04fe))
 client.query('SELECT * FROM some_table WHERE metric >= %s AND ip_address = %s', parameters=parameters)
 ```
 
-これにより、サーバー側で次のクエリが生成されます：
+これにより、サーバー側で次のクエリが生成されます。
 
 ```sql
 SELECT *

@@ -56,10 +56,10 @@ CMPLNT_FR_TM                Nullable(String)
 ```
 
 :::tip
-Most of the time the above command will let you know which fields in the input data are numeric, and which are strings, and which are tuples.  This is not always the case.  Because ClickHouse is routineley used with datasets containing billions of records there is a default number (100) of rows examined to [infer the schema](/integrations/data-formats/json/inference) in order to avoid parsing billions of rows to infer the schema. The response below may not match what you see, as the dataset is updated several times each year. Looking at the Data Dictionary you can see that CMPLNT_NUM is specified as text, and not numeric.  By overriding the default of 100 rows for inference with the setting `SETTINGS input_format_max_rows_to_read_for_schema_inference=2000`
+Most of the time the above command will let you know which fields in the input data are numeric, and which are strings, and which are tuples.  This isn't always the case.  Because ClickHouse is routineley used with datasets containing billions of records there is a default number (100) of rows examined to [infer the schema](/integrations/data-formats/json/inference) in order to avoid parsing billions of rows to infer the schema. The response below may not match what you see, as the dataset is updated several times each year. Looking at the Data Dictionary you can see that CMPLNT_NUM is specified as text, and not numeric.  By overriding the default of 100 rows for inference with the setting `SETTINGS input_format_max_rows_to_read_for_schema_inference=2000`
 you can get a better idea of the content.
 
-Note: as of version 22.5 the default is now 25,000 rows for inferring the schema, so only change the setting if you are on an older version or if you need more than 25,000 rows to be sampled.
+Note: as of version 22.5 the default is now 25,000 rows for inferring the schema, so only change the setting if you're on an older version or if you need more than 25,000 rows to be sampled.
 :::
 
 Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
@@ -109,7 +109,7 @@ Lat_Lon           Tuple(Nullable(Float64), Nullable(Float64))
 New Georeferenced Column Nullable(String)
 ```
 
-At this point you should check that the columns in the TSV file match the names and types specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types are not very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  When you create a ClickHouse table to store the data you can specify more appropriate and performant types.
+At this point you should check that the columns in the TSV file match the names and types specified in the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243).  The data types aren't very specific, all numeric fields are set to `Nullable(Float64)`, and all other fields are `Nullable(String)`.  When you create a ClickHouse table to store the data you can specify more appropriate and performant types.
 
 ### Determine the proper schema {#determine-the-proper-schema}
 
@@ -150,9 +150,9 @@ Result:
 
 The query response shows that the `JURISDICTION_CODE` fits well in a `UInt8`.
 
-Similarly, look at some of the `String` fields and see if they are well suited to being `DateTime` or [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) fields.
+Similarly, look at some of the `String` fields and see if they're well suited to being `DateTime` or [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) fields.
 
-For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)".  The names of parks in New York City may be a good candidate for a `LowCardinality(String)`:
+For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks aren't included)".  The names of parks in New York City may be a good candidate for a `LowCardinality(String)`:
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -323,7 +323,7 @@ LIMIT 25
 FORMAT PrettyCompact"
 ```
 
-Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time is not guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
+Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time isn't guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
 Result:
 ```response
@@ -356,7 +356,7 @@ Result:
 └─────────────────────────┴─────────────────────────┘
 ```
 :::note
-The dates shown as `1925` above are from errors in the data.  There are several records in the original data with dates in the years `1019` - `1022` that should be `2019` - `2022`.  They are being stored as Jan 1st 1925 as that is the earliest date with a 64 bit DateTime.
+The dates shown as `1925` above are from errors in the data.  There are several records in the original data with dates in the years `1019` - `1022` that should be `2019` - `2022`.  They're being stored as Jan 1st 1925 as that is the earliest date with a 64 bit DateTime.
 :::
 
 ## Create a table {#create-a-table}

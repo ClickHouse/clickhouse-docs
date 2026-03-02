@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Elixir ClickStack SDK', 'наблюдаемость Elixir', 'HyperDX Elixir', 'Elixir SDK для логирования', 'интеграция ClickStack с Elixir']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 <table>
   <tbody>
     <tr>
@@ -19,7 +22,8 @@ keywords: ['Elixir ClickStack SDK', 'наблюдаемость Elixir', 'HyperD
   </tbody>
 </table>
 
-_🚧 Поддержка метрик и трейсов OpenTelemetry появится в ближайшее время!_
+*🚧 Поддержка метрик и трейсов OpenTelemetry появится в ближайшее время!*
+
 
 ## Начало работы \{#getting-started\}
 
@@ -50,12 +54,26 @@ config :logger,
 
 ### Настройка переменных окружения \{#configure-environment-variables\}
 
-После этого вам нужно будет настроить следующие переменные окружения в оболочке, чтобы отправлять телеметрию в ClickStack:
+После этого вам нужно будет настроить следующие переменные окружения в оболочке, чтобы отправлять телеметрию в ClickStack через коллектор OpenTelemetry:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
+
+```shell
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack с открытым исходным кодом" >
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
+
+</TabItem>
+</Tabs>
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
 в приложении HyperDX; её можно задать любым удобным вам именем.*

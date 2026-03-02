@@ -34,11 +34,13 @@ npm install @hyperdx/otel-react-native
 import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
+  url: 'http://your-otel-collector:4318',
   service: 'my-rn-app',
-  apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // 设置以关联前端到后端请求的追踪
+  apiKey: '<YOUR_INGESTION_API_KEY>', // Omit for Managed ClickStack
+  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
 });
 ```
+
 
 ### 附加用户信息或元数据（可选） \{#attach-user-information-metadata\}
 

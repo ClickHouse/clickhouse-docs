@@ -224,7 +224,7 @@ These files are up to 35GB and can take around 30 mins to download depending on 
 
 ### Convert to JSON {#convert-to-json}
 
-At the time of writing, ClickHouse does not have native support for XML as an input format. To load the data into ClickHouse we first convert to NDJSON.
+At the time of writing, ClickHouse doesn't have native support for XML as an input format. To load the data into ClickHouse we first convert to NDJSON.
 
 To convert XML to JSON we recommend the [`xq`](https://github.com/kislyuk/yq) linux tool, a simple `jq` wrapper for XML documents.
 
@@ -254,7 +254,7 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-After running the above you will have a set of files, each with 10000 lines. This ensures the memory overhead of the next command is not excessive (xml to JSON conversion is done in memory).
+After running the above you will have a set of files, each with 10000 lines. This ensures the memory overhead of the next command isn't excessive (xml to JSON conversion is done in memory).
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json

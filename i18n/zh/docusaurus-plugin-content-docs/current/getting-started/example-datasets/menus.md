@@ -130,6 +130,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 设置 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，不带秒的 ISO-8601 时间（如 `2000-01-01 01:02`）也会被识别。如果不启用此设置，则只允许固定格式的 DateTime。
 
+
 ## 数据反规范化 \{#denormalize-data\}
 
 数据以[规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)分布在多个表中。这意味着，如果你想查询例如菜单项对应的菜品名称，就必须执行 [JOIN](/sql-reference/statements/select/join)。

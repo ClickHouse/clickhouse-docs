@@ -8,11 +8,11 @@ keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 
 
 ## インストール \{#installation\}
 
-### apt-key を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
+### apt-key を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cant-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
 
 [Advanced Package Tool (APT) の `apt-key` 機能は非推奨になりました](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html)。代わりに `gpg` コマンドを使用する必要があります。[インストールガイド](../getting-started/install/install.mdx)を参照してください。
 
-### gpg を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
+### gpg を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cant-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
 
 1. `gpg` がインストールされているか確認します。
 
@@ -21,12 +21,12 @@ sudo apt-get install gnupg
 ```
 
 
-### apt-get で ClickHouse リポジトリから deb パッケージを取得できない \{#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
+### apt-get で ClickHouse リポジトリから deb パッケージを取得できない \{#cant-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 1. ファイアウォール設定を確認します。
-2. 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install/install.mdx)の記事に記載されている方法でパッケージをダウンロードし、`sudo dpkg -i <packages>` コマンドを使用して手動でインストールしてください。`tzdata` パッケージも必要になります。
+1. 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install/install.mdx)の記事に記載されている方法でパッケージをダウンロードし、`sudo dpkg -i <packages>` コマンドを使用して手動でインストールしてください。`tzdata` パッケージも必要になります。
 
-### apt-get で ClickHouse リポジトリから deb パッケージを更新できない \{#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
+### apt-get で ClickHouse リポジトリから deb パッケージを更新できない \{#cant-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 この問題は、GPG キーが変更された場合に発生する可能性があります。
 

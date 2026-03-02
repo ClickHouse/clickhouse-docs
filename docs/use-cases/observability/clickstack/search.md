@@ -23,7 +23,7 @@ as well.
 
 ### Natural language search syntax {#natural-language-syntax}
 
-- Searches are not case sensitive
+- Searches aren't case sensitive
 - Searches match by whole word by default (ex. `Error` will match `Error here`
   but not `Errors here`). You can surround a word by wildcards to match partial
   words (ex. `*Error*` will match `AnyError` and `AnyErrors`)
@@ -59,14 +59,14 @@ as well.
 ### SQL search syntax {#sql-syntax}
 
 You can optionally toggle search inputs to be in SQL mode. This will accept any valid
-SQL WHERE clause for searching. This is useful for complex queries that cannot be
+SQL WHERE clause for searching. This is useful for complex queries that can't be
 expressed in Lucene syntax.
 
 ### Select statement {#select-statement}
 
 To specify the columns to display in the search results, you can use the `SELECT`
 input. This is a SQL SELECT expression for the columns to select in the search page.
-Aliases are not supported at this time (ex. you can not use `column as "alias"`).
+Aliases aren't supported at this time (ex. you can not use `column as "alias"`).
 
 ## Saved searches {#saved-searches}
 

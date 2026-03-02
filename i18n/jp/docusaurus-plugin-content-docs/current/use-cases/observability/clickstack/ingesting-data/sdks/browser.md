@@ -41,15 +41,14 @@ ClickStack ブラウザ SDK を使用すると、フロントエンドアプリ�
 ```shell
 npm install @hyperdx/browser
 ```
-
 **ClickStack を初期化する**
 
 ```javascript
 import HyperDX from '@hyperdx/browser';
 
 HyperDX.init({
-    url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack では省略
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
     consoleCapture: true, // Capture console logs (default false)
@@ -72,7 +71,7 @@ npm でインストールする代わりに、スクリプトタグ経由でス�
 <script>
   window.HyperDX.init({
     url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack では省略
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });

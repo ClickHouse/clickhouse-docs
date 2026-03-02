@@ -62,7 +62,7 @@ ClickHouse は主キーを持つテーブルをサポートしています。主
 
 ## セカンダリインデックス \{#secondary-indexes\}
 
-他のデータベース管理システムとは異なり、ClickHouse のセカンダリインデックスは特定の行や行範囲を指すものではありません。代わりに、一部のデータパーツ内のすべての行がクエリのフィルタ条件に一致しないことを事前に判断し、それらを一切読み込まないようにします。このため、これらは[データスキップインデックス](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes)と呼ばれます。
+他のデータベース管理システムとは異なり、ClickHouse のセカンダリインデックスは特定の行や行範囲を指すものではありません。代わりに、一部のデータパーツ内のすべての行がクエリのフィルタ条件に一致しないことを事前に判断し、それらを一切読み込まないようにします。このため、これらは[データスキッピングインデックス](../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes)と呼ばれます。
 
 ## オンラインクエリに適した設計 \{#suitable-for-online-queries\}
 

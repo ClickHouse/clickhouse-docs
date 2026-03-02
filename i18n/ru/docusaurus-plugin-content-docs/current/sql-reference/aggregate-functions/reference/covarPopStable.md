@@ -21,7 +21,7 @@ $$
 
 <br />
 
-It is similar to the [`covarPop`](../reference/covarpop.md) function, but uses a numerically stable algorithm. As a result, `covarPopStable` is slower than `covarPop` but produces a more accurate result.
+It is similar to the [`covarPop`](/sql-reference/aggregate-functions/reference/covarpop) function, but uses a numerically stable algorithm. As a result, `covarPopStable` is slower than `covarPop` but produces a more accurate result.
 
 **Syntax**
 
@@ -29,7 +29,7 @@ It is similar to the [`covarPop`](../reference/covarpop.md) function, but uses a
 covarPopStable(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
 - `x` — первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)

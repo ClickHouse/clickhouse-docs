@@ -11,7 +11,160 @@ doc_type: 'guide'
 
 Маскирование данных — это способ защиты данных, при котором исходные данные заменяются их версией, сохраняющей исходный формат и структуру, но не содержащей персональные идентифицирующие данные (PII) или конфиденциальную информацию.
 
-В этом руководстве показано, как маскировать данные в ClickHouse.
+В этом руководстве показано, как маскировать данные в ClickHouse с помощью нескольких подходов:
+
+- **Политики маскирования** (ClickHouse Cloud, 25.12+): встроенное динамическое маскирование, применяемое во время выполнения запроса для определённых пользователей/ролей
+- **Функции замены строк**: базовое маскирование с использованием встроенных функций
+- **Маскированные представления**: создание представлений с логикой преобразования
+- **Материализованные столбцы**: хранение маскированных версий вместе с исходными данными
+- **Правила маскирования запросов**: маскирование конфиденциальных данных в логах (ClickHouse OSS)
+
+## Использование политик маскирования (ClickHouse Cloud) \{#masking-policies\}
+
+:::note
+Политики маскирования доступны в ClickHouse Cloud начиная с версии 25.12.
+:::
+
+Команда [`CREATE MASKING POLICY`](/sql-reference/statements/create/masking-policy) предоставляет встроенный способ динамически маскировать значения столбцов для определённых пользователей или ролей на этапе выполнения запроса. В отличие от других подходов, политики маскирования не требуют создания отдельных представлений или хранения замаскированных данных — преобразование выполняется прозрачно при выполнении пользователями запросов к таблице.
+
+### Базовая политика маскирования \{#basic-maasking-policy\}
+
+Чтобы продемонстрировать политики маскирования, создадим таблицу `orders`, содержащую информацию о клиентах:
+
+```sql
+CREATE TABLE orders (
+    user_id UInt32,
+    name String,
+    email String,
+    phone String,
+    total_amount Decimal(10,2),
+    order_date Date,
+    shipping_address String
+)
+ENGINE = MergeTree()
+ORDER BY user_id;
+
+INSERT INTO orders VALUES
+    (1001, 'John Smith', 'john.smith@gmail.com', '555-123-4567', 299.99, '2024-01-15', '123 Main St, New York, NY 10001'),
+    (1002, 'Sarah Johnson', 'sarah.johnson@outlook.com', '555-987-6543', 149.50, '2024-01-16', '456 Oak Ave, Los Angeles, CA 90210'),
+    (1003, 'Michael Brown', 'mbrown@company.com', '555-456-7890', 599.00, '2024-01-17', '789 Pine Rd, Chicago, IL 60601'),
+    (1004, 'Emily Rogers', 'emily.rogers@yahoo.com', '555-321-0987', 89.99, '2024-01-18', '321 Elm St, Houston, TX 77001'),
+    (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
+```
+
+Теперь создайте роль для пользователей, которые должны видеть данные в замаскированном виде:
+
+```sql
+CREATE ROLE masked_data_viewer;
+```
+
+Создайте политику маскирования для роли `masked_data_viewer`:
+
+```sql
+CREATE MASKING POLICY mask_pii_data ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2'),
+        phone = replaceRegexpOne(phone, '^(\\d{3})-(\\d{3})-(\\d{4})$', '\\1-***-\\3'),
+        shipping_address = replaceRegexpOne(shipping_address, '^[^,]+,\\s*(.*)$', '*** \\1')
+    TO masked_data_viewer;
+```
+
+Когда пользователь с ролью `masked_data_viewer` выполняет запрос к таблице `orders`, он автоматически получает замаскированные данные:
+
+```sql title="Query"
+SELECT * FROM orders ORDER BY user_id;
+```
+
+```response title="Response (for masked_data_viewer role)"
+┌─user_id─┬─name─────────┬─email──────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address──────────┐
+│    1001 │ John ****    │ jo****@gmail.com   │ 555-***-4567 │       299.99 │ 2024-01-15 │ *** New York, NY 10001    │
+│    1002 │ Sarah ****   │ sa****@outlook.com │ 555-***-6543 │        149.5 │ 2024-01-16 │ *** Los Angeles, CA 90210 │
+│    1003 │ Michael **** │ mb****@company.com │ 555-***-7890 │          599 │ 2024-01-17 │ *** Chicago, IL 60601     │
+│    1004 │ Emily ****   │ em****@yahoo.com   │ 555-***-0987 │        89.99 │ 2024-01-18 │ *** Houston, TX 77001     │
+│    1005 │ David ****   │ dw****@email.net   │ 555-***-3210 │       449.75 │ 2024-01-19 │ *** Phoenix, AZ 85001     │
+└─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
+```
+
+Пользователи без роли `masked_data_viewer` видят оригинальные, немаскированные данные.
+
+
+### Условное маскирование \{#conditional-masking\}
+
+Вы можете использовать условие `WHERE`, чтобы применять маскирование только к определённым строкам. Например, чтобы маскировать только крупные заказы:
+
+```sql
+CREATE MASKING POLICY mask_high_value_orders ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2')
+    WHERE total_amount > 200
+    TO masked_data_viewer;
+```
+
+
+### Несколько политик с приоритетом \{#multiple-policies-with-priority\}
+
+Когда к одному и тому же столбцу применяются несколько политик маскирования, используйте клаузу `PRIORITY`, чтобы управлять тем, какое преобразование будет применено. Политики с более высоким приоритетом применяются последними:
+
+```sql
+-- Lower priority: Basic masking for all sensitive data
+CREATE MASKING POLICY basic_masking ON orders
+    UPDATE
+        name = '****',
+        email = '****@****.com'
+    TO masked_data_viewer
+    PRIORITY 0;
+
+-- Higher priority: More refined masking (overrides basic_masking)
+CREATE MASKING POLICY refined_masking ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****')
+    WHERE total_amount > 100
+    TO masked_data_viewer
+    PRIORITY 10;
+```
+
+В этом примере для заказов, у которых `total_amount > 100`, политика `refined_masking` (приоритет 10) имеет приоритет над политикой `basic_masking` (приоритет 0) для столбца `name`, в то время как для `email` по-прежнему используется базовое маскирование.
+
+
+### Маскирование на основе хэша \{#hash-based-masking\}
+
+В случаях, когда вам требуется детерминированное маскирование (одни и те же входные данные всегда дают один и тот же замаскированный результат), используйте хеш-функции:
+
+```sql
+CREATE MASKING POLICY hash_sensitive_data ON orders
+    UPDATE
+        email = concat(toString(cityHash64(email)), '@masked.com'),
+        phone = concat('555-', toString(cityHash64(phone) % 10000000))
+    TO masked_data_viewer;
+```
+
+
+### Управление политиками маскирования \{#managing-masking-policies\}
+
+Просмотреть все политики маскирования:
+
+```sql
+SHOW MASKING POLICIES;
+```
+
+Удалить политику маскирования:
+
+```sql
+DROP MASKING POLICY mask_pii_data ON orders;
+```
+
+Замените существующую политику:
+
+```sql
+CREATE OR REPLACE MASKING POLICY mask_pii_data ON orders
+    UPDATE name = '[REDACTED]'
+    TO masked_data_viewer;
+```
+
+Для получения более подробной информации см. документацию по [CREATE MASKING POLICY](/sql-reference/statements/create/masking-policy).
+
 
 ## Используйте функции замены строк \{#using-string-functions\}
 
@@ -74,6 +227,7 @@ SELECT replaceRegexpAll(
 │ SSN: XXX-XX-6789 │
 └──────────────────┘
 ```
+
 
 ## Создание маскирующих представлений `VIEW` \{#masked-views\}
 
@@ -139,6 +293,7 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
+
 Обратите внимание, что данные, возвращаемые из представления, частично маскированы, и конфиденциальная информация скрыта.
 Вы также можете создать несколько представлений с разными уровнями маскирования в зависимости от уровня привилегированного доступа к информации у пользователя, просматривающего данные.
 
@@ -164,7 +319,7 @@ GRANT SELECT ON masked_orders TO masked_orders_viewer;
 REVOKE SELECT ON orders FROM masked_orders_viewer;
 ```
 
-Наконец, назначьте роль нужным пользователям:
+Наконец, назначьте роль соответствующим пользователям:
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
@@ -172,6 +327,7 @@ GRANT masked_orders_viewer TO your_user;
 
 Это гарантирует, что пользователи с ролью `masked_orders_viewer` смогут видеть
 только замаскированные данные из представления, а не исходные данные таблицы без маскирования.
+
 
 ## Использование столбцов `MATERIALIZED` и ограничений доступа на уровне столбцов \{#materialized-ephemeral-column-restrictions\}
 
@@ -222,6 +378,7 @@ FROM orders
 ORDER BY user_id ASC
 ```
 
+
 ```response title="Response"
    ┌─user_id─┬─name──────────┬─email─────────────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address───────────────────┬─name_masked──┬─email_masked───────┬─phone_masked─┬─shipping_address_masked────┐
 1. │    1001 │ John Smith    │ john.smith@gmail.com      │ 555-123-4567 │       299.99 │ 2024-01-15 │ 123 Main St, New York, NY 10001    │ John ****    │ jo****@gmail.com   │ 555-***-4567 │ **** New York, NY 10001    │
@@ -247,7 +404,7 @@ CREATE ROLE masked_order_viewer;
 GRANT SELECT ON orders TO masked_data_reader;
 ```
 
-Отзовите доступ к любым конфиденциальным столбцам:
+Отзовите доступ к чувствительным столбцам:
 
 ```sql
 REVOKE SELECT(name) ON orders FROM masked_data_reader;
@@ -265,6 +422,7 @@ GRANT masked_orders_viewer TO your_user;
 Если вы хотите хранить в таблице `orders` только замаскированные данные,
 вы можете пометить чувствительные немаскированные столбцы как [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral),
 чтобы столбцы этого типа не сохранялись в таблице.
+
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -292,7 +450,7 @@ INSERT INTO orders (user_id, name, email, phone, total_amount, order_date, shipp
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-Если выполнить тот же запрос, что и раньше, вы увидите, что в таблицу были вставлены только материализованные, маскированные данные:
+Если выполнить тот же запрос, что и раньше, вы теперь увидите, что в таблицу были вставлены только материализованные маскированные данные:
 
 ```sql title="Query"
 SELECT
@@ -314,6 +472,7 @@ ORDER BY user_id ASC
 5. │    1005 │       449.75 │ 2024-01-19 │ David ****   │ dw****@email.net   │ 555-***-3210 │ *** Phoenix, AZ 85001     │
    └─────────┴──────────────┴────────────┴──────────────┴────────────────────┴──────────────┴───────────────────────────┘
 ```
+
 
 ## Использование правил маскирования запросов для данных логов \{#use-query-masking-rules\}
 

@@ -55,7 +55,7 @@ On clicking `Create` data sources will be created for the integrated ClickHouse 
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
+For an example of using an alternative ClickHouse instance, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 
 ### Ingest data {#ingest-data}
 
@@ -83,9 +83,9 @@ docker run \
 
 ## Deploying to production {#deploying-to-production}
 
-This option should not be deployed to production for the following reasons:
+This option shouldn't be deployed to production for the following reasons:
 
-- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale, and data will be lost if the container is removed or restarted - unless users [mount the required file paths](#persisting-data-and-settings).
+- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup doesn't support performance at scale, and data will be lost if the container is removed or restarted - unless users [mount the required file paths](#persisting-data-and-settings).
 - **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring and applies any `cgroup` limits globally to all processes. As a result, components may compete for CPU and memory.
 
 ## Customizing ports {#customizing-ports-deploy}
@@ -114,7 +114,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 The `CLICKHOUSE_ENDPOINT` should be the ClickHouse Cloud HTTPS endpoint, including the port `8443` e.g. `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-On connecting to the HyperDX UI, navigate to [`Team Settings`](http://localhost:8080/team) and create a connection to your ClickHouse Cloud service - followed by the required sources. For an example flow, see [here](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
+On connecting to the HyperDX UI, navigate to [`Team Settings`](http://localhost:8080/team) and create a connection to your ClickHouse Cloud service - followed by the required sources.
 
 ## Configuring the OpenTelemetry collector {#configuring-collector}
 

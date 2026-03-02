@@ -99,7 +99,7 @@ You can easily combine ClickHouse with data lakes, with built-in functions to qu
 **Transformation engine** - SQL provides a natural means of declaring data transformations.
 When extended with ClickHouse’s analytical and statistical functions, these transformations become succinct and optimized.
 As well as applying to either ClickHouse tables, in cases where ClickHouse is used as a data store, table functions allow SQL queries to be written against data stored in formats such as Parquet, on-disk or object storage, or even other data stores such as Postgres and MySQL.
-A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users are not memory-bound.
+A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users aren't memory-bound.
 Furthermore, materialized views allow data to be transformed at insert time, thus overloading compute to data load time from query time.
 These views can exploit the same range of analytical and statistical functions ideal for data analysis and summarization.
 Should any of ClickHouse’s existing analytical functions be insufficient or custom libraries need to be integrated, you can also utilize User Defined Functions (UDFs).

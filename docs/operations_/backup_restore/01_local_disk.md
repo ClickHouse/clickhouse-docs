@@ -94,7 +94,7 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 ```
 
 :::note
-- This disk should not be used for `MergeTree` itself, only for `BACKUP`/`RESTORE`
+- This disk shouldn't be used for `MergeTree` itself, only for `BACKUP`/`RESTORE`
 - If your tables are backed by S3 storage and the types of the disks are different, 
 it doesn't use `CopyObject` calls to copy parts to the destination bucket, instead,
 it downloads and uploads them, which is very inefficient. In this case prefer using
@@ -223,7 +223,7 @@ SETTINGS password='qwerty'
 ### Backups as tar archives {#backups-as-tar-archives}
 
 Backups can be stored not only as zip archives, but also as tar archives. 
-The functionality is the same as for zip, except that password protection is not 
+The functionality is the same as for zip, except that password protection isn't 
 supported for tar archives. Additionally, tar archives support a variety of 
 compression methods.
 

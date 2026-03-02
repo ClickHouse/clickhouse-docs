@@ -36,8 +36,6 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 - Если вы не используете управляемые политики AWS, вам необходимы следующие разрешения:
   - действие IAM `aws-marketplace:ListPrivateListings` и `aws-marketplace:ViewSubscriptions`
 
-
-
 ## Шаги для регистрации \{#steps-to-sign-up\}
 
 <VerticalStepper headerLevel="h3">

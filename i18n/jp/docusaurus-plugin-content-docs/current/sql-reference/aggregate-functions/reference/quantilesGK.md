@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 数値データ系列に対して、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて、複数の異なるレベルの[分位点](https://en.wikipedia.org/wiki/Quantile)を同時に計算します。
 
-この関数は [`quantileGK`](/sql-reference/aggregate-functions/reference/quantilegk) と同様に動作しますが、複数の分位点レベルを単一パスで計算できるため、個々の分位点関数をそれぞれ呼び出すよりも効率的です。
+この関数は [`quantileGK`](/sql-reference/aggregate-functions/reference/quantileGK) と同様に動作しますが、複数の分位点レベルを単一パスで計算できるため、個々の分位点関数をそれぞれ呼び出すよりも効率的です。
 
 Greenwald-Khanna アルゴリズムは、データストリーム上の分位点を高い効率で計算するために用いられるアルゴリズムです。
 このアルゴリズムは 2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。

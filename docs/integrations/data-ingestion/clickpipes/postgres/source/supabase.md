@@ -90,7 +90,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 :::info
 
-The connection pooler is not supported for CDC based replication, hence it needs to be disabled.
+The connection pooler isn't supported for CDC based replication, hence it needs to be disabled.
 
 :::
 

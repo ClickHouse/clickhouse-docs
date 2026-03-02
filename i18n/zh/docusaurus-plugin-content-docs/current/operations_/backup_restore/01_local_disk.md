@@ -95,7 +95,7 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 
 * 该磁盘不应直接用于 `MergeTree` 本身，只应用于 `BACKUP`/`RESTORE`。
 * 如果你的表后端使用的是 S3 存储，并且这些磁盘的类型不同，
-  将不会通过 `CopyObject` 调用将数据分片复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
+  将不会通过 `CopyObject` 调用将分区片段复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
   `BACKUP ... TO S3(<endpoint>)` 语法。
   :::
 

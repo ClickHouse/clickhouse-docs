@@ -280,7 +280,7 @@ WHERE date >= '2022-10-01 15:20:05'
 ```
 
 :::warning
-Серверная привязка параметров поддерживается сервером ClickHouse только для запросов `SELECT`. Она не работает для `ALTER`, `DELETE`, `INSERT` или других типов запросов. В будущем это может измениться; см. [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092).
+Серверная привязка параметров поддерживается сервером ClickHouse только для запросов `SELECT`. Она не работает для `ALTER`, `DELETE`, `INSERT` или других типов запросов. В будущем это может измениться; см. https://github.com/ClickHouse/ClickHouse/issues/42092.
 :::
 
 

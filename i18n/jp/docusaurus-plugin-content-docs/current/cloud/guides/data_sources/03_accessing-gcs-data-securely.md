@@ -56,14 +56,14 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   <Image img={create_service_account} size="md" alt="" />
 
-  サービスアカウントの名前と説明を入力してください。例：
+  サービスアカウントの名前と説明を入力してください。例えば:
 
   ```text
   Service account name: clickhouse-gcs-access (or your preferred name)
   Service account description: Service account for ClickHouse Cloud to access GCS buckets
   ```
 
-  `Create and continue`をクリックします
+  `Create and continue`をクリックしてください
 
   <Image img={create_and_continue} size="sm" alt="" />
 
@@ -78,7 +78,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
   より細かい制御が必要な場合は、カスタムロールを作成できます
   :::
 
-  `Continue`をクリックし、次に`Done`をクリックします
+  `Continue`をクリックしてから`Done`をクリックします
 
   サービスアカウントのメールアドレスをメモしてください:
 
@@ -86,30 +86,30 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   ### サービスアカウントにバケットへのアクセス権を付与する
 
-  アクセス権は、プロジェクトレベルまたは個別のバケットレベルで付与できます。
+  アクセス権は、プロジェクト レベルまたは個別のバケット レベルで付与できます。
 
   #### オプション1: 特定のバケットへのアクセスを許可（推奨）
 
   1. `Cloud Storage` → `Buckets` を開きます
-  2. アクセス権を付与するバケットをクリックします
+  2. アクセス権を付与したいバケットをクリックします
   3. `Permissions` タブを開きます
-  4. 「Permissions」で、前の手順で作成したプリンシパルの `Grant access` をクリックします
+  4. 「Permissions」タブで、前の手順で作成したプリンシパルに対して `Grant access` をクリックします
   5. &quot;New principals&quot; フィールドにサービス アカウントのメールアドレスを入力します
   6. 該当するロールを選択してください:
 
-  * 読み取り/書き込みアクセス権を持つ Storage Object USER
-  * 読み取り専用アクセス用 Storage Object Viewer
+  * 読み取り/書き込みアクセス用 Storage Object User
+  * 読み取り専用アクセス用の Storage Object Viewer
 
-  7. `Save` をクリックします。
-  8. 追加のバケットがある場合は、同じ手順を繰り返します
+  7. `Save` をクリックします
+  8. 追加のバケットについても同様に繰り返します
 
   #### オプション2: プロジェクトレベルのアクセス権限を付与する
 
-  1. 「IAM と管理」→「IAM」に移動します
+  1. `IAM と管理` → `IAM` に移動します
   2. `Grant access` をクリックします
   3. サービスアカウントのメールアドレスを `New principals` フィールドに入力します
-  4. Storage Object User（読み取り専用とする場合は Storage Object Viewer）を選択します。
-  5. [SAVE] をクリックします
+  4. Storage Object User（読み取り専用にする場合は Storage Object Viewer）を選択します
+  5. `SAVE` をクリックします
 
   :::warning セキュリティのベストプラクティス
   プロジェクト全体の権限ではなく、ClickHouseがアクセスする必要のある特定のバケットのみにアクセス権を付与してください。
@@ -117,7 +117,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   ### サービスアカウントのHMAC鍵を生成する
 
-  `Cloud Storage` → `Settings` → `Interoperability`に移動します:
+  `Cloud Storage` → `設定` → `相互運用` に移動します:
 
   <Image img={cloud_storage_settings} size="sm" alt="" />
 
@@ -129,12 +129,12 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   先ほど作成したサービスアカウントを選択します(例:clickhouse-gcs-access@your-project.iam.gserviceaccount.com)
 
-  `Create key`をクリックします。
+  `Create key`をクリックします:
 
   <Image img={create_key} size="md" alt="" />
 
   HMACキーが表示されます。
-  アクセスキーとシークレットの両方を直ちに保存してください。シークレットは後から再表示できません。
+  アクセスキーとシークレットの両方をすぐに保存してください。シークレットは後から再度表示できません。
 
   以下にキーの例を示します:
 
@@ -145,7 +145,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   :::danger 重要
   これらの認証情報は安全に保管してください。
-  この画面を閉じると、シークレットを再度取得することはできません。
+  この画面を閉じるとシークレットは再取得できません。
   シークレットを紛失した場合は、新しいキーを生成する必要があります。
   :::
 
@@ -164,7 +164,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
   );
   ```
 
-  複数のファイルにはワイルドカードを使用してください:
+  複数ファイルを対象とする場合はワイルドカードを使用してください:
 
   ```sql
   SELECT *
@@ -178,18 +178,18 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
   ## GCS向けClickPipesでのHMAC認証
 
-  ClickPipesは、Google Cloud Storageへの認証にHMAC（Hash-based Message Authentication Code）キーを使用します。
+  ClickPipesは、Google Cloud Storageへの認証にHMAC(Hash-based Message Authentication Code)キーを使用します。
 
-  [GCS ClickPipeをセットアップ](/integrations/clickpipes/object-storage/gcs/get-started)する際:
+  [GCS ClickPipe をセットアップ](/integrations/clickpipes/object-storage/gcs/get-started)する場合:
 
   1. ClickPipe のセットアップ時に、`Authentication method` で `Credentials` を選択します
-  2. 前の手順で取得した HMAC 認証情報を入力します
+  2. 前の手順で取得した HMAC 認証情報を指定します
 
   <Image img={clickpipes_hmac_key} size="md" alt="" />
 
   :::note
   サービスアカウント認証は現在サポートされていません。HMAC キーを使用してください。
-  GCS バケット URL は `https://storage.googleapis.com/<bucket>/<path>` の形式で指定してください(`gs://` 形式は使用できません)。
+  GCS バケット URL は `https://storage.googleapis.com/<bucket>/<path>` の形式で指定してください（`gs://` 形式は使用できません）。
   :::
 
   HMACキーは、`roles/storage.objectViewer`ロールを持つサービスアカウントに関連付ける必要があります。このロールには以下が含まれます:

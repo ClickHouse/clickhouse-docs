@@ -107,7 +107,7 @@ wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
 1
 ```
 
-この例では、生の HTTP リクエストを netcat にパイプで渡します。
+この例では、生の HTTP リクエストをパイプで netcat に渡します。
 
 ```bash title="command"
 echo -ne 'GET /?query=SELECT%201 HTTP/1.0\r\n\r\n' | nc localhost 8123
@@ -284,7 +284,7 @@ $ curl 'http://localhost:8123/?query=SELECT%20a%20FROM%20t'
 $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-データテーブルを返さない成功したリクエストでは、空のレスポンスボディが返されます。
+成功したリクエストのうちデータテーブルを返さないものは、空のレスポンスボディが返されます。
 
 
 ## 圧縮 \{#compression\}
@@ -610,7 +610,7 @@ Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while 
 __exception__
 ```
 
-こちらは同様の例ですが、`CSV` 形式での例です
+次に、`CSV` 形式の同様の例を示します
 
 
 ```bash

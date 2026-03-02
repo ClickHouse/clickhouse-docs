@@ -234,9 +234,9 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 
 ### Преобразование в JSON \{#convert-to-json\}
 
-На момент написания ClickHouse не имеет встроенной поддержки XML в качестве входного формата. Чтобы загрузить данные в ClickHouse, сначала преобразуем их в формат NDJSON.
+На момент написания ClickHouse не имеет встроенной поддержки XML как входного формата. Чтобы загрузить данные в ClickHouse, мы сначала преобразуем их в NDJSON.
 
-Для преобразования XML в JSON мы рекомендуем использовать утилиту для Linux [`xq`](https://github.com/kislyuk/yq), представляющую собой простую обёртку `jq` для работы с XML-документами.
+Для преобразования XML в JSON мы рекомендуем утилиту для Linux [`xq`](https://github.com/kislyuk/yq) — это простая обёртка вокруг `jq` для работы с XML‑документами.
 
 Установите xq и jq:
 
@@ -245,17 +245,17 @@ sudo apt install jq
 pip install yq
 ```
 
-Следующие шаги применимы к любому из вышеперечисленных файлов. В качестве примера используется файл `stackoverflow.com-Posts.7z`. При необходимости внесите соответствующие изменения.
+Следующие шаги применимы к любому из вышеперечисленных файлов. В качестве примера используется файл `stackoverflow.com-Posts.7z`. При необходимости адаптируйте их под свою ситуацию.
 
-Распакуйте файл с помощью [p7zip](https://p7zip.sourceforge.net/). В результате будет создан один XML-файл — в данном случае `Posts.xml`.
+Извлеките файл с помощью [p7zip](https://p7zip.sourceforge.net/). В результате будет создан один XML‑файл — в данном случае `Posts.xml`.
 
-> Файлы сжаты примерно в 4,5 раза. При размере 22 GB в сжатом виде файл с постами занимает около 97 GB в распакованном виде.
+> Файлы сжаты примерно в 4,5 раза. При размере 22 ГБ в сжатом виде файл с постами занимает около 97 ГБ в несжатом виде.
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-Следующий пример разбивает XML‑файл на файлы, каждый из которых содержит 10 000 строк.
+Следующий запрос разбивает XML-файл на файлы по 10000 строк каждый.
 
 ```bash
 mkdir posts
@@ -264,7 +264,7 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-После выполнения приведённых выше команд у вас будет набор файлов, каждый по 10 000 строк. Это гарантирует, что дополнительные затраты памяти при выполнении следующей команды не будут чрезмерными (преобразование XML в JSON выполняется в памяти).
+После выполнения приведённой выше команды у вас будет набор файлов, каждый из которых содержит 10000 строк. Это гарантирует, что затраты памяти для следующей команды не будут чрезмерными (преобразование XML в JSON выполняется в памяти).
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
@@ -272,7 +272,7 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 
 Приведённая выше команда создаст один файл `posts.json`.
 
-Загрузите данные в ClickHouse с помощью следующей команды. Обратите внимание, что схема задаётся для файла `posts.json`. Её потребуется скорректировать для каждого типа данных, чтобы привести в соответствие с целевой таблицей.
+Загрузите его в ClickHouse с помощью следующей команды. Обратите внимание, что схема указана для файла `posts.json`. Её потребуется скорректировать в соответствии с типами данных, чтобы она соответствовала целевой таблице.
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"

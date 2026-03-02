@@ -1,0 +1,116 @@
+---
+slug: /cloud/data-sources/secure-azure
+sidebar_label: 'Accessing Azure data securely'
+title: 'Connecting ClickHouse Cloud to Azure Blob Storage'
+description: 'This article demonstrates how ClickHouse Cloud customers can access their Azure data securely'
+keywords: ['ABS', 'azure blob storage']
+doc_type: 'guide'
+---
+
+This guide covers how to securely connect ClickHouse Cloud to Azure Blob Storage for data ingestion, external tables, and other integration scenarios.
+
+## Overview {#overview}
+
+ClickHouse Cloud can connect to Azure Blob Storage using several authentication methods.
+This guide will help you choose the right approach and configure your connection securely.
+
+Supported use cases:
+
+- Reading data from Azure Blob Storage using the [azureBlobStorage table function](/sql-reference/table-functions/azureBlobStorage)
+- Creating external tables with the [AzureBlobStorage table engine](/engines/table-engines/integrations/azureBlobStorage) 
+- Ingesting data via ClickPipes
+- [Storing backups in Azure Blob Storage](/cloud/manage/backups/backup-restore-via-ui#azure)
+
+:::warning Important Network Limitation
+When your ClickHouse Cloud service and Azure Blob Storage container are deployed in the same Azure region, IP address whitelisting does not work.
+
+This happens because Azure routes same-region traffic through its internal network (VNet + Service Endpoints), bypassing public internet and NAT gateways.
+As a result, your Azure Storage Account firewall rules based on public IP addresses will not be applied.
+
+IP whitelisting works when:
+- Your ClickHouse Cloud service is in a different Azure region than storage account
+- Your ClickHouse Cloud service is on AWS/GCP connecting to Azure storage
+
+IP whitelisting fails when:
+- Your ClickHouse Cloud service and storage are in the same Azure region. Use [Shared Access Signatures (SAS)](/integrations/clickpipes/object-storage/abs/overview#authentication) via connection string instead of IP whitelisting or deploy ABS and ClickHouse in different regions.
+:::
+
+## Network configuration (Cross-region only) {#network-config}
+
+:::warning Cross-Region Only
+This section applies only when your ClickHouse Cloud service and Azure Blob Storage container are in different Azure regions, or when ClickHouse Cloud is on AWS/GCP.
+For same-region deployments, use SAS tokens instead.
+:::
+
+<VerticalStepper headerLevel="h3">
+
+### Find your ClickHouse Cloud egress IPs {#find-egress-ips}
+
+To configure IP-based firewall rules, you need to allowlist the egress IP addresses for your ClickHouse Cloud region.
+
+Run the following command to retrieve a list of egress and ingress ips per region. 
+Replace `eastus` below with your region to filter out other regions:
+
+```bash
+# For Azure regions
+curl https://api.clickhouse.cloud/static-ips.json | jq '.azure[] | select(.region == "westus")'
+```
+
+You will see something similar to:
+
+```response
+{
+  "egress_ips": [
+    "20.14.94.21",
+    "20.150.217.205",
+    "20.38.32.164"
+  ],
+  "ingress_ips": [
+    "4.227.34.126"
+  ],
+  "region": "westus3"
+}
+```
+
+:::tip
+See [Azure regions](/cloud/reference/supported-regions#azure-regions) for a list of supported Cloud regions,
+and the "Programmatic name" column of [Azure regions list](https://learn.microsoft.com/en-us/azure/reliability/regions-list#azure-regions-list-1)
+for which name to use.
+:::
+
+See ["Cloud IP addresses"](/manage/data-sources/cloud-endpoints-api) for more details.
+
+### Configure Azure storage firewall {#configure-firewall}
+
+Navigate to your Storage Account in Azure Portal
+
+1. Go to **Networking** → **Firewalls and virtual networks**
+2. Select **Enabled from selected virtual networks and IP addresses**
+3. Add each ClickHouse Cloud egress IP address obtained in the previous step to the Address range field
+
+:::warning
+Do not add ClickHouse Cloud private IPs (10.x.x.x addresses)
+:::
+
+4. Click Save
+
+See [Configure Azure Storage firewalls docs](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal) for more details.
+
+</VerticalStepper>
+
+## ClickPipes configuration {#clickpipes-config}
+
+When using [ClickPipes](/integrations/clickpipes) with Azure Blob Storage, you need to configure authentication in the ClickPipes UI.
+See ["Creating your first Azure ClickPipe"](/integrations/clickpipes/object-storage/azure-blob-storage/get-started) for more details.
+
+:::note
+ClickPipes uses separate static IP addresses for outbound connections.
+These IPs must be allowlisted if you're using IP-based firewall rules.
+
+See ["List of Static IPs"](/integrations/clickpipes#list-of-static-ips)
+:::
+
+:::tip
+The same-region IP whitelisting limitation mentioned at the start of this document applies to ClickPipes as well.
+If your ClickPipes service and Azure Blob Storage are in the same region, use SAS token authentication instead of IP whitelisting.
+:::

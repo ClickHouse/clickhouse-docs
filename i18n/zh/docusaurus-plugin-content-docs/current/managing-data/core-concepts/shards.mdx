@@ -106,10 +106,10 @@ ClickHouse 中的复制通过在多个服务器之间维护 **^^shard^^ 数据�
 
 请注意，ClickHouse 允许为步骤 ② 配置查询转发策略。默认情况下——与上图不同——如果本地 ^^replica^^ 可用，则 ^^distributed table^^ 会[优先选择本地副本](/docs/operations/settings/settings#prefer_localhost_replica)，但也可以使用其他[负载均衡策略](/docs/operations/settings/settings#load_balancing)。
 
-## 在哪里可以找到更多信息 \{#where-to-find-more-information\}
+## 在哪里可以了解更多信息 \{#where-to-find-more-information\}
 
-如需在本高层概述之外进一步了解表分片和副本，请参阅我们的[部署与扩展指南](/docs/architecture/horizontal-scaling)。
+若想了解超出本篇高层次介绍范围的表分片和副本相关的更多细节，请查阅我们的[部署与横向扩展指南](/docs/architecture/horizontal-scaling)。
 
-我们也强烈推荐观看以下教程视频，以更深入地了解 ClickHouse 的分片和副本：
+我们也强烈推荐观看这段教程视频，以更深入地了解 ClickHouse 的分片和副本：
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

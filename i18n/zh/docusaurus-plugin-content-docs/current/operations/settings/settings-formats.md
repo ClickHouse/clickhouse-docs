@@ -154,11 +154,15 @@ RowBinary 格式中 Array 允许的最大大小。用于防止在数据损坏时
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "100000"},{"label": "用于在 JSON 类型二进制反序列化期间限制 Object 最大大小的新设置"}]}]}/>
+
 JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。用于防止在数据损坏时分配大量内存。0 表示不限制。
 
 ## format_binary_max_string_size \{#format_binary_max_string_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.12"},{"label": "1073741824"},{"label": "防止分配大量内存"}]}]}/>
 
 在 RowBinary 格式中允许的 String 类型的最大长度。用于防止在数据损坏时分配大量内存。0 表示不限制。
 
@@ -171,6 +175,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 ## format_capn_proto_max_message_size \{#format_capn_proto_max_message_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1073741824"},{"label": "防止分配过多内存"}]}]}/>
 
 单个 CapnProto 消息的最大大小（以字节为单位）。用于防止格式错误或损坏的数据导致过度的内存分配。默认值为 1 GiB。
 
@@ -189,6 +195,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 ## format_csv_allow_single_quotes \{#format_csv_allow_single_quotes\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.7"},{"label": "0"},{"label": "大多数工具不会对 CSV 中的单引号进行特殊处理，此处默认也同样不进行特殊处理"}]}]}/>
 
 如果设置为 true，则允许使用单引号括起的字符串。
 
@@ -274,6 +282,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 
 <SettingsInfoBlock type="EscapingRule" default_value="Raw" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "20.10"},{"label": "Raw"},{"label": "将 Raw 作为 Regexp 格式的默认转义规则，使行为更加符合用户预期"}]}]}/>
+
 字段转义规则（适用于 Regexp 格式）
 
 ## format_regexp_skip_unmatched \{#format_regexp_skip_unmatched\}
@@ -288,6 +298,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 
 ## format_schema_message_name \{#format_schema_message_name\}
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": ""},{"label": "新设置"}]}]}/>
+
 在 `format_schema` 定义的 schema 中指定所需的 message 名称。
 
 为了与旧版 format_schema 格式（`file_name:message_name`）保持兼容：
@@ -298,6 +310,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 ## format_schema_source \{#format_schema_source\}
 
 <SettingsInfoBlock type="String" default_value="file" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "file"},{"label": "新设置"}]}]}/>
 
 定义 `format_schema` 的来源。
 可选值：
@@ -320,6 +334,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 
 ## format_template_resultset_format \{#format_template_resultset_format\}
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": ""},{"label": "可以在查询中设置 Template 结果集格式字符串"}]}]}/>
+
 用于 Template 格式的结果集格式字符串
 
 ## format_template_row \{#format_template_row\}
@@ -327,6 +343,8 @@ JSON 类型 RowBinary 格式中，单个 Object 中允许的最大路径数。�
 包含行格式字符串的文件路径（用于 Template 格式）
 
 ## format_template_row_format \{#format_template_row_format\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": ""},{"label": "Template 行格式字符串可以在查询中直接设置"}]}]}/>
 
 行格式字符串（用于 Template 格式）
 
@@ -384,6 +402,8 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "默认在 Arrow 文件中允许存在缺失列"}]}]}/>
+
 允许在读取 Arrow 输入格式时存在缺失列
 
 ## input_format_arrow_case_insensitive_column_matching \{#input_format_arrow_case_insensitive_column_matching\}
@@ -414,17 +434,23 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "新增设置，允许在 RowBinaryWithNamesAndTypes 输入格式中以二进制格式读取类型名称"}]}]}/>
+
 在 RowBinaryWithNamesAndTypes 输入格式中，以二进制格式而非类型名称的形式读取数据类型
 
 ## input_format_binary_max_type_complexity \{#input_format_binary_max_type_complexity\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1000"},{"label": "新增一个用于控制解码二进制类型时最大类型节点数量的设置。用于防范恶意输入。"}]}]}/>
+
 解码二进制类型时允许的最大类型节点数量（按总数计，不是深度）。`Map(String, UInt32)` = 3 个节点。用于防范恶意输入。0 = 不限制。
 
 ## input_format_binary_read_json_as_string \{#input_format_binary_read_json_as_string\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "新增设置，用于在 RowBinary 输入格式中将 JSON 类型的值读取为 JSON 字符串"}]}]}/>
 
 在 RowBinary 输入格式中，将 [JSON](../../sql-reference/data-types/newjson.md) 数据类型的值读取为 JSON [String](../../sql-reference/data-types/string.md) 字符串值。
 
@@ -439,6 +465,18 @@ TSV 格式中 NULL 的自定义表示形式
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
+
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to allow parsing and processing remaining data in the buffer if the connection closes unexpectedly"}]}]}/>
+
+启用此选项后，如果连接意外关闭，缓冲区中剩余的任何数据将被解析和处理，而不是视为错误。
+
+:::note
+启用此选项会禁用并行解析，并且无法进行去重。
+:::
 
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
@@ -468,11 +506,15 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "添加了一种在 CSV 格式中解释 Tuple 的新方法。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "添加了一种在 CSV 格式中解释 Tuple 的新方法。"}]}]}/>
+
 当其设置为 true 时，以 CSV 格式写入的独立列可以反序列化为 Tuple 类型的列。
 
 ## input_format_csv_detect_header \{#input_format_csv_detect_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "默认在 CSV 格式中检测表头行"}]}]}/>
 
 在 CSV 格式中自动检测包含名称和类型的表头行
 
@@ -519,6 +561,8 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "新增了一种在 CSV 格式中解释元组的方式。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "新增了一种在 CSV 格式中解释元组的方式。"}]}]}/>
+
 将输入数据中带引号的元组视为 String 类型的值。
 
 ## input_format_csv_use_best_effort_in_schema_inference \{#input_format_csv_use_best_effort_in_schema_inference\}
@@ -543,6 +587,8 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "默认检测 CustomSeparated 格式中的表头"}]}]}/>
+
 自动识别 CustomSeparated 格式中包含名称和类型的表头
 
 ## input_format_custom_skip_trailing_empty_lines \{#input_format_custom_skip_trailing_empty_lines\}
@@ -554,6 +600,8 @@ TSV 格式中 NULL 的自定义表示形式
 ## input_format_defaults_for_omitted_fields \{#input_format_defaults_for_omitted_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "19.12"},{"label": "1"},{"label": "为某些输入格式中被省略的字段启用复杂默认表达式的计算，因为这应当是预期行为"}]}]}/>
 
 在执行 `INSERT` 查询时，将被省略的输入列的值替换为对应列的默认值。此选项适用于 [JSONEachRow](/interfaces/formats/JSONEachRow)（以及其他 JSON 格式）、[CSV](/interfaces/formats/CSV)、[TabSeparated](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[Parquet](/interfaces/formats/Parquet)、[Arrow](/interfaces/formats/Arrow)、[Avro](/interfaces/formats/Avro)、[ORC](/interfaces/formats/ORC)、[Native](/interfaces/formats/Native) 格式，以及带有 `WithNames`/`WithNamesAndTypes` 后缀的格式。
 
@@ -570,11 +618,15 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "0"},{"label": "在需要时禁用对省略字段使用的类型默认值"}]}]}/>
+
 强制将省略的字段初始化为 NULL
 
 ## input_format_hive_text_allow_variable_number_of_columns \{#input_format_hive_text_allow_variable_number_of_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "在 Hive Text 输入中忽略多余的列（如果文件中的列数多于预期），并将 Hive Text 输入中缺失的字段按默认值填充。"}]}]}/>
 
 在 Hive Text 输入中忽略多余的列（如果文件中的列数多于预期），并将 Hive Text 输入中缺失的字段按默认值处理
 
@@ -644,6 +696,8 @@ Hive 文本文件中 Map 键值对之间的分隔符
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "在读取 named tuple 时默认允许 JSON 对象缺少元素"}]}]}/>
+
 在解析 named tuple 时，如果 JSON 对象中缺少某些元素，则会插入默认值。
 仅在启用 `input_format_json_named_tuples_as_objects` 设置时生效。
 
@@ -652,6 +706,8 @@ Hive 文本文件中 Map 键值对之间的分隔符
 ## input_format_json_empty_as_default \{#input_format_json_empty_as_default\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "新增了一个设置，用于将 JSON 输入中的空字段视为默认值。"}]}]}/>
 
 启用后，会将 JSON 中为空的输入字段替换为默认值。对于复杂的默认表达式，还必须同时启用 `input_format_defaults_for_omitted_fields`。
 
@@ -664,6 +720,8 @@ Hive 文本文件中 Map 键值对之间的分隔符
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "1"},{"label": "改进将 JSON 对象解析为命名元组的功能"}]}]}/>
+
 在命名元组中，忽略 JSON 对象中未知的键。
 
 默认启用。
@@ -672,11 +730,15 @@ Hive 文本文件中 Map 键值对之间的分隔符
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "忽略不必要的字段并且不对这些字段进行解析。启用该选项后，对于格式无效或包含重复字段的 JSON 字符串，可能不会抛出异常。"}]}]}/>
+
 忽略不必要的字段并且不对这些字段进行解析。启用该选项后，对于格式无效或包含重复字段的 JSON 字符串，可能不会抛出异常。
 
 ## input_format_json_infer_array_of_dynamic_from_array_of_different_types \{#input_format_json_infer_array_of_dynamic_from_array_of_different_types\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "默认将值类型不同的 JSON 数组推断为 Array(Dynamic)"}]}]} />
 
 如果启用该设置，在进行模式推断时，ClickHouse 会对包含不同数据类型值的 JSON 数组使用 Array(Dynamic) 类型。
 
@@ -711,6 +773,8 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "默认允许在 JSON 格式中将不完整类型推断为 String 类型"}]}]} />
+
 允许在模式推断期间，对在数据样本中只包含 `Null`/`{}`/`[]` 的 JSON 键使用 String 类型。
 在 JSON 格式中，任何值都可以被读取为 String，通过对类型未知的键使用 String 类型，我们可以在模式推断期间避免出现类似 `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` 的错误。
 
@@ -741,6 +805,8 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置"}]}]}/>
+
 将 Map 列反序列化为由元组组成的 JSON 数组。
 
 默认禁用。
@@ -748,6 +814,8 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 ## input_format_json_max_depth \{#input_format_json_max_depth\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "1000"},{"label": "在早期版本中该值为无限制，但这并不安全。"}]}]}/>
 
 JSON 中字段的最大嵌套深度。这不是严格意义上的限制，不一定会被精确地执行。
 
@@ -762,6 +830,8 @@ JSON 中字段的最大嵌套深度。这不是严格意义上的限制，不一
 ## input_format_json_read_arrays_as_strings \{#input_format_json_read_arrays_as_strings\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "默认情况下允许在 JSON 格式中将数组作为字符串读取"}]}]} />
 
 允许在 JSON 输入格式中将 JSON 数组解析为字符串。
 
@@ -795,6 +865,8 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "1"},{"label": "默认允许在 JSON 格式中将布尔值作为字符串读取"}]}]}/>
+
 允许在 JSON 输入格式中将布尔值作为字符串进行解析。
 
 默认启用。
@@ -803,6 +875,8 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "默认允许在 JSON 格式中将数字读取为字符串"}]}]}/>
+
 允许在 JSON 输入格式中将数字以字符串形式进行解析。
 
 默认启用。
@@ -810,6 +884,8 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 ## input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "在 object 类型仍为实验特性时，支持将嵌套 JSON 对象作为字符串读取"}]}]} />
 
 允许在 JSON 输入格式中将 JSON 对象解析为字符串。
 
@@ -837,6 +913,8 @@ SELECT * FROM test;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "允许保存包含错误转义序列的 JSON 字符串"}]}]}/>
+
 如果 JSON 字符串在 JSON 输入格式中包含无效的转义序列，则抛出异常。若禁用，这些无效的转义序列将在数据中按原样保留。
 
 默认启用。
@@ -844,6 +922,8 @@ SELECT * FROM test;
 ## input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "默认尝试基于 JSON 对象推断命名 Tuple"}]}]} />
 
 启用后，在进行模式推断时，ClickHouse 会尝试从 JSON 对象推断命名 Tuple。
 生成的命名 Tuple 将包含样本数据中所有对应 JSON 对象里的所有元素。
@@ -870,6 +950,8 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "0"},{"label": "为防止可能的解析错误，默认情况下不会在 JSON 格式中从字符串推断数字"}]}]}/>
+
 如果启用该设置，在进行模式推断时，ClickHouse 会尝试从字符串字段中推断数值。
 当 JSON 数据中包含带引号的 UInt64 数字时，这会很有用。
 
@@ -878,6 +960,8 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 ## input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "0"},{"label": "允许在从 JSON 对象推断 named tuple 时，对存在路径歧义的情况使用 String 类型"}]}]}/>
 
 在从 JSON 对象推断 named tuple 时，如果存在路径歧义，则使用 String 类型，而不是抛出异常
 
@@ -894,8 +978,22 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "0"},{"label": "用于在由输入格式创建数据块时限制其字节大小的新设置"}]}]}/>
+
 限制在解析输入格式数据时生成的数据块大小（以字节为单位）。当在 ClickHouse 端构建数据块时，适用于基于行的输入格式。
 0 表示在字节数上不设上限。
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]}/>
+
+限制在基于行的输入格式解析过程中，在输出一个数据块之前所等待的最大时间（毫秒）。0 表示不限制。
+
+:::note
+此选项仅在启用 `input_format_connection_handling` 时有效。设置该值还会禁用并行解析，并使无法进行去重。
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -929,17 +1027,23 @@ MySQL dump 中要读取数据的表名
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "1"},{"label": "允许在 Native 输入格式中进行类型转换"}]}]}/>
+
 允许在 Native 输入格式中转换数据类型
 
 ## input_format_native_decode_types_in_binary_format \{#input_format_native_decode_types_in_binary_format\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "新增设置，以便在 Native 输出格式中以二进制格式读取类型名称"}]}]}/>
+
 在 Native 输入格式中，以二进制格式读取数据类型，而不是以类型名称的形式读取
 
 ## input_format_null_as_default \{#input_format_null_as_default\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "21.1"},{"label": "1"},{"label": "默认允许在输入格式中将 NULL 作为默认值插入"}]}]}/>
 
 启用或禁用以下行为：当这些字段的数据类型不是 [Nullable](/sql-reference/data-types/nullable) 时，使用[默认值](/sql-reference/statements/create/table#default_values)初始化 [NULL](/sql-reference/syntax#literals) 字段。  
 如果列类型不是 Nullable 且此设置被禁用，则插入 `NULL` 会导致异常。如果列类型是 Nullable，则无论此设置如何，`NULL` 值都会按原样插入。
@@ -957,6 +1061,8 @@ MySQL dump 中要读取数据的表名
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "默认在 ORC 文件中允许缺失列"}]}]}/>
+
 在读取 ORC 输入格式时允许列缺失
 
 ## input_format_orc_case_insensitive_column_matching \{#input_format_orc_case_insensitive_column_matching\}
@@ -969,6 +1075,8 @@ MySQL dump 中要读取数据的表名
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "在读取 ORC 文件时，将采用字典编码的 ORC 列视为 LowCardinality 列"}]}]}/>
+
 在读取 ORC 文件时，将采用字典编码的 ORC 列视为 LowCardinality 列。
 
 ## input_format_orc_filter_push_down \{#input_format_orc_filter_push_down\}
@@ -980,6 +1088,8 @@ MySQL dump 中要读取数据的表名
 ## input_format_orc_reader_time_zone_name \{#input_format_orc_reader_time_zone_name\}
 
 <SettingsInfoBlock type="String" default_value="GMT" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "GMT"},{"label": "ORC 行读取器使用的时区名称，默认 ORC 行读取器的时区为 GMT。"}]}]}/>
 
 ORC 行读取器使用的时区名称，默认 ORC 行读取器的时区为 GMT。
 
@@ -1016,17 +1126,23 @@ ORC 行读取器使用的时区名称，默认 ORC 行读取器的时区为 GMT�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "在 Parquet 文件中启用地理列的新增设置"}]}]}/>
+
 使用地理列解析器将 Array(UInt8) 解析为 Point/Linestring/Polygon/MultiLineString/MultiPolygon 类型
 
 ## input_format_parquet_allow_missing_columns \{#input_format_parquet_allow_missing_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "默认情况下允许 Parquet 文件中缺少列"}]}]}/>
+
 在读取 Parquet 格式输入数据时允许列缺失
 
 ## input_format_parquet_bloom_filter_push_down \{#input_format_parquet_bloom_filter_push_down\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "读取 Parquet 文件时，根据 `WHERE`/`PREWHERE` 子句和 Parquet 元数据中的 Bloom 过滤器跳过整个行组。"}]}, {"id": "row-2","items": [{"label": "24.10"},{"label": "0"},{"label": "读取 Parquet 文件时，根据 `WHERE`/`PREWHERE` 子句和 Parquet 元数据中的 Bloom 过滤器跳过整个行组。"}]}]}/>
 
 读取 Parquet 文件时，根据 `WHERE` 子句和 Parquet 元数据中的 Bloom 过滤器跳过整个行组。
 
@@ -1040,11 +1156,15 @@ ORC 行读取器使用的时区名称，默认 ORC 行读取器的时区为 GMT�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "1"},{"label": "读取 Parquet 文件时，将 JSON 列解析为 ClickHouse 的 JSON 列。"}]}]}/>
+
 读取 Parquet 文件时，将 JSON 列解析为 ClickHouse 的 JSON 列。
 
 ## input_format_parquet_enable_row_group_prefetch \{#input_format_parquet_enable_row_group_prefetch\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "在解析 Parquet 时启用行组预取。目前只有单线程解析支持预取。"}]}]}/>
 
 在解析 Parquet 时启用行组预取。目前只有单线程解析支持预取。
 
@@ -1064,11 +1184,15 @@ ORC 行读取器使用的时区名称，默认 ORC 行读取器的时区为 GMT�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "对 Parquet 的 'local time without timezone' 类型，使用更合适的 DateTime64(..., 'UTC') 类型。"}]}]}/>
+
 确定在 `isAdjustedToUTC=false` 时，schema 在推断 Parquet 时间戳时所使用的数据类型。若为 true：`DateTime64(..., 'UTC')`；若为 false：`DateTime64(...)`。两种行为都并不完全正确，因为 ClickHouse 没有用于本地挂钟时间（local wall-clock time）的数据类型。与直觉相反，`true` 可能是相对“没那么错误”的选项，因为将带有 `'UTC'` 的时间戳格式化为 `String` 时，会得到正确本地时间的字符串表示。
 
 ## input_format_parquet_max_block_size \{#input_format_parquet_max_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65409" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "65409"},{"label": "Increase block size for parquet reader."}]}]}/>
 
 Parquet 读取器的最大数据块大小。
 
@@ -1076,11 +1200,15 @@ Parquet 读取器的最大数据块大小。
 
 <SettingsInfoBlock type="UInt64" default_value="4294967296" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "4294967296"},{"label": "新设置"}]}]}/>
+
 Parquet 读取器 v3 的近似内存使用上限。用于限制可并行读取的行组或列的数量。在一次查询中读取多个文件时，该上限作用于这些文件的总内存使用量。
 
 ## input_format_parquet_memory_low_watermark \{#input_format_parquet_memory_low_watermark\}
 
 <SettingsInfoBlock type="UInt64" default_value="2097152" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "2097152"},{"label": "新设置"}]}]}/>
 
 如果内存使用量低于该阈值，则会更积极地调度预取任务。例如在需要通过网络读取大量小型布隆过滤器时，这可能会很有用。
 
@@ -1088,17 +1216,23 @@ Parquet 读取器 v3 的近似内存使用上限。用于限制可并行读取�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新设置（当禁用 input_format_parquet_use_native_reader_v3 时无效）"}]}]}/>
+
 利用列索引中的最小值和最大值来跳过数据页。
 
 ## input_format_parquet_prefer_block_bytes \{#input_format_parquet_prefer_block_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="16744704" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "16744704"},{"label": "Parquet 读取器输出的平均块大小（字节）。"}]}]}/>
+
 Parquet 读取器输出的平均块大小（字节）
 
 ## input_format_parquet_preserve_order \{#input_format_parquet_preserve_order\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "0"},{"label": "允许 Parquet 读取器重新排序行以获得更好的并行性。"}]}]}/>
 
 从 Parquet 文件读取数据时避免更改行的顺序。由于通常无法保证行顺序，并且查询管道的其他部分也可能打乱该顺序，因此不推荐启用该设置。请改用 `ORDER BY _row_number`。
 
@@ -1112,17 +1246,23 @@ Parquet 读取器输出的平均块大小（字节）
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "1"},{"label": "似乎稳定"}]}]}/>
+
 使用 Parquet v3 读取器。
 
 ## input_format_parquet_use_offset_index \{#input_format_parquet_use_offset_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新增设置（当 input_format_parquet_use_native_reader_v3 被禁用时无效）"}]}]}/>
+
 在未使用页过滤时，略微调整从 Parquet 文件读取页的方式。
 
 ## input_format_parquet_verify_checksums \{#input_format_parquet_verify_checksums\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "新设置。"}]}]}/>
 
 在读取 Parquet 文件时验证页校验和。
 
@@ -1135,6 +1275,8 @@ Parquet 读取器输出的平均块大小（字节）
 ## input_format_protobuf_oneof_presence \{#input_format_protobuf_oneof_presence\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 通过在一个特殊列中设置枚举值，指示已找到 protobuf oneof 中的哪个字段
 
@@ -1151,6 +1293,8 @@ Parquet 读取器输出的平均块大小（字节）
 ## input_format_skip_unknown_fields \{#input_format_skip_unknown_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.6"},{"label": "1"},{"label": "为某些输入格式优化部分列的读取"}]}]}/>
 
 启用或禁用在插入时跳过包含多余列的数据。
 
@@ -1190,11 +1334,15 @@ Parquet 读取器输出的平均块大小（字节）
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "0"},{"label": "允许在数据格式中推断为 DateTime 类型而不是 DateTime64 类型"}]}]}/>
+
 当启用 `input_format_try_infer_datetimes` 时，仅推断为 `DateTime64` 类型，而不推断为 `DateTime` 类型。
 
 ## input_format_try_infer_exponent_floats \{#input_format_try_infer_exponent_floats\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "0"},{"label": "默认不将指数表示法的数值推断为浮点数"}]}]}/>
 
 在对文本格式进行模式推断时，尝试将指数表示法的数值识别为浮点数（JSON 除外，其中带指数的数字始终会被推断）
 
@@ -1209,6 +1357,8 @@ Parquet 读取器输出的平均块大小（字节）
 ## input_format_try_infer_variants \{#input_format_try_infer_variants\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "当列或数组元素存在多个可能类型时，在文本格式中尝试推断 Variant 类型"}]}]}/>
 
 如果启用，ClickHouse 会在文本格式的 schema 推断中，当某个列或数组元素存在多个可能类型时，尝试将其推断为 [`Variant`](../../sql-reference/data-types/variant.md) 类型。
 
@@ -1227,11 +1377,15 @@ Parquet 读取器输出的平均块大小（字节）
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "0"},{"label": "启用对带有 CRLF 行结束符的 TSV 格式的读取"}]}]}/>
+
 如果将其设置为 true，`file` 函数将按使用 \\r\\n 而不是 \\n 作为行结束符的 TSV 格式进行读取。
 
 ## input_format_tsv_detect_header \{#input_format_tsv_detect_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "默认检测 TSV 格式中的表头"}]}]}/>
 
 在 TSV 格式中自动检测包含列名和类型的表头行
 
@@ -1286,6 +1440,8 @@ Parquet 读取器输出的平均块大小（字节）
 ## input_format_with_names_use_header \{#input_format_with_names_use_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "20.5"},{"label": "1"},{"label": "为带有 WithNames/WithNamesAndTypes 后缀的格式启用使用包含列名的表头"}]}]}/>
 
 启用或禁用对插入数据的列顺序进行检查。
 
@@ -1387,11 +1543,23 @@ Parquet 读取器输出的平均块大小（字节）
 
 <SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "在 Arrow 输出格式中默认使用 lz4 压缩"}]}]}/>
+
 Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zstd、none（不压缩）
+
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "默认将 Date 写为 Arrow DATE32，而不是普通的 UInt16。"}]}]}/>
+
+将 Date 值写为普通的 16 位无符号整数（读取时为 UInt16），而不是转换为 32 位的 Arrow DATE32 类型（读取时为 Date32）。
 
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.2"},{"label": "1"},{"label": "默认对 FixedString 使用 Arrow 的 FIXED_SIZE_BINARY 类型"}]}]}/>
 
 对 FixedString 列使用 Arrow 的 FIXED_SIZE_BINARY 类型，而不是 Binary 类型。
 
@@ -1405,17 +1573,23 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-对 String 列使用 Arrow String 类型而非 Binary 类型
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse 在 String 数据类型中允许任意二进制数据，通常是 UTF-8。Parquet/ORC/Arrow 中的 String 只支持 UTF-8。因此，可以选择在 Arrow 中为 ClickHouse 的 String 数据类型使用哪种数据类型 —— String 或 Binary。虽然 Binary 在语义上更严格且兼容性更好，但在大多数情况下，默认使用 String 更符合用户预期。"}]}]}/>
+
+对 String 列使用 Arrow 的 String 类型而不是 Binary
 
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 Arrow 字典中使用 64 位整数类型的索引"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 Arrow 字典中使用 64 位整数类型的索引"}]}]}/>
 
 在 Arrow 格式中对字典索引一律使用 64 位整数
 
 ## output_format_arrow_use_signed_indexes_for_dictionary \{#output_format_arrow_use_signed_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "1"},{"label": "默认对 Arrow 字典使用有符号索引类型，因为这是推荐的做法"}]}]}/>
 
 在 Arrow 格式中对字典索引使用有符号整数
 
@@ -1443,11 +1617,15 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "新增设置项，允许在 RowBinaryWithNamesAndTypes 输出格式中以二进制格式写入类型名称"}]}]}/>
+
 在 RowBinaryWithNamesAndTypes 输出格式中，将数据类型写成二进制格式，而不是类型名称
 
 ## output_format_binary_write_json_as_string \{#output_format_binary_write_json_as_string\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "新增设置，用于在 RowBinary 输出格式中将 JSON 类型的值写为 JSON 字符串"}]}]}/>
 
 在 RowBinary 输出格式中，将 [JSON](../../sql-reference/data-types/newjson.md) 数据类型的值写出为 JSON [String](../../sql-reference/data-types/string.md) 值。
 
@@ -1461,6 +1639,8 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "3"},{"label": "允许在查询输出中更改压缩级别"}]}]}/>
+
 当查询输出启用压缩时使用的默认压缩级别。该设置在 `SELECT` 查询带有 `INTO OUTFILE` 子句时，或在向表函数 `file`、`url`、`hdfs`、`s3` 或 `azureBlobStorage` 写入数据时生效。
 
 可选值：从 `1` 到 `22`
@@ -1468,6 +1648,8 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 ## output_format_compression_zstd_window_log \{#output_format_compression_zstd_window_log\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "当使用 zstd 压缩时，允许在查询输出中修改 zstd window log"}]}]}/>
 
 可在输出压缩方法为 `zstd` 时使用。若值大于 `0`，此设置会显式指定压缩窗口大小（`2` 的幂），并为 zstd 压缩启用 long-range 模式，从而有助于获得更高的压缩比。
 
@@ -1483,11 +1665,15 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "新增了一种解析 CSV 格式中元组的方式。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "新增了一种解析 CSV 格式中元组的方式。"}]}]}/>
+
 如果将其设为 true，则在 CSV 格式中，元组会被序列化为独立的列（即其在元组中的嵌套结构会丢失）。
 
 ## output_format_decimal_trailing_zeros \{#output_format_decimal_trailing_zeros\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "21.9"},{"label": "0"},{"label": "默认情况下不在 Decimal 类型的文本表示中输出末尾的零，以获得更美观的输出"}]}]}/>
 
 在输出 Decimal 值时保留末尾的零。例如将 1.23 输出为 1.230000。
 
@@ -1553,6 +1739,8 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting"}]}]}/>
+
 将 Map 类型列序列化为由元组组成的 JSON 数组。
 
 默认禁用。
@@ -1561,6 +1749,8 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.6"},{"label": "1"},{"label": "默认允许在 JSON 格式中将具名元组序列化为 JSON 对象"}]}]}/>
+
 将具名元组列序列化为 JSON 对象。
 
 默认情况下启用。
@@ -1568,6 +1758,8 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ## output_format_json_pretty_print \{#output_format_json_pretty_print\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "默认情况下以更易读的格式打印 JSON 输出中的值"}]}]} />
 
 此设置用于控制在使用 JSON 输出格式时，`data` 数组中 Tuples、Maps 和 Arrays 等嵌套结构的显示方式。
 
@@ -1623,6 +1815,8 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ## output_format_json_quote_64bit_integers \{#output_format_json_quote_64bit_integers\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "默认情况下在 JSON 中禁用为 64 位整数加引号"}]}]}/>
 
 控制在以 [JSON](/interfaces/formats/JSON) 格式输出时，是否对 64 位或更大[整数](../../sql-reference/data-types/int-uint.md)（如 `UInt64` 或 `Int128`）加引号。  
 默认情况下，此类整数会被包裹在引号中。该行为与大多数 JavaScript 实现兼容。
@@ -1782,11 +1976,15 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "添加新设置以允许在 Native 输出格式中以二进制格式写入类型名称"}]}]}/>
+
 在 Native 输出格式中，以二进制格式输出数据类型，而不是输出类型名称
 
 ## output_format_native_use_flattened_dynamic_and_json_serialization \{#output_format_native_use_flattened_dynamic_and_json_serialization\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "为 Native 格式新增扁平化的 Dynamic/JSON 序列化方式"}]}]}/>
 
 以扁平化格式写入 [JSON](../../sql-reference/data-types/newjson.md) 和 [Dynamic](../../sql-reference/data-types/dynamic.md) 列的数据（将所有类型和路径作为独立的子列）。
 
@@ -1794,11 +1992,15 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "新增设置，允许在 Native 格式下将 JSON 列写为单个 String 列"}]}]}/>
+
 将 [JSON](../../sql-reference/data-types/newjson.md) 列的数据写入为包含 JSON 字符串的 [String](../../sql-reference/data-types/string.md) 列，而不是采用默认的原生 JSON 序列化方式。
 
 ## output_format_orc_compression_block_size \{#output_format_orc_compression_block_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="262144" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "262144"},{"label": "新设置"}]}]}/>
 
 ORC 输出格式的压缩块大小（字节）。
 
@@ -1806,11 +2008,15 @@ ORC 输出格式的压缩块大小（字节）。
 
 <SettingsInfoBlock type="ORCCompression" default_value="zstd" />
 
-ORC 输出格式的压缩方法。支持的编解码器：lz4、snappy、zlib、zstd、none（不压缩）
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "zstd"},{"label": "Parquet/ORC/Arrow 支持多种压缩方法，包括 lz4 和 zstd。ClickHouse 支持上述每一种压缩方法。一些较差的工具（例如 'duckdb'）不支持更快的 `lz4` 压缩方法，因此我们默认使用 zstd。"}]}, {"id": "row-2","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "在 ORC 输出格式中默认使用 lz4 压缩。"}]}]}/>
+
+用于 ORC 输出格式的压缩方法。支持的编解码器：lz4、snappy、zlib、zstd、none（不压缩）。
 
 ## output_format_orc_dictionary_key_size_threshold \{#output_format_orc_dictionary_key_size_threshold\}
 
 <SettingsInfoBlock type="Double" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "对于 ORC 输出格式中的字符串列，如果不同取值的数量大于非空行总数中该参数所设定的比例，则关闭字典编码；否则启用字典编码。"}]}]}/>
 
 对于 ORC 输出格式中的字符串列，如果不同取值的数量大于非空行总数中该参数所设定的比例，则关闭字典编码；否则启用字典编码。
 
@@ -1824,11 +2030,15 @@ ORC 输出格式中的目标行索引步长
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-对 String 列使用 ORC String 类型而非 Binary 类型
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse 在 String 数据类型中允许任意二进制数据，通常为 UTF-8。Parquet/ORC/Arrow 的 String 只支持 UTF-8。因此，可以选择在 Arrow 中将 ClickHouse 的 String 数据类型映射为 String 或 Binary。虽然 Binary 在语义上更正确也更具兼容性，但默认使用 String 在大多数情况下更符合用户预期。"}]}]}/>
+
+为 String 列使用 ORC 的 String 类型而非 Binary 类型
 
 ## output_format_orc_writer_time_zone_name \{#output_format_orc_writer_time_zone_name\}
 
 <SettingsInfoBlock type="String" default_value="GMT" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "GMT"},{"label": "ORC 写入器使用的时区名称，默认时区为 GMT。"}]}]}/>
 
 ORC 写入器使用的时区名称，默认时区为 GMT。
 
@@ -1853,6 +2063,8 @@ ORC 写入器使用的时区名称，默认时区为 GMT。
 
 <SettingsInfoBlock type="Double" default_value="10.5" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "10.5"},{"label": "新设置。"}]}]}/>
+
 在 Parquet 布隆过滤器中为每个不同的值使用的大致比特数。估算的误报率为：
 
 *  6   bits - 10%
@@ -1865,6 +2077,8 @@ ORC 写入器使用的时区名称，默认时区为 GMT。
 
 <SettingsInfoBlock type="UInt64" default_value="134217728" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "134217728"},{"label": "新设置。"}]}]}/>
+
 在 parquet 文件中的哪个位置放置 Bloom 过滤器。Bloom 过滤器将按大致该大小分组写入。具体来说：
 
 * 如果为 0，则每个行组的 Bloom 过滤器会在该行组之后立即写入，
@@ -1875,11 +2089,15 @@ ORC 写入器使用的时区名称，默认时区为 GMT。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "1"},{"label": "更改输出 Parquet 文件 schema 中的内部字段名称。"}]}]}/>
+
 在 parquet 文件的 schema 中，对列表元素使用名称 `element` 而不是 `item`。这是 Arrow 库实现遗留下来的历史产物。通常会提升兼容性，但在某些旧版本的 Arrow 上可能例外。
 
 ## output_format_parquet_compression_method \{#output_format_parquet_compression_method\}
 
 <SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "zstd"},{"label": "Parquet/ORC/Arrow 支持多种压缩方法，包括 lz4 和 zstd。ClickHouse 完全支持所有这些压缩方法。一些能力较弱的工具（例如 'duckdb'）不支持速度更快的 `lz4` 压缩方法，因此我们将默认值设为 zstd。"}]}, {"id": "row-2","items": [{"label": "23.3"},{"label": "lz4"},{"label": "在 Parquet 输出格式中默认使用 lz4 压缩"}]}]}/>
 
 Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、brotli、zstd、gzip、none（不压缩）
 
@@ -1893,11 +2111,15 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "针对在 24.12 中引入的一项轻微的不兼容变更，新增了一个兼容性设置。"}]}, {"id": "row-2","items": [{"label": "24.12"},{"label": "0"},{"label": "将 Date 写为 Date32，而不是写为普通的 UInt16（这是与 Date 最接近的两种 Parquet 类型）。"}]}]}/>
+
 将 Date 值写入为普通的 16 位整数（读取时为 UInt16），而不是转换为 32 位的 Parquet DATE 类型（读取时为 Date32）。
 
 ## output_format_parquet_datetime_as_uint32 \{#output_format_parquet_datetime_as_uint32\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.12"},{"label": "0"},{"label": "将 DateTime 写为 DateTime64(3) 而不是 UInt32（这两种是最接近 DateTime 的 Parquet 类型）。"}]}]}/>
 
 将 DateTime 值写为原始 Unix 时间戳（读取时为 UInt32），而不是转换为毫秒（读取时为 DateTime64(3)）。
 
@@ -1905,11 +2127,15 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "默认启用在 Parquet 中将 Enum 写为 BYTE_ARRAY"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "写出枚举值时使用 Parquet 物理类型 BYTE_ARRAY 和逻辑类型 ENUM"}]}]}/>
+
 写出枚举值时使用 Parquet 物理类型 BYTE_ARRAY 和逻辑类型 ENUM
 
 ## output_format_parquet_fixed_string_as_fixed_byte_array \{#output_format_parquet_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.2"},{"label": "1"},{"label": "默认对 FixedString 使用 Parquet FIXED_LENGTH_BYTE_ARRAY 类型"}]}]}/>
 
 对于 FixedString 列，使用 Parquet 的 FIXED_LEN_BYTE_ARRAY 类型，而非 Binary 类型。
 
@@ -1917,11 +2143,15 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "1"},{"label": "新增设置，允许在 Parquet 元数据中写入地理空间列的信息，并将这些列编码为 WKB 格式。"}]}]}/>
+
 允许在 Parquet 元数据中写入地理空间列的信息，并将这些列编码为 WKB 格式。
 
 ## output_format_parquet_max_dictionary_size \{#output_format_parquet_max_dictionary_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1048576"},{"label": "新设置"}]}]}/>
 
 如果字典大小增长超过此字节数，则切换为不使用字典的编码方式。将其设置为 0 可禁用字典编码。
 
@@ -1947,11 +2177,15 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse 在 String 数据类型中允许任意二进制数据，通常为 UTF-8 编码。Parquet/ORC/Arrow 的 String 仅支持 UTF-8。因此，可以选择为 ClickHouse 的 String 数据类型使用哪种 Arrow 数据类型 —— String 或 Binary。虽然 Binary 在语义上更准确且兼容性更好，但在大多数情况下，默认使用 String 更符合用户预期。"}]}]}/>
+
 对 String 列使用 Parquet 的 String 类型，而不是 Binary 类型。
 
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "1"},{"label": "启用自定义 Parquet 编码器。"}]}]}/>
 
 使用更高效的 Parquet 编码器实现。
 
@@ -1959,11 +2193,15 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "2.latest"},{"label": "为输出格式使用最新的 Parquet 格式版本"}]}]}/>
+
 Parquet 输出格式所使用的版本。支持的版本：1.0、2.4、2.6 和 2.latest（默认）。
 
 ## output_format_parquet_write_bloom_filter \{#output_format_parquet_write_bloom_filter\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "添加了对写入 Parquet 布隆过滤器的支持。"}]}]}/>
 
 在 parquet 文件中写入布隆过滤器。需要 output_format_parquet_use_custom_encoder = true。
 
@@ -1971,11 +2209,15 @@ Parquet 输出格式所使用的版本。支持的版本：1.0、2.4、2.6 和 2
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "新设置。"}]}]}/>
+
 将 crc32 校验和写入 Parquet 页头。
 
 ## output_format_parquet_write_page_index \{#output_format_parquet_write_page_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "1"},{"label": "添加支持将页索引写入 Parquet 文件。"}]}]}/>
 
 将列索引和偏移索引（即每个数据页的统计信息，可在读取时用于过滤下推）写入 Parquet 文件。
 
@@ -1983,11 +2225,15 @@ Parquet 输出格式所使用的版本。支持的版本：1.0、2.4、2.6 和 2
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "auto"},{"label": "将该设置修改为也允许 auto 值；当输出不是 tty 时禁用 ANSI 转义序列"}]}]}/>
+
 在 Pretty 格式中使用 ANSI 转义码。0 - 禁用，1 - 启用，'auto' - 在终端环境下启用。
 
 ## output_format_pretty_display_footer_column_names \{#output_format_pretty_display_footer_column_names\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "新增设置，用于在行数较多时在页脚显示列名。阈值由 output_format_pretty_display_footer_column_names_min_rows 控制。"}]}]} />
 
 当表中有很多行时，在页脚显示列名。
 
@@ -2022,11 +2268,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "50"},{"label": "新增一个设置，用于控制 output_format_pretty_display_footer_column_names_min_rows 的阈值。默认值为 50。"}]}]}/>
+
 设置在启用 [output_format_pretty_display_footer_column_names](#output_format_pretty_display_footer_column_names) 时显示包含列名页脚所需的最小行数。
 
 ## output_format_pretty_fallback_to_vertical \{#output_format_pretty_fallback_to_vertical\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新增设置"}]}]}/>
 
 当启用该设置且表很宽但行数较少时，Pretty 格式会按 Vertical 格式的方式输出表数据。
 有关该行为的精细调整，请参阅 `output_format_pretty_fallback_to_vertical_max_rows_per_chunk` 和 `output_format_pretty_fallback_to_vertical_min_table_width`。
@@ -2035,11 +2285,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "100"},{"label": "新增设置"}]}]}/>
+
 仅当一个 chunk 中的行数不超过指定值时，才会回退到 Vertical 格式（参见 `output_format_pretty_fallback_to_vertical`）。
 
 ## output_format_pretty_fallback_to_vertical_min_columns \{#output_format_pretty_fallback_to_vertical_min_columns\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "5"},{"label": "新设置"}]}]}/>
 
 仅当列数大于指定值时，才会触发回退为 Vertical 格式（参见 `output_format_pretty_fallback_to_vertical`）。
 
@@ -2047,11 +2301,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="250" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "250"},{"label": "新的设置项"}]}]}/>
+
 仅当表中所有列的长度之和至少达到指定值，或者至少有一个值包含换行符时，才会启用回退为 Vertical 格式（参见 `output_format_pretty_fallback_to_vertical`）。
 
 ## output_format_pretty_glue_chunks \{#output_format_pretty_glue_chunks\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "auto"},{"label": "让 Pretty 格式更美观的新设置。"}]}]}/>
 
 如果以 Pretty 格式渲染的数据是分多个数据块到达的，即使中间有延迟，但下一个数据块的列宽与前一个相同，则使用 ANSI 转义序列回到上一行并覆盖前一个数据块的尾部，将其与新数据块的数据衔接起来。这样可以让结果在视觉上更友好。
 
@@ -2067,11 +2325,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "如果启用，并且输出目标是终端，则将每个表示千、百万等数量级的数字用下划线高亮显示。"}]}]}/>
+
 如果启用，并且输出目标是终端，则将每个表示千、百万等数量级的数字用下划线高亮显示。
 
 ## output_format_pretty_highlight_trailing_spaces \{#output_format_pretty_highlight_trailing_spaces\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新增设置。"}]}]}/>
 
 如果启用且输出为终端，则会以灰色下划线高亮显示行尾空格。
 
@@ -2079,12 +2341,16 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="24" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "24"},{"label": "新增设置"}]}]}/>
+
 如果列名太长，将其截断为此长度。  
 当列名长度大于 `output_format_pretty_max_column_name_width_cut_to` 加上 `output_format_pretty_max_column_name_width_min_chars_to_cut` 时，将会被截断。
 
 ## output_format_pretty_max_column_name_width_min_chars_to_cut \{#output_format_pretty_max_column_name_width_min_chars_to_cut\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "4"},{"label": "新增的设置"}]}]}/>
 
 当列名过长时至少要截断的字符数。  
 如果列名长度大于 `output_format_pretty_max_column_name_width_cut_to` 加上 `output_format_pretty_max_column_name_width_min_chars_to_cut`，则该列名会被截断。
@@ -2099,6 +2365,8 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1000"},{"label": "这在可用性方面更好 —— 需要滚动的内容更少。"}]}]}/>
+
 Pretty 格式的行数上限。
 
 ## output_format_pretty_max_value_width \{#output_format_pretty_max_value_width\}
@@ -2112,11 +2380,15 @@ Pretty 格式的行数上限。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "0"},{"label": "Pretty 格式中的单个值不会被截断。"}]}]}/>
+
 仅当块中包含不止一个值时才截断值（参见 `output_format_pretty_max_value_width` 设置）。否则应完整输出，这对于 `SHOW CREATE TABLE` 查询非常有用。
 
 ## output_format_pretty_multiline_fields \{#output_format_pretty_multiline_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新增设置"}]}]}/>
 
 如果启用，Pretty 格式会在表格单元格内渲染多行字段，从而保持表格的整体结构。
 如果未启用，它们将按原样渲染，可能会使表格变形（关闭该选项的一个好处是复制粘贴多行值会更方便）。
@@ -2125,11 +2397,15 @@ Pretty 格式的行数上限。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "新设置，用于控制是否将 Pretty 格式中的命名元组以 JSON 对象形式输出"}]}]}/>
+
 控制是否将 Pretty 格式中的命名元组以格式化的 JSON 对象形式输出。
 
 ## output_format_pretty_row_numbers \{#output_format_pretty_row_numbers\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "这样可提高易用性。"}]}]}/>
 
 在 Pretty 输出格式中为每一行添加行号
 
@@ -2137,11 +2413,15 @@ Pretty 格式的行数上限。
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1000000"},{"label": "当数据块仅包含一个数值且该数值超过此阈值（不包括 0）时，会在表格右侧输出一个更易读的数字提示。"}]}]}/>
+
 当数据块仅包含一个数值且该数值超过此阈值（不包括 0）时，会在表格右侧输出一个更易读的数字提示。
 
 ## output_format_pretty_squash_consecutive_ms \{#output_format_pretty_squash_consecutive_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "50"},{"label": "添加新设置"}]}]}/>
 
 在写入之前，最多等待指定的毫秒数以获取下一个数据块，并将其与前一个数据块合并。
 这可以避免过于频繁地输出过小的数据块，同时仍然允许以流式方式显示数据。
@@ -2149,6 +2429,8 @@ Pretty 格式的行数上限。
 ## output_format_pretty_squash_max_wait_ms \{#output_format_pretty_squash_max_wait_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "添加新设置"}]}]}/>
 
 如果自上一次输出以来经过的时间超过指定的毫秒数，则以 Pretty 格式输出当前等待输出的数据块。
 
@@ -2201,6 +2483,8 @@ Pretty 格式的行数上限。
 ## output_format_values_escape_quote_with_quote \{#output_format_values_escape_quote_with_quote\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "0"},{"label": "如果为 true，则将 ' 转义为 ''，否则使用 \' 引用"}]}]}/>
 
 如果为 true，则使用 `''` 对 `'` 进行转义，否则使用 `\\'`。
 

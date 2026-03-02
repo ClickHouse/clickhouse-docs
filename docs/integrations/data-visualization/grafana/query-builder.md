@@ -207,7 +207,7 @@ With the data links present, you can open traces and logs using the provided tra
 "**View Trace**" will open a split panel with the trace, and "**View Logs**" will open a logs query filtered by the trace ID.
 If the link is clicked from a dashboard instead of the explore view, the link will be opened in a new tab in the explore view.
 
-Having defaults configured for both [logs](./config.md#logs) and [traces](./config.md#traces) is required when crossing query types (logs to traces and traces to logs). Defaults are not required when opening a link of the same query type since the query can be simply copied.
+Having defaults configured for both [logs](./config.md#logs) and [traces](./config.md#traces) is required when crossing query types (logs to traces and traces to logs). Defaults aren't required when opening a link of the same query type since the query can be simply copied.
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
   Example of viewing a trace (right panel) from a logs query (left panel)
@@ -262,4 +262,4 @@ This is a list of all macros available in the plugin:
 | `$__timeInterval(columnName)`                | Replaced by a function calculating the interval based on window size in seconds.                                                                                                    | `toStartOfInterval(toDateTime(columnName), INTERVAL 20 second)`                                                   |
 | `$__timeInterval_ms(columnName)`             | Replaced by a function calculating the interval based on window size in milliseconds.                                                                                               | `toStartOfInterval(toDateTime64(columnName, 3), INTERVAL 20 millisecond)`                                         |
 | `$__interval_s`                              | Replaced by the dashboard interval in seconds.                                                                                                                                      | `20`                                                                                                              |
-| `$__conditionalAll(condition, $templateVar)` | Replaced by the first parameter when the template variable in the second parameter does not select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                                                              |
+| `$__conditionalAll(condition, $templateVar)` | Replaced by the first parameter when the template variable in the second parameter doesn't select every value. Replaced by the 1=1 when the template variable selects every value. | `condition` or `1=1`                                                                                              |

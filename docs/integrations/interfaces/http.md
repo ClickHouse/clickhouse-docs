@@ -92,7 +92,7 @@ curl 'http://localhost:8123/?query=SELECT%201'
 ```
 
 In this example wget is used with the `-nv` (non-verbose) and `-O-` parameters to output the result to the terminal.
-In this case it is not necessary to use URL encoding for the space:
+In this case it isn't necessary to use URL encoding for the space:
 
 ```bash title="command"
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1'
@@ -125,7 +125,7 @@ X-ClickHouse-Exception-Tag: dngjzjnxkvlwkeua
 ```
 
 As you can see, the `curl` command is somewhat inconvenient in that spaces must be URL escaped.
-Although `wget` escapes everything itself, we do not recommend using it because it does not work well over HTTP 1.1 when using keep-alive and Transfer-Encoding: chunked.
+Although `wget` escapes everything itself, we don't recommend using it because it doesn't work well over HTTP 1.1 when using keep-alive and Transfer-Encoding: chunked.
 
 ```bash
 $ echo 'SELECT 1' | curl 'http://localhost:8123/' --data-binary @-
@@ -277,7 +277,7 @@ To delete the table:
 $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
-For successful requests that do not return a data table, an empty response body is returned.
+For successful requests that don't return a data table, an empty response body is returned.
 
 ## Compression {#compression}
 
@@ -376,7 +376,7 @@ echo 'SELECT 1' | curl 'http://user:password@localhost:8123/' -d @-
 2. In the `user` and `password` URL parameters
 
 :::warning
-We do not recommend using this method as the parameter might be logged by web proxy and cached in the browser
+We don't recommend using this method as the parameter might be logged by web proxy and cached in the browser
 :::
 
 For example:
@@ -393,7 +393,7 @@ For example:
 echo 'SELECT 1' | curl -H 'X-ClickHouse-User: user' -H 'X-ClickHouse-Key: password' 'http://localhost:8123/' -d @-
 ```
 
-If the user name is not specified, then the `default` name is used. If the password is not specified, then an empty password is used.
+If the user name isn't specified, then the `default` name is used. If the password isn't specified, then an empty password is used.
 You can also use the URL parameters to specify any settings for processing a single query or entire profiles of settings. 
 
 For example:
@@ -450,7 +450,7 @@ The possible header fields are:
 | `elapsed_ns`         | Query runtime in nanoseconds.|
 | `memory_usage`       | Memory in bytes used by the query. (**Available from v25.11**) |
 
-Running requests do not stop automatically if the HTTP connection is lost. Parsing and data formatting are performed on the server-side, and using the network might be ineffective.
+Running requests don't stop automatically if the HTTP connection is lost. Parsing and data formatting are performed on the server-side, and using the network might be ineffective.
 
 The following optional parameters exist:
 
@@ -473,7 +473,7 @@ The following settings can be used:
 
 `buffer_size` determines the number of bytes in the result to buffer in the server memory. If a result body is larger than this threshold, the buffer is written to the HTTP channel, and the remaining data is sent directly to the HTTP channel.
 
-To ensure that the entire response is buffered, set `wait_end_of_query=1`. In this case, the data that is not stored in memory will be buffered in a temporary server file.
+To ensure that the entire response is buffered, set `wait_end_of_query=1`. In this case, the data that isn't stored in memory will be buffered in a temporary server file.
 
 For example:
 
@@ -490,7 +490,7 @@ Use buffering to avoid situations where a query processing error occurred after 
 This feature was added in ClickHouse 24.4.
 
 In specific scenarios, setting the granted role first might be required before executing the statement itself.
-However, it is not possible to send `SET ROLE` and the statement together, as multi-statements are not allowed:
+However, it isn't possible to send `SET ROLE` and the statement together, as multi-statements aren't allowed:
 
 ```bash
 curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM my_table;"
@@ -520,7 +520,7 @@ In this case, `?role=my_role&role=my_other_role` works similarly to executing `S
 
 ## HTTP response codes caveats {#http_response_codes_caveats}
 
-Because of limitations of the HTTP protocol, a HTTP 200 response code does not guarantee that a query was successful.
+Because of limitations of the HTTP protocol, a HTTP 200 response code doesn't guarantee that a query was successful.
 
 Here is an example:
 
@@ -537,7 +537,7 @@ The reason for this behavior is the nature of the HTTP protocol. The HTTP header
 
 This behavior is independent of the format used, whether it's `Native`, `TSV`, or `JSON`; the error message will always be in the middle of the response stream.
 
-You can mitigate this problem by enabling `wait_end_of_query=1` ([Response Buffering](#response-buffering)). In this case, sending of the HTTP header is delayed until the entire query is resolved. This however, does not completely solve the problem because the result must still fit within the [`http_response_buffer_size`](../../operations/settings/settings.md#http_response_buffer_size), and other settings like [`send_progress_in_http_headers`](../../operations/settings/settings.md#send_progress_in_http_headers) can interfere with the delay of the header.
+You can mitigate this problem by enabling `wait_end_of_query=1` ([Response Buffering](#response-buffering)). In this case, sending of the HTTP header is delayed until the entire query is resolved. This however, doesn't completely solve the problem because the result must still fit within the [`http_response_buffer_size`](../../operations/settings/settings.md#http_response_buffer_size), and other settings like [`send_progress_in_http_headers`](../../operations/settings/settings.md#send_progress_in_http_headers) can interfere with the delay of the header.
 
 :::tip
 The only way to catch all errors is to analyze the HTTP body before parsing it using the required format.
@@ -638,7 +638,7 @@ curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t
 Code: 457. DB::Exception: Value abc    123 cannot be parsed as String for query parameter 'arg1' because it isn't parsed completely: only 3 of 7 bytes was parsed: abc. (BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
 ```
 
-If you are using URL parameters, you will need to encode the `\t` as `%5C%09`. For example:
+If you're using URL parameters, you will need to encode the `\t` as `%5C%09`. For example:
 
 ```bash
 curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
@@ -737,20 +737,20 @@ Configuration options for `http_handlers` work as follows.
 Each of these are discussed below:
 
 - `method` is responsible for matching the method part of the HTTP request. `method` fully conforms to the definition of [`method`]    
-  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) in the HTTP protocol. It is an optional configuration. If it is not defined in the   
-  configuration file, it does not match the method portion of the HTTP request.
+  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) in the HTTP protocol. It is an optional configuration. If it isn't defined in the   
+  configuration file, it doesn't match the method portion of the HTTP request.
 
 - `url` is responsible for matching the URL part (path and query string) of the HTTP request.
   If the `url` prefixed with `regex:` it expects [RE2](https://github.com/google/re2)'s regular expressions.
-  It is an optional configuration. If it is not defined in the configuration file, it does not match the URL portion of the HTTP request.
+  It is an optional configuration. If it isn't defined in the configuration file, it doesn't match the URL portion of the HTTP request.
 
 - `full_url` same as `url`, but, includes complete URL, i.e. `schema://host:port/path?query_string`.
-  Note, ClickHouse does not support "virtual hosts", so the `host` is an IP address (and not the value of `Host` header).
+  Note, ClickHouse doesn't support "virtual hosts", so the `host` is an IP address (and not the value of `Host` header).
 
 - `empty_query_string` - ensures that there is no query string (`?query_string`) in the request
 
 - `headers` are responsible for matching the header part of the HTTP request. It is compatible with RE2's regular expressions. It is an optional 
-  configuration. If it is not defined in the configuration file, it does not match the header portion of the HTTP request.
+  configuration. If it isn't defined in the configuration file, it doesn't match the header portion of the HTTP request.
 
 - `handler` contains the main processing part.
 
@@ -770,7 +770,7 @@ Each of these are discussed below:
   - `response_content` — use with `static` type, response content sent to client, when using the prefix 'file://' or 'config://', find the content 
     from the file or configuration sends to client.
   - `user` - user to execute the query from (default user is `default`).
-    **Note**, you do not need to specify password for this user.
+    **Note**, you don't need to specify password for this user.
 
 The configuration methods for different `type`s are discussed next.
 
@@ -856,7 +856,7 @@ In one `predefined_query_handler` only one `query` is supported.
 
 In `dynamic_query_handler`, the query is written in the form of parameter of the HTTP request. The difference is that in `predefined_query_handler`, the query is written in the configuration file. `query_param_name` can be configured in `dynamic_query_handler`.
 
-ClickHouse extracts and executes the value corresponding to the `query_param_name` value in the URL of the HTTP request. The default value of `query_param_name` is `/query` . It is an optional configuration. If there is no definition in the configuration file, the parameter is not passed in.
+ClickHouse extracts and executes the value corresponding to the `query_param_name` value in the URL of the HTTP request. The default value of `query_param_name` is `/query` . It is an optional configuration. If there is no definition in the configuration file, the parameter isn't passed in.
 
 To experiment with this functionality, the following example defines the values of [`max_threads`](../../operations/settings/settings.md#max_threads) and `max_final_threads` and `queries` whether the settings were set successfully.
 

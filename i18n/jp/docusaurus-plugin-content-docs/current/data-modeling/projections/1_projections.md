@@ -117,7 +117,8 @@ FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
 ORDER BY tip_amount, trip_id ASC
 ```
 
-`ORDER BY` に含まれていない `tip_amount` でフィルタリングしているため、ClickHouse はテーブル全体をスキャンする必要がありました。このクエリを高速化していきましょう。
+`ORDER BY` に含まれていない `tip_amount` でフィルタリングしているため、ClickHouse
+はテーブル全体をスキャンする必要がありました。このクエリを高速化していきましょう。
 
 元のテーブルと結果を保持するために、新しいテーブルを作成し、`INSERT INTO SELECT` を使ってデータをコピーします。
 
@@ -143,7 +144,7 @@ ADD PROJECTION prj_tip_amount
 ALTER TABLE nyc.trips_with_projection MATERIALIZE PROJECTION prj_tip_amount
 ```
 
-プロジェクションを追加したので、改めてクエリを実行してみましょう。
+プロジェクションを追加したので、クエリをもう一度実行してみましょう。
 
 ```sql runnable
 SELECT
@@ -174,6 +175,7 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
+
 
 ### プロジェクションを使用してUK不動産価格データのクエリを高速化する \{#using-projections-to-speed-up-UK-price-paid\}
 
@@ -524,8 +526,8 @@ CREATE TABLE page_views
 ENGINE = MergeTree
 ORDER BY (event_date, id)
 SETTINGS
-  index_granularity = 1, -- グラニュールあたり1行
-  max_bytes_to_merge_at_max_space_in_pool = 1; -- マージを無効化
+  index_granularity = 1, -- one row per granule
+  max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
 ```
 
 次にテーブルにデータを挿入します。
@@ -595,7 +597,8 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
     └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-上に示した `EXPLAIN` の出力は、論理クエリプランを上から下へと示しています。
+上に示した `EXPLAIN` の出力は、論理クエリプランを上から下へと順に表しています。
+
 
 | 行番号 | 説明                                                                                                         |
 |--------|--------------------------------------------------------------------------------------------------------------|

@@ -35,7 +35,7 @@ Real-time Change Data Capture (CDC) can be implemented in ClickHouse using [Clic
 
 ### Manual bulk load + periodic updates {#manual-bulk-load-periodic-updates}
 
-In some cases, a more straightforward approach like manual bulk loading followed by periodic updates may be sufficient. This strategy is ideal for one-time migrations or situations where real-time replication is not required. It involves loading data from PostgreSQL to ClickHouse in bulk, either through direct SQL `INSERT` commands or by exporting and importing CSV files. After the initial migration, you can periodically update the data in ClickHouse by syncing changes from PostgreSQL at regular intervals.
+In some cases, a more straightforward approach like manual bulk loading followed by periodic updates may be sufficient. This strategy is ideal for one-time migrations or situations where real-time replication isn't required. It involves loading data from PostgreSQL to ClickHouse in bulk, either through direct SQL `INSERT` commands or by exporting and importing CSV files. After the initial migration, you can periodically update the data in ClickHouse by syncing changes from PostgreSQL at regular intervals.
 
 The bulk load process is simple and flexible but comes with the downside of no real-time updates. Once the initial data is in ClickHouse, updates won't be reflected immediately, so you must schedule periodic updates to sync the changes from PostgreSQL. This approach works well for less time-sensitive use cases, but it introduces a delay between when data changes in PostgreSQL and when those changes appear in ClickHouse.
 

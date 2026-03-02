@@ -19,4 +19,15 @@ MySQL 向け ClickPipes は、ソーステーブルでのスキーマ変更を�
 | デフォルト値付きの新しいカラムの追加（`ALTER TABLE ADD COLUMN ... DEFAULT ...`）   | 自動的に伝播されます。新しいカラムは、スキーマ変更後に複製されたすべての行について値が設定されますが、既存の行については、テーブル全体の再読み込みを行わない限りデフォルト値は反映されません |
 | 既存カラムの削除（`ALTER TABLE DROP COLUMN ...`）                                   | 検出はされますが、**伝播はされません**。削除されたカラムは、スキーマ変更後に複製されたすべての行で `NULL` に設定されます                                                                |
 
-**MySQL 5.7 およびそれ以前のバージョンではスキーマ変更はサポートされません。** カラムを確実に追跡するには、[MySQL 8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/) より前のバイナリログには含まれていないテーブルメタデータが必要です。
+### MySQL 5.x の制約 \{#mysql-5-limitations\}
+
+[8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/) より古い MySQL バージョンでは、binlog に完全なカラムメタデータ（`binlog_row_metadata=FULL`）が含まれていないため、ClickPipes はカラムを位置（序数）で追跡します。これは次のことを意味します。
+
+- **末尾へのカラム追加**（`ALTER TABLE ADD COLUMN ...`）はサポートされています。
+- **カラム位置をずらすあらゆる DDL** は、序数位置をもはや確実に対応付けできないため、パイプがエラーを発生させます。これには次が含まれます。
+  - `ALTER TABLE DROP COLUMN ...`
+  - `ALTER TABLE ADD COLUMN ... AFTER ...` / `FIRST`
+  - `ALTER TABLE MODIFY COLUMN ... AFTER ...` / `FIRST`
+  - `ALTER TABLE CHANGE COLUMN ... AFTER ...` / `FIRST`
+
+このエラーが発生した場合は、パイプを再同期する必要があります。

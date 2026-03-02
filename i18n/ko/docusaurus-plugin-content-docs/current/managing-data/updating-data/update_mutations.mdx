@@ -1,0 +1,19 @@
+---
+slug: /managing-data/update_mutations
+sidebar_label: '업데이트 뮤테이션'
+title: '업데이트 뮤테이션'
+hide_title: false
+description: '업데이트 뮤테이션을 설명하는 페이지 - 테이블 데이터를 업데이트를 통해 조작하는 ALTER 쿼리'
+doc_type: 'reference'
+keywords: ['update', '뮤테이션', 'alter table', '데이터 조작', '데이터 수정']
+---
+
+업데이트 뮤테이션은 업데이트를 통해 테이블 데이터를 조작하는 `ALTER` 쿼리를 의미합니다. 대표적으로 `ALTER TABLE UPDATE`와 같은 쿼리가 해당됩니다. 이러한 쿼리를 수행하면 데이터 파트의 새로운 뮤테이션 버전이 생성됩니다. 이는 해당 뮤테이션 이전에 삽입된 모든 데이터에 대해 전체 데이터 파트를 다시 쓰게 된다는 의미이며, 매우 많은 쓰기 요청으로 이어집니다.
+
+:::info
+업데이트의 경우 기본 MergeTree 테이블 엔진 대신 [ReplacingMergeTree](/guides/replacing-merge-tree) 또는 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)와 같은 전용 테이블 엔진을 사용하면 대량의 쓰기 요청을 피할 수 있습니다.
+:::
+
+import UpdateMutations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
+
+<UpdateMutations />

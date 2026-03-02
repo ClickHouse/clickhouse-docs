@@ -67,7 +67,7 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
 :::note
 You will need to use a different uuid for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new uuid each day.
+For example, if you're taking daily backups, you will need to use a new uuid each day.
 :::
   </TabItem>
   <TabItem value="Restore" label="RESTORE" default>
@@ -100,7 +100,7 @@ Where `uuid` is a unique identifier, used to identify the backup.
 
 :::note
 You will need to use a different uuid for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new uuid each day.
+For example, if you're taking daily backups, you will need to use a new uuid each day.
 :::
 
   </TabItem>
@@ -133,7 +133,7 @@ Where `uuid` is a unique identifier, used to identify the backup.
 
 :::note
 You will need to use a different uuid for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new uuid each day.
+For example, if you're taking daily backups, you will need to use a new uuid each day.
 :::
 </TabItem>
 <TabItem value="Restore" label="RESTORE" default>
@@ -195,7 +195,7 @@ FROM S3(
 <details>
 <summary>What happens to the backups in my cloud object storage? Are they cleaned up by ClickHouse at some point?</summary>
 
-We provide you the ability to export backups to your bucket, however, we do not clean up or delete any of the backups once written. You are responsible for managing the lifecycle of the backups in your bucket, including deleting, or archiving as needed, or moving to cheaper storage to optimize overall cost.
+We provide you the ability to export backups to your bucket, however, we don't clean up or delete any of the backups once written. You're responsible for managing the lifecycle of the backups in your bucket, including deleting, or archiving as needed, or moving to cheaper storage to optimize overall cost.
 
 </details>
 

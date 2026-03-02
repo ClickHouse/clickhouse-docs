@@ -45,7 +45,7 @@ In this guide you will connect your data from ClickHouse to Explo and visualize 
 <p/>
 
 :::tip Add some data
-If you do not have a dataset to work with you can add one of the examples.  This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one.  There are several others to look at in the same documentation category.
+If you don't have a dataset to work with you can add one of the examples.  This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one.  There are several others to look at in the same documentation category.
 :::
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}

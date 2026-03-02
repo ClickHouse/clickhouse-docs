@@ -46,7 +46,8 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. 我们将使用以下 `MergeTree` 表在 ClickHouse 中存储数据：
+2. 我们将使用以下 `MergeTree` 表用于在 ClickHouse 中存储数据：
+
 
 ```sql
 CREATE TABLE sensors
@@ -115,7 +116,7 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-下面是响应结果——显示了行数和处理速度。其写入速率超过每秒 600 万行！
+下面是响应结果——显示了行数和处理速度。数据写入速率超过每秒 600 万行！
 
 ```response
 0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
@@ -138,7 +139,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67T 已压缩至 310GiB，共 206.9 亿行：
+这 1.67T 数据被压缩到 310 GiB，共 206.9 亿行：
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -172,6 +173,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-以下是结果的可视化：
+下面是结果的可视化展示：
 
-<Image img={sensors_02} size="md" alt="炎热潮湿的天气"/>
+
+<Image img={sensors_02} size="md" alt="炎热潮湿的天数"/>

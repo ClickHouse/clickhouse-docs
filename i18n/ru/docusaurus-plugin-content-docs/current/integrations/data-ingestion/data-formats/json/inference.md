@@ -345,7 +345,7 @@ SETTINGS describe_compact_output = 1
 {"a":"22"}
 ```
 
-В этом случае ClickHouse может устранить конфликт типов и интерпретировать столбец `a` как `Nullable(String)`.
+В этом случае ClickHouse может привести конфликтующие типы к общему виду и интерпретировать столбец `a` как `Nullable(String)`.
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')

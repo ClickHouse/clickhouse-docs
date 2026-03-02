@@ -16,7 +16,7 @@ doc_type: 'guide'
 CREATE DATABASE IF NOT EXISTS helloworld
 ```
 
-Similarly, use `CREATE TABLE` to define a new table. If you do not specify the database name, the table will be in the
+Similarly, use `CREATE TABLE` to define a new table. If you don't specify the database name, the table will be in the
 `default` database. 
 
 The following table named `my_first_table` is created in the `helloworld` database:

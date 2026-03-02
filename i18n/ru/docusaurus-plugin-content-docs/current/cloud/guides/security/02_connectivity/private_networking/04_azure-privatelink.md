@@ -27,6 +27,7 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
+
 # Azure Private Link \{#azure-private-link\}
 
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
@@ -54,6 +55,7 @@ Azure поддерживает межрегиональное подключен
 :::
 
 ## Внимание \{#attention\}
+
 ClickHouse пытается сгруппировать ваши сервисы, чтобы повторно использовать одну и ту же опубликованную [службу Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) в пределах региона Azure. Однако такая группировка не гарантируется, особенно если вы распределяете свои сервисы между несколькими организациями ClickHouse.
 Если у вас уже настроен Private Link для других сервисов в вашей организации ClickHouse, вы в большинстве случаев можете пропустить основную часть шагов благодаря этой группировке и перейти сразу к последнему шагу: [добавить идентификатор ресурса Private Endpoint в список разрешённых для ваших сервисов](#add-private-endpoint-id-to-services-allow-list).
 
@@ -103,6 +105,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 Сохраните значение `endpointServiceId`. Оно потребуется на следующем шаге.
+
 
 ## Создание приватной конечной точки в Azure \{#create-private-endpoint-in-azure\}
 
@@ -204,11 +207,12 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 }
 ```
 
-### Получение идентификатора ресурса частной конечной точки \{#obtaining-private-endpoint-resourceid\}
 
-Чтобы использовать Private Link, вам необходимо добавить идентификатор ресурса подключения частной конечной точки в список разрешённых для вашего сервиса.
+### Получение Resource ID частной конечной точки \{#obtaining-private-endpoint-resourceid\}
 
-Идентификатор ресурса частной конечной точки доступен в портале Azure. Откройте частную конечную точку, созданную на предыдущем шаге, и нажмите **JSON View**:
+Чтобы использовать Private Link, необходимо добавить Resource ID подключения частной конечной точки в список разрешённых подключений вашего сервиса.
+
+Resource ID частной конечной точки отображается в Azure Portal. Откройте частную конечную точку, созданную на предыдущем шаге, и нажмите **JSON View**:
 
 <Image img={azure_pe_view} size="lg" alt="Просмотр частной конечной точки" border />
 
@@ -243,6 +247,7 @@ resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
 }
 ```
 
+
 ### Создание подстановочной записи DNS \{#create-a-wildcard-dns-record\}
 
 Создайте подстановочную DNS-запись и укажите ваш Private Endpoint:
@@ -271,15 +276,16 @@ resource "azurerm_private_dns_a_record" "example" {
 }
 ```
 
+
 ### Создайте привязку к виртуальной сети \{#create-a-virtual-network-link\}
 
 Чтобы связать частную зону DNS с виртуальной сетью, вам необходимо создать привязку к виртуальной сети.
 
-**Вариант 1: через портал Azure**
+**Вариант 1: использование портала Azure**
 
 Следуйте этой инструкции, чтобы [связать виртуальную сеть с частной зоной DNS](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
 
-**Вариант 2: с использованием Terraform**
+**Вариант 2: с помощью Terraform**
 
 :::note
 Существует множество способов настройки DNS. Настройте DNS в соответствии с вашим конкретным случаем использования.
@@ -300,6 +306,7 @@ Non-authoritative answer:
 Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
+
 
 ## Добавление идентификатора ресурса Private Endpoint в организацию ClickHouse Cloud \{#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization\}
 
@@ -369,6 +376,7 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
+
 ## Добавьте идентификатор ресурса частной конечной точки (Private Endpoint Resource ID) в allow list вашего сервиса (или сервисов) \{#add-private-endpoint-id-to-services-allow-list\}
 
 По умолчанию сервис ClickHouse Cloud недоступен по соединению Private Link, даже если соединение Private Link одобрено и установлено. Необходимо явно добавить идентификатор ресурса частной конечной точки (Private Endpoint Resource ID) для каждого сервиса, который должен быть доступен через Private Link.
@@ -432,6 +440,7 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
+
 ## Доступ к вашему сервису ClickHouse Cloud с использованием Private Link \{#access-your-clickhouse-cloud-service-using-private-link\}
 
 Каждый сервис с включённым Private Link имеет публичную и приватную конечную точку. Для подключения через Private Link необходимо использовать приватную конечную точку — это `privateDnsHostname`<sup>API</sup> или `DNS name`<sup>console</sup>, полученные на шаге [Получение псевдонима подключения Azure для Private Link](#obtain-azure-connection-alias-for-private-link).
@@ -474,6 +483,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 Используйте `privateDnsHostname` для подключения к вашей службе ClickHouse Cloud через Private Link.
 
+
 ## Устранение неполадок \{#troubleshooting\}
 
 ### Проверка настроек DNS \{#test-dns-setup\}
@@ -494,6 +504,7 @@ Name: <dns name>
 Address: 10.0.0.4
 ```
 
+
 ### Сброс соединения удалённым узлом \{#connection-reset-by-peer\}
 
 Скорее всего, идентификатор ресурса Private Endpoint не был добавлен в список разрешённых для сервиса (allow-list). Вернитесь к шагу [*Add Private Endpoint Resource ID to your services allow-list*](#add-private-endpoint-id-to-services-allow-list).
@@ -502,11 +513,11 @@ Address: 10.0.0.4
 
 Скорее всего, идентификатор ресурса Private Endpoint не был добавлен в список разрешённых для сервиса (allow-list). Вернитесь к шагу [*Add Private Endpoint Resource ID to your services allow-list*](#add-private-endpoint-id-to-services-allow-list).
 
-### Проверка подключения \{#test-connectivity\}
+### Тестирование подключения \{#test-connectivity\}
 
-Если у вас возникают проблемы с подключением с использованием Private Link, проверьте подключение с помощью `openssl`. Убедитесь, что статус конечной точки Private Link — `Accepted`.
+Если у вас возникают проблемы с подключением при использовании Private Link, проверьте его с помощью `openssl`. Убедитесь, что статус конечной точки Private Link — `Accepted`.
 
-OpenSSL должен успешно подключиться (см. CONNECTED в выводе команды). Значение `errno=104` является ожидаемым.
+OpenSSL должен устанавливать соединение (см. CONNECTED в выводе). Значение `errno=104` является ожидаемым.
 
 ```bash
 openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
@@ -533,6 +544,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
+
 ### Проверка фильтров частных конечных точек \{#checking-private-endpoint-filters\}
 
 Перед выполнением любых команд задайте следующие переменные окружения:
@@ -549,6 +561,7 @@ INSTANCE_ID=<Instance ID>
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
+
 
 ## Дополнительная информация \{#more-information\}
 

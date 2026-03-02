@@ -22,7 +22,7 @@ ClickPipes supports Postgres version 12 and later.
 
 ## Enable logical replication {#enable-logical-replication}
 
-**You don't need** to follow the below steps if `wal_level` is set to `logical`. This setting should mostly be pre-configured if you are migrating from another data replication tool.
+**You don't need** to follow the below steps if `wal_level` is set to `logical`. This setting should mostly be pre-configured if you're migrating from another data replication tool.
 
 1. Click on the **Server parameters** section
 
@@ -91,7 +91,7 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.
 
 1. Go to the **Networking** tab and add the [ClickPipes IPs](../../index.md#list-of-static-ips) to the Firewall
-   of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you are using SSH tunneling.
+   of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you're using SSH tunneling.
 
 <Image img={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" size="lg"/>
 

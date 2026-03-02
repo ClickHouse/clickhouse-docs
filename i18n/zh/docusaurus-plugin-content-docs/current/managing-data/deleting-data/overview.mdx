@@ -22,7 +22,7 @@ doc_type: 'guide'
 轻量级删除会将行立即标记为已删除，从而可以在之后的所有 `SELECT` 查询中自动将其过滤掉。随后对这些已删除行的实际移除会在自然合并周期中发生，因此会带来更少的 I/O 开销。其结果是，在一段未明确定义的时间内，数据可能并未真正从存储中删除，而只是被标记为已删除。如果你需要确保数据已经被删除，请考虑使用上述 mutation 命令。
 
 ```sql
--- 使用轻量级删除方式删除 2018 年的所有数据。不建议使用。
+-- delete all data from 2018 with a lightweight delete. Not recommended.
 DELETE FROM posts WHERE toYear(CreationDate) = 2018
 ```
 

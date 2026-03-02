@@ -46,6 +46,10 @@ MCP はクライアントサーバー型アーキテクチャに従います。
 
 ClickHouse Cloud でリモート MCP サーバーを探している場合は、["Remote MCP server in Cloud"](/cloud/features/ai-ml/remote-mcp) のページを参照してください。
 
+:::tip[Agent Skills]
+[ClickHouse Agent Skills リポジトリ](https://github.com/ClickHouse/agent-skills) は、AI コーディングエージェント (Claude Code、Cursor、Copilot など) を拡張してドメイン固有の専門知識を持たせるための、パッケージ化された指示セットを提供します。このリポジトリは ClickHouse データベース向けのスキルを提供しており、スキーマ設計、クエリ最適化、データのインジェストパターンをカバーします。
+:::
+
 ## ClickHouse MCP Server の利用ガイド \{#clickhouse-mcp-server-guides\}
 
 以下に、ClickHouse MCP Server の使用方法を説明するガイドをいくつか示します。

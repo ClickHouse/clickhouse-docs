@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: '使用 ClickStack 搜索'
+title: '基于 ClickStack 的告警'
 sidebar_label: '告警'
 pagination_prev: null
 pagination_next: null
@@ -21,15 +21,15 @@ import manage_alerts from '@site/static/images/use-cases/observability/manage_al
 import alerts_view from '@site/static/images/use-cases/observability/alerts_view.png';
 import multiple_search_alerts from '@site/static/images/use-cases/observability/multiple_search_alerts.png';
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-
-## 在 ClickStack 中使用告警 \{#alerting-in-clickstack\}
-
-ClickStack 内置了告警功能，使团队能够在日志、指标和链路追踪中实时发现并响应问题。
+ClickStack 内置了告警功能，使团队能够在日志、指标和追踪等各类数据中实时发现并响应问题。
 
 可以直接在 HyperDX 界面中创建告警，并与 Slack、PagerDuty 等常用通知系统集成。
 
-告警功能可在您的 ClickStack 数据之上无缝工作，帮助您跟踪系统健康状况、捕获性能退化，并监控关键业务事件。
+告警功能可以无缝适用于 ClickStack 数据，帮助你跟踪系统健康状况、捕获性能回归，并监控关键业务事件。
+
 
 ## 告警类型 \{#types-of-alerts\}
 

@@ -15,7 +15,7 @@ curl https://clickhouse.com/ | sh
 ```
 
 :::note
-For Mac users: If you are getting errors that the developer of the binary cannot be verified, please see [here](/knowledgebase/fix-developer-verification-error-in-macos).
+For Mac users: If you're getting errors that the developer of the binary can't be verified, please see [here](/knowledgebase/fix-developer-verification-error-in-macos).
 :::
 
 ## Start clickhouse-local {#start-clickhouse-local}
@@ -68,7 +68,7 @@ file. All available configuration settings are documented [here](/operations/ser
 [example configuration file
 template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
 
-You are now ready to start sending SQL commands to ClickHouse!
+You're now ready to start sending SQL commands to ClickHouse!
 
 :::tip
 The [Quick Start](/get-started/quick-start) walks you through the steps for creating tables and inserting data.

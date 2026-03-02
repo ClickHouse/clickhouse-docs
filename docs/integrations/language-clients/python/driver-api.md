@@ -13,7 +13,7 @@ doc_type: 'reference'
 :::note
 Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.
 
-*Methods not documented here are not considered part of the API, and may be removed or changed.*
+*Methods not documented here aren't considered part of the API, and may be removed or changed.*
 :::
 
 ## Client Initialization {#client-initialization}
@@ -33,8 +33,8 @@ The `clickhouse_connect.driver.client` class provides the primary interface betw
 | secure                   | bool        | False                         | Use HTTPS/TLS. This overrides inferred values from the interface or port arguments.                                                                                                                                                                   |
 | dsn                      | str         | *None*                        | A string in standard DSN (Data Source Name) format. Other connection values (such as host or user) will be extracted from this string if not set otherwise.                                                                                           |
 | compress                 | bool or str | True                          | Enable compression for ClickHouse HTTP inserts and query results. See [Additional Options (Compression)](additional-options.md#compression)                                                                                                           |
-| query_limit              | int         | 0 (unlimited)                 | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows. Note that large query limits may result in out of memory exceptions if results are not streamed, as all results are loaded into memory at once. |
-| query_retries            | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests are not automatically retried by the driver to prevent unintended duplicate requests.                                |
+| query_limit              | int         | 0 (unlimited)                 | Maximum number of rows to return for any `query` response. Set this to zero to return unlimited rows. Note that large query limits may result in out of memory exceptions if results aren't streamed, as all results are loaded into memory at once. |
+| query_retries            | int         | 2                             | Maximum number of retries for a `query` request. Only "retryable" HTTP responses will be retried. `command` or `insert` requests aren't automatically retried by the driver to prevent unintended duplicate requests.                                |
 | connect_timeout          | int         | 10                            | HTTP connection timeout in seconds.                                                                                                                                                                                                                   |
 | send_receive_timeout     | int         | 300                           | Send/receive timeout for the HTTP connection in seconds.                                                                                                                                                                                              |
 | client_name              | str         | *None*                        | client_name prepended to the HTTP User Agent header. Set this to track client queries in the ClickHouse system.query_log.                                                                                                                             |
@@ -53,15 +53,15 @@ The `clickhouse_connect.driver.client` class provides the primary interface betw
 | Parameter        | Type | Default | Description                                                                                                                                                                                                                                                                       |
 |------------------|------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | verify           | bool | True    | Validate the ClickHouse server TLS/SSL certificate (hostname, expiration, etc.) if using HTTPS/TLS.                                                                                                                                                                               |
-| ca_cert          | str  | *None*  | If *verify*=*True*, the file path to Certificate Authority root to validate ClickHouse server certificate, in .pem format. Ignored if verify is False. This is not necessary if the ClickHouse server certificate is a globally trusted root as verified by the operating system. |
+| ca_cert          | str  | *None*  | If *verify*=*True*, the file path to Certificate Authority root to validate ClickHouse server certificate, in .pem format. Ignored if verify is False. This isn't necessary if the ClickHouse server certificate is a globally trusted root as verified by the operating system. |
 | client_cert      | str  | *None*  | File path to a TLS Client certificate in .pem format (for mutual TLS authentication). The file should contain a full certificate chain, including any intermediate certificates.                                                                                                  |
-| client_cert_key  | str  | *None*  | File path to the private key for the Client Certificate. Required if the private key is not included the Client Certificate key file.                                                                                                                                             |
+| client_cert_key  | str  | *None*  | File path to the private key for the Client Certificate. Required if the private key isn't included the Client Certificate key file.                                                                                                                                             |
 | server_host_name | str  | *None*  | The ClickHouse server hostname as identified by the CN or SNI of its TLS certificate. Set this to avoid SSL errors when connecting through a proxy or tunnel with a different hostname                                                                                            |
-| tls_mode         | str  | *None*  | Controls advanced TLS behavior. `proxy` and `strict` do not invoke ClickHouse mutual TLS connection, but do send client cert and key.  `mutual` assumes ClickHouse mutual TLS auth with a client certificate.  *None*/default behavior is `mutual`                                |
+| tls_mode         | str  | *None*  | Controls advanced TLS behavior. `proxy` and `strict` don't invoke ClickHouse mutual TLS connection, but do send client cert and key.  `mutual` assumes ClickHouse mutual TLS auth with a client certificate.  *None*/default behavior is `mutual`                                |
 
 ### Settings argument {#settings-argument}
 
-Finally, the `settings` argument to `get_client` is used to pass additional ClickHouse settings to the server for each client request. Note that in most cases, users with *readonly*=*1* access cannot alter settings sent with a query, so ClickHouse Connect will drop such settings in the final request and log a warning. The following settings apply only to HTTP queries/sessions used by ClickHouse Connect, and are not documented as general ClickHouse settings.
+Finally, the `settings` argument to `get_client` is used to pass additional ClickHouse settings to the server for each client request. Note that in most cases, users with *readonly*=*1* access can't alter settings sent with a query, so ClickHouse Connect will drop such settings in the final request and log a warning. The following settings apply only to HTTP queries/sessions used by ClickHouse Connect, and aren't documented as general ClickHouse settings.
 
 | Setting           | Description                                                                                                                                                      |
 |-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -276,14 +276,14 @@ WHERE date >= '2022-10-01 15:20:05'
 ```
 
 :::warning
-Server-side binding is only supported (by the ClickHouse server) for `SELECT` queries. It does not work for `ALTER`, `DELETE`, `INSERT`, or other types of queries. This may change in the future; see https://github.com/ClickHouse/ClickHouse/issues/42092.
+Server-side binding is only supported (by the ClickHouse server) for `SELECT` queries. It doesn't work for `ALTER`, `DELETE`, `INSERT`, or other types of queries. This may change in the future; see https://github.com/ClickHouse/ClickHouse/issues/42092.
 :::
 
 #### Client-side binding {#client-side-binding}
 
 ClickHouse Connect also supports client-side parameter binding, which can allow more flexibility in generating templated SQL queries. For client-side binding, the `parameters` argument should be a dictionary or a sequence. Client-side binding uses the Python ["printf" style](https://docs.python.org/3/library/stdtypes.html#old-string-formatting) string formatting for parameter substitution.
 
-Note that unlike server-side binding, client-side binding does not work for database identifiers such as database, table, or column names, since Python-style formatting cannot distinguish between the different types of strings, and they need to be formatted differently (backticks or double quotes for database identifiers, single quotes for data values).
+Note that unlike server-side binding, client-side binding doesn't work for database identifiers such as database, table, or column names, since Python-style formatting can't distinguish between the different types of strings, and they need to be formatted differently (backticks or double quotes for database identifiers, single quotes for data values).
 
 - Example with Python Dictionary, DateTime value and string escaping
 
@@ -358,7 +358,7 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 
 ## Client `command` Method {#client-command-method}
 
-Use the `Client.command` method to send SQL queries to the ClickHouse server that do not normally return data or that return a single primitive or array value rather than a full dataset. This method takes the following parameters:
+Use the `Client.command` method to send SQL queries to the ClickHouse server that don't normally return data or that return a single primitive or array value rather than a full dataset. This method takes the following parameters:
 
 | Parameter     | Type             | Default    | Description                                                                                                                                                   |
 |---------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -593,9 +593,9 @@ The base `query` method returns a `QueryResult` object with the following public
 - `summary` -- Any data returned by the `X-ClickHouse-Summary` HTTP response header
 - `first_item` -- A convenience property for retrieving the first row of the response as a dictionary (keys are column names)
 - `first_row` -- A convenience property to return the first row of the result
-- `column_block_stream` -- A generator of query results in column oriented format. This property should not be referenced directly (see below).
-- `row_block_stream` -- A generator of query results in row oriented format. This property should not be referenced directly (see below).
-- `rows_stream` -- A generator of query results that yields a single row per invocation. This property should not be referenced directly (see below).
+- `column_block_stream` -- A generator of query results in column oriented format. This property shouldn't be referenced directly (see below).
+- `row_block_stream` -- A generator of query results in row oriented format. This property shouldn't be referenced directly (see below).
+- `rows_stream` -- A generator of query results that yields a single row per invocation. This property shouldn't be referenced directly (see below).
 - `summary` -- As described under the `command` method, a dictionary of summary information returned by ClickHouse
 
 The `*_stream` properties return a Python Context that can be used as an iterator for the returned data. They should only be accessed indirectly using the Client `*_stream` methods. 
@@ -632,7 +632,7 @@ This method returns a "query summary" dictionary as described under the "command
 For specialized insert methods that work with Pandas DataFrames, PyArrow Tables, and Arrow-backed DataFrames, see [Advanced Inserting (Specialized Insert Methods)](advanced-inserting.md#specialized-insert-methods).
 
 :::note
-A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method is not required.
+A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method isn't required.
 :::
 
 ### Examples {#examples}

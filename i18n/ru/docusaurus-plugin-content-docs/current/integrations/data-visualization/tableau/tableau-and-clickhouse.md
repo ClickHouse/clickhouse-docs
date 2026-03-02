@@ -29,6 +29,7 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Подключение Tableau к ClickHouse \{#connecting-tableau-to-clickhouse\}
 
 <ClickHouseSupportedBadge/>
@@ -71,6 +72,7 @@ ClickHouse предоставляет официальный коннектор 
 2. В левом меню в разделе **To a Server** нажмите **More**. Найдите **ClickHouse by ClickHouse** в списке доступных коннекторов:
 
 <Image size="md" img={tableau_connecttoserver} alt="Экран подключения Tableau с меню выбора коннектора, где выделен вариант ClickHouse by ClickHouse" border />
+
 <br/>
 
 :::note
@@ -81,12 +83,14 @@ ClickHouse предоставляет официальный коннектор 
 3. Нажмите **ClickHouse by ClickHouse** — откроется следующее диалоговое окно:
 
 <Image size="md" img={tableau_connector_details} alt="Диалог установки коннектора Tableau с информацией о коннекторе ClickHouse JDBC и кнопкой установки" border />
+
 <br/>
- 
+
 4. Нажмите **Install and Restart Tableau**. Перезапустите приложение.
 5. После перезапуска коннектор будет иметь полное имя: `ClickHouse JDBC by ClickHouse, Inc.`. При нажатии на него откроется следующее диалоговое окно:
 
 <Image size="md" img={tableau_connector_dialog} alt="Диалог подключения к ClickHouse в Tableau с полями для сервера, порта, базы данных, имени пользователя и пароля" border />
+
 <br/>
 
 6. Укажите параметры подключения:
@@ -102,6 +106,7 @@ ClickHouse предоставляет официальный коннектор 
 :::note
 При работе с ClickHouse Cloud для защищенных подключений необходимо включить флажок SSL.
 :::
+
 <br/>
 
 :::note
@@ -113,11 +118,13 @@ ClickHouse предоставляет официальный коннектор 
 7. Нажмите кнопку **Sign In**, после чего откроется новая рабочая книга Tableau:
 
 <Image size="md" img={tableau_newworkbook} alt="Новая рабочая книга Tableau, показывающая начальный экран подключения с параметрами выбора базы данных" border />
+
 <br/>
 
 8. Выберите **TPCD** в выпадающем списке **Schema**, после чего отобразится список таблиц в **TPCD**:
 
 <Image size="md" img={tableau_tpcdschema} alt="Выбор схемы в Tableau, показывающий таблицы базы данных TPCD, включая CUSTOMER, LINEITEM, NATION, ORDERS и другие" border />
+
 <br/>
 
 Теперь вы готовы создавать визуализации в Tableau!
@@ -195,9 +202,11 @@ ClickHouse предоставляет официальный коннектор 
 Для получения дополнительных рекомендаций по оптимизации интеграции Tableau с ClickHouse см. разделы [Советы по подключению](/integrations/tableau/connection-tips) и [Советы по анализу](/integrations/tableau/analysis-tips).
 
 ## Тесты \{#tests\}
+
 Коннектор тестируется с использованием [фреймворка TDVT](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) и в настоящее время имеет уровень покрытия тестами 97%.
 
 ## Краткое описание \{#summary\}
+
 Вы можете подключить Tableau к ClickHouse, используя универсальный драйвер ODBC/JDBC для ClickHouse. Однако этот
 коннектор упрощает процесс настройки подключения. Если у вас возникнут какие-либо проблемы с коннектором, сообщите о них
 на <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a>.

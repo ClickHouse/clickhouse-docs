@@ -22,7 +22,7 @@ The `Data` can be compressed.
 
 ## Hello {#hello}
 
-For example, we are `Go Client` v1.10 that supports `54451` protocol version and
+For example, we're `Go Client` v1.10 that supports `54451` protocol version and
 want to connect to `default` database with `default` user and `secret` password.
 
 | field            | type    | value         | description                |
@@ -40,7 +40,7 @@ want to connect to `default` database with `default` user and `secret` password.
 Protocol version is TCP protocol version of client.
 
 Usually it is equal to the latest compatible server revision, but
-should not be confused with it.
+shouldn't be confused with it.
 
 ### Defaults {#defaults}
 

@@ -27,35 +27,31 @@ doc_type: 'guide'
 
 ### 実装手順 \{#implementation-steps\}
 
-1. **二重インジェストを構成する**
+<VerticalStepper headerLevel="h4">
 
-<br/>
+#### 二重インジェストを構成する \{#configure-dual-ingestion\}
 
 データ収集パイプラインを設定し、Elastic と ClickStack の両方に同時にデータを送信できるようにします。 
 
 これをどのように実現するかは、現在使用している収集用エージェントによって異なります。詳しくは、「[Migrating Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents)」を参照してください。
 
-2. **保持期間を調整する**
-
-<br/>
+#### 保持期間を調整する \{#adjust-retention-period\}
 
 Elastic の TTL 設定を、希望する保持期間に合うように構成します。ClickStack 側でも同じ期間データを保持できるように、[TTL](/use-cases/observability/clickstack/production#configure-ttl) を設定します。
 
-3. **検証と比較**
-
-<br/>
+#### 検証と比較 \{#validate-and-compare\}
 
 - 両方のシステムに対してクエリを実行し、データの一貫性を確認する
 - クエリのパフォーマンスと結果を比較する
 - ダッシュボードとアラートを ClickStack に移行する（現在は手作業によるプロセスです）
 - すべての重要なダッシュボードとアラートが ClickStack 上で期待どおりに動作することを確認する
 
-4. **段階的な移行**
-
-<br/>
+#### 段階的な移行 \{#graudal-transition\}
 
 - データが Elastic から自然に期限切れを迎えるにつれて、徐々に ClickStack に依存するようになります
 - ClickStack に対する信頼が十分に確立されたら、クエリとダッシュボードのリダイレクトを開始できます
+
+</VerticalStepper>
 
 ### 長期保持 \{#long-term-retention\}
 
@@ -518,29 +514,29 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
 
   以下の点に注意してください：
 
-  * タプルは、ドット記法の代わりにネスト構造の表現に使用されています
+  * タプルは、ドット記法の代わりにネスト構造を表現するために使用されています
   * マッピングに基づき、適切な ClickHouse 型を採用しています:
     * `keyword` → `String`
     * `date` → `DateTime`
     * `boolean` → `UInt8`
     * `long` → `Int64`
     * `ip` → `Array(Variant(IPv4, IPv6))`。このフィールドには [`IPv4`](/sql-reference/data-types/ipv4) と [`IPv6`](/sql-reference/data-types/ipv6) が混在しているため、[`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) を使用します。
-    * `object` → 構造を事前に固定できない syslog オブジェクトには `JSON` を使用します。
+    * `object` → 構造が予測できない syslog オブジェクトには `JSON` を使用します。
   * `host.ip` と `host.mac` の列は明示的に `Array` 型として定義されています。一方、Elasticsearch ではすべての型が配列型として扱われます。
-  * 時間ベースのクエリを効率的に実行できるよう、タイムスタンプとホスト名をキーとする `ORDER BY` 句を追加しています
-  * ログデータに最適な `MergeTree` をテーブルエンジンとして使用します
+  * 時間ベースのクエリを効率的に実行できるよう、タイムスタンプとホスト名に基づく `ORDER BY` 句を追加しています
+  * ログデータに最適な `MergeTree` をテーブルエンジンとして使用しています
 
   **スキーマを静的に定義し、必要な箇所でJSON型を選択的に使用するこのアプローチが[推奨されます](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)。**
 
   この厳密なスキーマには、次のような利点があります：
 
-  * **データ検証** – 厳密なスキーマを採用することで、一部の特殊な構造を除き、列の爆発的増加のリスクを回避できます。
-  * **列の爆発的増加のリスクを回避**: JSON 型ではサブカラムが専用のカラムとして保存されるため、潜在的には数千のカラムまでスケールできますが、その結果として過剰な数のカラムファイルが生成され、パフォーマンスに悪影響を及ぼす「カラムファイルの爆発」を引き起こす可能性があります。この問題を抑制するために、JSON が利用している基盤となる [Dynamic type](/sql-reference/data-types/dynamic) では、[`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータを提供しており、別個のカラムファイルとして保存される一意のパス数を制限できます。このしきい値に達すると、それ以降のパスは共有のカラムファイルにコンパクトなエンコード形式で保存され、柔軟なデータのインジェストをサポートしつつ、パフォーマンスとストレージ効率を維持します。ただし、この共有カラムファイルへのアクセスは、専用カラムほど高パフォーマンスではありません。なお、JSON カラムは [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths) と併用することもできます。&quot;Hinted&quot; カラムは専用カラムと同等のパフォーマンスを提供します。
-  * **パスと型のより容易な把握**：JSON 型にも、推論された型やパスを確認するための[イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions)がありますが、`DESCRIBE` などを利用できる静的な構造のほうが、より簡単に把握できる場合があります。
+  * **データ検証** – 厳密なスキーマを強制することで、特定の構造が必要な箇所を除き、カラムの爆発的な増加リスクを回避できます。
+  * **列の爆発的増加のリスクを回避**: JSON 型ではサブカラムが専用のカラムとして保存されるため、潜在的には数千のカラムまでスケールできますが、その結果として過剰な数のカラムファイルが生成され、パフォーマンスに悪影響を及ぼす「カラムファイルの爆発」を引き起こす可能性があります。この問題を軽減するために、JSON が利用している基盤となる [Dynamic type](/sql-reference/data-types/dynamic) では、[`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータを提供しており、別個のカラムファイルとして保存される一意のパス数を制限できます。このしきい値に達すると、それ以降のパスは共有のカラムファイルにコンパクトなエンコード形式で保存され、柔軟なデータのインジェストをサポートしつつ、パフォーマンスとストレージ効率を維持します。ただし、この共有カラムファイルへのアクセスは、専用カラムほど高パフォーマンスではありません。なお、JSON カラムは [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths) と併用することもできます。&quot;Hinted&quot; カラムは専用カラムと同等のパフォーマンスを提供します。
+  * **パスと型のより簡単な確認**：JSON 型にも、推論された型やパスを確認するための[イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions)が用意されていますが、`DESCRIBE` などを利用できる静的な構造のほうが、よりシンプルに調査できる場合があります。
 
   <br />
 
-  あるいは、1つの`JSON`カラムを持つテーブルを作成することもできます。
+  あるいは、`JSON`カラムを1つだけ持つテーブルを作成するだけでもかまいません。
 
   ```sql
   SET enable_json_type = 1;
@@ -554,7 +550,7 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
   ```
 
   :::note
-  JSON定義内の`host.name`カラムと`timestamp`カラムに型ヒントを指定しています。これらのカラムを順序付けキー/プライマリキーで使用するためです。これによりClickHouseは当該カラムがnullにならないことを認識し、使用すべきサブカラムを判別できます(各型に対して複数のサブカラムが存在する可能性があるため、型ヒントがない場合は曖昧になります)。
+  JSON定義内の`host.name`カラムと`timestamp`カラムには、順序付けキー/プライマリキーで使用するための型ヒントを指定しています。これによりClickHouseは、これらのカラムがNULLにならないことを認識し、使用すべきサブカラムを判別できます（同じ型に対して複数のサブカラムが存在しうるため、型ヒントがない場合は曖昧になります）。
   :::
 
   この後者のアプローチは、よりシンプルではありますが、プロトタイピングやデータエンジニアリング作業に最適です。本番環境では、動的なサブ構造が必要な場合にのみ`JSON`を使用してください。
@@ -569,21 +565,21 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
   npm install elasticdump -g
   ```
 
-  `elasticdump`はデータ移行において次の利点があります：
+  `elasticdump`にはデータ移行に関して、次のような利点があります：
 
-  * Elasticsearch REST API と直接連携し、データが正しくエクスポートされるようにします。
-  * エクスポート処理中は Point-in-Time（PIT）API を使用してデータの一貫性を確保します。これにより、特定時点のデータを一貫した状態でスナップショットとして取得できます。
+  * Elasticsearch の REST API と直接対話し、データが正しくエクスポートされることを保証します。
+  * エクスポート処理中、Point-in-Time（PIT）API を利用してデータの一貫性を維持します。これにより、特定時点のデータを一貫した状態のスナップショットとして取得できます。
   * データを JSON 形式で直接エクスポートでき、ClickHouse クライアントにストリーミングしてそのまま挿入できます。
 
   可能な限り、ClickHouse、Elasticsearch、および `elastic dump` を同一のアベイラビリティゾーンまたはデータセンター内で実行することを推奨します。これにより、ネットワーク送信を最小化し、スループットを最大化できます。
 
   ### ClickHouseクライアントのインストール
 
-  `elasticdump`が配置されている[サーバーにClickHouseがインストールされている](/install)ことを確認してください。**ClickHouseサーバーは起動しないでください** - これらの手順ではクライアントのみが必要です。
+  `elasticdump`が配置されている[サーバーに ClickHouse がインストールされている](/install)ことを確認してください。**ClickHouse サーバーは起動しないでください** — これらの手順ではクライアントのみが必要です。
 
   ### データのストリーミング
 
-  ElasticsearchとClickHouse間でデータをストリーミングするには、`elasticdump`コマンドを使用し、出力を直接ClickHouseクライアントにパイプします。以下のコマンドは、適切に構造化されたテーブル`logs_system_syslog`にデータを挿入します。
+  ElasticsearchとClickHouse間でデータをストリーミングするには、`elasticdump`コマンドを使用し、出力を直接ClickHouse クライアントにパイプします。以下のコマンドは、適切に構造化されたテーブル`logs_system_syslog`にデータを挿入します。
 
   ```shell
   # export url and credentials
@@ -604,27 +600,27 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
   `elasticdump`では以下のフラグを使用します：
 
   * `type=data` - レスポンスを Elasticsearch ドキュメントの内容のみに限定します。
-  * `input-index` - Elasticsearch の入力インデックス。
+  * `input-index` - Elasticsearch の入力用インデックス。
   * `output=$` - すべての結果を標準出力 (stdout) にリダイレクトします。
-  * `sourceOnly` フラグにより、レスポンスからメタデータフィールドが除外されます。
-  * `searchAfter` フラグは、結果を効率的にページングするために [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) を利用するためのフラグです。
+  * `sourceOnly` フラグは、レスポンスからメタデータフィールドを除外するためのフラグです。
+  * `searchAfter` フラグにより、結果を効率的にページングするための [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) を利用します。
   * `pit=true` を指定して、[point in time API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time) を使用するクエリ間で結果の一貫性を確保します。
 
   <br />
 
   ここでのClickHouseクライアントパラメータ（認証情報を除く）:
 
-  * `max_insert_block_size=1000` - ClickHouse クライアントは、この行数に達するごとにデータを送信します。この値を大きくするとスループットは向上しますが、1ブロックを組み立てるまでの時間が長くなり、その結果 ClickHouse にデータが出現するまでの時間も長くなります。
-  * `min_insert_block_size_bytes=0` - サーバー側でのバイト数に基づくブロック結合処理を無効化します。
+  * `max_insert_block_size=1000` - ClickHouse クライアントは、この行数に達するとデータを送信します。この値を大きくするとスループットは向上しますが、1ブロックを構成するまでの時間が長くなり、その結果 ClickHouse にデータが現れるまでの時間も長くなります。
+  * `min_insert_block_size_bytes=0` - バイト数を基準としたサーバー側でのブロック結合処理を無効にします。
   * `min_insert_block_size_rows=1000` - クライアントから送信されたブロックをサーバー側でまとめて結合します。この例では、行が即座に反映されるように `max_insert_block_size` と同じ値に設定しています。スループットを向上させたい場合は、この値を大きくしてください。
   * `query="INSERT INTO logs_system_syslog FORMAT JSONAsRow"` - データを [JSONEachRow 形式](/integrations/data-formats/json/other-formats) として挿入します。これは `logs_system_syslog` のような、厳密に定義されたスキーマに対して書き込む場合に適しています。
 
   <br />
 
-  **毎秒数千行のオーダーのスループットを期待できます。**
+  **毎秒数千行程度のスループットが見込めます。**
 
   :::note 単一のJSON行への挿入
-  単一のJSONカラムに挿入する場合（上記の`syslog_json`スキーマを参照）、同じinsertコマンドを使用できます。ただし、フォーマットとして`JSONEachRow`ではなく`JSONAsObject`を指定する必要があります。例：
+  単一のJSONカラムに挿入する場合（上記の`syslog_json`スキーマを参照）、同じ INSERT コマンドを使用できます。ただし、フォーマットとして `JSONEachRow` ではなく `JSONAsObject` を指定する必要があります。例：
 
   ```shell
   elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
@@ -641,7 +637,7 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
 
   これは[`input`](/sql-reference/table-functions/input)テーブル関数を使用することで実現できます。この関数により、標準出力に対して任意の`SELECT`クエリを実行できます。
 
-  先ほどのデータから`timestamp`と`hostname`フィールドのみを保存する場合を想定します。ClickHouseスキーマは次のようになります：
+  先ほどのデータから`timestamp`と`hostname`フィールドだけを保存したいとします。ClickHouse のスキーマは次のとおりです：
 
   ```sql
   CREATE TABLE logs_system_syslog_v2

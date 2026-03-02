@@ -46,7 +46,7 @@ docker run -p 8080:8080 clickhouse/clickstack-local:latest
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-**You will not be prompted to create a user, as authentication is not enabled in this deployment mode.**
+**You won't be prompted to create a user, as authentication isn't enabled in this deployment mode.**
 
 Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
 
