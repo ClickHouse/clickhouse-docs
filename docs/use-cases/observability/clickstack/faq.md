@@ -83,7 +83,9 @@ The **View Events** drill-down works best with log and trace data. Because metri
 <details>
 <summary><strong>Is there a UI for browsing and searching metrics?</strong></summary>
 
-Metric names are discoverable via the metric name dropdown in the [chart builder](/use-cases/observability/clickstack/dashboards#navigate-chart-explorer). ClickStack also displays the attributes present for a selected metric to assist with discovery.
+![Metric Attribute Explorer](/images/clickstack/faq/metrics-explorer.png)
+
+Metric names are discoverable via the metric name dropdown in the [chart builder](/use-cases/observability/clickstack/dashboards#navigate-chart-explorer). When a metric is selected, the Metric Attribute Explorer panel displays the metric's description, units, and available attributes along with their values. This allows you to browse attributes and add them as filters or group-by fields directly from the panel.
 
 There is not currently a dedicated metrics search page similar to the log search experience. Improving metric discovery is an active area of development.
 
