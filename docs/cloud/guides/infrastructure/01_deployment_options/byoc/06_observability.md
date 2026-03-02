@@ -73,7 +73,7 @@ You can utilize the BYOC Prometheus stack in your monitoring ecosystem in severa
 - Use PromQL queries to extract, aggregate, and visualize the metrics you need.
 - Ideal for building bespoke dashboards or alerting pipelines.
 
-Prometheus query endpoint:
+Prometheus query endpoint `/query`:
 ```text
 https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com/query
 ```
