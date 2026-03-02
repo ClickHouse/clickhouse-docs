@@ -1,6 +1,6 @@
 ---
-title: 'Getting Started'
-sidebar_label: 'Getting Started'
+title: 'Getting started with lakehouse table formats'
+sidebar_label: 'Getting started'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
 pagination_prev: use-cases/data_lake/index
@@ -21,12 +21,12 @@ ClickHouse can act as a query engine over lakehouse formats stored in object sto
 
 ## Accelerating analytics {#accelerating-analytics}
 
-For workloads that demand low-latency responses and high concurrency, loading data from lakehouse formats into ClickHouse's MergeTree engine provides dramatically better performance. Sparse primary index, skip indices, and columnar storage allow queries that take seconds over Parquet files to complete in milliseconds.
+For workloads that demand low-latency responses and high concurrency, loading data from lakehouse formats into ClickHouse's MergeTree engine provides dramatically better performance. It's use of a sparse primary index, skip indices, and columnar storage allow queries that take seconds over Parquet files to complete in milliseconds.
 
-- [Accelerating analytics with MergeTree](/use-cases/data-lake/getting-started/accelerating-analytics) — Load data from a catalog into a MergeTree table and achieve ~40x query speedups.
+- [Accelerating analytics with MergeTree](/use-cases/data-lake/getting-started/accelerating-analytics) - Load data from a catalog into a MergeTree table and achieve ~40x query speedups.
 
 ## Writing data back {#writing-data-back}
 
 Data can also flow from ClickHouse back into lakehouse formats. Whether offloading aged data to long-term storage or publishing the results of transformations for downstream consumption, ClickHouse can write to Iceberg tables in object storage.
 
-- [Writing data to lakehouse formats](/use-cases/data-lake/getting-started/writing-data) — Write raw data and aggregated results from ClickHouse into Iceberg tables using `INSERT INTO SELECT`.
+- [Writing data to lakehouse formats](/use-cases/data-lake/getting-started/writing-data) - Write raw data and aggregated results from ClickHouse into Iceberg tables using `INSERT INTO SELECT`.
