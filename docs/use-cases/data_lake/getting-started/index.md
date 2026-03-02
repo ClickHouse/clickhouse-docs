@@ -17,7 +17,7 @@ This guide provides a hands-on walkthrough of the core capabilities ClickHouse o
 ClickHouse can act as a query engine over open table formats stored in object storage. Without duplicating data, users can point ClickHouse at existing Iceberg, Delta Lake, Hudi, or Paimon tables and begin querying immediately, whether to power a production workload or to explore data interactively. This can be done through direct reads using table functions and table engines, or by connecting to a data catalog.
 
 - [Querying open table formats directly](/use-cases/data-lake/getting-started/querying-directly) — Use ClickHouse table functions to read Iceberg, Delta Lake, Hudi, and Paimon tables in object storage without any prior setup.
-- [Connecting to a data catalog](/use-cases/data-lake/getting-started/connecting-catalogs) — Expose a catalog as a ClickHouse database and query its tables using standard SQL.
+- [Connecting to a data catalog](/use-cases/data-lake/getting-started/connecting-catalogs) — Expose a catalog as a ClickHouse database and query its tables using standard SQL. Recommended for when you have to access multiple tables in the catalog. 
 
 ## Accelerating analytics {#accelerating-analytics}
 
