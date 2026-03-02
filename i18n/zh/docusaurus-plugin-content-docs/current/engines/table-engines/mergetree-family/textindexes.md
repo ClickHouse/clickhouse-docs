@@ -76,7 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置三个设置项才能使用文本索引：
+如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置以下三个设置项，才能使用文本索引：
 
 ```sql
 SET enable_full_text_index = true;
@@ -87,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 或者，你也可以将 [compatibility](../../../operations/settings/settings#compatibility) 设置提高到 `26.2` 或更高版本，但这会影响许多设置，并且通常需要事先进行测试。
 :::
 
-可以在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引，语法如下：
+要创建文本索引，请使用以下语法：
 
 ```sql
 CREATE TABLE table
@@ -113,6 +113,14 @@ CREATE TABLE table
 ENGINE = MergeTree
 ORDER BY key
 ```
+
+文本索引可以在下列类型的列上定义：
+
+* [String](/sql-reference/data-types/string.md) 和 [FixedString](/sql-reference/data-types/fixedstring.md)，
+* [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md)，以及
+* [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数）。
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 和 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 类型的列也受支持，包括 `Array(Nullable(String or FixedString))`。
 
 或者，要为现有表添加一个文本索引：
 
@@ -207,6 +215,7 @@ Preprocessor 参数的典型用例包括：
 3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)。
 
 预处理器表达式必须将类型为 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 的输入值转换为相同类型的值。
+如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值（即不会抛出异常）。
 
 示例：
 
@@ -254,7 +263,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-预处理器也可以与 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列配合使用。
 在这种情况下，预处理器表达式会逐个转换数组元素。
 
 示例：
@@ -274,7 +282,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-要在基于 [Map](/sql-reference/data-types/map.md) 类型列的文本索引中定义预处理器，用户需要先决定该索引是建立在 Map 的键上还是值上。
+要在针对 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要先决定该索引是基于 Map 的键还是值构建的。
 
 示例：
 

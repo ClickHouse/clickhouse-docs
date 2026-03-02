@@ -7988,7 +7988,11 @@ true の場合、スカラーサブクエリは initiator で実行され、`UPD
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-MySQL 型が対応する ClickHouse 型にどのように変換されるかを定義します。`decimal`、`datetime64`、`date2Date32`、`date2String` を任意に組み合わせて指定するカンマ区切りのリストです。
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "最新の MySQL 型マッピングをデフォルトで有効にします。"}]}]}/>
+
+MySQL 型が対応する ClickHouse 型にどのように変換されるかを定義します。`decimal`、`datetime64`、`date2Date32`、`date2String` を任意に組み合わせて指定するカンマ区切りのリストです。すべての最新のマッピング（`decimal`、`datetime64`、`date2Date32`）はデフォルトで有効です。
 
 - `decimal`: 精度が許す場合、`NUMERIC` および `DECIMAL` 型を `Decimal` に変換します。
 - `datetime64`: 精度が `0` でない場合、`DATETIME` および `TIMESTAMP` 型を `DateTime` ではなく `DateTime64` に変換します。
@@ -8651,7 +8655,9 @@ Possible values:
 
 ## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "この最適化は本番運用に適しています"}]}]} />
 
 同一の引数を持つ集約関数を一つにまとめる（fuse）最適化を有効にします。クエリ内に、同一の引数を取る [sum](/sql-reference/aggregate-functions/reference/sum)、[count](/sql-reference/aggregate-functions/reference/count)、または [avg](/sql-reference/aggregate-functions/reference/avg) が少なくとも 2 つ含まれている場合に、それらを書き換えて [sumCount](/sql-reference/aggregate-functions/reference/sumcount) を使用します。
 
