@@ -316,7 +316,7 @@ Peak memory usage: 666.82 MiB.
 
 ### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 
-The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
 
 ### Refreshing dictionaries {#refreshing-dictionaries}
 
