@@ -56,7 +56,7 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 ### Connect to the catalog {#connect-catalog}
 
-With the credentials, you can connect to the relevant endpoint to query the files in either Iceberg or Delta.
+With the credentials, you can connect to the relevant endpoint to query the Iceberg or Delta tables.
 
 <Tabs groupId="connection-formats">
 <TabItem value="delta" label="Delta" default>
