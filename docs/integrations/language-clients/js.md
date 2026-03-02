@@ -1161,14 +1161,14 @@ If you're happy with the performance and don't experience any issues, it is reco
 You can find the correct Keep-Alive timeout value in the server response headers by running the following command:
 
 ```sh
-curl -v --data-binary "SELECT 1" <clickhouse_url>
+curl -is --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
 
 ```text
-< Connection: Keep-Alive
-< Keep-Alive: timeout=10
+Connection: Keep-Alive
+Keep-Alive: timeout=10
 ```
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
