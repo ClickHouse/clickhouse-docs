@@ -19,7 +19,7 @@ for a new use case or performance optimization.
 
 ### Why is it important?
 
-Schema management tools are fundamental to a DevOps stack because teams need to automate and version control those changes alongside the deployment of their application. It's common for schema changes
+Schema management tools are fundamental to a DevOps stack because often teams need to automate those changes alongside the deployment of their application. It's common for schema changes
 to be a prerequisite to deploying a new application version. These tools are also referred to as "schema migration" or "database migration" tools because users are "migrating" from one version of the
 database to another.
 
@@ -32,20 +32,19 @@ review steps is especially critical.
 
 Schema management tools generally fall into two categories.
 
-**Imperative / migration-based tools** These tools use versioned SQL files that describe *how* to get from state A to state B. You write explicit `CREATE TABLE`, `ALTER TABLE`, or `DROP COLUMN`
-statements. Then the tool runs them in order and tracks which have been applied. In this category, the user dictates the exact SQL to run.
-Examples: golang-migrate, Goose, Flyway 
+#### Imperative
+These tools use versioned SQL files that describe *how* to get from state A to state B. You write explicit DDL statements like `CREATE TABLE`, `ALTER TABLE`, or `DROP COLUMN` into files. Then the tool runs the files in order and tracks which have been applied. In this category, the user dictates the exact SQL to run.
+**Examples**: *golang-migrate, Goose, Flyway*
 
-**Declarative / state-based tools** These tools start with the user defining a "desired state" schema definition. The tool automatically detects the difference between the current database and the
-desired state, then generates and applies the necessary migration. This approach reduces manual migration writing and schema drift. In this category, the tool dictates the exact SQL to run.
-Example: Atlas 
+#### Declarative
+These tools start with the user defining a "desired state" schema definition. The tool detects the difference between the current database and the desired state, then generates and applies the necessary migration. This approach reduces manual migration writing and schema drift. In this category, the tool dictates the exact SQL to run.
+**Example**: *Atlas, Liquibase* 
 
-There is a third category of tools that focus less on the database schema change and more on transforming the data itself rather than the schema structure.
-For this document, we will focus on database schema changes. 
-Example: dbt 
+There is a third category of tools that focus less on the database schema change and more on transforming the data itself rather than the schema structure.  
+**Example**: *dbt* 
+For this document, we will focus solely on tools for database schema changes.
 
-Overall, we recommend that you choose a tool that aligns with how you and your team want to operate. Imperative tools give full visibility into exactly what DDL will run. But it requires dedicated
-focus for diff-ing and managing schema drift. Declarative tools are valuable for automating a lot of the boilerplate maintenance, but you should always review the generated plan before applying it to
+Overall, we recommend that you choose a tool that aligns with how you and your team want to operate. Imperative tools give full visibility into exactly what DDL will run. But it requires dedicated user focus for diff-ing and managing schema drift. Declarative tools are valuable for automating a lot of the boilerplate maintenance and preventing schema drift, but you should always review the generated plan before applying it to
 ClickHouse to ensure no surprise mutation or expensive rewrite hidden behind an auto-generated plan.
 
 ---
@@ -58,7 +57,7 @@ Users tend to choose tools based on ecosystem familiarity. If your team is a Go 
 Liquibase in place. If your infrastructure team uses Terraform and infrastructure-as-code patterns, Atlas's declarative model may be a comfortable fit. There's real value in picking something your
 team already knows — the best tool is one that actually gets adopted and used consistently.
 
-### What is your desired process and workflow?
+### What is your desired process?
 
 Think about how schema changes flow through your organization. Take into account if you need a
 
