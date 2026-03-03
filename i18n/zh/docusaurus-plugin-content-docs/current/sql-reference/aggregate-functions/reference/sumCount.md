@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## sumCount \{#sumCount\}
 
-引入于：v21.6 版本
+引入于：v21.6.0 版本
 
 同时计算数值的总和以及行数。该函数由 ClickHouse 查询优化器使用：如果在一个查询中存在多个 `sum`、`count` 或 `avg` 函数，它们可以被替换为一个 `sumCount` 函数以复用计算结果。通常不需要显式使用该函数。
 
 **另请参阅**
 
-* [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) 设置项。
+* [`optimize_syntax_fuse_functions`](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) 设置项。
 
 **语法**
 

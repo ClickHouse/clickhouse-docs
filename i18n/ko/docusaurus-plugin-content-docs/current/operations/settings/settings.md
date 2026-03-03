@@ -11770,15 +11770,6 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 데이터에 대한 스키마 추론 대신 삽입 테이블의 구조를 사용합니다. 가능한 값: 0 - 비활성화, 1 - 활성화, 2 - 자동
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-역직렬화된 텍스트 인덱스 딕셔너리 블록 캐시 사용 여부를 지정합니다.
-텍스트 인덱스 딕셔너리 블록 캐시를 사용하면 대량의 텍스트 인덱스 쿼리를 처리할 때 지연 시간을 크게 줄이고 처리량을 높일 수 있습니다.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

@@ -11804,15 +11804,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать структуру таблицы, в которую выполняется вставка, вместо определения схемы по данным. Возможные значения: 0 - отключено, 1 - включено, 2 - авто
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Определяет, использовать ли кэш десериализованного блока словаря текстового индекса.
-Использование кэша блока словаря текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

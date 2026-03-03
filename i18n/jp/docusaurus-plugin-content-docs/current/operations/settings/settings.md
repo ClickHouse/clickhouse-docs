@@ -541,7 +541,7 @@ SQL の代替言語である PRQL を有効にします。
 
 <ExperimentalBadge/>
 
-**エイリアス**: `allow_experimental_statistic`
+**別名**: `allow_experimental_statistic`
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11773,15 +11773,6 @@ TopK フィルタリングにデータスキッピングインデックスを使
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "22.11"},{"label": "2"},{"label": "Improve using structure from insertion table in table functions"}]}]}/>
 
 データからスキーマを推論するのではなく、挿入元テーブルの構造を使用します。指定可能な値: 0 - 無効、1 - 有効、2 - 自動
-
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-デシリアライズされたテキストインデックスDictionaryブロックのキャッシュを使用するかどうかを制御します。
-テキストインデックスDictionaryブロックキャッシュを使用すると、大量のテキストインデックスクエリを扱う場合のレイテンシを大幅に削減し、スループットを向上できます。
 
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 

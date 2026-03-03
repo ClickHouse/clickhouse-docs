@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 ## sumKahan \{#sumKahan\}
 
-引入于：v1.1
+引入于：v1.1.0
 
-使用 [Kahan 补偿求和算法](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)计算数值的总和。
+使用 [Kahan 补偿求和算法](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) 计算数值的总和。
 比 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数更慢。
 补偿仅适用于 [Float](/sql-reference/data-types/float) 类型。
 

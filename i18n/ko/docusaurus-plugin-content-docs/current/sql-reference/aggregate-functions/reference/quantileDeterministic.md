@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDeterministic \{#quantileDeterministic\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 수치형 데이터 시퀀스의 근사 [분위수](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 

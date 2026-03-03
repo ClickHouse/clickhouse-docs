@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-Добавлено в версии v25.4
+Добавлено в версии v25.4.0
 
 Оценивает коэффициент сжатия заданного столбца без фактического сжатия.
 
@@ -62,7 +62,7 @@ SELECT estimateCompressionRatio(number) AS estimate FROM compression_estimate_ex
 └────────────────────┘
 ```
 
-**Использование определённого кодека**
+**Использование конкретного кодека**
 
 ```sql title=Query
 SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_estimate_example
@@ -74,7 +74,7 @@ SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_esti
 └───────────────────┘
 ```
 
-**Использование нескольких кодировщиков**
+**Использование нескольких кодеков**
 
 ```sql title=Query
 SELECT estimateCompressionRatio('T64, ZSTD')(number) AS estimate FROM compression_estimate_example

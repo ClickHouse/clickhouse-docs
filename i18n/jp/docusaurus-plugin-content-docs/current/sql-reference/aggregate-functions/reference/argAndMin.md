@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argAndMin \{#argAndMin\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 最小の `val` 値に対応する `arg` と `val` の値を計算します。
 最小となる `val` が同じ行が複数存在する場合、どの行に対応する `arg` および `val` が返されるかは決定されていません。
@@ -53,7 +53,7 @@ SELECT argAndMin(user, salary) FROM salary;
 └─────────────────────────┘
 ```
 
-**NULL の扱いを含む発展例**
+**NULL ハンドリングを含む拡張例**
 
 ```sql title=Query
 CREATE TABLE test
@@ -74,7 +74,7 @@ SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
 └──────────────┴─────────────────┴────────┘
 ```
 
-**引数としての Tuple の使用**
+**引数における Tuple の使用**
 
 ```sql title=Query
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;

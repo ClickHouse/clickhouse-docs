@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigest \{#quantileTDigest\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データシーケンスに対して、[分位数](https://en.wikipedia.org/wiki/Quantile)を [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを用いて近似的に計算します。
 

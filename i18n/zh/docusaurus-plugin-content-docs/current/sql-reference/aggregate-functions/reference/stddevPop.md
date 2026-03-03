@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevPop \{#stddevPop\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回数值数据序列的总体标准差。
 结果等于 [`varPop`](/sql-reference/aggregate-functions/reference/varPop) 的平方根。

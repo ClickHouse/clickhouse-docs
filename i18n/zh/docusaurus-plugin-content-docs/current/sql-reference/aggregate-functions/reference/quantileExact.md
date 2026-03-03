@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

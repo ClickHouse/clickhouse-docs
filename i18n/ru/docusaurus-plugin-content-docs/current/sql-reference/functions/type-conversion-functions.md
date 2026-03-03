@@ -122,7 +122,7 @@ LIMIT 10
 
 ## CAST \{#CAST\}
 
-Впервые представлена в версии: v1.1
+Впервые представлена в версии: v1.1.0
 
 Преобразует значение в указанный тип данных.
 В отличие от функции reinterpret, CAST пытается получить то же значение в целевом типе.
@@ -186,7 +186,7 @@ SELECT '123'::UInt32
 
 ## DATE \{#DATE\}
 
-Добавлено в: v21.2
+Добавлено в: v21.2.0
 
 Преобразует аргумент в тип данных Date. Это псевдоним функции `toDate` для совместимости с MySQL. Работает так же, как `toDate`.
 
@@ -219,7 +219,7 @@ SELECT DATE('2023-01-01')
 
 ## accurateCast \{#accurateCast\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Преобразует значение в указанный тип данных. В отличие от [`CAST`](#CAST), `accurateCast` выполняет более строгую проверку типов и генерирует исключение, если преобразование приведёт к потере точности данных или если преобразование невозможно.
 
@@ -269,7 +269,7 @@ SELECT accurateCast('123.45', 'Float64')
 
 ## accurateCastOrDefault \{#accurateCastOrDefault\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Преобразует значение в указанный тип данных.
 Аналогично [`accurateCast`](#accurateCast), но возвращает значение по умолчанию вместо выбрасывания исключения, если преобразование не может быть выполнено точно.
@@ -334,7 +334,7 @@ SELECT accurateCastOrDefault('abc', 'UInt32')
 
 ## accurateCastOrNull \{#accurateCastOrNull\}
 
-Впервые представлена в: v1.1
+Впервые представлена в: v1.1.0
 
 Преобразует значение в указанный тип данных.
 Аналог [`accurateCast`](#accurateCast), но возвращает `NULL` вместо генерации исключения, если преобразование не может быть выполнено точно.
@@ -385,7 +385,7 @@ SELECT accurateCastOrNull('abc', 'UInt32')
 
 ## formatRow \{#formatRow\}
 
-Введена в версии: v20.7
+Введена в версии: v20.7.0
 
 Преобразует произвольные выражения в строку в соответствии с заданным форматом.
 
@@ -454,7 +454,7 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 
 ## formatRowNoNewline \{#formatRowNoNewline\}
 
-Добавлена в: v20.7
+Добавлена в: v20.7.0
 
 То же, что и [`formatRow`](#formatRow), но удаляет символ перевода строки в конце каждой строки.
 
@@ -495,7 +495,7 @@ FROM numbers(3)
 
 ## fromUnixTimestamp64Micro \{#fromUnixTimestamp64Micro\}
 
-Появилась в версии: v20.5
+Появилась в версии: v20.5.0
 
 Преобразует Unix-метку времени в микросекундах в значение типа `DateTime64` с точностью до микросекунд.
 
@@ -533,7 +533,7 @@ SELECT fromUnixTimestamp64Micro(1640995200123456)
 
 ## fromUnixTimestamp64Milli \{#fromUnixTimestamp64Milli\}
 
-Впервые появилась в: v20.5
+Впервые появилась в: v20.5.0
 
 Преобразует Unix-метку времени в миллисекундах в значение `DateTime64` с миллисекундной точностью.
 
@@ -571,7 +571,7 @@ SELECT fromUnixTimestamp64Milli(1640995200123)
 
 ## fromUnixTimestamp64Nano \{#fromUnixTimestamp64Nano\}
 
-Добавлена в версии: v20.5
+Добавлена в версии: v20.5.0
 
 Преобразует Unix‑временную метку в наносекундах в значение [`DateTime64`](/sql-reference/data-types/datetime64) с точностью до наносекунды.
 
@@ -613,7 +613,7 @@ SELECT fromUnixTimestamp64Nano(1640995200123456789)
 
 ## fromUnixTimestamp64Second \{#fromUnixTimestamp64Second\}
 
-Добавлена в версии: v24.12
+Добавлена в версии: v24.12.0
 
 Преобразует Unix‑метку времени в секундах в значение `DateTime64` с точностью до секунды.
 
@@ -651,7 +651,7 @@ SELECT fromUnixTimestamp64Second(1640995200)
 
 ## parseDateTime \{#parseDateTime\}
 
-Появилась в версии: v23.3
+Появилась в версии: v23.3.0
 
 Разбирает строку с датой и временем в соответствии со строкой формата даты MySQL.
 
@@ -693,7 +693,7 @@ SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTime32BestEffort \{#parseDateTime32BestEffort\}
 
-Появилась в версии: v20.9
+Появилась в версии: v20.9.0
 
 Преобразует строковое представление даты и времени в тип данных [`DateTime`](/sql-reference/data-types/datetime).
 
@@ -758,7 +758,7 @@ AS parseDateTime32BestEffort
 
 ## parseDateTime32BestEffortOrNull \{#parseDateTime32BestEffortOrNull\}
 
-Добавлена в: v20.9
+Добавлена в: v20.9.0
 
 Аналогична [`parseDateTime32BestEffort`](#parseDateTime32BestEffort), за исключением того, что возвращает `NULL`, если встречает формат даты, который не удаётся обработать.
 
@@ -796,7 +796,7 @@ SELECT
 
 ## parseDateTime32BestEffortOrZero \{#parseDateTime32BestEffortOrZero\}
 
-Добавлена в версии: v20.9
+Добавлена в версии: v20.9.0
 
 Аналог функции [`parseDateTime32BestEffort`](#parseDateTime32BestEffort), за исключением того, что при встрече нераспознаваемого формата даты возвращает нулевую дату или нулевое значение даты-времени.
 
@@ -834,7 +834,7 @@ SELECT
 
 ## parseDateTime64 \{#parseDateTime64\}
 
-Введена в версии v24.11
+Введена в версии v24.11.0
 
 Разбирает строку даты и времени с подсекундной точностью в соответствии с форматом даты MySQL.
 
@@ -874,7 +874,7 @@ SELECT parseDateTime64('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64BestEffort \{#parseDateTime64BestEffort\}
 
-Добавлено в: v20.1
+Добавлено в: v20.1.0
 
 Аналог функции [`parseDateTimeBestEffort`](#parseDateTimeBestEffort), но дополнительно разбирает миллисекунды и микросекунды и возвращает тип данных [`DateTime64`](../../sql-reference/data-types/datetime64.md).
 
@@ -921,7 +921,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## parseDateTime64BestEffortOrNull \{#parseDateTime64BestEffortOrNull\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 То же, что и [`parseDateTime64BestEffort`](#parseDateTime64BestEffort), но возвращает `NULL`, если встречает формат даты, который не удаётся обработать.
 
@@ -959,7 +959,7 @@ SELECT parseDateTime64BestEffortOrNull('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortOrZero \{#parseDateTime64BestEffortOrZero\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Аналог функции [`parseDateTime64BestEffort`](#parseDateTime64BestEffort), за исключением того, что при обнаружении формата даты, который не может быть обработан, возвращает нулевую дату или нулевое значение даты-времени.
 
@@ -997,7 +997,7 @@ SELECT parseDateTime64BestEffortOrZero('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortUS \{#parseDateTime64BestEffortUS\}
 
-Добавлена в версии: v22.8
+Добавлена в версии: v22.8.0
 
 Аналогична [`parseDateTime64BestEffort`](#parseDateTime64BestEffort), за исключением того, что при неоднозначности эта функция предпочитает американский формат даты (`MM/DD/YYYY` и т. д.).
 
@@ -1035,7 +1035,7 @@ SELECT parseDateTime64BestEffortUS('02/10/2025 12:30:45.123') AS us_format,
 
 ## parseDateTime64BestEffortUSOrNull \{#parseDateTime64BestEffortUSOrNull\}
 
-Введена в версии: v22.8
+Введена в версии: v22.8.0
 
 Аналогична функции [`parseDateTime64BestEffort`](#parseDateTime64BestEffort), за исключением того, что при неоднозначности эта функция отдаёт предпочтение американскому формату дат (`MM/DD/YYYY` и т. д.) и возвращает `NULL`, если встречает формат даты, который не может быть обработан.
 
@@ -1073,7 +1073,7 @@ SELECT parseDateTime64BestEffortUSOrNull('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64BestEffortUSOrZero \{#parseDateTime64BestEffortUSOrZero\}
 
-Введено в версии: v22.8
+Введено в версии: v22.8.0
 
 Аналог функции [`parseDateTime64BestEffort`](#parseDateTime64BestEffort), за исключением того, что при неоднозначной интерпретации эта функция предпочитает формат даты, принятый в США (`MM/DD/YYYY` и т. д.), и возвращает нулевую дату или нулевое значение даты-времени, когда встречает формат даты, который не удаётся обработать.
 
@@ -1111,7 +1111,7 @@ SELECT parseDateTime64BestEffortUSOrZero('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64InJodaSyntax \{#parseDateTime64InJodaSyntax\}
 
-Добавлено в: v24.10
+Добавлено в: v24.10.0
 
 Разбирает строку даты и времени с субсекундной точностью в соответствии со строкой формата даты в стиле Joda.
 
@@ -1153,7 +1153,7 @@ SELECT parseDateTime64InJodaSyntax('2025-01-04 23:00:00.123', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTime64InJodaSyntaxOrNull \{#parseDateTime64InJodaSyntaxOrNull\}
 
-Добавлено в версии: v24.10
+Добавлено в версии: v24.10.0
 
 То же, что и [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax), но возвращает `NULL`, если не удаётся разобрать дату в заданном формате.
 
@@ -1190,7 +1190,7 @@ SELECT parseDateTime64InJodaSyntaxOrNull('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64InJodaSyntaxOrZero \{#parseDateTime64InJodaSyntaxOrZero\}
 
-Введена в версии v24.10
+Введена в версии v24.10.0
 
 Аналог функции [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax), но возвращает нулевую дату, когда встречает формат даты, который не удаётся разобрать.
 
@@ -1227,7 +1227,7 @@ SELECT parseDateTime64InJodaSyntaxOrZero('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64OrNull \{#parseDateTime64OrNull\}
 
-Добавлена в: v24.11
+Добавлена в: v24.11.0
 
 Аналог функции [`parseDateTime64`](#parseDateTime64), но возвращает `NULL`, когда встречает дату в нераспознаваемом формате.
 
@@ -1264,7 +1264,7 @@ SELECT parseDateTime64OrNull('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64OrZero \{#parseDateTime64OrZero\}
 
-Введена в версии v24.11
+Введена в версии v24.11.0
 
 Аналог функции [`parseDateTime64`](#parseDateTime64), но возвращает нулевую дату, если встречает неподдающийся разбору формат даты.
 
@@ -1301,7 +1301,7 @@ SELECT parseDateTime64OrZero('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTimeBestEffort \{#parseDateTimeBestEffort\}
 
-Впервые представлено в: v1.1
+Впервые представлено в: v1.1.0
 
 Преобразует дату и время в строковом представлении в тип данных DateTime.
 Функция разбирает форматы [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html), [RFC 1123 - 5.2.14 RFC-822](https://datatracker.ietf.org/doc/html/rfc822) Date and Time Specification, форматы ClickHouse и некоторые другие форматы даты и времени.
@@ -1359,7 +1359,7 @@ SELECT parseDateTimeBestEffort('Sat, 18 Aug 2025 07:22:16 GMT', 'Asia/Istanbul')
 └─────────────────────────┘
 ```
 
-**Unix-время**
+**UNIX timestamp**
 
 ```sql title=Query
 SELECT parseDateTimeBestEffort('1735689600') AS parseDateTimeBestEffort
@@ -1374,7 +1374,7 @@ SELECT parseDateTimeBestEffort('1735689600') AS parseDateTimeBestEffort
 
 ## parseDateTimeBestEffortOrNull \{#parseDateTimeBestEffortOrNull\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 То же, что и [`parseDateTimeBestEffort`](#parseDateTimeBestEffort), за исключением того, что функция возвращает `NULL`, когда встречает формат даты, который не может быть обработан.
 Функция разбирает [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), форматы дат и времени ClickHouse, а также некоторые другие форматы.
@@ -1424,7 +1424,7 @@ SELECT parseDateTimeBestEffortOrNull('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortOrZero \{#parseDateTimeBestEffortOrZero\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Аналог функции [`parseDateTimeBestEffort`](#parseDateTimeBestEffort), за исключением того, что она возвращает нулевую дату или нулевое значение дата-время, когда встречает формат даты, который не может быть обработан.
 Функция разбирает форматы [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), форматы ClickHouse и некоторые другие форматы даты и времени.
@@ -1474,7 +1474,7 @@ SELECT parseDateTimeBestEffortOrZero('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortUS \{#parseDateTimeBestEffortUS\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Эта функция ведет себя так же, как [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) для ISO-форматов дат, например `YYYY-MM-DD hh:mm:ss`, а также других форматов дат, где компоненты месяца и дня могут быть однозначно извлечены, например `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh` или `YYYY-MM-DD hh:mm:ss ±h:mm`.
 Если компоненты месяца и дня не могут быть однозначно извлечены, например `MM/DD/YYYY`, `MM-DD-YYYY` или `MM-DD-YY`, функция отдает предпочтение формату даты США вместо `DD/MM/YYYY`, `DD-MM-YYYY` или `DD-MM-YY`.
@@ -1513,7 +1513,7 @@ SELECT parseDateTimeBestEffortUS('02/10/2025') AS us_format,
 
 ## parseDateTimeBestEffortUSOrNull \{#parseDateTimeBestEffortUSOrNull\}
 
-Впервые представлена в версии v1.1
+Впервые представлена в версии v1.1.0
 
 Аналог функции [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS), за исключением того, что она возвращает `NULL`, когда встречает формат даты, который не может быть обработан.
 
@@ -1552,7 +1552,7 @@ SELECT parseDateTimeBestEffortUSOrNull('02/10/2025') AS valid_us,
 
 ## parseDateTimeBestEffortUSOrZero \{#parseDateTimeBestEffortUSOrZero\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Аналог функции [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS), но возвращает нулевую дату (`1970-01-01`) или нулевую дату со временем (`1970-01-01 00:00:00`), если встречает формат даты, который не может быть обработан.
 
@@ -1591,7 +1591,7 @@ SELECT parseDateTimeBestEffortUSOrZero('02/10/2025') AS valid_us,
 
 ## parseDateTimeInJodaSyntax \{#parseDateTimeInJodaSyntax\}
 
-Появилась в версии v23.3
+Появилась в версии v23.3.0
 
 Разбирает строку с датой и временем в соответствии со строкой формата даты Joda.
 
@@ -1633,7 +1633,7 @@ SELECT parseDateTimeInJodaSyntax('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:ss')
 
 ## parseDateTimeInJodaSyntaxOrNull \{#parseDateTimeInJodaSyntaxOrNull\}
 
-Введена в: v23.3
+Введена в: v23.3.0
 
 Аналог функции [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax), но возвращает `NULL` при непарсируемом формате даты.
 
@@ -1670,7 +1670,7 @@ SELECT parseDateTimeInJodaSyntaxOrNull('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeInJodaSyntaxOrZero \{#parseDateTimeInJodaSyntaxOrZero\}
 
-Добавлена в: v23.3
+Добавлена в: v23.3.0
 
 Аналог функции [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax), но возвращает нулевую дату, если встречает неподдающийся разбору формат даты.
 
@@ -1707,7 +1707,7 @@ SELECT parseDateTimeInJodaSyntaxOrZero('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeOrNull \{#parseDateTimeOrNull\}
 
-Добавлено в: v23.3
+Добавлено в: v23.3.0
 
 Аналог [`parseDateTime`](#parseDateTime), но возвращает `NULL`, когда встречает некорректный формат даты.
 
@@ -1746,7 +1746,7 @@ SELECT parseDateTimeOrNull('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTimeOrZero \{#parseDateTimeOrZero\}
 
-Впервые появилась в версии v23.3
+Впервые появилась в версии v23.3.0
 
 Аналог функции [`parseDateTime`](#parseDateTime), но возвращает нулевую дату, если встречает дату в формате, который невозможно разобрать.
 
@@ -1783,7 +1783,7 @@ SELECT parseDateTimeOrZero('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## reinterpret \{#reinterpret\}
 
-Добавлено в версии v1.1
+Добавлено в версии v1.1.0
 
 Использует ту же исходную последовательность байт в памяти для заданного значения `x` и переинтерпретирует её как значение целевого типа.
 
@@ -1833,7 +1833,7 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 
 ## reinterpretAsDate \{#reinterpretAsDate\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Переинтерпретирует входное значение как значение типа Date (предполагается порядок байт little endian), представляющее собой количество дней с начала Unix-эпохи 1970-01-01.
 
@@ -1868,7 +1868,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A')
 
 ## reinterpretAsDateTime \{#reinterpretAsDateTime\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа DateTime (предполагая порядок байт little endian), которое представляет собой количество дней, прошедших с начала эпохи Unix (1970-01-01).
 
@@ -1903,7 +1903,7 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A')
 
 ## reinterpretAsFixedString \{#reinterpretAsFixedString\}
 
-Впервые появилась в версии v1.1
+Впервые появилась в версии v1.1.0
 
 Интерпретирует входное значение как строку фиксированной длины (при условии порядка байтов little endian).
 Нулевые байты в конце игнорируются, например, для значения UInt32 255 функция возвращает строку из одного символа.
@@ -1941,7 +1941,7 @@ SELECT
 
 ## reinterpretAsFloat32 \{#reinterpretAsFloat32\}
 
-Была добавлена в версии: v1.1
+Была добавлена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа Float32.
 В отличие от [`CAST`](#CAST), функция не пытается сохранять исходное значение — если целевой тип не может представить значение исходного типа, результат является неопределённым.
@@ -1977,7 +1977,7 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x)
 
 ## reinterpretAsFloat64 \{#reinterpretAsFloat64\}
 
-Впервые представлена в версии: v1.1
+Впервые представлена в версии: v1.1.0
 
 Переинтерпретирует входное значение как значение типа Float64.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не определён.
@@ -2013,7 +2013,7 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
 
 ## reinterpretAsInt128 \{#reinterpretAsInt128\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа Int128.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если в целевом типе невозможно представить входное значение, результат не определён.
@@ -2053,7 +2053,7 @@ SELECT
 
 ## reinterpretAsInt16 \{#reinterpretAsInt16\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа Int16.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить значение входного типа, результат не определён.
@@ -2093,7 +2093,7 @@ SELECT
 
 ## reinterpretAsInt256 \{#reinterpretAsInt256\}
 
-Впервые добавлена в версии: v1.1
+Впервые добавлена в версии: v1.1.0
 
 Переинтерпретирует входное значение как значение типа Int256.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить значение входного типа, результат не определён.
@@ -2133,7 +2133,7 @@ SELECT
 
 ## reinterpretAsInt32 \{#reinterpretAsInt32\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа Int32.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить значение исходного типа, результат не определён.
@@ -2173,7 +2173,7 @@ SELECT
 
 ## reinterpretAsInt64 \{#reinterpretAsInt64\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Переинтерпретирует входное значение как значение типа Int64.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить значение входного типа, результат не определён.
@@ -2213,7 +2213,7 @@ SELECT
 
 ## reinterpretAsInt8 \{#reinterpretAsInt8\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Интерпретирует входное значение как значение типа Int8.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат неопределён.
@@ -2253,7 +2253,7 @@ SELECT
 
 ## reinterpretAsString \{#reinterpretAsString\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Переинтерпретирует входное значение как строку (предполагается порядок байт little-endian).
 Нулевые байты в конце игнорируются, например, для значения UInt32, равного 255, функция возвращает строку с одним символом.
@@ -2291,7 +2291,7 @@ SELECT
 
 ## reinterpretAsUInt128 \{#reinterpretAsUInt128\}
 
-Введено в: v1.1
+Введено в: v1.1.0
 
 Интерпретирует входное значение как значение типа UInt128.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входной тип, результат является неопределённым.
@@ -2331,7 +2331,7 @@ SELECT
 
 ## reinterpretAsUInt16 \{#reinterpretAsUInt16\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Переинтерпретирует входное значение как значение типа UInt16.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не определён.
@@ -2371,7 +2371,7 @@ SELECT
 
 ## reinterpretAsUInt256 \{#reinterpretAsUInt256\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа UInt256.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не определен.
@@ -2411,7 +2411,7 @@ SELECT
 
 ## reinterpretAsUInt32 \{#reinterpretAsUInt32\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Интерпретирует входное значение как значение типа UInt32.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не определён.
@@ -2451,7 +2451,7 @@ SELECT
 
 ## reinterpretAsUInt64 \{#reinterpretAsUInt64\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Интерпретирует входное значение как значение типа UInt64.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить входное значение, результат не определён.
@@ -2491,7 +2491,7 @@ SELECT
 
 ## reinterpretAsUInt8 \{#reinterpretAsUInt8\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Переинтерпретирует входное значение как значение типа UInt8.
 В отличие от [`CAST`](#CAST), функция не пытается сохранить исходное значение — если целевой тип не может представить значения входного типа, результат является неопределённым.
@@ -2531,7 +2531,7 @@ SELECT
 
 ## reinterpretAsUUID \{#reinterpretAsUUID\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Принимает строку из 16 байт и возвращает UUID, интерпретируя каждую 8-байтную половину в порядке байтов little-endian. Если строка короче, функция работает так, как будто строка дополнена в конец необходимым количеством нулевых байтов. Если строка длиннее 16 байт, лишние байты в конце игнорируются.
 
@@ -2566,7 +2566,7 @@ SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))
 
 ## toBFloat16 \{#toBFloat16\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Преобразует входное значение в значение типа BFloat16.
 Выбрасывает исключение при ошибке.
@@ -2611,7 +2611,7 @@ toBFloat16('42.7'):          42.5
 
 ## toBFloat16OrNull \{#toBFloat16OrNull\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует входное значение типа String в значение типа BFloat16.
 Если строка не представляет собой число с плавающей запятой, функция возвращает NULL.
@@ -2667,7 +2667,7 @@ SELECT toBFloat16OrNull('0x5E'), -- unsupported arguments
 
 ## toBFloat16OrZero \{#toBFloat16OrZero\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Преобразует входное значение типа String в значение типа BFloat16.
 Если строка не представляет собой число с плавающей запятой, функция возвращает ноль.
@@ -2723,7 +2723,7 @@ SELECT toBFloat16OrZero('0x5E'), -- unsupported arguments
 
 ## toBool \{#toBool\}
 
-Введена в версии v22.2.
+Введена в версии v22.2.0.
 
 Преобразует входное значение в значение типа Bool.
 
@@ -2768,7 +2768,7 @@ toBool('FALSE'):         false
 
 ## toDate \{#toDate\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение в тип [`Date`](/sql-reference/data-types/date).
 Поддерживает преобразование из типов String, FixedString, DateTime или числовых типов.
@@ -2822,7 +2822,7 @@ SELECT toDate(20297)
 
 ## toDate32 \{#toDate32\}
 
-Введена в версии: v21.9
+Введена в версии: v21.9.0
 
 Преобразует аргумент к типу данных [Date32](../data-types/date32.md).
 Если значение выходит за пределы допустимого диапазона, `toDate32` возвращает граничные значения, поддерживаемые [Date32](../data-types/date32.md).
@@ -2875,7 +2875,7 @@ toTypeName(value): Date32
 
 ## toDate32OrDefault \{#toDate32OrDefault\}
 
-Введена в: v21.11
+Введена в: v21.11.0
 
 Преобразует аргумент к типу данных [Date32](../data-types/date32.md). Если значение выходит за допустимый диапазон, `toDate32OrDefault` возвращает нижнюю границу диапазона, поддерживаемого [Date32](../data-types/date32.md). Если аргумент имеет тип [Date](../data-types/date.md), дополнительно учитываются его границы диапазона. Возвращает значение по умолчанию, если получен некорректный аргумент.
 
@@ -2919,7 +2919,7 @@ SELECT toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'))
 
 ## toDate32OrNull \{#toDate32OrNull\}
 
-Введена в: v21.9
+Введена в: v21.9.0
 
 Преобразует входное значение в тип Date32, но возвращает `NULL`, если передан недопустимый аргумент.
 Аналогична [`toDate32`](#toDate32), но возвращает `NULL`, если передан недопустимый аргумент.
@@ -2955,7 +2955,7 @@ SELECT toDate32OrNull('2025-01-01'), toDate32OrNull('invalid')
 
 ## toDate32OrZero \{#toDate32OrZero\}
 
-Добавлена в версии: v21.9
+Добавлена в версии: v21.9.0
 
 Преобразует входное значение в значение типа [Date32](../data-types/date32.md), но возвращает нижнюю границу [Date32](../data-types/date32.md), если получен некорректный аргумент.
 Аналогично [toDate32](#toDate32), но возвращает нижнюю границу [Date32](../data-types/date32.md), если получен некорректный аргумент.
@@ -2997,7 +2997,7 @@ SELECT toDate32OrZero('2025-01-01'), toDate32OrZero('')
 
 ## toDateOrDefault \{#toDateOrDefault\}
 
-Введена в версии: v21.11
+Введена в версии: v21.11.0
 
 Аналог функции [toDate](#toDate), но при неуспешном преобразовании возвращает значение по умолчанию — либо второй аргумент (если указан), либо нижнюю границу диапазона типа [Date](../data-types/date.md).
 
@@ -3041,7 +3041,7 @@ SELECT toDateOrDefault('', CAST('2023-01-01', 'Date'))
 
 ## toDateOrNull \{#toDateOrNull\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Преобразует входное значение в значение типа `Date`, но возвращает `NULL`, если получен недопустимый аргумент.
 То же, что и [`toDate`](#toDate), но возвращает `NULL`, если получен недопустимый аргумент.
@@ -3077,7 +3077,7 @@ SELECT toDateOrNull('2025-12-30'), toDateOrNull('invalid')
 
 ## toDateOrZero \{#toDateOrZero\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Преобразует входное значение в значение типа [`Date`](../data-types/date.md), но возвращает нижнюю границу [`Date`](../data-types/date.md), если получен некорректный аргумент.
 То же самое, что и [toDate](#toDate), но возвращает нижнюю границу [`Date`](../data-types/date.md), если получен некорректный аргумент.
@@ -3119,7 +3119,7 @@ SELECT toDateOrZero('2025-12-30'), toDateOrZero('')
 
 ## toDateTime \{#toDateTime\}
 
-Введён в версии: v1.1
+Введён в версии: v1.1.0
 
 Преобразует входное значение к типу [DateTime](../data-types/datetime.md).
 
@@ -3163,7 +3163,7 @@ toDateTime(1735689600, 'UTC'):     2025-01-01 00:00:00
 
 ## toDateTime32 \{#toDateTime32\}
 
-Введена в: v20.9
+Введена в: v20.9.0
 
 Преобразует входное значение в тип `DateTime`.
 Поддерживает преобразование из `String`, `FixedString`, `Date`, `Date32`, `DateTime` или числовых типов (`(U)Int*`, `Float*`, `Decimal`).
@@ -3198,7 +3198,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**Как десятичное число с заданной точностью**
+**В виде десятичного числа с заданной точностью**
 
 ```sql title=Query
 SELECT toDateTime64(1735689600.000, 3) AS value, toTypeName(value);
@@ -3215,7 +3215,7 @@ SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**С указанием часового пояса**
+**С часовым поясом**
 
 ```sql title=Query
 SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeName(value);
@@ -3230,7 +3230,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64 \{#toDateTime64\}
 
-Добавлено в версии: v20.1
+Добавлено в версии: v20.1.0
 
 Преобразует переданное значение в значение типа [`DateTime64`](../data-types/datetime64.md).
 
@@ -3264,7 +3264,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**В десятичное число с заданной точностью**
+**Десятичное значение с заданной точностью**
 
 ```sql title=Query
 SELECT toDateTime64(1546300800.000, 3) AS value, toTypeName(value);
@@ -3293,7 +3293,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrDefault \{#toDateTime64OrDefault\}
 
-Введена в версии: v21.11
+Введена в версии: v21.11.0
 
 Как и [toDateTime64](#toDateTime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md),
 но возвращает либо значение по умолчанию для [DateTime64](../data-types/datetime64.md),
@@ -3341,7 +3341,7 @@ SELECT toDateTime64OrDefault('1976-10-18 00:00:00 30', 3, 'UTC', toDateTime64('2
 
 ## toDateTime64OrNull \{#toDateTime64OrNull\}
 
-Появилась в версии: v20.1
+Появилась в версии: v20.1.0
 
 Преобразует входное значение в значение типа `DateTime64`, но возвращает `NULL`, если получен некорректный аргумент.
 Аналогична функции `toDateTime64`, но возвращает `NULL`, если получен некорректный аргумент.
@@ -3377,7 +3377,7 @@ SELECT toDateTime64OrNull('2025-12-30 13:44:17.123'), toDateTime64OrNull('invali
 
 ## toDateTime64OrZero \{#toDateTime64OrZero\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но возвращает нижнюю границу диапазона значений [DateTime64](../data-types/datetime64.md), если получен некорректный аргумент.
 Аналогична [toDateTime64](#toDateTime64), но возвращает нижнюю границу диапазона значений [DateTime64](../data-types/datetime64.md), если получен некорректный аргумент.
@@ -3419,7 +3419,7 @@ SELECT toDateTime64OrZero('2025-12-30 13:44:17.123'), toDateTime64OrZero('invali
 
 ## toDateTimeOrDefault \{#toDateTimeOrDefault\}
 
-Добавлена в: v21.11
+Добавлена в: v21.11.0
 
 Аналогична [toDateTime](#toDateTime), но при неуспешном преобразовании возвращает значение по умолчанию: либо третий аргумент (если он указан), либо нижнюю границу [DateTime](../data-types/datetime.md).
 
@@ -3464,7 +3464,7 @@ SELECT toDateTimeOrDefault('', 'UTC', CAST('2023-01-01', 'DateTime(\'UTC\')'))
 
 ## toDateTimeOrNull \{#toDateTimeOrNull\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Преобразует входное значение в значение типа `DateTime`, но возвращает `NULL`, если получен некорректный аргумент.
 Аналогична [`toDateTime`](#toDateTime), но возвращает `NULL`, если получен некорректный аргумент.
@@ -3500,7 +3500,7 @@ SELECT toDateTimeOrNull('2025-12-30 13:44:17'), toDateTimeOrNull('invalid')
 
 ## toDateTimeOrZero \{#toDateTimeOrZero\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Преобразует входное значение к типу [DateTime](../data-types/datetime.md), но возвращает нижнюю границу [DateTime](../data-types/datetime.md), если получен некорректный аргумент.
 То же, что и [toDateTime](#toDateTime), но возвращает нижнюю границу [DateTime](../data-types/datetime.md), если получен некорректный аргумент.
@@ -3536,7 +3536,7 @@ SELECT toDateTimeOrZero('2025-12-30 13:44:17'), toDateTimeOrZero('invalid')
 
 ## toDecimal128 \{#toDecimal128\}
 
-Добавлено в: v18.12
+Добавлено в: v18.12.0
 
 Преобразует входное значение в значение типа [`Decimal(38, S)`](../data-types/decimal.md) с масштабом `S`.
 В случае ошибки выбрасывает исключение.
@@ -3604,7 +3604,7 @@ type_c: Decimal(38, 3)
 
 ## toDecimal128OrDefault \{#toDecimal128OrDefault\}
 
-Впервые появилась в версии: v21.11
+Впервые появилась в версии: v21.11.0
 
 Подобно функции [`toDecimal128`](#toDecimal128), эта функция преобразует входное значение в значение типа [Decimal(38, S)](../data-types/decimal.md), но в случае ошибки возвращает значение по умолчанию.
 
@@ -3649,7 +3649,7 @@ SELECT toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)'))
 
 ## toDecimal128OrNull \{#toDecimal128OrNull\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Преобразует входное значение в значение типа [`Decimal(38, S)`](../data-types/decimal.md), но в случае ошибки возвращает `NULL`.
 Аналог [`toDecimal128`](#toDecimal128), но возвращает `NULL` вместо генерации исключения при ошибках преобразования.
@@ -3703,7 +3703,7 @@ SELECT toDecimal128OrNull('42.7', 2), toDecimal128OrNull('invalid', 2)
 
 ## toDecimal128OrZero \{#toDecimal128OrZero\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Преобразует входное значение в значение типа [Decimal(38, S)](../data-types/decimal.md), но возвращает `0` в случае ошибки.
 Аналог [`toDecimal128`](#toDecimal128), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -3754,7 +3754,7 @@ SELECT toDecimal128OrZero('42.7', 2), toDecimal128OrZero('invalid', 2)
 
 ## toDecimal256 \{#toDecimal256\}
 
-Введена в: v20.8
+Введена в: v20.8.0
 
 Преобразует входное значение в значение типа [`Decimal(76, S)`](../data-types/decimal.md) с масштабом `S`. В случае ошибки выбрасывает исключение.
 
@@ -3821,7 +3821,7 @@ type_c: Decimal(76, 3)
 
 ## toDecimal256OrDefault \{#toDecimal256OrDefault\}
 
-Введена в версии: v21.11
+Введена в версии: v21.11.0
 
 Аналогично функции [`toDecimal256`](#toDecimal256), эта функция преобразует входное значение в значение типа [Decimal(76, S)](../data-types/decimal.md), но в случае ошибки возвращает значение по умолчанию.
 
@@ -3866,7 +3866,7 @@ SELECT toDecimal256OrDefault('Inf', 0, CAST('-1', 'Decimal256(0)'))
 
 ## toDecimal256OrNull \{#toDecimal256OrNull\}
 
-Введена в версии v20.8
+Введена в версии v20.8.0
 
 Преобразует входное значение в значение типа [`Decimal(76, S)`](../data-types/decimal.md), но возвращает `NULL` в случае ошибки.
 Аналог функции [`toDecimal256`](#toDecimal256), но возвращает `NULL` вместо генерации исключения при ошибках преобразования.
@@ -3920,7 +3920,7 @@ SELECT toDecimal256OrNull('42.7', 2), toDecimal256OrNull('invalid', 2)
 
 ## toDecimal256OrZero \{#toDecimal256OrZero\}
 
-Введена в версии v20.8
+Введена в версии v20.8.0
 
 Преобразует входное значение к типу [Decimal(76, S)](../data-types/decimal.md), но возвращает `0` в случае ошибки.
 Аналог [`toDecimal256`](#toDecimal256), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -3977,7 +3977,7 @@ SELECT toDecimal256OrZero('42.7', 2), toDecimal256OrZero('invalid', 2)
 
 ## toDecimal32 \{#toDecimal32\}
 
-Введена в: v18.12
+Введена в: v18.12.0
 
 Преобразует входное значение в значение типа [`Decimal(9, S)`](../data-types/decimal.md) с масштабом `S`. В случае ошибки генерирует исключение.
 
@@ -4044,7 +4044,7 @@ type_c: Decimal(9, 3)
 
 ## toDecimal32OrDefault \{#toDecimal32OrDefault\}
 
-Появилась в версии: v21.11
+Появилась в версии: v21.11.0
 
 Аналогично функции [`toDecimal32`](#toDecimal32), эта функция преобразует входное значение в значение типа [Decimal(9, S)](../data-types/decimal.md), но в случае ошибки возвращает значение по умолчанию.
 
@@ -4089,7 +4089,7 @@ SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
 
 ## toDecimal32OrNull \{#toDecimal32OrNull\}
 
-Функция появилась в: v20.1
+Функция появилась в: v20.1.0
 
 Преобразует входное значение в значение типа [`Decimal(9, S)`](../data-types/decimal.md), но в случае ошибки возвращает `NULL`.
 Аналог функции [`toDecimal32`](#toDecimal32), но вместо генерации исключения при ошибках преобразования возвращает `NULL`.
@@ -4143,7 +4143,7 @@ SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
 
 ## toDecimal32OrZero \{#toDecimal32OrZero\}
 
-Появилась в версии v20.1
+Появилась в версии v20.1.0
 
 Преобразует входное значение в значение типа [Decimal(9, S)](../data-types/decimal.md), но в случае ошибки возвращает `0`.
 Аналог [`toDecimal32`](#toDecimal32), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -4194,7 +4194,7 @@ SELECT toDecimal32OrZero('42.7', 2), toDecimal32OrZero('invalid', 2)
 
 ## toDecimal64 \{#toDecimal64\}
 
-Добавлена в версии v18.12
+Добавлена в версии v18.12.0
 
 Преобразует входное значение в значение типа [`Decimal(18, S)`](../data-types/decimal.md) с масштабом `S`.
 В случае ошибки выбрасывает исключение.
@@ -4262,7 +4262,7 @@ type_c: Decimal(18, 3)
 
 ## toDecimal64OrDefault \{#toDecimal64OrDefault\}
 
-Добавлена в версии v21.11
+Добавлена в версии v21.11.0
 
 Подобно функции [`toDecimal64`](#toDecimal64), эта функция преобразует входное значение в значение типа [Decimal(18, S)](../data-types/decimal.md), но в случае ошибки возвращает значение по умолчанию.
 
@@ -4307,7 +4307,7 @@ SELECT toDecimal64OrDefault('Inf', 0, CAST('-1', 'Decimal64(0)'))
 
 ## toDecimal64OrNull \{#toDecimal64OrNull\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Преобразует входное значение в значение типа [Decimal(18, S)](../data-types/decimal.md), но в случае ошибки возвращает `NULL`.
 Аналогична функции [`toDecimal64`](#toDecimal64), но возвращает `NULL` вместо генерации исключения при ошибках преобразования.
@@ -4361,7 +4361,7 @@ SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
 
 ## toDecimal64OrZero \{#toDecimal64OrZero\}
 
-Добавлена в: v20.1
+Добавлена в: v20.1.0
 
 Преобразует входное значение в значение типа [Decimal(18, S)](../data-types/decimal.md), но возвращает `0` в случае ошибки.
 Аналог [`toDecimal64`](#toDecimal64), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -4418,7 +4418,7 @@ SELECT toDecimal64OrZero('42.7', 2), toDecimal64OrZero('invalid', 2)
 
 ## toDecimalString \{#toDecimalString\}
 
-Введена в версии v23.3
+Введена в версии v23.3.0
 
 Преобразует числовое значение в String с указанным количеством знаков после запятой.
 
@@ -4482,7 +4482,7 @@ SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
 
 ## toFixedString \{#toFixedString\}
 
-Добавлено в версию v1.1
+Добавлено в версию v1.1.0
 
 Преобразует аргумент типа [`String`](/sql-reference/data-types/string) в тип [`FixedString(N)`](/sql-reference/data-types/fixedstring) (строка фиксированной длины N).
 
@@ -4521,7 +4521,7 @@ SELECT toFixedString('foo', 8) AS s;
 
 ## toFloat32 \{#toFloat32\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Преобразует входное значение в значение типа [Float32](/sql-reference/data-types/float).
 Генерирует исключение в случае ошибки.
@@ -4580,7 +4580,7 @@ toFloat32('NaN'):  nan
 
 ## toFloat32OrDefault \{#toFloat32OrDefault\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Подобно функции [`toFloat32`](#toFloat32), эта функция преобразует входное значение в значение типа [Float32](../data-types/float.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, то в случае ошибки возвращается `0`.
@@ -4625,7 +4625,7 @@ SELECT toFloat32OrDefault('abc', CAST('0', 'Float32'))
 
 ## toFloat32OrNull \{#toFloat32OrNull\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует входное значение в значение типа [Float32](../data-types/float.md), но в случае ошибки возвращает `NULL`.
 Аналог [`toFloat32`](#toFloat32), но возвращает `NULL` вместо генерации исключения при ошибках преобразования.
@@ -4685,7 +4685,7 @@ toFloat32OrNull('abc'):  \N
 
 ## toFloat32OrZero \{#toFloat32OrZero\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Преобразует входное значение в значение типа [Float32](../data-types/float.md), но возвращает `0` в случае ошибки.
 Аналог функции [`toFloat32`](#toFloat32), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -4731,7 +4731,7 @@ toFloat32OrZero('abc'):  0
 
 ## toFloat64 \{#toFloat64\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует входное значение в значение типа [`Float64`](../data-types/float.md).
 Выбрасывает исключение в случае ошибки.
@@ -4790,7 +4790,7 @@ toFloat64('NaN'):  nan
 
 ## toFloat64OrDefault \{#toFloat64OrDefault\}
 
-Добавлено в: v21.11
+Добавлено в: v21.11.0
 
 Аналогично [`toFloat64`](#toFloat64), эта функция преобразует входное значение в значение типа [Float64](../data-types/float.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение параметра `default` не передано, то в случае ошибки возвращается `0`.
@@ -4835,7 +4835,7 @@ SELECT toFloat64OrDefault('abc', CAST('0', 'Float64'))
 
 ## toFloat64OrNull \{#toFloat64OrNull\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение к типу [Float64](../data-types/float.md), но возвращает `NULL` в случае ошибки.
 Аналог [`toFloat64`](#toFloat64), но возвращает `NULL` вместо выбрасывания исключения при ошибках преобразования.
@@ -4895,7 +4895,7 @@ toFloat64OrNull('abc'):  \N
 
 ## toFloat64OrZero \{#toFloat64OrZero\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Преобразует входное значение к типу [Float64](../data-types/float.md), но при ошибке возвращает `0`.
 Аналог функции [`toFloat64`](#toFloat64), но возвращает `0` вместо генерации исключения при ошибках преобразования.
@@ -4941,7 +4941,7 @@ toFloat64OrZero('abc'):  0
 
 ## toInt128 \{#toInt128\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение в значение типа [Int128](/sql-reference/data-types/int-uint).
 Генерирует исключение в случае ошибки.
@@ -5005,7 +5005,7 @@ toInt128('-128'): -128
 
 ## toInt128OrDefault \{#toInt128OrDefault\}
 
-Введена в версии: v21.11
+Введена в версии: v21.11.0
 
 Подобно функции [`toInt128`](#toInt128), эта функция преобразует входное значение в значение типа [Int128](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, в случае ошибки возвращается `0`.
@@ -5050,7 +5050,7 @@ SELECT toInt128OrDefault('abc', CAST('-1', 'Int128'))
 
 ## toInt128OrNull \{#toInt128OrNull\}
 
-Добавлено в v20.8
+Добавлено в v20.8.0
 
 Как и [`toInt128`](#toInt128), эта функция преобразует входное значение в значение типа [Int128](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
 
@@ -5109,7 +5109,7 @@ toInt128OrNull('abc'):  \N
 
 ## toInt128OrZero \{#toInt128OrZero\}
 
-Представлена в: v20.8
+Представлена в: v20.8.0
 
 Преобразует входное значение к типу [Int128](/sql-reference/data-types/int-uint), но возвращает `0` в случае ошибки.
 Аналог [`toInt128`](#toInt128), но возвращает `0` вместо выброса исключения.
@@ -5146,7 +5146,7 @@ SELECT toInt128OrZero('123')
 123
 ```
 
-**При ошибке преобразования возвращается ноль**
+**При неудачном преобразовании возвращается ноль**
 
 ```sql title=Query
 SELECT toInt128OrZero('abc')
@@ -5159,7 +5159,7 @@ SELECT toInt128OrZero('abc')
 
 ## toInt16 \{#toInt16\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение в значение типа [`Int16`](../data-types/int-uint.md).
 Вызывает исключение в случае ошибки.
@@ -5227,7 +5227,7 @@ toInt16('-16'):  -16
 
 ## toInt16OrDefault \{#toInt16OrDefault\}
 
-Добавлена в: v21.11
+Добавлена в: v21.11.0
 
 Как и функция [`toInt16`](#toInt16), эта функция преобразует входное значение в значение типа [Int16](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, то в случае ошибки возвращается `0`.
@@ -5272,7 +5272,7 @@ SELECT toInt16OrDefault('abc', CAST('-1', 'Int16'))
 
 ## toInt16OrNull \{#toInt16OrNull\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Подобно функции [`toInt16`](#toInt16), эта функция преобразует входное значение в значение типа [Int16](../data-types/int-uint.md), но в случае ошибки возвращает `NULL`.
 
@@ -5331,7 +5331,7 @@ toInt16OrNull('abc'): \N
 
 ## toInt16OrZero \{#toInt16OrZero\}
 
-Впервые представлена в: v1.1
+Впервые представлена в: v1.1.0
 
 Как и [`toInt16`](#toInt16), эта функция преобразует входное значение в значение типа [Int16](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
 
@@ -5390,7 +5390,7 @@ toInt16OrZero('abc'): 0
 
 ## toInt256 \{#toInt256\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение в значение типа [Int256](/sql-reference/data-types/int-uint).
 Вызывает исключение в случае ошибки.
@@ -5454,7 +5454,7 @@ toInt256('-256'):   -256
 
 ## toInt256OrDefault \{#toInt256OrDefault\}
 
-Введена в версии v21.11
+Введена в версии v21.11.0
 
 Аналогично [`toInt256`](#toInt256), эта функция преобразует входное значение в значение типа [Int256](../data-types/int-uint.md), но возвращает значение по умолчанию в случае ошибки.
 Если параметр `default` не указан, то в случае ошибки возвращается `0`.
@@ -5499,7 +5499,7 @@ SELECT toInt256OrDefault('abc', CAST('-1', 'Int256'))
 
 ## toInt256OrNull \{#toInt256OrNull\}
 
-Добавлена в: v20.8
+Добавлена в: v20.8.0
 
 Как и [`toInt256`](#toInt256), эта функция преобразует входное значение в значение типа [Int256](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -5558,7 +5558,7 @@ toInt256OrNull('abc'):  \N
 
 ## toInt256OrZero \{#toInt256OrZero\}
 
-Добавлена в: v20.8
+Добавлена в: v20.8.0
 
 Преобразует входное значение к типу [Int256](/sql-reference/data-types/int-uint), но возвращает `0` в случае ошибки.
 Аналог функции [`toInt256`](#toInt256), но возвращает `0` вместо выброса исключения.
@@ -5608,7 +5608,7 @@ SELECT toInt256OrZero('abc')
 
 ## toInt32 \{#toInt32\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Преобразует входное значение в значение типа [`Int32`](../data-types/int-uint.md).
 Выбрасывает исключение в случае ошибки.
@@ -5676,7 +5676,7 @@ toInt32('-32'):  -32
 
 ## toInt32OrDefault \{#toInt32OrDefault\}
 
-Введена в: v21.11
+Введена в: v21.11.0
 
 Подобно [`toInt32`](#toInt32), эта функция преобразует входное значение в значение типа [Int32](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, в случае ошибки возвращается `0`.
@@ -5721,7 +5721,7 @@ SELECT toInt32OrDefault('abc', CAST('-1', 'Int32'))
 
 ## toInt32OrNull \{#toInt32OrNull\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Аналогично функции [`toInt32`](#toInt32), эта функция преобразует входное значение в значение типа [Int32](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -5780,7 +5780,7 @@ toInt32OrNull('abc'): \N
 
 ## toInt32OrZero \{#toInt32OrZero\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Подобно функции [`toInt32`](#toInt32), эта функция преобразует входное значение в значение типа [Int32](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
 
@@ -5839,7 +5839,7 @@ toInt32OrZero('abc'): 0
 
 ## toInt64 \{#toInt64\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Преобразует входное значение в значение типа [`Int64`](../data-types/int-uint.md).
 Выбрасывает исключение в случае ошибки.
@@ -5907,7 +5907,7 @@ toInt64('-64'):  -64
 
 ## toInt64OrDefault \{#toInt64OrDefault\}
 
-Введена в: v21.11
+Введена в: v21.11.0
 
 Аналогично функции [`toInt64`](#toInt64), эта функция преобразует входное значение в значение типа [Int64](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если параметр `default` не задан, то в случае ошибки возвращается `0`.
@@ -5952,7 +5952,7 @@ SELECT toInt64OrDefault('abc', CAST('-1', 'Int64'))
 
 ## toInt64OrNull \{#toInt64OrNull\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Подобно функции [`toInt64`](#toInt64), эта функция преобразует входное значение в значение типа [Int64](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -6011,7 +6011,7 @@ toInt64OrNull('abc'): \N
 
 ## toInt64OrZero \{#toInt64OrZero\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Преобразует входное значение в тип [Int64](/sql-reference/data-types/int-uint), но в случае ошибки возвращает `0`.
 Аналог [`toInt64`](#toInt64), но возвращает `0` вместо выбрасывания исключения.
@@ -6061,7 +6061,7 @@ SELECT toInt64OrZero('abc')
 
 ## toInt8 \{#toInt8\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Преобразует входное значение в значение типа [`Int8`](../data-types/int-uint.md).
 Выбрасывает исключение в случае ошибки.
@@ -6129,7 +6129,7 @@ toInt8('-8'): -8
 
 ## toInt8OrDefault \{#toInt8OrDefault\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Подобно функции [`toInt8`](#toInt8), эта функция преобразует входное значение в значение типа [Int8](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, то в случае ошибки возвращается `0`.
@@ -6174,7 +6174,7 @@ SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
 
 ## toInt8OrNull \{#toInt8OrNull\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Подобно функции [`toInt8`](#toInt8), эта функция преобразует входное значение в значение типа [Int8](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -6233,7 +6233,7 @@ toInt8OrNull('abc'): \N
 
 ## toInt8OrZero \{#toInt8OrZero\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Аналогично [`toInt8`](#toInt8), эта функция преобразует входное значение в значение типа [Int8](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
 
@@ -6292,7 +6292,7 @@ toInt8OrZero('abc'): 0
 
 ## toInterval \{#toInterval\}
 
-Введена в: v25.4
+Введена в: v25.4.0
 
 Создаёт значение типа Interval из числового значения и строки с единицей измерения.
 
@@ -6334,7 +6334,7 @@ SELECT
 └─────────┴──────┴────────┘
 ```
 
-**Использование интервалов в арифметике дат**
+**Использование интервалов при арифметических операциях с датами**
 
 ```sql title=Query
 SELECT
@@ -6369,7 +6369,7 @@ FROM numbers(5)
 
 ## toIntervalDay \{#toIntervalDay\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает интервал длиной `n` дней типа данных [`IntervalDay`](../data-types/special-data-types/interval.md).
 
@@ -6407,7 +6407,7 @@ SELECT date + interval_to_days AS result
 
 ## toIntervalHour \{#toIntervalHour\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает интервал продолжительностью `n` часов типа данных [`IntervalHour`](../data-types/special-data-types/interval.md).
 
@@ -6445,7 +6445,7 @@ SELECT date + interval_to_hours AS result
 
 ## toIntervalMicrosecond \{#toIntervalMicrosecond\}
 
-Появилась в версии: v22.6
+Появилась в версии: v22.6.0
 
 Возвращает интервал продолжительностью `n` микросекунд типа данных [`IntervalMicrosecond`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6483,7 +6483,7 @@ SELECT date + interval_to_microseconds AS result
 
 ## toIntervalMillisecond \{#toIntervalMillisecond\}
 
-Введена в: v22.6
+Введена в: v22.6.0
 
 Возвращает интервал `n` миллисекунд типа данных [IntervalMillisecond](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6521,7 +6521,7 @@ SELECT date + interval_to_milliseconds AS result
 
 ## toIntervalMinute \{#toIntervalMinute\}
 
-Функция впервые появилась в: v1.1
+Функция впервые появилась в: v1.1.0
 
 Возвращает интервал продолжительностью `n` минут типа данных [`IntervalMinute`](../data-types/special-data-types/interval.md).
 
@@ -6559,7 +6559,7 @@ SELECT date + interval_to_minutes AS result
 
 ## toIntervalMonth \{#toIntervalMonth\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает интервал длиной `n` месяцев типа данных [`IntervalMonth`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6597,7 +6597,7 @@ SELECT date + interval_to_month AS result
 
 ## toIntervalNanosecond \{#toIntervalNanosecond\}
 
-Появилась в версии: v22.6
+Появилась в версии: v22.6.0
 
 Возвращает интервал в `n` наносекунд типа данных [`IntervalNanosecond`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6635,7 +6635,7 @@ SELECT date + interval_to_nanoseconds AS result
 
 ## toIntervalQuarter \{#toIntervalQuarter\}
 
-Появилось в версии: v1.1
+Появилось в версии: v1.1.0
 
 Возвращает интервал длиной `n` кварталов типа данных [`IntervalQuarter`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6673,7 +6673,7 @@ SELECT date + interval_to_quarter AS result
 
 ## toIntervalSecond \{#toIntervalSecond\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает интервал продолжительностью `n` секунд типа данных [`IntervalSecond`](../data-types/special-data-types/interval.md).
 
@@ -6711,7 +6711,7 @@ SELECT date + interval_to_seconds AS result
 
 ## toIntervalWeek \{#toIntervalWeek\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает интервал длительностью `n` недель типа данных [`IntervalWeek`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6749,7 +6749,7 @@ SELECT date + interval_to_week AS result
 
 ## toIntervalYear \{#toIntervalYear\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает интервал длительностью `n` лет типа данных [`IntervalYear`](../../sql-reference/data-types/special-data-types/interval.md).
 
@@ -6787,7 +6787,7 @@ SELECT date + interval_to_year AS result
 
 ## toLowCardinality \{#toLowCardinality\}
 
-Введена в: v18.12
+Введена в: v18.12.0
 
 Преобразует входной аргумент в вариант типа данных [LowCardinality](../data-types/lowcardinality.md) с тем же типом данных.
 
@@ -6827,7 +6827,7 @@ SELECT toLowCardinality('1')
 
 ## toString \{#toString\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Преобразует значения в их строковое представление.
 Для аргументов типа DateTime функция может принимать второй аргумент типа String, содержащий имя часового пояса.
@@ -6874,7 +6874,7 @@ LIMIT 10
 
 ## toStringCutToZero \{#toStringCutToZero\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Принимает аргумент типа [String](/sql-reference/data-types/string) или [FixedString](/sql-reference/data-types/fixedstring) и возвращает строку типа String, содержащую копию исходной строки, обрезанную при первом нулевом байте.
 
@@ -6914,7 +6914,7 @@ SELECT
 
 ## toTime \{#toTime\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Преобразует входное значение в тип [Time](/sql-reference/data-types/time).
 Поддерживает преобразование из типов String, FixedString, DateTime или числовых типов, представляющих количество секунд с полуночи.
@@ -6968,7 +6968,7 @@ SELECT toTime(52225)
 
 ## toTime64 \{#toTime64\}
 
-Добавлена в версии: v25.6
+Добавлена в версии: v25.6.0
 
 Преобразует входное значение в тип [Time64](/sql-reference/data-types/time64).
 Поддерживает преобразование из типов String, FixedString, DateTime64 или числовых типов, представляющих количество микросекунд с полуночи.
@@ -7023,7 +7023,7 @@ SELECT toTime64(52225123456)
 
 ## toTime64OrNull \{#toTime64OrNull\}
 
-Появилось в версии: v25.6
+Появилось в версии: v25.6.0
 
 Преобразует входное значение в значение типа `Time64`, но при ошибке возвращает `NULL`.
 Аналог функции [`toTime64`](#toTime64), но возвращает `NULL` вместо выброса исключения при ошибках преобразования.
@@ -7064,7 +7064,7 @@ SELECT toTime64OrNull('12:30:45.123'), toTime64OrNull('invalid')
 
 ## toTime64OrZero \{#toTime64OrZero\}
 
-Введено в: v25.6
+Введено в: v25.6.0
 
 Преобразует входное значение в значение типа Time64, но возвращает `00:00:00.000` в случае ошибки.
 Аналог функции [`toTime64`](#toTime64), но возвращает `00:00:00.000` вместо генерации исключения при ошибках преобразования.
@@ -7100,7 +7100,7 @@ SELECT toTime64OrZero('12:30:45.123'), toTime64OrZero('invalid')
 
 ## toTimeOrNull \{#toTimeOrNull\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует входное значение в значение типа Time, но в случае ошибки возвращает `NULL`.
 Аналог функции [`toTime`](#toTime), но возвращает `NULL` вместо выбрасывания исключения при ошибке преобразования.
@@ -7141,7 +7141,7 @@ SELECT toTimeOrNull('12:30:45'), toTimeOrNull('invalid')
 
 ## toTimeOrZero \{#toTimeOrZero\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Преобразует входное значение в тип Time, но в случае ошибки возвращает `00:00:00`.
 Аналогична функции toTime, но вместо генерации исключения при ошибках преобразования возвращает `00:00:00`.
@@ -7177,7 +7177,7 @@ SELECT toTimeOrZero('12:30:45'), toTimeOrZero('invalid')
 
 ## toUInt128 \{#toUInt128\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует входное значение в значение типа [`UInt128`](/sql-reference/functions/type-conversion-functions#toUInt128).
 Выбрасывает исключение в случае ошибки.
@@ -7241,7 +7241,7 @@ toUInt128('128'): 128
 
 ## toUInt128OrDefault \{#toUInt128OrDefault\}
 
-Введена в версии v21.11
+Введена в версии v21.11.0
 
 Подобно функции [`toUInt128`](#toUInt128), эта функция преобразует входное значение в значение типа [`UInt128`](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если аргумент `default` не передан, то в случае ошибки возвращается `0`.
@@ -7286,7 +7286,7 @@ SELECT toUInt128OrDefault('abc', CAST('0', 'UInt128'))
 
 ## toUInt128OrNull \{#toUInt128OrNull\}
 
-Добавлена в: v21.6
+Добавлена в: v21.6.0
 
 Как и [`toUInt128`](#toUInt128), эта функция преобразует входное значение в значение типа [`UInt128`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -7345,7 +7345,7 @@ toUInt128OrNull('abc'): \N
 
 ## toUInt128OrZero \{#toUInt128OrZero\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Аналогично функции [`toUInt128`](#toUInt128), эта функция преобразует входное значение в значение типа [`UInt128`](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
 
@@ -7404,7 +7404,7 @@ toUInt128OrZero('abc'): 0
 
 ## toUInt16 \{#toUInt16\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Преобразует входное значение в значение типа [`UInt16`](../data-types/int-uint.md).
 Вызывает исключение в случае ошибки.
@@ -7472,7 +7472,7 @@ toUInt16('16'):  16
 
 ## toUInt16OrDefault \{#toUInt16OrDefault\}
 
-Введена в: v21.11
+Введена в: v21.11.0
 
 Аналогично [`toUInt16`](#toUInt16), эта функция преобразует входное значение в тип [UInt16](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, в случае ошибки возвращается `0`.
@@ -7517,7 +7517,7 @@ SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
 
 ## toUInt16OrNull \{#toUInt16OrNull\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Подобно [`toUInt16`](#toUInt16), эта функция преобразует входное значение в значение типа [`UInt16`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -7576,7 +7576,7 @@ toUInt16OrNull('abc'): \N
 
 ## toUInt16OrZero \{#toUInt16OrZero\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Подобно функции [`toUInt16`](#toUInt16), эта функция преобразует входное значение в значение типа [`UInt16`](../data-types/int-uint.md), но возвращает `0` в случае ошибки.
 
@@ -7635,7 +7635,7 @@ toUInt16OrZero('abc'): 0
 
 ## toUInt256 \{#toUInt256\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует входное значение в значение типа UInt256.
 Вызывает исключение в случае ошибки.
@@ -7699,7 +7699,7 @@ toUInt256('256'):   256
 
 ## toUInt256OrDefault \{#toUInt256OrDefault\}
 
-Добавлено в: v21.11
+Добавлено в: v21.11.0
 
 Подобно функции [`toUInt256`](#toUInt256), эта функция преобразует входное значение в тип [UInt256](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если аргумент `default` не передан, то в случае ошибки возвращается `0`.
@@ -7744,7 +7744,7 @@ SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
 
 ## toUInt256OrNull \{#toUInt256OrNull\}
 
-Добавлена в версии: v20.8
+Добавлена в версии: v20.8.0
 
 Как и [`toUInt256`](#toUInt256), эта функция преобразует входное значение в значение типа [`UInt256`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -7803,7 +7803,7 @@ toUInt256OrNull('abc'): \N
 
 ## toUInt256OrZero \{#toUInt256OrZero\}
 
-Появилась в версии: v20.8
+Появилась в версии: v20.8.0
 
 Как и [`toUInt256`](#toUInt256), эта функция преобразует входное значение в значение типа [`UInt256`](../data-types/int-uint.md), но в случае ошибки возвращает `0`.
 
@@ -7862,7 +7862,7 @@ toUInt256OrZero('abc'): 0
 
 ## toUInt32 \{#toUInt32\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Преобразует входное значение к типу [`UInt32`](../data-types/int-uint.md).
 Выбрасывает исключение в случае ошибки.
@@ -7930,7 +7930,7 @@ toUInt32('32'):  32
 
 ## toUInt32OrDefault \{#toUInt32OrDefault\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Как и [`toUInt32`](#toUInt32), эта функция преобразует входное значение в значение типа [UInt32](../data-types/int-uint.md), но в случае ошибки возвращает значение по умолчанию.
 Если значение `default` не передано, в случае ошибки возвращается `0`.
@@ -7975,7 +7975,7 @@ SELECT toUInt32OrDefault('abc', CAST('0', 'UInt32'))
 
 ## toUInt32OrNull \{#toUInt32OrNull\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Как и [`toUInt32`](#toUInt32), эта функция преобразует входное значение в значение типа [`UInt32`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -8034,7 +8034,7 @@ toUInt32OrNull('abc'): \N
 
 ## toUInt32OrZero \{#toUInt32OrZero\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Аналогично [`toUInt32`](#toUInt32), эта функция преобразует входное значение в значение типа [`UInt32`](../data-types/int-uint.md), но возвращает `0` в случае ошибки.
 
@@ -8093,7 +8093,7 @@ toUInt32OrZero('abc'): 0
 
 ## toUInt64 \{#toUInt64\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Преобразует входное значение в значение типа [`UInt64`](../data-types/int-uint.md).
 Вызывает исключение в случае ошибки.
@@ -8161,7 +8161,7 @@ toUInt64('64'):  64
 
 ## toUInt64OrDefault \{#toUInt64OrDefault\}
 
-Появилась в версии: v21.11
+Появилась в версии: v21.11.0
 
 Как и [`toUInt64`](#toUInt64), эта функция преобразует входное значение в значение типа [UInt64](../data-types/int-uint.md), но при ошибке возвращает значение по умолчанию.
 Если значение `default` не передано, то в случае ошибки возвращается `0`.
@@ -8206,7 +8206,7 @@ SELECT toUInt64OrDefault('abc', CAST('0', 'UInt64'))
 
 ## toUInt64OrNull \{#toUInt64OrNull\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Как и [`toUInt64`](#toUInt64), эта функция преобразует входное значение в значение типа [`UInt64`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -8265,7 +8265,7 @@ toUInt64OrNull('abc'): \N
 
 ## toUInt64OrZero \{#toUInt64OrZero\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Как и [`toUInt64`](#toUInt64), эта функция преобразует входное значение в значение типа [`UInt64`](../data-types/int-uint.md), но возвращает `0` в случае ошибки.
 
@@ -8324,7 +8324,7 @@ toUInt64OrZero('abc'): 0
 
 ## toUInt8 \{#toUInt8\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Преобразует входное значение в значение типа [`UInt8`](../data-types/int-uint.md).
 В случае ошибки выбрасывает исключение.
@@ -8392,7 +8392,7 @@ toUInt8('8'): 8
 
 ## toUInt8OrDefault \{#toUInt8OrDefault\}
 
-Добавлено в: v21.11
+Добавлено в: v21.11.0
 
 Подобно [`toUInt8`](#toUInt8), эта функция преобразует входное значение в значение типа [UInt8](../data-types/int-uint.md), но возвращает значение по умолчанию в случае ошибки.
 Если значение `default` не передано, то в случае ошибки возвращается `0`.
@@ -8437,7 +8437,7 @@ SELECT toUInt8OrDefault('abc', CAST('0', 'UInt8'))
 
 ## toUInt8OrNull \{#toUInt8OrNull\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Как и [`toUInt8`](#toUInt8), эта функция преобразует входное значение в значение типа [`UInt8`](../data-types/int-uint.md), но возвращает `NULL` в случае ошибки.
 
@@ -8496,7 +8496,7 @@ toUInt8OrNull('abc'): \N
 
 ## toUInt8OrZero \{#toUInt8OrZero\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Как и [`toUInt8`](#toUInt8), эта функция преобразует входное значение в значение типа [`UInt8`](../data-types/int-uint.md), но возвращает `0` в случае ошибки.
 
@@ -8555,7 +8555,7 @@ toUInt8OrZero('abc'): 0
 
 ## toUUID \{#toUUID\}
 
-Введено в версии: v1.1
+Введено в версии: v1.1.0
 
 Преобразует значение типа String в значение типа UUID.
 
@@ -8590,7 +8590,7 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 ## toUUIDOrZero \{#toUUIDOrZero\}
 
-Добавлена в версии: v20.12
+Добавлена в версии: v20.12.0
 
 Преобразует входное значение в значение типа [UUID](../data-types/uuid.md), но в случае ошибки возвращает нулевой UUID.
 Аналогична [`toUUID`](/sql-reference/functions/type-conversion-functions#toUUID), но возвращает нулевой UUID (`00000000-0000-0000-0000-000000000000`) вместо генерации исключения при ошибках преобразования.
@@ -8638,7 +8638,7 @@ SELECT
 
 ## toUnixTimestamp64Micro \{#toUnixTimestamp64Micro\}
 
-Введена в версии: v20.5
+Введена в версии: v20.5.0
 
 Преобразует значение типа [`DateTime64`](/sql-reference/data-types/datetime64) в значение типа [`Int64`](/sql-reference/data-types/int-uint) с фиксированной точностью до микросекунд.
 Входное значение масштабируется в большую или меньшую сторону в зависимости от его точности.
@@ -8679,7 +8679,7 @@ SELECT toUnixTimestamp64Micro(dt64);
 
 ## toUnixTimestamp64Milli \{#toUnixTimestamp64Milli\}
 
-Добавлена в версии: v20.5
+Добавлена в версии: v20.5.0
 
 Преобразует значение типа [`DateTime64`](/sql-reference/data-types/datetime64) в значение типа [`Int64`](/sql-reference/data-types/int-uint) с фиксированной точностью до миллисекунд.
 Входное значение соответствующим образом масштабируется (увеличивается или уменьшается) в зависимости от его точности.
@@ -8720,7 +8720,7 @@ SELECT toUnixTimestamp64Milli(dt64);
 
 ## toUnixTimestamp64Nano \{#toUnixTimestamp64Nano\}
 
-Впервые представлена в версии v20.5
+Впервые представлена в версии v20.5.0
 
 Преобразует [`DateTime64`](/sql-reference/data-types/datetime64) в значение [`Int64`](/sql-reference/functions/type-conversion-functions#toInt64) с фиксированной наносекундной точностью.
 Входное значение масштабируется вверх или вниз в зависимости от его точности.
@@ -8761,7 +8761,7 @@ SELECT toUnixTimestamp64Nano(dt64);
 
 ## toUnixTimestamp64Second \{#toUnixTimestamp64Second\}
 
-Добавлено в: v24.12
+Добавлено в: v24.12.0
 
 Преобразует [`DateTime64`](/sql-reference/data-types/datetime64) в значение [`Int64`](/sql-reference/data-types/int-uint) с фиксированной секундной точностью.
 Входное значение масштабируется вверх или вниз в зависимости от его точности.

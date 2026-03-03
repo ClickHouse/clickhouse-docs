@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## analysisOfVariance \{#analysisOfVariance\}
 
-引入于：v22.10
+引入于：v22.10.0
 
 提供用于单因素方差分析（ANOVA 检验）的一种统计检验方法。该检验用于多个服从正态分布的观测组，以判断这些组的均值是否全部相同。
 

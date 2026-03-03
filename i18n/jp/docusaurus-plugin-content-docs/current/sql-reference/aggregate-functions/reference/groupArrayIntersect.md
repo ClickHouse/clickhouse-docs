@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayIntersect \{#groupArrayIntersect\}
 
-導入バージョン: v24.2
+導入バージョン: v24.2.0
 
 指定された配列の共通部分を返します（すべての指定された配列に共通して含まれる要素を返します）。
 

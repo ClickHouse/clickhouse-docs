@@ -302,7 +302,7 @@ LAYOUT(REGEXP_TREE);
 
 ## dictGet \{#dictGet\}
 
-初出バージョン: v18.16
+初出バージョン: v18.16.0
 
 Dictionary から値を取得します。
 
@@ -362,7 +362,7 @@ LIMIT 3;
 
 ## dictGetAll \{#dictGetAll\}
 
-導入バージョン: v23.5
+導入バージョン: v23.5.0
 
 Dictionary 属性値を、Dictionary の設定に関係なく `All` データ型に変換します。
 
@@ -411,7 +411,7 @@ SELECT
 
 ## dictGetChildren \{#dictGetChildren\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 第 1 階層の子要素を索引の配列として返します。これは [dictGetHierarchy](#dictGetHierarchy) の逆変換です。
 
@@ -447,7 +447,7 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 
 ## dictGetDate \{#dictGetDate\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `Date` 型に変換します。
 
@@ -489,7 +489,7 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 
 ## dictGetDateOrDefault \{#dictGetDateOrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `Date` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -539,7 +539,7 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 
 ## dictGetDateTime \{#dictGetDateTime\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `DateTime` 型に変換します。
 
@@ -581,7 +581,7 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 
 ## dictGetDateTimeOrDefault \{#dictGetDateTimeOrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `DateTime` データ型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
 
@@ -631,7 +631,7 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 
 ## dictGetDescendants \{#dictGetDescendants\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 [`dictGetChildren`](#dictGetChildren) 関数を再帰的に `level` 回適用した場合と同様に、すべての子孫を返します。
 
@@ -677,7 +677,7 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 
 ## dictGetFloat32 \{#dictGetFloat32\}
 
-v1.1 で導入。
+v1.1.0 で導入。
 
 Dictionary の属性の値を、Dictionary の設定に関係なく `Float32` データ型に変換します。
 
@@ -719,7 +719,7 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 
 ## dictGetFloat32OrDefault \{#dictGetFloat32OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary 属性の値を `Float32` データ型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
 
@@ -768,7 +768,7 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 
 ## dictGetFloat64 \{#dictGetFloat64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary 属性の値を `Float64` 型に変換します。
 
@@ -810,7 +810,7 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 
 ## dictGetFloat64OrDefault \{#dictGetFloat64OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `Float64` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -860,7 +860,7 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 ## dictGetHierarchy \{#dictGetHierarchy\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [階層型 Dictionary](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries) 内のキーについて、そのすべての親を含む配列を返します。
 
@@ -896,7 +896,7 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 
 ## dictGetIPv4 \{#dictGetIPv4\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定内容に関係なく `IPv4` データ型に変換します。
 
@@ -938,7 +938,7 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 
 ## dictGetIPv4OrDefault \{#dictGetIPv4OrDefault\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `IPv4` データ型に変換するか、キーが見つからない場合には指定されたデフォルト値を返します。
 
@@ -988,7 +988,7 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 
 ## dictGetIPv6 \{#dictGetIPv6\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 `Dictionary` の属性値を、Dictionary の設定に関係なく `IPv6` データ型に変換します。
 
@@ -1030,7 +1030,7 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 
 ## dictGetIPv6OrDefault \{#dictGetIPv6OrDefault\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `IPv6` データ型として変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
 
@@ -1080,7 +1080,7 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 
 ## dictGetInt16 \{#dictGetInt16\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関わらず、属性値を `Int16` データ型に変換します。
 
@@ -1121,7 +1121,7 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 
 ## dictGetInt16OrDefault \{#dictGetInt16OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `Int16` データ型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
 
@@ -1170,7 +1170,7 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 
 ## dictGetInt32 \{#dictGetInt32\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `Int32` データ型に変換します。
 
@@ -1212,7 +1212,7 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 
 ## dictGetInt32OrDefault \{#dictGetInt32OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary 属性の値を `Int32` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -1262,7 +1262,7 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 
 ## dictGetInt64 \{#dictGetInt64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定内容に関係なく `Int64` データ型に変換します。
 
@@ -1304,7 +1304,7 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 
 ## dictGetInt64OrDefault \{#dictGetInt64OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `Int64` 型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -1354,7 +1354,7 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 
 ## dictGetInt8 \{#dictGetInt8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定内容に関係なくデータ型 `Int8` に変換します。
 
@@ -1396,7 +1396,7 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 
 ## dictGetInt8OrDefault \{#dictGetInt8OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関わらず、Dictionary 属性の値を `Int8` データ型に変換するか、キーが見つからない場合は指定したデフォルト値を返します。
 
@@ -1446,7 +1446,7 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 
 ## dictGetKeys \{#dictGetKeys\}
 
-導入バージョン: v25.12
+導入バージョン: v25.12.0
 
 指定された値と等しい属性を持つ Dictionary のキーを返します。この関数は、単一属性に対する `dictGet` の逆操作です。
 
@@ -1488,7 +1488,7 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 
 ## dictGetOrDefault \{#dictGetOrDefault\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
 Dictionary から値を取得します。キーが見つからない場合は、指定したデフォルト値を返します。
 
@@ -1525,7 +1525,7 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 
 ## dictGetOrNull \{#dictGetOrNull\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 Dictionary から値を取得し、キーが存在しない場合は NULL を返します。
 
@@ -1566,7 +1566,7 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 
 ## dictGetString \{#dictGetString\}
 
-v1.1 で導入。
+v1.1.0 で導入。
 
 Dictionary の設定に関係なく、Dictionary の属性値を `String` データ型に変換します。
 
@@ -1607,7 +1607,7 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 
 ## dictGetStringOrDefault \{#dictGetStringOrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `String` 型に変換するか、キーが見つからない場合は指定したデフォルト値を返します。
 
@@ -1657,7 +1657,7 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 
 ## dictGetUInt16 \{#dictGetUInt16\}
 
-v1.1 で導入。
+v1.1.0 で導入。
 
 Dictionary の属性値を、Dictionary の設定に依存せず `UInt16` データ型に変換します。
 
@@ -1699,7 +1699,7 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 
 ## dictGetUInt16OrDefault \{#dictGetUInt16OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `UInt16` データ型に変換するか、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -1749,7 +1749,7 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 
 ## dictGetUInt32 \{#dictGetUInt32\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 この関数は、Dictionary の属性値を Dictionary の設定に関係なく `UInt32` データ型に変換します。
 
@@ -1791,7 +1791,7 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 
 ## dictGetUInt32OrDefault \{#dictGetUInt32OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `UInt32` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
 
@@ -1841,7 +1841,7 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 
 ## dictGetUInt64 \{#dictGetUInt64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定内容にかかわらず `UInt64` データ型に変換します。
 
@@ -1883,7 +1883,7 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 
 ## dictGetUInt64OrDefault \{#dictGetUInt64OrDefault\}
 
-追加されたバージョン: v1.1
+追加されたバージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定内容に関係なく `UInt64` データ型に変換します。キーが見つからない場合は、指定したデフォルト値を返します。
 
@@ -1933,7 +1933,7 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 
 ## dictGetUInt8 \{#dictGetUInt8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `UInt8` 型に変換します。
 
@@ -1974,7 +1974,7 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 
 ## dictGetUInt8OrDefault \{#dictGetUInt8OrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定にかかわらず、Dictionary の属性値を `UInt8` データ型に変換します。キーが見つからない場合は、指定されたデフォルト値を返します。
 
@@ -2024,7 +2024,7 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 
 ## dictGetUUID \{#dictGetUUID\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の属性値を、Dictionary の設定に関係なく `UUID` データ型に変換します。
 
@@ -2066,7 +2066,7 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 
 ## dictGetUUIDOrDefault \{#dictGetUUIDOrDefault\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary の設定に関係なく、Dictionary の属性値を `UUID` データ型に変換し、キーが見つからない場合は指定されたデフォルト値を返します。
 
@@ -2116,7 +2116,7 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 
 ## dictHas \{#dictHas\}
 
-導入: v1.1
+導入: v1.1.0
 
 Dictionary にキーが存在するかどうかを判定します。
 
@@ -2165,7 +2165,7 @@ SELECT dictHas('hierarchical_dictionary', 7);
 
 ## dictIsIn \{#dictIsIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 Dictionary 内で階層構造全体をたどって、キーの祖先を判定します。
 

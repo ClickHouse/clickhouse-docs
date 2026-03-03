@@ -11758,15 +11758,6 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 使用插入表的结构，而不是从数据推断表结构。可选值：0 - 禁用，1 - 启用，2 - 自动
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-是否使用反序列化后的文本索引字典块缓存。
-在处理大量文本索引查询时，使用文本索引字典块缓存可以显著降低延迟并提高吞吐量。
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

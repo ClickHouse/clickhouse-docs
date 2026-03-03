@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtSamp \{#kurtSamp\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 シーケンスの[標本尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 

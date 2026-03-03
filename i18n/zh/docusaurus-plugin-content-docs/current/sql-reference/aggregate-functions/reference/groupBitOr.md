@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitOr \{#groupBitOr\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对一系列数字执行按位或运算。
 

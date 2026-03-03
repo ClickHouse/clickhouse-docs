@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## corr \{#corr\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculates the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 
@@ -36,13 +36,13 @@ corr(x, y)
 - `x` — 첫 번째 변수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 - `y` — 두 번째 변수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
-**Returned value**
+**반환값**
 
-Returns the Pearson correlation coefficient. [`Float64`](/sql-reference/data-types/float)
+피어슨 상관 계수를 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**예시**
 
-**Basic correlation calculation**
+**기본 상관 계산**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

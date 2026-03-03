@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersectionsPosition \{#maxIntersectionsPosition\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 用于计算[`maxIntersections`](/sql-reference/aggregate-functions/reference/maxintersections)函数各次出现位置的聚合函数。
 

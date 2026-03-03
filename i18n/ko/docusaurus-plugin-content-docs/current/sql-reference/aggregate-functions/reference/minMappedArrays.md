@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## minMappedArrays \{#minMappedArrays\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 `key` 배열에 지정된 키를 기준으로 `value` 배열에서 최소값을 계산합니다.
 

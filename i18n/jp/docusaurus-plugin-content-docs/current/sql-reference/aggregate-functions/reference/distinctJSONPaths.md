@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPaths \{#distinctJSONPaths\}
 
-導入バージョン: v24.9
+導入バージョン: v24.9.0
 
 [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson) カラムに保存されているパスのうち、一意なものの一覧を計算します。
 

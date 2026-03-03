@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileInterpolatedWeighted \{#quantileInterpolatedWeighted\}
 
-도입 버전: v23.1
+도입 버전: v23.1.0
 
 각 요소의 가중치를 고려하여, 선형 보간법을 사용해 수치형 데이터 시퀀스의 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayIntersect \{#groupArrayIntersect\}
 
-引入版本：v24.2
+引入版本：v24.2.0
 
 返回给定数组的交集（返回出现在所有给定数组中的所有元素）。
 
