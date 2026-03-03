@@ -23,7 +23,7 @@ Schema management tools are fundamental to a DevOps stack because often teams ne
 to be a prerequisite to deploying a new application version. These tools are also referred to as "schema migration" or "database migration" tools because users are "migrating" from one version of the
 database to another.
 
-Without schema management tooling, database changes are manual, error-prone, and hard to coordinate across teams and environments. While a user can always execute DDL directly to the database, these
+Without schema management tooling, database changes are manual, error-prone, and hard to coordinate across teams and environments. While you can always execute DDL directly to the database, these
 tools enable version control (tracking changes as versioned code), automated deployments (applying changes consistently across dev/staging/prod), rollback support (reverting changes when something
 goes wrong), and audit trails (recording what changed and when). For ClickHouse specifically, where certain DDL changes can be expensive or irreversible, having a structured migration process with
 review steps is especially critical.
