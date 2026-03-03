@@ -48,7 +48,7 @@ We recommend using the latest java client directly if performance/direct access 
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.9.6</version>
+            <version>0.9.7</version>
             <classifier>all</classifier>
         </dependency>
         ```
@@ -58,14 +58,14 @@ We recommend using the latest java client directly if performance/direct access 
 
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.9.6:all")
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.7:all")
         ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.9.6:all'
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.7:all'
         ```
 
     </TabItem>
@@ -85,10 +85,12 @@ If you are using JDBC driver within an application that requires jar to be added
 
 :::note
 `com.clickhouse.jdbc.ClickHouseDriver` is a facade class for the new and old JDBC implementations. It uses the new JDBC implementation by default. 
-You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` property to `true` in the connection properties.
+You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` **system** property to `true`. This property should be set before calling 
+Driver class. 
 
-`com.clickhouse.jdbc.Driver` is new JDBC implementation. 
-`com.clickhouse.jdbc.DriverV1` is old JDBC implementation.
+Alternative way to switch between version is to use Driver classes of each version directly: 
+- `com.clickhouse.jdbc.Driver` is new JDBC implementation (V2). 
+- `com.clickhouse.jdbc.DriverV1` is old JDBC implementation (V1).
 
 :::
 
@@ -236,7 +238,7 @@ There are few ways to change the mapping:
 - conversion from wider to narrower type isn't recommend because of data coruption risk.
 - `Bool` type acts as number, too.
 - All number types can be read as `java.lang.String`.
-
+- Storing java `Float.MAX_VALUE` as `Float` has issue (https://github.com/ClickHouse/clickhouse-java/issues/809). Saving same value as `Double` solves the issue.  
 
 **String Types**
 

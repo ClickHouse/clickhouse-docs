@@ -158,6 +158,8 @@ This happens because `toDateTime64` uses the server timezone and doesn’t know 
 ## Conversion tables {#conversion-tables}
 
 If a conversion pair is not mentioned in the tables below, then the conversion is not supported. For example, `Date` columns cannot be read as `java.sql.Timestamp` because there is no time part.
+Driver doesn't convert integer values to any of date/time values. Calling `pstmt.setLong("timestamp", 1772132359L)` will result `1772132359` written as number to a serevr what will be treated as
+UTC Unix timestamp in seconds.
 
 ### Writing values with `PreparedStatement#setObject` {#writing-values-setobject}
 
