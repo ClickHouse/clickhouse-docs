@@ -53,7 +53,7 @@ ClickHouse to ensure no surprise mutation or expensive rewrite hidden behind an 
 
 ### What does your team already use?
 
-Users tend to choose tools based on ecosystem familiarity. If your team is a Go shop, golang-migrate or Goose may feel natural. If you're in the Java ecosystem, you may already have Flyway or
+You'll likely gravitate toward tools based on ecosystem familiarity. If your team is a Go shop, golang-migrate or Goose may feel natural. If you're in the Java ecosystem, you may already have Flyway or
 Liquibase in place. If your infrastructure team uses Terraform and infrastructure-as-code patterns, Atlas's declarative model may be a comfortable fit. There's real value in picking something your
 team already knows — the best tool is one that actually gets adopted and used consistently.
 
