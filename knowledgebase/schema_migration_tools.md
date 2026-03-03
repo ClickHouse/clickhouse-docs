@@ -131,5 +131,5 @@ The following tools also work with ClickHouse. They may be a better fit dependin
 | [Liquibase](https://www.liquibase.org/) | Open Core | Teams that use Liquibase across multiple databases and want consistency| 
 | [clickhouse-migrations](https://www.npmjs.com/package/clickhouse-migrations) | Open Source | Node/TypeScript teams wanting a simple, ClickHouse-focused runner | 
 | [Houseplant](https://github.com/junehq/houseplant) | Open Source | Python teams wanting environment-aware, ClickHouse-specific tooling | 
-| [Sqitch](https://sqitch.org/) | Open Source | Teams needing explicit dependency management across complex deployments. | 
+| [Sqitch](https://sqitch.org/) | Open Source | Teams preferring native ClickHouse Client deployment scripting or needing explicit dependency management across complex deployments. | 
 | [Alembic](https://alembic.sqlalchemy.org/) (SQLAlchemy) | Open Source | Python shops already using SQLAlchemy for database access |
