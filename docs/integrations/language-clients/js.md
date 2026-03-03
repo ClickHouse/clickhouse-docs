@@ -1056,8 +1056,8 @@ Configurations parameters are:
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-The default logger implementation emits log records into `stdout` via `console.debug/info/warn/error` methods.
-You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `OFF`):
+The default logger implementation emits log records into `stdout` via `console.debug/info` methods and `stderr` via `console.warn/error` methods.
+You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `WARN`):
 
 ```typescript
 import type { Logger } from '@clickhouse/client'
@@ -1092,7 +1092,7 @@ class MyLogger implements Logger {
 const client = createClient({
   log: {
     LoggerClass: MyLogger,
-    level: ClickHouseLogLevel
+    level: ClickHouseLogLevel.DEBUG,
   }
 })
 ```
@@ -1161,14 +1161,14 @@ If you're happy with the performance and don't experience any issues, it is reco
 You can find the correct Keep-Alive timeout value in the server response headers by running the following command:
 
 ```sh
-curl -v --data-binary "SELECT 1" <clickhouse_url>
+curl -is --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
 
 ```text
-< Connection: Keep-Alive
-< Keep-Alive: timeout=10
+Connection: Keep-Alive
+Keep-Alive: timeout=10
 ```
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
@@ -1177,19 +1177,19 @@ In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `
 
 If you're experiencing `socket hang up` errors even when using the latest version of the client, there are the following options to resolve this issue:
 
-* Enable logs with at least `WARN` log level. This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
+* Enable logs with at least `WARN` log level (default). This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
   
   ```ts
   const client = createClient({
     log: { level: ClickHouseLogLevel.WARN },
   })
   ```
-  
-* Check your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
 
-* Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200–500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
+* Make sure that the desired configuration is applied to the correct client instance. If you have multiple client instances in your application, double-check that the one you're using for queries has the correct `keep_alive.idle_socket_ttl` value.
 
-* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
+* Reduce the `keep_alive.idle_socket_ttl` setting in the client configuration by 500 milliseconds. In certain situations, for example, high network latency between client and server, it could be beneficial, ruling out the situation where an outgoing request could obtain a socket that the server is going to close.
+
+* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to a load balancer or other network components closing long-lived connections or long running requests. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
 
   ```ts
   const client = createClient({
@@ -1217,6 +1217,31 @@ If you're experiencing `socket hang up` errors even when using the latest versio
     },
   })
   ```
+
+* Rule out potential issues with the rest of the network stack including Node.js itself by running a simple command-line test with the same ClickHouse instance and the same network path (i.e. from the same machine or network segment, e.g. a Kubernetes pod), for example, using `curl`:
+
+  ```sh
+  curl -is --user '<user>:<password>' --data-binary "SELECT 1" <clickhouse_url>
+  ```
+
+   You might want to run it in a loop for several minutes. If you see similar errors in `curl`, it is likely that the issue is not related to the client configuration, but rather to the network stack or the server configuration.
+
+* To test the connection with plain Node.js functionality, you can try to create a simple HTTP request to the ClickHouse server using the built-in `fetch` API:
+
+```ts
+  const response = await fetch('<clickhouse_url>?query=SELECT+1', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from('<user>:<password>').toString('base64'),
+    }
+  })
+```
+
+* In some cases the application code or the framework adapters can add a preemptive `ping()` before the actual query execution, which can lead to a situation where the `ping()` request is successful, but the subsequent query request fails with a "socket hang up" error due to the same underlying issue with idle connections. If you see that pattern in the logs, try to check if there is an option to disable preemptive pings in your framework or application code. This should also help with reducing the probability of getting rate limited by any of the intermediate network components.
+
+* Make sure that the application itself is getting enough CPU time and the network is not throttled by the hosting provider. Various means of monitoring like GC pause metrics, event loop lag metrics, and similar ones can also be helpful to rule out potential resource starvation issues.
+
+* Try checking your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
 
 ### Read-only users {#read-only-users}
 
