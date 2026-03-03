@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sum \{#sum\}
 
-導入: v1.1
+導入: v1.1.0
 
 数値の合計を計算します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactExclusive \{#quantilesExactExclusive\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 使用排除法（exclusive method），对数值数据序列在多个不同分位水平上同时精确计算多个[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

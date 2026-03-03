@@ -40,7 +40,7 @@ doc_type: 'reference'
 
 ## equals \{#equals\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2つの値を比較し、等しいかどうかを判定します。
 
@@ -76,7 +76,7 @@ SELECT 1 = 1, 1 = 2;
 
 ## globalIn \{#globalIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `in` と同様ですが、分散クエリではグローバルな Set 配布を行います。Set はすべてのリモートサーバーに送信されます。
 
@@ -108,7 +108,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalInIgnoreSet \{#globalInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `in` と同様ですが、分散クエリにおいて Set をグローバルに配布します。Set はすべてのリモートサーバーに送信されます。
 これは、Set を作成することなく型解析に使用される IgnoreSet のバリアントです。
@@ -141,7 +141,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalNotIn \{#globalNotIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `notIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
 
@@ -173,7 +173,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `notIn` と同様ですが、分散クエリでグローバルな Set 配布を使用します。Set はすべてのリモートサーバーに送信されます。
 これは、Set を作成することなく型解析を行うために使用される IgnoreSet のバリアントです。
@@ -206,7 +206,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotNullIn \{#globalNotNullIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `notNullIn` と同様ですが、分散クエリにおいてグローバル Set の分散を使用します。Set はすべてのリモートサーバーに送信されます。
 
@@ -238,7 +238,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `notNullIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
 これは、Set を作成せずに型解析を行うために使用される IgnoreSet 版です。
@@ -271,7 +271,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNullIn \{#globalNullIn\}
 
-導入: v1.1
+導入: v1.1.0
 
 `nullIn` と同様ですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
 
@@ -303,7 +303,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `nullIn` と同じですが、分散クエリにおいてグローバルな Set 分散を使用します。Set はすべてのリモートサーバーに送信されます。
 これは、型解析用に Set を作成せずに使用される IgnoreSet のバリアントです。
@@ -336,7 +336,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## greater \{#greater\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2つの値を比較して、「より大きい」関係かどうかを判定します。
 
@@ -371,7 +371,7 @@ SELECT 2 > 1, 1 > 2;
 
 ## greaterOrEquals \{#greaterOrEquals\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2 つの値を比較して、「以上」の関係にあるかどうかを判定します。
 
@@ -406,7 +406,7 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 
 ## in \{#in\}
 
-導入: v1.1
+導入: v1.1.0
 
 左オペランドが右オペランドの集合に含まれているかどうかを判定します。含まれていれば 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値はスキップされます（Set に含まれないものとして扱われます）。
 
@@ -418,8 +418,7 @@ in(x, set)
 
 **引数**
 
-* `x` — チェックする値。
-* `set` — 値の集合。
+* `x` — チェックする値。 - `set` — 値の集合。
 
 **返り値**
 
@@ -439,7 +438,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## inIgnoreSet \{#inIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの Set の要素かどうかをチェックします。要素であれば 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値はスキップされ（Set に含まれないものとして扱われ）ます。
 これは、Set を作成せずに型解析のために使用される IgnoreSet のバリアントです。
@@ -472,7 +471,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## isDistinctFrom \{#isDistinctFrom\}
 
-導入バージョン: v25.11
+導入バージョン: v25.11.0
 
 2 つの値に対して NULL セーフな「等値でない」比較を行います。
 一方の値が NULL で他方が NULL ではない場合を含め、値が異なる（等しくない）場合は `true` を返します。
@@ -517,7 +516,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-導入バージョン: v25.10
+導入バージョン: v25.10.0
 
 2 つの値の間で、NULL セーフな「等価」比較を実行します。
 両方の値が等しい場合、両方が NULL の場合も含めて `true` を返します。
@@ -562,7 +561,7 @@ SELECT
 
 ## less \{#less\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2 つの値を比較し、一方が他方より小さいかどうかを判定します。
 
@@ -597,7 +596,7 @@ SELECT 1 < 2, 2 < 1;
 
 ## lessOrEquals \{#lessOrEquals\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2 つの値を比較し、「以下（less-than-or-equal-to）」の関係かどうかを判定します。
 
@@ -632,7 +631,7 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 
 ## notEquals \{#notEquals\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2 つの値が等しくないかどうかを判定します。
 
@@ -668,7 +667,7 @@ SELECT 1 != 2, 1 != 1;
 
 ## notIn \{#notIn\}
 
-導入: v1.1
+導入: v1.1.0
 
 左オペランドが右オペランドの集合に属していないかどうかを判定します。集合に含まれていなければ 1 を返し、含まれていれば 0 を返します。左オペランド内の NULL 値はスキップされます。
 
@@ -701,7 +700,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notInIgnoreSet \{#notInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの Set に含まれて「いない」かどうかを判定します。Set に含まれていなければ 1 を、そうでなければ 0 を返します。左オペランド内の NULL 値は無視されます。
 これは、Set を作成せずに型解析を行うために使用される IgnoreSet バリアントです。
@@ -734,7 +733,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notNullIn \{#notNullIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの Set の要素に含まれて「いない」ことをチェックします。`notIn` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
 
@@ -767,7 +766,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## notNullInIgnoreSet \{#notNullInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの集合に含まれていないことをチェックします。`notIn` と異なり、NULL 値はスキップされません。NULL は集合要素と比較され、NULL = NULL は true と評価されます。
 これは、Set を作成せずに型解析を行うために使用される IgnoreSet のバリアントです。
@@ -800,7 +799,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## nullIn \{#nullIn\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの Set の要素であるかどうかを判定します。`in` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
 
@@ -832,7 +831,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## nullInIgnoreSet \{#nullInIgnoreSet\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 左オペランドが右オペランドの Set のメンバーかどうかをチェックします。`in` と異なり、NULL 値はスキップされません。NULL は Set の要素と比較され、NULL = NULL は true と評価されます。
 これは、Set を作成せずに型解析を行うために使用される IgnoreSet のバリアントです。

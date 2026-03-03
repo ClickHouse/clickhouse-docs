@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersections \{#maxIntersections\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 여러 구간으로 이루어진 집합에서, 모든 구간이 서로 최소 한 번 이상 교차한다고 가정할 때 구간들이 서로 교차하는 최대 횟수를 계산하는 집계 FUNCTION입니다.
 

@@ -2326,7 +2326,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -11804,15 +11804,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать структуру таблицы, в которую выполняется вставка, вместо определения схемы по данным. Возможные значения: 0 - отключено, 1 - включено, 2 - авто
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Определяет, использовать ли кэш десериализованного блока словаря текстового индекса.
-Использование кэша блока словаря текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11830,6 +11821,15 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может существенно снизить задержку и повысить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Следует ли использовать кэш десериализованной информации о токенах текстового индекса.
+Использование кэша токенов текстового индекса может значительно снизить задержку и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

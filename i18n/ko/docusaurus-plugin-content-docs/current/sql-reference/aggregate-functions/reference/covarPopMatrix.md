@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarPopMatrix \{#covarPopMatrix\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 N개의 변수에 대한 모집단 공분산 행렬을 반환합니다.
 

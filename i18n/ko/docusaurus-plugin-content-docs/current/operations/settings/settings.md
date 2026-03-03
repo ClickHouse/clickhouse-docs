@@ -2326,7 +2326,7 @@ Replicated\* 테이블(복제된 테이블, Replicated Table)에서 데이터를
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}]}/>
 
 `INSERT INTO`(Replicated\* 테이블 대상)에 대한 블록 단위 중복 제거를 활성화하거나 비활성화합니다.
 이 설정은 `insert_deduplicate` 및 `async_insert_deduplicate` 설정을 재정의합니다.
@@ -11770,15 +11770,6 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 데이터에 대한 스키마 추론 대신 삽입 테이블의 구조를 사용합니다. 가능한 값: 0 - 비활성화, 1 - 활성화, 2 - 자동
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-역직렬화된 텍스트 인덱스 딕셔너리 블록 캐시 사용 여부를 지정합니다.
-텍스트 인덱스 딕셔너리 블록 캐시를 사용하면 대량의 텍스트 인덱스 쿼리를 처리할 때 지연 시간을 크게 줄이고 처리량을 높일 수 있습니다.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11796,6 +11787,15 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 역직렬화된 텍스트 인덱스 포스팅 리스트 캐시를 사용할지 여부입니다.
 텍스트 인덱스 포스팅 캐시를 사용하면 다수의 텍스트 인덱스 쿼리를 처리할 때 지연 시간이 크게 줄어들고 처리량이 증가할 수 있습니다.
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+역직렬화된 텍스트 인덱스 토큰 정보 캐시를 사용할지 여부를 설정합니다.
+텍스트 인덱스 토큰 캐시를 사용하면 대량의 텍스트 인덱스 쿼리를 처리할 때 지연 시간을 크게 줄이고 처리량을 높일 수 있습니다.
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

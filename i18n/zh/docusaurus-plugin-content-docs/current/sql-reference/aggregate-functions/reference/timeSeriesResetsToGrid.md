@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResetsToGrid \{#timeSeriesResetsToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 聚合函数，将时间序列数据作为时间戳与数值的成对输入，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 `resets`](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets)。对于网格上的每一个点，用于计算 `resets` 的样本都会在指定的时间窗口内进行考虑。
 

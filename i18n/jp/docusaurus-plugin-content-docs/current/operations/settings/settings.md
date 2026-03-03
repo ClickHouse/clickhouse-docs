@@ -541,7 +541,7 @@ SQL の代替言語である PRQL を有効にします。
 
 <ExperimentalBadge/>
 
-**エイリアス**: `allow_experimental_statistic`
+**別名**: `allow_experimental_statistic`
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2324,7 +2324,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -11774,15 +11774,6 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 データからスキーマを推論するのではなく、挿入元テーブルの構造を使用します。指定可能な値: 0 - 無効、1 - 有効、2 - 自動
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-デシリアライズされたテキストインデックスDictionaryブロックのキャッシュを使用するかどうかを制御します。
-テキストインデックスDictionaryブロックキャッシュを使用すると、大量のテキストインデックスクエリを扱う場合のレイテンシを大幅に削減し、スループットを向上できます。
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11800,6 +11791,15 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 テキストインデックスのポスティングリストをデシリアライズした結果をキャッシュとして利用するかどうかを制御します。
 テキストインデックスに対するクエリ数が多い場合、このキャッシュを使用することでレイテンシを大幅に削減し、スループットを向上させることができます。
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+デシリアライズ済みのテキストインデックスのトークン情報をキャッシュとして使用するかどうかを指定します。
+大量のテキストインデックスクエリを扱う場合、テキストインデックストークンキャッシュを使用することで、レイテンシを大幅に削減し、スループットを向上させることができます。
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctDynamicTypes \{#distinctDynamicTypes\}
 
-Появилась в версии v24.9.
+Появилась в версии v24.9.0.
 
 Вычисляет список уникальных типов данных, содержащихся в столбце [Dynamic](https://clickhouse.com/docs/sql-reference/data-types/dynamic).
 

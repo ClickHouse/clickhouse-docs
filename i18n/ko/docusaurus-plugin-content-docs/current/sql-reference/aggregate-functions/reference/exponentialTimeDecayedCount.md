@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedCount \{#exponentialTimeDecayedCount\}
 
-도입된 버전: v21.12
+도입된 버전: v21.12.0
 
 시각 `t`에서 시계열의 누적 지수 감쇠 값을 반환합니다.
 

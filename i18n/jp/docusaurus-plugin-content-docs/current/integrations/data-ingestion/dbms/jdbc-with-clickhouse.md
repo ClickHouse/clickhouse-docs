@@ -23,7 +23,7 @@ clickhouse-jdbc-bridge には実験的なコードが含まれており、現在
 :::
 
 :::note
-JDBC を使用するには ClickHouse JDBC Bridge が必要なため、ローカルマシン上で `clickhouse-local` を使用して、データベースから ClickHouse Cloud へデータをストリーミングする必要があります。詳細については、ドキュメントの **Migrate** セクションにある [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) ページを参照してください。
+JDBC を使用するには ClickHouse JDBC Bridge が必要なため、ローカルマシン上で `clickhouse-local` を使用して、データベースから ClickHouse Cloud へデータをストリーミングする必要があります。詳細については、ドキュメントの **Migrate** セクションにある [**Using clickhouse-local**](/cloud/migration/clickhouse-local) ページを参照してください。
 :::
 
 **概要:** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> を [jdbc テーブル関数](/sql-reference/table-functions/jdbc.md) または [JDBC テーブルエンジン](/engines/table-engines/integrations/jdbc.md) と組み合わせて使用することで、<a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC ドライバー</a> が提供されている任意の外部データソース上のデータに ClickHouse からアクセスできるようになります。

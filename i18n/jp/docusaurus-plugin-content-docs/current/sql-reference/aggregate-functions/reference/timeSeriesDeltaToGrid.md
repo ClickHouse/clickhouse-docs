@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesDeltaToGrid \{#timeSeriesDeltaToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 この集約関数は、タイムスタンプと値のペアからなる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される等間隔の時間グリッド上で、このデータから [PromQL 風の delta](https://prometheus.io/docs/prometheus/latest/querying/functions/#delta) を計算します。グリッド上の各ポイントに対して、`delta` の計算に用いるサンプルは、指定された時間ウィンドウ内のものが対象になります。
 
@@ -17,7 +17,69 @@ doc_type: 'reference'
 この関数は実験的な機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効化してください。
 :::
 
+**Syntax**
+
 **構文**
+
+timeSeriesDeltaToGrid(start&#95;timestamp, end&#95;timestamp, grid&#95;step, staleness)(timestamp, value)
+
+**Parameters**
+
+`start_timestamp` — グリッドの開始を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
+
+`end_timestamp` — グリッドの終了を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
+
+`grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
+
+`staleness` — 対象とするサンプルの最大の「古さ（staleness）」を秒単位で指定します。staleness ウィンドウは左開・右閉の区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+
+**Arguments**
+
+`timestamp` — サンプルのタイムスタンプ。個々の値または配列を指定できます。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime) または [`Array(UInt32)`](/sql-reference/data-types/array) または [`Array(DateTime)`](/sql-reference/data-types/array)
+
+`value` — `timestamp` に対応する時系列の値。個々の値または配列を指定できます。[`Float*`](/sql-reference/data-types/float) または [`Array(Float*)`](/sql-reference/data-types/array)
+
+**Returned value**
+
+指定されたグリッド上の delta 値を返します。返される配列には、各時間グリッドポイントに対して 1 つの値が含まれます。特定のグリッドポイントについて、ウィンドウ内に delta 値を計算するのに十分なサンプルが存在しない場合、その値は NULL になります。[`Array(Nullable(Float64))`](/sql-reference/data-types/array)
+
+**Examples**
+
+**個々の timestamp-value ペアを用いた基本的な使用例**
+
+WITH
+-- NOTE: the gap between 140 and 190 is to show how values are filled for ts = 150, 165, 180 according to window parameter
+[110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
+[1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- array of values corresponding to timestamps above
+90 AS start&#95;ts,      -- start of timestamp grid
+90 + 120 AS end&#95;ts,  -- end of timestamp grid
+15 AS step&#95;seconds,  -- step of timestamp grid
+45 AS window&#95;seconds -- &quot;staleness&quot; window
+SELECT timeSeriesDeltaToGrid(start&#95;ts, end&#95;ts, step&#95;seconds, window&#95;seconds)(timestamp, value)
+FROM
+(
+-- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
+SELECT
+arrayJoin(arrayZip(timestamps, values)) AS ts&#95;and&#95;val,
+ts&#95;and&#95;val.1 AS timestamp,
+ts&#95;and&#95;val.2 AS value
+);
+
+┌─timeSeriesDeltaToGrid(start&#95;ts, end&#95;ts, step&#95;seconds, window&#95;seconds)(timestamp, value)─┐
+│ [NULL,NULL,0,3,4.5,3.75,NULL,NULL,3.75]                                               │
+└───────────────────────────────────────────────────────────────────────────────────────┘
+
+**配列引数の利用**
+
+-- it is possible to pass multiple samples of timestamps and values as Arrays of equal size
+WITH
+[110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
+[1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values,
+90 AS start&#95;ts,
+90 + 120 AS end&#95;ts,
+15 AS step&#95;seconds,
+45 AS window&#95;seconds
+SELECT timeSeriesDeltaToGrid(start&#95;ts, end&#95;ts, step&#95;seconds, window&#95;seconds)(timestamps, values);
 
 ```sql
 timeSeriesDeltaToGrid(start_timestamp, end_timestamp, grid_step, staleness)(timestamp, value)
@@ -69,7 +131,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**配列引数の利用**
+**配列引数の使用**
 
 ```sql title=Query
 -- it is possible to pass multiple samples of timestamps and values as Arrays of equal size

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## covarSamp \{#covarSamp\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculates the sample covariance:
 

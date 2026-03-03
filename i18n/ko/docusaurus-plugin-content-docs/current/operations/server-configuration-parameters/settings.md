@@ -4447,26 +4447,6 @@ TCP 프로토콜을 통해 클라이언트와 통신하는 포트입니다.
 
 <SettingsInfoBlock type="Bool" default_value="0" />분산 캐시에 임시 데이터를 저장합니다.
 
-## text_index_dictionary_block_cache_max_entries \{#text_index_dictionary_block_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="1000000" />텍스트 인덱스 딕셔너리 블록에 대한 캐시 크기(항목 수 기준)입니다. 0으로 설정하면 비활성화됩니다.
-
-## text_index_dictionary_block_cache_policy \{#text_index_dictionary_block_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />텍스트 인덱스 딕셔너리 블록 캐시 정책의 이름입니다.
-
-## text_index_dictionary_block_cache_size \{#text_index_dictionary_block_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="1073741824" />text 인덱스 딕셔너리 블록 캐시의 크기입니다. 0으로 설정하면 비활성화됩니다.
-
-:::note
-이 설정은 실행 중에 수정할 수 있으며, 즉시 적용됩니다.
-:::
-
-## text_index_dictionary_block_cache_size_ratio \{#text_index_dictionary_block_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />텍스트 인덱스 딕셔너리 블록 캐시에서 캐시 전체 크기 중 보호 큐가 차지하는 비율(SLRU 정책 사용 시)입니다.
-
 ## text_index_header_cache_max_entries \{#text_index_header_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />텍스트 인덱스 헤더 캐시의 크기(엔트리 수 기준)입니다. 0이면 비활성화됩니다.
@@ -4506,6 +4486,26 @@ TCP 프로토콜을 통해 클라이언트와 통신하는 포트입니다.
 ## text_index_postings_cache_size_ratio \{#text_index_postings_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />SLRU 정책 사용 시 텍스트 인덱스 포스팅 리스트 캐시에서 보호 큐의 크기가 캐시 전체 크기에 대해 차지하는 비율입니다.
+
+## text_index_tokens_cache_max_entries \{#text_index_tokens_cache_max_entries\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />텍스트 인덱스 토큰에 대한 캐시 크기(항목 수 기준)입니다. 0으로 설정하면 비활성화됩니다.
+
+## text_index_tokens_cache_policy \{#text_index_tokens_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" />텍스트 인덱스 토큰 캐시 정책의 이름입니다.
+
+## text_index_tokens_cache_size \{#text_index_tokens_cache_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />text 인덱스 토큰 캐시의 크기입니다. 0으로 설정하면 비활성화됩니다.
+
+:::note
+이 설정은 실행 중에 수정할 수 있으며, 즉시 적용됩니다.
+:::
+
+## text_index_tokens_cache_size_ratio \{#text_index_tokens_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />텍스트 인덱스 토큰 캐시에서 캐시 전체 크기 중 보호 큐가 차지하는 비율(SLRU 정책 사용 시)입니다.
 
 ## text_log \{#text_log\}
 

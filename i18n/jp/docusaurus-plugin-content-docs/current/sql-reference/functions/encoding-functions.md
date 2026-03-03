@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## bech32Decode \{#bech32Decode\}
 
-導入されたバージョン: v25.6
+導入されたバージョン: v25.6.0
 
 bech32 または bech32m アルゴリズムによって生成された Bech32 アドレス文字列をデコードします。
 
@@ -65,7 +65,7 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 
 ## bech32Encode \{#bech32Encode\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 バイナリデータ文字列と、人間が判読可能な部分 (HRP) を [Bech32 または Bech32m](https://en.bitcoin.it/wiki/Bech32) アルゴリズムでエンコードします。
 
@@ -130,7 +130,7 @@ abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 
 ## bin \{#bin\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
 引数の値をバイナリ表現に変換した文字列を、型ごとに次のロジックに従って返します:
 
@@ -183,7 +183,7 @@ SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────┘
 ```
 
-**Float64 型の数値**
+**Float64 数値**
 
 ```sql title=Query
 SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
@@ -210,7 +210,7 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 
 ## bitPositionsToArray \{#bitPositionsToArray\}
 
-導入バージョン: v21.7
+導入バージョン: v21.7.0
 
 この関数は、符号なし整数の2進数表現における、値が 1 のビットの位置（昇順）を返します。
 符号付き整数の入力は、最初に符号なし整数にキャストされます。
@@ -257,7 +257,7 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 
 ## bitmaskToArray \{#bitmaskToArray\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 この関数は整数を 2 のべき乗の和に分解します。
 2 のべき乗は昇順に並んだ配列として返されます。
@@ -304,7 +304,7 @@ SELECT bitmaskToArray(8) AS powers_of_two
 
 ## bitmaskToList \{#bitmaskToList\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 bitmaskToArray と似ていますが、2 の冪の値をカンマ区切りの文字列として返します。
 
@@ -338,7 +338,7 @@ SELECT bitmaskToList(50) AS powers_list
 
 ## char \{#char\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 渡された引数の数と同じ長さの文字列を返し、各バイトの値は対応する引数の値になります。数値型の複数の引数を受け取ります。
 
@@ -388,7 +388,7 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 
 ## hex \{#hex\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数の 16 進数表現を含む文字列を、型ごとに次のロジックに従って返します:
 
@@ -468,7 +468,7 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 
 ## hilbertDecode \{#hilbertDecode\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 Hilbert 曲線のインデックスを、多次元空間における座標を表す符号なし整数のタプルにデコードします。
 
@@ -525,7 +525,7 @@ SELECT hilbertDecode(1, 1)
 ["1"]
 ```
 
-**拡張モード**
+**Expanded モード**
 
 ```sql title=Query
 -- A single argument with a tuple specifying bit shifts will be right-shifted accordingly.
@@ -558,7 +558,7 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 
 ## hilbertEncode \{#hilbertEncode\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 符号なし整数のリストに対して、ヒルベルト曲線のコード値を計算します。
 
@@ -636,7 +636,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**展開された単一引数**
+**拡張単一引数**
 
 ```sql title=Query
 -- If a single argument is provided with a tuple specifying bit shifts, the function
@@ -670,7 +670,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 
 ## mortonDecode \{#mortonDecode\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 Morton encoding（ZCurve）を対応する符号なし整数タプルにデコードします。
 
@@ -728,7 +728,7 @@ SELECT mortonDecode(3, 53)
 ["1", "2", "3"]
 ```
 
-**単一引数**
+**引数 1 つ**
 
 ```sql title=Query
 SELECT mortonDecode(1, 1)
@@ -738,7 +738,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**拡張モード（一方の引数を縮小）**
+**拡張モード（1 つの引数を縮小）**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -776,7 +776,7 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 
 ## mortonEncode \{#mortonEncode\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 符号なし整数のリストに対して Morton エンコード（ZCurve）を計算します。
 
@@ -832,7 +832,7 @@ SELECT mortonEncode(1, 2, 3)
 53
 ```
 
-**拡張モード**
+**Expanded モード**
 
 ```sql title=Query
 -- Range expansion can be beneficial when you need a similar distribution for
@@ -857,7 +857,7 @@ SELECT mortonEncode(1)
 1
 ```
 
-**単一引数の詳細**
+**拡張モードで引数が 1 つの場合**
 
 ```sql title=Query
 SELECT mortonEncode(tuple(2), 128)
@@ -895,7 +895,7 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 
 ## sqidDecode \{#sqidDecode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 [sqid](https://sqids.org/) を数値の配列に変換します。
 
@@ -929,7 +929,7 @@ SELECT sqidDecode('gXHfJ1C6dN');
 
 ## sqidEncode \{#sqidEncode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 数値を [sqid](https://sqids.org/) に変換します。sqid は YouTube の動画 ID のような形式の ID 文字列です。
 
@@ -965,7 +965,7 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 
 ## unbin \{#unbin\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
 引数内の 2 ビットごとに値として解釈し、その値が表すバイトに変換します。この関数は `bin` の逆の処理を行います。
 
@@ -1020,7 +1020,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 
 ## unhex \{#unhex\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [`hex`](#hex) と逆の変換を行います。引数内の 16 進数の各 2 桁を数値として解釈し、その数値で表されるバイトに変換します。返される値はバイナリ文字列 (BLOB) です。
 
@@ -1037,7 +1037,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 引数の文字列に 16 進数以外の文字が含まれている場合は、実装依存の結果が返されます (例外はスローされません)。
 数値引数に対しては、hex(N) の逆変換は unhex() によっては行われません。
 
-**構文**
+**Syntax**
 
 ```sql
 unhex(arg)

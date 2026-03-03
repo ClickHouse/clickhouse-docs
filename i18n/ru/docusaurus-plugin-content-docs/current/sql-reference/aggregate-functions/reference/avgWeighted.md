@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avgWeighted \{#avgWeighted\}
 
-Введена в версии v20.1
+Введена в версии v20.1.0
 
 Вычисляет [взвешенное среднее арифметическое](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 
@@ -43,7 +43,7 @@ FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 └───────────────────┘
 ```
 
-**Смешанные целочисленные и дробные веса**
+**Смешанные целочисленные и вещественные веса**
 
 ```sql title=Query
 SELECT avgWeighted(x, w)

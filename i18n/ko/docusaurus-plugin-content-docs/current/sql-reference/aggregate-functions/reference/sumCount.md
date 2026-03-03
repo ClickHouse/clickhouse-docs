@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumCount \{#sumCount\}
 
-도입된 버전: v21.6
+도입된 버전: v21.6.0
 
 숫자의 합을 계산하면서 동시에 행의 개수를 셉니다. 이 함수는 ClickHouse 쿼리 옵티마이저에서 사용됩니다. 하나의 쿼리에 여러 `sum`, `count`, `avg` 함수가 포함된 경우, 계산을 재사용하기 위해 이들을 하나의 `sumCount` 함수로 대체할 수 있습니다. 이 함수를 명시적으로 사용할 일은 거의 없습니다.
 
@@ -52,4 +52,4 @@ SELECT sumCount(x) FROM s_table;
 
 **함께 보기**
 
-* [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) 설정입니다.
+* [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) 설정.

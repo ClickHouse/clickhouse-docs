@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 使用 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 算法计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 该函数会将序列中每个成员的权重考虑在内。

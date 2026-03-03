@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDD \{#quantileDD\}
 
-도입된 버전: v24.1
+도입된 버전: v24.1.0
 
 상대 오차 보장을 제공하면서 표본 데이터의 근사 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf)를 구성하여 동작합니다.

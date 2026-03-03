@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesGK \{#quantilesGK\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 数値データ系列に対して、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて、複数の異なるレベルの[分位点](https://en.wikipedia.org/wiki/Quantile)を同時に計算します。
 

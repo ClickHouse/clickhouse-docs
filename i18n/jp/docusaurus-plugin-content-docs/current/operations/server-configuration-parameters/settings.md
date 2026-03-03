@@ -4453,26 +4453,6 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 <SettingsInfoBlock type="Bool" default_value="0" />一時データを分散キャッシュ内に保存します。
 
-## text_index_dictionary_block_cache_max_entries \{#text_index_dictionary_block_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="1000000" />テキスト索引用 Dictionary ブロックキャッシュのエントリ数の上限。0 を指定すると無効になります。
-
-## text_index_dictionary_block_cache_policy \{#text_index_dictionary_block_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />テキスト索引用 Dictionary のブロックキャッシュポリシー名。
-
-## text_index_dictionary_block_cache_size \{#text_index_dictionary_block_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="1073741824" />テキスト索引 Dictionary ブロックのキャッシュサイズ。ゼロの場合は無効になります。
-
-:::note
-この設定は実行時に変更でき、直ちに反映されます。
-:::
-
-## text_index_dictionary_block_cache_size_ratio \{#text_index_dictionary_block_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />text index dictionary ブロックキャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズを、キャッシュ全体サイズに対する比率として指定します。
-
 ## text_index_header_cache_max_entries \{#text_index_header_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />テキスト索引ヘッダーキャッシュのサイズ（エントリ数単位）。0 の場合は無効です。
@@ -4512,6 +4492,26 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 ## text_index_postings_cache_size_ratio \{#text_index_postings_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />text index の posting list キャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズ比をキャッシュ全体サイズに対する割合として指定します。
+
+## text_index_tokens_cache_max_entries \{#text_index_tokens_cache_max_entries\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />テキスト索引用トークンキャッシュのエントリ数の上限。0 を指定すると無効になります。
+
+## text_index_tokens_cache_policy \{#text_index_tokens_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" />テキスト索引用トークンのキャッシュポリシー名。
+
+## text_index_tokens_cache_size \{#text_index_tokens_cache_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />テキスト索引トークンのキャッシュサイズ。ゼロの場合は無効になります。
+
+:::note
+この設定は実行時に変更でき、直ちに反映されます。
+:::
+
+## text_index_tokens_cache_size_ratio \{#text_index_tokens_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />text index tokens キャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズを、キャッシュ全体サイズに対する比率として指定します。
 
 ## text_log \{#text_log\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## cramersVBiasCorrected \{#cramersVBiasCorrected\}
 
-新增于：v22.1
+新增于：v22.1.0
 
 Cramer&#39;s V 是用于衡量表中两列之间关联程度的指标。
 [`cramersV` 函数](/sql-reference/aggregate-functions/reference/cramersv) 的结果范围是从 0（表示变量之间没有关联）到 1，并且只有在每个值都完全由另一个值决定时才会达到 1。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxMappedArrays \{#maxMappedArrays\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 `key` 배열에 지정된 키에 따라 `value` 배열에서 최댓값을 계산합니다.
 

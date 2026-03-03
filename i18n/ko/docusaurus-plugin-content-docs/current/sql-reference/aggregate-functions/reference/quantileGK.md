@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileGK \{#quantileGK\}
 
-도입된 버전: v23.4
+도입된 버전: v23.4.0
 
 [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) 알고리즘을 사용하여 수치 데이터 시퀀스의 [`quantile`](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 
@@ -56,7 +56,7 @@ SELECT quantileGK(1, 0.25)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────┘
 ```
 
-**더 높은 정확도의 분위수**
+**더 높은 정확도의 분위수 계산**
 
 ```sql title=Query
 SELECT quantileGK(100, 0.25)(number + 1) FROM numbers(1000);

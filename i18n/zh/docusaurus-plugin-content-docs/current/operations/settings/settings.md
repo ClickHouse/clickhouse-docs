@@ -2322,7 +2322,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -11758,15 +11758,6 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 使用插入表的结构，而不是从数据推断表结构。可选值：0 - 禁用，1 - 启用，2 - 自动
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-是否使用反序列化后的文本索引字典块缓存。
-在处理大量文本索引查询时，使用文本索引字典块缓存可以显著降低延迟并提高吞吐量。
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11784,6 +11775,15 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 是否使用反序列化后的文本索引 posting 列表缓存。
 在处理大量文本索引查询时，使用文本索引 postings 缓存可以显著降低延迟并提高吞吐量。
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+是否使用文本索引 token 反序列化结果的缓存。
+在处理大量文本索引查询时，使用文本索引 token 缓存可以显著降低延迟并提高吞吐量。
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
