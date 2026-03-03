@@ -33,7 +33,7 @@ review steps is especially critical.
 Schema management tools generally fall into two categories.
 
 #### Imperative
-These tools use versioned SQL files that describe *how* to get from state A to state B. You write explicit DDL statements like `CREATE TABLE`, `ALTER TABLE`, or `DROP COLUMN` into files. Then the tool runs the files in order and tracks which have been applied. In this category, the user dictates the exact SQL to run.
+These tools use versioned SQL files that describe *how* to get from state A to state B. You write explicit DDL statements like `CREATE TABLE`, `ALTER TABLE`, or `DROP COLUMN` into files. Then the tool runs the files in order and tracks which have been applied. In this category, you dictate the exact SQL to run.
 **Examples**: *golang-migrate, Goose, Flyway*
 
 #### Declarative
