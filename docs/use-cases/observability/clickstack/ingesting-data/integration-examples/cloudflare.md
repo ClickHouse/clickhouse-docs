@@ -45,7 +45,7 @@ This guide uses [ClickPipes](/integrations/clickpipes) to continuously ingest Cl
 :::note[Alternative: Direct HTTP ingestion]
 Cloudflare Logpush also supports pushing logs to [HTTP endpoints](https://developers.cloudflare.com/logs/get-started/enable-destinations/http/) directly. Since Cloudflare exports logs as newline-delimited JSON (NDJSON) and ClickHouse natively accepts this format via `JSONEachRow`, you can point Logpush directly at your ClickHouse Cloud HTTP interface using the following endpoint URL format:
 
-```
+```text
 https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT+JSONEachRow&header_Authorization=Basic+BASE64_CREDENTIALS
 ```
 
