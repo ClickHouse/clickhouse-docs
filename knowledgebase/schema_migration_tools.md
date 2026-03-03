@@ -19,7 +19,7 @@ for a new use case or performance optimization.
 
 ### Why is it important?
 
-Schema management tools are fundamental to a DevOps stack because often teams need to automate those changes alongside the deployment of their application. It's common for schema changes
+Schema management tools let you automate schema changes alongside application deployments. It's common for schema changes
 to be a prerequisite to deploying a new application version. These tools are also referred to as "schema migration" or "database migration" tools because users are "migrating" from one version of the
 database to another.
 
