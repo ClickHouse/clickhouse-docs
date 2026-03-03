@@ -122,7 +122,7 @@ These are the tools we generally recommend for ClickHouse users based on maturit
 
 ## Other Tools in the Ecosystem
 
-The following tools also work with ClickHouse. They may be a better fit for your specific situations and requirements. However we generally recommend the tools above.
+The following tools also work with ClickHouse. They may be a better fit depending on your stack and workflow. However we generally recommend the tools above.
 
 | Tool | License | Consider for... | 
 | :--- | :--- | :--- | 
