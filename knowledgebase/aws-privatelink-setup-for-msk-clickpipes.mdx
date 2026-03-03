@@ -43,9 +43,10 @@ Your MSK cluster VPC must be located in one of our ClickPipes regions. See [Clic
                         ]
                     },
                     "Action": [
-                        "kafka-cluster:Connect",
-                        "kafka-cluster:DescribeCluster",
-                        "kafka-cluster:ListClusters"
+                        "kafka:CreateVpcConnection",
+                        "kafka:GetBootstrapBrokers",
+                        "kafka:DescribeCluster",
+                        "kafka:DescribeClusterV2"
                     ]
                 }
             ]
