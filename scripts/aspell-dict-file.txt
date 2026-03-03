@@ -1299,10 +1299,12 @@ provisioner
 AsyncSinkBase
 BigDecimal
 BigInteger
+ClientConfigProperties
 DataStream
 DataWriter
 ElementConverter
 Flink's
+Kryo
 LocalDate
 LocalDateTime
 ZonedDateTime
@@ -1334,4 +1336,3 @@ writeMap
 writeString
 writeTuple
 writeUInt
-ClientConfigProperties

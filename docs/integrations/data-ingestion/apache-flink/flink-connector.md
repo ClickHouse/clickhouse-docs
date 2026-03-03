@@ -20,7 +20,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-This is the official Apache Flink Sink Connector supported by ClickHouse. It is built using Flink's [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) and the official ClickHouse [java client](https://github.com/ClickHouse/clickhouse-java).
+This is the official [Apache Flink Sink Connector](https://github.com/ClickHouse/flink-connector-clickhouse) supported by ClickHouse. It is built using Flink's [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) and the official ClickHouse [java client](https://github.com/ClickHouse/clickhouse-java).
 
 The connector supports Apache Flink's DataStream API. Table API support is [planned for a future release](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
@@ -369,6 +369,14 @@ Note: This metric measures the serialized data size sent over the network and mi
 
 - For optimal performance, ensure your DataStream element type is **not** a Generic type - see [here for Flink's type distinction](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class). Non-generic elements will avoid the serialization overhead incurred by Kryo and improve throughput to ClickHouse.
 - We recommend setting `maxBatchSize` to at least 1000 and ideally between 10,000 to 100,000. See [this guide on bulk inserts](https://clickhouse.com/docs/optimize/bulk-inserts) for more information.
+
+## Troubleshooting {#troubleshooting}
+
+- If you change your ClickHouse table schema while the connector is processing records of the old schema, ClickHouse may throw serialization errors. To recover, you must reset Flink state when you restart the connector.
+- If your connector's batch size is too small and flushes are too frequent, ClickHouse's background [part merging process](https://clickhouse.com/docs/merges) may slow down inserts and reduce the connector's throughput. Monitor the `numRequestSubmitted` and `actualRecordsPerBatch` metrics to help determine how to tune your batch size (`maxBatchSize`) and how frequently to flush.
+  - See [Advanced and recommended usage]({#advanced-and-recommended-usage}) for batch size recommendations.
+- If one or more records fails to insert into ClickHouse, the connector will retry the **entire batch**. This may result in duplicate records landing in your ClickHouse table. Depending on your table schema, using the [ReplacingMergeTree table engine](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree) will filter the duplicates by the sorting key (`ORDER BY` table section, not `PRIMARY KEY`).
+- If a batch fails to insert into ClickHouse more than the configured number of retries (settable via `ClickHouseClientConfig.setNumberOfRetries()`), the batch will be dropped. By default, the connector will attempt to re-insert a batch up to 3 times before dropping it.
 
 ## Contributing and support {#contributing-and-support}
 
