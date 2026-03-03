@@ -909,6 +909,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 Этот метод слияния текстовых индексов подобен тому, как объединяются [проекции](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) со столбцом `_part_offset`.
 Если индекс не материализован в исходной части, он строится, записывается во временный файл и затем объединяется с индексами из других частей и из других временных файлов индексов.
 
+**Отладка**
+
+Табличная функция [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) может быть использована для анализа текстовых индексов.
+
 ## Пример: набор данных Hacker News \{#hacker-news-dataset\}
 
 Рассмотрим, как текстовые индексы улучшают производительность на большом наборе данных с большим объёмом текста.

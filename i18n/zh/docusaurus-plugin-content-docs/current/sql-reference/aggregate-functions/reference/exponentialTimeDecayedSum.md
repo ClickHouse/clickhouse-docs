@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedSum \{#exponentialTimeDecayedSum\}
 
-引入版本：v21.12
+引入版本：v21.12.0
 
 返回时间序列在时间索引为 `t` 处，经指数平滑处理的移动平均值之和。
 

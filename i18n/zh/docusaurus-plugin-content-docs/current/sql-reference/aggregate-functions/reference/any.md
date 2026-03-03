@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## any \{#any\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 选择列中首次遇到的值。
 

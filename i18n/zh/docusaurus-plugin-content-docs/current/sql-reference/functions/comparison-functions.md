@@ -38,7 +38,7 @@ doc_type: 'reference'
 
 ## equals \{#equals\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 比较两个值是否相等。
 
@@ -74,7 +74,7 @@ SELECT 1 = 1, 1 = 2;
 
 ## globalIn \{#globalIn\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 与 `in` 相同，但在分布式查询中使用全局 Set 分发机制。该 Set 会被发送到所有远程服务器。
 
@@ -106,7 +106,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalInIgnoreSet \{#globalInIgnoreSet\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `in` 相同，但在分布式查询中使用全局 Set 分发。该 Set 会被发送到所有远程服务器。
 这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
@@ -139,7 +139,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalNotIn \{#globalNotIn\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `notIn` 相同，但在分布式查询中使用全局 Set 分发机制。该 Set 会被发送到所有远程服务器。
 
@@ -151,8 +151,7 @@ globalNotIn(x, set)
 
 **参数**
 
-* `x` — 要检查的值。
-* `set` — Set 类型的值集合。
+* `x` — 要检查的值。- `set` — Set 类型的值集合。
 
 **返回值**
 
@@ -172,7 +171,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `notIn` 相同，但在分布式查询中对 Set 使用全局分发机制。Set 会被发送到所有远程服务器。
 这是用于类型分析且无需创建 Set 的 IgnoreSet 变体。
@@ -205,7 +204,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotNullIn \{#globalNotNullIn\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `notNullIn` 相同，但在分布式查询中使用全局 Set 进行分发。该 Set 会被发送到所有远程服务器。
 
@@ -237,7 +236,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `notNullIn` 相同，但在分布式查询中使用全局 Set 进行分发。该 Set 会被发送到所有远程服务器。
 这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
@@ -270,7 +269,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNullIn \{#globalNullIn\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 `nullIn` 相同，但在分布式查询中使用全局 Set 分发。该 Set 会被发送到所有远程服务器。
 
@@ -302,7 +301,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 `nullIn` 相同，但在分布式查询中采用全局 Set 分发策略。该 Set 会被发送到所有远程服务器。
 这是用于类型分析且无需实际创建 Set 的 IgnoreSet 变体。
@@ -335,7 +334,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## greater \{#greater\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 用于比较两个值是否满足大于关系。
 
@@ -348,8 +347,7 @@ greater(a, b)
 
 **参数**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup>
-* `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
 
 **返回值**
 
@@ -371,7 +369,7 @@ SELECT 2 > 1, 1 > 2;
 
 ## greaterOrEquals \{#greaterOrEquals\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 用于比较两个值是否具有大于或等于的关系。
 
@@ -406,7 +404,7 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 
 ## in \{#in\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查左操作数是否属于右操作数的 Set。若属于则返回 1，否则返回 0。左操作数中的 NULL 值会被忽略（视为不在该 Set 中）。
 
@@ -438,7 +436,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## inIgnoreSet \{#inIgnoreSet\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 检查左操作数是否是右操作数 Set 的成员。如果是，则返回 1，否则返回 0。左操作数中的 NULL 值会被跳过（视为不在该 Set 中）。
 这是用于类型分析且无需创建 Set 的 IgnoreSet 变体。
@@ -471,7 +469,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## isDistinctFrom \{#isDistinctFrom\}
 
-引入版本：v25.11
+引入版本：v25.11.0
 
 对两个值执行 NULL 安全的“不等于”比较。
 如果两个值彼此不同（不相等），则返回 `true`，包括当一个值为 NULL 而另一个不为 NULL 的情况。
@@ -516,7 +514,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-引入于：v25.10
+引入于：v25.10.0
 
 对两个值执行空值安全的“相等”比较。
 如果两个值相等，则返回 `true`，包括两者都为 NULL 的情况。
@@ -561,7 +559,7 @@ SELECT
 
 ## less \{#less\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 比较两个值是否满足“小于”关系。
 
@@ -596,7 +594,7 @@ SELECT 1 < 2, 2 < 1;
 
 ## lessOrEquals \{#lessOrEquals\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 判断两个值之间是否满足小于等于关系。
 
@@ -631,7 +629,7 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 
 ## notEquals \{#notEquals\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 用于比较两个值是否不相等。
 
@@ -667,7 +665,7 @@ SELECT 1 != 2, 1 != 1;
 
 ## notIn \{#notIn\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查左侧操作数是否 **不** 是右侧操作数 Set 的成员。如果不在该 Set 中则返回 1，否则返回 0。左侧操作数中的 NULL 值会被忽略。
 
@@ -699,7 +697,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notInIgnoreSet \{#notInIgnoreSet\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查左操作数是否 *不* 是右操作数 Set 的成员。如果不在该 Set 中则返回 1，否则返回 0。左操作数中的 NULL 值会被跳过。
 这是 IgnoreSet 的一种变体，用于在不创建 Set 的情况下进行类型分析。
@@ -732,7 +730,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notNullIn \{#notNullIn\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查左操作数是否 **不是** 右操作数 Set 的成员。与 `notIn` 不同，NULL 值不会被忽略：NULL 会与 Set 中的元素进行比较，且 NULL = NULL 的结果为 true。
 
@@ -765,7 +763,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## notNullInIgnoreSet \{#notNullInIgnoreSet\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 检查左操作数是否 **不** 是右操作数集合的成员。与 `notIn` 不同，NULL 值不会被忽略：会将 NULL 与集合元素进行比较，且 NULL = NULL 的结果为 true。
 这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
@@ -778,8 +776,7 @@ notNullIn(x, set)
 
 **参数**
 
-* `x` — 要检查的值。
-* `set` — 值的 Set。
+* `x` — 要检查的值。 - `set` — 值的 Set。
 
 **返回值**
 
@@ -799,7 +796,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## nullIn \{#nullIn\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 检查左操作数是否是右操作数 Set 的成员。与 `in` 不同，NULL 值不会被跳过：会将 NULL 与 Set 中的元素进行比较，并且 NULL = NULL 的结果为 true。
 
@@ -831,7 +828,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## nullInIgnoreSet \{#nullInIgnoreSet\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查左操作数是否是右操作数集合的成员。与 `in` 不同，NULL 值不会被跳过：NULL 会与集合元素进行比较，并且 NULL = NULL 的结果为 true。
 这是 IgnoreSet 的一个变体，用于在不创建集合的情况下进行类型分析。

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## groupBitmapAnd \{#groupBitmapAnd\}
 
-Впервые появилась в: v20.1
+Впервые появилась в: v20.1.0
 
 Вычисляет AND над битмап-столбцом и возвращает его мощность множества.
 Если добавить суффикс-комбинатор [`-State`](/sql-reference/aggregate-functions/combinators#-state), возвращается объект битмапа.

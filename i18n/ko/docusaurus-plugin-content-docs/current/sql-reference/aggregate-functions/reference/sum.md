@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sum \{#sum\}
 
-도입: v1.1
+도입: v1.1.0
 
 숫자 값의 합을 계산합니다.
 

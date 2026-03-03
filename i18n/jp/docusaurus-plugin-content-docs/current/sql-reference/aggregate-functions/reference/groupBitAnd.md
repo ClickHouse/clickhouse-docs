@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitAnd \{#groupBitAnd\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値の系列に対してビット単位の AND 演算を適用します。
 

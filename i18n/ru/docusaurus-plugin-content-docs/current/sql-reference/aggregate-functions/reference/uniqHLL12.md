@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqHLL12 \{#uniqHLL12\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Вычисляет приблизительное количество различных значений аргументов с использованием алгоритма [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog).
 

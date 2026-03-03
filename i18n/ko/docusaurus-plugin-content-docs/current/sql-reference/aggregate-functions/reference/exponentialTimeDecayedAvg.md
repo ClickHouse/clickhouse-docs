@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedAvg \{#exponentialTimeDecayedAvg\}
 
-도입 버전: v21.12
+도입 버전: v21.12.0
 
 시점 `t`에서 시계열 값에 대한 지수 평활 가중 이동 평균을 반환합니다.
 

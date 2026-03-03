@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantiles \{#quantiles\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 在一次计算中，同时计算数值数据序列在不同分位点上的多个近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSamp \{#stddevSamp\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 숫자 데이터 시퀀스의 표본 표준 편차를 반환합니다.
 결과는 [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp)의 제곱근과 같습니다.

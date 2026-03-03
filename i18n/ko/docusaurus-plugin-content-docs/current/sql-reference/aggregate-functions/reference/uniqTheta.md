@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqTheta \{#uniqTheta\}
 
-도입 버전: v21.6
+도입 버전: v21.6.0
 
 [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework)을 사용하여 서로 다른 인자 값의 개수를 근사적으로 계산합니다.
 

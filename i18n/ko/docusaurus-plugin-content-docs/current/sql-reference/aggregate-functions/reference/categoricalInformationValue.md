@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 이진 타깃 변수와의 관계에서 범주형 특성의 정보값(Information Value, IV)을 계산합니다.
 
@@ -55,7 +55,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**USER 인구통계 정보가 포함된 여러 개의 범주형 특성**
+**사용자 인구통계 정보를 포함한 여러 개의 범주형 특성**
 
 ```sql title=Query
 SELECT categoricalInformationValue(

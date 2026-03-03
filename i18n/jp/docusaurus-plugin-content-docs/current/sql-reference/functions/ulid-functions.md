@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## ULIDStringToDateTime \{#ULIDStringToDateTime\}
 
-導入バージョン: v23.3
+導入バージョン: v23.3.0
 
 この関数は、[ULID](https://github.com/ulid/spec) からタイムスタンプ部分を抽出します。
 
@@ -59,7 +59,7 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 
 ## generateULID \{#generateULID\}
 
-導入されたバージョン: v23.2
+導入されたバージョン: v23.2.0
 
 [Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec) を生成します。
 

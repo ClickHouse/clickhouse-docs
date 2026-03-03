@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDeterministic \{#quantileDeterministic\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

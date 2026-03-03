@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## cramersVBiasCorrected \{#cramersVBiasCorrected\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 Cramer&#39;s V は、テーブル内の 2 つのカラム間の関連の強さを表す指標です。
 [`cramersV` 関数](/sql-reference/aggregate-functions/reference/cramersv) の結果は 0（変数間に関連がないことに対応）から 1 の範囲を取り、一方の値が他方によって一意に決まる場合にのみ 1 に到達します。

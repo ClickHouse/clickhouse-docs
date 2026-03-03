@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarPopMatrix \{#covarPopMatrix\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 N 個の変数についての母集団共分散行列を返します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxMappedArrays \{#maxMappedArrays\}
 
-引入版本：v20.5
+引入版本：v20.5.0
 
 根据 `key` 数组中指定的键，计算 `value` 数组中的最大值。
 

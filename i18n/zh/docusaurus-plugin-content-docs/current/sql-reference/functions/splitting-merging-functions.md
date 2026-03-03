@@ -24,7 +24,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## alphaTokens \{#alphaTokens\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 选取由 `a-z` 和 `A-Z` 范围内连续字节组成的子字符串，并返回这些子字符串构成的数组。
 
@@ -61,7 +61,7 @@ SELECT alphaTokens('abca1abc');
 
 ## arrayStringConcat \{#arrayStringConcat\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 使用提供的分隔符连接数组中各个值的字符串表示形式。分隔符是可选参数，默认值为空字符串。
 
@@ -96,7 +96,7 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 
 ## extractAllGroupsVertical \{#extractAllGroupsVertical\}
 
-引入版本：v20.5
+引入版本：v20.5.0
 
 使用正则表达式匹配字符串中的所有分组，并返回一个二维数组，其中每个子数组包含来自各分组的匹配片段，按它们在输入字符串中的出现顺序进行分组。
 
@@ -136,7 +136,7 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## ngrams \{#ngrams\}
 
-自 v21.11 引入
+自 v21.11.0 引入
 
 将 UTF-8 字符串拆分为长度为 `N` 的 n-grams。
 
@@ -169,7 +169,7 @@ SELECT ngrams('ClickHouse', 3);
 
 ## reverseBySeparator \{#reverseBySeparator\}
 
-引入版本：v26.2
+引入版本：v26.2.0
 
 反转由指定分隔符分隔的字符串中的子串顺序。
 该函数按分隔符拆分字符串，反转得到的各个部分的顺序，
@@ -261,7 +261,7 @@ SELECT reverseBySeparator('abcde', '')
 
 ## splitByChar \{#splitByChar\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将由指定常量字符串 `separator`（长度恰为一个字符）分隔的字符串拆分为子字符串数组。
 如果分隔符出现在字符串的开头或结尾，或存在多个连续分隔符，则可能产生空子字符串。
@@ -308,7 +308,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 
 ## splitByNonAlpha \{#splitByNonAlpha\}
 
-引入版本：v21.9
+引入版本：v21.9.0
 
 将由空白和标点字符分隔的字符串拆分为子字符串数组。
 
@@ -345,7 +345,7 @@ SELECT splitByNonAlpha('user@domain.com');
 
 ## splitByRegexp \{#splitByRegexp\}
 
-引入于：v21.6
+引入于：v21.6.0
 
 将以给定正则表达式分隔的字符串拆分为子字符串数组。
 如果提供的正则表达式为空，则会将字符串拆分为单个字符的数组。
@@ -405,7 +405,7 @@ SELECT splitByRegexp('', 'abcde');
 
 ## splitByString \{#splitByString\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 使用由多个字符组成的常量分隔符 `separator` 将字符串拆分为子字符串数组。
 如果字符串 `separator` 为空，则会将字符串 `s` 拆分为单个字符的数组。
@@ -464,7 +464,7 @@ SELECT splitByString('', 'abcde');
 
 ## splitByWhitespace \{#splitByWhitespace\}
 
-引入版本：v21.9
+引入版本：v21.9.0
 
 将以空白字符分隔的字符串拆分为子字符串数组。
 
@@ -501,7 +501,7 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 ## tokens \{#tokens\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 使用指定的 tokenizer 将字符串拆分为若干 token。
 

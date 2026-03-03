@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedSum \{#exponentialTimeDecayedSum\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 時系列について、時間インデックス `t` における指数平滑移動平均値の合計を返します。
 

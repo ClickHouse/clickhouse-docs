@@ -59,7 +59,7 @@ URL 関数には次の 2 種類があります。
 
 ## URLHierarchy \{#URLHierarchy\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 パスおよびクエリ文字列内で、末尾を区切り記号 `/`、`?`、`#` の位置までで切り詰めた URL を要素とする配列を返します。連続する区切り記号は 1 つの区切りとして扱われます。結果では、最初の要素はプロトコルとホストのみで構成され、その後の要素はパスが徐々に長くなっていくことで階層を形成します。
 
@@ -91,7 +91,7 @@ SELECT URLHierarchy('https://example.com/a/b?c=1')
 
 ## URLPathHierarchy \{#URLPathHierarchy\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL のパスコンポーネント部分を含む配列を返し、その末尾は文字 `/`、`?`、`#` のいずれかで打ち切られます。`URLHierarchy` と異なり、結果にはプロトコルとホストは含まれず、パスから始まります。連続した区切り文字は 1 文字として扱われます。
 
@@ -123,7 +123,7 @@ SELECT URLPathHierarchy('https://example.com/a/b?c=1')
 
 ## cutFragment \{#cutFragment\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL からフラグメント識別子（先頭の # を含む）を削除します。
 
@@ -157,7 +157,7 @@ SELECT cutFragment('http://example.com/path?query=value#fragment123');
 
 ## cutQueryString \{#cutQueryString\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL から `?` を含むクエリ文字列を削除します。
 
@@ -191,7 +191,7 @@ SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
 
 ## cutQueryStringAndFragment \{#cutQueryStringAndFragment\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL からクエリ文字列およびフラグメント識別子（先頭の `?` と `#` を含む）を削除します。
 
@@ -225,7 +225,7 @@ SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#
 
 ## cutToFirstSignificantSubdomain \{#cutToFirstSignificantSubdomain\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [最初の重要なサブドメイン](/sql-reference/functions/url-functions#firstSignificantSubdomain)までの上位サブドメインを含むドメイン名の一部を返します。
 
@@ -262,7 +262,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainCustom \{#cutToFirstSignificantSubdomainCustom\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 トップレベルドメインを含めて、最初の有意なサブドメインまでのドメイン名部分を返します。カスタムの [TLD リスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を引数として受け取ります。最新の TLD リストが必要な場合や、独自のリストを使用している場合に有用な関数です。
 
@@ -306,7 +306,7 @@ foo.there-is-no-such-domain
 
 ## cutToFirstSignificantSubdomainCustomRFC \{#cutToFirstSignificantSubdomainCustomRFC\}
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 トップレベルドメインを含めて、最初の重要なサブドメインまでのドメイン部分を返します。
 カスタムの [TLD リスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) の名前を受け取ります。
@@ -354,7 +354,7 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 
 ## cutToFirstSignificantSubdomainCustomWithWWW \{#cutToFirstSignificantSubdomainCustomWithWWW\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 最初の重要なサブドメインに到達するまでの上位サブドメインを含むドメイン部分を、&#39;www&#39; を削除せずに返します。カスタム TLD リスト名を指定できます。最新の TLD リストが必要な場合や、独自のリストを使用している場合に便利です。
 
@@ -399,7 +399,7 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 ## cutToFirstSignificantSubdomainCustomWithWWWRFC \{#cutToFirstSignificantSubdomainRFC\}
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 `www` を削除せずに、最初の重要なサブドメインまでの、トップレベルドメイン配下のサブドメインを含むドメイン名の一部を返します。
 カスタム TLD リストの名前を引数として受け取ります。
@@ -445,7 +445,7 @@ www.example.custom
 
 ## cutToFirstSignificantSubdomainRFC \{#cutToFirstSignificantSubdomainWithWWW\}
 
-導入: v22.10
+導入: v22.10.0
 
 ドメインのうち、トップレベルサブドメインから[「first significant subdomain」](/sql-reference/functions/url-functions#firstSignificantSubdomain)までを含む部分を返します。[`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain)と類似していますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)に準拠しています。
 
@@ -481,7 +481,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWW \{#cutToFirstSignificantSubdomainWithWWWRFC\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 ドメインのうち、トップレベルのサブドメインから「最初の重要なサブドメイン」までの部分を、&#39;www.&#39; を削除せずに返します。
 
@@ -520,7 +520,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWWRFC \{#cutURLParameter\}
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 トップレベルのサブドメインを「最初の重要なサブドメイン」に当たる部分まで含めたドメイン名の一部を、&#39;www&#39; を削除せずに返します。[`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW) と類似していますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠します。
 
@@ -556,7 +556,7 @@ SELECT
 
 ## cutURLParameter \{#cutWWW\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL に `name` パラメーターが存在する場合、それを削除します。
 この関数はパラメーター名内の文字のエンコード／デコードを行いません。例えば、`Client ID` と `Client%20ID` は別のパラメーター名として扱われます。
@@ -594,7 +594,7 @@ SELECT
 
 ## cutWWW \{#decodeURLComponent\}
 
-導入: v1.1
+導入: v1.1.0
 
 URL のドメインから、存在する場合は先頭の `www.` を削除します。
 
@@ -628,7 +628,7 @@ SELECT cutWWW('http://www.example.com/path?query=value#fragment');
 
 ## decodeURLComponent \{#decodeURLFormComponent\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL エンコードされた文字列を入力として受け取り、元の可読な形式にデコードします。
 
@@ -662,7 +662,7 @@ SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS Decod
 
 ## decodeURLFormComponent \{#domain\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 フォームエンコードの規則（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）に従って、URL エンコードされた文字列をデコードします。このとき `+` 記号はスペースに変換され、パーセントエンコードされた文字はデコードされます。
 
@@ -696,7 +696,7 @@ SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') A
 
 ## domain \{#domainRFC\}
 
-導入: v1.1
+導入: v1.1.0
 
 URL からホスト名を抽出します。
 
@@ -732,7 +732,7 @@ SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
 
 ## domainRFC \{#domainWithoutWWW\}
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 URL からホスト名を抽出します。
 [`domain`](#domain) と似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
@@ -769,7 +769,7 @@ SELECT
 
 ## domainWithoutWWW \{#domainWithoutWWWRFC\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL のドメイン部分を返します。先頭に `www.` が付いている場合はそれを除きます。
 
@@ -803,7 +803,7 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 
 ## domainWithoutWWWRFC \{#encodeURLComponent\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 先頭に `www.` が付いている場合は、それを取り除いたドメイン名を返します。[`domainWithoutWWW`](#domainWithoutWWW) と似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
 
@@ -839,7 +839,7 @@ SELECT
 
 ## encodeURLComponent \{#encodeURLFormComponent\}
 
-導入バージョン: v22.3
+導入バージョン: v22.3.0
 
 通常の文字列を受け取り、特殊文字を対応するパーセントエンコード表現に置き換えた URL エンコード（パーセントエンコード）形式の文字列に変換します。
 
@@ -873,7 +873,7 @@ SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedUR
 
 ## encodeURLFormComponent \{#extractURLParameter\}
 
-導入バージョン: v22.3
+導入バージョン: v22.3.0
 
 文字列をフォームエンコード規則（[RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)）に従ってエンコードします。スペースは+記号に変換され、特殊文字はパーセントエンコードされます。
 
@@ -907,7 +907,7 @@ SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS En
 
 ## extractURLParameter \{#extractURLParameterNames\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL に `name` パラメータが存在する場合はその値を返し、存在しない場合は空文字列を返します。
 同じ名前のパラメータが複数存在する場合は、最初に出現したものを返します。
@@ -944,7 +944,7 @@ SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'p
 
 ## extractURLParameterNames \{#extractURLParameters\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL パラメーターの名前に対応する文字列の配列を返します。
 値はデコードされません。
@@ -979,7 +979,7 @@ SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2
 
 ## extractURLParameters \{#firstSignificantSubdomain\}
 
-導入: v1.1
+導入: v1.1.0
 
 URL パラメータに対応する `name=value` 形式の文字列の配列を返します。
 値はデコードされません。
@@ -1014,7 +1014,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 
 ## firstSignificantSubdomain \{#firstSignificantSubdomainCustom\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 「first significant subdomain」（最初の有意なサブドメイン）を返します。
 
@@ -1050,7 +1050,7 @@ SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
 
 ## firstSignificantSubdomainCustom \{#firstSignificantSubdomainCustomRFC\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 カスタム TLD（Top-Level Domain）リストを使用して、URL の最初の有意なサブドメインを返します。カスタム TLD リスト名は、どのドメインサフィックスをトップレベルドメインとして扱うかを定義する設定を指します。これは非標準的な TLD 階層構造に対して有用です。この関数は、プロトコル部分およびそれ以降の部分が除去されていることを前提とした、簡略化された URL 解析アルゴリズムを使用します。
 
@@ -1083,7 +1083,7 @@ example
 
 ## firstSignificantSubdomainCustomRFC \{#firstSignificantSubdomainRFC\}
 
-導入: v22.10
+導入: v22.10.0
 
 `firstSignificantSubdomainCustom` と同様ですが、簡略化されたアルゴリズムではなく、RFC 3986 準拠の URL のパース処理を使用します。
 
@@ -1116,7 +1116,7 @@ example
 
 ## firstSignificantSubdomainRFC \{#fragment\}
 
-導入: v22.10
+導入: v22.10.0
 
 RFC 1034 に基づき「最初の有意なサブドメイン」を返します。
 
@@ -1136,7 +1136,7 @@ firstSignificantSubdomainRFC(url)
 
 ## fragment \{#netloc\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 先頭のハッシュ記号（#）を除いたフラグメント識別子を返します。
 
@@ -1170,7 +1170,7 @@ SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1
 
 ## netloc \{#path\}
 
-導入バージョン: v20.5
+導入バージョン: v20.5.0
 
 URL からネットワーク位置（`username:password@host:port`）を抽出します。
 
@@ -1204,7 +1204,7 @@ SELECT netloc('http://paul@www.example.com:80/');
 
 ## path \{#pathFull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL からクエリ文字列を除いたパスを返します。
 
@@ -1238,7 +1238,7 @@ SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?
 
 ## pathFull \{#port\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [`path`](#path) と同様ですが、URL のクエリ文字列およびフラグメントも含みます。
 
@@ -1272,7 +1272,7 @@ SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functio
 
 ## port \{#portRFC\}
 
-導入バージョン: v20.5
+導入バージョン: v20.5.0
 
 URL のポート番号を返します。URL にポートが含まれていない場合、または URL を解析できない場合は、`default_port` を返します。
 
@@ -1307,7 +1307,7 @@ SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/do
 
 ## portRFC \{#protocol\}
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 ポート番号を返します。URL にポートが含まれていない場合、または URL を解析できない場合は `default_port` を返します。
 [`port`](#port) と同様ですが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠しています。
@@ -1343,7 +1343,7 @@ SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:pass
 
 ## protocol \{#queryString\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL からプロトコルを抽出します。
 
@@ -1379,7 +1379,7 @@ SELECT protocol('https://clickhouse.com/');
 
 ## queryString \{#queryStringAndFragment\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL のクエリ文字列を返します。ただし、先頭の疑問符 `?` は含めず、`#` および `#` 以降はすべて除外します。
 
@@ -1413,7 +1413,7 @@ SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
 
 ## queryStringAndFragment \{#topLevelDomain\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 URL のクエリ文字列とフラグメント識別子を返します。
 
@@ -1447,7 +1447,7 @@ SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123
 
 ## topLevelDomain \{#topLevelDomainRFC\}
 
-導入: v1.1
+導入: v1.1.0
 
 URL からトップレベルドメインを抽出します。
 
@@ -1493,7 +1493,7 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 
 ## topLevelDomainRFC
 
-導入バージョン: v22.10
+導入バージョン: v22.10.0
 
 URL からトップレベルドメインを抽出します。
 [`topLevelDomain`](#topLevelDomain) と似ていますが、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に準拠します。

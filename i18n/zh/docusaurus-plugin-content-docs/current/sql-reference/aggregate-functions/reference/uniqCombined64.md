@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined64 \{#uniqCombined64\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 计算不同参数值的近似数量。
 它与 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) 相同，但对所有数据类型都使用 64 位哈希，而不仅仅是对 String 数据类型使用。

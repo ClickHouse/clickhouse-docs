@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArray \{#groupArray\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数の値から配列を作成します。
 値は任意の（不定の）順序で配列に追加されます。

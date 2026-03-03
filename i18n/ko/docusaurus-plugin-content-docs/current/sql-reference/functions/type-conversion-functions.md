@@ -121,7 +121,7 @@ LIMIT 10
 
 ## CAST \{#CAST\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 데이터 타입으로 값을 변환합니다.
 `reinterpret` 함수와 달리 CAST는 대상 타입에서 동일한 값을 생성하려고 시도합니다.
@@ -185,7 +185,7 @@ SELECT '123'::UInt32
 
 ## DATE \{#DATE\}
 
-도입 버전: v21.2
+도입 버전: v21.2.0
 
 인수를 Date 데이터 타입으로 변환합니다. MySQL 호환성을 위한 `toDate`의 별칭으로, `toDate`와 동일하게 동작합니다.
 
@@ -218,7 +218,7 @@ SELECT DATE('2023-01-01')
 
 ## accurateCast \{#accurateCast\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 값을 지정된 데이터 타입으로 변환합니다. [`CAST`](#CAST)와 달리 `accurateCast`는 더 엄격한 타입 검사를 수행하며, 변환으로 인해 데이터 정밀도가 손실되거나 변환이 불가능한 경우 예외를 발생시킵니다.
 
@@ -268,7 +268,7 @@ SELECT accurateCast('123.45', 'Float64')
 
 ## accurateCastOrDefault \{#accurateCastOrDefault\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 값을 지정된 데이터 타입으로 변환합니다.
 [`accurateCast`](#accurateCast)와 유사하지만, 변환을 정확하게 수행할 수 없는 경우 예외를 발생시키는 대신 기본값을 반환합니다.
@@ -333,7 +333,7 @@ SELECT accurateCastOrDefault('abc', 'UInt32')
 
 ## accurateCastOrNull \{#accurateCastOrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 값을 지정한 데이터 타입으로 변환합니다.
 [`accurateCast`](#accurateCast)와 유사하지만, 변환을 정확하게 수행할 수 없는 경우 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -384,7 +384,7 @@ SELECT accurateCastOrNull('abc', 'UInt32')
 
 ## formatRow \{#formatRow\}
 
-도입 버전: v20.7
+도입 버전: v20.7.0
 
 임의의 표현식을 지정된 형식을 사용해 문자열로 변환합니다.
 
@@ -453,7 +453,7 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 
 ## formatRowNoNewline \{#formatRowNoNewline\}
 
-도입된 버전: v20.7
+도입된 버전: v20.7.0
 
 [`formatRow`](#formatRow)와 동일하지만, 각 행의 줄 바꿈 문자를 제거합니다.
 
@@ -494,7 +494,7 @@ FROM numbers(3)
 
 ## fromUnixTimestamp64Micro \{#fromUnixTimestamp64Micro\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 마이크로초 단위 Unix 타임스탬프를 마이크로초 정밀도의 `DateTime64` 값으로 변환합니다.
 
@@ -532,7 +532,7 @@ SELECT fromUnixTimestamp64Micro(1640995200123456)
 
 ## fromUnixTimestamp64Milli \{#fromUnixTimestamp64Milli\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 밀리초 단위의 Unix 타임스탬프를 밀리초 정밀도의 `DateTime64` 값으로 변환합니다.
 
@@ -570,7 +570,7 @@ SELECT fromUnixTimestamp64Milli(1640995200123)
 
 ## fromUnixTimestamp64Nano \{#fromUnixTimestamp64Nano\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 나노초 단위 Unix 타임스탬프를 나노초 정밀도의 [`DateTime64`](/sql-reference/data-types/datetime64) 값으로 변환합니다.
 
@@ -612,7 +612,7 @@ SELECT fromUnixTimestamp64Nano(1640995200123456789)
 
 ## fromUnixTimestamp64Second \{#fromUnixTimestamp64Second\}
 
-도입된 버전: v24.12
+도입된 버전: v24.12.0
 
 초 단위 Unix 타임스탬프를 초 정밀도의 `DateTime64` 값으로 변환합니다.
 
@@ -650,7 +650,7 @@ SELECT fromUnixTimestamp64Second(1640995200)
 
 ## parseDateTime \{#parseDateTime\}
 
-도입 버전: v23.3
+도입 버전: v23.3.0
 
 MySQL 날짜 형식 문자열에 따라 날짜와 시간 문자열을 파싱합니다.
 
@@ -692,7 +692,7 @@ SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTime32BestEffort \{#parseDateTime32BestEffort\}
 
-도입 버전: v20.9
+도입 버전: v20.9.0
 
 날짜와 시간의 문자열 표현을 [`DateTime`](/sql-reference/data-types/datetime) 데이터 타입으로 변환합니다.
 
@@ -757,7 +757,7 @@ AS parseDateTime32BestEffort
 
 ## parseDateTime32BestEffortOrNull \{#parseDateTime32BestEffortOrNull\}
 
-도입: v20.9
+도입: v20.9.0
 
 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환한다는 점을 제외하면 [`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일합니다.
 
@@ -795,7 +795,7 @@ SELECT
 
 ## parseDateTime32BestEffortOrZero \{#parseDateTime32BestEffortOrZero\}
 
-도입된 버전: v20.9
+도입된 버전: v20.9.0
 
 [`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0값의 날짜 또는 날짜-시간 값을 반환합니다.
 
@@ -833,7 +833,7 @@ SELECT
 
 ## parseDateTime64 \{#parseDateTime64\}
 
-도입 버전: v24.11
+도입 버전: v24.11.0
 
 MySQL 날짜 형식 문자열에 따라, 초 단위 이하 정밀도를 포함한 날짜 및 시간 문자열을 파싱합니다.
 
@@ -873,7 +873,7 @@ SELECT parseDateTime64('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64BestEffort \{#parseDateTime64BestEffort\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 함수와 동일하지만 밀리초 및 마이크로초까지 파싱하며 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 데이터 타입을 반환합니다.
 
@@ -920,7 +920,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## parseDateTime64BestEffortOrNull \{#parseDateTime64BestEffortOrNull\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -958,7 +958,7 @@ SELECT parseDateTime64BestEffortOrNull('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortOrZero \{#parseDateTime64BestEffortOrZero\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜-시간 값을 반환합니다.
 
@@ -996,7 +996,7 @@ SELECT parseDateTime64BestEffortOrZero('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortUS \{#parseDateTime64BestEffortUS\}
 
-도입 버전: v22.8
+도입 버전: v22.8.0
 
 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 이 함수는 미국식 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용합니다.
 
@@ -1034,7 +1034,7 @@ SELECT parseDateTime64BestEffortUS('02/10/2025 12:30:45.123') AS us_format,
 
 ## parseDateTime64BestEffortUSOrNull \{#parseDateTime64BestEffortUSOrNull\}
 
-도입 버전: v22.8
+도입 버전: v22.8.0
 
 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 미국식 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하며, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1072,7 +1072,7 @@ SELECT parseDateTime64BestEffortUSOrNull('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64BestEffortUSOrZero \{#parseDateTime64BestEffortUSOrZero\}
 
-도입 버전: v22.8
+도입 버전: v22.8.0
 
 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우에는 US 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하며, 처리할 수 없는 날짜 형식을 만나면 zero date 또는 zero date time을 반환합니다.
 
@@ -1110,7 +1110,7 @@ SELECT parseDateTime64BestEffortUSOrZero('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64InJodaSyntax \{#parseDateTime64InJodaSyntax\}
 
-도입 버전: v24.10
+도입 버전: v24.10.0
 
 Joda 날짜 형식 문자열을 사용하여 초 단위 이하 정밀도를 포함한 날짜와 시간 문자열을 파싱합니다.
 
@@ -1152,7 +1152,7 @@ SELECT parseDateTime64InJodaSyntax('2025-01-04 23:00:00.123', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTime64InJodaSyntaxOrNull \{#parseDateTime64InJodaSyntaxOrNull\}
 
-도입된 버전: v24.10
+도입된 버전: v24.10.0
 
 [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1189,7 +1189,7 @@ SELECT parseDateTime64InJodaSyntaxOrNull('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64InJodaSyntaxOrZero \{#parseDateTime64InJodaSyntaxOrZero\}
 
-도입 버전: v24.10
+도입 버전: v24.10.0
 
 [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0 날짜 값을 반환합니다.
 
@@ -1226,7 +1226,7 @@ SELECT parseDateTime64InJodaSyntaxOrZero('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64OrNull \{#parseDateTime64OrNull\}
 
-도입된 버전: v24.11
+도입된 버전: v24.11.0
 
 [`parseDateTime64`](#parseDateTime64)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1263,7 +1263,7 @@ SELECT parseDateTime64OrNull('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64OrZero \{#parseDateTime64OrZero\}
 
-도입 버전: v24.11
+도입 버전: v24.11.0
 
 [`parseDateTime64`](#parseDateTime64)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 zero date(0 날짜)를 반환합니다.
 
@@ -1300,7 +1300,7 @@ SELECT parseDateTime64OrZero('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTimeBestEffort \{#parseDateTimeBestEffort\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `String` 표현의 날짜와 시간을 `DateTime` 데이터 타입으로 변환합니다.
 이 함수는 [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html), [RFC 1123 - 5.2.14 RFC-822](https://datatracker.ietf.org/doc/html/rfc822) 날짜 및 시간 사양, ClickHouse 고유 형식 및 그 외 일부 날짜와 시간 형식을 파싱합니다.
@@ -1346,7 +1346,7 @@ SELECT parseDateTimeBestEffort('23/10/2025 12:12:57') AS parseDateTimeBestEffort
 └─────────────────────────┘
 ```
 
-**시간대 포함**
+**시간대 지정**
 
 ```sql title=Query
 SELECT parseDateTimeBestEffort('Sat, 18 Aug 2025 07:22:16 GMT', 'Asia/Istanbul') AS parseDateTimeBestEffort
@@ -1373,7 +1373,7 @@ SELECT parseDateTimeBestEffort('1735689600') AS parseDateTimeBestEffort
 
 ## parseDateTimeBestEffortOrNull \{#parseDateTimeBestEffortOrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 이 함수는 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식 및 기타 일부 날짜와 시간 형식을 파싱합니다.
@@ -1423,7 +1423,7 @@ SELECT parseDateTimeBestEffortOrNull('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortOrZero \{#parseDateTimeBestEffortOrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜-시간 값을 반환합니다.
 이 함수는 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식 및 기타 일부 날짜와 시간 형식을 해석합니다.
@@ -1473,13 +1473,13 @@ SELECT parseDateTimeBestEffortOrZero('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortUS \{#parseDateTimeBestEffortUS\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 이 함수는 ISO 날짜 형식(예: `YYYY-MM-DD hh:mm:ss`)과 월(month)과 일(day) 구성 요소를 모호하지 않게 추출할 수 있는 다른 날짜 형식(예: `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh`, `YYYY-MM-DD hh:mm:ss ±h:mm`)에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작합니다.
 월과 일(day) 구성 요소를 모호하지 않게 추출할 수 없는 경우(예: `MM/DD/YYYY`, `MM-DD-YYYY`, `MM-DD-YY`)에는 `DD/MM/YYYY`, `DD-MM-YYYY`, `DD-MM-YY` 대신 미국식 날짜 형식을 우선적으로 사용합니다.
 단, 앞의 설명에 대한 예외로 월(month) 값이 12보다 크고 31 이하인 경우에는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)의 동작으로 돌아가며, 예를 들어 `15/08/2020`은 `2020-08-15`로 파싱됩니다.
 
-**구문**
+**Syntax**
 
 ```sql
 parseDateTimeBestEffortUS(time_string[, time_zone])
@@ -1512,7 +1512,7 @@ SELECT parseDateTimeBestEffortUS('02/10/2025') AS us_format,
 
 ## parseDateTimeBestEffortUSOrNull \{#parseDateTimeBestEffortUSOrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) FUNCTION과 동일하지만, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1551,7 +1551,7 @@ SELECT parseDateTimeBestEffortUSOrNull('02/10/2025') AS valid_us,
 
 ## parseDateTimeBestEffortUSOrZero \{#parseDateTimeBestEffortUSOrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) 함수와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 제로 날짜(zero date)인 `1970-01-01` 또는 시간 정보가 포함된 제로 날짜 `1970-01-01 00:00:00`를 반환합니다.
 
@@ -1590,7 +1590,7 @@ SELECT parseDateTimeBestEffortUSOrZero('02/10/2025') AS valid_us,
 
 ## parseDateTimeInJodaSyntax \{#parseDateTimeInJodaSyntax\}
 
-도입된 버전: v23.3
+도입된 버전: v23.3.0
 
 Joda 날짜 형식 문자열에 따라 날짜와 시간 문자열을 파싱합니다.
 
@@ -1632,7 +1632,7 @@ SELECT parseDateTimeInJodaSyntax('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:ss')
 
 ## parseDateTimeInJodaSyntaxOrNull \{#parseDateTimeInJodaSyntaxOrNull\}
 
-도입: v23.3
+도입: v23.3.0
 
 [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1669,7 +1669,7 @@ SELECT parseDateTimeInJodaSyntaxOrNull('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeInJodaSyntaxOrZero \{#parseDateTimeInJodaSyntaxOrZero\}
 
-도입 버전: v23.3
+도입 버전: v23.3.0
 
 [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0인 날짜 값을 반환합니다.
 
@@ -1706,7 +1706,7 @@ SELECT parseDateTimeInJodaSyntaxOrZero('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeOrNull \{#parseDateTimeOrNull\}
 
-도입된 버전: v23.3
+도입된 버전: v23.3.0
 
 [`parseDateTime`](#parseDateTime)와 동일하지만, 구문 분석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
@@ -1745,7 +1745,7 @@ SELECT parseDateTimeOrNull('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTimeOrZero \{#parseDateTimeOrZero\}
 
-도입 버전: v23.3
+도입 버전: v23.3.0
 
 [`parseDateTime`](#parseDateTime)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0값의 날짜를 반환합니다.
 
@@ -1782,7 +1782,7 @@ SELECT parseDateTimeOrZero('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## reinterpret \{#reinterpret\}
 
-도입: v1.1
+도입: v1.1.0
 
 제공된 값 `x`에 대해 메모리 상의 동일한 바이트 시퀀스를 사용하여 대상 타입으로 재해석합니다.
 
@@ -1832,7 +1832,7 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 
 ## reinterpretAsDate \{#reinterpretAsDate\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 리틀 엔디언 순서를 가정하여, Unix epoch인 1970-01-01 이후 경과한 일 수를 나타내는 Date 값으로 재해석합니다.
 
@@ -1867,7 +1867,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A')
 
 ## reinterpretAsDateTime \{#reinterpretAsDateTime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 DateTime 값으로 다시 해석합니다(리틀 엔디언 바이트 순서를 가정). 이 값은 Unix epoch의 시작인 1970-01-01 이후 경과한 일 수를 나타냅니다.
 
@@ -1902,7 +1902,7 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A')
 
 ## reinterpretAsFixedString \{#reinterpretAsFixedString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 고정 길이 문자열(FixedString)로 재해석합니다(리틀 엔디언 순서를 가정합니다).
 끝의 널 바이트는 무시되며, 예를 들어 `UInt32` 값 255에 대해 이 함수는 단일 문자로 이루어진 문자열을 반환합니다.
@@ -1940,7 +1940,7 @@ SELECT
 
 ## reinterpretAsFloat32 \{#reinterpretAsFloat32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 `Float32` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력값은 정의되지 않습니다.
@@ -1976,7 +1976,7 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x)
 
 ## reinterpretAsFloat64 \{#reinterpretAsFloat64\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 `Float64` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 결과는 정의되지 않은 값이 됩니다.
@@ -2012,7 +2012,7 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
 
 ## reinterpretAsInt128 \{#reinterpretAsInt128\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 `Int128` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
@@ -2052,7 +2052,7 @@ SELECT
 
 ## reinterpretAsInt16 \{#reinterpretAsInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 Int16 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
@@ -2092,7 +2092,7 @@ SELECT
 
 ## reinterpretAsInt256 \{#reinterpretAsInt256\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 `Int256` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면, 결과는 정의되지 않습니다.
@@ -2132,7 +2132,7 @@ SELECT
 
 ## reinterpretAsInt32 \{#reinterpretAsInt32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 Int32 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로는 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
@@ -2172,7 +2172,7 @@ SELECT
 
 ## reinterpretAsInt64 \{#reinterpretAsInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 Int64 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로 입력값을 표현할 수 없는 경우 결과는 정의되지 않습니다.
@@ -2212,7 +2212,7 @@ SELECT
 
 ## reinterpretAsInt8 \{#reinterpretAsInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 Int8 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우 출력은 정의되지 않습니다.
@@ -2252,7 +2252,7 @@ SELECT
 
 ## reinterpretAsString \{#reinterpretAsString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 문자열로 재해석합니다(리틀 엔디언 순서를 가정합니다).
 마지막에 있는 널 바이트는 무시됩니다. 예를 들어, 이 함수는 UInt32 값 255에 대해 한 글자로 이루어진 문자열을 반환합니다.
@@ -2290,7 +2290,7 @@ SELECT
 
 ## reinterpretAsUInt128 \{#reinterpretAsUInt128\}
 
-도입: v1.1
+도입: v1.1.0
 
 입력 값을 UInt128 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
@@ -2330,7 +2330,7 @@ SELECT
 
 ## reinterpretAsUInt16 \{#reinterpretAsUInt16\}
 
-도입: v1.1
+도입: v1.1.0
 
 입력 값을 UInt16 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
@@ -2370,7 +2370,7 @@ SELECT
 
 ## reinterpretAsUInt256 \{#reinterpretAsUInt256\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 UInt256 형식의 값으로 다시 해석합니다.
 [`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 형식으로 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
@@ -2410,7 +2410,7 @@ SELECT
 
 ## reinterpretAsUInt32 \{#reinterpretAsUInt32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 `UInt32` 타입의 값으로 다시 해석합니다.
 [`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 결과는 정의되지 않습니다.
@@ -2450,7 +2450,7 @@ SELECT
 
 ## reinterpretAsUInt64 \{#reinterpretAsUInt64\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 `UInt64` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
@@ -2490,7 +2490,7 @@ SELECT
 
 ## reinterpretAsUInt8 \{#reinterpretAsUInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 `UInt8` 타입의 값으로 재해석합니다.
 [`CAST`](#CAST)와 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로는 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
@@ -2530,7 +2530,7 @@ SELECT
 
 ## reinterpretAsUUID \{#reinterpretAsUUID\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 16바이트 문자열을 받아, 이를 8바이트씩 두 부분으로 나누고 각 부분을 리틀 엔디언 바이트 순서로 해석하여 UUID를 반환합니다. 문자열의 길이가 16바이트보다 짧으면, 문자열 끝에 필요한 개수만큼 널(null) 바이트가 패딩된 것처럼 동작합니다. 문자열이 16바이트보다 길면, 끝에 있는 추가 바이트는 무시됩니다.
 
@@ -2565,7 +2565,7 @@ SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))
 
 ## toBFloat16 \{#toBFloat16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 BFloat16 타입의 값으로 변환합니다.
 오류가 발생하는 경우 예외를 발생시킵니다.
@@ -2610,7 +2610,7 @@ toBFloat16('42.7'):          42.5
 
 ## toBFloat16OrNull \{#toBFloat16OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `String` 입력 값을 BFloat16 타입의 값으로 변환합니다.
 문자열이 부동 소수점 값을 나타내지 않으면 함수는 `NULL`을 반환합니다.
@@ -2666,7 +2666,7 @@ SELECT toBFloat16OrNull('0x5E'), -- unsupported arguments
 
 ## toBFloat16OrZero \{#toBFloat16OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 `String` 값을 BFloat16 타입 값으로 변환합니다.
 문자열이 부동 소수점 값을 나타내지 않으면 함수는 0을 반환합니다.
@@ -2722,7 +2722,7 @@ SELECT toBFloat16OrZero('0x5E'), -- unsupported arguments
 
 ## toBool \{#toBool\}
 
-도입된 버전: v22.2
+도입된 버전: v22.2.0
 
 입력 값을 Bool 형식의 값으로 변환합니다.
 
@@ -2767,7 +2767,7 @@ toBool('FALSE'):         false
 
 ## toDate \{#toDate\}
 
-도입: v1.1
+도입: v1.1.0
 
 입력값을 [`Date`](/sql-reference/data-types/date) 타입으로 변환합니다.
 String, FixedString, DateTime 및 숫자 타입에서의 변환을 지원합니다.
@@ -2821,7 +2821,7 @@ SELECT toDate(20297)
 
 ## toDate32 \{#toDate32\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 인수를 [Date32](../data-types/date32.md) 데이터 타입으로 변환합니다.
 값이 범위를 벗어나면 `toDate32`는 [Date32](../data-types/date32.md)가 지원하는 경계 값을 반환합니다.
@@ -2874,7 +2874,7 @@ toTypeName(value): Date32
 
 ## toDate32OrDefault \{#toDate32OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 인수를 [Date32](../data-types/date32.md) 데이터 타입으로 변환합니다. 값이 허용 범위를 벗어나는 경우 `toDate32OrDefault`는 [Date32](../data-types/date32.md)에서 지원하는 하한 경계값을 반환합니다. 인수가 [Date](../data-types/date.md) 타입인 경우 해당 타입의 허용 범위도 함께 고려합니다. 잘못된 인수가 전달되면 기본값(default value)을 반환합니다.
 
@@ -2918,7 +2918,7 @@ SELECT toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'))
 
 ## toDate32OrNull \{#toDate32OrNull\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 입력값을 Date32 타입의 값으로 변환하지만 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 [`toDate32`](#toDate32)와 동일하지만 잘못된 인수가 전달되면 `NULL`을 반환합니다.
@@ -2954,7 +2954,7 @@ SELECT toDate32OrNull('2025-01-01'), toDate32OrNull('invalid')
 
 ## toDate32OrZero \{#toDate32OrZero\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 입력 값을 [Date32](../data-types/date32.md) 타입의 값으로 변환하지만, 잘못된 인수가 입력되면 [Date32](../data-types/date32.md)의 하한 값을 반환합니다.
 [toDate32](#toDate32)와 동일하지만, 잘못된 인수가 입력되면 [Date32](../data-types/date32.md)의 하한 값을 반환합니다.
@@ -2996,7 +2996,7 @@ SELECT toDate32OrZero('2025-01-01'), toDate32OrZero('')
 
 ## toDateOrDefault \{#toDateOrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [toDate](#toDate)와 유사하지만, 변환에 성공하지 못하면 기본값을 반환합니다. 기본값은 두 번째 인자가 지정되어 있으면 그 값이고, 지정되지 않은 경우 [Date](../data-types/date.md)의 하한 값입니다.
 
@@ -3040,7 +3040,7 @@ SELECT toDateOrDefault('', CAST('2023-01-01', 'Date'))
 
 ## toDateOrNull \{#toDateOrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력값을 `Date` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 [`toDate`](#toDate)와 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
@@ -3076,7 +3076,7 @@ SELECT toDateOrNull('2025-12-30'), toDateOrNull('invalid')
 
 ## toDateOrZero \{#toDateOrZero\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 [`Date`](../data-types/date.md) 타입으로 변환하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md) 타입의 하한값을 반환합니다.
 [toDate](#toDate)와 동일하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md) 타입의 하한값을 반환합니다.
@@ -3118,7 +3118,7 @@ SELECT toDateOrZero('2025-12-30'), toDateOrZero('')
 
 ## toDateTime \{#toDateTime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 [DateTime](../data-types/datetime.md) 형식으로 변환합니다.
 
@@ -3162,7 +3162,7 @@ toDateTime(1735689600, 'UTC'):     2025-01-01 00:00:00
 
 ## toDateTime32 \{#toDateTime32\}
 
-도입 버전: v20.9
+도입 버전: v20.9.0
 
 입력 값을 `DateTime` 타입으로 변환합니다.
 `String`, `FixedString`, `Date`, `Date32`, `DateTime` 또는 수치형 타입(`(U)Int*`, `Float*`, `Decimal`)에서의 변환을 지원합니다.
@@ -3197,7 +3197,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**지정된 정밀도의 10진수로**
+**정밀도를 가진 10진수 값으로**
 
 ```sql title=Query
 SELECT toDateTime64(1735689600.000, 3) AS value, toTypeName(value);
@@ -3229,7 +3229,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64 \{#toDateTime64\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력값을 [`DateTime64`](../data-types/datetime64.md) 타입의 값으로 변환합니다.
 
@@ -3263,7 +3263,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**정밀도가 있는 Decimal로**
+**정밀도를 포함한 Decimal 값으로**
 
 ```sql title=Query
 SELECT toDateTime64(1546300800.000, 3) AS value, toTypeName(value);
@@ -3277,7 +3277,7 @@ SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**타임존 사용**
+**타임존 지정**
 
 ```sql title=Query
 SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeName(value);
@@ -3292,7 +3292,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrDefault \{#toDateTime64OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [toDateTime64](#toDateTime64)와 마찬가지로 이 함수는 입력값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환합니다.
 다만 잘못된 인수가 전달된 경우 [DateTime64](../data-types/datetime64.md)의 기본값 또는 제공된 기본값을 반환합니다.
@@ -3339,7 +3339,7 @@ SELECT toDateTime64OrDefault('1976-10-18 00:00:00 30', 3, 'UTC', toDateTime64('2
 
 ## toDateTime64OrNull \{#toDateTime64OrNull\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 입력 값을 `DateTime64` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 `toDateTime64`와 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
@@ -3375,7 +3375,7 @@ SELECT toDateTime64OrNull('2025-12-30 13:44:17.123'), toDateTime64OrNull('invali
 
 ## toDateTime64OrZero \{#toDateTime64OrZero\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력 값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환하되, 잘못된 인수가 전달되면 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
 [toDateTime64](#toDateTime64)와 동일하게 동작하지만, 잘못된 인수가 전달되면 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
@@ -3417,7 +3417,7 @@ SELECT toDateTime64OrZero('2025-12-30 13:44:17.123'), toDateTime64OrZero('invali
 
 ## toDateTimeOrDefault \{#toDateTimeOrDefault\}
 
-도입: v21.11
+도입: v21.11.0
 
 [toDateTime](#toDateTime)과 유사하지만, 변환에 실패하는 경우 기본값을 반환합니다. 기본값은 세 번째 인자가 지정되어 있으면 해당 값이고, 지정되지 않은 경우 [DateTime](../data-types/datetime.md)의 하한입니다.
 
@@ -3462,7 +3462,7 @@ SELECT toDateTimeOrDefault('', 'UTC', CAST('2023-01-01', 'DateTime(\'UTC\')'))
 
 ## toDateTimeOrNull \{#toDateTimeOrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 `DateTime` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 [`toDateTime`](#toDateTime)과 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
@@ -3498,7 +3498,7 @@ SELECT toDateTimeOrNull('2025-12-30 13:44:17'), toDateTimeOrNull('invalid')
 
 ## toDateTimeOrZero \{#toDateTimeOrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [DateTime](../data-types/datetime.md) 타입의 값으로 변환합니다. 단, 유효하지 않은 인수가 전달되면 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
 [toDateTime](#toDateTime)과 동일하지만, 유효하지 않은 인수가 전달되면 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
@@ -3534,7 +3534,7 @@ SELECT toDateTimeOrZero('2025-12-30 13:44:17'), toDateTimeOrZero('invalid')
 
 ## toDecimal128 \{#toDecimal128\}
 
-도입된 버전: v18.12
+도입된 버전: v18.12.0
 
 입력 값을 스케일 `S`를 갖는 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -3602,7 +3602,7 @@ type_c: Decimal(38, 3)
 
 ## toDecimal128OrDefault \{#toDecimal128OrDefault\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [`toDecimal128`](#toDecimal128)과 같이, 이 함수는 입력값을 [Decimal(38, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 
@@ -3647,7 +3647,7 @@ SELECT toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)'))
 
 ## toDecimal128OrNull \{#toDecimal128OrNull\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 입력 값을 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 변환 중 오류가 발생하는 경우 `NULL`을 반환합니다.
 [`toDecimal128`](#toDecimal128)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -3701,7 +3701,7 @@ SELECT toDecimal128OrNull('42.7', 2), toDecimal128OrNull('invalid', 2)
 
 ## toDecimal128OrZero \{#toDecimal128OrZero\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 입력 값을 [Decimal(38, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 [`toDecimal128`](#toDecimal128)과 같지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
@@ -3752,7 +3752,7 @@ SELECT toDecimal128OrZero('42.7', 2), toDecimal128OrZero('invalid', 2)
 
 ## toDecimal256 \{#toDecimal256\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 입력 값을 스케일 `S`를 갖는 [`Decimal(76, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다. 오류가 발생하면 예외를 발생시킵니다.
 
@@ -3819,7 +3819,7 @@ type_c: Decimal(76, 3)
 
 ## toDecimal256OrDefault \{#toDecimal256OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toDecimal256`](#toDecimal256)와 마찬가지로, 이 함수는 입력 값을 [Decimal(76, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 
@@ -3864,7 +3864,7 @@ SELECT toDecimal256OrDefault('Inf', 0, CAST('-1', 'Decimal256(0)'))
 
 ## toDecimal256OrNull \{#toDecimal256OrNull\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 입력 값을 [`Decimal(76, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 [`toDecimal256`](#toDecimal256)와 같지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -3918,7 +3918,7 @@ SELECT toDecimal256OrNull('42.7', 2), toDecimal256OrNull('invalid', 2)
 
 ## toDecimal256OrZero \{#toDecimal256OrZero\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 입력 값을 [Decimal(76, S)](../data-types/decimal.md) 타입 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 [`toDecimal256`](#toDecimal256)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
@@ -3975,7 +3975,7 @@ SELECT toDecimal256OrZero('42.7', 2), toDecimal256OrZero('invalid', 2)
 
 ## toDecimal32 \{#toDecimal32\}
 
-도입 버전: v18.12
+도입 버전: v18.12.0
 
 입력 값을 스케일 `S`를 갖는 [`Decimal(9, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다. 오류가 발생하면 예외를 발생시킵니다.
 
@@ -4042,7 +4042,7 @@ type_c: Decimal(9, 3)
 
 ## toDecimal32OrDefault \{#toDecimal32OrDefault\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [`toDecimal32`](#toDecimal32)와 마찬가지로, 이 FUNCTION은 입력값을 [Decimal(9, S)](../data-types/decimal.md) 형식의 값으로 변환하지만, 오류가 발생하는 경우 기본값을 반환합니다.
 
@@ -4087,7 +4087,7 @@ SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
 
 ## toDecimal32OrNull \{#toDecimal32OrNull\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력 값을 [`Decimal(9, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 [`toDecimal32`](#toDecimal32)와 같지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -4141,7 +4141,7 @@ SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
 
 ## toDecimal32OrZero \{#toDecimal32OrZero\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력 값을 [Decimal(9, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 [`toDecimal32`](#toDecimal32)와 같지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
@@ -4192,7 +4192,7 @@ SELECT toDecimal32OrZero('42.7', 2), toDecimal32OrZero('invalid', 2)
 
 ## toDecimal64 \{#toDecimal64\}
 
-도입된 버전: v18.12
+도입된 버전: v18.12.0
 
 입력 값을 스케일이 `S`인 [`Decimal(18, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -4260,7 +4260,7 @@ type_c: Decimal(18, 3)
 
 ## toDecimal64OrDefault \{#toDecimal64OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toDecimal64`](#toDecimal64)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
 
@@ -4305,7 +4305,7 @@ SELECT toDecimal64OrDefault('Inf', 0, CAST('-1', 'Decimal64(0)'))
 
 ## toDecimal64OrNull \{#toDecimal64OrNull\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력 값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 [`toDecimal64`](#toDecimal64)와 유사하지만 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -4359,7 +4359,7 @@ SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
 
 ## toDecimal64OrZero \{#toDecimal64OrZero\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 입력값을 [Decimal(18, S)](../data-types/decimal.md) 타입 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 [`toDecimal64`](#toDecimal64)와 유사하지만 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
@@ -4416,7 +4416,7 @@ SELECT toDecimal64OrZero('42.7', 2), toDecimal64OrZero('invalid', 2)
 
 ## toDecimalString \{#toDecimalString\}
 
-도입 버전: v23.3
+도입 버전: v23.3.0
 
 숫자 값을 지정된 소수 자릿수를 가진 String으로 변환합니다.
 
@@ -4451,7 +4451,7 @@ SELECT toDecimalString(2.1456, 2)
 └────────────────────────────┘
 ```
 
-**0으로 패딩**
+**0으로 채우기**
 
 ```sql title=Query
 SELECT toDecimalString(5, 3)
@@ -4479,7 +4479,7 @@ SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
 
 ## toFixedString \{#toFixedString\}
 
-도입: v1.1
+도입: v1.1.0
 
 [`String`](/sql-reference/data-types/string) 인자를 [`FixedString(N)`](/sql-reference/data-types/fixedstring) 타입(길이가 N으로 고정된 문자열)으로 변환합니다.
 
@@ -4518,7 +4518,7 @@ SELECT toFixedString('foo', 8) AS s;
 
 ## toFloat32 \{#toFloat32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Float32](/sql-reference/data-types/float) 타입 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -4577,7 +4577,7 @@ toFloat32('NaN'):  nan
 
 ## toFloat32OrDefault \{#toFloat32OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toFloat32`](#toFloat32)와 마찬가지로, 이 함수는 입력값을 [Float32](../data-types/float.md) 타입 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
 `default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -4622,7 +4622,7 @@ SELECT toFloat32OrDefault('abc', CAST('0', 'Float32'))
 
 ## toFloat32OrNull \{#toFloat32OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Float32](../data-types/float.md) 타입 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
 [`toFloat32`](#toFloat32)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
@@ -4682,7 +4682,7 @@ toFloat32OrNull('abc'):  \N
 
 ## toFloat32OrZero \{#toFloat32OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Float32](../data-types/float.md) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
 [`toFloat32`](#toFloat32)와 비슷하지만, 변환 오류 발생 시 예외를 던지는 대신 `0`을 반환합니다.
@@ -4728,7 +4728,7 @@ toFloat32OrZero('abc'):  0
 
 ## toFloat64 \{#toFloat64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`Float64`](../data-types/float.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -4787,7 +4787,7 @@ toFloat64('NaN'):  nan
 
 ## toFloat64OrDefault \{#toFloat64OrDefault\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [`toFloat64`](#toFloat64)와 같이, 이 함수는 입력값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 `default` 값을 전달하지 않으면, 오류 발생 시 `0`이 반환됩니다.
@@ -4832,7 +4832,7 @@ SELECT toFloat64OrDefault('abc', CAST('0', 'Float64'))
 
 ## toFloat64OrNull \{#toFloat64OrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 [`toFloat64`](#toFloat64)와 동일하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -4892,7 +4892,7 @@ toFloat64OrNull('abc'):  \N
 
 ## toFloat64OrZero \{#toFloat64OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Float64](../data-types/float.md) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
 [`toFloat64`](#toFloat64)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
@@ -4938,7 +4938,7 @@ toFloat64OrZero('abc'):  0
 
 ## toInt128 \{#toInt128\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Int128](/sql-reference/data-types/int-uint) 타입 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -5002,7 +5002,7 @@ toInt128('-128'): -128
 
 ## toInt128OrDefault \{#toInt128OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toInt128`](#toInt128)과 마찬가지로, 이 FUNCTION은 입력값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 지정되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -5047,7 +5047,7 @@ SELECT toInt128OrDefault('abc', CAST('-1', 'Int128'))
 
 ## toInt128OrNull \{#toInt128OrNull\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 [`toInt128`](#toInt128)과 마찬가지로 이 함수는 입력 값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -5106,7 +5106,7 @@ toInt128OrNull('abc'):  \N
 
 ## toInt128OrZero \{#toInt128OrZero\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 입력 값을 [Int128](/sql-reference/data-types/int-uint) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
 [`toInt128`](#toInt128)과 유사하지만 예외를 발생시키는 대신 `0`을 반환합니다.
@@ -5156,7 +5156,7 @@ SELECT toInt128OrZero('abc')
 
 ## toInt16 \{#toInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`Int16`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하는 경우 예외를 발생시킵니다.
@@ -5224,7 +5224,7 @@ toInt16('-16'):  -16
 
 ## toInt16OrDefault \{#toInt16OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toInt16`](#toInt16)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 지정되지 않으면 오류 발생 시 `0`이 반환됩니다.
@@ -5269,7 +5269,7 @@ SELECT toInt16OrDefault('abc', CAST('-1', 'Int16'))
 
 ## toInt16OrNull \{#toInt16OrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toInt16`](#toInt16)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -5328,7 +5328,7 @@ toInt16OrNull('abc'): \N
 
 ## toInt16OrZero \{#toInt16OrZero\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toInt16`](#toInt16)과(와) 마찬가지로 이 함수는 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -5387,7 +5387,7 @@ toInt16OrZero('abc'): 0
 
 ## toInt256 \{#toInt256\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 [Int256](/sql-reference/data-types/int-uint) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -5451,7 +5451,7 @@ toInt256('-256'):   -256
 
 ## toInt256OrDefault \{#toInt256OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toInt256`](#toInt256)와 마찬가지로 이 함수는 입력값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 기본값을 반환합니다.
 `default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -5496,7 +5496,7 @@ SELECT toInt256OrDefault('abc', CAST('-1', 'Int256'))
 
 ## toInt256OrNull \{#toInt256OrNull\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 [`toInt256`](#toInt256)과(와) 마찬가지로, 이 함수는 입력 값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -5555,7 +5555,7 @@ toInt256OrNull('abc'):  \N
 
 ## toInt256OrZero \{#toInt256OrZero\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 입력 값을 [Int256](/sql-reference/data-types/int-uint) 타입으로 변환하되, 오류가 발생하면 `0`을 반환합니다.
 [`toInt256`](#toInt256)과 동일하지만 예외를 발생시키는 대신 `0`을 반환합니다.
@@ -5605,7 +5605,7 @@ SELECT toInt256OrZero('abc')
 
 ## toInt32 \{#toInt32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 [`Int32`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -5673,7 +5673,7 @@ toInt32('-32'):  -32
 
 ## toInt32OrDefault \{#toInt32OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toInt32`](#toInt32)와 마찬가지로, 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 `default` 값이 지정되지 않으면, 오류가 발생할 때 `0`이 반환됩니다.
@@ -5718,7 +5718,7 @@ SELECT toInt32OrDefault('abc', CAST('-1', 'Int32'))
 
 ## toInt32OrNull \{#toInt32OrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toInt32`](#toInt32)와 같이 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -5777,7 +5777,7 @@ toInt32OrNull('abc'): \N
 
 ## toInt32OrZero \{#toInt32OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toInt32`](#toInt32)와 마찬가지로, 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
 
@@ -5836,7 +5836,7 @@ toInt32OrZero('abc'): 0
 
 ## toInt64 \{#toInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`Int64`](../data-types/int-uint.md) 타입 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -5904,7 +5904,7 @@ toInt64('-64'):  -64
 
 ## toInt64OrDefault \{#toInt64OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toInt64`](#toInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [Int64](../data-types/int-uint.md) 타입 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 지정되지 않으면 오류 발생 시 `0`이 반환됩니다.
@@ -5949,7 +5949,7 @@ SELECT toInt64OrDefault('abc', CAST('-1', 'Int64'))
 
 ## toInt64OrNull \{#toInt64OrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toInt64`](#toInt64)와 마찬가지로 이 FUNCTION은 입력 값을 [Int64](../data-types/int-uint.md) 타입의 값으로 변환하되, 오류가 발생한 경우 `NULL`을 반환합니다.
 
@@ -6008,7 +6008,7 @@ toInt64OrNull('abc'): \N
 
 ## toInt64OrZero \{#toInt64OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Int64](/sql-reference/data-types/int-uint) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
 [`toInt64`](#toInt64)와 동일하지만, 예외를 발생시키는 대신 `0`을 반환합니다.
@@ -6058,7 +6058,7 @@ SELECT toInt64OrZero('abc')
 
 ## toInt8 \{#toInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 [`Int8`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -6126,7 +6126,7 @@ toInt8('-8'): -8
 
 ## toInt8OrDefault \{#toInt8OrDefault\}
 
-도입: v21.11
+도입: v21.11.0
 
 [`toInt8`](#toInt8)과 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -6171,7 +6171,7 @@ SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
 
 ## toInt8OrNull \{#toInt8OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toInt8`](#toInt8)와 마찬가지로 이 함수는 입력 값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
 
@@ -6230,7 +6230,7 @@ toInt8OrNull('abc'): \N
 
 ## toInt8OrZero \{#toInt8OrZero\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toInt8`](#toInt8)과(와) 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -6289,7 +6289,7 @@ toInt8OrZero('abc'): 0
 
 ## toInterval \{#toInterval\}
 
-도입 버전: v25.4
+도입 버전: v25.4.0
 
 숫자 값과 단위 문자열을 사용하여 Interval 값을 생성합니다.
 
@@ -6331,7 +6331,7 @@ SELECT
 └─────────┴──────┴────────┘
 ```
 
-**날짜 연산에 interval을 사용합니다**
+**날짜 연산에 Interval 사용하기**
 
 ```sql title=Query
 SELECT
@@ -6346,7 +6346,7 @@ SELECT
 └──────────────────────┴─────────────────────┴─────────────────────┘
 ```
 
-**동적 간격 생성**
+**Interval을 동적으로 생성하기**
 
 ```sql title=Query
 SELECT toDate('2025-01-01') + toInterval(number, 'day') AS dates
@@ -6366,7 +6366,7 @@ FROM numbers(5)
 
 ## toIntervalDay \{#toIntervalDay\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`IntervalDay`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`일 간격 값을 반환합니다.
 
@@ -6404,7 +6404,7 @@ SELECT date + interval_to_days AS result
 
 ## toIntervalHour \{#toIntervalHour\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`IntervalHour`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`시간 간격(interval)을 반환합니다.
 
@@ -6442,7 +6442,7 @@ SELECT date + interval_to_hours AS result
 
 ## toIntervalMicrosecond \{#toIntervalMicrosecond\}
 
-도입 버전: v22.6
+도입 버전: v22.6.0
 
 [`IntervalMicrosecond`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n` 마이크로초 길이 interval을 반환합니다.
 
@@ -6480,7 +6480,7 @@ SELECT date + interval_to_microseconds AS result
 
 ## toIntervalMillisecond \{#toIntervalMillisecond\}
 
-도입 버전: v22.6
+도입 버전: v22.6.0
 
 데이터 타입 [IntervalMillisecond](../../sql-reference/data-types/special-data-types/interval.md)의 `n`밀리초 간격(interval)을 반환합니다.
 
@@ -6518,7 +6518,7 @@ SELECT date + interval_to_milliseconds AS result
 
 ## toIntervalMinute \{#toIntervalMinute\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`IntervalMinute`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`분 길이 인터벌 값을 반환합니다.
 
@@ -6556,7 +6556,7 @@ SELECT date + interval_to_minutes AS result
 
 ## toIntervalMonth \{#toIntervalMonth\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`IntervalMonth`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`개월 간격(interval)을 반환합니다.
 
@@ -6594,7 +6594,7 @@ SELECT date + interval_to_month AS result
 
 ## toIntervalNanosecond \{#toIntervalNanosecond\}
 
-도입된 버전: v22.6
+도입된 버전: v22.6.0
 
 데이터 타입 [`IntervalNanosecond`](../../sql-reference/data-types/special-data-types/interval.md)의 `n` 나노초 길이 구간(interval)을 반환합니다.
 
@@ -6632,7 +6632,7 @@ SELECT date + interval_to_nanoseconds AS result
 
 ## toIntervalQuarter \{#toIntervalQuarter\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 데이터 타입 [`IntervalQuarter`](../../sql-reference/data-types/special-data-types/interval.md)의 `n`분기 간격(interval)을 반환합니다.
 
@@ -6670,7 +6670,7 @@ SELECT date + interval_to_quarter AS result
 
 ## toIntervalSecond \{#toIntervalSecond\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`IntervalSecond`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`초 길이 간격(interval)을 반환합니다.
 
@@ -6708,7 +6708,7 @@ SELECT date + interval_to_seconds AS result
 
 ## toIntervalWeek \{#toIntervalWeek\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 데이터 타입 [`IntervalWeek`](../../sql-reference/data-types/special-data-types/interval.md)의 `n`주 구간(interval)을 반환합니다.
 
@@ -6746,7 +6746,7 @@ SELECT date + interval_to_week AS result
 
 ## toIntervalYear \{#toIntervalYear\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`IntervalYear`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`년 기간(interval)을 반환합니다.
 
@@ -6784,7 +6784,7 @@ SELECT date + interval_to_year AS result
 
 ## toLowCardinality \{#toLowCardinality\}
 
-도입 버전: v18.12
+도입 버전: v18.12.0
 
 입력 인수를 동일한 데이터 타입의 [LowCardinality](../data-types/lowcardinality.md) 버전으로 변환합니다.
 
@@ -6824,7 +6824,7 @@ SELECT toLowCardinality('1')
 
 ## toString \{#toString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 값을 문자열 표현으로 변환합니다.
 DateTime 인자를 사용하는 경우, 이 함수는 두 번째 인자로 시간대 이름을 포함하는 String 인자를 받을 수 있습니다.
@@ -6871,7 +6871,7 @@ LIMIT 10
 
 ## toStringCutToZero \{#toStringCutToZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [String](/sql-reference/data-types/string) 또는 [FixedString](/sql-reference/data-types/fixedstring) 인수를 받아, 첫 번째 null 바이트에서 원본 문자열을 잘라 복사한 String을 반환합니다.
 
@@ -6911,7 +6911,7 @@ SELECT
 
 ## toTime \{#toTime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [Time](/sql-reference/data-types/time) 타입으로 변환합니다.
 `String`, `FixedString`, `DateTime` 또는 자정 이후 경과 초(second)를 나타내는 숫자 타입에서의 변환을 지원합니다.
@@ -6952,7 +6952,7 @@ SELECT toTime(toDateTime('2025-04-15 14:30:25'))
 14:30:25
 ```
 
-**정수형을 Time으로 변환**
+**정수를 Time으로 변환**
 
 ```sql title=Query
 SELECT toTime(52225)
@@ -6965,7 +6965,7 @@ SELECT toTime(52225)
 
 ## toTime64 \{#toTime64\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 입력 값을 [Time64](/sql-reference/data-types/time64) 타입으로 변환합니다.
 String, FixedString, DateTime64, 또는 자정 이후 경과한 마이크로초 수를 나타내는 숫자 타입에서의 변환을 지원합니다.
@@ -7020,7 +7020,7 @@ SELECT toTime64(52225123456)
 
 ## toTime64OrNull \{#toTime64OrNull\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 입력 값을 `Time64` 타입의 값으로 변환하지만, 오류가 발생하면 `NULL`을 반환합니다.
 [`toTime64`](#toTime64)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -7061,7 +7061,7 @@ SELECT toTime64OrNull('12:30:45.123'), toTime64OrNull('invalid')
 
 ## toTime64OrZero \{#toTime64OrZero\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 입력 값을 Time64 타입 값으로 변환하지만, 오류가 발생하면 `00:00:00.000`을 반환합니다.
 [`toTime64`](#toTime64)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00.000`을 반환합니다.
@@ -7097,7 +7097,7 @@ SELECT toTime64OrZero('12:30:45.123'), toTime64OrZero('invalid')
 
 ## toTimeOrNull \{#toTimeOrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 Time 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
 [`toTime`](#toTime)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
@@ -7138,7 +7138,7 @@ SELECT toTimeOrNull('12:30:45'), toTimeOrNull('invalid')
 
 ## toTimeOrZero \{#toTimeOrZero\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 Time 타입 값으로 변환하지만, 오류가 발생하면 `00:00:00`을 반환합니다.
 toTime과 비슷하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00`을 반환합니다.
@@ -7174,7 +7174,7 @@ SELECT toTimeOrZero('12:30:45'), toTimeOrZero('invalid')
 
 ## toUInt128 \{#toUInt128\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 값을 [`UInt128`](/sql-reference/functions/type-conversion-functions#toUInt128) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -7238,7 +7238,7 @@ toUInt128('128'): 128
 
 ## toUInt128OrDefault \{#toUInt128OrDefault\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [`toUInt128`](#toUInt128)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생할 경우 기본값을 반환합니다.
 `default` 값이 지정되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -7283,7 +7283,7 @@ SELECT toUInt128OrDefault('abc', CAST('0', 'UInt128'))
 
 ## toUInt128OrNull \{#toUInt128OrNull\}
 
-도입된 버전: v21.6
+도입된 버전: v21.6.0
 
 [`toUInt128`](#toUInt128)과 같이, 이 함수는 입력 값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -7342,7 +7342,7 @@ toUInt128OrNull('abc'): \N
 
 ## toUInt128OrZero \{#toUInt128OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt128`](#toUInt128)과 마찬가지로, 이 함수는 입력 값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -7401,7 +7401,7 @@ toUInt128OrZero('abc'): 0
 
 ## toUInt16 \{#toUInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -7469,7 +7469,7 @@ toUInt16('16'):  16
 
 ## toUInt16OrDefault \{#toUInt16OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toUInt16`](#toUInt16)과 마찬가지로 이 FUNCTION은 입력값을 [UInt16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 전달되지 않으면 오류 발생 시 `0`을 반환합니다.
@@ -7514,7 +7514,7 @@ SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
 
 ## toUInt16OrNull \{#toUInt16OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt16`](#toUInt16)와 마찬가지로 이 함수는 입력값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -7573,7 +7573,7 @@ toUInt16OrNull('abc'): \N
 
 ## toUInt16OrZero \{#toUInt16OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt16`](#toUInt16)과 같이 이 함수는 입력 값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
 
@@ -7632,7 +7632,7 @@ toUInt16OrZero('abc'): 0
 
 ## toUInt256 \{#toUInt256\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 `UInt256` 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -7696,7 +7696,7 @@ toUInt256('256'):   256
 
 ## toUInt256OrDefault \{#toUInt256OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toUInt256`](#toUInt256)와 같이, 이 FUNCTION은 입력 값을 [UInt256](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
 `default` 값이 전달되지 않으면, 오류 발생 시 `0`이 반환됩니다.
@@ -7741,7 +7741,7 @@ SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
 
 ## toUInt256OrNull \{#toUInt256OrNull\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 [`toUInt256`](#toUInt256)과 마찬가지로 이 FUNCTION은 입력값을 [`UInt256`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -7800,7 +7800,7 @@ toUInt256OrNull('abc'): \N
 
 ## toUInt256OrZero \{#toUInt256OrZero\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 [`toUInt256`](#toUInt256)와 유사하게, 이 함수는 입력값을 [`UInt256`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -7858,7 +7858,7 @@ toUInt256OrZero('abc'): 0
 
 ## toUInt32 \{#toUInt32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -7926,7 +7926,7 @@ toUInt32('32'):  32
 
 ## toUInt32OrDefault \{#toUInt32OrDefault\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [`toUInt32`](#toUInt32)와 마찬가지로 이 FUNCTION은 입력 값을 [UInt32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 전달되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
@@ -7971,7 +7971,7 @@ SELECT toUInt32OrDefault('abc', CAST('0', 'UInt32'))
 
 ## toUInt32OrNull \{#toUInt32OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt32`](#toUInt32)와 마찬가지로, 이 함수는 입력 값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -8030,7 +8030,7 @@ toUInt32OrNull('abc'): \N
 
 ## toUInt32OrZero \{#toUInt32OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt32`](#toUInt32)와 마찬가지로, 이 함수는 입력값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -8089,7 +8089,7 @@ toUInt32OrZero('abc'): 0
 
 ## toUInt64 \{#toUInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -8157,7 +8157,7 @@ toUInt64('64'):  64
 
 ## toUInt64OrDefault \{#toUInt64OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toUInt64`](#toUInt64)와 마찬가지로 이 FUNCTION은 입력값을 [UInt64](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 전달되지 않은 경우에는 오류가 발생했을 때 `0`이 반환됩니다.
@@ -8202,7 +8202,7 @@ SELECT toUInt64OrDefault('abc', CAST('0', 'UInt64'))
 
 ## toUInt64OrNull \{#toUInt64OrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt64`](#toUInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -8260,7 +8260,7 @@ toUInt64OrNull('abc'): \N
 
 ## toUInt64OrZero \{#toUInt64OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt64`](#toUInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -8319,7 +8319,7 @@ toUInt64OrZero('abc'): 0
 
 ## toUInt8 \{#toUInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
@@ -8387,7 +8387,7 @@ toUInt8('8'): 8
 
 ## toUInt8OrDefault \{#toUInt8OrDefault\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 [`toUInt8`](#toUInt8)와 마찬가지로, 이 함수는 입력값을 [UInt8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 `default` 값을 전달하지 않으면, 오류가 발생했을 때 `0`이 반환됩니다.
@@ -8432,7 +8432,7 @@ SELECT toUInt8OrDefault('abc', CAST('0', 'UInt8'))
 
 ## toUInt8OrNull \{#toUInt8OrNull\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`toUInt8`](#toUInt8)와 같이, 이 FUNCTION은 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
@@ -8491,7 +8491,7 @@ toUInt8OrNull('abc'): \N
 
 ## toUInt8OrZero \{#toUInt8OrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`toUInt8`](#toUInt8)과 마찬가지로, 이 함수는 입력값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
@@ -8550,7 +8550,7 @@ toUInt8OrZero('abc'): 0
 
 ## toUUID \{#toUUID\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `String` 값을 `UUID` 값으로 변환합니다.
 
@@ -8585,7 +8585,7 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 ## toUUIDOrZero \{#toUUIDOrZero\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 입력 값을 [UUID](../data-types/uuid.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 zero UUID를 반환합니다.
 [`toUUID`](/sql-reference/functions/type-conversion-functions#toUUID)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 zero UUID (`00000000-0000-0000-0000-000000000000`)를 반환합니다.
@@ -8633,7 +8633,7 @@ SELECT
 
 ## toUnixTimestamp64Micro \{#toUnixTimestamp64Micro\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 [`DateTime64`](/sql-reference/data-types/datetime64)를 마이크로초 단위의 고정 정밀도를 갖는 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
 입력 값은 그 정밀도에 따라 적절히 확대 또는 축소되어 변환됩니다.
@@ -8674,7 +8674,7 @@ SELECT toUnixTimestamp64Micro(dt64);
 
 ## toUnixTimestamp64Milli \{#toUnixTimestamp64Milli\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 [`DateTime64`](/sql-reference/data-types/datetime64)를 밀리초(ms) 단위의 고정 정밀도를 갖는 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
 입력 값은 정밀도에 따라 적절히 확대하거나 축소됩니다.
@@ -8715,7 +8715,7 @@ SELECT toUnixTimestamp64Milli(dt64);
 
 ## toUnixTimestamp64Nano \{#toUnixTimestamp64Nano\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 [`DateTime64`](/sql-reference/data-types/datetime64)을(를) 고정 나노초 정밀도의 [`Int64`](/sql-reference/functions/type-conversion-functions#toInt64) 값으로 변환합니다.
 입력 값은 정밀도에 따라 적절하게 확대 또는 축소됩니다.
@@ -8756,7 +8756,7 @@ SELECT toUnixTimestamp64Nano(dt64);
 
 ## toUnixTimestamp64Second \{#toUnixTimestamp64Second\}
 
-도입 버전: v24.12
+도입 버전: v24.12.0
 
 [`DateTime64`](/sql-reference/data-types/datetime64)를 초 단위 고정 정밀도의 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
 입력 값의 정밀도에 따라 값의 배율이 적절히 조정됩니다.

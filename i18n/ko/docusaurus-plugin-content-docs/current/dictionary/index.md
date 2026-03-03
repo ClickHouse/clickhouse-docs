@@ -323,7 +323,7 @@ Peak memory usage: 666.82 MiB.
 
 ### 딕셔리 `LAYOUT` 선택 \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
+`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
 
 ### 딕셔너리 갱신 \{#refreshing-dictionaries\}
 

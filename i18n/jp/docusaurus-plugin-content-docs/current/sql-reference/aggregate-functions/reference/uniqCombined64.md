@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined64 \{#uniqCombined64\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 引数の異なる値の概算個数を計算します。
 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) と同じですが、String 型だけでなくすべてのデータ型に対して 64 ビットハッシュを使用します。

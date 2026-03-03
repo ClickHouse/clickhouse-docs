@@ -910,6 +910,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field)이 병합되는 방식과 유사합니다.
 소스 파트에 인덱스가 구체화되어 있지 않은 경우, 인덱스를 먼저 생성해 임시 파일에 기록한 다음, 다른 파트와 다른 임시 인덱스 파일의 인덱스와 함께 병합합니다.
 
+**디버깅**
+
+테이블 함수 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md)를 사용하여 텍스트 인덱스를 살펴볼 수 있습니다.
+
 ## 예시: Hackernews 데이터셋 \{#hacker-news-dataset\}
 
 텍스트가 많은 대규모 데이터셋에서 text index의 성능 향상 효과를 살펴보겠습니다.

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 알고리즘을 사용하여 숫자 데이터 시퀀스의 근사 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 함수는 시퀀스 각 원소의 가중치를 고려합니다.

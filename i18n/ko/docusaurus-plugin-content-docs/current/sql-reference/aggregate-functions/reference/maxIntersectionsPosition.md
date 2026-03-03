@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersectionsPosition \{#maxIntersectionsPosition\}
 
-도입: v1.1
+도입: v1.1.0
 
 [`maxIntersections`](/sql-reference/aggregate-functions/reference/maxintersections) FUNCTION에서 발생하는 지점의 위치를 계산하는 집계 FUNCTION입니다.
 

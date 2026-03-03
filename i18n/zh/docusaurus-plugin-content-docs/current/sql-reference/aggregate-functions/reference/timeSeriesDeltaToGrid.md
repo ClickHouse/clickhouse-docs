@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesDeltaToGrid \{#timeSeriesDeltaToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 该聚合函数接收由时间戳与数值构成的时间序列数据对，并在由起始时间戳、结束时间戳和步长描述的等间隔时间网格上，从这些数据中计算[类似 PromQL 的 delta](https://prometheus.io/docs/prometheus/latest/querying/functions/#delta)。
 对于网格上的每个点，计算 `delta` 时会考虑位于指定时间窗口内的样本。
@@ -70,7 +70,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**使用数组类型参数**
+**使用数组参数**
 
 ```sql title=Query
 -- it is possible to pass multiple samples of timestamps and values as Arrays of equal size

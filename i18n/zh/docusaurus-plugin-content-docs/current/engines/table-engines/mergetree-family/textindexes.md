@@ -907,6 +907,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
 如果源分区片段中索引尚未物化（materialized），则会先构建该索引，将其写入一个临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起合并。
 
+**Debugging**
+
+可以使用表函数 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) 来查看和分析文本索引。
+
 ## 示例：Hacker News 数据集 \{#hacker-news-dataset\}
 
 我们来看一下在包含大量文本的大型数据集上，使用文本索引带来的性能提升。

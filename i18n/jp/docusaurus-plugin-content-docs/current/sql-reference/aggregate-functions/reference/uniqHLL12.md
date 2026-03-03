@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqHLL12 \{#uniqHLL12\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) アルゴリズムを使用して、異なる引数値のおおよその個数を計算します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayInsertAt \{#groupArrayInsertAt\}
 
-Появилось в: v1.1
+Появилось в: v1.1.0
 
 Вставляет значение в массив в указанную позицию.
 
@@ -64,7 +64,7 @@ SELECT groupArrayInsertAt('-')(toString(number), number * 2) FROM numbers(5);
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Использование с параметрами значения и размера по умолчанию**
+**Использование параметров значения и размера по умолчанию**
 
 ```sql title=Query
 SELECT groupArrayInsertAt('-', 5)(toString(number), number * 2) FROM numbers(5);

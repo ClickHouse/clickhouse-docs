@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## array \{#array\}
 
-도입: v1.1
+도입: v1.1.0
 
 함수 인수를 사용해 배열을 생성합니다.
 
@@ -72,7 +72,7 @@ There is no supertype for types Int32, DateTime, Int8 ...
 
 ## arrayAUCPR \{#arrayAUCPR\}
 
-도입 버전: v20.4
+도입 버전: v20.4.0
 
 precision-recall(PR) 곡선 아래의 면적을 계산합니다.
 precision-recall 곡선은 모든 임계값에서 y축에 precision, x축에 recall을 표시하여 그립니다.
@@ -128,7 +128,7 @@ SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayAll \{#arrayAll\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 람다 `func(x [, y1, y2, ... yN])`가 모든 요소에 대해 `true`를 반환하면 `1`을 반환합니다. 그렇지 않으면 `0`을 반환합니다.
 
@@ -146,7 +146,7 @@ arrayAll(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 
 **반환 값**
 
-람다 함수가 모든 요소에 대해 true를 반환하면 `1`, 그렇지 않으면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+람다 함수가 모든 요소에 대해 `true`를 반환하면 `1`, 그렇지 않으면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **예제**
 
@@ -173,7 +173,7 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 
 ## arrayAvg \{#arrayAvg\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 소스 배열 요소들의 평균을 반환합니다.
 
@@ -220,7 +220,7 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 
 ## arrayCompact \{#arrayCompact\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 `null` 값을 포함하여 배열에서 연속된 중복 요소를 제거합니다. 결과 배열의 값 순서는 원본 배열에서의 순서를 유지합니다.
 
@@ -253,7 +253,7 @@ SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
 
 ## arrayConcat \{#arrayConcat\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 인수로 전달된 배열을 결합합니다.
 
@@ -286,7 +286,7 @@ SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
 
 ## arrayCount \{#arrayCount\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `func(arr1[i], ..., arrN[i])`가 true를 반환하는 요소의 개수를 반환합니다.
 `func`가 지정되지 않으면 배열에서 0이 아닌 요소의 개수를 반환합니다.
@@ -323,7 +323,7 @@ SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
 
 ## arrayCumSum \{#arrayCumSum\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 소스 배열의 각 요소에 대한 부분 합(누적 합)을 앞에서부터 계산한 결과를 배열로 반환합니다. lambda FUNCTION이 지정되면, 각 위치의 배열 요소에 이 lambda를 적용한 결과를 사용하여 합을 계산합니다.
 
@@ -368,7 +368,7 @@ SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
 
 ## arrayCumSumNonNegative \{#arrayCumSumNonNegative\}
 
-도입된 버전: v18.12
+도입된 버전: v18.12.0
 
 소스 배열의 요소들에 대한 부분합(누적합)으로 구성된 배열을 반환하며, 누적합이 음수가 되는 경우에는 0으로 대체합니다. 람다 FUNCTION이 지정된 경우, 각 위치의 배열 요소에 람다를 적용한 결과를 사용하여 합을 계산합니다.
 
@@ -413,7 +413,7 @@ SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
 
 ## arrayDifference \{#arrayDifference\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 배열에서 인접한 요소들 사이의 차이를 계산합니다.
 결과 배열의 첫 번째 요소는 0이고, 두 번째는 `arr[1] - arr[0]`, 세 번째는 `arr[2] - arr[1]`와 같이 계산됩니다.
@@ -460,7 +460,7 @@ SELECT arrayDifference([0, 10000000000000000000]);
 
 ## arrayDistinct \{#arrayDistinct\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열에서 서로 다른 요소만을 포함하는 배열을 반환합니다.
 
@@ -493,7 +493,7 @@ SELECT arrayDistinct([1, 2, 2, 3, 1]);
 
 ## arrayDotProduct \{#arrayDotProduct\}
 
-도입 버전: v23.5
+도입 버전: v23.5.0
 
 두 배열의 내적(dot product)을 반환합니다.
 
@@ -547,7 +547,7 @@ SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UI
 
 ## arrayElement \{#arrayElement\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `n`이 임의의 정수 타입일 수 있을 때, 주어진 배열에서 인덱스 `n`에 해당하는 요소를 가져옵니다. 인덱스가 배열의 범위를 벗어나면 기본값(숫자의 경우 0, 문자열의 경우 빈 문자열 등)을 반환합니다. 단, 상수가 아닌 배열 인자와 상수 인덱스 0이 함께 사용되는 경우는 예외이며, 이때는 `Array indices are 1-based` 오류가 발생합니다.
 
@@ -618,7 +618,7 @@ SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 
 ## arrayElementOrNull \{#arrayElementOrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `n`이 어떤 정수형 타입이든 될 수 있는 인덱스일 때, 지정된 배열에서 인덱스 `n`에 있는 요소를 가져옵니다.
 인덱스가 배열의 범위를 벗어나는 경우에는 기본값 대신 `NULL`을 반환합니다.
@@ -678,7 +678,7 @@ NULL
 
 ## arrayEnumerate \{#arrayEnumerate\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열 `[1, 2, 3, ..., length (arr)]`을 반환합니다.
 
@@ -738,7 +738,7 @@ ARRAY JOIN
 
 ## arrayEnumerateDense \{#arrayEnumerateDense\}
 
-도입 버전: v18.12
+도입 버전: v18.12.0
 
 원본 배열과 동일한 크기의 배열을 반환하며, 각 요소가 원본 배열에서 처음 나타나는 위치를 표시합니다.
 
@@ -771,7 +771,7 @@ SELECT arrayEnumerateDense([10, 20, 10, 30])
 
 ## arrayEnumerateDenseRanked \{#arrayEnumerateDenseRanked\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 원본 배열과 동일한 크기의 배열을 반환하며, 각 요소가 원본 배열에서 처음 나타나는 위치를 표시합니다. 배열 내부를 얼마나 깊이 탐색할지 지정할 수 있어, 다차원 배열을 열거할 수 있습니다.
 
@@ -824,7 +824,7 @@ SELECT arrayEnumerateDenseRanked(1,[[10,10,30,20],[40,50,10,30]],2);
 [[1,1,2,3],[4,5,1,2]]
 ```
 
-**clear&#95;depth를 증가시킨 예시**
+**clear&#95;depth 값을 증가시킨 예시**
 
 ```sql title=Query
 -- Changing clear_depth=2 results in the enumeration occurring separately for each row anew.
@@ -839,7 +839,7 @@ SELECT arrayEnumerateDenseRanked(2,[[10,10,30,20],[40,50,10,30]],2);
 
 ## arrayEnumerateUniq \{#arrayEnumerateUniq\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 원본 배열과 동일한 크기의 배열을 반환하며, 각 요소에 대해 동일한 값을 가진 요소들 중에서 해당 요소의 위치를 나타냅니다.
 
@@ -924,7 +924,7 @@ LIMIT 10
 
 ## arrayEnumerateUniqRanked \{#arrayEnumerateUniqRanked\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 원본 배열과 동일한 차원의 배열(또는 다차원 배열)을 반환하며,
 각 요소에 대해 동일한 값을 가진 요소들 사이에서 해당 요소의 위치(순서)를 나타냅니다.
@@ -1007,7 +1007,7 @@ SELECT arrayEnumerateUniqRanked(2,[[1, 2, 3],[2, 2, 1],[3]], 2);
 
 ## arrayExcept \{#arrayExcept\}
 
-도입된 버전: v25.9
+도입된 버전: v25.9.0
 
 `source`에는 존재하지만 `except`에는 존재하지 않는 요소만을 포함하는 배열을 반환하며, 원래 순서를 유지합니다.
 
@@ -1079,7 +1079,7 @@ SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
 
 ## arrayExists \{#arrayExists\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 소스 배열에서 `func(x[, y1, y2, ... yN])`이 true 값을 반환하는 요소가 하나 이상 있으면 `1`을 반환합니다. 그렇지 않으면 `0`을 반환합니다.
 
@@ -1114,7 +1114,7 @@ SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
 
 ## arrayFill \{#arrayFill\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 `arrayFill` 함수는 소스 배열을 첫 번째 요소부터 마지막 요소까지 순차적으로 처리하면서,
 소스 배열과 조건 배열의 요소를 사용해 각 위치에서 람다 조건식을 평가합니다.
@@ -1149,7 +1149,7 @@ SELECT arrayFill(x -> not isNull(x), [1, null, 2, null]) AS res
 [1, 1, 2, 2]
 ```
 
-**배열 두 개를 사용하는 예제**
+**두 개의 배열을 사용하는 예제**
 
 ```sql title=Query
 SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2, 8, 5]) AS res
@@ -1162,7 +1162,7 @@ SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2,
 
 ## arrayFilter \{#arrayFilter\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 람다 함수가 true를 반환하는 원본 배열의 요소만을 포함하는 배열을 반환합니다.
 
@@ -1212,7 +1212,7 @@ SELECT
 
 ## arrayFirst \{#arrayFirst\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `func(x[, y1, y2, ... yN])`이 참을 반환하는 소스 배열의 첫 번째 요소를 반환하며, 그런 요소가 없으면 기본값을 반환합니다.
 
@@ -1255,7 +1255,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayFirstIndex \{#arrayFirstIndex\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `func(x[, y1, y2, ... yN])`가 true를 반환하는 소스 배열의 첫 번째 요소의 인덱스를 반환하며, 해당하는 요소가 없으면 0을 반환합니다.
 
@@ -1298,7 +1298,7 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
 
 ## arrayFirstOrNull \{#arrayFirstOrNull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `func(x[, y1, y2, ... yN])`에 대해 true를 반환하는 첫 번째 요소를 소스 배열에서 반환하며, 그런 요소가 없으면 `NULL`을 반환합니다.
 
@@ -1343,7 +1343,7 @@ NULL Nullable(UInt8)
 
 ## arrayFlatten \{#arrayFlatten\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 중첩 배열을 평탄화(flat)된 배열로 변환합니다.
 
@@ -1385,7 +1385,7 @@ SELECT arrayFlatten([[[1]], [[2], [3]]]);
 
 ## arrayFold \{#arrayFold\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 크기가 같은 하나 이상의 배열에 람다 함수(lambda function)를 적용하고, 결과를 누산기(accumulator)에 누적합니다.
 
@@ -1456,7 +1456,7 @@ SELECT arrayFold(
 
 ## arrayIntersect \{#arrayIntersect\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 여러 배열을 입력으로 받아 모든 원본 배열에 공통으로 존재하는 요소들로 이루어진 배열을 반환합니다. 결과에는 중복되지 않는 값만 포함됩니다.
 
@@ -1493,7 +1493,7 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
-도입: v23.7
+도입: v23.7.0
 
 두 배열의 [자카드 인덱스(Jaccard index)](https://en.wikipedia.org/wiki/Jaccard_index)를 반환합니다.
 
@@ -1527,7 +1527,7 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 
 ## arrayJoin \{#arrayJoin\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `arrayJoin` 함수는 배열을 포함하는 행을 받아 이를 펼쳐서, 배열의 각 요소마다 하나씩 여러 행을 생성합니다.
 이는 ClickHouse의 일반 함수(Regular Functions)가 동일한 행 안에서 입력 값을 출력 값으로 매핑하는 것과,
@@ -1566,7 +1566,7 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-**arrayJoin은 쿼리의 모든 부분에 영향을 미칩니다**
+**arrayJoin은 쿼리의 모든 절에 영향을 미칩니다**
 
 ```sql title=Query
 -- The arrayJoin function affects all sections of the query, including the WHERE section. Notice the result 2, even though the subquery returned 1 row.
@@ -1737,7 +1737,7 @@ GROUP BY
 
 ## arrayLast \{#arrayLast\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 람다 `func(x [, y1, y2, ... yN])`의 결과가 true인 소스 배열의 마지막 요소를 반환하며, 그러한 요소가 없으면 기본값을 반환합니다.
 
@@ -1780,7 +1780,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayLastIndex \{#arrayLastIndex\}
 
-도입: v1.1
+도입: v1.1.0
 
 `func(x[, y1, y2, ... yN])`이 true를 반환하는 소스 배열에서 마지막 요소의 인덱스를 반환하며, 그렇지 않으면 &#39;0&#39;을 반환합니다.
 
@@ -1825,7 +1825,7 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
 
 ## arrayLastOrNull \{#arrayLastOrNull\}
 
-도입: v1.1
+도입: v1.1.0
 
 람다 `func(x [, y1, y2, ... yN])`가 true를 반환하는 원본 배열의 마지막 요소를 반환하며, 그런 요소가 없으면 `NULL`을 반환합니다.
 
@@ -1855,7 +1855,7 @@ SELECT arrayLastOrNull(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
 c
 ```
 
-**일치하는 항목 없음**
+**일치하는 값 없음**
 
 ```sql title=Query
 SELECT arrayLastOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1868,7 +1868,7 @@ NULL Nullable(UInt8)
 
 ## arrayLevenshteinDistance \{#arrayLevenshteinDistance\}
 
-도입 버전: v25.4
+도입 버전: v25.4.0
 
 두 배열 간 Levenshtein 거리를 계산합니다.
 
@@ -1901,7 +1901,7 @@ SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
 
 ## arrayLevenshteinDistanceWeighted \{#arrayLevenshteinDistanceWeighted\}
 
-도입 버전: v25.4
+도입 버전: v25.4.0
 
 각 요소에 대해 사용자 지정 가중치를 사용하여 두 배열 사이의 Levenshtein 거리(Levenshtein distance)를 계산합니다.
 배열의 요소 수와 해당 가중치의 수는 일치해야 합니다.
@@ -1936,7 +1936,7 @@ SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 
 
 ## arrayMap \{#arrayMap\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 람다 함수를 각 요소에 적용하여 원본 배열에서 생성된 배열을 반환합니다.
 
@@ -1967,7 +1967,7 @@ SELECT arrayMap(x -> (x + 2), [1, 2, 3]) as res;
 [3, 4, 5]
 ```
 
-**서로 다른 배열의 요소로 튜플 생성하기**
+**여러 배열의 요소로 튜플 생성하기**
 
 ```sql title=Query
 SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
@@ -1980,7 +1980,7 @@ SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
 
 ## arrayMax \{#arrayMax\}
 
-도입된 버전: v21.1
+도입된 버전: v21.1.0
 
 원본 배열에서 최댓값 요소를 반환합니다.
 
@@ -2027,7 +2027,7 @@ SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayMin \{#arrayMin\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 원본 배열의 최소 요소를 반환합니다.
 
@@ -2074,7 +2074,7 @@ SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayNormalizedGini \{#arrayNormalizedGini\}
 
-도입된 버전: v25.1
+도입된 버전: v25.1.0
 
 정규화된 지니 계수(Gini coefficient)를 계산합니다.
 
@@ -2108,7 +2108,7 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 
 ## arrayPartialReverseSort \{#arrayPartialReverseSort\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 이 FUNCTION은 `arrayReverseSort`와 동일하지만, 정렬을 부분적으로 수행할 수 있도록 추가 인자 `limit`을 받습니다.
 
@@ -2188,7 +2188,7 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 원본 배열과 동일한 크기의 배열을 반환하며, 구간 `[1..limit]` 내의 요소들은 원본 배열에서 무작위로 선택된 부분 집합입니다.
 나머지 `(limit..n]` 구간에는 `[1..limit]` 구간에 포함되지 않은 요소들이 정의되지 않은 순서로 포함됩니다.
@@ -2282,7 +2282,7 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 
 ## arrayPartialSort \{#arrayPartialSort\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 이 함수는 `arraySort`와 동일하지만, 추가 `limit` 인자를 통해 배열을 부분적으로 정렬할 수 있습니다.
 
@@ -2363,7 +2363,7 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPopBack \{#arrayPopBack\}
 
-도입: v1.1
+도입: v1.1.0
 
 배열에서 마지막 요소를 제거합니다.
 
@@ -2396,7 +2396,7 @@ SELECT arrayPopBack([1, 2, 3]) AS res;
 
 ## arrayPopFront \{#arrayPopFront\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열에서 첫 번째 요소를 제거합니다.
 
@@ -2429,7 +2429,7 @@ SELECT arrayPopFront([1, 2, 3]) AS res;
 
 ## arrayProduct \{#arrayProduct\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 원본 배열의 요소들을 모두 곱한 값을 반환합니다.
 
@@ -2476,7 +2476,7 @@ SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
 
 ## arrayPushBack \{#arrayPushBack\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열 끝에 요소 하나를 추가합니다.
 
@@ -2520,7 +2520,7 @@ SELECT arrayPushBack(['a'], 'b') AS res;
 
 ## arrayPushFront \{#arrayPushFront\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열의 맨 앞에 요소 하나를 추가합니다.
 
@@ -2563,7 +2563,7 @@ SELECT arrayPushFront(['b'], 'a') AS res;
 
 ## arrayROCAUC \{#arrayROCAUC\}
 
-도입 버전: v20.4
+도입 버전: v20.4.0
 
 수신자 조작 특성 곡선(ROC, Receiver Operating Characteristic) 아래 면적(AUC, Area Under the Curve)을 계산합니다.
 ROC 곡선은 모든 임곗값에 대해 참양성률(TPR, True Positive Rate)을 y축에, 거짓양성률(FPR, False Positive Rate)을 x축에 나타내어 생성합니다.
@@ -2620,7 +2620,7 @@ SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayRandomSample \{#arrayRandomSample\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 입력 배열에서 `samples` 개수만큼 무작위 요소를 포함하는 부분집합을 반환합니다. `samples` 값이 입력 배열의 크기를 초과하는 경우 샘플 크기는 배열의 크기로 제한됩니다. 이때 모든 배열 요소가 반환되지만, 순서는 보장되지 않습니다. 이 함수는 플랫(flat) 배열과 중첩 배열 모두를 처리할 수 있습니다.
 
@@ -2664,7 +2664,7 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 
 ## arrayReduce \{#arrayReduce\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열 요소에 집계 함수(aggregate function)를 적용하고 그 결과를 반환합니다.
 집계 함수 이름은 작은따옴표로 둘러싼 문자열로 전달됩니다(예: `'max'`, `'sum'`).
@@ -2713,7 +2713,7 @@ SELECT arrayReduce('maxIf', [3, 5], [1, 0]);
 └──────────────────────────────────────┘
 ```
 
-**매개변수화 집계 함수 예시**
+**매개변수형 집계 함수 예시**
 
 ```sql title=Query
 SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -2728,7 +2728,7 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 ## arrayReduceInRanges \{#arrayReduceInRanges\}
 
-도입 버전: v20.4
+도입 버전: v20.4.0
 
 지정된 범위의 배열 요소에 집계 함수(aggregate function)를 적용하고, 각 범위에 해당하는 결과를 담은 배열을 반환합니다.
 이 함수는 `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)`를 여러 번 호출한 것과 동일한 결과를 반환합니다.
@@ -2770,7 +2770,7 @@ SELECT arrayReduceInRanges(
 
 ## arrayRemove \{#arrayRemove\}
 
-도입 버전: v25.11
+도입 버전: v25.11.0
 
 배열에서 지정한 값과 같은 모든 요소를 제거합니다.
 NULL 값은 서로 동일한 값으로 간주됩니다.
@@ -2816,7 +2816,7 @@ SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
 
 ## arrayResize \{#arrayResize\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 배열의 길이를 변경합니다.
 
@@ -2864,7 +2864,7 @@ SELECT arrayResize([1], 3, NULL);
 
 ## arrayReverse \{#arrayReverse\}
 
-도입: v1.1
+도입: v1.1.0
 
 주어진 배열의 요소 순서를 역순으로 변경합니다.
 
@@ -2901,7 +2901,7 @@ SELECT arrayReverse([1, 2, 3])
 
 ## arrayReverseFill \{#arrayReverseFill\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 `arrayReverseFill` FUNCTION은 소스 배열을 마지막 요소에서 첫 번째 요소까지 순차적으로 처리하면서, 소스 배열과 조건 배열의 요소를 사용해 각 위치에서 lambda 조건을 평가합니다. 인덱스 i 위치에서 조건이 false로 평가되면, 함수는 해당 요소를 현재 배열 상태에서 인덱스 i+1 위치의 요소로 대체합니다. 마지막 요소는 어떤 조건과 관계없이 항상 유지됩니다.
 
@@ -2946,7 +2946,7 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 
 ## arrayReverseSort \{#arrayReverseSort\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 배열의 요소를 내림차순으로 정렬합니다.
 함수 `f`가 지정되면, 입력 배열의 각 요소에 함수를 적용한 결과를 기준으로 정렬한 뒤, 이렇게 정렬된 배열을 뒤집습니다.
@@ -3001,7 +3001,7 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 원본 배열을 여러 개의 배열로 분할합니다. `func(x[, y1, ..., yN])`이 0이 아닌 값을 반환하면, 해당 요소의 오른쪽에서 배열이 분할됩니다. 마지막 요소 뒤에서는 배열이 분할되지 않습니다.
 
@@ -3036,7 +3036,7 @@ SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arrayRotateLeft \{#arrayRotateLeft\}
 
-도입된 버전: v23.8
+도입된 버전: v23.8.0
 
 지정한 요소 개수만큼 배열을 왼쪽으로 회전합니다. `n`의 값이 음수인 경우, 그 절댓값만큼 오른쪽으로 회전하는 것으로 처리됩니다.
 
@@ -3079,7 +3079,7 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
 
 ## arrayRotateRight \{#arrayRotateRight\}
 
-도입 버전: v23.8
+도입 버전: v23.8.0
 
 지정된 개수만큼 배열을 오른쪽으로 회전합니다. `n`의 값이 음수이면 회전 크기의 절댓값만큼 왼쪽으로 회전한 것으로 처리합니다.
 
@@ -3123,7 +3123,7 @@ SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
 
 ## arrayShiftLeft \{#arrayShiftLeft\}
 
-도입 버전: v23.8
+도입 버전: v23.8.0
 
 지정된 개수만큼 배열을 왼쪽으로 시프트합니다.
 새 요소는 제공된 인자 또는 배열 요소 타입의 기본값으로 채워집니다.
@@ -3178,7 +3178,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
 
 ## arrayShiftRight \{#arrayShiftRight\}
 
-도입 버전: v23.8
+도입 버전: v23.8.0
 
 배열을 지정된 개수만큼 오른쪽으로 이동합니다.
 새로 채워지는 요소는 제공된 인자 또는 배열 요소 타입의 기본값으로 채워집니다.
@@ -3235,7 +3235,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
 
 ## arrayShingles \{#arrayShingles\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 shingle(문자열에서의 n-그램과 유사)들로 구성된 배열을 생성합니다. 즉, 입력 배열에서 지정한 길이의 연속된 부분 배열(sub-array)을 연속적으로 생성합니다.
 
@@ -3269,7 +3269,7 @@ SELECT arrayShingles([1, 2, 3, 4], 3) as res;
 
 ## arrayShuffle \{#arrayShuffle\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 원본 배열과 동일한 크기의 배열을 반환하며, 요소들은 무작위로 섞인 순서로 포함됩니다.
 요소들은 가능한 모든 순열이 동일한 확률로 나타나도록 재배열됩니다.
@@ -3318,7 +3318,7 @@ SELECT arrayShuffle([1, 2, 3, 4], 41);
 
 ## arraySimilarity \{#arraySimilarity\}
 
-도입 버전: v25.4
+도입 버전: v25.4.0
 
 가중치가 적용된 레벤슈타인 거리(Levenshtein distance)를 기준으로 두 배열의 유사도를 `0`에서 `1` 사이 값으로 계산합니다.
 
@@ -3354,7 +3354,7 @@ SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5
 
 ## arraySlice \{#arraySlice\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `NULL` 요소를 포함하여 배열의 일부 구간을 반환합니다.
 
@@ -3389,7 +3389,7 @@ SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
 
 ## arraySort \{#arraySort\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 배열의 요소를 오름차순으로 정렬합니다.
 람다 함수 `f`가 지정된 경우, 배열의 각 요소에 람다를 적용한 결과에 따라 정렬 순서가 결정됩니다.
@@ -3453,9 +3453,9 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 
 ## arraySplit \{#arraySplit\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
-소스 배열을 여러 개의 배열로 분할합니다. `func(x [, y1, ..., yN])`이 0이 아닌 값을 반환하면 해당 요소의 왼쪽에서 배열이 분할됩니다. 첫 번째 요소 앞에서는 배열이 분할되지 않습니다.
+소스 배열을 여러 개의 배열으로 분할합니다. `func(x [, y1, ..., yN])`이 0이 아닌 값을 반환하면 해당 요소의 왼쪽에서 배열이 분할됩니다. 첫 번째 요소 앞에서는 배열이 분할되지 않습니다.
 
 **구문**
 
@@ -3489,7 +3489,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arraySum \{#arraySum\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 소스 배열 요소들의 합을 반환합니다.
 
@@ -3536,7 +3536,7 @@ SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
 
 ## arraySymmetricDifference \{#arraySymmetricDifference\}
 
-도입 버전: v25.4
+도입 버전: v25.4.0
 
 여러 배열을 입력으로 받아 모든 원본 배열에 모두 존재하지 않는 요소들로만 구성된 배열을 반환합니다. 결과에는 고유한 값만 포함됩니다.
 
@@ -3579,7 +3579,7 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 
 ## arrayUnion \{#arrayUnion\}
 
-도입 버전: v24.10
+도입 버전: v24.10.0
 
 여러 배열을 인수로 받아, 원본 배열들 중 하나에 존재하는 모든 요소를 포함하는 배열을 반환합니다. 결과 배열에는 중복되지 않는 고유한 값만 포함됩니다.
 
@@ -3617,7 +3617,7 @@ arrayUnion([1, 3, NULL], [2, 3, NULL]) as null_example
 
 ## arrayUniq \{#arrayUniq\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수가 하나만 전달되면 배열에서 서로 다른 요소의 개수를 셉니다.
 여러 인수가 전달되면 여러 배열에서 동일한 위치의 요소들로 이루어진 **튜플(tuple)** 중 서로 다른 튜플의 개수를 셉니다.
@@ -3663,7 +3663,7 @@ SELECT arrayUniq([1, 1, 2, 2])
 2
 ```
 
-**다중 인자**
+**다중 인수**
 
 ```sql title=Query
 SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
@@ -3676,7 +3676,7 @@ SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
 
 ## arrayWithConstant \{#arrayWithConstant\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 상수 `x`로 채워진 길이 `length`의 배열을 생성합니다.
 
@@ -3710,7 +3710,7 @@ SELECT arrayWithConstant(3, 1)
 
 ## arrayZip \{#arrayZip\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 여러 배열을 하나의 배열로 결합합니다. 결과 배열에는 인수에 지정된 순서대로, 각 원본 배열에서 동일한 위치(인덱스)의 요소들을 튜플로 묶은 값들이 포함됩니다.
 
@@ -3743,7 +3743,7 @@ SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
 
 ## arrayZipUnaligned \{#arrayZipUnaligned\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 여러 배열을 하나의 배열로 결합하며, 길이가 서로 다른 배열도 허용합니다. 결과 배열에는 인수로 전달된 순서에 따라 각 원본 배열에서 같은 인덱스의 요소들이 튜플로 묶여 포함됩니다.
 
@@ -3776,7 +3776,7 @@ SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
 
 ## countEqual \{#countEqual\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 배열에서 값이 `x`인 요소의 개수를 반환합니다. `arrayCount(elem -> elem = x, arr)`와 동일합니다.
 
@@ -3812,7 +3812,7 @@ SELECT countEqual([1, 2, NULL, NULL], NULL)
 
 ## empty \{#empty\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 배열이 비어 있는지 확인합니다.
 
@@ -3853,7 +3853,7 @@ SELECT empty([]);
 
 ## emptyArrayDate \{#emptyArrayDate\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 비어 있는 Date 형식 배열을 반환합니다.
 
@@ -3886,7 +3886,7 @@ SELECT emptyArrayDate
 
 ## emptyArrayDateTime \{#emptyArrayDateTime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 빈 DateTime 배열을 반환합니다.
 
@@ -3919,7 +3919,7 @@ SELECT emptyArrayDateTime
 
 ## emptyArrayFloat32 \{#emptyArrayFloat32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 빈 Float32 배열을 반환합니다.
 
@@ -3952,7 +3952,7 @@ SELECT emptyArrayFloat32
 
 ## emptyArrayFloat64 \{#emptyArrayFloat64\}
 
-도입: v1.1
+도입: v1.1.0
 
 빈 Float64 타입 배열을 반환합니다.
 
@@ -3985,7 +3985,7 @@ SELECT emptyArrayFloat64
 
 ## emptyArrayInt16 \{#emptyArrayInt16\}
 
-v1.1에서 도입됨
+v1.1.0에서 도입됨
 
 빈 Int16 배열을 반환합니다.
 
@@ -4018,7 +4018,7 @@ SELECT emptyArrayInt16
 
 ## emptyArrayInt32 \{#emptyArrayInt32\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 빈 Int32 배열을 반환합니다.
 
@@ -4051,7 +4051,7 @@ SELECT emptyArrayInt32
 
 ## emptyArrayInt64 \{#emptyArrayInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 빈 Int64 배열을 반환합니다.
 
@@ -4084,7 +4084,7 @@ SELECT emptyArrayInt64
 
 ## emptyArrayInt8 \{#emptyArrayInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 빈 Int8 배열을 반환합니다.
 
@@ -4117,7 +4117,7 @@ SELECT emptyArrayInt8
 
 ## emptyArrayString \{#emptyArrayString\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 빈 String 배열을 반환합니다.
 
@@ -4150,7 +4150,7 @@ SELECT emptyArrayString
 
 ## emptyArrayToSingle \{#emptyArrayToSingle\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 빈 배열을 인수로 받아 기본값과 동일한 단일 요소 배열을 반환합니다.
 
@@ -4195,7 +4195,7 @@ SELECT emptyArrayToSingle(a), emptyArrayToSingle(b), emptyArrayToSingle(c) FROM 
 
 ## emptyArrayUInt16 \{#emptyArrayUInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 비어 있는 UInt16 배열을 반환합니다.
 
@@ -4228,7 +4228,7 @@ SELECT emptyArrayUInt16
 
 ## emptyArrayUInt32 \{#emptyArrayUInt32\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 빈 UInt32 배열을 반환합니다.
 
@@ -4261,7 +4261,7 @@ SELECT emptyArrayUInt32
 
 ## emptyArrayUInt64 \{#emptyArrayUInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 빈 UInt64 타입 배열을 반환합니다.
 
@@ -4294,7 +4294,7 @@ SELECT emptyArrayUInt64
 
 ## emptyArrayUInt8 \{#emptyArrayUInt8\}
 
-도입: v1.1
+도입: v1.1.0
 
 빈 UInt8 배열을 반환합니다.
 
@@ -4327,7 +4327,7 @@ SELECT emptyArrayUInt8
 
 ## has \{#has\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열에 지정한 요소가 포함되어 있는지 여부를 반환합니다.
 
@@ -4375,7 +4375,7 @@ SELECT has([1, 2, 3], 4)
 
 ## hasAll \{#hasAll\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 한 배열이 다른 배열의 부분집합인지 확인합니다.
 
@@ -4423,7 +4423,7 @@ SELECT hasAll([1, Null], [Null])
 1
 ```
 
-**서로 다른 타입의 값이 포함된 배열**
+**서로 다른 타입의 값을 포함한 배열**
 
 ```sql title=Query
 SELECT hasAll([1.0, 2, 3, 4], [1, 3])
@@ -4466,7 +4466,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
 
 ## hasAny \{#hasAny\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 두 배열에 하나 이상의 공통 요소가 있는지 확인합니다.
 
@@ -4513,7 +4513,7 @@ SELECT hasAny([Null], [Null, 1])
 1
 ```
 
-**서로 다른 타입의 값을 담은 배열**
+**서로 다른 타입의 값을 포함한 배열**
 
 ```sql title=Query
 SELECT hasAny([-128, 1., 512], [1])
@@ -4546,7 +4546,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
 
 ## hasSubstr \{#hasSubstr\}
 
-도입된 버전: v20.6
+도입된 버전: v20.6.0
 
 `array2`의 모든 요소가 `array1` 안에 정확히 같은 순서로 나타나는지 확인합니다.
 따라서 `array1 = prefix + array2 + suffix`인 경우에만, 그리고 그 경우에 한해 함수는 `1`을 반환합니다.
@@ -4587,7 +4587,7 @@ SELECT hasSubstr([], [])
 1
 ```
 
-**NULL 값을 포함한 배열**
+**NULL 값을 포함하는 배열**
 
 ```sql title=Query
 SELECT hasSubstr([1, Null], [Null])
@@ -4597,7 +4597,7 @@ SELECT hasSubstr([1, Null], [Null])
 1
 ```
 
-**서로 다른 타입의 값이 섞인 배열**
+**서로 다른 타입의 값을 포함한 배열**
 
 ```sql title=Query
 SELECT hasSubstr([1.0, 2, 3, 4], [1, 3])
@@ -4617,7 +4617,7 @@ SELECT hasSubstr(['a', 'b'], ['a'])
 1
 ```
 
-**유효한 순서가 있는 배열**
+**순서가 올바른 배열**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
@@ -4627,7 +4627,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
 1
 ```
 
-**순서가 올바르지 않은 배열**
+**잘못된 순서의 배열**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
@@ -4660,7 +4660,7 @@ Raises a `NO_COMMON_TYPE` exception
 
 ## indexOf \{#indexOf\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 배열에 값 &#39;x&#39;인 첫 번째 요소가 존재하는 경우, 해당 요소의 인덱스를 반환합니다(1부터 시작).
 배열에 찾는 값이 없으면 함수는 `0`을 반환합니다.
@@ -4707,7 +4707,7 @@ SELECT indexOf([1, 3, NULL, NULL], NULL)
 
 ## indexOfAssumeSorted \{#indexOfAssumeSorted\}
 
-도입 버전: v24.12
+도입 버전: v24.12.0
 
 배열에 값 &#39;x&#39;가 포함되어 있으면, 해당 값과 같은 첫 번째 요소의 인덱스를 반환합니다(`1`부터 시작합니다).
 배열에 찾는 값이 없으면 함수는 `0`을 반환합니다.
@@ -4747,7 +4747,7 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 
 ## kql_array_sort_asc \{#kql_array_sort_asc\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 하나 이상의 배열을 오름차순으로 정렬합니다. 첫 번째 배열이 정렬되며, 이후 배열들은 첫 번째 배열의 정렬된 순서에 맞게 재정렬됩니다. NULL 값은 끝에 배치됩니다. 이는 KQL (Kusto Query Language) 호환성 함수입니다.
 
@@ -4782,7 +4782,7 @@ SELECT kql_array_sort_asc([3, 1, 2])
 
 ## kql_array_sort_desc \{#kql_array_sort_desc\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 하나 이상의 배열을 내림차순으로 정렬합니다. 첫 번째 배열이 정렬되며, 이후 배열들은 첫 번째 배열의 정렬 순서에 맞추어 재정렬됩니다. NULL 값은 끝에 위치합니다. 이는 KQL(Kusto Query Language)과의 호환성을 위한 함수입니다.
 
@@ -4817,7 +4817,7 @@ SELECT kql_array_sort_desc([3, 1, 2])
 
 ## length \{#length\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 문자열 또는 배열의 길이를 계산합니다.
 
@@ -4914,7 +4914,7 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 
 ## notEmpty \{#notEmpty\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 배열이 비어 있지 않은지 확인합니다.
 
@@ -4955,7 +4955,7 @@ SELECT notEmpty([1,2]);
 
 ## range \{#range\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `start`부터 `end - 1`까지 `step` 간격으로 숫자 배열을 반환합니다.
 
@@ -5002,7 +5002,7 @@ SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
 
 ## replicate \{#replicate\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 단일 값만 포함하는 배열을 생성합니다.
 
@@ -5038,7 +5038,7 @@ SELECT replicate(1, ['a', 'b', 'c']);
 
 ## reverse \{#reverse\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 배열의 요소 순서 또는 입력 문자열의 문자 순서를 역순으로 반환합니다.
 

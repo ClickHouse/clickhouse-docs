@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## corrMatrix \{#corrMatrix\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 N 個の変数についての相関行列を計算します。
 

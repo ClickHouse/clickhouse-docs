@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilePrometheusHistogram \{#quantilePrometheusHistogram\}
 
-Появилась в версии v25.10
+Появилась в версии v25.10.0
 
 Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) гистограммы с использованием линейной интерполяции, учитывая накопленные значения и верхние границы каждого бакета гистограммы.
 
