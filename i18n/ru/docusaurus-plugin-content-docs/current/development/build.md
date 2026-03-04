@@ -10,7 +10,7 @@ doc_type: 'guide'
 # Как собрать ClickHouse под Linux \{#how-to-build-clickhouse-on-linux\}
 
 :::info Вам не обязательно собирать ClickHouse самостоятельно!
-Вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/#quick-start).
+Вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/docs/get-started/quick-start).
 :::
 
 ClickHouse может быть собран на следующих платформах:

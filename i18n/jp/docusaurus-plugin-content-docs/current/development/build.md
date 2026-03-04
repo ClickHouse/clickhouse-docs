@@ -10,7 +10,7 @@ doc_type: 'guide'
 # Linux で ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux\}
 
 :::info 自分で ClickHouse をビルドする必要はありません！
-[Quick Start](https://clickhouse.com/#quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
+[Quick Start](https://clickhouse.com/docs/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
 :::
 
 ClickHouse は次のプラットフォーム上でビルドできます：
