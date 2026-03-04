@@ -44,8 +44,12 @@ ENGINE = Alias(target_db, target_table)
 
 ## 엔진 매개변수 \{#engine-parameters\}
 
-- **`target_db (optional)`** — 대상 테이블이 포함된 데이터베이스의 이름입니다.
-- **`target_table`** — 대상 테이블의 이름입니다.
+* **`target_db (optional)`** — 대상 테이블이 포함된 데이터베이스의 이름입니다.
+* **`target_table`** — 대상 테이블의 이름입니다.
+
+:::note
+`target_db`가 생략되고 `target_table`이 완전히 정규화된 이름이 아닌 경우(예: `Alias('my_table')`)에는, 대상은 세션의 현재 데이터베이스가 아니라 별칭 자체와 동일한 데이터베이스로 결정됩니다.
+:::
 
 ## 지원되는 연산 \{#supported-operations\}
 

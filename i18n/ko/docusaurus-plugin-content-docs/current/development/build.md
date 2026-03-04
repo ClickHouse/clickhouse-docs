@@ -10,16 +10,16 @@ doc_type: 'guide'
 # Linux에서 ClickHouse를 빌드하는 방법 \{#how-to-build-clickhouse-on-linux\}
 
 :::info ClickHouse를 직접 빌드할 필요는 없습니다!
-[Quick Start](https://clickhouse.com/#quick-start)에 설명된 대로 사전 빌드된 ClickHouse를 설치할 수 있습니다.
+[Quick Start](https://clickhouse.com/docs/get-started/quick-start)에 설명된 대로 사전 빌드된 ClickHouse를 설치할 수 있습니다.
 :::
 
 ClickHouse는 다음 플랫폼에서 빌드할 수 있습니다:
 
-- x86_64
-- AArch64
-- PowerPC 64 LE (실험적 지원)
-- s390/x (실험적 지원)
-- RISC-V 64 (실험적 지원)
+* x86&#95;64
+* AArch64
+* PowerPC 64 LE (실험적 지원)
+* s390/x (실험적 지원)
+* RISC-V 64 (실험적 지원)
 
 ## Assumptions \{#assumptions\}
 

@@ -32,7 +32,6 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 * [MATERIALIZE COLUMN](#materialize-column) — 컬럼이 없는 파트에서 컬럼을 구체화합니다.
   이러한 작업은 아래에서 자세히 설명합니다.
 
-
 ## ADD COLUMN \{#add-column\}
 
 ```sql
@@ -69,7 +68,6 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-
 ## DROP COLUMN \{#drop-column\}
 
 ```sql
@@ -90,7 +88,6 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-
 ## COLUMN 이름 변경 \{#rename-column\}
 
 ```sql
@@ -107,7 +104,6 @@ RENAME COLUMN [IF EXISTS] name to new_name
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-
 ## CLEAR COLUMN \{#clear-column\}
 
 ```sql
@@ -123,7 +119,6 @@ CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ```sql
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
-
 
 ## COMMENT COLUMN \{#comment-column\}
 
@@ -142,7 +137,6 @@ COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```sql
 ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
-
 
 ## MODIFY COLUMN \{#modify-column\}
 
@@ -223,7 +217,6 @@ DESCRIBE users;
 널 허용(Nullable) 컬럼을 널 비허용(Non-Nullable)으로 변경할 때는 주의해야 합니다. 해당 컬럼에 NULL 값이 존재하지 않는지 반드시 확인해야 합니다. NULL 값이 남아 있으면 이후 읽기 시 문제가 발생합니다. 이 경우에는 mutation을 중지(KILL)한 다음 컬럼을 다시 Nullable 타입으로 되돌리는 것이 하나의 우회 방법입니다.
 :::
 
-
 ## MODIFY COLUMN REMOVE \{#modify-column-remove\}
 
 다음 컬럼 속성 중 하나를 제거합니다: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`.
@@ -244,8 +237,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 **함께 보기**
 
-* [REMOVE TTL](ttl.md)
-
+* [REMOVE TTL](ttl.md).
 
 ## MODIFY COLUMN MODIFY SETTING \{#modify-column-modify-setting\}
 
@@ -265,7 +257,6 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-
 ## MODIFY COLUMN RESET SETTING \{#modify-column-reset-setting\}
 
 컬럼의 SETTING을 초기화하며, 테이블 CREATE 쿼리의 컬럼 표현식에 있는 해당 SETTING 선언도 제거합니다.
@@ -283,7 +274,6 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ```sql
 ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
-
 
 ## MATERIALIZE COLUMN \{#materialize-column\}
 
@@ -345,10 +335,11 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view).
 
-
 ## 제한 사항 \{#limitations\}
 
 `ALTER` 쿼리는 중첩 데이터 구조 전체가 아니라, 중첩 데이터 구조 안의 개별 요소(컬럼)를 생성하거나 삭제할 수 있습니다. 중첩 데이터 구조를 추가하려면 `name.nested_name`과 같은 이름과 `Array(T)` 타입의 컬럼을 추가하면 됩니다. 중첩 데이터 구조는 점(.) 앞부분의 접두사가 동일한 이름을 가진 여러 배열 컬럼과 동등합니다.
+
+이름에 점이 포함된 컬럼 이름 변경은 부분적으로만 지원됩니다. 점(`.`)은 [Nested](/sql-reference/data-types/nested-data-structures/nested) 서브컬럼 접근을 위해 예약되어 있으므로, 접두사(부모 이름)는 동일하게 유지되어야 합니다. 접미사(서브컬럼 이름)만 변경할 수 있습니다. 예를 들어 `a.b`는 `a.c`로 이름을 바꿀 수 있지만, Nested 부모 접두사가 변경되므로 `a.b`를 `b.d`로 변경하는 것은 허용되지 않습니다.
 
 기본 키 또는 샘플링 키(`ENGINE` 표현식에서 사용되는 컬럼)의 컬럼 삭제는 지원되지 않습니다. 기본 키에 포함된 컬럼의 타입 변경은 이 변경이 데이터 수정으로 이어지지 않는 경우에만 가능합니다(예를 들어 Enum에 값을 추가하거나, `DateTime` 타입을 `UInt32` 타입으로 변경하는 것은 허용됩니다).
 
