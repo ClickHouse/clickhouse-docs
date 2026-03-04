@@ -3,8 +3,8 @@ sidebar_label: 'Materialization: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
 description: 'materialized_view materialization에 대한 상세 문서입니다'
-keywords: ['clickhouse', 'dbt', 'materialized view', 'refreshable', 'external target table', 'catchup']
-title: 'Materialized Views'
+keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
+title: 'Materialization: materialized_view'
 doc_type: 'guide'
 ---
 
@@ -292,13 +292,62 @@ GROUP BY event_date, event_type
 1. `materialization_target_table()` 호출을 수정합니다.
 2. `dbt run --full-refresh -s your_mv_model`을 실행합니다.
 
-### 암시적 대상 방식과 명시적 대상 방식의 동작 비교\{#explicit-target-behavior\}
+### 자주 발생하는 문제 해결 \{#explicit-target-troubleshooting\}
 
-| Operation | Implicit target | Explicit target |
-| --- | --- | --- |
-| First dbt run | 모든 리소스가 생성됨 | 모든 리소스가 생성됨 |
-| Next dbt run |  **개별 리소스를 따로 관리할 수 없으며, 모든 작업이 동시에 수행됩니다:**<br /><br />**target table**: <br /> 변경 사항은 `on_schema_change` 설정으로 관리됩니다. 기본적으로 `ignore`로 설정되어 있어 새 컬럼은 처리되지 않습니다.<br /><br />**MVs**: `alter table modify query` 작업으로 모두 업데이트됩니다 | **변경 사항을 개별적으로 적용할 수 있습니다:<br /><br />target table**: <br />dbt에서 정의한 MVs의 target table인지 자동으로 감지합니다. 해당하는 경우 컬럼 변경은 기본적으로 `mv_on_schema_change` 설정의 `fail` 값으로 관리되어, 컬럼이 변경되면 실패합니다. 이 기본값은 보호 장치로 추가되었습니다<br /><br />**MVs**: SQL이 `alter table modify query` 작업으로 업데이트됩니다. |
-| dbt run --full-refresh | **개별 리소스를 따로 관리할 수 없으며, 모든 작업이 동시에 수행됩니다:<br /><br />target table**: <br />target table이 비어 있는 상태로 다시 생성됩니다. 모든 MVs의 SQL을 함께 사용하여 백필(backfill)을 구성하기 위한 `catchup`을 사용할 수 있습니다. `catchup`은 기본적으로 `True`입니다<br /><br />**MVs**: 모두 다시 생성됩니다. | **변경 사항이 개별적으로 적용됩니다:<br /><br />target table:** 기존과 동일한 방식으로 다시 생성됩니다.<br /><br />**MVs**: drop 후 다시 생성됩니다. 초기 백필(backfill)을 위해 `catchup`을 사용할 수 있습니다. `catchup`은 기본적으로 `True`입니다. <br /><br />**참고: 이 과정 동안 target table은 MVs가 다시 생성될 때까지 비어 있거나 일부만 적재된 상태가 됩니다. 이를 방지하려면, 다음 섹션에서 target table을 점진적으로 갱신(iterate)하는 방법을 확인하십시오.**|
+#### `run`이 실행되는 동안 또는 실행된 후 대상 테이블이 비어 있음 \{#target-table-empty\}
+
+다음과 같은 몇 가지 이유로 이런 현상이 발생할 수 있습니다:
+
+- materialized view가 `catchup=False`로 설정되어 있거나 대상 테이블이 `repopulate_from_mvs_on_full_refresh=False`로 설정되어 있어서, materialized view가 생성되거나 대상 테이블이 재생성될 때 백필(backfill)이 수행되지 않습니다. 이는 의도된 동작이므로, materialized view의 SQL을 사용해 데이터를 다시 삽입하려면 materialized view에서 `catchup=True`(기본값입니다)를 설정하거나 대상 테이블에서 `repopulate_from_mvs_on_full_refresh=True`를 설정해야 합니다. 중복을 방지하기 위해 두 옵션을 동시에 활성화하지 않았는지 확인하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 참조하십시오.
+- `dbt run --full-refresh`가 실행되는 동안 materialized view가 기본값인 `catchup=True`를 사용하는 경우, 대상 테이블이 다시 생성되고 materialized view가 데이터를 순차적으로 다시 삽입합니다. 이 상황을 피하려면 [명시적 대상과 함께 하는 전체 새로 고침](#explicit-target-full-refresh)을 참조하십시오.
+
+#### `repopulate_from_mvs_on_full_refresh=True`가 설정된 대상 테이블에서 `dbt run --full-refresh`를 실행하면, 현재 프로젝트에 있는 SQL이 아니라 이전 materialized view 정의의 로직을 사용합니다 \{#full-refresh-with-repopulate-from-mvs-on-full-refresh\}
+
+`repopulate_from_mvs_on_full_refresh=True`는 ClickHouse에 이미 정의되어 있는 기존 MV SQL을 사용합니다. 새로운 materialized view 정의가 사용되도록 하려면, 대상 테이블에서 `dbt run --full-refresh`를 실행하기 전에 각 materialized view에 대해 `dbt run`을 먼저 실행해야 합니다.
+
+#### 실행 후 중복 데이터가 발생합니다 \{#duplicate-data\}
+
+가능한 원인:
+
+- materialized view(들)에 `catchup=True`가 설정되어 있고 대상 테이블에 `repopulate_from_mvs_on_full_refresh=True`도 설정되어 있는 경우: 수행하려는 작업에 따라 둘 중 하나만 유지하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 확인하십시오.
+- 대상 테이블이 `WHERE 0`으로 정의되지 않은 경우: 대상 테이블은 비어 있는 상태로 생성되어야 하지만, `WHERE 0`이 포함되지 않으면 내부 쿼리에서 데이터를 삽입할 수 있습니다. 해당 절이 포함되어 있는지 확인하십시오.
+
+#### `dbt run --full-refresh` 실행 후 활성 수집 중 데이터 손실 발생 \{#data-loss-active-ingestion\}
+
+`dbt run --full-refresh` 실행 후 소스 테이블의 일부 행이 대상 테이블에서 누락될 수 있습니다.
+ClickHouse materialized view는 insert 트리거처럼 동작하며, 해당 materialized view가 존재하는 동안에만 데이터를 캡처합니다. 전체 새로 고침(full refresh) 중에는 MV가 삭제되었다가 다시 생성되는 아주 짧은 구간(「blind window」)이 발생합니다. 이 구간에 소스 테이블에 삽입된 행은 캡처되지 않습니다. 자세한 내용은 [활성 수집 중 동작](#behavior-during-active-ingestion) 섹션을 확인하십시오.
+
+### 디버깅 방법 \{#debugging-techniques\}
+
+#### ClickHouse에서 MV의 현재 대상 확인 \{#check-mv-target\}
+
+materialized view가 어디에 데이터를 기록하는지 확인하려면 `system.tables`를 쿼리합니다:
+
+```sql
+SELECT
+    name as mv_name,
+    replaceRegexpOne(
+        create_table_query,
+        '.*TO\\s+`?([^`\\s(]+)`?\\.`?([^`\\s(]+)`?.*',
+        '\\1.\\2'
+    ) AS target_table
+FROM system.tables
+WHERE database = 'your_schema'
+  AND engine = 'MaterializedView'
+```
+
+
+#### dbt가 테이블을 materialized view의 대상으로 인식하는지 확인 \{#check-dbt-recognition\}
+
+dbt 실행 중 다음 로그 메시지를 확인합니다:
+
+>Table `<table_name>` is used as a target by a dbt-managed materialized view. Defaulting mv_on_schema_change to "fail" to prevent data loss.
+
+이 메시지가 표시되면, 해당 테이블이 하나 이상의 dbt 관리 materialized view의 대상 테이블임을 dbt가 감지했다는 의미입니다. 이 메시지가 표시될 것으로 예상되는데 보이지 않는 경우, 다음을 확인하십시오.
+
+- materialized view 모델이 `{{ materialization_target_table(ref('your_target')) }}` 를 올바르게 정의하고 있는지
+- materialized view 모델 설정에 `materialized='materialized_view'` 가 포함되어 있는지
+- materialized view와 대상 테이블이 모두 최소 한 번 이상 실행되었는지
 
 ### 암시적 대상에서 명시적 대상으로 마이그레이션 \{#migration-implicit-to-explicit\}
 
@@ -367,23 +416,34 @@ select a, b, c from {{ source('raw', 'table_2') }}
 **3. 필요에 따라 [명시적 대상](#explicit-target) 섹션의 지침을 따라 반복적으로 수정합니다.**
 
 
-## 활성 수집 중 동작 \{#behavior-during-active-ingestion\}
+## 암시적 대상 방식과 명시적 대상 방식의 동작 비교\{#behavior-comparison\}
 
-ClickHouse의 구체화된 뷰(Materialized View)는 **insert 트리거**처럼 동작하므로, 해당 뷰가 존재하는 동안에만 데이터를 캡처합니다. materialized view가 삭제되었다가 다시 생성되는 경우(예: `--full-refresh` 중), 그 시간 창 동안 소스 테이블에 삽입된 행은 MV에서 처리되지 **않습니다**. 이를 MV가 「blind」 상태라고 합니다.
+### 일반적인 동작 방식 \{#general-behavior\}
 
-추가로, **catch-up** 과정(MV의 `catchup` 또는 대상 테이블의 `repopulate_from_mvs_on_full_refresh` 모두)은 MV의 SQL을 사용하여 `INSERT INTO ... SELECT`를 실행합니다. 이와 동시에 소스 테이블에 대한 insert가 발생하고 있다면, catch-up 쿼리에 MV가 이미 처리한(또는 생성 직후 처리하게 될) 행이 포함될 수 있으며, 이로 인해 대상 테이블에 **중복 데이터**가 생길 수 있습니다. 대상 테이블에 `ReplacingMergeTree`와 같은 중복 제거 엔진을 사용하면 이러한 위험을 완화할 수 있습니다.
+| Operation | Implicit target | Explicit target |
+| --- | --- | --- |
+| First dbt run | 모든 리소스가 생성됨 | 모든 리소스가 생성됨 |
+| Next dbt run |  **개별 리소스를 따로 관리할 수 없으며, 모두 한 번에 처리됩니다:**<br /><br />**target table**: <br /> `on_schema_change` 설정으로 변경 사항을 관리합니다. 기본값은 `ignore`이므로 새로운 컬럼은 반영되지 않습니다.<br /><br />**materialized view**: 모두 `alter table modify query` 작업으로 업데이트됩니다 | **변경 사항을 개별적으로 적용할 수 있습니다:<br /><br />target table**: <br />dbt에서 정의한 materialized view의 target table인지 자동으로 감지합니다. 해당되는 경우 컬럼 변경은 기본적으로 `mv_on_schema_change` 설정의 `fail` 값으로 관리되며, 컬럼이 변경되면 실패합니다. 이 기본값은 보호 장치로 추가되었습니다.<br /><br />**materialized view**: 해당 SQL이 `alter table modify query` 작업으로 업데이트됩니다. |
+| dbt run --full-refresh | **개별 리소스를 따로 관리할 수 없으며, 모두 한 번에 처리됩니다:<br /><br />target table**: <br />target table이 비어 있는 상태로 다시 생성됩니다. 모든 materialized view의 SQL을 함께 사용하여 백필(backfill)을 구성하기 위한 `catchup`을 사용할 수 있습니다. `catchup`의 기본값은 `True`입니다.<br /><br />**materialized view**: 모두 다시 생성됩니다. | **변경 사항이 개별적으로 적용됩니다:<br /><br />target table:** 일반적인 방식으로 다시 생성됩니다.<br /><br />**materialized view**: drop 후 다시 생성됩니다. 초기 백필(backfill)을 위해 `catchup`을 사용할 수 있습니다. `catchup`의 기본값은 `True`입니다. <br /><br />**참고:** 이 과정 동안 materialized view가 다시 생성될 때까지 target table은 비어 있거나 일부만 적재된 상태가 됩니다. 이를 피하려면 다음 섹션의 target table을 반복적으로 갱신하는 방법을 확인하십시오.|
+
+### 활성 수집 중 동작 \{#behavior-during-active-ingestion\}
+
+모델을 반복적으로 개선할 때에는, 서로 다른 작업이 현재 삽입되고 있는 데이터와 어떻게 상호작용하는지 이해해야 합니다.
+
+- ClickHouse의 구체화된 뷰(Materialized View)는 **insert 트리거**처럼 동작하므로, 해당 뷰가 존재하는 동안에만 데이터를 캡처합니다. materialized view가 삭제되었다가 다시 생성되는 경우(예: `--full-refresh` 중), 그 시간 창 동안 소스 테이블에 삽입된 행은 MV에서 처리되지 **않습니다**. 이를 MV가 「blind」 상태라고 합니다.
+- 다양한 `catchup` 프로세스는 모두 materialized view의 SQL을 사용한 `INSERT INTO ... SELECT` 작업을 기반으로 하며, materialized view가 동작하는 방식과는 독립적으로 수행됩니다. 한 번 `INSERT`가 시작되면, 이후 새로 들어오는 데이터는 해당 `INSERT`에 의해 캡처되지 않지만, 연결된 materialized view에 의해 캡처됩니다.
 
 다음 표는 소스 테이블에 insert가 활발히 발생하고 있을 때 각 작업의 안전성을 요약한 것입니다.
 
-### 암시적 대상 작업 \{#ingestion-implicit-target\}
+#### 암시적 대상 작업 \{#ingestion-implicit-target\}
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. 대상 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. MV 생성 | ⚠️ **1단계와 3단계 사이에는 MV가 소스 변경을 감지하지 못합니다.** 이 구간 동안 소스에 삽입되는 행은 캡처되지 않습니다. |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 안전합니다. MV는 원자적으로 업데이트됩니다. |
-| `dbt run --full-refresh` | 1. 백업 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. MV 삭제<br/>4. 테이블 교환<br/>5. MV 재생성 | ⚠️ **재생성 중에는 MV가 소스 변경을 감지하지 못합니다.** 3단계와 5단계 사이에 소스에 삽입된 데이터는 새 대상 테이블에 나타나지 않습니다. |
+| First `dbt run` | 1. 대상 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. materialized view 생성 | ⚠️ **1단계와 3단계 사이에는 materialized view가 소스 변경을 감지하지 못합니다.** 이 구간 동안 소스에 삽입되는 행은 캡처되지 않습니다. |
+| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 안전합니다. materialized view는 원자적으로 업데이트됩니다. |
+| `dbt run --full-refresh` | 1. 백업 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. materialized view 삭제<br/>4. 테이블 교환<br/>5. materialized view 재생성 | ⚠️ **재생성 중에는 materialized view가 소스 변경을 감지하지 못합니다.** 3단계와 5단계 사이에 소스에 삽입된 데이터는 새 대상 테이블에 나타나지 않습니다. |
 
-### 명시적 대상 작업 \{#ingestion-explicit-target\}
+#### 명시적 대상 작업 \{#ingestion-explicit-target\}
 
 **materialized view 모델:**
 

@@ -1093,6 +1093,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+## JSONKey \{#JSONKey\}
+
+Введена в: v20.1
+
+Возвращает ключ поля JSON-объекта по его индексу (нумерация с единицы). Если JSON передаётся в виде строки, он сначала разбирается. Второй аргумент — это JSON-путь для перехода во вложенные объекты. Функция возвращает имя ключа в указанной позиции.
+
+**Синтаксис**
+
+```sql
+JSONKey(json[, indices_or_keys, ...])
+```
+
+**Аргументы**
+
+* `json` — JSON-строка для разбора. [`String`](/sql-reference/data-types/string)
+* `indices_or_keys` — необязательный список индексов или ключей, определяющих путь к вложенному элементу. Каждый аргумент может быть либо строкой (доступ по ключу), либо целым числом (доступ по индексу, начиная с 1). [`String`](/sql-reference/data-types/string) или [`Int*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает имя ключа на указанной позиции в JSON-объекте. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT JSONKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1);
+```
+
+```response title=Response
+a
+```
+
+
 ## JSONLength \{#JSONLength\}
 
 Добавлена в версии: v20.1
@@ -1139,7 +1173,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 **Синтаксис**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **Псевдонимы**: `jsonMergePatch`
@@ -1157,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **Пример использования**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response

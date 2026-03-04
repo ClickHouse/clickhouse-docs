@@ -7,12 +7,7 @@ title: '텍스트 인덱스를 활용한 전문 검색'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
@@ -35,7 +30,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: I, have, two, dogs, and, a, cat
 ```
 
-일반적으로 검색 시 대소문자를 구분하지 않으므로 토큰을 소문자로 변환합니다:
+일반적으로는 대소문자를 구분하지 않고 검색하므로 토큰을 모두 소문자로 변환합니다:
 
 ```result
 1: the, cat, likes, mice
@@ -43,7 +38,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: i, have, two, dogs, and, a, cat
 ```
 
-또한 거의 모든 행에 나타나는 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
+또한 거의 모든 행에서 등장하므로 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
 
 ```result
 1: cat, likes, mice
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-반환합니다
-
-```text
-25.4
-```
-
-또는 26.2보다 작은 값을 사용하는 경우 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
+`26.2`보다 작은 값(예: `25.4`)을 반환하는 경우, 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
 :::
 
-텍스트 인덱스는 다음 구문을 사용하여 [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) 컬럼( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수 사용)을 대상으로 정의할 수 있습니다:
+텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
 
 ```sql
 CREATE TABLE table
@@ -125,6 +114,14 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
+텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
+
+* [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
+* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
+
 또는 기존 테이블에 텍스트 인덱스를 추가하려면 다음과 같이 합니다.
 
 ```sql
@@ -147,13 +144,13 @@ ALTER TABLE table
 
 ```
 
-이미 존재하는 테이블에 인덱스를 추가하는 경우, 기존 테이블 파트에 대해 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 대신 느린 전수 검색(brute-force scan)으로 처리됩니다.
+이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 전수 검색(brute-force scan)으로 수행됩니다.
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
-텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오
+텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오.
 
 ```sql
 ALTER TABLE table DROP INDEX text_idx;
@@ -216,9 +213,10 @@ Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), 아래 첫 번째 예제 참고).
 2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
-3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](./sql-reference/functions/string-replace-functions.md/#translate)).
+3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate)).
 
 전처리기 표현식은 [String](/sql-reference/data-types/string.md) 또는 [FixedString](/sql-reference/data-types/fixedstring.md) 타입의 입력 값을 동일한 타입의 값으로 변환해야 합니다.
+텍스트 인덱스가 `Nullable(T)` 또는 `LowCardinality(T)` 타입 컬럼에 대해 생성된 경우, 전처리기 표현식은 널 허용 값 또는 LowCardinality 값도 입력으로 허용해야 합니다(즉, 예외를 발생시키면 안 됩니다).
 
 예:
 
@@ -252,7 +250,7 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, 'Foo');
 ```
 
-다음과 같습니다:
+다음과 동일합니다:
 
 ```sql
 CREATE TABLE table
@@ -266,7 +264,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-전처리기는 [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md) 컬럼에도 사용할 수 있습니다.
 이 경우 전처리기 표현식은 배열 요소를 각각 변환합니다.
 
 예시:

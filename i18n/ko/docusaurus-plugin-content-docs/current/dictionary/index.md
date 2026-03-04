@@ -3,7 +3,7 @@ slug: /dictionary
 title: '딕셔너리'
 keywords: ['dictionary', 'dictionaries']
 description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 제공합니다.'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 
 # 딕셔너리 \{#dictionary\}
 
-ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/dictionaries#dictionary-sources)의 데이터를 메모리 내 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
+ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)의 데이터를 메모리 내 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
 
 딕셔너리는 다음과 같은 용도로 유용합니다:
 
@@ -89,7 +89,7 @@ Peak memory usage: 3.18 GiB.
 
 #### 딕셔너리 적용하기 \{#applying-a-dictionary\}
 
-이 개념들을 보여 주기 위해 투표 데이터에 딕셔너리를 사용합니다. 딕셔너리는 일반적으로 메모리에 상주하므로([ssd&#95;cache](/sql-reference/dictionaries#ssd_cache)는 예외), 데이터 크기에 유의해야 합니다. 먼저 `votes` 테이블의 크기를 확인합니다:
+이 개념들을 보여 주기 위해 투표 데이터에 딕셔너리를 사용합니다. 딕셔너리는 일반적으로 메모리에 상주하므로([ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache)는 예외), 데이터 크기에 유의해야 합니다. 먼저 `votes` 테이블의 크기를 확인합니다:
 
 ```sql
 SELECT table,
@@ -107,7 +107,7 @@ GROUP BY table
 
 데이터는 딕셔너리에 압축되지 않은 상태로 저장되므로, 모든 컬럼을 (실제로는 그렇게 하지 않지만) 딕셔너리에 저장한다고 가정하면 최소 4GB의 메모리가 필요합니다. 딕셔너리는 클러스터 전체에 걸쳐 복제되므로, 이 메모리는 *노드별로* 예약되어야 합니다.
 
-> 아래 예제에서는 딕셔너리 데이터가 ClickHouse 테이블에서 생성됩니다. 이는 딕셔너리의 가장 흔한 소스이지만, 파일, http, 그리고 [Postgres](/sql-reference/dictionaries#postgresql)를 포함한 데이터베이스 등 [여러 가지 소스](/sql-reference/dictionaries#dictionary-sources)를 지원합니다. 아래에서 설명하듯이, 딕셔너리는 자동으로 갱신될 수 있어, 자주 변경되는 소규모 데이터셋을 직접 조인에 사용할 수 있도록 보장하는 데 이상적인 방법을 제공합니다.
+> 아래 예제에서는 딕셔너리 데이터가 ClickHouse 테이블에서 생성됩니다. 이는 딕셔너리의 가장 흔한 소스이지만, 파일, http, 그리고 [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql)를 포함한 데이터베이스 등 [여러 가지 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)를 지원합니다. 아래에서 설명하듯이, 딕셔너리는 자동으로 갱신될 수 있어, 자주 변경되는 소규모 데이터셋을 직접 조인에 사용할 수 있도록 보장하는 데 이상적인 방법을 제공합니다.
 
 딕셔너리에는 조회가 수행될 기본 키(primary key)가 필요합니다. 이는 개념적으로 트랜잭션 데이터베이스의 기본 키와 동일하며 고유해야 합니다. 위의 쿼리에서는 조인 키 `PostId`에 대한 조회가 필요합니다. 딕셔너리는 `votes` 테이블에서 `PostId`별로 찬성 및 반대 투표 수를 합산한 값으로 채워져야 합니다. 이 딕셔너리 데이터를 얻기 위한 쿼리는 다음과 같습니다:
 
@@ -119,7 +119,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-딕셔너리를 생성하려면 다음과 같은 DDL이 필요합니다. 위에서 작성한 쿼리의 사용 방식에 주의하십시오.
+딕셔너리를 생성하려면 다음과 같은 DDL을 사용합니다. 위에서 작성한 쿼리가 어떻게 사용되는지에 유의하십시오.
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -323,20 +323,20 @@ Peak memory usage: 666.82 MiB.
 
 ### 딕셔리 `LAYOUT` 선택 \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
+`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
 
 ### 딕셔너리 갱신 \{#refreshing-dictionaries\}
 
 딕셔너리에 `MIN 600 MAX 900`의 `LIFETIME`을 지정했습니다. LIFETIME은 딕셔너리의 업데이트 주기이며, 여기서 지정한 값에 따라 600초에서 900초 사이의 임의의 간격으로 주기적으로 다시 로드됩니다. 이러한 임의의 간격은 많은 수의 서버에서 업데이트를 수행할 때 딕셔너리 소스에 가해지는 부하를 분산하기 위해 필요합니다. 업데이트 중에도 기존 버전의 딕셔너리는 계속 쿼리할 수 있으며, 최초 로드 시에만 쿼리가 차단됩니다. `(LIFETIME(0))`으로 설정하면 딕셔너리가 업데이트되지 않음을 유의하십시오.
 `SYSTEM RELOAD DICTIONARY` 명령을 사용하여 딕셔너리를 강제로 다시 로드할 수 있습니다.
 
-ClickHouse와 Postgres 같은 데이터베이스 소스의 경우, 주기적인 간격이 아니라 실제로 변경되었을 때만 딕셔너리를 업데이트하도록 쿼리를 설정할 수 있습니다(해당 쿼리의 응답이 이를 결정합니다). 자세한 내용은 [여기](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)를 참조하십시오.
+ClickHouse와 Postgres 같은 데이터베이스 소스의 경우, 주기적인 간격이 아니라 실제로 변경되었을 때만 딕셔너리를 업데이트하도록 쿼리를 설정할 수 있습니다(해당 쿼리의 응답이 이를 결정합니다). 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)를 참조하십시오.
 
 ### 기타 딕셔너리 유형 \{#other-dictionary-types\}
 
-ClickHouse는 [계층형(Hierarchical)](/sql-reference/dictionaries#hierarchical-dictionaries), [폴리곤(Polygon)](/sql-reference/dictionaries#polygon-dictionaries), [정규 표현식(Regular Expression)](/sql-reference/dictionaries#regexp-tree-dictionary) 딕셔너리도 지원합니다.
+ClickHouse는 [계층형(Hierarchical)](/sql-reference/statements/create/dictionary/layouts/hierarchical), [폴리곤(Polygon)](/sql-reference/statements/create/dictionary/layouts/polygon), [정규 표현식(Regular Expression)](/sql-reference/statements/create/dictionary/layouts/regexp-tree) 딕셔너리도 지원합니다.
 
 ### 추가 참고 자료 \{#more-reading\}
 
 - [딕셔너리를 사용하여 쿼리 가속화하기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [딕셔너리를 위한 고급 구성](/sql-reference/dictionaries)
+- [딕셔너리를 위한 고급 구성](/sql-reference/statements/create/dictionary)

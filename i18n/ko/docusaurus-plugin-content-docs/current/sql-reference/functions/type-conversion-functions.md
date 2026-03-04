@@ -6,16 +6,16 @@ title: '형 변환 함수'
 doc_type: 'reference'
 ---
 
-# 형 변환 함수 \{#type-conversion-functions\}
+# 데이터 형식 변환 함수 \{#type-conversion-functions\}
 
-## 데이터 변환 시 흔한 문제 \{#common-issues-with-data-conversion\}
+## 데이터 변환 시 일반적인 문제 \{#common-issues-with-data-conversion\}
 
-ClickHouse는 일반적으로 [C++ 프로그램과 동일한 동작](https://en.cppreference.com/w/cpp/language/implicit_conversion)을 따릅니다.
+ClickHouse는 일반적으로 [C++ 프로그램과 동일한 동작 방식](https://en.cppreference.com/w/cpp/language/implicit_conversion)을 사용합니다.
 
-`to<type>` 함수와 [cast](#CAST)는 경우에 따라 다르게 동작합니다. 예를 들어 [LowCardinality](../data-types/lowcardinality.md)의 경우 [cast](#CAST)는 [LowCardinality](../data-types/lowcardinality.md) 특성을 제거하지만, `to<type>` 함수는 제거하지 않습니다. [널 허용(Nullable)](../data-types/nullable.md)도 마찬가지이며, 이 동작은 SQL 표준과 호환되지 않습니다. [cast&#95;keep&#95;nullable](../../operations/settings/settings.md/#cast_keep_nullable) 설정을 사용하여 변경할 수 있습니다.
+`to<type>` 함수와 [cast](#CAST)는 일부 상황에서, 예를 들어 [LowCardinality](../data-types/lowcardinality.md)의 경우 서로 다르게 동작합니다. [cast](#CAST)는 [LowCardinality](../data-types/lowcardinality.md) 특성을 제거하지만 `to<type>` 함수는 제거하지 않습니다. [Nullable](../data-types/nullable.md)에 대해서도 마찬가지이며, 이 동작은 SQL 표준과 호환되지 않습니다. 이 동작은 [cast&#95;keep&#95;nullable](../../operations/settings/settings.md/#cast_keep_nullable) 설정을 사용하여 변경할 수 있습니다.
 
 :::note
-데이터 타입의 값이 더 작은 데이터 타입으로 변환될 때(예: `Int64`에서 `Int32`로), 또는 서로 호환되지 않는 데이터 타입 간에 변환될 때(예: `String`에서 `Int`로) 잠재적인 데이터 손실이 발생할 수 있습니다. 결과가 예상과 일치하는지 반드시 주의 깊게 확인하십시오.
+데이터 타입의 값을 더 작은 데이터 타입(예: `Int64`에서 `Int32`로)으로 변환하거나, 서로 호환되지 않는 데이터 타입(예: `String`에서 `Int`로) 간에 변환하는 경우 데이터 손실이 발생할 수 있습니다. 결과가 기대한 대로인지 반드시 주의 깊게 확인하십시오.
 :::
 
 예:
@@ -53,29 +53,29 @@ SETTINGS cast_keep_nullable = 1
 
 ## `toString` 함수에 대한 참고 사항 \{#to-string-functions\}
 
-`toString` 계열 함수는 숫자, 문자열(고정 문자열 제외), 날짜, 그리고 시간 정보를 포함한 날짜를 서로 변환하는 데 사용됩니다.
-이들 모든 함수는 하나의 인자만 받습니다.
+`toString` 계열 함수는 숫자, 문자열(고정 길이 문자열은 제외), 날짜, 시간 정보를 포함한 날짜 사이를 서로 변환할 수 있게 합니다.
+이 모든 함수는 하나의 인자를 받습니다.
 
-- 문자열로 변환하거나 문자열에서 변환할 때, 값은 TabSeparated 형식(및 거의 모든 다른 텍스트 형식)과 동일한 규칙으로 형식화되거나 파싱됩니다. 문자열을 파싱할 수 없으면 예외가 발생하고 요청이 취소됩니다.
-- 날짜를 숫자로 또는 그 반대로 변환할 때, 해당 날짜는 유닉스 epoch 시작 시점부터의 일 수에 대응합니다.
-- 시간 정보를 포함한 날짜를 숫자로 또는 그 반대로 변환할 때, 해당 날짜-시간 값은 유닉스 epoch 시작 시점부터의 초 수에 대응합니다.
-- `DateTime` 인자를 받는 `toString` 함수는 두 번째 인자로 time zone 이름을 포함하는 String 인자를 받을 수 있습니다(예: `Europe/Amsterdam`). 이 경우 시간은 지정된 time zone에 따라 형식화됩니다.
+- 문자열로 변환하거나 문자열에서 다른 타입으로 변환할 때, 값은 TabSeparated 형식(및 거의 모든 다른 텍스트 형식)과 동일한 규칙을 사용해 형식화되거나 해석됩니다. 문자열을 해석할 수 없으면 예외가 발생하고 요청이 취소됩니다.
+- 날짜를 숫자로 또는 그 반대로 변환할 때, 날짜는 유닉스 에포크(Unix epoch) 시작 시점부터 경과한 일(day) 수에 해당합니다.
+- 시간 정보를 포함한 날짜를 숫자로 또는 그 반대로 변환할 때, 시간 정보를 포함한 날짜는 유닉스 에포크 시작 시점부터 경과한 초(second) 수에 해당합니다.
+- `DateTime` 인자를 갖는 `toString` 함수는 시간대 이름을 포함하는 두 번째 String 인자를 받을 수 있습니다(예: `Europe/Amsterdam`). 이 경우 시간은 지정된 시간대에 따라 형식화됩니다.
 
 ## `toDate`/`toDateTime` 함수에 대한 참고 사항 \{#to-date-and-date-time-functions\}
 
-`toDate`/`toDateTime` 함수의 날짜 및 날짜-시간 형식은 다음과 같이 정의됩니다:
+`toDate`/`toDateTime` 함수에 사용되는 날짜 및 날짜-시간 형식은 다음과 같이 정의됩니다.
 
 ```response
 YYYY-MM-DD
 YYYY-MM-DD hh:mm:ss
 ```
 
-예외적으로, UInt32, Int32, UInt64, Int64 숫자형 타입을 Date로 변환할 때 값이 65536 이상이면, 해당 값을 일수(day)가 아닌 Unix 타임스탬프로 해석한 뒤 날짜로 반올림합니다.
-이를 통해 일반적으로 자주 사용하는 `toDate(unix_timestamp)` 형태를 지원할 수 있으며, 그렇지 않으면 오류가 발생하므로 더 번거로운 `toDate(toDateTime(unix_timestamp))` 형태로 작성해야 합니다.
+예외적으로 UInt32, Int32, UInt64, Int64 숫자 타입에서 Date로 변환할 때, 값이 65536 이상이면 이 값을 일 수가 아닌 Unix 타임스탬프로 해석하여 해당 날짜로 반올림합니다.
+이는 그렇지 않으면 오류가 발생하는 일반적인 패턴인 `toDate(unix_timestamp)` 호출을 지원하기 위한 것으로, 원래라면 더 번거로운 `toDate(toDateTime(unix_timestamp))`를 작성해야 합니다.
 
-날짜(Date)와 시간 정보를 포함한 날짜(DateTime) 간 변환은 자연스럽게 처리되며, 시간 값을 0으로 채워 넣거나 시간 값을 제거하는 방식으로 수행됩니다.
+날짜 타입과 시간 정보를 포함한 날짜·시간 타입 간의 변환은 자연스럽게 수행됩니다. 즉, 시간 값을 0시(자정)으로 추가하거나 시간 정보를 제거합니다.
 
-숫자형 타입 간 변환은 C++에서 서로 다른 숫자형 타입 간 대입에 사용하는 규칙과 동일한 규칙을 따릅니다.
+숫자 타입 간의 변환은 C++에서 서로 다른 숫자 타입 간의 대입과 동일한 규칙을 사용합니다.
 
 **예시**
 
@@ -111,7 +111,7 @@ LIMIT 10
 [`toUnixTimestamp`](/sql-reference/functions/date-time-functions#toUnixTimestamp) 함수도 함께 참고하십시오.
 
 {/* 
-  아래 태그 안의 내용은 문서 프레임워크 빌드 시점에 
+  아래 태그 안의 내용은 문서 프레임워크를 빌드할 때 
   system.functions에서 생성된 문서로 대체됩니다. 태그를 수정하거나 삭제하지 마십시오.
   자세한 내용은 https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md 를 참조하십시오.
   */ }
@@ -121,11 +121,11 @@ LIMIT 10
 
 ## CAST \{#CAST\}
 
-도입: v1.1
+도입 버전: v1.1
 
-값을 지정된 데이터 타입으로 변환합니다.
-`reinterpret` 함수와 달리, CAST는 대상 타입에서도 동일한 값을 생성하려고 시도합니다.
-이렇게 변환할 수 없는 경우 예외가 발생합니다.
+지정된 데이터 타입으로 값을 변환합니다.
+`reinterpret` 함수와 달리 CAST는 대상 타입에서 동일한 값을 생성하려고 시도합니다.
+이때 변환이 불가능하면 예외가 발생합니다.
 
 **구문**
 
@@ -137,14 +137,14 @@ or x::T
 
 **인수**
 
-* `x` — 임의의 데이터 타입 값. [`Any`](/sql-reference/data-types)
-* `T` — 대상 데이터 타입. [`String`](/sql-reference/data-types/string)
+* `x` — 임의의 타입 값입니다. [`Any`](/sql-reference/data-types)
+* `T` — 대상 데이터 타입입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
 대상 데이터 타입으로 변환된 값을 반환합니다. [`Any`](/sql-reference/data-types)
 
-**예제**
+**예시**
 
 **기본 사용법**
 
@@ -158,7 +158,7 @@ SELECT CAST(42, 'String')
 └────────────────────┘
 ```
 
-**AS 구문 사용**
+**AS 구문 사용하기**
 
 ```sql title=Query
 SELECT CAST('2025-01-01' AS Date)
@@ -170,7 +170,7 @@ SELECT CAST('2025-01-01' AS Date)
 └────────────────────────────┘
 ```
 
-**:: 구문 사용**
+**`::` 구문 사용**
 
 ```sql title=Query
 SELECT '123'::UInt32
@@ -183,13 +183,46 @@ SELECT '123'::UInt32
 ```
 
 
+## DATE \{#DATE\}
+
+도입 버전: v21.2
+
+인수를 Date 데이터 타입으로 변환합니다. MySQL 호환성을 위한 `toDate`의 별칭으로, `toDate`와 동일하게 동작합니다.
+
+**구문**
+
+```sql
+DATE(expr)
+```
+
+**인수**
+
+* `expr` — 변환할 값입니다. [`String`](/sql-reference/data-types/string) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
+
+**반환 값**
+
+`Date` 값을 반환합니다. [`Date`](/sql-reference/data-types/date)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT DATE('2023-01-01')
+```
+
+```response title=Response
+2023-01-01
+```
+
+
 ## accurateCast \{#accurateCast\}
 
 도입 버전: v1.1
 
-값을 지정된 데이터 타입으로 변환합니다. [`CAST`](#CAST)와 달리 `accurateCast`는 더 엄격하게 타입을 검사하며, 변환으로 인해 데이터 정밀도가 손실되거나 변환 자체가 불가능한 경우 예외를 발생시킵니다.
+값을 지정된 데이터 타입으로 변환합니다. [`CAST`](#CAST)와 달리 `accurateCast`는 더 엄격한 타입 검사를 수행하며, 변환으로 인해 데이터 정밀도가 손실되거나 변환이 불가능한 경우 예외를 발생시킵니다.
 
-이 함수는 정밀도 손실과 유효하지 않은 변환을 방지하므로 일반 `CAST`보다 더 안전합니다.
+이 함수는 정밀도 손실과 잘못된 변환을 방지하므로 일반적인 `CAST`보다 더 안전합니다.
 
 **구문**
 
@@ -197,16 +230,16 @@ SELECT '123'::UInt32
 accurateCast(x, T)
 ```
 
-**인수**
+**인자**
 
 * `x` — 변환할 값. [`Any`](/sql-reference/data-types)
 * `T` — 대상 데이터 타입의 이름. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
 대상 데이터 타입으로 변환된 값을 반환합니다. [`Any`](/sql-reference/data-types)
 
-**예시**
+**예제**
 
 **성공적인 변환**
 
@@ -237,11 +270,11 @@ SELECT accurateCast('123.45', 'Float64')
 
 도입 버전: v21.1
 
-지정된 데이터 타입으로 값을 변환합니다.
-[`accurateCast`](#accurateCast)와 동일하지만, 변환을 정확하게 수행할 수 없는 경우 예외를 발생시키는 대신 기본값을 반환합니다.
+값을 지정된 데이터 타입으로 변환합니다.
+[`accurateCast`](#accurateCast)와 유사하지만, 변환을 정확하게 수행할 수 없는 경우 예외를 발생시키는 대신 기본값을 반환합니다.
 
-두 번째 인수로 기본값을 제공하는 경우 해당 값은 대상 타입이어야 합니다.
-기본값을 제공하지 않으면 대상 타입의 기본값이 사용됩니다.
+두 번째 인수로 기본값을 전달하는 경우, 이 값은 대상 타입과 동일한 타입이어야 합니다.
+기본값을 전달하지 않으면 대상 타입의 기본값이 사용됩니다.
 
 **구문**
 
@@ -249,17 +282,17 @@ SELECT accurateCast('123.45', 'Float64')
 accurateCastOrDefault(x, T[, default_value])
 ```
 
-**인수**
+**인자**
 
 * `x` — 변환할 값입니다. [`Any`](/sql-reference/data-types)
-* `T` — 대상 데이터 타입의 이름입니다. [`const String`](/sql-reference/data-types/string)
-* `default_value` — 선택 사항입니다. 변환에 실패했을 때 반환할 기본값입니다. [`Any`](/sql-reference/data-types)
+* `T` — 대상 데이터 타입 이름입니다. [`const String`](/sql-reference/data-types/string)
+* `default_value` — 선택적입니다. 변환에 실패했을 때 반환할 기본값입니다. [`Any`](/sql-reference/data-types)
 
-**반환 값**
+**반환값**
 
 대상 데이터 타입으로 변환된 값 또는 변환이 불가능한 경우 기본값을 반환합니다. [`Any`](/sql-reference/data-types)
 
-**예시**
+**예제**
 
 **성공적인 변환**
 
@@ -285,7 +318,7 @@ SELECT accurateCastOrDefault('abc', 'UInt32', 999::UInt32)
 └─────────────────────────────────────────────┘
 ```
 
-**암시적 기본값으로 인한 변환 실패**
+**암시적 기본값을 사용하는 변환 실패**
 
 ```sql title=Query
 SELECT accurateCastOrDefault('abc', 'UInt32')
@@ -302,12 +335,12 @@ SELECT accurateCastOrDefault('abc', 'UInt32')
 
 도입 버전: v1.1
 
-값을 지정된 데이터 타입으로 변환합니다.
+값을 지정한 데이터 타입으로 변환합니다.
 [`accurateCast`](#accurateCast)와 유사하지만, 변환을 정확하게 수행할 수 없는 경우 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
-이 함수는 [`accurateCast`](#accurateCast)의 안정성과 유연한 오류 처리를 결합합니다.
+이 함수는 [`accurateCast`](#accurateCast)의 안전성과 우아한 오류 처리를 결합합니다.
 
-**구문**
+**문법**
 
 ```sql
 accurateCastOrNull(x, T)
@@ -316,15 +349,15 @@ accurateCastOrNull(x, T)
 **인수**
 
 * `x` — 변환할 값입니다. [`Any`](/sql-reference/data-types)
-* `T` — 대상 데이터 타입의 이름입니다. [`String`](/sql-reference/data-types/string)
+* `T` — 대상 데이터 타입 이름입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-대상 데이터 타입으로 변환된 값을 반환하며, 변환이 불가능하면 `NULL`을 반환합니다. [`Any`](/sql-reference/data-types)
+대상 데이터 타입으로의 변환에 성공하면 변환된 값을, 변환이 불가능하면 `NULL`을 반환합니다. [`Any`](/sql-reference/data-types)
 
-**예제**
+**예시**
 
-**성공적인 변환**
+**변환 성공**
 
 ```sql title=Query
 SELECT accurateCastOrNull(42, 'String')
@@ -336,7 +369,7 @@ SELECT accurateCastOrNull(42, 'String')
 └──────────────────────────────────┘
 ```
 
-**변환 실패 시 NULL 반환**
+**변환 실패 시 NULL을 반환합니다**
 
 ```sql title=Query
 SELECT accurateCastOrNull('abc', 'UInt32')
@@ -353,14 +386,14 @@ SELECT accurateCastOrNull('abc', 'UInt32')
 
 도입 버전: v20.7
 
-임의의 표현식을 지정된 format을 통해 문자열로 변환합니다.
+임의의 표현식을 지정된 형식을 사용해 문자열로 변환합니다.
 
 :::note
-format에 접두사/접미사가 포함되어 있으면 각 행마다 함께 출력됩니다.
-이 함수는 행 기반 format만 지원합니다.
+형식에 접미사/접두사가 포함되어 있으면 각 행마다 출력됩니다.
+이 함수에서는 행 기반 형식만 지원합니다.
 :::
 
-**문법**
+**구문**
 
 ```sql
 formatRow(format, x, y, ...)
@@ -368,12 +401,12 @@ formatRow(format, x, y, ...)
 
 **인수**
 
-* `format` — 텍스트 형식입니다. 예: CSV, TSV. [`String`](/sql-reference/data-types/string)
+* `format` — 텍스트 형식입니다(예: CSV, TSV). [`String`](/sql-reference/data-types/string)
 * `x, y, ...` — 표현식입니다. [`Any`](/sql-reference/data-types)
 
 **반환 값**
 
-서식이 적용된 문자열입니다. (텍스트 형식의 경우 일반적으로 줄 바꿈 문자로 끝납니다). [`String`](/sql-reference/data-types/string)
+서식화된 문자열입니다(텍스트 형식의 경우 보통 줄 바꿈 문자로 끝납니다). [`String`](/sql-reference/data-types/string)
 
 **예시**
 
@@ -395,7 +428,7 @@ FROM numbers(3)
 └──────────────────────────────────┘
 ```
 
-**사용자 지정 포맷 사용**
+**사용자 정의 포맷 사용**
 
 ```sql title=Query
 SELECT formatRow('CustomSeparated', number, 'good')
@@ -420,21 +453,21 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 
 ## formatRowNoNewline \{#formatRowNoNewline\}
 
-도입 버전: v20.7
+도입된 버전: v20.7
 
-[`formatRow`](#formatRow)와 동일하지만, 각 행의 개행 문자를 제거합니다.
+[`formatRow`](#formatRow)와 동일하지만, 각 행의 줄 바꿈 문자를 제거합니다.
 
-임의의 표현식을 지정된 포맷으로 문자열로 변환하되, 결과에서 뒤에 붙은 개행 문자를 제거합니다.
+임의의 표현식을 지정된 포맷을 사용해 문자열로 변환하되, 결과 끝에 있는 줄 바꿈 문자를 모두 제거합니다.
 
-**문법**
+**구문**
 
 ```sql
 formatRowNoNewline(format, x, y, ...)
 ```
 
-**인자**
+**인수**
 
-* `format` — 텍스트 형식입니다. 예: CSV, TSV. [`String`](/sql-reference/data-types/string)
+* `format` — 텍스트 형식입니다. 예를 들어 CSV, TSV입니다. [`String`](/sql-reference/data-types/string)
 * `x, y, ...` — 표현식입니다. [`Any`](/sql-reference/data-types)
 
 **반환 값**
@@ -443,7 +476,7 @@ formatRowNoNewline(format, x, y, ...)
 
 **예제**
 
-**기본 사용법**
+**기본 사용**
 
 ```sql title=Query
 SELECT formatRowNoNewline('CSV', number, 'good')
@@ -461,30 +494,30 @@ FROM numbers(3)
 
 ## fromUnixTimestamp64Micro \{#fromUnixTimestamp64Micro\}
 
-도입 버전: v20.5
+도입된 버전: v20.5
 
 마이크로초 단위 Unix 타임스탬프를 마이크로초 정밀도의 `DateTime64` 값으로 변환합니다.
 
-입력값은 마이크로초 정밀도의 Unix 타임스탬프(1970-01-01 00:00:00 UTC 이후 경과한 마이크로초 수)로 간주됩니다.
+입력값은 1970-01-01 00:00:00 UTC 이후 경과한 마이크로초 수를 나타내는 마이크로초 정밀도의 Unix 타임스탬프로 처리됩니다.
 
-**구문**
+**Syntax**
 
 ```sql
 fromUnixTimestamp64Micro(value[, timezone])
 ```
 
-**인수**
+**인수(Arguments)**
 
-* `value` — 마이크로초 단위의 Unix 타임스탬프. [`Int64`](/sql-reference/data-types/int-uint)
-* `timezone` — 선택적 인수. 반환 값에 사용할 타임존. [`String`](/sql-reference/data-types/string)
+* `value` — 마이크로초 단위의 Unix 타임스탬프입니다. [`Int64`](/sql-reference/data-types/int-uint)
+* `timezone` — 선택 사항입니다. 반환 값에 사용할 타임존입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
 마이크로초 정밀도의 `DateTime64` 값을 반환합니다. [`DateTime64(6)`](/sql-reference/data-types/datetime64)
 
-**예시**
+**예제(Examples)**
 
-**사용 예시**
+**사용 예제(Usage example)**
 
 ```sql title=Query
 SELECT fromUnixTimestamp64Micro(1640995200123456)
@@ -503,7 +536,7 @@ SELECT fromUnixTimestamp64Micro(1640995200123456)
 
 밀리초 단위의 Unix 타임스탬프를 밀리초 정밀도의 `DateTime64` 값으로 변환합니다.
 
-입력 값은 1970-01-01 00:00:00 UTC 이후 경과한 밀리초 수를 나타내는, 밀리초 정밀도의 Unix 타임스탬프로 간주됩니다.
+입력 값은 밀리초 정밀도의 Unix 타임스탬프(1970-01-01 00:00:00 UTC 이후 경과한 밀리초 수)로 간주됩니다.
 
 **구문**
 
@@ -513,12 +546,12 @@ fromUnixTimestamp64Milli(value[, timezone])
 
 **인수**
 
-* `value` — 밀리초 단위의 Unix 타임스탬프입니다. [`Int64`](/sql-reference/data-types/int-uint)
-* `timezone` — 선택적입니다. 반환 값에 사용할 타임존입니다. [`String`](/sql-reference/data-types/string)
+* `value` — 밀리초 단위 Unix 타임스탬프. [`Int64`](/sql-reference/data-types/int-uint)
+* `timezone` — 선택 사항. 반환 값에 사용할 시간대. [`String`](/sql-reference/data-types/string)
 
-**반환값**
+**반환 값**
 
-밀리초 단위 정밀도를 가지는 `DateTime64` 값입니다. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+밀리초 단위까지의 정밀도를 가지는 `DateTime64` 값. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -537,14 +570,14 @@ SELECT fromUnixTimestamp64Milli(1640995200123)
 
 ## fromUnixTimestamp64Nano \{#fromUnixTimestamp64Nano\}
 
-도입 버전: v20.5
+도입된 버전: v20.5
 
 나노초 단위 Unix 타임스탬프를 나노초 정밀도의 [`DateTime64`](/sql-reference/data-types/datetime64) 값으로 변환합니다.
 
-입력 값은 1970-01-01 00:00:00 UTC부터 경과한 나노초 수를 나타내는, 나노초 정밀도의 Unix 타임스탬프로 간주합니다.
+입력 값은 1970-01-01 00:00:00 UTC 이후 경과한 나노초 수인 나노초 정밀도의 Unix 타임스탬프로 처리됩니다.
 
 :::note
-입력 값은 입력 값에 포함된 타임존이 아니라 UTC 기준 타임스탬프로 처리된다는 점에 유의하십시오.
+입력 값은 해당 값의 타임존이 아니라 UTC 타임스탬프로 처리된다는 점에 유의하십시오.
 :::
 
 **구문**
@@ -553,10 +586,10 @@ SELECT fromUnixTimestamp64Milli(1640995200123)
 fromUnixTimestamp64Nano(value[, timezone])
 ```
 
-**인수**
+**인자**
 
 * `value` — 나노초 단위 Unix 타임스탬프. [`Int64`](/sql-reference/data-types/int-uint)
-* `timezone` — 선택 사항. 반환 값에 사용할 타임존. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택적입니다. 반환 값의 시간대. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -581,9 +614,9 @@ SELECT fromUnixTimestamp64Nano(1640995200123456789)
 
 도입된 버전: v24.12
 
-초 단위 Unix 타임스탬프를 초 단위 정밀도를 갖는 `DateTime64` 값으로 변환합니다.
+초 단위 Unix 타임스탬프를 초 정밀도의 `DateTime64` 값으로 변환합니다.
 
-입력값은 초 단위 정밀도(1970-01-01 00:00:00 UTC 이후 경과한 초 수)를 갖는 Unix 타임스탬프로 간주됩니다.
+입력 값은 1970-01-01 00:00:00 UTC 이후 경과한 초 수를 나타내는 초 단위 Unix 타임스탬프로 간주됩니다.
 
 **구문**
 
@@ -591,10 +624,10 @@ SELECT fromUnixTimestamp64Nano(1640995200123456789)
 fromUnixTimestamp64Second(value[, timezone])
 ```
 
-**인자**
+**인수**
 
 * `value` — 초 단위 Unix 타임스탬프. [`Int64`](/sql-reference/data-types/int-uint)
-* `timezone` — 선택 사항입니다. 반환 값에 사용할 타임존. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 반환되는 값의 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -617,12 +650,12 @@ SELECT fromUnixTimestamp64Second(1640995200)
 
 ## parseDateTime \{#parseDateTime\}
 
-도입된 버전: v23.3
+도입 버전: v23.3
 
 MySQL 날짜 형식 문자열에 따라 날짜와 시간 문자열을 파싱합니다.
 
-이 FUNCTION은 [`formatDateTime`](/sql-reference/functions/date-time-functions)의 역연산입니다.
-`String` 인자를 형식 지정 `String`에 따라 파싱합니다. `DateTime` 데이터 타입을 반환합니다.
+이 FUNCTION은 [`formatDateTime`](/sql-reference/functions/date-time-functions)의 역함수입니다.
+형식 String을 사용하여 String 인자를 파싱합니다. 반환 타입은 DateTime입니다.
 
 **구문**
 
@@ -630,21 +663,21 @@ MySQL 날짜 형식 문자열에 따라 날짜와 시간 문자열을 파싱합�
 parseDateTime(time_string, format[, timezone])
 ```
 
-**별칭**: `TO_UNIXTIME`
+**별칭(Aliases)**: `TO_UNIXTIME`
 
-**인수**
+**인수(Arguments)**
 
 * `time_string` — `DateTime`으로 변환할 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `format` — `time_string`을 어떻게 파싱할지 지정하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존을 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
-MySQL 스타일 형식 문자열에 따라 입력 문자열을 파싱하여 얻은 `DateTime`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+MySQL 스타일 형식 문자열에 따라 입력 문자열에서 파싱한 `DateTime` 값을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
@@ -663,7 +696,7 @@ SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 날짜와 시간의 문자열 표현을 [`DateTime`](/sql-reference/data-types/datetime) 데이터 타입으로 변환합니다.
 
-이 FUNCTION은 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식을 비롯한 여러 날짜 및 시간 형식을 파싱합니다.
+이 FUNCTION은 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse에서 사용하는 형식 및 기타 여러 날짜와 시간 형식을 파싱합니다.
 
 **구문**
 
@@ -671,14 +704,14 @@ SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 parseDateTime32BestEffort(time_string[, time_zone])
 ```
 
-**인수**
+**인자**
 
-* `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택적입니다. `time_string`을 해석할 때 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜와 시간을 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`time_string`을 `DateTime` 값으로 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+`time_string`을 `DateTime` 타입으로 변환하여 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -724,9 +757,9 @@ AS parseDateTime32BestEffort
 
 ## parseDateTime32BestEffortOrNull \{#parseDateTime32BestEffortOrNull\}
 
-도입 버전: v20.9
+도입: v20.9
 
-[`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환한다는 점을 제외하면 [`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일합니다.
 
 **구문**
 
@@ -736,12 +769,12 @@ parseDateTime32BestEffortOrNull(time_string[, time_zone])
 
 **인수**
 
-* `time_string` — 변환할 날짜와 시간이 들어 있는 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택적입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 해석할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-문자열을 파싱하여 얻은 `DateTime` 객체를 반환하며, 파싱에 실패하면 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+문자열에서 파싱한 `DateTime` 객체를 반환하며, 파싱에 실패하면 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -764,7 +797,7 @@ SELECT
 
 도입된 버전: v20.9
 
-[`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 값의 날짜 또는 0 값의 날짜-시간을 반환합니다.
+[`parseDateTime32BestEffort`](#parseDateTime32BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0값의 날짜 또는 날짜-시간 값을 반환합니다.
 
 **구문**
 
@@ -772,18 +805,18 @@ SELECT
 parseDateTime32BestEffortOrZero(time_string[, time_zone])
 ```
 
-**인자**
+**인수(Arguments)**
 
-* `time_string` — 변환할 날짜와 시간을 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준이 되는 시간대를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
-문자열을 파싱하여 얻은 `DateTime` 값을 반환하며, 파싱에 실패하면 zero date인 `1970-01-01 00:00:00`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+문자열을 파싱하여 얻은 `DateTime` 객체를 반환하며, 파싱에 실패하면 zero date인 `1970-01-01 00:00:00`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 SELECT
@@ -800,14 +833,14 @@ SELECT
 
 ## parseDateTime64 \{#parseDateTime64\}
 
-도입된 버전: v24.11
+도입 버전: v24.11
 
-MySQL 날짜 형식 문자열을 사용하여, 초 단위 미만의 정밀도로 날짜와 시간 문자열을 파싱합니다.
+MySQL 날짜 형식 문자열에 따라, 초 단위 이하 정밀도를 포함한 날짜 및 시간 문자열을 파싱합니다.
 
 이 함수는 DateTime64에 대해 [`formatDateTime`](/sql-reference/functions/date-time-functions)의 역함수입니다.
-`String` 인자를 형식 지정 `String`을 사용해 파싱합니다. 1900년부터 2299년까지의 날짜를 초 단위 미만 정밀도로 표현할 수 있는 `DateTime64` 타입을 반환합니다.
+형식 문자열을 사용하여 `String` 인자를 파싱합니다. 1900년부터 2299년까지의 날짜를 초 단위 이하의 정밀도로 표현할 수 있는 `DateTime64` 타입을 반환합니다.
 
-**문법**
+**구문**
 
 ```sql
 parseDateTime64(time_string, format[, timezone])
@@ -815,13 +848,13 @@ parseDateTime64(time_string, format[, timezone])
 
 **인수**
 
-* `time_string` — `DateTime64`로 파싱할 문자열. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 파싱하는 방법을 지정하는 포맷 문자열. [`String`](/sql-reference/data-types/string)
-* `timezone` — 옵션. 타임존. [`String`](/sql-reference/data-types/string)
+* `time_string` — `DateTime64`로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 파싱하는 방법을 지정하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-MySQL 스타일 포맷 문자열을 기준으로 입력 문자열을 파싱해 얻은 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+입력 문자열을 MySQL 스타일 형식 문자열에 따라 파싱하여 얻은 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -842,9 +875,9 @@ SELECT parseDateTime64('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 도입 버전: v20.1
 
-[`parseDateTimeBestEffort`](#parseDateTimeBestEffort) FUNCTION과 동일하지만 밀리초 및 마이크로초까지 파싱하며 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 데이터 타입을 반환합니다.
+[`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 함수와 동일하지만 밀리초 및 마이크로초까지 파싱하며 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 데이터 타입을 반환합니다.
 
-**문법**
+**구문**
 
 ```sql
 parseDateTime64BestEffort(time_string[, precision[, time_zone]])
@@ -854,15 +887,15 @@ parseDateTime64BestEffort(time_string[, precision[, time_zone]])
 
 * `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `precision` — 선택 사항입니다. 필요한 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항입니다. 시간대입니다. 함수는 이 매개변수로 지정된 시간대를 기준으로 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. 시간대입니다. 함수는 `time_string`을 해당 시간대에 따라 파싱합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 데이터 타입으로 변환된 `time_string`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT parseDateTime64BestEffort('2025-01-01') AS a, toTypeName(a) AS t
@@ -887,9 +920,9 @@ FORMAT PrettyCompactMonoBlock
 
 ## parseDateTime64BestEffortOrNull \{#parseDateTime64BestEffortOrNull\}
 
-도입 버전: v20.1
+도입된 버전: v20.1
 
-[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -897,15 +930,15 @@ FORMAT PrettyCompactMonoBlock
 parseDateTime64BestEffortOrNull(time_string[, precision[, time_zone]])
 ```
 
-**인수**
+**인자**
 
-* `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `precision` — 선택 사항입니다. 필요한 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항입니다. 시간대를 지정합니다. 함수는 해당 시간대에 따라 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜 또는 날짜와 시간 정보를 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `precision` — 선택 사항입니다. 요구되는 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `time_zone` — 선택 사항입니다. 시간대입니다. 함수는 `time_string`을 해당 시간대에 따라 해석합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환하여 반환하거나, 입력을 파싱하지 못하면 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
+`time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 형식으로 변환한 값을 반환하며, 입력을 해석할 수 없으면 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -925,9 +958,9 @@ SELECT parseDateTime64BestEffortOrNull('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortOrZero \{#parseDateTime64BestEffortOrZero\}
 
-도입: v20.1
+도입 버전: v20.1
 
-[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 처리할 수 없는 형식의 날짜를 만나면 날짜 0 값 또는 날짜-시간 0 값을 반환합니다.
+[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜-시간 값을 반환합니다.
 
 **구문**
 
@@ -938,12 +971,12 @@ parseDateTime64BestEffortOrZero(time_string[, precision[, time_zone]])
 **인수**
 
 * `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `precision` — 선택 사항입니다. 요구되는 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항입니다. 시간대입니다. 함수는 이 시간대를 기준으로 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
+* `precision` — 선택적 인수입니다. 필요한 정밀도를 나타냅니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `time_zone` — 선택적 인수입니다. 시간대를 나타냅니다. 함수는 이 시간대를 기준으로 `time_string`을 해석합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-[`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환된 `time_string`을 반환하며, 입력을 파싱할 수 없는 경우 영(0) 날짜/시간 값(`1970-01-01 00:00:00.000`)을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+`time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환한 값을 반환하며, 입력을 해석할 수 없는 경우 zero date/datetime 값인 `1970-01-01 00:00:00.000`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -965,7 +998,7 @@ SELECT parseDateTime64BestEffortOrZero('2025-01-01 01:01:00.123') AS valid,
 
 도입 버전: v22.8
 
-[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 미국식 날짜 형식(`MM/DD/YYYY` 등)으로 우선적으로 해석합니다.
+[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 이 함수는 미국식 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용합니다.
 
 **구문**
 
@@ -977,11 +1010,11 @@ parseDateTime64BestEffortUS(time_string [, precision [, time_zone]])
 
 * `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `precision` — 선택 사항입니다. 필요한 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항입니다. 시간대입니다. 이 함수는 해당 시간대를 기준으로 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. 시간대입니다. 함수는 이 시간대에 따라 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-모호한 경우 미국식 날짜 형식 선호 규칙을 사용하여 `time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환한 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+모호한 경우에는 미국식 날짜 형식 규칙을 사용하여, `time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 타입으로 변환한 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -1003,7 +1036,7 @@ SELECT parseDateTime64BestEffortUS('02/10/2025 12:30:45.123') AS us_format,
 
 도입 버전: v22.8
 
-[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 US 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하고, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 미국식 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하며, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -1014,12 +1047,12 @@ parseDateTime64BestEffortUSOrNull(time_string[, precision[, time_zone]])
 **인수**
 
 * `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `precision` — 선택 사항. 필요한 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항. 시간대입니다. 함수는 이 시간대를 기준으로 `time_string`을 해석합니다. [`String`](/sql-reference/data-types/string)
+* `precision` — 선택 사항입니다. 필요한 정밀도를 지정합니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `time_zone` — 선택 사항입니다. 시간대를 지정합니다. 함수는 지정된 시간대를 기준으로 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-미국 형식 우선 규칙에 따라 `time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환한 값을 반환하며, 입력을 해석할 수 없는 경우 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
+미국식 형식을 우선 적용하여 `time_string`을 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환한 값을 반환하며, 입력을 파싱할 수 없는 경우 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -1041,9 +1074,9 @@ SELECT parseDateTime64BestEffortUSOrNull('02/10/2025 12:30:45.123') AS valid_us,
 
 도입 버전: v22.8
 
-[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우 미국식 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하고, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜‑시간 값을 반환합니다.
+[`parseDateTime64BestEffort`](#parseDateTime64BestEffort)와 동일하지만, 모호한 경우에는 US 날짜 형식(`MM/DD/YYYY` 등)을 우선적으로 사용하며, 처리할 수 없는 날짜 형식을 만나면 zero date 또는 zero date time을 반환합니다.
 
-**문법**
+**구문**
 
 ```sql
 parseDateTime64BestEffortUSOrZero(time_string [, precision [, time_zone]])
@@ -1051,13 +1084,13 @@ parseDateTime64BestEffortUSOrZero(time_string [, precision [, time_zone]])
 
 **인수**
 
-* `time_string` — 변환할 날짜 또는 날짜·시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `precision` — 선택 사항입니다. 필요한 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-* `time_zone` — 선택 사항입니다. 시간대입니다. 이 함수는 해당 시간대에 따라 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜 또는 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `precision` — 선택 사항입니다. 요구되는 정밀도입니다. 밀리초는 `3`, 마이크로초는 `6`입니다. 기본값: `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `time_zone` — 선택 사항입니다. 타임존을 나타냅니다. 함수는 해당 타임존에 따라 `time_string`을 파싱합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-미국식 형식을 기준으로 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환된 `time_string`을 반환하며, 입력을 파싱할 수 없는 경우 0 날짜/일시값(`1970-01-01 00:00:00.000`)을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+미국식 날짜/시간 형식을 기준으로 [`DateTime64`](../../sql-reference/data-types/datetime64.md)로 변환된 `time_string`을 반환하며, 입력을 파싱할 수 없는 경우 0 값의 날짜/날짜-시간 (`1970-01-01 00:00:00.000`)을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -1079,28 +1112,28 @@ SELECT parseDateTime64BestEffortUSOrZero('02/10/2025 12:30:45.123') AS valid_us,
 
 도입 버전: v24.10
 
-Joda 날짜 형식 문자열에 따라 초 단위 이하 정밀도를 포함한 날짜와 시간 문자열을 파싱합니다.
+Joda 날짜 형식 문자열을 사용하여 초 단위 이하 정밀도를 포함한 날짜와 시간 문자열을 파싱합니다.
 
 이 FUNCTION은 DateTime64에 대해 [`formatDateTimeInJodaSyntax`](/sql-reference/functions/date-time-functions#formatDateTimeInJodaSyntax)의 역함수입니다.
-Joda 스타일 형식 문자열을 사용하여 String 인자를 파싱합니다. 1900년부터 2299년까지의 날짜를 초 단위 이하 정밀도로 표현할 수 있는 DateTime64 타입을 반환합니다.
+Joda 스타일의 형식 `String`을 사용하여 `String` 인자를 파싱합니다. 1900년부터 2299년까지의 날짜를 초 단위 이하 정밀도로 표현할 수 있는 `DateTime64` 타입을 반환합니다.
 
-형식 패턴은 [Joda Time 문서](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)를 참조하십시오.
+형식 패턴에 대해서는 [Joda Time 문서를](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) 참고하십시오.
 
-**Syntax**
+**구문**
 
 ```sql
 parseDateTime64InJodaSyntax(time_string, format[, timezone])
 ```
 
-**인자**
+**인수**
 
 * `time_string` — `DateTime64`로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문(Joda syntax)의 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문을 사용하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열을 Joda 스타일 형식 문자열에 따라 파싱한 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+입력 문자열을 Joda 스타일 형식 문자열에 따라 파싱한 `DateTime64`를 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -1121,7 +1154,7 @@ SELECT parseDateTime64InJodaSyntax('2025-01-04 23:00:00.123', 'yyyy-MM-dd HH:mm:
 
 도입된 버전: v24.10
 
-[`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 구문 분석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -1132,12 +1165,12 @@ parseDateTime64InJodaSyntaxOrNull(time_string, format[, timezone])
 **인수**
 
 * `time_string` — DateTime64로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을(를) 어떻게 파싱할지 지정하는 Joda 구문 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 타임존을 나타냅니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항. 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열을 파싱해 얻은 DateTime64를 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime64)`](/sql-reference/data-types/nullable)
+입력 문자열을 DateTime64로 파싱한 값을 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime64)`](/sql-reference/data-types/nullable)
 
 **예시**
 
@@ -1158,7 +1191,7 @@ SELECT parseDateTime64InJodaSyntaxOrNull('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 도입 버전: v24.10
 
-[`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 구문 분석할 수 없는 날짜 형식을 만나면 0 날짜(Zero date)를 반환합니다.
+[`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0 날짜 값을 반환합니다.
 
 **구문**
 
@@ -1166,15 +1199,15 @@ SELECT parseDateTime64InJodaSyntaxOrNull('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 parseDateTime64InJodaSyntaxOrZero(time_string, format[, timezone])
 ```
 
-**인수**
+**인자**
 
 * `time_string` — `DateTime64`로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 파싱하는 방법을 지정하는 Joda 문법의 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존을 지정합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열에서 파싱한 `DateTime64` 값을 반환하며, 파싱에 실패하면 0인 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+입력 문자열에서 파싱된 `DateTime64`를 반환하며, 파싱에 실패하면 0을 나타내는 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -1193,9 +1226,9 @@ SELECT parseDateTime64InJodaSyntaxOrZero('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64OrNull \{#parseDateTime64OrNull\}
 
-도입 버전: v24.11
+도입된 버전: v24.11
 
-[`parseDateTime64`](#parseDateTime64)와 동일하지만, 구문 분석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTime64`](#parseDateTime64)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -1203,15 +1236,15 @@ SELECT parseDateTime64InJodaSyntaxOrZero('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 parseDateTime64OrNull(time_string, format[, timezone])
 ```
 
-**인수**
+**인자**
 
 * `time_string` — `DateTime64`로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항인 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항. 시간대입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-입력 문자열을 파싱한 `DateTime64`를 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime64)`](/sql-reference/data-types/nullable)
+입력 문자열을 파싱한 `DateTime64` 값을 반환하며, 파싱에 실패하면 `NULL`을 반환합니다. [`Nullable(DateTime64)`](/sql-reference/data-types/nullable)
 
 **예시**
 
@@ -1232,7 +1265,7 @@ SELECT parseDateTime64OrNull('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 도입 버전: v24.11
 
-[`parseDateTime64`](#parseDateTime64)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 0값 날짜를 반환합니다.
+[`parseDateTime64`](#parseDateTime64)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 zero date(0 날짜)를 반환합니다.
 
 **구문**
 
@@ -1240,15 +1273,15 @@ SELECT parseDateTime64OrNull('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 parseDateTime64OrZero(time_string, format[, timezone])
 ```
 
-**인자**
+**인수**
 
 * `time_string` — `DateTime64`로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 파싱하는 형식을 지정하는 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항인 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열에서 파싱한 `DateTime64` 값을 반환하며, 파싱에 실패하면 0인 `DateTime64` 값을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+입력 문자열에서 파싱된 `DateTime64`를 반환하며, 파싱에 실패하면 0으로 초기화된 `DateTime64`를 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -1267,24 +1300,24 @@ SELECT parseDateTime64OrZero('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTimeBestEffort \{#parseDateTimeBestEffort\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-`String` 형식으로 표현된 날짜와 시간을 `DateTime` 데이터 타입으로 변환합니다.
-이 함수는 [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html), [RFC 1123 - 5.2.14 RFC-822](https://datatracker.ietf.org/doc/html/rfc822) 날짜 및 시간 명세, ClickHouse 고유 형식 및 기타 여러 날짜/시간 형식을 파싱합니다.
+`String` 표현의 날짜와 시간을 `DateTime` 데이터 타입으로 변환합니다.
+이 함수는 [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html), [RFC 1123 - 5.2.14 RFC-822](https://datatracker.ietf.org/doc/html/rfc822) 날짜 및 시간 사양, ClickHouse 고유 형식 및 그 외 일부 날짜와 시간 형식을 파싱합니다.
 
 지원되는 비표준 형식:
 
-* 9~10자리 UNIX 타임스탬프가 포함된 문자열.
-* 날짜와 시간 구성 요소를 포함하는 문자열: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` 등.
-* 날짜만 있고 시간 구성 요소가 없는 문자열: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` 등.
-* 일(day)과 시간을 포함하는 문자열: `DD`, `DD hh`, `DD hh:mm`. 이 경우 `MM`은 `01`로 대체됩니다.
-* 날짜와 시간에 더해 시간대 오프셋 정보가 포함된 문자열: `YYYY-MM-DD hh:mm:ss ±h:mm` 등.
-* syslog 타임스탬프 형식의 문자열: `Mmm dd hh:mm:ss`. 예: `Jun  9 14:20:32`.
+* 9~10자리 Unix 타임스탬프를 포함하는 문자열
+* 날짜와 시간 구성 요소를 포함하는 문자열: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` 등
+* 날짜는 있으나 시간 구성 요소가 없는 문자열: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` 등
+* 일(day)과 시간만 있는 문자열: `DD`, `DD hh`, `DD hh:mm`. 이 경우 `MM`은 `01`로 대체됩니다.
+* 날짜와 시간에 더해 시간대 오프셋 정보를 포함하는 문자열: `YYYY-MM-DD hh:mm:ss ±h:mm` 등
+* syslog 타임스탬프: `Mmm dd hh:mm:ss`. 예: `Jun  9 14:20:32`
 
-구분자가 있는 모든 형식에 대해 이 함수는 월 이름이 전체 이름이거나 월 이름의 앞 세 글자로 표현된 경우를 모두 파싱합니다.
-연도가 명시되지 않은 경우 현재 연도로 간주합니다.
+구분자가 있는 모든 형식에 대해서 이 함수는 월 이름이 전체 이름으로 표현된 경우와 월 이름의 첫 세 글자로 표현된 경우를 모두 파싱합니다.
+연도가 지정되지 않은 경우 현재 연도와 동일한 값으로 간주합니다.
 
-**문법**
+**구문**
 
 ```sql
 parseDateTimeBestEffort(time_string[, time_zone])
@@ -1293,11 +1326,11 @@ parseDateTimeBestEffort(time_string[, time_zone])
 **인수**
 
 * `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택적인 인수입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`time_string`을 `DateTime`으로 변환하여 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+`time_string`을 `DateTime`으로 변환한 값을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1313,7 +1346,7 @@ SELECT parseDateTimeBestEffort('23/10/2025 12:12:57') AS parseDateTimeBestEffort
 └─────────────────────────┘
 ```
 
-**타임존 포함**
+**시간대 포함**
 
 ```sql title=Query
 SELECT parseDateTimeBestEffort('Sat, 18 Aug 2025 07:22:16 GMT', 'Asia/Istanbul') AS parseDateTimeBestEffort
@@ -1340,22 +1373,22 @@ SELECT parseDateTimeBestEffort('1735689600') AS parseDateTimeBestEffort
 
 ## parseDateTimeBestEffortOrNull \{#parseDateTimeBestEffortOrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 이 함수는 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식 및 기타 일부 날짜와 시간 형식을 파싱합니다.
 
 지원되는 비표준 형식:
 
-* 9~10자리 Unix 타임스탬프가 포함된 문자열.
-* 날짜와 시간 구성 요소를 모두 포함하는 문자열: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` 등.
+* 9~10자리 유닉스(unix) 타임스탬프를 포함하는 문자열.
+* 날짜와 시간 구성 요소를 포함하는 문자열: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` 등.
 * 날짜만 있고 시간 구성 요소가 없는 문자열: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` 등.
 * 일(day)과 시간만 포함하는 문자열: `DD`, `DD hh`, `DD hh:mm`. 이 경우 `MM`은 `01`로 대체됩니다.
-* 날짜와 시간에 더해 시간대 오프셋 정보까지 포함하는 문자열: `YYYY-MM-DD hh:mm:ss ±h:mm` 등.
+* 날짜와 시간에 더해 시간대 오프셋 정보를 포함하는 문자열: `YYYY-MM-DD hh:mm:ss ±h:mm` 등.
 * syslog 타임스탬프: `Mmm dd hh:mm:ss`. 예: `Jun  9 14:20:32`.
 
-구분자가 있는 모든 형식의 경우, 함수는 월 이름을 전체 이름 또는 앞 세 글자로 표기한 경우 모두 파싱합니다.
-연도가 지정되지 않은 경우 현재 연도와 동일한 값으로 간주합니다.
+구분자가 있는 모든 형식의 경우, 이 함수는 월 이름을 전체 이름이나 월 이름의 앞 세 글자로 표현한 경우를 모두 파싱합니다.
+연도가 지정되지 않은 경우 현재 연도로 간주합니다.
 
 **구문**
 
@@ -1365,12 +1398,12 @@ parseDateTimeBestEffortOrNull(time_string[, time_zone])
 
 **인수**
 
-* `time_string` — 변환할 날짜와 시간이 들어 있는 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준으로 사용하는 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`time_string`을 DateTime으로 변환한 값을 반환하며, 입력을 파싱할 수 없으면 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
+`time_string`을 DateTime으로 변환한 값을 반환하며, 입력 값을 파싱할 수 없는 경우 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -1390,22 +1423,22 @@ SELECT parseDateTimeBestEffortOrNull('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortOrZero \{#parseDateTimeBestEffortOrZero\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-[`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜-시간을 반환합니다.
-이 함수는 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식 및 기타 일부 날짜 및 시간 형식을 파싱합니다.
+[`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜 또는 0 날짜-시간 값을 반환합니다.
+이 함수는 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601), [RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55), ClickHouse 고유 형식 및 기타 일부 날짜와 시간 형식을 해석합니다.
 
 지원되는 비표준 형식:
 
 * 9~10자리 유닉스 타임스탬프를 포함하는 문자열.
 * 날짜와 시간 구성 요소를 포함하는 문자열: `YYYYMMDDhhmmss`, `DD/MM/YYYY hh:mm:ss`, `DD-MM-YY hh:mm`, `YYYY-MM-DD hh:mm:ss` 등.
-* 날짜는 있으나 시간 구성 요소가 없는 문자열: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` 등.
-* 일(day)과 시간만 있는 문자열: `DD`, `DD hh`, `DD hh:mm`. 이 경우 `MM`은 `01`로 대체됩니다.
+* 날짜는 있지만 시간 구성 요소가 없는 문자열: `YYYY`, `YYYYMM`, `YYYY*MM`, `DD/MM/YYYY`, `DD-MM-YY` 등.
+* 일(day)과 시간만 있는 문자열: `DD`, `DD hh`, `DD hh:mm`. 이 경우 `MM` 값은 `01`로 대체됩니다.
 * 날짜와 시간에 더해 시간대 오프셋 정보가 포함된 문자열: `YYYY-MM-DD hh:mm:ss ±h:mm` 등.
 * syslog 타임스탬프: `Mmm dd hh:mm:ss`. 예: `Jun  9 14:20:32`.
 
-구분자가 있는 모든 형식에 대해, 이 함수는 월 이름을 전체 이름 또는 월 이름의 처음 세 글자로 표현한 경우를 모두 파싱합니다.
-연도가 지정되지 않은 경우, 현재 연도로 간주합니다.
+구분자가 있는 모든 형식에 대해, 이 함수는 월 이름을 전체 이름 또는 월 이름의 앞 세 글자로 표기한 경우 모두 해석합니다.
+연도가 지정되지 않은 경우 현재 연도로 간주합니다.
 
 **구문**
 
@@ -1416,11 +1449,11 @@ parseDateTimeBestEffortOrZero(time_string[, time_zone])
 **인자**
 
 * `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 사용할 시간대를 나타냅니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택적입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 값을 파싱할 수 있으면 `time_string`을 `DateTime`으로 반환하고, 파싱할 수 없으면 0 날짜/DateTime 값( `1970-01-01` 또는 `1970-01-01 00:00:00`)을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+`time_string`을 `DateTime`으로 반환하거나, 입력을 파싱할 수 없는 경우 0값 날짜/날짜시간 값(`1970-01-01` 또는 `1970-01-01 00:00:00`)을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1442,9 +1475,9 @@ SELECT parseDateTimeBestEffortOrZero('23/10/2025 12:12:57') AS valid,
 
 도입 버전: v1.1
 
-이 FUNCTION은 ISO 날짜 형식(예: `YYYY-MM-DD hh:mm:ss`)과 월(month)과 일(day) 구성 요소를 모호하지 않게 추출할 수 있는 다른 날짜 형식(예: `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh`, `YYYY-MM-DD hh:mm:ss ±h:mm`)에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작합니다.
-월과 일 구성 요소를 모호하지 않게 추출할 수 없는 경우(예: `MM/DD/YYYY`, `MM-DD-YYYY`, `MM-DD-YY`)에는 `DD/MM/YYYY`, `DD-MM-YYYY`, `DD-MM-YY` 대신 미국식 날짜 형식으로 우선 해석합니다.
-단, 앞의 설명에 대한 예외로, 월 값이 12보다 크고 31 이하인 경우에는 이 FUNCTION이 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)의 동작을 따릅니다. 예를 들어 `15/08/2020`은 `2020-08-15`로 파싱됩니다.
+이 함수는 ISO 날짜 형식(예: `YYYY-MM-DD hh:mm:ss`)과 월(month)과 일(day) 구성 요소를 모호하지 않게 추출할 수 있는 다른 날짜 형식(예: `YYYYMMDDhhmmss`, `YYYY-MM`, `DD hh`, `YYYY-MM-DD hh:mm:ss ±h:mm`)에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작합니다.
+월과 일(day) 구성 요소를 모호하지 않게 추출할 수 없는 경우(예: `MM/DD/YYYY`, `MM-DD-YYYY`, `MM-DD-YY`)에는 `DD/MM/YYYY`, `DD-MM-YYYY`, `DD-MM-YY` 대신 미국식 날짜 형식을 우선적으로 사용합니다.
+단, 앞의 설명에 대한 예외로 월(month) 값이 12보다 크고 31 이하인 경우에는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)의 동작으로 돌아가며, 예를 들어 `15/08/2020`은 `2020-08-15`로 파싱됩니다.
 
 **구문**
 
@@ -1479,26 +1512,26 @@ SELECT parseDateTimeBestEffortUS('02/10/2025') AS us_format,
 
 ## parseDateTimeBestEffortUSOrNull \{#parseDateTimeBestEffortUSOrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-[`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) FUNCTION과 동일하지만, 처리할 수 없는 날짜 형식을 발견하면 `NULL`을 반환합니다.
+[`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) FUNCTION과 동일하지만, 처리할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
-이 FUNCTION은 ISO 날짜 형식에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작하지만, 애매할 때는 미국식 날짜 형식을 우선하며, 파싱 오류가 발생하면 `NULL`을 반환합니다.
+이 FUNCTION은 ISO 날짜 형식에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작하지만, 모호한 경우에는 미국식 날짜 형식을 우선 사용하며, 파싱 오류 시 `NULL`을 반환합니다.
 
-**문법**
+**구문**
 
 ```sql
 parseDateTimeBestEffortUSOrNull(time_string[, time_zone])
 ```
 
-**인자**
+**인수**
 
 * `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항입니다. `time_string`을 해석할 때 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 기준이 되는 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-미국식 형식을 우선 적용하여 `time_string`을 `DateTime`으로 변환해 반환하거나, 입력을 파싱할 수 없는 경우 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
+미국식 형식을 우선적으로 사용하여 `time_string`을 DateTime으로 반환하거나, 입력을 파싱할 수 없는 경우 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -1518,11 +1551,11 @@ SELECT parseDateTimeBestEffortUSOrNull('02/10/2025') AS valid_us,
 
 ## parseDateTimeBestEffortUSOrZero \{#parseDateTimeBestEffortUSOrZero\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-[`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) 함수와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 0 날짜(`1970-01-01`) 또는 시간까지 포함한 0 날짜(`1970-01-01 00:00:00`)를 반환합니다.
+[`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) 함수와 동일하지만, 처리할 수 없는 날짜 형식을 만나면 제로 날짜(zero date)인 `1970-01-01` 또는 시간 정보가 포함된 제로 날짜 `1970-01-01 00:00:00`를 반환합니다.
 
-이 함수는 ISO 날짜 형식에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작하지만, 모호한 경우에는 US 날짜 형식을 우선하며, 파싱 오류 발생 시 0 값을 반환합니다.
+이 함수는 ISO 날짜 형식에 대해서는 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort)와 동일하게 동작하지만, 애매한 경우에는 미국식 날짜 형식을 우선 사용하며, 파싱 오류가 발생하면 0 값을 반환합니다.
 
 **구문**
 
@@ -1533,11 +1566,11 @@ parseDateTimeBestEffortUSOrZero(time_string[, time_zone])
 **인수**
 
 * `time_string` — 변환할 날짜와 시간이 포함된 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `time_zone` — 선택 사항. `time_string`을 해석할 때 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_zone` — 선택 사항입니다. `time_string`을 파싱할 때 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-미국식 형식을 우선적으로 사용하여 `time_string`을 `DateTime`으로 변환해 반환하며, 입력을 파싱할 수 없는 경우 0값 날짜/DateTime(`1970-01-01` 또는 `1970-01-01 00:00:00`)을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+미국 형식 우선 규칙을 사용하여 `time_string`을 `DateTime`으로 반환하며, 입력을 파싱할 수 없는 경우 영(0) 날짜/시간 값( `1970-01-01` 또는 `1970-01-01 00:00:00` )을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1557,14 +1590,14 @@ SELECT parseDateTimeBestEffortUSOrZero('02/10/2025') AS valid_us,
 
 ## parseDateTimeInJodaSyntax \{#parseDateTimeInJodaSyntax\}
 
-도입: v23.3
+도입된 버전: v23.3
 
-Joda 날짜 형식 문자열을 사용하여 날짜 및 시간 문자열을 구문 분석합니다.
+Joda 날짜 형식 문자열에 따라 날짜와 시간 문자열을 파싱합니다.
 
-이 함수는 [`formatDateTimeInJodaSyntax`](/sql-reference/functions/date-time-functions#formatDateTimeInJodaSyntax)의 역함수입니다.
-Joda 스타일의 형식 `String`을 사용하여 `String` 인수를 구문 분석합니다. `DateTime` 타입을 반환합니다.
+이 함수는 [`formatDateTimeInJodaSyntax`](/sql-reference/functions/date-time-functions#formatDateTimeInJodaSyntax)의 역연산입니다.
+Joda 스타일의 형식 지정용 String을 사용하여 String 인수를 파싱합니다. DateTime 타입의 값을 반환합니다.
 
-형식 패턴에 대해서는 [Joda Time 문서](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)를 참조하십시오.
+형식 패턴은 [Joda Time 문서](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)를 참고하십시오.
 
 **구문**
 
@@ -1575,12 +1608,12 @@ parseDateTimeInJodaSyntax(time_string, format[, timezone])
 **인수**
 
 * `time_string` — `DateTime`으로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 문법의 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 시간대를 나타냅니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 파싱하는 방법을 지정하는 Joda 문법의 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-Joda 스타일 포맷 문자열에 따라 입력 문자열을 파싱한 `DateTime`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+Joda 스타일 형식 문자열에 따라 입력 문자열을 파싱해 생성된 `DateTime`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1599,9 +1632,9 @@ SELECT parseDateTimeInJodaSyntax('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:ss')
 
 ## parseDateTimeInJodaSyntaxOrNull \{#parseDateTimeInJodaSyntaxOrNull\}
 
-도입 버전: v23.3
+도입: v23.3
 
-[`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -1611,13 +1644,13 @@ parseDateTimeInJodaSyntaxOrNull(time_string, format[, timezone])
 
 **인수**
 
-* `time_string` — `DateTime` 형식으로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문을 사용하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `time_string` — `DateTime`으로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 문법의 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항. 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열을 파싱하여 얻은 `DateTime`을 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime)`](/sql-reference/data-types/nullable)
+입력 문자열을 `DateTime`으로 파싱한 값을 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime)`](/sql-reference/data-types/nullable)
 
 **예시**
 
@@ -1638,7 +1671,7 @@ SELECT parseDateTimeInJodaSyntaxOrNull('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 도입 버전: v23.3
 
-[`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 0 날짜 값을 반환합니다.
+[`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0인 날짜 값을 반환합니다.
 
 **구문**
 
@@ -1646,15 +1679,15 @@ SELECT parseDateTimeInJodaSyntaxOrNull('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 parseDateTimeInJodaSyntaxOrZero(time_string, format[, timezone])
 ```
 
-**인자**
+**인수**
 
 * `time_string` — `DateTime`으로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문을 사용하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항입니다. 타임존을 나타냅니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떻게 파싱할지 지정하는 Joda 구문의 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열에서 파싱한 `DateTime`을 반환하며, 파싱에 실패하면 `DateTime` 값 0을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+입력 문자열에서 파싱한 `DateTime`을 반환하며, 파싱에 실패하면 값이 0인 `DateTime`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1673,9 +1706,9 @@ SELECT parseDateTimeInJodaSyntaxOrZero('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeOrNull \{#parseDateTimeOrNull\}
 
-도입 버전: v23.3
+도입된 버전: v23.3
 
-[`parseDateTime`](#parseDateTime)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
+[`parseDateTime`](#parseDateTime)와 동일하지만, 구문 분석할 수 없는 날짜 형식을 만나면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -1688,12 +1721,12 @@ parseDateTimeOrNull(time_string, format[, timezone])
 **인수**
 
 * `time_string` — `DateTime`으로 파싱할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `format` — `time_string`을 어떻게 파싱할지 지정하는 형식 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `timezone` — 선택 사항인 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `format` — `time_string`을 어떤 형식으로 파싱할지 지정하는 포맷 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력 문자열을 `DateTime`으로 파싱한 값을 반환하며, 파싱에 실패하면 NULL을 반환합니다. [`Nullable(DateTime)`](/sql-reference/data-types/nullable)
+입력 문자열을 파싱한 `DateTime`을 반환하며, 파싱에 실패하면 `NULL`을 반환합니다. [`Nullable(DateTime)`](/sql-reference/data-types/nullable)
 
 **예시**
 
@@ -1714,7 +1747,7 @@ SELECT parseDateTimeOrNull('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 도입 버전: v23.3
 
-[`parseDateTime`](#parseDateTime)와 동일하지만, 파싱할 수 없는 날짜 형식을 만나면 0 값의 날짜를 반환합니다.
+[`parseDateTime`](#parseDateTime)와 동일하지만, 해석할 수 없는 날짜 형식을 만나면 0값의 날짜를 반환합니다.
 
 **구문**
 
@@ -1730,7 +1763,7 @@ parseDateTimeOrZero(time_string, format[, timezone])
 
 **반환 값**
 
-입력 문자열에서 파싱한 `DateTime`을 반환하며, 파싱에 실패한 경우 0으로 초기화된 `DateTime`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+입력 문자열에서 파싱한 `DateTime`을 반환하며, 파싱에 실패하면 0 `DateTime` 값을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -1749,9 +1782,9 @@ SELECT parseDateTimeOrZero('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## reinterpret \{#reinterpret\}
 
-도입 버전: v1.1
+도입: v1.1
 
-입력 값 `x`의 원본 메모리 내 바이트 시퀀스를 그대로 사용하고, 이를 대상 타입으로 재해석합니다.
+제공된 값 `x`에 대해 메모리 상의 동일한 바이트 시퀀스를 사용하여 대상 타입으로 재해석합니다.
 
 **구문**
 
@@ -1762,11 +1795,11 @@ reinterpret(x, type)
 **인수**
 
 * `x` — 임의의 타입. [`Any`](/sql-reference/data-types)
-* `type` — 대상 타입. 배열인 경우 배열 요소 타입은 고정 길이 타입이어야 합니다. [`String`](/sql-reference/data-types/string)
+* `type` — 변환 대상 타입. 배열인 경우, 배열 요소 타입은 고정 길이 타입이어야 합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-대상 타입의 값입니다. [`Any`](/sql-reference/data-types)
+변환 대상 타입의 값. [`Any`](/sql-reference/data-types)
 
 **예시**
 
@@ -1784,7 +1817,7 @@ SELECT reinterpret(toInt8(-1), 'UInt8') AS int_to_uint,
 └─────────────┴──────────────┴───────────────┘
 ```
 
-**Array 예제**
+**배열 예시**
 
 ```sql title=Query
 SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS string_to_array_of_Float32
@@ -1801,7 +1834,7 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 
 도입 버전: v1.1
 
-입력 값을 Date 값으로 재해석합니다(리틀 엔디언 순서를 가정). 이 값은 Unix epoch 시작일인 1970-01-01 이후 경과한 일 수를 나타냅니다.
+입력 값을 리틀 엔디언 순서를 가정하여, Unix epoch인 1970-01-01 이후 경과한 일 수를 나타내는 Date 값으로 재해석합니다.
 
 **구문**
 
@@ -1811,11 +1844,11 @@ reinterpretAsDate(x)
 
 **인수**
 
-* `x` — Unix Epoch 시작 이후 경과한 일 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Unix Epoch 시작 시점부터 경과한 일 수입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-날짜. [`Date`](/sql-reference/data-types/date)
+날짜입니다. [`Date`](/sql-reference/data-types/date)
 
 **예시**
 
@@ -1836,7 +1869,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A')
 
 도입 버전: v1.1
 
-입력 값을 DateTime 값으로(리틀 엔디언 순서를 가정하여) 재해석하며, 이는 Unix epoch의 시작인 1970-01-01 이후 경과한 일 수를 나타냅니다.
+입력 값을 DateTime 값으로 다시 해석합니다(리틀 엔디언 바이트 순서를 가정). 이 값은 Unix epoch의 시작인 1970-01-01 이후 경과한 일 수를 나타냅니다.
 
 **구문**
 
@@ -1844,17 +1877,17 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A')
 reinterpretAsDateTime(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — Unix Epoch 기준 시작 시점부터 경과한 초 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Unix Epoch 시작 시점부터 경과한 초 단위의 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**반환값**
+**반환 값**
 
 날짜와 시간. [`DateTime`](/sql-reference/data-types/datetime)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A')
@@ -1871,8 +1904,8 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A')
 
 도입 버전: v1.1
 
-입력값을 고정 길이 문자열로 재해석합니다(little endian 순서를 가정합니다).
-마지막에 오는 널 바이트(null byte)는 무시됩니다. 예를 들어, `UInt32` 값 255에 대해 이 함수는 한 글자로 이루어진 문자열을 반환합니다.
+입력값을 고정 길이 문자열(FixedString)로 재해석합니다(리틀 엔디언 순서를 가정합니다).
+끝의 널 바이트는 무시되며, 예를 들어 `UInt32` 값 255에 대해 이 함수는 단일 문자로 이루어진 문자열을 반환합니다.
 
 **구문**
 
@@ -1882,11 +1915,11 @@ reinterpretAsFixedString(x)
 
 **인수**
 
-* `x` — 문자열로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
+* `x` — 문자열로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환 값**
 
-`x`를 나타내는 바이트를 포함하는 고정 길이 문자열 값입니다. [`FixedString`](/sql-reference/data-types/fixedstring)
+`x`를 나타내는 바이트를 포함하는 고정 길이 문자열 값. [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **예시**
 
@@ -1909,8 +1942,8 @@ SELECT
 
 도입 버전: v1.1
 
-입력 값을 Float32 타입의 값으로 다시 해석합니다.
-[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없는 경우 결과 값은 정의되지 않습니다.
+입력값을 `Float32` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력값은 정의되지 않습니다.
 
 **구문**
 
@@ -1924,7 +1957,7 @@ reinterpretAsFloat32(x)
 
 **반환 값**
 
-재해석된 `x` 값을 [`Float32`](/sql-reference/data-types/float) 형식으로 반환합니다.
+재해석된 값 `x`를 반환합니다. [`Float32`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -1943,10 +1976,10 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x)
 
 ## reinterpretAsFloat64 \{#reinterpretAsFloat64\}
 
-도입: v1.1
+도입된 버전: v1.1
 
-입력 값을 Float64 형식의 값으로 재해석합니다.
-[`CAST`](#CAST)와 달리, 이 함수는 원래 값을 보존하려고 하지 않습니다. 대상 형식이 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
+입력 값을 `Float64` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 결과는 정의되지 않은 값이 됩니다.
 
 **구문**
 
@@ -1954,17 +1987,17 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x)
 reinterpretAsFloat64(x)
 ```
 
-**인수(Arguments)**
+**인수**
 
-* `x` — Float64로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Float64로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나일 수 있습니다.
 
-**반환 값(Returned value)**
+**반환 값**
 
-`x`를 재해석한 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+재해석한 값 `x`를 반환합니다. 반환 타입은 [`Float64`](/sql-reference/data-types/float)입니다.
 
-**예시(Examples)**
+**예시**
 
-**사용 예시(Usage example)**
+**사용 예시**
 
 ```sql title=Query
 SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
@@ -1979,10 +2012,10 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
 
 ## reinterpretAsInt128 \{#reinterpretAsInt128\}
 
-도입: v1.1
+도입 버전: v1.1
 
-입력 값을 Int128 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력은 정의되지 않습니다.
+입력 값을 `Int128` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
 
 **구문**
 
@@ -1990,13 +2023,13 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
 reinterpretAsInt128(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — Int128로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Int128로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나입니다.
 
 **반환 값**
 
-재해석된 `x` 값을 반환합니다. [`Int128`](/sql-reference/data-types/int-uint)
+재해석한 값 `x`를 반환합니다. [`Int128`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2021,10 +2054,10 @@ SELECT
 
 도입 버전: v1.1
 
-입력값을 Int16 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없는 경우 출력값은 정의되지 않습니다.
+입력 값을 Int16 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
 
-**문법**
+**구문**
 
 ```sql
 reinterpretAsInt16(x)
@@ -2032,7 +2065,7 @@ reinterpretAsInt16(x)
 
 **인수**
 
-* `x` — Int16으로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나입니다.
+* `x` — Int16으로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
@@ -2061,8 +2094,8 @@ SELECT
 
 도입 버전: v1.1
 
-입력 값을 Int256 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없는 경우, 출력 값은 정의되지 않습니다.
+입력 값을 `Int256` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면, 결과는 정의되지 않습니다.
 
 **구문**
 
@@ -2072,11 +2105,11 @@ reinterpretAsInt256(x)
 
 **인자**
 
-* `x` — Int256으로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Int256으로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-재해석된 값 `x`를 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
+재해석된 값인 `x`를 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2102,7 +2135,7 @@ SELECT
 도입 버전: v1.1
 
 입력 값을 Int32 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 하지 않습니다. 대상 타입으로 입력 값을 표현할 수 없는 경우 결과는 정의되지 않습니다.
+[`CAST`](#CAST)와 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로는 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
 
 **구문**
 
@@ -2110,9 +2143,9 @@ SELECT
 reinterpretAsInt32(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — Int32로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Int32로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나입니다.
 
 **반환 값**
 
@@ -2139,12 +2172,12 @@ SELECT
 
 ## reinterpretAsInt64 \{#reinterpretAsInt64\}
 
-도입 시기: v1.1
+도입 버전: v1.1
 
-입력 값을 Int64 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려 하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 결과는 정의되지 않습니다.
+입력값을 Int64 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로 입력값을 표현할 수 없는 경우 결과는 정의되지 않습니다.
 
-**문법**
+**구문**
 
 ```sql
 reinterpretAsInt64(x)
@@ -2152,11 +2185,11 @@ reinterpretAsInt64(x)
 
 **인수**
 
-* `x` — `Int64`로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — Int64로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-`Int64`로 재해석된 값 `x`를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
+재해석된 값 `x`를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2179,10 +2212,10 @@ SELECT
 
 ## reinterpretAsInt8 \{#reinterpretAsInt8\}
 
-도입: v1.1
+도입 버전: v1.1
 
-입력 값을 `Int8` 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없으면 결과 값은 정의되지 않습니다.
+입력 값을 Int8 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우 출력은 정의되지 않습니다.
 
 **구문**
 
@@ -2190,13 +2223,13 @@ SELECT
 reinterpretAsInt8(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — Int8로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나입니다.
+* `x` — Int8 형식으로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-재해석한 값 `x`를 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
+재해석된 `x` 값을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2221,8 +2254,8 @@ SELECT
 
 도입 버전: v1.1
 
-입력 값을 문자열로 재해석합니다(리틀 엔디언 바이트 순서를 가정합니다).
-값 끝부분의 널 바이트는 무시되며, 예를 들어 이 함수는 UInt32 값 255에 대해 문자 하나로 이루어진 문자열을 반환합니다.
+입력값을 문자열로 재해석합니다(리틀 엔디언 순서를 가정합니다).
+마지막에 있는 널 바이트는 무시됩니다. 예를 들어, 이 함수는 UInt32 값 255에 대해 한 글자로 이루어진 문자열을 반환합니다.
 
 **구문**
 
@@ -2230,13 +2263,13 @@ SELECT
 reinterpretAsString(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 문자열로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
+* `x` — 문자열로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환 값**
 
-`x`를 표현하는 바이트를 그대로 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
+`x`를 표현하는 바이트를 포함하는 문자열. [`String`](/sql-reference/data-types/string)
 
 **예시**
 
@@ -2257,10 +2290,10 @@ SELECT
 
 ## reinterpretAsUInt128 \{#reinterpretAsUInt128\}
 
-도입 버전: v1.1
+도입: v1.1
 
 입력 값을 UInt128 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 결과는 정의되지 않습니다.
+[`CAST`](#CAST)와는 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
 
 **구문**
 
@@ -2274,7 +2307,7 @@ reinterpretAsUInt128(x)
 
 **반환 값**
 
-재해석된 값 `x`를 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
+재해석된 `x` 값을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
 
 **예제**
 
@@ -2297,10 +2330,10 @@ SELECT
 
 ## reinterpretAsUInt16 \{#reinterpretAsUInt16\}
 
-도입 버전: v1.1
+도입: v1.1
 
-입력값을 `UInt16` 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없는 경우, 결과는 정의되지 않습니다.
+입력 값을 UInt16 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
 
 **구문**
 
@@ -2310,11 +2343,11 @@ reinterpretAsUInt16(x)
 
 **인수**
 
-* `x` — `UInt16` 값으로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — UInt16 값으로 다시 해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-재해석한 값 `x`를 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
+다시 해석된 값 `x`를 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2339,10 +2372,10 @@ SELECT
 
 도입 버전: v1.1
 
-입력 값을 `UInt256` 타입의 값으로 다시 해석합니다.
-[`CAST`](#CAST)와 달리 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우, 출력 값은 정의되지 않습니다.
+입력 값을 UInt256 형식의 값으로 다시 해석합니다.
+[`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 형식으로 입력 값을 표현할 수 없으면 결과는 정의되지 않습니다.
 
-**문법**
+**구문**
 
 ```sql
 reinterpretAsUInt256(x)
@@ -2354,7 +2387,7 @@ reinterpretAsUInt256(x)
 
 **반환 값**
 
-`x`를 UInt256으로 재해석한 값을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
+재해석된 값인 `x`를 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
 
 **예제**
 
@@ -2377,10 +2410,10 @@ SELECT
 
 ## reinterpretAsUInt32 \{#reinterpretAsUInt32\}
 
-도입: v1.1
+도입 버전: v1.1
 
-입력 값을 `UInt32` 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와 달리, 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
+입력 값을 `UInt32` 타입의 값으로 다시 해석합니다.
+[`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 결과는 정의되지 않습니다.
 
 **구문**
 
@@ -2390,11 +2423,11 @@ reinterpretAsUInt32(x)
 
 **인자**
 
-* `x` — UInt32로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — UInt32로 재해석할 값. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring) 중 하나입니다.
 
 **반환 값**
 
-재해석된 `x` 값을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
+재해석한 `x` 값을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2417,10 +2450,10 @@ SELECT
 
 ## reinterpretAsUInt64 \{#reinterpretAsUInt64\}
 
-도입: v1.1
+도입된 버전: v1.1
 
-입력 값을 UInt64 타입의 값으로 재해석합니다.
-[`CAST`](#CAST)와는 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
+입력 값을 `UInt64` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와는 달리 이 함수는 원래 값을 보존하려고 시도하지 않습니다. 대상 타입이 입력 타입을 표현할 수 없으면 출력 값은 정의되지 않습니다.
 
 **구문**
 
@@ -2428,13 +2461,13 @@ SELECT
 reinterpretAsUInt64(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — UInt64로 재해석할 값. [`Int*`](/sql-reference/data-types/int-uint) 또는 [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — UInt64로 재해석할 값입니다. [`Int*`](/sql-reference/data-types/int-uint) 또는 [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`UUID`](/sql-reference/data-types/uuid) 또는 [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-재해석된 `x` 값을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+`x`를 UInt64로 재해석한 값을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2457,10 +2490,10 @@ SELECT
 
 ## reinterpretAsUInt8 \{#reinterpretAsUInt8\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-입력 값을 `UInt8` 타입의 값으로 다시 해석합니다.
-[`CAST`](#CAST)와 달리, 대상 타입이 입력 타입을 표현할 수 없더라도 원래 값을 보존하려고 시도하지 않으며, 이 경우 출력 값은 정의되지 않습니다.
+입력 값을 `UInt8` 타입의 값으로 재해석합니다.
+[`CAST`](#CAST)와 달리, 이 FUNCTION은 원래 값을 보존하려고 시도하지 않습니다. 대상 타입으로는 입력 값을 표현할 수 없는 경우 출력 값은 정의되지 않습니다.
 
 **구문**
 
@@ -2468,13 +2501,13 @@ SELECT
 reinterpretAsUInt8(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — `UInt8`로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring)
+* `x` — UInt8로 재해석할 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime), [`UUID`](/sql-reference/data-types/uuid), [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-재해석된 값 `x`를 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+재해석된 `x` 값을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -2499,7 +2532,7 @@ SELECT
 
 도입 버전: v1.1
 
-16바이트 길이의 문자열을 받아, 이를 8바이트씩 두 부분으로 나누어 각 부분을 리틀 엔디언(little-endian) 바이트 순서로 해석하여 UUID를 반환합니다. 문자열 길이가 충분하지 않으면, 필요한 개수만큼의 널(null) 바이트가 문자열 끝에 패딩된 것처럼 동작합니다. 문자열이 16바이트보다 길면, 끝에 있는 추가 바이트들은 무시됩니다.
+16바이트 문자열을 받아, 이를 8바이트씩 두 부분으로 나누고 각 부분을 리틀 엔디언 바이트 순서로 해석하여 UUID를 반환합니다. 문자열의 길이가 16바이트보다 짧으면, 문자열 끝에 필요한 개수만큼 널(null) 바이트가 패딩된 것처럼 동작합니다. 문자열이 16바이트보다 길면, 끝에 있는 추가 바이트는 무시됩니다.
 
 **구문**
 
@@ -2507,9 +2540,9 @@ SELECT
 reinterpretAsUUID(fixed_string)
 ```
 
-**인자**
+**인수**
 
-* `fixed_string` — 빅엔디언 바이트 문자열입니다. [`FixedString`](/sql-reference/data-types/fixedstring)
+* `fixed_string` — 빅 엔디언(big-endian) 바이트 문자열입니다. [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
@@ -2517,7 +2550,7 @@ UUID 타입의 값입니다. [`UUID`](/sql-reference/data-types/uuid)
 
 **예시**
 
-**문자열을 UUID로 변환**
+**String을 UUID로 변환**
 
 ```sql title=Query
 SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))
@@ -2532,10 +2565,10 @@ SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))
 
 ## toBFloat16 \{#toBFloat16\}
 
-도입: v1.1
+도입 버전: v1.1
 
-입력 값을 BFloat16 타입 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+입력값을 BFloat16 타입의 값으로 변환합니다.
+오류가 발생하는 경우 예외를 발생시킵니다.
 
 함께 보기:
 
@@ -2550,11 +2583,11 @@ toBFloat16(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
-16비트 brain-float 값입니다. [`BFloat16`](/sql-reference/data-types/float)
+16비트 브레인 플로트(brain-float) 값을 반환합니다. [`BFloat16`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -2579,8 +2612,8 @@ toBFloat16('42.7'):          42.5
 
 도입 버전: v1.1
 
-String 형식의 입력 값을 BFloat16 형식의 값으로 변환합니다.
-문자열이 부동 소수점 값을 나타내지 않는 경우 함수는 NULL을 반환합니다.
+`String` 입력 값을 BFloat16 타입의 값으로 변환합니다.
+문자열이 부동 소수점 값을 나타내지 않으면 함수는 `NULL`을 반환합니다.
 
 지원되는 인수:
 
@@ -2592,7 +2625,7 @@ String 형식의 입력 값을 BFloat16 형식의 값으로 변환합니다.
 * 숫자 값.
 
 :::note
-이 함수는 문자열 표현에서 변환하는 동안 정밀도 손실이 발생해도 오류 없이 진행되도록 허용합니다.
+이 함수는 문자열 표현에서 변환하는 과정에서 정밀도가 암묵적으로 손실되는 것을 허용합니다.
 :::
 
 함께 보기:
@@ -2600,23 +2633,23 @@ String 형식의 입력 값을 BFloat16 형식의 값으로 변환합니다.
 * [`toBFloat16`](#toBFloat16).
 * [`toBFloat16OrZero`](#toBFloat16OrZero).
 
-**문법**
+**구문**
 
 ```sql
 toBFloat16OrNull(x)
 ```
 
-**인수**
+**인수(Arguments)**
 
-* `x` — 숫자를 나타내는 `String` 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
-16비트 brain-float 값(BFloat16)을 반환하며, 그렇지 않으면 `NULL`을 반환합니다. [`BFloat16`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
+16비트 brain-float 값을 반환하며, 그렇지 않으면 `NULL`을 반환합니다. [`BFloat16`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 SELECT toBFloat16OrNull('0x5E'), -- unsupported arguments
@@ -2635,20 +2668,20 @@ SELECT toBFloat16OrNull('0x5E'), -- unsupported arguments
 
 도입 버전: v1.1
 
-`String` 입력 값을 BFloat16 타입의 값으로 변환합니다.
+입력 `String` 값을 BFloat16 타입 값으로 변환합니다.
 문자열이 부동 소수점 값을 나타내지 않으면 함수는 0을 반환합니다.
 
 지원되는 인수:
 
-* 숫자 값을 나타내는 문자열 표현.
+* 숫자 값을 나타내는 문자열.
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인수 (`0` 반환):
 
-* 2진수 및 16진수 값을 나타내는 문자열 표현.
+* 이진수 및 16진수 값을 나타내는 문자열.
 * 숫자 값.
 
 :::note
-이 함수는 문자열 표현에서 변환하는 동안 정밀도 손실이 발생해도 오류나 경고 없이 허용합니다.
+이 함수는 문자열 표현에서 변환하는 동안 정밀도가 조용히(암묵적으로) 손실되는 것을 허용합니다.
 :::
 
 함께 보기:
@@ -2664,15 +2697,15 @@ toBFloat16OrZero(x)
 
 **인수**
 
-* `x` — 숫자의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-16비트 brain-float 값을 반환하며, 그렇지 않은 경우 `0`을 반환합니다. [`BFloat16`](/sql-reference/data-types/float)
+16비트 brain-float 값을 반환하며, 그렇지 않으면 `0`을 반환합니다. [`BFloat16`](/sql-reference/data-types/float)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT toBFloat16OrZero('0x5E'), -- unsupported arguments
@@ -2689,9 +2722,9 @@ SELECT toBFloat16OrZero('0x5E'), -- unsupported arguments
 
 ## toBool \{#toBool\}
 
-도입 버전: v22.2
+도입된 버전: v22.2
 
-입력 값을 Bool 타입의 값으로 변환합니다.
+입력 값을 Bool 형식의 값으로 변환합니다.
 
 **구문**
 
@@ -2701,15 +2734,15 @@ toBool(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 문자열을 반환하는 표현식입니다. 문자열의 경우 대소문자를 구분하지 않고 &#39;true&#39; 또는 &#39;false&#39; 값을 허용합니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string) 또는 [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 문자열을 반환하는 표현식입니다. 문자열의 경우 대소문자를 구분하지 않고 「true」 또는 「false」만 허용합니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string) 또는 [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**반환 값**
+**반환값**
 
 인수의 평가 결과에 따라 `true` 또는 `false`를 반환합니다. [`Bool`](/sql-reference/data-types/boolean)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -2734,10 +2767,10 @@ toBool('FALSE'):         false
 
 ## toDate \{#toDate\}
 
-도입된 버전: v1.1
+도입: v1.1
 
 입력값을 [`Date`](/sql-reference/data-types/date) 타입으로 변환합니다.
-String, FixedString, DateTime 또는 숫자형 타입에서의 변환을 지원합니다.
+String, FixedString, DateTime 및 숫자 타입에서의 변환을 지원합니다.
 
 **구문**
 
@@ -2745,7 +2778,7 @@ String, FixedString, DateTime 또는 숫자형 타입에서의 변환을 지원�
 toDate(x)
 ```
 
-**인수**
+**인자**
 
 * `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
@@ -2753,7 +2786,7 @@ toDate(x)
 
 변환된 입력값을 반환합니다. [`Date`](/sql-reference/data-types/date)
 
-**예제**
+**예시**
 
 **String을 Date로 변환**
 
@@ -2765,7 +2798,7 @@ SELECT toDate('2025-04-15')
 2025-04-15
 ```
 
-**DateTime 값을 Date로 변환**
+**DateTime을 Date로 변환**
 
 ```sql title=Query
 SELECT toDate(toDateTime('2025-04-15 10:30:00'))
@@ -2788,11 +2821,11 @@ SELECT toDate(20297)
 
 ## toDate32 \{#toDate32\}
 
-도입 버전: v21.9
+도입된 버전: v21.9
 
 인수를 [Date32](../data-types/date32.md) 데이터 타입으로 변환합니다.
-값이 범위를 벗어나면 `toDate32`는 [Date32](../data-types/date32.md)가 지원하는 경계값을 반환합니다.
-인수가 [`Date`](../data-types/date.md) 타입인 경우, 해당 타입의 범위를 고려합니다.
+값이 범위를 벗어나면 `toDate32`는 [Date32](../data-types/date32.md)가 지원하는 경계 값을 반환합니다.
+인수가 [`Date`](../data-types/date.md) 타입인 경우 해당 타입의 범위가 적용됩니다.
 
 **구문**
 
@@ -2806,9 +2839,9 @@ toDate32(expr)
 
 **반환값**
 
-캘린더 날짜인 [`Date32`](/sql-reference/data-types/date32)를 반환합니다.
+달력 날짜를 반환합니다. [`Date32`](/sql-reference/data-types/date32)
 
-**예제**
+**예시**
 
 **범위 내**
 
@@ -2824,7 +2857,7 @@ value:           2025-01-01
 toTypeName(value): Date32
 ```
 
-**범위 초과**
+**범위를 벗어남**
 
 ```sql title=Query
 SELECT toDate32('1899-01-01') AS value, toTypeName(value)
@@ -2843,7 +2876,7 @@ toTypeName(value): Date32
 
 도입 버전: v21.11
 
-인수를 [Date32](../data-types/date32.md) 데이터 타입으로 변환합니다. 값이 범위를 벗어나면 `toDate32OrDefault`는 [Date32](../data-types/date32.md)에서 지원하는 하한 값을 반환합니다. 인수가 [Date](../data-types/date.md) 타입이면 해당 타입의 범위가 적용됩니다. 유효하지 않은 인수가 전달되면 기본값을 반환합니다.
+인수를 [Date32](../data-types/date32.md) 데이터 타입으로 변환합니다. 값이 허용 범위를 벗어나는 경우 `toDate32OrDefault`는 [Date32](../data-types/date32.md)에서 지원하는 하한 경계값을 반환합니다. 인수가 [Date](../data-types/date.md) 타입인 경우 해당 타입의 허용 범위도 함께 고려합니다. 잘못된 인수가 전달되면 기본값(default value)을 반환합니다.
 
 **구문**
 
@@ -2853,16 +2886,16 @@ toDate32OrDefault(expr[, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `default` — 선택 사항. 파싱에 실패했을 때 반환할 기본값. [`Date32`](/sql-reference/data-types/date32)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `default` — 선택 사항입니다. 파싱(구문 분석)에 실패했을 때 반환할 기본값입니다. [`Date32`](/sql-reference/data-types/date32)
 
 **반환 값**
 
-성공한 경우 Date32 타입의 값을 반환하며, 그렇지 않으면 지정된 기본값을 반환하고, 기본값이 지정되지 않은 경우 1900-01-01을 반환합니다. [`Date32`](/sql-reference/data-types/date32)
+성공한 경우 `Date32` 타입의 값을 반환하며, 그렇지 않은 경우 전달된 기본값이 있으면 그 값을, 없으면 1900-01-01을 반환합니다. [`Date32`](/sql-reference/data-types/date32)
 
-**예시**
+**예제**
 
-**변환 성공 예시**
+**변환 성공 예제**
 
 ```sql title=Query
 SELECT toDate32OrDefault('1930-01-01', toDate32('2020-01-01'))
@@ -2872,7 +2905,7 @@ SELECT toDate32OrDefault('1930-01-01', toDate32('2020-01-01'))
 1930-01-01
 ```
 
-**형 변환 실패**
+**변환 실패**
 
 ```sql title=Query
 SELECT toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'))
@@ -2887,7 +2920,7 @@ SELECT toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'))
 
 도입 버전: v21.9
 
-입력 값을 Date32 타입 값으로 변환하며, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
+입력값을 Date32 타입의 값으로 변환하지만 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 [`toDate32`](#toDate32)와 동일하지만 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 
 **구문**
@@ -2898,11 +2931,11 @@ toDate32OrNull(x)
 
 **인수**
 
-* `x` — 날짜를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 날짜를 나타내는 문자열. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-성공하면 `Date32` 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Date32`](/sql-reference/data-types/date32) 또는 [`NULL`](/sql-reference/syntax#null)
+성공한 경우 Date32 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Date32`](/sql-reference/data-types/date32) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예제**
 
@@ -2923,8 +2956,8 @@ SELECT toDate32OrNull('2025-01-01'), toDate32OrNull('invalid')
 
 도입 버전: v21.9
 
-입력 값을 [Date32](../data-types/date32.md) 타입의 값으로 변환하며, 잘못된 인수가 전달되면 [Date32](../data-types/date32.md)의 하한값을 반환합니다.
-[toDate32](#toDate32)와 동일하지만, 잘못된 인수가 전달되면 [Date32](../data-types/date32.md)의 하한값을 반환합니다.
+입력 값을 [Date32](../data-types/date32.md) 타입의 값으로 변환하지만, 잘못된 인수가 입력되면 [Date32](../data-types/date32.md)의 하한 값을 반환합니다.
+[toDate32](#toDate32)와 동일하지만, 잘못된 인수가 입력되면 [Date32](../data-types/date32.md)의 하한 값을 반환합니다.
 
 함께 보기:
 
@@ -2938,13 +2971,13 @@ SELECT toDate32OrNull('2025-01-01'), toDate32OrNull('invalid')
 toDate32OrZero(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 날짜를 나타내는 문자열. [`String`](/sql-reference/data-types/string)
+* `x` — 문자열 형태의 날짜. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 Date32 값을, 실패하면 Date32의 하한 값인 `1900-01-01`을 반환합니다. [`Date32`](/sql-reference/data-types/date32)
+성공한 경우 Date32 값을 반환하고, 그렇지 않으면 Date32의 하한인 `1900-01-01`을 반환합니다. [`Date32`](/sql-reference/data-types/date32)
 
 **예시**
 
@@ -2963,9 +2996,9 @@ SELECT toDate32OrZero('2025-01-01'), toDate32OrZero('')
 
 ## toDateOrDefault \{#toDateOrDefault\}
 
-도입된 버전: v21.11
+도입 버전: v21.11
 
-[toDate](#toDate)와 동일하지만, 변환에 실패하는 경우 기본값을 반환합니다. 기본값은 두 번째 인자가 지정되어 있으면 그 값이고, 지정되지 않은 경우 [Date](../data-types/date.md)의 최솟값입니다.
+[toDate](#toDate)와 유사하지만, 변환에 성공하지 못하면 기본값을 반환합니다. 기본값은 두 번째 인자가 지정되어 있으면 그 값이고, 지정되지 않은 경우 [Date](../data-types/date.md)의 하한 값입니다.
 
 **구문**
 
@@ -2973,14 +3006,14 @@ SELECT toDate32OrZero('2025-01-01'), toDate32OrZero('')
 toDateOrDefault(expr[, default])
 ```
 
-**인수**
+**인자**
 
-* `expr` — 숫자 값이거나 숫자의 문자열 표현을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Date`](/sql-reference/data-types/date)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `default` — 선택 사항입니다. 파싱에 실패한 경우 반환할 기본값입니다. [`Date`](/sql-reference/data-types/date)
 
 **반환 값**
 
-성공하면 `Date` 타입의 값을 반환하고, 그렇지 않으면 `default` 인수가 전달된 경우 해당 기본값을, 전달되지 않은 경우 1970-01-01을 반환합니다. [`Date`](/sql-reference/data-types/date)
+성공한 경우 Date 타입의 값을 반환합니다. 실패한 경우 기본값이 전달되어 있으면 해당 값을, 전달되지 않은 경우 1970-01-01을 반환합니다. [`Date`](/sql-reference/data-types/date)
 
 **예시**
 
@@ -3007,7 +3040,7 @@ SELECT toDateOrDefault('', CAST('2023-01-01', 'Date'))
 
 ## toDateOrNull \{#toDateOrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
 입력값을 `Date` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 [`toDate`](#toDate)와 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
@@ -3018,13 +3051,13 @@ SELECT toDateOrDefault('', CAST('2023-01-01', 'Date'))
 toDateOrNull(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 날짜를 나타내는 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 날짜를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 Date 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 Date 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -3043,10 +3076,10 @@ SELECT toDateOrNull('2025-12-30'), toDateOrNull('invalid')
 
 ## toDateOrZero \{#toDateOrZero\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-입력 값을 [`Date`](../data-types/date.md) 타입으로 변환하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md)의 하한 값을 반환합니다.
-[toDate](#toDate)와 동일하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md) 타입의 하한 값을 반환합니다.
+입력 값을 [`Date`](../data-types/date.md) 타입으로 변환하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md) 타입의 하한값을 반환합니다.
+[toDate](#toDate)와 동일하지만, 잘못된 인수가 전달되면 [`Date`](../data-types/date.md) 타입의 하한값을 반환합니다.
 
 함께 보기:
 
@@ -3054,19 +3087,19 @@ SELECT toDateOrNull('2025-12-30'), toDateOrNull('invalid')
 * [`toDateOrNull`](#toDateOrNull)
 * [`toDateOrDefault`](#toDateOrDefault)
 
-**구문**
+**문법**
 
 ```sql
 toDateOrZero(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 문자열 형식의 날짜. [`String`](/sql-reference/data-types/string)
+* `x` — 문자열 형태의 날짜. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공적으로 변환되면 Date 값을, 그렇지 않으면 Date의 하한값인 `1970-01-01`을 반환합니다. [`Date`](/sql-reference/data-types/date)
+성공한 경우 Date 값을, 그렇지 않으면 Date의 하한값인 `1970-01-01`을 반환합니다. [`Date`](/sql-reference/data-types/date)
 
 **예시**
 
@@ -3087,15 +3120,15 @@ SELECT toDateOrZero('2025-12-30'), toDateOrZero('')
 
 도입 버전: v1.1
 
-입력 값을 [DateTime](../data-types/datetime.md) 타입으로 변환합니다.
+입력값을 [DateTime](../data-types/datetime.md) 형식으로 변환합니다.
 
 :::note
-`expr`이 숫자인 경우, Unix Epoch의 시작 시점부터 경과한 초 수(Unix timestamp)로 해석됩니다.
-`expr`이 [String](../data-types/string.md)인 경우, Unix timestamp 또는 날짜 / 날짜와 시간의 문자열 표현으로 해석될 수 있습니다.
-이 때문에 짧은 숫자 문자열(최대 4자리)의 파싱은 모호성으로 인해 명시적으로 비활성화되어 있습니다. 예를 들어 문자열 `'1999'`는 연도(불완전한 Date / DateTime 문자열 표현)이거나 Unix timestamp일 수도 있습니다. 더 긴 숫자 문자열은 허용됩니다.
+`expr`이 숫자인 경우 유닉스 에포크(Unix Epoch) 시작 시점부터의 초 단위 시간(Unix 타임스탬프, Unix timestamp)으로 해석됩니다.
+`expr`이 [String](../data-types/string.md)인 경우 Unix 타임스탬프이거나 날짜/날짜-시간의 문자열 표현으로 해석될 수 있습니다.
+따라서 짧은 숫자 문자열 표현(최대 4자리)은 모호성 때문에 파싱이 명시적으로 비활성화되어 있습니다. 예를 들어 문자열 `'1999'`는 연도(날짜/DateTime의 불완전한 문자열 표현)일 수도 있고 Unix 타임스탬프일 수도 있습니다. 더 긴 숫자 문자열은 허용됩니다.
 :::
 
-**구문**
+**문법**
 
 ```sql
 toDateTime(expr[, time_zone])
@@ -3103,16 +3136,16 @@ toDateTime(expr[, time_zone])
 
 **인수**
 
-* `expr` — 값. [`String`](/sql-reference/data-types/string) 또는 [`Int`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
-* `time_zone` — 시간대. [`String`](/sql-reference/data-types/string)
+* `expr` — 값입니다. [`String`](/sql-reference/data-types/string) 또는 [`Int`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
+* `time_zone` — 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`DateTime` 형식의 날짜와 시간 값을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+`DateTime` 형식의 날짜와 시간을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT toDateTime('2025-01-01 00:00:00'), toDateTime(1735689600, 'UTC')
@@ -3129,11 +3162,11 @@ toDateTime(1735689600, 'UTC'):     2025-01-01 00:00:00
 
 ## toDateTime32 \{#toDateTime32\}
 
-도입된 버전: v20.9
+도입 버전: v20.9
 
 입력 값을 `DateTime` 타입으로 변환합니다.
-`String`, `FixedString`, `Date`, `Date32`, `DateTime` 또는 숫자 타입(`(U)Int*`, `Float*`, `Decimal`)에서의 변환을 지원합니다.
-DateTime32는 `DateTime`과 비교해 확장된 범위를 제공하며, `1900-01-01`부터 `2299-12-31`까지의 날짜를 지원합니다.
+`String`, `FixedString`, `Date`, `Date32`, `DateTime` 또는 수치형 타입(`(U)Int*`, `Float*`, `Decimal`)에서의 변환을 지원합니다.
+`DateTime32`는 `DateTime`에 비해 더 넓은 범위를 제공하며, `1900-01-01`부터 `2299-12-31`까지의 날짜를 지원합니다.
 
 **구문**
 
@@ -3144,7 +3177,7 @@ toDateTime32(x[, timezone])
 **인수**
 
 * `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 선택 사항입니다. 반환되는 `DateTime` 값의 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 반환되는 `DateTime` 값에 사용할 타임존입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -3164,7 +3197,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**정밀도를 지정한 10진수로**
+**지정된 정밀도의 10진수로**
 
 ```sql title=Query
 SELECT toDateTime64(1735689600.000, 3) AS value, toTypeName(value);
@@ -3181,7 +3214,7 @@ SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**타임존 포함**
+**타임존을 사용하는 경우**
 
 ```sql title=Query
 SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeName(value);
@@ -3208,17 +3241,17 @@ toDateTime64(expr, scale[, timezone])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식(expression). [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `scale` — 틱 크기(정밀도): 10^(-scale) 초. [`UInt8`](/sql-reference/data-types/int-uint)
-* `timezone` — 선택 사항. 지정된 `DateTime64` 객체의 시간대. [`String`](/sql-reference/data-types/string)
+* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `scale` — 틱 크기(정밀도)입니다. 10^(-scale)초를 의미합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 선택 사항입니다. 지정된 `DateTime64` 객체에 사용할 시간대입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-하위 초 단위 정밀도를 갖는 달력 날짜 및 시각을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+하위 초 단위까지 포함하는 달력 날짜와 하루 중 시간을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**예시**
+**예제**
 
-**값이 허용 범위 내에 있는 경우**
+**값이 유효 범위 내에 있는 경우**
 
 ```sql title=Query
 SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
@@ -3230,7 +3263,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**지정된 정밀도의 decimal로**
+**정밀도가 있는 Decimal로**
 
 ```sql title=Query
 SELECT toDateTime64(1546300800.000, 3) AS value, toTypeName(value);
@@ -3244,7 +3277,7 @@ SELECT toDateTime64(1546300800000, 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**타임존 포함**
+**타임존 사용**
 
 ```sql title=Query
 SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeName(value);
@@ -3261,8 +3294,8 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 도입 버전: v21.11
 
-[toDateTime64](#toDateTime64)와 같이, 이 FUNCTION은 입력값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환하지만,
-유효하지 않은 인수가 전달되었을 때는 [DateTime64](../data-types/datetime64.md)의 기본값 또는 사용자가 지정한 기본값을 반환합니다.
+[toDateTime64](#toDateTime64)와 마찬가지로 이 함수는 입력값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환합니다.
+다만 잘못된 인수가 전달된 경우 [DateTime64](../data-types/datetime64.md)의 기본값 또는 제공된 기본값을 반환합니다.
 
 **구문**
 
@@ -3272,18 +3305,18 @@ toDateTime64OrDefault(expr, scale[, timezone, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `scale` — 틱 크기(정밀도)입니다. 10^-precision 초 단위입니다. [`UInt8`](/sql-reference/data-types/int-uint)
 * `timezone` — 선택 사항입니다. 시간대입니다. [`String`](/sql-reference/data-types/string)
 * `default` — 선택 사항입니다. 파싱에 실패한 경우 반환할 기본값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **반환 값**
 
-변환에 성공하면 DateTime64 타입의 값을 반환하며, 그렇지 않은 경우 전달된 기본값이 있으면 해당 값을, 없으면 1970-01-01 00:00:00.000을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+성공하면 DateTime64 유형의 값을 반환하며, 그렇지 않으면 `default` 값이 전달된 경우 해당 값을, 전달되지 않은 경우 1970-01-01 00:00:00.000을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
-**성공적인 변환**
+**성공한 변환**
 
 ```sql title=Query
 SELECT toDateTime64OrDefault('1976-10-18 00:00:00.30', 3)
@@ -3293,7 +3326,7 @@ SELECT toDateTime64OrDefault('1976-10-18 00:00:00.30', 3)
 1976-10-18 00:00:00.300
 ```
 
-**형 변환 실패**
+**변환 실패**
 
 ```sql title=Query
 SELECT toDateTime64OrDefault('1976-10-18 00:00:00 30', 3, 'UTC', toDateTime64('2001-01-01 00:00:00.00',3))
@@ -3306,10 +3339,10 @@ SELECT toDateTime64OrDefault('1976-10-18 00:00:00 30', 3, 'UTC', toDateTime64('2
 
 ## toDateTime64OrNull \{#toDateTime64OrNull\}
 
-도입 버전: v20.1
+도입된 버전: v20.1
 
-입력값을 `DateTime64` 타입 값으로 변환하지만, 유효하지 않은 인수가 전달되면 `NULL`을 반환합니다.
-`toDateTime64`와 동일하지만, 유효하지 않은 인수가 전달되면 `NULL`을 반환합니다.
+입력 값을 `DateTime64` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
+`toDateTime64`와 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -3319,11 +3352,11 @@ toDateTime64OrNull(x)
 
 **인수**
 
-* `x` — 시간 및 서브초 정밀도를 포함하는 날짜의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 소수 초 단위까지의 정밀도를 포함하는 날짜와 시간의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공한 경우 DateTime64 값을, 그렇지 않은 경우 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 DateTime64 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -3342,12 +3375,12 @@ SELECT toDateTime64OrNull('2025-12-30 13:44:17.123'), toDateTime64OrNull('invali
 
 ## toDateTime64OrZero \{#toDateTime64OrZero\}
 
-도입된 버전: v20.1
+도입 버전: v20.1
 
-입력 값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환하지만, 잘못된 인수가 전달된 경우 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
-[toDateTime64](#toDateTime64)와 동일하지만, 잘못된 인수가 전달된 경우 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
+입력 값을 [DateTime64](../data-types/datetime64.md) 타입의 값으로 변환하되, 잘못된 인수가 전달되면 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
+[toDateTime64](#toDateTime64)와 동일하게 동작하지만, 잘못된 인수가 전달되면 [DateTime64](../data-types/datetime64.md)의 하한 값을 반환합니다.
 
-관련 항목:
+함께 보기:
 
 * [toDateTime64](#toDateTime64).
 * [toDateTime64OrNull](#toDateTime64OrNull).
@@ -3359,17 +3392,17 @@ SELECT toDateTime64OrNull('2025-12-30 13:44:17.123'), toDateTime64OrNull('invali
 toDateTime64OrZero(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 시간과 초 이하 단위까지의 정밀도를 포함한 날짜의 문자열 표현. [`String`](/sql-reference/data-types/string)
+* `x` — 시간 및 초 이하 단위 정밀도를 포함한 날짜의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 DateTime64 값을 반환하고, 그렇지 않으면 DateTime64의 하한값인 `1970-01-01 00:00:00.000`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+성공하면 DateTime64 값을 반환하며, 실패하면 DateTime64의 하한 값인 `1970-01-01 00:00:00.000`을 반환합니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT toDateTime64OrZero('2025-12-30 13:44:17.123'), toDateTime64OrZero('invalid')
@@ -3384,9 +3417,9 @@ SELECT toDateTime64OrZero('2025-12-30 13:44:17.123'), toDateTime64OrZero('invali
 
 ## toDateTimeOrDefault \{#toDateTimeOrDefault\}
 
-도입 버전: v21.11
+도입: v21.11
 
-[toDateTime](#toDateTime)과 동일하지만, 변환에 실패하는 경우 기본값을 반환합니다. 기본값은 세 번째 인자가 지정된 경우 해당 값이고, 지정되지 않은 경우 [DateTime](../data-types/datetime.md)의 최솟값입니다.
+[toDateTime](#toDateTime)과 유사하지만, 변환에 실패하는 경우 기본값을 반환합니다. 기본값은 세 번째 인자가 지정되어 있으면 해당 값이고, 지정되지 않은 경우 [DateTime](../data-types/datetime.md)의 하한입니다.
 
 **구문**
 
@@ -3397,16 +3430,16 @@ toDateTimeOrDefault(expr[, timezone, default])
 **인자**
 
 * `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `timezone` — 선택 사항입니다. 시간대입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항입니다. 타임존을 나타냅니다. [`String`](/sql-reference/data-types/string)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환 값**
 
-성공한 경우 DateTime 타입의 값을 반환하고, 그렇지 않으면 전달된 기본값을 반환하며, 기본값이 없으면 1970-01-01 00:00:00을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+성공한 경우 DateTime 타입의 값을 반환하고, 그렇지 않은 경우 `default` 값이 전달되었으면 해당 값을, 전달되지 않았으면 1970-01-01 00:00:00을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
-**성공한 변환**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toDateTimeOrDefault('2022-12-30 13:44:17')
@@ -3429,10 +3462,10 @@ SELECT toDateTimeOrDefault('', 'UTC', CAST('2023-01-01', 'DateTime(\'UTC\')'))
 
 ## toDateTimeOrNull \{#toDateTimeOrNull\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-입력값을 `DateTime` 타입의 값으로 변환하지만, 잘못된 인자가 전달되면 `NULL`을 반환합니다.
-[`toDateTime`](#toDateTime)와 동일하지만, 잘못된 인자가 전달되면 `NULL`을 반환합니다.
+입력값을 `DateTime` 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
+[`toDateTime`](#toDateTime)과 동일하지만, 잘못된 인수가 전달되면 `NULL`을 반환합니다.
 
 **구문**
 
@@ -3442,15 +3475,15 @@ toDateTimeOrNull(x)
 
 **인수**
 
-* `x` — 시간 정보를 포함한 날짜의 문자열 형식입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 시간 정보를 포함한 날짜를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 `DateTime` 값을, 그렇지 않으면 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
+성공한 경우 `DateTime` 값을, 그렇지 않으면 `NULL`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT toDateTimeOrNull('2025-12-30 13:44:17'), toDateTimeOrNull('invalid')
@@ -3467,8 +3500,8 @@ SELECT toDateTimeOrNull('2025-12-30 13:44:17'), toDateTimeOrNull('invalid')
 
 도입 버전: v1.1
 
-입력값을 [DateTime](../data-types/datetime.md) 타입의 값으로 변환하지만, 잘못된 인수가 전달되면 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
-[toDateTime](#toDateTime)과 동일하게 동작하지만, 잘못된 인수가 전달될 경우 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
+입력 값을 [DateTime](../data-types/datetime.md) 타입의 값으로 변환합니다. 단, 유효하지 않은 인수가 전달되면 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
+[toDateTime](#toDateTime)과 동일하지만, 유효하지 않은 인수가 전달되면 [DateTime](../data-types/datetime.md) 하한값을 반환합니다.
 
 **구문**
 
@@ -3478,11 +3511,11 @@ toDateTimeOrZero(x)
 
 **인수**
 
-* `x` — 시간 정보를 포함한 날짜의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 시간 정보를 포함한 날짜의 문자열 표현. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-성공하면 DateTime 값을 반환하고, 그렇지 않으면 DateTime의 최소값인 `1970-01-01 00:00:00`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
+성공한 경우 DateTime 값을 반환하고, 실패한 경우 DateTime의 하한값인 `1970-01-01 00:00:00`을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime)
 
 **예시**
 
@@ -3503,32 +3536,32 @@ SELECT toDateTimeOrZero('2025-12-30 13:44:17'), toDateTimeOrZero('invalid')
 
 도입된 버전: v18.12
 
-입력 값을 스케일 `S`를 가지는 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다.
+입력 값을 스케일 `S`를 갖는 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 해당 값의 문자열 표현.
-* Float* 타입의 값 또는 해당 값의 문자열 표현.
+* 타입이 (U)Int*인 값 또는 해당 값의 문자열 표현.
+* 타입이 Float*인 값 또는 해당 값의 문자열 표현.
 
 지원되지 않는 인수:
 
-* Float* 값 `NaN` 및 `Inf`의 값 또는 이 값들의 문자열 표현(대소문자 구분 없음).
-* 이진수 및 16진수 값의 문자열 표현, 예: `SELECT toDecimal128('0xc0fe', 1);`.
+* Float* 형식의 `NaN`, `Inf` 값 또는 해당 값의 문자열 표현(대소문자 구분 없음).
+* 이진 및 16진수 값의 문자열 표현, 예: `SELECT toDecimal128('0xc0fe', 1);`.
 
 :::note
 `expr`의 값이 `Decimal128`의 범위 `(-1*10^(38 - S), 1*10^(38 - S))`를 초과하면 오버플로가 발생할 수 있습니다.
-소수 부분의 초과 자릿수는 버려지며(반올림되지 않음),
+소수 부분의 초과 자릿수는 버려집니다(반올림되지 않음).
 정수 부분의 초과 자릿수는 예외를 발생시킵니다.
 :::
 
 :::warning
-변환 과정에서 여분의 자릿수가 잘려 나가고, 연산이 부동소수점 명령어를 사용하여 수행되므로 Float32/Float64 입력을 사용할 때 예상과 다르게 동작할 수 있습니다.
-예를 들어, `toDecimal128(1.15, 2)`는 1.15 * 100이 부동소수점에서 114.99가 되기 때문에 `1.14`와 같습니다.
-문자열 입력을 사용하면 내부적으로 정수 타입을 사용하여 연산할 수 있습니다: `toDecimal128('1.15', 2) = 1.15`
+변환 시 부동 소수점 명령어를 사용하여 연산이 수행되므로 Float32/Float64 입력을 사용할 때 추가 자릿수가 잘려 나가 예기치 않게 동작할 수 있습니다.
+예를 들어 `toDecimal128(1.15, 2)`는 부동 소수점에서 1.15 * 100이 114.99가 되기 때문에 `1.14`와 같습니다.
+연산에 기본 정수 타입을 사용하도록 하려면 String 입력을 사용할 수 있습니다: `toDecimal128('1.15', 2) = 1.15`
 :::
 
-**구문**
+**문법**
 
 ```sql
 toDecimal128(expr, S)
@@ -3536,8 +3569,8 @@ toDecimal128(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0 이상 38 이하의 스케일 매개변수로, 숫자의 소수부가 가질 수 있는 자릿수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 38 사이의 스케일(scale) 매개변수로, 소수 부분이 가질 수 있는 자릿수(숫자 개수)를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -3569,11 +3602,11 @@ type_c: Decimal(38, 3)
 
 ## toDecimal128OrDefault \{#toDecimal128OrDefault\}
 
-도입 버전: v21.11
+도입된 버전: v21.11
 
-[`toDecimal128`](#toDecimal128)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Decimal(38, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+[`toDecimal128`](#toDecimal128)과 같이, 이 함수는 입력값을 [Decimal(38, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 
-**구문**
+**문법**
 
 ```sql
 toDecimal128OrDefault(expr, S[, default])
@@ -3581,13 +3614,13 @@ toDecimal128OrDefault(expr, S[, default])
 
 **인수**
 
-* `expr` — 숫자를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
-* `S` — 0에서 38 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
-* `default` — 선택 사항입니다. Decimal128(S) 타입으로의 파싱이 실패했을 때 반환할 기본값입니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
+* `expr` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `S` — 0에서 38 사이의 스케일(scale) 매개변수로, 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `default` — 선택 사항입니다. Decimal128(S) 형식으로 파싱하지 못했을 때 반환할 기본값입니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
 
 **반환 값**
 
-성공한 경우 Decimal(38, S) 타입의 값을, 그렇지 않은 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(38, S) 형식의 값을 반환하고, 그렇지 않으면 전달된 기본값이 있을 경우 해당 값을, 없을 경우 0을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -3614,10 +3647,10 @@ SELECT toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)'))
 
 ## toDecimal128OrNull \{#toDecimal128OrNull\}
 
-도입 버전: v20.1
+도입된 버전: v20.1
 
-입력 값을 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
-[`toDecimal128`](#toDecimal128)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
+입력 값을 [`Decimal(38, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 변환 중 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toDecimal128`](#toDecimal128)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
 지원되는 인수:
 
@@ -3626,8 +3659,8 @@ SELECT toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)'))
 
 지원되지 않는 인수(`NULL` 반환):
 
-* Float* 값 `NaN` 및 `Inf` 값 또는 해당 값의 문자열 표현(대소문자 구분 없음).
-* 2진수 및 16진수 값의 문자열 표현.
+* Float* 값 `NaN` 및 `Inf`의 값 또는 해당 값의 문자열 표현(대소문자 구분 없음).
+* 이진수 및 16진수 값의 문자열 표현.
 * `Decimal128`의 범위를 초과하는 값: `(-1*10^(38 - S), 1*10^(38 - S))`.
 
 관련 항목:
@@ -3645,15 +3678,15 @@ toDecimal128OrNull(expr, S)
 **인수**
 
 * `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0과 38 사이의 스케일(scale) 매개변수로, 숫자의 소수부가 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `S` — 0에서 38 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수의 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 Decimal(38, S) 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
+성공한 경우 Decimal(38, S) 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT toDecimal128OrNull('42.7', 2), toDecimal128OrNull('invalid', 2)
@@ -3668,23 +3701,23 @@ SELECT toDecimal128OrNull('42.7', 2), toDecimal128OrNull('invalid', 2)
 
 ## toDecimal128OrZero \{#toDecimal128OrZero\}
 
-도입 버전: v20.1
+도입된 버전: v20.1
 
 입력 값을 [Decimal(38, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
-[`toDecimal128`](#toDecimal128)과 동일하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
+[`toDecimal128`](#toDecimal128)과 같지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
 
-지원되는 인자:
+지원되는 인수:
 
-* (U)Int* 타입 값 또는 해당 값의 문자열 표현.
-* Float* 타입 값 또는 해당 값의 문자열 표현.
+* (U)Int* 타입의 값 또는 그 문자열 표현.
+* Float* 타입의 값 또는 그 문자열 표현.
 
-지원되지 않는 인자(`0`을 반환):
+지원되지 않는 인수(`0` 반환):
 
-* Float* 타입의 `NaN` 및 `Inf` 값 또는 해당 값의 문자열 표현(대소문자 구분 없음).
+* Float* 타입의 `NaN` 및 `Inf` 값 또는 해당 문자열 표현(대소문자 구분 없음).
 * 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값이 `Decimal128`의 경계 `(-1*10^(38 - S), 1*10^(38 - S))`를 초과하면 함수는 `0`을 반환합니다.
+입력 값이 `Decimal128`의 범위 `(-1*10^(38 - S), 1*10^(38 - S))`를 초과하면, 함수는 `0`을 반환합니다.
 :::
 
 **구문**
@@ -3695,16 +3728,16 @@ toDecimal128OrZero(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0에서 38 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0 이상 38 이하의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 최대 자릿수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 Decimal(38, S) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(38, S) 값을, 그렇지 않으면 `0`을 반환합니다. [`Decimal128(S)`](/sql-reference/data-types/decimal)
 
-**예제**
+**예시**
 
-**기본 사용 예**
+**기본 사용법**
 
 ```sql title=Query
 SELECT toDecimal128OrZero('42.7', 2), toDecimal128OrZero('invalid', 2)
@@ -3719,42 +3752,42 @@ SELECT toDecimal128OrZero('42.7', 2), toDecimal128OrZero('invalid', 2)
 
 ## toDecimal256 \{#toDecimal256\}
 
-도입된 버전: v20.8
+도입 버전: v20.8
 
-입력 값을 스케일이 `S`인 [`Decimal(76, S)`](../data-types/decimal.md) 타입 값으로 변환합니다. 오류가 발생하면 예외를 발생시킵니다.
+입력 값을 스케일 `S`를 갖는 [`Decimal(76, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다. 오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 타입 값 또는 해당 문자열 표현.
-* Float* 타입 값 또는 해당 문자열 표현.
+* (U)Int* 타입의 값 또는 해당 값의 문자열 표현.
+* Float* 타입의 값 또는 해당 값의 문자열 표현.
 
 지원되지 않는 인수:
 
-* Float* 값 `NaN` 및 `Inf`(대소문자 구분 없음) 또는 해당 문자열 표현.
-* 이진 및 16진수 값의 문자열 표현(예: `SELECT toDecimal256('0xc0fe', 1);`).
+* Float* 값 `NaN` 및 `Inf`(대소문자 구분 없음) 자체 값 또는 해당 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현(예: `SELECT toDecimal256('0xc0fe', 1);`).
 
 :::note
-`expr` 값이 `Decimal256`의 범위 `(-1*10^(76 - S), 1*10^(76 - S))`를 초과하면 오버플로가 발생할 수 있습니다.
-소수부에서 초과된 자릿수는 (반올림 없이) 버려집니다.
-정수부에서 초과된 자릿수는 예외를 발생시킵니다.
+`expr`의 값이 `Decimal256`의 경계값 `(-1*10^(76 - S), 1*10^(76 - S))`을 초과하면 오버플로가 발생할 수 있습니다.
+소수 부분에서 과도한 자리수는 버려지며(반올림되지 않음),
+정수 부분에서 과도한 자리수는 예외를 발생시킵니다.
 :::
 
 :::warning
-변환 과정에서 추가 자릿수가 버려지며, 연산이 부동소수점 명령어를 사용하여 수행되므로 Float32/Float64 입력으로 작업할 때 예기치 않은 방식으로 동작할 수 있습니다.
-예를 들어, `toDecimal256(1.15, 2)`는 `1.14`와 같습니다. 이는 부동소수점에서 1.15 * 100이 114.99가 되기 때문입니다.
-문자열 입력을 사용하면 기본 정수 타입을 사용하여 연산할 수 있습니다: `toDecimal256('1.15', 2) = 1.15`
+변환 과정에서 추가 자리수가 잘려 나가며, 연산이 부동소수점 명령어로 수행되기 때문에 Float32/Float64 입력을 사용할 때 예기치 않은 방식으로 동작할 수 있습니다.
+예를 들어, `toDecimal256(1.15, 2)`는 1.15 * 100이 부동소수점에서 114.99가 되기 때문에 `1.14`와 같습니다.
+연산이 내부 정수 타입을 사용하도록 하려면 String 입력을 사용할 수 있습니다: `toDecimal256('1.15', 2) = 1.15`
 :::
 
-**Syntax**
+**구문**
 
 ```sql
 toDecimal256(expr, S)
 ```
 
-**인자**
+**인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0 이상 76 이하의 스케일(scale) 매개변수로, 소수 부분이 가질 수 있는 자릿수의 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0 이상 76 이하의 스케일 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -3788,7 +3821,7 @@ type_c: Decimal(76, 3)
 
 도입 버전: v21.11
 
-[`toDecimal256`](#toDecimal256)와 마찬가지로 이 FUNCTION은 입력값을 [Decimal(76, S)](../data-types/decimal.md) 형식의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+[`toDecimal256`](#toDecimal256)와 마찬가지로, 이 함수는 입력 값을 [Decimal(76, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
 
 **구문**
 
@@ -3798,17 +3831,17 @@ toDecimal256OrDefault(expr, S[, default])
 
 **인수**
 
-* `expr` — 숫자를 String 형식으로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
-* `S` — 0부터 76 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
-* `default` — 선택 사항입니다. Decimal256(S) 타입으로 파싱(parse)하지 못했을 때 반환할 기본값입니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
+* `expr` — 숫자의 문자열(String) 표현입니다. [`String`](/sql-reference/data-types/string)
+* `S` — 0과 76 사이의 스케일(scale) 매개변수로, 숫자의 소수부가 가질 수 있는 자릿수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `default` — 선택 사항입니다. Decimal256(S) 타입으로의 파싱이 실패했을 때 반환할 기본값입니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
 
 **반환 값**
 
-성공하면 Decimal(76, S) 타입의 값을 반환하고, 그렇지 않으면 기본값이 전달된 경우 해당 값을, 그렇지 않은 경우 0을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
+성공 시 Decimal(76, S) 타입의 값을, 실패 시 전달된 기본값이 있으면 그 값을, 없으면 0을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
-**변환 성공 예**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toDecimal256OrDefault(toString(1/42), 76)
@@ -3833,21 +3866,21 @@ SELECT toDecimal256OrDefault('Inf', 0, CAST('-1', 'Decimal256(0)'))
 
 도입 버전: v20.8
 
-입력 값을 [`Decimal(76, S)`](../data-types/decimal.md) 형식의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
-[`toDecimal256`](#toDecimal256)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+입력 값을 [`Decimal(76, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toDecimal256`](#toDecimal256)와 같지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int* 형식의 값 또는 해당 문자열 표현.
-* Float* 형식의 값 또는 해당 문자열 표현.
+* (U)Int* 타입의 값 또는 그 문자열 표현.
+* Float* 타입의 값 또는 그 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인수 (`NULL` 반환):
 
-* Float* 형식의 `NaN`, `Inf` 값 또는 해당 문자열 표현(대소문자를 구분하지 않습니다).
-* 2진수 및 16진수 값의 문자열 표현.
+* `NaN`, `Inf`(대소문자 구분 없음)과 같은 Float* 값 또는 그 문자열 표현.
+* 2진수 및 16진수 값을 나타내는 문자열 표현.
 * `Decimal256`의 범위를 초과하는 값: `(-1 * 10^(76 - S), 1 * 10^(76 - S))`.
 
-관련 항목:
+함께 보기:
 
 * [`toDecimal256`](#toDecimal256).
 * [`toDecimal256OrZero`](#toDecimal256OrZero).
@@ -3859,14 +3892,14 @@ SELECT toDecimal256OrDefault('Inf', 0, CAST('-1', 'Decimal256(0)'))
 toDecimal256OrNull(expr, S)
 ```
 
-**인수**
+**인자**
 
 * `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0에서 76 사이의 스케일 매개변수로, 숫자의 소수 부분에서 허용되는 자릿수의 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `S` — 0에서 76 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 Decimal(76, S) 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 Decimal(76, S) 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -3885,26 +3918,26 @@ SELECT toDecimal256OrNull('42.7', 2), toDecimal256OrNull('invalid', 2)
 
 ## toDecimal256OrZero \{#toDecimal256OrZero\}
 
-도입 버전: v20.8
+도입된 버전: v20.8
 
-입력 값을 [Decimal(76, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
-[`toDecimal256`](#toDecimal256)과 유사하지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
+입력 값을 [Decimal(76, S)](../data-types/decimal.md) 타입 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toDecimal256`](#toDecimal256)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int* 타입 값 또는 해당 문자열 표현.
 * Float* 타입 값 또는 해당 문자열 표현.
 
-지원되지 않는 인수(`0`을 반환):
+지원되지 않는 인수(`0` 반환):
 
-* `NaN` 및 `Inf`와 같은 Float* 값 또는 해당 문자열 표현(대소문자 구분 없음).
-* 2진수 및 16진수 값의 문자열 표현.
+* Float* 타입의 `NaN` 및 `Inf` 값 또는 그 문자열 표현(대소문자를 구분하지 않음).
+* 이진수 및 16진수 값의 문자열 표현.
 
 :::note
 입력 값이 `Decimal256`의 범위 `(-1*10^(76 - S), 1*10^(76 - S))`를 초과하는 경우, 함수는 `0`을 반환합니다.
 :::
 
-함께 참고:
+함께 보기:
 
 * [`toDecimal256`](#toDecimal256).
 * [`toDecimal256OrNull`](#toDecimal256OrNull).
@@ -3918,12 +3951,12 @@ toDecimal256OrZero(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0에서 76 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 76 사이의 스케일 매개변수로, 소수 부분 자릿수의 최대 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 Decimal(76, S) 값을, 그렇지 않으면 `0`을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(76, S) 값을, 그렇지 않으면 `0`을 반환합니다. [`Decimal256(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -3944,7 +3977,7 @@ SELECT toDecimal256OrZero('42.7', 2), toDecimal256OrZero('invalid', 2)
 
 도입 버전: v18.12
 
-입력값을 스케일이 `S`인 [`Decimal(9, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다. 오류가 발생하는 경우 예외를 발생시킵니다.
+입력 값을 스케일 `S`를 갖는 [`Decimal(9, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다. 오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
@@ -3953,19 +3986,19 @@ SELECT toDecimal256OrZero('42.7', 2), toDecimal256OrZero('invalid', 2)
 
 지원되지 않는 인수:
 
-* Float* 값 `NaN` 및 `Inf` 또는 해당 문자열 표현(대소문자 무시).
-* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toDecimal32('0xc0fe', 1);`.
+* Float* 타입의 `NaN` 및 `Inf` 값(대소문자 구분 없음)과 그 문자열 표현.
+* 이진 및 16진수 값의 문자열 표현. 예: `SELECT toDecimal32('0xc0fe', 1);`.
 
 :::note
 `expr`의 값이 `Decimal32`의 범위 `(-1*10^(9 - S), 1*10^(9 - S))`를 초과하면 오버플로가 발생할 수 있습니다.
-소수부의 자릿수가 너무 많으면 초과분은 버려지며(반올림하지 않음),
-정수부의 자릿수가 너무 많으면 예외가 발생합니다.
+소수부의 자릿수가 너무 많은 경우 초과 자릿수는 버려집니다(반올림되지 않음).
+정수부의 자릿수가 너무 많은 경우 예외가 발생합니다.
 :::
 
 :::warning
-변환 시 초과 자릿수가 잘려 나가며, 부동소수점 명령어를 사용하여 연산이 수행되므로 Float32/Float64 입력을 사용할 때 예상과 다르게 동작할 수 있습니다.
-예: `toDecimal32(1.15, 2)`는 `1.14`와 같은데, 이는 부동소수점에서 1.15 * 100이 114.99가 되기 때문입니다.
-연산이 내부적으로 정수 타입을 사용하도록 하려면 String 입력을 사용할 수 있습니다: `toDecimal32('1.15', 2) = 1.15`
+변환 과정에서 초과 자릿수가 잘려 나가며, 연산이 부동소수점 명령어를 사용해 수행되므로 Float32/Float64 입력을 처리할 때 예기치 않게 동작할 수 있습니다.
+예: `toDecimal32(1.15, 2)`는 `1.14`와 같습니다. 이는 부동소수점 연산에서 1.15 * 100이 114.99가 되기 때문입니다.
+문자열 입력을 사용하여 연산이 내부 정수 타입을 사용하도록 할 수 있습니다: `toDecimal32('1.15', 2) = 1.15`
 :::
 
 **구문**
@@ -3976,12 +4009,12 @@ toDecimal32(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0에서 9 사이의 스케일 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 9 사이의 스케일(scale) 매개변수로, 수의 소수 부분에 허용되는 자릿수의 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-`Decimal(9, S)` 타입의 값 [`Decimal32(S)`](/sql-reference/data-types/decimal)을(를) 반환합니다.
+`Decimal(9, S)` 타입의 값을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -4011,7 +4044,7 @@ type_c: Decimal(9, 3)
 
 도입된 버전: v21.11
 
-[`toDecimal32`](#toDecimal32)와 마찬가지로 이 FUNCTION은 입력값을 [Decimal(9, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+[`toDecimal32`](#toDecimal32)와 마찬가지로, 이 FUNCTION은 입력값을 [Decimal(9, S)](../data-types/decimal.md) 형식의 값으로 변환하지만, 오류가 발생하는 경우 기본값을 반환합니다.
 
 **구문**
 
@@ -4022,12 +4055,12 @@ toDecimal32OrDefault(expr, S[, default])
 **인수**
 
 * `expr` — 숫자의 문자열(String) 표현입니다. [`String`](/sql-reference/data-types/string)
-* `S` — 0과 9 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
-* `default` — 선택 사항입니다. Decimal32(S) 타입으로 파싱에 실패했을 때 반환할 기본값입니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
+* `S` — 0 이상 9 이하의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `default` — 선택 사항입니다. Decimal32(S) 타입으로의 파싱에 실패했을 때 반환할 기본값입니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
 
 **반환 값**
 
-성공하면 Decimal(9, S) 타입의 값을 반환하고, 실패하면 전달된 경우 기본값을, 전달되지 않은 경우 0을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
+성공한 경우 Decimal(9, S) 타입의 값을 반환하며, 실패한 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -4057,18 +4090,18 @@ SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
 도입 버전: v20.1
 
 입력 값을 [`Decimal(9, S)`](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
-[`toDecimal32`](#toDecimal32)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+[`toDecimal32`](#toDecimal32)와 같지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int* 타입 값 또는 해당 타입의 문자열 표현.
-* Float* 타입 값 또는 해당 타입의 문자열 표현.
+* (U)Int* 타입 값 또는 해당 값의 문자열 표현.
+* Float* 타입 값 또는 해당 값의 문자열 표현.
 
 지원되지 않는 인수(`NULL` 반환):
 
-* Float* 타입의 `NaN` 및 `Inf` 값 또는 해당 문자열 표현(대소문자 구분 없음).
+* Float* 값 `NaN` 및 `Inf` 값 또는 해당 값의 문자열 표현(대소문자 구분 안 함).
 * 이진수 및 16진수 값의 문자열 표현.
-* `Decimal32`의 범위를 벗어나는 값: `(-1*10^(9 - S), 1*10^(9 - S))`.
+* `Decimal32`의 범위를 초과하는 값: `(-1*10^(9 - S), 1*10^(9 - S))`.
 
 관련 항목:
 
@@ -4082,18 +4115,18 @@ SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
 toDecimal32OrNull(expr, S)
 ```
 
-**인자(Arguments)**
+**인자**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0 이상 9 이하의 스케일(scale) 파라미터로, 숫자의 소수 부분 자릿수 최대 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0 이상 9 이하의 스케일 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**반환 값(Returned value)**
+**반환 값**
 
-성공하면 Decimal(9, S) 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
+성공 시 Decimal(9, S) 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예시(Examples)**
+**예시**
 
-**사용 예시(Usage example)**
+**사용 예시**
 
 ```sql title=Query
 SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
@@ -4110,21 +4143,21 @@ SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
 
 도입 버전: v20.1
 
-입력값을 [Decimal(9, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
-[`toDecimal32`](#toDecimal32)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
+입력 값을 [Decimal(9, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toDecimal32`](#toDecimal32)와 같지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 해당 값의 문자열 표현.
-* Float* 타입의 값 또는 해당 값의 문자열 표현.
+* (U)Int* 타입 값 또는 해당 문자열 표현.
+* Float* 타입 값 또는 해당 문자열 표현.
 
 지원되지 않는 인수(`0` 반환):
 
-* Float* 값 `NaN` 및 `Inf`(대소문자 구분 없음) 또는 그 문자열 표현.
+* Float* 타입 값 `NaN`, `Inf` 또는 해당 문자열 표현(대소문자 구분 없음).
 * 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값이 `Decimal32`의 범위 `(-1*10^(9 - S), 1*10^(9 - S))`를 초과하면 함수는 `0`을 반환합니다.
+입력 값이 `Decimal32`의 범위 `(-1*10^(9 - S), 1*10^(9 - S))`를 벗어나면, 함수는 `0`을 반환합니다.
 :::
 
 **구문**
@@ -4133,14 +4166,14 @@ SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
 toDecimal32OrZero(expr, S)
 ```
 
-**인수**
+**인자**
 
-* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0에서 9 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수(소수점 이하 자리 수)를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 9 사이의 스케일 파라미터로, 숫자의 소수 부분이 가질 수 있는 자릿수(소수 자릿수)를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공 시 Decimal(9, S) 값을 반환하며, 실패 시 `0`을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(9, S) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Decimal32(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -4159,34 +4192,34 @@ SELECT toDecimal32OrZero('42.7', 2), toDecimal32OrZero('invalid', 2)
 
 ## toDecimal64 \{#toDecimal64\}
 
-도입 버전: v18.12
+도입된 버전: v18.12
 
-입력 값을 스케일 `S`를 가진 [`Decimal(18, S)`](../data-types/decimal.md) 형식의 값으로 변환합니다.
-오류가 발생하면 예외가 발생합니다.
+입력 값을 스케일이 `S`인 [`Decimal(18, S)`](../data-types/decimal.md) 타입의 값으로 변환합니다.
+오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 형식의 값 또는 해당 문자열 표현.
-* Float* 형식의 값 또는 해당 문자열 표현.
+* (U)Int* 타입의 값 또는 해당 문자열 표현.
+* Float* 타입의 값 또는 해당 문자열 표현.
 
 지원되지 않는 인수:
 
-* Float* 값 `NaN` 및 `Inf`(대소문자 구분 안 함) 또는 해당 문자열 표현.
+* Float* 값 `NaN` 및 `Inf`(대소문자 구분 없음)의 값 또는 문자열 표현.
 * 이진 및 16진수 값의 문자열 표현. 예: `SELECT toDecimal64('0xc0fe', 1);`.
 
 :::note
 `expr` 값이 `Decimal64`의 범위 `(-1*10^(18 - S), 1*10^(18 - S))`를 초과하면 오버플로가 발생할 수 있습니다.
-소수 부분의 너무 많은 자릿수는 버려집니다(반올림하지 않음).
-정수 부분의 너무 많은 자릿수는 예외를 발생시킵니다.
+소수 부분의 초과 자릿수는 버려지며(반올림되지 않음),
+정수 부분의 초과 자릿수는 예외를 발생시킵니다.
 :::
 
 :::warning
-변환 과정에서 추가 자릿수는 버려지며, 연산이 부동소수점 명령을 사용하여 수행되므로 Float32/Float64 입력을 사용할 때 예상과 다르게 동작할 수 있습니다.
-예를 들어 `toDecimal64(1.15, 2)` 의 결과는 `1.14`인데, 이는 부동소수점 연산에서 1.15 * 100 이 114.99가 되기 때문입니다.
-문자열 입력을 사용하면 연산에 기본 정수 형식을 사용할 수 있습니다: `toDecimal64('1.15', 2) = 1.15`
+변환 시 부동 소수점 명령어를 사용하여 연산하므로 Float32/Float64 입력을 사용할 때 초과 자릿수를 잘라내며, 이로 인해 예상과 다르게 동작할 수 있습니다.
+예를 들어 `toDecimal64(1.15, 2)`는 부동 소수점에서 1.15 * 100이 114.99가 되기 때문에 `1.14`와 같습니다.
+문자열 입력을 사용하면 내부 정수 타입을 사용하여 연산하게 할 수 있습니다: `toDecimal64('1.15', 2) = 1.15`
 :::
 
-**구문**
+**문법**
 
 ```sql
 toDecimal64(expr, S)
@@ -4194,16 +4227,16 @@ toDecimal64(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0 이상 18 이하의 정수 값으로, 숫자의 소수부가 가질 수 있는 자릿수(스케일)를 지정하는 매개변수. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 18 사이의 스케일 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수(숫자 개수)를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-10진수 값을 반환합니다. [`Decimal(18, S)`](/sql-reference/data-types/decimal)
+10진수(Decimal) 값을 반환합니다. [`Decimal(18, S)`](/sql-reference/data-types/decimal)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -4229,27 +4262,27 @@ type_c: Decimal(18, 3)
 
 도입 버전: v21.11
 
-[`toDecimal64`](#toDecimal64)와 마찬가지로 이 FUNCTION은 입력값을 [Decimal(18, S)](../data-types/decimal.md) 형식의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+[`toDecimal64`](#toDecimal64)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
 
-**구문**
+**문법**
 
 ```sql
 toDecimal64OrDefault(expr, S[, default])
 ```
 
-**인수**
+**인자**
 
-* `expr` — 숫자를 나타내는 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
-* `S` — 0에서 18 사이의 스케일 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
-* `default` — 선택 사항입니다. Decimal64(S) 타입으로 파싱하는 데 실패했을 때 반환할 기본값입니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
+* `expr` — 숫자를 문자열(String)로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `S` — 0에서 18 사이의 스케일 파라미터로, 숫자의 소수 부분이 가질 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `default` — 선택 사항입니다. Decimal64(S) 타입으로의 파싱이 실패했을 때 반환할 기본값입니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
 
 **반환 값**
 
-성공하면 Decimal(18, S) 타입의 값이며, 그렇지 않으면 기본값이 전달된 경우 해당 값을, 전달되지 않은 경우 0을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(18, S) 타입의 값을 반환하며, 실패하면 전달된 기본값이 있으면 그 값을, 없으면 0을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
 
-**예제**
+**예시**
 
-**성공적인 변환**
+**변환 성공 예시**
 
 ```sql title=Query
 SELECT toDecimal64OrDefault(toString(0.0001), 18)
@@ -4274,18 +4307,18 @@ SELECT toDecimal64OrDefault('Inf', 0, CAST('-1', 'Decimal64(0)'))
 
 도입 버전: v20.1
 
-입력 값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
-[`toDecimal64`](#toDecimal64)와 같지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+입력 값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toDecimal64`](#toDecimal64)와 유사하지만 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
-지원하는 인수:
+지원되는 인수:
 
-* 타입이 (U)Int*인 값 또는 해당 값의 문자열 표현.
-* 타입이 Float*인 값 또는 해당 값의 문자열 표현.
+* (U)Int* 타입의 값 또는 해당 문자열 표현.
+* Float* 타입의 값 또는 해당 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인수(`NULL`을 반환):
 
-* Float* 값 `NaN` 및 `Inf`의 문자열 표현(대소문자를 구분하지 않습니다).
-* 이진수 및 16진수 값의 문자열 표현.
+* Float* 값 `NaN` 및 `Inf`의 값 또는 해당 문자열 표현(대소문자를 구분하지 않음).
+* 2진수 및 16진수 값의 문자열 표현.
 * `Decimal64`의 범위를 초과하는 값: `(-1*10^(18 - S), 1*10^(18 - S))`.
 
 함께 보기:
@@ -4302,16 +4335,16 @@ toDecimal64OrNull(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0 이상 18 이하의 스케일(scale) 매개변수로, 숫자의 소수 부분에서 사용할 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0에서 18 사이의 스케일(scale) 매개변수로, 소수 부분의 자릿수 개수를 지정합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 Decimal(18, S) 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 Decimal(18, S) 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
@@ -4326,23 +4359,23 @@ SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
 
 ## toDecimal64OrZero \{#toDecimal64OrZero\}
 
-도입된 버전: v20.1
+도입 버전: v20.1
 
-입력 값을 [Decimal(18, S)](../data-types/decimal.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
-[`toDecimal64`](#toDecimal64)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
+입력값을 [Decimal(18, S)](../data-types/decimal.md) 타입 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toDecimal64`](#toDecimal64)와 유사하지만 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 그 문자열 표현.
-* Float* 타입의 값 또는 그 문자열 표현.
+* (U)Int* 타입 값 또는 그 문자열 표현.
+* Float* 타입 값 또는 그 문자열 표현.
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인수(다음 경우에는 `0` 반환):
 
-* Float* 값 `NaN` 및 `Inf`의 값 또는 그 문자열 표현(대소문자 구분 없음).
-* 이진 및 16진수 값의 문자열 표현.
+* Float* 값 `NaN` 및 `Inf`(대소문자 구분 없음) 또는 그러한 값의 문자열 표현.
+* 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값이 `Decimal64`의 경계 값 `(-1*10^(18 - S), 1*10^(18 - S))`를 벗어나면 함수는 `0`을 반환합니다.
+입력값이 `Decimal64`의 범위 `(-1*10^(18 - S), 1*10^(18 - S))`를 초과하는 경우 함수는 `0`을 반환합니다.
 :::
 
 함께 보기:
@@ -4351,7 +4384,7 @@ SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
 * [`toDecimal64OrNull`](#toDecimal64OrNull).
 * [`toDecimal64OrDefault`](#toDecimal64OrDefault).
 
-**구문**
+**문법**
 
 ```sql
 toDecimal64OrZero(expr, S)
@@ -4359,12 +4392,12 @@ toDecimal64OrZero(expr, S)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 0과 18 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분이 가질 수 있는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `S` — 0부터 18 사이의 스케일(scale) 매개변수로, 숫자의 소수 부분에서 허용되는 자릿수입니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공 시 Decimal(18, S) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
+성공하면 Decimal(18, S) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Decimal64(S)`](/sql-reference/data-types/decimal)
 
 **예시**
 
@@ -4383,13 +4416,13 @@ SELECT toDecimal64OrZero('42.7', 2), toDecimal64OrZero('invalid', 2)
 
 ## toDecimalString \{#toDecimalString\}
 
-도입된 버전: v23.3
+도입 버전: v23.3
 
-숫자 값을 지정된 소수 자릿수의 `String`으로 변환합니다.
+숫자 값을 지정된 소수 자릿수를 가진 String으로 변환합니다.
 
-이 FUNCTION은 입력값을 지정된 소수 자릿수로 반올림합니다. 입력값의 소수 자릿수가 요청된 자릿수보다 적으면, 결과가 지정된 소수 자릿수와 정확히 일치하도록 끝을 0으로 채웁니다.
+이 FUNCTION은 입력 값을 지정된 소수 자릿수로 반올림합니다. 입력 값의 소수 자릿수가 요청된 자릿수보다 적은 경우, 결과를 0으로 채워 지정된 소수 자릿수와 정확히 같아지도록 합니다.
 
-**Syntax**
+**구문**
 
 ```sql
 toDecimalString(number, scale)
@@ -4397,16 +4430,16 @@ toDecimalString(number, scale)
 
 **인수**
 
-* `number` — 문자열로 변환할 숫자 값입니다. Int, UInt, Float, Decimal 모든 숫자형 타입을 허용합니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
-* `scale` — 소수 부분에 표시할 자릿수입니다. 필요하면 결과가 반올림됩니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `number` — 문자열로 변환할 숫자 값입니다. Int, UInt, Float, Decimal 등 모든 숫자 타입을 사용할 수 있습니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
+* `scale` — 소수 부분에 표시할 자릿수입니다. 필요한 경우 결과가 반올림됩니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-정확히 지정된 개수의 소수 자릿수를 가진 숫자의 문자열(String) 표현을 반환합니다. [`String`](/sql-reference/data-types/string)
+정확히 지정된 개수의 소수 자릿수를 갖는 숫자의 String 표현을 반환합니다. [`String`](/sql-reference/data-types/string)
 
 **예시**
 
-**숫자를 반올림하고 형식 지정하기**
+**숫자 반올림 및 형식 지정**
 
 ```sql title=Query
 SELECT toDecimalString(2.1456, 2)
@@ -4418,7 +4451,7 @@ SELECT toDecimalString(2.1456, 2)
 └────────────────────────────┘
 ```
 
-**0으로 채우기**
+**0으로 패딩**
 
 ```sql title=Query
 SELECT toDecimalString(5, 3)
@@ -4430,7 +4463,7 @@ SELECT toDecimalString(5, 3)
 └───────────────────────┘
 ```
 
-**서로 다른 숫자형**
+**다양한 수치형 타입**
 
 ```sql title=Query
 SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
@@ -4446,11 +4479,11 @@ SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
 
 ## toFixedString \{#toFixedString\}
 
-도입 버전: v1.1
+도입: v1.1
 
-[`String`](/sql-reference/data-types/string) 인수를 [`FixedString(N)`](/sql-reference/data-types/fixedstring) 타입(길이가 N으로 고정된 문자열)으로 변환합니다.
+[`String`](/sql-reference/data-types/string) 인자를 [`FixedString(N)`](/sql-reference/data-types/fixedstring) 타입(길이가 N으로 고정된 문자열)으로 변환합니다.
 
-문자열의 바이트 수가 N보다 적으면 오른쪽에 널 바이트(null byte)로 패딩됩니다.
+문자열의 바이트 수가 N보다 적으면 오른쪽을 널(null) 바이트로 채웁니다.
 문자열의 바이트 수가 N보다 많으면 예외가 발생합니다.
 
 **구문**
@@ -4459,12 +4492,12 @@ SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
 toFixedString(s, N)
 ```
 
-**인수**
+**인자**
 
-* `s` — 변환할 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `N` — 결과로 생성될 `FixedString`의 길이입니다. [`const UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 변환할 문자열. [`String`](/sql-reference/data-types/string)
+* `N` — 결과로 생성되는 `FixedString`의 길이. [`const UInt*`](/sql-reference/data-types/int-uint)
 
-**반환 값**
+**반환값**
 
 길이가 N인 `FixedString`을 반환합니다. [`FixedString(N)`](/sql-reference/data-types/fixedstring)
 
@@ -4487,21 +4520,21 @@ SELECT toFixedString('foo', 8) AS s;
 
 도입 버전: v1.1
 
-입력 값을 [Float32](/sql-reference/data-types/float) 타입의 값으로 변환합니다.
+입력 값을 [Float32](/sql-reference/data-types/float) 타입 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값.
+* (U)Int* 타입 값.
 * (U)Int8/16/32/128/256의 문자열 표현.
-* `NaN` 및 `Inf`를 포함한 Float* 타입의 값.
-* `NaN` 및 `Inf`를 포함한 Float*의 문자열 표현(대소문자 구분 없음).
+* `NaN` 및 `Inf`를 포함한 Float* 타입 값.
+* 대소문자를 구분하지 않는 `NaN` 및 `Inf`를 포함한 Float*의 문자열 표현.
 
 지원되지 않는 인수:
 
-* `SELECT toFloat32('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `SELECT toFloat32('0xc0fe');`와 같은 이진수 및 16진수 값을 나타내는 문자열 표현.
 
-같이 보기:
+관련 항목:
 
 * [`toFloat32OrZero`](#toFloat32OrZero).
 * [`toFloat32OrNull`](#toFloat32OrNull).
@@ -4515,7 +4548,7 @@ toFloat32(expr)
 
 **인자**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -4546,8 +4579,8 @@ toFloat32('NaN'):  nan
 
 도입 버전: v21.11
 
-[`toFloat32`](#toFloat32)와 마찬가지로 이 함수는 입력값을 [Float32](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
-`default` 값이 전달되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
+[`toFloat32`](#toFloat32)와 마찬가지로, 이 함수는 입력값을 [Float32](../data-types/float.md) 타입 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
+`default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -4562,11 +4595,11 @@ toFloat32OrDefault(expr[, default])
 
 **반환 값**
 
-성공하면 `Float32` 타입의 값을 반환하고, 그렇지 않으면 기본값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`Float32`](/sql-reference/data-types/float)
+성공하면 `Float32` 타입의 값을 반환하고, 그렇지 않으면 전달된 기본값이 있으면 그 값을, 없으면 0을 반환합니다. [`Float32`](/sql-reference/data-types/float)
 
-**예제**
+**예시**
 
-**성공적인 변환**
+**변환 성공 예**
 
 ```sql title=Query
 SELECT toFloat32OrDefault('8', CAST('0', 'Float32'))
@@ -4576,7 +4609,7 @@ SELECT toFloat32OrDefault('8', CAST('0', 'Float32'))
 8
 ```
 
-**변환 실패**
+**형 변환 실패**
 
 ```sql title=Query
 SELECT toFloat32OrDefault('abc', CAST('0', 'Float32'))
@@ -4591,28 +4624,28 @@ SELECT toFloat32OrDefault('abc', CAST('0', 'Float32'))
 
 도입 버전: v1.1
 
-입력 값을 [Float32](../data-types/float.md) 타입 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
-[`toFloat32`](#toFloat32)와 같지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+입력 값을 [Float32](../data-types/float.md) 타입 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
+[`toFloat32`](#toFloat32)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
 
-지원되는 인자:
+지원되는 인수:
 
 * (U)Int* 타입 값.
 * (U)Int8/16/32/128/256의 문자열 표현.
 * `NaN` 및 `Inf`를 포함한 Float* 타입 값.
-* `NaN` 및 `Inf`를 포함한 Float*의 문자열 표현(대소문자를 구분하지 않음).
+* `NaN` 및 `Inf`를 포함한 Float*의 문자열 표현(대소문자 구분 없음).
 
-지원되지 않는 인자(`NULL` 반환):
+지원되지 않는 인수(`NULL` 반환):
 
-* `SELECT toFloat32OrNull('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
-* 잘못된 문자열 형식.
+* `SELECT toFloat32OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* 유효하지 않은 문자열 형식.
 
-함께 보기:
+관련 항목:
 
 * [`toFloat32`](#toFloat32).
 * [`toFloat32OrZero`](#toFloat32OrZero).
 * [`toFloat32OrDefault`](#toFloat32OrDefault).
 
-**문법**
+**구문**
 
 ```sql
 toFloat32OrNull(x)
@@ -4620,11 +4653,11 @@ toFloat32OrNull(x)
 
 **인자**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-성공하면 32비트 Float 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Float32`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 32비트 부동소수점 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Float32`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -4651,10 +4684,10 @@ toFloat32OrNull('abc'):  \N
 
 도입 버전: v1.1
 
-입력 값을 [Float32](../data-types/float.md) 타입의 값으로 변환합니다. 이때 오류가 발생하면 `0`을 반환합니다.
-[`toFloat32`](#toFloat32)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
+입력 값을 [Float32](../data-types/float.md) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
+[`toFloat32`](#toFloat32)와 비슷하지만, 변환 오류 발생 시 예외를 던지는 대신 `0`을 반환합니다.
 
-함께 보기:
+관련 항목:
 
 * [`toFloat32`](#toFloat32).
 * [`toFloat32OrNull`](#toFloat32OrNull).
@@ -4666,13 +4699,13 @@ toFloat32OrNull('abc'):  \N
 toFloat32OrZero(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공 시 32비트 부동소수점(Float) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Float32`](/sql-reference/data-types/float)
+성공하면 32비트 부동 소수점(Float) 값을 반환하고, 실패하면 `0`을 반환합니다. [`Float32`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -4698,26 +4731,26 @@ toFloat32OrZero('abc'):  0
 도입 버전: v1.1
 
 입력 값을 [`Float64`](../data-types/float.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외가 발생합니다.
+오류가 발생하면 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값
-* (U)Int8/16/32/128/256의 문자열 표현
-* `NaN` 및 `Inf`를 포함한 Float* 타입의 값
-* `NaN` 및 `Inf`를 포함한 Float* 타입의 문자열 표현(대소문자 구분 없음)
+* (U)Int* 타입의 값.
+* (U)Int8/16/32/128/256의 문자열 표현.
+* `NaN` 및 `Inf`를 포함한 Float* 타입의 값.
+* `NaN` 및 `Inf`를 포함한 Float* 타입의 문자열 표현(대소문자 구분 없음).
 
 지원되지 않는 인수:
 
-* `SELECT toFloat64('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현
+* `SELECT toFloat64('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
-추가 참고:
+관련 항목:
 
 * [`toFloat64OrZero`](#toFloat64OrZero).
 * [`toFloat64OrNull`](#toFloat64OrNull).
 * [`toFloat64OrDefault`](#toFloat64OrDefault).
 
-**Syntax**
+**구문**
 
 ```sql
 toFloat64(expr)
@@ -4725,11 +4758,11 @@ toFloat64(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
-64비트 부동소수점 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+64비트 부동 소수점 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
 **예제**
 
@@ -4754,29 +4787,29 @@ toFloat64('NaN'):  nan
 
 ## toFloat64OrDefault \{#toFloat64OrDefault\}
 
-도입 버전: v21.11
+도입된 버전: v21.11
 
-[`toFloat64`](#toFloat64)와 마찬가지로, 이 FUNCTION은 입력값을 [Float64](../data-types/float.md) 형식의 값으로 변환하지만 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
+[`toFloat64`](#toFloat64)와 같이, 이 함수는 입력값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+`default` 값을 전달하지 않으면, 오류 발생 시 `0`이 반환됩니다.
 
-**문법**
+**구문**
 
 ```sql
 toFloat64OrDefault(expr[, default])
 ```
 
-**인수**
+**인자**
 
-* `expr` — 숫자 또는 숫자 형태의 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Float64`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본 값입니다. [`Float64`](/sql-reference/data-types/float)
 
 **반환 값**
 
-변환에 성공하면 Float64 타입의 값을 반환하고, 그렇지 않으면 전달된 경우 기본값을, 전달되지 않은 경우 0을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+성공하면 Float64 타입의 값을 반환하며, 실패하면 전달된 기본 값이 있으면 그 값을, 없으면 0을 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
 **예시**
 
-**변환 성공 사례**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toFloat64OrDefault('8', CAST('0', 'Float64'))
@@ -4786,7 +4819,7 @@ SELECT toFloat64OrDefault('8', CAST('0', 'Float64'))
 8
 ```
 
-**변환 실패**
+**형 변환 실패**
 
 ```sql title=Query
 SELECT toFloat64OrDefault('abc', CAST('0', 'Float64'))
@@ -4799,21 +4832,21 @@ SELECT toFloat64OrDefault('abc', CAST('0', 'Float64'))
 
 ## toFloat64OrNull \{#toFloat64OrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-입력값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
-[`toFloat64`](#toFloat64)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+입력 값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toFloat64`](#toFloat64)와 동일하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int* 타입의 값.
 * (U)Int8/16/32/128/256의 문자열 표현.
 * `NaN` 및 `Inf`를 포함한 Float* 타입의 값.
-* `NaN` 및 `Inf`를 포함한 Float* 타입의 문자열 표현(대소문자를 구분하지 않음).
+* `NaN` 및 `Inf`를 포함한 Float* 타입의 문자열 표현(대소문자 구분 없음).
 
 지원되지 않는 인수(`NULL` 반환):
 
-* 이진 및 16진수 값의 문자열 표현(예: `SELECT toFloat64OrNull('0xc0fe');`).
+* 이진수 및 16진수 값의 문자열 표현(예: `SELECT toFloat64OrNull('0xc0fe');`).
 * 잘못된 문자열 형식.
 
 함께 보기:
@@ -4830,11 +4863,11 @@ toFloat64OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자의 문자열 표현. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 64비트 부동 소수점 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Float64`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
+변환에 성공하면 64비트 부동 소수점 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Float64`](/sql-reference/data-types/float) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -4861,8 +4894,8 @@ toFloat64OrNull('abc'):  \N
 
 도입 버전: v1.1
 
-입력 값을 [Float64](../data-types/float.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
-[`toFloat64`](#toFloat64)와 같지만, 변환 오류 시 예외를 발생시키는 대신 `0`을 반환합니다.
+입력 값을 [Float64](../data-types/float.md) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
+[`toFloat64`](#toFloat64)와 유사하지만, 변환 오류 시 예외를 던지는 대신 `0`을 반환합니다.
 
 함께 보기:
 
@@ -4876,17 +4909,17 @@ toFloat64OrNull('abc'):  \N
 toFloat64OrZero(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열 값. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 64비트 부동 소수점 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+성공하면 64비트 부동 소수점(Float) 값을 반환하고, 그렇지 않으면 `0`을 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -4907,9 +4940,9 @@ toFloat64OrZero('abc'):  0
 
 도입 버전: v1.1
 
-입력 값을 [Int128](/sql-reference/data-types/int-uint) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 던집니다.
-이 함수는 0을 향해 반올림하는 방식을 사용하므로, 숫자의 소수 자릿수를 잘라냅니다.
+입력 값을 [Int128](/sql-reference/data-types/int-uint) 타입 값으로 변환합니다.
+오류가 발생하면 예외를 발생시킵니다.
+이 함수는 0을 향한 반올림을 사용하므로 숫자의 소수 자릿수를 잘라냅니다.
 
 지원되는 인수:
 
@@ -4918,11 +4951,11 @@ toFloat64OrZero('abc'):  0
 
 지원되지 않는 인수:
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toInt128('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
+* `SELECT toInt128('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 Int128 범위 내에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력 값을 Int128의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -4938,9 +4971,9 @@ toFloat64OrZero('abc'):  0
 toInt128(expr)
 ```
 
-**인자**
+**인수**
 
-* `expr` — 숫자 값 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -4971,10 +5004,10 @@ toInt128('-128'): -128
 
 도입 버전: v21.11
 
-[`toInt128`](#toInt128)과 같이, 이 함수는 입력값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값이 전달되지 않으면 오류가 발생한 경우 `0`이 반환됩니다.
+[`toInt128`](#toInt128)과 마찬가지로, 이 FUNCTION은 입력값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값이 지정되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
-**문법**
+**구문**
 
 ```sql
 toInt128OrDefault(expr[, default])
@@ -4982,14 +5015,14 @@ toInt128OrDefault(expr[, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Int128`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 Int128 타입의 값을 반환하며, 실패한 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`Int128`](/sql-reference/data-types/int-uint)
+성공한 경우 Int128 타입의 값을 반환합니다. 실패한 경우 기본값이 전달되었다면 그 값을, 전달되지 않았다면 0을 반환합니다. [`Int128`](/sql-reference/data-types/int-uint)
 
-**예제**
+**예시**
 
 **성공적인 변환**
 
@@ -5016,19 +5049,19 @@ SELECT toInt128OrDefault('abc', CAST('-1', 'Int128'))
 
 도입 버전: v20.8
 
-[`toInt128`](#toInt128)과(와) 마찬가지로 이 FUNCTION은 입력값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toInt128`](#toInt128)과 마찬가지로 이 함수는 입력 값을 [Int128](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int*의 문자열 표현
+* (U)Int* 값의 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인수( `NULL` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현
-* `SELECT toInt128OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
+* `SELECT toInt128OrNull('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int128](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에서 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [Int128](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -5038,7 +5071,7 @@ SELECT toInt128OrDefault('abc', CAST('-1', 'Int128'))
 * [`toInt128OrZero`](#toInt128OrZero).
 * [`toInt128OrDefault`](#toInt128OrDefault).
 
-**Syntax**
+**구문**
 
 ```sql
 toInt128OrNull(x)
@@ -5046,7 +5079,7 @@ toInt128OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 String 형식으로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 문자열(String)로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -5075,8 +5108,8 @@ toInt128OrNull('abc'):  \N
 
 도입된 버전: v20.8
 
-입력 값을 [Int128](/sql-reference/data-types/int-uint) 데이터 타입으로 변환하지만 오류가 발생하는 경우 `0`을 반환합니다.
-[`toInt128`](#toInt128)와 유사하지만, 예외를 던지는 대신 `0`을 반환합니다.
+입력 값을 [Int128](/sql-reference/data-types/int-uint) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
+[`toInt128`](#toInt128)과 유사하지만 예외를 발생시키는 대신 `0`을 반환합니다.
 
 함께 보기:
 
@@ -5092,11 +5125,11 @@ toInt128OrZero(x)
 
 **인수**
 
-* `x` — 변환할 입력값입니다. 허용 타입: [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Float*`](/sql-reference/data-types/float), [`Decimal`](/sql-reference/data-types/decimal), [`(U)Int*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`DateTime`](/sql-reference/data-types/datetime)
+* `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환 값**
 
-변환된 입력값을 반환하며, 변환에 실패하면 `0`을 반환합니다. 반환 타입: [`Int128`](/sql-reference/data-types/int-uint)
+변환된 입력값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`Int128`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -5110,7 +5143,7 @@ SELECT toInt128OrZero('123')
 123
 ```
 
-**변환에 실패하면 0을 반환합니다**
+**변환 실패 시 0 반환**
 
 ```sql title=Query
 SELECT toInt128OrZero('abc')
@@ -5123,15 +5156,15 @@ SELECT toInt128OrZero('abc')
 
 ## toInt16 \{#toInt16\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-입력값을 [`Int16`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+입력 값을 [`Int16`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
+오류가 발생하는 경우 예외를 발생시킵니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 해당 문자열 표현.
-* Float* 타입의 값.
+* 타입이 (U)Int*인 값 또는 해당 문자열 표현.
+* 타입이 Float*인 값.
 
 지원되지 않는 인수:
 
@@ -5139,13 +5172,13 @@ SELECT toInt128OrZero('abc')
 * `SELECT toInt16('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int16](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [Int16](../data-types/int-uint.md)의 범위 안에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toInt16(32768) == -32768;`.
 :::
 
 :::note
-이 함수는 [0으로의 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하며, 이는 숫자의 소수 부분을 잘라낸다는 의미입니다.
+이 함수는 [0을 향한 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하며, 이는 숫자의 소수 자릿수를 잘라낸다는 의미입니다.
 :::
 
 함께 보기:
@@ -5160,17 +5193,17 @@ SELECT toInt128OrZero('abc')
 toInt16(expr)
 ```
 
-**인자**
+**인수**
 
 * `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**반환 값**
+**반환값**
 
 16비트 정수 값을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -5193,8 +5226,8 @@ toInt16('-16'):  -16
 
 도입 버전: v21.11
 
-[`toInt16`](#toInt16)과 마찬가지로 이 함수는 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생할 경우 기본값을 반환합니다.
-`default` 값이 지정되지 않은 경우, 오류가 발생하면 `0`이 반환됩니다.
+[`toInt16`](#toInt16)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값이 지정되지 않으면 오류 발생 시 `0`이 반환됩니다.
 
 **구문**
 
@@ -5202,18 +5235,18 @@ toInt16('-16'):  -16
 toInt16OrDefault(expr[, default])
 ```
 
-**인자**
+**인수**
 
 * `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `default` — 선택 사항입니다. 파싱에 실패한 경우 반환할 기본값입니다. [`Int16`](/sql-reference/data-types/int-uint)
+* `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Int16`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 Int16 타입의 값을 반환하고, 그렇지 않으면 기본값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint)
+성공하면 `Int16` 타입의 값을 반환하고, 실패하면 `default` 값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**변환 성공 예**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toInt16OrDefault('-16', CAST('-1', 'Int16'))
@@ -5238,23 +5271,23 @@ SELECT toInt16OrDefault('abc', CAST('-1', 'Int16'))
 
 도입된 버전: v1.1
 
-[`toInt16`](#toInt16)과 마찬가지로 이 FUNCTION은 입력 값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toInt16`](#toInt16)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int*의 문자열 표현
+* (U)Int*의 문자열 표현.
 
 지원되지 않는 인수(`NULL` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현
-* 이진수 및 16진수 값의 문자열 표현(예: `SELECT toInt16OrNull('0xc0fe');`)
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
+* `SELECT toInt16OrNull('0xc0fe');`와 같은 이진 및 16진 값의 문자열 표현.
 
 :::note
-입력 값을 [Int16](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
+입력값을 [Int16](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생할 수 있습니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-함께 보기:
+관련 항목:
 
 * [`toInt16`](#toInt16).
 * [`toInt16OrZero`](#toInt16OrZero).
@@ -5268,11 +5301,11 @@ toInt16OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 String 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`Int16` 타입의 값을 반환하며, 변환에 실패하면 `NULL`을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+`Int16` 타입의 값을 반환하며, 변환에 실패한 경우 `NULL`을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -5295,25 +5328,25 @@ toInt16OrNull('abc'): \N
 
 ## toInt16OrZero \{#toInt16OrZero\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-[`toInt16`](#toInt16)와 마찬가지로 이 FUNCTION은 입력 값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toInt16`](#toInt16)과(와) 마찬가지로 이 함수는 입력값을 [Int16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int*의 문자열 표현.
+* (U)Int* 값의 문자열 표현.
 
 지원되지 않는 인수(`0` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 2진수 및 16진수 값의 문자열 표현(예: `SELECT toInt16OrZero('0xc0fe');`).
+* 예: `SELECT toInt16OrZero('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [Int16](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에서 오버플로 또는 언더플로가 발생합니다.
-이 동작은 오류로 간주되지 않습니다.
+입력값이 [Int16](../data-types/int-uint.md) 범위로 표현될 수 없는 경우, 결과에서 오버플로 또는 언더플로가 발생합니다.
+이는 오류로 간주되지 않습니다.
 :::
 
-함께 보기:
+관련 항목:
 
 * [`toInt16`](#toInt16).
 * [`toInt16OrNull`](#toInt16OrNull).
@@ -5325,13 +5358,13 @@ toInt16OrNull('abc'): \N
 toInt16OrZero(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 String으로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-Int16 타입의 값을 반환하며, 변환이 실패한 경우 `0`을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint)
+Int16 타입의 값을 반환하며, 변환에 실패한 경우 `0`을 반환합니다. [`Int16`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -5354,24 +5387,24 @@ toInt16OrZero('abc'): 0
 
 ## toInt256 \{#toInt256\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-입력 값을 [Int256](/sql-reference/data-types/int-uint) 형식의 값으로 변환합니다.
+입력 값을 [Int256](/sql-reference/data-types/int-uint) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 발생시킵니다.
-이 함수는 0을 향한 반올림을 사용하므로, 숫자의 소수 자릿수를 절사합니다.
+이 함수는 0을 향한 반올림(절단)을 사용하여, 숫자의 소수 자릿수를 잘라냅니다.
 
 지원되는 인수:
 
-* 형식이 (U)Int*인 값 또는 해당 문자열 표현입니다.
-* 형식이 Float*인 값입니다.
+* (U)Int* 타입의 값 또는 해당 문자열 표현.
+* Float* 타입의 값.
 
 지원되지 않는 인수:
 
-* `NaN` 및 `Inf`를 포함하여, Float* 값의 문자열 표현입니다.
-* `SELECT toInt256('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현입니다.
+* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
+* `SELECT toInt256('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 Int256의 범위 내에서 표현할 수 없는 경우, 결과가 오버플로 또는 언더플로를 일으킵니다.
+입력 값을 Int256 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -5389,9 +5422,9 @@ toInt256(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**반환되는 값**
+**반환 값**
 
 256비트 정수 값을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
 
@@ -5420,8 +5453,8 @@ toInt256('-256'):   -256
 
 도입 버전: v21.11
 
-[`toInt256`](#toInt256)과 유사하게 이 FUNCTION은 입력 값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
-`default` 값이 전달되지 않으면 오류 발생 시 `0`이 반환됩니다.
+[`toInt256`](#toInt256)와 마찬가지로 이 함수는 입력값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 기본값을 반환합니다.
+`default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -5436,11 +5469,11 @@ toInt256OrDefault(expr[, default])
 
 **반환 값**
 
-성공 시 Int256 타입의 값을 반환하고, 실패한 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
+변환에 성공하면 Int256 타입의 값을 반환하고, 실패하면 전달된 경우 기본값을, 기본값이 없으면 0을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
 
 **예시**
 
-**변환 성공 예시**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toInt256OrDefault('-256', CAST('-1', 'Int256'))
@@ -5463,31 +5496,31 @@ SELECT toInt256OrDefault('abc', CAST('-1', 'Int256'))
 
 ## toInt256OrNull \{#toInt256OrNull\}
 
-도입 버전: v20.8
+도입된 버전: v20.8
 
-[`toInt256`](#toInt256)와 같이, 이 FUNCTION은 입력값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
+[`toInt256`](#toInt256)과(와) 마찬가지로, 이 함수는 입력 값을 [Int256](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
-* (U)Int*의 문자열 표현.
+* (U)Int* 값의 문자열 표현.
 
-지원되지 않는 인수(`NULL`을 반환):
+지원되지 않는 인자(`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 2진수 및 16진수 값의 문자열 표현. 예: `SELECT toInt256OrNull('0xc0fe');`.
+* `SELECT toInt256OrNull('0xc0fe');`와 같은 이진 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int256](../data-types/int-uint.md)의 범위 안에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력 값을 [Int256](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toInt256`](#toInt256).
 * [`toInt256OrZero`](#toInt256OrZero).
 * [`toInt256OrDefault`](#toInt256OrDefault).
 
-**구문**
+**Syntax**
 
 ```sql
 toInt256OrNull(x)
@@ -5495,11 +5528,11 @@ toInt256OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 String 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환이 성공하면 `Int256` 타입의 값을 반환하고, 실패하면 `NULL`을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 Int256 타입의 값을, 변환에 실패하면 `NULL`을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -5524,10 +5557,10 @@ toInt256OrNull('abc'):  \N
 
 도입 버전: v20.8
 
-입력값을 [Int256](/sql-reference/data-types/int-uint) 타입으로 변환하지만, 오류가 발생할 경우 `0`을 반환합니다.
-[`toInt256`](#toInt256)과 동일하지만, 예외를 발생시키는 대신 `0`을 반환합니다.
+입력 값을 [Int256](/sql-reference/data-types/int-uint) 타입으로 변환하되, 오류가 발생하면 `0`을 반환합니다.
+[`toInt256`](#toInt256)과 동일하지만 예외를 발생시키는 대신 `0`을 반환합니다.
 
-관련 항목:
+함께 보기:
 
 * [`toInt256`](#toInt256).
 * [`toInt256OrNull`](#toInt256OrNull).
@@ -5539,13 +5572,13 @@ toInt256OrNull('abc'):  \N
 toInt256OrZero(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 변환할 입력값. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
+* `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환값**
 
-변환된 입력값을 반환하고, 변환에 실패하면 `0`을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
+변환된 입력값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`Int256`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -5574,27 +5607,27 @@ SELECT toInt256OrZero('abc')
 
 도입 버전: v1.1
 
-입력 값을 [`Int32`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+입력값을 [`Int32`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
+오류가 발생하면 예외를 던집니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 그 문자열 표현.
+* (U)Int* 타입의 값 또는 문자열 표현.
 * Float* 타입의 값.
 
 지원되지 않는 인수:
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
+* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
 * `SELECT toInt32('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [Int32](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과가 오버플로 또는 언더플로됩니다.
+입력값을 [Int32](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과가 오버플로나 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toInt32(2147483648) == -2147483648;`
 :::
 
 :::note
-이 함수는 [0을 향한 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로 숫자의 소수 자릿수를 잘라냅니다.
+이 함수는 [0을 향한 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하며, 이는 숫자의 소수 자릿수를 잘라낸다는 의미입니다.
 :::
 
 함께 보기:
@@ -5613,13 +5646,13 @@ toInt32(expr)
 
 * `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**반환값**
+**반환 값**
 
 32비트 정수 값을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -5642,8 +5675,8 @@ toInt32('-32'):  -32
 
 도입 버전: v21.11
 
-[`toInt32`](#toInt32)와 마찬가지로, 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 형식의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
-`default` 값이 지정되지 않은 경우, 오류 발생 시 `0`이 반환됩니다.
+[`toInt32`](#toInt32)와 마찬가지로, 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+`default` 값이 지정되지 않으면, 오류가 발생할 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -5651,14 +5684,14 @@ toInt32('-32'):  -32
 toInt32OrDefault(expr[, default])
 ```
 
-**인자**
+**인수**
 
-* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Int32`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 Int32 타입의 값을 반환하며, 실패한 경우 인자로 기본값이 전달되었으면 해당 기본값을, 전달되지 않았으면 0을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint)
+성공한 경우 Int32 타입의 값을 반환하며, 그렇지 않은 경우 `default` 값이 전달되었다면 해당 값을, 전달되지 않았다면 0을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -5685,25 +5718,25 @@ SELECT toInt32OrDefault('abc', CAST('-1', 'Int32'))
 
 ## toInt32OrNull \{#toInt32OrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-[`toInt32`](#toInt32)와 마찬가지로 이 FUNCTION은 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생할 경우 `NULL`을 반환합니다.
+[`toInt32`](#toInt32)와 같이 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int*의 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인수 (`NULL`을 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 예: `SELECT toInt32OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* 예를 들어 `SELECT toInt32OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int32](../data-types/int-uint.md) 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
+입력값을 [Int32](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toInt32`](#toInt32).
 * [`toInt32OrZero`](#toInt32OrZero).
@@ -5717,11 +5750,11 @@ toInt32OrNull(x)
 
 **인자**
 
-* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 String 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환이 성공하면 Int32 타입의 값을, 실패하면 `NULL`을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+Int32 타입의 값을 반환하며, 변환에 실패한 경우에는 `NULL`을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -5746,7 +5779,7 @@ toInt32OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toInt32`](#toInt32)와 마찬가지로 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
+[`toInt32`](#toInt32)와 마찬가지로, 이 함수는 입력값을 [Int32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
@@ -5755,20 +5788,20 @@ toInt32OrNull('abc'): \N
 지원되지 않는 인수(`0` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toInt32OrZero('0xc0fe');`.
+* `SELECT toInt32OrZero('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int32](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
+입력값을 [Int32](../data-types/int-uint.md)의 범위 안에서 표현할 수 없는 경우, 결과에서 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toInt32`](#toInt32).
 * [`toInt32OrNull`](#toInt32OrNull).
 * [`toInt32OrDefault`](#toInt32OrDefault).
 
-**구문**
+**Syntax**
 
 ```sql
 toInt32OrZero(x)
@@ -5776,11 +5809,11 @@ toInt32OrZero(x)
 
 **인자**
 
-* `x` — 숫자를 나타내는 String 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-Int32 타입의 값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint)
+변환에 성공하면 Int32 타입의 값을 반환하고, 실패하면 `0`을 반환합니다. [`Int32`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -5805,27 +5838,27 @@ toInt32OrZero('abc'): 0
 
 도입 버전: v1.1
 
-입력 값을 [`Int64`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+입력 값을 [`Int64`](../data-types/int-uint.md) 타입 값으로 변환합니다.
+오류가 발생하면 예외를 던집니다.
 
-지원되는 인수:
+지원하는 인자:
 
-* (U)Int* 타입의 값 또는 해당 문자열 표현.
+* (U)Int* 타입의 값 또는 해당 값의 문자열 표현.
 * Float* 타입의 값.
 
-지원되지 않는 인수:
+지원하지 않는 인자:
 
-* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
 * `SELECT toInt64('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [Int64](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [Int64](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
-예를 들어: `SELECT toInt64(9223372036854775808) == -9223372036854775808;`
+예: `SELECT toInt64(9223372036854775808) == -9223372036854775808;`
 :::
 
 :::note
-이 함수는 [0 방향으로 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 잘라냅니다.
+이 함수는 [0 방향으로 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하며, 이는 숫자의 소수 자릿수를 잘라낸다는 의미입니다.
 :::
 
 함께 보기:
@@ -5840,9 +5873,9 @@ toInt32OrZero('abc'): 0
 toInt64(expr)
 ```
 
-**인자**
+**인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. 지원되는 입력: 타입이 (U)Int*인 값 및 해당 값의 문자열 표현, 타입이 Float*인 값. 지원되지 않는 입력: NaN 및 Inf를 포함한 Float* 값의 문자열 표현, 2진수 및 16진수 값의 문자열 표현. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. 지원: (U)Int* 형식의 값 및 해당 문자열 표현, Float* 형식의 값. 지원되지 않음: NaN 및 Inf를 포함한 Float* 값의 문자열 표현, 2진수 및 16진수 값의 문자열 표현. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -5873,8 +5906,8 @@ toInt64('-64'):  -64
 
 도입 버전: v21.11
 
-[`toInt64`](#toInt64)와 같이, 이 FUNCTION은 입력 값을 [Int64](../data-types/int-uint.md) 유형의 값으로 변환하지만 오류가 발생하는 경우 기본값을 반환합니다.
-`default` 값이 지정되지 않으면 오류가 발생할 때 `0`이 반환됩니다.
+[`toInt64`](#toInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [Int64](../data-types/int-uint.md) 타입 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값이 지정되지 않으면 오류 발생 시 `0`이 반환됩니다.
 
 **구문**
 
@@ -5882,18 +5915,18 @@ toInt64('-64'):  -64
 toInt64OrDefault(expr[, default])
 ```
 
-**인자**
+**인수(Arguments)**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 결과로 내는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Int64`](/sql-reference/data-types/int-uint)
 
-**반환 값**
+**반환 값(Returned value)**
 
-성공하면 `Int64` 타입의 값을 반환합니다. 실패하면 기본값이 전달된 경우 해당 값을, 그렇지 않으면 0을 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
+성공하면 Int64 타입의 값을 반환하고, 그렇지 않은 경우 전달된 기본값이 있으면 그 값을, 없으면 0을 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예시(Examples)**
 
-**변환 성공**
+**성공적인 변환(Successful conversion)**
 
 ```sql title=Query
 SELECT toInt64OrDefault('-64', CAST('-1', 'Int64'))
@@ -5916,9 +5949,9 @@ SELECT toInt64OrDefault('abc', CAST('-1', 'Int64'))
 
 ## toInt64OrNull \{#toInt64OrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-[`toInt64`](#toInt64)와 마찬가지로 이 함수는 입력값을 [Int64](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toInt64`](#toInt64)와 마찬가지로 이 FUNCTION은 입력 값을 [Int64](../data-types/int-uint.md) 타입의 값으로 변환하되, 오류가 발생한 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
@@ -5930,8 +5963,8 @@ SELECT toInt64OrDefault('abc', CAST('-1', 'Int64'))
 * `SELECT toInt64OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [Int64](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
-이는 오류로 처리되지 않습니다.
+입력 값을 [Int64](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
+이는 오류로 간주되지 않습니다.
 :::
 
 함께 보기:
@@ -5948,7 +5981,7 @@ toInt64OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 표현하는 String 형식입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -5975,10 +6008,10 @@ toInt64OrNull('abc'): \N
 
 ## toInt64OrZero \{#toInt64OrZero\}
 
-도입: v1.1
+도입 버전: v1.1
 
-입력 값을 [Int64](/sql-reference/data-types/int-uint) 타입으로 변환합니다. 이때 오류가 발생하면 `0`을 반환합니다.
-[`toInt64`](#toInt64)와 유사하지만, 예외를 발생시키는 대신 `0`을 반환합니다.
+입력 값을 [Int64](/sql-reference/data-types/int-uint) 타입으로 변환하지만, 오류가 발생하면 `0`을 반환합니다.
+[`toInt64`](#toInt64)와 동일하지만, 예외를 발생시키는 대신 `0`을 반환합니다.
 
 함께 보기:
 
@@ -5992,13 +6025,13 @@ toInt64OrNull('abc'): \N
 toInt64OrZero(x)
 ```
 
-**인수**
+**인자**
 
 * `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime)
 
 **반환 값**
 
-변환된 입력값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
+변환된 입력값을 반환하고, 변환에 실패하면 `0`을 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6012,7 +6045,7 @@ SELECT toInt64OrZero('123')
 123
 ```
 
-**실패한 변환은 0을 반환합니다**
+**변환 실패 시 0을 반환합니다**
 
 ```sql title=Query
 SELECT toInt64OrZero('abc')
@@ -6027,30 +6060,30 @@ SELECT toInt64OrZero('abc')
 
 도입 버전: v1.1
 
-입력 값을 [`Int8`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+입력값을 [`Int8`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
+오류가 발생하면 예외를 던집니다.
 
 지원되는 인수:
 
-* 타입이 (U)Int*인 값 또는 해당 문자열 표현.
-* 타입이 Float*인 값.
+* (U)Int* 타입 값 또는 해당 값의 문자열 표현.
+* Float* 타입 값.
 
 지원되지 않는 인수:
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toInt8('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toInt8('0xc0fe');`.
 
 :::note
-입력 값을 [Int8](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에서 오버플로 또는 언더플로가 발생합니다.
+입력값을 [Int8](../data-types/int-uint.md) 범위 내에서 표현할 수 없는 경우, 결과에 오버플로(overflow) 또는 언더플로(underflow)가 발생합니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toInt8(128) == -128;`.
 :::
 
 :::note
-이 함수는 [0 방향 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 잘라냅니다.
+이 함수는 [0 쪽으로의 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 잘라냅니다.
 :::
 
-함께 참고:
+함께 보기:
 
 * [`toInt8OrZero`](#toInt8OrZero).
 * [`toInt8OrNull`](#toInt8OrNull).
@@ -6064,7 +6097,7 @@ toInt8(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 결과로 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -6093,10 +6126,10 @@ toInt8('-8'): -8
 
 ## toInt8OrDefault \{#toInt8OrDefault\}
 
-도입 버전: v21.11
+도입: v21.11
 
-[`toInt8`](#toInt8)와 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값을 인수로 전달하지 않으면, 오류가 발생했을 때 `0`이 반환됩니다.
+[`toInt8`](#toInt8)과 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -6106,16 +6139,16 @@ toInt8OrDefault(expr[, default])
 
 **인자**
 
-* `expr` — 숫자 또는 숫자 형식의 문자열을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`Int8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 Int8 타입의 값을 반환하고, 실패한 경우에는 전달된 기본값이 있으면 그 값을, 없으면 0을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
+성공한 경우 Int8 타입의 값을 반환하고, 그렇지 않은 경우 전달된 기본값을 반환하며, 기본값이 없으면 0을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
-**변환 성공 예시**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toInt8OrDefault('-8', CAST('-1', 'Int8'))
@@ -6125,7 +6158,7 @@ SELECT toInt8OrDefault('-8', CAST('-1', 'Int8'))
 -8
 ```
 
-**변환 실패**
+**형 변환 실패**
 
 ```sql title=Query
 SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
@@ -6140,7 +6173,7 @@ SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
 
 도입 버전: v1.1
 
-[`toInt8`](#toInt8)와 마찬가지로, 이 FUNCTION은 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
+[`toInt8`](#toInt8)와 마찬가지로 이 함수는 입력 값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
@@ -6149,10 +6182,10 @@ SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
 지원되지 않는 인수(`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toInt8OrNull('0xc0fe');`.
+* 이진 및 16진 값의 문자열 표현(예: `SELECT toInt8OrNull('0xc0fe');`).
 
 :::note
-입력값을 [Int8](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [Int8](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -6170,11 +6203,11 @@ toInt8OrNull(x)
 
 **인자**
 
-* `x` — 숫자를 나타내는 String 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환에 성공하면 `Int8` 타입의 값을, 실패하면 `NULL`을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+변환이 성공하면 `Int8` 타입의 값을, 실패하면 `NULL`을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -6197,9 +6230,9 @@ toInt8OrNull('abc'): \N
 
 ## toInt8OrZero \{#toInt8OrZero\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-[`toInt8`](#toInt8)와 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toInt8`](#toInt8)과(와) 마찬가지로, 이 함수는 입력값을 [Int8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
@@ -6215,7 +6248,7 @@ toInt8OrNull('abc'): \N
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toInt8`](#toInt8).
 * [`toInt8OrNull`](#toInt8OrNull).
@@ -6229,11 +6262,11 @@ toInt8OrZero(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 `String` 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`Int8` 타입의 값을 반환하며, 변환에 실패한 경우 `0`을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
+성공 시 Int8 타입의 값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`Int8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6258,13 +6291,13 @@ toInt8OrZero('abc'): 0
 
 도입 버전: v25.4
 
-숫자 값과 단위 문자열로부터 Interval 값을 생성합니다.
+숫자 값과 단위 문자열을 사용하여 Interval 값을 생성합니다.
 
-이 함수는 단위를 문자열 인수로 지정하여 서로 다른 유형의 기간(초, 분, 시간, 일, 주, 월, 분기, 년)을
-하나의 함수로 일원화하여 생성할 수 있도록 합니다. 단위 문자열은 대소문자를 구분하지 않습니다.
+이 함수는 단위를 문자열 인자로 지정하여, 서로 다른 타입의 Interval(초, 분, 시, 일, 주, 월, 분기, 연)을
+하나의 함수로 생성할 수 있는 통합된 방식을 제공합니다. 단위 문자열은 대소문자를 구분하지 않습니다.
 
-이는 `toIntervalSecond`, `toIntervalMinute`, `toIntervalDay` 등의 타입별 함수를 호출하는 것과 동일하지만,
-단위를 문자열 매개변수로 동적으로 지정할 수 있습니다.
+이는 `toIntervalSecond`, `toIntervalMinute`, `toIntervalDay` 등과 같은 타입별 함수를 호출하는 것과 동일하지만,
+단위를 문자열 매개변수로 동적으로 지정할 수 있도록 합니다.
 
 **구문**
 
@@ -6274,16 +6307,16 @@ toInterval(value, unit)
 
 **인수**
 
-* `value` — 단위의 개수를 나타내는 숫자 값입니다. 임의의 숫자형 데이터일 수 있습니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float)
-* `unit` — 시간 단위입니다. 상수 문자열이어야 합니다. 유효한 값: &#39;nanosecond&#39;, &#39;microsecond&#39;, &#39;millisecond&#39;, &#39;second&#39;, &#39;minute&#39;, &#39;hour&#39;, &#39;day&#39;, &#39;week&#39;, &#39;month&#39;, &#39;quarter&#39;, &#39;year&#39;. [`String`](/sql-reference/data-types/string)
+* `value` — 단위의 개수를 나타내는 숫자 값입니다. 모든 숫자형 데이터 타입을 사용할 수 있습니다. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float)
+* `unit` — 시간 단위입니다. 반드시 상수 문자열이어야 합니다. 유효한 값: &#39;nanosecond&#39;, &#39;microsecond&#39;, &#39;millisecond&#39;, &#39;second&#39;, &#39;minute&#39;, &#39;hour&#39;, &#39;day&#39;, &#39;week&#39;, &#39;month&#39;, &#39;quarter&#39;, &#39;year&#39;. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-지정된 유형의 Interval 값을 반환합니다. 결과 유형은 단위에 따라 IntervalNanosecond, IntervalMicrosecond, IntervalMillisecond, IntervalSecond, IntervalMinute, IntervalHour, IntervalDay, IntervalWeek, IntervalMonth, IntervalQuarter, IntervalYear 중 하나가 됩니다. [`Interval`](/sql-reference/data-types/int-uint)
+지정된 타입의 Interval 값을 반환합니다. 결과 타입은 단위에 따라 달라지며 IntervalNanosecond, IntervalMicrosecond, IntervalMillisecond, IntervalSecond, IntervalMinute, IntervalHour, IntervalDay, IntervalWeek, IntervalMonth, IntervalQuarter, IntervalYear 중 하나입니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
-**서로 다른 단위를 사용하여 Interval 생성**
+**서로 다른 단위를 사용해 Interval 생성하기**
 
 ```sql title=Query
 SELECT
@@ -6313,7 +6346,7 @@ SELECT
 └──────────────────────┴─────────────────────┴─────────────────────┘
 ```
 
-**동적 인터벌 생성**
+**동적 간격 생성**
 
 ```sql title=Query
 SELECT toDate('2025-01-01') + toInterval(number, 'day') AS dates
@@ -6333,9 +6366,9 @@ FROM numbers(5)
 
 ## toIntervalDay \{#toIntervalDay\}
 
-도입: v1.1
+도입 버전: v1.1
 
-[`IntervalDay`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`일 간격(interval)을 반환합니다.
+[`IntervalDay`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`일 간격 값을 반환합니다.
 
 **구문**
 
@@ -6343,17 +6376,17 @@ FROM numbers(5)
 toIntervalDay(n)
 ```
 
-**인수**
+**인수(Arguments)**
 
-* `n` — 일 수. 정수, 해당 정수의 문자열 표현 또는 부동 소수점 수입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 일 수. 정수 또는 해당 정수의 문자열 표현, 그리고 부동 소수점 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
-`n`일 간격(interval)을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`일의 interval(기간)을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 WITH
@@ -6371,9 +6404,9 @@ SELECT date + interval_to_days AS result
 
 ## toIntervalHour \{#toIntervalHour\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-데이터 타입 [`IntervalHour`](../data-types/special-data-types/interval.md)의 `n`시간 길이 구간(interval)을 반환합니다.
+[`IntervalHour`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`시간 간격(interval)을 반환합니다.
 
 **구문**
 
@@ -6383,15 +6416,15 @@ toIntervalHour(n)
 
 **인수**
 
-* `n` — 시간 수. 정수 또는 해당 값의 문자열 표현, 그리고 부동 소수점 수입니다. [`Int*`](/sql-reference/data-types/int-uint) 또는 [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 시간 수. 정수 또는 해당 값을 나타내는 문자열, 그리고 부동 소수점 수. [`Int*`](/sql-reference/data-types/int-uint) 또는 [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n`시간의 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n` 시간의 간격(interval)을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 WITH
@@ -6411,7 +6444,7 @@ SELECT date + interval_to_hours AS result
 
 도입 버전: v22.6
 
-데이터 타입 [`IntervalMicrosecond`](../../sql-reference/data-types/special-data-types/interval.md)의 `n` 마이크로초 길이 간격(interval)을 반환합니다.
+[`IntervalMicrosecond`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n` 마이크로초 길이 interval을 반환합니다.
 
 **구문**
 
@@ -6419,17 +6452,17 @@ SELECT date + interval_to_hours AS result
 toIntervalMicrosecond(n)
 ```
 
-**인수(Arguments)**
+**인수**
 
 * `n` — 마이크로초(microseconds) 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n` 마이크로초에 해당하는 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n` 마이크로초에 해당하는 `Interval` 값을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
-**예시(Examples)**
+**예시**
 
-**사용 예시(Usage example)**
+**사용 예시**
 
 ```sql title=Query
 WITH
@@ -6449,9 +6482,9 @@ SELECT date + interval_to_microseconds AS result
 
 도입 버전: v22.6
 
-`n` 밀리초 길이의 [IntervalMillisecond](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입 interval을 반환합니다.
+데이터 타입 [IntervalMillisecond](../../sql-reference/data-types/special-data-types/interval.md)의 `n`밀리초 간격(interval)을 반환합니다.
 
-**문법**
+**구문**
 
 ```sql
 toIntervalMillisecond(n)
@@ -6459,11 +6492,11 @@ toIntervalMillisecond(n)
 
 **인자**
 
-* `n` — 밀리초 단위의 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 밀리초 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n` 밀리초 구간을 나타내는 [`Interval`](/sql-reference/data-types/int-uint) 값을 반환합니다.
+`n` 밀리초 길이의 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6487,7 +6520,7 @@ SELECT date + interval_to_milliseconds AS result
 
 도입 버전: v1.1
 
-데이터 타입 [`IntervalMinute`](../data-types/special-data-types/interval.md)을(를) 갖는 `n`분 간격을 반환합니다.
+[`IntervalMinute`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`분 길이 인터벌 값을 반환합니다.
 
 **문법**
 
@@ -6497,11 +6530,11 @@ toIntervalMinute(n)
 
 **인수**
 
-* `n` — 분(minute) 수. 정수, 그에 해당하는 문자열 표현, 또는 부동 소수점 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 분 단위 수입니다. 정수, 해당 정수의 문자열 표현, 또는 부동 소수점 수를 사용할 수 있습니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n`분 길이의 `Interval` 값을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`분의 Interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6525,7 +6558,7 @@ SELECT date + interval_to_minutes AS result
 
 도입 버전: v1.1
 
-데이터 타입 [`IntervalMonth`](../../sql-reference/data-types/special-data-types/interval.md)의 `n`개월 길이 interval을 반환합니다.
+[`IntervalMonth`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`개월 간격(interval)을 반환합니다.
 
 **구문**
 
@@ -6535,11 +6568,11 @@ toIntervalMonth(n)
 
 **인수**
 
-* `n` — 개월 수를 나타냅니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 개월 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n`개월의 `Interval`을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`개월에 해당하는 `Interval`을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6563,9 +6596,9 @@ SELECT date + interval_to_month AS result
 
 도입된 버전: v22.6
 
-[`IntervalNanosecond`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n` 나노초 간격(interval)을 반환합니다.
+데이터 타입 [`IntervalNanosecond`](../../sql-reference/data-types/special-data-types/interval.md)의 `n` 나노초 길이 구간(interval)을 반환합니다.
 
-**구문**
+**문법**
 
 ```sql
 toIntervalNanosecond(n)
@@ -6573,11 +6606,11 @@ toIntervalNanosecond(n)
 
 **인수**
 
-* `n` — 나노초 단위의 개수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 나노초 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n` 나노초의 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n` 나노초 길이의 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6601,7 +6634,7 @@ SELECT date + interval_to_nanoseconds AS result
 
 도입된 버전: v1.1
 
-[`IntervalQuarter`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`개 분기 구간(interval)을 반환합니다.
+데이터 타입 [`IntervalQuarter`](../../sql-reference/data-types/special-data-types/interval.md)의 `n`분기 간격(interval)을 반환합니다.
 
 **구문**
 
@@ -6617,9 +6650,9 @@ toIntervalQuarter(n)
 
 `n`개의 분기로 구성된 Interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 WITH
@@ -6639,7 +6672,7 @@ SELECT date + interval_to_quarter AS result
 
 도입 버전: v1.1
 
-데이터 타입 [`IntervalSecond`](../data-types/special-data-types/interval.md)의 `n`초 길이 간격을 반환합니다.
+[`IntervalSecond`](../data-types/special-data-types/interval.md) 데이터 타입의 `n`초 길이 간격(interval)을 반환합니다.
 
 **구문**
 
@@ -6649,11 +6682,11 @@ toIntervalSecond(n)
 
 **인수**
 
-* `n` — 초 단위 값입니다. 정수 또는 그 값의 문자열 표현, 그리고 부동 소수점 숫자를 허용합니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 초 단위 값. 정수형 숫자 또는 그에 대한 문자열 표현, 그리고 부동 소수점 숫자. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
-`n`초 길이의 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`초에 해당하는 Interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6677,7 +6710,7 @@ SELECT date + interval_to_seconds AS result
 
 도입된 버전: v1.1
 
-[`IntervalWeek`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`주의 간격을 반환합니다.
+데이터 타입 [`IntervalWeek`](../../sql-reference/data-types/special-data-types/interval.md)의 `n`주 구간(interval)을 반환합니다.
 
 **구문**
 
@@ -6687,11 +6720,11 @@ toIntervalWeek(n)
 
 **인수**
 
-* `n` — 주(week) 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 주 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n`주에 해당하는 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`주에 해당하는 Interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6715,7 +6748,7 @@ SELECT date + interval_to_week AS result
 
 도입 버전: v1.1
 
-[`IntervalYear`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`년 interval 값을 반환합니다.
+[`IntervalYear`](../../sql-reference/data-types/special-data-types/interval.md) 데이터 타입의 `n`년 기간(interval)을 반환합니다.
 
 **구문**
 
@@ -6723,13 +6756,13 @@ SELECT date + interval_to_week AS result
 toIntervalYear(n)
 ```
 
-**인수**
+**인자**
 
-* `n` — 연수(년 수). [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
+* `n` — 년 수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`n`년에 해당하는 간격을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
+`n`년을 나타내는 interval을 반환합니다. [`Interval`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -6751,12 +6784,12 @@ SELECT date + interval_to_year AS result
 
 ## toLowCardinality \{#toLowCardinality\}
 
-도입된 버전: v18.12
+도입 버전: v18.12
 
 입력 인수를 동일한 데이터 타입의 [LowCardinality](../data-types/lowcardinality.md) 버전으로 변환합니다.
 
 :::tip
-`LowCardinality` 데이터 타입에서 일반 데이터 타입으로 변환하려면 [CAST](#CAST) FUNCTION을 사용하십시오.
+`LowCardinality` 데이터 타입을 일반 데이터 타입으로 변환하려면 [CAST](#CAST) FUNCTION을 사용하십시오.
 예: `CAST(x AS String)`.
 :::
 
@@ -6768,11 +6801,11 @@ toLowCardinality(expr)
 
 **인수**
 
-* `expr` — 지원되는 데이터 타입 중 하나의 값을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 지원되는 데이터 타입 중 하나의 값을 결과로 생성하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
-**반환 값**
+**반환값**
 
-입력 값을 `LowCardinality` 데이터 타입으로 변환하여 반환합니다. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+입력값을 `LowCardinality` 데이터 타입으로 변환하여 반환합니다. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
 **예시**
 
@@ -6793,8 +6826,8 @@ SELECT toLowCardinality('1')
 
 도입 버전: v1.1
 
-값을 문자열 형태로 변환합니다.
-DateTime 인수인 경우, 함수는 시간대 이름을 지정하는 두 번째 String 인수를 받을 수 있습니다.
+값을 문자열 표현으로 변환합니다.
+DateTime 인자를 사용하는 경우, 이 함수는 두 번째 인자로 시간대 이름을 포함하는 String 인자를 받을 수 있습니다.
 
 **구문**
 
@@ -6802,14 +6835,14 @@ DateTime 인수인 경우, 함수는 시간대 이름을 지정하는 두 번째
 toString(value[, timezone])
 ```
 
-**인자**
+**인수**
 
 * `value` — 문자열로 변환할 값. [`Any`](/sql-reference/data-types)
-* `timezone` — 선택적 인자입니다. DateTime 변환에 사용할 타임존 이름입니다. [`String`](/sql-reference/data-types/string)
+* `timezone` — 선택 사항. DateTime 변환에 사용할 타임존 이름. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-입력값의 문자열 표현을 반환합니다. [`String`](/sql-reference/data-types/string)
+입력 값을 문자열 표현으로 반환합니다. [`String`](/sql-reference/data-types/string)
 
 **예시**
 
@@ -6840,28 +6873,28 @@ LIMIT 10
 
 도입 버전: v1.1
 
-[String](/sql-reference/data-types/string) 또는 [FixedString](/sql-reference/data-types/fixedstring) 인수를 받아, 첫 번째 널 바이트에서 잘라진 원본 문자열의 복사본인 String을 반환합니다.
+[String](/sql-reference/data-types/string) 또는 [FixedString](/sql-reference/data-types/fixedstring) 인수를 받아, 첫 번째 null 바이트에서 원본 문자열을 잘라 복사한 String을 반환합니다.
 
-널 바이트(\0)는 문자열 종료 문자로 간주됩니다.
-이 FUNCTION은 널 바이트가 의미 있는 내용의 끝을 나타내는 C 스타일 문자열이나 이진 데이터를 처리할 때 유용합니다.
+null 바이트(\0)는 문자열 종료 문자로 간주됩니다.
+이 함수는 null 바이트가 의미 있는 내용의 끝을 표시하는 C 스타일의 문자열 또는 이진 데이터를 처리할 때 유용합니다.
 
-**문법**
+**구문**
 
 ```sql
 toStringCutToZero(s)
 ```
 
-**인수**
+**인수(Arguments)**
 
-* `s` — 처리할 String 또는 FixedString. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `s` — 처리할 대상인 String 또는 FixedString 값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
-**반환 값**
+**반환 값(Returned value)**
 
-첫 번째 null 바이트 이전의 문자로 구성된 String을 반환합니다. [`String`](/sql-reference/data-types/string)
+첫 번째 null 바이트 앞까지의 문자만 포함하는 String 값을 반환합니다. [`String`](/sql-reference/data-types/string)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 SELECT
@@ -6878,10 +6911,10 @@ SELECT
 
 ## toTime \{#toTime\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-입력 값을 [Time](/sql-reference/data-types/time) 데이터 타입으로 변환합니다.
-String, FixedString, DateTime 또는 자정 이후 경과한 초를 나타내는 숫자형 타입에서의 변환을 지원합니다.
+입력 값을 [Time](/sql-reference/data-types/time) 타입으로 변환합니다.
+`String`, `FixedString`, `DateTime` 또는 자정 이후 경과 초(second)를 나타내는 숫자 타입에서의 변환을 지원합니다.
 
 **구문**
 
@@ -6891,7 +6924,7 @@ toTime(x)
 
 **인수**
 
-* `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`DateTime`](/sql-reference/data-types/datetime), [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float)
+* `x` — 변환할 입력 값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
 **반환 값**
 
@@ -6919,7 +6952,7 @@ SELECT toTime(toDateTime('2025-04-15 14:30:25'))
 14:30:25
 ```
 
-**정수를 Time으로 변환**
+**정수형을 Time으로 변환**
 
 ```sql title=Query
 SELECT toTime(52225)
@@ -6932,11 +6965,11 @@ SELECT toTime(52225)
 
 ## toTime64 \{#toTime64\}
 
-도입 버전: v25.6
+도입된 버전: v25.6
 
 입력 값을 [Time64](/sql-reference/data-types/time64) 타입으로 변환합니다.
-String, FixedString, DateTime64 또는 자정 이후 경과 시간을 마이크로초 단위로 나타내는 숫자형 타입에서의 변환을 지원합니다.
-시간 값을 마이크로초 단위 정밀도로 표현합니다.
+String, FixedString, DateTime64, 또는 자정 이후 경과한 마이크로초 수를 나타내는 숫자 타입에서의 변환을 지원합니다.
+시간 값에 대해 마이크로초 단위의 정밀도를 제공합니다.
 
 **구문**
 
@@ -6946,15 +6979,15 @@ toTime64(x)
 
 **인수**
 
-* `x` — 변환할 입력 값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `x` — 변환할 입력값입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`DateTime64`](/sql-reference/data-types/datetime64) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
 **반환 값**
 
-마이크로초 정밀도로 변환된 입력 값을 반환합니다. [`Time64(6)`](/sql-reference/data-types/time64)
+마이크로초 단위 정밀도로 변환된 입력값을 반환합니다. [`Time64(6)`](/sql-reference/data-types/time64)
 
 **예제**
 
-**String에서 Time64로의 변환**
+**String을 Time64로 변환**
 
 ```sql title=Query
 SELECT toTime64('14:30:25.123456')
@@ -6987,17 +7020,17 @@ SELECT toTime64(52225123456)
 
 ## toTime64OrNull \{#toTime64OrNull\}
 
-도입된 버전: v25.6
+도입 버전: v25.6
 
-입력 값을 `Time64` 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
-[`toTime64`](#toTime64)와 동일하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
+입력 값을 `Time64` 타입의 값으로 변환하지만, 오류가 발생하면 `NULL`을 반환합니다.
+[`toTime64`](#toTime64)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
-관련 항목:
+참고:
 
 * [`toTime64`](#toTime64)
 * [`toTime64OrZero`](#toTime64OrZero)
 
-**문법**
+**구문**
 
 ```sql
 toTime64OrNull(x)
@@ -7005,11 +7038,11 @@ toTime64OrNull(x)
 
 **인수**
 
-* `x` — 초 이하 단위까지의 정밀도를 갖는 시간의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 소수점 이하(서브초) 정밀도를 포함하는 시간의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 Time64 값을, 그렇지 않으면 `NULL`을 반환합니다. [`Time64`](/sql-reference/data-types/time64) 또는 [`NULL`](/sql-reference/syntax#null)
+성공한 경우 Time64 값을, 그렇지 않은 경우 `NULL`을 반환합니다. [`Time64`](/sql-reference/data-types/time64) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -7030,8 +7063,8 @@ SELECT toTime64OrNull('12:30:45.123'), toTime64OrNull('invalid')
 
 도입 버전: v25.6
 
-입력 값을 Time64 타입 값으로 변환하지만, 오류가 발생하는 경우 `00:00:00.000`을 반환합니다.
-[`toTime64`](#toTime64)와 비슷하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00.000`을 반환합니다.
+입력 값을 Time64 타입 값으로 변환하지만, 오류가 발생하면 `00:00:00.000`을 반환합니다.
+[`toTime64`](#toTime64)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00.000`을 반환합니다.
 
 **구문**
 
@@ -7041,7 +7074,7 @@ toTime64OrZero(x)
 
 **인수**
 
-* `x` — 초 단위 이하(소수점 이하) 정밀도를 포함한 시간의 문자열 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 소수점 이하 초 단위 정밀도의 시간을 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -7064,10 +7097,10 @@ SELECT toTime64OrZero('12:30:45.123'), toTime64OrZero('invalid')
 
 ## toTimeOrNull \{#toTimeOrNull\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-입력 값을 Time 타입 값으로 변환하지만, 오류가 발생하면 `NULL`을 반환합니다.
-[`toTime`](#toTime)와 동일하지만, 변환 오류 시 예외를 던지는 대신 `NULL`을 반환합니다.
+입력 값을 Time 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
+[`toTime`](#toTime)과 유사하지만, 변환 오류 시 예외를 발생시키는 대신 `NULL`을 반환합니다.
 
 함께 보기:
 
@@ -7086,7 +7119,7 @@ toTimeOrNull(x)
 
 **반환 값**
 
-성공하면 Time 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`Time`](/sql-reference/data-types/time) 또는 [`NULL`](/sql-reference/syntax#null)
+성공하면 Time 값을, 실패하면 `NULL`을 반환합니다. [`Time`](/sql-reference/data-types/time) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -7105,10 +7138,10 @@ SELECT toTimeOrNull('12:30:45'), toTimeOrNull('invalid')
 
 ## toTimeOrZero \{#toTimeOrZero\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
-입력 값을 Time 타입의 값으로 변환하지만, 오류가 발생하면 `00:00:00`을 반환합니다.
-toTime과 동일하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00`을 반환합니다.
+입력 값을 Time 타입 값으로 변환하지만, 오류가 발생하면 `00:00:00`을 반환합니다.
+toTime과 비슷하지만, 변환 오류 시 예외를 발생시키는 대신 `00:00:00`을 반환합니다.
 
 **구문**
 
@@ -7118,11 +7151,11 @@ toTimeOrZero(x)
 
 **인수**
 
-* `x` — 시간을 나타내는 문자열 표현. [`String`](/sql-reference/data-types/string)
+* `x` — 시간을 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공하면 Time 값을 반환하고, 그렇지 않으면 `00:00:00`을 반환합니다. [`Time`](/sql-reference/data-types/time)
+성공하면 Time 값을, 그렇지 않으면 `00:00:00`을 반환합니다. [`Time`](/sql-reference/data-types/time)
 
 **예시**
 
@@ -7141,24 +7174,24 @@ SELECT toTimeOrZero('12:30:45'), toTimeOrZero('invalid')
 
 ## toUInt128 \{#toUInt128\}
 
-도입 버전: v1.1
+도입된 버전: v1.1
 
 입력 값을 [`UInt128`](/sql-reference/functions/type-conversion-functions#toUInt128) 타입의 값으로 변환합니다.
-오류가 발생하는 경우 예외를 발생시킵니다.
-함수는 0 방향으로 반올림을 수행하므로 숫자의 소수 자릿수를 잘라냅니다.
+오류가 발생하면 예외를 발생시킵니다.
+이 함수는 0을 향한 반올림을 사용하며, 숫자의 소수 자릿수를 잘라냅니다.
 
-지원되는 인자:
+지원되는 인수:
 
-* (U)Int* 타입 값 또는 해당 타입의 문자열 표현.
+* (U)Int* 타입 값 또는 해당 문자열 표현.
 * Float* 타입 값.
 
-지원되지 않는 인자:
+지원되지 않는 인수:
 
 * `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
-* 예: `SELECT toUInt128('0xc0fe');`와 같은 이진 및 16진수 값의 문자열 표현.
+* `SELECT toUInt128('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 UInt128 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 UInt128의 범위 내에서 표현할 수 없는 경우, 결과는 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7176,15 +7209,15 @@ toUInt128(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
 128비트 부호 없는 정수 값을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -7205,10 +7238,10 @@ toUInt128('128'): 128
 
 ## toUInt128OrDefault \{#toUInt128OrDefault\}
 
-도입 버전: v21.11
+도입된 버전: v21.11
 
-[`toUInt128`](#toUInt128)과 마찬가지로, 이 FUNCTION은 입력값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값을 전달하지 않으면, 오류가 발생할 때 `0`이 반환됩니다.
+[`toUInt128`](#toUInt128)과(와) 마찬가지로, 이 FUNCTION은 입력값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생할 경우 기본값을 반환합니다.
+`default` 값이 지정되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -7216,18 +7249,18 @@ toUInt128('128'): 128
 toUInt128OrDefault(expr[, default])
 ```
 
-**인수**
+**인자**
 
 * `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`UInt128`](/sql-reference/data-types/int-uint)
 
-**반환 값**
+**반환값**
 
-성공하면 [`UInt128`](/sql-reference/data-types/int-uint) 타입의 값을 반환하고, 실패하면 기본값이 전달된 경우 해당 값을, 전달되지 않은 경우 0을 반환합니다.
+성공한 경우 UInt128 타입의 값을 반환하고, 그렇지 않은 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
 
 **예시**
 
-**변환 성공 예**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toUInt128OrDefault('128', CAST('0', 'UInt128'))
@@ -7252,19 +7285,19 @@ SELECT toUInt128OrDefault('abc', CAST('0', 'UInt128'))
 
 도입된 버전: v21.6
 
-[`toUInt128`](#toUInt128)과 같이, 이 FUNCTION은 입력값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `NULL`을 반환합니다.
+[`toUInt128`](#toUInt128)과 같이, 이 함수는 입력 값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int*의 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인수 (`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
 * `SELECT toUInt128OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [`UInt128`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [`UInt128`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에서 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7274,7 +7307,7 @@ SELECT toUInt128OrDefault('abc', CAST('0', 'UInt128'))
 * [`toUInt128OrZero`](#toUInt128OrZero).
 * [`toUInt128OrDefault`](#toUInt128OrDefault).
 
-**문법**
+**구문**
 
 ```sql
 toUInt128OrNull(x)
@@ -7282,15 +7315,15 @@ toUInt128OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 String 형식의 값. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 String 형태로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환에 성공하면 UInt128 타입의 값을 반환하고, 실패하면 `NULL`을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+UInt128 타입의 값을 반환하며, 변환에 실패한 경우 `NULL`을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -7311,19 +7344,19 @@ toUInt128OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toUInt128`](#toUInt128)와 마찬가지로, 이 함수는 입력 값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toUInt128`](#toUInt128)과 마찬가지로, 이 함수는 입력 값을 [`UInt128`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
-* (U)Int*의 문자열 표현.
+* (U)Int*의 문자열 표현
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인자 (`0` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 예: `SELECT toUInt128OrZero('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현
+* `SELECT toUInt128OrZero('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현
 
 :::note
-입력 값을 [`UInt128`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력 값을 [`UInt128`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생할 수 있습니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7339,13 +7372,13 @@ toUInt128OrNull('abc'): \N
 toUInt128OrZero(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 숫자를 나타내는 String 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-UInt128 타입의 값을 반환하며, 변환에 실패한 경우 `0`을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
+변환에 성공하면 `UInt128` 타입의 값을, 실패하면 `0`을 반환합니다. [`UInt128`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -7375,31 +7408,31 @@ toUInt128OrZero('abc'): 0
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 해당 문자열 표현.
-* Float* 타입의 값.
+* (U)Int* 타입 값 또는 해당 타입의 문자열 표현.
+* Float* 타입 값.
 
 지원되지 않는 인수:
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
+* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
 * `SELECT toUInt16('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [`UInt16`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [`UInt16`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과가 오버플로우 또는 언더플로우됩니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toUInt16(65536) == 0;`.
 :::
 
 :::note
-이 함수는 숫자의 소수 자릿수를 잘라내는 방식인 [0 방향 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)(rounding towards zero)을 사용합니다.
+이 함수는 [0을 향한 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 버립니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toUInt16OrZero`](#toUInt16OrZero).
 * [`toUInt16OrNull`](#toUInt16OrNull).
 * [`toUInt16OrDefault`](#toUInt16OrDefault).
 
-**구문**
+**Syntax**
 
 ```sql
 toUInt16(expr)
@@ -7407,7 +7440,7 @@ toUInt16(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -7438,8 +7471,8 @@ toUInt16('16'):  16
 
 도입 버전: v21.11
 
-[`toUInt16`](#toUInt16)과 유사하게, 이 FUNCTION은 입력값을 [UInt16](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값을 전달하지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
+[`toUInt16`](#toUInt16)과 마찬가지로 이 FUNCTION은 입력값을 [UInt16](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값이 전달되지 않으면 오류 발생 시 `0`을 반환합니다.
 
 **구문**
 
@@ -7449,14 +7482,14 @@ toUInt16OrDefault(expr[, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`UInt16`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 `UInt16` 타입의 값을 반환하고, 그렇지 않으면 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
+성공하면 `UInt16` 타입의 값을 반환하며, 실패한 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
 **성공적인 변환**
 
@@ -7468,7 +7501,7 @@ SELECT toUInt16OrDefault('16', CAST('0', 'UInt16'))
 16
 ```
 
-**형변환 실패**
+**변환 실패**
 
 ```sql title=Query
 SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
@@ -7483,20 +7516,20 @@ SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
 
 도입 버전: v1.1
 
-[`toUInt16`](#toUInt16)과(와) 마찬가지로, 이 함수는 입력값을 [`UInt16`](../data-types/int-uint.md) 타입 값으로 변환하지만 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toUInt16`](#toUInt16)와 마찬가지로 이 함수는 입력값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수( `NULL`을 반환):
+지원되지 않는 인수(`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 예: `SELECT toUInt16OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `SELECT toUInt16OrNull('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [`UInt16`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
-이는 오류로 간주되지 않습니다.
+입력값을 [`UInt16`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
+이때는 오류로 간주되지 않습니다.
 :::
 
 함께 보기:
@@ -7511,13 +7544,13 @@ SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
 toUInt16OrNull(x)
 ```
 
-**인수**
+**인자**
 
-* `x` — 숫자를 나타내는 String 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자의 문자열(String) 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환이 성공하면 `UInt16` 타입의 값을 반환하고, 그렇지 않으면 `NULL`을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+변환에 성공하면 `UInt16` 타입의 값을 반환하고, 변환에 실패하면 `NULL`을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -7542,19 +7575,19 @@ toUInt16OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toUInt16`](#toUInt16)과 마찬가지로 이 함수는 입력값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toUInt16`](#toUInt16)과 같이 이 함수는 입력 값을 [`UInt16`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
-* (U)Int8/16/32/128/256의 문자열 표현입니다.
+* (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인자(`0`을 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현입니다.
-* 2진수 및 16진수 값의 문자열 표현입니다(예: `SELECT toUInt16OrZero('0xc0fe');`).
+* `NaN`과 `Inf`를 포함한 Float* 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현, 예: `SELECT toUInt16OrZero('0xc0fe');`.
 
 :::note
-입력값을 [`UInt16`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력 값을 [`UInt16`](../data-types/int-uint.md)의 범위 안에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7564,7 +7597,7 @@ toUInt16OrNull('abc'): \N
 * [`toUInt16OrNull`](#toUInt16OrNull).
 * [`toUInt16OrDefault`](#toUInt16OrDefault).
 
-**문법**
+**구문**
 
 ```sql
 toUInt16OrZero(x)
@@ -7572,11 +7605,11 @@ toUInt16OrZero(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 `String` 형식의 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자의 문자열(String) 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환에 성공하면 `UInt16` 타입의 값을, 그렇지 않으면 `0`을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
+변환에 성공하면 UInt16 타입의 값을 반환하고, 변환에 실패하면 `0`을 반환합니다. [`UInt16`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -7601,22 +7634,22 @@ toUInt16OrZero('abc'): 0
 
 도입 버전: v1.1
 
-입력 값을 UInt256 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
-이 함수는 0에 가까운 방향으로 반올림하므로 숫자의 소수 자릿수를 잘라냅니다.
+입력 값을 `UInt256` 타입의 값으로 변환합니다.
+오류가 발생하면 예외를 던집니다.
+이 함수는 0 방향으로 반올림하므로, 숫자의 소수 자릿수를 잘라냅니다.
 
-지원되는 인자:
+지원되는 인수:
 
 * (U)Int* 타입의 값 또는 해당 문자열 표현.
 * Float* 타입의 값.
 
-지원되지 않는 인자:
+지원되지 않는 인수:
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt256('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현, 예: `SELECT toUInt256('0xc0fe');`.
 
 :::note
-입력 값을 UInt256의 범위 내에서 표현할 수 없는 경우 결과에 오버플로나 언더플로가 발생합니다.
+입력 값을 `UInt256`의 범위 내에서 표현할 수 없으면 결과가 오버플로 또는 언더플로 됩니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7634,15 +7667,15 @@ toUInt256(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
 256비트 부호 없는 정수 값을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -7665,8 +7698,8 @@ toUInt256('256'):   256
 
 도입 버전: v21.11
 
-[`toUInt256`](#toUInt256)과 마찬가지로 이 함수는 입력값을 [UInt256](../data-types/int-uint.md) 자료형의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
-`default` 값이 전달되지 않으면, 오류가 발생했을 때 `0`이 반환됩니다.
+[`toUInt256`](#toUInt256)와 같이, 이 FUNCTION은 입력 값을 [UInt256](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생하면 기본값을 반환합니다.
+`default` 값이 전달되지 않으면, 오류 발생 시 `0`이 반환됩니다.
 
 **구문**
 
@@ -7681,11 +7714,11 @@ toUInt256OrDefault(expr[, default])
 
 **반환 값**
 
-성공하면 `UInt256` 타입의 값을 반환하고, 그렇지 않으면 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
+성공하면 `UInt256` 타입의 값을 반환하고, 그렇지 않으면 기본값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
 
 **예시**
 
-**성공적인 변환**
+**변환 성공**
 
 ```sql title=Query
 SELECT toUInt256OrDefault('-256', CAST('0', 'UInt256'))
@@ -7695,7 +7728,7 @@ SELECT toUInt256OrDefault('-256', CAST('0', 'UInt256'))
 0
 ```
 
-**형 변환 실패**
+**변환 실패**
 
 ```sql title=Query
 SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
@@ -7708,21 +7741,21 @@ SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
 
 ## toUInt256OrNull \{#toUInt256OrNull\}
 
-도입 버전: v20.8
+도입된 버전: v20.8
 
-[`toUInt256`](#toUInt256)와 같이, 이 FUNCTION은 입력값을 [`UInt256`](../data-types/int-uint.md) 타입으로 변환하지만, 오류가 발생하면 `NULL`을 반환합니다.
+[`toUInt256`](#toUInt256)과 마찬가지로 이 FUNCTION은 입력값을 [`UInt256`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int*의 문자열 표현.
+* (U)Int* 값의 문자열 표현.
 
 지원되지 않는 인수(`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt256OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* 이진 및 16진수 값의 문자열 표현(예: `SELECT toUInt256OrNull('0xc0fe');`).
 
 :::note
-입력값을 [`UInt256`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력값을 [`UInt256`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -7732,7 +7765,7 @@ SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
 * [`toUInt256OrZero`](#toUInt256OrZero).
 * [`toUInt256OrDefault`](#toUInt256OrDefault).
 
-**문법**
+**구문**
 
 ```sql
 toUInt256OrNull(x)
@@ -7740,15 +7773,15 @@ toUInt256OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 String 형식의 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환이 성공하면 UInt256 타입의 값을 반환하고, 실패하면 `NULL`을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+변환이 성공하면 `UInt256` 타입의 값을 반환하고, 실패하면 `NULL`을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -7767,47 +7800,46 @@ toUInt256OrNull('abc'): \N
 
 ## toUInt256OrZero \{#toUInt256OrZero\}
 
-도입 버전: v20.8
+도입된 버전: v20.8
 
-[`toUInt256`](#toUInt256)과 마찬가지로, 이 함수는 입력값을 [`UInt256`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toUInt256`](#toUInt256)와 유사하게, 이 함수는 입력값을 [`UInt256`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
-* (U)Int*의 문자열 표현.
+* (U)Int* 값의 문자열 표현.
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인자(`0` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
 * 예: `SELECT toUInt256OrZero('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [`UInt256`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
-이는 오류로 간주되지 않습니다.
+입력값을 [`UInt256`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생하지만, 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toUInt256`](#toUInt256).
 * [`toUInt256OrNull`](#toUInt256OrNull).
 * [`toUInt256OrDefault`](#toUInt256OrDefault).
 
-**문법**
+**구문**
 
 ```sql
 toUInt256OrZero(x)
 ```
 
-**인수(Arguments)**
+**인수**
 
-* `x` — 숫자를 나타내는 문자열. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 String으로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값(Returned value)**
+**반환 값**
 
-변환이 성공하면 UInt256 타입의 값을, 실패하면 `0`을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
+변환에 성공하면 `UInt256` 타입의 값을 반환하고, 실패하면 `0`을 반환합니다. [`UInt256`](/sql-reference/data-types/int-uint)
 
-**예시(Examples)**
+**예시**
 
-**사용 예시(Usage example)**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -7829,35 +7861,35 @@ toUInt256OrZero('abc'): 0
 도입 버전: v1.1
 
 입력값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+오류가 발생하면 예외를 던집니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 문자열 표현.
+* (U)Int* 타입의 값 또는 그 문자열 형태.
 * Float* 타입의 값.
 
 지원되지 않는 인수:
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt32('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 형태.
+* `SELECT toUInt32('0xc0fe');`와 같은 이진 및 16진 값의 문자열 형태.
 
 :::note
-입력값을 [`UInt32`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과값은 오버플로 또는 언더플로가 발생합니다.
+입력값을 [`UInt32`](../data-types/int-uint.md) 범위 내에서 표현할 수 없는 경우, 결과가 오버플로 또는 언더플로 됩니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toUInt32(4294967296) == 0;`
 :::
 
 :::note
-이 함수는 [0으로의 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하며, 이는 숫자의 소수 부분을 잘라낸다는 의미입니다.
+이 함수는 [0 방향 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 잘라냅니다.
 :::
 
-함께 보기:
+관련 항목:
 
 * [`toUInt32OrZero`](#toUInt32OrZero).
 * [`toUInt32OrNull`](#toUInt32OrNull).
 * [`toUInt32OrDefault`](#toUInt32OrDefault).
 
-**구문**
+**Syntax**
 
 ```sql
 toUInt32(expr)
@@ -7865,15 +7897,15 @@ toUInt32(expr)
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
-32비트 부호 없는 정수 값인 [`UInt32`](/sql-reference/data-types/int-uint)를 반환합니다.
+32비트 부호 없는 정수 값을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -7894,9 +7926,9 @@ toUInt32('32'):  32
 
 ## toUInt32OrDefault \{#toUInt32OrDefault\}
 
-도입 버전: v21.11
+도입된 버전: v21.11
 
-[`toUInt32`](#toUInt32)와 마찬가지로, 이 FUNCTION은 입력값을 [UInt32](../data-types/int-uint.md) 타입의 값으로 변환하되, 오류가 발생하면 기본값을 반환합니다.
+[`toUInt32`](#toUInt32)와 마찬가지로 이 FUNCTION은 입력 값을 [UInt32](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
 `default` 값이 전달되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
@@ -7905,16 +7937,16 @@ toUInt32('32'):  32
 toUInt32OrDefault(expr[, default])
 ```
 
-**인수**
+**인자**
 
-* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`UInt32`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공하면 `UInt32` 타입의 값을 반환하며, 실패한 경우 `default` 값이 전달되었으면 해당 값을, 그렇지 않으면 0을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
+변환에 성공하면 `UInt32` 타입의 값을 반환하며, 실패하면 기본값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
 **성공적인 변환**
 
@@ -7939,25 +7971,25 @@ SELECT toUInt32OrDefault('abc', CAST('0', 'UInt32'))
 
 ## toUInt32OrNull \{#toUInt32OrNull\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-[`toUInt32`](#toUInt32)와 같이, 이 FUNCTION은 입력 값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toUInt32`](#toUInt32)와 마찬가지로, 이 함수는 입력 값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int8/16/32/128/256의 문자열 표현
+* (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수 (`NULL` 반환):
+지원되지 않는 인수(`NULL` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현
-* 예: `SELECT toUInt32OrNull('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현
+* `NaN` 및 `Inf`를 포함한 Float* 타입 값의 문자열 표현.
+* `SELECT toUInt32OrNull('0xc0fe');`와 같은 이진수 및 16진수 값을 나타내는 문자열.
 
 :::note
-입력 값을 [`UInt32`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에서 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [`UInt32`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 내용:
+함께 보기:
 
 * [`toUInt32`](#toUInt32).
 * [`toUInt32OrZero`](#toUInt32OrZero).
@@ -7969,17 +8001,17 @@ SELECT toUInt32OrDefault('abc', CAST('0', 'UInt32'))
 toUInt32OrNull(x)
 ```
 
-**인수**
+**인수(Arguments)**
 
-* `x` — 숫자를 나타내는 String 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환 값(Returned value)**
 
-변환이 성공하면 `UInt32` 타입의 값을 반환하고, 실패하면 `NULL`을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+변환에 성공하면 `UInt32` 타입의 값을 반환하고, 변환에 실패하면 `NULL`을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
-**예시**
+**예시(Examples)**
 
-**사용 예시**
+**사용 예시(Usage example)**
 
 ```sql title=Query
 SELECT
@@ -8000,23 +8032,23 @@ toUInt32OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toUInt32`](#toUInt32)와 유사하게, 이 함수는 입력값을 [`UInt32`](../data-types/int-uint.md) 형식의 값으로 변환하지만, 오류가 발생한 경우 `0`을 반환합니다.
+[`toUInt32`](#toUInt32)와 마찬가지로, 이 함수는 입력값을 [`UInt32`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수 (`0` 반환):
+지원되지 않는 인수(`0` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toUInt32OrZero('0xc0fe');`.
+* `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현(예: `SELECT toUInt32OrZero('0xc0fe');`).
 
 :::note
-입력값을 [`UInt32`](../data-types/int-uint.md) 범위 내에서 표현할 수 없으면 결과에서 오버플로 또는 언더플로가 발생합니다.
+입력값을 [`UInt32`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-같이 보기:
+함께 보기:
 
 * [`toUInt32`](#toUInt32).
 * [`toUInt32OrNull`](#toUInt32OrNull).
@@ -8030,11 +8062,11 @@ toUInt32OrZero(x)
 
 **인수**
 
-* `x` — 문자열로 표현된 숫자입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공적으로 변환되면 UInt32 타입의 값을, 변환에 실패하면 `0`을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
+변환에 성공하면 UInt32 타입의 값을, 실패하면 `0`을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -8060,26 +8092,26 @@ toUInt32OrZero('abc'): 0
 도입 버전: v1.1
 
 입력 값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
-오류가 발생하면 예외를 발생시킵니다.
+오류가 발생하면 예외를 던집니다.
 
 지원되는 인수:
 
-* (U)Int* 타입의 값 또는 문자열 표현.
-* Float* 타입의 값.
+* (U)Int* 타입 값 또는 해당 문자열 표현.
+* Float* 타입 값.
 
 지원되지 않는 타입:
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt64('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `SELECT toUInt64('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [`UInt64`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면, 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [`UInt64`](../data-types/int-uint.md) 범위로 표현할 수 없는 경우, 결과가 오버플로 또는 언더플로 됩니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toUInt64(18446744073709551616) == 0;`
 :::
 
 :::note
-이 함수는 [0으로의 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 버립니다.
+이 함수는 [0 방향으로 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 수행하므로, 숫자의 소수 자릿수를 잘라냅니다.
 :::
 
 함께 보기:
@@ -8088,15 +8120,15 @@ toUInt32OrZero('abc'): 0
 * [`toUInt64OrNull`](#toUInt64OrNull).
 * [`toUInt64OrDefault`](#toUInt64OrDefault).
 
-**Syntax**
+**구문**
 
 ```sql
 toUInt64(expr)
 ```
 
-**인자**
+**인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자 형식의 문자열을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
 **반환 값**
 
@@ -8127,10 +8159,10 @@ toUInt64('64'):  64
 
 도입 버전: v21.11
 
-[`toUInt64`](#toUInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [UInt64](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값이 지정되지 않으면 오류가 발생했을 때 `0`이 반환됩니다.
+[`toUInt64`](#toUInt64)와 마찬가지로 이 FUNCTION은 입력값을 [UInt64](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
+`default` 값이 전달되지 않은 경우에는 오류가 발생했을 때 `0`이 반환됩니다.
 
-**문법**
+**구문**
 
 ```sql
 toUInt64OrDefault(expr[, default])
@@ -8138,16 +8170,16 @@ toUInt64OrDefault(expr[, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자의 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
-* `default` — 선택 사항입니다. 파싱에 실패한 경우 반환할 기본값입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 `UInt64` 타입의 값을 반환하고, 실패한 경우에는 전달된 기본값을, 기본값이 전달되지 않았다면 0을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+성공하면 UInt64 타입의 값을 반환하고, 그렇지 않으면 기본값이 지정된 경우 해당 값을, 지정되지 않은 경우 0을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**변환 성공 예**
+**성공적인 변환**
 
 ```sql title=Query
 SELECT toUInt64OrDefault('64', CAST('0', 'UInt64'))
@@ -8170,25 +8202,24 @@ SELECT toUInt64OrDefault('abc', CAST('0', 'UInt64'))
 
 ## toUInt64OrNull \{#toUInt64OrNull\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
-[`toUInt64`](#toUInt64)와 마찬가지로 이 FUNCTION은 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
+[`toUInt64`](#toUInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
 * (U)Int*의 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인자(`NULL` 반환):
 
 * `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt64OrNull('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* 이진수 및 16진수 값의 문자열 표현. 예: `SELECT toUInt64OrNull('0xc0fe');`.
 
 :::note
-입력값을 [`UInt64`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에서 오버플로우 또는 언더플로우가 발생합니다.
-이는 오류로 간주되지 않습니다.
+입력값을 [`UInt64`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생하지만, 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toUInt64`](#toUInt64).
 * [`toUInt64OrZero`](#toUInt64OrZero).
@@ -8200,11 +8231,11 @@ SELECT toUInt64OrDefault('abc', CAST('0', 'UInt64'))
 toUInt64OrNull(x)
 ```
 
-**인자**
+**인수**
 
-* `x` — 숫자의 문자열(String) 표현입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 String입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값**
+**반환값**
 
 변환에 성공하면 UInt64 타입의 값을, 실패하면 `NULL`을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
@@ -8231,23 +8262,23 @@ toUInt64OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toUInt64`](#toUInt64)와 마찬가지로, 이 함수는 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만 오류가 발생하는 경우 `0`을 반환합니다.
+[`toUInt64`](#toUInt64)와 마찬가지로, 이 FUNCTION은 입력값을 [`UInt64`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
-* (U)Int*의 문자열 표현입니다.
+* (U)Int* 값의 문자열 표현.
 
 지원되지 않는 인수(`0` 반환):
 
-* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현입니다.
-* `SELECT toUInt64OrZero('0xc0fe');`와 같은 이진 및 16진수 값의 문자열 표현입니다.
+* `NaN` 및 `Inf`를 포함한 Float* 값의 문자열 표현.
+* `SELECT toUInt64OrZero('0xc0fe');`와 같은 2진수 및 16진수 값의 문자열 표현.
 
 :::note
-입력값을 [`UInt64`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에서 오버플로 또는 언더플로가 발생합니다.
+입력값을 [`UInt64`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로 또는 언더플로가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-관련 항목:
+함께 보기:
 
 * [`toUInt64`](#toUInt64).
 * [`toUInt64OrNull`](#toUInt64OrNull).
@@ -8259,17 +8290,17 @@ toUInt64OrNull('abc'): \N
 toUInt64OrZero(x)
 ```
 
-**인수(Arguments)**
+**인수**
 
-* `x` — 숫자를 문자열로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
 
-**반환 값(Returned value)**
+**반환 값**
 
-변환에 성공하면 `UInt64` 타입의 값을 반환하고, 실패하면 `0`을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+`UInt64` 타입의 값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**예시(Examples)**
+**예시**
 
-**사용 예시(Usage example)**
+**사용 예시**
 
 ```sql title=Query
 SELECT
@@ -8288,29 +8319,29 @@ toUInt64OrZero('abc'): 0
 
 ## toUInt8 \{#toUInt8\}
 
-도입된 버전: v1.1
+도입 버전: v1.1
 
 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환합니다.
 오류가 발생하면 예외를 던집니다.
 
 지원되는 인수:
 
-* 타입이 (U)Int*인 값 또는 해당 문자열 표현.
+* 타입이 (U)Int*인 값 또는 해당 값의 문자열 표현.
 * 타입이 Float*인 값.
 
 지원되지 않는 인수:
 
 * `NaN`, `Inf`를 포함한 Float* 값의 문자열 표현.
-* `SELECT toUInt8('0xc0fe');`와 같은 이진수 및 16진수 값의 문자열 표현.
+* `SELECT toUInt8('0xc0fe');`와 같은 이진 및 16진수 값의 문자열 표현.
 
 :::note
-입력 값을 [UInt8](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로 또는 언더플로가 발생합니다.
+입력 값을 [UInt8](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에서 overflow 또는 underflow가 발생합니다.
 이는 오류로 간주되지 않습니다.
 예: `SELECT toUInt8(256) == 0;`.
 :::
 
 :::note
-이 함수는 [0 방향으로 반올림](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용합니다. 즉, 수의 소수 부분을 잘라냅니다.
+이 함수는 [0 쪽으로의 반올림(rounding towards zero)](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)을 사용하므로, 숫자의 소수 자릿수를 잘라 냅니다.
 :::
 
 함께 보기:
@@ -8319,23 +8350,23 @@ toUInt64OrZero('abc'): 0
 * [`toUInt8OrNull`](#toUInt8OrNull).
 * [`toUInt8OrDefault`](#toUInt8OrDefault).
 
-**Syntax**
+**구문**
 
 ```sql
 toUInt8(expr)
 ```
 
-**인자**
+**매개변수**
 
-* `expr` — 숫자 또는 숫자를 문자열로 표현한 값을 반환하는 표현식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 식입니다. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-**반환 값**
+**반환값**
 
-8비트 부호 없는 정수 값[`UInt8`](/sql-reference/data-types/int-uint)을 반환합니다.
+8비트 부호 없는 정수 값을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -8358,8 +8389,8 @@ toUInt8('8'): 8
 
 도입 버전: v21.11
 
-[`toUInt8`](#toUInt8)와 마찬가지로, 이 함수는 입력값을 [UInt8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생한 경우 기본값을 반환합니다.
-`default` 값이 전달되지 않으면, 오류가 발생한 경우 `0`이 반환됩니다.
+[`toUInt8`](#toUInt8)와 마찬가지로, 이 함수는 입력값을 [UInt8](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 기본값을 반환합니다.
+`default` 값을 전달하지 않으면, 오류가 발생했을 때 `0`이 반환됩니다.
 
 **구문**
 
@@ -8369,12 +8400,12 @@ toUInt8OrDefault(expr[, default])
 
 **인수**
 
-* `expr` — 숫자 또는 숫자를 나타내는 문자열을 반환하는 표현식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
+* `expr` — 숫자 또는 숫자를 나타내는 문자열 표현을 반환하는 식입니다. [`String`](/sql-reference/data-types/string) 또는 [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 * `default` — 선택 사항입니다. 파싱에 실패했을 때 반환할 기본값입니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
-성공한 경우 `UInt8` 타입의 값을 반환하고, 실패한 경우 전달된 기본값이 있으면 해당 값을, 없으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+변환에 성공하면 `UInt8` 타입의 값을 반환하며, 실패한 경우 `default` 인수가 전달되었으면 해당 값을, 전달되지 않았으면 0을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -8403,19 +8434,19 @@ SELECT toUInt8OrDefault('abc', CAST('0', 'UInt8'))
 
 도입된 버전: v1.1
 
-[`toUInt8`](#toUInt8)와 마찬가지로 이 함수는 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하면 `NULL`을 반환합니다.
+[`toUInt8`](#toUInt8)와 같이, 이 FUNCTION은 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `NULL`을 반환합니다.
 
-지원되는 인수:
+지원되는 인자:
 
 * (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수(`NULL` 반환):
+지원되지 않는 인자 (`NULL` 반환):
 
-* `NaN` 및 `Inf`를 포함한 일반 Float* 값의 문자열 표현.
-* 이진수 및 16진수 값의 문자열 표현, 예: `SELECT toUInt8OrNull('0xc0fe');`.
+* 일반적인 Float* 값의 문자열 표현 (`NaN` 및 `Inf` 포함).
+* 2진수 및 16진수 값의 문자열 표현. 예: `SELECT toUInt8OrNull('0xc0fe');`.
 
 :::note
-입력 값을 [`UInt8`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
+입력 값을 [`UInt8`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없으면 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
@@ -8425,7 +8456,7 @@ SELECT toUInt8OrDefault('abc', CAST('0', 'UInt8'))
 * [`toUInt8OrZero`](#toUInt8OrZero).
 * [`toUInt8OrDefault`](#toUInt8OrDefault).
 
-**구문**
+**Syntax**
 
 ```sql
 toUInt8OrNull(x)
@@ -8433,11 +8464,11 @@ toUInt8OrNull(x)
 
 **인수**
 
-* `x` — 숫자를 String 형식으로 표현한 값입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 String 형식의 값입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-변환에 성공하면 UInt8 타입의 값을, 실패하면 `NULL`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
+변환이 성공하면 UInt8 타입의 값을, 그렇지 않으면 `NULL`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`NULL`](/sql-reference/syntax#null)
 
 **예시**
 
@@ -8462,23 +8493,23 @@ toUInt8OrNull('abc'): \N
 
 도입 버전: v1.1
 
-[`toUInt8`](#toUInt8)와 마찬가지로 이 함수는 입력 값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
+[`toUInt8`](#toUInt8)과 마찬가지로, 이 함수는 입력값을 [`UInt8`](../data-types/int-uint.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 `0`을 반환합니다.
 
 지원되는 인수:
 
 * (U)Int8/16/32/128/256의 문자열 표현.
 
-지원되지 않는 인수(`0` 반환):
+지원되지 않는 인수 (`0` 반환):
 
-* `NaN` 및 `Inf`를 포함한 일반적인 Float* 타입 값의 문자열 표현.
-* 이진수 및 16진수 값의 문자열 표현, 예를 들어 `SELECT toUInt8OrZero('0xc0fe');`.
+* 일반적인 부동소수점(Float*) 값의 문자열 표현 (`NaN`, `Inf` 포함).
+* 이진 및 16진 값의 문자열 표현. 예: `SELECT toUInt8OrZero('0xc0fe');`.
 
 :::note
-입력 값을 [`UInt8`](../data-types/int-uint.md)의 범위 내에서 표현할 수 없는 경우 결과에 오버플로 또는 언더플로가 발생합니다.
+입력값이 [`UInt8`](../data-types/int-uint.md)의 범위 내에서 표현될 수 없는 경우, 결과에 오버플로우 또는 언더플로우가 발생합니다.
 이는 오류로 간주되지 않습니다.
 :::
 
-함께 보기:
+다음도 함께 참고하십시오:
 
 * [`toUInt8`](#toUInt8).
 * [`toUInt8OrNull`](#toUInt8OrNull).
@@ -8492,11 +8523,11 @@ toUInt8OrZero(x)
 
 **인수**
 
-* `x` — 숫자를 나타내는 문자열(String)입니다. [`String`](/sql-reference/data-types/string)
+* `x` — 숫자를 나타내는 String 표현입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-`UInt8` 타입의 값을 반환하며, 변환에 실패하면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+변환에 성공하면 UInt8 타입의 값을 반환하고, 실패하면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -8521,9 +8552,9 @@ toUInt8OrZero('abc'): 0
 
 도입 버전: v1.1
 
-`String` 형식의 값을 `UUID` 값으로 변환합니다.
+`String` 값을 `UUID` 값으로 변환합니다.
 
-**문법**
+**구문**
 
 ```sql
 toUUID(string)
@@ -8531,11 +8562,11 @@ toUUID(string)
 
 **인수**
 
-* `string` — 문자열로 표현된 UUID. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `string` — 문자열 형태의 UUID. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-UUID 문자열 표현으로부터 UUID를 반환합니다. [`UUID`](/sql-reference/data-types/uuid)
+UUID의 문자열 표현에서 UUID 값을 반환합니다. [`UUID`](/sql-reference/data-types/uuid)
 
 **예시**
 
@@ -8556,7 +8587,7 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 도입 버전: v20.12
 
-입력 값을 [UUID](../data-types/uuid.md) 타입의 값으로 변환하지만, 오류가 발생할 경우 zero UUID를 반환합니다.
+입력 값을 [UUID](../data-types/uuid.md) 타입의 값으로 변환하지만, 오류가 발생하는 경우 zero UUID를 반환합니다.
 [`toUUID`](/sql-reference/functions/type-conversion-functions#toUUID)와 유사하지만, 변환 오류 시 예외를 발생시키는 대신 zero UUID (`00000000-0000-0000-0000-000000000000`)를 반환합니다.
 
 지원되는 인수:
@@ -8577,15 +8608,15 @@ toUUIDOrZero(x)
 
 **인수**
 
-* `x` — UUID를 문자열로 표현한 값. [`String`](/sql-reference/data-types/string)
+* `x` — UUID의 문자열 표현. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-성공 시 UUID 값을, 그렇지 않으면 모두 0으로 구성된 UUID (`00000000-0000-0000-0000-000000000000`)를 반환합니다. [`UUID`](/sql-reference/data-types/uuid)
+성공하면 UUID 값을 반환하고, 실패하면 0 UUID 값(`00000000-0000-0000-0000-000000000000`)을 반환합니다. [`UUID`](/sql-reference/data-types/uuid)
 
-**예시**
+**예제**
 
-**사용 예시**
+**사용 예제**
 
 ```sql title=Query
 SELECT
@@ -8604,11 +8635,11 @@ SELECT
 
 도입 버전: v20.5
 
-[`DateTime64`](/sql-reference/data-types/datetime64)를 마이크로초 단위의 고정 정밀도를 가진 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
-입력 값의 정밀도에 따라 값이 적절히 확대되거나 축소됩니다.
+[`DateTime64`](/sql-reference/data-types/datetime64)를 마이크로초 단위의 고정 정밀도를 갖는 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
+입력 값은 그 정밀도에 따라 적절히 확대 또는 축소되어 변환됩니다.
 
 :::note
-출력 값은 입력 값의 시간대가 아니라 UTC 기준입니다.
+출력 값은 입력 값의 타임존이 아니라 UTC를 기준으로 합니다.
 :::
 
 **구문**
@@ -8619,7 +8650,7 @@ toUnixTimestamp64Micro(value)
 
 **인수**
 
-* `value` — 임의의 정밀도를 가진 DateTime64 값. [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 임의의 정밀도를 가진 DateTime64 값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **반환 값**
 
@@ -8643,13 +8674,13 @@ SELECT toUnixTimestamp64Micro(dt64);
 
 ## toUnixTimestamp64Milli \{#toUnixTimestamp64Milli\}
 
-도입 버전: v20.5
+도입된 버전: v20.5
 
-[`DateTime64`](/sql-reference/data-types/datetime64)를 밀리초 고정 정밀도의 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
-입력 값은 정밀도에 따라 적절히 확대 또는 축소되어 변환됩니다.
+[`DateTime64`](/sql-reference/data-types/datetime64)를 밀리초(ms) 단위의 고정 정밀도를 갖는 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
+입력 값은 정밀도에 따라 적절히 확대하거나 축소됩니다.
 
 :::note
-출력 값은 입력 값의 시간대가 아니라 UTC를 기준으로 합니다.
+출력 값은 입력 값의 타임존이 아니라 UTC를 기준으로 합니다.
 :::
 
 **구문**
@@ -8660,15 +8691,15 @@ toUnixTimestamp64Milli(value)
 
 **인수**
 
-* `value` — 임의의 정밀도를 가진 DateTime64 값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 임의의 정밀도를 가진 DateTime64 값. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **반환 값**
 
 밀리초 단위의 Unix 타임스탬프를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
-**예제**
+**예시**
 
-**사용 예제**
+**사용 예시**
 
 ```sql title=Query
 WITH toDateTime64('2025-02-13 23:31:31.011', 3, 'UTC') AS dt64
@@ -8684,10 +8715,10 @@ SELECT toUnixTimestamp64Milli(dt64);
 
 ## toUnixTimestamp64Nano \{#toUnixTimestamp64Nano\}
 
-도입 버전: v20.5
+도입된 버전: v20.5
 
-[`DateTime64`](/sql-reference/data-types/datetime64)를 나노초 단위의 고정된 정밀도를 갖는 [`Int64`](/sql-reference/functions/type-conversion-functions#toInt64) 값으로 변환합니다.
-입력값은 자신의 정밀도에 따라 적절히 확대 또는 축소되어 변환됩니다.
+[`DateTime64`](/sql-reference/data-types/datetime64)을(를) 고정 나노초 정밀도의 [`Int64`](/sql-reference/functions/type-conversion-functions#toInt64) 값으로 변환합니다.
+입력 값은 정밀도에 따라 적절하게 확대 또는 축소됩니다.
 
 :::note
 출력 값은 입력 값의 타임존이 아니라 UTC를 기준으로 합니다.
@@ -8705,7 +8736,7 @@ toUnixTimestamp64Nano(value)
 
 **반환 값**
 
-Unix 타임스탬프를 나노초 단위로 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
+나노초 단위의 Unix 타임스탬프를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
 **예시**
 
@@ -8727,11 +8758,11 @@ SELECT toUnixTimestamp64Nano(dt64);
 
 도입 버전: v24.12
 
-[`DateTime64`](/sql-reference/data-types/datetime64)를 초 단위의 고정 정밀도를 갖는 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
-입력 값은 정밀도에 따라 적절히 확대 또는 축소되어 변환됩니다.
+[`DateTime64`](/sql-reference/data-types/datetime64)를 초 단위 고정 정밀도의 [`Int64`](/sql-reference/data-types/int-uint) 값으로 변환합니다.
+입력 값의 정밀도에 따라 값의 배율이 적절히 조정됩니다.
 
 :::note
-출력 값은 입력 값의 타임존이 아니라 UTC를 기준으로 합니다.
+출력 값은 입력 값의 시간대가 아니라 UTC를 기준으로 합니다.
 :::
 
 **구문**
@@ -8742,11 +8773,11 @@ toUnixTimestamp64Second(value)
 
 **인수**
 
-* `value` — 임의의 정밀도를 가진 DateTime64 값. [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 임의의 정밀도를 가진 DateTime64 값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **반환 값**
 
-초 단위 Unix 타임스탬프를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
+초 단위의 Unix 타임스탬프를 반환합니다. [`Int64`](/sql-reference/data-types/int-uint)
 
 **예시**
 

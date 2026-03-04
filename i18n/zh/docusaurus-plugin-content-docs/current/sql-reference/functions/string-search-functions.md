@@ -399,7 +399,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **语法**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **参数**
@@ -421,7 +421,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -617,7 +617,7 @@ hasAnyTokens(input, needles)
 
 **参数**
 
-* `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
+* `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable) 或 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array) 或 [`Array(Nullable(String))`](/sql-reference/data-types/array) 或 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记（token）。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
 * `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
@@ -649,7 +649,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**指定在数组中按原样（不进行分词）查找的目标字符串**
+**指定在数组中按原样（不进行分词）进行搜索的字符串**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
@@ -719,7 +719,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues 示例**
+**使用 mapValues 的示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -935,13 +935,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-引入于：v
+引入于：v20.1
 
 在 haystack 中使用 `tokenbf_v1` 索引对 needle 执行不区分大小写的查找。
 
 **语法**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **参数**
@@ -954,13 +955,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-引入于：v
+引入于：v23.1
 
 使用 `tokenbf_v1` 索引在 haystack 中对 needle 执行不区分大小写的查找。如果 needle 非法，则返回 NULL。
 
 **语法**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **参数**

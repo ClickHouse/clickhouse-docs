@@ -1522,6 +1522,7 @@ SELECT initcapUTF8('не тормозит')
 **構文**
 
 ```sql
+isValidASCII(str)
 ```
 
 **別名**: `isASCII`

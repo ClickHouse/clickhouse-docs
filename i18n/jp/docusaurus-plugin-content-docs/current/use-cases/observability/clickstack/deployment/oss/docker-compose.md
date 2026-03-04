@@ -70,7 +70,7 @@ docker compose up
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-代替の ClickHouse インスタンスを使用する例については、「[Create a ClickHouse Cloud connection](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)」を参照してください。
+代替の ClickHouse インスタンスを使用する例については、「[Using ClickHouse Cloud](#using-clickhouse-cloud)」を参照してください。
 
 ### 接続情報を入力する \{#complete-connection-details\}
 

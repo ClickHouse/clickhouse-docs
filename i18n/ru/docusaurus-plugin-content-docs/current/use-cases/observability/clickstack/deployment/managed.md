@@ -115,7 +115,7 @@ import TabItem from '@theme/TabItem';
 
       <Image img={select_service} alt="Выберите сервис" size="lg" />
 
-      ### Перейдите к интерфейсу ClickStack
+      ### Перейдите в пользовательский интерфейс ClickStack
 
       Выберите &#39;ClickStack&#39; в меню навигации слева. Вы будете перенаправлены в интерфейс ClickStack и автоматически авторизованы на основе ваших прав доступа ClickHouse Cloud.
 
@@ -139,7 +139,7 @@ import TabItem from '@theme/TabItem';
 
       Выберите &quot;Start Ingestion&quot;, и вам будет предложено выбрать источник для ингестии. Управляемый ClickStack поддерживает OpenTelemetry и [Vector](https://vector.dev/) в качестве основных источников ингестии. Однако пользователи также могут отправлять данные напрямую в ClickHouse по собственной схеме, используя любую из [интеграций, поддерживаемых ClickHouse Cloud](/integrations).
 
-      <Image img={select_source_clickstack_ui} size="lg" alt="Выберите источник — ClickStack UI" border />
+      <Image img={select_source_clickstack_ui} size="lg" alt="Выбор источника — интерфейс ClickStack" border />
 
       :::note[Рекомендуется OpenTelemetry]
       Настоятельно рекомендуется использовать OpenTelemetry в качестве формата ингестии.
@@ -163,7 +163,7 @@ import TabItem from '@theme/TabItem';
           **Измените эту команду, подставив учётные данные сервиса, которые вы сохранили при его создании.**
 
           :::note[Развёртывание в production]
-          Хотя в этой команде используется пользователь `default` для подключения к Managed ClickStack, при [переходе в production](/use-cases/observability/clickstack/production#create-a-user) следует создать выделенного пользователя и изменить конфигурацию.
+          Хотя в этой команде используется пользователь `default` для подключения к Managed ClickStack, при [переходе в production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed) следует создать выделенного пользователя и изменить конфигурацию.
           :::
 
           Выполнение этой единственной команды запускает ClickStack collector с OTLP-эндпоинтами, доступными на портах 4317 (gRPC) и 4318 (HTTP). Если у вас уже есть инструментация и агенты OpenTelemetry, вы можете сразу начинать отправлять телеметрию на эти эндпоинты.
@@ -254,7 +254,7 @@ import TabItem from '@theme/TabItem';
         </TabItem>
       </Tabs>
 
-      ### Перейдите к интерфейсу ClickStack
+      ### Перейдите в пользовательский интерфейс ClickStack
 
       После завершения настройки ингестии и начала отправки данных выберите &quot;Next&quot;.
 

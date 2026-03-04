@@ -1093,6 +1093,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+## JSONKey \{#JSONKey\}
+
+導入: v20.1
+
+JSON オブジェクトのフィールドのキーを、そのインデックス（1 始まり）で返します。JSON が文字列として渡された場合は、まずパースされます。2 番目の引数は、ネストされたオブジェクト内をたどるための JSON パスです。この関数は、指定された位置にあるキー名を返します。
+
+**構文**
+
+```sql
+JSONKey(json[, indices_or_keys, ...])
+```
+
+**引数**
+
+* `json` — 解析する JSON 文字列。[`String`](/sql-reference/data-types/string)
+* `indices_or_keys` — ネストされた要素へのパスを指定するための、任意の索引またはキーのリスト。各引数は、文字列（キーによるアクセス）または整数（1 から始まる索引によるアクセス）のいずれかです。[`String`](/sql-reference/data-types/string) または [`Int*`](/sql-reference/data-types/int-uint)
+
+**返り値**
+
+JSON オブジェクト内の指定した位置にあるキー名を返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT JSONKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1);
+```
+
+```response title=Response
+a
+```
+
+
 ## JSONLength \{#JSONLength\}
 
 導入バージョン: v20.1
@@ -1139,7 +1173,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 **構文**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **別名**: `jsonMergePatch`
@@ -1157,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **使用例**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response

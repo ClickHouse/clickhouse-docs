@@ -19,6 +19,10 @@ doc_type: 'reference'
 OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION ID 'partition_id'] [FINAL | FORCE] [DEDUPLICATE [BY expression]]
 ```
 
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
 `OPTIMIZE` クエリは [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリー（[materialized views](/sql-reference/statements/create/view#materialized-view) を含む）および [Buffer](../../engines/table-engines/special/buffer.md) エンジンでサポートされています。他のテーブルエンジンはサポートされていません。
 
 `OPTIMIZE` を [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) ファミリーのテーブルエンジンで使用する場合、ClickHouse はマージ用のタスクを作成し、すべてのレプリカでの実行が完了するまで（[alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `2` に設定されている場合）、または現在のレプリカでの実行が完了するまで（[alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `1` に設定されている場合）待機します。
@@ -33,6 +37,55 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 :::note
 `alter_sync` が `2` に設定されていて、`replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えても一部のレプリカがアクティブにならない場合、`UNFINISHED` という例外がスローされます。
 :::
+
+## DRY RUN \{#dry-run\}
+
+`DRY RUN` 句は、指定されたパーツのマージを結果をコミットせずにシミュレートします。マージされたパーツは一時的な場所に書き込まれて検証され、その後破棄されます。元のパーツおよびテーブルデータは変更されません。
+
+これは次の用途に役立ちます:
+
+* ClickHouse のバージョン間でマージの正しさをテストする。
+* マージ関連のバグを確実に再現する。
+* マージのパフォーマンスをベンチマークする。
+
+`DRY RUN` は [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルでのみサポートされます。パーツ名のリストを伴う `PARTS` キーワードが必須です。指定されたすべてのパーツは存在し、アクティブであり、同じパーティションに属している必要があります。
+
+`DRY RUN` は `FINAL` および `PARTITION` とは併用できません。`DEDUPLICATE`（任意のカラム指定付き）および `CLEANUP`（`ReplacingMergeTree` テーブル向け）とは組み合わせることができます。
+
+**構文**
+
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
+デフォルトでは、マージ後に生成されるパーツは [`CHECK TABLE`](/sql-reference/statements/check-table) クエリと同様の方法で検証されます。この動作は [optimize&#95;dry&#95;run&#95;check&#95;part](/operations/settings/settings#optimize_dry_run_check_part) SETTING（デフォルトで有効）によって制御されます。これを無効にすると検証がスキップされ、マージ処理自体のベンチマークを行う際に有用です。
+
+**例**
+
+```sql
+CREATE TABLE dry_run_example (key UInt64, value String) ENGINE = MergeTree ORDER BY key;
+
+INSERT INTO dry_run_example VALUES (1, 'a'), (2, 'b');
+INSERT INTO dry_run_example VALUES (1, 'c'), (4, 'd');
+
+-- Simulate merging using two parts
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0';
+
+-- Simulate merging with deduplication
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0' DEDUPLICATE;
+
+-- Parts and data remain unchanged after DRY RUN
+SELECT name, rows FROM system.parts
+WHERE database = currentDatabase() AND table = 'dry_run_example' AND active
+ORDER BY name;
+```
+
+```response
+┌─name────────┬─rows─┐
+│ all_1_1_0   │    2 │
+│ all_2_2_0   │    2 │
+└─────────────┴──────┘
+```
 
 ## BY 式 \{#by-expression\}
 
@@ -84,7 +137,7 @@ VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```sql
 
@@ -101,11 +154,11 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-以下のすべての例は、5 行を持つこの状態に対して実行されます。
+以下のすべての例は、5 行のこの状態に対して実行されます。
 
 #### `DEDUPLICATE` \{#deduplicate\}
 
-重複排除に使用するカラムが指定されていない場合、すべてのカラムが考慮されます。前の行の対応する値と、すべてのカラムにおいて値がすべて等しい場合にのみ、その行は削除されます。
+重複排除に使用するカラムが指定されていない場合は、すべてのカラムが対象になります。各カラムの値が前の行の対応する値とすべて等しい場合にのみ、その行は削除されます。
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
@@ -142,7 +195,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐

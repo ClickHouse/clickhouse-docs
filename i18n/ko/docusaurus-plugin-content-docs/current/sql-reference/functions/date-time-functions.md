@@ -2235,7 +2235,7 @@ FORMAT PrettyCompactMonoBlock
 **구문**
 
 ```sql
-nowInBlock([scale[, timezone]])
+nowInBlock64([scale[, timezone]])
 ```
 
 **인수**
@@ -2279,7 +2279,7 @@ FORMAT PrettyCompactMonoBlock
 **구문**
 
 ```sql
-serverTimeZone()
+serverTimezone()
 ```
 
 **별칭**: `serverTimeZone`
@@ -3258,7 +3258,7 @@ SELECT timezone()
 **구문**
 
 ```sql
-timeZoneOf(datetime)
+timezoneOf(datetime)
 ```
 
 **별칭**: `timeZoneOf`
@@ -3296,7 +3296,7 @@ SELECT timezoneOf(now());
 **구문**
 
 ```sql
-timeZoneOffset(datetime)
+timezoneOffset(datetime)
 ```
 
 **별칭**: `timeZoneOffset`
@@ -3316,7 +3316,7 @@ UTC로부터의 오프셋을 초 단위로 반환합니다. [`Int32`](/sql-refer
 ```sql title=Query
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time,
 toTypeName(Time) AS Type,
-timeZoneOffset(Time) AS Offset_in_seconds,
+timezoneOffset(Time) AS Offset_in_seconds,
 (Offset_in_seconds / 3600) AS Offset_in_hours;
 ```
 
@@ -5057,7 +5057,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 **구문**
 
 ```sql
-toTime(date[, timezone])
+toTimeWithFixedDate(date[, timezone])
 ```
 
 **인수**
@@ -5074,7 +5074,7 @@ toTime(date[, timezone])
 **두 날짜 사이의 시간 차이 계산**
 
 ```sql title=Query
-SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
+SELECT toTimeWithFixedDate('2025-06-15 12:00:00'::DateTime) - toTimeWithFixedDate('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
 ```
 
 ```response title=Response
@@ -5094,7 +5094,7 @@ SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::D
 **구문**
 
 ```sql
-toTimeZone(datetime, timezone)
+toTimezone(datetime, timezone)
 ```
 
 **별칭**: `toTimeZone`
@@ -5116,10 +5116,10 @@ toTimeZone(datetime, timezone)
 SELECT toDateTime('2019-01-01 00:00:00', 'UTC') AS time_utc,
 toTypeName(time_utc) AS type_utc,
 toInt32(time_utc) AS int32utc,
-toTimeZone(time_utc, 'Asia/Yekaterinburg') AS time_yekat,
+toTimezone(time_utc, 'Asia/Yekaterinburg') AS time_yekat,
 toTypeName(time_yekat) AS type_yekat,
 toInt32(time_yekat) AS int32yekat,
-toTimeZone(time_utc, 'US/Samoa') AS time_samoa,
+toTimezone(time_utc, 'US/Samoa') AS time_samoa,
 toTypeName(time_samoa) AS type_samoa,
 toInt32(time_samoa) AS int32samoa
 FORMAT Vertical;

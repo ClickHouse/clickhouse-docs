@@ -1093,6 +1093,40 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 ```
 
 
+## JSONKey \{#JSONKey\}
+
+도입 버전: v20.1
+
+JSON 객체 필드의 키를 인덱스(1부터 시작) 기준으로 반환합니다. JSON이 문자열로 전달되는 경우 먼저 파싱합니다. 두 번째 인수는 중첩 객체 내부로 이동하기 위한 JSON 경로입니다. 함수는 지정된 위치의 키 이름을 반환합니다.
+
+**구문**
+
+```sql
+JSONKey(json[, indices_or_keys, ...])
+```
+
+**인수**
+
+* `json` — 파싱할 JSON 문자열. [`String`](/sql-reference/data-types/string)
+* `indices_or_keys` — 중첩 요소의 경로를 지정하는 선택적 인덱스 또는 키 목록입니다. 각 인수는 문자열(키로 접근) 또는 정수(1부터 시작하는 인덱스로 접근)일 수 있습니다. [`String`](/sql-reference/data-types/string) 또는 [`Int*`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+JSON 객체에서 지정한 위치의 키 이름을 반환합니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT JSONKey('{"a": "hello", "b": [-100, 200.0, 300]}', 1);
+```
+
+```response title=Response
+a
+```
+
+
 ## JSONLength \{#JSONLength\}
 
 도입 버전: v20.1
@@ -1139,7 +1173,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 **구문**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **별칭(Aliases)**: `jsonMergePatch`
@@ -1157,7 +1191,7 @@ JSON 객체 문자열이 유효하면 병합된 JSON 객체 문자열을 반환�
 **사용 예시(Usage example)**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response

@@ -403,7 +403,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **구문**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **인자**
@@ -425,7 +425,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -622,7 +622,7 @@ hasAnyTokens(input, needles)
 
 **인수**
 
-* `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Array(String)`](/sql-reference/data-types/array), [`Array(FixedString)`](/sql-reference/data-types/array) 형식일 수 있습니다.
+* `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Nullable(String)`](/sql-reference/data-types/nullable) 또는 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 또는 [`Array(String)`](/sql-reference/data-types/array) 또는 [`Array(FixedString)`](/sql-reference/data-types/array) 또는 [`Array(Nullable(String))`](/sql-reference/data-types/array) 또는 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array) 형식일 수 있습니다.
 * `needles` — 검색 대상 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
 * `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 
@@ -654,7 +654,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**배열에서 검색할 needle을 토큰화 없이 그대로(AS-IS) 지정합니다**
+**배열에 토큰화 없이 그대로(AS-IS) 검색할 needle을 지정합니다**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
@@ -666,7 +666,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
 └─────────┘
 ```
 
-**`tokens` 함수를 사용하여 needle 생성**
+**`tokens` 함수를 사용하여 needle을 생성합니다**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
@@ -700,7 +700,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**배열 컬럼 예제**
+**배열 컬럼 사용 예제**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
@@ -724,7 +724,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues 예제**
+**mapValues 사용 예제**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -940,13 +940,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-도입 버전: v
+도입 버전: v20.1
 
 `tokenbf_v1` 인덱스를 사용하여 `haystack` 내에서 `needle`을 대소문자를 구분하지 않고 검색합니다.
 
 **구문**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **인수**
@@ -959,13 +960,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-도입된 버전: v
+도입된 버전: v23.1
 
 `tokenbf_v1` 인덱스를 사용하여 `haystack`에서 `needle`을 대소문자를 구분하지 않고 검색합니다. `needle`의 형식이 올바르지 않은 경우 null을 반환합니다.
 
 **구문**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **인수**

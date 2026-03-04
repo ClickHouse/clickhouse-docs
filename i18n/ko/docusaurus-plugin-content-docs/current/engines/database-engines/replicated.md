@@ -7,15 +7,11 @@ title: '복제형'
 doc_type: 'reference'
 ---
 
-
-
 # Replicated \{#replicated\}
 
 이 엔진은 [Atomic](../../engines/database-engines/atomic.md) 엔진을 기반으로 합니다. DDL 로그가 ZooKeeper에 기록되는 방식으로 메타데이터 복제를 지원하며, 해당 데이터베이스의 모든 레플리카에서 실행됩니다.
 
 하나의 ClickHouse 서버에는 여러 개의 복제된 데이터베이스가 동시에 실행되고 업데이트될 수 있습니다. 하지만 하나의 복제된 데이터베이스에 대해 여러 개의 레플리카를 둘 수는 없습니다.
-
-
 
 ## 데이터베이스 생성 \{#creating-a-database\}
 
@@ -35,6 +31,12 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) 테이블의 경우 인수를 지정하지 않으면 기본 인수인 `/clickhouse/tables/{uuid}/{shard}`와 `{replica}`가 사용됩니다. 이는 서버 설정 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) 및 [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name)에서 변경할 수 있습니다. 매크로 `{uuid}`는 테이블의 UUID로 확장되고, `{shard}`와 `{replica}`는 데이터베이스 엔진 인수가 아니라 서버 설정에 지정된 값으로 확장됩니다. 향후에는 Replicated 데이터베이스의 `shard_name`과 `replica_name`을 사용할 수 있게 될 것입니다.
 
+보조 ZooKeeper 클러스터도 기본 ZooKeeper 클러스터 대신 복제 데이터베이스의 메타데이터를 저장하는 용도로 사용할 수 있습니다. 다음과 같이 SQL을 사용하여 보조 ZooKeeper 클러스터를 사용하는 복제 데이터베이스를 생성할 수 있습니다:
+
+```sql
+CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_auxiliary_zookeepers:path', 'shard_name', 'replica_name')
+```
+
 
 ## 세부 사항 및 권장 사항 \{#specifics-and-recommendations\}
 
@@ -52,8 +54,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 테이블 복제를 유지하지 않고 클러스터만 구성하면 되는 경우, [Cluster Discovery](../../operations/cluster-discovery.md) 기능을 참고하십시오.
 
-
-
 ## 사용 예시 \{#usage-example\}
 
 3개의 호스트로 구성된 클러스터를 생성합니다:
@@ -70,7 +70,7 @@ node3 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','{repli
 CREATE DATABASE r ON CLUSTER default ENGINE=Replicated;
 ```
 
-DDL 쿼리 실행:
+DDL 쿼리를 실행합니다:
 
 ```sql
 CREATE TABLE r.rmt (n UInt64) ENGINE=ReplicatedMergeTree ORDER BY n;
@@ -120,14 +120,14 @@ node1 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 ```
 
-`zoo_path`에서 매크로 `{uuid}`를 사용하는 경우, 다른 호스트에 레플리카를 하나 더 추가하기:
+`zoo_path`에서 매크로 `{uuid}`를 사용하는 경우, 추가 호스트에 레플리카를 하나 더 추가하기:
 
 ```sql
 node1 :) SELECT uuid FROM system.databases WHERE database='r';
 node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
 ```
 
-클러스터 구성은 다음과 같습니다.
+클러스터 구성은 다음과 같이 됩니다.
 
 
 ```text

@@ -402,7 +402,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **Синтаксис**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **Аргументы**
@@ -424,7 +424,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -621,7 +621,7 @@ hasAnyTokens(input, needles)
 
 **Аргументы**
 
-* `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
+* `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Nullable(String)`](/sql-reference/data-types/nullable) или [`Nullable(FixedString)`](/sql-reference/data-types/nullable) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array) или [`Array(Nullable(String))`](/sql-reference/data-types/array) или [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — Токены, которые нужно найти. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
 * `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
@@ -653,7 +653,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**Укажите строки, которые следует искать «как есть» (без токенизации) в массиве**
+**Укажите искомые значения, которые следует искать в массиве «как есть» (без токенизации)**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
@@ -723,7 +723,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**Пример использования mapValues**
+**Пример с функцией mapValues**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -939,13 +939,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-Добавлена в версии: v
+Добавлена в версии: v20.1
 
 Выполняет регистронезависимый поиск значения `needle` в `haystack` с использованием индекса tokenbf&#95;v1.
 
 **Синтаксис**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **Аргументы**
@@ -958,13 +959,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-Введена в версии: v
+Введена в версии: v23.1
 
 Выполняет поиск `needle` в `haystack` без учета регистра с использованием индекса tokenbf&#95;v1. Возвращает null, если `needle` задано некорректно.
 
 **Синтаксис**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **Аргументы**

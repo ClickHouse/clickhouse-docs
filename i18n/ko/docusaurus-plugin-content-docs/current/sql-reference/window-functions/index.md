@@ -57,9 +57,13 @@ ClickHouse는 윈도우 및 윈도우 함수 정의를 위한 표준 문법을 �
 ```text
 aggregate_function (column_name)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_within_the_group]] | [window_name])
 FROM table_name
-WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
+WINDOW window_name as ([
+  [PARTITION BY grouping_column]
+  [ORDER BY sorting_column]
+  [ROWS or RANGE expression_to_bound_rows_within_the_group]
+])
 ```
 
 * `PARTITION BY` - 결과 집합을 그룹으로 나누는 방식을 정의합니다.

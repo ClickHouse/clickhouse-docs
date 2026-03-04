@@ -209,6 +209,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Использовать фоновый пул ввода-вывода для чтения из таблиц MergeTree. Этот параметр может повысить производительность для запросов, ограниченных скоростью операций ввода-вывода.
 
+## allow_calculating_subcolumns_sizes_for_merge_tree_reading \{#allow_calculating_subcolumns_sizes_for_merge_tree_reading\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Разрешить вычисление размеров подстолбцов при чтении MergeTree для улучшения разбиения задач чтения"}]}]}/>
+
+При включении ClickHouse будет вычислять размер файлов, необходимых для чтения каждого подстолбца, для более точного расчета размеров задач и блоков чтения.
+
 ## allow_changing_replica_until_first_data_packet \{#allow_changing_replica_until_first_data_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -606,6 +614,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный табличный движок для интеграции с YTsaurus.
 
+## allow_fuzz_query_functions \{#allow_fuzz_query_functions\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для включения функции fuzzQuery."}]}]}/>
+
+Включает функцию `fuzzQuery`, которая применяет случайные мутации AST к строке запроса.
+
 ## allow_general_join_planning \{#allow_general_join_planning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -632,9 +650,11 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 <BetaBadge/>
 
+**Псевдонимы**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Разрешает выполнение запросов `insert` в Iceberg.
 
@@ -1071,9 +1091,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
 
 Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
 Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
@@ -1121,6 +1141,32 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 - 'path' — использовать FlightDescriptor::Path (значение по умолчанию, работает с большинством серверов Arrow Flight)
 - 'command' — использовать FlightDescriptor::Command с запросом SELECT (требуется для Dremio)
+
+## ast_fuzzer_any_query \{#ast_fuzzer_any_query\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр, позволяющий выполнять фаззинг для всех типов запросов, а не только на чтение."}]}]}/>
+
+Если значение `false` (по умолчанию), серверный AST fuzzer (управляется `ast_fuzzer_runs`) выполняет фаззинг только запросов на чтение (SELECT, EXPLAIN, SHOW, DESCRIBE, EXISTS). При значении `true` выполняется фаззинг всех типов запросов, включая DDL и INSERT.
+
+## ast_fuzzer_runs \{#ast_fuzzer_runs\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Float" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to enable server-side AST fuzzer."}]}]}/>
+
+Включает серверный AST-фаззер, который запускает случайные запросы после каждого обычного запроса и отбрасывает их результаты.
+
+- 0: отключено (по умолчанию).
+- Значение между 0 и 1 (исключая границы): вероятность запуска одного фаззированного запроса.
+- Значение >= 1: количество фаззированных запросов, выполняемых на каждый обычный запрос.
+
+Фаззер накапливает фрагменты AST из всех запросов во всех сессиях, со временем порождая всё более интересные мутации. Фаззированные запросы, завершившиеся с ошибкой, незаметно отбрасываются; их результаты никогда не возвращаются клиенту.
 
 ## asterisk_include_alias_columns \{#asterisk_include_alias_columns\}
 
@@ -2475,6 +2521,15 @@ ENGINE = Log
 
 Включает логирование файлов метаданных Delta Lake в системную таблицу.
 
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка, определяющая, будет ли DeltaLake перезагружать схему перед каждым запросом для обеспечения согласованности."}]}]}/>
+
+Если настройка включена, схема перезагружается из метаданных DeltaLake перед выполнением каждого запроса, чтобы обеспечить
+согласованность между схемой, использованной во время анализа запроса, и схемой, использованной во время выполнения.
+
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -3349,8 +3404,6 @@ ClickHouse применяет этот SETTING, когда запрос соде
 Записывать в system.filesystem prefetch_log во время выполнения запроса. Следует использовать только для тестирования или отладки; не рекомендуется включать по умолчанию
 
 ## enable_full_text_index \{#enable_full_text_index\}
-
-<BetaBadge/>
 
 **Псевдонимы**: `allow_experimental_full_text_index`
 
@@ -5341,6 +5394,30 @@ SELECT * FROM x_dist ORDER BY number ASC;
 Профили можно выгружать с помощью SYSTEM JEMALLOC FLUSH PROFILE, что можно использовать для анализа выделения памяти.
 Выборки также могут сохраняться в system.trace_log с помощью конфигурации jemalloc_collect_global_profile_samples_in_trace_log или с настройкой запроса jemalloc_collect_profile_samples_in_trace_log.
 См. [Профилирование выделений](/operations/allocation-profiling).
+
+## jemalloc_profile_text_collapsed_use_count \{#jemalloc_profile_text_collapsed_use_count\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новый параметр для агрегации по количеству аллокаций вместо байтов в свернутом формате профиля кучи jemalloc"}]}]}/>
+
+При использовании формата вывода `collapsed` для профиля кучи jemalloc агрегирование выполняется по количеству аллокаций вместо байтов. Если значение равно false (по умолчанию), каждый стек взвешивается по количеству живых байтов; если true — по количеству живых аллокаций.
+
+## jemalloc_profile_text_output_format \{#jemalloc_profile_text_output_format\}
+
+<SettingsInfoBlock type="JemallocProfileFormat" default_value="collapsed" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "collapsed"},{"label": "Новая настройка, управляющая форматом вывода таблицы system.jemalloc_profile_text. Возможные значения: 'raw', 'symbolized', 'collapsed'"}]}]}/>
+
+Формат вывода профиля кучи jemalloc в таблице system.jemalloc_profile_text. Возможные значения: 'raw' (сырой профиль), 'symbolized' (формат jeprof с символами) или 'collapsed' (формат FlameGraph).
+
+## jemalloc_profile_text_symbolize_with_inline \{#jemalloc_profile_text_symbolize_with_inline\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка, управляющая тем, включать ли inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что замедляет символизацию; при отключении они пропускаются для более быстрого вывода"}]}]}/>
+
+Определяет, нужно ли включать inline-кадры при символизации профиля кучи jemalloc. При включении inline-кадры учитываются, что может существенно замедлить процесс символизации; при отключении они пропускаются. Влияет только на форматы вывода 'symbolized' и 'collapsed'.
 
 ## join_algorithm \{#join_algorithm\}
 
@@ -7931,7 +8008,11 @@ ClickHouse использует эту настройку при чтении д
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`.
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "Современные отображения типов MySQL включены по умолчанию."}]}]}/>
+
+Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`. Все современные отображения (`decimal`, `datetime64`, `date2Date32`) включены по умолчанию.
 
 - `decimal`: преобразовывать типы `NUMERIC` и `DECIMAL` в `Decimal`, когда это допускает точность.
 - `datetime64`: преобразовывать типы `DATETIME` и `TIMESTAMP` в `DateTime64` вместо `DateTime`, когда точность не равна `0`.
@@ -8219,6 +8300,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 В настоящий момент эта настройка требует `optimize_skip_unused_shards` (причина в том, что однажды она может быть включена по умолчанию, и корректная работа будет гарантирована только в том случае, если данные вставлялись через distributed таблицу, то есть распределены в соответствии с sharding_key).
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Когда настройка включена, `OPTIMIZE ... DRY RUN` проверяет получившуюся объединённую часть с помощью `checkDataPart`. Если проверка не проходит, генерируется исключение.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 
@@ -8586,7 +8675,9 @@ SELECT * FROM test2;
 
 ## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Оптимизация готова к промышленному использованию"}]}]} />
 
 Включает оптимизацию, которая объединяет агрегатные функции с одинаковым аргументом. Переписывает запрос, если он содержит как минимум две агрегатные функции [sum](/sql-reference/aggregate-functions/reference/sum), [count](/sql-reference/aggregate-functions/reference/count) или [avg](/sql-reference/aggregate-functions/reference/avg) с одинаковым аргументом, в [sumCount](/sql-reference/aggregate-functions/reference/sumcount).
 
@@ -11140,14 +11231,6 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
-## text_index_use_bloom_filter \{#text_index_use_bloom_filter\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "Новая настройка."}]}]}/>
-
-Для тестирования позволяет включать или отключать использование bloom-фильтра в текстовом индексе.
-
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11544,6 +11627,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Использует отсечение партиций Paimon для табличных функций Paimon
+
+## use_partition_pruning \{#use_partition_pruning\}
+
+**Псевдонимы**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Новая настройка, управляющая использованием в MergeTree ключа партиции для отсечения. \"use_partition_key\" является псевдонимом этой настройки."}]}]}/>
+
+Использовать ключ партиции для отсечения партиций во время выполнения запроса для таблиц MergeTree.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
 
 ## use_primary_key \{#use_primary_key\}
 

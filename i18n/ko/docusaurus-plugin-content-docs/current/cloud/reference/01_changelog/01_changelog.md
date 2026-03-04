@@ -43,6 +43,10 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026년 2월 20일 \{#february-20-2026\}
+
+- **ClickPipes:** 비활성 상태인 Reverse private endpoint는 설정된 유예 기간이 지나면 이제 자동으로 제거됩니다. 이를 통해 사용되지 않거나 잘못 구성된 엔드포인트가 백엔드에 무기한 남지 않도록 합니다. 자세한 내용은 자동 정리 [문서](/integrations/clickpipes/aws-privatelink#automatic-cleanup)를 참조하십시오.
+
 ## 2026년 2월 13일 \{#february-13-2026\}
 
 - [BigQuery Connector](/integrations/clickpipes/bigquery/overview)가 이제 Private Preview 단계입니다. 자세한 내용은 이 [블로그 글](https://clickhouse.com/blog/bigquery-clickpipe-private-preview)에서 확인하고, 액세스 권한을 받기 위해 [대기자 명단](https://clickhouse.com/cloud/clickpipes/bigquery-connector)에 등록하십시오.
@@ -1604,7 +1608,7 @@ ClickHouse Cloud는 이제 프로덕션 환경에서 사용할 수 있도록 준
 
 ### 일반 변경 사항 \{#general-changes-5\}
 
-- 로컬 ClickHouse 테이블 및 HTTP 소스를 사용하는 [dictionaries](/sql-reference/dictionaries/index.md)에 대한 지원이 추가되었습니다
+- 로컬 ClickHouse 테이블 및 HTTP 소스를 사용하는 [dictionaries](/sql-reference/statements/create/dictionary)에 대한 지원이 추가되었습니다
 - 뭄바이 [리전](/cloud/reference/supported-regions)에 대한 지원이 추가되었습니다
 
 ### Console 변경 사항 \{#console-changes-30\}

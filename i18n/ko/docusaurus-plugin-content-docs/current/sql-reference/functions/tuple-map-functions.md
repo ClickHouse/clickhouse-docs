@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-도입 버전: v
+도입 버전: v23.4
 
 임의의 문자열에서 key-value 쌍을 추출합니다. 문자열이 key-value 쌍 형식으로 100% 구조화되어 있을 필요는 없습니다.
 
@@ -60,7 +60,7 @@ key-value 쌍은 키, 그 뒤에 오는 `key_value_delimiter`, 그리고 값으�
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**인용 부호로서의 작은따옴표**
+**인용 문자로 작은따옴표 사용**
 
 ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**이스케이프 시퀀스 미지원 시 이스케이프 처리**
+**이스케이프 시퀀스를 지원하지 않는 경우**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **구문**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **별칭(Aliases)**: `str_to_map`, `mapFromString`
@@ -173,7 +174,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-도입 버전: v
+도입 버전: v23.4
 
 `extractKeyValuePairs`와 동일하지만 이스케이프를 지원합니다.
 
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **구문**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **인수**
@@ -403,7 +405,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 **구문**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **별칭**: `mapContains`

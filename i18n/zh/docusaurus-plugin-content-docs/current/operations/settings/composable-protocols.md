@@ -155,6 +155,57 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 </protocols>
 ```
 
+### 为每个端点配置自定义 HTTP 处理器 \{#custom-http-handlers-per-endpoint\}
+
+默认情况下，所有 `type=http` 协议条目共享同一个 `<http_handlers>` 配置。可以通过添加一个指向其他配置段的 `<handlers>` 标签来覆盖这一行为。这样可以让每个 HTTP 端口使用一组不同的 HTTP 路由规则。
+
+例如，要在端口 8124 上运行一个具有独立处理器的备用 HTTP API：
+
+```xml
+<protocols>
+
+  <plain_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8123</port>
+  </plain_http>
+
+  <alt_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8124</port>
+    <handlers>http_handlers_alt</handlers>
+  </alt_http>
+
+</protocols>
+
+<!-- Default handlers used by plain_http (port 8123) -->
+<http_handlers>
+    <defaults/>
+</http_handlers>
+
+<!-- Alternative handlers used by alt_http (port 8124) -->
+<http_handlers_alt>
+    <rule>
+        <url>/custom</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>SELECT 'custom_endpoint'</query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers_alt>
+```
+
+在此示例中，发往端口 8123 的请求使用标准的 `<http_handlers>` 规则，
+而发往端口 8124 的请求使用 `<http_handlers_alt>` 规则。如果省略 `<handlers>`，
+该端点将退回使用默认的 `<http_handlers>`。
+
+自定义 handlers 部分的格式与
+[`<http_handlers>`](/docs/en/operations/server-configuration-parameters/settings#http_handlers) 相同。
+在重新加载配置时，会检测对自定义 handlers 部分所做的更改，并自动重启相应的端点。
+
+
 ### 指定额外层参数 \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 某些模块可以包含额外的层参数。例如，TLS 层

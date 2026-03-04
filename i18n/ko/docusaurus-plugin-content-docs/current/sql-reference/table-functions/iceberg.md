@@ -439,7 +439,7 @@ y: 993
 
 ### 스키마 변경 \{#iceberg-writes-schema-evolution\}
 
-ClickHouse에서는 단순 타입(튜플, 배열, 맵이 아닌 타입)을 사용하는 컬럼을 추가, 삭제 또는 수정할 수 있습니다.
+ClickHouse에서는 단순 타입(튜플, 배열, 맵이 아닌 타입)을 사용하는 컬럼을 추가, 삭제 또는 수정하거나 이름을 변경할 수 있습니다.
 
 ### 예제 \{#example-iceberg-writes-evolution\}
 
@@ -498,6 +498,27 @@ Row 1:
 ──────
 x: Ivanov
 y: 993
+
+ALTER TABLE iceberg_writes_example RENAME COLUMN y TO value;
+SHOW CREATE TABLE iceberg_writes_example;
+
+   ┌─statement─────────────────────────────────────────────────┐
+1. │ CREATE TABLE default.iceberg_writes_example              ↴│
+   │↳(                                                        ↴│
+   │↳    `x` Nullable(String),                                ↴│
+   │↳    `value` Nullable(Int64)                              ↴│
+   │↳)                                                        ↴│
+   │↳ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/') │
+   └───────────────────────────────────────────────────────────┘
+
+SELECT *
+FROM iceberg_writes_example
+FORMAT VERTICAL;
+
+Row 1:
+──────
+x: Ivanov
+value: 993
 ```
 
 

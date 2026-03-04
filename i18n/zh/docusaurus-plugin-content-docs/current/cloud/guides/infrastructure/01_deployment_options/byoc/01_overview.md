@@ -27,7 +27,7 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 
 * AWS（GA）
 * GCP（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
-* Azure（Roadmap）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
+* Azure（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
 
 **支持的云区域：**
 在我们的[支持的区域](https://clickhouse.com/docs/cloud/reference/supported-regions)文档中列出的所有**公共区域**均可用于 BYOC 部署。目前不支持私有区域。

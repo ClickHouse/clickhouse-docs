@@ -7,12 +7,7 @@ title: 'Полнотекстовый поиск с текстовыми инде
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # Полнотекстовый поиск с текстовыми индексами \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 Текстовые индексы (также известные как [обратные индексы](https://en.wikipedia.org/wiki/Inverted_index)) обеспечивают быстрый полнотекстовый поиск по текстовым данным.
 Текстовый индекс хранит отображение от токенов к номерам строк, содержащих каждый токен.
@@ -81,13 +76,7 @@ two    : [3]
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-возвращает
-
-```text
-25.4
-```
-
-или любое другое значение, меньшее 26.2, вам потребуется настроить три дополнительных параметра для использования текстового индекса:
+возвращает значение меньше `26.2` (например, `25.4`), вам потребуется настроить три дополнительных параметра для использования текстового индекса:
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 В качестве альтернативы вы можете увеличить параметр [compatibility](../../../operations/settings/settings#compatibility) до `26.2` или новее, однако это затрагивает множество настроек и обычно требует предварительного тестирования.
 :::
 
-Текстовые индексы можно определять для столбцов типов [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)) с использованием следующего синтаксиса:
+Чтобы создать текстовый индекс, используйте следующий синтаксис:
 
 ```sql
 CREATE TABLE table
@@ -124,6 +113,14 @@ CREATE TABLE table
 ENGINE = MergeTree
 ORDER BY key
 ```
+
+Текстовые индексы можно определять для столбцов следующих типов:
+
+* [String](/sql-reference/data-types/string.md) и [FixedString](/sql-reference/data-types/fixedstring.md),
+* [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md), и
+* [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)).
+
+Также поддерживаются столбцы типа [Nullable(T)](/sql-reference/data-types/nullable.md) и [LowCardinality()](/sql-reference/data-types/lowcardinality.md), включая `Array(Nullable(String or FixedString))`.
 
 Также можно добавить текстовый индекс к существующей таблице:
 
@@ -159,7 +156,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Аргумент tokenizer (обязательный)**. Аргумент `tokenizer` задаёт токенизатор:
+**Аргумент tokenizer (обязательный)**. Аргумент `tokenizer` определяет используемый токенизатор:
 
 
 * `splitByNonAlpha` разбивает строки по небуквенно-цифровым ASCII-символам (см. функцию [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)).
@@ -215,9 +212,10 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 1. Приведение к нижнему или верхнему регистру для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8) (см. первый пример ниже).
 2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
-3. Удаление или преобразование нежелательных символов или подстрок, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](./sql-reference/functions/string-replace-functions.md/#translate).
+3. Удаление или преобразование нежелательных символов или подстрок, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate).
 
 Выражение препроцессора должно преобразовывать входное значение типа [String](/sql-reference/data-types/string.md) или [FixedString](/sql-reference/data-types/fixedstring.md) в значение того же типа.
+Если текстовый индекс был построен по столбцу типа `Nullable(T)` или `LowCardinality(T)`, то выражение препроцессора должно принимать значения типов Nullable(T) или LowCardinality(T) (то есть не приводить к выбросу исключения).
 
 Примеры:
 
@@ -265,7 +263,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-Препроцессор также может использоваться со столбцами типа [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md).
 В этом случае выражение препроцессора применяется к элементам массива по отдельности.
 
 Пример:
@@ -302,7 +299,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**Дополнительные аргументы (необязательно)**.
+**Дополнительные аргументы (необязательные)**.
 
 
 <details markdown="1">

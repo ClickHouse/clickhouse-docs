@@ -427,7 +427,7 @@ y: 993
 
 ### 模式演进 \{#iceberg-writes-schema-evolution\}
 
-ClickHouse 允许对具有简单类型（非 tuple、非 array、非 map）的列执行添加、删除或修改操作。
+ClickHouse 允许对具有简单类型（非 tuple、非 array、非 map）的列执行添加、删除、修改或重命名操作。
 
 ### 示例 \{#example-iceberg-writes-evolution\}
 
@@ -486,7 +486,29 @@ Row 1:
 ──────
 x: Ivanov
 y: 993
+
+ALTER TABLE iceberg_writes_example RENAME COLUMN y TO value;
+SHOW CREATE TABLE iceberg_writes_example;
+
+   ┌─statement─────────────────────────────────────────────────┐
+1. │ CREATE TABLE default.iceberg_writes_example              ↴│
+   │↳(                                                        ↴│
+   │↳    `x` Nullable(String),                                ↴│
+   │↳    `value` Nullable(Int64)                              ↴│
+   │↳)                                                        ↴│
+   │↳ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/') │
+   └───────────────────────────────────────────────────────────┘
+
+SELECT *
+FROM iceberg_writes_example
+FORMAT VERTICAL;
+
+Row 1:
+──────
+x: Ivanov
+value: 993
 ```
+
 
 ### 合并整理（Compaction） \{#iceberg-writes-compaction\}
 

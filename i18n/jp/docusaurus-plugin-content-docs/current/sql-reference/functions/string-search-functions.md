@@ -401,7 +401,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 **構文**
 
 ```sql
-extractAllGroups(s, regexp)
+extractGroups(s, regexp)
 ```
 
 **引数**
@@ -423,7 +423,7 @@ WITH '< Server: nginx
 < Content-Type: text/html; charset=UTF-8
 < Connection: keep-alive
 ' AS s
-SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
@@ -620,7 +620,7 @@ hasAnyTokens(input, needles)
 
 **引数**
 
-* `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
+* `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable) または [`Nullable(FixedString)`](/sql-reference/data-types/nullable) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array) または [`Array(Nullable(String))`](/sql-reference/data-types/array) または [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
 * `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
 
@@ -652,7 +652,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**トークナイズせずに文字列をそのまま検索するための検索対象文字列を配列で指定します**
+**トークナイズせずにそのまま検索する needle を配列で指定します**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
@@ -698,7 +698,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**配列カラムの例**
+**配列型カラムの例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
@@ -938,13 +938,14 @@ SELECT hasToken('clickhouse test', 'test')
 
 ## hasTokenCaseInsensitive \{#hasTokenCaseInsensitive\}
 
-導入バージョン: v
+導入バージョン: v20.1
 
 tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文字を区別せずに検索します。
 
 **構文**
 
 ```sql
+hasTokenCaseInsensitive(haystack, needle)
 ```
 
 **引数**
@@ -957,13 +958,14 @@ tokenbf&#95;v1 索引を使用して、haystack 内の needle を大文字小文
 
 ## hasTokenCaseInsensitiveOrNull \{#hasTokenCaseInsensitiveOrNull\}
 
-導入バージョン: v
+導入バージョン: v23.1
 
 `tokenbf_v1` 索引を使用して、haystack 内で needle を大文字小文字を区別せずに検索します。needle が不正な形式の場合は null を返します。
 
 **構文**
 
 ```sql
+hasTokenCaseInsensitiveOrNull(haystack, needle)
 ```
 
 **引数**

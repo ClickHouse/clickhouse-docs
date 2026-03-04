@@ -466,6 +466,18 @@ BSON 포맷에 대해 스키마 추론 시 지원되지 않는 타입의 필드�
 
 CapnProto 포맷에 대해 스키마 추론(schema inference)을 수행할 때 지원되지 않는 타입의 컬럼은 건너뜁니다
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to allow parsing and processing remaining data in the buffer if the connection closes unexpectedly"}]}]}/>
+
+이 옵션을 활성화하면 연결이 예기치 않게 종료되더라도 버퍼에 남아 있는 데이터가 오류로 간주되지 않고 파싱되어 처리됩니다.
+
+:::note
+이 옵션을 활성화하면 병렬 파싱이 비활성화되고 중복 제거가 불가능해집니다.
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -971,6 +983,18 @@ JSON/JSONCompact/JSONColumnsWithMetadata 입력 포맷에서 이 설정이 1이�
 
 입력 포맷에서 데이터를 파싱할 때 형성되는 블록의 크기를 바이트 단위로 제한합니다. 블록이 ClickHouse 측에서 생성되는 행 기반 입력 포맷에서 사용됩니다.
 0은 바이트 단위 크기에 제한이 없음을 의미합니다.
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "input format에 의해 블록이 출력되기 전에 대기하는 최대 시간(밀리초)을 제한하는 새로운 설정"}]}]}/>
+
+행 기반 input format에서 파싱 중 블록을 출력하기 전에 대기하는 최대 시간을 밀리초 단위로 제한합니다. 0으로 설정하면 제한이 없음을 의미합니다.
+
+:::note
+이 옵션은 `input_format_connection_handling`이 활성화되어 있는 경우에만 동작합니다. 값을 설정하면 병렬 파싱이 비활성화되며 중복 제거가 불가능해집니다.
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 

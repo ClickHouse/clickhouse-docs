@@ -27,7 +27,7 @@ BYOC разработан специально для крупномасштаб
 
 * AWS (GA)
 * GCP (Private Preview). Если вы заинтересованы, присоединитесь к списку ожидания [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
-* Azure (Roadmap). Если вы заинтересованы, присоединитесь к списку ожидания [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
+* Azure (Private Preview). Если вы заинтересованы, присоединитесь к списку ожидания [здесь](https://clickhouse.com/cloud/bring-your-own-cloud).
 
 **Поддерживаемые регионы Cloud:**
 Все **публичные регионы**, перечисленные в нашей документации по [поддерживаемым регионам](https://clickhouse.com/docs/cloud/reference/supported-regions), доступны для развертываний BYOC. Частные регионы в настоящее время не поддерживаются.

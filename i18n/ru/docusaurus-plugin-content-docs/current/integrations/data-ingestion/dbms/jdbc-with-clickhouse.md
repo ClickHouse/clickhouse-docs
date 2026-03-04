@@ -18,6 +18,10 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 
 # Подключение ClickHouse к внешним источникам данных с помощью JDBC \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
 
+:::warning
+clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. Он может содержать уязвимости, влияющие на надёжность и безопасность. Используйте его на свой страх и риск.
+:::
+
 :::note
 Использование JDBC требует ClickHouse JDBC Bridge, поэтому вам понадобится использовать `clickhouse-local` на локальной машине, чтобы передавать данные из вашей базы данных в ClickHouse Cloud. Перейдите на страницу [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) в разделе **Migrate** документации для получения подробной информации.
 :::
@@ -38,7 +42,7 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 1. установлена оболочка Unix и есть доступ в интернет
 2. установлен <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a>
 3. установлена актуальная версия **Java** (например, <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> версии >= 17)
-4. установлена и запущена актуальная версия **MySQL** (например, <a href="https://www.mysql.com" target="_blank">MySQL</a> версии >= 8)
+4. установлена и запущена актуальная версия **MySQL** (например, <a href="https://www.mysql.com" target="_blank">MySQL</a> версии >=8)
 5. установлена и запущена актуальная версия **ClickHouse** ([см. установку](/getting-started/install/install.mdx))
 :::
 

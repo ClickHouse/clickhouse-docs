@@ -12,7 +12,7 @@ doc_type: 'reference'
 도입 버전: v22.1
 
 Cramer&#39;s V는 테이블의 두 컬럼 간 연관성을 측정하는 지표입니다.
-[`cramersV` 함수](/sql-reference/aggregate-functions/reference/cramersV)의 결과는 0(변수 간에 연관성이 없음을 의미)에서 1까지의 범위를 가지며, 각 값이 다른 값에 의해 완전히 결정될 때에만 1에 도달합니다.
+[`cramersV` 함수](/sql-reference/aggregate-functions/reference/cramersv)의 결과는 0(변수 간에 연관성이 없음을 의미)에서 1까지의 범위를 가지며, 각 값이 다른 값에 의해 완전히 결정될 때에만 1에 도달합니다.
 이 함수는 편향이 크게 발생할 수 있으므로, 이 Cramer&#39;s V 버전은 [편향 수정(bias correction)](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction)을 사용합니다.
 
 **구문**

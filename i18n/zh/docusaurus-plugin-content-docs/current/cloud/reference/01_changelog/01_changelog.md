@@ -43,6 +43,10 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026 年 2 月 20 日 \{#february-20-2026\}
+
+- **ClickPipes：** 处于非活动状态的反向私有终端节点现在会在经过指定的宽限期后自动删除。这样可以确保未使用或配置错误的终端节点不会在后端系统中被无限期保留。更多详情请参阅自动清理[文档](/integrations/clickpipes/aws-privatelink#automatic-cleanup)。
+
 ## 2026 年 2 月 13 日 \{#february-13-2026\}
 
 - [BigQuery Connector](/integrations/clickpipes/bigquery/overview) 现已进入私有预览阶段。阅读这篇[博客文章](https://clickhouse.com/blog/bigquery-clickpipe-private-preview)了解更多详情，并加入[候补名单](https://clickhouse.com/cloud/clickpipes/bigquery-connector)以申请访问权限。
@@ -1584,7 +1588,7 @@ ClickHouse Cloud 现已达到生产级就绪状态，具备 SOC2 Type II 合规�
 
 ### 常规更改 \{#general-changes-5\}
 
-- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/dictionaries/index.md) 的支持
+- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/statements/create/dictionary) 的支持
 - 引入了对孟买 [region](/cloud/reference/supported-regions) 的支持
 
 ### 控制台更改 \{#console-changes-30\}

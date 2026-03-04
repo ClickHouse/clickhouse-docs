@@ -466,6 +466,18 @@ TSV 格式中 NULL 的自定义表示形式
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to allow parsing and processing remaining data in the buffer if the connection closes unexpectedly"}]}]}/>
+
+启用此选项后，如果连接意外关闭，缓冲区中剩余的任何数据将被解析和处理，而不是视为错误。
+
+:::note
+启用此选项会禁用并行解析，并且无法进行去重。
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -970,6 +982,18 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 限制在解析输入格式数据时生成的数据块大小（以字节为单位）。当在 ClickHouse 端构建数据块时，适用于基于行的输入格式。
 0 表示在字节数上不设上限。
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]}/>
+
+限制在基于行的输入格式解析过程中，在输出一个数据块之前所等待的最大时间（毫秒）。0 表示不限制。
+
+:::note
+此选项仅在启用 `input_format_connection_handling` 时有效。设置该值还会禁用并行解析，并使无法进行去重。
+:::
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 

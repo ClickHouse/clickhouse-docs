@@ -7,12 +7,7 @@ title: '使用文本索引的全文搜索'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 使用文本索引进行全文搜索 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 文本索引（也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)）可以对文本数据进行快速全文搜索。
 文本索引存储从词元到包含该词元的行号的映射关系。
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-返回值
-
-```text
-25.4
-```
-
-或者如果设置为任何小于 26.2 的值，则需要再配置三个额外的设置才能使用文本索引：
+如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置以下三个设置项，才能使用文本索引：
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 或者，你也可以将 [compatibility](../../../operations/settings/settings#compatibility) 设置提高到 `26.2` 或更高版本，但这会影响许多设置，并且通常需要事先进行测试。
 :::
 
-可以在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引，语法如下：
+要创建文本索引，请使用以下语法：
 
 ```sql
 CREATE TABLE table
@@ -125,7 +114,15 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
-或者，可以为现有表添加一个文本索引：
+文本索引可以在下列类型的列上定义：
+
+* [String](/sql-reference/data-types/string.md) 和 [FixedString](/sql-reference/data-types/fixedstring.md)，
+* [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md)，以及
+* [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数）。
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 和 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 类型的列也受支持，包括 `Array(Nullable(String or FixedString))`。
+
+或者，要为现有表添加一个文本索引：
 
 ```sql
 ALTER TABLE table
@@ -147,7 +144,7 @@ ALTER TABLE table
 
 ```
 
-如果你向已有表添加一个索引，我们建议为该表中已有的分区片段物化该索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会退回到较慢的穷举扫描）。
+如果你向已有表添加一个索引，我们建议为表中现有的分区片段物化此索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会回退到较慢的穷举扫描方式）。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
@@ -215,9 +212,10 @@ Preprocessor 参数的典型用例包括：
 
 1. 转换为小写或大写以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（见下方第一个示例）。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](./sql-reference/functions/string-replace-functions.md/#translate)。
+3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)。
 
 预处理器表达式必须将类型为 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 的输入值转换为相同类型的值。
+如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值（即不会抛出异常）。
 
 示例：
 
@@ -265,7 +263,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-预处理器也可以与 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列配合使用。
 在这种情况下，预处理器表达式会逐个转换数组元素。
 
 示例：
@@ -285,7 +282,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-要在基于 [Map](/sql-reference/data-types/map.md) 类型列的文本索引中定义预处理器，用户需要先决定该索引是建立在 Map 的键上还是值上。
+要在针对 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要先决定该索引是基于 Map 的键还是值构建的。
 
 示例：
 

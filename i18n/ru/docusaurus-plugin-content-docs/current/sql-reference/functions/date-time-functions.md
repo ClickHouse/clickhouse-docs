@@ -2235,7 +2235,7 @@ FORMAT PrettyCompactMonoBlock
 **Синтаксис**
 
 ```sql
-nowInBlock([scale[, timezone]])
+nowInBlock64([scale[, timezone]])
 ```
 
 **Аргументы**
@@ -2279,7 +2279,7 @@ FORMAT PrettyCompactMonoBlock
 **Синтаксис**
 
 ```sql
-serverTimeZone()
+serverTimezone()
 ```
 
 **Псевдонимы**: `serverTimeZone`
@@ -3259,7 +3259,7 @@ SELECT timezone()
 **Синтаксис**
 
 ```sql
-timeZoneOf(datetime)
+timezoneOf(datetime)
 ```
 
 **Псевдонимы**: `timeZoneOf`
@@ -3297,7 +3297,7 @@ SELECT timezoneOf(now());
 **Синтаксис**
 
 ```sql
-timeZoneOffset(datetime)
+timezoneOffset(datetime)
 ```
 
 **Псевдонимы**: `timeZoneOffset`
@@ -3317,7 +3317,7 @@ timeZoneOffset(datetime)
 ```sql title=Query
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time,
 toTypeName(Time) AS Type,
-timeZoneOffset(Time) AS Offset_in_seconds,
+timezoneOffset(Time) AS Offset_in_seconds,
 (Offset_in_seconds / 3600) AS Offset_in_hours;
 ```
 
@@ -5058,7 +5058,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 **Синтаксис**
 
 ```sql
-toTime(date[, timezone])
+toTimeWithFixedDate(date[, timezone])
 ```
 
 **Аргументы**
@@ -5075,7 +5075,7 @@ toTime(date[, timezone])
 **Вычисление разницы времени между двумя датами**
 
 ```sql title=Query
-SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
+SELECT toTimeWithFixedDate('2025-06-15 12:00:00'::DateTime) - toTimeWithFixedDate('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
 ```
 
 ```response title=Response
@@ -5095,7 +5095,7 @@ SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::D
 **Синтаксис**
 
 ```sql
-toTimeZone(datetime, timezone)
+toTimezone(datetime, timezone)
 ```
 
 **Псевдонимы**: `toTimeZone`
@@ -5117,10 +5117,10 @@ toTimeZone(datetime, timezone)
 SELECT toDateTime('2019-01-01 00:00:00', 'UTC') AS time_utc,
 toTypeName(time_utc) AS type_utc,
 toInt32(time_utc) AS int32utc,
-toTimeZone(time_utc, 'Asia/Yekaterinburg') AS time_yekat,
+toTimezone(time_utc, 'Asia/Yekaterinburg') AS time_yekat,
 toTypeName(time_yekat) AS type_yekat,
 toInt32(time_yekat) AS int32yekat,
-toTimeZone(time_utc, 'US/Samoa') AS time_samoa,
+toTimezone(time_utc, 'US/Samoa') AS time_samoa,
 toTypeName(time_samoa) AS type_samoa,
 toInt32(time_samoa) AS int32samoa
 FORMAT Vertical;

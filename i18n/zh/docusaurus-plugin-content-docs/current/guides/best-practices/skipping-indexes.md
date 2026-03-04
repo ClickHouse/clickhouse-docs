@@ -142,6 +142,18 @@ SET send_logs_level='trace';
 
 此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而将不会应用索引。
 
+{/* vale off */ }
+
+
+### text \{#text\}
+
+{/* vale on */ }
+
+对于涉及自然语言或自由形式文本搜索的工作负载（例如在大型文本列中搜索单词或短语），ClickHouse 提供了一种**文本索引**（真正的倒排索引）。
+文本索引支持高效的全文搜索语义和基于分词的查找。由于它提供了确定性的词元（token）索引，并且在诸如 `hasAnyToken`、`hasAllTokens` 等搜索函数以及所有常见文本搜索函数上具备更好的性能，因此是全文搜索查询的推荐选择。
+
+有关详细信息，请参阅[此处](engines/table-engines/mergetree-family/textindexes.md)的文本索引文档。
+
 
 ### Bloom filter 类型 \{#bloom-filter-types\}
 

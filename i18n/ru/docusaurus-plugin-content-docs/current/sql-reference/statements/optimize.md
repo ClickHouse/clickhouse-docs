@@ -19,6 +19,10 @@ doc_type: 'reference'
 OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION ID 'partition_id'] [FINAL | FORCE] [DEDUPLICATE [BY expression]]
 ```
 
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
 Запрос `OPTIMIZE` поддерживается для семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) (включая [materialized views](/sql-reference/statements/create/view#materialized-view)) и движка [Buffer](../../engines/table-engines/special/buffer.md). Другие табличные движки `OPTIMIZE` не поддерживают.
 
 Когда `OPTIMIZE` используется с семейством табличных движков [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md), ClickHouse создает задачу на выполнение слияния и ожидает её завершения на всех репликах (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `2`) или на текущей реплике (если настройка [alter&#95;sync](/operations/settings/settings#alter_sync) установлена в значение `1`).
@@ -33,6 +37,55 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 :::note
 Если `alter_sync` установлен в значение `2`, и некоторые реплики неактивны дольше времени, заданного настройкой `replication_wait_for_inactive_replica_timeout`, генерируется исключение `UNFINISHED`.
 :::
+
+## DRY RUN \{#dry-run\}
+
+Предложение `DRY RUN` имитирует слияние указанных частей без фиксации результата. Слитая часть записывается во временное место на диске, проходит проверку и затем удаляется. Исходные части и данные таблицы остаются неизменными.
+
+Это полезно для:
+
+* Тестирования корректности слияния между разными версиями ClickHouse.
+* Детерминированного воспроизведения ошибок, связанных со слияниями.
+* Измерения производительности слияния.
+
+`DRY RUN` поддерживается только для таблиц семейства [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Требуется ключевое слово `PARTS` со списком имён частей. Все указанные части должны существовать, быть активными и принадлежать одной и той же партиции.
+
+`DRY RUN` несовместим с `FINAL` и `PARTITION`. Его можно комбинировать с `DEDUPLICATE` (с необязательным указанием столбцов) и `CLEANUP` (для таблиц `ReplacingMergeTree`).
+
+**Синтаксис**
+
+```sql
+OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
+```
+
+По умолчанию результирующая часть после слияния проверяется аналогично запросу [`CHECK TABLE`](/sql-reference/statements/check-table). Это поведение контролируется настройкой [optimize&#95;dry&#95;run&#95;check&#95;part](/operations/settings/settings#optimize_dry_run_check_part) (включена по умолчанию). При её отключении валидация не выполняется, что может быть полезно для бенчмаркинга самой операции слияния.
+
+**Пример**
+
+```sql
+CREATE TABLE dry_run_example (key UInt64, value String) ENGINE = MergeTree ORDER BY key;
+
+INSERT INTO dry_run_example VALUES (1, 'a'), (2, 'b');
+INSERT INTO dry_run_example VALUES (1, 'c'), (4, 'd');
+
+-- Simulate merging using two parts
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0';
+
+-- Simulate merging with deduplication
+OPTIMIZE TABLE dry_run_example DRY RUN PARTS 'all_1_1_0', 'all_2_2_0' DEDUPLICATE;
+
+-- Parts and data remain unchanged after DRY RUN
+SELECT name, rows FROM system.parts
+WHERE database = currentDatabase() AND table = 'dry_run_example' AND active
+ORDER BY name;
+```
+
+```response
+┌─name────────┬─rows─┐
+│ all_1_1_0   │    2 │
+│ all_2_2_0   │    2 │
+└─────────────┴──────┘
+```
 
 ## Выражение BY \{#by-expression\}
 

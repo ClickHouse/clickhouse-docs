@@ -34,20 +34,22 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
 Настройки для дополнительных необязательных улучшений в системе управления доступом.
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Default |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `on_cluster_queries_require_cluster_grant`      | Определяет, требуют ли запросы `ON CLUSTER` привилегию `CLUSTER`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `true`  |
-| `role_cache_expiration_time_seconds`            | Задаёт количество секунд с момента последнего обращения, в течение которых роль хранится в кэше ролей (Role Cache).                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `600`   |
-| `select_from_information_schema_requires_grant` | Определяет, требует ли `SELECT * FROM information_schema.<table>` каких‑либо привилегий или может выполняться любым пользователем. Если установлено значение `true`, то этот запрос требует `GRANT SELECT ON information_schema.<table>` так же, как и для обычных таблиц.                                                                                                                                                                                                                                                                                           | `true`  |
-| `select_from_system_db_requires_grant`          | Определяет, требует ли `SELECT * FROM system.<table>` каких‑либо привилегий или может выполняться любым пользователем. Если установлено значение `true`, то этот запрос требует `GRANT SELECT ON system.<table>` так же, как и для несистемных таблиц. Исключения: несколько системных таблиц (`tables`, `columns`, `databases` и некоторые константные таблицы, такие как `one`, `contributors`) по‑прежнему доступны всем; а если выдана привилегия `SHOW` (например, `SHOW USERS`), то соответствующая системная таблица (то есть `system.users`) будет доступна. | `true`  |
-| `settings_constraints_replace_previous`         | Определяет, будет ли ограничение в профиле настроек для некоторой настройки отменять действие предыдущего ограничения (определённого в других профилях) для этой настройки, включая поля, которые не заданы новым ограничением. Также включает тип ограничения `changeable_in_readonly`.                                                                                                                                                                                                                                                                             | `true`  |
-| `table_engines_require_grant`                   | Определяет, требуется ли привилегия для создания таблицы с определённым движком таблицы.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `false` |
-| `users_without_row_policies_can_read_rows`      | Определяет, могут ли пользователи без разрешающих политик строк (ROW POLICY) по-прежнему читать строки с помощью запроса `SELECT`. Например, если есть два пользователя A и B, и политика строк (ROW POLICY) определена только для A, то если этот параметр равен `true`, пользователь B увидит все строки. Если этот параметр равен `false`, пользователь B не увидит ни одной строки.                                                                                                                                                                              | `true`  |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `on_cluster_queries_require_cluster_grant`      | Определяет, требуют ли запросы `ON CLUSTER` привилегию `CLUSTER`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `true`  |
+| `role_cache_expiration_time_seconds`            | Задаёт количество секунд с момента последнего обращения, в течение которых роль хранится в кэше ролей (Role Cache).                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `600`   |
+| `select_from_information_schema_requires_grant` | Определяет, требует ли `SELECT * FROM information_schema.<table>` каких‑либо привилегий или может выполняться любым пользователем. Если установлено значение `true`, то этот запрос требует `GRANT SELECT ON information_schema.<table>` так же, как и для обычных таблиц.                                                                                                                                                                                                                                                                                            | `true`  |
+| `select_from_system_db_requires_grant`          | Определяет, требует ли `SELECT * FROM system.<table>` каких‑лиибо привилегий или может выполняться любым пользователем. Если установлено значение `true`, то этот запрос требует `GRANT SELECT ON system.<table>` так же, как и для несистемных таблиц. Исключения: несколько системных таблиц (`tables`, `columns`, `databases` и некоторые константные таблицы, такие как `one`, `contributors`) по‑прежнему доступны всем; а если выдана привилегия `SHOW` (например, `SHOW USERS`), то соответствующая системная таблица (то есть `system.users`) будет доступна. | `true`  |
+| `settings_constraints_replace_previous`         | Определяет, будет ли ограничение в профиле настроек для некоторой настройки отменять действие предыдущего ограничения (определённого в других профилях) для этой настройки, включая поля, которые не заданы новым ограничением. Также включает тип ограничения `changeable_in_readonly`.                                                                                                                                                                                                                                                                              | `true`  |
+| `table_engines_require_grant`                   | Определяет, требуется ли привилегия для создания таблицы с определённым движком таблицы.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `false` |
+| `throw_on_unmatched_row_policies`               | Определяет, должно ли при чтении из таблицы генерироваться исключение, если для таблицы заданы политики строк (ROW POLICY), но ни одна из них не относится к текущему пользователю.                                                                                                                                                                                                                                                                                                                                                                                   | `false` |
+| `users_without_row_policies_can_read_rows`      | Определяет, могут ли пользователи без разрешающих политик строк (ROW POLICY) по-прежнему читать строки с помощью запроса `SELECT`. Например, если есть два пользователя A и B, и политика строк (ROW POLICY) определена только для A, то если этот параметр равен `true`, пользователь B увидит все строки. Если этот параметр равен `false`, пользователь B не увидит ни одной строки.                                                                                                                                                                               | `true`  |
 
 Example:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -74,6 +76,10 @@ Example:
 ## aggregate_function_group_array_max_element_size \{#aggregate_function_group_array_max_element_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />Максимальный размер элемента массива в байтах для функции groupArray. Этот лимит проверяется при сериализации и позволяет избежать чрезмерного размера состояния.
+
+## allow_experimental_webassembly_udf \{#allow_experimental_webassembly_udf\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />Включает экспериментальную поддержку UDF на WebAssembly
 
 ## allow_feature_tier \{#allow_feature_tier\}
 
@@ -930,7 +936,7 @@ ClickHouse перезагружает встроенные словари каж
 
 См. также:
 
-* &quot;[Словари](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Словари](../../sql-reference/statements/create/dictionary/overview.md)&quot;.
 
 **Пример**
 
@@ -1253,6 +1259,12 @@ ClickHouse перезагружает встроенные словари каж
 Все вышеперечисленное также применимо к `aes_256_gcm_siv` (но длина ключа должна составлять 32 байта).
 :::
 
+
+## enforce_keeper_component_tracking \{#enforce_keeper_component_tracking\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Если параметр включён, каждый запрос ZooKeeper должен иметь имя компонента, установленное через `Coordination::setCurrentComponent`. Если компонент отсутствует, выбрасывается исключение `LOGICAL_ERROR`.
 
 ## error_log \{#error_log\}
 
@@ -1611,6 +1623,10 @@ ClickHouse перезагружает встроенные словари каж
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования меток вторичного индекса.
 
+## index_mark_cache_prewarm_ratio \{#index_mark_cache_prewarm_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.95" />Доля общего объёма кэша меток индекса, которую нужно заполнить при предварительном прогреве.
+
 ## index_mark_cache_size \{#index_mark_cache_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
@@ -1650,7 +1666,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## insert_deduplication_version \{#insert_deduplication_version\}
 
-<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 Этот параметр позволяет перейти с версии кода, в которой дедупликация вставок для синхронных и асинхронных операций выполняется по‑разному и непрозрачно, на версию кода, в которой вставляемые данные дедуплицируются единообразно для синхронных и асинхронных вставок.
 Значение по умолчанию — `old_separate_hashes`, что означает, что ClickHouse будет использовать разные хэши дедупликации для синхронных и асинхронных вставок (как и раньше).
@@ -1823,6 +1839,14 @@ ClickHouse поддерживает динамическую ротацию ме
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальное количество фоновых потоков jemalloc, которые создаются; установите 0, чтобы использовать значение по умолчанию jemalloc
+
+## jemalloc_profiler_sampling_rate \{#jemalloc_profiler_sampling_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="19" />
+
+Управляет параметром jemalloc `lg_prof_sample` — двоичным логарифмом среднего интервала (в байтах) между выборками выделения памяти.
+Значение по умолчанию 19 соответствует 512 KiB. Меньшее значение увеличивает частоту выборки (больше накладные расходы, более детальная информация), а большее — уменьшает её.
+Изменение этого значения вызывает `prof.reset`, который сбрасывает всю накопленную статистику профилирования. Требуется включённое профилирование (`MALLOC_CONF=prof:true`).
 
 ## keep_alive_timeout \{#keep_alive_timeout\}
 
@@ -4963,6 +4987,10 @@ ClickHouse использует этот параметр для всех таб
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+Список пользователей, разделённых запятыми, для которых игнорируется ранняя проверка ограничения по памяти. Если пользователь не входит в этот список, запрос будет отклонён, если общее использование памяти превышает лимит.
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

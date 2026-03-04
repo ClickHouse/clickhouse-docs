@@ -68,7 +68,6 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 | [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
@@ -94,6 +93,9 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
 | [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
 | [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
+| [ast&#95;fuzzer&#95;runs](/operations/settings/settings#ast_fuzzer_runs)                                                                                                                                                            | `0`                     |
+| [ast&#95;fuzzer&#95;any&#95;query](/operations/settings/settings#ast_fuzzer_any_query)                                                                                                                                              | `0`                     |
+| [allow&#95;fuzz&#95;query&#95;functions](/operations/settings/settings#allow_fuzz_query_functions)                                                                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                                      | `0`                     |
 | [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                                          | `0`                     |
 | [automatic&#95;parallel&#95;replicas&#95;mode](/operations/settings/settings#automatic_parallel_replicas_mode)                                                                                                                      | `0`                     |

@@ -555,7 +555,7 @@ Dynamic データ型のシリアライゼーションバージョンを指定し
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の設定が、
@@ -2492,9 +2492,9 @@ ClickHouse Cloud でのみ利用可能です。
 
 ## shared_merge_tree_enable_automatic_empty_partitions_cleanup \{#shared_merge_tree_enable_automatic_empty_partitions_cleanup\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Enable by default"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 空のパーティションに対応する Keeper エントリのクリーンアップを有効にします。
 
@@ -2774,6 +2774,14 @@ ClickHouse Cloud でのみ利用可能です。
 
 可能な場合はリーダーから仮想パーツを読み込みます。ClickHouse Cloud でのみ使用可能です。
 
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "New setting"}]}]}/>
+
+バックグラウンドでレプリカが replica set の更新を試みる頻度。
+
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2877,6 +2885,14 @@ ClickHouse Cloud でのみ利用可能です。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 これはテーブル用ディスクであり、path/endpoint はデータベース全体のデータではなくテーブルデータを指す必要があります。s3_plain/s3_plain_rewritable/web に対してのみ設定可能です。
+
+## table_readonly \{#table_readonly\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "テーブルを読み取り専用としてマークし、挿入と変更を防止する新しい設定"}]}]}/>
+
+true に設定すると、テーブルは読み取り専用モードになります。データの挿入やテーブルの変更を行おうとすると、すべて失敗します。
 
 ## temporary_directories_lifetime \{#temporary_directories_lifetime\}
 
