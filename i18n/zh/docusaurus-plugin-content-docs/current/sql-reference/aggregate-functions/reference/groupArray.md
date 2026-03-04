@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArray \{#groupArray\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 创建由参数值组成的数组。
 值可以以任意（不确定的）顺序添加到数组中。

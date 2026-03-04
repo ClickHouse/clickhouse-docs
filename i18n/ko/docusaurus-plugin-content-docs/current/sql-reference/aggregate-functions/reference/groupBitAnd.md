@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitAnd \{#groupBitAnd\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 일련의 숫자에 비트 단위 AND 연산을 적용합니다.
 

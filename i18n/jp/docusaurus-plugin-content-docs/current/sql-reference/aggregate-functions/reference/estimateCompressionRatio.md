@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-導入バージョン: v25.4
+導入バージョン: v25.4.0
 
 指定したカラムを圧縮することなく、その圧縮率を推定します。
 
@@ -74,7 +74,7 @@ SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_esti
 └───────────────────┘
 ```
 
-**複数コーデックの利用**
+**複数コーデックの使用**
 
 ```sql title=Query
 SELECT estimateCompressionRatio('T64, ZSTD')(number) AS estimate FROM compression_estimate_example

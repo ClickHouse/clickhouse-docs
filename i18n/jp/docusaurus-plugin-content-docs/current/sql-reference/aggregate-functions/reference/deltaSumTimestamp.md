@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## deltaSumTimestamp \{#deltaSumTimestamp\}
 
-導入バージョン: v21.6
+導入バージョン: v21.6.0
 
 連続する行同士の差分を加算します。
 差分が負の場合は無視されます。

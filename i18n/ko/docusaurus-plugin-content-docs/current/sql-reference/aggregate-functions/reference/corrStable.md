@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## corrStable \{#corrStable\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [피어슨 상관 계수](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)를 계산합니다:
 

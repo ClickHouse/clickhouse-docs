@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## contingency \{#contingency\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 `contingency` 함수는 [contingency coefficient](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)를 계산하며, 이는 테이블에서 두 컬럼 간의 연관성을 측정하는 값입니다.
 계산 방식은 [`cramersV`](/sql-reference/aggregate-functions/reference/cramersv) 함수와 유사하지만, 제곱근의 분모가 다릅니다.

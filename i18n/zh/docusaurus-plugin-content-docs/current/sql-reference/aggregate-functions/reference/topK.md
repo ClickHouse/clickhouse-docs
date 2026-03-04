@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## topK \{#topK\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个数组，其中包含指定列中近似出现次数最多的值。结果数组按照值的近似出现频率降序排序（而不是按值本身排序）。
 
@@ -35,7 +35,7 @@ topK(N, load_factor, 'counts')(column)
 
 * `N` — 要返回的元素数量。默认值：10。`N` 的最大值为 `65536`。[`UInt64`](/sql-reference/data-types/int-uint)
 * `load_factor` — 可选。用于定义为存储值预留的单元格数量。如果 `uniq(column) > N * load_factor`，则 topK 函数的结果是近似值。默认值：3。[`UInt64`](/sql-reference/data-types/int-uint)
-* `counts` — 可选。定义结果中是否应包含近似计数和误差值。[`Bool`](/sql-reference/data-types/boolean)
+* `counts` — 可选。用于指定结果中是否应包含近似计数和误差值。[`Bool`](/sql-reference/data-types/boolean)
 
 **参数**
 

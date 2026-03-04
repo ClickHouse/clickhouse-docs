@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## deltaSum \{#deltaSum\}
 
-도입 버전: v21.3
+도입 버전: v21.3.0
 
 연속된 행 사이의 산술 차이를 합산합니다.
 차이가 음수인 경우 무시됩니다.
@@ -51,7 +51,7 @@ SELECT deltaSum(arrayJoin([1, 2, 3]))
 └────────────────────────────────┘
 ```
 
-**음수 차이를 무시하는 혼합 값**
+**음수 차이를 무시하는 혼합 값 사용 예**
 
 ```sql title=Query
 SELECT deltaSum(arrayJoin([1, 2, 3, 0, 3, 4, 2, 3]))

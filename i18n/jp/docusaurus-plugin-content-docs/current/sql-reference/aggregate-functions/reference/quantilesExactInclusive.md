@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactInclusive \{#quantilesExactInclusive\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 数値データ系列に対して、インクルーシブ方式を用いて複数の異なるレベルの[分位数](https://en.wikipedia.org/wiki/Quantile)を同時に厳密に計算します。
 

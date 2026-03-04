@@ -1666,11 +1666,12 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 <SettingsInfoBlock type="InsertDeduplicationVersions" default_value="compatible_double_hashes" />
 
 この設定は、同期および非同期の insert に対する重複排除処理が、互いにまったく異なり不透明な方法で実装されているコードバージョンから、同期および非同期の insert をまたいでデータが重複排除されるコードバージョンへ移行できるようにします。
-デフォルト値は `old_separate_hashes` であり、これは ClickHouse が同期 insert と非同期 insert に対して異なる重複排除ハッシュを使用することを意味します（従来と同じ動作です）。
-後方互換性のため、この値をデフォルト値として使用する必要があります。既存のすべての ClickHouse インスタンスは、破壊的な変更を避けるためにこの値を使用する必要があります。
+`old_separate_hashes` の値は、ClickHouse が同期 insert と非同期 insert に対して異なる重複排除ハッシュを使用することを意味します (従来と同じ動作です) 。
+移行を開始する予定がない場合は、この値をデフォルト値として使用する必要があります。
 `compatible_double_hashes` の値は、ClickHouse が 2 種類の重複排除ハッシュを使用することを意味します。1 つは同期または非同期 insert 用の従来のハッシュで、もう 1 つはすべての insert に対して使用される新しいハッシュです。この値は、既存のインスタンスを新しい動作に安全に移行するために使用する必要があります。
-この値は、移行中に同期または非同期の insert が失われないことを確認するために、一定期間有効にしておく必要があります（`replicated_deduplication_window` および `non_replicated_deduplication_window` 設定を参照してください）。
+この値は、移行中に同期または非同期の insert が失われないことを確認するために、一定期間有効にしておく必要があります (`replicated_deduplication_window` および `non_replicated_deduplication_window` 設定を参照してください) 。
 最後に、`new_unified_hash` の値は、ClickHouse が同期および非同期 insert に対して新しい重複排除ハッシュのみを使用することを意味します。この値は、新規の ClickHouse インスタンス、またはすでに一定期間 `compatible_double_hashes` の値を使用していたインスタンスで有効化できます。
+今後の ClickHouse のバージョンでは、この移行を 2 段階で安全に完了させるために、デフォルト値はまず `compatible_double_hashes` に、次に `new_unified_hash` に設定される予定です。
 
 ## interserver_http_credentials \{#interserver_http_credentials\}
 
@@ -4453,26 +4454,6 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 <SettingsInfoBlock type="Bool" default_value="0" />一時データを分散キャッシュ内に保存します。
 
-## text_index_dictionary_block_cache_max_entries \{#text_index_dictionary_block_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="1000000" />テキスト索引用 Dictionary ブロックキャッシュのエントリ数の上限。0 を指定すると無効になります。
-
-## text_index_dictionary_block_cache_policy \{#text_index_dictionary_block_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />テキスト索引用 Dictionary のブロックキャッシュポリシー名。
-
-## text_index_dictionary_block_cache_size \{#text_index_dictionary_block_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="1073741824" />テキスト索引 Dictionary ブロックのキャッシュサイズ。ゼロの場合は無効になります。
-
-:::note
-この設定は実行時に変更でき、直ちに反映されます。
-:::
-
-## text_index_dictionary_block_cache_size_ratio \{#text_index_dictionary_block_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />text index dictionary ブロックキャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズを、キャッシュ全体サイズに対する比率として指定します。
-
 ## text_index_header_cache_max_entries \{#text_index_header_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />テキスト索引ヘッダーキャッシュのサイズ（エントリ数単位）。0 の場合は無効です。
@@ -4512,6 +4493,26 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 ## text_index_postings_cache_size_ratio \{#text_index_postings_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />text index の posting list キャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズ比をキャッシュ全体サイズに対する割合として指定します。
+
+## text_index_tokens_cache_max_entries \{#text_index_tokens_cache_max_entries\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />テキスト索引用トークンキャッシュのエントリ数の上限。0 を指定すると無効になります。
+
+## text_index_tokens_cache_policy \{#text_index_tokens_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" />テキスト索引用トークンのキャッシュポリシー名。
+
+## text_index_tokens_cache_size \{#text_index_tokens_cache_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />テキスト索引トークンのキャッシュサイズ。ゼロの場合は無効になります。
+
+:::note
+この設定は実行時に変更でき、直ちに反映されます。
+:::
+
+## text_index_tokens_cache_size_ratio \{#text_index_tokens_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />text index tokens キャッシュにおける、保護キュー（SLRU ポリシーの場合）のサイズを、キャッシュ全体サイズに対する比率として指定します。
 
 ## text_log \{#text_log\}
 

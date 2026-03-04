@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## mannWhitneyUTest \{#mannWhitneyUTest\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 두 모집단에서 가져온 표본에 Mann-Whitney 순위 검정을 적용합니다.
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTestOneSample \{#studentTTestOneSample\}
 
-導入バージョン: v25.10
+導入バージョン: v25.10.0
 
 既知の母平均と比較して、標本平均が異なるかどうかを判定するために、1標本 t 検定（Student&#39;s t-test）を適用します。
 
@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 **関連情報**
 
-* [Student&#39;s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test)
+* [スチューデントのt検定](https://en.wikipedia.org/wiki/Student%27s_t-test)
 * [studentTTest 関数](/sql-reference/aggregate-functions/reference/studentttest)
 
 **構文**
@@ -58,7 +58,7 @@ SELECT studentTTestOneSample()(value, 20.0) FROM t;
 ```response title=Response
 ```
 
-**信頼区間（95%）付き**
+**信頼区間あり（95%）**
 
 ```sql title=Query
 SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySample \{#groupArraySample\}
 
-導入されたバージョン: v20.3
+導入されたバージョン: v20.3.0
 
 引数値のサンプルを要素とする配列を作成します。
 生成される配列のサイズは `max_size` 要素に制限されます。
@@ -74,7 +74,7 @@ SELECT groupArraySample(3, 987654321)(color) as newcolors FROM default.colors;
 └────────────────────────────┘
 ```
 
-**引数に式を指定する**
+**引数として式を使用する**
 
 ```sql title=Query
 -- Query with expression as argument

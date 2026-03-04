@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedCount \{#exponentialTimeDecayedCount\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 時系列において、時間インデックス `t` における累積指数減衰値を返します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewSamp \{#skewSamp\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 シーケンスの[標本歪度 (sample skewness)](https://en.wikipedia.org/wiki/Skewness) を計算します。
 

@@ -457,6 +457,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Если параметр установлен в true и выполнены условия `join_to_sort_minimum_perkey_rows` и `join_to_sort_maximum_table_rows`, правая таблица пересортировывается по ключу для повышения производительности левого или внутреннего хеш-соединения.
 
+## allow_experimental_json_lazy_type_hints \{#allow_experimental_json_lazy_type_hints\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новый экспериментальный параметр для ленивых подсказок типов JSON"}]}]} />
+
+Включает экспериментальные ленивые подсказки типов для типа JSON. Эта функция позволяет оптимизировать преобразования типа JSON за счёт отложенной оценки подсказок типов.
+
 ## allow_experimental_kafka_offsets_storage_in_keeper \{#allow_experimental_kafka_offsets_storage_in_keeper\}
 
 <ExperimentalBadge/>
@@ -1192,9 +1202,11 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait_for_async_insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить асинхронные вставки по умолчанию."}]}]} />
+
+Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait&#95;for&#95;async&#95;insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
 
 ## async_insert_busy_timeout_decrease_rate \{#async_insert_busy_timeout_decrease_rate\}
 
@@ -2326,15 +2338,15 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]} />
 
-Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
+Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
 У данной настройки есть три возможных значения:
 
-- disable — дедупликация отключена для запроса `INSERT INTO`.
-- enable — дедупликация включена для запроса `INSERT INTO`.
-- backward_compatible_choice — дедупликация включена, если `insert_deduplicate` или `async_insert_deduplicate` включены для соответствующего типа вставки.
+* disable — дедупликация отключена для запроса `INSERT INTO`.
+* enable — дедупликация включена для запроса `INSERT INTO`.
+* backward&#95;compatible&#95;choice — дедупликация включена, если `insert_deduplicate` или `async_insert_deduplicate` включены для соответствующего типа вставки.
 
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
@@ -11804,15 +11816,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать структуру таблицы, в которую выполняется вставка, вместо определения схемы по данным. Возможные значения: 0 - отключено, 1 - включено, 2 - авто
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Определяет, использовать ли кэш десериализованного блока словаря текстового индекса.
-Использование кэша блока словаря текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11830,6 +11833,15 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может существенно снизить задержку и повысить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Следует ли использовать кэш десериализованной информации о токенах текстового индекса.
+Использование кэша токенов текстового индекса может значительно снизить задержку и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

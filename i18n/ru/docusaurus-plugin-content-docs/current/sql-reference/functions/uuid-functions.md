@@ -59,7 +59,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## UUIDNumToString \{#UUIDNumToString\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Принимает двоичное представление UUID, формат которого может быть дополнительно указан с помощью параметра `variant` (по умолчанию — `Big-endian`), и возвращает строку длиной 36 символов в текстовом формате.
 
@@ -111,7 +111,7 @@ SELECT
 
 ## UUIDStringToNum \{#UUIDStringToNum\}
 
-Появилась в версии v1.1
+Появилась в версии v1.1.0
 
 Принимает строку из 36 символов в формате `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` и возвращает [FixedString(16)](../data-types/fixedstring.md) как её двоичное представление; формат может быть при необходимости задан параметром `variant` (по умолчанию `Big-endian`).
 
@@ -163,7 +163,7 @@ SELECT
 
 ## UUIDToNum \{#UUIDToNum\}
 
-Введена в: v24.5
+Введена в: v24.5.0
 
 Принимает [UUID](../data-types/uuid.md) и возвращает его двоичное представление в виде [FixedString(16)](../data-types/fixedstring.md), при этом его формат может быть дополнительно указан параметром `variant` (по умолчанию `Big-endian`).
 Эта функция заменяет сочетание вызовов `UUIDStringToNum(toString(uuid))`, поэтому для извлечения байтов из UUID не требуется промежуточное преобразование UUID в строку.
@@ -216,7 +216,7 @@ SELECT
 
 ## UUIDv7ToDateTime \{#UUIDv7ToDateTime\}
 
-Добавлена в: v24.5
+Добавлена в: v24.5.0
 
 Возвращает компонент отметки времени UUID версии 7.
 
@@ -264,7 +264,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 
 ## dateTime64ToSnowflake \{#dateTime64ToSnowflake\}
 
-Появилась в версии: v21.10
+Появилась в версии: v21.10.0
 
 <DeprecatedBadge />
 
@@ -308,7 +308,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 ## dateTime64ToSnowflakeID \{#dateTime64ToSnowflakeID\}
 
-Добавлено в версии: v24.6
+Добавлено в версии: v24.6.0
 
 Преобразует значение [DateTime64](../data-types/datetime64.md) в первый идентификатор [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) для заданного момента времени.
 
@@ -342,7 +342,7 @@ SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shan
 
 ## dateTimeToSnowflake \{#dateTimeToSnowflake\}
 
-Добавлено в: v21.10
+Добавлено в: v21.10.0
 
 <DeprecatedBadge />
 
@@ -386,7 +386,7 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 
 ## dateTimeToSnowflakeID \{#dateTimeToSnowflakeID\}
 
-Добавлено в версии: v24.6
+Добавлено в версии: v24.6.0
 
 Преобразует значение [DateTime](../data-types/datetime.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в заданный момент времени.
 
@@ -420,7 +420,7 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-Введена в версии: v25.9
+Введена в версии: v25.9.0
 
 Преобразует значение [DateTime](../data-types/datetime.md) в [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) в заданный момент времени.
 
@@ -477,7 +477,7 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 
-Появилась в версии v24.6
+Появилась в версии v24.6.0
 
 Генерирует [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID).
 
@@ -547,7 +547,7 @@ SELECT generateSnowflakeID('expr', 1);
 
 ## generateUUIDv4 \{#generateUUIDv4\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Генерирует [UUID](../data-types/uuid.md) [версии 4](https://tools.ietf.org/html/rfc4122#section-4.4).
 
@@ -596,7 +596,7 @@ SELECT generateUUIDv4(1), generateUUIDv4(1);
 
 ## generateUUIDv7 \{#generateUUIDv7\}
 
-Добавлено в: v24.5
+Добавлено в: v24.5.0
 
 Генерирует [UUID версии 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) ([UUID](../data-types/uuid.md)).
 
@@ -651,7 +651,7 @@ SELECT generateUUIDv7(1), generateUUIDv7(1);
 
 ## snowflakeIDToDateTime \{#snowflakeIDToDateTime\}
 
-Введена в версии: v24.6
+Введена в версии: v24.6.0
 
 Возвращает компонент временной метки идентификатора [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) как значение типа [DateTime](../data-types/datetime.md).
 
@@ -688,7 +688,7 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 
 ## snowflakeIDToDateTime64 \{#snowflakeIDToDateTime64\}
 
-Добавлена в: v24.6
+Добавлена в: v24.6.0
 
 Возвращает компонент метки времени [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в виде значения типа [DateTime64](../data-types/datetime64.md).
 
@@ -725,7 +725,7 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 
 ## snowflakeToDateTime \{#snowflakeToDateTime\}
 
-Введена в версии v21.10
+Введена в версии v21.10.0
 
 <DeprecatedBadge />
 
@@ -770,7 +770,7 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 
 ## snowflakeToDateTime64 \{#snowflakeToDateTime64\}
 
-Появилась в: v21.10
+Появилась в: v21.10.0
 
 <DeprecatedBadge />
 
@@ -781,7 +781,7 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 Вместо неё используйте функцию [`snowflakeIDToDateTime64`](#snowflakeIDToDateTime64).
 :::
 
-Извлекает компонент отметки времени из [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) и возвращает его в формате [DateTime64](../data-types/datetime64.md).
+Извлекает компонент отметки времени из [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) в формате [DateTime64](../data-types/datetime64.md).
 
 **Синтаксис**
 
@@ -815,7 +815,7 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 
 ## toUUIDOrDefault \{#toUUIDOrDefault\}
 
-Добавлена в: v21.1
+Добавлена в: v21.1.0
 
 Преобразует значение типа String в тип UUID. Если преобразование не удаётся, возвращает значение UUID по умолчанию вместо генерации ошибки.
 
@@ -866,7 +866,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 
 ## toUUIDOrNull \{#toUUIDOrNull\}
 
-Добавлено в: v20.12
+Добавлено в: v20.12.0
 
 Преобразует входное значение в значение типа `UUID`, но в случае ошибки возвращает `NULL`.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avgWeighted \{#avgWeighted\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 [가중 산술 평균](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)을 계산합니다.
 
@@ -43,7 +43,7 @@ FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 └───────────────────┘
 ```
 
-**정수형과 실수형 가중치 혼합**
+**정수형과 실수형 가중치 혼용**
 
 ```sql title=Query
 SELECT avgWeighted(x, w)
@@ -56,7 +56,7 @@ FROM VALUES('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 └───────────────────┘
 ```
 
-**모든 가중치가 0이면 NaN이 반환됩니다**
+**모든 가중치가 0이면 NaN을 반환합니다**
 
 ```sql title=Query
 SELECT avgWeighted(x, w)
@@ -69,7 +69,7 @@ FROM VALUES('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 └───────────────────┘
 ```
 
-**비어 있는 테이블에서는 NaN이 반환됩니다**
+**비어 있는 테이블은 NaN을 반환합니다**
 
 ```sql title=Query
 CREATE TABLE test (t UInt8) ENGINE = Memory;

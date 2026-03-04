@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTiming \{#quantileTiming\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された精度で数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactExclusive \{#quantileExactExclusive\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 与 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) 类似，该函数计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

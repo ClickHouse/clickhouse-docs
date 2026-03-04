@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileBFloat16 \{#quantileBFloat16\}
 
-導入バージョン: v21.7
+導入バージョン: v21.7.0
 
 [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) 数値からなる標本の近似的な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

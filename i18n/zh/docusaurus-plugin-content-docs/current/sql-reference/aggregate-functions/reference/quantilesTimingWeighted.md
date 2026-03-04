@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesTimingWeighted \{#quantilesTimingWeighted\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 在给定精度下，同时按不同水平计算数值数据序列的多个[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑序列中每个元素的权重。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewSamp \{#skewSamp\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Вычисляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
 
@@ -43,7 +43,7 @@ SELECT skewSamp(number) FROM numbers(100);
 └──────────────────┘
 ```
 
-**Распределение с правосторонней (положительной) асимметрией**
+**Распределение с правой (положительной) асимметрией**
 
 ```sql title=Query
 SELECT skewSamp(x) FROM (SELECT pow(number, 2) AS x FROM numbers(10));

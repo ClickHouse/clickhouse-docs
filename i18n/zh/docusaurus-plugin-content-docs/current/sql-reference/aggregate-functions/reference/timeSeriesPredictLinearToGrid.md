@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesPredictLinearToGrid \{#timeSeriesPredictLinearToGrid\}
 
-自 v25.6 版本引入
+自 v25.6.0 版本引入
 
 该聚合函数接收由时间戳和值组成的时间序列数据对，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，计算具有指定预测时间偏移量的[类似 PromQL 的线性预测](https://prometheus.io/docs/prometheus/latest/querying/functions/#predict_linear)。对于网格上的每个点，用于计算 `predict_linear` 的样本都限定在指定的时间窗口内。
 
@@ -25,11 +25,11 @@ timeSeriesPredictLinearToGrid(start_timestamp, end_timestamp, grid_step, stalene
 
 **参数**
 
-* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长（以秒为单位）。 - `staleness` — 指定所考虑样本的最大“陈旧度”（以秒为单位）。陈旧度窗口是一个左开右闭区间。 - `predict_offset` — 指定要添加到预测时间的偏移秒数。
+* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长（以秒为单位）。 - `staleness` — 指定所考虑样本的最大“陈旧度”（以秒为单位）。陈旧度窗口是左开右闭区间。 - `predict_offset` — 指定要添加到预测时间的偏移量（秒）。
 
-**参数（函数参数）**
+**参数**
 
-* `timestamp` — 样本的时间戳。可以是单个值或数组。 - `value` — 与该时间戳对应的时间序列值。可以是单个值或数组。
+* `timestamp` — 样本的时间戳。可以是单个值或数组。 - `value` — 与该时间戳对应的时间序列的值。可以是单个值或数组。
 
 **返回值**
 

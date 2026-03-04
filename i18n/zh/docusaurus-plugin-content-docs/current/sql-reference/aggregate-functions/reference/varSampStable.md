@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## varSampStable \{#varSampStable\}
 
-引入版本:v1.1
+引入版本:v1.1.0
 
 计算数据集的样本方差。与 [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp) 不同,该函数使用[数值稳定](https://en.wikipedia.org/wiki/Numerical_stability)算法。运行速度较慢,但计算误差更小。
 

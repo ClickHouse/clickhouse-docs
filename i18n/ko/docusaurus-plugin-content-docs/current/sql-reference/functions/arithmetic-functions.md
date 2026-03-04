@@ -44,7 +44,7 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 
 ## abs \{#abs\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `x`의 절댓값을 계산합니다. `x`가 부호 없는 타입이면 결과는 변경되지 않습니다. `x`가 부호 있는 타입이면 부호 없는 수를 반환합니다.
 
@@ -76,7 +76,7 @@ SELECT abs(-0.5)
 
 ## avg2 \{#avg2\}
 
-도입된 버전: v25.11
+도입된 버전: v25.11.0
 
 제공된 인수의 평균값을 계산하여 반환합니다.
 숫자형 및 시간 관련 타입을 지원합니다.
@@ -93,7 +93,7 @@ avg2(x1, x2])
 
 **반환 값**
 
-제공된 인수들의 평균 값을 계산한 뒤, 호환 가능한 가장 큰 데이터 타입으로 승격하여 반환합니다.
+제공된 인수들의 평균값을 계산한 뒤, 호환 가능한 가장 큰 데이터 타입으로 승격하여 반환합니다.
 
 **예시**
 
@@ -160,7 +160,7 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 
 ## byteSwap \{#byteSwap\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 정수의 바이트 순서를 반전합니다. 즉, [endianness](https://en.wikipedia.org/wiki/Endianness)를 변경합니다.
 
@@ -169,7 +169,7 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 1. 10진수 정수를 big-endian 형식의 16진수로 변환합니다. 예: 3351772109 -&gt; C7 C7 FB CD (4바이트)
 2. 바이트 순서를 반전합니다. 예: C7 C7 FB CD -&gt; CD FB C7 C7
 3. 결과를 big-endian으로 가정하고 다시 정수로 변환합니다. 예: CD FB C7 C7 -&gt; 3455829959
-   이 FUNCTION의 한 가지 사용 사례는 IPv4 주소의 바이트 순서를 반전하는 것입니다.
+   이 FUNCTION의 한 가지 사용 사례는 IPv4 주소의 바이트 순서를 반전하는 것입니다:
 
 ```result
 ┌─toIPv4(byteSwap(toUInt32(toIPv4('205.251.199.199'))))─┐
@@ -245,7 +245,7 @@ SELECT byteSwap(123294967295)
 
 ## divide \{#divide\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 두 값 `a`와 `b`의 몫을 계산합니다. 결과 타입은 항상 [Float64](/sql-reference/data-types/float)입니다. 정수 나눗셈은 `intDiv` FUNCTION으로 수행됩니다.
 
@@ -291,7 +291,7 @@ inf
 
 ## divideDecimal \{#divideDecimal\}
 
-도입: v22.12
+도입: v22.12.0
 
 두 개의 decimal 값에 대해 나눗셈을 수행합니다. 결과값의 타입은 [Decimal256](/sql-reference/data-types/decimal)입니다.
 결과 스케일(scale)은 `result_scale` 인자(범위 `[0, 76]`의 const Integer)로 명시적으로 지정할 수 있습니다. 지정하지 않으면 결과 스케일은 전달된 인자들의 스케일 중 최대값이 됩니다.
@@ -347,7 +347,7 @@ SELECT toDecimal64(-12, 1) as a, toDecimal32(2.1, 1) as b, divideDecimal(a, b, 1
 
 ## divideOrNull \{#divideOrNull\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 `divide`와 동일하지만, 0으로 나눌 때 NULL을 반환합니다.
 
@@ -379,7 +379,7 @@ SELECT divideOrNull(25, 0)
 
 ## gcd \{#gcd\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 두 값 a와 b의 최대공약수를 반환합니다.
 
@@ -413,7 +413,7 @@ SELECT gcd(12, 18)
 
 ## ifNotFinite \{#ifNotFinite\}
 
-도입된 버전: v20.3
+도입된 버전: v20.3.0
 
 부동소수점 값이 유한한지 확인합니다.
 
@@ -449,7 +449,7 @@ inf  42
 
 ## intDiv \{#intDiv\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 값 `x`를 `y`로 정수 나눗셈합니다. 다시 말해,
 몫을 가장 가까운 더 작은 정수로 내림하여 계산합니다.
@@ -504,7 +504,7 @@ large number: While processing intDiv(1, 0.001) AS res, toTypeName(res).
 
 ## intDivOrNull \{#intDivOrNull\}
 
-도입된 버전: v25.5
+도입된 버전: v25.5.0
 
 `intDiv`와 동일하지만, 0으로 나누거나 최소 음수를 -1로 나눌 때 NULL을 반환합니다.
 
@@ -547,7 +547,7 @@ SELECT intDivOrNull(-9223372036854775808, -1)
 
 ## intDivOrZero \{#intDivOrZero\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `intDiv`와 동일하지만 0으로 나누는 경우나, 최소 음수 값을 -1로 나누는 경우 0을 반환합니다.
 
@@ -590,7 +590,7 @@ SELECT intDivOrZero(0.05, -1)
 
 ## isFinite \{#isFinite\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 Float32 또는 Float64 타입 인자가 무한대가 아니고 `NaN`도 아니면 `1`을 반환하고,
 그 외의 경우 `0`을 반환합니다.
@@ -623,7 +623,7 @@ SELECT isFinite(inf)
 
 ## isInfinite \{#isInfinite\}
 
-도입: v1.1
+도입: v1.1.0
 
 Float32 또는 Float64 형식의 인자가 무한대일 경우 `1`을 반환하고, 그렇지 않은 경우 `0`을 반환합니다.
 `NaN`인 경우에도 `0`을 반환합니다.
@@ -656,7 +656,7 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 
 ## isNaN \{#isNaN\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 Float32 및 Float64 형 인자가 `NaN`이면 `1`을 반환하고, 그렇지 않으면 `0`을 반환합니다.
 
@@ -688,7 +688,7 @@ SELECT isNaN(NaN)
 
 ## lcm \{#lcm\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 두 값 `x`와 `y`의 최소 공배수를 반환합니다.
 
@@ -723,7 +723,7 @@ SELECT lcm(6, 8)
 
 ## max2 \{#max2\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 두 개의 숫자형 값 `x`와 `y` 중 더 큰 값을 반환합니다.
 
@@ -756,7 +756,7 @@ SELECT max2(-1, 2)
 
 ## midpoint \{#midpoint\}
 
-도입 버전: v25.11
+도입 버전: v25.11.0
 
 제공된 인수들의 평균값을 계산하여 반환합니다.
 수치형 및 시간 타입을 지원합니다.
@@ -840,7 +840,7 @@ SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toT
 
 ## min2 \{#min2\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 두 개의 숫자 값 `x`와 `y` 중 더 작은 값을 반환합니다.
 
@@ -873,7 +873,7 @@ SELECT min2(-1, 2)
 
 ## minus \{#minus\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 두 값 `a`와 `b`의 차이를 계산합니다. 결과는 항상 부호 있는 값입니다.
 plus와 마찬가지로, 날짜 또는 날짜·시간 값에서 정수를 뺄 수 있습니다.
@@ -917,7 +917,7 @@ SELECT minus(toDate('2025-01-01'),5)
 
 ## modulo \{#modulo\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 값 a와 b에 대해, a를 b로 나눈 나머지를 계산합니다.
 
@@ -957,7 +957,7 @@ SELECT modulo(5, 2)
 
 ## moduloLegacy \{#moduloLegacy\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 나눗셈의 나머지를 계산합니다. C++의 `%` 연산자를 사용하는 레거시 modulo 구현으로, 음수 인수에 대해 음수 결과를 반환할 수 있습니다. 이 함수는 기존 테이블 파티션 로직과의 하위 호환성을 위해 제공됩니다. 표준 동작을 사용하려면 `modulo` 또는 `positiveModulo`를 사용하십시오.
 
@@ -990,7 +990,7 @@ SELECT moduloLegacy(10, 3)
 
 ## moduloOrNull \{#moduloOrNull\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 `a`를 `b`로 나눈 나머지를 계산합니다. 함수 `modulo`와 유사하지만, 오른쪽 인자가 0이면 `moduloOrNull`은 NULL을 반환합니다.
 
@@ -1025,7 +1025,7 @@ SELECT moduloOrNull(5, 0)
 
 ## moduloOrZero \{#moduloOrZero\}
 
-도입된 버전: v20.3
+도입된 버전: v20.3.0
 
 나머지 연산 함수(modulo)와 유사하지만, 나누는 수(제수)가 0일 때 예외를 발생시키는 modulo 함수와 달리 0을 반환합니다.
 
@@ -1058,7 +1058,7 @@ SELECT moduloOrZero(5, 0)
 
 ## multiply \{#multiply\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 값 `x`와 `y`의 곱을 계산합니다.
 
@@ -1091,7 +1091,7 @@ SELECT multiply(5,5)
 
 ## multiplyDecimal \{#multiplyDecimal\}
 
-도입: v22.12
+도입: v22.12.0
 
 Decimal 값 두 개에 대한 곱셈을 수행합니다. 결과값의 타입은 [Decimal256](/sql-reference/data-types/decimal)입니다.
 결과 스케일은 `result_scale` 인자(범위가 `[0, 76]`인 상수 Integer)로 명시적으로 지정할 수 있습니다. 지정하지 않으면 결과 스케일은 전달된 인자들 중 최대 스케일이 됩니다.
@@ -1144,7 +1144,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**십진수 오버플로**
+**Decimal 오버플로**
 
 ```sql title=Query
 SELECT
@@ -1168,7 +1168,7 @@ While processing toDecimal64(-12.647987876, 9) AS a, toDecimal64(123.967645643, 
 
 ## negate \{#negate\}
 
-도입: v1.1
+도입: v1.1.0
 
 인수 `x`의 부호를 반전합니다. 결과는 항상 부호 있는 값입니다.
 
@@ -1200,7 +1200,7 @@ SELECT negate(10)
 
 ## plus \{#plus\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 값 `x`와 `y`의 합을 계산합니다. 별칭: `x + y` (연산자).
 정수와 날짜를 더하거나, 정수와 날짜-시간 값을 더할 수도 있습니다. 전자의
@@ -1244,7 +1244,7 @@ SELECT plus(toDate('2025-01-01'),5)
 
 ## positiveModulo \{#positiveModulo\}
 
-도입: v22.11
+도입: v22.11.0
 
 `x`를 `y`로 나눌 때의 나머지를 계산합니다. FUNCTION `modulo`와 비슷하지만
 `positiveModulo`는 항상 음이 아닌 숫자를 반환합니다.
@@ -1280,7 +1280,7 @@ SELECT positiveModulo(-1, 10)
 
 ## positiveModuloOrNull \{#positiveModuloOrNull\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 `a`를 `b`로 나눌 때의 나머지를 계산합니다. 함수 `positiveModulo`와 유사하지만, 오른쪽 인자가 0이면 `positiveModuloOrNull`은 NULL을 반환합니다.
 

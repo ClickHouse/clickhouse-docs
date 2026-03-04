@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarPopMatrix \{#covarPopMatrix\}
 
-自 v23.2 版本引入
+自 v23.2.0 版本引入
 
 返回 N 个变量的总体协方差矩阵。
 

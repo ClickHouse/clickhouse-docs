@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 
