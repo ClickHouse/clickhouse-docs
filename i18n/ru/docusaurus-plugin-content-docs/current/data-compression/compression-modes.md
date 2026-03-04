@@ -10,7 +10,6 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
-
 # Режимы сжатия \{#compression-modes\}
 
 Протокол ClickHouse поддерживает сжатие **блоков данных** с контрольными суммами.
@@ -41,14 +40,14 @@ import Image from '@theme/IdealImage';
 | поле            | тип     | описание                                         |
 |-----------------|---------|--------------------------------------------------|
 | checksum        | uint128 | [Хеш](../native-protocol/hash.md) от (header + compressed data) |
-| raw_size        | uint32  | Сырой размер без заголовка                       |
-| data_size       | uint32  | Размер несжатых данных                           |
+| raw&#95;size        | uint32  | Сырой размер без заголовка                       |
+| data&#95;size       | uint32  | Размер несжатых данных                           |
 | mode            | byte    | Режим сжатия                                     |
-| compressed_data | binary  | Блок сжатых данных                               |
+| compressed&#95;data | binary  | Блок сжатых данных                               |
 
-<Image img={CompressionBlock} size="md" alt="Диаграмма, иллюстрирующая структуру блока сжатия ClickHouse"/>
+<Image img={CompressionBlock} size="md" alt="Диаграмма, иллюстрирующая структуру блока сжатия ClickHouse" />
 
-Заголовок — это (raw_size + data_size + mode), сырой размер равен длине (header + compressed_data).
+Заголовок — это (raw&#95;size + data&#95;size + mode), сырой размер равен длине (header + compressed&#95;data).
 
 Контрольная сумма рассчитывается как `hash(header + compressed_data)` с использованием [ClickHouse CityHash](../native-protocol/hash.md).
 

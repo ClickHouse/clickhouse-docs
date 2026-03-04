@@ -43,7 +43,6 @@ SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 SELECT name, status FROM system.dictionaries;
 ```
 
-
 ## SYSTEM RELOAD MODELS \{#reload-models\}
 
 :::note
@@ -59,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL \{#reload-model\}
 
 卸载位于 `model_path` 的 CatBoost 模型。
@@ -69,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS \{#reload-functions\}
 
@@ -82,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS \{#reload-asynchronous-metrics\}
 
 重新计算所有[异步指标](../../operations/system-tables/asynchronous_metrics.md)。由于异步指标会根据设置项 [asynchronous&#95;metrics&#95;update&#95;period&#95;s](../../operations/server-configuration-parameters/settings.md) 定期更新，通常无需使用该语句手动触发更新。
@@ -90,7 +86,6 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```sql
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM CLEAR|DROP DNS CACHE \{#drop-dns-cache\}
 
@@ -112,9 +107,9 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 如果你想单独清除其中某一个缓存，可以运行
 
-- `SYSTEM CLEAR TEXT INDEX HEADER CACHE`,
-- `SYSTEM CLEAR TEXT INDEX DICTIONARY CACHE`, 或
-- `SYSTEM CLEAR TEXT INDEX POSTINGS CACHE`
+* `SYSTEM CLEAR TEXT INDEX HEADER CACHE`,
+* `SYSTEM CLEAR TEXT INDEX DICTIONARY CACHE`, 或
+* `SYSTEM CLEAR TEXT INDEX POSTINGS CACHE`
 
 ## SYSTEM DROP REPLICA \{#drop-replica\}
 
@@ -146,11 +141,10 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 
 类似于 `SYSTEM DROP REPLICA`，但用于在没有数据库可执行 `DROP DATABASE` 时，从 ZooKeeper 中移除 `Replicated` 数据库副本的路径。请注意，它不会移除 `ReplicatedMergeTree` 副本（因此可能还需要执行 `SYSTEM DROP REPLICA`）。分片名称和副本名称是在创建数据库时于 `Replicated` 引擎参数中指定的名称。此外，也可以从 `system.clusters` 中的 `database_shard_name` 和 `database_replica_name` 列获取这些名称。如果缺少 `FROM SHARD` 子句，则 `replica_name` 必须是 `shard_name|replica_name` 格式的完整副本名称。
 
-
 ## SYSTEM CLEAR|DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
 
-清除未压缩数据缓存。  
-未压缩数据缓存可以在查询/USER/配置文件级别通过 [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) 设置启用或禁用。  
+清除未压缩数据缓存。\
+未压缩数据缓存可以在查询/USER/配置文件级别通过 [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) 设置启用或禁用。\
 其大小可以通过服务器级别的设置 [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size) 进行配置。
 
 ## SYSTEM CLEAR|DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
@@ -172,7 +166,6 @@ SYSTEM CLEAR QUERY CACHE TAG '<tag>'
 清空[查询缓存](../../operations/query-cache.md)。
 如果指定了标签，则只删除具有该标签的查询缓存项。
 
-
 ## SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
 
 清除从 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path) 加载的 schema 缓存。
@@ -186,7 +179,6 @@ SYSTEM CLEAR QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS \{#flush-logs\}
 
@@ -203,7 +195,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG \{#reload-config\}
 
 重新加载 ClickHouse 配置。在配置存储于 ZooKeeper 时使用。注意，`SYSTEM RELOAD CONFIG` 不会重新加载存储在 ZooKeeper 中的 `USER` 配置，它只会重新加载存储在 `users.xml` 中的 `USER` 配置。要重新加载所有 `USER` 配置，请使用 `SYSTEM RELOAD USERS`。
@@ -211,7 +202,6 @@ SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```sql
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM RELOAD USERS \{#reload-users\}
 
@@ -221,10 +211,9 @@ SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM SHUTDOWN \{#shutdown\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 正常关闭 ClickHouse 服务器（类似于 `service clickhouse-server stop` / `kill {$pid_clickhouse-server}`）
 
@@ -262,7 +251,6 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' LOG ENTRY 'this is a log prin
 SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' LOG EXIT 'this is a log printed at exit'
 ```
 
-
 #### SLEEP \{#instrument-add-sleep\}
 
 在 `ENTRY` 或 `EXIT` 时休眠固定时长（秒）：
@@ -277,7 +265,6 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' SLEEP ENTRY 0.5
 SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' SLEEP ENTRY 0 1
 ```
 
-
 #### PROFILE \{#instrument-add-profile\}
 
 测量函数在 `ENTRY` 与 `EXIT` 之间执行所耗费的时间。
@@ -287,7 +274,6 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' SLEEP ENTRY 0 1
 ```sql
 SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' PROFILE
 ```
-
 
 ### SYSTEM INSTRUMENT REMOVE \{#instrument-remove\}
 
@@ -316,7 +302,6 @@ SYSTEM INSTRUMENT REMOVE 'QueryMetricLog::startQuery'
 ```
 
 插桩点信息可以从 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 系统表中获取。
-
 
 ## 管理分布式表 \{#managing-distributed-tables\}
 
@@ -348,7 +333,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 每个挂起的数据块都会按照最初 INSERT 查询中的设置存储到磁盘上，因此有时你可能需要覆盖这些设置。
 :::
 
-
 ### SYSTEM START DISTRIBUTED SENDS \{#start-distributed-sends\}
 
 开启在向分布式表插入数据时的后台数据分发。
@@ -356,7 +340,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```sql
 SYSTEM START DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM STOP LISTEN \{#stop-listen\}
 
@@ -373,7 +356,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 * 如果指定了 `QUERIES DEFAULT [EXCEPT .. [,..]]` 修饰符，则会停止所有默认协议，除非在 `EXCEPT` 子句中明确排除。
 * 如果指定了 `QUERIES CUSTOM [EXCEPT .. [,..]]` 修饰符，则会停止所有自定义协议，除非在 `EXCEPT` 子句中明确排除。
 
-
 ### SYSTEM START LISTEN \{#start-listen\}
 
 允许在指定协议上建立新的连接。
@@ -383,7 +365,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## 管理 MergeTree 表 \{#managing-mergetree-tables\}
 
@@ -413,7 +394,6 @@ SYSTEM STOP MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]mer
 SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
 提供根据 [TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 停止对 MergeTree 系列表中旧数据进行后台删除的功能：
@@ -422,7 +402,6 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 ```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
@@ -433,7 +412,6 @@ SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_n
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
 允许为 MergeTree 家族中的表停止根据[带有 TO VOLUME 或 TO DISK 子句的 TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl)执行的后台数据移动：
@@ -442,7 +420,6 @@ SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_
 ```sql
 SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START MOVES \{#start-moves\}
 
@@ -453,7 +430,6 @@ SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM SYSTEM UNFREEZE \{#query_language-system-unfreeze\}
 
 从所有磁盘中清除具有指定名称的冻结备份。关于解冻单个分区片段的更多信息，请参阅 [ALTER TABLE table&#95;name UNFREEZE WITH NAME ](/sql-reference/statements/alter/partition#unfreeze-partition)
@@ -462,7 +438,6 @@ SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 SYSTEM UNFREEZE WITH NAME <backup_name>
 ```
 
-
 ### SYSTEM WAIT LOADING PARTS \{#wait-loading-parts\}
 
 等待直到表中所有正在异步加载的数据分区片段（过时的数据分区片段）都加载完成。
@@ -470,7 +445,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## 管理 ReplicatedMergeTree 表 \{#managing-replicatedmergetree-tables\}
 
@@ -498,7 +472,6 @@ SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family
 SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATED SENDS \{#stop-replicated-sends\}
 
 提供一种机制，用于在集群中停止将新插入的分区片段以后台方式发送到其他副本，适用于 `ReplicatedMergeTree` 系列表：
@@ -506,7 +479,6 @@ SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_famil
 ```sql
 SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATED SENDS \{#start-replicated-sends\}
 
@@ -516,7 +488,6 @@ SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tr
 SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATION QUEUES \{#stop-replication-queues\}
 
 用于停止针对 `ReplicatedMergeTree` 系列表、存储在 ZooKeeper 中的复制队列里的后台拉取任务。可能的后台任务类型包括：合并（merges）、拉取（fetches）、变更（mutations）、带有 ON CLUSTER 子句的 DDL 语句：
@@ -524,7 +495,6 @@ SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_t
 ```sql
 SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATION QUEUES \{#start-replication-queues\}
 
@@ -534,7 +504,6 @@ SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_
 SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP PULLING REPLICATION LOG \{#stop-pulling-replication-log\}
 
 停止从复制日志向 `ReplicatedMergeTree` 表的复制队列加载新的记录。
@@ -543,7 +512,6 @@ SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge
 SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START PULLING REPLICATION LOG \{#start-pulling-replication-log\}
 
 撤销 `SYSTEM STOP PULLING REPLICATION LOG` 的效果。
@@ -551,7 +519,6 @@ SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_m
 ```sql
 SYSTEM START PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM SYNC REPLICA \{#sync-replica\}
 
@@ -569,7 +536,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
   此外，LIGHTWEIGHT 修饰符支持可选的 FROM &#39;srcReplicas&#39; 子句，其中 &#39;srcReplicas&#39; 是以逗号分隔的源副本名称列表。此扩展通过仅关注来自指定源副本的复制任务，实现更有针对性的同步。
 * 如果指定了 `PULL` 修饰符，则查询会从 ZooKeeper 中拉取新的复制队列条目，但不会等待处理这些条目。
 
-
 ### SYNC DATABASE REPLICA \{#sync-database-replica\}
 
 等待直到指定的 [replicated database](/engines/database-engines/replicated)从该数据库的 DDL 队列中应用完所有 schema 更改。
@@ -580,7 +546,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
 SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 ```
 
-
 ### SYSTEM RESTART REPLICA \{#restart-replica\}
 
 用于为 `ReplicatedMergeTree` 表重新初始化 ZooKeeper 会话状态，会将当前状态与以 ZooKeeper 为权威数据源的状态进行比较，并在需要时向 ZooKeeper 队列中添加任务。
@@ -590,7 +555,6 @@ SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 SYSTEM RESTART REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_table_name
 ```
 
-
 ### SYSTEM RESTORE REPLICA \{#restore-replica\}
 
 在数据可能仍然存在但 ZooKeeper 元数据丢失时恢复一个副本。
@@ -599,9 +563,9 @@ SYSTEM RESTART REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_fami
 
 可以在以下情况下执行该查询：
 
-- ZooKeeper 根 `/` 丢失。
-- 副本路径 `/replicas` 丢失。
-- 单个副本路径 `/replicas/replica_name/` 丢失。
+* ZooKeeper 根 `/` 丢失。
+* 副本路径 `/replicas` 丢失。
+* 单个副本路径 `/replicas/replica_name/` 丢失。
 
 副本会在本地附加找到的分区片段，并将其信息发送到 ZooKeeper。
 在元数据丢失前已经存在于该副本上的分区片段，如果没有过期，则不会从其他副本重新获取（因此恢复副本并不意味着需要通过网络重新下载所有数据）。
@@ -682,7 +646,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 SYSTEM CLEAR FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
 
-
 ### SYSTEM SYNC FILE CACHE \{#sync-file-cache\}
 
 :::note
@@ -694,7 +657,6 @@ SYSTEM CLEAR FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```sql
 SYSTEM SYNC FILE CACHE [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM LOAD PRIMARY KEY \{#load-primary-key\}
 
@@ -708,7 +670,6 @@ SYSTEM LOAD PRIMARY KEY [db.]name
 SYSTEM LOAD PRIMARY KEY
 ```
 
-
 ### SYSTEM UNLOAD PRIMARY KEY \{#unload-primary-key\}
 
 为指定的表或所有表卸载主键缓存。
@@ -720,7 +681,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## 管理可刷新materialized view \{#refreshable-materialized-views\}
 
@@ -759,7 +719,6 @@ SYSTEM STOP VIEW [db.]name
 SYSTEM STOP VIEWS
 ```
 
-
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS \{#start-view-start-views\}
 
 为指定的 VIEW 或所有可刷新 VIEW 启用定期刷新。不会立即触发刷新。
@@ -774,7 +733,6 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
-
 ### SYSTEM CANCEL VIEW \{#cancel-view\}
 
 如果当前副本上的指定 VIEW 正在刷新，则中断并取消该刷新；否则，不执行任何操作。
@@ -782,7 +740,6 @@ SYSTEM START VIEWS
 ```sql
 SYSTEM CANCEL VIEW [db.]name
 ```
-
 
 ### SYSTEM WAIT VIEW \{#system-wait-view\}
 

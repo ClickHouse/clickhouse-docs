@@ -17,7 +17,6 @@ import Image from '@theme/IdealImage';
 {/* TODO(kaushik-ubi): Скриншот экрана конфигурации высокой доступности
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
 
-
 ## Варианты высокой доступности \{#high-availability-options\}
 
 ### 2 Standbys \{#two-standbys\}

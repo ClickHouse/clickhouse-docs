@@ -20,21 +20,21 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # 将 Databrain 连接到 ClickHouse \{#connecting-databrain-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [Databrain](https://usedatabrain.com) 是一款嵌入式分析平台，可帮助你为客户构建和共享交互式仪表盘、指标和数据可视化。Databrain 通过 HTTPS 接口连接到 ClickHouse，使你能够通过现代、易用的界面轻松对 ClickHouse 数据进行可视化和分析。
 
 <Image size="md" img={databrain_01} alt="显示 ClickHouse 数据可视化的 Databrain 仪表盘界面" border />
 
-<br/>
+<br />
 
 本指南将逐步介绍如何将 Databrain 连接到你的 ClickHouse 实例。
 
 ## 前置条件 \{#pre-requisites\}
 
-- 一个 ClickHouse 数据库，可以部署在自有基础设施上，或托管于 [ClickHouse Cloud](https://clickhouse.com/)。
-- 一个 [Databrain 账号](https://app.usedatabrain.com/users/sign-up)。
-- 一个 Databrain 工作区，用于连接数据源。
+* 一个 ClickHouse 数据库，可以部署在自有基础设施上，或托管于 [ClickHouse Cloud](https://clickhouse.com/)。
+* 一个 [Databrain 账号](https://app.usedatabrain.com/users/sign-up)。
+* 一个 Databrain 工作区，用于连接数据源。
 
 ## 将 Databrain 连接到 ClickHouse 的步骤 \{#steps-to-connect-databrain-to-clickhouse\}
 
@@ -116,10 +116,10 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 2. 选择你的 ClickHouse 数据源，并选取你想要可视化的表。
 
 3. 使用 Databrain 提供的直观界面来：
-   - 选择维度和度量
-   - 应用过滤和聚合
-   - 选择可视化类型（柱状图、折线图、饼图、数据表等）
-   - 添加自定义 SQL 查询以进行高级分析
+   * 选择维度和度量
+   * 应用过滤和聚合
+   * 选择可视化类型（柱状图、折线图、饼图、数据表等）
+   * 添加自定义 SQL 查询以进行高级分析
 
 4. 保存你的指标，以便在多个仪表板中复用。
 
@@ -139,12 +139,12 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 在配合 ClickHouse 使用时，Databrain 提供了多项高级功能：
 
-- **Custom SQL Console**：直接针对你的 ClickHouse 数据库编写并执行自定义 SQL 查询
-- **Multi-tenancy and single-tenancy**：在单租户和多租户架构下连接你的 ClickHouse 数据库
-- **Report Scheduling**：安排自动化报告并通过电子邮件发送给相关方
-- **AI-powered Insights**：使用 AI 从数据中生成摘要和洞察
-- **Embedded Analytics**：将仪表板和指标直接嵌入到你的应用程序中
-- **Semantic Layer**：创建可复用的数据模型和业务逻辑
+* **Custom SQL Console**：直接针对你的 ClickHouse 数据库编写并执行自定义 SQL 查询
+* **Multi-tenancy and single-tenancy**：在单租户和多租户架构下连接你的 ClickHouse 数据库
+* **Report Scheduling**：安排自动化报告并通过电子邮件发送给相关方
+* **AI-powered Insights**：使用 AI 从数据中生成摘要和洞察
+* **Embedded Analytics**：将仪表板和指标直接嵌入到你的应用程序中
+* **Semantic Layer**：创建可复用的数据模型和业务逻辑
 
 ## 故障排查 \{#troubleshooting\}
 
@@ -171,7 +171,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 如需深入了解 Databrain 的功能以及如何构建强大的分析能力：
 
-- [Databrain 文档](https://docs.usedatabrain.com/)
-- [ClickHouse 集成指南](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)
-- [创建仪表盘](https://docs.usedatabrain.com/guides/dashboards/create-a-dashboard)
-- [构建指标](https://docs.usedatabrain.com/guides/metrics/create-metrics)
+* [Databrain 文档](https://docs.usedatabrain.com/)
+* [ClickHouse 集成指南](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)
+* [创建仪表盘](https://docs.usedatabrain.com/guides/dashboards/create-a-dashboard)
+* [构建指标](https://docs.usedatabrain.com/guides/metrics/create-metrics)

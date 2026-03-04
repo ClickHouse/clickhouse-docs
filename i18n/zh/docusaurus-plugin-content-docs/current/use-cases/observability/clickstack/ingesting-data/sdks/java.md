@@ -26,7 +26,6 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）
   </tbody>
 </table>
 
-
 ## 入门 \{#getting-started\}
 
 :::note
@@ -41,36 +40,31 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-
 ### 配置环境变量 \{#configure-environment-variables\}
 
 然后，你需要在 shell 环境中配置以下环境变量，以便通过 OpenTelemetry collector 将遥测数据上报到 ClickStack：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```shell
+    export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
+    OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_LOGS_EXPORTER=otlp \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+    ```
+  </TabItem>
 
-```shell
-export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```shell
-export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
-```
-
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```shell
+    export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
+    OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+    OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_LOGS_EXPORTER=otlp \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+    ```
+  </TabItem>
 </Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务，其值可以是任意名称。*

@@ -24,9 +24,9 @@ ClickHouse не поддерживает традиционные хранимы
 
 ClickHouse оптимизирован для:
 
-- **Аналитических нагрузок** — сложных агрегаций по большим наборам данных
-- **Пакетной обработки** — эффективной обработки больших объёмов данных
-- **Декларативных запросов** — SQL-запросов, которые описывают, какие данные нужно получить, а не то, как их обрабатывать
+* **Аналитических нагрузок** — сложных агрегаций по большим наборам данных
+* **Пакетной обработки** — эффективной обработки больших объёмов данных
+* **Декларативных запросов** — SQL-запросов, которые описывают, какие данные нужно получить, а не то, как их обрабатывать
 
 Хранимые процедуры с процедурной логикой противоречат этим принципам оптимизации. Вместо них ClickHouse предоставляет альтернативы, соответствующие его сильным сторонам.
 
@@ -108,7 +108,6 @@ SELECT format_phone('5551234567');
 * Рекурсивные функции не допускаются
 
 Полный синтаксис см. в [`CREATE FUNCTION`](/sql-reference/statements/create/function).
-
 
 #### Исполняемые UDF-функции \{#executable-udfs\}
 
@@ -557,7 +556,7 @@ WHERE month = toStartOfMonth(today());
   </TabItem>
 </Tabs>
 
-<br/>
+<br />
 
 #### Ключевые отличия \{#key-differences\}
 
@@ -570,26 +569,26 @@ WHERE month = toStartOfMonth(today());
 :::tip
 **Когда использовать каждый подход:**
 
-- **OLTP-нагрузки** (заказы, платежи, учетные записи пользователей) → используйте MySQL/PostgreSQL с хранимыми процедурами
-- **Аналитические нагрузки** (отчеты, агрегации, временные ряды) → используйте ClickHouse с оркестрацией на уровне приложения
-- **Гибридная архитектура** → используйте оба подхода: передавайте транзакционные данные из OLTP в ClickHouse в потоковом режиме для аналитики
-:::
+* **OLTP-нагрузки** (заказы, платежи, учетные записи пользователей) → используйте MySQL/PostgreSQL с хранимыми процедурами
+* **Аналитические нагрузки** (отчеты, агрегации, временные ряды) → используйте ClickHouse с оркестрацией на уровне приложения
+* **Гибридная архитектура** → используйте оба подхода: передавайте транзакционные данные из OLTP в ClickHouse в потоковом режиме для аналитики
+  :::
 
 #### Использование инструментов оркестрации рабочих процессов \{#using-workflow-orchestration-tools\}
 
-- **Apache Airflow** - Планирование и мониторинг сложных DAG'ов с запросами к ClickHouse
-- **dbt** - Преобразование данных с использованием SQL-ориентированных рабочих процессов
-- **Prefect/Dagster** - Современные системы оркестрации на базе Python
-- **Пользовательские планировщики** - Cron-задания, Kubernetes CronJobs и т.д.
+* **Apache Airflow** - Планирование и мониторинг сложных DAG&#39;ов с запросами к ClickHouse
+* **dbt** - Преобразование данных с использованием SQL-ориентированных рабочих процессов
+* **Prefect/Dagster** - Современные системы оркестрации на базе Python
+* **Пользовательские планировщики** - Cron-задания, Kubernetes CronJobs и т.д.
 
 **Преимущества внешней оркестрации:**
 
-- Полноценные возможности языков программирования
-- Улучшенная обработка ошибок и логика повторных попыток
-- Интеграция с внешними системами (API, другие базы данных)
-- Контроль версий и тестирование
-- Мониторинг и оповещения
-- Более гибкое планирование
+* Полноценные возможности языков программирования
+* Улучшенная обработка ошибок и логика повторных попыток
+* Интеграция с внешними системами (API, другие базы данных)
+* Контроль версий и тестирование
+* Мониторинг и оповещения
+* Более гибкое планирование
 
 ## Альтернативы подготовленным выражениям в ClickHouse \{#alternatives-to-prepared-statements-in-clickhouse\}
 
@@ -667,128 +666,122 @@ clickhouse-client \
 
 Параметры задаются в виде: `{parameter_name: DataType}`
 
-- `parameter_name` — имя параметра (без префикса `param_`)
-- `DataType` — тип данных ClickHouse, к которому приводится параметр
+* `parameter_name` — имя параметра (без префикса `param_`)
+* `DataType` — тип данных ClickHouse, к которому приводится параметр
 
 ### Примеры типов данных \{#data-type-examples\}
 
 <details>
-<summary>Таблицы и пример данных</summary>
+  <summary>Таблицы и пример данных</summary>
 
-```sql
--- 1. Создайте таблицу для тестирования строк и чисел
-CREATE TABLE IF NOT EXISTS users (
-    name String,
-    age UInt8,
-    salary Float64
-) ENGINE = Memory;
+  ```sql
+  -- 1. Создайте таблицу для тестирования строк и чисел
+  CREATE TABLE IF NOT EXISTS users (
+      name String,
+      age UInt8,
+      salary Float64
+  ) ENGINE = Memory;
 
-INSERT INTO users VALUES
-    ('John Doe', 25, 75000.50),
-    ('Jane Smith', 30, 85000.75),
-    ('Peter Jones', 20, 50000.00);
+  INSERT INTO users VALUES
+      ('John Doe', 25, 75000.50),
+      ('Jane Smith', 30, 85000.75),
+      ('Peter Jones', 20, 50000.00);
 
--- 2. Создайте таблицу для тестирования дат и временных меток
-CREATE TABLE IF NOT EXISTS events (
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = Memory;
+  -- 2. Создайте таблицу для тестирования дат и временных меток
+  CREATE TABLE IF NOT EXISTS events (
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = Memory;
 
-INSERT INTO events VALUES
-    ('2024-01-15', '2024-01-15 14:30:00'),
-    ('2024-01-15', '2024-01-15 15:00:00'),
-    ('2024-01-16', '2024-01-16 10:00:00');
+  INSERT INTO events VALUES
+      ('2024-01-15', '2024-01-15 14:30:00'),
+      ('2024-01-15', '2024-01-15 15:00:00'),
+      ('2024-01-16', '2024-01-16 10:00:00');
 
--- 3. Создайте таблицу для тестирования массивов
-CREATE TABLE IF NOT EXISTS products (
-    id UInt32,
-    name String
-) ENGINE = Memory;
+  -- 3. Создайте таблицу для тестирования массивов
+  CREATE TABLE IF NOT EXISTS products (
+      id UInt32,
+      name String
+  ) ENGINE = Memory;
 
-INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
+  INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
--- 4. Создайте таблицу для тестирования Map (аналог структур)
-CREATE TABLE IF NOT EXISTS accounts (
-    user_id UInt32,
-    status String,
-    type String
-) ENGINE = Memory;
+  -- 4. Создайте таблицу для тестирования Map (аналог структур)
+  CREATE TABLE IF NOT EXISTS accounts (
+      user_id UInt32,
+      status String,
+      type String
+  ) ENGINE = Memory;
 
-INSERT INTO accounts VALUES
-    (101, 'active', 'premium'),
-    (102, 'inactive', 'basic'),
-    (103, 'active', 'basic');
+  INSERT INTO accounts VALUES
+      (101, 'active', 'premium'),
+      (102, 'inactive', 'basic'),
+      (103, 'active', 'basic');
 
--- 5. Создайте таблицу для тестирования Identifier
-CREATE TABLE IF NOT EXISTS sales_2024 (
-    value UInt32
-) ENGINE = Memory;
+  -- 5. Создайте таблицу для тестирования Identifier
+  CREATE TABLE IF NOT EXISTS sales_2024 (
+      value UInt32
+  ) ENGINE = Memory;
 
-INSERT INTO sales_2024 VALUES (100), (200), (300);
-```
+  INSERT INTO sales_2024 VALUES (100), (200), (300);
+  ```
 </details>
 
 <Tabs>
-<TabItem value="strings" label="Строки и числа" default>
+  <TabItem value="strings" label="Строки и числа" default>
+    ```sql
+    SET param_name = 'John Doe';
+    SET param_age = 25;
+    SET param_salary = 75000.50;
 
-```sql
-SET param_name = 'John Doe';
-SET param_age = 25;
-SET param_salary = 75000.50;
+    SELECT name, age, salary FROM users
+    WHERE name = {name: String}
+      AND age >= {age: UInt8}
+      AND salary <= {salary: Float64};
+    ```
+  </TabItem>
 
-SELECT name, age, salary FROM users
-WHERE name = {name: String}
-  AND age >= {age: UInt8}
-  AND salary <= {salary: Float64};
-```
+  <TabItem value="dates" label="Даты и время">
+    ```sql
+    SET param_date = '2024-01-15';
+    SET param_timestamp = '2024-01-15 14:30:00';
 
-</TabItem>
-<TabItem value="dates" label="Даты и время">
+    SELECT * FROM events
+    WHERE event_date = {date: Date}
+       OR event_timestamp > {timestamp: DateTime};
+    ```
+  </TabItem>
 
-```sql
-SET param_date = '2024-01-15';
-SET param_timestamp = '2024-01-15 14:30:00';
+  <TabItem value="arrays" label="Массивы">
+    ```sql
+    SET param_ids = [1, 2, 3, 4, 5];
 
-SELECT * FROM events
-WHERE event_date = {date: Date}
-   OR event_timestamp > {timestamp: DateTime};
-```
+    SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="arrays" label="Массивы">
+  <TabItem value="maps" label="Отображения (Map)">
+    ```sql
+    SET param_filters = {'target_status': 'active'};
 
-```sql
-SET param_ids = [1, 2, 3, 4, 5];
+    SELECT user_id, status, type FROM accounts
+    WHERE status = arrayElement(
+        mapValues({filters: Map(String, String)}),
+        indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
+    );
+    ```
+  </TabItem>
 
-SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-```
+  <TabItem value="identifiers" label="Идентификаторы">
+    ```sql
+    SET param_table = 'sales_2024';
 
-</TabItem>
-<TabItem value="maps" label="Отображения (Map)">
-
-```sql
-SET param_filters = {'target_status': 'active'};
-
-SELECT user_id, status, type FROM accounts
-WHERE status = arrayElement(
-    mapValues({filters: Map(String, String)}),
-    indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
-);
-```
-
-</TabItem>
-<TabItem value="identifiers" label="Идентификаторы">
-
-```sql
-SET param_table = 'sales_2024';
-
-SELECT count() FROM {table: Identifier};
-```
-
-</TabItem>
+    SELECT count() FROM {table: Identifier};
+    ```
+  </TabItem>
 </Tabs>
 
-<br/>
+<br />
 
 Для использования параметров запроса в [клиентах для языков программирования](/integrations/language-clients) обратитесь к документации по языковому клиенту, который вас интересует.
 
@@ -831,7 +824,6 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
 -- ✗ Multiple statements
 {statements: String};  -- NOT SUPPORTED
 ```
-
 
 ### Рекомендации по безопасности \{#data-type-examples\}
 
@@ -900,7 +892,6 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 Подробнее см. [документацию по интерфейсу MySQL](/interfaces/mysql) и [запись в блоге о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
 
-
 ## Резюме \{#summary\}
 
 ### Альтернативы хранимым процедурам в ClickHouse \{#summary-stored-procedures\}
@@ -918,15 +909,15 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 Параметры запроса могут использоваться для:
 
-- предотвращения SQL-инъекций
-- выполнения параметризованных запросов с контролем типов
-- динамической фильтрации в приложениях
-- создания многократно используемых шаблонов запросов
+* предотвращения SQL-инъекций
+* выполнения параметризованных запросов с контролем типов
+* динамической фильтрации в приложениях
+* создания многократно используемых шаблонов запросов
 
 ## Связанная документация \{#related-documentation\}
 
-- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - Пользовательские функции
-- [`CREATE VIEW`](/sql-reference/statements/create/view) - Представления, включая параметризованные и материализованные
-- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - Полный синтаксис параметров запросов
-- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - Продвинутые шаблоны каскадных материализованных представлений
-- [Executable UDFs](/sql-reference/functions/udf) - Выполнение внешних функций
+* [`CREATE FUNCTION`](/sql-reference/statements/create/function) - Пользовательские функции
+* [`CREATE VIEW`](/sql-reference/statements/create/view) - Представления, включая параметризованные и материализованные
+* [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - Полный синтаксис параметров запросов
+* [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - Продвинутые шаблоны каскадных материализованных представлений
+* [Executable UDFs](/sql-reference/functions/udf) - Выполнение внешних функций

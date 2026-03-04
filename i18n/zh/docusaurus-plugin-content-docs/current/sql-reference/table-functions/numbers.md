@@ -46,7 +46,6 @@ SELECT (number - 10) * 2 FROM numbers(10, 10);
 SELECT * FROM numbers(0, 20, 2);
 ```
 
-
 ### 示例 \{#examples\}
 
 前 10 个数字。
@@ -92,8 +91,7 @@ LIMIT 1;
  └──────────────────┘
 ```
 
-
 ### 注意事项 \{#notes\}
 
-- 出于性能考虑，如果你知道需要多少行，优先使用有界形式（`numbers(N)`、`numbers(N, M[, S])`），而不是无界的 `numbers()` / `system.numbers`。
-- 若要进行并行生成，可以使用 `numbers_mt(...)` 或 [`system.numbers_mt`](/operations/system-tables/numbers_mt) 表。请注意，结果返回的顺序可能是不确定的。
+* 出于性能考虑，如果你知道需要多少行，优先使用有界形式（`numbers(N)`、`numbers(N, M[, S])`），而不是无界的 `numbers()` / `system.numbers`。
+* 若要进行并行生成，可以使用 `numbers_mt(...)` 或 [`system.numbers_mt`](/operations/system-tables/numbers_mt) 表。请注意，结果返回的顺序可能是不确定的。

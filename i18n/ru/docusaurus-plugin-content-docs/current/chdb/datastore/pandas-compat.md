@@ -32,7 +32,6 @@ result = df[df['age'] > 25].groupby('city')['salary'].mean()
 
 ***
 
-
 ## Атрибуты и свойства \{#attributes\}
 
 | Свойство  | Описание                 | Вызывает вычисление |
@@ -63,7 +62,6 @@ print(ds.empty)      # False
 
 ***
 
-
 ## Индексация и выборка \{#indexing\}
 
 | Метод | Описание              | Пример |
@@ -87,7 +85,7 @@ print(ds.empty)      # False
 | `df.xs()` | Поперечное сечение        | `ds.xs('key')` |
 | `df.pop()` | Удаление столбца          | `ds.pop('col')` |
 
----
+***
 
 ## Статистические методы \{#statistical\}
 
@@ -145,7 +143,6 @@ print(ds.groupby('city').agg({'salary': ['mean', 'std'], 'age': 'count'}))
 
 ***
 
-
 ## Обработка данных \{#manipulation\}
 
 | Method              | Description                    |
@@ -190,7 +187,6 @@ result = ds.assign(
 
 ***
 
-
 ## Сортировка и ранжирование \{#sorting\}
 
 | Метод           | Описание                |
@@ -215,7 +211,6 @@ result = ds.nsmallest(5, 'age')
 ```
 
 ***
-
 
 ## Преобразование формы данных \{#reshaping\}
 
@@ -258,7 +253,6 @@ result = ds.explode('tags')
 
 ***
 
-
 ## Комбинирование / объединение \{#combining\}
 
 | Метод             | Описание                     |
@@ -285,7 +279,6 @@ result = pd.concat([df1, df2], axis=1)
 ```
 
 ***
-
 
 ## Бинарные операции \{#binary\}
 
@@ -314,7 +307,6 @@ result = ds['col1'].add(ds['col2'], fill_value=0)
 
 ***
 
-
 ## Операции сравнения \{#comparison\}
 
 | Method | Description |
@@ -328,7 +320,7 @@ result = ds['col1'].add(ds['col2'], fill_value=0)
 | `equals()` | Проверка равенства |
 | `compare()` | Показ различий |
 
----
+***
 
 ## Применение функций \{#application\}
 
@@ -362,7 +354,6 @@ result = (ds
 ```
 
 ***
-
 
 ## Временные ряды \{#timeseries\}
 
@@ -399,7 +390,6 @@ result = ds['value'].shift(-1)  # Lead
 
 ***
 
-
 ## Пропущенные данные \{#missing\}
 
 | Метод | Описание |
@@ -413,7 +403,7 @@ result = ds['value'].shift(-1)  # Lead
 | `interpolate()` | Интерполяция значений |
 | `replace()` | Замена значений |
 
----
+***
 
 ## Методы ввода-вывода \{#io\}
 
@@ -437,7 +427,7 @@ result = ds['value'].shift(-1)  # Lead
 
 См. подробную документацию в разделе [Операции ввода-вывода](io.md).
 
----
+***
 
 ## Итерация \{#iteration\}
 
@@ -447,7 +437,7 @@ result = ds['value'].shift(-1)  # Lead
 | `iterrows()` | Итерация (индекс, Series)  |
 | `itertuples()` | Итерация по именованным кортежам  |
 
----
+***
 
 ## Основные отличия от Pandas \{#differences\}
 
@@ -461,7 +451,6 @@ pdf['col']  # → pd.Series
 ds['col']   # → ColumnExpr
 ```
 
-
 ### 2. Ленивое вычисление \{#lazy-execution\}
 
 ```python
@@ -469,7 +458,6 @@ ds['col']   # → ColumnExpr
 result = ds.filter(ds['age'] > 25)  # Not executed yet
 df = result.to_df()  # Executed here
 ```
-
 
 ### 3. Отсутствие параметра inplace \{#no-inplace-parameter\}
 
@@ -480,7 +468,6 @@ df.drop(columns=['col'], inplace=True)
 # DataStore (always returns new object)
 ds = ds.drop(columns=['col'])
 ```
-
 
 ### 4. Сравнение результатов \{#comparing-results\}
 

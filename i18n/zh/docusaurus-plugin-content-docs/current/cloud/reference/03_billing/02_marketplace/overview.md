@@ -20,7 +20,6 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 * [Azure Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/azure-marketplace-payg)
 * [Azure Marketplace 承诺用量合约](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
-
 ## 常见问题解答 \{#faqs\}
 
 ### 我如何验证我的组织是否已连接到 Marketplace 计费？​ \{#how-can-i-verify-that-my-organization-is-connected-to-marketplace-billing\}
@@ -40,9 +39,9 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 ### 我是现有的 ClickHouse Cloud 用户。如果我希望将现有服务通过 Marketplace 计费，该怎么做？​ \{#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace\}
 
-你需要通过云服务商的 Marketplace 订阅 ClickHouse Cloud。完成在 Marketplace 上的订阅并重定向回 ClickHouse Cloud 后，你将可以选择将一个现有的 ClickHouse Cloud 组织关联到 Marketplace 计费。从那一刻起，你的现有资源将通过 Marketplace 进行计费。 
+你需要通过云服务商的 Marketplace 订阅 ClickHouse Cloud。完成在 Marketplace 上的订阅并重定向回 ClickHouse Cloud 后，你将可以选择将一个现有的 ClickHouse Cloud 组织关联到 Marketplace 计费。从那一刻起，你的现有资源将通过 Marketplace 进行计费。
 
-<Image img={marketplace_signup_and_org_linking} size='md' alt='Marketplace 注册与组织关联' border/>
+<Image img={marketplace_signup_and_org_linking} size="md" alt="Marketplace 注册与组织关联" border />
 
 你可以在该组织的计费页面上确认计费已成功连接到 Marketplace。如果在此过程中遇到任何问题，请联系 [ClickHouse Cloud 支持](https://clickhouse.com/support/program)。
 
@@ -60,15 +59,15 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 在这种情况下，请像往常一样订阅 ClickHouse Cloud（参见通过 Marketplace 订阅 ClickHouse Cloud 的相关章节）。
 
-- 对于 AWS Marketplace，将创建一个新的 ClickHouse Cloud 组织并将其连接到该 Marketplace。
-- 对于 GCP Marketplace，你之前的组织将会被重新激活。
+* 对于 AWS Marketplace，将创建一个新的 ClickHouse Cloud 组织并将其连接到该 Marketplace。
+* 对于 GCP Marketplace，你之前的组织将会被重新激活。
 
 如果在重新激活你的 Marketplace 组织时遇到任何问题，请联系 [ClickHouse Cloud 支持](https://clickhouse.com/support/program)。
 
 ### 我如何访问我在 Marketplace 中订阅的 ClickHouse Cloud 服务的发票？​ \{#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service\}
 
-- [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
-- [GCP Marketplace orders](https://console.cloud.google.com/marketplace/orders)（选择你用于订阅的计费账号）
+* [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
+* [GCP Marketplace orders](https://console.cloud.google.com/marketplace/orders)（选择你用于订阅的计费账号）
 
 ### 为什么用量报表上的日期与 Marketplace 发票上的日期不匹配？​ \{#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice\}
 
@@ -92,4 +91,4 @@ ClickHouse Cloud 用量报表遵循不同的计费周期：从你注册当日开
 
 ### 如果我的 ClickHouse Organization 通过云 Marketplace 承诺消费协议计费，在用完额度后会自动切换到 PAYG 计费吗？ \{#automatically-move-to-PAYG-when-running-out-of-credit\}
 
-如果您的 Marketplace 承诺消费合同仍然有效，并且您用完了额度，我们会自动将您的 Organization 切换到按需付费（PAYG）计费模式。不过，当现有合同到期时，您需要将新的 Marketplace 合同关联到您的 Organization，或者将您的 Organization 切换为通过信用卡直接计费。 
+如果您的 Marketplace 承诺消费合同仍然有效，并且您用完了额度，我们会自动将您的 Organization 切换到按需付费（PAYG）计费模式。不过，当现有合同到期时，您需要将新的 Marketplace 合同关联到您的 Organization，或者将您的 Organization 切换为通过信用卡直接计费。

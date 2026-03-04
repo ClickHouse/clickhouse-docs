@@ -10,11 +10,11 @@ doc_type: 'reference'
 
 `GROUP BY` 子句会将 `SELECT` 查询切换到聚合模式，其工作方式如下：
 
-- `GROUP BY` 子句包含一个表达式列表（或单个表达式，此时被视为长度为 1 的列表）。这个列表充当“分组键（grouping key）”，而列表中的每个表达式称为“键表达式（key expression）”。
-- [SELECT](/sql-reference/statements/select/index.md)、[HAVING](/sql-reference/statements/select/having.md) 和 [ORDER BY](/sql-reference/statements/select/order-by.md) 子句中的所有表达式 **必须** 基于键表达式 **或** 基于针对非键表达式（包括普通列）的[聚合函数](../../../sql-reference/aggregate-functions/index.md)计算得出。换句话说，从表中选出的每一列要么必须用于某个键表达式，要么必须出现在某个聚合函数内部，但不能同时两者兼有。
-- 聚合后的 `SELECT` 查询结果中包含的行数等于源表中“分组键”不同取值的个数。通常，这会显著减少行数，经常能减少几个数量级，但并非必然：如果所有“分组键”取值都互不相同，则行数保持不变。
+* `GROUP BY` 子句包含一个表达式列表（或单个表达式，此时被视为长度为 1 的列表）。这个列表充当“分组键（grouping key）”，而列表中的每个表达式称为“键表达式（key expression）”。
+* [SELECT](/sql-reference/statements/select/index.md)、[HAVING](/sql-reference/statements/select/having.md) 和 [ORDER BY](/sql-reference/statements/select/order-by.md) 子句中的所有表达式 **必须** 基于键表达式 **或** 基于针对非键表达式（包括普通列）的[聚合函数](../../../sql-reference/aggregate-functions/index.md)计算得出。换句话说，从表中选出的每一列要么必须用于某个键表达式，要么必须出现在某个聚合函数内部，但不能同时两者兼有。
+* 聚合后的 `SELECT` 查询结果中包含的行数等于源表中“分组键”不同取值的个数。通常，这会显著减少行数，经常能减少几个数量级，但并非必然：如果所有“分组键”取值都互不相同，则行数保持不变。
 
-如果需要按列序号而不是列名对表中的数据进行分组，请启用 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设置。
+如果需要按列序号而不是列名对表中的数据进行分组，请启用 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) 设置。
 
 :::note
 还有另一种方式可以对表进行聚合。如果查询中只在聚合函数内部使用了表列，则可以省略 `GROUP BY` 子句，此时会假定按空键集进行聚合。此类查询总是恰好返回一行。
@@ -228,11 +228,11 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 这行额外数据仅在 `JSON*`、`TabSeparated*` 和 `Pretty*` 格式中生成，并且与其他行分开输出：
 
-- 在 `XML` 和 `JSON*` 格式中，这一行作为单独的 `totals` 字段输出。
-- 在 `TabSeparated*`、`CSV*` 和 `Vertical` 格式中，该行位于主结果之后，在其他数据之后由一个空行分隔。
-- 在 `Pretty*` 格式中，该行作为主结果之后的一个单独表格输出。
-- 在 `Template` 格式中，该行根据指定的模板输出。
-- 在其他格式中，不支持该行。
+* 在 `XML` 和 `JSON*` 格式中，这一行作为单独的 `totals` 字段输出。
+* 在 `TabSeparated*`、`CSV*` 和 `Vertical` 格式中，该行位于主结果之后，在其他数据之后由一个空行分隔。
+* 在 `Pretty*` 格式中，该行作为主结果之后的一个单独表格输出。
+* 在 `Template` 格式中，该行根据指定的模板输出。
+* 在其他格式中，不支持该行。
 
 :::note
 `totals` 会出现在 `SELECT` 查询的结果中，但不会出现在 `INSERT INTO ... SELECT` 的结果中。
@@ -376,17 +376,17 @@ GROUPING SETS
 
 ### 基于表排序键的 GROUP BY 优化 \{#group-by-optimization-depending-on-table-sorting-key\}
 
-如果表按某个键排序，并且 `GROUP BY` 表达式至少包含排序键的前缀或单射函数，那么聚合可以更高效地执行。在这种情况下，当从表中读取到一个新的键时，聚合的中间结果可以被最终化并发送给客户端。此行为由 [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 设置控制。该优化在聚合过程中可以降低内存使用，但在某些情况下可能会减慢查询执行。
+如果表按某个键排序，并且 `GROUP BY` 表达式至少包含排序键的前缀或单射函数，那么聚合可以更高效地执行。在这种情况下，当从表中读取到一个新的键时，聚合的中间结果可以被最终化并发送给客户端。此行为由 [optimize&#95;aggregation&#95;in&#95;order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 设置控制。该优化在聚合过程中可以降低内存使用，但在某些情况下可能会减慢查询执行。
 
 ### 外部内存中的 GROUP BY \{#group-by-in-external-memory\}
 
 可以启用将临时数据写入磁盘，以限制执行 `GROUP BY` 时的内存使用。
-[max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 设置决定了将 `GROUP BY` 临时数据写入文件系统时的 RAM 消耗阈值。如果设置为 0（默认值），则表示禁用。
-或者，可以设置 [max_bytes_ratio_before_external_group_by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)，只在查询已使用内存达到某个阈值后，才允许使用外部内存执行 `GROUP BY`。
+[max&#95;bytes&#95;before&#95;external&#95;group&#95;by](/operations/settings/settings#max_bytes_before_external_group_by) 设置决定了将 `GROUP BY` 临时数据写入文件系统时的 RAM 消耗阈值。如果设置为 0（默认值），则表示禁用。
+或者，可以设置 [max&#95;bytes&#95;ratio&#95;before&#95;external&#95;group&#95;by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)，只在查询已使用内存达到某个阈值后，才允许使用外部内存执行 `GROUP BY`。
 
 在使用 `max_bytes_before_external_group_by` 时，建议将 `max_memory_usage` 设置为其大约两倍（或将 `max_bytes_ratio_before_external_group_by=0.5`）。这是必要的，因为聚合分为两个阶段：读取数据并形成中间数据（阶段 1），以及合并中间数据（阶段 2）。只有在阶段 1 中才可能将数据写入文件系统。如果临时数据没有被写入磁盘，那么阶段 2 可能需要与阶段 1 相同数量的内存。
 
-例如，如果 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置为 10000000000，并且希望使用外部聚合，那么将 `max_bytes_before_external_group_by` 也设置为 10000000000，将 `max_memory_usage` 设置为 20000000000 是合理的。当触发外部聚合时（即至少发生过一次临时数据写入磁盘），RAM 的最大消耗只会略高于 `max_bytes_before_external_group_by`。
+例如，如果 [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage) 设置为 10000000000，并且希望使用外部聚合，那么将 `max_bytes_before_external_group_by` 也设置为 10000000000，将 `max_memory_usage` 设置为 20000000000 是合理的。当触发外部聚合时（即至少发生过一次临时数据写入磁盘），RAM 的最大消耗只会略高于 `max_bytes_before_external_group_by`。
 
 在分布式查询处理时，外部聚合在远程服务器上执行。为了使请求端服务器只使用少量 RAM，请将 `distributed_aggregation_memory_efficient` 设置为 1。
 

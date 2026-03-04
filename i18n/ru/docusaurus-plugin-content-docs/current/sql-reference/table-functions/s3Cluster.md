@@ -94,5 +94,5 @@ SELECT count(*) FROM s3Cluster(
 
 ## Связанные разделы \{#related\}
 
-- [Движок S3](../../engines/table-engines/integrations/s3.md)
-- [Табличная функция S3](../../sql-reference/table-functions/s3.md)
+* [Движок S3](../../engines/table-engines/integrations/s3.md)
+* [Табличная функция S3](../../sql-reference/table-functions/s3.md)

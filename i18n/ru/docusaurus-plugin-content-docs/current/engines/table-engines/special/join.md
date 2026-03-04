@@ -57,8 +57,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Основные варианты использования таблиц с движком `Join`:
 
-- Использовать таблицу справа в выражении `JOIN`.
-- Вызывать функцию [joinGet](/sql-reference/functions/other-functions.md/#joinGet), которая позволяет извлекать данные из таблицы так же, как из словаря.
+* Использовать таблицу справа в выражении `JOIN`.
+* Вызывать функцию [joinGet](/sql-reference/functions/other-functions.md/#joinGet), которая позволяет извлекать данные из таблицы так же, как из словаря.
 
 ### Удаление данных \{#deleting-data\}
 
@@ -70,23 +70,24 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 #### `join_use_nulls` \{#join_use_nulls\}
 
-[join_use_nulls](/operations/settings/settings.md/#join_use_nulls)
+[join&#95;use&#95;nulls](/operations/settings/settings.md/#join_use_nulls)
 
 #### `max_rows_in_join` \{#max_rows_in_join\}
 
-[max_rows_in_join](/operations/settings/settings#max_rows_in_join)
+[max&#95;rows&#95;in&#95;join](/operations/settings/settings#max_rows_in_join)
 
 #### `max_bytes_in_join` \{#max_bytes_in_join\}
 
-[max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
+[max&#95;bytes&#95;in&#95;join](/operations/settings/settings#max_bytes_in_join)
 
 #### `join_overflow_mode` \{#join_overflow_mode\}
 
-[join_overflow_mode](/operations/settings/settings#join_overflow_mode)
+[join&#95;overflow&#95;mode](/operations/settings/settings#join_overflow_mode)
 
 #### `join_any_take_last_row` \{#join_any_take_last_row\}
 
-[join_any_take_last_row](/operations/settings/settings.md/#join_any_take_last_row)
+[join&#95;any&#95;take&#95;last&#95;row](/operations/settings/settings.md/#join_any_take_last_row)
+
 #### `join_use_nulls` \{#join_use_nulls-1\}
 
 #### Persistent \{#persistent\}
@@ -97,14 +98,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Возможные значения:
 
-- 1 — включено.
-- 0 — выключено.
+* 1 — включено.
+* 0 — выключено.
 
 Значение по умолчанию: `1`.
 
 Таблицы с движком `Join` не могут использоваться в операциях `GLOBAL JOIN`.
 
-Движок `Join` позволяет указать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в операторе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
+Движок `Join` позволяет указать настройку [join&#95;use&#95;nulls](/operations/settings/settings.md/#join_use_nulls) в операторе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
 
 ## Примеры использования \{#example\}
 
@@ -161,7 +162,4 @@ ALTER TABLE id_val_join DELETE WHERE id = 3;
 ```
 
 ```text
-┌─id─┬─val─┐
-│  1 │  21 │
-└────┴─────┘
-```
+┌─id─┬─val�

@@ -26,22 +26,21 @@ config.use_pandas_compat()      # Full pandas compatibility (default)
 config.enable_profiling()       # Enable performance profiling
 ```
 
-
 ## Все параметры конфигурации \{#all-options\}
 
 | Категория | Опция | Значения | По умолчанию | Описание |
 |----------|--------|--------|---------|-------------|
 | **Logging** | `log_level` | DEBUG/INFO/WARNING/ERROR | WARNING | Уровень детализации логов |
-| | `log_format` | "simple", "verbose" | "simple" | Формат сообщений лога |
+| | `log_format` | &quot;simple&quot;, &quot;verbose&quot; | &quot;simple&quot; | Формат сообщений лога |
 | **Cache** | `cache_enabled` | True/False | True | Включить кэширование результатов |
 | | `cache_ttl` | float (seconds) | 0.0 | Время жизни кэша (TTL) |
-| **Engine** | `execution_engine` | "auto", "chdb", "pandas" | "auto" | Движок выполнения |
-| | `cross_datastore_engine` | "auto", "chdb", "pandas" | "auto" | Операции между DataStore |
-| **Compat** | `compat_mode` | "pandas", "performance" | "pandas" | Режим совместимости: Pandas или максимальная производительность (SQL-first) |
+| **Engine** | `execution_engine` | &quot;auto&quot;, &quot;chdb&quot;, &quot;pandas&quot; | &quot;auto&quot; | Движок выполнения |
+| | `cross_datastore_engine` | &quot;auto&quot;, &quot;chdb&quot;, &quot;pandas&quot; | &quot;auto&quot; | Операции между DataStore |
+| **Compat** | `compat_mode` | &quot;pandas&quot;, &quot;performance&quot; | &quot;pandas&quot; | Режим совместимости: Pandas или максимальная производительность (SQL-first) |
 | **Profiling** | `profiling_enabled` | True/False | False | Включить профилирование |
 | **Dtype** | `correction_level` | NONE/CRITICAL/HIGH/MEDIUM/ALL | HIGH | Уровень коррекции Dtype |
 
----
+***
 
 ## Способы настройки \{#methods\}
 
@@ -67,7 +66,6 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 Дополнительные сведения см. в разделе [Logging](logging.md).
 
-
 ### Настройка кэша \{#cache\}
 
 ```python
@@ -83,7 +81,6 @@ config.set_cache_ttl(0.0)   # No expiration (default)
 print(config.cache_enabled)
 print(config.cache_ttl)
 ```
-
 
 ### Конфигурация движка \{#engine\}
 
@@ -109,7 +106,6 @@ print(config.execution_engine)
 
 Подробности см. в разделе [Execution Engine](execution-engine.md).
 
-
 ### Режим совместимости \{#compat-mode\}
 
 ```python
@@ -127,7 +123,6 @@ print(config.compat_mode)  # 'pandas' or 'performance'
 
 Подробнее см. раздел [Режим производительности](performance-mode.md).
 
-
 ### Настройка профилирования \{#profiling\}
 
 ```python
@@ -144,7 +139,6 @@ print(config.profiling_enabled)
 
 Подробности см. в разделе [Profiling](../debugging/profiling.md).
 
-
 ### Коррекция типов данных \{#dtype\}
 
 ```python
@@ -159,7 +153,6 @@ config.set_correction_level(CorrectionLevel.ALL)       # All corrections
 ```
 
 ***
-
 
 ## Использование объекта config \{#config-object\}
 
@@ -183,7 +176,6 @@ config.enable_profiling()
 
 ***
 
-
 ## Конфигурация в коде \{#in-code\}
 
 ### Настройка отдельных скриптов \{#per-script\}
@@ -202,7 +194,6 @@ ds = pd.read_csv("data.csv")
 result = ds.filter(ds['age'] > 25).groupby('city').agg({'salary': 'mean'})
 ```
 
-
 ### Менеджер контекста (планируется) \{#context-manager\}
 
 ```python
@@ -213,7 +204,6 @@ with config.override(execution_engine='pandas'):
 ```
 
 ***
-
 
 ## Типовые сценарии настройки \{#scenarios\}
 
@@ -227,7 +217,6 @@ config.enable_profiling()    # Performance tracking
 config.set_cache_enabled(False)  # Disable caching for fresh results
 ```
 
-
 ### Продакшн-среда \{#prod-config\}
 
 ```python
@@ -240,7 +229,6 @@ config.set_cache_enabled(True)         # Enable caching
 config.set_profiling_enabled(False)    # Disable profiling overhead
 ```
 
-
 ### Максимальная пропускная способность \{#max-throughput-config\}
 
 ```python
@@ -249,7 +237,6 @@ from chdb.datastore.config import config
 config.use_performance_mode()    # SQL-first, no pandas overhead
 config.set_cache_enabled(False)  # Disable cache for streaming
 ```
-
 
 ### Тестирование производительности \{#perf-config\}
 
@@ -260,7 +247,6 @@ config.use_chdb()            # Force ClickHouse for benchmarks
 config.enable_profiling()    # Track performance
 config.set_cache_enabled(False)  # Disable cache for accurate timing
 ```
-
 
 ### Проверка совместимости с Pandas \{#compat-config\}
 
@@ -273,11 +259,10 @@ config.enable_debug()        # See what operations are used
 
 ***
 
-
 ## Сопутствующая документация \{#related\}
 
-- [Execution Engine](execution-engine.md) — подробности выбора движка
-- [Performance Mode](performance-mode.md) — режим SQL-first для максимальной пропускной способности
-- [Function Config](function-config.md) — конфигурация движка на уровне функции
-- [Logging](../debugging/logging.md) — настройка логирования
-- [Profiling](../debugging/profiling.md) — профилирование производительности
+* [Execution Engine](execution-engine.md) — подробности выбора движка
+* [Performance Mode](performance-mode.md) — режим SQL-first для максимальной пропускной способности
+* [Function Config](function-config.md) — конфигурация движка на уровне функции
+* [Logging](../debugging/logging.md) — настройка логирования
+* [Profiling](../debugging/profiling.md) — профилирование производительности

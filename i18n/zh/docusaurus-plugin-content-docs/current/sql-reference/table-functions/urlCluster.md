@@ -59,9 +59,9 @@ SELECT * FROM urlCluster('cluster_simple','http://127.0.0.1:12345', CSV, 'column
 ## URL 中的通配符 \{#globs-in-url\}
 
 花括号 `{ }` 中的模式可用于生成一组分片，或用于指定故障转移地址。支持的模式类型及示例，参见 [remote](remote.md#globs-in-addresses) 函数的描述。
-模式内的字符 `|` 用于指定故障转移地址。它们会按照在模式中出现的顺序进行迭代。生成的地址数量受 [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
+模式内的字符 `|` 用于指定故障转移地址。它们会按照在模式中出现的顺序进行迭代。生成的地址数量受 [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
 
 ## 相关内容 \{#related\}
 
--   [HDFS 引擎](/engines/table-engines/integrations/hdfs)
--   [URL 表函数](/engines/table-engines/special/url)
+* [HDFS 引擎](/engines/table-engines/integrations/hdfs)
+* [URL 表函数](/engines/table-engines/special/url)

@@ -32,7 +32,6 @@ REST Catalog 是针对 Iceberg catalog 的标准化 API 规范，受多个平台
 `SET allow_database_iceberg = 1;`
 :::
 
-
 ## 本地开发环境搭建 \{#local-development-setup\}
 
 在本地开发和测试场景下，可以使用容器化的 REST catalog 环境。此方式非常适合用于学习、原型验证以及日常开发。
@@ -89,7 +88,6 @@ docker-compose logs -f
 REST 目录的配置要求首先将示例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 尝试查询这些表之前，Spark 环境已经创建并写入了这些表。表的可用性取决于具体的 docker-compose 配置和示例数据加载脚本。
 :::
 
-
 ### 连接到本地 REST 目录 \{#connecting-to-local-rest-catalog\}
 
 连接到 ClickHouse 容器：
@@ -110,7 +108,6 @@ SETTINGS
     storage_endpoint = 'http://minio:9000/lakehouse', 
     warehouse = 'demo'
 ```
-
 
 ## 使用 ClickHouse 查询 REST 目录表 \{#querying-rest-catalog-tables-using-clickhouse\}
 
@@ -194,7 +191,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 将数据湖中的数据加载到 ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

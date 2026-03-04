@@ -37,7 +37,7 @@ Resync 按如下顺序执行以下操作：
 2. 转到 **Settings** 选项卡。
 3. 点击 **Resync** 按钮。
 
-<Image img={resync_button} border size="md"/>
+<Image img={resync_button} border size="md" />
 
 4. 会弹出一个确认对话框。再次点击 Resync。
 5. 前往 **Metrics** 选项卡。

@@ -55,6 +55,7 @@ doc_type: 'changelog'
 * 为数据湖增加对 Google Cloud Storage 的支持。 [#93866](https://github.com/ClickHouse/ClickHouse/pull/93866) ([Konstantin Vedernikov](https://github.com/scanhex12)).
 
 #### 实验特性 \{#experimental-feature\}
+
 * 将 `QBit` 从 Experimental 提升至 Beta。 [#93816](https://github.com/ClickHouse/ClickHouse/pull/93816) ([Raufs Dunamalijevs](https://github.com/rienath)).
 * 新增对 `Nullable(Tuple)` 的支持。将 `allow_experimental_nullable_tuple_type` 设置为 1 以启用该功能。 [#89643](https://github.com/ClickHouse/ClickHouse/pull/89643) ([Nihal Z. Miaji](https://github.com/nihalzp)).
 * 支持 Paimon REST catalog，延续自 https://github.com/ClickHouse/ClickHouse/pull/84423。 [#92011](https://github.com/ClickHouse/ClickHouse/pull/92011) ([JIaQi Tang](https://github.com/JiaQiTang98)).

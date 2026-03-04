@@ -43,13 +43,13 @@ SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/c
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
-- `_etag` — 文件的 etag。类型：`LowCardinality(String)`。如果 etag 未知，则该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
+* `_etag` — 文件的 etag。类型：`LowCardinality(String)`。如果 etag 未知，则该值为 `NULL`。
 
 **另请参阅**
 
-- [Iceberg 引擎](/engines/table-engines/integrations/iceberg.md)
-- [Iceberg 表函数](sql-reference/table-functions/iceberg.md)
+* [Iceberg 引擎](/engines/table-engines/integrations/iceberg.md)
+* [Iceberg 表函数](sql-reference/table-functions/iceberg.md)

@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # Табличная функция ytsaurus \{#ytsaurus-table-function\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 Табличная функция ytsaurus позволяет считывать данные из кластера YTsaurus.
 
@@ -30,10 +30,10 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 
 ## Аргументы \{#arguments\}
 
-- `http_proxy_url` — URL HTTP-прокси YTsaurus.
-- `cypress_path` — путь Cypress к источнику данных.
-- `oauth_token` — OAuth-токен.
-- `format` — [формат](/interfaces/formats) источника данных.
+* `http_proxy_url` — URL HTTP-прокси YTsaurus.
+* `cypress_path` — путь Cypress к источнику данных.
+* `oauth_token` — OAuth-токен.
+* `format` — [формат](/interfaces/formats) источника данных.
 
 **Возвращаемое значение**
 
@@ -41,4 +41,4 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 
 **См. также**
 
-- [движок YTsaurus](/engines/table-engines/integrations/ytsaurus.md)
+* [движок YTsaurus](/engines/table-engines/integrations/ytsaurus.md)

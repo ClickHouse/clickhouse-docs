@@ -11,15 +11,14 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-
 # HTTP-интерфейс \{#http-interface\}
 
 ## Предварительные требования \{#prerequisites\}
 
 Для примеров в этой статье вам потребуется:
 
-- запущенный экземпляр сервера ClickHouse
-- установленный `curl`. В Ubuntu или Debian выполните `sudo apt install curl` или обратитесь к этой [документации](https://curl.se/download.html) для инструкций по установке.
+* запущенный экземпляр сервера ClickHouse
+* установленный `curl`. В Ubuntu или Debian выполните `sudo apt install curl` или обратитесь к этой [документации](https://curl.se/download.html) для инструкций по установке.
 
 ## Обзор \{#overview\}
 
@@ -40,7 +39,6 @@ Ok.
 «Ok.» — значение по умолчанию, определённое в [`http_server_default_response`](../../operations/server-configuration-parameters/settings.md#http_server_default_response), которое при необходимости можно изменить.
 
 См. также: [особенности кодов ответа HTTP](#http_response_codes_caveats).
-
 
 ## Веб-интерфейс \{#web-ui\}
 
@@ -67,7 +65,6 @@ Ok.
 $ curl 'http://localhost:8123/replicas_status'
 Ok.
 ```
-
 
 ## Выполнение запросов по HTTP/HTTPS \{#querying\}
 
@@ -162,7 +159,6 @@ ECT 1
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
 ```
 
-
 ```response title="Response"
 {
     "meta":
@@ -219,7 +215,6 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 
 7
 ```
-
 
 ## Запросы `INSERT` по HTTP/HTTPS \{#insert-queries\}
 
@@ -287,12 +282,11 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 В случае успешных запросов, которые не возвращают таблицу данных, возвращается пустое тело ответа.
 
-
 ## Сжатие \{#compression\}
 
 Сжатие можно использовать для уменьшения сетевого трафика при передаче большого объема данных или для создания дампов, которые сразу создаются в сжатом виде.
 
-Вы можете использовать внутренний формат сжатия ClickHouse при передаче данных. Сжатые данные имеют нестандартный формат, и для работы с ними требуется программа `clickhouse-compressor`. Она устанавливается по умолчанию вместе с пакетом `clickhouse-client`. 
+Вы можете использовать внутренний формат сжатия ClickHouse при передаче данных. Сжатые данные имеют нестандартный формат, и для работы с ними требуется программа `clickhouse-compressor`. Она устанавливается по умолчанию вместе с пакетом `clickhouse-client`.
 
 Чтобы повысить эффективность вставки данных, отключите проверку контрольных сумм на стороне сервера, используя настройку [`http_native_compression_disable_checksumming_on_decompress`](../../operations/settings/settings.md#http_native_compression_disable_checksumming_on_decompress).
 
@@ -300,18 +294,18 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 Вы также можете использовать [HTTP-сжатие](https://en.wikipedia.org/wiki/HTTP_compression). ClickHouse поддерживает следующие [методы сжатия](https://en.wikipedia.org/wiki/HTTP_compression#Content-Encoding_tokens):
 
-- `gzip`
-- `br`
-- `deflate`
-- `xz`
-- `zstd`
-- `lz4`
-- `bz2`
-- `snappy`
+* `gzip`
+* `br`
+* `deflate`
+* `xz`
+* `zstd`
+* `lz4`
+* `bz2`
+* `snappy`
 
 Чтобы отправить сжатый запрос `POST`, добавьте заголовок запроса `Content-Encoding: compression_method`.
 
-Чтобы ClickHouse сжимал ответ, добавьте к запросу заголовок `Accept-Encoding: compression_method`. 
+Чтобы ClickHouse сжимал ответ, добавьте к запросу заголовок `Accept-Encoding: compression_method`.
 
 Вы можете настроить уровень сжатия данных с помощью настройки [`http_zlib_compression_level`](../../operations/settings/settings.md#http_zlib_compression_level) для всех методов сжатия.
 
@@ -350,7 +344,6 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 2
 ```
 
-
 ## База данных по умолчанию \{#default-database\}
 
 Вы можете использовать параметр URL-адреса `database` или заголовок `X-ClickHouse-Database`, чтобы задать базу данных по умолчанию.
@@ -370,7 +363,6 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 ```
 
 По умолчанию используется база данных, заданная в настройках сервера. В стандартной конфигурации это база данных `default`. При необходимости вы можете явно указать базу данных, добавив её имя и точку перед именем таблицы.
-
 
 ## Аутентификация \{#authentication\}
 
@@ -432,7 +424,6 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [Settings](/operations/settings/settings)
 * [SET](/sql-reference/statements/set)
 
-
 ## Использование сессий ClickHouse в протоколе HTTP \{#using-clickhouse-sessions-in-the-http-protocol\}
 
 Вы также можете использовать сессии ClickHouse в протоколе HTTP. Для этого необходимо добавить к запросу `GET` параметр `session_id`. В качестве идентификатора сессии можно использовать любую строку.
@@ -474,7 +465,6 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 
 HTTP-интерфейс позволяет передавать внешние данные (внешние временные таблицы) для выполнения запросов. Дополнительную информацию см. в разделе [&quot;External data for query processing&quot;](/engines/table-engines/special/external-data).
 
-
 ## Буферизация ответа \{#response-buffering\}
 
 Буферизацию ответа можно включить на стороне сервера. Для этого используются следующие параметры URL:
@@ -500,7 +490,6 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 :::tip
 Используйте буферизацию, чтобы избежать ситуаций, когда ошибка обработки запроса возникает после отправки клиенту кода ответа и HTTP-заголовков. В такой ситуации сообщение об ошибке добавляется в конец тела ответа, и на стороне клиента ошибка может быть обнаружена только на этапе разбора ответа.
 :::
-
 
 ## Назначение роли через параметры запроса \{#setting-role-with-query-parameters\}
 
@@ -534,7 +523,6 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 ```
 
 В этом случае `?role=my_role&role=my_other_role` работает аналогично выполнению `SET ROLE my_role, my_other_role` перед выполнением запроса.
-
 
 ## Особенности кодов ответа HTTP \{#http_response_codes_caveats\}
 
@@ -613,7 +601,6 @@ __exception__
 
 Ниже приведён похожий пример, но в формате `CSV`.
 
-
 ```bash
 $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)+FORMAT+CSV"
 ...
@@ -628,7 +615,6 @@ Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while 
 __exception__
 ```
 
-
 ## Запросы с параметрами \{#cli-queries-with-parameters\}
 
 Вы можете создать запрос с параметрами и передать им значения через соответствующие параметры HTTP-запроса. Дополнительную информацию см. в разделе [Запросы с параметрами для CLI](../../interfaces/cli.md#cli-queries-with-parameters).
@@ -638,7 +624,6 @@ __exception__
 ```bash
 $ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
-
 
 ### Табуляции в параметрах URL \{#tabs-in-url-parameters\}
 
@@ -668,7 +653,6 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ```response
 ['abc','123']
 ```
-
 
 ## Предопределённый HTTP-интерфейс \{#predefined_http_interface\}
 
@@ -759,41 +743,42 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 Каждый из этих параметров описан ниже:
 
-
-- `method` отвечает за сопоставление части HTTP-запроса, содержащей метод. `method` полностью соответствует определению [`method`]    
-  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) в протоколе HTTP. Это необязательная настройка. Если она не определена в   
+* `method` отвечает за сопоставление части HTTP-запроса, содержащей метод. `method` полностью соответствует определению [`method`]\
+  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) в протоколе HTTP. Это необязательная настройка. Если она не определена в\
   конфигурационном файле, сопоставление по части запроса, содержащей метод, не выполняется.
 
-- `url` отвечает за сопоставление части HTTP-запроса, содержащей URL (путь и строку запроса).
+* `url` отвечает за сопоставление части HTTP-запроса, содержащей URL (путь и строку запроса).
   Если `url` начинается с префикса `regex:`, ожидаются регулярные выражения в синтаксисе [RE2](https://github.com/google/re2).
   Это необязательная настройка. Если она не определена в конфигурационном файле, сопоставление по части запроса, содержащей URL, не выполняется.
 
-- `full_url` аналогичен `url`, но включает полный URL, то есть `schema://host:port/path?query_string`.
+* `full_url` аналогичен `url`, но включает полный URL, то есть `schema://host:port/path?query_string`.
   Обратите внимание, ClickHouse не поддерживает «виртуальные хосты», поэтому в `host` указывается IP-адрес (а не значение заголовка `Host`).
 
-- `empty_query_string` — гарантирует, что в запросе отсутствует строка запроса (`?query_string`).
+* `empty_query_string` — гарантирует, что в запросе отсутствует строка запроса (`?query_string`).
 
-- `headers` отвечают за сопоставление части HTTP-запроса, содержащей заголовки. Совместимы с регулярными выражениями RE2. Это необязательная 
+* `headers` отвечают за сопоставление части HTTP-запроса, содержащей заголовки. Совместимы с регулярными выражениями RE2. Это необязательная
   настройка. Если она не определена в конфигурационном файле, сопоставление по части запроса, содержащей заголовки, не выполняется.
 
-- `handler` содержит основную логику обработки.
+* `handler` содержит основную логику обработки.
 
   Он может иметь следующий `type`:
-  - [`predefined_query_handler`](#predefined_query_handler)
-  - [`dynamic_query_handler`](#dynamic_query_handler)
-  - [`static`](#static)
-  - [`redirect`](#redirect)
+
+  * [`predefined_query_handler`](#predefined_query_handler)
+  * [`dynamic_query_handler`](#dynamic_query_handler)
+  * [`static`](#static)
+  * [`redirect`](#redirect)
 
   И следующие параметры:
-  - `query` — использовать с типом `predefined_query_handler`, выполняет запрос при вызове обработчика.
-  - `query_param_name` — использовать с типом `dynamic_query_handler`, извлекает и выполняет значение параметра, соответствующего `query_param_name`, из 
-       параметров HTTP-запроса.
-  - `status` — использовать с типом `static`, код статуса ответа.
-  - `content_type` — использовать с любым типом, [content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) ответа.
-  - `http_response_headers` — использовать с любым типом, отображение (map) заголовков ответа. Может также использоваться для установки типа содержимого.
-  - `response_content` — использовать с типом `static`, содержимое ответа, отправляемое клиенту; при использовании префикса `file://` или `config://` 
+
+  * `query` — использовать с типом `predefined_query_handler`, выполняет запрос при вызове обработчика.
+  * `query_param_name` — использовать с типом `dynamic_query_handler`, извлекает и выполняет значение параметра, соответствующего `query_param_name`, из
+    параметров HTTP-запроса.
+  * `status` — использовать с типом `static`, код статуса ответа.
+  * `content_type` — использовать с любым типом, [content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type) ответа.
+  * `http_response_headers` — использовать с любым типом, отображение (map) заголовков ответа. Может также использоваться для установки типа содержимого.
+  * `response_content` — использовать с типом `static`, содержимое ответа, отправляемое клиенту; при использовании префикса `file://` или `config://`
     содержимое берётся из файла или конфигурации и отправляется клиенту.
-  - `user` — пользователь, от имени которого выполняется запрос (пользователь по умолчанию — `default`).
+  * `user` — пользователь, от имени которого выполняется запрос (пользователь по умолчанию — `default`).
     **Обратите внимание**, вам не нужно указывать пароль для этого пользователя.
 
 Методы конфигурирования для различных значений `type` рассматриваются далее.
@@ -839,7 +824,6 @@ max_final_threads    2
 max_threads    1
 ```
 
-
 #### Виртуальный параметр `_request_body` \{#virtual-param-request-body\}
 
 Помимо параметров URL, заголовков и параметров запроса, `predefined_query_handler` поддерживает специальный виртуальный параметр `_request_body`.
@@ -877,7 +861,6 @@ curl -X POST 'http://localhost:8123/api/events?id=123' \
 В одном `predefined_query_handler` может быть определён только один `query`.
 :::
 
-
 ### dynamic_query_handler \{#dynamic_query_handler\}
 
 В `dynamic_query_handler` запрос передается в виде параметра HTTP‑запроса. В отличие от этого, в `predefined_query_handler` запрос задается в конфигурационном файле. Параметр `query_param_name` можно настроить в `dynamic_query_handler`.
@@ -907,7 +890,6 @@ curl  -H 'XXX:TEST_HEADER_VALUE_DYNAMIC'  'http://localhost:8123/own?max_threads
 max_threads 1
 max_final_threads   2
 ```
-
 
 ### static \{#static\}
 
@@ -1002,7 +984,6 @@ Say Hi!%
 </http_handlers>
 ```
 
-
 ```bash
 $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 *   Trying ::1...
@@ -1058,7 +1039,6 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 </http_handlers>
 ```
 
-
 ```bash
 $ user_files_path='/var/lib/clickhouse/user_files'
 $ sudo echo "<html><body>Relative Path File</body></html>" > $user_files_path/relative_path_file.html
@@ -1103,7 +1083,6 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 * Connection #0 to host localhost left intact
 ```
 
-
 ### redirect \{#redirect\}
 
 `redirect` выполнит перенаправление `302` на `location`
@@ -1124,7 +1103,6 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
     </http_handlers>
 </clickhouse>
 ```
-
 
 ## Заголовки HTTP-ответов \{#http-response-headers\}
 
@@ -1161,7 +1139,6 @@ ClickHouse позволяет настраивать произвольные з
     </http_handlers>
 </clickhouse>
 ```
-
 
 ## Корректный JSON/XML‑ответ при исключении во время HTTP‑стриминга \{#valid-output-on-exception-http-streaming\}
 

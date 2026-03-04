@@ -120,63 +120,63 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 <Tabs>
   <TabItem value="Service level" label="服务级别" default>
     ```sql
-SELECT
+    SELECT
     server_id,
     region,
     avgMerge(avg_response_time) AS avg_response_ms
-FROM server_performance
-GROUP BY server_id, region
-ORDER BY region, server_id;
-```
+    FROM server_performance
+    GROUP BY server_id, region
+    ORDER BY region, server_id;
+    ```
 
     ```response
-┌─server_id─┬─region─────┬─avg_response_ms─┐
-│       301 │ eu-central │             145 │
-│       302 │ eu-central │             155 │
-│       101 │ us-east    │             125 │
-│       102 │ us-east    │             115 │
-│       201 │ us-west    │              95 │
-│       202 │ us-west    │             105 │
-└───────────┴────────────┴─────────────────┘
-```
+    ┌─server_id─┬─region─────┬─avg_response_ms─┐
+    │       301 │ eu-central │             145 │
+    │       302 │ eu-central │             155 │
+    │       101 │ us-east    │             125 │
+    │       102 │ us-east    │             115 │
+    │       201 │ us-west    │              95 │
+    │       202 │ us-west    │             105 │
+    └───────────┴────────────┴─────────────────┘
+    ```
   </TabItem>
 
   <TabItem value="Regional level" label="区域级别">
     ```sql
-SELECT
+    SELECT
     region,
     datacenter,
     avgMerge(avg_response_time) AS avg_response_ms
-FROM region_performance
-GROUP BY region, datacenter
-ORDER BY datacenter, region;
-```
+    FROM region_performance
+    GROUP BY region, datacenter
+    ORDER BY datacenter, region;
+    ```
 
     ```response
-┌─region─────┬─datacenter─┬────avg_response_ms─┐
-│ us-east    │ dc1        │ 121.66666666666667 │
-│ us-west    │ dc1        │                100 │
-│ eu-central │ dc2        │                150 │
-└────────────┴────────────┴────────────────────┘
-```
+    ┌─region─────┬─datacenter─┬────avg_response_ms─┐
+    │ us-east    │ dc1        │ 121.66666666666667 │
+    │ us-west    │ dc1        │                100 │
+    │ eu-central │ dc2        │                150 │
+    └────────────┴────────────┴────────────────────┘
+    ```
   </TabItem>
 
   <TabItem value="Datacenter level" label="数据中心级别">
     ```sql
-SELECT
+    SELECT
     datacenter,
     avgMerge(avg_response_time) AS avg_response_ms
-FROM datacenter_performance
-GROUP BY datacenter
-ORDER BY datacenter;
-```
+    FROM datacenter_performance
+    GROUP BY datacenter
+    ORDER BY datacenter;
+    ```
 
     ```response
-┌─datacenter─┬─avg_response_ms─┐
-│ dc1        │             113 │
-│ dc2        │             150 │
-└────────────┴─────────────────┘
-```
+    ┌─datacenter─┬─avg_response_ms─┐
+    │ dc1        │             113 │
+    │ dc2        │             150 │
+    └────────────┴─────────────────┘
+    ```
   </TabItem>
 </Tabs>
 
@@ -208,7 +208,8 @@ ORDER BY datacenter;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-- [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
-- [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)
+
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
+* [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

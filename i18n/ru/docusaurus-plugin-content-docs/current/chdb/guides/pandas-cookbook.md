@@ -25,7 +25,6 @@ from chdb import datastore as pd
 df = pd.read_csv("data.csv")
 ```
 
-
 ### Чтение нескольких файлов \{#read-multiple-files\}
 
 ```python
@@ -40,7 +39,6 @@ df = pd.read_csv("data/*.csv")
 
 ***
 
-
 ## Фильтрация \{#filtering\}
 
 ### Одно условие \{#single-condition\}
@@ -51,7 +49,6 @@ df[df['age'] > 25]
 df[df['city'] == 'NYC']
 df[df['name'].str.contains('John')]
 ```
-
 
 ### Несколько условий \{#multiple-conditions\}
 
@@ -66,7 +63,6 @@ df[(df['age'] < 18) | (df['age'] > 65)]
 df[~(df['status'] == 'inactive')]
 ```
 
-
 ### Использование функции query() \{#using-query\}
 
 ```python
@@ -75,14 +71,12 @@ df.query('age > 25 and city == "NYC"')
 df.query('salary > 50000')
 ```
 
-
 ### isin() \{#isin\}
 
 ```python
 # Pandas and DataStore - identical
 df[df['city'].isin(['NYC', 'LA', 'SF'])]
 ```
-
 
 ### between() \{#between\}
 
@@ -92,7 +86,6 @@ df[df['age'].between(18, 65)]
 ```
 
 ***
-
 
 ## Выбор столбцов \{#selecting\}
 
@@ -104,14 +97,12 @@ df['name']
 df.name  # attribute access
 ```
 
-
 ### Несколько столбцов \{#multiple-columns-select\}
 
 ```python
 # Pandas and DataStore - identical
 df[['name', 'age', 'city']]
 ```
-
 
 ### Выборка и фильтрация \{#select-and-filter\}
 
@@ -125,7 +116,6 @@ df.filter(df['age'] > 25).select('name', 'salary')
 
 ***
 
-
 ## Сортировка \{#sorting\}
 
 ### Один столбец \{#single-column-sort\}
@@ -136,14 +126,12 @@ df.sort_values('salary')
 df.sort_values('salary', ascending=False)
 ```
 
-
 ### Несколько столбцов \{#multiple-columns-sort\}
 
 ```python
 # Pandas and DataStore - identical
 df.sort_values(['city', 'salary'], ascending=[True, False])
 ```
-
 
 ### Получение верхних/нижних N \{#get-top-bottom-n\}
 
@@ -155,7 +143,6 @@ df.nsmallest(5, 'age')
 
 ***
 
-
 ## GroupBy и агрегирование \{#groupby\}
 
 ### Простой пример GroupBy \{#simple-groupby\}
@@ -166,7 +153,6 @@ df.groupby('city')['salary'].mean()
 df.groupby('city')['salary'].sum()
 df.groupby('city').size()  # count
 ```
-
 
 ### Несколько агрегаций \{#multiple-aggregations\}
 
@@ -180,7 +166,6 @@ df.groupby('city').agg({
 })
 ```
 
-
 ### Именованные агрегации \{#named-aggregations\}
 
 ```python
@@ -192,7 +177,6 @@ df.groupby('city').agg(
 )
 ```
 
-
 ### Несколько ключей группировки \{#multiple-groupby-keys\}
 
 ```python
@@ -201,7 +185,6 @@ df.groupby(['city', 'department'])['salary'].mean()
 ```
 
 ***
-
 
 ## Объединение данных \{#joining\}
 
@@ -218,7 +201,6 @@ pd.merge(df1, df2, on='id')
 df1.join(df2, on='id')
 ```
 
-
 ### Левое соединение \{#left-join\}
 
 ```python
@@ -226,14 +208,12 @@ df1.join(df2, on='id')
 pd.merge(df1, df2, on='id', how='left')
 ```
 
-
 ### Объединение по разным столбцам \{#join-on-different-columns\}
 
 ```python
 # Pandas and DataStore - identical
 pd.merge(df1, df2, left_on='emp_id', right_on='id')
 ```
-
 
 ### Объединение \{#concat\}
 
@@ -244,7 +224,6 @@ pd.concat([df1, df2], axis=1)
 ```
 
 ***
-
 
 ## Операции со строками \{#string\}
 
@@ -257,7 +236,6 @@ df['name'].str.lower()
 df['name'].str.title()
 ```
 
-
 ### Подстрока \{#substring\}
 
 ```python
@@ -265,7 +243,6 @@ df['name'].str.title()
 df['name'].str[:3]        # First 3 characters
 df['name'].str.slice(0, 3)
 ```
-
 
 ### Поиск \{#search\}
 
@@ -276,7 +253,6 @@ df['name'].str.startswith('A')
 df['name'].str.endswith('son')
 ```
 
-
 ### Замена \{#replace\}
 
 ```python
@@ -284,7 +260,6 @@ df['name'].str.endswith('son')
 df['text'].str.replace('old', 'new')
 df['text'].str.replace(r'\d+', '', regex=True)  # Remove digits
 ```
-
 
 ### Разделение \{#split\}
 
@@ -294,7 +269,6 @@ df['name'].str.split(' ')
 df['name'].str.split(' ', expand=True)
 ```
 
-
 ### Продолжительность \{#length\}
 
 ```python
@@ -303,7 +277,6 @@ df['name'].str.len()
 ```
 
 ***
-
 
 ## Операции с датой и временем \{#datetime\}
 
@@ -318,7 +291,6 @@ df['date'].dt.dayofweek
 df['date'].dt.hour
 ```
 
-
 ### Форматирование \{#formatting\}
 
 ```python
@@ -327,7 +299,6 @@ df['date'].dt.strftime('%Y-%m-%d')
 ```
 
 ***
-
 
 ## Пропущенные данные \{#missing\}
 
@@ -340,7 +311,6 @@ df['col'].notna()
 df.isna().sum()
 ```
 
-
 ### Удаление пропущенных значений \{#drop-missing\}
 
 ```python
@@ -348,7 +318,6 @@ df.isna().sum()
 df.dropna()
 df.dropna(subset=['col1', 'col2'])
 ```
-
 
 ### Заполнение пропущенных значений \{#fill-missing\}
 
@@ -361,7 +330,6 @@ df.fillna(method='ffill')
 
 ***
 
-
 ## Создание новых столбцов \{#new-columns\}
 
 ### Простое присваивание \{#simple-assignment\}
@@ -371,7 +339,6 @@ df.fillna(method='ffill')
 df['total'] = df['price'] * df['quantity']
 df['age_group'] = df['age'] // 10 * 10
 ```
-
 
 ### Использование функции assign() \{#using-assign\}
 
@@ -383,14 +350,12 @@ df = df.assign(
 )
 ```
 
-
 ### Условные выражения (where/mask) \{#conditional-where-mask\}
 
 ```python
 # Pandas and DataStore - identical
 df['status'] = df['age'].where(df['age'] >= 18, 'minor')
 ```
-
 
 ### apply() для пользовательской логики \{#apply-for-custom-logic\}
 
@@ -407,7 +372,6 @@ df['category'] = (
 
 ***
 
-
 ## Изменение структуры данных \{#reshaping\}
 
 ### Сводная таблица \{#pivot-table\}
@@ -422,7 +386,6 @@ df.pivot_table(
 )
 ```
 
-
 ### Melt (unpivot, обратное преобразование) \{#melt-unpivot\}
 
 ```python
@@ -435,7 +398,6 @@ df.melt(
 )
 ```
 
-
 ### Развёртка (explode) \{#explode\}
 
 ```python
@@ -444,7 +406,6 @@ df.explode('tags')  # Expand array column
 ```
 
 ***
-
 
 ## Оконные функции \{#window\}
 
@@ -456,7 +417,6 @@ df['rolling_avg'] = df['price'].rolling(window=7).mean()
 df['rolling_sum'] = df['amount'].rolling(window=30).sum()
 ```
 
-
 ### Расширяющиеся окна \{#expanding\}
 
 ```python
@@ -465,7 +425,6 @@ df['cumsum'] = df['amount'].expanding().sum()
 df['cummax'] = df['amount'].expanding().max()
 ```
 
-
 ### Смещение \{#shift\}
 
 ```python
@@ -473,7 +432,6 @@ df['cummax'] = df['amount'].expanding().max()
 df['prev_value'] = df['value'].shift(1)   # Lag
 df['next_value'] = df['value'].shift(-1)  # Lead
 ```
-
 
 ### Разница \{#diff\}
 
@@ -485,7 +443,6 @@ df['pct_change'] = df['value'].pct_change()
 
 ***
 
-
 ## Результат \{#output\}
 
 ### В CSV \{#to-csv\}
@@ -495,14 +452,12 @@ df['pct_change'] = df['value'].pct_change()
 df.to_csv("output.csv", index=False)
 ```
 
-
 ### В Parquet \{#to-parquet\}
 
 ```python
 # Pandas and DataStore - identical
 df.to_parquet("output.parquet")
 ```
-
 
 ### В DataFrame библиотеки pandas \{#to-pandas-dataframe\}
 
@@ -514,7 +469,6 @@ pandas_df = ds.to_pandas()
 
 ***
 
-
 ## Дополнительные возможности DataStore \{#extras\}
 
 ### Просмотр SQL \{#view-sql\}
@@ -524,14 +478,12 @@ pandas_df = ds.to_pandas()
 print(ds.to_sql())
 ```
 
-
 ### План выполнения \{#explain-plan\}
 
 ```python
 # DataStore only
 ds.explain()
 ```
-
 
 ### Функции ClickHouse \{#clickhouse-functions\}
 
@@ -541,7 +493,6 @@ df['domain'] = df['url'].url.domain()
 df['json_value'] = df['data'].json.get_string('key')
 df['ip_valid'] = df['ip'].ip.is_ipv4_string()
 ```
-
 
 ### Универсальный URI \{#universal-uri\}
 

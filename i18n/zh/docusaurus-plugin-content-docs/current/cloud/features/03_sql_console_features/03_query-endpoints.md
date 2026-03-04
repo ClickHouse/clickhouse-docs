@@ -14,7 +14,6 @@ import edit_api_key from '@site/static/images/cloud/guides/query-endpoints/api-k
 import specific_locations from '@site/static/images/cloud/guides/query-endpoints/specific-locations.png';
 import Link from '@docusaurus/Link'
 
-
 # 查询 API 端点 \{#query-api-endpoints\}
 
 构建交互式数据驱动应用不仅需要高速数据库、结构良好的数据以及经过优化的查询，
@@ -30,27 +29,25 @@ Query API 端点遵循基于 API 密钥的 IP 白名单配置。与 SQL Console 
 要限制哪些客户端可以调用您的 Query API 端点：
 
 <VerticalStepper headerLevel="h4">
+  #### 打开 API 密钥设置 \{#open-settings\}
 
-#### 打开 API 密钥设置 \{#open-settings\}
+  1. 进入 ClickHouse Cloud Console → **Organization** → **API Keys**
 
-1. 进入 ClickHouse Cloud Console → **Organization** → **API Keys**
+  <Image img={console_api_keys} alt="API Keys" />
 
-<Image img={console_api_keys} alt="API Keys"/>
+  2. 点击用于 Query API 端点的 API 密钥旁边的 **Edit**
 
-2. 点击用于 Query API 端点的 API 密钥旁边的 **Edit**
+  <Image img={edit_api_key} alt="Edit" />
 
-<Image img={edit_api_key} alt="Edit"/>
+  #### 添加允许的 IP 地址 \{#add-ips\}
 
-#### 添加允许的 IP 地址 \{#add-ips\}
+  1. 在 **Allow access to this API Key** 部分中，选择 **Specific locations**
+  2. 输入 IP 地址或 CIDR 范围（例如：`203.0.113.1` 或 `203.0.113.0/24`）
+  3. 根据需要添加多条记录
 
-1. 在 **Allow access to this API Key** 部分中，选择 **Specific locations**
-2. 输入 IP 地址或 CIDR 范围（例如：`203.0.113.1` 或 `203.0.113.0/24`）
-3. 根据需要添加多条记录
+  <Image img={specific_locations} alt="Specific locations" />
 
-<Image img={specific_locations} alt="Specific locations"/>
-
-创建 Query API 端点需要 Admin Console Role，以及具有相应权限的 API 密钥。
-
+  创建 Query API 端点需要 Admin Console Role，以及具有相应权限的 API 密钥。
 </VerticalStepper>
 
 :::tip Guide

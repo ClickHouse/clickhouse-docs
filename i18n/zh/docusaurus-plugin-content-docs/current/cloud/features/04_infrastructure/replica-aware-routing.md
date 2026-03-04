@@ -8,10 +8,9 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
 # 副本感知路由 \{#replica-aware-routing\}
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge />
 
 副本感知路由（也称为 sticky sessions、sticky routing 或 session affinity）使用了 [Envoy proxy 的 ring hash 负载均衡](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash)。副本感知路由的主要目的是提高缓存复用的概率，它并不保证隔离。
 

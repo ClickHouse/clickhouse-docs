@@ -17,10 +17,9 @@ doc_type: 'reference'
 dictionary('dict')
 ```
 
-
 ## 参数 \{#arguments\}
 
-- `dict` — 字典名。[String](../../sql-reference/data-types/string.md)。
+* `dict` — 字典名。[String](../../sql-reference/data-types/string.md)。
 
 ## 返回值 \{#returned_value\}
 
@@ -59,7 +58,6 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-
 ## 相关内容 \{#related\}
 
-- [Dictionary 引擎](/engines/table-engines/special/dictionary)
+* [Dictionary 引擎](/engines/table-engines/special/dictionary)

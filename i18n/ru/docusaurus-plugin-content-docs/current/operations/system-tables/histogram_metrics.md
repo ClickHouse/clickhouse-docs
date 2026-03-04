@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # histogram_metrics \{#histogram_metrics\}
 
 <SystemTableCloud />
@@ -41,7 +40,6 @@ SELECT
 FROM system.histogram_metrics
 FORMAT Prometheus
 ```
-
 
 ## Описания метрик \{#metric_descriptions\}
 
@@ -95,7 +93,7 @@ FORMAT Prometheus
 
 **См. также**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически вычисляемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит количество произошедших событий.
-- [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
-- [Monitoring](../../operations/monitoring.md) — Базовые концепции мониторинга ClickHouse.
+* [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — Содержит количество произошедших событий.
+* [system.metric&#95;log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
+* [Monitoring](../../operations/monitoring.md) — Базовые концепции мониторинга ClickHouse.

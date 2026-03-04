@@ -138,5 +138,5 @@ ORDER BY page_id;
 
 ## 另请参阅 \{#see-also\}
 
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`State`](/sql-reference/aggregate-functions/combinators#-state)
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`State`](/sql-reference/aggregate-functions/combinators#-state)

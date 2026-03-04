@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## 描述 \{#description\}
 
-可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 组合器应用于 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，
 将指定键列的取值范围划分为固定数量的区间（`N`），
 并通过从落入每个区间的数据点中选取一个代表值
@@ -55,5 +55,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

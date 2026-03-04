@@ -38,4 +38,4 @@ SELECT * FROM FORMAT('RowBinaryWithDefaults', 'x UInt32 default 42, y UInt32', x
 
 ## 格式设置 \{#format-settings\}
 
-<RowBinaryFormatSettings/>
+<RowBinaryFormatSettings />

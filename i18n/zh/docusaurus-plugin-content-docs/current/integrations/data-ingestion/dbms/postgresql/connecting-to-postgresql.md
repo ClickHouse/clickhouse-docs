@@ -10,7 +10,6 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # 将 ClickHouse 连接到 PostgreSQL \{#connecting-clickhouse-to-postgresql\}
 
 本页介绍以下几种将 PostgreSQL 与 ClickHouse 集成的方式：
@@ -90,7 +89,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 有关出站流量的详细信息，请查看 ClickHouse 的 [Cloud Endpoints API](/cloud/get-started/query-endpoints)。
 :::
 
-
 ### 2. 在 ClickHouse 中定义一张表 \{#2-define-a-table-in-clickhouse\}
 
 1. 登录 `clickhouse-client`:
@@ -128,7 +126,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 :::note
 查看 [PostgreSQL 表引擎](/engines/table-engines/integrations/postgresql) 文档页面以获取完整的参数列表。
 :::
-
 
 ### 3 测试集成 \{#3-test-the-integration\}
 
@@ -206,7 +203,6 @@ ClickHouse 表应会自动填充为包含 PostgreSQL 表中原本已存在的那
 本示例演示了使用 `PostrgeSQL` 表引擎在 PostgreSQL 和 ClickHouse 之间进行基础集成。
 
 请参阅 [PostgreSQL 表引擎的文档页面](/engines/table-engines/integrations/postgresql)，了解更多功能，例如指定 schema、仅返回部分列以及连接到多个副本。另请参阅博客文章：[ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)。
-
 
 ## 使用 MaterializedPostgreSQL 数据库引擎 \{#using-the-materializedpostgresql-database-engine\}
 
@@ -293,7 +289,6 @@ host    db1             clickhouse_user 192.168.1.0/24          password
  psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
-
 ### 2. 在 ClickHouse 中 \{#2-in-clickhouse\}
 
 1. 登录 ClickHouse CLI
@@ -348,7 +343,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 └────┴─────────┘
 ```
 
-
 ### 3. 测试基本复制 \{#3-test-basic-replication\}
 
 1. 在 PostgreSQL 中添加新行：
@@ -384,7 +378,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. 总结 \{#4-summary\}
 

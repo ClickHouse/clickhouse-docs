@@ -30,7 +30,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Описание параметров запроса см. в [описании запроса](../../../sql-reference/statements/create/table.md).
 
-
 ### Параметры SummingMergeTree \{#parameters-of-summingmergetree\}
 
 #### Столбцы \{#columns\}
@@ -45,26 +44,24 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 При создании таблицы `SummingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
+  <summary>Устаревший метод создания таблицы</summary>
 
-<summary>Устаревший метод создания таблицы</summary>
+  :::note
+  Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
+  :::
 
-:::note
-Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
-:::
+  ```sql
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+      ...
+  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+  ```
 
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-```
+  Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
 
-Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
-
-- `columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр. Для описания см. текст выше.
-
+  * `columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр. Для описания см. текст выше.
 </details>
 
 ## Пример использования \{#usage-example\}
@@ -99,7 +96,6 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 │   1 │          3 │
 └─────┴────────────┘
 ```
-
 
 ## Обработка данных \{#data-processing\}
 
@@ -192,7 +188,6 @@ ARRAY JOIN
 
 Для вложенной структуры данных не нужно указывать её столбцы в кортеже столбцов, по которым выполняется суммирование.
 
-
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

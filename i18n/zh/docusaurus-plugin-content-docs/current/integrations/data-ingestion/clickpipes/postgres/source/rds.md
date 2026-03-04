@@ -19,7 +19,6 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # RDS Postgres 源配置指南 \{#rds-postgres-source-setup-guide\}
 
 ## 支持的 Postgres 版本 \{#supported-postgres-versions\}
@@ -69,48 +68,47 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
 
-
 ## 配置数据库用户 \{#configure-database-user\}
 
 以管理员用户身份连接到你的 RDS Postgres 实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
-    ```sql
-    CREATE USER clickpipes_user PASSWORD 'some-password';
-    ```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
 2. 为你在上一步创建的用户授予模式级别的只读访问权限。以下示例展示了对 `public` 模式的权限设置。对于每个包含你希望复制的表的模式，请重复执行这些命令：
 
-    ```sql
-    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-    ```
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
 3. 为该用户授予复制权限：
 
-    ```sql
-    GRANT rds_replication TO clickpipes_user;
-    ```
+   ```sql
+   GRANT rds_replication TO clickpipes_user;
+   ```
 
 4. 为你希望复制的表创建一个[publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议只在 publication 中包含你需要的表，以避免性能开销。
 
    :::warning
-   任何包含在 publication 中的表必须定义有 **primary key**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关如何设置 publication 作用范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   任何包含在 publication 中的表必须定义有 **primary key**，*或者* 将其 **replica identity** 配置为 `FULL`。有关如何设置 publication 作用范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
-   - 为特定表创建 publication：
+   * 为特定表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 为特定模式中的所有表创建 publication：
+   * 为特定模式中的所有表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，并将在后续用于摄取该复制流。
 
@@ -120,9 +118,9 @@ postgres=> SHOW wal_sender_timeout ;
 
 如果您希望限制访问 RDS 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 RDS 安全组的 `Inbound rules` 中。
 
-<Image img={security_group_in_rds_postgres} alt="在 RDS Postgres 中查找安全组的位置" size="lg" border/>
+<Image img={security_group_in_rds_postgres} alt="在 RDS Postgres 中查找安全组的位置" size="lg" border />
 
-<Image img={edit_inbound_rules} alt="为上述安全组编辑入站规则" size="lg" border/>
+<Image img={edit_inbound_rules} alt="为上述安全组编辑入站规则" size="lg" border />
 
 ### 通过 AWS PrivateLink 进行私有访问 \{#private-access-via-aws-privatelink\}
 

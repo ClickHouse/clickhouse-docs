@@ -12,18 +12,17 @@ import TabItem from '@theme/TabItem';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # UDFs 用户自定义函数 \{#udfs-user-defined-functions\}
 
 ClickHouse 支持多种类型的用户自定义函数（UDF）：
 
-- [可执行 UDF](#executable-user-defined-functions) 会启动一个外部程序或脚本（Python、Bash 等），并通过 STDIN / STDOUT 以数据块的形式向其进行流式传输。可以使用它们在不重新编译 ClickHouse 的情况下集成现有代码或工具。相比进程内选项，它们的单次调用开销更高，更适合较重的逻辑，或需要不同运行时的场景。
-- [SQL UDF](#sql-user-defined-functions) 使用纯 SQL 的 `CREATE FUNCTION` 定义。它们会被内联/展开到查询计划中（无进程边界），因此非常轻量，适合复用表达式逻辑或简化复杂的计算列。
-- [实验性的 WebAssembly UDF](#webassembly-user-defined-functions) 在服务器进程内的沙箱中运行编译为 WebAssembly 的代码。与外部可执行程序相比，它们具有更低的单次调用开销，同时比本地扩展具有更好的隔离性，适用于使用可编译为 WASM 的语言（例如 C/C++/Rust）编写的自定义算法。
+* [可执行 UDF](#executable-user-defined-functions) 会启动一个外部程序或脚本（Python、Bash 等），并通过 STDIN / STDOUT 以数据块的形式向其进行流式传输。可以使用它们在不重新编译 ClickHouse 的情况下集成现有代码或工具。相比进程内选项，它们的单次调用开销更高，更适合较重的逻辑，或需要不同运行时的场景。
+* [SQL UDF](#sql-user-defined-functions) 使用纯 SQL 的 `CREATE FUNCTION` 定义。它们会被内联/展开到查询计划中（无进程边界），因此非常轻量，适合复用表达式逻辑或简化复杂的计算列。
+* [实验性的 WebAssembly UDF](#webassembly-user-defined-functions) 在服务器进程内的沙箱中运行编译为 WebAssembly 的代码。与外部可执行程序相比，它们具有更低的单次调用开销，同时比本地扩展具有更好的隔离性，适用于使用可编译为 WASM 的语言（例如 C/C++/Rust）编写的自定义算法。
 
 ## 可执行用户定义函数 \{#executable-user-defined-functions\}
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge />
 
 :::note
 此功能目前在 ClickHouse Cloud 中提供私有预览。
@@ -41,7 +40,7 @@ ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
 |-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------|
 | `name`                        | 函数名称                                                                                                                                                                                                                                                                                                                                                                                      | Yes       | -                     |
 | `command`                     | 要执行的脚本名称，或者在 `execute_direct` 为 false 时要执行的命令                                                                                                                                                                                                                                                                                                                             | Yes       | -                     |
-| `argument`                    | 参数描述，包含参数的 `type` 以及可选的参数 `name`。每个参数在单独的配置项中描述。如果参数名称是用户定义函数序列化格式（例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)）的一部分，则必须指定名称                                                                                                                                        | Yes       | `c` + argument_number |
+| `argument`                    | 参数描述，包含参数的 `type` 以及可选的参数 `name`。每个参数在单独的配置项中描述。如果参数名称是用户定义函数序列化格式（例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)）的一部分，则必须指定名称                                                                                                                                        | Yes       | `c` + argument&#95;number |
 | `format`                      | 向命令传递参数所使用的[格式](../../interfaces/formats.md)。命令的输出也必须使用相同的格式                                                                                                                                                                                                                                                                                                      | Yes       | -                     |
 | `return_type`                 | 返回值的类型                                                                                                                                                                                                                                                                                                                                                                                  | Yes       | -                     |
 | `return_name`                 | 返回值名称。如果返回名称是用户定义函数序列化格式（例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)）的一部分，则必须指定返回名称                                                                                                                                                                                                                | Optional  | `result`              |
@@ -52,7 +51,7 @@ ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
 | `command_write_timeout`       | 向命令 stdin 写入数据的超时时间（毫秒）                                                                                                                                                                                                                                                                                                                                                      | Optional  | `10000`               |
 | `pool_size`                   | 命令池的大小                                                                                                                                                                                                                                                                                                                                                                                  | Optional  | `16`                  |
 | `send_chunk_header`           | 控制在发送要处理的数据块之前是否先发送行数                                                                                                                                                                                                                                                                                                                                                    | Optional  | `false`               |
-| `execute_direct`              | 如果 `execute_direct` = `1`，则会在由 [user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path) 指定的 user_scripts 目录中搜索 `command`。可以通过空格分隔指定额外的脚本参数，例如：`script_name arg1 arg2`。如果 `execute_direct` = `0`，则将 `command` 作为参数传递给 `bin/sh -c`                                      | Optional  | `1`                   |
+| `execute_direct`              | 如果 `execute_direct` = `1`，则会在由 [user&#95;scripts&#95;path](../../operations/server-configuration-parameters/settings.md#user_scripts_path) 指定的 user&#95;scripts 目录中搜索 `command`。可以通过空格分隔指定额外的脚本参数，例如：`script_name arg1 arg2`。如果 `execute_direct` = `0`，则将 `command` 作为参数传递给 `bin/sh -c`                                      | Optional  | `1`                   |
 | `lifetime`                    | 函数的重新加载间隔（秒）。如果设置为 `0`，则函数不会被重新加载                                                                                                                                                                                                                                                                                                                                | Optional  | `0`                   |
 | `deterministic`               | 是否为确定性函数（对相同输入返回相同结果）                                                                                                                                                                                                                                                                                                                                                    | Optional  | `false`               |
 
@@ -126,7 +125,6 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
-
 ### 来自 Python 脚本的 UDF \{#udf-python\}
 
 在本示例中，我们创建一个 UDF，它从 `STDIN` 读取一个值，并将其作为字符串返回。
@@ -195,7 +193,6 @@ SELECT test_function_python(toUInt64(2));
 │ Value 2                 │
 └─────────────────────────┘
 ```
-
 
 ### 从 `STDIN` 读取两个值并以 JSON 对象形式返回它们的和 \{#udf-stdin\}
 
@@ -277,7 +274,6 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
-
 ### 在 `command` 设置中使用参数 \{#udf-parameters-in-command\}
 
 可执行类型的用户自定义函数可以在 `command` 设置中接受常量参数（这仅适用于 `executable` 类型的用户自定义函数）。
@@ -345,7 +341,6 @@ SELECT test_function_parameter_python(1)(2);
 │ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
-
 
 ### 基于 shell 脚本的 UDF \{#udf-shell-script\}
 
@@ -420,7 +415,6 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
-
 ## 错误处理 \{#error-handling\}
 
 如果数据无效，某些函数可能会抛出异常。
@@ -441,8 +435,8 @@ SELECT test_shell(number) FROM numbers(10);
 这意味着函数可以在不同的服务器上执行。
 例如，在查询 `SELECT f(sum(g(x))) FROM distributed_table GROUP BY h(y),` 中：
 
-- 如果 `distributed_table` 至少有两个分片，函数 `g` 和 `h` 在远程服务器上执行，而函数 `f` 在请求方服务器上执行。
-- 如果 `distributed_table` 只有一个分片，则函数 `f`、`g` 和 `h` 都在该分片所在的服务器上执行。
+* 如果 `distributed_table` 至少有两个分片，函数 `g` 和 `h` 在远程服务器上执行，而函数 `f` 在请求方服务器上执行。
+* 如果 `distributed_table` 只有一个分片，则函数 `f`、`g` 和 `h` 都在该分片所在的服务器上执行。
 
 函数的结果通常与其在哪台服务器上执行无关。但在某些情况下，这一点很重要。
 例如，操作字典的函数会使用其运行所在服务器上的字典。
@@ -456,9 +450,9 @@ SELECT test_shell(number) FROM numbers(10);
 
 ## WebAssembly 用户自定义函数 \{#webassembly-user-defined-functions\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 WebAssembly 用户自定义函数（WASM UDF）允许在 ClickHouse 服务器进程中运行编译为 WebAssembly 的自定义代码。
 
@@ -496,11 +490,10 @@ RETURNS UInt32;
 SELECT my_function(10, 20);
 ```
 
-
 ### 更多信息 \{#more-information\}
 
 更多信息请参阅 [WebAssembly 用户自定义函数](wasm_udf.md) 文档。
 
 ## 相关内容 \{#related-content\}
 
-- [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)
+* [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

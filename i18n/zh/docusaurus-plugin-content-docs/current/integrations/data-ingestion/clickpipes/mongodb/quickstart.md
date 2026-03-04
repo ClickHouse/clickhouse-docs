@@ -53,7 +53,6 @@ _peerdb_is_deleted: 0
 _peerdb_version:    0
 ```
 
-
 ## 表结构 \{#table-schema\}
 
 这些复制表使用以下标准表结构：
@@ -74,7 +73,6 @@ _peerdb_version:    0
 * `_peerdb_version`: 跟踪该行的版本；当该行被更新或删除时递增
 * `_peerdb_is_deleted`: 标记该行是否已被删除
 
-
 ### ReplacingMergeTree 表引擎 \{#replacingmergetree-table-engine\}
 
 ClickPipes 使用 `ReplacingMergeTree` 表引擎族将 MongoDB 集合映射为 ClickHouse 中的表。使用该引擎时，更新会被建模为插入一条具有更高版本（`_peerdb_version`）的新文档记录（针对给定主键 `_id`），从而能够以版本化插入的方式高效处理更新、替换和删除操作。
@@ -84,7 +82,6 @@ ClickPipes 使用 `ReplacingMergeTree` 表引擎族将 MongoDB 集合映射为 C
 ```sql
 SELECT * FROM t1 FINAL;
 ```
-
 
 ### 处理删除操作 \{#handling-deletes\}
 
@@ -100,7 +97,6 @@ SELECT * FROM t1 FINAL WHERE _peerdb_is_deleted = 0;
 CREATE ROW POLICY policy_name ON t1
 FOR SELECT USING _peerdb_is_deleted = 0;
 ```
-
 
 ## 查询 JSON 数据 \{#querying-json-data\}
 
@@ -130,7 +126,6 @@ SELECT doc.^shipping as shipping_info FROM t1;
 │ {"city":"Seattle","cost":19.99,"method":"express"} │
 └────────────────────────────────────────────────────┘
 ```
-
 
 ### Dynamic 类型 \{#dynamic-type\}
 
@@ -200,7 +195,6 @@ SELECT length(doc.items) AS item_count FROM t1;
 └────────────┘
 ```
 
-
 ### 字段类型转换 \{#field-casting\}
 
 ClickHouse 中的[聚合函数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)不能直接作用于 `Dynamic` 类型。例如，如果你尝试在 `Dynamic` 类型上直接使用 `sum` 函数，会收到如下错误：
@@ -225,7 +219,6 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 :::note
 从 Dynamic 类型转换为其底层数据类型（由 `dynamicType` 决定）的操作非常高效，因为 ClickHouse 在内部已经以该底层类型存储了该值。
 :::
-
 
 ## 展平 JSON \{#flattening-json\}
 
@@ -276,7 +269,6 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-
 ### 可刷新物化视图 \{#refreshable-materialized-view\}
 
 可以创建[可刷新物化视图](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view)，通过定期调度执行查询，对行进行去重，并将结果存储到一个扁平化的目标表中。每次按计划刷新时，目标表都会被最新的查询结果替换。
@@ -326,7 +318,6 @@ GROUP BY customer_id
 ORDER BY customer_id DESC
 LIMIT 10;
 ```
-
 
 ### 增量materialized view \{#incremental-materialized-view\}
 

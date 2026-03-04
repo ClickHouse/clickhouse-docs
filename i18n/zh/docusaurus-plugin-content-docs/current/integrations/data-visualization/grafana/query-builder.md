@@ -23,10 +23,9 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 查询构建器 \{#query-builder\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 可以使用 ClickHouse 插件运行任意查询。
 查询构建器是处理较简单查询的便捷选项，但对于复杂查询，则需要使用 [SQL 编辑器](#sql-editor)。
@@ -35,11 +34,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 可用的查询类型包括：
 
-- [表格](#table)：用于以表格形式展示数据的最简单查询类型。适合作为包含聚合函数的简单和复杂查询的通用选项。
-- [日志](#logs)：针对构建日志查询进行了优化。在已[配置默认值](./config.md#logs)的 Explore 视图中效果最佳。
-- [时间序列](#time-series)：最适合用于构建时间序列查询。允许选择专用时间列并添加聚合函数。
-- [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
-- [SQL 编辑器](#sql-editor)：当需要对查询进行完全控制时可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
+* [表格](#table)：用于以表格形式展示数据的最简单查询类型。适合作为包含聚合函数的简单和复杂查询的通用选项。
+* [日志](#logs)：针对构建日志查询进行了优化。在已[配置默认值](./config.md#logs)的 Explore 视图中效果最佳。
+* [时间序列](#time-series)：最适合用于构建时间序列查询。允许选择专用时间列并添加聚合函数。
+* [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
+* [SQL 编辑器](#sql-editor)：当需要对查询进行完全控制时可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
 
 ## 查询类型 \{#query-types\}
 
@@ -90,7 +89,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={demo_logs_query} alt="OTel 日志查询示例" border />
 
-<br/>
+<br />
 
 此查询类型会在日志面板中渲染数据，并在顶部显示一个日志直方图面板。
 
@@ -104,10 +103,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 这两种视图大体相同，但有以下显著差异：
 
-- 独立的 *Time* 字段。
-- 在 Aggregate 模式下，会自动应用时间间隔宏，并对 Time 字段添加 Group By。
-- 在 Aggregate 模式下，“Columns” 字段会被隐藏。
-- 会为 **Time** 字段自动添加时间范围过滤器和 ORDER BY。
+* 独立的 *Time* 字段。
+* 在 Aggregate 模式下，会自动应用时间间隔宏，并对 Time 字段添加 Group By。
+* 在 Aggregate 模式下，“Columns” 字段会被隐藏。
+* 会为 **Time** 字段自动添加时间范围过滤器和 ORDER BY。
 
 :::important 可视化中缺少数据？
 在某些情况下，时间序列面板看起来像是被截断了，因为默认上限为 `1000`。
@@ -173,7 +172,7 @@ Trace 查询类型支持 [data links](#data-links)。
 对于使用查询构建器难以构建的复杂查询，可以使用 SQL 编辑器。
 通过编写并运行纯 ClickHouse SQL，你可以对查询进行完全控制。
 
-可以在查询编辑器顶部选择 "SQL Editor" 来打开 SQL 编辑器。
+可以在查询编辑器顶部选择 &quot;SQL Editor&quot; 来打开 SQL 编辑器。
 
 在此模式下仍然可以使用 [Macro functions](#macros)。
 
@@ -190,21 +189,23 @@ Grafana [数据链接](https://grafana.com/docs/grafana/latest/panels-visualizat
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', marginBottom: '15px' }}>
   表格中 trace 链接示例
+
   <Image size="sm" img={trace_id_in_table} alt="表格中的 Trace 链接" border />
 </div>
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
   日志中 trace 链接示例
+
   <Image size="md" img={trace_id_in_logs} alt="日志中的 Trace 链接" border />
 </div>
 
 ### 如何创建数据链接 \{#how-to-make-a-data-link\}
 
-可以通过在查询中选择名为 `traceID` 的列来创建数据链接。该名称不区分大小写，并且支持在 "ID" 前添加下划线。例如：`traceId`、`TraceId`、`TRACE_ID` 和 `tracE_iD` 都是有效的。
+可以通过在查询中选择名为 `traceID` 的列来创建数据链接。该名称不区分大小写，并且支持在 &quot;ID&quot; 前添加下划线。例如：`traceId`、`TraceId`、`TRACE_ID` 和 `tracE_iD` 都是有效的。
 
 如果在启用 OpenTelemetry 的[日志](#logs)或[追踪](#traces)查询中，系统会自动包含一个 trace ID 列。
 
-当查询结果中包含 trace ID 列时，"**View Trace**" 和 "**View Logs**" 链接将会附加到数据上。
+当查询结果中包含 trace ID 列时，&quot;**View Trace**&quot; 和 &quot;**View Logs**&quot; 链接将会附加到数据上。
 
 ### 链接功能 \{#linking-abilities\}
 
@@ -217,6 +218,7 @@ Grafana [数据链接](https://grafana.com/docs/grafana/latest/panels-visualizat
 
 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
   从 logs 查询（左侧面板）查看 trace（右侧面板）的示例
+
   <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
 </div>
 
@@ -252,7 +254,6 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 在此示例中，Grafana 仪表板的时间范围会应用到 `log_time` 列。
 
 该插件也支持使用大括号 `{}` 的表示法。当需要在[参数](/sql-reference/syntax.md#defining-and-using-query-parameters)中使用查询时，请使用这种表示法。
-
 
 ### 宏列表 \{#list-of-macros\}
 

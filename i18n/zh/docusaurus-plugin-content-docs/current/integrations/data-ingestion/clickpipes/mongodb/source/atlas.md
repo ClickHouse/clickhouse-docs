@@ -18,7 +18,6 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-
 # MongoDB Atlas 数据源配置指南 \{#mongodb-atlas-source-setup-guide\}
 
 ## 配置 oplog 保留时间 \{#enable-oplog-retention\}
@@ -27,15 +26,15 @@ import Image from '@theme/IdealImage';
 
 1. 在 MongoDB Atlas 控制台中进入集群的 `Overview` 选项卡，然后单击 `Configuration` 选项卡。
 
-<Image img={mongo_atlas_configuration} alt="导航到集群配置" size="lg" border/>
+<Image img={mongo_atlas_configuration} alt="导航到集群配置" size="lg" border />
 
 2. 单击 `Additional Settings`，然后向下滚动到 `More Configuration Options`。
 
-<Image img={mngo_atlas_additional_settings} alt="展开附加设置" size="lg" border/>
+<Image img={mngo_atlas_additional_settings} alt="展开附加设置" size="lg" border />
 
 3. 单击 `More Configuration Options`，并将最小 oplog 时间窗口设置为 `72 hours` 或更长。
 
-<Image img={mongo_atlas_retention_hours} alt="设置 oplog 保留时间（小时）" size="lg" border/>
+<Image img={mongo_atlas_retention_hours} alt="设置 oplog 保留时间（小时）" size="lg" border />
 
 4. 单击 `Review Changes` 进行检查，然后单击 `Apply Changes` 以部署更改。
 
@@ -45,20 +44,20 @@ import Image from '@theme/IdealImage';
 
 ClickPipes 需要使用密码身份验证：
 
-<Image img={mongo_atlas_add_user} alt="添加数据库用户" size="lg" border/>
+<Image img={mongo_atlas_add_user} alt="添加数据库用户" size="lg" border />
 
 ClickPipes 需要一个具有以下角色的用户：
 
-- `readAnyDatabase`
-- `clusterMonitor`
+* `readAnyDatabase`
+* `clusterMonitor`
 
 可以在 `Specific Privileges` 部分中找到这些角色：
 
-<Image img={mongo_atlas_add_roles} alt="配置用户角色" size="lg" border/>
+<Image img={mongo_atlas_add_roles} alt="配置用户角色" size="lg" border />
 
 还可以进一步指定希望授予 ClickPipes 用户访问权限的集群/实例：
 
-<Image img={mongo_atlas_restrict_access} alt="限制集群/实例访问" size="lg" border/>
+<Image img={mongo_atlas_restrict_access} alt="限制集群/实例访问" size="lg" border />
 
 ## 后续步骤 \{#whats-next\}
 

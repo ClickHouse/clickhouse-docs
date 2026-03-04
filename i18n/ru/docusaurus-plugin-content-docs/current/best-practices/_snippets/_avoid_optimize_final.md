@@ -25,8 +25,7 @@ OPTIMIZE TABLE <table> FINAL;
 первичном ключе.
 :::
 
-
-## Почему этого следует избегать?  \{#why-avoid\}
+## Почему этого следует избегать? \{#why-avoid\}
 
 ### Это дорого по ресурсам \{#its-expensive\}
 
@@ -41,7 +40,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 ### Игнорируются защитные лимиты \{#it-ignores-safety-limits\}
 
-Обычно ClickHouse избегает слияния частей размером более ~150 ГБ (настраивается через [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)). Но `OPTIMIZE FINAL` **игнорирует этот механизм защиты**, что означает:
+Обычно ClickHouse избегает слияния частей размером более ~150 ГБ (настраивается через [max&#95;bytes&#95;to&#95;merge&#95;at&#95;max&#95;space&#95;in&#95;pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)). Но `OPTIMIZE FINAL` **игнорирует этот механизм защиты**, что означает:
 
 * Может быть предпринята попытка слить **несколько частей по 150 ГБ** в одну огромную часть
 * Это может привести к **длительным операциям слияния**, **дефициту памяти** или даже **ошибкам out-of-memory (OOM)**

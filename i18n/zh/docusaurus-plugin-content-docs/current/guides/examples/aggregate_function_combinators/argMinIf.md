@@ -59,7 +59,8 @@ GROUP BY product_id;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

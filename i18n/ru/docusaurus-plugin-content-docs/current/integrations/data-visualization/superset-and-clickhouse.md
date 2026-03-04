@@ -28,10 +28,9 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Подключение Superset к ClickHouse \{#connect-superset-to-clickhouse\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> — это платформа с открытым исходным кодом для исследования и визуализации данных, написанная на Python. Superset подключается к ClickHouse с помощью Python-драйвера от ClickHouse. Давайте посмотрим, как это работает...
 
@@ -41,7 +40,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={superset_12} alt="Панель Superset, показывающая цены на недвижимость в Великобритании с несколькими визуализациями, включая круговые диаграммы и таблицы" border />
 
-<br/>
+<br />
 
 :::tip Добавьте данные
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров.
@@ -55,13 +54,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 1. Superset использует драйвер `clickhouse-connect` для подключения к ClickHouse. Подробную информацию о `clickhouse-connect` см. на странице <a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a>; установить его можно с помощью следующей команды:
 
-    ```console
-    pip install clickhouse-connect
-    ```
+   ```console
+   pip install clickhouse-connect
+   ```
 
-    :::note Настройка Docker Compose
-    Для установок на базе Docker см. [руководство по настройке баз данных Superset](https://superset.apache.org/docs/configuration/databases/#clickhouse) с инструкциями по добавлению `clickhouse-connect` в контейнер.
-    :::
+   :::note Настройка Docker Compose
+   Для установок на базе Docker см. [руководство по настройке баз данных Superset](https://superset.apache.org/docs/configuration/databases/#clickhouse) с инструкциями по добавлению `clickhouse-connect` в контейнер.
+   :::
 
 2. Запустите (или перезапустите) Superset.
 
@@ -71,35 +70,35 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="lg" img={superset_01} alt="Интерфейс Superset с меню Database и выделенной кнопкой + Database" border />
 
-<br/>
+<br />
 
 2. На первом шаге выберите **ClickHouse Connect** в качестве типа базы данных:
 
 <Image size="sm" img={superset_02} alt="Мастер подключения базы данных Superset с выбранным вариантом ClickHouse Connect" border />
 
-<br/>
+<br />
 
 3. На втором шаге:
 
-- Включите или выключите SSL.
-- Введите информацию о подключении, собранную ранее.
-- Укажите **DISPLAY NAME**: это может быть любое удобное вам имя. Если вы будете подключаться к нескольким базам данных ClickHouse, сделайте имя более описательным.
+* Включите или выключите SSL.
+* Введите информацию о подключении, собранную ранее.
+* Укажите **DISPLAY NAME**: это может быть любое удобное вам имя. Если вы будете подключаться к нескольким базам данных ClickHouse, сделайте имя более описательным.
 
 <Image size="sm" img={superset_03} alt="Форма конфигурации подключения Superset с параметрами подключения к ClickHouse" border />
 
-<br/>
+<br />
 
 4. Нажмите кнопки **CONNECT**, а затем **FINISH**, чтобы завершить мастер настройки, после чего вы должны увидеть свою базу данных в списке баз данных.
 
 ## 4. Добавление набора данных \{#4-add-a-dataset\}
 
-1. Чтобы работать с данными ClickHouse в Superset, необходимо определить **_dataset_** (набор данных). В верхнем меню Superset выберите **Data**, затем **Datasets** в раскрывающемся списке.
+1. Чтобы работать с данными ClickHouse в Superset, необходимо определить ***dataset*** (набор данных). В верхнем меню Superset выберите **Data**, затем **Datasets** в раскрывающемся списке.
 
 2. Нажмите кнопку добавления набора данных. Выберите вашу новую базу данных как источник данных (datasource), и вы увидите таблицы, определённые в этой базе данных:
 
 <Image size="sm" img={superset_04} alt="Диалог создания набора данных в Superset, показывающий доступные таблицы из базы данных ClickHouse" border />
 
-<br/>
+<br />
 
 3. Нажмите кнопку **ADD** в нижней части диалогового окна, и ваша таблица появится в списке наборов данных. Теперь вы готовы создавать дашборд и анализировать данные ClickHouse!
 
@@ -111,13 +110,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={superset_05} alt="Пустой дашборд Superset с именем UK property prices, готовый для добавления графиков" border />
 
-<br/>
+<br />
 
-2. Чтобы создать новый график, выберите **Charts** в верхнем меню и нажмите кнопку для добавления нового графика. Вам будет показано много вариантов. В следующем примере показан график типа **Pie Chart**, использующий датасет **uk_price_paid** из выпадающего списка **CHOOSE A DATASET**:
+2. Чтобы создать новый график, выберите **Charts** в верхнем меню и нажмите кнопку для добавления нового графика. Вам будет показано много вариантов. В следующем примере показан график типа **Pie Chart**, использующий датасет **uk&#95;price&#95;paid** из выпадающего списка **CHOOSE A DATASET**:
 
 <Image size="md" img={superset_06} alt="Интерфейс создания графика Superset с выбранным типом визуализации Pie Chart" border />
 
-<br/>
+<br />
 
 3. Для круговых диаграмм в Superset требуется задать **Dimension** и **Metric**, остальные параметры являются необязательными. Вы можете выбрать свои собственные поля для Dimension и Metric; в этом примере используется поле ClickHouse `district` в качестве Dimension и `AVG(price)` в качестве Metric.
 
@@ -125,22 +124,22 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={superset_09} alt="Конфигурация Metric с агрегатной функцией AVG(price) для круговой диаграммы" border />
 
-<br/>
+<br />
 
 5. Если вы предпочитаете кольцевые диаграммы (doughnut) вместо круговых, вы можете задать это и другие параметры во вкладке **CUSTOMIZE**:
 
 <Image size="sm" img={superset_10} alt="Панель Customize с опцией кольцевой диаграммы и другими настройками конфигурации круговой диаграммы" border />
 
-<br/>
+<br />
 
-6. Нажмите кнопку **SAVE**, чтобы сохранить график, затем выберите **UK property prices** в выпадающем списке **ADD TO DASHBOARD**, после чего **SAVE & GO TO DASHBOARD** сохранит график и добавит его на дашборд:
+6. Нажмите кнопку **SAVE**, чтобы сохранить график, затем выберите **UK property prices** в выпадающем списке **ADD TO DASHBOARD**, после чего **SAVE &amp; GO TO DASHBOARD** сохранит график и добавит его на дашборд:
 
 <Image size="md" img={superset_11} alt="Диалог сохранения графика с выпадающим списком выбора дашборда и кнопкой Save & Go to Dashboard" border />
 
-<br/>
+<br />
 
 7. На этом всё. Построение дашбордов в Superset на основе данных в ClickHouse открывает целый мир сверхбыстрой аналитики!
 
 <Image size="md" img={superset_12} alt="Готовый дашборд Superset с несколькими визуализациями данных о ценах на недвижимость в Великобритании из ClickHouse" border />
 
-<br/>
+<br />

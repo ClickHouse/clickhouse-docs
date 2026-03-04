@@ -45,87 +45,71 @@ OpenTelemetry 项目提供了独立的 Lambda 层，用于：
 2. 选择 “Specify an ARN”，并根据语言选择对应的 ARN，确保将 `<region>` 替换为你的 Region（例如 `us-east-2`）：
 
 <Tabs groupId="install-language-options">
-<TabItem value="javascript" label="Javascript" default>
+  <TabItem value="javascript" label="Javascript" default>
+    ```shell
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-nodejs-0_7_0:1
+    ```
+  </TabItem>
 
-```shell
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-nodejs-0_7_0:1
-```
+  <TabItem value="python" label="Python" default>
+    ```shell copy
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-python-0_7_0:1
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="python" label="Python" default>
+  <TabItem value="java" label="Java" default>
+    ```shell copy
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-javaagent-0_6_0:1
+    ```
+  </TabItem>
 
-```shell copy
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-python-0_7_0:1
-```
-
-</TabItem>
-
-<TabItem value="java" label="Java" default>
-
-```shell copy
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-javaagent-0_6_0:1
-```
-
-</TabItem>
-
-<TabItem value="ruby" label="Ruby" default>
-
-```shell copy
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
-```
-
-</TabItem>
-
+  <TabItem value="ruby" label="Ruby" default>
+    ```shell copy
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
+    ```
+  </TabItem>
 </Tabs>
 
-_The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
+*The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases).*
 
-3. Configure the following environment variables in your Lambda function under "Configuration" > "Environment variables".
+3. Configure the following environment variables in your Lambda function under &quot;Configuration&quot; &gt; &quot;Environment variables&quot;.
 
 <Tabs groupId="install-language-env">
-<TabItem value="javascript" label="Javascript" default>
+  <TabItem value="javascript" label="Javascript" default>
+    ```shell
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
+    OTEL_PROPAGATORS=tracecontext
+    OTEL_TRACES_SAMPLER=always_on
+    ```
+  </TabItem>
 
-```shell
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
-OTEL_PROPAGATORS=tracecontext
-OTEL_TRACES_SAMPLER=always_on
-```
+  <TabItem value="python" label="Python" default>
+    ```shell
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument
+    OTEL_PROPAGATORS=tracecontext
+    OTEL_TRACES_SAMPLER=always_on
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="python" label="Python" default>
+  <TabItem value="java" label="Java" default>
+    ```shell
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
+    OTEL_PROPAGATORS=tracecontext
+    OTEL_TRACES_SAMPLER=always_on
+    ```
+  </TabItem>
 
-```shell
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument
-OTEL_PROPAGATORS=tracecontext
-OTEL_TRACES_SAMPLER=always_on
-```
-
-</TabItem>
-
-<TabItem value="java" label="Java" default>
-
-```shell
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
-OTEL_PROPAGATORS=tracecontext
-OTEL_TRACES_SAMPLER=always_on
-```
-
-</TabItem>
-
-<TabItem value="ruby" label="Ruby" default>
-
-```shell
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
-OTEL_PROPAGATORS=tracecontext
-OTEL_TRACES_SAMPLER=always_on
-```
-
-</TabItem>
-
+  <TabItem value="ruby" label="Ruby" default>
+    ```shell
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+    AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
+    OTEL_PROPAGATORS=tracecontext
+    OTEL_TRACES_SAMPLER=always_on
+    ```
+  </TabItem>
 </Tabs>
 
 ### 安装 OpenTelemetry collector Lambda 层 \{#installing-the-otel-collector-layer\}
@@ -237,22 +221,21 @@ collector Lambda 层允许你将 Lambda 函数中的日志、指标和追踪（t
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
-
 ## Checking the installation \{#checking-the-installation\}
 
 After deploying the layers, you should now see traces automatically
-collected from your Lambda function in HyperDX. The `decouple` and `batching` 
-processor may introduce a delay in telemetry collection, so traces may be 
-delayed in showing up. To emit custom logs or metrics, you'll need to instrument your code your language-specific 
+collected from your Lambda function in HyperDX. The `decouple` and `batching`
+processor may introduce a delay in telemetry collection, so traces may be
+delayed in showing up. To emit custom logs or metrics, you&#39;ll need to instrument your code your language-specific
 OpenTelemetry SDKs.
 
 ## Troubleshooting \{#troubleshoting\}
 
 ### Custom instrumentation not sending \{#custom-instrumentation-not-sending\}
 
-If you're not seeing your manually defined traces or other telemetry, you may
+If you&#39;re not seeing your manually defined traces or other telemetry, you may
 be using an incompatible version of the OpenTelemetry API package. Ensure your
-OpenTelemetry API package is at least the same or lower version than the 
+OpenTelemetry API package is at least the same or lower version than the
 version included in the AWS lambda.
 
 ### Enabling SDK debug logs \{#enabling-sdk-debug-logs\}
@@ -264,89 +247,85 @@ is correctly instrumenting your application.
 ### Enabling collector debug logs \{#enabling-collector-debug-logs\}
 
 To debug collector issues, you can enable debug logs by modifying your collector
-configuration file to add the `logging` exporter and setting the telemetry 
+configuration file to add the `logging` exporter and setting the telemetry
 log level to `debug` to enable more verbose logging from the collector lambda layer.
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```yaml
+    # collector.yaml
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 'localhost:4317'
+          http:
+            endpoint: 'localhost:4318'
 
-```yaml
-# collector.yaml
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 'localhost:4317'
-      http:
-        endpoint: 'localhost:4318'
+    exporters:
+      logging:
+        verbosity: detailed
+      otlphttp:
+        endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+        compression: gzip
 
-exporters:
-  logging:
-    verbosity: detailed
-  otlphttp:
-    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
-    compression: gzip
+    service:
+      telemetry:
+        logs:
+          level: "debug"
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+        metrics:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+        logs:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+    ```
+  </TabItem>
 
-service:
-  telemetry:
-    logs:
-      level: "debug"
-  pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-    metrics:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-    logs:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-```
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```yaml
+    # collector.yaml
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 'localhost:4317'
+          http:
+            endpoint: 'localhost:4318'
 
-</TabItem>
+    exporters:
+      logging:
+        verbosity: detailed
+      otlphttp:
+        endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+        headers:
+          authorization: <您的摄取_API_密钥>
+        compression: gzip
 
-<TabItem value="clickstack-oss" label="ClickStack 开源版">
-
-```yaml
-# collector.yaml
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 'localhost:4317'
-      http:
-        endpoint: 'localhost:4318'
-
-exporters:
-  logging:
-    verbosity: detailed
-  otlphttp:
-    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
-    headers:
-      authorization: <您的摄取_API_密钥>
-    compression: gzip
-
-service:
-  telemetry:
-    logs:
-      level: "debug"
-  pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-    metrics:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-    logs:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp, logging]
-```
-
-</TabItem>
+    service:
+      telemetry:
+        logs:
+          level: "debug"
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+        metrics:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+        logs:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp, logging]
+    ```
+  </TabItem>
 </Tabs>

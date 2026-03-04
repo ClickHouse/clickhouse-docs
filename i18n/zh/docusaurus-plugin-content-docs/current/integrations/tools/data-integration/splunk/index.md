@@ -22,10 +22,9 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # 将 ClickHouse Cloud 审计日志存储到 Splunk 中 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 [Splunk](https://www.splunk.com/) 是一个数据分析和监控平台。
 
@@ -41,7 +40,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_001} size="lg" alt="Splunkbase 网站，展示 ClickHouse Cloud Audit Add-on for Splunk 的下载页面" border />
 
-在 Splunk Enterprise 中，依次进入 Apps -> Manage，然后单击“Install app from file”。
+在 Splunk Enterprise 中，依次进入 Apps -&gt; Manage，然后单击“Install app from file”。
 
 <Image img={splunk_002} size="lg" alt="Splunk Enterprise 界面，展示带有“Install app from file”选项的 Apps 管理页面" border />
 
@@ -55,14 +54,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 要配置模块化输入，首先需要从您的 ClickHouse Cloud 部署中获取以下信息：
 
-- 组织 ID
-- 管理员 [API Key](/cloud/manage/openapi)
+* 组织 ID
+* 管理员 [API Key](/cloud/manage/openapi)
 
 ## 从 ClickHouse Cloud 获取信息 \{#getting-information-from-clickhouse-cloud\}
 
 登录 [ClickHouse Cloud 控制台](https://console.clickhouse.cloud/)。
 
-进入你的 Organization -> Organization details。在该页面可以复制 Organization ID。
+进入你的 Organization -&gt; Organization details。在该页面可以复制 Organization ID。
 
 <Image img={splunk_004} size="lg" alt="ClickHouse Cloud 控制台展示包含 Organization ID 的 Organization details 页面" border />
 
@@ -80,7 +79,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 ## 在 Splunk 中配置数据输入 \{#configure-data-input-in-splunk\}
 
-回到 Splunk，依次进入 Settings -> Data inputs。
+回到 Splunk，依次进入 Settings -&gt; Data inputs。
 
 <Image img={splunk_008} size="lg" alt="Splunk 界面中显示包含 Data inputs 选项的 Settings 菜单" border />
 
@@ -88,11 +87,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_009} size="lg" alt="Splunk Data inputs 页面中显示 ClickHouse Cloud Audit Logs 选项" border />
 
-点击 "New" 来配置一个新的数据输入实例。
+点击 &quot;New&quot; 来配置一个新的数据输入实例。
 
 <Image img={splunk_010} size="lg" alt="用于配置新的 ClickHouse Cloud Audit Logs 数据输入的 Splunk 界面" border />
 
-填写完所有信息后，点击 "Next"。
+填写完所有信息后，点击 &quot;Next&quot;。
 
 <Image img={splunk_011} size="lg" alt="已完成 ClickHouse 数据输入设置的 Splunk 配置页面" border />
 

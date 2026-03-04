@@ -54,7 +54,6 @@ profiler.report()
 
 ***
 
-
 ## Метод explain() \{#explain\}
 
 Просмотрите план выполнения перед запуском запроса.
@@ -91,7 +90,6 @@ GROUP BY region
 Подробности см. в [документации по explain()](explain.md).
 
 ***
-
 
 ## Профилирование \{#profiling\}
 
@@ -141,7 +139,6 @@ Total                         1.939s      7
 
 ***
 
-
 ## Логирование \{#logging\}
 
 Просматривайте подробные логи выполнения.
@@ -173,7 +170,6 @@ DEBUG - Cache: Storing result (key: abc123)
 
 ***
 
-
 ## Типичные сценарии отладки \{#scenarios\}
 
 ### 1. Запрос не возвращает ожидаемые результаты \{#scenario-wrong-results\}
@@ -189,7 +185,6 @@ config.enable_debug()
 # Step 3: Run and check logs
 result = query.to_df()
 ```
-
 
 ### 2. Медленное выполнение запроса \{#scenario-slow\}
 
@@ -207,7 +202,6 @@ profiler.report()
 # Step 4: Identify slow operations and optimize
 ```
 
-
 ### 3. Принципы выбора движка \{#scenario-engine\}
 
 ```python
@@ -221,7 +215,6 @@ result = ds.filter(ds['x'] > 10).apply(custom_func)
 # DEBUG - filter: Using chdb engine
 # DEBUG - apply: Using pandas engine (custom function)
 ```
-
 
 ### 4. Отладка проблем с кэшем \{#scenario-cache\}
 
@@ -244,7 +237,6 @@ result2 = ds.filter(ds['x'] > 10).to_df()
 
 ***
 
-
 ## Лучшие практики \{#best-practices\}
 
 ### 1. Отлаживайте в среде разработки, а не в продакшене \{#best-practice-1\}
@@ -259,7 +251,6 @@ config.set_log_level(logging.WARNING)
 config.set_profiling_enabled(False)
 ```
 
-
 ### 2. Перед выполнением крупных запросов используйте explain() \{#best-practice-2\}
 
 ```python
@@ -273,7 +264,6 @@ query.explain()
 result = query.to_df()
 ```
 
-
 ### 3. Сначала профилируйте, потом оптимизируйте \{#best-practice-3\}
 
 ```python
@@ -282,7 +272,6 @@ config.enable_profiling()
 result = your_pipeline()
 get_profiler().report()
 ```
-
 
 ### 4. Проверьте SQL‑запрос, если результаты неверны \{#best-practice-4\}
 
@@ -296,7 +285,6 @@ print(query.to_sql())
 
 ***
 
-
 ## Сводка инструментов отладки \{#summary\}
 
 | Инструмент | Команда | Результат |
@@ -309,10 +297,10 @@ print(query.to_sql())
 | Отчет профилировщика | `get_profiler().report()` | Сводка по производительности |
 | Очистить профилировщик | `get_profiler().reset()` | Очистка данных о времени выполнения |
 
----
+***
 
 ## Дальнейшие шаги \{#next-steps\}
 
-- [Метод explain()](explain.md) - Подробное описание плана выполнения
-- [Руководство по профилированию](profiling.md) - Измерение производительности
-- [Конфигурация логирования](logging.md) - Настройка уровней и формата логирования
+* [Метод explain()](explain.md) - Подробное описание плана выполнения
+* [Руководство по профилированию](profiling.md) - Измерение производительности
+* [Конфигурация логирования](logging.md) - Настройка уровней и формата логирования

@@ -61,5 +61,6 @@ GROUP BY timeslot;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`max`](/sql-reference/aggregate-functions/reference/max)
+* [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)

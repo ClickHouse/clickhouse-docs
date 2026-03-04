@@ -15,7 +15,6 @@ doc_type: 'reference'
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [SETTINGS ...] [COMMENT 'Comment']
 ```
 
-
 ## 子句 \{#clauses\}
 
 ### IF NOT EXISTS \{#if-not-exists\}
@@ -61,7 +60,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 │ db_comment │ The temporary database │
 └────────────┴────────────────────────┘
 ```
-
 
 ### SETTINGS \{#settings\}
 

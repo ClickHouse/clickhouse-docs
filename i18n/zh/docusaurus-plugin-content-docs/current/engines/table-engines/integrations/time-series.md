@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # TimeSeries 表引擎 \{#timeseries-table-engine\}
 
 <ExperimentalBadge />
@@ -30,7 +29,6 @@ metric_name2[...] = ...
 输入命令 `set allow_experimental_time_series_table = 1`。
 :::
 
-
 ## 语法 \{#syntax\}
 
 ```sql
@@ -40,7 +38,6 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
-
 
 ## 用法 \{#usage\}
 
@@ -54,7 +51,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](/interfaces/prometheus#remote-write)
 * [prometheus remote-read](/interfaces/prometheus#remote-read)
-
 
 ## 目标表 \{#target-tables\}
 
@@ -70,9 +66,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 ### Data 表 \{#data-table\}
 
-_data_ 表包含与某个标识符关联的时间序列。
+*data* 表包含与某个标识符关联的时间序列。
 
-_data_ 表必须包含以下列：
+*data* 表必须包含以下列：
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
@@ -82,34 +78,34 @@ _data_ 表必须包含以下列：
 
 ### Tags 表 \{#tags-table\}
 
-_tags_ 表包含为每种度量名称与标签组合计算得到的标识符。
+*tags* 表包含为每种度量名称与标签组合计算得到的标识符。
 
-_tags_ 表必须包含以下列：
+*tags* 表必须包含以下列：
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `id` | [x] | `UUID` | any (必须与 [data](#data-table) 表中 `id` 的类型匹配) | `id` 用于标识度量名称与标签的组合。`DEFAULT` 表达式用于指定如何计算该标识符 |
 | `metric_name` | [x] | `LowCardinality(String)` | `String` or `LowCardinality(String)` | 度量名称 |
-| `<tag_value_column>` | [ ] | `String` | `String` or `LowCardinality(String)` or `LowCardinality(Nullable(String))` | 某个特定标签的值，该标签的名称以及对应列的名称在 [tags_to_columns](#settings) 设置中指定 |
-| `tags` | [x] | `Map(LowCardinality(String), String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | 标签的 Map，排除包含度量名称的标签 `__name__`，以及名称在 [tags_to_columns](#settings) 设置中列出的标签 |
+| `<tag_value_column>` | [ ] | `String` | `String` or `LowCardinality(String)` or `LowCardinality(Nullable(String))` | 某个特定标签的值，该标签的名称以及对应列的名称在 [tags&#95;to&#95;columns](#settings) 设置中指定 |
+| `tags` | [x] | `Map(LowCardinality(String), String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | 标签的 Map，排除包含度量名称的标签 `__name__`，以及名称在 [tags&#95;to&#95;columns](#settings) 设置中列出的标签 |
 | `all_tags` | [ ] | `Map(String, String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | 临时列，每一行是所有标签的 Map，仅排除包含度量名称的标签 `__name__`。该列唯一的用途是用于计算 `id` |
-| `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最小时间戳。当 [store_min_time_and_max_time](#settings) 为 `true` 时创建该列 |
-| `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最大时间戳。当 [store_min_time_and_max_time](#settings) 为 `true` 时创建该列 |
+| `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最小时间戳。当 [store&#95;min&#95;time&#95;and&#95;max&#95;time](#settings) 为 `true` 时创建该列 |
+| `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最大时间戳。当 [store&#95;min&#95;time&#95;and&#95;max&#95;time](#settings) 为 `true` 时创建该列 |
 
 ### Metrics 表 \{#metrics-table\}
 
-_metrics_ 表包含关于已收集指标的一些信息、这些指标的类型以及它们的描述。
+*metrics* 表包含关于已收集指标的一些信息、这些指标的类型以及它们的描述。
 
-_metrics_ 表必须包含以下列：
+*metrics* 表必须包含以下列：
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` or `LowCardinality(String)` | 指标族名称 |
-| `type` | [x] | `String` | `String` or `LowCardinality(String)` | 指标族类型，可选值为 "counter"、"gauge"、"summary"、"stateset"、"histogram"、"gaugehistogram" |
+| `type` | [x] | `String` | `String` or `LowCardinality(String)` | 指标族类型，可选值为 &quot;counter&quot;、&quot;gauge&quot;、&quot;summary&quot;、&quot;stateset&quot;、&quot;histogram&quot;、&quot;gaugehistogram&quot; |
 | `unit` | [x] | `String` | `String` or `LowCardinality(String)` | 指标使用的单位 |
 | `help` | [x] | `String` | `String` or `LowCardinality(String)` | 指标的描述信息 |
 
-插入到 `TimeSeries` 表中的任何一行实际上都会被写入这三个目标表中。  
+插入到 `TimeSeries` 表中的任何一行实际上都会被写入这三个目标表中。\
 `TimeSeries` 表包含来自 [data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 三张表的所有列。
 
 ## 创建 \{#creation\}
@@ -196,7 +192,6 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
 ## 调整列类型 \{#adjusting-column-types\}
 
 在定义主表时，通过显式指定列类型，可以调整内部目标表中几乎任意列的类型。例如，
@@ -221,7 +216,6 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
 ## `id` 列 \{#id-column\}
 
 `id` 列包含标识符，每个标识符是根据指标名称与标签的组合计算得到的。
@@ -235,7 +229,6 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
-
 
 ## `tags` 与 `all_tags` 列 \{#tags-and-all-tags\}
 
@@ -268,7 +261,6 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
 ## 内部目标表的表引擎 \{#inner-table-engines\}
 
 默认情况下，内部目标表使用以下表引擎：
@@ -287,7 +279,6 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
-
 
 ## 外部目标表 \{#external-target-tables\}
 
@@ -310,7 +301,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## 设置 \{#settings\}
 
 下面是定义 `TimeSeries` 表时可以指定的设置列表：
@@ -327,6 +317,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 
 以下是支持以 `TimeSeries` 表作为参数的函数列表：
 
-- [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
-- [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
-- [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)
+* [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
+* [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
+* [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

@@ -29,17 +29,17 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 `table` – 要将数据刷新到的目标表。
 
-#### `num_layers` \{#num&#95;layers\}
+#### `num_layers` \{#num_layers\}
 
 `num_layers` – 并行层数。从物理上看，该表将表示为 `num_layers` 个彼此独立的缓冲区。
 
-#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, 和 `max_bytes` \{#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes\}
+#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, 和 `max_bytes` \{#min_time-max_time-min_rows-max_rows-min_bytes-and-max_bytes\}
 
 用于从缓冲区刷新数据的触发条件。
 
 ### 可选引擎参数 \{#optional-engine-parameters\}
 
-#### `flush_time`, `flush_rows`, 和 `flush_bytes` \{#flush&#95;time-flush&#95;rows-and-flush&#95;bytes\}
+#### `flush_time`, `flush_rows`, 和 `flush_bytes` \{#flush_time-flush_rows-and-flush_bytes\}
 
 在后台从缓冲区刷新数据的触发条件（省略或设为零表示没有 `flush*` 参数）。
 
@@ -47,15 +47,15 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 另外，如果至少一个 `flush*` 条件满足，就会在后台发起一次刷新操作。这与 `max*` 不同，因为 `flush*` 允许单独配置后台刷新，以避免对写入 Buffer 表的 `INSERT` 查询增加延迟。
 
-#### `min_time`, `max_time`, 和 `flush_time` \{#min&#95;time-max&#95;time-and-flush&#95;time\}
+#### `min_time`, `max_time`, 和 `flush_time` \{#min_time-max_time-and-flush_time\}
 
 从第一次写入缓冲区开始计算的时间（秒）条件。
 
-#### `min_rows`, `max_rows`, 和 `flush_rows` \{#min&#95;rows-max&#95;rows-and-flush&#95;rows\}
+#### `min_rows`, `max_rows`, 和 `flush_rows` \{#min_rows-max_rows-and-flush_rows\}
 
 缓冲区中行数的条件。
 
-#### `min_bytes`, `max_bytes`, 和 `flush_bytes` \{#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes\}
+#### `min_bytes`, `max_bytes`, 和 `flush_bytes` \{#min_bytes-max_bytes-and-flush_bytes\}
 
 缓冲区中字节数的条件。
 

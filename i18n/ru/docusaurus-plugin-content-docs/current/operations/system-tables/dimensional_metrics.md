@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# dimensional&#95;metrics \{#dimensional_metrics\}
+# dimensional_metrics \{#dimensional_metrics\}
 
 <SystemTableCloud />
 
@@ -40,16 +40,20 @@ FORMAT Prometheus
 ## Описание метрик \{#metric_descriptions\}
 
 ### merge_failures \{#merge_failures\}
+
 Общее количество неудачных слияний с момента запуска.
 
 ### startup_scripts_failure_reason \{#startup_scripts_failure_reason\}
+
 Отражает причины ошибок стартовых скриптов по типу ошибки. При неудачном выполнении стартового скрипта устанавливается в 1, при этом в метке указывается имя ошибки.
 
 ### merge_tree_parts \{#merge_tree_parts\}
+
 Количество частей данных MergeTree с метками, указывающими состояние части, тип части и то, является ли она частью проекции.
 
 **См. также**
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически вычисляемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит количество произошедших событий.
-- [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик таблиц `system.metrics` и `system.events`.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+
+* [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — Содержит количество произошедших событий.
+* [system.metric&#95;log](/operations/system-tables/metric_log) — Содержит историю значений метрик таблиц `system.metrics` и `system.events`.
+* [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

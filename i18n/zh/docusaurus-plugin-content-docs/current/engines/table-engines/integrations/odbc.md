@@ -9,10 +9,9 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # ODBC 表引擎 \{#odbc-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 允许 ClickHouse 通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接到外部数据库。
 
@@ -47,7 +46,6 @@ ENGINE = ODBC(datasource, external_database, external_table)
 * `external_table` — `external_database` 中表的名称。
 
 这些参数也可以通过[命名集合](operations/named-collections.md)传递。
-
 
 ## 使用示例 \{#usage-example\}
 
@@ -138,8 +136,7 @@ SELECT * FROM odbc_t
 └────────┴────────────────┘
 ```
 
-
 ## 另请参阅 \{#see-also\}
 
-- [ODBC 字典](/sql-reference/statements/create/dictionary/sources/odbc)
-- [ODBC 表函数](../../../sql-reference/table-functions/odbc.md)
+* [ODBC 字典](/sql-reference/statements/create/dictionary/sources/odbc)
+* [ODBC 表函数](../../../sql-reference/table-functions/odbc.md)

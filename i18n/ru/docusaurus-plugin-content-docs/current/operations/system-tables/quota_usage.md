@@ -48,4 +48,4 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 ## См. также \{#see-also\}
 
-- [SHOW QUOTA](/sql-reference/statements/show#show-quota))
+* [SHOW QUOTA](/sql-reference/statements/show#show-quota))

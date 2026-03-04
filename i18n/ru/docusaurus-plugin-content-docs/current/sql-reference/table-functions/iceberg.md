@@ -69,7 +69,6 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-
 ## Использование каталога данных \{#iceberg-writes-catalogs\}
 
 Таблицы Iceberg также могут использоваться с различными каталогами данных, такими как [REST Catalog](https://iceberg.apache.org/rest-catalog-spec/), [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html) и [Unity Catalog](https://www.unitycatalog.io/).
@@ -114,14 +113,13 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-
 ## Эволюция схемы \{#schema-evolution\}
 
 В настоящее время с помощью CH вы можете читать таблицы Iceberg, схема которых со временем изменялась. Поддерживается чтение таблиц, в которых столбцы добавлялись и удалялись, а также изменялся их порядок. Вы также можете изменить столбец с обязательным значением на столбец, в котором допускается значение NULL. Дополнительно поддерживается допустимое приведение типов для простых типов, а именно:  
 
-* int -> long
-* float -> double
-* decimal(P, S) -> decimal(P', S), где P' > P.
+* int -&gt; long
+* float -&gt; double
+* decimal(P, S) -&gt; decimal(P&#39;, S), где P&#39; &gt; P.
 
 Пока невозможно изменять вложенные структуры или типы элементов внутри массивов и отображений.
 
@@ -135,31 +133,33 @@ ClickHouse поддерживает механизм time travel для табл
 
 ## Обработка таблиц с удалёнными строками \{#deleted-rows\}
 
-В настоящее время поддерживаются только таблицы Iceberg, использующие [position deletes](https://iceberg.apache.org/spec/#position-delete-files). 
+В настоящее время поддерживаются только таблицы Iceberg, использующие [position deletes](https://iceberg.apache.org/spec/#position-delete-files).
 
 Следующие методы удаления **не поддерживаются**:
 
-- [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
-- [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors) (появились в версии 3)
+* [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
+* [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors) (появились в версии 3)
 
 ### Основы использования \{#basic-usage\}
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
- ```
+```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
- ```
+```
 
 Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` одновременно в одном запросе.
 
 ### Важные замечания \{#important-considerations\}
 
 * **Снимки** обычно создаются в следующих случаях:
+
 * В таблицу записываются новые данные
+
 * Выполняется какой-либо вид компактации данных
 
 * **Изменения схемы обычно не создают снимков** — это приводит к важным особенностям поведения при использовании time travel для таблиц, схема которых со временем изменялась.
@@ -270,7 +270,6 @@ ClickHouse поддерживает механизм time travel для табл
 
 Это происходит потому, что `ALTER TABLE` не создает новый снимок, а для текущей таблицы Spark берет значение `schema_id` из последнего файла метаданных, а не из снимка.
 
-
 #### Сценарий 3: различия между исторической и текущей схемами \{#scenario-3\}
 
 Второй случай заключается в том, что при использовании механизма time travel вы не можете получить состояние таблицы до того, как в неё были записаны какие-либо данные:
@@ -292,7 +291,6 @@ ClickHouse поддерживает механизм time travel для табл
 
 В ClickHouse поведение такое же, как в Spark. Можно мысленно заменить запросы SELECT в Spark на запросы SELECT в ClickHouse — всё будет работать так же.
 
-
 ## Определение файла метаданных \{#metadata-file-resolution\}
 
 При использовании табличной функции `iceberg` в ClickHouse системе необходимо найти соответствующий файл metadata.json, который описывает структуру таблицы Iceberg. Ниже описано, как работает этот процесс определения:
@@ -300,17 +298,17 @@ ClickHouse поддерживает механизм time travel для табл
 ### Поиск кандидатов (в порядке приоритета) \{#candidate-search\}
 
 1. **Явное указание пути**:
-*Если вы задаёте `iceberg_metadata_file_path`, система будет использовать именно этот путь, добавляя его к пути каталога таблицы Iceberg.
+   *Если вы задаёте `iceberg_metadata_file_path`, система будет использовать именно этот путь, добавляя его к пути каталога таблицы Iceberg.
 
 * При наличии этого параметра все остальные параметры разрешения пути игнорируются.
 
 2. **Сопоставление UUID таблицы**:
-*Если указан `iceberg_metadata_table_uuid`, система будет:
-    *Смотреть только файлы `.metadata.json` в каталоге `metadata`
-    *Отбирать файлы, содержащие поле `table-uuid` со значением, совпадающим с указанным UUID (без учёта регистра)
+   *Если указан `iceberg_metadata_table_uuid`, система будет:
+   *Смотреть только файлы `.metadata.json` в каталоге `metadata`
+   *Отбирать файлы, содержащие поле `table-uuid` со значением, совпадающим с указанным UUID (без учёта регистра)
 
 3. **Поиск по умолчанию**:
-*Если ни один из вышеперечисленных параметров не задан, все файлы `.metadata.json` в каталоге `metadata` рассматриваются как кандидаты
+   *Если ни один из вышеперечисленных параметров не задан, все файлы `.metadata.json` в каталоге `metadata` рассматриваются как кандидаты
 
 ### Выбор самого нового файла \{#most-recent-file\}
 
@@ -345,11 +343,11 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — Имя файла. Тип: `LowCardinality(String)`.
+* `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 ## Запись в таблицы Iceberg \{#writes-into-iceberg-table\}
 
@@ -360,7 +358,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 ```sql
 SET allow_insert_into_iceberg = 1;
 ```
-
 
 ### Создание таблицы \{#create-iceberg-table\}
 
@@ -513,7 +510,6 @@ x: Ivanov
 value: 993
 ```
 
-
 ### Компакция \{#iceberg-writes-compaction\}
 
 ClickHouse поддерживает компакцию таблиц Iceberg. В настоящее время он может объединять файлы позиционных удалений (position delete files) с файлами данных с одновременным обновлением метаданных. Идентификаторы и метки времени предыдущих снимков (snapshot IDs and timestamps) остаются неизменными, поэтому функция time-travel по‑прежнему может использоваться с теми же значениями.
@@ -534,7 +530,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ## См. также \{#see-also\}
 

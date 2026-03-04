@@ -28,7 +28,7 @@ remoteSecure(named_collection[, option=value [,..]])
 
 | Аргумент       | Описание                                                                                                                                                                                                                                                                                                                                                            |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `addresses_expr` | Адрес удалённого сервера или выражение, генерирующее несколько адресов удалённых серверов. Формат: `host` или `host:port`.<br/><br/>    `host` может быть указан как имя сервера либо как IPv4- или IPv6-адрес. Адрес IPv6 должен быть указан в квадратных скобках.<br/><br/>    `port` — это TCP-порт на удалённом сервере. Если порт опущен, используется значение [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port) из конфигурационного файла сервера для табличной функции `remote` (по умолчанию 9000) и [tcp_port_secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure) для табличной функции `remoteSecure` (по умолчанию 9440).<br/><br/>    Для IPv6-адресов указание порта обязательно.<br/><br/>    Если указан только параметр `addresses_expr`, по умолчанию для `db` и `table` используется `system.one`.<br/><br/>    Тип: [String](../../sql-reference/data-types/string.md). |
+| `addresses_expr` | Адрес удалённого сервера или выражение, генерирующее несколько адресов удалённых серверов. Формат: `host` или `host:port`.<br /><br />    `host` может быть указан как имя сервера либо как IPv4- или IPv6-адрес. Адрес IPv6 должен быть указан в квадратных скобках.<br /><br />    `port` — это TCP-порт на удалённом сервере. Если порт опущен, используется значение [tcp&#95;port](../../operations/server-configuration-parameters/settings.md#tcp_port) из конфигурационного файла сервера для табличной функции `remote` (по умолчанию 9000) и [tcp&#95;port&#95;secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure) для табличной функции `remoteSecure` (по умолчанию 9440).<br /><br />    Для IPv6-адресов указание порта обязательно.<br /><br />    Если указан только параметр `addresses_expr`, по умолчанию для `db` и `table` используется `system.one`.<br /><br />    Тип: [String](../../sql-reference/data-types/string.md). |
 | `db`           | Имя базы данных. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                                                                           |
 | `table`        | Имя таблицы. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                                                                               |
 | `user`         | Имя пользователя. Если не указано, используется `default`. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                                 |
@@ -119,7 +119,7 @@ SELECT * FROM remote_table;
   SELECT create_table_query
   FROM system.tables
   WHERE database = 'imdb' AND table = 'actors'
-  ```
+```
 
 Ответ
 
@@ -130,7 +130,7 @@ SELECT * FROM remote_table;
                             `gender` FixedString(1))
                   ENGINE = MergeTree
                   ORDER BY (id, first_name, last_name, gender);
-  ```
+```
 
 #### На целевой системе ClickHouse \{#on-the-destination-clickhouse-system\}
 
@@ -167,10 +167,10 @@ SELECT * from imdb.actors
 
 Поддерживаются следующие типы шаблонов.
 
-- `{a,b,c}` — представляет любую из альтернативных строк `a`, `b` или `c`. Шаблон заменяется на `a` в адресе первого шарда, на `b` — во втором и так далее. Например, `example0{1,2}-1` генерирует адреса `example01-1` и `example02-1`.
-- `{N..M}` — диапазон чисел. Этот шаблон генерирует адреса шардов с увеличивающимися индексами от `N` до `M` включительно. Например, `example0{1..2}-1` генерирует `example01-1` и `example02-1`.
-- `{0n..0m}` — диапазон чисел с ведущими нулями. Этот шаблон сохраняет ведущие нули в индексах. Например, `example{01..03}-1` генерирует `example01-1`, `example02-1` и `example03-1`.
-- `{a|b}` — произвольное количество вариантов, разделённых символом `|`. Шаблон задаёт реплики. Например, `example01-{1|2}` генерирует реплики `example01-1` и `example01-2`.
+* `{a,b,c}` — представляет любую из альтернативных строк `a`, `b` или `c`. Шаблон заменяется на `a` в адресе первого шарда, на `b` — во втором и так далее. Например, `example0{1,2}-1` генерирует адреса `example01-1` и `example02-1`.
+* `{N..M}` — диапазон чисел. Этот шаблон генерирует адреса шардов с увеличивающимися индексами от `N` до `M` включительно. Например, `example0{1..2}-1` генерирует `example01-1` и `example02-1`.
+* `{0n..0m}` — диапазон чисел с ведущими нулями. Этот шаблон сохраняет ведущие нули в индексах. Например, `example{01..03}-1` генерирует `example01-1`, `example02-1` и `example03-1`.
+* `{a|b}` — произвольное количество вариантов, разделённых символом `|`. Шаблон задаёт реплики. Например, `example01-{1|2}` генерирует реплики `example01-1` и `example01-2`.
 
-Запрос будет отправлен на первую «здоровую» реплику. Однако для `remote` реплики перебираются в порядке, который в данный момент задан настройкой [load_balancing](../../operations/settings/settings.md#load_balancing).
-Число сгенерированных адресов ограничено настройкой [table_function_remote_max_addresses](../../operations/settings/settings.md#table_function_remote_max_addresses).
+Запрос будет отправлен на первую «здоровую» реплику. Однако для `remote` реплики перебираются в порядке, который в данный момент задан настройкой [load&#95;balancing](../../operations/settings/settings.md#load_balancing).
+Число сгенерированных адресов ограничено настройкой [table&#95;function&#95;remote&#95;max&#95;addresses](../../operations/settings/settings.md#table_function_remote_max_addresses).

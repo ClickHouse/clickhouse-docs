@@ -38,7 +38,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关请求参数的说明，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
 
-
 ### CoalescingMergeTree 的参数 \{#parameters-of-coalescingmergetree\}
 
 #### 列 \{#columns\}
@@ -57,13 +56,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] CoalescingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-```
+  ) ENGINE [=] CoalescingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+  ```
 
   除 `columns` 之外的所有参数与 `MergeTree` 中的含义相同。
 

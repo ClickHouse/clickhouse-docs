@@ -15,7 +15,6 @@ import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_re
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
-
 # 升级 \{#upgrades\}
 
 使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/cloud)。
@@ -36,18 +35,19 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 ## 维护模式 \{#maintenance-mode\}
 
-在某些情况下，我们可能需要更新您的服务，这可能会要求我们暂时禁用某些功能，例如扩缩容或空闲休眠。在极少数情况下，我们可能需要对出现问题的服务采取措施，使其恢复到健康状态。在此类维护期间，您会在服务页面上看到一条横幅，显示 _"Maintenance in progress"_。在这段时间内，您通常仍然可以继续使用该服务进行查询。
+在某些情况下，我们可能需要更新您的服务，这可能会要求我们暂时禁用某些功能，例如扩缩容或空闲休眠。在极少数情况下，我们可能需要对出现问题的服务采取措施，使其恢复到健康状态。在此类维护期间，您会在服务页面上看到一条横幅，显示 *&quot;Maintenance in progress&quot;*。在这段时间内，您通常仍然可以继续使用该服务进行查询。
 
-在服务处于维护状态的这段时间内，我们不会向您收取费用。_维护模式_ 的出现非常罕见，不应与常规的服务升级相混淆。
+在服务处于维护状态的这段时间内，我们不会向您收取费用。*维护模式* 的出现非常罕见，不应与常规的服务升级相混淆。
 
 ## 发布通道（升级计划） \{#release-channels-upgrade-schedule\}
 
 用户可以通过订阅特定的发布通道来指定其 ClickHouse Cloud 服务的升级计划。共有三个发布通道，用户可以使用 **计划升级（scheduled upgrades）** 功能配置每周的升级日期和时间。
 
 这三个发布通道为：
-- [**快速发布通道（fast release channel）**](#fast-release-channel-early-upgrades)，用于提前获取升级。
-- [**常规发布通道（regular release channel）**](#regular-release-channel) 是默认通道，该通道上的升级会在快速发布通道升级后的两周开始。如果你的 Scale 和 Enterprise 等级服务未设置发布通道，则默认处于常规发布通道。
-- [**慢速发布通道（slow release channel）**](#slow-release-channel-deferred-upgrades)，用于延后升级。该通道上的升级会在常规发布通道升级后的两周进行。
+
+* [**快速发布通道（fast release channel）**](#fast-release-channel-early-upgrades)，用于提前获取升级。
+* [**常规发布通道（regular release channel）**](#regular-release-channel) 是默认通道，该通道上的升级会在快速发布通道升级后的两周开始。如果你的 Scale 和 Enterprise 等级服务未设置发布通道，则默认处于常规发布通道。
+* [**慢速发布通道（slow release channel）**](#slow-release-channel-deferred-upgrades)，用于延后升级。该通道上的升级会在常规发布通道升级后的两周进行。
 
 :::note
 Basic 等级服务会自动加入快速发布通道。
@@ -55,28 +55,28 @@ Basic 等级服务会自动加入快速发布通道。
 
 ### 快速发布通道（提前升级） \{#fast-release-channel-early-upgrades\}
 
-<ScalePlanFeatureBadge feature="快速发布通道"/>
+<ScalePlanFeatureBadge feature="快速发布通道" />
 
 除了常规升级计划外，如果你希望服务在常规发布计划之前接收更新，我们提供 **快速发布（Fast release）** 通道。
 
 具体而言，服务将：
 
-- 接收最新的 ClickHouse 发布版本
-- 随着新版本通过测试而更频繁地升级
+* 接收最新的 ClickHouse 发布版本
+* 随着新版本通过测试而更频繁地升级
 
 你可以在 Cloud 控制台中按如下所示修改服务的升级计划：
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="Select Plan" border/>
+  <Image img={fast_release} size="lg" alt="Select Plan" border />
 </div>
 
-<br/>
+<br />
 
 <div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
+  <Image img={enroll_fast_release} size="lg" alt="Select Plan" border />
 </div>
 
-<br/>
+<br />
 
 此 **快速发布（Fast release）** 通道适用于在非关键环境中测试新功能。**不建议用于具有严格可用性和可靠性要求的生产工作负载。**
 
@@ -92,42 +92,45 @@ Basic 等级服务会在快速发布通道之后不久进行升级。
 
 ### 慢速发布通道（延后升级） \{#slow-release-channel-deferred-upgrades\}
 
-<EnterprisePlanFeatureBadge feature="慢速发布通道"/>
+<EnterprisePlanFeatureBadge feature="慢速发布通道" />
 
 如果你希望服务在常规发布计划之后再进行升级，我们提供 **慢速发布（Slow release）** 通道。
 
 具体而言，服务将：
 
-- 在快速和常规发布通道的升级全部完成后再进行升级
-- 在常规发布版本之后大约 2 周接收 ClickHouse 发布版本
-- 适用于希望在生产升级前，先在非生产环境中对 ClickHouse 发布版本进行额外测试的客户。非生产环境可以选择快速或常规发布通道进行升级，以用于测试和验证。
+* 在快速和常规发布通道的升级全部完成后再进行升级
+* 在常规发布版本之后大约 2 周接收 ClickHouse 发布版本
+* 适用于希望在生产升级前，先在非生产环境中对 ClickHouse 发布版本进行额外测试的客户。非生产环境可以选择快速或常规发布通道进行升级，以用于测试和验证。
 
 :::note
-你可以随时更改发布通道。但在某些情况下，更改只会应用于未来的发布。 
+你可以随时更改发布通道。但在某些情况下，更改只会应用于未来的发布。
 
-- 切换到更快的通道会立即升级你的服务。例如：慢速到常规、常规到快速
-- 切换到更慢的通道不会将你的服务降级，并会让你保持当前版本，直到该通道中有更新的版本可用。例如：常规到慢速、快速到常规或慢速
-:::
+* 切换到更快的通道会立即升级你的服务。例如：慢速到常规、常规到快速
+* 切换到更慢的通道不会将你的服务降级，并会让你保持当前版本，直到该通道中有更新的版本可用。例如：常规到慢速、快速到常规或慢速
+  :::
 
 ## 计划升级 \{#scheduled-upgrades\}
 
-<EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
+<EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true" />
 
 用户可以为 Enterprise 级别的服务配置升级时间窗口。
 
 选择你希望设置计划升级的服务，然后在左侧菜单中选择 `Settings`。向下滚动到 `Scheduled upgrades`。
 
 <div class="eighty-percent">
-    <Image img={scheduled_upgrades} size="lg" alt="计划升级" border/>
+  <Image img={scheduled_upgrades} size="lg" alt="计划升级" border />
 </div>
-<br/>
+
+<br />
 
 选择此选项后，用户可以为数据库和云服务升级选择一周中的日期和时间窗口。
 
 <div class="eighty-percent">
-    <Image img={scheduled_upgrade_window} size="lg" alt="计划升级时间窗口" border/>
+  <Image img={scheduled_upgrade_window} size="lg" alt="计划升级时间窗口" border />
 </div>
-<br/>
+
+<br />
+
 :::note
 虽然计划升级会遵循已定义的时间表，但关键安全补丁和漏洞修复可能会例外。当发现紧急安全问题时，升级可能在计划时间窗口之外执行。如有必要，我们会就此类例外情况通知客户。
 :::

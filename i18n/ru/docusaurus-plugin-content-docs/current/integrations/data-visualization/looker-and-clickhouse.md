@@ -18,10 +18,9 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Looker \{#looker\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 Looker может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse с помощью официального источника данных ClickHouse.
 
@@ -31,29 +30,29 @@ Looker может подключаться к ClickHouse Cloud или локал
 
 ## 2. Создайте источник данных ClickHouse \{#2-create-a-clickhouse-data-source\}
 
-Перейдите в Admin -> Database -> Connections и нажмите кнопку «Add Connection» в правом верхнем углу.
+Перейдите в Admin -&gt; Database -&gt; Connections и нажмите кнопку «Add Connection» в правом верхнем углу.
 
 <Image size="md" img={looker_01} alt="Добавление нового подключения в интерфейсе управления базами данных Looker" border />
 
-<br/>
+<br />
 
 Задайте имя для источника данных и выберите `ClickHouse` в выпадающем списке диалектов. Введите свои учетные данные в форме.
 
 <Image size="md" img={looker_02} alt="Указание учетных данных ClickHouse в форме подключения Looker" border />
 
-<br/>
+<br />
 
 Если вы используете ClickHouse Cloud или ваше развертывание требует SSL, убедитесь, что SSL включен в дополнительных настройках.
 
 <Image size="md" img={looker_03} alt="Включение SSL для подключения ClickHouse в настройках Looker" border />
 
-<br/>
+<br />
 
 Сначала протестируйте подключение и, после успешной проверки, подключитесь к новому источнику данных ClickHouse.
 
 <Image size="md" img={looker_04} alt="Тестирование и подключение к источнику данных ClickHouse" border />
 
-<br/>
+<br />
 
 Теперь вы сможете подключить источник данных ClickHouse к проекту Looker.
 

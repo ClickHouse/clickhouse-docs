@@ -14,20 +14,19 @@ import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
-
 ## 在 ClickStack 和 Elastic 中搜索 \{#search-in-clickstack-and-elastic\}
 
-ClickHouse 是一个原生支持 SQL 的引擎，从一开始就为高性能分析型工作负载而设计。相比之下，Elasticsearch 提供的是类 SQL 接口，会将 SQL 转换为底层的 Elasticsearch 查询 DSL——这意味着 SQL 不是一等公民，其[特性对等性](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations)有限。 
+ClickHouse 是一个原生支持 SQL 的引擎，从一开始就为高性能分析型工作负载而设计。相比之下，Elasticsearch 提供的是类 SQL 接口，会将 SQL 转换为底层的 Elasticsearch 查询 DSL——这意味着 SQL 不是一等公民，其[特性对等性](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations)有限。
 
 ClickHouse 不仅完整支持 SQL，还扩展了一系列面向可观测性的函数，例如 [`argMax`](/sql-reference/aggregate-functions/reference/argmax)、[`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) 和 [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)，用于简化对结构化日志、指标和链路追踪的查询。
 
 对于简单的日志与链路追踪探索，ClickStack UI（HyperDX）提供了[类 Lucene 语法](/use-cases/observability/clickstack/search)，支持直观的文本式过滤，包括字段-值查询、范围查询、通配符等。其能力可与 Elasticsearch 中的 [Lucene 语法](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax)以及 [Kibana Query Language](https://www.elastic.co/docs/reference/query-languages/kql) 的部分特性相媲美。
 
-<Image img={hyperdx_search} alt="Search" size="lg"/>
+<Image img={hyperdx_search} alt="Search" size="lg" />
 
 该搜索界面支持这种熟悉的语法，但会在后台将其转换为高效的 SQL `WHERE` 子句，使 Kibana 用户在保持熟悉体验的同时，在需要时仍能充分利用 SQL 的强大能力。这样，用户就可以利用 ClickHouse 中完整的[字符串搜索函数](/sql-reference/functions/string-search-functions)、[相似度函数](/sql-reference/functions/string-functions#stringJaccardIndex)以及[日期时间函数](/sql-reference/functions/date-time-functions)。
 
-<Image img={hyperdx_sql} alt="SQL" size="lg"/>
+<Image img={hyperdx_sql} alt="SQL" size="lg" />
 
 下面我们对比 ClickStack 和 Elasticsearch 中的 Lucene 查询语言。
 
@@ -61,8 +60,8 @@ ClickStack 和 Elasticsearch 都提供了灵活的查询语言，用于实现直
 
 与 Elasticsearch 不同，在 Elasticsearch 中字段可以在事件中被完全省略，从而真正意义上“不存在”；而在 ClickHouse 中，表结构中的所有列都必须存在。如果在插入的事件中未提供某个字段：
 
-- 对于 [`Nullable`](/sql-reference/data-types/nullable) 字段，该字段会被设置为 `NULL`。
-- 对于非 Nullable 字段（默认情况），该字段会被填充为默认值（通常是空字符串、0 或等价值）。
+* 对于 [`Nullable`](/sql-reference/data-types/nullable) 字段，该字段会被设置为 `NULL`。
+* 对于非 Nullable 字段（默认情况），该字段会被填充为默认值（通常是空字符串、0 或等价值）。
 
 在 ClickStack 中，我们采用后一种方式，因为 [`Nullable`](/sql-reference/data-types/nullable) [不建议使用](/optimize/avoid-nullable-columns)。
 

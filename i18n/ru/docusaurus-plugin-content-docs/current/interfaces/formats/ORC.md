@@ -42,9 +42,9 @@ doc_type: 'reference'
 | `Binary`                              | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                                    | `Binary`                 |
 | `Binary`                              | [Decimal256](/sql-reference/data-types/decimal.md)                                                        | `Binary`                 |
 
-- Другие типы не поддерживаются.
-- Массивы могут быть вложенными и иметь в качестве аргумента значение типа `Nullable`. Типы `Tuple` и `Map` также могут быть вложенными.
-- Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями ORC. При вставке данных ClickHouse интерпретирует типы данных согласно таблице выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#CAST) данные к типу, заданному для столбца таблицы ClickHouse.
+* Другие типы не поддерживаются.
+* Массивы могут быть вложенными и иметь в качестве аргумента значение типа `Nullable`. Типы `Tuple` и `Map` также могут быть вложенными.
+* Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями ORC. При вставке данных ClickHouse интерпретирует типы данных согласно таблице выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#CAST) данные к типу, заданному для столбца таблицы ClickHouse.
 
 ## Пример использования \{#example-usage\}
 
@@ -80,7 +80,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
-
 ### Чтение данных \{#reading-data\}
 
 Прочитайте данные в формате `ORC`:
@@ -95,7 +94,6 @@ FORMAT ORC
 :::tip
 ORC — это бинарный формат, который не отображается в человекочитаемом виде в терминале. Используйте оператор `INTO OUTFILE` для вывода данных в файлы ORC.
 :::
-
 
 ## Настройки формата \{#format-settings\}
 

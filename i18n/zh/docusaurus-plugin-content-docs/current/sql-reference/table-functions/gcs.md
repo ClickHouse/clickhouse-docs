@@ -216,5 +216,6 @@ INSERT INTO TABLE FUNCTION
 因此，数据将被写入位于不同 bucket 中的三个文件：`my_bucket_1/file.csv`、`my_bucket_10/file.csv` 和 `my_bucket_20/file.csv`。
 
 ## 相关 \{#related\}
-- [S3 表函数](s3.md)
-- [S3 引擎](../../engines/table-engines/integrations/s3.md)
+
+* [S3 表函数](s3.md)
+* [S3 引擎](../../engines/table-engines/integrations/s3.md)

@@ -23,7 +23,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] APPLY PATCHES [IN PARTITION partitio
 * 这是一种数据变更操作，会在后台异步执行。
   :::
 
-
 ## 何时使用 APPLY PATCHES \{#when-to-use\}
 
 :::tip
@@ -32,10 +31,10 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] APPLY PATCHES [IN PARTITION partitio
 
 当启用（默认）[`apply_patches_on_merge`](/operations/settings/merge-tree-settings#apply_patches_on_merge) 设置时，补丁分区片段通常会在合并过程中自动应用。不过，在以下场景中，你可能希望手动触发补丁应用：
 
-- 降低在执行 `SELECT` 查询时应用补丁的开销
-- 在补丁分区片段累积之前先将多个补丁分区片段合并
-- 在备份或导出数据前，将补丁预先物化到数据中
-- 当 `apply_patches_on_merge` 被禁用且你希望自行控制补丁应用时
+* 降低在执行 `SELECT` 查询时应用补丁的开销
+* 在补丁分区片段累积之前先将多个补丁分区片段合并
+* 在备份或导出数据前，将补丁预先物化到数据中
+* 当 `apply_patches_on_merge` 被禁用且你希望自行控制补丁应用时
 
 ## 示例 \{#examples\}
 
@@ -57,7 +56,6 @@ ALTER TABLE my_table APPLY PATCHES IN PARTITION '2024-01';
 ALTER TABLE my_table APPLY PATCHES, UPDATE column = value WHERE condition;
 ```
 
-
 ## 监控补丁应用 \{#monitor\}
 
 您可以通过 [`system.mutations`](/operations/system-tables/mutations) 表监控补丁应用的进度：
@@ -67,8 +65,7 @@ SELECT * FROM system.mutations
 WHERE table = 'my_table' AND command LIKE '%APPLY PATCHES%';
 ```
 
-
 ## 另请参阅 \{#see-also\}
 
-- [轻量级 `UPDATE`](/sql-reference/statements/update) - 通过轻量级更新创建补丁分区片段
-- [`apply_patches_on_merge` 设置](/operations/settings/merge-tree-settings#apply_patches_on_merge) - 控制在合并过程中自动应用补丁
+* [轻量级 `UPDATE`](/sql-reference/statements/update) - 通过轻量级更新创建补丁分区片段
+* [`apply_patches_on_merge` 设置](/operations/settings/merge-tree-settings#apply_patches_on_merge) - 控制在合并过程中自动应用补丁

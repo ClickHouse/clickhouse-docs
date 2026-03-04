@@ -34,10 +34,10 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 指定允许从该用户处接收[权限](../../../sql-reference/statements/grant.md#privileges)的用户或角色，前提是该用户自身也已通过带有 [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax) 的授权获得所有必需的访问权限。`GRANTEES` 子句的选项：
 
-- `user` — 指定该用户可以向其授予权限的用户。
-- `role` — 指定该用户可以向其授予权限的角色。
-- `ANY` — 该用户可以向任意用户或角色授予权限。此为默认设置。
-- `NONE` — 该用户不能向任何用户或角色授予权限。
+* `user` — 指定该用户可以向其授予权限的用户。
+* `role` — 指定该用户可以向其授予权限的角色。
+* `ANY` — 该用户可以向任意用户或角色授予权限。此为默认设置。
+* `NONE` — 该用户不能向任何用户或角色授予权限。
 
 您可以使用 `EXCEPT` 表达式排除任意用户或角色。例如，`ALTER USER user1 GRANTEES ANY EXCEPT user2`。这意味着如果 `user1` 拥有一些通过 `GRANT OPTION` 授予的权限，则它可以将这些权限授予除 `user2` 之外的任意用户或角色。
 
@@ -108,7 +108,7 @@ ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 
 示例：
 
-- `ALTER USER name1 VALID UNTIL '2025-01-01'`
-- `ALTER USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
-- `ALTER USER name1 VALID UNTIL 'infinity'`
-- `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL'2025-01-01''`
+* `ALTER USER name1 VALID UNTIL '2025-01-01'`
+* `ALTER USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
+* `ALTER USER name1 VALID UNTIL 'infinity'`
+* `ALTER USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL'2025-01-01''`

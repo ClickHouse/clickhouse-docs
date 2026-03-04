@@ -22,6 +22,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 :::
 
 ## Столбцы \{#columns\}
+
 | Имя           | Тип      | Описание                                                                                   |
 |----------------|-----------|----------------------------------------------------------------------------------------------|
 | `event_date`   | [Date](../../sql-reference/data-types/date.md)      | Дата файла журнала.                                                                       |
@@ -31,7 +32,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 | `file_path`    | [String](../../sql-reference/data-types/string.md)    | Путь к корневому JSON-файлу метаданных.             |
 | `content`      | [String](../../sql-reference/data-types/string.md)    | Содержимое в формате JSON (исходные метаданные из файла .json).       |
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
 ## Управление уровнем детализации журналирования \{#controlling-log-verbosity\}
 

@@ -13,19 +13,20 @@ doc_type: 'guide'
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
 
 ClickHouse 访问控制实体：
-- [用户账户](#user-account-management)
-- [角色](#role-management)
-- [行策略](#row-policy-management)
-- [设置配置文件](#settings-profiles-management)
-- [配额](#quotas-management)
+
+* [用户账户](#user-account-management)
+* [角色](#role-management)
+* [行策略](#row-policy-management)
+* [设置配置文件](#settings-profiles-management)
+* [配额](#quotas-management)
 
 您可以通过以下方式配置访问控制实体：
 
-- 基于 SQL 的工作流。
+* 基于 SQL 的工作流。
 
-    您需要[启用](#enabling-access-control)该功能。
+  您需要[启用](#enabling-access-control)该功能。
 
-- 服务器[配置文件](/operations/configuration-files.md) `users.xml` 和 `config.xml`。
+* 服务器[配置文件](/operations/configuration-files.md) `users.xml` 和 `config.xml`。
 
 我们建议使用基于 SQL 的工作流。这两种配置方法可以同时生效，因此如果您使用服务器配置文件来管理账户和访问权限，可以平稳切换到基于 SQL 的工作流。
 
@@ -45,45 +46,45 @@ ClickHouse 访问控制实体：
 
 如果你刚开始使用 ClickHouse，可以考虑如下步骤：
 
-1.  为 `default` 用户[启用](#enabling-access-control)基于 SQL 的访问控制和账户管理。
-2.  以 `default` 用户账户登录并创建所有需要的用户。不要忘记创建一个管理员账户（`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`）。
-3.  为 `default` 用户[收紧权限](/operations/settings/permissions-for-queries)，并为其禁用基于 SQL 的访问控制和账户管理。
+1. 为 `default` 用户[启用](#enabling-access-control)基于 SQL 的访问控制和账户管理。
+2. 以 `default` 用户账户登录并创建所有需要的用户。不要忘记创建一个管理员账户（`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`）。
+3. 为 `default` 用户[收紧权限](/operations/settings/permissions-for-queries)，并为其禁用基于 SQL 的访问控制和账户管理。
 
 ### 当前方案的特性 \{#access-control-properties\}
 
-- 即使数据库和表尚不存在，你也可以为它们授予权限。
-- 如果一个表被删除，与该表对应的所有权限不会自动被收回。这意味着即使你之后创建了同名的新表，所有这些权限仍然有效。要撤销与已删除表对应的权限，你需要执行例如 `REVOKE ALL PRIVILEGES ON db.table FROM ALL` 这样的查询。
-- 权限没有生存期相关的设置。
+* 即使数据库和表尚不存在，你也可以为它们授予权限。
+* 如果一个表被删除，与该表对应的所有权限不会自动被收回。这意味着即使你之后创建了同名的新表，所有这些权限仍然有效。要撤销与已删除表对应的权限，你需要执行例如 `REVOKE ALL PRIVILEGES ON db.table FROM ALL` 这样的查询。
+* 权限没有生存期相关的设置。
 
 ### 用户账户 \{#user-account-management\}
 
 用户账户是一种访问实体，用于在 ClickHouse 中对某个主体进行授权。一个用户账户包含：
 
-- 标识信息。
-- [权限](/sql-reference/statements/grant.md#privileges)，用于定义该用户可以执行的查询范围。
-- 被允许连接到 ClickHouse 服务器的主机。
-- 分配给该用户的角色及其默认角色。
-- 在用户登录时默认应用的设置及其约束。
-- 分配给该用户的设置配置文件。
+* 标识信息。
+* [权限](/sql-reference/statements/grant.md#privileges)，用于定义该用户可以执行的查询范围。
+* 被允许连接到 ClickHouse 服务器的主机。
+* 分配给该用户的角色及其默认角色。
+* 在用户登录时默认应用的设置及其约束。
+* 分配给该用户的设置配置文件。
 
 可以通过 [GRANT](/sql-reference/statements/grant.md) 查询，或通过分配[角色](#role-management)，向用户账户授予权限。要从用户撤销权限，ClickHouse 提供 [REVOKE](/sql-reference/statements/revoke.md) 查询。要列出某个用户拥有的权限，使用 [SHOW GRANTS](/sql-reference/statements/show#show-grants) 语句。
 
 管理查询：
 
-- [CREATE USER](/sql-reference/statements/create/user.md)
-- [ALTER USER](/sql-reference/statements/alter/user)
-- [DROP USER](/sql-reference/statements/drop.md)
-- [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
-- [SHOW USERS](/sql-reference/statements/show#show-users)
+* [CREATE USER](/sql-reference/statements/create/user.md)
+* [ALTER USER](/sql-reference/statements/alter/user)
+* [DROP USER](/sql-reference/statements/drop.md)
+* [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
+* [SHOW USERS](/sql-reference/statements/show#show-users)
 
 ### 设置的生效顺序 \{#access-control-settings-applying\}
 
 设置可以通过不同方式进行配置：在用户账户中、在授予给该用户的角色中，以及在设置配置文件中。在用户登录时，如果同一项设置在不同的访问实体中都有配置，其值和约束按如下优先级（从高到低）生效：
 
-1.  用户账户自身的设置。
-2.  用户账户默认角色中的设置。如果某个设置在多个角色中都有配置，则该设置的应用顺序未定义。
-3.  分配给用户或其默认角色的设置配置文件中的设置。如果某个设置在多个配置文件中都有配置，则该设置的应用顺序未定义。
-4.  默认应用于整个服务器的设置，或来自 [default profile](/operations/server-configuration-parameters/settings#default_profile) 的设置。
+1. 用户账户自身的设置。
+2. 用户账户默认角色中的设置。如果某个设置在多个角色中都有配置，则该设置的应用顺序未定义。
+3. 分配给用户或其默认角色的设置配置文件中的设置。如果某个设置在多个配置文件中都有配置，则该设置的应用顺序未定义。
+4. 默认应用于整个服务器的设置，或来自 [default profile](/operations/server-configuration-parameters/settings#default_profile) 的设置。
 
 ### 角色 \{#role-management\}
 
@@ -91,19 +92,19 @@ ClickHouse 访问控制实体：
 
 一个角色包含：
 
-- [权限](/sql-reference/statements/grant#privileges)
-- 设置和约束
-- 已分配角色的列表
+* [权限](/sql-reference/statements/grant#privileges)
+* 设置和约束
+* 已分配角色的列表
 
 管理查询：
 
-- [CREATE ROLE](/sql-reference/statements/create/role)
-- [ALTER ROLE](/sql-reference/statements/alter/role)
-- [DROP ROLE](/sql-reference/statements/drop#drop-role)
-- [SET ROLE](/sql-reference/statements/set-role)
-- [SET DEFAULT ROLE](/sql-reference/statements/set-role)
-- [SHOW CREATE ROLE](/sql-reference/statements/show#show-create-role)
-- [SHOW ROLES](/sql-reference/statements/show#show-roles)
+* [CREATE ROLE](/sql-reference/statements/create/role)
+* [ALTER ROLE](/sql-reference/statements/alter/role)
+* [DROP ROLE](/sql-reference/statements/drop#drop-role)
+* [SET ROLE](/sql-reference/statements/set-role)
+* [SET DEFAULT ROLE](/sql-reference/statements/set-role)
+* [SHOW CREATE ROLE](/sql-reference/statements/show#show-create-role)
+* [SHOW ROLES](/sql-reference/statements/show#show-roles)
 
 可以通过 [GRANT](/sql-reference/statements/grant.md) 查询向角色授予权限。要从角色撤销权限，ClickHouse 提供 [REVOKE](/sql-reference/statements/revoke.md) 查询。
 
@@ -117,11 +118,11 @@ ClickHouse 访问控制实体：
 
 管理查询：
 
-- [CREATE ROW POLICY](/sql-reference/statements/create/row-policy)
-- [ALTER ROW POLICY](/sql-reference/statements/alter/row-policy)
-- [DROP ROW POLICY](/sql-reference/statements/drop#drop-row-policy)
-- [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
-- [SHOW POLICIES](/sql-reference/statements/show#show-policies)
+* [CREATE ROW POLICY](/sql-reference/statements/create/row-policy)
+* [ALTER ROW POLICY](/sql-reference/statements/alter/row-policy)
+* [DROP ROW POLICY](/sql-reference/statements/drop#drop-row-policy)
+* [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
+* [SHOW POLICIES](/sql-reference/statements/show#show-policies)
 
 ### 设置配置文件 \{#settings-profiles-management\}
 
@@ -129,11 +130,11 @@ ClickHouse 访问控制实体：
 
 管理查询：
 
-- [CREATE SETTINGS PROFILE](/sql-reference/statements/create/settings-profile)
-- [ALTER SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile)
-- [DROP SETTINGS PROFILE](/sql-reference/statements/drop#drop-settings-profile)
-- [SHOW CREATE SETTINGS PROFILE](/sql-reference/statements/show#show-create-settings-profile)
-- [SHOW PROFILES](/sql-reference/statements/show#show-profiles)
+* [CREATE SETTINGS PROFILE](/sql-reference/statements/create/settings-profile)
+* [ALTER SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile)
+* [DROP SETTINGS PROFILE](/sql-reference/statements/drop#drop-settings-profile)
+* [SHOW CREATE SETTINGS PROFILE](/sql-reference/statements/show#show-create-settings-profile)
+* [SHOW PROFILES](/sql-reference/statements/show#show-profiles)
 
 ### 配额 \{#quotas-management\}
 
@@ -143,22 +144,22 @@ ClickHouse 访问控制实体：
 
 管理查询：
 
-- [CREATE QUOTA](/sql-reference/statements/create/quota)
-- [ALTER QUOTA](/sql-reference/statements/alter/quota)
-- [DROP QUOTA](/sql-reference/statements/drop#drop-quota)
-- [SHOW CREATE QUOTA](/sql-reference/statements/show#show-create-quota)
-- [SHOW QUOTA](/sql-reference/statements/show#show-quota)
-- [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
+* [CREATE QUOTA](/sql-reference/statements/create/quota)
+* [ALTER QUOTA](/sql-reference/statements/alter/quota)
+* [DROP QUOTA](/sql-reference/statements/drop#drop-quota)
+* [SHOW CREATE QUOTA](/sql-reference/statements/show#show-create-quota)
+* [SHOW QUOTA](/sql-reference/statements/show#show-quota)
+* [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
 ### 启用基于 SQL 的访问控制和账户管理 \{#enabling-access-control\}
 
-- 为配置存储设置一个目录。
+* 为配置存储设置一个目录。
 
-    ClickHouse 将访问实体配置存储在由服务器配置参数 [access_control_path](/operations/server-configuration-parameters/settings.md#access_control_path) 指定的文件夹中。
+  ClickHouse 将访问实体配置存储在由服务器配置参数 [access&#95;control&#95;path](/operations/server-configuration-parameters/settings.md#access_control_path) 指定的文件夹中。
 
-- 至少为一个用户账户启用基于 SQL 的访问控制和账户管理。
+* 至少为一个用户账户启用基于 SQL 的访问控制和账户管理。
 
-    默认情况下，基于 SQL 的访问控制和账户管理对所有用户均处于禁用状态。你需要在 `users.xml` 配置文件中至少配置一个用户，并将 [`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections` 和 `show_named_collections_secrets` 设置的值设为 1。
+  默认情况下，基于 SQL 的访问控制和账户管理对所有用户均处于禁用状态。你需要在 `users.xml` 配置文件中至少配置一个用户，并将 [`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections` 和 `show_named_collections_secrets` 设置的值设为 1。
 
 ## 定义 SQL 用户和角色 \{#defining-sql-users-and-roles\}
 
@@ -170,37 +171,38 @@ ClickHouse 访问控制实体：
 
 ### 启用 SQL 用户模式 \{#enabling-sql-user-mode\}
 
-1.  在 `users.xml` 文件中为 `<default>` 用户启用 SQL 用户模式：
-    ```xml
-    <access_management>1</access_management>
-    <named_collection_control>1</named_collection_control>
-    <show_named_collections>1</show_named_collections>
-    <show_named_collections_secrets>1</show_named_collections_secrets>
-    ```
+1. 在 `users.xml` 文件中为 `<default>` 用户启用 SQL 用户模式：
 
-    :::note
-    `default` 用户是在全新安装时默认创建的唯一用户，同时也是默认用于节点间通信的账户。
+   ```xml
+   <access_management>1</access_management>
+   <named_collection_control>1</named_collection_control>
+   <show_named_collections>1</show_named_collections>
+   <show_named_collections_secrets>1</show_named_collections_secrets>
+   ```
 
-    在生产环境中，建议在使用 SQL 管理员用户配置好节点间通信，并使用 `<secret>`、集群凭证以及/或节点间 HTTP 和传输协议凭证之后禁用该用户，因为 `default` 账户会被用于节点间通信。
-    :::
+   :::note
+   `default` 用户是在全新安装时默认创建的唯一用户，同时也是默认用于节点间通信的账户。
+
+   在生产环境中，建议在使用 SQL 管理员用户配置好节点间通信，并使用 `<secret>`、集群凭证以及/或节点间 HTTP 和传输协议凭证之后禁用该用户，因为 `default` 账户会被用于节点间通信。
+   :::
 
 2. 重启节点以应用更改。
 
 3. 启动 ClickHouse 客户端：
-    ```sql
-    clickhouse-client --user default --password <password>
-    ```
+   ```sql
+   clickhouse-client --user default --password <password>
+   ```
 
 ### 定义用户 \{#defining-users\}
 
 1. 创建一个 SQL 管理员账户：
-    ```sql
-    CREATE USER clickhouse_admin IDENTIFIED BY 'password';
-    ```
+   ```sql
+   CREATE USER clickhouse_admin IDENTIFIED BY 'password';
+   ```
 2. 授予新用户完整的管理权限
-    ```sql
-    GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
-    ```
+   ```sql
+   GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
+   ```
 
 ## ALTER 权限 \{#alter-permissions\}
 
@@ -329,7 +331,6 @@ GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```sql
 SHOW GRANTS FOR my_user;
 ```
-
 
 ```response
 SHOW GRANTS FOR my_user

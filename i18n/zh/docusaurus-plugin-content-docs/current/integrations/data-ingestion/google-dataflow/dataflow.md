@@ -10,16 +10,16 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 将 Google Dataflow 与 ClickHouse 集成 \{#integrating-google-dataflow-with-clickhouse\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 [Google Dataflow](https://cloud.google.com/dataflow) 是一项完全托管的流式和批处理数据处理服务。它支持使用 Java 或 Python 编写的数据管道（pipeline），并基于 Apache Beam SDK 构建。
 
 将 Google Dataflow 与 ClickHouse 结合使用主要有两种方式，这两种方式都使用 [`ClickHouseIO Apache Beam 连接器`](/integrations/apache-beam)：
-- [Java 运行器](#1-java-runner)
-- [预定义模板](#2-predefined-templates)
+
+* [Java 运行器](#1-java-runner)
+* [预定义模板](#2-predefined-templates)
 
 ## Java runner \{#1-java-runner\}
 
@@ -28,9 +28,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### 主要特性 \{#key-features\}
 
-- 高度可定制。
-- 适用于复杂或高级用例。
-- 需要编写代码并理解 Beam API。
+* 高度可定制。
+* 适用于复杂或高级用例。
+* 需要编写代码并理解 Beam API。
 
 ## 预定义模板 \{#2-predefined-templates\}
 
@@ -38,8 +38,8 @@ ClickHouse 提供了针对特定使用场景设计的[预定义模板](./templat
 
 ### 关键特性 \{#key-features-1\}
 
-- 无需编写 Beam 代码。
-- 为简单用例提供快速、便捷的设置。
-- 同样适合编程经验有限的用户。
+* 无需编写 Beam 代码。
+* 为简单用例提供快速、便捷的设置。
+* 同样适合编程经验有限的用户。
 
 这两种方法都与 Google Cloud 和 ClickHouse 生态系统完全兼容，可根据您的技术专长和项目需求提供灵活性。

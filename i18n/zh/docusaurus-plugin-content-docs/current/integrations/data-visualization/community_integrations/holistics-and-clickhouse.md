@@ -16,10 +16,9 @@ import holistics_04 from '@site/static/images/integrations/data-visualization/ho
 import holistics_05 from '@site/static/images/integrations/data-visualization/holistics_05.png';
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
-
 # 将 ClickHouse 连接到 Holistics \{#connecting-clickhouse-to-holistics\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [Holistics](https://www.holistics.io/) 是一款 AI 原生的自助式 BI 平台，提供可编程语义层，以实现一致且可信的指标体系。
 
@@ -29,9 +28,9 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 
 在连接之前，请确保满足以下条件：
 
-- **权限：** 必须在 Holistics 中具备 Admin（管理员）角色才能添加新的数据源。
-- **网络访问：** ClickHouse 服务器必须允许来自 [Holistics 的 IP 地址](https://docs.holistics.io/docs/connect/ip-whitelisting) 的访问。
-- **数据库用户：** 为 Holistics 创建一个专用的只读数据库用户，而不要使用管理员账号。
+* **权限：** 必须在 Holistics 中具备 Admin（管理员）角色才能添加新的数据源。
+* **网络访问：** ClickHouse 服务器必须允许来自 [Holistics 的 IP 地址](https://docs.holistics.io/docs/connect/ip-whitelisting) 的访问。
+* **数据库用户：** 为 Holistics 创建一个专用的只读数据库用户，而不要使用管理员账号。
 
 ### 建议的权限 \{#recommended-privileges\}
 
@@ -46,7 +45,7 @@ GRANT SELECT ON system.* TO holistics_user;
 ```
 
 <VerticalStepper headerLevel="h2">
-  ## 收集连接信息
+  ## 收集连接信息 \{#step-1-gather-connection-details\}
 
   要通过 HTTP(S) 连接到 ClickHouse，您需要以下信息：
 
@@ -62,7 +61,7 @@ GRANT SELECT ON system.* TO holistics_user;
 
   <Image size="md" img={holistics_01} alt="ClickHouse Cloud 控制台中 Connect 按钮的位置" border />
 
-  ## 配置网络访问
+  ## 配置网络访问 \{#step-2-configure-network-access\}
 
   由于 Holistics 是云端应用，其服务器必须能够访问您的数据库。您有以下两种选择：
 
@@ -72,7 +71,7 @@ GRANT SELECT ON system.* TO holistics_user;
 
   2. **反向 SSH 隧道：** 如果您的数据库位于私有网络（VPC）且无法对公网开放，请使用 [Reverse SSH Tunnel](https://docs.holistics.io/docs/connect/connect-tunnel)。
 
-  ## 在 Holistics 中添加数据源
+  ## 在 Holistics 中添加数据源 \{#step-3-add-data-source-in-holistics\}
 
   1. 在 Holistics 中，前往 **Settings → Data Sources**。
 
@@ -101,12 +100,11 @@ GRANT SELECT ON system.* TO holistics_user;
      * **失败：** 检查您的用户名/密码，并确认 [Holistics IP 已加入允许列表](https://docs.holistics.io/docs/connect/ip-whitelisting)。
 </VerticalStepper>
 
-
 ## 已知限制 \{#known-limitations\}
 
 Holistics 支持 ClickHouse 中的大多数标准 SQL 特性，但存在以下例外：
 
-- **Running Total：** 此分析函数目前在 ClickHouse 中的支持有限。
-- **嵌套数据类型：** 深度嵌套的 JSON 或 Array 结构在可视化之前，可能需要通过 SQL 模型先进行扁平化处理。
+* **Running Total：** 此分析函数目前在 ClickHouse 中的支持有限。
+* **嵌套数据类型：** 深度嵌套的 JSON 或 Array 结构在可视化之前，可能需要通过 SQL 模型先进行扁平化处理。
 
 有关受支持特性的完整列表，请参阅 [数据库特定限制页面](https://docs.holistics.io/docs/connect/faqs/clickhouse-limitations)。

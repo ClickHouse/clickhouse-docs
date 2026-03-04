@@ -37,10 +37,10 @@ VALUES(
 
 ## 参数 \{#arguments\}
 
-- `column1_name Type1, ...`（可选）。[String](/sql-reference/data-types/string) 
+* `column1_name Type1, ...`（可选）。[String](/sql-reference/data-types/string)
   用于指定列名和类型。如果省略该参数，列名将依次为 `c1`、`c2` 等。
-- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple) 
-   包含任意类型的值。
+* `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple)
+  包含任意类型的值。
 
 :::note
 以逗号分隔的元组也可以用单个值代替。在这种情况下，每个值都被视为一行新数据。详情参见[示例](#examples)部分。
@@ -48,7 +48,7 @@ VALUES(
 
 ## 返回值 \{#returned-value\}
 
-- 返回一个包含传入值的临时表。
+* 返回一个包含传入值的临时表。
 
 ## 示例 \{#examples\}
 
@@ -188,4 +188,4 @@ FROM VALUES(
 
 ## 另请参阅 \{#see-also\}
 
-- [Values 格式](/interfaces/formats/Values)
+* [Values 格式](/interfaces/formats/Values)

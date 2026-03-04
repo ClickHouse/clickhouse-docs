@@ -27,10 +27,9 @@ import TabItem from '@theme/TabItem';
 | Project Nessie       | [Nessie catalog](/use-cases/data-lake/nessie-catalog)         |
 | Microsoft OneLake    | [Fabric OneLake](/use-cases/data-lake/onelake-catalog)        |
 
-
 ## 连接到 Unity Catalog \{#connecting-to-unity-catalog\}
 
-<BetaBadge/>
+<BetaBadge />
 
 作为示例，我们将使用 Unity Catalog。
 
@@ -60,31 +59,28 @@ Catalog 配置完成后，必须为 ClickHouse 生成凭证。根据与 Unity �
 使用这些凭证，您可以连接到相应的端点，查询 Iceberg 或 Delta 表。
 
 <Tabs groupId="connection-formats">
-<TabItem value="delta" label="Delta" default>
+  <TabItem value="delta" label="Delta" default>
+    应使用 [Unity Catalog](/use-cases/data-lake/unity-catalog) 来访问 Delta 格式的数据。
 
-应使用 [Unity Catalog](/use-cases/data-lake/unity-catalog) 来访问 Delta 格式的数据。
+    ```sql
+    SET allow_experimental_database_unity_catalog = 1;
 
-```sql
-SET allow_experimental_database_unity_catalog = 1;
+    CREATE DATABASE unity
+    ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog')
+    SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity';
+    ```
+  </TabItem>
 
-CREATE DATABASE unity
-ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog')
-SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity';
-```
+  <TabItem value="iceberg" label="Iceberg" default>
+    ```sql
+    SET allow_database_iceberg = 1;
 
-</TabItem>
-<TabItem value="iceberg" label="Iceberg" default>
-
-```sql
-SET allow_database_iceberg = 1;
-
-CREATE DATABASE unity
-ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg-rest')
-SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace',
-oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql';
-```
-
-</TabItem>
+    CREATE DATABASE unity
+    ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg-rest')
+    SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace',
+    oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql';
+    ```
+  </TabItem>
 </Tabs>
 
 ### 列出表 \{#list-tables\}
@@ -101,7 +97,6 @@ SHOW TABLES FROM unity
 
 31 rows in set.
 ```
-
 
 ### 浏览表结构 \{#exploring-table-schemas\}
 
@@ -140,7 +135,6 @@ CREATE TABLE unity.`icebench.single_day_log`
 )
 ENGINE = Iceberg('s3://...')
 ```
-
 
 ### 查询表 \{#querying-a-table\}
 

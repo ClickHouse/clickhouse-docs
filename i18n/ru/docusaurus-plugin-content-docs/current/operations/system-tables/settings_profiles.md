@@ -6,7 +6,7 @@ title: 'system.settings_profiles'
 doc_type: 'reference'
 ---
 
-# system.settings&#95;profiles \{#systemsettings_profiles\}
+# system.settings_profiles \{#systemsettings_profiles\}
 
 Содержит свойства определённых профилей настроек.
 
@@ -26,4 +26,4 @@ doc_type: 'reference'
 
 ## См. также \{#see-also\}
 
-- [SHOW PROFILES](/sql-reference/statements/show#show-profiles)
+* [SHOW PROFILES](/sql-reference/statements/show#show-profiles)

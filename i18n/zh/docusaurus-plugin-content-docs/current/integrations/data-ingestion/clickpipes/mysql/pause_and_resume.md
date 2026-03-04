@@ -25,16 +25,16 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 2. 前往 **Settings** 选项卡。
 3. 单击 **Pause** 按钮。
 
-<Image img={pause_button} border size="md"/>
+<Image img={pause_button} border size="md" />
 
 4. 会弹出确认对话框。再次单击 **Pause**。
 
-<Image img={pause_dialog} border size="md"/>
+<Image img={pause_dialog} border size="md" />
 
 4. 前往 **Metrics** 选项卡。
 5. 约 5 秒后（或刷新页面后），该管道的状态应变为 **Paused**。
 
-<Image img={pause_status} border size="md"/>
+<Image img={pause_status} border size="md" />
 
 ## 恢复 MySQL ClickPipe 的步骤 \{#resume-clickpipe-steps\}
 
@@ -42,11 +42,11 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 2. 前往 **Settings** 选项卡。
 3. 点击 **Resume** 按钮。
 
-<Image img={resume_button} border size="md"/>
+<Image img={resume_button} border size="md" />
 
 4. 会弹出一个确认对话框。再次点击 Resume。
 
-<Image img={resume_dialog} border size="md"/>
+<Image img={resume_dialog} border size="md" />
 
 5. 前往 **Metrics** 选项卡。
 6. 大约 5 秒后（或刷新页面后），管道的状态应变为 **Running**。

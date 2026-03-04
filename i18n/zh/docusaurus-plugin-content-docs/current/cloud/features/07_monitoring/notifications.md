@@ -18,14 +18,13 @@ ClickHouse Cloud 会发送与你的服务或组织相关的关键事件通知。
 2. **通知严重性（Notification severity）**：通知的严重性可以为 `info`、`warning` 或 `critical`，具体取决于该通知的重要程度。此项不可配置。
 3. **通知渠道（Notification channel）**：渠道指接收通知的方式，例如用户界面（UI）、电子邮件、Slack 等。对于大多数通知，此项是可配置的。
 
-
 ## 接收通知 \{#receiving-notifications\}
 
 可以通过多种渠道接收通知。目前，ClickHouse Cloud 支持通过电子邮件、ClickHouse Cloud UI 和 Slack 接收通知。您可以点击左上角菜单中的铃铛图标查看当前通知，这会打开一个侧边弹出面板。点击该面板底部的 **View All** 按钮，即可进入一个页面，查看所有通知的活动日志。
 
-<Image img={notifications_1} size="md" alt="ClickHouse Cloud 通知弹出面板" border/>
+<Image img={notifications_1} size="md" alt="ClickHouse Cloud 通知弹出面板" border />
 
-<Image img={notifications_2} size="md" alt="ClickHouse Cloud 通知活动日志" border/>
+<Image img={notifications_2} size="md" alt="ClickHouse Cloud 通知活动日志" border />
 
 ## 自定义通知 \{#customizing-notifications\}
 
@@ -35,9 +34,9 @@ ClickHouse Cloud 会发送与你的服务或组织相关的关键事件通知。
 
 要为某条特定通知配置投递方式，点击铅笔图标以修改该通知的投递渠道。
 
-<Image img={notifications_3} size="md" alt="ClickHouse Cloud 通知设置界面" border/>
+<Image img={notifications_3} size="md" alt="ClickHouse Cloud 通知设置界面" border />
 
-<Image img={notifications_4} size="md" alt="ClickHouse Cloud 通知投递设置" border/>
+<Image img={notifications_4} size="md" alt="ClickHouse Cloud 通知投递设置" border />
 
 :::note
 某些**必需的**通知（例如 **Payment failed**）不可配置。

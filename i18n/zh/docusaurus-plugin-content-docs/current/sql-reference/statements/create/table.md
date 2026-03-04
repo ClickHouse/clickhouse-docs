@@ -17,7 +17,6 @@ import TabItem from '@theme/TabItem';
 
 默认情况下,表仅在当前服务器上创建。分布式 DDL 查询以 `ON CLUSTER` 子句实现,该子句在[单独描述](../../../sql-reference/distributed-ddl.md)。
 
-
 ## 语法形式 \{#syntax-forms\}
 
 ### 使用显式架构 \{#with-explicit-schema\}
@@ -43,7 +42,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可以为列和表添加注释。
 
-
 ### 使用与另一张表类似的架构 \{#with-a-schema-similar-to-other-table\}
 
 ```sql
@@ -51,7 +49,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 ```
 
 创建一个与另一个表具有相同结构的表。您可以为表指定不同的引擎。如果未指定引擎,将使用与 `db2.name2` 表相同的引擎。
-
 
 ### 使用从另一个表克隆的架构和数据 \{#with-a-schema-and-data-cloned-from-another-table\}
 
@@ -66,7 +63,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
 
-
 ### 从表函数 \{#from-a-table-function\}
 
 ```sql
@@ -74,7 +70,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
 创建一个结果与指定的[表函数](/sql-reference/table-functions)相同的表。创建的表在行为上也与所指定的相应表函数相同。
-
 
 ### 从 SELECT 查询 \{#from-select-query\}
 
@@ -105,14 +100,13 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
-
 ## NULL 或 NOT NULL 修饰符 \{#null-or-not-null-modifiers\}
 
 列定义中数据类型后的 `NULL` 和 `NOT NULL` 修饰符允许或不允许它为 [Nullable](/sql-reference/data-types/nullable)。
 
 如果类型不是 `Nullable` 且指定了 `NULL`,它将被视为 `Nullable`;如果指定了 `NOT NULL`,则不会。例如,`INT NULL` 与 `Nullable(INT)` 相同。如果类型是 `Nullable` 且指定了 `NULL` 或 `NOT NULL` 修饰符,将抛出异常。
 
-另请参阅 [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) 设置。
+另请参阅 [data&#95;type&#95;default&#95;nullable](../../../operations/settings/settings.md#data_type_default_nullable) 设置。
 
 ## 默认值 \{#default_values\}
 
@@ -152,7 +146,6 @@ SELECT * FROM test;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-
 ### MATERIALIZED \{#materialized\}
 
 `MATERIALIZED expr`
@@ -191,7 +184,6 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 └────┴─────────────────────┴─────────────────┘
 ```
 
-
 ### EPHEMERAL \{#ephemeral\}
 
 `EPHEMERAL [expr]`
@@ -227,7 +219,6 @@ id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
 ```
-
 
 ### ALIAS \{#alias\}
 
@@ -266,7 +257,6 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 └────┴────────────┴──────────┘
 ```
 
-
 ## 主键 \{#primary-key\}
 
 您可以在创建表时定义[主键](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)。主键可以通过两种方式指定:
@@ -297,7 +287,6 @@ PRIMARY KEY(expr1[, expr2,...]);
 您不能在一个查询中组合两种方式。
 :::
 
-
 ## 约束 \{#constraints\}
 
 除了列描述外,还可以定义约束:
@@ -317,7 +306,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `boolean_expr_1` 可以是任何布尔表达式。如果为表定义了约束,`INSERT` 查询中的每一行都将检查每个约束。如果不满足任何约束,服务器将引发包含约束名称和检查表达式的异常。
 
 添加大量约束会对大型 `INSERT` 查询的性能产生负面影响。
-
 
 ### ASSUME \{#assume\}
 
@@ -342,7 +330,6 @@ ORDER BY (name_len, name);
 然后,在执行查询 `SELECT name FROM users_a WHERE length(name) < 5;` 时,ClickHouse 可以将其优化为 `SELECT name FROM users_a WHERE name_len < 5`;因为 `ASSUME CONSTRAINT`。这可以使查询运行得更快,因为它避免了为每一行计算 `name` 的长度。
 
 `ASSUME CONSTRAINT` **不强制执行约束**,它只是告知优化器约束为真。如果约束实际上不为真,查询的结果可能不正确。因此,只有在确定约束为真时才应使用 `ASSUME CONSTRAINT`。
-
 
 ## TTL 表达式 \{#ttl-expression\}
 
@@ -393,7 +380,6 @@ ALTER TABLE codec_example MODIFY COLUMN float_value CODEC(Default);
 
 ClickHouse 支持通用编解码器和专用编解码器。
 
-
 ### 通用编解码器 \{#general-purpose-codecs\}
 
 #### NONE \{#none\}
@@ -410,17 +396,17 @@ ClickHouse 支持通用编解码器和专用编解码器。
 
 #### ZSTD \{#zstd\}
 
-`ZSTD[(level)]` — 具有可配置 `level` 的 [ZSTD 压缩算法](https://en.wikipedia.org/wiki/Zstandard)。可能的级别:\[1, 22\]。默认级别:1。
+`ZSTD[(level)]` — 具有可配置 `level` 的 [ZSTD 压缩算法](https://en.wikipedia.org/wiki/Zstandard)。可能的级别:[1, 22]。默认级别:1。
 
 高压缩级别对于不对称场景很有用,例如压缩一次,重复解压缩。更高的级别意味着更好的压缩和更高的 CPU 使用率。
 
 #### 已弃用：ZSTD_QAT \{#zstd_qat\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 #### 已弃用：DEFLATE_QPL \{#deflate_qpl\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 ### 专用编解码器 \{#specialized-codecs\}
 
@@ -444,7 +430,7 @@ ClickHouse 支持通用编解码器和专用编解码器。
 
 #### ALP \{#alp\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 `ALP()` — 基于十进制缩放的浮点数据自适应无损压缩。ALP 尝试使用十进制幂将每个值表示为精确缩放的整数，然后使用 Frame-of-Reference 和位打包对得到的整数进行压缩。无法被精确表示的值会以原始形式作为异常值存储。最适用于源自十进制小数的数值（例如测量值、货币金额）。支持 `Float32` 和 `Float64`。详细信息参见 [ALP: Adaptive lossless floating-point compression](https://ir.cwi.nl/pub/33334)。
 
@@ -470,7 +456,6 @@ CREATE TABLE codec_example
 )
 ENGINE = MergeTree()
 ```
-
 
 ### 加密编解码器 \{#encryption-codecs\}
 
@@ -520,7 +505,6 @@ CREATE TABLE mytable
 ENGINE = MergeTree ORDER BY x;
 ```
 
-
 ## 临时表 \{#temporary-tables\}
 
 :::note
@@ -550,7 +534,6 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 在大多数情况下,临时表不是手动创建的,而是在使用外部数据进行查询时或用于分布式 `(GLOBAL) IN` 时才会创建。有关更多信息,请参阅相应的部分。
 
 可以使用 [ENGINE = Memory](../../../engines/table-engines/special/memory.md) 引擎的表代替临时表。
-
 
 ## REPLACE TABLE \{#replace-table\}
 
@@ -586,7 +569,6 @@ SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
 
-
 ### 语法 \{#syntax\}
 
 ```sql
@@ -597,125 +579,123 @@ WHERE CounterID <12345;
 `CREATE` 语句的所有语法形式也适用于此语句。对不存在的表调用 `REPLACE` 将会报错。
 :::
 
-
 ### 示例: \{#examples\}
 
 <Tabs>
-<TabItem value="clickhouse_replace_example" label="Local" default>
+  <TabItem value="clickhouse_replace_example" label="Local" default>
+    考虑以下表:
 
-考虑以下表:
+    ```sql
+    CREATE DATABASE base
+    ENGINE = Atomic;
 
-```sql
-CREATE DATABASE base
-ENGINE = Atomic;
+    CREATE OR REPLACE TABLE base.t1
+    (
+        n UInt64,
+        s String
+    )
+    ENGINE = MergeTree
+    ORDER BY n;
 
-CREATE OR REPLACE TABLE base.t1
-(
-    n UInt64,
-    s String
-)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (1, 'test');
 
-INSERT INTO base.t1 VALUES (1, 'test');
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
+    ┌─n─┬─s────┐
+    │ 1 │ test │
+    └───┴──────┘
+    ```
 
-┌─n─┬─s────┐
-│ 1 │ test │
-└───┴──────┘
-```
+    我们可以使用 `REPLACE` 语句清除所有数据:
 
-我们可以使用 `REPLACE` 语句清除所有数据:
+    ```sql
+    CREATE OR REPLACE TABLE base.t1
+    (
+        n UInt64,
+        s Nullable(String)
+    )
+    ENGINE = MergeTree
+    ORDER BY n;
 
-```sql
-CREATE OR REPLACE TABLE base.t1
-(
-    n UInt64,
-    s Nullable(String)
-)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (2, null);
 
-INSERT INTO base.t1 VALUES (2, null);
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
+    ┌─n─┬─s──┐
+    │ 2 │ \N │
+    └───┴────┘
+    ```
 
-┌─n─┬─s──┐
-│ 2 │ \N │
-└───┴────┘
-```
+    或者我们可以使用 `REPLACE` 语句更改表结构:
 
-或者我们可以使用 `REPLACE` 语句更改表结构:
+    ```sql
+    REPLACE TABLE base.t1 (n UInt64)
+    ENGINE = MergeTree
+    ORDER BY n;
 
-```sql
-REPLACE TABLE base.t1 (n UInt64)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (3);
 
-INSERT INTO base.t1 VALUES (3);
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
+    ┌─n─┐
+    │ 3 │
+    └───┘
+    ```
+  </TabItem>
 
-┌─n─┐
-│ 3 │
-└───┘
-```  
-</TabItem>
-<TabItem value="cloud_replace_example" label="Cloud">
+  <TabItem value="cloud_replace_example" label="Cloud">
+    考虑 ClickHouse Cloud 上的以下表:
 
-考虑 ClickHouse Cloud 上的以下表:
+    ```sql
+    CREATE DATABASE base;
 
-```sql
-CREATE DATABASE base;
+    CREATE OR REPLACE TABLE base.t1
+    (
+        n UInt64,
+        s String
+    )
+    ENGINE = MergeTree
+    ORDER BY n;
 
-CREATE OR REPLACE TABLE base.t1
-(
-    n UInt64,
-    s String
-)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (1, 'test');
 
-INSERT INTO base.t1 VALUES (1, 'test');
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
+    1    test
+    ```
 
-1    test
-```
+    我们可以使用 `REPLACE` 语句清除所有数据:
 
-我们可以使用 `REPLACE` 语句清除所有数据:
+    ```sql
+    CREATE OR REPLACE TABLE base.t1
+    (
+        n UInt64,
+        s Nullable(String)
+    )
+    ENGINE = MergeTree
+    ORDER BY n;
 
-```sql
-CREATE OR REPLACE TABLE base.t1
-(
-    n UInt64,
-    s Nullable(String)
-)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (2, null);
 
-INSERT INTO base.t1 VALUES (2, null);
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
+    2    
+    ```
 
-2    
-```
+    或者我们可以使用 `REPLACE` 语句更改表结构:
 
-或者我们可以使用 `REPLACE` 语句更改表结构:
+    ```sql
+    REPLACE TABLE base.t1 (n UInt64)
+    ENGINE = MergeTree
+    ORDER BY n;
 
-```sql
-REPLACE TABLE base.t1 (n UInt64)
-ENGINE = MergeTree
-ORDER BY n;
+    INSERT INTO base.t1 VALUES (3);
 
-INSERT INTO base.t1 VALUES (3);
+    SELECT * FROM base.t1;
 
-SELECT * FROM base.t1;
-
-3
-```    
-</TabItem>
+    3
+    ```
+  </TabItem>
 </Tabs>
 
 ## COMMENT 子句 \{#comment-clause\}
@@ -763,8 +743,7 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 └──────┴─────────────────────┘
 ```
 
-
 ## 相关内容 \{#related-content\}
 
-- 博客: [使用 Schema 和编解码器优化 ClickHouse](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
-- 博客: [在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客: [使用 Schema 和编解码器优化 ClickHouse](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
+* 博客: [在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

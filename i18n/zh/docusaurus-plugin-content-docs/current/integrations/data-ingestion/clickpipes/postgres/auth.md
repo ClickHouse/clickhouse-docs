@@ -21,7 +21,6 @@ import Image from '@theme/IdealImage';
 对于 MySQL 和 MariaDB，则不受此限制，您可以同时运行 `Initial Load Only` 和 `CDC` 类型的 ClickPipes。
 :::
 
-
 ## 设置 \{#setup\}
 
 ### 获取 ClickHouse 服务 IAM 角色 ARN \{#obtaining-the-clickhouse-service-iam-role-arn\}
@@ -36,7 +35,7 @@ import Image from '@theme/IdealImage';
 
 5 - 复制如下所示、属于该服务的 **Service role ID (IAM)** 值。
 
-<Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
+<Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border />
 
 我们将这个值记作 `{ClickHouse_IAM_ARN}`。这是用于访问你的 RDS/Aurora 实例的 IAM 角色。
 
@@ -62,18 +61,18 @@ import Image from '@theme/IdealImage';
 ##### PostgreSQL \{#setting-up-the-database-user-postgres\}
 
 1. 连接到 RDS/Aurora 实例，并使用以下命令创建一个新的数据库用户：
-    ```sql
-    CREATE USER clickpipes_iam_user; 
-    GRANT rds_iam TO clickpipes_iam_user;
-    ```
+   ```sql
+   CREATE USER clickpipes_iam_user; 
+   GRANT rds_iam TO clickpipes_iam_user;
+   ```
 2. 按照 [PostgreSQL 源设置指南](./source/rds) 中的其余步骤，将 RDS 实例配置为用于 ClickPipes。
 
 ##### MySQL / MariaDB \{#setting-up-the-database-user-mysql\}
 
 1. 连接到您的 RDS/Aurora 实例，并使用以下命令创建一个新的数据库用户：
-    ```sql
-    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
-    ```
+   ```sql
+   CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
+   ```
 2. 按照 [MySQL 源设置指南](../mysql/source/rds) 中其余步骤，将您的 RDS/Aurora 实例配置为与 ClickPipes 集成。
 
 ### 配置 IAM 角色 \{#setting-up-iam-role\}

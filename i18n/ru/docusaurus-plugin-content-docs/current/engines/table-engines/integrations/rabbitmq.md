@@ -13,8 +13,8 @@ doc_type: 'guide'
 
 `RabbitMQ` позволяет:
 
-- Публиковать или подписываться на потоки данных.
-- Обрабатывать потоки по мере их поступления.
+* Публиковать или подписываться на потоки данных.
+* Обрабатывать потоки по мере их поступления.
 
 ## Создание таблицы \{#creating-a-table\}
 
@@ -59,30 +59,29 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Необязательные параметры:
 
-
-- `rabbitmq_exchange_type` – Тип обменника RabbitMQ: `direct`, `fanout`, `topic`, `headers`, `consistent_hash`. По умолчанию: `fanout`.
-- `rabbitmq_routing_key_list` – Список ключей маршрутизации (routing keys), разделённых запятыми.
-- `rabbitmq_schema` – Параметр, который необходимо использовать, если формат требует определения схемы. Например, [Cap'n Proto](https://capnproto.org/) требует указать путь к файлу схемы и имя корневого объекта `schema.capnp:Message`.
-- `rabbitmq_num_consumers` – Количество consumers на таблицу. Укажите большее число consumers, если пропускной способности одного недостаточно. По умолчанию: `1`.
-- `rabbitmq_num_queues` – Общее количество очередей. Увеличение этого числа может значительно повысить производительность. По умолчанию: `1`.
-- `rabbitmq_queue_base` - Укажите префикс для имён очередей. Сценарии использования этого параметра описаны ниже.
-- `rabbitmq_persistent` - Если установлено в 1 (true), в запросе INSERT режим доставки будет установлен в 2 (помечает сообщения как `persistent`). По умолчанию: `0`.
-- `rabbitmq_skip_broken_messages` – Допустимое количество сообщений RabbitMQ, несовместимых со схемой, в одном блоке при разборе. Если `rabbitmq_skip_broken_messages = N`, то движок пропускает *N* сообщений RabbitMQ, которые не удаётся разобрать (одно сообщение соответствует одной строке данных). По умолчанию: `0`.
-- `rabbitmq_max_block_size` - Количество строк, собираемых перед сбросом данных из RabbitMQ. По умолчанию: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size).
-- `rabbitmq_flush_interval_ms` - Таймаут для сброса данных из RabbitMQ. По умолчанию: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms).
-- `rabbitmq_queue_settings_list` - Позволяет задать настройки RabbitMQ при создании очереди. Доступные настройки: `x-max-length`, `x-max-length-bytes`, `x-message-ttl`, `x-expires`, `x-priority`, `x-max-priority`, `x-overflow`, `x-dead-letter-exchange`, `x-queue-type`. Параметр `durable` для очереди включается автоматически.
-- `rabbitmq_address` - Адрес для подключения. Используйте либо этот параметр, либо `rabbitmq_host_port`.
-- `rabbitmq_vhost` - RabbitMQ vhost. По умолчанию: `'\`.
-- `rabbitmq_queue_consume` - Использовать заранее созданные (пользовательские) очереди и не выполнять никакой конфигурации RabbitMQ: объявление exchanges, очередей, связей (bindings). По умолчанию: `false`.
-- `rabbitmq_username` - Имя пользователя RabbitMQ.
-- `rabbitmq_password` - Пароль RabbitMQ.
-- `reject_unhandled_messages` - Отклонять сообщения (отправлять в RabbitMQ отрицательное подтверждение) в случае ошибок. Этот параметр автоматически включается, если задан `x-dead-letter-exchange` в `rabbitmq_queue_settings_list`.
-- `rabbitmq_commit_on_select` - Фиксировать сообщения при выполнении запроса SELECT. По умолчанию: `false`.
-- `rabbitmq_max_rows_per_message` — Максимальное количество строк, записываемых в одно сообщение RabbitMQ для построчных форматов. По умолчанию: `1`.
-- `rabbitmq_empty_queue_backoff_start_ms` — Начальная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
-- `rabbitmq_empty_queue_backoff_end_ms` — Конечная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
-- `rabbitmq_empty_queue_backoff_step_ms` — Шаг backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
-- `rabbitmq_handle_error_mode` — Способ обработки ошибок для движка RabbitMQ. Возможные значения: default (будет выброшено исключение, если не удаётся разобрать сообщение), stream (текст исключения и исходное сообщение будут сохранены во виртуальных столбцах `_error` и `_raw_message`), dead_letter_queue (данные, связанные с ошибкой, будут сохранены в system.dead_letter_queue).
+* `rabbitmq_exchange_type` – Тип обменника RabbitMQ: `direct`, `fanout`, `topic`, `headers`, `consistent_hash`. По умолчанию: `fanout`.
+* `rabbitmq_routing_key_list` – Список ключей маршрутизации (routing keys), разделённых запятыми.
+* `rabbitmq_schema` – Параметр, который необходимо использовать, если формат требует определения схемы. Например, [Cap&#39;n Proto](https://capnproto.org/) требует указать путь к файлу схемы и имя корневого объекта `schema.capnp:Message`.
+* `rabbitmq_num_consumers` – Количество consumers на таблицу. Укажите большее число consumers, если пропускной способности одного недостаточно. По умолчанию: `1`.
+* `rabbitmq_num_queues` – Общее количество очередей. Увеличение этого числа может значительно повысить производительность. По умолчанию: `1`.
+* `rabbitmq_queue_base` - Укажите префикс для имён очередей. Сценарии использования этого параметра описаны ниже.
+* `rabbitmq_persistent` - Если установлено в 1 (true), в запросе INSERT режим доставки будет установлен в 2 (помечает сообщения как `persistent`). По умолчанию: `0`.
+* `rabbitmq_skip_broken_messages` – Допустимое количество сообщений RabbitMQ, несовместимых со схемой, в одном блоке при разборе. Если `rabbitmq_skip_broken_messages = N`, то движок пропускает *N* сообщений RabbitMQ, которые не удаётся разобрать (одно сообщение соответствует одной строке данных). По умолчанию: `0`.
+* `rabbitmq_max_block_size` - Количество строк, собираемых перед сбросом данных из RabbitMQ. По умолчанию: [max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size).
+* `rabbitmq_flush_interval_ms` - Таймаут для сброса данных из RabbitMQ. По умолчанию: [stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms).
+* `rabbitmq_queue_settings_list` - Позволяет задать настройки RabbitMQ при создании очереди. Доступные настройки: `x-max-length`, `x-max-length-bytes`, `x-message-ttl`, `x-expires`, `x-priority`, `x-max-priority`, `x-overflow`, `x-dead-letter-exchange`, `x-queue-type`. Параметр `durable` для очереди включается автоматически.
+* `rabbitmq_address` - Адрес для подключения. Используйте либо этот параметр, либо `rabbitmq_host_port`.
+* `rabbitmq_vhost` - RabbitMQ vhost. По умолчанию: `'\`.
+* `rabbitmq_queue_consume` - Использовать заранее созданные (пользовательские) очереди и не выполнять никакой конфигурации RabbitMQ: объявление exchanges, очередей, связей (bindings). По умолчанию: `false`.
+* `rabbitmq_username` - Имя пользователя RabbitMQ.
+* `rabbitmq_password` - Пароль RabbitMQ.
+* `reject_unhandled_messages` - Отклонять сообщения (отправлять в RabbitMQ отрицательное подтверждение) в случае ошибок. Этот параметр автоматически включается, если задан `x-dead-letter-exchange` в `rabbitmq_queue_settings_list`.
+* `rabbitmq_commit_on_select` - Фиксировать сообщения при выполнении запроса SELECT. По умолчанию: `false`.
+* `rabbitmq_max_rows_per_message` — Максимальное количество строк, записываемых в одно сообщение RabbitMQ для построчных форматов. По умолчанию: `1`.
+* `rabbitmq_empty_queue_backoff_start_ms` — Начальная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
+* `rabbitmq_empty_queue_backoff_end_ms` — Конечная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
+* `rabbitmq_empty_queue_backoff_step_ms` — Шаг backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
+* `rabbitmq_handle_error_mode` — Способ обработки ошибок для движка RabbitMQ. Возможные значения: default (будет выброшено исключение, если не удаётся разобрать сообщение), stream (текст исключения и исходное сообщение будут сохранены во виртуальных столбцах `_error` и `_raw_message`), dead&#95;letter&#95;queue (данные, связанные с ошибкой, будут сохранены в system.dead&#95;letter&#95;queue).
 
 ### SSL-соединение \{#ssl-connection\}
 
@@ -123,7 +122,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     <vhost>clickhouse</vhost>
  </rabbitmq>
 ```
-
 
 ## Описание \{#description\}
 
@@ -186,20 +184,19 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   SELECT key, value FROM daily ORDER BY key;
 ```
 
-
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_exchange_name` — имя exchange в RabbitMQ. Тип данных: `String`.
-- `_channel_id` — идентификатор канала (ChannelID), на котором был объявлен consumer, получивший сообщение. Тип данных: `String`.
-- `_delivery_tag` — DeliveryTag полученного сообщения. Область действия — один канал. Тип данных: `UInt64`.
-- `_redelivered` — флаг `redelivered` сообщения. Тип данных: `UInt8`.
-- `_message_id` — идентификатор сообщения (messageID) полученного сообщения; непустой, если был установлен при публикации сообщения. Тип данных: `String`.
-- `_timestamp` — временная метка (timestamp) полученного сообщения; непустая, если была установлена при публикации сообщения. Тип данных: `UInt64`.
+* `_exchange_name` — имя exchange в RabbitMQ. Тип данных: `String`.
+* `_channel_id` — идентификатор канала (ChannelID), на котором был объявлен consumer, получивший сообщение. Тип данных: `String`.
+* `_delivery_tag` — DeliveryTag полученного сообщения. Область действия — один канал. Тип данных: `UInt64`.
+* `_redelivered` — флаг `redelivered` сообщения. Тип данных: `UInt8`.
+* `_message_id` — идентификатор сообщения (messageID) полученного сообщения; непустой, если был установлен при публикации сообщения. Тип данных: `String`.
+* `_timestamp` — временная метка (timestamp) полученного сообщения; непустая, если была установлена при публикации сообщения. Тип данных: `UInt64`.
 
 Дополнительные виртуальные столбцы при `rabbitmq_handle_error_mode='stream'`:
 
-- `_raw_message` — исходное сообщение, которое не удалось успешно разобрать. Тип данных: `Nullable(String)`.
-- `_error` — текст исключения, возникшего при ошибке разбора. Тип данных: `Nullable(String)`.
+* `_raw_message` — исходное сообщение, которое не удалось успешно разобрать. Тип данных: `Nullable(String)`.
+* `_error` — текст исключения, возникшего при ошибке разбора. Тип данных: `Nullable(String)`.
 
 Примечание: виртуальные столбцы `_raw_message` и `_error` заполняются только в случае возникновения исключения во время разбора; при успешном разборе сообщения они всегда равны `NULL`.
 
@@ -212,5 +209,5 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Движок RabbitMQ поддерживает все [форматы](../../../interfaces/formats.md), которые поддерживаются в ClickHouse.
 Количество строк в одном сообщении RabbitMQ зависит от того, является ли формат построчным или блочным:
 
-- Для построчных форматов количество строк в одном сообщении RabbitMQ можно контролировать с помощью настройки `rabbitmq_max_rows_per_message`.
-- Для блочных форматов нельзя разделить блок на более мелкие части, но количество строк в одном блоке можно контролировать глобальной настройкой [max_block_size](/operations/settings/settings#max_block_size).
+* Для построчных форматов количество строк в одном сообщении RabbitMQ можно контролировать с помощью настройки `rabbitmq_max_rows_per_message`.
+* Для блочных форматов нельзя разделить блок на более мелкие части, но количество строк в одном блоке можно контролировать глобальной настройкой [max&#95;block&#95;size](/operations/settings/settings#max_block_size).

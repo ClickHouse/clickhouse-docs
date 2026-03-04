@@ -24,7 +24,6 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-
 ### 示例 1 \{#example1\}
 
 默认情况下会忽略 NULL 值。
@@ -38,7 +37,6 @@ SELECT last_value(b) FROM test_data
 │                          5 │
 └────────────────────────────┘
 ```
-
 
 ### 示例 2 \{#example2\}
 
@@ -54,7 +52,6 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-
 ### 示例 3 \{#example3\}
 
 接受 NULL 值。
@@ -68,7 +65,6 @@ SELECT last_value(b) respect nulls FROM test_data
 │                        ᴺᵁᴸᴸ │
 └─────────────────────────────┘
 ```
-
 
 ### 示例 4 \{#example4\}
 

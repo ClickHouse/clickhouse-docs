@@ -75,7 +75,6 @@ SELECT * FROM tab;
 
 ORDER BY (UUIDv7ToDateTime(uuid), uuid)
 
-
 ## Генерация UUID \{#generating-uuids\}
 
 ClickHouse предоставляет функцию [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) для генерации случайных UUID версии 4.
@@ -118,7 +117,6 @@ SELECT * FROM t_uuid
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## Ограничения \{#restrictions\}
 

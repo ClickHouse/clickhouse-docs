@@ -27,30 +27,30 @@ integration:
 
 ClickHouse 使用以下规则来转换 `DateTime` 字符串值：
 
-- 如果列定义了时区（`DateTime64(9, 'Asia/Tokyo')`），则该字符串值会被视为该时区中的时间戳。`2026-01-01 13:00:00` 在 `UTC` 时间中将是 `2026-01-01 04:00:00`。
-- 如果列没有时区定义，则只使用服务器时区。重要说明：`session_timezone` 设置不会产生影响。因此，如果服务器时区为 `UTC`，而会话时区为 `America/Los_Angeles`，那么 `2026-01-01 13:00:00` 将按 `UTC` 时间写入。
-- 从没有时区定义的列中读取值时，会优先使用 `session_timezone`，如果未设置，则使用服务器时区。因此，以字符串形式读取时间戳会受到 `session_timezone` 的影响。这本身没有问题，但需要牢记这一点。
+* 如果列定义了时区（`DateTime64(9, 'Asia/Tokyo')`），则该字符串值会被视为该时区中的时间戳。`2026-01-01 13:00:00` 在 `UTC` 时间中将是 `2026-01-01 04:00:00`。
+* 如果列没有时区定义，则只使用服务器时区。重要说明：`session_timezone` 设置不会产生影响。因此，如果服务器时区为 `UTC`，而会话时区为 `America/Los_Angeles`，那么 `2026-01-01 13:00:00` 将按 `UTC` 时间写入。
+* 从没有时区定义的列中读取值时，会优先使用 `session_timezone`，如果未设置，则使用服务器时区。因此，以字符串形式读取时间戳会受到 `session_timezone` 的影响。这本身没有问题，但需要牢记这一点。
 
 ### 跨时区写入 timestamp \{#writing-timestamps-across-timezones\}
 
 现在假设我们有一个应用运行在 `us-west` 区域，本地时区为 `UTC-8`，需要写入一个本地 timestamp `2026-01-01 02:00:00`，它在 `UTC` 下对应为 `2026-01-01 10:00:00`：
 
-- 以字符串形式写入时，需要先将其转换为服务器时区或列时区。
-- 以语言原生的时间结构写入时，要求驱动知道目标时区，但：
-  - 这并不总是可行
-  - 驱动 API 在这方面的设计并不理想
-  - 唯一的办法是明确说明将执行哪些转换，以便应用可以进行补偿（或者将 Unix timestamp 以数值形式写入）
+* 以字符串形式写入时，需要先将其转换为服务器时区或列时区。
+* 以语言原生的时间结构写入时，要求驱动知道目标时区，但：
+  * 这并不总是可行
+  * 驱动 API 在这方面的设计并不理想
+  * 唯一的办法是明确说明将执行哪些转换，以便应用可以进行补偿（或者将 Unix timestamp 以数值形式写入）
 
 ### Java 和 JDBC timestamp API \{#java-and-jdbc-timestamp-apis\}
 
 Java 和 JDBC 提供了不同的方式来设置时间戳（timestamp）：
 
 1. 使用 `Timestamp` 类，它本质上是一个 Unix 时间戳。
-    1. 当与 `Calendar` 对象一起使用时，可以在该 `Calendar` 的时区中重新解释这个 `Timestamp`。
-    2. `Timestamp` 具有一个不太显而易见的内部日历表示。
+   1. 当与 `Calendar` 对象一起使用时，可以在该 `Calendar` 的时区中重新解释这个 `Timestamp`。
+   2. `Timestamp` 具有一个不太显而易见的内部日历表示。
 2. 使用 `LocalDateTime` 类，它很容易转换到任意时区，但没有允许你传入目标时区的方法。
 3. 使用 `ZonedDateTime` 类，它在写入不带时区的 `DateTime` 时有助于进行时区转换（因为我们知道要使用服务器时区）。
-    1. 但将 `ZonedDateTime` 写入具有已定义时区的列时，用户需要自行对驱动程序的转换进行补偿处理。
+   1. 但将 `ZonedDateTime` 写入具有已定义时区的列时，用户需要自行对驱动程序的转换进行补偿处理。
 4. 使用 `Long` 来写入 Unix 时间戳的毫秒值。
 5. 使用 `String` 在应用端完成所有转换（可移植性较差）。
 
@@ -105,10 +105,10 @@ ClickHouse JDBC 驱动始终返回一个指向**本地**日期午夜时刻的 `j
 
 :::note
 
-- `toTime` 始终要求参数为 `Date`、`DateTime` 或其他类似类型，不接受字符串。相关 issue：https://github.com/ClickHouse/ClickHouse/issues/89896
-- 它是 [`toTimeWithFixedDate`](/sql-reference/functions/date-time-functions#toTimeWithFixedDate) 的别名。
-- 存在一个与时区相关的已知问题：https://github.com/ClickHouse/ClickHouse/pull/90310
-:::
+* `toTime` 始终要求参数为 `Date`、`DateTime` 或其他类似类型，不接受字符串。相关 issue：https://github.com/ClickHouse/ClickHouse/issues/89896
+* 它是 [`toTimeWithFixedDate`](/sql-reference/functions/date-time-functions#toTimeWithFixedDate) 的别名。
+* 存在一个与时区相关的已知问题：https://github.com/ClickHouse/ClickHouse/pull/90310
+  :::
 
 ## Timestamp \{#timestamp\}
 
@@ -122,9 +122,9 @@ ClickHouse 中有 `DateTime`（32 位整数，精度始终为秒）和 `DateTime
 
 字符串表示形式在时区处理上存在一些复杂性：
 
-- 如果在列定义中未指定时区，并且写入时以字符串形式传入值，则该字符串会从服务器时区转换为 UTC 时间戳数值。从这样的列中读取值时，会将 UTC 时间戳转换为时间戳字面量，并使用服务器或会话时区（在表达式中，对于未显式指定时区的时间戳字面量也采用类似的处理方式）。
-- 如果在列定义中指定了时区，那么在所有与字符串之间的转换中只会使用该时区。这与未指定时区时的逻辑不同，因此需要充分理解在查询中每一列的数据是如何写入的。
-- 如果以包含时区信息的格式将日期作为字符串传入，则需要使用转换函数。通常使用 [`parseDateTimeBestEffort`](/sql-reference/functions/type-conversion-functions#parseDateTimeBestEffort)。
+* 如果在列定义中未指定时区，并且写入时以字符串形式传入值，则该字符串会从服务器时区转换为 UTC 时间戳数值。从这样的列中读取值时，会将 UTC 时间戳转换为时间戳字面量，并使用服务器或会话时区（在表达式中，对于未显式指定时区的时间戳字面量也采用类似的处理方式）。
+* 如果在列定义中指定了时区，那么在所有与字符串之间的转换中只会使用该时区。这与未指定时区时的逻辑不同，因此需要充分理解在查询中每一列的数据是如何写入的。
+* 如果以包含时区信息的格式将日期作为字符串传入，则需要使用转换函数。通常使用 [`parseDateTimeBestEffort`](/sql-reference/functions/type-conversion-functions#parseDateTimeBestEffort)。
 
 ### JDBC 驱动程序如何处理时间戳 \{#how-jdbc-driver-handles-timestamps\}
 
@@ -137,7 +137,6 @@ ClickHouse 中有 `DateTime`（32 位整数，精度始终为秒）和 `DateTime
 这种表示方式解决了大多数与时间戳值相关的转换问题，因为它以统一格式将数据发送到服务器。虽然这种方法需要对 SQL 语句做一些小的调整，但它提供了向任意列写入时间戳的最简单、最直接的方式。
 
 `DateTime` 和 `DateTime64` 在客户端会以 `java.time.ZonedDateTime` 的形式读取和存储，这有助于将这些值转换为任意其他时区（时区信息会被保留）。
-
 
 ### 使用 `toDateTime64` 时的常见陷阱 \{#common-pitfall-todatetime64\}
 
@@ -156,7 +155,6 @@ try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 ```
 
 这是因为 `toDateTime64` 使用的是服务器时区，并且不会考虑源时区。
-
 
 ## 转换表 \{#conversion-tables\}
 

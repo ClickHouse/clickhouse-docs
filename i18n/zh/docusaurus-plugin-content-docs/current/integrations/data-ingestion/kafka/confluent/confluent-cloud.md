@@ -15,19 +15,19 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
 # 将 Confluent Cloud 与 ClickHouse 集成 \{#integrating-confluent-cloud-with-clickhouse\}
 
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 前提条件 \{#prerequisites\}
@@ -60,17 +60,17 @@ import Image from '@theme/IdealImage';
 
 在配置 ClickHouse Sink Connector 时，需要提供以下信息：
 
-- ClickHouse 服务器的 hostname
-- ClickHouse 服务器的端口（默认是 8443）
-- ClickHouse 服务器的用户名和密码
-- 用于写入数据的 ClickHouse 数据库名称
-- 在 Kafka 中用于向 ClickHouse 写入数据的 topic 名称
+* ClickHouse 服务器的 hostname
+* ClickHouse 服务器的端口（默认是 8443）
+* ClickHouse 服务器的用户名和密码
+* 用于写入数据的 ClickHouse 数据库名称
+* 在 Kafka 中用于向 ClickHouse 写入数据的 topic 名称
 
 Confluent Cloud 的 UI 支持高级配置选项，可调整轮询间隔、批大小和其他参数以优化性能。
 
-:::note  
+:::note\
 在 Confluent Cloud 中，调整某些设置（例如 [fetch 相关设置](/integrations/kafka/clickhouse-kafka-connect-sink/#fetch-settings)和 [poll 相关设置](/integrations/kafka/clickhouse-kafka-connect-sink/#poll-settings)）需要通过 Confluent Cloud 提交支持工单。
-:::  
+:::
 
 #### 已知限制 \{#known-limitations\}
 

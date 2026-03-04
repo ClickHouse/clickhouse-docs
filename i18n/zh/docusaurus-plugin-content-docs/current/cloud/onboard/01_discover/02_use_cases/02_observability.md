@@ -7,7 +7,7 @@ sidebar_label: '可观测性'
 doc_type: 'guide'
 ---
 
-<iframe width="758" height="426" src="https://www.youtube.com/embed/eKlZoT6hPwI?si=Wyrft2T04E1v8US6" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="758" height="426" src="https://www.youtube.com/embed/eKlZoT6hPwI?si=Wyrft2T04E1v8US6" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 现代软件系统极其复杂。微服务、云基础设施和分布式系统让我们越来越难以理解应用程序内部到底发生了什么。一旦出现问题，团队需要能够快速定位问题发生的位置和原因。
 
@@ -45,11 +45,11 @@ doc_type: 'guide'
 但它们仍然是理解系统不同行为方面的基础概念。
 
 1. **Logs** - 系统中发生的离散事件的文本记录。
-这些记录为特定事件、错误和状态变化提供了详细上下文。
+   这些记录为特定事件、错误和状态变化提供了详细上下文。
 2. **Metrics** - 随时间收集的数值型度量。
-这些包括计数器、仪表和直方图，用于跟踪系统性能、资源使用情况和业务 KPI。
+   这些包括计数器、仪表和直方图，用于跟踪系统性能、资源使用情况和业务 KPI。
 3. **Traces** - 跟踪请求在分布式系统中流转路径的记录。
-这些有助于理解各个服务之间的关系，并识别性能瓶颈。
+   这些有助于理解各个服务之间的关系，并识别性能瓶颈。
 
 这三大支柱使团队能够监控、排障并优化其系统。
 然而，真正的价值在于理解如何在这三大支柱上高效地采集、
@@ -59,8 +59,8 @@ doc_type: 'guide'
 
 虽然可观测性的技术层面——日志、指标和追踪——已经被充分理解，但同样重要的是要考虑其带来的业务收益。
 
-在他们的著作 ["Observability Engineering"](https://clickhouse.com/engineering-resources/observability#:~:text=Observability%20Engineering)
-（O'Reilly，2022）中，Charity Majors、Liz Fong-Jones 和 George Miranda 基于行业研究和实践反馈，总结出组织在实施完善的可观测性实践后可以预期获得的四项关键业务收益。
+在他们的著作 [&quot;Observability Engineering&quot;](https://clickhouse.com/engineering-resources/observability#:~:text=Observability%20Engineering)
+（O&#39;Reilly，2022）中，Charity Majors、Liz Fong-Jones 和 George Miranda 基于行业研究和实践反馈，总结出组织在实施完善的可观测性实践后可以预期获得的四项关键业务收益。
 我们来逐一分析这些收益：
 
 ### 更高的增量收入 \{#higher-incremental-revenue\}

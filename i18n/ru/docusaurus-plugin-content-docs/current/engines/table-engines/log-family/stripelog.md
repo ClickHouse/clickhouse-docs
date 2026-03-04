@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Движок таблицы StripeLog \{#stripelog-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Этот движок относится к семейству лог-движков. Общие свойства лог-движков и их различия см. в статье [Log Engine Family](../../../engines/table-engines/log-family/index.md).
 
@@ -36,8 +36,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Для каждой таблицы ClickHouse создает следующие файлы:
 
-- `data.bin` — файл с данными.
-- `index.mrk` — файл с метками. Метки содержат смещения для каждого столбца каждого вставленного блока данных.
+* `data.bin` — файл с данными.
+* `index.mrk` — файл с метками. Метки содержат смещения для каждого столбца каждого вставленного блока данных.
 
 Движок `StripeLog` не поддерживает операции `ALTER UPDATE` и `ALTER DELETE`.
 

@@ -19,11 +19,11 @@ view(subquery)
 
 ## 参数 \{#arguments\}
 
-- `subquery` — `SELECT` 查询。
+* `subquery` — `SELECT` 查询。
 
 ## 返回值 \{#returned_value\}
 
-- 一张表。
+* 一张表。
 
 ## 示例 \{#examples\}
 
@@ -67,4 +67,4 @@ SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 
 ## 相关内容 \{#related\}
 
-- [View 表引擎](/engines/table-engines/special/view/)
+* [View 表引擎](/engines/table-engines/special/view/)

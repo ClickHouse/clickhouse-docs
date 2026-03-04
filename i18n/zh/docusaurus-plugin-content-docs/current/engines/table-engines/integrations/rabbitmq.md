@@ -13,8 +13,8 @@ doc_type: 'guide'
 
 `RabbitMQ` 可用于：
 
-- 发布或订阅数据流。
-- 在数据流可用时对其进行处理。
+* 发布或订阅数据流。
+* 在数据流可用时对其进行处理。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -59,30 +59,29 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可选参数：
 
-
-- `rabbitmq_exchange_type` – RabbitMQ exchange 的类型：`direct`、`fanout`、`topic`、`headers`、`consistent_hash`。默认值：`fanout`。
-- `rabbitmq_routing_key_list` – 以逗号分隔的路由键（routing key）列表。
-- `rabbitmq_schema` – 当格式需要 schema 定义时必须使用的参数。例如， [Cap'n Proto](https://capnproto.org/) 需要提供 schema 文件的路径以及根 `schema.capnp:Message` 对象的名称。
-- `rabbitmq_num_consumers` – 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请设置更多的 consumer。默认值：`1`。
-- `rabbitmq_num_queues` – 队列总数。增大该值可以显著提升性能。默认值：`1`。
-- `rabbitmq_queue_base` - 为队列名称提供一个提示（前缀/基名）。此设置的使用场景会在下文中说明。
-- `rabbitmq_persistent` - 如果设置为 1（true），在 insert 查询中，投递模式（delivery mode）会被设置为 2（将消息标记为“persistent”）。默认值：`0`。
-- `rabbitmq_skip_broken_messages` – 每个数据块中 RabbitMQ 消息解析器对与 schema 不兼容消息的容忍数量。如果 `rabbitmq_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 RabbitMQ 消息（每条消息对应一行数据）。默认值：`0`。
-- `rabbitmq_max_block_size` - 在从 RabbitMQ 刷新（flush）数据前累积的行数。默认值：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `rabbitmq_flush_interval_ms` - 从 RabbitMQ 刷新（flush）数据的超时时间（毫秒）。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `rabbitmq_queue_settings_list` - 允许在创建队列时设置 RabbitMQ 参数。可用设置包括：`x-max-length`、`x-max-length-bytes`、`x-message-ttl`、`x-expires`、`x-priority`、`x-max-priority`、`x-overflow`、`x-dead-letter-exchange`、`x-queue-type`。队列的 `durable` 设置会自动启用。
-- `rabbitmq_address` - 连接地址。此设置与 `rabbitmq_host_port` 二选一。
-- `rabbitmq_vhost` - RabbitMQ vhost。默认值：`'\'`。
-- `rabbitmq_queue_consume` - 使用用户自定义队列，并且不执行任何 RabbitMQ 初始化操作：声明 exchange、队列或绑定。默认值：`false`。
-- `rabbitmq_username` - RabbitMQ 用户名。
-- `rabbitmq_password` - RabbitMQ 密码。
-- `reject_unhandled_messages` - 在出现错误时拒绝消息（向 RabbitMQ 发送负确认）。如果在 `rabbitmq_queue_settings_list` 中定义了 `x-dead-letter-exchange`，则此设置会自动启用。
-- `rabbitmq_commit_on_select` - 在执行 select 查询时提交消息。默认值：`false`。
-- `rabbitmq_max_rows_per_message` — 对于基于行的格式，在一条 RabbitMQ 消息中写入的最大行数。默认值：`1`。
-- `rabbitmq_empty_queue_backoff_start_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避起点（毫秒）。
-- `rabbitmq_empty_queue_backoff_end_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避终点（毫秒）。
-- `rabbitmq_empty_queue_backoff_step_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作时使用的退避步长（毫秒）。
-- `rabbitmq_handle_error_mode` — RabbitMQ 引擎的错误处理方式。可选值：`default`（如果解析消息失败，将抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、`dead_letter_queue`（与错误相关的数据将保存在 `system.dead_letter_queue` 中）。
+* `rabbitmq_exchange_type` – RabbitMQ exchange 的类型：`direct`、`fanout`、`topic`、`headers`、`consistent_hash`。默认值：`fanout`。
+* `rabbitmq_routing_key_list` – 以逗号分隔的路由键（routing key）列表。
+* `rabbitmq_schema` – 当格式需要 schema 定义时必须使用的参数。例如， [Cap&#39;n Proto](https://capnproto.org/) 需要提供 schema 文件的路径以及根 `schema.capnp:Message` 对象的名称。
+* `rabbitmq_num_consumers` – 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请设置更多的 consumer。默认值：`1`。
+* `rabbitmq_num_queues` – 队列总数。增大该值可以显著提升性能。默认值：`1`。
+* `rabbitmq_queue_base` - 为队列名称提供一个提示（前缀/基名）。此设置的使用场景会在下文中说明。
+* `rabbitmq_persistent` - 如果设置为 1（true），在 insert 查询中，投递模式（delivery mode）会被设置为 2（将消息标记为“persistent”）。默认值：`0`。
+* `rabbitmq_skip_broken_messages` – 每个数据块中 RabbitMQ 消息解析器对与 schema 不兼容消息的容忍数量。如果 `rabbitmq_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 RabbitMQ 消息（每条消息对应一行数据）。默认值：`0`。
+* `rabbitmq_max_block_size` - 在从 RabbitMQ 刷新（flush）数据前累积的行数。默认值：[max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size)。
+* `rabbitmq_flush_interval_ms` - 从 RabbitMQ 刷新（flush）数据的超时时间（毫秒）。默认值：[stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms)。
+* `rabbitmq_queue_settings_list` - 允许在创建队列时设置 RabbitMQ 参数。可用设置包括：`x-max-length`、`x-max-length-bytes`、`x-message-ttl`、`x-expires`、`x-priority`、`x-max-priority`、`x-overflow`、`x-dead-letter-exchange`、`x-queue-type`。队列的 `durable` 设置会自动启用。
+* `rabbitmq_address` - 连接地址。此设置与 `rabbitmq_host_port` 二选一。
+* `rabbitmq_vhost` - RabbitMQ vhost。默认值：`'\'`。
+* `rabbitmq_queue_consume` - 使用用户自定义队列，并且不执行任何 RabbitMQ 初始化操作：声明 exchange、队列或绑定。默认值：`false`。
+* `rabbitmq_username` - RabbitMQ 用户名。
+* `rabbitmq_password` - RabbitMQ 密码。
+* `reject_unhandled_messages` - 在出现错误时拒绝消息（向 RabbitMQ 发送负确认）。如果在 `rabbitmq_queue_settings_list` 中定义了 `x-dead-letter-exchange`，则此设置会自动启用。
+* `rabbitmq_commit_on_select` - 在执行 select 查询时提交消息。默认值：`false`。
+* `rabbitmq_max_rows_per_message` — 对于基于行的格式，在一条 RabbitMQ 消息中写入的最大行数。默认值：`1`。
+* `rabbitmq_empty_queue_backoff_start_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避起点（毫秒）。
+* `rabbitmq_empty_queue_backoff_end_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避终点（毫秒）。
+* `rabbitmq_empty_queue_backoff_step_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作时使用的退避步长（毫秒）。
+* `rabbitmq_handle_error_mode` — RabbitMQ 引擎的错误处理方式。可选值：`default`（如果解析消息失败，将抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、`dead_letter_queue`（与错误相关的数据将保存在 `system.dead_letter_queue` 中）。
 
 ### SSL 连接 \{#ssl-connection\}
 
@@ -123,7 +122,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     <vhost>clickhouse</vhost>
  </rabbitmq>
 ```
-
 
 ## 描述 \{#description\}
 
@@ -186,20 +184,19 @@ Exchange 类型说明：
   SELECT key, value FROM daily ORDER BY key;
 ```
 
-
 ## 虚拟列 \{#virtual-columns\}
 
-- `_exchange_name` - RabbitMQ 交换器（exchange）名称。数据类型：`String`。
-- `_channel_id` - 接收该消息的 consumer 所声明的 ChannelID。数据类型：`String`。
-- `_delivery_tag` - 所接收消息的 DeliveryTag，在每个 channel 内单独计数。数据类型：`UInt64`。
-- `_redelivered` - 消息的 `redelivered` 标志位。数据类型：`UInt8`。
-- `_message_id` - 所接收消息的 messageID；如果在发布消息时设置了该字段则为非空。数据类型：`String`。
-- `_timestamp` - 所接收消息的 timestamp；如果在发布消息时设置了该字段则为非空。数据类型：`UInt64`。
+* `_exchange_name` - RabbitMQ 交换器（exchange）名称。数据类型：`String`。
+* `_channel_id` - 接收该消息的 consumer 所声明的 ChannelID。数据类型：`String`。
+* `_delivery_tag` - 所接收消息的 DeliveryTag，在每个 channel 内单独计数。数据类型：`UInt64`。
+* `_redelivered` - 消息的 `redelivered` 标志位。数据类型：`UInt8`。
+* `_message_id` - 所接收消息的 messageID；如果在发布消息时设置了该字段则为非空。数据类型：`String`。
+* `_timestamp` - 所接收消息的 timestamp；如果在发布消息时设置了该字段则为非空。数据类型：`UInt64`。
 
 当 `rabbitmq_handle_error_mode='stream'` 时的附加虚拟列：
 
-- `_raw_message` - 无法成功解析的原始消息。数据类型：`Nullable(String)`。
-- `_error` - 解析失败期间产生的异常信息。数据类型：`Nullable(String)`。
+* `_raw_message` - 无法成功解析的原始消息。数据类型：`Nullable(String)`。
+* `_error` - 解析失败期间产生的异常信息。数据类型：`Nullable(String)`。
 
 注意：仅在解析期间发生异常时，`_raw_message` 和 `_error` 虚拟列才会被填充；当消息被成功解析时，它们始终为 `NULL`。
 
@@ -212,5 +209,5 @@ Exchange 类型说明：
 RabbitMQ 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/formats.md)。
 单个 RabbitMQ 消息中的行数取决于使用的是按行还是按块的格式：
 
-- 对于按行的格式，可以通过设置 `rabbitmq_max_rows_per_message` 来控制单个 RabbitMQ 消息中的行数。
-- 对于按块的格式，我们无法将数据块拆分为更小的部分，但可以通过全局设置 [max_block_size](/operations/settings/settings#max_block_size) 来控制单个数据块中的行数。
+* 对于按行的格式，可以通过设置 `rabbitmq_max_rows_per_message` 来控制单个 RabbitMQ 消息中的行数。
+* 对于按块的格式，我们无法将数据块拆分为更小的部分，但可以通过全局设置 [max&#95;block&#95;size](/operations/settings/settings#max_block_size) 来控制单个数据块中的行数。

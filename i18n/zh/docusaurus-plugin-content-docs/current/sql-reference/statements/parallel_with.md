@@ -41,11 +41,12 @@ DROP TABLE table2;
 
 ## 设置 \{#settings\}
 
-[max_threads](../../operations/settings/settings.md#max_threads) 设置用于控制要启动的线程数。
+[max&#95;threads](../../operations/settings/settings.md#max_threads) 设置用于控制要启动的线程数。
 
 ## 与 UNION 的比较 \{#comparison-with-union\}
 
 `PARALLEL WITH` 子句与 [UNION](select/union.md) 有些相似，`UNION` 也会并行执行其操作数。但它们之间存在一些差异：
-- `PARALLEL WITH` 不会返回其操作数执行产生的任何结果，如果出现异常，它只能重新抛出该异常；
-- `PARALLEL WITH` 不要求其操作数具有相同的一组结果列；
-- `PARALLEL WITH` 可以执行任意语句（不仅仅是 `SELECT`）。
+
+* `PARALLEL WITH` 不会返回其操作数执行产生的任何结果，如果出现异常，它只能重新抛出该异常；
+* `PARALLEL WITH` 不要求其操作数具有相同的一组结果列；
+* `PARALLEL WITH` 可以执行任意语句（不仅仅是 `SELECT`）。

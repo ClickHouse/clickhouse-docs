@@ -28,11 +28,10 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 Вместо ручного ввода данных можно воспользоваться [инструментом интеграции](../../integrations/index.mdx).
 
-
 ## Полезные настройки \{#useful-settings\}
 
-- `input_format_skip_unknown_fields` позволяет вставлять JSON, даже если в нём есть дополнительные поля, отсутствующие в схеме таблицы (такие поля отбрасываются).
-- `input_format_import_nested_json` позволяет вставлять вложенные JSON-объекты в столбцы типа [Nested](../../sql-reference/data-types/nested-data-structures/index.md).
+* `input_format_skip_unknown_fields` позволяет вставлять JSON, даже если в нём есть дополнительные поля, отсутствующие в схеме таблицы (такие поля отбрасываются).
+* `input_format_import_nested_json` позволяет вставлять вложенные JSON-объекты в столбцы типа [Nested](../../sql-reference/data-types/nested-data-structures/index.md).
 
 :::note
 Настройки указываются как параметры `GET`-запроса для HTTP-интерфейса или как дополнительные аргументы командной строки с префиксом `--` для интерфейса `CLI`.

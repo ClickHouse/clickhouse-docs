@@ -14,12 +14,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java 客户端概览 \{#java-clients-overview\}
 
-- [Client 0.8+](./client/client.mdx)
-- [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC 驱动](./r2dbc.md)
+* [Client 0.8+](./client/client.mdx)
+* [JDBC 0.8+](./jdbc/jdbc.mdx)
+* [R2DBC 驱动](./r2dbc.md)
 
 ## ClickHouse 客户端 \{#clickhouse-client\}
 
@@ -86,11 +85,11 @@ Java 客户端早在 2015 年就开始开发，其代码库已经变得非常难
 
 :::note
 
-- AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
-- Decimal - 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以获得一致的行为
-- Enum - 可以同时视为字符串和整数
-- UInt64 - 在 client-v1 中映射为 `long` 类型
-:::
+* AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
+* Decimal - 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以获得一致的行为
+* Enum - 可以同时视为字符串和整数
+* UInt64 - 在 client-v1 中映射为 `long` 类型
+  :::
 
 ### 功能 \{#features\}
 
@@ -123,10 +122,10 @@ JDBC 驱动继承其底层客户端实现的相同功能。其他 JDBC 功能列
 
 ### 兼容性 \{#compatibility\}
 
-- 此仓库中的所有项目都会针对 ClickHouse 的所有[当前活动的 LTS 版本](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)进行测试。
-- [支持策略](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
-- 我们建议持续升级客户端，以免错过安全修复和最新改进。
-- 如果在迁移到 v2 API 时遇到问题，请[提交一个 issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)，我们会及时回复。
+* 此仓库中的所有项目都会针对 ClickHouse 的所有[当前活动的 LTS 版本](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)进行测试。
+* [支持策略](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
+* 我们建议持续升级客户端，以免错过安全修复和最新改进。
+* 如果在迁移到 v2 API 时遇到问题，请[提交一个 issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=\&labels=v2-feedback\&projects=\&template=v2-feedback.md\&title=)，我们会及时回复。
 
 ### 日志记录 \{#logging\}
 
@@ -157,7 +156,6 @@ JDBC 驱动继承其底层客户端实现的相同功能。其他 JDBC 功能列
     </dependency>
 </dependencies>
 ```
-
 
 #### 配置日志记录 \{#configuring-logging\}
 

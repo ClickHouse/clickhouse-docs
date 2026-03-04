@@ -386,4 +386,4 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理时序数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客文章：[在 ClickHouse 中处理时序数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

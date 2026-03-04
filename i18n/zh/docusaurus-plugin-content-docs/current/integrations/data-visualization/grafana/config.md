@@ -22,10 +22,9 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 在 Grafana 中配置 ClickHouse 数据源 \{#configuring-clickhouse-data-source-in-grafana\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 修改配置最简单的方式是在 Grafana UI 的插件配置页面中进行操作，但数据源也可以通过 [使用 YAML 文件进行预配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
@@ -65,7 +64,6 @@ secureJsonData:
 
 请注意，通过 UI 保存配置时会新增一个 `version` 属性，该属性表示保存该配置时对应的插件版本。
 
-
 ### HTTP 协议 \{#http-protocol\}
 
 如果选择通过 HTTP 协议进行连接，将会显示更多配置选项。
@@ -81,7 +79,6 @@ jsonData:
   # excludes first slash
   path: additional/path/example
 ```
-
 
 #### 自定义 HTTP 请求头 \{#custom-http-headers\}
 
@@ -109,7 +106,6 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-
 ## 其他设置 \{#additional-settings\}
 
 这些额外设置是可选的。
@@ -127,7 +123,6 @@ jsonData:
   queryTimeout: 60   # query timeout when running a query, in seconds. Defaults to 60. This requires permissions on the user, if you get a permission error try setting it to "0" to disable it.
   validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
-
 
 ### OpenTelemetry \{#opentelemetry\}
 
@@ -167,7 +162,6 @@ jsonData:
     messageColumn: <string> # the log's message/content.
 ```
 
-
 ### Trace（追踪） \{#traces\}
 
 为了加速[构建追踪查询](./query-builder.md#traces)，你可以为追踪查询设置默认数据库和表，以及默认使用的列。这样会在查询构建器中预加载一条可直接运行的追踪搜索查询，从而在 Explore 页面中进行可观测性浏览时更加高效。
@@ -204,7 +198,6 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
-
 ### 列别名 \{#column-aliases\}
 
 列别名是一种方便的方法，可以使用不同的名称和类型来查询你的数据。
@@ -212,10 +205,10 @@ jsonData:
 
 在以下情况下，别名可能对你有用：
 
-- 你了解自己的 schema 以及其中大部分嵌套属性和类型
-- 你将数据存储在 Map 类型中
-- 你将 JSON 以字符串形式存储
-- 你经常对所选列应用函数来进行转换
+* 你了解自己的 schema 以及其中大部分嵌套属性和类型
+* 你将数据存储在 Map 类型中
+* 你将 JSON 以字符串形式存储
+* 你经常对所选列应用函数来进行转换
 
 #### 在表中定义的 ALIAS 列 \{#table-defined-alias-columns\}
 
@@ -234,7 +227,6 @@ CREATE TABLE alias_example (
 表中定义的别名在执行 `SELECT *` 时不会返回，但可以通过服务器设置进行配置。
 
 要了解更多信息，请阅读 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
-
 
 #### 列别名表 \{#column-alias-tables\}
 
@@ -279,7 +271,6 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 <Image size="md" img={alias_table_select_example} alt="别名表查询示例" border />
 
 这两种类型的别名都可以用于执行复杂的类型转换或 JSON 字段提取。
-
 
 ## 所有 YAML 选项 \{#all-yaml-options\}
 

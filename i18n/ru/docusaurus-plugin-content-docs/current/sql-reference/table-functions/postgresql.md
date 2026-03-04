@@ -17,7 +17,6 @@ doc_type: 'reference'
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Аргумент      | Описание                                                                  |
@@ -69,7 +68,6 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 ```
 
 Поддерживаются приоритеты реплик для источника словаря PostgreSQL. Чем больше значение в отображении (map), тем ниже приоритет. Наивысший приоритет — `0`.
-
 
 ## Примеры \{#examples\}
 
@@ -149,11 +147,10 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
-
 ## Связанные материалы \{#related\}
 
-- [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
-- [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources/postgresql)
+* [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
+* [Использование PostgreSQL как источника словаря](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### Репликация или миграция данных Postgres с помощью PeerDB \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

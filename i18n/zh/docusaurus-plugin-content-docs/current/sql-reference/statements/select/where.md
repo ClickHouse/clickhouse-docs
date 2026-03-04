@@ -27,8 +27,9 @@ Prewhere 是一种更有效地应用过滤的优化。
 ## 测试 `NULL` \{#testing-for-null\}
 
 如果您需要测试值是否为 [`NULL`](/sql-reference/syntax#null),请使用:
-- [`IS NULL`](/sql-reference/operators#is_null) 或 [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
-- [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
+
+* [`IS NULL`](/sql-reference/operators#is_null) 或 [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
+* [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 否则,带有 `NULL` 的表达式永远不会通过。
 
@@ -36,10 +37,10 @@ Prewhere 是一种更有效地应用过滤的优化。
 
 您可以将以下[逻辑函数](/sql-reference/functions/logical-functions#and)与 `WHERE` 子句一起使用来组合多个条件:
 
-- [`and()`](/sql-reference/functions/logical-functions#and) 或 `AND`
-- [`not()`](/sql-reference/functions/logical-functions#not) 或 `NOT`
-- [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
-- [`xor()`](/sql-reference/functions/logical-functions#xor)
+* [`and()`](/sql-reference/functions/logical-functions#and) 或 `AND`
+* [`not()`](/sql-reference/functions/logical-functions#not) 或 `NOT`
+* [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
+* [`xor()`](/sql-reference/functions/logical-functions#xor)
 
 ## 将 UInt8 列用作条件 \{#using-uint8-columns-as-a-condition\}
 
@@ -78,7 +79,7 @@ Prewhere 是一种更有效地应用过滤的优化。
 | `multiIf()` | `multiIf(c1, r1, c2, r2, def)` | N/A | 快速 | 多个条件 |
 | `CASE` | `CASE WHEN ... THEN ... END` | N/A | 快速 | SQL 标准条件逻辑 |
 
-有关使用示例,请参阅["模式匹配和条件表达式"](#examples-pattern-matching-and-conditional-expressions)。
+有关使用示例,请参阅[&quot;模式匹配和条件表达式&quot;](#examples-pattern-matching-and-conditional-expressions)。
 
 ## 包含文字、列或子查询的表达式 \{#expressions-with-literals-columns-subqueries\}
 
@@ -109,6 +110,7 @@ WHERE (price > 100 OR category IN (SELECT category FROM featured))
   AND in_stock = true
   AND name LIKE '%Special%'
 ```
+
 ## 示例 \{#examples\}
 
 ### 测试 `NULL` \{#examples-testing-for-null\}

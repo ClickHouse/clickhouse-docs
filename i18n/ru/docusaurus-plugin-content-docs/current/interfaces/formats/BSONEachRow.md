@@ -40,7 +40,7 @@ doc_type: 'reference'
 | [Decimal256](/sql-reference/data-types/decimal.md)                                                                   | `\x05` binary, `\x00` подтип binary, размер = 32                                                              |
 | [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                                             | `\x05` binary, `\x00` подтип binary, размер = 16                                                              |
 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                             | `\x05` binary, `\x00` подтип binary, размер = 32                                                              |
-| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md)               | `\x05` binary, `\x00` подтип binary или \x02 string, если включена настройка output_format_bson_string_as_string |
+| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md)               | `\x05` binary, `\x00` подтип binary или \x02 string, если включена настройка output&#95;format&#95;bson&#95;string&#95;as&#95;string |
 | [UUID](/sql-reference/data-types/uuid.md)                                                                            | `\x05` binary, `\x04` подтип uuid, размер = 16                                                                |
 | [Array](/sql-reference/data-types/array.md)                                                                          | `\x04` array                                                                                                  |
 | [Tuple](/sql-reference/data-types/tuple.md)                                                                          | `\x04` array                                                                                                  |
@@ -70,10 +70,10 @@ doc_type: 'reference'
 | `\x10` int32                             | [Int32/UInt32](/sql-reference/data-types/int-uint.md)/[Decimal32](/sql-reference/data-types/decimal.md)/[IPv4](/sql-reference/data-types/ipv4.md)/[Enum8/Enum16](/sql-reference/data-types/enum.md) |
 | `\x12` int64                             | [Int64/UInt64](/sql-reference/data-types/int-uint.md)/[Decimal64](/sql-reference/data-types/decimal.md)/[DateTime64](/sql-reference/data-types/datetime64.md)                                                       |
 
-Другие типы BSON не поддерживаются. Кроме того, выполняется преобразование между различными целочисленными типами. 
+Другие типы BSON не поддерживаются. Кроме того, выполняется преобразование между различными целочисленными типами.
 Например, можно вставить значение BSON типа `int32` в ClickHouse как [`UInt8`](../../sql-reference/data-types/int-uint.md).
 
-Большие целые и десятичные числа, такие как `Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256`, могут быть получены при разборе значения BSON типа Binary с двоичным подтипом `\x00`. 
+Большие целые и десятичные числа, такие как `Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256`, могут быть получены при разборе значения BSON типа Binary с двоичным подтипом `\x00`.
 В этом случае формат проверяет, что размер двоичных данных равен размеру ожидаемого значения.
 
 :::note

@@ -20,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 Этот документ описывает бинарный протокол для TCP‑клиентов ClickHouse.
 
-
 ## Varint \{#varint\}
 
 Для длин, кодов пакетов и в других случаях используется кодирование в формате *unsigned varint*.
@@ -41,78 +40,71 @@ import TabItem from '@theme/TabItem';
 :::
 
 <Tabs>
-<TabItem value="encode" label="Кодирование">
+  <TabItem value="encode" label="Кодирование">
+    ```go
+    s := "Hello, world!"
 
-```go
-s := "Hello, world!"
+    // Writing string length as uvarint.
+    buf := make([]byte, binary.MaxVarintLen64)
+    n := binary.PutUvarint(buf, uint64(len(s)))
+    buf = buf[:n]
 
-// Writing string length as uvarint.
-buf := make([]byte, binary.MaxVarintLen64)
-n := binary.PutUvarint(buf, uint64(len(s)))
-buf = buf[:n]
+    // Writing string value.
+    buf = append(buf, s...)
+    ```
+  </TabItem>
 
-// Writing string value.
-buf = append(buf, s...)
-```
+  <TabItem value="decode" label="Декодирование">
+    ```go
+    r := bytes.NewReader([]byte{
+        0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
+        0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
+    })
 
-</TabItem>
-<TabItem value="decode" label="Декодирование">
+    // Read length.
+    n, err := binary.ReadUvarint(r)
+    if err != nil {
+            panic(err)
+    }
 
-```go
-r := bytes.NewReader([]byte{
-    0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
-    0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
-})
+    // Check n to prevent OOM or runtime exception in make().
+    const maxSize = 1024 * 1024 * 10 // 10 MB
+    if n > maxSize || n < 0 {
+        panic("invalid n")
+    }
 
-// Read length.
-n, err := binary.ReadUvarint(r)
-if err != nil {
-        panic(err)
-}
+    buf := make([]byte, n)
+    if _, err := io.ReadFull(r, buf); err != nil {
+            panic(err)
+    }
 
-// Check n to prevent OOM or runtime exception in make().
-const maxSize = 1024 * 1024 * 10 // 10 MB
-if n > maxSize || n < 0 {
-    panic("invalid n")
-}
-
-buf := make([]byte, n)
-if _, err := io.ReadFull(r, buf); err != nil {
-        panic(err)
-}
-
-fmt.Println(string(buf))
-// Hello, world!
-```
-
-</TabItem>
+    fmt.Println(string(buf))
+    // Hello, world!
+    ```
+  </TabItem>
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="Шестнадцатеричный дамп">
+  <TabItem value="hexdump" label="Шестнадцатеричный дамп">
+    ```hexdump
+    00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
+    ```
+  </TabItem>
 
-```hexdump
-00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
-```
+  <TabItem value="base64" label="Base64">
+    ```text
+    DUhlbGxvLCB3b3JsZCE
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
-DUhlbGxvLCB3b3JsZCE
-```
-
-</TabItem>
-<TabItem value="go" label="Go">
-
-```go
-data := []byte{
-    0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
-    0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
-}
-```
-
-</TabItem>
+  <TabItem value="go" label="Go">
+    ```go
+    data := []byte{
+        0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
+        0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
+    }
+    ```
+  </TabItem>
 </Tabs>
 
 ## Целые числа \{#integers\}
@@ -148,7 +140,6 @@ fmt.Println(d) // 1000
     ```
   </TabItem>
 </Tabs>
-
 
 ## Boolean \{#boolean\}
 

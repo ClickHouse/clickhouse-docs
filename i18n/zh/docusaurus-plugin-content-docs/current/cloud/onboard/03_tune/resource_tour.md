@@ -16,10 +16,10 @@ import TableOfContentsSecurity from '@site/i18n/zh/docusaurus-plugin-content-doc
 本文旨在为您概述文档中可用的资源，帮助您充分发挥 ClickHouse Cloud 部署的价值。
 您可以按以下主题浏览资源：
 
-- [查询优化技术与性能调优](#query-optimization)
-- [监控](#monitoring)
-- [安全最佳实践与合规特性](#security)
-- [成本优化与计费](#cost-optimization)
+* [查询优化技术与性能调优](#query-optimization)
+* [监控](#monitoring)
+* [安全最佳实践与合规特性](#security)
+* [成本优化与计费](#cost-optimization)
 
 在深入了解更具体的主题之前，我们建议您先从我们的
 ClickHouse 通用最佳实践指南开始，这些指南涵盖了使用 ClickHouse 时应遵循的通用最佳实践：
@@ -28,7 +28,7 @@ ClickHouse 通用最佳实践指南开始，这些指南涵盖了使用 ClickHou
 
 ## 查询优化技术及性能调优 \{#query-optimization\}
 
-<TableOfContentsOptimizationAndPerformance/>
+<TableOfContentsOptimizationAndPerformance />
 
 ## 监控 \{#monitoring\}
 
@@ -40,7 +40,7 @@ ClickHouse 通用最佳实践指南开始，这些指南涵盖了使用 ClickHou
 
 ## 安全性 \{#security\}
 
-<TableOfContentsSecurity/>
+<TableOfContentsSecurity />
 
 ## 成本优化与计费 \{#cost-optimization\}
 

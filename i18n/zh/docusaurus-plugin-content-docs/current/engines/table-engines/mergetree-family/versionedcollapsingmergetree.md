@@ -11,8 +11,8 @@ doc_type: 'reference'
 
 该引擎：
 
-- 允许快速写入持续变化的对象状态。
-- 在后台删除旧的对象状态，从而显著减少存储占用。
+* 允许快速写入持续变化的对象状态。
+* 在后台删除旧的对象状态，从而显著减少存储占用。
 
 详细信息参见 [Collapsing](#table_engines_versionedcollapsingmergetree) 部分。
 
@@ -58,13 +58,13 @@ VersionedCollapsingMergeTree(sign, version)
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-```
+  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+  ```
 
   除 `sign` 和 `version` 之外的所有参数，其含义与 `MergeTree` 中相同。
 

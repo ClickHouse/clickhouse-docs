@@ -91,7 +91,6 @@ GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-
 现在你可以以 `user_1` 身份连接并执行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
 
 ```sql
@@ -107,7 +106,6 @@ FROM events
 5. │         1 │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## 独立表 \{#separate-tables\}
 
@@ -185,7 +183,7 @@ GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-现在您可以以 `user_1` 身份连接并对该用户对应的表运行简单的 SELECT 查询。仅返回第一个租户的行。 
+现在您可以以 `user_1` 身份连接并对该用户对应的表运行简单的 SELECT 查询。仅返回第一个租户的行。
 
 ```sql
 -- Logged as user_1
@@ -200,7 +198,6 @@ FROM default.events_tenant_1
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## 独立数据库 \{#separate-databases\}
 
@@ -286,7 +283,6 @@ GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-
 现在，你可以以 `user_1` 身份连接到数据库，并在相应数据库的 events 表上执行一个简单的 SELECT 查询。只会返回第一个租户的行。
 
 ```sql
@@ -303,18 +299,17 @@ FROM tenant_1.events
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-
 ## 计算-计算分离 \{#compute-compute-separation\}
 
-上面描述的三种方法也可以通过使用 [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据存储在共享的对象存储中，但借助于 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation)，每个租户都可以拥有自己的计算服务，并配置不同的 CPU/内存配比。 
+上面描述的三种方法也可以通过使用 [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据存储在共享的对象存储中，但借助于 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation)，每个租户都可以拥有自己的计算服务，并配置不同的 CPU/内存配比。
 
-用户管理与前面描述的方法类似，因为同一 Warehouse 中的所有服务都会[共享访问控制](/cloud/reference/warehouses#database-credentials)。 
+用户管理与前面描述的方法类似，因为同一 Warehouse 中的所有服务都会[共享访问控制](/cloud/reference/warehouses#database-credentials)。
 
 请注意，一个 Warehouse 中的子服务数量有较小的上限。参见 [Warehouse 限制](/cloud/reference/warehouses#limitations)。
 
 ## 独立的云服务 \{#separate-service\}
 
-最激进的方法是为每个租户单独使用一个 ClickHouse 服务。 
+最激进的方法是为每个租户单独使用一个 ClickHouse 服务。
 
 > **这种较少使用的方法适用于需要将租户数据存储在不同区域的场景——通常出于法律、安全或就近访问等原因。**
 

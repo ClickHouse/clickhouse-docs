@@ -85,7 +85,6 @@ FROM
 
 В этом случае следует помнить, что вы не знаете границы интервалов гистограммы.
 
-
 ## sequenceMatch \{#sequencematch\}
 
 Проверяет, содержит ли последовательность цепочку событий, соответствующую заданному шаблону.
@@ -116,7 +115,6 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 * 0, если шаблон не совпал.
 
 Тип: `UInt8`.
-
 
 #### Синтаксис шаблона \{#pattern-syntax\}
 
@@ -178,7 +176,6 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 
 * [sequenceCount](#sequencecount)
 
-
 ## sequenceCount \{#sequencecount\}
 
 Подсчитывает количество цепочек событий, соответствующих шаблону. Функция ищет цепочки событий, которые не перекрываются: после сопоставления текущей цепочки она начинает поиск следующей.
@@ -235,7 +232,6 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 │                                                                       2 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sequenceMatchEvents \{#sequencematchevents\}
 
@@ -298,7 +294,6 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 
 * [sequenceMatch](#sequencematch)
 
-
 ## windowFunnel \{#windowfunnel\}
 
 Ищет цепочки событий в скользящем временном окне и вычисляет максимальное число событий из цепочки, произошедших в этом окне.
@@ -351,7 +346,6 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 4. Пользователь оформил повторный заказ (`eventID = 1010`).
 
 Входная таблица:
-
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
@@ -427,7 +421,6 @@ FROM
 GROUP BY level
 ORDER BY level ASC;
 ```
-
 
 ## retention \{#retention\}
 
@@ -534,7 +527,6 @@ ORDER BY uid ASC
 
 Результат:
 
-
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -589,7 +581,6 @@ FROM
 * `r2` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени между 2020-01-01 и 2020-01-02 (условия `cond1` и `cond2`).
 * `r3` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени в даты 2020-01-01 и 2020-01-03 (условия `cond1` и `cond3`).
 
-
 ## uniqUpTo(N)(x) \{#uniquptonx\}
 
 Вычисляет количество различных значений аргумента до заданного предела `N`. Если количество различных значений аргумента больше `N`, функция возвращает `N` + 1, в противном случае вычисляет точное значение.
@@ -609,7 +600,6 @@ HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
 `uniqUpTo(4)(UserID)` вычисляет количество уникальных значений `UserID` для каждого `SearchPhrase`, но считает только до 4 уникальных значений. Если для какого-либо `SearchPhrase` существует более 4 уникальных значений `UserID`, функция возвращает 5 (4 + 1). Затем условие `HAVING` отфильтровывает значения `SearchPhrase`, для которых количество уникальных значений `UserID` меньше 5. В результате вы получите список поисковых запросов, которые использовались как минимум 5 уникальными пользователями.
-
 
 ## sumMapFiltered \{#summapfiltered\}
 
@@ -660,7 +650,6 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
@@ -723,7 +712,6 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
 ```
-
 
 ## sequenceNextNode \{#sequencenextnode\}
 
@@ -801,7 +789,6 @@ INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2,
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
 
-
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -862,7 +849,6 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
@@ -939,7 +925,6 @@ ORDER BY id;
 
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;

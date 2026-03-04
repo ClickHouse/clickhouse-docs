@@ -13,7 +13,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
-
 # ClickHouse Go \{#clickhouse-go\}
 
 ## 一个简单示例 \{#a-simple-example\}
@@ -117,7 +116,6 @@ func connect() (driver.Conn, error) {
     return conn, nil
 }
 ```
-
 
 ### 运行 go mod tidy \{#run-go-mod-tidy\}
 
@@ -250,7 +248,6 @@ go run main.go
 
 ```
 
-
 ### 版本管理与兼容性 \{#versioning--compatibility\}
 
 该客户端的发布独立于 ClickHouse。2.x 是当前开发中的主版本分支。所有 2.x 版本之间都应保持相互兼容。
@@ -259,15 +256,15 @@ go run main.go
 
 客户端支持：
 
-- [此处](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)记录的所有当前仍受支持的 ClickHouse 版本。一旦某些 ClickHouse 版本不再受支持，也将不再针对客户端新版本进行主动测试。
-- 自客户端发布日期起 2 年内的所有 ClickHouse 版本。注意：仅对 LTS 版本进行主动测试。
+* [此处](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)记录的所有当前仍受支持的 ClickHouse 版本。一旦某些 ClickHouse 版本不再受支持，也将不再针对客户端新版本进行主动测试。
+* 自客户端发布日期起 2 年内的所有 ClickHouse 版本。注意：仅对 LTS 版本进行主动测试。
 
 #### Golang 兼容性 \{#golang-compatibility\}
 
 | 客户端版本 | Golang 版本 |
 |:--------------:|:---------------:|
-|  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
-|     >= 2.3     |       1.18      |
+|  =&gt; 2.0 &lt;= 2.2 |    1.17, 1.18   |
+|     &gt;= 2.3     |       1.18      |
 
 ## ClickHouse 客户端 API \{#clickhouse-client-api\}
 
@@ -298,7 +295,6 @@ fmt.Println(v)
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
 
 **在后续所有示例中，除非特别说明，否则都假定 ClickHouse 的 `conn` 变量已创建并可用。**
-
 
 #### 连接设置 \{#connection-settings\}
 
@@ -436,7 +432,6 @@ v, err := conn.ServerVersion()
 
 如果需要额外的 TLS 参数，应用代码应在 `tls.Config` 结构体中设置相应字段。这可以包括指定密码套件、强制使用特定 TLS 版本（如 1.2 或 1.3）、添加内部 CA 证书链、在 ClickHouse 服务器要求时添加客户端证书（及其私钥），以及大多数用于更高级安全配置的其他选项。
 
-
 ### 认证 \{#authentication\}
 
 在连接配置中通过指定 Auth 结构体来设置用户名和密码。
@@ -534,7 +529,6 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 注意可以将 Context 传递给查询。这可以用于传入特定的查询级别设置——参见[使用 Context](#using-context)。
 
-
 ### 批量插入 \{#batch-insert\}
 
 为了插入大量行，客户端提供了批处理语义。需要先准备一个批处理对象，然后可以向其中追加多行数据。最后通过 `Send()` 方法发送该批处理。在执行 `Send` 之前，批处理会保存在内存中。
@@ -627,7 +621,6 @@ return batch.Send()
 
 若要查看每种列类型所支持的 Go 类型的完整说明，请参阅 [类型转换](#type-conversions)。
 
-
 ### 查询行 \{#querying-rows\}
 
 用户可以使用 `QueryRow` 方法查询单行，或通过 `Query` 获取用于遍历结果集的游标。前者接收一个用于存放结果数据的目标变量，而后者则需要对每一行调用 `Scan`。
@@ -677,7 +670,6 @@ return rows.Err()
 与插入操作类似，`Scan` 方法要求目标变量使用合适的类型。该方法同样尽量保持灵活，只要不会产生精度损失，就会在可能的情况下进行类型转换，例如，上述示例展示了将一个 UUID 列读取到字符串变量中。有关每种列类型所支持的 Go 类型的完整列表，请参阅 [类型转换](#type-conversions)。
 
 最后，请注意可以向 `Query` 和 `QueryRow` 方法传入 `Context`。这可用于配置查询级别的设置——更多详情请参阅 [使用 Context](#using-context)。
-
 
 ### 异步插入 \{#async-insert\}
 
@@ -902,7 +894,6 @@ rows.Close()
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
 
-
 #### Map \{#map\}
 
 `Map` 应作为 Go 语言的 `map` 插入，其键和值必须符合[前面](#type-conversions)定义的类型规则。
@@ -952,7 +943,6 @@ rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
-
 
 #### Tuples \{#tuples\}
 
@@ -1127,7 +1117,6 @@ rows.Close()
 [完整示例 - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
 如果 `flatten_nested` 使用默认值 1，嵌套列会被扁平化为多个独立数组。这要求在插入和查询时使用嵌套切片。尽管任意层级的嵌套在实践中可能可行，但这并未得到官方支持。
-
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1326,7 +1315,6 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
 
-
 #### Decimal \{#decimal\}
 
 由于 Go 缺少内置的 `Decimal` 类型，我们建议使用第三方包 [github.com/shopspring/decimal](https://github.com/shopspring/decimal)，以便在不修改原始查询的情况下原生支持 `Decimal` 类型。
@@ -1385,7 +1373,6 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, co
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
-
 
 #### Nullable \{#nullable\}
 
@@ -1627,7 +1614,6 @@ fmt.Printf("NamedDate count: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
 
-
 ### 使用 context \{#using-context\}
 
 Go 的 context 提供了一种在 API 边界之间传递截止时间、取消信号及其他请求作用域值的机制。连接上的所有方法都将 context 作为其第一个参数。虽然前面的示例使用的是 `context.Background()`，但你可以利用这一能力来传递设置和截止时间，并取消查询。
@@ -1728,7 +1714,6 @@ for i := 1; i <= 6; i++ {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
-
 ### 进度 / Profile / 日志信息 \{#progressprofilelog-information\}
 
 在查询中可以请求 Progress、Profile 和 Log 信息。Progress 信息会报告在 ClickHouse 中已读取和处理的行数和字节数等统计数据。相比之下，Profile 信息会提供返回给客户端的数据摘要，包括未压缩字节数、行数和数据块数量等总计信息。最后，Log 信息会提供线程相关统计信息，例如内存使用情况和数据处理速度。
@@ -1764,7 +1749,6 @@ rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
-
 
 ### 动态扫描 \{#dynamic-scanning\}
 
@@ -1808,7 +1792,6 @@ if err := rows.Err(); err != nil {
 ```
 
 [完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
-
 
 ### 外部表 \{#external-tables\}
 
@@ -1880,7 +1863,6 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
 
-
 ### OpenTelemetry \{#open-telemetry\}
 
 ClickHouse 允许在原生协议中传递[跟踪上下文](/operations/opentelemetry/)。客户端支持通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 传递，从而实现这一点。
@@ -1906,7 +1888,6 @@ fmt.Printf("count: %d\n", count)
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
 
 关于如何使用链路追踪的完整说明，请参见 [OpenTelemetry 支持](/operations/opentelemetry/)。
-
 
 ## Database/SQL API \{#databasesql-api\}
 
@@ -1956,7 +1937,6 @@ func ConnectDSN() error {
 
 **在后续所有示例中，除非特别说明，我们都假定已创建并可以使用名为 `conn` 的 ClickHouse 连接变量。**
 
-
 #### 连接设置 \{#connection-settings-1\}
 
 可以在 DSN 字符串中传递以下参数：
@@ -1995,10 +1975,9 @@ func ConnectSettings() error {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
-
 #### 连接池 \{#connection-pooling-1\}
 
-你可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。 
+你可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。
 对于 Native（TCP）和 HTTP 协议，均启用了连接池。
 
 #### 通过 HTTP 连接 \{#connecting-over-http\}
@@ -2200,7 +2179,6 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 
 此方法不支持接收 context 参数——默认情况下，它使用后台 context 执行。如果有此需求，用户可以使用 `ExecContext`——参见[使用 Context](#using-context)。
 
-
 ### 批量插入 \{#batch-insert-1\}
 
 可以通过使用 `Being` 方法创建一个 `sql.Tx` 来实现批量语义。随后，使用携带 `INSERT` 语句的 `Prepare` 方法获取一个批处理对象。该方法返回一个 `sql.Stmt`，可以通过 `Exec` 方法向其中追加多行数据。批处理会在内存中累积，直到对原始的 `sql.Tx` 调用 `Commit` 为止。
@@ -2286,7 +2264,6 @@ if err := rows.Err(); err != nil {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
-
 
 ### 异步插入 \{#async-insert-1\}
 
@@ -2381,7 +2358,6 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
 
 插入行为与 ClickHouse API 保持一致。
-
 
 ### 压缩 \{#compression-1\}
 
@@ -2543,7 +2519,6 @@ if err := rows.Err(); err != nil {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
 
-
 ### 会话 \{#sessions\}
 
 原生连接本身就包含一个会话，而通过 HTTP 的连接则要求用户创建一个会话 ID，用于在设置中传递上下文。这样可以使用诸如临时表等依赖会话的特性。
@@ -2612,7 +2587,6 @@ if err := rows.Err(); err != nil {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
 
-
 ### 动态扫描 \{#dynamic-scanning-1\}
 
 与 [ClickHouse API](#dynamic-scanning) 类似，这里也可以获取列的类型信息，便于你在运行时创建类型正确的变量实例并将其传递给 Scan。这样即使事先不知道列的类型，也可以读取这些列。
@@ -2657,7 +2631,6 @@ if err := rows.Err(); err != nil {
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
-
 
 ### 外部表 \{#external-tables-1\}
 
@@ -2730,7 +2703,6 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
-
 ### OpenTelemetry \{#open-telemetry-1\}
 
 ClickHouse 允许在原生协议中传递 [trace context](/operations/opentelemetry/)。客户端可以通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 进行传递来实现这一点。当使用 HTTP 作为传输协议时，不支持该功能。
@@ -2754,7 +2726,6 @@ fmt.Printf("count: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
-
 
 ## 性能建议 \{#performance-tips\}
 

@@ -32,7 +32,6 @@ pip install "chdb[arrow]>=4.0"
 pip install "chdb[all]>=4.0"
 ```
 
-
 ### Проверка установки \{#verify\}
 
 ```python
@@ -42,7 +41,6 @@ print(chdb.__version__)  # Should print 4.x.x or higher
 from chdb import datastore as pd
 print("DataStore ready!")
 ```
-
 
 ## Однострочная миграция с Pandas \{#migration\}
 
@@ -57,7 +55,6 @@ from chdb import datastore as pd
 ```
 
 Вот и всё! Теперь ваш существующий код на pandas будет использовать DataStore и выигрывать от оптимизации SQL.
-
 
 ### Пример переноса данных \{#migration-example\}
 
@@ -93,7 +90,6 @@ result = (df[df['salary'] > 50000]
 print(result)  # Same result, faster execution!
 ```
 
-
 ## Основы использования \{#basic-usage\}
 
 ### Создание хранилища данных DataStore \{#creating\}
@@ -120,7 +116,6 @@ ds = pd.read_csv("data.csv")
 ds = pd.read_parquet("data.parquet")
 ```
 
-
 ### Фильтрация данных \{#filtering\}
 
 ```python
@@ -141,7 +136,6 @@ young_or_senior = ds[(ds['age'] < 25) | (ds['age'] > 50)]
 result = ds.filter(ds['salary'] > 50000)
 ```
 
-
 ### Выбор столбцов \{#selecting\}
 
 ```python
@@ -152,7 +146,6 @@ subset = ds[['name', 'age']]
 subset = ds.select('name', 'age')
 ```
 
-
 ### Сортировка \{#sorting\}
 
 ```python
@@ -162,7 +155,6 @@ sorted_ds = ds.sort_values('salary', ascending=False)
 # SQL style
 sorted_ds = ds.sort('salary', ascending=False)
 ```
-
 
 ### Группировка и агрегирование \{#groupby\}
 
@@ -197,7 +189,6 @@ summary = ds.groupby('category').agg({
 })
 ```
 
-
 ### Объединение хранилищ данных \{#joining\}
 
 ```python
@@ -224,7 +215,6 @@ result = employees.join(departments, on='dept_id', how='left')
 result = pd.merge(employees, departments, on='dept_id')
 ```
 
-
 ## Получение результатов \{#results\}
 
 DataStore использует отложенное вычисление (lazy evaluation) — операции не выполняются, пока не потребуются результаты.
@@ -243,7 +233,6 @@ df = ds.to_df()     # Convert to pandas DataFrame
 df = ds.to_pandas() # Same as to_df()
 ```
 
-
 ### Просмотр сгенерированного SQL-кода \{#view-sql\}
 
 ```python
@@ -261,7 +250,6 @@ WHERE age > 25
 GROUP BY city
 ```
 
-
 ## Работа с разными источниками данных \{#data-sources\}
 
 ### Локальные файлы \{#local-files\}
@@ -278,7 +266,6 @@ ds = pd.read_parquet("data.parquet")
 # JSON
 ds = pd.read_json("data.json")
 ```
-
 
 ### Облачное хранилище \{#cloud-storage\}
 
@@ -298,7 +285,6 @@ ds = DataStore.from_s3(
 # HTTP/HTTPS
 ds = DataStore.uri("https://example.com/data.csv")
 ```
-
 
 ### Базы данных \{#databases\}
 
@@ -327,7 +313,6 @@ ds = DataStore.from_postgresql(
 ds = DataStore.uri("mysql://user:pass@localhost:3306/mydb/users")
 ```
 
-
 ## Операции со строками и типом DateTime \{#accessors\}
 
 ### Строковые операции \{#string-ops\}
@@ -339,7 +324,6 @@ ds['name_len'] = ds['name'].str.len()
 ds['has_a'] = ds['name'].str.contains('a')
 ```
 
-
 ### Операции с датой и временем \{#datetime-ops\}
 
 ```python
@@ -348,7 +332,6 @@ ds['year'] = ds['date'].dt.year
 ds['month'] = ds['date'].dt.month
 ds['day_of_week'] = ds['date'].dt.dayofweek
 ```
-
 
 ### Расширения ClickHouse \{#extensions\}
 
@@ -363,7 +346,6 @@ ds['user_name'] = ds['json_data'].json.get_string('name')
 ds['is_ipv4'] = ds['ip_addr'].ip.is_ipv4_string()
 ```
 
-
 ## Рекомендации \{#best-practices\}
 
 ### 1. Используйте формат Parquet для больших файлов \{#use-parquet-for-large-files\}
@@ -375,7 +357,6 @@ ds = pd.read_csv("large_data.csv")
 # Parquet - faster, columnar format, reads only needed columns
 ds = pd.read_parquet("large_data.parquet")
 ```
-
 
 ### 2. Фильтруйте как можно раньше \{#filter-early\}
 
@@ -390,7 +371,6 @@ result = (ds
 result = ds.groupby('category')['amount'].sum()
 ```
 
-
 ### 3. Выбирайте только нужные столбцы \{#select-only-needed-columns\}
 
 ```python
@@ -400,7 +380,6 @@ result = ds.select('name', 'age', 'city').filter(ds['age'] > 25)
 # Less optimal - work with all columns
 result = ds.filter(ds['age'] > 25)
 ```
-
 
 ### 4. Используйте SQL для сложных операций \{#use-sql-for-complex-operations\}
 
@@ -421,10 +400,9 @@ result = ds.sql("""
 """)
 ```
 
-
 ## Дальнейшие шаги \{#next-steps\}
 
-- Узнайте обо всех [Factory Methods](factory-methods.md) для создания DataStore
-- Изучите [Query Building](query-building.md) для операций в стиле SQL
-- Ознакомьтесь с [Accessors](accessors.md) для строк, дат и времени и многого другого
-- Прочитайте [Performance Guide](../guides/pandas-performance.md) с советами по оптимизации
+* Узнайте обо всех [Factory Methods](factory-methods.md) для создания DataStore
+* Изучите [Query Building](query-building.md) для операций в стиле SQL
+* Ознакомьтесь с [Accessors](accessors.md) для строк, дат и времени и многого другого
+* Прочитайте [Performance Guide](../guides/pandas-performance.md) с советами по оптимизации

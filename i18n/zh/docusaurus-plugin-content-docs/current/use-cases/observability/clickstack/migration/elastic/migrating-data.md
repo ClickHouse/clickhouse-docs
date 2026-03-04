@@ -19,55 +19,53 @@ doc_type: 'guide'
 2. **自然的数据过期**：大多数可观测性数据都有有限的保留期（通常为 30 天或更短），随着数据在 Elastic 中自然过期，可以实现自然过渡。
 3. **简化迁移过程**：无需使用复杂的数据传输工具或流程在系统之间移动历史数据。
 
-<br/>
+<br />
 
 :::note 数据迁移
-我们在 ["Migrating data"](#migrating-data) 章节中演示了从 Elasticsearch 向 ClickHouse 迁移关键数据的一种方法。对于更大规模的数据集不应采用该方法，因为其性能往往不佳——受限于 Elasticsearch 的导出效率，且仅支持 JSON 格式。
+我们在 [&quot;Migrating data&quot;](#migrating-data) 章节中演示了从 Elasticsearch 向 ClickHouse 迁移关键数据的一种方法。对于更大规模的数据集不应采用该方法，因为其性能往往不佳——受限于 Elasticsearch 的导出效率，且仅支持 JSON 格式。
 :::
 
 ### 实施步骤 \{#implementation-steps\}
 
 <VerticalStepper headerLevel="h4">
+  #### 配置双重摄取 \{#configure-dual-ingestion\}
 
-#### 配置双重摄取 \{#configure-dual-ingestion\}
+  将数据采集管道配置为同时向 Elastic 和 ClickStack 发送数据。
 
-将数据采集管道配置为同时向 Elastic 和 ClickStack 发送数据。 
+  具体实现方式取决于当前使用的采集代理（agent）—— 参见「[迁移 Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents)」。
 
-具体实现方式取决于当前使用的采集代理（agent）—— 参见「[迁移 Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents)」。
+  #### 调整保留期 \{#adjust-retention-period\}
 
-#### 调整保留期 \{#adjust-retention-period\}
+  将 Elastic 的 TTL 设置配置为与目标保留期一致。配置 ClickStack 的 [TTL](/use-cases/observability/clickstack/production#configure-ttl)，以在相同时间范围内保留数据。
 
-将 Elastic 的 TTL 设置配置为与目标保留期一致。配置 ClickStack 的 [TTL](/use-cases/observability/clickstack/production#configure-ttl)，以在相同时间范围内保留数据。
+  #### 验证与对比 \{#validate-and-compare\}
 
-#### 验证与对比 \{#validate-and-compare\}
+  * 在两个系统上运行查询以确保数据一致性
+  * 对比查询性能和结果
+  * 将仪表盘和告警迁移到 ClickStack。目前这仍是一个手动流程。
+  * 验证所有关键仪表盘和告警在 ClickStack 中是否按预期工作
 
-- 在两个系统上运行查询以确保数据一致性
-- 对比查询性能和结果
-- 将仪表盘和告警迁移到 ClickStack。目前这仍是一个手动流程。
-- 验证所有关键仪表盘和告警在 ClickStack 中是否按预期工作
+  #### 渐进式切换 \{#graudal-transition\}
 
-#### 渐进式切换 \{#graudal-transition\}
-
-- 随着 Elastic 中的数据自然过期，你会逐步更多地依赖 ClickStack
-- 一旦对 ClickStack 建立了足够信心，即可开始将查询和仪表盘重定向到 ClickStack
-
+  * 随着 Elastic 中的数据自然过期，你会逐步更多地依赖 ClickStack
+  * 一旦对 ClickStack 建立了足够信心，即可开始将查询和仪表盘重定向到 ClickStack
 </VerticalStepper>
 
 ### 长期保留 \{#long-term-retention\}
 
 对于需要更长数据保留周期的组织：
 
-- 在 Elastic 中的所有数据过期之前，继续并行运行这两个系统
-- 利用 ClickStack 的 [分层存储](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 功能高效管理长期数据。
-- 考虑使用 [物化视图](/materialized-view/incremental-materialized-view) 来维护聚合或过滤后的历史数据，同时允许原始数据过期。
+* 在 Elastic 中的所有数据过期之前，继续并行运行这两个系统
+* 利用 ClickStack 的 [分层存储](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 功能高效管理长期数据。
+* 考虑使用 [物化视图](/materialized-view/incremental-materialized-view) 来维护聚合或过滤后的历史数据，同时允许原始数据过期。
 
 ### 迁移时间线 \{#migration-timeline\}
 
 迁移时间线取决于数据保留要求：
 
-- **30 天保留期**：迁移可以在一个月内完成。
-- **更长保留期**：在 Elastic 中的数据过期之前，继续保持并行运行。
-- **历史数据**：如确有必要，可考虑使用 [迁移数据](#migrating-data) 来导入特定的历史数据。
+* **30 天保留期**：迁移可以在一个月内完成。
+* **更长保留期**：在 Elastic 中的数据过期之前，继续保持并行运行。
+* **历史数据**：如确有必要，可考虑使用 [迁移数据](#migrating-data) 来导入特定的历史数据。
 
 ## 迁移设置 \{#migration-settings\}
 
@@ -77,21 +75,21 @@ doc_type: 'guide'
 
 我们建议从**单个分片**开始，并进行纵向扩展。此配置适用于大多数可观测性工作负载，同时简化管理和查询性能优化。
 
-- **[ClickHouse Cloud](https://clickhouse.com/cloud)**：默认采用单分片、多副本架构。存储与计算可独立扩展，非常适合摄取模式不可预测且以读取为主的可观测性用例。
-- **ClickHouse OSS**：在自行管理的部署中，我们建议：
-  - 从单个分片开始
-  - 通过增加 CPU 和 RAM 进行纵向扩展
-  - 使用[分层存储](/observability/managing-data#storage-tiers)，通过 S3 兼容对象存储扩展本地磁盘
-  - 在需要高可用性时使用 [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication)
-  - 为实现容错能力，[1 个分片副本](/engines/table-engines/mergetree-family/replication)通常已足以满足可观测性工作负载的需求。
+* **[ClickHouse Cloud](https://clickhouse.com/cloud)**：默认采用单分片、多副本架构。存储与计算可独立扩展，非常适合摄取模式不可预测且以读取为主的可观测性用例。
+* **ClickHouse OSS**：在自行管理的部署中，我们建议：
+  * 从单个分片开始
+  * 通过增加 CPU 和 RAM 进行纵向扩展
+  * 使用[分层存储](/observability/managing-data#storage-tiers)，通过 S3 兼容对象存储扩展本地磁盘
+  * 在需要高可用性时使用 [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication)
+  * 为实现容错能力，[1 个分片副本](/engines/table-engines/mergetree-family/replication)通常已足以满足可观测性工作负载的需求。
 
 ### 何时进行分片 \{#when-to-shard\}
 
 在以下情况下，可能需要进行分片：
 
-- 您的摄取速率超过单个节点的处理能力（通常 &gt;500K 行/秒）
-- 您需要实现租户隔离或区域性数据隔离
-- 即使使用对象存储，您的整个数据集对于单台服务器来说仍然过大
+* 您的摄取速率超过单个节点的处理能力（通常 &gt;500K 行/秒）
+* 您需要实现租户隔离或区域性数据隔离
+* 即使使用对象存储，您的整个数据集对于单台服务器来说仍然过大
 
 如果确实需要分片，请参考[横向扩展](/architecture/horizontal-scaling)，获取关于分片键和分布式表设置的指导。
 
@@ -99,9 +97,9 @@ doc_type: 'guide'
 
 ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clickstack/production#configure-ttl) 来管理数据过期。TTL 策略可以：
 
-- 自动删除已过期的数据
-- 将较旧的数据迁移到冷对象存储
-- 仅在快速磁盘上保留最新且高频查询的日志
+* 自动删除已过期的数据
+* 将较旧的数据迁移到冷对象存储
+* 仅在快速磁盘上保留最新且高频查询的日志
 
 我们建议将 ClickHouse 的 TTL 配置与现有的 Elastic 保留策略保持一致，以便在迁移期间维持统一的数据生命周期。示例请参见 [ClickStack 生产环境 TTL 配置](/use-cases/observability/clickstack/production#configure-ttl)。
 
@@ -109,16 +107,16 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
 虽然我们建议对大多数可观测性数据采用并行运行的方式，但在某些特定情况下，可能需要将数据从 Elasticsearch 直接迁移到 ClickHouse：
 
-- 用于数据富化的小型查找表（例如用户映射、服务目录）
-- 存储在 Elasticsearch 中、需要与可观测性数据进行关联的业务数据。在这种情况下，相比于 Elasticsearch 相对受限的查询能力，借助 ClickHouse 的 SQL 能力以及与商业智能（BI）工具的集成，可以更轻松地维护和查询这些数据。
-- 需要在迁移过程中保留的配置数据
+* 用于数据富化的小型查找表（例如用户映射、服务目录）
+* 存储在 Elasticsearch 中、需要与可观测性数据进行关联的业务数据。在这种情况下，相比于 Elasticsearch 相对受限的查询能力，借助 ClickHouse 的 SQL 能力以及与商业智能（BI）工具的集成，可以更轻松地维护和查询这些数据。
+* 需要在迁移过程中保留的配置数据
 
 由于 Elasticsearch 的导出能力仅限于通过 HTTP 导出 JSON，且在更大规模数据集下扩展性较差，因此该方法仅适用于行数少于 1000 万的数据集。
 
 以下步骤说明如何将单个 Elasticsearch 索引迁移到 ClickHouse。
 
 <VerticalStepper headerLevel="h3">
-  ### 迁移数据库架构
+  ### 迁移数据库架构 \{#migrate-scheme\}
 
   在 ClickHouse 中为从 Elasticsearch 迁移的索引创建表。您可以将 [Elasticsearch 类型映射到其 ClickHouse](/use-cases/observability/clickstack/migration/elastic/types) 对应类型。或者,您也可以直接使用 ClickHouse 中的 JSON 数据类型,它会在插入数据时动态创建相应类型的列。
 
@@ -557,7 +555,7 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
   有关在架构中使用 JSON 类型以及如何高效应用的更多详细信息,请参阅指南 [&quot;设计您的架构&quot;](/integrations/data-formats/json/schema)。
 
-  ### 安装 `elasticdump`
+  ### 安装 `elasticdump` \{#install-elasticdump\}
 
   我们推荐使用 [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) 从 Elasticsearch 导出数据。该工具依赖 `node`,应安装在与 Elasticsearch 和 ClickHouse 网络邻近的机器上。对于大多数导出操作,我们建议使用至少 4 核 CPU 和 16GB 内存的专用服务器。
 
@@ -573,11 +571,11 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
   在可能的情况下,我们建议将 ClickHouse、Elasticsearch 和 `elastic dump` 部署在同一可用区或数据中心内,以减少网络出口流量并最大化吞吐量。
 
-  ### 安装 ClickHouse 客户端
+  ### 安装 ClickHouse 客户端 \{#install-clickhouse-client\}
 
   确保在 `elasticdump` 所在的[服务器上安装 ClickHouse](/install)。**请勿启动 ClickHouse 服务器** - 这些步骤仅需要客户端。
 
-  ### 流式传输数据
+  ### 流式传输数据 \{#stream-data\}
 
   要在 Elasticsearch 和 ClickHouse 之间流式传输数据,请使用 `elasticdump` 命令,通过管道将输出直接传递给 ClickHouse 客户端。以下操作会将数据插入到结构良好的表 `logs_system_syslog` 中。
 
@@ -631,7 +629,7 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
   有关更多详细信息,请参阅[&quot;将 JSON 读取为对象&quot;](/integrations/data-formats/json/other-formats#reading-json-as-an-object)。
   :::
 
-  ### 转换数据(可选)
+  ### 转换数据(可选) \{#transform-data\}
 
   上述命令假设 Elasticsearch 字段与 ClickHouse 列之间存在一对一映射。用户通常需要在将 Elasticsearch 数据插入 ClickHouse 之前对其进行过滤和转换。
 

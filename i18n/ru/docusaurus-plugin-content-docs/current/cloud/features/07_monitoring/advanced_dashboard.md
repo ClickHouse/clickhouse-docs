@@ -28,7 +28,6 @@ import Image from '@theme/IdealImage';
 так и в ClickHouse Cloud. В этой статье мы покажем, как использовать расширенную панель мониторинга в
 ClickHouse Cloud.
 
-
 ## Доступ к расширенной панели мониторинга \{#accessing-the-advanced-dashboard\}
 
 Перейдите к расширенной панели мониторинга:
@@ -36,7 +35,7 @@ ClickHouse Cloud.
 * Левая боковая панель
   * `Monitoring` → `Advanced dashboard`
 
-<Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
+<Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard" />
 
 ## Доступ к встроенной расширенной панели мониторинга \{#accessing-the-native-advanced-dashboard\}
 
@@ -49,22 +48,22 @@ ClickHouse Cloud.
 Откроется встроенная расширенная панель мониторинга в новой вкладке. Для доступа
 к панели мониторинга потребуется аутентификация.
 
-<Image img={NativeAdvancedDashboard} size="lg" alt="Расширенная панель мониторинга"/>
+<Image img={NativeAdvancedDashboard} size="lg" alt="Расширенная панель мониторинга" />
 
 Каждая визуализация имеет связанный с ней SQL-запрос, который формирует её содержимое. Вы можете
 отредактировать этот запрос, нажав на значок карандаша.
 
-<Image img={EditVisualization} size="lg" alt="Расширенная панель мониторинга"/>
+<Image img={EditVisualization} size="lg" alt="Расширенная панель мониторинга" />
 
 ## Готовые визуализации \{#out-of-box-visualizations\}
 
-Базовые графики в Advanced Dashboard предназначены для обеспечения 
-наблюдаемости вашей системы ClickHouse в режиме реального времени. Ниже приведён список 
+Базовые графики в Advanced Dashboard предназначены для обеспечения
+наблюдаемости вашей системы ClickHouse в режиме реального времени. Ниже приведён список
 этих графиков с описанием каждого. Они сгруппированы в три категории, чтобы упростить навигацию.
 
 ### Специфичные для ClickHouse \{#clickhouse-specific\}
 
-Эти метрики предназначены для мониторинга состояния и производительности 
+Эти метрики предназначены для мониторинга состояния и производительности
 экземпляра ClickHouse.
 
 | Metric                    | Description                                                                                           |

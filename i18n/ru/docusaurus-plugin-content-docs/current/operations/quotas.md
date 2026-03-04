@@ -137,4 +137,4 @@ doc_type: 'guide'
 
 ## Связанные материалы \{#related-content\}
 
-- Статья в блоге: [Создание одностраничных веб-приложений с ClickHouse](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)
+* Статья в блоге: [Создание одностраничных веб-приложений с ClickHouse](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

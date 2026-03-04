@@ -19,7 +19,6 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 凡是将备份导出到同一云服务提供商的其他区域的用法，都会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
 :::
 
-
 ## 前提条件 \{#requirements\}
 
 要将备份导出到或从你自己的 CSP 存储 bucket 中恢复，需要准备以下信息。
@@ -49,7 +48,6 @@ Where:
 若要使用基于 role 的身份验证，请按照 Secure S3 的[配置步骤](https://clickhouse.com/docs/cloud/security/secure-s3)。此外，你还需要在[此处](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)所述的 IAM 策略中添加 `s3:PutObject` 和 `s3:DeleteObject` 权限。
 :::
 
-
 ### Azure \{#azure\}
 
 1. Azure 存储连接字符串。
@@ -65,7 +63,7 @@ Where:
    ```
 2. 用于访问的 HMAC key 和 HMAC secret。
 
-<hr/>
+<hr />
 
 # 备份与恢复 \{#backup-restore\}
 
@@ -95,7 +93,6 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
-
 ### 从备份中恢复 \{#restore-from-a-backup\}
 
 ```sql
@@ -105,7 +102,6 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 ```
 
 详情请参见：[将 BACKUP/RESTORE 配置为使用 S3 端点](/operations/backup/s3_endpoint)。
-
 
 ## 备份 / 恢复到 Azure Blob 存储 \{#backup--restore-to-azure-blob-storage\}
 
@@ -128,7 +124,6 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-
 ### 从备份中恢复 \{#restore-from-a-backup-1\}
 
 ```sql
@@ -138,7 +133,6 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 ```
 
 请参阅：[配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) 了解更多详情。
-
 
 ## 备份 / 恢复到 Google Cloud Storage (GCS) \{#backup--restore-to-google-cloud-storage-gcs\}
 
@@ -160,7 +154,6 @@ BACKUP DATABASE test_backups
 TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', 'key', 'secret')
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
-
 
 ### 从备份恢复 \{#restore-from-a-backup-2\}
 

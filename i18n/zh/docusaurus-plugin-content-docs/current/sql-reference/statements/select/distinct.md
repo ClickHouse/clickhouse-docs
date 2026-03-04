@@ -109,6 +109,6 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 也可以在不使用任何聚合函数的情况下，对 `SELECT` 子句中指定的同一组值使用 [GROUP BY](/sql-reference/statements/select/group-by)，从而获得相同的结果。但与基于 `GROUP BY` 的方式相比，仍存在一些差异：
 
-- `DISTINCT` 可以与 `GROUP BY` 一起使用。
-- 当省略 [ORDER BY](../../../sql-reference/statements/select/order-by.md) 且指定了 [LIMIT](../../../sql-reference/statements/select/limit.md) 时，在读取到所需数量的不同结果行后，查询会立刻停止运行。
-- 数据块在处理的同时就会被输出，而无需等待整个查询运行结束。
+* `DISTINCT` 可以与 `GROUP BY` 一起使用。
+* 当省略 [ORDER BY](../../../sql-reference/statements/select/order-by.md) 且指定了 [LIMIT](../../../sql-reference/statements/select/limit.md) 时，在读取到所需数量的不同结果行后，查询会立刻停止运行。
+* 数据块在处理的同时就会被输出，而无需等待整个查询运行结束。

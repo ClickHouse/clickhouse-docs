@@ -20,7 +20,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 # 将 ClickHouse 连接到 Fabi.ai \{#connecting-clickhouse-to-fabiai\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 <a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> 是一个一体化协作式数据分析平台。你可以借助 SQL、Python、AI 和无代码能力，以前所未有的速度构建仪表盘和数据工作流。结合 ClickHouse 的强大规模与性能，你可以在几分钟内基于海量数据集构建并分享第一个高性能仪表盘。
 
@@ -35,7 +35,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 登录或创建你的 Fabi.ai 账户：https://app.fabi.ai/
 
 1. 在你首次创建账户时，系统会提示你连接数据库；如果你已经拥有账户，请在任意 Smartbook 左侧点击数据源面板，然后选择 Add Data Source。
-   
+
    <Image size="lg" img={fabi_02} alt="添加数据源" border />
 
 2. 随后系统会提示你输入连接信息。
@@ -48,7 +48,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 将 Fabi.ai 连接到 ClickHouse 之后，打开任意一个 [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) 并创建一个 SQL 单元格。如果你的 Fabi.ai 实例只连接了一个数据源，SQL 单元格会自动将 ClickHouse 设为默认数据源；否则，你可以在数据源下拉菜单中选择要查询的数据源。
 
-   <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
+<Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
 
 ## 更多资源 \{#additional-resources\}
 

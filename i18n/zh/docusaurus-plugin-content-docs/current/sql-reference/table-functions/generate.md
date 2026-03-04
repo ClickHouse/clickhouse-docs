@@ -107,4 +107,5 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 :::
 
 ## 相关内容 \{#related-content\}
-- 博客文章：[在 ClickHouse 中生成随机测试分布数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+
+* 博客文章：[在 ClickHouse 中生成随机测试分布数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

@@ -53,7 +53,7 @@ integration:
 :::note
 此状态即将可用。如果你在使用我们的 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi)，建议现在就为其添加支持，以确保在该功能发布后，你的集成可以继续正常工作。
 :::
-此状态表示 pipe 正处于重新同步阶段，在该阶段中，它正在将 _resync 表与原始表进行原子交换。关于重新同步的更多信息，请参阅[重新同步文档](./resync)。
+此状态表示 pipe 正处于重新同步阶段，在该阶段中，它正在将 &#95;resync 表与原始表进行原子交换。关于重新同步的更多信息，请参阅[重新同步文档](./resync)。
 
 ## 已完成 \{#completed\}
 

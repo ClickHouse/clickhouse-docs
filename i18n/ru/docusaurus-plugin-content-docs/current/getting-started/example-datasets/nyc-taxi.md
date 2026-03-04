@@ -23,7 +23,6 @@ import TabItem from '@theme/TabItem';
 [«Характеристики Playground»](/getting-started/playground#specifications).
 :::
 
-
 ## Создайте таблицу trips \{#create-the-table-trips\}
 
 Сначала создайте таблицу для поездок на такси:
@@ -58,71 +57,70 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ## Загрузка данных напрямую из объектного хранилища \{#load-the-data-directly-from-object-storage\}
 
 Вы можете взять небольшой поднабор данных (3 миллиона строк), чтобы познакомиться с ним. Данные хранятся в TSV-файлах в объектном хранилище, откуда их можно легко потоково загрузить в
-ClickHouse Cloud с помощью табличной функции `s3`. 
+ClickHouse Cloud с помощью табличной функции `s3`.
 
 Одни и те же данные сохранены как в S3, так и в GCS; выберите любую вкладку.
 
 <Tabs groupId="storageVendor">
-<TabItem value="s3" label="S3">
+  <TabItem value="s3" label="S3">
+    Следующая команда потоково загружает три файла из бакета S3 в таблицу `trips_small` (синтаксис `{0..2}` служит шаблоном для значений 0, 1 и 2):
 
-Следующая команда потоково загружает три файла из бакета S3 в таблицу `trips_small` (синтаксис `{0..2}` служит шаблоном для значений 0, 1 и 2):
+    ```sql
+    INSERT INTO nyc_taxi.trips_small
+    SELECT
+        trip_id,
+        pickup_datetime,
+        dropoff_datetime,
+        pickup_longitude,
+        pickup_latitude,
+        dropoff_longitude,
+        dropoff_latitude,
+        passenger_count,
+        trip_distance,
+        fare_amount,
+        extra,
+        tip_amount,
+        tolls_amount,
+        total_amount,
+        payment_type,
+        pickup_ntaname,
+        dropoff_ntaname
+    FROM s3(
+        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
+        'TabSeparatedWithNames'
+    );
+    ```
+  </TabItem>
 
-```sql
-INSERT INTO nyc_taxi.trips_small
-SELECT
-    trip_id,
-    pickup_datetime,
-    dropoff_datetime,
-    pickup_longitude,
-    pickup_latitude,
-    dropoff_longitude,
-    dropoff_latitude,
-    passenger_count,
-    trip_distance,
-    fare_amount,
-    extra,
-    tip_amount,
-    tolls_amount,
-    total_amount,
-    payment_type,
-    pickup_ntaname,
-    dropoff_ntaname
-FROM s3(
-    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
-    'TabSeparatedWithNames'
-);
-```
-</TabItem>
-<TabItem value="gcs" label="GCS" default>
+  <TabItem value="gcs" label="GCS" default>
+    Следующая команда потоково загружает три файла из бакета GCS в таблицу `trips_small` (синтаксис `{0..2}` служит шаблоном для значений 0, 1 и 2):
 
-Следующая команда потоково загружает три файла из бакета GCS в таблицу `trips_small` (синтаксис `{0..2}` служит шаблоном для значений 0, 1 и 2):
-
-```sql
-INSERT INTO nyc_taxi.trips_small
-SELECT
-    trip_id,
-    pickup_datetime,
-    dropoff_datetime,
-    pickup_longitude,
-    pickup_latitude,
-    dropoff_longitude,
-    dropoff_latitude,
-    passenger_count,
-    trip_distance,
-    fare_amount,
-    extra,
-    tip_amount,
-    tolls_amount,
-    total_amount,
-    payment_type,
-    pickup_ntaname,
-    dropoff_ntaname
-FROM gcs(
-    'https://storage.googleapis.com/clickhouse-public-datasets/nyc-taxi/trips_{0..2}.gz',
-    'TabSeparatedWithNames'
-);
-```
-</TabItem>
+    ```sql
+    INSERT INTO nyc_taxi.trips_small
+    SELECT
+        trip_id,
+        pickup_datetime,
+        dropoff_datetime,
+        pickup_longitude,
+        pickup_latitude,
+        dropoff_longitude,
+        dropoff_latitude,
+        passenger_count,
+        trip_distance,
+        fare_amount,
+        extra,
+        tip_amount,
+        tolls_amount,
+        total_amount,
+        payment_type,
+        pickup_ntaname,
+        dropoff_ntaname
+    FROM gcs(
+        'https://storage.googleapis.com/clickhouse-public-datasets/nyc-taxi/trips_{0..2}.gz',
+        'TabSeparatedWithNames'
+    );
+    ```
+  </TabItem>
 </Tabs>
 
 ## Примеры запросов \{#sample-queries\}
@@ -180,7 +178,6 @@ FROM nyc_taxi.trips_small
 GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
-
 
 ## Скачивание подготовленных партиций \{#download-of-prepared-partitions\}
 

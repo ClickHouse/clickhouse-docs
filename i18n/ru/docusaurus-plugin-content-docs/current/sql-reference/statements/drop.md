@@ -21,7 +21,6 @@ doc_type: 'reference'
 DROP DATABASE [IF EXISTS] db [ON CLUSTER cluster] [SYNC]
 ```
 
-
 ## DROP TABLE \{#drop-table\}
 
 Удаляет одну или несколько таблиц.
@@ -41,7 +40,6 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 * Если указано условие `IF EMPTY`, сервер проверяет, пуста ли таблица, только на реплике, которая получила запрос.
 * Удаление нескольких таблиц одновременно не является атомарной операцией, т.е. если удаление одной таблицы завершается с ошибкой, последующие таблицы не будут удалены.
 
-
 ## DROP DICTIONARY \{#drop-dictionary\}
 
 Удаляет словарь.
@@ -51,7 +49,6 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 ```sql
 DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
 ```
-
 
 ## DROP USER \{#drop-user\}
 
@@ -63,7 +60,6 @@ DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
 DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-
 ## DROP ROLE \{#drop-role\}
 
 Удаляет роль. Удалённая роль автоматически отзывается у всех объектов, которым она была назначена.
@@ -73,7 +69,6 @@ DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 ```sql
 DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
-
 
 ## DROP ROW POLICY \{#drop-row-policy\}
 
@@ -85,7 +80,6 @@ DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-
 ## DROP MASKING POLICY \{#drop-masking-policy\}
 
 Удаляет политику маскирования.
@@ -95,7 +89,6 @@ DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER
 ```sql
 DROP MASKING POLICY [IF EXISTS] name ON [database.]table [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
-
 
 ## DROP QUOTA \{#drop-quota\}
 
@@ -107,7 +100,6 @@ DROP MASKING POLICY [IF EXISTS] name ON [database.]table [ON CLUSTER cluster_nam
 DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-
 ## DROP SETTINGS PROFILE \{#drop-settings-profile\}
 
 Удаляет профиль настроек. Удалённый профиль настроек будет снят со всех объектов, которым он был назначен.
@@ -118,7 +110,6 @@ DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storag
 DROP [SETTINGS] PROFILE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
-
 ## DROP VIEW \{#drop-view\}
 
 Удаляет представление. Представления можно удалить и с помощью команды `DROP TABLE`, но `DROP VIEW` проверяет, что `[db.]name` действительно является представлением.
@@ -128,7 +119,6 @@ DROP [SETTINGS] PROFILE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM 
 ```sql
 DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 ```
-
 
 ## DROP FUNCTION \{#drop-function\}
 
@@ -147,7 +137,6 @@ DROP FUNCTION [IF EXISTS] function_name [on CLUSTER cluster]
 CREATE FUNCTION linear_equation AS (x, k, b) -> k*x + b;
 DROP FUNCTION linear_equation;
 ```
-
 
 ## DROP NAMED COLLECTION \{#drop-named-collection\}
 

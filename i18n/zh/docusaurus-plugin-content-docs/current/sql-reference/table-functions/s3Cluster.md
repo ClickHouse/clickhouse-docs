@@ -92,5 +92,5 @@ SELECT count(*) FROM s3Cluster(
 
 ## 相关 \{#related\}
 
-- [S3 引擎](../../engines/table-engines/integrations/s3.md)
-- [S3 表函数](../../sql-reference/table-functions/s3.md)
+* [S3 引擎](../../engines/table-engines/integrations/s3.md)
+* [S3 表函数](../../sql-reference/table-functions/s3.md)

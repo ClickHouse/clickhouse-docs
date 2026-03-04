@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 本文档介绍在 ClickPipe 处于 **CDC（Running）模式** 时如何控制 MySQL ClickPipe 的同步过程。
 
-
 ## 概览 \{#overview\}
 
 Database ClickPipes 的架构由两个并行流程组成——从源数据库拉取数据以及向目标数据库推送数据。拉取流程由一个同步配置控制，该配置定义了拉取数据的频率以及每次拉取的数据量。这里的“每次”是指一个批次——因为 ClickPipe 是按批次拉取和推送数据的。
@@ -48,18 +47,18 @@ Database ClickPipes 的架构由两个并行流程组成——从源数据库拉
 在创建 ClickPipe 或编辑现有 ClickPipe 时，可以配置同步间隔和拉取批量大小。
 在创建 ClickPipe 时，这些设置会出现在创建向导的第二步中，如下所示：
 
-<Image img={create_sync_settings} alt="创建同步设置" size="md"/>
+<Image img={create_sync_settings} alt="创建同步设置" size="md" />
 
 在编辑现有 ClickPipe 时，可以进入该管道的 **Settings** 选项卡，先暂停该管道，然后点击此处的 **Configure**：
 
-<Image img={edit_sync_button} alt="编辑同步按钮" size="md"/>
+<Image img={edit_sync_button} alt="编辑同步按钮" size="md" />
 
 此操作会打开一个包含同步设置的侧边弹出面板，你可以在其中修改同步间隔和拉取批量大小：
 
-<Image img={edit_sync_settings} alt="编辑同步设置" size="md"/>
+<Image img={edit_sync_settings} alt="编辑同步设置" size="md" />
 
 ### 监控同步控制行为 \{#monitoring\}
 
 你可以在 ClickPipe 的 **Metrics** 选项卡中的 **CDC Syncs** 表中查看每个批次的耗时。注意，这里的持续时间包含推送时间；并且如果当前没有新的行写入，ClickPipe 会等待，这段等待时间也会计入持续时间。
 
-<Image img={cdc_syncs} alt="CDC Syncs 表" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs 表" size="md" />

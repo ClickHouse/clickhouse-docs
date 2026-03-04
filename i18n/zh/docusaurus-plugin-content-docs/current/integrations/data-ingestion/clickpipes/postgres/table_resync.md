@@ -31,7 +31,6 @@ integration:
 RENAME TABLE table_A TO table_A_bak;
 ```
 
-
 ### 3. 重新将该表添加到 ClickPipe 中 \{#add-table-again\}
 
 接下来请按照[添加表指南](./add_table)中的步骤操作。

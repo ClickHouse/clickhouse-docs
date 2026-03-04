@@ -15,7 +15,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # 将 Embeddable 连接到 ClickHouse \{#connecting-embeddable-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 在 [Embeddable](https://embeddable.com/) 中，你以代码的形式（存放在你自己的代码仓库中）定义 [Data Models](https://docs.embeddable.com/data-modeling/introduction) 和 [Components](https://docs.embeddable.com/development/introduction)，并使用我们的 **SDK** 将这些内容提供给你的团队，以便在功能强大的 Embeddable **无代码构建器** 中使用。
 

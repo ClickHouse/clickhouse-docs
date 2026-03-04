@@ -14,13 +14,12 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-
 # 使用 ClickHouse MCP 服务器与 Ollama \{#using-clickhouse-mcp-server-with-ollama\}
 
 > 本指南介绍如何使用 ClickHouse MCP 服务器与 Ollama。
 
 <VerticalStepper headerLevel="h2">
-  ## 安装 Ollama
+  ## 安装 Ollama \{#install-ollama\}
 
   Ollama is a library for running Large Language Models (LLMs) on your own machine.
   它提供[多种可用模型](https://ollama.com/library)且易于使用。
@@ -91,7 +90,7 @@ import Image from '@theme/IdealImage';
 
   从此输出可以看出,默认的 qwen3 模型有略超过 80 亿个参数。
 
-  ## 安装 MCPHost
+  ## 安装 MCPHost \{#install-mcphost\}
 
   在撰写本文时(2025 年 7 月),尚无将 Ollama 与 MCP 服务器配合使用的原生功能。
   但是,可以使用 [MCPHost](https://github.com/mark3labs/mcphost) 来运行 Ollama 模型与 MCP 服务器。
@@ -105,7 +104,7 @@ import Image from '@theme/IdealImage';
 
   二进制文件将安装在 `~/go/bin` 目录下,因此需要确保该目录已添加到 PATH 环境变量中。
 
-  ## 配置 ClickHouse MCP 服务器
+  ## 配置 ClickHouse MCP 服务器 \{#configure-clickhouse-mcp-server\}
 
   可以使用 YAML 或 JSON 文件在 MCPHost 中配置 MCP 服务器。
   MCPHost 将按以下顺序在主目录中查找配置文件:
@@ -153,7 +152,7 @@ import Image from '@theme/IdealImage';
   理论上,您应该能够在 MCP 配置文件的 `environment` 键下提供这些变量,但我们发现这种方式无法正常工作。
   :::
 
-  ## 运行 MCPHost
+  ## 运行 MCPHost \{#running-mcphost\}
 
   配置好 ClickHouse MCP 服务器后,可以通过运行以下命令来运行 MCPHost:
 

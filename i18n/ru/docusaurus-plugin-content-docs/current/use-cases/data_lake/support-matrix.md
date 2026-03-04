@@ -15,7 +15,6 @@ import TabItem from '@theme/TabItem';
 
 Эта страница содержит сводные матрицы совместимости lakehouse-интеграций ClickHouse. В них перечислены доступные возможности для каждого формата lakehouse-таблиц, каталоги, к которым может подключаться ClickHouse, а также функции, поддерживаемые каждым каталогом.
 
-
 ## Поддержка lakehouse-форматов \{#format-support\}
 
 ClickHouse интегрируется с четырьмя lakehouse-форматами таблиц: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi) и [Apache Paimon](/sql-reference/table-functions/paimon). Выберите формат ниже, чтобы просмотреть матрицу поддержки.

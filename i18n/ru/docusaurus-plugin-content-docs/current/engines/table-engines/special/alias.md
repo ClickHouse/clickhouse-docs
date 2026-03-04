@@ -11,14 +11,14 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # Движок таблицы Alias \{#alias-table-engine\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 Движок `Alias` создаёт прокси для другой таблицы. Все операции чтения и записи перенаправляются в целевую таблицу, при этом сама таблица-алиас не хранит данных и только поддерживает ссылку на целевую таблицу.
 
 :::info
 Это экспериментальная функция, которая может измениться в будущих релизах с нарушением обратной совместимости.
 Включите использование движка таблицы Alias
-с помощью настройки [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine).
+с помощью настройки [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine).
 Введите команду `set allow_experimental_alias_table_engine = 1`.
 :::
 
@@ -51,7 +51,7 @@ ENGINE = Alias(target_db, target_table)
 
 ## Поддерживаемые операции \{#supported-operations\}
 
-Движок таблицы `Alias` поддерживает все основные операции. 
+Движок таблицы `Alias` поддерживает все основные операции.
 
 ### Операции с целевой таблицей \{#operations-on-target\}
 

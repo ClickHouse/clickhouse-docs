@@ -41,7 +41,6 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-
 ## uniqThetaIntersect \{#uniqthetaintersect\}
 
 对两个 uniqThetaSketch 对象执行交集计算（集合运算 ∩），返回一个新的 uniqThetaSketch。
@@ -67,7 +66,6 @@ FROM
 │             1 │             2 │             3 │
 └───────────────┴───────────────┴───────────────┘
 ```
-
 
 ## uniqThetaNot \{#uniqthetanot\}
 

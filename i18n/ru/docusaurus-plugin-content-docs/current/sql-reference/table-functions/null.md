@@ -19,7 +19,7 @@ null('structure')
 
 ## Аргумент \{#argument\}
 
-- `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
+* `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -43,4 +43,4 @@ DROP TABLE IF EXISTS t;
 
 ## Связанные разделы \{#related\}
 
-- [Движок таблицы Null](../../engines/table-engines/special/null.md)
+* [Движок таблицы Null](../../engines/table-engines/special/null.md)

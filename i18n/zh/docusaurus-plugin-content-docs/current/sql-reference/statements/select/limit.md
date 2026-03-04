@@ -67,9 +67,9 @@ LIMIT n, m
 
 :::note
 
-- 分数必须是大于 0 且小于 1 的 [Float64](../../data-types/float.md) 值。
-- 分数对应的行数会向上取整到下一个整数。
-:::
+* 分数必须是大于 0 且小于 1 的 [Float64](../../data-types/float.md) 值。
+* 分数对应的行数会向上取整到下一个整数。
+  :::
 
 ## 组合限制类型 \{#combining-limit-types\}
 
@@ -135,4 +135,4 @@ SELECT * FROM (
 
 ## 另请参阅 \{#see-also\}
 
-- [LIMIT BY](/sql-reference/statements/select/limit-by) — 按值分组后限制每组的行数，可用于在每个类别中获取前 N 个结果。
+* [LIMIT BY](/sql-reference/statements/select/limit-by) — 按值分组后限制每组的行数，可用于在每个类别中获取前 N 个结果。

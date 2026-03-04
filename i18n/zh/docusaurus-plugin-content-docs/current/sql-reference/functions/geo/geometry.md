@@ -42,7 +42,6 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 └──────────────────────────┘
 ```
 
-
 ## areaCartesian \{#areacartesian\}
 
 在笛卡尔坐标系下计算给定 Geometry 对象的面积。
@@ -75,7 +74,6 @@ SELECT areaCartesian(geom) FROM geo_dst;
 └─────────────────────┘
 ```
 
-
 ## perimeterSpherical \{#perimeterspherical\}
 
 计算球面上 Geometry 对象的周长。
@@ -107,7 +105,6 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 │ 0                        │
 └──────────────────────────┘
 ```
-
 
 ## areaSpherical \{#areaspherical\}
 

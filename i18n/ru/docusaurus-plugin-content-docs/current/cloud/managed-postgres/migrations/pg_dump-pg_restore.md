@@ -15,7 +15,6 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-
 # Миграция в Managed Postgres с использованием pg_dump и pg_restore \{#pg-dump-pg-restore\}
 
 В этом руководстве приводятся пошаговые инструкции по переносу вашей базы данных PostgreSQL в ClickHouse Managed Postgres с использованием утилит `pg_dump` и `pg_restore`.
@@ -24,8 +23,8 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 
 ## Предварительные требования \{#migration-pgdump-pg-restore-prerequisites\}
 
-- Доступ к исходной базе данных PostgreSQL.
-- `pg_dump` и `pg_restore`, установленные на вашем локальном компьютере. Как правило, они входят в стандартную установку PostgreSQL. Если нет, вы можете скачать их с [официального сайта PostgreSQL](https://www.postgresql.org/download/).
+* Доступ к исходной базе данных PostgreSQL.
+* `pg_dump` и `pg_restore`, установленные на вашем локальном компьютере. Как правило, они входят в стандартную установку PostgreSQL. Если нет, вы можете скачать их с [официального сайта PostgreSQL](https://www.postgresql.org/download/).
 
 ## Настройка \{#migration-pgdump-pg-restore-setup\}
 
@@ -35,10 +34,10 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 
 Вот с чем мы работаем:
 
-- Две таблицы — `events` и `users`. `events` содержит миллион строк, а `users` — тысячу строк.
-- У `events` есть индекс.
-- Представление поверх таблицы `events`.
-- Пара последовательностей
+* Две таблицы — `events` и `users`. `events` содержит миллион строк, а `users` — тысячу строк.
+* У `events` есть индекс.
+* Представление поверх таблицы `events`.
+* Пара последовательностей
 
 ## Создайте дамп исходной базы данных \{#migration-pgdump-pg-restore-dump\}
 
@@ -66,10 +65,9 @@ pg_dump \
 
 <Image img={dumpCommand} alt="Выполнение команды pg_dump" size="xl" border />
 
-
 ## Перенесите дамп в ClickHouse Managed Postgres \{#migration-pgdump-pg-restore-restore\}
 
-Теперь, когда у нас есть файл с дампом, мы можем восстановить его в наш экземпляр ClickHouse Managed Postgres с помощью утилиты `pg_restore`. 
+Теперь, когда у нас есть файл с дампом, мы можем восстановить его в наш экземпляр ClickHouse Managed Postgres с помощью утилиты `pg_restore`.
 
 ### Создайте экземпляр Managed Postgres \{#migration-pgdump-pg-restore-create-pg\}
 
@@ -99,7 +97,6 @@ pg_restore \
 
 <Image img={restoreCommand} alt="Выполнение команды pg_restore" size="xl" border />
 
-
 ## Проверка миграции \{#migration-pgdump-pg-restore-verify\}
 
 После завершения процесса восстановления вы можете подключиться к своему экземпляру Managed Postgres и убедиться, что все ваши данные и объекты были успешно перенесены. Для подключения и выполнения запросов вы можете использовать любой PostgreSQL-клиент.
@@ -111,15 +108,15 @@ pg_restore \
 
 ## Соображения \{#migration-pgdump-pg-restore-considerations\}
 
-- Убедитесь, что версии PostgreSQL для исходной и целевой баз данных совместимы.
-Использование версии pg_dump, более старой, чем версия исходного сервера, может привести к отсутствию некоторых функций или проблемам при восстановлении. В идеале используйте ту же или более новую мажорную версию pg_dump, чем у исходной базы данных.
-- Создание дампа и восстановление больших баз данных может занять значительное время.
-Планируйте это заранее, чтобы минимизировать простой, и по возможности рассмотрите использование параллельных операций дампа и восстановления (--jobs), если они поддерживаются.
-- Обратите внимание, что pg_dump / pg_restore не реплицируют все объекты, связанные с базой данных, и рабочее состояние сервера.
-К ним относятся роли и членство в ролях, слоты репликации (replication slots), конфигурация на уровне сервера (например, postgresql.conf, pg_hba.conf), табличные пространства и статистика выполнения (runtime statistics).
+* Убедитесь, что версии PostgreSQL для исходной и целевой баз данных совместимы.
+  Использование версии pg&#95;dump, более старой, чем версия исходного сервера, может привести к отсутствию некоторых функций или проблемам при восстановлении. В идеале используйте ту же или более новую мажорную версию pg&#95;dump, чем у исходной базы данных.
+* Создание дампа и восстановление больших баз данных может занять значительное время.
+  Планируйте это заранее, чтобы минимизировать простой, и по возможности рассмотрите использование параллельных операций дампа и восстановления (--jobs), если они поддерживаются.
+* Обратите внимание, что pg&#95;dump / pg&#95;restore не реплицируют все объекты, связанные с базой данных, и рабочее состояние сервера.
+  К ним относятся роли и членство в ролях, слоты репликации (replication slots), конфигурация на уровне сервера (например, postgresql.conf, pg&#95;hba.conf), табличные пространства и статистика выполнения (runtime statistics).
 
 ## Дальнейшие шаги \{#migration-pgdump-pg-restore-next-steps\}
 
-Поздравляем! Вы успешно мигрировали свою базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg_dump и pg_restore. Теперь вы готовы изучать возможности Managed Postgres и его интеграцию с ClickHouse. Ниже приведено краткое руководство на 10 минут, которое поможет вам начать работу:
+Поздравляем! Вы успешно мигрировали свою базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg&#95;dump и pg&#95;restore. Теперь вы готовы изучать возможности Managed Postgres и его интеграцию с ClickHouse. Ниже приведено краткое руководство на 10 минут, которое поможет вам начать работу:
 
-- [Краткое руководство по Managed Postgres](../quickstart)
+* [Краткое руководство по Managed Postgres](../quickstart)

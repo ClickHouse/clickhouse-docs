@@ -13,16 +13,16 @@ doc_type: 'reference'
 
 ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/). Это система удалённых вызовов процедур с открытым исходным кодом, которая использует HTTP/2 и [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers). Реализация gRPC в ClickHouse поддерживает:
 
-- SSL;
-- аутентификацию;
-- сеансы;
-- сжатие;
-- параллельные запросы по одному и тому же каналу;
-- отмену запросов;
-- получение информации о прогрессе выполнения и логов;
-- внешние таблицы.
+* SSL;
+* аутентификацию;
+* сеансы;
+* сжатие;
+* параллельные запросы по одному и тому же каналу;
+* отмену запросов;
+* получение информации о прогрессе выполнения и логов;
+* внешние таблицы.
 
-Спецификация интерфейса приведена в [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
+Спецификация интерфейса приведена в [clickhouse&#95;grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
 
 ## Конфигурация gRPC \{#grpc-interface-configuration\}
 
@@ -59,7 +59,6 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## Встроенный клиент \{#grpc-client\}
 

@@ -21,7 +21,6 @@ chDB-go предоставляет привязки Go для chDB, позвол
 curl -sL https://lib.chdb.io | bash
 ```
 
-
 ### Шаг 2: Установка chdb-go \{#install-chdb-go\}
 
 Установите пакет Go:
@@ -35,7 +34,6 @@ go install github.com/chdb-io/chdb-go@latest
 ```bash
 go get github.com/chdb-io/chdb-go
 ```
-
 
 ## Использование \{#usage\}
 
@@ -53,7 +51,6 @@ chDB-go включает CLI для быстрых запросов:
 # Interactive mode with persistent storage
 ./chdb-go --path /tmp/chdb
 ```
-
 
 ### Библиотека Go - быстрый старт \{#quick-start\}
 
@@ -78,7 +75,6 @@ func main() {
     fmt.Println(result)
 }
 ```
-
 
 #### Запросы с состоянием через сессию \{#stateful-queries\}
 
@@ -133,7 +129,6 @@ func main() {
 }
 ```
 
-
 #### Интерфейс SQL-драйвера \{#sql-driver\}
 
 chDB-go реализует интерфейс Go `database/sql`:
@@ -172,7 +167,6 @@ func main() {
     }
 }
 ```
-
 
 #### Потоковые запросы для больших наборов данных \{#query-streaming\}
 
@@ -242,15 +236,14 @@ func main() {
 * **Поддержка отмены** - Можно отменять долго выполняющиеся запросы с помощью `Cancel()`
 * **Обработка ошибок** - Проверяйте ошибки во время потоковой обработки с помощью `Error()`
 
-
 ## Документация API \{#api-documentation\}
 
 chDB-go предоставляет API как высокого, так и низкого уровня:
 
-- **[Документация API высокого уровня](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - Рекомендуется для большинства случаев использования
-- **[Документация API низкого уровня](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - Для продвинутых случаев использования, требующих детального контроля
+* **[Документация API высокого уровня](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - Рекомендуется для большинства случаев использования
+* **[Документация API низкого уровня](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - Для продвинутых случаев использования, требующих детального контроля
 
 ## Системные требования \{#requirements\}
 
-- Go 1.21 или новее
-- Совместим с Linux, macOS
+* Go 1.21 или новее
+* Совместим с Linux, macOS

@@ -31,6 +31,6 @@ doc_type: 'reference'
 命令 `ADD`、`DROP` 和 `CLEAR` 是轻量级的，因为它们只会更改元数据或删除文件。
 此外，这些命令是可复制的，会通过 ClickHouse Keeper 或 ZooKeeper 同步索引元数据。
 
-:::note    
+:::note\
 索引操作仅支持使用 [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 引擎（包括[复制](/engines/table-engines/mergetree-family/replication.md)变体）的表。
 :::

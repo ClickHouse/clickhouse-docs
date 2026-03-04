@@ -18,12 +18,11 @@ import TabItem from '@theme/TabItem';
 
 用户可以通过 [language SDKs](/use-cases/observability/clickstack/sdks) 将数据发送到该 collector，或者通过采集基础设施指标和日志的数据采集代理发送数据（例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel collector，或其他技术，如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/)）。对于希望使用托管 OpenTelemetry 管道的团队，[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)提供一个原生支持 OpenTelemetry 的解决方案，内置 ClickStack 目标端，从而简化遥测数据的采集、处理和路由。
 
-
 ## 发送 OpenTelemetry 数据 \{#sending-otel-data\}
 
 <Tabs groupId="os-type">
   <TabItem value="托管版 ClickStack" label="托管版 ClickStack" default>
-    ### 安装 ClickStack OpenTelemetry collector
+    ### 安装 ClickStack OpenTelemetry collector \{#installing-otel-collector-managed\}
 
     要向托管 ClickStack 发送数据，应以[gateway 角色](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)部署一个 OTel collector。兼容 OTel 的埋点会通过基于 HTTP 或 gRPC 的 OTLP 将事件发送到该 collector。
 
@@ -33,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
     更多详情请参阅[《部署 collector》](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
 
-    ### 向 collector 发送数据
+    ### 向 collector 发送数据 \{#sending-data-to-collector-managed\}
 
     要向托管 ClickStack 发送数据，请将您的 OpenTelemetry 埋点指向由 OpenTelemetry collector 暴露的以下端点：
 
@@ -93,7 +92,7 @@ import TabItem from '@theme/TabItem';
     * [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
     * [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-    ### 安装 ClickStack OpenTelemetry collector
+    ### 安装 ClickStack OpenTelemetry collector \{#installing-otel-collector\}
 
     ClickStack OTel collector 也可以以独立方式部署，而无需依赖整个技术栈中的其他组件。
 
@@ -108,7 +107,7 @@ import TabItem from '@theme/TabItem';
 
     更多详情请参阅[《部署 collector》](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
 
-    ### 向 collector 发送数据
+    ### 向 collector 发送数据 \{#sending-data-to-collector-oss\}
 
     要向 ClickStack 发送数据，请将您的 OpenTelemetry 埋点指向由 OpenTelemetry collector 暴露的以下端点：
 

@@ -36,7 +36,6 @@ profiler = get_profiler()
 print(profiler.report())
 ```
 
-
 ## Включение профилирования \{#enabling\}
 
 ```python
@@ -54,7 +53,6 @@ print(config.profiling_enabled)  # True or False
 
 ***
 
-
 ## API профилировщика \{#api\}
 
 ### Получение экземпляра профайлера \{#get-profiler\}
@@ -64,7 +62,6 @@ from chdb.datastore.config import get_profiler
 
 profiler = get_profiler()
 ```
-
 
 ### report() \{#report\}
 
@@ -103,7 +100,6 @@ EXECUTION PROFILE
 * Иерархическое вложение операций
 * Метаданные для каждого шага (например, `ops_count`, `ops`)
 
-
 ### step() \{#step\}
 
 Измеряет время выполнения блока кода вручную.
@@ -114,7 +110,6 @@ with profiler.step("custom_operation"):
     expensive_operation()
 ```
 
-
 ### clear() \{#clear\}
 
 Очищает все данные профилирования.
@@ -122,7 +117,6 @@ with profiler.step("custom_operation"):
 ```python
 profiler.clear()
 ```
-
 
 ### summary() \{#summary\}
 
@@ -147,7 +141,6 @@ Total Execution.SQL Segment 1.Result to DataFrame: 1.74ms
 
 ***
 
-
 ## Разбор отчёта \{#understanding\}
 
 ### Названия шагов \{#step-names\}
@@ -164,9 +157,9 @@ Total Execution.SQL Segment 1.Result to DataFrame: 1.74ms
 
 ### Длительность \{#duration\}
 
-- **Этапы планирования** (Query Planning): обычно выполняются быстро
-- **Этапы выполнения** (SQL Execution): здесь выполняется основная работа
-- **Этапы передачи** (Result to DataFrame): преобразование данных в pandas
+* **Этапы планирования** (Query Planning): обычно выполняются быстро
+* **Этапы выполнения** (SQL Execution): здесь выполняется основная работа
+* **Этапы передачи** (Result to DataFrame): преобразование данных в pandas
 
 ### Определение узких мест \{#bottlenecks\}
 
@@ -186,7 +179,6 @@ EXECUTION PROFILE
 
 ***
 
-
 ## Паттерны профилирования \{#patterns\}
 
 ### Профилирование одного запроса \{#single-query\}
@@ -202,7 +194,6 @@ result = ds.filter(...).groupby(...).agg(...).to_df()
 # View this query's profile
 print(profiler.report())
 ```
-
 
 ### Профилирование нескольких запросов \{#multiple-queries\}
 
@@ -221,7 +212,6 @@ with profiler.step("Query 2"):
 
 print(profiler.report())
 ```
-
 
 ### Сравнение подходов \{#compare\}
 
@@ -249,32 +239,31 @@ print(f"Winner: {'Approach 1' if time1 < time2 else 'Approach 2'}")
 
 ***
 
-
 ## Советы по оптимизации \{#optimization\}
 
 ### 1. Проверьте время выполнения SQL \{#check-sql\}
 
 Если узким местом является выполнение SQL-запросов:
 
-- Добавьте дополнительные фильтры, чтобы сократить объём данных
-- Используйте Parquet вместо CSV
-- Проверьте наличие подходящих индексов (для источников данных в БД)
+* Добавьте дополнительные фильтры, чтобы сократить объём данных
+* Используйте Parquet вместо CSV
+* Проверьте наличие подходящих индексов (для источников данных в БД)
 
 ### 2. Проверьте время операций ввода-вывода \{#check-io\}
 
 Если `read_csv` или `read_parquet` — узкое место:
 
-- Используйте Parquet (столбцовый, сжатый формат)
-- Читайте только необходимые столбцы
-- Фильтруйте данные на стороне источника, если возможно
+* Используйте Parquet (столбцовый, сжатый формат)
+* Читайте только необходимые столбцы
+* Фильтруйте данные на стороне источника, если возможно
 
 ### 3. Проверка передачи данных \{#check-transfer\}
 
 Если `to_df` работает медленно:
 
-- Результирующий набор может быть слишком большим
-- Добавьте больше фильтров или ограничьте выборку с помощью LIMIT
-- Используйте `head()` для предварительного просмотра результатов
+* Результирующий набор может быть слишком большим
+* Добавьте больше фильтров или ограничьте выборку с помощью LIMIT
+* Используйте `head()` для предварительного просмотра результатов
 
 ### 4. Сравните движки \{#compare-engines\}
 
@@ -299,7 +288,6 @@ print(f"pandas: {time_pandas:.2f}ms")
 
 ***
 
-
 ## Лучшие практики \{#best-practices\}
 
 ### 1. Проводите профилирование перед оптимизацией \{#best-practice-1\}
@@ -311,7 +299,6 @@ result = your_query.to_df()
 print(get_profiler().report())
 ```
 
-
 ### 2. Очищайте хранилище между тестами \{#best-practice-2\}
 
 ```python
@@ -320,7 +307,6 @@ profiler.clear()  # Clear previous data
 print(profiler.report())
 ```
 
-
 ### 3. Используйте min_duration_ms для фокусировки профилирования \{#best-practice-3\}
 
 ```python
@@ -328,14 +314,12 @@ print(profiler.report())
 profiler.report(min_duration_ms=100)
 ```
 
-
 ### 4. Профилирование представительных данных \{#best-practice-4\}
 
 ```python
 # Profile with real-world data sizes
 # Small test data may not show real bottlenecks
 ```
-
 
 ### 5. Отключите в продакшене \{#best-practice-5\}
 
@@ -348,7 +332,6 @@ config.set_profiling_enabled(False)  # Avoid overhead
 ```
 
 ***
-
 
 ## Пример: полноценная сессия профилирования \{#example\}
 

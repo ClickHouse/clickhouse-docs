@@ -117,21 +117,21 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 Если ZooKeeper не указан в конфигурационном файле, вы не сможете создавать реплицируемые таблицы, а любые существующие реплицируемые таблицы будут доступны только для чтения.
 
-ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
+ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max&#95;replica&#95;delay&#95;for&#95;distributed&#95;queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback&#95;to&#95;stale&#95;replicas&#95;for&#95;distributed&#95;queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
 
 Для каждого запроса `INSERT` в ZooKeeper добавляется примерно десять записей через несколько транзакций. (Более точно: для каждого вставленного блока данных; один запрос `INSERT` содержит один блок или один блок на `max_insert_block_size = 1048576` строк.) Это приводит к немного большему времени ожидания для `INSERT` по сравнению с нереплицируемыми таблицами. Но если вы следуете рекомендациям и вставляете данные пакетами не чаще одного `INSERT` в секунду, это не создаёт никаких проблем. Весь кластер ClickHouse, используемый для координации одного кластера ZooKeeper, в сумме обрабатывает несколько сотен запросов `INSERT` в секунду. Пропускная способность по вставке данных (количество строк в секунду) столь же высока, как и для нереплицируемых данных.
 
 Для очень больших кластеров вы можете использовать разные кластеры ZooKeeper для разных сегментов. Однако, по нашему опыту, в боевых кластерах примерно из 300 серверов в этом не было необходимости.
 
-Репликация асинхронная и multi-master. Запросы `INSERT` (а также `ALTER`) могут быть отправлены на любой доступный сервер. Данные вставляются на сервере, где выполняется запрос, а затем копируются на другие серверы. Поскольку это происходит асинхронно, недавно вставленные данные появляются на других репликах с некоторой задержкой. Если часть реплик недоступна, данные будут записаны, когда они станут доступными. Если реплика доступна, задержка равна времени передачи блока сжатых данных по сети. Количество потоков, выполняющих фоновые задачи для реплицируемых таблиц, может быть задано настройкой [background_schedule_pool_size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size).
+Репликация асинхронная и multi-master. Запросы `INSERT` (а также `ALTER`) могут быть отправлены на любой доступный сервер. Данные вставляются на сервере, где выполняется запрос, а затем копируются на другие серверы. Поскольку это происходит асинхронно, недавно вставленные данные появляются на других репликах с некоторой задержкой. Если часть реплик недоступна, данные будут записаны, когда они станут доступными. Если реплика доступна, задержка равна времени передачи блока сжатых данных по сети. Количество потоков, выполняющих фоновые задачи для реплицируемых таблиц, может быть задано настройкой [background&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size).
 
-Движок `ReplicatedMergeTree` использует отдельный пул потоков для реплицируемых загрузок данных (fetches). Размер пула ограничен настройкой [background_fetches_pool_size](/operations/server-configuration-parameters/settings#background_fetches_pool_size), которую можно изменить с перезапуском сервера.
+Движок `ReplicatedMergeTree` использует отдельный пул потоков для реплицируемых загрузок данных (fetches). Размер пула ограничен настройкой [background&#95;fetches&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_fetches_pool_size), которую можно изменить с перезапуском сервера.
 
 По умолчанию запрос `INSERT` ожидает подтверждения записи данных только от одной реплики. Если данные были успешно записаны только на одну реплику и сервер с этой репликой перестаёт существовать, сохранённые данные будут утеряны. Чтобы включить получение подтверждения о записи данных от нескольких реплик, используйте опцию `insert_quorum`.
 
 Каждый блок данных записывается атомарно. Запрос `INSERT` разбивается на блоки до `max_insert_block_size = 1048576` строк. Другими словами, если запрос `INSERT` содержит меньше 1048576 строк, он выполняется атомарно.
 
-Блоки данных дедуплицируются. При многократной записи одного и того же блока данных (блоки данных одного размера, содержащие одни и те же строки в одном и том же порядке) блок записывается только один раз. Это сделано для случая сбоев сети, когда клиентское приложение не знает, были ли данные записаны в БД, поэтому запрос `INSERT` можно просто повторить. Неважно, на какие реплики отправлялись запросы `INSERT` с идентичными данными. Запросы `INSERT` являются идемпотентными. Параметры дедупликации управляются серверными настройками [merge_tree](/operations/server-configuration-parameters/settings.md/#merge_tree).
+Блоки данных дедуплицируются. При многократной записи одного и того же блока данных (блоки данных одного размера, содержащие одни и те же строки в одном и том же порядке) блок записывается только один раз. Это сделано для случая сбоев сети, когда клиентское приложение не знает, были ли данные записаны в БД, поэтому запрос `INSERT` можно просто повторить. Неважно, на какие реплики отправлялись запросы `INSERT` с идентичными данными. Запросы `INSERT` являются идемпотентными. Параметры дедупликации управляются серверными настройками [merge&#95;tree](/operations/server-configuration-parameters/settings.md/#merge_tree).
 
 Во время репликации по сети передаются только исходные данные для вставки. Дальнейшее преобразование данных (слияние) координируется и выполняется на всех репликах одинаковым образом. Это минимизирует сетевой трафик, что означает, что репликация хорошо работает, когда реплики находятся в разных дата-центрах. (Обратите внимание, что дублирование данных в разных дата-центрах является основной целью репликации.)
 
@@ -178,13 +178,13 @@ SAMPLE BY intHash32(UserID);
   <summary>Пример с устаревшим синтаксисом</summary>
 
   ```sql
-CREATE TABLE table_name
-(
+  CREATE TABLE table_name
+  (
     EventDate DateTime,
     CounterID UInt32,
     UserID UInt32
-) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-```
+  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+  ```
 </details>
 
 Как видно из примера, эти параметры могут содержать подстановки в фигурных скобках. Значения для подстановки берутся из раздела [macros](/operations/server-configuration-parameters/settings.md/#macros) файла конфигурации.
@@ -276,14 +276,14 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 Если все данные и метаданные исчезли с одного из серверов, выполните следующие шаги для восстановления:
 
-1.  Установите ClickHouse на сервер. Корректно задайте подстановки в конфигурационном файле, который содержит идентификатор сегмента и реплик, если вы их используете.
-2.  Если у вас были нереплицированные таблицы, которые необходимо вручную продублировать на серверах, скопируйте их данные с реплики (из каталога `/var/lib/clickhouse/data/db_name/table_name/`).
-3.  Скопируйте определения таблиц, расположенные в `/var/lib/clickhouse/metadata/`, с реплики. Если в определениях таблиц явно задан идентификатор сегмента или реплики, скорректируйте его так, чтобы он соответствовал этой реплике. (Либо запустите сервер и выполните все запросы `ATTACH TABLE`, которые должны были быть в .sql-файлах в `/var/lib/clickhouse/metadata/`.)
-4.  Чтобы запустить восстановление, создайте узел ClickHouse Keeper `/path_to_table/replica_name/flags/force_restore_data` с любым содержимым или выполните команду для восстановления всех реплицированных таблиц: `sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data`
+1. Установите ClickHouse на сервер. Корректно задайте подстановки в конфигурационном файле, который содержит идентификатор сегмента и реплик, если вы их используете.
+2. Если у вас были нереплицированные таблицы, которые необходимо вручную продублировать на серверах, скопируйте их данные с реплики (из каталога `/var/lib/clickhouse/data/db_name/table_name/`).
+3. Скопируйте определения таблиц, расположенные в `/var/lib/clickhouse/metadata/`, с реплики. Если в определениях таблиц явно задан идентификатор сегмента или реплики, скорректируйте его так, чтобы он соответствовал этой реплике. (Либо запустите сервер и выполните все запросы `ATTACH TABLE`, которые должны были быть в .sql-файлах в `/var/lib/clickhouse/metadata/`.)
+4. Чтобы запустить восстановление, создайте узел ClickHouse Keeper `/path_to_table/replica_name/flags/force_restore_data` с любым содержимым или выполните команду для восстановления всех реплицированных таблиц: `sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data`
 
 Затем запустите сервер (или перезапустите, если он уже работает). Данные будут загружены с реплик.
 
-Альтернативный вариант восстановления — удалить информацию о потерянной реплике из ClickHouse Keeper (`/path_to_table/replica_name`), затем создать реплику заново, как описано в разделе "[Создание реплицированных таблиц](#creating-replicated-tables)".
+Альтернативный вариант восстановления — удалить информацию о потерянной реплике из ClickHouse Keeper (`/path_to_table/replica_name`), затем создать реплику заново, как описано в разделе &quot;[Создание реплицированных таблиц](#creating-replicated-tables)&quot;.
 
 Во время восстановления нет ограничений на пропускную способность сети. Учитывайте это, если вы восстанавливаете большое количество реплик одновременно.
 
@@ -327,8 +327,8 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 Если вы хотите избавиться от таблицы `ReplicatedMergeTree`, не запуская сервер:
 
-- Удалите соответствующий файл `.sql` в каталоге метаданных (`/var/lib/clickhouse/metadata/`).
-- Удалите соответствующий путь в ClickHouse Keeper (`/path_to_table/replica_name`).
+* Удалите соответствующий файл `.sql` в каталоге метаданных (`/var/lib/clickhouse/metadata/`).
+* Удалите соответствующий путь в ClickHouse Keeper (`/path_to_table/replica_name`).
 
 После этого вы можете запустить сервер, создать таблицу `MergeTree`, переместить данные в её каталог, а затем перезапустить сервер.
 
@@ -338,8 +338,8 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 **См. также**
 
-- [background_schedule_pool_size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size)
-- [background_fetches_pool_size](/operations/server-configuration-parameters/settings.md/#background_fetches_pool_size)
-- [execute_merges_on_single_replica_time_threshold](/operations/settings/merge-tree-settings#execute_merges_on_single_replica_time_threshold)
-- [max_replicated_fetches_network_bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_fetches_network_bandwidth)
-- [max_replicated_sends_network_bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_sends_network_bandwidth)
+* [background&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size)
+* [background&#95;fetches&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_fetches_pool_size)
+* [execute&#95;merges&#95;on&#95;single&#95;replica&#95;time&#95;threshold](/operations/settings/merge-tree-settings#execute_merges_on_single_replica_time_threshold)
+* [max&#95;replicated&#95;fetches&#95;network&#95;bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_fetches_network_bandwidth)
+* [max&#95;replicated&#95;sends&#95;network&#95;bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_sends_network_bandwidth)

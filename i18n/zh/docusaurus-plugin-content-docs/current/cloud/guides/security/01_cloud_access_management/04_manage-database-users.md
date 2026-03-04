@@ -12,7 +12,6 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 本指南介绍了两种管理数据库用户的方式：在 SQL 控制台中管理，以及直接在数据库中管理。
 
-
 ### SQL 控制台免密认证 \{#sql-console-passwordless-authentication\}
 
 SQL 控制台用户会为每个会话单独创建，并使用会自动轮换的 X.509 证书进行身份验证。会话终止时，该用户会被删除。在为审计生成访问列表时，请在控制台中进入相应服务的 Settings 选项卡，在记录数据库中现有数据库用户的同时，也一并记录 SQL 控制台访问情况。如果配置了自定义角色，用户的访问权限会列在以该用户用户名结尾的角色中。
@@ -21,35 +20,33 @@ SQL 控制台用户会为每个会话单独创建，并使用会自动轮换的 
 
 具有 Service Read Only 和 Service Admin 权限的用户可以被分配基本的 SQL 控制台角色。有关更多信息，请参阅 [管理 SQL 控制台角色分配](/cloud/guides/sql-console/manage-sql-console-role-assignments)。本指南演示如何为 SQL 控制台用户创建自定义角色。
 
-要为 SQL 控制台用户创建自定义角色并为其授予通用角色，请运行以下命令。电子邮件地址必须与该用户在控制台中的电子邮件地址一致。 
+要为 SQL 控制台用户创建自定义角色并为其授予通用角色，请运行以下命令。电子邮件地址必须与该用户在控制台中的电子邮件地址一致。
 
 <VerticalStepper headerLevel="h4">
+  #### 创建 `database_developer` 并授予权限 \{#create-role-grant-permissions\}
 
-#### 创建 `database_developer` 并授予权限 \{#create-role-grant-permissions\}
+  创建 `database_developer` 角色并授予 `SHOW`、`CREATE`、`ALTER` 和 `DELETE` 权限。
 
-创建 `database_developer` 角色并授予 `SHOW`、`CREATE`、`ALTER` 和 `DELETE` 权限。
-    
-```sql
-CREATE ROLE OR REPLACE database_developer;
-GRANT SHOW ON * TO database_developer;
-GRANT CREATE ON * TO database_developer;
-GRANT ALTER ON * TO database_developer;
-GRANT DELETE ON * TO database_developer;
-```
+  ```sql
+  CREATE ROLE OR REPLACE database_developer;
+  GRANT SHOW ON * TO database_developer;
+  GRANT CREATE ON * TO database_developer;
+  GRANT ALTER ON * TO database_developer;
+  GRANT DELETE ON * TO database_developer;
+  ```
 
-#### 创建 SQL 控制台用户角色 \{#create-sql-console-user-role\}
+  #### 创建 SQL 控制台用户角色 \{#create-sql-console-user-role\}
 
-为 SQL 控制台用户 my.user@domain.com 创建角色，并为其分配 database_developer 角色。
-    
-```sql
-CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
-GRANT database_developer TO `sql-console-role:my.user@domain.com`;
-```
+  为 SQL 控制台用户 my.user@domain.com 创建角色，并为其分配 database&#95;developer 角色。
 
-#### 用户在使用 SQL 控制台时将被分配新角色 \{#use-assigned-new-role\}
+  ```sql
+  CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
+  GRANT database_developer TO `sql-console-role:my.user@domain.com`;
+  ```
 
-每当用户使用 SQL 控制台时，系统都会为其分配与其电子邮件地址关联的角色。 
+  #### 用户在使用 SQL 控制台时将被分配新角色 \{#use-assigned-new-role\}
 
+  每当用户使用 SQL 控制台时，系统都会为其分配与其电子邮件地址关联的角色。
 </VerticalStepper>
 
 ## 数据库身份验证 \{#database-authentication\}
@@ -65,7 +62,6 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 ```sql
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
-
 
 ### 使用安全外壳（SSH）身份验证的数据库用户 \{#database-ssh\}
 
@@ -112,53 +108,50 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
 用户可以使用 SHA256 哈希生成器，或使用 Python 中的 `hashlib` 等函数，将一个长度不少于 12 个字符且复杂度足够的密码转换为 SHA256 字符串，并以该字符串作为密码传递给系统管理员。这样可以确保管理员不会看到或接触明文密码。
 
-
 ### 使用 SQL 控制台用户生成数据库访问清单 \{#database-access-listings-with-sql-console-users\}
 
 以下流程可用于在你的组织中生成涵盖 SQL 控制台及各数据库的完整访问清单。
 
 <VerticalStepper headerLevel="h4">
+  #### 获取所有数据库授权列表 \{#get-a-list-of-all-database-grants\}
 
-#### 获取所有数据库授权列表 \{#get-a-list-of-all-database-grants\}
+  运行以下查询以获取数据库中所有授权的列表。
 
-运行以下查询以获取数据库中所有授权的列表。 
+  ```sql
+  SELECT grants.user_name,
+  grants.role_name,
+  users.name AS role_member,
+  grants.access_type,
+  grants.database,
+  grants.table
+  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-```sql
-SELECT grants.user_name,
-grants.role_name,
-users.name AS role_member,
-grants.access_type,
-grants.database,
-grants.table
-FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+  UNION ALL
 
-UNION ALL
+  SELECT grants.user_name,
+  grants.role_name,
+  role_grants.role_name AS role_member,
+  grants.access_type,
+  grants.database,
+  grants.table
+  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+  WHERE role_grants.user_name is null;
+  ```
 
-SELECT grants.user_name,
-grants.role_name,
-role_grants.role_name AS role_member,
-grants.access_type,
-grants.database,
-grants.table
-FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-WHERE role_grants.user_name is null;
-```
+  #### 将授权列表关联到拥有 SQL 控制台访问权限的 Console 用户 \{#associate-grant-list-to-console-users-with-access-to-sql-console\}
 
-#### 将授权列表关联到拥有 SQL 控制台访问权限的 Console 用户 \{#associate-grant-list-to-console-users-with-access-to-sql-console\}
+  将此列表与拥有 SQL 控制台访问权限的 Console 用户进行关联。
 
-将此列表与拥有 SQL 控制台访问权限的 Console 用户进行关联。
-   
-a. 进入 Console。
+  a. 进入 Console。
 
-b. 选择相关的服务（service）。
+  b. 选择相关的服务（service）。
 
-c. 在左侧选择设置（Settings）。
+  c. 在左侧选择设置（Settings）。
 
-d. 向下滚动到 SQL console access 部分。
+  d. 向下滚动到 SQL console access 部分。
 
-e. 点击显示具有该服务数据库访问权限用户数量的链接 `There are # users with access to this service.`，以查看用户列表。
-
+  e. 点击显示具有该服务数据库访问权限用户数量的链接 `There are # users with access to this service.`，以查看用户列表。
 </VerticalStepper>
 
 ## Warehouse users \{#warehouse-users\}

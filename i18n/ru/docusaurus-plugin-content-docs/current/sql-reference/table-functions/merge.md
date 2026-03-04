@@ -28,4 +28,4 @@ merge(['db_name',] 'tables_regexp')
 
 ## См. также \{#related\}
 
-- [Merge](../../engines/table-engines/special/merge.md) — движок таблиц
+* [Merge](../../engines/table-engines/special/merge.md) — движок таблиц

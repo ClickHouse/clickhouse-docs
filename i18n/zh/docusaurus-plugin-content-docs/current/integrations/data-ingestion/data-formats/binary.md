@@ -9,12 +9,11 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 在 ClickHouse 中使用 Native 和二进制格式 \{#using-native-and-binary-formats-in-clickhouse\}
 
 ClickHouse 支持多种二进制格式，可以带来更好的性能和空间利用率。二进制格式在字符编码处理方面也更安全，因为数据是以二进制形式保存的。
 
-我们将使用 some_data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，可在自己的 ClickHouse 实例上进行复现。
+我们将使用 some&#95;data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，可在自己的 ClickHouse 实例上进行复现。
 
 ## 以 ClickHouse 原生格式导出 \{#exporting-in-a-native-clickhouse-format\}
 
@@ -26,7 +25,6 @@ INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
 这将在原生格式下创建 [data.clickhouse](assets/data.clickhouse) 文件。
-
 
 ### 从原生格式导入 \{#importing-from-a-native-format\}
 
@@ -56,7 +54,6 @@ FROM INFILE 'data.clickhouse'
 FORMAT Native
 ```
 
-
 ### 原生格式压缩 \{#native-format-compression\}
 
 在将数据导出为 Native 格式时（以及大多数其他格式），我们也可以通过 `COMPRESSION` 子句启用压缩：
@@ -77,7 +74,6 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-
 ## 导出为 RowBinary \{#exporting-to-rowbinary\}
 
 另一种受支持的二进制格式是 [RowBinary](/interfaces/formats/RowBinary)，它支持以二进制行的形式导入和导出数据：
@@ -88,7 +84,6 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
 这将生成一个采用二进制行格式的 [data.binary](assets/data.binary) 文件。
-
 
 ### 探索 RowBinary 文件 \{#exploring-rowbinary-files\}
 
@@ -112,7 +107,6 @@ LIMIT 5
 
 可以考虑使用 [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames)，它会额外添加一行包含列名的表头。 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 则会再添加一行包含列类型的表头。
 
-
 ### 从 RowBinary 文件导入 \{#importing-from-rowbinary-files\}
 
 要从 RowBinary 文件加载数据，可以使用 `FROM INFILE` 子句：
@@ -122,7 +116,6 @@ INSERT INTO sometable
 FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
-
 
 ## 使用 RawBLOB 导入单个二进制值 \{#importing-single-binary-value-using-rawblob\}
 
@@ -151,7 +144,6 @@ SELECT length(data) FROM images
 └──────────────┘
 ```
 
-
 ### 导出 RawBLOB 数据 \{#exporting-rawblob-data\}
 
 此格式也可用于配合 `INTO OUTFILE` 子句导出数据：
@@ -163,7 +155,6 @@ FORMAT RawBLOB
 ```
 
 请注意，我们必须使用 `LIMIT 1`，因为导出多个值会生成损坏的文件。
-
 
 ## MessagePack \{#messagepack\}
 
@@ -183,7 +174,6 @@ INSERT INTO sometable
 FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
-
 
 ## Protocol Buffers \{#protocol-buffers\}
 
@@ -211,7 +201,6 @@ SETTINGS format_schema = 'schema:MessageType'
 ```
 
 这会将数据保存到 [proto.bin](assets/proto.bin) 文件中。ClickHouse 还支持导入 Protobuf 数据以及包含嵌套消息的数据。对于处理单个 Protocol Buffer 消息的场景（此时会省略长度分隔符），请考虑使用 [ProtobufSingle](/interfaces/formats/ProtobufSingle)。
-
 
 ## Cap&#39;n Proto \{#capn-proto\}
 
@@ -244,16 +233,15 @@ SETTINGS format_schema = 'schema:PathStats'
 
 请注意，我们需要将 `Date` 列强制转换为 `UInt32` 类型，以便[与对应的数据类型匹配](/interfaces/formats/CapnProto#data_types-matching-capnproto)。
 
-
 ## 其他格式 \{#other-formats\}
 
 ClickHouse 支持多种格式，包括文本和二进制格式，以满足各种场景和平台的需求。可以在以下文章中了解更多格式以及如何使用它们：
 
-- [CSV 和 TSV 格式](csv-tsv.md)
-- [Parquet](parquet.md)
-- [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
-- [正则表达式和模板](templates-regex.md)
-- **Native 和二进制格式**
-- [SQL 格式](sql.md)
+* [CSV 和 TSV 格式](csv-tsv.md)
+* [Parquet](parquet.md)
+* [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
+* [正则表达式和模板](templates-regex.md)
+* **Native 和二进制格式**
+* [SQL 格式](sql.md)
 
 此外，还可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 一款便携的全功能工具，可在不启动 ClickHouse 服务器的情况下处理本地/远程文件。

@@ -21,10 +21,10 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 
 ## Аргументы \{#arguments\}
 
-- `db_name` — имя базы данных, в которой находится таблица TimeSeries.
-- `time_series_table` — имя таблицы TimeSeries.
-- `promql_query` — запрос, написанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/).
-- `evaluation_time` — метка времени вычисления. Чтобы вычислить запрос на текущий момент времени, используйте `now()` в качестве значения `evaluation_time`.
+* `db_name` — имя базы данных, в которой находится таблица TimeSeries.
+* `time_series_table` — имя таблицы TimeSeries.
+* `promql_query` — запрос, написанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/).
+* `evaluation_time` — метка времени вычисления. Чтобы вычислить запрос на текущий момент времени, используйте `now()` в качестве значения `evaluation_time`.
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -32,10 +32,10 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 
 | Тип результата | Столбцы результата | Пример |
 |----------------|--------------------|--------|
-| vector         | tags Array(Tuple(String, String)), timestamp TimestampType, value ValueType | prometheusQuery(mytable, 'up') |
-| matrix         | tags Array(Tuple(String, String)), time_series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, 'up[1m]') |
-| scalar         | scalar ValueType | prometheusQuery(mytable, '1h30m') |
-| string         | string String | prometheusQuery(mytable, '"abc"') |
+| vector         | tags Array(Tuple(String, String)), timestamp TimestampType, value ValueType | prometheusQuery(mytable, &#39;up&#39;) |
+| matrix         | tags Array(Tuple(String, String)), time&#95;series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, &#39;up[1m]&#39;) |
+| scalar         | scalar ValueType | prometheusQuery(mytable, &#39;1h30m&#39;) |
+| string         | string String | prometheusQuery(mytable, &#39;&quot;abc&quot;&#39;) |
 
 ## Пример \{#example\}
 

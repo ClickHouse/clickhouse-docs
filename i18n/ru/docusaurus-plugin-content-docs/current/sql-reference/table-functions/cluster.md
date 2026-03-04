@@ -55,13 +55,13 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 
 Табличные функции `cluster` и `clusterAllReplicas` могут быть полезны в следующих случаях:
 
-- Доступ к конкретному кластеру для сравнения данных, отладки и тестирования.
-- Запросы к различным кластерам и репликам ClickHouse в исследовательских целях.
-- Редкие распределённые запросы, выполняемые вручную.
+* Доступ к конкретному кластеру для сравнения данных, отладки и тестирования.
+* Запросы к различным кластерам и репликам ClickHouse в исследовательских целях.
+* Редкие распределённые запросы, выполняемые вручную.
 
 Параметры подключения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из секции конфигурации `<remote_servers>`. Подробности см. в описании [движка Distributed](../../engines/table-engines/special/distributed.md).
 
 ## См. также \{#related\}
 
-- [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
-- [load_balancing](../../operations/settings/settings.md#load_balancing)
+* [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
+* [load&#95;balancing](../../operations/settings/settings.md#load_balancing)

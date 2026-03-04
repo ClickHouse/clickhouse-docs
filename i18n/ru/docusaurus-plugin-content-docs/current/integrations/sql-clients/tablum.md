@@ -19,12 +19,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Интеграция TABLUM.IO с ClickHouse \{#connecting-tablumio-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## Откройте стартовую страницу TABLUM.IO \{#open-the-tablumio-startup-page\}
 
 :::note
-  Вы можете установить самостоятельно размещаемую (self-hosted) версию TABLUM.IO на свой Linux-сервер с помощью Docker.
+Вы можете установить самостоятельно размещаемую (self-hosted) версию TABLUM.IO на свой Linux-сервер с помощью Docker.
 :::
 
 ## 1. Зарегистрируйтесь или войдите в сервис \{#1-sign-up-or-sign-in-to-the-service\}
@@ -69,7 +69,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 * создавать и использовать несколько коннекторов ClickHouse в рамках своего аккаунта TABLUM.IO,
 * выполнять запросы к любым загруженным данным независимо от источника данных,
 * делиться результатами в виде новой базы данных ClickHouse.
-:::
+  :::
 
 ## Узнать больше \{#learn-more\}
 

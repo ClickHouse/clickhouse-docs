@@ -22,7 +22,7 @@ doc_type: 'guide'
 | **Индекс** | Полная поддержка | Упрощённая |
 | **Память** | Все данные в памяти | Данные остаются у источника |
 
----
+***
 
 ## 1. Ленивое vs немедленное выполнение \{#lazy-execution\}
 
@@ -37,7 +37,6 @@ df = pd.read_csv("data.csv")  # Loads entire file NOW
 result = df[df['age'] > 25]   # Filters NOW
 grouped = result.groupby('city')['salary'].mean()  # Aggregates NOW
 ```
-
 
 ### DataStore (ленивый режим) \{#datastore-lazy\}
 
@@ -55,17 +54,16 @@ print(grouped)        # Executes when displaying
 df = grouped.to_df()  # Or when converting to pandas
 ```
 
-
 ### Почему это важно \{#why-lazy\}
 
 Ленивое выполнение позволяет:
 
-- **Оптимизацию запросов**: несколько операций объединяются в один SQL-запрос
-- **Отсечение столбцов**: считываются только необходимые столбцы
-- **Проталкивание фильтров**: фильтры применяются на стороне источника данных
-- **Более эффективное использование памяти**: данные, которые не нужны, не загружаются
+* **Оптимизацию запросов**: несколько операций объединяются в один SQL-запрос
+* **Отсечение столбцов**: считываются только необходимые столбцы
+* **Проталкивание фильтров**: фильтры применяются на стороне источника данных
+* **Более эффективное использование памяти**: данные, которые не нужны, не загружаются
 
----
+***
 
 ## 2. Типы возвращаемых значений \{#return-types\}
 
@@ -78,7 +76,6 @@ df[df['x'] > 10]    # Returns pd.DataFrame
 df.groupby('x')     # Returns DataFrameGroupBy
 ```
 
-
 ### Хранилище данных (DataStore) \{#datastore-return-types\}
 
 ```python
@@ -87,7 +84,6 @@ ds[['a', 'b']]      # Returns DataStore (lazy)
 ds[ds['x'] > 10]    # Returns DataStore (lazy)
 ds.groupby('x')     # Returns LazyGroupBy
 ```
-
 
 ### Преобразование в типы данных pandas \{#converting-to-pandas-types\}
 
@@ -104,7 +100,6 @@ print(ds)  # Automatically converts for display
 ```
 
 ***
-
 
 ## 3. Триггеры выполнения \{#triggers\}
 
@@ -136,7 +131,7 @@ DataStore выполняет вычисления, когда вам нужны 
 | `ds[['a', 'b']]` | DataStore |
 | `ds[condition]` | DataStore |
 
----
+***
 
 ## 4. Порядок строк \{#row-order\}
 
@@ -148,7 +143,6 @@ DataStore выполняет вычисления, когда вам нужны 
 df = pd.read_csv("data.csv")
 print(df.head())  # Always same order as file
 ```
-
 
 ### DataStore \{#datastore-row-order\}
 
@@ -164,23 +158,22 @@ ds_filtered = ds[ds['age'] > 25]  # Same order as pandas
 
 DataStore автоматически отслеживает исходные позиции строк во внутреннем представлении (используя `rowNumberInAllBlocks()`), чтобы порядок соответствовал порядку в pandas.
 
-
 ### Когда порядок сохраняется \{#order-preserved\}
 
-- Источники из файлов (CSV, Parquet, JSON и т. д.)
-- Источники pandas DataFrame
-- Операции фильтрации
-- Выбор столбцов
-- После явного вызова `sort()` или `sort_values()`
-- Операции, задающие порядок (`nlargest()`, `nsmallest()`, `head()`, `tail()`)
+* Источники из файлов (CSV, Parquet, JSON и т. д.)
+* Источники pandas DataFrame
+* Операции фильтрации
+* Выбор столбцов
+* После явного вызова `sort()` или `sort_values()`
+* Операции, задающие порядок (`nlargest()`, `nsmallest()`, `head()`, `tail()`)
 
 ### Когда порядок может отличаться \{#order-may-differ\}
 
-- После агрегаций с `groupby()` (используйте `sort_values()` для обеспечения детерминированного порядка)
-- После `merge()` / `join()` с определёнными типами соединений
-- В **режиме производительности** (`config.use_performance_mode()`): порядок строк не гарантируется ни для каких операций. См. [Режим производительности](../configuration/performance-mode.md).
+* После агрегаций с `groupby()` (используйте `sort_values()` для обеспечения детерминированного порядка)
+* После `merge()` / `join()` с определёнными типами соединений
+* В **режиме производительности** (`config.use_performance_mode()`): порядок строк не гарантируется ни для каких операций. См. [Режим производительности](../configuration/performance-mode.md).
 
----
+***
 
 ## 5. Отсутствие параметра inplace \{#no-inplace\}
 
@@ -192,7 +185,6 @@ df.fillna(0, inplace=True)              # Modifies df
 df.rename(columns={'old': 'new'}, inplace=True)
 ```
 
-
 ### DataStore \{#datastore-inplace\}
 
 `inplace=True` не поддерживается. Всегда присваивайте результат:
@@ -203,17 +195,16 @@ ds = ds.fillna(0)                       # Returns new DataStore
 ds = ds.rename(columns={'old': 'new'})  # Returns new DataStore
 ```
 
-
 ### Почему нет inplace? \{#why-no-inplace\}
 
 DataStore использует неизменяемые операции для:
 
-- построения запросов (ленивое вычисление)
-- потокобезопасности
-- более простой отладки
-- более чистого кода
+* построения запросов (ленивое вычисление)
+* потокобезопасности
+* более простой отладки
+* более чистого кода
 
----
+***
 
 ## 6. Поддержка индексов \{#index\}
 
@@ -228,7 +219,6 @@ df.loc['a':'z']             # Label-based slicing
 df.reset_index()
 df.index.name = 'user_id'
 ```
-
 
 ### DataStore \{#datastore-index\}
 
@@ -245,13 +235,12 @@ df = df.set_index('id')
 df.loc['user123']
 ```
 
-
 ### Важно, какой источник DataStore используется \{#datastore-source-matters\}
 
-- **Источник DataFrame**: сохраняет индекс pandas
-- **Файловый источник**: использует простой целочисленный индекс
+* **Источник DataFrame**: сохраняет индекс pandas
+* **Файловый источник**: использует простой целочисленный индекс
 
----
+***
 
 ## 7. Поведение при сравнении \{#comparison\}
 
@@ -273,7 +262,6 @@ pdf == dsf  # pandas doesn't know DataStore
 pdf.equals(dsf.to_pandas())  # True
 ```
 
-
 ### Использование метода equals() \{#using-equals\}
 
 ```python
@@ -282,7 +270,6 @@ dsf.equals(pdf)  # Compares with pandas DataFrame
 ```
 
 ***
-
 
 ## 8. Вывод типов \{#types\}
 
@@ -293,7 +280,6 @@ dsf.equals(pdf)  # Compares with pandas DataFrame
 ```python
 df['col'].dtype  # int64, float64, object, datetime64, etc.
 ```
-
 
 ### DataStore \{#datastore-types\}
 
@@ -307,7 +293,6 @@ df = ds.to_df()
 df['col'].dtype  # Now pandas type
 ```
 
-
 ### Явное приведение типов \{#explicit-casting\}
 
 ```python
@@ -316,7 +301,6 @@ ds['col'] = ds['col'].astype('int64')
 ```
 
 ***
-
 
 ## 9. Модель памяти \{#memory\}
 
@@ -327,7 +311,6 @@ ds['col'] = ds['col'].astype('int64')
 ```python
 df = pd.read_csv("huge.csv")  # 10GB in memory!
 ```
-
 
 ### DataStore \{#datastore-memory\}
 
@@ -343,7 +326,6 @@ df = ds.to_df()  # Maybe only 1GB now
 
 ***
 
-
 ## 10. Сообщения об ошибках \{#errors\}
 
 ### Различные источники ошибок \{#different-error-sources\}
@@ -355,7 +337,6 @@ df = ds.to_df()  # Maybe only 1GB now
 # May see ClickHouse-style errors
 # "Code: 62. DB::Exception: Syntax error..."
 ```
-
 
 ### Рекомендации по отладке \{#debugging-tips\}
 
@@ -373,19 +354,18 @@ config.enable_debug()
 
 ***
 
-
 ## Контрольный список миграции \{#checklist\}
 
 При миграции с pandas:
 
-- [ ] Измените инструкцию `import`
-- [ ] Удалите параметры `inplace=True`
-- [ ] Добавьте явный вызов `to_df()`, когда требуется pandas DataFrame
-- [ ] Добавьте сортировку, если важен порядок строк
-- [ ] Используйте `to_pandas()` для сравнительных тестов
-- [ ] Тестируйте на репрезентативных объёмах данных
+* [ ] Измените инструкцию `import`
+* [ ] Удалите параметры `inplace=True`
+* [ ] Добавьте явный вызов `to_df()`, когда требуется pandas DataFrame
+* [ ] Добавьте сортировку, если важен порядок строк
+* [ ] Используйте `to_pandas()` для сравнительных тестов
+* [ ] Тестируйте на репрезентативных объёмах данных
 
----
+***
 
 ## Краткая справка \{#quick-ref\}
 

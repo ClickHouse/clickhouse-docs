@@ -14,9 +14,9 @@ doc_type: 'reference'
 
 Сценарии использования:
 
-- Экспорт данных из ClickHouse в файл.
-- Преобразование данных из одного формата в другой.
-- Обновление данных в ClickHouse путём редактирования файла на диске.
+* Экспорт данных из ClickHouse в файл.
+* Преобразование данных из одного формата в другой.
+* Обновление данных в ClickHouse путём редактирования файла на диске.
 
 :::note
 Этот движок в настоящее время недоступен в ClickHouse Cloud, пожалуйста, [используйте вместо него табличную функцию S3](/sql-reference/table-functions/s3.md).
@@ -86,14 +86,14 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 
 ## Подробности реализации \{#details-of-implementation\}
 
-- Несколько запросов `SELECT` могут выполняться одновременно, но запросы `INSERT` выполняются последовательно.
-- Поддерживается создание нового файла с помощью запроса `INSERT`.
-- Если файл существует, `INSERT` будет дописывать в него новые значения.
-- Не поддерживаются:
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - Индексы
-  - Репликация
+* Несколько запросов `SELECT` могут выполняться одновременно, но запросы `INSERT` выполняются последовательно.
+* Поддерживается создание нового файла с помощью запроса `INSERT`.
+* Если файл существует, `INSERT` будет дописывать в него новые значения.
+* Не поддерживаются:
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * Индексы
+  * Репликация
 
 ## PARTITION BY \{#partition-by\}
 
@@ -103,15 +103,15 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — Имя файла. Тип: `LowCardinality(String)`.
+* `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
 ## Настройки \{#settings\}
 
-- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) — позволяет выполнять выборку из несуществующего файла, возвращая пустой набор данных. По умолчанию отключена.
-- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) — позволяет усекать файл перед вставкой в него данных. По умолчанию отключена.
-- [engine_file_allow_create_multiple_files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключена.
-- [engine_file_skip_empty_files](/operations/settings/settings.md#engine_file_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключена.
-- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) — метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap`. Метод `mmap` не применяется к clickhouse-server (предназначен для clickhouse-local). Значение по умолчанию: `pread` для clickhouse-server, `mmap` для clickhouse-local.
+* [engine&#95;file&#95;empty&#95;if&#95;not&#95;exists](/operations/settings/settings#engine_file_empty_if_not_exists) — позволяет выполнять выборку из несуществующего файла, возвращая пустой набор данных. По умолчанию отключена.
+* [engine&#95;file&#95;truncate&#95;on&#95;insert](/operations/settings/settings#engine_file_truncate_on_insert) — позволяет усекать файл перед вставкой в него данных. По умолчанию отключена.
+* [engine&#95;file&#95;allow&#95;create&#95;multiple&#95;files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключена.
+* [engine&#95;file&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_file_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключена.
+* [storage&#95;file&#95;read&#95;method](/operations/settings/settings#engine_file_empty_if_not_exists) — метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap`. Метод `mmap` не применяется к clickhouse-server (предназначен для clickhouse-local). Значение по у

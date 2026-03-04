@@ -15,7 +15,6 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
-
 # Переход на Managed Postgres с использованием логической репликации \{#logical-replication-migration\}
 
 В этом руководстве приведены пошаговые инструкции по переносу вашей базы данных PostgreSQL на ClickHouse Managed Postgres с использованием встроенной в Postgres логической репликации.
@@ -32,27 +31,26 @@ import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/so
 dig +short <your-managed-postgres-hostname>
 ```
 
-
 ## Настройка \{#migration-logical-replication-setup\}
 
 Чтобы логическая репликация работала, необходимо правильно настроить исходную базу данных. Основные требования:
 
-- В исходной базе данных параметр `wal_level` должен быть установлен в значение `logical`.
-- В исходной базе данных параметр `max_replication_slots` должен быть установлен как минимум в `1`.
-- Для RDS (который используется в этом руководстве в качестве примера) необходимо убедиться, что в группе параметров значение `rds.logical_replication` установлено в `1`.
-- Пользователь исходной базы данных должен иметь привилегию `REPLICATION`. В случае RDS вам нужно выполнить:
-    ```sql
-    GRANT rds_replication TO <your-username>;
-    ```
-- Роль, которую вы используете для целевой базы данных, должна иметь права на запись на объекты целевой базы данных:
-    ```sql
-    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
-    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
-    GRANT pg_create_subscription TO subscriber_user;
+* В исходной базе данных параметр `wal_level` должен быть установлен в значение `logical`.
+* В исходной базе данных параметр `max_replication_slots` должен быть установлен как минимум в `1`.
+* Для RDS (который используется в этом руководстве в качестве примера) необходимо убедиться, что в группе параметров значение `rds.logical_replication` установлено в `1`.
+* Пользователь исходной базы данных должен иметь привилегию `REPLICATION`. В случае RDS вам нужно выполнить:
+  ```sql
+  GRANT rds_replication TO <your-username>;
+  ```
+* Роль, которую вы используете для целевой базы данных, должна иметь права на запись на объекты целевой базы данных:
+  ```sql
+  GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+  GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+  GRANT pg_create_subscription TO subscriber_user;
 
-    -- Предоставление прав на таблицы
-    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
-    ```
+  -- Предоставление прав на таблицы
+  GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+  ```
 
 Убедитесь, что исходная база данных настроена следующим образом:
 
@@ -81,7 +79,6 @@ pg_dump \
 
 <Image img={sourceSetup} alt="Исходная схема таблиц PostgreSQL" size="xl" border />
 
-
 ### Создайте экземпляр Managed Postgres \{#migration-pgdump-pg-restore-create-pg\}
 
 Сначала убедитесь, что у вас развернут экземпляр Managed Postgres, желательно в том же регионе, что и источник. Вы можете следовать краткому руководству [здесь](../quickstart#create-postgres-database). Вот что мы развернём в рамках этого руководства:
@@ -109,7 +106,6 @@ pg_restore \
 
 <Image img={targetInitialSetup} alt="Начальная настройка целевой ClickHouse Managed Postgres" size="xl" border />
 
-
 ## Настройка логической репликации \{#migration-logical-replication-setup-replication\}
 
 После того как схема подготовлена, можно настроить логическую репликацию из исходной базы данных в целевую базу данных ClickHouse Managed Postgres. Для этого необходимо создать публикацию на исходной базе данных и подписку на целевой базе данных.
@@ -125,7 +121,6 @@ CREATE PUBLICATION <pub_name> FOR TABLE table1, table2...;
 :::info
 Создание публикации с параметром FOR ALL TABLES может привести к дополнительным сетевым издержкам, если в базе много таблиц. Рекомендуется указывать только те таблицы, которые вы хотите реплицировать.
 :::
-
 
 ### Создайте подписку в целевой базе данных ClickHouse Managed Postgres \{#migration-logical-replication-create-subscription\}
 
@@ -145,16 +140,15 @@ PUBLICATION <pub_name_you_entered_above>;
 
 Новые строки, добавленные в исходную базу данных, теперь будут реплицироваться в целевую базу данных ClickHouse Managed Postgres практически в режиме реального времени.
 
-
 ## Ограничения и соображения \{#migration-logical-replication-caveats\}
 
-- Логическая репликация передаёт только изменения данных (INSERT, UPDATE, DELETE). Изменения схемы (например, ALTER TABLE) необходимо обрабатывать отдельно.
-- Убедитесь, что сетевое соединение между исходной и целевой базами данных стабильно, чтобы избежать прерываний репликации.
-- Отслеживайте задержку репликации, чтобы гарантировать, что целевая база данных не отстаёт от исходной. Установка подходящего значения параметра `max_slot_wal_keep_size` на исходной базе данных может помочь управлять ростом слота репликации и предотвратить чрезмерное потребление дискового пространства.
-- В зависимости от сценария использования имеет смысл настроить мониторинг и оповещения для процесса репликации.
+* Логическая репликация передаёт только изменения данных (INSERT, UPDATE, DELETE). Изменения схемы (например, ALTER TABLE) необходимо обрабатывать отдельно.
+* Убедитесь, что сетевое соединение между исходной и целевой базами данных стабильно, чтобы избежать прерываний репликации.
+* Отслеживайте задержку репликации, чтобы гарантировать, что целевая база данных не отстаёт от исходной. Установка подходящего значения параметра `max_slot_wal_keep_size` на исходной базе данных может помочь управлять ростом слота репликации и предотвратить чрезмерное потребление дискового пространства.
+* В зависимости от сценария использования имеет смысл настроить мониторинг и оповещения для процесса репликации.
 
 ## Следующие шаги \{#migration-pgdump-pg-restore-next-steps\}
 
-Поздравляем! Вы успешно перенесли базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg_dump и pg_restore. Теперь вы готовы исследовать возможности Managed Postgres и его интеграцию с ClickHouse. Вот 10‑минутное краткое руководство, которое поможет вам начать:
+Поздравляем! Вы успешно перенесли базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg&#95;dump и pg&#95;restore. Теперь вы готовы исследовать возможности Managed Postgres и его интеграцию с ClickHouse. Вот 10‑минутное краткое руководство, которое поможет вам начать:
 
-- [Краткое руководство по Managed Postgres](../quickstart)
+* [Краткое руководство по Managed Postgres](../quickstart)

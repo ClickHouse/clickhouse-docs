@@ -35,12 +35,12 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
 ## Предварительные требования \{#pre-requisites\}
 
-- Вы уже развернули [локальный сервер ClickHouse](/install)
-- Вы знакомы с основами конфигурирования ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
-- На вашей машине установлен Docker
+* Вы уже развернули [локальный сервер ClickHouse](/install)
+* Вы знакомы с основами конфигурирования ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
+* На вашей машине установлен Docker
 
 <VerticalStepper level="h2">
-  ## Настройка структуры каталогов и тестового окружения
+  ## Настройка структуры каталогов и тестового окружения \{#set-up\}
 
   <ExampleFiles />
 
@@ -164,9 +164,9 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <ConfigExplanation />
 
-  ## Настройка узлов ClickHouse
+  ## Настройка узлов ClickHouse \{#configure-clickhouse-servers\}
 
-  ### Настройка сервера
+  ### Настройка сервера \{#server-setup\}
 
   Теперь измените каждый пустой файл конфигурации `config.xml`, расположенный по пути
   `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Строки, выделенные
@@ -243,7 +243,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   Каждый раздел указанного выше конфигурационного файла подробно описан ниже.
 
-  #### Сеть и логирование
+  #### Сеть и логирование \{#networking\}
 
   <ListenHost />
 
@@ -262,7 +262,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   Дополнительную информацию о настройке логирования см. в комментариях стандартного [файла конфигурации](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) ClickHouse.
 
-  #### Конфигурация кластера
+  #### Конфигурация кластера \{#cluster-configuration\}
 
   Конфигурация кластера задаётся в блоке `<remote_servers>`.
   Здесь задано имя кластера `cluster_2S_1R`.
@@ -296,7 +296,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <ServerParameterTable />
 
-  #### Конфигурация Keeper
+  #### Конфигурация Keeper \{#keeper-config-explanation\}
 
   Секция `<ZooKeeper>` указывает ClickHouse, где запущен ClickHouse Keeper (или ZooKeeper).
   Поскольку используется кластер ClickHouse Keeper, необходимо указать каждый узел `<node>` кластера
@@ -326,7 +326,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   для production-окружений мы настоятельно рекомендуем использовать выделенные хосты для ClickHouse Keeper.
   :::
 
-  #### Конфигурация макросов
+  #### Конфигурация макросов \{#macros-config-explanation\}
 
   Кроме того, секция `<macros>` используется для определения подстановки параметров для
   реплицируемых таблиц. Они перечислены в `system.macros` и позволяют использовать подстановки
@@ -343,7 +343,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   Эти параметры задаются в соответствии с топологией кластера.
   :::
 
-  ### Настройка пользователя
+  ### Настройка пользователя \{#user-config\}
 
   Теперь измените каждый пустой конфигурационный файл `users.xml`, расположенный в
   `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d`, следующим образом:
@@ -400,9 +400,9 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   В данном примере файл `users.xml` одинаков для всех узлов кластера.
   :::
 
-  ## Настройка ClickHouse Keeper
+  ## Настройка ClickHouse Keeper \{#configure-clickhouse-keeper-nodes\}
 
-  ### Настройка Keeper
+  ### Настройка Keeper \{#configuration-explanation\}
 
   <KeeperConfig />
 
@@ -416,7 +416,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <CloudTip />
 
-  ## Проверка настройки
+  ## Проверка настройки \{#test-the-setup\}
 
   Убедитесь, что Docker запущен на вашем компьютере.
   Запустите кластер командой `docker-compose up` из корневого каталога `cluster_2S_1R`:
@@ -493,7 +493,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   Таким образом, вы успешно настроили кластер ClickHouse с одним сегментом и двумя репликами.
   На следующем шаге вы создадите таблицу в кластере.
 
-  ## Создание базы данных
+  ## Создание базы данных \{#creating-a-database\}
 
   Теперь, когда вы убедились, что кластер правильно настроен и запущен,
   вы создадите ту же таблицу, что и в руководстве по примеру набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
@@ -550,7 +550,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
      └────────────────────┘
   ```
 
-  ## Создание таблицы в кластере
+  ## Создание таблицы в кластере \{#creating-a-table\}
 
   Теперь, когда база данных создана, создайте таблицу.
   Выполните следующий запрос из любого клиента на хосте:
@@ -650,7 +650,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   В ClickHouse этот интерфейс называется **distributed таблицей**, которую мы создаём с помощью движка таблицы [`Distributed`](/engines/table-engines/special/distributed). Рассмотрим, как это работает.
 
-  ## Создание distributed таблицы
+  ## Создание distributed таблицы \{#create-distributed-table\}
 
   Создайте distributed таблицу с помощью следующего запроса:
 
@@ -686,7 +686,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   ENGINE = Distributed('cluster_2S_1R', 'uk', 'uk_price_paid_local', rand());
   ```
 
-  ## Вставка данных в distributed таблицу
+  ## Вставка данных в distributed таблицу \{#inserting-data-into-distributed-table\}
 
   Теперь подключитесь к любому из хостов и вставьте данные:
 

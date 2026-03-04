@@ -31,7 +31,6 @@ assert qr[0][0] == 4
 
 `InsertContext` 包含在插入过程中会被更新的可变状态，因此并不是线程安全的。
 
-
 ### 写入格式 \{#write-formats\}
 
 当前仅对少量类型实现了写入格式支持。在大多数情况下，ClickHouse Connect 会尝试通过检查首个（非空）数据值的类型，自动推断列的正确写入格式。举例来说，如果要向 `DateTime` 列插入数据，并且该列的第一个插入值是一个 Python 整数，ClickHouse Connect 会在假定该值实际表示 Unix epoch 秒数的前提下，直接插入该整数值。
@@ -64,7 +63,7 @@ assert qr[0][0] == 4
 | Map                   | dict                    |                   |                                                                                                             |
 | Nested                | Sequence[dict]          |                   |                                                                                                             |
 | UUID                  | uuid.UUID               | string            | 可插入格式正确的字符串作为 ClickHouse UUID                                                                 |
-| JSON/Object('json')   | dict                    | string            | 可以将字典或 JSON 字符串插入到 JSON 列中（注意 `Object('json')` 已被弃用）                                 |
+| JSON/Object(&#39;json&#39;)   | dict                    | string            | 可以将字典或 JSON 字符串插入到 JSON 列中（注意 `Object('json')` 已被弃用）                                 |
 | Variant               | object                  |                   | 当前所有 Variant 值都以字符串形式插入，并由 ClickHouse 服务器解析                                          |
 | Dynamic               | object                  |                   | 警告 —— 当前对 Dynamic 列的任何插入都会以 ClickHouse String 类型持久化存储                                 |
 
@@ -72,9 +71,9 @@ assert qr[0][0] == 4
 
 ClickHouse Connect 为常见数据格式提供了专用插入方法：
 
-- `insert_df` -- 插入一个 Pandas DataFrame。与向主 `insert` 方法传递一个「序列的序列」类型的 Python `data` 参数不同，此方法的第二个参数为 `df`，且必须是一个 Pandas DataFrame 实例。ClickHouse Connect 会自动将该 DataFrame 作为列式数据源进行处理，因此不需要也不提供 `column_oriented` 参数。
-- `insert_arrow` -- 插入一个 PyArrow Table。ClickHouse Connect 会将 Arrow 表原样传递给 ClickHouse 服务器处理，因此除了 `table` 和 `arrow_table` 以外，只能额外指定 `database` 和 `settings` 参数。
-- `insert_df_arrow` -- 插入一个以 Arrow 为后端的 Pandas DataFrame 或一个 Polars DataFrame。ClickHouse Connect 会自动判断该 DataFrame 是 Pandas 类型还是 Polars 类型。如果是 Pandas，将执行校验以确保每一列的 dtype 后端都是基于 Arrow 的，否则将抛出错误。
+* `insert_df` -- 插入一个 Pandas DataFrame。与向主 `insert` 方法传递一个「序列的序列」类型的 Python `data` 参数不同，此方法的第二个参数为 `df`，且必须是一个 Pandas DataFrame 实例。ClickHouse Connect 会自动将该 DataFrame 作为列式数据源进行处理，因此不需要也不提供 `column_oriented` 参数。
+* `insert_arrow` -- 插入一个 PyArrow Table。ClickHouse Connect 会将 Arrow 表原样传递给 ClickHouse 服务器处理，因此除了 `table` 和 `arrow_table` 以外，只能额外指定 `database` 和 `settings` 参数。
+* `insert_df_arrow` -- 插入一个以 Arrow 为后端的 Pandas DataFrame 或一个 Polars DataFrame。ClickHouse Connect 会自动判断该 DataFrame 是 Pandas 类型还是 Polars 类型。如果是 Pandas，将执行校验以确保每一列的 dtype 后端都是基于 Arrow 的，否则将抛出错误。
 
 :::note
 NumPy 数组是一个有效的「序列的序列」（Sequence of Sequences），可以作为主 `insert` 方法的 `data` 参数使用，因此不需要专用方法。
@@ -114,8 +113,7 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-#### 基于 Arrow 的 DataFrame 插入（pandas 2.x）\{#arrow-backed-dataframe-insert-pandas-2\}
-
+#### 基于 Arrow 的 DataFrame 插入（pandas 2.x） \{#arrow-backed-dataframe-insert-pandas-2\}
 
 ```python
 import clickhouse_connect

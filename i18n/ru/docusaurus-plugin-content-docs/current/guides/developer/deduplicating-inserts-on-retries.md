@@ -54,9 +54,9 @@ doc_type: 'guide'
 
 Вы можете управлять этим процессом с помощью следующих настроек для исходной таблицы:
 
-- [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window)
-- [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
-- [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
+* [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window)
+* [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
+* [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
 
 Также необходимо включить настройку профиля пользователя [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
 При включённой настройке `insert_deduplicate=1` вставленные данные дедуплицируются в исходной таблице. Настройка `deduplicate_blocks_in_dependent_materialized_views=1` дополнительно включает дедупликацию в зависимых таблицах. Для полной дедупликации необходимо включить обе настройки.
@@ -175,7 +175,6 @@ ORDER by all;
 
 Здесь мы видим, что при повторной вставке все данные дедуплицируются. Дедупликация работает как для таблицы `dst`, так и для таблицы `mv_dst`.
 
-
 ### Идентичные блоки при вставке \{#identical-blocks-on-insertion\}
 
 ```sql
@@ -214,7 +213,6 @@ ORDER BY all;
 ```
 
 При указанных выше настройках запрос select возвращает два блока — следовательно, в таблицу `dst` должны быть вставлены два блока. Однако мы видим, что в таблицу `dst` был вставлен только один блок. Это произошло из-за дедупликации второго блока. Он содержит те же данные и ключ дедупликации `block_id`, который вычисляется как хеш вставленных данных. Такое поведение не соответствует ожидаемому. Подобные случаи встречаются редко, но теоретически возможны. Для корректной обработки таких ситуаций необходимо указать `insert_deduplication_token`. Исправим это с помощью следующих примеров:
-
 
 ### Идентичные блоки при вставке с использованием `insert_deduplication_token` \{#identical-blocks-in-insertion-with-insert_deduplication_token\}
 
@@ -305,7 +303,6 @@ ORDER BY all;
 
 Эта вставка также будет дедуплицирована, даже несмотря на то, что она содержит другие данные. Обратите внимание, что `insert_deduplication_token` имеет более высокий приоритет: ClickHouse не использует хеш-сумму данных, когда указан `insert_deduplication_token`.
 
-
 ### Разные операции вставки приводят к одинаковым данным после преобразования в базовой таблице materialized view \{#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view\}
 
 ```sql
@@ -389,7 +386,6 @@ ORDER by all;
 ```
 
 Каждый раз мы вставляем разные данные. Однако в таблицу `mv_dst` попадают одни и те же данные. Дедупликация не выполняется, так как исходные данные различались.
-
 
 ### Вставки из разных материализованных представлений в одну целевую таблицу с эквивалентными данными \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
 

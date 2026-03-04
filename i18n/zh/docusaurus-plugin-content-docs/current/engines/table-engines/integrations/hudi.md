@@ -53,4 +53,4 @@ CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 
 ## 另请参阅 \{#see-also\}
 
-- [Hudi 表函数](/sql-reference/table-functions/hudi.md)
+* [Hudi 表函数](/sql-reference/table-functions/hudi.md)

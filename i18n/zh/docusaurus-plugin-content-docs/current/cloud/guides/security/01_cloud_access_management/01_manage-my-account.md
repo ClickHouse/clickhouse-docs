@@ -9,12 +9,11 @@ keywords: ['账户管理', '用户资料', '安全', '云控制台', '设置']
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-
 ## 接受邀请 \{#accept-invitation\}
 
-用户可以通过多种方式接受加入组织的邀请。如果这是您首次收到邀请，请在下方为您的组织选择合适的身份验证方式。 
+用户可以通过多种方式接受加入组织的邀请。如果这是您首次收到邀请，请在下方为您的组织选择合适的身份验证方式。
 
-如果这不是您的第一个组织，可以先使用现有组织的账户登录，然后在页面左下角接受邀请；或者先通过电子邮件中的邀请链接接受邀请，再使用现有账户登录。 
+如果这不是您的第一个组织，可以先使用现有组织的账户登录，然后在页面左下角接受邀请；或者先通过电子邮件中的邀请链接接受邀请，再使用现有账户登录。
 
 :::note SAML 用户
 使用 SAML 的组织在每个 ClickHouse 组织下都有唯一的登录入口。请使用管理员提供的直接链接进行登录。
@@ -30,11 +29,11 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 
 使用 `Continue with Google` 或 `Continue with Microsoft Account` 来注册服务或接受邀请。
 
-如果您的公司使用 Google Workspace 或 Microsoft 365，您可以在 ClickHouse Cloud 中复用现有的单点登录配置。为此，只需使用公司邮箱地址注册，并使用他们的公司邮箱地址邀请其他用户。这样，您的用户必须先通过公司现有的登录流程（无论是通过身份提供商，还是直接使用 Google 或 Microsoft 身份验证），然后才能登录 ClickHouse Cloud。 
+如果您的公司使用 Google Workspace 或 Microsoft 365，您可以在 ClickHouse Cloud 中复用现有的单点登录配置。为此，只需使用公司邮箱地址注册，并使用他们的公司邮箱地址邀请其他用户。这样，您的用户必须先通过公司现有的登录流程（无论是通过身份提供商，还是直接使用 Google 或 Microsoft 身份验证），然后才能登录 ClickHouse Cloud。
 
 ### SAML 单点登录 (SSO) \{#saml-sso\}
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+<EnterprisePlanFeatureBadge feature="SAML SSO" />
 
 使用 SAML SSO 的用户在登录时会由其身份提供商自动添加。具有 Organization Admin 角色的 ClickHouse Cloud 用户可以[管理分配给 SAML 用户的角色](/cloud/security/manage-cloud-users)，并强制将 SAML 设为唯一的身份验证方式。
 
@@ -56,6 +55,7 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 ### 获取新的恢复代码 \{#obtain-recovery-code\}
 
 如果你之前已启用 MFA，但没有创建恢复代码或已遗失恢复代码，请按照以下步骤获取新的恢复代码：
+
 1. 访问 https://console.clickhouse.cloud
 2. 使用你的凭据和 MFA 登录
 3. 点击左上角进入你的个人资料（Profile）
@@ -112,4 +112,4 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 
 **提交工单**：如果您所在的组织中还有其他管理员用户，即使您只是尝试访问一个单用户组织，也请让组织中具有 Admin 角色的成员登录组织，并代表您提交支持工单来重置您的 MFA。我们在验证请求已通过身份认证后，会重置您的 MFA 并通知该 Admin。之后您可以像往常一样在没有 MFA 的情况下登录，如有需要，可前往个人资料设置中注册新的因子。
 
-**通过电子邮件重置**：如果您是组织中的唯一用户，请使用与您账户关联的邮箱地址，通过电子邮件（support@clickhouse.com）提交支持请求。我们在验证请求来自正确邮箱后，会重置您的 MFA 和密码。然后前往您的邮箱获取密码重置链接。设置新密码后，如有需要，可前往个人资料设置中注册新的因子。 
+**通过电子邮件重置**：如果您是组织中的唯一用户，请使用与您账户关联的邮箱地址，通过电子邮件（support@clickhouse.com）提交支持请求。我们在验证请求来自正确邮箱后，会重置您的 MFA 和密码。然后前往您的邮箱获取密码重置链接。设置新密码后，如有需要，可前往个人资料设置中注册新的因子。

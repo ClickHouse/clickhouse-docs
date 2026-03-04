@@ -19,13 +19,13 @@ doc_type: 'reference'
 
 **Использование**
 
-Регулярное выражение из настройки [format_regexp](/operations/settings/settings-formats.md/#format_regexp) применяется к каждой строке импортируемых данных. Количество подвыражений (групп) в регулярном выражении должно быть равно количеству столбцов в импортируемом наборе данных.
+Регулярное выражение из настройки [format&#95;regexp](/operations/settings/settings-formats.md/#format_regexp) применяется к каждой строке импортируемых данных. Количество подвыражений (групп) в регулярном выражении должно быть равно количеству столбцов в импортируемом наборе данных.
 
 Строки импортируемых данных должны быть разделены символом новой строки `'\n'` или переводом строки в стиле DOS `"\r\n"`.
 
-Содержимое каждого совпавшего подвыражения разбирается способом, соответствующим его типу данных, в соответствии с настройкой [format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule).
+Содержимое каждого совпавшего подвыражения разбирается способом, соответствующим его типу данных, в соответствии с настройкой [format&#95;regexp&#95;escaping&#95;rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule).
 
-Если регулярное выражение не соответствует строке и параметр [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) равен 1, строка просто пропускается без ошибки. В противном случае генерируется исключение.
+Если регулярное выражение не соответствует строке и параметр [format&#95;regexp&#95;skip&#95;unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) равен 1, строка просто пропускается без ошибки. В противном случае генерируется исключение.
 
 ## Пример использования \{#example-usage\}
 
@@ -67,13 +67,14 @@ SELECT * FROM imp_regex_table;
 
 При работе с форматом `Regexp` можно использовать следующие настройки:
 
-- `format_regexp` — [String](/sql-reference/data-types/string.md). Содержит регулярное выражение в синтаксисе [re2](https://github.com/google/re2/wiki/Syntax).
-- `format_regexp_escaping_rule` — [String](/sql-reference/data-types/string.md). Поддерживаются следующие правила экранирования:
+* `format_regexp` — [String](/sql-reference/data-types/string.md). Содержит регулярное выражение в синтаксисе [re2](https://github.com/google/re2/wiki/Syntax).
 
-  - CSV (аналогично [CSV](/interfaces/formats/CSV)
-  - JSON (аналогично [JSONEachRow](/interfaces/formats/JSONEachRow)
-  - Escaped (аналогично [TSV](/interfaces/formats/TabSeparated)
-  - Quoted (аналогично [Values](/interfaces/formats/Values)
-  - Raw (извлекает подвыражения целиком, без правил экранирования, аналогично [TSVRaw](/interfaces/formats/TabSeparated)
+* `format_regexp_escaping_rule` — [String](/sql-reference/data-types/string.md). Поддерживаются следующие правила экранирования:
 
-- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md). Определяет, нужно ли выбрасывать исключение, если выражение `format_regexp` не соответствует импортируемым данным. Может быть `0` или `1`.
+  * CSV (аналогично [CSV](/interfaces/formats/CSV)
+  * JSON (аналогично [JSONEachRow](/interfaces/formats/JSONEachRow)
+  * Escaped (аналогично [TSV](/interfaces/formats/TabSeparated)
+  * Quoted (аналогично [Values](/interfaces/formats/Values)
+  * Raw (извлекает подвыражения целиком, без правил экранирования, аналогично [TSVRaw](/interfaces/formats/TabSeparated)
+
+* `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md). Определяет, нужно ли выбрасывать исключение, если выражение `format_regexp` не соответствует импортируемым данным. Может быть `0` или `1`.

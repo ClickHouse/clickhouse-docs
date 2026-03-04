@@ -23,7 +23,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # QuickSight \{#quicksight\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 QuickSight может подключаться к локальному развертыванию ClickHouse (23.11+) через интерфейс MySQL, используя официальный источник данных MySQL и режим Direct Query.
 
@@ -121,44 +121,51 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## Подключение QuickSight к ClickHouse \{#connecting-quicksight-to-clickhouse\}
 
-Для начала перейдите на [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), откройте раздел Datasets и нажмите "New dataset":
+Для начала перейдите на [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), откройте раздел Datasets и нажмите &quot;New dataset&quot;:
 
 <Image size="md" img={quicksight_01} alt="Панель управления Amazon QuickSight с кнопкой New dataset в разделе Datasets" border />
-<br/>
+
+<br />
 
 Найдите официальный коннектор MySQL, поставляемый с QuickSight (называется просто **MySQL**):
 
 <Image size="md" img={quicksight_02} alt="Экран выбора источника данных QuickSight с MySQL, выделенным в результатах поиска" border />
-<br/>
+
+<br />
 
 Укажите параметры подключения. Обратите внимание, что порт интерфейса MySQL по умолчанию — 9004,
 и он может отличаться в зависимости от конфигурации вашего сервера.
 
 <Image size="md" img={quicksight_03} alt="Форма настройки подключения MySQL в QuickSight с полями hostname, port, database и credentials" border />
-<br/>
+
+<br />
 
 Теперь у вас есть два варианта получения данных из ClickHouse. Во‑первых, вы можете выбрать таблицу из списка:
 
 <Image size="md" img={quicksight_04} alt="Интерфейс выбора таблиц в QuickSight, показывающий таблицы базы данных, доступные из ClickHouse" border />
-<br/>
+
+<br />
 
 Либо вы можете указать произвольный SQL-запрос для получения данных:
 
 <Image size="md" img={quicksight_05} alt="Редактор произвольного SQL-запроса в QuickSight для выборки данных из ClickHouse" border />
-<br/>
 
-Нажав "Edit/Preview data", вы сможете увидеть структуру таблицы, полученную в результате автоанализа, или скорректировать ваш произвольный SQL-запрос, если вы решили получать данные таким способом:
+<br />
+
+Нажав &quot;Edit/Preview data&quot;, вы сможете увидеть структуру таблицы, полученную в результате автоанализа, или скорректировать ваш произвольный SQL-запрос, если вы решили получать данные таким способом:
 
 <Image size="md" img={quicksight_06} alt="Предпросмотр данных в QuickSight, показывающий структуру таблицы со столбцами и примерами данных" border />
-<br/>
 
-Убедитесь, что в левом нижнем углу интерфейса выбран режим "Direct Query":
+<br />
+
+Убедитесь, что в левом нижнем углу интерфейса выбран режим &quot;Direct Query&quot;:
 
 <Image size="md" img={quicksight_07} alt="Интерфейс QuickSight с выделенной опцией режима Direct Query в нижнем углу" border />
-<br/>
+
+<br />
 
 Теперь вы можете опубликовать набор данных и создать новую визуализацию!
 
 ## Известные ограничения \{#known-limitations\}
 
-- Импорт SPICE работает некорректно; вместо него используйте режим Direct Query. См. [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553).
+* Импорт SPICE работает некорректно; вместо него используйте режим Direct Query. См. [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553).

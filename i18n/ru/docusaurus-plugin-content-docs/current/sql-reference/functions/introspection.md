@@ -122,7 +122,6 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
 Впервые представлена в версии: v22.2.0
@@ -177,7 +176,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -294,7 +292,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -389,7 +386,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -450,7 +446,6 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
-
 ## logTrace \{#logTrace\}
 
 Впервые появился в версии v20.12.0
@@ -484,7 +479,6 @@ SELECT logTrace('logTrace message');
 │                            0 │
 └──────────────────────────────┘
 ```
-
 
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
@@ -520,7 +514,6 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 │ all               │             12 │             25 │          7 │             4 │
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
-
 
 ## tid \{#tid\}
 

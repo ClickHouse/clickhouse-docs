@@ -191,11 +191,11 @@ FROM file('time.parquet', Parquet);
 
 ClickHouse 支持多种格式，包括文本和二进制格式，以适配各种场景和平台。请在以下文章中了解更多格式以及使用它们的方法：
 
-- [CSV 和 TSV 格式](csv-tsv.md)
-- [Avro、Arrow 和 ORC](arrow-avro-orc.md)
-- [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
-- [正则表达式和模板](templates-regex.md)
-- [原生和二进制格式](binary.md)
-- [SQL 格式](sql.md)
+* [CSV 和 TSV 格式](csv-tsv.md)
+* [Avro、Arrow 和 ORC](arrow-avro-orc.md)
+* [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
+* [正则表达式和模板](templates-regex.md)
+* [原生和二进制格式](binary.md)
+* [SQL 格式](sql.md)
 
 还可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)——一个可移植且功能完备的工具，可在无需 ClickHouse 服务器的情况下处理本地/远程文件。

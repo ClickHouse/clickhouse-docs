@@ -26,7 +26,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 > 我希望能够将我们的 NLB proxy protocol v2 配置为如下所示：`proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`。
 > :::
 
-
 ## 1. 创建 SSL 用户证书 \{#1-create-ssl-user-certificates\}
 
 :::note
@@ -34,25 +33,25 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 :::
 
 1. 生成证书签名请求（CSR）和密钥。基本格式如下：
-    ```bash
-    openssl req -newkey rsa:2048 -nodes -subj "/CN=<my_host>:<my_user>"  -keyout <my_cert_name>.key -out <my_cert_name>.csr
-    ```
-    在此示例中，我们将在本示例环境中为要使用的域和用户生成 CSR：
-    ```bash
-    openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1.marsnet.local:cert_user"  -keyout chnode1_cert_user.key -out chnode1_cert_user.csr
-    ```
-    :::note
-    CN 值是任意的，任何字符串都可以用作证书标识符。后续步骤在创建用户时会用到该值。
-    :::
+   ```bash
+   openssl req -newkey rsa:2048 -nodes -subj "/CN=<my_host>:<my_user>"  -keyout <my_cert_name>.key -out <my_cert_name>.csr
+   ```
+   在此示例中，我们将在本示例环境中为要使用的域和用户生成 CSR：
+   ```bash
+   openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode1.marsnet.local:cert_user"  -keyout chnode1_cert_user.key -out chnode1_cert_user.csr
+   ```
+   :::note
+   CN 值是任意的，任何字符串都可以用作证书标识符。后续步骤在创建用户时会用到该值。
+   :::
 
-2.  生成并签名用于身份验证的新用户证书。基本格式如下：
-    ```bash
-    openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
-    ```
-    在此示例中，我们将在本示例环境中为要使用的域和用户生成证书：
-    ```bash
-    openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
-    ```
+2. 生成并签名用于身份验证的新用户证书。基本格式如下：
+   ```bash
+   openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
+   ```
+   在此示例中，我们将在本示例环境中为要使用的域和用户生成证书：
+   ```bash
+   openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
+   ```
 
 ## 2. 创建 SQL 用户并授予权限 \{#2-create-a-sql-user-and-grant-permissions\}
 
@@ -61,36 +60,40 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 :::
 
 1. 创建一个基于证书认证的 SQL 用户：
-    ```sql
-    CREATE USER cert_user IDENTIFIED WITH ssl_certificate CN 'chnode1.marsnet.local:cert_user';
-    ```
+   ```sql
+   CREATE USER cert_user IDENTIFIED WITH ssl_certificate CN 'chnode1.marsnet.local:cert_user';
+   ```
 
 2. 为新的证书用户授予权限：
-    ```sql
-    GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
-    ```
-    :::note
-    在本练习中，为演示目的向该用户授予了完全的管理员权限。有关权限设置，请参阅 ClickHouse [RBAC 文档](/guides/sre/user-management/index.md)。
-    :::
 
-    :::note
-    建议使用 SQL 定义用户和角色。不过，如果当前是通过配置文件定义用户和角色，则用户配置类似于：
-    ```xml
-    <users>
-        <cert_user>
-            <ssl_certificates>
-                <common_name>chnode1.marsnet.local:cert_user</common_name>
-            </ssl_certificates>
-            <networks>
-                <ip>::/0</ip>
-            </networks>
-            <profile>default</profile>
-            <access_management>1</access_management>
-            <!-- additional options-->
-        </cert_user>
-    </users>
-    ```
-    :::
+   ```sql
+   GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
+   ```
+
+   :::note
+   在本练习中，为演示目的向该用户授予了完全的管理员权限。有关权限设置，请参阅 ClickHouse [RBAC 文档](/guides/sre/user-management/index.md)。
+   :::
+
+   :::note
+   建议使用 SQL 定义用户和角色。不过，如果当前是通过配置文件定义用户和角色，则用户配置类似于：
+
+   ```xml
+   <users>
+       <cert_user>
+           <ssl_certificates>
+               <common_name>chnode1.marsnet.local:cert_user</common_name>
+           </ssl_certificates>
+           <networks>
+               <ip>::/0</ip>
+           </networks>
+           <profile>default</profile>
+           <access_management>1</access_management>
+           <!-- additional options-->
+       </cert_user>
+   </users>
+   ```
+
+   :::
 
 ## 3. 测试 \{#3-testing\}
 
@@ -98,46 +101,46 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 2. 在 ClickHouse 的 [客户端配置](/interfaces/cli.md#configuration_files) 中使用证书及其路径配置 OpenSSL。
 
-    ```xml
-    <openSSL>
-        <client>
-            <certificateFile>my_cert_name.crt</certificateFile>
-            <privateKeyFile>my_cert_name.key</privateKeyFile>
-            <caConfig>my_ca_cert.crt</caConfig>
-        </client>
-    </openSSL>
-    ```
+   ```xml
+   <openSSL>
+       <client>
+           <certificateFile>my_cert_name.crt</certificateFile>
+           <privateKeyFile>my_cert_name.key</privateKeyFile>
+           <caConfig>my_ca_cert.crt</caConfig>
+       </client>
+   </openSSL>
+   ```
 
 3. 运行 `clickhouse-client`。
-    ```bash
-    clickhouse-client --user <my_user> --query 'SHOW TABLES'
-    ```
-    :::note
-    请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
-    :::
+   ```bash
+   clickhouse-client --user <my_user> --query 'SHOW TABLES'
+   ```
+   :::note
+   请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
+   :::
 
 ## 4. 测试 HTTP \{#4-testing-http\}
 
 1. 将用户证书、用户私钥和 CA 证书复制到一个远程节点上。
 
 2. 使用 `curl` 测试一条示例 SQL 命令。基本格式如下：
-    ```bash
-    echo 'SHOW TABLES' | curl 'https://<clickhouse_node>:8443' --cert <my_cert_name>.crt --key <my_cert_name>.key --cacert <my_ca_cert>.crt -H "X-ClickHouse-SSL-Certificate-Auth: on" -H "X-ClickHouse-User: <my_user>" --data-binary @-
-    ```
-    例如：
-    ```bash
-    echo 'SHOW TABLES' | curl 'https://chnode1:8443' --cert chnode1_cert_user.crt --key chnode1_cert_user.key --cacert marsnet_ca.crt -H "X-ClickHouse-SSL-Certificate-Auth: on" -H "X-ClickHouse-User: cert_user" --data-binary @-
-    ```
-    输出类似如下：
-    ```response
-    INFORMATION_SCHEMA
-    default
-    information_schema
-    system
-    ```
-    :::note
-    请注意，这里没有指定密码。证书用来替代密码，这是 ClickHouse 对用户进行身份验证的方式。
-    :::
+   ```bash
+   echo 'SHOW TABLES' | curl 'https://<clickhouse_node>:8443' --cert <my_cert_name>.crt --key <my_cert_name>.key --cacert <my_ca_cert>.crt -H "X-ClickHouse-SSL-Certificate-Auth: on" -H "X-ClickHouse-User: <my_user>" --data-binary @-
+   ```
+   例如：
+   ```bash
+   echo 'SHOW TABLES' | curl 'https://chnode1:8443' --cert chnode1_cert_user.crt --key chnode1_cert_user.key --cacert marsnet_ca.crt -H "X-ClickHouse-SSL-Certificate-Auth: on" -H "X-ClickHouse-User: cert_user" --data-binary @-
+   ```
+   输出类似如下：
+   ```response
+   INFORMATION_SCHEMA
+   default
+   information_schema
+   system
+   ```
+   :::note
+   请注意，这里没有指定密码。证书用来替代密码，这是 ClickHouse 对用户进行身份验证的方式。
+   :::
 
 ## 摘要 \{#summary\}
 

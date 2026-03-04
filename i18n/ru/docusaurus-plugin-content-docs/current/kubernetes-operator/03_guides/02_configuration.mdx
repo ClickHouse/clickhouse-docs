@@ -33,7 +33,6 @@ spec:
         storage: 10Gi
 ```
 
-
 ### Реплики и сегменты \{#replicas-and-shards\}
 
 * **Реплики**: количество экземпляров ClickHouse в одном сегменте (для высокой доступности)
@@ -47,7 +46,6 @@ spec:
 
 Кластер с `replicas: 3` и `shards: 2` создаст в сумме 6 подов ClickHouse.
 
-
 ### Интеграция с Keeper \{#keeper-integration\}
 
 Каждый кластер ClickHouse должен быть связан с KeeperCluster для координации:
@@ -57,7 +55,6 @@ spec:
   keeperClusterRef:
     name: my-keeper  # Name of the KeeperCluster in the same namespace
 ```
-
 
 ## Конфигурация KeeperCluster \{#keepercluster-configuration\}
 
@@ -75,7 +72,6 @@ spec:
       requests:
         storage: 5Gi
 ```
-
 
 ## Конфигурация хранилища \{#storage-configuration\}
 
@@ -96,7 +92,6 @@ spec:
 Оператор может изменять существующий PVC только если базовый класс хранилища поддерживает расширение тома.
 :::
 
-
 ## Конфигурация подов \{#pod-configuration\}
 
 ### Автоматическое распределение подов (topology spread) и аффинность \{#automatic-topology-spread-and-affinity\}
@@ -114,7 +109,6 @@ spec:
 Убедитесь, что в вашем кластере Kubernetes достаточно узлов в разных зонах, чтобы соответствовать ограничениям распределения.
 :::
 
-
 ### Ручная конфигурация \{#manual-configuration\}
 
 Можно задать произвольные правила affinity/anti-affinity подов и ограничения распределения по топологии.
@@ -127,7 +121,6 @@ spec:
     topologySpreadConstraints:
       <your-topology-spread-constraints-here>
 ```
-
 
 ### См. [API Reference](../04_api_reference.mdx#podtemplatespec) для описания всех поддерживаемых параметров шаблона пода. \{#see-api-reference04_api_referencemdxpodtemplatespec-for-all-supported-pod-template-options\}
 
@@ -146,7 +139,6 @@ spec:
     imagePullPolicy: IfNotPresent
 ```
 
-
 ### Ресурсы контейнеров \{#container-resources\}
 
 Настройте ресурсы CPU и памяти для контейнеров ClickHouse:
@@ -164,7 +156,6 @@ spec:
         memory: "1Gi"
 ```
 
-
 ### Переменные окружения \{#environment-variables\}
 
 Добавьте пользовательские переменные окружения:
@@ -176,7 +167,6 @@ spec:
     - name: CUSTOM_ENV_VAR
       value: "1"
 ```
-
 
 ### Монтирование томов \{#volume-mounts\}
 
@@ -196,7 +186,6 @@ spec:
 Оператор создаст проецируемый том со всеми указанными монтированиями.
 :::
 
-
 ### См. [API Reference](../04_api_reference.mdx#containertemplatespec) для описания всех поддерживаемых параметров шаблона контейнера. \{#see-api-reference04_api_referencemdxcontainertemplatespec-for-all-supported-container-template-options\}
 
 ## Настройка TLS/SSL \{#tls-ssl-configuration\}
@@ -215,14 +204,13 @@ spec:
         name: <certificate-secret-name>
 ```
 
-
 ### Формат секрета с SSL-сертификатом \{#ssl-certificate-secret-format\}
 
 Предполагается, что Secret содержит следующие ключи:
 
-- `tls.crt` — серверный сертификат в формате PEM
-- `tls.key` — закрытый ключ в формате PEM
-- `ca.crt` — цепочка сертификатов CA в формате PEM
+* `tls.crt` — серверный сертификат в формате PEM
+* `tls.key` — закрытый ключ в формате PEM
+* `ca.crt` — цепочка сертификатов CA в формате PEM
 
 :::note
 Этот формат совместим с сертификатами, сгенерированными cert-manager.
@@ -245,7 +233,6 @@ spec:
             name: <ca-certificate-secret-name>
             key: <ca-certificate-key>
 ```
-
 
 ## Настройки ClickHouse \{#clickhouse-settings\}
 
@@ -273,7 +260,6 @@ spec:
 kubectl create secret generic clickhouse-password --from-literal=password='your-secure-password'
 ```
 
-
 #### Использование ConfigMap для паролей пользователей \{#using-configmap-for-user-passwords\}
 
 Вы также можете использовать ConfigMap для несекретных паролей по умолчанию:
@@ -287,7 +273,6 @@ spec:
         name: clickhouse-config
         key: default_password
 ```
-
 
 ### Пользователи, определённые в конфигурации \{#custom-users-in-configuration\}
 
@@ -341,7 +326,6 @@ spec:
         readOnly: true
 ```
 
-
 ### Синхронизация базы данных \{#database-sync\}
 
 Включите автоматическую синхронизацию базы данных для новых реплик:
@@ -353,7 +337,6 @@ spec:
 ```
 
 При включении этой опции оператор синхронизирует реплицируемые и интеграционные таблицы с новыми репликами.
-
 
 ## Пользовательская конфигурация \{#custom-configuration\}
 
@@ -369,7 +352,6 @@ spec:
     extraConfig:
       background_pool_size: 20
 ```
-
 
 #### Полезные ссылки: \{#useful-links\}
 
@@ -405,7 +387,6 @@ spec:
 :::note
 `extraUsersConfig` сохраняется в объекте k8s ConfigMap. Избегайте хранения там секретов в виде простого текста.
 :::
-
 
 #### См. [документацию](/operations/settings/settings-users) со всеми поддерживаемыми параметрами конфигурации пользователей ClickHouse. \{#see-documentationoperationssettingssettings-users-for-all-supported-clickhouse-users-configuration-options\}
 

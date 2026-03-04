@@ -20,15 +20,14 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 
 可以通过 ClickPipes UI 手动部署和管理 S3 ClickPipes，也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 以编程方式进行部署和管理。
 
-
 ## 支持的数据源 \{#supported-data-sources\}
 
 | 名称                 | 标志                                                                                      | 详情           |
 |----------------------|-------------------------------------------------------------------------------------------|-------------------|
-| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 徽标" style={{width: '2.5rem', height: 'auto'}}/>     | 持续摄取默认要求按[词典序](#continuous-ingestion-lexicographical-order)排序，但可以配置为[以任意顺序摄取文件](#continuous-ingestion-any-order)。 |
-| **Cloudflare R2** <br></br> _兼容 S3_ | <R2svg class="image" alt="Cloudflare R2 徽标" style={{width: '2.5rem', height: 'auto'}}/> | 持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
-| **DigitalOcean Spaces** <br></br> _兼容 S3_ | <DOsvg class="image" alt="Digital Ocean 徽标" style={{width: '2.5rem', height: 'auto'}}/> |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
-| **OVH Object Storage** <br></br> _兼容 S3_ | <Image img={OVHpng} alt="Cloud Storage 徽标" size="logo" border/>                         |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
+| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 徽标" style={{width: '2.5rem', height: 'auto'}} />     | 持续摄取默认要求按[词典序](#continuous-ingestion-lexicographical-order)排序，但可以配置为[以任意顺序摄取文件](#continuous-ingestion-any-order)。 |
+| **Cloudflare R2** <br /> *兼容 S3* | <R2svg class="image" alt="Cloudflare R2 徽标" style={{width: '2.5rem', height: 'auto'}} /> | 持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
+| **DigitalOcean Spaces** <br /> *兼容 S3* | <DOsvg class="image" alt="Digital Ocean 徽标" style={{width: '2.5rem', height: 'auto'}} /> |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
+| **OVH Object Storage** <br /> *兼容 S3* | <Image img={OVHpng} alt="Cloud Storage 徽标" size="logo" border />                         |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
 
 :::tip
 由于各对象存储服务提供商在 URL 格式和 API 实现上的差异，并非所有兼容 S3 的服务都能直接获得支持。如果您在使用上面未列出的服务时遇到问题，请[联系我们的团队](https://clickhouse.com/company/contact?loc=clickpipes)。
@@ -36,11 +35,11 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 
 ## 支持的格式 \{#supported-formats\}
 
-- [JSON](/interfaces/formats/JSON)
-- [CSV](/interfaces/formats/CSV)
-- [TSV](/interfaces/formats/TabSeparated)
-- [Parquet](/interfaces/formats/Parquet)
-- [Avro](/interfaces/formats/Avro)
+* [JSON](/interfaces/formats/JSON)
+* [CSV](/interfaces/formats/CSV)
+* [TSV](/interfaces/formats/TabSeparated)
+* [Parquet](/interfaces/formats/Parquet)
+* [Avro](/interfaces/formats/Avro)
 
 ## 功能特性 \{#features\}
 
@@ -92,7 +91,7 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 |---------|-------------|---------|---------|
 | `?` | 精确匹配**一个**字符（不包含 `/`） | `data-?.csv` | `data-1.csv`, `data-a.csv`, `data-x.csv` |
 | `*` | 匹配**零个或多个**字符（不包含 `/`） | `data-*.csv` | `data-1.csv`, `data-001.csv`, `data-report.csv`, `data-.csv` |
-| `**` <br></br> 递归 | 匹配**零个或多个**字符（包含 `/`），并启用 **递归目录遍历**。 | `logs/**/error.log` | `logs/error.log`, `logs/2024/error.log`, `logs/2024/01/error.log` |
+| `**` <br /> 递归 | 匹配**零个或多个**字符（包含 `/`），并启用 **递归目录遍历**。 | `logs/**/error.log` | `logs/error.log`, `logs/2024/error.log`, `logs/2024/01/error.log` |
 
 **示例：**
 
@@ -150,13 +149,13 @@ S3 ClickPipe 支持公共和私有存储桶。[Requester Pays](https://docs.aws.
 
 要使用 [access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 进行身份验证，在设置 ClickPipe 连接时，在 **Authentication method** 下选择 `Credentials`。然后分别在 `Access key` 和 `Secret key` 中填写访问密钥 ID（例如 `AKIAIOSFODNN7EXAMPLE`）和秘密访问密钥（例如 `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`）。
 
-<Image img={cp_credentials} alt="用于 S3 ClickPipes 的 IAM 凭证" size="lg" border/>
+<Image img={cp_credentials} alt="用于 S3 ClickPipes 的 IAM 凭证" size="lg" border />
 
 #### IAM 角色 \{#iam-role\}
 
 要使用[基于角色的访问控制](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)进行身份验证，请在设置 ClickPipe 连接时，将 **Authentication method** 设置为 `IAM role`。
 
-<Image img={cp_iam} alt="S3 ClickPipes 的 IAM 认证" size="lg" border/>
+<Image img={cp_iam} alt="S3 ClickPipes 的 IAM 认证" size="lg" border />
 
 请按照[本指南](/cloud/data-sources/secure-s3)中的说明，[创建一个 IAM 角色](/cloud/data-sources/secure-s3#option-2-manually-create-iam-role)，并为 S3 访问配置所需的信任策略。然后，在 `IAM role ARN` 字段中填写该 IAM 角色的 ARN。
 
@@ -166,23 +165,23 @@ S3 ClickPipes 会使用两条不同的网络路径分别执行元数据发现和
 
 * 对于 **基于 IP 的访问控制**，S3 存储桶策略必须同时允许 ClickPipes 服务区域中列出的静态 IP（见[此处](/integrations/clickpipes#list-of-static-ips)），以及 ClickHouse Cloud 服务的[静态 IP](/manage/data-sources/cloud-endpoints-api)。要获取你所使用的 ClickHouse Cloud 区域的静态 IP，请打开终端并运行：
 
-    ```bash
-    # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
-    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
-    ```
+  ```bash
+  # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
+  curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
+  ```
 
 * 对于 **基于 VPC endpoint 的访问控制**，S3 存储桶必须与 ClickHouse Cloud 服务处于同一 region，并且将 `GetObject` 操作限制为 ClickHouse Cloud 服务的 VPC endpoint ID。要获取你所使用的 ClickHouse Cloud 区域的 VPC endpoint，请打开终端并运行：
 
-    ```bash
-    # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
-    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
-    ```
+  ```bash
+  # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
+  curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+  ```
 
 ## 高级设置 \{#advanced-settings\}
 
 ClickPipes 提供了合理的默认值，能够满足大多数用例的需求。如果您的用例需要进一步微调，可以调整以下设置：
 
-| 设置                                | 默认值        |  描述                                |                    
+| 设置                                | 默认值        |  描述                                |\
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
 | `Max insert bytes`                 | 10GB          | 单个插入批次中要处理的字节数。                                  |
 | `Max file count`                   | 100           | 单个插入批次中要处理的最大文件数。                          |
@@ -195,7 +194,7 @@ ClickPipes 提供了合理的默认值，能够满足大多数用例的需求。
 | `Parallel view processing`         | false         | 是否启用[并发而非顺序](/operations/settings/settings#parallel_view_processing)地向附加的 VIEW 推送数据。 |
 | `Use cluster function`             | true          | 是否在多个节点之间并行处理文件。 |
 
-<Image img={cp_advanced_settings} alt="ClickPipes 的高级设置" size="lg" border/>
+<Image img={cp_advanced_settings} alt="ClickPipes 的高级设置" size="lg" border />
 
 ### 扩缩容 \{#scaling\}
 

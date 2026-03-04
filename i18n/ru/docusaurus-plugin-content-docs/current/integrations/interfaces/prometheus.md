@@ -72,7 +72,6 @@ Settings:
 curl 127.0.0.1:9363/metrics
 ```
 
-
 ## Протокол remote-write
 
 ClickHouse поддерживает протокол [remote-write](https://prometheus.io/docs/specs/remote_write_spec/).
@@ -104,7 +103,6 @@ Settings:
 | `table`                      | none    | The name of a [TimeSeries](/engines/table-engines/special/time_series) table to write data received by the `remote-write` protocol. This name can optionally contain the name of a database too. |
 | `database`                   | none    | The name of a database where the table specified in the `table` setting is located if it&#39;s not specified in the `table` setting.                                                             |
 
-
 ## Remote-read protocol
 
 ClickHouse supports the [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) protocol.
@@ -134,7 +132,6 @@ Settings:
 | `url` / `headers` / `method` | none    | Filters used to find a matching handler for a request. Similar to the fields with the same names in the [`<http_handlers>`](/interfaces/http) section.                                        |
 | `table`                      | none    | The name of a [TimeSeries](/engines/table-engines/special/time_series) table to read data to send by the `remote-read` protocol. This name can optionally contain the name of a database too. |
 | `database`                   | none    | The name of a database where the table specified in the `table` setting is located if it&#39;s not specified in the `table` setting.                                                          |
-
 
 ## Конфигурация для нескольких протоколов
 

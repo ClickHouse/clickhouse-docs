@@ -11,7 +11,7 @@ keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhou
 
 ## 概览 \{#overview\}
 
-本教程基于 [ClickHouse 教程]，但通过 pg_clickhouse 来执行其中的所有查询。
+本教程基于 [ClickHouse 教程]，但通过 pg&#95;clickhouse 来执行其中的所有查询。
 
 ## 启动 ClickHouse \{#start-clickhouse\}
 
@@ -21,7 +21,6 @@ keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhou
 docker run -d --network host --name clickhouse -p 8123:8123 -p9000:9000 --ulimit nofile=262144:262144 clickhouse
 docker exec -it clickhouse clickhouse-client
 ```
-
 
 ## 创建表 \{#create-a-table\}
 
@@ -86,7 +85,6 @@ ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
-
 
 ## 添加数据集 \{#add-the-data-set\}
 
@@ -157,7 +155,6 @@ SELECT count() FROM taxi.trips;
 quit
 ```
 
-
 ### 安装 pg_clickhouse \{#install-pg_clickhouse\}
 
 从 [PGXN] 或 [GitHub] 构建并安装 pg&#95;clickhouse。或者使用 [pg&#95;clickhouse image] 启动一个
@@ -167,7 +164,6 @@ Docker 容器，该镜像只是将 pg&#95;clickhouse 添加到基于 Docker 的 
 docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
        -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
-
 
 ### 连接 pg_clickhouse \{#connect-pg_clickhouse\}
 
@@ -220,7 +216,6 @@ taxi=# \det+ taxi.*
 ```
 
 成功！使用 `\d` 来查看所有列：
-
 
 ```pgsql
 taxi=# \d taxi.trips
@@ -300,7 +295,6 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
 
 请注意，在执行计划的根节点可以看到 &quot;Foreign Scan&quot;，这意味着整个查询都被下推到了 ClickHouse。
-
 
 ## 分析数据 \{#analyze-the-data\}
 
@@ -466,156 +460,156 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 下面是你正在使用的 CSV 文件的一部分，并以表格形式展示。文件中的 `LocationID` 列映射到行程表中的 `pickup_nyct2010_gid` 和
 `dropoff_nyct2010_gid` 列：
 
-| LocationID | Borough       |  Zone                   | service_zone |
-  | ---------: | ------------- | ----------------------- | ------------ |
-  |          1 | EWR           | Newark Airport          | EWR          |
-  |          2 | Queens        | Jamaica Bay             | Boro Zone    |
-  |          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-  |          4 | Manhattan     | Alphabet City           | Yellow Zone  |
-  |          5 | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       |  Zone                   | service&#95;zone |
+| ---------: | ------------- | ----------------------- | ------------ |
+|          1 | EWR           | Newark Airport          | EWR          |
+|          2 | Queens        | Jamaica Bay             | Boro Zone    |
+|          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
+|          4 | Manhattan     | Alphabet City           | Yellow Zone  |
+|          5 | Staten Island | Arden Heights           | Boro Zone    |
 
-1.  仍然在 Postgres 中，使用 `clickhouse_raw_query` 函数创建一个名为
-    `taxi_zone_dictionary` 的 ClickHouse [dictionary]，并从 S3 中的 CSV
-    文件填充该字典：
+1. 仍然在 Postgres 中，使用 `clickhouse_raw_query` 函数创建一个名为
+   `taxi_zone_dictionary` 的 ClickHouse [dictionary]，并从 S3 中的 CSV
+   文件填充该字典：
 
-    ```sql
-    SELECT clickhouse_raw_query($$
-        CREATE DICTIONARY taxi.taxi_zone_dictionary (
-            LocationID Int64 DEFAULT 0,
-            Borough String,
-            zone String,
-            service_zone String
-        )
-        PRIMARY KEY LocationID
-        SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-        LIFETIME(MIN 0 MAX 0)
-        LAYOUT(HASHED_ARRAY())
-    $$, 'host=localhost dbname=taxi');
-    ```
+   ```sql
+   SELECT clickhouse_raw_query($$
+       CREATE DICTIONARY taxi.taxi_zone_dictionary (
+           LocationID Int64 DEFAULT 0,
+           Borough String,
+           zone String,
+           service_zone String
+       )
+       PRIMARY KEY LocationID
+       SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+       LIFETIME(MIN 0 MAX 0)
+       LAYOUT(HASHED_ARRAY())
+   $$, 'host=localhost dbname=taxi');
+   ```
 
-    :::note
-    将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，你可能会进行不同的配置。有关详细信息，请参阅
-    [Refreshing dictionary data using
-    LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
-    :::
+   :::note
+   将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，你可能会进行不同的配置。有关详细信息，请参阅
+   [Refreshing dictionary data using
+   LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
+   :::
 
-    2.  现在将其导入：
+   2. 现在将其导入：
 
-    ```sql
-    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
-    FROM SERVER taxi_srv INTO taxi;
-    ```
+   ```sql
+   IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
+   FROM SERVER taxi_srv INTO taxi;
+   ```
 
-    3.  确认我们可以对其进行查询：
+   3. 确认我们可以对其进行查询：
 
-    ```pgsql
-    taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone
-    ------------+-----------+-----------------------------------------------+--------------
-             77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
-            106 | Brooklyn  | Gowanus                                       | Boro Zone
-            103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
-    (3 rows)
-    ```
+   ```pgsql
+   taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
+    LocationID |  Borough  |                     Zone                      | service_zone
+   ------------+-----------+-----------------------------------------------+--------------
+            77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
+           106 | Brooklyn  | Gowanus                                       | Boro Zone
+           103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
+   (3 rows)
+   ```
 
-    4.  很好。现在使用 `dictGet` 函数在查询中获取行政区名称。此查询会汇总在
-        LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量：
+   4. 很好。现在使用 `dictGet` 函数在查询中获取行政区名称。此查询会汇总在
+      LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量：
 
-    ```pgsql
-    taxi=# SELECT
-            count(1) AS total,
-            COALESCE(NULLIF(dictGet(
-                'taxi.taxi_zone_dictionary', 'Borough',
-                toUInt64(pickup_nyct2010_gid)
-            ), ''), 'Unknown') AS borough_name
-        FROM taxi.trips
-        WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-        GROUP BY borough_name
-        ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-     23683 | Unknown
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (7 rows)
+   ```pgsql
+   taxi=# SELECT
+           count(1) AS total,
+           COALESCE(NULLIF(dictGet(
+               'taxi.taxi_zone_dictionary', 'Borough',
+               toUInt64(pickup_nyct2010_gid)
+           ), ''), 'Unknown') AS borough_name
+       FROM taxi.trips
+       WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+       GROUP BY borough_name
+       ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+    23683 | Unknown
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (7 rows)
 
-    Time: 66.245 ms
-    ```
+   Time: 66.245 ms
+   ```
 
-    此查询汇总了在 LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量。注意，有相当多的行程其上车社区是未知的。
+   此查询汇总了在 LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量。注意，有相当多的行程其上车社区是未知的。
 
 ## 执行一次 JOIN \{#perform-a-join\}
 
 编写一些查询，将 `taxi_zone_dictionary` 与你的 `trips`
 表进行关联。
 
-1.  先从一个与前面机场查询类似的简单 `JOIN` 开始：
+1. 先从一个与前面机场查询类似的简单 `JOIN` 开始：
 
-    ```pgsql
-    taxi=# SELECT
-        count(1) AS total,
-        "Borough"
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-      ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-    WHERE pickup_nyct2010_gid > 0
-      AND dropoff_nyct2010_gid IN (132, 138)
-    GROUP BY "Borough"
-    ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (6 rows)
+   ```pgsql
+   taxi=# SELECT
+       count(1) AS total,
+       "Borough"
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+     ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+   WHERE pickup_nyct2010_gid > 0
+     AND dropoff_nyct2010_gid IN (132, 138)
+   GROUP BY "Borough"
+   ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (6 rows)
 
-    Time: 48.449 ms
-    ```
+   Time: 48.449 ms
+   ```
 
-    :::note
-    注意，上述 `JOIN` 查询的输出与上面的 `dictGet`
-    查询相同（只是未包含 `Unknown` 值）。在幕后，ClickHouse 实际上是为
-    `taxi_zone_dictionary` 字典调用 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发人员来说更加熟悉。
-    :::
+   :::note
+   注意，上述 `JOIN` 查询的输出与上面的 `dictGet`
+   查询相同（只是未包含 `Unknown` 值）。在幕后，ClickHouse 实际上是为
+   `taxi_zone_dictionary` 字典调用 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发人员来说更加熟悉。
+   :::
 
-    ```pgsql
-    taxi=# explain SELECT
-            count(1) AS total,
-            "Borough"
-        FROM taxi.trips
-        JOIN taxi.taxi_zone_dictionary
-          ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-        WHERE pickup_nyct2010_gid > 0
-          AND dropoff_nyct2010_gid IN (132, 138)
-        GROUP BY "Borough"
-        ORDER BY total DESC;
-                                  QUERY PLAN
-    -----------------------------------------------------------------------
-     Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
-       Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
-    (2 rows)
-    Time: 2.012 ms
-    ```
+   ```pgsql
+   taxi=# explain SELECT
+           count(1) AS total,
+           "Borough"
+       FROM taxi.trips
+       JOIN taxi.taxi_zone_dictionary
+         ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+       WHERE pickup_nyct2010_gid > 0
+         AND dropoff_nyct2010_gid IN (132, 138)
+       GROUP BY "Borough"
+       ORDER BY total DESC;
+                                 QUERY PLAN
+   -----------------------------------------------------------------------
+    Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
+      Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
+   (2 rows)
+   Time: 2.012 ms
+   ```
 
-2.  此查询返回小费金额最高的 1000 次行程对应的行，
-    然后对每一行与字典执行一次内连接：
+2. 此查询返回小费金额最高的 1000 次行程对应的行，
+   然后对每一行与字典执行一次内连接：
 
-    ```sql
-    taxi=# SELECT *
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-        ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
-    WHERE tip_amount > 0
-    ORDER BY tip_amount DESC
-    LIMIT 1000;
-    ```
+   ```sql
+   taxi=# SELECT *
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+       ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
+   WHERE tip_amount > 0
+   ORDER BY tip_amount DESC
+   LIMIT 1000;
+   ```
 
 :::note
 通常，我们会在 PostgreSQL 和 ClickHouse 中避免使用 `SELECT *`。
@@ -624,24 +618,18 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 [tutorial]: /tutorial "ClickHouse 高级教程"
 
-[psql]: https://www.postgresql.org/docs/current/app-psql.html
-    "PostgreSQL 客户端应用：psql"
+[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 客户端应用：psql"
 
-[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
-    "SQL 命令：EXPLAIN"
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL 命令：EXPLAIN"
 
 [dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上的 pg_clickhouse"
 
-[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases
-    "GitHub 上的 pg_clickhouse 发布版本"
+[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub 上的 pg_clickhouse 发布版本"
 
-[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "GitHub 上的 pg_clickhouse OCI 镜像"
+[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "GitHub 上的 pg_clickhouse OCI 镜像"
 
-[Postgres image]: https://hub.docker.com/_/postgres
-    "Docker Hub 上的 Postgres OCI 镜像"
+[Postgres image]: https://hub.docker.com/_/postgres "Docker Hub 上的 Postgres OCI 镜像"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
-    "ClickHouse 文档：使用 LIFETIME 刷新字典数据"
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime "ClickHouse 文档：使用 LIFETIME 刷新字典数据"

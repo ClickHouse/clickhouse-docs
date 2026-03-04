@@ -53,8 +53,8 @@ ClickHouse 提供了[表函数](/sql-reference/table-functions)和[引擎](/engi
 
 ClickHouse 支持将数据写回开放表格式，这在以下场景中非常重要：
 
-- **从实时到长期存储** - 数据先进入 ClickHouse，作为实时分析层进行处理，用户需要将结果导出到 Iceberg 或其他格式中，以实现持久且具成本效益的长期存储。
-- **反向 ETL** - 用户在 ClickHouse 中使用 materialized view 或定时查询执行数据转换，并希望将结果持久化为开放表格式，供数据生态系统中的其他工具使用。
+* **从实时到长期存储** - 数据先进入 ClickHouse，作为实时分析层进行处理，用户需要将结果导出到 Iceberg 或其他格式中，以实现持久且具成本效益的长期存储。
+* **反向 ETL** - 用户在 ClickHouse 中使用 materialized view 或定时查询执行数据转换，并希望将结果持久化为开放表格式，供数据生态系统中的其他工具使用。
 
 请参阅 [写入数据湖](/use-cases/data-lake/getting-started/writing-data) 入门指南。
 

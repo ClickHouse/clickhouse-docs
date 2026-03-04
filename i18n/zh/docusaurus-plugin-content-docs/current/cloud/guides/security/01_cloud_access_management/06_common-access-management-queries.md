@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
-
 # 常见访问管理查询 \{#common-access-management-queries\}
 
 :::tip 自托管
@@ -38,7 +37,6 @@ GRANT default_role TO clickhouse_admin;
 
 这些自动创建的 SQL Console 用户具有 `default` 角色。
 :::
-
 
 ## 免密认证 \{#passwordless-authentication\}
 

@@ -31,7 +31,6 @@ SELECT * FROM posts FINAL
 WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
-
 ## 不使用可刷新materialized view的自定义排序键 \{#custom-ordering-keys-without-refreshable-materialized-views\}
 
 如果由于数据规模原因无法使用可刷新materialized view，以下是一些建议，可用于在较大表上定义自定义排序键，从而规避与去重相关的问题。

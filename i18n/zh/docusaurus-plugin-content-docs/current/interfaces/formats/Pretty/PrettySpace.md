@@ -15,17 +15,12 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | -- | -- | -- |
 | ✗  | ✔  |    |
 
-
 ## 描述 \{#description\}
 
 与 [`PrettyCompact`](./PrettyCompact.md) 格式不同之处在于，该格式使用空白（空格字符）来显示表格，而不是使用网格。
 
-
-
 ## 用法示例 \{#example-usage\}
-
-
 
 ## 格式设置 \{#format-settings\}
 
-<PrettyFormatSettings/>
+<PrettyFormatSettings />

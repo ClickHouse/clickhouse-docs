@@ -82,7 +82,6 @@ SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 └────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## 相关内容 \{#related-content\}
 
 ### [可执行 UDF](/sql-reference/functions/udf.md). \{#executable-udfs\}

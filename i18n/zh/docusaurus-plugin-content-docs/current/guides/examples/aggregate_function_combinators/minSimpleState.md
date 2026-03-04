@@ -144,7 +144,6 @@ ORDER BY location_id;
 
 现在可以看到预期的结果：
 
-
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
@@ -158,9 +157,8 @@ ORDER BY location_id;
 使用 `SimpleState` 时，就不需要再使用 `Merge` 组合器来合并部分聚合状态。
 :::
 
-
 ## 另请参阅 \{#see-also\}
 
-- [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)
+* [`min`](/sql-reference/aggregate-functions/reference/min)
+* [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
+* [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

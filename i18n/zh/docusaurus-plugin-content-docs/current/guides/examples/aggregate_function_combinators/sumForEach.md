@@ -40,5 +40,6 @@ ORDER BY hour_of_day;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach` 组合器](/sql-reference/aggregate-functions/combinators#-foreach)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`ForEach` 组合器](/sql-reference/aggregate-functions/combinators#-foreach)

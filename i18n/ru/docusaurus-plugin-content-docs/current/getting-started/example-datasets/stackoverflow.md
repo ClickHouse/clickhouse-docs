@@ -21,7 +21,6 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 Описание схемы этих данных можно найти [здесь](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede).
 
-
 ## Предварительно подготовленные данные \{#pre-prepared-data\}
 
 Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Хотя этот набор данных и невелик для ClickHouse по числу строк (60 миллионов публикаций), он содержит значительный объем текстов и крупные столбцы типа String.
@@ -31,7 +30,6 @@ CREATE DATABASE stackoverflow
 ```
 
 Приведённые ниже временные показатели получены для кластера ClickHouse Cloud с 96 ГиБ ОЗУ и 24 vCPU, расположенного в `eu-west-2`. Набор данных находится в `eu-west-3`.
-
 
 ### Публикации \{#posts\}
 
@@ -72,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 Посты также доступны по годам, например, по адресу: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### Голоса \{#votes\}
 
 ```sql
@@ -94,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 Голоса также доступны по годам, например: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### Комментарии \{#comments\}
 
@@ -118,7 +114,6 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 ```
 
 Комментарии также доступны по годам, например, [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
-
 
 ### Пользователи \{#users\}
 
@@ -146,7 +141,6 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-
 ### Значки \{#badges\}
 
 ```sql
@@ -167,7 +161,6 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-
 ### Ссылки на сообщения \{#postlinks\}
 
 ```sql
@@ -186,7 +179,6 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
-
 
 ### PostHistory \{#posthistory\}
 
@@ -212,7 +204,6 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-
 ## Исходный набор данных \{#original-dataset\}
 
 Исходный набор данных доступен в сжатом XML-формате (7zip) по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) — файлы с префиксом `stackoverflow.com*`.
@@ -230,7 +221,6 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
 Эти файлы могут иметь размер до 35 ГБ, и их скачивание может занять около 30 минут в зависимости от интернет-соединения — сервер загрузки ограничивает скорость примерно до 20 МБ/с.
-
 
 ### Преобразование в JSON \{#convert-to-json\}
 
@@ -278,7 +268,6 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
-
 ## Примеры запросов \{#example-queries\}
 
 Несколько простых запросов для начала.
@@ -312,7 +301,6 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-
 ### Пользователь с наибольшим числом ответов (активные учетные записи) \{#user-with-the-most-answers-active-accounts\}
 
 Для учетной записи требуется `UserId`.
@@ -338,7 +326,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
 Peak memory usage: 206.45 MiB.
 ```
-
 
 ### Самые просматриваемые посты о ClickHouse \{#clickhouse-related-posts-with-the-most-views\}
 
@@ -369,7 +356,6 @@ LIMIT 10
 10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
 Peak memory usage: 240.01 MiB.
 ```
-
 
 ### Самые резонансные публикации \{#most-controversial-posts\}
 
@@ -404,7 +390,6 @@ LIMIT 3
 3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
 Peak memory usage: 6.05 GiB.
 ```
-
 
 ## Атрибуция \{#attribution\}
 

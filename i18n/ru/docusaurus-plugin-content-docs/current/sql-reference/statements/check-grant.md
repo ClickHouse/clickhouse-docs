@@ -48,4 +48,5 @@ CHECK GRANT SELECT(col2) ON table_2;
 ```
 
 ## Подстановочные символы \{#wildcard\}
+
 При указании привилегий можно использовать звездочку (`*`) вместо имени таблицы или базы данных. Правила использования подстановочных символов описаны в разделе [WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants).

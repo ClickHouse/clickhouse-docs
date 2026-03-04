@@ -13,7 +13,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # azureBlobStorage 表函数 \{#azureblobstorage-table-function\}
 
 提供类似表的接口，用于在 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 中查询/插入文件。此表函数类似于 [s3 函数](../../sql-reference/table-functions/s3.md)。
@@ -21,40 +20,36 @@ import TabItem from '@theme/TabItem';
 ## 语法 \{#syntax\}
 
 <Tabs>
-<TabItem value="connection_string" label="连接字符串" default>
+  <TabItem value="connection_string" label="连接字符串" default>
+    凭证信息已嵌入到连接字符串中，因此无需单独提供 `account_name`/`account_key` 参数：
 
-凭证信息已嵌入到连接字符串中，因此无需单独提供 `account_name`/`account_key` 参数：
+    ```sql
+    azureBlobStorage(connection_string, container_name, blobpath [, format, compression, structure])
+    ```
+  </TabItem>
 
-```sql
-azureBlobStorage(connection_string, container_name, blobpath [, format, compression, structure])
-```
+  <TabItem value="storage_account_url" label="存储帐户 URL">
+    需要将 `account_name` 和 `account_key` 作为单独的参数传入：
 
-</TabItem>
-<TabItem value="storage_account_url" label="存储帐户 URL">
+    ```sql
+    azureBlobStorage(storage_account_url, container_name, blobpath, account_name, account_key [, format, compression, structure])
+    ```
+  </TabItem>
 
-需要将 `account_name` 和 `account_key` 作为单独的参数传入：
+  <TabItem value="named_collection" label="命名集合">
+    有关受支持的键的完整列表，请参阅下文的 [Named Collections](#named-collections)：
 
-```sql
-azureBlobStorage(storage_account_url, container_name, blobpath, account_name, account_key [, format, compression, structure])
-```
-
-</TabItem>
-<TabItem value="named_collection" label="命名集合">
-
-有关受支持的键的完整列表，请参阅下文的 [Named Collections](#named-collections)：
-
-```sql
-azureBlobStorage(named_collection[, option=value [,..]])
-```
-
-</TabItem>
+    ```sql
+    azureBlobStorage(named_collection[, option=value [,..]])
+    ```
+  </TabItem>
 </Tabs>
 
 ## 参数 \{#arguments\}
 
 | Argument                         | Description                                                                                                                                                                                                                                                                                                                                               |
 |----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `connection_string`              | 包含嵌入凭证（账户名称 + 账户密钥或 SAS 令牌）的连接字符串。使用此形式时，`account_name` 和 `account_key` **不应**单独传入。参见[配置连接字符串](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)。 |
+| `connection_string`              | 包含嵌入凭证（账户名称 + 账户密钥或 SAS 令牌）的连接字符串。使用此形式时，`account_name` 和 `account_key` **不应**单独传入。参见[配置连接字符串](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json\&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)。 |
 | `storage_account_url`            | 存储账户的终结点 URL，例如 `https://myaccount.blob.core.windows.net/`。使用此形式时，**必须**同时传入 `account_name` 和 `account_key`。                                                                                                                                                                                         |
 | `container_name`                 | 容器名称。                                                                                                                                                                                                                                                                                                                                           |
 | `blobpath`                       | 文件路径。在只读模式下支持以下通配符：`*`、`**`、`?`、`{abc,def}` 以及 `{N..M}`，其中 `N`、`M` 为数字，`'abc'`、`'def'` 为字符串。                                                                                                                                                                                            |
@@ -113,7 +108,6 @@ FROM azureBlobStorage(azure_my_data, blob_path = 'other_data/*.csv', format = 'C
 LIMIT 5;
 ```
 
-
 ## 返回值 \{#returned_value\}
 
 具有指定结构的表，用于在指定文件中读写数据。
@@ -135,7 +129,6 @@ FROM azureBlobStorage(
 LIMIT 5;
 ```
 
-
 ### 使用 `connection_string` 形式读取数据 \{#reading-with-connection-string\}
 
 ```sql
@@ -148,7 +141,6 @@ FROM azureBlobStorage(
 )
 LIMIT 5;
 ```
-
 
 ### 使用分区写入 \{#writing-with-partitions\}
 
@@ -184,13 +176,12 @@ FROM azureBlobStorage(
 └─────────┴─────────┴─────────┘
 ```
 
-
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果文件大小未知，则值为 `NULL`。
-- `_time` — 文件最后一次修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果文件大小未知，则值为 `NULL`。
+* `_time` — 文件最后一次修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
 
 ## 分区写入 \{#partitioned-write\}
 
@@ -232,7 +223,6 @@ SELECT _path, * FROM azureBlobStorage(
    └─────────────────────────────────────────────────────────────────────────────────┴────┴──────┴─────────┘
 ```
 
-
 ## use_hive_partitioning 设置 \{#hive-style-partitioning\}
 
 这是一个设置，用于让 ClickHouse 在读取时解析 Hive 风格分区文件。它对写入没有任何影响。若要在读写两侧保持对称，请使用 `partition_strategy` 参数。
@@ -246,7 +236,6 @@ SELECT _path, * FROM azureBlobStorage(
 ```sql
 SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
-
 
 ## 使用共享访问签名 (SAS) \{#using-shared-access-signatures-sas-sas-tokens\}
 
@@ -280,7 +269,6 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 1 row in set. Elapsed: 0.153 sec.
 ```
 
-
 ## 相关内容 \{#related\}
 
-- [AzureBlobStorage 表引擎](engines/table-engines/integrations/azureBlobStorage.md)
+* [AzureBlobStorage 表引擎](engines/table-engines/integrations/azureBlobStorage.md)

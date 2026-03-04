@@ -61,7 +61,6 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \{#table-engines-file-s3-url-hdfs-azureblobstorage\}
 
 Если в запросе `CREATE TABLE` не указан список столбцов, структура таблицы будет автоматически определена по данным.
@@ -104,7 +103,6 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ## clickhouse-local \{#clickhouse-local\}
 
 У `clickhouse-local` есть необязательный параметр `-S/--structure`, задающий структуру входных данных. Если этот параметр не указан или имеет значение `auto`, структура будет определена по данным.
@@ -134,7 +132,6 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 3    32    Lana    ['fitness','reading','shopping']
 4    47    Brayan    ['movies','skydiving']
 ```
-
 
 ## Использование структуры из таблицы-вставки \{#using-structure-from-insertion-table\}
 
@@ -244,7 +241,6 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 В этом случае в запросе `SELECT` выполняются некоторые операции со столбцом `hobbies` перед его вставкой в таблицу, поэтому ClickHouse не может использовать структуру таблицы, в которую выполняется вставка, и будет использовано автоматическое определение схемы.
 
-
 ## Кэш автоопределения схемы \{#schema-inference-cache\}
 
 Для большинства форматов ввода автоопределение схемы читает часть данных, чтобы определить их структуру, и этот процесс может занять некоторое время.
@@ -314,7 +310,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
 ```
 
-
 ```response
 ┌─name───────┬─type─────────────────────────────────────────┐
 │ type       │ Nullable(String)                             │
@@ -381,7 +376,6 @@ SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_j
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
 ```
 
-
 ```response
 ┌─schema──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─format─┬─source───────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ type Nullable(String), actor Tuple(avatar_url Nullable(String), display_login Nullable(String), id Nullable(Int64), login Nullable(String), url Nullable(String)), repo Tuple(id Nullable(Int64), name Nullable(String), url Nullable(String)), created_at Nullable(String), payload Tuple(action Nullable(String), distinct_size Nullable(Int64), pull_request Tuple(author_association Nullable(String), base Tuple(ref Nullable(String), sha Nullable(String)), head Tuple(ref Nullable(String), sha Nullable(String)), number Nullable(Int64), state Nullable(String), title Nullable(String), updated_at Nullable(String), user Tuple(login Nullable(String))), ref Nullable(String), ref_type Nullable(String), size Nullable(Int64)) │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
@@ -410,7 +404,6 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 │       0 │
 └─────────┘
 ```
-
 
 ## Текстовые форматы \{#text-formats\}
 
@@ -566,7 +559,6 @@ DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
 DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}]}')
 ```
 
-
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Tuple(Array(Array(Nullable(String))), Tuple(key1 Nullable(Int64), key2 Nullable(Int64))) │              │                    │         │                  │                │
@@ -596,7 +588,6 @@ most likely this column contains only Nulls or empty Arrays/Maps.
 ...
 ```
 
-
 #### Параметры JSON \{#json-settings\}
 
 ##### input_format_json_try_infer_numbers_from_strings \{#input_format_json_try_infer_numbers_from_strings\}
@@ -620,7 +611,6 @@ DESC format(JSONEachRow, $$
 │ value │ Nullable(Int64) │              │                    │         │                  │                │
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ##### input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
 
@@ -656,7 +646,6 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
@@ -704,7 +693,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 └─────────────────────┘
 ```
 
-
 ##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
 Включение этого параметра позволяет считывать вложенные объекты JSON как строки.
@@ -728,7 +716,6 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_read_numbers_as_strings \{#input_format_json_read_numbers_as_strings\}
 
 Включение этого параметра позволяет считывать числовые значения как строки.
@@ -750,7 +737,6 @@ DESC format(JSONEachRow, $$
 │ value │ Nullable(String) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ##### input_format_json_read_bools_as_numbers \{#input_format_json_read_bools_as_numbers\}
 
@@ -774,7 +760,6 @@ DESC format(JSONEachRow, $$
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_read_bools_as_strings \{#input_format_json_read_bools_as_strings\}
 
 Включение этого параметра позволяет читать значения типа Bool как строки.
@@ -797,7 +782,6 @@ DESC format(JSONEachRow, $$
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_read_arrays_as_strings \{#input_format_json_read_arrays_as_strings\}
 
 Включение этого параметра позволяет считывать значения JSON-массивов как строки.
@@ -816,7 +800,6 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 │ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
 ```
-
 
 ##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
 
@@ -843,7 +826,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
 ```
-
 
 ### CSV \{#csv\}
 
@@ -916,7 +898,6 @@ DESC format(CSV, '"[1,2,3]","[[1, 2], [], [3, 4]]"')
 ```sql
 DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
 ```
-
 
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1000,7 +981,6 @@ $$"number","string","array"
 $$)
 ```
 
-
 ```response
 ┌─number─┬─string─┬─array───┐
 │     42 │ Hello  │ [1,2,3] │
@@ -1045,7 +1025,6 @@ $$)
 └──────────────┴───────────────┘
 ```
 
-
 #### Настройки CSV \{#csv-settings\}
 
 ##### input_format_csv_try_infer_numbers_from_strings \{#input_format_csv_try_infer_numbers_from_strings\}
@@ -1067,7 +1046,6 @@ DESC format(CSV, '42,42.42');
 │ c2   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ### TSV/TSKV \{#tsv-tskv\}
 
@@ -1137,7 +1115,6 @@ DESC format(TSV, '[1,2,3]    [[1, 2], [], [3, 4]]')
 ```sql
 DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
 ```
-
 
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1213,7 +1190,6 @@ SET input_format_tsv_use_best_effort_in_schema_inference = 0
 DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 ```
 
-
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
@@ -1277,7 +1253,6 @@ $$)
 │ World        │ Hello         │
 └──────────────┴───────────────┘
 ```
-
 
 ### Значения \{#values\}
 
@@ -1404,7 +1379,6 @@ DESC format(TSV, '[1,2,3]    42.42    Hello World!')
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### CustomSeparated \{#custom-separated\}
 
 В формате CustomSeparated ClickHouse сначала извлекает все значения столбцов из строки в соответствии с указанными разделителями, а затем пытается определить
@@ -1467,7 +1441,6 @@ $$)
 └────────┴───────────────┴────────────┘
 ```
 
-
 ### Template \{#template\}
 
 В формате Template ClickHouse сначала извлекает все значения столбцов из строки в соответствии с указанным шаблоном, а затем пытается определить
@@ -1511,7 +1484,6 @@ $$)
 └──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### Regexp \{#regexp\}
 
 Аналогично Template, в формате Regexp ClickHouse сначала извлекает значения всех столбцов из строки в соответствии с указанным регулярным выражением, а затем пытается определить
@@ -1535,7 +1507,6 @@ Line: value_1=2, value_2="Some string 2", value_3="[4, 5, NULL]"$$)
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### Настройки для текстовых форматов \{#settings-for-text-formats\}
 
 #### input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference \{#input-format-max-rows-to-read-for-schema-inference\}
@@ -1546,8 +1517,8 @@ Line: value_1=2, value_2="Some string 2", value_3="[4, 5, NULL]"$$)
 
 Значения по умолчанию:
 
--   `25000` для `input_format_max_rows_to_read_for_schema_inference`.
--   `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
+* `25000` для `input_format_max_rows_to_read_for_schema_inference`.
+* `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
 
 #### column_names_for_schema_inference \{#column-names-for-schema-inference\}
 
@@ -1566,7 +1537,6 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 │ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 #### schema_inference_hints \{#schema-inference-hints\}
 
@@ -1588,7 +1558,6 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 │ hobbies │ Array(Nullable(String)) │              │                    │         │                  │                │
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 #### schema_inference_make_columns_nullable $ \{#schema-inference-make-columns-nullable\}
 
@@ -1726,7 +1695,6 @@ DESC format(JSONEachRow, $$
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 #### input_format_try_infer_datetimes \{#input-format-try-infer-datetimes\}
 
 Если включено, ClickHouse будет пытаться определять тип `DateTime` или `DateTime64` по строковым полям при выводе схемы для текстовых форматов.
@@ -1781,7 +1749,6 @@ DESC format(JSONEachRow, $$
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 #### input_format_try_infer_datetimes_only_datetime64 \{#input-format-try-infer-datetimes-only-datetime64\}
 
 Если включено, ClickHouse будет всегда определять тип `DateTime64(9)`, когда параметр `input_format_try_infer_datetimes` включён, даже если значения даты и времени не содержат дробной части.
@@ -1807,7 +1774,6 @@ DESC format(JSONEachRow, $$
 ```
 
 Примечание: При разборе значений типов DateTime при выводе схемы учитывается настройка [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format)
-
 
 #### input_format_try_infer_dates \{#input-format-try-infer-dates\}
 
@@ -1860,7 +1826,6 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 #### input_format_try_infer_exponent_floats \{#input-format-try-infer-exponent-floats\}
 
 Если включено, ClickHouse будет пытаться распознавать числа с плавающей запятой в экспоненциальной форме в текстовых форматах (кроме JSON, где числа в экспоненциальной форме всегда распознаются).
@@ -1883,7 +1848,6 @@ $$)
 │ c1   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Самоописывающиеся форматы \{#self-describing-formats\}
 
@@ -1914,7 +1878,6 @@ $$)
 │ arr  │ Array(UInt8) │              │                    │         │                  │                │
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ### Форматы JSON с метаданными \{#json-with-metadata\}
 
@@ -1971,7 +1934,6 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### Avro \{#avro\}
 
 В формате Avro ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
@@ -1980,7 +1942,7 @@ $$)
 |-------------------------------------|---------------------------------------------------------------------------------|
 | `boolean`                           | [Bool](../sql-reference/data-types/boolean.md)                                  |
 | `int`                               | [Int32](../sql-reference/data-types/int-uint.md)                                |
-| `int (date)` \*                     | [Date32](../sql-reference/data-types/date32.md)                                 |
+| `int (date)` *                     | [Date32](../sql-reference/data-types/date32.md)                                 |
 | `long`                              | [Int64](../sql-reference/data-types/int-uint.md)                                |
 | `float`                             | [Float32](../sql-reference/data-types/float.md)                                 |
 | `double`                            | [Float64](../sql-reference/data-types/float.md)                                 |
@@ -1990,10 +1952,10 @@ $$)
 | `array(T)`                          | [Array(T)](../sql-reference/data-types/array.md)                                |
 | `union(null, T)`, `union(T, null)` | [Nullable(T)](../sql-reference/data-types/date.md)                              |
 | `null`                              | [Nullable(Nothing)](../sql-reference/data-types/special-data-types/nothing.md)  |
-| `string (uuid)` \*                  | [UUID](../sql-reference/data-types/uuid.md)                                     |
-| `binary (decimal)` \*               | [Decimal(P, S)](../sql-reference/data-types/decimal.md)                         |
+| `string (uuid)` *                  | [UUID](../sql-reference/data-types/uuid.md)                                     |
+| `binary (decimal)` *               | [Decimal(P, S)](../sql-reference/data-types/decimal.md)                         |
 
-\* [Логические типы Avro](https://avro.apache.org/docs/current/spec.html#Logical+Types)
+* [Логические типы Avro](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
 Другие типы Avro не поддерживаются.
 
@@ -2193,7 +2155,6 @@ DESC format(LineAsString, 'Hello\nworld!')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### JSONAsString \{#json-as-string\}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `String`. Определяемый для этого формата тип всегда `String`, а имя столбца — `json`.
@@ -2210,7 +2171,6 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ### JSONAsObject \{#json-as-object\}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `JSON`. Определяемый для этого формата тип данных всегда `JSON`, а имя столбца — `json`.
@@ -2226,7 +2186,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 │ json │ JSON │              │                    │         │                  │                │
 └──────┴──────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Режимы определения схемы \{#schema-inference-modes\}
 
@@ -2284,7 +2243,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 Это происходит потому, что ClickHouse сначала попытался определить схему по файлу `data1.jsonl`, но не смог, так как для поля `field2` были только значения NULL,
 затем попытался определить схему по `data2.jsonl` и успешно это сделал, поэтому данные из файла `data3.jsonl` так и не были прочитаны.
 
-
 ### Режим union \{#default-schema-inference-mode-1\}
 
 В режиме union ClickHouse предполагает, что файлы могут иметь разные схемы, поэтому он определяет схемы всех файлов, а затем объединяет их в общую схему.
@@ -2338,7 +2296,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 * Поскольку некоторые файлы могут не содержать некоторые столбцы из результирующей схемы, режим объединения (union) поддерживается только для форматов, которые умеют читать подмножество столбцов (таких как JSONEachRow, Parquet, TSVWithNames и т. д.) и не будет работать для других форматов (таких как CSV, TSV, JSONCompactEachRow и т. д.).
 * Если ClickHouse не может определить схему по одному из файлов, будет сгенерировано исключение.
 * Если у вас много файлов, чтение схемы из всех них может занять много времени.
-
 
 ## Автоматическое определение формата \{#automatic-format-detection\}
 

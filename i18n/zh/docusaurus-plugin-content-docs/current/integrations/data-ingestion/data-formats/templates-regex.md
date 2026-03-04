@@ -84,7 +84,6 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-
 ### 跳过空白字符 \{#skipping-whitespaces\}
 
 建议使用 [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)，它可以忽略模板中分隔符之间的空白字符：
@@ -93,7 +92,6 @@ GROUP BY request
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
-
 
 ## 使用模板导出数据 \{#exporting-data-using-templates\}
 
@@ -139,7 +137,6 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
-
 ### 导出为 HTML 文件 \{#exporting-to-html-files\}
 
 基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。我们来基于给定的 [结果集](assets/html.results) 和 [行](assets/html.row) 格式生成 HTML 文件：
@@ -154,7 +151,6 @@ FORMAT Template
 SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
-
 
 ### 导出为 XML \{#exporting-to-xml\}
 
@@ -200,7 +196,6 @@ FORMAT XML
 </result>
 
 ```
-
 
 ## 基于正则表达式导入数据 \{#importing-data-based-on-regular-expressions\}
 
@@ -250,16 +245,15 @@ SELECT * FROM error_log LIMIT 5
 SET format_regexp_skip_unmatched = 1;
 ```
 
-
 ## 其他格式 \{#other-formats\}
 
 ClickHouse 引入了对多种文本和二进制格式的支持，以覆盖各种使用场景和平台。请在以下文章中了解更多格式以及与这些格式协同工作的方式：
 
-- [CSV 和 TSV 格式](csv-tsv.md)
-- [Parquet](parquet.md)
-- [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
-- **正则表达式和模板**
-- [Native 与二进制格式](binary.md)
-- [SQL 格式](sql.md)
+* [CSV 和 TSV 格式](csv-tsv.md)
+* [Parquet](parquet.md)
+* [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
+* **正则表达式和模板**
+* [Native 与二进制格式](binary.md)
+* [SQL 格式](sql.md)
 
 还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 一款可移植、功能完备的工具，无需 ClickHouse 服务器即可处理本地或远程文件。

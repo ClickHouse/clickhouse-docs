@@ -22,7 +22,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 Такой подход позволяет клиентам управлять всем доступом к своим S3‑бакетам в одном месте (через политику IAM принимаемой роли), без необходимости просматривать и изменять политики каждого бакета для добавления или удаления доступа.
 В следующем разделе вы узнаете, как это настроить.
 
-
 ## Получение ARN роли IAM вашего сервиса ClickHouse \{#obtaining-the-clickhouse-service-iam-role-arn\}
 
 1. Войдите в свою учетную запись ClickHouse Cloud.
@@ -41,19 +40,19 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 Роль IAM assume role можно настроить одним из двух способов:
 
-- [С помощью стека CloudFormation](#option-1-deploying-with-cloudformation-stack)
-- [Ручное создание роли IAM](#option-2-manually-create-iam-role)
+* [С помощью стека CloudFormation](#option-1-deploying-with-cloudformation-stack)
+* [Ручное создание роли IAM](#option-2-manually-create-iam-role)
 
 ### Развертывание с помощью стека CloudFormation \{#option-1-deploying-with-cloudformation-stack\}
 
 1. Войдите в свою учетную запись AWS в веб-браузере, используя IAM-пользователя с правами на создание и управление ролью IAM.
 
-2. Перейдите по [этой ссылке](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3), чтобы создать стек CloudFormation.
+2. Перейдите по [этой ссылке](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml\&stackName=ClickHouseSecureS3), чтобы создать стек CloudFormation.
 
-3. Введите (или вставьте) **service role ID (IAM)** для вашего сервиса, который вы получили ранее, в поле с названием "ClickHouse Instance Roles".
+3. Введите (или вставьте) **service role ID (IAM)** для вашего сервиса, который вы получили ранее, в поле с названием &quot;ClickHouse Instance Roles&quot;.
    Вы можете вставить service role ID в точности так, как он отображается в консоли Cloud.
 
-4. Введите имя вашего бакета в поле с названием "Bucket Names". Если URL вашего бакета — `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/`, то именем бакета будет `ch-docs-s3-bucket`.
+4. Введите имя вашего бакета в поле с названием &quot;Bucket Names&quot;. Если URL вашего бакета — `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/`, то именем бакета будет `ch-docs-s3-bucket`.
 
 :::note
 Не указывайте полный ARN бакета, указывайте только имя бакета.
@@ -136,7 +135,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 4. После создания скопируйте новый **IAM Role Arn**, он потребуется для доступа к вашему S3-бакету.
 
-
 ## Доступ к бакету S3 с ролью ClickHouseAccess \{#access-your-s3-bucket-with-the-clickhouseaccess-role\}
 
 ClickHouse Cloud позволяет указывать параметр `extra_credentials` в S3 table function.
@@ -157,7 +155,6 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 Мы рекомендуем размещать исходное хранилище S3 в том же регионе, что и ваш сервис ClickHouse Cloud, чтобы снизить затраты на передачу данных.
 Для получения дополнительной информации см. раздел [S3 pricing](https://aws.amazon.com/s3/pricing/)
 :::
-
 
 ## Расширенное управление действиями \{#advanced-action-control\}
 

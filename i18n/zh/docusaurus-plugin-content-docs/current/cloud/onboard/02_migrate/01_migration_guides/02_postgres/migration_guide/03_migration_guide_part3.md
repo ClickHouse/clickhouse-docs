@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 我们建议正在从 Postgres 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。本指南使用相同的 Stack Overflow 数据集，并基于 ClickHouse 的功能探索多种建模方案。
 
-
 ## ClickHouse 中的主键（排序键） \{#primary-ordering-keys-in-clickhouse\}
 
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找对应的概念。注意到 ClickHouse 支持 `PRIMARY KEY` 语法后，用户可能会倾向于直接沿用源 OLTP 数据库中的同一组键来定义表模式。这种做法并不合适。
@@ -27,15 +26,15 @@ import Image from '@theme/IdealImage';
 
 要理解为什么在 ClickHouse 中直接使用 OLTP 的主键是不合适的，首先需要了解 ClickHouse 索引的一些基础知识。这里以 Postgres 作为对比示例，但这些通用概念同样适用于其他 OLTP 数据库。
 
-- Postgres 的主键按照定义对每一行都是唯一的。借助 [B-tree 结构](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)，可以高效地通过此键查找单行记录。虽然 ClickHouse 也可以针对单行值查找进行优化，但分析型工作负载通常需要在大量行上读取少量列。筛选条件更常见的需求是识别要执行聚合操作的**行子集**。
-- 在 ClickHouse 通常运行的规模下，内存和磁盘效率至关重要。数据以称为 part 的数据块形式写入 ClickHouse 表，并在后台根据一定规则对这些 part 进行合并。在 ClickHouse 中，每个 part 都有自己的主索引。当 part 被合并时，合并后 part 的主索引也会一并合并。与 Postgres 不同，这些索引并不是为每一行构建的。相反，一个 part 的主索引只为一组行维护一个索引项——这种技术称为**稀疏索引（sparse indexing）**。
-- 之所以可以使用**稀疏索引**，是因为 ClickHouse 会根据指定的键，对某个 part 中的行在磁盘上的存储顺序进行排序。稀疏主索引并不像基于 B-Tree 的索引那样直接定位单行记录，而是通过对索引项进行二分查找，快速定位可能与查询匹配的成组行。随后，这些被定位到的潜在匹配行集合会并行地流入 ClickHouse 引擎，以找到真正匹配的记录。这种索引设计使得主索引可以非常小（可完全常驻主内存），同时仍能显著加速查询执行时间，尤其是数据分析场景中常见的范围查询。 
+* Postgres 的主键按照定义对每一行都是唯一的。借助 [B-tree 结构](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)，可以高效地通过此键查找单行记录。虽然 ClickHouse 也可以针对单行值查找进行优化，但分析型工作负载通常需要在大量行上读取少量列。筛选条件更常见的需求是识别要执行聚合操作的**行子集**。
+* 在 ClickHouse 通常运行的规模下，内存和磁盘效率至关重要。数据以称为 part 的数据块形式写入 ClickHouse 表，并在后台根据一定规则对这些 part 进行合并。在 ClickHouse 中，每个 part 都有自己的主索引。当 part 被合并时，合并后 part 的主索引也会一并合并。与 Postgres 不同，这些索引并不是为每一行构建的。相反，一个 part 的主索引只为一组行维护一个索引项——这种技术称为**稀疏索引（sparse indexing）**。
+* 之所以可以使用**稀疏索引**，是因为 ClickHouse 会根据指定的键，对某个 part 中的行在磁盘上的存储顺序进行排序。稀疏主索引并不像基于 B-Tree 的索引那样直接定位单行记录，而是通过对索引项进行二分查找，快速定位可能与查询匹配的成组行。随后，这些被定位到的潜在匹配行集合会并行地流入 ClickHouse 引擎，以找到真正匹配的记录。这种索引设计使得主索引可以非常小（可完全常驻主内存），同时仍能显著加速查询执行时间，尤其是数据分析场景中常见的范围查询。
 
 如需更多详细信息，推荐参阅这篇[深度指南](/guides/best-practices/sparse-primary-indexes)。
 
-<Image img={postgres_b_tree} size="lg" alt="PostgreSQL B-Tree 索引"/>
+<Image img={postgres_b_tree} size="lg" alt="PostgreSQL B-Tree 索引" />
 
-<Image img={postgres_sparse_index} size="lg" alt="PostgreSQL 稀疏索引"/>
+<Image img={postgres_sparse_index} size="lg" alt="PostgreSQL 稀疏索引" />
 
 在 ClickHouse 中，所选择的键不仅决定索引本身，还决定数据在磁盘上的写入顺序。正因为如此，它会显著影响压缩率，而压缩率又会反过来影响查询性能。能够让大多数量的列值按连续顺序写入的排序键，将使所选压缩算法（以及编解码器）能够更高效地压缩数据。
 
@@ -73,7 +72,6 @@ PARTITION BY toYear(CreationDate)
 ```
 
 有关分区的完整介绍，请参阅 [&quot;Table partitions&quot;](/partitions)。
-
 
 ### 分区的应用场景 \{#applications-of-partitions\}
 
@@ -118,14 +116,13 @@ Ok.
 
 * **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，你应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
-
 ### 分区使用建议 \{#recommendations-for-partitions\}
 
 用户应将分区视为一种数据管理技术。当在处理时序数据并需要从集群中淘汰数据时，它非常理想，例如可以[直接删除](/sql-reference/statements/alter/partition#drop-partitionpart)最老的分区。
 
 **重要：** 确保你的分区键表达式不会产生高基数集合，即应避免创建超过 100 个分区。例如，不要按高基数列（如客户端标识符或名称）对数据进行分区。相反，应将客户端标识符或名称作为 ORDER BY 表达式中的第一列。
 
-> 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着数据不断插入，part 的数量会增加。为了防止 part 数量过高（会导致要读取的文件增加，从而降低查询性能），系统会通过后台异步进程将多个 part 合并。如果 part 的数量超过预配置的上限，ClickHouse 会在插入时抛出异常——即 "too many parts" 错误。在正常运行下不应发生这种情况，只会在 ClickHouse 配置错误或使用方式不当（例如大量小批量插入操作）时出现。
+> 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着数据不断插入，part 的数量会增加。为了防止 part 数量过高（会导致要读取的文件增加，从而降低查询性能），系统会通过后台异步进程将多个 part 合并。如果 part 的数量超过预配置的上限，ClickHouse 会在插入时抛出异常——即 &quot;too many parts&quot; 错误。在正常运行下不应发生这种情况，只会在 ClickHouse 配置错误或使用方式不当（例如大量小批量插入操作）时出现。
 
 > 由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量相应增加，即 part 数量是分区数量的倍数。因此，高基数的分区键可能会导致上述错误，应当避免。
 
@@ -221,7 +218,6 @@ Peak memory usage: 4.06 MiB.
 
 通过 `EXPLAIN` 命令，我们还可以确认该查询确实使用了这个 projection：
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
@@ -245,12 +241,11 @@ WHERE UserId = 8592047
 11 rows in set. Elapsed: 0.004 sec.
 ```
 
-
 ### 何时使用投影 \{#when-to-use-projections\}
 
 投影对新用户来说是一个极具吸引力的特性,因为它们会在数据插入时自动维护。此外,查询只需发送到单个表,投影会在可能的情况下自动被利用以加快响应时间。
 
-<Image img={postgres_projections} size="md" alt="ClickHouse 中的 PostgreSQL 投影"/>
+<Image img={postgres_projections} size="md" alt="ClickHouse 中的 PostgreSQL 投影" />
 
 这与物化视图形成对比,在物化视图中,用户必须根据过滤条件选择相应的优化目标表或重写查询。这对用户应用程序提出了更高要求,并增加了客户端复杂性。
 
@@ -258,13 +253,13 @@ WHERE UserId = 8592047
 
 我们建议在以下情况下使用投影:
 
-- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。你可以在此表达式中选择列的子集以减少存储占用。
-- 用户能够接受相关的存储占用增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
+* 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。你可以在此表达式中选择列的子集以减少存储占用。
+* 用户能够接受相关的存储占用增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
 :::note
 从 25.5 版本开始,ClickHouse 在投影中支持虚拟列 `_part_offset`。这提供了一种更节省空间的投影存储方式。
 
-有关更多详细信息,请参阅["投影"](/data-modeling/projections)
+有关更多详细信息,请参阅[&quot;投影&quot;](/data-modeling/projections)
 :::
 
 ## 反规范化 \{#denormalization\}

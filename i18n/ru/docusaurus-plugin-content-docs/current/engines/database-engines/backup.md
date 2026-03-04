@@ -34,7 +34,6 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 * `database_name_inside_backup` — Имя базы данных внутри резервной копии.
 * `backup_destination` — Место размещения резервной копии.
 
-
 ## Пример использования \{#usage-example\}
 
 Рассмотрим пример с местом назначения резервных копий типа `Disk`. Сначала настроим диск для резервных копий в `storage.xml`:

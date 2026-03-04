@@ -53,7 +53,6 @@ print(result.to_sql())
 df = result.to_df()  # <-- Triggers execution
 ```
 
-
 ### Преимущества ленивых вычислений \{#benefits\}
 
 1. **Оптимизация запросов**: Несколько операций компилируются в один оптимизированный SQL‑запрос
@@ -62,7 +61,7 @@ df = result.to_df()  # <-- Triggers execution
 4. **Отложенный выбор**: Движок выполнения можно выбрать во время выполнения
 5. **Анализ плана**: Вы можете просмотреть и отладить запрос перед выполнением
 
----
+***
 
 ## Триггеры выполнения \{#triggers\}
 
@@ -98,7 +97,6 @@ list(ds)               # List of values
 ds.to_df()             # pandas DataFrame
 ```
 
-
 ### Операции, которые выполняются лениво \{#stay-lazy\}
 
 | Operation              | Returns     | Description                 |
@@ -123,7 +121,6 @@ result = ds.groupby('city')              # Returns LazyGroupBy
 
 ***
 
-
 ## Трёхфазное выполнение \{#three-phase\}
 
 Операции DataStore используют трёхфазную модель выполнения:
@@ -144,7 +141,6 @@ result = (ds
 # All compiled into one SQL query
 ```
 
-
 ### Фаза 2: Точка выполнения \{#phase-2\}
 
 Когда срабатывает триггер, накопленный SQL-запрос выполняется:
@@ -154,7 +150,6 @@ result = (ds
 df = result.to_df()  
 # The single optimized SQL query runs now
 ```
-
 
 ### Фаза 3: операции с DataFrame (если есть) \{#phase-3\}
 
@@ -170,7 +165,6 @@ result = (ds
 ```
 
 ***
-
 
 ## Просмотр планов выполнения \{#explain\}
 
@@ -215,7 +209,6 @@ query.explain(verbose=True)
 
 ***
 
-
 ## Кеширование \{#caching\}
 
 DataStore кеширует результаты выполнения, чтобы избежать повторных запросов.
@@ -246,7 +239,6 @@ print(result.columns)  # Uses cached result
 df = result.to_df()  # Uses cached result
 ```
 
-
 ### Инвалидация кэша \{#cache-invalidation\}
 
 Кэш становится недействительным, когда операции модифицируют DataStore:
@@ -259,7 +251,6 @@ print(result.shape)  # Executes, caches
 result2 = result.filter(result['city'] == 'NYC')
 print(result2.shape)  # Re-executes (different query)
 ```
-
 
 ### Ручное управление кэшем \{#cache-control\}
 
@@ -274,7 +265,6 @@ config.set_cache_enabled(False)
 
 ***
 
-
 ## Смешивание операций SQL и Pandas \{#mixing\}
 
 DataStore интеллектуально обрабатывает операции, сочетающие SQL и Pandas:
@@ -283,23 +273,23 @@ DataStore интеллектуально обрабатывает операци
 
 Эти операции транслируются в SQL:
 
-- `filter()`, `where()`
-- `select()`
-- `groupby()`, `agg()`
-- `sort()`, `orderby()`
-- `limit()`, `offset()`
-- `join()`, `union()`
-- `distinct()`
-- Операции над столбцами (арифметика, сравнение, строковые методы)
+* `filter()`, `where()`
+* `select()`
+* `groupby()`, `agg()`
+* `sort()`, `orderby()`
+* `limit()`, `offset()`
+* `join()`, `union()`
+* `distinct()`
+* Операции над столбцами (арифметика, сравнение, строковые методы)
 
 ### Операции только в pandas \{#pandas-ops\}
 
 Эти операции запускают выполнение и используют pandas:
 
-- `apply()` с пользовательскими функциями
-- `pivot_table()` со сложными агрегациями
-- `stack()`, `unstack()`
-- Операции с выполненными объектами DataFrame
+* `apply()` с пользовательскими функциями
+* `pivot_table()` со сложными агрегациями
+* `stack()`, `unstack()`
+* Операции с выполненными объектами DataFrame
 
 ### Гибридные конвейеры \{#hybrid\}
 
@@ -320,7 +310,6 @@ result = (result
 
 ***
 
-
 ## Выбор движка выполнения \{#engine-selection\}
 
 DataStore может выполнять операции с использованием различных движков:
@@ -334,14 +323,12 @@ config.set_execution_engine('auto')  # Default
 # Automatically selects best engine per operation
 ```
 
-
 ### Принудительный выбор движка chDB \{#chdb-engine\}
 
 ```python
 config.set_execution_engine('chdb')
 # All operations use ClickHouse SQL
 ```
-
 
 ### Принудительное использование движка Pandas \{#pandas-engine\}
 
@@ -353,7 +340,6 @@ config.set_execution_engine('pandas')
 Подробности см. в разделе [Configuration: Execution Engine](../configuration/execution-engine.md).
 
 ***
-
 
 ## Влияние на производительность \{#performance\}
 
@@ -368,7 +354,6 @@ result = (ds
 )
 ```
 
-
 ### Плохо: фильтровать поздно \{#filter-late\}
 
 ```python
@@ -381,7 +366,6 @@ result = (ds
 )
 ```
 
-
 ### Хорошо: выбирайте столбцы как можно раньше \{#select-early\}
 
 ```python
@@ -393,7 +377,6 @@ result = (ds
     .agg({'amount': 'sum'})
 )
 ```
-
 
 ### Лучше так: пусть за вас работает SQL \{#sql-work\}
 
@@ -417,7 +400,6 @@ means = ds.groupby('category')['amount'].mean().to_df()
 ```
 
 ***
-
 
 ## Краткое изложение передовых практик \{#best-practices\}
 

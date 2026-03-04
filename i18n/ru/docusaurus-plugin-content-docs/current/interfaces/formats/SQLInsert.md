@@ -43,4 +43,4 @@ INSERT INTO table (x, y, z) VALUES (8, 9, 'Hello'), (9, 10, 'Hello');
 | [`output_format_sql_insert_table_name`](../../operations/settings/settings-formats.md/#output_format_sql_insert_table_name)            | Имя таблицы в результирующем операторе INSERT.               | `'table'` |
 | [`output_format_sql_insert_include_column_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) | Включать имена столбцов в оператор INSERT.                   | `true`    |
 | [`output_format_sql_insert_use_replace`](../../operations/settings/settings-formats.md/#output_format_sql_insert_use_replace)          | Использовать оператор REPLACE вместо INSERT.                 | `false`   |
-| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)          | Заключать имена столбцов в символы «\`».                     | `true`    |
+| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)          | Заключать имена столбцов в символы «`».                     | `true`    |

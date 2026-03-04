@@ -35,7 +35,6 @@ GRANT IMPERSONATE ON * TO user3;
 При работе от имени другого пользователя функция [currentUser()](/sql-reference/functions/other-functions#currentUser) возвращает имя этого пользователя,
 а функция [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) возвращает имя пользователя, который был фактически аутентифицирован.
 
-
 ## Примеры \{#examples\}
 
 ```sql

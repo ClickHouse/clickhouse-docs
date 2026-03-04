@@ -19,7 +19,6 @@ mongodb(uri, collection, structure[, oid_columns]);
 mongodb(named_collection_name[, <arg>=<value>...]);
 ```
 
-
 ## 参数 \{#arguments\}
 
 | 参数            | 描述                                              |
@@ -63,7 +62,6 @@ mongodb(_named_collection_[, host][, port][, database][, collection][, user][, p
 -- or
 mongodb(_named_collection_[, uri][, structure][, oid_columns])
 ```
-
 
 ## 返回值 \{#returned_value\}
 
@@ -125,8 +123,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-
 ## 相关 \{#related\}
 
-- [`MongoDB` 表引擎](engines/table-engines/integrations/mongodb.md)
-- [将 MongoDB 用作字典源](../statements/create/dictionary/sources/mongodb.md)
+* [`MongoDB` 表引擎](engines/table-engines/integrations/mongodb.md)
+* [将 MongoDB 用作字典源](../statements/create/dictionary/sources/mongodb.md)

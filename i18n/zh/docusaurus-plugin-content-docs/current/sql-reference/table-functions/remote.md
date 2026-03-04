@@ -28,7 +28,7 @@ remoteSecure(named_collection[, option=value [,..]])
 
 | 参数           | 说明                                                                                                                                                                                                                                                                                                                                                               |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `addresses_expr` | 远程服务器地址，或用于生成多个远程服务器地址的表达式。格式：`host` 或 `host:port`。<br/><br/>    `host` 可以是服务器名称，也可以是 IPv4 或 IPv6 地址。IPv6 地址必须用方括号括起来。<br/><br/>    `port` 是远程服务器上的 TCP 端口。如果未指定端口，对于表函数 `remote`，将从服务器配置文件中使用 [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port)（默认 9000）；对于表函数 `remoteSecure`，将使用 [tcp_port_secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure)（默认 9440）。<br/><br/>    对于 IPv6 地址，必须指定端口。<br/><br/>    如果只指定参数 `addresses_expr`，则 `db` 和 `table` 默认使用 `system.one`。<br/><br/>    类型：[String](../../sql-reference/data-types/string.md)。 |
+| `addresses_expr` | 远程服务器地址，或用于生成多个远程服务器地址的表达式。格式：`host` 或 `host:port`。<br /><br />    `host` 可以是服务器名称，也可以是 IPv4 或 IPv6 地址。IPv6 地址必须用方括号括起来。<br /><br />    `port` 是远程服务器上的 TCP 端口。如果未指定端口，对于表函数 `remote`，将从服务器配置文件中使用 [tcp&#95;port](../../operations/server-configuration-parameters/settings.md#tcp_port)（默认 9000）；对于表函数 `remoteSecure`，将使用 [tcp&#95;port&#95;secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure)（默认 9440）。<br /><br />    对于 IPv6 地址，必须指定端口。<br /><br />    如果只指定参数 `addresses_expr`，则 `db` 和 `table` 默认使用 `system.one`。<br /><br />    类型：[String](../../sql-reference/data-types/string.md)。 |
 | `db`           | 数据库名称。类型：[String](../../sql-reference/data-types/string.md)。                                                                                                                                                                                                                                                                                             |
 | `table`        | 表名称。类型：[String](../../sql-reference/data-types/string.md)。                                                                                                                                                                                                                                                                                               |
 | `user`         | 用户名。如果未指定，则使用 `default`。类型：[String](../../sql-reference/data-types/string.md)。                                                                                                                                                                                                                                                         |
@@ -119,7 +119,7 @@ SELECT * FROM remote_table;
   SELECT create_table_query
   FROM system.tables
   WHERE database = 'imdb' AND table = 'actors'
-  ```
+```
 
 响应
 
@@ -130,7 +130,7 @@ SELECT * FROM remote_table;
                             `gender` FixedString(1))
                   ENGINE = MergeTree
                   ORDER BY (id, first_name, last_name, gender);
-  ```
+```
 
 #### 在目标 ClickHouse 系统上 \{#on-the-destination-clickhouse-system\}
 
@@ -167,10 +167,10 @@ SELECT * from imdb.actors
 
 支持以下类型的模式：
 
-- `{a,b,c}` - 表示可选字符串 `a`、`b` 或 `c` 中的任意一个。该模式在第一个分片地址中被替换为 `a`，在第二个分片地址中被替换为 `b`，依此类推。例如，`example0{1,2}-1` 会生成地址 `example01-1` 和 `example02-1`。
-- `{N..M}` - 数字范围。此模式会生成索引从 `N` 到（包含）`M` 的分片地址。例如，`example0{1..2}-1` 会生成 `example01-1` 和 `example02-1`。
-- `{0n..0m}` - 带前导零的数字范围。此模式会在索引中保留前导零。例如，`example{01..03}-1` 会生成 `example01-1`、`example02-1` 和 `example03-1`。
-- `{a|b}` - 任意数量的变体，由 `|` 分隔。该模式用于指定副本。例如，`example01-{1|2}` 会生成副本 `example01-1` 和 `example01-2`。
+* `{a,b,c}` - 表示可选字符串 `a`、`b` 或 `c` 中的任意一个。该模式在第一个分片地址中被替换为 `a`，在第二个分片地址中被替换为 `b`，依此类推。例如，`example0{1,2}-1` 会生成地址 `example01-1` 和 `example02-1`。
+* `{N..M}` - 数字范围。此模式会生成索引从 `N` 到（包含）`M` 的分片地址。例如，`example0{1..2}-1` 会生成 `example01-1` 和 `example02-1`。
+* `{0n..0m}` - 带前导零的数字范围。此模式会在索引中保留前导零。例如，`example{01..03}-1` 会生成 `example01-1`、`example02-1` 和 `example03-1`。
+* `{a|b}` - 任意数量的变体，由 `|` 分隔。该模式用于指定副本。例如，`example01-{1|2}` 会生成副本 `example01-1` 和 `example01-2`。
 
-查询将被发送到第一个可用副本。不过，对于 `remote`，副本会按照 [load_balancing](../../operations/settings/settings.md#load_balancing) 设置中当前配置的顺序进行遍历。
-生成的地址数量受 [table_function_remote_max_addresses](../../operations/settings/settings.md#table_function_remote_max_addresses) 设置限制。
+查询将被发送到第一个可用副本。不过，对于 `remote`，副本会按照 [load&#95;balancing](../../operations/settings/settings.md#load_balancing) 设置中当前配置的顺序进行遍历。
+生成的地址数量受 [table&#95;function&#95;remote&#95;max&#95;addresses](../../operations/settings/settings.md#table_function_remote_max_addresses) 设置限制。

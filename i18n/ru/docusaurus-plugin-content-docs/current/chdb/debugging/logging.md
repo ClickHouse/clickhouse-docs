@@ -35,7 +35,6 @@ ds = pd.read_csv("data.csv")
 result = ds.filter(ds['age'] > 25).to_df()
 ```
 
-
 ## Уровни логирования \{#levels\}
 
 | Уровень | Значение | Описание |
@@ -62,7 +61,6 @@ config.set_log_level(logging.ERROR)
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-
 ## Формат логов \{#format\}
 
 ### Простой формат (по умолчанию) \{#simple\}
@@ -78,7 +76,6 @@ DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### Подробный формат \{#verbose\}
 
 ```python
@@ -93,7 +90,6 @@ config.set_log_format("verbose")
 ```
 
 ***
-
 
 ## Что записывается в журнал \{#what-logged\}
 
@@ -113,7 +109,6 @@ DEBUG - Execution time: 0.089s
 DEBUG - Cache: Storing result (key: abc123)
 ```
 
-
 ### Уровень INFO \{#info-logged\}
 
 * Завершение крупных операций
@@ -126,7 +121,6 @@ INFO - Execution engine set to: chdb
 INFO - Connected to MySQL: localhost:3306/mydb
 ```
 
-
 ### Уровень WARNING \{#warning-logged\}
 
 * Использование устаревших функций
@@ -138,7 +132,6 @@ WARNING - Large result set (>1M rows) may cause memory issues
 WARNING - Cache TTL exceeded, re-executing query
 WARNING - Column 'date' has mixed types, using string
 ```
-
 
 ### Уровень ERROR \{#error-logged\}
 
@@ -153,7 +146,6 @@ ERROR - Cannot convert column 'price' to float
 ```
 
 ***
-
 
 ## Пользовательская конфигурация логирования \{#custom\}
 
@@ -177,7 +169,6 @@ ds_logger = logging.getLogger('chdb.datastore')
 ds_logger.setLevel(logging.DEBUG)
 ```
 
-
 ### Логирование в файл \{#log-file\}
 
 ```python
@@ -195,7 +186,6 @@ ds_logger = logging.getLogger('chdb.datastore')
 ds_logger.addHandler(file_handler)
 ```
 
-
 ### Отключение логирования \{#suppress\}
 
 ```python
@@ -209,7 +199,6 @@ config.set_log_level(logging.CRITICAL)
 ```
 
 ***
-
 
 ## Сценарии отладки \{#scenarios\}
 
@@ -236,7 +225,6 @@ DEBUG - Generated SQL:
         GROUP BY city
 ```
 
-
 ### Выбор отладочного движка \{#debug-engine\}
 
 ```python
@@ -254,7 +242,6 @@ DEBUG - apply: selecting engine (eligible: pandas)
 DEBUG - apply: using pandas (custom function)
 ```
 
-
 ### Отладка операций кэша \{#debug-cache\}
 
 ```python
@@ -271,7 +258,6 @@ result2 = ds.filter(ds['age'] > 25).to_df()
 # DEBUG - Cache hit for query hash abc123
 # DEBUG - Returning cached result
 ```
-
 
 ### Диагностика проблем с производительностью \{#debug-performance\}
 
@@ -301,7 +287,6 @@ DEBUG - Result conversion: 2.345ms
 
 ***
 
-
 ## Конфигурация для продакшена \{#production\}
 
 ### Рекомендуемые настройки \{#recommended\}
@@ -315,7 +300,6 @@ config.set_log_level(logging.WARNING)
 config.set_log_format("simple")
 config.set_profiling_enabled(False)
 ```
-
 
 ### Ротация журналов \{#rotation\}
 
@@ -336,7 +320,6 @@ logging.getLogger('chdb.datastore').addHandler(handler)
 ```
 
 ***
-
 
 ## Переменные окружения \{#env-vars\}
 
@@ -360,7 +343,6 @@ config.set_log_level(getattr(logging, log_level))
 ```
 
 ***
-
 
 ## Сводка \{#summary\}
 

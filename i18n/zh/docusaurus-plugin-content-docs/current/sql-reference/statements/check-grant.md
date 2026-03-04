@@ -48,4 +48,5 @@ CHECK GRANT SELECT(col2) ON table_2;
 ```
 
 ## 通配符 \{#wildcard\}
+
 在授予权限时，可以使用星号（`*`）来代替表名或数据库名。有关通配符规则，请参阅 [WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants)。

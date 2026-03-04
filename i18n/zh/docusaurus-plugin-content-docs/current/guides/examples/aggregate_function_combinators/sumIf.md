@@ -120,5 +120,6 @@ ORDER BY month;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)

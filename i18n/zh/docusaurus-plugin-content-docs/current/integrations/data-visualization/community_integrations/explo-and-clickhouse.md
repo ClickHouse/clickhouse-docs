@@ -31,10 +31,9 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Explo 连接到 ClickHouse \{#connecting-explo-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 适用于任何平台的客户可见分析功能。为精美可视化而设计，为简单易用而打造。
 
@@ -44,7 +43,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_15} size="md" alt="Explo 仪表板" />
 
-<p/>
+<p />
 
 :::tip 添加一些数据
 如果当前还没有可用的数据集，可以添加一个示例数据集。本指南使用的是 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集，因此您可以选择该数据集。在同一文档类别下还有其他多个示例数据集可供查看。
@@ -83,9 +82,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <Image img={explo_06} size="md" alt="安全配置" border />
 
 8. 在 ClickHouse 中 **将 Explo IP 加入白名单**。
-`
-54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
-`
+   `54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148`
 
 ## 3. 创建仪表板 \{#3-create-a-dashboard\}
 
@@ -104,10 +101,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 ## 4. 运行 SQL 查询 \{#4-run-a-sql-query\}
 
 1. 在右侧侧边栏中，在你的 schema 标题下找到表名。然后在数据集编辑器中输入以下命令：
-`
-SELECT * FROM YOUR_TABLE_NAME
-LIMIT 100
-`
+   `SELECT * FROM YOUR_TABLE_NAME
+   LIMIT 100`
 
 <Image img={explo_10} size="md" alt="Explo 仪表盘" border />
 

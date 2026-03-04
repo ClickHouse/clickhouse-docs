@@ -96,4 +96,4 @@ Extremes:
 
 ## 格式设置 \{#format-settings\}
 
-<PrettyFormatSettings/>
+<PrettyFormatSettings />

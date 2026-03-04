@@ -32,12 +32,12 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
 ## Предварительные требования \{#prerequisites\}
 
-- Вы уже развернули [локальный сервер ClickHouse](/install)
-- Вы знакомы с базовыми концепциями конфигурирования ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
-- На вашей машине установлен Docker
+* Вы уже развернули [локальный сервер ClickHouse](/install)
+* Вы знакомы с базовыми концепциями конфигурирования ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
+* На вашей машине установлен Docker
 
 <VerticalStepper level="h2">
-  ## Настройка структуры каталогов и тестовой среды
+  ## Настройка структуры каталогов и тестовой среды \{#set-up\}
 
   <ExampleFiles />
 
@@ -169,9 +169,9 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <ConfigExplanation />
 
-  ## Настройка узлов ClickHouse
+  ## Настройка узлов ClickHouse \{#configure-clickhouse-servers\}
 
-  ### Настройка сервера
+  ### Настройка сервера \{#server-setup\}
 
   Теперь измените каждый пустой файл конфигурации `config.xml`, расположенный по пути
   `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Строки, выделенные
@@ -260,7 +260,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   Каждый раздел указанного выше конфигурационного файла подробно описан ниже.
 
-  #### Сеть и логирование
+  #### Сеть и логирование \{#networking\}
 
   <ListenHost />
 
@@ -279,7 +279,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   Дополнительную информацию о настройке логирования см. в комментариях стандартного [файла конфигурации](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) ClickHouse.
 
-  #### Конфигурация кластера
+  #### Конфигурация кластера \{#cluster-config\}
 
   Конфигурация кластера задаётся в блоке `<remote_servers>`.
   Здесь задано имя кластера `cluster_2S_2R`.
@@ -328,7 +328,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   и служит шаблоном для распределённых DDL-запросов — запросов, выполняемых
   на всех узлах кластера с помощью конструкции `ON CLUSTER`.
 
-  #### Конфигурация Keeper
+  #### Конфигурация Keeper \{#keeper-config-explanation\}
 
   Секция `<ZooKeeper>` указывает ClickHouse, где запущен ClickHouse Keeper (или ZooKeeper).
   Поскольку используется кластер ClickHouse Keeper, необходимо указать каждый узел `<node>` кластера
@@ -358,7 +358,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   для production-окружений мы настоятельно рекомендуем использовать выделенные хосты для ClickHouse Keeper.
   :::
 
-  #### Конфигурация макросов
+  #### Конфигурация макросов \{#macros-config-explanation\}
 
   Кроме того, секция `<macros>` используется для определения подстановки параметров для
   реплицируемых таблиц. Они перечислены в `system.macros` и позволяют использовать подстановки
@@ -371,7 +371,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   </macros>
   ```
 
-  ### Настройка пользователя
+  ### Настройка пользователя \{#cluster-configuration\}
 
   Теперь измените каждый пустой конфигурационный файл `users.xml`, расположенный в
   `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d`, следующим образом:
@@ -423,11 +423,11 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   В данном примере файл `users.xml` одинаков для всех узлов кластера.
   :::
 
-  ## Настройка ClickHouse Keeper
+  ## Настройка ClickHouse Keeper \{#configure-clickhouse-keeper-nodes\}
 
   Далее необходимо настроить ClickHouse Keeper, который используется для координации.
 
-  ### Настройка Keeper
+  ### Настройка Keeper \{#configuration-explanation\}
 
   <KeeperConfig />
 
@@ -441,7 +441,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <CloudTip />
 
-  ## Проверка настройки
+  ## Проверка настройки \{#test-the-setup\}
 
   Убедитесь, что Docker запущен на вашем компьютере.
   Запустите кластер командой `docker-compose up` из корневого каталога `cluster_2S_2R`:
@@ -522,7 +522,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   Таким образом, вы успешно настроили кластер ClickHouse с двумя сегментами и двумя репликами.
   На следующем шаге вы создадите таблицу в кластере.
 
-  ## Создание базы данных
+  ## Создание базы данных \{#creating-a-database\}
 
   Теперь, когда вы убедились, что кластер правильно настроен и запущен,
   вы создадите ту же таблицу, что и в руководстве по примеру набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
@@ -580,7 +580,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
      └────────────────────┘
   ```
 
-  ## Создание таблицы в кластере
+  ## Создание таблицы в кластере \{#creating-a-table\}
 
   Теперь, когда база данных создана, создайте таблицу с репликацией.
 
@@ -652,7 +652,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
      └─────────────────────┘
   ```
 
-  ## Вставка данных в distributed таблицу
+  ## Вставка данных в distributed таблицу \{#inserting-data-using-distributed\}
 
   Для вставки данных в таблицу нельзя использовать `ON CLUSTER`, поскольку эта конструкция
   не применяется к DML-запросам (Data Manipulation Language — язык манипулирования данными), таким как `INSERT`, `UPDATE`
@@ -751,4 +751,4 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 Кроме того, хотя кластер выдерживает отказ одного узла, одновременная потеря двух узлов может сделать кластер неработоспособным в зависимости от того, какие именно узлы выйдут из строя и как распределены шарды.
 Эта топология представляет собой компромисс между доступностью и стоимостью, что делает её подходящей для продакшн-сред, где требуется определённый уровень отказоустойчивости без расходов на более высокий коэффициент репликации.
 
-Чтобы узнать, как ClickHouse Cloud обрабатывает запросы, обеспечивая и масштабируемость, и отказоустойчивость, см. раздел ["Parallel Replicas"](/deployment-guides/parallel-replicas).
+Чтобы узнать, как ClickHouse Cloud обрабатывает запросы, обеспечивая и масштабируемость, и отказоустойчивость, см. раздел [&quot;Parallel Replicas&quot;](/deployment-guides/parallel-replicas).

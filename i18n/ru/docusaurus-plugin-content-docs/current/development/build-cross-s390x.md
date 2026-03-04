@@ -93,10 +93,10 @@ Process 1 stopped
 
 ## Интеграция с Visual Studio Code \{#visual-studio-code-integration\}
 
-- Для визуальной отладки требуется расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb).
-- Расширение [Command Variable](https://github.com/rioj7/command-variable) может упростить динамический запуск при использовании [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md).
-- Убедитесь, что бекенд настроен на вашу установку LLVM, например: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`.
-- Перед запуском визуальной отладки предварительно запустите исполняемый файл clickhouse в режиме отладки. (Также можно создать задачу `preLaunchTask`, которая автоматизирует это.)
+* Для визуальной отладки требуется расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb).
+* Расширение [Command Variable](https://github.com/rioj7/command-variable) может упростить динамический запуск при использовании [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md).
+* Убедитесь, что бекенд настроен на вашу установку LLVM, например: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`.
+* Перед запуском визуальной отладки предварительно запустите исполняемый файл clickhouse в режиме отладки. (Также можно создать задачу `preLaunchTask`, которая автоматизирует это.)
 
 ### Примеры конфигураций \{#example-configurations\}
 

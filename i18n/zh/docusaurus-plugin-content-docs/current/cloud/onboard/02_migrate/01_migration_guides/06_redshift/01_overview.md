@@ -28,7 +28,8 @@ Redshift 工作负载并行部署的“加速层”。
 
 对于在 AWS 生态体系中投入较多的用户，当面临数据仓库需求时，Redshift 往往是一个顺理成章的选择。Redshift 在一个重要方面与 ClickHouse 不同——它的引擎是专门针对需要复杂报表和分析查询的数据仓库型工作负载进行优化的。
 在所有部署模式下，下述两个限制使得将 Redshift 用于实时分析型工作负载变得困难：
-* Redshift 会[为每个查询执行计划编译代码](https://docs.aws.amazon.com/redshift/latest/dg/c-query-performance.html)，这会为首次查询执行带来显著开销。当查询模式可预测且编译后的执行计划可以存储在查询缓存中时，这一开销是可以接受的。然而，这会给查询模式多变的交互式应用程序带来挑战。即使 Redshift 能够利用这一代码编译缓存，在大多数查询上 ClickHouse 仍然更快。参见 ["ClickBench"](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|Rf&type=-&machine=-ca2|gl|6ax|6ale|3al&cluster_size=-&opensource=-&tuned=+n&metric=hot&queries=-)。
+
+* Redshift 会[为每个查询执行计划编译代码](https://docs.aws.amazon.com/redshift/latest/dg/c-query-performance.html)，这会为首次查询执行带来显著开销。当查询模式可预测且编译后的执行计划可以存储在查询缓存中时，这一开销是可以接受的。然而，这会给查询模式多变的交互式应用程序带来挑战。即使 Redshift 能够利用这一代码编译缓存，在大多数查询上 ClickHouse 仍然更快。参见 [&quot;ClickBench&quot;](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|Rf\&type=-\&machine=-ca2|gl|6ax|6ale|3al\&cluster_size=-\&opensource=-\&tuned=+n\&metric=hot\&queries=-)。
 * Redshift [将所有队列的并发查询数限制为 50](https://docs.aws.amazon.com/redshift/latest/dg/c_workload_mngmt_classification.html)，这对于 BI 来说尚可，但不适用于高度并发的分析型应用。
 
 相对而言，虽然 ClickHouse 同样可以用于复杂分析查询，但它主要针对实时分析型工作负载进行了优化，既可以为应用程序直接提供支撑，也可以充当数据仓库加速层。因此，Redshift 用户通常会出于下列原因，用 ClickHouse 替代或增强 Redshift：

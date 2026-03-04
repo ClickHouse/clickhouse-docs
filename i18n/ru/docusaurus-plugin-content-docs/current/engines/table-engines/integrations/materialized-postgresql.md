@@ -51,13 +51,13 @@ PRIMARY KEY key;
 
 ## Требования \{#requirements\}
 
-1. Параметр [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) должен иметь значение `logical`, а параметр `max_replication_slots` — значение не менее `2` в конфигурационном файле PostgreSQL.
+1. Параметр [wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) должен иметь значение `logical`, а параметр `max_replication_slots` — значение не менее `2` в конфигурационном файле PostgreSQL.
 
 2. Таблица с движком `MaterializedPostgreSQL` должна иметь первичный ключ — тот же, что и индекс replica identity (по умолчанию — первичный ключ) соответствующей таблицы PostgreSQL (см. [подробности об индексе replica identity](../../../engines/database-engines/materialized-postgresql.md#requirements)).
 
-3. Допускается только тип базы данных [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)).
+3. Допускается только тип базы данных [Atomic](https://en.wikipedia.org/wiki/Atomicity_\(database_systems\)).
 
-4. Движок таблицы `MaterializedPostgreSQL` работает только с PostgreSQL версии >= 11, поскольку реализация использует функцию PostgreSQL [pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html).
+4. Движок таблицы `MaterializedPostgreSQL` работает только с PostgreSQL версии &gt;= 11, поскольку реализация использует функцию PostgreSQL [pg&#95;replication&#95;slot&#95;advance](https://pgpedia.info/p/pg_replication_slot_advance.html).
 
 ## Виртуальные столбцы \{#virtual-columns\}
 

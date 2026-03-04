@@ -15,10 +15,9 @@ import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Подключение DbVisualizer к ClickHouse \{#connecting-dbvisualizer-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## Запустите DbVisualizer или скачайте его \{#start-or-download-dbvisualizer\}
 

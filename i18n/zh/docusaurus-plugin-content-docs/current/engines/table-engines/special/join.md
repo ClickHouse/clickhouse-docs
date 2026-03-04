@@ -57,8 +57,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 `Join` 引擎表的主要使用场景如下：
 
-- 将表放在 `JOIN` 子句的右侧。
-- 调用 [joinGet](/sql-reference/functions/other-functions.md/#joinGet) 函数，以与从字典中提取数据相同的方式从表中提取数据。
+* 将表放在 `JOIN` 子句的右侧。
+* 调用 [joinGet](/sql-reference/functions/other-functions.md/#joinGet) 函数，以与从字典中提取数据相同的方式从表中提取数据。
 
 ### 删除数据 \{#deleting-data\}
 
@@ -70,23 +70,24 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 #### `join_use_nulls` \{#join_use_nulls\}
 
-[join_use_nulls](/operations/settings/settings.md/#join_use_nulls)
+[join&#95;use&#95;nulls](/operations/settings/settings.md/#join_use_nulls)
 
 #### `max_rows_in_join` \{#max_rows_in_join\}
 
-[max_rows_in_join](/operations/settings/settings#max_rows_in_join)
+[max&#95;rows&#95;in&#95;join](/operations/settings/settings#max_rows_in_join)
 
 #### `max_bytes_in_join` \{#max_bytes_in_join\}
 
-[max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
+[max&#95;bytes&#95;in&#95;join](/operations/settings/settings#max_bytes_in_join)
 
 #### `join_overflow_mode` \{#join_overflow_mode\}
 
-[join_overflow_mode](/operations/settings/settings#join_overflow_mode)
+[join&#95;overflow&#95;mode](/operations/settings/settings#join_overflow_mode)
 
 #### `join_any_take_last_row` \{#join_any_take_last_row\}
 
-[join_any_take_last_row](/operations/settings/settings.md/#join_any_take_last_row)
+[join&#95;any&#95;take&#95;last&#95;row](/operations/settings/settings.md/#join_any_take_last_row)
+
 #### `join_use_nulls` \{#join_use_nulls-1\}
 
 #### Persistent \{#persistent\}
@@ -97,14 +98,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可能的取值：
 
-- 1 — 启用。
-- 0 — 禁用。
+* 1 — 启用。
+* 0 — 禁用。
 
 默认值：`1`。
 
 `Join` 引擎表不能用于 `GLOBAL JOIN` 操作。
 
-`Join` 引擎允许在 `CREATE TABLE` 语句中指定 [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) 设置。[SELECT](/sql-reference/statements/select/index.md) 查询必须使用相同的 `join_use_nulls` 值。
+`Join` 引擎允许在 `CREATE TABLE` 语句中指定 [join&#95;use&#95;nulls](/operations/settings/settings.md/#join_use_nulls) 设置。[SELECT](/sql-reference/statements/select/index.md) 查询必须使用相同的 `join_use_nulls` 值。
 
 ## 用法示例 \{#example\}
 

@@ -32,5 +32,6 @@ LIMIT 20;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Distinct 组合器`](/sql-reference/aggregate-functions/combinators#-distinct)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Distinct 组合器`](/sql-reference/aggregate-functions/combinators#-distinct)

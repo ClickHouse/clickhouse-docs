@@ -90,7 +90,6 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 
 要加载这些文件中的数据行,可以使用 [`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select):
 
-
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
 Ok.
@@ -116,7 +115,6 @@ FORMAT JSONEachRow
 ```
 
 这些示例假定使用 `JSONEachRow` 格式。系统同样支持其他常见的 JSON 格式,加载这些格式的示例请参见[此处](/integrations/data-formats/json/other-formats)。
-
 
 ## 加载半结构化 JSON \{#loading-semi-structured-json\}
 
@@ -193,7 +191,6 @@ LIMIT 2
 ```
 
 请注意此处在加载数据时的性能差异。`JSON` 列在插入时需要进行类型推断,并且如果某些列中存在多种类型的值,还需要额外的存储空间。尽管可以通过配置 `JSON` 类型(参见 [Designing JSON schema](/integrations/data-formats/json/schema))来获得与显式声明列相当的性能,但它在开箱即用时被刻意设计为更加灵活。不过,这种灵活性也会带来一定的代价。
-
 
 ### 何时使用 JSON 类型 \{#when-to-use-the-json-type\}
 

@@ -24,10 +24,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 :::note[TL;DR]
 本指南演示如何从你的 Node.js 应用中采集分布式 Trace，并利用 OpenTelemetry 自动埋点在 ClickStack 中进行可视化。你将学到如何：
 
-- 为 Node.js 安装并配置 OpenTelemetry 自动埋点
-- 将 Trace 发送到 ClickStack 的 OTLP 端点
-- 验证 Trace 是否出现在 HyperDX 中
-- 使用预构建的 Dashboard 可视化应用性能
+* 为 Node.js 安装并配置 OpenTelemetry 自动埋点
+* 将 Trace 发送到 ClickStack 的 OTLP 端点
+* 验证 Trace 是否出现在 HyperDX 中
+* 使用预构建的 Dashboard 可视化应用性能
 
 如果你希望在为生产应用添加埋点之前先测试集成效果，我们提供了一个包含示例 Trace 的演示数据集。
 
@@ -42,61 +42,59 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ##### 前提条件 \{#prerequisites\}
 
-- 已运行的 ClickStack 实例，且 OTLP 端点可访问（端口 4317/4318）
-- 现有 Node.js 应用程序（Node.js 14 或更高版本）
-- npm 或 yarn 包管理器
-- ClickStack 主机名或 IP 地址
+* 已运行的 ClickStack 实例，且 OTLP 端点可访问（端口 4317/4318）
+* 现有 Node.js 应用程序（Node.js 14 或更高版本）
+* npm 或 yarn 包管理器
+* ClickStack 主机名或 IP 地址
 
 <VerticalStepper headerLevel="h4">
+  #### 安装并配置 OpenTelemetry \{#install-configure\}
 
-#### 安装并配置 OpenTelemetry \{#install-configure\}
+  安装 `@hyperdx/node-opentelemetry` 包，并在应用程序启动时进行初始化。详细安装步骤请参阅 [Node.js SDK 指南](/use-cases/observability/clickstack/sdks/nodejs#getting-started)。
 
-安装 `@hyperdx/node-opentelemetry` 包，并在应用程序启动时进行初始化。详细安装步骤请参阅 [Node.js SDK 指南](/use-cases/observability/clickstack/sdks/nodejs#getting-started)。
+  #### 获取 ClickStack API key \{#get-api-key\}
 
-#### 获取 ClickStack API key \{#get-api-key\}
+  用于将跟踪数据发送到 ClickStack 的 OTLP 端点的 API key。
 
-用于将跟踪数据发送到 ClickStack 的 OTLP 端点的 API key。
+  1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
+  2. 如有需要，创建账号或登录
+  3. 导航到 **Team Settings → API Keys**
+  4. 复制 **摄取 API key**
 
-1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
-2. 如有需要，创建账号或登录
-3. 导航到 **Team Settings → API Keys**
-4. 复制 **摄取 API key**
+  <Image img={api_key} alt="ClickStack API Key" />
 
-<Image img={api_key} alt="ClickStack API Key"/>
+  #### 运行应用程序 \{#run-application\}
 
-#### 运行应用程序 \{#run-application\}
+  设置好环境变量后启动 Node.js 应用程序：
 
-设置好环境变量后启动 Node.js 应用程序：
+  ```bash
+  export CLICKSTACK_API_KEY=your-api-key-here
+  export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+  ```
 
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-```
+  #### 生成一些流量 \{#generate-traffic\}
 
-#### 生成一些流量 \{#generate-traffic\}
+  向应用程序发起请求以生成跟踪数据：
 
-向应用程序发起请求以生成跟踪数据：
+  ```bash
+  # 简单请求
+  curl http://localhost:3000/
+  curl http://localhost:3000/api/users
+  curl http://localhost:3000/api/products
 
-```bash
-# 简单请求
-curl http://localhost:3000/
-curl http://localhost:3000/api/users
-curl http://localhost:3000/api/products
+  # 模拟负载
+  for i in {1..100}; do curl -s http://localhost:3000/ > /dev/null; done
+  ```
 
-# 模拟负载
-for i in {1..100}; do curl -s http://localhost:3000/ > /dev/null; done
-```
+  #### 在 HyperDX 中验证跟踪数据 \{#verify-traces\}
 
-#### 在 HyperDX 中验证跟踪数据 \{#verify-traces\}
+  完成配置后，登录 HyperDX 并验证跟踪数据是否正常流入。应当能看到如下所示的界面。如果没有看到跟踪数据，尝试调整时间范围：
 
-完成配置后，登录 HyperDX 并验证跟踪数据是否正常流入。应当能看到如下所示的界面。如果没有看到跟踪数据，尝试调整时间范围：
+  <Image img={search_view} alt="跟踪搜索视图" />
 
-<Image img={search_view} alt="跟踪搜索视图"/>
+  点击任意跟踪以查看包含 span、时间和属性的详细视图：
 
-点击任意跟踪以查看包含 span、时间和属性的详细视图：
-
-<Image img={trace_view} alt="单个跟踪视图"/>
-
+  <Image img={trace_view} alt="单个跟踪视图" />
 </VerticalStepper>
 
 ## 演示数据集 \{#demo-dataset\}
@@ -104,68 +102,67 @@ for i in {1..100}; do curl -s http://localhost:3000/ > /dev/null; done
 对于希望在为生产环境应用进行插桩之前，先使用 ClickStack 测试 Node.js 链路追踪的用户，我们提供了一个预先生成的 Node.js 应用链路追踪示例数据集，包含接近真实的流量模式。
 
 <VerticalStepper headerLevel="h4">
+  #### 下载示例数据集 \{#download-sample\}
 
-#### 下载示例数据集 \{#download-sample\}
+  下载示例链路追踪文件：
 
-下载示例链路追踪文件：
+  ```bash
+  curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nodejs/nodejs-traces-sample.json
+  ```
 
-```bash
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nodejs/nodejs-traces-sample.json
-```
+  #### 启动 ClickStack \{#start-clickstack\}
 
-#### 启动 ClickStack \{#start-clickstack\}
+  如果尚未运行 ClickStack，可以通过以下命令启动：
 
-如果尚未运行 ClickStack，可以通过以下命令启动：
-```bash
-docker run -d --name clickstack-demo \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CLICKHOUSE_USER=default \
-  -e CLICKHOUSE_PASSWORD= \
-  clickhouse/clickstack-all-in-one:latest
-```
+  ```bash
+  docker run -d --name clickstack-demo \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CLICKHOUSE_USER=default \
+    -e CLICKHOUSE_PASSWORD= \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
-#### 获取 ClickStack API key \{#get-api-key-demo\}
+  #### 获取 ClickStack API key \{#get-api-key-demo\}
 
-用于将链路追踪数据摄取到 ClickStack 的 OTLP 端点的 API key。
+  用于将链路追踪数据摄取到 ClickStack 的 OTLP 端点的 API key。
 
-1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
-2. 如有需要，创建账户或登录
-3. 进入 **Team Settings → API Keys**
-4. 复制你的 **摄取 API key（Ingestion API Key）**
+  1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
+  2. 如有需要，创建账户或登录
+  3. 进入 **Team Settings → API Keys**
+  4. 复制你的 **摄取 API key（Ingestion API Key）**
 
-<Image img={api_key} alt="ClickStack API Key"/>
+  <Image img={api_key} alt="ClickStack API Key" />
 
-将 API key 设置为环境变量：
+  将 API key 设置为环境变量：
 
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-```
+  ```bash
+  export CLICKSTACK_API_KEY=your-api-key-here
+  ```
 
-#### 将链路追踪发送到 ClickStack \{#send-traces\}
+  #### 将链路追踪发送到 ClickStack \{#send-traces\}
 
-```bash
-curl -X POST http://localhost:4318/v1/traces \
-  -H "Content-Type: application/json" \
-  -H "Authorization: $CLICKSTACK_API_KEY" \
-  -d @nodejs-traces-sample.json
-```
+  ```bash
+  curl -X POST http://localhost:4318/v1/traces \
+    -H "Content-Type: application/json" \
+    -H "Authorization: $CLICKSTACK_API_KEY" \
+    -d @nodejs-traces-sample.json
+  ```
 
-应当看到类似 `{"partialSuccess":{}}` 的响应，表示链路追踪已成功发送。
+  应当看到类似 `{"partialSuccess":{}}` 的响应，表示链路追踪已成功发送。
 
-#### 在 HyperDX 中验证链路追踪 \{#verify-demo-traces\}
+  #### 在 HyperDX 中验证链路追踪 \{#verify-demo-traces\}
 
-1. 打开 [HyperDX](http://localhost:8080/) 并登录账户（可能需要先创建账户）
-2. 进入 **Search** 视图，并将 source 设置为 **Traces**
-3. 将时间范围设置为 **2025-10-25 13:00:00 - 2025-10-28 13:00:00**
+  1. 打开 [HyperDX](http://localhost:8080/) 并登录账户（可能需要先创建账户）
+  2. 进入 **Search** 视图，并将 source 设置为 **Traces**
+  3. 将时间范围设置为 **2025-10-25 13:00:00 - 2025-10-28 13:00:00**
 
-<Image img={search_view} alt="Traces search view"/>
+  <Image img={search_view} alt="Traces search view" />
 
-<Image img={trace_view} alt="Individual trace view"/>
+  <Image img={trace_view} alt="Individual trace view" />
 
-:::note[时区显示]
-HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范围为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**。我们使用较宽的时间范围以确保无论你所处的位置如何，都能看到演示链路追踪。一旦看到这些链路追踪后，可以将时间范围收窄到 24 小时，以获得更清晰的可视化效果。
-:::
-
+  :::note[时区显示]
+  HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范围为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**。我们使用较宽的时间范围以确保无论你所处的位置如何，都能看到演示链路追踪。一旦看到这些链路追踪后，可以将时间范围收窄到 24 小时，以获得更清晰的可视化效果。
+  :::
 </VerticalStepper>
 
 ## 仪表板和可视化 \{#dashboards\}
@@ -173,28 +170,26 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范
 为了帮助你开始监控 Node.js 应用的性能，我们提供了一个预构建的仪表板，其中包含关键的 Trace 可视化图表。
 
 <VerticalStepper headerLevel="h4">
+  #### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
+  #### 导入预构建仪表板 \{#import-dashboard\}
 
-#### 导入预构建仪表板 \{#import-dashboard\}
+  1. 打开 HyperDX 并导航到 **Dashboards** 部分
+  2. 点击右上角（省略号下方）的 **Import Dashboard**
 
-1. 打开 HyperDX 并导航到 **Dashboards** 部分
-2. 点击右上角（省略号下方）的 **Import Dashboard**
+  <Image img={import_dashboard} alt="导入仪表板" />
 
-<Image img={import_dashboard} alt="导入仪表板"/>
+  3. 上传 `nodejs-traces-dashboard.json` 文件并点击 **Finish Import**
 
-3. 上传 `nodejs-traces-dashboard.json` 文件并点击 **Finish Import**
+  <Image img={finish_import} alt="完成导入" />
 
-<Image img={finish_import} alt="完成导入"/>
+  #### 系统会创建仪表板，并预先配置好其中的所有可视化图表 \{#created-dashboard\}
 
-#### 系统会创建仪表板，并预先配置好其中的所有可视化图表 \{#created-dashboard\}
+  <Image img={example_dashboard} alt="示例仪表板" />
 
-<Image img={example_dashboard} alt="示例仪表板"/>
-
-:::note
-对于演示数据集，将时间范围设置为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表板默认不会指定时间范围。
-:::
-
+  :::note
+  对于演示数据集，将时间范围设置为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表板默认不会指定时间范围。
+  :::
 </VerticalStepper>
 
 ## 故障排查 \{#troubleshooting\}
@@ -211,7 +206,6 @@ curl -X POST http://localhost:4318/v1/traces \
 ```
 
 这是一个已知问题，只会在通过 curl 使用演示方案时出现，不会影响已完成埋点的生产环境应用程序。
-
 
 ### 在 HyperDX 中未看到任何 Trace 数据 \{#no-traces\}
 
@@ -240,8 +234,8 @@ curl -v http://localhost:4318/v1/traces
 
 如需进一步探索，可以参考以下步骤来继续试用你的仪表盘：
 
-- 为关键指标（错误率、延迟阈值）设置[告警](/use-cases/observability/clickstack/alerts)
-- 为特定使用场景（API 监控、安全事件）创建额外的仪表盘
+* 为关键指标（错误率、延迟阈值）设置[告警](/use-cases/observability/clickstack/alerts)
+* 为特定使用场景（API 监控、安全事件）创建额外的仪表盘
 
 ## 进入生产环境 \{#going-to-production\}
 

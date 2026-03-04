@@ -59,9 +59,9 @@ SELECT * FROM urlCluster('cluster_simple','http://127.0.0.1:12345', CSV, 'column
 ## Шаблоны (globs) в URL \{#globs-in-url\}
 
 Шаблоны в фигурных скобках `{ }` используются для генерации набора шардов или указания резервных (failover) адресов. Поддерживаемые типы шаблонов и примеры см. в описании функции [remote](remote.md#globs-in-addresses).
-Символ `|` внутри шаблонов используется для указания резервных адресов. Они перебираются в том же порядке, в котором перечислены в шаблоне. Количество сгенерированных адресов ограничивается параметром [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements).
+Символ `|` внутри шаблонов используется для указания резервных адресов. Они перебираются в том же порядке, в котором перечислены в шаблоне. Количество сгенерированных адресов ограничивается параметром [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements).
 
 ## См. также \{#related\}
 
--   [Движок HDFS](/engines/table-engines/integrations/hdfs)
--   [Табличная функция URL](/engines/table-engines/special/url)
+* [Движок HDFS](/engines/table-engines/integrations/hdfs)
+* [Табличная функция URL](/engines/table-engines/special/url)

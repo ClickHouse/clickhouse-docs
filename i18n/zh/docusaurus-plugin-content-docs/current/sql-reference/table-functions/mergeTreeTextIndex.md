@@ -20,7 +20,6 @@ doc_type: 'reference'
 mergeTreeTextIndex(database, table, index_name)
 ```
 
-
 ## 参数 \{#arguments\}
 
 | 参数         | 描述                                         |

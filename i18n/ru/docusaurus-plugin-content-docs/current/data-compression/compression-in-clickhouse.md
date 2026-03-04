@@ -6,7 +6,7 @@ keywords: ['compression', 'codec', 'encoding']
 doc_type: 'reference'
 ---
 
-Одним из секретов высокой производительности запросов в ClickHouse является сжатие. 
+Одним из секретов высокой производительности запросов в ClickHouse является сжатие.
 
 Меньше данных на диске означает меньше операций ввода-вывода и более быстрые запросы и вставки. Накладные расходы любого алгоритма сжатия по нагрузке на CPU в большинстве случаев компенсируются сокращением объёма ввода-вывода. Поэтому улучшение сжатия данных должно быть первой задачей при работе над ускорением запросов в ClickHouse.
 
@@ -14,9 +14,9 @@ doc_type: 'reference'
 
 На сжатие в ClickHouse влияют три основных фактора:
 
-- ключ сортировки;
-- типы данных;
-- используемые кодеки.
+* ключ сортировки;
+* типы данных;
+* используемые кодеки.
 
 Все они настраиваются в схеме.
 
@@ -64,83 +64,80 @@ GROUP BY name
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
 
-
 <details>
-   
-<summary>Замечание о компактных и широких частях</summary>
+  <summary>Замечание о компактных и широких частях</summary>
 
-Если вы видите значения `compressed_size` или `uncompressed_size`, равные `0`, это может быть связано с тем, что тип
-частей — `compact`, а не `wide` (см. описание `part_type` в [`system.parts`](/operations/system-tables/parts)).
-Формат части определяется настройками [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
-и [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part), то есть если вставленные
-данные приводят к созданию части, размер которой не превышает значения указанных настроек, часть будет компактной, а не
-широкой, и вы не увидите значения для `compressed_size` или `uncompressed_size`.
+  Если вы видите значения `compressed_size` или `uncompressed_size`, равные `0`, это может быть связано с тем, что тип
+  частей — `compact`, а не `wide` (см. описание `part_type` в [`system.parts`](/operations/system-tables/parts)).
+  Формат части определяется настройками [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
+  и [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part), то есть если вставленные
+  данные приводят к созданию части, размер которой не превышает значения указанных настроек, часть будет компактной, а не
+  широкой, и вы не увидите значения для `compressed_size` или `uncompressed_size`.
 
-Для примера:
+  Для примера:
 
-```sql title="Query"
--- Создать таблицу с компактными частями
-CREATE TABLE compact (
-  number UInt32
-)
-ENGINE = MergeTree()
-ORDER BY number 
-AS SELECT * FROM numbers(100000); -- Недостаточно большая, чтобы превысить значение по умолчанию min_bytes_for_wide_part = 10485760
+  ```sql title="Query"
+  -- Создать таблицу с компактными частями
+  CREATE TABLE compact (
+    number UInt32
+  )
+  ENGINE = MergeTree()
+  ORDER BY number 
+  AS SELECT * FROM numbers(100000); -- Недостаточно большая, чтобы превысить значение по умолчанию min_bytes_for_wide_part = 10485760
 
--- Проверить тип частей
-SELECT table, name, part_type from system.parts where table = 'compact';
+  -- Проверить тип частей
+  SELECT table, name, part_type from system.parts where table = 'compact';
 
--- Получить сжатые и несжатые размеры столбцов для компактной таблицы
-SELECT name,
-   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE table = 'compact'
-GROUP BY name;
+  -- Получить сжатые и несжатые размеры столбцов для компактной таблицы
+  SELECT name,
+     formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+  FROM system.columns
+  WHERE table = 'compact'
+  GROUP BY name;
 
--- Создать таблицу с широкими частями 
-CREATE TABLE wide (
-  number UInt32
-)
-ENGINE = MergeTree()
-ORDER BY number
-SETTINGS min_bytes_for_wide_part=0
-AS SELECT * FROM numbers(100000);
+  -- Создать таблицу с широкими частями 
+  CREATE TABLE wide (
+    number UInt32
+  )
+  ENGINE = MergeTree()
+  ORDER BY number
+  SETTINGS min_bytes_for_wide_part=0
+  AS SELECT * FROM numbers(100000);
 
--- Проверить тип частей
-SELECT table, name, part_type from system.parts where table = 'wide';
+  -- Проверить тип частей
+  SELECT table, name, part_type from system.parts where table = 'wide';
 
--- Получить сжатые и несжатые размеры для широкой таблицы
-SELECT name,
-   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE table = 'wide'
-GROUP BY name;
-```
+  -- Получить сжатые и несжатые размеры для широкой таблицы
+  SELECT name,
+     formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+  FROM system.columns
+  WHERE table = 'wide'
+  GROUP BY name;
+  ```
 
-```response title="Response"
-   ┌─table───┬─name──────┬─part_type─┐
-1. │ compact │ all_1_1_0 │ Compact   │
-   └─────────┴───────────┴───────────┘
-   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-1. │ number │ 0.00 B          │ 0.00 B            │   nan │
-   └────────┴─────────────────┴───────────────────┴───────┘
-   ┌─table─┬─name──────┬─part_type─┐
-1. │ wide  │ all_1_1_0 │ Wide      │
-   └───────┴───────────┴───────────┘
-   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
-   └────────┴─────────────────┴───────────────────┴───────┘
-```
-
+  ```response title="Response"
+     ┌─table───┬─name──────┬─part_type─┐
+  1. │ compact │ all_1_1_0 │ Compact   │
+     └─────────┴───────────┴───────────┘
+     ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+  1. │ number │ 0.00 B          │ 0.00 B            │   nan │
+     └────────┴─────────────────┴───────────────────┴───────┘
+     ┌─table─┬─name──────┬─part_type─┐
+  1. │ wide  │ all_1_1_0 │ Wide      │
+     └───────┴───────────┴───────────┘
+     ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+  1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
+     └────────┴─────────────────┴───────────────────┴───────┘
+  ```
 </details>
 
 Здесь мы показываем как сжатый, так и несжатый размер. Оба важны. Сжатый размер соответствует объему данных, который потребуется прочитать с диска — то, что мы стремимся минимизировать для повышения производительности запросов (и снижения стоимости хранения). Эти данные необходимо распаковать перед чтением. Размер несжатых данных в данном случае будет зависеть от используемого типа данных. Минимизация этого размера уменьшит накладные расходы по памяти для запросов и объем данных, который должен быть обработан запросом, улучшая использование кэшей и, в конечном итоге, время выполнения запросов.
 
-> Приведенный выше запрос использует таблицу `columns` в системной базе данных. Эта база управляется ClickHouse и является кладезем полезной информации — от метрик производительности запросов до фоновых логов кластера. Мы рекомендуем материал ["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) и сопутствующие статьи[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) для заинтересованных читателей. 
+> Приведенный выше запрос использует таблицу `columns` в системной базе данных. Эта база управляется ClickHouse и является кладезем полезной информации — от метрик производительности запросов до фоновых логов кластера. Мы рекомендуем материал [&quot;System Tables and a Window into the Internals of ClickHouse&quot;](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) и сопутствующие статьи[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) для заинтересованных читателей.
 
 Чтобы получить общий размер таблицы, мы можем упростить приведённый выше запрос:
 
@@ -172,7 +169,6 @@ WHERE `table` = 'posts_v3'
 ```
 
 Подробный разбор по столбцам показывает существенную экономию для столбцов `Body`, `Title`, `Tags` и `CreationDate`, достигнутую за счёт упорядочивания данных перед сжатием и использования подходящих типов.
-
 
 ```sql
 SELECT
@@ -209,7 +205,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
-
 
 ## Выбор подходящего кодека сжатия столбца \{#choosing-the-right-column-compression-codec\}
 
@@ -267,7 +262,6 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 
 Результаты сжатия для этих столбцов приведены ниже:
 
-
 ```sql
 SELECT
     `table`,
@@ -295,7 +289,6 @@ ORDER BY
 
 6 rows in set. Elapsed: 0.008 sec
 ```
-
 
 ### Сжатие в ClickHouse Cloud \{#compression-in-clickhouse-cloud\}
 

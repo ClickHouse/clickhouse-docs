@@ -15,12 +15,13 @@ doc_type: 'reference'
 与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于：第一行写入列名，第二行写入列类型。
 
 :::note
-- 如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，  
-则会根据列名将输入数据中的列映射到表中的列；如果将 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列将被跳过。  
-否则，第一行将被跳过。
-- 如果将 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，  
-则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
-:::
+
+* 如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，\
+  则会根据列名将输入数据中的列映射到表中的列；如果将 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列将被跳过。\
+  否则，第一行将被跳过。
+* 如果将 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，\
+  则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
+  :::
 
 ## 使用示例 \{#example-usage\}
 

@@ -18,30 +18,29 @@ import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cl
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
 
-
 # 使用备份命令将自管理 ClickHouse 迁移到 ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## 概述 \{#overview-migration-approaches\}
 
 将数据从自管理 ClickHouse（OSS）迁移到 ClickHouse Cloud 主要有两种方法：
 
-- 使用 [`remoteSecure()`](/cloud/migration/clickhouse-to-cloud) 函数，直接拉取/推送数据。
-- 通过云对象存储使用 `BACKUP`/`RESTORE` 命令。
+* 使用 [`remoteSecure()`](/cloud/migration/clickhouse-to-cloud) 函数，直接拉取/推送数据。
+* 通过云对象存储使用 `BACKUP`/`RESTORE` 命令。
 
->本迁移指南重点介绍 `BACKUP`/`RESTORE` 方法，并提供一个通过 S3 bucket 将开源 ClickHouse 中的数据库或完整服务迁移到 Cloud 的实用示例。
+> 本迁移指南重点介绍 `BACKUP`/`RESTORE` 方法，并提供一个通过 S3 bucket 将开源 ClickHouse 中的数据库或完整服务迁移到 Cloud 的实用示例。
 
 **先决条件**
 
-- 已安装 Docker
-- 已有一个 [S3 bucket 和 IAM 用户](/integrations/s3/creating-iam-user-and-s3-bucket)
-- 能够创建一个新的 ClickHouse Cloud 服务
+* 已安装 Docker
+* 已有一个 [S3 bucket 和 IAM 用户](/integrations/s3/creating-iam-user-and-s3-bucket)
+* 能够创建一个新的 ClickHouse Cloud 服务
 
 为便于读者跟随并复现本指南中的步骤，我们将使用一个 Docker Compose 配置，
 搭建一个包含两个分片、每个分片有两个副本的 ClickHouse 集群。
 
 :::note[需要集群]
 这种备份方法要求使用 ClickHouse 集群，因为必须将表从 `MergeTree` 引擎转换为 `ReplicatedMergeTree`。
-如果你只运行单个实例，请改为按照["在自管理 ClickHouse 与 ClickHouse Cloud 之间使用 remoteSecure 进行迁移"](/cloud/migration/clickhouse-to-cloud)中的步骤操作。
+如果你只运行单个实例，请改为按照[&quot;在自管理 ClickHouse 与 ClickHouse Cloud 之间使用 remoteSecure 进行迁移&quot;](/cloud/migration/clickhouse-to-cloud)中的步骤操作。
 :::
 
 ## OSS 准备工作 \{#oss-setup\}
@@ -75,7 +74,6 @@ docker compose up
 ```bash
 docker exec -it clickhouse-01 clickhouse-client
 ```
-
 
 ### 创建示例数据 \{#create-sample-data\}
 
@@ -175,74 +173,72 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 现在，您已经可以继续配置 Cloud 服务，为稍后从 S3 存储桶中恢复备份做准备。
 
-
 ## Cloud 准备工作 \{#cloud-setup\}
 
 你将把数据恢复到一个新的 Cloud 服务中。
 按照以下步骤创建一个新的 Cloud 服务。
 
 <VerticalStepper headerLevel="h4">
+  #### 打开 Cloud 控制台 \{#open-cloud-console\}
 
-#### 打开 Cloud 控制台 \{#open-cloud-console\}
+  访问 [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
 
-访问 [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
+  #### 创建一个新服务 \{#create-new-service\}
 
-#### 创建一个新服务 \{#create-new-service\}
+  <Image img={create_service} size="md" alt="创建一个新服务" />
 
-<Image img={create_service} size="md" alt="创建一个新服务"/> 
+  #### 配置并创建服务 \{#configure-and-create\}
 
-#### 配置并创建服务 \{#configure-and-create\}
+  选择目标区域和配置，然后点击 `Create service`。
 
-选择目标区域和配置，然后点击 `Create service`。
+  <Image img={service_details} size="md" alt="配置服务参数" />
 
-<Image img={service_details} size="md" alt="配置服务参数"/> 
+  #### 创建访问角色 \{#create-an-access-role\}
 
-#### 创建访问角色 \{#create-an-access-role\}
+  打开 SQL 控制台。
 
-打开 SQL 控制台。
+  <Image img={open_console} size="md" alt="打开 SQL 控制台" />
 
-<Image img={open_console} size="md" alt="打开 SQL 控制台"/>
+  ### 设置 S3 访问 \{#set-up-s3-access\}
 
-### 设置 S3 访问 \{#set-up-s3-access\}
+  要从 S3 恢复备份，需要在 ClickHouse Cloud 与 S3 bucket 之间配置安全访问。
 
-要从 S3 恢复备份，需要在 ClickHouse Cloud 与 S3 bucket 之间配置安全访问。
+  1. 按照 [&quot;安全访问 S3 数据&quot;](/cloud/data-sources/secure-s3) 中的步骤创建访问角色并获取该角色的 ARN。
 
-1. 按照 ["安全访问 S3 数据"](/cloud/data-sources/secure-s3) 中的步骤创建访问角色并获取该角色的 ARN。
+  2. 在 [&quot;如何创建 S3 bucket 和 IAM 角色&quot;](/integrations/s3/creating-iam-user-and-s3-bucket) 中创建的 S3 bucket 策略基础上，添加上一步获得的角色 ARN。
 
-2. 在 ["如何创建 S3 bucket 和 IAM 角色"](/integrations/s3/creating-iam-user-and-s3-bucket) 中创建的 S3 bucket 策略基础上，添加上一步获得的角色 ARN。
+  更新后的 S3 bucket 策略类似如下：
 
-更新后的 S3 bucket 策略类似如下：
+  ```json
+  {
+      "Version": "2012-10-17",
+      "Id": "Policy123456",
+      "Statement": [
+          {
+              "Sid": "abc123",
+              "Effect": "Allow",
+              "Principal": {
+                  "AWS": [
+  #highlight-start                  
+                      "arn:aws:iam::123456789123:role/ClickHouseAccess-001",
+                      "arn:aws:iam::123456789123:user/docs-s3-user"
+  #highlight-end                            
+                  ]
+              },
+              "Action": "s3:*",
+              "Resource": [
+                  "arn:aws:s3:::ch-docs-s3-bucket",
+                  "arn:aws:s3:::ch-docs-s3-bucket/*"
+              ]
+          }
+      ]
+  }
+  ```
 
-```json
-{
-    "Version": "2012-10-17",
-    "Id": "Policy123456",
-    "Statement": [
-        {
-            "Sid": "abc123",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": [
-#highlight-start                  
-                    "arn:aws:iam::123456789123:role/ClickHouseAccess-001",
-                    "arn:aws:iam::123456789123:user/docs-s3-user"
-#highlight-end                            
-                ]
-            },
-            "Action": "s3:*",
-            "Resource": [
-                "arn:aws:s3:::ch-docs-s3-bucket",
-                "arn:aws:s3:::ch-docs-s3-bucket/*"
-            ]
-        }
-    ]
-}
-```
+  该策略包含两个 ARN：
 
-该策略包含两个 ARN：
-- **IAM user** (`docs-s3-user`)：允许自管理 ClickHouse 集群将数据备份到 S3
-- **ClickHouse Cloud role** (`ClickHouseAccess-001`)：允许 Cloud 服务从 S3 恢复数据
-
+  * **IAM user** (`docs-s3-user`)：允许自管理 ClickHouse 集群将数据备份到 S3
+  * **ClickHouse Cloud role** (`ClickHouseAccess-001`)：允许 Cloud 服务从 S3 恢复数据
 </VerticalStepper>
 
 ## 执行备份（在自管理部署中） \{#taking-a-backup-on-oss\}
@@ -334,7 +330,6 @@ WHERE id = 'abc123-def456-789'
 
 还可以执行增量备份。
 有关备份的一般信息，请参阅[备份与恢复](/operations/backup/overview)文档。
-
 
 ## 恢复到 ClickHouse Cloud \{#restore-to-clickhouse-cloud\}
 

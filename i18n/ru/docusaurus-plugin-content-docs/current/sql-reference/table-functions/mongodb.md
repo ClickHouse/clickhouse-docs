@@ -19,7 +19,6 @@ mongodb(uri, collection, structure[, oid_columns]);
 mongodb(named_collection_name[, <arg>=<value>...]);
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Аргумент      | Описание                                                                                                             |
@@ -63,7 +62,6 @@ mongodb(_named_collection_[, host][, port][, database][, collection][, user][, p
 -- or
 mongodb(_named_collection_[, uri][, structure][, oid_columns])
 ```
-
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -125,8 +123,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-
 ## См. также \{#related\}
 
-- [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
-- [Использование MongoDB в качестве источника словаря](../statements/create/dictionary/sources/mongodb.md)
+* [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
+* [Использование MongoDB в качестве источника словаря](../statements/create/dictionary/sources/mongodb.md)

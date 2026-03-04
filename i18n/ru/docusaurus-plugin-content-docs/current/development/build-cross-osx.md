@@ -49,7 +49,6 @@ cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
 
-
 ## Сборка ClickHouse \{#build-clickhouse\}
 
 ```bash

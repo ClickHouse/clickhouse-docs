@@ -23,15 +23,14 @@ apiVersion: clickhouse.com/v1alpha1
 kind: ClickHouseCluster
 ```
 
-
 ### ClickHouseClusterSpec \{#clickhouseclusterspec\}
 
 ClickHouseClusterSpec определяет желаемое состояние кластера ClickHouse.
 
 | Поле                  | Тип                         | Обязательное | По умолчанию | Описание                                                  |
 |-----------------------|-----------------------------|--------------|--------------|-----------------------------------------------------------|
-| `replicas`            | `*int32`                    | No           | `3`          | Количество реплик в одном сегменте. Должно быть >= 0.    |
-| `shards`              | `*int32`                    | No           | `1`          | Количество сегментов в кластере. Должно быть >= 0.       |
+| `replicas`            | `*int32`                    | No           | `3`          | Количество реплик в одном сегменте. Должно быть &gt;= 0.    |
+| `shards`              | `*int32`                    | No           | `1`          | Количество сегментов в кластере. Должно быть &gt;= 0.       |
 | `keeperClusterRef`    | `LocalObjectReference`      | Yes          | -            | Ссылка на KeeperCluster, используемый для координации.   |
 | `podTemplate`         | `PodTemplateSpec`           | No           | -            | Параметры спецификации пода.                             |
 | `containerTemplate`   | `ContainerTemplateSpec`     | No           | См. значения по умолчанию | Параметры спецификации контейнера ClickHouse.  |
@@ -81,7 +80,6 @@ spec:
         name: clickhouse-cert
 ```
 
-
 ### ClickHouseConfig \{#clickhouseconfig\}
 
 Параметры конфигурации ClickHouse.
@@ -120,7 +118,6 @@ KeeperCluster — это схема API для кластера ClickHouse Keepe
 apiVersion: clickhouse.com/v1alpha1
 kind: KeeperCluster
 ```
-
 
 ### KeeperClusterSpec \{#keeperclusterspec\}
 
@@ -169,7 +166,6 @@ spec:
       serverCertSecret:
         name: keeper-cert
 ```
-
 
 ### KeeperConfig \{#keeperconfig\}
 
@@ -233,7 +229,6 @@ podTemplate:
         topologyKey: kubernetes.io/hostname
 ```
 
-
 ### ContainerTemplateSpec \{#containertemplatespec\}
 
 Параметры конфигурации контейнера.
@@ -267,14 +262,13 @@ containerTemplate:
     value: "UTC"
 ```
 
-
 ### ContainerImage \{#containerimage\}
 
 Спецификация образа контейнера.
 
 | Поле         | Тип      | Обязательное | Значение по умолчанию                                                               | Описание                    |
 |--------------|----------|--------------|--------------------------------------------------------------------------------------|-----------------------------|
-| `repository` | `string` | Нет          | ClickHouse: `clickhouse/clickhouse-server`<br/>Keeper: `clickhouse/clickhouse-keeper` | Репозиторий образа контейнера. |
+| `repository` | `string` | Нет          | ClickHouse: `clickhouse/clickhouse-server`<br />Keeper: `clickhouse/clickhouse-keeper` | Репозиторий образа контейнера. |
 | `tag`        | `string` | Нет          | `latest`                                                                             | Тег образа.                 |
 
 ### ClusterTLSSpec \{#clustertlsspec\}
@@ -302,7 +296,6 @@ tls:
       key: ca.crt
 ```
 
-
 ### LoggerConfig \{#loggerconfig\}
 
 Конфигурация логирования для ClickHouse и Keeper.
@@ -323,7 +316,6 @@ logger:
   size: "1000M"
   count: 50
 ```
-
 
 ### DefaultPasswordSelector \{#defaultpasswordselector\}
 
@@ -349,7 +341,6 @@ defaultUserPassword:
     key: password
 ```
 
-
 #### Пример с SHA-256 \{#defaultpasswordselector-example-sha256\}
 
 ```yaml
@@ -360,7 +351,6 @@ defaultUserPassword:
     key: password_hash
 ```
 
-
 #### Пример использования ConfigMap \{#defaultpasswordselector-example-configmap\}
 
 ```yaml
@@ -370,7 +360,6 @@ defaultUserPassword:
     name: clickhouse-config
     key: default_password
 ```
-
 
 ## Значения по умолчанию \{#default-values\}
 

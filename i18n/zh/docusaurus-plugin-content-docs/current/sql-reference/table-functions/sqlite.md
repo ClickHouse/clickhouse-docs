@@ -17,15 +17,14 @@ doc_type: 'reference'
 sqlite('db_path', 'table_name')
 ```
 
-
 ## 参数 \{#arguments\}
 
-- `db_path` — SQLite 数据库文件的路径。[String](../../sql-reference/data-types/string.md)。
-- `table_name` — SQLite 数据库中某个表的名称。[String](../../sql-reference/data-types/string.md)。
+* `db_path` — SQLite 数据库文件的路径。[String](../../sql-reference/data-types/string.md)。
+* `table_name` — SQLite 数据库中某个表的名称。[String](../../sql-reference/data-types/string.md)。
 
 ## 返回值 \{#returned_value\}
 
-- 一个表对象，其列与原始 `SQLite` 表相同。
+* 一个表对象，其列与原始 `SQLite` 表相同。
 
 ## 示例 \{#example\}
 
@@ -45,8 +44,7 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
-
 ## 相关 \{#related\}
 
-- [SQLite](../../engines/table-engines/integrations/sqlite.md) 表引擎
-- [SQLite 数据库引擎](../../engines/database-engines/sqlite.md) — 数据类型支持章节
+* [SQLite](../../engines/table-engines/integrations/sqlite.md) 表引擎
+* [SQLite 数据库引擎](../../engines/database-engines/sqlite.md) — 数据类型支持章节

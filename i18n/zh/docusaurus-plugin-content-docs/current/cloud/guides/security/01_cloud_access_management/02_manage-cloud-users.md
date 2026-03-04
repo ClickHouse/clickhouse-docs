@@ -19,7 +19,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 本指南适用于在 ClickHouse Cloud 中拥有 Organization Admin 角色的用户。
 
-
 ## 向组织添加用户 \{#add-users\}
 
 ### 邀请用户 \{#invite-users\}
@@ -27,6 +26,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 管理员一次最多可以邀请三 (3) 名用户，并在发送邀请时为其分配组织和服务级别角色。
 
 邀请用户的步骤：
+
 1. 在左下角选择组织名称
 2. 点击 `Users and roles`
 3. 在左上角点击 `Invite members`
@@ -38,7 +38,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ### 通过 SAML 身份提供方添加用户 \{#add-users-via-saml\}
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+<EnterprisePlanFeatureBadge feature="SAML SSO" />
 
 如果你的组织已配置 [SAML SSO](/cloud/security/saml-setup)，请按照以下步骤将用户添加到组织中。
 
@@ -55,47 +55,45 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 被授予 `Organization Admin` 角色的用户可以随时更新其他用户的权限。
 
 <VerticalStepper headerLevel="h3">
+  ### 访问组织设置 \{#access-organization-settings\}
 
-### 访问组织设置 \{#access-organization-settings\}
+  在 `Services` 页面中，选择你的组织名称：
 
-在 `Services` 页面中，选择你的组织名称：
+  <Image img={step_1} size="md" />
 
-<Image img={step_1} size="md"/>
+  ### 访问用户和角色 \{#access-users-and-roles\}
 
-### 访问用户和角色 \{#access-users-and-roles\}
+  从弹出菜单中选择 `Users and roles` 菜单项。
 
-从弹出菜单中选择 `Users and roles` 菜单项。
+  <Image img={step_2} size="md" />
 
-<Image img={step_2} size="md"/>
+  ### 选择要更新的用户 \{#select-user-to-update\}
 
-### 选择要更新的用户 \{#select-user-to-update\}
+  在你希望修改访问权限的用户所在行的末尾，选择该行末尾的菜单项：
 
-在你希望修改访问权限的用户所在行的末尾，选择该行末尾的菜单项：
+  <Image img={step_3} size="lg" />
 
-<Image img={step_3} size="lg"/>
+  ### 选择 `edit` \{#select-edit\}
 
-### 选择 `edit` \{#select-edit\}
+  <Image img={step_4} size="lg" />
 
-<Image img={step_4} size="lg"/>
+  页面右侧会显示一个侧边选项卡：
 
-页面右侧会显示一个侧边选项卡：
+  <Image img={step_5} size="lg" />
 
-<Image img={step_5} size="lg"/>
+  ### 更新权限 \{#update-permissions\}
 
-### 更新权限 \{#update-permissions\}
+  通过下拉菜单调整控制台范围的访问权限，以及用户在 ClickHouse 控制台中可访问的功能。有关角色及其关联权限的完整列表，请参阅 [Console roles and permissions](/cloud/security/console-roles)。
 
-通过下拉菜单调整控制台范围的访问权限，以及用户在 ClickHouse 控制台中可访问的功能。有关角色及其关联权限的完整列表，请参阅 [Console roles and permissions](/cloud/security/console-roles)。
+  通过下拉菜单调整所选用户服务角色的访问范围。当选择 `Specific services` 时，你可以按服务分别控制该用户的角色。
 
-通过下拉菜单调整所选用户服务角色的访问范围。当选择 `Specific services` 时，你可以按服务分别控制该用户的角色。
+  <Image img={step_6} size="md" />
 
-<Image img={step_6} size="md"/>
+  ### 保存更改 \{#save-changes\}
 
-### 保存更改 \{#save-changes\}
+  在选项卡底部点击 `Save changes` 按钮保存更改：
 
-在选项卡底部点击 `Save changes` 按钮保存更改：
-
-<Image img={step_7} size="md"/>
-
+  <Image img={step_7} size="md" />
 </VerticalStepper>
 
 ## 删除用户 \{#remove-user\}

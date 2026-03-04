@@ -17,7 +17,6 @@ import highlighted_attributes_search from '@site/static/images/use-cases/observa
 
 以下配置选项适用于 ClickStack 的各个组件：
 
-
 ## 开源发行版的配置 \{#modifying-settings\}
 
 ### Docker \{#docker\}
@@ -27,7 +26,6 @@ import highlighted_attributes_search from '@site/static/images/use-cases/observa
 ```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
-
 
 ### Docker Compose \{#docker-compose\}
 
@@ -45,7 +43,6 @@ services:
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       # ... other settings
 ```
-
 
 ### Helm \{#helm\}
 
@@ -100,21 +97,20 @@ ingress:
       value: abc
 ```
 
-
 ## ClickStack UI（HyperDX）应用 \{#hyperdx\}
 
 ### 数据源设置 \{#datasource-settings\}
 
 ClickStack UI 依赖用户为每一种可观测性数据类型/支柱定义一个数据源（source）：
 
-- `Logs`
-- `Traces`
-- `Metrics`
-- `Sessions`
+* `Logs`
+* `Traces`
+* `Metrics`
+* `Sessions`
 
 可以在应用内通过 `Team Settings -> Sources` 完成此配置，下图展示了针对日志的配置方式：
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
+<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg" />
 
 每一个数据源在创建时至少需要指定一张表，以及一组列，以便 HyperDX 能够对数据进行查询。
 
@@ -212,37 +208,37 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
 
 可以为 Log 和 Trace 数据源配置 Highlighted Attributes 和 Highlighted Trace Attributes。
 
-- Highlighted Attributes 是在查看日志或 span 详情时，为每条日志或每个 span 显示的列或表达式。
-- Highlighted Trace Attributes 是从某个 trace 中的每条日志或每个 span 查询得到的列或表达式，并显示在该 trace 的瀑布图上方。
+* Highlighted Attributes 是在查看日志或 span 详情时，为每条日志或每个 span 显示的列或表达式。
+* Highlighted Trace Attributes 是从某个 trace 中的每条日志或每个 span 查询得到的列或表达式，并显示在该 trace 的瀑布图上方。
 
 这些属性在数据源配置中定义，可以是任意 SQL 表达式。如果 SQL 表达式返回的值是 URL 格式，则该属性会显示为一个链接。空值不会显示。
 
 例如，下面这个 trace 数据源已配置了一个 Highlighted Attribute 和一个 Highlighted Trace Attribute：
 
-<Image img={highlighted_attributes_config} alt="Highlighted Attributes 配置" size="md"/>
+<Image img={highlighted_attributes_config} alt="Highlighted Attributes 配置" size="md" />
 
 在点击某条日志或某个 span 之后，这些属性会显示在侧边面板中：
 
-<Image img={highlighted_attributes} alt="Highlighted Attributes" size="md"/>
+<Image img={highlighted_attributes} alt="Highlighted Attributes" size="md" />
 
 点击某个属性可获得将该属性作为搜索值使用的选项。如果在属性配置中提供了可选的 Lucene 表达式，则搜索时会使用该 Lucene 表达式，而不是 SQL 表达式。
 
-<Image img={highlighted_attributes_search} alt="Highlighted Attributes 搜索" size="md"/>
+<Image img={highlighted_attributes_search} alt="Highlighted Attributes 搜索" size="md" />
 
 ### 关联来源 \{#correlated-sources\}
 
 要在 ClickStack 中启用完整的跨来源关联，必须为 logs、traces、metrics 和 sessions 配置关联来源。这样 HyperDX 就能够将相关数据关联起来，并在渲染事件时提供丰富的上下文信息。
 
-- `Logs`：可以与 traces 和 metrics 进行关联。
-- `Traces`：可以与 logs、sessions 和 metrics 进行关联。
-- `Metrics`：可以与 logs 进行关联。
-- `Sessions`：可以与 traces 进行关联。
+* `Logs`：可以与 traces 和 metrics 进行关联。
+* `Traces`：可以与 logs、sessions 和 metrics 进行关联。
+* `Metrics`：可以与 logs 进行关联。
+* `Sessions`：可以与 traces 进行关联。
 
 配置这些关联可以启用多种功能。例如，HyperDX 可以在 trace 旁边展示相关的 logs，或显示与某个 session 关联的指标异常。
 
 例如，下面是为 Logs 源配置关联来源的示例：
 
-<Image img={hyperdx_26} alt="HyperDX Source correlated" size="md"/>
+<Image img={hyperdx_26} alt="HyperDX Source correlated" size="md" />
 
 ### 应用程序配置设置 \{#application-configuration-settings\}
 
@@ -381,62 +377,62 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
 
 ## OpenTelemetry collector \{#otel-collector\}
 
-参见 ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) 了解更多详情。
+参见 [&quot;ClickStack OpenTelemetry Collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector) 了解更多详情。
 
-- `CLICKHOUSE_ENDPOINT`
-  - **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则会设置为集成的 ClickHouse 实例。
-  - **说明：** 用于导出遥测数据的 ClickHouse 实例的 HTTPS URL。
-  - **指南：**
-    - 必须是包含端口的完整 HTTPS 端点（例如 `https://clickhouse.example.com:8443`）
-    - 采集器向 ClickHouse 发送数据时必需
+* `CLICKHOUSE_ENDPOINT`
+  * **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则会设置为集成的 ClickHouse 实例。
+  * **说明：** 用于导出遥测数据的 ClickHouse 实例的 HTTPS URL。
+  * **指南：**
+    * 必须是包含端口的完整 HTTPS 端点（例如 `https://clickhouse.example.com:8443`）
+    * 采集器向 ClickHouse 发送数据时必需
 
-- `CLICKHOUSE_USER`
-  - **默认值：** `default`
-  - **说明：** 用于与 ClickHouse 实例进行身份验证的用户名。
-  - **指南：**
-    - 确保该用户具有 `INSERT` 和 `CREATE TABLE` 权限
-    - 推荐为摄取创建专用用户
+* `CLICKHOUSE_USER`
+  * **默认值：** `default`
+  * **说明：** 用于与 ClickHouse 实例进行身份验证的用户名。
+  * **指南：**
+    * 确保该用户具有 `INSERT` 和 `CREATE TABLE` 权限
+    * 推荐为摄取创建专用用户
 
-- `CLICKHOUSE_PASSWORD`
-  - **默认值：** *无（启用认证时必填）*
-  - **说明：** 指定 ClickHouse 用户的密码。
-  - **指南：**
-    - 如果该用户账户设置了密码，则必需
-    - 在生产环境部署中通过 secret 安全存储
+* `CLICKHOUSE_PASSWORD`
+  * **默认值：** *无（启用认证时必填）*
+  * **说明：** 指定 ClickHouse 用户的密码。
+  * **指南：**
+    * 如果该用户账户设置了密码，则必需
+    * 在生产环境部署中通过 secret 安全存储
 
-- `HYPERDX_LOG_LEVEL`
-  - **默认值：** `info`
-  - **说明：** 采集器的日志详细程度级别。
-  - **指南：**
-    - 接受 `debug`、`info`、`warn`、`error` 等值
-    - 排查问题时使用 `debug`
+* `HYPERDX_LOG_LEVEL`
+  * **默认值：** `info`
+  * **说明：** 采集器的日志详细程度级别。
+  * **指南：**
+    * 接受 `debug`、`info`、`warn`、`error` 等值
+    * 排查问题时使用 `debug`
 
-- `OPAMP_SERVER_URL`
-  - **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则指向已部署的 HyperDX 实例。
-  - **说明：** 用于管理采集器的 OpAMP 服务器 URL（例如 HyperDX 实例）。默认端口为 `4320`。
-  - **指南：**
-    - 必须指向你的 HyperDX 实例
-    - 启用动态配置和安全摄取
-    - 如果省略，则除非指定了 `OTLP_AUTH_TOKEN` 值，否则安全摄取将被禁用。
+* `OPAMP_SERVER_URL`
+  * **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则指向已部署的 HyperDX 实例。
+  * **说明：** 用于管理采集器的 OpAMP 服务器 URL（例如 HyperDX 实例）。默认端口为 `4320`。
+  * **指南：**
+    * 必须指向你的 HyperDX 实例
+    * 启用动态配置和安全摄取
+    * 如果省略，则除非指定了 `OTLP_AUTH_TOKEN` 值，否则安全摄取将被禁用。
 
-- `OTLP_AUTH_TOKEN`
-  - **默认值：** *无*。仅用于独立镜像。
-  - **说明：** 允许指定 OTLP 认证 token。若设置，则所有通信都需要该 bearer token。
-  - **指南：**
-    - 建议在生产环境中使用独立采集器镜像时启用。
+* `OTLP_AUTH_TOKEN`
+  * **默认值：** *无*。仅用于独立镜像。
+  * **说明：** 允许指定 OTLP 认证 token。若设置，则所有通信都需要该 bearer token。
+  * **指南：**
+    * 建议在生产环境中使用独立采集器镜像时启用。
 
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
-  - **默认值：** `default`
-  - **说明：** 采集器写入遥测数据的 ClickHouse 数据库。
-  - **指南：**
-    - 若使用自定义数据库名，则需设置
-    - 确保指定用户对该数据库具有访问权限
+* `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  * **默认值：** `default`
+  * **说明：** 采集器写入遥测数据的 ClickHouse 数据库。
+  * **指南：**
+    * 若使用自定义数据库名，则需设置
+    * 确保指定用户对该数据库具有访问权限
 
-- `OTEL_AGENT_FEATURE_GATE_ARG`
-  - **默认值：** `<empty string>`
-  - **说明：** 用于在采集器中启用 feature flag。如果设置为 `--feature-gates=clickhouse.json`，则在采集器中启用对 JSON 类型的 Beta 支持，确保 schema 使用该类型创建。另见 [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) 以在 HyperDX 中启用 JSON 支持。
-  - **指南：**
-  - 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
+* `OTEL_AGENT_FEATURE_GATE_ARG`
+  * **默认值：** `<empty string>`
+  * **说明：** 用于在采集器中启用 feature flag。如果设置为 `--feature-gates=clickhouse.json`，则在采集器中启用对 JSON 类型的 Beta 支持，确保 schema 使用该类型创建。另见 [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) 以在 HyperDX 中启用 JSON 支持。
+  * **指南：**
+  * 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
 
 ## ClickHouse \{#clickhouse\}
 

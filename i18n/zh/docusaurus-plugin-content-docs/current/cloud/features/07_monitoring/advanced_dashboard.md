@@ -23,7 +23,6 @@ import Image from '@theme/IdealImage';
 
 高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
 
-
 ## 访问高级仪表板 \{#accessing-the-advanced-dashboard\}
 
 可以通过以下路径访问高级仪表板：
@@ -31,7 +30,7 @@ import Image from '@theme/IdealImage';
 * 左侧边栏
   * `Monitoring` → `Advanced dashboard`
 
-<Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
+<Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard" />
 
 ## 访问原生高级仪表盘 \{#accessing-the-native-advanced-dashboard\}
 
@@ -43,11 +42,11 @@ import Image from '@theme/IdealImage';
 
 这将在新的浏览器标签页中打开原生高级仪表盘。您需要通过身份验证才能访问该仪表盘。
 
-<Image img={NativeAdvancedDashboard} size="lg" alt="Advanced dashboard"/>
+<Image img={NativeAdvancedDashboard} size="lg" alt="Advanced dashboard" />
 
 每个可视化视图都关联有一个用于填充数据的 SQL 查询。您可以点击铅笔图标来编辑此查询。
 
-<Image img={EditVisualization} size="lg" alt="Advanced dashboard"/>
+<Image img={EditVisualization} size="lg" alt="Advanced dashboard" />
 
 ## 开箱即用的可视化 \{#out-of-box-visualizations\}
 

@@ -70,5 +70,5 @@ WHERE  name = 'database_with_comment';
 
 ## 相关内容 \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
-- [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
+* [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

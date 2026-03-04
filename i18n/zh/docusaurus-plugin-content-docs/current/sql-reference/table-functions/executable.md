@@ -88,12 +88,12 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 
 ## 设置 \{#settings\}
 
-- `send_chunk_header` - 控制在发送要处理的数据块之前，是否先发送行数。默认值为 `false`。
-- `pool_size` — 连接池大小。如果 `pool_size` 指定为 0，则不限制连接池大小。默认值为 `16`。
-- `max_command_execution_time` — 处理数据块时，可执行脚本命令的最大执行时间。以秒为单位指定。默认值为 10。
-- `command_termination_timeout` — 可执行脚本应包含主读写循环。在表函数被销毁后，管道会被关闭，可执行文件有 `command_termination_timeout` 秒的时间完成关闭，然后 ClickHouse 会向子进程发送 SIGTERM 信号。以秒为单位指定。默认值为 10。
-- `command_read_timeout` - 从命令的 stdout 读取数据的超时时间，单位为毫秒。默认值为 10000。
-- `command_write_timeout` - 向命令的 stdin 写入数据的超时时间，单位为毫秒。默认值为 10000。
+* `send_chunk_header` - 控制在发送要处理的数据块之前，是否先发送行数。默认值为 `false`。
+* `pool_size` — 连接池大小。如果 `pool_size` 指定为 0，则不限制连接池大小。默认值为 `16`。
+* `max_command_execution_time` — 处理数据块时，可执行脚本命令的最大执行时间。以秒为单位指定。默认值为 10。
+* `command_termination_timeout` — 可执行脚本应包含主读写循环。在表函数被销毁后，管道会被关闭，可执行文件有 `command_termination_timeout` 秒的时间完成关闭，然后 ClickHouse 会向子进程发送 SIGTERM 信号。以秒为单位指定。默认值为 10。
+* `command_read_timeout` - 从命令的 stdout 读取数据的超时时间，单位为毫秒。默认值为 10000。
+* `command_write_timeout` - 向命令的 stdin 写入数据的超时时间，单位为毫秒。默认值为 10000。
 
 ## 将查询结果传递给脚本 \{#passing-query-results-to-a-script\}
 

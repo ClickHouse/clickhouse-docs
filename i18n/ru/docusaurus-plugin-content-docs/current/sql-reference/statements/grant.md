@@ -11,8 +11,8 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Команда GRANT \{#grant-statement\}
 
-- Предоставляет [привилегии](#privileges) учетным записям пользователей ClickHouse или ролям.
-- Назначает роли учетным записям пользователей или другим ролям.
+* Предоставляет [привилегии](#privileges) учетным записям пользователей ClickHouse или ролям.
+* Назначает роли учетным записям пользователей или другим ролям.
 
 Чтобы отозвать привилегии, используйте команду [REVOKE](../../sql-reference/statements/revoke.md). Также вы можете вывести список предоставленных привилегий с помощью команды [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants).
 
@@ -342,30 +342,30 @@ GRANT SELECT(foo) ON db.table* TO john -- wrong
 
 Примеры того, как трактуется эта иерархия:
 
-- Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
-- `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
+* Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
+* `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
 
 Привилегии применяются на разных уровнях. Зная уровень, можно определить доступный для привилегии синтаксис.
 
 Уровни (от нижнего к более высокому):
 
-- `COLUMN` — привилегия может быть выдана для столбца, таблицы, базы данных или глобально.
-- `TABLE` — привилегия может быть выдана для таблицы, базы данных или глобально.
-- `VIEW` — привилегия может быть выдана для представления, базы данных или глобально.
-- `DICTIONARY` — привилегия может быть выдана для словаря, базы данных или глобально.
-- `DATABASE` — привилегия может быть выдана для базы данных или глобально.
-- `GLOBAL` — привилегия может быть выдана только глобально.
-- `GROUP` — группирует привилегии разных уровней. Когда выдается привилегия уровня `GROUP`, выдаются только те привилегии из группы, которые соответствуют использованному синтаксису.
+* `COLUMN` — привилегия может быть выдана для столбца, таблицы, базы данных или глобально.
+* `TABLE` — привилегия может быть выдана для таблицы, базы данных или глобально.
+* `VIEW` — привилегия может быть выдана для представления, базы данных или глобально.
+* `DICTIONARY` — привилегия может быть выдана для словаря, базы данных или глобально.
+* `DATABASE` — привилегия может быть выдана для базы данных или глобально.
+* `GLOBAL` — привилегия может быть выдана только глобально.
+* `GROUP` — группирует привилегии разных уровней. Когда выдается привилегия уровня `GROUP`, выдаются только те привилегии из группы, которые соответствуют использованному синтаксису.
 
 Примеры допустимого синтаксиса:
 
-- `GRANT SELECT(x) ON db.table TO user`
-- `GRANT SELECT ON db.* TO user`
+* `GRANT SELECT(x) ON db.table TO user`
+* `GRANT SELECT ON db.* TO user`
 
 Примеры недопустимого синтаксиса:
 
-- `GRANT CREATE USER(x) ON db.table TO user`
-- `GRANT CREATE USER ON db.* TO user`
+* `GRANT CREATE USER(x) ON db.table TO user`
+* `GRANT CREATE USER ON db.* TO user`
 
 Специальная привилегия [ALL](#all) предоставляет все привилегии учетной записи пользователя или роли.
 
@@ -415,69 +415,69 @@ GRANT INSERT(x,y) ON db.table TO john
 
 Позволяет выполнять запросы [ALTER](../../sql-reference/statements/alter/index.md) в соответствии со следующей иерархией привилегий:
 
-- `ALTER`. Уровень: `COLUMN`.
-  - `ALTER TABLE`. Уровень: `GROUP`
-  - `ALTER UPDATE`. Уровень: `COLUMN`. Синонимы: `UPDATE`
-  - `ALTER DELETE`. Уровень: `COLUMN`. Синонимы: `DELETE`
-  - `ALTER COLUMN`. Уровень: `GROUP`
-  - `ALTER ADD COLUMN`. Уровень: `COLUMN`. Синонимы: `ADD COLUMN`
-  - `ALTER DROP COLUMN`. Уровень: `COLUMN`. Синонимы: `DROP COLUMN`
-  - `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Синонимы: `MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Синонимы: `COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Синонимы: `CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Синонимы: `RENAME COLUMN`
-  - `ALTER INDEX`. Уровень: `GROUP`. Синонимы: `INDEX`
-  - `ALTER ORDER BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`. Уровень: `TABLE`. Синонимы: `ADD INDEX`
-  - `ALTER DROP INDEX`. Уровень: `TABLE`. Синонимы: `DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Синонимы: `MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`. Уровень: `TABLE`. Синонимы: `CLEAR INDEX`
-  - `ALTER CONSTRAINT`. Уровень: `GROUP`. Синонимы: `CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Синонимы: `ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Синонимы: `DROP CONSTRAINT`
-  - `ALTER TTL`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY TTL`, `MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Синонимы: `MATERIALIZE TTL`
-  - `ALTER SETTINGS`. Уровень: `TABLE`. Синонимы: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
-  - `ALTER MOVE PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
-  - `ALTER FETCH PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
-  - `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Синонимы: `FREEZE PARTITION`
-  - `ALTER VIEW`. Уровень: `GROUP`
-  - `ALTER VIEW REFRESH`. Уровень: `VIEW`. Синонимы: `REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY SQL SECURITY`
+* `ALTER`. Уровень: `COLUMN`.
+  * `ALTER TABLE`. Уровень: `GROUP`
+  * `ALTER UPDATE`. Уровень: `COLUMN`. Синонимы: `UPDATE`
+  * `ALTER DELETE`. Уровень: `COLUMN`. Синонимы: `DELETE`
+  * `ALTER COLUMN`. Уровень: `GROUP`
+  * `ALTER ADD COLUMN`. Уровень: `COLUMN`. Синонимы: `ADD COLUMN`
+  * `ALTER DROP COLUMN`. Уровень: `COLUMN`. Синонимы: `DROP COLUMN`
+  * `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Синонимы: `MODIFY COLUMN`
+  * `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Синонимы: `COMMENT COLUMN`
+  * `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Синонимы: `CLEAR COLUMN`
+  * `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Синонимы: `RENAME COLUMN`
+  * `ALTER INDEX`. Уровень: `GROUP`. Синонимы: `INDEX`
+  * `ALTER ORDER BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
+  * `ALTER SAMPLE BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
+  * `ALTER ADD INDEX`. Уровень: `TABLE`. Синонимы: `ADD INDEX`
+  * `ALTER DROP INDEX`. Уровень: `TABLE`. Синонимы: `DROP INDEX`
+  * `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Синонимы: `MATERIALIZE INDEX`
+  * `ALTER CLEAR INDEX`. Уровень: `TABLE`. Синонимы: `CLEAR INDEX`
+  * `ALTER CONSTRAINT`. Уровень: `GROUP`. Синонимы: `CONSTRAINT`
+  * `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Синонимы: `ADD CONSTRAINT`
+  * `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Синонимы: `DROP CONSTRAINT`
+  * `ALTER TTL`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY TTL`, `MODIFY TTL`
+  * `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Синонимы: `MATERIALIZE TTL`
+  * `ALTER SETTINGS`. Уровень: `TABLE`. Синонимы: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
+  * `ALTER MOVE PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
+  * `ALTER FETCH PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
+  * `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Синонимы: `FREEZE PARTITION`
+  * `ALTER VIEW`. Уровень: `GROUP`
+  * `ALTER VIEW REFRESH`. Уровень: `VIEW`. Синонимы: `REFRESH VIEW`
+  * `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY QUERY`
+  * `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY SQL SECURITY`
 
 Примеры трактовки этой иерархии:
 
-- Привилегия `ALTER` включает в себя все остальные привилегии `ALTER*`.
-- `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
+* Привилегия `ALTER` включает в себя все остальные привилегии `ALTER*`.
+* `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
 
 **Примечания**
 
-- Привилегия `MODIFY SETTING` позволяет изменять настройки движка таблицы. Она не влияет на настройки или параметры конфигурации сервера.
-- Операция `ATTACH` требует привилегии [CREATE](#create).
-- Операция `DETACH` требует привилегии [DROP](#drop).
-- Чтобы остановить мутацию запросом [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию для запуска этой мутации. Например, если вы хотите остановить запрос `ALTER UPDATE`, вам необходима привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
+* Привилегия `MODIFY SETTING` позволяет изменять настройки движка таблицы. Она не влияет на настройки или параметры конфигурации сервера.
+* Операция `ATTACH` требует привилегии [CREATE](#create).
+* Операция `DETACH` требует привилегии [DROP](#drop).
+* Чтобы остановить мутацию запросом [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию для запуска этой мутации. Например, если вы хотите остановить запрос `ALTER UPDATE`, вам необходима привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
 
 ### BACKUP \{#backup\}
 
-Разрешает использование оператора [`BACKUP`] в запросах. Дополнительные сведения о резервном копировании см. в разделе ["Резервное копирование и восстановление"](/operations/backup/overview).
+Разрешает использование оператора [`BACKUP`] в запросах. Дополнительные сведения о резервном копировании см. в разделе [&quot;Резервное копирование и восстановление&quot;](/operations/backup/overview).
 
 ### CREATE \{#create\}
 
 Позволяет выполнять DDL-запросы [CREATE](../../sql-reference/statements/create/index.md) и [ATTACH](../../sql-reference/statements/attach.md) в соответствии со следующей иерархией прав доступа:
 
-- `CREATE`. Уровень: `GROUP`
-  - `CREATE DATABASE`. Уровень: `DATABASE`
-  - `CREATE TABLE`. Уровень: `TABLE`
-    - `CREATE ARBITRARY TEMPORARY TABLE`. Уровень: `GLOBAL`
-      - `CREATE TEMPORARY TABLE`. Уровень: `GLOBAL`
-  - `CREATE VIEW`. Уровень: `VIEW`
-  - `CREATE DICTIONARY`. Уровень: `DICTIONARY`
+* `CREATE`. Уровень: `GROUP`
+  * `CREATE DATABASE`. Уровень: `DATABASE`
+  * `CREATE TABLE`. Уровень: `TABLE`
+    * `CREATE ARBITRARY TEMPORARY TABLE`. Уровень: `GLOBAL`
+      * `CREATE TEMPORARY TABLE`. Уровень: `GLOBAL`
+  * `CREATE VIEW`. Уровень: `VIEW`
+  * `CREATE DICTIONARY`. Уровень: `DICTIONARY`
 
 **Примечания**
 
-- Чтобы удалить созданную таблицу, пользователю требуется привилегия [DROP](#drop).
+* Чтобы удалить созданную таблицу, пользователю требуется привилегия [DROP](#drop).
 
 ### CLUSTER \{#cluster\}
 
@@ -506,11 +506,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Позволяет выполнять запросы [DROP](../../sql-reference/statements/drop.md) и [DETACH](../../sql-reference/statements/detach.md) в соответствии со следующей иерархией прав доступа:
 
-- `DROP`. Уровень: `GROUP`
-  - `DROP DATABASE`. Уровень: `DATABASE`
-  - `DROP TABLE`. Уровень: `TABLE`
-  - `DROP VIEW`. Уровень: `VIEW`
-  - `DROP DICTIONARY`. Уровень: `DICTIONARY`
+* `DROP`. Уровень: `GROUP`
+  * `DROP DATABASE`. Уровень: `DATABASE`
+  * `DROP TABLE`. Уровень: `TABLE`
+  * `DROP VIEW`. Уровень: `VIEW`
+  * `DROP DICTIONARY`. Уровень: `DICTIONARY`
 
 ### TRUNCATE \{#truncate\}
 
@@ -528,11 +528,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Позволяет выполнять запросы `SHOW`, `DESCRIBE`, `USE` и `EXISTS` в соответствии со следующей иерархией привилегий:
 
-- `SHOW`. Уровень: `GROUP`
-  - `SHOW DATABASES`. Уровень: `DATABASE`. Позволяет выполнять запросы `SHOW DATABASES`, `SHOW CREATE DATABASE`, `USE <database>`.
-  - `SHOW TABLES`. Уровень: `TABLE`. Позволяет выполнять запросы `SHOW TABLES`, `EXISTS <table>`, `CHECK <table>`.
-  - `SHOW COLUMNS`. Уровень: `COLUMN`. Позволяет выполнять запросы `SHOW CREATE TABLE`, `DESCRIBE`.
-  - `SHOW DICTIONARIES`. Уровень: `DICTIONARY`. Позволяет выполнять запросы `SHOW DICTIONARIES`, `SHOW CREATE DICTIONARY`, `EXISTS <dictionary>`.
+* `SHOW`. Уровень: `GROUP`
+  * `SHOW DATABASES`. Уровень: `DATABASE`. Позволяет выполнять запросы `SHOW DATABASES`, `SHOW CREATE DATABASE`, `USE <database>`.
+  * `SHOW TABLES`. Уровень: `TABLE`. Позволяет выполнять запросы `SHOW TABLES`, `EXISTS <table>`, `CHECK <table>`.
+  * `SHOW COLUMNS`. Уровень: `COLUMN`. Позволяет выполнять запросы `SHOW CREATE TABLE`, `DESCRIBE`.
+  * `SHOW DICTIONARIES`. Уровень: `DICTIONARY`. Позволяет выполнять запросы `SHOW DICTIONARIES`, `SHOW CREATE DICTIONARY`, `EXISTS <dictionary>`.
 
 **Примечания**
 
@@ -552,30 +552,30 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Позволяет пользователю выполнять запросы для управления пользователями, ролями и политиками строк.
 
-- `ACCESS MANAGEMENT`. Уровень: `GROUP`
-  - `CREATE USER`. Уровень: `GLOBAL`
-  - `ALTER USER`. Уровень: `GLOBAL`
-  - `DROP USER`. Уровень: `GLOBAL`
-  - `CREATE ROLE`. Уровень: `GLOBAL`
-  - `ALTER ROLE`. Уровень: `GLOBAL`
-  - `DROP ROLE`. Уровень: `GLOBAL`
-  - `ROLE ADMIN`. Уровень: `GLOBAL`
-  - `CREATE ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `CREATE POLICY`
-  - `ALTER ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `ALTER POLICY`
-  - `DROP ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `DROP POLICY`
-  - `CREATE QUOTA`. Уровень: `GLOBAL`
-  - `ALTER QUOTA`. Уровень: `GLOBAL`
-  - `DROP QUOTA`. Уровень: `GLOBAL`
-  - `CREATE SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `CREATE PROFILE`
-  - `ALTER SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `ALTER PROFILE`
-  - `DROP SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `DROP PROFILE`
-  - `SHOW ACCESS`. Уровень: `GROUP`
-    - `SHOW_USERS`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE USER`
-    - `SHOW_ROLES`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE ROLE`
-    - `SHOW_ROW_POLICIES`. Уровень: `GLOBAL`. Алиасы: `SHOW POLICIES`, `SHOW CREATE ROW POLICY`, `SHOW CREATE POLICY`
-    - `SHOW_QUOTAS`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE QUOTA`
-    - `SHOW_SETTINGS_PROFILES`. Уровень: `GLOBAL`. Алиасы: `SHOW PROFILES`, `SHOW CREATE SETTINGS PROFILE`, `SHOW CREATE PROFILE`
-  - `ALLOW SQL SECURITY NONE`. Уровень: `GLOBAL`. Алиасы: `CREATE SQL SECURITY NONE`, `SQL SECURITY NONE`, `SECURITY NONE`
+* `ACCESS MANAGEMENT`. Уровень: `GROUP`
+  * `CREATE USER`. Уровень: `GLOBAL`
+  * `ALTER USER`. Уровень: `GLOBAL`
+  * `DROP USER`. Уровень: `GLOBAL`
+  * `CREATE ROLE`. Уровень: `GLOBAL`
+  * `ALTER ROLE`. Уровень: `GLOBAL`
+  * `DROP ROLE`. Уровень: `GLOBAL`
+  * `ROLE ADMIN`. Уровень: `GLOBAL`
+  * `CREATE ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `CREATE POLICY`
+  * `ALTER ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `ALTER POLICY`
+  * `DROP ROW POLICY`. Уровень: `GLOBAL`. Алиасы: `DROP POLICY`
+  * `CREATE QUOTA`. Уровень: `GLOBAL`
+  * `ALTER QUOTA`. Уровень: `GLOBAL`
+  * `DROP QUOTA`. Уровень: `GLOBAL`
+  * `CREATE SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `CREATE PROFILE`
+  * `ALTER SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `ALTER PROFILE`
+  * `DROP SETTINGS PROFILE`. Уровень: `GLOBAL`. Алиасы: `DROP PROFILE`
+  * `SHOW ACCESS`. Уровень: `GROUP`
+    * `SHOW_USERS`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE USER`
+    * `SHOW_ROLES`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE ROLE`
+    * `SHOW_ROW_POLICIES`. Уровень: `GLOBAL`. Алиасы: `SHOW POLICIES`, `SHOW CREATE ROW POLICY`, `SHOW CREATE POLICY`
+    * `SHOW_QUOTAS`. Уровень: `GLOBAL`. Алиасы: `SHOW CREATE QUOTA`
+    * `SHOW_SETTINGS_PROFILES`. Уровень: `GLOBAL`. Алиасы: `SHOW PROFILES`, `SHOW CREATE SETTINGS PROFILE`, `SHOW CREATE PROFILE`
+  * `ALLOW SQL SECURITY NONE`. Уровень: `GLOBAL`. Алиасы: `CREATE SQL SECURITY NONE`, `SQL SECURITY NONE`, `SECURITY NONE`
 
 Привилегия `ROLE ADMIN` позволяет пользователю назначать и отзывать любые роли, включая те, которые не назначены этому пользователю с опцией ADMIN.
 
@@ -583,29 +583,29 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Позволяет пользователю выполнять запросы [SYSTEM](../../sql-reference/statements/system.md) в соответствии со следующей иерархией привилегий.
 
-- `SYSTEM`. Уровень: `GROUP`
-  - `SYSTEM SHUTDOWN`. Уровень: `GLOBAL`. Синонимы: `SYSTEM KILL`, `SHUTDOWN`
-  - `SYSTEM DROP CACHE`. Синонимы: `DROP CACHE`
-    - `SYSTEM DROP DNS CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR DNS CACHE`, `SYSTEM DROP DNS`, `DROP DNS CACHE`, `DROP DNS`
-    - `SYSTEM DROP MARK CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR MARK CACHE`, `SYSTEM DROP MARK`, `DROP MARK CACHE`, `DROP MARKS`
-    - `SYSTEM DROP UNCOMPRESSED CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR UNCOMPRESSED CACHE`, `SYSTEM DROP UNCOMPRESSED`, `DROP UNCOMPRESSED CACHE`, `DROP UNCOMPRESSED`
-  - `SYSTEM RELOAD`. Уровень: `GROUP`
-    - `SYSTEM RELOAD CONFIG`. Уровень: `GLOBAL`. Синонимы: `RELOAD CONFIG`
-    - `SYSTEM RELOAD DICTIONARY`. Уровень: `GLOBAL`. Синонимы: `SYSTEM RELOAD DICTIONARIES`, `RELOAD DICTIONARY`, `RELOAD DICTIONARIES`
-      - `SYSTEM RELOAD EMBEDDED DICTIONARIES`. Уровень: `GLOBAL`. Синонимы: `RELOAD EMBEDDED DICTIONARIES`
-  - `SYSTEM MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MERGES`, `SYSTEM START MERGES`, `STOP MERGES`, `START MERGES`
-  - `SYSTEM TTL MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP TTL MERGES`, `SYSTEM START TTL MERGES`, `STOP TTL MERGES`, `START TTL MERGES`
-  - `SYSTEM FETCHES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP FETCHES`, `SYSTEM START FETCHES`, `STOP FETCHES`, `START FETCHES`
-  - `SYSTEM MOVES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MOVES`, `SYSTEM START MOVES`, `STOP MOVES`, `START MOVES`
-  - `SYSTEM SENDS`. Уровень: `GROUP`. Синонимы: `SYSTEM STOP SENDS`, `SYSTEM START SENDS`, `STOP SENDS`, `START SENDS`
-    - `SYSTEM DISTRIBUTED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP DISTRIBUTED SENDS`, `SYSTEM START DISTRIBUTED SENDS`, `STOP DISTRIBUTED SENDS`, `START DISTRIBUTED SENDS`
-    - `SYSTEM REPLICATED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATED SENDS`, `SYSTEM START REPLICATED SENDS`, `STOP REPLICATED SENDS`, `START REPLICATED SENDS`
-  - `SYSTEM REPLICATION QUEUES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATION QUEUES`, `SYSTEM START REPLICATION QUEUES`, `STOP REPLICATION QUEUES`, `START REPLICATION QUEUES`
-  - `SYSTEM SYNC REPLICA`. Уровень: `TABLE`. Синонимы: `SYNC REPLICA`
-  - `SYSTEM RESTART REPLICA`. Уровень: `TABLE`. Синонимы: `RESTART REPLICA`
-  - `SYSTEM FLUSH`. Уровень: `GROUP`
-    - `SYSTEM FLUSH DISTRIBUTED`. Уровень: `TABLE`. Синонимы: `FLUSH DISTRIBUTED`
-    - `SYSTEM FLUSH LOGS`. Уровень: `GLOBAL`. Синонимы: `FLUSH LOGS`
+* `SYSTEM`. Уровень: `GROUP`
+  * `SYSTEM SHUTDOWN`. Уровень: `GLOBAL`. Синонимы: `SYSTEM KILL`, `SHUTDOWN`
+  * `SYSTEM DROP CACHE`. Синонимы: `DROP CACHE`
+    * `SYSTEM DROP DNS CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR DNS CACHE`, `SYSTEM DROP DNS`, `DROP DNS CACHE`, `DROP DNS`
+    * `SYSTEM DROP MARK CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR MARK CACHE`, `SYSTEM DROP MARK`, `DROP MARK CACHE`, `DROP MARKS`
+    * `SYSTEM DROP UNCOMPRESSED CACHE`. Уровень: `GLOBAL`. Синонимы: `SYSTEM CLEAR UNCOMPRESSED CACHE`, `SYSTEM DROP UNCOMPRESSED`, `DROP UNCOMPRESSED CACHE`, `DROP UNCOMPRESSED`
+  * `SYSTEM RELOAD`. Уровень: `GROUP`
+    * `SYSTEM RELOAD CONFIG`. Уровень: `GLOBAL`. Синонимы: `RELOAD CONFIG`
+    * `SYSTEM RELOAD DICTIONARY`. Уровень: `GLOBAL`. Синонимы: `SYSTEM RELOAD DICTIONARIES`, `RELOAD DICTIONARY`, `RELOAD DICTIONARIES`
+      * `SYSTEM RELOAD EMBEDDED DICTIONARIES`. Уровень: `GLOBAL`. Синонимы: `RELOAD EMBEDDED DICTIONARIES`
+  * `SYSTEM MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MERGES`, `SYSTEM START MERGES`, `STOP MERGES`, `START MERGES`
+  * `SYSTEM TTL MERGES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP TTL MERGES`, `SYSTEM START TTL MERGES`, `STOP TTL MERGES`, `START TTL MERGES`
+  * `SYSTEM FETCHES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP FETCHES`, `SYSTEM START FETCHES`, `STOP FETCHES`, `START FETCHES`
+  * `SYSTEM MOVES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP MOVES`, `SYSTEM START MOVES`, `STOP MOVES`, `START MOVES`
+  * `SYSTEM SENDS`. Уровень: `GROUP`. Синонимы: `SYSTEM STOP SENDS`, `SYSTEM START SENDS`, `STOP SENDS`, `START SENDS`
+    * `SYSTEM DISTRIBUTED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP DISTRIBUTED SENDS`, `SYSTEM START DISTRIBUTED SENDS`, `STOP DISTRIBUTED SENDS`, `START DISTRIBUTED SENDS`
+    * `SYSTEM REPLICATED SENDS`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATED SENDS`, `SYSTEM START REPLICATED SENDS`, `STOP REPLICATED SENDS`, `START REPLICATED SENDS`
+  * `SYSTEM REPLICATION QUEUES`. Уровень: `TABLE`. Синонимы: `SYSTEM STOP REPLICATION QUEUES`, `SYSTEM START REPLICATION QUEUES`, `STOP REPLICATION QUEUES`, `START REPLICATION QUEUES`
+  * `SYSTEM SYNC REPLICA`. Уровень: `TABLE`. Синонимы: `SYNC REPLICA`
+  * `SYSTEM RESTART REPLICA`. Уровень: `TABLE`. Синонимы: `RESTART REPLICA`
+  * `SYSTEM FLUSH`. Уровень: `GROUP`
+    * `SYSTEM FLUSH DISTRIBUTED`. Уровень: `TABLE`. Синонимы: `FLUSH DISTRIBUTED`
+    * `SYSTEM FLUSH LOGS`. Уровень: `GLOBAL`. Синонимы: `FLUSH LOGS`
 
 Привилегия `SYSTEM RELOAD EMBEDDED DICTIONARIES` неявно предоставляется при наличии привилегии `SYSTEM RELOAD DICTIONARY ON *.*`.
 
@@ -613,38 +613,38 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Позволяет использовать функции [интроспекции](../../operations/optimizing-performance/sampling-query-profiler.md).
 
-- `INTROSPECTION`. Уровень: `GROUP`. Псевдонимы: `INTROSPECTION FUNCTIONS`
-  - `addressToLine`. Уровень: `GLOBAL`
-  - `addressToLineWithInlines`. Уровень: `GLOBAL`
-  - `addressToSymbol`. Уровень: `GLOBAL`
-  - `demangle`. Уровень: `GLOBAL`
+* `INTROSPECTION`. Уровень: `GROUP`. Псевдонимы: `INTROSPECTION FUNCTIONS`
+  * `addressToLine`. Уровень: `GLOBAL`
+  * `addressToLineWithInlines`. Уровень: `GLOBAL`
+  * `addressToSymbol`. Уровень: `GLOBAL`
+  * `demangle`. Уровень: `GLOBAL`
 
 ### SOURCES \{#sources\}
 
 Позволяет использовать внешние источники данных. Применимо к [табличным движкам](../../engines/table-engines/index.md) и [табличным функциям](/sql-reference/table-functions).
 
-- `READ`. Уровень: `GLOBAL_WITH_PARAMETER`  
-- `WRITE`. Уровень: `GLOBAL_WITH_PARAMETER`
+* `READ`. Уровень: `GLOBAL_WITH_PARAMETER`
+* `WRITE`. Уровень: `GLOBAL_WITH_PARAMETER`
 
 Возможные параметры:
 
-- `AZURE`
-- `FILE`
-- `HDFS`
-- `HIVE`
-- `JDBC`
-- `KAFKA`
-- `MONGO`
-- `MYSQL`
-- `NATS`
-- `ODBC`
-- `POSTGRES`
-- `RABBITMQ`
-- `REDIS`
-- `REMOTE`
-- `S3`
-- `SQLITE`
-- `URL`
+* `AZURE`
+* `FILE`
+* `HDFS`
+* `HIVE`
+* `JDBC`
+* `KAFKA`
+* `MONGO`
+* `MYSQL`
+* `NATS`
+* `ODBC`
+* `POSTGRES`
+* `RABBITMQ`
+* `REDIS`
+* `REMOTE`
+* `S3`
+* `SQLITE`
+* `URL`
 
 :::note
 Разделение прав READ/WRITE для источников доступно, начиная с версии 25.7, и только при включённой серверной настройке
@@ -655,8 +655,8 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 Примеры:
 
-- Чтобы создать таблицу с [табличным движком MySQL](../../engines/table-engines/integrations/mysql.md), необходимы права `CREATE TABLE (ON db.table_name)` и `MYSQL`.
-- Чтобы использовать [табличную функцию mysql](../../sql-reference/table-functions/mysql.md), необходимы права `CREATE TEMPORARY TABLE` и `MYSQL`.
+* Чтобы создать таблицу с [табличным движком MySQL](../../engines/table-engines/integrations/mysql.md), необходимы права `CREATE TABLE (ON db.table_name)` и `MYSQL`.
+* Чтобы использовать [табличную функцию mysql](../../sql-reference/table-functions/mysql.md), необходимы права `CREATE TEMPORARY TABLE` и `MYSQL`.
 
 ### Права доступа по фильтру источника \{#source-filter-grants\}
 
@@ -730,7 +730,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### dictGet \{#dictget\}
 
-- `dictGet`. Алиасы: `dictHas`, `dictGetHierarchy`, `dictIsIn`
+* `dictGet`. Алиасы: `dictHas`, `dictGetHierarchy`, `dictIsIn`
 
 Позволяет выполнять функции [dictGet](/sql-reference/functions/ext-dict-functions#dictGet), [dictHas](../../sql-reference/functions/ext-dict-functions.md#dictHas), [dictGetHierarchy](../../sql-reference/functions/ext-dict-functions.md#dictGetHierarchy), [dictIsIn](../../sql-reference/functions/ext-dict-functions.md#dictIsIn).
 
@@ -738,8 +738,8 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 **Примеры**
 
-- `GRANT dictGet ON mydb.mydictionary TO john`
-- `GRANT dictGet ON mydictionary TO john`
+* `GRANT dictGet ON mydb.mydictionary TO john`
+* `GRANT dictGet ON mydictionary TO john`
 
 ### displaySecretsInShowAndSelect \{#displaysecretsinshowandselect\}
 
@@ -751,13 +751,13 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 Позволяет выполнять определённую операцию над указанной именованной коллекцией. До версии 23.7 право называлось NAMED COLLECTION CONTROL, а начиная с 23.7 было добавлено NAMED COLLECTION ADMIN, при этом NAMED COLLECTION CONTROL сохранено как псевдоним.
 
-- `NAMED COLLECTION ADMIN`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION CONTROL`
-  - `CREATE NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
-  - `DROP NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
-  - `ALTER NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
-  - `SHOW NAMED COLLECTIONS`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `SHOW NAMED COLLECTIONS`
-  - `SHOW NAMED COLLECTIONS SECRETS`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `SHOW NAMED COLLECTIONS SECRETS`
-  - `NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION USAGE, USE NAMED COLLECTION`
+* `NAMED COLLECTION ADMIN`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION CONTROL`
+  * `CREATE NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
+  * `DROP NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
+  * `ALTER NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`
+  * `SHOW NAMED COLLECTIONS`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `SHOW NAMED COLLECTIONS`
+  * `SHOW NAMED COLLECTIONS SECRETS`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `SHOW NAMED COLLECTIONS SECRETS`
+  * `NAMED COLLECTION`. Уровень: `NAMED_COLLECTION`. Псевдонимы: `NAMED COLLECTION USAGE, USE NAMED COLLECTION`
 
 В отличие от всех остальных прав (CREATE, DROP, ALTER, SHOW), право NAMED COLLECTION было добавлено только в версии 23.7, тогда как все остальные были добавлены ранее — в версии 22.12.
 
@@ -765,7 +765,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 Пусть именованная коллекция называется abc. Предоставим право CREATE NAMED COLLECTION пользователю john.
 
-- `GRANT CREATE NAMED COLLECTION ON abc TO john`
+* `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
 ### TABLE ENGINE \{#table-engine\}
 
@@ -773,8 +773,8 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 **Примеры**
 
-- `GRANT TABLE ENGINE ON * TO john`
-- `GRANT TABLE ENGINE ON TinyLog TO john`
+* `GRANT TABLE ENGINE ON * TO john`
+* `GRANT TABLE ENGINE ON TinyLog TO john`
 
 :::note
 По умолчанию из соображений обратной совместимости при создании таблицы с конкретным движком таблицы права игнорируются,
@@ -784,7 +784,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### ALL \{#all\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Предоставляет все привилегии на управляемый объект учетной записи пользователя или роли.
 

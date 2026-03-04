@@ -14,7 +14,7 @@ doc_type: 'reference'
 Таким образом, примеры, приведённые в этом разделе, по умолчанию будут приводить к исключению в [ClickHouse Fiddle](https://fiddle.clickhouse.com/), а также в быстрых и продукционных развертываниях, если предварительно не выполнить настройку.
 :::
 
-Сведения о создании справочных списков см. в разделе ["Dictionaries"](../statements/create/dictionary/embedded).
+Сведения о создании справочных списков см. в разделе [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded).
 
 ## Несколько геобаз \{#multiple-geobases\}
 
@@ -38,7 +38,6 @@ regionToCountry(RegionID) – Uses the default dictionary: /opt/geo/regions_hier
 regionToCountry(RegionID, '') – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
 regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/geo/regions_hierarchy_ua.txt
 ```
-
 
 ### regionToName
 
@@ -79,7 +78,6 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 │ Boulder County                             │
 └────────────────────────────────────────────┘
 ```
-
 
 ### regionToCity
 
@@ -128,7 +126,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 │ Asia                                       │  0 │                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToArea
 
@@ -182,7 +179,6 @@ LIMIT 15
 └──────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToDistrict
 
 Преобразует регион в федеральный округ (тип 4 в геобазе). Во всём остальном эта функция аналогична `regionToCity`.
@@ -235,7 +231,6 @@ LIMIT 15
 └──────────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToCountry
 
 Преобразует регион в страну (тип 3 в geobase). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
@@ -283,7 +278,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 │ Asia                                       │  0 │                                                             │
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToContinent
 
@@ -333,7 +327,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToTopContinent
 
 Находит континент верхнего уровня в иерархии для региона.
@@ -381,7 +374,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 │ Asia                                       │ 11 │ Eurasia                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToPopulation
 
@@ -431,7 +423,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-
 ### regionIn
 
 Проверяет, принадлежит ли регион `lhs` региону `rhs`. Возвращает число типа UInt8, равное 1, если принадлежит, и 0 — если не принадлежит.
@@ -479,7 +470,6 @@ USA is not in Colorado
 USA is not in Boulder County
 USA is not in Boulder    
 ```
-
 
 ### regionHierarchy
 

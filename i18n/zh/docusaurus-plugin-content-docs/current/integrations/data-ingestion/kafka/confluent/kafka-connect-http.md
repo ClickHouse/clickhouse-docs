@@ -15,7 +15,6 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
-
 # Confluent HTTP sink connector \{#confluent-http-sink-connector\}
 
 HTTP Sink Connector 与数据类型无关，因此不需要 Kafka schema，同时也支持 ClickHouse 特定的数据类型，例如 Map 和 Array。这个额外的灵活性会带来一定的配置复杂度提升。
@@ -62,7 +61,6 @@ CREATE TABLE default.my_table
 ORDER BY tuple()
 ```
 
-
 #### 4. 配置 HTTP Sink \{#4-configure-http-sink\}
 
 创建一个 Kafka 主题以及一个 HTTP Sink Connector 实例：
@@ -104,9 +102,9 @@ ORDER BY tuple()
 
 在由你的 HTTP Sink 配置的主题中创建一条消息：
 
-<Image img={createMessageInTopic} size="md" alt="Confluent Cloud 界面展示如何在 Kafka 主题中创建测试消息" border/>
+<Image img={createMessageInTopic} size="md" alt="Confluent Cloud 界面展示如何在 Kafka 主题中创建测试消息" border />
 
-<br/>
+<br />
 
 并验证该消息已写入你的 ClickHouse 实例。
 
@@ -123,7 +121,7 @@ ORDER BY tuple()
 
 #### 400 Bad Request \{#400-bad-request\}
 
-##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING \{#cannot_parse_quoted_string\}
+##### CANNOT_PARSE_QUOTED_STRING \{#cannot_parse_quoted_string\}
 
 如果在向 `String` 列插入 JSON 对象时，HTTP Sink 失败并出现以下消息：
 
@@ -132,7 +130,6 @@ Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote
 ```
 
 在 URL 中将参数 `input_format_json_read_objects_as_strings=1` 以编码字符串 `SETTINGS%20input_format_json_read_objects_as_strings%3D1` 的形式设置
-
 
 ### 加载 GitHub 数据集（可选） \{#load-the-github-dataset-optional\}
 
@@ -167,7 +164,6 @@ http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRo
 包含如何配置代理、重试以及高级 SSL 在内的完整设置列表可在[此处](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到。
 
 GitHub 示例数据的配置文件示例可在[此处](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)找到，前提是 Connect 以 standalone 模式运行且 Kafka 部署在 Confluent Cloud 中。
-
 
 ##### 2. 创建 ClickHouse 表 \{#2-create-the-clickhouse-table\}
 
@@ -204,7 +200,6 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 
 ```
-
 
 ##### 3. 向 Kafka 添加数据 \{#3-add-data-to-kafka\}
 

@@ -31,12 +31,12 @@ doc_type: 'reference'
 
 `JSON` 类型与 JavaScript 兼容。为确保这一点，会对某些字符进行额外转义：
 
-- 斜杠 `/` 被转义为 `\/`。
-- 会导致部分浏览器出错的替代换行符 `U+2028` 和 `U+2029` 被转义为 `\uXXXX`。
-- ASCII 控制字符会被转义：退格、换页、换行、回车和水平制表符分别被替换为 `\b`、`\f`、`\n`、`\r`、`\t`，其余 0x00–0x1F 范围内的字节则使用 `\uXXXX` 序列替换。
-- 无效的 UTF-8 序列会被替换为替代字符 `�`，从而保证输出文本仅由有效的 UTF-8 序列组成。
+* 斜杠 `/` 被转义为 `\/`。
+* 会导致部分浏览器出错的替代换行符 `U+2028` 和 `U+2029` 被转义为 `\uXXXX`。
+* ASCII 控制字符会被转义：退格、换页、换行、回车和水平制表符分别被替换为 `\b`、`\f`、`\n`、`\r`、`\t`，其余 0x00–0x1F 范围内的字节则使用 `\uXXXX` 序列替换。
+* 无效的 UTF-8 序列会被替换为替代字符 `�`，从而保证输出文本仅由有效的 UTF-8 序列组成。
 
-为了与 JavaScript 兼容，Int64 和 UInt64 整数默认会用双引号括起来。  
+为了与 JavaScript 兼容，Int64 和 UInt64 整数默认会用双引号括起来。\
 要去掉引号，可以将配置参数 [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers) 设置为 `0`。
 
 ClickHouse 支持 [NULL](/sql-reference/syntax.md)，在 JSON 输出中显示为 `null`。要在输出中启用 `+nan`、`-nan`、`+inf`、`-inf` 值，请将 [`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) 设置为 `1`。
@@ -106,5 +106,5 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 
 ## 另请参阅 \{#see-also\}
 
-- [JSONEachRow](/interfaces/formats/JSONEachRow) 格式
-- [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows) 设置
+* [JSONEachRow](/interfaces/formats/JSONEachRow) 格式
+* [output&#95;format&#95;json&#95;array&#95;of&#95;rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows) 设置

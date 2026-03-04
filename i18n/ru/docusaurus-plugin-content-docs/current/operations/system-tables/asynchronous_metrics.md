@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.asynchronous&#95;metrics \{#systemasynchronous_metrics\}
+# system.asynchronous_metrics \{#systemasynchronous_metrics\}
 
 <SystemTableCloud />
 
@@ -44,7 +44,6 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 {/*- В отличие от system.events и system.metrics, асинхронные метрики не собраны в один простой список в файле исходного кода —
       они переплетены с логикой в src/Interpreters/ServerAsynchronousMetrics.cpp.
       Здесь приведён их явный перечень для удобства читателя. -*/ }
-
 
 ## Описание метрик \{#metric-descriptions\}
 
@@ -662,7 +661,7 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 **См. также**
 
-- [Monitoring](../../operations/monitoring.md) — Базовые концепции мониторинга ClickHouse.
-- [system.metrics](/operations/system-tables/metrics) — Содержит мгновенно вычисляемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит счётчики произошедших событий.
-- [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
+* [Monitoring](../../operations/monitoring.md) — Базовые концепции мониторинга ClickHouse.
+* [system.metrics](/operations/system-tables/metrics) — Содержит мгновенно вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — Содержит счётчики произошедших событий.
+* [system.metric&#95;log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.

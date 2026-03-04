@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 ### 字符串 \{#strings\}
 
-ClickHouse 和 Snowflake 在字符串数据存储方式上采取了截然不同的策略。Snowflake 中的 `VARCHAR` 以 UTF-8 存储 Unicode 字符，允许用户指定最大长度。该长度对存储或性能没有影响，始终使用存储字符串所需的最少字节数，只是为下游工具提供有用的约束。其他类型，例如 `Text` 和 `NChar`，只是该类型的别名。相反，ClickHouse 使用 `String` 类型（不需要指定长度）将所有[字符串数据以原始字节形式](/sql-reference/data-types/string)存储，将编码交由用户控制，并提供适用于不同编码的[查询时函数](/sql-reference/functions/string-functions#lengthUTF8)。关于背后的动机，我们推荐读者参考 ["Opaque data argument"](https://utf8everywhere.org/#cookie)。因此，在实现上，ClickHouse 的 `String` 更接近于 Snowflake 的 `Binary` 类型。[Snowflake](https://docs.snowflake.com/en/sql-reference/collation) 和 [ClickHouse](/sql-reference/statements/select/order-by#collation-support) 均支持“排序规则（collation）”，允许用户自定义字符串的排序与比较方式。
+ClickHouse 和 Snowflake 在字符串数据存储方式上采取了截然不同的策略。Snowflake 中的 `VARCHAR` 以 UTF-8 存储 Unicode 字符，允许用户指定最大长度。该长度对存储或性能没有影响，始终使用存储字符串所需的最少字节数，只是为下游工具提供有用的约束。其他类型，例如 `Text` 和 `NChar`，只是该类型的别名。相反，ClickHouse 使用 `String` 类型（不需要指定长度）将所有[字符串数据以原始字节形式](/sql-reference/data-types/string)存储，将编码交由用户控制，并提供适用于不同编码的[查询时函数](/sql-reference/functions/string-functions#lengthUTF8)。关于背后的动机，我们推荐读者参考 [&quot;Opaque data argument&quot;](https://utf8everywhere.org/#cookie)。因此，在实现上，ClickHouse 的 `String` 更接近于 Snowflake 的 `Binary` 类型。[Snowflake](https://docs.snowflake.com/en/sql-reference/collation) 和 [ClickHouse](/sql-reference/statements/select/order-by#collation-support) 均支持“排序规则（collation）”，允许用户自定义字符串的排序与比较方式。
 
 ### 半结构化类型 \{#semi-structured-data\}
 

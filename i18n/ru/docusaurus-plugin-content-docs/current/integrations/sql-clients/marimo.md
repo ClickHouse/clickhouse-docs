@@ -21,10 +21,9 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Использование marimo с ClickHouse \{#using-marimo-with-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [marimo](https://marimo.io/) — это реактивный ноутбук для Python с открытым исходным кодом и встроенной поддержкой SQL. При запуске ячейки или взаимодействии с элементом интерфейса marimo автоматически выполняет затронутые ячейки (или помечает их как устаревшие), поддерживая согласованность кода и результатов и предотвращая появление ошибок. Каждый ноутбук marimo хранится как чистый Python, может выполняться как скрипт и развёртываться как приложение.
 
@@ -38,7 +37,6 @@ marimo edit clickhouse_demo.py
 ```
 
 Должен открыться веб‑браузер с адресом localhost.
-
 
 ## 2. Подключение к ClickHouse. \{#connect-to-clickhouse\}
 

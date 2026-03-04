@@ -26,7 +26,6 @@ import TabItem from '@theme/TabItem';
 
 *要将日志发送到 ClickStack，请通过 [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 发送日志。*
 
-
 ## 快速开始 \{#getting-started\}
 
 ### 安装 OpenTelemetry 软件包 \{#install-otel-packages\}
@@ -76,32 +75,27 @@ Rails.application.configure do
 end
 ```
 
-
 ### 配置环境变量 \{#configure-environment-variables\}
 
 接下来需要在 shell 中配置以下环境变量，用于通过 OpenTelemetry collector 将遥测数据发送到 ClickStack：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```shell
+    export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    ```
+  </TabItem>
 
-```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
-```
-
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```shell
+    export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+    ```
+  </TabItem>
 </Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，可以是任意你想要的名称。*

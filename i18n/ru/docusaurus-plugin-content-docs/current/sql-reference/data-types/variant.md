@@ -110,7 +110,6 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-
 ## Чтение вложенных типов Variant как подколонок \{#reading-variant-nested-types-as-subcolumns\}
 
 Тип Variant поддерживает чтение отдельного вложенного типа из столбца Variant, используя имя типа как подколонку.
@@ -184,13 +183,11 @@ SELECT variantType(v) FROM test;
 SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
-
 ```text
 ┌─toTypeName(variantType(v))──────────────────────────────────────────┐
 │ Enum8('None' = -1, 'Array(UInt64)' = 0, 'String' = 1, 'UInt64' = 2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Преобразование между столбцом Variant и другими столбцами \{#conversion-between-a-variant-column-and-other-columns\}
 
@@ -243,7 +240,6 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-
 ### Converting an ordinary column to a Variant column \{#converting-an-ordinary-column-to-a-variant-column\}
 
 It is possible to convert an ordinary column with type `T` to a `Variant` column containing this type:
@@ -270,7 +266,6 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-
 ### Converting a Variant column to an ordinary column \{#converting-a-variant-column-to-an-ordinary-column\}
 
 It is possible to convert a `Variant` column to an ordinary column. In this case all nested variants will be converted to a destination type:
@@ -289,7 +284,6 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-
 ### Преобразование одного Variant в другой Variant \{#converting-a-variant-to-another-variant\}
 
 It is possible to convert a `Variant` column to another `Variant` column, but only if the destination `Variant` column contains all nested types from the original `Variant`:
@@ -307,7 +301,6 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 │ String                                            │
 └───────────────────────────────────────────────────┘
 ```
-
 
 ## Reading Variant type from the data \{#reading-variant-type-from-the-data\}
 
@@ -341,7 +334,6 @@ $$)
 │ [1,2,3]             │ ᴺᵁᴸᴸ          │ ᴺᵁᴸᴸ │  ᴺᵁᴸᴸ │                ᴺᵁᴸᴸ │ [1,2,3] │
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
-
 
 ## Comparing values of Variant type \{#comparing-values-of-variant-data\}
 
@@ -423,7 +415,6 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- or using variantElemen
 └────┴─────────┘
 ```
 
-
 Иногда может быть полезно дополнительно проверить тип варианта, так как подстолбцы со сложными типами, такими как `Array/Map/Tuple`, не могут находиться внутри `Nullable` и будут иметь значения по умолчанию вместо `NULL` в строках с другими типами:
 
 ```sql
@@ -472,7 +463,6 @@ SELECT v, variantType(v) FROM test ORDER by v;
 
 **Note** by default `Variant` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-
 ## JSONExtract functions with Variant \{#jsonextract-functions-with-variant\}
 
 All `JSONExtract*` functions support `Variant` type:
@@ -506,7 +496,6 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Var
 │ [('a',42),('b','Hello'),('c',[1,2,3])] │ [('a','UInt32'),('b','String'),('c','Array(UInt32)')] │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────┘
 ```
-
 
 ## Функции с аргументами типа Variant \{#functions-with-variant-arguments\}
 

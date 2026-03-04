@@ -95,7 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## Запрос данных из CSV-файлов \{#querying-data-in-csv-files\}
+## Запрос данных из CSV-файлов &#123;#querying-data-in-csv-files&#125;
 
 Мы скачали набор файлов с префиксом `atp_rankings`.
 Давайте используем конструкцию `DESCRIBE`, чтобы разобраться со схемой:

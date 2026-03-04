@@ -103,7 +103,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 约束 \{#constraints\}
 
 如果表定义了[约束](../../sql-reference/statements/create/table.md#constraints)，则会针对插入数据的每一行检查相应的约束表达式。如果任一约束未被满足，服务器将抛出一个包含约束名称和表达式的异常，并停止执行该查询。
@@ -134,7 +133,6 @@ INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
-
 ## 从文件中插入数据 \{#inserting-data-from-a-file\}
 
 **语法**
@@ -150,7 +148,6 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 此功能可在[命令行客户端](../../interfaces/cli.md)和 [clickhouse-local](../../operations/utilities/clickhouse-local.md) 中使用。
 
 **示例**
-
 
 ### 使用 FROM INFILE 的单个文件 \{#single-file-with-from-infile\}
 
@@ -171,7 +168,6 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### 使用通配符的多文件 FROM INFILE \{#multiple-files-with-from-infile-using-globs\}
 
@@ -194,7 +190,6 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 ```
 
 :::
-
 
 ## 使用表函数插入数据 \{#inserting-using-a-table-function\}
 
@@ -225,7 +220,6 @@ SELECT * FROM simple_table;
 └─────┴───────────────────────┘
 ```
 
-
 ## 在 ClickHouse Cloud 中插入数据 \{#inserting-into-clickhouse-cloud\}
 
 默认情况下，ClickHouse Cloud 上的服务会提供多个副本以实现高可用性。当连接到某个服务时，连接会建立到这些副本中的一个。
@@ -240,7 +234,6 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 请注意，使用 `select_sequential_consistency` 会增加 ClickHouse Keeper（ClickHouse Cloud 内部使用的组件）的负载，并且可能会视该服务的负载情况导致性能下降。除非确有必要，否则我们不建议启用此设置。推荐的做法是在同一会话中执行读写操作，或者使用基于原生协议（从而支持粘性连接）的客户端驱动程序。
 
-
 ## 在复制部署中执行插入 \{#inserting-into-a-replicated-setup\}
 
 在复制部署中，数据在完成复制后才会在其他副本上可见。`INSERT` 执行后，会立即开始复制过程（在其他副本上下载数据）。这与 ClickHouse Cloud 不同，后者会将数据直接写入共享存储，由副本订阅元数据变更。
@@ -251,13 +244,13 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 `INSERT` 会按照主键对输入数据进行排序，并根据分区键将其拆分为多个分区。如果一次性向多个分区插入数据，可能会显著降低 `INSERT` 查询的性能。为避免这种情况：
 
-- 以相对较大的批次添加数据，例如每次 100,000 行。
-- 在将数据导入 ClickHouse 之前，先按分区键对数据进行分组。
+* 以相对较大的批次添加数据，例如每次 100,000 行。
+* 在将数据导入 ClickHouse 之前，先按分区键对数据进行分组。
 
 在以下情况下，性能不会下降：
 
-- 以实时方式添加数据。
-- 导入的数据通常已经按时间排序。
+* 以实时方式添加数据。
+* 导入的数据通常已经按时间排序。
 
 ### 异步插入 \{#asynchronous-inserts\}
 
@@ -271,9 +264,9 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 **另请参阅**
 
-- [async_insert](/operations/settings/settings#async_insert)
-- [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert)
-- [wait_for_async_insert_timeout](/operations/settings/settings#wait_for_async_insert_timeout)
-- [async_insert_max_data_size](/operations/settings/settings#async_insert_max_data_size)
-- [async_insert_busy_timeout_ms](/operations/settings/settings#async_insert_busy_timeout_max_ms)
-- [async_insert_stale_timeout_ms](/operations/settings/settings#async_insert_max_data_size)
+* [async&#95;insert](/operations/settings/settings#async_insert)
+* [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert)
+* [wait&#95;for&#95;async&#95;insert&#95;timeout](/operations/settings/settings#wait_for_async_insert_timeout)
+* [async&#95;insert&#95;max&#95;data&#95;size](/operations/settings/settings#async_insert_max_data_size)
+* [async&#95;insert&#95;busy&#95;timeout&#95;ms](/operations/settings/settings#async_insert_busy_timeout_max_ms)
+* [async&#95;insert&#95;stale&#95;timeout&#95;ms](/operations/settings/settings#async_insert_max_data_size)

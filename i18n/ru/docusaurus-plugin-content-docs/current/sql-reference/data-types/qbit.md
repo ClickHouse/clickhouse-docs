@@ -20,7 +20,6 @@ column_name QBit(element_type, dimension)
 * `element_type` – тип каждого элемента вектора. Допустимые типы: `BFloat16`, `Float32` и `Float64`
 * `dimension` – количество элементов в каждом векторе
 
-
 ## Создание QBit \{#creating-qbit\}
 
 Использование типа `QBit` при определении столбца таблицы:
@@ -37,7 +36,6 @@ SELECT vec FROM test ORDER BY id;
 │ [9,10,11,12,13,14,15,16] │
 └──────────────────────────┘
 ```
-
 
 ## Подстолбцы QBit \{#qbit-subcolumns\}
 
@@ -62,7 +60,6 @@ SELECT bin(vec.1) FROM test;
 * `BFloat16`: 16 подстолбцов (1–16)
 * `Float32`: 32 подстолбца (1–32)
 * `Float64`: 64 подстолбца (1–64)
-
 
 ## Функции векторного поиска \{#vector-search-functions\}
 

@@ -18,10 +18,9 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Luzmo 与 ClickHouse 集成 \{#integrating-luzmo-with-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## 1. 配置 ClickHouse 连接 \{#1-setup-a-clickhouse-connection\}
 
@@ -33,10 +32,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={luzmo_02} size="md" alt="Luzmo 连接配置表单，展示了 ClickHouse host、username 和 password 字段" border />
 
-*   **Host**：ClickHouse 数据库对外提供服务的主机地址。请注意，这里仅允许使用 `https`，以便在网络上传输数据时保证安全。host URL 的结构应为：`https://url-to-clickhouse-db:port/database`
-    默认情况下，插件会连接到 `default` 数据库和 443 端口。通过在 `/` 之后指定数据库名称，你可以配置要连接的具体数据库。
-*   **Username**：用于连接到 ClickHouse 集群的用户名。
-*   **Password**：用于连接到 ClickHouse 集群的密码。
+* **Host**：ClickHouse 数据库对外提供服务的主机地址。请注意，这里仅允许使用 `https`，以便在网络上传输数据时保证安全。host URL 的结构应为：`https://url-to-clickhouse-db:port/database`
+  默认情况下，插件会连接到 `default` 数据库和 443 端口。通过在 `/` 之后指定数据库名称，你可以配置要连接的具体数据库。
+* **Username**：用于连接到 ClickHouse 集群的用户名。
+* **Password**：用于连接到 ClickHouse 集群的密码。
 
 请参阅我们的开发者文档中的示例，了解如何通过 API [创建到 ClickHouse 的连接](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody)。
 
@@ -57,16 +56,16 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 3. 为确保例如只有 Luzmo 应用能够访问你的 ClickHouse 实例，强烈建议你**将 [Luzmo 的静态 IP 地址范围](https://academy.luzmo.com/article/u9on8gbm) 加入白名单**。我们也建议使用一个用于技术访问的只读用户账号。
 4. ClickHouse 连接器目前支持以下数据类型：
 
-    | ClickHouse Type | Luzmo Type |
-    | --- | --- |
-    | UInt | numeric |
-    | Int | numeric |
-    | Float | numeric |
-    | Decimal | numeric |
-    | Date | datetime |
-    | DateTime | datetime |
-    | String | hierarchy |
-    | Enum | hierarchy |
-    | FixedString | hierarchy |
-    | UUID | hierarchy |
-    | Bool | hierarchy |
+   | ClickHouse Type | Luzmo Type |
+   | --- | --- |
+   | UInt | numeric |
+   | Int | numeric |
+   | Float | numeric |
+   | Decimal | numeric |
+   | Date | datetime |
+   | DateTime | datetime |
+   | String | hierarchy |
+   | Enum | hierarchy |
+   | FixedString | hierarchy |
+   | UUID | hierarchy |
+   | Bool | hierarchy |

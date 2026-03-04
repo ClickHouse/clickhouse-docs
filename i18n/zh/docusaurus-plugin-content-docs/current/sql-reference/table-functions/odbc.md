@@ -19,7 +19,6 @@ odbc(datasource, external_table)
 odbc(named_collection)
 ```
 
-
 ## 参数 \{#arguments\}
 
 | 参数            | 描述                                                            |
@@ -111,8 +110,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-
 ## 另请参阅 \{#see-also\}
 
-- [ODBC 字典](/sql-reference/statements/create/dictionary/sources/odbc)
-- [ODBC 表引擎](/engines/table-engines/integrations/odbc).
+* [ODBC 字典](/sql-reference/statements/create/dictionary/sources/odbc)
+* [ODBC 表引擎](/engines/table-engines/integrations/odbc).

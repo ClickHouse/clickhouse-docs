@@ -143,5 +143,5 @@ DESCRIBE TABLE test_database.test_table;
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+* Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+* Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

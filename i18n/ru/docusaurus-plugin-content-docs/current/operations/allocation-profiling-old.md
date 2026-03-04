@@ -9,10 +9,9 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Профилирование выделения памяти для версий до 25.9 \{#allocation-profiling-for-versions-before-259\}
 
-ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для выборочного отслеживания и профилирования выделения памяти.  
+ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для выборочного отслеживания и профилирования выделения памяти.\
 Для удобства профилирования выделения памяти предусмотрены команды `SYSTEM`, а также четырёхбуквенные (4LW) команды в Keeper.
 
 ## Сэмплирование выделений памяти и сброс профилей кучи \{#sampling-allocations-and-flushing-heap-profiles\}
@@ -53,7 +52,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profil
 
 К префиксу в имени сгенерированного файла будут добавлены PID и порядковый номер.
 
-
 ## Анализ профилей кучи \{#analyzing-heap-profiles\}
 
 После генерации профилей кучи их необходимо проанализировать.
@@ -90,7 +88,6 @@ jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
-
 ### Примеры \{#examples\}
 
 * если вы хотите создать текстовый файл, в котором каждая процедура записана в отдельной строке:
@@ -104,7 +101,6 @@ jeprof path/to/binary path/to/heap/profile --text > result.txt
 ```sh
 jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
-
 
 ### Генерация flame-графа \{#generating-flame-graph\}
 
@@ -125,7 +121,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 ```
 
 Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
-
 
 ## Управление профилировщиком выделений во время работы \{#controlling-allocation-profiler-during-runtime\}
 
@@ -173,12 +168,11 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 Профилировщик можно будет включить позже.
 
-
 ## Дополнительные параметры профилировщика \{#additional-options-for-profiler\}
 
 В `jemalloc` доступно множество различных параметров, связанных с профилировщиком. Ими можно управлять через переменную окружения `MALLOC_CONF`.
-Например, интервал между выборками выделений памяти можно контролировать с помощью `lg_prof_sample`.  
-Если вы хотите сбрасывать профиль кучи каждые N байт, вы можете включить это с помощью `lg_prof_interval`.  
+Например, интервал между выборками выделений памяти можно контролировать с помощью `lg_prof_sample`.\
+Если вы хотите сбрасывать профиль кучи каждые N байт, вы можете включить это с помощью `lg_prof_interval`.
 
 Для получения полного списка параметров рекомендуется ознакомиться со [справочной страницей](https://jemalloc.net/jemalloc.3.html) `jemalloc`.
 
@@ -200,7 +194,6 @@ FORMAT Vertical
 ```
 
 [Справочник](/operations/system-tables/asynchronous_metrics)
-
 
 ### Системная таблица `jemalloc_bins` \{#system-table-jemalloc_bins\}
 

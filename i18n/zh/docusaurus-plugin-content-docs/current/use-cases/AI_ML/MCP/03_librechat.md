@@ -15,14 +15,13 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-
 # 在 LibreChat 中使用 ClickHouse MCP 服务器 \{#using-clickhouse-mcp-server-with-librechat\}
 
 > 本指南介绍如何使用 Docker 设置 LibreChat 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
-  ## 安装 Docker
+  ## 安装 Docker \{#install-docker\}
 
   您需要 Docker 来运行 LibreChat 和 MCP 服务器。获取 Docker 的方法：
 
@@ -35,7 +34,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   有关更多信息,请参阅 [Docker 文档](https://docs.docker.com/get-docker/)。
 
-  ## 克隆 LibreChat 仓库
+  ## 克隆 LibreChat 仓库 \{#clone-librechat-repo\}
 
   打开终端(命令提示符、终端或 PowerShell),并使用以下命令克隆 LibreChat 仓库:
 
@@ -44,7 +43,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   cd LibreChat
   ```
 
-  ## 创建并编辑 .env 文件
+  ## 创建并编辑 .env 文件 \{#create-and-edit-env-file\}
 
   将示例配置文件从 `.env.example` 复制到 `.env`：
 
@@ -72,7 +71,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   请不要修改 .env 文件,继续执行后续步骤。
   :::
 
-  ## 创建 librechat.yaml 文件
+  ## 创建 librechat.yaml 文件 \{#create-librechat-yaml-file\}
 
   运行以下命令创建一个新的 `librechat.yaml` 文件：
 
@@ -82,7 +81,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   这将为 LibreChat 创建主[配置文件](https://www.librechat.ai/docs/configuration/librechat_yaml)。
 
-  ## 将 ClickHouse MCP 服务器添加到 Docker Compose
+  ## 将 ClickHouse MCP 服务器添加到 Docker Compose \{#add-clickhouse-mcp-server-to-docker-compose\}
 
   接下来,我们将把 ClickHouse MCP 服务器添加到 LibreChat 的 Docker Compose 文件中,
   以便 LLM 能够与
@@ -134,7 +133,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
     />
   </Link>
 
-  ## 在 librechat.yaml 中配置 MCP 服务器
+  ## 在 librechat.yaml 中配置 MCP 服务器 \{#configure-mcp-server-in-librechat-yaml\}
 
   打开 `librechat.yaml` 文件,并将以下配置添加到文件末尾:
 
@@ -159,9 +158,9 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   socialLogins: []
   ```
 
-  ## 使用 Ollama 添加本地 LLM（可选）
+  ## 使用 Ollama 添加本地 LLM（可选） \{#add-local-llm-using-ollama\}
 
-  ### 安装 Ollama
+  ### 安装 Ollama \{#install-ollama\}
 
   前往 [Ollama 网站](https://ollama.com/download) 并为您的系统安装 Ollama。
 
@@ -175,7 +174,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   有关模型列表,请参阅 [Ollama library](https://ollama.com/library)
 
-  ### 在 librechat.yaml 中配置 Ollama
+  ### 在 librechat.yaml 中配置 Ollama \{#configure-ollama-in-librechat-yaml\}
 
   模型下载完成后，在 `librechat.yaml` 中对其进行配置：
 
@@ -198,7 +197,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
       modelDisplayLabel: "Ollama"
   ```
 
-  ## 启动所有服务
+  ## 启动所有服务 \{#start-all-services\}
 
   在 LibreChat 项目文件夹的根目录下，运行以下命令以启动服务：
 
@@ -208,7 +207,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   等待所有服务完全启动并运行。
 
-  ## 在浏览器中打开 LibreChat
+  ## 在浏览器中打开 LibreChat \{#open-librechat-in-browser\}
 
   所有服务启动并运行后,打开浏览器并访问 `http://localhost:3080/`
 

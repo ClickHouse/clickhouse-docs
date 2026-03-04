@@ -116,21 +116,21 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 如果在配置文件中未配置 ZooKeeper，你将无法创建副本表，且任何已有的副本表都将变为只读。
 
-ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性能，查询速度与非复制表一样快。对于分布式复制表的查询，ClickHouse 的行为由 [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) 和 [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) 这两个设置控制。
+ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性能，查询速度与非复制表一样快。对于分布式复制表的查询，ClickHouse 的行为由 [max&#95;replica&#95;delay&#95;for&#95;distributed&#95;queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) 和 [fallback&#95;to&#95;stale&#95;replicas&#95;for&#95;distributed&#95;queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) 这两个设置控制。
 
 对于每个 `INSERT` 查询，会通过若干事务向 ZooKeeper 添加大约十条记录。（更精确地说，这是针对每个被插入的数据块；一个 INSERT 查询包含一个数据块，或者每 `max_insert_block_size = 1048576` 行一个数据块。）这会导致 `INSERT` 相比非复制表有略高的延迟。但如果遵循建议，以每秒不超过一个 `INSERT` 的批量方式插入数据，就不会产生任何问题。一个用于协调单个 ZooKeeper 集群的整个 ClickHouse 集群，总共每秒可处理数百个 `INSERT`。数据插入的吞吐量（每秒行数）与非复制数据一样高。
 
 对于非常大的集群，可以为不同的分片使用不同的 ZooKeeper 集群。不过根据我们的经验，在大约 300 台服务器的生产集群中，还没有发现这种做法是必要的。
 
-复制是异步的，并且是多主（multi-master）。`INSERT` 查询（以及 `ALTER`）可以发送到任何可用服务器。数据会先插入到执行查询的服务器上，然后再复制到其他服务器。由于复制是异步的，新插入的数据会在一定延迟后才出现在其他副本上。如果部分副本不可用，则当这些副本重新可用时数据才会被写入。如果某个副本是可用的，延迟就是在网络上传输压缩数据块所需的时间。用于处理复制表后台任务的线程数量可以通过 [background_schedule_pool_size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size) 这个设置来配置。
+复制是异步的，并且是多主（multi-master）。`INSERT` 查询（以及 `ALTER`）可以发送到任何可用服务器。数据会先插入到执行查询的服务器上，然后再复制到其他服务器。由于复制是异步的，新插入的数据会在一定延迟后才出现在其他副本上。如果部分副本不可用，则当这些副本重新可用时数据才会被写入。如果某个副本是可用的，延迟就是在网络上传输压缩数据块所需的时间。用于处理复制表后台任务的线程数量可以通过 [background&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size) 这个设置来配置。
 
-`ReplicatedMergeTree` 引擎使用单独的线程池来处理复制数据拉取（replicated fetches）。该线程池的大小由 [background_fetches_pool_size](/operations/server-configuration-parameters/settings#background_fetches_pool_size) 设置限制，并且可以在重启服务器时进行调整。
+`ReplicatedMergeTree` 引擎使用单独的线程池来处理复制数据拉取（replicated fetches）。该线程池的大小由 [background&#95;fetches&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_fetches_pool_size) 设置限制，并且可以在重启服务器时进行调整。
 
 默认情况下，INSERT 查询只等待来自一个副本的数据写入确认。如果数据仅成功写入一个副本，而该副本所在的服务器随之完全宕机，则已存储的数据会丢失。要启用从多个副本获取写入确认的能力，请使用 `insert_quorum` 选项。
 
 每个数据块的写入是原子的。INSERT 查询会被拆分为最多 `max_insert_block_size = 1048576` 行的数据块。换句话说，如果 `INSERT` 查询中少于 1048576 行，则整个查询是以原子方式完成的。
 
-数据块会被去重。对于多次写入同一个数据块（具有相同大小、包含相同行且行顺序相同的数据块），该数据块只会被写入一次。这样设计的原因在于，网络故障时客户端应用可能不知道数据是否已写入数据库，因此可以直接重试 `INSERT` 查询。对于包含相同数据的 INSERT 来说，它被发送到了哪个副本并不重要。`INSERT` 操作是幂等的。去重参数由 [merge_tree](/operations/server-configuration-parameters/settings.md/#merge_tree) 服务器设置控制。
+数据块会被去重。对于多次写入同一个数据块（具有相同大小、包含相同行且行顺序相同的数据块），该数据块只会被写入一次。这样设计的原因在于，网络故障时客户端应用可能不知道数据是否已写入数据库，因此可以直接重试 `INSERT` 查询。对于包含相同数据的 INSERT 来说，它被发送到了哪个副本并不重要。`INSERT` 操作是幂等的。去重参数由 [merge&#95;tree](/operations/server-configuration-parameters/settings.md/#merge_tree) 服务器设置控制。
 
 在复制过程中，只有要插入的源数据会通过网络传输。后续的数据转换（合并）会在所有副本上以相同方式进行协调并执行。这样可以最大限度地减少网络使用量，这意味着当副本位于不同数据中心时，复制依然工作良好。（注意，将数据复制到不同数据中心是复制的主要目标。）
 
@@ -177,13 +177,13 @@ SAMPLE BY intHash32(UserID);
   <summary>已弃用语法示例</summary>
 
   ```sql
-CREATE TABLE table_name
-(
+  CREATE TABLE table_name
+  (
     EventDate DateTime,
     CounterID UInt32,
     UserID UInt32
-) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-```
+  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+  ```
 </details>
 
 如该示例所示，这些参数可以在花括号中包含可替换的占位符。替换后的值取自配置文件的 [macros](/operations/server-configuration-parameters/settings.md/#macros) 部分。
@@ -275,10 +275,10 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 如果某台服务器上的所有数据和元数据都丢失了，请按以下步骤进行恢复：
 
-1.  在该服务器上安装 ClickHouse。在包含分片标识符和副本信息（如使用副本）的配置文件中正确配置 substitutions。
-2.  如果有需要在服务器上手动复制的非复制表（unreplicated tables），请从副本中拷贝其数据（目录 `/var/lib/clickhouse/data/db_name/table_name/`）。
-3.  从副本中拷贝位于 `/var/lib/clickhouse/metadata/` 的表定义。如果在表定义中显式定义了分片或副本标识符，请更正为与此副本相对应。（或者，启动服务器并执行所有本应位于 `/var/lib/clickhouse/metadata/` 目录下 .sql 文件中的 `ATTACH TABLE` 查询。）
-4.  要开始恢复，请在 ClickHouse Keeper 中创建节点 `/path_to_table/replica_name/flags/force_restore_data`（内容任意），或者运行命令以恢复所有复制表：`sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data`
+1. 在该服务器上安装 ClickHouse。在包含分片标识符和副本信息（如使用副本）的配置文件中正确配置 substitutions。
+2. 如果有需要在服务器上手动复制的非复制表（unreplicated tables），请从副本中拷贝其数据（目录 `/var/lib/clickhouse/data/db_name/table_name/`）。
+3. 从副本中拷贝位于 `/var/lib/clickhouse/metadata/` 的表定义。如果在表定义中显式定义了分片或副本标识符，请更正为与此副本相对应。（或者，启动服务器并执行所有本应位于 `/var/lib/clickhouse/metadata/` 目录下 .sql 文件中的 `ATTACH TABLE` 查询。）
+4. 要开始恢复，请在 ClickHouse Keeper 中创建节点 `/path_to_table/replica_name/flags/force_restore_data`（内容任意），或者运行命令以恢复所有复制表：`sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data`
 
 然后启动服务器（如果已经在运行，则重启）。数据会从其他副本中下载。
 
@@ -326,8 +326,8 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 如果希望在不启动服务器的情况下移除 `ReplicatedMergeTree` 表：
 
-- 删除元数据目录（`/var/lib/clickhouse/metadata/`）中对应的 `.sql` 文件。
-- 删除 ClickHouse Keeper 中相应的路径（`/path_to_table/replica_name`）。
+* 删除元数据目录（`/var/lib/clickhouse/metadata/`）中对应的 `.sql` 文件。
+* 删除 ClickHouse Keeper 中相应的路径（`/path_to_table/replica_name`）。
 
 完成上述操作后，可以启动服务器，创建一个 `MergeTree` 表，将数据移动到该表的数据目录中，然后重启服务器。
 
@@ -337,8 +337,8 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 **另请参阅**
 
-- [background_schedule_pool_size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size)
-- [background_fetches_pool_size](/operations/server-configuration-parameters/settings.md/#background_fetches_pool_size)
-- [execute_merges_on_single_replica_time_threshold](/operations/settings/merge-tree-settings#execute_merges_on_single_replica_time_threshold)
-- [max_replicated_fetches_network_bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_fetches_network_bandwidth)
-- [max_replicated_sends_network_bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_sends_network_bandwidth)
+* [background&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_schedule_pool_size)
+* [background&#95;fetches&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_fetches_pool_size)
+* [execute&#95;merges&#95;on&#95;single&#95;replica&#95;time&#95;threshold](/operations/settings/merge-tree-settings#execute_merges_on_single_replica_time_threshold)
+* [max&#95;replicated&#95;fetches&#95;network&#95;bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_fetches_network_bandwidth)
+* [max&#95;replicated&#95;sends&#95;network&#95;bandwidth](/operations/settings/merge-tree-settings.md/#max_replicated_sends_network_bandwidth)

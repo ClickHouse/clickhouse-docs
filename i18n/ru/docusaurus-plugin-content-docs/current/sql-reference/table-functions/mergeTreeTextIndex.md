@@ -20,7 +20,6 @@ doc_type: 'reference'
 mergeTreeTextIndex(database, table, index_name)
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Аргумент     | Описание                                          |

@@ -12,7 +12,7 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 
 ## Синтаксис \{#syntax\}
 
-<Syntax/>
+<Syntax />
 
 ## Настройка BACKUP / RESTORE для использования конечной точки AzureBlobStorage \{#configuring-backuprestore-to-use-an-azureblobstorage-endpoint\}
 

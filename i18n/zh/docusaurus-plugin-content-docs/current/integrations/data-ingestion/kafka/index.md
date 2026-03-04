@@ -93,9 +93,9 @@ Kafka Connect 是一个开源框架，作为集中式数据枢纽，用于在 Ka
 
 | 产品 | 优点 | 缺点 |
 |---------|-----------|------------|
-| **ClickPipes for Kafka** | • 面向高吞吐与低延迟的可扩展架构<br/>• 内置监控和 schema 管理<br/>• 私有网络连接（通过 PrivateLink）<br/>• 支持 SSL/TLS 认证和 IAM 授权<br/>• 支持以编程方式配置（Terraform、API endpoints） | • 不支持向 Kafka 推送数据<br/>• 至少一次（at-least-once）语义 |
-| **Kafka Connect Sink** | • 精确一次（exactly-once）语义<br/>• 允许对数据转换、批处理和错误处理进行精细控制<br/>• 可以部署在私有网络中<br/>• 通过 Debezium 允许对 ClickPipes 尚未支持的数据库进行实时复制 | • 不支持向 Kafka 推送数据<br/>• 搭建和运维复杂<br/>• 需要 Kafka 和 Kafka Connect 方面的专业知识 |
-| **Kafka table engine** | • 支持[向 Kafka 推送数据](./kafka-table-engine.md/#clickhouse-to-kafka)<br/>• 搭建和运维简单 | • 至少一次（at-least-once）语义<br/>• 对消费者的水平扩展能力有限，无法与 ClickHouse 服务器解耦并独立扩展<br/>• 错误处理和调试选项有限<br/>• 需要 Kafka 方面的专业知识 |
+| **ClickPipes for Kafka** | • 面向高吞吐与低延迟的可扩展架构<br />• 内置监控和 schema 管理<br />• 私有网络连接（通过 PrivateLink）<br />• 支持 SSL/TLS 认证和 IAM 授权<br />• 支持以编程方式配置（Terraform、API endpoints） | • 不支持向 Kafka 推送数据<br />• 至少一次（at-least-once）语义 |
+| **Kafka Connect Sink** | • 精确一次（exactly-once）语义<br />• 允许对数据转换、批处理和错误处理进行精细控制<br />• 可以部署在私有网络中<br />• 通过 Debezium 允许对 ClickPipes 尚未支持的数据库进行实时复制 | • 不支持向 Kafka 推送数据<br />• 搭建和运维复杂<br />• 需要 Kafka 和 Kafka Connect 方面的专业知识 |
+| **Kafka table engine** | • 支持[向 Kafka 推送数据](./kafka-table-engine.md/#clickhouse-to-kafka)<br />• 搭建和运维简单 | • 至少一次（at-least-once）语义<br />• 对消费者的水平扩展能力有限，无法与 ClickHouse 服务器解耦并独立扩展<br />• 错误处理和调试选项有限<br />• 需要 Kafka 方面的专业知识 |
 
 ### 其他选项 \{#other-options\}
 

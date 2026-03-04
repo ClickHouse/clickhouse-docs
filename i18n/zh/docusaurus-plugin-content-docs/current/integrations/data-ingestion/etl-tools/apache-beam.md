@@ -12,10 +12,9 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 集成 Apache Beam 与 ClickHouse \{#integrating-apache-beam-and-clickhouse\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 **Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流式（连续）数据处理管道。Apache Beam 的灵活性体现在它能够支持广泛的数据处理场景，从 ETL（抽取、转换、加载）操作到复杂事件处理和实时分析。
 本集成在数据写入层使用了 ClickHouse 官方的 [JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)。
@@ -45,7 +44,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 :::
 
 相关构件可以在[官方 Maven 仓库](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)中找到。
-
 
 ### 代码示例 \{#code-example\}
 
@@ -103,7 +101,6 @@ public class Main {
 
 ```
 
-
 ## 支持的数据类型 \{#supported-data-types\}
 
 | ClickHouse                         | Apache Beam                | 是否支持 | 说明                                                                                                                                     |
@@ -126,7 +123,7 @@ public class Main {
 | `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`   | ✅        |                                                                                                                                          |
 | `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN`  | ✅        |                                                                                                                                          |
 | `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`      | ✅        |                                                                                                                                          |
-| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅        | `FixedBytes` 是一种 `LogicalType`，表示固定长度的<br/>字节数组，定义在<br/>`org.apache.beam.sdk.schemas.logicaltypes` 包中 |
+| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅        | `FixedBytes` 是一种 `LogicalType`，表示固定长度的<br />字节数组，定义在<br />`org.apache.beam.sdk.schemas.logicaltypes` 包中 |
 |                                    | `Schema.TypeName#DECIMAL`  | ❌        |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌        |                                                                                                                                          |
 

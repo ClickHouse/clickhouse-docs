@@ -21,21 +21,20 @@ ClickStack 中的事件模式可以通过自动将相似的消息聚类在一起
 
 除了用于故障响应之外，这种高层次视图还能帮助你识别可以精简以降低成本的噪声日志来源、发现某个服务产生的不同类型日志，并更快速地回答系统是否已经发出了你所关心的关键信号等问题。
 
-
 ## 访问事件模式 \{#accessing-event-patterns\}
 
-可以直接通过 ClickStack 中的 **Search** 面板访问事件模式。  
+可以直接通过 ClickStack 中的 **Search** 面板访问事件模式。
 
-在左上角的 **Analysis Mode** 选择器中选择 **Event Patterns**，即可从标准结果表切换到相似事件的聚类视图。  
+在左上角的 **Analysis Mode** 选择器中选择 **Event Patterns**，即可从标准结果表切换到相似事件的聚类视图。
 
-<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg" />
 
 这提供了相对于默认 **Results Table** 的另一种视图，默认视图允许你逐条滚动浏览每一条日志或跟踪（trace）。
 
 ## 建议 \{#recommendations\}
 
-将事件模式应用于数据的**更窄子集**时效果最佳。比如，在启用事件模式之前先筛选到单个服务，通常比一次性在上千个服务上应用模式，更容易发现更相关、更有价值的消息。  
+将事件模式应用于数据的**更窄子集**时效果最佳。比如，在启用事件模式之前先筛选到单个服务，通常比一次性在上千个服务上应用模式，更容易发现更相关、更有价值的消息。
 
-事件模式在汇总错误消息时也尤其强大；具有不同 ID 或负载的重复错误会被聚合成简洁的簇。  
+事件模式在汇总错误消息时也尤其强大；具有不同 ID 或负载的重复错误会被聚合成简洁的簇。
 
 要查看在线示例，请参考在 [Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns) 中如何使用事件模式。

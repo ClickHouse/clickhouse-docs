@@ -34,20 +34,19 @@ function_config.prefer_pandas()  # Default to pandas
 function_config.reset()
 ```
 
-
 ### Когда использовать \{#when-to-use\}
 
 **Принудительно использовать chdb для:**
 
-- Функций с более высокой производительностью в ClickHouse
-- Функций, которые выигрывают от SQL-оптимизации
-- Масштабных операций со строками и датой/временем
+* Функций с более высокой производительностью в ClickHouse
+* Функций, которые выигрывают от SQL-оптимизации
+* Масштабных операций со строками и датой/временем
 
 **Принудительно использовать pandas для:**
 
-- Функций с поведением, специфичным для pandas
-- Случаев, когда требуется полная совместимость с pandas
-- Пользовательских строковых операций
+* Функций с поведением, специфичным для pandas
+* Случаев, когда требуется полная совместимость с pandas
+* Пользовательских строковых операций
 
 ### Пример \{#function-example\}
 
@@ -73,7 +72,6 @@ ds['name_upper'] = ds['name'].str.upper()
 
 ***
 
-
 ## Общие функции \{#overlapping\}
 
 159+ функций доступны как в движках chdb, так и pandas:
@@ -88,10 +86,10 @@ ds['name_upper'] = ds['name'].str.upper()
 Для общих функций движок выбирается на основе:
 
 1. Явной настройки функции (если указана)
-2. Глобальной настройки параметра execution_engine
+2. Глобальной настройки параметра execution&#95;engine
 3. Автоматического выбора на основе контекста
 
----
+***
 
 ## Функции, доступные только в chdb \{#chdb-only\}
 
@@ -109,7 +107,7 @@ ds['name_upper'] = ds['name'].str.upper()
 
 Эти функции автоматически используют движок chdb независимо от конфигурации.
 
----
+***
 
 ## Функции, доступные только в pandas \{#pandas-only\}
 
@@ -124,7 +122,7 @@ ds['name_upper'] = ds['name'].str.upper()
 
 Эти функции автоматически используют движок pandas вне зависимости от конфигурации.
 
----
+***
 
 ## Коррекция типов данных (Dtype) \{#dtype-correction\}
 
@@ -151,7 +149,6 @@ config.set_correction_level(CorrectionLevel.MEDIUM)
 # All - correct all possible types
 config.set_correction_level(CorrectionLevel.ALL)
 ```
-
 
 ### Подробное описание уровней коррекции \{#level-details\}
 
@@ -188,7 +185,6 @@ config.set_correction_level(CorrectionLevel.ALL)
 
 ***
 
-
 ## API конфигурации функций \{#api\}
 
 ### Объект `function_config` \{#function-config-object\}
@@ -211,7 +207,6 @@ function_config.reset()
 function_config.get_engine('length')  # Returns 'chdb', 'pandas', or 'auto'
 ```
 
-
 ### Переопределение на уровне вызова \{#per-call\}
 
 Некоторые методы поддерживают переопределение движка на уровне отдельного вызова:
@@ -223,7 +218,6 @@ ds['result'] = ds['col'].str.upper(engine='pandas')
 
 ***
 
-
 ## Лучшие практики \{#best-practices\}
 
 ### 1. Сначала используйте настройки по умолчанию \{#start-with-defaults\}
@@ -232,7 +226,6 @@ ds['result'] = ds['col'].str.upper(engine='pandas')
 # Use auto mode, let DataStore decide
 config.use_auto()
 ```
-
 
 ### 2. Настройка под конкретные типы нагрузок \{#configure-for-specific-workloads\}
 
@@ -244,7 +237,6 @@ function_config.use_chdb('length', 'substring', 'concat')
 function_config.use_pandas('upper', 'lower')
 ```
 
-
 ### 3. Используйте соответствующий уровень исправления \{#use-appropriate-correction-level\}
 
 ```python
@@ -254,7 +246,6 @@ config.set_correction_level(CorrectionLevel.ALL)
 # Production: stricter
 config.set_correction_level(CorrectionLevel.HIGH)
 ```
-
 
 ### 4. Протестируйте оба движка \{#test-both-engines\}
 

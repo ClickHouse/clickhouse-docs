@@ -30,7 +30,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关请求参数的描述，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
 
-
 ### SummingMergeTree 的参数 \{#parameters-of-summingmergetree\}
 
 #### 列 \{#columns\}
@@ -52,13 +51,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-```
+  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+  ```
 
   除 `columns` 之外的所有参数与 `MergeTree` 中的含义相同。
 
@@ -97,7 +96,6 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 │   1 │          3 │
 └─────┴────────────┘
 ```
-
 
 ## 数据处理 \{#data-processing\}
 
@@ -190,7 +188,6 @@ ARRAY JOIN
 
 对于嵌套数据结构，无需在用于求和的列元组中显式指定其中的列。
 
-
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* 博客文章：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

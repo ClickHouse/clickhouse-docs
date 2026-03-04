@@ -12,7 +12,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## 客户自管 VPC（BYO-VPC） \{#customer-managed-vpc\}
 
 :::note
@@ -32,7 +31,7 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 
 <Image img={byoc_subnet_2} size="lg" alt="BYOC VPC 子网标签" />
 
-### 配置 S3 网关终端节点（Gateway Endpoint）\{#configure-s3-endpoint\}
+### 配置 S3 网关终端节点（Gateway Endpoint） \{#configure-s3-endpoint\}
 
 如果您的 VPC 尚未配置 S3 网关终端节点，则需要创建一个，以便在 VPC 与 Amazon S3 之间启用安全、私有的通信。通过该终端节点，ClickHouse 服务可以在不经过公共互联网的情况下访问 S3。请参考下方截图中的示例配置。
 
@@ -40,10 +39,10 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 
 ### 确保网络连通性 \{#ensure-network-connectivity\}
 
-**出站互联网访问**  
+**出站互联网访问**\
 您的 VPC 至少需要允许出站互联网访问，以便 ClickHouse BYOC 组件能够与 Tailscale 控制平面通信。Tailscale 用于为私有管理操作提供安全的零信任网络。与 Tailscale 的初始注册和设置需要公共互联网连接，可以通过直连互联网或通过 NAT 网关实现。为确保 BYOC 部署的隐私性和安全性，必须具备上述连通性。
 
-**DNS 解析**  
+**DNS 解析**\
 确保您的 VPC 具备正常工作的 DNS 解析能力，且不会阻止、干扰或覆盖标准 DNS 名称。ClickHouse BYOC 依赖 DNS 来解析 Tailscale 控制服务器以及 ClickHouse 服务端点。如果 DNS 不可用或配置错误，BYOC 服务可能无法正常连接或正常运行。
 
 ### 配置你的 AWS 账户 \{#configure-aws-account\}
@@ -68,7 +67,7 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 * 您为 ClickHouse 分配的私有子网 ID
 * 这些子网所在的可用区
 
-我们的团队会审核您的配置，并在我们这边完成资源的开通与配置工作。 
+我们的团队会审核您的配置，并在我们这边完成资源的开通与配置工作。
 
 ## 客户自管理 IAM 角色 \{#customer-managed-iam-roles\}
 
@@ -82,6 +81,6 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 * 为 ClickHouse Cloud 提供预先配置的 IAM 角色以供使用
 * 移除用于跨账户访问的 `ClickHouseManagementRole` 对 IAM 相关权限的写入权限
 * 完全掌控角色权限和信任关系
-:::
+  :::
 
 有关 ClickHouse Cloud 默认创建的 IAM 角色的信息，请参阅 [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge)。

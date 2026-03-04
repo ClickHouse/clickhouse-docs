@@ -230,6 +230,7 @@ LIMIT 3;
 ```
 
 ## 故障排查 \{#troubleshooting\}
+
 您可以在 DEBUG 级别日志中看到生成的 MongoDB 查询。
 
 实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 的文档中找到。

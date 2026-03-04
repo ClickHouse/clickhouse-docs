@@ -6,7 +6,7 @@ title: 'system.row_policies'
 doc_type: 'reference'
 ---
 
-# system.row&#95;policies \{#systemrow_policies\}
+# system.row_policies \{#systemrow_policies\}
 
 Содержит фильтры для одной определённой таблицы, а также список ролей и/или пользователей, которые должны использовать эту политику строк.
 
@@ -30,4 +30,4 @@ doc_type: 'reference'
 
 ## См. также \{#see-also\}
 
-- [SHOW POLICIES](/sql-reference/statements/show#show-policies)
+* [SHOW POLICIES](/sql-reference/statements/show#show-policies)

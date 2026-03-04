@@ -14,11 +14,11 @@ doc_type: 'reference'
 
 > Кэш страниц в пространстве пользователя — это новый механизм кэширования, который позволяет хранить данные в памяти процесса, а не полагаться на страничный кэш ОС.
 
-ClickHouse уже предлагает [Filesystem cache](/docs/operations/storing-data) 
-для кэширования поверх удалённого объектного хранилища, такого как Amazon S3, Google 
-Cloud Storage (GCS) или Azure Blob Storage. Кэш страниц в пространстве пользователя предназначен 
-для ускорения доступа к удалённым данным, когда обычное кэширование ОС работает 
-недостаточно эффективно. 
+ClickHouse уже предлагает [Filesystem cache](/docs/operations/storing-data)
+для кэширования поверх удалённого объектного хранилища, такого как Amazon S3, Google
+Cloud Storage (GCS) или Azure Blob Storage. Кэш страниц в пространстве пользователя предназначен
+для ускорения доступа к удалённым данным, когда обычное кэширование ОС работает
+недостаточно эффективно.
 
 Он отличается от кэша файловой системы следующим:
 
@@ -72,5 +72,6 @@ SET use_page_cache_for_disks_without_file_cache=1;
 | `page_cache_shards`                                     | Разбивать userspace page cache на указанное количество шардов для снижения конкуренции за мьютексы. Экспериментальная настройка, маловероятно, что улучшит производительность.                                                                                                                                                         | `4`         |
 
 ## Связанные материалы \{#related-content\}
-- [Кэш файловой системы](/docs/operations/storing-data)
-- [Вебинар по релизу ClickHouse v25.3](https://www.youtube.com/live/iCKEzp0_Z2Q?feature=shared&t=1320)
+
+* [Кэш файловой системы](/docs/operations/storing-data)
+* [Вебинар по релизу ClickHouse v25.3](https://www.youtube.com/live/iCKEzp0_Z2Q?feature=shared\&t=1320)

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## 描述 \{#description\}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
 聚合函数，用于在固定数量的区间（`N`）内统计指定键列的取值次数。
 
@@ -60,5 +60,6 @@ FROM avg_wage;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

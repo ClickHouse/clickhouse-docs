@@ -13,8 +13,8 @@ doc_type: 'guide'
 
 在前面的指南中，你在原始位置就地查询开放表格式的数据，并将其加载到 MergeTree 中以实现快速分析。在许多架构中，数据还需要沿相反方向流动——从 ClickHouse 回写到湖仓格式。通常出于以下两种场景的需求：
 
-- **卸载到长期存储** - 数据首先进入 ClickHouse，作为实时分析层，为仪表盘和运维报表提供支持。当数据超出其实时分析窗口后，可以将其写出到对象存储中的 Iceberg，以一种持久、具备成本效益且可互操作的格式进行保留。
-- **Reverse ETL** - 在 ClickHouse 内执行的转换、聚合和增强（enrichment）操作会生成派生数据集，下游工具和其他团队需要消费这些数据。将这些结果写入 Iceberg 表，可以让它们在更广泛的数据生态系统中可用。
+* **卸载到长期存储** - 数据首先进入 ClickHouse，作为实时分析层，为仪表盘和运维报表提供支持。当数据超出其实时分析窗口后，可以将其写出到对象存储中的 Iceberg，以一种持久、具备成本效益且可互操作的格式进行保留。
+* **Reverse ETL** - 在 ClickHouse 内执行的转换、聚合和增强（enrichment）操作会生成派生数据集，下游工具和其他团队需要消费这些数据。将这些结果写入 Iceberg 表，可以让它们在更广泛的数据生态系统中可用。
 
 在这两种情况下，`INSERT INTO SELECT` 都可以用于将数据从 ClickHouse 表移动到存储在对象存储中的 Iceberg 表中。
 
@@ -96,7 +96,6 @@ FROM url(
 Peak memory usage: 485.15 MiB.
 ```
 
-
 ## 将数据写入 Iceberg 表 \{#write-iceberg\}
 
 ### 创建 Iceberg 表 \{#create-iceberg-table\}
@@ -126,7 +125,6 @@ CREATE TABLE uk.uk_iceberg
 ENGINE = IcebergS3('https://datasets-documentation.s3.amazonaws.com/lake_formats/iceberg_uk_price_paid/', '<aws_access_key>', '<aws_secret_key>', '<session_token>')
 ```
 
-
 ### 插入数据子集 \{#insert-subset\}
 
 使用 `INSERT INTO SELECT` 将 MergeTree 表中的数据写入 Iceberg 表。在此示例中，我们仅写入伦敦的交易记录：
@@ -141,7 +139,6 @@ WHERE town = 'LONDON'
 2346741 rows in set. Elapsed: 1.419 sec. Processed 30.91 million rows, 153.43 MB (21.78 million rows/s., 108.15 MB/s.)
 Peak memory usage: 371.60 MiB.
 ```
-
 
 ### 查询 Iceberg 表 \{#query-iceberg\}
 
@@ -174,7 +171,6 @@ LIMIT 10
 Peak memory usage: 12.19 MiB.
 ```
 
-
 ## 写入聚合结果 \{#write-aggregates\}
 
 Iceberg 表不仅限于存储原始行。它们还可以保存聚合与转换的输出——即在 ClickHouse 内执行的 ETL 流程结果。这对于将预计算的汇总结果发布到数据湖仓以供下游消费非常有用。
@@ -190,7 +186,6 @@ CREATE TABLE uk.uk_avg_town
 ENGINE = IcebergS3('https://datasets-documentation.s3.amazonaws.com/lake_formats/iceberg_uk_avg_town/', '<aws_access_key>', '<aws_secret_key>', '<session_token>')
 ```
 
-
 ### 插入聚合数据 \{#insert-aggregates\}
 
 按城镇计算平均房价，并将结果直接写入 Iceberg 表中：
@@ -205,7 +200,6 @@ GROUP BY town
 1173 rows in set. Elapsed: 0.480 sec. Processed 30.91 million rows, 185.44 MB (64.34 million rows/s., 386.05 MB/s.)
 Peak memory usage: 4.18 MiB.
 ```
-
 
 ### 查询聚合表 \{#query-aggregates\}
 

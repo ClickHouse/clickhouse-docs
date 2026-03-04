@@ -11,7 +11,7 @@ ClickHouse поддерживает геометрические типы дан
 
 **См. также**
 
-- [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
+* [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
 
 ## Point \{#point\}
 
@@ -35,7 +35,6 @@ SELECT p, toTypeName(p) FROM geo_point;
 └─────────┴───────────────┘
 ```
 
-
 ## Кольцо \{#ring\}
 
 `Ring` — это простой многоугольник без отверстий, хранящийся в виде массива точек: [Array](array.md)([Point](#point)).
@@ -57,7 +56,6 @@ SELECT r, toTypeName(r) FROM geo_ring;
 │ [(0,0),(10,0),(10,10),(0,10)] │ Ring          │
 └───────────────────────────────┴───────────────┘
 ```
-
 
 ## LineString \{#linestring\}
 
@@ -81,7 +79,6 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 └───────────────────────────────┴───────────────┘
 ```
 
-
 ## MultiLineString \{#multilinestring\}
 
 `MultiLineString` — это несколько линий, хранящихся в виде массива `LineString`: [Array](array.md)([LineString](#linestring)).
@@ -103,7 +100,6 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 │ [[(0,0),(10,0),(10,10),(0,10)],[(1,1),(2,2),(3,3)]] │ MultiLineString │
 └─────────────────────────────────────────────────────┴─────────────────┘
 ```
-
 
 ## Многоугольник \{#polygon\}
 
@@ -127,7 +123,6 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 └───────────────────────────────────────────────────────────────┴────────────────┘
 ```
 
-
 ## MultiPolygon \{#multipolygon\}
 
 `MultiPolygon` состоит из нескольких полигонов и хранится как массив полигонов: [Array](array.md)([Polygon](#polygon)).
@@ -149,7 +144,6 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 │ [[[(0,0),(10,0),(10,10),(0,10)]],[[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]]] │ MultiPolygon    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
-
 
 ## Геометрия \{#geometry\}
 
@@ -199,7 +193,6 @@ SELECT * FROM geo_dst;
    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## Связанные материалы \{#related-content\}
 
-- [Исследование масштабных реальных наборов данных: более чем 100 лет метеорологических наблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+* [Исследование масштабных реальных наборов данных: более чем 100 лет метеорологических наблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

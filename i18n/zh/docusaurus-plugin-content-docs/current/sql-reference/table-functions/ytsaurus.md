@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ytsaurus 表函数 \{#ytsaurus-table-function\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 此表函数用于从 YTsaurus 集群读取数据。
 
@@ -30,10 +30,10 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 
 ## 参数 \{#arguments\}
 
-- `http_proxy_url` — YTsaurus HTTP 代理的 URL。
-- `cypress_path` — 指向数据源的 Cypress 路径。
-- `oauth_token` — OAuth 令牌。
-- `format` — 数据源的[格式](/interfaces/formats)。
+* `http_proxy_url` — YTsaurus HTTP 代理的 URL。
+* `cypress_path` — 指向数据源的 Cypress 路径。
+* `oauth_token` — OAuth 令牌。
+* `format` — 数据源的[格式](/interfaces/formats)。
 
 **返回值**
 
@@ -41,4 +41,4 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 
 **另请参阅**
 
-- [YTsaurus 引擎](/engines/table-engines/integrations/ytsaurus.md)
+* [YTsaurus 引擎](/engines/table-engines/integrations/ytsaurus.md)

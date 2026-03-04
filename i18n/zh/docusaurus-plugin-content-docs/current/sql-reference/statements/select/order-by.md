@@ -10,12 +10,12 @@ doc_type: 'reference'
 
 `ORDER BY` 子句包含：
 
-- 表达式列表，例如 `ORDER BY visits, search_phrase`，
-- 引用 `SELECT` 子句中列的数字列表，例如 `ORDER BY 2, 1`，或者
-- `ALL`，表示 `SELECT` 子句中的所有列，例如 `ORDER BY ALL`。
+* 表达式列表，例如 `ORDER BY visits, search_phrase`，
+* 引用 `SELECT` 子句中列的数字列表，例如 `ORDER BY 2, 1`，或者
+* `ALL`，表示 `SELECT` 子句中的所有列，例如 `ORDER BY ALL`。
 
-要禁用按列序号排序，将设置项 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设为 0。
-要禁用按 `ALL` 排序，将设置项 [enable_order_by_all](/operations/settings/settings#enable_order_by_all) 设为 0。
+要禁用按列序号排序，将设置项 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) 设为 0。
+要禁用按 `ALL` 排序，将设置项 [enable&#95;order&#95;by&#95;all](/operations/settings/settings#enable_order_by_all) 设为 0。
 
 `ORDER BY` 子句可以带有 `DESC`（降序）或 `ASC`（升序）修饰符，用于指定排序方向。
 如果未显式指定排序顺序，则默认使用 `ASC`。
@@ -266,7 +266,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 ## 数据读取优化 \{#optimization-of-data-reading\}
 
-如果 `ORDER BY` 表达式的前缀与表的排序键前缀一致，则可以通过使用 [optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order) 设置来优化查询。
+如果 `ORDER BY` 表达式的前缀与表的排序键前缀一致，则可以通过使用 [optimize&#95;read&#95;in&#95;order](../../../operations/settings/settings.md#optimize_read_in_order) 设置来优化查询。
 
 当启用 `optimize_read_in_order` 设置时，ClickHouse 服务器会使用表索引，并按照 `ORDER BY` 键的顺序读取数据。这样在指定了 [LIMIT](../../../sql-reference/statements/select/limit.md) 的情况下，可以避免读取全部数据。因此，对于数据量很大但 LIMIT 值较小的查询，请求处理会更快。
 
@@ -278,9 +278,9 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 该优化支持以下表引擎：
 
-- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)（包括[物化视图](/sql-reference/statements/create/view#materialized-view)），
-- [Merge](../../../engines/table-engines/special/merge.md)，
-- [Buffer](../../../engines/table-engines/special/buffer.md)
+* [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)（包括[物化视图](/sql-reference/statements/create/view#materialized-view)），
+* [Merge](../../../engines/table-engines/special/merge.md)，
+* [Buffer](../../../engines/table-engines/special/buffer.md)
 
 在 `MaterializedView` 引擎的表中，该优化适用于类似 `SELECT ... FROM merge_tree_table ORDER BY pk` 的视图。但对于类似 `SELECT ... FROM view ORDER BY pk` 的查询，如果视图定义中的查询本身没有 `ORDER BY` 子句，则不支持该优化。
 
@@ -672,4 +672,4 @@ INTERPOLATE ( value AS 9999 )
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

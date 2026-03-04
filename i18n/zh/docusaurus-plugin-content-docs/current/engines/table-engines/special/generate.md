@@ -13,8 +13,8 @@ doc_type: 'reference'
 
 使用示例：
 
-- 在测试中用于填充可复现的大规模表数据。
-- 为模糊测试（fuzzing）生成随机输入。
+* 在测试中用于填充可复现的大规模表数据。
+* 为模糊测试（fuzzing）生成随机输入。
 
 ## 在 ClickHouse Server 中的使用 \{#usage-in-clickhouse-server\}
 
@@ -52,9 +52,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## 实现细节 \{#details-of-implementation\}
 
-- 不支持：
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - `INSERT`
-  - 索引
-  - 复制
+* 不支持：
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * `INSERT`
+  * 索引
+  * 复制

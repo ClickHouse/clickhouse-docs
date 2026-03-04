@@ -21,7 +21,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 # 将 ClickHouse 连接到 Deepnote \{#connect-clickhouse-to-deepnote\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 <a href="https://www.deepnote.com/" target="_blank">Deepnote</a> 是一款协作数据笔记本，旨在帮助团队发现和共享洞察。除了兼容 Jupyter 之外，它还可在云端运行，为您提供一个集中化的协作空间，以便高效开展数据科学项目。
 
@@ -45,7 +45,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 <Image size="md" img={deepnote_02} alt="ClickHouse 详情对话框" border />
 
-**_注意：_** 如果您通过 IP 访问列表限制对 ClickHouse 的访问，则可能需要将 Deepnote 的 IP 地址加入允许列表。详细信息请参阅 [Deepnote 的文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)。
+***注意：*** 如果您通过 IP 访问列表限制对 ClickHouse 的访问，则可能需要将 Deepnote 的 IP 地址加入允许列表。详细信息请参阅 [Deepnote 的文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)。
 
 3. 恭喜！您已在 Deepnote 中成功集成 ClickHouse。
 
@@ -56,4 +56,5 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
    <Image size="lg" img={deepnote_03} alt="ClickHouse 详情对话框" border />
 
 2. 现在创建一个新的 ClickHouse 查询块并查询你的数据库。查询结果会被保存为一个 DataFrame，并存储在 SQL 块中指定的变量中。
+
 3. 你也可以将任意现有的 [SQL 块](https://docs.deepnote.com/features/sql-cells) 转换为 ClickHouse 块。

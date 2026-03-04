@@ -35,7 +35,6 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # ClickStack - 示例日志、追踪和指标 \{#clickstack-sample-dataset\}
 
 本指南通过一个示例数据集演示 ClickStack 开源版和托管版的使用方式。
@@ -45,19 +44,19 @@ import TabItem from '@theme/TabItem';
     <VerticalStepper headerLevel="h3">
       以下指南假设您已完成[托管 ClickStack 入门指南](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)并已[记录连接凭据](/use-cases/observability/clickstack/getting-started/managed#next-steps)。
 
-      ### 选择您的服务
+      ### 选择您的服务 \{#select-your-service-managed\}
 
       从 ClickHouse Cloud 主登录页面选择托管 ClickStack 服务。
 
       <Image img={select_service} alt="选择服务" size="lg" />
 
-      ### 导航到 ClickStack UI (HyperDX)
+      ### 导航到 ClickStack UI (HyperDX) \{#navigate-to-the-hyperdx-ui-managed\}
 
       从左侧菜单中选择 `ClickStack`,导航至 ClickStack UI,系统将自动完成身份验证。
 
       <Image img={hyperdx} alt="ClickStack UI" size="lg" />
 
-      ### 下载示例数据
+      ### 下载示例数据 \{#download-sample-data-managed\}
 
       为了在 UI 中填充示例数据,请下载以下文件:
 
@@ -72,7 +71,7 @@ import TabItem from '@theme/TabItem';
 
       此文件包含来自我们公开的 [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) 的示例日志、指标和追踪数据——这是一个包含微服务的简单电子商务应用。将此文件复制到您选择的目录中。
 
-      ### 加载示例数据
+      ### 加载示例数据 \{#load-sample-data-managed\}
 
       要加载此数据,只需将其发送到已部署的 OpenTelemetry (OTel) 收集器的 HTTP 端点。
 
@@ -99,7 +98,7 @@ import TabItem from '@theme/TabItem';
 
       数据加载需要几分钟时间。请等待加载完成后再进行后续步骤。
 
-      ### 探索会话
+      ### 探索会话 \{#explore-sessions-managed\}
 
       假设我们收到用户在支付商品时遇到问题的报告。我们可以使用 HyperDX 的会话回放功能来查看他们的使用体验。
 
@@ -127,7 +126,7 @@ import TabItem from '@theme/TabItem';
 
       选择此 `500` 错误。`Overview` 和 `Column Values` 均未指出问题的来源,仅表明该错误是意外的,并导致了 `Internal Error`。
 
-      ### 探索追踪
+      ### 探索追踪 \{#explore-traces-managed\}
 
       导航至 `Trace` 选项卡以查看完整的分布式跟踪。
 
@@ -147,7 +146,7 @@ import TabItem from '@theme/TabItem';
 
       我们已确定支付服务中的缓存已被填满,导致支付无法完成。
 
-      ### 浏览日志
+      ### 浏览日志 \{#explore-logs-managed\}
 
       如需了解更多详细信息,可以返回到 `Search`:
 
@@ -157,7 +156,7 @@ import TabItem from '@theme/TabItem';
 
       可以看到,虽然该问题是最近才出现的,但受影响的支付数量较多。此外,与 Visa 支付相关的缓存似乎正在引发问题。
 
-      ### 图表指标
+      ### 图表指标 \{#chart-metrics-managed\}
 
       虽然代码中明显引入了错误,但我们可以使用指标来确认缓存大小。导航至 `Chart Explorer` 视图。
 
@@ -171,19 +170,19 @@ import TabItem from '@theme/TabItem';
     以下示例假设您已按照[一体化镜像的说明](/use-cases/observability/clickstack/getting-started/oss)启动开源 ClickStack,并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started/oss#complete-connection-credentials)。
 
     <VerticalStepper headerLevel="h3">
-      ### 导航到 ClickStack UI (HyperDX)
+      ### 导航到 ClickStack UI (HyperDX) \{#navigate-to-the-hyperdx-ui\}
 
       访问 [http://localhost:8080](http://localhost:8080) 以访问 ClickStack UI。
 
       <Image img={hyperdx} alt="ClickStack 用户界面" size="lg" />
 
-      ### 复制摄取 API key
+      ### 复制摄取 API key \{#copy-ingestion-api-key\}
 
       导航至 [`Team Settings`](http://localhost:8080/team) 并从 `API Keys` 部分复制 `Ingestion API Key`。此 API key 可确保通过 OpenTelemetry collector 进行的数据摄取安全可靠。
 
       <Image img={copy_api_key} alt="复制 API 密钥" size="lg" />
 
-      ### 下载示例数据
+      ### 下载示例数据 \{#download-sample-data\}
 
       为了在 UI 中填充示例数据,请下载以下文件:
 
@@ -198,7 +197,7 @@ import TabItem from '@theme/TabItem';
 
       此文件包含来自我们公开的 [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) 的示例日志、指标和追踪数据——这是一个包含微服务的简单电子商务应用。将此文件复制到您选择的目录中。
 
-      ### 加载示例数据
+      ### 加载示例数据 \{#load-sample-data\}
 
       要加载此数据,只需将其发送到已部署的 OpenTelemetry (OTel) 收集器的 HTTP 端点。
 
@@ -232,7 +231,7 @@ import TabItem from '@theme/TabItem';
 
       数据加载需要几分钟时间。请等待加载完成后再进行后续步骤。
 
-      ### 探索会话
+      ### 探索会话 \{#explore-sessions\}
 
       假设我们收到用户在支付商品时遇到问题的报告。我们可以使用 HyperDX 的会话回放功能来查看他们的使用体验。
 
@@ -260,7 +259,7 @@ import TabItem from '@theme/TabItem';
 
       选择此 `500` 错误。`Overview` 和 `Column Values` 均未指出问题的来源,仅表明该错误是意外的,并导致了 `Internal Error`。
 
-      ### 探索追踪
+      ### 探索追踪 \{#explore-traces\}
 
       导航至 `Trace` 选项卡以查看完整的分布式跟踪。
 
@@ -280,7 +279,7 @@ import TabItem from '@theme/TabItem';
 
       我们已确定支付服务中的缓存已被填满,导致支付无法完成。
 
-      ### 浏览日志
+      ### 浏览日志 \{#explore-logs\}
 
       如需了解更多详细信息,我们可以返回 [`Search` 视图](http://localhost:8080/search):
 
@@ -290,7 +289,7 @@ import TabItem from '@theme/TabItem';
 
       可以看到,虽然该问题是最近才出现的,但受影响的支付数量较多。此外,与 Visa 支付相关的缓存似乎正在引发问题。
 
-      ### 图表指标
+      ### 图表指标 \{#chart-metrics\}
 
       虽然代码中明显引入了错误,但我们可以使用指标来确认缓存大小。导航至 `Chart Explorer` 视图。
 

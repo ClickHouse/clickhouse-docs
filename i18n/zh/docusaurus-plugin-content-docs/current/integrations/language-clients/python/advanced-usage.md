@@ -24,8 +24,8 @@ doc_type: 'reference'
 | parameters    | dict or iterable | *None*     | 参见 [parameters description](driver-api.md#parameters-argument)。                                                                                       |
 | settings      | dict             | *None*     | 参见 [settings description](driver-api.md#settings-argument)。                                                                                           |
 | fmt           | str              | *None*     | 生成的字节数据所使用的 ClickHouse 输出格式。（如果未指定，ClickHouse 使用 TSV）                                                                         |
-| use_database  | bool             | True       | 在查询上下文中使用由 ClickHouse Connect 客户端指定的数据库                                                                                              |
-| external_data | ExternalData     | *None*     | 一个包含要在查询中使用的文件或二进制数据的 ExternalData 对象。参见 [Advanced Queries (External Data)](advanced-querying.md#external-data)              |
+| use&#95;database  | bool             | True       | 在查询上下文中使用由 ClickHouse Connect 客户端指定的数据库                                                                                              |
+| external&#95;data | ExternalData     | *None*     | 一个包含要在查询中使用的文件或二进制数据的 ExternalData 对象。参见 [Advanced Queries (External Data)](advanced-querying.md#external-data)              |
 
 调用方有责任处理返回的 `bytes` 对象。请注意，`Client.query_arrow` 只是此方法的一个轻量封装，使用 ClickHouse 的 `Arrow` 输出格式。
 
@@ -40,8 +40,8 @@ doc_type: 'reference'
 | Parameter    | Type                                   | Default    | Description                                                                                 |
 |--------------|----------------------------------------|------------|---------------------------------------------------------------------------------------------|
 | table        | str                                    | *Required* | 简单表名或带数据库前缀的完整表名                                                            |
-| column_names | Sequence[str]                          | *None*     | 插入数据块的列名。如果 `fmt` 参数中未包含列名，则此参数为必需                               |
-| insert_block | str, bytes, Generator[bytes], BinaryIO | *Required* | 要插入的数据。字符串会使用客户端编码进行编码。                                              |
+| column&#95;names | Sequence[str]                          | *None*     | 插入数据块的列名。如果 `fmt` 参数中未包含列名，则此参数为必需                               |
+| insert&#95;block | str, bytes, Generator[bytes], BinaryIO | *Required* | 要插入的数据。字符串会使用客户端编码进行编码。                                              |
 | settings     | dict                                   | *None*     | 参见 [settings 描述](driver-api.md#settings-argument)。                                     |
 | fmt          | str                                    | *None*     | `insert_block` 字节数据的 ClickHouse 输入格式（Input Format）。（如果未指定，ClickHouse 使用 TSV） |
 
@@ -115,7 +115,6 @@ asyncio.run(main())
 
 另请参阅：[run&#95;async 示例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
-
 ## 管理 ClickHouse 会话 ID \{#managing-clickhouse-session-ids\}
 
 每个 ClickHouse 查询都会在一个 ClickHouse “会话”的上下文中执行。会话目前用于两个目的：
@@ -140,7 +139,6 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 或者，将 `autogenerate_session_id=False` 直接传递给 `get_client(...)`。
 
 在这种情况下，ClickHouse Connect 不会发送 `session_id`；服务器不会将各个请求视为同一会话的一部分。临时表和会话级别的设置不会在请求之间保留。
-
 
 ## 自定义 HTTP 连接池 \{#customizing-the-http-connection-pool\}
 

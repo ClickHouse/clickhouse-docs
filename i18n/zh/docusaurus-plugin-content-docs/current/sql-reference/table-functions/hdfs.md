@@ -105,12 +105,12 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件的路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件的大小（字节数）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
+* `_path` — 文件的路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件的大小（字节数）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
 
-## use&#95;hive&#95;partitioning 设置 \{#hive-style-partitioning\}
+## use_hive_partitioning 设置 \{#hive-style-partitioning\}
 
 当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径（`/name=value/`）中检测 Hive 风格的分区方式，并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以下划线 `_` 开头。
 
@@ -124,10 +124,10 @@ SELECT * FROM HDFS('hdfs://hdfs1:9000/data/path/date=*/country=*/code=*/*.parque
 
 ## 存储设置 \{#storage-settings\}
 
-- [hdfs_truncate_on_insert](operations/settings/settings.md#hdfs_truncate_on_insert) - 允许在插入之前截断目标文件。默认关闭。
-- [hdfs_create_new_file_on_insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认关闭。
-- [hdfs_skip_empty_files](operations/settings/settings.md#hdfs_skip_empty_files) - 允许在读取时跳过空文件。默认关闭。
+* [hdfs&#95;truncate&#95;on&#95;insert](operations/settings/settings.md#hdfs_truncate_on_insert) - 允许在插入之前截断目标文件。默认关闭。
+* [hdfs&#95;create&#95;new&#95;file&#95;on&#95;insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认关闭。
+* [hdfs&#95;skip&#95;empty&#95;files](operations/settings/settings.md#hdfs_skip_empty_files) - 允许在读取时跳过空文件。默认关闭。
 
 ## 相关内容 \{#related\}
 
-- [虚拟列](../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [虚拟列](../../engines/table-engines/index.md#table_engines-virtual_columns)

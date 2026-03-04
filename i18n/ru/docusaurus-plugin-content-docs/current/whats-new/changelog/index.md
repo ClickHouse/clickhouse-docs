@@ -364,6 +364,7 @@ doc_type: 'changelog'
 * Список записей файла манифеста теперь пересоздаётся только при необходимости (ранее он пересоздавался на каждой итерации). [#95162](https://github.com/ClickHouse/ClickHouse/pull/95162) ([Daniil Ivanik](https://github.com/divanik)).
 
 #### Улучшения сборки/тестирования/упаковки \{#buildtestingpackaging-improvement\}
+
 * Добавлен набор инструментов для профилирования выделений памяти в SQL-парсере ClickHouse с использованием возможностей профилирования кучи jemalloc. [#94072](https://github.com/ClickHouse/ClickHouse/pull/94072) ([Ilya Yatsishin](https://github.com/qoega)).
 * Добавлен инструмент, упрощающий отладку выделений памяти в парсере. Он использует метрику jemalloc `stats.allocated` до и после разбора запроса в представление AST, чтобы показать, какие объекты были выделены. Также он поддерживает режим профилирования памяти, который сохраняет дамп профиля до и после разбора для построения отчетов о том, где происходили выделения. [#93523](https://github.com/ClickHouse/ClickHouse/pull/93523) ([Ilya Yatsishin](https://github.com/qoega)).
 * Удалены транзитивные включения libc++. [#92523](https://github.com/ClickHouse/ClickHouse/pull/92523) ([Raúl Марín](https://github.com/Algunenano)).

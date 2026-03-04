@@ -17,10 +17,10 @@ doc_type: 'reference'
 
 Движок `DataLakeCatalog` поддерживает следующие каталоги данных:
 
-- **AWS Glue Catalog** — для таблиц Iceberg в средах AWS
-- **Databricks Unity Catalog** — для таблиц Delta Lake и Iceberg
-- **Hive Metastore** — традиционный каталог экосистемы Hadoop
-- **REST Catalogs** — любой каталог, поддерживающий спецификацию Iceberg REST
+* **AWS Glue Catalog** — для таблиц Iceberg в средах AWS
+* **Databricks Unity Catalog** — для таблиц Delta Lake и Iceberg
+* **Hive Metastore** — традиционный каталог экосистемы Hadoop
+* **REST Catalogs** — любой каталог, поддерживающий спецификацию Iceberg REST
 
 ## Создание базы данных \{#creating-a-database\}
 
@@ -61,7 +61,6 @@ catalog_type,
 | `region`                | Регион AWS для сервиса (например, `us-east-1`)                                                                              |
 | `dlf_access_key_id`     | Идентификатор ключа доступа для DLF                                                                                         |
 | `dlf_access_key_secret` | Секретный ключ доступа для DLF                                                                                              |
-
 
 ## Примеры \{#examples\}
 

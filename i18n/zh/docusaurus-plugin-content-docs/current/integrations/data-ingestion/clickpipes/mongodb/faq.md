@@ -35,7 +35,6 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 要了解更多关于处理 JSON 的信息，请参阅我们的 [JSON 使用指南](./quickstart)。
 
-
 ### 如何在 ClickHouse 中展平嵌套的 MongoDB 文档？ \{#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse\}
 
 MongoDB 文档在 ClickHouse 中默认被复制为 JSON 类型，并保留其嵌套结构。你有多种方式可以对这些数据进行展平。如果你希望将数据展平成列，可以使用普通视图、物化视图，或者在查询时直接访问。

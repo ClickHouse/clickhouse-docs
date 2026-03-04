@@ -77,7 +77,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 Вместо того чтобы использовать tpch-kit и генерировать таблицы самостоятельно, вы можете импортировать данные из публичного S3 бакета. Сначала обязательно
 создайте пустые таблицы с помощью [`init.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/tpc-h/init.sql).
 
-
 ```sql
 -- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;

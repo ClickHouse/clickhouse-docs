@@ -31,9 +31,9 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 一个表对象，其列包括：源表主索引值以及（若启用）min-max 索引值的列、源表各个数据分片中所有可能文件（若启用了 marks）的标记值列，以及虚拟列：
 
-- `part_name` - 数据分片的名称。
-- `mark_number` - 数据分片中当前标记的编号。
-- `rows_in_granule` - 当前粒度中的行数。
+* `part_name` - 数据分片的名称。
+* `mark_number` - 数据分片中当前标记的编号。
+* `rows_in_granule` - 当前粒度中的行数。
 
 当某列在数据分片中不存在，或其某个子流的标记未被写入（例如在 compact 分片中）时，marks 列可能包含 `(NULL, NULL)` 值。
 

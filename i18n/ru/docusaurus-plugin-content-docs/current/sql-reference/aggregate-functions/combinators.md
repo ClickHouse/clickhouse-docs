@@ -106,11 +106,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 Для работы с этими состояниями используйте:
 
-- Табличный движок [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
-- Функцию [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation).
-- Функцию [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate).
-- Комбинатор [-Merge](#-merge).
-- Комбинатор [-MergeState](#-mergestate).
+* Табличный движок [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
+* Функцию [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation).
+* Функцию [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate).
+* Комбинатор [-Merge](#-merge).
+* Комбинатор [-MergeState](#-mergestate).
 
 ## -Merge \{#-merge\}
 
@@ -332,4 +332,4 @@ FROM people
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

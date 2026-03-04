@@ -62,7 +62,6 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-
 ## 使用示例 \{#usage-example\}
 
 在 MySQL 中创建表：
@@ -128,7 +127,6 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-
 ## 设置 \{#mysql-settings\}
 
 默认设置的效率不高，因为它们甚至不会复用连接。可以通过这些设置来提升服务器每秒可执行的查询数量。
@@ -139,8 +137,8 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 1 — 允许自动关闭连接，因此禁用连接复用
-- 0 — 不允许自动关闭连接，因此启用连接复用
+* 1 — 允许自动关闭连接，因此禁用连接复用
+* 0 — 不允许自动关闭连接，因此启用连接复用
 
 默认值：`1`。
 
@@ -150,8 +148,8 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 正整数。
-- 0 — 带故障转移的连接池不进行重试。
+* 正整数。
+* 0 — 带故障转移的连接池不进行重试。
 
 默认值：`3`。
 
@@ -161,7 +159,7 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`16`。
 
@@ -171,7 +169,7 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`5`。
 
@@ -181,7 +179,7 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`10`。
 
@@ -191,11 +189,11 @@ SELECT * FROM mysql_table
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`300`。
 
 ## 另请参阅 \{#see-also\}
 
-- [MySQL 表函数](../../../sql-reference/table-functions/mysql.md)
-- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)
+* [MySQL 表函数](../../../sql-reference/table-functions/mysql.md)
+* [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)

@@ -38,7 +38,7 @@ Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过
 
 链路追踪配置稍微复杂一些（完整列表见[此处](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)）。这里所需的列是为了便于对后续用于构建完整链路追踪画像的查询进行抽象和封装。这些查询假设数据结构与 OTel 类似，因此如果用户显著偏离标准模式，则需要通过视图才能从该特性中受益。
 
-<Image img={observability_15} alt="连接器配置" size="sm"/>
+<Image img={observability_15} alt="连接器配置" size="sm" />
 
 配置完成后，你可以进入 [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)，开始搜索日志和链路追踪数据。
 
@@ -54,12 +54,11 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 查询构建器提供了一种简便方式来修改查询，从而避免用户手写 SQL。包括关键词搜索在内的筛选操作都可以在查询构建器中完成。希望编写更复杂查询的用户可以切换到 SQL 编辑器。只要返回了合适的列，并且在 Query Type 中选择了 `logs`，结果就会以日志的形式呈现。用于日志渲染的必需列列在[此处](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)。
 
-
 ### 从日志跳转到 Trace \{#logs-to-traces\}
 
 如果日志中包含 trace ID，你可以从特定的日志行导航到对应的 trace 进行查看。
 
-<Image img={observability_17} alt="从日志跳转到 Trace" size="lg" border/>
+<Image img={observability_17} alt="从日志跳转到 Trace" size="lg" border />
 
 ## Traces \{#traces\}
 
@@ -132,14 +131,13 @@ ORDER BY timestamp ASC LIMIT 1000
 
 <Image img={observability_20} alt="Trace 到日志" size="lg" border />
 
-
 ## 仪表盘 \{#dashboards\}
 
 用户可以在 Grafana 中使用 ClickHouse 数据源构建仪表盘。建议参考 Grafana 与 ClickHouse 的[数据源文档](https://github.com/grafana/clickhouse-datasource)以获取更多详细信息，尤其是其中关于[宏](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros)和[变量](https://grafana.com/docs/grafana/latest/dashboards/variables/)的内容。
 
 该插件提供了多个开箱即用的仪表盘，其中包括一个示例仪表盘 “Simple ClickHouse OTel dashboarding”，用于展示符合 OTel 规范的日志和追踪数据。使用该示例需要遵循 OTel 的默认列名约定，并可在数据源配置中进行安装。
 
-<Image img={observability_21} alt="Dashboards" size="lg" border/>
+<Image img={observability_21} alt="Dashboards" size="lg" border />
 
 下面是一些用于构建可视化的简单建议。
 

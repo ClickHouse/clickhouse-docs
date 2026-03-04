@@ -10,7 +10,6 @@ keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 ## 在 Kafka 和 ClickHouse 中使用 Vector \{#using-vector-with-kafka-and-clickhouse\}
 
 Vector 是一个与厂商无关的数据管道，能够从 Kafka 读取数据并将事件发送到 ClickHouse。
@@ -108,7 +107,6 @@ batch.timeout_secs = 1
 ```
 
 关于此配置以及 Vector 的行为，有几个重要注意事项：
-
 
 * 此示例已在 Confluent Cloud 上进行测试。因此，`sasl.*` 和 `ssl.enabled` 安全选项在自行管理部署的场景中可能并不适用。
 * 配置参数 `bootstrap_servers` 不需要协议前缀，例如 `pkc-2396y.us-east-1.aws.confluent.cloud:9092`。

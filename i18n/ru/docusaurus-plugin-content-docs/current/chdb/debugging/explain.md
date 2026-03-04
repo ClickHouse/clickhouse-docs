@@ -39,7 +39,6 @@ query = (ds
 query.explain()
 ```
 
-
 ## Синтаксис \{#syntax\}
 
 ```python
@@ -51,7 +50,6 @@ explain(verbose=False) -> None
 | Параметр  | Тип  | Значение по умолчанию | Описание                             |
 | --------- | ---- | --------------------- | ------------------------------------ |
 | `verbose` | bool | `False`               | Отображать дополнительные метаданные |
-
 
 ## Формат вывода \{#output-format\}
 
@@ -91,7 +89,6 @@ ORDER BY sum DESC
 ================================================================================
 ```
 
-
 ### Условные обозначения значков \{#icons\}
 
 | Значок | Значение |
@@ -110,7 +107,6 @@ query.explain(verbose=True)
 
 ***
 
-
 ## Три этапа выполнения \{#phases\}
 
 Вывод explain показывает операции, разбитые на три этапа:
@@ -126,7 +122,6 @@ query.explain(verbose=True)
   4. Aggregate: sum(amount)
 ```
 
-
 ### Фаза 2: Точка выполнения \{#phase-2\}
 
 Когда срабатывает триггер:
@@ -135,7 +130,6 @@ query.explain(verbose=True)
   5. Execute SQL -> DataFrame
      Trigger: to_df() called
 ```
-
 
 ### Этап 3: операции над DataFrame \{#phase-3\}
 
@@ -147,7 +141,6 @@ query.explain(verbose=True)
 ```
 
 ***
-
 
 ## Разбор плана \{#understanding\}
 
@@ -168,7 +161,6 @@ Source: mysql('host', 'db', 'table', ...)
 Source: __dataframe__  (pandas DataFrame input)
 ```
 
-
 ### Операции фильтрации \{#filter\}
 
 ```text
@@ -176,7 +168,6 @@ Filter: amount > 1000 AND status = 'active'
 ```
 
 Показывает условие WHERE, которое будет применено.
-
 
 ### GROUP BY и агрегация \{#groupby\}
 
@@ -187,7 +178,6 @@ Aggregate: sum(amount), avg(amount), count(id)
 
 Показывает столбцы GROUP BY и функции агрегации.
 
-
 ### Операции сортировки \{#sort\}
 
 ```text
@@ -195,7 +185,6 @@ Sort: sum DESC, region ASC
 ```
 
 Показывает предложение ORDER BY.
-
 
 ### Операции с LIMIT \{#limit\}
 
@@ -207,7 +196,6 @@ Offset: 100
 Отображает LIMIT и OFFSET.
 
 ***
-
 
 ## Информация о движке \{#engine\}
 
@@ -223,13 +211,12 @@ Apply: custom_function
   - Pushdown: No
 ```
 
-
 ### Pushdown \{#pushdown\}
 
-- **Да**: Операция будет выполняться на стороне источника данных (SQL)
-- **Нет**: Операция требует выполнения средствами pandas
+* **Да**: Операция будет выполняться на стороне источника данных (SQL)
+* **Нет**: Операция требует выполнения средствами pandas
 
----
+***
 
 ## Примеры \{#examples\}
 
@@ -271,7 +258,6 @@ SELECT * FROM file('data.csv', 'csv') WHERE "age" > 25
 
 ================================================================================
 ```
-
 
 ### Сложная агрегация \{#example-complex\}
 
@@ -326,7 +312,6 @@ LIMIT 20
 ================================================================================
 ```
 
-
 ### Смешанное использование SQL и pandas \{#example-mixed\}
 
 Когда операции нельзя полностью выполнить на стороне SQL, в плане отображается несколько сегментов:
@@ -367,7 +352,6 @@ Operations:
 
 ***
 
-
 ## Отладка с помощью explain() \{#debugging\}
 
 ### Проверьте логику фильтрации \{#debug-filter\}
@@ -379,7 +363,6 @@ query.explain()
 # Output shows: Filter: age > 25 AND city = 'NYC'
 ```
 
-
 ### Проверьте выбор столбцов \{#debug-select\}
 
 ```python
@@ -388,7 +371,6 @@ query = ds.select('name', 'age').filter(ds['age'] > 25)
 query.explain()
 # Output shows: SELECT name, age FROM ... WHERE age > 25
 ```
-
 
 ### Понимание агрегации \{#debug-agg\}
 
@@ -400,7 +382,6 @@ query.explain()
 ```
 
 ***
-
 
 ## Рекомендуемые практики \{#best-practices\}
 
@@ -415,7 +396,6 @@ query.explain()  # Check plan
 result = query.to_df()  # Execute
 ```
 
-
 ### 2. Используйте режим verbose для отладки \{#best-practice-2\}
 
 ```python
@@ -423,7 +403,6 @@ result = query.to_df()  # Execute
 query.explain(verbose=True)
 # Shows engine selection and pushdown info
 ```
-
 
 ### 3. Сравнить с to_sql() \{#best-practice-3\}
 
@@ -436,7 +415,6 @@ print(query.to_sql())
 
 # Both useful for different purposes
 ```
-
 
 ### 4. Проверьте статус pushdown \{#best-practice-4\}
 

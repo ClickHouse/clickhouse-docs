@@ -15,7 +15,6 @@ keywords: ['mysql', 'интеграция с базой данных', 'внеш
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Интеграция MySQL с ClickHouse \{#integrating-mysql-with-clickhouse\}
 
 На этой странице рассматривается использование табличного движка `MySQL` для чтения данных из таблицы MySQL.
@@ -73,7 +72,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 Обратитесь к ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
 :::
 
-
 ### 2. Определите таблицу в ClickHouse \{#2-define-a-table-in-clickhouse\}
 
 1. Теперь давайте создадим таблицу ClickHouse, которая использует табличный движок `MySQL`:
@@ -99,7 +97,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 :::note
 См. страницу документации [MySQL table engine](/engines/table-engines/integrations/mysql.md) для полного списка параметров.
 :::
-
 
 ### 3. Протестируйте интеграцию \{#3-test-the-integration\}
 
@@ -165,7 +162,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   +------+---------+
   5 rows in set (0.01 sec)
 ```
-
 
 ### Краткое содержание \{#summary\}
 

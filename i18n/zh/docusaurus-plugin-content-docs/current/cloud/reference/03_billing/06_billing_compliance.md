@@ -86,6 +86,7 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 如有任何与云市场计费相关的具体问题，请直接联系相应的云服务提供商。
 
 解决云市场计费问题的实用链接：
+
 * [AWS 计费常见问题](https://aws.amazon.com/aws-cost-management/aws-billing/faqs/)
 * [GCP 计费常见问题](https://cloud.google.com/compute/docs/billing-questions)
 * [Azure 计费常见问题](https://learn.microsoft.com/en-us/azure/cost-management-billing/cost-management-billing-faq)

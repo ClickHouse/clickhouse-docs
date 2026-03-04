@@ -61,5 +61,6 @@ GROUP BY timeslot;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

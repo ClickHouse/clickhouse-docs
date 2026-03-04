@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 本文档介绍在 ClickPipe 处于 **CDC (Running) 模式** 时，如何控制 MongoDB ClickPipe 的同步。
 
-
 ## 概览 \{#overview\}
 
 Database ClickPipes 的架构由两个并行流程组成——从源数据库拉取数据以及向目标数据库推送数据。拉取流程由一个同步配置控制，该配置定义了应当多长时间拉取一次数据，以及每次应拉取多少数据。这里的“每次”指的是一个批次——因为 ClickPipe 是以批次方式拉取和推送数据的。
@@ -44,18 +43,18 @@ Database ClickPipes 的架构由两个并行流程组成——从源数据库拉
 在创建 ClickPipe 或编辑现有 ClickPipe 时，可以配置同步间隔和拉取批次大小。
 在创建 ClickPipe 时，这些设置会显示在创建向导的第二步，如下所示：
 
-<Image img={create_sync_settings} alt="Create sync settings" size="md"/>
+<Image img={create_sync_settings} alt="Create sync settings" size="md" />
 
 在编辑现有 ClickPipe 时，可以进入该管道的 **Settings** 选项卡，先暂停该管道，然后点击此处的 **Configure**：
 
-<Image img={edit_sync_button} alt="Edit sync button" size="md"/>
+<Image img={edit_sync_button} alt="Edit sync button" size="md" />
 
 此操作会打开一个包含同步设置的侧边弹出面板，你可以在其中修改同步间隔和拉取批次大小：
 
-<Image img={edit_sync_settings} alt="Edit sync settings" size="md"/>
+<Image img={edit_sync_settings} alt="Edit sync settings" size="md" />
 
 ### 监控同步控制行为 \{#monitoring\}
 
 你可以在 ClickPipe 的 **Metrics** 选项卡中的 **CDC Syncs** 表中查看每个批次所用的时间。请注意，这里的持续时间包括推送时间；此外，如果没有新的行写入，ClickPipe 会等待，这段等待时间也会计入持续时间中。
 
-<Image img={cdc_syncs} alt="CDC Syncs 表" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs 表" size="md" />

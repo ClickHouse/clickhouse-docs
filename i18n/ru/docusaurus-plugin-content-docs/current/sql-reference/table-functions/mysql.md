@@ -18,7 +18,6 @@ doc_type: 'reference'
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Аргумент              | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -49,13 +48,12 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-
 ## Возвращаемое значение \{#returned_value\}
 
 Объект таблицы с теми же столбцами, что и исходная таблица MySQL.
 
 :::note
-Некоторые типы данных MySQL могут сопоставляться с различными типами ClickHouse — это настраивается параметром уровня запроса [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
+Некоторые типы данных MySQL могут сопоставляться с различными типами ClickHouse — это настраивается параметром уровня запроса [mysql&#95;datatypes&#95;support&#95;level](operations/settings/settings.md#mysql_datatypes_support_level)
 :::
 
 :::note
@@ -145,12 +143,11 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
-
 ## См. также \{#related\}
 
-- [Движок таблицы MySQL](../../engines/table-engines/integrations/mysql.md)
-- [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/mysql)
-- [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
-- [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
-- [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)
-- [mysql_max_rows_to_insert](operations/settings/settings.md#mysql_max_rows_to_insert)
+* [Движок таблицы MySQL](../../engines/table-engines/integrations/mysql.md)
+* [Использование MySQL в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/mysql)
+* [mysql&#95;datatypes&#95;support&#95;level](operations/settings/settings.md#mysql_datatypes_support_level)
+* [mysql&#95;map&#95;fixed&#95;string&#95;to&#95;text&#95;in&#95;show&#95;columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
+* [mysql&#95;map&#95;string&#95;to&#95;text&#95;in&#95;show&#95;columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)
+* [mysql&#95;max&#95;rows&#95;to&#95;insert](operations/settings/settings.md#mysql_max_rows_to_insert)

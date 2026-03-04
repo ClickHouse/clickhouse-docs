@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 使用场景：
 
-- 将数据从 ClickHouse 导出到文件。
-- 将数据从一种格式转换为另一种格式。
-- 通过编辑磁盘上的文件来更新 ClickHouse 中的数据。
+* 将数据从 ClickHouse 导出到文件。
+* 将数据从一种格式转换为另一种格式。
+* 通过编辑磁盘上的文件来更新 ClickHouse 中的数据。
 
 :::note
 该引擎目前在 ClickHouse Cloud 中不可用，请[改用 S3 表函数](/sql-reference/table-functions/s3.md)。
@@ -82,14 +82,14 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 
 ## 实现细节 \{#details-of-implementation\}
 
-- 可以并发执行多个 `SELECT` 查询，但各个 `INSERT` 查询之间会互相等待。
-- 支持通过 `INSERT` 查询创建新文件。
-- 如果文件已存在，`INSERT` 会向其中追加新数据。
-- 不支持：
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - 索引
-  - 复制
+* 可以并发执行多个 `SELECT` 查询，但各个 `INSERT` 查询之间会互相等待。
+* 支持通过 `INSERT` 查询创建新文件。
+* 如果文件已存在，`INSERT` 会向其中追加新数据。
+* 不支持：
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * 索引
+  * 复制
 
 ## PARTITION BY \{#partition-by\}
 
@@ -99,15 +99,15 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
 
 ## 设置 \{#settings\}
 
-- [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) - 允许在文件不存在时返回空结果。默认禁用。
-- [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) - 允许在插入数据前截断文件。默认禁用。
-- [engine_file_allow_create_multiple_files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认禁用。
-- [engine_file_skip_empty_files](/operations/settings/settings.md#engine_file_skip_empty_files) - 允许在读取时跳过空文件。默认禁用。
-- [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists) - 从存储文件读取数据的方法，可选值：`read`、`pread`、`mmap`。`mmap` 方法不适用于 clickhouse-server（用于 clickhouse-local）。默认值：clickhouse-server 为 `pread`，clickhouse-local 为 `mmap`。
+* [engine&#95;file&#95;empty&#95;if&#95;not&#95;exists](/operations/settings/settings#engine_file_empty_if_not_exists) - 允许在文件不存在时返回空结果。默认禁用。
+* [engine&#95;file&#95;truncate&#95;on&#95;insert](/operations/settings/settings#engine_file_truncate_on_insert) - 允许在插入数据前截断文件。默认禁用。
+* [engine&#95;file&#95;allow&#95;create&#95;multiple&#95;files](/operations/settings/settings.md#engine_file_allow_create_multiple_files) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认禁用。
+* [engine&#95;file&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_file_skip_empty_files) - 允许在读取时跳过空文件。默认禁用。
+* [storage&#95;file&#95;read&#95;method](/operations/settings/settings#engine_file_empty_if_not_exists) - 从存储文件读取数据的方法，可选值：`read`、`pread`、`mmap`。`mmap` 方法不适用于 clickhouse-server（用于 clickhouse-local）。默认值：clickhouse-server 为 `pread`，clickhouse-local 为 `mmap`。

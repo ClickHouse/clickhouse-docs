@@ -305,7 +305,7 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 
 ## Дополнительные материалы \{#related-content-1\}
 
-- [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
-- [Загрузка данных в ClickHouse — часть 1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- [Анализ крупных реальных наборов данных: более 100 лет метеонаблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
-- Блог: [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [Загрузка данных в ClickHouse — часть 1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
+* [Анализ крупных реальных наборов данных: более 100 лет метеонаблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+* Блог: [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)

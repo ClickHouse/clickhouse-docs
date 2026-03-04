@@ -50,13 +50,12 @@ CREATE DATABASE IF NOT EXISTS helloworld
 Существует множество движков, но для простой таблицы на одноузловом сервере ClickHouse, скорее всего, подойдёт [MergeTree](/engines/table-engines/mergetree-family/mergetree.md).
 :::
 
-
 ## Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
 
 Прежде чем двигаться дальше, важно понять, как работают первичные ключи в ClickHouse (их реализация
 может показаться неожиданной!):
 
-- первичные ключи в ClickHouse **_не являются уникальными_** для каждой строки в таблице
+* первичные ключи в ClickHouse ***не являются уникальными*** для каждой строки в таблице
 
 Первичный ключ таблицы ClickHouse определяет, как данные сортируются при записи на диск. Каждые 8 192 строки или 10 МБ
 данных (это называется **гранулярностью индекса**) создают запись в файле индекса первичного ключа. Эта концепция
@@ -70,5 +69,5 @@ CREATE DATABASE IF NOT EXISTS helloworld
 данные, хранящиеся в каждом столбцовом файле, будут отсортированы по `user_id`, а затем по `timestamp`.
 
 :::tip
-Подробнее см. в [модуле обучения по моделированию данных](https://learn.clickhouse.com/visitor_catalog_class/show/1328860/?utm_source=clickhouse&utm_medium=docs) в ClickHouse Academy.
+Подробнее см. в [модуле обучения по моделированию данных](https://learn.clickhouse.com/visitor_catalog_class/show/1328860/?utm_source=clickhouse\&utm_medium=docs) в ClickHouse Academy.
 :::

@@ -119,8 +119,8 @@ SELECT * FROM stats ORDER BY key;
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。
-- `_file` — 文件名。
+* `_path` — 文件路径。
+* `_file` — 文件名。
 
 关于虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 

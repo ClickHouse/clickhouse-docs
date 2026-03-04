@@ -38,7 +38,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — 用户名。
 * `password` — 用户密码。
 
-
 ## 实现细节 \{#implementation-details\}
 
 支持多个副本：多个副本之间必须使用 `|` 分隔，多个分片之间必须使用 `,` 分隔。例如：

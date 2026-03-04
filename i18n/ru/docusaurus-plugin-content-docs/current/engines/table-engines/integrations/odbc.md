@@ -9,10 +9,9 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы ODBC \{#odbc-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 Позволяет ClickHouse подключаться к внешним базам данных через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
@@ -47,7 +46,6 @@ ENGINE = ODBC(datasource, external_database, external_table)
 * `external_table` — Имя таблицы в `external_database`.
 
 Эти параметры также можно передавать с помощью [именованных коллекций](operations/named-collections.md).
-
 
 ## Пример использования \{#usage-example\}
 
@@ -138,8 +136,7 @@ SELECT * FROM odbc_t
 └────────┴────────────────┘
 ```
 
-
 ## Смотрите также \{#see-also\}
 
-- [Словари ODBC](/sql-reference/statements/create/dictionary/sources/odbc)
-- [Табличная функция ODBC](../../../sql-reference/table-functions/odbc.md)
+* [Словари ODBC](/sql-reference/statements/create/dictionary/sources/odbc)
+* [Табличная функция ODBC](../../../sql-reference/table-functions/odbc.md)

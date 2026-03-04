@@ -14,7 +14,7 @@ doc_type: 'guide'
 
 ClickHouse принимает HTTP-заголовки контекста трассировки, как описано в [рекомендации W3C](https://www.w3.org/TR/trace-context/). Он также принимает контекст трассировки по нативному протоколу, который используется для обмена данными между серверами ClickHouse или между клиентом и сервером. Для ручного тестирования заголовки контекста трассировки, соответствующие спецификации Trace Context, можно передать в `clickhouse-client` с помощью флагов `--opentelemetry-traceparent` и `--opentelemetry-tracestate`.
 
-Если родительский контекст трассировки не передан или переданный контекст трассировки не соответствует указанному выше стандарту W3C, ClickHouse может начать новую трассировку с вероятностью, задаваемой настройкой [opentelemetry_start_trace_probability](/operations/settings/settings#opentelemetry_start_trace_probability).
+Если родительский контекст трассировки не передан или переданный контекст трассировки не соответствует указанному выше стандарту W3C, ClickHouse может начать новую трассировку с вероятностью, задаваемой настройкой [opentelemetry&#95;start&#95;trace&#95;probability](/operations/settings/settings#opentelemetry_start_trace_probability).
 
 ## Распространение контекста трассировки \{#propagating-the-trace-context\}
 
@@ -45,32 +45,31 @@ ClickHouse поддерживает трассировку с использов
 </clickhouse>
 ```
 
-
 ### Типы спанов Keeper \{#keeper-span-types\}
 
 Когда включена трассировка, ClickHouse создаёт спаны как для клиентских, так и для серверных операций Keeper:
 
 **Клиентские спаны:**
 
-- `zookeeper.create` — Создание нового узла
-- `zookeeper.get` — Получение данных узла
-- `zookeeper.set` — Установка данных узла
-- `zookeeper.remove` — Удаление узла
-- `zookeeper.list` — Перечисление дочерних узлов
-- `zookeeper.exists` — Проверка существования узла
-- `zookeeper.multi` — Атомарное выполнение нескольких операций
-- `zookeeper.client.requests_queue` — Время ожидания запросов в очереди перед отправкой
+* `zookeeper.create` — Создание нового узла
+* `zookeeper.get` — Получение данных узла
+* `zookeeper.set` — Установка данных узла
+* `zookeeper.remove` — Удаление узла
+* `zookeeper.list` — Перечисление дочерних узлов
+* `zookeeper.exists` — Проверка существования узла
+* `zookeeper.multi` — Атомарное выполнение нескольких операций
+* `zookeeper.client.requests_queue` — Время ожидания запросов в очереди перед отправкой
 
 **Серверные спаны (Keeper):**
 
-- `keeper.receive_request` — Получение и разбор запроса от клиента
-- `keeper.dispatcher.requests_queue` — Постановка запроса в очередь в диспетчере
-- `keeper.write.pre_commit` — Предварительная обработка запросов на запись до коммита Raft
-- `keeper.write.commit` — Обработка запросов на запись после коммита Raft
-- `keeper.read.wait_for_write` — Ожидание запросами на чтение завершения зависимых операций записи
-- `keeper.read.process` — Обработка запросов на чтение
-- `keeper.dispatcher.responses_queue` — Постановка ответа в очередь в диспетчере
-- `keeper.send_response` — Отправка ответа клиенту
+* `keeper.receive_request` — Получение и разбор запроса от клиента
+* `keeper.dispatcher.requests_queue` — Постановка запроса в очередь в диспетчере
+* `keeper.write.pre_commit` — Предварительная обработка запросов на запись до коммита Raft
+* `keeper.write.commit` — Обработка запросов на запись после коммита Raft
+* `keeper.read.wait_for_write` — Ожидание запросами на чтение завершения зависимых операций записи
+* `keeper.read.process` — Обработка запросов на чтение
+* `keeper.dispatcher.responses_queue` — Постановка ответа в очередь в диспетчере
+* `keeper.send_response` — Отправка ответа клиенту
 
 ### Семплирование и производительность \{#sampling-and-performance\}
 
@@ -80,7 +79,7 @@ ClickHouse поддерживает трассировку с использов
 
 ClickHouse создаёт `trace spans` для каждого запроса и некоторых этапов его выполнения, таких как планирование запроса или распределённые запросы.
 
-Чтобы эта информация была полезной, данные трассировки должны быть экспортированы в систему мониторинга, поддерживающую OpenTelemetry, такую как [Jaeger](https://jaegertracing.io/) или [Prometheus](https://prometheus.io/). ClickHouse избегает зависимости от конкретной системы мониторинга и вместо этого предоставляет данные трассировки через системную таблицу. Информация о span'ах трассировки OpenTelemetry, [требуемая стандартом](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#span), хранится в таблице [system.opentelemetry_span_log](../operations/system-tables/opentelemetry_span_log.md).
+Чтобы эта информация была полезной, данные трассировки должны быть экспортированы в систему мониторинга, поддерживающую OpenTelemetry, такую как [Jaeger](https://jaegertracing.io/) или [Prometheus](https://prometheus.io/). ClickHouse избегает зависимости от конкретной системы мониторинга и вместо этого предоставляет данные трассировки через системную таблицу. Информация о span&#39;ах трассировки OpenTelemetry, [требуемая стандартом](https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#span), хранится в таблице [system.opentelemetry&#95;span&#95;log](../operations/system-tables/opentelemetry_span_log.md).
 
 Таблица должна быть включена в конфигурации сервера, см. элемент `opentelemetry_span_log` в файле конфигурации по умолчанию `config.xml`. По умолчанию она включена.
 
@@ -88,7 +87,7 @@ ClickHouse создаёт `trace spans` для каждого запроса и 
 
 ## Log-query-settings \{#log-query-settings\}
 
-Настройка [log_query_settings](settings/settings.md) позволяет логировать изменения параметров запроса во время его выполнения. При включении любые изменения настроек запроса будут записываться в журнал спанов OpenTelemetry. Эта функция особенно полезна в продуктивной среде для отслеживания изменений конфигурации, которые могут повлиять на производительность запросов.
+Настройка [log&#95;query&#95;settings](settings/settings.md) позволяет логировать изменения параметров запроса во время его выполнения. При включении любые изменения настроек запроса будут записываться в журнал спанов OpenTelemetry. Эта функция особенно полезна в продуктивной среде для отслеживания изменений конфигурации, которые могут повлиять на производительность запросов.
 
 ## Интеграция с системами мониторинга \{#integration-with-monitoring-systems\}
 
@@ -117,7 +116,6 @@ FROM system.opentelemetry_span_log
 
 В случае возникновения ошибок та часть данных журнала, для которой произошла ошибка, будет незаметно потеряна. Если данные не поступают, проверьте журнал сервера на наличие сообщений об ошибках.
 
-
 ## См. также \{#related-content\}
 
-- Блог: [Построение решения для обсервабилити с ClickHouse — часть 2. Трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+* Блог: [Построение решения для обсервабилити с ClickHouse — часть 2. Трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

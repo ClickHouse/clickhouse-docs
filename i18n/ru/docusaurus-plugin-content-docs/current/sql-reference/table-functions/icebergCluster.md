@@ -44,13 +44,13 @@ SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/c
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — имя файла. Тип: `LowCardinality(String)`.
-- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — имя файла. Тип: `LowCardinality(String)`.
+* `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 **См. также**
 
-- [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
-- [Табличная функция Iceberg](sql-reference/table-functions/iceberg.md)
+* [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
+* [Табличная функция Iceberg](sql-reference/table-functions/iceberg.md)

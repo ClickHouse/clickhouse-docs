@@ -25,7 +25,6 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
-
 ## 参数 \{#arguments\}
 
 此表函数的参数分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 的参数相同。
@@ -57,7 +56,6 @@ LIMIT 2
 │ http://auto.ria.ua/search/index.kz/jobinmoscow.ru/gosushi             │         1 │
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
-
 
 ### 插入数据 \{#inserting-data\}
 
@@ -98,16 +96,15 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
 
-
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
-- `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，则该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，则该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
+* `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，则该值为 `NULL`。
 
 ## 相关 \{#related\}
 
-- [DeltaLake 引擎](engines/table-engines/integrations/deltalake.md)
-- [DeltaLake 集群表函数](sql-reference/table-functions/deltalakeCluster.md)
+* [DeltaLake 引擎](engines/table-engines/integrations/deltalake.md)
+* [DeltaLake 集群表函数](sql-reference/table-functions/deltalakeCluster.md)

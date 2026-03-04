@@ -16,7 +16,6 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
 # Azure PostgreSQL 灵活服务器源设置指南 \{#azure-flexible-server-for-postgres-source-setup-guide\}
 
 ClickPipes 支持 Postgres 12 及更高版本。
@@ -27,15 +26,15 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 1. 点击 **Server parameters** 部分
 
-<Image img={server_parameters} alt="Azure Flexible Server for Postgres 中的 Server Parameters" size="lg" border/>
+<Image img={server_parameters} alt="Azure Flexible Server for Postgres 中的 Server Parameters" size="lg" border />
 
 2. 将 `wal_level` 设置为 `logical`
 
-<Image img={wal_level} alt="在 Azure Flexible Server for Postgres 中将 wal_level 更改为 logical" size="lg" border/>
+<Image img={wal_level} alt="在 Azure Flexible Server for Postgres 中将 wal_level 更改为 logical" size="lg" border />
 
 3. 此更改需要重启服务器。因此，请在系统提示时重启服务器。
 
-<Image img={restart} alt="在更改 wal_level 后重启服务器" size="lg" border/>
+<Image img={restart} alt="在更改 wal_level 后重启服务器" size="lg" border />
 
 ## 创建 ClickPipes 用户并授予权限 \{#creating-clickpipes-user-and-granting-permissions\}
 
@@ -64,20 +63,20 @@ ClickPipes 支持 Postgres 12 及更高版本。
 4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议只在 publication 中包含你需要的表，以避免不必要的性能开销。
 
    :::warning
-   任何包含在 publication 中的表必须定义有**主键**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关范围设定的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   任何包含在 publication 中的表必须定义有**主键**，*或者* 将其 **replica identity** 配置为 `FULL`。有关范围设定的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
-   - 为特定表创建 publication：
+   * 为特定表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 为特定模式中的所有表创建 publication：
+   * 为特定模式中的所有表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，之后会用于摄取复制流。
 
@@ -93,7 +92,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 1. 转到 **Networking** 选项卡，将 [ClickPipes IP](../../index.md#list-of-static-ips) 添加到 Azure Flexible Server Postgres 的防火墙；如果使用 SSH 隧道，则将其添加到 Jump Server/Bastion 主机的防火墙中。
 
-<Image img={firewall} alt="在 Azure Flexible Server for Postgres 中将 ClickPipes IP 添加到防火墙" size="lg"/>
+<Image img={firewall} alt="在 Azure Flexible Server for Postgres 中将 ClickPipes IP 添加到防火墙" size="lg" />
 
 ## 下一步 \{#whats-next\}
 

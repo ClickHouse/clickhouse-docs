@@ -59,7 +59,6 @@ print(ds['amount'].nunique()) # Unique count
 
 ***
 
-
 ## Агрегации GroupBy \{#groupby\}
 
 ### Одиночная агрегация \{#single-agg\}
@@ -69,7 +68,6 @@ print(ds['amount'].nunique()) # Unique count
 result = ds.groupby('category')['amount'].sum()
 result = ds.groupby('region')['sales'].mean()
 ```
-
 
 ### Множественные агрегации \{#multi-agg\}
 
@@ -88,7 +86,6 @@ result = ds.groupby('category').agg({
 })
 ```
 
-
 ### Именованные агрегаты \{#named-agg\}
 
 ```python
@@ -101,7 +98,6 @@ result = ds.groupby('region').agg(
 )
 ```
 
-
 ### Несколько ключей группировки (GroupBy) \{#multi-groupby\}
 
 ```python
@@ -113,7 +109,6 @@ result = ds.groupby(['region', 'category']).agg({
 ```
 
 ***
-
 
 ## Статистические агрегации \{#statistical\}
 
@@ -141,7 +136,6 @@ correlation = ds[['sales', 'marketing_spend']].corr()
 ```
 
 ***
-
 
 ## Условные агрегации \{#conditional\}
 
@@ -174,7 +168,6 @@ result = ds.groupby('region').agg({
 ```
 
 ***
-
 
 ## Агрегации коллекций \{#collection\}
 
@@ -209,7 +202,6 @@ result = ds.groupby('region').agg({
 ```
 
 ***
-
 
 ## Оконные функции \{#window\}
 
@@ -248,7 +240,6 @@ ds['dense_rank'] = F.dense_rank().over(
 ds['quartile'] = F.ntile(4).over(order_by='score')
 ```
 
-
 ### Функции значений \{#value-functions\}
 
 | Функция         | SQL                 | Описание                   |
@@ -272,7 +263,6 @@ ds['first_order'] = F.first_value('amount').over(
     order_by='date'
 )
 ```
-
 
 ### Кумулятивные функции \{#cumulative\}
 
@@ -300,7 +290,6 @@ ds['daily_diff'] = ds['sales'].diff(1)
 ds['pct_change'] = ds['sales'].pct_change(1)
 ```
 
-
 ### Скользящие окна \{#rolling\}
 
 ```python
@@ -316,7 +305,6 @@ ds['expanding_sum'] = ds['amount'].expanding().sum()
 
 ***
 
-
 ## Пространство имён F \{#f-namespace\}
 
 Пространство имён `F` предоставляет доступ к функциям ClickHouse.
@@ -326,7 +314,6 @@ ds['expanding_sum'] = ds['amount'].expanding().sum()
 ```python
 from chdb.datastore import F, Field
 ```
-
 
 ### Использование функций из пространства имён F \{#f-usage\}
 
@@ -364,7 +351,6 @@ F.floor(Field('value'))
 F.ceil(Field('value'))
 ```
 
-
 ### F с оконными функциями \{#f-window\}
 
 ```python
@@ -379,7 +365,6 @@ ds['rolling_avg'] = F.avg(Field('price')).over(window)
 ```
 
 ***
-
 
 ## Типовые шаблоны агрегации \{#patterns\}
 
@@ -396,7 +381,6 @@ result = (ds
 )
 ```
 
-
 ### Нарастающий итог \{#running-total\}
 
 ```python
@@ -407,7 +391,6 @@ ds['running_total'] = F.sum('amount').over(
 )
 ```
 
-
 ### Скользящее среднее \{#moving-avg\}
 
 ```python
@@ -417,7 +400,6 @@ ds['ma_7'] = F.avg('price').over(
     rows_between=(-6, 0)
 )
 ```
-
 
 ### Сравнение «год к году» \{#yoy\}
 
@@ -430,7 +412,6 @@ ds['prev_year_sales'] = F.lag('sales', 12).over(
 ds['yoy_growth'] = (ds['sales'] - ds['prev_year_sales']) / ds['prev_year_sales']
 ```
 
-
 ### Ранжирование по процентилю \{#percentile\}
 
 ```python
@@ -439,7 +420,6 @@ ds['spend_percentile'] = F.percent_rank().over(order_by='total_spend')
 ```
 
 ***
-
 
 ## Сводка методов агрегации \{#summary\}
 

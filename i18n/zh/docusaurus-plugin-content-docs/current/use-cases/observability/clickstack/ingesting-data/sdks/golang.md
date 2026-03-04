@@ -26,7 +26,6 @@ ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）
   </tbody>
 </table>
 
-
 ## 快速开始 \{#getting-started\}
 
 ### 安装 OpenTelemetry 插桩包 \{#install-opentelemetry\}
@@ -237,26 +236,22 @@ func main() {
 接下来，你需要在 shell 中配置以下环境变量，通过 OpenTelemetry collector 将遥测数据摄取到 ClickStack：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```shell
+    export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    ```
+  </TabItem>
 
-```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
-```
-
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```shell
+    export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+    ```
+  </TabItem>
 </Tabs>
 
 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量包含 API Key，可在 HyperDX 应用的 `Team Settings → API Keys` 中获取。

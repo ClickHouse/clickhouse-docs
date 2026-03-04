@@ -254,7 +254,7 @@ OK
 1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    [&quot;hello world&quot;,&quot;hello world&quot;]    [1.1,1.2]    [[1,2],[3,4]]    [[&quot;a&quot;,&quot;b&quot;],[&quot;c&quot;,&quot;d&quot;]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 耗时：0.766 秒，获取：1 行记录
 
-```sql
+````sql
 CREATE TABLE test.test_parquet
 (
     `f_tinyint` Int8,
@@ -546,7 +546,7 @@ FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'
 
 查询 ID: 55b79d35-56de-45b9-8be6-57282fbf1f44
-```
+````
 
 第 1 行:
 ──────

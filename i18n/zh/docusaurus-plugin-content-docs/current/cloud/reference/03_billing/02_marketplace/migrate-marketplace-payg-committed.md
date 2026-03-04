@@ -33,12 +33,12 @@ doc_type: 'guide'
 1. **前往 [AWS Marketplace](https://us-east-1.console.aws.amazon.com/marketplace)**
 2. **点击“Manage Subscriptions”按钮**
 3. **进入“Your Subscriptions”：**
-    - 点击“Manage Subscriptions”
+   * 点击“Manage Subscriptions”
 4. **在列表中找到 ClickHouse Cloud：**
-    - 在“Your Subscriptions”下找到并点击 ClickHouse Cloud
+   * 在“Your Subscriptions”下找到并点击 ClickHouse Cloud
 5. **取消订阅：**
-    - 在“Agreement”下，点击 ClickHouse Cloud 列表项旁的“Actions”下拉菜单或按钮
-    - 选择“Cancel subscription”
+   * 在“Agreement”下，点击 ClickHouse Cloud 列表项旁的“Actions”下拉菜单或按钮
+   * 选择“Cancel subscription”
 
 > **注意：** 如果你在取消订阅时需要帮助（例如，“Cancel subscription” 按钮不可用），请联系 [AWS support](https://support.console.aws.amazon.com/support/home#/)。
 
@@ -49,12 +49,12 @@ doc_type: 'guide'
 ### 取消 GCP 按需付费 (PAYG) 订单的步骤 \{#cancel-gcp-payg\}
 
 1. **前往你的 [Google Cloud Marketplace 控制台](https://console.cloud.google.com/marketplace)：**
-    - 确保你已登录正确的 GCP 帐号，并已选择相应的项目
+   * 确保你已登录正确的 GCP 帐号，并已选择相应的项目
 2. **找到你的 ClickHouse 订单：**
-    - 在左侧菜单中，点击 “Your Orders”
-    - 在活动订单列表中找到对应的 ClickHouse 订单
+   * 在左侧菜单中，点击 “Your Orders”
+   * 在活动订单列表中找到对应的 ClickHouse 订单
 3. **取消该订单：**
-    - 在订单右侧找到三点菜单，并按提示操作以取消该 ClickHouse 订单
+   * 在订单右侧找到三点菜单，并按提示操作以取消该 ClickHouse 订单
 
 > **注意：** 如需帮助取消该订单，请联系 [GCP 支持](https://cloud.google.com/support/docs/get-billing-support)。
 
@@ -68,8 +68,8 @@ doc_type: 'guide'
 2. **在左侧导航中选择 “Subscriptions”（订阅）**
 3. **找到您想要取消的活动 ClickHouse 订阅**
 4. **取消订阅：**
-    - 单击该 ClickHouse Cloud 订阅以打开订阅详情
-    - 选择 “Cancel subscription” 按钮
+   * 单击该 ClickHouse Cloud 订阅以打开订阅详情
+   * 选择 “Cancel subscription” 按钮
 
 > **注意：** 如需协助取消此订单，请在 Azure 门户中提交支持工单。
 
@@ -78,5 +78,6 @@ doc_type: 'guide'
 ## 将组织关联至承诺消费合同时的要求 \{#linking-requirements\}
 
 > **注意：** 要将您的组织关联到云市场中的承诺消费合同：
-> - 执行以下步骤的用户必须是要附加订阅的 ClickHouse 组织的管理员用户
-> - 该组织的所有未支付发票必须先结清（如有任何问题，请联系 ClickHouse [支持](https://clickhouse.com/support/program)）
+>
+> * 执行以下步骤的用户必须是要附加订阅的 ClickHouse 组织的管理员用户
+> * 该组织的所有未支付发票必须先结清（如有任何问题，请联系 ClickHouse [支持](https://clickhouse.com/support/program)）

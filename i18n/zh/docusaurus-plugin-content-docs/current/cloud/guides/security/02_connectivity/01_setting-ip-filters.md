@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
-
 ## 设置 IP 过滤器 \{#setting-ip-filters\}
 
 IP 访问列表通过指定允许连接的源地址来过滤到 ClickHouse 服务或使用 API 密钥的流量。可以为每个服务和每个 API 密钥分别配置这些列表。列表既可以在创建服务或 API 密钥时配置，也可以在之后进行配置。
@@ -37,53 +36,51 @@ IP 访问列表仅适用于来自公共互联网、即 [PrivateLink](/cloud/secu
   <summary>ClickHouse 服务的 IP 访问列表</summary>
 
   创建 ClickHouse 服务时，IP Allow list 的默认设置为“Allow from anywhere”。
-  
+
   在 ClickHouse Cloud 服务列表中选择该服务，然后选择 **Settings**。在 **Security** 部分可以找到 IP 访问列表。点击 **Add IPs** 按钮。
-  
+
   会打开一个侧边栏，可在其中进行如下配置：
-  
-- 允许来自任意位置到该服务的入站流量
-- 允许来自特定位置到该服务的访问
-- 拒绝所有到该服务的访问
-  
+
+  * 允许来自任意位置到该服务的入站流量
+  * 允许来自特定位置到该服务的访问
+  * 拒绝所有到该服务的访问
 </details>
 
 <details>
   <summary>API key 的 IP 访问列表</summary>
 
   创建 API key 时，IP Allow list 的默认设置为“Allow from anywhere”。
-  
+
   在 API key 列表中，点击该 API key 所在行 **Actions** 列中的三个点，然后选择 **Edit**。在页面底部可以看到 IP 访问列表以及可配置的选项：
 
-- 允许来自任意位置到该服务的入站流量
-- 允许来自特定位置到该服务的访问
-- 拒绝所有到该服务的访问
-  
+  * 允许来自任意位置到该服务的入站流量
+  * 允许来自特定位置到该服务的访问
+  * 拒绝所有到该服务的访问
 </details>
 
 下图展示了一个访问列表，它允许来自一段 IP 地址范围的流量，描述为 “NY Office range”：
 
-<Image img={ip_filtering_after_provisioning} size="md" alt="ClickHouse Cloud 中现有的访问列表" border/>
+<Image img={ip_filtering_after_provisioning} size="md" alt="ClickHouse Cloud 中现有的访问列表" border />
 
 ### 可执行的操作 \{#possible-actions\}
 
 1. 要添加一条新条目，可以使用 **+ Add new IP**
 
-  以下示例添加了一个单一 IP 地址，描述为 `London server`：
+以下示例添加了一个单一 IP 地址，描述为 `London server`：
 
-<Image img={ip_filter_add_single_ip} size="md" alt="在 ClickHouse Cloud 中向访问列表添加单个 IP" border/>
+<Image img={ip_filter_add_single_ip} size="md" alt="在 ClickHouse Cloud 中向访问列表添加单个 IP" border />
 
 2. 删除现有条目
 
-  点击叉号 (x) 可以删除一个条目
+点击叉号 (x) 可以删除一个条目
 
 3. 编辑现有条目
 
-  直接修改该条目
+直接修改该条目
 
 4. 切换为允许从 **Anywhere** 访问
 
-  不推荐这样做，但这是允许的。建议将构建在 ClickHouse 之上的应用暴露给公网，并限制对后端 ClickHouse Cloud 服务的访问。
+不推荐这样做，但这是允许的。建议将构建在 ClickHouse 之上的应用暴露给公网，并限制对后端 ClickHouse Cloud 服务的访问。
 
 要应用所做的更改，必须点击 **Save**。
 
@@ -113,7 +110,6 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 Ok.
 ```
 
-
 ## 限制 \{#limitations\}
 
-- 目前，IP 访问列表仅支持 IPv4 地址
+* 目前，IP 访问列表仅支持 IPv4 地址

@@ -32,16 +32,15 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 > 本指南将向您展示如何在 AWS 中创建 IAM 用户和 S3 存储桶，
 > 这是将备份写入 S3 或将 ClickHouse 配置为在 S3 上存储数据的先决条件步骤
 
-
 ## 创建 AWS IAM 用户 \{#create-an-aws-iam-user\}
 
 在本步骤中，我们将创建一个服务账户用户，而不是登录用户。
 
-1.  登录 AWS IAM 管理控制台。
+1. 登录 AWS IAM 管理控制台。
 
 2. 在 `Users` 选项卡中，选择 `Create user`
 
-<Image size="lg" img={s3_1} alt="AWS IAM 管理控制台 - 添加新用户"/>
+<Image size="lg" img={s3_1} alt="AWS IAM 管理控制台 - 添加新用户" />
 
 3. 输入用户名
 

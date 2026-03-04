@@ -281,7 +281,7 @@ is_trigger_deletable:       NO
 is_trigger_insertable_into: NO
 ```
 
-## KEY&#95;COLUMN&#95;USAGE \{#key_column_usage\}
+## KEY_COLUMN_USAGE \{#key_column_usage\}
 
 Содержит столбцы из системной таблицы [system.tables](../../operations/system-tables/tables.md), для которых заданы ограничения.
 
@@ -346,17 +346,17 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 Столбцы:
 
-- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — в настоящее время не используется.
-- `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — в настоящее время не используется.
-- `match_option` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `update_rule` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `delete_rule` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
-- `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — в настоящее время не используется.
+* `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — в настоящее время не используется.
+* `match_option` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `update_rule` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `delete_rule` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
+* `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — в настоящее время не используется.
 
 ## STATISTICS \{#statistics\}
 
@@ -364,21 +364,21 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 Столбцы:
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `non_unique` ([Int32](../../sql-reference/data-types/int-uint.md)) — В настоящее время не используется.
-- `index_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `index_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
-- `seq_in_index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — В настоящее время не используется.
-- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
-- `collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
-- `cardinality` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — В настоящее время не используется.
-- `sub_part` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — В настоящее время не используется.
-- `packed` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
-- `nullable` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `index_type` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `comment` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `index_comment` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `is_visible` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
-- `expression` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
+* `table_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `table_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `table_name` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `non_unique` ([Int32](../../sql-reference/data-types/int-uint.md)) — В настоящее время не используется.
+* `index_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `index_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
+* `seq_in_index` ([UInt32](../../sql-reference/data-types/int-uint.md)) — В настоящее время не используется.
+* `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
+* `collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
+* `cardinality` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — В настоящее время не используется.
+* `sub_part` ([Nullable](../../sql-reference/data-types/nullable.md)([Int64](../../sql-reference/data-types/int-uint.md))) — В настоящее время не используется.
+* `packed` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.
+* `nullable` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `index_type` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `comment` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `index_comment` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `is_visible` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
+* `expression` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется.

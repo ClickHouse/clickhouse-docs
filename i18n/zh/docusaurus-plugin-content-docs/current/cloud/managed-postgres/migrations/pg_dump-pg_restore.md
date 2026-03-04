@@ -15,7 +15,6 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-
 # 使用 pg_dump 和 pg_restore 迁移到 Managed Postgres \{#pg-dump-pg-restore\}
 
 本指南提供分步说明，介绍如何使用 `pg_dump` 和 `pg_restore` 工具将 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。
@@ -24,8 +23,8 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 
 ## 先决条件 \{#migration-pgdump-pg-restore-prerequisites\}
 
-- 具备对源 PostgreSQL 数据库的访问权限。
-- 本地计算机已安装 `pg_dump` 和 `pg_restore`。这些工具通常随 PostgreSQL 一同安装；如未安装，可从 [PostgreSQL 官方网站](https://www.postgresql.org/download/) 下载。
+* 具备对源 PostgreSQL 数据库的访问权限。
+* 本地计算机已安装 `pg_dump` 和 `pg_restore`。这些工具通常随 PostgreSQL 一同安装；如未安装，可从 [PostgreSQL 官方网站](https://www.postgresql.org/download/) 下载。
 
 ## 环境准备 \{#migration-pgdump-pg-restore-setup\}
 
@@ -35,10 +34,10 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 
 我们的数据对象包括：
 
-- 两个表——`events` 和 `users`。`events` 有一百万行，`users` 有一千行。
-- `events` 表上有一个索引。
-- 一个基于 `events` 表的视图。
-- 几个序列对象。
+* 两个表——`events` 和 `users`。`events` 有一百万行，`users` 有一千行。
+* `events` 表上有一个索引。
+* 一个基于 `events` 表的视图。
+* 几个序列对象。
 
 ## 创建源数据库的转储 \{#migration-pgdump-pg-restore-dump\}
 
@@ -66,10 +65,9 @@ pg_dump \
 
 <Image img={dumpCommand} alt="pg_dump 命令执行" size="xl" border />
 
-
 ## 将转储数据迁移到 ClickHouse Managed Postgres \{#migration-pgdump-pg-restore-restore\}
 
-现在我们已经获得了转储文件，可以使用 `pg_restore` 将其恢复到我们的 ClickHouse Managed Postgres 实例中。 
+现在我们已经获得了转储文件，可以使用 `pg_restore` 将其恢复到我们的 ClickHouse Managed Postgres 实例中。
 
 ### 创建 Managed Postgres 实例 \{#migration-pgdump-pg-restore-create-pg\}
 
@@ -99,7 +97,6 @@ pg_restore \
 
 <Image img={restoreCommand} alt="pg_restore 命令执行" size="xl" border />
 
-
 ## 验证迁移 \{#migration-pgdump-pg-restore-verify\}
 
 在还原过程完成后，可以连接到 Managed Postgres 实例，验证所有数据和对象是否已成功迁移。可以使用任意 PostgreSQL 客户端进行连接并执行查询。
@@ -111,15 +108,15 @@ pg_restore \
 
 ## 注意事项 \{#migration-pgdump-pg-restore-considerations\}
 
-- 确保源数据库和目标数据库所使用的 PostgreSQL 版本彼此兼容。
-使用比源服务器更旧版本的 `pg_dump` 可能会导致缺少功能或恢复问题。理想情况下，应使用与源数据库相同或更高主版本的 `pg_dump`。
-- 对于大型数据库，导出和恢复可能需要相当长的时间。
-请提前规划以尽量减少停机时间，并在支持的情况下考虑使用并行导出/恢复（`--jobs`）。
-- 请注意，`pg_dump` / `pg_restore` 不会复制所有与数据库相关的对象或运行时状态。
-这些包括角色及其成员关系、复制槽、服务器级配置（例如 `postgresql.conf`、`pg_hba.conf`）、表空间以及运行时统计信息。
+* 确保源数据库和目标数据库所使用的 PostgreSQL 版本彼此兼容。
+  使用比源服务器更旧版本的 `pg_dump` 可能会导致缺少功能或恢复问题。理想情况下，应使用与源数据库相同或更高主版本的 `pg_dump`。
+* 对于大型数据库，导出和恢复可能需要相当长的时间。
+  请提前规划以尽量减少停机时间，并在支持的情况下考虑使用并行导出/恢复（`--jobs`）。
+* 请注意，`pg_dump` / `pg_restore` 不会复制所有与数据库相关的对象或运行时状态。
+  这些包括角色及其成员关系、复制槽、服务器级配置（例如 `postgresql.conf`、`pg_hba.conf`）、表空间以及运行时统计信息。
 
 ## 后续步骤 \{#migration-pgdump-pg-restore-next-steps\}
 
-恭喜！您已使用 pg_dump 和 pg_restore 成功将 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。现在，您可以开始探索 Managed Postgres 的各项功能，以及它与 ClickHouse 的集成。下面是一个 10 分钟的快速入门教程，引导您继续操作：
+恭喜！您已使用 pg&#95;dump 和 pg&#95;restore 成功将 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。现在，您可以开始探索 Managed Postgres 的各项功能，以及它与 ClickHouse 的集成。下面是一个 10 分钟的快速入门教程，引导您继续操作：
 
-- [Managed Postgres 快速入门指南](../quickstart)
+* [Managed Postgres 快速入门指南](../quickstart)

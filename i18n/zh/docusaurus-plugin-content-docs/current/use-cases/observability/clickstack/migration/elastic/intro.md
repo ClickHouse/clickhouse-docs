@@ -19,14 +19,14 @@ doc_type: 'guide'
 
 如果符合以下情况，应考虑迁移到 ClickStack：
 
-- 正在摄取大量可观测性数据，并且由于压缩效率低和资源利用率差而发现 Elastic 成本过高。ClickStack 可以显著降低存储和计算成本——对原始数据提供至少 10 倍压缩。
-- 在大规模场景下搜索性能较差，或面临摄取瓶颈。
-- 希望使用 SQL 将可观测性信号与业务数据关联，从而统一可观测性与分析工作流。
-- 已经全面采用 OpenTelemetry，并希望避免厂商锁定。
-- 希望利用 ClickHouse Cloud 中存储与计算分离的优势，实现几乎无限的扩展——在空闲期间只需为摄取计算和对象存储付费。
+* 正在摄取大量可观测性数据，并且由于压缩效率低和资源利用率差而发现 Elastic 成本过高。ClickStack 可以显著降低存储和计算成本——对原始数据提供至少 10 倍压缩。
+* 在大规模场景下搜索性能较差，或面临摄取瓶颈。
+* 希望使用 SQL 将可观测性信号与业务数据关联，从而统一可观测性与分析工作流。
+* 已经全面采用 OpenTelemetry，并希望避免厂商锁定。
+* 希望利用 ClickHouse Cloud 中存储与计算分离的优势，实现几乎无限的扩展——在空闲期间只需为摄取计算和对象存储付费。
 
 然而，在以下情况下，ClickStack 可能并不适合：
 
-- 主要将可观测性数据用于安全场景，并需要以 SIEM 为核心的产品。
-- 通用剖析（universal profiling）是工作流中的关键组成部分。
-- 需要一个商业智能（BI）看板平台。ClickStack 有意为 SRE 和开发人员提供具有明确产品设定的可视化工作流，并非设计为商业智能（BI）工具。对于等效能力，我们建议使用 [Grafana with the ClickHouse plugin](/integrations/grafana) 或 [Superset](/integrations/superset)。
+* 主要将可观测性数据用于安全场景，并需要以 SIEM 为核心的产品。
+* 通用剖析（universal profiling）是工作流中的关键组成部分。
+* 需要一个商业智能（BI）看板平台。ClickStack 有意为 SRE 和开发人员提供具有明确产品设定的可视化工作流，并非设计为商业智能（BI）工具。对于等效能力，我们建议使用 [Grafana with the ClickHouse plugin](/integrations/grafana) 或 [Superset](/integrations/superset)。

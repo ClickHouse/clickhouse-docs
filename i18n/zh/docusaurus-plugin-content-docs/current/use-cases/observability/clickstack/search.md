@@ -22,27 +22,27 @@ ClickStack 允许您对事件（日志和跟踪）执行全文搜索。您只需
 
 ### 自然语言搜索语法 \{#natural-language-syntax\}
 
-- 搜索不区分大小写
-- 搜索默认按整词匹配（例如，`Error` 会匹配 `Error here`，但不会匹配 `Errors here`）。可以在单词前后加通配符来匹配部分单词（例如，`*Error*` 会匹配 `AnyError` 和 `AnyErrors`）
-- 搜索词的出现顺序不限（例如，`Hello World` 会匹配包含 `Hello World` 和 `World Hello` 的日志）
-- 可以使用 `NOT` 或 `-` 排除关键字（例如，`Error NOT Exception` 或 `Error -Exception`）
-- 可以使用 `AND` 和 `OR` 组合多个关键字（例如，`Error OR Exception`）
-- 使用双引号可以进行精确匹配（例如，`"Error tests not found"`）
+* 搜索不区分大小写
+* 搜索默认按整词匹配（例如，`Error` 会匹配 `Error here`，但不会匹配 `Errors here`）。可以在单词前后加通配符来匹配部分单词（例如，`*Error*` 会匹配 `AnyError` 和 `AnyErrors`）
+* 搜索词的出现顺序不限（例如，`Hello World` 会匹配包含 `Hello World` 和 `World Hello` 的日志）
+* 可以使用 `NOT` 或 `-` 排除关键字（例如，`Error NOT Exception` 或 `Error -Exception`）
+* 可以使用 `AND` 和 `OR` 组合多个关键字（例如，`Error OR Exception`）
+* 使用双引号可以进行精确匹配（例如，`"Error tests not found"`）
 
-<Image img={hyperdx_27} alt="搜索" size="md"/>
+<Image img={hyperdx_27} alt="搜索" size="md" />
 
 #### 列/属性搜索 \{#column-search\}
 
-- 可以使用 `column:value` 查找列以及 JSON/map 属性（例如 `level:Error`、`service:app`）
-- 可以使用比较运算符（`>`, `<`, `>=`, `<=`）查找某个取值范围（例如 `Duration:>1000`）
-- 可以使用 `property:*` 查找某个属性是否存在（例如 `duration:*`）
+* 可以使用 `column:value` 查找列以及 JSON/map 属性（例如 `level:Error`、`service:app`）
+* 可以使用比较运算符（`>`, `<`, `>=`, `<=`）查找某个取值范围（例如 `Duration:>1000`）
+* 可以使用 `property:*` 查找某个属性是否存在（例如 `duration:*`）
 
 ### 时间输入 \{#time-input\}
 
-- 时间输入支持自然语言（例如 `1 hour ago`、`yesterday`、`last week`）
-- 指定单个时间点时，将从该时间点搜索到当前时间。
-- 搜索时，时间范围会自动转换为解析后的时间范围，便于调试时间查询。
-- 你也可以高亮直方图中的某个柱子，以放大到特定的时间范围。
+* 时间输入支持自然语言（例如 `1 hour ago`、`yesterday`、`last week`）
+* 指定单个时间点时，将从该时间点搜索到当前时间。
+* 搜索时，时间范围会自动转换为解析后的时间范围，便于调试时间查询。
+* 你也可以高亮直方图中的某个柱子，以放大到特定的时间范围。
 
 ### SQL 搜索语法 \{#sql-syntax\}
 
@@ -50,7 +50,7 @@ ClickStack 允许您对事件（日志和跟踪）执行全文搜索。您只需
 SQL WHERE 子句作为搜索条件。这对于那些无法用 Lucene 语法
 表达的复杂查询尤其有用。
 
-### SELECT 语句  \{#select-statement\}
+### SELECT 语句 \{#select-statement\}
 
 要指定在搜索结果中显示的列，可以使用 `SELECT` 输入项。它是一个在搜索页面中用于选择列的 SQL SELECT 表达式。目前不支持别名（例如，不能使用 `column as "alias"`）。
 

@@ -53,7 +53,6 @@ LIMIT 10
 
 ***
 
-
 ## Соответствие базовых операций \{#basic\}
 
 ### Фильтрация (WHERE) \{#filtering-where\}
@@ -90,7 +89,7 @@ LIMIT 10
 | `df.nlargest(10, 'col')` | `ORDER BY col DESC LIMIT 10` |
 | `df.nsmallest(5, 'col')` | `ORDER BY col ASC LIMIT 5` |
 
----
+***
 
 ## GroupBy и агрегация \{#groupby\}
 
@@ -137,7 +136,6 @@ FROM data
 GROUP BY city
 ```
 
-
 ### Оператор HAVING \{#having-clause\}
 
 ```python
@@ -155,7 +153,6 @@ HAVING sum > 10000
 ```
 
 ***
-
 
 ## Операции соединения \{#joins\}
 
@@ -181,7 +178,6 @@ LEFT JOIN departments d ON e.dept_id = d.dept_id
 
 ***
 
-
 ## Операции со строками \{#string\}
 
 | pandas | SQL |
@@ -196,7 +192,7 @@ LEFT JOIN departments d ON e.dept_id = d.dept_id
 | `df['col'].str.replace('a', 'b')` | `replace(col, 'a', 'b')` |
 | `df['col'].str[:5]` | `substring(col, 1, 5)` |
 
----
+***
 
 ## Операции с датой и временем \{#datetime\}
 
@@ -209,7 +205,7 @@ LEFT JOIN departments d ON e.dept_id = d.dept_id
 | `df['date'].dt.dayofweek` | `toDayOfWeek(date)` |
 | `df['date'].dt.quarter` | `toQuarter(date)` |
 
----
+***
 
 ## Арифметические операции \{#arithmetic\}
 
@@ -225,7 +221,7 @@ LEFT JOIN departments d ON e.dept_id = d.dept_id
 | `df['a'].abs()` | `abs(a)` |
 | `df['a'].round(2)` | `round(a, 2)` |
 
----
+***
 
 ## Обработка значений NULL \{#null\}
 
@@ -237,7 +233,7 @@ LEFT JOIN departments d ON e.dept_id = d.dept_id
 | `df.fillna(0)` | `ifNull(col, 0)` |
 | `df.fillna({'a': 0, 'b': 'x'})` | `ifNull(a, 0), ifNull(b, 'x')` |
 
----
+***
 
 ## Полный пример \{#example\}
 
@@ -263,7 +259,6 @@ result = (df
 )
 ```
 
-
 ### Эквивалентный SQL‑запрос \{#equivalent-sql\}
 
 ```sql
@@ -281,7 +276,6 @@ HAVING amount_sum > 10000
 ORDER BY amount_sum DESC
 LIMIT 20
 ```
-
 
 ### Код DataStore \{#datastore-code\}
 
@@ -307,7 +301,6 @@ print(result.to_sql())
 
 ***
 
-
 ## Краткий обзор ключевых слов SQL \{#summary\}
 
 | Операция pandas | Оператор SQL |
@@ -322,7 +315,7 @@ print(result.to_sql())
 | `.drop_duplicates()` | `DISTINCT` |
 | `.having()` | `HAVING` |
 
----
+***
 
 ## Советы пользователям pandas \{#tips\}
 
@@ -336,7 +329,6 @@ print(result.to_sql())
 ds.filter(...).groupby(...).agg(...).sort(...).head(...)
 ```
 
-
 ### 2. Используйте to_sql() для изучения SQL \{#use-to-sql\}
 
 ```python
@@ -344,7 +336,6 @@ ds.filter(...).groupby(...).agg(...).sort(...).head(...)
 query = ds.filter(ds['x'] > 10).groupby('y').sum()
 print(query.to_sql())
 ```
-
 
 ### 3. Используйте возможности SQL \{#leverage-sql-features\}
 

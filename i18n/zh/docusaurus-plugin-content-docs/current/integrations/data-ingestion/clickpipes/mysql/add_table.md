@@ -21,12 +21,15 @@ import add_table from '@site/static/images/integrations/data-ingestion/clickpipe
 ## 向 ClickPipe 添加特定表的步骤 \{#add-tables-steps\}
 
 可以按以下步骤进行：
+
 1. [暂停](./pause_and_resume.md) 该管道。
 2. 点击 **Edit Table settings**。
 3. 找到您的表——可以在搜索栏中搜索。
 4. 勾选复选框以选择该表。
-<br/>
-<Image img={add_table} border size="md"/>
+
+<br />
+
+<Image img={add_table} border size="md" />
 
 5. 点击 **update**。
 6. 更新成功后，管道会依次进入 `Setup`、`Snapshot` 和 `Running` 状态。您可以在 **Tables** 标签页中跟踪该表的初始加载。

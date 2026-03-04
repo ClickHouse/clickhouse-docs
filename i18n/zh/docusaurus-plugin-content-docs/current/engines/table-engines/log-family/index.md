@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Log 表引擎系列 \{#log-table-engine-family\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 这些引擎适用于这样一种场景：需要快速写入大量小表（单表最多约 100 万行），并在之后整体读取它们。
 
@@ -33,23 +33,23 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 这些引擎：
 
-- 将数据存储在磁盘上。
+* 将数据存储在磁盘上。
 
-- 在写入时将数据追加到文件末尾。
+* 在写入时将数据追加到文件末尾。
 
-- 支持用于并发数据访问的锁。
+* 支持用于并发数据访问的锁。
 
-    在执行 `INSERT` 查询时，表会被锁定，其他读写数据的查询都会等待表解锁。如果没有数据写入查询在执行，则可以并发执行任意数量的数据读取查询。
+  在执行 `INSERT` 查询时，表会被锁定，其他读写数据的查询都会等待表解锁。如果没有数据写入查询在执行，则可以并发执行任意数量的数据读取查询。
 
-- 不支持[变更](/sql-reference/statements/alter#mutations)。
+* 不支持[变更](/sql-reference/statements/alter#mutations)。
 
-- 不支持索引。
+* 不支持索引。
 
-    这意味着针对数据范围的 `SELECT` 查询效率不高。
+  这意味着针对数据范围的 `SELECT` 查询效率不高。
 
-- 不以原子方式写入数据。
+* 不以原子方式写入数据。
 
-    如果写入操作被中断（例如服务器异常关闭），则可能会得到一个数据损坏的表。
+  如果写入操作被中断（例如服务器异常关闭），则可能会得到一个数据损坏的表。
 
 ## 差异 \{#differences\}
 

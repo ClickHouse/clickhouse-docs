@@ -39,7 +39,6 @@ WHERE value > 0
 ORDER BY value DESC;
 ```
 
-
 ### system.replicas \{#system-replicas\}
 
 Содержит информацию о задержке и статусе репликации для мониторинга состояния кластера.
@@ -51,8 +50,7 @@ WHERE absolute_delay > 60
 ORDER BY absolute_delay DESC;
 ```
 
-
-### system.replication&#95;queue \{#system-replication-queue\}
+### system.replication_queue \{#system-replication-queue\}
 
 Предоставляет подробные сведения для диагностики проблем с репликацией.
 
@@ -63,7 +61,6 @@ WHERE last_exception != ''
 ORDER BY create_time DESC;
 ```
 
-
 ### system.merges \{#system-merges\}
 
 Отображает текущие операции слияния и может помочь выявить зависшие процессы.
@@ -73,7 +70,6 @@ SELECT database, table, elapsed, progress, is_mutation, total_size_bytes_compres
 FROM system.merges 
 ORDER BY elapsed DESC;
 ```
-
 
 ### system.parts \{#system-parts\}
 
@@ -86,7 +82,6 @@ WHERE active = 1
 GROUP BY database, table
 ORDER BY count() DESC;
 ```
-
 
 ## Распространённые проблемы в продакшене \{#common-production-issues\}
 
@@ -127,7 +122,6 @@ WHERE is_done = 0;
 
 Сначала тестируйте изменения схемы на небольших наборах данных.
 
-
 ## Память и производительность \{#memory-and-performance\}
 
 ### Внешняя агрегация \{#external-aggregation\}
@@ -144,7 +138,6 @@ FROM large_table
 GROUP BY column1, column2
 SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
 ```
-
 
 ### Подробности об асинхронной вставке \{#async-insert-details\}
 
@@ -177,12 +170,12 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
 | Проблема | Обнаружение | Решение |
 |-------|-----------|----------|
 | Дисковое пространство | Проверить суммарный объём байт в `system.parts` | Отслеживать использование, планировать масштабирование |
-| Слишком много частей | Посчитать количество частей на таблицу | Пакетные вставки, включить async_insert |
+| Слишком много частей | Посчитать количество частей на таблицу | Пакетные вставки, включить async&#95;insert |
 | Задержка репликации | Проверить задержку в `system.replicas` | Отслеживать состояние сети, перезапустить реплики |
 | Некорректные данные | Проверить даты партиций | Реализовать проверку меток времени |
 | Застрявшие мутации | Проверить статус в `system.mutations` | Сначала протестировать на небольшом объёме данных |
 
 ### Видео-материалы \{#video-sources\}
 
-- [10 уроков эксплуатации ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE)
-- [Быстрые, параллельные и согласованные асинхронные операции INSERT в ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM)
+* [10 уроков эксплуатации ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE)
+* [Быстрые, параллельные и согласованные асинхронные операции INSERT в ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM)

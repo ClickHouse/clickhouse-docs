@@ -17,7 +17,6 @@ doc_type: 'reference'
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
-
 ## 参数 \{#arguments\}
 
 | Argument    | Description                                                                                                |
@@ -30,8 +29,8 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 | `pool_size` | Redis 最大连接池大小，默认值为 16。                                                               |
 | `primary`   | 必须指定，仅支持主键中的单列。主键将以二进制形式序列化为 Redis key。 |
 
-- 主键以外的列将按对应顺序以二进制形式序列化为 Redis value。
-- 带有 `key =` 或 `key IN (...)` 过滤条件的查询会被优化为从 Redis 进行多 key 查找。如果查询不包含 key 过滤条件，则会执行全表扫描，这是一个开销很大的操作。
+* 主键以外的列将按对应顺序以二进制形式序列化为 Redis value。
+* 带有 `key =` 或 `key IN (...)` 过滤条件的查询会被优化为从 Redis 进行多 key 查找。如果查询不包含 key 过滤条件，则会执行全表扫描，这是一个开销很大的操作。
 
 目前 `redis` 表函数不支持使用 [Named collections](/operations/named-collections.md)。
 
@@ -60,8 +59,7 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
-
 ## 相关 \{#related\}
 
-- [`Redis` 表引擎](/engines/table-engines/integrations/redis.md)
-- [将 Redis 用作字典源](/sql-reference/statements/create/dictionary/sources/redis)
+* [`Redis` 表引擎](/engines/table-engines/integrations/redis.md)
+* [将 Redis 用作字典源](/sql-reference/statements/create/dictionary/sources/redis)

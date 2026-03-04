@@ -22,4 +22,4 @@ doc_type: 'reference'
 
 ## См. также \{#see-also\}
 
-- [SHOW ROLES](/sql-reference/statements/show#show-roles)
+* [SHOW ROLES](/sql-reference/statements/show#show-roles)

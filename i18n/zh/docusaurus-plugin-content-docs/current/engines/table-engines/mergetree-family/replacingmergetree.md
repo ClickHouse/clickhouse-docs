@@ -154,30 +154,29 @@ SELECT * FROM myThirdReplacingMT final;
 在创建 `ReplacingMergeTree` 表时，需要使用与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。
 
 <details markdown="1">
+  <summary>已弃用的建表方法</summary>
 
-<summary>已弃用的建表方法</summary>
+  :::note
+  不要在新项目中使用此方法，如有可能，请将旧项目迁移到上面所述的方法。
+  :::
 
-:::note
-不要在新项目中使用此方法，如有可能，请将旧项目迁移到上面所述的方法。
-:::
+  ```sql
+  CREATE TABLE rmt_example
+  (
+      `number` UInt16
+  )
+  ENGINE = ReplacingMergeTree
+  ORDER BY number
 
-```sql
-CREATE TABLE rmt_example
-(
-    `number` UInt16
-)
-ENGINE = ReplacingMergeTree
-ORDER BY number
+  INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
+  FROM numbers(1000000000)
 
-INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
-FROM numbers(1000000000)
+  0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
+  ```
 
-0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
-```
+  除 `ver` 之外的所有参数与 `MergeTree` 中的含义相同。
 
-除 `ver` 之外的所有参数与 `MergeTree` 中的含义相同。
-
-- `ver` - 版本列。可选参数。相关说明参见上文。
+  * `ver` - 版本列。可选参数。相关说明参见上文。
 </details>
 
 ## 查询时去重 &amp; FINAL \{#query-time-de-duplication--final\}

@@ -19,7 +19,6 @@ doc_type: 'reference'
 from chdb.datastore import DataStore
 ```
 
-
 ### Конструктор \{#datastore-constructor\}
 
 ```python
@@ -49,7 +48,6 @@ ds = DataStore(pd.DataFrame({'a': [1, 2, 3]}))
 # Empty DataStore
 ds = DataStore()
 ```
-
 
 ### Свойства \{#datastore-properties\}
 
@@ -146,7 +144,7 @@ ds = DataStore()
 | `to_json(path, ...)` | Экспорт в JSON |
 | `to_excel(path, ...)` | Экспорт в Excel |
 | `to_df()` | Преобразовать в pandas DataFrame |
-| `to_pandas()` | Синоним to_df |
+| `to_pandas()` | Синоним to&#95;df |
 | `to_arrow()` | Преобразовать в таблицу Arrow |
 | `to_dict(orient)` | Преобразовать в словарь |
 | `to_records()` | Преобразовать в записи |
@@ -199,7 +197,7 @@ ds = DataStore()
 | `__pos__()` | `+ds` |
 | `__abs__()` | `abs(ds)` |
 
----
+***
 
 ## ColumnExpr \{#columnexpr\}
 
@@ -209,7 +207,6 @@ ds = DataStore()
 # ColumnExpr is returned automatically
 col = ds['name']  # Returns ColumnExpr
 ```
-
 
 ### Свойства \{#columnexpr-properties\}
 
@@ -242,7 +239,6 @@ ds['squared'] = ds['value'] ** 2
 ds['remainder'] = ds['value'] % 10
 ```
 
-
 ### Операции сравнения \{#columnexpr-comparison\}
 
 ```python
@@ -254,7 +250,6 @@ ds[ds['name'] == 'Alice']    # Equal
 ds[ds['name'] != 'Bob']      # Not equal
 ```
 
-
 ### Логические операции \{#columnexpr-logical\}
 
 ```python
@@ -262,7 +257,6 @@ ds[(ds['age'] > 25) & (ds['city'] == 'NYC')]    # AND
 ds[(ds['age'] > 25) | (ds['city'] == 'NYC')]    # OR
 ds[~(ds['status'] == 'inactive')]               # NOT
 ```
-
 
 ### Методы \{#columnexpr-methods\}
 
@@ -307,7 +301,7 @@ ds[~(ds['status'] == 'inactive')]               # NOT
 | `any()` | Есть хотя бы одно истинное значение |
 | `all()` | Все значения истинны |
 
----
+***
 
 ## LazyGroupBy \{#lazygroupby\}
 
@@ -317,7 +311,6 @@ ds[~(ds['status'] == 'inactive')]               # NOT
 # LazyGroupBy is returned automatically
 grouped = ds.groupby('category')  # Returns LazyGroupBy
 ```
-
 
 ### Методы \{#lazygroupby-methods\}
 
@@ -351,7 +344,6 @@ grouped['amount'].sum()     # Returns DataStore
 grouped[['a', 'b']].sum()   # Returns DataStore
 ```
 
-
 ### Спецификации агрегирования \{#lazygroupby-agg\}
 
 ```python
@@ -370,7 +362,6 @@ grouped.agg(
 ```
 
 ***
-
 
 ## LazySeries \{#lazyseries\}
 
@@ -397,7 +388,7 @@ grouped.agg(
 | `to_numpy()` | Преобразовать в массив NumPy |
 | `to_frame()` | Преобразовать в DataStore |
 
----
+***
 
 ## Связанные классы \{#related\}
 
@@ -425,7 +416,6 @@ F.lag('price', 1).over(partition_by='product', order_by='date')
 
 Дополнительные сведения см. в разделе [Aggregation](aggregation.md#f-namespace).
 
-
 ### Field \{#field-class\}
 
 Ссылка на столбец по его имени.
@@ -441,7 +431,6 @@ price = Field('price')
 F.sum(Field('amount'))
 F.avg(Field('price'))
 ```
-
 
 ### CaseWhen \{#casewhen-class\}
 
@@ -459,7 +448,6 @@ result = (ds
 # Assign to column
 ds['grade'] = result
 ```
-
 
 ### Window \{#window-class\}
 

@@ -13,11 +13,11 @@ doc_type: 'guide'
 
 本指南将演示如何在 ClickHouse 中通过多种方式进行数据脱敏：
 
-- **Masking policies** (ClickHouse Cloud, 25.12+)：在查询时针对特定用户/角色应用的原生动态脱敏策略
-- **String replacement functions**：使用内置字符串替换函数进行基本脱敏处理
-- **Masked views**：创建带有转换逻辑的视图
-- **Materialized columns**：与原始数据一同存储脱敏后的数据版本
-- **Query masking rules**：在日志中对敏感数据进行脱敏（ClickHouse OSS）
+* **Masking policies** (ClickHouse Cloud, 25.12+)：在查询时针对特定用户/角色应用的原生动态脱敏策略
+* **String replacement functions**：使用内置字符串替换函数进行基本脱敏处理
+* **Masked views**：创建带有转换逻辑的视图
+* **Materialized columns**：与原始数据一同存储脱敏后的数据版本
+* **Query masking rules**：在日志中对敏感数据进行脱敏（ClickHouse OSS）
 
 ## 使用 Masking Policy（ClickHouse Cloud） \{#masking-policies\}
 
@@ -88,7 +88,6 @@ SELECT * FROM orders ORDER BY user_id;
 
 不具有 `masked_data_viewer` 角色的用户将看到原始的未掩码数据。
 
-
 ### 条件脱敏 \{#conditional-masking\}
 
 你可以使用 `WHERE` 子句只对特定行应用脱敏。例如，仅对高金额订单进行脱敏：
@@ -101,7 +100,6 @@ CREATE MASKING POLICY mask_high_value_orders ON orders
     WHERE total_amount > 200
     TO masked_data_viewer;
 ```
-
 
 ### 具有优先级的多个策略 \{#multiple-policies-with-priority\}
 
@@ -127,7 +125,6 @@ CREATE MASKING POLICY refined_masking ON orders
 
 在此示例中，对于 `total_amount > 100` 的订单，`refined_masking` 策略（优先级 10）会取代 `basic_masking` 策略（优先级 0）在 `name` 列上的应用，而 `email` 仍然使用基本脱敏策略。
 
-
 ### 基于哈希的数据脱敏 \{#hash-based-masking\}
 
 对于需要一致性脱敏（相同输入始终产生相同脱敏结果）的场景，请使用哈希函数：
@@ -139,7 +136,6 @@ CREATE MASKING POLICY hash_sensitive_data ON orders
         phone = concat('555-', toString(cityHash64(phone) % 10000000))
     TO masked_data_viewer;
 ```
-
 
 ### 管理脱敏策略 \{#managing-masking-policies\}
 
@@ -164,7 +160,6 @@ CREATE OR REPLACE MASKING POLICY mask_pii_data ON orders
 ```
 
 如需了解更多信息，请参阅 [CREATE MASKING POLICY](/sql-reference/statements/create/masking-policy) 的文档。
-
 
 ## 使用字符串替换函数 \{#using-string-functions\}
 
@@ -227,7 +222,6 @@ SELECT replaceRegexpAll(
 │ SSN: XXX-XX-6789 │
 └──────────────────┘
 ```
-
 
 ## 创建掩码 `VIEW` \{#masked-views\}
 
@@ -293,7 +287,6 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
-
 请注意，从该视图返回的数据经过部分遮蔽处理，用以隐藏敏感信息。
 你也可以创建多个视图，并根据查看者的权限级别应用不同程度的模糊/脱敏。
 
@@ -326,7 +319,6 @@ GRANT masked_orders_viewer TO your_user;
 ```
 
 这可确保拥有 `masked_orders_viewer` 角色的用户只能在该视图中看到脱敏后的数据，而无法从表中查看原始的未脱敏数据。
-
 
 ## 使用 `MATERIALIZED` 列和列级访问限制 \{#materialized-ephemeral-column-restrictions\}
 
@@ -377,7 +369,6 @@ FROM orders
 ORDER BY user_id ASC
 ```
 
-
 ```response title="Response"
    ┌─user_id─┬─name──────────┬─email─────────────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address───────────────────┬─name_masked──┬─email_masked───────┬─phone_masked─┬─shipping_address_masked────┐
 1. │    1001 │ John Smith    │ john.smith@gmail.com      │ 555-123-4567 │       299.99 │ 2024-01-15 │ 123 Main St, New York, NY 10001    │ John ****    │ jo****@gmail.com   │ 555-***-4567 │ **** New York, NY 10001    │
@@ -421,7 +412,6 @@ GRANT masked_orders_viewer TO your_user;
 如果你只想在 `orders` 表中存储脱敏后的数据，
 可以将那些敏感的未脱敏列标记为 [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral)，
 从而确保此类列不会被实际存储在表中。
-
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -471,7 +461,6 @@ ORDER BY user_id ASC
 5. │    1005 │       449.75 │ 2024-01-19 │ David ****   │ dw****@email.net   │ 555-***-3210 │ *** Phoenix, AZ 85001     │
    └─────────┴──────────────┴────────────┴──────────────┴────────────────────┴──────────────┴───────────────────────────┘
 ```
-
 
 ## 对日志数据使用查询掩码规则 \{#use-query-masking-rules\}
 

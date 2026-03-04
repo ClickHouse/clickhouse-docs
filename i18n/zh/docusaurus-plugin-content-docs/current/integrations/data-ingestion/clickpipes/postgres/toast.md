@@ -37,7 +37,6 @@ WHERE c.relname = 'your_table_name'
 
 此查询将返回可能会被 TOAST 处理的列的名称和数据类型。需要注意的是，此查询仅会根据列的数据类型和存储属性识别出具备 TOAST 存储条件的列。要确定这些列是否实际包含经过 TOAST 处理的数据，还需要考虑这些列中的值是否超过相应的大小阈值。数据是否真正发生 TOAST，取决于存储在这些列中的具体内容。
 
-
 ## 确保正确处理 TOAST 列 \{#ensuring-proper-handling-of-toast-columns\}
 
 为确保在复制期间正确处理 TOAST 列，需要将表的 `REPLICA IDENTITY` 设置为 `FULL`。这会指示 PostgreSQL 在对 UPDATE 和 DELETE 操作写入 WAL 时包含完整的旧行数据，从而确保所有列值（包括 TOAST 列）都可用于复制。
@@ -50,7 +49,6 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 
 有关在设置 `REPLICA IDENTITY FULL` 时的性能考虑，请参阅[这篇博客文章](https://xata.io/blog/replica-identity-full-performance)。
 
-
 ## 当未设置 REPLICA IDENTITY FULL 时的复制行为 \{#replication-behavior-when-replica-identity-full-is-not-set\}
 
 如果未为包含 TOAST 列的表设置 `REPLICA IDENTITY FULL`，在复制到 ClickHouse 时可能会遇到以下问题：
@@ -58,8 +56,8 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 1. 对于 INSERT 操作，所有列（包括 TOAST 列）都会被正确复制。
 
 2. 对于 UPDATE 操作：
-   - 如果某个 TOAST 列未被修改，其值在 ClickHouse 中会显示为 NULL 或为空。
-   - 如果某个 TOAST 列被修改，则会被正确复制。
+   * 如果某个 TOAST 列未被修改，其值在 ClickHouse 中会显示为 NULL 或为空。
+   * 如果某个 TOAST 列被修改，则会被正确复制。
 
 3. 对于 DELETE 操作，TOAST 列的值在 ClickHouse 中会显示为 NULL 或为空。
 

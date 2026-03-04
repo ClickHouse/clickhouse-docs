@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # HDFS 表引擎 \{#hdfs-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 该引擎通过允许通过 ClickHouse 管理 [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上的数据，为 [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) 生态系统提供集成能力。此引擎类似于 [File](/engines/table-engines/special/file) 和 [URL](/engines/table-engines/special/url) 引擎，但提供了 Hadoop 特有的功能。
 
@@ -156,47 +156,47 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 
 | **参数**                                         | **默认值**       |
 | -                                                  | -                    |
-| rpc\_client\_connect\_tcpnodelay                      | true                    |
-| dfs\_client\_read\_shortcircuit                       | true                    |
-| output\_replace-datanode-on-failure                   | true                    |
-| input\_notretry-another-node                          | false                   |
-| input\_localread\_mappedfile                          | true                    |
-| dfs\_client\_use\_legacy\_blockreader\_local          | false                   |
-| rpc\_client\_ping\_interval                           | 10  * 1000              |
-| rpc\_client\_connect\_timeout                         | 600 * 1000              |
-| rpc\_client\_read\_timeout                            | 3600 * 1000             |
-| rpc\_client\_write\_timeout                           | 3600 * 1000             |
-| rpc\_client\_socket\_linger\_timeout                  | -1                      |
-| rpc\_client\_connect\_retry                           | 10                      |
-| rpc\_client\_timeout                                  | 3600 * 1000             |
-| dfs\_default\_replica                                 | 3                       |
-| input\_connect\_timeout                               | 600 * 1000              |
-| input\_read\_timeout                                  | 3600 * 1000             |
-| input\_write\_timeout                                 | 3600 * 1000             |
-| input\_localread\_default\_buffersize                 | 1 * 1024 * 1024         |
-| dfs\_prefetchsize                                     | 10                      |
-| input\_read\_getblockinfo\_retry                      | 3                       |
-| input\_localread\_blockinfo\_cachesize                | 1000                    |
-| input\_read\_max\_retry                               | 60                      |
-| output\_default\_chunksize                            | 512                     |
-| output\_default\_packetsize                           | 64 * 1024               |
-| output\_default\_write\_retry                         | 10                      |
-| output\_connect\_timeout                              | 600 * 1000              |
-| output\_read\_timeout                                 | 3600 * 1000             |
-| output\_write\_timeout                                | 3600 * 1000             |
-| output\_close\_timeout                                | 3600 * 1000             |
-| output\_packetpool\_size                              | 1024                    |
-| output\_heartbeat\_interval                          | 10 * 1000               |
-| dfs\_client\_failover\_max\_attempts                  | 15                      |
-| dfs\_client\_read\_shortcircuit\_streams\_cache\_size | 256                     |
-| dfs\_client\_socketcache\_expiryMsec                  | 3000                    |
-| dfs\_client\_socketcache\_capacity                    | 16                      |
-| dfs\_default\_blocksize                               | 64 * 1024 * 1024        |
-| dfs\_default\_uri                                     | "hdfs://localhost:9000" |
-| hadoop\_security\_authentication                      | "simple"                |
-| hadoop\_security\_kerberos\_ticket\_cache\_path       | ""                      |
-| dfs\_client\_log\_severity                            | "INFO"                  |
-| dfs\_domain\_socket\_path                             | ""                      |
+| rpc&#95;client&#95;connect&#95;tcpnodelay                      | true                    |
+| dfs&#95;client&#95;read&#95;shortcircuit                       | true                    |
+| output&#95;replace-datanode-on-failure                   | true                    |
+| input&#95;notretry-another-node                          | false                   |
+| input&#95;localread&#95;mappedfile                          | true                    |
+| dfs&#95;client&#95;use&#95;legacy&#95;blockreader&#95;local          | false                   |
+| rpc&#95;client&#95;ping&#95;interval                           | 10  * 1000              |
+| rpc&#95;client&#95;connect&#95;timeout                         | 600 * 1000              |
+| rpc&#95;client&#95;read&#95;timeout                            | 3600 * 1000             |
+| rpc&#95;client&#95;write&#95;timeout                           | 3600 * 1000             |
+| rpc&#95;client&#95;socket&#95;linger&#95;timeout                  | -1                      |
+| rpc&#95;client&#95;connect&#95;retry                           | 10                      |
+| rpc&#95;client&#95;timeout                                  | 3600 * 1000             |
+| dfs&#95;default&#95;replica                                 | 3                       |
+| input&#95;connect&#95;timeout                               | 600 * 1000              |
+| input&#95;read&#95;timeout                                  | 3600 * 1000             |
+| input&#95;write&#95;timeout                                 | 3600 * 1000             |
+| input&#95;localread&#95;default&#95;buffersize                 | 1 * 1024 * 1024         |
+| dfs&#95;prefetchsize                                     | 10                      |
+| input&#95;read&#95;getblockinfo&#95;retry                      | 3                       |
+| input&#95;localread&#95;blockinfo&#95;cachesize                | 1000                    |
+| input&#95;read&#95;max&#95;retry                               | 60                      |
+| output&#95;default&#95;chunksize                            | 512                     |
+| output&#95;default&#95;packetsize                           | 64 * 1024               |
+| output&#95;default&#95;write&#95;retry                         | 10                      |
+| output&#95;connect&#95;timeout                              | 600 * 1000              |
+| output&#95;read&#95;timeout                                 | 3600 * 1000             |
+| output&#95;write&#95;timeout                                | 3600 * 1000             |
+| output&#95;close&#95;timeout                                | 3600 * 1000             |
+| output&#95;packetpool&#95;size                              | 1024                    |
+| output&#95;heartbeat&#95;interval                          | 10 * 1000               |
+| dfs&#95;client&#95;failover&#95;max&#95;attempts                  | 15                      |
+| dfs&#95;client&#95;read&#95;shortcircuit&#95;streams&#95;cache&#95;size | 256                     |
+| dfs&#95;client&#95;socketcache&#95;expiryMsec                  | 3000                    |
+| dfs&#95;client&#95;socketcache&#95;capacity                    | 16                      |
+| dfs&#95;default&#95;blocksize                               | 64 * 1024 * 1024        |
+| dfs&#95;default&#95;uri                                     | &quot;hdfs://localhost:9000&quot; |
+| hadoop&#95;security&#95;authentication                      | &quot;simple&quot;                |
+| hadoop&#95;security&#95;kerberos&#95;ticket&#95;cache&#95;path       | &quot;&quot;                      |
+| dfs&#95;client&#95;log&#95;severity                            | &quot;INFO&quot;                  |
+| dfs&#95;domain&#95;socket&#95;path                             | &quot;&quot;                      |
 
 [HDFS 配置参考](https://hawq.apache.org/docs/userguide/2.3.0.0-incubating/reference/HDFSConfigurationParameterReference.html) 对部分参数可能有更详细的说明。
 
@@ -204,11 +204,12 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 
 | **参数**                                         | **默认值**       |
 | -                                                  | -                    |
-|hadoop\_kerberos\_keytab                               | ""                      |
-|hadoop\_kerberos\_principal                            | ""                      |
-|libhdfs3\_conf                                         | ""                      |
+|hadoop&#95;kerberos&#95;keytab                               | &quot;&quot;                      |
+|hadoop&#95;kerberos&#95;principal                            | &quot;&quot;                      |
+|libhdfs3&#95;conf                                         | &quot;&quot;                      |
 
 ### 限制 \{#limitations\}
+
 * `hadoop_security_kerberos_ticket_cache_path` 和 `libhdfs3_conf` 只能作为全局配置使用，不能针对单个用户设置
 
 ## Kerberos 支持 \{#kerberos-support\}
@@ -237,17 +238,17 @@ libhdfs3 支持 HDFS Namenode 高可用（HA）。
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（字节）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
 
 ## 存储设置 \{#storage-settings\}
 
-- [hdfs_truncate_on_insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - 允许在插入前截断文件。默认禁用。
-- [hdfs_create_new_file_on_insert](/operations/settings/settings.md#hdfs_create_new_file_on_insert) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认禁用。
-- [hdfs_skip_empty_files](/operations/settings/settings.md#hdfs_skip_empty_files) - 允许在读取时跳过空文件。默认禁用。
+* [hdfs&#95;truncate&#95;on&#95;insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - 允许在插入前截断文件。默认禁用。
+* [hdfs&#95;create&#95;new&#95;file&#95;on&#95;insert](/operations/settings/settings.md#hdfs_create_new_file_on_insert) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认禁用。
+* [hdfs&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#hdfs_skip_empty_files) - 允许在读取时跳过空文件。默认禁用。
 
 **另请参阅**
 
-- [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns)

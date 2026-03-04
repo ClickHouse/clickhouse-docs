@@ -19,7 +19,7 @@ null('structure')
 
 ## 参数 \{#argument\}
 
-- `structure` — 列及其类型的列表。[String](../../sql-reference/data-types/string.md)。
+* `structure` — 列及其类型的列表。[String](../../sql-reference/data-types/string.md)。
 
 ## 返回值 \{#returned_value\}
 
@@ -43,4 +43,4 @@ DROP TABLE IF EXISTS t;
 
 ## 相关 \{#related\}
 
-- [Null 表引擎](../../engines/table-engines/special/null.md)
+* [Null 表引擎](../../engines/table-engines/special/null.md)

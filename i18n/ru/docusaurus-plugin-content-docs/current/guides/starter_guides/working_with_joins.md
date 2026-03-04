@@ -21,7 +21,6 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse полностью поддерживает стандартные SQL-операции соединения (JOIN), что позволяет эффективно анализировать данные.
 В этом руководстве вы рассмотрите некоторые из наиболее часто используемых типов соединений и узнаете, как работать с ними с помощью диаграмм Венна и примерных запросов к нормализованному набору данных [IMDB](https://en.wikipedia.org/wiki/IMDb), полученному из [репозитория реляционных наборов данных](https://relational.fit.cvut.cz/dataset/IMDb).
 
-
 ## Тестовые данные и ресурсы \{#test-data-and-resources\}
 
 Инструкции по созданию и загрузке таблиц можно найти [здесь](/integrations/dbt/guides).
@@ -37,21 +36,21 @@ ClickHouse полностью поддерживает стандартные SQ
 
 Стрелки на диаграмме выше обозначают [связи внешнего ключа с первичным](https://en.wikipedia.org/wiki/Foreign_key), например, столбец `movie_id` строки в таблице `genres` содержит значение `id` из строки в таблице `movies`.
 
-Между фильмами и актерами существует [связь «многие-ко-многим»](https://en.wikipedia.org/wiki/Many-to-many_(data_model)).
-Эта связь «многие-ко-многим» нормализована до двух [связей «один-ко-многим»](https://en.wikipedia.org/wiki/One-to-many_(data_model)) с помощью таблицы `roles`.
+Между фильмами и актерами существует [связь «многие-ко-многим»](https://en.wikipedia.org/wiki/Many-to-many_\(data_model\)).
+Эта связь «многие-ко-многим» нормализована до двух [связей «один-ко-многим»](https://en.wikipedia.org/wiki/One-to-many_\(data_model\)) с помощью таблицы `roles`.
 Каждая строка в таблице `roles` содержит значения столбцов `id` таблицы `movies` и таблицы `actors`.
 
 ## Типы JOIN, поддерживаемые в ClickHouse \{#join-types-supported-in-clickhouse\}
 
 ClickHouse поддерживает следующие типы JOIN:
 
-- [INNER JOIN](#inner-join)
-- [OUTER JOIN](#left--right--full-outer-join)
-- [CROSS JOIN](#cross-join)
-- [SEMI JOIN](#left--right-semi-join)
-- [ANTI JOIN](#left--right-anti-join)
-- [ANY JOIN](#left--right--inner-any-join)
-- [ASOF JOIN](#asof-join)
+* [INNER JOIN](#inner-join)
+* [OUTER JOIN](#left--right--full-outer-join)
+* [CROSS JOIN](#cross-join)
+* [SEMI JOIN](#left--right-semi-join)
+* [ANTI JOIN](#left--right-anti-join)
+* [ANY JOIN](#left--right--inner-any-join)
+* [ASOF JOIN](#asof-join)
 
 В следующих разделах приведены примеры запросов для каждого из перечисленных выше типов JOIN.
 
@@ -98,7 +97,6 @@ LIMIT 10;
 
 Поведение операции `INNER JOIN` можно расширить или изменить, используя один из следующих типов соединений.
 
-
 ## (LEFT / RIGHT / FULL) OUTER JOIN \{#left--right--full-outer-join\}
 
 `LEFT OUTER JOIN` ведёт себя так же, как `INNER JOIN`; дополнительно для несовпадающих строк левой таблицы ClickHouse возвращает [значения по умолчанию](/sql-reference/statements/create/table#default_values) для столбцов правой таблицы.
@@ -144,7 +142,6 @@ LIMIT 10;
 :::note
 Ключевое слово `OUTER` можно опустить.
 :::
-
 
 ## CROSS JOIN \{#cross-join\}
 
@@ -242,7 +239,6 @@ ALL
 
 И поскольку, как уже упоминалось выше, ключевое слово `OUTER` можно опустить для `RIGHT OUTER JOIN`, а необязательное ключевое слово `ALL` можно добавить, вы можете написать `ALL RIGHT JOIN`, и это будет корректно работать.
 
-
 ## (LEFT / RIGHT) SEMI JOIN \{#left--right-semi-join\}
 
 Запрос `LEFT SEMI JOIN` возвращает значения столбцов для каждой строки из левой таблицы, для которой в правой таблице есть хотя бы одно совпадение по ключу соединения.
@@ -281,7 +277,6 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-
 ## (LEFT / RIGHT) ANTI JOIN \{#left--right-anti-join\}
 
 `LEFT ANTI JOIN` возвращает значения столбцов для всех строк из левой таблицы, которые не нашли соответствия в правой таблице.
@@ -316,7 +311,6 @@ LIMIT 10;
 │ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
-
 
 ## (LEFT / RIGHT / INNER) ANY JOIN \{#left--right--inner-any-join\}
 
@@ -393,7 +387,6 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-
 ## ASOF JOIN \{#asof-join\}
 
 `ASOF JOIN` предоставляет возможности неточного сопоставления.
@@ -450,7 +443,6 @@ final_price:        9645
 :::note
 Предложение `ON` в `ASOF JOIN` обязательно и задаёт условие точного соответствия, которое дополняет условие неточного соответствия в предложении `AND`.
 :::
-
 
 ## Краткое содержание \{#summary\}
 

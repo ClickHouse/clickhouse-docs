@@ -28,4 +28,4 @@ merge(['db_name',] 'tables_regexp')
 
 ## 相关内容 \{#related\}
 
-- [Merge](../../engines/table-engines/special/merge.md) 表引擎
+* [Merge](../../engines/table-engines/special/merge.md) 表引擎

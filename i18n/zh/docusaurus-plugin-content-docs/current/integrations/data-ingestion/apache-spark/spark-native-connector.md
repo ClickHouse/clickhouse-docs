@@ -13,7 +13,6 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Spark 连接器 \{#spark-connector\}
 
 <ClickHouseSupportedBadge />
@@ -45,9 +44,9 @@ ClickHouse Spark 连接器支持两种访问模式：**Catalog API** 和 **Table
 
 ## 环境要求 \{#requirements\}
 
-- Java 8 或 17（Spark 4.0 需要 Java 17+）
-- Scala 2.12 或 2.13（Spark 4.0 仅支持 Scala 2.13）
-- Apache Spark 3.3、3.4、3.5 或 4.0
+* Java 8 或 17（Spark 4.0 需要 Java 17+）
+* Scala 2.12 或 2.13（Spark 4.0 仅支持 Scala 2.13）
+* Apache Spark 3.3、3.4、3.5 或 4.0
 
 ## 兼容性矩阵 \{#compatibility-matrix\}
 
@@ -75,86 +74,81 @@ ClickHouse Spark 连接器支持两种访问模式：**Catalog API** 和 **Table
 ### 作为依赖导入 \{#import-as-a-dependency\}
 
 <Tabs>
-<TabItem value="Maven" label="Maven" default>
+  <TabItem value="Maven" label="Maven" default>
+    ```maven
+    <dependency>
+      <groupId>com.clickhouse.spark</groupId>
+      <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
+      <version>{{ stable_version }}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.clickhouse</groupId>
+      <artifactId>clickhouse-jdbc</artifactId>
+      <classifier>all</classifier>
+      <version>{{ clickhouse_jdbc_version }}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    ```
 
-```maven
-<dependency>
-  <groupId>com.clickhouse.spark</groupId>
-  <artifactId>clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}</artifactId>
-  <version>{{ stable_version }}</version>
-</dependency>
-<dependency>
-  <groupId>com.clickhouse</groupId>
-  <artifactId>clickhouse-jdbc</artifactId>
-  <classifier>all</classifier>
-  <version>{{ clickhouse_jdbc_version }}</version>
-  <exclusions>
-    <exclusion>
-      <groupId>*</groupId>
-      <artifactId>*</artifactId>
-    </exclusion>
-  </exclusions>
-</dependency>
-```
+    如果希望使用 SNAPSHOT 版本，请添加以下仓库。
 
-如果希望使用 SNAPSHOT 版本，请添加以下仓库。
+    ```maven
+    <repositories>
+      <repository>
+        <id>sonatype-oss-snapshots</id>
+        <name>Sonatype OSS Snapshots Repository</name>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+      </repository>
+    </repositories>
+    ```
+  </TabItem>
 
-```maven
-<repositories>
-  <repository>
-    <id>sonatype-oss-snapshots</id>
-    <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-  </repository>
-</repositories>
-```
+  <TabItem value="Gradle" label="Gradle">
+    ```gradle
+    dependencies {
+      implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
+      implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
+    }
+    ```
 
-</TabItem>
-<TabItem value="Gradle" label="Gradle">
+    如果希望使用 SNAPSHOT 版本，请添加以下仓库：
 
-```gradle
-dependencies {
-  implementation("com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}")
-  implementation("com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all") { transitive = false }
-}
-```
+    ```gradle
+    repositries {
+      maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+    }
+    ```
+  </TabItem>
 
-如果希望使用 SNAPSHOT 版本，请添加以下仓库：
+  <TabItem value="SBT" label="SBT">
+    ```sbt
+    libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
+    libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
+    ```
+  </TabItem>
 
-```gradle
-repositries {
-  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
-}
-```
+  <TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
+    在使用 Spark 的 shell 选项（Spark SQL CLI、Spark Shell CLI 和 Spark Submit 命令）时，可以通过传入所需的 JAR 包来注册依赖：
 
-</TabItem>
-<TabItem value="SBT" label="SBT">
+    ```text
+    $SPARK_HOME/bin/spark-sql \
+      --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
+    ```
 
-```sbt
-libraryDependencies += "com.clickhouse" % "clickhouse-jdbc" % {{ clickhouse_jdbc_version }} classifier "all"
-libraryDependencies += "com.clickhouse.spark" %% clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }} % {{ stable_version }}
-```
+    如果希望避免将 JAR 文件复制到 Spark 客户端节点，可以改用以下方式：
 
-</TabItem>
-<TabItem value="Spark SQL/Shell CLI" label="Spark SQL/Shell CLI">
+    ```text
+      --repositories https://{maven-central-mirror or private-nexus-repo} \
+      --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
+    ```
 
-在使用 Spark 的 shell 选项（Spark SQL CLI、Spark Shell CLI 和 Spark Submit 命令）时，可以通过传入所需的 JAR 包来注册依赖：
-
-```text
-$SPARK_HOME/bin/spark-sql \
-  --jars /path/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}.jar,/path/clickhouse-jdbc-{{ clickhouse_jdbc_version }}-all.jar
-```
-
-如果希望避免将 JAR 文件复制到 Spark 客户端节点，可以改用以下方式：
-
-```text
-  --repositories https://{maven-central-mirror or private-nexus-repo} \
-  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
-```
-
-注意：对于仅 SQL 的使用场景，推荐在生产环境中使用 [Apache Kyuubi](https://github.com/apache/kyuubi)。
-
-</TabItem>
+    注意：对于仅 SQL 的使用场景，推荐在生产环境中使用 [Apache Kyuubi](https://github.com/apache/kyuubi)。
+  </TabItem>
 </Tabs>
 
 ### 下载依赖库 \{#download-the-library\}
@@ -179,7 +173,6 @@ clickhouse-jdbc:all 中。
 无论采用哪种方式，请确保各个包的版本根据
 [Compatibility Matrix](#compatibility-matrix) 之间是兼容的。
 :::
-
 
 ## 注册 catalog（必需） \{#register-the-catalog-required\}
 
@@ -230,7 +223,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-
 ## 使用 TableProvider API（基于格式的访问） \{#using-the-tableprovider-api\}
 
 除了基于 catalog 的方式之外，ClickHouse Spark 连接器还支持通过 TableProvider API 采用**基于格式的访问模式**。
@@ -238,128 +230,120 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 ### 基于格式的读取示例 \{#format-based-read\}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    from pyspark.sql import SparkSession
 
-```python
-from pyspark.sql import SparkSession
+    spark = SparkSession.builder.getOrCreate()
 
-spark = SparkSession.builder.getOrCreate()
+    # 使用格式 API 从 ClickHouse 读取数据
+    df = spark.read \
+        .format("clickhouse") \
+        .option("host", "your-clickhouse-host") \
+        .option("protocol", "https") \
+        .option("http_port", "8443") \
+        .option("database", "default") \
+        .option("table", "your_table") \
+        .option("user", "default") \
+        .option("password", "your_password") \
+        .option("ssl", "true") \
+        .load()
 
-# 使用格式 API 从 ClickHouse 读取数据
-df = spark.read \
-    .format("clickhouse") \
-    .option("host", "your-clickhouse-host") \
-    .option("protocol", "https") \
-    .option("http_port", "8443") \
-    .option("database", "default") \
-    .option("table", "your_table") \
-    .option("user", "default") \
-    .option("password", "your_password") \
-    .option("ssl", "true") \
-    .load()
+    df.show()
+    ```
+  </TabItem>
 
-df.show()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    val df = spark.read
+      .format("clickhouse")
+      .option("host", "your-clickhouse-host")
+      .option("protocol", "https")
+      .option("http_port", "8443")
+      .option("database", "default")
+      .option("table", "your_table")
+      .option("user", "default")
+      .option("password", "your_password")
+      .option("ssl", "true")
+      .load()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    df.show()
+    ```
+  </TabItem>
 
-```scala
-val df = spark.read
-  .format("clickhouse")
-  .option("host", "your-clickhouse-host")
-  .option("protocol", "https")
-  .option("http_port", "8443")
-  .option("database", "default")
-  .option("table", "your_table")
-  .option("user", "default")
-  .option("password", "your_password")
-  .option("ssl", "true")
-  .load()
+  <TabItem value="Java" label="Java">
+    ```java
+    Dataset<Row> df = spark.read()
+        .format("clickhouse")
+        .option("host", "your-clickhouse-host")
+        .option("protocol", "https")
+        .option("http_port", "8443")
+        .option("database", "default")
+        .option("table", "your_table")
+        .option("user", "default")
+        .option("password", "your_password")
+        .option("ssl", "true")
+        .load();
 
-df.show()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-Dataset<Row> df = spark.read()
-    .format("clickhouse")
-    .option("host", "your-clickhouse-host")
-    .option("protocol", "https")
-    .option("http_port", "8443")
-    .option("database", "default")
-    .option("table", "your_table")
-    .option("user", "default")
-    .option("password", "your_password")
-    .option("ssl", "true")
-    .load();
-
-df.show();
-```
-
-</TabItem>
+    df.show();
+    ```
+  </TabItem>
 </Tabs>
 
 ### 基于格式的写入示例 \{#format-based-write\}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # 使用 format API 向 ClickHouse 写入数据
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-clickhouse-host") \
+        .option("protocol", "https") \
+        .option("http_port", "8443") \
+        .option("database", "default") \
+        .option("table", "your_table") \
+        .option("user", "default") \
+        .option("password", "your_password") \
+        .option("ssl", "true") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-```python
-# 使用 format API 向 ClickHouse 写入数据
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-clickhouse-host") \
-    .option("protocol", "https") \
-    .option("http_port", "8443") \
-    .option("database", "default") \
-    .option("table", "your_table") \
-    .option("user", "default") \
-    .option("password", "your_password") \
-    .option("ssl", "true") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    df.write
+      .format("clickhouse")
+      .option("host", "your-clickhouse-host")
+      .option("protocol", "https")
+      .option("http_port", "8443")
+      .option("database", "default")
+      .option("table", "your_table")
+      .option("user", "default")
+      .option("password", "your_password")
+      .option("ssl", "true")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
-
-```scala
-df.write
-  .format("clickhouse")
-  .option("host", "your-clickhouse-host")
-  .option("protocol", "https")
-  .option("http_port", "8443")
-  .option("database", "default")
-  .option("table", "your_table")
-  .option("user", "default")
-  .option("password", "your_password")
-  .option("ssl", "true")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-df.write()
-    .format("clickhouse")
-    .option("host", "your-clickhouse-host")
-    .option("protocol", "https")
-    .option("http_port", "8443")
-    .option("database", "default")
-    .option("table", "your_table")
-    .option("user", "default")
-    .option("password", "your_password")
-    .option("ssl", "true")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+  <TabItem value="Java" label="Java">
+    ```java
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-clickhouse-host")
+        .option("protocol", "https")
+        .option("http_port", "8443")
+        .option("database", "default")
+        .option("table", "your_table")
+        .option("user", "default")
+        .option("password", "your_password")
+        .option("ssl", "true")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 ### TableProvider 功能 \{#tableprovider-features\}
@@ -370,92 +354,88 @@ TableProvider API 提供了一些强大的功能：
 
 当向一个不存在的表写入数据时，连接器会根据合适的 schema 自动创建该表。连接器提供了智能默认值：
 
-- **Engine**：如果未指定，则默认为 `MergeTree()`。你可以通过 `engine` 选项指定不同的 engine（例如：`ReplacingMergeTree()`、`SummingMergeTree()` 等）。
-- **ORDER BY**：**必需** —— 创建新表时必须显式指定 `order_by` 选项。连接器会校验所有指定的列是否存在于 schema 中。
-- **Nullable Key 支持**：如果 ORDER BY 中包含 Nullable 列，会自动添加 `settings.allow_nullable_key=1`
+* **Engine**：如果未指定，则默认为 `MergeTree()`。你可以通过 `engine` 选项指定不同的 engine（例如：`ReplacingMergeTree()`、`SummingMergeTree()` 等）。
+* **ORDER BY**：**必需** —— 创建新表时必须显式指定 `order_by` 选项。连接器会校验所有指定的列是否存在于 schema 中。
+* **Nullable Key 支持**：如果 ORDER BY 中包含 Nullable 列，会自动添加 `settings.allow_nullable_key=1`
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # 使用显式 ORDER BY（必需）自动创建表
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# 使用显式 ORDER BY（必需）自动创建表
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # 使用自定义 engine 指定建表选项
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# 使用自定义 engine 指定建表选项
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // 使用显式 ORDER BY（必需）自动创建表
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // 使用显式建表选项和自定义 engine
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// 使用显式 ORDER BY（必需）自动创建表
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // 使用显式 ORDER BY（必需）自动创建表
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// 使用显式建表选项和自定义 engine
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// 使用显式 ORDER BY（必需）自动创建表
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// 使用显式建表选项和自定义 engine
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // 使用显式建表选项和自定义 engine
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
@@ -496,8 +476,8 @@ df.write()
 | `cluster`                   | 分布式表的集群名称                                                           | N/A               | No       |
 | `clickhouse.column.<name>.variant_types` | Variant 列对应的 ClickHouse 类型列表，使用逗号分隔（例如 `String, Int64, Bool, JSON`）。类型名区分大小写。逗号后的空格可选。 | N/A | No |
 
-\* 在创建新表时，`order_by` 选项是必需的。所有指定的列必须存在于模式（schema）中。  
-\** 如果 ORDER BY 中包含 Nullable 列且未显式提供该设置，则会自动设置为 `1`。
+* 在创建新表时，`order_by` 选项是必需的。所有指定的列必须存在于模式（schema）中。\
+** 如果 ORDER BY 中包含 Nullable 列且未显式提供该设置，则会自动设置为 `1`。
 
 :::tip
 **最佳实践**：对于 ClickHouse Cloud，如果你的 ORDER BY 列可能为 Nullable 类型，请显式设置 `settings.allow_nullable_key=1`，因为 ClickHouse Cloud 需要此 SETTING。
@@ -507,56 +487,52 @@ df.write()
 
 Spark 连接器（包括 TableProvider API 和 Catalog API）支持以下写入模式：
 
-- **`append`**：向已有表追加数据
-- **`overwrite`**：替换表中的全部数据（截断表）
+* **`append`**：向已有表追加数据
+* **`overwrite`**：替换表中的全部数据（截断表）
 
 :::important
 **不支持分区覆盖写入**：该连接器目前不支持分区级覆盖写入操作（例如在 `overwrite` 模式下使用 `partitionBy`）。该功能正在开发中。进度跟踪请参阅 [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34)。
 :::
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # overwrite 模式（会先截断表）
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "my_table") \
+        .mode("overwrite") \
+        .save()
+    ```
+  </TabItem>
 
-```python
-# overwrite 模式（会先截断表）
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "my_table") \
-    .mode("overwrite") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // overwrite 模式（会先截断表）
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "my_table")
+      .mode("overwrite")
+      .save()
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
-
-```scala
-// overwrite 模式（会先截断表）
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "my_table")
-  .mode("overwrite")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// overwrite 模式（会先截断表）
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "my_table")
-    .mode("overwrite")
-    .save();
-```
-
-</TabItem>
+  <TabItem value="Java" label="Java">
+    ```java
+    // overwrite 模式（会先截断表）
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "my_table")
+        .mode("overwrite")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 ## 配置 ClickHouse 选项 \{#configuring-clickhouse-options\}
@@ -570,54 +546,50 @@ ClickHouse 选项允许你配置 ClickHouse 专用的 SETTING，例如 `allow_nu
 使用 TableProvider API 时，请采用 `settings.&lt;key&gt;` 选项格式：
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "my_table") \
+        .option("order_by", "id") \
+        .option("settings.allow_nullable_key", "1") \
+        .option("settings.index_granularity", "8192") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-```python
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "my_table") \
-    .option("order_by", "id") \
-    .option("settings.allow_nullable_key", "1") \
-    .option("settings.index_granularity", "8192") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "my_table")
+      .option("order_by", "id")
+      .option("settings.allow_nullable_key", "1")
+      .option("settings.index_granularity", "8192")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
-
-```scala
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "my_table")
-  .option("order_by", "id")
-  .option("settings.allow_nullable_key", "1")
-  .option("settings.index_granularity", "8192")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "my_table")
-    .option("order_by", "id")
-    .option("settings.allow_nullable_key", "1")
-    .option("settings.index_granularity", "8192")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+  <TabItem value="Java" label="Java">
+    ```java
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "my_table")
+        .option("order_by", "id")
+        .option("settings.allow_nullable_key", "1")
+        .option("settings.index_granularity", "8192")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 ### 使用 Catalog API \{#using-catalog-api-options\}
@@ -644,7 +616,6 @@ TBLPROPERTIES (
 )
 ```
 
-
 ## ClickHouse Cloud 设置 \{#clickhouse-cloud-settings\}
 
 连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请确保启用 SSL，并设置合适的 SSL 模式。例如：
@@ -654,112 +625,106 @@ spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
 
-
 ## 读取数据 \{#read-data\}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Java" label="Java" default>
+  <TabItem value="Java" label="Java" default>
+    ```java
+    public static void main(String[] args) {
+            // 创建 Spark 会话
+            SparkSession spark = SparkSession.builder()
+                    .appName("example")
+                    .master("local[*]")
+                    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+                    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+                    .config("spark.sql.catalog.clickhouse.protocol", "http")
+                    .config("spark.sql.catalog.clickhouse.http_port", "8123")
+                    .config("spark.sql.catalog.clickhouse.user", "default")
+                    .config("spark.sql.catalog.clickhouse.password", "123456")
+                    .config("spark.sql.catalog.clickhouse.database", "default")
+                    .config("spark.clickhouse.write.format", "json")
+                    .getOrCreate();
 
-```java
-public static void main(String[] args) {
-        // 创建 Spark 会话
-        SparkSession spark = SparkSession.builder()
-                .appName("example")
-                .master("local[*]")
-                .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-                .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-                .config("spark.sql.catalog.clickhouse.protocol", "http")
-                .config("spark.sql.catalog.clickhouse.http_port", "8123")
-                .config("spark.sql.catalog.clickhouse.user", "default")
-                .config("spark.sql.catalog.clickhouse.password", "123456")
-                .config("spark.sql.catalog.clickhouse.database", "default")
-                .config("spark.clickhouse.write.format", "json")
-                .getOrCreate();
+            Dataset<Row> df = spark.sql("select * from clickhouse.default.example_table");
 
-        Dataset<Row> df = spark.sql("select * from clickhouse.default.example_table");
+            df.show();
 
-        df.show();
+            spark.stop();
+        }
+    ```
+  </TabItem>
 
-        spark.stop();
+  <TabItem value="Scala" label="Scala">
+    ```java
+    object NativeSparkRead extends App {
+      val spark = SparkSession.builder
+        .appName("example")
+        .master("local[*]")
+        .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+        .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+        .config("spark.sql.catalog.clickhouse.protocol", "http")
+        .config("spark.sql.catalog.clickhouse.http_port", "8123")
+        .config("spark.sql.catalog.clickhouse.user", "default")
+        .config("spark.sql.catalog.clickhouse.password", "123456")
+        .config("spark.sql.catalog.clickhouse.database", "default")
+        .config("spark.clickhouse.write.format", "json")
+        .getOrCreate
+
+      val df = spark.sql("select * from clickhouse.default.example_table")
+
+      df.show()
+
+      spark.stop()
     }
-```
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+  <TabItem value="Python" label="Python">
+    ```python
+    from pyspark.sql import SparkSession
 
-```java
-object NativeSparkRead extends App {
-  val spark = SparkSession.builder
-    .appName("example")
-    .master("local[*]")
-    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-    .config("spark.sql.catalog.clickhouse.protocol", "http")
-    .config("spark.sql.catalog.clickhouse.http_port", "8123")
-    .config("spark.sql.catalog.clickhouse.user", "default")
-    .config("spark.sql.catalog.clickhouse.password", "123456")
-    .config("spark.sql.catalog.clickhouse.database", "default")
-    .config("spark.clickhouse.write.format", "json")
-    .getOrCreate
+    packages = [
+        "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
+        "com.clickhouse:clickhouse-client:0.7.0",
+        "com.clickhouse:clickhouse-http-client:0.7.0",
+        "org.apache.httpcomponents.client5:httpclient5:5.2.1"
 
-  val df = spark.sql("select * from clickhouse.default.example_table")
+    ]
 
-  df.show()
+    spark = (SparkSession.builder
+             .config("spark.jars.packages", ",".join(packages))
+             .getOrCreate())
 
-  spark.stop()
-}
-```
+    spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+    spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+    spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
+    spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
+    spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+    spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
+    spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+    spark.conf.set("spark.clickhouse.write.format", "json")
 
-</TabItem>
-<TabItem value="Python" label="Python">
+    df = spark.sql("select * from clickhouse.default.example_table")
+    df.show()
 
-```python
-from pyspark.sql import SparkSession
+    ```
+  </TabItem>
 
-packages = [
-    "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
-    "com.clickhouse:clickhouse-client:0.7.0",
-    "com.clickhouse:clickhouse-http-client:0.7.0",
-    "org.apache.httpcomponents.client5:httpclient5:5.2.1"
-
-]
-
-spark = (SparkSession.builder
-         .config("spark.jars.packages", ",".join(packages))
-         .getOrCreate())
-
-spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
-spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
-spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
-spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
-spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
-spark.conf.set("spark.clickhouse.write.format", "json")
-
-df = spark.sql("select * from clickhouse.default.example_table")
-df.show()
-
-```
-
-</TabItem>
-<TabItem value="SparkSQL" label="Spark SQL">
-
-```sql
-   CREATE TEMPORARY VIEW jdbcTable
-           USING org.apache.spark.sql.jdbc
-           OPTIONS (
-                   url "jdbc:ch://localhost:8123/default", 
-                   dbtable "schema.tablename",
-                   user "username",
-                   password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
-           );
-           
-   SELECT * FROM jdbcTable;
-```
-
-</TabItem>
+  <TabItem value="SparkSQL" label="Spark SQL">
+    ```sql
+       CREATE TEMPORARY VIEW jdbcTable
+               USING org.apache.spark.sql.jdbc
+               OPTIONS (
+                       url "jdbc:ch://localhost:8123/default", 
+                       dbtable "schema.tablename",
+                       user "username",
+                       password "password",
+                       driver "com.clickhouse.jdbc.ClickHouseDriver" 
+               );
+               
+       SELECT * FROM jdbcTable;
+    ```
+  </TabItem>
 </Tabs>
 
 ## 写入数据 \{#write-data\}
@@ -924,7 +889,6 @@ TBLPROPERTIES (
 
 以上示例展示了 Spark SQL 查询，你可以在应用程序中使用任意 API（Java、Scala、PySpark 或 shell）来运行这些查询。
 
-
 ## 使用 VariantType \{#working-with-varianttype\}
 
 :::note
@@ -949,60 +913,56 @@ Spark 从 4.0+ 版本开始支持 VariantType，并且需要在启用了 experim
 从 ClickHouse 读取数据时，`JSON` 和 `Variant` 列会自动映射到 Spark 的 `VariantType`：
 
 <Tabs groupId="spark_apis">
-<TabItem value="Scala" label="Scala" default>
+  <TabItem value="Scala" label="Scala" default>
+    ```scala
+    // 将 JSON 列读取为 VariantType
+    val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
 
-```scala
-// 将 JSON 列读取为 VariantType
-val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+    // 访问 VariantType 数据
+    df.show()
 
-// 访问 VariantType 数据
-df.show()
+    // 将 VariantType 转换为 JSON 字符串以便查看
+    import org.apache.spark.sql.functions._
+    df.select(
+      col("id"),
+      to_json(col("data")).as("data_json")
+    ).show()
+    ```
+  </TabItem>
 
-// 将 VariantType 转换为 JSON 字符串以便查看
-import org.apache.spark.sql.functions._
-df.select(
-  col("id"),
-  to_json(col("data")).as("data_json")
-).show()
-```
+  <TabItem value="Python" label="Python">
+    ```python
+    # 将 JSON 列读取为 VariantType
+    df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
 
-</TabItem>
-<TabItem value="Python" label="Python">
+    # 访问 VariantType 数据
+    df.show()
 
-```python
-# 将 JSON 列读取为 VariantType
-df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+    # 将 VariantType 转换为 JSON 字符串以便查看
+    from pyspark.sql.functions import to_json
+    df.select(
+        "id",
+        to_json("data").alias("data_json")
+    ).show()
+    ```
+  </TabItem>
 
-# 访问 VariantType 数据
-df.show()
+  <TabItem value="Java" label="Java">
+    ```java
+    // 将 JSON 列读取为 VariantType
+    Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
 
-# 将 VariantType 转换为 JSON 字符串以便查看
-from pyspark.sql.functions import to_json
-df.select(
-    "id",
-    to_json("data").alias("data_json")
-).show()
-```
+    // 访问 VariantType 数据
+    df.show();
 
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// 将 JSON 列读取为 VariantType
-Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
-
-// 访问 VariantType 数据
-df.show();
-
-// 将 VariantType 转换为 JSON 字符串以便查看
-import static org.apache.spark.sql.functions.*;
-df.select(
-    col("id"),
-    to_json(col("data")).as("data_json")
-).show();
-```
-
-</TabItem>
+    // 将 VariantType 转换为 JSON 字符串以便查看
+    import static org.apache.spark.sql.functions.*;
+    df.select(
+        col("id"),
+        to_json(col("data")).as("data_json")
+    ).show();
+    ```
+  </TabItem>
 </Tabs>
 
 ### 写入 VariantType 数据 \{#writing-varianttype-data\}
@@ -1010,118 +970,114 @@ df.select(
 你可以使用 JSON 或 Variant 列类型将 VariantType 数据写入 ClickHouse：
 
 <Tabs groupId="spark_apis">
-<TabItem value="Scala" label="Scala" default>
+  <TabItem value="Scala" label="Scala" default>
+    ```scala
+    import org.apache.spark.sql.functions._
 
-```scala
-import org.apache.spark.sql.functions._
+    // 使用 JSON 数据创建 DataFrame
+    val jsonData = Seq(
+      (1, """{"name": "Alice", "age": 30}"""),
+      (2, """{"name": "Bob", "age": 25}"""),
+      (3, """{"name": "Charlie", "city": "NYC"}""")
+    ).toDF("id", "json_string")
 
-// 使用 JSON 数据创建 DataFrame
-val jsonData = Seq(
-  (1, """{"name": "Alice", "age": 30}"""),
-  (2, """{"name": "Bob", "age": 25}"""),
-  (3, """{"name": "Charlie", "city": "NYC"}""")
-).toDF("id", "json_string")
+    // 将 JSON 字符串解析为 VariantType
+    val variantDF = jsonData.select(
+      col("id"),
+      parse_json(col("json_string")).as("data")
+    )
 
-// 将 JSON 字符串解析为 VariantType
-val variantDF = jsonData.select(
-  col("id"),
-  parse_json(col("json_string")).as("data")
-)
+    // 使用 JSON 类型写入 ClickHouse（仅支持 JSON 对象）
+    variantDF.writeTo("clickhouse.default.user_data").create()
 
-// 使用 JSON 类型写入 ClickHouse（仅支持 JSON 对象）
-variantDF.writeTo("clickhouse.default.user_data").create()
+    // 或者指定支持多种类型的 Variant 列
+    spark.sql("""
+      CREATE TABLE clickhouse.default.mixed_data (
+        id INT,
+        data VARIANT
+      ) USING clickhouse
+      TBLPROPERTIES (
+        'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+        'engine' = 'MergeTree()',
+        'order_by' = 'id'
+      )
+    """)
+    ```
+  </TabItem>
 
-// 或者指定支持多种类型的 Variant 列
-spark.sql("""
-  CREATE TABLE clickhouse.default.mixed_data (
-    id INT,
-    data VARIANT
-  ) USING clickhouse
-  TBLPROPERTIES (
-    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
-    'engine' = 'MergeTree()',
-    'order_by' = 'id'
-  )
-""")
-```
+  <TabItem value="Python" label="Python">
+    ```python
+    from pyspark.sql.functions import parse_json
 
-</TabItem>
-<TabItem value="Python" label="Python">
+    # 使用 JSON 数据创建 DataFrame
+    json_data = [
+        (1, '{"name": "Alice", "age": 30}'),
+        (2, '{"name": "Bob", "age": 25}'),
+        (3, '{"name": "Charlie", "city": "NYC"}')
+    ]
+    df = spark.createDataFrame(json_data, ["id", "json_string"])
 
-```python
-from pyspark.sql.functions import parse_json
+    # 将 JSON 字符串解析为 VariantType
+    variant_df = df.select(
+        "id",
+        parse_json("json_string").alias("data")
+    )
 
-# 使用 JSON 数据创建 DataFrame
-json_data = [
-    (1, '{"name": "Alice", "age": 30}'),
-    (2, '{"name": "Bob", "age": 25}'),
-    (3, '{"name": "Charlie", "city": "NYC"}')
-]
-df = spark.createDataFrame(json_data, ["id", "json_string"])
+    # 使用 JSON 类型写入 ClickHouse
+    variant_df.writeTo("clickhouse.default.user_data").create()
 
-# 将 JSON 字符串解析为 VariantType
-variant_df = df.select(
-    "id",
-    parse_json("json_string").alias("data")
-)
+    // 或者指定支持多种类型的 Variant 列
+    spark.sql("""
+      CREATE TABLE clickhouse.default.mixed_data (
+        id INT,
+        data VARIANT
+      ) USING clickhouse
+      TBLPROPERTIES (
+        'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+        'engine' = 'MergeTree()',
+        'order_by' = 'id'
+      )
+    """)
+    ```
+  </TabItem>
 
-# 使用 JSON 类型写入 ClickHouse
-variant_df.writeTo("clickhouse.default.user_data").create()
+  <TabItem value="Java" label="Java">
+    ```java
+    import static org.apache.spark.sql.functions.*;
 
-// 或者指定支持多种类型的 Variant 列
-spark.sql("""
-  CREATE TABLE clickhouse.default.mixed_data (
-    id INT,
-    data VARIANT
-  ) USING clickhouse
-  TBLPROPERTIES (
-    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
-    'engine' = 'MergeTree()',
-    'order_by' = 'id'
-  )
-""")
-```
+    // 使用 JSON 数据创建 DataFrame
+    List<Row> jsonData = Arrays.asList(
+        RowFactory.create(1, "{\"name\": \"Alice\", \"age\": 30}"),
+        RowFactory.create(2, "{\"name\": \"Bob\", \"age\": 25}"),
+        RowFactory.create(3, "{\"name\": \"Charlie\", \"city\": \"NYC\"}")
+    );
+    StructType schema = new StructType(new StructField[]{
+        DataTypes.createStructField("id", DataTypes.IntegerType, false),
+        DataTypes.createStructField("json_string", DataTypes.StringType, false)
+    });
+    Dataset<Row> jsonDF = spark.createDataFrame(jsonData, schema);
 
-</TabItem>
-<TabItem value="Java" label="Java">
+    // 将 JSON 字符串解析为 VariantType
+    Dataset<Row> variantDF = jsonDF.select(
+        col("id"),
+        parse_json(col("json_string")).as("data")
+    );
 
-```java
-import static org.apache.spark.sql.functions.*;
+    // 使用 JSON 类型写入 ClickHouse（仅支持 JSON 对象）
+    variantDF.writeTo("clickhouse.default.user_data").create();
 
-// 使用 JSON 数据创建 DataFrame
-List<Row> jsonData = Arrays.asList(
-    RowFactory.create(1, "{\"name\": \"Alice\", \"age\": 30}"),
-    RowFactory.create(2, "{\"name\": \"Bob\", \"age\": 25}"),
-    RowFactory.create(3, "{\"name\": \"Charlie\", \"city\": \"NYC\"}")
-);
-StructType schema = new StructType(new StructField[]{
-    DataTypes.createStructField("id", DataTypes.IntegerType, false),
-    DataTypes.createStructField("json_string", DataTypes.StringType, false)
-});
-Dataset<Row> jsonDF = spark.createDataFrame(jsonData, schema);
-
-// 将 JSON 字符串解析为 VariantType
-Dataset<Row> variantDF = jsonDF.select(
-    col("id"),
-    parse_json(col("json_string")).as("data")
-);
-
-// 使用 JSON 类型写入 ClickHouse（仅支持 JSON 对象）
-variantDF.writeTo("clickhouse.default.user_data").create();
-
-// 或者指定支持多种类型的 Variant 列
-spark.sql("CREATE TABLE clickhouse.default.mixed_data (" +
-    "id INT, " +
-    "data VARIANT" +
-    ") USING clickhouse " +
-    "TBLPROPERTIES (" +
-    "'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON', " +
-    "'engine' = 'MergeTree()', " +
-    "'order_by' = 'id'" +
-    ")");
-```
-
-</TabItem>
+    // 或者指定支持多种类型的 Variant 列
+    spark.sql("CREATE TABLE clickhouse.default.mixed_data (" +
+        "id INT, " +
+        "data VARIANT" +
+        ") USING clickhouse " +
+        "TBLPROPERTIES (" +
+        "'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON', " +
+        "'engine' = 'MergeTree()', " +
+        "'order_by' = 'id'" +
+        ")");
+    ```
+  </TabItem>
 </Tabs>
 
 ### 使用 Spark SQL 创建 VariantType 表 \{#creating-varianttype-tables-spark-sql\}
@@ -1153,7 +1109,6 @@ TBLPROPERTIES (
 )
 ```
 
-
 ### 配置 VariantType 类型 \{#configuring-variant-types\}
 
 在创建包含 VariantType 列的表时，可以指定要使用的 ClickHouse 类型：
@@ -1178,7 +1133,6 @@ TBLPROPERTIES (
 ```sql
 CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id
 ```
-
 
 #### 具有多种类型的 Variant 类型 \{#variant-type-multiple-types\}
 
@@ -1205,53 +1159,48 @@ CREATE TABLE flexible_data (
 ) ENGINE = MergeTree() ORDER BY id
 ```
 
-
 ### 支持的 Variant 类型 \{#supported-variant-types\}
 
 `Variant()` 中可以使用以下 ClickHouse 类型：
 
-- **基本类型**：`String`、`Int8`、`Int16`、`Int32`、`Int64`、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Float32`、`Float64`、`Bool`
-- **数组**：`Array(T)`，其中 T 为任意受支持的类型，包括嵌套数组
-- **JSON**：`JSON`，用于存储 JSON 对象
+* **基本类型**：`String`、`Int8`、`Int16`、`Int32`、`Int64`、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Float32`、`Float64`、`Bool`
+* **数组**：`Array(T)`，其中 T 为任意受支持的类型，包括嵌套数组
+* **JSON**：`JSON`，用于存储 JSON 对象
 
 ### 读取格式配置 \{#read-format-configuration\}
 
 默认情况下，JSON 和 Variant 列会被读取为 `VariantType`。可以通过以下配置将其改为按字符串读取：
 
 <Tabs groupId="spark_apis">
-<TabItem value="Scala" label="Scala" default>
+  <TabItem value="Scala" label="Scala" default>
+    ```scala
+    // 将 JSON/Variant 读取为字符串，而不是 VariantType
+    spark.conf.set("spark.clickhouse.read.jsonAs", "string")
 
-```scala
-// 将 JSON/Variant 读取为字符串，而不是 VariantType
-spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+    val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+    // data 列将是包含 JSON 字符串的 StringType
+    ```
+  </TabItem>
 
-val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
-// data 列将是包含 JSON 字符串的 StringType
-```
+  <TabItem value="Python" label="Python">
+    ```python
+    # 将 JSON/Variant 读取为字符串，而不是 VariantType
+    spark.conf.set("spark.clickhouse.read.jsonAs", "string")
 
-</TabItem>
-<TabItem value="Python" label="Python">
+    df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+    # data 列将是包含 JSON 字符串的 StringType
+    ```
+  </TabItem>
 
-```python
-# 将 JSON/Variant 读取为字符串，而不是 VariantType
-spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+  <TabItem value="Java" label="Java">
+    ```java
+    // 将 JSON/Variant 读取为字符串，而不是 VariantType
+    spark.conf().set("spark.clickhouse.read.jsonAs", "string");
 
-df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
-# data 列将是包含 JSON 字符串的 StringType
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// 将 JSON/Variant 读取为字符串，而不是 VariantType
-spark.conf().set("spark.clickhouse.read.jsonAs", "string");
-
-Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
-// data 列将是包含 JSON 字符串的 StringType
-```
-
-</TabItem>
+    Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
+    // data 列将是包含 JSON 字符串的 StringType
+    ```
+  </TabItem>
 </Tabs>
 
 ### 写入格式支持 \{#write-format-support\}
@@ -1272,7 +1221,6 @@ spark.conf.set("spark.clickhouse.write.format", "json")  // Recommended for Vari
 :::tip
 如需向 ClickHouse 的 `Variant` 类型写入数据，请使用 JSON 格式。Arrow 格式仅支持写入 `JSON` 类型。
 :::
-
 
 ### 最佳实践 \{#varianttype-best-practices\}
 
@@ -1466,7 +1414,7 @@ spark.conf.set("spark.clickhouse.write.format", "json")  // Recommended for Vari
 或者在 `spark-defaults.conf` 中设置，或者在创建 Spark 会话时进行设置。
 :::
 
-<br/>
+<br />
 
 | 键名                                                                       | 默认值                                              | 说明                                                                                                                                                                                                                                                                                                                                     | 自版本起   |
 | ------------------------------------------------------------------------ | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |

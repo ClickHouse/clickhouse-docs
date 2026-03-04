@@ -43,138 +43,134 @@ DROP DATABASE db1;
 #### Создание тестовой базы данных, таблицы и строк \{#creating-a-sample-database-table-and-rows\}
 
 <VerticalStepper headerLevel="h5">
+  ##### Создайте тестовую базу данных \{#create-a-test-database\}
 
-##### Создайте тестовую базу данных \{#create-a-test-database\}
+  ```sql
+  CREATE DATABASE db1;
+  ```
 
-```sql
-CREATE DATABASE db1;
-```
+  ##### Создайте таблицу \{#create-a-table\}
 
-##### Создайте таблицу \{#create-a-table\}
+  ```sql
+  CREATE TABLE db1.table1 (
+     id UInt64,
+     column1 String,
+     column2 String
+  )
+  ENGINE MergeTree
+  ORDER BY id;
+  ```
 
-```sql
-CREATE TABLE db1.table1 (
-   id UInt64,
-   column1 String,
-   column2 String
-)
-ENGINE MergeTree
-ORDER BY id;
-```
+  ##### Заполните таблицу тестовыми строками \{#populate\}
 
-##### Заполните таблицу тестовыми строками \{#populate\}
+  ```sql
+  INSERT INTO db1.table1
+     (id, column1, column2)
+  VALUES
+     (1, 'A', 'abc'),
+     (2, 'A', 'def'),
+     (3, 'B', 'abc'),
+     (4, 'B', 'def');
+  ```
 
-```sql
-INSERT INTO db1.table1
-   (id, column1, column2)
-VALUES
-   (1, 'A', 'abc'),
-   (2, 'A', 'def'),
-   (3, 'B', 'abc'),
-   (4, 'B', 'def');
-```
+  ##### Проверьте таблицу \{#verify\}
 
-##### Проверьте таблицу \{#verify\}
+  ```sql title="Query"
+  SELECT *
+  FROM db1.table1
+  ```
 
-```sql title="Query"
-SELECT *
-FROM db1.table1
-```
+  ```response title="Response"
+  Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
-```response title="Response"
-Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
+  ┌─id─┬─column1─┬─column2─┐
+  │  1 │ A       │ abc     │
+  │  2 │ A       │ def     │
+  │  3 │ B       │ abc     │
+  │  4 │ B       │ def     │
+  └────┴─────────┴─────────┘
+  ```
 
-┌─id─┬─column1─┬─column2─┐
-│  1 │ A       │ abc     │
-│  2 │ A       │ def     │
-│  3 │ B       │ abc     │
-│  4 │ B       │ def     │
-└────┴─────────┴─────────┘
-```
+  ##### Создайте пользователя `column_user` \{#create-a-user-with-restricted-access-to-columns\}
 
-##### Создайте пользователя `column_user` \{#create-a-user-with-restricted-access-to-columns\}
+  Создайте обычного пользователя для демонстрации ограничения доступа к определённым столбцам:
 
-Создайте обычного пользователя для демонстрации ограничения доступа к определённым столбцам:
+  ```sql
+  CREATE USER column_user IDENTIFIED BY 'password';
+  ```
 
-```sql
-CREATE USER column_user IDENTIFIED BY 'password';
-```
+  ##### Создайте пользователя `row_user` \{#create-a-user-with-restricted-access-to-rows-with-certain-values\}
 
-##### Создайте пользователя `row_user` \{#create-a-user-with-restricted-access-to-rows-with-certain-values\}
+  Создайте обычного пользователя для демонстрации ограничения доступа к строкам с определёнными значениями:
 
-Создайте обычного пользователя для демонстрации ограничения доступа к строкам с определёнными значениями:
-
-```sql
-CREATE USER row_user IDENTIFIED BY 'password';
-```
-
+  ```sql
+  CREATE USER row_user IDENTIFIED BY 'password';
+  ```
 </VerticalStepper>
 
 #### Создание ролей \{#creating-roles\}
 
 В этом наборе примеров:
 
-- будут созданы роли для различных привилегий, таких как доступ к столбцам и строкам
-- привилегии будут предоставлены ролям
-- пользователи будут назначены каждой роли
+* будут созданы роли для различных привилегий, таких как доступ к столбцам и строкам
+* привилегии будут предоставлены ролям
+* пользователи будут назначены каждой роли
 
 Роли используются для определения групп пользователей с определёнными привилегиями вместо управления каждым пользователем по отдельности.
 
 <VerticalStepper headerLevel="h5">
+  ##### Создайте роль для ограничения пользователей этой роли просмотром только `column1` в базе данных `db1` и таблице `table1`: \{#create-column-role\}
 
-##### Создайте роль для ограничения пользователей этой роли просмотром только `column1` в базе данных `db1` и таблице `table1`: \{#create-column-role\}
+  ```sql
+  CREATE ROLE column1_users;
+  ```
 
-    ```sql
-    CREATE ROLE column1_users;
-    ```
+  ##### Установите привилегии для разрешения просмотра `column1` \{#set-column-privileges\}
 
-##### Установите привилегии для разрешения просмотра `column1` \{#set-column-privileges\}
+  ```sql
+  GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
+  ```
 
-    ```sql
-    GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
-    ```
+  ##### Добавьте пользователя `column_user` в роль `column1_users` \{#add-column-user-to-role\}
 
-##### Добавьте пользователя `column_user` в роль `column1_users` \{#add-column-user-to-role\}
+  ```sql
+  GRANT column1_users TO column_user;
+  ```
 
-    ```sql
-    GRANT column1_users TO column_user;
-    ```
+  ##### Создайте роль для ограничения пользователей этой роли просмотром только выбранных строк, в данном случае только строк, содержащих `A` в `column1` \{#create-row-role\}
 
-##### Создайте роль для ограничения пользователей этой роли просмотром только выбранных строк, в данном случае только строк, содержащих `A` в `column1` \{#create-row-role\}
+  ```sql
+  CREATE ROLE A_rows_users;
+  ```
 
-    ```sql
-    CREATE ROLE A_rows_users;
-    ```
+  ##### Добавьте пользователя `row_user` в роль `A_rows_users` \{#add-row-user-to-role\}
 
-##### Добавьте пользователя `row_user` в роль `A_rows_users` \{#add-row-user-to-role\}
+  ```sql
+  GRANT A_rows_users TO row_user;
+  ```
 
-    ```sql
-    GRANT A_rows_users TO row_user;
-    ```
+  ##### Создайте политику для разрешения просмотра только строк, где `column1` имеет значение `A` \{#create-row-policy\}
 
-##### Создайте политику для разрешения просмотра только строк, где `column1` имеет значение `A` \{#create-row-policy\}
+  ```sql
+  CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
+  ```
 
-    ```sql
-    CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
-    ```
+  ##### Установите привилегии для базы данных и таблицы \{#set-db-table-privileges\}
 
-##### Установите привилегии для базы данных и таблицы \{#set-db-table-privileges\}
+  ```sql
+  GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
+  ```
 
-    ```sql
-    GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
-    ```
+  ##### Предоставьте явные разрешения другим ролям для сохранения доступа ко всем строкам \{#grant-other-roles-access\}
 
-##### Предоставьте явные разрешения другим ролям для сохранения доступа ко всем строкам \{#grant-other-roles-access\}
+  ```sql
+  CREATE ROW POLICY allow_other_users_filter 
+  ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
+  ```
 
-    ```sql
-    CREATE ROW POLICY allow_other_users_filter 
-    ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
-    ```
-
-    :::note
-    При привязке политики к таблице система применит её, и только указанные в ней пользователи и роли смогут выполнять операции с таблицей — всем остальным будет запрещён любой доступ. Чтобы ограничительная политика строк не распространялась на других пользователей, необходимо определить дополнительную политику, предоставляющую им стандартный или иной тип доступа.
-    :::
-
+  :::note
+  При привязке политики к таблице система применит её, и только указанные в ней пользователи и роли смогут выполнять операции с таблицей — всем остальным будет запрещён любой доступ. Чтобы ограничительная политика строк не распространялась на других пользователей, необходимо определить дополнительную политику, предоставляющую им стандартный или иной тип доступа.
+  :::
 </VerticalStepper>
 
 ## Проверка \{#verification\}
@@ -182,112 +178,108 @@ CREATE USER row_user IDENTIFIED BY 'password';
 ### Тестирование привилегий роли с пользователем, ограниченным по столбцам \{#testing-role-privileges-with-column-restricted-user\}
 
 <VerticalStepper headerLevel="h5">
+  ##### Войдите в клиент ClickHouse, используя пользователя `clickhouse_admin` \{#login-admin-user\}
 
-##### Войдите в клиент ClickHouse, используя пользователя `clickhouse_admin` \{#login-admin-user\}
+  ```bash
+  clickhouse-client --user clickhouse_admin --password password
+  ```
 
-   ```bash
-   clickhouse-client --user clickhouse_admin --password password
-   ```
+  ##### Проверьте доступ к базе данных, таблице и всем строкам от имени пользователя-администратора. \{#verify-admin-access\}
 
-##### Проверьте доступ к базе данных, таблице и всем строкам от имени пользователя-администратора. \{#verify-admin-access\}
+  ```sql
+  SELECT *
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+  ```response
+  Query id: f5e906ea-10c6-45b0-b649-36334902d31d
 
-   ```response
-   Query id: f5e906ea-10c6-45b0-b649-36334902d31d
+  ┌─id─┬─column1─┬─column2─┐
+  │  1 │ A       │ abc     │
+  │  2 │ A       │ def     │
+  │  3 │ B       │ abc     │
+  │  4 │ B       │ def     │
+  └────┴─────────┴─────────┘
+  ```
 
-   ┌─id─┬─column1─┬─column2─┐
-   │  1 │ A       │ abc     │
-   │  2 │ A       │ def     │
-   │  3 │ B       │ abc     │
-   │  4 │ B       │ def     │
-   └────┴─────────┴─────────┘
-   ```
+  ##### Войдите в клиент ClickHouse, используя пользователя `column_user` \{#login-column-user\}
 
-##### Войдите в клиент ClickHouse, используя пользователя `column_user` \{#login-column-user\}
+  ```bash
+  clickhouse-client --user column_user --password password
+  ```
 
-   ```bash
-   clickhouse-client --user column_user --password password
-   ```
+  ##### Проверьте выполнение запроса `SELECT` с использованием всех столбцов \{#test-select-all-columns\}
 
-##### Проверьте выполнение запроса `SELECT` с использованием всех столбцов \{#test-select-all-columns\}
+  ```sql
+  SELECT *
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+  ```response
+  Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
 
-   ```response
-   Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
+  0 rows in set. Elapsed: 0.006 sec.
 
-   0 rows in set. Elapsed: 0.006 sec.
+  Received exception from server (version 22.3.2):
+  Code: 497. DB::Exception: Received from localhost:9000. 
+  DB::Exception: column_user: Not enough privileges. 
+  To execute this query it's necessary to have grant 
+  SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
+  ```
 
-   Received exception from server (version 22.3.2):
-   Code: 497. DB::Exception: Received from localhost:9000. 
-   DB::Exception: column_user: Not enough privileges. 
-   To execute this query it's necessary to have grant 
-   SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
-   ```
+  :::note
+  Доступ запрещён, так как были указаны все столбцы, а у пользователя есть доступ только к `id` и `column1`.
+  :::
 
-   :::note
-   Доступ запрещён, так как были указаны все столбцы, а у пользователя есть доступ только к `id` и `column1`.
-   :::
+  ##### Проверьте запрос `SELECT` только с явно указанными разрешёнными столбцами: \{#verify-allowed-columns\}
 
-##### Проверьте запрос `SELECT` только с явно указанными разрешёнными столбцами: \{#verify-allowed-columns\}
+  ```sql
+  SELECT
+      id,
+      column1
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT
-       id,
-       column1
-   FROM db1.table1
-   ```
+  ```response
+  Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 
-   ```response
-   Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
-
-   ┌─id─┬─column1─┐
-   │  1 │ A       │
-   │  2 │ A       │
-   │  3 │ B       │
-   │  4 │ B       │
-   └────┴─────────┘
-   ```
-
+  ┌─id─┬─column1─┐
+  │  1 │ A       │
+  │  2 │ A       │
+  │  3 │ B       │
+  │  4 │ B       │
+  └────┴─────────┘
+  ```
 </VerticalStepper>
 
 ### Тестирование привилегий роли с пользователем, ограниченным по строкам \{#testing-role-privileges-with-row-restricted-user\}
 
 <VerticalStepper headerLevel="h5">
+  ##### Войдите в клиент ClickHouse, используя пользователя `row_user` \{#login-row-user\}
 
-##### Войдите в клиент ClickHouse, используя пользователя `row_user` \{#login-row-user\}
+  ```bash
+  clickhouse-client --user row_user --password password
+  ```
 
-   ```bash
-   clickhouse-client --user row_user --password password
-   ```
+  ##### Просмотрите доступные строки \{#view-available-rows\}
 
-##### Просмотрите доступные строки \{#view-available-rows\}
+  ```sql
+  SELECT *
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+  ```response
+  Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
 
-   ```response
-   Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
+  ┌─id─┬─column1─┬─column2─┐
+  │  1 │ A       │ abc     │
+  │  2 │ A       │ def     │
+  └────┴─────────┴─────────┘
+  ```
 
-   ┌─id─┬─column1─┬─column2─┐
-   │  1 │ A       │ abc     │
-   │  2 │ A       │ def     │
-   └────┴─────────┴─────────┘
-   ```
-
-   :::note
-   Убедитесь, что возвращаются только две строки, показанные выше; строки со значением `B` в `column1` должны быть исключены.
-   :::
-
+  :::note
+  Убедитесь, что возвращаются только две строки, показанные выше; строки со значением `B` в `column1` должны быть исключены.
+  :::
 </VerticalStepper>
 
 ## Изменение пользователей и ролей \{#modifying-users-and-roles\}
@@ -297,67 +289,66 @@ CREATE USER row_user IDENTIFIED BY 'password';
 Например, если одна роль `role1` разрешает выполнять `SELECT` только по `column1`, а `role2` разрешает `SELECT` по `column1` и `column2`, пользователь будет иметь доступ к обоим столбцам.
 
 <VerticalStepper headerLevel="h5">
+  ##### Используя учетную запись администратора, создайте нового пользователя с ограничением и по строкам, и по столбцам, с ролями по умолчанию \{#create-restricted-user\}
 
-##### Используя учетную запись администратора, создайте нового пользователя с ограничением и по строкам, и по столбцам, с ролями по умолчанию \{#create-restricted-user\}
+  ```sql
+  CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
+  ```
 
-   ```sql
-   CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
-   ```
+  ##### Удалите ранее выданные привилегии для роли `A_rows_users` \{#remove-prior-privileges\}
 
-##### Удалите ранее выданные привилегии для роли `A_rows_users` \{#remove-prior-privileges\}
+  ```sql
+  REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
+  ```
 
-   ```sql
-   REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
-   ```
+  ##### Разрешите роли `A_row_users` выполнять выборку только из `column1` \{#allow-column1-select\}
 
-##### Разрешите роли `A_row_users` выполнять выборку только из `column1` \{#allow-column1-select\}
+  ```sql
+  GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
+  ```
 
-   ```sql
-   GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
-   ```
+  ##### Войдите в клиент ClickHouse, используя пользователя `row_and_column_user` \{#login-restricted-user\}
 
-##### Войдите в клиент ClickHouse, используя пользователя `row_and_column_user` \{#login-restricted-user\}
+  ```bash
+  clickhouse-client --user row_and_column_user --password password;
+  ```
 
-   ```bash
-   clickhouse-client --user row_and_column_user --password password;
-   ```
+  ##### Проверьте выборку всех столбцов: \{#test-all-columns-restricted\}
 
-##### Проверьте выборку всех столбцов: \{#test-all-columns-restricted\}
+  ```sql
+  SELECT *
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+  ```response
+  Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
 
-   ```response
-   Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
+  0 rows in set. Elapsed: 0.005 sec.
 
-   0 rows in set. Elapsed: 0.005 sec.
+  Received exception from server (version 22.3.2):
+  Code: 497. DB::Exception: Received from localhost:9000. 
+  DB::Exception: row_and_column_user: Not enough privileges. 
+  To execute this query it's necessary to have grant 
+  SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
+  ```
 
-   Received exception from server (version 22.3.2):
-   Code: 497. DB::Exception: Received from localhost:9000. 
-   DB::Exception: row_and_column_user: Not enough privileges. 
-   To execute this query it's necessary to have grant 
-   SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
-   ```
+  ##### Проверьте с ограниченным набором разрешенных столбцов: \{#test-limited-columns\}
 
-##### Проверьте с ограниченным набором разрешенных столбцов: \{#test-limited-columns\}
+  ```sql
+  SELECT
+      id,
+      column1
+  FROM db1.table1
+  ```
 
-   ```sql
-   SELECT
-       id,
-       column1
-   FROM db1.table1
-   ```
+  ```response
+  Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
 
-   ```response
-   Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
-
-   ┌─id─┬─column1─┐
-   │  1 │ A       │
-   │  2 │ A       │
-   └────┴─────────┘
-   ```
+  ┌─id─┬─column1─┐
+  │  1 │ A       │
+  │  2 │ A       │
+  └────┴─────────┘
+  ```
 </VerticalStepper>
 
 ## Устранение неполадок \{#troubleshooting\}

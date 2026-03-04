@@ -54,13 +54,13 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 
 `cluster` 和 `clusterAllReplicas` 表函数在以下场景中会比较有用：
 
-- 访问特定集群以进行数据对比、调试和测试。
-- 出于研究目的，对多个 ClickHouse 集群和副本执行查询。
-- 不常见且由人工发起的分布式请求。
+* 访问特定集群以进行数据对比、调试和测试。
+* 出于研究目的，对多个 ClickHouse 集群和副本执行查询。
+* 不常见且由人工发起的分布式请求。
 
 `host`、`port`、`user`、`password`、`compression`、`secure` 等连接设置从 `<remote_servers>` 配置节中获取。详情参见 [Distributed 引擎](../../engines/table-engines/special/distributed.md)。
 
 ## 相关内容 \{#related\}
 
-- [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
-- [load_balancing](../../operations/settings/settings.md#load_balancing)
+* [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
+* [load&#95;balancing](../../operations/settings/settings.md#load_balancing)

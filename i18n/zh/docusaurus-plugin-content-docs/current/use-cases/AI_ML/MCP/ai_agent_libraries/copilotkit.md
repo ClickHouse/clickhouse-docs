@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 # 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
 
-这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
+这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse)
 从 ClickHouse 查询数据，并基于这些数据生成图表。
 
 [CopilotKit](https://github.com/CopilotKit/CopilotKit) 用于构建 UI，
@@ -24,8 +24,8 @@ doc_type: 'guide'
 
 ## 前提条件 \{#prerequisites\}
 
-- `Node.js >= 20.14.0`
-- `uv >= 0.1.0`
+* `Node.js >= 20.14.0`
+* `uv >= 0.1.0`
 
 ## 安装依赖 \{#install-dependencies\}
 
@@ -57,7 +57,6 @@ uv sync
 uv add fastmcp
 ```
 
-
 ## 配置应用程序 \{#configure-the-application\}
 
 将 `env.example` 文件复制到 `.env`，并在其中填入您的 `ANTHROPIC_API_KEY`。
@@ -73,19 +72,19 @@ Copilotkit 运行时以使用不同的 LLM 适配器。
 默认情况下，本示例默认配置为连接到
 [ClickHouse 演示集群](https://sql.clickhouse.com/)。您也可以通过设置以下环境变量来使用您自己的 ClickHouse 集群：
 
-- `CLICKHOUSE_HOST`
-- `CLICKHOUSE_PORT`
-- `CLICKHOUSE_USER`
-- `CLICKHOUSE_PASSWORD`
-- `CLICKHOUSE_SECURE`
+* `CLICKHOUSE_HOST`
+* `CLICKHOUSE_PORT`
+* `CLICKHOUSE_USER`
+* `CLICKHOUSE_PASSWORD`
+* `CLICKHOUSE_SECURE`
 
 # 运行应用 \{#run-the-application\}
 
 运行 `npm run dev` 来启动开发服务器。
 
-你可以使用如下提示词来测试 Agent： 
+你可以使用如下提示词来测试 Agent：
 
-> "Show me the price evolution in 
-Manchester for the last 10 years."
+> &quot;Show me the price evolution in
+> Manchester for the last 10 years.&quot;
 
 在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看结果。

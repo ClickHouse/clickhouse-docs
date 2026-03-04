@@ -11,7 +11,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # 在 Easypanel 上部署 ClickHouse \{#deploying-clickhouse-on-easypanel\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [Easypanel](https://easypanel.io) 是一款现代的服务器控制面板。可以用它在自己的服务器上部署 ClickHouse。
 

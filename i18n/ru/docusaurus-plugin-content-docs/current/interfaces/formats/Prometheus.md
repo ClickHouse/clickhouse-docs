@@ -19,11 +19,11 @@ doc_type: 'reference'
 
 Для этого формата требуется, чтобы выходная таблица была структурирована правильно в соответствии со следующими правилами:
 
-- Столбцы `name` ([String](/sql-reference/data-types/string.md)) и `value` (число) являются обязательными.
-- Строки могут опционально содержать `help` ([String](/sql-reference/data-types/string.md)) и `timestamp` (число).
-- Столбец `type` ([String](/sql-reference/data-types/string.md)) должен быть одним из `counter`, `gauge`, `histogram`, `summary`, `untyped` или пустым.
-- Каждое значение метрики также может иметь некоторые `labels` ([Map(String, String)](/sql-reference/data-types/map.md)).
-- Несколько последовательных строк могут относиться к одной метрике с различными метками. Таблица должна быть отсортирована по имени метрики (например, с помощью `ORDER BY name`).
+* Столбцы `name` ([String](/sql-reference/data-types/string.md)) и `value` (число) являются обязательными.
+* Строки могут опционально содержать `help` ([String](/sql-reference/data-types/string.md)) и `timestamp` (число).
+* Столбец `type` ([String](/sql-reference/data-types/string.md)) должен быть одним из `counter`, `gauge`, `histogram`, `summary`, `untyped` или пустым.
+* Каждое значение метрики также может иметь некоторые `labels` ([Map(String, String)](/sql-reference/data-types/map.md)).
+* Несколько последовательных строк могут относиться к одной метрике с различными метками. Таблица должна быть отсортирована по имени метрики (например, с помощью `ORDER BY name`).
 
 Существуют особые требования к меткам `histogram` и `summary` - см. [документацию Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries) для получения подробностей.
 Специальные правила применяются к строкам с метками `{'count':''}` и `{'sum':''}`, которые преобразуются в `<metric_name>_count` и `<metric_name>_sum` соответственно.
@@ -87,4 +87,3 @@ something_weird{problem="division by zero"} +Inf -3982045
 ```
 
 ## Настройки формата \{#format-settings\}
-

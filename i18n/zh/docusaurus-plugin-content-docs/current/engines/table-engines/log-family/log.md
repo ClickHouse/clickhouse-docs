@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Log 表引擎 \{#log-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 该引擎属于 `Log` 引擎系列。关于 `Log` 引擎的通用属性及其差异，请参阅 [Log Engine Family](../../../engines/table-engines/log-family/index.md) 一文。
 
@@ -36,16 +36,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 `Log` 引擎通过将每一列写入各自独立的文件来高效存储数据。对于每个表，Log 引擎会在指定的存储路径下写入以下文件：
 
-- `<column>.bin`：每一列对应的数据文件，包含序列化并压缩后的数据。
-- `__marks.mrk`：标记文件，存储每个插入数据块的偏移量和行数。标记用于在读取时帮助引擎跳过无关的数据块，从而提升查询执行效率。
+* `<column>.bin`：每一列对应的数据文件，包含序列化并压缩后的数据。
+* `__marks.mrk`：标记文件，存储每个插入数据块的偏移量和行数。标记用于在读取时帮助引擎跳过无关的数据块，从而提升查询执行效率。
 
 ### 写入过程 \{#writing-process\}
 
 当数据写入到 `Log` 表时：
 
-1.    数据会被序列化并压缩成数据块。
-2.    对于每一列，压缩后的数据会追加写入对应的 `<column>.bin` 文件。
-3.    在 `__marks.mrk` 文件中添加相应条目，用于记录新插入数据的偏移量和行数。
+1. 数据会被序列化并压缩成数据块。
+2. 对于每一列，压缩后的数据会追加写入对应的 `<column>.bin` 文件。
+3. 在 `__marks.mrk` 文件中添加相应条目，用于记录新插入数据的偏移量和行数。
 
 ## 读取数据 \{#table_engines-log-reading-the-data\}
 

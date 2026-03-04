@@ -22,7 +22,7 @@ Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
 
 ## 在 AWS 中配置 Glue \{#configuring\}
 
-要连接到 Glue 数据目录，您需要确定目录所在的区域，并提供访问密钥和秘密访问密钥。 
+要连接到 Glue 数据目录，您需要确定目录所在的区域，并提供访问密钥和秘密访问密钥。
 
 :::note
 当前 Glue 数据目录仅支持使用访问密钥和秘密访问密钥进行访问，但我们将在未来支持更多的身份验证方式。
@@ -78,7 +78,6 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```sql
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
-
 
 ```sql title="Response"
   ┌─statement───────────────────────────────────────────────┐

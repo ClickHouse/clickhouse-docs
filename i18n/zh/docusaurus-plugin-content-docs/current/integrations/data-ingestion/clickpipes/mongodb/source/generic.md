@@ -39,7 +39,6 @@ db.adminCommand({
 
 有关 `replSetResizeOplog` 命令和 oplog 保留的更多信息，请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)。
 
-
 ## 配置数据库用户 \{#configure-database-user\}
 
 以管理员用户身份连接到 MongoDB 实例，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个用户：
@@ -57,7 +56,6 @@ db.getSiblingDB("admin").createUser({
 请务必将 `clickpipes_user` 和 `some_secure_password` 替换为您期望的用户名和密码。
 
 :::
-
 
 ## 接下来？ \{#whats-next\}
 

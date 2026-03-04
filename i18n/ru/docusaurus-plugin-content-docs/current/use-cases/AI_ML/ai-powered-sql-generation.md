@@ -31,7 +31,6 @@ export OPENAI_API_KEY=your_api_key
 
 Кроме того, вы можете [указать файл конфигурации](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration).
 
-
 ## Подключение к SQL‑песочнице ClickHouse \{#connecting-to-the-clickhouse-sql-playground\}
 
 Мы будем исследовать эту возможность, используя [SQL‑песочницу ClickHouse](https://sql.clickhouse.com/).
@@ -48,7 +47,6 @@ clickhouse client -mn \
 :::note
 Будем считать, что ClickHouse уже установлен, но если это не так, обратитесь к [руководству по установке](https://clickhouse.com/docs/install)
 :::
-
 
 ## Задаём вопросы ClickHouse на естественном языке \{#asking-clickhouse-questions-in-natural-language\}
 
@@ -113,7 +111,6 @@ clickhouse client -mn \
 Мы видим, что он действительно нашёл таблицу `uk_price_paid` и сгенерировал запрос, который мы можем выполнить.
 Если мы запустим этот запрос, то увидим следующий результат:
 
-
 ```text
 ┌─town───────────┬─district───────────────┬─county──────────┬──avg_price─┬─total_sales─┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
@@ -130,7 +127,6 @@ clickhouse client -mn \
 ```
 
 Если мы хотим задать уточняющий вопрос, его нужно заново сформулировать с нуля.
-
 
 ### Поиск дорогой недвижимости в Большом Лондоне \{#finding-expensive-properties-in-greater-london\}
 
@@ -179,7 +175,6 @@ clickhouse client -mn \
 
 Это формирует более точный запрос, который отфильтровывает данные именно для Большого Лондона и разбивает результаты по годам.
 Результат выполнения запроса показан ниже:
-
 
 ```text
 ┌─district────────────┬─year─┬───avg_price─┬─total_sales─┐

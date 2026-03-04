@@ -153,5 +153,6 @@ SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_ta
 ## 限制 \{#limitations\}
 
 Redis 引擎也支持扫描查询，例如 `where k > xx`，但存在一些限制：
+
 1. 在极少数情况下，当正在进行 rehashing 时，扫描查询可能会产生一些重复的键。详情参见 [Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269)。
 2. 在扫描过程中，键可能被创建或删除，因此结果数据集无法表示某个时间点上的有效快照。

@@ -26,13 +26,13 @@ doc_type: 'guide'
 | [`format_template_row`](#format_template_row)                                                            | 指定包含行格式字符串的文件路径。                                                                                           |
 | [`format_template_resultset`](#format_template_resultset)                                                | 指定包含结果集行格式字符串的文件路径。                                                                                     |
 | [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                      | 指定行与行之间的分隔符，它会在每一行（除最后一行）之后被打印（或被期望读取）（默认值为 `\n`）。                            |
-| `format_template_row_format`                                                                             | 指定[内联](#inline_specification)的行格式字符串。                                                                          |                                                                           
+| `format_template_row_format`                                                                             | 指定[内联](#inline_specification)的行格式字符串。                                                                          |\
 | `format_template_resultset_format`                                                                       | 指定[内联](#inline_specification)的结果集格式字符串。                                                                      |
 | 某些其他格式的设置（例如使用 `JSON` 转义时的 `output_format_json_quote_64bit_integers`）                |                                                                                                                            |
 
 ## 设置和转义规则 \{#settings-and-escaping-rules\}
 
-### format&#95;template&#95;row \{#format_template_row\}
+### format_template_row \{#format_template_row\}
 
 `format_template_row` 设置指定包含行格式字符串的文件路径，该文件中行格式字符串的语法如下：
 
@@ -83,11 +83,11 @@ Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter \{#format_template_rows_between_delimiter\}
+### format_template_rows_between_delimiter \{#format_template_rows_between_delimiter\}
 
 `format_template_rows_between_delimiter` 设置用于指定行与行之间的分隔符，该分隔符会在每一行（除了最后一行）之后输出（默认是 `\n`）。
 
-### format&#95;template&#95;resultset \{#format_template_resultset\}
+### format_template_resultset \{#format_template_resultset\}
 
 `format_template_resultset` 设置用于指定包含结果集格式字符串的文件路径。
 
@@ -115,7 +115,7 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ### 内联指定 \{#inline_specification\}
 
 在很多情况下，要将模板格式所需的格式配置
-（由 `format_template_row`、`format_template_resultset` 设定）部署到集群中所有节点的某个目录是非常困难的，甚至是不可能的。 
+（由 `format_template_row`、`format_template_resultset` 设定）部署到集群中所有节点的某个目录是非常困难的，甚至是不可能的。
 此外，某些格式可能非常简单，以至于不需要单独存放在文件中。
 
 在这些情况下，可以使用 `format_template_row_format`（对应 `format_template_row`）和 `format_template_resultset_format`（对应 `format_template_resultset`）在查询中直接设置模板字符串，
@@ -123,9 +123,10 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 
 :::note
 格式字符串和转义序列的规则与以下情况相同：
-- 使用 `format_template_row_format` 时，对应 [`format_template_row`](#format_template_row)。
-- 使用 `format_template_resultset_format` 时，对应 [`format_template_resultset`](#format_template_resultset)。
-:::
+
+* 使用 `format_template_row_format` 时，对应 [`format_template_row`](#format_template_row)。
+* 使用 `format_template_resultset_format` 时，对应 [`format_template_resultset`](#format_template_resultset)。
+  :::
 
 ## 示例用法 \{#example-usage\}
 

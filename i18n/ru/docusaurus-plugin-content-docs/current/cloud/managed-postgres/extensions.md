@@ -13,7 +13,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 Управляемый Postgres включает отобранный набор расширений, позволяющих расширить возможности вашей базы данных. Ниже приведен список доступных расширений.
 
-
 ## Установка расширений \{#installing-extensions\}
 
 Чтобы установить расширение, подключитесь к своей базе данных и выполните:
@@ -33,7 +32,6 @@ SELECT * FROM pg_extension;
 ```sql
 SELECT * FROM pg_available_extensions;
 ```
-
 
 ## Доступные расширения \{#available-extensions\}
 
@@ -138,4 +136,4 @@ SELECT * FROM pg_available_extensions;
 
 Расширение `pg_clickhouse` предустановлено на каждом управляемом экземпляре Postgres. Оно позволяет выполнять запросы к базам данных ClickHouse непосредственно из PostgreSQL, обеспечивая единый слой запросов как для транзакций, так и для аналитики.
 
-Подробные инструкции по настройке и использованию см. в [документации по pg_clickhouse](/integrations/pg_clickhouse).
+Подробные инструкции по настройке и использованию см. в [документации по pg&#95;clickhouse](/integrations/pg_clickhouse).

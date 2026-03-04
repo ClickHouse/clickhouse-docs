@@ -232,6 +232,7 @@ LIMIT 3;
 ```
 
 ## Диагностика и устранение неполадок \{#troubleshooting\}
+
 Сгенерированный запрос MongoDB можно увидеть в журналах с уровнем DEBUG.
 
 Подробности реализации приведены в документации [mongocxx](https://github.com/mongodb/mongo-cxx-driver) и [mongoc](https://github.com/mongodb/mongo-c-driver).

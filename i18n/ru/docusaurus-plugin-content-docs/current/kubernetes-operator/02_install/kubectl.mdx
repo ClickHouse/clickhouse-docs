@@ -11,9 +11,9 @@ sidebar_label: 'kubectl'
 
 ## Предварительные требования \{#prerequisites\}
 
-- Кластер Kubernetes версии v1.33.0 или новее
-- kubectl версии v1.33.0 или новее
-- Права администратора кластера
+* Кластер Kubernetes версии v1.33.0 или новее
+* kubectl версии v1.33.0 или новее
+* Права администратора кластера
 
 ## Установка из манифестов релиза \{#install-from-release-manifests\}
 
@@ -36,7 +36,6 @@ kubectl apply -f https://github.com/ClickHouse/clickhouse-operator/releases/late
 5. Будут зарегистрированы вебхуки для проверки ресурсов и задания значений по умолчанию
 6. Будут настроены SSL-сертификаты с использованием cert-manager
 7. Будет включен endpoint метрик
-
 
 ## Проверьте установку \{#verify-installation\}
 
@@ -66,7 +65,6 @@ clickhouseclusters.clickhouse.com    2025-01-06T00:00:00Z
 keeperclusters.clickhouse.com        2025-01-06T00:00:00Z
 ```
 
-
 ## Настройка пользовательских параметров Развертывания \{#configure-custom-deployment-options\}
 
 Если вы хотите настроить параметры Развертывания оператора, выполните следующие шаги.
@@ -77,7 +75,6 @@ keeperclusters.clickhouse.com        2025-01-06T00:00:00Z
 git clone https://github.com/ClickHouse/clickhouse-operator.git
 cd clickhouse-operator
 ```
-
 
 ### 2. Настройте параметры установки \{#configure-installation-options\}
 

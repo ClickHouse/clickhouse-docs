@@ -21,14 +21,14 @@ doc_type: 'guide'
 
 ## 前置条件 \{#prerequisites\}
 
-- 您需要在系统上安装 Python。
+* 您需要在系统上安装 Python。
   您需要安装 [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
-- 您需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥
+* 您需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥
 
 您可以按照以下步骤创建 Streamlit 应用程序。
 
 <VerticalStepper headerLevel="h2">
-  ## 安装库
+  ## 安装库 \{#install-libraries\}
 
   通过运行以下命令安装所需的库:
 
@@ -36,7 +36,7 @@ doc_type: 'guide'
   pip install streamlit agno ipywidgets
   ```
 
-  ## 创建工具函数文件
+  ## 创建工具函数文件 \{#create-utilities\}
 
   创建一个 `utils.py` 文件,其中包含两个实用函数。第一个是用于处理来自 Agno 代理的流式响应的异步函数生成器。第二个是用于将样式应用到 Streamlit 应用程序的函数:
 
@@ -61,7 +61,7 @@ doc_type: 'guide'
     <hr class='divider' />""", unsafe_allow_html=True)
   ```
 
-  ## 设置凭据
+  ## 设置凭据 \{#setup-credentials\}
 
   将您的 Anthropic API 密钥设置为环境变量：
 
@@ -74,7 +74,7 @@ doc_type: 'guide'
   您可以在 [Agno &quot;Integrations&quot; 文档](https://docs.agentops.ai/v2/integrations/ag2) 中找到设置凭据的说明
   :::
 
-  ## 导入所需库
+  ## 导入所需库 \{#import-libraries\}
 
   首先创建主 Streamlit 应用程序文件(例如 `app.py`)并添加导入语句:
 
@@ -98,7 +98,7 @@ doc_type: 'guide'
   from queue import Queue
   ```
 
-  ## 定义代理的流式函数
+  ## 定义代理的流式函数 \{#define-agent-function\}
 
   添加主代理函数,该函数连接到 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/),并以流式方式输出响应:
 
@@ -148,7 +148,7 @@ doc_type: 'guide'
                       yield chunk.content
   ```
 
-  ## 添加同步包装函数
+  ## 添加同步包装函数 \{#add-wrapper-functions\}
 
   添加辅助函数以在 Streamlit 中处理异步流式传输：
 
@@ -170,7 +170,7 @@ doc_type: 'guide'
           queue.put(chunk)
   ```
 
-  ## 创建 Streamlit 界面
+  ## 创建 Streamlit 界面 \{#create-interface\}
 
   添加 Streamlit UI 组件和聊天功能：
 
@@ -199,7 +199,7 @@ doc_type: 'guide'
     st.session_state.messages.append({"role": "assistant", "content": response})
   ```
 
-  ## 运行应用
+  ## 运行应用 \{#run-application\}
 
   要启动您的 ClickHouse AI 代理 Web 应用程序,您可以在终端中运行以下命令:
 

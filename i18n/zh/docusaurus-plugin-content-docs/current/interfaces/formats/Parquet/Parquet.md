@@ -36,7 +36,7 @@ doc_type: 'reference'
 | `TIMESTAMP`, `TIME` | [DateTime64](/sql-reference/data-types/datetime64.md) |
 | `FLOAT` | [Float32](/sql-reference/data-types/float.md) |
 | `DOUBLE` | [Float64](/sql-reference/data-types/float.md) |
-| `INT96` | [DateTime64(9, 'UTC')](/sql-reference/data-types/datetime64.md) |
+| `INT96` | [DateTime64(9, &#39;UTC&#39;)](/sql-reference/data-types/datetime64.md) |
 | `BYTE_ARRAY`, `UTF8`, `ENUM`, `BSON` | [String](/sql-reference/data-types/string.md) |
 | `JSON` | [JSON](/sql-reference/data-types/newjson.md) |
 | `FIXED_LEN_BYTE_ARRAY` | [FixedString](/sql-reference/data-types/fixedstring.md) |
@@ -118,7 +118,6 @@ Parquet 是一种二进制格式，无法在终端中以人类可读的形式显
 :::
 
 要与 Hadoop 进行数据交换，可以使用 [`HDFS 表引擎`](/engines/table-engines/integrations/hdfs.md)。
-
 
 ## 格式设置 \{#format-settings\}
 

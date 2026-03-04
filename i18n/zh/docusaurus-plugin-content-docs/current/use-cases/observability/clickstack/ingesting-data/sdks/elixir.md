@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
 
 *🚧 OpenTelemetry 指标和链路追踪支持即将推出！*
 
-
 ## 快速入门 \{#getting-started\}
 
 ### 安装 ClickStack Logger 后端包 \{#install-hyperdx-logger-backend-package\}
@@ -56,22 +55,18 @@ config :logger,
 接下来，你需要在 shell 中配置以下环境变量，以通过 OpenTelemetry collector 将遥测数据发送到 ClickStack：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```shell
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+    ```
+  </TabItem>
 
-```shell
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
-```
-
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```shell
+    export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+    ```
+  </TabItem>
 </Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，其值可以是任何你想要的名称。*

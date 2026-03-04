@@ -41,24 +41,20 @@ opentelemetry-bootstrap -a install
 接下来，需要在 shell 中配置以下环境变量，用于通过 OpenTelemetry collector 将遥测数据上报到 ClickStack：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管 ClickStack" default>
+    ```shell
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+    ```
+  </TabItem>
 
-```shell
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```shell
-export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
-```
-
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```shell
+    export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+    OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+    ```
+  </TabItem>
 </Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，它可以是任意你希望的名称。*
@@ -78,34 +74,29 @@ opentelemetry-instrument python app.py
 要为使用预派生（pre-fork）模式的应用服务器配置 OpenTelemetry，请确保在 fork 之后的钩子（post-fork hook）中调用 `configure_opentelemetry` 方法。
 
 <Tabs groupId="python-alternative">
-<TabItem value="gunicorn" label="Gunicorn" default>
+  <TabItem value="gunicorn" label="Gunicorn" default>
+    ```python
+    from hyperdx.opentelemetry import configure_opentelemetry
 
-```python
-from hyperdx.opentelemetry import configure_opentelemetry
+    def post_fork(server, worker):
+        configure_opentelemetry()
+    ```
+  </TabItem>
 
-def post_fork(server, worker):
-    configure_opentelemetry()
-```
-</TabItem>
-<TabItem value="uwsgi" label="uWSGI" default>
+  <TabItem value="uwsgi" label="uWSGI" default>
+    ```python
+    from hyperdx.opentelemetry import configure_opentelemetry
+    from uwsgidecorators import postfork
 
-```python
-from hyperdx.opentelemetry import configure_opentelemetry
-from uwsgidecorators import postfork
+    @postfork
+    def init_tracing():
+        configure_opentelemetry()
+    ```
+  </TabItem>
 
-@postfork
-def init_tracing():
-    configure_opentelemetry()
-```
-
-</TabItem>
-
-<TabItem value="uvicorn" label="uvicorn" default>
-
-当使用 `--reload` 标志或多 worker（`--workers`）运行 `uvicorn` 时，OpenTelemetry [目前无法正常工作](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)。我们建议在测试时禁用这些标志，或改用 Gunicorn。
-
-</TabItem>
-
+  <TabItem value="uvicorn" label="uvicorn" default>
+    当使用 `--reload` 标志或多 worker（`--workers`）运行 `uvicorn` 时，OpenTelemetry [目前无法正常工作](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)。我们建议在测试时禁用这些标志，或改用 Gunicorn。
+  </TabItem>
 </Tabs>
 
 ## 高级配置 \{#advanced-configuration\}

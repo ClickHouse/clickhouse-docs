@@ -158,6 +158,7 @@ ClickHouse выставляет счета за сервисы на уровне
 По любым вопросам, связанным с биллингом в облачном маркетплейсе, обращайтесь напрямую к вашему облачному провайдеру.
 
 Полезные ссылки для решения проблем, связанных с биллингом в маркетплейсе:
+
 * [Часто задаваемые вопросы по биллингу AWS](https://aws.amazon.com/aws-cost-management/aws-billing/faqs/)
 * [Часто задаваемые вопросы по биллингу GCP](https://cloud.google.com/compute/docs/billing-questions)
 * [Часто задаваемые вопросы по биллингу Azure](https://learn.microsoft.com/en-us/azure/cost-management-billing/cost-management-billing-faq)

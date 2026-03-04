@@ -102,9 +102,9 @@ SELECT toTypeName(d.String), toTypeName(d.Int64), toTypeName(d.`Array(Int64)`), 
 └──────────────────────┴─────────────────────┴────────────────────────────┴────────────────────┴─────────────────────────────┘
 ```
 
-```sql
+````sql
 SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'), dynamicElement(d, 'Array(Int64)'), dynamicElement(d, 'Date'), dynamicElement(d, 'Array(String)') FROM test;```
-```
+````
 
 ```text
 ┌─d─────────────┬─dynamicType(d)─┬─dynamicElement(d, 'String')─┬─dynamicElement(d, 'Int64')─┬─dynamicElement(d, 'Array(Int64)')─┬─dynamicElement(d, 'Date')─┬─dynamicElement(d, 'Array(String)')─┐
@@ -204,7 +204,7 @@ SELECT v::Dynamic AS d, dynamicType(d) FROM test;
 
 ### Converting a Dynamic(max_types=N) column to another Dynamic(max_types=K) \{#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk\}
 
-If `K >= N` than during conversion the data doesn't change:
+If `K >= N` than during conversion the data doesn&#39;t change:
 
 ```sql
 CREATE TABLE test (d Dynamic(max_types=3)) ENGINE = Memory;
@@ -223,6 +223,7 @@ SELECT d::Dynamic(max_types=5) as d2, dynamicType(d2) FROM test;
 ```
 
 If `K < N`, then the values with the rarest types will be inserted into a single special subcolumn, but still will be accessible:
+
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), (43), ('42.42'), (true), ([1, 2, 3]);
@@ -263,7 +264,7 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=0) as d2, dynamicType(d2), isDyna
 
 ## Reading Dynamic type from the data \{#reading-dynamic-type-from-the-data\}
 
-All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Dynamic` type. During data parsing ClickHouse tries to infer the type of each value and use it during insertion to `Dynamic` column. 
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Dynamic` type. During data parsing ClickHouse tries to infer the type of each value and use it during insertion to `Dynamic` column.
 
 Example:
 
@@ -298,7 +299,7 @@ $$)
 ## Using Dynamic type in functions \{#using-dynamic-type-in-functions\}
 
 Most of the functions support arguments with type `Dynamic`. In this case the function is executed separately on each internal data type stored inside `Dynamic` column.
-When the result type of the function depends on the arguments types, the result of such function executed with `Dynamic` arguments will be `Dynamic`. When the result type of the function doesn't depend on the arguments types - the result will be `Nullable(T)` where `T` the usual result type of this function.
+When the result type of the function depends on the arguments types, the result of such function executed with `Dynamic` arguments will be `Dynamic`. When the result type of the function doesn&#39;t depend on the arguments types - the result will be `Nullable(T)` where `T` the usual result type of this function.
 
 Examples:
 
@@ -506,12 +507,14 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 
 During `ORDER BY` and `GROUP BY` values of `Dynamic` types are compared similar to values of `Variant` type:
 The result of operator `<` for values `d1` with underlying type `T1` and `d2` with underlying type `T2`  of a type `Dynamic` is defined as follows:
-- If `T1 = T2 = T`, the result will be `d1.T < d2.T` (underlying values will be compared).
-- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
+
+* If `T1 = T2 = T`, the result will be `d1.T < d2.T` (underlying values will be compared).
+* If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
 By default `Dynamic` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
 Examples:
+
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
 INSERT INTO test VALUES (42), (43), ('abc'), ('abd'), ([1, 2, 3]), ([]), (NULL);
@@ -585,10 +588,10 @@ SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in
 
 ## Reaching the limit in number of different data types stored inside Dynamic \{#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic\}
 
-`Dynamic` data type can store only limited number of different data types as separate subcolumns. By default, this limit is 32, but you can change it in type declaration using syntax `Dynamic(max_types=N)` where N is between 0 and 254 (due to implementation details, it's impossible to have more than 254 different data types that can be stored as separate subcolumns inside Dynamic).
+`Dynamic` data type can store only limited number of different data types as separate subcolumns. By default, this limit is 32, but you can change it in type declaration using syntax `Dynamic(max_types=N)` where N is between 0 and 254 (due to implementation details, it&#39;s impossible to have more than 254 different data types that can be stored as separate subcolumns inside Dynamic).
 When the limit is reached, all new data types inserted to `Dynamic` column will be inserted into a single shared data structure that stores values with different data types in binary form.
 
-Let's see what happens when the limit is reached in different scenarios.
+Let&#39;s see what happens when the limit is reached in different scenarios.
 
 ### Reaching the limit during data parsing \{#reaching-the-limit-during-data-parsing\}
 
@@ -620,10 +623,10 @@ As we can see, after inserting 3 different data types `Int64`, `Array(Int64)` an
 
 ### During merges of data parts in MergeTree table engines \{#during-merges-of-data-parts-in-mergetree-table-engines\}
 
-During merge of several data parts in MergeTree table the `Dynamic` column in the resulting data part can reach the limit of different data types that can be stored in separate subcolumns inside and won't be able to store all types as subcolumns from source parts.
+During merge of several data parts in MergeTree table the `Dynamic` column in the resulting data part can reach the limit of different data types that can be stored in separate subcolumns inside and won&#39;t be able to store all types as subcolumns from source parts.
 In this case ClickHouse chooses what types will remain as separate subcolumns after merge and what types will be inserted into shared data structure. In most cases ClickHouse tries to keep the most frequent types and store the rarest types in shared data structure, but it depends on the implementation.
 
-Let's see an example of such merge. First, let's create a table with `Dynamic` column, set the limit of different data types to `3` and insert values with `5` different types:
+Let&#39;s see an example of such merge. First, let&#39;s create a table with `Dynamic` column, set the limit of different data types to `3` and insert values with `5` different types:
 
 ```sql
 CREATE TABLE test (id UInt64, d Dynamic(max_types=3)) ENGINE=MergeTree ORDER BY id;
@@ -636,6 +639,7 @@ INSERT INTO test SELECT number, 'str_' || toString(number) FROM numbers(1);
 ```
 
 Each insert will create a separate data pert with `Dynamic` column containing single type:
+
 ```sql
 SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test GROUP BY _part, dynamicType(d), isDynamicElementInSharedData(d) ORDER BY _part, count();
 ```
@@ -650,7 +654,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-Now, let's merge all parts into one and see what will happen:
+Now, let&#39;s merge all parts into one and see what will happen:
 
 ```sql
 SYSTEM START MERGES test;
@@ -694,9 +698,9 @@ SELECT JSONExtract('{"obj" : {"a" : 42, "b" : "Hello", "c" : [1,2,3]}}', 'obj', 
 └──────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 
-```sql
+````sql
 SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Dynamic') AS dynamics, arrayMap(x -> (x.1, dynamicType(x.2)), dynamics) AS dynamic_types```
-```
+````
 
 ```text
 ┌─dynamics───────────────────────────────┬─dynamic_types─────────────────────────────────────────────────┐

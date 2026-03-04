@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.quotas&#95;usage \{#systemquotas_usage\}
+# system.quotas_usage \{#systemquotas_usage\}
 
 <SystemTableCloud />
 
@@ -51,4 +51,4 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 ## См. также \{#see-also\}
 
-- [SHOW QUOTA](/sql-reference/statements/show#show-quota)
+* [SHOW QUOTA](/sql-reference/statements/show#show-quota)

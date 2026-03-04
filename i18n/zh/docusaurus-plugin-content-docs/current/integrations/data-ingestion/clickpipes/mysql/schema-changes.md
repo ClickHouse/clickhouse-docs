@@ -23,11 +23,11 @@ integration:
 
 [8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/) 之前的 MySQL 版本在 binlog 中不会包含完整的列元数据（`binlog_row_metadata=FULL`），因此 ClickPipes 会根据列的序号位置进行跟踪。也就是说：
 
-- **在末尾新增列**（`ALTER TABLE ADD COLUMN ...`）是支持的。
-- **任何会改变列位置的 DDL** 都会导致管道报错，因为列序号位置不再能被可靠映射。包括：
-  - `ALTER TABLE DROP COLUMN ...`
-  - `ALTER TABLE ADD COLUMN ... AFTER ...` / `FIRST`
-  - `ALTER TABLE MODIFY COLUMN ... AFTER ...` / `FIRST`
-  - `ALTER TABLE CHANGE COLUMN ... AFTER ...` / `FIRST`
+* **在末尾新增列**（`ALTER TABLE ADD COLUMN ...`）是支持的。
+* **任何会改变列位置的 DDL** 都会导致管道报错，因为列序号位置不再能被可靠映射。包括：
+  * `ALTER TABLE DROP COLUMN ...`
+  * `ALTER TABLE ADD COLUMN ... AFTER ...` / `FIRST`
+  * `ALTER TABLE MODIFY COLUMN ... AFTER ...` / `FIRST`
+  * `ALTER TABLE CHANGE COLUMN ... AFTER ...` / `FIRST`
 
 如果遇到此错误，则需要重新同步该管道。

@@ -36,13 +36,13 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — Имя файла. Тип: `LowCardinality(String)`.
+* `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 ## Смотрите также \{#related\}
 
-- [Движок Hudi](engines/table-engines/integrations/hudi.md)
-- [Табличная функция Hudi](sql-reference/table-functions/hudi.md)
+* [Движок Hudi](engines/table-engines/integrations/hudi.md)
+* [Табличная функция Hudi](sql-reference/table-functions/hudi.md)

@@ -15,7 +15,6 @@ import Image from '@theme/IdealImage';
 
 由于 ClickHouse 的数据存储结构以及复制机制，从 Postgres 复制到 ClickHouse 的更新和删除操作会在 ClickHouse 中产生重复行。本页介绍导致这种情况发生的原因，以及在 ClickHouse 中用于处理重复数据的策略。
 
-
 ## 数据是如何进行复制的？ \{#how-does-data-get-replicated\}
 
 ### PostgreSQL 逻辑解码 \{#PostgreSQL-logical-decoding\}
@@ -54,12 +53,11 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-
 ### 示例说明 \{#illustrative-example\}
 
 下图演示了使用 ClickPipes 在 PostgreSQL 和 ClickHouse 之间同步 `users` 表的一个基础示例。
 
-<Image img={clickpipes_initial_load} alt="ClickPipes 初始加载" size="lg"/>
+<Image img={clickpipes_initial_load} alt="ClickPipes 初始加载" size="lg" />
 
 **步骤 1** 显示的是 PostgreSQL 中 2 行数据的初始快照，以及 ClickPipes 将这 2 行数据初始加载到 ClickHouse 的过程。可以看到，这两行都被原样复制到了 ClickHouse 中。
 
@@ -127,7 +125,6 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-
 #### FINAL 设置项 \{#final-setting\}
 
 与其在查询中为每个表名单独添加 FINAL 修饰符，你可以使用 [FINAL 设置项](/operations/settings/settings#final)，将其自动应用到查询中的所有表。
@@ -143,7 +140,6 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
-
 #### ROW policy \{#row-policy\}
 
 隐藏多余的 `_peerdb_is_deleted = 0` 过滤条件的一个简单方法是使用 [ROW policy](/docs/operations/access-rights#row-policy-management)。下面是一个示例，演示如何创建一个 ROW policy，在对 votes 表的所有查询中排除已删除的行。
@@ -154,7 +150,6 @@ CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO
 ```
 
 > 行级策略会应用到一组用户和角色上。在本示例中，它适用于所有用户和角色。也可以将其调整为仅适用于特定用户或角色。
-
 
 ### 像在 Postgres 中一样查询 \{#query-like-with-postgres\}
 
@@ -188,7 +183,6 @@ GROUP BY owneruserid
 ORDER BY viewcount DESC
 LIMIT 10
 ```
-
 
 #### 可刷新materialized view \{#refreshable-material-view\}
 

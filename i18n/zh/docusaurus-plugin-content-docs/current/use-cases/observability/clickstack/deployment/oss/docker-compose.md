@@ -33,7 +33,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 这些端口支持与多种遥测源集成，使 OpenTelemetry collector 在生产环境中能够满足多样化的数据摄取需求。
 
-
 ### 适用场景 \{#suitable-for\}
 
 * 本地测试
@@ -43,45 +42,43 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 ## 部署步骤 \{#deployment-steps\}
 
-<br/>
+<br />
 
 <VerticalStepper headerLevel="h3">
+  ### 克隆代码仓库 \{#clone-the-repo\}
 
-### 克隆代码仓库 \{#clone-the-repo\}
+  要使用 Docker Compose 进行部署，克隆 ClickStack 代码仓库，进入该目录并运行 `docker-compose up`：
 
-要使用 Docker Compose 进行部署，克隆 ClickStack 代码仓库，进入该目录并运行 `docker-compose up`：
+  ```shell
+  git clone https://github.com/ClickHouse/ClickStack.git
+  docker compose up
+  ```
 
-```shell
-git clone https://github.com/ClickHouse/ClickStack.git
-docker compose up
-```
+  ### 访问 HyperDX UI \{#navigate-to-hyperdx-ui\}
 
-### 访问 HyperDX UI \{#navigate-to-hyperdx-ui\}
+  访问 [http://localhost:8080](http://localhost:8080) 打开 HyperDX UI。
 
-访问 [http://localhost:8080](http://localhost:8080) 打开 HyperDX UI。
+  创建一个用户，并提供满足要求的用户名和密码。
 
-创建一个用户，并提供满足要求的用户名和密码。 
+  点击 `Create` 后，将为通过 Docker Compose 部署的 ClickHouse 实例创建数据源。
 
-点击 `Create` 后，将为通过 Docker Compose 部署的 ClickHouse 实例创建数据源。
+  :::note 覆盖默认连接
+  可以覆盖与集成 ClickHouse 实例的默认连接配置。详情请参阅 [&quot;Using ClickHouse Cloud&quot;](#using-clickhouse-cloud)。
+  :::
 
-:::note 覆盖默认连接
-可以覆盖与集成 ClickHouse 实例的默认连接配置。详情请参阅 ["Using ClickHouse Cloud"](#using-clickhouse-cloud)。
-:::
+  <Image img={hyperdx_login} alt="HyperDX UI" size="lg" />
 
-<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+  有关使用其他 ClickHouse 实例的示例，请参阅 [&quot;Using ClickHouse Cloud&quot;](#using-clickhouse-cloud)。
 
-有关使用其他 ClickHouse 实例的示例，请参阅 ["Using ClickHouse Cloud"](#using-clickhouse-cloud)。
+  ### 完成连接配置 \{#complete-connection-details\}
 
-### 完成连接配置 \{#complete-connection-details\}
+  要连接到已部署的 ClickHouse 实例，只需单击 **Create** 并接受默认设置即可。
 
-要连接到已部署的 ClickHouse 实例，只需单击 **Create** 并接受默认设置即可。  
+  如果希望连接到自己的**外部 ClickHouse 集群**（例如 ClickHouse Cloud），可以手动输入连接凭证。
 
-如果希望连接到自己的**外部 ClickHouse 集群**（例如 ClickHouse Cloud），可以手动输入连接凭证。
+  如果系统提示创建数据源，请保留所有默认值，并将 `Table` 字段填写为 `otel_logs`。其他所有设置应会自动检测，此时可以点击 `Save New Source`。
 
-如果系统提示创建数据源，请保留所有默认值，并将 `Table` 字段填写为 `otel_logs`。其他所有设置应会自动检测，此时可以点击 `Save New Source`。
-
-<Image img={hyperdx_logs} alt="创建日志数据源" size="md"/>
-
+  <Image img={hyperdx_logs} alt="创建日志数据源" size="md" />
 </VerticalStepper>
 
 ## 修改 compose 设置 \{#modifying-settings\}
@@ -112,7 +109,6 @@ HYPERDX_OPAMP_PORT=4320
 # Otel/Clickhouse config
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
-
 
 ### 配置 OpenTelemetry collector \{#configuring-collector\}
 

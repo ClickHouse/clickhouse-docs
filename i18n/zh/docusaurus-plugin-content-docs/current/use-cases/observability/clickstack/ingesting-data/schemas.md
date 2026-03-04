@@ -59,7 +59,6 @@ TTL TimestampTime + toIntervalDay(30)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
 ```
 
-
 ## 追踪 \{#traces\}
 
 ```sql
@@ -104,7 +103,6 @@ TTL toDate(Timestamp) + toIntervalDay(30)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
 ```
 
-
 ## 指标 \{#metrics\}
 
 ### Gauge 指标 \{#gauge\}
@@ -145,7 +143,6 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### 求和（Sum）指标 \{#sum\}
 
 ```sql
@@ -185,7 +182,6 @@ ENGINE = MergeTree
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ### 直方图指标 \{#histogram\}
 
@@ -230,7 +226,6 @@ ENGINE = MergeTree
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ### 指数直方图 \{#exponential-histograms\}
 
@@ -284,7 +279,6 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### 汇总表 \{#summary-table\}
 
 ```sql
@@ -320,7 +314,6 @@ ENGINE = MergeTree
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ## 会话 \{#sessions\}
 

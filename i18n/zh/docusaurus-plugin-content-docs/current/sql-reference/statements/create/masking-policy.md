@@ -27,17 +27,16 @@ CREATE MASKING POLICY [IF NOT EXISTS | OR REPLACE] policy_name ON [database.]tab
     [PRIORITY priority_number]
 ```
 
-
 ## UPDATE 子句 \{#update-clause\}
 
 `UPDATE` 子句指定要对哪些列进行脱敏以及如何转换它们。可以在单个策略中脱敏多个列。
 
 示例：
 
-- 简单脱敏：`UPDATE email = '***masked***'`
-- 部分脱敏：`UPDATE email = concat(substring(email, 1, 3), '***@***.***')`
-- 基于哈希的脱敏：`UPDATE email = concat('masked_', substring(hex(cityHash64(email)), 1, 8))`
-- 多列脱敏：`UPDATE email = '***@***.***', phone = '***-***-****'`
+* 简单脱敏：`UPDATE email = '***masked***'`
+* 部分脱敏：`UPDATE email = concat(substring(email, 1, 3), '***@***.***')`
+* 基于哈希的脱敏：`UPDATE email = concat('masked_', substring(hex(cityHash64(email)), 1, 8))`
+* 多列脱敏：`UPDATE email = '***@***.***', phone = '***-***-****'`
 
 ## WHERE 子句 \{#where-clause\}
 
@@ -52,14 +51,13 @@ WHERE salary > 100000
 TO analyst;
 ```
 
-
 ## TO 子句 \{#to-clause\}
 
 在 `TO` 子句中，指定该策略应应用到哪些用户和角色。
 
-- `TO user1, user2`：应用于特定用户/角色
-- `TO ALL`：应用于所有用户
-- `TO ALL EXCEPT user1, user2`：应用于除指定用户外的所有用户
+* `TO user1, user2`：应用于特定用户/角色
+* `TO ALL`：应用于所有用户
+* `TO ALL EXCEPT user1, user2`：应用于除指定用户外的所有用户
 
 :::note
 与行策略不同，掩码策略不会影响未被应用该策略的用户。如果某个用户没有任何适用的掩码策略，他们将看到原始数据。

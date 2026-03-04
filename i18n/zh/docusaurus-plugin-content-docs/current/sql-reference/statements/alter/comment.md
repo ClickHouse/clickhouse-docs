@@ -76,12 +76,12 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ## 注意事项 \{#caveats\}
 
-对于 Replicated 表，不同副本上的注释（comment）可以不同。  
+对于 Replicated 表，不同副本上的注释（comment）可以不同。\
 修改注释只会作用于单个副本。
 
 该功能自 23.9 版本起可用。在更早的 ClickHouse 版本中不可用。
 
 ## 相关内容 \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
-- [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
+* [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

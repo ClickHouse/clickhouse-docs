@@ -98,7 +98,6 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
-
 ## 将查询结果传递给脚本 \{#passing-query-results-to-a-script\}
 
 Hacker News 网站的用户会留下评论。Python 提供了一个自然语言处理工具包（`nltk`），其中的 `SentimentIntensityAnalyzer` 可用于判断评论是正面、负面还是中性，并为其打分，分值范围在 -1（极度负面评论）到 1（极度正面评论）之间。我们来创建一个 `Executable` 表，使用 `nltk` 计算 Hacker News 评论的情感。
@@ -173,7 +172,6 @@ FROM sentiment
 
 返回结果如下：
 
-
 ```response
 ┌───────id─┬─sentiment─┐
 │  7398199 │    0.4404 │
@@ -198,7 +196,6 @@ FROM sentiment
 │ 21465723 │   -0.6956 │
 └──────────┴───────────┘
 ```
-
 
 ## 创建 `ExecutablePool` 表 \{#creating-an-executablepool-table\}
 

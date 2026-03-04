@@ -26,7 +26,6 @@ git push
 
 Если вы не уверены, как поступить, обратитесь за помощью к мейнтейнеру проекта.
 
-
 ## Объединение с master \{#merge-with-master\}
 
 Проверяет, что PR может быть объединён с веткой master.
@@ -42,7 +41,7 @@ git push
 
 ## Проверка описания \{#description-check\}
 
-Убедитесь, что описание вашего pull request соответствует шаблону [PULL_REQUEST_TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
+Убедитесь, что описание вашего pull request соответствует шаблону [PULL&#95;REQUEST&#95;TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
 Вы должны указать категорию изменения для changelog (например, Bug Fix) и написать понятное пользователю сообщение, описывающее изменение, для [CHANGELOG.md](../whats-new/changelog/index.md)
 
 ## Docker-образ \{#docker-image\}
@@ -99,7 +98,6 @@ python -m ci.praktika run "Style check" --test cpp
 Эти команды скачивают Docker-образ `clickhouse/style-test` и запускают задачу в контейнеризованной среде.
 Дополнительные зависимости не требуются — достаточно Python 3 и Docker.
 
-
 ## Быстрый тест \{#fast-test\}
 
 Обычно это первая проверка, которая запускается для PR.
@@ -116,7 +114,6 @@ python -m ci.praktika run "Fast test" [--test some_test_name]
 Эти команды загружают Docker-образ `clickhouse/fast-test` и запускают задачу в контейнеризированной среде.
 Никаких зависимостей, кроме Python 3 и Docker, не требуется.
 
-
 ## Проверка сборки \{#build-check\}
 
 Выполняет сборку ClickHouse в различных конфигурациях для использования на следующих шагах.
@@ -130,7 +127,6 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 Помимо Python 3 и Docker, никаких дополнительных зависимостей не требуется.
-
 
 #### Доступные задания сборки \{#available-build-jobs\}
 
@@ -180,7 +176,6 @@ python -m ci.praktika run "Build (amd_debug)"
 
 Если описанный выше подход вам не подходит, используйте параметры cmake из лога сборки и следуйте [общему процессу сборки](../development/build.md).
 
-
 ## Functional stateless tests \{#functional-stateless-tests\}
 
 Запускает [функциональные stateless-тесты](tests.md#functional-tests) для бинарных файлов ClickHouse, собранных в различных конфигурациях — release, debug, с санитайзерами и т. д.
@@ -195,15 +190,15 @@ python -m ci.praktika run "Build (amd_debug)"
 ## Проверка исправления ошибки \{#bugfix-validate-check\}
 
 Проверяет, что либо добавлен новый тест (функциональный или интеграционный), либо есть изменённые тесты, которые падают при использовании бинарника, собранного из ветки master.
-Эта проверка запускается, когда у pull request есть метка "pr-bugfix".
+Эта проверка запускается, когда у pull request есть метка &quot;pr-bugfix&quot;.
 
 ## Стресс-тест \{#stress-test\}
 
 Запускает функциональные тесты без сохранения состояния одновременно с нескольких клиентов для выявления ошибок, связанных с конкурентным выполнением. Если тест завершился неуспешно:
 
 * Сначала исправьте все остальные ошибки тестов;
-    * Ознакомьтесь с отчетом, найдите журналы сервера и проверьте их на возможные причины
-      ошибки.
+  * Ознакомьтесь с отчетом, найдите журналы сервера и проверьте их на возможные причины
+    ошибки.
 
 ## Проверка совместимости \{#compatibility-check\}
 

@@ -18,17 +18,17 @@ BYOC 部署使用 **Network Load Balancers (NLBs)** 来管理并路由发往 Cli
 | **Public NLB**       | 默认启用                  | 默认禁用                |
 | **Private NLB**      | 默认禁用                  | 默认启用                |
 
-**公网负载均衡器：**  
+**公网负载均衡器：**
 
-- 提供对 ClickHouse 服务的公网（面向互联网）访问。
-- 在使用 ClickHouse 托管的专用 VPC 时通常默认启用。
-- 在使用客户自管 VPC 时，为增强安全性通常默认禁用。
+* 提供对 ClickHouse 服务的公网（面向互联网）访问。
+* 在使用 ClickHouse 托管的专用 VPC 时通常默认启用。
+* 在使用客户自管 VPC 时，为增强安全性通常默认禁用。
 
-**私网负载均衡器：**  
+**私网负载均衡器：**
 
-- 提供私有（内部）访问，仅能从已连接的网络内部访问。
-- 在使用客户自管 VPC 时通常默认启用。
-- 在使用 ClickHouse 托管的专用 VPC 时通常默认禁用。
+* 提供私有（内部）访问，仅能从已连接的网络内部访问。
+* 在使用客户自管 VPC 时通常默认启用。
+* 在使用 ClickHouse 托管的专用 VPC 时通常默认禁用。
 
 你可以联系 **ClickHouse Cloud Support**，根据你的需求调整需要启用的端点。
 
@@ -40,9 +40,9 @@ BYOC 部署使用 **Network Load Balancers (NLBs)** 来管理并路由发往 Cli
 
 **联系 ClickHouse 支持团队**，请求修改入站安全组规则，以允许来自您特定源网络的流量：
 
-- **VPC Peering**：请求添加规则，以允许来自已对等 VPC 的 CIDR 网段的流量。
-- **PrivateLink**：无需更改安全组，因为该流量不受负载均衡器安全组的控制。
-- **其他网络设置**：说明您的具体场景，以便支持团队提供相应协助。
+* **VPC Peering**：请求添加规则，以允许来自已对等 VPC 的 CIDR 网段的流量。
+* **PrivateLink**：无需更改安全组，因为该流量不受负载均衡器安全组的控制。
+* **其他网络设置**：说明您的具体场景，以便支持团队提供相应协助。
 
 :::note
 所有针对私有负载均衡器安全组的更改都必须由 ClickHouse 支持团队执行。这样可以确保配置的一致性，并避免在 ClickHouse Cloud 托管环境中产生冲突。
@@ -72,21 +72,21 @@ Kubernetes 节点组是由计算实例组成的集合，为在 BYOC 部署中运
 
 BYOC 集群默认包含两种主要的节点组类型：
 
-- **System Node Group（系统节点组）**  
+* **System Node Group（系统节点组）**\
   承载关键的系统工作负载——例如 ClickHouse Operator、Istio（用于服务网格 service mesh）、监控组件（Prometheus、Grafana、AlertManager）、cluster autoscaler 以及其他核心服务。这些节点通常使用标准的 x86 实例类型。
 
-- **Workload Node Groups（工作负载节点组）**  
+* **Workload Node Groups（工作负载节点组）**\
   专用于 ClickHouse 数据工作负载，包括服务器和 Keeper 服务。默认情况下，工作负载节点运行在基于 ARM 的实例上，在性能与成本之间实现高效平衡。不过，它们也可以根据需求配置为其他 CPU/内存规格，或者切换为 x86 架构。
 
 ### 自定义节点组 \{#customizing-node-groups\}
 
 需要更为专用的资源或架构？可以使用以下自定义选项——请联系 ClickHouse Support 进行讨论和实施：
 
-- **实例类型选择**  
+* **实例类型选择**\
   选择特定实例类型，以满足性能、合规性、高内存/CPU，或利用预留资源等需求。
-- **CPU/内存比例**  
+* **CPU/内存比例**\
   按需调整工作负载节点组的计算规格。
-- **架构**  
+* **架构**\
   如有需要，可将工作负载节点组从 ARM 切换到 x86。
 
 > **注意：** 不支持 Spot（可抢占）实例；所有 BYOC 节点组默认运行在按需实例上。
@@ -99,8 +99,8 @@ BYOC 集群默认包含两种主要的节点组类型：
 
 集群节点组会根据以下因素，由集群自动扩缩容组件（cluster autoscaler）自动进行扩缩容：
 
-- pod（容器组）的资源请求与限制
-- 整体集群容量与利用率
-- ClickHouse 服务的扩缩容需求
+* pod（容器组）的资源请求与限制
+* 整体集群容量与利用率
+* ClickHouse 服务的扩缩容需求
 
 无需人工干预。ClickHouse Cloud 会为您的部署持续管理资源与扩缩容。

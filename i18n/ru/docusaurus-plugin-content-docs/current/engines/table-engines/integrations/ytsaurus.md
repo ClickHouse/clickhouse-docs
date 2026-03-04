@@ -13,8 +13,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # Движок таблицы YTsaurus \{#ytsaurus-table-engine\}
 
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
 
 Движок таблицы YTsaurus позволяет импортировать данные из кластера YTsaurus.
 
@@ -123,6 +124,6 @@ SELECT * FROM yt_saurus;
 
 **См. также**
 
-- Табличная функция [ytsaurus](../../../sql-reference/table-functions/ytsaurus.md)
-- [Схема данных ytsaurus](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
-- [Типы данных ytsaurus](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)
+* Табличная функция [ytsaurus](../../../sql-reference/table-functions/ytsaurus.md)
+* [Схема данных ytsaurus](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
+* [Типы данных ytsaurus](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)

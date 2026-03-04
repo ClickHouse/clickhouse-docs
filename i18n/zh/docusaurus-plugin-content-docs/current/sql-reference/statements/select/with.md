@@ -27,7 +27,6 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 WITH <identifier> AS <subquery expression>
 ```
 
-
 ### 示例 \{#common-table-expressions-example\}
 
 子查询会被重新执行的情况示例：
@@ -50,7 +49,6 @@ WHERE num IN (SELECT num FROM cte_numbers)
 
 然而，由于我们两次引用了 `cte_numbers`，每次都会生成随机数，因此会看到不同的随机结果，比如 `280501, 392454, 261636, 196227` 等等……
 
-
 ## 通用标量表达式 \{#common-scalar-expressions\}
 
 ClickHouse 允许你在 `WITH` 子句中为任意标量表达式声明别名。
@@ -67,7 +65,6 @@ ClickHouse 会在尽可能接近的作用域中解析任何标识符，这意味
 ```sql
 WITH <expression> AS <identifier>
 ```
-
 
 ### 示例 \{#common-scalar-expressions-examples\}
 
@@ -165,7 +162,6 @@ WITH test1 AS (SELECT i + 1, j + 1 FROM test1)
 SELECT * FROM test1;
 ```
 
-
 ## 递归查询 \{#recursive-queries\}
 
 可选的 `RECURSIVE` 修饰符允许 WITH 查询引用其自身的输出。示例：
@@ -243,7 +239,6 @@ SELECT * FROM search_tree;
 └────┴───────────┴───────────┘
 ```
 
-
 ### 搜索顺序 \{#search-order\}
 
 要实现深度优先顺序，我们为每个结果行计算一个记录已访问行的数组：
@@ -297,7 +292,6 @@ SELECT * FROM search_tree ORDER BY depth;
 │  3 │    1 │ Child_1_1 │ [0,1,3] │     2 │
 └────┴──────┴───────────┴─────────┴───────┘
 ```
-
 
 ### 循环检测 \{#cycle-detection\}
 
@@ -381,7 +375,6 @@ SELECT * FROM search_graph WHERE is_cycle ORDER BY from;
 │    5 │  1 │ 5 -> 1 │ true     │ [(5,1),(1,4),(4,5),(5,1)] │
 └──────┴────┴────────┴──────────┴───────────────────────────┘
 ```
-
 
 ### 无限查询 \{#infinite-queries\}
 

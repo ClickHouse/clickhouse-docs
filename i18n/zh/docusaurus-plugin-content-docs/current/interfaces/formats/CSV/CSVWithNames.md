@@ -107,6 +107,6 @@ FORMAT CSVWithNames
 
 :::note
 如果将 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
-则输入数据中的列会按名称映射到表中的列；如果同时将 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
+则输入数据中的列会按名称映射到表中的列；如果同时将 [input&#95;format&#95;skip&#95;unknown&#95;fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
 否则，第一行会被跳过。
 :::

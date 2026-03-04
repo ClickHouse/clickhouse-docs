@@ -39,14 +39,13 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_auxiliary_zookeepers:path', 'shard_name', 'replica_name')
 ```
 
-
 ## Особенности и рекомендации \{#specifics-and-recommendations\}
 
 DDL-запросы с базой данных `Replicated` работают аналогично запросам [ON CLUSTER](../../sql-reference/distributed-ddl.md), но с небольшими отличиями.
 
-Сначала DDL-запрос пытается выполниться на инициаторе (хосте, который изначально получил запрос от пользователя). Если запрос не был выполнен, пользователь сразу получает ошибку, другие хосты не пытаются его выполнить. Если запрос был успешно выполнен на инициаторе, то все остальные хосты будут автоматически повторять попытки до тех пор, пока не завершат его выполнение. Инициатор будет пытаться дождаться завершения запроса на других хостах (не дольше чем [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)) и вернёт таблицу со статусами выполнения запроса на каждом хосте.
+Сначала DDL-запрос пытается выполниться на инициаторе (хосте, который изначально получил запрос от пользователя). Если запрос не был выполнен, пользователь сразу получает ошибку, другие хосты не пытаются его выполнить. Если запрос был успешно выполнен на инициаторе, то все остальные хосты будут автоматически повторять попытки до тех пор, пока не завершат его выполнение. Инициатор будет пытаться дождаться завершения запроса на других хостах (не дольше чем [distributed&#95;ddl&#95;task&#95;timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)) и вернёт таблицу со статусами выполнения запроса на каждом хосте.
 
-Поведение в случае ошибок регулируется настройкой [distributed_ddl_output_mode](../../operations/settings/settings.md#distributed_ddl_output_mode), для базы данных `Replicated` лучше установить её в значение `null_status_on_timeout` — т. е. если какие-то хосты не успели выполнить запрос за время [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout), то не выбрасывать исключение, а показать статус `NULL` для них в таблице.
+Поведение в случае ошибок регулируется настройкой [distributed&#95;ddl&#95;output&#95;mode](../../operations/settings/settings.md#distributed_ddl_output_mode), для базы данных `Replicated` лучше установить её в значение `null_status_on_timeout` — т. е. если какие-то хосты не успели выполнить запрос за время [distributed&#95;ddl&#95;task&#95;timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout), то не выбрасывать исключение, а показать статус `NULL` для них в таблице.
 
 Системная таблица [system.clusters](../../operations/system-tables/clusters.md) содержит кластер с именем, совпадающим с именем реплицируемой базы данных, который состоит из всех реплик этой базы данных. Этот кластер автоматически обновляется при создании/удалении реплик и может использоваться для таблиц [Distributed](/engines/table-engines/special/distributed).
 
@@ -131,7 +130,6 @@ node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('
 
 Конфигурация кластера будет выглядеть следующим образом:
 
-
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
 │ r       │     1     │      1      │   node3   │  127.0.0.1   │ 9002 │     0    │
@@ -153,7 +151,6 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 │ node4 │  [0,2,4,6,8]  │
 └───────┴───────────────┘
 ```
-
 
 ## Параметры \{#settings\}
 

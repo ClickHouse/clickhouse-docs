@@ -22,7 +22,7 @@ integration:
 
 ### 2. 在 ClickHouse 上截断或删除该表 \{#truncate-drop-table\}
 
-此步骤是为了在下一步再次添加该表时避免出现重复数据。您可以在 ClickHouse Cloud 的 **SQL Console** 选项卡中执行一条查询来完成此操作。  
+此步骤是为了在下一步再次添加该表时避免出现重复数据。您可以在 ClickHouse Cloud 的 **SQL Console** 选项卡中执行一条查询来完成此操作。\
 请注意，如果该表在 ClickHouse 中已存在且不为空，我们的校验逻辑会阻止再次添加该表。
 
 ### 3. 将该表重新添加到 ClickPipe \{#add-table-again\}

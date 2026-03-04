@@ -23,7 +23,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ### 环境要求 \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) 8 或更高版本
+* [OpenJDK](https://openjdk.java.net) 8 或更高版本
 
 ### 设置 \{#setup\}
 

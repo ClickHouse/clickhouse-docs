@@ -20,142 +20,143 @@ doc_type: 'reference'
 чтобы выполнить примеры для функций, описанных ниже.
 
 <details>
-<summary>Пример словаря для функций dictGet&lt;T&gt; и dictGet&lt;T&gt;OrDefault</summary>
+  <summary>Пример словаря для функций dictGet&lt;T&gt; и dictGet&lt;T&gt;OrDefault</summary>
 
-```sql
--- Создать таблицу со всеми необходимыми типами данных
-CREATE TABLE all_types_test (
-    `id` UInt32,
-    
-    -- Тип String
-    `String_value` String,
-    
-    -- Беззнаковые целочисленные типы
-    `UInt8_value` UInt8,
-    `UInt16_value` UInt16,
-    `UInt32_value` UInt32,
-    `UInt64_value` UInt64,
-    
-    -- Знаковые целочисленные типы
-    `Int8_value` Int8,
-    `Int16_value` Int16,
-    `Int32_value` Int32,
-    `Int64_value` Int64,
-    
-    -- Типы с плавающей точкой
-    `Float32_value` Float32,
-    `Float64_value` Float64,
-    
-    -- Типы даты/времени
-    `Date_value` Date,
-    `DateTime_value` DateTime,
-    
-    -- Сетевые типы
-    `IPv4_value` IPv4,
-    `IPv6_value` IPv6,
-    
-    -- Тип UUID
-    `UUID_value` UUID
-) ENGINE = MergeTree() 
-ORDER BY id;
-```
-```sql
--- Вставить тестовые данные
-INSERT INTO all_types_test VALUES
-(
-    1,                              -- id
-    'ClickHouse',                   -- String
-    100,                            -- UInt8
-    5000,                           -- UInt16
-    1000000,                        -- UInt32
-    9223372036854775807,            -- UInt64
-    -100,                           -- Int8
-    -5000,                          -- Int16
-    -1000000,                       -- Int32
-    -9223372036854775808,           -- Int64
-    123.45,                         -- Float32
-    987654.123456,                  -- Float64
-    '2024-01-15',                   -- Date
-    '2024-01-15 10:30:00',          -- DateTime
-    '192.168.1.1',                  -- IPv4
-    '2001:db8::1',                  -- IPv6
-    '550e8400-e29b-41d4-a716-446655440000' -- UUID
-)
-```
+  ```sql
+  -- Создать таблицу со всеми необходимыми типами данных
+  CREATE TABLE all_types_test (
+      `id` UInt32,
+      
+      -- Тип String
+      `String_value` String,
+      
+      -- Беззнаковые целочисленные типы
+      `UInt8_value` UInt8,
+      `UInt16_value` UInt16,
+      `UInt32_value` UInt32,
+      `UInt64_value` UInt64,
+      
+      -- Знаковые целочисленные типы
+      `Int8_value` Int8,
+      `Int16_value` Int16,
+      `Int32_value` Int32,
+      `Int64_value` Int64,
+      
+      -- Типы с плавающей точкой
+      `Float32_value` Float32,
+      `Float64_value` Float64,
+      
+      -- Типы даты/времени
+      `Date_value` Date,
+      `DateTime_value` DateTime,
+      
+      -- Сетевые типы
+      `IPv4_value` IPv4,
+      `IPv6_value` IPv6,
+      
+      -- Тип UUID
+      `UUID_value` UUID
+  ) ENGINE = MergeTree() 
+  ORDER BY id;
+  ```
 
-```sql
--- Создать словарь
-CREATE DICTIONARY all_types_dict
-(
-    id UInt32,
-    String_value String,
-    UInt8_value UInt8,
-    UInt16_value UInt16,
-    UInt32_value UInt32,
-    UInt64_value UInt64,
-    Int8_value Int8,
-    Int16_value Int16,
-    Int32_value Int32,
-    Int64_value Int64,
-    Float32_value Float32,
-    Float64_value Float64,
-    Date_value Date,
-    DateTime_value DateTime,
-    IPv4_value IPv4,
-    IPv6_value IPv6,
-    UUID_value UUID
-)
-PRIMARY KEY id
-SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'all_types_test' DB 'default'))
-LAYOUT(HASHED())
-LIFETIME(MIN 300 MAX 600);
-```
+  ```sql
+  -- Вставить тестовые данные
+  INSERT INTO all_types_test VALUES
+  (
+      1,                              -- id
+      'ClickHouse',                   -- String
+      100,                            -- UInt8
+      5000,                           -- UInt16
+      1000000,                        -- UInt32
+      9223372036854775807,            -- UInt64
+      -100,                           -- Int8
+      -5000,                          -- Int16
+      -1000000,                       -- Int32
+      -9223372036854775808,           -- Int64
+      123.45,                         -- Float32
+      987654.123456,                  -- Float64
+      '2024-01-15',                   -- Date
+      '2024-01-15 10:30:00',          -- DateTime
+      '192.168.1.1',                  -- IPv4
+      '2001:db8::1',                  -- IPv6
+      '550e8400-e29b-41d4-a716-446655440000' -- UUID
+  )
+  ```
+
+  ```sql
+  -- Создать словарь
+  CREATE DICTIONARY all_types_dict
+  (
+      id UInt32,
+      String_value String,
+      UInt8_value UInt8,
+      UInt16_value UInt16,
+      UInt32_value UInt32,
+      UInt64_value UInt64,
+      Int8_value Int8,
+      Int16_value Int16,
+      Int32_value Int32,
+      Int64_value Int64,
+      Float32_value Float32,
+      Float64_value Float64,
+      Date_value Date,
+      DateTime_value DateTime,
+      IPv4_value IPv4,
+      IPv6_value IPv6,
+      UUID_value UUID
+  )
+  PRIMARY KEY id
+  SOURCE(CLICKHOUSE(HOST 'localhost' PORT 9000 USER 'default' TABLE 'all_types_test' DB 'default'))
+  LAYOUT(HASHED())
+  LIFETIME(MIN 300 MAX 600);
+  ```
 </details>
 
 <details>
-<summary>Пример словаря для dictGetAll</summary>
+  <summary>Пример словаря для dictGetAll</summary>
 
-Создайте таблицу для хранения данных словаря regexp tree:
+  Создайте таблицу для хранения данных словаря regexp tree:
 
-```sql
-CREATE TABLE regexp_os(
-    id UInt64,
-    parent_id UInt64,
-    regexp String,
-    keys Array(String),
-    values Array(String)
-)
-ENGINE = Memory;
-```
+  ```sql
+  CREATE TABLE regexp_os(
+      id UInt64,
+      parent_id UInt64,
+      regexp String,
+      keys Array(String),
+      values Array(String)
+  )
+  ENGINE = Memory;
+  ```
 
-Вставьте данные в таблицу:
+  Вставьте данные в таблицу:
 
-```sql
-INSERT INTO regexp_os 
-SELECT *
-FROM s3(
-    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/' ||
-    'user_agent_regex/regexp_os.csv'
-);
-```
+  ```sql
+  INSERT INTO regexp_os 
+  SELECT *
+  FROM s3(
+      'https://datasets-documentation.s3.eu-west-3.amazonaws.com/' ||
+      'user_agent_regex/regexp_os.csv'
+  );
+  ```
 
-Создайте словарь regexp tree:
+  Создайте словарь regexp tree:
 
-```sql
-CREATE DICTIONARY regexp_tree
-(
-    regexp String,
-    os_replacement String DEFAULT 'Other',
-    os_v1_replacement String DEFAULT '0',
-    os_v2_replacement String DEFAULT '0',
-    os_v3_replacement String DEFAULT '0',
-    os_v4_replacement String DEFAULT '0'
-)
-PRIMARY KEY regexp
-SOURCE(CLICKHOUSE(TABLE 'regexp_os'))
-LIFETIME(MIN 0 MAX 0)
-LAYOUT(REGEXP_TREE);
-```
+  ```sql
+  CREATE DICTIONARY regexp_tree
+  (
+      regexp String,
+      os_replacement String DEFAULT 'Other',
+      os_v1_replacement String DEFAULT '0',
+      os_v2_replacement String DEFAULT '0',
+      os_v3_replacement String DEFAULT '0',
+      os_v4_replacement String DEFAULT '0'
+  )
+  PRIMARY KEY regexp
+  SOURCE(CLICKHOUSE(TABLE 'regexp_os'))
+  LIFETIME(MIN 0 MAX 0)
+  LAYOUT(REGEXP_TREE);
+  ```
 </details>
 
 <details>
@@ -300,7 +301,6 @@ LAYOUT(REGEXP_TREE);
 
 {/*AUTOGENERATED_START*/ }
 
-
 ## dictGet \{#dictGet\}
 
 Появилась в версии v18.16.0
@@ -360,7 +360,6 @@ LIMIT 3;
 └─────────┴────────────────┘
 ```
 
-
 ## dictGetAll \{#dictGetAll\}
 
 Добавлена в версии: v23.5.0
@@ -409,7 +408,6 @@ SELECT
 └────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴─────────────┘
 ```
 
-
 ## dictGetChildren \{#dictGetChildren\}
 
 Введена в версии: v21.4.0
@@ -444,7 +442,6 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 │ [4,5]                    │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDate \{#dictGetDate\}
 
@@ -486,7 +483,6 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 │               2020-01-01 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDateOrDefault \{#dictGetDateOrDefault\}
 
@@ -537,7 +533,6 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 └──────────────────────────┘
 ```
 
-
 ## dictGetDateTime \{#dictGetDateTime\}
 
 Добавлена в версии: v1.1.0
@@ -578,7 +573,6 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 │      2024-01-15 10:30:00 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetDateTimeOrDefault \{#dictGetDateTimeOrDefault\}
 
@@ -628,7 +622,6 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 └──────────────────────────┘
 ```
 
-
 ## dictGetDescendants \{#dictGetDescendants\}
 
 Впервые появилась в версии v21.4.0
@@ -674,7 +667,6 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 └──────────────────────────┘
 ```
 
-
 ## dictGetFloat32 \{#dictGetFloat32\}
 
 Добавлено в версии v1.1.0
@@ -715,7 +707,6 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 │               -123.123   │
 └──────────────────────────┘
 ```
-
 
 ## dictGetFloat32OrDefault \{#dictGetFloat32OrDefault\}
 
@@ -766,7 +757,6 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 └───────────────────────────┘
 ```
 
-
 ## dictGetFloat64 \{#dictGetFloat64\}
 
 Впервые представлена в: v1.1.0
@@ -807,7 +797,6 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 │                 -123.123 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetFloat64OrDefault \{#dictGetFloat64OrDefault\}
 
@@ -858,7 +847,6 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 └──────────────────────────┘
 ```
 
-
 ## dictGetHierarchy \{#dictGetHierarchy\}
 
 Впервые представлена в: v1.1.0
@@ -893,7 +881,6 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 │ [5,2,1]                  │
 └──────────────────────────┘
 ```
-
 
 ## dictGetIPv4 \{#dictGetIPv4\}
 
@@ -935,7 +922,6 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 │ 192.168.0.1                         │
 └─────────────────────────────────────┘
 ```
-
 
 ## dictGetIPv4OrDefault \{#dictGetIPv4OrDefault\}
 
@@ -986,7 +972,6 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 └──────────────────────────────┘
 ```
 
-
 ## dictGetIPv6 \{#dictGetIPv6\}
 
 Впервые представлен в: v23.1.0
@@ -1027,7 +1012,6 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 │ 2001:db8:85a3::8a2e:370:7334        │
 └─────────────────────────────────────┘
 ```
-
 
 ## dictGetIPv6OrDefault \{#dictGetIPv6OrDefault\}
 
@@ -1078,7 +1062,6 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 └──────────────────────────────┘
 ```
 
-
 ## dictGetInt16 \{#dictGetInt16\}
 
 Введено в версии: v1.1.0
@@ -1119,7 +1102,6 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 │                    -5000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt16OrDefault \{#dictGetInt16OrDefault\}
 
@@ -1170,7 +1152,6 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt32 \{#dictGetInt32\}
 
 Добавлена в версии: v1.1.0
@@ -1211,7 +1192,6 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 │                -1000000  │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt32OrDefault \{#dictGetInt32OrDefault\}
 
@@ -1262,7 +1242,6 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt64 \{#dictGetInt64\}
 
 Добавлена в версии: v1.1.0
@@ -1303,7 +1282,6 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 │       -9223372036854775807 │
 └────────────────────────────┘
 ```
-
 
 ## dictGetInt64OrDefault \{#dictGetInt64OrDefault\}
 
@@ -1354,7 +1332,6 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetInt8 \{#dictGetInt8\}
 
 Введено в: v1.1.0
@@ -1395,7 +1372,6 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 │                     -100 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetInt8OrDefault \{#dictGetInt8OrDefault\}
 
@@ -1446,7 +1422,6 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 └──────────────────────────┘
 ```
 
-
 ## dictGetKeys \{#dictGetKeys\}
 
 Введена в версии: v25.12.0
@@ -1488,7 +1463,6 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 └───────┘
 ```
 
-
 ## dictGetOrDefault \{#dictGetOrDefault\}
 
 Добавлена в версии: v18.16.0
@@ -1524,7 +1498,6 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 ```response title=Response
 0
 ```
-
 
 ## dictGetOrNull \{#dictGetOrNull\}
 
@@ -1566,7 +1539,6 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 (4,'2019-05-20')  \N
 ```
 
-
 ## dictGetString \{#dictGetString\}
 
 Добавлена в версии v1.1.0.
@@ -1607,7 +1579,6 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 │ test string                │
 └────────────────────────────┘
 ```
-
 
 ## dictGetStringOrDefault \{#dictGetStringOrDefault\}
 
@@ -1657,7 +1628,6 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 └─────────────────────────────────┘
 ```
 
-
 ## dictGetUInt16 \{#dictGetUInt16\}
 
 Впервые появилась в версии: v1.1.0
@@ -1698,7 +1668,6 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 │                     5000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt16OrDefault \{#dictGetUInt16OrDefault\}
 
@@ -1749,7 +1718,6 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt32 \{#dictGetUInt32\}
 
 Добавлена в версии: v1.1.0
@@ -1790,7 +1758,6 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 │                  1000000 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt32OrDefault \{#dictGetUInt32OrDefault\}
 
@@ -1841,7 +1808,6 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt64 \{#dictGetUInt64\}
 
 Добавлена в: v1.1.0
@@ -1882,7 +1848,6 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 │      9223372036854775807 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt64OrDefault \{#dictGetUInt64OrDefault\}
 
@@ -1933,7 +1898,6 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUInt8 \{#dictGetUInt8\}
 
 Впервые появилась в версии: v1.1.0
@@ -1974,7 +1938,6 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 │                      100 │
 └──────────────────────────┘
 ```
-
 
 ## dictGetUInt8OrDefault \{#dictGetUInt8OrDefault\}
 
@@ -2025,7 +1988,6 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 └──────────────────────────┘
 ```
 
-
 ## dictGetUUID \{#dictGetUUID\}
 
 Появилась в версии: v1.1.0
@@ -2066,7 +2028,6 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 │ 123e4567-e89b-12d3-a456-426614174000 │
 └──────────────────────────────────────┘
 ```
-
 
 ## dictGetUUIDOrDefault \{#dictGetUUIDOrDefault\}
 
@@ -2117,7 +2078,6 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 └────────────────────────────────────────┘
 ```
 
-
 ## dictHas \{#dictHas\}
 
 Впервые появилась в версии: v1.1.0
@@ -2165,7 +2125,6 @@ SELECT dictHas('hierarchical_dictionary', 7);
 │                        0 │
 └──────────────────────────┘
 ```
-
 
 ## dictIsIn \{#dictIsIn\}
 

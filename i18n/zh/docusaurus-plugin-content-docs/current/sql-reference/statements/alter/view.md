@@ -196,7 +196,6 @@ SELECT * FROM mv;
 └───┘
 ```
 
-
 ## ALTER TABLE ... MODIFY REFRESH 语句 \{#alter-table--modify-refresh-statement\}
 
 `ALTER TABLE ... MODIFY REFRESH` 语句更改[可刷新物化视图](../create/view.md#refreshable-materialized-view)的刷新参数。请参阅[更改刷新参数](../create/view.md#changing-refresh-parameters)。

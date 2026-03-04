@@ -30,7 +30,7 @@ doc_type: 'guide'
 
 此表引擎的所有参数（`Sign` 参数除外）与 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 中的含义相同。
 
-- `Sign` — 行类型标记列的名称，其中 `1` 表示“状态”行，`-1` 表示“撤销”行。类型：[Int8](/sql-reference/data-types/int-uint)。
+* `Sign` — 行类型标记列的名称，其中 `1` 表示“状态”行，`-1` 表示“撤销”行。类型：[Int8](/sql-reference/data-types/int-uint)。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -57,14 +57,14 @@ ENGINE = CollapsingMergeTree(Sign)
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) 
-ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
-```
+  ) 
+  ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
+  ```
 
   `Sign` — 分配给某列的名称，该列用于表示行的类型，其中 `1` 表示“state”行，`-1` 表示“cancel”行。[Int8](/sql-reference/data-types/int-uint)。
 </details>

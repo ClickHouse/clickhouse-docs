@@ -18,10 +18,9 @@ doc_type: 'reference'
 dictionary('dict')
 ```
 
-
 ## Аргументы \{#arguments\}
 
-- `dict` — Имя словаря. [String](../../sql-reference/data-types/string.md).
+* `dict` — Имя словаря. [String](../../sql-reference/data-types/string.md).
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -60,7 +59,6 @@ SELECT * FROM dictionary('new_dictionary');
 └────┴───────┘
 ```
 
-
 ## См. также \{#related\}
 
-- [Движок Dictionary](/engines/table-engines/special/dictionary)
+* [Движок Dictionary](/engines/table-engines/special/dictionary)

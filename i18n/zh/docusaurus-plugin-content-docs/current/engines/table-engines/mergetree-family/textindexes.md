@@ -60,7 +60,6 @@ two    : [3]
 
 在给定搜索 token 的情况下，该索引结构可以快速定位所有匹配的行。
 
-
 ## 创建文本索引 \{#creating-a-text-index\}
 
 文本索引在 ClickHouse 26.2 及更高版本中已进入 GA（正式发布）阶段。
@@ -158,7 +157,6 @@ ALTER TABLE table DROP INDEX text_idx;
 
 **Tokenizer 参数（必填）**。`tokenizer` 参数指定要使用的分词器：
 
-
 * `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串（参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)）。
 * `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串（参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)）。
   可以通过可选参数指定分隔符，例如：`tokenizer = splitByString([', ', '; ', '\n', '\\'])`。
@@ -208,7 +206,6 @@ SELECT tokens('abc def', 'ngrams', 3);
 **Preprocessor 参数（可选）**。Preprocessor 指的是在分词之前应用于输入字符串的一个表达式。
 
 Preprocessor 参数的典型用例包括：
-
 
 1. 转换为小写或大写以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（见下方第一个示例）。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
@@ -300,7 +297,6 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 **其他参数（可选）**。
 
-
 <details markdown="1">
   <summary>可选高级参数</summary>
 
@@ -356,7 +352,6 @@ SHOW CREATE TABLE table;
 较大的索引粒度可确保为整个 part 创建文本索引。
 显式指定的索引粒度将被忽略。
 
-
 ## 使用文本索引 \{#using-a-text-index\}
 
 在 `SELECT` 查询中使用文本索引很简单，常见的字符串搜索函数会自动利用该索引。
@@ -378,7 +373,6 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
-
 #### `=` 和 `!=` \{#functions-example-equals-notequals\}
 
 `=`（[equals](/sql-reference/functions/comparison-functions.md/#equals)）和 `!=`（[notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)）会匹配整个给定的搜索词。
@@ -391,7 +385,6 @@ SELECT * from table WHERE str = 'Hello';
 
 文本索引支持 `=` 和 `!=`，但等值和不等值查询只有在使用 `array` 分词器时才有意义（因为它会让索引存储整行的值）。
 
-
 #### `IN` 和 `NOT IN` \{#functions-example-in-notin\}
 
 `IN`（[in](/sql-reference/functions/in-functions)）和 `NOT IN`（[notIn](/sql-reference/functions/in-functions)）与函数 `equals` 和 `notEquals` 类似，但它们分别匹配全部（`IN`）或不匹配任何（`NOT IN`）搜索项。
@@ -403,7 +396,6 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
 适用与 `=` 和 `!=` 相同的限制，也就是说，`IN` 和 `NOT IN` 只有在与 `array` 分词器配合使用时才有意义。
-
 
 #### `LIKE`、`NOT LIKE` 和 `match` \{#functions-example-like-notlike-match\}
 
@@ -431,7 +423,6 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` 左右的空格能够确保该词被提取为一个单独的 token。
 
-
 #### `startsWith` 和 `endsWith` \{#functions-example-startswith-endswith\}
 
 与 `LIKE` 类似，当且仅当能够从搜索词中提取出完整的 token 时，函数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) 和 [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 才能使用文本索引。
@@ -458,7 +449,6 @@ startsWith(comment, 'clickhouse supports ')`
 SELECT count() FROM table WHERE endsWith(comment, ' olap engine');
 ```
 
-
 #### `hasToken` 和 `hasTokenOrNull` \{#functions-example-hastoken-hastokenornull\}
 
 :::note
@@ -475,7 +465,6 @@ SELECT count() FROM table WHERE endsWith(comment, ' olap engine');
 ```sql
 SELECT count() FROM table WHERE hasToken(comment, 'clickhouse');
 ```
-
 
 #### `hasAnyTokens` 和 `hasAllTokens` \{#functions-example-hasanytokens-hasalltokens\}
 
@@ -496,7 +485,6 @@ SELECT count() FROM table WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
-
 #### `has` \{#functions-example-has\}
 
 数组函数 [has](/sql-reference/functions/array-functions#has) 用于在字符串数组中匹配单个 token。
@@ -506,7 +494,6 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```sql
 SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
-
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
@@ -522,7 +509,6 @@ SELECT count() FROM table WHERE mapContainsKey(map, 'clickhouse');
 SELECT count() FROM table WHERE mapContains(map, 'clickhouse');
 ```
 
-
 #### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
 函数 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue) 会在 map 的值中，针对从被搜索的字符串中提取出的 token 进行匹配。
@@ -535,7 +521,6 @@ SELECT count() FROM table WHERE mapContains(map, 'clickhouse');
 SELECT count() FROM table WHERE mapContainsValue(map, 'clickhouse');
 ```
 
-
 #### `mapContainsKeyLike` 和 `mapContainsValueLike` \{#functions-example-mapcontainslike\}
 
 函数 [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike) 和 [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike) 用于将给定模式分别匹配到 map 的所有键或所有值上。
@@ -546,7 +531,6 @@ SELECT count() FROM table WHERE mapContainsValue(map, 'clickhouse');
 SELECT count() FROM table WHERE mapContainsKeyLike(map, '% clickhouse %');
 SELECT count() FROM table WHERE mapContainsValueLike(map, '% clickhouse %');
 ```
-
 
 #### `operator[]` \{#functions-example-access-operator\}
 
@@ -559,7 +543,6 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 ```
 
 请参考以下示例，了解如何在文本索引中使用类型为 `Array(T)` 和 `Map(K, V)` 的列。
-
 
 ### 具有文本索引的 `Array` 和 `Map` 列示例 \{#text-index-array-and-map-examples\}
 
@@ -595,7 +578,6 @@ SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table 
 ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitByNonAlpha);
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
-
 
 #### 为 Map 列建立索引 \{#text-index-example-map\}
 
@@ -656,7 +638,6 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 -- Finds all logs where any attribute includes an error:
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
-
 
 ## 性能调优 \{#performance-tuning\}
 
@@ -753,7 +734,6 @@ Direct read 作为提示可以通过设置 [query&#95;plan&#95;text&#95;index&#9
 
 不使用提示的查询示例：
 
-
 ```sql
 EXPLAIN actions = 1
 SELECT count()
@@ -794,12 +774,11 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 
-
 ### 缓存 \{#caching\}
 
 有多种缓存可用于在内存中缓冲文本索引的部分内容（参见[实现细节](#implementation)部分）。
 当前，对文本索引的反序列化头部信息、tokens（标记）以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
-可以通过以下 SETTING 启用这些缓存：[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、[use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
+可以通过以下 SETTING 启用这些缓存：[use&#95;text&#95;index&#95;header&#95;cache](/operations/settings/settings#use_text_index_header_cache)、[use&#95;text&#95;index&#95;tokens&#95;cache](/operations/settings/settings#use_text_index_tokens_cache) 和 [use&#95;text&#95;index&#95;postings&#95;cache](/operations/settings/settings#use_text_index_postings_cache)。
 默认情况下，所有缓存均为禁用状态。
 要清除这些缓存，请使用语句 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches)。
 
@@ -809,35 +788,35 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 | 设置                                                                                                                                                     | 说明                                                                                                           |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 文本索引词元缓存策略名称。                                                                  |
-| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
-| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 缓存中反序列化的词元最大数量。                                                              |
-| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 文本索引词元缓存中受保护队列相对于缓存总大小的比例。  |
+| [text&#95;index&#95;tokens&#95;cache&#95;policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 文本索引词元缓存策略名称。                                                                  |
+| [text&#95;index&#95;tokens&#95;cache&#95;size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
+| [text&#95;index&#95;tokens&#95;cache&#95;max&#95;entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 缓存中反序列化的词元最大数量。                                                              |
+| [text&#95;index&#95;tokens&#95;cache&#95;size&#95;ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 文本索引词元缓存中受保护队列相对于缓存总大小的比例。  |
 
 #### 头部缓存设置 \{#caching-header\}
 
 | Setting                                                                                                                              | 描述                                                                                                  |
 |--------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| [text_index_header_cache_policy](/operations/server-configuration-parameters/settings#text_index_header_cache_policy)                | 文本索引头部缓存策略名称。                                                                           |
-| [text_index_header_cache_size](/operations/server-configuration-parameters/settings#text_index_header_cache_size)                    | 最大缓存大小（字节）。                                                                               |
-| [text_index_header_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_header_cache_max_entries)      | 缓存中反序列化头部的最大数量。                                                                       |
-| [text_index_header_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_header_cache_size_ratio)        | 文本索引头部缓存中受保护队列占缓存总大小的比例。                                                     |
+| [text&#95;index&#95;header&#95;cache&#95;policy](/operations/server-configuration-parameters/settings#text_index_header_cache_policy)                | 文本索引头部缓存策略名称。                                                                           |
+| [text&#95;index&#95;header&#95;cache&#95;size](/operations/server-configuration-parameters/settings#text_index_header_cache_size)                    | 最大缓存大小（字节）。                                                                               |
+| [text&#95;index&#95;header&#95;cache&#95;max&#95;entries](/operations/server-configuration-parameters/settings#text_index_header_cache_max_entries)      | 缓存中反序列化头部的最大数量。                                                                       |
+| [text&#95;index&#95;header&#95;cache&#95;size&#95;ratio](/operations/server-configuration-parameters/settings#text_index_header_cache_size_ratio)        | 文本索引头部缓存中受保护队列占缓存总大小的比例。                                                     |
 
 #### Posting 列表缓存设置 \{#caching-posting-lists\}
 
 | Setting                                                                                                                               | Description                                                                                             |
 |---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [text_index_postings_cache_policy](/operations/server-configuration-parameters/settings#text_index_postings_cache_policy)             | 文本索引 posting 列表缓存策略的名称。                                                                   |
-| [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | 最大缓存大小（以字节为单位）。                                                                          |
-| [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中已反序列化 posting 的最大数量。                                                                   |
-| [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引 posting 列表缓存中受保护队列大小相对于缓存总大小的比例。                                      |
+| [text&#95;index&#95;postings&#95;cache&#95;policy](/operations/server-configuration-parameters/settings#text_index_postings_cache_policy)             | 文本索引 posting 列表缓存策略的名称。                                                                   |
+| [text&#95;index&#95;postings&#95;cache&#95;size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | 最大缓存大小（以字节为单位）。                                                                          |
+| [text&#95;index&#95;postings&#95;cache&#95;max&#95;entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中已反序列化 posting 的最大数量。                                                                   |
+| [text&#95;index&#95;postings&#95;cache&#95;size&#95;ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引 posting 列表缓存中受保护队列大小相对于缓存总大小的比例。                                      |
 
 ## 限制 \{#limitations\}
 
 当前文本索引具有以下限制：
 
-- 对包含大量 tokens（例如 100 亿 tokens）的文本索引进行物化时，可能会消耗大量内存。文本索引的物化可以直接进行（`ALTER TABLE <table> MATERIALIZE INDEX <index>`），也可以在分区片段合并时通过间接方式发生。
-- 无法在包含超过 4.294.967.296（= 2^32 ≈ 42 亿）行的分区片段上物化文本索引。如果没有物化的文本索引，查询会退回到在该分区片段内执行低效的暴力搜索。作为一种最坏情况的估算，假设某个分区片段只包含一个类型为 String 的列，并且 MergeTree 设置 `max_bytes_to_merge_at_max_space_in_pool`（默认值：150 GB）未被修改。在这种假设下，只要该列平均每行少于 29.5 个字符，就会出现上述情况。实际上，表中通常还包含其他列，因此阈值通常会小好几倍（具体取决于其他列的数量、类型和大小）。
+* 对包含大量 tokens（例如 100 亿 tokens）的文本索引进行物化时，可能会消耗大量内存。文本索引的物化可以直接进行（`ALTER TABLE <table> MATERIALIZE INDEX <index>`），也可以在分区片段合并时通过间接方式发生。
+* 无法在包含超过 4.294.967.296（= 2^32 ≈ 42 亿）行的分区片段上物化文本索引。如果没有物化的文本索引，查询会退回到在该分区片段内执行低效的暴力搜索。作为一种最坏情况的估算，假设某个分区片段只包含一个类型为 String 的列，并且 MergeTree 设置 `max_bytes_to_merge_at_max_space_in_pool`（默认值：150 GB）未被修改。在这种假设下，只要该列平均每行少于 29.5 个字符，就会出现上述情况。实际上，表中通常还包含其他列，因此阈值通常会小好几倍（具体取决于其他列的数量、类型和大小）。
 
 ## 文本索引 vs 基于 Bloom Filter 的索引 \{#text-index-vs-bloom-filter-indexes\}
 
@@ -845,37 +824,37 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 **Bloom Filter 索引**
 
-- 基于可能产生假阳性的概率型数据结构。
-- 只能回答集合成员关系问题，即：该列可能包含 token X，或可以确定不包含 X。
-- 存储粒度级信息，以便在查询执行期间跳过粗粒度范围。
-- 难以正确调优（示例参见[此处](mergetree#n-gram-bloom-filter)）。
-- 相对紧凑（每个 part 通常只有几 KB 或几 MB）。
+* 基于可能产生假阳性的概率型数据结构。
+* 只能回答集合成员关系问题，即：该列可能包含 token X，或可以确定不包含 X。
+* 存储粒度级信息，以便在查询执行期间跳过粗粒度范围。
+* 难以正确调优（示例参见[此处](mergetree#n-gram-bloom-filter)）。
+* 相对紧凑（每个 part 通常只有几 KB 或几 MB）。
 
 **文本索引**
 
-- 在 token 之上构建确定性的倒排索引，索引本身不会产生假阳性。
-- 专门针对文本搜索类工作负载进行了优化。
-- 存储行级信息，从而支持高效的词项查找。
-- 体积相对较大（每个 part 通常为数十到数百 MB）。
+* 在 token 之上构建确定性的倒排索引，索引本身不会产生假阳性。
+* 专门针对文本搜索类工作负载进行了优化。
+* 存储行级信息，从而支持高效的词项查找。
+* 体积相对较大（每个 part 通常为数十到数百 MB）。
 
 基于 Bloom Filter 的索引对全文搜索的支持只是一种“副作用”：
 
-- 不支持高级分词和预处理。
-- 不支持多 token 搜索。
-- 无法提供倒排索引所期望的性能特征。
+* 不支持高级分词和预处理。
+* 不支持多 token 搜索。
+* 无法提供倒排索引所期望的性能特征。
 
 相比之下，文本索引是为全文搜索专门构建的：
 
-- 提供分词和预处理能力。
-- 高效支持 `hasAllTokens`、`LIKE`、`match` 以及类似的文本搜索函数。
-- 在处理大型文本语料库时具有显著更好的可扩展性。
+* 提供分词和预处理能力。
+* 高效支持 `hasAllTokens`、`LIKE`、`match` 以及类似的文本搜索函数。
+* 在处理大型文本语料库时具有显著更好的可扩展性。
 
 ## Implementation Details \{#implementation\}
 
 每个文本索引由两个（抽象的）数据结构组成：
 
-- 一个字典，将每个 token 映射到一个倒排列表（postings list），以及
-- 一组倒排列表，每个倒排列表表示一组行号。
+* 一个字典，将每个 token 映射到一个倒排列表（postings list），以及
+* 一组倒排列表，每个倒排列表表示一组行号。
 
 文本索引是针对整个分区片段构建的。
 与其他跳过索引不同，在合并数据分区片段时，文本索引可以通过合并来处理，而无需重新构建（见下文）。
@@ -978,7 +957,6 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 现在，让我们运行一些使用 `hasToken`、`hasAnyTokens` 和 `hasAllTokens` 函数的查询。
 下面的示例将展示标准索引扫描与直接读取优化之间巨大的性能差异。
 
-
 ### 1. 使用 `hasToken` \{#using-hasToken\}
 
 `hasToken` 用于检查文本中是否包含某个特定的单个 token。
@@ -1019,7 +997,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1;
 
 直接读取的查询速度快了 45 倍以上（0.362s 对比 0.008s），并且由于仅从索引中读取数据，处理的数据量大幅减少（9.51 GB 对比 3.15 MB）。
 
-
 ### 2. 使用 `hasAnyTokens` \{#using-hasAnyTokens\}
 
 `hasAnyTokens` 用于检查文本是否至少包含任意一个指定的 token。
@@ -1057,7 +1034,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 对于这种常见的“OR”搜索，加速效果更加显著。
 通过避免对整列进行扫描，该查询速度提升了近 89 倍（1.329s vs 0.015s）。
-
 
 ### 3. 使用 `hasAllTokens` \{#using-hasAllTokens\}
 
@@ -1099,7 +1075,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 对于这种“AND”搜索，直接读取优化比标准跳过索引的扫描快 26 倍以上（0.184 秒 vs 0.007 秒）。
 
-
 ### 4. 复合搜索：OR、AND、NOT 等 \{#compound-search\}
 
 直接读取优化同样适用于复合布尔表达式。
@@ -1138,14 +1113,13 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 通过结合索引过滤的结果，直接读取的查询快了 34 倍（0.450s 对比 0.013s），并且避免了读取 9.58 GB 的列数据。
 对于这个特定场景，`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` 将是更推荐使用的、更高效的写法。
 
-
 ## 相关内容 \{#related-content\}
 
-- 演示文稿：https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
-- 演示文稿：https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+* 演示文稿：https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse&#95;%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+* 演示文稿：https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted&#95;indexes&#95;the&#95;what&#95;the&#95;why&#95;the&#95;how.pdf
 
 **已过时的内容**
 
-- 博客：[Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
-- 博客：[Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)
-- 视频：[Full-Text Indices: Design and Experiments](https://www.youtube.com/watch?v=O_MnyUkrIq8)
+* 博客：[Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
+* 博客：[Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)
+* 视频：[Full-Text Indices: Design and Experiments](https://www.youtube.com/watch?v=O_MnyUkrIq8)

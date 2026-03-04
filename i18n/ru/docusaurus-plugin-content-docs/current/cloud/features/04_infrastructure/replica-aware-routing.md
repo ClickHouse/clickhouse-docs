@@ -8,10 +8,9 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
 # Маршрутизация с учетом реплик \{#replica-aware-routing\}
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge />
 
 Маршрутизация с учетом реплик (также известная как sticky-сессии, sticky-маршрутизация или session affinity) использует [балансировку нагрузки с кольцевым хешированием (ring hash) в прокси Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). Основная цель маршрутизации с учетом реплик — увеличить вероятность повторного использования кеша. Она не гарантирует изоляцию.
 

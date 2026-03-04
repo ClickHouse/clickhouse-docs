@@ -20,10 +20,10 @@ doc_type: 'reference'
 
 关键特性：
 
-- 结构与 `JSONCompactEachRowWithProgress` 相同
-- 所有值都表示为字符串（数字、数组等均以加引号的字符串形式输出）
-- 包含进度更新、汇总以及异常处理
-- 适用于偏好或要求基于字符串数据的客户端
+* 结构与 `JSONCompactEachRowWithProgress` 相同
+* 所有值都表示为字符串（数字、数组等均以加引号的字符串形式输出）
+* 包含进度更新、汇总以及异常处理
+* 适用于偏好或要求基于字符串数据的客户端
 
 ## 使用示例 \{#example-usage\}
 

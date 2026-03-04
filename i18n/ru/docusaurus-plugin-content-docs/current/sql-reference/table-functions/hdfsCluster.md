@@ -61,5 +61,5 @@ FROM hdfsCluster('cluster_simple', 'hdfs://hdfs1:9000/{some,another}_dir/*', 'TS
 
 ## См. также \{#related\}
 
-- [Движок HDFS](../../engines/table-engines/integrations/hdfs.md)
-- [Табличная функция HDFS](../../sql-reference/table-functions/hdfs.md)
+* [Движок HDFS](../../engines/table-engines/integrations/hdfs.md)
+* [Табличная функция HDFS](../../sql-reference/table-functions/hdfs.md)

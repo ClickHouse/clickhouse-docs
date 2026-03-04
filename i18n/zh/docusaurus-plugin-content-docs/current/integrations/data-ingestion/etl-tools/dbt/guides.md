@@ -19,10 +19,9 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 指南 \{#guides\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 本节提供了关于设置 dbt 和 ClickHouse 适配器的指南，以及一个在 ClickHouse 上使用 dbt 并基于公开可用的 IMDB 数据集的示例。该示例涵盖以下步骤：
 
@@ -35,7 +34,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 这些指南应与其余[文档](/integrations/dbt)、[功能和配置](/integrations/dbt/features-and-configurations)以及[materializations 参考](/integrations/dbt/materializations)配合使用。
 
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## 设置 \{#setup\}
 
@@ -140,7 +139,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 
 执行这些操作所需的时间可能会因您的网络带宽而有所不同，但每个操作通常只需几秒钟即可完成。执行以下查询，以统计每位演员的汇总信息（按出演电影次数从多到少排序），并确认数据已成功加载：
 
-
 ```sql
 SELECT id,
        any(actor_name)          AS name,
@@ -185,97 +183,96 @@ LIMIT 5;
 
 在后续指南中，我们会将此查询转换为一个模型——在 ClickHouse 中将其物化为一个 dbt 视图和表。
 
-
 ## 连接到 ClickHouse \{#connecting-to-clickhouse\}
 
 1. 创建一个 dbt 项目。本例中我们将其命名为 `imdb`，与我们的 `imdb` 数据源保持一致。在提示时，选择 `clickhouse` 作为数据库源。
 
-    ```bash
-    clickhouse-user@clickhouse:~$ dbt init imdb
+   ```bash
+   clickhouse-user@clickhouse:~$ dbt init imdb
 
-    16:52:40  Running with dbt=1.1.0
-    Which database would you like to use?
-    [1] clickhouse
+   16:52:40  Running with dbt=1.1.0
+   Which database would you like to use?
+   [1] clickhouse
 
-    (Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
+   (Don't see the one you want? https://docs.getdbt.com/docs/available-adapters)
 
-    Enter a number: 1
-    16:53:21  No sample profile found for clickhouse.
-    16:53:21
-    Your new dbt project "imdb" was created!
+   Enter a number: 1
+   16:53:21  No sample profile found for clickhouse.
+   16:53:21
+   Your new dbt project "imdb" was created!
 
-    For more information on how to configure the profiles.yml file,
-    please consult the dbt documentation here:
+   For more information on how to configure the profiles.yml file,
+   please consult the dbt documentation here:
 
-    https://docs.getdbt.com/docs/configure-your-profile
-    ```
+   https://docs.getdbt.com/docs/configure-your-profile
+   ```
 
 2. 使用 `cd` 进入项目文件夹：
 
-    ```bash
-    cd imdb
-    ```
+   ```bash
+   cd imdb
+   ```
 
 3. 此时，你需要使用任意偏好的文本编辑器。下面的示例中，我们使用流行的 VS Code。打开 IMDB 目录后，你应该会看到一组 yml 和 sql 文件：
 
-    <Image img={dbt_02} size="lg" alt="新的 dbt 项目" />
+   <Image img={dbt_02} size="lg" alt="新的 dbt 项目" />
 
 4. 更新你的 `dbt_project.yml` 文件，以指定我们的第一个模型 `actor_summary`，并将 profile 设置为 `clickhouse_imdb`。
 
-    <Image img={dbt_03} size="lg" alt="dbt profile" />
+   <Image img={dbt_03} size="lg" alt="dbt profile" />
 
-    <Image img={dbt_04} size="lg" alt="dbt profile" />
+   <Image img={dbt_04} size="lg" alt="dbt profile" />
 
 5. 接下来，我们需要为 dbt 提供 ClickHouse 实例的连接信息。将以下内容添加到 `~/.dbt/profiles.yml` 中。
 
-    ```yml
-    clickhouse_imdb:
-      target: dev
-      outputs:
-        dev:
-          type: clickhouse
-          schema: imdb_dbt
-          host: localhost
-          port: 8123
-          user: default
-          password: ''
-          secure: False
-    ```
+   ```yml
+   clickhouse_imdb:
+     target: dev
+     outputs:
+       dev:
+         type: clickhouse
+         schema: imdb_dbt
+         host: localhost
+         port: 8123
+         user: default
+         password: ''
+         secure: False
+   ```
 
-    注意需要修改 user 和 password。更多可用设置见[此处](https://github.com/silentsokolov/dbt-clickhouse#example-profile)。
+   注意需要修改 user 和 password。更多可用设置见[此处](https://github.com/silentsokolov/dbt-clickhouse#example-profile)。
 
 6. 在 IMDB 目录下执行 `dbt debug` 命令，以确认 dbt 是否能够连接到 ClickHouse。
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt debug
-    17:33:53  Running with dbt=1.1.0
-    dbt version: 1.1.0
-    python version: 3.10.1
-    python path: /home/dale/.pyenv/versions/3.10.1/bin/python3.10
-    os info: Linux-5.13.0-10039-tuxedo-x86_64-with-glibc2.31
-    Using profiles.yml file at /home/dale/.dbt/profiles.yml
-    Using dbt_project.yml file at /opt/dbt/imdb/dbt_project.yml
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt debug
+   17:33:53  Running with dbt=1.1.0
+   dbt version: 1.1.0
+   python version: 3.10.1
+   python path: /home/dale/.pyenv/versions/3.10.1/bin/python3.10
+   os info: Linux-5.13.0-10039-tuxedo-x86_64-with-glibc2.31
+   Using profiles.yml file at /home/dale/.dbt/profiles.yml
+   Using dbt_project.yml file at /opt/dbt/imdb/dbt_project.yml
 
-    Configuration:
-    profiles.yml file [OK found and valid]
-    dbt_project.yml file [OK found and valid]
+   Configuration:
+   profiles.yml file [OK found and valid]
+   dbt_project.yml file [OK found and valid]
 
-    Required dependencies:
-    - git [OK found]
+   Required dependencies:
+   - git [OK found]
 
-    Connection:
-    host: localhost
-    port: 8123
-    user: default
-    schema: imdb_dbt
-    secure: False
-    verify: False
-    Connection test: [OK connection ok]
+   Connection:
+   host: localhost
+   port: 8123
+   user: default
+   schema: imdb_dbt
+   secure: False
+   verify: False
+   Connection test: [OK connection ok]
 
-    All checks passed!
-    ```
+   All checks passed!
+   ```
 
-    确认输出中包含 `Connection test: [OK connection ok]`，表示连接成功。
+   确认输出中包含 `Connection test: [OK connection ok]`，表示连接成功。
 
 ## 创建一个简单的视图实体化 \{#creating-a-simple-view-materialization\}
 
@@ -416,76 +413,77 @@ LIMIT 5;
 
 1. 修改文件 `actors_summary.sql`，将 `materialized` 参数设置为 `table`。注意 `ORDER BY` 是如何定义的，并注意我们使用的是 `MergeTree` 表引擎：
 
-    ```sql
-    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='table') }}
-    ```
+   ```sql
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='table') }}
+   ```
 
 2. 在 `imdb` 目录下执行命令 `dbt run`。这次运行可能会稍微更久一些——在大多数机器上大约需要 10 秒。
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt run
-    15:13:27  Running with dbt=1.1.0
-    15:13:27  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-    15:13:27
-    15:13:28  Concurrency: 1 threads (target='dev')
-    15:13:28
-    15:13:28  1 of 1 START table model imdb_dbt.actor_summary................................. [RUN]
-    15:13:37  1 of 1 OK created table model imdb_dbt.actor_summary............................ [OK in 9.22s]
-    15:13:37
-    15:13:37  Finished running 1 table model in 10.20s.
-    15:13:37
-    15:13:37  Completed successfully
-    15:13:37
-    15:13:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt run
+   15:13:27  Running with dbt=1.1.0
+   15:13:27  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+   15:13:27
+   15:13:28  Concurrency: 1 threads (target='dev')
+   15:13:28
+   15:13:28  1 of 1 START table model imdb_dbt.actor_summary................................. [RUN]
+   15:13:37  1 of 1 OK created table model imdb_dbt.actor_summary............................ [OK in 9.22s]
+   15:13:37
+   15:13:37  Finished running 1 table model in 10.20s.
+   15:13:37
+   15:13:37  Completed successfully
+   15:13:37
+   15:13:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
 
 3. 确认表 `imdb_dbt.actor_summary` 已成功创建：
 
-    ```sql
-    SHOW CREATE TABLE imdb_dbt.actor_summary;
-    ```
+   ```sql
+   SHOW CREATE TABLE imdb_dbt.actor_summary;
+   ```
 
-    你应该会看到一个具有合适数据类型的表定义：
-    ```response
-    +----------------------------------------
-    |statement
-    +----------------------------------------
-    |CREATE TABLE imdb_dbt.actor_summary
-    |(
-    |`id` UInt32,
-    |`first_name` String,
-    |`last_name` String,
-    |`num_movies` UInt64,
-    |`updated_at` DateTime
-    |)
-    |ENGINE = MergeTree
-    |ORDER BY (id, first_name, last_name)
-    +----------------------------------------
-    ```
+   你应该会看到一个具有合适数据类型的表定义：
+
+   ```response
+   +----------------------------------------
+   |statement
+   +----------------------------------------
+   |CREATE TABLE imdb_dbt.actor_summary
+   |(
+   |`id` UInt32,
+   |`first_name` String,
+   |`last_name` String,
+   |`num_movies` UInt64,
+   |`updated_at` DateTime
+   |)
+   |ENGINE = MergeTree
+   |ORDER BY (id, first_name, last_name)
+   +----------------------------------------
+   ```
 
 4. 确认该表中的结果与之前的输出一致。注意在模型物化为表之后，响应时间有显著改善：
 
-    ```sql
-    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-    ```
+   ```sql
+   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+   ```
 
-    ```response
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
-    +------+------------+----------+------------------+------+---------+-------------------+
-    |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
-    |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
-    |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
-    |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
-    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
-    +------+------------+----------+------------------+------+---------+-------------------+
-    ```
+   ```response
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
+   +------+------------+----------+------------------+------+---------+-------------------+
+   |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
+   |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
+   |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
+   |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
+   |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
+   +------+------------+----------+------------------+------+---------+-------------------+
+   ```
 
-    可以随意针对该模型执行其他查询。例如：哪些演员出演次数超过 5 次且其电影的排名最高？
+   可以随意针对该模型执行其他查询。例如：哪些演员出演次数超过 5 次且其电影的排名最高？
 
-    ```sql
-    SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
-    ```
+   ```sql
+   SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
+   ```
 
 ## 创建增量物化 \{#creating-an-incremental-materialization\}
 
@@ -686,7 +684,6 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 这种策略在非常大的模型上可能会遇到挑战。更多细节请参见 [Limitations](/integrations/dbt#limitations)。
 
-
 ### 追加策略（仅插入模式） \{#append-strategy-inserts-only-mode\}
 
 为克服增量模型在处理大型数据集时的限制，适配器使用 dbt 配置参数 `incremental_strategy`。该参数可以设置为 `append`。在该模式下，更新的行会被直接插入到目标表（即 `imdb_dbt.actor_summary`）中，而不会创建临时表。
@@ -694,7 +691,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 为了演示该模式，我们将再添加一位新演员，并使用 `incremental_strategy='append'` 重新执行 dbt run。
 
-1. 在 actor_summary.sql 中配置为仅追加模式：
+1. 在 actor&#95;summary.sql 中配置为仅追加模式：
 
    ```sql
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
@@ -788,7 +785,6 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 在本次运行中，只有新增的行会直接添加到 `imdb_dbt.actor_summary` 表中，不会涉及创建新表。
 
-
 ### 删除并插入模式（实验性） \{#deleteinsert-mode-experimental\}
 
 一直以来，ClickHouse 仅通过异步的 [变更（Mutations）](/sql-reference/statements/alter/index.md) 对更新和删除提供有限支持。这些操作对 IO 消耗极大，通常应尽量避免。
@@ -813,8 +809,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md)�
 
 <Image img={dbt_06} size="lg" alt="轻量级 delete 增量" />
 
-
-### insert&#95;overwrite 模式（实验性） \{#insert_overwrite-mode-experimental\}
+### insert_overwrite 模式（实验性） \{#insert_overwrite-mode-experimental\}
 
 执行以下步骤：
 
@@ -906,25 +901,24 @@ dbt 快照允许随着时间推移记录可变模型的变更。这使得可以�
 * `select` 查询定义了你希望随时间进行快照的结果。函数 `ref` 用于引用我们之前创建的 `actor&#95;summary` 模型。
 * 我们需要一个时间戳列来标识记录发生变化。我们的 `updated&#95;at` 列（参见 [Creating an Incremental Table Model](#creating-an-incremental-materialization)）可以在这里使用。参数 `strategy` 表示我们使用时间戳来表示更新，而参数 `updated&#95;at` 指定要使用的列。如果你的模型中没有该列，可以改用 [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy)。这种方式效率要低得多，并且要求用户指定需要比较的列列表。dbt 会比较这些列的当前值与历史值，记录任何变化（如果相同则不执行任何操作）。
 
-
 3. 运行命令 `dbt snapshot`。
 
-    ```response
-    clickhouse-user@clickhouse:~/imdb$ dbt snapshot
-    13:26:23  Running with dbt=1.1.0
-    13:26:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
-    13:26:23
-    13:26:25  Concurrency: 1 threads (target='dev')
-    13:26:25
-    13:26:25  1 of 1 START snapshot snapshots.actor_summary_snapshot...................... [RUN]
-    13:26:25  1 of 1 OK snapshotted snapshots.actor_summary_snapshot...................... [OK in 0.79s]
-    13:26:25
-    13:26:25  Finished running 1 snapshot in 2.11s.
-    13:26:25
-    13:26:25  Completed successfully
-    13:26:25
-    13:26:25  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```response
+   clickhouse-user@clickhouse:~/imdb$ dbt snapshot
+   13:26:23  Running with dbt=1.1.0
+   13:26:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
+   13:26:23
+   13:26:25  Concurrency: 1 threads (target='dev')
+   13:26:25
+   13:26:25  1 of 1 START snapshot snapshots.actor_summary_snapshot...................... [RUN]
+   13:26:25  1 of 1 OK snapshotted snapshots.actor_summary_snapshot...................... [OK in 0.79s]
+   13:26:25
+   13:26:25  Finished running 1 snapshot in 2.11s.
+   13:26:25
+   13:26:25  Completed successfully
+   13:26:25
+   13:26:25  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
 
 请注意，snapshots 数据库中已经创建了一个名为 actor&#95;summary&#95;snapshot 的表（由 target&#95;schema 参数决定）。
 
@@ -1015,53 +1009,54 @@ dbt 提供了从 CSV 文件加载数据的功能。该功能并不适合用于�
 
 1. 我们从现有数据集中生成一个类型代码列表。在 dbt 目录中，使用 `clickhouse-client` 创建文件 `seeds/genre_codes.csv`：
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
-    "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
-    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
+   "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
+   LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
+   ```
 
 2. 执行 `dbt seed` 命令。这将在我们的数据库 `imdb_dbt` 中创建一个新表 `genre_codes`（如我们的 schema 配置所定义），其内容来自我们的 CSV 文件中的行。
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt seed
+   17:03:23  Running with dbt=1.1.0
+   17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
+   17:03:23
+   17:03:24  Concurrency: 1 threads (target='dev')
+   17:03:24
+   17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
+   17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
+   17:03:24
+   17:03:24  Finished running 1 seed in 1.62s.
+   17:03:24
+   17:03:24  Completed successfully
+   17:03:24
+   17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
+
 3. 确认这些数据已被加载：
 
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```
+   ```sql
+   SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+   ```
 
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
+   ```response
+   +-------+----+
+   |genre  |code|
+   +-------+----+
+   |Drama  |DRA |
+   |Romance|ROM |
+   |Short  |SHO |
+   |Mystery|MYS |
+   |Adult  |ADU |
+   |Family |FAM |
 
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
-    ```
+   |Action |ACT |
+   |Sci-Fi |SCI |
+   |Horror |HOR |
+   |War    |WAR |
+   +-------+----+=
+   ```
 
 ## 更多信息 \{#further-information\}
 

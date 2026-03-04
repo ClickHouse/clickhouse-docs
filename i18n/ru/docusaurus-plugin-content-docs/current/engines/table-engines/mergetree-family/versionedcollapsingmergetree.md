@@ -12,8 +12,8 @@ doc_type: 'reference'
 
 Этот движок:
 
-- Обеспечивает быструю запись состояний объектов, которые постоянно изменяются.
-- Удаляет старые состояния объектов в фоновом режиме, что значительно сокращает объём занимаемого места.
+* Обеспечивает быструю запись состояний объектов, которые постоянно изменяются.
+* Удаляет старые состояния объектов в фоновом режиме, что значительно сокращает объём занимаемого места.
 
 См. раздел [Collapsing](#table_engines_versionedcollapsingmergetree) для получения дополнительной информации.
 
@@ -59,13 +59,13 @@ VersionedCollapsingMergeTree(sign, version)
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-```
+  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+  ```
 
   Все параметры, кроме `sign` и `version`, имеют то же значение, что и в `MergeTree`.
 

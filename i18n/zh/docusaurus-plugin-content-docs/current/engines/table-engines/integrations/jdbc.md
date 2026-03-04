@@ -11,10 +11,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # JDBC 表引擎 \{#jdbc-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 :::note
-clickhouse-jdbc-bridge 包含实验性代码，且已不再受支持。它可能存在可靠性问题和安全漏洞，请自行承担使用风险。  
+clickhouse-jdbc-bridge 包含实验性代码，且已不再受支持。它可能存在可靠性问题和安全漏洞，请自行承担使用风险。\
 ClickHouse 推荐使用 ClickHouse 内置的表函数，作为临时（即席）查询场景（Postgres、MySQL、MongoDB 等）的更佳替代方案。
 :::
 
@@ -104,4 +104,4 @@ FROM system.numbers
 
 ## 另请参阅 \{#see-also\}
 
-- [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md)。
+* [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md)。

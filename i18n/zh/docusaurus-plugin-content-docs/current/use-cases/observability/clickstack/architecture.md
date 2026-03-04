@@ -17,7 +17,6 @@ import TabItem from '@theme/TabItem';
 
 ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Source** 中的所有组件均为自管理，而在 **Managed ClickStack** 中，ClickHouse 和 HyperDX UI 则托管并运行于 ClickHouse Cloud 中，两者在架构上存在重要差异。尽管这两种模型中的核心组件保持不变，但对各组件进行托管、扩展以及安全防护的职责划分不同。
 
-
 ## 架构概览 \{#architecture-overview\}
 
 下文概述了托管版和开源版 ClickStack 的架构。
@@ -30,7 +29,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     <Image img={managed_architecture} alt="Managed Architecture" size="lg" />
 
-    ### ClickHouse Cloud：引擎
+    ### ClickHouse Cloud：引擎 \{#clickhouse-cloud\}
 
     托管版 ClickStack 的核心是 ClickHouse Cloud，它是 ClickHouse 的无服务器版本——一种为大规模实时分析而设计的列式数据库。它为可观测性数据提供摄取和查询能力，实现：
 
@@ -52,7 +51,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
     * 安全性与合规特性
     * 无缝升级
 
-    ### OpenTelemetry collector：数据摄取
+    ### OpenTelemetry collector：数据摄取 \{#open-telemetry-collector-managed\}
 
     托管版 ClickStack 包含一个预先配置好的 OpenTelemetry (OTel) collector，以开放、标准化的方式摄取遥测数据。你可以通过 OTLP 协议发送数据，支持：
 
@@ -63,7 +62,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     **架构中的这一组件由用户负责管理**
 
-    ### ClickStack UI（HyperDX）：界面层
+    ### ClickStack UI（HyperDX）：界面层 \{#hyperdx\}
 
     ClickStack UI（HyperDX）是 ClickStack 的用户界面。它提供：
 
@@ -84,7 +83,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     <Image img={oss_architecture} alt="Architecture" size="lg" />
 
-    ### ClickHouse：数据库引擎
+    ### ClickHouse：数据库引擎 \{#clickhouse\}
 
     ClickStack 的核心是 ClickHouse，这是一款为大规模实时分析而设计的列式数据库。它负责可观测性数据的摄取和查询，实现：
 
@@ -96,7 +95,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     ClickHouse 将可观测性数据作为宽事件进行处理，使日志、指标和追踪能够在单一统一结构中实现深度关联。
 
-    ### OpenTelemetry collector：数据摄取
+    ### OpenTelemetry collector：数据摄取 \{#open-telemetry-collector\}
 
     ClickStack 内置了预先配置好的 OpenTelemetry (OTel) collector，以开放、标准化的方式摄取遥测数据。可以通过 OTLP 协议发送数据，支持：
 
@@ -105,7 +104,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     collector 以高效批量的方式将遥测数据导出到 ClickHouse。它针对不同数据源提供了优化的表 schema，从而确保对所有信号类型都具备可扩展的性能。
 
-    ### ClickStack UI（HyperDX）：用户界面
+    ### ClickStack UI（HyperDX）：用户界面 \{#hyperdx-ui\}
 
     ClickStack UI（HyperDX）是 ClickStack 的用户界面。它提供：
 
@@ -118,7 +117,7 @@ ClickStack 的架构会根据部署方式而有所不同。**ClickStack Open Sou
 
     HyperDX 专为 ClickHouse 设计，将强大的搜索能力与直观的工作流结合起来，帮助快速发现异常、排查问题并获得洞察。
 
-    ### MongoDB：应用状态
+    ### MongoDB：应用状态 \{#mongo\}
 
     ClickStack 使用 MongoDB 存储应用级状态，包括：
 

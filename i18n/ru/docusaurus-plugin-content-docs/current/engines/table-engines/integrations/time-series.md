@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Табличный движок TimeSeries \{#timeseries-table-engine\}
 
 <ExperimentalBadge />
@@ -31,7 +30,6 @@ metric_name2[...] = ...
 Выполните команду `set allow_experimental_time_series_table = 1`.
 :::
 
-
 ## Синтаксис \{#syntax\}
 
 ```sql
@@ -41,7 +39,6 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
-
 
 ## Использование \{#usage\}
 
@@ -55,7 +52,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 * [prometheus remote-write](/interfaces/prometheus#remote-write)
 * [prometheus remote-read](/interfaces/prometheus#remote-read)
-
 
 ## Целевые таблицы \{#target-tables\}
 
@@ -71,9 +67,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 ### Таблица data \{#data-table\}
 
-Таблица _data_ содержит временные ряды, связанные с некоторым идентификатором.
+Таблица *data* содержит временные ряды, связанные с некоторым идентификатором.
 
-Таблица _data_ должна иметь столбцы:
+Таблица *data* должна иметь столбцы:
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
@@ -83,30 +79,30 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 ### Таблица tags \{#tags-table\}
 
-Таблица _tags_ содержит идентификаторы, вычисленные для каждой комбинации имени метрики и тегов.
+Таблица *tags* содержит идентификаторы, вычисленные для каждой комбинации имени метрики и тегов.
 
-Таблица _tags_ должна иметь столбцы:
+Таблица *tags* должна иметь столбцы:
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `id` | [x] | `UUID` | any (must match the type of `id` in the [data](#data-table) table) | `id` идентифицирует комбинацию имени метрики и тегов. Выражение DEFAULT определяет, как вычисляется такой идентификатор |
 | `metric_name` | [x] | `LowCardinality(String)` | `String` or `LowCardinality(String)` | Имя метрики |
-| `<tag_value_column>` | [ ] | `String` | `String` or `LowCardinality(String)` or `LowCardinality(Nullable(String))` | Значение конкретного тега, имя тега и имя соответствующего столбца задаются в настройке [tags_to_columns](#settings) |
-| `tags` | [x] | `Map(LowCardinality(String), String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | Карта тегов за исключением тега `__name__`, содержащего имя метрики, и за исключением тегов с именами, перечисленными в настройке [tags_to_columns](#settings) |
+| `<tag_value_column>` | [ ] | `String` | `String` or `LowCardinality(String)` or `LowCardinality(Nullable(String))` | Значение конкретного тега, имя тега и имя соответствующего столбца задаются в настройке [tags&#95;to&#95;columns](#settings) |
+| `tags` | [x] | `Map(LowCardinality(String), String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | Карта тегов за исключением тега `__name__`, содержащего имя метрики, и за исключением тегов с именами, перечисленными в настройке [tags&#95;to&#95;columns](#settings) |
 | `all_tags` | [ ] | `Map(String, String)` | `Map(String, String)` or `Map(LowCardinality(String), String)` or `Map(LowCardinality(String), LowCardinality(String))` | Эфемерный столбец, каждая строка — это карта всех тегов, за исключением только тега `__name__`, содержащего имя метрики. Единственная цель этого столбца — использовать его при вычислении `id` |
-| `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | Минимальная метка времени временных рядов с этим `id`. Столбец создаётся, если [store_min_time_and_max_time](#settings) имеет значение `true` |
-| `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | Максимальная метка времени временных рядов с этим `id`. Столбец создаётся, если [store_min_time_and_max_time](#settings) имеет значение `true` |
+| `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | Минимальная метка времени временных рядов с этим `id`. Столбец создаётся, если [store&#95;min&#95;time&#95;and&#95;max&#95;time](#settings) имеет значение `true` |
+| `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | Максимальная метка времени временных рядов с этим `id`. Столбец создаётся, если [store&#95;min&#95;time&#95;and&#95;max&#95;time](#settings) имеет значение `true` |
 
 ### Таблица metrics \{#metrics-table\}
 
-Таблица _metrics_ содержит сведения о собираемых метриках, их типах и описаниях.
+Таблица *metrics* содержит сведения о собираемых метриках, их типах и описаниях.
 
-Таблица _metrics_ должна содержать следующие столбцы:
+Таблица *metrics* должна содержать следующие столбцы:
 
 | Имя | Обязательный? | Тип по умолчанию | Возможные типы | Описание |
 |---|---|---|---|---|
 | `metric_family_name` | [x] | `String` | `String` или `LowCardinality(String)` | Имя семейства метрик |
-| `type` | [x] | `String` | `String` или `LowCardinality(String)` | Тип семейства метрик, одно из следующих значений: "counter", "gauge", "summary", "stateset", "histogram", "gaugehistogram" |
+| `type` | [x] | `String` | `String` или `LowCardinality(String)` | Тип семейства метрик, одно из следующих значений: &quot;counter&quot;, &quot;gauge&quot;, &quot;summary&quot;, &quot;stateset&quot;, &quot;histogram&quot;, &quot;gaugehistogram&quot; |
 | `unit` | [x] | `String` | `String` или `LowCardinality(String)` | Единица измерения, используемая в метрике |
 | `help` | [x] | `String` | `String` или `LowCardinality(String)` | Описание метрики |
 
@@ -196,7 +192,6 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
-
 ## Настройка типов столбцов \{#adjusting-column-types\}
 
 Вы можете изменить тип почти любого столбца во внутренних целевых таблицах, явно указав его
@@ -222,7 +217,6 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
-
 ## Столбец `id` \{#id-column\}
 
 Столбец `id` содержит идентификаторы; каждый идентификатор вычисляется для комбинации имени метрики и тегов.
@@ -236,7 +230,6 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
-
 
 ## Столбцы `tags` и `all_tags` \{#tags-and-all-tags\}
 
@@ -272,7 +265,6 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
-
 ## Движки внутренних целевых таблиц \{#inner-table-engines\}
 
 По умолчанию внутренние целевые таблицы используют следующие движки таблиц:
@@ -291,7 +283,6 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
-
 
 ## Внешние таблицы назначения \{#external-target-tables\}
 
@@ -314,7 +305,6 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
-
 ## Настройки \{#settings\}
 
 Ниже приведён список настроек, которые можно задать при определении таблицы `TimeSeries`:
@@ -331,6 +321,6 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 
 Ниже приведен список функций, которые принимают таблицу `TimeSeries` в качестве аргумента:
 
-- [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
-- [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
-- [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)
+* [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
+* [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
+* [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

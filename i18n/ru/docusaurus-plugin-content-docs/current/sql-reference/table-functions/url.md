@@ -54,17 +54,17 @@ SELECT * FROM test_table;
 ## Глоб-шаблоны в URL \{#globs-in-url\}
 
 Шаблоны в фигурных скобках `{ }` используются для формирования набора шардов или указания резервных адресов. Поддерживаемые типы шаблонов и примеры см. в описании функции [remote](remote.md#globs-in-addresses).
-Символ `|` внутри шаблонов используется для указания резервных адресов. Они перебираются в том же порядке, в котором перечислены в шаблоне. Количество сгенерированных адресов ограничивается настройкой [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements).
+Символ `|` внутри шаблонов используется для указания резервных адресов. Они перебираются в том же порядке, в котором перечислены в шаблоне. Количество сгенерированных адресов ограничивается настройкой [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements).
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к `URL`. Тип: `LowCardinality(String)`.
-- `_file` — Имя ресурса в `URL`. Тип: `LowCardinality(String)`.
-- `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_headers` — Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
+* `_path` — Путь к `URL`. Тип: `LowCardinality(String)`.
+* `_file` — Имя ресурса в `URL`. Тип: `LowCardinality(String)`.
+* `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_headers` — Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
 
-## настройка use&#95;hive&#95;partitioning \{#hive-style-partitioning\}
+## настройка use_hive_partitioning \{#hive-style-partitioning\}
 
 Когда настройка `use_hive_partitioning` установлена в 1, ClickHouse будет распознавать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути секционирования, но с префиксом `_`.
 
@@ -78,8 +78,8 @@ SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE _d
 
 ## Настройки хранения \{#storage-settings\}
 
-- [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
-- [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) — позволяет включать или отключать декодирование/кодирование пути в URI. По умолчанию включено.
+* [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
+* [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) — позволяет включать или отключать декодирование/кодирование пути в URI. По умолчанию включено.
 
 ## Разрешения \{#permissions\}
 
@@ -87,4 +87,4 @@ SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE _d
 
 ## См. также \{#related\}
 
-- [Виртуальные столбцы](/engines/table-engines/index.md#table_engines-virtual_columns)
+* [Виртуальные столбцы](/engines/table-engines/index.md#table_engines-virtual_columns)

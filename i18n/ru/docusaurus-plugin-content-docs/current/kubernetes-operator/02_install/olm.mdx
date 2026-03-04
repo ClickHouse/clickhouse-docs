@@ -11,10 +11,10 @@ sidebar_label: 'OLM'
 
 ## Предварительные требования \{#prerequisites\}
 
-- Кластер Kubernetes версии 1.33.0 или новее
-- kubectl, настроенный для доступа к кластеру
-- Права администратора кластера
-- Установленный OLM (Operator Lifecycle Manager)
+* Кластер Kubernetes версии 1.33.0 или новее
+* kubectl, настроенный для доступа к кластеру
+* Права администратора кластера
+* Установленный OLM (Operator Lifecycle Manager)
 
 ## Установка OLM \{#install-olm\}
 
@@ -27,7 +27,6 @@ kubectl get ns olm
 # If not installed, install OLM
 curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
 ```
-
 
 ## Установка оператора \{#install-the-operator\}
 
@@ -79,7 +78,6 @@ spec:
 EOF
 ```
 
-
 ## Удаление \{#uninstall\}
 
 ```bash
@@ -98,7 +96,6 @@ kubectl delete operator clickhouse-operator.clickhouse-operator-system
 
 Дополнительную информацию об удалении можно найти в [документации OLM](https://olm.operatorframework.io/docs/tasks/uninstall-operator/).
 
-
 ## Дополнительные материалы \{#additional-resources\}
 
-- [Документация Operator Lifecycle Manager](https://olm.operatorframework.io/docs)
+* [Документация Operator Lifecycle Manager](https://olm.operatorframework.io/docs)

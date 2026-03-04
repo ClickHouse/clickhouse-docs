@@ -39,8 +39,8 @@ doc_type: 'reference'
 | [`TIMETZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timetz)                             | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                           |
 | [`VARBYTE`](https://docs.aws.amazon.com/redshift/latest/dg/r_VARBYTE_type.html) **                                                   | 将 [`String`](/sql-reference/data-types/string) 与 [`Bit`](/sql-reference/functions/bit-functions) 和 [Encoding](/sql-reference/functions/encoding-functions/#hex) 函数组合使用                                                                           |
 
-<sub><span>*</span> ClickHouse 此外还支持取值范围更大的无符号整数类型，即 <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32` 和 `UInt64`</a>。</sub><br />
-<sub><span>**</span>ClickHouse 的 String 类型默认不受长度限制，但可以通过使用 <a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>约束</a> 将其限制为特定长度。</sub>
+<sub><span>*</span> ClickHouse 此外还支持取值范围更大的无符号整数类型，即 <a href="http://clickhouse.com/docs/sql-reference/data-types/int-uint">`UInt8`、`UInt32`、`UInt32` 和 `UInt64`</a>。</sub><br />
+<sub><span>**</span>ClickHouse 的 String 类型默认不受长度限制，但可以通过使用 <a href="http://clickhouse.com/docs/sql-reference/statements/create/table#constraints">约束</a> 将其限制为特定长度。</sub>
 
 ## DDL 语法 \{#compression\}
 

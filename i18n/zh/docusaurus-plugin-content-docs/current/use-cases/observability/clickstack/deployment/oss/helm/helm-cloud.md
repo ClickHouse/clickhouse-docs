@@ -98,15 +98,15 @@ clickhouse:
 
 在任何云服务商上将 ClickStack 部署到生产环境之前：
 
-- [ ] 使用外部域名/IP 正确配置 `frontendUrl`
-- [ ] 配置启用 TLS 的入口（Ingress），提供 HTTPS 访问
-- [ ] 如果遇到连接问题（尤其是在 GKE 上），将 `otel.opampServerUrl` 设置为 FQDN
-- [ ] 根据 pod（容器组）网络 CIDR 调整 `clickhouse.config.clusterCidrs`
-- [ ] 为生产工作负载配置持久存储
-- [ ] 设置合适的资源请求和限制
-- [ ] 启用监控和告警
-- [ ] 配置备份和灾难恢复
-- [ ] 实施适当的 Secret 管理
+* [ ] 使用外部域名/IP 正确配置 `frontendUrl`
+* [ ] 配置启用 TLS 的入口（Ingress），提供 HTTPS 访问
+* [ ] 如果遇到连接问题（尤其是在 GKE 上），将 `otel.opampServerUrl` 设置为 FQDN
+* [ ] 根据 pod（容器组）网络 CIDR 调整 `clickhouse.config.clusterCidrs`
+* [ ] 为生产工作负载配置持久存储
+* [ ] 设置合适的资源请求和限制
+* [ ] 启用监控和告警
+* [ ] 配置备份和灾难恢复
+* [ ] 实施适当的 Secret 管理
 
 ## 生产环境最佳实践 \{#production-best-practices\}
 
@@ -169,6 +169,6 @@ clickhouse:
 
 ## 后续步骤 \{#next-steps\}
 
-- [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API 密钥、机密信息和入口
-- [部署选项](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部系统配置
-- [Helm 主指南](/docs/use-cases/observability/clickstack/deployment/helm) - 基本安装
+* [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API 密钥、机密信息和入口
+* [部署选项](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部系统配置
+* [Helm 主指南](/docs/use-cases/observability/clickstack/deployment/helm) - 基本安装

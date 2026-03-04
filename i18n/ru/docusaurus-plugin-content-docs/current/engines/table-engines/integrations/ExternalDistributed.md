@@ -40,7 +40,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — Имя пользователя.
 * `password` — Пароль пользователя.
 
-
 ## Детали реализации \{#implementation-details\}
 
 Поддерживаются несколько реплик; их необходимо перечислять через `|`, а шарды — через `,`. Например:

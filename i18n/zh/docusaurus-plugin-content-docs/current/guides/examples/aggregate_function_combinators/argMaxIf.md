@@ -52,7 +52,8 @@ FROM product_sales;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

@@ -32,9 +32,9 @@ ClickHouse выдает ошибку «Too many parts», чтобы предот
 
 **Связанные документы**
 
-- [Движок MergeTree](/engines/table-engines/mergetree-family/mergetree)
-- [Части](/parts)
-- [Системная таблица parts](/operations/system-tables/parts)
+* [Движок MergeTree](/engines/table-engines/mergetree-family/mergetree)
+* [Части](/parts)
+* [Системная таблица parts](/operations/system-tables/parts)
 
 ## Раннее выявление проблемы \{#recognize-parts-problem\}
 
@@ -72,8 +72,7 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-
 ## Видеоматериалы \{#video-sources\}
 
-- [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) — сотрудник команды ClickHouse объясняет асинхронные INSERT и проблему слишком большого числа частей
-- [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) — практические стратегии пакетной обработки от платформ наблюдаемости
+* [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) — сотрудник команды ClickHouse объясняет асинхронные INSERT и проблему слишком большого числа частей
+* [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) — практические стратегии пакетной обработки от платформ наблюдаемости

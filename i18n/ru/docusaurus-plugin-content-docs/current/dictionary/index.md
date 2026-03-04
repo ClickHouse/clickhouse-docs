@@ -10,23 +10,22 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
 # Словарь \{#dictionary\}
 
 Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
 
 Словари полезны для:
 
-- Повышения производительности запросов, особенно при использовании с операциями `JOIN`
-- Обогащения поступающих данных «на лету» без замедления процесса ингестии
+* Повышения производительности запросов, особенно при использовании с операциями `JOIN`
+* Обогащения поступающих данных «на лету» без замедления процесса ингестии
 
-<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse"/>
+<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse" />
 
 ## Ускорение соединений с использованием словаря \{#speeding-up-joins-using-a-dictionary\}
 
 Словари можно использовать для ускорения определённого типа операции `JOIN`: типа [`LEFT ANY`](/sql-reference/statements/select/join#supported-types-of-join), когда ключ соединения совпадает с ключевым атрибутом подлежащего хранилища ключ-значение.
 
-<Image img={dictionaryLeftAnyJoin} size="sm" alt="Использование словаря с LEFT ANY JOIN"/>
+<Image img={dictionaryLeftAnyJoin} size="sm" alt="Использование словаря с LEFT ANY JOIN" />
 
 В таком случае ClickHouse может использовать словарь для выполнения [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join). Это самый быстрый алгоритм соединения в ClickHouse, применимый, когда базовый [движок таблицы](/engines/table-engines) для таблицы справа поддерживает запросы к хранилищу ключ-значение с низкой задержкой. В ClickHouse есть три движка таблиц, которые это поддерживают: [Join](/engines/table-engines/special/join) (по сути, предварительно вычисленная хеш-таблица), [EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) и [Dictionary](/engines/table-engines/special/dictionary). Мы опишем подход, основанный на словаре, но механика одинакова для всех трёх движков.
 
@@ -150,7 +149,6 @@ WHERE name = 'votes_dict'
 ```
 
 Получить количество голосов «за» и «против» для конкретного `PostId` теперь можно с помощью простого вызова функции `dictGet`. Ниже мы получаем значения для поста `11227902`:
-
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -315,7 +313,6 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-
 ## Расширенные темы о словарях \{#advanced-dictionary-topics\}
 
 ### Выбор `LAYOUT` словаря \{#choosing-the-dictionary-layout\}
@@ -335,5 +332,5 @@ ClickHouse также поддерживает [иерархические](/sql
 
 ### Дополнительные материалы для чтения \{#more-reading\}
 
-- [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)
+* [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)

@@ -106,12 +106,12 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — Имя файла. Тип: `LowCardinality(String)`.
+* `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
-## параметр use&#95;hive&#95;partitioning \{#hive-style-partitioning\}
+## параметр use_hive_partitioning \{#hive-style-partitioning\}
 
 Когда параметр `use_hive_partitioning` установлен в значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути, но с префиксом `_`.
 
@@ -125,10 +125,10 @@ SELECT * FROM HDFS('hdfs://hdfs1:9000/data/path/date=*/country=*/code=*/*.parque
 
 ## Настройки хранилища \{#storage-settings\}
 
-- [hdfs_truncate_on_insert](operations/settings/settings.md#hdfs_truncate_on_insert) — позволяет усекать файл перед вставкой данных в него. По умолчанию отключено.
-- [hdfs_create_new_file_on_insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.
-- [hdfs_skip_empty_files](operations/settings/settings.md#hdfs_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
+* [hdfs&#95;truncate&#95;on&#95;insert](operations/settings/settings.md#hdfs_truncate_on_insert) — позволяет усекать файл перед вставкой данных в него. По умолчанию отключено.
+* [hdfs&#95;create&#95;new&#95;file&#95;on&#95;insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) — позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.
+* [hdfs&#95;skip&#95;empty&#95;files](operations/settings/settings.md#hdfs_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключено.
 
 ## См. также \{#related\}
 
-- [Виртуальные столбцы](../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [Виртуальные столбцы](../../engines/table-engines/index.md#table_engines-virtual_columns)

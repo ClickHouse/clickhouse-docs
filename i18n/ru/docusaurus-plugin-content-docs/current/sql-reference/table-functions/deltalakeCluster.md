@@ -30,9 +30,9 @@ deltaLakeAzureCluster(cluster_name, named_collection[, option=value [,..]])
 
 ## Аргументы \{#arguments\}
 
-- `cluster_name` — имя кластера, которое используется для формирования набора адресов и параметров подключения к удалённым и локальным серверам.
+* `cluster_name` — имя кластера, которое используется для формирования набора адресов и параметров подключения к удалённым и локальным серверам.
 
-- Описание всех остальных аргументов аналогично описанию аргументов в эквивалентной табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
+* Описание всех остальных аргументов аналогично описанию аргументов в эквивалентной табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -40,13 +40,13 @@ deltaLakeAzureCluster(cluster_name, named_collection[, option=value [,..]])
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — имя файла. Тип: `LowCardinality(String)`.
-- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — имя файла. Тип: `LowCardinality(String)`.
+* `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 ## См. также \{#related\}
 
-- [движок Delta Lake](engines/table-engines/integrations/deltalake.md)
-- [табличная функция Delta Lake](sql-reference/table-functions/deltalake.md)
+* [движок Delta Lake](engines/table-engines/integrations/deltalake.md)
+* [табличная функция Delta Lake](sql-reference/table-functions/deltalake.md)

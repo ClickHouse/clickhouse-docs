@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # StripeLog 表引擎 \{#stripelog-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 此引擎属于 Log 引擎系列。关于 Log 引擎的通用属性及其差异，请参见[Log 引擎系列](../../../engines/table-engines/log-family/index.md)一文。
 
@@ -36,8 +36,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 对于每个表，ClickHouse 会写入以下文件：
 
-- `data.bin` — 数据文件。
-- `index.mrk` — 标记文件。标记包含插入的每个数据块中各列的偏移量。
+* `data.bin` — 数据文件。
+* `index.mrk` — 标记文件。标记包含插入的每个数据块中各列的偏移量。
 
 `StripeLog` 引擎不支持 `ALTER UPDATE` 和 `ALTER DELETE` 操作。
 

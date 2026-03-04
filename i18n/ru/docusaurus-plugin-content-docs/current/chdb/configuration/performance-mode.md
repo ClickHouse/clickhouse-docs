@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 | Режим | Значение `compat_mode` | Описание |
 |-------|------------------------|----------|
-| **Pandas** (по умолчанию) | `"pandas"` | Полная совместимость с поведением pandas. Порядок строк сохраняется, поддерживаются MultiIndex, set_index, исправления dtype, устойчивые правила сортировки при равных значениях, обертки `-If`/`isNaN`. |
+| **Pandas** (по умолчанию) | `"pandas"` | Полная совместимость с поведением pandas. Порядок строк сохраняется, поддерживаются MultiIndex, set&#95;index, исправления dtype, устойчивые правила сортировки при равных значениях, обертки `-If`/`isNaN`. |
 | **Performance** | `"performance"` | Выполнение в режиме SQL-first. Все накладные расходы, связанные с совместимостью с pandas, убраны. Максимальная пропускная способность, но структура результатов может отличаться от pandas. |
 
 ### Что отключает режим Performance \{#what-it-disables\}
@@ -24,10 +24,10 @@ doc_type: 'guide'
 |-------------------|---------------------------|---------------------------------|
 | **Сохранение порядка строк** | Вставка `_row_id`, `rowNumberInAllBlocks()`, подзапросы `__orig_row_num__` | Отключено — порядок строк не гарантируется |
 | **Стабильное разрешение совпадений при сортировке** | `rowNumberInAllBlocks() ASC` добавляется к ORDER BY | Отключено — элементы с равными значениями могут иметь произвольный порядок |
-| **Parquet preserve_order** | `input_format_parquet_preserve_order=1` | Отключено — разрешено параллельное чтение Parquet |
+| **Parquet preserve&#95;order** | `input_format_parquet_preserve_order=1` | Отключено — разрешено параллельное чтение Parquet |
 | **Авто ORDER BY для GroupBy** | Добавляется `ORDER BY group_key` (pandas по умолчанию `sort=True`) | Отключено — группы возвращаются в произвольном порядке |
 | **GroupBy dropna WHERE** | Добавляется `WHERE key IS NOT NULL` (pandas по умолчанию `dropna=True`) | Отключено — группы с NULL включены |
-| **GroupBy set_index** | Ключи групп устанавливаются как индекс | Отключено — ключи групп остаются столбцами |
+| **GroupBy set&#95;index** | Ключи групп устанавливаются как индекс | Отключено — ключи групп остаются столбцами |
 | **Столбцы MultiIndex** | `agg({'col': ['sum','mean']})` возвращает столбцы MultiIndex | Отключено — плоские имена столбцов (`col_sum`, `col_mean`) |
 | **Обёртки `-If`/`isNaN`** | `sumIf(col, NOT isNaN(col))` для skipna | Отключено — обычный `sum(col)` (ClickHouse изначально пропускает NULL) |
 | **`toInt64` для count** | `toInt64(count())` для соответствия pandas int64 | Отключено — возвращается нативный SQL dtype |
@@ -37,7 +37,7 @@ doc_type: 'guide'
 | **`first()`/`last()`** | `argMin/argMax(col, rowNumberInAllBlocks())` | `any(col)` / `anyLast(col)` — быстрее, но недетерминированно |
 | **Агрегация в одном SQL** | groupby в ColumnExpr материализует промежуточный DataFrame | Вставляет `LazyGroupByAgg` в цепочку ленивых операций — один SQL-запрос |
 
----
+***
 
 ## Включение режима повышенной производительности \{#enabling\}
 
@@ -56,7 +56,6 @@ config.use_pandas_compat()
 print(config.compat_mode)  # 'pandas' or 'performance'
 ```
 
-
 ### Использование функций на уровне модуля \{#using-functions\}
 
 ```python
@@ -71,7 +70,6 @@ print(is_performance_mode())  # True
 # Back to default
 set_compat_mode(CompatMode.PANDAS)
 ```
-
 
 ### Использование упрощённых импортов \{#using-imports\}
 
@@ -89,25 +87,24 @@ use_pandas_compat()
 
 ***
 
-
 ## Когда использовать режим производительности \{#when-to-use\}
 
 **Используйте режим производительности, когда:**
 
-- Обрабатываете большие наборы данных (от сотен тысяч до миллионов строк)
-- Запускаете нагрузки с интенсивной агрегацией (groupby, sum, mean, count)
-- Порядок строк не имеет значения (например, агрегированные результаты, отчёты, дашборды)
-- Вам нужна максимальная пропускная способность SQL и минимальные накладные расходы
-- Важно потребление памяти (параллельное чтение Parquet, без промежуточных DataFrame)
+* Обрабатываете большие наборы данных (от сотен тысяч до миллионов строк)
+* Запускаете нагрузки с интенсивной агрегацией (groupby, sum, mean, count)
+* Порядок строк не имеет значения (например, агрегированные результаты, отчёты, дашборды)
+* Вам нужна максимальная пропускная способность SQL и минимальные накладные расходы
+* Важно потребление памяти (параллельное чтение Parquet, без промежуточных DataFrame)
 
 **Оставайтесь в режиме pandas, когда:**
 
-- Вам нужно точное поведение pandas (порядок строк, MultiIndex, dtypes)
-- Вы полагаетесь на то, что `first()`/`last()` возвращают действительно первую/последнюю строку
-- Вы используете `shift()`, `diff()`, `cumsum()`, которые зависят от порядка строк
-- Вы пишете тесты, сравнивающие вывод DataStore с pandas
+* Вам нужно точное поведение pandas (порядок строк, MultiIndex, dtypes)
+* Вы полагаетесь на то, что `first()`/`last()` возвращают действительно первую/последнюю строку
+* Вы используете `shift()`, `diff()`, `cumsum()`, которые зависят от порядка строк
+* Вы пишете тесты, сравнивающие вывод DataStore с pandas
 
----
+***
 
 ## Особенности поведения \{#behavior-differences\}
 
@@ -134,7 +131,6 @@ result = ds.groupby("region")["revenue"].sum()
 result = ds.groupby("region")["revenue"].sum().sort_values()
 ```
 
-
 ### Результаты GroupBy \{#groupby-results\}
 
 | Аспект | Режим Pandas | Режим производительности |
@@ -156,7 +152,6 @@ config.use_performance_mode()
 result = ds.groupby("cat")["val"].sum()
 ```
 
-
 ### Выполнение одним SQL-запросом \{#single-sql\}
 
 В режиме производительности агрегация groupby `ColumnExpr` (например, `ds[condition].groupby('col')['val'].sum()`) выполняется как **один SQL запрос**, вместо двухэтапного процесса, используемого в режиме pandas:
@@ -175,7 +170,6 @@ result = ds[ds["rating"] > 3.5].groupby("category")["revenue"].sum()
 Это устраняет необходимость в промежуточной материализации DataFrame и может существенно сократить потребление памяти и время выполнения.
 
 ***
-
 
 ## Сравнение с Execution Engine \{#vs-execution-engine\}
 
@@ -198,7 +192,6 @@ config.use_performance_mode()  # Force chDB + remove pandas overhead
 
 ***
 
-
 ## Тестирование в режиме повышенной производительности \{#testing\}
 
 При написании тестов для режима повышенной производительности результаты могут отличаться от pandas по порядку строк и структуре. Используйте следующие стратегии:
@@ -215,7 +208,6 @@ pd_sorted = pd_result.sort_index()
 np.testing.assert_array_equal(ds_sorted.values, pd_sorted.values)
 ```
 
-
 ### Проверка диапазона значений (первое/последнее значение) \{#value-range-check\}
 
 ```python
@@ -224,7 +216,6 @@ result = ds.groupby("cat")["val"].first()
 for group_key in groups:
     assert result.loc[group_key] in group_values[group_key]
 ```
-
 
 ### Схема и подсчёт строк (LIMIT без ORDER BY) \{#schema-and-count\}
 
@@ -236,7 +227,6 @@ assert set(result.columns) == expected_columns
 ```
 
 ***
-
 
 ## Лучшие практики \{#best-practices\}
 
@@ -252,7 +242,6 @@ ds = pd.read_parquet("data.parquet")
 result = ds[ds["amount"] > 100].groupby("region")["amount"].sum()
 ```
 
-
 ### 2. Добавляйте явную сортировку, когда важен порядок \{#explicit-sort\}
 
 ```python
@@ -262,7 +251,6 @@ result = (ds
     .sort_values(ascending=False)
 )
 ```
-
 
 ### 3. Используйте для пакетных ETL‑нагрузок \{#batch-etl\}
 
@@ -278,7 +266,6 @@ summary = (ds
 summary.to_df().to_parquet("summary.parquet")
 ```
 
-
 ### 4. Переключение режимов в пределах одной сессии \{#switch-modes\}
 
 ```python
@@ -293,9 +280,8 @@ detailed = ds[ds["val"] > 100].head(10)
 
 ***
 
-
 ## Связанная документация \{#related\}
 
-- [Execution Engine](execution-engine.md) — выбор движка выполнения (auto/chdb/pandas)
-- [Performance Guide](../guides/pandas-performance.md) — руководство по оптимизации производительности
-- [Key Differences from pandas](../guides/pandas-differences.md) — ключевые поведенческие отличия
+* [Execution Engine](execution-engine.md) — выбор движка выполнения (auto/chdb/pandas)
+* [Performance Guide](../guides/pandas-performance.md) — руководство по оптимизации производительности
+* [Key Differences from pandas](../guides/pandas-differences.md) — ключевые поведенческие отличия

@@ -23,23 +23,23 @@ ClickHouse 会根据你的部署模型，通过不同的端点暴露与 Promethe
 
 可通过 ClickHouse 服务器上的标准 /metrics 端点访问的服务器直连 Prometheus 端点。此方式提供：
 
-- 完整的指标暴露能力：在没有任何内置过滤的情况下，提供 ClickHouse 所有可用指标
-- 实时指标：在被抓取时直接从 system 表生成
+* 完整的指标暴露能力：在没有任何内置过滤的情况下，提供 ClickHouse 所有可用指标
+* 实时指标：在被抓取时直接从 system 表生成
 
-**直接访问系统表** 
+**直接访问系统表**
 
 对生产环境的 system 表执行查询，会增加监控负载，并阻止系统进入空闲以实现节省成本
 
-<ObservabilityIntegrations/>
+<ObservabilityIntegrations />
 
 ### ClickStack 部署选项 \{#clickstack-deployment\}
 
-- [Helm](/use-cases/observability/clickstack/deployment/helm)：推荐用于基于 Kubernetes 的调试环境。支持通过 `values.yaml` 配置特定环境、资源限制和弹性伸缩。
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)：分别部署各个组件（ClickHouse、HyperDX、OTel collector、MongoDB）。
-- [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)：独立运行的 HyperDX 容器。
+* [Helm](/use-cases/observability/clickstack/deployment/helm)：推荐用于基于 Kubernetes 的调试环境。支持通过 `values.yaml` 配置特定环境、资源限制和弹性伸缩。
+* [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)：分别部署各个组件（ClickHouse、HyperDX、OTel collector、MongoDB）。
+* [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)：独立运行的 HyperDX 容器。
 
 有关完整的部署选项和架构细节，请参阅 [ClickStack 文档](/use-cases/observability/clickstack/overview) 和 [数据摄取指南](/use-cases/observability/clickstack/ingesting-data/overview)。
 
-<DirectIntegrations/>
+<DirectIntegrations />
 
-<CommunityMonitoring/>
+<CommunityMonitoring />

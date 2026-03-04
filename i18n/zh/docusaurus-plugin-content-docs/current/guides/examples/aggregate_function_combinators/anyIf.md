@@ -53,5 +53,6 @@ FROM sales;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`any`](/sql-reference/aggregate-functions/reference/any)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

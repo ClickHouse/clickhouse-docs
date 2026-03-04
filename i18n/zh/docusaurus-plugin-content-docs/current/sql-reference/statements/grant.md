@@ -11,8 +11,8 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # GRANT 语句 \{#grant-statement\}
 
-- 向 ClickHouse 用户账户或角色授予[权限](#privileges)。
-- 将角色分配给用户账户或其他角色。
+* 向 ClickHouse 用户账户或角色授予[权限](#privileges)。
+* 将角色分配给用户账户或其他角色。
 
 要撤销权限，请使用 [REVOKE](../../sql-reference/statements/revoke.md) 语句。还可以使用 [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants) 语句列出已授予的权限。
 
@@ -342,30 +342,30 @@ ClickHouse 中的权限层级如下所示：
 
 以下是该层级关系的处理方式示例：
 
-- `ALTER` 权限包含所有其他 `ALTER*` 权限。
-- `ALTER CONSTRAINT` 包含 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
+* `ALTER` 权限包含所有其他 `ALTER*` 权限。
+* `ALTER CONSTRAINT` 包含 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
 
 权限可以应用在不同层级。知道存在某个层级，意味着该层级上有相应可用的权限语法。
 
 层级（从低到高）：
 
-- `COLUMN` — 权限可以授予给列、表、数据库或全局。
-- `TABLE` — 权限可以授予给表、数据库或全局。
-- `VIEW` — 权限可以授予给视图、数据库或全局。
-- `DICTIONARY` — 权限可以授予给字典、数据库或全局。
-- `DATABASE` — 权限可以授予给数据库或全局。
-- `GLOBAL` — 权限只能在全局范围内授予。
-- `GROUP` — 聚合不同层级的权限。当授予 `GROUP` 级别的权限时，仅授予该组中与所使用语法相对应的那些权限。
+* `COLUMN` — 权限可以授予给列、表、数据库或全局。
+* `TABLE` — 权限可以授予给表、数据库或全局。
+* `VIEW` — 权限可以授予给视图、数据库或全局。
+* `DICTIONARY` — 权限可以授予给字典、数据库或全局。
+* `DATABASE` — 权限可以授予给数据库或全局。
+* `GLOBAL` — 权限只能在全局范围内授予。
+* `GROUP` — 聚合不同层级的权限。当授予 `GROUP` 级别的权限时，仅授予该组中与所使用语法相对应的那些权限。
 
 允许的语法示例：
 
-- `GRANT SELECT(x) ON db.table TO user`
-- `GRANT SELECT ON db.* TO user`
+* `GRANT SELECT(x) ON db.table TO user`
+* `GRANT SELECT ON db.* TO user`
 
 不允许的语法示例：
 
-- `GRANT CREATE USER(x) ON db.table TO user`
-- `GRANT CREATE USER ON db.* TO user`
+* `GRANT CREATE USER(x) ON db.table TO user`
+* `GRANT CREATE USER ON db.* TO user`
 
 特殊权限 [ALL](#all) 会向用户账户或角色授予所有权限。
 
@@ -415,49 +415,49 @@ GRANT INSERT(x,y) ON db.table TO john
 
 允许根据以下权限层级执行 [ALTER](../../sql-reference/statements/alter/index.md) 查询：
 
-- `ALTER`。级别：`COLUMN`。
-  - `ALTER TABLE`。级别：`GROUP`
-  - `ALTER UPDATE`。级别：`COLUMN`。别名：`UPDATE`
-  - `ALTER DELETE`。级别：`COLUMN`。别名：`DELETE`
-  - `ALTER COLUMN`。级别：`GROUP`
-  - `ALTER ADD COLUMN`。级别：`COLUMN`。别名：`ADD COLUMN`
-  - `ALTER DROP COLUMN`。级别：`COLUMN`。别名：`DROP COLUMN`
-  - `ALTER MODIFY COLUMN`。级别：`COLUMN`。别名：`MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`。级别：`COLUMN`。别名：`COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`。级别：`COLUMN`。别名：`CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`。级别：`COLUMN`。别名：`RENAME COLUMN`
-  - `ALTER INDEX`。级别：`GROUP`。别名：`INDEX`
-  - `ALTER ORDER BY`。级别：`TABLE`。别名：`ALTER MODIFY ORDER BY`、`MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`。级别：`TABLE`。别名：`ALTER MODIFY SAMPLE BY`、`MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`。级别：`TABLE`。别名：`ADD INDEX`
-  - `ALTER DROP INDEX`。级别：`TABLE`。别名：`DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`。级别：`TABLE`。别名：`MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`。级别：`TABLE`。别名：`CLEAR INDEX`
-  - `ALTER CONSTRAINT`。级别：`GROUP`。别名：`CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`。级别：`TABLE`。别名：`ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`。级别：`TABLE`。别名：`DROP CONSTRAINT`
-  - `ALTER TTL`。级别：`TABLE`。别名：`ALTER MODIFY TTL`、`MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`。级别：`TABLE`。别名：`MATERIALIZE TTL`
-  - `ALTER SETTINGS`。级别：`TABLE`。别名：`ALTER SETTING`、`ALTER MODIFY SETTING`、`MODIFY SETTING`
-  - `ALTER MOVE PARTITION`。级别：`TABLE`。别名：`ALTER MOVE PART`、`MOVE PARTITION`、`MOVE PART`
-  - `ALTER FETCH PARTITION`。级别：`TABLE`。别名：`ALTER FETCH PART`、`FETCH PARTITION`、`FETCH PART`
-  - `ALTER FREEZE PARTITION`。级别：`TABLE`。别名：`FREEZE PARTITION`
-  - `ALTER VIEW`。级别：`GROUP`
-  - `ALTER VIEW REFRESH`。级别：`VIEW`。别名：`REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY SQL SECURITY`
+* `ALTER`。级别：`COLUMN`。
+  * `ALTER TABLE`。级别：`GROUP`
+  * `ALTER UPDATE`。级别：`COLUMN`。别名：`UPDATE`
+  * `ALTER DELETE`。级别：`COLUMN`。别名：`DELETE`
+  * `ALTER COLUMN`。级别：`GROUP`
+  * `ALTER ADD COLUMN`。级别：`COLUMN`。别名：`ADD COLUMN`
+  * `ALTER DROP COLUMN`。级别：`COLUMN`。别名：`DROP COLUMN`
+  * `ALTER MODIFY COLUMN`。级别：`COLUMN`。别名：`MODIFY COLUMN`
+  * `ALTER COMMENT COLUMN`。级别：`COLUMN`。别名：`COMMENT COLUMN`
+  * `ALTER CLEAR COLUMN`。级别：`COLUMN`。别名：`CLEAR COLUMN`
+  * `ALTER RENAME COLUMN`。级别：`COLUMN`。别名：`RENAME COLUMN`
+  * `ALTER INDEX`。级别：`GROUP`。别名：`INDEX`
+  * `ALTER ORDER BY`。级别：`TABLE`。别名：`ALTER MODIFY ORDER BY`、`MODIFY ORDER BY`
+  * `ALTER SAMPLE BY`。级别：`TABLE`。别名：`ALTER MODIFY SAMPLE BY`、`MODIFY SAMPLE BY`
+  * `ALTER ADD INDEX`。级别：`TABLE`。别名：`ADD INDEX`
+  * `ALTER DROP INDEX`。级别：`TABLE`。别名：`DROP INDEX`
+  * `ALTER MATERIALIZE INDEX`。级别：`TABLE`。别名：`MATERIALIZE INDEX`
+  * `ALTER CLEAR INDEX`。级别：`TABLE`。别名：`CLEAR INDEX`
+  * `ALTER CONSTRAINT`。级别：`GROUP`。别名：`CONSTRAINT`
+  * `ALTER ADD CONSTRAINT`。级别：`TABLE`。别名：`ADD CONSTRAINT`
+  * `ALTER DROP CONSTRAINT`。级别：`TABLE`。别名：`DROP CONSTRAINT`
+  * `ALTER TTL`。级别：`TABLE`。别名：`ALTER MODIFY TTL`、`MODIFY TTL`
+  * `ALTER MATERIALIZE TTL`。级别：`TABLE`。别名：`MATERIALIZE TTL`
+  * `ALTER SETTINGS`。级别：`TABLE`。别名：`ALTER SETTING`、`ALTER MODIFY SETTING`、`MODIFY SETTING`
+  * `ALTER MOVE PARTITION`。级别：`TABLE`。别名：`ALTER MOVE PART`、`MOVE PARTITION`、`MOVE PART`
+  * `ALTER FETCH PARTITION`。级别：`TABLE`。别名：`ALTER FETCH PART`、`FETCH PARTITION`、`FETCH PART`
+  * `ALTER FREEZE PARTITION`。级别：`TABLE`。别名：`FREEZE PARTITION`
+  * `ALTER VIEW`。级别：`GROUP`
+  * `ALTER VIEW REFRESH`。级别：`VIEW`。别名：`REFRESH VIEW`
+  * `ALTER VIEW MODIFY QUERY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY QUERY`
+  * `ALTER VIEW MODIFY SQL SECURITY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY SQL SECURITY`
 
 以下是该层级的使用示例：
 
-- `ALTER` 权限包含所有其他 `ALTER*` 权限。
-- `ALTER CONSTRAINT` 包含 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
+* `ALTER` 权限包含所有其他 `ALTER*` 权限。
+* `ALTER CONSTRAINT` 包含 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
 
 **说明**
 
-- `MODIFY SETTING` 权限允许修改表引擎设置。它不影响设置或服务器配置参数。
-- `ATTACH` 操作需要具有 [CREATE](#create) 权限。
-- `DETACH` 操作需要具有 [DROP](#drop) 权限。
-- 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止一次 mutation，需要具有启动该 mutation 的相应权限。例如，如果你想停止 `ALTER UPDATE` 查询，你需要具有 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
+* `MODIFY SETTING` 权限允许修改表引擎设置。它不影响设置或服务器配置参数。
+* `ATTACH` 操作需要具有 [CREATE](#create) 权限。
+* `DETACH` 操作需要具有 [DROP](#drop) 权限。
+* 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止一次 mutation，需要具有启动该 mutation 的相应权限。例如，如果你想停止 `ALTER UPDATE` 查询，你需要具有 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
 
 ### BACKUP \{#backup\}
 
@@ -467,17 +467,17 @@ GRANT INSERT(x,y) ON db.table TO john
 
 允许按照以下权限层级执行 [CREATE](../../sql-reference/statements/create/index.md) 和 [ATTACH](../../sql-reference/statements/attach.md) DDL 查询：
 
-- `CREATE`。级别：`GROUP`
-  - `CREATE DATABASE`。级别：`DATABASE`
-  - `CREATE TABLE`。级别：`TABLE`
-    - `CREATE ARBITRARY TEMPORARY TABLE`。级别：`GLOBAL`
-      - `CREATE TEMPORARY TABLE`。级别：`GLOBAL`
-  - `CREATE VIEW`。级别：`VIEW`
-  - `CREATE DICTIONARY`。级别：`DICTIONARY`
+* `CREATE`。级别：`GROUP`
+  * `CREATE DATABASE`。级别：`DATABASE`
+  * `CREATE TABLE`。级别：`TABLE`
+    * `CREATE ARBITRARY TEMPORARY TABLE`。级别：`GLOBAL`
+      * `CREATE TEMPORARY TABLE`。级别：`GLOBAL`
+  * `CREATE VIEW`。级别：`VIEW`
+  * `CREATE DICTIONARY`。级别：`DICTIONARY`
 
 **注意**
 
-- 若要删除已创建的表，用户需要 [DROP](#drop) 权限。
+* 若要删除已创建的表，用户需要 [DROP](#drop) 权限。
 
 ### CLUSTER \{#cluster\}
 
@@ -506,11 +506,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 允许按照以下权限层级执行 [DROP](../../sql-reference/statements/drop.md) 和 [DETACH](../../sql-reference/statements/detach.md) 查询语句：
 
-- `DROP`。级别：`GROUP`
-  - `DROP DATABASE`。级别：`DATABASE`
-  - `DROP TABLE`。级别：`TABLE`
-  - `DROP VIEW`。级别：`VIEW`
-  - `DROP DICTIONARY`。级别：`DICTIONARY`
+* `DROP`。级别：`GROUP`
+  * `DROP DATABASE`。级别：`DATABASE`
+  * `DROP TABLE`。级别：`TABLE`
+  * `DROP VIEW`。级别：`VIEW`
+  * `DROP DICTIONARY`。级别：`DICTIONARY`
 
 ### TRUNCATE \{#truncate\}
 
@@ -528,11 +528,11 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 允许根据以下权限层级执行 `SHOW`、`DESCRIBE`、`USE` 和 `EXISTS` 查询：
 
-- `SHOW`。级别：`GROUP`
-  - `SHOW DATABASES`。级别：`DATABASE`。允许执行 `SHOW DATABASES`、`SHOW CREATE DATABASE`、`USE <database>` 查询。
-  - `SHOW TABLES`。级别：`TABLE`。允许执行 `SHOW TABLES`、`EXISTS <table>`、`CHECK <table>` 查询。
-  - `SHOW COLUMNS`。级别：`COLUMN`。允许执行 `SHOW CREATE TABLE`、`DESCRIBE` 查询。
-  - `SHOW DICTIONARIES`。级别：`DICTIONARY`。允许执行 `SHOW DICTIONARIES`、`SHOW CREATE DICTIONARY`、`EXISTS <dictionary>` 查询。
+* `SHOW`。级别：`GROUP`
+  * `SHOW DATABASES`。级别：`DATABASE`。允许执行 `SHOW DATABASES`、`SHOW CREATE DATABASE`、`USE <database>` 查询。
+  * `SHOW TABLES`。级别：`TABLE`。允许执行 `SHOW TABLES`、`EXISTS <table>`、`CHECK <table>` 查询。
+  * `SHOW COLUMNS`。级别：`COLUMN`。允许执行 `SHOW CREATE TABLE`、`DESCRIBE` 查询。
+  * `SHOW DICTIONARIES`。级别：`DICTIONARY`。允许执行 `SHOW DICTIONARIES`、`SHOW CREATE DICTIONARY`、`EXISTS <dictionary>` 查询。
 
 **注意**
 
@@ -552,30 +552,30 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 允许用户执行用于管理用户、角色和行策略的查询。
 
-- `ACCESS MANAGEMENT`. 等级：`GROUP`
-  - `CREATE USER`. 等级：`GLOBAL`
-  - `ALTER USER`. 等级：`GLOBAL`
-  - `DROP USER`. 等级：`GLOBAL`
-  - `CREATE ROLE`. 等级：`GLOBAL`
-  - `ALTER ROLE`. 等级：`GLOBAL`
-  - `DROP ROLE`. 等级：`GLOBAL`
-  - `ROLE ADMIN`. 等级：`GLOBAL`
-  - `CREATE ROW POLICY`. 等级：`GLOBAL`。别名：`CREATE POLICY`
-  - `ALTER ROW POLICY`. 等级：`GLOBAL`。别名：`ALTER POLICY`
-  - `DROP ROW POLICY`. 等级：`GLOBAL`。别名：`DROP POLICY`
-  - `CREATE QUOTA`. 等级：`GLOBAL`
-  - `ALTER QUOTA`. 等级：`GLOBAL`
-  - `DROP QUOTA`. 等级：`GLOBAL`
-  - `CREATE SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`CREATE PROFILE`
-  - `ALTER SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`ALTER PROFILE`
-  - `DROP SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`DROP PROFILE`
-  - `SHOW ACCESS`. 等级：`GROUP`
-    - `SHOW_USERS`. 等级：`GLOBAL`。别名：`SHOW CREATE USER`
-    - `SHOW_ROLES`. 等级：`GLOBAL`。别名：`SHOW CREATE ROLE`
-    - `SHOW_ROW_POLICIES`. 等级：`GLOBAL`。别名：`SHOW POLICIES`、`SHOW CREATE ROW POLICY`、`SHOW CREATE POLICY`
-    - `SHOW_QUOTAS`. 等级：`GLOBAL`。别名：`SHOW CREATE QUOTA`
-    - `SHOW_SETTINGS_PROFILES`. 等级：`GLOBAL`。别名：`SHOW PROFILES`、`SHOW CREATE SETTINGS PROFILE`、`SHOW CREATE PROFILE`
-  - `ALLOW SQL SECURITY NONE`. 等级：`GLOBAL`。别名：`CREATE SQL SECURITY NONE`、`SQL SECURITY NONE`、`SECURITY NONE`
+* `ACCESS MANAGEMENT`. 等级：`GROUP`
+  * `CREATE USER`. 等级：`GLOBAL`
+  * `ALTER USER`. 等级：`GLOBAL`
+  * `DROP USER`. 等级：`GLOBAL`
+  * `CREATE ROLE`. 等级：`GLOBAL`
+  * `ALTER ROLE`. 等级：`GLOBAL`
+  * `DROP ROLE`. 等级：`GLOBAL`
+  * `ROLE ADMIN`. 等级：`GLOBAL`
+  * `CREATE ROW POLICY`. 等级：`GLOBAL`。别名：`CREATE POLICY`
+  * `ALTER ROW POLICY`. 等级：`GLOBAL`。别名：`ALTER POLICY`
+  * `DROP ROW POLICY`. 等级：`GLOBAL`。别名：`DROP POLICY`
+  * `CREATE QUOTA`. 等级：`GLOBAL`
+  * `ALTER QUOTA`. 等级：`GLOBAL`
+  * `DROP QUOTA`. 等级：`GLOBAL`
+  * `CREATE SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`CREATE PROFILE`
+  * `ALTER SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`ALTER PROFILE`
+  * `DROP SETTINGS PROFILE`. 等级：`GLOBAL`。别名：`DROP PROFILE`
+  * `SHOW ACCESS`. 等级：`GROUP`
+    * `SHOW_USERS`. 等级：`GLOBAL`。别名：`SHOW CREATE USER`
+    * `SHOW_ROLES`. 等级：`GLOBAL`。别名：`SHOW CREATE ROLE`
+    * `SHOW_ROW_POLICIES`. 等级：`GLOBAL`。别名：`SHOW POLICIES`、`SHOW CREATE ROW POLICY`、`SHOW CREATE POLICY`
+    * `SHOW_QUOTAS`. 等级：`GLOBAL`。别名：`SHOW CREATE QUOTA`
+    * `SHOW_SETTINGS_PROFILES`. 等级：`GLOBAL`。别名：`SHOW PROFILES`、`SHOW CREATE SETTINGS PROFILE`、`SHOW CREATE PROFILE`
+  * `ALLOW SQL SECURITY NONE`. 等级：`GLOBAL`。别名：`CREATE SQL SECURITY NONE`、`SQL SECURITY NONE`、`SECURITY NONE`
 
 `ROLE ADMIN` 权限允许用户分配和撤销任意角色，包括那些并未授予给该用户（即使带有 admin 选项）的角色。
 
@@ -583,29 +583,29 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 允许用户根据以下权限层级执行 [SYSTEM](../../sql-reference/statements/system.md) 查询。
 
-- `SYSTEM`。级别：`GROUP`
-  - `SYSTEM SHUTDOWN`。级别：`GLOBAL`。别名：`SYSTEM KILL`、`SHUTDOWN`
-  - `SYSTEM DROP CACHE`。别名：`DROP CACHE`
-    - `SYSTEM DROP DNS CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR DNS CACHE`、`SYSTEM DROP DNS CACHE`、`SYSTEM DROP DNS`、`DROP DNS CACHE`、`DROP DNS`
-    - `SYSTEM DROP MARK CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR MARK CACHE`、`SYSTEM DROP MARK CACHE`、`SYSTEM DROP MARK`、`DROP MARK CACHE`、`DROP MARKS`
-    - `SYSTEM DROP UNCOMPRESSED CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR UNCOMPRESSED CACHE`、`SYSTEM DROP UNCOMPRESSED CACHE`、`SYSTEM DROP UNCOMPRESSED`、`DROP UNCOMPRESSED CACHE`、`DROP UNCOMPRESSED`
-  - `SYSTEM RELOAD`。级别：`GROUP`
-    - `SYSTEM RELOAD CONFIG`。级别：`GLOBAL`。别名：`RELOAD CONFIG`
-    - `SYSTEM RELOAD DICTIONARY`。级别：`GLOBAL`。别名：`SYSTEM RELOAD DICTIONARIES`、`RELOAD DICTIONARY`、`RELOAD DICTIONARIES`
-      - `SYSTEM RELOAD EMBEDDED DICTIONARIES`。级别：`GLOBAL`。别名：`RELOAD EMBEDDED DICTIONARIES`
-  - `SYSTEM MERGES`。级别：`TABLE`。别名：`SYSTEM STOP MERGES`、`SYSTEM START MERGES`、`STOP MERGES`、`START MERGES`
-  - `SYSTEM TTL MERGES`。级别：`TABLE`。别名：`SYSTEM STOP TTL MERGES`、`SYSTEM START TTL MERGES`、`STOP TTL MERGES`、`START TTL MERGES`
-  - `SYSTEM FETCHES`。级别：`TABLE`。别名：`SYSTEM STOP FETCHES`、`SYSTEM START FETCHES`、`STOP FETCHES`、`START FETCHES`
-  - `SYSTEM MOVES`。级别：`TABLE`。别名：`SYSTEM STOP MOVES`、`SYSTEM START MOVES`、`STOP MOVES`、`START MOVES`
-  - `SYSTEM SENDS`。级别：`GROUP`。别名：`SYSTEM STOP SENDS`、`SYSTEM START SENDS`、`STOP SENDS`、`START SENDS`
-    - `SYSTEM DISTRIBUTED SENDS`。级别：`TABLE`。别名：`SYSTEM STOP DISTRIBUTED SENDS`、`SYSTEM START DISTRIBUTED SENDS`、`STOP DISTRIBUTED SENDS`、`START DISTRIBUTED SENDS`
-    - `SYSTEM REPLICATED SENDS`。级别：`TABLE`。别名：`SYSTEM STOP REPLICATED SENDS`、`SYSTEM START REPLICATED SENDS`、`STOP REPLICATED SENDS`、`START REPLICATED SENDS`
-  - `SYSTEM REPLICATION QUEUES`。级别：`TABLE`。别名：`SYSTEM STOP REPLICATION QUEUES`、`SYSTEM START REPLICATION QUEUES`、`STOP REPLICATION QUEUES`、`START REPLICATION QUEUES`
-  - `SYSTEM SYNC REPLICA`。级别：`TABLE`。别名：`SYNC REPLICA`
-  - `SYSTEM RESTART REPLICA`。级别：`TABLE`。别名：`RESTART REPLICA`
-  - `SYSTEM FLUSH`。级别：`GROUP`
-    - `SYSTEM FLUSH DISTRIBUTED`。级别：`TABLE`。别名：`FLUSH DISTRIBUTED`
-    - `SYSTEM FLUSH LOGS`。级别：`GLOBAL`。别名：`FLUSH LOGS`
+* `SYSTEM`。级别：`GROUP`
+  * `SYSTEM SHUTDOWN`。级别：`GLOBAL`。别名：`SYSTEM KILL`、`SHUTDOWN`
+  * `SYSTEM DROP CACHE`。别名：`DROP CACHE`
+    * `SYSTEM DROP DNS CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR DNS CACHE`、`SYSTEM DROP DNS CACHE`、`SYSTEM DROP DNS`、`DROP DNS CACHE`、`DROP DNS`
+    * `SYSTEM DROP MARK CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR MARK CACHE`、`SYSTEM DROP MARK CACHE`、`SYSTEM DROP MARK`、`DROP MARK CACHE`、`DROP MARKS`
+    * `SYSTEM DROP UNCOMPRESSED CACHE`。级别：`GLOBAL`。别名：`SYSTEM CLEAR UNCOMPRESSED CACHE`、`SYSTEM DROP UNCOMPRESSED CACHE`、`SYSTEM DROP UNCOMPRESSED`、`DROP UNCOMPRESSED CACHE`、`DROP UNCOMPRESSED`
+  * `SYSTEM RELOAD`。级别：`GROUP`
+    * `SYSTEM RELOAD CONFIG`。级别：`GLOBAL`。别名：`RELOAD CONFIG`
+    * `SYSTEM RELOAD DICTIONARY`。级别：`GLOBAL`。别名：`SYSTEM RELOAD DICTIONARIES`、`RELOAD DICTIONARY`、`RELOAD DICTIONARIES`
+      * `SYSTEM RELOAD EMBEDDED DICTIONARIES`。级别：`GLOBAL`。别名：`RELOAD EMBEDDED DICTIONARIES`
+  * `SYSTEM MERGES`。级别：`TABLE`。别名：`SYSTEM STOP MERGES`、`SYSTEM START MERGES`、`STOP MERGES`、`START MERGES`
+  * `SYSTEM TTL MERGES`。级别：`TABLE`。别名：`SYSTEM STOP TTL MERGES`、`SYSTEM START TTL MERGES`、`STOP TTL MERGES`、`START TTL MERGES`
+  * `SYSTEM FETCHES`。级别：`TABLE`。别名：`SYSTEM STOP FETCHES`、`SYSTEM START FETCHES`、`STOP FETCHES`、`START FETCHES`
+  * `SYSTEM MOVES`。级别：`TABLE`。别名：`SYSTEM STOP MOVES`、`SYSTEM START MOVES`、`STOP MOVES`、`START MOVES`
+  * `SYSTEM SENDS`。级别：`GROUP`。别名：`SYSTEM STOP SENDS`、`SYSTEM START SENDS`、`STOP SENDS`、`START SENDS`
+    * `SYSTEM DISTRIBUTED SENDS`。级别：`TABLE`。别名：`SYSTEM STOP DISTRIBUTED SENDS`、`SYSTEM START DISTRIBUTED SENDS`、`STOP DISTRIBUTED SENDS`、`START DISTRIBUTED SENDS`
+    * `SYSTEM REPLICATED SENDS`。级别：`TABLE`。别名：`SYSTEM STOP REPLICATED SENDS`、`SYSTEM START REPLICATED SENDS`、`STOP REPLICATED SENDS`、`START REPLICATED SENDS`
+  * `SYSTEM REPLICATION QUEUES`。级别：`TABLE`。别名：`SYSTEM STOP REPLICATION QUEUES`、`SYSTEM START REPLICATION QUEUES`、`STOP REPLICATION QUEUES`、`START REPLICATION QUEUES`
+  * `SYSTEM SYNC REPLICA`。级别：`TABLE`。别名：`SYNC REPLICA`
+  * `SYSTEM RESTART REPLICA`。级别：`TABLE`。别名：`RESTART REPLICA`
+  * `SYSTEM FLUSH`。级别：`GROUP`
+    * `SYSTEM FLUSH DISTRIBUTED`。级别：`TABLE`。别名：`FLUSH DISTRIBUTED`
+    * `SYSTEM FLUSH LOGS`。级别：`GLOBAL`。别名：`FLUSH LOGS`
 
 `SYSTEM RELOAD EMBEDDED DICTIONARIES` 权限会通过 `SYSTEM RELOAD DICTIONARY ON *.*` 权限隐式授予。
 
@@ -613,38 +613,38 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 允许使用[自省](../../operations/optimizing-performance/sampling-query-profiler.md)函数。
 
-- `INTROSPECTION`。级别：`GROUP`。别名：`INTROSPECTION FUNCTIONS`
-  - `addressToLine`。级别：`GLOBAL`
-  - `addressToLineWithInlines`。级别：`GLOBAL`
-  - `addressToSymbol`。级别：`GLOBAL`
-  - `demangle`。级别：`GLOBAL`
+* `INTROSPECTION`。级别：`GROUP`。别名：`INTROSPECTION FUNCTIONS`
+  * `addressToLine`。级别：`GLOBAL`
+  * `addressToLineWithInlines`。级别：`GLOBAL`
+  * `addressToSymbol`。级别：`GLOBAL`
+  * `demangle`。级别：`GLOBAL`
 
 ### SOURCES \{#sources\}
 
 允许使用外部数据源。适用于[表引擎](../../engines/table-engines/index.md)和[表函数](/sql-reference/table-functions)。
 
-- `READ`。级别：`GLOBAL_WITH_PARAMETER`  
-- `WRITE`。级别：`GLOBAL_WITH_PARAMETER`
+* `READ`。级别：`GLOBAL_WITH_PARAMETER`
+* `WRITE`。级别：`GLOBAL_WITH_PARAMETER`
 
 可用的参数：
 
-- `AZURE`
-- `FILE`
-- `HDFS`
-- `HIVE`
-- `JDBC`
-- `KAFKA`
-- `MONGO`
-- `MYSQL`
-- `NATS`
-- `ODBC`
-- `POSTGRES`
-- `RABBITMQ`
-- `REDIS`
-- `REMOTE`
-- `S3`
-- `SQLITE`
-- `URL`
+* `AZURE`
+* `FILE`
+* `HDFS`
+* `HIVE`
+* `JDBC`
+* `KAFKA`
+* `MONGO`
+* `MYSQL`
+* `NATS`
+* `ODBC`
+* `POSTGRES`
+* `RABBITMQ`
+* `REDIS`
+* `REMOTE`
+* `S3`
+* `SQLITE`
+* `URL`
 
 :::note
 对于数据源（sources）的 READ/WRITE 权限分离从 25.7 版本开始提供，并且仅在服务端配置项
@@ -656,8 +656,8 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 示例：
 
-- 要创建一个使用 [MySQL 表引擎](../../engines/table-engines/integrations/mysql.md)的表，您需要具备 `CREATE TABLE (ON db.table_name)` 和 `MYSQL` 权限。
-- 要使用 [mysql 表函数](../../sql-reference/table-functions/mysql.md)，您需要具备 `CREATE TEMPORARY TABLE` 和 `MYSQL` 权限。
+* 要创建一个使用 [MySQL 表引擎](../../engines/table-engines/integrations/mysql.md)的表，您需要具备 `CREATE TABLE (ON db.table_name)` 和 `MYSQL` 权限。
+* 要使用 [mysql 表函数](../../sql-reference/table-functions/mysql.md)，您需要具备 `CREATE TEMPORARY TABLE` 和 `MYSQL` 权限。
 
 ### 源过滤器授权 \{#source-filter-grants\}
 
@@ -732,7 +732,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### dictGet \{#dictget\}
 
-- `dictGet`。别名：`dictHas`、`dictGetHierarchy`、`dictIsIn`
+* `dictGet`。别名：`dictHas`、`dictGetHierarchy`、`dictIsIn`
 
 允许执行 [dictGet](/sql-reference/functions/ext-dict-functions#dictGet)、[dictHas](../../sql-reference/functions/ext-dict-functions.md#dictHas)、[dictGetHierarchy](../../sql-reference/functions/ext-dict-functions.md#dictGetHierarchy)、[dictIsIn](../../sql-reference/functions/ext-dict-functions.md#dictIsIn) 函数。
 
@@ -740,8 +740,8 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 **示例**
 
-- `GRANT dictGet ON mydb.mydictionary TO john`
-- `GRANT dictGet ON mydictionary TO john`
+* `GRANT dictGet ON mydb.mydictionary TO john`
+* `GRANT dictGet ON mydictionary TO john`
 
 ### displaySecretsInShowAndSelect \{#displaysecretsinshowandselect\}
 
@@ -755,13 +755,13 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 允许对指定的 named collection 执行某项操作。在 23.7 版本之前，它被称为 NAMED COLLECTION CONTROL，从 23.7 开始新增了 NAMED COLLECTION ADMIN，同时保留 NAMED COLLECTION CONTROL 作为别名。
 
-- `NAMED COLLECTION ADMIN`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION CONTROL`
-  - `CREATE NAMED COLLECTION`。级别：`NAMED_COLLECTION`
-  - `DROP NAMED COLLECTION`。级别：`NAMED_COLLECTION`
-  - `ALTER NAMED COLLECTION`。级别：`NAMED_COLLECTION`
-  - `SHOW NAMED COLLECTIONS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS`
-  - `SHOW NAMED COLLECTIONS SECRETS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS SECRETS`
-  - `NAMED COLLECTION`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION USAGE, USE NAMED COLLECTION`
+* `NAMED COLLECTION ADMIN`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION CONTROL`
+  * `CREATE NAMED COLLECTION`。级别：`NAMED_COLLECTION`
+  * `DROP NAMED COLLECTION`。级别：`NAMED_COLLECTION`
+  * `ALTER NAMED COLLECTION`。级别：`NAMED_COLLECTION`
+  * `SHOW NAMED COLLECTIONS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS`
+  * `SHOW NAMED COLLECTIONS SECRETS`。级别：`NAMED_COLLECTION`。别名：`SHOW NAMED COLLECTIONS SECRETS`
+  * `NAMED COLLECTION`。级别：`NAMED_COLLECTION`。别名：`NAMED COLLECTION USAGE, USE NAMED COLLECTION`
 
 与所有其他授权（CREATE、DROP、ALTER、SHOW）不同，授权 NAMED COLLECTION 仅在 23.7 中才添加，而其他所有授权则更早在 22.12 中就已添加。
 
@@ -769,7 +769,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 假设 named collection 名为 abc，我们将 CREATE NAMED COLLECTION 权限授予用户 john。
 
-- `GRANT CREATE NAMED COLLECTION ON abc TO john`
+* `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
 ### TABLE ENGINE \{#table-engine\}
 
@@ -777,8 +777,8 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 **示例**
 
-- `GRANT TABLE ENGINE ON * TO john`
-- `GRANT TABLE ENGINE ON TinyLog TO john`
+* `GRANT TABLE ENGINE ON * TO john`
+* `GRANT TABLE ENGINE ON TinyLog TO john`
 
 :::note
 默认情况下，出于向后兼容的考虑，使用特定表引擎创建表时会忽略权限授权，
@@ -788,7 +788,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### ALL \{#all\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 将某个受管对象上的所有权限授予用户账户或角色。
 

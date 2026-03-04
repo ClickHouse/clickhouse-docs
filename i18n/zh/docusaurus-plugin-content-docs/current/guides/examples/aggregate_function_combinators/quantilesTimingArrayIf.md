@@ -57,5 +57,6 @@ GROUP BY endpoint;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

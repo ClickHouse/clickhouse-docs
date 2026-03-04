@@ -22,16 +22,15 @@ DateTime([timezone])
 
 Точность: 1 секунда.
 
-
 ## Скорость \{#speed\}
 
-Тип данных `Date` работает быстрее, чем `DateTime` в _большинстве_ случаев.
+Тип данных `Date` работает быстрее, чем `DateTime` в *большинстве* случаев.
 
 Тип `Date` занимает 2 байта, тогда как `DateTime` — 4. Однако при сжатии разница в размере между `Date` и `DateTime` становится более заметной. Это связано с тем, что минуты и секунды в `DateTime` хуже поддаются сжатию. Фильтрация и агрегация по `Date` вместо `DateTime` также выполняются быстрее.
 
 ## Замечания по использованию \{#usage-remarks\}
 
-Момент времени сохраняется в виде [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), независимо от часового пояса или перехода на летнее время. Часовой пояс влияет на то, как значения типа `DateTime` отображаются в текстовом формате и как разбираются значения, заданные в виде строк ('2020-01-01 05:00:01').
+Момент времени сохраняется в виде [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), независимо от часового пояса или перехода на летнее время. Часовой пояс влияет на то, как значения типа `DateTime` отображаются в текстовом формате и как разбираются значения, заданные в виде строк (&#39;2020-01-01 05:00:01&#39;).
 
 Независимый от часового пояса Unix timestamp хранится в таблицах, а часовой пояс используется для преобразования его в текстовый формат или обратно при импорте/экспорте данных, а также для выполнения календарных вычислений над значениями (например, функциями `toDate`, `toHour` и т. д.). Часовой пояс не хранится в строках таблицы (или в результатах запроса), а хранится в метаданных столбца.
 
@@ -41,9 +40,9 @@ DateTime([timezone])
 
 По умолчанию [clickhouse-client](../../interfaces/cli.md) использует часовой пояс сервера, если часовой пояс явно не задан при инициализации типа данных. Чтобы использовать часовой пояс клиента, запустите `clickhouse-client` с параметром `--use_client_time_zone`.
 
-ClickHouse выводит значения в зависимости от значения настройки [date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format). По умолчанию используется текстовый формат `YYYY-MM-DD hh:mm:ss`. Кроме того, вы можете изменить формат вывода с помощью функции [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime).
+ClickHouse выводит значения в зависимости от значения настройки [date&#95;time&#95;output&#95;format](../../operations/settings/settings-formats.md#date_time_output_format). По умолчанию используется текстовый формат `YYYY-MM-DD hh:mm:ss`. Кроме того, вы можете изменить формат вывода с помощью функции [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime).
 
-При вставке данных в ClickHouse вы можете использовать различные форматы строк даты и времени в зависимости от значения настройки [date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format).
+При вставке данных в ClickHouse вы можете использовать различные форматы строк даты и времени в зависимости от значения настройки [date&#95;time&#95;input&#95;format](../../operations/settings/settings-formats.md#date_time_input_format).
 
 ## Примеры \{#examples\}
 
@@ -131,7 +130,6 @@ FROM dt
 
 Поскольку преобразование часового пояса затрагивает только метаданные, эта операция не требует вычислительных ресурсов.
 
-
 ## Ограничения поддержки часовых поясов \{#limitations-on-time-zones-support\}
 
 Некоторые часовые пояса могут поддерживаться не полностью. Возможны следующие случаи:
@@ -187,15 +185,14 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 
 В этом случае ClickHouse переносит несуществующее время `2023-03-26 01:30:00` на `2023-03-26 00:30:00`.
 
-
 ## См. также \{#see-also\}
 
-- [Функции преобразования типов](../../sql-reference/functions/type-conversion-functions.md)
-- [Функции для работы с датами и временем](../../sql-reference/functions/date-time-functions.md)
-- [Функции для работы с массивами](../../sql-reference/functions/array-functions.md)
-- [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
-- [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
-- [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
-- [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
-- [Операторы для работы с датами и временем](../../sql-reference/operators#operators-for-working-with-dates-and-times)
-- [Тип данных `Date`](../../sql-reference/data-types/date.md)
+* [Функции преобразования типов](../../sql-reference/functions/type-conversion-functions.md)
+* [Функции для работы с датами и временем](../../sql-reference/functions/date-time-functions.md)
+* [Функции для работы с массивами](../../sql-reference/functions/array-functions.md)
+* [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
+* [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
+* [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
+* [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
+* [Операторы для работы с датами и временем](../../sql-reference/operators#operators-for-working-with-dates-and-times)
+* [Тип данных `Date`](../../sql-reference/data-types/date.md)

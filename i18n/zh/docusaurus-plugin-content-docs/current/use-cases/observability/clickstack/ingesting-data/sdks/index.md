@@ -13,7 +13,7 @@ keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs Cl
 
 语言 SDKs 负责从您的应用程序内部收集遥测数据——主要是 **traces（跟踪）** 和 **logs（日志）**——并通过 OTLP 端点将这些数据导出到 OpenTelemetry 收集器，由收集器负责将数据摄取到 ClickHouse。
 
-在基于浏览器的环境中，SDKs 也可能负责收集 **session data（会话数据）**，包括 UI 事件、点击和页面导航，从而支持对用户会话的回放。 
+在基于浏览器的环境中，SDKs 也可能负责收集 **session data（会话数据）**，包括 UI 事件、点击和页面导航，从而支持对用户会话的回放。
 
 ## 工作原理 \{#how-it-works\}
 
@@ -27,7 +27,7 @@ keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs Cl
 尽管 ClickStack 提供了自研的语言 SDKs，内置了增强的遥测能力和功能，你也可以无缝继续使用现有的 OpenTelemetry SDKs。
 :::
 
-<br/>
+<br />
 
 | Language | Description | Link |
 |----------|-------------|------|
@@ -64,13 +64,12 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-
 ## Kubernetes 集成 \{#kubernetes-integration\}
 
 所有 SDK 在 Kubernetes 环境中运行时，均支持自动关联 Kubernetes 元数据（pod 名称、命名空间等）。这使你可以：
 
-- 查看与服务关联的 Pod（容器组）和节点的 Kubernetes 指标
-- 将应用日志和链路追踪与基础设施指标进行关联
-- 跨整个 Kubernetes 集群监控资源使用情况和性能
+* 查看与服务关联的 Pod（容器组）和节点的 Kubernetes 指标
+* 将应用日志和链路追踪与基础设施指标进行关联
+* 跨整个 Kubernetes 集群监控资源使用情况和性能
 
 要启用此功能，请配置 OpenTelemetry Collector，将资源标签转发到 pod（容器组）。有关详细的配置步骤，请参阅 [Kubernetes 集成指南](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)。

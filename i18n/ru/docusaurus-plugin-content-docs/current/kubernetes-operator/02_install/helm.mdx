@@ -11,9 +11,9 @@ sidebar_label: 'Helm'
 
 ## Предварительные требования \{#prerequisites\}
 
-- Кластер Kubernetes версии v1.33.0 или новее
-- Helm версии v3.0 или новее
-- kubectl, настроенный для взаимодействия с вашим кластером
+* Кластер Kubernetes версии v1.33.0 или новее
+* Helm версии v3.0 или новее
+* kubectl, настроенный для взаимодействия с вашим кластером
 
 ## Установите Helm \{#install-helm\}
 
@@ -28,7 +28,6 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ```bash
 helm version
 ```
-
 
 ## Установите оператор \{#install-the-operator\}
 
@@ -55,7 +54,6 @@ helm version
        --set-json="manager.container.tag=<operator version>
 ```
 
-
 ### Из локального чарта \{#from-local-chart\}
 
 Клонируйте репозиторий и выполните установку из локального чарта:
@@ -65,7 +63,6 @@ git clone https://github.com/ClickHouse/clickhouse-operator.git
 cd clickhouse-operator
 helm install clickhouse-operator ./dist/chart
 ```
-
 
 ### Параметры конфигурации \{#configuration-options\}
 

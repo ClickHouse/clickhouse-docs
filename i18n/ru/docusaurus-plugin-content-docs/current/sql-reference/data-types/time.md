@@ -116,12 +116,12 @@ SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
 
 ## См. также \{#see-also\}
 
-- [Функции преобразования типов](../functions/type-conversion-functions.md)
-- [Функции для работы с датами и временем](../functions/date-time-functions.md)
-- [Функции для работы с массивами](../functions/array-functions.md)
-- [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
-- [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
-- [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
-- [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
-- [Тип данных `DateTime`](datetime.md)
-- [Тип данных `Date`](date.md)
+* [Функции преобразования типов](../functions/type-conversion-functions.md)
+* [Функции для работы с датами и временем](../functions/date-time-functions.md)
+* [Функции для работы с массивами](../functions/array-functions.md)
+* [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
+* [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
+* [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
+* [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
+* [Тип данных `DateTime`](datetime.md)
+* [Тип данных `Date`](date.md)

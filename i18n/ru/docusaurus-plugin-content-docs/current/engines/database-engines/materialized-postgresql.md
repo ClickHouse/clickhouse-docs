@@ -236,55 +236,55 @@ ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_bloc
 
 1. Настройте слот репликации в PostgreSQL.
 
-    ```yaml
-    apiVersion: "acid.zalan.do/v1"
-    kind: postgresql
-    metadata:
-      name: acid-demo-cluster
-    spec:
-      numberOfInstances: 2
-      postgresql:
-        parameters:
-          wal_level: logical
-      patroni:
-        slots:
-          clickhouse_sync:
-            type: logical
-            database: demodb
-            plugin: pgoutput
-    ```
+   ```yaml
+   apiVersion: "acid.zalan.do/v1"
+   kind: postgresql
+   metadata:
+     name: acid-demo-cluster
+   spec:
+     numberOfInstances: 2
+     postgresql:
+       parameters:
+         wal_level: logical
+     patroni:
+       slots:
+         clickhouse_sync:
+           type: logical
+           database: demodb
+           plugin: pgoutput
+   ```
 
 2. Дождитесь готовности слота репликации, затем начните транзакцию и экспортируйте идентификатор снимка транзакции (snapshot):
 
-    ```sql
-    BEGIN;
-    SELECT pg_export_snapshot();
-    ```
+   ```sql
+   BEGIN;
+   SELECT pg_export_snapshot();
+   ```
 
 3. В ClickHouse создайте базу данных:
 
-    ```sql
-    CREATE DATABASE demodb
-    ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
-    SETTINGS
-      materialized_postgresql_replication_slot = 'clickhouse_sync',
-      materialized_postgresql_snapshot = '0000000A-0000023F-3',
-      materialized_postgresql_tables_list = 'table1,table2,table3';
-    ```
+   ```sql
+   CREATE DATABASE demodb
+   ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
+   SETTINGS
+     materialized_postgresql_replication_slot = 'clickhouse_sync',
+     materialized_postgresql_snapshot = '0000000A-0000023F-3',
+     materialized_postgresql_tables_list = 'table1,table2,table3';
+   ```
 
 4. Завершите транзакцию в PostgreSQL после того, как подтвердите репликацию в базу данных ClickHouse. Убедитесь, что репликация продолжается после переключения:
 
-    ```bash
-    kubectl exec acid-demo-cluster-0 -c postgres -- su postgres -c 'patronictl failover --candidate acid-demo-cluster-1 --force'
-    ```
+   ```bash
+   kubectl exec acid-demo-cluster-0 -c postgres -- su postgres -c 'patronictl failover --candidate acid-demo-cluster-1 --force'
+   ```
 
 ### Необходимые привилегии \{#required-permissions\}
 
 1. [CREATE PUBLICATION](https://postgrespro.ru/docs/postgresql/14/sql-createpublication) — привилегия на выполнение оператора создания публикации.
 
-2. [CREATE_REPLICATION_SLOT](https://postgrespro.ru/docs/postgrespro/10/protocol-replication#PROTOCOL-REPLICATION-CREATE-SLOT) — привилегия репликации.
+2. [CREATE&#95;REPLICATION&#95;SLOT](https://postgrespro.ru/docs/postgrespro/10/protocol-replication#PROTOCOL-REPLICATION-CREATE-SLOT) — привилегия репликации.
 
-3. [pg_drop_replication_slot](https://postgrespro.ru/docs/postgrespro/9.5/functions-admin#functions-replication) — привилегия репликации или права суперпользователя.
+3. [pg&#95;drop&#95;replication&#95;slot](https://postgrespro.ru/docs/postgrespro/9.5/functions-admin#functions-replication) — привилегия репликации или права суперпользователя.
 
 4. [DROP PUBLICATION](https://postgrespro.ru/docs/postgresql/10/sql-droppublication) — требуется быть владельцем публикации (`username` в самом движке MaterializedPostgreSQL).
 
@@ -292,8 +292,8 @@ ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_bloc
 
 Доступ к таблицам:
 
-1. pg_publication
+1. pg&#95;publication
 
-2. pg_replication_slots
+2. pg&#95;replication&#95;slots
 
-3. pg_publication_tables
+3. pg&#95;publication&#95;tables

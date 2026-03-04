@@ -118,4 +118,4 @@ ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND 
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Создание аналитических приложений реального времени с ClickHouse и Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
+* Блог: [Создание аналитических приложений реального времени с ClickHouse и Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)

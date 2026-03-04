@@ -13,8 +13,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # YTsaurus 表引擎 \{#ytsaurus-table-engine\}
 
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
 
 YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
 
@@ -123,6 +124,6 @@ SELECT * FROM yt_saurus;
 
 **另请参阅**
 
-- [ytsaurus](../../../sql-reference/table-functions/ytsaurus.md) 表函数
-- [ytsaurus 数据架构](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
-- [ytsaurus 数据类型](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)
+* [ytsaurus](../../../sql-reference/table-functions/ytsaurus.md) 表函数
+* [ytsaurus 数据架构](https://ytsaurus.tech/docs/en/user-guide/storage/static-schema)
+* [ytsaurus 数据类型](https://ytsaurus.tech/docs/en/user-guide/storage/data-types)

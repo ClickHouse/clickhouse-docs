@@ -10,7 +10,6 @@ keywords: ['kafka', 'kafka connect', 'jdbc', '集成', '数据管道']
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # JDBC connector \{#jdbc-connector\}
 
 :::note
@@ -68,15 +67,15 @@ JDBC Connector 基于 [Confluent Community License](https://www.confluent.io/con
 * `pk.mode` - 与 ClickHouse 无关，设置为 none。
 * `auto.create` - 不支持，必须为 false。
 * `auto.evolve` - 我们建议将此设置为 false，尽管未来可能会提供支持。
-* `insert.mode` - 设置为 "insert"。当前不支持其他模式。
+* `insert.mode` - 设置为 &quot;insert&quot;。当前不支持其他模式。
 * `key.converter` - 根据 key 的类型进行设置。
 * `value.converter` - 根据 topic 中数据的类型进行设置。该数据必须具有受支持的 schema——JSON、Avro 或 Protobuf 格式。
 
 如果使用我们的示例数据集进行测试，请确保如下设置：
 
 * `value.converter.schemas.enable` - 设置为 false，因为我们使用 schema registry。如果你在每条消息中嵌入 schema，则设置为 true。
-* `key.converter` - 设置为 "org.apache.kafka.connect.storage.StringConverter"。我们使用字符串类型的 key。
-* `value.converter` - 设置为 "io.confluent.connect.json.JsonSchemaConverter"。
+* `key.converter` - 设置为 &quot;org.apache.kafka.connect.storage.StringConverter&quot;。我们使用字符串类型的 key。
+* `value.converter` - 设置为 &quot;io.confluent.connect.json.JsonSchemaConverter&quot;。
 * `value.converter.schema.registry.url` - 设置为 schema server 的 URL，并通过参数 `value.converter.schema.registry.basic.auth.user.info` 配置访问 schema server 的凭据。
 
 适用于 GitHub 示例数据的配置文件示例可在[此处](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink)找到，假定 Connect 以 standalone 模式运行且 Kafka 部署在 Confluent Cloud 上。
@@ -113,7 +112,6 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-
 #### 5. 启动 Kafka Connect \{#5-start-kafka-connect\}
 
 以 [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) 或 [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) 模式启动 Kafka Connect。
@@ -121,7 +119,6 @@ CREATE TABLE github
 ```bash
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
-
 
 #### 6. 向 Kafka 添加数据 \{#6-add-data-to-kafka\}
 
@@ -149,11 +146,10 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-
 ### 推荐延伸阅读 \{#recommended-further-reading\}
 
 * [Kafka Sink 配置参数](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect 深入解析：JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)
 * [Kafka Connect JDBC Sink 深入解析：主键处理](https://rmoff.net/2021/03/12/kafka-connect-jdbc-sink-deep-dive-working-with-primary-keys/)
-* [Kafka Connect 实战：JDBC Sink](https://www.youtube.com/watch?v=b-3qN_tlYR4&t=981s) - 适合偏好看视频而非阅读的读者。
+* [Kafka Connect 实战：JDBC Sink](https://www.youtube.com/watch?v=b-3qN_tlYR4\&t=981s) - 适合偏好看视频而非阅读的读者。
 * [Kafka Connect 深入解析：转换器与序列化机制详解](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)

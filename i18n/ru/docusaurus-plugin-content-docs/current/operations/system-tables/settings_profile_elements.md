@@ -6,7 +6,7 @@ title: 'system.settings_profile_elements'
 doc_type: 'reference'
 ---
 
-# system.settings&#95;profile&#95;elements \{#systemsettings&#95;profile&#95;elements\}
+# system.settings_profile_elements \{#systemsettings_profile_elements\}
 
 Описывает содержимое профиля настроек:
 

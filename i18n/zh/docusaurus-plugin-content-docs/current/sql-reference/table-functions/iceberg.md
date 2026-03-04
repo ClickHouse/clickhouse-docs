@@ -69,7 +69,6 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-
 ## 使用数据目录 \{#iceberg-writes-catalogs\}
 
 Iceberg 表也可以与多种数据目录配合使用，例如 [REST Catalog](https://iceberg.apache.org/rest-catalog-spec/)、[AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html) 和 [Unity Catalog](https://www.unitycatalog.io/)。
@@ -114,14 +113,13 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-
 ## 模式演进 \{#schema-evolution\}
 
 目前，借助 CH，你可以读取其模式随时间发生变化的 Iceberg 表。我们目前支持读取那些列被添加或删除、并且列顺序发生变化的表。你也可以将某个原本不允许为 NULL 的列更改为允许为 NULL 的列。此外，我们支持对简单类型进行类型转换，具体包括： 
 
-* int -> long
-* float -> double
-* decimal(P, S) -> decimal(P', S) 其中 P' > P。
+* int -&gt; long
+* float -&gt; double
+* decimal(P, S) -&gt; decimal(P&#39;, S) 其中 P&#39; &gt; P。
 
 目前尚不支持修改嵌套结构，或变更数组和 map 中元素的类型。
 
@@ -139,27 +137,29 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
 以下删除方式**不受支持**：
 
-- [等值删除（equality deletes）](https://iceberg.apache.org/spec/#equality-delete-files)
-- [删除向量（deletion vectors）](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入）
+* [等值删除（equality deletes）](https://iceberg.apache.org/spec/#equality-delete-files)
+* [删除向量（deletion vectors）](https://iceberg.apache.org/spec/#deletion-vectors)（在 v3 中引入）
 
 ### 基本用法 \{#basic-usage\}
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
- ```
+```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
- ```
+```
 
 注意：在同一个查询中无法同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
 ### 重要注意事项 \{#important-considerations\}
 
 * 通常在以下情况下会创建 **snapshot（快照）**：
+
 * 有新数据写入到表中
+
 * 执行了某种数据压缩（compaction）操作
 
 * **模式变更通常不会创建 snapshot（快照）** —— 这在对经历过模式演进的表使用 time travel（时间回溯）时会产生一些重要的行为差异。
@@ -270,7 +270,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
 这是因为 `ALTER TABLE` 不会创建新的快照；但对于当前表，Spark 会从最新的元数据文件中读取 `schema_id`，而不是从某个快照中获取。
 
-
 #### 场景 3：历史模式与当前模式的差异 \{#scenario-3\}
 
 第二种情况是，在执行时间穿梭（time travel）时，你无法获取该表在写入任何数据之前的状态：
@@ -292,7 +291,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
 在 ClickHouse 中，其行为与 Spark 一致。你可以把 Spark 的 Select 查询在概念上替换为 ClickHouse 的 Select 查询，二者的工作方式是完全相同的。
 
-
 ## 元数据文件解析 \{#metadata-file-resolution\}
 
 在 ClickHouse 中使用 `iceberg` 表函数时，系统需要定位描述 Iceberg 表结构的正确 metadata.json 文件。以下是该解析过程的具体工作方式：
@@ -300,17 +298,17 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 ### 候选文件搜索（按优先级顺序） \{#candidate-search\}
 
 1. **直接指定路径**：
-*如果你设置了 `iceberg_metadata_file_path`，系统会将其与 Iceberg 表目录路径拼接，并使用这个精确路径。
+   *如果你设置了 `iceberg_metadata_file_path`，系统会将其与 Iceberg 表目录路径拼接，并使用这个精确路径。
 
 * 当提供此设置时，其他所有解析相关的设置都会被忽略。
 
 2. **按表 UUID 匹配**：
-*如果指定了 `iceberg_metadata_table_uuid`，系统将：
-    *只检查 `metadata` 目录中的 `.metadata.json` 文件
-    *仅保留其中 `table-uuid` 字段与所指定 UUID 匹配的文件（不区分大小写）
+   *如果指定了 `iceberg_metadata_table_uuid`，系统将：
+   *只检查 `metadata` 目录中的 `.metadata.json` 文件
+   *仅保留其中 `table-uuid` 字段与所指定 UUID 匹配的文件（不区分大小写）
 
 3. **默认搜索**：
-*如果未提供上述任一设置，则 `metadata` 目录中的所有 `.metadata.json` 文件都将作为候选文件
+   *如果未提供上述任一设置，则 `metadata` 目录中的所有 `.metadata.json` 文件都将作为候选文件
 
 ### 选择最新的文件 \{#most-recent-file\}
 
@@ -341,11 +339,11 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
-- `_time` — 文件最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
-- `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
+* `_time` — 文件最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
+* `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
 
 ## 向 Iceberg 表写入 \{#writes-into-iceberg-table\}
 
@@ -356,7 +354,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 ```sql
 SET allow_insert_into_iceberg = 1;
 ```
-
 
 ### 创建表 \{#create-iceberg-table\}
 
@@ -509,7 +506,6 @@ x: Ivanov
 value: 993
 ```
 
-
 ### 合并整理（Compaction） \{#iceberg-writes-compaction\}
 
 ClickHouse 支持对 Iceberg 表进行合并整理（compaction）。当前，它可以在更新元数据的同时，将 position delete 文件合并到数据文件中。先前的快照 ID 和时间戳保持不变，因此仍然可以使用相同的值进行时间旅行（time travel）。
@@ -530,7 +526,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ## 另请参阅 \{#see-also\}
 

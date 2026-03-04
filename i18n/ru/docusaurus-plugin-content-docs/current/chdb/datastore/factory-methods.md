@@ -31,7 +31,6 @@ ds = DataStore.uri("mysql://user:pass@host:3306/db/table")
 ds = DataStore.uri("postgresql://user:pass@host:5432/db/table")
 ```
 
-
 ### Справочник по синтаксису URI \{#uri-syntax\}
 
 | Тип источника | Формат URI | Пример |
@@ -46,7 +45,7 @@ ds = DataStore.uri("postgresql://user:pass@host:5432/db/table")
 | SQLite | `sqlite:///path?table=name` | `sqlite:///data.db?table=users` |
 | ClickHouse | `clickhouse://host:port/db/table` | `clickhouse://localhost:9000/default/hits` |
 
----
+***
 
 ## Файловые источники \{#file-sources\}
 
@@ -85,7 +84,6 @@ ds = DataStore.from_file("data.txt", format="CSV")
 ds = DataStore.from_file("data.csv.gz", compression="gzip")
 ```
 
-
 ### Функции чтения, совместимые с Pandas \{#pandas-read\}
 
 ```python
@@ -108,7 +106,6 @@ ds = pd.read_excel("data.xlsx", sheet_name="Sheet1")
 ```
 
 ***
-
 
 ## Облачное хранилище \{#cloud-storage\}
 
@@ -149,7 +146,6 @@ ds = DataStore.uri("s3://bucket/data.parquet?nosign=true")
 ds = DataStore.uri("s3://bucket/data.parquet?access_key_id=KEY&secret_access_key=SECRET")
 ```
 
-
 ### `from_gcs` \{#from-gcs\}
 
 Создаёт DataStore из Google Cloud Storage.
@@ -164,7 +160,6 @@ DataStore.from_gcs(url, credentials_path=None, **kwargs)
 ds = DataStore.from_gcs("gs://bucket/data.parquet")
 ds = DataStore.from_gcs("gs://bucket/data.parquet", credentials_path="/path/to/creds.json")
 ```
-
 
 ### `from_azure` \{#from-azure\}
 
@@ -184,7 +179,6 @@ ds = DataStore.from_azure(
 )
 ```
 
-
 ### `from_hdfs` \{#from-hdfs\}
 
 Создаёт DataStore из HDFS.
@@ -198,7 +192,6 @@ DataStore.from_hdfs(url, **kwargs)
 ```python
 ds = DataStore.from_hdfs("hdfs://namenode:8020/path/data.parquet")
 ```
-
 
 ### `from_url` \{#from-url\}
 
@@ -216,7 +209,6 @@ ds = DataStore.from_url("https://raw.githubusercontent.com/user/repo/main/data.p
 ```
 
 ***
-
 
 ## Базы данных \{#databases\}
 
@@ -254,7 +246,6 @@ ds = DataStore.from_mysql(
 ds = DataStore.uri("mysql://root:password@localhost:3306/mydb/users")
 ```
 
-
 ### `from_postgresql` \{#from-postgresql\}
 
 Создаёт объект DataStore из базы данных PostgreSQL.
@@ -277,7 +268,6 @@ ds = DataStore.from_postgresql(
 # Using URI
 ds = DataStore.uri("postgresql://postgres:password@localhost:5432/mydb/users")
 ```
-
 
 ### `from_clickhouse` \{#from-clickhouse\}
 
@@ -309,7 +299,6 @@ ds.tables("production")         # List tables
 result = ds.sql("SELECT * FROM production.users LIMIT 10")
 ```
 
-
 ### `from_mongodb` \{#from-mongodb\}
 
 Создает DataStore на основе MongoDB.
@@ -327,7 +316,6 @@ ds = DataStore.from_mongodb(
     collection="users"
 )
 ```
-
 
 ### `from_sqlite` \{#from-sqlite\}
 
@@ -348,7 +336,6 @@ ds = DataStore.uri("sqlite:///data.db?table=users")
 
 ***
 
-
 ## Озера данных \{#data-lakes\}
 
 ### `from_iceberg` \{#from-iceberg\}
@@ -366,7 +353,6 @@ ds = DataStore.from_iceberg("/path/to/iceberg_table")
 ds = DataStore.uri("iceberg://catalog/namespace/table")
 ```
 
-
 ### `from_delta` \{#from-delta\}
 
 Создаёт объект DataStore из таблицы Delta Lake.
@@ -381,7 +367,6 @@ DataStore.from_delta(path, **kwargs)
 ds = DataStore.from_delta("/path/to/delta_table")
 ds = DataStore.uri("deltalake:///path/to/delta_table")
 ```
-
 
 ### `from_hudi` \{#from-hudi\}
 
@@ -399,7 +384,6 @@ ds = DataStore.uri("hudi:///path/to/hudi_table")
 ```
 
 ***
-
 
 ## Источники в оперативной памяти \{#in-memory\}
 
@@ -422,7 +406,6 @@ pdf = pandas.DataFrame({'a': [1, 2, 3], 'b': ['x', 'y', 'z']})
 ds = DataStore.from_df(pdf)
 ```
 
-
 ### `DataFrame` Constructor \{#dataframe-constructor\}
 
 Создание DataStore с помощью конструктора, аналогичного pandas.
@@ -444,7 +427,6 @@ ds = pd.DataFrame(pdf)
 
 ***
 
-
 ## Специальные источники \{#special-sources\}
 
 ### `from_numbers` \{#from-numbers\}
@@ -462,7 +444,6 @@ ds = DataStore.from_numbers(1000000)  # 1M rows with 'number' column
 result = ds.filter(ds['number'] % 2 == 0).head(10)  # Even numbers
 ```
 
-
 ### `from_random` \{#from-random\}
 
 Создает DataStore со случайными данными.
@@ -476,7 +457,6 @@ DataStore.from_random(rows, columns, **kwargs)
 ```python
 ds = DataStore.from_random(rows=1000, columns=5)
 ```
-
 
 ### `run_sql` \{#run-sql\}
 
@@ -497,7 +477,6 @@ ds = DataStore.run_sql("""
 ```
 
 ***
-
 
 ## Сводная таблица \{#summary\}
 

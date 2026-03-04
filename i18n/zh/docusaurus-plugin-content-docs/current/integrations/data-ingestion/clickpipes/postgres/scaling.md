@@ -16,15 +16,15 @@ integration:
 
 扩展 API 适用于以下场景：
 
-- 大规模初始加载（超过 4 TB）
-- 尽可能快速地迁移中等规模的数据
-- 在同一服务下支持超过 8 个 CDC ClickPipes
+* 大规模初始加载（超过 4 TB）
+* 尽可能快速地迁移中等规模的数据
+* 在同一服务下支持超过 8 个 CDC ClickPipes
 
 在尝试扩容之前，请先考虑：
 
-- 确保源数据库具有足够的可用容量
-- 在创建 ClickPipe 时，优先调整[初始加载并行度和分区](/integrations/clickpipes/postgres/parallel_initial_load)
-- 检查源端是否存在可能导致 CDC 延迟的[长时间运行事务](/integrations/clickpipes/postgres/sync_control#transactions)
+* 确保源数据库具有足够的可用容量
+* 在创建 ClickPipe 时，优先调整[初始加载并行度和分区](/integrations/clickpipes/postgres/parallel_initial_load)
+* 检查源端是否存在可能导致 CDC 延迟的[长时间运行事务](/integrations/clickpipes/postgres/sync_control#transactions)
 
 **提升扩展级别会按比例增加 ClickPipes 的计算成本。** 如果你仅为初始加载而扩容，务必在快照完成后及时缩容，以避免产生意外费用。有关定价的更多信息，请参阅 [Postgres CDC 定价](/cloud/reference/billing/clickpipes)。
 

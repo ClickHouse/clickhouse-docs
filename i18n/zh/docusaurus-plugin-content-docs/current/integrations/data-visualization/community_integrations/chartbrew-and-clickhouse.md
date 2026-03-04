@@ -25,10 +25,9 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
-
 # 将 Chartbrew 连接到 ClickHouse \{#connecting-chartbrew-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [Chartbrew](https://chartbrew.com) 是一个数据可视化平台，用于创建仪表板并实时监控数据。它支持包括 ClickHouse 在内的多种数据源，并提供一个无需编写代码的界面来构建图表和报表。
 
@@ -49,22 +48,24 @@ import Image from '@theme/IdealImage';
 ## 2. 将 Chartbrew 连接到 ClickHouse \{#2-connect-chartbrew-to-clickhouse\}
 
 1. 登录 [Chartbrew](https://chartbrew.com/login) 并进入 **Connections** 选项卡。
+
 2. 点击 **Create connection**，然后在可用数据库选项中选择 **ClickHouse**。
 
    <Image img={chartbrew_02} size="lg" alt="在 Chartbrew 中选择 ClickHouse 连接" />
 
 3. 输入 ClickHouse 数据库的连接信息：
 
-   - **Display Name**：用于在 Chartbrew 中标识该连接的名称。
-   - **Host**：ClickHouse 服务器的主机名或 IP 地址。
-   - **Port**：HTTPS 连接通常为 `8443`。
-   - **Database Name**：需要连接的数据库名称。
-   - **Username**：ClickHouse 用户名。
-   - **Password**：ClickHouse 密码。
+   * **Display Name**：用于在 Chartbrew 中标识该连接的名称。
+   * **Host**：ClickHouse 服务器的主机名或 IP 地址。
+   * **Port**：HTTPS 连接通常为 `8443`。
+   * **Database Name**：需要连接的数据库名称。
+   * **Username**：ClickHouse 用户名。
+   * **Password**：ClickHouse 密码。
 
    <Image img={chartbrew_03} size="lg" alt="Chartbrew 中的 ClickHouse 连接设置" />
 
 4. 点击 **Test connection** 来验证 Chartbrew 是否可以连接到 ClickHouse。
+
 5. 如果测试成功，点击 **Save connection**。Chartbrew 将自动从 ClickHouse 获取 schema。
 
    <Image img={chartbrew_04} size="lg" alt="Chartbrew 中的 ClickHouse JSON schema" />
@@ -95,13 +96,12 @@ import Image from '@theme/IdealImage';
 
 数据返回后，点击 **Configure dataset** 来配置可视化参数。
 
-
 ## 4. 创建可视化 \{#4-create-a-visualization\}
 
 1. 为可视化定义一个指标（数值型）和一个维度（类别型）。
-  2. 预览数据集，确保查询结果结构正确。
-  3. 选择图表类型（例如折线图、柱状图、饼图），并将其添加到仪表盘中。
-  4. 点击 **Complete dataset** 以完成配置。
+2. 预览数据集，确保查询结果结构正确。
+3. 选择图表类型（例如折线图、柱状图、饼图），并将其添加到仪表盘中。
+4. 点击 **Complete dataset** 以完成配置。
 
 <Image img={chartbrew_08} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
 
@@ -114,8 +114,8 @@ import Image from '@theme/IdealImage';
 为了保持仪表板数据为最新状态，您可以设置自动数据更新：
 
 1. 点击数据集刷新按钮旁边的日历图标。
-  2. 配置更新间隔（例如每小时、每天）。
-  3. 保存设置以启用自动刷新。
+2. 配置更新间隔（例如每小时、每天）。
+3. 保存设置以启用自动刷新。
 
 <Image img={chartbrew_09} size="lg" alt="Chartbrew 数据集刷新设置" />
 

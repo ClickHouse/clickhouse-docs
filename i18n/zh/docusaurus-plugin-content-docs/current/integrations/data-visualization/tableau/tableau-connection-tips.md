@@ -14,10 +14,9 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 连接建议 \{#connection-tips\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## Initial SQL 选项卡 \{#initial-sql-tab\}
 
@@ -27,21 +26,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 SET my_setting=value;
 ```
 
-
 ## 高级选项卡 \{#advanced-tab\}
 
 在 99% 的情况下，无需使用“高级”选项卡；对于剩余 1% 的场景，可以使用以下设置：
 
-- **Custom Connection Parameters**。默认已经指定了 `socket_timeout`，如果某些抽取更新耗时非常长，可能需要调整此参数。该参数的取值单位为毫秒。其余可用参数可以在[这里](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java)找到，将它们以逗号分隔的形式添加到此字段中
-- **JDBC Driver custom_http_params**。此字段允许通过向[驱动的 `custom_http_params` 参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)传递值，将部分参数附加到 ClickHouse 连接字符串中。例如，当勾选 *Set Session ID* 复选框时，就会通过这种方式指定 `session_id`
-- **JDBC Driver `typeMappings`**。此字段允许你[传递 ClickHouse 数据类型到 JDBC 驱动使用的 Java 数据类型的映射列表](https://github.com/ClickHouse/clickhouse-jdbc#configuration)。连接器得益于此参数会自动将大整数显示为字符串，你可以通过传入自己的映射 Set（*我不知道为什么*）来修改这一行为，例如：
-    ```text
-    UInt256=java.lang.Double,Int256=java.lang.Double
-    ```
+* **Custom Connection Parameters**。默认已经指定了 `socket_timeout`，如果某些抽取更新耗时非常长，可能需要调整此参数。该参数的取值单位为毫秒。其余可用参数可以在[这里](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java)找到，将它们以逗号分隔的形式添加到此字段中
+
+* **JDBC Driver custom&#95;http&#95;params**。此字段允许通过向[驱动的 `custom_http_params` 参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)传递值，将部分参数附加到 ClickHouse 连接字符串中。例如，当勾选 *Set Session ID* 复选框时，就会通过这种方式指定 `session_id`
+
+* **JDBC Driver `typeMappings`**。此字段允许你[传递 ClickHouse 数据类型到 JDBC 驱动使用的 Java 数据类型的映射列表](https://github.com/ClickHouse/clickhouse-jdbc#configuration)。连接器得益于此参数会自动将大整数显示为字符串，你可以通过传入自己的映射 Set（*我不知道为什么*）来修改这一行为，例如：
+  ```text
+  UInt256=java.lang.Double,Int256=java.lang.Double
+  ```
   关于映射的更多内容，请参见相应章节
 
-- **JDBC Driver URL Parameters**。可以在此字段中传递其余[驱动参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)，例如 `jdbcCompliance`。请注意，参数值必须以 URL 编码格式传递；并且当在此字段以及高级选项卡前面几个字段中传递 `custom_http_params` 或 `typeMappings` 时，高级选项卡中前两个字段的取值具有更高优先级
-- **Set Session ID** 复选框。用于在 Initial SQL 选项卡中设置会话级别的设置，会以 `"tableau-jdbc-connector-*{timestamp}*-*{number}*"` 的格式生成包含时间戳和伪随机数的 `session_id`
+* **JDBC Driver URL Parameters**。可以在此字段中传递其余[驱动参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)，例如 `jdbcCompliance`。请注意，参数值必须以 URL 编码格式传递；并且当在此字段以及高级选项卡前面几个字段中传递 `custom_http_params` 或 `typeMappings` 时，高级选项卡中前两个字段的取值具有更高优先级
+
+* **Set Session ID** 复选框。用于在 Initial SQL 选项卡中设置会话级别的设置，会以 `"tableau-jdbc-connector-*{timestamp}*-*{number}*"` 的格式生成包含时间戳和伪随机数的 `session_id`
 
 ## 对 UInt64、Int128、(U)Int256 数据类型的支持有限 \{#limited-support-for-uint64-int128-uint256-data-types\}
 

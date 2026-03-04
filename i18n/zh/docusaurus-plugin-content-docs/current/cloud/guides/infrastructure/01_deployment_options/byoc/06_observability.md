@@ -16,7 +16,6 @@ import byoc_mixin_5 from '@site/static/images/cloud/reference/byoc-mixin-5.png';
 
 BYOC 部署提供完善的可观测性功能，使你能够通过专用的 Prometheus 监控栈，以及来自 ClickHouse 服务器的直接指标端点来监控你的 ClickHouse 服务。所有可观测性数据都会保留在你的云账号中，使你能够对监控基础设施实现完全掌控。
 
-
 ## Prometheus 监控方式 \{#prometheus-monitoring\}
 
 BYOC 提供两种主要方式，使用 Prometheus 来收集和可视化指标：
@@ -36,15 +35,15 @@ BYOC 提供两种主要方式，使用 Prometheus 来收集和可视化指标：
 | **最适用场景**           | 全面性的基础设施与服务监控                                      | 面向特定服务的监控与集成                                   |
 | **如何集成**             | 在外部 Prometheus 中配置联邦来摄取集群指标                      | 将 ClickHouse 指标端点直接添加到你的 Prometheus 配置中     |
 
-**推荐做法**：对于大多数使用场景，我们建议集成内置 Prometheus 栈，因为它能够提供 BYOC 部署中所有组件（ClickHouse 服务、Kubernetes 集群以及相关服务）的完整指标，而不仅仅是 ClickHouse 服务器指标。 
+**推荐做法**：对于大多数使用场景，我们建议集成内置 Prometheus 栈，因为它能够提供 BYOC 部署中所有组件（ClickHouse 服务、Kubernetes 集群以及相关服务）的完整指标，而不仅仅是 ClickHouse 服务器指标。
 
 ## 内置 BYOC Prometheus 堆栈 \{#builtin-prometheus-stack\}
 
 ClickHouse BYOC 会在 Kubernetes 集群中部署一个完整的 Prometheus 监控堆栈，包括 Prometheus、Grafana、AlertManager，以及可选用于长期指标存储的 Thanos。该堆栈会收集以下来源的指标：
 
-- ClickHouse 服务器和 ClickHouse Keeper
-- Kubernetes 集群及系统组件
-- 底层基础设施节点
+* ClickHouse 服务器和 ClickHouse Keeper
+* Kubernetes 集群及系统组件
+* 底层基础设施节点
 
 ### 访问 Prometheus Stack \{#accessing-prometheus-stack\}
 
@@ -102,7 +101,6 @@ scrape_configs:
         - 'prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com'
 ```
 
-
 ## ClickHouse 服务 Prometheus 集成 \{#direct-prometheus-integration\}
 
 ClickHouse 服务会暴露一个兼容 Prometheus 的指标端点，你可以使用自己的 Prometheus 实例直接对其进行抓取。此方式能够提供 ClickHouse 特定的指标，但不包括 Kubernetes 或其他配套服务的指标。
@@ -128,7 +126,6 @@ ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server
 # TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
 ```
-
 
 ### 认证 \{#authentication\}
 
@@ -161,7 +158,6 @@ GRANT SELECT(description, labels, metric, value) ON system.histogram_metrics TO 
 GRANT SELECT(description, metric, value) ON system.metrics TO scrapping_user;
 ```
 
-
 ### 配置 Prometheus \{#configuring-prometheus\}
 
 将 Prometheus 实例配置为从 ClickHouse 指标端点抓取数据：
@@ -187,7 +183,6 @@ scrape_configs:
 * 将 `<service-subdomain>.<byoc-subdomain>.<region>.<provider>.byoc.clickhouse-byoc.com:8443` 替换为您的实际服务端点
 * 将 `<username>` 和 `<password>` 替换为用于抓取的用户凭据
 
-
 ## ClickHouse Mixin \{#clickhouse-mixin\}
 
 对于希望使用现成监控仪表盘的团队，ClickHouse 提供了一个 Prometheus 的 **ClickHouse Mixin**。这是一个专门为监控 ClickHouse 集群而设计的预构建 Grafana 仪表盘。
@@ -196,22 +191,22 @@ scrape_configs:
 
 在 Prometheus 实例与 ClickHouse 监控栈集成完成后，可以按照以下步骤在 Grafana 中对指标进行可视化展示：
 
-1. **在 Grafana 中添加 Prometheus 数据源**  
-   在 Grafana 侧边栏进入 "Data sources"，点击 "Add data source"，选择 "Prometheus"。输入 Prometheus 实例的 URL 以及连接所需的凭据。
+1. **在 Grafana 中添加 Prometheus 数据源**\
+   在 Grafana 侧边栏进入 &quot;Data sources&quot;，点击 &quot;Add data source&quot;，选择 &quot;Prometheus&quot;。输入 Prometheus 实例的 URL 以及连接所需的凭据。
 
-<Image img={byoc_mixin_1} size="lg" alt="BYOC Mixin 1" background='black'/>
+<Image img={byoc_mixin_1} size="lg" alt="BYOC Mixin 1" background="black" />
 
-<Image img={byoc_mixin_2} size="lg" alt="BYOC Mixin 2" background='black'/>
+<Image img={byoc_mixin_2} size="lg" alt="BYOC Mixin 2" background="black" />
 
-<Image img={byoc_mixin_3} size="lg" alt="BYOC Mixin 3" background='black'/>
+<Image img={byoc_mixin_3} size="lg" alt="BYOC Mixin 3" background="black" />
 
-2. **导入 ClickHouse Dashboard**  
-   在 Grafana 中，进入 dashboard 区域并选择 "Import"。你可以上传 dashboard 的 JSON 文件，或直接粘贴其内容。JSON 文件可从 ClickHouse mixin 仓库获取：  
+2. **导入 ClickHouse Dashboard**\
+   在 Grafana 中，进入 dashboard 区域并选择 &quot;Import&quot;。你可以上传 dashboard 的 JSON 文件，或直接粘贴其内容。JSON 文件可从 ClickHouse mixin 仓库获取：\
    [ClickHouse Mix-in Dashboard JSON](https://github.com/ClickHouse/clickhouse-mixin/blob/main/dashboard_byoc.json)
 
-<Image img={byoc_mixin_4} size="lg" alt="BYOC Mixin 4" background='black'/>
+<Image img={byoc_mixin_4} size="lg" alt="BYOC Mixin 4" background="black" />
 
-3. **探索你的指标**  
+3. **探索你的指标**\
    当 dashboard 已导入并配置为使用你的 Prometheus 数据源后，就可以看到来自 ClickHouse Cloud 服务的实时指标。
 
-<Image img={byoc_mixin_5} size="lg" alt="BYOC Mixin 5" background='black'/>
+<Image img={byoc_mixin_5} size="lg" alt="BYOC Mixin 5" background="black" />

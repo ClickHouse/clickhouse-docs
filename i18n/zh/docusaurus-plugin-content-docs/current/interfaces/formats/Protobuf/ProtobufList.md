@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 描述 \{#description\}
 
-`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似，但每一行表示为一系列子消息，这些子消息包含在一个名称固定为 "Envelope" 的消息中。
+`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似，但每一行表示为一系列子消息，这些子消息包含在一个名称固定为 &quot;Envelope&quot; 的消息中。
 
 ## 示例用法 \{#example-usage\}
 

@@ -13,8 +13,8 @@ doc_type: 'guide'
 
 `NATS` 可以让您：
 
-- 发布或订阅消息主题。
-- 在有新消息时进行处理。
+* 发布或订阅消息主题。
+* 在有新消息时进行处理。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -76,7 +76,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 SSL 连接：
 
-
 要使用安全连接，请设置 `nats_secure = 1`。
 证书验证由环境变量 `CLICKHOUSE_NATS_TLS_SECURE` 控制。如果证书已过期、自签名、缺失或其他无效情况，可以通过设置 `CLICKHOUSE_NATS_TLS_SECURE=0` 来禁用验证。
 
@@ -128,7 +127,6 @@ SSL 连接：
 </nats>
 ```
 
-
 ## 描述 \{#description\}
 
 `SELECT` 对于读取消息（除调试用途外）并不是特别有用，因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)来创建实时处理流水线。为此，您需要：
@@ -170,15 +168,14 @@ SSL 连接：
 
 如果你想通过 `ALTER` 更改目标表，建议先禁用该物化视图，以避免目标表与视图数据之间出现不一致。
 
-
 ## 虚拟列 \{#virtual-columns\}
 
-- `_subject` - NATS 消息的主题。数据类型：`String`。
+* `_subject` - NATS 消息的主题。数据类型：`String`。
 
 当 `nats_handle_error_mode='stream'` 时的附加虚拟列：
 
-- `_raw_message` - 无法成功解析的原始消息。数据类型：`Nullable(String)`。
-- `_error` - 解析失败时产生的异常信息。数据类型：`Nullable(String)`。
+* `_raw_message` - 无法成功解析的原始消息。数据类型：`Nullable(String)`。
+* `_error` - 解析失败时产生的异常信息。数据类型：`Nullable(String)`。
 
 注意：仅在解析过程中发生异常时，`_raw_message` 和 `_error` 虚拟列才会被写入；当消息成功解析时，它们始终为 `NULL`。
 
@@ -187,8 +184,8 @@ SSL 连接：
 NATS 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/formats.md)。
 一条 NATS 消息中的行数取决于所使用的格式是基于行还是基于块：
 
-- 对于基于行的格式，可以通过设置 `nats_max_rows_per_message` 来控制一条 NATS 消息中的行数。
-- 对于基于块的格式，我们无法将一个块拆分为更小的部分，但可以通过全局设置 [max_block_size](/operations/settings/settings#max_block_size) 来控制一个块中的行数。
+* 对于基于行的格式，可以通过设置 `nats_max_rows_per_message` 来控制一条 NATS 消息中的行数。
+* 对于基于块的格式，我们无法将一个块拆分为更小的部分，但可以通过全局设置 [max&#95;block&#95;size](/operations/settings/settings#max_block_size) 来控制一个块中的行数。
 
 ## 使用 JetStream \{#using-jetstream\}
 

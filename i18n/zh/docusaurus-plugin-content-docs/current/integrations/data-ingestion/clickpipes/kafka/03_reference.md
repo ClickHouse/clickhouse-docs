@@ -20,26 +20,25 @@ import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
-
 # 参考 \{#reference\}
 
 ## 支持的数据源 \{#supported-data-sources\}
 
 | 名称                 |Logo|类型| 状态           | 描述                                                                                                  |
 |----------------------|----|----|----------------|-------------------------------------------------------------------------------------------------------|
-| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka 标志" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| 稳定           | 配置 ClickPipes 并开始从 Apache Kafka 摄取流式数据到 ClickHouse Cloud。                               |
-| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud 标志" style={{width: '3rem'}}/>|Streaming| 稳定           | 通过我们的直接集成，将 Confluent 与 ClickHouse Cloud 的能力结合使用。                                |
-| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda 标志"/>|Streaming| 稳定           | 配置 ClickPipes 并开始从 Redpanda 摄取流式数据到 ClickHouse Cloud。                                  |
-| AWS MSK              |<Msksvg class="image" alt="AWS MSK 标志" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| 稳定           | 配置 ClickPipes 并开始从 AWS MSK 摄取流式数据到 ClickHouse Cloud。                                   |
-| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs 标志" style={{width: '3rem'}}/>|Streaming| 稳定           | 配置 ClickPipes 并开始从 Azure Event Hubs 摄取流式数据到 ClickHouse Cloud。                          |
-| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream 标志" style={{width: '3rem'}}/>|Streaming| 稳定           | 配置 ClickPipes 并开始从 WarpStream 摄取流式数据到 ClickHouse Cloud。                                |
+| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka 标志" style={{width: '3rem', 'height': '3rem'}} />|Streaming| 稳定           | 配置 ClickPipes 并开始从 Apache Kafka 摄取流式数据到 ClickHouse Cloud。                               |
+| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud 标志" style={{width: '3rem'}} />|Streaming| 稳定           | 通过我们的直接集成，将 Confluent 与 ClickHouse Cloud 的能力结合使用。                                |
+| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda 标志" />|Streaming| 稳定           | 配置 ClickPipes 并开始从 Redpanda 摄取流式数据到 ClickHouse Cloud。                                  |
+| AWS MSK              |<Msksvg class="image" alt="AWS MSK 标志" style={{width: '3rem', 'height': '3rem'}} />|Streaming| 稳定           | 配置 ClickPipes 并开始从 AWS MSK 摄取流式数据到 ClickHouse Cloud。                                   |
+| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs 标志" style={{width: '3rem'}} />|Streaming| 稳定           | 配置 ClickPipes 并开始从 Azure Event Hubs 摄取流式数据到 ClickHouse Cloud。                          |
+| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream 标志" style={{width: '3rem'}} />|Streaming| 稳定           | 配置 ClickPipes 并开始从 WarpStream 摄取流式数据到 ClickHouse Cloud。                                |
 
 ## 支持的数据格式 \{#supported-data-formats\}
 
 支持的格式有：
 
-- [JSON](/integrations/data-formats/json/overview)
-- [AvroConfluent](/interfaces/formats/AvroConfluent)
+* [JSON](/integrations/data-formats/json/overview)
+* [AvroConfluent](/interfaces/formats/AvroConfluent)
 
 ## 受支持的数据类型 \{#supported-data-types\}
 
@@ -47,22 +46,22 @@ import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
 ClickPipes 当前支持以下标准 ClickHouse 数据类型：
 
-- 基本数值类型 - \[U\]Int8/16/32/64、Float32/64 和 BFloat16
-- 大整数类型 - \[U\]Int128/256
-- Decimal 类型
-- Boolean
-- String
-- FixedString
-- Date、Date32
-- DateTime、DateTime64（仅支持 UTC 时区）
-- Enum8/Enum16
-- UUID
-- IPv4
-- IPv6
-- 所有 ClickHouse 的 LowCardinality 类型
-- 键和值使用上述任意类型（包括 Nullable）的 Map
-- 元素使用上述任意类型（包括 Nullable，仅一层嵌套）的 Tuple 和 Array
-- SimpleAggregateFunction 类型（用于 AggregatingMergeTree 或 SummingMergeTree 目标）
+* 基本数值类型 - [U]Int8/16/32/64、Float32/64 和 BFloat16
+* 大整数类型 - [U]Int128/256
+* Decimal 类型
+* Boolean
+* String
+* FixedString
+* Date、Date32
+* DateTime、DateTime64（仅支持 UTC 时区）
+* Enum8/Enum16
+* UUID
+* IPv4
+* IPv6
+* 所有 ClickHouse 的 LowCardinality 类型
+* 键和值使用上述任意类型（包括 Nullable）的 Map
+* 元素使用上述任意类型（包括 Nullable，仅一层嵌套）的 Tuple 和 Array
+* SimpleAggregateFunction 类型（用于 AggregatingMergeTree 或 SummingMergeTree 目标）
 
 ### Avro \{#avro\}
 
@@ -75,19 +74,19 @@ ClickPipes 支持所有 Avro 原始类型（primitive）和复杂类型（comple
 #### Nullable 类型和 Avro union \{#nullable-types-and-avro-unions\}
 
 在 Avro 中，Nullable 类型是通过使用 `(T, null)` 或 `(null, T)` 的 union schema 来定义的，其中 T 是基础 Avro 类型。在 schema 推断过程中，此类 union 会被映射为 ClickHouse 的 Nullable 列。注意，ClickHouse 不支持
-`Nullable(Array)`、`Nullable(Map)` 或 `Nullable(Tuple)` 类型。这些类型对应的 Avro null union 将被映射为非 Nullable 版本（Avro Record 类型会被映射为 ClickHouse 的命名 Tuple）。对于这些类型中的 Avro "null" 值，将按如下方式插入：
+`Nullable(Array)`、`Nullable(Map)` 或 `Nullable(Tuple)` 类型。这些类型对应的 Avro null union 将被映射为非 Nullable 版本（Avro Record 类型会被映射为 ClickHouse 的命名 Tuple）。对于这些类型中的 Avro &quot;null&quot; 值，将按如下方式插入：
 
-- 对于为 null 的 Avro array，插入空的 Array
-- 对于为 null 的 Avro Map，插入空的 Map
-- 对于为 null 的 Avro Record，插入一个所有字段为默认值/零值的命名 Tuple
+* 对于为 null 的 Avro array，插入空的 Array
+* 对于为 null 的 Avro Map，插入空的 Map
+* 对于为 null 的 Avro Record，插入一个所有字段为默认值/零值的命名 Tuple
 
 #### Variant 类型支持 \{#variant-type-support\}
 
 ClickPipes 在下列情况下支持 Variant 类型：
 
-- Avro Union。 如果你的 Avro schema 中包含由多个非 null 类型组成的 union，ClickPipes 会推断出
+* Avro Union。 如果你的 Avro schema 中包含由多个非 null 类型组成的 union，ClickPipes 会推断出
   合适的 Variant 类型。除此之外，Avro 数据不支持 Variant 类型。
-- JSON 字段。你可以为源数据流中的任何 JSON 字段手动指定 Variant 类型（例如 `Variant(String, Int64, DateTime)`）。
+* JSON 字段。你可以为源数据流中的任何 JSON 字段手动指定 Variant 类型（例如 `Variant(String, Int64, DateTime)`）。
   不支持复杂子类型（数组/映射/元组）。另外，由于 ClickPipes 确定要使用的正确 Variant 子类型的方式所限，
   在 Variant 定义中只能使用一种整数类型或一种日期时间类型 —— 例如，不支持 `Variant(Int64, UInt32)`。
 
@@ -95,9 +94,9 @@ ClickPipes 在下列情况下支持 Variant 类型：
 
 ClickPipes 在以下情况下支持 JSON 类型：
 
-- Avro Record 类型始终可以指定为 JSON 列。
-- 如果列实际存储的是 JSON 字符串对象，则 Avro String 和 Bytes 类型可以指定为 JSON 列。
-- 始终为 JSON 对象的 JSON 字段可以指定为 JSON 目标列。
+* Avro Record 类型始终可以指定为 JSON 列。
+* 如果列实际存储的是 JSON 字符串对象，则 Avro String 和 Bytes 类型可以指定为 JSON 列。
+* 始终为 JSON 对象的 JSON 字段可以指定为 JSON 目标列。
 
 请注意，您需要手动将目标列更改为所需的 JSON 类型，包括任何固定路径或跳过路径。
 
@@ -116,5 +115,5 @@ ClickPipes 在以下情况下支持 JSON 类型：
 | `_header_values` | 记录头部中各 header 值的并行数组                  | `Array(String)`        |
 | `_raw_message`   | 完整的 Kafka 消息                                | `String`               |
 
-请注意，`_raw_message` 列仅推荐用于 JSON 数据。  
+请注意，`_raw_message` 列仅推荐用于 JSON 数据。\
 对于只需要 JSON 字符串的使用场景（例如使用 ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 函数来填充下游 materialized view），删除所有“非虚拟”列可能会提升 ClickPipes 的性能。

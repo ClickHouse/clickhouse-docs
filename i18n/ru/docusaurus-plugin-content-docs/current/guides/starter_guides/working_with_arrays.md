@@ -160,7 +160,6 @@ SELECT string_array[0]
 └──────────────────────────┘
 ```
 
-
 ## Функции для работы с массивами \{#array-functions\}
 
 ClickHouse предоставляет множество полезных функций для работы с массивами.
@@ -226,7 +225,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## Исследование данных о перелётах с помощью массивов \{#exploring-flight-data-with-array-functions\}
 
@@ -311,7 +309,6 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-
 ### arrayMap и arrayZip \{#arraymap\}
 
 В предыдущем запросе мы увидели, что международный аэропорт Денвера (Denver International Airport) был аэропортом с наибольшим количеством вылетающих рейсов в выбранный нами день.
@@ -345,7 +342,6 @@ GROUP BY ALL
 Затем первый элемент результирующего массива извлекается с помощью `[DepDelayMinutes][1]`.
 Функция [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) объединяет массив `Tail_Number` и массив `statuses` в один массив.
 
-
 ### arrayFilter \{#arrayfilter\}
 
 Далее рассмотрим только количество рейсов, задержанных на 30 минут и более, из аэропортов `DEN`, `ATL` и `DFW`:
@@ -369,7 +365,6 @@ ORDER BY num_delays_30_min_or_more DESC
 ```sql
 d -> d >= 30
 ```
-
 
 ### arraySort и arrayIntersect \{#arraysort-and-arrayintersect\}
 
@@ -417,7 +412,6 @@ LIMIT 10
 Наконец, запрос сортирует результаты, чтобы показать, какие пары аэропортов имеют наибольшее количество общих пунктов назначения, и возвращает только первые 10.
 Это показывает, какие крупные узловые аэропорты имеют наиболее пересекающиеся маршрутные сети, что может указывать на конкурентные рынки, где несколько авиакомпаний обслуживают одни и те же пары городов, или на хабы, которые обслуживают схожие географические регионы и потенциально могут использоваться как альтернативные точки пересадки для пассажиров.
 
-
 ### arrayReduce \{#arrayReduce\}
 
 Пока мы анализируем задержки, давайте используем ещё одну функцию высшего порядка для массивов — `arrayReduce`, чтобы найти среднюю и максимальную задержку
@@ -442,7 +436,6 @@ ORDER BY avg_delay DESC
 
 В приведённом выше примере мы использовали `arrayReduce`, чтобы найти средние и максимальные задержки для различных вылетающих из `DEN` рейсов.
 `arrayReduce` применяет агрегатную функцию, переданную в первом параметре, к элементам массива, указанного во втором параметре.
-
 
 ### arrayJoin \{#arrayJoin\}
 
@@ -504,7 +497,6 @@ GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
 
-
 ## Дальнейшие шаги \{#next-steps\}
 
 Поздравляем! Вы узнали, как работать с массивами в ClickHouse — от базового создания и индексирования массивов до использования мощных функций, таких как `groupArray`, `arrayFilter`, `arrayMap`, `arrayReduce` и `arrayJoin`.
@@ -515,4 +507,4 @@ ORDER BY flightsDelayed DESC
 Массивы — это базовая возможность ClickHouse, которая позволяет выполнять эффективные аналитические запросы. По мере того как вы будете лучше осваивать функции для работы с массивами, вы обнаружите, что они могут значительно упростить сложные агрегации и анализ временных рядов.
 Для ещё более глубокого погружения в работу с массивами мы рекомендуем YouTube‑видео ниже от Марка, нашего эксперта по данным:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7jaw3J6U_h8?si=6NiEJ7S1odU-VVqX" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/7jaw3J6U_h8?si=6NiEJ7S1odU-VVqX" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

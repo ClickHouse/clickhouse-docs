@@ -17,7 +17,6 @@ doc_type: 'reference'
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
-
 ## 参数 \{#arguments\}
 
 | Argument              | Description                                                                                                                                                                                                                                                                                                                                                                            |
@@ -48,13 +47,12 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-
 ## 返回值 \{#returned_value\}
 
 一个表对象，其列与原始 MySQL 表相同。
 
 :::note
-某些 MySQL 数据类型可以映射到不同的 ClickHouse 类型 —— 这可以通过查询级别的设置 [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level) 来处理。
+某些 MySQL 数据类型可以映射到不同的 ClickHouse 类型 —— 这可以通过查询级别的设置 [mysql&#95;datatypes&#95;support&#95;level](operations/settings/settings.md#mysql_datatypes_support_level) 来处理。
 :::
 
 :::note
@@ -144,12 +142,11 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
-
 ## 相关内容 \{#related\}
 
-- [`MySQL` 表引擎](../../engines/table-engines/integrations/mysql.md)
-- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)
-- [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
-- [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
-- [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)
-- [mysql_max_rows_to_insert](operations/settings/settings.md#mysql_max_rows_to_insert)
+* [`MySQL` 表引擎](../../engines/table-engines/integrations/mysql.md)
+* [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)
+* [mysql&#95;datatypes&#95;support&#95;level](operations/settings/settings.md#mysql_datatypes_support_level)
+* [mysql&#95;map&#95;fixed&#95;string&#95;to&#95;text&#95;in&#95;show&#95;columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
+* [mysql&#95;map&#95;string&#95;to&#95;text&#95;in&#95;show&#95;columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)
+* [mysql&#95;max&#95;rows&#95;to&#95;insert](operations/settings/settings.md#mysql_max_rows_to_insert)

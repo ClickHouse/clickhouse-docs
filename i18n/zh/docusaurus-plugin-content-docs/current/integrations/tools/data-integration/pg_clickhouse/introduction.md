@@ -11,9 +11,9 @@ keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhou
 
 ## 介绍 \{#introduction\}
 
-[pg_clickhouse] 是一个开源的 PostgreSQL 扩展，可以直接在 PostgreSQL 中对 ClickHouse 运行分析查询，而无需重写任何 SQL。它支持 PostgreSQL 13 及以上版本以及 ClickHouse v23 及以上版本。
+[pg&#95;clickhouse][pg_clickhouse] 是一个开源的 PostgreSQL 扩展，可以直接在 PostgreSQL 中对 ClickHouse 运行分析查询，而无需重写任何 SQL。它支持 PostgreSQL 13 及以上版本以及 ClickHouse v23 及以上版本。
 
-一旦 [ClickPipes](/integrations/clickpipes) 开始向 ClickHouse 同步数据，即可使用 pg_clickhouse 将[导入外部表]到 PostgreSQL 的某个 schema 中，快速且便捷。随后可以对这些表运行现有的 PostgreSQL 查询，在将执行下推到 ClickHouse 的同时保留现有的代码库。
+一旦 [ClickPipes](/integrations/clickpipes) 开始向 ClickHouse 同步数据，即可使用 pg&#95;clickhouse 将[导入外部表]到 PostgreSQL 的某个 schema 中，快速且便捷。随后可以对这些表运行现有的 PostgreSQL 查询，在将执行下推到 ClickHouse 的同时保留现有的代码库。
 
 ## 入门 \{#getting-started\}
 
@@ -28,14 +28,13 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 
 请参阅该 [教程]，以开始导入 ClickHouse 表并启用查询下推。
 
-
 ## 测试用例：TPC-H \{#test-case-tpc-h\}
 
 此表对比了在缩放因子为 1 时，[TPC-H] 查询在常规 PostgreSQL
-表与通过 pg\_clickhouse 连接到 ClickHouse 的表之间的性能；✔︎ 表示完全下推，而短横线（-）表示在 1 分钟后取消该查询。
+表与通过 pg&#95;clickhouse 连接到 ClickHouse 的表之间的性能；✔︎ 表示完全下推，而短横线（-）表示在 1 分钟后取消该查询。
 所有测试均在配备 36 GB 内存的 MacBook Pro M4 Max 上运行。
 
-|      查询 | PostgreSQL | pg\_clickhouse |  下推 |
+|      查询 | PostgreSQL | pg&#95;clickhouse |  下推 |
 | ------: | ---------: | ----------------: | :-: |
 |  [查询 1] |    4693 ms |            268 ms |  ✔︎ |
 |  [查询 2] |     458 ms |           3446 ms |     |
@@ -84,7 +83,6 @@ sudo apt install \
   g++
 ```
 
-
 #### RedHat / CentOS / Yum \{#redhat--centos--yum\}
 
 ```sh
@@ -100,7 +98,6 @@ sudo yum install \
 
 有关如何从 PostgreSQL Yum 仓库获取的详细信息，请参阅 [PostgreSQL Yum]。
 
-
 #### 从 PGXN 安装 \{#install-from-pgxn\}
 
 在满足上述依赖的前提下，使用 [PGXN client]（可通过
@@ -110,7 +107,6 @@ sudo yum install \
 ```sh
 pgxn install pg_clickhouse
 ```
-
 
 #### 编译并安装 \{#compile-and-install\}
 
@@ -188,7 +184,6 @@ extension_control_path = '/usr/local/extras/postgresql/share:$system'
 dynamic_library_path   = '/usr/local/extras/postgresql/lib:$libdir'
 ```
 
-
 #### 测试 \{#testing\}
 
 扩展安装完成后，如需运行测试套件，请执行
@@ -209,7 +204,6 @@ ERROR:  must be owner of database regression
 make installcheck PGUSER=postgres
 ```
 
-
 ### 加载 \{#loading\}
 
 安装 `pg_clickhouse` 之后，以超级用户身份连接到数据库并运行以下命令即可将其添加到该数据库：
@@ -225,7 +219,6 @@ CREATE SCHEMA env;
 CREATE EXTENSION pg_clickhouse SCHEMA env;
 ```
 
-
 ## 依赖项 \{#dependencies\}
 
 `pg_clickhouse` 扩展需要 [PostgreSQL] 13 或更高版本、[libcurl] 和
@@ -236,37 +229,35 @@ make] 和 [CMake]。
 
 我们当前的首要任务是在添加 DML 功能之前，先完成针对分析型工作负载的下推覆盖。我们的路线图如下：
 
-*   让剩余 10 条尚未下推的 TPC-H 查询都能生成最优执行计划
-*   测试并修复 ClickBench 查询的下推
-*   支持对所有 PostgreSQL 聚合函数的透明下推
-*   支持对所有 PostgreSQL 函数的透明下推
-*   通过 CREATE SERVER 和 GUCs 支持在服务器级别和会话级别配置 ClickHouse 设置
-*   支持所有 ClickHouse 数据类型
-*   支持轻量级删除和 UPDATE
-*   支持通过 COPY 进行批量插入
-*   增加一个函数，用于执行任意 ClickHouse 查询，并将其结果作为一张表返回
-*   当所有子查询都访问远程数据库时，增加对 UNION 查询下推的支持
+* 让剩余 10 条尚未下推的 TPC-H 查询都能生成最优执行计划
+* 测试并修复 ClickBench 查询的下推
+* 支持对所有 PostgreSQL 聚合函数的透明下推
+* 支持对所有 PostgreSQL 函数的透明下推
+* 通过 CREATE SERVER 和 GUCs 支持在服务器级别和会话级别配置 ClickHouse 设置
+* 支持所有 ClickHouse 数据类型
+* 支持轻量级删除和 UPDATE
+* 支持通过 COPY 进行批量插入
+* 增加一个函数，用于执行任意 ClickHouse 查询，并将其结果作为一张表返回
+* 当所有子查询都访问远程数据库时，增加对 UNION 查询下推的支持
 
 ## 作者 \{#authors\}
 
-*   [David E. Wheeler](https://justatheory.com/)
-*   [Ildus Kurbangaliev](https://github.com/ildus)
-*   [Ibrar Ahmed](https://github.com/ibrarahmad)
+* [David E. Wheeler](https://justatheory.com/)
+* [Ildus Kurbangaliev](https://github.com/ildus)
+* [Ibrar Ahmed](https://github.com/ibrarahmad)
 
 ## 版权 \{#copyright\}
 
-*   版权所有 (c) 2025-2026, ClickHouse
-*   部分版权所有 (c) 2023-2025, Ildus Kurbangaliev
-*   部分版权所有 (c) 2019-2023, Adjust GmbH
-*   部分版权所有 (c) 2012-2019, PostgreSQL Global Development Group
+* 版权所有 (c) 2025-2026, ClickHouse
+* 部分版权所有 (c) 2023-2025, Ildus Kurbangaliev
+* 部分版权所有 (c) 2019-2023, Adjust GmbH
+* 部分版权所有 (c) 2012-2019, PostgreSQL Global Development Group
 
-[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
-    "GitHub 上的 pg_clickhouse"
+[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse "GitHub 上的 pg_clickhouse"
 
 [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
 
-[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "最新 Docker 发布版本"
+[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "最新 Docker 发布版本"
 
 [tutorial]: /integrations/pg_clickhouse/tutorial "pg_clickhouse 教程"
 
@@ -276,11 +267,9 @@ make] 和 [CMake]。
 
 [PGXN client]: https://pgxn.github.io/pgxnclient/ "PGXN 客户端文档"
 
-[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default
-    "Homebrew 上的 PGXN 客户端"
+[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default "Homebrew 上的 PGXN 客户端"
 
-[Apt]: https://tracker.debian.org/pkg/pgxnclient
-    "Debian Apt 上的 PGXN 客户端"
+[Apt]: https://tracker.debian.org/pkg/pgxnclient "Debian Apt 上的 PGXN 客户端"
 
 [`postgresql.conf` parameters]: https://www.postgresql.org/docs/devel/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER
 
@@ -298,25 +287,25 @@ make] 和 [CMake]。
 
 [TPC-H]: https://www.tpc.org/tpch/
 
-[查询 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
-  [查询 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql
-  [查询 3] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/3.sql
-  [查询 4] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/4.sql
-  [查询 5] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/5.sql
-  [查询 6] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/6.sql
-  [查询 7] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/7.sql
-  [查询 8] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/8.sql
-  [查询 9] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/9.sql
-  [查询 10] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/10.sql
-  [查询 11] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/11.sql
-  [查询 12] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/12.sql
-  [查询 13] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/13.sql
-  [查询 14] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/14.sql
-  [查询 15] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/15.sql
-  [查询 16] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/16.sql
-  [查询 17] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/17.sql
-  [查询 18] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/18.sql
-  [查询 19] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/19.sql
-  [查询 20] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/20.sql
-  [查询 21] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/21.sql
-  [查询 22] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/22.sql
+[查询 1] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/1.sql
+[查询 2] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/2.sql
+[查询 3] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/3.sql
+[查询 4] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/4.sql
+[查询 5] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/5.sql
+[查询 6] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/6.sql
+[查询 7] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/7.sql
+[查询 8] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/8.sql
+[查询 9] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/9.sql
+[查询 10] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/10.sql
+[查询 11] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/11.sql
+[查询 12] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/12.sql
+[查询 13] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/13.sql
+[查询 14] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/14.sql
+[查询 15] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/15.sql
+[查询 16] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/16.sql
+[查询 17] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/17.sql
+[查询 18] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/18.sql
+[查询 19] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/19.sql
+[查询 20] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/20.sql
+[查询 21] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/21.sql
+[查询 22] https://github.com/ClickHouse/pg&#95;clickhouse/blob/main/dev/tpch/queries/22.sql

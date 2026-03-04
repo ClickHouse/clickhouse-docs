@@ -21,11 +21,11 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 每条 Avro 消息都会嵌入一个模式 ID（schema ID），ClickHouse 会通过查询已配置的 Schema Registry 自动解析该 ID。模式解析完成后会被缓存，以获得最佳性能。
 
-<a id="data-types-matching"></a>
+<a id="data-types-matching" />
 
 ## 数据类型映射 \{#data-type-mapping\}
 
-<DataTypesMatching/>
+<DataTypesMatching />
 
 ## 格式设置 \{#format-settings\}
 

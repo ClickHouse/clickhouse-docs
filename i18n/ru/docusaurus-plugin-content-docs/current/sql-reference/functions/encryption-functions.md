@@ -99,7 +99,6 @@ HMAC(mode, message, key)
 
 **Аргументы**
 
-
 * `mode` — Имя алгоритма хеширования (регистронезависимое). Поддерживаются: md5, sha1, sha224, sha256, sha384, sha512. [`String`](/sql-reference/data-types/string)
 * `message` — Сообщение, для которого вычисляется код аутентификации. [`String`](/sql-reference/data-types/string)
 * `key` — Секретный ключ для HMAC. [`String`](/sql-reference/data-types/string)
@@ -210,7 +209,6 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 └───────────┘
 ```
 
-
 ## aes_encrypt_mysql \{#aes_encrypt_mysql\}
 
 Появилась в версии: v20.12.0
@@ -296,7 +294,6 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-
 ## decrypt \{#decrypt\}
 
 Впервые представлена в: v20.12.0
@@ -372,7 +369,6 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 │aes-256-cbc no IV                │ �2*4�h3c�4w��@
 └──────────────────────────────────┴───────────┘
 ```
-
 
 ## encrypt \{#encrypt\}
 
@@ -452,7 +448,6 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 │ aes-256-gcm with AAD │ A8A3CCBC6426D9A1017A0A932322F1852260A4AD6837 │
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
-
 
 ## tryDecrypt \{#tryDecrypt\}
 

@@ -18,14 +18,13 @@ ClickHouse Cloud отправляет уведомления о критичес
 2. **Важность уведомления**: Уровень важности уведомления может быть `info`, `warning` или `critical` в зависимости от того, насколько оно важно. Этот параметр не настраивается.
 3. **Канал уведомления**: Канал означает способ получения уведомления, например через UI, по email, в Slack и т. д. Для большинства уведомлений его можно настроить.
 
-
 ## Получение уведомлений \{#receiving-notifications\}
 
 Уведомления могут поступать по различным каналам. В настоящий момент ClickHouse Cloud поддерживает получение уведомлений по электронной почте, в интерфейсе ClickHouse Cloud и в Slack. Вы можете нажать на значок колокольчика в верхнем левом меню, чтобы просмотреть текущие уведомления — откроется выезжающая панель. Нажав кнопку **View All** в нижней части панели, вы перейдёте на страницу с журналом активности всех уведомлений.
 
-<Image img={notifications_1} size="md" alt="Выезжающая панель уведомлений ClickHouse Cloud" border/>
+<Image img={notifications_1} size="md" alt="Выезжающая панель уведомлений ClickHouse Cloud" border />
 
-<Image img={notifications_2} size="md" alt="Журнал активности уведомлений ClickHouse Cloud" border/>
+<Image img={notifications_2} size="md" alt="Журнал активности уведомлений ClickHouse Cloud" border />
 
 ## Настройка уведомлений \{#customizing-notifications\}
 
@@ -35,9 +34,9 @@ ClickHouse Cloud отправляет уведомления о критичес
 
 Чтобы настроить доставку для конкретного уведомления, нажмите значок карандаша, чтобы изменить каналы доставки уведомлений.
 
-<Image img={notifications_3} size="md" alt="Экран настроек уведомлений ClickHouse Cloud" border/>
+<Image img={notifications_3} size="md" alt="Экран настроек уведомлений ClickHouse Cloud" border />
 
-<Image img={notifications_4} size="md" alt="Настройки доставки уведомлений ClickHouse Cloud" border/>
+<Image img={notifications_4} size="md" alt="Настройки доставки уведомлений ClickHouse Cloud" border />
 
 :::note
 Некоторые **обязательные** уведомления, такие как **Payment failed**, не подлежат изменению.

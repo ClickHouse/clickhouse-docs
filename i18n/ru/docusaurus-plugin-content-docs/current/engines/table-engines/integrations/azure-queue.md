@@ -120,8 +120,8 @@ SELECT * FROM stats ORDER BY key;
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу.
-- `_file` — имя файла.
+* `_path` — путь к файлу.
+* `_file` — имя файла.
 
 Подробнее о виртуальных столбцах см. [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
 

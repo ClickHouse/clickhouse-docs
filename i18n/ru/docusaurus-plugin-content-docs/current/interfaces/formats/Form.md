@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 ## Описание \{#description\}
 
-Формат `Form` можно использовать для чтения одной записи в формате application/x-www-form-urlencoded, 
+Формат `Form` можно использовать для чтения одной записи в формате application/x-www-form-urlencoded,
 в котором данные представлены в виде `key1=value1&key2=value2`.
 
 ## Пример использования \{#example-usage\}

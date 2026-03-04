@@ -28,7 +28,6 @@ ds = ds[ds['year'] == 2024]        # Filter in SQL
 df = ds.to_df()                    # Only load filtered data
 ```
 
-
 ### 2. Отсечение столбцов \{#column-pruning\}
 
 Читаются только необходимые столбцы:
@@ -40,7 +39,6 @@ result = ds.select('name', 'age').to_df()
 
 # vs pandas: Reads all 100 columns, then selects
 ```
-
 
 ### 3. Ленивое вычисление \{#lazy-evaluation\}
 
@@ -65,14 +63,13 @@ result = (ds
 
 ***
 
-
 ## Бенчмарк: DataStore и pandas \{#benchmark\}
 
 ### Тестовая среда \{#test-environment\}
 
-- Данные: 10 миллионов строк
-- Оборудование: стандартный ноутбук
-- Формат файла: CSV
+* Данные: 10 миллионов строк
+* Оборудование: стандартный ноутбук
+* Формат файла: CSV
 
 ### Результаты \{#results\}
 
@@ -101,7 +98,7 @@ result = (ds
 4. **Оптимальный сценарий**: Многошаговые операции с groupby/агрегацией
 5. **Zero-copy**: `to_df()` не добавляет накладных расходов на преобразование данных
 
----
+***
 
 ## Когда выигрывает DataStore \{#when-datastore-wins\}
 
@@ -111,7 +108,6 @@ result = (ds
 # DataStore excels: 19.93x faster
 result = ds.groupby('category')['amount'].sum()
 ```
-
 
 ### Сложные конвейеры обработки данных \{#complex-pipelines\}
 
@@ -127,7 +123,6 @@ result = (ds
 )
 ```
 
-
 ### Обработка больших файлов \{#large-file-processing\}
 
 ```python
@@ -135,7 +130,6 @@ result = (ds
 ds = pd.read_parquet("huge_file.parquet")
 result = ds.filter(ds['id'] == 12345).to_df()  # Fast!
 ```
-
 
 ### Операции над несколькими столбцами \{#multiple-column-operations\}
 
@@ -147,7 +141,6 @@ ds = ds.filter(ds['is_large'])
 ```
 
 ***
-
 
 ## Когда pandas сопоставим по производительности \{#when-pandas-wins\}
 
@@ -161,7 +154,6 @@ ds = ds.filter(ds['is_large'])
 small_df = pd.DataFrame({'x': range(100)})
 ```
 
-
 ### Простые операции среза \{#simple-slice-operations\}
 
 ```python
@@ -169,7 +161,6 @@ small_df = pd.DataFrame({'x': range(100)})
 df = df[df['x'] > 10]  # pandas slightly faster
 ds = ds[ds['x'] > 10]  # DataStore comparable
 ```
-
 
 ### Пользовательские лямбда-функции на Python \{#custom-python-functions\}
 
@@ -188,7 +179,6 @@ df['result'] = df.apply(complex_function, axis=1)
 :::
 
 ***
-
 
 ## Zero-copy интеграция DataFrame \{#zero-copy\}
 
@@ -209,7 +199,6 @@ ds = DataStore(existing_df)  # No data copy
 * Память разделяется между DataStore и представлениями pandas
 
 ***
-
 
 ## Рекомендации по оптимизации \{#tips\}
 
@@ -238,7 +227,6 @@ result = (ds
 
 Подробности см. в разделе [Performance Mode](../configuration/performance-mode.md).
 
-
 ### 2. Используйте формат Parquet вместо CSV \{#use-parquet\}
 
 ```python
@@ -254,7 +242,6 @@ df.to_parquet("data.parquet")
 ```
 
 **Ожидаемый прирост производительности**: операции чтения в 3–10 раз быстрее
-
 
 ### 3. Выполняйте фильтрацию как можно раньше \{#filter-early\}
 
@@ -272,7 +259,6 @@ result = (ds
 )
 ```
 
-
 ### 4. Выбирайте только нужные столбцы \{#select-only-needed-columns\}
 
 ```python
@@ -282,7 +268,6 @@ result = ds.select('name', 'amount').filter(ds['amount'] > 100)
 # Less optimal: All columns loaded
 result = ds.filter(ds['amount'] > 100)  # Loads all columns
 ```
-
 
 ### 5. Используйте агрегатные функции SQL \{#leverage-sql-aggregations\}
 
@@ -295,7 +280,6 @@ result = ds.groupby('category').agg({
 })
 ```
 
-
 ### 6. Используйте head() вместо выполнения полных запросов \{#use-head\}
 
 ```python
@@ -305,7 +289,6 @@ result = ds.filter(ds['type'] == 'A').head(100)  # LIMIT 100
 # Avoid this for large results
 # result = ds.filter(ds['type'] == 'A').to_df()  # Loads everything
 ```
-
 
 ### 7. Пакетные операции \{#batch-operations\}
 
@@ -317,7 +300,6 @@ result = ds.filter(ds['x'] > 10).filter(ds['y'] < 100).to_df()
 result1 = ds.filter(ds['x'] > 10).to_df()  # Execute
 result2 = result1[result1['y'] < 100]       # Execute again
 ```
-
 
 ### 8. Используйте explain() для оптимизации \{#use-explain\}
 
@@ -331,7 +313,6 @@ result = query.to_df()
 ```
 
 ***
-
 
 ## Профилирование нагрузки \{#profiling\}
 
@@ -350,7 +331,6 @@ profiler = get_profiler()
 profiler.report()
 ```
 
-
 ### Определение узких мест \{#identify-bottlenecks\}
 
 ```text
@@ -362,7 +342,6 @@ SQL execution           2.5s        62.5%     <- Bottleneck!
 read_csv                1.2s        30.0%
 Other                   0.3s        7.5%
 ```
-
 
 ### Сравнение подходов \{#compare-approaches\}
 
@@ -383,7 +362,6 @@ print(f"Approach 2: {time2:.0f}ms")
 
 ***
 
-
 ## Краткое резюме рекомендаций \{#summary\}
 
 | Рекомендация | Результат |
@@ -398,7 +376,7 @@ print(f"Approach 2: {time2:.0f}ms")
 | Используйте explain() | Проверьте оптимизацию запроса |
 | Используйте head() для выборок | Избегайте полного сканирования таблицы |
 
----
+***
 
 ## Краткое руководство по выбору \{#decision\}
 

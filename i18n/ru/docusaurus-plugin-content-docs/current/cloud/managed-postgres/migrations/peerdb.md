@@ -18,7 +18,6 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
-
 # Миграция на Managed Postgres с помощью PeerDB \{#peerdb-migration\}
 
 В этом руководстве приведены пошаговые инструкции по миграции вашей базы данных PostgreSQL на ClickHouse Managed Postgres с помощью PeerDB.
@@ -27,17 +26,17 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 ## Предварительные требования \{#migration-peerdb-prerequisites\}
 
-- Доступ к исходной базе данных PostgreSQL.
-- Экземпляр сервиса ClickHouse Managed Postgres, в который вы хотите перенести свои данные.
-- Установленный PeerDB на машине. Вы можете следовать инструкциям по установке в [репозитории PeerDB на GitHub](https://github.com/PeerDB-io/peerdb?tab=readme-ov-file#get-started): достаточно клонировать репозиторий и выполнить `docker-compose up`. В этом руководстве мы будем использовать **PeerDB UI**, который будет доступен по адресу `http://localhost:3000` после запуска PeerDB.
+* Доступ к исходной базе данных PostgreSQL.
+* Экземпляр сервиса ClickHouse Managed Postgres, в который вы хотите перенести свои данные.
+* Установленный PeerDB на машине. Вы можете следовать инструкциям по установке в [репозитории PeerDB на GitHub](https://github.com/PeerDB-io/peerdb?tab=readme-ov-file#get-started): достаточно клонировать репозиторий и выполнить `docker-compose up`. В этом руководстве мы будем использовать **PeerDB UI**, который будет доступен по адресу `http://localhost:3000` после запуска PeerDB.
 
 ## Важные замечания перед миграцией \{#migration-peerdb-considerations-before\}
 
 Перед началом миграции учтите следующее:
 
-- **Объекты базы данных**: PeerDB будет автоматически создавать таблицы в целевой базе данных на основе исходной схемы. Однако некоторые объекты базы данных, такие как индексы, ограничения и триггеры, не будут перенесены автоматически. Вам потребуется вручную воссоздать эти объекты в целевой базе данных после завершения миграции.
-- **DDL-изменения**: Если вы включите непрерывную репликацию, PeerDB будет поддерживать синхронизацию целевой базы данных с исходной для DML-операций (INSERT, UPDATE, DELETE) и будет распространять операции ADD COLUMN. Однако другие DDL-изменения (например, DROP COLUMN, ALTER COLUMN) не распространяются автоматически. Подробнее о поддержке изменений схемы см. [здесь](/integrations/clickpipes/postgres/schema-changes).
-- **Сетевое подключение**: Убедитесь, что как исходная, так и целевая базы данных достижимы по сети с машины, на которой запущен PeerDB. Возможно, вам потребуется настроить правила брандмауэра или параметры групп безопасности, чтобы разрешить подключение.
+* **Объекты базы данных**: PeerDB будет автоматически создавать таблицы в целевой базе данных на основе исходной схемы. Однако некоторые объекты базы данных, такие как индексы, ограничения и триггеры, не будут перенесены автоматически. Вам потребуется вручную воссоздать эти объекты в целевой базе данных после завершения миграции.
+* **DDL-изменения**: Если вы включите непрерывную репликацию, PeerDB будет поддерживать синхронизацию целевой базы данных с исходной для DML-операций (INSERT, UPDATE, DELETE) и будет распространять операции ADD COLUMN. Однако другие DDL-изменения (например, DROP COLUMN, ALTER COLUMN) не распространяются автоматически. Подробнее о поддержке изменений схемы см. [здесь](/integrations/clickpipes/postgres/schema-changes).
+* **Сетевое подключение**: Убедитесь, что как исходная, так и целевая базы данных достижимы по сети с машины, на которой запущен PeerDB. Возможно, вам потребуется настроить правила брандмауэра или параметры групп безопасности, чтобы разрешить подключение.
 
 ## Создание peers \{#migration-peerdb-create-peers\}
 
@@ -107,7 +106,6 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
 
-
 #### Удаление ограничений UNIQUE и индексов из дампа схемы \{#migration-peerdb-remove-constraints-indexes\}
 
 Прежде чем применять дамп к целевой базе данных, необходимо удалить ограничения UNIQUE и индексы из файла дампа, чтобы процесс ингестии данных PeerDB в целевые таблицы не блокировался этими ограничениями и индексами. Их можно удалить с помощью:
@@ -121,7 +119,6 @@ grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
 # Remove
 sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
 ```
-
 
 ### Примените дамп схемы к целевой базе данных \{#migration-peerdb-apply-schema-dump\}
 
@@ -137,10 +134,9 @@ psql -h <target_host> -p <target_port> -U <target_username> -d <target_database>
 ALTER ROLE <target_role> SET session_replication_role = replica;
 ```
 
-
 ## Создайте mirror \{#migration-peerdb-create-mirror\}
 
-Далее необходимо создать mirror, чтобы определить процесс миграции данных между исходным и целевым peers. В интерфейсе PeerDB перейдите в раздел "Mirrors", выбрав пункт "Mirrors" в боковой панели. Чтобы создать новый mirror, нажмите кнопку `+ New mirror`.
+Далее необходимо создать mirror, чтобы определить процесс миграции данных между исходным и целевым peers. В интерфейсе PeerDB перейдите в раздел &quot;Mirrors&quot;, выбрав пункт &quot;Mirrors&quot; в боковой панели. Чтобы создать новый mirror, нажмите кнопку `+ New mirror`.
 
 <Image img={createMirror} alt="Create Mirror" size="md" border />
 
@@ -148,8 +144,8 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 2. Выберите исходный и целевой peers, созданные ранее, из раскрывающихся списков.
 3. Убедитесь, что:
 
-- Soft delete выключен.
-- Разверните `Advanced settings`. Убедитесь, что **Postgres type system is enabled** и **PeerDB columns are disabled**.
+* Soft delete выключен.
+* Разверните `Advanced settings`. Убедитесь, что **Postgres type system is enabled** и **PeerDB columns are disabled**.
 
 <Image img={settings} alt="Mirror Settings" size="md" border />
 
@@ -163,7 +159,7 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 5. После настройки параметров mirror нажмите кнопку `Create mirror`.
 
-Вы увидите только что созданный mirror в разделе "Mirrors".
+Вы увидите только что созданный mirror в разделе &quot;Mirrors&quot;.
 
 <Image img={mirrors} alt="Mirrors List" size="md" border />
 
@@ -187,9 +183,9 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 После завершения миграции:
 
-- **Воссоздайте объекты базы данных**: Не забудьте вручную воссоздать индексы, ограничения и триггеры в целевой базе данных, поскольку они не переносятся автоматически.
-- **Протестируйте приложение**: Обязательно протестируйте приложение с экземпляром ClickHouse Managed Postgres, чтобы убедиться, что всё работает как ожидается.
-- **Освободите ресурсы**: Когда вы будете удовлетворены результатами миграции и переключите приложение на использование ClickHouse Managed Postgres, вы можете удалить объекты mirror и peers в PeerDB, чтобы освободить ресурсы.
+* **Воссоздайте объекты базы данных**: Не забудьте вручную воссоздать индексы, ограничения и триггеры в целевой базе данных, поскольку они не переносятся автоматически.
+* **Протестируйте приложение**: Обязательно протестируйте приложение с экземпляром ClickHouse Managed Postgres, чтобы убедиться, что всё работает как ожидается.
+* **Освободите ресурсы**: Когда вы будете удовлетворены результатами миграции и переключите приложение на использование ClickHouse Managed Postgres, вы можете удалить объекты mirror и peers в PeerDB, чтобы освободить ресурсы.
 
 :::info Слоты репликации
 Если вы включили непрерывную репликацию, PeerDB создаст **слот репликации** в исходной базе данных PostgreSQL. Обязательно удалите слот репликации вручную в исходной базе данных после завершения миграции, чтобы избежать ненужного расхода ресурсов.
@@ -197,12 +193,12 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 ## Справочные материалы \{#migration-peerdb-references\}
 
-- [Документация ClickHouse Managed Postgres](../)
-- [Руководство PeerDB по созданию CDC (фиксации изменений данных)](https://docs.peerdb.io/mirror/cdc-pg-pg)
-- [FAQ по Postgres ClickPipe (актуально и для PeerDB)](../../../integrations/data-ingestion/clickpipes/postgres/faq.md)
+* [Документация ClickHouse Managed Postgres](../)
+* [Руководство PeerDB по созданию CDC (фиксации изменений данных)](https://docs.peerdb.io/mirror/cdc-pg-pg)
+* [FAQ по Postgres ClickPipe (актуально и для PeerDB)](../../../integrations/data-ingestion/clickpipes/postgres/faq.md)
 
 ## Следующие шаги \{#migration-pgdump-pg-restore-next-steps\}
 
-Поздравляем! Вы успешно перенесли свою базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg_dump и pg_restore. Теперь вы готовы изучать возможности Managed Postgres и его интеграцию с ClickHouse. Ниже приведено краткое 10‑минутное руководство, которое поможет вам начать работу:
+Поздравляем! Вы успешно перенесли свою базу данных PostgreSQL в ClickHouse Managed Postgres с помощью pg&#95;dump и pg&#95;restore. Теперь вы готовы изучать возможности Managed Postgres и его интеграцию с ClickHouse. Ниже приведено краткое 10‑минутное руководство, которое поможет вам начать работу:
 
-- [Краткое руководство по Managed Postgres](../quickstart)
+* [Краткое руководство по Managed Postgres](../quickstart)

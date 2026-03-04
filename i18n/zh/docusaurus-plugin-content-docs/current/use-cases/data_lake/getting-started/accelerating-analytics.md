@@ -15,11 +15,11 @@ doc_type: 'guide'
 
 与直接读取开放表格式相比，MergeTree 具有以下优势：
 
-- **[稀疏主索引（Sparse primary index）](/optimize/sparse-primary-indexes)** - 按选定键在磁盘上对数据排序，使 ClickHouse 在查询时能够跳过大量无关的行。
-- **增强的数据类型** - 原生支持 [JSON](/sql-reference/data-types/json)、[LowCardinality](/sql-reference/data-types/lowcardinality) 和 [Enum](/sql-reference/data-types/enum) 等类型，从而实现更紧凑的存储和更快速的处理。
-- **[数据跳过索引（Skip indices）](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** 和 **[全文索引（full-text indices）](/engines/table-engines/mergetree-family/invertedindexes)** - 二级索引结构，使 ClickHouse 能跳过与查询过滤条件不匹配的数据粒度，对文本搜索工作负载尤其有效。
-- **具有自动合并压缩的快速插入** - ClickHouse 专为高吞吐插入而设计，并在后台自动合并数据分区片段，这类似于开放表格式中的压缩合并操作。
-- **为并发读取进行了优化** - MergeTree 的列式存储布局结合[多级缓存](/operations/caches)，支持高并发的实时分析型工作负载，而开放表格式并非为此而设计。
+* **[稀疏主索引（Sparse primary index）](/optimize/sparse-primary-indexes)** - 按选定键在磁盘上对数据排序，使 ClickHouse 在查询时能够跳过大量无关的行。
+* **增强的数据类型** - 原生支持 [JSON](/sql-reference/data-types/json)、[LowCardinality](/sql-reference/data-types/lowcardinality) 和 [Enum](/sql-reference/data-types/enum) 等类型，从而实现更紧凑的存储和更快速的处理。
+* **[数据跳过索引（Skip indices）](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** 和 **[全文索引（full-text indices）](/engines/table-engines/mergetree-family/invertedindexes)** - 二级索引结构，使 ClickHouse 能跳过与查询过滤条件不匹配的数据粒度，对文本搜索工作负载尤其有效。
+* **具有自动合并压缩的快速插入** - ClickHouse 专为高吞吐插入而设计，并在后台自动合并数据分区片段，这类似于开放表格式中的压缩合并操作。
+* **为并发读取进行了优化** - MergeTree 的列式存储布局结合[多级缓存](/operations/caches)，支持高并发的实时分析型工作负载，而开放表格式并非为此而设计。
 
 本指南将演示如何使用 `INSERT INTO SELECT` 将数据从目录加载到 MergeTree 表中，以获得更快速的分析能力。
 
@@ -36,7 +36,6 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql';
 ```
 
-
 ### 列出所有表 \{#list-tables\}
 
 ```sql
@@ -47,7 +46,6 @@ SHOW TABLES FROM unity
 │ unity.single_day_log                               │
 └────────────────────────────────────────────────────┘
 ```
-
 
 ### 查看 Schema \{#explore-schema\}
 
@@ -92,7 +90,6 @@ FROM unity.`icebench.single_day_log`
 1 row in set. Elapsed: 1.265 sec.
 ```
 
-
 ## 对 lakehouse 表执行查询 \{#query-lakehouse\}
 
 让我们运行一个查询，按线程名称和实例类型过滤日志，在消息文本中搜索错误，并按记录器（logger）对结果进行分组：
@@ -122,7 +119,6 @@ Peak memory usage: 4.35 GiB.
 ```
 
 该查询耗时将近 **9 秒**，因为 ClickHouse 必须对对象存储中的所有 Parquet 文件执行全表扫描。可以通过分区来提升性能，但像 `logger_name` 这样的列其基数可能过高，难以有效进行分区。我们也没有诸如 [Text indices](/engines/table-engines/mergetree-family/mergetree#text) 之类的索引来进一步过滤数据。这正是 MergeTree 的强项。
-
 
 ## 将数据加载到 MergeTree 表中 \{#load-data\}
 
@@ -165,7 +161,6 @@ ENGINE = MergeTree
 ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 ```
 
-
 ### 从目录中插入数据 \{#insert-data\}
 
 使用 `INSERT INTO SELECT` 将约 3 亿条记录从 lakehouse 表加载到我们的 ClickHouse 表中：
@@ -176,7 +171,6 @@ INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`
 282634391 rows in set. Elapsed: 237.680 sec. Processed 282.63 million rows, 5.42 GB (1.19 million rows/s., 22.79 MB/s.)
 Peak memory usage: 18.62 GiB.
 ```
-
 
 ## 重新执行查询 \{#reexecute-query\}
 

@@ -51,13 +51,13 @@ PRIMARY KEY key;
 
 ## 要求 \{#requirements\}
 
-1. 在 PostgreSQL 配置文件中，[wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 设置必须为 `logical`，并且 `max_replication_slots` 参数的值至少为 `2`。
+1. 在 PostgreSQL 配置文件中，[wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 设置必须为 `logical`，并且 `max_replication_slots` 参数的值至少为 `2`。
 
 2. 使用 `MaterializedPostgreSQL` 引擎的表必须具有主键，且该主键必须与 PostgreSQL 表的副本标识索引（默认：主键）相同（参见[副本标识索引的详细信息](../../../engines/database-engines/materialized-postgresql.md#requirements)）。
 
-3. 仅允许使用 [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)) 数据库。
+3. 仅允许使用 [Atomic](https://en.wikipedia.org/wiki/Atomicity_\(database_systems\)) 数据库。
 
-4. 由于实现依赖于 PostgreSQL 的 [pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html) 函数，`MaterializedPostgreSQL` 表引擎仅适用于 PostgreSQL 版本 >= 11。
+4. 由于实现依赖于 PostgreSQL 的 [pg&#95;replication&#95;slot&#95;advance](https://pgpedia.info/p/pg_replication_slot_advance.html) 函数，`MaterializedPostgreSQL` 表引擎仅适用于 PostgreSQL 版本 &gt;= 11。
 
 ## 虚拟列 \{#virtual-columns\}
 

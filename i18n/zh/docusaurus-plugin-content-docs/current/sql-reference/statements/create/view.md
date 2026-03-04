@@ -11,7 +11,6 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # CREATE VIEW \{#create-view\}
 
 创建一个新视图。视图可以是[普通视图](#normal-view)、[物化视图](#materialized-view)、[可刷新的物化视图](#refreshable-materialized-view)以及[窗口视图](/sql-reference/statements/create/view#window-view)。
@@ -47,7 +46,6 @@ SELECT a, b, c FROM view
 SELECT a, b, c FROM (SELECT ...)
 ```
 
-
 ## 参数化视图 \{#parameterized-view\}
 
 参数化视图与普通视图类似，但在创建时可以指定不会立即解析的参数。这类视图可以配合表函数使用：将视图名称作为函数名，将参数值作为函数参数传入。
@@ -61,7 +59,6 @@ CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Co
 ```sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
-
 
 ## 物化视图 \{#materialized-view\}
 
@@ -117,7 +114,6 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 
 要删除视图，请使用 [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)。尽管 `DROP TABLE` 对 VIEW 也同样可用。
 
-
 ## SQL 安全性 \{#sql_security\}
 
 `DEFINER` 和 `SQL SECURITY` 允许你指定在执行视图底层查询时要使用的 ClickHouse 用户。
@@ -150,7 +146,6 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 ALTER TABLE MODIFY SQL SECURITY { DEFINER | INVOKER | NONE } [DEFINER = { user | CURRENT_USER }]
 ```
 
-
 ### 示例 \{#examples\}
 
 ```sql
@@ -165,10 +160,9 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
-
 ## 实时视图 \{#live-view\}
 
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 此功能已被弃用，并将在未来的版本中移除。
 
@@ -208,7 +202,6 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 查询中 `REFRESH ... SETTINGS` 部分中的设置是刷新设置（例如 `refresh_retries`），与常规设置（例如 `max_threads`）不同。常规设置可以在查询末尾使用 `SETTINGS` 指定。
 :::
 
-
 ### 刷新计划 \{#refresh-schedule\}
 
 刷新计划示例：
@@ -237,7 +230,6 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 此外，在创建物化视图之后，会立即启动一次刷新，除非在 `CREATE` 查询中指定了 `EMPTY`。如果指定了 `EMPTY`，则第一次刷新会按照预定的计划执行。
 
-
 ### 在 Replicated 数据库中 \{#in-replicated-db\}
 
 如果可刷新的物化视图位于 [Replicated 数据库](../../../engines/database-engines/replicated.md) 中，副本之间会相互协调，使得在每个计划的刷新时间点仅有一个副本执行刷新。需要使用 [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) 表引擎，以确保所有副本都能看到刷新产生的数据。
@@ -246,7 +238,7 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 在非 `APPEND` 模式下，只支持协同刷新。若要使用不协同的刷新方式，请使用 `Atomic` 数据库，并结合 `CREATE ... ON CLUSTER` 查询在所有副本上创建可刷新物化视图。
 
-这种协调通过 Keeper 实现。znode 路径由 [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 服务器设置决定。
+这种协调通过 Keeper 实现。znode 路径由 [default&#95;replica&#95;path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 服务器设置决定。
 
 ### 依赖关系 \{#refresh-dependencies\}
 
@@ -293,7 +285,6 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 `DEPENDS ON` 仅在可刷新的物化视图之间生效。将普通表列入 `DEPENDS ON` 列表会导致该视图永远不会刷新（可以使用 `ALTER` 移除依赖关系，见下文）。
 :::
 
-
 ### Settings \{#settings\}
 
 可用的刷新设置：
@@ -314,7 +305,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 这会一次性替换刷新参数的*所有*内容：调度、依赖关系、设置以及是否为 APPEND 模式。例如，如果表之前有 `DEPENDS ON`，在执行不带 `DEPENDS ON` 的 `MODIFY REFRESH` 时将会移除这些依赖关系。
 :::
 
-
 ### 其他操作 \{#other-operations\}
 
 所有可刷新的 materialized view 的状态都可以在表 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。该表包含刷新进度（如果正在运行）、上次和下次刷新时间，以及在刷新失败时的异常消息。
@@ -324,7 +314,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 要等待某次刷新完成，请使用 [`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views)。这在创建视图后等待其完成初始刷新时尤其有用。
 
 :::note
-趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏（Conway's Game of Life）：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
+趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏（Conway&#39;s Game of Life）：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
 
 ## 窗口视图 \{#window-view\}
@@ -349,7 +339,6 @@ GROUP BY time_window_function
 创建窗口视图与创建 `MATERIALIZED VIEW` 类似。窗口视图需要一个内部存储引擎来保存中间数据。可以通过使用 `INNER ENGINE` 子句来指定内部存储；未显式指定时，窗口视图将使用 `AggregatingMergeTree` 作为默认内部引擎。
 
 在创建未带 `TO [db].[table]` 子句的窗口视图时，必须指定 `ENGINE`——用于存储数据的表引擎。
-
 
 ### 时间窗口函数 \{#time-window-functions\}
 
@@ -391,7 +380,6 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 
 可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在窗口视图中指定的 `SELECT` 查询。新的 `SELECT` 查询生成的结果数据结构，无论是否包含 `TO [db.]name` 子句，都必须与原始 `SELECT` 查询保持一致。请注意，当前窗口中的数据会丢失，因为中间状态无法复用。
 
-
 ### 监控新窗口 \{#monitoring-new-windows\}
 
 window view 支持使用 [WATCH](../../../sql-reference/statements/watch.md) 查询来监控变更，或者使用 `TO` 语法将结果输出到一个表中。
@@ -404,7 +392,6 @@ WATCH [db.]window_view
 ```
 
 可以通过指定 `LIMIT` 来限定在终止查询前要接收的更新次数。`EVENTS` 子句可用于得到 `WATCH` 查询的一种精简形式，在这种形式下，不会返回查询结果本身，而只会返回最新的查询水位线。
-
 
 ### 设置 \{#settings-1\}
 
@@ -454,7 +441,6 @@ CREATE WINDOW VIEW wv TO dst AS SELECT count(id), tumbleStart(w_id) as window_st
 
 在 ClickHouse 的有状态测试中可以找到更多示例（这些测试的名称都包含 `*window_view*`）。
 
-
 ### Window View 用法 \{#window-view-usage\}
 
 Window View 在以下场景中非常有用：
@@ -464,8 +450,8 @@ Window View 在以下场景中非常有用：
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
-- 博客文章：[使用 ClickHouse 构建可观测性解决方案（第二部分：链路追踪）](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+* 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客文章：[使用 ClickHouse 构建可观测性解决方案（第二部分：链路追踪）](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
 
 ## 临时视图 \{#temporary-views\}
 
@@ -503,7 +489,6 @@ CREATE TEMPORARY VIEW [IF NOT EXISTS] view_name AS <select_query>
 
 `OR REPLACE` **不**支持用于临时视图（与临时表的行为保持一致）。如果你需要“替换”临时视图，请先将其删除，然后再创建一次。
 
-
 ### 示例 \{#temporary-views-examples\}
 
 创建一个临时源表以及基于该表的临时视图：
@@ -531,7 +516,6 @@ SHOW CREATE TEMPORARY VIEW tview;
 ```sql
 DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
-
 
 ### 不允许的用法 / 限制 \{#temporary-views-limitations\}
 

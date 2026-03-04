@@ -16,10 +16,9 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Подключение QStudio к ClickHouse \{#connect-qstudio-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 QStudio — это бесплатный графический интерфейс SQL-клиента, который позволяет запускать SQL-скрипты, легко просматривать таблицы, строить графики и экспортировать результаты. Он работает на всех операционных системах и с любой базой данных.
 
@@ -29,10 +28,10 @@ QStudio подключается к ClickHouse по JDBC.
 
 QStudio использует JDBC поверх HTTP(S) для подключения к ClickHouse. Для этого вам понадобятся:
 
-- endpoint
-- номер порта
-- имя пользователя
-- пароль
+* endpoint
+* номер порта
+* имя пользователя
+* пароль
 
 <ConnectionDetails />
 
@@ -42,28 +41,30 @@ QStudio доступен по адресу https://www.timestored.com/qstudio/do
 
 ## 3. Добавление базы данных \{#3-add-a-database\}
 
-- Когда вы впервые откроете QStudio, выберите в меню **Server->Add Server** или нажмите кнопку добавления сервера на панели инструментов.
-- Затем укажите параметры:
+* Когда вы впервые откроете QStudio, выберите в меню **Server-&gt;Add Server** или нажмите кнопку добавления сервера на панели инструментов.
+* Затем укажите параметры:
 
 <Image img={qstudio_add_connection} size="lg" border alt="Окно настройки подключения к базе данных QStudio с параметрами подключения к ClickHouse" />
 
-1.   Server Type: Clickhouse.com
-2.    Обратите внимание: в Host ОБЯЗАТЕЛЬНО должен быть указан протокол https://
-    Host: https://abc.def.clickhouse.cloud
-    Port: 8443
-3.  Username: default
-    Password: `XXXXXXXXXXX`
- 4. Нажмите Add
+1. Server Type: Clickhouse.com
+2. Обратите внимание: в Host ОБЯЗАТЕЛЬНО должен быть указан протокол https://
+   Host: https://abc.def.clickhouse.cloud
+   Port: 8443
+3. Username: default
+   Password: `XXXXXXXXXXX`
+4. Нажмите Add
 
 Если QStudio обнаружит, что у вас не установлен драйвер ClickHouse JDBC, он предложит скачать их для вас:
 
 ## 4. Выполнение запросов к ClickHouse \{#4-query-clickhouse\}
 
-- Откройте редактор запросов и выполните запрос. Вы можете запускать запросы с помощью:
-- Ctrl + E — выполняет выделенный текст
-- Ctrl + Enter — выполняет текущую строку
+* Откройте редактор запросов и выполните запрос. Вы можете запускать запросы с помощью:
 
-- Пример запроса:
+* Ctrl + E — выполняет выделенный текст
+
+* Ctrl + Enter — выполняет текущую строку
+
+* Пример запроса:
 
 <Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, демонстрирующий выполнение примерного SQL-запроса в базе данных ClickHouse" />
 

@@ -103,7 +103,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## Ограничения \{#constraints\}
 
 Если у таблицы есть [ограничения](../../sql-reference/statements/create/table.md#constraints), их выражения проверяются для каждой строки вставляемых данных. Если какое-либо из этих ограничений нарушено, сервер выбросит исключение с именем ограничения и его выражением, а выполнение запроса будет прекращено.
@@ -134,7 +133,6 @@ INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
-
 ## Вставка данных из файла \{#inserting-data-from-a-file\}
 
 **Синтаксис**
@@ -150,7 +148,6 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 Эта функциональность доступна в [клиенте командной строки](../../interfaces/cli.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
 
 **Примеры**
-
 
 ### Один файл с FROM INFILE \{#single-file-with-from-infile\}
 
@@ -171,7 +168,6 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### Несколько файлов с FROM INFILE, использующим glob-шаблоны \{#multiple-files-with-from-infile-using-globs\}
 
@@ -194,7 +190,6 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 ```
 
 :::
-
 
 ## Вставка с использованием табличной функции \{#inserting-using-a-table-function\}
 
@@ -225,7 +220,6 @@ SELECT * FROM simple_table;
 └─────┴───────────────────────┘
 ```
 
-
 ## Вставка в ClickHouse Cloud \{#inserting-into-clickhouse-cloud\}
 
 По умолчанию сервисы ClickHouse Cloud предоставляют несколько реплик для обеспечения высокой доступности. При подключении к сервису устанавливается соединение с одной из этих реплик.
@@ -240,7 +234,6 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 Обратите внимание, что использование `select_sequential_consistency` увеличит нагрузку на ClickHouse Keeper (который используется в ClickHouse Cloud) и может привести к снижению производительности в зависимости от нагрузки на сервис. Мы не рекомендуем включать эту настройку без необходимости. Рекомендуемый подход — выполнять операции чтения и записи в рамках одного сеанса или использовать клиентский драйвер, который работает по нативному протоколу (и, соответственно, поддерживает «липкие» подключения).
 
-
 ## Вставка в реплицируемую конфигурацию \{#inserting-into-a-replicated-setup\}
 
 В реплицируемой конфигурации данные становятся видимыми на других репликах после того, как они были реплицированы. Репликация данных (загрузка на другие реплики) начинается сразу после выполнения `INSERT`. Это отличается от ClickHouse Cloud, где данные немедленно записываются в общее хранилище, а реплики подписываются на изменения метаданных.
@@ -251,13 +244,13 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 `INSERT` сортирует входные данные по первичному ключу и разбивает их на партиции по ключу партиционирования. Если вы вставляете данные сразу в несколько партиций, это может значительно снизить производительность запроса `INSERT`. Чтобы этого избежать:
 
-- Добавляйте данные достаточно крупными пакетами, например по 100 000 строк за раз.
-- Группируйте данные по ключу партиционирования перед загрузкой в ClickHouse.
+* Добавляйте данные достаточно крупными пакетами, например по 100 000 строк за раз.
+* Группируйте данные по ключу партиционирования перед загрузкой в ClickHouse.
 
 Производительность не снизится, если:
 
-- Данные добавляются в режиме реального времени.
-- Вы загружаете данные, которые обычно уже отсортированы по времени.
+* Данные добавляются в режиме реального времени.
+* Вы загружаете данные, которые обычно уже отсортированы по времени.
 
 ### Асинхронные вставки \{#asynchronous-inserts\}
 
@@ -271,9 +264,9 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 **См. также**
 
-- [async_insert](/operations/settings/settings#async_insert)
-- [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert)
-- [wait_for_async_insert_timeout](/operations/settings/settings#wait_for_async_insert_timeout)
-- [async_insert_max_data_size](/operations/settings/settings#async_insert_max_data_size)
-- [async_insert_busy_timeout_ms](/operations/settings/settings#async_insert_busy_timeout_max_ms)
-- [async_insert_stale_timeout_ms](/operations/settings/settings#async_insert_max_data_size)
+* [async&#95;insert](/operations/settings/settings#async_insert)
+* [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert)
+* [wait&#95;for&#95;async&#95;insert&#95;timeout](/operations/settings/settings#wait_for_async_insert_timeout)
+* [async&#95;insert&#95;max&#95;data&#95;size](/operations/settings/settings#async_insert_max_data_size)
+* [async&#95;insert&#95;busy&#95;timeout&#95;ms](/operations/settings/settings#async_insert_busy_timeout_max_ms)
+* [async&#95;insert&#95;stale&#95;timeout&#95;ms](/operations/settings/settings#async_insert_max_data_size)

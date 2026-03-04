@@ -13,16 +13,16 @@ doc_type: 'reference'
 
 `T` не может быть ни одним из следующих составных типов данных:
 
-- [Array](../../sql-reference/data-types/array.md) — Не поддерживается
-- [Map](../../sql-reference/data-types/map.md) — Не поддерживается
-- [Tuple](../../sql-reference/data-types/tuple.md) — Доступна экспериментальная поддержка*
+* [Array](../../sql-reference/data-types/array.md) — Не поддерживается
+* [Map](../../sql-reference/data-types/map.md) — Не поддерживается
+* [Tuple](../../sql-reference/data-types/tuple.md) — Доступна экспериментальная поддержка*
 
 Однако составные типы данных **могут содержать** значения типа `Nullable`, например `Array(Nullable(Int8))` или `Tuple(Nullable(String), Nullable(Int64))`.
 
 :::note Экспериментальная функция: Nullable Tuples
 
 * [Nullable(Tuple(...))](../../sql-reference/data-types/tuple.md#nullable-tuple) поддерживается, когда включен параметр `allow_experimental_nullable_tuple_type = 1`.
-:::
+  :::
 
 Поле типа `Nullable` не может участвовать в индексах таблицы.
 
@@ -32,7 +32,7 @@ doc_type: 'reference'
 
 Для хранения значений типа `Nullable` в столбце таблицы ClickHouse использует отдельный файл с `NULL`-масками в дополнение к обычному файлу со значениями. Записи в файле масок позволяют ClickHouse различать `NULL` и значение по умолчанию соответствующего типа данных для каждой строки таблицы. Из-за дополнительного файла столбец `Nullable` потребляет больше дискового пространства по сравнению с аналогичным обычным столбцом.
 
-:::note    
+:::note\
 Использование `Nullable` почти всегда негативно влияет на производительность, учитывайте это при проектировании своих баз данных.
 :::
 
@@ -62,7 +62,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## Пример использования \{#usage-example\}
 

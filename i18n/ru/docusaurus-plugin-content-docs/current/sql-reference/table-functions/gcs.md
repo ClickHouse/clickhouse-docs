@@ -216,5 +216,6 @@ INSERT INTO TABLE FUNCTION
 В результате данные записываются в три файла в разных бакетах: `my_bucket_1/file.csv`, `my_bucket_10/file.csv` и `my_bucket_20/file.csv`.
 
 ## См. также \{#related\}
-- [Табличная функция S3](s3.md)
-- [Движок таблицы S3](../../engines/table-engines/integrations/s3.md)
+
+* [Табличная функция S3](s3.md)
+* [Движок таблицы S3](../../engines/table-engines/integrations/s3.md)

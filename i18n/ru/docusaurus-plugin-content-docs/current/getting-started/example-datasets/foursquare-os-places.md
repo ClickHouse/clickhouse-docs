@@ -257,18 +257,17 @@ INSERT INTO foursquare_mercator
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
-
 ## Визуализация данных \{#data-visualization\}
 
-Чтобы увидеть, что можно сделать с этим набором данных, зайдите на [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219).
+Чтобы увидеть, что можно сделать с этим набором данных, зайдите на [adsb.exposed](https://adsb.exposed/?dataset=Places\&zoom=5\&lat=52.3488\&lng=4.9219).
 adsb.exposed изначально был создан сооснователем и CTO ClickHouse Алексеем Миловидовым для визуализации данных о полётах ADS‑B (Automatic Dependent Surveillance‑Broadcast), которые в тысячу раз больше по объёму. Во время внутреннего хакатона Алексей добавил в этот инструмент данные Foursquare.
 
 Ниже приведены некоторые из наших любимых визуализаций, которыми мы хотим с вами поделиться.
 
-<Image img={visualization_1} size="md" alt="Карта плотности объектов интереса в Европе"/>
+<Image img={visualization_1} size="md" alt="Карта плотности объектов интереса в Европе" />
 
-<Image img={visualization_2} size="md" alt="Сакэ-бары в Японии"/>
+<Image img={visualization_2} size="md" alt="Сакэ-бары в Японии" />
 
-<Image img={visualization_3} size="md" alt="Банкоматы"/>
+<Image img={visualization_3} size="md" alt="Банкоматы" />
 
-<Image img={visualization_4} size="md" alt="Карта Европы с объектами интереса, классифицированными по странам"/>
+<Image img={visualization_4} size="md" alt="Карта Европы с объектами интереса, классифицированными по странам" />

@@ -62,16 +62,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     EventDate Date,
     Path String,
     Time DateTime,
     Value Float64,
     Version <Numeric_type>
     ...
-) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
-```
+  ) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
+  ```
 
   除 `config_section` 以外，所有参数的含义都与 `MergeTree` 中相同。
 
@@ -89,19 +89,19 @@ patterns
 
 ### 必需列 \{#required-columns\}
 
-#### `path_column_name` \{#path&#95;column&#95;name\}
+#### `path_column_name` \{#path_column_name\}
 
 `path_column_name` — 存储指标名称（Graphite 指标）的列名。默认值：`Path`。
 
-#### `time_column_name` \{#time&#95;column&#95;name\}
+#### `time_column_name` \{#time_column_name\}
 
 `time_column_name` — 存储该指标采集时间的列名。默认值：`Time`。
 
-#### `value_column_name` \{#value&#95;column&#95;name\}
+#### `value_column_name` \{#value_column_name\}
 
 `value_column_name` — 存储在 `time_column_name` 中指定时间点的指标值的列名。默认值：`Value`。
 
-#### `version_column_name` \{#version&#95;column&#95;name\}
+#### `version_column_name` \{#version_column_name\}
 
 `version_column_name` — 存储指标版本的列名。默认值：`Timestamp`。
 

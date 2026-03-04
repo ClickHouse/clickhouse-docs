@@ -75,6 +75,7 @@ total_unique_products:       7
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+* [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

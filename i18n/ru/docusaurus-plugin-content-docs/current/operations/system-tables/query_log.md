@@ -9,35 +9,34 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.query_log \{#systemquery_log\}
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
-Хранит метаданные и статистику о выполненных запросах: время начала, длительность, сообщения об ошибках, использование ресурсов и другие детали выполнения. Эта таблица не хранит результаты запросов. 
+Хранит метаданные и статистику о выполненных запросах: время начала, длительность, сообщения об ошибках, использование ресурсов и другие детали выполнения. Эта таблица не хранит результаты запросов.
 
-Вы можете изменить настройки логирования запросов в разделе конфигурации сервера [query_log](../../operations/server-configuration-parameters/settings.md#query_log).
+Вы можете изменить настройки логирования запросов в разделе конфигурации сервера [query&#95;log](../../operations/server-configuration-parameters/settings.md#query_log).
 
-Вы можете отключить логирование запросов, установив [log_queries = 0](/operations/settings/settings#log_queries). Мы не рекомендуем отключать логирование, так как информация в этой таблице важна для устранения неполадок.
+Вы можете отключить логирование запросов, установив [log&#95;queries = 0](/operations/settings/settings#log_queries). Мы не рекомендуем отключать логирование, так как информация в этой таблице важна для устранения неполадок.
 
-Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query_log](../../operations/server-configuration-parameters/settings.md#query_log). Чтобы принудительно выполнить сброс, используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
+Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query&#95;log](../../operations/server-configuration-parameters/settings.md#query_log). Чтобы принудительно выполнить сброс, используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
 
 ClickHouse не удаляет данные из этой таблицы автоматически. См. раздел [Introduction](/operations/system-tables/overview#system-tables-introduction) для получения дополнительной информации.
 
 Таблица `system.query_log` регистрирует два типа запросов:
 
-1.  Первичные запросы, которые были запущены непосредственно клиентом.
-2.  Дочерние запросы, которые были инициированы другими запросами (для распределённого выполнения запросов). Для таких запросов информация о родительских запросах отображается в столбцах `initial_*`.
+1. Первичные запросы, которые были запущены непосредственно клиентом.
+2. Дочерние запросы, которые были инициированы другими запросами (для распределённого выполнения запросов). Для таких запросов информация о родительских запросах отображается в столбцах `initial_*`.
 
 Каждый запрос создаёт одну или две строки в таблице `query_log` в зависимости от статуса запроса (см. столбец `type`):
 
-1.  Если выполнение запроса прошло успешно, создаются две строки с типами `QueryStart` и `QueryFinish`.
-2.  Если при обработке запроса произошла ошибка, создаются два события с типами `QueryStart` и `ExceptionWhileProcessing`.
-3.  Если ошибка произошла до запуска запроса, создаётся одно событие с типом `ExceptionBeforeStart`.
+1. Если выполнение запроса прошло успешно, создаются две строки с типами `QueryStart` и `QueryFinish`.
+2. Если при обработке запроса произошла ошибка, создаются два события с типами `QueryStart` и `ExceptionWhileProcessing`.
+3. Если ошибка произошла до запуска запроса, создаётся одно событие с типом `ExceptionBeforeStart`.
 
-Вы можете использовать настройку [log_queries_probability](/operations/settings/settings#log_queries_probability), чтобы уменьшить количество запросов, регистрируемых в таблице `query_log`.
+Вы можете использовать настройку [log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability), чтобы уменьшить количество запросов, регистрируемых в таблице `query_log`.
 
-Вы можете использовать настройку [log_formatted_queries](/operations/settings/settings#log_formatted_queries), чтобы логировать форматированные запросы в столбец `formatted_query`.
+Вы можете использовать настройку [log&#95;formatted&#95;queries](/operations/settings/settings#log_formatted_queries), чтобы логировать форматированные запросы в столбец `formatted_query`.
 
 ## Столбцы \{#columns\}
 

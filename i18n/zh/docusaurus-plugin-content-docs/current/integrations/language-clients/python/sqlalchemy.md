@@ -131,10 +131,10 @@ with Session(engine) as session:
 
 ## 范围和限制 \{#scope-and-limitations\}
 
-- 核心重点：支持 SQLAlchemy Core 功能，例如带有 `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）的 `SELECT`，以及 `WHERE`、`ORDER BY`、`LIMIT`/`OFFSET` 和 `DISTINCT`。
-- 仅支持带 `WHERE` 的 `DELETE`：该方言支持轻量级 `DELETE`，但要求显式指定 `WHERE` 子句，以避免误删整张表。若需清空整张表，请使用 `TRUNCATE TABLE`。
-- 不支持 `UPDATE`：ClickHouse 针对追加写入进行了优化。该方言不实现 `UPDATE`。如果需要修改数据，请在上游完成数据转换后重新插入，或在自行承担风险的前提下使用显式文本 SQL（例如 `ALTER TABLE ... UPDATE`）。
-- DDL 和反射：支持创建数据库和数据表，反射会返回列类型和表引擎元数据。传统的主键/外键/索引元数据不存在，因为 ClickHouse 不强制这些约束。
-- ORM 范围：为方便使用，支持声明式模型以及通过 `Session.add(...)`/`bulk_save_objects(...)` 进行插入。高级 ORM 功能（关系管理、工作单元更新、级联、急加载/懒加载语义）不受支持。
-- 主键语义：`Column(..., primary_key=True)` 仅被 SQLAlchemy 用于对象标识，并不会在 ClickHouse 中创建服务器端约束。请通过表引擎定义 `ORDER BY`（以及可选的 `PRIMARY KEY`）（例如 `MergeTree(order_by=...)`）。
-- 事务与服务器特性：不支持两阶段事务、序列、`RETURNING`，以及高级隔离级别。`engine.begin()` 提供用于对语句分组的 Python 上下文管理器，但并不执行实际的事务控制（提交/回滚为空操作）。
+* 核心重点：支持 SQLAlchemy Core 功能，例如带有 `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）的 `SELECT`，以及 `WHERE`、`ORDER BY`、`LIMIT`/`OFFSET` 和 `DISTINCT`。
+* 仅支持带 `WHERE` 的 `DELETE`：该方言支持轻量级 `DELETE`，但要求显式指定 `WHERE` 子句，以避免误删整张表。若需清空整张表，请使用 `TRUNCATE TABLE`。
+* 不支持 `UPDATE`：ClickHouse 针对追加写入进行了优化。该方言不实现 `UPDATE`。如果需要修改数据，请在上游完成数据转换后重新插入，或在自行承担风险的前提下使用显式文本 SQL（例如 `ALTER TABLE ... UPDATE`）。
+* DDL 和反射：支持创建数据库和数据表，反射会返回列类型和表引擎元数据。传统的主键/外键/索引元数据不存在，因为 ClickHouse 不强制这些约束。
+* ORM 范围：为方便使用，支持声明式模型以及通过 `Session.add(...)`/`bulk_save_objects(...)` 进行插入。高级 ORM 功能（关系管理、工作单元更新、级联、急加载/懒加载语义）不受支持。
+* 主键语义：`Column(..., primary_key=True)` 仅被 SQLAlchemy 用于对象标识，并不会在 ClickHouse 中创建服务器端约束。请通过表引擎定义 `ORDER BY`（以及可选的 `PRIMARY KEY`）（例如 `MergeTree(order_by=...)`）。
+* 事务与服务器特性：不支持两阶段事务、序列、`RETURNING`，以及高级隔离级别。`engine.begin()` 提供用于对语句分组的 Python 上下文管理器，但并不执行实际的事务控制（提交/回滚为空操作）。

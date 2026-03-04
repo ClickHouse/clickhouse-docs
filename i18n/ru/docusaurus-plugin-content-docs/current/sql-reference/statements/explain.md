@@ -60,11 +60,11 @@ Union
 
 ## Типы EXPLAIN \{#explain-types\}
 
-- `AST` — абстрактное синтаксическое дерево.
-- `SYNTAX` — текст запроса после оптимизаций на уровне AST.
-- `QUERY TREE` — дерево запроса после оптимизаций на уровне Query Tree.
-- `PLAN` — план выполнения запроса.
-- `PIPELINE` — конвейер выполнения запроса.
+* `AST` — абстрактное синтаксическое дерево.
+* `SYNTAX` — текст запроса после оптимизаций на уровне AST.
+* `QUERY TREE` — дерево запроса после оптимизаций на уровне Query Tree.
+* `PLAN` — план выполнения запроса.
+* `PIPELINE` — конвейер выполнения запроса.
 
 ### EXPLAIN AST \{#explain-ast\}
 
@@ -103,7 +103,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
@@ -277,7 +276,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
-
 ```json
 [
   {
@@ -405,7 +403,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
-
 
 Если `actions` = 1, добавляемые ключи зависят от типа шага.
 
@@ -541,7 +538,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

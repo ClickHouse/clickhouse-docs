@@ -21,59 +21,57 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 > 本指南介绍如何配置 SQL 控制台角色分配，这些分配决定整个控制台的访问权限，以及用户在 Cloud 控制台中可使用的功能。
 
 <VerticalStepper headerLevel="h3">
+  ### 访问服务设置 \{#access-service-settings\}
 
-### 访问服务设置 \{#access-service-settings\}
+  在 Services 页面中，点击你希望调整 SQL 控制台访问设置的服务右上角菜单。
 
-在 Services 页面中，点击你希望调整 SQL 控制台访问设置的服务右上角菜单。
+  <Image img={step_1} size="lg" />
 
-<Image img={step_1} size="lg"/>
+  在弹出菜单中选择 `settings`。
 
-在弹出菜单中选择 `settings`。
+  <Image img={step_2} size="lg" />
 
-<Image img={step_2} size="lg"/>
+  ### 调整 SQL 控制台访问权限 \{#adjust-sql-console-access\}
 
-### 调整 SQL 控制台访问权限 \{#adjust-sql-console-access\}
+  在 &quot;Security&quot; 部分下，找到 &quot;SQL console access&quot; 区域：
 
-在 "Security" 部分下，找到 "SQL console access" 区域：
+  <Image img={step_3} size="md" />
 
-<Image img={step_3} size="md"/>
+  ### 更新 Service Admin 的设置 \{#update-settings-for-service-admin\}
 
-### 更新 Service Admin 的设置 \{#update-settings-for-service-admin\}
+  选择 Service Admin 的下拉菜单，更改 Service Admin 角色的访问控制设置：
 
-选择 Service Admin 的下拉菜单，更改 Service Admin 角色的访问控制设置：
+  <Image img={step_4} size="md" />
 
-<Image img={step_4} size="md"/>
+  你可以从以下角色中进行选择：
 
-你可以从以下角色中进行选择：
+  | 角色          |
+  |---------------|
+  | `No access`   |
+  | `Read only`   |
+  | `Full access` |
 
-| 角色          |
-|---------------|
-| `No access`   |
-| `Read only`   |
-| `Full access` |
+  ### 更新 Service Read Only 的设置 \{#update-settings-for-service-read-only\}
 
-### 更新 Service Read Only 的设置 \{#update-settings-for-service-read-only\}
+  选择 Service Read Only 的下拉菜单，更改 Service Read Only 角色的访问控制设置：
 
-选择 Service Read Only 的下拉菜单，更改 Service Read Only 角色的访问控制设置：
+  <Image img={step_5} size="md" />
 
-<Image img={step_5} size="md"/>
+  你可以从以下角色中进行选择：
 
-你可以从以下角色中进行选择：
+  | 角色          |
+  |---------------|
+  | `No access`   |
+  | `Read only`   |
+  | `Full access` |
 
-| 角色          |
-|---------------|
-| `No access`   |
-| `Read only`   |
-| `Full access` |
+  ### 查看具有访问权限的用户 \{#review-users-with-access\}
 
-### 查看具有访问权限的用户 \{#review-users-with-access\}
+  点击用户数量可以查看该服务的用户概览：
 
-点击用户数量可以查看该服务的用户概览：
+  <Image img={step_6} size="md" />
 
-<Image img={step_6} size="md"/>
+  页面右侧会打开一个标签页，显示用户总数及其角色：
 
-页面右侧会打开一个标签页，显示用户总数及其角色：
-
-<Image img={step_7} size="md"/>
-
+  <Image img={step_7} size="md" />
 </VerticalStepper>

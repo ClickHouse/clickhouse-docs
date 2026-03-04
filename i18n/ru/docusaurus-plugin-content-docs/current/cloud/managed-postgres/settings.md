@@ -17,10 +17,9 @@ import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
 Вы можете изменять параметры конфигурации и управлять настройками экземпляра Managed Postgres на вкладке **Settings** в боковой панели.
 
-
 ## Изменение параметров конфигурации \{#changing-configuration\}
 
-<Image img={postgresParameters} alt="Конфигурация параметров Postgres" size="md" border/>
+<Image img={postgresParameters} alt="Конфигурация параметров Postgres" size="md" border />
 
 Чтобы изменить параметр, нажмите кнопку **Edit parameters**. Выберите параметры, которые необходимо изменить, и задайте для них соответствующие значения. После того как вы внесёте все необходимые изменения, нажмите кнопку **Save Changes**.
 
@@ -28,13 +27,13 @@ import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
 ## Действия с сервисом и масштабирование \{#service-actions\}
 
-<Image img={serviceActions} alt="Service actions and scaling" size="md" border/>
+<Image img={serviceActions} alt="Service actions and scaling" size="md" border />
 
 Панель **Service actions** предоставляет средства управления экземпляром Managed Postgres:
 
-- **Reset password**: обновление пароля суперпользователя (только когда экземпляр находится в состоянии `Running`)
-- **Restart**: перезапуск экземпляра базы данных (только когда экземпляр находится в состоянии `Running`)
-- **Delete**: удаление экземпляра
+* **Reset password**: обновление пароля суперпользователя (только когда экземпляр находится в состоянии `Running`)
+* **Restart**: перезапуск экземпляра базы данных (только когда экземпляр находится в состоянии `Running`)
+* **Delete**: удаление экземпляра
 
 Раздел **Scaling** позволяет изменять типы экземпляров для primary и standby, чтобы увеличить или уменьшить вычислительные ресурсы и объем хранилища. В фоновом режиме будут созданы новые экземпляры, которые затем возьмут на себя работу после того, как догонят текущий primary. Процесс failover прервет все текущие подключения и приведет к кратковременному простою.
 
@@ -46,7 +45,7 @@ import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
 IP-фильтры определяют, с каких исходных IP-адресов разрешено подключаться к вашему экземпляру Managed Postgres.
 
-<Image img={ipFilters} alt="Конфигурация списка доступа по IP" size="md" border/>
+<Image img={ipFilters} alt="Конфигурация списка доступа по IP" size="md" border />
 
 Чтобы настроить IP-фильтры:
 

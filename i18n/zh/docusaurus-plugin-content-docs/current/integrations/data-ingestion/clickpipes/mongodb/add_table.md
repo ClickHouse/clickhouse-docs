@@ -27,9 +27,9 @@ import add_table from '@site/static/images/integrations/data-ingestion/clickpipe
 3. 找到您的表——可以在搜索栏中搜索表名。
 4. 通过勾选复选框来选择该表。
 
-<br/>
+<br />
 
-<Image img={add_table} border size="md"/>
+<Image img={add_table} border size="md" />
 
 5. 点击 **update**。
 6. 成功更新后，pipe 将依次进入 `Setup`、`Snapshot` 和 `Running` 状态。您可以在 **Tables** 选项卡中跟踪该表的初始加载进度。

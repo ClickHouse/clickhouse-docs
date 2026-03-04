@@ -36,13 +36,13 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
-- `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
+* `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
 
 ## 相关 \{#related\}
 
-- [Hudi 引擎](engines/table-engines/integrations/hudi.md)
-- [Hudi 表函数](sql-reference/table-functions/hudi.md)
+* [Hudi 引擎](engines/table-engines/integrations/hudi.md)
+* [Hudi 表函数](sql-reference/table-functions/hudi.md)

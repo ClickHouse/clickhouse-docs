@@ -67,7 +67,6 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
-
 ## Time 和 Time64 类型 \{#time-series-time-types\}
 
 对于需要存储不带日期组件的“时间（time-of-day）”值的场景，ClickHouse 提供了 [`Time`](/sql-reference/data-types/time) 和 [`Time64`](/sql-reference/data-types/time64) 类型，它们是在 25.6 版本中引入的。它们适用于表示重复日程、每日模式，或在逻辑上需要将日期与时间组件分离的情况。
@@ -123,7 +122,6 @@ SELECT * FROM time_examples ORDER BY event_id;
 ```sql
 SELECT * FROM time_examples WHERE basic_time = '14:30:25';
 ```
-
 
 ## 时区 \{#time-series-timezones\}
 
@@ -190,7 +188,6 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 第二行中，我们在未指定时区的情况下插入了所有值，因此使用了服务器的本地时区。
 与第一行相同，`dt_1` 和 `dt64_1` 被转换为 `Europe/Berlin`，而 `dt_2` 和 `dt64_2` 使用服务器的本地时区。
-
 
 ## 日期和时间函数 \{#time-series-date-time-functions\}
 

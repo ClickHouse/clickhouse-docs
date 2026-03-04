@@ -17,25 +17,25 @@ doc_type: 'reference'
 
 1. Применение настройки непосредственно к пользователю или внутри профиля настроек
 
-    - SQL (рекомендуется)
-    - добавление одного или нескольких XML- или YAML-файлов в `/etc/clickhouse-server/users.d`
+   * SQL (рекомендуется)
+   * добавление одного или нескольких XML- или YAML-файлов в `/etc/clickhouse-server/users.d`
 
 2. Настройки сессии
 
-    - Отправьте `SET setting=value` из SQL-консоли ClickHouse Cloud или
-    `clickhouse client` в интерактивном режиме. Аналогично, вы можете
-    использовать сессии ClickHouse по протоколу HTTP. Для этого необходимо
-    указать HTTP-параметр `session_id`.
+   * Отправьте `SET setting=value` из SQL-консоли ClickHouse Cloud или
+     `clickhouse client` в интерактивном режиме. Аналогично, вы можете
+     использовать сессии ClickHouse по протоколу HTTP. Для этого необходимо
+     указать HTTP-параметр `session_id`.
 
 3. Настройки запроса
 
-    - При запуске `clickhouse client` в неинтерактивном режиме установите
-    параметр запуска `--setting=value`.
-    - При использовании HTTP API передавайте CGI-параметры (`URL?setting_1=value&setting_2=value...`).
-    - Определите настройки в разделе
-    [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
-    запроса SELECT. Значение настройки применяется только к этому запросу и
-    после выполнения запроса сбрасывается к значению по умолчанию или предыдущему значению.
+   * При запуске `clickhouse client` в неинтерактивном режиме установите
+     параметр запуска `--setting=value`.
+   * При использовании HTTP API передавайте CGI-параметры (`URL?setting_1=value&setting_2=value...`).
+   * Определите настройки в разделе
+     [SETTINGS](../../sql-reference/statements/select/index.md#settings-in-select-query)
+     запроса SELECT. Значение настройки применяется только к этому запросу и
+     после выполнения запроса сбрасывается к значению по умолчанию или предыдущему значению.
 
 ## Возврат настройки к значению по умолчанию \{#converting-a-setting-to-its-default-value\}
 
@@ -218,5 +218,5 @@ VALUES (...)
 
 ## См. также \{#see-also\}
 
-- См. страницу [Settings](/operations/settings/settings.md) с описанием настроек ClickHouse.
-- [Глобальные настройки сервера](/operations/server-configuration-parameters/settings.md)
+* См. страницу [Settings](/operations/settings/settings.md) с описанием настроек ClickHouse.
+* [Глобальные настройки сервера](/operations/server-configuration-parameters/settings.md)

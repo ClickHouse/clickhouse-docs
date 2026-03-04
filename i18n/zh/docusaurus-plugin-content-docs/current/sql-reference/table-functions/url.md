@@ -54,17 +54,17 @@ SELECT * FROM test_table;
 ## URL 中的通配模式 \{#globs-in-url\}
 
 花括号 `{ }` 中的模式用于生成一组分片，或用于指定故障转移地址。受支持的模式类型及示例请参见 [remote](remote.md#globs-in-addresses) 函数的描述。
-模式中的字符 `|` 用于指定故障转移地址。故障转移地址会按照在模式中列出的顺序依次迭代。生成地址的数量受 [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
+模式中的字符 `|` 用于指定故障转移地址。故障转移地址会按照在模式中列出的顺序依次迭代。生成地址的数量受 [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — `URL` 的路径。类型：`LowCardinality(String)`。
-- `_file` — `URL` 的资源名。类型：`LowCardinality(String)`。
-- `_size` — 资源以字节为单位的大小。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
-- `_headers` - HTTP 响应头部。类型：`Map(LowCardinality(String), LowCardinality(String))`。
+* `_path` — `URL` 的路径。类型：`LowCardinality(String)`。
+* `_file` — `URL` 的资源名。类型：`LowCardinality(String)`。
+* `_size` — 资源以字节为单位的大小。类型：`Nullable(UInt64)`。如果大小未知，则值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
+* `_headers` - HTTP 响应头部。类型：`Map(LowCardinality(String), LowCardinality(String))`。
 
-## use&#95;hive&#95;partitioning 设置 \{#hive-style-partitioning\}
+## use_hive_partitioning 设置 \{#hive-style-partitioning\}
 
 当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径（`/name=value/`）中检测 Hive 风格的分区，并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但会以 `_` 作为前缀。
 
@@ -78,8 +78,8 @@ SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE _d
 
 ## 存储设置 \{#storage-settings\}
 
-- [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - 用于在读取时跳过空文件。默认禁用。
-- [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - 用于控制是否对 URI 中路径进行解码/编码。默认启用。
+* [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) - 用于在读取时跳过空文件。默认禁用。
+* [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) - 用于控制是否对 URI 中路径进行解码/编码。默认启用。
 
 ## 权限 \{#permissions\}
 
@@ -87,4 +87,4 @@ SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE _d
 
 ## 相关内容 \{#related\}
 
-- [虚拟列](/engines/table-engines/index.md#table_engines-virtual_columns)
+* [虚拟列](/engines/table-engines/index.md#table_engines-virtual_columns)

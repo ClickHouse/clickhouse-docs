@@ -21,7 +21,6 @@ chDB предоставляет нативный C/C++ API для встраив
 curl -sL https://lib.chdb.io | bash
 ```
 
-
 ### Шаг 2: Подключение заголовков \{#include-headers\}
 
 Подключите заголовок chDB в ваш проект:
@@ -29,7 +28,6 @@ curl -sL https://lib.chdb.io | bash
 ```c
 #include <chdb.h>
 ```
-
 
 ### Шаг 3: Линковка библиотеки \{#link-library\}
 
@@ -42,7 +40,6 @@ gcc -o myapp myapp.c -lchdb
 # C++ compilation  
 g++ -o myapp myapp.cpp -lchdb
 ```
-
 
 ## Примеры на C \{#c-examples\}
 
@@ -94,7 +91,6 @@ int main() {
     return 0;
 }
 ```
-
 
 ### Потоковые запросы \{#streaming-queries\}
 
@@ -160,7 +156,6 @@ int main() {
 }
 ```
 
-
 ### Работа с различными форматами данных \{#data-formats\}
 
 ```c
@@ -198,7 +193,6 @@ int main() {
     return 0;
 }
 ```
-
 
 ## Пример на C++ \{#cpp-example\}
 
@@ -283,7 +277,6 @@ int main() {
 }
 ```
 
-
 ## Лучшие практики обработки ошибок \{#error-handling\}
 
 ```c
@@ -331,9 +324,8 @@ cleanup:
 }
 ```
 
-
 ## Репозиторий GitHub \{#github-repository\}
 
-- **Основной репозиторий**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **Проблемы и поддержка**: Сообщайте о проблемах в [репозитории GitHub](https://github.com/chdb-io/chdb/issues)
-- **Документация C API**: [Документация привязок](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+* **Основной репозиторий**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
+* **Проблемы и поддержка**: Сообщайте о проблемах в [репозитории GitHub](https://github.com/chdb-io/chdb/issues)
+* **Документация C API**: [Документация привязок](https://github.com/chdb-io/chdb/blob/main/bindings.md)

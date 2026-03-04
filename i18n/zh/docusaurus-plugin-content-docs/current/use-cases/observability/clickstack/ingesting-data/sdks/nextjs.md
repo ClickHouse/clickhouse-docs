@@ -57,20 +57,17 @@ module.exports = nextConfig;
 ### 安装 ClickHouse OpenTelemetry SDK \{#install-sdk\}
 
 <Tabs groupId="npm">
-<TabItem value="npm" label="NPM" default>
+  <TabItem value="npm" label="NPM" default>
+    ```shell
+    npm install @hyperdx/node-opentelemetry 
+    ```
+  </TabItem>
 
-```shell 
-npm install @hyperdx/node-opentelemetry 
-```
-
-</TabItem>
-<TabItem value="yarn" label="Yarn" default>
-
-```shell  
-yarn add @hyperdx/node-opentelemetry 
-```
-
-</TabItem>
+  <TabItem value="yarn" label="Yarn" default>
+    ```shell
+    yarn add @hyperdx/node-opentelemetry 
+    ```
+  </TabItem>
 </Tabs>
 
 ### 创建 Instrumentation 文件 \{#create-instrumentation-files\}
@@ -98,25 +95,22 @@ export async function register() {
 服务器，以便将 span 发送到 OTel collector：
 
 <Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="托管版 ClickStack" default>
+  <TabItem value="clickstack-managed" label="托管版 ClickStack" default>
+    ```sh copy
+    OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+    npm run dev
+    ```
+  </TabItem>
 
-```sh copy
-OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
-npm run dev
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack 开源版" >
-
-```sh copy
-HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
-OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
-npm run dev
-```
-</TabItem>
+  <TabItem value="clickstack-oss" label="ClickStack 开源版">
+    ```sh copy
+    HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
+    OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+    npm run dev
+    ```
+  </TabItem>
 </Tabs>
 
 如果您在 Vercel 上进行部署，请确保上述所有环境变量都已为您的部署完成配置。

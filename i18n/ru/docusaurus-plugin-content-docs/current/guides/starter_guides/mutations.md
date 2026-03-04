@@ -60,7 +60,6 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 Нельзя обновлять столбцы, которые входят в первичный или сортировочный ключ.
 :::
 
-
 ## Удаление данных \{#deleting-data\}
 
 Используйте команду `ALTER TABLE`, чтобы удалить строки:
@@ -88,7 +87,6 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 :::
 
 См. страницу документации по оператору [`DELETE`](/sql-reference/statements/delete.md) для получения дополнительных сведений.
-
 
 ## Легковесные удаления \{#lightweight-deletes\}
 

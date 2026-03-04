@@ -95,11 +95,11 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 
 Ниже приведены несколько ссылок, которые могут быть полезны при написании кода для ClickHouse:
 
-- [Архитектура ClickHouse](/development/architecture/).
-- [Руководство по стилю кода](/development/style/).
-- [Сторонние библиотеки](/development/contrib#adding-and-maintaining-third-party-libraries)
-- [Написание тестов](/development/tests/)
-- [Открытые задачи](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
+* [Архитектура ClickHouse](/development/architecture/).
+* [Руководство по стилю кода](/development/style/).
+* [Сторонние библиотеки](/development/contrib#adding-and-maintaining-third-party-libraries)
+* [Написание тестов](/development/tests/)
+* [Открытые задачи](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
 
 ### IDE \{#ide\}
 
@@ -107,9 +107,9 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 
 [CLion](https://www.jetbrains.com/clion/) — ещё одна отличная альтернатива. Однако он может работать медленнее на крупных проектах, таких как ClickHouse. Несколько моментов, которые стоит учитывать при использовании CLion:
 
-- CLion самостоятельно создаёт каталог `build` и автоматически выбирает `debug` как тип сборки
-- Он использует версию CMake, определённую в CLion, а не установленную вами
-- CLion будет использовать `make` для выполнения задач сборки вместо `ninja` (это нормальное поведение)
+* CLion самостоятельно создаёт каталог `build` и автоматически выбирает `debug` как тип сборки
+* Он использует версию CMake, определённую в CLion, а не установленную вами
+* CLion будет использовать `make` для выполнения задач сборки вместо `ninja` (это нормальное поведение)
 
 Другие IDE, которые вы можете использовать, — [Sublime Text](https://www.sublimetext.com/), [Qt Creator](https://www.qt.io/product/development-tools) или [Kate](https://kate-editor.org/).
 
@@ -140,7 +140,7 @@ Pull request можно создать даже в том случае, если
 Если вы хотите предварительно просмотреть изменения в документации, инструкции по локальной сборке страницы документации доступны в файле README.md [здесь](https://github.com/ClickHouse/clickhouse-docs).
 При добавлении новой функции в ClickHouse вы можете использовать приведённый ниже шаблон в качестве ориентира:
 
-```markdown
+````markdown
 # newFunctionName
 
 A short description of the function goes here. It should describe briefly what it does and a typical usage case.
@@ -180,7 +180,7 @@ Response:
 │ the result of the query           │
 └───────────────────────────────────┘
 \```
-```
+````
 
 ## Использование тестовых данных \{#using-test-data\}
 

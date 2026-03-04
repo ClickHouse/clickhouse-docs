@@ -53,21 +53,21 @@ Elasticsearch 和 ClickHouse 支持的数据显示类型非常丰富，但它们
 
 ### 备注 \{#notes\}
 
-- **数组（Arrays）**：在 Elasticsearch 中，所有字段原生支持数组。在 ClickHouse 中，数组必须显式定义（例如 `Array(String)`），其优点是可以按特定位置访问和查询，例如 `an_array[1]`。
-- **多字段（Multi-fields）**：Elasticsearch 允许以[多种方式索引同一字段](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers)（例如同时作为 `text` 和 `keyword`）。在 ClickHouse 中，必须通过单独的列或视图来实现这种模式。
-- **Map 和 JSON 类型** - 在 ClickHouse 中，[`Map`](/sql-reference/data-types/map) 类型通常用于建模如 `resourceAttributes` 和 `logAttributes` 这类动态键值结构。该类型通过允许在运行时添加任意键，实现灵活的无模式（schema-less）摄取，其理念与 Elasticsearch 中的 JSON 对象类似。然而，需要注意以下重要限制：
+* **数组（Arrays）**：在 Elasticsearch 中，所有字段原生支持数组。在 ClickHouse 中，数组必须显式定义（例如 `Array(String)`），其优点是可以按特定位置访问和查询，例如 `an_array[1]`。
+* **多字段（Multi-fields）**：Elasticsearch 允许以[多种方式索引同一字段](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers)（例如同时作为 `text` 和 `keyword`）。在 ClickHouse 中，必须通过单独的列或视图来实现这种模式。
+* **Map 和 JSON 类型** - 在 ClickHouse 中，[`Map`](/sql-reference/data-types/map) 类型通常用于建模如 `resourceAttributes` 和 `logAttributes` 这类动态键值结构。该类型通过允许在运行时添加任意键，实现灵活的无模式（schema-less）摄取，其理念与 Elasticsearch 中的 JSON 对象类似。然而，需要注意以下重要限制：
 
-  - **统一的值类型**：ClickHouse [`Map`](/sql-reference/data-types/map) 列必须具有一致的值类型（例如 `Map(String, String)`）。在不进行类型强制转换的情况下，不支持混合类型的值。
-  - **性能开销**：访问 [`Map`](/sql-reference/data-types/map) 中的任意键都需要将整个 map 加载到内存中，这在性能上可能不是最优的。
-  - **无子列**：与 JSON 不同，[`Map`](/sql-reference/data-types/map) 中的键并不会表示为真正的子列，这限制了 ClickHouse 在索引、压缩和高效查询方面的能力。
+  * **统一的值类型**：ClickHouse [`Map`](/sql-reference/data-types/map) 列必须具有一致的值类型（例如 `Map(String, String)`）。在不进行类型强制转换的情况下，不支持混合类型的值。
+  * **性能开销**：访问 [`Map`](/sql-reference/data-types/map) 中的任意键都需要将整个 map 加载到内存中，这在性能上可能不是最优的。
+  * **无子列**：与 JSON 不同，[`Map`](/sql-reference/data-types/map) 中的键并不会表示为真正的子列，这限制了 ClickHouse 在索引、压缩和高效查询方面的能力。
 
   由于这些限制，ClickStack 正在从 [`Map`](/sql-reference/data-types/map) 迁移到 ClickHouse 增强版的 [`JSON`](/sql-reference/data-types/newjson) 类型。[`JSON`](/sql-reference/data-types/newjson) 类型解决了 `Map` 的许多不足之处：
 
-  - **真正的列式存储**：每个 JSON 路径都作为子列存储，从而实现高效压缩、过滤和向量化查询执行。
-  - **混合类型支持**：不同数据类型（例如整数、字符串、数组）可以在同一路径下共存，而无需进行类型强制转换或类型统一。
-  - **文件系统可扩展性**：对动态键（`max_dynamic_paths`）和动态类型（`max_dynamic_types`）的内部约束，可防止在高基数键集合场景下磁盘上列文件数量爆炸式增长。
-  - **紧凑存储**：空值（null）和缺失值以稀疏方式存储，以避免不必要的开销。
+  * **真正的列式存储**：每个 JSON 路径都作为子列存储，从而实现高效压缩、过滤和向量化查询执行。
+  * **混合类型支持**：不同数据类型（例如整数、字符串、数组）可以在同一路径下共存，而无需进行类型强制转换或类型统一。
+  * **文件系统可扩展性**：对动态键（`max_dynamic_paths`）和动态类型（`max_dynamic_types`）的内部约束，可防止在高基数键集合场景下磁盘上列文件数量爆炸式增长。
+  * **紧凑存储**：空值（null）和缺失值以稀疏方式存储，以避免不必要的开销。
 
     [`JSON`](/sql-reference/data-types/newjson) 类型特别适合可观测性工作负载，在提供无模式摄取灵活性的同时，兼具原生 ClickHouse 类型的性能和可扩展性——这使其成为在动态属性字段中替代 [`Map`](/sql-reference/data-types/map) 的理想选择。
 
-    关于 JSON 类型的更多细节，推荐参考 [JSON 指南](https://clickhouse.com/docs/integrations/data-formats/json/overview) 以及文章 ["How we built a new powerful JSON data type for ClickHouse"](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
+    关于 JSON 类型的更多细节，推荐参考 [JSON 指南](https://clickhouse.com/docs/integrations/data-formats/json/overview) 以及文章 [&quot;How we built a new powerful JSON data type for ClickHouse&quot;](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。

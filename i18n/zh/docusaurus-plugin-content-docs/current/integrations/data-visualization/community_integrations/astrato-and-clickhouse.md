@@ -25,10 +25,9 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Astrato 连接到 ClickHouse \{#connecting-astrato-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 ClickHouse。这样，您就可以借助 ClickHouse 行业领先的性能，访问所需的全部数据。
 
@@ -36,36 +35,36 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 
 在设置数据连接时，需要以下信息：
 
-- 数据连接：主机名、端口
+* 数据连接：主机名、端口
 
-- 数据库凭证：用户名、密码
+* 数据库凭证：用户名、密码
 
 <ConnectionDetails />
 
 ## 创建与 ClickHouse 的数据连接 \{#creating-the-data-connection-to-clickhouse\}
 
-- 在侧边栏中选择 **Data**，然后选择 **Data Connection** 选项卡  
-（或者访问此链接：https://app.astrato.io/data/sources）
-​
-- 点击屏幕右上角的 **New Data Connection** 按钮。
+* 在侧边栏中选择 **Data**，然后选择 **Data Connection** 选项卡\
+  （或者访问此链接：https://app.astrato.io/data/sources）
+  ​
+* 点击屏幕右上角的 **New Data Connection** 按钮。
 
 <Image size="sm" img={astrato_1_dataconnection} alt="Astrato Data Connection" border />
 
-- 选择 **ClickHouse**。
+* 选择 **ClickHouse**。
 
 <Image size="sm" img={astrato_2a_clickhouse_connection} alt="Astrato ClickHouse Data Connection" border />
 
-- 在连接对话框中填写必填字段。
+* 在连接对话框中填写必填字段。
 
 <Image size="sm" img={astrato_2b_clickhouse_connection} alt="Astrato connect to ClickHouse required fields" border />
 
-- 点击 **Test Connection**。如果连接成功，为该数据连接指定一个名称（填写 **name** 字段），然后点击 **Next.**
+* 点击 **Test Connection**。如果连接成功，为该数据连接指定一个名称（填写 **name** 字段），然后点击 **Next.**
 
-- 为该数据连接设置 **user access**（用户访问权限），然后点击 **connect.**
+* 为该数据连接设置 **user access**（用户访问权限），然后点击 **connect.**
 
 <Image size="md" img={astrato_3_user_access} alt="Astrato connect to ClickHouse User Access" border />
 
--   连接创建完成，并自动创建一个数据视图（data view）。
+* 连接创建完成，并自动创建一个数据视图（data view）。
 
 :::note
 如果创建了重复项，会在数据源名称中追加时间戳。

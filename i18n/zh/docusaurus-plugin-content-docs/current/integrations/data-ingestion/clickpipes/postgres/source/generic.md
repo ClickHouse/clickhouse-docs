@@ -24,35 +24,43 @@ ClickPipes 支持 Postgres 12 及以上版本。
 
 1. 要在 Postgres 实例上启用复制，需要确保配置了以下参数：
 
-    ```sql
-    wal_level = logical
-    ```
+   ```sql
+   wal_level = logical
+   ```
+
    要检查该参数的值，可以运行以下 SQL 命令：
-    ```sql
-    SHOW wal_level;
-    ```
+
+   ```sql
+   SHOW wal_level;
+   ```
 
    输出应为 `logical`。如果不是，请运行：
-    ```sql
-    ALTER SYSTEM SET wal_level = logical;
-    ```
+
+   ```sql
+   ALTER SYSTEM SET wal_level = logical;
+   ```
 
 2. 此外，建议在 Postgres 实例上设置以下参数：
-    ```sql
-    max_wal_senders > 1
-    max_replication_slots >= 4
-    ```
+
+   ```sql
+   max_wal_senders > 1
+   max_replication_slots >= 4
+   ```
+
    要检查这些参数的值，可以运行以下 SQL 命令：
-    ```sql
-    SHOW max_wal_senders;
-    SHOW max_replication_slots;
-    ```
+
+   ```sql
+   SHOW max_wal_senders;
+   SHOW max_replication_slots;
+   ```
 
    如果参数值与推荐值不一致，可以运行以下 SQL 命令进行设置：
-    ```sql
-    ALTER SYSTEM SET max_wal_senders = 10;
-    ALTER SYSTEM SET max_replication_slots = 10;
-    ```
+
+   ```sql
+   ALTER SYSTEM SET max_wal_senders = 10;
+   ALTER SYSTEM SET max_replication_slots = 10;
+   ```
+
 3. 如果根据上述说明修改了任何配置，则必须重启 Postgres 实例，以使更改生效。
 
 ## 创建具有权限和 publication 的用户 \{#creating-a-user-with-permissions-and-publication\}
@@ -66,12 +74,12 @@ ClickPipes 支持 Postgres 12 及以上版本。
    ```
 
 2. 为你在上一步创建的用户授予 schema 级只读访问权限。以下示例展示了对 `public` schema 的权限设置。对于每个包含你希望复制的表的 schema，都需要重复执行这些命令：
-   
-    ```sql
-    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-    ```
+
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
 3. 为该用户授予复制权限：
 
@@ -82,20 +90,20 @@ ClickPipes 支持 Postgres 12 及以上版本。
 4. 使用你想要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议仅在 publication 中包含必需的表，以避免额外的性能开销。
 
    :::warning
-   包含在 publication 中的任何表必须定义有 **primary key**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关 publication 作用域设置的指导，请参阅 [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   包含在 publication 中的任何表必须定义有 **primary key**，*或者* 将其 **replica identity** 配置为 `FULL`。有关 publication 作用域设置的指导，请参阅 [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
-   - 若要为特定表创建 publication：
+   * 若要为特定表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 若要为特定 schema 中的所有表创建 publication：
+   * 若要为特定 schema 中的所有表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication 将包含从指定表生成的一组变更事件，并将在后续用于摄取复制流。
 
@@ -104,14 +112,14 @@ ClickPipes 支持 Postgres 12 及以上版本。
 如果你是自托管部署，则需要按照以下步骤允许来自 ClickPipes IP 地址的 ClickPipes 用户连接。如果你使用的是托管服务，可以参考服务提供商的文档完成相同的配置。
 
 1. 对 `pg_hba.conf` 文件进行必要修改，以允许来自 ClickPipes IP 地址的 ClickPipes 用户连接。`pg_hba.conf` 文件中的示例条目如下所示：
-    ```response
-    host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
-    ```
+   ```response
+   host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
+   ```
 
 2. 重新加载 PostgreSQL 实例以使更改生效：
-    ```sql
-    SELECT pg_reload_conf();
-    ```
+   ```sql
+   SELECT pg_reload_conf();
+   ```
 
 ## 增大 `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
@@ -134,7 +142,6 @@ SELECT pg_reload_conf();
 如需获得该数值更合理的取值建议，您可以联系 ClickPipes 团队。
 
 :::
-
 
 ## 下一步是什么？ \{#whats-next\}
 

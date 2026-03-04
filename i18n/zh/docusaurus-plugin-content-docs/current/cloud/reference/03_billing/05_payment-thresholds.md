@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import billing_1 from '@site/static/images/cloud/reference/billing_payment_threshhold.png';
 import billing_2 from '@site/static/images/cloud/reference/billing_payment_threshhold_2.png';
 
-
 ## 支付阈值 \{#threshholds\}
 
 如果您是按使用量付费（pay as you go）客户，并且在某个计费周期内对 ClickHouse Cloud 的应付金额达到 10,000 美元（或等值金额），系统会自动向为您的组织配置的支付方式扣款。
@@ -29,9 +28,9 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 下面的示例展示了 Cloud 控制台中的计费 UI：
 
-<Image img={billing_1} size="sm" alt="在 UI 中查找计费的位置"/>
+<Image img={billing_1} size="sm" alt="在 UI 中查找计费的位置" />
 
-<Image img={billing_2} size="lg" alt="账单"/>
+<Image img={billing_2} size="lg" alt="账单" />
 
 从上述示例可以看到，在 2 月 28 日至 3 月 31 日的计费周期内发送了一张阈值发票，然后在同一计费周期内又针对超过 10,000 美元的剩余用量发送了另一张发票。
 

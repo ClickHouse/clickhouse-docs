@@ -23,23 +23,23 @@ ClickHouse предоставляет метрики, совместимые с 
 
 Прямая серверная конечная точка Prometheus, доступная по стандартному пути `/metrics` на вашем сервере ClickHouse. Этот подход обеспечивает:
 
-- Полный охват метрик: весь доступный набор метрик ClickHouse без встроенной фильтрации
-- Метрики в реальном времени: генерируются напрямую из системных таблиц при опросе
+* Полный охват метрик: весь доступный набор метрик ClickHouse без встроенной фильтрации
+* Метрики в реальном времени: генерируются напрямую из системных таблиц при опросе
 
 **Прямой доступ к системе**
 
 Выполняет запросы к системным таблицам в продуктивной среде, что добавляет нагрузку на систему мониторинга и не позволяет использовать режимы простоя для экономии ресурсов
 
-<ObservabilityIntegrations/>
+<ObservabilityIntegrations />
 
 ### Варианты развертывания ClickStack \{#clickstack-deployment\}
 
-- [Helm](/use-cases/observability/clickstack/deployment/helm): Рекомендуется для отладочных сред на базе Kubernetes. Позволяет настраивать параметры среды, задавать лимиты ресурсов и масштабирование через `values.yaml`.
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Разворачивает каждый компонент (ClickHouse, HyperDX, OTel collector, MongoDB) отдельно.
-- [Только HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only): Автономный контейнер HyperDX.
+* [Helm](/use-cases/observability/clickstack/deployment/helm): Рекомендуется для отладочных сред на базе Kubernetes. Позволяет настраивать параметры среды, задавать лимиты ресурсов и масштабирование через `values.yaml`.
+* [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Разворачивает каждый компонент (ClickHouse, HyperDX, OTel collector, MongoDB) отдельно.
+* [Только HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only): Автономный контейнер HyperDX.
 
 Полный перечень вариантов развертывания и подробные сведения об архитектуре приведены в [документации по ClickStack](/use-cases/observability/clickstack/overview) и [руководстве по ингестии данных](/use-cases/observability/clickstack/ingesting-data/overview).
 
-<DirectIntegrations/>
+<DirectIntegrations />
 
-<CommunityMonitoring/>
+<CommunityMonitoring />

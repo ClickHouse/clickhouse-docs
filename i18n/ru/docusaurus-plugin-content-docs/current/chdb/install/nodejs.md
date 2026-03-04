@@ -188,6 +188,6 @@ safeSessionQuery();
 
 ## Репозиторий на GitHub \{#github-repository\}
 
-- **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)
-- **Пакет npm**: [chdb на npm](https://www.npmjs.com/package/chdb)
+* **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+* **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)
+* **Пакет npm**: [chdb на npm](https://www.npmjs.com/package/chdb)

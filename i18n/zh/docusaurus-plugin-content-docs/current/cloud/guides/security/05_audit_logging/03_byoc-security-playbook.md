@@ -24,7 +24,6 @@ SELECT *
 FROM clusterAllReplicas('default',system.crash_log)
 ```
 
-
 ## 遭入侵的 ClickHouse 创建的 AWS 角色 \{#compromised-clickhouse-created-aws-roles\}
 
 ClickHouse 使用预先创建的角色来实现系统功能。本节假设客户在 AWS 上启用了 CloudTrail，并且能够访问 CloudTrail 日志。

@@ -29,72 +29,69 @@ ClickStack 浏览器 SDK 允许你在前端应用中接入埋点，
 
 ## 快速开始 \{#getting-started\}
 
-<br/>
+<br />
 
 <Tabs groupId="install">
-<TabItem value="package_import" label="包导入" default>
+  <TabItem value="package_import" label="包导入" default>
+    **通过包导入安装（推荐）**
 
-**通过包导入安装（推荐）**
+    使用以下命令安装 [browser 包](https://www.npmjs.com/package/@hyperdx/browser)。
 
-使用以下命令安装 [browser 包](https://www.npmjs.com/package/@hyperdx/browser)。
+    ```shell
+    npm install @hyperdx/browser
+    ```
 
-```shell
-npm install @hyperdx/browser
-```
+    **初始化 ClickStack**
 
-**初始化 ClickStack**
+    ```javascript
+    import HyperDX from '@hyperdx/browser';
 
-```javascript
-import HyperDX from '@hyperdx/browser';
+    HyperDX.init({
+        url: 'http://your-otel-collector:4318',
+        apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管的 ClickStack 省略此项
+        service: 'my-frontend-app',
+        tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+        consoleCapture: true, // Capture console logs (default false)
+        advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
+    });
+    ```
+  </TabItem>
 
-HyperDX.init({
-    url: 'http://your-otel-collector:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管的 ClickStack 省略此项
-    service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-    consoleCapture: true, // Capture console logs (default false)
-    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
-});
-```
+  <TabItem value="script_tag" label="Script 标签">
+    **通过 Script 标签安装（可选方式）**
 
-</TabItem>
-<TabItem value="script_tag" label="Script 标签">
+    你也可以通过 script 标签引入并安装该脚本，而不是
+    通过 npm 安装。这样会暴露 `HyperDX` 全局变量，并且可以
+    像使用 npm 包一样使用它。
 
-**通过 Script 标签安装（可选方式）**
+    如果你的站点目前不是通过打包工具构建的，推荐使用这种方式。
 
-你也可以通过 script 标签引入并安装该脚本，而不是
-通过 npm 安装。这样会暴露 `HyperDX` 全局变量，并且可以
-像使用 npm 包一样使用它。
-
-如果你的站点目前不是通过打包工具构建的，推荐使用这种方式。
-
-```html
-<script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
-<script>
-  window.HyperDX.init({
-    url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管的 ClickStack 省略此项
-    service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-  });
-</script>
-```
-
-</TabItem>
+    ```html
+    <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
+    <script>
+      window.HyperDX.init({
+        url: 'http://localhost:4318',
+        apiKey: 'YOUR_INGESTION_API_KEY', // 对于托管的 ClickStack 省略此项
+        service: 'my-frontend-app',
+        tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+      });
+    </script>
+    ```
+  </TabItem>
 </Tabs>
 
 ### 选项 \{#options\}
 
-- `apiKey` - 您的 ClickStack 摄取 API key。
-- `service` - 事件在 HyperDX UI 中显示时使用的服务名称。
-- `tracePropagationTargets` - 用于匹配 HTTP 请求的一组正则表达式模式，用来关联前端和后端的跟踪；它会为匹配任一模式的所有请求添加一个额外的 `traceparent` 头。该值应设置为您的后端 API 域名（例如 `api.yoursite.com`）。
-- `consoleCapture` -（可选）是否捕获所有控制台日志（默认值为 `false`）。
-- `advancedNetworkCapture` -（可选）是否捕获完整的请求/响应头和消息体（默认值为 `false`）。
-- `url` -（可选）OpenTelemetry collector 的 URL，仅在自托管部署中需要。
-- `maskAllInputs` -（可选）是否在会话回放中对所有输入字段进行掩码处理（默认值为 `false`）。
-- `maskAllText` -（可选）是否在会话回放中对所有文本进行掩码处理（默认值为 `false`）。
-- `disableIntercom` -（可选）是否禁用 Intercom 集成（默认值为 `false`）。
-- `disableReplay` -（可选）是否禁用会话回放（默认值为 `false`）。
+* `apiKey` - 您的 ClickStack 摄取 API key。
+* `service` - 事件在 HyperDX UI 中显示时使用的服务名称。
+* `tracePropagationTargets` - 用于匹配 HTTP 请求的一组正则表达式模式，用来关联前端和后端的跟踪；它会为匹配任一模式的所有请求添加一个额外的 `traceparent` 头。该值应设置为您的后端 API 域名（例如 `api.yoursite.com`）。
+* `consoleCapture` -（可选）是否捕获所有控制台日志（默认值为 `false`）。
+* `advancedNetworkCapture` -（可选）是否捕获完整的请求/响应头和消息体（默认值为 `false`）。
+* `url` -（可选）OpenTelemetry collector 的 URL，仅在自托管部署中需要。
+* `maskAllInputs` -（可选）是否在会话回放中对所有输入字段进行掩码处理（默认值为 `false`）。
+* `maskAllText` -（可选）是否在会话回放中对所有文本进行掩码处理（默认值为 `false`）。
+* `disableIntercom` -（可选）是否禁用 Intercom 集成（默认值为 `false`）。
+* `disableReplay` -（可选）是否禁用会话回放（默认值为 `false`）。
 
 ## 其他配置 \{#additional-configuration\}
 

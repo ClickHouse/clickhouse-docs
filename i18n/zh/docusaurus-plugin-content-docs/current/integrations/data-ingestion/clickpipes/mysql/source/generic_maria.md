@@ -66,29 +66,28 @@ expire_logs_days = 1
 
 :::
 
-
 ## 配置数据库用户 \{#configure-database-user\}
 
 以 root 用户连接到你的 MariaDB 实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
-    ```sql
-    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some_secure_password';
-    ```
+   ```sql
+   CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some_secure_password';
+   ```
 
 2. 授予 schema 权限。以下示例展示了对 `clickpipes` 数据库的权限。对于要进行复制的每个数据库和主机，请重复这些命令：
 
-    ```sql
-    GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'%';
-    ```
+   ```sql
+   GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'%';
+   ```
 
 3. 为该用户授予复制权限：
 
-    ```sql
-    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
-    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-    ```
+   ```sql
+   GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+   GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+   ```
 
 :::note
 
@@ -100,7 +99,7 @@ expire_logs_days = 1
 
 SSL 证书用于确保与 MariaDB 数据库之间的安全连接。具体配置取决于证书类型：
 
-**受信任证书颁发机构（DigiCert、Let's Encrypt 等）** - 无需额外配置。
+**受信任证书颁发机构（DigiCert、Let&#39;s Encrypt 等）** - 无需额外配置。
 
 **内部证书颁发机构** - 向你的 IT 团队获取根 CA 证书文件。在 ClickPipes UI 中创建新的 MariaDB ClickPipe 时上传该证书。
 

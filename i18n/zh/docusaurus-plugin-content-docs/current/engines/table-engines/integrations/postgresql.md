@@ -68,7 +68,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-
 ## 实现细节 \{#implementation-details\}
 
 PostgreSQL 端的 `SELECT` 查询在只读 PostgreSQL 事务中以 `COPY (SELECT ...) TO STDOUT` 的形式运行，每个 `SELECT` 查询结束后都会提交事务。
@@ -116,7 +115,6 @@ PostgreSQL 字典源支持副本优先级。映射中的数字越大，优先级
 </source>
 ```
 
-
 ## 使用示例 \{#usage-example\}
 
 ### PostgreSQL 中的表 \{#table-in-postgresql\}
@@ -142,7 +140,6 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
-
 ### 在 ClickHouse 中创建表并连接到上文创建的 PostgreSQL 表 \{#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above\}
 
 此示例使用 [PostgreSQL 表引擎](/engines/table-engines/integrations/postgresql.md)，将 ClickHouse 表连接到 PostgreSQL 表，并在 PostgreSQL 数据库上同时执行 SELECT 和 INSERT 查询：
@@ -156,7 +153,6 @@ CREATE TABLE default.postgresql_table
 )
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
-
 
 ### 使用 SELECT 查询将 PostgreSQL 表中的初始数据插入到 ClickHouse 表中 \{#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query\}
 
@@ -178,7 +174,6 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-
 ### 将 PostgreSQL 表中的增量数据插入到 ClickHouse 表中 \{#inserting-incremental-data-from-postgresql-table-into-clickhouse-table\}
 
 如果在初始插入之后，随后需要在 PostgreSQL 表和 ClickHouse 表之间执行持续同步，可以在 ClickHouse 中使用 WHERE 子句，根据时间戳或唯一序列 ID，仅插入新增到 PostgreSQL 的数据。
@@ -197,7 +192,6 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'po
 WHERE int_id > maxIntID;
 ```
 
-
 ### 从生成的 ClickHouse 表中查询数据 \{#selecting-data-from-the-resulting-clickhouse-table\}
 
 ```sql
@@ -209,7 +203,6 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 │           ᴺᵁᴸᴸ │ test │      1 │
 └────────────────┴──────┴────────┘
 ```
-
 
 ### 使用非默认模式 \{#using-non-default-schema\}
 
@@ -231,8 +224,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 * [`postgresql` 表函数](../../../sql-reference/table-functions/postgresql.md)
 * [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources/postgresql)
 
-
 ## 相关内容 \{#related-content\}
 
-- 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第一部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第二部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+* 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第一部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+* 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第二部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

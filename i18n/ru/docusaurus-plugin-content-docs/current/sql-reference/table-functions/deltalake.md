@@ -26,7 +26,6 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
-
 ## Аргументы \{#arguments\}
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
@@ -58,7 +57,6 @@ LIMIT 2
 │ http://auto.ria.ua/search/index.kz/jobinmoscow.ru/gosushi             │         1 │
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
-
 
 ### Вставка данных \{#inserting-data\}
 
@@ -99,16 +97,15 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
 
-
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — Имя файла. Тип: `LowCardinality(String)`.
+* `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 ## Связанные разделы \{#related\}
 
-- [Движок DeltaLake](engines/table-engines/integrations/deltalake.md)
-- [Кластерная табличная функция DeltaLake](sql-reference/table-functions/deltalakeCluster.md)
+* [Движок DeltaLake](engines/table-engines/integrations/deltalake.md)
+* [Кластерная табличная функция DeltaLake](sql-reference/table-functions/deltalakeCluster.md)

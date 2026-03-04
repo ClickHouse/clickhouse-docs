@@ -25,16 +25,16 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 2. 前往 **Settings** 选项卡。
 3. 点击 **Pause** 按钮。
 
-<Image img={pause_button} border size="md"/>
+<Image img={pause_button} border size="md" />
 
 4. 将弹出一个确认对话框。再次点击 **Pause**。
 
-<Image img={pause_dialog} border size="md"/>
+<Image img={pause_dialog} border size="md" />
 
 4. 前往 **Metrics** 选项卡。
 5. 等待该 ClickPipe 的状态变为 **Paused**。
 
-<Image img={pause_status} border size="md"/>
+<Image img={pause_status} border size="md" />
 
 ## 恢复 MongoDB ClickPipe 的步骤 \{#resume-clickpipe-steps\}
 
@@ -42,11 +42,11 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 2. 切换到 **Settings** 选项卡。
 3. 单击 **Resume** 按钮。
 
-<Image img={resume_button} border size="md"/>
+<Image img={resume_button} border size="md" />
 
 4. 会弹出一个确认对话框，再次单击 **Resume**。
 
-<Image img={resume_dialog} border size="md"/>
+<Image img={resume_dialog} border size="md" />
 
 5. 切换到 **Metrics** 选项卡。
 6. 等待管道状态变为 **Running**。

@@ -52,5 +52,6 @@ GROUP BY user_id;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

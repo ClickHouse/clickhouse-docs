@@ -12,7 +12,6 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-
 # Разделение хранилища и вычислений \{#separation-of-storage-and-compute\}
 
 ## Обзор \{#overview\}
@@ -94,7 +93,6 @@ chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 service clickhouse-server restart
 ```
 
-
 ## 2. Создайте таблицу с использованием S3 \{#2-create-a-table-backed-by-s3\}
 
 Чтобы проверить, что диск S3 настроен правильно, можно попробовать создать таблицу и выполнить к ней запрос.
@@ -163,7 +161,6 @@ SELECT * FROM my_s3_table;
 
 <Image img={s3_bucket_example} size="md" alt="Пример бакета S3 с разделением вычислений и хранилища" border />
 
-
 ## 3. Реализация репликации для отказоустойчивости (необязательно) \{#3-implementing-replication-for-fault-tolerance-optional\}
 
 :::warning
@@ -174,9 +171,9 @@ SELECT * FROM my_s3_table;
 
 Репликация с дисками S3 может быть реализована с помощью движка таблиц `ReplicatedMergeTree`. Подробности см. в следующем руководстве:
 
-- [Репликация одного сегмента между двумя регионами AWS с использованием S3 Object Storage](/integrations/s3#s3-multi-region).
+* [Репликация одного сегмента между двумя регионами AWS с использованием S3 Object Storage](/integrations/s3#s3-multi-region).
 
 ## Дополнительные материалы \{#further-reading\}
 
-- [Движок таблицы SharedMergeTree](/cloud/reference/shared-merge-tree)
-- [Анонс SharedMergeTree в блоге](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)
+* [Движок таблицы SharedMergeTree](/cloud/reference/shared-merge-tree)
+* [Анонс SharedMergeTree в блоге](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

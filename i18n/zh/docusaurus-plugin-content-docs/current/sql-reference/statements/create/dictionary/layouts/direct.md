@@ -10,7 +10,6 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 ## direct \{#direct\}
 
 字典不存储在内存中，在处理请求时会直接访问数据源。
@@ -22,25 +21,22 @@ import TabItem from '@theme/TabItem';
 配置示例：
 
 <Tabs>
-<TabItem value="ddl" label="DDL" default>
+  <TabItem value="ddl" label="DDL" default>
+    ```sql
+    LAYOUT(DIRECT())
+    ```
+  </TabItem>
 
-```sql
-LAYOUT(DIRECT())
-```
-
-</TabItem>
-<TabItem value="xml" label="Configuration file">
-
-```xml
-<layout>
-  <direct />
-</layout>
-```
-
-</TabItem>
+  <TabItem value="xml" label="Configuration file">
+    ```xml
+    <layout>
+      <direct />
+    </layout>
+    ```
+  </TabItem>
 </Tabs>
 
-<br/>
+<br />
 
 ## complex_key_direct \{#complex_key_direct\}
 

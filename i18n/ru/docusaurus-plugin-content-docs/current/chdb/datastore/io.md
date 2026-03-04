@@ -47,7 +47,6 @@ ds = pd.read_csv(
 ds = pd.read_csv("https://example.com/data.csv")
 ```
 
-
 ### Файлы Parquet \{#read-parquet\}
 
 Рекомендуются для больших наборов данных: столбцовый формат с более эффективным сжатием.
@@ -69,7 +68,6 @@ ds = pd.read_parquet("data.parquet", columns=['col1', 'col2', 'col3'])
 ds = pd.read_parquet("s3://bucket/data.parquet")
 ```
 
-
 ### JSON-файлы \{#read-json\}
 
 ```python
@@ -88,7 +86,6 @@ ds = pd.read_json("data.jsonl", lines=True)
 # JSON with specific orientation
 ds = pd.read_json("data.json", orient='records')
 ```
-
 
 ### Файлы Excel \{#read-excel\}
 
@@ -110,7 +107,6 @@ ds = pd.read_excel("data.xlsx", sheet_name=2)  # Third sheet
 sheets = pd.read_excel("data.xlsx", sheet_name=['Sheet1', 'Sheet2'])
 ```
 
-
 ### Базы данных SQL \{#read-sql\}
 
 ```python
@@ -124,7 +120,6 @@ read_sql(sql, con, **kwargs)
 ds = pd.read_sql("SELECT * FROM users", connection)
 ds = pd.read_sql("SELECT * FROM orders WHERE date > '2024-01-01'", connection)
 ```
-
 
 ### Прочие форматы \{#read-other\}
 
@@ -146,7 +141,6 @@ ds = pd.read_html("https://example.com/table.html")[0]
 ```
 
 ***
-
 
 ## Запись данных \{#writing\}
 
@@ -181,7 +175,6 @@ ds.to_csv(
 csv_string = ds.to_csv()
 ```
 
-
 ### to_parquet \{#to-parquet\}
 
 Экспорт в формат Parquet (рекомендуется для больших объёмов данных).
@@ -206,7 +199,6 @@ ds.to_parquet(
     partition_cols=['year', 'month']
 )
 ```
-
 
 ### to_json \{#to-json\}
 
@@ -234,7 +226,6 @@ ds.to_json("output.json", orient='columns')  # {col: {idx: val}}
 json_string = ds.to_json()
 ```
 
-
 ### to_excel \{#to-excel\}
 
 Экспорт в формат Excel.
@@ -255,7 +246,6 @@ with pd.ExcelWriter("output.xlsx") as writer:
     ds1.to_excel(writer, sheet_name="Sales")
     ds2.to_excel(writer, sheet_name="Inventory")
 ```
-
 
 ### to_sql \{#to-sql-method\}
 
@@ -278,7 +268,6 @@ print(sql)
 # Write to database
 ds.to_sql("table_name", connection, if_exists='replace')
 ```
-
 
 ### Другие способы экспорта \{#to-other\}
 
@@ -326,7 +315,6 @@ ds.to_feather("output.feather")
 
 ***
 
-
 ## Сравнение форматов файлов \{#format-comparison\}
 
 | Формат | Скорость чтения | Скорость записи | Размер файла | Схема | Лучше всего подходит для |
@@ -340,19 +328,19 @@ ds.to_feather("output.feather")
 ### Рекомендации \{#recommendations\}
 
 1. **Для аналитических нагрузок:** используйте Parquet
-   - Столбцовый формат позволяет читать только нужные столбцы
-   - Отличное сжатие
-   - Сохраняет типы данных
+   * Столбцовый формат позволяет читать только нужные столбцы
+   * Отличное сжатие
+   * Сохраняет типы данных
 
 2. **Для обмена данными:** используйте CSV или JSON
-   - Универсальная совместимость
-   - Человекочитаемый формат
+   * Универсальная совместимость
+   * Человекочитаемый формат
 
 3. **Для взаимодействия с pandas:** используйте Feather или Arrow
-   - Самая быстрая сериализация
-   - Сохранение типов
+   * Самая быстрая сериализация
+   * Сохранение типов
 
----
+***
 
 ## Поддержка сжатия \{#compression\}
 
@@ -369,7 +357,6 @@ ds = pd.read_csv("data.csv.zst")
 ds = pd.read_csv("data.csv", compression='gzip')
 ```
 
-
 ### Запись в сжатые файлы \{#write-compressed\}
 
 ```python
@@ -384,7 +371,6 @@ ds.to_parquet("output.parquet", compression='zstd')    # Best ratio
 ds.to_parquet("output.parquet", compression='lz4')     # Fastest
 ```
 
-
 ### Параметры сжатия \{#compression-options\}
 
 | Сжатие | Скорость | Степень сжатия | Типичный сценарий |
@@ -395,7 +381,7 @@ ds.to_parquet("output.parquet", compression='lz4')     # Fastest
 | `zstd` | Высокая | Очень высокая | Оптимальный баланс |
 | `bz2` | Низкая | Очень высокая | Максимальное сжатие |
 
----
+***
 
 ## Потоковый ввод-вывод \{#streaming\}
 
@@ -414,7 +400,6 @@ reader = pd.read_csv("large.csv", iterator=True)
 chunk = reader.get_chunk(10000)
 ```
 
-
 ### Работа с ClickHouse Streaming \{#clickhouse-streaming\}
 
 ```python
@@ -429,7 +414,6 @@ result = ds.filter(ds['amount'] > 1000).head(100)
 
 ***
 
-
 ## Удалённые источники данных \{#remote\}
 
 ### HTTP/HTTPS \{#http\}
@@ -439,7 +423,6 @@ result = ds.filter(ds['amount'] > 1000).head(100)
 ds = pd.read_csv("https://example.com/data.csv")
 ds = pd.read_parquet("https://example.com/data.parquet")
 ```
-
 
 ### S3 \{#s3\}
 
@@ -457,12 +440,11 @@ ds = DataStore.from_s3(
 )
 ```
 
-
 ### GCS, Azure, HDFS \{#cloud\}
 
 См. раздел [Factory Methods](factory-methods.md) для вариантов облачных хранилищ.
 
----
+***
 
 ## Рекомендации по использованию \{#best-practices\}
 
@@ -477,7 +459,6 @@ ds.to_parquet("large.parquet")
 ds = pd.read_parquet("large.parquet")
 ```
 
-
 ### 2. Выбирайте только нужные столбцы \{#select-only-needed-columns\}
 
 ```python
@@ -488,14 +469,12 @@ ds = pd.read_parquet("data.parquet", columns=['col1', 'col2'])
 ds = pd.read_parquet("data.parquet")[['col1', 'col2']]
 ```
 
-
 ### 3. Используйте сжатие \{#use-compression\}
 
 ```python
 # Smaller file size, usually faster due to less I/O
 ds.to_parquet("output.parquet", compression='zstd')
 ```
-
 
 ### 4. Пакетная запись \{#batch-writes\}
 

@@ -51,9 +51,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 | `DATA`                                               | [Decimal128/Decimal256](/sql-reference/data-types/decimal.md)                                                                                                                   | `DATA`                                                |
 | `STRUCT(entries LIST(STRUCT(key Key, value Value)))` | [Map](/sql-reference/data-types/map.md)                                                                                                                                         | `STRUCT(entries LIST(STRUCT(key Key, value Value)))`  |
 
-- Целочисленные типы могут быть преобразованы друг в друга при вводе и выводе данных.
-- Для работы с `Enum` в формате CapnProto используйте настройку [format_capn_proto_enum_comparising_mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode).
-- Массивы могут быть вложенными и могут иметь значение типа `Nullable` в качестве аргумента. Типы `Tuple` и `Map` также могут быть вложенными.
+* Целочисленные типы могут быть преобразованы друг в друга при вводе и выводе данных.
+* Для работы с `Enum` в формате CapnProto используйте настройку [format&#95;capn&#95;proto&#95;enum&#95;comparising&#95;mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode).
+* Массивы могут быть вложенными и могут иметь значение типа `Nullable` в качестве аргумента. Типы `Tuple` и `Map` также могут быть вложенными.
 
 ## Пример использования \{#example-usage\}
 

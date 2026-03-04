@@ -20,8 +20,8 @@ integration:
 
 ## 限制 \{#limitations\}
 
-- 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
-- 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下（未压缩）限制为 8MB，对于更大的副本则为 16MB（未压缩）。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
+* 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
+* 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下（未压缩）限制为 8MB，对于更大的副本则为 16MB（未压缩）。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
 
 ## 传输语义 \{#delivery-semantics\}
 
@@ -82,7 +82,6 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
-
 #### 配置信任关系 \{#configuring-a-trusted-relationship\}
 
 如果您使用 IAM 角色 ARN 对 MSK 进行认证，则需要在您的 ClickHouse Cloud 实例与该角色之间配置信任关系，以便实例可以承担该角色。
@@ -107,7 +106,6 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
-
 ### 自定义证书 \{#custom-certificates\}
 
 用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
@@ -121,8 +119,8 @@ ClickPipes 会以批处理的方式向 ClickHouse 插入数据。这样可以避
 
 在满足以下任一条件时，会插入当前批次的数据：
 
-- 批次大小达到最大值（每 1GB pod（容器组）内存对应 100,000 行或 32MB）
-- 批次已打开的时间达到最大时长（5 秒）
+* 批次大小达到最大值（每 1GB pod（容器组）内存对应 100,000 行或 32MB）
+* 批次已打开的时间达到最大时长（5 秒）
 
 ### 延迟 \{#latency\}
 
@@ -132,7 +130,7 @@ ClickPipes 不对延迟提供任何保证。如果您有特定的低延迟需求
 
 ### 扩展 \{#scaling\}
 
-ClickPipes for Kafka 设计为既可以横向扩展也可以纵向扩展。默认情况下，会创建一个仅包含单个消费者的消费者组。可以在创建 ClickPipe 时进行配置，或者在之后通过 **Settings** -> **Advanced Settings** -> **Scaling** 进行配置。
+ClickPipes for Kafka 设计为既可以横向扩展也可以纵向扩展。默认情况下，会创建一个仅包含单个消费者的消费者组。可以在创建 ClickPipe 时进行配置，或者在之后通过 **Settings** -&gt; **Advanced Settings** -&gt; **Scaling** 进行配置。
 
 ClickPipes 提供高可用性，并采用跨可用区的分布式架构。
 为此，至少需要扩展到两个消费者。
@@ -147,11 +145,11 @@ ClickPipe 会自动重新启动该消费者并继续处理消息。
 
 基准测试详情：
 
-- 我们使用了资源充足的生产环境 ClickHouse Cloud 服务，确保吞吐量不会因 ClickHouse 端的插入处理而出现瓶颈。
-- ClickHouse Cloud 服务、Kafka 集群（Confluent Cloud）和 ClickPipe 均运行在同一地域（`us-east-2`）。
-- ClickPipe 配置为单个 L 规格的副本（4 GiB 内存和 1 个 vCPU）。
-- 示例数据包含嵌套数据，混合使用了 `UUID`、`String` 和 `Int` 数据类型。其他数据类型（例如 `Float`、`Decimal` 和 `DateTime`）的性能可能较低。
-- 使用压缩与非压缩数据时，性能没有明显差异。
+* 我们使用了资源充足的生产环境 ClickHouse Cloud 服务，确保吞吐量不会因 ClickHouse 端的插入处理而出现瓶颈。
+* ClickHouse Cloud 服务、Kafka 集群（Confluent Cloud）和 ClickPipe 均运行在同一地域（`us-east-2`）。
+* ClickPipe 配置为单个 L 规格的副本（4 GiB 内存和 1 个 vCPU）。
+* 示例数据包含嵌套数据，混合使用了 `UUID`、`String` 和 `Int` 数据类型。其他数据类型（例如 `Float`、`Decimal` 和 `DateTime`）的性能可能较低。
+* 使用压缩与非压缩数据时，性能没有明显差异。
 
 | Replica Size  | Message Size | Data Format | Throughput |
 |---------------|--------------|-------------|------------|

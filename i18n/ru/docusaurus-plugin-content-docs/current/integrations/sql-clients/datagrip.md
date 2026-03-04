@@ -20,10 +20,9 @@ import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.
 // Компонент CommunityMaintainedBadge обозначает материалы, поддерживаемые сообществом
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Подключение DataGrip к ClickHouse \{#connecting-datagrip-to-clickhouse\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## Запустите DataGrip или скачайте его \{#start-or-download-datagrip\}
 
@@ -42,12 +41,12 @@ DataGrip доступен по адресу https://www.jetbrains.com/datagrip/
 Выберите **ClickHouse**
 
 :::tip
-  По мере создания подключений их порядок меняется, поэтому ClickHouse может пока не находиться вверху списка.
-  :::
+По мере создания подключений их порядок меняется, поэтому ClickHouse может пока не находиться вверху списка.
+:::
 
 <Image img={datagrip_6} size="sm" border alt="Выбор ClickHouse из списка источников данных в DataGrip" />
 
-- Переключитесь на вкладку **Drivers** и загрузите драйвер ClickHouse
+* Переключитесь на вкладку **Drivers** и загрузите драйвер ClickHouse
 
   DataGrip не поставляется с драйверами, чтобы минимизировать размер загрузки. На вкладке **Drivers**
   выберите **ClickHouse** в списке **Complete Support** и разверните знак **+**. Выберите драйвер **Latest stable** в пункте **Provided Driver**:
@@ -56,8 +55,8 @@ DataGrip доступен по адресу https://www.jetbrains.com/datagrip/
 
 ## 3. Подключитесь к ClickHouse \{#3-connect-to-clickhouse\}
 
-- Укажите параметры подключения к базе данных и нажмите **Test Connection**. 
-На первом шаге вы собрали параметры подключения — заполните URL хоста, порт, имя пользователя, пароль и имя базы данных, затем протестируйте подключение.
+* Укажите параметры подключения к базе данных и нажмите **Test Connection**.
+  На первом шаге вы собрали параметры подключения — заполните URL хоста, порт, имя пользователя, пароль и имя базы данных, затем протестируйте подключение.
 
 :::tip
 В поле **Host** указывайте только имя хоста (например, `your-host.clickhouse.cloud`) без какого-либо префикса протокола вроде `https://`.
@@ -66,7 +65,7 @@ DataGrip доступен по адресу https://www.jetbrains.com/datagrip/
 
 `jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true`
 
-ClickHouse Cloud требует шифрование с помощью SSL для всех подключений. Без параметра `?ssl=true` вы будете получать ошибки "Connection reset" даже при корректных учетных данных.
+ClickHouse Cloud требует шифрование с помощью SSL для всех подключений. Без параметра `?ssl=true` вы будете получать ошибки &quot;Connection reset&quot; даже при корректных учетных данных.
 
 Для получения дополнительной информации о настройках JDBC URL обратитесь к репозиторию [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java).
 :::

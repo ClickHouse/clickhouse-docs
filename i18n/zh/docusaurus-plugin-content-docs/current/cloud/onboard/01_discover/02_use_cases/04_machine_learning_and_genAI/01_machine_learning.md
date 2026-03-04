@@ -11,7 +11,6 @@ import machine_learning_data_layer from '@site/static/images/cloud/onboard/disco
 import online_feature_store from '@site/static/images/cloud/onboard/discover/use_cases/ml_data_layer.png'
 import Image from '@theme/IdealImage';
 
-
 ## 机器学习数据层 \{#machine-learning-data-layer\}
 
 你可能听过这样的说法：机器学习从业者 80% 的时间都花在清洗数据上。
@@ -22,7 +21,7 @@ import Image from '@theme/IdealImage';
 通常，这表现为在一个通用解决方案之上包了一层抽象，并提供一个带有强烈“主见”的接口，从表面上看，使其更容易用于当前的某个子问题。
 但这样一来，本质上是用某一特定任务的易用性和简单性，换取了通用解决方案所提供的灵活性。
 
-<Image img={machine_learning_data_layer} size="sm"/>
+<Image img={machine_learning_data_layer} size="sm" />
 
 这种方式存在几个缺点。
 与“通用解决方案 + 支撑应用代码”的组合相比，一整套层层叠加的专用工具、产品和服务，往往会带来不必要的架构复杂度和数据成本风险。
@@ -124,7 +123,7 @@ ClickHouse 还提供了丰富的内置统计与聚合函数套件，可以在 PB
 在线特征存储用于保存用于推理的最新特征版本，并在实时场景中应用。
 这意味着这些特征必须以极低的延迟完成计算，因为它们会作为实时机器学习服务的一部分被使用。
 
-<Image img={online_feature_store} size="sm"/>
+<Image img={online_feature_store} size="sm" />
 
 作为一款实时分析型数据库，ClickHouse 可以在低延迟的前提下承载高度并发的查询负载。
 虽然这通常要求数据是反规范化的，但这与在训练和推理阶段使用的特征组的存储方式是一致的。

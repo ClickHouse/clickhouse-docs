@@ -29,17 +29,17 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 `table` – Таблица, в которую сбрасываются данные.
 
-#### `num_layers` \{#num&#95;layers\}
+#### `num_layers` \{#num_layers\}
 
 `num_layers` – Уровень параллелизма. Физически таблица будет представлена как `num_layers` независимых буферов.
 
-#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes` и `max_bytes` \{#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes\}
+#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes` и `max_bytes` \{#min_time-max_time-min_rows-max_rows-min_bytes-and-max_bytes\}
 
 Условия для сброса данных из буфера.
 
 ### Необязательные параметры движка \{#optional-engine-parameters\}
 
-#### `flush_time`, `flush_rows` и `flush_bytes` \{#flush&#95;time-flush&#95;rows-and-flush&#95;bytes\}
+#### `flush_time`, `flush_rows` и `flush_bytes` \{#flush_time-flush_rows-and-flush_bytes\}
 
 Условия для фонового сброса данных из буфера (отсутствие параметра или значение 0 означает отсутствие параметров `flush*`).
 
@@ -47,15 +47,15 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 Также, если выполнено хотя бы одно условие `flush*`, в фоновом режиме инициируется сброс. В отличие от параметров `max*`, параметры `flush*` позволяют настраивать фоновые сбросы отдельно, чтобы избежать добавления задержки для запросов `INSERT` в таблицы Buffer.
 
-#### `min_time`, `max_time` и `flush_time` \{#min&#95;time-max&#95;time-and-flush&#95;time\}
+#### `min_time`, `max_time` и `flush_time` \{#min_time-max_time-and-flush_time\}
 
 Условие по времени в секундах с момента первой записи в буфер.
 
-#### `min_rows`, `max_rows` и `flush_rows` \{#min&#95;rows-max&#95;rows-and-flush&#95;rows\}
+#### `min_rows`, `max_rows` и `flush_rows` \{#min_rows-max_rows-and-flush_rows\}
 
 Условие по количеству строк в буфере.
 
-#### `min_bytes`, `max_bytes` и `flush_bytes` \{#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes\}
+#### `min_bytes`, `max_bytes` и `flush_bytes` \{#min_bytes-max_bytes-and-flush_bytes\}
 
 Условие по количеству байт в буфере.
 

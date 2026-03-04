@@ -20,7 +20,6 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-
 # Google Cloud SQL Postgres 源端设置指南 \{#google-cloud-sql-postgres-source-setup-guide\}
 
 :::info
@@ -39,15 +38,15 @@ Postgres 12 及更高版本
 
 1. 在概览页面点击 **Edit** 按钮。
 
-<Image img={edit_button} alt="Cloud SQL Postgres 中的 Edit 按钮" size="lg" border/>
+<Image img={edit_button} alt="Cloud SQL Postgres 中的 Edit 按钮" size="lg" border />
 
 2. 打开 Flags，将 `cloudsql.logical_decoding` 修改为 on，并将 `wal_sender_timeout` 修改为 0。这些更改需要重启您的 Postgres 服务器才能生效。
 
-<Image img={cloudsql_logical_decoding1} alt="将 cloudsql.logical_decoding 修改为 on" size="lg" border/>
+<Image img={cloudsql_logical_decoding1} alt="将 cloudsql.logical_decoding 修改为 on" size="lg" border />
 
-<Image img={cloudsql_logical_decoding2} alt="已修改 cloudsql.logical_decoding 和 wal_sender_timeout" size="lg" border/>
+<Image img={cloudsql_logical_decoding2} alt="已修改 cloudsql.logical_decoding 和 wal_sender_timeout" size="lg" border />
 
-<Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border />
 
 ## 创建 ClickPipes 用户并授予权限 \{#creating-clickpipes-user-and-granting-permissions\}
 
@@ -76,24 +75,24 @@ Postgres 12 及更高版本
 4. 使用需要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议仅在 publication 中包含所需的表，以避免额外的性能开销。
 
    :::warning
-   包含在 publication 中的任意表必须定义有 **primary key**，_或者_ 将其 **replica identity** 配置为 `FULL`。关于作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   包含在 publication 中的任意表必须定义有 **primary key**，*或者* 将其 **replica identity** 配置为 `FULL`。关于作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
-   - 为指定的表创建 publication：
+   * 为指定的表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 为特定 schema 中的所有表创建 publication：
+   * 为特定 schema 中的所有表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication 将包含由指定表生成的变更事件集合，之后会被用于摄取复制流。
 
-[//]: # (TODO Add SSH Tunneling)
+[//]: # "TODO Add SSH Tunneling"
 
 ## 将 ClickPipes IP 添加到防火墙 \{#add-clickpipes-ips-to-firewall\}
 
@@ -107,17 +106,17 @@ Postgres 12 及更高版本
 
 1. 转到 **Connections** 区域
 
-<Image img={connections} alt="Cloud SQL 中的 Connections 区域" size="lg" border/>
+<Image img={connections} alt="Cloud SQL 中的 Connections 区域" size="lg" border />
 
 2. 转到 Networking 子菜单
 
-<Image img={connections_networking} alt="Cloud SQL 中的 Networking 子菜单" size="lg" border/>
+<Image img={connections_networking} alt="Cloud SQL 中的 Networking 子菜单" size="lg" border />
 
 3. 添加 [ClickPipes 的公网 IP](../../index.md#list-of-static-ips)
 
-<Image img={firewall1} alt="将 ClickPipes 网络添加到防火墙" size="lg" border/>
+<Image img={firewall1} alt="将 ClickPipes 网络添加到防火墙" size="lg" border />
 
-<Image img={firewall2} alt="已将 ClickPipes 网络添加到防火墙" size="lg" border/>
+<Image img={firewall2} alt="已将 ClickPipes 网络添加到防火墙" size="lg" border />
 
 ## 下一步 \{#whats-next\}
 

@@ -11,7 +11,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # SSH-интерфейс с псевдотерминалом (PTY) \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
@@ -54,7 +53,6 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1
 ```
 
-
 ## Конфигурация сервера \{#server-configuration\}
 
 Чтобы включить функцию SSH-сервера, необходимо раскомментировать или добавить следующий раздел в файл `config.xml`:
@@ -84,7 +82,6 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```bash
 ssh -o "StrictHostKeyChecking no" user@host
 ```
-
 
 ## Настройка встроенного клиента \{#configuring-embedded-client\}
 

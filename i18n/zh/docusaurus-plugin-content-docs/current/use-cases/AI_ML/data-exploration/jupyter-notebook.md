@@ -24,8 +24,8 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **前置条件**：
 
-- 一个虚拟环境
-- 一个可用的 ClickHouse Cloud 服务，以及您的[连接信息](/cloud/guides/sql-console/gather-connection-details)
+* 一个虚拟环境
+* 一个可用的 ClickHouse Cloud 服务，以及您的[连接信息](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
 如果您还没有 ClickHouse Cloud 账号，可以[注册](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)
@@ -34,10 +34,10 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **您将学到：**
 
-- 使用 chDB 从 Jupyter Notebook 连接到 ClickHouse Cloud
-- 查询远程数据集并将结果转换为 Pandas DataFrame
-- 将云端数据与本地 CSV 文件结合进行分析
-- 使用 matplotlib 可视化数据
+* 使用 chDB 从 Jupyter Notebook 连接到 ClickHouse Cloud
+* 查询远程数据集并将结果转换为 Pandas DataFrame
+* 将云端数据与本地 CSV 文件结合进行分析
+* 使用 matplotlib 可视化数据
 
 我们将使用 UK Property Price 数据集，该数据集是 ClickHouse Cloud 提供的入门数据集之一。
 它包含 1995 年到 2024 年间英国房屋成交价格的数据。
@@ -235,7 +235,6 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
-
 <details>
   <summary>在单个步骤中从多个数据源读取</summary>
   你也可以在单个步骤中从多个数据源读取。可以使用下面带有 `JOIN` 的查询来实现：
@@ -320,7 +319,6 @@ plt.show()
 另一方面，价格则从 1995 年约 £150,000 起，持续、稳定增长，到 2005 年达到约 £300,000。
 2012 年之后增速显著加快，从约 £400,000 急剧上升，到 2019 年超过 £1,000,000。
 与销售量不同，价格几乎未受到 2008 年危机的影响，并一直保持上升趋势。真是惊人！
-
 
 ## 总结 \{#summary\}
 

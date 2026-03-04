@@ -13,8 +13,8 @@ doc_type: 'reference'
 
 投影会以一种优化查询执行的格式存储数据，在以下场景中非常有用：
 
-- 在不属于主键的列上运行查询
-- 对列进行预聚合，从而同时减少计算和 IO
+* 在不属于主键的列上运行查询
+* 对列进行预聚合，从而同时减少计算和 IO
 
 你可以为一张表定义一个或多个投影。在查询分析阶段，ClickHouse 会在不修改用户所提供查询的前提下，自动选择需要扫描数据量最少的投影。
 
@@ -82,7 +82,6 @@ LIMIT 2
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
-
 
 ### 预聚合查询示例 \{#example-pre-aggregation-query\}
 
@@ -164,7 +163,6 @@ GROUP BY user_agent
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
-
 ### 带有 `_part_offset` 字段的常规投影 \{#normal-projection-with-part-offset-field\}
 
 创建一个带有常规投影并使用 `_part_offset` 字段的表：
@@ -193,7 +191,6 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
-
 #### 将 `_part_offset` 用作二级索引 \{#normal-projection-secondary-index\}
 
 `_part_offset` 字段在合并和变更操作过程中会保留其值，因此非常适合作为二级索引使用。我们可以在查询中加以利用：
@@ -210,7 +207,6 @@ WHERE _part_starting_offset + _part_offset IN (
 SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
-
 ## 投影操作 \{#manipulating-projections\}
 
 可以执行以下关于[投影](/engines/table-engines/mergetree-family/mergetree.md/#projections)的操作：
@@ -222,7 +218,6 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```sql
 ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] ) [WITH SETTINGS ( setting_name1 = setting_value1, setting_name2 = setting_value2, ...)]
 ```
-
 
 #### `WITH SETTINGS` 子句 \{#with-settings\}
 
@@ -243,7 +238,6 @@ ADD PROJECTION p (
 
 PROJECTION 的设置会覆盖该 PROJECTION 实际生效的表设置，但需遵守校验规则（例如，无效或不兼容的覆盖将被拒绝）。
 
-
 ### DROP PROJECTION \{#drop-projection\}
 
 使用如下语句从表的元数据中移除投影定义，并从磁盘中删除投影文件。
@@ -253,7 +247,6 @@ PROJECTION 的设置会覆盖该 PROJECTION 实际生效的表设置，但需遵
 ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name
 ```
 
-
 ### MATERIALIZE PROJECTION \{#materialize-projection\}
 
 此语句会在分区 `partition_name` 中重建投影 `name`。其实现方式为一次[变更操作](/sql-reference/statements/alter/index.md#mutations)。
@@ -261,7 +254,6 @@ ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]
 ```
-
 
 ### CLEAR PROJECTION \{#clear-projection\}
 
@@ -278,7 +270,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [I
 :::note
 只有使用 [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 引擎（包括其[复制](/engines/table-engines/mergetree-family/replication.md)变体）的表才支持对投影的操作。
 :::
-
 
 ### 控制 PROJECTION 合并行为 \{#control-projections-merges\}
 
@@ -305,12 +296,12 @@ ClickHouse 通常会尽可能少地读取数据，并使用一些技巧来识别
 
 下面是 `deduplicate_merge_projection_mode` 和 `lightweight_mutation_projection_mode` 两个设置可能的取值：
 
-- `throw`（默认）：抛出异常，防止 PROJECTION 分区片段与主表数据发生不同步。
-- `drop`：丢弃受影响的 PROJECTION 表分区片段。对于受影响的 PROJECTION 分区片段，查询将回退到原始表分区片段。
-- `rebuild`：重建受影响的 PROJECTION 分区片段，以保持与原始表分区片段中的数据一致。
+* `throw`（默认）：抛出异常，防止 PROJECTION 分区片段与主表数据发生不同步。
+* `drop`：丢弃受影响的 PROJECTION 表分区片段。对于受影响的 PROJECTION 分区片段，查询将回退到原始表分区片段。
+* `rebuild`：重建受影响的 PROJECTION 分区片段，以保持与原始表分区片段中的数据一致。
 
 ## 另请参阅 \{#see-also\}
 
-- ["在合并过程中控制 Projections"（博客文章）](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)
-- ["Projections"（指南)](/data-modeling/projections#using-projections-to-speed-up-UK-price-paid)
-- ["Materialized Views 与 Projections 对比"](https://clickhouse.com/docs/managing-data/materialized-views-versus-projections)
+* [&quot;在合并过程中控制 Projections&quot;（博客文章）](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)
+* [&quot;Projections&quot;（指南)](/data-modeling/projections#using-projections-to-speed-up-UK-price-paid)
+* [&quot;Materialized Views 与 Projections 对比&quot;](https://clickhouse.com/docs/managing-data/materialized-views-versus-projections)

@@ -13,8 +13,8 @@ doc_type: 'reference'
 
 `FileLog` 可以：
 
-- 订阅日志文件。
-- 在新记录追加到已订阅的日志文件时对其进行处理。
+* 订阅日志文件。
+* 在新记录追加到已订阅的日志文件时对其进行处理。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -97,12 +97,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_filename` - 日志文件名。数据类型：`LowCardinality(String)`。
-- `_offset` - 在日志文件中的偏移量。数据类型：`UInt64`。
+* `_filename` - 日志文件名。数据类型：`LowCardinality(String)`。
+* `_offset` - 在日志文件中的偏移量。数据类型：`UInt64`。
 
 当 `handle_error_mode='stream'` 时的额外虚拟列：
 
-- `_raw_record` - 无法成功解析的原始记录。数据类型：`Nullable(String)`。
-- `_error` - 解析失败时产生的异常消息。数据类型：`Nullable(String)`。
+* `_raw_record` - 无法成功解析的原始记录。数据类型：`Nullable(String)`。
+* `_error` - 解析失败时产生的异常消息。数据类型：`Nullable(String)`。
 
 注意：只有在解析过程中发生异常时，虚拟列 `_raw_record` 和 `_error` 才会被填充；当消息成功解析时，它们的值始终为 `NULL`。

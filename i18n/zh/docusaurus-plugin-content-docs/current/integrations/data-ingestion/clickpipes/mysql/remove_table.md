@@ -24,9 +24,9 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 3. 找到你的表——可以在搜索栏中搜索该表。
 4. 点击该表前已选中的复选框以取消选择。
 
-<br/>
+<br />
 
-<Image img={remove_table} border size="md"/>
+<Image img={remove_table} border size="md" />
 
 5. 点击 **Update**。
 6. 成功更新后，在 **Metrics** 选项卡中，状态将为 **Running**。该表将不再由此 ClickPipe 进行复制。

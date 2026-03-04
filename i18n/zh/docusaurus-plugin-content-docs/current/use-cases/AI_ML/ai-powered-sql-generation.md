@@ -31,7 +31,6 @@ export OPENAI_API_KEY=your_api_key
 
 或者可以[提供一个配置文件](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)。
 
-
 ## 连接到 ClickHouse SQL Playground \{#connecting-to-the-clickhouse-sql-playground\}
 
 我们将使用 [ClickHouse SQL Playground](https://sql.clickhouse.com/) 来演示该功能。
@@ -48,7 +47,6 @@ clickhouse client -mn \
 :::note
 我们假定您已经安装了 ClickHouse；如果尚未安装，请参阅[安装指南](https://clickhouse.com/docs/install)。
 :::
-
 
 ## 使用自然语言向 ClickHouse 提问 \{#asking-clickhouse-questions-in-natural-language\}
 
@@ -113,7 +111,6 @@ AI 会按以下步骤执行：
 我们可以看到，它确实找到了 `uk_price_paid` 表，并为我们生成了一条可执行的查询语句。
 如果我们运行该查询，将会看到如下输出：
 
-
 ```text
 ┌─town───────────┬─district───────────────┬─county──────────┬──avg_price─┬─total_sales─┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
@@ -130,7 +127,6 @@ AI 会按以下步骤执行：
 ```
 
 如果我们想要继续追问，就需要从头重新表述问题。
-
 
 ### 在大伦敦地区查找高价房产 \{#finding-expensive-properties-in-greater-london\}
 
@@ -179,7 +175,6 @@ AI 会按以下步骤执行：
 
 这将生成一个更有针对性的查询，只筛选大伦敦地区的数据，并按年份细分结果。
 查询结果如下：
-
 
 ```text
 ┌─district────────────┬─year─┬───avg_price─┬─total_sales─┐

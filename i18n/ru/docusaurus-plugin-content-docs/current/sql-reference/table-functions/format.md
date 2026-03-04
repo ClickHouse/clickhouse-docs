@@ -19,9 +19,9 @@ format(format_name, [structure], data)
 
 ## Аргументы \{#arguments\}
 
-- `format_name` — [формат](/sql-reference/formats) данных.
-- `structure` — структура таблицы. Необязательный параметр. Формат: `column1_name column1_type, column2_name column2_type, ...`.
-- `data` — строковый литерал или константное выражение, которое возвращает строку с данными в заданном формате.
+* `format_name` — [формат](/sql-reference/formats) данных.
+* `structure` — структура таблицы. Необязательный параметр. Формат: `column1_name column1_type, column2_name column2_type, ...`.
+* `data` — строковый литерал или константное выражение, которое возвращает строку с данными в заданном формате.
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -102,4 +102,4 @@ $$)
 
 ## См. также \{#related\}
 
-- [Форматы](../../interfaces/formats.md)
+* [Форматы](../../interfaces/formats.md)

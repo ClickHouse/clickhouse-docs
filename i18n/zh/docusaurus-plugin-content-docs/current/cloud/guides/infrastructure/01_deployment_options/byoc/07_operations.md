@@ -13,7 +13,7 @@ ClickHouse Cloud 会为您的 BYOC 部署负责升级和维护，确保您的服
 
 ## ClickHouse 服务升级流程 \{#clickhouse-upgrade-process\}
 
-我们会定期升级 ClickHouse 数据库，包括版本升级、缺陷修复和性能改进。ClickHouse Cloud 在执行升级时采用 ["make before break" (MBB)](https://clickhouse.com/docs/cloud/features/mbb) 策略，即先添加更新后的副本，再移除旧副本，从而在尽量减少对运行中工作负载影响的情况下，更加平滑地完成升级。
+我们会定期升级 ClickHouse 数据库，包括版本升级、缺陷修复和性能改进。ClickHouse Cloud 在执行升级时采用 [&quot;make before break&quot; (MBB)](https://clickhouse.com/docs/cloud/features/mbb) 策略，即先添加更新后的副本，再移除旧副本，从而在尽量减少对运行中工作负载影响的情况下，更加平滑地完成升级。
 
 BYOC 中的 ClickHouse 服务升级流程和模式与标准 ClickHouse Cloud 服务保持一致，包括对发布通道（Fast、Regular 和 Slow）以及计划维护时间窗口的支持。所有 Scale 和 Enterprise 等级的功能在 BYOC 部署中均可用。关于升级时间安排、发布通道和维护时间窗口的详细信息，请参阅 [升级文档](/manage/updates)。
 
@@ -23,9 +23,9 @@ ClickHouse Cloud 会定期升级运行在 Kubernetes 上的支持服务以及你
 
 会被升级的 Cloud 服务示例包括：
 
-- **ClickHouse Operator**：管理 ClickHouse 集群的 Kubernetes Operator
-- **Istio Services**：入口和代理组件
-- **Monitoring Stack**：Prometheus、Grafana、AlertManager 和 Thanos 组件
+* **ClickHouse Operator**：管理 ClickHouse 集群的 Kubernetes Operator
+* **Istio Services**：入口和代理组件
+* **Monitoring Stack**：Prometheus、Grafana、AlertManager 和 Thanos 组件
 
 ## Kubernetes 集群升级流程 \{#k8s-upgrade-process\}
 
@@ -37,9 +37,9 @@ ClickHouse Cloud 会定期升级运行在 Kubernetes 上的支持服务以及你
 
 **节点组升级（Node Group Upgrades）**：工作节点升级需要进行节点替换，这可能会影响正在运行的 Pod（容器组）。ClickHouse Cloud 使用“先建后拆”（make-before-break）的方法来协调这些升级，以最大限度减少中断：
 
-- 在移除旧节点之前，预先创建运行更新后 Kubernetes 版本的新节点
-- 以优雅方式驱逐并将 Pod（容器组）迁移到新节点上
-- 仅在 Pod（容器组）已成功迁移之后才终止旧节点
+* 在移除旧节点之前，预先创建运行更新后 Kubernetes 版本的新节点
+* 以优雅方式驱逐并将 Pod（容器组）迁移到新节点上
+* 仅在 Pod（容器组）已成功迁移之后才终止旧节点
 
 :::note
 Kubernetes 节点升级可能会在迁移过程中导致短暂的 Pod（容器组）重启。ClickHouse Cloud 使用 Pod 中断预算（pod disruption budgets）和优雅关闭来将对您的工作负载的影响降到最低。

@@ -11,10 +11,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Движок таблицы JDBC \{#jdbc-table-engine\}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 :::note
-clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости в области безопасности. Используйте его на свой страх и риск. 
+clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости в области безопасности. Используйте его на свой страх и риск.
 ClickHouse рекомендует использовать встроенные табличные функции ClickHouse, которые являются более удачной альтернативой для сценариев разовых запросов (Postgres, MySQL, MongoDB и т. д.).
 :::
 
@@ -104,4 +104,4 @@ FROM system.numbers
 
 ## См. также \{#see-also\}
 
-- [табличная функция JDBC](../../../sql-reference/table-functions/jdbc.md).
+* [табличная функция JDBC](../../../sql-reference/table-functions/jdbc.md).

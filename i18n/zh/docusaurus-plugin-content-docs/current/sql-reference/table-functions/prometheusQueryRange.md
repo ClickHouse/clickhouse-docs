@@ -21,12 +21,12 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 
 ## 参数 \{#arguments\}
 
-- `db_name` - TimeSeries 表所在数据库的名称。
-- `time_series_table` - TimeSeries 表的名称。
-- `promql_query` - 使用 [PromQL 语法](https://prometheus.io/docs/prometheus/latest/querying/basics/) 编写的查询。
-- `start_time` - 评估区间的开始时间。
-- `end_time` - 评估区间的结束时间。
-- `step` - 用于在从 `start_time` 到 `end_time`（含起止时间）范围内迭代评估时间的步长。
+* `db_name` - TimeSeries 表所在数据库的名称。
+* `time_series_table` - TimeSeries 表的名称。
+* `promql_query` - 使用 [PromQL 语法](https://prometheus.io/docs/prometheus/latest/querying/basics/) 编写的查询。
+* `start_time` - 评估区间的开始时间。
+* `end_time` - 评估区间的结束时间。
+* `step` - 用于在从 `start_time` 到 `end_time`（含起止时间）范围内迭代评估时间的步长。
 
 ## 返回值 \{#returned_value\}
 
@@ -34,10 +34,10 @@ prometheusQueryRange('time_series_table', 'promql_query', start_time, end_time, 
 
 | Result Type | Result Columns | Example |
 |-------------|----------------|---------|
-| vector      | tags Array(Tuple(String, String)), timestamp TimestampType, value ValueType | prometheusQuery(mytable, 'up') |
-| matrix      | tags Array(Tuple(String, String)), time_series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, 'up[1m]') |
-| scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
-| string      | string String | prometheusQuery(mytable, '"abc"') |
+| vector      | tags Array(Tuple(String, String)), timestamp TimestampType, value ValueType | prometheusQuery(mytable, &#39;up&#39;) |
+| matrix      | tags Array(Tuple(String, String)), time&#95;series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, &#39;up[1m]&#39;) |
+| scalar      | scalar ValueType | prometheusQuery(mytable, &#39;1h30m&#39;) |
+| string      | string String | prometheusQuery(mytable, &#39;&quot;abc&quot;&#39;) |
 
 ## 示例 \{#example\}
 

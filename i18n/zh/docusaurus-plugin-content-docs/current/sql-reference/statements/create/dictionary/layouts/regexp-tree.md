@@ -9,13 +9,12 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 ## 概览 \{#overview\}
 
 `regexp_tree` 字典用于基于分层正则表达式模式将键映射到值。
 它针对模式匹配查找进行了优化（例如，通过匹配正则表达式模式对用户代理字符串之类的字符串进行分类），而非精确键匹配。
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse 正则表达式树字典简介" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse 正则表达式树字典简介" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 ## 将正则表达式树字典与 YAMLRegExpTree 源一起使用 \{#use-regular-expression-tree-dictionary-in-clickhouse-open-source\}
 
@@ -82,7 +81,6 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 借助精心编写的 YAML 配置文件，你可以将正则表达式树字典用作 User-Agent 字符串解析器。
 ClickHouse 支持 [uap-core](https://github.com/ua-parser/uap-core)，你可以在功能测试 [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) 中了解其用法。
 
-
 ### 收集属性值 \{#collecting-attribute-values\}
 
 有时，相比只返回叶子节点的值，返回所有匹配的多个正则表达式的值会更有用。在这种情况下，可以使用专门的 [`dictGetAll`](/sql-reference/functions/ext-dict-functions.md#dictGetAll) 函数。如果某个节点具有类型为 `T` 的属性值，`dictGetAll` 将返回一个包含零个或多个值的 `Array(T)`。
@@ -144,13 +142,12 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ### 匹配模式 \{#matching-modes\}
 
 可以通过某些字典相关的设置项来修改模式匹配行为：
 
-- `regexp_dict_flag_case_insensitive`：使用不区分大小写的匹配（默认为 `false`）。可以在单个表达式中通过 `(?i)` 和 `(?-i)` 覆盖。
-- `regexp_dict_flag_dotall`：允许 `.` 匹配换行符（默认为 `false`）。
+* `regexp_dict_flag_case_insensitive`：使用不区分大小写的匹配（默认为 `false`）。可以在单个表达式中通过 `(?i)` 和 `(?-i)` 覆盖。
+* `regexp_dict_flag_dotall`：允许 `.` 匹配换行符（默认为 `false`）。
 
 ## 在 ClickHouse Cloud 中使用正则表达式树字典 \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
@@ -189,10 +186,10 @@ values Array(String)
 
 然后按如下方式更新本地 CSV 文件：
 
-clickhouse client 
---host MY&#95;HOST 
---secure 
---password MY&#95;PASSWORD 
+clickhouse client
+--host MY&#95;HOST
+--secure
+--password MY&#95;PASSWORD
 --query &quot;
 INSERT INTO regexp&#95;dictionary&#95;source&#95;table
 SELECT * FROM input (&#39;id UInt64, parent&#95;id UInt64, regexp String, keys Array(String), values Array(String)&#39;)

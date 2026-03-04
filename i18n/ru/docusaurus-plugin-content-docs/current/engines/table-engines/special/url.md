@@ -13,27 +13,28 @@ doc_type: 'reference'
 
 Синтаксис: `URL(URL [,Format] [,CompressionMethod])`
 
-- Параметр `URL` должен соответствовать структуре Uniform Resource Locator. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Для получения ответа от сервера не требуются дополнительные заголовки.
+* Параметр `URL` должен соответствовать структуре Uniform Resource Locator. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Для получения ответа от сервера не требуются дополнительные заголовки.
 
-- `Format` должен быть форматом, который ClickHouse может использовать в запросах `SELECT` и, при необходимости, в запросах `INSERT`. Полный список поддерживаемых форматов см. в разделе [Formats](/interfaces/formats#formats-overview).
+* `Format` должен быть форматом, который ClickHouse может использовать в запросах `SELECT` и, при необходимости, в запросах `INSERT`. Полный список поддерживаемых форматов см. в разделе [Formats](/interfaces/formats#formats-overview).
 
-    Если этот аргумент не указан, ClickHouse автоматически определяет формат по суффиксу параметра `URL`. Если суффикс параметра `URL` не соответствует ни одному из поддерживаемых форматов, создание таблицы завершится с ошибкой. Например, для выражения движка `URL('http://localhost/test.json')` будет применён формат `JSON`.
+  Если этот аргумент не указан, ClickHouse автоматически определяет формат по суффиксу параметра `URL`. Если суффикс параметра `URL` не соответствует ни одному из поддерживаемых форматов, создание таблицы завершится с ошибкой. Например, для выражения движка `URL('http://localhost/test.json')` будет применён формат `JSON`.
 
-- `CompressionMethod` указывает, нужно ли сжимать тело HTTP-запроса. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок `Content-Encoding`, который указывает, какой метод сжатия используется.
+* `CompressionMethod` указывает, нужно ли сжимать тело HTTP-запроса. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок `Content-Encoding`, который указывает, какой метод сжатия используется.
 
 Чтобы включить сжатие, сначала убедитесь, что удалённая HTTP‑конечная точка, указанная параметром `URL`, поддерживает соответствующий алгоритм сжатия.
 
 Поддерживаемое значение `CompressionMethod` должно быть одним из следующих:
-- gzip или gz
-- deflate
-- brotli или br
-- lzma или xz
-- zstd или zst
-- lz4
-- bz2
-- snappy
-- none
-- auto
+
+* gzip или gz
+* deflate
+* brotli или br
+* lzma или xz
+* zstd или zst
+* lz4
+* bz2
+* snappy
+* none
+* auto
 
 Если `CompressionMethod` не указан, по умолчанию используется значение `auto`. Это означает, что ClickHouse автоматически определяет метод сжатия по суффиксу параметра `URL`. Если суффикс совпадает с каким-либо из перечисленных выше методов сжатия, применяется соответствующее сжатие, в противном случае сжатие не включается.
 
@@ -43,7 +44,7 @@ doc_type: 'reference'
 
 Запросы `INSERT` и `SELECT` преобразуются соответственно в HTTP-запросы `POST` и `GET`. Для обработки `POST`-запросов удалённый сервер должен поддерживать [передачу с кодированием фрагментами (Chunked transfer encoding)](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
 
-Вы можете ограничить максимальное количество переходов по перенаправлениям для HTTP-запросов GET с помощью настройки [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects).
+Вы можете ограничить максимальное количество переходов по перенаправлениям для HTTP-запросов GET с помощью настройки [max&#95;http&#95;get&#95;redirects](/operations/settings/settings#max_http_get_redirects).
 
 ## Пример \{#example\}
 
@@ -92,21 +93,21 @@ SELECT * FROM url_engine_table
 
 ## Подробности реализации \{#details-of-implementation\}
 
-- Возможны параллельные операции чтения и записи
-- Не поддерживаются:
-  - Операции `ALTER` и `SELECT...SAMPLE`.
-  - Индексы.
-  - Репликация.
+* Возможны параллельные операции чтения и записи
+* Не поддерживаются:
+  * Операции `ALTER` и `SELECT...SAMPLE`.
+  * Индексы.
+  * Репликация.
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — Путь к URL-ресурсу. Тип: `LowCardinality(String)`.
-- `_file` — Имя URL-ресурса. Тип: `LowCardinality(String)`.
-- `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_headers` — Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
+* `_path` — Путь к URL-ресурсу. Тип: `LowCardinality(String)`.
+* `_file` — Имя URL-ресурса. Тип: `LowCardinality(String)`.
+* `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
+* `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_headers` — Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
 
 ## Настройки хранения \{#storage-settings\}
 
-- [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключена.
-- [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) — позволяет включать и отключать кодирование и декодирование пути в URI. По умолчанию включена.
+* [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) — позволяет пропускать пустые файлы при чтении. По умолчанию отключена.
+* [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) — позволяет включать и отключать кодирование и декодирование пути в URI. По у

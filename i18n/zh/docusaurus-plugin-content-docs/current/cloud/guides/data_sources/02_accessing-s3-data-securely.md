@@ -22,7 +22,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 这种方式允许客户在单一位置（所承担角色的 IAM 策略）管理对其 S3 存储桶的全部访问权限，而无需逐一修改所有存储桶策略来添加或移除访问权限。
 在下面的章节中，您将学习如何完成这一配置。
 
-
 ## 获取 ClickHouse 服务 IAM 角色 ARN \{#obtaining-the-clickhouse-service-iam-role-arn\}
 
 1. 登录到你的 ClickHouse cloud 账户。
@@ -41,19 +40,19 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 可以通过以下两种方式之一来设置该 IAM 角色：
 
-- [使用 CloudFormation 堆栈](#option-1-deploying-with-cloudformation-stack)
-- [手动创建 IAM 角色](#option-2-manually-create-iam-role)
+* [使用 CloudFormation 堆栈](#option-1-deploying-with-cloudformation-stack)
+* [手动创建 IAM 角色](#option-2-manually-create-iam-role)
 
 ### 使用 CloudFormation 堆栈部署 \{#option-1-deploying-with-cloudformation-stack\}
 
 1. 在浏览器中使用具备创建和管理 IAM 角色权限的 IAM 用户登录到您的 AWS 账户。
 
-2. 访问以下 [CloudFormation URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3)，以预填 CloudFormation 堆栈。
+2. 访问以下 [CloudFormation URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml\&stackName=ClickHouseSecureS3)，以预填 CloudFormation 堆栈。
 
-3. 将之前为您的服务获取到的 **service role ID (IAM)** 输入（或粘贴）到名为 "ClickHouse Instance Roles" 的输入框中。  
+3. 将之前为您的服务获取到的 **service role ID (IAM)** 输入（或粘贴）到名为 &quot;ClickHouse Instance Roles&quot; 的输入框中。\
    您可以按其在 Cloud 控制台中显示的方式原样粘贴该 service role ID。
 
-4. 在名为 "Bucket Names" 的输入框中输入您的 bucket 名称。如果您的 bucket URL 是 `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/`，那么 bucket 名称就是 `ch-docs-s3-bucket`。
+4. 在名为 &quot;Bucket Names&quot; 的输入框中输入您的 bucket 名称。如果您的 bucket URL 是 `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/`，那么 bucket 名称就是 `ch-docs-s3-bucket`。
 
 :::note
 不要填写完整的 bucket ARN，而只填写 bucket 名称。
@@ -136,7 +135,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 4. 在创建完成后复制新的 **IAM Role Arn**，这是访问您的 S3 bucket 所需的标识。
 
-
 ## 使用 ClickHouseAccess 角色访问你的 S3 bucket \{#access-your-s3-bucket-with-the-clickhouseaccess-role\}
 
 ClickHouse Cloud 允许你在 S3 表函数中指定 `extra_credentials`。下面是一个示例，展示如何使用上面新创建的角色来运行查询。
@@ -156,7 +154,6 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 我们建议将您的源 S3 与 ClickHouse Cloud 服务部署在同一地域，以降低数据传输费用。
 有关更多信息，请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)。
 :::
-
 
 ## 高级操作控制 \{#advanced-action-control\}
 

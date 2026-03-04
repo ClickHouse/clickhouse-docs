@@ -32,14 +32,14 @@ import Image from '@theme/IdealImage';
 首先，需要在 DynamoDB 表上启用 Kinesis 流，以实时捕获变更。我们希望在创建快照之前先完成这一步，以避免遗漏任何数据。
 请参考位于 [此处](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html) 的 AWS 官方指南。
 
-<Image img={dynamodb_kinesis_stream} size="lg" alt="DynamoDB Kinesis 流" border/>
+<Image img={dynamodb_kinesis_stream} size="lg" alt="DynamoDB Kinesis 流" border />
 
 ## 2. 创建快照 \{#2-create-the-snapshot\}
 
 接下来，我们将创建 DynamoDB 表的快照。这可以通过使用 AWS 将数据导出到 S3 来实现。请参考位于[此处](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)的 AWS 指南。
 **你需要执行一次使用 DynamoDB JSON 格式的 “Full export”（完整导出）。**
 
-<Image img={dynamodb_s3_export} size="md" alt="DynamoDB S3 导出" border/>
+<Image img={dynamodb_s3_export} size="md" alt="DynamoDB S3 导出" border />
 
 ## 3. 将快照载入 ClickHouse \{#3-load-the-snapshot-into-clickhouse\}
 
@@ -121,19 +121,18 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 创建完成后，数据会开始写入快照表和目标表。无需等待快照加载完成即可继续下一步操作。
 
-
 ## 4. 创建 Kinesis ClickPipe \{#4-create-the-kinesis-clickpipe\}
 
 现在我们可以配置 Kinesis ClickPipe 来从 Kinesis 流中捕获实时变更。请按照 Kinesis ClickPipe 指南[此处](/integrations/data-ingestion/clickpipes/kinesis/01_overview.md)的步骤进行，但使用以下设置：
 
-- **Stream**：在步骤 1 中使用的 Kinesis 流
-- **Table**：目标表（例如上述示例中的 `default.destination`）
-- **Flatten object**：true
-- **Column mappings**：
-  - `ApproximateCreationDateTime`：`version`
-  - 将其他字段映射到如下所示的相应目标列
+* **Stream**：在步骤 1 中使用的 Kinesis 流
+* **Table**：目标表（例如上述示例中的 `default.destination`）
+* **Flatten object**：true
+* **Column mappings**：
+  * `ApproximateCreationDateTime`：`version`
+  * 将其他字段映射到如下所示的相应目标列
 
-<Image img={dynamodb_map_columns} size="md" alt="DynamoDB 映射列" border/>
+<Image img={dynamodb_map_columns} size="md" alt="DynamoDB 映射列" border />
 
 ## 5. 清理（可选） \{#5-cleanup-optional\}
 

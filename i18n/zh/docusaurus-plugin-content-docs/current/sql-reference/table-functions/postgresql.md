@@ -17,7 +17,6 @@ doc_type: 'reference'
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-
 ## 参数 \{#arguments\}
 
 | 参数          | 描述                                                                         |
@@ -69,7 +68,6 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 ```
 
 支持为 PostgreSQL 字典数据源设置副本优先级。`map` 中数值越大，优先级越低，最高优先级为 `0`。
-
 
 ## 示例 \{#examples\}
 
@@ -149,11 +147,10 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
-
 ## 相关 \{#related\}
 
-- [PostgreSQL 表引擎](../../engines/table-engines/integrations/postgresql.md)
-- [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources/postgresql)
+* [PostgreSQL 表引擎](../../engines/table-engines/integrations/postgresql.md)
+* [将 PostgreSQL 用作字典源](/sql-reference/statements/create/dictionary/sources/postgresql)
 
 ### 使用 PeerDB 复制或迁移 Postgres 数据 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

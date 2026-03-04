@@ -19,9 +19,9 @@ format(format_name, [structure], data)
 
 ## 参数 \{#arguments\}
 
-- `format_name` — 数据的[格式](/sql-reference/formats)。
-- `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
-- `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
+* `format_name` — 数据的[格式](/sql-reference/formats)。
+* `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
+* `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
 
 ## 返回值 \{#returned_value\}
 
@@ -102,4 +102,4 @@ $$)
 
 ## 相关内容 \{#related\}
 
-- [格式](../../interfaces/formats.md)
+* [格式](../../interfaces/formats.md)

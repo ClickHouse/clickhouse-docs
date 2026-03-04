@@ -60,11 +60,11 @@ Union
 
 ## EXPLAIN 类型 \{#explain-types\}
 
-- `AST` — 抽象语法树。
-- `SYNTAX` — 经过 AST 级优化后的查询文本。
-- `QUERY TREE` — 经过 Query Tree 级优化后的查询树。
-- `PLAN` — 查询执行计划。
-- `PIPELINE` — 查询执行流水线。
+* `AST` — 抽象语法树。
+* `SYNTAX` — 经过 AST 级优化后的查询文本。
+* `QUERY TREE` — 经过 Query Tree 级优化后的查询树。
+* `PLAN` — 查询执行计划。
+* `PIPELINE` — 查询执行流水线。
 
 ### EXPLAIN AST \{#explain-ast\}
 
@@ -123,7 +123,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
@@ -297,7 +296,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
-
 ```json
 [
   {
@@ -425,7 +423,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
-
 
 当 `actions` = 1 时，添加的键取决于步骤类型。
 
@@ -561,7 +558,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

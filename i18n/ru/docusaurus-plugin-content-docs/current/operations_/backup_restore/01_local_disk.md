@@ -11,12 +11,11 @@ import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # Резервное копирование и восстановление на локальный диск \{#backup-to-a-local-disk\}
 
 ## Синтаксис \{#syntax\}
 
-<Syntax/>
+<Syntax />
 
 ## Настройка путей назначения резервного копирования для диска \{#configure-backup-destinations-for-disk\}
 
@@ -50,7 +49,6 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 <!--highlight-end -->
 </clickhouse>
 ```
-
 
 ### Настройка назначения резервного копирования для диска S3 \{#backuprestore-using-an-s3-disk\}
 
@@ -101,7 +99,6 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   данные сначала скачиваются, а затем загружаются, что крайне неэффективно. В таком случае рекомендуется использовать
   синтаксис `BACKUP ... TO S3(<endpoint>)` для этого сценария.
   :::
-
 
 ## Примеры использования операций резервного копирования и восстановления на локальный диск \{#usage-examples\}
 
@@ -170,7 +167,6 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 Можно использовать и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
 ниже для получения дополнительной информации.
 
-
 ### Инкрементные резервные копии на диск \{#incremental-backups\}
 
 Базовая резервная копия в ClickHouse — это начальная полная резервная копия, на основе которой
@@ -203,7 +199,6 @@ RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
 
-
 ### Защита резервной копии \{#assign-a-password-to-the-backup\}
 
 К файлам резервных копий, записанным на диск, можно применить пароль.
@@ -223,7 +218,6 @@ RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### Резервные копии в виде tar-архивов \{#backups-as-tar-archives\}
 
@@ -261,7 +255,6 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 * `.tzst`
 * `.tar.xz`
 
-
 ### Настройки сжатия \{#compression-settings\}
 
 Метод сжатия и степень сжатия можно задать с помощью параметров `compression_method` и `compression_level` соответственно.
@@ -275,7 +268,6 @@ BACKUP TABLE test_db.test_table
 TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
-
 
 ### Восстановление отдельных партиций \{#restore-specific-partitions\}
 

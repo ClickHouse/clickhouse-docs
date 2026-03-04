@@ -20,9 +20,9 @@ doc_type: 'reference'
 
 С типом `AggregateFunction` обычно используются два [комбинатора](/sql-reference/aggregate-functions/combinators) агрегатных функций:
 
-- Комбинатор агрегатной функции [`-State`](/sql-reference/aggregate-functions/combinators#-state), который при добавлении к имени агрегатной
+* Комбинатор агрегатной функции [`-State`](/sql-reference/aggregate-functions/combinators#-state), который при добавлении к имени агрегатной
   функции формирует промежуточные состояния `AggregateFunction`.
-- Комбинатор агрегатной функции [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge), который используется для получения
+* Комбинатор агрегатной функции [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge), который используется для получения
   конечного результата агрегации из промежуточных состояний.
 
 ## Синтаксис \{#syntax\}
@@ -105,7 +105,7 @@ SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP
 
 ## Связанные материалы \{#related-content\}
 
-- Запись в блоге: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-- [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)
+* Запись в блоге: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)
   комбинатор MergeState.
-- [State](/sql-reference/aggregate-functions/combinators#-state) комбинатор State.
+* [State](/sql-reference/aggregate-functions/combinators#-state) комбинатор State.

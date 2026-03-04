@@ -108,12 +108,12 @@ FORMAT CSVWithNamesAndTypes
 ## 格式设置 \{#format-settings\}
 
 :::note
-如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
-则会根据列名将输入数据中的列映射到表中的列；如果将 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
+如果将 [input&#95;format&#95;with&#95;names&#95;use&#95;header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
+则会根据列名将输入数据中的列映射到表中的列；如果将 [input&#95;format&#95;skip&#95;unknown&#95;fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
 否则，将跳过第一行。
 :::
 
 :::note
-如果将 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，
+如果将 [input&#95;format&#95;with&#95;types&#95;use&#95;header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，
 则会将输入数据中的类型与表中对应列的类型进行比较。否则，将跳过第二行。
 :::

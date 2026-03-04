@@ -14,12 +14,11 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
 # 使用 ClickHouse 的 azureBlobStorage 表函数 \{#using-azureBlobStorage-function\}
 
 这是将数据从 Azure Blob Storage 或 Azure Data Lake Storage 复制到 ClickHouse 的最高效、最直接的方法之一。借助这个表函数，可以让 ClickHouse 直接连接到 Azure 存储，并按需读取数据。
 
-它提供了类似表的接口，使你可以直接从源端执行查询、插入和过滤操作。该函数经过高度优化，并支持许多广泛使用的文件格式，包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参阅 ["Data formats"](/interfaces/formats)。
+它提供了类似表的接口，使你可以直接从源端执行查询、插入和过滤操作。该函数经过高度优化，并支持许多广泛使用的文件格式，包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参阅 [&quot;Data formats&quot;](/interfaces/formats)。
 
 在本节中，我们将通过一个简单的入门示例，演示如何从 Azure Blob Storage 向 ClickHouse 传输数据，并说明高效使用该函数时的一些重要注意事项。若需了解更多详细信息和高级选项，请参阅官方文档：
 [`azureBlobStorage` Table Function documentation page](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
@@ -31,10 +30,10 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 1. 在 Azure 门户中，进入你的 **Storage Account（存储帐户）**。
 
 2. 在左侧菜单中，在 **Security + networking（安全性 + 网络）** 部分下选择 **Access keys（访问密钥）**。
-   <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border/>
+   <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border />
 
 3. 选择 **key1** 或 **key2**，然后点击 **Connection string（连接字符串）** 字段旁边的 **Show** 按钮。
-   <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
+   <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border />
 
 4. 复制该连接字符串——你将把它作为参数用于 azureBlobStorage 表函数。
 
@@ -68,7 +67,6 @@ SELECT * FROM azureBlobStorage(
 ```
 
 这样即可高效地将外部数据拉取到 ClickHouse，而无需额外的 ETL 中间步骤。
-
 
 ## 使用 Environmental Sensors 数据集的简单示例 \{#simple-example-using-the-environmental-sensors-dataset\}
 
@@ -134,11 +132,10 @@ SELECT * FROM azureBlobStorage(
 
 现在，存储在 Azure Blob Storage 中的 `2019-06_bmp180.csv.zst` 文件里的数据已经写入 sensors 表中。
 
-
 ## 其他资源 \{#additional-resources\}
 
 这只是关于使用 azureBlobStorage 函数的基础介绍。要了解更高级的选项和配置细节，请参阅官方文档：
 
-- [azureBlobStorage 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-- [输入和输出数据格式](https://clickhouse.com/docs/sql-reference/formats)
-- [从输入数据自动推断模式](https://clickhouse.com/docs/interfaces/schema-inference)
+* [azureBlobStorage 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+* [输入和输出数据格式](https://clickhouse.com/docs/sql-reference/formats)
+* [从输入数据自动推断模式](https://clickhouse.com/docs/interfaces/schema-inference)

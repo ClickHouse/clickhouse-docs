@@ -17,7 +17,6 @@ doc_type: 'reference'
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Argument    | Description                                                                                                |
@@ -30,8 +29,8 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 | `pool_size` | Максимальный размер пула подключений Redis, по умолчанию 16.                                              |
 | `primary`   | Должен быть указан; поддерживается только один столбец в первичном ключе. Первичный ключ будет сериализован в двоичном виде как ключ Redis. |
 
-- Столбцы, отличные от первичного ключа, будут сериализованы в двоичном виде как значение Redis в соответствующем порядке.
-- Запросы с фильтрацией по выражениям `key equals` или `key in` будут оптимизированы до поиска по нескольким ключам в Redis. Если запрос выполняется без фильтрации по ключу, будет происходить полное сканирование таблицы, что является ресурсоёмкой операцией.
+* Столбцы, отличные от первичного ключа, будут сериализованы в двоичном виде как значение Redis в соответствующем порядке.
+* Запросы с фильтрацией по выражениям `key equals` или `key in` будут оптимизированы до поиска по нескольким ключам в Redis. Если запрос выполняется без фильтрации по ключу, будет происходить полное сканирование таблицы, что является ресурсоёмкой операцией.
 
 [Именованные коллекции](/operations/named-collections.md) в настоящий момент не поддерживаются для табличной функции `redis`.
 
@@ -60,8 +59,7 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
-
 ## См. также \{#related\}
 
-- [Табличный движок `Redis`](/engines/table-engines/integrations/redis.md)
-- [Использование Redis в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/redis)
+* [Табличный движок `Redis`](/engines/table-engines/integrations/redis.md)
+* [Использование Redis в качестве источника словаря](/sql-reference/statements/create/dictionary/sources/redis)

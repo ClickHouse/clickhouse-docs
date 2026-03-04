@@ -52,7 +52,8 @@ FROM user_interests;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`arrayJoin`](/sql-reference/functions/array-join)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`arrayJoin`](/sql-reference/functions/array-join)
+* [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+* [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

@@ -26,7 +26,7 @@ doc_type: 'reference'
 | [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
-大多数 `ALTER TABLE` 查询仅支持 [\*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md) 和 [Distributed](/engines/table-engines/special/distributed.md) 表。
+大多数 `ALTER TABLE` 查询仅支持 [*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md) 和 [Distributed](/engines/table-engines/special/distributed.md) 表。
 :::
 
 这些 `ALTER` 语句用于操作视图：
@@ -67,11 +67,11 @@ doc_type: 'reference'
 
 对于非复制表，所有 `ALTER` 查询都会以同步方式执行。对于复制表，查询只是向 `ZooKeeper` 中添加相应操作的指令，而这些操作本身会尽快执行。不过，查询可以等待这些操作在所有副本上完成。
 
-对于会创建 mutation 的 `ALTER` 查询（例如包括但不限于 `UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`APPLY PATCHES`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC`），其同步行为由 [mutations_sync](/operations/settings/settings.md/#mutations_sync) 设置控制。
+对于会创建 mutation 的 `ALTER` 查询（例如包括但不限于 `UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`APPLY PATCHES`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC`），其同步行为由 [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置控制。
 
-对于仅修改元数据的其他 `ALTER` 查询，可以使用 [alter_sync](/operations/settings/settings#alter_sync) 设置来配置等待行为。
+对于仅修改元数据的其他 `ALTER` 查询，可以使用 [alter&#95;sync](/operations/settings/settings#alter_sync) 设置来配置等待行为。
 
-可以通过 [replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 设置指定在非活动副本上等待其执行完所有 `ALTER` 查询的最长时间（以秒为单位）。
+可以通过 [replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 设置指定在非活动副本上等待其执行完所有 `ALTER` 查询的最长时间（以秒为单位）。
 
 :::note
 对于所有 `ALTER` 查询，如果 `alter_sync = 2`，并且某些副本处于非活动状态的时间超过 `replication_wait_for_inactive_replica_timeout` 设置中指定的时长，则会抛出 `UNFINISHED` 异常。
@@ -79,4 +79,4 @@ doc_type: 'reference'
 
 ## 相关内容 \{#related-content\}
 
-- 博客：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* 博客：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

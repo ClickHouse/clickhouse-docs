@@ -22,18 +22,19 @@ timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 
 ## Аргументы \{#arguments\}
 
-- `db_name` — имя базы данных, в которой находится таблица TimeSeries.
-- `time_series_table` — имя таблицы TimeSeries.
-- `instant_query` — мгновенный селектор, записанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors), без модификаторов `@` или `offset`.
-- `min_time` — начальная метка времени (включительно).
-- `max_time` — конечная метка времени (включительно).
+* `db_name` — имя базы данных, в которой находится таблица TimeSeries.
+* `time_series_table` — имя таблицы TimeSeries.
+* `instant_query` — мгновенный селектор, записанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors), без модификаторов `@` или `offset`.
+* `min_time` — начальная метка времени (включительно).
+* `max_time` — конечная метка времени (включительно).
 
 ## Возвращаемое значение \{#returned_value\}
 
 Функция возвращает три столбца:
-- `id` — содержит идентификаторы временных рядов, соответствующих указанному селектору.
-- `timestamp` — содержит метки времени.
-- `value` — содержит значения.
+
+* `id` — содержит идентификаторы временных рядов, соответствующих указанному селектору.
+* `timestamp` — содержит метки времени.
+* `value` — содержит значения.
 
 Порядок возвращаемых данных не гарантируется.
 

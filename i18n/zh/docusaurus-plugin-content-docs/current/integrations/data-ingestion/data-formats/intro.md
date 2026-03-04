@@ -15,7 +15,7 @@ doc_type: '指南'
 
 ### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) \{#binary\}
 
-导出和加载二进制格式，例如 ClickHouse Native、MessagePack、Protocol Buffers 和 Cap'n Proto。
+导出和加载二进制格式，例如 ClickHouse Native、MessagePack、Protocol Buffers 和 Cap&#39;n Proto。
 
 ### [**CSV and TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) \{#csv-and-tsv\}
 

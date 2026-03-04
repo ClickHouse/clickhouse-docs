@@ -34,7 +34,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 <br />
 
 <VerticalStepper headerLevel="h3">
-  ### 使用 Docker 部署
+  ### 使用 Docker 部署 \{#deploy-with-docker\}
 
   本地模式会在端口 8080 上部署 HyperDX UI。
 
@@ -42,7 +42,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   docker run -p 8080:8080 clickhouse/clickstack-local:latest
   ```
 
-  ### 访问 HyperDX UI
+  ### 访问 HyperDX UI \{#navigate-to-hyperdx-ui\}
 
   访问 [http://localhost:8080](http://localhost:8080) 即可打开 HyperDX UI。
 

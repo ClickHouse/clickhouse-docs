@@ -150,7 +150,7 @@ SELECT
 
 ### in 子查询函数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。  
+`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。
 
 ### notIn subquery function \{#notin-subquery-function\}
 
@@ -341,7 +341,6 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
-
 
 ## 逻辑 AND 运算符 \{#logical-and-operator\}
 

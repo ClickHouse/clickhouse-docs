@@ -10,7 +10,7 @@ doc_type: 'guide'
 # Кэш условий запроса \{#query-condition-cache\}
 
 :::note
-Кэш условий запроса работает только, когда [enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) установлен в значение true, что является значением по умолчанию.
+Кэш условий запроса работает только, когда [enable&#95;analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) установлен в значение true, что является значением по умолчанию.
 :::
 
 Во многих реальных рабочих нагрузках выполняются повторяющиеся запросы к одним и тем же или почти тем же данным (например, к уже существующим данным плюс новым данным).
@@ -27,9 +27,10 @@ ClickHouse предоставляет различные техники опти
 В первом случае ClickHouse может пропустить соответствующую гранулу при вычислении фильтра, во втором случае гранулу необходимо загрузить и обработать.
 
 Кэш условий запроса эффективен, если выполняются три предпосылки:
-- Во‑первых, нагрузка должна многократно вычислять одни и те же условия фильтрации. Это естественным образом происходит, если один и тот же запрос выполняется несколько раз, но это также возможно, если два запроса используют одни и те же фильтры, например `SELECT product FROM products WHERE quality > 3` и `SELECT vendor, count() FROM products WHERE quality > 3`.
-- Во‑вторых, большая часть данных должна быть неизменяемой, то есть не изменяться между запросами. В ClickHouse это обычно так, поскольку части (parts) неизменяемы и создаются только с помощью INSERT.
-- В‑третьих, фильтры должны быть селективными, то есть лишь относительно небольшое число строк удовлетворяет условию фильтра. Чем меньше строк соответствует условию фильтра, тем больше гранул будет записано с битом 0 (нет подходящих строк), и тем больше данных можно будет «отсечь» при последующих вычислениях фильтра.
+
+* Во‑первых, нагрузка должна многократно вычислять одни и те же условия фильтрации. Это естественным образом происходит, если один и тот же запрос выполняется несколько раз, но это также возможно, если два запроса используют одни и те же фильтры, например `SELECT product FROM products WHERE quality > 3` и `SELECT vendor, count() FROM products WHERE quality > 3`.
+* Во‑вторых, большая часть данных должна быть неизменяемой, то есть не изменяться между запросами. В ClickHouse это обычно так, поскольку части (parts) неизменяемы и создаются только с помощью INSERT.
+* В‑третьих, фильтры должны быть селективными, то есть лишь относительно небольшое число строк удовлетворяет условию фильтра. Чем меньше строк соответствует условию фильтра, тем больше гранул будет записано с битом 0 (нет подходящих строк), и тем больше данных можно будет «отсечь» при последующих вычислениях фильтра.
 
 ## Потребление памяти \{#memory-consumption\}
 
@@ -55,14 +56,13 @@ SETTINGS use_query_condition_cache = true;
 кэш будет сохранять диапазоны таблицы, которые не удовлетворяют предикату.
 Последующие выполнения того же запроса, также с параметром `use_query_condition_cache = true`, будут использовать кэш условий запроса для сканирования меньшего объёма данных.
 
-
 ## Администрирование \{#administration\}
 
 Кэш условий запросов не сохраняется между перезапусками ClickHouse.
 
 Чтобы очистить кэш условий запросов, выполните команду [`SYSTEM CLEAR QUERY CONDITION CACHE`](../sql-reference/statements/system.md#drop-query-condition-cache).
 
-Содержимое кэша отображается в системной таблице [system.query_condition_cache](system-tables/query_condition_cache.md).
+Содержимое кэша отображается в системной таблице [system.query&#95;condition&#95;cache](system-tables/query_condition_cache.md).
 Чтобы вычислить текущий размер кэша условий запросов в МБ, выполните `SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache`.
 Если требуется исследовать отдельные фильтрующие условия, проверьте поле `condition` в `system.query_condition_cache`. Обратите внимание, что это поле доступно только в отладочных (debug) сборках.
 
@@ -71,5 +71,5 @@ SETTINGS use_query_condition_cache = true;
 
 ## Связанные материалы \{#related-content\}
 
-- Публикация в блоге: [Introducing the Query Condition Cache](https://clickhouse.com/blog/introducing-the-clickhouse-query-condition-cache)
-- [Predicate Caching: Query-Driven Secondary Indexing for Cloud Data Warehouses (Schmidt et. al., 2024)](https://doi.org/10.1145/3626246.3653395)
+* Публикация в блоге: [Introducing the Query Condition Cache](https://clickhouse.com/blog/introducing-the-clickhouse-query-condition-cache)
+* [Predicate Caching: Query-Driven Secondary Indexing for Cloud Data Warehouses (Schmidt et. al., 2024)](https://doi.org/10.1145/3626246.3653395)

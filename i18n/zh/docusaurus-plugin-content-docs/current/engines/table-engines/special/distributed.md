@@ -165,12 +165,12 @@ SETTINGS
 | `host`        | 远程服务器的地址。可以使用域名或 IPv4/IPv6 地址。如果指定域名，服务器在启动时会发起一次 DNS 请求，并在服务器运行期间缓存该结果。如果 DNS 请求失败，服务器将无法启动。如果更改了 DNS 记录，需要重启服务器。 | -            |
 | `port`        | 用于客户端通信的 TCP 端口（配置中的 `tcp_port`，通常设置为 9000）。不要与 `http_port` 混淆。                                                                                                                                                                                                                                              | -            |
 | `user`        | 用于连接远程服务器的用户名。该用户必须拥有连接到指定服务器的权限。访问控制在 `users.xml` 文件中配置。更多信息，参见 [Access rights](../../../guides/sre/user-management/index.md) 部分。                                                                                                                | `default`    |
-| `password`    | 用于连接远程服务器的密码（不会被掩码）。                                                                                                                                                                                                                                                                                                  | ''           |
+| `password`    | 用于连接远程服务器的密码（不会被掩码）。                                                                                                                                                                                                                                                                                                  | &#39;&#39;           |
 | `secure`      | 是否使用安全的 SSL/TLS 连接。通常还需要显式指定端口（默认安全端口为 `9440`）。服务器应监听 `<tcp_port_secure>9440</tcp_port_secure>`，并正确配置证书。                                                                                                                                                | `false`      |
 | `compression` | 是否使用数据压缩。                                                                                                                                                                                                                                                                                                                        | `true`       |
 | `bind_host`   | 从当前节点连接到远程服务器时使用的源地址。仅支持 IPv4 地址。适用于需要为 ClickHouse 分布式查询设置源 IP 地址的高级部署场景。                                                                                                                                                                         | -            |
 
-在指定副本时，读取时会为每个分片选择一个可用的副本。可以配置负载均衡算法（优先访问哪一个副本）——参见 [load_balancing](../../../operations/settings/settings.md#load_balancing) 设置。如果无法与服务器建立连接，将以较短的超时时间尝试建立连接。如果连接失败，将选择下一个副本，对所有副本依次尝试。如果对所有副本的连接尝试都失败，则会以相同方式重复多次尝试。这有助于提升系统的可靠性，但不能提供完全的容错能力：远程服务器可能会接受连接，但可能无法正常工作，或工作不佳。
+在指定副本时，读取时会为每个分片选择一个可用的副本。可以配置负载均衡算法（优先访问哪一个副本）——参见 [load&#95;balancing](../../../operations/settings/settings.md#load_balancing) 设置。如果无法与服务器建立连接，将以较短的超时时间尝试建立连接。如果连接失败，将选择下一个副本，对所有副本依次尝试。如果对所有副本的连接尝试都失败，则会以相同方式重复多次尝试。这有助于提升系统的可靠性，但不能提供完全的容错能力：远程服务器可能会接受连接，但可能无法正常工作，或工作不佳。
 
 可以只指定一个分片（在这种情况下，该查询处理应称为 remote，而不是 distributed），也可以指定任意数量的分片。在每个分片内，可以指定从一个到任意数量的副本。对于每个分片，都可以指定不同数量的副本。
 
@@ -196,7 +196,7 @@ SETTINGS
 
 如果 `internal_replication` 设置为 `false`（默认值），数据会写入所有副本。在这种情况下，由 `Distributed` 表自身来复制数据。这比使用复制表要差，因为不会检查副本之间的一致性，随着时间推移，各副本中会包含略有不同的数据。
 
-为了选择某一行数据要发送到哪个分片，系统会先计算分片表达式，然后将其对所有分片总权重取余。该行会被发送到与余数对应的从 `prev_weights` 到 `prev_weights + weight` 的半开区间内的分片，其中 `prev_weights` 是编号更小的分片的权重总和，`weight` 是当前分片的权重。例如，如果有两个分片，第一个分片的权重为 9，第二个分片的权重为 10，则余数在区间 \[0, 9) 的行会被发送到第一个分片，而余数在区间 \[9, 19) 的行会被发送到第二个分片。
+为了选择某一行数据要发送到哪个分片，系统会先计算分片表达式，然后将其对所有分片总权重取余。该行会被发送到与余数对应的从 `prev_weights` 到 `prev_weights + weight` 的半开区间内的分片，其中 `prev_weights` 是编号更小的分片的权重总和，`weight` 是当前分片的权重。例如，如果有两个分片，第一个分片的权重为 9，第二个分片的权重为 10，则余数在区间 [0, 9) 的行会被发送到第一个分片，而余数在区间 [9, 19) 的行会被发送到第二个分片。
 
 分片表达式可以是任何由常量和表列构成且返回整数的表达式。例如，可以使用表达式 `rand()` 来随机分布数据，或者使用 `UserID` 按用户 ID 取余来分布数据（这样单个用户的数据会位于同一个分片上，便于基于用户执行 `IN` 和 `JOIN`）。如果某个列的分布不够均匀，可以将其包裹在哈希函数中，例如 `intHash64(UserID)`。
 
@@ -204,10 +204,10 @@ SETTINGS
 
 在以下情况中，需要特别关注分片方案：
 
-- 在执行需要按特定键进行数据关联（`IN` 或 `JOIN`）的查询时，如果数据按该键进行了分片，就可以使用本地的 `IN` 或 `JOIN` 来代替 `GLOBAL IN` 或 `GLOBAL JOIN`，这样效率要高得多。
-- 在使用大量服务器（数百台或更多）并伴随大量小查询的场景下，例如针对单个客户（如网站、广告主或合作伙伴）数据的查询，为了避免这些小查询影响整个集群，将单个客户的数据放置在单个分片上是合理的选择。或者，可以设置两级分片：将整个集群划分为多个“层”，每一层可以由多个分片组成。单个客户的数据位于单个层中，但可以按需向该层添加分片，数据在该层内的分片之间随机分布。为每个层创建各自的 `Distributed` 表，同时为全局查询创建一个共享的分布式表。
+* 在执行需要按特定键进行数据关联（`IN` 或 `JOIN`）的查询时，如果数据按该键进行了分片，就可以使用本地的 `IN` 或 `JOIN` 来代替 `GLOBAL IN` 或 `GLOBAL JOIN`，这样效率要高得多。
+* 在使用大量服务器（数百台或更多）并伴随大量小查询的场景下，例如针对单个客户（如网站、广告主或合作伙伴）数据的查询，为了避免这些小查询影响整个集群，将单个客户的数据放置在单个分片上是合理的选择。或者，可以设置两级分片：将整个集群划分为多个“层”，每一层可以由多个分片组成。单个客户的数据位于单个层中，但可以按需向该层添加分片，数据在该层内的分片之间随机分布。为每个层创建各自的 `Distributed` 表，同时为全局查询创建一个共享的分布式表。
 
-数据在后台写入。当向表中执行插入操作时，数据块只是被写入本地文件系统。数据会在后台尽快发送到远程服务器。发送数据的周期由 [distributed_background_insert_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_sleep_time_ms) 和 [distributed_background_insert_max_sleep_time_ms](../../../operations/settings/settings.md#distributed_background_insert_max_sleep_time_ms) 设置进行管理。`Distributed` 引擎会分别发送每个插入数据的文件，但可以通过 [distributed_background_insert_batch](../../../operations/settings/settings.md#distributed_background_insert_batch) 设置启用批量发送文件。该设置能够通过更好地利用本地服务器和网络资源来提升集群性能。应当通过检查表目录中待发送数据文件列表来确认数据是否已成功发送：`/var/lib/clickhouse/data/database/table/`。执行后台任务的线程数量可以通过 [background_distributed_schedule_pool_size](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 设置来指定。
+数据在后台写入。当向表中执行插入操作时，数据块只是被写入本地文件系统。数据会在后台尽快发送到远程服务器。发送数据的周期由 [distributed&#95;background&#95;insert&#95;sleep&#95;time&#95;ms](../../../operations/settings/settings.md#distributed_background_insert_sleep_time_ms) 和 [distributed&#95;background&#95;insert&#95;max&#95;sleep&#95;time&#95;ms](../../../operations/settings/settings.md#distributed_background_insert_max_sleep_time_ms) 设置进行管理。`Distributed` 引擎会分别发送每个插入数据的文件，但可以通过 [distributed&#95;background&#95;insert&#95;batch](../../../operations/settings/settings.md#distributed_background_insert_batch) 设置启用批量发送文件。该设置能够通过更好地利用本地服务器和网络资源来提升集群性能。应当通过检查表目录中待发送数据文件列表来确认数据是否已成功发送：`/var/lib/clickhouse/data/database/table/`。执行后台任务的线程数量可以通过 [background&#95;distributed&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 设置来指定。
 
 如果服务器在对 `Distributed` 表执行 `INSERT` 之后宕机或发生了异常重启（例如由于硬件故障），插入的数据可能会丢失。如果在表目录中检测到损坏的数据部分，它会被移动到 `broken` 子目录中并不再使用。
 
@@ -215,7 +215,7 @@ SETTINGS
 
 在查询 `Distributed` 表时，`SELECT` 查询会被发送到所有分片，并且无论数据如何分布在这些分片上（可以是完全随机分布），都可以正常工作。添加新分片时，无需将旧数据迁移到其中。相反，你可以通过为该分片指定更大的权重，将新数据写入其中——这样数据分布会略有不均，但查询仍能正确且高效地执行。
 
-当启用 `max_parallel_replicas` 选项时，查询处理会在单个分片内的所有副本之间并行化。有关更多信息，请参阅 [max_parallel_replicas](../../../operations/settings/settings.md#max_parallel_replicas) 一节。
+当启用 `max_parallel_replicas` 选项时，查询处理会在单个分片内的所有副本之间并行化。有关更多信息，请参阅 [max&#95;parallel&#95;replicas](../../../operations/settings/settings.md#max_parallel_replicas) 一节。
 
 要了解分布式 `in` 和 `global in` 查询的处理方式，请参阅[此处](/sql-reference/operators/in#distributed-subqueries)的文档。
 
@@ -226,11 +226,11 @@ SETTINGS
 `_shard_num` — 包含表 `system.clusters` 中的 `shard_num` 值。类型：[UInt32](../../../sql-reference/data-types/int-uint.md)。
 
 :::note
-由于 [`remote`](../../../sql-reference/table-functions/remote.md) 和 [`cluster](../../../sql-reference/table-functions/cluster.md) 表函数在内部会创建临时的 Distributed 表，`_shard_num` 在这些临时表中同样可用。
+由于 [`remote`](../../../sql-reference/table-functions/remote.md) 和 [`cluster](../../../sql-reference/table-functions/cluster.md) 表函数在内部会创建临时的 Distributed 表，`&#95;shard&#95;num` 在这些临时表中同样可用。
 :::
 
 **另请参阅**
 
-- [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns) 说明
-- [`background_distributed_schedule_pool_size`](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 设置
-- [`shardNum()`](../../../sql-reference/functions/other-functions.md#shardNum) 和 [`shardCount()`](../../../sql-reference/functions/other-functions.md#shardCount) 函数
+* [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns) 说明
+* [`background_distributed_schedule_pool_size`](/operations/server-configuration-parameters/settings#background_distributed_schedule_pool_size) 设置
+* [`shardNum()`](../../../sql-reference/functions/other-functions.md#shardNum) 和 [`shardCount()`](../../../sql-reference/functions/other-functions.md#shardCount) 函数

@@ -24,7 +24,6 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # 将 Airbyte 连接到 ClickHouse \{#connect-airbyte-to-clickhouse\}
 
 <PartnerBadge />
@@ -33,20 +32,20 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 请注意,ClickHouse 的 Airbyte 源连接器和目标连接器目前处于 Alpha 状态,不适用于迁移大型数据集(超过 1000 万行)
 :::
 
-<a href='https://www.airbyte.com/' target='_blank'>
+<a href="https://www.airbyte.com/" target="_blank">
   Airbyte
 </a>
+
 是一个开源数据集成平台。它支持创建
-<a
-  href='https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el'
-  target='_blank'
->
+
+<a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">
   ELT
 </a>
+
 数据管道,并内置超过 140 个开箱即用的连接器。本分步教程将演示如何将 Airbyte 连接到 ClickHouse 作为目标端,并加载示例数据集。
 
 <VerticalStepper headerLevel="h2">
-  ## 下载并运行 Airbyte
+  ## 下载并运行 Airbyte \{#1-download-and-run-airbyte\}
 
   1. Airbyte 基于 Docker 运行，并使用 `docker-compose`。请确保已下载并安装最新版 Docker。
 
@@ -66,7 +65,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
      另外，你也可以注册并使用 <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
      :::
 
-  ## 将 ClickHouse 添加为目标
+  ## 将 ClickHouse 添加为目标 \{#2-add-clickhouse-as-a-destination\}
 
   在本节中,我们将展示如何将 ClickHouse 实例添加为目标。
 
@@ -97,7 +96,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   :::
 
-  ## 添加数据集作为源
+  ## 添加数据集作为源 \{#3-add-a-dataset-as-a-source\}
 
   我们将使用的示例数据集是 <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a>(位于 <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>)。在本教程中,我们将使用该数据集的一个子集,对应于 2022 年 1 月的数据。
 
@@ -115,7 +114,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   3. 恭喜！您已在 Airbyte 中添加了一个数据源。
 
-  ## 创建连接并将数据集加载到 ClickHouse 中
+  ## 创建连接并将数据集加载到 ClickHouse 中 \{#4-create-a-connection-and-load-the-dataset-into-clickhouse\}
 
   1. 在 Airbyte 中，打开 “Connections” 页面并添加一个新连接
 

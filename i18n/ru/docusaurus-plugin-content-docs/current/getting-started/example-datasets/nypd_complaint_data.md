@@ -11,11 +11,11 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 
 Работая по этому руководству, вы:
 
-- **Исследуете** структуру и содержимое файла TSV с помощью запросов.
-- **Определите целевую схему ClickHouse**: выберите подходящие типы данных и сопоставите имеющиеся данные с этими типами.
-- **Создадите таблицу ClickHouse**.
-- **Предобработаете и организуете потоковую загрузку данных** в ClickHouse.
-- **Выполните несколько запросов** к ClickHouse.
+* **Исследуете** структуру и содержимое файла TSV с помощью запросов.
+* **Определите целевую схему ClickHouse**: выберите подходящие типы данных и сопоставите имеющиеся данные с этими типами.
+* **Создадите таблицу ClickHouse**.
+* **Предобработаете и организуете потоковую загрузку данных** в ClickHouse.
+* **Выполните несколько запросов** к ClickHouse.
 
 Набор данных, используемый в этом руководстве, предоставлен командой NYC Open Data и содержит данные обо «всех действительных преступлениях категорий felony, misdemeanor и violation, о которых было сообщено в Департамент полиции города Нью-Йорка (NYPD)». На момент написания размер файла данных составлял 166 МБ, но он регулярно обновляется.
 
@@ -24,15 +24,15 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 
 ## Предварительные требования \{#prerequisites\}
 
-- Загрузите набор данных, перейдя на страницу [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), нажав кнопку «Export» и выбрав **TSV for Excel**.
-- Установите [ClickHouse server and client](../../getting-started/install/install.mdx)
+* Загрузите набор данных, перейдя на страницу [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), нажав кнопку «Export» и выбрав **TSV for Excel**.
+* Установите [ClickHouse server and client](../../getting-started/install/install.mdx)
 
 ### Примечание о командах, описанных в этом руководстве \{#a-note-about-the-commands-described-in-this-guide\}
 
 В этом руководстве используются два типа команд:
 
-- Некоторые команды выполняют запросы к TSV-файлам и запускаются в командной строке.
-- Остальные команды выполняют запросы к ClickHouse и запускаются в `clickhouse-client` или в интерфейсе Play.
+* Некоторые команды выполняют запросы к TSV-файлам и запускаются в командной строке.
+* Остальные команды выполняют запросы к ClickHouse и запускаются в `clickhouse-client` или в интерфейсе Play.
 
 :::note
 В примерах в этом руководстве предполагается, что вы сохранили TSV-файл по пути `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`. При необходимости скорректируйте команды.
@@ -117,7 +117,6 @@ New Georeferenced Column Nullable(String)
 ```
 
 На этом этапе вам следует проверить, что столбцы в файле TSV совпадают по именам и типам с указанными в разделе **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243). Типы данных заданы не очень строго: все числовые поля имеют тип `Nullable(Float64)`, а все остальные поля — `Nullable(String)`. При создании таблицы ClickHouse для хранения данных вы можете указать более подходящие и эффективные типы.
-
 
 ### Определите подходящую схему \{#determine-the-proper-schema\}
 
@@ -209,7 +208,6 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 В наборе данных, используемом на момент написания, содержится лишь несколько сотен различных парков и детских площадок в столбце `PARK_NM`. Это небольшое количество по сравнению с рекомендацией для [LowCardinality](/sql-reference/data-types/lowcardinality#description) — иметь менее 10 000 различных строковых значений в поле `LowCardinality(String)`.
 
-
 ### Поля DateTime \{#datetime-fields\}
 
 Судя по разделу **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), в наборе данных есть поля даты и времени для начала и окончания зарегистрированного события. Просмотр минимальных и максимальных значений полей `CMPLNT_FR_DT` и `CMPLT_TO_DT` даёт представление о том, всегда ли эти поля заполняются:
@@ -278,20 +276,19 @@ FORMAT PrettyCompact"
 └───────────────────┴───────────────────┘
 ```
 
-
 ## Составьте план \{#make-a-plan\}
 
 Исходя из проведённого выше анализа:
 
-- `JURISDICTION_CODE` должен быть приведён к типу `UInt8`.
-- `PARKS_NM` должно быть приведено к `LowCardinality(String)`.
-- `CMPLNT_FR_DT` и `CMPLNT_FR_TM` всегда заполнены (возможно, значением времени по умолчанию `00:00:00`).
-- `CMPLNT_TO_DT` и `CMPLNT_TO_TM` могут быть пустыми.
-- Даты и время в исходных данных хранятся в отдельных полях.
-- Даты имеют формат `mm/dd/yyyy`.
-- Время имеет формат `hh:mm:ss`.
-- Даты и время могут быть объединены в значения типов DateTime.
-- В данных встречаются даты до 1 января 1970 года, что означает, что нам нужен 64-битный DateTime.
+* `JURISDICTION_CODE` должен быть приведён к типу `UInt8`.
+* `PARKS_NM` должно быть приведено к `LowCardinality(String)`.
+* `CMPLNT_FR_DT` и `CMPLNT_FR_TM` всегда заполнены (возможно, значением времени по умолчанию `00:00:00`).
+* `CMPLNT_TO_DT` и `CMPLNT_TO_TM` могут быть пустыми.
+* Даты и время в исходных данных хранятся в отдельных полях.
+* Даты имеют формат `mm/dd/yyyy`.
+* Время имеет формат `hh:mm:ss`.
+* Даты и время могут быть объединены в значения типов DateTime.
+* В данных встречаются даты до 1 января 1970 года, что означает, что нам нужен 64-битный DateTime.
 
 :::note
 Необходимо внести ещё много изменений в типы; все их можно определить, следуя тем же шагам анализа. Оценивайте количество различных строковых значений в поле, минимумы и максимумы числовых значений и принимайте решения. Схема таблицы, приведённая далее в руководстве, содержит много строковых значений с низкой кардинальностью и беззнаковых целочисленных полей и очень мало чисел с плавающей запятой.
@@ -327,7 +324,6 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
-
 ## Преобразование строки с датой и временем в тип DateTime64 \{#convert-the-date-and-time-string-to-a-datetime64-type\}
 
 Ранее в руководстве мы обнаружили, что в TSV-файле есть даты до 1 января 1970 года, поэтому для них нам нужен 64-битный тип DateTime64. Даты также необходимо преобразовать из формата `MM/DD/YYYY` в `YYYY/MM/DD`. Оба этих действия можно выполнить с помощью [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort).
@@ -348,7 +344,6 @@ FORMAT PrettyCompact"
 Строки 2 и 3 выше содержат результат конкатенации из предыдущего шага, а строки 4 и 5 выше преобразуют строки в `DateTime64`. Поскольку время окончания обращения может отсутствовать, используется `parseDateTime64BestEffortOrNull`.
 
 Результат:
-
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -383,7 +378,6 @@ FORMAT PrettyCompact"
 :::note
 Даты, показанные выше как `1925`, являются результатом ошибок в данных. В исходных данных есть несколько записей с датами в годах `1019`–`1022`, которые на самом деле должны быть `2019`–`2022`. Они сохраняются как 1 января 1925 года, поскольку это самая ранняя дата, представимая 64-битным типом DateTime.
 :::
-
 
 ## Создание таблицы \{#create-a-table\}
 
@@ -484,7 +478,6 @@ CREATE TABLE NYPD_Complaint (
   ORDER BY ( borough, offense_description, date_reported )
 ```
 
-
 ### Поиск первичного ключа таблицы \{#finding-the-primary-key-of-a-table\}
 
 База данных ClickHouse `system`, а именно таблица `system.table`, содержит всю информацию о таблице, которую вы только что создали. Этот запрос показывает `ORDER BY` (ключ сортировки) и `PRIMARY KEY`:
@@ -514,7 +507,6 @@ table:         NYPD_Complaint
 
 1 row in set. Elapsed: 0.001 sec.
 ```
-
 
 ## Предварительная обработка и импорт данных \{#preprocess-import-data\}
 
@@ -570,7 +562,6 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-client --query='INSERT INTO NYPD_Complaint FORMAT TSV'
 ```
 
-
 ## Проверьте данные \{#validate-data\}
 
 :::note
@@ -612,7 +603,6 @@ WHERE name = 'NYPD_Complaint'
 └─────────────────────────────────┘
 ```
 
-
 ## Выполнение нескольких запросов \{#run-queries\}
 
 ### Запрос 1. Сравнение количества жалоб по месяцам \{#query-1-compare-the-number-of-complaints-by-month\}
@@ -652,7 +642,6 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-
 ### Запрос 2. Сравнение общего количества жалоб по районам \{#query-2-compare-total-number-of-complaints-by-borough\}
 
 Запрос:
@@ -683,7 +672,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
-
 
 ## Дальнейшие шаги \{#next-steps\}
 

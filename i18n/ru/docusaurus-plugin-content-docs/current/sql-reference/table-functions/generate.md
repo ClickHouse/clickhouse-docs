@@ -107,4 +107,5 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 :::
 
 ## Связанные материалы \{#related-content\}
-- Блог: [Генерация случайных данных в ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+
+* Блог: [Генерация случайных данных в ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

@@ -19,7 +19,6 @@ odbc(datasource, external_table)
 odbc(named_collection)
 ```
 
-
 ## Аргументы \{#arguments\}
 
 | Аргумент            | Описание                                                            |
@@ -111,8 +110,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-
 ## См. также \{#see-also\}
 
-- [Словари ODBC](/sql-reference/statements/create/dictionary/sources/odbc)
-- [Табличный движок ODBC](/engines/table-engines/integrations/odbc).
+* [Словари ODBC](/sql-reference/statements/create/dictionary/sources/odbc)
+* [Табличный движок ODBC](/engines/table-engines/integrations/odbc).

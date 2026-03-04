@@ -51,10 +51,10 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
 以下情况也会对轻量级 `DELETE` 的性能产生负面影响：
 
-- 在 `DELETE` 查询中使用复杂或开销较大的 `WHERE` 条件。
-- 如果变更（mutation）队列中已经堆积了大量其他变更，由于同一张表上的所有变更都是按顺序执行的，这可能会导致性能问题。
-- 受影响的表包含非常多的数据分片（data parts）。
-- 在紧凑分片（Compact part）中存在大量数据。在紧凑分片中，所有列都存储在同一个文件中。
+* 在 `DELETE` 查询中使用复杂或开销较大的 `WHERE` 条件。
+* 如果变更（mutation）队列中已经堆积了大量其他变更，由于同一张表上的所有变更都是按顺序执行的，这可能会导致性能问题。
+* 受影响的表包含非常多的数据分片（data parts）。
+* 在紧凑分片（Compact part）中存在大量数据。在紧凑分片中，所有列都存储在同一个文件中。
 
 ## 删除权限 \{#delete-permissions\}
 
@@ -75,9 +75,11 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 2. **`SELECT` 查询会被转换以包含掩码**
 
    当在查询中使用了带掩码的列时，`SELECT ... FROM table WHERE condition` 查询在内部会通过增加对 `_row_exists` 的谓词被转换为：
+
    ```sql
    SELECT ... FROM table PREWHERE _row_exists WHERE condition
    ```
+
    在执行时，会读取 `_row_exists` 列以确定哪些行不应该被返回。如果存在大量已删除的行，ClickHouse 可以在读取其他列时判定哪些粒度块（granule）可以被完全跳过。
 
 3. **`DELETE` 查询会被转换为 `ALTER TABLE ... UPDATE` 查询**
@@ -94,4 +96,4 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

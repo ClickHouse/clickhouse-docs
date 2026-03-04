@@ -180,31 +180,29 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 При создании таблицы `ReplacingMergeTree` необходимо указывать те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
+  <summary>Устаревший способ создания таблицы</summary>
 
-<summary>Устаревший способ создания таблицы</summary>
+  :::note
+  Не используйте этот способ в новых проектах и, по возможности, переведите старые проекты на способ, описанный выше.
+  :::
 
-:::note
-Не используйте этот способ в новых проектах и, по возможности, переведите старые проекты на способ, описанный выше.
-:::
+  ```sql
+  CREATE TABLE rmt_example
+  (
+      `number` UInt16
+  )
+  ENGINE = ReplacingMergeTree
+  ORDER BY number
 
-```sql
-CREATE TABLE rmt_example
-(
-    `number` UInt16
-)
-ENGINE = ReplacingMergeTree
-ORDER BY number
+  INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
+  FROM numbers(1000000000)
 
-INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
-FROM numbers(1000000000)
+  0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
+  ```
 
-0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
-```
+  Все параметры, за исключением `ver`, имеют тот же смысл, что и в `MergeTree`.
 
-Все параметры, за исключением `ver`, имеют тот же смысл, что и в `MergeTree`.
-
-- `ver` — столбец с версией. Необязательный параметр. Описание см. в тексте выше.
-
+  * `ver` — столбец с версией. Необязательный параметр. Описание см. в тексте выше.
 </details>
 
 ## Дедупликация при выполнении запроса &amp; FINAL \{#query-time-de-duplication--final\}

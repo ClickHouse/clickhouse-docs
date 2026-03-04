@@ -15,16 +15,15 @@ import WhenToUseJson from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 <WhenToUseJson />
 
-
 ## Соображения и советы по использованию JSON \{#considerations-and-tips-for-using-json\}
 
 Тип JSON обеспечивает эффективное столбцовое хранение за счёт разворачивания путей в подстолбцы. Но с гибкостью приходит ответственность. Чтобы использовать его эффективно:
 
-* **Явно указывайте типы путей**, используя [подсказки в определении столбца](/sql-reference/data-types/newjson), чтобы задавать типы для известных подстолбцов и избегать ненужного вывода типов. 
+* **Явно указывайте типы путей**, используя [подсказки в определении столбца](/sql-reference/data-types/newjson), чтобы задавать типы для известных подстолбцов и избегать ненужного вывода типов.
 * **Пропускайте пути**, если вам не нужны их значения, с помощью [SKIP и SKIP REGEXP](/sql-reference/data-types/newjson), чтобы сократить объём хранения и повысить производительность.
 * **Избегайте слишком большого значения [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json)** — большие значения увеличивают потребление ресурсов и снижают эффективность. В качестве эмпирического правила держите его ниже 10 000.
 
-:::note Подсказки типов 
+:::note Подсказки типов
 Подсказки типов дают больше, чем просто способ избежать ненужного вывода типов — они полностью устраняют издержки на косвенное хранение и обработку. JSON‑пути с подсказками типов всегда хранятся так же, как обычные столбцы, устраняя необходимость в [**столбцах‑дискриминаторах**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) или динамическом разрешении во время выполнения запроса. Это означает, что при хорошо заданных подсказках типов вложенные поля JSON достигают такой же производительности и эффективности, как если бы они изначально моделировались как поля верхнего уровня. В результате для наборов данных, которые в целом однородны, но всё же выигрывают от гибкости JSON, подсказки типов предоставляют удобный способ сохранить производительность без необходимости переработки схемы или конвейера приёма.
 :::
 
@@ -140,7 +139,6 @@ ORDER BY update_date
 
 Снова вставим данные в формате JSON:
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
@@ -217,7 +215,6 @@ ORDER BY doc.update_date
 
 Мы можем выполнить вставку в эту таблицу и просмотреть автоматически выведенную схему с помощью функции [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) и формата вывода [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow):
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
@@ -285,7 +282,6 @@ ORDER BY update_date
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
-
 
 Теперь мы можем определить типы подстолбца `tags`.
 

@@ -18,13 +18,13 @@ ClickHouse Cloud API 是为开发者设计的 REST API，便于在 ClickHouse Cl
 
 ## Swagger（OpenAPI）端点和 UI \{#swagger-openapi-endpoint-and-ui\}
 
-ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/) 构建，以实现可预测的客户端调用行为。  
+ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/) 构建，以实现可预测的客户端调用行为。\
 如果您需要以编程方式使用 ClickHouse Cloud API 文档，我们在 https://api.clickhouse.cloud/v1 提供了基于 JSON 的 Swagger 端点。您也可以通过 [Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger) 查看 API 文档。
 
-:::note 
-如果您的组织已迁移到某个[新定价方案](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false)，并且您使用 OpenAPI，那么在创建服务的 `POST` 请求中必须移除 `tier` 字段。
+:::note
+如果您的组织已迁移到某个[新定价方案](https://clickhouse.com/pricing?plan=scale\&provider=aws\&region=us-east-1\&hours=8\&storageCompressed=false)，并且您使用 OpenAPI，那么在创建服务的 `POST` 请求中必须移除 `tier` 字段。
 
-由于我们不再提供服务层级，`tier` 字段已从服务对象中移除。  
+由于我们不再提供服务层级，`tier` 字段已从服务对象中移除。\
 这将影响 `POST`、`GET` 和 `PATCH` 服务请求返回的对象。因此，任何调用这些 API 的代码都可能需要进行相应调整以适配这些变更。
 :::
 
@@ -41,8 +41,8 @@ ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/)
 
 如果你希望为 ClickHouse Terraform Provider 做出贡献，可以在 [GitHub 仓库中查看源代码](https://github.com/ClickHouse/terraform-provider-clickhouse)。
 
-:::note 
-如果你的组织已迁移到某个[新计费方案](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false)，则需要使用我们的 [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 2.0.0 或更高版本。此升级是为了处理服务中 `tier` 属性的变更，因为在计费迁移后，服务将不再接受 `tier` 字段，并且应移除对该字段的所有引用。
+:::note
+如果你的组织已迁移到某个[新计费方案](https://clickhouse.com/pricing?plan=scale\&provider=aws\&region=us-east-1\&hours=8\&storageCompressed=false)，则需要使用我们的 [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 2.0.0 或更高版本。此升级是为了处理服务中 `tier` 属性的变更，因为在计费迁移后，服务将不再接受 `tier` 字段，并且应移除对该字段的所有引用。
 
 现在你还可以将 `num_replicas` 字段作为 service 资源的一个属性进行指定。
 :::
@@ -55,6 +55,6 @@ ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/)
 
 ## 支持 \{#support\}
 
-我们建议您优先通过[我们的 Slack 频道](https://clickhouse.com/slack)获取快速支持。  
-如果您需要更多帮助，或想进一步了解我们的 API 及其功能，  
+我们建议您优先通过[我们的 Slack 频道](https://clickhouse.com/slack)获取快速支持。\
+如果您需要更多帮助，或想进一步了解我们的 API 及其功能，\
 请联系 ClickHouse 支持团队：https://console.clickhouse.cloud/support

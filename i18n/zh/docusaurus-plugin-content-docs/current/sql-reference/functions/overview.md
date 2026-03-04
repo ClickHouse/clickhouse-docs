@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 # 常规函数 \{#regular-functions\}
 
-函数至少有\*两种类型 —— 常规函数（通常就直接称为“函数”）和聚合函数。这是完全不同的概念。常规函数的工作方式就像是对每一行单独应用（对于每一行，函数的结果不依赖于其他行）。聚合函数则会从多行中累积一组值（即它们依赖于整组行）。
+函数至少有*两种类型 —— 常规函数（通常就直接称为“函数”）和聚合函数。这是完全不同的概念。常规函数的工作方式就像是对每一行单独应用（对于每一行，函数的结果不依赖于其他行）。聚合函数则会从多行中累积一组值（即它们依赖于整组行）。
 
 本节讨论的是常规函数。关于聚合函数，请参阅“聚合函数”一节。
 
-:::note 
-还有第三类函数，其中 ['arrayJoin' 函数](../functions/array-join.md)就属于该类。另外，[表函数](../table-functions/index.md)也可以单独归为一类。
+:::note
+还有第三类函数，其中 [&#39;arrayJoin&#39; 函数](../functions/array-join.md)就属于该类。另外，[表函数](../table-functions/index.md)也可以单独归为一类。
 :::
 
 ## 强类型 \{#strong-typing\}
@@ -42,8 +42,8 @@ doc_type: 'reference'
 
 函数具有以下行为：
 
-- 如果函数的至少一个参数为 `NULL`，则函数结果也为 `NULL`。
-- 某些函数具有在各自描述中单独说明的特殊行为。在 ClickHouse 源代码中，这些函数将 `UseDefaultImplementationForNulls` 设为 `false`。
+* 如果函数的至少一个参数为 `NULL`，则函数结果也为 `NULL`。
+* 某些函数具有在各自描述中单独说明的特殊行为。在 ClickHouse 源代码中，这些函数将 `UseDefaultImplementationForNulls` 设为 `false`。
 
 ## 不变性 \{#constancy\}
 

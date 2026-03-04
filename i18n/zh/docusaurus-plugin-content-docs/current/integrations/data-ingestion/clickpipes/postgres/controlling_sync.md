@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 本文档介绍如何在 ClickPipe 处于 **CDC（运行中）模式** 时控制 Postgres ClickPipe 的同步。
 
-
 ## 概览 \{#overview\}
 
 Database ClickPipes 的架构包含两个并行流程——从源数据库拉取数据，以及向目标数据库推送数据。拉取流程由一个同步配置控制，该配置定义了数据应当多长时间拉取一次，以及每次应当拉取多少数据。这里的“每次”是指一个批次——因为 ClickPipe 是以批次的方式拉取和推送数据的。
@@ -48,15 +47,15 @@ Database ClickPipes 的架构包含两个并行流程——从源数据库拉取
 在创建 ClickPipe 或编辑现有 ClickPipe 时，你可以设置同步间隔和拉取批次大小。
 创建 ClickPipe 时，这些设置会显示在创建向导的第二步，如下所示：
 
-<Image img={create_sync_settings} alt="创建同步设置" size="md"/>
+<Image img={create_sync_settings} alt="创建同步设置" size="md" />
 
 编辑现有 ClickPipe 时，你可以前往该管道的 **Settings** 选项卡，先暂停该管道，然后点击此处的 **Configure**：
 
-<Image img={edit_sync_button} alt="编辑同步按钮" size="md"/>
+<Image img={edit_sync_button} alt="编辑同步按钮" size="md" />
 
 这会打开一个包含同步设置的侧边弹出面板，你可以在其中修改同步间隔和拉取批次大小：
 
-<Image img={edit_sync_settings} alt="编辑同步设置" size="md"/>
+<Image img={edit_sync_settings} alt="编辑同步设置" size="md" />
 
 ### 调整同步设置以缓解 replication slot 增长 \{#tweaking\}
 
@@ -68,4 +67,4 @@ Database ClickPipes 的架构包含两个并行流程——从源数据库拉取
 
 你可以在 ClickPipe 的 **Metrics** 选项卡下的 **CDC Syncs** 表中查看每个同步批次的耗时。请注意，此处的耗时包含推送时间；如果一段时间内没有新的行数据写入，ClickPipe 会等待，这段等待时间也会计入耗时。
 
-<Image img={cdc_syncs} alt="CDC Syncs 表" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs 表" size="md" />

@@ -21,15 +21,14 @@ import replay_search from '@site/static/images/clickstack/session-replay/replay-
 预计耗时：10–15 分钟
 :::
 
-
 ## 概览 \{#overview\}
 
 [会话回放示例应用](https://github.com/ClickHouse/clickstack-session-replay-demo) 是一个使用原生 JavaScript 构建的文档浏览器。它演示了会话回放埋点如何做到极简——只需一个 script 标签和一次初始化调用，即可自动捕获所有用户交互。
 
 该代码仓库包含两个分支：
 
-- **`main`** —— 已完整埋点，可立即使用
-- **`pre-instrumented`** —— 未包含埋点代码的干净版本，代码注释中标明了需要添加埋点的位置
+* **`main`** —— 已完整埋点，可立即使用
+* **`pre-instrumented`** —— 未包含埋点代码的干净版本，代码注释中标明了需要添加埋点的位置
 
 本指南将首先使用 `main` 分支直观展示会话回放的实际效果，然后逐步讲解埋点代码，便于在自己的应用中采用相同的模式。
 
@@ -37,69 +36,67 @@ import replay_search from '@site/static/images/clickstack/session-replay/replay-
 
 ## 先决条件 \{#prerequisites\}
 
-- 已安装 Docker 和 Docker Compose
-- 端口 3000、4317、4318 和 8080 可用
+* 已安装 Docker 和 Docker Compose
+* 端口 3000、4317、4318 和 8080 可用
 
 ## 运行示例 \{#running-the-demo\}
 
 <VerticalStepper headerLevel="h3">
+  ### 克隆代码仓库 \{#clone-repository\}
 
-### 克隆代码仓库 \{#clone-repository\}
+  ```shell
+  git clone https://github.com/ClickHouse/clickstack-session-replay-demo
+  cd clickstack-session-replay-demo
+  ```
 
-```shell
-git clone https://github.com/ClickHouse/clickstack-session-replay-demo
-cd clickstack-session-replay-demo
-```
+  ### 启动 ClickStack \{#start-clickstack\}
 
-### 启动 ClickStack \{#start-clickstack\}
+  ```shell
+  docker-compose up -d clickstack
+  ```
 
-```shell
-docker-compose up -d clickstack
-```
+  ### 获取你的 API key \{#get-api-key\}
 
-### 获取你的 API key \{#get-api-key\}
+  1. 在浏览器中打开 HyperDX，地址为 [http://localhost:8080](http://localhost:8080)
+  2. 创建一个账户，或在需要时登录
+  3. 进入 **Team Settings → API Keys**
+  4. 复制你的 **摄取 API key**
 
-1. 在浏览器中打开 HyperDX，地址为 [http://localhost:8080](http://localhost:8080)
-2. 创建一个账户，或在需要时登录
-3. 进入 **Team Settings → API Keys**
-4. 复制你的 **摄取 API key**
+  <Image img={api_key} alt="ClickStack API Key" />
 
-<Image img={api_key} alt="ClickStack API Key"/>
+  5. 将其设置为环境变量：
 
-5. 将其设置为环境变量：
+  ```shell
+  export CLICKSTACK_API_KEY='your-api-key-here'
+  ```
 
-```shell
-export CLICKSTACK_API_KEY='your-api-key-here'
-```
+  ### 启动示例应用 \{#start-demo-app\}
 
-### 启动示例应用 \{#start-demo-app\}
+  ```shell
+  docker-compose --profile demo up demo-app
+  ```
 
-```shell
-docker-compose --profile demo up demo-app
-```
+  :::note
+  请确保在导出 `CLICKSTACK_API_KEY` 变量的同一个终端中运行此命令。
+  :::
 
-:::note
-请确保在导出 `CLICKSTACK_API_KEY` 变量的同一个终端中运行此命令。
-:::
+  在浏览器中打开 [http://localhost:3000](http://localhost:3000)，与该应用进行交互——搜索主题、按类别过滤、查看代码示例以及收藏条目。
 
-在浏览器中打开 [http://localhost:3000](http://localhost:3000)，与该应用进行交互——搜索主题、按类别过滤、查看代码示例以及收藏条目。
+  <Image img={demo_app} alt="Session replay demo app" />
 
-<Image img={demo_app} alt="Session replay demo app"/>
+  所有交互都会由 ClickStack Browser SDK 自动捕获。
 
-所有交互都会由 ClickStack Browser SDK 自动捕获。
+  ### 查看你的会话回放 \{#view-session-replay\}
 
-### 查看你的会话回放 \{#view-session-replay\}
+  返回 [http://localhost:8080](http://localhost:8080) 中的 HyperDX，在左侧边栏中进入 **Client Sessions**。
 
-返回 [http://localhost:8080](http://localhost:8080) 中的 HyperDX，在左侧边栏中进入 **Client Sessions**。
+  <Image img={replay_search} alt="Session replay search" />
 
-<Image img={replay_search} alt="Session replay search"/>
+  你应该会看到你的会话列表，以及对应的持续时间和事件数量。点击 ▶️ 按钮即可回放。
 
-你应该会看到你的会话列表，以及对应的持续时间和事件数量。点击 ▶️ 按钮即可回放。
+  <Image img={session_replay} alt="Session replay" />
 
-<Image img={session_replay} alt="Session replay"/>
-
-在 **Highlighted** 和 **All Events** 模式之间切换，以调整时间线上的细节级别。
-
+  在 **Highlighted** 和 **All Events** 模式之间切换，以调整时间线上的细节级别。
 </VerticalStepper>
 
 ## 埋点与监测 \{#instrumentation\}
@@ -126,7 +123,6 @@ window.HyperDX.init({
 
 其余部分都是标准应用程序代码。SDK 会自动捕获所有用户交互、控制台日志、网络请求和错误——无需任何额外的手动埋点或插桩。
 
-
 ### 自己动手实践 \{#try-it-yourself\}
 
 要从零开始为应用添加埋点，请切换到 `pre-instrumented` 分支：
@@ -136,7 +132,6 @@ git checkout pre-instrumented
 ```
 
 此分支包含未添加任何 ClickStack 插桩的同一应用程序版本。`app/public/index.html` 和 `app/public/js/app.js` 中的代码注释精确标明了需要添加上述两个代码片段的具体位置。添加完成后，重启演示应用，你的交互行为就会开始出现在 ClickStack 中。
-
 
 ## 故障排查 \{#troubleshooting\}
 
@@ -170,10 +165,9 @@ docker-compose down
 docker-compose down -v
 ```
 
-
 ## 了解更多 \{#learn-more\}
 
-- [Session Replay](/use-cases/observability/clickstack/session-replay) — 功能概览、SDK 选项和隐私控制
-- [Browser SDK Reference](/use-cases/observability/clickstack/sdks/browser) — 完整 SDK 选项和高级配置
-- [ClickStack 入门](/use-cases/observability/clickstack/getting-started) — 部署 ClickStack 并摄取首批数据
-- [所有示例数据集](/use-cases/observability/clickstack/sample-datasets) — 其他示例数据集和指南
+* [Session Replay](/use-cases/observability/clickstack/session-replay) — 功能概览、SDK 选项和隐私控制
+* [Browser SDK Reference](/use-cases/observability/clickstack/sdks/browser) — 完整 SDK 选项和高级配置
+* [ClickStack 入门](/use-cases/observability/clickstack/getting-started) — 部署 ClickStack 并摄取首批数据
+* [所有示例数据集](/use-cases/observability/clickstack/sample-datasets) — 其他示例数据集和指南

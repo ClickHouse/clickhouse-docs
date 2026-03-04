@@ -20,9 +20,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Вы не можете выполнять следующие запросы:
 
-- `RENAME`
-- `CREATE TABLE`
-- `ALTER`
+* `RENAME`
+* `CREATE TABLE`
+* `ALTER`
 
 ## Создание базы данных \{#creating-a-database\}
 

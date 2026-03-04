@@ -17,7 +17,6 @@ import backupAndRestore from '@site/static/images/managed-postgres/backup-and-re
 
 <Image img={backupAndRestore} alt="Раздел Backups с историей резервных копий и параметрами восстановления до определённого момента времени" size="lg" border />
 
-
 ## Резервное копирование \{#backups\}
 
 ### Частота резервного копирования \{#backup-frequency\}

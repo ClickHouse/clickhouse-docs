@@ -22,18 +22,19 @@ timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 
 ## 参数 \{#arguments\}
 
-- `db_name` - 包含 TimeSeries 表的数据库名称。
-- `time_series_table` - TimeSeries 表的名称。
-- `instant_query` - 使用 [PromQL 语法](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors) 编写的即时选择器（instant selector），且不包含 `@` 或 `offset` 修饰符。
-- `min_time` - 起始时间戳（含）。
-- `max_time` - 结束时间戳（含）。
+* `db_name` - 包含 TimeSeries 表的数据库名称。
+* `time_series_table` - TimeSeries 表的名称。
+* `instant_query` - 使用 [PromQL 语法](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors) 编写的即时选择器（instant selector），且不包含 `@` 或 `offset` 修饰符。
+* `min_time` - 起始时间戳（含）。
+* `max_time` - 结束时间戳（含）。
 
 ## 返回值 \{#returned_value\}
 
 该函数返回三列：
-- `id` - 包含符合指定选择器条件的时间序列标识符。
-- `timestamp` - 包含时间戳。
-- `value` - 包含数值。
+
+* `id` - 包含符合指定选择器条件的时间序列标识符。
+* `timestamp` - 包含时间戳。
+* `value` - 包含数值。
 
 返回的数据不保证特定顺序。
 

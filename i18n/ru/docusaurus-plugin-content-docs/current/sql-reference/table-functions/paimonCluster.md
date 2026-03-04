@@ -29,8 +29,8 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 ## Аргументы \{#arguments\}
 
-- `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
-- Описание всех остальных аргументов совпадает с описанием аргументов эквивалентной табличной функции [paimon](/sql-reference/table-functions/paimon.md).
+* `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
+* Описание всех остальных аргументов совпадает с описанием аргументов эквивалентной табличной функции [paimon](/sql-reference/table-functions/paimon.md).
 
 **Возвращаемое значение**
 
@@ -38,12 +38,12 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — имя файла. Тип: `LowCardinality(String)`.
-- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — имя файла. Тип: `LowCardinality(String)`.
+* `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 **См. также**
 
-- [Табличная функция Paimon](sql-reference/table-functions/paimon.md)
+* [Табличная функция Paimon](sql-reference/table-functions/paimon.md)

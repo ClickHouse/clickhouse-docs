@@ -29,10 +29,9 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Power BI \{#power-bi\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Microsoft Power BI может выполнять запросы к данным в [ClickHouse Cloud](https://clickhouse.com/cloud) или в самостоятельно управляемом развертывании, а также загружать эти данные в память.
 
@@ -84,7 +83,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_odbc_install} alt="Мастер установки драйвера ClickHouse ODBC с отображением параметров установки" border />
 
-<br/>
+<br />
 
 :::note
 `Debug symbols` являются необязательными и не требуются.
@@ -98,13 +97,13 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_odbc_search} alt="Поиск в Windows с отображением пункта ODBC Data Sources (64-bit)" border />
 
-<br/>
+<br />
 
 Убедитесь, что драйвер ClickHouse присутствует в списке.
 
 <Image size="md" img={powerbi_odbc_verify} alt="ODBC Data Source Administrator с драйверами ClickHouse на вкладке Drivers" border />
 
-<br/>
+<br />
 
 ### Поиск коннектора ClickHouse \{#find-the-clickhouse-connector\}
 
@@ -115,13 +114,13 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_get_data} alt="Стартовый экран Power BI Desktop с кнопкой Get Data" border />
 
-<br/>
+<br />
 
 Введите в поле поиска «ClickHouse».
 
 <Image size="md" img={powerbi_search_clickhouse} alt="Диалог Power BI Get Data с ClickHouse, введённым в строку поиска" border />
 
-<br/>
+<br />
 
 ### Подключение к ClickHouse \{#connect-to-clickhouse\}
 
@@ -136,7 +135,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_connect_db} alt="Диалог подключения к ClickHouse с полями host, port, database и connectivity mode" border />
 
-<br/>
+<br />
 
 :::note
 Рекомендуем выбрать DirectQuery для прямого выполнения запросов к ClickHouse.
@@ -148,7 +147,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_connect_user} alt="Диалог ввода учётных данных подключения к ClickHouse с полями username и password" border />
 
-<br/>
+<br />
 
 ### Выполнение запросов и визуализация данных \{#query-and-visualise-data\}
 
@@ -157,11 +156,11 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_table_navigation} alt="Окно Power BI Navigator с таблицами базы данных ClickHouse и примерами данных" border />
 
-<br/>
+<br />
 
 После завершения импорта данные ClickHouse будут доступны в Power BI как обычно.
 
-<br/>
+<br />
 
 ## Сервис Power BI \{#power-bi-service\}
 
@@ -177,55 +176,59 @@ Microsoft Power BI может выполнять запросы к данным 
 
 ### Создание нового пользовательского DSN \{#create-a-new-user-dsn\}
 
-После завершения установки драйвера можно создать источник данных ODBC. Найдите ODBC в меню «Пуск» и выберите "ODBC Data Sources (64-bit)".
+После завершения установки драйвера можно создать источник данных ODBC. Найдите ODBC в меню «Пуск» и выберите &quot;ODBC Data Sources (64-bit)&quot;.
 
 <Image size="md" img={powerbi_odbc_search} alt="Поиск в Windows с вариантом ODBC Data Sources (64-bit)" border />
-<br/>
 
-Здесь нужно добавить новый пользовательский DSN. Нажмите кнопку "Add" слева.
+<br />
+
+Здесь нужно добавить новый пользовательский DSN. Нажмите кнопку &quot;Add&quot; слева.
 
 <Image size="md" img={powerbi_add_dsn} alt="ODBC Data Source Administrator с выделенной кнопкой Add для создания нового DSN" border />
-<br/>
+
+<br />
 
 Выберите Unicode-версию драйвера ODBC.
 
 <Image size="md" img={powerbi_select_unicode} alt="Диалог Create New Data Source с выбранным ClickHouse Unicode Driver" border />
-<br/>
+
+<br />
 
 Заполните параметры подключения.
 
 <Image size="sm" img={powerbi_connection_details} alt="Диалог конфигурации ClickHouse ODBC Driver с параметрами подключения" border />
-<br/>
+
+<br />
 
 :::note
 Если вы используете развертывание с включенным SSL (например, ClickHouse Cloud или самостоятельный экземпляр), в поле `SSLMode` следует указать `require`.
 
-- В `Host` всегда должен отсутствовать протокол (то есть `http://` или `https://`).
-- `Timeout` — целое число, задающее тайм-аут в секундах. Значение по умолчанию: `30` секунд.
-:::
+* В `Host` всегда должен отсутствовать протокол (то есть `http://` или `https://`).
+* `Timeout` — целое число, задающее тайм-аут в секундах. Значение по умолчанию: `30` секунд.
+  :::
 
 ### Загрузка данных в Power BI \{#get-data-into-power-bi\}
 
 Если у вас еще не установлен Power BI,
 [скачайте и установите Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
 
-На стартовом экране Power BI Desktop нажмите "Get Data".
+На стартовом экране Power BI Desktop нажмите &quot;Get Data&quot;.
 
 <Image size="md" img={powerbi_get_data} alt="Стартовый экран Power BI Desktop с кнопкой Get Data" border />
 
-<br/>
+<br />
 
-Выберите "Other" -> "ODBC".
+Выберите &quot;Other&quot; -&gt; &quot;ODBC&quot;.
 
 <Image size="md" img={powerbi_select_odbc} alt="Диалог Power BI Get Data с выбранным вариантом ODBC в категории Other" border />
 
-<br/>
+<br />
 
 Выберите ранее созданный источник данных из списка.
 
 <Image size="md" img={powerbi_select_dsn} alt="Диалог выбора драйвера ODBC с настроенным ClickHouse DSN" border />
 
-<br/>
+<br />
 
 :::note
 Если вы не указали учетные данные при создании источника данных, вам будет предложено ввести имя пользователя и пароль.
@@ -233,13 +236,13 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <Image size="md" img={powerbi_dsn_credentials} alt="Диалог ввода учетных данных для подключения к ODBC DSN" border />
 
-<br/>
+<br />
 
-В итоге вы должны увидеть базы данных и таблицы в окне Navigator. Выберите нужную таблицу и нажмите "Load", чтобы импортировать данные из ClickHouse.
+В итоге вы должны увидеть базы данных и таблицы в окне Navigator. Выберите нужную таблицу и нажмите &quot;Load&quot;, чтобы импортировать данные из ClickHouse.
 
 <Image size="md" img={powerbi_table_navigation} alt="Окно Power BI Navigator с таблицами базы данных ClickHouse и примером данных" border />
 
-<br/>
+<br />
 
 После завершения импорта данные из ClickHouse будут доступны в Power BI как обычно.
 
@@ -251,9 +254,9 @@ PowerBI автоматически генерирует SQL-запросы с в
 
 **Рекомендуемый подход для больших наборов данных:** вместо того чтобы обращаться напрямую к «сырым» таблицам, создавайте в ClickHouse отдельные `materialized views` для каждой визуализации дашборда. Это обеспечивает:
 
-- Стабильную, высокую производительность независимо от объема данных
-- Более низкую нагрузку на кластер ClickHouse
-- Более предсказуемые затраты
+* Стабильную, высокую производительность независимо от объема данных
+* Более низкую нагрузку на кластер ClickHouse
+* Более предсказуемые затраты
 
 :::warning
 Если ваши дашборды работают медленно, проверьте [`query_log`](/operations/system-tables/query_log) в ClickHouse, чтобы увидеть, какие SQL-запросы фактически выполняет Power BI. Распространенные проблемы включают вложенные подзапросы, сканирование всех таблиц или неэффективные соединения. После того как вы определите проблему, создайте [materialized views](/materialized-views), которые устраняют эти конкретные проблемы.
@@ -261,21 +264,21 @@ PowerBI автоматически генерирует SQL-запросы с в
 
 ### Рекомендации по реализации \{#implementation-best-practices\}
 
-####  Стратегия предагрегации \{#pre-aggregation-strategy\}
+#### Стратегия предагрегации \{#pre-aggregation-strategy\}
 
 Создавайте materialized view на нескольких уровнях агрегации:
 
-- Почасовые агрегации для недавних, детализированных дашбордов
-- Дневные агрегации для анализа исторических тенденций
-- Месячные сводки для долгосрочной отчетности
-- Храните сырые данные с подходящим TTL для разовых аналитических запросов
+* Почасовые агрегации для недавних, детализированных дашбордов
+* Дневные агрегации для анализа исторических тенденций
+* Месячные сводки для долгосрочной отчетности
+* Храните сырые данные с подходящим TTL для разовых аналитических запросов
 
 #### Оптимизация моделирования данных \{#data-modelling-optimization\}
 
-- Определяйте ключи `ORDER BY`, соответствующие вашим шаблонам запросов
-- Используйте разбиение на партиции для данных временных рядов
-- Преобразуйте небольшие таблицы измерений в словари для эффективного поиска
-- Используйте проекции для дополнительной оптимизации запросов
+* Определяйте ключи `ORDER BY`, соответствующие вашим шаблонам запросов
+* Используйте разбиение на партиции для данных временных рядов
+* Преобразуйте небольшие таблицы измерений в словари для эффективного поиска
+* Используйте проекции для дополнительной оптимизации запросов
 
 ## Известные ограничения \{#known-limitations\}
 
@@ -284,15 +287,15 @@ PowerBI автоматически генерирует SQL-запросы с в
 Беззнаковые целочисленные типы, такие как UInt64 и старше, не будут автоматически загружены в набор данных, так как Int64 — максимальный целочисленный тип, поддерживаемый Power BI.
 
 :::note
-Чтобы корректно импортировать данные, перед нажатием кнопки "Load" в окне Navigator сначала нажмите "Transform Data".
+Чтобы корректно импортировать данные, перед нажатием кнопки &quot;Load&quot; в окне Navigator сначала нажмите &quot;Transform Data&quot;.
 :::
 
-В этом примере таблица `pageviews` содержит столбец UInt64, который по умолчанию определяется как тип "Binary".
-"Transform Data" открывает Power Query Editor, где мы можем изменить тип столбца, установив его, например, как
+В этом примере таблица `pageviews` содержит столбец UInt64, который по умолчанию определяется как тип &quot;Binary&quot;.
+&quot;Transform Data&quot; открывает Power Query Editor, где мы можем изменить тип столбца, установив его, например, как
 Text.
 
 <Image size="md" img={powerbi_16} alt="Power Query Editor, показывающий преобразование типа данных для столбца UInt64" border />
 
-<br/>
+<br />
 
-По завершении нажмите "Close & Apply" в левом верхнем углу и продолжите загрузку данных.
+По завершении нажмите &quot;Close &amp; Apply&quot; в левом верхнем углу и продолжите загрузку данных.
