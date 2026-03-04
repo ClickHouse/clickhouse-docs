@@ -350,7 +350,7 @@ ClickHouse exporter 是 [OpenTelemetry Collector Contrib](https://github.com/ope
 
 下面是一个完整的配置文件示例。
 
-[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
+[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -370,7 +370,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 10000
+    send_batch_size: 5000
 exporters:
   clickhouse:
     endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
@@ -413,7 +413,7 @@ service:
 * **create&#95;schema** - 决定在启动时是否使用默认 schema 创建表。默认值为 true，便于快速上手。你应将其设为 false 并自行定义 schema。
 * **database** - 目标数据库。
 * **retry&#95;on&#95;failure** - 用于确定是否重试失败批次的设置。
-* **batch** - batch processor 确保事件以批次形式发送。我们建议 batch 大小至少为 10,000（如果内存允许，可以增加到 100,000），超时时间为 5s。两者中任一条件先被触发，都会启动将该批次 flush 到 exporter。降低这些值将带来更低延迟的 pipeline，使数据更快可用于查询，但代价是向 ClickHouse 发送更多连接和批次。如果你未使用[异步写入](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，不建议这么做，因为这可能导致 ClickHouse 中出现[过多分区片段](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)问题。相反，如果你在使用异步写入，数据可用于查询的时间还将取决于异步写入设置——尽管数据仍会更早从 connector 中被 flush 出来。更多详情请参见 [Batching](#batching)。
+* **batch** - batch processor 确保事件以批次形式发送。我们建议 batch 大小约为 5000，超时时间为 5s。两者中任一条件先被触发，都会启动将该批次 flush 到 exporter。降低这些值将带来更低延迟的 pipeline，使数据更快可用于查询，但代价是向 ClickHouse 发送更多连接和批次。如果你未使用[异步写入](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，不建议这么做，因为这可能导致 ClickHouse 中出现[过多分区片段](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)问题。相反，如果你在使用异步写入，数据可用于查询的时间还将取决于异步写入设置——尽管数据仍会更早从 connector 中被 flush 出来。更多详情请参见 [Batching](#batching)。
 * **sending&#95;queue** - 控制发送队列的大小。队列中的每一项都包含一个 batch。如果该队列被占满，例如由于 ClickHouse 不可达但事件仍在持续到达，则批次会被丢弃。
 
 假设用户已经解压了结构化日志文件并在本地运行了一个[本地 ClickHouse 实例](/install)（使用默认认证），可以通过以下命令运行此配置：
@@ -609,7 +609,7 @@ SETTINGS ttl_only_drop_parts = 1
 
 从 collector 的视角来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含顺序相同的相同数据，如果原始（未确认的）insert 实际上已经成功，ClickHouse 会自动忽略这次重试的 insert。
 
-我们建议用户使用之前配置中展示的[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)来满足上述要求。这样可以确保 insert 以满足上述要求的一致行批次形式发送。如果预期某个 collector 具有高吞吐量（每秒事件数），并且每次 insert 至少可以发送 10,000 个事件，那么这通常就是该管道中唯一需要的批处理。在这种情况下，collector 会在 batch processor 的 `timeout` 到达之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
+我们建议用户使用之前配置中展示的[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)来满足上述要求。这样可以确保 insert 以满足上述要求的一致行批次形式发送。如果预期某个 collector 具有高吞吐量（每秒事件数），并且每次 insert 至少可以发送 5,000 个事件，那么这通常就是该管道中唯一需要的批处理。在这种情况下，collector 会在 batch processor 的 `timeout` 到达之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
 ### 使用异步插入 \{#use-asynchronous-inserts\}
 
@@ -659,7 +659,7 @@ SETTINGS ttl_only_drop_parts = 1
 
 该架构的目标是将计算密集型处理从 agent 侧卸载，从而最小化其资源占用。这些网关可以执行原本需要由 agents 完成的转换任务。此外，通过聚合来自多个 agents 的事件，网关可以确保以大批量的方式将数据发送到 ClickHouse，从而实现高效写入。随着新增 agent 实例以及事件吞吐量的提升，这些网关 collectors 也可以轻松扩展。下面展示了一个网关配置示例，以及一个与之关联、用于读取示例结构化日志文件的 agent 配置。请注意 agent 与网关之间使用 OTLP 进行通信。
 
-[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
+[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -675,7 +675,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 10000
+    send_batch_size: 1000
 exporters:
   otlp:
     endpoint: localhost:4317

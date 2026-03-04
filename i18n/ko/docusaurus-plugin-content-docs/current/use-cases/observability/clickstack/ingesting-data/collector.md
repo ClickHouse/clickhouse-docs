@@ -303,7 +303,7 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 10000
+    send_batch_size: 100
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
@@ -354,7 +354,7 @@ service:
 
 collector의 관점에서는 (1)과 (2)를 구분하기 어려울 수 있습니다. 그러나 두 경우 모두, 확인 응답을 받지 못한 insert는 즉시 재시도할 수 있습니다. 재시도된 insert 쿼리가 동일한 데이터와 동일한 순서를 포함하는 한, 원래의(확인 응답을 받지 못한) insert가 성공했다면 ClickHouse는 재시도된 insert를 자동으로 무시합니다.
 
-이러한 이유로, ClickStack 배포판의 OTel collector는 [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)를 사용합니다. 이를 통해 insert가 위 요구 사항을 만족하는 일관된 행 배치로 전송되도록 보장합니다. collector가 높은 처리량(초당 이벤트 수)을 처리할 것으로 예상되고, 각 insert에 최소 10,000개의 이벤트를 포함해 보낼 수 있는 경우, 일반적으로 파이프라인에서 필요한 배치 처리는 이것으로 충분합니다. 이 경우 collector는 batch processor의 `timeout`에 도달하기 전에 배치를 플러시하여, 파이프라인의 종단 간 지연 시간이 낮게 유지되고 배치 크기가 일관되도록 합니다.
+이러한 이유로, ClickStack 배포판의 OTel collector는 [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)를 사용합니다. 이를 통해 insert가 위 요구 사항을 만족하는 일관된 행 배치로 전송되도록 보장합니다. collector가 높은 처리량(초당 이벤트 수)을 처리할 것으로 예상되고, 각 insert에 최소 5,000개의 이벤트를 포함해 보낼 수 있는 경우, 일반적으로 파이프라인에서 필요한 배치 처리는 이것으로 충분합니다. 이 경우 collector는 batch processor의 `timeout`에 도달하기 전에 배치를 플러시하여, 파이프라인의 종단 간 지연 시간이 낮게 유지되고 배치 크기가 일관되도록 합니다.
 
 ### 비동기 insert 사용 \{#use-asynchronous-inserts\}
 
