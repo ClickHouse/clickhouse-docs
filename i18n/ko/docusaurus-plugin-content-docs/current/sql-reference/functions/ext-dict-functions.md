@@ -863,7 +863,7 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 도입 버전: v1.1
 
-[계층 딕셔너리](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)에서 주어진 키의 모든 부모를 포함하는 배열을 반환합니다.
+[계층 딕셔너리](/dictionary#hierarchical-dictionaries)에서 주어진 키의 모든 부모를 포함하는 배열을 반환합니다.
 
 **구문**
 
