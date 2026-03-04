@@ -49,7 +49,7 @@ ClickHouseには、簡略化されたJSONを扱うための特別な関数があ
 
 ## JSONAllPaths \{#JSONAllPaths\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 JSON カラム内の各行に格納されているすべてのパスのリストを返します。
 
@@ -88,7 +88,7 @@ SELECT json, JSONAllPaths(json) FROM test;
 
 ## JSONAllPathsWithTypes \{#JSONAllPathsWithTypes\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 JSON カラム内の各行に保存されている、すべてのパスとそのデータ型の一覧を返します。
 
@@ -127,7 +127,7 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 
 ## JSONArrayLength \{#JSONArrayLength\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 最も外側の JSON 配列内の要素数を返します。
 入力 JSON 文字列が無効な場合、関数は `NULL` を返します。
@@ -167,7 +167,7 @@ SELECT
 
 ## JSONDynamicPaths \{#JSONDynamicPaths\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 JSON カラム内で個別のサブカラムとして保存されている動的パスの一覧を返します。
 
@@ -206,7 +206,7 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 
 ## JSONDynamicPathsWithTypes \{#JSONDynamicPathsWithTypes\}
 
-導入されたバージョン: v24.8
+導入されたバージョン: v24.8.0
 
 JSON カラム内の各行について、個別のサブカラムとして保存されている動的パスとその型の一覧を返します。
 
@@ -245,7 +245,7 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 
 ## JSONExtract \{#JSONExtract\}
 
-導入バージョン: v19.14
+導入バージョン: v19.14.0
 
 JSON をパースし、指定された ClickHouse データ型の値を抽出します。
 
@@ -282,7 +282,7 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 
 ## JSONExtractArrayRaw \{#JSONExtractArrayRaw\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON 配列の各要素を、パース前の文字列のまま格納した配列を返します。
 
@@ -318,7 +318,7 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 
 ## JSONExtractArrayRawCaseInsensitive \{#JSONExtractArrayRawCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON 配列の各要素を、それぞれパースされていない文字列として表現した配列を、キーの大文字・小文字を区別しない一致で取得して返します。この関数は [`JSONExtractArrayRaw`](#JSONExtractArrayRaw) と類似しています。
 
@@ -352,7 +352,7 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 
 ## JSONExtractBool \{#JSONExtractBool\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON をパースし、Bool 型の値を抽出します。
 
@@ -388,7 +388,7 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 
 ## JSONExtractBoolCaseInsensitive \{#JSONExtractBoolCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON をパースし、キーを大文字小文字を区別せずに照合してブール値を抽出します。この関数は [`JSONExtractBool`](#JSONExtractBool) と同様です。
 
@@ -422,7 +422,7 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 
 ## JSONExtractCaseInsensitive \{#JSONExtractCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON を解析し、キーに対して大文字・小文字を区別しない照合を行って、指定された ClickHouse データ型の値を抽出します。この関数は [`JSONExtract`](#JSONExtract) と類似しています。
 
@@ -467,7 +467,7 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 
 ## JSONExtractFloat \{#JSONExtractFloat\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON を解析し、Float 型の値を抽出します。
 
@@ -503,7 +503,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 
 ## JSONExtractFloatCaseInsensitive \{#JSONExtractFloatCaseInsensitive\}
 
-導入されたバージョン: v25.8
+導入されたバージョン: v25.8.0
 
 JSON を解析し、大文字・小文字を区別しないキーの照合によって Float 型の値を抽出します。この関数は [`JSONExtractFloat`](#JSONExtractFloat) と類似しています。
 
@@ -537,7 +537,7 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 
 ## JSONExtractInt \{#JSONExtractInt\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSONを解析して、Int 型の値を抽出します。
 
@@ -573,7 +573,7 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 
 ## JSONExtractIntCaseInsensitive \{#JSONExtractIntCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON をパースし、キーの大文字と小文字を区別せずに Int 型の値を抽出します。この関数は [`JSONExtractInt`](#JSONExtractInt) と同様です。
 
@@ -617,7 +617,7 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 
 ## JSONExtractKeys \{#JSONExtractKeys\}
 
-導入バージョン：v21.11
+導入バージョン：v21.11.0
 
 JSON 文字列を解析し、キーを抽出します。
 
@@ -653,7 +653,7 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 
 ## JSONExtractKeysAndValues \{#JSONExtractKeysAndValues\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 指定した ClickHouse データ型の値を持つ JSON から、キーと値のペアを抽出します。
 
@@ -690,7 +690,7 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 
 ## JSONExtractKeysAndValuesCaseInsensitive \{#JSONExtractKeysAndValuesCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 キー名の大文字小文字を区別しないマッチングを用いて、JSON からキーと値のペアを抽出します。この関数は [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues) に類似しています。
 
@@ -725,7 +725,7 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 
 ## JSONExtractKeysAndValuesRaw \{#JSONExtractKeysAndValuesRaw\}
 
-導入: v20.4
+導入: v20.4.0
 
 JSON オブジェクトからキーと値を含むタプルの配列を返します。すべての値は未パースの文字列として表現されます。
 
@@ -761,7 +761,7 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 
 ## JSONExtractKeysAndValuesRawCaseInsensitive \{#JSONExtractKeysAndValuesRawCaseInsensitive\}
 
-導入: v25.8
+導入: v25.8.0
 
 キーの大文字・小文字を区別しない照合で、JSON から生のキーと値のペアを抽出します。この関数は [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw) と同様です。
 
@@ -795,7 +795,7 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 
 ## JSONExtractKeysCaseInsensitive \{#JSONExtractKeysCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON 文字列をパースし、大文字と小文字を区別しないキー照合を用いてネストされたオブジェクトをたどり、キーを抽出します。この関数は [`JSONExtractKeys`](#JSONExtractKeys) と類似しています。
 
@@ -839,7 +839,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 
 ## JSONExtractRaw \{#JSONExtractRaw\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON の一部を未解析の文字列として返します。
 
@@ -875,7 +875,7 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 
 ## JSONExtractRawCaseInsensitive \{#JSONExtractRawCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 キーの大文字・小文字を区別しない（一致をケースインセンシティブにする）方式で、JSON の一部を未解析の文字列として返します。この関数は [`JSONExtractRaw`](#JSONExtractRaw) と似ています。
 
@@ -909,7 +909,7 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 
 ## JSONExtractString \{#JSONExtractString\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON を解析し、`String` 型の値を抽出します。
 
@@ -945,7 +945,7 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 
 ## JSONExtractStringCaseInsensitive \{#JSONExtractStringCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON を解析し、キーの大文字・小文字を区別しない一致で文字列を抽出します。この関数は [`JSONExtractString`](#JSONExtractString) と類似しています。
 
@@ -989,7 +989,7 @@ John
 
 ## JSONExtractUInt \{#JSONExtractUInt\}
 
-v20.1 で導入。
+v20.1.0 で導入。
 
 JSON を解析して、UInt 型の値を抽出します。
 
@@ -1025,7 +1025,7 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 
 ## JSONExtractUIntCaseInsensitive \{#JSONExtractUIntCaseInsensitive\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 JSON を解析し、キーの大文字・小文字を区別しない照合で UInt 型の値を抽出します。この関数は [`JSONExtractUInt`](#JSONExtractUInt) と類似しています。
 
@@ -1059,7 +1059,7 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 
 ## JSONHas \{#JSONHas\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 指定した値（複数可）が JSON ドキュメント内に存在するかどうかを確認します。
 
@@ -1095,7 +1095,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 
 ## JSONKey \{#JSONKey\}
 
-導入: v20.1
+導入: v20.1.0
 
 JSON オブジェクトのフィールドのキーを、そのインデックス（1 始まり）で返します。JSON が文字列として渡された場合は、まずパースされます。2 番目の引数は、ネストされたオブジェクト内をたどるための JSON パスです。この関数は、指定された位置にあるキー名を返します。
 
@@ -1129,7 +1129,7 @@ a
 
 ## JSONLength \{#JSONLength\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 JSON 配列または JSON オブジェクトの長さを返します。
 値が存在しないか、型が正しくない場合は `0` を返します。
@@ -1147,7 +1147,7 @@ JSONLength(json [, indices_or_keys, ...])
 
 **戻り値**
 
-JSON 配列または JSON オブジェクトの長さを返します。値が存在しないか、型が誤っている場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+JSON 配列または JSON オブジェクトの長さを返します。値が存在しないか、型が正しくない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
@@ -1166,7 +1166,7 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 
 ## JSONMergePatch \{#JSONMergePatch\}
 
-導入バージョン: v23.10
+導入バージョン: v23.10.0
 
 複数の JSON オブジェクトをマージして生成される、マージされた JSON オブジェクト文字列を返します。
 
@@ -1203,7 +1203,7 @@ SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 
 ## JSONSharedDataPaths \{#JSONSharedDataPaths\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 JSON カラムの共有データ構造に格納されているパスの一覧を返します。
 
@@ -1242,7 +1242,7 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 
 ## JSONSharedDataPathsWithTypes \{#JSONSharedDataPathsWithTypes\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 共有データ構造に格納されているパスの一覧と、JSONカラムの各行におけるそれらの型を返します。
 
@@ -1281,9 +1281,9 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 
 ## JSONType \{#JSONType\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
-JSON 値の型を返します。値が存在しない場合は、`Null = 0` を返します。
+JSON 値の型を返します。値が存在しない場合は、`Null=0` を返します。
 
 **構文**
 
@@ -1317,9 +1317,9 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS \{#JSON_EXISTS\}
+## JSON_EXISTS \{#JSON_EXISTS\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
 JSON ドキュメント内に値が存在する場合は `1` を返します。
 値が存在しない場合は `0` を返します。
@@ -1366,9 +1366,9 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY \{#JSON_QUERY\}
+## JSON_QUERY \{#JSON_QUERY\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
 JSON を解析して、値を JSON 配列または JSON オブジェクトとして抽出します。
 値が存在しない場合は、空文字列が返されます。
@@ -1407,9 +1407,9 @@ String
 ```
 
 
-## JSON&#95;VALUE \{#JSON_VALUE\}
+## JSON_VALUE \{#JSON_VALUE\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 JSON を解析して、値を JSON のスカラー値として抽出します。値が存在しない場合、デフォルトでは空文字列が返されます。
 
@@ -1454,7 +1454,7 @@ world
 
 ## dynamicElement \{#dynamicElement\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 `Dynamic` カラムから、指定した型のカラムを抽出します。
 
@@ -1499,7 +1499,7 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 
 ## dynamicType \{#dynamicType\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 `Dynamic` カラムの各行に対して、そのバリアントの型名を返します。
 
@@ -1541,7 +1541,7 @@ SELECT d, dynamicType(d) FROM test;
 
 ## isDynamicElementInSharedData \{#isDynamicElementInSharedData\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 Dynamic カラムのうち、個別のサブカラムとしてではなく共有のバリアント形式で保存されている行に対して true を返します。
 
@@ -1583,7 +1583,7 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 
 ## isValidJSON \{#isValidJSON\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 渡された文字列が有効な JSON 形式かどうかを検証します。
 
@@ -1639,7 +1639,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 `field_name` という名前のフィールドの値から true/false の真偽値をパースします。
 結果の型は `UInt8` です。
@@ -1694,7 +1694,7 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractFloat \{#simpleJSONExtractFloat\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 `field_name` という名前のフィールドの値から `Float64` をパースします。
 `field_name` が文字列フィールドの場合、文字列の先頭から数値として解釈できるか試みます。
@@ -1749,7 +1749,7 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractInt \{#simpleJSONExtractInt\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 `field_name` という名前のフィールドの値から `Int64` をパースします。
 `field_name` が文字列フィールドの場合は、文字列の先頭から数値のパースを試みます。
@@ -1804,7 +1804,7 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractRaw \{#simpleJSONExtractRaw\}
 
-導入されたバージョン: v21.4
+導入されたバージョン: v21.4.0
 
 区切りも含めて、`field_name` という名前のフィールドの値を `String` として返します。
 
@@ -1856,7 +1856,7 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractString \{#simpleJSONExtractString\}
 
-導入されたバージョン: v21.4
+導入されたバージョン: v21.4.0
 
 `field_name` という名前のフィールドの値から、二重引用符で囲まれている `String` を解析します。
 
@@ -1910,7 +1910,7 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractUInt \{#simpleJSONExtractUInt\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 `field_name` という名前のフィールドの値から `UInt64` を抽出します。
 `field_name` が文字列フィールドの場合、文字列の先頭から数値としての解釈を試みます。
@@ -1965,7 +1965,7 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONHas \{#simpleJSONHas\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 `field_name` という名前のフィールドが存在するかどうかを判定します。
 
@@ -2012,7 +2012,7 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 
 ## toJSONString \{#toJSONString\}
 
-導入バージョン: v21.7
+導入バージョン: v21.7.0
 
 値をその JSON 表現にシリアライズします。さまざまなデータ型およびネストした構造をサポートします。
 64-bit の[整数](../data-types/int-uint.md)以上（`UInt64` や `Int128` など）は、デフォルトでは引用符で囲まれます。[output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers) によってこの動作を制御できます。

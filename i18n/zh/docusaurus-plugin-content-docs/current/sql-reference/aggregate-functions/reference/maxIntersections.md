@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersections \{#maxIntersections\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 聚合函数，用于计算一组区间之间相互相交的最大次数（在所有区间至少有一次相交的前提下）。
 

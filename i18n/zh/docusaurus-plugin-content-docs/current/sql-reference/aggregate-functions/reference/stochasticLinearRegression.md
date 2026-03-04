@@ -9,19 +9,19 @@ doc_type: 'reference'
 
 ## stochasticLinearRegression \{#stochasticLinearRegression\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 该函数实现了随机线性回归。
 它支持以下自定义参数：
 
 * 学习率
 * L2 正则化系数
-* mini-batch 大小
+* 小批量大小
 
 它还提供了一些用于更新权重的方法：
 
-* Adam（默认）
-* 简单 SGD
+* Adam（默认使用）
+* 普通 SGD
 * Momentum
 * Nesterov
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 该函数的使用分为两个步骤：拟合模型以及在新数据上进行预测。
 
-1. 拟合
+1. 模型拟合
 
 用于拟合时，可以使用如下形式的查询：
 
@@ -67,7 +67,7 @@ evalMLMethod(model, x1, x2) FROM test_data
 
 **注意**
 
-1. 为了合并两个模型，用户可以创建如下查询：
+1. 要合并两个模型，可以编写如下查询：
 
 ```sq;
 SELECT state1 + state2 FROM your_models
@@ -76,7 +76,7 @@ SELECT state1 + state2 FROM your_models
 其中 `your_models` 表同时包含这两个模型。
 此查询将返回一个新的 `AggregateFunctionState` 对象。
 
-2. 如果未使用 `-State` 组合器，你可以出于自身用途获取已创建模型的权重，而无需保存该模型。
+2. 如果未使用 `-State` 组合器，则可以在不保存模型的情况下获取已创建模型的权重，以供自行使用。
 
 ```sql
 SELECT stochasticLinearRegression(0.01)(target, param1, param2)
@@ -94,9 +94,9 @@ stochasticLinearRegression([learning_rate, l2_regularization_coef, mini_batch_si
 
 **参数**
 
-* `learning_rate` — 在执行梯度下降步骤时用于步长的系数。学习率过大会导致模型权重发散为无穷大。默认值为 `0.00001`。[`Float64`](/sql-reference/data-types/float)
+* `learning_rate` — 在执行梯度下降步骤时用于步长的系数。学习率过大会导致模型权重发散趋于无穷大。默认值为 `0.00001`。[`Float64`](/sql-reference/data-types/float)
 * `l2_regularization_coef` — L2 正则化系数，有助于防止过拟合。默认值为 `0.1`。[`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 一次梯度下降步骤中，用于计算梯度并求和的元素数量。纯随机梯度下降仅使用一个元素，而使用较小的小批量（约 10 个元素）可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `mini_batch_size` — 在一次梯度下降步骤中要计算梯度并求和的元素数量。纯随机梯度下降仅使用一个元素，而使用较小的小批量（约 10 个元素）可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
 * `method` — 更新权重的方法：`Adam`（默认）、`SGD`、`Momentum`、`Nesterov`。`Momentum` 和 `Nesterov` 需要稍多的计算和内存，但在随机梯度方法的收敛速度和稳定性方面通常更有优势。[`const String`](/sql-reference/data-types/string)
 * `target` — 需要学习并预测的目标值（因变量）。必须为数值类型。[`Float*`](/sql-reference/data-types/float)
 * `x1, x2, ...` — 特征值（自变量）。必须全部为数值类型。[`Float*`](/sql-reference/data-types/float)

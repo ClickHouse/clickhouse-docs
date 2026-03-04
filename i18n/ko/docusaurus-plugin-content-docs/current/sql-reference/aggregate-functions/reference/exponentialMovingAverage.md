@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialMovingAverage \{#exponentialMovingAverage\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 지정된 시간 구간에 대해 값들의 지수 이동 평균을 계산합니다.
 
@@ -55,7 +55,7 @@ FROM VALUES('temperature Int32, timestamp Int32',
 └──────────────────────────┘
 ```
 
-**`bar` FUNCTION 사용 예시**
+**`bar` FUNCTION을 사용한 예시**
 
 ```sql title=Query
 SELECT

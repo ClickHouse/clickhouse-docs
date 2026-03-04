@@ -17,7 +17,7 @@ doc_type: 'reference'
 | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage)                    | 提供类似表的接口，用于在 Azure Blob 存储中选择/插入文件，与 s3 函数类似。                                                                         |
 | [azureBlobStorageCluster](/sql-reference/table-functions/azureBlobStorageCluster)      | 允许在指定集群的多个节点上并行处理来自 Azure Blob 存储的文件。                                                                                 |
-| [clusterAllReplicas](/sql-reference/table-functions/cluster)                           | 允许在不创建分布式表的情况下访问集群中在 `remote_servers` 配置段中定义的所有分片。                                                                    |
+| [clusterAllReplicas](/sql-reference/table-functions/cluster)                           | 允许在不创建分布式表的情况下访问集群中在 `remote_servers` 部分中配置的所有分片。                                                                     |
 | [deltaLake](/sql-reference/table-functions/deltalake)                                  | 为存储在 Amazon S3 中的 Delta Lake 表提供类似表的只读接口。                                                                             |
 | [deltaLakeCluster](/sql-reference/table-functions/deltalakeCluster)                    | 是 deltaLake 表函数的扩展。                                                                                                   |
 | [字典](/sql-reference/table-functions/dictionary)                                        | 以 ClickHouse 表的形式展示字典数据。其工作方式与 Dictionary 引擎相同。                                                                       |
@@ -31,6 +31,7 @@ doc_type: 'reference'
 | [generateRandom](/sql-reference/table-functions/generate)                              | 根据指定的 schema 生成随机数据，可使用生成的数据填充测试表。并非所有数据类型均受支持。                                                                       |
 | [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex)                        | 表示 MergeTree 表中索引文件和 marks 文件的内容。可用于内部结构探查。                                                                           |
 | [mergeTreeProjection](/sql-reference/table-functions/mergeTreeProjection)              | 表示 MergeTree 表中某个 PROJECTION 的内容。可用于内部结构探查。                                                                           |
+| [mergeTreeTextIndex](/sql-reference/table-functions/mergeTreeTextIndex)                | 表示 MergeTree 表中文本索引的字典。可用于内部结构探查。                                                                                     |
 | [hdfs](/sql-reference/table-functions/hdfs)                                            | 从 HDFS 中的文件创建表。此表函数与 `url` 和 `file` 表函数类似。                                                                            |
 | [hdfsCluster](/sql-reference/table-functions/hdfsCluster)                              | 允许在指定集群的多个节点上并行处理来自 HDFS 的文件。                                                                                         |
 | [hudi](/sql-reference/table-functions/hudi)                                            | 为存储在 Amazon S3 中的 Apache Hudi 表提供只读的类表接口。                                                                             |
@@ -51,20 +52,20 @@ doc_type: 'reference'
 | [prometheusQuery](/sql-reference/table-functions/prometheusQuery)                      | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                  |
 | [prometheusQueryRange](/sql-reference/table-functions/prometheusQueryRange)            | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                  |
 | [timeSeriesData](/sql-reference/table-functions/timeSeriesData)                        | timeSeriesData 返回表 `db_name.time_series_table` 所使用的数据表，该表的表引擎为 TimeSeries。                                            |
-| [timeSeriesMetrics](/sql-reference/table-functions/timeSeriesMetrics)                  | timeSeriesMetrics 返回表 `db_name.time_series_table` 所使用的指标表，该表的表引擎为 TimeSeries。                                         |
+| [timeSeriesMetrics](/sql-reference/table-functions/timeSeriesMetrics)                  | timeSeriesMetrics 返回表 `db_name.time_series_table` 所使用的指标表，其表引擎为 TimeSeries 引擎。                                        |
 | [timeSeriesSelector](/sql-reference/table-functions/timeSeriesSelector)                | 从 TimeSeries 表中读取时间序列数据，根据选择器进行过滤，并限定时间戳在指定时间区间内。                                                                     |
 | [timeSeriesTags](/sql-reference/table-functions/timeSeriesTags)                        | timeSeriesTags 表函数返回表 `db_name.time_series_table` 所使用的标签表，该表的表引擎为 TimeSeries。                                         |
 | [zeros](/sql-reference/table-functions/zeros)                                          | 用于测试场景，是生成大量行的最快方式。类似于 `system.zeros` 和 `system.zeros_mt` 系统表。                                                        |
-| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含名为 `generate_series` 的单列（类型为 UInt64）的表，该列包含从 start 到 stop（含端点）之间的所有整数。                                         |
+| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含名为 `generate_series` 的单列（类型为 UInt64）的表，该列包含从 start 到 stop（包含端点）之间的所有整数。                                        |
 | [odbc](/sql-reference/table-functions/odbc)                                            | 返回一张通过 ODBC 连接的表。                                                                                                     |
 | [postgresql](/sql-reference/table-functions/postgresql)                                | 允许对存储在远程 PostgreSQL 服务器上的数据进行 `SELECT` 和 `INSERT` 查询。                                                                 |
 | [redis](/sql-reference/table-functions/redis)                                          | 该表函数可将 ClickHouse 与 Redis 集成。                                                                                         |
-| [remote, remoteSecure](/sql-reference/table-functions/remote)                          | 表函数 `remote` 允许按需访问远程服务器，即无需创建分布式表。表函数 `remoteSecure` 与 `remote` 功能相同，只是通过安全连接进行访问。                                   |
+| [remote, remoteSecure](/sql-reference/table-functions/remote)                          | 表函数 `remote` 允许动态访问远程服务器，无需创建分布式表。表函数 `remoteSecure` 与 `remote` 相同，只是通过安全连接进行访问。                                      |
 | [S3 表函数](/sql-reference/table-functions/s3)                                            | 提供类似表的接口，用于在 Amazon S3 和 Google Cloud Storage 中选择/插入文件。该表函数与 `hdfs` 表函数类似，但提供了 S3 特有的功能。                              |
 | [s3Cluster](/sql-reference/table-functions/s3Cluster)                                  | 是对 `s3` 表函数的扩展，用于在指定集群的多个节点上并行处理来自 Amazon S3 和 Google Cloud Storage 的文件。                                              |
 | [sqlite](/sql-reference/table-functions/sqlite)                                        | 允许对存储在 SQLite 数据库中的数据进行查询。                                                                                            |
 | [arrowFlight](/sql-reference/table-functions/arrowflight)                              | 允许对由 Apache Arrow Flight 服务器提供的数据执行查询。                                                                                |
-| [url](/sql-reference/table-functions/url)                                              | 根据给定的 `format` 和 `structure`，从 `URL` 创建一张表                                                                            |
+| [url](/sql-reference/table-functions/url)                                              | 根据指定的 `format` 和 `structure` 从 `URL` 创建一张表                                                                            |
 | [urlCluster](/sql-reference/table-functions/urlCluster)                                | 允许在指定集群内的多个节点上并行处理来自 URL 的文件。                                                                                         |
 | [values](/sql-reference/table-functions/values)                                        | 创建一个临时存储，用指定的值填充各列。                                                                                                   |
 | [view](/sql-reference/table-functions/view)                                            | 将子查询转换为一张表。该函数用于实现视图。                                                                                                 |

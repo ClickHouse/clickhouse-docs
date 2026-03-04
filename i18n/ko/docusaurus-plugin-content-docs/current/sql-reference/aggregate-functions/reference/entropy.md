@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## entropy \{#entropy\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 값 컬럼의 [Shannon 엔트로피](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))를 계산합니다.
 

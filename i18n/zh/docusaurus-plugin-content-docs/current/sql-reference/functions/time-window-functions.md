@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## hop \{#hop\}
 
-引入版本：v21.12
+引入版本：v21.12.0
 
 跳跃时间窗口具有固定的持续时间（`window_interval`），并按照指定的跳跃间隔（`hop_interval`）移动。如果 `hop_interval` 小于 `window_interval`，则跳跃窗口会发生重叠。因此，一条记录可以被分配到多个窗口中。
 
@@ -69,7 +69,7 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopEnd \{#hopEnd\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回对应 hopping window 的不包含端点的上界值（exclusive upper bound）。
 
@@ -107,7 +107,7 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopStart \{#hopStart\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回对应 hop 窗口的包含式下界。
 
@@ -145,7 +145,7 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## tumble \{#tumble\}
 
-引入于：v21.12
+引入于：v21.12.0
 
 tumbling 时间窗口会将记录划分到持续时间固定（`interval`）、互不重叠且连续的窗口中。
 
@@ -180,7 +180,7 @@ SELECT tumble(now(), toIntervalDay('1'))
 
 ## tumbleEnd \{#tumbleEnd\}
 
-自 v22.1 起引入
+自 v22.1.0 起引入
 
 返回对应 tumbling 窗口的不包含自身的上界。
 
@@ -215,7 +215,7 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 
 ## tumbleStart \{#tumbleStart\}
 
-自 v22.1 引入
+自 v22.1.0 引入
 
 返回对应翻转窗口的下界（含端点）。
 
@@ -250,7 +250,7 @@ SELECT tumbleStart(now(), toIntervalDay('1'))
 
 ## windowID \{#windowID\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回对应滚动窗口或跳跃窗口的窗口标识符。
 该函数只能与 `WINDOW VIEW` 一起使用。

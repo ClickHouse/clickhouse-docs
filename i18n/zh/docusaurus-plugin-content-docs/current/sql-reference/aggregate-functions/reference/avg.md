@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avg \{#avg\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算算术平均值。
 

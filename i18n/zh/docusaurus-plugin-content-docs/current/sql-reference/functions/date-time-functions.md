@@ -36,7 +36,7 @@ SELECT
 
 ## UTCTimestamp \{#UTCTimestamp\}
 
-引入版本：v22.11
+引入版本：v22.11.0
 
 在查询分析阶段返回当前日期和时间。该函数是一个常量表达式。
 
@@ -74,7 +74,7 @@ SELECT UTCTimestamp()
 
 ## YYYYMMDDToDate \{#YYYYMMDDToDate\}
 
-引入于：v23.9
+引入于：v23.9.0
 
 将一个包含年份、月份和日期数字的数值转换为 `Date`。
 此函数是函数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 的逆操作。
@@ -110,7 +110,7 @@ SELECT YYYYMMDDToDate(20230911);
 
 ## YYYYMMDDToDate32 \{#YYYYMMDDToDate32\}
 
-引入于：v23.9
+引入于：v23.9.0
 
 将一个包含年份、月份和日期数字的数值转换为 `Date32`。
 该函数是函数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 的逆操作。
@@ -146,7 +146,7 @@ SELECT YYYYMMDDToDate32(20000507);
 
 ## YYYYMMDDhhmmssToDateTime \{#YYYYMMDDhhmmssToDateTime\}
 
-引入于：v23.9
+引入于：v23.9.0
 
 将一个包含年、月、日、时、分、秒的数字转换为 `DateTime`。
 此函数执行的转换与函数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) 相反。
@@ -183,13 +183,35 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 
 ## YYYYMMDDhhmmssToDateTime64 \{#YYYYMMDDhhmmssToDateTime64\}
 
-自 v23.9 起提供
+自 v23.9.0 起提供
 
 将包含年、月、日、时、分、秒的数字转换为 `DateTime64`。
 该函数与 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) 的功能相反。
 如果输入未表示有效的 `DateTime64` 值，则输出未定义。
 
 **语法**
+
+YYYYMMDDhhmmssToDateTime64(YYYYMMDDhhmmss[, precision[, timezone]])
+
+**参数**
+
+`YYYYMMDDhhmmss` — 包含年份、月份、日期、小时、分钟和秒的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+
+`precision` — 小数部分的精度（0-9）。[`UInt8`](/sql-reference/data-types/int-uint)
+
+`timezone` — 时区名称。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+根据提供的参数返回一个 `DateTime64` 值。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**示例**
+
+SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, &#39;Asia/Istanbul&#39;);
+
+┌─YYYYMMDDhhmm⋯/Istanbul&#39;)─┐
+│  2023-09-11 13:14:15.000 │
+└──────────────────────────┘
 
 ```sql
 YYYYMMDDhhmmssToDateTime64(YYYYMMDDhhmmss[, precision[, timezone]])
@@ -221,7 +243,7 @@ SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
 
 ## addDate \{#addDate\}
 
-自 v23.9 引入
+自 v23.9.0 引入
 
 将时间间隔添加到指定的日期、日期时间，或其字符串形式的日期、日期时间。
 如果相加的结果超出该数据类型的取值范围，则结果未定义。
@@ -257,7 +279,7 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 
 ## addDays \{#addDays\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将指定的天数添加到日期、日期时间，或其字符串编码形式的日期 / 日期时间值中。
 
@@ -311,7 +333,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
 
 ## addHours \{#addHours\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将指定数量的小时数加到日期、日期时间或其字符串形式的日期/日期时间上。
 
@@ -351,7 +373,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
@@ -365,7 +387,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
 
 ## addInterval \{#addInterval\}
 
-引入版本：v22.11
+引入版本：v22.11.0
 
 将一个 interval 添加到另一个 interval，或添加到由多个 interval 组成的元组上。
 
@@ -412,7 +434,7 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY)
 
 ## addMicroseconds \{#addMicroseconds\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 将指定数量的微秒添加到一个日期时间值，或一个以字符串编码的日期时间值。
 
@@ -450,7 +472,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**使用其他 INTERVAL 语法**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -464,7 +486,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 
 ## addMilliseconds \{#addMilliseconds\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 将指定数量的毫秒添加到日期时间值或其字符串编码形式。
 
@@ -502,7 +524,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -516,7 +538,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 
 ## addMinutes \{#addMinutes\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将指定的分钟数添加到日期、日期时间，或其字符串编码形式的日期/日期时间值上。
 
@@ -556,7 +578,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 写法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
@@ -570,7 +592,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
 
 ## addMonths \{#addMonths\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将指定数量的月份添加到日期、日期时间，或其字符串编码形式的日期或日期时间上。
 
@@ -624,7 +646,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
 
 ## addNanoseconds \{#addNanoseconds\}
 
-自 v22.6 版本引入
+自 v22.6.0 版本引入
 
 将指定数量的纳秒添加到日期时间值或其字符串编码的日期时间值中。
 
@@ -662,7 +684,7 @@ SELECT
 └────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
@@ -676,7 +698,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
 
 ## addQuarters \{#addQuarters\}
 
-自 v20.1 版本引入
+自 v20.1.0 版本引入
 
 向日期、日期时间或其字符串形式添加指定数量的季度。
 
@@ -730,7 +752,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
 
 ## addSeconds \{#addSeconds\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 向日期、日期时间或其字符串表示形式添加指定数量的秒。
 
@@ -784,7 +806,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
 
 ## addTupleOfIntervals \{#addTupleOfIntervals\}
 
-引入于：v22.11
+引入于：v22.11.0
 
 依次将一个间隔元组加到日期或日期时间值上。
 
@@ -820,7 +842,7 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 
 ## addWeeks \{#addWeeks\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将指定的周数添加到 `date`、`date with time` 或其字符串形式的 `date` / `date with time` 值上。
 
@@ -874,7 +896,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
 
 ## addYears \{#addYears\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 为日期、带时间的日期，或其字符串编码形式添加指定数量的年份。
 
@@ -928,7 +950,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
 
 ## age \{#age\}
 
-引入于：v23.1
+引入于：v23.1.0
 
 返回 `startdate` 与 `enddate` 之间差值在指定单位下的分量。
 该差值使用 1 纳秒精度进行计算。
@@ -1003,7 +1025,7 @@ SELECT
 
 ## changeDay \{#changeDay\}
 
-引入版本：v24.7
+引入版本：v24.7.0
 
 更改日期或日期时间值中的“日”部分。
 
@@ -1036,7 +1058,7 @@ SELECT changeDay('2024-01-31'::DateTime, 15)
 
 ## changeHour \{#changeHour\}
 
-引入版本：v24.7
+引入版本：v24.7.0
 
 更改日期或日期时间值的小时部分。
 
@@ -1069,7 +1091,7 @@ SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
 
 ## changeMinute \{#changeMinute\}
 
-引入于：v24.7
+引入于：v24.7.0
 
 更改 `date` 或 `date time` 的分钟部分。
 
@@ -1102,7 +1124,7 @@ SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
 
 ## changeMonth \{#changeMonth\}
 
-引入版本：v24.7
+引入版本：v24.7.0
 
 修改日期或日期时间值的月份部分。
 
@@ -1135,7 +1157,7 @@ SELECT changeMonth('2024-01-01'::DateTime, 12)
 
 ## changeSecond \{#changeSecond\}
 
-引入版本：v24.7
+引入版本：v24.7.0
 
 更改日期或日期时间值中的秒部分。
 
@@ -1168,7 +1190,7 @@ SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
 
 ## changeYear \{#changeYear\}
 
-引入于：v24.7
+引入于：v24.7.0
 
 修改日期或日期时间值的年份部分。
 
@@ -1201,7 +1223,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 
 ## dateDiff \{#dateDiff\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 返回在 `startdate` 和 `enddate` 之间跨越的指定 `unit` 边界的次数。
 差值是使用相对单位进行计算的。例如，2021-12-29 和 2022-01-01 之间的差值，对于单位 day 是 3 天
@@ -1261,7 +1283,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**按不同单位计算日期差**
+**按不同单位计算日期差值**
 
 ```sql title=Query
 SELECT
@@ -1280,7 +1302,7 @@ SELECT
 
 ## dateName \{#dateName\}
 
-自 v21.7 起引入
+自 v21.7.0 起引入
 
 返回日期中指定的部分。
 
@@ -1333,7 +1355,7 @@ SELECT
 
 ## dateTrunc \{#dateTrunc\}
 
-自 v20.8 版本引入
+自 v20.8.0 版本引入
 
 将日期和时间值截断到指定的日期粒度。
 
@@ -1392,7 +1414,7 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 
 ## formatDateTime \{#formatDateTime\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 根据给定的格式字符串格式化日期或日期时间。`format` 是常量表达式，因此无法为同一个结果列使用多种格式。
 
@@ -1522,7 +1544,7 @@ LIMIT 10
 
 ## formatDateTimeInJodaSyntax \{#formatDateTimeInJodaSyntax\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 与 `formatDateTime` 类似，但它使用 Joda 风格而非 MySQL 风格来格式化日期时间。请参考 [Joda Time 文档](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 
@@ -1590,7 +1612,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 
 ## fromDaysSinceYearZero \{#fromDaysSinceYearZero\}
 
-引入版本：v23.11
+引入版本：v23.11.0
 
 对于给定的自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)以来经过的天数，返回该天在 [ISO 8601 定义的前推（proleptic）格里高利历](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)中的对应日期。
 
@@ -1630,7 +1652,7 @@ fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 
 ## fromDaysSinceYearZero32 \{#fromDaysSinceYearZero32\}
 
-引入于：v23.11
+引入于：v23.11.0
 
 对于给定的自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)起算的天数，返回在[ISO 8601 定义的前推格里高利历（proleptic Gregorian calendar）](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)中的对应日期。
 其计算方式与 MySQL 的 `FROM_DAYS()` 函数相同。如果结果无法在 [`Date32`](../data-types/date32.md) 类型的取值范围内表示，则结果未定义。
@@ -1667,7 +1689,7 @@ fromDaysSinceYearZero32(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 
 ## fromModifiedJulianDay \{#fromModifiedJulianDay\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将一个[修正儒略日](https://en.wikipedia.org/wiki/Julian_day#Variants)数转换为[前推格里高利历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)文本形式的日期字符串 `YYYY-MM-DD`。此函数支持的日数范围为从 `-678941` 到 `2973483`（分别表示 0000-01-01 和 9999-12-31）。如果日数超出支持范围，将抛出异常。
 
@@ -1701,7 +1723,7 @@ SELECT fromModifiedJulianDay(58849)
 
 ## fromModifiedJulianDayOrNull \{#fromModifiedJulianDayOrNull\}
 
-自 v21.1 引入。
+自 v21.1.0 引入。
 
 与 [`fromModifiedJulianDay()`](#fromModifiedJulianDay) 类似，但不会抛出异常，而是返回 `NULL`。
 
@@ -1739,7 +1761,7 @@ SELECT fromModifiedJulianDayOrNull(60000000); -- invalid argument, returns NULL
 
 ## fromUTCTimestamp \{#fromUTCTimestamp\}
 
-自 v22.1 起引入
+自 v22.1.0 起引入
 
 将 UTC 时区的日期或日期时间值转换为指定时区的日期或日期时间值。此函数主要用于与 Apache Spark 和类似框架的兼容性。
 
@@ -1776,7 +1798,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 ## fromUnixTimestamp \{#fromUnixTimestamp\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 此函数将 Unix 时间戳转换为日历日期和一天中的时间。
 
@@ -1833,7 +1855,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 ## fromUnixTimestampInJodaSyntax \{#fromUnixTimestampInJodaSyntax\}
 
-引入于：v23.1
+引入于：v23.1.0
 
 此函数将 Unix 时间戳转换为日历日期和当天时间。
 
@@ -1876,7 +1898,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 
 ## makeDate \{#makeDate\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 根据以下任一形式创建 `Date`：
 
@@ -1929,7 +1951,7 @@ SELECT makeDate(2023, 42) AS date;
 
 ## makeDate32 \{#makeDate32\}
 
-自 v22.6 引入
+自 v22.6.0 引入
 
 根据以下两种形式之一创建 `Date32`：
 
@@ -1982,7 +2004,7 @@ SELECT makeDate(2023, 42) AS date;
 
 ## makeDateTime \{#makeDateTime\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 根据年、月、日、时、分和秒创建一个 `DateTime`，可选传入时区。
 
@@ -2022,7 +2044,7 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 
 ## makeDateTime64 \{#makeDateTime64\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 根据 year、month、day、hour、minute、second 创建一个 `DateTime64` 值，可选参数包括 fraction、precision 和 timezone。
 
@@ -2064,7 +2086,7 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 
 ## monthName \{#monthName\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 从日期或日期时间值中返回表示月份名称的字符串。
 
@@ -2099,7 +2121,7 @@ SELECT monthName(date_value)
 
 ## now \{#now\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 返回在查询解析阶段的当前日期和时间。该函数是一个常量表达式。
 
@@ -2147,7 +2169,7 @@ SELECT now('Asia/Istanbul')
 
 ## now64 \{#now64\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 在查询分析阶段返回当前日期和时间，精度可达亚秒级。该函数为常量表达式。
 
@@ -2182,7 +2204,7 @@ SELECT now64(), now64(9, 'Asia/Istanbul')
 
 ## nowInBlock \{#nowInBlock\}
 
-引入自：v22.8
+引入自：v22.8.0
 
 返回在处理每个数据块时的当前日期和时间。与函数 [`now`](#now) 相比，它不是常量表达式，对于长时间运行的查询，在不同数据块中返回的值会不同。
 
@@ -2226,7 +2248,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## nowInBlock64 \{#nowInBlock64\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 在处理每个数据块时，返回当时的当前日期和时间，单位为毫秒。与函数 [now64](#now64) 相比，它不是常量表达式，对于长时间运行的查询，在不同数据块中返回的值会不同。
 
@@ -2271,7 +2293,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## serverTimezone \{#serverTimezone\}
 
-自 v23.6 起引入
+自 v23.6.0 起引入
 
 返回服务器的时区，即 [`timezone`](/operations/server-configuration-parameters/settings#timezone) 设置的值。
 如果在分布式表的上下文中执行该函数，则会生成一个普通列，其值对应各个分片的时区。否则，它会生成一个常量值。
@@ -2308,7 +2330,7 @@ SELECT serverTimeZone()
 
 ## subDate \{#subDate\}
 
-引入版本：v23.9
+引入版本：v23.9.0
 
 从给定的日期、日期时间或其字符串表示中减去一个时间间隔。
 如果运算结果超出了该数据类型的取值范围，则结果未定义。
@@ -2344,7 +2366,7 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 
 ## subtractDays \{#subtractDays\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从日期、日期时间或其字符串表示中减去指定天数。
 
@@ -2384,7 +2406,7 @@ SELECT
 └─────────────────────────┴──────────────────────────────┴─────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
@@ -2398,7 +2420,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
 
 ## subtractHours \{#subtractHours\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 从日期、日期时间或其字符串形式中减去指定的小时数。
 
@@ -2438,7 +2460,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 写法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
@@ -2452,7 +2474,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
 
 ## subtractInterval \{#subtractInterval\}
 
-引入于：v22.11
+引入于：v22.11.0
 
 将一个取负的 interval 加到另一个 interval 或由多个 interval 组成的元组上。
 
@@ -2497,7 +2519,7 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 
 ## subtractMicroseconds \{#subtractMicroseconds\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 从带时间的日期或其字符串编码形式中减去指定数量的微秒。
 
@@ -2535,7 +2557,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -2549,7 +2571,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 
 ## subtractMilliseconds \{#subtractMilliseconds\}
 
-自 v22.6 版本引入
+自 v22.6.0 版本引入
 
 从日期时间值或字符串形式的日期时间中减去指定的毫秒数。
 
@@ -2601,7 +2623,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 
 ## subtractMinutes \{#subtractMinutes\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 从日期、日期时间或其字符串表示中减去指定数量的分钟。
 
@@ -2655,7 +2677,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
 
 ## subtractMonths \{#subtractMonths\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从日期、日期时间或其字符串表示中减去指定数量的月份。
 
@@ -2709,7 +2731,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
 
 ## subtractNanoseconds \{#subtractNanoseconds\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 从日期时间值或其字符串表示中减去指定数量的纳秒。
 
@@ -2761,7 +2783,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
 
 ## subtractQuarters \{#subtractQuarters\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 从日期、日期时间或字符串形式的日期/日期时间中减去指定数量的季度。
 
@@ -2815,7 +2837,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
 
 ## subtractSeconds \{#subtractSeconds\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从日期、日期时间，或其字符串表示中减去指定数量的秒数。
 
@@ -2855,7 +2877,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**使用另一种 INTERVAL 语法**
+**使用另一种 INTERVAL 语法形式**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
@@ -2869,7 +2891,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
 
 ## subtractTupleOfIntervals \{#subtractTupleOfIntervals\}
 
-引入版本：v22.11
+引入版本：v22.11.0
 
 从日期或日期时间中依次减去一个包含多个时间间隔的元组。
 
@@ -2904,7 +2926,7 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 
 ## subtractWeeks \{#subtractWeeks\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从 `date`、带时间的 `date`，或它们的字符串编码形式中减去指定的周数。
 
@@ -2958,7 +2980,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
 
 ## subtractYears \{#subtractYears\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从日期、日期时间或其字符串编码的日期/日期时间中减去指定数量的年份。
 
@@ -3012,7 +3034,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
 
 ## timeDiff \{#timeDiff\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 返回两个日期或日期时间值之间的差值，单位为秒。
 差值的计算方式为 `enddate` - `startdate`。
@@ -3062,7 +3084,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**等同于以秒为单位的 dateDiff**
+**等价于按秒计算的 dateDiff**
 
 ```sql title=Query
 SELECT
@@ -3078,7 +3100,7 @@ SELECT
 
 ## timeSlot \{#timeSlot\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将时间向下取整到其所在半小时时间段的起始时刻。
 
@@ -3118,7 +3140,7 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
 
 ## timeSlots \{#timeSlots\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 对于一个从 `StartTime` 开始并持续 `Duration` 秒的时间区间，该函数返回一个时间点数组，由该区间内按 `Size` 秒向下取整后的各个时间点组成。`Size` 是一个可选参数，默认设置为 1800（30 分钟）。
 
@@ -3166,7 +3188,7 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 
 ## timestamp \{#timestamp\}
 
-自 v23.9 起引入
+自 v23.9.0 起引入
 
 将第一个参数 `expr` 转换为类型 [`DateTime64(6)`](/sql-reference/data-types/datetime64)。
 如果提供第二个参数 `expr_time`，则会在转换后的值上加上指定的时间。
@@ -3214,7 +3236,7 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
 
 ## timezone \{#timezone\}
 
-在 v21.4 中引入
+在 v21.4.0 中引入
 
 返回当前会话的时区名称，或将时区偏移量或名称转换为规范的时区名称。
 
@@ -3250,7 +3272,7 @@ SELECT timezone()
 
 ## timezoneOf \{#timezoneOf\}
 
-自 v21.4 起引入
+自 v21.4.0 起引入
 
 返回 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 值的时区名称。
 
@@ -3287,7 +3309,7 @@ SELECT timezoneOf(now());
 
 ## timezoneOffset \{#timezoneOffset\}
 
-自 v21.6 引入
+自 v21.6.0 引入
 
 返回相对于 [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) 的时区偏移量（以秒为单位）。
 该函数在指定的日期和时间点会考虑夏令时以及历史时区变更。
@@ -3327,7 +3349,7 @@ timezoneOffset(Time) AS Offset_in_seconds,
 
 ## toDayOfMonth \{#toDayOfMonth\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回 `Date` 或 `DateTime` 值所在月份的日（1-31）。
 
@@ -3363,7 +3385,7 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toDayOfWeek \{#toDayOfWeek\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回 `Date` 或 `DateTime` 值在其所在星期中的序号（星期几）。
 
@@ -3414,7 +3436,7 @@ SELECT
 
 ## toDayOfYear \{#toDayOfYear\}
 
-引入自：v18.4
+引入自：v18.4.0
 
 返回 `Date` 或 `DateTime` 值在一年中的第几天（1-366）。
 
@@ -3450,7 +3472,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysSinceYearZero \{#toDaysSinceYearZero\}
 
-引入于：v23.9
+引入于：v23.9.0
 
 对于给定日期，返回自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)起在
 [ISO 8601 定义的前溯公历（proleptic Gregorian calendar）](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)中已经过去的天数。
@@ -3490,7 +3512,7 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'))
 
 ## toHour \{#toHour\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 返回 `DateTime` 或 `DateTime64` 值的小时部分（0-23）。
 
@@ -3526,7 +3548,7 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 
 ## toISOWeek \{#toISOWeek\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 返回日期或日期时间值对应的 ISO 周编号。
 
@@ -3566,7 +3588,7 @@ SELECT toDate('2016-12-27') AS date, toISOWeek(date) AS isoWeek
 └────────────┴─────────┘
 ```
 
-**ISO 周可能隶属于不同的日历年份**
+**ISO 周可能属于不同的年份**
 
 ```sql title=Query
 SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS year
@@ -3580,7 +3602,7 @@ SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS
 
 ## toISOYear \{#toISOYear\}
 
-引入于：v18.4
+引入于：v18.4.0
 
 将日期或带时间的日期转换为 ISO 年份数值。
 
@@ -3616,7 +3638,7 @@ toISOYear(toDateTime('2024-10-02 01:30:00')) as year2
 
 ## toLastDayOfMonth \{#toLastDayOfMonth\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将日期或日期时间向上取整到所在月份的最后一天。
 
@@ -3656,7 +3678,7 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toLastDayOfWeek \{#toLastDayOfWeek\}
 
-引入自：v23.5
+引入自：v23.5.0
 
 将日期或带时间的日期向上取整到最近的周六或周日（即下一个周六或周日）。
 
@@ -3704,7 +3726,7 @@ toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 
 ## toMillisecond \{#toMillisecond\}
 
-引入版本：v24.2
+引入版本：v24.2.0
 
 返回 `DateTime` 或 `DateTime64` 值的毫秒部分（0-999）。
 
@@ -3740,7 +3762,7 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
 
 ## toMinute \{#toMinute\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回 `Date` 或 `DateTime` 值的分钟部分（0-59）。
 
@@ -3776,7 +3798,7 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 
 ## toModifiedJulianDay \{#toModifiedJulianDay\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将文本格式为 `YYYY-MM-DD` 的 [前推格里高利历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期转换为 `Int32` 类型的 [修正儒略日](https://en.wikipedia.org/wiki/Julian_day#Variants) 数值。该函数支持的日期范围为 `0000-01-01` 到 `9999-12-31`。如果参数无法解析为日期或日期无效，则会抛出异常。
 
@@ -3810,7 +3832,7 @@ SELECT toModifiedJulianDay('2020-01-01')
 
 ## toModifiedJulianDayOrNull \{#toModifiedJulianDayOrNull\}
 
-自 v21.1 引入
+自 v21.1.0 引入
 
 类似于 [`toModifiedJulianDay()`](#toModifiedJulianDay)，但不会抛出异常，而是返回 `NULL`。
 
@@ -3848,7 +3870,7 @@ SELECT toModifiedJulianDayOrNull('0000-00-00'); -- invalid date, returns NULL
 
 ## toMonday \{#toMonday\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将日期或带时间的日期向下取整到所在周的星期一。返回日期值。
 
@@ -3888,7 +3910,7 @@ toMonday(toDate('2023-04-24'));              -- Already a Monday
 
 ## toMonth \{#toMonth\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回 `Date` 或 `DateTime` 值的月份部分（1-12）。
 
@@ -3924,7 +3946,7 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toMonthNumSinceEpoch \{#toMonthNumSinceEpoch\}
 
-引入于：v25.3
+引入于：v25.3.0
 
 返回自 1970 年起已过去的月份数
 
@@ -3956,7 +3978,7 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ## toQuarter \{#toQuarter\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回给定 `Date` 或 `DateTime` 值对应年份中的季度（1-4）。
 
@@ -3992,7 +4014,7 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 
 ## toRelativeDayNum \{#toRelativeDayNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或带时间的日期转换为自过去某个固定时间点以来经过的天数。
 这一具体时间点属于实现细节，因此不建议单独使用该函数。
@@ -4028,7 +4050,7 @@ SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01
 
 ## toRelativeHourNum \{#toRelativeHourNum\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将一个日期或带时间的日期转换为自某个固定的过去时间点以来经过的小时数。
 该具体时间点属于实现细节，因此不建议将此函数单独使用。
@@ -4064,7 +4086,7 @@ SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(
 
 ## toRelativeMinuteNum \{#toRelativeMinuteNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或日期时间转换为自某个固定的过去时间点起经过的分钟数。
 该具体时间点属于实现细节，因此此函数不应单独使用。
@@ -4100,7 +4122,7 @@ SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinute
 
 ## toRelativeMonthNum \{#toRelativeMonthNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或日期时间转换为自过去某个固定时间点起经过的月份数。
 该具体时间点属于实现细节，因此不建议单独调用此函数。
@@ -4136,7 +4158,7 @@ SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('202
 
 ## toRelativeQuarterNum \{#toRelativeQuarterNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或带时间的日期转换为自过去某个固定时间点以来经过的季度数。
 这个具体时间点属于实现细节，因此不建议单独使用此函数。
@@ -4172,7 +4194,7 @@ SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate(
 
 ## toRelativeSecondNum \{#toRelativeSecondNum\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将日期或日期时间转换为自过去某个固定时间点起经过的秒数。
 该精确时间点属于实现细节，因此不建议单独使用此函数。
@@ -4208,7 +4230,7 @@ SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecond
 
 ## toRelativeWeekNum \{#toRelativeWeekNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或日期时间转换为自过去某个固定时间点以来经过的周数。
 该确切时间点属于实现细节，因此不建议单独使用此函数。
@@ -4244,7 +4266,7 @@ SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-
 
 ## toRelativeYearNum \{#toRelativeYearNum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或带时间的日期转换为自某个固定历史时间点以来经过的年份数。
 该时间点的具体值属于实现细节，因此不建议单独使用此函数。
@@ -4280,7 +4302,7 @@ SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01
 
 ## toSecond \{#toSecond\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回 `DateTime` 或 `DateTime64` 值中的秒数部分（0-59）。
 
@@ -4316,7 +4338,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfDay \{#toStartOfDay\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将包含时间的日期向下取整到当天的起始时刻。
 
@@ -4354,7 +4376,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfFifteenMinutes \{#toStartOfFifteenMinutes\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将包含时间的日期值向下取整到所在十五分钟区间的起始时刻。
 
@@ -4398,7 +4420,7 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 
 ## toStartOfFiveMinutes \{#toStartOfFiveMinutes\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 将带时间的日期向下取整到最近的五分钟区间的起始时间点。
 
@@ -4444,7 +4466,7 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfHour \{#toStartOfHour\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将带时间的日期向下取整到整点（该小时的起始时刻）。
 
@@ -4483,7 +4505,7 @@ SELECT
 
 ## toStartOfISOYear \{#toStartOfISOYear\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或日期时间向下取整到 ISO 年的第一天，这可能与日历年不同。参见 [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date)。
 
@@ -4521,7 +4543,7 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfInterval \{#toStartOfInterval\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 此函数通过 `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 语法，对其他 `toStartOf*()` 函数进行泛化。
 
@@ -4588,7 +4610,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
 └──────────────────────────┘
 ```
 
-**使用原点时间**
+**使用起始时间点**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'))
@@ -4602,7 +4624,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 
 ## toStartOfMicrosecond \{#toStartOfMicrosecond\}
 
-自 v22.6 起引入
+自 v22.6.0 起引入
 
 将日期时间向下取整到微秒。
 
@@ -4651,7 +4673,7 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfMillisecond \{#toStartOfMillisecond\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 将带时间的日期向下取整到毫秒起始时刻。
 
@@ -4700,7 +4722,7 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfMinute \{#toStartOfMinute\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将日期时间向下取整到所在分钟的起始时刻。
 
@@ -4742,7 +4764,7 @@ toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:0
 
 ## toStartOfMonth \{#toStartOfMonth\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将日期或日期时间向下取整到所在月份的第一天。
 
@@ -4780,7 +4802,7 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfNanosecond \{#toStartOfNanosecond\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 将带时间的日期向下取整到纳秒级的起始时刻。
 
@@ -4829,7 +4851,7 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfQuarter \{#toStartOfQuarter\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将日期或带时间的日期向下取整到所在季度的第一天。季度的第一天为 1 月 1 日、4 月 1 日、7 月 1 日或 10 月 1 日。
 
@@ -4867,7 +4889,7 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfSecond \{#toStartOfSecond\}
 
-引入版本：v20.5
+引入版本：v20.5.0
 
 将日期时间向下取整到所在秒的起始时刻。
 
@@ -4916,7 +4938,7 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfTenMinutes \{#toStartOfTenMinutes\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 将带时间的日期向下取整到最近的 10 分钟区间的起始时刻。
 
@@ -4960,9 +4982,9 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfWeek \{#toStartOfWeek\}
 
-引入于：v20.1
+引入于：v20.1.0
 
-将日期或日期时间向下取整到最近的周日或周一。
+将日期或日期时间向下取整到最近的星期日或星期一。
 
 :::note
 可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
@@ -5008,7 +5030,7 @@ Row 1:
 
 ## toStartOfYear \{#toStartOfYear\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将日期或日期时间向下取整到所在年份的第一天。返回一个 `Date` 类型的值。
 
@@ -5046,7 +5068,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toTimeWithFixedDate \{#toTimeWithFixedDate\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从日期或日期时间值中提取时间部分。
 返回结果是相对于某个固定时间点的偏移量，目前为 `1970-01-02`，
@@ -5086,7 +5108,7 @@ SELECT toTimeWithFixedDate('2025-06-15 12:00:00'::DateTime) - toTimeWithFixedDat
 
 ## toTimezone \{#toTimezone\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将 `DateTime` 或 `DateTime64` 转换为指定的时区。
 数据的内部值（Unix 时间秒数）不会改变。
@@ -5142,7 +5164,7 @@ int32samoa: 1546300800
 
 ## toUTCTimestamp \{#toUTCTimestamp\}
 
-引入版本：v23.8
+引入版本：v23.8.0
 
 将一个日期或日期时间值从某个时区转换为 UTC 时区的时间戳。此函数主要用于与 Apache Spark 及类似框架的兼容性。
 
@@ -5179,7 +5201,7 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
 
 ## toUnixTimestamp \{#toUnixTimestamp\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将 `String`、`Date` 或 `DateTime` 转换为 Unix 时间戳（自 `1970-01-01 00:00:00 UTC` 起的秒数），并以 `UInt32` 返回。
 
@@ -5228,7 +5250,7 @@ from_date32:     1509840000
 
 ## toWeek \{#toWeek\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 该函数返回日期或日期时间对应的周序号。`toWeek()` 的双参数形式允许指定一周是从星期日还是星期一开始，以及返回值是在 `0` 到 `53` 还是 `1` 到 `53` 的范围内。
 
@@ -5294,7 +5316,7 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 
 ## toYYYYMM \{#toYYYYMM\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将日期或日期时间转换为一个 `UInt32` 整数，包含年份和月份（YYYY * 100 + MM）。
 接受第二个可选的时区参数。如果指定该参数，时区必须是字符串常量。
@@ -5332,7 +5354,7 @@ SELECT toYYYYMM(now(), 'US/Eastern')
 
 ## toYYYYMMDD \{#toYYYYMMDD\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将日期或带时间的日期转换为一个 `UInt32` 数值，包含年月日数字（YYYY * 10000 + MM * 100 + DD）。接受一个可选的第二个参数用于指定时区。如果提供，该时区必须是字符串常量。
 
@@ -5367,7 +5389,7 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 
 ## toYYYYMMDDhhmmss \{#toYYYYMMDDhhmmss\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将日期或日期时间转换为一个 `UInt64` 数值，表示年份、月份、日期以及时间（小时、分钟、秒）的组合编码（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）。
 接受第二个可选的时区参数。如果提供，则时区必须是字符串常量。
@@ -5403,7 +5425,7 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 
 ## toYear \{#toYear\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 返回 `Date` 或 `DateTime` 值的公历年份部分（AD）。
 
@@ -5439,7 +5461,7 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toYearNumSinceEpoch \{#toYearNumSinceEpoch\}
 
-引入版本：v25.3
+引入版本：v25.3.0
 
 返回自 1970 年起经过的年份数。
 
@@ -5471,7 +5493,7 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 
 ## toYearWeek \{#toYearWeek\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 返回日期对应的年份和周数。对于一年中的第一周和最后一周，结果中的年份可能与参数日期所在的年份不同。
 
@@ -5515,7 +5537,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 
 ## today \{#today\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回在查询分析时刻的当前日期。等同于 `toDate(now())`。
 
@@ -5553,7 +5575,7 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 
 ## yesterday \{#yesterday\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 不接受任何参数，并在查询分析期间的某个时间点返回昨天的日期。
 

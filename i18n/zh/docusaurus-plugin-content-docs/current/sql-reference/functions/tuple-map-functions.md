@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 从任意字符串中提取键值对。该字符串不需要完全符合键值对格式。
 
@@ -174,7 +174,7 @@ extractKeyValuePairs(input)
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-引入版本: v23.4
+引入版本: v23.4.0
 
 与 `extractKeyValuePairs` 相同,但支持转义。
 
@@ -219,7 +219,7 @@ extractKeyValuePairsWithEscaping(input)
 
 ## map \{#map\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 从键值对创建一个类型为 `Map(key, value)` 的值。
 
@@ -254,7 +254,7 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
 
 ## mapAdd \{#mapAdd\}
 
-在 v20.7 中引入
+在 v20.7.0 中引入
 
 收集所有键并对相应的值求和。
 
@@ -296,7 +296,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
 
 ## mapAll \{#mapAll\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 判断某个条件是否对 map 中的所有键值对都成立。
 `mapAll` 是一个高阶函数。
@@ -331,7 +331,7 @@ SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 
 ## mapApply \{#mapApply\}
 
-引入于：v22.3 版本
+引入于：v22.3.0 版本
 
 将一个函数应用于 map 中的每个元素。
 
@@ -364,7 +364,7 @@ SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
 
 ## mapConcat \{#mapConcat\}
 
-首次引入版本：v23.4
+首次引入版本：v23.4.0
 
 根据键是否相等来连接多个 map。
 如果多个输入 map 中存在相同键的元素，所有这些元素都会被添加到结果 map 中，但通过 `[]` 运算符只能访问到第一个元素。
@@ -397,7 +397,7 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 
 ## mapContainsKey \{#mapContainsKey\}
 
-引入版本：v21.2
+引入版本：v21.2.0
 
 判断 `map` 中是否包含某个键。
 
@@ -432,7 +432,7 @@ SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
 
 ## mapContainsKeyLike \{#mapContainsKeyLike\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 检查 `map` 中是否存在与指定模式通过 `LIKE` 匹配的键。
 
@@ -474,7 +474,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 
 ## mapContainsValue \{#mapContainsValue\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 用于判断某个值是否存在于 map 中。
 
@@ -507,7 +507,7 @@ SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
 
 ## mapContainsValueLike \{#mapContainsValueLike\}
 
-自 v25.5 引入
+自 v25.5.0 引入
 
 检查 map 中是否存在符合指定 `LIKE` 模式的值。
 
@@ -549,7 +549,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 
 ## mapExists \{#mapExists\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 用于判断在一个 map 中是否存在至少一对键值对满足指定条件。
 `mapExists` 是一个高阶函数。
@@ -584,7 +584,7 @@ SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 
 ## mapExtractKeyLike \{#mapExtractKeyLike\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 给定一个键为字符串的 map 和一个 `LIKE` 模式，此函数返回一个仅包含键与该模式匹配元素的 map。
 
@@ -626,7 +626,7 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 
 ## mapExtractValueLike \{#mapExtractValueLike\}
 
-引入版本：v25.5
+引入版本：v25.5.0
 
 给定一个值为字符串的 map 和一个 `LIKE` 模式，此函数返回一个 map，其中只包含值与该模式匹配的元素。
 
@@ -668,7 +668,7 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 
 ## mapFilter \{#mapFilter\}
 
-在 v22.3 中引入
+在 v22.3.0 中引入
 
 通过对每个 map 元素应用函数来过滤该 map。
 
@@ -701,7 +701,7 @@ SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
 
 ## mapFromArrays \{#mapFromArrays\}
 
-引入版本：v23.3
+引入版本：v23.3.0
 
 从键的数组或 Map 与值的数组或 Map 创建一个 Map。
 该函数是语法 `CAST([...], 'Map(key_type, value_type)')` 的一种更便捷的替代写法。
@@ -747,7 +747,7 @@ SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
 
 ## mapKeys \{#mapKeys\}
 
-引入版本：v21.2
+引入版本：v21.2.0
 
 返回给定 map 的键。
 通过启用设置 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns)，可以对该函数进行优化。
@@ -782,7 +782,7 @@ SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
 
 ## mapPartialReverseSort \{#mapPartialReverseSort\}
 
-自 v23.4 引入
+自 v23.4.0 引入
 
 对 map 的元素按降序排序，并带有一个额外的 limit 参数，用于进行部分排序。
 如果指定了 func 函数，则根据将 func 函数应用于 map 的键和值所得到的结果来确定排序顺序。
@@ -817,7 +817,7 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapPartialSort \{#mapPartialSort\}
 
-自 v23.4 版本引入
+自 v23.4.0 版本引入
 
 对 map 的元素按升序排序，并接受一个额外的 limit 参数，用于执行部分排序。
 如果指定了函数 func，则排序顺序由函数 func 作用于 map 的键和值后得到的结果来决定。
@@ -852,7 +852,7 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapPopulateSeries \{#mapPopulateSeries\}
 
-引入版本：v20.10
+引入版本：v20.10.0
 
 在具有整数键的 map 中填充缺失的键值对。
 为了支持将键扩展到当前最大值之外，可以指定一个最大键。
@@ -901,7 +901,7 @@ SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
 
 ## mapReverseSort \{#mapReverseSort\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 对 map 中的元素进行降序排序。
 如果指定了函数 func，则排序顺序由函数 func 作用于 map 的键和值所产生的结果来决定。
@@ -935,7 +935,7 @@ SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapSort \{#mapSort\}
 
-引入于：v23.4
+引入于：v23.4.0
 
 按升序对 map 的元素进行排序。
 如果指定了函数 func，则排序顺序由将 func 函数应用于 map 的键和值后得到的结果决定。
@@ -969,7 +969,7 @@ SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapSubtract \{#mapSubtract\}
 
-自 v20.7 版本引入。
+自 v20.7.0 版本引入。
 
 收集所有键并对相应的值进行相减运算。
 
@@ -999,7 +999,7 @@ SELECT mapSubtract(map(1, 1), map(1, 1))
 {1:0}
 ```
 
-**使用 tuple map 时**
+**使用元组形式的 Map**
 
 ```sql title=Query
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1]))
@@ -1011,7 +1011,7 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapUpdate \{#mapUpdate\}
 
-引入版本：v22.3
+引入版本：v22.3.0
 
 对于两个 `map`，返回在第一个 `map` 的基础上，用第二个 `map` 中对应键的值更新后的结果。
 
@@ -1044,7 +1044,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
 
 ## mapValues \{#mapValues\}
 
-首次引入于：v21.2
+首次引入于：v21.2.0
 
 返回给定 map 中所有的值。
 通过启用 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) 这个设置，可以对该函数进行优化。

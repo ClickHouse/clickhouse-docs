@@ -23,3 +23,4 @@ ClickStack 可以通过两种方式进行部署。使用 **ClickStack Open Sourc
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | 向 ClickStack 摄取数据的指南 |
 | [Search](/use-cases/observability/clickstack/search) | 如何搜索和查询可观测性数据 |
 | [Production](/use-cases/observability/clickstack/production) | 生产环境部署最佳实践 |
+| [FAQ](/use-cases/observability/clickstack/faq) | 常见问题解答 |

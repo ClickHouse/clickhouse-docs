@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## corr \{#corr\}
 
-Введено в версии: v1.1
+Введено в версии: v1.1.0
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 

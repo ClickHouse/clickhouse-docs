@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности с использованием алгоритма [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 Функция учитывает вес каждого элемента последовательности.

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stochasticLinearRegression \{#stochasticLinearRegression\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 이 함수는 확률적 선형 회귀를 구현합니다.
 다음과 같은 사용자 정의 매개변수를 지원합니다:
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 이 함수는 두 단계로 사용됩니다: 먼저 모델을 피팅(fitting)한 뒤 새로운 데이터에 대한 예측에 사용합니다.
 
-1. 피팅
+1. 모델 피팅
 
 모델을 피팅하기 위해 다음과 같은 쿼리를 사용할 수 있습니다:
 
@@ -67,16 +67,16 @@ evalMLMethod(model, x1, x2) FROM test_data
 
 **참고**
 
-1. 두 개의 모델을 병합하기 위해 사용자는 다음과 같은 쿼리를 작성할 수 있습니다:
+1. 두 개의 모델을 병합하려면 다음과 같은 쿼리를 사용할 수 있습니다:
 
 ```sq;
 SELECT state1 + state2 FROM your_models
 ```
 
 여기서 `your_models` 테이블에는 두 모델이 모두 포함되어 있습니다.
-이 쿼리는 새로운 `AggregateFunctionState` 객체를 반환합니다.
+이 쿼리는 새 `AggregateFunctionState` 객체를 반환합니다.
 
-2. `-State` 콤비네이터를 사용하지 않는 경우, 생성된 모델을 저장하지 않고도 필요에 따라 해당 모델의 가중치를 가져올 수 있습니다.
+2. `-State` 콤비네이터를 사용하지 않는 경우, 생성된 모델을 저장하지 않고도 필요한 용도로 해당 모델의 가중치만 가져올 수 있습니다.
 
 ```sql
 SELECT stochasticLinearRegression(0.01)(target, param1, param2)
@@ -95,11 +95,11 @@ stochasticLinearRegression([learning_rate, l2_regularization_coef, mini_batch_si
 **인수**
 
 * `learning_rate` — 경사 하강법 단계를 수행할 때 사용되는 단계 길이 계수입니다. 학습률이 너무 크면 모델의 가중치가 무한대로 발산할 수 있습니다. 기본값은 `0.00001`입니다. [`Float64`](/sql-reference/data-types/float)
-* `l2_regularization_coef` — 과적합을 방지하는 데 도움이 될 수 있는 L2 정규화 계수입니다. 기본값은 `0.1`입니다. [`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 한 번의 경사 하강 단계를 수행하기 위해, 기울기를 계산하고 합산할 요소의 개수를 설정합니다. 완전한 확률적(스토캐스틱) 하강법은 하나의 요소만 사용하지만, 약 10개 정도의 작은 배치를 사용하면 경사 단계가 더 안정적이 됩니다. 기본값은 `15`입니다. [`UInt64`](/sql-reference/data-types/int-uint)
-* `method` — 가중치 갱신 방법입니다: `Adam`(기본값), `SGD`, `Momentum`, `Nesterov`. `Momentum`과 `Nesterov`는 계산량과 메모리가 조금 더 필요하지만, 수렴 속도와 확률적 경사 하강법의 안정성 측면에서 유용합니다. [`const String`](/sql-reference/data-types/string)
-* `target` — 예측하도록 학습할 타깃 값(종속 변수)입니다. 숫자형이어야 합니다. [`Float*`](/sql-reference/data-types/float)
-* `x1, x2, ...` — 특성 값(독립 변수)입니다. 모두 숫자형이어야 합니다. [`Float*`](/sql-reference/data-types/float)
+* `l2_regularization_coef` — 과적합 방지에 도움이 될 수 있는 L2 정규화 계수입니다. 기본값은 `0.1`입니다. [`Float64`](/sql-reference/data-types/float)
+* `mini_batch_size` — 한 번의 경사 하강 단계를 수행하기 위해 기울기를 계산하여 합산할 요소의 개수를 설정합니다. 순수한 확률적(스토캐스틱) 경사 하강법은 하나의 요소만 사용하지만, 약 10개 정도의 작은 배치를 사용하면 경사 하강 단계가 더 안정적이 됩니다. 기본값은 `15`입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+* `method` — 가중치 갱신 방법입니다: `Adam`(기본값), `SGD`, `Momentum`, `Nesterov`. `Momentum`과 `Nesterov`는 계산량과 메모리를 다소 더 필요로 하지만, 수렴 속도와 확률적 경사 하강법의 안정성 측면에서 유용합니다. [`const String`](/sql-reference/data-types/string)
+* `target` — 예측하도록 학습되는 타깃 값(종속 변수)입니다. 숫자형 값이어야 합니다. [`Float*`](/sql-reference/data-types/float)
+* `x1, x2, ...` — 특성값(독립 변수)입니다. 모두 숫자형이어야 합니다. [`Float*`](/sql-reference/data-types/float)
 
 **반환 값**
 

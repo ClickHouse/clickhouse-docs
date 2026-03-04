@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined \{#uniqCombined\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 異なる引数値のおおよその個数を計算します。
 結果は決定論的であり（クエリ処理順序に依存せず）、常に同じになります。
@@ -68,7 +68,7 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 └──────────────────────┘
 ```
 
-**カスタム精度を使用する場合**
+**カスタム精度の指定**
 
 ```sql title=Query
 SELECT uniqCombined(15)(number) FROM numbers(1e5);

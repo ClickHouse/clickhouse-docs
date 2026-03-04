@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 引数の末尾の値からなる配列を作成します。
 例えば、`groupArrayLast(1)(x)` は `[anyLast(x)]` と同等です。

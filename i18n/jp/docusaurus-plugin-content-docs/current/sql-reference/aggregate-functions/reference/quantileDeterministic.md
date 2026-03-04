@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDeterministic \{#quantileDeterministic\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ系列の近似的な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

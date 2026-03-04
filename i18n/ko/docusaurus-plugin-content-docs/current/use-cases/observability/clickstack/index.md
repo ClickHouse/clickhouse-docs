@@ -23,3 +23,4 @@ ClickStack은 두 가지 방식으로 배포할 수 있습니다. **ClickStack O
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | ClickStack으로 데이터를 수집하기 위한 가이드라인 |
 | [Search](/use-cases/observability/clickstack/search) | 관측성 데이터를 검색하고 쿼리하는 방법 |
 | [Production](/use-cases/observability/clickstack/production) | 프로덕션 배포 모범 사례 |
+| [FAQ](/use-cases/observability/clickstack/faq) | 자주 묻는 질문 |

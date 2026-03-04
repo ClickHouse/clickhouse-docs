@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactInclusive \{#quantileExactInclusive\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 与 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) 类似，它计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -55,7 +55,7 @@ SELECT quantileExactInclusive(0.25)(number) FROM numbers(5);
 └──────────────────────────────────────┘
 ```
 
-**计算多个分位点**
+**计算多个分位数级别**
 
 ```sql title=Query
 SELECT quantileExactInclusive(0.1)(number), quantileExactInclusive(0.9)(number) FROM numbers(10);

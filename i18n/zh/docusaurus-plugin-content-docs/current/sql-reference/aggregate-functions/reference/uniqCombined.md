@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined \{#uniqCombined\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算不同参数值的大致数量。
 它以确定性的方式提供结果（不依赖于查询处理顺序）。

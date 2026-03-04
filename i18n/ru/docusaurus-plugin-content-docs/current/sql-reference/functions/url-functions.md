@@ -58,7 +58,7 @@ doc_type: 'reference'
 
 ## URLHierarchy \{#URLHierarchy\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает массив, содержащий URL, усечённый в конце по символам `/`, `?` и `#` в пути и строке запроса. Последовательные символы-разделители считаются за один. Результат включает протокол и хост в качестве первого элемента, а последующие элементы — всё более длинные пути, образующие иерархию.
 
@@ -90,7 +90,7 @@ SELECT URLHierarchy('https://example.com/a/b?c=1')
 
 ## URLPathHierarchy \{#URLPathHierarchy\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает массив, содержащий компонент пути URL-адреса, усечённый по символам `/`, `?` и `#` в конце. В отличие от `URLHierarchy`, результат не включает протокол и хост — он начинается с пути. Идущие подряд разделители считаются одним.
 
@@ -122,7 +122,7 @@ SELECT URLPathHierarchy('https://example.com/a/b?c=1')
 
 ## cutFragment \{#cutFragment\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Удаляет идентификатор фрагмента, включая знак решётки (#), из URL-адреса.
 
@@ -156,7 +156,7 @@ SELECT cutFragment('http://example.com/path?query=value#fragment123');
 
 ## cutQueryString \{#cutQueryString\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Удаляет строку запроса, включая вопросительный знак, из URL-адреса.
 
@@ -190,7 +190,7 @@ SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
 
 ## cutQueryStringAndFragment \{#cutQueryStringAndFragment\}
 
-Появилась в версии v1.1
+Появилась в версии v1.1.0
 
 Удаляет строку запроса и идентификатор фрагмента, включая вопросительный знак и символ решётки, из URL.
 
@@ -224,7 +224,7 @@ SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#
 
 ## cutToFirstSignificantSubdomain \{#cutToFirstSignificantSubdomain\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает часть доменного имени, включающую домен верхнего уровня и субдомены вплоть до [первого значимого субдомена](/sql-reference/functions/url-functions#firstSignificantSubdomain).
 
@@ -261,7 +261,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainCustom \{#cutToFirstSignificantSubdomainCustom\}
 
-Впервые появилась в: v21.1
+Впервые появилась в: v21.1.0
 
 Возвращает часть доменного имени, включающую домены верхнего уровня вплоть до первого значимого поддомена. Принимает имя пользовательского списка [TLD](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains). Эта функция может быть полезна, если вам нужен обновлённый список TLD или у вас есть собственный список.
 
@@ -285,7 +285,7 @@ cutToFirstSignificantSubdomainCustom(url, tld_list_name)
 **Аргументы**
 
 * `url` — URL или строка с доменным именем для обработки. [`String`](/sql-reference/data-types/string)
-* `tld_list_name` — имя пользовательского списка TLD, настроенного в ClickHouse. [`const String`](/sql-reference/data-types/string)
+* `tld_list_name` — имя пользовательского списка TTD, настроенного в ClickHouse. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -305,7 +305,7 @@ foo.there-is-no-such-domain
 
 ## cutToFirstSignificantSubdomainCustomRFC \{#cutToFirstSignificantSubdomainCustomRFC\}
 
-Добавлена в версии: v22.10
+Добавлена в версии: v22.10.0
 
 Возвращает часть домена, включающую домены верхнего уровня до первого значимого поддомена.
 Принимает наименование пользовательского списка доменов верхнего уровня (TLD): [TLD list](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains).
@@ -354,7 +354,7 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 
 ## cutToFirstSignificantSubdomainCustomWithWWW \{#cutToFirstSignificantSubdomainCustomWithWWW\}
 
-Появилась в версии: v21.1
+Появилась в версии: v21.1.0
 
 Возвращает часть доменного имени, включающую домены верхнего уровня до первого значимого поддомена, при этом префикс &#39;www&#39; не удаляется. Принимает имя пользовательского списка TLD. Может быть полезно, если вам нужен актуальный список TLD или у вас есть собственный список.
 
@@ -399,7 +399,7 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 ## cutToFirstSignificantSubdomainCustomWithWWWRFC \{#cutToFirstSignificantSubdomainRFC\}
 
-Добавлена в версии: v22.10
+Добавлена в версии: v22.10.0
 
 Возвращает часть домена, которая включает верхнеуровневые субдомены до первого значимого субдомена, не удаляя `www`.
 Принимает имя пользовательского списка TLD.
@@ -445,7 +445,7 @@ www.example.custom
 
 ## cutToFirstSignificantSubdomainRFC \{#cutToFirstSignificantSubdomainWithWWW\}
 
-Добавлена в: v22.10
+Добавлена в: v22.10.0
 
 Возвращает часть доменного имени, которая включает поддомены верхнего уровня до [«первого значимого поддомена»](/sql-reference/functions/url-functions#firstSignificantSubdomain). Аналогична [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
@@ -481,7 +481,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWW \{#cutToFirstSignificantSubdomainWithWWWRFC\}
 
-Добавлена в версии: v20.12
+Добавлена в версии: v20.12.0
 
 Возвращает часть доменного имени, включающую домен верхнего уровня и поддомены до «первого значимого поддомена», при этом префикс &#39;www.&#39; не удаляется.
 
@@ -520,7 +520,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWWRFC \{#cutURLParameter\}
 
-Появилась в: v22.10
+Появилась в: v22.10.0
 
 Возвращает часть доменного имени, включающую поддомены верхнего уровня вплоть до «первого значимого поддомена», без удаления `www`. Аналогична [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
@@ -556,7 +556,7 @@ SELECT
 
 ## cutURLParameter \{#cutWWW\}
 
-Впервые появилась в версии: v1.1
+Впервые появилась в версии: v1.1.0
 
 Удаляет параметр `name` из URL, если он присутствует.
 Эта функция не кодирует и не декодирует символы в именах параметров, например, `Client ID` и `Client%20ID` рассматриваются как разные имена параметров.
@@ -594,7 +594,7 @@ SELECT
 
 ## cutWWW \{#decodeURLComponent\}
 
-Добавлен в версии v1.1
+Добавлен в версии v1.1.0
 
 Удаляет начальное `www.` из доменного имени URL-адреса, если оно присутствует.
 
@@ -628,7 +628,7 @@ SELECT cutWWW('http://www.example.com/path?query=value#fragment');
 
 ## decodeURLComponent \{#decodeURLFormComponent\}
 
-Добавлено в версии v1.1
+Добавлено в версии v1.1.0
 
 Принимает URL-кодированную строку на вход и декодирует её в исходное, человекочитаемое представление.
 
@@ -662,7 +662,7 @@ SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS Decod
 
 ## decodeURLFormComponent \{#domain\}
 
-Впервые добавлена в v1.1
+Впервые добавлена в v1.1.0
 
 Декодирует URL-кодированные строки по правилам кодирования веб-форм ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), при которых знаки `+` преобразуются в пробелы, а процент-кодированные символы декодируются.
 
@@ -696,7 +696,7 @@ SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') A
 
 ## domain \{#domainRFC\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Извлекает имя хоста из URL-адреса.
 
@@ -732,7 +732,7 @@ SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
 
 ## domainRFC \{#domainWithoutWWW\}
 
-Введена в версии v22.10
+Введена в версии v22.10.0
 
 Извлекает имя хоста из URL.
 Аналогична функции [`domain`](#domain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
@@ -769,7 +769,7 @@ SELECT
 
 ## domainWithoutWWW \{#domainWithoutWWWRFC\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает домен URL-адреса без ведущего `www.`, если он присутствует.
 
@@ -803,7 +803,7 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 
 ## domainWithoutWWWRFC \{#encodeURLComponent\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает домен без начального `www.`, если оно присутствует. Аналогична [`domainWithoutWWW`](#domainWithoutWWW), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
 
@@ -839,7 +839,7 @@ SELECT
 
 ## encodeURLComponent \{#encodeURLFormComponent\}
 
-Введена в версии: v22.3
+Введена в версии: v22.3.0
 
 Принимает обычную строку и преобразует её в URL-кодированный формат (percent-encoding), в котором специальные символы заменяются их процентно-кодированными эквивалентами.
 
@@ -873,7 +873,7 @@ SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedUR
 
 ## encodeURLFormComponent \{#extractURLParameter\}
 
-Добавлена в: v22.3
+Добавлена в: v22.3.0
 
 Кодирует строки по правилам кодирования данных HTML-форм ([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html)), при которых пробелы заменяются на символ «+», а специальные символы кодируются с использованием процентного кодирования.
 
@@ -907,7 +907,7 @@ SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS En
 
 ## extractURLParameter \{#extractURLParameterNames\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает значение параметра `name` в URL, если он присутствует; в противном случае возвращается пустая строка.
 Если существует несколько параметров с этим именем, возвращается первое вхождение.
@@ -944,7 +944,7 @@ SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'p
 
 ## extractURLParameterNames \{#extractURLParameters\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает массив строк, содержащий имена параметров URL.
 Значения не декодируются.
@@ -979,7 +979,7 @@ SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2
 
 ## extractURLParameters \{#firstSignificantSubdomain\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает массив строк вида `name=value`, соответствующих URL-параметрам.
 Значения не декодируются.
@@ -996,7 +996,7 @@ extractURLParameters(url)
 
 **Возвращаемое значение**
 
-Возвращает массив строк формата `name=value`, соответствующих параметрам URL. [`Array(String)`](/sql-reference/data-types/array)
+Возвращает массив строк вида `name=value`, соответствующих параметрам URL. [`Array(String)`](/sql-reference/data-types/array)
 
 **Примеры**
 
@@ -1014,7 +1014,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 
 ## firstSignificantSubdomain \{#firstSignificantSubdomainCustom\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает «первый значимый поддомен».
 
@@ -1050,7 +1050,7 @@ SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
 
 ## firstSignificantSubdomainCustom \{#firstSignificantSubdomainCustomRFC\}
 
-Введена в версии v21.1
+Введена в версии v21.1.0
 
 Возвращает первый значимый поддомен URL на основе пользовательского списка TLD (Top-Level Domain). Имя пользовательского списка TLD соответствует конфигурации, которая определяет, какие суффиксы доменов следует считать доменами верхнего уровня. Это полезно для нестандартных иерархий доменов верхнего уровня. Функция использует упрощённый алгоритм разбора URL, который предполагает, что протокол и всё следующее за ним уже удалены.
 
@@ -1083,7 +1083,7 @@ example
 
 ## firstSignificantSubdomainCustomRFC \{#firstSignificantSubdomainRFC\}
 
-Добавлена в версии v22.10
+Добавлена в версии v22.10.0
 
 Похожа на `firstSignificantSubdomainCustom`, но использует разбор URL в соответствии с RFC 3986 вместо упрощённого алгоритма.
 
@@ -1116,7 +1116,7 @@ example
 
 ## firstSignificantSubdomainRFC \{#fragment\}
 
-Введена в версии: v22.10
+Введена в версии: v22.10.0
 
 Возвращает «первый значимый поддомен» в соответствии с RFC 1034.
 
@@ -1136,7 +1136,7 @@ firstSignificantSubdomainRFC(url)
 
 ## fragment \{#netloc\}
 
-Добавлено в версии v1.1
+Добавлено в версии v1.1.0
 
 Возвращает идентификатор фрагмента без начального символа `#`.
 
@@ -1170,7 +1170,7 @@ SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1
 
 ## netloc \{#path\}
 
-Добавлено в: v20.5
+Добавлено в: v20.5.0
 
 Извлекает сетевую часть (`username:password@host:port`) из URL.
 
@@ -1204,7 +1204,7 @@ SELECT netloc('http://paul@www.example.com:80/');
 
 ## path \{#pathFull\}
 
-Введено в версии: v1.1
+Введено в версии: v1.1.0
 
 Возвращает путь URL-адреса без строки запроса.
 
@@ -1238,7 +1238,7 @@ SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?
 
 ## pathFull \{#port\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 То же, что и [`path`](#path), но включает строку запроса и фрагмент URL-адреса.
 
@@ -1272,7 +1272,7 @@ SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functio
 
 ## port \{#portRFC\}
 
-Введена в версии: v20.5
+Введена в версии: v20.5.0
 
 Возвращает порт URL-адреса или `default_port`, если в URL-адресе порт не указан или URL-адрес не удаётся разобрать.
 
@@ -1307,7 +1307,7 @@ SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/do
 
 ## portRFC \{#protocol\}
 
-Введена в версии v22.10
+Введена в версии v22.10.0
 
 Возвращает порт или `default_port`, если URL не содержит порта или не может быть разобран.
 Аналогична [`port`](#port), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).
@@ -1343,7 +1343,7 @@ SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:pass
 
 ## protocol \{#queryString\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Извлекает протокол из URL.
 
@@ -1379,7 +1379,7 @@ SELECT protocol('https://clickhouse.com/');
 
 ## queryString \{#queryStringAndFragment\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает строку запроса URL без начального знака вопроса, `#` и всего, что следует после `#`.
 
@@ -1413,7 +1413,7 @@ SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
 
 ## queryStringAndFragment \{#topLevelDomain\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает строку запроса и идентификатор фрагмента URL.
 
@@ -1447,7 +1447,7 @@ SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123
 
 ## topLevelDomain \{#topLevelDomainRFC\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Извлекает домен верхнего уровня из URL-адреса.
 
@@ -1493,7 +1493,7 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 
 ## topLevelDomainRFC
 
-Введена в: v22.10
+Введена в: v22.10.0
 
 Извлекает домен верхнего уровня из URL-адреса.
 Аналогична функции [`topLevelDomain`](#topLevelDomain), но соответствует [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986).

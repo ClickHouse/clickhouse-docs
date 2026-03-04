@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesGK \{#quantilesGK\}
 
-引入版本：v23.4
+引入版本：v23.4.0
 
 使用 [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) 算法，对数值数据序列在多个不同分位点上同时计算[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -53,7 +53,7 @@ SELECT quantilesGK(1, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────────────────┘
 ```
 
-**更高精度的分位数计算**
+**更高精度的分位数**
 
 ```sql title=Query
 SELECT quantilesGK(100, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);

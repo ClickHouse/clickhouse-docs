@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumKahan \{#sumKahan\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Вычисляет сумму чисел с использованием [алгоритма компенсированного суммирования Кэхэна](https://en.wikipedia.org/wiki/Kahan_summation_algorithm).
 Работает медленнее, чем функция [`sum`](/sql-reference/aggregate-functions/reference/sum).

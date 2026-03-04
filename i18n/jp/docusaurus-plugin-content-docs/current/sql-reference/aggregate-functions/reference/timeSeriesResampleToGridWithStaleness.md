@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResampleToGridWithStaleness \{#timeSeriesResampleToGridWithStaleness\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアとして与えられたタイムシリーズデータを、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッドに再サンプリングする集約関数です。グリッド上の各ポイントについて、（指定された時間ウィンドウ内で）最も新しいサンプルが選択されます。
 

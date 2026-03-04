@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## assumeNotNull \{#assumeNotNull\}
 
-Появилась в v1.1
+Появилась в v1.1.0
 
 Возвращает соответствующее значение не-`Nullable` для значения типа [`Nullable`](../data-types/nullable.md).
 Если исходное значение равно `NULL`, может быть возвращён произвольный результат.
@@ -68,7 +68,7 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 
 ## coalesce \{#coalesce\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает левый аргумент, не равный `NULL`.
 
@@ -121,7 +121,7 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 
 ## firstNonDefault \{#firstNonDefault\}
 
-Впервые появилась в версии v25.9
+Впервые появилась в версии v25.9.0
 
 Возвращает первое значение, отличное от значения по умолчанию, среди аргументов
 
@@ -171,7 +171,7 @@ SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
 1
 ```
 
-**нулевое значение для Nullable**
+**ноль типа Nullable**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
@@ -183,7 +183,7 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 
 ## ifNull \{#ifNull\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает альтернативное значение, если первый аргумент равен `NULL`.
 
@@ -218,7 +218,7 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 
 ## isNotNull \{#isNotNull\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Проверяет, что аргумент не равен `NULL`.
 
@@ -264,7 +264,7 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNull \{#isNull\}
 
-Впервые появилась в v1.1
+Впервые появилась в v1.1.0
 
 Проверяет, имеет ли аргумент значение `NULL`.
 
@@ -310,7 +310,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 ## isNullable \{#isNullable\}
 
-Впервые появилась в v22.7
+Впервые появилась в v22.7.0
 
 Проверяет, является ли тип данных аргумента `Nullable` (то есть допускает значения `NULL`).
 
@@ -353,7 +353,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 ## isZeroOrNull \{#isZeroOrNull\}
 
-Добавлена в версии: v20.3
+Добавлена в версии: v20.3.0
 
 Проверяет, является ли аргумент нулём (`0`) или `NULL`.
 
@@ -398,7 +398,7 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 
 ## nullIf \{#nullIf\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает `NULL`, если оба аргумента равны.
 
@@ -433,7 +433,7 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 
 ## toNullable \{#toNullable\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Преобразует тип переданного аргумента в `Nullable`.
 

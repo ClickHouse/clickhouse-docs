@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined \{#uniqCombined\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 서로 다른 인자 값의 대략적인 개수를 계산합니다.
 쿼리 처리 순서에 의존하지 않는, 결정론적인 방식으로 결과를 반환합니다.
@@ -68,7 +68,7 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 └──────────────────────┘
 ```
 
-**사용자 정의 정밀도 사용**
+**사용자 지정 정밀도**
 
 ```sql title=Query
 SELECT uniqCombined(15)(number) FROM numbers(1e5);

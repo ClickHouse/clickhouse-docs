@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 计算分类特征相对于二元目标变量的信息值（Information Value，IV）。
 
@@ -55,7 +55,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**包含用户人口统计学信息的多个分类特征**
+**包含用户人口统计特征的多个分类特征**
 
 ```sql title=Query
 SELECT categoricalInformationValue(
