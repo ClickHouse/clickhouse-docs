@@ -10,16 +10,16 @@ doc_type: 'guide'
 # 如何在 Linux 上构建 ClickHouse \{#how-to-build-clickhouse-on-linux\}
 
 :::info 无需自行构建 ClickHouse！
-你可以按照[快速开始](https://clickhouse.com/#quick-start)中的说明安装预编译的 ClickHouse。
+你可以按照[快速开始](https://clickhouse.com/docs/get-started/quick-start)中的说明安装预编译的 ClickHouse。
 :::
 
 ClickHouse 可以在以下平台上构建：
 
-- x86_64
-- AArch64
-- PowerPC 64 LE（实验性）
-- s390/x（实验性）
-- RISC-V 64（实验性）
+* x86&#95;64
+* AArch64
+* PowerPC 64 LE (实验性) 
+* s390/x (实验性) 
+* RISC-V 64 (实验性)
 
 ## 前提条件 \{#assumptions\}
 
