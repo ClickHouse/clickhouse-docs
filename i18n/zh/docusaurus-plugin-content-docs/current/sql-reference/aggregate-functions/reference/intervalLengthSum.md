@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## intervalLengthSum \{#intervalLengthSum\}
 
-引入版本：v21.7
+引入版本：v21.7.0
 
 接收多个数值区间，将所有重叠部分合并为单个统一区间后，计算其总长度。
 

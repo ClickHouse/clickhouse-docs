@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-引入于：v25.4
+引入于：v25.4.0
 
 在不压缩给定列的情况下估算其压缩比。
 

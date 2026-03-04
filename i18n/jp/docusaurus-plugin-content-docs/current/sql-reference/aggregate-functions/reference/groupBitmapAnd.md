@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapAnd \{#groupBitmapAnd\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 ビットマップカラムに対して AND を計算し、その結果の基数を返します。
 サフィックスコンビネータ [`-State`](/sql-reference/aggregate-functions/combinators#-state) を付与した場合は、ビットマップオブジェクトを返します。

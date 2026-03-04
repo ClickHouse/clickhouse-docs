@@ -9,7 +9,6 @@ doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -441,16 +440,6 @@ ClickHouse는 범용 코덱과 특수 목적 코덱을 모두 지원합니다.
 #### Gorilla \{#gorilla\}
 
 `Gorilla(bytes_size)` — 현재 부동 소수점 값과 이전 값 사이의 XOR을 계산하여 이를 컴팩트한 이진 형식으로 기록합니다. 연속된 값들 사이의 차이가 작을수록, 즉 시계열 값이 더 천천히 변할수록 압축률이 더 좋아집니다. Gorilla TSDB에서 사용되는 알고리즘을 구현하며, 이를 확장하여 64비트 타입을 지원합니다. 사용 가능한 `bytes_size` 값은 1, 2, 4, 8이며, 기본값은 해당 값이 1, 2, 4, 8 중 하나일 때 `sizeof(type)`입니다. 그 밖의 모든 경우에는 1입니다. 추가 정보는 [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078)의 4.1절을 참고하십시오.
-
-#### ALP \{#alp\}
-
-<ExperimentalBadge/>
-
-`ALP()` — 10진수 스케일링에 기반한 부동 소수점 데이터용 적응형 무손실 압축입니다. ALP는 각 값을 10의 거듭제곱을 사용하여 정확한 스케일 정수로 표현한 다음, 결과 정수를 Frame-of-Reference와 비트 패킹으로 압축합니다. 정확하게 표현할 수 없는 값은 예외로 원본 값 그대로 저장합니다. 10진수(예: 계측값, 통화)에서 유래한 숫자에 가장 적합합니다. `Float32`와 `Float64`를 지원합니다. 자세한 내용은 [ALP: Adaptive lossless floating-point compression](https://ir.cwi.nl/pub/33334)을 참조하십시오.
-
-:::note
-이 코덱은 실험적 기능이며 사용을 위해 `SET allow_experimental_codecs = 1`로 설정해야 합니다.
-:::
 
 #### FPC \{#fpc\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## anyLast \{#anyLast\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 カラムで最後に出現した値を選択します。
 

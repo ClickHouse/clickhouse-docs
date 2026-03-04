@@ -1024,6 +1024,78 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
+## Lazy Type Hints (экспериментально) \{#lazy-type-hints\}
+
+:::note
+Эта функция является экспериментальной и требует включения настройки `allow_experimental_json_lazy_type_hints`.
+:::
+
+Когда вы добавляете или изменяете подсказки типов для JSON-столбца с помощью `ALTER TABLE ... MODIFY COLUMN`, ClickHouse обычно перезаписывает все части, чтобы материализовать новые подсказки типов. Для таблиц с большим объёмом исторических данных (сотни терабайт) это может быть чрезвычайно затратно.
+
+**Lazy type hints** позволяют добавлять подсказки типов как операцию, затрагивающую только метаданные, без перезаписи существующих данных:
+
+* **Старые части**: подсказки типов применяются во время выполнения запроса путём приведения от `Dynamic` к указанному типу
+* **Новые части**: подсказки типов материализуются во время операций `INSERT`
+* **Слияния**: подсказки типов материализуются при слиянии частей
+
+Это означает, что вы можете добавить подсказки типов мгновенно, а данные будут постепенно преобразовываться по мере выполнения обычных фоновых слияний.
+
+### Включение ленивых подсказок типов \{#enabling-lazy-type-hints\}
+
+```sql
+SET allow_experimental_json_lazy_type_hints = 1;
+```
+
+
+### Пример \{#lazy-type-hints-example\}
+
+```sql title="Query"
+-- Create a table and insert data
+CREATE TABLE test_lazy (json JSON) ENGINE = MergeTree ORDER BY tuple();
+INSERT INTO test_lazy VALUES ('{"user_id": "123", "score": "95.5"}');
+
+-- Enable experimental setting
+SET allow_experimental_json_lazy_type_hints = 1;
+
+-- Add type hints - this completes instantly without mutation
+ALTER TABLE test_lazy MODIFY COLUMN json JSON(user_id UInt64, score Float64);
+
+-- Query the data - type hints are applied at read time
+SELECT json.user_id, toTypeName(json.user_id), json.score, toTypeName(json.score) FROM test_lazy;
+```
+
+```text title="Response"
+┌─json.user_id─┬─toTypeName(json.user_id)─┬─json.score─┬─toTypeName(json.score)─┐
+│          123 │ UInt64                   │       95.5 │ Float64                │
+└──────────────┴──────────────────────────┴────────────┴────────────────────────┘
+```
+
+
+### Проверка отсутствия мутаций \{#verifying-no-mutation-occurred\}
+
+Вы можете убедиться, что оператор `ALTER` завершился без мутаций, проверив таблицу `system.mutations`:
+
+```sql
+SELECT * FROM system.mutations WHERE table = 'test_lazy' AND NOT is_done;
+```
+
+При включённых ленивых подсказках типов этот запрос не возвращает строк, что подтверждает, что операция выполнялась только на уровне метаданных.
+
+
+### Материализация подсказок типов \{#materializing-type-hints\}
+
+Чтобы материализовать подсказки типов в существующих данных, вы можете:
+
+1. **Подождать фоновых слияний**: ClickHouse автоматически материализует подсказки типов при слиянии частей
+2. **Принудительно выполнить слияние**: Используйте `OPTIMIZE TABLE test_lazy FINAL`, чтобы немедленно объединить все части
+3. **Перезаписать части**: Используйте `ALTER TABLE test_lazy REWRITE PARTS`, чтобы перезаписать части с новыми метаданными
+
+### Ограничения \{#lazy-type-hints-limitations\}
+
+* Эта возможность является экспериментальной и может измениться в будущих версиях
+* Преобразование типов во время выполнения запроса может иметь существенные накладные расходы по сравнению с предматериализованными типами, особенно для больших JSON-объектов
+* Эта возможность применяется только при изменении `typed_paths` (подсказок типов); другие параметры JSON, такие как `max_dynamic_paths`, `SKIP` или `SKIP REGEXP`, по-прежнему требуют Мутации
+
 ## Сравнение значений типа JSON \{#comparison-between-values-of-the-json-type\}
 
 Объекты JSON сравниваются аналогично значениям типа `Map`.

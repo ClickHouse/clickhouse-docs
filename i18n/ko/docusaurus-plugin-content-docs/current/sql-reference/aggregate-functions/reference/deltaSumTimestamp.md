@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## deltaSumTimestamp \{#deltaSumTimestamp\}
 
-도입 버전: v21.6
+도입 버전: v21.6.0
 
 연속된 행 사이의 차이를 더합니다.
 차이가 음수인 경우에는 무시합니다.

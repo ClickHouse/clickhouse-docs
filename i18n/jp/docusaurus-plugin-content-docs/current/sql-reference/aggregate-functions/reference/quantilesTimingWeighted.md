@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesTimingWeighted \{#quantilesTimingWeighted\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データのシーケンスに対して、各要素の重みを考慮しつつ、異なるレベルの複数の[分位数](https://en.wikipedia.org/wiki/Quantile)を、指定された精度で同時に計算します。
 

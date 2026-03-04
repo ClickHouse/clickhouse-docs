@@ -1021,6 +1021,78 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
+## Lazy Type Hints (実験的) \{#lazy-type-hints\}
+
+:::note
+この機能は実験的であり、`allow_experimental_json_lazy_type_hints` の設定を有効にする必要があります。
+:::
+
+`ALTER TABLE ... MODIFY COLUMN` を使って JSON カラムに type hint を追加または変更すると、通常 ClickHouse は新しい type hint を具体化するために、すべてのデータパーツを書き換えます。過去データを大量 (数百テラバイト) に保持するテーブルでは、これは非常にコストが高くなり得ます。
+
+**Lazy type hints** を使うと、既存データを書き換えることなく、メタデータのみの操作として type hint を追加できます：
+
+* **古いパーツ**：クエリ時に `Dynamic` から指定された型へのキャストによって type hint が適用されます
+* **新しいパーツ**：`INSERT` 実行時に type hint が具体化されます
+* **マージ**：パーツがマージされる際に type hint が具体化されます
+
+これにより、type hint を即座に追加でき、通常のバックグラウンドマージが進行するにつれてデータが徐々に変換されていきます。
+
+### Lazy Type Hints を有効にする \{#enabling-lazy-type-hints\}
+
+```sql
+SET allow_experimental_json_lazy_type_hints = 1;
+```
+
+
+### 例 \{#lazy-type-hints-example\}
+
+```sql title="Query"
+-- Create a table and insert data
+CREATE TABLE test_lazy (json JSON) ENGINE = MergeTree ORDER BY tuple();
+INSERT INTO test_lazy VALUES ('{"user_id": "123", "score": "95.5"}');
+
+-- Enable experimental setting
+SET allow_experimental_json_lazy_type_hints = 1;
+
+-- Add type hints - this completes instantly without mutation
+ALTER TABLE test_lazy MODIFY COLUMN json JSON(user_id UInt64, score Float64);
+
+-- Query the data - type hints are applied at read time
+SELECT json.user_id, toTypeName(json.user_id), json.score, toTypeName(json.score) FROM test_lazy;
+```
+
+```text title="Response"
+┌─json.user_id─┬─toTypeName(json.user_id)─┬─json.score─┬─toTypeName(json.score)─┐
+│          123 │ UInt64                   │       95.5 │ Float64                │
+└──────────────┴──────────────────────────┴────────────┴────────────────────────┘
+```
+
+
+### 変更が発生していないことの確認 \{#verifying-no-mutation-occurred\}
+
+`system.mutations` テーブルを確認することで、`ALTER` がミューテーションを伴わずに完了したことを確認できます。
+
+```sql
+SELECT * FROM system.mutations WHERE table = 'test_lazy' AND NOT is_done;
+```
+
+遅延型ヒントを有効にしている場合、このクエリは1行も返さないため、操作がメタデータだけを対象としたものであることが確認できます。
+
+
+### 型ヒントのマテリアライズ \{#materializing-type-hints\}
+
+既存データの型ヒントをマテリアライズするには、次のいずれかの方法を使用します。
+
+1. **バックグラウンドマージ完了を待つ**: ClickHouse は、パーツがマージされる際に自動的に型ヒントをマテリアライズします
+2. **マージを強制する**: `OPTIMIZE TABLE test_lazy FINAL` を使用して、すべてのパーツをすぐにマージします
+3. **パーツを書き換える**: `ALTER TABLE test_lazy REWRITE PARTS` を使用して、新しいメタデータでパーツを書き換えます
+
+### 制限事項 \{#lazy-type-hints-limitations\}
+
+* この機能は実験的であり、将来のバージョンで変更される可能性があります
+* クエリ時の型変換は、特に大きな JSON オブジェクトに対しては、事前にマテリアライズされた型と比べて大きなパフォーマンス上のオーバーヘッドが発生する可能性があります
+* この機能が適用されるのは `typed_paths` (型ヒント) を変更する場合のみであり、`max_dynamic_paths`、`SKIP`、`SKIP REGEXP` などの他の JSON パラメータには引き続き mutation が必要です
+
 ## JSON 型の値の比較 \{#comparison-between-values-of-the-json-type\}
 
 JSON オブジェクトは Map 型と同様に比較されます。

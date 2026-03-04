@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## mannWhitneyUTest \{#mannWhitneyUTest\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 2つの母集団からの標本に対して、Mann-Whitney の順位和検定を適用します。
 

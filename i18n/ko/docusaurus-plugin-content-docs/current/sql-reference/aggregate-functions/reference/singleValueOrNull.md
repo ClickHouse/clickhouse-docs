@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## singleValueOrNull \{#singleValueOrNull\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 집계 함수 `singleValueOrNull`는 `x = ALL (SELECT ...)`과 같은 서브쿼리 연산자를 구현하는 데 사용됩니다. 이 함수는 데이터에 NULL이 아닌 서로 다른 값이 하나만 존재하는지 확인합니다.
 서로 다른 값이 정확히 하나라면 그 값을 반환합니다. 값이 하나도 없거나 둘 이상 존재하면 NULL을 반환합니다.

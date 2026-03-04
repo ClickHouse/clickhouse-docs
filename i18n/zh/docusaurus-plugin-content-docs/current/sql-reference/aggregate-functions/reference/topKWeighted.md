@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## topKWeighted \{#topKWeighted\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个数组，包含指定列中近似出现频率最高的值。
 结果数组按照值的近似出现频率降序排序（而不是按值本身排序）。
@@ -58,7 +58,7 @@ VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10));
 └────────────────────────┘
 ```
 
-**使用 counts 参数**
+**使用 `counts` 参数**
 
 ```sql title=Query
 SELECT topKWeighted(2, 10, 'counts')(k, w)

@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## corrStable \{#corrStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
+Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-Similar to the [`corr`](../reference/corr.md) function, but uses a numerically stable algorithm.
-As a result, `corrStable` is slower than `corr` but produces a more accurate result.
+Аналогична функции [`corr`](../reference/corr.md), но использует численно стабильный алгоритм.
+В результате `corrStable` работает медленнее, чем `corr`, но даёт более точный результат.
 
 **Syntax**
 
@@ -32,16 +32,16 @@ corrStable(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — Первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the Pearson correlation coefficient. [`Float64`](/sql-reference/data-types/float)
+Возвращает коэффициент корреляции Пирсона. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**Примеры**
 
-**Basic correlation calculation with stable algorithm**
+**Базовое вычисление корреляции с использованием стабильного алгоритма**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

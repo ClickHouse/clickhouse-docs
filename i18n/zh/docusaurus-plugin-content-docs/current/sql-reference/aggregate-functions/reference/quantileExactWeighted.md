@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeighted \{#quantileExactWeighted\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑每个元素的权重。
 

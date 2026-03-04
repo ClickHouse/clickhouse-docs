@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## assumeNotNull \{#assumeNotNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对于类型为 [`Nullable`](../data-types/nullable.md) 的值，返回其对应的非 `Nullable` 类型值。
 如果原始值为 `NULL`，则返回结果是任意的（未定义）。
@@ -68,7 +68,7 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 
 ## coalesce \{#coalesce\}
 
-在 v1.1 版本中引入
+在 v1.1.0 版本中引入
 
 返回最左侧的非 `NULL` 参数。
 
@@ -121,7 +121,7 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 
 ## firstNonDefault \{#firstNonDefault\}
 
-引入于：v25.9
+引入于：v25.9.0
 
 从一组参数中返回第一个非默认值
 
@@ -183,7 +183,7 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 
 ## ifNull \{#ifNull\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 如果第一个参数为 `NULL`，则返回一个替代值。
 
@@ -218,7 +218,7 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 
 ## isNotNull \{#isNotNull\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 检查参数是否不为 `NULL`。
 
@@ -264,7 +264,7 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNull \{#isNull\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 检查参数是否为 `NULL`。
 
@@ -310,7 +310,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 ## isNullable \{#isNullable\}
 
-引入版本：v22.7
+引入版本：v22.7.0
 
 检查参数的数据类型是否为 `Nullable`（即是否允许 `NULL` 值）。
 
@@ -353,7 +353,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 ## isZeroOrNull \{#isZeroOrNull\}
 
-自 v20.3 引入
+自 v20.3.0 引入
 
 检查参数是否为零（`0`）或 `NULL`。
 
@@ -398,7 +398,7 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 
 ## nullIf \{#nullIf\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 如果两个参数相等，则返回 `NULL`。
 
@@ -433,7 +433,7 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 
 ## toNullable \{#toNullable\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将传入参数的类型转换为 `Nullable`。
 

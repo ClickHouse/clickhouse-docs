@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileInterpolatedWeighted \{#quantileInterpolatedWeighted\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 各要素の重みを考慮し、線形補間を用いて数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

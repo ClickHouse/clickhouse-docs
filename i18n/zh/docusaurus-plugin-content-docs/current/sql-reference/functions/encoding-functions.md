@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## bech32Decode \{#bech32Decode\}
 
-引入于：v25.6
+引入于：v25.6.0
 
 解码由 bech32 或 bech32m 算法生成的 Bech32 地址字符串。
 
@@ -65,7 +65,7 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 
 ## bech32Encode \{#bech32Encode\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 使用 [Bech32 或 Bech32m](https://en.bitcoin.it/wiki/Bech32) 算法对二进制数据字符串以及人类可读部分（HRP）进行编码。
 
@@ -129,7 +129,7 @@ abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 
 ## bin \{#bin\}
 
-引入于：v21.8
+引入于：v21.8.0
 
 返回一个包含参数二进制表示的字符串，针对不同类型遵循以下逻辑：
 
@@ -182,7 +182,7 @@ SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────┘
 ```
 
-**Float64 数值**
+**Float64 浮点数**
 
 ```sql title=Query
 SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
@@ -209,7 +209,7 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 
 ## bitPositionsToArray \{#bitPositionsToArray\}
 
-引入版本：v21.7
+引入版本：v21.7.0
 
 该函数返回无符号整数二进制表示中所有 1 比特的位置（按升序排列）。
 对于有符号输入整数，会先将其转换为无符号整数。
@@ -256,7 +256,7 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 
 ## bitmaskToArray \{#bitmaskToArray\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 此函数将一个整数分解为若干个 2 的幂之和。
 这些 2 的幂以按升序排列的数组形式返回。
@@ -303,7 +303,7 @@ SELECT bitmaskToArray(8) AS powers_of_two
 
 ## bitmaskToList \{#bitmaskToList\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 bitmaskToArray 类似，但返回的是由 2 的幂构成、以逗号分隔的字符串。
 
@@ -337,7 +337,7 @@ SELECT bitmaskToList(50) AS powers_list
 
 ## char \{#char\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 返回一个字符串，其长度等于传入参数的数量，其中每个字节的值等于对应的参数值。接受多个数值类型参数。
 
@@ -371,7 +371,7 @@ SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
 └───────┘
 ```
 
-**构建任意编码**
+**构造任意编码字符串**
 
 ```sql title=Query
 -- You can construct a string of arbitrary encoding by passing the corresponding bytes.
@@ -387,7 +387,7 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 
 ## hex \{#hex\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回一个字符串，包含参数的十六进制表示形式，不同类型按照以下逻辑处理：
 
@@ -467,7 +467,7 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 
 ## hilbertDecode \{#hilbertDecode\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 将 Hilbert 曲线索引解码为无符号整数的元组，用于表示多维空间中的坐标。
 
@@ -537,7 +537,7 @@ SELECT hilbertDecode(tuple(2), 32768)
 ["128"]
 ```
 
-**列用法**
+**列的用法**
 
 ```sql title=Query
 -- First create the table and insert some data
@@ -559,7 +559,7 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 
 ## hilbertEncode \{#hilbertEncode\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 为一组无符号整数计算 Hilbert 曲线的编码。
 
@@ -611,7 +611,7 @@ SELECT hilbertEncode(3, 4)
 31
 ```
 
-**展开模式**
+**扩展模式**
 
 ```sql title=Query
 -- Range expansion can be beneficial when you need a similar distribution for
@@ -637,7 +637,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**单参数展开形式**
+**单个参数（展开模式）**
 
 ```sql title=Query
 -- If a single argument is provided with a tuple specifying bit shifts, the function
@@ -671,7 +671,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 
 ## mortonDecode \{#mortonDecode\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 将 Morton 编码（ZCurve）解码为对应的无符号整数元组。
 
@@ -710,7 +710,7 @@ mortonDecode(range_mask, code)
 **参数**
 
 * `tuple_size` — 不超过 8 的整数值。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
-* `range_mask` — 在扩展模式下，每个参数对应的掩码。该掩码是一个无符号整数的元组。掩码中的每个数字用于配置范围收缩量。[`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
+* `range_mask` — 在扩展模式下，每个参数对应的掩码。该掩码是一个无符号整数的元组。掩码中的每个数字用于配置范围缩减倍数。[`Tuple(UInt8/16/32/64)`](/sql-reference/data-types/tuple)
 * `code` — UInt64 代码。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -739,7 +739,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**扩展模式（省略一个参数）**
+**扩展模式（缩减一个参数的范围）**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -777,7 +777,7 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 
 ## mortonEncode \{#mortonEncode\}
 
-引入于：v24.6
+引入于：v24.6.0
 
 为一组无符号整数计算 Morton 编码（Z 曲线，ZCurve）。
 
@@ -858,7 +858,7 @@ SELECT mortonEncode(1)
 1
 ```
 
-**单参数扩展形式**
+**单参数扩展模式**
 
 ```sql title=Query
 SELECT mortonEncode(tuple(2), 128)
@@ -896,7 +896,7 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 
 ## sqidDecode \{#sqidDecode\}
 
-引入于：v24.1
+引入于：v24.1.0
 
 将一个 [sqid](https://sqids.org/) 解码回数字数组。
 
@@ -930,7 +930,7 @@ SELECT sqidDecode('gXHfJ1C6dN');
 
 ## sqidEncode \{#sqidEncode\}
 
-自 v24.1 引入
+自 v24.1.0 引入
 
 将数字转换为一个 [sqid](https://sqids.org/)（类似 YouTube 的 ID 字符串）。
 
@@ -966,7 +966,7 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 
 ## unbin \{#unbin\}
 
-引入版本：v21.8
+引入版本：v21.8.0
 
 将参数中每两位二进制数字解释为一个数值，并将其转换为该数值所表示的字节。该函数执行与 `bin` 相反的操作。
 
@@ -1020,7 +1020,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 
 ## unhex \{#unhex\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 执行与 [`hex`](#hex) 相反的操作。它将参数中的每一对十六进制数字解释为一个数值，并将其转换为该数值所表示的字节。返回值是一个二进制字符串（BLOB）。
 

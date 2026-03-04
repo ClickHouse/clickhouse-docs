@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argAndMin \{#argAndMin\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 최솟값인 `val`에 대해 `arg`와 `val` 값을 계산합니다.
 최솟값인 `val`이 동일한 여러 행이 있는 경우, 어떤 `arg` 및 `val`이 반환될지는 결정적이지 않습니다.
@@ -74,7 +74,7 @@ SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
 └──────────────┴─────────────────┴────────┘
 ```
 
-**튜플을 인수로 사용하기**
+**Tuple을 인수로 사용하기**
 
 ```sql title=Query
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtPop \{#kurtPop\}
 
-Появился в версии: v20.1
+Появился в версии: v20.1.0
 
 Вычисляет [эксцесс](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
 

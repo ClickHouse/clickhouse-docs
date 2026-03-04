@@ -121,7 +121,7 @@ LIMIT 10
 
 ## CAST \{#CAST\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 将一个值转换为指定的数据类型。
 与 reinterpret 函数不同，CAST 会尝试在目标类型中生成相同的值。
@@ -185,7 +185,7 @@ SELECT '123'::UInt32
 
 ## DATE \{#DATE\}
 
-引入于：v21.2
+引入于：v21.2.0
 
 将参数转换为 `Date` 数据类型。这是用于 MySQL 兼容性的 `toDate` 的别名，其行为与 `toDate` 相同。
 
@@ -218,7 +218,7 @@ SELECT DATE('2023-01-01')
 
 ## accurateCast \{#accurateCast\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将一个值转换为指定的数据类型。与 [`CAST`](#CAST) 不同，`accurateCast` 会执行更严格的类型检查，如果转换会导致数据精度丢失，或者根本无法完成转换，则会抛出异常。
 
@@ -268,7 +268,7 @@ SELECT accurateCast('123.45', 'Float64')
 
 ## accurateCastOrDefault \{#accurateCastOrDefault\}
 
-引入自：v21.1
+引入自：v21.1.0
 
 将一个值转换为指定的数据类型。
 类似于 [`accurateCast`](#accurateCast)，但在无法精确完成转换时，不抛出异常，而是返回一个默认值。
@@ -333,7 +333,7 @@ SELECT accurateCastOrDefault('abc', 'UInt32')
 
 ## accurateCastOrNull \{#accurateCastOrNull\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将一个值转换为指定的数据类型。
 与 [`accurateCast`](#accurateCast) 类似，但如果无法精确完成转换，则返回 `NULL`，而不是抛出异常。
@@ -384,7 +384,7 @@ SELECT accurateCastOrNull('abc', 'UInt32')
 
 ## formatRow \{#formatRow\}
 
-引入自：v20.7
+引入自：v20.7.0
 
 按照给定格式将任意表达式转换为字符串。
 
@@ -453,7 +453,7 @@ SETTINGS format_custom_result_before_delimiter='<prefix>\n', format_custom_resul
 
 ## formatRowNoNewline \{#formatRowNoNewline\}
 
-引入版本：v20.7
+引入版本：v20.7.0
 
 与 [`formatRow`](#formatRow) 相同，但会去除每一行末尾的换行符。
 
@@ -494,7 +494,7 @@ FROM numbers(3)
 
 ## fromUnixTimestamp64Micro \{#fromUnixTimestamp64Micro\}
 
-引入于：v20.5
+引入于：v20.5.0
 
 将以微秒为单位的 Unix 时间戳转换为具有微秒精度的 `DateTime64` 值。
 
@@ -532,7 +532,7 @@ SELECT fromUnixTimestamp64Micro(1640995200123456)
 
 ## fromUnixTimestamp64Milli \{#fromUnixTimestamp64Milli\}
 
-自 v20.5 起引入
+自 v20.5.0 起引入
 
 将以毫秒为单位的 Unix 时间戳转换为具有毫秒精度的 `DateTime64` 值。
 
@@ -570,7 +570,7 @@ SELECT fromUnixTimestamp64Milli(1640995200123)
 
 ## fromUnixTimestamp64Nano \{#fromUnixTimestamp64Nano\}
 
-自 v20.5 引入
+自 v20.5.0 引入
 
 将以纳秒为单位的 Unix 时间戳转换为具有纳秒精度的 [`DateTime64`](/sql-reference/data-types/datetime64) 值。
 
@@ -612,7 +612,7 @@ SELECT fromUnixTimestamp64Nano(1640995200123456789)
 
 ## fromUnixTimestamp64Second \{#fromUnixTimestamp64Second\}
 
-自 v24.12 引入
+自 v24.12.0 引入
 
 将以秒为单位的 Unix 时间戳转换为秒级精度的 `DateTime64` 值。
 
@@ -650,7 +650,7 @@ SELECT fromUnixTimestamp64Second(1640995200)
 
 ## parseDateTime \{#parseDateTime\}
 
-自 v23.3 引入
+自 v23.3.0 引入
 
 按照 MySQL 日期格式字符串对日期和时间字符串进行解析。
 
@@ -692,7 +692,7 @@ SELECT parseDateTime('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTime32BestEffort \{#parseDateTime32BestEffort\}
 
-引入于：v20.9
+引入于：v20.9.0
 
 将日期和时间的字符串表示转换为 [`DateTime`](/sql-reference/data-types/datetime) 数据类型。
 
@@ -757,7 +757,7 @@ AS parseDateTime32BestEffort
 
 ## parseDateTime32BestEffortOrNull \{#parseDateTime32BestEffortOrNull\}
 
-自 v20.9 引入
+自 v20.9.0 引入
 
 与 [`parseDateTime32BestEffort`](#parseDateTime32BestEffort) 相同，但在遇到无法处理的日期格式时返回 `NULL`。
 
@@ -795,7 +795,7 @@ SELECT
 
 ## parseDateTime32BestEffortOrZero \{#parseDateTime32BestEffortOrZero\}
 
-引入版本：v20.9
+引入版本：v20.9.0
 
 与 [`parseDateTime32BestEffort`](#parseDateTime32BestEffort) 相同，不同之处在于，当遇到无法处理的日期格式时，它会返回零日期或零日期时间值。
 
@@ -833,7 +833,7 @@ SELECT
 
 ## parseDateTime64 \{#parseDateTime64\}
 
-引入于：v24.11
+引入于：v24.11.0
 
 根据 MySQL 日期格式字符串解析具有亚秒级精度的日期时间字符串。
 
@@ -873,7 +873,7 @@ SELECT parseDateTime64('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64BestEffort \{#parseDateTime64BestEffort\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 与 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 函数相同，但还会解析毫秒和微秒，并返回 [`DateTime64`](../../sql-reference/data-types/datetime64.md) 数据类型。
 
@@ -920,7 +920,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## parseDateTime64BestEffortOrNull \{#parseDateTime64BestEffortOrNull\}
 
-自 v20.1 起引入。
+自 v20.1.0 起引入。
 
 与 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort) 相同，但在遇到无法处理的日期格式时返回 `NULL`。
 
@@ -958,7 +958,7 @@ SELECT parseDateTime64BestEffortOrNull('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortOrZero \{#parseDateTime64BestEffortOrZero\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 与 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort) 相同，不同之处在于当遇到无法处理的日期格式时，它会返回零值日期或零值日期时间。
 
@@ -996,7 +996,7 @@ SELECT parseDateTime64BestEffortOrZero('2025-01-01 01:01:00.123') AS valid,
 
 ## parseDateTime64BestEffortUS \{#parseDateTime64BestEffortUS\}
 
-引入于：v22.8
+引入于：v22.8.0
 
 与 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort) 相同，但在存在歧义的情况下，该函数优先使用美国日期格式（`MM/DD/YYYY` 等）。
 
@@ -1034,7 +1034,7 @@ SELECT parseDateTime64BestEffortUS('02/10/2025 12:30:45.123') AS us_format,
 
 ## parseDateTime64BestEffortUSOrNull \{#parseDateTime64BestEffortUSOrNull\}
 
-引入版本：v22.8
+引入版本：v22.8.0
 
 与 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort) 相同，只是在存在歧义时，该函数优先采用美国日期格式（如 `MM/DD/YYYY` 等），并在遇到无法处理的日期格式时返回 `NULL`。
 
@@ -1072,7 +1072,7 @@ SELECT parseDateTime64BestEffortUSOrNull('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64BestEffortUSOrZero \{#parseDateTime64BestEffortUSOrZero\}
 
-引入版本：v22.8
+引入版本：v22.8.0
 
 与 [`parseDateTime64BestEffort`](#parseDateTime64BestEffort) 相同，不同之处在于，在存在歧义时，该 FUNCTION 会优先采用美国日期格式（`MM/DD/YYYY` 等），并在遇到无法处理的日期格式时返回零日期或零日期时间。
 
@@ -1110,7 +1110,7 @@ SELECT parseDateTime64BestEffortUSOrZero('02/10/2025 12:30:45.123') AS valid_us,
 
 ## parseDateTime64InJodaSyntax \{#parseDateTime64InJodaSyntax\}
 
-引入于：v24.10
+引入于：v24.10.0
 
 根据 Joda 日期格式字符串解析具有子秒精度的日期时间字符串。
 
@@ -1152,7 +1152,7 @@ SELECT parseDateTime64InJodaSyntax('2025-01-04 23:00:00.123', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTime64InJodaSyntaxOrNull \{#parseDateTime64InJodaSyntaxOrNull\}
 
-自 v24.10 引入
+自 v24.10.0 引入
 
 与 [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax) 相同，但在遇到无法解析的日期格式时返回 `NULL`。
 
@@ -1189,7 +1189,7 @@ SELECT parseDateTime64InJodaSyntaxOrNull('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64InJodaSyntaxOrZero \{#parseDateTime64InJodaSyntaxOrZero\}
 
-引入于：v24.10
+引入于：v24.10.0
 
 与 [`parseDateTime64InJodaSyntax`](#parseDateTime64InJodaSyntax) 相同，但在遇到不可解析的日期格式时返回零日期值。
 
@@ -1226,7 +1226,7 @@ SELECT parseDateTime64InJodaSyntaxOrZero('2025-01-04 23:00:00.123', 'yyyy-MM-dd 
 
 ## parseDateTime64OrNull \{#parseDateTime64OrNull\}
 
-引入版本：v24.11
+引入版本：v24.11.0
 
 与 [`parseDateTime64`](#parseDateTime64) 相同，但在遇到无法解析的日期时间格式时返回 `NULL`。
 
@@ -1239,7 +1239,7 @@ parseDateTime64OrNull(time_string, format[, timezone])
 **参数**
 
 * `time_string` — 要解析为 DateTime64 的字符串。[`String`](/sql-reference/data-types/string)
-* `format` — 指定如何解析 `time_string` 的格式字符串。[`String`](/sql-reference/data-types/string)
+* `format` — 指定如何解析 time&#95;string 的格式字符串。[`String`](/sql-reference/data-types/string)
 * `timezone` — 可选。时区。[`String`](/sql-reference/data-types/string)
 
 **返回值**
@@ -1263,7 +1263,7 @@ SELECT parseDateTime64OrNull('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTime64OrZero \{#parseDateTime64OrZero\}
 
-引入版本：v24.11
+引入版本：v24.11.0
 
 与 [`parseDateTime64`](#parseDateTime64) 相同，但在遇到无法解析的日期格式时返回零日期值。
 
@@ -1300,7 +1300,7 @@ SELECT parseDateTime64OrZero('2025-01-04 23:00:00.123', '%Y-%m-%d %H:%i:%s.%f')
 
 ## parseDateTimeBestEffort \{#parseDateTimeBestEffort\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字符串形式的日期和时间转换为 DateTime 数据类型。
 该函数会解析 [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html)、[RFC 1123 - 5.2.14 RFC-822 日期和时间规范](https://datatracker.ietf.org/doc/html/rfc822)、ClickHouse 自身的格式以及其他一些日期和时间格式。
@@ -1373,7 +1373,7 @@ SELECT parseDateTimeBestEffort('1735689600') AS parseDateTimeBestEffort
 
 ## parseDateTimeBestEffortOrNull \{#parseDateTimeBestEffortOrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 相同，不同之处在于，当遇到无法处理的日期格式时，该函数返回 `NULL`。
 该函数可以解析 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)、[RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55)、ClickHouse 特有的以及其他一些日期和时间格式。
@@ -1423,7 +1423,7 @@ SELECT parseDateTimeBestEffortOrNull('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortOrZero \{#parseDateTimeBestEffortOrZero\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 相同，不同之处在于当遇到无法处理的日期格式时，它会返回全零日期或全零日期时间值。
 该函数可以解析 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)、[RFC 1123 - 5.2.14 RFC-822 Date and Time Specification](https://tools.ietf.org/html/rfc1123#page-55)、ClickHouse 自身以及其他一些日期和时间格式。
@@ -1473,7 +1473,7 @@ SELECT parseDateTimeBestEffortOrZero('23/10/2025 12:12:57') AS valid,
 
 ## parseDateTimeBestEffortUS \{#parseDateTimeBestEffortUS\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对于 ISO 日期格式（例如 `YYYY-MM-DD hh:mm:ss`）以及其他可以无歧义解析出月份和日期部分的日期格式（例如 `YYYYMMDDhhmmss`、`YYYY-MM`、`DD hh` 或 `YYYY-MM-DD hh:mm:ss ±h:mm`），此函数的行为与 [`parseDateTimeBestEffort`](#parseDateTimeBestEffort) 相同。
 如果无法无歧义地解析出月份和日期部分，例如 `MM/DD/YYYY`、`MM-DD-YYYY` 或 `MM-DD-YY`，则该函数会优先按美国日期格式进行解析，而不是 `DD/MM/YYYY`、`DD-MM-YYYY` 或 `DD-MM-YY`。
@@ -1512,7 +1512,7 @@ SELECT parseDateTimeBestEffortUS('02/10/2025') AS us_format,
 
 ## parseDateTimeBestEffortUSOrNull \{#parseDateTimeBestEffortUSOrNull\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 与 [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) 函数相同，只是在遇到无法处理的日期格式时返回 `NULL`。
 
@@ -1551,7 +1551,7 @@ SELECT parseDateTimeBestEffortUSOrNull('02/10/2025') AS valid_us,
 
 ## parseDateTimeBestEffortUSOrZero \{#parseDateTimeBestEffortUSOrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`parseDateTimeBestEffortUS`](#parseDateTimeBestEffortUS) 函数相同，不同之处在于，当遇到无法处理的日期格式时，它会返回零日期（`1970-01-01`）或带时间的零日期（`1970-01-01 00:00:00`）。
 
@@ -1590,7 +1590,7 @@ SELECT parseDateTimeBestEffortUSOrZero('02/10/2025') AS valid_us,
 
 ## parseDateTimeInJodaSyntax \{#parseDateTimeInJodaSyntax\}
 
-引入于：v23.3
+引入于：v23.3.0
 
 根据 Joda 日期格式字符串解析日期和时间字符串。
 
@@ -1632,7 +1632,7 @@ SELECT parseDateTimeInJodaSyntax('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:ss')
 
 ## parseDateTimeInJodaSyntaxOrNull \{#parseDateTimeInJodaSyntaxOrNull\}
 
-自 v23.3 版本引入。
+自 v23.3.0 版本引入。
 
 与 [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax) 相同，但在遇到无法解析的日期格式时返回 `NULL`。
 
@@ -1669,7 +1669,7 @@ SELECT parseDateTimeInJodaSyntaxOrNull('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeInJodaSyntaxOrZero \{#parseDateTimeInJodaSyntaxOrZero\}
 
-引入版本：v23.3
+引入版本：v23.3.0
 
 与 [`parseDateTimeInJodaSyntax`](#parseDateTimeInJodaSyntax) 相同，但在遇到无法解析的日期格式时返回零日期值。
 
@@ -1706,7 +1706,7 @@ SELECT parseDateTimeInJodaSyntaxOrZero('2025-01-04 23:00:00', 'yyyy-MM-dd HH:mm:
 
 ## parseDateTimeOrNull \{#parseDateTimeOrNull\}
 
-自 v23.3 起引入。
+自 v23.3.0 起引入。
 
 与 [`parseDateTime`](#parseDateTime) 相同，但在遇到无法解析的日期格式时返回 `NULL`。
 
@@ -1745,7 +1745,7 @@ SELECT parseDateTimeOrNull('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## parseDateTimeOrZero \{#parseDateTimeOrZero\}
 
-引入版本：v23.3
+引入版本：v23.3.0
 
 与 [`parseDateTime`](#parseDateTime) 相同，但在遇到无法解析的日期格式时返回零值日期。
 
@@ -1782,7 +1782,7 @@ SELECT parseDateTimeOrZero('2025-01-04+23:00:00', '%Y-%m-%d+%H:%i:%s')
 
 ## reinterpret \{#reinterpret\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 对给定值 `x` 复用其在内存中的同一字节序列，并将其按目标类型重新解释。
 
@@ -1832,7 +1832,7 @@ SELECT reinterpret(x'3108b4403108d4403108b4403108d440', 'Array(Float32)') AS str
 
 ## reinterpretAsDate \{#reinterpretAsDate\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将输入值重新解释为一个 Date 类型的值（假定为小端字节序），表示自 Unix 纪元 1970-01-01 起经过的天数。
 
@@ -1867,7 +1867,7 @@ SELECT reinterpretAsDate(65), reinterpretAsDate('A')
 
 ## reinterpretAsDateTime \{#reinterpretAsDateTime\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值按小端序重新解释为一个 DateTime 值，该值表示自 Unix 纪元（1970-01-01）起算的天数。
 
@@ -1902,7 +1902,7 @@ SELECT reinterpretAsDateTime(65), reinterpretAsDateTime('A')
 
 ## reinterpretAsFixedString \{#reinterpretAsFixedString\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 将输入值重新解释为定长字符串（假定为小端字节序）。
 末尾的空字节会被忽略，例如，对于 UInt32 值 255，该函数返回一个仅包含单个字符的字符串。
@@ -1940,7 +1940,7 @@ SELECT
 
 ## reinterpretAsFloat32 \{#reinterpretAsFloat32\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值重新解释为 Float32 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入类型，则输出结果未定义。
@@ -1976,7 +1976,7 @@ SELECT reinterpretAsUInt32(toFloat32(0.2)) AS x, reinterpretAsFloat32(x)
 
 ## reinterpretAsFloat64 \{#reinterpretAsFloat64\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值重新解释为 Float64 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示该输入值，则结果是未定义的。
@@ -2012,7 +2012,7 @@ SELECT reinterpretAsUInt64(toFloat64(0.2)) AS x, reinterpretAsFloat64(x)
 
 ## reinterpretAsInt128 \{#reinterpretAsInt128\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值重新解释为 `Int128` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示该输入值，则输出结果未定义。
@@ -2052,7 +2052,7 @@ SELECT
 
 ## reinterpretAsInt16 \{#reinterpretAsInt16\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值重新解释为 `Int16` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出未定义。
@@ -2092,7 +2092,7 @@ SELECT
 
 ## reinterpretAsInt256 \{#reinterpretAsInt256\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值按位重新解释为 `Int256` 类型的值。
 与 [`CAST`](#CAST) 不同，该 FUNCTION 不尝试保留原始数值——如果目标类型无法表示输入值，则输出结果未定义。
@@ -2132,7 +2132,7 @@ SELECT
 
 ## reinterpretAsInt32 \{#reinterpretAsInt32\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将输入值按 Int32 类型重新解释。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始数值——如果目标类型无法表示输入类型，输出结果未定义。
@@ -2172,7 +2172,7 @@ SELECT
 
 ## reinterpretAsInt64 \{#reinterpretAsInt64\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值重新解释为 `Int64` 类型的值。
 与 [`CAST`](#CAST) 不同，该 FUNCTION 不会尝试保留原始值——如果目标类型无法表示输入值，则输出结果未定义。
@@ -2212,7 +2212,7 @@ SELECT
 
 ## reinterpretAsInt8 \{#reinterpretAsInt8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值按 Int8 类型重新解释为一个值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出是未定义的。
@@ -2252,7 +2252,7 @@ SELECT
 
 ## reinterpretAsString \{#reinterpretAsString\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值重新解释为字符串（假定为小端字节序）。
 末尾的空字节会被忽略，例如，对于 UInt32 值 255，函数会返回一个只包含单个字符的字符串。
@@ -2290,7 +2290,7 @@ SELECT
 
 ## reinterpretAsUInt128 \{#reinterpretAsUInt128\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值重新解释为 `UInt128` 类型的值。
 不同于 [`CAST`](#CAST)，该 FUNCTION 不会尝试保留原始值——如果目标类型无法表示输入值，则输出结果未定义。
@@ -2330,7 +2330,7 @@ SELECT
 
 ## reinterpretAsUInt16 \{#reinterpretAsUInt16\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值重新解释为 `UInt16` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出是未定义的。
@@ -2370,7 +2370,7 @@ SELECT
 
 ## reinterpretAsUInt256 \{#reinterpretAsUInt256\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值重新解释为 `UInt256` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出结果未定义。
@@ -2410,7 +2410,7 @@ SELECT
 
 ## reinterpretAsUInt32 \{#reinterpretAsUInt32\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值重新解释为 `UInt32` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值；如果目标类型无法表示输入值，则结果是未定义的。
@@ -2450,7 +2450,7 @@ SELECT
 
 ## reinterpretAsUInt64 \{#reinterpretAsUInt64\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值重新解释为 `UInt64` 类型的值。
 不同于 [`CAST`](#CAST)，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出结果未定义。
@@ -2490,7 +2490,7 @@ SELECT
 
 ## reinterpretAsUInt8 \{#reinterpretAsUInt8\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值重新解释为 `UInt8` 类型的值。
 与 [`CAST`](#CAST) 不同，该函数不会尝试保留原始值——如果目标类型无法表示输入值，则输出未定义。
@@ -2530,7 +2530,7 @@ SELECT
 
 ## reinterpretAsUUID \{#reinterpretAsUUID\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 接受一个长度为 16 字节的字符串，将其拆分为两个 8 字节部分，并按小端字节序解释每个部分，从而返回一个 UUID。如果字符串长度不足，函数的行为等同于在字符串末尾用所需数量的空字节进行填充。如果字符串长于 16 字节，则会忽略末尾多余的字节。
 
@@ -2565,7 +2565,7 @@ SELECT reinterpretAsUUID(reverse(unhex('000102030405060708090a0b0c0d0e0f')))
 
 ## toBFloat16 \{#toBFloat16\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 BFloat16 类型的值。
 发生错误时会抛出异常。
@@ -2610,7 +2610,7 @@ toBFloat16('42.7'):          42.5
 
 ## toBFloat16OrNull \{#toBFloat16OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将一个 String 输入值转换为 BFloat16 类型的值。
 如果该字符串不表示浮点值，则函数返回 NULL。
@@ -2666,7 +2666,7 @@ SELECT toBFloat16OrNull('0x5E'), -- unsupported arguments
 
 ## toBFloat16OrZero \{#toBFloat16OrZero\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将一个 String 输入值转换为 BFloat16 类型的值。
 如果该字符串不表示浮点数值，函数返回 0。
@@ -2722,7 +2722,7 @@ SELECT toBFloat16OrZero('0x5E'), -- unsupported arguments
 
 ## toBool \{#toBool\}
 
-自 v22.2 引入
+自 v22.2.0 引入
 
 将输入值转换为 Bool 类型的值。
 
@@ -2767,7 +2767,7 @@ toBool('FALSE'):         false
 
 ## toDate \{#toDate\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将输入值转换为 [`Date`](/sql-reference/data-types/date) 类型。
 支持从 String、FixedString、DateTime 或数值类型进行转换。
@@ -2821,7 +2821,7 @@ SELECT toDate(20297)
 
 ## toDate32 \{#toDate32\}
 
-自 v21.9 引入
+自 v21.9.0 引入
 
 将参数转换为 [Date32](../data-types/date32.md) 数据类型。
 如果值超出取值范围，`toDate32` 会返回 [Date32](../data-types/date32.md) 所支持的边界值。
@@ -2874,7 +2874,7 @@ toTypeName(value): Date32
 
 ## toDate32OrDefault \{#toDate32OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 将参数转换为 [Date32](../data-types/date32.md) 数据类型。如果值超出该类型的取值范围，`toDate32OrDefault` 会返回 [Date32](../data-types/date32.md) 支持的下边界值。如果参数类型为 [Date](../data-types/date.md)，则会同时考虑 `Date` 类型的取值边界。若接收到无效参数，则返回默认值。
 
@@ -2918,7 +2918,7 @@ SELECT toDate32OrDefault('xx1930-01-01', toDate32('2020-01-01'))
 
 ## toDate32OrNull \{#toDate32OrNull\}
 
-自 v21.9 引入
+自 v21.9.0 引入
 
 将输入值转换为 `Date32` 类型的值，如果参数无效则返回 `NULL`。
 与 [`toDate32`](#toDate32) 相同，只是在参数无效时返回 `NULL`。
@@ -2954,7 +2954,7 @@ SELECT toDate32OrNull('2025-01-01'), toDate32OrNull('invalid')
 
 ## toDate32OrZero \{#toDate32OrZero\}
 
-引入自：v21.9
+引入自：v21.9.0
 
 将输入值转换为 [Date32](../data-types/date32.md) 类型的值，但在接收到无效参数时返回 [Date32](../data-types/date32.md) 的下界。
 与 [toDate32](#toDate32) 相同，但在接收到无效参数时返回 [Date32](../data-types/date32.md) 的下界。
@@ -2996,7 +2996,7 @@ SELECT toDate32OrZero('2025-01-01'), toDate32OrZero('')
 
 ## toDateOrDefault \{#toDateOrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 类似于 [toDate](#toDate)，但在转换失败时，会返回一个默认值：如果指定了第二个参数，则使用第二个参数，否则返回 [Date](../data-types/date.md) 的最小值。
 
@@ -3040,7 +3040,7 @@ SELECT toDateOrDefault('', CAST('2023-01-01', 'Date'))
 
 ## toDateOrNull \{#toDateOrNull\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将输入值转换为 `Date` 类型的值，但在接收到无效参数时返回 `NULL`。
 与 [`toDate`](#toDate) 相同，但在接收到无效参数时返回 `NULL`。
@@ -3076,7 +3076,7 @@ SELECT toDateOrNull('2025-12-30'), toDateOrNull('invalid')
 
 ## toDateOrZero \{#toDateOrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [`Date`](../data-types/date.md) 类型的值，但在接收到无效参数时返回 [`Date`](../data-types/date.md) 的下界值。
 与 [toDate](#toDate) 相同，但在接收到无效参数时会返回 [`Date`](../data-types/date.md) 的下界值。
@@ -3118,7 +3118,7 @@ SELECT toDateOrZero('2025-12-30'), toDateOrZero('')
 
 ## toDateTime \{#toDateTime\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 [DateTime](../data-types/datetime.md) 类型。
 
@@ -3162,7 +3162,7 @@ toDateTime(1735689600, 'UTC'):     2025-01-01 00:00:00
 
 ## toDateTime32 \{#toDateTime32\}
 
-引入版本：v20.9
+引入版本：v20.9.0
 
 将输入值转换为 `DateTime` 类型。
 支持从 `String`、`FixedString`、`Date`、`Date32`、`DateTime` 或数值类型（`(U)Int*`、`Float*`、`Decimal`）进行转换。
@@ -3197,7 +3197,7 @@ SELECT toDateTime64('2025-01-01 00:00:00.000', 3) AS value, toTypeName(value);
 └─────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
-**作为带精度的十进制数**
+**以带精度的小数形式**
 
 ```sql title=Query
 SELECT toDateTime64(1735689600.000, 3) AS value, toTypeName(value);
@@ -3229,7 +3229,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64 \{#toDateTime64\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 将输入值转换为 [`DateTime64`](../data-types/datetime64.md) 类型。
 
@@ -3292,7 +3292,7 @@ SELECT toDateTime64('2025-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrDefault \{#toDateTime64OrDefault\}
 
-引入自：v21.11
+引入自：v21.11.0
 
 与 [toDateTime64](#toDateTime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，
 但如果收到无效参数，则返回 [DateTime64](../data-types/datetime64.md) 的默认值
@@ -3340,7 +3340,7 @@ SELECT toDateTime64OrDefault('1976-10-18 00:00:00 30', 3, 'UTC', toDateTime64('2
 
 ## toDateTime64OrNull \{#toDateTime64OrNull\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将输入值转换为 `DateTime64` 类型的值，但在传入无效参数时返回 `NULL`。
 与 `toDateTime64` 类似，只是在传入无效参数时返回 `NULL`。
@@ -3376,7 +3376,7 @@ SELECT toDateTime64OrNull('2025-12-30 13:44:17.123'), toDateTime64OrNull('invali
 
 ## toDateTime64OrZero \{#toDateTime64OrZero\}
 
-引入自：v20.1
+引入自：v20.1.0
 
 将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但在接收到无效参数时返回 [DateTime64](../data-types/datetime64.md) 的下边界值。
 与 [toDateTime64](#toDateTime64) 相同，但在接收到无效参数时返回 [DateTime64](../data-types/datetime64.md) 的下边界值。
@@ -3418,7 +3418,7 @@ SELECT toDateTime64OrZero('2025-12-30 13:44:17.123'), toDateTime64OrZero('invali
 
 ## toDateTimeOrDefault \{#toDateTimeOrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [toDateTime](#toDateTime) 类似，但在转换失败时返回一个默认值：如果指定了第三个参数，则使用该参数，否则返回 [DateTime](../data-types/datetime.md) 的最小值。
 
@@ -3463,7 +3463,7 @@ SELECT toDateTimeOrDefault('', 'UTC', CAST('2023-01-01', 'DateTime(\'UTC\')'))
 
 ## toDateTimeOrNull \{#toDateTimeOrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 `DateTime` 类型的值，但在参数无效时返回 `NULL`。
 与 [`toDateTime`](#toDateTime) 相同，但在参数无效时返回 `NULL`。
@@ -3499,7 +3499,7 @@ SELECT toDateTimeOrNull('2025-12-30 13:44:17'), toDateTimeOrNull('invalid')
 
 ## toDateTimeOrZero \{#toDateTimeOrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [DateTime](../data-types/datetime.md) 类型的值，但如果传入无效参数，则返回 [DateTime](../data-types/datetime.md) 的下限值。
 与 [toDateTime](#toDateTime) 相同，但在传入无效参数时会返回 [DateTime](../data-types/datetime.md) 的下限值。
@@ -3535,7 +3535,7 @@ SELECT toDateTimeOrZero('2025-12-30 13:44:17'), toDateTimeOrZero('invalid')
 
 ## toDecimal128 \{#toDecimal128\}
 
-引入于：v18.12
+引入于：v18.12.0
 
 将输入值转换为类型为 [`Decimal(38, S)`](../data-types/decimal.md)、scale 为 `S` 的值。
 在发生错误时抛出异常。
@@ -3603,7 +3603,7 @@ type_c: Decimal(38, 3)
 
 ## toDecimal128OrDefault \{#toDecimal128OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toDecimal128`](#toDecimal128) 类似，此函数将输入值转换为类型为 [Decimal(38, S)](../data-types/decimal.md) 的值，但在发生错误时返回默认值。
 
@@ -3648,7 +3648,7 @@ SELECT toDecimal128OrDefault('Inf', 0, CAST('-1', 'Decimal128(0)'))
 
 ## toDecimal128OrNull \{#toDecimal128OrNull\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 将输入值转换为 [`Decimal(38, S)`](../data-types/decimal.md) 类型的值，但在出错时返回 `NULL`。
 类似于 [`toDecimal128`](#toDecimal128)，但在转换出错时返回 `NULL`，而不是在出错时抛出异常。
@@ -3679,7 +3679,7 @@ toDecimal128OrNull(expr, S)
 **参数**
 
 * `expr` — 返回数字或数字字符串表示形式的表达式。[`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 介于 0 和 38 之间的小数位数（scale）参数，指定数字的小数部分最多可以有多少位。[`UInt8`](/sql-reference/data-types/int-uint)
+* `S` — 介于 0 和 38  之间的小数位数（scale）参数，指定数字的小数部分最多可以有多少位。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -3702,7 +3702,7 @@ SELECT toDecimal128OrNull('42.7', 2), toDecimal128OrNull('invalid', 2)
 
 ## toDecimal128OrZero \{#toDecimal128OrZero\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将输入值转换为 [Decimal(38, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回 `0`。
 与 [`toDecimal128`](#toDecimal128) 类似，但在转换出错时返回 `0`，而不是抛出异常。
@@ -3753,7 +3753,7 @@ SELECT toDecimal128OrZero('42.7', 2), toDecimal128OrZero('invalid', 2)
 
 ## toDecimal256 \{#toDecimal256\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 将输入值转换为类型为 [`Decimal(76, S)`](../data-types/decimal.md)、scale 为 `S` 的值。发生错误时抛出异常。
 
@@ -3820,7 +3820,7 @@ type_c: Decimal(76, 3)
 
 ## toDecimal256OrDefault \{#toDecimal256OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toDecimal256`](#toDecimal256) 类似，此 FUNCTION 将输入值转换为 [Decimal(76, S)](../data-types/decimal.md) 类型的值，但在发生错误时返回默认值。
 
@@ -3865,7 +3865,7 @@ SELECT toDecimal256OrDefault('Inf', 0, CAST('-1', 'Decimal256(0)'))
 
 ## toDecimal256OrNull \{#toDecimal256OrNull\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 将输入值转换为 [`Decimal(76, S)`](../data-types/decimal.md) 类型的值，但在发生错误时返回 `NULL`。
 类似于 [`toDecimal256`](#toDecimal256)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -3919,7 +3919,7 @@ SELECT toDecimal256OrNull('42.7', 2), toDecimal256OrNull('invalid', 2)
 
 ## toDecimal256OrZero \{#toDecimal256OrZero\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 将输入值转换为类型为 [Decimal(76, S)](../data-types/decimal.md) 的值，但在出错时返回 `0`。
 类似于 [`toDecimal256`](#toDecimal256)，但在转换出错时返回 `0`，而不是抛出异常。
@@ -3953,7 +3953,7 @@ toDecimal256OrZero(expr, S)
 **参数**
 
 * `expr` — 返回数字或数字字符串表示形式的表达式。[`Expression`](/sql-reference/data-types/special-data-types/expression)
-* `S` — 介于 0 和 76 之间的 scale 参数，用于指定数字小数部分的位数上限。[`UInt8`](/sql-reference/data-types/int-uint)
+* `S` — 介于 0 和 76  之间的 scale 参数，用于指定数字小数部分的位数上限。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -3976,7 +3976,7 @@ SELECT toDecimal256OrZero('42.7', 2), toDecimal256OrZero('invalid', 2)
 
 ## toDecimal32 \{#toDecimal32\}
 
-引入版本：v18.12
+引入版本：v18.12.0
 
 将输入值转换为 [`Decimal(9, S)`](../data-types/decimal.md) 类型、scale 为 `S` 的值。发生错误时抛出异常。
 
@@ -4043,7 +4043,7 @@ type_c: Decimal(9, 3)
 
 ## toDecimal32OrDefault \{#toDecimal32OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toDecimal32`](#toDecimal32) 类似，此函数将输入值转换为类型为 [Decimal(9, S)](../data-types/decimal.md) 的值，但在发生错误时返回默认值。
 
@@ -4075,7 +4075,7 @@ SELECT toDecimal32OrDefault(toString(0.0001), 5)
 0.0001
 ```
 
-**转换未成功**
+**转换失败**
 
 ```sql title=Query
 SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
@@ -4088,7 +4088,7 @@ SELECT toDecimal32OrDefault('Inf', 0, CAST('-1', 'Decimal32(0)'))
 
 ## toDecimal32OrNull \{#toDecimal32OrNull\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 将输入值转换为 [`Decimal(9, S)`](../data-types/decimal.md) 类型的值，但在发生错误时返回 `NULL`。
 类似于 [`toDecimal32`](#toDecimal32)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -4142,7 +4142,7 @@ SELECT toDecimal32OrNull('42.7', 2), toDecimal32OrNull('invalid', 2)
 
 ## toDecimal32OrZero \{#toDecimal32OrZero\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 将输入值转换为类型为 [Decimal(9, S)](../data-types/decimal.md) 的值，但在出错时返回 `0`。
 类似于 [`toDecimal32`](#toDecimal32)，但在转换出错时返回 `0`，而不是抛出异常。
@@ -4193,7 +4193,7 @@ SELECT toDecimal32OrZero('42.7', 2), toDecimal32OrZero('invalid', 2)
 
 ## toDecimal64 \{#toDecimal64\}
 
-引入版本：v18.12
+引入版本：v18.12.0
 
 将输入值转换为类型为 [`Decimal(18, S)`](../data-types/decimal.md)，且 scale 为 `S` 的值。
 在发生错误时抛出异常。
@@ -4261,7 +4261,7 @@ type_c: Decimal(18, 3)
 
 ## toDecimal64OrDefault \{#toDecimal64OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toDecimal64`](#toDecimal64) 类似，此函数将输入值转换为 [Decimal(18, S)](../data-types/decimal.md) 类型的值，但在出错时返回默认值。
 
@@ -4306,7 +4306,7 @@ SELECT toDecimal64OrDefault('Inf', 0, CAST('-1', 'Decimal64(0)'))
 
 ## toDecimal64OrNull \{#toDecimal64OrNull\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 将输入值转换为类型为 [Decimal(18, S)](../data-types/decimal.md) 的值，但在出错时返回 `NULL`。
 类似于 [`toDecimal64`](#toDecimal64)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -4360,7 +4360,7 @@ SELECT toDecimal64OrNull('42.7', 2), toDecimal64OrNull('invalid', 2)
 
 ## toDecimal64OrZero \{#toDecimal64OrZero\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将输入值转换为类型 [Decimal(18, S)](../data-types/decimal.md) 的值，但在发生错误时返回 `0`。
 类似于 [`toDecimal64`](#toDecimal64)，但在转换错误时返回 `0`，而不是抛出异常。
@@ -4417,7 +4417,7 @@ SELECT toDecimal64OrZero('42.7', 2), toDecimal64OrZero('invalid', 2)
 
 ## toDecimalString \{#toDecimalString\}
 
-引入版本：v23.3
+引入版本：v23.3.0
 
 将数值转换为具有指定小数位数的 String 类型。
 
@@ -4480,7 +4480,7 @@ SELECT toDecimalString(CAST(123.456 AS Decimal(10,3)), 2) AS decimal_val,
 
 ## toFixedString \{#toFixedString\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将 [`String`](/sql-reference/data-types/string) 参数转换为 [`FixedString(N)`](/sql-reference/data-types/fixedstring) 类型（长度固定为 N 的字符串）。
 
@@ -4519,7 +4519,7 @@ SELECT toFixedString('foo', 8) AS s;
 
 ## toFloat32 \{#toFloat32\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [Float32](/sql-reference/data-types/float) 类型的值。
 在出错时抛出异常。
@@ -4578,7 +4578,7 @@ toFloat32('NaN'):  nan
 
 ## toFloat32OrDefault \{#toFloat32OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toFloat32`](#toFloat32) 类似，此函数将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -4623,7 +4623,7 @@ SELECT toFloat32OrDefault('abc', CAST('0', 'Float32'))
 
 ## toFloat32OrNull \{#toFloat32OrNull\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在发生错误时返回 `NULL`。
 类似于 [`toFloat32`](#toFloat32)，但在转换出错时返回 `NULL`，而不是在转换错误时抛出异常。
@@ -4683,7 +4683,7 @@ toFloat32OrNull('abc'):  \N
 
 ## toFloat32OrZero \{#toFloat32OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [Float32](../data-types/float.md) 类型的值，但在发生错误时返回 `0`。
 类似于 [`toFloat32`](#toFloat32)，但在转换出错时返回 `0`，而不是抛出异常。
@@ -4729,7 +4729,7 @@ toFloat32OrZero('abc'):  0
 
 ## toFloat64 \{#toFloat64\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [`Float64`](../data-types/float.md) 类型的值。
 出错时抛出异常。
@@ -4788,7 +4788,7 @@ toFloat64('NaN'):  nan
 
 ## toFloat64OrDefault \{#toFloat64OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toFloat64`](#toFloat64) 类似，此函数将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -4833,7 +4833,7 @@ SELECT toFloat64OrDefault('abc', CAST('0', 'Float64'))
 
 ## toFloat64OrNull \{#toFloat64OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在发生错误时返回 `NULL`。
 类似于 [`toFloat64`](#toFloat64)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -4893,7 +4893,7 @@ toFloat64OrNull('abc'):  \N
 
 ## toFloat64OrZero \{#toFloat64OrZero\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 [Float64](../data-types/float.md) 类型的值，但在出错时返回 `0`。
 类似于 [`toFloat64`](#toFloat64)，但在转换出错时返回 `0`，而不是抛出异常。
@@ -4939,7 +4939,7 @@ toFloat64OrZero('abc'):  0
 
 ## toInt128 \{#toInt128\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为类型为 [Int128](/sql-reference/data-types/int-uint) 的值。
 在发生错误时抛出异常。
@@ -5003,7 +5003,7 @@ toInt128('-128'): -128
 
 ## toInt128OrDefault \{#toInt128OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toInt128`](#toInt128) 类似，此函数将输入值转换为 [Int128](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -5048,7 +5048,7 @@ SELECT toInt128OrDefault('abc', CAST('-1', 'Int128'))
 
 ## toInt128OrNull \{#toInt128OrNull\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 与 [`toInt128`](#toInt128) 类似，此函数将输入值转换为类型为 [Int128](../data-types/int-uint.md) 的值，但在出错时返回 `NULL`。
 
@@ -5107,7 +5107,7 @@ toInt128OrNull('abc'):  \N
 
 ## toInt128OrZero \{#toInt128OrZero\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 将输入值转换为 [Int128](/sql-reference/data-types/int-uint) 类型，但在出错时返回 `0`。
 类似于 [`toInt128`](#toInt128)，但在发生异常时返回 `0`。
@@ -5144,7 +5144,7 @@ SELECT toInt128OrZero('123')
 123
 ```
 
-**失败的转换将返回零**
+**转换失败时返回零**
 
 ```sql title=Query
 SELECT toInt128OrZero('abc')
@@ -5157,7 +5157,7 @@ SELECT toInt128OrZero('abc')
 
 ## toInt16 \{#toInt16\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 [`Int16`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -5225,7 +5225,7 @@ toInt16('-16'):  -16
 
 ## toInt16OrDefault \{#toInt16OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toInt16`](#toInt16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 参数，则在出错时返回 `0`。
@@ -5270,7 +5270,7 @@ SELECT toInt16OrDefault('abc', CAST('-1', 'Int16'))
 
 ## toInt16OrNull \{#toInt16OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt16`](#toInt16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -5329,7 +5329,7 @@ toInt16OrNull('abc'): \N
 
 ## toInt16OrZero \{#toInt16OrZero\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 [`toInt16`](#toInt16) 类似，此函数将输入值转换为 [Int16](../data-types/int-uint.md) 类型的值，但在出现错误时返回 `0`。
 
@@ -5388,7 +5388,7 @@ toInt16OrZero('abc'): 0
 
 ## toInt256 \{#toInt256\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 [Int256](/sql-reference/data-types/int-uint) 类型的值。
 在发生错误时抛出异常。
@@ -5452,7 +5452,7 @@ toInt256('-256'):   -256
 
 ## toInt256OrDefault \{#toInt256OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toInt256`](#toInt256) 类似，此函数将输入值转换为 [Int256](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -5497,7 +5497,7 @@ SELECT toInt256OrDefault('abc', CAST('-1', 'Int256'))
 
 ## toInt256OrNull \{#toInt256OrNull\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 与 [`toInt256`](#toInt256) 类似，此函数将输入值转换为 [Int256](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -5556,7 +5556,7 @@ toInt256OrNull('abc'):  \N
 
 ## toInt256OrZero \{#toInt256OrZero\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 将输入值转换为 [Int256](/sql-reference/data-types/int-uint) 类型，但在发生错误时返回 `0`。
 类似于 [`toInt256`](#toInt256)，但不会抛出异常，而是返回 `0`。
@@ -5606,7 +5606,7 @@ SELECT toInt256OrZero('abc')
 
 ## toInt32 \{#toInt32\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [`Int32`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -5674,7 +5674,7 @@ toInt32('-32'):  -32
 
 ## toInt32OrDefault \{#toInt32OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toInt32`](#toInt32) 类似，该函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -5719,7 +5719,7 @@ SELECT toInt32OrDefault('abc', CAST('-1', 'Int32'))
 
 ## toInt32OrNull \{#toInt32OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt32`](#toInt32) 类似，此函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -5778,7 +5778,7 @@ toInt32OrNull('abc'): \N
 
 ## toInt32OrZero \{#toInt32OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt32`](#toInt32) 类似，此函数将输入值转换为 [Int32](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -5837,7 +5837,7 @@ toInt32OrZero('abc'): 0
 
 ## toInt64 \{#toInt64\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 将输入值转换为 [`Int64`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -5905,7 +5905,7 @@ toInt64('-64'):  -64
 
 ## toInt64OrDefault \{#toInt64OrDefault\}
 
-引入自：v21.11
+引入自：v21.11.0
 
 与 [`toInt64`](#toInt64) 类似，此函数将输入值转换为 [Int64](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -5950,7 +5950,7 @@ SELECT toInt64OrDefault('abc', CAST('-1', 'Int64'))
 
 ## toInt64OrNull \{#toInt64OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt64`](#toInt64) 类似，此函数将输入值转换为 [Int64](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -6009,7 +6009,7 @@ toInt64OrNull('abc'): \N
 
 ## toInt64OrZero \{#toInt64OrZero\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 [Int64](/sql-reference/data-types/int-uint) 类型，但在出错时返回 `0`。
 类似于 [`toInt64`](#toInt64)，但会返回 `0` 而不是抛出异常。
@@ -6059,7 +6059,7 @@ SELECT toInt64OrZero('abc')
 
 ## toInt8 \{#toInt8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [`Int8`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -6127,7 +6127,7 @@ toInt8('-8'): -8
 
 ## toInt8OrDefault \{#toInt8OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toInt8`](#toInt8) 类似，此函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 参数，则在发生错误时返回 `0`。
@@ -6172,7 +6172,7 @@ SELECT toInt8OrDefault('abc', CAST('-1', 'Int8'))
 
 ## toInt8OrNull \{#toInt8OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt8`](#toInt8) 类似，该函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -6231,7 +6231,7 @@ toInt8OrNull('abc'): \N
 
 ## toInt8OrZero \{#toInt8OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toInt8`](#toInt8) 类似，该函数将输入值转换为 [Int8](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -6290,7 +6290,7 @@ toInt8OrZero('abc'): 0
 
 ## toInterval \{#toInterval\}
 
-引入版本：v25.4
+引入版本：v25.4.0
 
 根据数值和单位字符串创建一个 Interval 值。
 
@@ -6330,7 +6330,7 @@ SELECT
 └─────────┴──────┴────────┘
 ```
 
-**在日期运算中使用时间间隔**
+**在日期计算中使用时间间隔**
 
 ```sql title=Query
 SELECT
@@ -6365,7 +6365,7 @@ FROM numbers(5)
 
 ## toIntervalDay \{#toIntervalDay\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回一个长度为 `n` 天、数据类型为 [`IntervalDay`](../data-types/special-data-types/interval.md) 的区间值。
 
@@ -6403,7 +6403,7 @@ SELECT date + interval_to_days AS result
 
 ## toIntervalHour \{#toIntervalHour\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个由 `n` 小时组成的时间间隔，数据类型为 [`IntervalHour`](../data-types/special-data-types/interval.md)。
 
@@ -6441,7 +6441,7 @@ SELECT date + interval_to_hours AS result
 
 ## toIntervalMicrosecond \{#toIntervalMicrosecond\}
 
-自 v22.6 引入
+自 v22.6.0 引入
 
 返回一个表示 `n` 微秒的时间间隔，数据类型为 [`IntervalMicrosecond`](../../sql-reference/data-types/special-data-types/interval.md)。
 
@@ -6479,7 +6479,7 @@ SELECT date + interval_to_microseconds AS result
 
 ## toIntervalMillisecond \{#toIntervalMillisecond\}
 
-自 v22.6 引入
+自 v22.6.0 引入
 
 返回一个长度为 `n` 毫秒的时间间隔，数据类型为 [IntervalMillisecond](../../sql-reference/data-types/special-data-types/interval.md)。
 
@@ -6517,7 +6517,7 @@ SELECT date + interval_to_milliseconds AS result
 
 ## toIntervalMinute \{#toIntervalMinute\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个 `n` 分钟的时间间隔，数据类型为 [`IntervalMinute`](../data-types/special-data-types/interval.md)。
 
@@ -6555,7 +6555,7 @@ SELECT date + interval_to_minutes AS result
 
 ## toIntervalMonth \{#toIntervalMonth\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个数据类型为 [`IntervalMonth`](../../sql-reference/data-types/special-data-types/interval.md)、表示 `n` 个月的时间间隔。
 
@@ -6593,7 +6593,7 @@ SELECT date + interval_to_month AS result
 
 ## toIntervalNanosecond \{#toIntervalNanosecond\}
 
-自 v22.6 起提供
+自 v22.6.0 起提供
 
 返回一个表示 `n` 纳秒、数据类型为 [`IntervalNanosecond`](../../sql-reference/data-types/special-data-types/interval.md) 的区间值。
 
@@ -6631,7 +6631,7 @@ SELECT date + interval_to_nanoseconds AS result
 
 ## toIntervalQuarter \{#toIntervalQuarter\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回一个由 `n` 个季度组成、数据类型为 [`IntervalQuarter`](../../sql-reference/data-types/special-data-types/interval.md) 的区间。
 
@@ -6669,7 +6669,7 @@ SELECT date + interval_to_quarter AS result
 
 ## toIntervalSecond \{#toIntervalSecond\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 返回一个时长为 `n` 秒、数据类型为 [`IntervalSecond`](../data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -6707,7 +6707,7 @@ SELECT date + interval_to_seconds AS result
 
 ## toIntervalWeek \{#toIntervalWeek\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个由 `n` 周组成、数据类型为 [`IntervalWeek`](../../sql-reference/data-types/special-data-types/interval.md) 的时间间隔。
 
@@ -6745,7 +6745,7 @@ SELECT date + interval_to_week AS result
 
 ## toIntervalYear \{#toIntervalYear\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回一个长度为 `n` 年、数据类型为 [`IntervalYear`](../../sql-reference/data-types/special-data-types/interval.md) 的区间。
 
@@ -6783,7 +6783,7 @@ SELECT date + interval_to_year AS result
 
 ## toLowCardinality \{#toLowCardinality\}
 
-引入于：v18.12
+引入于：v18.12.0
 
 将输入参数转换为相同数据类型的 [LowCardinality](../data-types/lowcardinality.md) 版本。
 
@@ -6823,7 +6823,7 @@ SELECT toLowCardinality('1')
 
 ## toString \{#toString\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将值转换为其字符串表示形式。
 对于 `DateTime` 参数，该函数可以接受第二个 `String` 类型参数，其中包含时区名称。
@@ -6870,7 +6870,7 @@ LIMIT 10
 
 ## toStringCutToZero \{#toStringCutToZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 接受一个 [String](/sql-reference/data-types/string) 或 [FixedString](/sql-reference/data-types/fixedstring) 参数，并返回一个 String，其内容为原始字符串在遇到第一个空字节处被截断的副本。
 
@@ -6910,7 +6910,7 @@ SELECT
 
 ## toTime \{#toTime\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [Time](/sql-reference/data-types/time) 类型。
 支持从 String、FixedString、DateTime，或表示自午夜起经过秒数的数值类型进行转换。
@@ -6964,7 +6964,7 @@ SELECT toTime(52225)
 
 ## toTime64 \{#toTime64\}
 
-引入自：v25.6
+引入自：v25.6.0
 
 将输入值转换为 [Time64](/sql-reference/data-types/time64) 类型。
 支持从 String、FixedString、DateTime64，或表示自午夜起微秒数的数值类型进行转换。
@@ -7019,7 +7019,7 @@ SELECT toTime64(52225123456)
 
 ## toTime64OrNull \{#toTime64OrNull\}
 
-引入自：v25.6
+引入自：v25.6.0
 
 将输入值转换为 `Time64` 类型的值，但在出现错误时返回 `NULL`。
 类似于 [`toTime64`](#toTime64)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -7060,7 +7060,7 @@ SELECT toTime64OrNull('12:30:45.123'), toTime64OrNull('invalid')
 
 ## toTime64OrZero \{#toTime64OrZero\}
 
-引入于：v25.6
+引入于：v25.6.0
 
 将输入值转换为 Time64 类型的值，但在发生错误时返回 `00:00:00.000`。
 类似于 [`toTime64`](#toTime64)，但在转换出错时不会抛出异常，而是返回 `00:00:00.000`。
@@ -7096,7 +7096,7 @@ SELECT toTime64OrZero('12:30:45.123'), toTime64OrZero('invalid')
 
 ## toTimeOrNull \{#toTimeOrNull\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 `Time` 类型的值，但在转换失败时返回 `NULL`。
 类似于 [`toTime`](#toTime)，但在转换出错时返回 `NULL`，而不是抛出异常。
@@ -7137,7 +7137,7 @@ SELECT toTimeOrNull('12:30:45'), toTimeOrNull('invalid')
 
 ## toTimeOrZero \{#toTimeOrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 `Time` 类型的值，但在发生错误时返回 `00:00:00`。
 类似于 `toTime`，但在转换出错时返回 `00:00:00`，而不是抛出异常。
@@ -7173,7 +7173,7 @@ SELECT toTimeOrZero('12:30:45'), toTimeOrZero('invalid')
 
 ## toUInt128 \{#toUInt128\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将输入值转换为 [`UInt128`](/sql-reference/functions/type-conversion-functions#toUInt128) 类型的值。
 发生错误时会抛出异常。
@@ -7237,7 +7237,7 @@ toUInt128('128'): 128
 
 ## toUInt128OrDefault \{#toUInt128OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toUInt128`](#toUInt128) 类似，此 FUNCTION 将输入值转换为 [`UInt128`](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -7282,7 +7282,7 @@ SELECT toUInt128OrDefault('abc', CAST('0', 'UInt128'))
 
 ## toUInt128OrNull \{#toUInt128OrNull\}
 
-引入版本：v21.6
+引入版本：v21.6.0
 
 与 [`toUInt128`](#toUInt128) 类似，此函数将输入值转换为 [`UInt128`](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -7341,7 +7341,7 @@ toUInt128OrNull('abc'): \N
 
 ## toUInt128OrZero \{#toUInt128OrZero\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 [`toUInt128`](#toUInt128) 类似，此函数将输入值转换为 [`UInt128`](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -7400,7 +7400,7 @@ toUInt128OrZero('abc'): 0
 
 ## toUInt16 \{#toUInt16\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 [`UInt16`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -7468,7 +7468,7 @@ toUInt16('16'):  16
 
 ## toUInt16OrDefault \{#toUInt16OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toUInt16`](#toUInt16) 类似，该 FUNCTION 将输入值转换为 [UInt16](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -7513,7 +7513,7 @@ SELECT toUInt16OrDefault('abc', CAST('0', 'UInt16'))
 
 ## toUInt16OrNull \{#toUInt16OrNull\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 [`toUInt16`](#toUInt16) 类似，该函数将输入值转换为 [`UInt16`](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -7572,7 +7572,7 @@ toUInt16OrNull('abc'): \N
 
 ## toUInt16OrZero \{#toUInt16OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toUInt16`](#toUInt16) 类似，此函数将输入值转换为 [`UInt16`](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -7631,7 +7631,7 @@ toUInt16OrZero('abc'): 0
 
 ## toUInt256 \{#toUInt256\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将输入值转换为 `UInt256` 类型的值。
 在发生错误时抛出异常。
@@ -7695,7 +7695,7 @@ toUInt256('256'):   256
 
 ## toUInt256OrDefault \{#toUInt256OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toUInt256`](#toUInt256) 类似，此函数将输入值转换为 [UInt256](../data-types/int-uint.md) 类型的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -7740,7 +7740,7 @@ SELECT toUInt256OrDefault('abc', CAST('0', 'UInt256'))
 
 ## toUInt256OrNull \{#toUInt256OrNull\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 与 [`toUInt256`](#toUInt256) 类似，此函数将输入值转换为 [`UInt256`](../data-types/int-uint.md) 类型的值，但在出错时则返回 `NULL`。
 
@@ -7799,7 +7799,7 @@ toUInt256OrNull('abc'): \N
 
 ## toUInt256OrZero \{#toUInt256OrZero\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 与 [`toUInt256`](#toUInt256) 类似，此函数将输入值转换为 [`UInt256`](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -7858,7 +7858,7 @@ toUInt256OrZero('abc'): 0
 
 ## toUInt32 \{#toUInt32\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 将输入值转换为 [`UInt32`](../data-types/int-uint.md) 类型的值。
 出错时抛出异常。
@@ -7926,7 +7926,7 @@ toUInt32('32'):  32
 
 ## toUInt32OrDefault \{#toUInt32OrDefault\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 与 [`toUInt32`](#toUInt32) 类似，该函数将输入值转换为类型为 [UInt32](../data-types/int-uint.md) 的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -7971,7 +7971,7 @@ SELECT toUInt32OrDefault('abc', CAST('0', 'UInt32'))
 
 ## toUInt32OrNull \{#toUInt32OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toUInt32`](#toUInt32) 类似，此函数将输入值转换为 [`UInt32`](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -8030,7 +8030,7 @@ toUInt32OrNull('abc'): \N
 
 ## toUInt32OrZero \{#toUInt32OrZero\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 与 [`toUInt32`](#toUInt32) 类似，此函数将输入值转换为 [`UInt32`](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -8089,7 +8089,7 @@ toUInt32OrZero('abc'): 0
 
 ## toUInt64 \{#toUInt64\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 [`UInt64`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -8157,7 +8157,7 @@ toUInt64('64'):  64
 
 ## toUInt64OrDefault \{#toUInt64OrDefault\}
 
-自 v21.11 引入
+自 v21.11.0 引入
 
 与 [`toUInt64`](#toUInt64) 类似，此函数将输入值转换为 [UInt64](../data-types/int-uint.md) 类型的值，但在出错时返回默认值。
 如果未传入 `default` 值，则在出错时返回 `0`。
@@ -8202,7 +8202,7 @@ SELECT toUInt64OrDefault('abc', CAST('0', 'UInt64'))
 
 ## toUInt64OrNull \{#toUInt64OrNull\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toUInt64`](#toUInt64) 类似，此函数将输入值转换为 [`UInt64`](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `NULL`。
 
@@ -8261,7 +8261,7 @@ toUInt64OrNull('abc'): \N
 
 ## toUInt64OrZero \{#toUInt64OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toUInt64`](#toUInt64) 类似，该函数将输入值转换为 [`UInt64`](../data-types/int-uint.md) 类型的值，但在出错时返回 `0`。
 
@@ -8320,7 +8320,7 @@ toUInt64OrZero('abc'): 0
 
 ## toUInt8 \{#toUInt8\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将输入值转换为 [`UInt8`](../data-types/int-uint.md) 类型的值。
 在发生错误时抛出异常。
@@ -8388,7 +8388,7 @@ toUInt8('8'): 8
 
 ## toUInt8OrDefault \{#toUInt8OrDefault\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 与 [`toUInt8`](#toUInt8) 类似，此函数将输入值转换为类型为 [UInt8](../data-types/int-uint.md) 的值，但在发生错误时返回默认值。
 如果未传入 `default` 值，则在发生错误时返回 `0`。
@@ -8433,7 +8433,7 @@ SELECT toUInt8OrDefault('abc', CAST('0', 'UInt8'))
 
 ## toUInt8OrNull \{#toUInt8OrNull\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 与 [`toUInt8`](#toUInt8) 类似，此函数将输入值转换为 [`UInt8`](../data-types/int-uint.md) 类型的值，但在出错时返回 `NULL`。
 
@@ -8492,7 +8492,7 @@ toUInt8OrNull('abc'): \N
 
 ## toUInt8OrZero \{#toUInt8OrZero\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`toUInt8`](#toUInt8) 类似，此函数将输入值转换为 [`UInt8`](../data-types/int-uint.md) 类型的值，但在发生错误时返回 `0`。
 
@@ -8551,7 +8551,7 @@ toUInt8OrZero('abc'): 0
 
 ## toUUID \{#toUUID\}
 
-首次引入版本：v1.1
+首次引入版本：v1.1.0
 
 将 String 值转换为 UUID 值。
 
@@ -8586,7 +8586,7 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 
 ## toUUIDOrZero \{#toUUIDOrZero\}
 
-引入自：v20.12
+引入自：v20.12.0
 
 将输入值转换为 [UUID](../data-types/uuid.md) 类型的值；如果出错则返回零 UUID。
 类似于 [`toUUID`](/sql-reference/functions/type-conversion-functions#toUUID)，但在转换出错时不会抛出异常，而是返回零 UUID（`00000000-0000-0000-0000-000000000000`）。
@@ -8634,7 +8634,7 @@ SELECT
 
 ## toUnixTimestamp64Micro \{#toUnixTimestamp64Micro\}
 
-引入自：v20.5
+引入自：v20.5.0
 
 将 [`DateTime64`](/sql-reference/data-types/datetime64) 转换为具有固定微秒精度的 [`Int64`](/sql-reference/data-types/int-uint) 类型值。
 输入值会根据其自身精度被相应地放大或缩小。
@@ -8675,7 +8675,7 @@ SELECT toUnixTimestamp64Micro(dt64);
 
 ## toUnixTimestamp64Milli \{#toUnixTimestamp64Milli\}
 
-自 v20.5 起引入
+自 v20.5.0 起引入
 
 将 [`DateTime64`](/sql-reference/data-types/datetime64) 转换为具有固定毫秒精度的 [`Int64`](/sql-reference/data-types/int-uint) 值。
 根据输入值的精度进行相应的放大或缩小。
@@ -8685,6 +8685,27 @@ SELECT toUnixTimestamp64Micro(dt64);
 :::
 
 **语法**
+
+toUnixTimestamp64Milli(value)
+
+**参数**
+
+value — 任意精度的 DateTime64 值。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**返回值**
+
+返回以毫秒为单位的 Unix 时间戳。[`Int64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+使用示例
+
+WITH toDateTime64(&#39;2025-02-13 23:31:31.011&#39;, 3, &#39;UTC&#39;) AS dt64
+SELECT toUnixTimestamp64Milli(dt64);
+
+┌─toUnixTimestamp64Milli(dt64)─┐
+│                1739489491011 │
+└──────────────────────────────┘
 
 ```sql
 toUnixTimestamp64Milli(value)
@@ -8716,7 +8737,7 @@ SELECT toUnixTimestamp64Milli(dt64);
 
 ## toUnixTimestamp64Nano \{#toUnixTimestamp64Nano\}
 
-引入于：v20.5
+引入于：v20.5.0
 
 将 [`DateTime64`](/sql-reference/data-types/datetime64) 转换为具有固定纳秒精度的 [`Int64`](/sql-reference/functions/type-conversion-functions#toInt64) 值。
 输入值会根据其精度进行相应的放大或缩小。
@@ -8757,7 +8778,7 @@ SELECT toUnixTimestamp64Nano(dt64);
 
 ## toUnixTimestamp64Second \{#toUnixTimestamp64Second\}
 
-自 v24.12 起提供
+自 v24.12.0 起提供
 
 将 [`DateTime64`](/sql-reference/data-types/datetime64) 转换为具有固定秒精度的 [`Int64`](/sql-reference/data-types/int-uint) 值。
 输入值会根据其精度按比例进行放大或缩小。

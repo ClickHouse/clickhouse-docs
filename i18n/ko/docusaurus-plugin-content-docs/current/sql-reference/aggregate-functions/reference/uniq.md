@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniq \{#uniq\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수의 서로 다른 값 개수를 근사적으로 계산합니다.
 
@@ -72,7 +72,7 @@ FROM example_table;
 └───────────────────┘
 ```
 
-**여러 개의 인수**
+**다중 인수**
 
 ```sql title=Query
 SELECT uniq(category, value) as unique_combinations

@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## hop \{#hop\}
 
-도입된 버전: v21.12
+도입된 버전: v21.12.0
 
 Hop 시간 윈도우는 고정된 기간(`window_interval`)을 가지며, 지정된 hop 간격(`hop_interval`)만큼 이동합니다. `hop_interval`이 `window_interval`보다 작으면 hop 윈도우는 서로 겹치게 됩니다. 따라서 하나의 레코드는 여러 윈도우에 할당될 수 있습니다.
 
@@ -69,7 +69,7 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopEnd \{#hopEnd\}
 
-도입된 버전: v22.1
+도입된 버전: v22.1.0
 
 해당 hopping window의 배타적 상한값을 반환합니다.
 
@@ -107,7 +107,7 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopStart \{#hopStart\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 해당 hop 윈도우의 포함되는 하한 경계를 반환합니다.
 
@@ -145,7 +145,7 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## tumble \{#tumble\}
 
-도입된 버전: v21.12
+도입된 버전: v21.12.0
 
 tumbling 시간 윈도우는 고정된 길이(`interval`)를 가진 서로 겹치지 않는 연속적인 윈도우에 레코드를 할당합니다.
 
@@ -180,7 +180,7 @@ SELECT tumble(now(), toIntervalDay('1'))
 
 ## tumbleEnd \{#tumbleEnd\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 해당 텀블링 윈도에 대한 배타적 상한을 반환합니다.
 
@@ -215,7 +215,7 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 
 ## tumbleStart \{#tumbleStart\}
 
-도입된 버전: v22.1
+도입된 버전: v22.1.0
 
 해당 텀블링 윈도의 포함 구간 시작 값을 반환합니다.
 
@@ -250,7 +250,7 @@ SELECT tumbleStart(now(), toIntervalDay('1'))
 
 ## windowID \{#windowID\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 해당 텀블링(tumbling) 윈도 또는 호핑(hopping) 윈도의 식별자를 반환합니다.
 이 함수는 `WINDOW VIEW`에서만 사용할 수 있습니다.

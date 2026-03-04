@@ -26,7 +26,7 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 ## CRC32 \{#CRC32\}
 
-Добавлена в версии: v20.1
+Добавлена в версии: v20.1.0
 
 Вычисляет контрольную сумму CRC32 для строки с использованием полинома CRC-32-IEEE 802.3 и начального значения `0xffffffff` (реализация zlib).
 
@@ -60,7 +60,7 @@ SELECT CRC32('ClickHouse')
 
 ## CRC32IEEE \{#CRC32IEEE\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Вычисляет контрольную сумму CRC32 для строки с использованием полинома CRC-32-IEEE 802.3.
 
@@ -94,7 +94,7 @@ SELECT CRC32IEEE('ClickHouse');
 
 ## CRC64 \{#CRC64\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Вычисляет контрольную сумму CRC64 для строки с использованием полинома CRC-64-ECMA.
 
@@ -128,7 +128,7 @@ SELECT CRC64('ClickHouse');
 
 ## appendTrailingCharIfAbsent \{#appendTrailingCharIfAbsent\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Добавляет символ `c` к строке `s`, если строка `s` непуста и не оканчивается символом `c`.
 
@@ -163,7 +163,7 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 
 ## ascii \{#ascii\}
 
-Введена в: v22.11
+Введена в: v22.11.0
 
 Возвращает кодовую точку ASCII первого символа строки `s` в виде `Int32`.
 
@@ -197,7 +197,7 @@ SELECT ascii('234')
 
 ## base32Decode \{#base32Decode\}
 
-Добавлена в: v25.6
+Добавлена в: v25.6.0
 
 Декодирует строку в формате [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648).
 Если строка не является корректной Base32-кодировкой, генерируется исключение.
@@ -232,7 +232,7 @@ SELECT base32Decode('IVXGG33EMVSA====');
 
 ## base32Encode \{#base32Encode\}
 
-Появилась в версии: v25.6
+Появилась в версии: v25.6.0
 
 Кодирует строку с использованием [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
 
@@ -266,7 +266,7 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-Введена в версии: v22.7
+Введена в версии: v22.7.0
 
 Декодирует строку в формате [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3).
 Если строка не является корректной строкой в кодировке Base58, генерируется исключение.
@@ -301,7 +301,7 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 
 ## base58Encode \{#base58Encode\}
 
-Добавлена в версии: v22.7
+Добавлена в версии: v22.7.0
 
 Кодирует строку с использованием кодирования в формате [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html).
 
@@ -335,7 +335,7 @@ SELECT base58Encode('ClickHouse');
 
 ## base64Decode \{#base64Decode\}
 
-Функция появилась в версии v18.16.
+Функция появилась в версии v18.16.0.
 
 Декодирует строку из представления [Base64](https://en.wikipedia.org/wiki/Base64) в соответствии с RFC 4648.
 В случае ошибки выбрасывает исключение.
@@ -372,7 +372,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 
 ## base64Encode \{#base64Encode\}
 
-Введена в версии: v18.16
+Введена в версии: v18.16.0
 
 Кодирует строку в формат [Base64](https://en.wikipedia.org/wiki/Base64) в соответствии с RFC 4648.
 
@@ -408,7 +408,7 @@ SELECT base64Encode('clickhouse')
 
 ## base64URLDecode \{#base64URLDecode\}
 
-Добавлена в: v24.6
+Добавлена в: v24.6.0
 
 Декодирует строку из представления [Base64](https://en.wikipedia.org/wiki/Base64), используя URL-безопасный алфавит в соответствии с RFC 4648.
 В случае ошибки выбрасывает исключение.
@@ -443,7 +443,7 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## base64URLEncode \{#base64URLEncode\}
 
-Добавлена в версии: v18.16
+Добавлена в версии: v18.16.0
 
 Кодирует строку в представление [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) с URL‑безопасным алфавитом.
 
@@ -477,7 +477,7 @@ SELECT base64URLEncode('https://clickhouse.com')
 
 ## basename \{#basename\}
 
-Добавлено в версии: v20.1
+Добавлено в версии: v20.1.0
 
 Извлекает часть строки, расположенную после её последней прямой или обратной косой черты.
 Эта функция часто используется для извлечения имени файла из пути.
@@ -510,7 +510,7 @@ SELECT 'some/long/path/to/file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────┘
 ```
 
-**Извлечь имя файла из пути в Windows**
+**Извлечение имени файла из пути в Windows**
 
 ```sql title=Query
 SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
@@ -536,7 +536,7 @@ SELECT 'some-file-name' AS a, basename(a)
 
 ## byteHammingDistance \{#byteHammingDistance\}
 
-Добавлено в версии v23.9
+Добавлено в версии v23.9.0
 
 Вычисляет [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между двумя байтовыми строками.
 
@@ -573,7 +573,7 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 
 ## compareSubstrings \{#compareSubstrings\}
 
-Впервые появилось в: v25.2
+Впервые появилось в: v25.2.0
 
 Сравнивает две строки в лексикографическом порядке.
 
@@ -616,7 +616,7 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 
 ## concat \{#concat\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Объединяет переданные аргументы.
 
@@ -665,7 +665,7 @@ SELECT concat(42, 144)
 
 ## concatAssumeInjective \{#concatAssumeInjective\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Аналог функции [`concat`](#concat), но предполагает, что `concat(s1, s2, ...) → sn` является инъективной,
 т. е. возвращает разные результаты для разных аргументов.
@@ -704,7 +704,7 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 
 ## concatWithSeparator \{#concatWithSeparator\}
 
-Добавлена в версии: v22.12
+Добавлена в версии: v22.12.0
 
 Объединяет переданные строки, разделяя их указанным разделителем.
 
@@ -741,7 +741,7 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 
 ## concatWithSeparatorAssumeInjective \{#concatWithSeparatorAssumeInjective\}
 
-Введена в версии: v22.12
+Введена в версии: v22.12.0
 
 То же, что [`concatWithSeparator`](#concatWithSeparator), но предполагается, что `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` является инъективной.
 Функция считается инъективной, если она возвращает различные результаты для различных аргументов.
@@ -800,7 +800,7 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-Добавлено в версии v1.1
+Добавлено в версии v1.1.0
 
 Преобразует числа между разными системами счисления.
 
@@ -845,7 +845,7 @@ SELECT conv('FF', 16, 10)
 255
 ```
 
-**Преобразование при отрицательном числе**
+**Преобразование отрицательного числа**
 
 ```sql title=Query
 SELECT conv('-1', 10, 16)
@@ -867,7 +867,7 @@ SELECT conv('1010', 2, 8)
 
 ## convertCharset \{#convertCharset\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Возвращает строку `s`, преобразованную из кодировки `from` в кодировку `to`.
 
@@ -903,7 +903,7 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 
 ## damerauLevenshteinDistance \{#damerauLevenshteinDistance\}
 
-Добавлено в: v24.1
+Добавлено в: v24.1.0
 
 Вычисляет [расстояние Дамерау — Левенштейна](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) между двумя байтовыми строками.
 
@@ -938,7 +938,7 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 
 ## decodeHTMLComponent \{#decodeHTMLComponent\}
 
-Появилась в версии: v23.9
+Появилась в версии: v23.9.0
 
 Преобразует HTML-сущности в строке в соответствующие символы.
 
@@ -972,7 +972,7 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 
 ## decodeXMLComponent \{#decodeXMLComponent\}
 
-Появилась в версии: v21.2
+Появилась в версии: v21.2.0
 
 Преобразует XML‑сущности в строке в соответствующие им символы.
 
@@ -984,11 +984,11 @@ decodeXMLComponent(s)
 
 **Аргументы**
 
-* `s` — строка, содержащая XML-сущности для декодирования. [`String`](/sql-reference/data-types/string)
+* `s` — строка, содержащая XML‑сущности для декодирования. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-Возвращает переданную строку с декодированными XML-сущностями. [`String`](/sql-reference/data-types/string)
+Возвращает переданную строку с декодированными XML‑сущностями. [`String`](/sql-reference/data-types/string)
 
 **Примеры**
 
@@ -1006,7 +1006,7 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 
 ## editDistance \{#editDistance\}
 
-Добавлена в версии: v23.9
+Добавлена в версии: v23.9.0
 
 Вычисляет [редакционное расстояние](https://en.wikipedia.org/wiki/Edit_distance) между двумя байтовыми строками.
 
@@ -1043,7 +1043,7 @@ SELECT editDistance('clickhouse', 'mouse')
 
 ## editDistanceUTF8 \{#editDistanceUTF8\}
 
-Введена в версии: v24.6
+Введена в версии: v24.6.0
 
 Вычисляет [редакционное расстояние](https://en.wikipedia.org/wiki/Edit_distance) между двумя строками в кодировке UTF-8.
 
@@ -1080,7 +1080,7 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 
 ## encodeXMLComponent \{#encodeXMLComponent\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Экранирует символы для помещения строки в текстовый узел или атрибут XML.
 
@@ -1116,7 +1116,7 @@ SELECT
 
 ## endsWith \{#endsWith\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Проверяет, оканчивается ли строка указанным суффиксом.
 
@@ -1151,7 +1151,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-Добавлено в версии: v25.9
+Добавлено в версии: v25.9.0
 
 Проверяет, оканчивается ли строка заданным суффиксом без учета регистра.
 
@@ -1186,7 +1186,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-Впервые представлена в: v25.9
+Впервые представлена в: v25.9.0
 
 Возвращает, оканчивается ли строка `s` суффиксом `suffix` без учёта регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1223,7 +1223,7 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
-Введена в: v23.8
+Введена в: v23.8.0
 
 Возвращает, оканчивается ли строка `s` суффиксом `suffix`.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1260,7 +1260,7 @@ SELECT endsWithUTF8('данных', 'ых');
 
 ## extractTextFromHTML \{#extractTextFromHTML\}
 
-Появилась в v21.3
+Появилась в v21.3.0
 
 Извлекает текстовое содержимое из HTML или XHTML.
 
@@ -1313,7 +1313,7 @@ SELECT extractTextFromHTML('
 
 ## firstLine \{#firstLine\}
 
-Добавлена в: v23.7
+Добавлена в: v23.7.0
 
 Возвращает первую строку многострочной строки.
 
@@ -1347,7 +1347,7 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 ## idnaDecode \{#idnaDecode\}
 
-Добавлена в версии: v24.1
+Добавлена в версии: v24.1.0
 
 Возвращает представление доменного имени в Юникоде (UTF-8) в соответствии с алгоритмом ToUnicode и механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
 В случае ошибки (например, при некорректном входном значении) возвращается исходная строка.
@@ -1383,7 +1383,7 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 ## idnaEncode \{#idnaEncode\}
 
-Добавлено в версии: v24.1
+Добавлено в версии: v24.1.0
 
 Возвращает ASCII-представление (алгоритм ToASCII) доменного имени в соответствии с механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
 Входная строка должна быть в UTF-кодировке и преобразуемой в ASCII-строку, в противном случае генерируется исключение.
@@ -1422,7 +1422,7 @@ SELECT idnaEncode('straße.münchen.de')
 
 ## initcap \{#initcap\}
 
-Впервые появилась в: v23.7
+Впервые появилась в: v23.7.0
 
 Преобразует первую букву каждого слова в верхний регистр, а остальные — в нижний.
 Слова представляют собой последовательности буквенно-цифровых символов, разделённых небуквенно-цифровыми символами.
@@ -1474,7 +1474,7 @@ SELECT initcap('John''s cat won''t eat.');
 
 ## initcapUTF8 \{#initcapUTF8\}
 
-Добавлено в версии: v23.7
+Добавлено в версии: v23.7.0
 
 Подобно [`initcap`](#initcap), `initcapUTF8` преобразует первую букву каждого слова в верхний регистр, а остальные — в нижний.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1515,7 +1515,7 @@ SELECT initcapUTF8('не тормозит')
 
 ## isValidASCII \{#isValidASCII\}
 
-Введена в версии: v25.9
+Введена в версии: v25.9.0
 
 Возвращает 1, если входной `String` или `FixedString` содержит только ASCII-байты (0x00–0x7F), в противном случае — 0. Оптимизирована для положительного случая (когда входное значение *является* корректным ASCII).
 
@@ -1546,7 +1546,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ## isValidUTF8 \{#isValidUTF8\}
 
-Впервые представлена в: v20.1
+Впервые представлена в: v20.1.0
 
 Проверяет, представляет ли набор байтов корректный текст в кодировке UTF-8.
 
@@ -1580,7 +1580,7 @@ SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
 
 ## jaroSimilarity \{#jaroSimilarity\}
 
-Введена в версии: v24.1
+Введена в версии: v24.1.0
 
 Вычисляет [сходство по метрике Jaro](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) между двумя байтовыми строками.
 
@@ -1615,7 +1615,7 @@ SELECT jaroSimilarity('clickhouse', 'click')
 
 ## jaroWinklerSimilarity \{#jaroWinklerSimilarity\}
 
-Впервые добавлена в версии v24.1
+Впервые добавлена в версии v24.1.0
 
 Вычисляет [меру сходства Яро — Винклера](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) между двумя байтовыми строками.
 
@@ -1650,7 +1650,7 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 
 ## left \{#left\}
 
-Введено в версии v22.1
+Введено в версии v22.1.0
 
 Возвращает подстроку строки `s` с указанным `offset` от левого края.
 
@@ -1698,7 +1698,7 @@ Hello
 
 ## leftPad \{#leftPad\}
 
-Добавлено в: v21.8
+Добавлено в: v21.8.0
 
 Дополняет строку слева пробелами или указанной строкой (повторяя её при необходимости) до тех пор, пока длина результирующей строки не достигнет заданного значения `length`.
 
@@ -1736,7 +1736,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 ## leftPadUTF8 \{#leftPadUTF8\}
 
-Добавлена в версии: v21.8
+Добавлена в версии: v21.8.0
 
 Дополняет UTF8‑строку слева пробелами или указанной строкой (при необходимости многократно) до тех пор, пока результирующая строка не достигнет заданной длины.
 В отличие от [`leftPad`](#leftPad), который измеряет длину строки в байтах, в этом случае длина строки измеряется в кодовых точках.
@@ -1773,7 +1773,7 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 
 ## leftUTF8 \{#leftUTF8\}
 
-Появилась в версии: v22.1
+Появилась в версии: v22.1.0
 
 Возвращает подстроку строки `s` в кодировке UTF‑8 с заданным `offset`, начиная с левого края.
 
@@ -1821,7 +1821,7 @@ SELECT leftUTF8('Привет', -4)
 
 ## lengthUTF8 \{#lengthUTF8\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает длину строки в кодовых точках Unicode, а не в байтах или символах.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1859,7 +1859,7 @@ SELECT lengthUTF8('Здравствуй, мир!')
 
 ## lower \{#lower\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Преобразует ASCII-строку в нижний регистр.
 
@@ -1895,7 +1895,7 @@ SELECT lower('CLICKHOUSE')
 
 ## lowerUTF8 \{#lowerUTF8\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Преобразует строку в нижний регистр, предполагая, что строка содержит корректный текст в кодировке UTF-8. Если это предположение не выполняется, исключение не выбрасывается, а результат остается неопределённым.
 
@@ -1927,7 +1927,7 @@ münchen
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Нормализует строку UTF-8 в соответствии с [нормальной формой NFC](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
@@ -1965,7 +1965,7 @@ length(nfc_normalized);
 
 ## normalizeUTF8NFD \{#normalizeUTF8NFD\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Нормализует строку в кодировке UTF-8 в соответствии с [формой нормализации NFD](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
@@ -2003,7 +2003,7 @@ SELECT
 
 ## normalizeUTF8NFKC \{#normalizeUTF8NFKC\}
 
-Появилась в версии: v21.11
+Появилась в версии: v21.11.0
 
 Нормализует строку в кодировке UTF-8 в соответствии с [нормальной формой NFKC](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
@@ -2039,7 +2039,7 @@ SELECT
 
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
 
-Добавлена в: v21.11
+Добавлена в: v21.11.0
 
 Нормализует строку в кодировке UTF-8 в соответствии с [формой нормализации NFKD](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
@@ -2075,7 +2075,7 @@ SELECT
 
 ## punycodeDecode \{#punycodeDecode\}
 
-Добавлено в: v24.1
+Добавлено в: v24.1.0
 
 Возвращает исходный текст в кодировке UTF-8 для строки, закодированной в формате [Punycode](https://en.wikipedia.org/wiki/Punycode).
 Если передана некорректная строка в формате Punycode, генерируется исключение.
@@ -2110,7 +2110,7 @@ SELECT punycodeDecode('Mnchen-3ya')
 
 ## punycodeEncode \{#punycodeEncode\}
 
-Впервые представлена в версии: v24.1
+Впервые представлена в версии: v24.1.0
 
 Возвращает представление строки в формате [Punycode](https://en.wikipedia.org/wiki/Punycode).
 Строка должна быть закодирована в UTF-8, в противном случае поведение не определено.
@@ -2145,7 +2145,7 @@ SELECT punycodeEncode('München')
 
 ## regexpExtract \{#regexpExtract\}
 
-Впервые появилась в: v23.2
+Впервые появилась в: v23.2.0
 
 Извлекает первую подстроку в `haystack`, которая соответствует шаблону регулярного выражения и относится к группе с указанным индексом.
 
@@ -2187,7 +2187,7 @@ SELECT
 
 ## repeat \{#repeat\}
 
-Добавлено в: v20.1
+Добавлено в: v20.1.0
 
 Повторяет строку указанное число раз, объединяя результаты в одну строку.
 
@@ -2222,7 +2222,7 @@ SELECT repeat('abc', 10)
 
 ## reverseUTF8 \{#reverseUTF8\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Переворачивает последовательность кодовых точек Unicode в строке.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -2256,7 +2256,7 @@ esuoHkcilC
 
 ## right \{#right\}
 
-Появилась в версии: v22.1
+Появилась в версии: v22.1.0
 
 Возвращает подстроку строки `s` с указанным смещением `offset`, отсчитываемым справа.
 
@@ -2304,7 +2304,7 @@ lo
 
 ## rightPad \{#rightPad\}
 
-Введена в версии v21.8
+Введена в версии v21.8.0
 
 Дополняет строку справа пробелами или указанной строкой (при необходимости многократно) до тех пор, пока результирующая строка не достигнет значения `length`.
 
@@ -2342,7 +2342,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 ## rightPadUTF8 \{#rightPadUTF8\}
 
-Введена в: v21.8
+Введена в: v21.8.0
 
 Дополняет строку справа пробелами или указанной строкой (при необходимости несколько раз), пока результирующая строка не достигнет заданной длины.
 В отличие от [`rightPad`](#rightPad), который измеряет длину строки в байтах, здесь длина строки измеряется в кодовых точках.
@@ -2379,7 +2379,7 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 
 ## rightUTF8 \{#rightUTF8\}
 
-Введена в: v22.1
+Введена в: v22.1.0
 
 Возвращает подстроку UTF-8-кодированной строки `s` с указанным `offset`, отсчитываемым от конца строки (справа).
 
@@ -2427,7 +2427,7 @@ SELECT rightUTF8('Привет', -4)
 
 ## soundex \{#soundex\}
 
-Впервые представлена в: v23.4
+Впервые представлена в: v23.4.0
 
 Возвращает [код Soundex](https://en.wikipedia.org/wiki/Soundex) для строки.
 
@@ -2461,7 +2461,7 @@ SELECT soundex('aksel')
 
 ## space \{#space\}
 
-Появилась в версии: v23.5
+Появилась в версии: v23.5.0
 
 Повторяет пробел (` `) указанное число раз.
 
@@ -2495,7 +2495,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-Добавлена в версии: v25.5
+Добавлена в версии: v25.5.0
 
 Находит все подстроки заданной строки длиной не менее `n`,
 для которых хеши (n-1)-грамм на границах подстроки
@@ -2535,7 +2535,7 @@ SELECT sparseGrams('alice', 3)
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
-Добавлена в версии v25.5
+Добавлена в версии v25.5.0
 
 Находит хэши всех подстрок заданной строки длиной не менее `n`,
 для которых хэши (n-1)-грамм на границах подстроки
@@ -2575,7 +2575,7 @@ SELECT sparseGramsHashes('alice', 3)
 
 ## sparseGramsHashesUTF8 \{#sparseGramsHashesUTF8\}
 
-Добавлено в: v25.5
+Добавлено в: v25.5.0
 
 Находит хэши всех подстрок заданной UTF-8-строки длиной не менее `n`, для которых хэши (n-1)-грамм на границах подстроки строго больше хэшей любых (n-1)-грамм внутри подстроки.
 Ожидает строку в кодировке UTF-8, выбрасывает исключение в случае некорректной UTF-8-последовательности.
@@ -2614,7 +2614,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 ## sparseGramsUTF8 \{#sparseGramsUTF8\}
 
-Добавлено в: v25.5
+Добавлено в: v25.5.0
 
 Находит все подстроки заданной строки в кодировке UTF-8 длиной не менее `n`, для которых значения хэшей (n-1)-грамм на границах подстроки строго больше, чем значения хэшей любых (n-1)-грамм внутри подстроки.
 Ожидает строку в кодировке UTF-8; при некорректной последовательности UTF-8 генерирует исключение.
@@ -2653,7 +2653,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 
 ## startsWith \{#startsWith\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Проверяет, начинается ли строка с заданной строки.
 
@@ -2688,7 +2688,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-Добавлена в версии: v25.9
+Добавлена в версии: v25.9.0
 
 Проверяет, начинается ли строка с заданной подстроки без учета регистра.
 
@@ -2723,7 +2723,7 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-Появилась в: v25.9
+Появилась в: v25.9.0
 
 Проверяет, начинается ли строка с указанного префикса без учета регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -2760,7 +2760,7 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
-Добавлена в версии: v23.8
+Добавлена в версии: v23.8.0
 
 Проверяет, начинается ли строка с указанного префикса.
 Предполагается, что строка содержит текст в корректной кодировке UTF-8.
@@ -2797,7 +2797,7 @@ SELECT startsWithUTF8('приставка', 'при')
 
 ## stringBytesEntropy \{#stringBytesEntropy\}
 
-Появилась в версии v25.6
+Появилась в версии v25.6.0
 
 Вычисляет энтропию Шеннона распределения байтов в строке.
 
@@ -2831,7 +2831,7 @@ SELECT stringBytesEntropy('Hello, world!')
 
 ## stringBytesUniq \{#stringBytesUniq\}
 
-Введена в версии: v25.6
+Введена в версии: v25.6.0
 
 Подсчитывает количество уникальных байтов в строке.
 
@@ -2865,7 +2865,7 @@ SELECT stringBytesUniq('Hello')
 
 ## stringJaccardIndex \{#stringJaccardIndex\}
 
-Введена в версии v23.11
+Введена в версии v23.11.0
 
 Вычисляет [индекс сходства Жаккара](https://en.wikipedia.org/wiki/Jaccard_index) между двумя байтовыми строками.
 
@@ -2900,7 +2900,7 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 
 ## stringJaccardIndexUTF8 \{#stringJaccardIndexUTF8\}
 
-Добавлена в версии: v23.11
+Добавлена в версии: v23.11.0
 
 Аналог [`stringJaccardIndex`](#stringJaccardIndex), но для строк в кодировке UTF-8.
 
@@ -2935,7 +2935,7 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 
 ## substring \{#substring\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Возвращает подстроку строки `s`, которая начинается с указанного байтового индекса `offset`.
 Подсчёт байтов начинается с 1 по следующей логике:
@@ -2979,7 +2979,7 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 
 ## substringIndex \{#substringIndex\}
 
-Введена в версии: v23.7
+Введена в версии: v23.7.0
 
 Возвращает подстроку из `s` до `count`-го вхождения разделителя `delim`, аналогично функциям в Spark или MySQL.
 
@@ -3017,7 +3017,7 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 
 ## substringIndexUTF8 \{#substringIndexUTF8\}
 
-Впервые появилась в: v23.7
+Впервые появилась в: v23.7.0
 
 Возвращает подстроку `s` перед `count` вхождениями разделителя `delim`, выполняя обработку на уровне кодовых точек Unicode.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -3053,7 +3053,7 @@ www.straßen-in-europa
 
 ## substringUTF8 \{#substringUTF8\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает подстроку строки `s`, которая начинается с указанного индекса по кодовым точкам `offset`.
 Подсчёт кодовых точек начинается с `1` по следующей логике:
@@ -3098,7 +3098,7 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 
 ## toValidUTF8 \{#toValidUTF8\}
 
-Добавлена в: v20.1
+Добавлена в: v20.1.0
 
 Преобразует строку в корректную кодировку UTF-8, заменяя любые некорректные символы UTF-8 символом-заполнителем `�` (U+FFFD).
 Если обнаруживается несколько подряд идущих некорректных символов, они заменяются одним символом-заполнителем.
@@ -3134,7 +3134,7 @@ c
 
 ## trimBoth \{#trimBoth\}
 
-Представлена в: v20.1
+Представлена в: v20.1.0
 
 Удаляет указанные символы с начала и с конца строки.
 По умолчанию — распространённые пробельные символы (ASCII).
@@ -3172,7 +3172,7 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 
 ## trimLeft \{#trimLeft\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Удаляет указанные символы с начала строки.
 По умолчанию удаляет распространённые пробельные символы (ASCII).
@@ -3210,7 +3210,7 @@ SELECT trimLeft('ClickHouse', 'Click');
 
 ## trimRight \{#trimRight\}
 
-Введена в версии v20.1
+Введена в версии v20.1.0
 
 Удаляет указанные символы с конца строки.
 По умолчанию удаляет стандартные пробельные символы (ASCII).
@@ -3248,7 +3248,7 @@ SELECT trimRight('ClickHouse','House');
 
 ## tryBase32Decode \{#tryBase32Decode\}
 
-Добавлена в: v25.6
+Добавлена в: v25.6.0
 
 Принимает строку и декодирует её, используя кодировку [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
 
@@ -3282,7 +3282,7 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-Добавлена в версии v22.10
+Добавлена в версии v22.10.0
 
 Аналогична [`base58Decode`](#base58Decode), но в случае ошибки возвращает пустую строку.
 
@@ -3316,7 +3316,7 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 
 ## tryBase64Decode \{#tryBase64Decode\}
 
-Появилась в версии: v18.16
+Появилась в версии: v18.16.0
 
 Аналог [`base64Decode`](#base64Decode), но в случае ошибки возвращает пустую строку.
 
@@ -3328,7 +3328,7 @@ tryBase64Decode(encoded)
 
 **Аргументы**
 
-* `encoded` — Столбец или константа типа String для декодирования. Если строка не является корректной строкой в кодировке Base64, в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
+* `encoded` — столбец или константа типа String для декодирования. Если строка не является корректной строкой в кодировке Base64, в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -3350,7 +3350,7 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 
 ## tryBase64URLDecode \{#tryBase64URLDecode\}
 
-Введена в: v18.16
+Введена в: v18.16.0
 
 Аналогична [`base64URLDecode`](#base64URLDecode), но в случае ошибки возвращает пустую строку.
 
@@ -3384,7 +3384,7 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## tryIdnaEncode \{#tryIdnaEncode\}
 
-Добавлена в версии: v24.1
+Добавлена в версии: v24.1.0
 
 Возвращает представление доменного имени в Unicode (UTF-8) по алгоритму ToUnicode в соответствии с механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
 В случае ошибки возвращает пустую строку вместо выбрасывания исключения.
@@ -3419,7 +3419,7 @@ SELECT tryIdnaEncode('straße.münchen.de')
 
 ## tryPunycodeDecode \{#tryPunycodeDecode\}
 
-Добавлена в версии: v24.1
+Добавлена в версии: v24.1.0
 
 Аналог функции `punycodeDecode`, но возвращает пустую строку, если передана некорректная строка в кодировке Punycode.
 
@@ -3453,7 +3453,7 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 
 ## upper \{#upper\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Преобразует латинские символы ASCII в строке в верхний регистр.
 
@@ -3489,7 +3489,7 @@ SELECT upper('clickhouse')
 
 ## upperUTF8 \{#upperUTF8\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Преобразует строку в верхний регистр, предполагая, что строка содержит корректный текст в кодировке UTF-8.
 Если это предположение нарушено, исключение не генерируется, а результат не определён.

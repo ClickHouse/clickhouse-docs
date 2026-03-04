@@ -59,7 +59,7 @@ UUID 生成函数保证，在并发运行的线程和查询中，对于同一时
 
 ## UUIDNumToString \{#UUIDNumToString\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 接受一个 UUID 的二进制表示形式，其格式可以通过可选参数 `variant` 指定（默认为 `Big-endian`），并返回一个包含 36 个字符的文本格式字符串。
 
@@ -111,7 +111,7 @@ SELECT
 
 ## UUIDStringToNum \{#UUIDStringToNum\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 接受一个包含 36 个字符、格式为 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 的字符串，并返回其二进制表示形式的 [FixedString(16)](../data-types/fixedstring.md)，其格式可以通过 `variant` 参数可选指定（默认为 `Big-endian`）。
 
@@ -163,7 +163,7 @@ SELECT
 
 ## UUIDToNum \{#UUIDToNum\}
 
-引入于：v24.5
+引入于：v24.5.0
 
 接受一个 [UUID](../data-types/uuid.md)，并返回其作为 [FixedString(16)](../data-types/fixedstring.md) 的二进制表示，其格式可通过可选参数 `variant` 指定（默认为 `Big-endian`）。
 此函数用于替代组合调用 `UUIDStringToNum(toString(uuid))`，因此在从 UUID 中提取字节时，不再需要先将 UUID 中间转换为字符串。
@@ -216,7 +216,7 @@ SELECT
 
 ## UUIDv7ToDateTime \{#UUIDv7ToDateTime\}
 
-自 v24.5 引入
+自 v24.5.0 引入
 
 返回 UUID 第 7 版的时间戳部分。
 
@@ -264,7 +264,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 
 ## dateTime64ToSnowflake \{#dateTime64ToSnowflake\}
 
-引入于：v21.10
+引入于：v21.10.0
 
 <DeprecatedBadge />
 
@@ -308,7 +308,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 ## dateTime64ToSnowflakeID \{#dateTime64ToSnowflakeID\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 将 [DateTime64](../data-types/datetime64.md) 值转换为给定时间点对应的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
@@ -342,7 +342,7 @@ SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shan
 
 ## dateTimeToSnowflake \{#dateTimeToSnowflake\}
 
-首次引入于：v21.10
+首次引入于：v21.10.0
 
 <DeprecatedBadge />
 
@@ -386,7 +386,7 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 
 ## dateTimeToSnowflakeID \{#dateTimeToSnowflakeID\}
 
-自 v24.6 引入
+自 v24.6.0 引入
 
 将 [DateTime](../data-types/datetime.md) 值转换为在给定时间对应的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
@@ -420,7 +420,7 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-引入版本：v25.9
+引入版本：v25.9.0
 
 将 [DateTime](../data-types/datetime.md) 值在给定时间点转换为 [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7)。
 
@@ -477,7 +477,7 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 生成一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
@@ -519,7 +519,7 @@ SELECT * FROM tab;
 └─────────────────────┘
 ```
 
-**每行会生成多个 Snowflake ID**
+**每行生成多个 Snowflake ID**
 
 ```sql title=Query
 SELECT generateSnowflakeID(1), generateSnowflakeID(2);
@@ -546,7 +546,7 @@ SELECT generateSnowflakeID('expr', 1);
 
 ## generateUUIDv4 \{#generateUUIDv4\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 生成一个[第 4 版](https://tools.ietf.org/html/rfc4122#section-4.4) [UUID](../data-types/uuid.md)。
 
@@ -595,7 +595,7 @@ SELECT generateUUIDv4(1), generateUUIDv4(1);
 
 ## generateUUIDv7 \{#generateUUIDv7\}
 
-引入于：v24.5
+引入于：v24.5.0
 
 生成一个[版本 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) [UUID](../data-types/uuid.md)。
 
@@ -650,7 +650,7 @@ SELECT generateUUIDv7(1), generateUUIDv7(1);
 
 ## snowflakeIDToDateTime \{#snowflakeIDToDateTime\}
 
-引入自：v24.6
+引入自：v24.6.0
 
 返回 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 中时间戳部分对应的 [DateTime](../data-types/datetime.md) 类型值。
 
@@ -687,7 +687,7 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 
 ## snowflakeIDToDateTime64 \{#snowflakeIDToDateTime64\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 返回 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 的时间戳部分，类型为 [DateTime64](../data-types/datetime64.md)。
 
@@ -724,7 +724,7 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 
 ## snowflakeToDateTime \{#snowflakeToDateTime\}
 
-引入于：v21.10
+引入于：v21.10.0
 
 <DeprecatedBadge />
 
@@ -769,7 +769,7 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 
 ## snowflakeToDateTime64 \{#snowflakeToDateTime64\}
 
-引入版本：v21.10
+引入版本：v21.10.0
 
 <DeprecatedBadge />
 
@@ -814,7 +814,7 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 
 ## toUUIDOrDefault \{#toUUIDOrDefault\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 String 值转换为 UUID 类型。如果转换失败，则返回一个默认 UUID 值，而不是抛出错误。
 
@@ -865,7 +865,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 
 ## toUUIDOrNull \{#toUUIDOrNull\}
 
-引入版本：v20.12
+引入版本：v20.12.0
 
 将输入值转换为 `UUID` 类型的值，但在出错时返回 `NULL`。
 

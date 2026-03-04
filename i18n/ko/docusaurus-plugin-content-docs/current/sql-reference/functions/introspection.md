@@ -34,7 +34,7 @@ ClickHouse는 프로파일러 보고서를 [trace&#95;log](/operations/system-ta
 
 ## addressToLine \{#addressToLine\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 ClickHouse 서버 프로세스 내의 가상 메모리 주소를 ClickHouse 소스 코드의 파일 이름과 줄 번호로 변환합니다.
 
@@ -83,7 +83,7 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-**하나의 주소에 대한 소스 코드 파일명 및 줄 번호 가져오기**
+**단일 주소에 대한 소스 코드 파일 이름과 줄 번호 가져오기**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -96,7 +96,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-**전체 스택 트레이스에 함수를 적용하기**
+**함수를 전체 스택 트레이스에 적용하기**
 
 ```sql title=Query
 -- The arrayMap function in this example processing each individual element of the trace array by the addressToLine function.
@@ -124,7 +124,7 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
-도입 버전: v22.2
+도입 버전: v22.2.0
 
 `addressToLine`과 유사하지만, 모든 인라인 함수가 포함된 배열(Array)을 반환합니다.
 이로 인해 `addressToLine`보다 느리게 동작합니다.
@@ -224,7 +224,7 @@ WHERE
 
 ## addressToSymbol \{#addressToSymbol\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 ClickHouse 서버 프로세스의 가상 메모리 주소를 ClickHouse 오브젝트 파일의 심볼로 변환합니다.
 
@@ -240,7 +240,7 @@ addressToSymbol(address_of_binary_instruction)
 
 **반환 값**
 
-ClickHouse 객체 파일에서 심볼을 반환하며, 주소가 유효하지 않으면 빈 문자열을 반환합니다. [`String`](/sql-reference/data-types/string)
+ClickHouse 오브젝트 파일에서 심볼을 반환하며, 주소가 유효하지 않으면 빈 문자열을 반환합니다. [`String`](/sql-reference/data-types/string)
 
 **예시**
 
@@ -264,7 +264,7 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-**단일 주소의 심볼 가져오기**
+**단일 주소에 대한 심볼 가져오기**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -318,7 +318,7 @@ clone
 
 ## demangle \{#demangle\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 심볼을 C++ 함수 이름으로 변환합니다.
 이 심볼은 일반적으로 `addressToSymbol` 함수가 반환합니다.
@@ -358,7 +358,7 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-**단일 주소의 함수 이름 확인**
+**단일 주소에 대한 함수 이름 가져오기**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -371,7 +371,7 @@ Row 1:
 demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
 ```
 
-**전체 스택 트레이스에 FUNCTION을 적용하기**
+**전체 스택 트레이스에 함수를 적용하기**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -412,7 +412,7 @@ clone
 
 ## isMergeTreePartCoveredBy \{#isMergeTreePartCoveredBy\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 첫 번째 인수의 파트가 두 번째 인수의 파트에 포함되어 있는지 확인하는 함수입니다.
 
@@ -448,7 +448,7 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 
 ## logTrace \{#logTrace\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 각 [Block](/development/architecture/#block)에 대해 서버 로그에 trace 로그 메시지를 기록합니다.
 
@@ -482,7 +482,7 @@ SELECT logTrace('logTrace message');
 
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 `MergeTree` 파트 이름에서 필요한 값을 추출하는 FUNCTION입니다.
 
@@ -517,7 +517,7 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 
 ## tid \{#tid\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 현재 [Block](/development/architecture/#block)이 처리 중인 스레드의 ID를 반환합니다.
 

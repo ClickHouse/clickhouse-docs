@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-도입된 버전: v25.12
+도입된 버전: v25.12.0
 
 지정된 해시 알고리즘과 비밀 키를 사용하여 주어진 메시지에 대한 HMAC(Hash-based Message Authentication Code)를 계산합니다.
 
@@ -152,7 +152,7 @@ SELECT
 
 ## aes_decrypt_mysql \{#aes_decrypt_mysql\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 MySQL의 [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 함수로 암호화된 데이터를 복호화합니다.
 
@@ -211,7 +211,7 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 
 ## aes_encrypt_mysql \{#aes_encrypt_mysql\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 MySQL의 `AES_ENCRYPT` 함수와 동일한 방식으로 텍스트를 암호화합니다.
 결과로 생성된 암호문은 MySQL의 `AES_DECRYPT` 함수로 복호화할 수 있습니다.
@@ -256,7 +256,7 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-**긴 키 사용 시 암호화 실패**
+**긴 키로 인한 암호화 실패**
 
 ```sql title=Query
 -- But encrypt fails when key or iv is longer than expected:
@@ -281,7 +281,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-**더 긴 IV를 사용해도 동일한 결과를 반환합니다**
+**더 긴 IV를 사용해도 결과는 동일합니다**
 
 ```sql title=Query
 -- Notice how supplying even longer IV produces the same result
@@ -296,7 +296,7 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 
 ## decrypt \{#decrypt\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 이 FUNCTION은 AES로 암호화된 바이너리 문자열을 다음 모드로 복호화합니다:
 
@@ -347,7 +347,7 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**암호화된 데이터의 잘못된 복호화**
+**암호화된 데이터를 잘못 복호화하기**
 
 ```sql title=Query
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') AS plaintext FROM encryption_test
@@ -372,7 +372,7 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 
 ## encrypt \{#encrypt\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 다음 모드 중 하나를 사용하는 AES로 평문을 암호문으로 암호화합니다:
 
@@ -451,7 +451,7 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 
 ## tryDecrypt \{#tryDecrypt\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 `decrypt` 함수와 유사하지만, 잘못된 키로 인해 복호화에 실패하면 `NULL`을 반환합니다.
 

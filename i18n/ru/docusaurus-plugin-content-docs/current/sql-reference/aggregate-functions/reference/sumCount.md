@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumCount \{#sumCount\}
 
-Появилась в версии: v21.6
+Появилась в версии: v21.6.0
 
 Вычисляет сумму чисел и одновременно подсчитывает количество строк. Функция используется оптимизатором запросов ClickHouse: если в запросе есть несколько функций `sum`, `count` или `avg`, их можно заменить одной функцией `sumCount`, чтобы переиспользовать результаты вычислений. Необходимость в её явном использовании возникает редко.
 
@@ -52,4 +52,4 @@ SELECT sumCount(x) FROM s_table;
 
 **См. также**
 
-* настройку [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions).
+* [optimize&#95;syntax&#95;fuse&#95;functions](../../../operations/settings/settings.md#optimize_syntax_fuse_functions) настройка.

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## deltaSumTimestamp \{#deltaSumTimestamp\}
 
-引入版本：v21.6
+引入版本：v21.6.0
 
 对相邻行之间的差值求和。
 如果差值为负，则会被忽略。
