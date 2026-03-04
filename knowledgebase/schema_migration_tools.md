@@ -41,13 +41,11 @@ These tools start with the user defining a "desired state" schema definition. Th
 **Example**: *Atlas, Liquibase* 
 
 There is a third category of tools that focus less on the database schema change and more on transforming the data itself rather than the schema structure.  
-**Example**: *dbt* 
+**Example**: *dbt*  
 For this document, we will focus solely on tools for database schema changes.
 
-Overall, we recommend that you choose a tool that aligns with how you and your team want to operate. Imperative tools give full visibility into exactly what DDL will run. But it requires dedicated user focus for diff-ing and managing schema drift. Declarative tools are valuable for automating a lot of the boilerplate maintenance and preventing schema drift, but you should always review the generated plan before applying it to
-ClickHouse to ensure no surprise mutation or expensive rewrite hidden behind an auto-generated plan.
+Overall, we recommend that you choose a tool that aligns with how you and your team want to operate. Imperative tools give full visibility into exactly what DDL will run. But it requires dedicated user focus for diff-ing and managing schema drift. Declarative tools are valuable for automating a lot of the boilerplate maintenance and preventing schema drift, but you should always review the generated plan before applying it to ClickHouse to ensure no surprise mutation or expensive rewrite hidden behind an auto-generated plan.
 
----
 
 ## What to Consider When Choosing a Tool
 
