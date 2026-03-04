@@ -505,13 +505,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 ## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]} />
 
 Разрешает создавать в таблицах столбцы типа [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md).
+
+Этот параметр не управляет тем, могут ли извлечённые подстолбцы кортежей иметь тип `Nullable` (например, из столбцов типов Dynamic, Variant, JSON или Tuple).
+Используйте `allow_nullable_tuple_in_extracted_subcolumns`, чтобы управлять тем, могут ли извлечённые подстолбцы кортежей иметь тип `Nullable`.
 
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
@@ -749,6 +752,24 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 - 0 — Запрещено.
 - 1 — Разрешено.
+
+## allow_nullable_tuple_in_extracted_subcolumns \{#allow_nullable_tuple_in_extracted_subcolumns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка, контролирующая, могут ли извлечённые подстолбцы типа Tuple быть Nullable."}]}]} />
+
+Определяет, могут ли извлечённые подстолбцы типа `Tuple(...)` иметь тип `Nullable(Tuple(...))`.
+
+* `false`: Возвращать `Tuple(...)` и использовать значения кортежа по умолчанию для строк, в которых подстолбец отсутствует.
+* `true`: Возвращать `Nullable(Tuple(...))` и использовать `NULL` для строк, в которых подстолбец отсутствует.
+
+Эта настройка управляет только поведением извлечённых подстолбцов.
+Она не управляет тем, могут ли в таблицах создаваться столбцы типа `Nullable(Tuple(...))`; это контролируется настройкой `allow_experimental_nullable_tuple_type`.
+
+ClickHouse использует значение этой настройки, загруженное при запуске сервера.
+Изменения, сделанные с помощью `SET` или `SETTINGS` на уровне запроса, не изменяют поведение извлечённых подстолбцов.
+Чтобы изменить поведение извлечённых подстолбцов, обновите `allow_nullable_tuple_in_extracted_subcolumns` в конфигурации профиля запуска (например, users.xml) и перезапустите сервер.
 
 ## allow_prefetched_read_pool_for_local_filesystem \{#allow_prefetched_read_pool_for_local_filesystem\}
 
