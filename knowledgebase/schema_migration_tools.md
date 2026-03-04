@@ -65,8 +65,6 @@ Think about how schema changes flow through your organization. Take into account
 
 Match the tool to your requirements and process. 
 
----
-
 ## Recommended Tools
 
 These are the tools we generally recommend for ClickHouse users based on maturity, ClickHouse compatibility, community adoption, and operational fit.
@@ -115,8 +113,6 @@ These are the tools we generally recommend for ClickHouse users based on maturit
 - **Language:** Go (single binary)
 - **License:** Open Source (MIT, free)
 - **Cluster support:** No
-
----
 
 ## Other Tools in the Ecosystem
 
