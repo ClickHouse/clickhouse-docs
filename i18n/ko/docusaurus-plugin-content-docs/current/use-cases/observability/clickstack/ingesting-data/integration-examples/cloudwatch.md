@@ -470,13 +470,13 @@ logs:
 
 ### Collector가 메모리를 과도하게 사용하는 경우
 
-**배치 크기를 줄이거나 타임아웃을 늘리십시오.**
+**타임아웃을 늘리거나 메모리 제한 프로세서를 사용하십시오.**
 
 ```yaml
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 100
+    send_batch_size: 10000
 ```
 
 **자동 검색 범위 제한:**

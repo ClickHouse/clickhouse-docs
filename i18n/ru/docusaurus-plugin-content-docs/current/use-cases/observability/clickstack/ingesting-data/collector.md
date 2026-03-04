@@ -303,7 +303,7 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048

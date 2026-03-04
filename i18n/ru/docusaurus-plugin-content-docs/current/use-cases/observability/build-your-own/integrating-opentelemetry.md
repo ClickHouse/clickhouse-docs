@@ -350,7 +350,7 @@ service:
 
 Ниже приведён полный конфигурационный файл.
 
-[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
+[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -370,7 +370,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 5000
+    send_batch_size: 10000
 exporters:
   clickhouse:
     endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
@@ -413,7 +413,7 @@ service:
 * **create&#95;schema** - определяет, создаются ли таблицы со стандартными схемами при запуске. По умолчанию равно true для упрощения начала работы. В дальнейшем вам следует установить значение false и задать собственные схемы.
 * **database** - целевая база данных.
 * **retry&#95;on&#95;failure** - настройки, определяющие, должны ли повторно отправляться неудачные пакеты.
-* **batch** - пакетный процессор (batch processor) обеспечивает отправку событий пакетами. Мы рекомендуем значение около 5000 с тайм-аутом 5s. То, что будет достигнуто первым, инициирует сброс пакета в exporter. Уменьшение этих значений приведёт к конвейеру с меньшей задержкой и более ранней доступностью данных для запросов, ценой увеличения количества соединений и пакетов, отправляемых в ClickHouse. Это не рекомендуется, если вы не используете [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), так как это может вызвать проблемы со [слишком большим числом частей](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) в ClickHouse. Напротив, если вы используете асинхронные вставки, доступность данных для запросов также будет зависеть от настроек асинхронных вставок, хотя данные всё равно будут раньше сбрасываться из коннектора. См. раздел [Batching](#batching) для получения дополнительных сведений.
+* **batch** - пакетный процессор (batch processor) обеспечивает отправку событий пакетами. Мы рекомендуем значение не менее 10 000 с тайм-аутом 5s (до 100 000, если позволяет память). То, что будет достигнуто первым, инициирует сброс пакета в exporter. Уменьшение этих значений приведёт к конвейеру с меньшей задержкой и более ранней доступностью данных для запросов, ценой увеличения количества соединений и пакетов, отправляемых в ClickHouse. Это не рекомендуется, если вы не используете [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), так как это может вызвать проблемы со [слишком большим числом частей](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) в ClickHouse. Напротив, если вы используете асинхронные вставки, доступность данных для запросов также будет зависеть от настроек асинхронных вставок, хотя данные всё равно будут раньше сбрасываться из коннектора. См. раздел [Batching](#batching) для получения дополнительных сведений.
 * **sending&#95;queue** - управляет размером очереди отправки. Каждый элемент в очереди содержит один пакет. Если размер очереди будет превышен, например, из‑за недоступности ClickHouse при продолжающемся поступлении событий, пакеты будут отброшены.
 
 Предполагая, что пользователи извлекли структурированный файл логов и у них запущен [локальный экземпляр ClickHouse](/install) (с аутентификацией по умолчанию), вы можете запустить эту конфигурацию командой:
@@ -609,7 +609,7 @@ SETTINGS ttl_only_drop_parts = 1
 
 С точки зрения коллектора случаи (1) и (2) может быть сложно различить. Однако в обоих случаях неподтвержденную вставку можно немедленно повторить. Пока повторный INSERT‑запрос содержит те же данные в том же порядке, ClickHouse автоматически проигнорирует повторную вставку, если (неподтвержденный) исходный INSERT завершился успешно.
 
-Мы рекомендуем использовать [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md), показанный в предыдущих конфигурациях, чтобы выполнить описанные выше требования. Это гарантирует, что вставки отправляются как согласованные пакеты строк, удовлетворяющие указанным условиям. Если от коллектора ожидается высокая пропускная способность (событий в секунду) и как минимум 5000 событий могут быть отправлены в каждой вставке, это, как правило, единственное необходимое пакетирование в конвейере. В этом случае коллектор будет сбрасывать пакеты до того, как будет достигнут `timeout` batch processor, обеспечивая низкую сквозную задержку конвейера и стабильный размер пакетов.
+Мы рекомендуем использовать [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md), показанный в предыдущих конфигурациях, чтобы выполнить описанные выше требования. Это гарантирует, что вставки отправляются как согласованные пакеты строк, удовлетворяющие указанным условиям. Если от коллектора ожидается высокая пропускная способность (событий в секунду) и как минимум 10 000 событий могут быть отправлены в каждой вставке, это, как правило, единственное необходимое пакетирование в конвейере. В этом случае коллектор будет сбрасывать пакеты до того, как будет достигнут `timeout` batch processor, обеспечивая низкую сквозную задержку конвейера и стабильный размер пакетов.
 
 ### Используйте асинхронные вставки \{#use-asynchronous-inserts\}
 
@@ -659,7 +659,7 @@ OTel collector могут быть развернуты в виде экземп
 
 Цель этой архитектуры — снять ресурсоемкую обработку с агентов, тем самым минимизируя их потребление ресурсов. Эти шлюзы могут выполнять задачи преобразования, которые в противном случае пришлось бы выполнять агентам. Кроме того, агрегируя события от множества агентов, шлюзы могут обеспечивать отправку крупных пакетов данных в ClickHouse, что позволяет эффективно производить вставку. Эти коллекторы‑шлюзы можно легко масштабировать по мере добавления новых агентов и роста объема событий. Пример конфигурации шлюза с соответствующей конфигурацией агента, который читает пример структурированного файла логов, приведен ниже. Обратите внимание на использование OTLP для связи между агентом и шлюзом.
 
-[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
+[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -675,7 +675,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 1000
+    send_batch_size: 10000
 exporters:
   otlp:
     endpoint: localhost:4317

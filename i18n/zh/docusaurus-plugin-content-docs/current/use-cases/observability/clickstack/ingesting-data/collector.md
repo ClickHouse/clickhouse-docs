@@ -303,7 +303,7 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
@@ -353,7 +353,7 @@ service:
 
 从 collector 的角度来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含的数据及其顺序与原始 insert 相同，如果原始（未被确认的）insert 实际上已成功，ClickHouse 就会自动忽略这次重试的 insert。
 
-基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量（每秒事件数，events per second），并且每次 insert 至少可以发送 5000 个事件，那么通常这就是处理管道（pipeline）中唯一需要的批处理机制。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
+基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量（每秒事件数，events per second），并且每次 insert 至少可以发送 10,000 个事件，那么通常这就是处理管道（pipeline）中唯一需要的批处理机制。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
 ### 使用异步插入 \{#use-asynchronous-inserts\}
 
