@@ -31,6 +31,8 @@ catalog plugins.
 Spark's default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
 
+<TOCInline toc={toc}></TOCInline>
+
 ## Choosing Between Catalog API and TableProvider API {#choosing-between-apis}
 
 The ClickHouse Spark connector supports two access patterns: the **Catalog API** and the **TableProvider API** (format-based access). Understanding the differences helps you choose the right approach for your use case.
@@ -44,8 +46,6 @@ The ClickHouse Spark connector supports two access patterns: the **Catalog API**
 | **DDL Operations** | Full support (CREATE, DROP, ALTER) | Limited (automatic table creation only) |
 | **Spark SQL Integration** | Native (`clickhouse.database.table`) | Requires format specification |
 | **Use Case** | Long-term, stable connections with centralized config | Ad-hoc, dynamic, or temporary access |
-
-<TOCInline toc={toc}></TOCInline>
 
 ## Requirements {#requirements}
 
