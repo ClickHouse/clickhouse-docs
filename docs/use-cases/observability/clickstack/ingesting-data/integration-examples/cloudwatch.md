@@ -455,12 +455,12 @@ logs:
 
 ### Collector using too much memory {#memory}
 
-**Increase timeout or use the memory limiter processor:**
+**Reduce batch size or increase timeout:**
 ```yaml
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 10000
+    send_batch_size: 100
 ```
 
 **Limit autodiscovery:**

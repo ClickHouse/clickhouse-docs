@@ -470,13 +470,13 @@ logs:
 
 ### Collector 内存占用过高
 
-**增加超时时间或使用内存限制器处理器：**
+**减小批处理大小或增加超时时间：**
 
 ```yaml
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 10000
+    send_batch_size: 100
 ```
 
 **限制自动发现范围：**
