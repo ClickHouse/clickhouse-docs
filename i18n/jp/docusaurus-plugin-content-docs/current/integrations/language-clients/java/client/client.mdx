@@ -33,9 +33,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ## セットアップ \{#setup\}
 
-    * Maven Central（プロジェクトの Web ページ）: https://mvnrepository.com/artifact/com.clickhouse/client-v2
-    * ナイトリービルド（リポジトリへのリンク）：https://central.sonatype.com/repository/maven-snapshots/
-    * 旧Nightlyビルド用 Artifactory（リポジトリリンク）：https://s01.oss.sonatype.org/content/repositories/snapshots/
+    * Maven Central (プロジェクトのWebページ) : https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    * ナイトリービルド (リポジトリへのリンク) ：https://central.sonatype.com/repository/maven-snapshots/
+    * 旧Nightlyビルド用 Artifactory (リポジトリリンク) ：https://s01.oss.sonatype.org/content/repositories/snapshots/
 
     <br />
 
@@ -45,7 +45,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>client-v2</artifactId>
-            <version>0.9.6</version>
+            <version>0.9.7</version>
         </dependency>
         ```
       </TabItem>
@@ -53,14 +53,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation("com.clickhouse:client-v2:0.9.6")
+        implementation("com.clickhouse:client-v2:0.9.7")
         ```
       </TabItem>
 
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation 'com.clickhouse:client-v2:0.9.6'
+        implementation 'com.clickhouse:client-v2:0.9.7'
         ```
       </TabItem>
     </Tabs>
@@ -72,7 +72,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Clientオブジェクトは `com.clickhouse.client.api.Client.Builder#build()` によって初期化されます。各クライアントは独自のコンテキストを持ち、オブジェクトはクライアント間で共有されません。
     Builder には設定を簡単に行うための構成メソッドが用意されています。
 
-    例:
+    例：
 
     ```java showLineNumbers
      Client client = new Client.Builder()
@@ -98,7 +98,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
             .build();
     ```
 
-    アクセストークンによる認証を行うには、`setAccessToken(String)` を呼び出してアクセストークンを設定する必要があります:
+    アクセストークンで認証するには、`setAccessToken(String)` を呼び出してアクセストークンを設定する必要があります:
 
     ```java showLineNumbers
      Client client = new Client.Builder()
@@ -107,7 +107,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
             .build();
     ```
 
-    SSLクライアント証明書による認証を行うには、`setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)`、`setClientKey(String)` をそれぞれ呼び出して、ユーザー名の設定、SSL 認証の有効化、およびクライアント証明書とクライアントキーの設定を行う必要があります:
+    SSLクライアント証明書による認証を行うには、`setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)`、`setClientKey(String)` をそれぞれ呼び出して、ユーザー名の設定、SSL認証の有効化、クライアント証明書とクライアントキーの設定を行う必要があります。
 
     ```java showLineNumbers
     Client client = new Client.Builder()
@@ -118,23 +118,23 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ```
 
     :::note
-    SSL認証は、SSLライブラリから出力されるエラーの多くが十分な情報を提供しないため、本番環境でのトラブルシューティングが困難になる場合があります。例えば、クライアント証明書と秘密鍵が一致しない場合、サーバーは即座に接続を切断します（HTTP の場合、HTTP リクエストが送信される前の接続確立段階で切断されるため、レスポンスは一切返されません）。
+    SSL認証は、SSLライブラリからの多くのエラーが十分な情報を提供しないため、本番環境ではトラブルシューティングが難しい場合があります。例えば、クライアント証明書と秘密鍵が一致しないと、サーバーは接続を直ちに切断します (HTTPの場合は接続確立時で、まだHTTPリクエストが送信されていないため、レスポンスは返されません) 。
 
-    証明書と鍵を検証するには、[openssl](https://docs.openssl.org/master/man1/openssl/)のようなツールを使用してください:
+    証明書および鍵の検証には、[openssl](https://docs.openssl.org/master/man1/openssl/) などのツールを使用してください：
 
-    * 秘密鍵の整合性を確認します: `openssl rsa -in [key-file.key] -check -noout`
-    * クライアント証明書の CN がユーザーと一致していることを確認します:
-      * ユーザー証明書から CN を取得します - `openssl x509 -noout -subject -in [user.cert]`
-      * 次のクエリを実行して、同じ値がデータベース側に設定されていることを確認します: `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（このクエリでは、`auth_params` フィールドに ` {"common_names":["some_user"]}` のような値が出力されます）
+    * 秘密鍵の整合性をチェック: `openssl rsa -in [key-file.key] -check -noout`
+    * クライアント証明書の CN がユーザー名と一致していることを確認します:
+      * ユーザーの証明書から CN を取得します - `openssl x509 -noout -subject -in [user.cert]`
+      * 次のクエリを実行して、同じ値がデータベース側に設定されていることを確認します: `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (このクエリの結果では、`auth_params` に ` {"common_names":["some_user"]}` のような値が出力されます)
 
     :::
 
     ## 設定 \{#configuration\}
 
-    すべての設定はインスタンスメソッド(構成メソッドとも呼ばれる)によって定義され、各値のスコープとコンテキストが明確になります。
-    主要な設定パラメータは1つのスコープ（クライアントまたは操作）で定義され、互いに上書きされることはありません。
+    すべての設定はインスタンスメソッド (いわゆる構成メソッド) によって定義され、各値のスコープとコンテキストが明確になります。
+    主要な構成パラメータは1つのスコープ (クライアントまたはオペレーション) で定義され、互いに上書きされることはありません。
 
-    設定はクライアント作成時に定義します。`com.clickhouse.client.api.Client.Builder`を参照してください。
+    設定はクライアントの作成時に定義されます。`com.clickhouse.client.api.Client.Builder`を参照してください。
 
     ## クライアント構成 \{#client-configuration\}
 
@@ -175,13 +175,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="ソケット" label="ソケットオプション">
-        | Method                               | Arguments             | Description                                                                           | Default | Key                  |
-        | ------------------------------------ | --------------------- | ------------------------------------------------------------------------------------- | ------- | -------------------- |
-        | `setSocketRcvbuf(long size)`         | `size` - バイト数         | TCP ソケットの受信バッファを設定します。このバッファは JVM 管理外のメモリ上に確保されます。                                    | `8196`  | `socket_rcvbuf`      |
-        | `setSocketSndbuf(long size)`         | `size` - バイト数         | TCP ソケットの送信バッファを設定します。このバッファは JVM 管理外のメモリ上に確保されます。                                    | `8196`  | `socket_sndbuf`      |
-        | `setSocketKeepAlive(boolean value)`  | `value` - 有効/無効を示すフラグ | すべての TCP ソケットに対してオプション `SO_KEEPALIVE` を設定します。TCP Keep-Alive は、接続の生存状態を確認する仕組みを有効にします。 | -       | `socket_keepalive`   |
-        | `setSocketTcpNodelay(boolean value)` | `value` - 有効/無効を示すフラグ | すべての TCP ソケットに対してオプション `SO_NODELAY` を設定します。この TCP オプションにより、ソケットは可能な限り速やかにデータを送信します。   | -       | `socket_tcp_nodelay` |
-        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - 秒数  | クライアントが作成するすべての TCP ソケットに対して linger 時間を設定します。                                         | -       | `socket_linger`      |
+        | Method                               | Arguments             | Description                                                                         | Default | Key                  |
+        | ------------------------------------ | --------------------- | ----------------------------------------------------------------------------------- | ------- | -------------------- |
+        | `setSocketRcvbuf(long size)`         | `size` - バイト数         | TCP ソケットの受信バッファを設定します。このバッファは JVM 管理外のメモリ上に確保されます。                                  | `8196`  | `socket_rcvbuf`      |
+        | `setSocketSndbuf(long size)`         | `size` - バイト数         | TCP ソケットの送信バッファを設定します。このバッファは JVM 管理外のメモリ上に確保されます。                                  | `8196`  | `socket_sndbuf`      |
+        | `setSocketKeepAlive(boolean value)`  | `value` - 有効/無効を示すフラグ | すべての TCP ソケットに対してオプション `SO_KEEPALIVE` を設定します。TCP Keep-Alive 機構を有効にし、接続の生存状態を監視します。  | -       | `socket_keepalive`   |
+        | `setSocketTcpNodelay(boolean value)` | `value` - 有効/無効を示すフラグ | すべての TCP ソケットに対してオプション `SO_NODELAY` を設定します。この TCP オプションにより、ソケットは可能な限り速やかにデータを送信します。 | -       | `socket_tcp_nodelay` |
+        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - 秒数  | クライアントが作成するすべての TCP ソケットに対して linger 時間を設定します。                                       | -       | `socket_linger`      |
       </TabItem>
 
       <TabItem value="圧縮" label="圧縮">
@@ -201,33 +201,35 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `setSSLTrustStore(String path)`             | `path` - ローカルシステム上のファイルパス | クライアントがサーバーホストの検証のために SSL トラストストアを使用するかどうかを設定します。             | -       | `trust_store`        |
         | `setSSLTrustStorePassword(String password)` | `password` - シークレット値      | `setSSLTrustStore` で指定した SSL トラストストアのロック解除に使用するパスワードを設定します。   | -       | `key_store_password` |
         | `setSSLTrustStoreType(String type)`         | `type` - truststore のタイプ名 | `setSSLTrustStore` で指定したトラストストアの種類を設定します。                     | -       | `key_store_type`     |
-        | `setRootCertificate(String path)`           | `path` - ローカルシステム上のファイルパス | サーバーホストの検証に使用するルート (CA) 証明書をクライアントが利用するかどうかを設定します。            | -       | `sslrootcert`        |
+        | `setRootCertificate(String path)`           | `path` - ローカルシステム上のファイルパス | サーバーホストの検証に、指定したルート (CA) 証明書をクライアントが使用するかどうかを設定します。           | -       | `sslrootcert`        |
         | `setClientCertificate(String path)`         | `path` - ローカルシステム上のファイルパス | SSL 接続の確立時および SSL 認証で使用するクライアント証明書のパスを設定します。                  | -       | `sslcert`            |
         | `setClientKey(String path)`                 | `path` - ローカルシステム上のファイルパス | サーバーとの SSL 通信を暗号化するために使用するクライアント秘密鍵を設定します。                    | -       | `ssl_key`            |
-        | `sslSocketSNI(String sni)`                  | `sni` - サーバー名文字列          | SSL/TLS 接続において SNI (Server Name Indication) に使用するサーバー名を設定します。 | -       | `ssl_socket_sni`     |
+        | `sslSocketSNI(String sni)`                  | `sni` - サーバー名を表す文字列       | SSL/TLS 接続において SNI (Server Name Indication) に使用するサーバー名を設定します。 | -       | `ssl_socket_sni`     |
       </TabItem>
 
       <TabItem value="プロキシ" label="プロキシ">
-        | Method                                            | Arguments                                                               | Description                  | Default | Key                                      |
-        | ------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------- | ------- | ---------------------------------------- |
-        | `addProxy(ProxyType type, String host, int port)` | `type` - プロキシの種類<br />`host` - プロキシのホスト名または IP<br />`port` - プロキシのポート番号 | サーバーとの通信に使用するプロキシを設定します。     | -       | `proxy_type`, `proxy_host`, `proxy_port` |
-        | `setProxyCredentials(String user, String pass)`   | `user` - プロキシのユーザー名<br />`pass` - パスワード                                 | プロキシでの認証に使用するユーザー資格情報を設定します。 | -       | `proxy_user`, `proxy_password`           |
+        | Method                                            | Arguments                                                               | Description                   | Default | Key                                      |
+        | ------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------- | ------- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - プロキシの種類<br />`host` - プロキシのホスト名または IP<br />`port` - プロキシのポート番号 | サーバーとの通信に使用するプロキシを設定します。      | -       | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - プロキシのユーザー名<br />`pass` - パスワード                                 | プロキシ認証に使用するユーザー名とパスワードを設定します。 | -       | `proxy_user`, `proxy_password`           |
       </TabItem>
 
       <TabItem value="http" label="HTTP とヘッダー">
-        | Method                                      | Arguments                                     | Description                            | Default | Key    |
-        | ------------------------------------------- | --------------------------------------------- | -------------------------------------- | ------- | ------ |
-        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 有効/無効を切り替えるフラグ                    | HTTP Cookie を保持し、サーバーに送り返すかどうかを設定します。  | -       | -      |
-        | `httpHeader(String key, String value)`      | `key` - HTTP ヘッダーのキー<br />`value` - 文字列値      | 単一の HTTP ヘッダー値を設定します。以前の値は上書きされます。     | `none`  | `none` |
-        | `httpHeader(String key, Collection values)` | `key` - HTTP ヘッダーのキー<br />`values` - 文字列値のリスト | 単一の HTTP ヘッダーに複数の値を設定します。以前の値は上書きされます。 | `none`  | `none` |
-        | `httpHeaders(Map headers)`                  | `headers` - HTTP ヘッダーを含むマップ                   | 複数の HTTP ヘッダー値をまとめて設定します。              | `none`  | `none` |
+        | Method                                      | Arguments                                     | Description                                                                                                                                                          | Default | Key                                      |
+        | ------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------- |
+        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 有効/無効を切り替えるフラグ                    | HTTP Cookie を保持し、サーバーに送り返すかどうかを設定します。                                                                                                                                | -       | -                                        |
+        | `httpHeader(String key, String value)`      | `key` - HTTP ヘッダーのキー<br />`value` - 文字列値      | 単一の HTTP ヘッダー値を設定します。以前の値は上書きされます。                                                                                                                                   | `none`  | `none`                                   |
+        | `httpHeader(String key, Collection values)` | `key` - HTTP ヘッダーのキー<br />`values` - 文字列値のリスト | 単一の HTTP ヘッダーに複数の値を設定します。以前の値は上書きされます。                                                                                                                               | `none`  | `none`                                   |
+        | `httpHeaders(Map headers)`                  | `headers` - HTTP ヘッダーを含むマップ                   | 複数の HTTP ヘッダー値をまとめて設定します。                                                                                                                                            | `none`  | `none`                                   |
+        | `useHttpFormDataForQuery(boolean enable)`   | `enable` - 有効/無効を切り替えるフラグ                     | クエリパラメータを URL ではなく、リクエストボディ内の HTTP フォームデータとして送信するかどうかを設定します。サーバー側圧縮が有効な場合にのみ動作します。クライアント側の圧縮が有効な場合、各パラメータがマルチパートコンテンツとして送信されるため、パラメータ付きクエリリクエストではクライアント側の圧縮は無効化されます。 | `false` | `client.http.use_form_request_for_query` |
       </TabItem>
 
       <TabItem value="サーバー設定" label="サーバー設定">
-        | Method                                          | Arguments                               | Description                                                                                         | Default | Key    |
-        | ----------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------- | ------- | ------ |
-        | `serverSetting(String name, String value)`      | `name` - 設定名<br />`value` - 設定値         | 各クエリとともにサーバーへ渡す設定を指定します。個々の操作で指定された設定によって上書きされる場合があります。 [設定の一覧](/operations/settings/query-level)   | `none`  | `none` |
-        | `serverSetting(String name, Collection values)` | `name` - 設定名<br />`values` - 設定値のコレクション | サーバーへ渡す設定を複数の値で指定します。たとえば[roles](/interfaces/http#setting-role-with-query-parameters)のようなケースで利用します。 | `none`  | `none` |
+        | Method                                          | Arguments                               | Description                                                                                                                         | Default   | Key                      |
+        | ----------------------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------ |
+        | `serverSetting(String name, String value)`      | `name` - 設定名<br />`value` - 設定値         | 各クエリとともにサーバーへ渡す設定を指定します。個々の操作で指定された設定によって上書きされる場合があります。 [設定の一覧](/operations/settings/query-level)                                   | `none`    | `none`                   |
+        | `serverSetting(String name, Collection values)` | `name` - 設定名<br />`values` - 設定値のコレクション | サーバーへ渡す設定を複数の値で指定します。たとえば[roles](/interfaces/http#setting-role-with-query-parameters)のようなケースで利用します。                                 | `none`    | `none`                   |
+        | `setOption("custom_settings_prefix", value)`    | `value` - プレフィックス文字列                    | サーバーに渡すカスタム設定のプレフィックスを設定します。サーバー側の構成と一致している必要があります。[ClickHouse ドキュメント](/operations/settings/query-level#custom_settings) を参照してください。 | `custom_` | `custom_settings_prefix` |
       </TabItem>
 
       <TabItem value="タイムゾーン" label="タイムゾーン">
@@ -239,30 +241,31 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="詳細設定" label="詳細設定">
-        | Method                                                                    | Arguments                                                    | Description                                                                     | Default  | Key                          |
-        | ------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------- | -------- | ---------------------------- |
-        | `setOption(String key, String value)`                                     | `key` - 設定オプションのキー<br />`value` - オプション値                     | クライアントオプションの生の値を設定します。プロパティファイルから設定を読み込む場合に有用です。                                | -        | -                            |
-        | `useAsyncRequests(boolean async)`                                         | `async` - 有効/無効を切り替えるフラグ                                     | クライアントがリクエストを別スレッドで実行するかどうかを設定します。アプリケーション側がマルチスレッド処理をより適切に制御できるため、デフォルトでは無効です。 | `false`  | `async`                      |
-        | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - ExecutorService インスタンス                   | 操作タスク用の ExecutorService を設定します。                                                 | `none`   | `none`                       |
-        | `setClientNetworkBufferSize(int size)`                                    | `size` - バイト単位のサイズ                                           | ソケットとアプリケーション間でデータをコピーする際に使用される、アプリケーションメモリ空間内のバッファサイズを設定します。                   | `300000` | `client_network_buffer_size` |
-        | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | `reuse` - 有効/無効を切り替えるフラグ                                     | 有効にした場合、リーダーは数値変換を行うために事前割り当てされたバッファを再利用します。数値データに対する GC プレッシャーを軽減します。          | -        | -                            |
-        | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - マッチング戦略の実装クラス                                   | DTO を登録する際に、DTO クラスのフィールドと DB のカラムをマッチングするために使用するカスタム戦略を設定します。                  | `none`   | `none`                       |
-        | `setClientName(String clientName)`                                        | `clientName` - アプリケーション名文字列                                  | 呼び出し元アプリケーションに関する追加情報を設定します。`User-Agent` ヘッダーとして渡されます。                          | -        | `client_name`                |
-        | `registerClientMetrics(Object registry, String name)`                     | `registry` - Micrometer レジストリインスタンス<br />`name` - メトリクスグループ名 | Micrometer (https://micrometer.io/) のレジストリインスタンスにメトリクスを登録します。                   | -        | -                            |
-        | `setServerVersion(String version)`                                        | `version` - サーバーバージョン文字列                                     | バージョン検出をスキップするために、サーバーバージョンを設定します。                                              | -        | `server_version`             |
-        | `typeHintMapping(Map typeHintMapping)`                                    | `typeHintMapping` - 型ヒントのマップ                                 | ClickHouse 型に対する型ヒントのマッピングを設定します。例えば、多次元配列を Java のコンテナとして表現できるようにする場合などに使用します。  | -        | `type_hint_mapping`          |
+        | Method                                                                    | Arguments                                                    | Description                                                                                | Default  | Key                          |
+        | ------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | -------- | ---------------------------- |
+        | `setOption(String key, String value)`                                     | `key` - 設定オプションのキー<br />`value` - オプション値                     | クライアントオプションの生の値を設定します。プロパティファイルから設定を読み込む場合に有用です。                                           | -        | -                            |
+        | `useAsyncRequests(boolean async)`                                         | `async` - 有効/無効を切り替えるフラグ                                     | クライアントがリクエストを別スレッドで実行するかどうかを設定します。アプリケーション側がマルチスレッド処理をより適切に制御できるため、デフォルトでは無効です。            | `false`  | `async`                      |
+        | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - ExecutorService インスタンス                   | 操作タスク用の ExecutorService を設定します。                                                            | `none`   | `none`                       |
+        | `setQueryIdGenerator(Supplier<String> supplier)`                          | `supplier` - クエリ ID を生成する `Supplier<String>`                 | 操作設定 (`InsertSettings`、`QuerySettings`) でクエリ ID が指定されていない場合に使用される、カスタムクエリ ID ジェネレータを設定します。 | -        | -                            |
+        | `setClientNetworkBufferSize(int size)`                                    | `size` - バイト単位のサイズ                                           | ソケットとアプリケーション間でデータをコピーする際に使用される、アプリケーションメモリ空間内のバッファサイズを設定します。                              | `300000` | `client_network_buffer_size` |
+        | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | `reuse` - 有効/無効を切り替えるフラグ                                     | 有効にした場合、リーダーは数値変換を行うために事前割り当てされたバッファを再利用します。数値データに対する GC プレッシャーを軽減します。                     | -        | -                            |
+        | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - マッチング戦略の実装クラス                                   | DTO を登録する際に、DTO クラスのフィールドと DB のカラムをマッチングするために使用するカスタム戦略を設定します。                             | `none`   | `none`                       |
+        | `setClientName(String clientName)`                                        | `clientName` - アプリケーション名文字列                                  | 呼び出し元アプリケーションに関する追加情報を設定します。`User-Agent` ヘッダーとして渡されます。                                     | -        | `client_name`                |
+        | `registerClientMetrics(Object registry, String name)`                     | `registry` - Micrometer レジストリインスタンス<br />`name` - メトリクスグループ名 | Micrometer (https://micrometer.io/) のレジストリインスタンスにメトリクスを登録します。                              | -        | -                            |
+        | `setServerVersion(String version)`                                        | `version` - サーバーバージョン文字列                                     | バージョン検出をスキップするために、サーバーバージョンを設定します。                                                         | -        | `server_version`             |
+        | `typeHintMapping(Map typeHintMapping)`                                    | `typeHintMapping` - 型ヒントのマップ                                 | ClickHouse 型に対する型ヒントのマッピングを設定します。例えば、多次元配列を Java のコンテナとして表現できるようにする場合などに使用します。             | -        | `type_hint_mapping`          |
       </TabItem>
     </Tabs>
 
     <br />
 
-    ### クライアント識別 \{#client-identification\}
+    ### クライアントの識別 \{#client-identification\}
 
-    クエリログには、リクエストの発信元アプリケーションを識別するフィールドが2つあります: `client_name` と `http_user_agent` です。ネイティブ TCP プロトコルはアプリケーションの識別に `client_name` を使用し、HTTP プロトコルは `http_user_agent` を使用します。クライアントビルダーには、両プロトコルに対して正しい値を設定するための `setClientName` メソッドがあります。
-    `http_user_agent` フィールドは、`User-Agent` ヘッダーの一般的な形式に従って設定されます: `application-name[/version] [(operating-system; architecture; ...)]`。
-    この値のセットは、アプリケーション、クライアントライブラリ、HTTP クライアントライブラリの各レイヤーに対して繰り返されます。`setClientName` メソッドで設定された値がリストの先頭に来ます。
+    クエリログには、リクエストの発信元アプリケーションを識別するフィールドが2つあります: `client_name` と `http_user_agent`。ネイティブTCPプロトコルではアプリケーション識別に `client_name` を使用し、HTTPプロトコルでは `http_user_agent` を使用します。クライアントビルダーには両プロトコルに対して正しい値を設定する `setClientName` メソッドがあります。
+    `http_user_agent` フィールドは `User-Agent` ヘッダーの一般的な形式に従って設定されます: `application-name[/version] [(operating-system; architecture; ...)]`。
+    この値のセットはアプリケーション、クライアントライブラリ、HTTPクライアントライブラリの各レイヤーごとに繰り返されます。`setClientName` メソッドで設定されたものがリストの先頭に来ます。
 
-    例:
+    例えば:
 
     ```java showLineNumbers
     client.setClientName("my-app-01/1.0");
@@ -276,11 +279,11 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     アプリケーションは自身を識別するために独自のHTTPヘッダー `User-Agent` を設定できます。ただし、`clickhouse-java-v2/0.9.6-SNAPSHOT` の部分がヘッダーの末尾に追加されます。
 
-    ### 操作の識別 \{#operation-identification\}
+    ### 操作識別 \{#operation-identification\}
 
     クエリログには、操作を識別しクエリログに追加情報を付加するために使用できる `query_id` と `log_comment` という2つのフィールドがあります。
 
-    `query_id` は操作の一意の識別子です。アプリケーションから `QuerySettings` クラスの `setQueryId` メソッドを呼び出すことで設定できます。
+    `query_id` は操作の一意の識別子です。アプリケーションが `QuerySettings` クラスの `setQueryId` メソッドを呼び出すことで設定できます。
 
     ```java showLineNumbers
     QuerySettings querySettings = new QuerySettings();
@@ -296,7 +299,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### サーバー設定 \{#server-settings\}
 
-    サーバー側の設定は、クライアント作成時に一度クライアントレベルで設定できます（`Builder`の`serverSetting`メソッドを参照）。また、操作レベルでも設定できます（操作設定クラスの`serverSetting`を参照）。
+    サーバー側の設定は、クライアント作成時の初期化フェーズに一度だけクライアントレベルで設定できます (`Builder`の`serverSetting`メソッドを参照) 。また、操作ごとに操作レベルでも設定できます (操作設定クラスの`serverSetting`を参照) 。
 
     ```java showLineNumbers
      try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
@@ -319,7 +322,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    ⚠️ `setOption`メソッド（`Client.Builder` または操作設定クラス）でオプションを設定する場合、サーバー設定名には `clickhouse_setting_` をプレフィックスとして付ける必要があります。この場合、`com.clickhouse.client.api.ClientConfigProperties#serverSetting()` が便利です。
+    ⚠️ `setOption`メソッド (`Client.Builder` または操作設定クラス) でオプションを設定する場合、サーバー設定名には `clickhouse_setting_` をプレフィックスとして付ける必要があります。この場合、`com.clickhouse.client.api.ClientConfigProperties#serverSetting()` が便利です。
 
     ### カスタムHTTPヘッダー \{#custom-http-header\}
 
@@ -333,111 +336,111 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ```
 
-    `setOption`メソッド(`Client.Builder`または操作設定クラスのいずれか)でオプションを設定する場合、カスタムヘッダー名には`http_header_`のプレフィックスを付ける必要があります。この場合、`com.clickhouse.client.api.ClientConfigProperties#httpHeader()`メソッドが役立ちます。
+    `setOption`メソッド (`Client.Builder` または操作設定クラスのいずれか) でオプションを設定する場合、カスタムヘッダー名には `http_header_` のプレフィックスを付ける必要があります。この場合には、`com.clickhouse.client.api.ClientConfigProperties#httpHeader()` メソッドを利用すると便利です。
 
     ## 共通定義 \{#common-definitions\}
 
     ### ClickHouseFormat \{#clickhouseformat\}
 
-    [サポートされている形式](/interfaces/formats)の列挙型。ClickHouseがサポートするすべての形式を含みます。
+    [サポートされている形式](/interfaces/formats)の列挙型 (Enum) です。ClickHouse がサポートするすべての形式を含みます。
 
-    * `raw` - ユーザー側で生データをトランスコードする必要があります
-    * `full` - クライアントが自前でデータのトランスコードを行い、生のデータストリームをそのまま受信できます
-    * `-` - この形式に対して ClickHouse がサポートしない操作
+    * `raw` - ユーザーが生データをトランスコードする必要があります
+    * `full` - クライアントがデータのトランスコードを自前で行い、生のデータストリームをそのまま受け取れます
+    * `-` - この形式では ClickHouse がサポートしない操作
 
-    このクライアントバージョンは以下をサポートします:
+    このクライアントバージョンでサポートされるのは次のとおりです:
 
-    | フォーマット                                                                                                       |  入力  |  出力  |
-    | ------------------------------------------------------------------------------------------------------------ | :--: | :--: |
-    | [TabSeparated](/interfaces/formats/TabSeparated)                                                             |  raw |  raw |
-    | [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                       |  raw |  raw |
-    | [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                           |  raw |  raw |
-    | [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                           |  raw |  raw |
-    | [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     |  raw |  raw |
-    | [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |  raw |  raw |
-    | [Template](/interfaces/formats/Template)                                                                     |  raw |  raw |
-    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  raw |   *  |
-    | [CSV](/interfaces/formats/CSV)                                                                               |  raw |  raw |
-    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  raw |  raw |
-    | [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |  raw |  raw |
-    | [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |  raw |  raw |
-    | [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |  raw |  raw |
-    | [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                     |  raw |  raw |
-    | [SQLInsert](/interfaces/formats/SQLInsert)                                                                   |   -  |  raw |
-    | [Values](/interfaces/formats/Values)                                                                         |  raw |  raw |
-    | [Vertical](/interfaces/formats/Vertical)                                                                     |   *  |  raw |
-    | [JSON](/interfaces/formats/JSON)                                                                             |  raw |  raw |
-    | [JSONAsString](/interfaces/formats/JSONAsString)                                                             |  raw |   -  |
-    | [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |  raw |   *  |
-    | [JSONStrings](/interfaces/formats/JSONStrings)                                                               |  raw |  raw |
-    | [JSONColumns](/interfaces/formats/JSONColumns)                                                               |  raw |  raw |
-    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  raw |  raw |
-    | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |  raw |  raw |
-    | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |   -  |  raw |
-    | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |  raw |  raw |
-    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |  raw |  raw |
-    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |   *  |  raw |
-    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |   -  |  raw |
-    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |  raw |  raw |
-    | [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |   *  |  raw |
-    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |  raw |  raw |
-    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |  raw |  raw |
-    | [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               |  raw |  raw |
-    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |  raw |  raw |
-    | [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 |  raw |  raw |
-    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |  raw |  raw |
-    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |  raw |  raw |
-    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |  raw |  raw |
-    | [TSKV](/interfaces/formats/TSKV)                                                                             |  raw |  raw |
-    | [Pretty](/interfaces/formats/Pretty)                                                                         |   -  |  raw |
-    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   *  |  raw |
-    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -  |  raw |
-    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   *  |  raw |
-    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -  |  raw |
-    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   *  |  raw |
-    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -  |  raw |
-    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   *  |  raw |
-    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -  |  raw |
-    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   *  |  raw |
-    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -  |  raw |
-    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   *  |  raw |
-    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |   -  |  raw |
-    | [Protobuf](/interfaces/formats/Protobuf)                                                                     |  raw |  raw |
-    | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |  raw |  raw |
-    | [ProtobufList](/interfaces/formats/ProtobufList)                                                             |  raw |  raw |
-    | [Avro](/interfaces/formats/Avro)                                                                             |  raw |  raw |
-    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |  raw |   *  |
-    | [Parquet](/interfaces/formats/Parquet)                                                                       |  raw |  raw |
-    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |  raw |   -  |
-    | [Arrow](/interfaces/formats/Arrow)                                                                           |  raw |  raw |
-    | [ArrowStream](/interfaces/formats/ArrowStream)                                                               |  raw |  raw |
-    | [ORC](/interfaces/formats/ORC)                                                                               |  raw |  raw |
-    | [One](/interfaces/formats/One)                                                                               |  raw |   *  |
-    | [Npy](/interfaces/formats/Npy)                                                                               |  raw |  raw |
-    | [RowBinary](/interfaces/formats/RowBinary)                                                                   | full | full |
-    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         | full | full |
-    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 | full | full |
-    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           | full |   -  |
-    | [Native](/interfaces/formats/Native)                                                                         | full |  raw |
-    | [Null](/interfaces/formats/Null)                                                                             |   *  |  raw |
-    | [XML](/interfaces/formats/XML)                                                                               |   -  |  raw |
-    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |  raw |  raw |
-    | [LineAsString](/interfaces/formats/LineAsString)                                                             |  raw |  raw |
-    | [Regexp](/interfaces/formats/Regexp)                                                                         |  raw |   *  |
-    | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |  raw |  raw |
-    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |  raw |  raw |
-    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |  raw |   -  |
-    | [DWARF](/interfaces/formats/DWARF)                                                                           |  raw |   *  |
-    | [Markdown](/interfaces/formats/Markdown)                                                                     |   -  |  raw |
-    | [Form](/interfaces/formats/Form)                                                                             |  raw |   *  |
+    | Format                                                                                                       | Input | Output |
+    | ------------------------------------------------------------------------------------------------------------ | :---: | :----: |
+    | [TabSeparated](/interfaces/formats/TabSeparated)                                                             |  raw  |   raw  |
+    | [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                       |  raw  |   raw  |
+    | [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                           |  raw  |   raw  |
+    | [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                           |  raw  |   raw  |
+    | [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     |  raw  |   raw  |
+    | [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |  raw  |   raw  |
+    | [Template](/interfaces/formats/Template)                                                                     |  raw  |   raw  |
+    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  raw  |    *   |
+    | [CSV](/interfaces/formats/CSV)                                                                               |  raw  |   raw  |
+    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  raw  |   raw  |
+    | [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |  raw  |   raw  |
+    | [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |  raw  |   raw  |
+    | [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |  raw  |   raw  |
+    | [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                     |  raw  |   raw  |
+    | [SQLInsert](/interfaces/formats/SQLInsert)                                                                   |   -   |   raw  |
+    | [Values](/interfaces/formats/Values)                                                                         |  raw  |   raw  |
+    | [Vertical](/interfaces/formats/Vertical)                                                                     |   *   |   raw  |
+    | [JSON](/interfaces/formats/JSON)                                                                             |  raw  |   raw  |
+    | [JSONAsString](/interfaces/formats/JSONAsString)                                                             |  raw  |    -   |
+    | [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |  raw  |    *   |
+    | [JSONStrings](/interfaces/formats/JSONStrings)                                                               |  raw  |   raw  |
+    | [JSONColumns](/interfaces/formats/JSONColumns)                                                               |  raw  |   raw  |
+    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  raw  |   raw  |
+    | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |  raw  |   raw  |
+    | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |   -   |   raw  |
+    | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |  raw  |   raw  |
+    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |  raw  |   raw  |
+    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |   *   |   raw  |
+    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |   -   |   raw  |
+    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |  raw  |   raw  |
+    | [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |   *   |   raw  |
+    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |  raw  |   raw  |
+    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |  raw  |   raw  |
+    | [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               |  raw  |   raw  |
+    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |  raw  |   raw  |
+    | [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 |  raw  |   raw  |
+    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |  raw  |   raw  |
+    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |  raw  |   raw  |
+    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |  raw  |   raw  |
+    | [TSKV](/interfaces/formats/TSKV)                                                                             |  raw  |   raw  |
+    | [Pretty](/interfaces/formats/Pretty)                                                                         |   -   |   raw  |
+    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   *   |   raw  |
+    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -   |   raw  |
+    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   *   |   raw  |
+    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -   |   raw  |
+    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   *   |   raw  |
+    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -   |   raw  |
+    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   *   |   raw  |
+    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -   |   raw  |
+    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   *   |   raw  |
+    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -   |   raw  |
+    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   *   |   raw  |
+    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |   -   |   raw  |
+    | [Protobuf](/interfaces/formats/Protobuf)                                                                     |  raw  |   raw  |
+    | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |  raw  |   raw  |
+    | [ProtobufList](/interfaces/formats/ProtobufList)                                                             |  raw  |   raw  |
+    | [Avro](/interfaces/formats/Avro)                                                                             |  raw  |   raw  |
+    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |  raw  |    *   |
+    | [Parquet](/interfaces/formats/Parquet)                                                                       |  raw  |   raw  |
+    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |  raw  |    -   |
+    | [Arrow](/interfaces/formats/Arrow)                                                                           |  raw  |   raw  |
+    | [ArrowStream](/interfaces/formats/ArrowStream)                                                               |  raw  |   raw  |
+    | [ORC](/interfaces/formats/ORC)                                                                               |  raw  |   raw  |
+    | [One](/interfaces/formats/One)                                                                               |  raw  |    *   |
+    | [Npy](/interfaces/formats/Npy)                                                                               |  raw  |   raw  |
+    | [RowBinary](/interfaces/formats/RowBinary)                                                                   |  full |  full  |
+    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         |  full |  full  |
+    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 |  full |  full  |
+    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           |  full |    -   |
+    | [Native](/interfaces/formats/Native)                                                                         |  full |   raw  |
+    | [Null](/interfaces/formats/Null)                                                                             |   *   |   raw  |
+    | [XML](/interfaces/formats/XML)                                                                               |   -   |   raw  |
+    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |  raw  |   raw  |
+    | [LineAsString](/interfaces/formats/LineAsString)                                                             |  raw  |   raw  |
+    | [Regexp](/interfaces/formats/Regexp)                                                                         |  raw  |    *   |
+    | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |  raw  |   raw  |
+    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |  raw  |   raw  |
+    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |  raw  |    -   |
+    | [DWARF](/interfaces/formats/DWARF)                                                                           |  raw  |    *   |
+    | [Markdown](/interfaces/formats/Markdown)                                                                     |   -   |   raw  |
+    | [Form](/interfaces/formats/Form)                                                                             |  raw  |    *   |
 
     ## Insert API \{#insert-api\}
 
     ### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
 
-    指定されたフォーマットのバイト列を`InputStream`として受け取ります。`data`は`format`でエンコードされている必要があります。
+    指定されたフォーマットでエンコードされたバイト列を`InputStream`として受け取ります。`data`は`format`でエンコードされていることが前提です。
 
-    **署名**
+    **シグネチャ**
 
     ```java
     CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
@@ -446,17 +449,17 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `tableName` - 対象テーブル名。
+    `tableName` - 対象テーブルの名前。
 
-    `data` - エンコードされたデータの入力ストリーム。
+    `data` - エンコード済みデータを含む入力ストリーム。
 
-    `format` - データのエンコードに使用される形式。
+    `format` - データがエンコードされている形式。
 
-    `settings` - リクエスト設定。
+    `settings` - リクエストの設定。
 
     **戻り値**
 
-    `InsertResponse` 型の Future — 操作の結果とサーバー側のメトリクスなどの追加情報。
+    `InsertResponse` 型の Future。操作結果およびサーバー側メトリクスなどの追加情報を含みます。
 
     **例**
 
@@ -476,7 +479,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
-    データベースに書き込みリクエストを送信します。オブジェクトのリストは効率的な形式に変換され、その後サーバーに送信されます。リスト内要素のクラスは、`register(Class, TableSchema)` メソッドを使用して事前に登録しておく必要があります。
+    データベースに書き込みリクエストを送信します。オブジェクトのリストは効率的な形式に変換され、その後サーバーに送信されます。リスト項目のクラスは `register(Class, TableSchema)` メソッドを使って事前に登録しておく必要があります。
 
     **署名**
 
@@ -487,15 +490,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `tableName` - 対象テーブルの名前。
+    `tableName` - 対象テーブル名。
 
-    `data` - DTO（Data Transfer Object）オブジェクトのコレクション。
+    `data` - DTO (Data Transfer Object) オブジェクトのコレクション。
 
     `settings` - リクエスト設定。
 
     **戻り値**
 
-    `InsertResponse` 型の Future - 操作結果とサーバー側メトリクスなどの追加情報。
+    `InsertResponse` 型の Future — 操作の結果やサーバー側のメトリクスなどの追加情報。
 
     **例**
 
@@ -516,36 +519,36 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **設定メソッド**
 
-    | メソッド                                            | 説明                                                                               |
-    | ----------------------------------------------- | -------------------------------------------------------------------------------- |
-    | `setQueryId(String queryId)`                    | 操作に割り当てるクエリ ID を設定します。デフォルト: `null`。                                             |
-    | `setDeduplicationToken(String token)`           | 重複排除トークンを設定します。このトークンはサーバーに送信され、クエリを識別するために使用できます。デフォルト: `null`。                 |
-    | `setInputStreamCopyBufferSize(int size)`        | コピー用バッファのサイズ。書き込み処理時に、ユーザーが提供した入力ストリームから出力ストリームへデータをコピーする際に使用されます。デフォルト: `8196`。 |
-    | `serverSetting(String name, String value)`      | 操作単位で個別のサーバー設定を指定します。                                                            |
-    | `serverSetting(String name, Collection values)` | 操作用に複数の値を持つ個別のサーバー設定を指定します。コレクションの要素は `String` 型の値である必要があります。                    |
-    | `setDBRoles(Collection dbRoles)`                | 操作の実行前に有効にする DB ロールを設定します。コレクションの要素はすべて `String` 値である必要があります。                    |
-    | `setOption(String option, Object value)`        | 構成オプションを生の値として設定します。これはサーバー設定ではありません。                                            |
+    | Method                                          | Description                                                                     |
+    | ----------------------------------------------- | ------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                    | 操作に割り当てられるクエリ ID を設定します。デフォルト: `null`。                                          |
+    | `setDeduplicationToken(String token)`           | 重複排除トークンを設定します。このトークンはサーバーに送信され、クエリの識別に利用できます。デフォルト: `null`。                    |
+    | `setInputStreamCopyBufferSize(int size)`        | コピー用バッファのサイズ。書き込み処理時に、ユーザー提供の入力ストリームから出力ストリームへデータをコピーするために使用されます。デフォルト: `8196`。 |
+    | `serverSetting(String name, String value)`      | 操作単位で個別のサーバー設定を指定します。                                                           |
+    | `serverSetting(String name, Collection values)` | 操作に対して、1 つのサーバー設定に複数の値を設定します。コレクションの要素は `String` 型の値である必要があります。                 |
+    | `setDBRoles(Collection dbRoles)`                | 操作の実行前に有効にする DB ロールを設定します。コレクションの要素はすべて `String` 値である必要があります。                   |
+    | `setOption(String option, Object value)`        | 構成オプションを生の値として設定します。これはサーバー設定ではありません。                                           |
 
     ### InsertResponse \{#insertresponse\}
 
-    挿入操作の結果を保持するレスポンスオブジェクト。クライアントがサーバーからレスポンスを受け取った場合にのみ利用可能です。
+    挿入操作の結果を保持するレスポンスオブジェクト。クライアントがサーバーからレスポンスを受信した場合にのみ利用できます。
 
     :::note
-    このオブジェクトは接続を解放するため、できるだけ早くクローズする必要があります。前のレスポンスのすべてのデータが完全に読み取られるまで、接続を再利用できません。
+    このオブジェクトは接続を解放するために、可能な限り早くクローズする必要があります。前のレスポンスのすべてのデータが完全に読み取られるまで、その接続を再利用することはできません。
     :::
 
     | メソッド                            | 説明                                                       |
     | ------------------------------- | -------------------------------------------------------- |
-    | `OperationMetrics getMetrics()` | 操作メトリクスを表すオブジェクトを返します。                                   |
-    | `String getQueryId()`           | この操作に対して、アプリケーション（操作設定経由）またはサーバーによって割り当てられたクエリ ID を返します。 |
+    | `OperationMetrics getMetrics()` | 操作メトリクスを含むオブジェクトを返します。                                   |
+    | `String getQueryId()`           | 操作に対して、アプリケーション (操作設定経由) またはサーバーによって割り当てられたクエリ ID を返します。 |
 
     ## クエリAPI \{#query-api\}
 
     ### query(String sqlQuery) \{#querystring-sqlquery\}
 
-    `sqlQuery`をそのまま送信します。レスポンス形式はクエリ設定によって決まります。`QueryResponse`は、指定された形式に対応したリーダーが読み取るべきレスポンスストリームへの参照を保持します。
+    `sqlQuery`をそのまま送信します。レスポンス形式はクエリ設定によって決まります。`QueryResponse`は、対応する形式をサポートするリーダーが読み取るべきレスポンスストリームへの参照を保持します。
 
-    **署名**
+    **シグネチャ**
 
     ```java
     CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
@@ -554,9 +557,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `sqlQuery` - 単一のSQLステートメントです。クエリはそのままサーバーに送信されます。
+    `sqlQuery` - 単一の SQL ステートメントを表します。クエリはそのままサーバーに送信されます。
 
-    `settings` - リクエスト設定。
+    `settings` - リクエストの設定。
 
     **戻り値**
 
@@ -592,9 +595,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
 
-    `sqlQuery`をそのまま送信します。さらに、サーバー側でSQL式をコンパイルできるようにクエリパラメータも送信します。
+    `sqlQuery`をそのまま送信します。加えて、サーバーがSQL式をコンパイルできるようにクエリパラメータも送信します。
 
-    **署名**
+    **シグネチャ**
 
     ```java
     CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
@@ -604,13 +607,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `sqlQuery` - `{}` プレースホルダーを含む SQL 式。
 
-    `queryParams` - サーバー側で SQL 式を完成させるための変数マップ。
+    `queryParams` - サーバー側で SQL 式を完成させるための変数のマップ。
 
-    `settings` - リクエスト設定。
+    `settings` - リクエストの設定。
 
     **戻り値**
 
-    `QueryResponse`型の Future — 結果データセットおよびサーバー側メトリクスなどの追加情報。データセットを使い終わったら Response オブジェクトをクローズする必要があります。
+    `QueryResponse` 型の Future であり、結果データセットおよびサーバー側メトリクスなどの追加情報を含みます。データセットの読み取りが完了したら、Response オブジェクトをクローズする必要があります。
 
     **例**
 
@@ -650,7 +653,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `sqlQuery` - サーバー上のデータをクエリするためのSQL式。
+    `sqlQuery` - サーバー上のデータをクエリするための SQL 式。
 
     **戻り値**
 
@@ -680,36 +683,36 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     クエリ操作の構成オプション。
 
-    **設定方法**
+    **設定メソッド**
 
-    | メソッド                                              | 説明                                                                                                                        |
-    | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-    | `setQueryId(String queryId)`                      | 操作に割り当てるクエリ ID を設定します。                                                                                                    |
-    | `setFormat(ClickHouseFormat format)`              | レスポンス形式を設定します。利用可能な形式の一覧については `RowBinaryWithNamesAndTypes` を参照してください。                                                     |
-    | `setMaxExecutionTime(Integer maxExecutionTime)`   | サーバー側での操作の最大実行時間を設定します。読み取りタイムアウトには影響しません。                                                                                |
-    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | レスポンスを返す前にクエリの終了を待機するようサーバーに要求します。                                                                                        |
-    | `setUseServerTimeZone(Boolean useServerTimeZone)` | クライアント設定で指定されたサーバーのタイムゾーンを用いて、操作結果内の日付／時刻型の値を解析します。デフォルト値は `false` です。                                                    |
-    | `setUseTimeZone(String timeZone)`                 | サーバーに対して、時刻の変換に `timeZone` を使用するよう要求します。[session&#95;timezone](/operations/settings/settings#session_timezone) を参照してください。 |
-    | `serverSetting(String name, String value)`        | 操作ごとに個別のサーバー設定を指定します。                                                                                                     |
-    | `serverSetting(String name, Collection values)`   | 操作に対して、1 つのサーバー設定に複数の値を設定します。コレクションの要素は `String` 型の値である必要があります。                                                           |
-    | `setDBRoles(Collection dbRoles)`                  | 操作の実行前に適用する DB ロールを設定します。コレクションの要素はすべて `String` 値である必要があります。                                                              |
-    | `setOption(String option, Object value)`          | 構成オプションを生の値として設定します。これはサーバー設定ではありません。                                                                                     |
+    | メソッド                                              | 説明                                                                                                                          |
+    | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                      | 操作に割り当てるクエリ ID を設定します。                                                                                                      |
+    | `setFormat(ClickHouseFormat format)`              | レスポンス形式を設定します。利用可能な形式の全一覧については `RowBinaryWithNamesAndTypes` を参照してください。                                                      |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | サーバー上での操作の最大実行時間を設定します。読み取りタイムアウトには影響しません。                                                                                  |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | レスポンスを返す前にクエリの終了を待機するようサーバーに要求します。                                                                                          |
+    | `setUseServerTimeZone(Boolean useServerTimeZone)` | サーバーのタイムゾーン (クライアント設定を参照) が、操作結果内の日時型の値をパースする際に使用されます。デフォルトは `false` です。                                                    |
+    | `setUseTimeZone(String timeZone)`                 | サーバーに対して、時刻変換のために `timeZone` を使用するよう要求します。[session&#95;timezone](/operations/settings/settings#session_timezone) を参照してください。 |
+    | `serverSetting(String name, String value)`        | 操作ごとに個別のサーバー設定を指定します。                                                                                                       |
+    | `serverSetting(String name, Collection values)`   | 操作に対して、1 つのサーバー設定に複数の値を設定します。コレクションの要素は `String` 型の値である必要があります。                                                             |
+    | `setDBRoles(Collection dbRoles)`                  | 操作の実行前に適用する DB ロールを設定します。コレクションの要素はすべて `String` 値である必要があります。                                                                |
+    | `setOption(String option, Object value)`          | 構成オプションを生の値として設定します。これはサーバー設定ではありません。                                                                                       |
 
     ### QueryResponse \{#queryresponse\}
 
     クエリの実行結果を保持するレスポンスオブジェクトです。クライアントがサーバーからレスポンスを受け取った場合にのみ利用可能です。
 
     :::note
-    このオブジェクトは接続を解放するため、できるだけ早くクローズする必要があります。前のレスポンスのすべてのデータが完全に読み取られるまで、接続を再利用できません。
+    このオブジェクトは接続を解放するため、できるだけ早くクローズする必要があります。直前のレスポンスのすべてのデータが完全に読み取られるまで、その接続は再利用できません。
     :::
 
-    | メソッド                            | 説明                                                 |
-    | ------------------------------- | -------------------------------------------------- |
-    | `ClickHouseFormat getFormat()`  | レスポンス内のデータがエンコードされている形式を返します。                      |
-    | `InputStream getInputStream()`  | 指定された形式でエンコードされた非圧縮データのバイトストリームを返します。              |
-    | `OperationMetrics getMetrics()` | 操作メトリクスを保持するオブジェクトを返します。                           |
-    | `String getQueryId()`           | アプリケーション（操作設定またはサーバー）によってこの操作に割り当てられたクエリ ID を返します。 |
-    | `TimeZone getTimeZone()`        | レスポンス内の Date/DateTime 型を処理する際に使用するタイムゾーンを返します。     |
+    | メソッド                            | 説明                                                      |
+    | ------------------------------- | ------------------------------------------------------- |
+    | `ClickHouseFormat getFormat()`  | レスポンス内のデータがエンコードされているフォーマットを返します。                       |
+    | `InputStream getInputStream()`  | 指定されたフォーマットでエンコードされた非圧縮データのバイトストリームを返します。               |
+    | `OperationMetrics getMetrics()` | 操作メトリクスを保持するオブジェクトを返します。                                |
+    | `String getQueryId()`           | アプリケーション (操作設定経由) またはサーバーによって、この操作に割り当てられたクエリ ID を返します。 |
+    | `TimeZone getTimeZone()`        | レスポンス内の Date/DateTime 型を処理する際に使用すべきタイムゾーンを返します。         |
 
     ### 例 \{#examples\}
 
@@ -720,7 +723,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### getTableSchema(String table) \{#gettableschemastring-table\}
 
-    `table`のテーブルスキーマを取得します。
+    `table`テーブルのスキーマを取得します。
 
     **署名**
 
@@ -729,15 +732,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     TableSchema getTableSchema(String table, String database)
     ```
 
-    **パラメータ**
+    **パラメーター**
 
-    `table` - スキーマデータを取得するテーブル名。
+    `table` - スキーマデータを取得する対象テーブル名。
 
     `database` - 対象テーブルが定義されているデータベース。
 
     **戻り値**
 
-    テーブルカラムのリストを含む`TableSchema`オブジェクトを返します。
+    テーブルのカラム一覧を含む `TableSchema` オブジェクトを返します。
 
     ### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
@@ -751,7 +754,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `sql` - スキーマを返す&quot;SELECT&quot; SQLステートメント。
+    `sql` - スキーマを返すための &quot;SELECT&quot; SQL ステートメント。
 
     **戻り値**
 
@@ -761,10 +764,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
 
-    Java クラスが `schema` を使用してデータの書き込み/読み取りを行うためのシリアライゼーションおよびデシリアライゼーション層を生成します。このメソッドは、getter/setter のペアと対応するカラムに対してシリアライザーとデシリアライザーを作成します。
-    カラムの対応付けは、メソッド名からカラム名を抽出することで行われます。例えば、`getFirstName` はカラム `first_name` または `firstname` に対応します。
+    Java クラスが `schema` を使用してデータの書き込み/読み取りを行うためのシリアライゼーションおよびデシリアライゼーション層をコンパイルします。このメソッドは、getter/setter のペアごとに、対応するカラム向けのシリアライザーとデシリアライザーを作成します。
+    カラムのマッチングは、メソッド名からカラム名を抽出することで行われます。例えば、`getFirstName` はカラム `first_name` または `firstname` に対応します。
 
-    **署名**
+    **シグネチャ**
 
     ```java
     void register(Class<?> clazz, TableSchema schema)
@@ -784,32 +787,33 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ## 使用例 \{#usage-examples\}
 
-    完全なサンプルコードは、リポジトリの `example` [フォルダ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)に格納されています:
+    完全なサンプルコードは、リポジトリ内の `example` [フォルダ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)に配置されています：
 
-    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要なサンプル一式です。
-    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションでクライアントを使用する例。
-    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor（Kotlin）ベースのアプリケーションでクライアントを使用するサンプルです。
+    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主なサンプルセットです。
+    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションでクライアントを利用するサンプル。
+    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor (Kotlin) アプリケーションでクライアントを使用する方法のサンプルです。
 
     ## データの読み取り \{#reading-data\}
 
     データを読み込む一般的な方法は2つあります。
 
-    * `query()` メソッドは、データを含む `InputStream` を保持する低レベルな `QueryResponse` オブジェクトを返します。通常はストリーミング読み取りのために `ClickHouseBinaryFormatReader` と組み合わせて使用されますが、他の任意のカスタムリーダー実装でも利用できます。`QueryResponse` は、結果セットのメタデータおよびメトリクスへのアクセスも提供します。
-    * `queryAll()` メソッドと `GenericRecord` を使用すると、行単位でのデータアクセスが容易になります。この場合、結果セット全体がメモリに読み込まれます。
-    * `queryRecords()` メソッドは `com.clickhouse.client.api.query.Records` を返し、これは `GenericRecord` オブジェクト用のイテレータです。このメソッドはストリーミング方式を採用しており（データはメモリにロードされません）、`GenericRecord` を通じてデータにアクセスします。
+    * `query()` メソッドは、データを含む `InputStream` を保持する低レベルな `QueryResponse` オブジェクトを返します。通常はストリーミング読み取りのために `ClickHouseBinaryFormatReader` と組み合わせて使用されますが、
+      他の任意のカスタムリーダー実装でも利用できます。`QueryResponse` は、結果セットのメタデータおよびメトリクスへのアクセスも提供します。
+    * `queryAll()` メソッドと `GenericRecord` を使用すると、行単位で結果にアクセスできます。この場合、結果セット全体がメモリに読み込まれます。
+    * `queryRecords()` メソッドは `com.clickhouse.client.api.query.Records` を返し、これは `GenericRecord` オブジェクトのイテレータです。このメソッドはストリーミング方式で動作するため (データはメモリにロードされません) 、`GenericRecord` を利用してデータにアクセスします。
 
-    **注意:** ストリーミング方式ではデータをネットワークストリームから直接読み取るため、読み取りが遅いとサーバーの書き込みタイムアウトが発生する可能性があります。
+    **注意:** ストリーミング方式ではデータをネットワークストリームから直接読み取るため、高速に読み取る必要があります。そうでない場合、サーバー側の書き込みタイムアウトが発生する可能性があります。
 
     ### 配列の読み取り \{#reading-arrays\}
 
     **`ClickHouseBinaryFormatReader` メソッド**
 
     * `getList(...)` - 任意の `Array(...)` を `List<T>` として読み取ります。柔軟に型を扱う読み取りのデフォルトとして適しています。ネストされた配列をサポートします。
-    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - プリミティブ型互換の値で構成された1次元配列に最適です。
-    * `getStringArray(...)` - `Array(String)` 型（および名前で表現される enum 値）向け。
-    * `getObjectArray(...)` - ネストされた配列を含む任意の `Array(...)` 要素型に対応する汎用的なオプションです。Nullable 値を含む配列やネストされた配列を読み取るために使用します。
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - プリミティブ型互換の値で構成された一次元配列に最適です。
+    * `getStringArray(...)` - `Array(String)` 型 (および名前で表現される enum 値) 向け。
+    * `getObjectArray(...)` - ネストされた配列を含む任意の `Array(...)` 要素型に対応する汎用的なオプションです。Nullable な値やネストされた配列を含む配列を読み取るために使用します。
 
-    すべてのメソッドに対して、インデックスベースと名前ベースのオーバーロードが利用可能です。インデックスは1始まりです。インデックスベースはカラムへの直接アクセスを行います。
+    すべてのメソッドに対して、インデックスベースと名前ベースのオーバーロードが利用可能です。インデックスは1始まりです。インデックスベースのメソッドはカラムへ直接アクセスします。
     名前ベースのメソッドは、毎回インデックスの検索が必要です。
 
     ```java
@@ -827,15 +831,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    **`GenericRecord` メソッド**
+    **`GenericRecord` のメソッド**
 
-    * `getList(...)` - 任意の `Array(...)` を `List<T>` として読み取ります。柔軟な型付き読み取りのデフォルトとして利用できます。ネストされた配列もサポートします。
+    * `getList(...)` - 任意の `Array(...)` を `List<T>` として読み取ります。柔軟な型付き読み取りのデフォルトとして利用できます。ネストされた配列をサポートします。
     * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - プリミティブ互換の値で構成された一次元配列に最適です。
-    * `getStringArray(...)` - `Array(String)` 型（および名前で表現される enum 値）用。
-    * `getObjectArray(...)` - ネストされた配列を含む、任意の `Array(...)` の要素型に対応できる汎用的なオプションです。Nullable な値を含む配列やネストされた配列を読み取るために使用します。
+    * `getStringArray(...)` - `Array(String)` 型 (および名前で表現される enum 値) 向け。
+    * `getObjectArray(...)` - ネストされた配列を含む任意の `Array(...)` 要素型に対応する汎用的なオプションです。Nullable な値を含む配列やネストされた配列を読み取るために使用します。
 
-    すべてのメソッドに対して、インデックスベースと名前ベースのオーバーロードが利用可能です。インデックスは1始まりです。インデックスベースはカラムへの直接アクセスを行います。
-    名前ベースのメソッドは、毎回インデックスの検索が必要です。
+    すべてのメソッドには、インデックス指定および名前指定のオーバーロードが用意されています。インデックスは1始まりです。インデックス指定のメソッドはカラムに直接アクセスします。
+    名前指定のメソッドは、毎回インデックスの検索が発生します。
 
     ````java
     try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
@@ -1125,7 +1129,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ````
 
-    **V2 TSV形式データの挿入。**
+    **V2 TSV形式データの挿入**
 
     ```java
     InputStream inData = getInData();
@@ -1139,14 +1143,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    * 呼び出すメソッドは 1 つだけで、追加のリクエストオブジェクトを作成する必要はありません。
+    * 呼び出すメソッドは 1 つだけで、別途リクエストオブジェクトを作成する必要はありません。
     * リクエストボディストリームは、すべてのデータのコピーが完了すると自動的にクローズされます。
     * 新しい低レベル API `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)` が利用可能です。`com.clickhouse.client.api.DataStreamWriter` は独自のデータ書き込みロジックを実装できるように設計されています。たとえば、キューからデータを読み出すようなケースです。
 
     ### データの読み取り
 
-    * データはデフォルトで `RowBinaryWithNamesAndTypes` フォーマットで読み込まれます。現在、データバインディングが必要な場合はこのフォーマットのみがサポートされています。
-    * データは、`List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` メソッドを使用してレコードのコレクションとして読み取れます。このメソッドはデータをメモリに読み込み、接続を解放します。呼び出し側での追加のリソース管理は不要です。`GenericRecord` はデータへのアクセス手段を提供し、各種変換処理も実装しています。
+    * データはデフォルトで `RowBinaryWithNamesAndTypes` フォーマットで読み取られます。現在、データバインディングが必要な場合にサポートされるのはこのフォーマットのみです。
+    * `List&lt;GenericRecord&gt; com.clickhouse.client.api.Client#queryAll(java.lang.String)` メソッドを使用すると、データをレコードのコレクションとして読み取ることができます。このメソッドはデータをメモリに読み込み、接続を解放します。追加のリソース管理は不要です。`GenericRecord` はデータへのアクセス手段を提供し、一部の型変換も実装しています。
 
     ```java
     Collection<GenericRecord> records = client.queryAll("SELECT * FROM table");
@@ -1163,7 +1167,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     DBサーバーとそのプロトコルを通じて通信するためのJavaクライアントライブラリ。現在の実装では[HTTPインターフェース](/interfaces/http)のみをサポートしています。このライブラリは、サーバーへのリクエスト送信用の独自APIを提供します。
 
     :::warning 非推奨
-    このライブラリは間もなく非推奨になります。新規プロジェクトには最新の[Java クライアント](/integrations/language-clients/java/client/client.mdx)を使用してください。
+    このライブラリはまもなく非推奨となります。新規プロジェクトでは最新の[Java クライアント](/integrations/language-clients/java/client/client.mdx)を使用してください。
     :::
 
     ## セットアップ
@@ -1195,7 +1199,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
     </Tabs>
 
-    バージョン `0.5.0` 以降、ドライバは新しいクライアント HTTP ライブラリを使用するようになったため、このライブラリを依存関係として追加する必要があります。
+    バージョン `0.5.0` 以降、このドライバでは新しい HTTP クライアントライブラリを使用するようになったため、そのライブラリを依存関係として追加する必要があります。
 
     <Tabs groupId="client-v1-http-client">
       <TabItem value="maven" label="Maven">
@@ -1226,7 +1230,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ## 初期化
 
-    接続URL形式: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`、例:
+    接続 URL の形式: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`。例:
 
     * `http://localhost:8443?ssl=true&sslmode=NONE`
     * `https://(https://explorer@play.clickhouse.com:443`
@@ -1296,17 +1300,17 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     [リポジトリ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)内の[完全なコード例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39)を参照してください。
 
-    **RowBinaryエンコーディング**
+    **RowBinary のエンコード**
 
     RowBinary形式の詳細は、[こちらのページ](/interfaces/formats/RowBinaryWithNamesAndTypes)を参照してください。
 
-    [コード例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)もあります。
+    [コード例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)が公開されています。
 
     ## 機能
 
     ### 圧縮
 
-    クライアントはデフォルトで LZ4 圧縮を使用します。これには次の依存関係が必要です:
+    クライアントはデフォルトで LZ4 圧縮を使用し、そのためには次の依存関係が必要です:
 
     <Tabs groupId="client-v1-compression-deps">
       <TabItem value="maven" label="Maven">
@@ -1335,12 +1339,12 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
     </Tabs>
 
-    接続URLで `compress_algorithm=gzip` を設定すると、代わりに gzip を使用することができます。
+    接続URLのパラメータに `compress_algorithm=gzip` を指定すると、圧縮方式として gzip を使用できます。
 
-    あるいは、圧縮を無効にする方法もいくつかあります。
+    あるいは、いくつかの方法で圧縮を無効化できます。
 
     1. 接続URLで `compress=0` を指定して圧縮を無効化します: `http://localhost:8123/default?compress=0`
-    2. クライアント設定で無効にします:
+    2. クライアント設定で無効化する:
 
     ```java showLineNumbers
     ClickHouseClient client = ClickHouseClient.builder()
@@ -1369,7 +1373,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### 名前付きパラメータ
 
-    パラメータリスト内の位置に依存せず、名前でパラメータを渡すことができます。この機能は `params` 関数を使用して利用可能です。
+    パラメータリスト内での位置にだけ依存せずに、パラメータ名を指定して渡すことができます。この機能は `params` 関数で利用できます。
 
     ```java showLineNumbers
     try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -1384,7 +1388,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ```
 
     :::note パラメータ
-    `String`型を含むすべての`params`シグネチャ(`String`、`String[]`、`Map<String, String>`)は、渡されるキーが有効なClickHouse SQL文字列であることを前提としています。例:
+    `String` 型 (`String`、`String[]`、`Map<String, String>`) を含むすべての `params` シグネチャは、渡されるキーが有効な ClickHouse SQL 文字列であることを前提としています。例えば:
 
     ```java showLineNumbers
     try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -1398,7 +1402,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    String オブジェクトを手動で ClickHouse SQL にパースしたくない場合は、`com.clickhouse.data` にあるヘルパー関数 `ClickHouseValues.convertToSqlExpression` を使用できます:
+    String オブジェクトを手動で ClickHouse SQL に変換したくない場合は、`com.clickhouse.data` パッケージにあるヘルパー関数 `ClickHouseValues.convertToSqlExpression` を利用できます:
 
     ```java showLineNumbers
     try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -1412,63 +1416,63 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    上記の例では、`ClickHouseValues.convertToSqlExpression`が内部のシングルクォートをエスケープし、変数の両端を有効なシングルクォートで囲みます。
+    上記の例では、`ClickHouseValues.convertToSqlExpression` が内部のシングルクォートをエスケープし、変数を有効なシングルクォートで囲みます。
 
     `Integer`、`UUID`、`Array`、`Enum` などのその他の型は、`params` 内で自動的に変換されます。
     :::
 
-    ## ノードディスカバリー
+    ## ノード検出
 
-    Javaクライアントには、ClickHouseノードを自動検出する機能があります。自動検出はデフォルトで無効になっています。手動で有効にするには、`auto_discovery`を`true`に設定します:
+    JavaクライアントはClickHouseノードを自動検出する機能を提供します。自動検出はデフォルトで無効です。手動で有効にするには、`auto_discovery` を `true` に設定してください:
 
     ```java
     properties.setProperty("auto_discovery", "true");
     ```
 
-    または接続URLで指定します:
+    または接続URLで指定することもできます:
 
     ```plaintext
     jdbc:ch://my-server/system?auto_discovery=true
     ```
 
-    自動検出が有効になっている場合、接続URLにすべてのClickHouseノードを指定する必要はありません。URLに指定されたノードはシードとして扱われ、Javaクライアントはシステムテーブルやclickhouse-keeper、zookeeperから追加のノードを自動的に検出します。
+    自動検出が有効になっている場合、接続URLにすべてのClickHouseノードを指定する必要はありません。URLに指定されたノードはシードノードとして扱われ、Javaクライアントはシステムテーブルおよび/または clickhouse-keeper や zookeeper から追加のノードを自動的に検出します。
 
     以下のオプションは自動検出の構成に使用します:
 
-    | プロパティ                           | デフォルト   | 説明                                                                        |
-    | ------------------------------- | ------- | ------------------------------------------------------------------------- |
-    | auto&#95;discovery              | `false` | クライアントが system テーブルおよび/または clickhouse-keeper/zookeeper から追加のノードを検出するかどうか。 |
-    | node&#95;discovery&#95;interval | `0`     | ノード検出を実行する間隔（ミリ秒）。値が 0 または負の場合は、一度だけ検出を実行することを意味します。                      |
-    | node&#95;discovery&#95;limit    | `100`   | 一度に検出対象となるノードの最大数。0 以下の値は上限なしを意味します。                                      |
+    | プロパティ                           | デフォルト   | 説明                                                                                |
+    | ------------------------------- | ------- | --------------------------------------------------------------------------------- |
+    | auto&#95;discovery              | `false` | クライアントが system テーブルおよび/または clickhouse-keeper/zookeeper から追加のノードを自動検出するかどうかを指定します。 |
+    | node&#95;discovery&#95;interval | `0`     | ノード検出を行う間隔 (ミリ秒) 。値が 0 以下の場合は、1 回だけ検出を実行することを意味します。                               |
+    | node&#95;discovery&#95;limit    | `100`   | 一度に検出できるノード数の上限。値が 0 以下の場合は上限なしを意味します。                                            |
 
-    ### ロードバランシング
+    ### 負荷分散
 
-    Javaクライアントは負荷分散ポリシーに従ってリクエストを送信するClickHouseノードを選択します。一般的に、負荷分散ポリシーは次の事項を担当します：
+    Javaクライアントは、負荷分散ポリシーに従ってどのClickHouseノードにリクエストを送信するかを選択します。一般に、負荷分散ポリシーは次のような役割を担います。
 
     1. 管理対象ノード一覧から 1 つのノードを取得します。
     2. ノードの状態を管理します。
-    3. （自動ディスカバリが有効な場合）必要に応じてノードディスカバリ用のバックグラウンドプロセスをスケジュールし、ヘルスチェックを実行します。
+    3. (自動ディスカバリが有効な場合) 必要に応じてノードディスカバリ用のバックグラウンドプロセスをスケジュールし、ヘルスチェックを実行します。
 
     ロードバランシングを構成するためのオプションは次のとおりです:
 
-    | プロパティ                         | デフォルト                                    | 説明                                                                                                                                                                                                                                                                                                                                     |
-    | ----------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | load&#95;balancing&#95;policy | `""`                                     | ロードバランシングポリシーは次のいずれかです: <li>`firstAlive` - リクエストは管理対象ノードのリスト内で最初に見つかった正常なノードに送信されます</li><li>`random` - リクエストは管理対象ノードのリストからランダムに選択されたノードに送信されます</li><li>`roundRobin` - リクエストは管理対象ノードのリスト内の各ノードに順番に送信されます</li><li>`ClickHouseLoadBalancingPolicy` を実装する完全修飾クラス名 - カスタムのロードバランシングポリシー</li>ポリシーが指定されていない場合、リクエストは管理対象ノードのリストの最初のノードに送信されます |
-    | load&#95;balancing&#95;tags   | `""`                                     | ノードを絞り込むためのロードバランシング用タグ。リクエストは指定したタグを持つノードにのみ送信されます。                                                                                                                                                                                                                                                                                   |
-    | health&#95;check&#95;interval | `0`                                      | ヘルスチェックの間隔をミリ秒単位で指定します。0 以下の値は一度だけ実行されることを意味します。                                                                                                                                                                                                                                                                                       |
-    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | ヘルスチェック方式。次のいずれかを指定できます: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` クエリの実行によってチェックします</li> <li>`ClickHouseHealthCheckMethod.PING` - プロトコル固有の方法によるチェックで、一般的により高速です</li>                                                                                                                                                  |
-    | node&#95;check&#95;interval   | `0`                                      | ノードチェック間隔（ミリ秒単位）。負の値は 0 として扱われます。前回のチェックから指定した時間が経過している場合にノードのステータスがチェックされます。<br />`health_check_interval` と `node_check_interval` の違いは、`health_check_interval` オプションがノード（全ノードまたは障害ノード）のリストに対してステータスをチェックするバックグラウンドジョブをスケジューリングするのに対し、`node_check_interval` は特定のノードごとに、前回のチェックからどれだけ時間が経過していれば再チェックを行うかを指定する点です                        |
-    | check&#95;all&#95;nodes       | `false`                                  | すべてのノードを対象にヘルスチェックを行うか、障害が発生しているノードのみを対象にするかを指定します。                                                                                                                                                                                                                                                                                    |
+    | プロパティ                         | デフォルト                                    | 説明                                                                                                                                                                                                                                                                                                                                                |
+    | ----------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | load&#95;balancing&#95;policy | `""`                                     | ロードバランシングポリシーとして指定できる値は次のいずれかです: <li>`firstAlive` - リクエストは管理対象ノードのリスト内で最初に見つかった正常なノードに送信されます</li><li>`random` - リクエストは管理対象ノードのリストからランダムに選択されたノードに送信されます </li><li>`roundRobin` - リクエストは管理対象ノードのリスト内の各ノードに順番に送信されます</li><li>`ClickHouseLoadBalancingPolicy` を実装する完全修飾クラス名 - カスタムのロードバランシングポリシー</li>ポリシーが指定されていない場合、リクエストは管理対象ノードのリストの最初のノードに送信されます。 |
+    | load&#95;balancing&#95;tags   | `""`                                     | ノードを絞り込むためのロードバランシング用タグ。リクエストは指定したタグを持つノードにのみ送信されます。                                                                                                                                                                                                                                                                                              |
+    | health&#95;check&#95;interval | `0`                                      | ヘルスチェックの間隔をミリ秒単位で指定します。0 以下の値は一度だけ実行されることを意味します。                                                                                                                                                                                                                                                                                                  |
+    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | ヘルスチェック方式。次のいずれかを指定できます: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` クエリを実行してチェックします</li> <li>`ClickHouseHealthCheckMethod.PING` - プロトコル固有のチェック方式で、一般的により高速です</li>                                                                                                                                                                  |
+    | node&#95;check&#95;interval   | `0`                                      | ノードチェック間隔 (ミリ秒単位) 。負の値は 0 として扱われます。前回のチェックから指定した時間が経過している場合に、そのノードのステータスがチェックされます。<br />`health_check_interval` と `node_check_interval` の違いは、`health_check_interval` オプションがノード (全ノードまたは障害ノード) のリストに対してステータスをチェックするバックグラウンドジョブをスケジューリングするのに対し、`node_check_interval` は特定のノードごとに、前回のチェックからどれだけ時間が経過していればそのノードを再チェックするかを指定する点です                       |
+    | check&#95;all&#95;nodes       | `false`                                  | すべてのノードを対象にヘルスチェックを行うか、障害が発生しているノードのみを対象にするかを指定します。                                                                                                                                                                                                                                                                                               |
 
     ### フェイルオーバーとリトライ
 
-    Javaクライアントは、失敗したクエリのフェイルオーバーおよびリトライ動作を設定するための構成オプションを提供します:
+    Javaクライアントは、失敗したクエリに対するフェイルオーバーおよびリトライの動作を設定するための構成オプションを提供します:
 
-    | プロパティ                              | デフォルト  | 説明                                                                                                                                                              |
+    | プロパティ                              | デフォルト値 | 説明                                                                                                                                                              |
     | ---------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | failover                           | `0`    | 1 つのリクエストで許可されるフェイルオーバーの最大回数。0 または負の値の場合、フェイルオーバーは行われません。フェイルオーバーとは、障害から復旧するために、失敗したリクエストを（負荷分散ポリシーに従って）別のノードに送信することです。                                         |
-    | retry                              | `0`    | 1 つのリクエストに対して許可されるリトライの最大回数です。0 または負の値の場合はリトライを行いません。リトライは、ClickHouse サーバーが `NETWORK_ERROR` エラーコードを返した場合にのみ、同じノードに対してリクエストを再送信します。                              |
-    | repeat&#95;on&#95;session&#95;lock | `true` | セッションがロックされている場合に、`session_timeout` または `connect_timeout` に基づいてタイムアウトするまでリクエストの実行を繰り返すかどうか。ClickHouse サーバーが `SESSION_IS_LOCKED` エラーコードを返した場合、失敗したリクエストが再試行されます。 |
+    | failover                           | `0`    | 1 つのリクエストに対してフェイルオーバーが発生できる最大回数。0 または負の値の場合、フェイルオーバーは行われません。フェイルオーバーでは、障害から復旧するために、失敗したリクエストを (負荷分散ポリシーに従って) 別のノードに送信します。                                       |
+    | retry                              | `0`    | 1 つのリクエストに対して実行されるリトライの最大回数です。0 または負の値の場合はリトライを行いません。リトライは、ClickHouse サーバーが `NETWORK_ERROR` エラーコードを返した場合にのみ行われ、その場合、同じノードに対してリクエストを再送信します。                      |
+    | repeat&#95;on&#95;session&#95;lock | `true` | セッションがロックされている場合に、`session_timeout` または `connect_timeout` に基づくタイムアウトに達するまでリクエストの実行を繰り返すかどうか。ClickHouse サーバーが `SESSION_IS_LOCKED` エラーコードを返した場合、失敗したリクエストは再実行されます |
 
     ### カスタムHTTPヘッダーの追加
 

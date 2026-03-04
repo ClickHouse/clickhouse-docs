@@ -16,7 +16,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark 连接器 \{#spark-connector\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 此连接器利用 ClickHouse 特定的优化功能，例如高级分区和谓词下推，以提升查询性能和数据处理能力。
 该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并自行管理其 catalog。
@@ -27,21 +27,21 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{database}.{table}` 来标识。借助新的 catalog 功能，现在可以在同一个 Spark 应用程序中添加并使用多个 catalog。
 
+<TOCInline toc={toc} />
+
 ## 在 Catalog API 和 TableProvider API 之间进行选择 \{#choosing-between-apis\}
 
 ClickHouse Spark 连接器支持两种访问模式：**Catalog API** 和 **TableProvider API**（基于格式的访问）。了解二者之间的差异有助于根据具体用例选择合适的方式。
 
 ### Catalog API 与 TableProvider API 对比 \{#catalog-vs-tableprovider-comparison\}
 
-| 功能 | Catalog API | TableProvider API |
-|---------|-------------|-------------------|
-| **配置方式** | 通过 Spark 配置集中管理 | 按操作通过选项配置 |
-| **表发现机制** | 通过 catalog 自动发现 | 手动指定表 |
-| **DDL 操作** | 完整支持（CREATE、DROP、ALTER） | 支持有限（仅自动建表） |
-| **Spark SQL 集成** | 原生（`clickhouse.database.table`） | 需要指定数据格式（format） |
-| **使用场景** | 长期、稳定连接并集中管理配置 | 临时、动态或一次性访问 |
-
-<TOCInline toc={toc}></TOCInline>
+| 功能               | Catalog API                       | TableProvider API  |
+| ---------------- | --------------------------------- | ------------------ |
+| **配置方式**         | 通过 Spark 配置集中管理                   | 按操作通过选项配置          |
+| **表发现机制**        | 通过 catalog 自动发现                   | 手动指定表              |
+| **DDL 操作**       | 完整支持 (CREATE、DROP、ALTER)          | 支持有限 (仅自动建表)       |
+| **Spark SQL 集成** | 原生 (`clickhouse.database.table`)  | 需要指定数据格式 (format)  |
+| **使用场景**         | 长期、稳定连接并集中管理配置                    | 临时、动态或一次性访问        |
 
 ## 环境要求 \{#requirements\}
 
