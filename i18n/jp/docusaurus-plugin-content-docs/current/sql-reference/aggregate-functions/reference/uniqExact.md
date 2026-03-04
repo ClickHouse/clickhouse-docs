@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqExact \{#uniqExact\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数の異なる値の個数を正確に計算します。
 

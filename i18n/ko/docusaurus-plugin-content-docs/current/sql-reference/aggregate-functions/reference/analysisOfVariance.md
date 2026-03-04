@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## analysisOfVariance \{#analysisOfVariance\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 일원 분산 분석(ANOVA 검정)을 위한 통계적 검정을 제공합니다. 정규 분포를 따르는 여러 집단에 대해 모든 집단의 평균이 동일한지 여부를 검정합니다.
 

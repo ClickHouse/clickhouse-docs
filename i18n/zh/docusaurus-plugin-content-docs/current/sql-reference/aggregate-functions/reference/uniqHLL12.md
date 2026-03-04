@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqHLL12 \{#uniqHLL12\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 使用 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 算法计算不同参数取值个数的近似值。
 

@@ -1,5 +1,5 @@
 ---
-description: 'NumericIndexedVector 及其相关函数文档'
+description: 'NumericIndexedVector 及其函数的文档'
 sidebar_label: 'NumericIndexedVector'
 slug: /sql-reference/functions/numeric-indexed-vector-functions
 title: 'NumericIndexedVector 函数'
@@ -8,32 +8,32 @@ doc_type: 'reference'
 
 # NumericIndexedVector \{#numericindexedvector\}
 
-NumericIndexedVector 是一种抽象数据结构，用于封装向量并实现向量聚合和逐元素运算。其存储方式为位切片索引（Bit-Sliced Index）。关于其理论基础和使用场景，请参考论文 [Large-Scale Metric Computation in Online Controlled Experiment Platform](https://arxiv.org/pdf/2405.08411)。
+NumericIndexedVector 是一种抽象数据结构，它封装了向量，并实现向量聚合和按元素运算。Bit-Sliced Index 是其存储方式。关于理论基础和使用场景，请参考论文 [Large-Scale Metric Computation in Online Controlled Experiment Platform](https://arxiv.org/pdf/2405.08411)。
 
 ## BSI \{#bit-sliced-index\}
 
-在 BSI（Bit-Sliced Index，比特切片索引）存储方式中，数据首先以 [Bit-Sliced Index](https://dl.acm.org/doi/abs/10.1145/253260.253268) 形式存储，然后再使用 [Roaring Bitmap](https://github.com/RoaringBitmap/RoaringBitmap) 进行压缩。聚合运算和逐点运算直接在压缩数据上进行，这可以显著提升存储和查询效率。
+在 BSI（Bit-Sliced Index，位切片索引）存储方式中，数据首先以 [Bit-Sliced Index](https://dl.acm.org/doi/abs/10.1145/253260.253268) 形式存储，然后再使用 [Roaring Bitmap](https://github.com/RoaringBitmap/RoaringBitmap) 进行压缩。聚合运算和逐点运算可以直接在压缩数据上执行，从而显著提升存储与查询效率。
 
-一个向量包含索引及其对应的值。以下是该数据结构在 BSI 存储模式下的一些特性和约束：
+一个向量包含索引及其对应的值。以下是该数据结构在 BSI 存储模式下的一些特性与约束：
 
-- 索引类型可以是 `UInt8`、`UInt16` 或 `UInt32` 之一。**注意：** 鉴于 Roaring Bitmap 在 64 位实现上的性能，BSI 格式不支持 `UInt64`/`Int64`。
-- 值类型可以是 `Int8`、`Int16`、`Int32`、`Int64`、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Float32` 或 `Float64` 之一。**注意：** 值类型不会自动扩展。例如，如果你使用 `UInt8` 作为值类型，那么任何超过 `UInt8` 容量的求和都会发生溢出，而不会提升为更高类型；同样，对整数的运算会产生整数结果（例如，除法不会自动转换为浮点结果）。因此，提前规划和设计值类型非常重要。在实际场景中，常用的是浮点类型（`Float32`/`Float64`）。
+- 索引类型可以是 `UInt8`、`UInt16` 或 `UInt32` 之一。**注意：** 考虑到 Roaring Bitmap 的 64 位实现性能，BSI 格式不支持 `UInt64`/`Int64`。
+- 值类型可以是 `Int8`、`Int16`、`Int32`、`Int64`、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Float32` 或 `Float64` 之一。**注意：** 值类型不会自动提升。例如，如果你使用 `UInt8` 作为值类型，任何超过 `UInt8` 容量的求和结果都会发生溢出，而不会自动提升为更高精度类型；同样，整数运算将产生整数结果（例如除法不会自动转换为浮点结果）。因此，提前规划和设计值类型非常重要。在实际场景中，通常使用浮点类型（`Float32`/`Float64`）。
 - 只有索引类型和值类型都相同的两个向量才能进行运算。
-- 底层存储使用 Bit-Sliced Index，其中索引用位图存储。Roaring Bitmap 用作位图的具体实现。最佳实践是尽可能将索引集中在少数几个 Roaring Bitmap 容器中，以最大化压缩率和查询性能。
-- Bit-Sliced Index 机制会将值转换为二进制。对于浮点类型，转换采用定点数表示，这可能会带来精度损失。可以通过自定义小数部分所使用的比特数来调整精度，默认是 24 位，这在大多数场景下已经足够。在使用带有 `-State` 的聚合函数 groupNumericIndexedVector 构造 NumericIndexedVector 时，可以自定义整数位和小数位的位数。
-- 索引有三种情况：非零值、零值和不存在。在 NumericIndexedVector 中，仅存储非零值和零值。此外，在两个 NumericIndexedVector 之间进行逐点运算时，不存在的索引值会被视为 0。在除法场景中，当除数为零时，结果为零。
+- 底层存储使用 Bit-Sliced Index，其中位图用于存储索引。Roaring Bitmap 被用作位图的具体实现。最佳实践是尽可能将索引集中到少数几个 Roaring Bitmap 容器中，以最大化压缩率和查询性能。
+- Bit-Sliced Index 机制会将值转换为二进制。对于浮点类型，会使用定点表示进行转换，这可能导致精度损失。可以通过自定义用于小数部分的位数来调整精度，默认是 24 位，这在大多数场景下已经足够。在使用带有 `-State` 的聚合函数 groupNumericIndexedVector 构建 NumericIndexedVector 时，可以自定义整数位数和小数位数。
+- 索引的取值情况有三种：非零值、零值和不存在。在 NumericIndexedVector 中，只会存储非零值和零值。此外，在两个 NumericIndexedVector 之间进行逐点运算时，不存在的索引的值会被视为 0。在除法场景下，当除数为 0 时结果为 0。
 
 ## 创建 numericIndexedVector 对象 \{#create-numeric-indexed-vector-object\}
 
-有两种方式可以创建这种结构：一种是使用带有 `-State` 的聚合函数 `groupNumericIndexedVector`。
-你可以添加后缀 `-if` 来接受一个额外的条件。
+有两种方式可以创建这种结构：一种是使用聚合函数 `groupNumericIndexedVector` 的 `-State` 变体。
+你可以添加后缀 `-if` 以接收一个额外的条件。
 聚合函数只会处理满足该条件的行。
-另一种方式是使用 `numericIndexedVectorBuild` 从一个 map 构建该结构。
-`groupNumericIndexedVectorState` 函数允许通过参数自定义整数位和小数位的位数，而 `numericIndexedVectorBuild` 则不支持这一点。
+另一种方式是使用 `numericIndexedVectorBuild` 从一个 map 构建它。
+`groupNumericIndexedVectorState` 函数允许通过参数自定义整数位和小数位的数量，而 `numericIndexedVectorBuild` 则不支持。
 
 ## groupNumericIndexedVector \{#group-numeric-indexed-vector\}
 
-从两个数据列构造一个 NumericIndexedVector，并以 `Float64` 类型返回所有值的和。如果添加后缀 `State`，则返回一个 NumericIndexedVector 对象。
+从两列数据构造一个 NumericIndexedVector，并以 `Float64` 类型返回所有值之和。如果添加后缀 `State`，则返回一个 NumericIndexedVector 对象。
 
 **语法**
 
@@ -44,10 +44,10 @@ groupNumericIndexedVectorState(type, integer_bit_num, fraction_bit_num)(col1, co
 
 **参数**
 
-* `type`：字符串类型，可选。指定存储格式。目前仅支持 `'BSI'`。
-* `integer_bit_num`：`UInt32`，可选。在 `'BSI'` 存储格式下生效，该参数表示用于整数部分的位数。当索引类型为整数类型时，默认值为存储该索引所用的位数。例如，当索引类型为 UInt16 时，默认的 `integer_bit_num` 为 16。对于 Float32 和 Float64 索引类型，`integer_bit_num` 的默认值为 40，因此可表示的数据整数部分范围为 `[-2^39, 2^39 - 1]`。合法范围为 `[0, 64]`。
-* `fraction_bit_num`：`UInt32`，可选。在 `'BSI'` 存储格式下生效，该参数表示用于小数部分的位数。当值类型为整数时，默认值为 0；当值类型为 Float32 或 Float64 时，默认值为 24。合法范围为 `[0, 24]`。
-* 还存在一个约束条件：integer&#95;bit&#95;num + fraction&#95;bit&#95;num 的合法范围为 [0, 64]。
+* `type`：字符串，可选。指定存储格式。目前仅支持 `'BSI'`。
+* `integer_bit_num`：`UInt32`，可选。在 `'BSI'` 存储格式下生效，该参数表示整数部分使用的位数。当索引类型为整数类型时，默认值对应于存储该索引类型所需的位数。例如，如果索引类型为 UInt16，则默认的 `integer_bit_num` 为 16。对于 Float32 和 Float64 索引类型，`integer_bit_num` 的默认值为 40，因此可表示的数据整数部分范围为 `[-2^39, 2^39 - 1]`。合法范围为 `[0, 64]`。
+* `fraction_bit_num`：`UInt32`，可选。在 `'BSI'` 存储格式下生效，该参数表示小数部分使用的位数。当值类型为整数时，默认值为 0；当值类型为 Float32 或 Float64 时，默认值为 24。合法范围为 `[0, 24]`。
+* 另有约束：`integer_bit_num + fraction_bit_num` 的有效范围为 `[0, 64]`。
 * `col1`：索引列。支持的类型：`UInt8`/`UInt16`/`UInt32`/`Int8`/`Int16`/`Int32`。
 * `col2`：数值列。支持的类型：`Int8`/`Int16`/`Int32`/`Int64`/`UInt8`/`UInt16`/`UInt32`/`UInt64`/`Float32`/`Float64`。
 
@@ -60,7 +60,7 @@ groupNumericIndexedVectorState(type, integer_bit_num, fraction_bit_num)(col1, co
 测试数据：
 
 ```text
-UserID  游戏时长
+UserID  PlayTime
 1       10
 2       20
 3       30
@@ -91,19 +91,20 @@ SELECT groupNumericIndexedVectorStateIf('BSI', 32, 0)(UserID, PlayTime, day = '2
 ```
 
 :::note
-以下文档是从 `system.functions` 系统表生成的。
+以下文档内容由 `system.functions` 系统表生成。
 :::
 
 {/* 
-  下面的标签用于根据 system 数据库中的系统表生成文档，请勿删除。
-  更多详细信息请参见 https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  下面的标签用于根据 system 表生成文档，请勿删除。
+  更多详情请参见 https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
   */ }
 
 {/*AUTOGENERATED_START*/ }
 
+
 ## numericIndexedVectorAllValueSum \{#numericIndexedVectorAllValueSum\}
 
-自 v25.7 起引入
+自 v25.7.0 起引入
 
 返回 numericIndexedVector 中所有值的总和。
 
@@ -123,7 +124,7 @@ numericIndexedVectorAllValueSum(v)
 
 **示例**
 
-**用法示例**
+**使用示例**
 
 ```sql title=Query
 SELECT numericIndexedVectorAllValueSum(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;
@@ -135,11 +136,12 @@ SELECT numericIndexedVectorAllValueSum(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
+
 ## numericIndexedVectorBuild \{#numericIndexedVectorBuild\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-从 `map` 创建一个 `NumericIndexedVector`。`map` 的键表示向量的索引，`map` 的值表示向量的元素值。
+从 map 创建一个 NumericIndexedVector。map 中的键表示向量的索引，值表示向量的数值。
 
 **语法**
 
@@ -149,7 +151,7 @@ numericIndexedVectorBuild(map)
 
 **参数**
 
-* `map` — 从索引到值的映射。[`Map`](/sql-reference/data-types/map)
+* `map` — 从索引到值的映射关系。[`Map`](/sql-reference/data-types/map)
 
 **返回值**
 
@@ -157,7 +159,7 @@ numericIndexedVectorBuild(map)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res, toTypeName(res);
@@ -169,11 +171,12 @@ SELECT numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30])) AS res,
 └─────┴────────────────────────────────────────────────────────────┘
 ```
 
+
 ## numericIndexedVectorCardinality \{#numericIndexedVectorCardinality\}
 
-首次引入于：v25.7
+引入版本：v25.7.0
 
-返回 `numericIndexedVector` 的基数（唯一索引数量）。
+返回 numericIndexedVector 的基数（唯一索引的数量）。
 
 **语法**
 
@@ -187,7 +190,7 @@ numericIndexedVectorCardinality(v)
 
 **返回值**
 
-返回唯一索引的数量，类型为 [`UInt64`](/sql-reference/data-types/int-uint)。
+返回唯一索引的个数。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
@@ -203,9 +206,10 @@ SELECT numericIndexedVectorCardinality(numericIndexedVectorBuild(mapFromArrays([
 └─────┘
 ```
 
+
 ## numericIndexedVectorGetValue \{#numericIndexedVectorGetValue\}
 
-自 v25.7 版本引入
+自 v25.7.0 起可用
 
 从 `numericIndexedVector` 中检索指定索引对应的值。
 
@@ -217,12 +221,12 @@ numericIndexedVectorGetValue(v, i)
 
 **参数**
 
-* `v` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `i` — 要读取其对应值的索引。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `v` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `i` — 要获取其值的索引。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-一个数值，其类型与 NumericIndexedVector 的值类型相同。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+返回一个数值，其类型与 NumericIndexedVector 的值类型相同。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -238,11 +242,12 @@ SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 
 └─────┘
 ```
 
+
 ## numericIndexedVectorPointwiseAdd \{#numericIndexedVectorPointwiseAdd\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或数值常量执行逐元素加法运算。
+对 `numericIndexedVector` 与另一个 `numericIndexedVector` 或数值常量逐元素相加。
 
 **语法**
 
@@ -253,7 +258,7 @@ numericIndexedVectorPointwiseAdd(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值型常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 一个数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
@@ -278,11 +283,12 @@ SELECT
 └───────────────────────┴──────────────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseDivide \{#numericIndexedVectorPointwiseDivide\}
 
-引入于：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或数值常量执行逐元素除法运算。
+在一个 numericIndexedVector 与另一个 numericIndexedVector 或数值常量之间执行按元素除法运算。
 
 **语法**
 
@@ -293,11 +299,11 @@ numericIndexedVectorPointwiseDivide(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值常量或 numericIndexedVector 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回一个新的 numericIndexedVector 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
@@ -318,12 +324,13 @@ SELECT
 └─────────────┴─────────────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseEqual \{#numericIndexedVectorPointwiseEqual\}
 
-引入于：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或一个数值常量进行逐元素比较。
-结果是一个 `numericIndexedVector`，其中包含值相等位置的索引，所有对应的值都被设为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行逐元素比较。
+结果返回一个 numericIndexedVector，其中包含所有值相等的位置索引，并将这些位置上的值全部设为 1。
 
 **语法**
 
@@ -333,12 +340,12 @@ numericIndexedVectorPointwiseEqual(v1, v2)
 
 **参数**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 * `v2` — 一个数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回一个新的 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) 对象。
+返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
@@ -359,12 +366,13 @@ SELECT
 └───────┴───────┘
 ```
 
+
 ## numericIndexedVectorPointwiseGreater \{#numericIndexedVectorPointwiseGreater\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-对一个 numericIndexedVector 与另一个 numericIndexedVector 或数值常量进行逐元素比较。
-结果是一个 numericIndexedVector，其中包含第一个向量的值大于第二个向量的值的索引位置，且所有这些位置上的值均被设置为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行逐元素比较。
+结果是一个 numericIndexedVector，其中包含第一个向量的值大于第二个向量的值的索引位置，且这些位置上的所有对应值都被设为 1。
 
 **语法**
 
@@ -374,16 +382,16 @@ numericIndexedVectorPointwiseGreater(v1, v2)
 
 **参数**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 一个数值型常量或 numericIndexedVector 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+返回一个新的 numericIndexedVector 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 with
@@ -400,12 +408,13 @@ SELECT
 └───────────┴───────┘
 ```
 
+
 ## numericIndexedVectorPointwiseGreaterEqual \{#numericIndexedVectorPointwiseGreaterEqual\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或一个数值常量进行逐元素比较。
-结果是一个 `numericIndexedVector`，其中包含第一个向量中值大于或等于第二个向量中对应值的索引，且这些索引上的所有值都被设置为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行按元素比较。
+结果是一个 numericIndexedVector，其中包含第一个向量中值大于或等于第二个向量中对应值的索引位置，并将所有这些位置上的值设为 1。
 
 **语法**
 
@@ -416,7 +425,7 @@ numericIndexedVectorPointwiseGreaterEqual(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 数值常量或 `numericIndexedVector` 对象。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 一个数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
@@ -424,7 +433,7 @@ numericIndexedVectorPointwiseGreaterEqual(v1, v2)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 with
@@ -441,12 +450,13 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseLess \{#numericIndexedVectorPointwiseLess\}
 
-引入于：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或一个数值常量进行逐元素比较。
-结果是一个 `numericIndexedVector`，包含第一个向量中那些值小于第二个向量对应值的索引位置，并将这些索引位置上的值全部设为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行逐元素比较运算。
+结果返回一个 numericIndexedVector，其中包含第一个向量的值小于第二个向量的值的索引位置，且所有对应的值都被设置为 1。
 
 **语法**
 
@@ -457,15 +467,15 @@ numericIndexedVectorPointwiseLess(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值型常量或 numericIndexedVector 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回一个新的 numericIndexedVector 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 with
@@ -482,12 +492,13 @@ SELECT
 └───────────┴───────┘
 ```
 
+
 ## numericIndexedVectorPointwiseLessEqual \{#numericIndexedVectorPointwiseLessEqual\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或数值常量执行逐元素比较。
-结果是一个 `numericIndexedVector`，其中包含第一个向量中值小于或等于第二个向量值的位置索引，且这些位置上的值均被设为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量进行逐元素比较。
+结果是一个 numericIndexedVector，其中包含第一个向量中值小于或等于第二个向量对应值的位置索引，这些位置上的所有值都被设置为 1。
 
 **语法**
 
@@ -498,7 +509,7 @@ numericIndexedVectorPointwiseLessEqual(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值常量（[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)）或一个 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object) 对象
+* `v2` — 一个数值常量或 `numericIndexedVector` 对象，类型为 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
@@ -506,12 +517,12 @@ numericIndexedVectorPointwiseLessEqual(v1, v2)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 with
-    numericIndexedVectorBuild(mapFromArrays([1, 2, 3], arrayMap(x -> toFloat64(x), [10, 20, 30]))) 作为 vec1,
-    numericIndexedVectorBuild(mapFromArrays([2, 3, 4], arrayMap(x -> toFloat64(x), [20, 40, 30]))) 作为 vec2
+    numericIndexedVectorBuild(mapFromArrays([1, 2, 3], arrayMap(x -> toFloat64(x), [10, 20, 30]))) as vec1,
+    numericIndexedVectorBuild(mapFromArrays([2, 3, 4], arrayMap(x -> toFloat64(x), [20, 40, 30]))) as vec2
 SELECT
     numericIndexedVectorToMap(numericIndexedVectorPointwiseLessEqual(vec1, vec2)) AS res1,
     numericIndexedVectorToMap(numericIndexedVectorPointwiseLessEqual(vec1, 20)) AS res2;
@@ -523,11 +534,12 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseMultiply \{#numericIndexedVectorPointwiseMultiply\}
 
-在 v25.7 中引入
+引入版本：v25.7.0
 
-对一个 numericIndexedVector 与另一个 numericIndexedVector 或数值常量执行逐元素乘法。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或数值常量执行按元素乘法运算。
 
 **语法**
 
@@ -538,7 +550,7 @@ numericIndexedVectorPointwiseMultiply(v1, v2)
 **参数**
 
 * `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值常量或 `numericIndexedVector` 对象。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
@@ -563,12 +575,13 @@ SELECT
 └───────────────┴──────────────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseNotEqual \{#numericIndexedVectorPointwiseNotEqual\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
-对一个 `numericIndexedVector` 与另一个 `numericIndexedVector` 或一个数值常量执行逐元素比较。
-返回一个 `numericIndexedVector`，其中包含值不相等的索引，且所有对应的值都被设置为 1。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行逐元素比较。
+结果是一个 numericIndexedVector，包含值不相等的索引位置，并将这些索引位置上的值全部设为 1。
 
 **语法**
 
@@ -578,12 +591,12 @@ numericIndexedVectorPointwiseNotEqual(v1, v2)
 
 **参数**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 一个数值常量或 `numericIndexedVector` 对象。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 一个数值常量或 numericIndexedVector 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+返回一个新的 numericIndexedVector 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
@@ -604,11 +617,12 @@ SELECT
 └───────────────┴───────────┘
 ```
 
+
 ## numericIndexedVectorPointwiseSubtract \{#numericIndexedVectorPointwiseSubtract\}
 
-自 v25.7 起引入
+引入版本：v25.7.0
 
-对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行按元素减法运算。
+对一个 numericIndexedVector 与另一个 numericIndexedVector 或一个数值常量执行逐元素相减运算。
 
 **语法**
 
@@ -618,16 +632,16 @@ numericIndexedVectorPointwiseSubtract(v1, v2)
 
 **参数**
 
-* `v1` — [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
-* `v2` — 数值型常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v1` —  [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+* `v2` — 一个数值常量或 `numericIndexedVector` 对象。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **返回值**
 
-返回新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
+返回一个新的 `numericIndexedVector` 对象。[`numericIndexedVector`](/sql-reference/functions/numeric-indexed-vector-functions#create-numeric-indexed-vector-object)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 WITH
@@ -644,9 +658,10 @@ SELECT
 └────────────────────────┴─────────────────┘
 ```
 
+
 ## numericIndexedVectorShortDebugString \{#numericIndexedVectorShortDebugString\}
 
-自 v25.7 引入
+自 v25.7.0 引入
 
 以 JSON 格式返回 numericIndexedVector 的内部信息。
 此函数主要用于调试。
@@ -663,7 +678,7 @@ numericIndexedVectorShortDebugString(v)
 
 **返回值**
 
-返回一个包含调试信息的 JSON 字符串。[`String`](/sql-reference/data-types/string)
+返回包含调试信息的 JSON 字符串。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -674,16 +689,17 @@ SELECT numericIndexedVectorShortDebugString(numericIndexedVectorBuild(mapFromArr
 ```
 
 ```response title=Response
-第 1 行：
+Row 1:
 ──────
 res: {"vector_type":"BSI","index_type":"char8_t","value_type":"char8_t","integer_bit_num":8,"fraction_bit_num":0,"zero_indexes_info":{"cardinality":"0"},"non_zero_indexes_info":{"total_cardinality":"3","all_value_sum":60,"number_of_bitmaps":"8","bitmap_info":{"cardinality":{"0":"0","1":"2","2":"2","3":"2","4":"2","5":"0","6":"0","7":"0"}}}}
 ```
 
+
 ## numericIndexedVectorToMap \{#numericIndexedVectorToMap\}
 
-自 v25.7 引入
+引入版本：v25.7.0
 
-将 `numericIndexedVector` 转换为 `map`。
+将 numericIndexedVector 转换为 map。
 
 **语法**
 
@@ -697,11 +713,11 @@ numericIndexedVectorToMap(v)
 
 **返回值**
 
-返回一个包含索引-值对的映射（`Map`）。[`Map`](/sql-reference/data-types/map)
+返回一个包含索引-值对的 Map 映射。[`Map`](/sql-reference/data-types/map)
 
 **示例**
 
-**使用示例**
+**用法示例**
 
 ```sql title=Query
 SELECT numericIndexedVectorToMap(numericIndexedVectorBuild(mapFromArrays([1, 2, 3], [10, 20, 30]))) AS res;

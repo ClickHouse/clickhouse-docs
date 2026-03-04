@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 对来自两个总体的样本应用 [Welch&#39;s t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)。
 
@@ -57,7 +57,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └────────────────────────────────────────────┘
 ```
 
-**包含置信水平**
+**带置信水平**
 
 ```sql title=Query
 SELECT welchTTest(0.95)(sample_data, sample_index) FROM welch_ttest;

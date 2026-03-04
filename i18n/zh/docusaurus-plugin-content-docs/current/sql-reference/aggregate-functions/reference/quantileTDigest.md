@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigest \{#quantileTDigest\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 使用 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 算法计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

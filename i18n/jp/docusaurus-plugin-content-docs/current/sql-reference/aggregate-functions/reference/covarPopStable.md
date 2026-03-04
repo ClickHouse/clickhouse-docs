@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarPopStable \{#covarPopStable\}
 
-Introduced in: v1.1
+導入バージョン: v1.1.0
 
-Calculates the population covariance:
+母共分散を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
@@ -21,9 +21,9 @@ $$
 
 <br />
 
-[`covarPop`](/sql-reference/aggregate-functions/reference/covarpop)関数と類似していますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable`は`covarPop`よりも低速ですが、より正確な結果を生成します。
+[`covarPop`](/sql-reference/aggregate-functions/reference/covarpop) 関数に似ていますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable` は `covarPop` より遅くなりますが、より正確な結果を生成します。
 
-**構文**
+**Syntax**
 
 ```sql
 covarPopStable(x, y)
@@ -31,16 +31,16 @@ covarPopStable(x, y)
 
 **引数**
 
-- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
-- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
+- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
-**返り値**
+**戻り値**
 
-`x`と`y`の母共分散を返します。[`Float64`](/sql-reference/data-types/float)
+`x` と `y` の間の母共分散を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 
-**安定したアルゴリズムによる基本的な母共分散の計算**
+**安定したアルゴリズムを使用した基本的な母共分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

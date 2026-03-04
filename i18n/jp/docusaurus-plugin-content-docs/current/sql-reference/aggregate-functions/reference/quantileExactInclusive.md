@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactInclusive \{#quantileExactInclusive\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と同様に、数値データ系列の厳密な [quantile](https://en.wikipedia.org/wiki/Quantile) を計算します。
 
@@ -55,7 +55,7 @@ SELECT quantileExactInclusive(0.25)(number) FROM numbers(5);
 └──────────────────────────────────────┘
 ```
 
-**複数の分位点レベルを計算する**
+**複数の分位数レベルを算出する**
 
 ```sql title=Query
 SELECT quantileExactInclusive(0.1)(number), quantileExactInclusive(0.9)(number) FROM numbers(10);

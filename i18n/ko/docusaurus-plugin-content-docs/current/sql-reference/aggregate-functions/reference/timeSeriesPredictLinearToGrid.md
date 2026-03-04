@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesPredictLinearToGrid \{#timeSeriesPredictLinearToGrid\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 타임스탬프와 값 쌍으로 된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝으로 정의되는 균일한 시간 그리드 상에서 지정된 예측 타임스탬프 오프셋을 기준으로 [PromQL 유사 선형 예측](https://prometheus.io/docs/prometheus/latest/querying/functions/#predict_linear)을 계산하는 집계 함수입니다. 그리드의 각 지점에 대해 `predict_linear` 계산에 사용되는 샘플은 지정된 시간 윈도우 내의 데이터만 고려됩니다.
 
@@ -25,11 +25,11 @@ timeSeriesPredictLinearToGrid(start_timestamp, end_timestamp, grid_step, stalene
 
 **매개변수**
 
-* `start_timestamp` — 그리드의 시작을 지정합니다. - `end_timestamp` — 그리드의 끝을 지정합니다. - `grid_step` — 그리드의 간격(초 단위)을 지정합니다. - `staleness` — 고려되는 샘플의 최대 「staleness」(초 단위)을 지정합니다. staleness 윈도우는 왼쪽이 열린 구간이고 오른쪽이 닫힌 구간인 구간입니다. - `predict_offset` — 예측 시간에 더할 오프셋(초)을 지정합니다.
+* `start_timestamp` — 그리드의 시작 시점을 지정합니다. - `end_timestamp` — 그리드의 끝 시점을 지정합니다. - `grid_step` — 그리드의 간격(초 단위)을 지정합니다. - `staleness` — 고려되는 샘플에 허용되는 최대 「staleness」(초 단위)를 지정합니다. staleness 윈도우는 왼쪽이 열린 구간이고 오른쪽이 닫힌 구간입니다. - `predict_offset` — 예측 시각에 더할 오프셋(초)을 지정합니다.
 
 **인수**
 
-* `timestamp` — 샘플의 타임스탬프입니다. 개별 값이나 배열일 수 있습니다. - `value` — 타임스탬프에 해당하는 시계열 값입니다. 개별 값이나 배열일 수 있습니다.
+* `timestamp` — 샘플 타임스탬프입니다. 단일 값 또는 배열일 수 있습니다. - `value` — 해당 타임스탬프의 시계열 값입니다. 단일 값 또는 배열일 수 있습니다.
 
 **반환 값**
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の近似的な [`quantile`](https://en.wikipedia.org/wiki/Quantile) を計算します。
 

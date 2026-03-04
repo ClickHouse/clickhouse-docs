@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTimingWeighted \{#quantileTimingWeighted\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 주어진 정밀도로, 각 시퀀스 구성원의 가중치에 따라 숫자 데이터 시퀀스의 [분위수](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## sparkbar \{#sparkbar\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 이 함수는 구간 `[min_x, max_x]`에서 값 `x`와 해당 값들의 반복 빈도 `y`에 대한 빈도 히스토그램을 그립니다.
 같은 버킷에 속하는 모든 `x`의 반복 값은 평균이 계산되므로 데이터는 미리 집계되어 있어야 합니다.
@@ -60,7 +60,7 @@ SELECT sparkbar(9)(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date F
 └──────────────────────────────┘
 ```
 
-**간격 지정 사용**
+**구간을 지정하는 경우**
 
 ```sql title=Query
 SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date FROM spark_bar_data GROUP BY event_date);

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqHLL12 \{#uniqHLL12\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 알고리즘을 사용하여 서로 다른 인수 값의 개수를 근사적으로 계산합니다.
 

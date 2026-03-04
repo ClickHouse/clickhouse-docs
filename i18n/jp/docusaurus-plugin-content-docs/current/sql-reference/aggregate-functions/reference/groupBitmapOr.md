@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapOr \{#groupBitmapOr\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 ビットマップ型のカラムに対して OR 演算を行い、そのカーディナリティを返します。
 サフィックスコンビネータ [`-State`](/sql-reference/aggregate-functions/combinators#-state) を付与した場合は、ビットマップオブジェクトを返します。

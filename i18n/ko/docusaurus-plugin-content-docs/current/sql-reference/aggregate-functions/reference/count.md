@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## count \{#count\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 행 수 또는 NULL이 아닌 값의 개수를 계산합니다.
 
@@ -65,7 +65,7 @@ SELECT count() FROM t
 └─────────┘
 ```
 
-**COUNT(DISTINCT) 예제**
+**COUNT(DISTINCT) 예시**
 
 ```sql title=Query
 -- This example shows that `count(DISTINCT num)` is performed by the `uniqExact` function according to the `count_distinct_implementation` setting value.

@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 ## groupBitmapOr \{#groupBitmapOr\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
-비트맵 컬럼의 OR 연산 결과를 계산하고 그 기수(cardinality)를 반환합니다.
+비트맵 컬럼의 OR 연산을 수행한 결과의 기수(cardinality)를 계산하여 반환합니다.
 조합자 접미사 [`-State`](/sql-reference/aggregate-functions/combinators#-state)를 추가하면 비트맵 객체를 반환합니다.
 이는 조합자 접미사 [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge)가 있는 [`groupBitmap`](/sql-reference/aggregate-functions/reference/groupbitmap)인 `groupBitmapMerge`와 동일합니다.
 
@@ -56,7 +56,7 @@ SELECT groupBitmapOr(z) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%')
 └──────────────────┘
 ```
 
-**-State 조합자 사용**
+**-State 조합자 사용하기**
 
 ```sql title=Query
 SELECT arraySort(bitmapToArray(groupBitmapOrState(z))) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%');

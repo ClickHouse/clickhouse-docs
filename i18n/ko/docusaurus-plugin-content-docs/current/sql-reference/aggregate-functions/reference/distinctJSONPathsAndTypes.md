@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPathsAndTypes \{#distinctJSONPathsAndTypes\}
 
-도입 버전: v24.9
+도입 버전: v24.9.0
 
 [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson) 컬럼에 저장된 서로 다른 경로와 해당 타입 목록을 계산합니다.
 
@@ -49,7 +49,7 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**JSON 경로 선언 후 사용**
+**선언된 JSON 경로 사용**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_json;

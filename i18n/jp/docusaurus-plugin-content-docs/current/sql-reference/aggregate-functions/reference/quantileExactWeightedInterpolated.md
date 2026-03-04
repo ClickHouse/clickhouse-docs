@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeightedInterpolated \{#quantileExactWeightedInterpolated\}
 
-導入バージョン: v24.10
+導入バージョン: v24.10.0
 
 各要素の重みを考慮しつつ線形補間を用いて、数値データ列の[分位数 (quantile)](https://en.wikipedia.org/wiki/Quantile) を計算します。
 
@@ -55,7 +55,7 @@ SELECT quantileExactWeightedInterpolated(n, val) FROM t;
 └───────────────────────────────────────────┘
 ```
 
-**`quantileInterpolatedWeighted` よりも `quantileExactWeightedInterpolated` を優先して使用する**
+**`quantileInterpolatedWeighted` より `quantileExactWeightedInterpolated` の使用を優先する**
 
 ```sql title=Query
 SELECT

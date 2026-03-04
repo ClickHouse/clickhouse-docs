@@ -1073,8 +1073,8 @@ createClient({
 로깅은 실험적 기능으로, 향후 변경될 수 있습니다.
 :::
 
-기본 로거 구현은 `console.debug/info/warn/error` 메서드를 사용하여 `stdout`으로 로그 레코드를 출력합니다.
-`LoggerClass`를 제공하여 로깅 동작을 사용자 정의할 수 있으며, `level` 매개변수(기본값은 `OFF`)를 통해 원하는 로그 레벨을 선택할 수 있습니다:
+기본 로거 구현은 `console.debug/info` 메서드를 사용하여 `stdout`으로, `console.warn/error` 메서드를 사용하여 `stderr`로 로그 레코드를 출력합니다.
+`LoggerClass`를 제공하여 로깅 동작을 사용자 정의할 수 있으며, `level` 매개변수(기본값은 `WARN`)를 통해 원하는 로그 레벨을 선택할 수 있습니다:
 
 ```typescript
 import type { Logger } from '@clickhouse/client'
@@ -1109,7 +1109,7 @@ class MyLogger implements Logger {
 const client = createClient({
   log: {
     LoggerClass: MyLogger,
-    level: ClickHouseLogLevel
+    level: ClickHouseLogLevel.DEBUG,
   }
 })
 ```
@@ -1180,14 +1180,14 @@ const client = createClient({
 다음 명령을 실행하면 서버 응답 헤더에서 올바른 Keep-Alive timeout 값을 확인할 수 있습니다.
 
 ```sh
-curl -v --data-binary "SELECT 1" <clickhouse_url>
+curl -is --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 응답에서 `Connection` 및 `Keep-Alive` 헤더 값을 확인합니다. 예를 들어:
 
 ```text
-< Connection: Keep-Alive
-< Keep-Alive: timeout=10
+Connection: Keep-Alive
+Keep-Alive: timeout=10
 ```
 
 이 경우 `keep_alive_timeout`은 10초이며, 유휴 소켓을 기본값보다 조금 더 오래 열어 두기 위해 `keep_alive.idle_socket_ttl` 값을 9000 또는 9500밀리초까지 높여 볼 수 있습니다. 서버가 클라이언트보다 먼저 연결을 종료한다는 것을 나타내는 발생 가능한 「Socket hang-up」 오류를 모니터링하고, 오류가 사라질 때까지 해당 값을 점진적으로 낮추십시오.
@@ -1197,19 +1197,19 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 최신 버전의 클라이언트를 사용하고 있음에도 `socket hang up` 오류가 발생하는 경우, 다음과 같은 방법으로 이 문제를 해결할 수 있습니다:
 
-* 최소한 `WARN` 로그 레벨로 로그를 활성화합니다. 이렇게 하면 애플리케이션 코드에 미처 소비되지 않았거나 떠 있는(dangling) 스트림이 있는지 확인할 수 있습니다. 전송 계층에서 이러한 스트림을 WARN 레벨로 로그에 남기며, 이는 서버가 소켓을 닫는 상황으로 이어질 수 있기 때문입니다. 클라이언트 설정에서 다음과 같이 로깅을 활성화할 수 있습니다:
-  
+* 기본값인 최소 `WARN` 로그 레벨로 로그를 활성화합니다. 이렇게 하면 애플리케이션 코드에 미처 소비되지 않았거나 떠 있는(dangling) 스트림이 있는지 확인할 수 있습니다. 전송 계층에서 이러한 스트림을 WARN 레벨로 로그에 남기며, 이는 서버가 소켓을 닫는 상황으로 이어질 수 있기 때문입니다. 클라이언트 설정에서 다음과 같이 로깅을 활성화할 수 있습니다:
+
   ```ts
   const client = createClient({
     log: { level: ClickHouseLogLevel.WARN },
   })
   ```
-  
-* [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint 규칙을 활성화하여 애플리케이션 코드를 점검합니다. 이 규칙은 처리되지 않은 promise를 식별하는 데 도움이 되며, 이러한 promise가 남아 있는 스트림과 소켓으로 이어질 수 있습니다.
 
-* ClickHouse 서버 설정에서 `keep_alive.idle_socket_ttl` 설정 값을 약간 줄입니다. 예를 들어 클라이언트와 서버 간 네트워크 지연 시간이 큰 경우, `keep_alive.idle_socket_ttl`을 200–500밀리초 정도 추가로 줄여서, 서버가 곧 닫으려는 소켓을 발신 요청이 잡는 상황을 방지하는 것이 도움이 될 수 있습니다. 
+* 원하는 설정이 올바른 클라이언트 인스턴스에 적용되었는지 확인합니다. 애플리케이션에 여러 클라이언트 인스턴스가 있는 경우, 쿼리에 사용 중인 인스턴스가 올바른 `keep_alive.idle_socket_ttl` 값을 가지고 있는지 다시 확인하십시오.
 
-* 들어오는 데이터나 나가는 데이터가 없는 장시간 실행 쿼리(예: 장시간 실행되는 `INSERT FROM SELECT`) 중에 이 오류가 발생하는 경우, 로드 밸런서가 유휴 연결을 닫기 때문일 수 있습니다. 이러한 장시간 실행 쿼리 동안 다음 ClickHouse 설정 조합을 사용하여, 쿼리 실행 중에 주기적으로 일부 데이터가 오가도록 하는 방식을 시도할 수 있습니다:
+* 클라이언트 설정에서 `keep_alive.idle_socket_ttl` 값을 500밀리초 줄입니다. 예를 들어 클라이언트와 서버 간 네트워크 지연 시간이 큰 경우, 이를 줄이는 것이 도움이 될 수 있으며, 서버가 곧 닫으려는 소켓을 발신 요청이 잡는 상황을 방지할 수 있습니다.
+
+* 들어오는 데이터나 나가는 데이터가 없는 장시간 실행 쿼리(예: 장시간 실행되는 `INSERT FROM SELECT`) 중에 이 오류가 발생하는 경우, 로드 밸런서나 기타 네트워크 구성 요소가 장기간 지속되는 연결 또는 장시간 실행되는 요청을 닫기 때문일 수 있습니다. 이러한 장시간 실행 쿼리 동안 다음 ClickHouse 설정 조합을 사용하여, 쿼리 실행 중에 주기적으로 일부 데이터가 오가도록 하는 방식을 시도할 수 있습니다:
 
   ```ts
   const client = createClient({
@@ -1224,9 +1224,10 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
     },
   })
   ```
+
   다만 최근 Node.js 버전에서는 수신되는 헤더의 총 크기에 16KB 제한이 있다는 점을 유의해야 합니다. 진행 상황 헤더가 일정 개수(테스트에서는 약 70–80개)를 초과하여 수신되면 예외가 발생합니다.
 
-  네트워크 구간에서의 대기 시간을 완전히 피하는 방식으로, 전혀 다른 접근 방식을 사용할 수도 있습니다. HTTP 인터페이스의 「연결이 끊어져도 뮤테이션이 취소되지 않는다」는 "특징"을 활용하면 됩니다. 자세한 내용은 [이 예시 (part 2)](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)를 참고하십시오.
+  네트워크 구간에서의 대기 시간을 완전히 피하는 방식으로, 전혀 다른 접근 방식을 사용할 수도 있습니다. HTTP 인터페이스의 「연결이 끊어져도 뮤테이션이 취소되지 않는다」는 &quot;특징&quot;을 활용하면 됩니다. 자세한 내용은 [이 예시 (part 2)](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)를 참고하십시오.
 
 * Keep-Alive 기능을 완전히 비활성화할 수도 있습니다. 이 경우 클라이언트는 각 요청에 `Connection: close` 헤더를 추가하며, 내부 HTTP 에이전트는 연결을 재사용하지 않습니다. 유휴 소켓이 존재하지 않으므로 `keep_alive.idle_socket_ttl` 설정은 무시됩니다. 각 요청마다 새로운 연결이 설정되므로 추가 오버헤드가 발생합니다.
 
@@ -1237,6 +1238,32 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
     },
   })
   ```
+
+* 동일한 ClickHouse 인스턴스와 동일한 네트워크 경로(예: 동일한 머신 또는 네트워크 세그먼트, 예: Kubernetes 파드)에서 간단한 커맨드라인 테스트를 실행하여, Node.js 자체를 포함한 나머지 네트워크 스택과 관련된 잠재적인 문제를 배제합니다. 예를 들어 `curl`을 사용할 수 있습니다:
+
+  ```sh
+  curl -is --user '<user>:<password>' --data-binary "SELECT 1" <clickhouse_url>
+  ```
+
+  이 명령을 몇 분 동안 반복 실행해 볼 수 있습니다. `curl`에서도 유사한 오류가 발생한다면, 문제는 클라이언트 설정이 아니라 네트워크 스택이나 서버 설정과 더 관련이 있을 가능성이 큽니다.
+
+* 기본 Node.js 기능만으로 연결을 테스트하기 위해, 내장된 `fetch` API를 사용하여 ClickHouse 서버로 단순한 HTTP 요청을 생성해 볼 수 있습니다.
+
+```ts
+  const response = await fetch('<clickhouse_url>?query=SELECT+1', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from('<user>:<password>').toString('base64'),
+    }
+  })
+```
+
+
+* 경우에 따라 애플리케이션 코드나 프레임워크 어댑터가 실제 쿼리 실행 전에 미리 `ping()` 호출을 추가할 수 있습니다. 이때 동일한 유휴 연결 문제로 인해 `ping()` 요청은 성공하지만, 뒤이은 쿼리 요청은 「socket hang up」 오류로 실패하는 상황이 발생할 수 있습니다. 로그에서 이러한 패턴이 보이면, 사용 중인 프레임워크나 애플리케이션 코드에서 사전 `ping()`을 비활성화할 수 있는 옵션이 있는지 확인하십시오. 이는 중간 네트워크 구성 요소에서 rate limiting에 걸릴 가능성을 줄이는 데에도 도움이 됩니다.
+
+* 애플리케이션 자체가 충분한 CPU 시간을 확보하고 있으며, 네트워크가 호스팅 제공자에 의해 제한되고 있지 않은지 확인해야 합니다. GC 일시 중지(GC pause) 메트릭, 이벤트 루프 지연(event loop lag) 메트릭 등 다양한 모니터링 수단을 활용하면 잠재적인 리소스 부족 문제를 배제하는 데 도움이 됩니다.
+
+* [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint 규칙을 활성화한 상태에서 애플리케이션 코드를 점검해 보십시오. 이 규칙은 처리되지 않은 promise를 식별하는 데 도움이 되며, 이러한 promise가 남아 있는 스트림과 소켓으로 이어질 수 있습니다.
 
 ### 읽기 전용 사용자 \{#read-only-users\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesLastTwoSamples \{#timeSeriesLastTwoSamples\}
 
-Введена в версии v25.6
+Введена в версии v25.6.0
 
 Агрегатная функция для ресемплинга временных рядов для вычислений irate и idelta в стиле PromQL.
 

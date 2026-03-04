@@ -9,7 +9,6 @@ doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -441,16 +440,6 @@ ClickHouse 支持通用编解码器和专用编解码器。
 #### Gorilla \{#gorilla\}
 
 `Gorilla(bytes_size)` — 计算当前和前一个浮点值之间的按位异或 (XOR),并以紧凑的二进制形式写入。连续值之间的差异越小,即序列的值变化越慢,压缩率越好。实现 Gorilla TSDB 中使用的算法,将其扩展为支持 64 位类型。可能的 `bytes_size` 值:1、2、4、8,如果等于 1、2、4 或 8,默认值为 `sizeof(type)`。在所有其他情况下,默认为 1。有关更多信息,请参阅 [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078) 中的第 4.1 节。
-
-#### ALP \{#alp\}
-
-<ExperimentalBadge/>
-
-`ALP()` — 基于十进制缩放的浮点数据自适应无损压缩。ALP 尝试使用十进制幂将每个值表示为精确缩放的整数，然后使用 Frame-of-Reference 和位打包对得到的整数进行压缩。无法被精确表示的值会以原始形式作为异常值存储。最适用于源自十进制小数的数值（例如测量值、货币金额）。支持 `Float32` 和 `Float64`。详细信息参见 [ALP: Adaptive lossless floating-point compression](https://ir.cwi.nl/pub/33334)。
-
-:::note
-该编解码器为实验性功能，使用前需要先执行 `SET allow_experimental_codecs = 1`。
-:::
 
 #### FPC \{#fpc\}
 

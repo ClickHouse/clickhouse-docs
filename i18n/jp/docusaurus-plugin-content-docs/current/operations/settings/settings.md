@@ -455,6 +455,16 @@ Iceberg テーブルに対して 'OPTIMIZE' を明示的に使用できるよう
 
 true に設定され、`join_to_sort_minimum_perkey_rows` と `join_to_sort_maximum_table_rows` の条件が満たされている場合、LEFT または INNER ハッシュ JOIN のパフォーマンスを向上させるために、右テーブルをキーで再ソートします。
 
+## allow_experimental_json_lazy_type_hints \{#allow_experimental_json_lazy_type_hints\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "JSON 型の遅延評価型ヒント用の新しい実験的な設定"}]}]} />
+
+JSON 型に対する実験的な遅延評価型ヒントを有効にします。この機能により、型ヒントの評価を後回しにすることで JSON 型の変換を最適化できます。
+
 ## allow_experimental_kafka_offsets_storage_in_keeper \{#allow_experimental_kafka_offsets_storage_in_keeper\}
 
 <ExperimentalBadge/>
@@ -541,7 +551,7 @@ SQL の代替言語である PRQL を有効にします。
 
 <ExperimentalBadge/>
 
-**エイリアス**: `allow_experimental_statistic`
+**別名**: `allow_experimental_statistic`
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1190,9 +1200,11 @@ fuzzerは、すべてのセッションにわたるすべてのクエリからAS
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-true の場合、INSERT クエリのデータはキューに格納され、後でバックグラウンドでテーブルにフラッシュされます。wait_for_async_insert が false の場合、INSERT クエリはほぼ即座に処理されます。true の場合、クライアントはデータがテーブルにフラッシュされるまで待機します。
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "非同期挿入をデフォルトで有効にします。"}]}]} />
+
+true の場合、INSERT クエリのデータはキューに格納され、後でバックグラウンドでテーブルにフラッシュされます。wait&#95;for&#95;async&#95;insert が false の場合、INSERT クエリはほぼ即座に処理されます。true の場合、クライアントはデータがテーブルにフラッシュされるまで待機します。
 
 ## async_insert_busy_timeout_decrease_rate \{#async_insert_busy_timeout_decrease_rate\}
 
@@ -2324,15 +2336,15 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]} />
 
-`INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
+`INSERT INTO` (Replicated* テーブル向け) のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
 この設定には次の 3 つの値を指定できます。
 
-- disable — `INSERT INTO` クエリに対する重複排除を無効にします。
-- enable — `INSERT INTO` クエリに対する重複排除を有効にします。
-- backward_compatible_choice — 特定の INSERT の種類に対して `insert_deduplicate` または `async_insert_deduplicate` が有効な場合に、重複排除を有効にします。
+* disable — `INSERT INTO` クエリに対する重複排除を無効にします。
+* enable — `INSERT INTO` クエリに対する重複排除を有効にします。
+* backward&#95;compatible&#95;choice — 特定の INSERT の種類に対して `insert_deduplicate` または `async_insert_deduplicate` が有効な場合に、重複排除を有効にします。
 
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
@@ -11774,15 +11786,6 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 データからスキーマを推論するのではなく、挿入元テーブルの構造を使用します。指定可能な値: 0 - 無効、1 - 有効、2 - 自動
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-デシリアライズされたテキストインデックスDictionaryブロックのキャッシュを使用するかどうかを制御します。
-テキストインデックスDictionaryブロックキャッシュを使用すると、大量のテキストインデックスクエリを扱う場合のレイテンシを大幅に削減し、スループットを向上できます。
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11800,6 +11803,15 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 テキストインデックスのポスティングリストをデシリアライズした結果をキャッシュとして利用するかどうかを制御します。
 テキストインデックスに対するクエリ数が多い場合、このキャッシュを使用することでレイテンシを大幅に削減し、スループットを向上させることができます。
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+デシリアライズ済みのテキストインデックスのトークン情報をキャッシュとして使用するかどうかを指定します。
+大量のテキストインデックスクエリを扱う場合、テキストインデックストークンキャッシュを使用することで、レイテンシを大幅に削減し、スループットを向上させることができます。
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

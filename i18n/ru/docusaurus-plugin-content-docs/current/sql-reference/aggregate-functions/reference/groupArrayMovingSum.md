@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingSum \{#groupArrayMovingSum\}
 
-Появилась в версии: v20.1
+Появилась в версии: v20.1.0
 
 Вычисляет скользящую сумму входных значений.
 

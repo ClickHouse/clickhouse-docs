@@ -24,7 +24,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## alphaTokens \{#alphaTokens\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `a-z` および `A-Z` の範囲に含まれる連続するバイト列からなる部分文字列を抽出し、その部分文字列の配列を返します。
 
@@ -61,7 +61,7 @@ SELECT alphaTokens('abca1abc');
 
 ## arrayStringConcat \{#arrayStringConcat\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列内に列挙された値の文字列表現を、指定された区切り文字で連結します。区切り文字は省略可能なパラメータで、省略した場合はデフォルトで空文字列が使用されます。
 
@@ -96,7 +96,7 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 
 ## extractAllGroupsVertical \{#extractAllGroupsVertical\}
 
-導入バージョン: v20.5
+導入バージョン: v20.5.0
 
 正規表現を使用して文字列内のすべてのキャプチャグループにマッチさせ、その結果を配列の配列として返します。各配列には、入力文字列中の出現順にグループ化された、各キャプチャグループのマッチ部分が含まれます。
 
@@ -136,7 +136,7 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## ngrams \{#ngrams\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 UTF-8 でエンコードされた文字列を、長さ `N` の n-gram に分割します。
 
@@ -169,7 +169,7 @@ SELECT ngrams('ClickHouse', 3);
 
 ## reverseBySeparator \{#reverseBySeparator\}
 
-導入バージョン: v26.2
+導入バージョン: v26.2.0
 
 指定したセパレーターで区切られた文字列内の部分文字列の順序を逆にします。
 この関数は、文字列をセパレーターで分割し、生成された各部分の順序を反転させ、
@@ -183,6 +183,55 @@ SELECT ngrams('ClickHouse', 3);
 * reverseBySeparator(&#39;x::y::z&#39;, &#39;::&#39;) は &#39;z::y::x&#39; を返します
 
 **構文**
+
+reverseBySeparator(string[, separator])
+
+**引数**
+
+* `string` — パーツの順序を逆転させる対象となる入力文字列。String
+* `separator` — パーツを識別するために使用する区切り文字列。指定しない場合は &#39;.&#39; (ドット) を使用します。デフォルト: &#39;.&#39;&#39;。String
+
+**戻り値**
+
+元の文字列中の部分文字列を右から左の順に並べ替え、同じ区切り文字で連結した文字列を返します。String
+
+**例**
+
+**ドメイン名の基本的な反転**
+
+SELECT reverseBySeparator(&#39;www.google.com&#39;)
+
+&#39;com.google.www&#39;
+
+**パスの逆順**
+
+SELECT reverseBySeparator(&#39;a/b/c&#39;, &#39;/&#39;)
+
+&#39;c/b/a&#39;
+
+**任意の区切り文字**
+
+SELECT reverseBySeparator(&#39;x::y::z&#39;, &#39;::&#39;)
+
+&#39;z::y::x&#39;
+
+**ドットを含むエッジケース**
+
+SELECT reverseBySeparator(&#39;.a.b.&#39;, &#39;.&#39;)
+
+&#39;.b.a.&#39;
+
+**単一要素**
+
+SELECT reverseBySeparator(&#39;single&#39;)
+
+&#39;single&#39;
+
+**空の区切り**
+
+SELECT reverseBySeparator(&#39;abcde&#39;, &#39;&#39;)
+
+&#39;edcba&#39;
 
 ```sql
 reverseBySeparator(string[, separator])
@@ -209,7 +258,7 @@ SELECT reverseBySeparator('www.google.com')
 'com.google.www'
 ```
 
-**パスの逆順**
+**パスの反転**
 
 ```sql title=Query
 SELECT reverseBySeparator('a/b/c', '/')
@@ -229,7 +278,7 @@ SELECT reverseBySeparator('x::y::z', '::')
 'z::y::x'
 ```
 
-**ドットを含むエッジケース**
+**ドットに関するエッジケース**
 
 ```sql title=Query
 SELECT reverseBySeparator('.a.b.', '.')
@@ -261,7 +310,7 @@ SELECT reverseBySeparator('abcde', '')
 
 ## splitByChar \{#splitByChar\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 長さ 1 文字の定数文字列 `separator` を区切り文字として用いて、文字列を部分文字列の配列に分割します。
 区切り文字が文字列の先頭または末尾にある場合、あるいは複数の区切り文字が連続している場合には、空の部分文字列が生成されることがあります。
@@ -272,7 +321,7 @@ SELECT reverseBySeparator('abcde', '')
 
 次の場合、空の部分文字列が生成されることがあります:
 
-* 区切り文字が文字列の先頭または末尾にある場合
+* 区切り文字が文字列の先頭また末尾にある場合
 * 複数の区切り文字が連続している場合
 * 元の文字列 `s` が空である場合
 
@@ -308,7 +357,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 
 ## splitByNonAlpha \{#splitByNonAlpha\}
 
-導入バージョン: v21.9
+導入バージョン: v21.9.0
 
 空白文字および句読点文字で区切られた文字列を、部分文字列の配列に分割します。
 
@@ -345,7 +394,7 @@ SELECT splitByNonAlpha('user@domain.com');
 
 ## splitByRegexp \{#splitByRegexp\}
 
-導入バージョン: v21.6
+導入バージョン: v21.6.0
 
 指定された正規表現で区切られた文字列を、部分文字列の配列に分割します。
 指定された正規表現が空文字列の場合、文字列は 1 文字ごとの配列に分割されます。
@@ -405,7 +454,7 @@ SELECT splitByRegexp('', 'abcde');
 
 ## splitByString \{#splitByString\}
 
-導入: v1.1
+導入: v1.1.0
 
 複数文字から成る定数 `separator` をセパレータとして文字列を分割し、部分文字列の配列を返します。
 文字列 `separator` が空の場合、文字列 `s` を 1 文字ずつの配列に分割します。
@@ -464,7 +513,7 @@ SELECT splitByString('', 'abcde');
 
 ## splitByWhitespace \{#splitByWhitespace\}
 
-導入バージョン: v21.9
+導入バージョン: v21.9.0
 
 空白文字で区切られた文字列を、部分文字列の配列に分割します。
 
@@ -501,7 +550,7 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 ## tokens \{#tokens\}
 
-導入されたバージョン: v21.11
+導入されたバージョン: v21.11.0
 
 指定したトークナイザーを使用して文字列をトークンに分割します。
 

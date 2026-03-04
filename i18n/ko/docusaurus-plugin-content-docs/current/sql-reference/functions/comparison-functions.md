@@ -40,7 +40,7 @@ doc_type: 'reference'
 
 ## equals \{#equals\}
 
-도입: v1.1
+도입: v1.1.0
 
 두 값을 비교하여 같은지 평가합니다.
 
@@ -76,7 +76,7 @@ SELECT 1 = 1, 1 = 2;
 
 ## globalIn \{#globalIn\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `in`과 동일하지만, 분산 쿼리에서 글로벌 Set 분산 방식을 사용합니다. 이 Set은 모든 원격 서버로 전송됩니다.
 
@@ -109,7 +109,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalInIgnoreSet \{#globalInIgnoreSet\}
 
-도입: v1.1
+도입: v1.1.0
 
 `in`과 동일하지만, 분산 쿼리에서 전역 Set 분산(global set distribution)을 사용합니다. 이때 Set은 모든 원격 서버로 전송됩니다.
 이 함수는 Set을 생성하지 않고 타입 분석에만 사용하는 IgnoreSet의 변형입니다.
@@ -142,7 +142,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## globalNotIn \{#globalNotIn\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `notIn`과 같지만, 분산 쿼리에서 전역 Set 분산 방식을 사용합니다. 이 Set은 모든 원격 서버로 전송됩니다.
 
@@ -174,7 +174,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `notIn`과 동일하지만, 분산 쿼리에서 글로벌 Set 분산 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
 이는 Set을 생성하지 않고 데이터 타입 분석을 위해 사용되는 IgnoreSet의 변형입니다.
@@ -207,7 +207,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## globalNotNullIn \{#globalNotNullIn\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `notNullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분산 방식을 사용합니다. Set은 모든 원격 서버에 전송됩니다.
 
@@ -239,7 +239,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `notNullIn`과 동일하지만, 분산 쿼리에서 global set 분산 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
 이 함수는 Set을 실제로 생성하지 않고 형식 분석(타입 분석)에 사용하는 IgnoreSet 변형입니다.
@@ -272,7 +272,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## globalNullIn \{#globalNullIn\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `nullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분배 방식을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
 
@@ -305,7 +305,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `nullIn`과 동일하지만, 분산 쿼리에서 전역 Set 분산을 사용합니다. Set은 모든 원격 서버로 전송됩니다.
 이 IgnoreSet 변형은 Set을 생성하지 않고 타입 분석에 사용됩니다.
@@ -339,7 +339,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## greater \{#greater\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 값을 비교하여 앞의 값이 뒤의 값보다 큰지 판별합니다.
 
@@ -374,7 +374,7 @@ SELECT 2 > 1, 1 > 2;
 
 ## greaterOrEquals \{#greaterOrEquals\}
 
-도입: v1.1
+도입: v1.1.0
 
 두 값이 크거나 같은지 비교합니다.
 
@@ -409,7 +409,7 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 
 ## in \{#in\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자인 Set에 포함되어 있는지 확인합니다. 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자에 있는 NULL 값은 건너뛰며(Set에 포함되지 않은 것으로 간주합니다).
 
@@ -441,7 +441,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## inIgnoreSet \{#inIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자인 Set에 포함되어 있는지 확인합니다. 포함되어 있으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자에서 NULL 값은 건너뛰며(해당 Set에 포함되지 않은 것으로 간주함) 처리합니다.
 이 함수는 Set을 생성하지 않고 형식 분석에 사용하는 IgnoreSet 변형입니다.
@@ -474,7 +474,7 @@ SELECT 1 IN (1, 2, 3)
 
 ## isDistinctFrom \{#isDistinctFrom\}
 
-도입 버전: v25.11
+도입 버전: v25.11.0
 
 두 값 간 NULL-안전(null-safe) 「같지 않음(not equals)」 비교를 수행합니다.
 한 값은 NULL이고 다른 값은 NULL이 아닌 경우를 포함하여, 두 값이 서로 다를(distinct, 같지 않을) 때 `true`를 반환합니다.
@@ -519,7 +519,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-도입된 버전: v25.10
+도입된 버전: v25.10.0
 
 두 값에 대해 NULL에 안전한 「equals」 비교를 수행합니다.
 두 값이 동일하면, 둘 다 NULL인 경우를 포함하여 `true`를 반환합니다.
@@ -564,7 +564,7 @@ SELECT
 
 ## less \{#less\}
 
-도입: v1.1
+도입: v1.1.0
 
 두 값을 비교하여 앞의 값이 뒤의 값보다 작은지(미만 관계인지) 여부를 판단합니다.
 
@@ -599,7 +599,7 @@ SELECT 1 < 2, 2 < 1;
 
 ## lessOrEquals \{#lessOrEquals\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 값이 작거나 같은지 비교합니다.
 
@@ -634,7 +634,7 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 
 ## notEquals \{#notEquals\}
 
-도입: v1.1
+도입: v1.1.0
 
 두 값이 서로 다른지 비교합니다.
 
@@ -670,7 +670,7 @@ SELECT 1 != 2, 1 != 1;
 
 ## notIn \{#notIn\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자 Set의 요소가 아닌지 확인합니다. Set에 포함되지 않으면 1을 반환하고, 포함되어 있으면 0을 반환합니다. 왼쪽 피연산자의 NULL 값은 무시됩니다.
 
@@ -702,7 +702,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notInIgnoreSet \{#notInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자인 Set의 요소가 아닌지 확인합니다. Set에 포함되어 있지 않으면 1을, 그렇지 않으면 0을 반환합니다. 왼쪽 피연산자의 NULL 값은 무시됩니다.
 Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet 변형입니다.
@@ -735,7 +735,7 @@ SELECT 4 NOT IN (1, 2, 3)
 
 ## notNullIn \{#notNullIn\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되지 않는지 확인합니다. `notIn`과는 달리 NULL 값이 건너뛰어지지 않습니다. NULL은 Set의 요소들과 비교되며, NULL = NULL 비교는 true로 평가됩니다.
 
@@ -767,7 +767,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## notNullInIgnoreSet \{#notNullInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자 Set의 요소가 아닌지 확인합니다. `notIn`과는 달리 NULL 값도 건너뛰지 않습니다. NULL은 Set의 요소와 비교되며, NULL = NULL은 true로 평가됩니다.
 이는 Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet 변형입니다.
@@ -800,7 +800,7 @@ SELECT notNullIn(NULL, tuple(1, NULL))
 
 ## nullIn \{#nullIn\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되어 있는지 확인합니다. `in`과 달리 NULL 값이 무시되지 않습니다. NULL은 Set의 요소와 비교되며, `NULL = NULL` 표현식은 true로 평가됩니다.
 
@@ -832,7 +832,7 @@ SELECT nullIn(NULL, tuple(1, NULL))
 
 ## nullInIgnoreSet \{#nullInIgnoreSet\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 왼쪽 피연산자가 오른쪽 피연산자 Set에 포함되는지 확인합니다. `in`과 달리 NULL 값은 건너뛰지 않습니다. NULL은 Set의 요소와 비교되며, NULL = NULL 비교 결과는 true가 됩니다.
 이는 Set을 생성하지 않고 타입 분석에 사용하는 IgnoreSet의 변형입니다.

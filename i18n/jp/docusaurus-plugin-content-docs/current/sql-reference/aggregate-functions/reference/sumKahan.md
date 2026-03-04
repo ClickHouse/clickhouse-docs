@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumKahan \{#sumKahan\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [Kahan 補償和アルゴリズム](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) を用いて数値の合計を計算します。
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 関数よりも低速です。

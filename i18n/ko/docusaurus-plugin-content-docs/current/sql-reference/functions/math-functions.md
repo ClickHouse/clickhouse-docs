@@ -18,9 +18,9 @@ doc_type: 'reference'
 
 ## acos \{#acos\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
-인수의 아크 코사인 값을 반환합니다.
+인수의 아크코사인 값을 반환합니다.
 
 **구문**
 
@@ -50,7 +50,7 @@ SELECT acos(0.5);
 
 ## acosh \{#acosh\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 역쌍곡 코사인 값을 반환합니다.
 
@@ -82,7 +82,7 @@ SELECT acosh(1)
 
 ## asin \{#asin\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 입력 인수의 아크사인 값을 계산합니다.
 인수가 `[-1, 1]` 범위에 있으면 반환 값은 `[-pi() / 2, pi() / 2]` 범위에 속합니다.
@@ -135,7 +135,7 @@ nan nan nan nan
 
 ## asinh \{#asinh\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 역쌍곡 사인(inverse hyperbolic sine)을 반환합니다.
 
@@ -167,7 +167,7 @@ SELECT asinh(0)
 
 ## atan \{#atan\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 인수의 아크탄젠트(arc tangent)를 반환합니다.
 
@@ -199,7 +199,7 @@ SELECT atan(1);
 
 ## atan2 \{#atan2\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 유클리드 평면에서 양의 x축과 점 `(x, y) ≠ (0, 0)`으로 향하는 반직선 사이의 각도를 라디안 단위로 나타낸 atan2 값을 반환합니다.
 
@@ -232,7 +232,7 @@ SELECT atan2(1, 1)
 
 ## atanh \{#atanh\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 역쌍곡 탄젠트 값을 반환합니다.
 
@@ -264,7 +264,7 @@ SELECT atanh(0)
 
 ## cbrt \{#cbrt\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수의 세제곱근을 반환합니다.
 
@@ -296,7 +296,7 @@ SELECT cbrt(8);
 
 ## cos \{#cos\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 인수의 코사인 값을 반환합니다.
 
@@ -328,7 +328,7 @@ SELECT cos(0);
 
 ## cosh \{#cosh\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 인수의 쌍곡선 코사인 값을 반환합니다.
 
@@ -360,7 +360,7 @@ SELECT cosh(0)
 
 ## degrees \{#degrees\}
 
-도입된 버전: v22.2
+도입된 버전: v22.2.0
 
 라디안을 도로 변환합니다.
 
@@ -392,7 +392,7 @@ SELECT degrees(3.141592653589793)
 
 ## e \{#e\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 자연상수 e를 반환합니다.
 
@@ -424,7 +424,7 @@ SELECT e();
 
 ## erf \{#erf\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `x`가 0 이상일 때, `erf(x/(σ√2))`는 표준 편차가 `σ`인 정규 분포를 따르는 확률 변수가 기댓값으로부터의 거리가 `x`를 초과하는 값을 가질 확률입니다.
 
@@ -458,7 +458,7 @@ SELECT erf(3 / sqrt(2))
 
 ## erfc \{#erfc\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 입력 `x`가 큰 경우에도 정밀도 손실 없이 `1-erf(x)`에 가까운 값을 반환합니다.
 
@@ -490,7 +490,7 @@ SELECT erfc(0);
 
 ## exp \{#exp\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 함수의 인수로 주어진 `x`에 대해, e의 `x` 제곱 값을 반환합니다.
 
@@ -524,7 +524,7 @@ SELECT round(exp(-1), 4)
 
 ## exp10 \{#exp10\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 주어진 인수를 지수로 하는 10의 거듭제곱 값을 반환합니다.
 
@@ -556,7 +556,7 @@ SELECT exp10(2);
 
 ## exp2 \{#exp2\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정한 인자를 지수로 갖는 2의 거듭제곱 값을 반환합니다.
 
@@ -588,7 +588,7 @@ SELECT exp2(3);
 
 ## factorial \{#factorial\}
 
-도입 버전: v22.11
+도입 버전: v22.11.0
 
 정수 값의 팩토리얼을 계산합니다.
 0의 팩토리얼은 1입니다. 마찬가지로 `factorial()` 함수는 어떤 음수 값에 대해서도 `1`을 반환합니다.
@@ -622,7 +622,7 @@ factorial(10)
 
 ## hypot \{#hypot\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 직각삼각형의 빗변 길이를 반환합니다.
 hypot 함수는 매우 크거나 매우 작은 수를 제곱할 때 발생할 수 있는 문제를 방지합니다.
@@ -656,7 +656,7 @@ SELECT hypot(1, 1)
 
 ## intExp10 \{#intExp10\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [exp10](#exp10)과 유사하지만 `UInt64` 값을 반환합니다.
 
@@ -688,7 +688,7 @@ SELECT intExp10(2);
 
 ## intExp2 \{#intExp2\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [exp2](#exp2)와 유사하지만 `UInt64` 값을 반환합니다.
 
@@ -720,7 +720,7 @@ SELECT intExp2(3);
 
 ## lgamma \{#lgamma\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 감마 함수의 로그를 반환합니다.
 
@@ -752,7 +752,7 @@ SELECT lgamma(5);
 
 ## log \{#log\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수의 자연로그를 반환합니다.
 
@@ -786,7 +786,7 @@ SELECT log(10);
 
 ## log10 \{#log10\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수의 상용 로그를 반환합니다.
 
@@ -818,7 +818,7 @@ SELECT log10(100);
 
 ## log1p \{#log1p\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 log(1+x)를 계산합니다.
 `x`의 값이 작은 경우 log1p(x)는 log(1+x)보다 더 정확하게 계산됩니다.
@@ -851,7 +851,7 @@ SELECT log1p(0)
 
 ## log2 \{#log2\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 인수의 이진 로그를 반환합니다.
 
@@ -883,7 +883,7 @@ SELECT log2(8);
 
 ## pi \{#pi\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 파이(π)를 반환합니다.
 
@@ -915,7 +915,7 @@ SELECT pi();
 
 ## pow \{#pow\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 x의 y제곱 값을 반환합니다.
 
@@ -930,7 +930,7 @@ pow(x, y)
 **인수**
 
 * `x` — 밑(base). [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal*`](/sql-reference/data-types/decimal)
-* `y` — 지수(exponent). [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 지수(exponent). [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal*`](/sql-reference/data-types/float) 또는 [`Decimal*`](/sql-reference/data-types/decimal)
 
 **반환 값**
 
@@ -950,7 +950,7 @@ SELECT pow(2, 3);
 
 ## proportionsZTest \{#proportionsZTest\}
 
-도입 버전: v22.3
+도입 버전: v22.3.0
 
 두 모집단 x와 y에서의 비율을 비교하는 통계 검정인 두 표본 비율 Z-검정의 검정 통계량을 반환합니다.
 이 FUNCTION은 표준 오차 추정을 위해 pooled 방식과 unpooled 방식 두 가지를 모두 지원합니다.
@@ -992,7 +992,7 @@ SELECT proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled');
 
 ## radians \{#radians\}
 
-도입된 버전: v22.2
+도입된 버전: v22.2.0
 
 도(degree)를 라디안(radian)으로 변환합니다.
 
@@ -1024,7 +1024,7 @@ SELECT radians(180)
 
 ## sigmoid \{#sigmoid\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 다음 sigmoid 함수 `1 / (1 + exp(-x))`를 계산합니다. sigmoid 함수는 임의의 실수를 (0, 1) 구간의 값으로 변환하며, 머신 러닝에서 널리 사용됩니다.
 
@@ -1056,7 +1056,7 @@ SELECT sigmoid(0)
 
 ## sign \{#sign\}
 
-도입 버전: v21.2
+도입 버전: v21.2.0
 
 실수 값의 부호를 반환합니다.
 
@@ -1086,7 +1086,7 @@ SELECT sign(0)
 0
 ```
 
-**양수에 대한 부호**
+**양수의 부호**
 
 ```sql title=Query
 SELECT sign(1)
@@ -1108,7 +1108,7 @@ SELECT sign(-1)
 
 ## sin \{#sin\}
 
-도입: v1.1
+도입: v1.1.0
 
 인수의 사인(sine) 값을 반환합니다.
 
@@ -1140,7 +1140,7 @@ SELECT sin(1.23)
 
 ## sinh \{#sinh\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 쌍곡선 사인(hyperbolic sine)을 반환합니다.
 
@@ -1172,7 +1172,7 @@ SELECT sinh(0)
 
 ## sqrt \{#sqrt\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수의 제곱근을 반환합니다.
 
@@ -1204,7 +1204,7 @@ SELECT sqrt(16);
 
 ## tan \{#tan\}
 
-도입: v1.1
+도입: v1.1.0
 
 인수의 탄젠트 값을 반환합니다.
 
@@ -1236,7 +1236,7 @@ SELECT tan(0);
 
 ## tanh \{#tanh\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 쌍곡선 탄젠트(hyperbolic tangent)를 반환합니다.
 
@@ -1268,7 +1268,7 @@ SELECT tanh(0)
 
 ## tgamma \{#tgamma\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 감마 함수의 값을 반환합니다.
 
@@ -1300,7 +1300,7 @@ SELECT tgamma(5);
 
 ## widthBucket \{#widthBucket\}
 
-도입 버전: v23.3
+도입 버전: v23.3.0
 
 히스토그램에서 매개변수 `operand`가 위치하는 버킷의 번호를 반환합니다. 이 히스토그램은 `low` 에서 `high` 까지의 범위를 동일한 너비를 가진 `count`개의 버킷으로 나눈 것입니다. `operand`가 `low`보다 작으면 0을 반환하고, `operand`가 `high`보다 크거나 같으면 `count`+1을 반환합니다.
 다른 데이터베이스와의 호환성을 위해 대소문자를 구분하지 않는 별칭인 `WIDTH_BUCKET`도 제공합니다.

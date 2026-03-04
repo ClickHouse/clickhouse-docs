@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## varPopStable \{#varPopStable\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 모집단 분산을 반환합니다.
 [`varPop`](/sql-reference/aggregate-functions/reference/varPop)과 달리 이 FUNCTION은 [수치적으로 안정적인](https://en.wikipedia.org/wiki/Numerical_stability) 알고리즘을 사용합니다.

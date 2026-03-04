@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## kolmogorovSmirnovTest \{#kolmogorovSmirnovTest\}
 
-自 v23.4 引入
+自 v23.4.0 引入
 
 对来自两个总体的样本应用 Kolmogorov-Smirnov 检验。
 
@@ -63,7 +63,7 @@ FROM
 └────────────────────────────────────────────────────┘
 ```
 
-**不同分布的检验**
+**不同分布检验**
 
 ```sql title=Query
 SELECT kolmogorovSmirnovTest('two-sided', 'exact')(value, num)

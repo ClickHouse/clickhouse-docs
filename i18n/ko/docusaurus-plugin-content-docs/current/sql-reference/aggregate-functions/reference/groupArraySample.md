@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySample \{#groupArraySample\}
 
-도입 버전: v20.3
+도입 버전: v20.3.0
 
 샘플로 추출된 인수 값의 배열을 생성합니다.
 결과 배열의 크기는 `max_size`개의 요소로 제한됩니다.
@@ -61,7 +61,7 @@ SELECT groupArraySample(3)(color) as newcolors FROM default.colors;
 └────────────────────────────┘
 ```
 
-**시드를 사용한 예**
+**시드 사용 예시**
 
 ```sql title=Query
 -- Query with column name and different seed

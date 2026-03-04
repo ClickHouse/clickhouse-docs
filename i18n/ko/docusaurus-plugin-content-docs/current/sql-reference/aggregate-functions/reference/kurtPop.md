@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtPop \{#kurtPop\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 값 시퀀스의 [첨도](https://en.wikipedia.org/wiki/Kurtosis)를 계산합니다.
 

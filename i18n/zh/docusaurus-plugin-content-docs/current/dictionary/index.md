@@ -320,7 +320,7 @@ Peak memory usage: 666.82 MiB.
 
 ### 选择字典 `LAYOUT` \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
+`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
 
 ### 刷新字典 \{#refreshing-dictionaries\}
 

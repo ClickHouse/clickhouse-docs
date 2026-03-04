@@ -798,21 +798,21 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### 缓存 \{#caching\}
 
 有多种缓存可用于在内存中缓冲文本索引的部分内容（参见[实现细节](#implementation)部分）。
-当前，对文本索引的反序列化字典块、头部信息以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
-可以通过以下 SETTING 启用这些缓存：[use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
+当前，对文本索引的反序列化头部信息、tokens（标记）以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
+可以通过以下 SETTING 启用这些缓存：[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、[use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
 默认情况下，所有缓存均为禁用状态。
 要清除这些缓存，请使用语句 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches)。
 
 请参考以下服务端 SETTING 来配置这些缓存。
 
-#### 字典块缓存设置 \{#caching-dictionary\}
+#### 词元缓存设置 \{#caching-tokens\}
 
 | 设置                                                                                                                                                     | 说明                                                                                                           |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 文本索引字典块缓存策略名称。                                                                                   |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | 缓存中反序列化的字典块最大数量。                                                                               |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | 文本索引字典块缓存中受保护队列相对于缓存总大小的比例。                                                         |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 文本索引词元缓存策略名称。                                                                  |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 缓存中反序列化的词元最大数量。                                                              |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 文本索引词元缓存中受保护队列相对于缓存总大小的比例。  |
 
 #### 头部缓存设置 \{#caching-header\}
 
@@ -906,6 +906,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这个过程使用在初始合并阶段创建的旧行号到新行号的映射。
 这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
 如果源分区片段中索引尚未物化（materialized），则会先构建该索引，将其写入一个临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起合并。
+
+**Debugging**
+
+可以使用表函数 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) 来查看和分析文本索引。
 
 ## 示例：Hacker News 数据集 \{#hacker-news-dataset\}
 

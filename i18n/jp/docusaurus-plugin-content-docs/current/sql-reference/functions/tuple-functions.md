@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ## dotProduct \{#dotProduct\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 2 つのベクトル（同じ長さのタプルまたは配列）の[ドット積](https://en.wikipedia.org/wiki/Dot_product)（スカラー積）を計算します。
 対応する要素同士の積の合計を返します。
@@ -58,7 +58,7 @@ SELECT dotProduct((1, 2), (3, 4))
 
 ## flattenTuple \{#flattenTuple\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 名前付きかつネストされたタプルをフラット化します。
 返されるタプルの要素は、入力タプル内の要素を指すパスになります。
@@ -97,7 +97,7 @@ SELECT flattenTuple(t) FROM tab;
 
 ## tuple \{#tuple\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 入力引数をグループ化してタプルを返します。
 
@@ -133,7 +133,7 @@ SELECT tuple(1, 2)
 
 ## tupleConcat \{#tupleConcat\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 引数として渡されたタプル同士を結合します。
 
@@ -166,7 +166,7 @@ SELECT tupleConcat((1, 2), ('a',), (true, false))
 
 ## tupleDivide \{#tupleDivide\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 同じ長さの 2 つのタプルにおける、対応する要素同士の除算を計算します。
 
@@ -204,7 +204,7 @@ SELECT tupleDivide((1, 2), (2, 3))
 
 ## tupleDivideByNumber \{#tupleDivideByNumber\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 指定した数値で各要素を割った `tuple` を返します。
 
@@ -242,7 +242,7 @@ SELECT tupleDivideByNumber((1, 2), 0.5)
 
 ## tupleElement \{#tupleElement\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 タプルから要素をインデックスまたは名前で抽出します。
 
@@ -295,7 +295,7 @@ SELECT tupleElement((1, 'hello'), -1)
 hello
 ```
 
-**テーブルを指定した名前付きタプル**
+**テーブル内の名前付きタプル**
 
 ```sql title=Query
 CREATE TABLE example (values Tuple(name String, age UInt32)) ENGINE = Memory;
@@ -307,7 +307,7 @@ SELECT tupleElement(values, 'name') FROM example;
 Alice
 ```
 
-**デフォルト値ありの場合**
+**デフォルト値の指定**
 
 ```sql title=Query
 SELECT tupleElement((1, 2), 5, 'not_found')
@@ -330,7 +330,7 @@ hello
 
 ## tupleHammingDistance \{#tupleHammingDistance\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 要素数が同じ 2 つのタプル間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)を返します。
 
@@ -394,7 +394,7 @@ SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseIn
 
 ## tupleIntDiv \{#tupleIntDiv\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 分子のタプルと分母のタプルを用いて整数除算を実行します。商のタプルを返します。
 いずれかのタプルに非整数要素が含まれている場合、各非整数の分子または除数は最も近い整数に丸められてから結果が計算されます。
@@ -440,7 +440,7 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
 
 ## tupleIntDivByNumber \{#tupleIntDivByNumber\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 分子のタプルを指定された分母で整数除算し、その商をタプルとして返します。
 入力パラメータのいずれかに整数以外の要素が含まれている場合、各整数以外の分子または除数は四捨五入して整数に変換したうえで結果を計算します。
@@ -486,7 +486,7 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
 
 ## tupleIntDivOrZero \{#tupleIntDivOrZero\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 [`tupleIntDiv`](#tupleIntDiv) と同様に、分子のタプルと分母のタプルに対して整数除算を実行し、商のタプルを返します。
 0 での除算が発生した場合、例外をスローする代わりに、その商を 0 として返します。
@@ -522,7 +522,7 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
 
 ## tupleIntDivOrZeroByNumber \{#tupleIntDivOrZeroByNumber\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 [`tupleIntDivByNumber`](#tupleIntDivByNumber) と同様に、分子のタプルを指定した分母で整数除算し、商のタプルを返します。
 ゼロ除算の場合でもエラーはスローされず、商はゼロとして返されます。
@@ -568,7 +568,7 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 
 ## tupleMinus \{#tupleMinus\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 同じサイズの2つのタプルについて、対応する要素間の差を計算します。
 
@@ -604,7 +604,7 @@ SELECT tupleMinus((1, 2), (2, 3))
 
 ## tupleModulo \{#tupleModulo\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 2 つのタプルの要素同士を割り算した際の余り（剰余）からなるタプルを返します。
 
@@ -638,7 +638,7 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2))
 
 ## tupleModuloByNumber \{#tupleModuloByNumber\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 タプルを指定した除数で割ったときの剰余（余り）からなるタプルを返します。
 
@@ -672,7 +672,7 @@ SELECT tupleModuloByNumber((15, 10, 5), 2)
 
 ## tupleMultiply \{#tupleMultiply\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 同じ長さの 2 つのタプルについて、対応する要素同士の積を計算します。
 
@@ -706,7 +706,7 @@ SELECT tupleMultiply((1, 2), (2, 3))
 
 ## tupleMultiplyByNumber \{#tupleMultiplyByNumber\}
 
-導入: v21.11
+導入: v21.11.0
 
 すべての要素を与えられた数値で乗算したタプルを返します。
 
@@ -740,7 +740,7 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1)
 
 ## tupleNames \{#tupleNames\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 タプルをカラム名の配列に変換します。`Tuple(a T, b T, ...)` という形式のタプルに対して、タプル内の名前付きカラムを表す文字列の配列を返します。タプル要素に明示的な名前がない場合は、そのインデックス番号がカラム名として使用されます。
 
@@ -771,7 +771,7 @@ SELECT tupleNames(tuple(1 as a, 2 as b))
 
 ## tupleNegate \{#tupleNegate\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 タプル要素の符号反転を行います。
 
@@ -804,7 +804,7 @@ SELECT tupleNegate((1, 2))
 
 ## tuplePlus \{#tuplePlus\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 同じ長さの2つのタプルについて、対応する要素同士の合計を計算します。
 
@@ -840,7 +840,7 @@ SELECT tuplePlus((1, 2), (2, 3))
 
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
-導入バージョン: v21.9
+導入バージョン: v21.9.0
 
 タプルを `(name, value)` ペアの配列に変換します。
 たとえば、タプル `Tuple(n1 T1, n2 T2, ...)` は `Array(Tuple('n1', T1), Tuple('n2', T2), ...)` に変換されます。

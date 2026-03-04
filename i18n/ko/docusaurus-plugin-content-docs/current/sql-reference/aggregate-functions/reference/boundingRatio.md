@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## boundingRatio \{#boundingRatio\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 값 그룹에서 가장 왼쪽 점과 가장 오른쪽 점을 이은 직선의 기울기를 계산합니다.
 

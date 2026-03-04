@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedMax \{#exponentialTimeDecayedMax\}
 
-도입 버전: v21.12
+도입 버전: v21.12.0
 
 시간 인덱스 `t`에서의 지수 평활 이동 평균값과 `t-1`에서의 값 중 최대값을 반환합니다.
 
