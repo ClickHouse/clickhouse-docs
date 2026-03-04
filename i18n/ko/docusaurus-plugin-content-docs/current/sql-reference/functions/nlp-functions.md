@@ -236,7 +236,7 @@ SELECT
 도입 버전: v21.9
 
 지정된 단어에 대한 표제어 추출(lemmatization)을 수행합니다.
-이 함수가 동작하려면 딕셔너리가 필요하며, [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)에서 가져올 수 있습니다. 로컬 파일에서 딕셔너리를 로드하는 방법에 대한 자세한 내용은 [&quot;딕셔너리 정의하기&quot;](/sql-reference/dictionaries#local-file) 페이지를 참조하십시오.
+이 함수가 동작하려면 딕셔너리가 필요하며, [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)에서 가져올 수 있습니다. 로컬 파일에서 딕셔너리를 로드하는 방법에 대한 자세한 내용은 [&quot;딕셔너리 정의하기&quot;](/sql-reference/statements/create/dictionary/sources/local-file) 페이지를 참조하십시오.
 
 **구문**
 

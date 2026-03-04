@@ -236,7 +236,7 @@ SELECT
 引入于：v21.9
 
 对给定单词执行词形还原（lemmatization）。
-此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/dictionaries#local-file)。
+此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/statements/create/dictionary/sources/local-file)。
 
 **语法**
 

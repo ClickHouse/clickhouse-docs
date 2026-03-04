@@ -236,7 +236,7 @@ SELECT
 導入バージョン: v21.9
 
 指定された単語に対してレンマ化（基本形への変換）を行います。
-この関数を利用するには辞書が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから辞書を読み込む方法の詳細については [&quot;Defining Dictionaries&quot;](/sql-reference/dictionaries#local-file) のページを参照してください。
+この関数を利用するには辞書が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから辞書を読み込む方法の詳細については [&quot;Defining Dictionaries&quot;](/sql-reference/statements/create/dictionary/sources/local-file) のページを参照してください。
 
 **構文**
 
