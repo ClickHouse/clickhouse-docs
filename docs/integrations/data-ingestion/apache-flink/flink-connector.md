@@ -333,29 +333,28 @@ By default, the connector will use either [RowBinaryWithDefaults](https://clickh
 
 The connector exposes the following additional metrics on top of Flink's existing metrics:
 
-| Metric                                  | Description                                                         | Type      | Status |
-|-----------------------------------------|---------------------------------------------------------------------|-----------|--------|
-| `numBytesSend`                          | Total number of bytes sent to ClickHouse in the request payload.
-Note: This metric measures the serialized data size sent over the network and might differ from ClickHouse's `written_bytes` in `system.query_log`, which reflects the actual bytes written to storage after processing.                            | Counter   | ✅      |
-| `numRecordSend`                         | Total number of records sent to ClickHouse                          | Counter   | ✅      |
-| `numRequestSubmitted`                   | Total number of requests sent (actual number of flushes performed)  | Counter   | ✅      |
-| `numOfDroppedBatches`                   | Total number of batches dropped due to non-retryable failures       | Counter   | ✅      |
-| `numOfDroppedRecords`                   | Total number of records dropped due to non-retryable failures       | Counter   | ✅      |
-| `totalBatchRetries`                     | Total number of batch retries due to retryable failures             | Counter   | ✅      |
-| `writeLatencyHistogram`                 | Histogram of successful write latency distribution (ms)             | Histogram | ✅      |
-| `writeFailureLatencyHistogram`          | Histogram of failed write latency distribution (ms)                 | Histogram | ✅      |
-| `triggeredByMaxBatchSizeCounter`        | Total number of flushes triggered by reaching `maxBatchSize`        | Counter   | ✅      |
-| `triggeredByMaxBatchSizeInBytesCounter` | Total number of flushes triggered by reaching `maxBatchSizeInBytes` | Counter   | ✅      |
-| `triggeredByMaxTimeInBufferMSCounter`   | Total number of flushes triggered by reaching `maxTimeInBufferMS`   | Counter   | ✅      |
-| `actualRecordsPerBatch`                 | Histogram of actual batch size distribution                         | Histogram | ✅      |
-| `actualBytesPerBatch`                   | Histogram of actual bytes per batch distribution                    | Histogram | ✅      |
+| Metric                                  | Description                                                                                                                                                                                                                                                                                | Type      | Status |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|--------|
+| `numBytesSend`                          | Total number of bytes sent to ClickHouse in the request payload. _Note: this metric measures the serialized data size sent over the network and might differ from ClickHouse's `written_bytes` in `system.query_log`, which reflects the actual bytes written to storage after processing_ | Counter   | ✅      |
+| `numRecordSend`                         | Total number of records sent to ClickHouse                                                                                                                                                                                                                                                 | Counter   | ✅      |
+| `numRequestSubmitted`                   | Total number of requests sent (actual number of flushes performed)                                                                                                                                                                                                                         | Counter   | ✅      |
+| `numOfDroppedBatches`                   | Total number of batches dropped due to non-retryable failures                                                                                                                                                                                                                              | Counter   | ✅      |
+| `numOfDroppedRecords`                   | Total number of records dropped due to non-retryable failures                                                                                                                                                                                                                              | Counter   | ✅      |
+| `totalBatchRetries`                     | Total number of batch retries due to retryable failures                                                                                                                                                                                                                                    | Counter   | ✅      |
+| `writeLatencyHistogram`                 | Histogram of successful write latency distribution (ms)                                                                                                                                                                                                                                    | Histogram | ✅      |
+| `writeFailureLatencyHistogram`          | Histogram of failed write latency distribution (ms)                                                                                                                                                                                                                                        | Histogram | ✅      |
+| `triggeredByMaxBatchSizeCounter`        | Total number of flushes triggered by reaching `maxBatchSize`                                                                                                                                                                                                                               | Counter   | ✅      |
+| `triggeredByMaxBatchSizeInBytesCounter` | Total number of flushes triggered by reaching `maxBatchSizeInBytes`                                                                                                                                                                                                                        | Counter   | ✅      |
+| `triggeredByMaxTimeInBufferMSCounter`   | Total number of flushes triggered by reaching `maxTimeInBufferMS`                                                                                                                                                                                                                          | Counter   | ✅      |
+| `actualRecordsPerBatch`                 | Histogram of actual batch size distribution                                                                                                                                                                                                                                                | Histogram | ✅      |
+| `actualBytesPerBatch`                   | Histogram of actual bytes per batch distribution                                                                                                                                                                                                                                           | Histogram | ✅      |
 
 [//]: # (| actualTimeInBuffer           | Histogram of actual time in buffer before flush distribution       | Histogram | ❌      |)
 
 ## Limitations {#limitations}
 
 * The sink currently provides an at-least-once delivery guarantee. Work toward exactly-once semantics is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/106).
-* The sink does not yet support a dead-letter queue (DLQ) for buffering unprocessable messages. In the meantime, the connector will stop processing at the first row it is unable to handle. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
+* The sink does not yet support a dead-letter queue (DLQ) for buffering unprocessable records. In the meantime, the connector will attempt to re-insert records that fail and drop them if unsuccessful. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
 * The sink does not yet support creation via Flink's Table API or Flink SQL. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
 ## ClickHouse version compatibility and security {#compatibility-and-security}
@@ -372,11 +371,42 @@ Note: This metric measures the serialized data size sent over the network and mi
 
 ## Troubleshooting {#troubleshooting}
 
-- If you change your ClickHouse table schema while the connector is processing records of the old schema, ClickHouse may throw serialization errors. To recover, you must reset Flink state when you restart the connector.
-- If your connector's batch size is too small and flushes are too frequent, ClickHouse's background [part merging process](https://clickhouse.com/docs/merges) may slow down inserts and reduce the connector's throughput. Monitor the `numRequestSubmitted` and `actualRecordsPerBatch` metrics to help determine how to tune your batch size (`maxBatchSize`) and how frequently to flush.
-  - See [Advanced and recommended usage]({#advanced-and-recommended-usage}) for batch size recommendations.
-- If one or more records fails to insert into ClickHouse, the connector will retry the **entire batch**. This may result in duplicate records landing in your ClickHouse table. Depending on your table schema, using the [ReplacingMergeTree table engine](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree) will filter the duplicates by the sorting key (`ORDER BY` table section, not `PRIMARY KEY`).
-- If a batch fails to insert into ClickHouse more than the configured number of retries (settable via `ClickHouseClientConfig.setNumberOfRetries()`), the batch will be dropped. By default, the connector will attempt to re-insert a batch up to 3 times before dropping it.
+### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
+
+The following error may occur:
+
+<Tabs groupId="cannot_read_all_data_error">
+<TabItem value="Text" label="Text" default>
+
+```text
+com.clickhouse.client.api.ServerException: Code: 33. DB::Exception: Cannot read all data. Bytes read: 9205. Bytes expected: 1100022.: (at row 9) : While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)
+```
+</TabItem>
+</Tabs>
+
+**Cause**: Most commonly, the CANNOT_READ_ALL_DATA error means that your ClickHouse table schema has diverged from your Flink record schema. This can happen when one or the other is changed in a backwards incompatible way.
+
+**Solution**: Update the schema in either (or both) your ClickHouse table or connector input data type so they are compatible. If needed, refer to the [type mapping](#inserting-data-from-flink-into-clickhouse) for how to resolve Java types to ClickHouse types. _Note: if there are still records in flight, you will need to reset Flink state when you restart the connector._
+
+### Low throughput {#low_throughput}
+
+You may experience that the connector's throughput does not scale with the job's parallelism (Flink task count) when writing to ClickHouse.
+
+**Cause**: ClickHouse's background [part merging process](https://clickhouse.com/docs/merges) may be slowing down inserts. This can happen when the configured batch size is too small, the connector is flushing too frequently, or a combination of the two.
+
+**Solution**: Monitor the `numRequestSubmitted` and `actualRecordsPerBatch` metrics to help determine how to tune your batch size (`maxBatchSize`) and how frequently to flush. Also, see [Advanced and recommended usage](#advanced-and-recommended-usage) for batch sizing recommendations.
+
+### I see lots of duplicate rows in my ClickHouse table {#duplicate_rows}
+
+**Cause**: If one or more records in a batch fails to insert into ClickHouse, the connector will retry the **entire batch**. This may result in duplicate records landing in your ClickHouse table.
+
+**Solution**: A workaround is to use the [ReplacingMergeTree table engine](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree), which will filter duplicate rows by the sorting key (`ORDER BY` table section, not `PRIMARY KEY`) assuming one is set.
+
+### I am missing rows in my ClickHouse table {#missing_rows}
+
+**Cause**: The batch(es) were dropped either because of a non-retryable failure or they could not be inserted in the configured number of retries (settable via `ClickHouseClientConfig.setNumberOfRetries()`). _Note: by default, the connector will attempt to re-insert a batch up to 3 times before dropping it._
+
+**Solution**: Inspect the TaskManager logs and/or stack trace(s) for the root cause.
 
 ## Contributing and support {#contributing-and-support}
 
