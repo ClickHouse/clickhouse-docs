@@ -4,8 +4,31 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useColorMode } from "@docusaurus/theme-common";
 import CUICard from "@site/src/components/CUICard";
 import styles from "./styles.module.scss";
+import { strapi } from "@strapi/client";
 
+const strapiClient = strapi({ baseURL: "https://cms.clickhouse.com:1337/api" });
+
+// Strapi v5 flat response format (used for live CMS data)
 type CMSIntegrationData = {
+  id: number;
+  documentId: string;
+  name: string;
+  slug: string;
+  category: string;
+  supportLevel: string;
+  docsLink?: string;
+  logo?: {
+    id: number;
+    url: string;
+  };
+  logo_dark?: {
+    id: number;
+    url: string;
+  };
+};
+
+// Strapi v4 response format (used for the static fallback JSON)
+type CMSIntegrationDataV4 = {
   id: number;
   attributes: {
     name: string;
@@ -157,28 +180,48 @@ function IntegrationCards({
   );
 }
 
-// Helper function to transform CMS data to the expected format
-function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
-  // Mapping from CMS category to display-friendly integration type
-  const categoryMapping: { [key: string]: string } = {
-    AI_ML: "AI/ML",
-    CLICKPIPES: "ClickPipes",
-    DATA_INGESTION: "Data ingestion",
-    DATA_INTEGRATION: "Data integration",
-    DATA_MANAGEMENT: "Data management",
-    DATA_VISUALIZATION: "Data visualization",
-    LANGUAGE_CLIENT: "Language client",
-    SECURITY_GOVERNANCE: "Security governance",
-    SQL_CLIENT: "SQL client",
-  };
+const categoryMapping: { [key: string]: string } = {
+  AI_ML: "AI/ML",
+  CLICKPIPES: "ClickPipes",
+  DATA_INGESTION: "Data ingestion",
+  DATA_INTEGRATION: "Data integration",
+  DATA_MANAGEMENT: "Data management",
+  DATA_VISUALIZATION: "Data visualization",
+  LANGUAGE_CLIENT: "Language client",
+  SECURITY_GOVERNANCE: "Security governance",
+  SQL_CLIENT: "SQL client",
+};
 
+// Transform Strapi v5 (flat) CMS data to the expected format
+function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
   return cmsData.map((item) => {
-    // Map category to integration_type array
+    const integrationTypes = item.category
+      ? [categoryMapping[item.category] || item.category]
+      : [];
+    const integrationTier = item.supportLevel?.toLowerCase() || "";
+
+    return {
+      slug: item.slug.startsWith("/") ? item.slug : `/${item.slug}`,
+      docsLink: item.docsLink,
+      integration_logo: item.logo?.url
+        ? `https://cms.clickhouse.com:1337${item.logo.url}`
+        : "",
+      integration_logo_dark: item.logo_dark?.url
+        ? `https://cms.clickhouse.com:1337${item.logo_dark.url}`
+        : undefined,
+      integration_type: integrationTypes,
+      integration_title: item.name,
+      integration_tier: integrationTier,
+    };
+  });
+}
+
+// Transform Strapi v4 (nested attributes) data — used for the static fallback JSON
+function transformFallbackData(cmsData: CMSIntegrationDataV4[]): IntegrationData[] {
+  return cmsData.map((item) => {
     const integrationTypes = item.attributes.category
       ? [categoryMapping[item.attributes.category] || item.attributes.category]
       : [];
-
-    // Map supportLevel to integration_tier
     const integrationTier = item.attributes.supportLevel?.toLowerCase() || "";
 
     return {
@@ -187,10 +230,10 @@ function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
         : `/${item.attributes.slug}`,
       docsLink: item.attributes.docsLink,
       integration_logo: item.attributes.logo?.data?.attributes.url
-        ? `https://cms.clickhouse-dev.com:1337${item.attributes.logo.data.attributes.url}`
+        ? `https://cms.clickhouse.com:1337${item.attributes.logo.data.attributes.url}`
         : "",
       integration_logo_dark: item.attributes.logo_dark?.data?.attributes.url
-        ? `https://cms.clickhouse-dev.com:1337${item.attributes.logo_dark.data.attributes.url}`
+        ? `https://cms.clickhouse.com:1337${item.attributes.logo_dark.data.attributes.url}`
         : undefined,
       integration_type: integrationTypes,
       integration_title: item.attributes.name,
@@ -200,7 +243,7 @@ function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
 }
 
 // Configuration: Set to true to fetch from CMS, false to use only static fallback
-const USE_CMS_ENDPOINT = false;
+const USE_CMS_ENDPOINT = true;
 
 // Custom hook for fetching CMS data
 function useCMSIntegrations() {
@@ -219,7 +262,7 @@ function useCMSIntegrations() {
 
         if (fallbackResponse.ok) {
           const fallbackData = await fallbackResponse.json();
-          const transformedData = transformCMSData(fallbackData.data || []);
+          const transformedData = transformFallbackData(fallbackData.data || []);
           setIntegrations(transformedData);
           setError(null);
           setLoading(false); // Show content immediately with fallback data
@@ -235,35 +278,14 @@ function useCMSIntegrations() {
         // Continue to try CMS even if fallback fails
       }
 
-      // Step 2: Try to fetch fresh data from CMS with timeout (if enabled)
+      // Step 2: Try to fetch fresh data from CMS (if enabled)
       if (USE_CMS_ENDPOINT) {
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => {
-            controller.abort();
-            console.log("CMS request timed out after 8 seconds");
-          }, 8000); // 8 second timeout
+          const { data } = await strapiClient.collection("integrations").find({
+            populate: ["logo", "logo_dark"],
+          });
 
-          const response = await fetch(
-            "https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark",
-            {
-              signal: controller.signal,
-              // Add headers to help with CORS and caching
-              headers: {
-                Accept: "application/json",
-                "Strapi-Response-Format": "v4",
-              },
-            },
-          );
-
-          clearTimeout(timeoutId);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          const transformedData = transformCMSData(data.data || []);
+          const transformedData = transformCMSData(data as unknown as CMSIntegrationData[]);
 
           // Update with fresh CMS data
           setIntegrations(transformedData);
@@ -272,16 +294,10 @@ function useCMSIntegrations() {
         } catch (cmsErr) {
           // CMS fetch failed, but that's okay - we already have fallback data
           if (cmsErr instanceof Error) {
-            if (cmsErr.name === "AbortError") {
-              console.log(
-                "CMS request was aborted due to timeout, using fallback data",
-              );
-            } else {
-              console.error(
-                "Error loading integrations from CMS:",
-                cmsErr.message,
-              );
-            }
+            console.error(
+              "Error loading integrations from CMS:",
+              cmsErr.message,
+            );
           }
 
           // Only set error if we don't have any integrations data at all

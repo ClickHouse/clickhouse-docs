@@ -7,8 +7,9 @@ import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
 import { galaxyOnClick } from '@site/src/lib/galaxy/galaxy';
+import { strapi } from '@strapi/client';
 
-const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
+const strapiClient = strapi({ baseURL: 'https://cms.clickhouse.com:1337/api' });
 
 export default function DocItemTOCDesktop() {
   const { toc, frontMatter } = useDoc();
@@ -49,15 +50,16 @@ export default function DocItemTOCDesktop() {
           || !attributes.hasOwnProperty('tag')
         ) {
           try {
-            const response = await window.fetch(AD_DATA_ENDPOINT, {
-              headers: {
-                "Strapi-Response-Format": "v4",
-              },
-            });
-            const { data } = await response.json();
+            const { data } = await strapiClient.single('docs-ad').find();
 
-            if (data && typeof data === 'object' && data.hasOwnProperty('attributes')) {
-              attributes = data.attributes;
+            if (data && typeof data === 'object') {
+              attributes = {
+                title: data.title,
+                description: data.description,
+                href: data.href,
+                label: data.label,
+                tag: data.tag,
+              };
               window.localStorage.setItem(cacheKey, JSON.stringify(attributes));
             }
           } catch (e) {
