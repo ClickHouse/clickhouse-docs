@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTimingWeighted \{#quantileTimingWeighted\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された精度で、数値データ列に対して各要素の重みに基づき[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

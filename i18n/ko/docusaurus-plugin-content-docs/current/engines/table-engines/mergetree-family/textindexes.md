@@ -76,7 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-`26.2`보다 작은 값(예: `25.4`)을 반환하면 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
+`26.2`보다 작은 값(예: `25.4`)을 반환하는 경우, 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
 
 ```sql
 SET enable_full_text_index = true;
@@ -87,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
 :::
 
-텍스트 인덱스는 [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) 컬럼([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수 사용)에 대해 다음 구문을 사용하여 정의할 수 있습니다:
+텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
 
 ```sql
 CREATE TABLE table
@@ -113,6 +113,14 @@ CREATE TABLE table
 ENGINE = MergeTree
 ORDER BY key
 ```
+
+텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
+
+* [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
+* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
 
 또는 기존 테이블에 텍스트 인덱스를 추가하려면 다음과 같이 합니다.
 
@@ -208,6 +216,7 @@ Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate)).
 
 전처리기 표현식은 [String](/sql-reference/data-types/string.md) 또는 [FixedString](/sql-reference/data-types/fixedstring.md) 타입의 입력 값을 동일한 타입의 값으로 변환해야 합니다.
+텍스트 인덱스가 `Nullable(T)` 또는 `LowCardinality(T)` 타입 컬럼에 대해 생성된 경우, 전처리기 표현식은 널 허용 값 또는 LowCardinality 값도 입력으로 허용해야 합니다(즉, 예외를 발생시키면 안 됩니다).
 
 예:
 
@@ -255,7 +264,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-전처리기는 [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md) 컬럼에도 사용할 수 있습니다.
 이 경우 전처리기 표현식은 배열 요소를 각각 변환합니다.
 
 예시:
@@ -292,7 +300,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**기타 인수(선택 사항)**.
+**기타 매개변수(선택 사항)**.
 
 
 <details markdown="1">
@@ -792,21 +800,22 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### 캐싱 \{#caching\}
 
 텍스트 인덱스의 일부를 메모리에 버퍼링하기 위해 다양한 캐시를 사용할 수 있습니다(섹션 [구현 세부 정보](#implementation) 참조).
-현재는 I/O를 줄이기 위해 텍스트 인덱스의 역직렬화된 딕셔너리 블록, 헤더 및 포스팅 리스트에 대한 캐시가 제공됩니다.
-캐시는 설정 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)를 통해 활성화할 수 있습니다.
+현재는 I/O를 줄이기 위해 텍스트 인덱스의 역직렬화된 헤더, 토큰 및 포스팅 리스트에 대한 캐시가 제공됩니다.
+캐시는 설정 [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache), [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)를 통해 활성화할 수 있습니다.
+
 기본적으로 모든 캐시는 비활성화되어 있습니다.
 캐시를 비우려면 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches) SQL 문을 사용합니다.
 
 캐시를 구성하려면 다음 서버 설정을 참조하십시오.
 
-#### 딕셔너리 블록 캐시 설정 \{#caching-dictionary\}
+#### 토큰 캐시 설정 \{#caching-tokens\}
 
 | Setting                                                                                                                                                  | 설명                                                                                                            |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 텍스트 인덱스 딕셔너리 블록 캐시 정책 이름입니다.                                                              |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | 캐시의 최대 크기(바이트)입니다.                                                                                |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | 캐시에 저장되는 역직렬화된 딕셔너리 블록의 최대 개수입니다.                                                    |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | 텍스트 인덱스 딕셔너리 블록 캐시에서 보호 큐의 크기를 캐시 전체 크기에 대해 나타내는 비율입니다.              |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 텍스트 인덱스 토큰 캐시 정책 이름입니다.                                                                       |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 캐시의 최대 크기(바이트)입니다.                                                                                |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 캐시에 저장되는 역직렬화된 토큰의 최대 개수입니다.                                                             |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 텍스트 인덱스 토큰 캐시에서 보호 큐의 크기를 캐시 전체 크기에 대해 나타내는 비율입니다.                       |
 
 #### 헤더 캐시 설정 \{#caching-header\}
 
@@ -901,6 +910,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 포스팅 리스트의 행 번호 또한 병합된 데이터 파트에서의 새로운 위치를 반영하도록 재계산되며, 이를 위해 초기 병합 단계에서 생성된 기존 행 번호에서 새로운 행 번호로의 매핑을 사용합니다.
 텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field)이 병합되는 방식과 유사합니다.
 소스 파트에 인덱스가 구체화되어 있지 않은 경우, 인덱스를 먼저 생성해 임시 파일에 기록한 다음, 다른 파트와 다른 임시 인덱스 파일의 인덱스와 함께 병합합니다.
+
+**디버깅**
+
+테이블 함수 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md)를 사용하여 텍스트 인덱스를 살펴볼 수 있습니다.
 
 ## 예시: Hackernews 데이터셋 \{#hacker-news-dataset\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileInterpolatedWeighted \{#quantileInterpolatedWeighted\}
 
-引入版本：v23.1
+引入版本：v23.1.0
 
 使用线性插值计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑每个元素的权重。
 

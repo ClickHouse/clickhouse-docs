@@ -1979,6 +1979,7 @@ const sidebars = {
           ],
         },
         'use-cases/observability/clickstack/api-reference',
+        'use-cases/observability/clickstack/faq',
         {
           type: 'category',
           label: 'Integration partners',

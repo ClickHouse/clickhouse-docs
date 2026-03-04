@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantDeltaToGrid \{#timeSeriesInstantDeltaToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 この集約関数は、タイムスタンプと値のペアとして与えられた時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で [PromQL ライクな idelta](https://prometheus.io/docs/prometheus/latest/querying/functions/#idelta) を計算します。
 グリッド上の各ポイントについて、`idelta` を計算するために考慮されるサンプルは、指定された時間ウィンドウ内のものです。

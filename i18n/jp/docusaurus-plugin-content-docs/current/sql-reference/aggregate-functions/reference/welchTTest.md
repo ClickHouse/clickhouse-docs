@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 2 つの母集団からのサンプルに対して [Welch の t 検定](https://en.wikipedia.org/wiki/Welch%27s_t-test) を適用します。
 
@@ -57,7 +57,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └────────────────────────────────────────────┘
 ```
 
-**信頼水準あり**
+**信頼水準を指定した場合**
 
 ```sql title=Query
 SELECT welchTTest(0.95)(sample_data, sample_index) FROM welch_ttest;

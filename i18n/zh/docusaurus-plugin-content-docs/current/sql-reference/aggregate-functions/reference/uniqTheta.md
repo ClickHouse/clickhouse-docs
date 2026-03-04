@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqTheta \{#uniqTheta\}
 
-引入于：v21.6
+引入于：v21.6.0
 
 使用 [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework) 计算不同参数值数量的近似值。
 

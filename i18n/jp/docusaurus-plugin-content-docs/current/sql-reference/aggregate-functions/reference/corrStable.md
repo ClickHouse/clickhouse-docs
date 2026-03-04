@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## corrStable \{#corrStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
+[ピアソン相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-Similar to the [`corr`](../reference/corr.md) function, but uses a numerically stable algorithm.
-As a result, `corrStable` is slower than `corr` but produces a more accurate result.
+[`corr`](../reference/corr.md)関数に似ていますが、数値的に安定したアルゴリズムを使用します。
+その結果、`corrStable`は`corr`より遅いですが、より正確な結果を生成します。
 
 **Syntax**
 

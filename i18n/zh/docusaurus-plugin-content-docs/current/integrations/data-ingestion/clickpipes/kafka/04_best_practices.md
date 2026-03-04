@@ -37,10 +37,6 @@ ClickPipes 依赖 Kafka 设置 `max.fetch_bytes` 来限制任意时刻单个 Cli
 
 ### IAM \{#iam\}
 
-:::info
-用于 MSK ClickPipe 的 IAM 身份验证当前为测试版功能。
-:::
-
 ClickPipes 支持以下 AWS MSK 身份验证方式：
 
 * [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) 身份验证

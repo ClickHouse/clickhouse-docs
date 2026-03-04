@@ -62,6 +62,16 @@ from chdb import datastore as pd
 ### 移行の例 \{#migration-example\}
 
 ```python
+from pathlib import Path
+Path("employees.csv").write_text("""\
+name,age,city,salary,department,dept_id,status,email
+Alice,28,NYC,75000,Engineering,1,active,alice@company.com
+Bob,35,LA,85000,Engineering,1,active,bob@company.com
+Charlie,52,NYC,95000,Product,2,active,charlie@company.com
+Diana,32,SF,70000,Design,3,active,diana@company.com
+Eve,23,LA,48000,Product,2,inactive,eve@company.com
+""")
+
 # Original pandas code
 import pandas as pd
 
@@ -157,6 +167,16 @@ sorted_ds = ds.sort('salary', ascending=False)
 ### グループ化と集約 \{#groupby\}
 
 ```python
+from pathlib import Path
+Path("sales.csv").write_text("""\
+region,product,category,amount,quantity,price,date,order_id
+East,Widget,Electronics,5200,10,120,2024-01-15,1001
+West,Gadget,Electronics,800,5,160,2024-02-20,1002
+East,Gizmo,Home,6500,3,100,2024-03-10,1003
+North,Widget,Electronics,4500,6,150,2024-06-18,1004
+West,Gadget,Electronics,2000,8,250,2024-09-14,1005
+""")
+
 from chdb import datastore as pd
 
 ds = pd.read_csv("sales.csv")
@@ -181,6 +201,14 @@ summary = ds.groupby('category').agg({
 ### DataStore 間の結合 \{#joining\}
 
 ```python
+from pathlib import Path
+Path("departments.csv").write_text("""\
+dept_id,department_name
+1,Engineering
+2,Product
+3,Design
+""")
+
 from chdb import datastore as pd
 
 employees = pd.read_csv("employees.csv")

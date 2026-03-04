@@ -39,10 +39,6 @@ Warpstream がこの設定に従わず、その結果として予期しないパ
 
 ### IAM \{#iam\}
 
-:::info
-MSK ClickPipe 用の IAM 認証はベータ機能です。
-:::
-
 ClickPipes は、次の AWS MSK 認証方式をサポートします。
 
 * [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) 認証

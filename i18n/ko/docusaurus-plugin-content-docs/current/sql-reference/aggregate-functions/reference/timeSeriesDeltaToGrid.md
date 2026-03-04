@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesDeltaToGrid \{#timeSeriesDeltaToGrid\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 타임스탬프와 값의 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝(step)으로 정의되는 균일한 시간 그리드에서 이 데이터로부터 [PromQL-like delta](https://prometheus.io/docs/prometheus/latest/querying/functions/#delta)를 계산하는 집계 함수입니다.
 그리드의 각 지점마다 `delta`를 계산하기 위한 샘플은 지정된 시간 윈도우 내의 값들만 고려됩니다.
@@ -70,7 +70,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**배열 인수 사용**
+**배열 인수 사용 예**
 
 ```sql title=Query
 -- it is possible to pass multiple samples of timestamps and values as Arrays of equal size

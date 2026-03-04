@@ -34,7 +34,7 @@ ClickHouse 会将分析器生成的报告保存到 [trace&#95;log](/operations/s
 
 ## addressToLine \{#addressToLine\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 源代码中的文件名和行号。
 
@@ -71,8 +71,8 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` 字段包含采样时刻的堆栈跟踪信息。
-行 1:
+-- The `trace` field contains the stack trace at the moment of sampling.
+Row 1:
 ──────
 event_date:              2019-11-19
 event_time:              2019-11-19 18:57:23
@@ -99,8 +99,8 @@ addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadP
 **将该函数应用于完整堆栈跟踪**
 
 ```sql title=Query
--- 此示例中的 arrayMap 函数通过 addressToLine 函数处理 trace 数组中的每个元素。
--- 处理结果显示在输出的 trace_source_code_lines 列中。
+-- The arrayMap function in this example processing each individual element of the trace array by the addressToLine function.
+-- The result of this processing is seen in the trace_source_code_lines column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> addressToLine(x), trace), '\n') AS trace_source_code_lines
@@ -110,7 +110,7 @@ LIMIT 1
 ```
 
 ```response title=Response
-行 1:
+Row 1:
 ──────
 trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /usr/lib/debug/usr/bin/clickhouse
@@ -122,9 +122,10 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
+
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
-引入于：v22.2
+引入于：v22.2.0
 
 与 `addressToLine` 类似，但返回包含所有内联函数的数组（Array）。
 因此，它比 `addressToLine` 更慢。
@@ -168,7 +169,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayJoin 函数将数组拆分为多行
+-- The arrayJoin function will split array to rows
 
 SELECT
     ta, addressToLineWithInlines(arrayJoin(trace) AS ta)
@@ -176,6 +177,7 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
+
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -224,7 +226,7 @@ WHERE
 
 ## addressToSymbol \{#addressToSymbol\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 对象文件中的符号。
 
@@ -252,8 +254,8 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` 字段包含采样时刻的堆栈跟踪。
-行 1:
+-- The `trace` field contains the stack trace at the moment of sampling.
+Row 1:
 ──────
 event_date:    2019-11-20
 event_time:    2019-11-20 16:57:59
@@ -264,7 +266,7 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-**获取单个地址的符号信息**
+**获取单个地址对应的符号**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -277,13 +279,13 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-**将该函数应用于整个堆栈跟踪**
+**将函数应用于整个堆栈跟踪**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayMap 函数允许通过 addressToSymbol 函数处理 trace 数组中的每个元素。
--- 处理结果显示在输出的 trace_symbols 列中。
+-- The arrayMap function allows to process each individual element of the trace array by the addressToSymbols function.
+-- The result of this processing is shown in the trace_symbols column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> addressToSymbol(x), trace), '\n') AS trace_symbols
@@ -291,6 +293,7 @@ FROM system.trace_log
 LIMIT 1
 \G
 ```
+
 
 ```response title=Response
 Row 1:
@@ -318,7 +321,7 @@ clone
 
 ## demangle \{#demangle\}
 
-引入自：v20.1 版本
+引入自：v20.1.0 版本
 
 将符号转换为 C++ 函数名。
 该符号通常由函数 `addressToSymbol` 返回。
@@ -346,8 +349,8 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` 字段包含采样时刻的堆栈跟踪。
-行 1:
+-- The `trace` field contains the stack trace at the moment of sampling.
+Row 1:
 ──────
 event_date:    2019-11-20
 event_time:    2019-11-20 16:57:59
@@ -376,8 +379,8 @@ demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::Aggr
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayMap 函数允许使用 demangle 函数处理 trace 数组中的每个元素。
--- 处理结果显示在输出的 trace_functions 列中。
+-- The arrayMap function allows to process each individual element of the trace array by the demangle function.
+-- The result of this processing is shown in the trace_functions column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> demangle(addressToSymbol(x)), trace), '\n') AS trace_functions
@@ -385,6 +388,7 @@ FROM system.trace_log
 LIMIT 1
 \G
 ```
+
 
 ```response title=Response
 Row 1:
@@ -412,7 +416,7 @@ clone
 
 ## isMergeTreePartCoveredBy \{#isMergeTreePartCoveredBy\}
 
-在 v25.6 中引入
+在 v25.6.0 中引入
 
 检查第一个参数所表示的数据分片是否被第二个参数所表示的数据分片覆盖的 FUNCTION。
 
@@ -446,9 +450,10 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
+
 ## logTrace \{#logTrace\}
 
-自 v20.12 引入
+自 v20.12.0 引入
 
 为每个 [Block](/development/architecture/#block) 在服务器日志中写入一条跟踪日志记录。
 
@@ -480,9 +485,10 @@ SELECT logTrace('logTrace message');
 └──────────────────────────────┘
 ```
 
+
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 用于从 `MergeTree` 数据部分名称中提取有用信息的函数。
 
@@ -515,9 +521,10 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
 
+
 ## tid \{#tid\}
 
-引入版本：v20.12
+引入版本：v20.12.0
 
 返回处理当前 [Block](/development/architecture/#block) 的线程 ID。
 

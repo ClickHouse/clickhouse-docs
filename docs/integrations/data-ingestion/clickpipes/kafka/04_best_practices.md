@@ -36,10 +36,6 @@ to 8MB (or lower) when configuring your WarpStream agent to prevent ClickPipes f
 
 ### IAM {#iam}
 
-:::info
-IAM Authentication for the MSK ClickPipe is a beta feature.
-:::
-
 ClickPipes supports the following AWS MSK authentication
 
 - [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication

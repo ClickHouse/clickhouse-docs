@@ -44,6 +44,15 @@ select(*fields: Union[str, Expression]) -> DataStore
 
 ```python
 from chdb.datastore import DataStore
+from pathlib import Path
+Path("employees.csv").write_text("""\
+name,age,city,salary,department,dept_id,status,email,manager_id,bonus
+Alice,28,NYC,75000,Engineering,1,active,alice@company.com,3,5000
+Bob,35,LA,85000,Engineering,1,active,bob@company.com,3,
+Charlie,52,NYC,95000,Product,2,active,charlie@company.com,,10000
+Diana,32,SF,70000,Design,3,active,diana@company.com,3,3000
+Eve,23,LA,48000,Product,2,inactive,eve@company.com,2,
+""")
 
 ds = DataStore.from_file("employees.csv")
 
@@ -215,6 +224,16 @@ distinct(subset=None, keep='first') -> DataStore
 **Examples:**
 
 ```python
+from pathlib import Path
+Path("events.csv").write_text("""\
+user_id,event_type,timestamp
+1,click,2024-01-15 10:30:00
+2,view,2024-01-15 11:00:00
+1,purchase,2024-01-15 11:30:00
+3,click,2024-01-16 09:00:00
+2,click,2024-01-16 10:00:00
+""")
+
 ds = DataStore.from_file("events.csv")
 
 # Remove all duplicate rows
@@ -243,6 +262,16 @@ groupby(*fields, sort=True, as_index=True, dropna=True) -> LazyGroupBy
 **Examples:**
 
 ```python
+from pathlib import Path
+Path("sales.csv").write_text("""\
+region,product,category,amount,quantity,price,date,order_id
+East,Widget,Electronics,5200,10,120,2024-01-15,1001
+West,Gadget,Electronics,800,5,160,2024-02-20,1002
+East,Gizmo,Home,6500,3,100,2024-03-10,1003
+North,Widget,Electronics,4500,6,150,2024-06-18,1004
+West,Gadget,Electronics,2000,8,250,2024-09-14,1005
+""")
+
 ds = DataStore.from_file("sales.csv")
 
 # Group by single column
@@ -320,6 +349,14 @@ join(right, on=None, how='inner', left_on=None, right_on=None) -> DataStore
 **Examples:**
 
 ```python
+from pathlib import Path
+Path("departments.csv").write_text("""\
+dept_id,department_name
+1,Engineering
+2,Product
+3,Design
+""")
+
 employees = DataStore.from_file("employees.csv")
 departments = DataStore.from_file("departments.csv")
 
@@ -354,6 +391,20 @@ union(other, all=False) -> DataStore
 **Examples:**
 
 ```python
+from pathlib import Path
+Path("sales_2023.csv").write_text("""\
+region,product,amount,date
+East,Widget,1200,2023-06-15
+West,Gadget,800,2023-09-20
+North,Gizmo,600,2023-11-10
+""")
+Path("sales_2024.csv").write_text("""\
+region,product,amount,date
+East,Widget,1500,2024-03-10
+North,Gizmo,900,2024-07-22
+West,Gadget,1100,2024-05-05
+""")
+
 ds1 = DataStore.from_file("sales_2023.csv")
 ds2 = DataStore.from_file("sales_2024.csv")
 

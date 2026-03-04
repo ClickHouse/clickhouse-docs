@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## hop \{#hop\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 ホップ型時間ウィンドウは固定の長さ（`window_interval`）を持ち、指定されたホップ間隔（`hop_interval`）ごとにシフトします。`hop_interval` が `window_interval` より小さい場合、ホップウィンドウは互いに重なります。このため、レコードは複数のウィンドウに割り当てられる可能性があります。
 
@@ -69,7 +69,7 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopEnd \{#hopEnd\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 対応する hop window の排他的上限を返します。
 
@@ -107,7 +107,7 @@ SELECT hopEnd(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## hopStart \{#hopStart\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 対応するホップウィンドウの含まれる側の下限値を返します。
 
@@ -128,7 +128,7 @@ hopStart(time_attr, hop_interval, window_interval[, timezone])
 
 **返り値**
 
-対応するホッピングウィンドウの包含的な下限値を返します。[`DateTime`](/sql-reference/data-types/datetime)
+対応するホップウィンドウの含まれる側の下限値を返します。[`DateTime`](/sql-reference/data-types/datetime)
 
 **使用例**
 
@@ -145,7 +145,7 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY)
 
 ## tumble \{#tumble\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 tumbling time window は、固定長の期間（`interval`）で構成される、互いに重ならない連続ウィンドウにレコードを割り当てます。
 
@@ -180,7 +180,7 @@ SELECT tumble(now(), toIntervalDay('1'))
 
 ## tumbleEnd \{#tumbleEnd\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 対応するタンブリングウィンドウの排他的上限値を返します。
 
@@ -215,7 +215,7 @@ SELECT tumbleEnd(now(), toIntervalDay('1'))
 
 ## tumbleStart \{#tumbleStart\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 対応するタンブリングウィンドウの含まれる下限値（開始時刻）を返します。
 
@@ -250,7 +250,7 @@ SELECT tumbleStart(now(), toIntervalDay('1'))
 
 ## windowID \{#windowID\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 対応するタンブリングウィンドウまたはホッピングウィンドウのウィンドウ識別子を返します。
 この関数は `WINDOW VIEW` でのみ使用できます。

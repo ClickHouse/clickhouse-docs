@@ -23,3 +23,4 @@ ClickStack には 2 つのデプロイ方法があります。**ClickStack Open 
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | ClickStack にデータを取り込むためのガイドライン |
 | [Search](/use-cases/observability/clickstack/search) | オブザーバビリティデータの検索およびクエリ方法 |
 | [Production](/use-cases/observability/clickstack/production) | 本番環境へのデプロイメントに関するベストプラクティス |
+| [FAQ](/use-cases/observability/clickstack/faq) | よくある質問 |

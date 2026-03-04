@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarPopStable \{#covarPopStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the population covariance:
+Вычисляет ковариацию генеральной совокупности:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
@@ -21,7 +21,7 @@ $$
 
 <br />
 
-It is similar to the [`covarPop`](/sql-reference/aggregate-functions/reference/covarpop) function, but uses a numerically stable algorithm. As a result, `covarPopStable` is slower than `covarPop` but produces a more accurate result.
+Аналогична функции [`covarPop`](/sql-reference/aggregate-functions/reference/covarpop), но использует численно устойчивый алгоритм. В результате `covarPopStable` работает медленнее, чем `covarPop`, но даёт более точный результат.
 
 **Syntax**
 
@@ -31,16 +31,16 @@ covarPopStable(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — Первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the population covariance between `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+Возвращает ковариацию генеральной совокупности между `x` и `y`. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**Примеры**
 
-**Basic population covariance calculation with stable algorithm**
+**Базовое вычисление ковариации генеральной совокупности с использованием устойчивого алгоритма**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

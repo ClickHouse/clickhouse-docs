@@ -320,7 +320,7 @@ Peak memory usage: 666.82 MiB.
 
 ### Dictionary の `LAYOUT` を選択する \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
+`LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
 
 ### Dictionary の更新 \{#refreshing-dictionaries\}
 

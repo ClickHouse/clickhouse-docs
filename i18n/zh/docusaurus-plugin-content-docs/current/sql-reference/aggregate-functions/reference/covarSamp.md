@@ -11,39 +11,39 @@ doc_type: 'reference'
 
 ## covarSamp \{#covarSamp\}
 
-Introduced in: v1.1
+引入版本：v1.1.0
 
-Calculates the sample covariance:
+计算样本协方差：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
 $$
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable) function.
-It works slower but provides a lower computational error.
+此函数使用数值不稳定的算法。如果在计算中需要数值稳定性，请使用 [`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable) 函数。
+该函数速度较慢，但能提供更低的计算误差。
 :::
 
-**Syntax**
+**语法**
 
 ```sql
 covarSamp(x, y)
 ```
 
-**Aliases**: `COVAR_SAMP`
+**别名**: `COVAR_SAMP`
 
-**Arguments**
+**参数**
 
 - `x` — 第一个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第二个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返回值**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `nan` is returned. [`Float64`](/sql-reference/data-types/float)
+返回 `x` 与 `y` 之间的样本协方差。当 `n <= 1` 时返回 `nan`。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Basic sample covariance calculation**
+**基本样本协方差计算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -60,7 +60,7 @@ FROM series
 └─────────────────────────────┘
 ```
 
-**Single value returns NaN**
+**单个值返回 NaN**
 
 ```sql title=Query
 SELECT covarSamp(x_value, y_value)

@@ -1473,10 +1473,10 @@ Peak memory usage: 27.85 MiB.
 
 ### 用于全文搜索的文本索引 \{#text-index-for-full-text-search\}
 
-对于生产级的全文搜索，ClickHouse 提供了专用的[文本索引](/engines/table-engines/mergetree-family/textindexes)。
+ClickHouse 为全文搜索提供了专用的[文本索引](/engines/table-engines/mergetree-family/textindexes)。
 该索引会在分词后的文本数据之上构建倒排索引，从而支持基于 token 的快速搜索。
 
-文本索引从 ClickHouse 26.2 版本开始进入一般可用阶段（GA）。
+文本索引从 ClickHouse 26.2 版本开始可用。
 
 它可以定义在 MergeTree 表中的以下列类型上：[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 这两个 map 函数）列。
 
@@ -1513,7 +1513,7 @@ ORDER BY Timestamp
 SETTINGS index_granularity = 8192
 ```
 
-即使没有索引，我们也可以使用相同的函数。
+我们也可以在没有文本索引的情况下使用 `hasAnyTokens`，但查询会对 Body 列执行较慢的完整扫描：
 
 ```sql
 SELECT count()
@@ -1529,12 +1529,10 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-此查询会对 Body 列执行完整扫描。
-
 
 #### 添加文本索引 \{#adding-a-text-index\}
 
-可以在创建表时添加文本索引：
+可以在创建表时为 Body 列添加文本索引：
 
 ```sql
 CREATE TABLE otel_logs_index_body
@@ -1570,9 +1568,8 @@ ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAl
 ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 ```
 
-这将使用 `splitByNonAlpha` 分词器为 Body 列创建一个倒排索引。
-
-> 注意：部分物化的索引已经可以被查询使用，但只有在完全物化之后才能获得最大的性能提升。
+如果我们再次运行相同的 SELECT 查询，将会通过文本索引进行查找。
+访问的数据量将从数 GB 降至数 MB，性能大约提升 45 倍。
 
 ```sql
 SELECT count()
@@ -1589,8 +1586,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 Peak memory usage: 15.23 MiB.
 ```
 
-该索引将扫描的数据量从数 GB 降至数 MB,性能提升约 `45x`。
-
 
 #### 使用预处理器 \{#using-a-preprocessor\}
 
@@ -1602,7 +1597,8 @@ Peak memory usage: 15.23 MiB.
 例如：
 
 ```sql
- INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha, preprocessor = JSONExtract(Body, 'msg', 'String')) GRANULARITY 100000000
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
 在本示例中，预处理器会：
@@ -1629,7 +1625,7 @@ Peak memory usage: 1.95 MiB.
 
 与未预处理的索引相比，性能可提升约 2 倍。
 
-索引大小对比
+使用预处理器可以将索引体积从数 GB 缩小到几百 KB，约为原始大小的 0.01%。
 
 ```sql
 SELECT
@@ -1647,8 +1643,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
    └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-使用预处理器可以将索引体积从数 GB 缩小到几百 KB——约为原始大小的 0.01%——同时还能提升查询性能。
-
 **其他文本搜索索引
 
 有关二级跳过索引的更多详细信息，请参阅[此处](/optimize/skipping-indexes#skip-index-functions)。
@@ -1656,6 +1650,10 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
 <details markdown="1">
   <summary>文本搜索的布隆过滤器</summary>
+
+  :::note
+  `ngrambf_v1` 和 `tokenbf_v1` 索引不再推荐用于全文搜索。
+  :::
 
   基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。 需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。 这意味着查询时只能匹配 token(或完整单词)。 若需要更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。 它将字符串拆分为指定大小的 ngram,从而实现子词匹配。
 

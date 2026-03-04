@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingSum \{#groupArrayMovingSum\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 입력 값의 이동 합계를 계산합니다.
 
@@ -62,7 +62,7 @@ FROM t;
 └────────────┴─────────────────────────────────┴────────────────────────┘
 ```
 
-**윈도 크기 지정**
+**윈도우 크기 지정**
 
 ```sql title=Query
 SELECT

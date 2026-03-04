@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialMovingAverage \{#exponentialMovingAverage\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 计算在指定时间段内的指数移动平均值。
 

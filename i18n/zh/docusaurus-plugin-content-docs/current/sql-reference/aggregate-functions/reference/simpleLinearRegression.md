@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## simpleLinearRegression \{#simpleLinearRegression\}
 
-首次引入于：v20.1
+首次引入于：v20.1.0
 
 进行简单（一维）线性回归。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumKahan \{#sumKahan\}
 
-도입: v1.1
+도입: v1.1.0
 
 [Kahan 보상 합산 알고리즘](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)을 사용하여 숫자의 합을 계산합니다.
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 함수보다 느립니다.

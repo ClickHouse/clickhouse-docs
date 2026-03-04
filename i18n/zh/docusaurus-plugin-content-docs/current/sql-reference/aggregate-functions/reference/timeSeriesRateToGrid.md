@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesRateToGrid \{#timeSeriesRateToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 聚合函数，接受由时间戳和值构成的时间序列数据对，并在由起始时间戳、结束时间戳和步长定义的规则时间网格上，从这些数据计算[类似 PromQL 的 rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate)。对于网格上的每个点，用于计算 `rate` 的样本会被限制在指定的时间窗口内。
 
@@ -69,7 +69,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**使用数组形式的参数**
+**使用数组参数**
 
 ```sql title=Query
 WITH

@@ -26,7 +26,7 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 ## CRC32 \{#CRC32\}
 
-在 v20.1 中引入
+在 v20.1.0 中引入
 
 使用 CRC-32-IEEE 802.3 多项式和初始值 `0xffffffff`（zlib 实现）计算字符串的 CRC32 校验和。
 
@@ -60,7 +60,7 @@ SELECT CRC32('ClickHouse')
 
 ## CRC32IEEE \{#CRC32IEEE\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 使用 CRC-32-IEEE 802.3 多项式计算字符串的 CRC32 校验和。
 
@@ -94,7 +94,7 @@ SELECT CRC32IEEE('ClickHouse');
 
 ## CRC64 \{#CRC64\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 使用 CRC-64-ECMA 多项式计算字符串的 CRC64 校验和。
 
@@ -128,7 +128,7 @@ SELECT CRC64('ClickHouse');
 
 ## appendTrailingCharIfAbsent \{#appendTrailingCharIfAbsent\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 如果字符串 `s` 非空且末尾不是字符 `c`，则将字符 `c` 追加到字符串 `s` 的末尾。
 
@@ -163,7 +163,7 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 
 ## ascii \{#ascii\}
 
-自 v22.11 引入
+自 v22.11.0 引入
 
 返回字符串 `s` 的第一个字符的 ASCII 码点，类型为 `Int32`。
 
@@ -197,7 +197,7 @@ SELECT ascii('234')
 
 ## base32Decode \{#base32Decode\}
 
-引入于：v25.6
+引入于：v25.6.0
 
 对 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）字符串进行解码。
 如果字符串不是有效的 Base32 编码格式，将抛出异常。
@@ -232,7 +232,7 @@ SELECT base32Decode('IVXGG33EMVSA====');
 
 ## base32Encode \{#base32Encode\}
 
-自 v25.6 版本引入。
+自 v25.6.0 版本引入。
 
 使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 对字符串进行编码。
 
@@ -266,7 +266,7 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-自 v22.7 引入
+自 v22.7.0 引入
 
 对 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 字符串进行解码。
 如果字符串不是有效的 Base58 编码字符串，则会抛出异常。
@@ -301,7 +301,7 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 
 ## base58Encode \{#base58Encode\}
 
-自 v22.7 引入
+自 v22.7.0 引入
 
 使用 [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) 对字符串进行编码。
 
@@ -335,7 +335,7 @@ SELECT base58Encode('ClickHouse');
 
 ## base64Decode \{#base64Decode\}
 
-自 v18.16 引入
+自 v18.16.0 引入
 
 根据 RFC 4648，将 [Base64](https://en.wikipedia.org/wiki/Base64) 表示形式的字符串解码。
 在发生错误时抛出异常。
@@ -372,7 +372,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 
 ## base64Encode \{#base64Encode\}
 
-引入版本：v18.16
+引入版本：v18.16.0
 
 按照 RFC 4648，对字符串进行 [Base64](https://en.wikipedia.org/wiki/Base64) 编码。
 
@@ -408,7 +408,7 @@ SELECT base64Encode('clickhouse')
 
 ## base64URLDecode \{#base64URLDecode\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 根据 RFC 4648，使用 URL 安全字母表，对 [Base64](https://en.wikipedia.org/wiki/Base64) 表示形式的字符串进行解码。
 如果发生错误，则抛出异常。
@@ -443,7 +443,7 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## base64URLEncode \{#base64URLEncode\}
 
-自 v18.16 引入
+自 v18.16.0 引入
 
 采用 URL 安全字母表，对字符串进行 [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）编码。
 
@@ -477,7 +477,7 @@ SELECT base64URLEncode('https://clickhouse.com')
 
 ## basename \{#basename\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 提取字符串中最后一个正斜杠或反斜杠之后的末尾部分。
 该函数通常用于从路径中提取文件名。
@@ -494,7 +494,7 @@ basename(expr)
 
 **返回值**
 
-返回输入字符串中最后一个斜杠或反斜杠之后的部分。如果输入字符串以斜杠或反斜杠结尾，则函数返回空字符串。如果没有斜杠或反斜杠，则返回原始字符串。[`String`](/sql-reference/data-types/string)
+返回输入字符串中最后一个正斜杠或反斜杠之后的部分。如果输入字符串以斜杠或反斜杠结尾，则函数返回空字符串。如果没有斜杠或反斜杠，则返回原始字符串。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -536,7 +536,7 @@ SELECT 'some-file-name' AS a, basename(a)
 
 ## byteHammingDistance \{#byteHammingDistance\}
 
-引入于：v23.9 版本
+引入于：v23.9.0 版本
 
 计算两个字节字符串之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)。
 
@@ -573,7 +573,7 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 
 ## compareSubstrings \{#compareSubstrings\}
 
-在 v25.2 中引入
+在 v25.2.0 中引入
 
 按字典序比较两个字符串。
 
@@ -616,7 +616,7 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 
 ## concat \{#concat\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将给定的参数进行连接。
 
@@ -665,7 +665,7 @@ SELECT concat(42, 144)
 
 ## concatAssumeInjective \{#concatAssumeInjective\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 类似于 [`concat`](#concat)，但假设 `concat(s1, s2, ...) → sn` 是单射，
 也就是说，对不同的参数返回不同的结果。
@@ -704,7 +704,7 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 
 ## concatWithSeparator \{#concatWithSeparator\}
 
-自 v22.12 起引入
+自 v22.12.0 起引入
 
 将提供的字符串按指定的分隔符连接为一个字符串。
 
@@ -741,7 +741,7 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 
 ## concatWithSeparatorAssumeInjective \{#concatWithSeparatorAssumeInjective\}
 
-引入版本：v22.12
+引入版本：v22.12.0
 
 与 [`concatWithSeparator`](#concatWithSeparator) 类似，但假设 `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` 是单射。
 如果一个函数对不同的参数返回不同的结果，则称其为单射。
@@ -800,7 +800,7 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 在不同进制之间转换数字。
 
@@ -867,7 +867,7 @@ SELECT conv('1010', 2, 8)
 
 ## convertCharset \{#convertCharset\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回字符串 `s` 从编码 `from` 转换为编码 `to` 后的结果。
 
@@ -903,7 +903,7 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 
 ## damerauLevenshteinDistance \{#damerauLevenshteinDistance\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 计算两个字节字符串之间的 [Damerau-Levenshtein 距离](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)。
 
@@ -938,7 +938,7 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 
 ## decodeHTMLComponent \{#decodeHTMLComponent\}
 
-自 v23.9 起引入
+自 v23.9.0 起引入
 
 将字符串中的 HTML 实体解码为对应的字符。
 
@@ -972,7 +972,7 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 
 ## decodeXMLComponent \{#decodeXMLComponent\}
 
-引入版本：v21.2
+引入版本：v21.2.0
 
 将字符串中的 XML 实体解码为对应的字符。
 
@@ -1006,7 +1006,7 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 
 ## editDistance \{#editDistance\}
 
-于 v23.9 引入
+于 v23.9.0 引入
 
 计算两个字节串之间的[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)。
 
@@ -1043,7 +1043,7 @@ SELECT editDistance('clickhouse', 'mouse')
 
 ## editDistanceUTF8 \{#editDistanceUTF8\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 计算两个 UTF-8 字符串之间的[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)。
 
@@ -1080,7 +1080,7 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 
 ## encodeXMLComponent \{#encodeXMLComponent\}
 
-自 v21.1 引入
+自 v21.1.0 引入
 
 对字符进行转义，以便将字符串放入 XML 文本节点或属性中。
 
@@ -1116,7 +1116,7 @@ SELECT
 
 ## endsWith \{#endsWith\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 检查字符串是否以指定的后缀结尾。
 
@@ -1151,7 +1151,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-引入于：v25.9
+引入于：v25.9.0
 
 检查字符串的结尾是否为给定的不区分大小写的后缀。
 
@@ -1186,7 +1186,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-引入于：v25.9
+引入于：v25.9.0
 
 返回字符串 `s` 是否以不区分大小写的 `suffix` 结尾。
 假定该字符串包含有效的 UTF-8 编码文本。
@@ -1223,7 +1223,7 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
-引入版本：v23.8
+引入版本：v23.8.0
 
 返回字符串 `s` 是否以 `suffix` 结尾。
 假设该字符串包含有效的 UTF-8 编码文本。
@@ -1260,7 +1260,7 @@ SELECT endsWithUTF8('данных', 'ых');
 
 ## extractTextFromHTML \{#extractTextFromHTML\}
 
-引入版本：v21.3
+引入版本：v21.3.0
 
 从 HTML 或 XHTML 中提取文本内容。
 
@@ -1313,7 +1313,7 @@ SELECT extractTextFromHTML('
 
 ## firstLine \{#firstLine\}
 
-引入版本：v23.7
+引入版本：v23.7.0
 
 返回一个多行字符串的第一行。
 
@@ -1347,7 +1347,7 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 ## idnaDecode \{#idnaDecode\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示（ToUnicode 算法）。
 如果发生错误（例如输入无效），则返回原始输入字符串。
@@ -1383,7 +1383,7 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 ## idnaEncode \{#idnaEncode\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 ASCII 表示形式（ToASCII 算法）。
 输入字符串必须是 UTF 编码（例如 UTF-8）且可转换为 ASCII 字符串，否则会抛出异常。
@@ -1422,7 +1422,7 @@ SELECT idnaEncode('straße.münchen.de')
 
 ## initcap \{#initcap\}
 
-自 v23.7 引入
+自 v23.7.0 引入
 
 将每个单词的首字母转换为大写，其余字母转换为小写。
 单词是由非字母数字字符分隔的字母数字字符序列。
@@ -1474,7 +1474,7 @@ SELECT initcap('John''s cat won''t eat.');
 
 ## initcapUTF8 \{#initcapUTF8\}
 
-引入版本：v23.7
+引入版本：v23.7.0
 
 与 [`initcap`](#initcap) 类似，`initcapUTF8` 将每个单词的首字母转换为大写，其余字母转换为小写。
 假定字符串包含有效的 UTF-8 编码文本。
@@ -1486,6 +1486,26 @@ SELECT initcap('John''s cat won''t eat.');
 :::
 
 **语法**
+
+initcapUTF8(s)
+
+**参数**
+
+s — 输入字符串。String
+
+**返回值**
+
+返回将 s 中每个单词首字母转换为大写后的字符串。String
+
+**示例**
+
+**用法示例**
+
+SELECT initcapUTF8(&#39;не тормозит&#39;)
+
+┌─initcapUTF8(&#39;не тормозит&#39;)─┐
+│ Не Тормозит                │
+└────────────────────────────┘
 
 ```sql
 initcapUTF8(s)
@@ -1515,7 +1535,7 @@ SELECT initcapUTF8('не тормозит')
 
 ## isValidASCII \{#isValidASCII\}
 
-引入版本：v25.9
+引入版本：v25.9.0
 
 如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。针对正向场景（输入 *是* 有效 ASCII）进行了优化。
 
@@ -1546,7 +1566,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ## isValidUTF8 \{#isValidUTF8\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 检查某个字节序列是否构成有效的 UTF-8 编码文本。
 
@@ -1580,7 +1600,7 @@ SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
 
 ## jaroSimilarity \{#jaroSimilarity\}
 
-在 v24.1 中引入
+在 v24.1.0 中引入
 
 计算两个字节字符串之间的 [Jaro 相似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity)。
 
@@ -1615,7 +1635,7 @@ SELECT jaroSimilarity('clickhouse', 'click')
 
 ## jaroWinklerSimilarity \{#jaroWinklerSimilarity\}
 
-自 v24.1 起引入
+自 v24.1.0 起引入
 
 计算两个字节串之间的 [Jaro-Winkler 相似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)。
 
@@ -1650,7 +1670,7 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 
 ## left \{#left\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回字符串 `s` 中，从左侧起、在指定 `offset` 处开始的子字符串。
 
@@ -1698,7 +1718,7 @@ Hello
 
 ## leftPad \{#leftPad\}
 
-引入于：v21.8
+引入于：v21.8.0
 
 从左侧开始使用空格或指定字符串（必要时可重复多次）填充，直到结果字符串达到指定的 `length`。
 
@@ -1736,7 +1756,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 ## leftPadUTF8 \{#leftPadUTF8\}
 
-引入于：v21.8
+引入于：v21.8.0
 
 从左侧使用空格或指定字符串（必要时可重复多次）填充 UTF-8 字符串，直到结果字符串达到给定长度。
 与按字节数计算字符串长度的 [`leftPad`](#leftPad) 不同，这里的字符串长度按 Unicode 码点数计算。
@@ -1773,7 +1793,7 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 
 ## leftUTF8 \{#leftUTF8\}
 
-引入于：v22.1
+引入于：v22.1.0
 
 返回 UTF-8 编码字符串 `s` 中，从左侧偏移量 `offset` 处开始的子串。
 
@@ -1821,7 +1841,7 @@ SELECT leftUTF8('Привет', -4)
 
 ## lengthUTF8 \{#lengthUTF8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回字符串的长度，以 Unicode 码点数量计算，而不是以字节或字符计算。
 该函数假定字符串包含有效的 UTF-8 编码文本。
@@ -1859,7 +1879,7 @@ SELECT lengthUTF8('Здравствуй, мир!')
 
 ## lower \{#lower\}
 
-首次引入于：v1.1
+首次引入于：v1.1.0
 
 将 ASCII 字符串转换为小写形式。
 
@@ -1895,7 +1915,7 @@ SELECT lower('CLICKHOUSE')
 
 ## lowerUTF8 \{#lowerUTF8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字符串转换为小写，假定该字符串包含有效的 UTF-8 编码文本。如果该假设不成立，则不会抛出异常，且结果未定义。
 
@@ -1927,7 +1947,7 @@ münchen
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 根据 [NFC 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化。
 
@@ -1965,7 +1985,7 @@ length(nfc_normalized);
 
 ## normalizeUTF8NFD \{#normalizeUTF8NFD\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 根据 [NFD 规范形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) 对 UTF-8 字符串进行规范化。
 
@@ -2003,7 +2023,7 @@ SELECT
 
 ## normalizeUTF8NFKC \{#normalizeUTF8NFKC\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 根据 [NFKC 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) 对 UTF-8 字符串进行规范化处理。
 
@@ -2039,7 +2059,7 @@ SELECT
 
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
 
-新增于：v21.11
+新增于：v21.11.0
 
 根据 [NFKD 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化。
 
@@ -2075,7 +2095,7 @@ SELECT
 
 ## punycodeDecode \{#punycodeDecode\}
 
-自 v24.1 引入
+自 v24.1.0 引入
 
 返回由 [Punycode](https://en.wikipedia.org/wiki/Punycode) 编码字符串解码得到的 UTF8 编码明文字符串。
 如果给定的字符串不是有效的 Punycode 编码字符串，则会抛出异常。
@@ -2110,7 +2130,7 @@ SELECT punycodeDecode('Mnchen-3ya')
 
 ## punycodeEncode \{#punycodeEncode\}
 
-自 v24.1 起引入
+自 v24.1.0 起引入
 
 返回字符串的 [Punycode](https://en.wikipedia.org/wiki/Punycode) 编码表示。
 字符串必须为 UTF-8 编码，否则其行为未定义。
@@ -2145,7 +2165,7 @@ SELECT punycodeEncode('München')
 
 ## regexpExtract \{#regexpExtract\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 从 `haystack` 中提取与正则表达式模式匹配且对应指定正则捕获组索引的第一个子串。
 
@@ -2187,7 +2207,7 @@ SELECT
 
 ## repeat \{#repeat\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 按指定次数将字符串与其自身拼接。
 
@@ -2222,7 +2242,7 @@ SELECT repeat('abc', 10)
 
 ## reverseUTF8 \{#reverseUTF8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 反转字符串中的一系列 Unicode 码点。
 假定字符串包含有效的 UTF-8 编码文本。
@@ -2256,7 +2276,7 @@ esuoHkcilC
 
 ## right \{#right\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回字符串 `s` 从右侧开始、长度为指定 `offset` 的子字符串。
 
@@ -2292,7 +2312,7 @@ SELECT right('Hello', 3)
 llo
 ```
 
-**负偏移**
+**负偏移量**
 
 ```sql title=Query
 SELECT right('Hello', -3)
@@ -2304,7 +2324,7 @@ lo
 
 ## rightPad \{#rightPad\}
 
-引入版本：v21.8
+引入版本：v21.8.0
 
 从右侧使用空格或指定字符串（必要时可重复多次）填充字符串，直到结果字符串达到指定的 `length`。
 
@@ -2342,7 +2362,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 ## rightPadUTF8 \{#rightPadUTF8\}
 
-自 v21.8 起提供
+自 v21.8.0 起提供
 
 从右侧开始使用空格或指定字符串（必要时可重复多次）对字符串进行填充，直到结果字符串达到给定长度。
 与按字节计算字符串长度的 [`rightPad`](#rightPad) 不同，这里的字符串长度按 Unicode 码点计量。
@@ -2379,7 +2399,7 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 
 ## rightUTF8 \{#rightUTF8\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
 返回 UTF-8 编码字符串 `s` 的一个子串，从右侧起以指定的 `offset` 进行截取。
 
@@ -2427,7 +2447,7 @@ SELECT rightUTF8('Привет', -4)
 
 ## soundex \{#soundex\}
 
-自 v23.4 引入
+自 v23.4.0 引入
 
 返回字符串的 [Soundex 编码](https://en.wikipedia.org/wiki/Soundex)。
 
@@ -2461,7 +2481,7 @@ SELECT soundex('aksel')
 
 ## space \{#space\}
 
-自 v23.5 起引入。
+自 v23.5.0 起引入。
 
 将空格字符（` `）按指定次数重复连接。
 
@@ -2495,7 +2515,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-自 v25.5 起引入
+自 v25.5.0 起引入
 
 查找给定字符串中所有长度至少为 `n` 的子串，
 其中子串边界处的 (n-1)-gram 的哈希值
@@ -2535,7 +2555,7 @@ SELECT sparseGrams('alice', 3)
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
-引入版本：v25.5
+引入版本：v25.5.0
 
 查找给定字符串中所有长度至少为 `n` 的子串的哈希值，
 其中该子串边界处的 (n-1)-gram 的哈希值
@@ -2575,7 +2595,7 @@ SELECT sparseGramsHashes('alice', 3)
 
 ## sparseGramsHashesUTF8 \{#sparseGramsHashesUTF8\}
 
-引入版本：v25.5
+引入版本：v25.5.0
 
 查找给定 UTF-8 字符串中所有长度至少为 `n` 的子字符串的哈希，这些子字符串需满足：子字符串边界处的 (n-1)-gram 的哈希值都严格大于该子字符串内部任意 (n-1)-gram 的哈希值。
 要求输入为 UTF-8 编码的字符串，当遇到无效的 UTF-8 序列时会抛出异常。
@@ -2614,7 +2634,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 ## sparseGramsUTF8 \{#sparseGramsUTF8\}
 
-引入于：v25.5
+引入于：v25.5.0
 
 查找给定 UTF-8 字符串中所有长度至少为 `n` 的子字符串，这些子字符串的边界处 (n-1)-gram 的哈希值严格大于该子字符串内部任意 (n-1)-gram 的哈希值。
 参数为 UTF-8 编码字符串，如果输入包含无效的 UTF-8 序列则抛出异常。
@@ -2653,7 +2673,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 
 ## startsWith \{#startsWith\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 检查字符串是否以指定字符串开头。
 
@@ -2688,7 +2708,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-自 v25.9 引入
+自 v25.9.0 引入
 
 检查字符串是否以给定字符串（不区分大小写）开头。
 
@@ -2723,7 +2743,7 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-引入版本：v25.9
+引入版本：v25.9.0
 
 检查字符串是否以给定的不区分大小写的前缀开头。
 假设字符串包含有效的 UTF-8 编码文本。
@@ -2760,7 +2780,7 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
-自 v23.8 引入
+自 v23.8.0 引入
 
 检查字符串是否以指定前缀开头。
 假定字符串包含有效的 UTF-8 编码文本。
@@ -2797,7 +2817,7 @@ SELECT startsWithUTF8('приставка', 'при')
 
 ## stringBytesEntropy \{#stringBytesEntropy\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 计算字符串中字节分布的 Shannon 熵。
 
@@ -2831,7 +2851,7 @@ SELECT stringBytesEntropy('Hello, world!')
 
 ## stringBytesUniq \{#stringBytesUniq\}
 
-首次引入于：v25.6
+首次引入于：v25.6.0
 
 统计字符串中不同字节的个数。
 
@@ -2865,7 +2885,7 @@ SELECT stringBytesUniq('Hello')
 
 ## stringJaccardIndex \{#stringJaccardIndex\}
 
-自 v23.11 版本引入
+自 v23.11.0 版本引入
 
 计算两个字节字符串之间的 [Jaccard 相似系数](https://en.wikipedia.org/wiki/Jaccard_index)。
 
@@ -2900,7 +2920,7 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 
 ## stringJaccardIndexUTF8 \{#stringJaccardIndexUTF8\}
 
-自 v23.11 引入
+自 v23.11.0 引入
 
 与 [`stringJaccardIndex`](#stringJaccardIndex) 类似，但用于 UTF-8 编码的字符串。
 
@@ -2935,7 +2955,7 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 
 ## substring \{#substring\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回字符串 `s` 的子串，该子串从指定的字节索引 `offset` 开始。
 字节计数从 1 开始，逻辑如下：
@@ -2979,7 +2999,7 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 
 ## substringIndex \{#substringIndex\}
 
-引入于：v23.7
+引入于：v23.7.0
 
 返回字符串 `s` 中在分隔符 `delim` 出现 `count` 次之前的子串，其行为与 Spark 或 MySQL 中相同。
 
@@ -3017,7 +3037,7 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 
 ## substringIndexUTF8 \{#substringIndexUTF8\}
 
-引入于：v23.7
+引入于：v23.7.0
 
 返回在分隔符 `delim` 第 `count` 次出现之前的 `s` 的子字符串，专门按 Unicode 码点进行处理。
 假定该字符串包含有效的 UTF-8 编码文本。
@@ -3053,15 +3073,15 @@ www.straßen-in-europa
 
 ## substringUTF8 \{#substringUTF8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回字符串 `s` 的子字符串，该子字符串从指定的码点索引 `offset` 处开始。
-码点计数从 `1` 开始，遵循以下逻辑：
+码点从 `1` 开始计数，遵循以下逻辑：
 
 * 如果 `offset` 为 `0`，则返回空字符串。
 * 如果 `offset` 为负数，则子字符串从字符串末尾起向前数 `offset` 个码点处开始，而不是从开头开始。
 
-可选参数 `length` 指定返回的子字符串允许拥有的最大码点数。
+可选参数 `length` 指定返回的子字符串所允许的最大码点数量。
 
 :::note
 此函数假定字符串包含有效的 UTF-8 编码文本。
@@ -3098,7 +3118,7 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 
 ## toValidUTF8 \{#toValidUTF8\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 将字符串中的任意无效 UTF-8 字符替换为替换字符 `�`（U+FFFD），从而转换为有效的 UTF-8 编码。
 当遇到多个连续的无效字符时，会合并为单个替换字符。
@@ -3134,7 +3154,7 @@ c
 
 ## trimBoth \{#trimBoth\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 从字符串的开头和结尾移除指定的字符。
 默认情况下，会移除常见的空白字符（ASCII）。
@@ -3172,7 +3192,7 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 
 ## trimLeft \{#trimLeft\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 从字符串开头移除指定字符。
 默认情况下，会移除常见的空白（ASCII）字符。
@@ -3210,7 +3230,7 @@ SELECT trimLeft('ClickHouse', 'Click');
 
 ## trimRight \{#trimRight\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 从字符串末尾移除指定字符。
 默认会移除常见的空白（ASCII）字符。
@@ -3248,7 +3268,7 @@ SELECT trimRight('ClickHouse','House');
 
 ## tryBase32Decode \{#tryBase32Decode\}
 
-自 v25.6 引入
+自 v25.6.0 引入
 
 接收一个字符串，并使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 编码方案对其进行解码。
 
@@ -3282,7 +3302,7 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-自 v22.10 引入
+自 v22.10.0 引入
 
 类似于 [`base58Decode`](#base58Decode)，但在出错时返回空字符串。
 
@@ -3316,7 +3336,7 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 
 ## tryBase64Decode \{#tryBase64Decode\}
 
-自 v18.16 起引入
+自 v18.16.0 起引入
 
 与 [`base64Decode`](#base64Decode) 类似，但在发生错误时返回空字符串。
 
@@ -3350,7 +3370,7 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 
 ## tryBase64URLDecode \{#tryBase64URLDecode\}
 
-引入自：v18.16
+引入自：v18.16.0
 
 与 [`base64URLDecode`](#base64URLDecode) 类似，但在发生错误时返回空字符串。
 
@@ -3384,7 +3404,7 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## tryIdnaEncode \{#tryIdnaEncode\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示形式（使用 ToUnicode 算法）。
 在发生错误时，它会返回空字符串，而不是抛出异常。
@@ -3419,7 +3439,7 @@ SELECT tryIdnaEncode('straße.münchen.de')
 
 ## tryPunycodeDecode \{#tryPunycodeDecode\}
 
-自 v24.1 起引入
+自 v24.1.0 起引入
 
 类似于 `punycodeDecode`，但如果给定的字符串不是有效的 Punycode 编码，则返回空字符串。
 
@@ -3453,7 +3473,7 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 
 ## upper \{#upper\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将字符串中的 ASCII 拉丁字符转换为大写形式。
 
@@ -3489,7 +3509,7 @@ SELECT upper('clickhouse')
 
 ## upperUTF8 \{#upperUTF8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 在假定字符串包含有效 UTF-8 编码文本的前提下，将字符串转换为大写。
 如果这一假设不成立，则不会抛出异常，且结果未定义。

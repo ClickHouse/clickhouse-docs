@@ -26,7 +26,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## FQDN \{#FQDN\}
 
-首次引入于：v20.1
+首次引入于：v20.1.0
 
 返回 ClickHouse 服务器的完全限定域名（FQDN，Fully Qualified Domain Name）。
 
@@ -62,7 +62,7 @@ SELECT fqdn()
 
 ## MACNumToString \{#MACNumToString\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将一个 [`UInt64`](/sql-reference/data-types/int-uint) 数值按大端字节序解释为 MAC 地址。
 以字符串形式返回对应的 MAC 地址，格式为 `AA:BB:CC:DD:EE:FF`（以冒号分隔的十六进制数）。
@@ -97,7 +97,7 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 
 ## MACStringToNum \{#MACStringToNum\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 `MACNumToString` 的反向函数。如果 MAC 地址格式无效，则返回 0。
 
@@ -129,7 +129,7 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 
 ## MACStringToOUI \{#MACStringToOUI\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 给定一个格式为 AA:BB:CC:DD:EE:FF（以冒号分隔的十六进制数字）的 MAC 地址，返回其前三个字节，并将其表示为一个 UInt64 整数。如果 MAC 地址格式无效，则返回 0。
 
@@ -161,7 +161,7 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 
 ## authenticatedUser \{#authenticatedUser\}
 
-引入于：v25.11
+引入于：v25.11.0
 
 如果会话 `USER` 已通过 `EXECUTE AS` 命令被切换，则此函数返回最初用于身份验证并创建会话的原始 `USER` 名称。
 别名：authUser()
@@ -199,7 +199,7 @@ EXECUTE as u1;
 
 ## bar \{#bar\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 用于构建柱状图。
 绘制一个带状条，其宽度与 (x - min) 成正比；当 x = max 时，其宽度为 width 个字符。
@@ -267,7 +267,7 @@ ORDER BY h ASC
 
 ## blockNumber \{#blockNumber\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回包含该行的[块](../../development/architecture.md#block)的单调递增编号。
 返回的块编号按尽力而为原则更新，因此可能并非完全精确。
@@ -325,9 +325,9 @@ FROM
 
 ## blockSerializedSize \{#blockSerializedSize\}
 
-引入自：v20.3
+引入自：v20.3.0
 
-返回磁盘上一个值块未压缩后的大小（以字节为单位）。
+返回磁盘上一个值块未压缩时的大小（以字节为单位）。
 
 **语法**
 
@@ -359,7 +359,7 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 
 ## blockSize \{#blockSize\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 在 ClickHouse 中，查询是按[块](/development/architecture#block)（chunk）进行处理的。
 此函数返回调用该函数所在块的大小（行数）。
@@ -399,7 +399,7 @@ FROM system.numbers LIMIT 5
 
 ## buildId \{#buildId\}
 
-引入于：v20.5
+引入于：v20.5.0
 
 返回编译器为当前运行的 ClickHouse 服务器二进制文件生成的构建 ID。
 如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
@@ -435,7 +435,7 @@ SELECT buildId()
 
 ## byteSize \{#byteSize\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 返回对其参数在内存中未压缩字节大小的估计值。
 对于 `String` 参数，函数返回字符串长度 + 8（用于存储长度的信息）。
@@ -483,7 +483,7 @@ SELECT byteSize(NULL, 1, 0.3, '')
 
 ## catboostEvaluate \{#catboostEvaluate\}
 
-引入版本：v22.9
+引入版本：v22.9.0
 
 评估外部 catboost 模型。[CatBoost](https://catboost.ai) 是由 Yandex 开发的开源梯度提升库，用于机器学习。
 此函数接受 catboost 模型的路径以及模型参数（特征）。
@@ -547,7 +547,7 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 
 ## colorOKLABToSRGB \{#colorOKLABToSRGB\}
 
-引入版本：v26.2
+引入版本：v26.2.0
 
 将颜色从 OKLab 知觉色彩空间转换为 sRGB 色彩空间。
 
@@ -619,7 +619,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorOKLCHToSRGB \{#colorOKLCHToSRGB\}
 
-引入版本：v25.7
+引入版本：v25.7.0
 
 将 **OKLCH** 感知色彩空间中的颜色转换为常用的 **sRGB** 色彩空间中的颜色。
 
@@ -685,7 +685,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorSRGBToOKLAB \{#colorSRGBToOKLAB\}
 
-引入于：v26.2
+引入于：v26.2.0
 
 将以 **sRGB** 色彩空间编码的颜色转换为感知均匀的 **OKLAB** 色彩空间。
 
@@ -733,7 +733,7 @@ SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab;
 
 ## colorSRGBToOKLCH \{#colorSRGBToOKLCH\}
 
-自 v25.7 引入
+自 v25.7.0 引入
 
 将以 **sRGB** 色彩空间编码的颜色转换为感知均匀的 **OKLCH** 色彩空间。
 
@@ -784,7 +784,7 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
 
 ## connectionId \{#connectionId\}
 
-引入于：v21.3
+引入于：v21.3.0
 
 返回提交当前查询的客户端的连接 ID。
 此函数在调试场景中最为有用。
@@ -821,7 +821,7 @@ SELECT connectionId();
 
 ## countDigits \{#countDigits\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 返回表示一个值所需的十进制位数。
 
@@ -872,7 +872,7 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 
 ## currentDatabase \{#currentDatabase\}
 
-引入自：v1.1 版本
+引入自：v1.1.0 版本
 
 返回当前数据库的名称。
 在 `CREATE TABLE` 查询中需要在表引擎参数里指定数据库时非常有用。
@@ -911,7 +911,7 @@ SELECT currentDatabase()
 
 ## currentProfiles \{#currentProfiles\}
 
-引入版本：v21.9
+引入版本：v21.9.0
 
 返回当前用户的设置配置文件数组。
 
@@ -945,7 +945,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-引入版本：v25.2
+引入版本：v25.2.0
 
 返回当前查询 ID。
 
@@ -979,7 +979,7 @@ SELECT currentQueryID();
 
 ## currentRoles \{#currentRoles\}
 
-自 v21.9 版本引入
+自 v21.9.0 版本引入
 
 返回一个数组，包含授予当前用户的所有角色。
 
@@ -1013,7 +1013,7 @@ SELECT currentRoles();
 
 ## currentSchemas \{#currentSchemas\}
 
-引入于：v23.7
+引入于：v23.7.0
 
 与函数 [`currentDatabase`](#currentDatabase) 相同，但：
 
@@ -1057,7 +1057,7 @@ SELECT currentSchemas(true)
 
 ## currentUser \{#currentUser\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 返回当前用户的名称。
 在分布式查询中，返回发起该查询的用户的名称。
@@ -1094,7 +1094,7 @@ SELECT currentUser()
 
 ## defaultProfiles \{#defaultProfiles\}
 
-引入版本：v21.9
+引入版本：v21.9.0
 
 返回当前用户的默认设置配置文件名称数组。
 
@@ -1128,7 +1128,7 @@ SELECT defaultProfiles();
 
 ## defaultRoles \{#defaultRoles\}
 
-自 v21.9 引入
+自 v21.9.0 引入
 
 返回当前用户的默认角色数组。
 
@@ -1162,7 +1162,7 @@ SELECT defaultRoles();
 
 ## defaultValueOfArgumentType \{#defaultValueOfArgumentType\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 返回给定数据类型的默认值。
 不包括用户为自定义列设置的默认值。
@@ -1209,7 +1209,7 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 
 ## defaultValueOfTypeName \{#defaultValueOfTypeName\}
 
-首次引入于：v1.1
+首次引入于：v1.1.0
 
 返回指定类型名称的默认值。
 
@@ -1255,7 +1255,7 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 
 ## displayName \{#displayName\}
 
-自 v22.11 引入
+自 v22.11.0 引入
 
 返回 [config](/operations/configuration-files) 中的 `display_name` 值；如果未设置，则返回服务器的完全限定域名（FQDN）。
 
@@ -1289,7 +1289,7 @@ SELECT displayName();
 
 ## dumpColumnStructure \{#dumpColumnStructure\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 输出某个列的数据类型及其内部结构的详细描述。
 
@@ -1323,7 +1323,7 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 
 ## enabledProfiles \{#enabledProfiles\}
 
-引入版本：v21.9
+引入版本：v21.9.0
 
 返回一个数组，其中包含当前用户已启用的设置配置文件的名称。
 
@@ -1357,7 +1357,7 @@ SELECT enabledProfiles();
 
 ## enabledRoles \{#enabledRoles\}
 
-自 v21.9 起引入
+自 v21.9.0 起引入
 
 返回一个数组，列出当前用户已启用的角色。
 
@@ -1391,7 +1391,7 @@ SELECT enabledRoles();
 
 ## errorCodeToName \{#errorCodeToName\}
 
-引入于：v20.12
+引入于：v20.12.0
 
 返回数值型 ClickHouse 错误码对应的文本名称。
 数值错误码与错误名称之间的映射可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp)查看。
@@ -1426,7 +1426,7 @@ SELECT errorCodeToName(252);
 
 ## file \{#file\}
 
-引入于：v21.3
+引入于：v21.3.0
 
 以字符串形式读取文件，并将数据加载到指定的列中。
 文件内容不会被解析。
@@ -1461,7 +1461,7 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 
 ## filesystemAvailable \{#filesystemAvailable\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 返回承载数据库持久化数据的文件系统中的可用空间。
 返回值始终小于文件系统的总可用空间（[`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)），因为一部分空间会被预留给操作系统。
@@ -1496,7 +1496,7 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 
 ## filesystemCapacity \{#filesystemCapacity\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 返回文件系统的容量（字节数）。
 需要在配置中设置指向数据目录的 [path](../../operations/server-configuration-parameters/settings.md#path)。
@@ -1531,7 +1531,7 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 
 ## filesystemUnreserved \{#filesystemUnreserved\}
 
-自 v22.12 引入
+自 v22.12.0 引入
 
 返回用于数据库持久化的文件系统上的空闲空间总量（此前为 `filesystemFree`）。
 另请参见 [`filesystemAvailable`](#filesystemAvailable)。
@@ -1566,7 +1566,7 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 
 ## finalizeAggregation \{#finalizeAggregation\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 在给定聚合状态的情况下，该函数返回聚合结果（或在使用 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 组合器时返回最终状态）。
 
@@ -1621,7 +1621,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-引入于：v25.10
+引入于：v25.10.0
 
 对几何对象的 x 和 y 坐标进行翻转。该操作会交换纬度和经度，这对于在不同坐标系之间转换或纠正坐标顺序非常有用。
 
@@ -1697,7 +1697,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-引入于：v23.10
+引入于：v23.10.0
 
 返回给定 SQL 查询的格式化版本，可能为多行格式。解析出错时将抛出异常。
 [example:multiline]
@@ -1734,7 +1734,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-引入于：v23.11
+引入于：v23.11.0
 
 返回给定 SQL 查询的格式化结果，可能为多行。若解析出错，则返回 NULL。
 [example:multiline]
@@ -1771,7 +1771,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-引入版本：v23.10
+引入版本：v23.10.0
 
 类似于 formatQuery()，但返回的格式化字符串不包含换行符。解析出错时抛出异常。
 [example:multiline]
@@ -1804,7 +1804,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-引入于：v23.11
+引入于：v23.11.0
 
 与 formatQuery() 类似，但返回的格式化字符串不包含换行符。若解析出错，则返回 NULL。
 [example:multiline]
@@ -1837,7 +1837,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatReadableDecimalSize \{#formatReadableDecimalSize\}
 
-自 v22.11 起引入。
+自 v22.11.0 起引入。
 
 给定一个大小（字节数）后，此函数返回一个带有后缀（KB、MB 等)、经过四舍五入的可读大小字符串。
 
@@ -1878,7 +1878,7 @@ SELECT
 
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
-引入版本：v20.10
+引入版本：v20.10.0
 
 给定一个数字，此函数返回一个四舍五入后的、带有后缀（thousand、million、billion 等）的数值字符串。
 
@@ -1920,7 +1920,7 @@ SELECT
 
 ## formatReadableSize \{#formatReadableSize\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 给定一个大小（字节数），此函数返回一个可读的、四舍五入后的大小，并带有后缀（KiB、MiB 等），以字符串形式表示。
 
@@ -1964,7 +1964,7 @@ SELECT
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
 
-引入版本：v20.12
+引入版本：v20.12.0
 
 给定以秒为单位的时间间隔（delta），此函数返回以字符串形式表示的时间差，包含年/月/日/时/分/秒/毫秒/微秒/纳秒。
 
@@ -2004,7 +2004,7 @@ SELECT
 └────────────┴────────────────────────────────────────────────────────────────┘
 ```
 
-**使用最大单位**
+**指定最大单位**
 
 ```sql title=Query
 SELECT
@@ -2022,7 +2022,7 @@ SELECT
 
 ## fuzzQuery \{#fuzzQuery\}
 
-引入于：v26.2
+引入于：v26.2.0
 
 解析给定的查询字符串，并对其应用随机的 AST 变异（fuzzing）。返回变异后的查询字符串。该函数是非确定性的：每次调用都可能产生不同结果。需要设置 `allow_fuzz_query_functions = 1`。
 
@@ -2053,7 +2053,7 @@ SET allow_fuzz_query_functions = 1; SELECT fuzzQuery('SELECT 1');
 
 ## generateRandomStructure \{#generateRandomStructure\}
 
-引入版本：v23.5
+引入版本：v23.5.0
 
 生成格式为 `column1_name column1_type, column2_name column2_type, ...` 的随机表结构。
 
@@ -2106,7 +2106,7 @@ c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCar
 
 ## generateSerialID \{#generateSerialID\}
 
-引入版本：v25.1
+引入版本：v25.1.0
 
 生成并返回从上一个计数器值开始的连续数字。
 此函数接受一个字符串参数（序列标识符）以及一个可选的起始值。
@@ -2182,7 +2182,7 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
-**指定 start 值时的第二次调用**
+**带 start 值的第二次调用**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2196,7 +2196,7 @@ SELECT generateSerialID('id2', 100)
 
 ## getClientHTTPHeader \{#getClientHTTPHeader\}
 
-引入版本：v24.5
+引入版本：v24.5.0
 
 获取指定 HTTP 头的值。
 如果该头不存在，或者当前请求不是通过 HTTP 接口执行的，函数会返回空字符串。
@@ -2240,7 +2240,7 @@ SELECT getClientHTTPHeader('Content-Type');
 
 ## getMacro \{#getMacro\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 从服务器配置文件中返回某个宏的值。
 宏在配置文件的 [`<macros>`](/operations/server-configuration-parameters/settings#macros) 部分中定义，可用于通过易于识别的名称区分服务器，即使它们具有复杂的主机名。
@@ -2276,7 +2276,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-引入版本：v25.1
+引入版本：v25.1.0
 
 返回指定数据库中表名的最大长度限制。
 
@@ -2310,7 +2310,7 @@ SELECT getMaxTableNameLengthForDatabase('default');
 
 ## getMergeTreeSetting \{#getMergeTreeSetting\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 返回指定 MergeTree 设置的当前值。
 
@@ -2344,7 +2344,7 @@ SELECT getMergeTreeSetting('index_granularity');
 
 ## getOSKernelVersion \{#getOSKernelVersion\}
 
-自 v21.11 起引入
+自 v21.11.0 起引入
 
 返回一个表示操作系统内核版本的字符串。
 
@@ -2378,7 +2378,7 @@ SELECT getOSKernelVersion();
 
 ## getServerPort \{#getServerPort\}
 
-自 v21.10 引入
+自 v21.10.0 引入
 
 返回给定协议对应的服务器的端口号。
 
@@ -2412,7 +2412,7 @@ SELECT getServerPort('tcp_port');
 
 ## getServerSetting \{#getServerSetting\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 返回指定服务器设置名称对应的当前值。
 
@@ -2446,7 +2446,7 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 
 ## getSetting \{#getSetting\}
 
-引入版本：v20.7
+引入版本：v20.7.0
 
 返回指定设置项的当前值。
 
@@ -2485,7 +2485,7 @@ SELECT getSetting('enable_analyzer');
 
 ## getSettingOrDefault \{#getSettingOrDefault\}
 
-自 v24.10 引入
+自 v24.10.0 引入
 
 返回指定设置的当前值；如果在当前配置概要中未设置该项，则返回第二个参数中指定的默认值。
 
@@ -2522,7 +2522,7 @@ NULL
 
 ## getSizeOfEnumType \{#getSizeOfEnumType\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回给定 [`Enum`](../../sql-reference/data-types/enum.md) 中枚举成员的数量。
 
@@ -2556,7 +2556,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-自 v23.3 版本引入。
+自 v23.3.0 版本引入。
 
 接收一个表达式或标识符，以及一个包含子列名称的常量字符串作为参数。
 
@@ -2587,7 +2587,7 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 
 ## getTypeSerializationStreams \{#getTypeSerializationStreams\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 枚举某个数据类型的流路径。
 该 FUNCTION 主要用于开发用途。
@@ -2630,7 +2630,7 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 
 ## globalVariable \{#globalVariable\}
 
-引入版本：v20.5
+引入版本：v20.5.0
 
 接受一个常量字符串参数，并返回具有该名称的全局变量的值。此函数仅用于与 MySQL 的兼容性，对于 ClickHouse 的正常运行既非必需，也无实际用途。仅定义了少量用于占位的全局变量。
 
@@ -2662,7 +2662,7 @@ SELECT globalVariable('max_allowed_packet')
 
 ## hasColumnInTable \{#hasColumnInTable\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查数据库表中是否存在指定的列。
 对于嵌套数据结构中的元素，该函数会检查对应列是否存在。
@@ -2711,7 +2711,7 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 
 ## hasThreadFuzzer \{#hasThreadFuzzer\}
 
-引入于：v20.6
+引入于：v20.6.0
 
 返回是否启用了线程 fuzzer。
 此 FUNCTION 仅在测试和调试时有用。
@@ -2746,7 +2746,7 @@ SELECT hasThreadFuzzer()
 
 ## hostName \{#hostName\}
 
-引入版本：v20.5
+引入版本：v20.5.0
 
 返回执行此函数的主机名。
 如果函数在远程服务器上执行（分布式处理），则返回远程服务器的名称。
@@ -2785,7 +2785,7 @@ SELECT hostName()
 
 ## icebergBucket \{#icebergBucket\}
 
-自 v25.5 版本引入
+自 v25.5.0 版本引入
 
 实现了 [Iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.) 的逻辑。
 
@@ -2818,7 +2818,7 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 
 ## icebergTruncate \{#icebergTruncate\}
 
-在 v25.3 中引入
+在 v25.3.0 中引入
 
 实现 Iceberg truncate 变换的逻辑：https://iceberg.apache.org/spec/#truncate-transform-details。
 
@@ -2850,7 +2850,7 @@ ice
 
 ## identity \{#identity\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 此函数返回传入的参数，在调试和测试时非常有用。它可以让你绕过索引的使用，从而观察全表扫描时的性能。在查找可用索引时，查询分析器会忽略 `identity` 函数内部的所有内容，并且还会禁用常量折叠。
 
@@ -2882,7 +2882,7 @@ SELECT identity(42)
 
 ## ignore \{#ignore\}
 
-在 v1.1 版本中引入
+在 v1.1.0 版本中引入
 
 接受任意参数并无条件返回 `0`。
 
@@ -2916,7 +2916,7 @@ SELECT ignore(0, 'ClickHouse', NULL)
 
 ## indexHint \{#indexHint\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 此函数用于调试和内部分析（introspection）。
 它会忽略其参数并始终返回 1。
@@ -2995,7 +2995,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 
 ## initialQueryID \{#initialQueryID\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回初始当前查询的 ID。
 查询的其他参数可以从 [`system.query_log`](../../operations/system-tables/query_log.md) 表中的 `initial_query_id` 字段中提取。
@@ -3036,7 +3036,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 
 ## initialQueryStartTime \{#initialQueryStartTime\}
 
-引入版本：v25.4
+引入版本：v25.4.0
 
 返回与当前查询对应的初始查询的开始时间。
 `initialQueryStartTime` 在不同分片上返回相同的结果。
@@ -3075,7 +3075,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 
 ## initializeAggregation \{#initializeAggregation\}
 
-引入于：v20.6
+引入于：v20.6.0
 
 基于单个值计算聚合函数的结果。
 此函数可用于通过组合器 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 初始化聚合函数。
@@ -3128,7 +3128,7 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 
 ## isConstant \{#isConstant\}
 
-引入自：v20.3
+引入自：v20.3.0
 
 返回参数是否为常量表达式。
 常量表达式是指其结果在查询分析阶段（即执行之前）就已知的表达式。
@@ -3204,7 +3204,7 @@ SELECT isConstant(now())
 
 ## isDecimalOverflow \{#isDecimalOverflow\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 检查一个十进制数的位数是否过多，因而无法在给定精度的 Decimal 数据类型中被正确表示。
 
@@ -3242,7 +3242,7 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 
 ## joinGet \{#joinGet\}
 
-引入版本：v18.16
+引入版本：v18.16.0
 
 允许像从字典中提取数据那样从表中提取数据。
 使用指定的 JOIN 键从 Join 表中获取数据。
@@ -3284,7 +3284,7 @@ SELECT joinGet(db_test.id_val, 'val', toUInt32(1));
 └─────────────────────────────────────────────┘
 ```
 
-**在当前数据库表上的用法**
+**在当前数据库中的表的用法**
 
 ```sql title=Query
 USE db_test;
@@ -3314,7 +3314,7 @@ SELECT joinGet(some_table, 'name', 1, 11);
 
 ## joinGetOrNull \{#joinGetOrNull\}
 
-引入版本：v20.4
+引入版本：v20.4.0
 
 允许像从字典中一样从表中提取数据。
 使用指定的 JOIN 键从 JOIN 表中获取数据。
@@ -3359,7 +3359,7 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 
 ## lowCardinalityIndices \{#lowCardinalityIndices\}
 
-引入版本：v18.12
+引入版本：v18.12.0
 
 返回 [LowCardinality](../data-types/lowcardinality.md) 列的字典中某个值的位置。位置从 1 开始计数。由于 LowCardinality 列在每个分区片段上都有独立字典，此函数在不同分区片段中对相同值可能返回不同的位置。
 
@@ -3412,7 +3412,7 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 
 ## lowCardinalityKeys \{#lowCardinalityKeys\}
 
-引入于：v18.12
+引入于：v18.12.0
 
 返回 [LowCardinality](../data-types/lowcardinality.md) 列的字典值。
 如果数据块大小小于或大于字典大小，结果将分别被截断或用默认值填充扩展。
@@ -3467,7 +3467,7 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 
 ## materialize \{#materialize\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将一个常量转换为包含单个值的普通列。
 在内存中，普通列和常量的表示方式不同。
@@ -3508,7 +3508,7 @@ Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal ty
 
 ## minSampleSizeContinuous \{#minSampleSizeContinuous\}
 
-引入于：v23.10
+引入于：v23.10.0
 
 计算在 A/B 测试中比较两个样本的某个连续型指标均值时所需的最小样本量。
 
@@ -3551,7 +3551,7 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 
 ## minSampleSizeConversion \{#minSampleSizeConversion\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 计算在 A/B 测试中比较两组转化率（比例）时所需的最小样本量。
 
@@ -3588,7 +3588,7 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 
 ## neighbor \{#neighbor\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 返回同一列中相对于当前行指定偏移量处的值。
 该函数已被弃用且容易出错，因为它基于数据块的物理顺序进行操作，而这可能与用户期望的逻辑顺序不一致。
@@ -3635,7 +3635,7 @@ SELECT number, neighbor(number, 2) FROM system.numbers LIMIT 10;
 └────────┴─────────────────────┘
 ```
 
-**含默认值**
+**使用默认值**
 
 ```sql title=Query
 SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
@@ -3658,7 +3658,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 
 ## normalizeQuery \{#normalizeQuery\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 将字面量、字面量序列以及复杂别名（包含空格、超过两位数字，或长度至少为 36 字节（如 UUID））替换为占位符 `?`。
 
@@ -3692,7 +3692,7 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 
 ## normalizeQueryKeepNames \{#normalizeQueryKeepNames\}
 
-引入版本：v21.2
+引入版本：v21.2.0
 
 将字面量和字面量序列替换为占位符 `?`，但不会替换复杂别名（包括包含空白字符、数字位数多于两位，或长度至少为 36 字节（例如 UUID） 的别名）。
 这有助于更好地分析复杂的查询日志。
@@ -3727,7 +3727,7 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 
 ## normalizedQueryHash \{#normalizedQueryHash\}
 
-引入于：v20.8
+引入于：v20.8.0
 
 对于类似的查询，在不考虑字面量具体取值的情况下，返回相同的 64 位哈希值。
 可用于分析查询日志。
@@ -3762,7 +3762,7 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 
 ## normalizedQueryHashKeepNames \{#normalizedQueryHashKeepNames\}
 
-引入于：v21.2
+引入于：v21.2.0
 
 与 [`normalizedQueryHash`](#normalizedQueryHash) 类似，它在对相似查询进行哈希时，会返回相同的 64 位哈希值，并且忽略字面量的值，但在哈希之前不会将复杂别名（包含空格、超过两位数字，或长度至少为 36 字节（例如 UUID））替换为占位符。
 在分析查询日志时可能会很有用。
@@ -3801,7 +3801,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## parseReadableSize \{#parseReadableSize\}
 
-引入于：v24.6
+引入于：v24.6.0
 
 给定一个字符串，该字符串包含字节大小以及单位（如 `B`、`KiB`、`KB`、`MiB`、`MB` 等，既可以是 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 中规定的二进制前缀，也可以是十进制字节单位），该函数返回对应的字节数。
 如果函数无法解析输入值，则会抛出异常。
@@ -3841,7 +3841,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 
 ## parseReadableSizeOrNull \{#parseReadableSizeOrNull\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 给定一个包含字节大小以及 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位的字符串（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），该函数返回对应的字节数。
 如果函数无法解析输入值，则返回 `NULL`。
@@ -3882,7 +3882,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseReadableSizeOrZero \{#parseReadableSizeOrZero\}
 
-引入版本：v24.6
+引入版本：v24.6.0
 
 给定一个字符串，其中包含以 `B`、`KiB`、`KB`、`MiB`、`MB` 等作为单位表示的字节大小（即 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 或十进制字节单位），此函数返回对应的字节数。
 如果函数无法解析输入值，则返回 `0`。
@@ -3890,6 +3890,30 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 此函数的逆操作为 [`formatReadableSize`](#formatReadableSize) 和 [`formatReadableDecimalSize`](#formatReadableDecimalSize)。
 
 **语法**
+
+parseReadableSizeOrZero(x)
+
+**参数**
+
+`x` — 使用 ISO/IEC 80000-13 或十进制字节单位表示的可读大小值。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回字节数，向上取整为最接近的整数；如果无法解析输入，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+SELECT arrayJoin([&#39;1 B&#39;, &#39;1 KiB&#39;, &#39;3 MB&#39;, &#39;5.314 KiB&#39;, &#39;invalid&#39;]) AS readable&#95;sizes, parseReadableSizeOrZero(readable&#95;sizes) AS sizes;
+
+┌─readable&#95;sizes─┬───sizes─┐
+│ 1 B            │       1 │
+│ 1 KiB          │    1024 │
+│ 3 MB           │ 3000000 │
+│ 5.314 KiB      │    5442 │
+│ invalid        │       0 │
+└────────────────┴─────────┘
 
 ```sql
 parseReadableSizeOrZero(x)
@@ -3923,7 +3947,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseTimeDelta \{#parseTimeDelta\}
 
-引入版本：v22.7
+引入版本：v22.7.0
 
 解析由一串数字后接类似时间单位的部分组成的字符串。
 
@@ -3986,7 +4010,7 @@ SELECT parseTimeDelta('1yr2mo')
 
 ## partitionId \{#partitionId\}
 
-引入于：v21.4
+引入于：v21.4.0
 
 计算[分区 ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)。
 
@@ -4044,7 +4068,7 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 
 ## queryID \{#queryID\}
 
-引入于：v21.9
+引入于：v21.9.0
 
 返回当前查询的 ID。
 查询的其他参数可以从 [`system.query_log`](../../operations/system-tables/query_log.md) 表中的 `query_id` 字段中提取。
@@ -4085,7 +4109,7 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 
 ## revision \{#revision\}
 
-引入自：v22.7
+引入自：v22.7.0
 
 返回当前 ClickHouse 服务器的修订版本号。
 
@@ -4119,7 +4143,7 @@ SELECT revision()
 
 ## rowNumberInAllBlocks \{#rowNumberInAllBlocks\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 为每个被处理的行返回一个唯一的行号。
 
@@ -4177,7 +4201,7 @@ SETTINGS max_block_size = 2
 
 ## rowNumberInBlock \{#rowNumberInBlock\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对于由 `rowNumberInBlock` 处理的每个[块](../../development/architecture.md#block)，返回当前行的行号。
 
@@ -4236,7 +4260,7 @@ FROM
 
 ## runningAccumulate \{#runningAccumulate\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 对数据块中每一行累积聚合函数的状态。
 
@@ -4286,7 +4310,7 @@ FROM numbers(5);
 
 ## runningConcurrency \{#runningConcurrency\}
 
-引入于：v21.3
+引入于：v21.3.0
 
 计算并发事件的数量。
 每个事件都有开始时间和结束时间。
@@ -4339,7 +4363,7 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 
 ## runningDifference \{#runningDifference\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算数据块中两个相邻行的值之间的差值。
 对于第一行返回 `0`，对于后续各行返回其与前一行之间的差值。
@@ -4424,7 +4448,7 @@ WHERE diff != 1;
 
 ## runningDifferenceStartingWithFirstValue \{#runningDifferenceStartingWithFirstValue\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算数据块中相邻行值之间的差值，但与 [`runningDifference`](#runningDifference) 不同的是，它返回第一行的实际值，而不是 `0`。
 
@@ -4473,7 +4497,7 @@ FROM numbers(5);
 
 ## serverUUID \{#serverUUID\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 返回服务器首次启动时生成的随机且唯一的 UUID（v4）。
 该 UUID 会被持久化，即在第二次、第三次及后续服务器启动时都会返回同一个 UUID。
@@ -4508,7 +4532,7 @@ SELECT serverUUID();
 
 ## shardCount \{#shardCount\}
 
-自 v21.9 起引入
+自 v21.9.0 起引入
 
 返回分布式查询的分片总数。
 如果查询不是分布式查询，则返回常量值 `0`。
@@ -4547,7 +4571,7 @@ SELECT shardCount() FROM shard_count_example;
 
 ## shardNum \{#shardNum\}
 
-引入自：v21.9
+引入自：v21.9.0
 
 返回在分布式查询中处理部分数据的分片的索引值。
 索引从 `1` 开始。
@@ -4586,7 +4610,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 
 ## showCertificate \{#showCertificate\}
 
-引入于：v22.6
+引入于：v22.6.0
 
 在已配置的情况下，会显示当前服务器的安全套接字层（SSL）证书的信息。
 关于如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅 [Configuring TLS](/guides/sre/tls/configuring-tls)。
@@ -4619,7 +4643,7 @@ SELECT showCertificate() FORMAT LineAsString;
 
 ## sleep \{#sleep\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 按指定的秒数暂停查询的执行。
 该函数主要用于测试和调试。
@@ -4670,7 +4694,7 @@ SELECT sleep(2);
 
 ## sleepEachRow \{#sleepEachRow\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 使查询在结果集的每一行上暂停执行指定的秒数。
 
@@ -4720,7 +4744,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-引入版本：v23.8
+引入版本：v23.8.0
 
 用于将 ClickHouse 表结构转换为 CapnProto 格式 schema 的函数
 
@@ -4754,7 +4778,7 @@ struct MessageName
 
 ## structureToProtobufSchema \{#structureToProtobufSchema\}
 
-引入版本：v23.8
+引入版本：v23.8.0
 
 将 ClickHouse 表结构转换为 Protobuf 格式的 schema。
 
@@ -4796,7 +4820,7 @@ message MessageName
 
 ## tcpPort \{#tcpPort\}
 
-引入于：v20.12
+引入于：v20.12.0
 
 返回服务器监听的 [native interface](/interfaces/tcp) TCP 端口号。
 如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
@@ -4832,7 +4856,7 @@ SELECT tcpPort()
 
 ## throwIf \{#throwIf\}
 
-引入自：v1.1 版本
+引入自：v1.1.0 版本
 
 如果参数 x 为 true，则抛出异常。
 要使用 `error_code` 参数，必须启用配置参数 `allow_custom_error_code_in_throw`。
@@ -4868,7 +4892,7 @@ Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 
 ## toColumnTypeName \{#toColumnTypeName\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 返回给定值对应数据类型的内部名称。
 与函数 [`toTypeName`](#toTypeName) 不同，返回的数据类型可能还包含内部包装列，例如 `Const` 和 `LowCardinality`。
@@ -4903,7 +4927,7 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 
 ## toTypeName \{#toTypeName\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 返回传入参数的类型名称。
 如果传入 `NULL`，函数返回类型 `Nullable(Nothing)`，这对应于 ClickHouse 的内部 `NULL` 表示。
@@ -4938,7 +4962,7 @@ SELECT toTypeName(123)
 
 ## transactionID \{#transactionID\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 <ExperimentalBadge />
 
@@ -4996,7 +5020,7 @@ ROLLBACK;
 
 ## transactionLatestSnapshot \{#transactionLatestSnapshot\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 <ExperimentalBadge />
 
@@ -5048,7 +5072,7 @@ ROLLBACK;
 
 ## transactionOldestSnapshot \{#transactionOldestSnapshot\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 <ExperimentalBadge />
 
@@ -5100,7 +5124,7 @@ ROLLBACK;
 
 ## transform \{#transform\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 根据显式定义的若干元素到其他元素的映射来转换一个值。
 
@@ -5185,7 +5209,7 @@ LIMIT 10
 
 ## uniqThetaIntersect \{#uniqThetaIntersect\}
 
-引入版本：v22.9
+引入版本：v22.9.0
 
 对两个 uniqThetaSketch 对象执行交集运算（集合运算 ∩），结果为一个新的 uniqThetaSketch。
 
@@ -5221,7 +5245,7 @@ FROM
 
 ## uniqThetaNot \{#uniqThetaNot\}
 
-引入版本：v22.9
+引入版本：v22.9.0
 
 对两个 uniqThetaSketch 对象执行 a&#95;not&#95;b 计算（Set 操作 ×），返回一个新的 uniqThetaSketch。
 
@@ -5257,7 +5281,7 @@ FROM
 
 ## uniqThetaUnion \{#uniqThetaUnion\}
 
-自 v22.9 引入
+自 v22.9.0 引入
 
 对两个 uniqThetaSketch 对象执行并集运算（集合运算 ∪），结果是一个新的 uniqThetaSketch。
 
@@ -5293,7 +5317,7 @@ FROM
 
 ## uptime \{#uptime\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回服务器的运行时间（以秒为单位）。
 如果在分布式表的上下文中执行，则此函数会生成一个普通列（非常量列），其中的值对应各个分片。
@@ -5329,7 +5353,7 @@ SELECT uptime() AS Uptime
 
 ## variantElement \{#variantElement\}
 
-引入版本：v25.2
+引入版本：v25.2.0
 
 从 `Variant` 列中提取指定类型的列。
 
@@ -5370,7 +5394,7 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 
 ## variantType \{#variantType\}
 
-引入版本：v24.2
+引入版本：v24.2.0
 
 返回 `Variant` 列中每一行对应的变体类型名称。如果某一行包含 NULL，则为其返回 &#39;None&#39;。
 
@@ -5409,7 +5433,7 @@ SELECT variantType(v) FROM test;
 
 ## version \{#version\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 以字符串形式返回当前 ClickHouse 版本号，格式为：`major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`。
 如果在分布式表的上下文中执行，此函数会生成一个普通列，其值对应各个分片。
@@ -5445,7 +5469,7 @@ SELECT version()
 
 ## visibleWidth \{#visibleWidth\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算以文本格式（制表符分隔）将值输出到控制台时的大致显示宽度。
 系统使用此函数来实现 Pretty 格式。
@@ -5481,7 +5505,7 @@ SELECT visibleWidth(NULL)
 
 ## zookeeperSessionUptime \{#zookeeperSessionUptime\}
 
-自 v21.11 引入
+自 v21.11.0 引入
 
 返回当前 ZooKeeper 会话的运行时长（以秒为单位）。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactHigh \{#quantileExactHigh\}
 
-引入版本：v20.8
+引入版本：v20.8.0
 
 与 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) 类似，该函数计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -58,7 +58,7 @@ SELECT quantileExactHigh(number) FROM numbers(10);
 └───────────────────────────┘
 ```
 
-**计算特定分位点**
+**计算特定分位数水平**
 
 ```sql title=Query
 SELECT quantileExactHigh(0.1)(number) FROM numbers(10);

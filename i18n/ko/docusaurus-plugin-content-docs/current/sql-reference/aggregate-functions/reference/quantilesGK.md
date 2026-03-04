@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesGK \{#quantilesGK\}
 
-도입 버전: v23.4
+도입 버전: v23.4.0
 
 [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) 알고리즘을 사용하여 수치 데이터 시퀀스에 대해 서로 다른 여러 레벨의 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 동시에 계산합니다.
 
@@ -53,7 +53,7 @@ SELECT quantilesGK(1, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────────────────┘
 ```
 
-**더 높은 정밀도의 분위수**
+**더 높은 정확도의 분위수**
 
 ```sql title=Query
 SELECT quantilesGK(100, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupUniqArray \{#groupUniqArray\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 서로 다른 인수 값으로부터 배열을 생성합니다.
 이 함수의 메모리 사용량은 [`uniqExact`](/sql-reference/aggregate-functions/reference/uniqexact) 함수와 동일합니다.
@@ -50,7 +50,7 @@ SELECT groupUniqArray(x) FROM t;
 └───────────────────┘
 ```
 
-**max&#95;size 매개변수를 사용하는 경우**
+**max&#95;size 매개변수 사용 시**
 
 ```sql title=Query
 SELECT groupUniqArray(2)(x) FROM t;

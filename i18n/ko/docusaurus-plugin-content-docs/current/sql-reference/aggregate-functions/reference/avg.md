@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avg \{#avg\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 산술 평균을 계산합니다.
 
@@ -41,7 +41,7 @@ SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 └────────┘
 ```
 
-**빈 테이블에서는 NaN이 반환됩니다**
+**빈 테이블은 NaN을 반환합니다**
 
 ```sql title=Query
 CREATE TABLE test (t UInt8) ENGINE = Memory;
