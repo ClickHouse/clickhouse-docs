@@ -111,6 +111,14 @@ Connect to your RDS Postgres instance as an admin user and execute the following
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
+:::tip
+We don't recommend creating a publication `FOR ALL TABLES` unless you are replicating all tables, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+:::
+
+:::note
+ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
+:::
+
 ## Configure network access {#configure-network-access}
 
 ### IP-based access control {#ip-based-access-control}

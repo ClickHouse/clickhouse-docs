@@ -193,7 +193,7 @@ For Postgres versions 13 or lower, CTID range scans are very slow and therefore 
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-You can let ClickPipes manage your publications (requires additional permissions) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
+We don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe). This will slow down Postgres WAL decoding and reduce overall efficiency.
 
 If you include any table in your publication, make sure it has either a primary key or `REPLICA IDENTITY FULL`. If you have tables without a primary key, creating a publication for all tables will cause DELETE and UPDATE operations to fail on those tables.
 
@@ -226,9 +226,7 @@ You have two options when dealing with tables without primary keys:
    ```
 
 :::tip
-If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
-
-For manually created publications, please add any tables you want to the publication before adding them to the pipe.
+Alternatively, ClickPipes can manage publications on your behalf, automatically handling table additions and removals as you modify the pipe. Note that this requires the database user to have both the `CREATE` permission on the database and ownership of the replicated tables, meaning the user cannot be configured with read-only access.
 :::
 
 :::warning

@@ -92,6 +92,14 @@ Connect to your PlanetScale Postgres instance using the default `postgres.<...>`
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
+:::tip
+We don't recommend creating a publication `FOR ALL TABLES` unless you are replicating all tables, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+:::
+
+:::note
+ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
+:::
+
 ## Caveats {#caveats}
 1. To connect to PlanetScale Postgres, the current branch needs to be appended to the username created above. For example, if the created user was named `clickpipes_user`, the actual user provided during the ClickPipe creation needs to be `clickpipes_user`.`branch` where `branch` refers to the "id" of the current PlanetScale Postgres [branch](https://planetscale.com/docs/postgres/branching). To quickly determine this, you can refer to the username of the `postgres` user you used to create the user earlier, the part after the period would be the branch id.
 2. Don't use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to PlanetScale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.

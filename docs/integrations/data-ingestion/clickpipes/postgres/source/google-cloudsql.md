@@ -90,6 +90,14 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
+:::tip
+We don't recommend creating a publication `FOR ALL TABLES` unless you are replicating all tables, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+:::
+
+:::note
+ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
+:::
+
 [//]: # (TODO Add SSH Tunneling)
 
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
