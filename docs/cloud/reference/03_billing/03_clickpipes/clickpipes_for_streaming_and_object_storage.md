@@ -41,7 +41,7 @@ This corresponds to **0.0625** ClickHouse compute units (1 unit = 8 GiB RAM, 2 v
 - Compute: \$0.20 per unit per hour (\$0.0125 per replica per hour for the default replica size)
 - Ingested data: \$0.04 per GB
 
-The price for the Compute dimension depends on the **number** and **size** of replica(s) in a ClickPipe. The default replica size can be adjusted using vertical scaling, and each replica size is priced as follows:
+The price for the Compute dimension depends on the **number** and **size** of replicas in a ClickPipe. The default replica size can be adjusted using vertical scaling, and each replica size is priced as follows:
 
 | Replica Size               | Compute Units | RAM     | vCPU   | Price per Hour |
 |----------------------------|---------------|---------|--------|----------------|

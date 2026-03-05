@@ -469,7 +469,7 @@ df.write()
 </Tabs>
 
 :::important
-**ORDER BY Required**: The `order_by` option is **required** when creating a new table via the TableProvider API. You must explicitly specify which column(s) to use for the ORDER BY clause. The connector validates that all specified columns exist in the schema and will throw an error if any columns are missing.
+**ORDER BY Required**: The `order_by` option is **required** when creating a new table via the TableProvider API. You must explicitly specify which columns to use for the ORDER BY clause. The connector validates that all specified columns exist in the schema and will throw an error if any columns are missing.
 
 **Engine Selection**: The default engine is `MergeTree()`, but you can specify any ClickHouse table engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()`, etc.).
 :::
@@ -499,7 +499,7 @@ These options are used when the table doesn't exist and needs to be created:
 
 | Option                      | Description                                                                 | Default Value     | Required |
 |-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | Column(s) to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
+| `order_by`                  | Columns to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
 | `engine`                    | ClickHouse table engine (e.g., `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, etc.) | `MergeTree()`     | No       |
 | `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
 | `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
