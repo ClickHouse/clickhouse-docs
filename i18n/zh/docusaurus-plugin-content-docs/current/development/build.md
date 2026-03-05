@@ -17,8 +17,8 @@ ClickHouse 可以在以下平台上构建：
 
 * x86&#95;64
 * AArch64
-* PowerPC 64 LE (实验性) 
-* s390/x (实验性) 
+* PowerPC 64 LE (实验性)
+* s390/x (实验性)
 * RISC-V 64 (实验性)
 
 ## 前提条件 \{#assumptions\}
@@ -121,8 +121,12 @@ ninja
 你可以使用参数 `-j` 来控制并行构建任务的数量：
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`、`clickhouse-client` 等是构建完成后在 `programs/` 目录下指向 `clickhouse` 二进制文件的符号链接，因此只需构建 `clickhouse` 目标即可。
+:::
 
 :::tip
 CMake 为这些命令提供了快捷方式：

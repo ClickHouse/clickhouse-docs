@@ -17,8 +17,8 @@ ClickHouse は次のプラットフォーム上でビルドできます：
 
 * x86&#95;64
 * AArch64
-* PowerPC 64 LE (実験的) 
-* s390/x (実験的) 
+* PowerPC 64 LE (実験的)
+* s390/x (実験的)
 * RISC-V 64 (実験的)
 
 ## 前提条件 \{#assumptions\}
@@ -121,8 +121,12 @@ ninja
 パラメータ `-j` を使用して、並列ビルドジョブの数を指定できます。
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`、`clickhouse-client` などは、ビルド完了後に `programs/` ディレクトリに作成される `clickhouse` バイナリへのシンボリックリンクです。そのため、`clickhouse` ターゲットのみをビルドすれば十分です。
+:::
 
 :::tip
 CMake には、上記のコマンドを簡略化するためのショートカットが用意されています：
