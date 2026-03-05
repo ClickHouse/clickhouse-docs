@@ -76,8 +76,6 @@ Connect to your Supabase instance as an admin user and execute the following com
    ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
    :::
 
-<Image img={supabase_commands} alt="User and publication commands" size="large" border/>
-
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
 :::warning

@@ -226,7 +226,7 @@ You have two options when dealing with tables without primary keys:
    ```
 
 :::tip
-Alternatively, ClickPipes can manage publications on your behalf, automatically handling table additions and removals as you modify the pipe. Note that this requires the database user to have both the `CREATE` permission on the database and ownership of the replicated tables, meaning the user cannot be configured with read-only access.
+Alternatively, ClickPipes can manage publications on your behalf, automatically handling table additions and removals as you modify the pipe. Note that this requires granting the database user both the `CREATE` permission on the database and ownership of the source tables, which elevates the user beyond read-only access. We recommend managing publications manually to minimize the permission surface of the database user.
 :::
 
 :::warning
