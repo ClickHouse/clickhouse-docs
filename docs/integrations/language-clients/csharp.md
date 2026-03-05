@@ -1512,7 +1512,6 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 `ClickHouse.Driver` works with Dapper. The driver automatically converts Dapper's `@parameter` syntax to ClickHouse's native `{parameter:Type}` syntax, with types inferred from .NET values.
 
-
 Use `ClickHouseDataSource` for proper connection lifetime management:
 
 ```csharp
@@ -1633,7 +1632,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 See the [Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs) for an example type handler implementation.
 
-#### Dapper.Contrib
+#### Dapper.Contrib {#dapper-contrib}
 
 `GetAll<T>()` and `Get<T>(id)` work. `Insert<T>()` does not — it generates SQL Server syntax (`SCOPE_IDENTITY`, square brackets). It is recommended to use the `ClickHouseClient` native `InsertBinaryAsync` method instead.
 
@@ -1647,7 +1646,7 @@ var one = await connection.GetAsync<UserRecord>(1);
 
 Property names must match ClickHouse column names exactly (case-sensitive).
 
-#### Limitations
+#### Limitations {#dapper-limitations}
 
 | What | Status | Details |
 |---|---|---|
@@ -1657,7 +1656,6 @@ Property names must match ClickHouse column names exactly (case-sensitive).
 | Geo types as parameter | Not supported | Point, Ring, Polygon, LineString, MultiLineString, MultiPolygon |
 | `Dapper.Contrib.Insert<T>()` | Not supported | Generates SQL Server-specific syntax |
 | `Nothing` type | Not supported | No meaningful .NET representation |
-
 
 ### Linq2db {#orm-support-linq2db}
 
