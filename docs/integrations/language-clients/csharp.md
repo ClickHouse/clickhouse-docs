@@ -1557,7 +1557,7 @@ var rows = await connection.QueryAsync<User>(
     "SELECT id, name FROM users WHERE id = @Id", parameters);
 ```
 
-**DynamicParameters (from dictionary or anonymous object):**
+**`DynamicParameters` (from dictionary or anonymous object):**
 
 ```csharp
 var dynParams = new DynamicParameters(new { Id = 1 });
@@ -1618,7 +1618,7 @@ var rows = await connection.QueryAsync<User>(
 
 #### Custom type handlers {#dapper-type-handlers}
 
-Some ClickHouse types, eg ITuple, BigInteger, and ClickHouseDecimal need handlers registered at startup:
+Some ClickHouse types, eg `ITuple`, `BigInteger`, and `ClickHouseDecimal` need handlers registered at startup:
 
 ```csharp
 // ClickHouseDecimal (for Decimal64/128/256 columns)
