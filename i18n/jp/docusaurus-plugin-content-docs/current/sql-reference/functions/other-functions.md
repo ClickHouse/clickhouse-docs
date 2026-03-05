@@ -910,6 +910,18 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**SQL 標準構文 (括弧なし)&#x20;**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
 導入バージョン: v21.9.0
@@ -1091,6 +1103,18 @@ SELECT currentUser()
 ┌─currentUser()─┐
 │ default       │
 └───────────────┘
+```
+
+**括弧なしの SQL 標準構文**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
 ```
 
 ## defaultProfiles \{#defaultProfiles\}

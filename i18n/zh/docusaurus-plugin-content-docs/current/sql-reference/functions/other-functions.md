@@ -909,6 +909,18 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**无需括号的 SQL 标准语法**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
 引入版本：v21.9.0
@@ -1090,6 +1102,18 @@ SELECT currentUser()
 ┌─currentUser()─┐
 │ default       │
 └───────────────┘
+```
+
+**无需括号的 SQL 标准语法**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
 ```
 
 ## defaultProfiles \{#defaultProfiles\}

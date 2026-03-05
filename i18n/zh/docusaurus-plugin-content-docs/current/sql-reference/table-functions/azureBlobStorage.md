@@ -237,14 +237,14 @@ SELECT _path, * FROM azureBlobStorage(
 
 这是一个设置，用于让 ClickHouse 在读取时解析 Hive 风格分区文件。它对写入没有任何影响。若要在读写两侧保持对称，请使用 `partition_strategy` 参数。
 
-当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径中检测 Hive 风格分区（`/name=value/`），并允许在查询中将分区列作为虚拟列来使用。这些虚拟列的名称将与分区路径中的名称相同，但会以 `_` 作为前缀。
+当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径中检测 Hive 风格分区 (`/name=value/`) ，并允许在查询中将分区列作为虚拟列来使用。这些虚拟列的名称将与分区路径中的名称相同。
 
 **示例**
 
 在查询中使用由 Hive 风格分区创建的虚拟列
 
 ```sql
-SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
 

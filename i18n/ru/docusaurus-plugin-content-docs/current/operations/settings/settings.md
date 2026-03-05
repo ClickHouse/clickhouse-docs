@@ -1223,9 +1223,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить асинхронные вставки по умолчанию."}]}]} />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait&#95;for&#95;async&#95;insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
 
@@ -12081,6 +12079,47 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 Тайм-аут ожидания сигнала срабатывания window view при обработке по времени события
+
+## webassembly_udf_max_fuel \{#webassembly_udf_max_fuel\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="100000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "Новая настройка для ограничения числа инструкций CPU («топлива») при выполнении одного экземпляра WebAssembly UDF."}]}]} />
+
+Лимит «топлива» на выполнение одного экземпляра WebAssembly UDF. Каждая инструкция WebAssembly потребляет некоторое количество «топлива».
+Установите значение 0, чтобы снять ограничение.
+
+## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка для ограничения размера входного блока для WebAssembly UDF."}]}]} />
+
+Максимальное количество строк, передаваемых в WebAssembly UDF в одном блоке. Установите значение 0, чтобы обрабатывать все строки за один раз.
+
+## webassembly_udf_max_instances \{#webassembly_udf_max_instances\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "Новая настройка для ограничения количества одновременно работающих экземпляров WebAssembly UDF для одной функции."}]}]} />
+
+Максимальное количество экземпляров WebAssembly UDF, которые могут выполняться одновременно для одной функции.
+
+## webassembly_udf_max_memory \{#webassembly_udf_max_memory\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="134217728" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "134217728"},{"label": "Новая настройка, ограничивающая объём памяти, выделяемой на один экземпляр WebAssembly UDF."}]}]} />
+
+Ограничение объёма памяти в байтах, выделяемой на один экземпляр WebAssembly UDF.
 
 ## window_view_clean_interval \{#window_view_clean_interval\}
 

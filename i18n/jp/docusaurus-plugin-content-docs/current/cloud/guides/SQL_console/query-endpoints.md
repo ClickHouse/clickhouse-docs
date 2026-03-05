@@ -25,8 +25,8 @@ import TabItem from '@theme/TabItem';
 
 先に進む前に、次の準備ができていることを確認してください:
 
-- 適切な権限を持つ API キー
-- Admin Console ロール
+* 適切な権限を持つ API キー
+* Admin Console ロール
 
 まだ持っていない場合は、このガイドに従って [API キーを作成](/cloud/manage/openapi) できます。
 
@@ -35,94 +35,93 @@ API エンドポイントに対してクエリを実行するには、API キー
 :::
 
 <VerticalStepper headerLevel="h3">
+  ### 保存済みクエリを作成する
 
-### 保存済みクエリを作成する \{#creating-a-saved-query\}
+  すでに保存済みクエリがある場合は、このステップをスキップできます。
 
-すでに保存済みクエリがある場合は、このステップをスキップできます。
+  新しいクエリタブを開きます。デモンストレーションのために、約 45 億件のレコードを含む [youtube データセット](/getting-started/example-datasets/youtube-dislikes) を使用します。
+  Cloud サービス上にテーブルを作成し、データを挿入するには、「[テーブルを作成](/getting-started/example-datasets/youtube-dislikes#create-the-table)」セクションの手順に従ってください。
 
-新しいクエリタブを開きます。デモンストレーションのために、約 45 億件のレコードを含む [youtube データセット](/getting-started/example-datasets/youtube-dislikes) を使用します。
-Cloud サービス上にテーブルを作成し、データを挿入するには、「[テーブルを作成](/getting-started/example-datasets/youtube-dislikes#create-the-table)」セクションの手順に従ってください。
+  :::tip 行数を `LIMIT` で制限する
+  このサンプルデータセットのチュートリアルでは大量のデータ (46.5 億行) を挿入するため、挿入に時間がかかる場合があります。
+  本ガイドの目的では、`LIMIT` 句を使用してより少量のデータを挿入することを推奨します。
+  例えば 1000 万行程度に制限してください。
+  :::
 
-:::tip 行数を `LIMIT` で制限する
-このサンプルデータセットのチュートリアルでは大量のデータ (46.5 億行) を挿入するため、挿入に時間がかかる場合があります。
-本ガイドの目的では、`LIMIT` 句を使用してより少量のデータを挿入することを推奨します。
-例えば 1000 万行程度に制限してください。
-:::
+  サンプルクエリとして、ユーザー入力の `year` パラメータを用いて、動画あたりの平均再生回数が多いアップローダー上位 10 件を返します。
 
-サンプルクエリとして、ユーザー入力の `year` パラメータを用いて、動画あたりの平均再生回数が多いアップローダー上位 10 件を返します。
+  ```sql
+  WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+  SELECT
+    uploader,
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+  FROM
+    youtube
+  WHERE
+  -- highlight-next-line
+    toYear(upload_date) = {year: UInt16}
+  GROUP BY uploader
+  ORDER BY per_upload desc
+    LIMIT 10
+  ```
 
-```sql
-WITH sum(view_count) AS view_sum,
-  round(view_sum / num_uploads, 2) AS per_upload
-SELECT
-  uploader,
-  count() AS num_uploads,
-  formatReadableQuantity(view_sum) AS total_views,
-  formatReadableQuantity(per_upload) AS views_per_video
-FROM
-  youtube
-WHERE
--- highlight-next-line
-  toYear(upload_date) = {year: UInt16}
-GROUP BY uploader
-ORDER BY per_upload desc
-  LIMIT 10
-```
+  このクエリには、上記のスニペットでハイライトされているパラメータ (`year`) が含まれている点に注意してください。
+  パラメータは、中括弧 `{ }` とパラメータの型を組み合わせて指定できます。
+  SQL コンソールのクエリエディタは ClickHouse のクエリパラメータ式を自動的に検出し、各パラメータに対応する入力欄を提供します。
 
-このクエリには、上記のスニペットでハイライトされているパラメータ (`year`) が含まれている点に注意してください。
-パラメータは、中括弧 `{ }` とパラメータの型を組み合わせて指定できます。
-SQL コンソールのクエリエディタは ClickHouse のクエリパラメータ式を自動的に検出し、各パラメータに対応する入力欄を提供します。
+  クエリが動作することを確認するために、SQL エディタ右側のクエリ変数入力ボックスに `2010` 年を指定して、このクエリを実行してみましょう:
 
-クエリが動作することを確認するために、SQL エディタ右側のクエリ変数入力ボックスに `2010` 年を指定して、このクエリを実行してみましょう:
+  <Image img={endpoints_testquery} size="md" alt="サンプルクエリをテストする" />
 
-<Image img={endpoints_testquery} size="md" alt="サンプルクエリをテストする" />
+  次に、クエリを保存します:
 
-次に、クエリを保存します:
+  <Image img={endpoints_savequery} size="md" alt="サンプルクエリを保存する" />
 
-<Image img={endpoints_savequery} size="md" alt="サンプルクエリを保存する" />
+  保存済みクエリに関する詳細なドキュメントは、「[クエリを保存する](/cloud/get-started/sql-console#saving-a-query)」セクションを参照してください。
 
-保存済みクエリに関する詳細なドキュメントは、「[クエリを保存する](/cloud/get-started/sql-console#saving-a-query)」セクションを参照してください。
+  ### クエリ API エンドポイントの設定
 
-### クエリ API エンドポイントの設定 \{#configuring-the-query-api-endpoint\}
+  クエリビューから直接、**Share** ボタンをクリックし、`API Endpoint` を選択することで Query API エンドポイントを設定できます。
+  どの API キーがこのエンドポイントへアクセスできるかを指定するよう促されます:
 
-クエリビューから直接、**Share** ボタンをクリックし、`API Endpoint` を選択することで Query API エンドポイントを設定できます。
-どの API キーがこのエンドポイントへアクセスできるかを指定するよう促されます:
+  <Image img={endpoints_configure} size="md" alt="クエリエンドポイントの設定" />
 
-<Image img={endpoints_configure} size="md" alt="クエリエンドポイントの設定" />
+  API キーを選択した後、次の項目を指定します:
 
-API キーを選択した後、次の項目を指定します:
-- クエリの実行に使用する Database ロール (`Full access`、`Read only`、または `Create a custom role`)
-- クロスオリジンリソース共有 (CORS) で許可するドメイン
+  * クエリの実行に使用する Database ロール (`Full access`、`Read only`、または `Create a custom role`)
+  * クロスオリジンリソース共有 (CORS) で許可するドメイン
 
-これらのオプションを選択すると、クエリ API エンドポイントが自動的にプロビジョニングされます。
+  これらのオプションを選択すると、クエリ API エンドポイントが自動的にプロビジョニングされます。
 
-テストリクエストを送信できるよう、`curl` コマンドの例が表示されます:
+  テストリクエストを送信できるよう、`curl` コマンドの例が表示されます:
 
-<Image img={endpoints_completed} size="md" alt="エンドポイント用 curl コマンド" />
+  <Image img={endpoints_completed} size="md" alt="エンドポイント用 curl コマンド" />
 
-利便性のため、インターフェイスに表示される curl コマンドを以下に示します:
+  利便性のため、インターフェイスに表示される curl コマンドを以下に示します:
 
-```bash
-curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
-```
+  ```bash
+  curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
+  ```
 
-### Query API パラメータ \{#query-api-parameters\}
+  ### Query API パラメータ
 
-クエリ内のクエリパラメータは `{parameter_name: type}` という構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストのペイロードには、これらのパラメータを渡すための `queryVariables` オブジェクトが含まれます。
+  クエリ内のクエリパラメータは `{parameter_name: type}` という構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストのペイロードには、これらのパラメータを渡すための `queryVariables` オブジェクトが含まれます。
 
-### テストとモニタリング \{#testing-and-monitoring\}
+  ### テストとモニタリング
 
-Query API エンドポイントを作成したら、`curl` やその他の HTTP クライアントを使用して動作をテストできます:
+  Query API エンドポイントを作成したら、`curl` やその他の HTTP クライアントを使用して動作をテストできます:
 
-<Image img={endpoints_curltest} size="md" alt="エンドポイントの curl テスト" />
+  <Image img={endpoints_curltest} size="md" alt="エンドポイントの curl テスト" />
 
-最初のリクエストを送信すると、**Share** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、そのクエリに関するモニタリングデータを含むフライアウトが開きます:
+  最初のリクエストを送信すると、**Share** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、そのクエリに関するモニタリングデータを含むフライアウトが開きます:
 
-<Image img={endpoints_monitoring} size="sm" alt="エンドポイントのモニタリング" />
-
+  <Image img={endpoints_monitoring} size="sm" alt="エンドポイントのモニタリング" />
 </VerticalStepper>
 
-## 実装の詳細 \{#implementation-details\}
+## 実装の詳細 {#implementation-details}
 
 このエンドポイントは、保存済みの Query API エンドポイントに対してクエリを実行します。
 複数バージョンへの対応、柔軟なレスポンス形式、パラメータ付きクエリ、およびオプションのストリーミングレスポンス（バージョン 2 のみ）をサポートします。
@@ -161,13 +160,13 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### リクエスト設定 \{#request-configuration\}
 
-#### URL パラメータ \{#url-params\}
+#### URL パラメータ {#url-params}
 
 | パラメータ | 必須 | 説明 |
 |-----------|----------|-------------|
 | `queryEndpointId` | **はい** | 実行するクエリエンドポイントの一意の識別子 |
 
-#### クエリパラメータ \{#query-params\}
+#### クエリパラメータ {#query-params}
 
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|---------|
@@ -176,7 +175,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | No | クエリのタイムアウト（ミリ秒単位、デフォルト: 30000） | `?request_timeout=60000` |
 | `:clickhouse_setting` | No | サポートされている任意の [ClickHouse 設定](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### ヘッダー \{#headers\}
+#### ヘッダー {#headers}
 
 | ヘッダー | 必須 | 説明 | 値 |
 |--------|----------|-------------|--------|
@@ -203,9 +202,9 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### レスポンス \{#responses\}
+### レスポンス {#responses}
 
-#### 成功 \{#success\}
+#### 成功 {#success}
 
 **ステータス:** `200 OK`  
 クエリは正常に実行されました。
@@ -239,9 +238,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - レスポンスのストリーミング機能
 - パフォーマンスおよび機能の強化
 
-## 例 \{#examples\}
+## 例 {#examples}
 
-### 基本的なリクエスト \{#basic-request\}
+### 基本的なリクエスト {#basic-request}
 
 **クエリ API エンドポイント用の SQL:**
 
@@ -306,7 +305,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### バージョン 2 \{#version-2\}
+#### バージョン 2 {#version-2}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -360,7 +359,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -495,7 +494,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
   </TabItem>
 </Tabs>
 
-### ClickHouse の設定 `max_threads` を 8 にしたリクエスト \{#request-with-clickhouse-settings-max_threads-set-to-8\}
+### ClickHouse の設定 `max_threads` を 8 にしたリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **クエリ API エンドポイントの SQL:**
 
@@ -541,7 +540,7 @@ SELECT * FROM system.tables;
   </TabItem>
 </Tabs>
 
-### レスポンスをストリームとしてリクエストしてパースする` \{#request-and-parse-the-response-as-a-stream\}
+### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
 
 **クエリ API エンドポイントの SQL:**
 

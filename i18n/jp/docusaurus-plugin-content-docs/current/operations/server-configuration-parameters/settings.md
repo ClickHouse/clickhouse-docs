@@ -5042,6 +5042,10 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 ```
 
 
+## webassembly_udf_engine \{#webassembly_udf_engine\}
+
+<SettingsInfoBlock type="String" default_value="wasmtime" />WebAssembly UDF を実行するエンジンです。サポートされている値は &#39;wasmtime&#39; と &#39;wasmedge&#39; です。
+
 ## workload_path \{#workload_path\}
 
 すべての `CREATE WORKLOAD` および `CREATE RESOURCE` クエリのストレージとして使用されるディレクトリです。デフォルトでは、サーバーのワーキングディレクトリ直下の `/workload/` ディレクトリが使用されます。

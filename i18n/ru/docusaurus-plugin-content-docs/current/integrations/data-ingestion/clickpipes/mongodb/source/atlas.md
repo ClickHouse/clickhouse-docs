@@ -45,20 +45,20 @@ import Image from '@theme/IdealImage';
 
 Для ClickPipes требуется аутентификация по паролю:
 
-<Image img={mongo_atlas_add_user} alt="Добавить пользователя базы данных" size="lg" border/>
+<Image img={mongo_atlas_add_user} alt="Добавить пользователя базы данных" size="lg" border />
 
 Для ClickPipes нужен пользователь со следующими ролями:
 
-- `readAnyDatabase`
-- `clusterMonitor`
+* `readAnyDatabase`
+* `clusterMonitor`
 
 Вы можете найти их в разделе `Specific Privileges`:
 
-<Image img={mongo_atlas_add_roles} alt="Настройка ролей пользователя" size="lg" border/>
+<Image img={mongo_atlas_add_roles} alt="Настройка ролей пользователя" size="lg" border />
 
 Вы также можете указать кластеры/инстансы, к которым хотите предоставить доступ пользователю ClickPipes:
 
-<Image img={mongo_atlas_restrict_access} alt="Ограничение доступа к кластерам/инстансам" size="lg" border/>
+<Image img={mongo_atlas_restrict_access} alt="Ограничение доступа к кластерам/инстансам" size="lg" border />
 
 ## Что дальше? \{#whats-next\}
 

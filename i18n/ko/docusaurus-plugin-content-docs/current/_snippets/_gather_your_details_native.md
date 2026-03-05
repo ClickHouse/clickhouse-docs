@@ -4,7 +4,7 @@ import Image from '@theme/IdealImage';
 
 네이티브 TCP를 사용해 ClickHouse에 연결하려면 다음 정보가 필요합니다:
 
-| Parameter(s)              | Description                                               |
+| Parameters                | Description                                               |
 | ------------------------- | --------------------------------------------------------- |
 | `HOST` and `PORT`         | 일반적으로 TLS를 사용하는 경우 포트는 9440, TLS를 사용하지 않는 경우 포트는 9000입니다. |
 | `DATABASE NAME`           | 기본적으로 `default`라는 데이터베이스가 있습니다. 연결하려는 데이터베이스의 이름을 사용합니다.  |

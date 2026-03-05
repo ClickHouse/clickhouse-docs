@@ -350,10 +350,10 @@ join(right, on=None, how='inner', left_on=None, right_on=None) -> DataStore
 | Parameter  | Type      | Default   | Description                                                             |
 | ---------- | --------- | --------- | ----------------------------------------------------------------------- |
 | `right`    | DataStore | *必須*      | 結合する右側の DataStore                                                       |
-| `on`       | str/list  | `None`    | 結合に使用するカラム（複数可）                                                         |
+| `on`       | str/list  | `None`    | 結合に使用するカラム (複数可)                                                        |
 | `how`      | str       | `'inner'` | 結合方法: &#39;inner&#39;, &#39;left&#39;, &#39;right&#39;, &#39;outer&#39; |
-| `left_on`  | str/list  | `None`    | 左側の結合に使用するカラム（複数可）                                                      |
-| `right_on` | str/list  | `None`    | 右側の結合に使用するカラム（複数可）                                                      |
+| `left_on`  | str/list  | `None`    | 左側の結合に使用するカラム (複数可)                                                     |
+| `right_on` | str/list  | `None`    | 右側の結合に使用するカラム (複数可)                                                     |
 
 **例:**
 
