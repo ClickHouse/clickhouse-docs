@@ -503,13 +503,16 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 ## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]} />
 
 テーブルの [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) カラムの作成を許可します。
+
+この設定は、抽出されたタプルのサブカラム (たとえば Dynamic、Variant、JSON、または Tuple カラムから抽出されたもの) が `Nullable` になり得るかどうかは制御しません。
+抽出されたタプルのサブカラムを `Nullable` にできるかどうかを制御するには、`allow_nullable_tuple_in_extracted_subcolumns` を使用します。
 
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
@@ -747,6 +750,24 @@ toTimeZone(), fromUnixTimestamp*(), snowflakeToDateTime*() のような一部の
 
 - 0 — 許可しない。
 - 1 — 許可する。
+
+## allow_nullable_tuple_in_extracted_subcolumns \{#allow_nullable_tuple_in_extracted_subcolumns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "抽出された Tuple サブカラムを Nullable にできるかどうかを制御する新しい設定。"}]}]} />
+
+抽出された `Tuple(...)` 型のサブカラムを `Nullable(Tuple(...))` として型付けできるかどうかを制御します。
+
+* `false`: `Tuple(...)` を返し、サブカラムが存在しない行にはデフォルトのタプル値を使用します。
+* `true`: `Nullable(Tuple(...))` を返し、サブカラムが存在しない行には `NULL` を使用します。
+
+この設定は、抽出されたサブカラムの動作のみを制御します。
+テーブル内で `Nullable(Tuple(...))` カラムを作成できるかどうかは制御せず、それは `allow_experimental_nullable_tuple_type` によって制御されます。
+
+ClickHouse はサーバー起動時に読み込まれたこの設定の値を使用します。
+`SET` またはクエリ単位の `SETTINGS` による変更では、抽出されたサブカラムの動作は変わりません。
+抽出されたサブカラムの動作を変更するには、起動プロファイル設定 (たとえば users.xml) 内の `allow_nullable_tuple_in_extracted_subcolumns` を更新し、サーバーを再起動します。
 
 ## allow_prefetched_read_pool_for_local_filesystem \{#allow_prefetched_read_pool_for_local_filesystem\}
 
