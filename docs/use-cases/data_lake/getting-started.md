@@ -3,8 +3,8 @@ title: 'Getting started with lakehouse table formats'
 sidebar_label: 'Getting started'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
-pagination_prev: use-cases/data_lake/index
-pagination_next: use-cases/data_lake/getting-started/querying-directly
+pagination_prev: null
+pagination_next: use-cases/data_lake/guides/querying-directly
 description: 'A hands-on introduction to querying, accelerating, and writing back data in open table formats with ClickHouse.'
 keywords: ['data lake', 'lakehouse', 'getting started', 'iceberg', 'delta lake', 'hudi', 'paimon']
 doc_type: 'guide'
