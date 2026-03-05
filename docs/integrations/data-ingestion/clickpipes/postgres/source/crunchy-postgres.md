@@ -72,13 +72,13 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
-:::tip
-We don't recommend creating a publication `FOR ALL TABLES` unless you are replicating all tables, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
-:::
+   :::warning
+   Avoid using `FOR ALL TABLES` unless you intend to replicate every table. Including unnecessary tables increases WAL traffic from Postgres to ClickPipes and reduces overall replication efficiency.
+   :::
 
-:::note
-ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
-:::
+   :::note
+   ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
+   :::
 
 ## Safe list ClickPipes IPs {#safe-list-clickpipes-ips}
 
