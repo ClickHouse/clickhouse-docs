@@ -171,18 +171,14 @@ RETURNS return_type
 **パラメータ**:
 
 * `function_name`: ClickHouse 内での関数名。モジュール内でエクスポートされている関数名とは異なる場合があります。
-* `FROM 'module_name' :: 'source_function_name'`: 読み込まれる WASM モジュール名と、使用する WASM モジュール内の関数名（省略時は `function_name` が既定値）。
-* `ARGUMENTS`: 引数名と型のリスト（名前は任意。名前付きフィールドをサポートするシリアライゼーション形式で使用されます）
+* `FROM 'module_name' :: 'source_function_name'`: 読み込まれる WASM モジュール名と、使用する WASM モジュール内の関数名 (省略時は `function_name` が既定値) 。
+* `ARGUMENTS`: 引数名と型のリスト (名前は任意。名前付きフィールドをサポートするシリアライゼーション形式で使用されます)
 * `ABI`: Application Binary Interface のバージョン
   * `ROW_DIRECT`: 型を直接マッピングし、行単位で処理
   * `BUFFERED_V1`: シリアライゼーションを伴うブロック単位の処理
-* `SHA256_HASH`: 検証用の期待されるモジュールハッシュ（省略時は自動設定）。異なるレプリカ間で正しい WASM モジュールが読み込まれていることを保証するために使用できます。
+* `SHA256_HASH`: 検証用の期待されるモジュールハッシュ (省略時は自動設定) 。異なるレプリカ間で正しい WASM モジュールが読み込まれていることを保証するために使用できます。
 * `SETTINGS`: 関数ごとの設定
-  * `max_fuel` UInt64 — インスタンスごとの命令実行用 fuel。既定値: `100000`。
-  * `max_memory` UInt64 — インスタンスごとの最大メモリ使用量（バイト単位）。範囲: 64 KiB 〜 4 GiB。既定値: `104857600`（100 MiB）。
   * `serialization_format` String — ABI がシリアライゼーション形式を必要とする場合に使用される形式。既定値: `MsgPack`。
-  * `max_input_block_size` UInt64 — 指定された場合、ブロックベース処理を行う ABI に対して、入力ブロックサイズの最大値（行数）を制限します。既定値: `0`（無制限）。
-  * `max_instances` UInt64 — 1 つのクエリ内で関数ごとに並列実行されるインスタンスの最大数。既定値: `128`。
 
 ## ABI バージョン \{#abis-versions\}
 
@@ -300,6 +296,25 @@ ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) {
 * `clickhouse_log(ptr: i32, size: i32)` — メッセージを ClickHouse サーバーのテキストログに出力します。
 * `clickhouse_random(ptr: i32, size: i32)` — メモリをランダムなバイトで埋めます。
 
-## 関連項目 \{#host-api-available-to-modules\}
+## 設定 \{#host-api-available-to-modules\}
+
+クエリレベルの以下の設定値により、WebAssembly UDF の実行を制御します：
+
+* `webassembly_udf_max_fuel` (UInt64, default: 100000) — WebAssembly UDF インスタンス 1 回の実行ごとの fuel 上限。各 WebAssembly 命令は一定量の fuel を消費します。無制限にするには 0 に設定します。
+
+* `webassembly_udf_max_memory` (UInt64, default: 128&#95;MiB) — WebAssembly UDF インスタンス 1 つあたりのメモリ上限 (バイト単位) 。
+
+* `webassembly_udf_max_input_block_size` (UInt64, default: 0) — 単一ブロックで WebAssembly UDF に渡される最大行数。すべての行を一度に処理するには 0 に設定します。
+
+* `webassembly_udf_max_instances` (UInt64, default: 128) — 1 つの関数につき並列実行できる WebAssembly UDF インスタンスの最大数。
+
+使用例：
+
+```sql
+SET webassembly_udf_max_fuel = 200000;
+SELECT my_wasm_udf(column) FROM table;
+```
+
+## 関連項目 \{#settings\}
 
 * [ClickHouse UDF の概要](/sql-reference/functions/udf)

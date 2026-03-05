@@ -75,6 +75,22 @@ doc_type: 'reference'
 - 快速且响应灵敏的性能
 - 开源并采用 MIT 许可证
 
+### Dory \{#dory\}
+
+[Dory](https://github.com/dorylab/dory) AI 原生 SQL 工作空间，对 ClickHouse 提供一流支持，并内置 AI 能力。
+
+功能特性：
+
+* 用于 SQL 生成、解释和调试的 AI Copilot
+* 在统一工作空间中管理和查询多个 ClickHouse 集群
+* 具备 Schema 感知能力的 SQL 自动补全和多标签查询工作空间
+* 支持过滤和可视化的交互式查询结果探索
+* AI 驱动的数据表摘要，便于理解数据集
+* 直接连接 ClickHouse，支持 SSH 隧道
+* 现代、对开发者友好的界面，支持浅色、深色及主题
+* 跨平台桌面应用 (macOS、Windows、Linux) ，并支持 Docker
+* 开源并采用 MIT 许可
+
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
 [ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一个用于通过 Mermaid.js 图表可视化 ClickHouse 表关系的强大开源 Web 应用。你可以通过直观界面浏览数据库和数据表，利用可选的行数与大小信息探索表元数据，并导出交互式 schema 图。

@@ -172,18 +172,14 @@ RETURNS return_type
 **参数**：
 
 * `function_name`: ClickHouse 中的函数名。可以与模块中导出的函数名不同。
-* `FROM 'module_name' :: 'source_function_name'`: 已加载 WASM 模块的名称，以及在该 WASM 模块中要使用的函数名（默认值为 `function_name`）
-* `ARGUMENTS`: 参数名称和类型列表（名称可选，并用于支持命名字段的序列化格式）
-* `ABI`: Application Binary Interface（应用二进制接口）版本
+* `FROM 'module_name' :: 'source_function_name'`: 已加载 WASM 模块的名称，以及在该 WASM 模块中要使用的函数名 (默认值为 `function_name`)
+* `ARGUMENTS`: 参数名称和类型列表 (名称可选，并用于支持命名字段的序列化格式)
+* `ABI`: Application Binary Interface (应用二进制接口) 版本
   * `ROW_DIRECT`: 直接类型映射，逐行处理
-  * `BUFFERED_V1`: 采用基于块（block）的处理并进行序列化
-* `SHA256_HASH`: 用于校验的期望模块哈希（如果省略则自动填充），可用于确保在不同副本上加载的是正确的 WASM 模块。
+  * `BUFFERED_V1`: 采用基于块 (block) 的处理并进行序列化
+* `SHA256_HASH`: 用于校验的期望模块哈希 (如果省略则自动填充) ，可用于确保在不同副本上加载的是正确的 WASM 模块。
 * `SETTINGS`: 每个函数的设置
-  * `max_fuel` UInt64 — 每个实例可用的指令燃料。默认值：`100000`。
-  * `max_memory` UInt64 — 每个实例的最大内存使用量（字节）。范围：64 KiB … 4 GiB。默认值：`104857600`（100 MiB）。
   * `serialization_format` String — 当 ABI 需要时使用的序列化格式。默认值：`MsgPack`。
-  * `max_input_block_size` UInt64 — 如指定，则在使用基于块处理的 ABI 时限制输入块的最大大小（以行数计）。默认值：`0`（无限制）。
-  * `max_instances` UInt64 — 单个查询中每个函数的最大并行实例数。默认值：`128`。
 
 ## ABI 版本 \{#abis-versions\}
 
@@ -301,6 +297,25 @@ ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) {
 * `clickhouse_log(ptr: i32, size: i32)` — 将消息记录到 ClickHouse 服务器文本日志中。
 * `clickhouse_random(ptr: i32, size: i32)` — 使用随机字节填充内存。
 
-## 另请参阅 \{#host-api-available-to-modules\}
+## 设置 \{#host-api-available-to-modules\}
+
+以下查询级别设置用于控制 WebAssembly UDF 的执行：
+
+* `webassembly_udf_max_fuel` (UInt64，默认值：100000) — 每个 WebAssembly UDF 实例执行可使用的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。设置为 0 表示不限制。
+
+* `webassembly_udf_max_memory` (UInt64，默认值：128&#95;MiB) — 每个 WebAssembly UDF 实例的内存限制 (以字节为单位) 。
+
+* `webassembly_udf_max_input_block_size` (UInt64，默认值：0) — 在单个数据块中传递给 WebAssembly UDF 的最大行数。设置为 0 表示一次性处理所有行。
+
+* `webassembly_udf_max_instances` (UInt64，默认值：128) — 每个函数可并行运行的 WebAssembly UDF 实例最大数量。
+
+示例用法：
+
+```sql
+SET webassembly_udf_max_fuel = 200000;
+SELECT my_wasm_udf(column) FROM table;
+```
+
+## 另请参阅 \{#settings\}
 
 * [ClickHouse UDF 概述](/sql-reference/functions/udf)

@@ -179,11 +179,7 @@ RETURNS return_type
   * `BUFFERED_V1`: 직렬화를 사용하는 블록 기반 처리
 * `SHA256_HASH`: 검증을 위한 예상 모듈 해시입니다(생략 시 자동으로 채워지며), 서로 다른 레플리카에서 올바른 WASM 모듈이 로드되었는지 보장하는 데 사용할 수 있습니다.
 * `SETTINGS`: 함수별 설정입니다.
-  * `max_fuel` UInt64 — 인스턴스당 명령어 연료량입니다. 기본값: `100000`.
-  * `max_memory` UInt64 — 인스턴스당 최대 메모리 사용량(바이트 단위)입니다. 범위: 64 KiB … 4 GiB. 기본값: `104857600` (100 MiB).
   * `serialization_format` String — ABI에서 요구하는 경우 사용할 직렬화 형식입니다. 기본값: `MsgPack`.
-  * `max_input_block_size` UInt64 — 지정된 경우, 블록 기반 처리를 사용하는 ABI에서 입력 블록의 최대 크기를 행 단위로 제한합니다. 기본값: `0` (무제한).
-  * `max_instances` UInt64 — 단일 쿼리에서 함수별 최대 병렬 인스턴스 수입니다. 기본값: `128`.
 
 ## ABI 버전 \{#abis-versions\}
 
@@ -301,6 +297,25 @@ ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) {
 * `clickhouse_log(ptr: i32, size: i32)` — 메시지를 ClickHouse 서버 텍스트 로그에 기록합니다.
 * `clickhouse_random(ptr: i32, size: i32)` — 메모리를 임의의 바이트로 채웁니다.
 
-## 같이 보기 \{#host-api-available-to-modules\}
+## 설정 \{#host-api-available-to-modules\}
+
+다음 쿼리 단위 설정으로 WebAssembly UDF 실행을 제어합니다.
+
+* `webassembly_udf_max_fuel` (UInt64, 기본값: 100000) — WebAssembly UDF 인스턴스 1회 실행당 연료 한도입니다. 각 WebAssembly 명령은 일정량의 연료를 소비합니다. 제한을 두지 않으려면 0으로 설정합니다.
+
+* `webassembly_udf_max_memory` (UInt64, 기본값: 128&#95;MiB) — WebAssembly UDF 인스턴스당 바이트 단위 메모리 한도입니다.
+
+* `webassembly_udf_max_input_block_size` (UInt64, 기본값: 0) — 단일 블록에서 WebAssembly UDF로 전달되는 최대 행 수입니다. 모든 행을 한 번에 처리하려면 0으로 설정합니다.
+
+* `webassembly_udf_max_instances` (UInt64, 기본값: 128) — 각 함수당 병렬로 실행될 수 있는 WebAssembly UDF 인스턴스의 최대 개수입니다.
+
+사용 예:
+
+```sql
+SET webassembly_udf_max_fuel = 200000;
+SELECT my_wasm_udf(column) FROM table;
+```
+
+## 같이 보기 \{#settings\}
 
 * [ClickHouse UDF 개요](/sql-reference/functions/udf)

@@ -379,92 +379,88 @@ TableProvider API에는 여러 가지 강력한 기능이 있습니다.
 
 존재하지 않는 테이블로 데이터를 쓰는 경우 커넥터가 적절한 스키마로 테이블을 자동으로 생성합니다. 커넥터는 다음과 같은 지능적인 기본값을 제공합니다.
 
-- **엔진(Engine)**: 지정하지 않은 경우 기본값은 `MergeTree()`입니다. `engine` 옵션을 사용해 다른 엔진을 지정할 수 있습니다(예: `ReplacingMergeTree()`, `SummingMergeTree()` 등).
-- **ORDER BY**: **필수** - 새 테이블을 생성할 때 `order_by` 옵션을 명시적으로 지정해야 합니다. 커넥터는 지정된 모든 컬럼이 스키마에 존재하는지 검증합니다.
-- **널 허용 키 지원(Nullable Key Support)**: ORDER BY에 널 허용 컬럼이 포함된 경우 `settings.allow_nullable_key=1`을 자동으로 추가합니다.
+* **엔진(Engine)**: 지정하지 않은 경우 기본값은 `MergeTree()`입니다. `engine` 옵션을 사용해 다른 엔진을 지정할 수 있습니다(예: `ReplacingMergeTree()`, `SummingMergeTree()` 등).
+* **ORDER BY**: **필수** - 새 테이블을 생성할 때 `order_by` 옵션을 명시적으로 지정해야 합니다. 커넥터는 지정된 모든 컬럼이 스키마에 존재하는지 검증합니다.
+* **널 허용 키 지원(Nullable Key Support)**: ORDER BY에 널 허용 컬럼이 포함된 경우 `settings.allow_nullable_key=1`을 자동으로 추가합니다.
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # 사용자 지정 엔진으로 테이블 생성 옵션을 지정합니다.
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# 사용자 지정 엔진으로 테이블 생성 옵션을 지정합니다.
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // 명시적인 테이블 생성 옵션과 사용자 지정 엔진을 사용합니다.
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// 명시적인 테이블 생성 옵션과 사용자 지정 엔진을 사용합니다.
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// 명시적인 ORDER BY(필수)와 함께 테이블이 자동으로 생성됩니다.
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// 명시적인 테이블 생성 옵션과 사용자 지정 엔진을 사용합니다.
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // 명시적인 테이블 생성 옵션과 사용자 지정 엔진을 사용합니다.
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
@@ -496,17 +492,17 @@ df.write()
 
 다음 옵션은 테이블이 존재하지 않아 새로 생성해야 할 때 사용합니다:
 
-| Option                      | Description                                                                 | Default Value     | Required |
-|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | ORDER BY 절에 사용할 컬럼. 여러 컬럼은 콤마로 구분합니다                     | N/A               | **예**   |
-| `engine`                    | ClickHouse 테이블 엔진 (예: `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` 등) | `MergeTree()`     | 아니요   |
-| `settings.allow_nullable_key` | ORDER BY에서 널 허용 키를 활성화합니다 (ClickHouse Cloud용)               | 자동 감지**       | 아니요   |
-| `settings.<key>`            | ClickHouse 테이블 설정 전체                                                 | N/A               | 아니요   |
-| `cluster`                   | 분산 테이블용 클러스터 이름                                                | N/A               | 아니요   |
-| `clickhouse.column.<name>.variant_types` | Variant 컬럼에 사용할 ClickHouse 타입의 콤마 구분 목록 (예: `String, Int64, Bool, JSON`). 타입 이름은 대소문자를 구분합니다. 콤마 뒤 공백은 선택 사항입니다. | N/A | 아니요 |
+| Option                                   | Description                                                                                                      | Default Value | Required |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
+| `order_by`                               | ORDER BY 절에 사용할 컬럼. 여러 컬럼은 콤마로 구분합니다                                                                             | N/A           | **예**    |
+| `engine`                                 | ClickHouse 테이블 엔진 (예: `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` 등)                             | `MergeTree()` | 아니요      |
+| `settings.allow_nullable_key`            | ORDER BY에서 널 허용 키를 활성화합니다 (ClickHouse Cloud용)                                                                    | 자동 감지**       | 아니요      |
+| `settings.<key>`                         | ClickHouse 테이블 설정 전체                                                                                             | N/A           | 아니요      |
+| `cluster`                                | 분산 테이블용 클러스터 이름                                                                                                  | N/A           | 아니요      |
+| `clickhouse.column.<name>.variant_types` | Variant 컬럼에 사용할 ClickHouse 타입의 콤마 구분 목록 (예: `String, Int64, Bool, JSON`). 타입 이름은 대소문자를 구분합니다. 콤마 뒤 공백은 선택 사항입니다. | N/A           | 아니요      |
 
-\* 새 테이블을 생성할 때는 `order_by` 옵션이 필수입니다. 지정된 모든 컬럼이 스키마에 존재해야 합니다.  
-\** ORDER BY에 널 허용 컬럼이 포함되어 있고 명시적으로 설정되지 않은 경우 자동으로 `1`로 설정됩니다.
+* 새 테이블을 생성할 때는 `order_by` 옵션이 필수입니다. 지정된 모든 컬럼이 스키마에 존재해야 합니다.
+** ORDER BY에 널 허용 컬럼이 포함되어 있고 명시적으로 설정되지 않은 경우 자동으로 `1`로 설정됩니다.
 
 :::tip
 **모범 사례**: ClickHouse Cloud에서는 ORDER BY 컬럼이 널 허용일 수 있는 경우, ClickHouse Cloud에서 이 설정을 요구하므로 `settings.allow_nullable_key=1`을 명시적으로 설정하는 것이 좋습니다.

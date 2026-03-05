@@ -45,20 +45,20 @@ import Image from '@theme/IdealImage';
 
 ClickPipes 需要使用密码身份验证：
 
-<Image img={mongo_atlas_add_user} alt="添加数据库用户" size="lg" border/>
+<Image img={mongo_atlas_add_user} alt="添加数据库用户" size="lg" border />
 
 ClickPipes 需要一个具有以下角色的用户：
 
-- `readAnyDatabase`
-- `clusterMonitor`
+* `readAnyDatabase`
+* `clusterMonitor`
 
 可以在 `Specific Privileges` 部分中找到这些角色：
 
-<Image img={mongo_atlas_add_roles} alt="配置用户角色" size="lg" border/>
+<Image img={mongo_atlas_add_roles} alt="配置用户角色" size="lg" border />
 
 还可以进一步指定希望授予 ClickPipes 用户访问权限的集群/实例：
 
-<Image img={mongo_atlas_restrict_access} alt="限制集群/实例访问" size="lg" border/>
+<Image img={mongo_atlas_restrict_access} alt="限制集群/实例访问" size="lg" border />
 
 ## 后续步骤 \{#whats-next\}
 

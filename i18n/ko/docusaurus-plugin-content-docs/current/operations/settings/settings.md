@@ -1223,9 +1223,7 @@ fuzzer는 모든 세션의 모든 쿼리에서 AST 조각을 축적하여 시간
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 async insert를 활성화합니다."}]}]} />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
 true인 경우, INSERT 쿼리로 들어온 데이터는 큐에 저장된 뒤 백그라운드에서 테이블로 플러시됩니다. wait&#95;for&#95;async&#95;insert가 false이면 INSERT 쿼리는 거의 즉시 처리되고, 그렇지 않으면 클라이언트는 데이터가 테이블로 플러시될 때까지 대기합니다.
 

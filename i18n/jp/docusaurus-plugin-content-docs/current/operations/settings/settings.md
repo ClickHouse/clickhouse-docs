@@ -1221,9 +1221,7 @@ fuzzerは、すべてのセッションにわたるすべてのクエリからAS
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "非同期挿入をデフォルトで有効にします。"}]}]} />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
 true の場合、INSERT クエリのデータはキューに格納され、後でバックグラウンドでテーブルにフラッシュされます。wait&#95;for&#95;async&#95;insert が false の場合、INSERT クエリはほぼ即座に処理されます。true の場合、クライアントはデータがテーブルにフラッシュされるまで待機します。
 
