@@ -1316,6 +1316,7 @@ numOfDroppedBatches
 numOfDroppedRecords
 numRecordSend
 numRequestSubmitted
+TaskManager
 totalBatchRetries
 triggeredByMaxBatchSizeCounter
 triggeredByMaxBatchSizeInBytesCounter

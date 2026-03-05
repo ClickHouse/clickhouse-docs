@@ -24,6 +24,8 @@ This is the official [Apache Flink Sink Connector](https://github.com/ClickHouse
 
 The connector supports Apache Flink's DataStream API. Table API support is [planned for a future release](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
+<TOCInline toc={toc}></TOCInline>
+
 ## Requirements {#requirements}
 
 - Java 11+ (for Flink 1.17+) or 17+ (for Flink 2.0+)
