@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import authenticate from '@site/static/images/clickstack/deployment/embedded/authenticate.png';
-import create_source from '@site/static/images/clickstack/deployment/embedded/create-source.png';
+import inferred_source from '@site/static/images/clickstack/deployment/embedded/inferred-source.png';
 
 ClickStack is bundled directly into the ClickHouse server binary. This means you can access the ClickStack UI (HyperDX) from your ClickHouse instance without deploying any additional components. This deployment is similar to the public demo at [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com), but running against your own ClickHouse instance and data.
 
@@ -34,12 +34,12 @@ This embedded version is **not designed for production use**. The following feat
 
 ## Deployment steps {#deployment-steps}
 
-<VerticalStepper headerLevel="h3">
-
-### Start ClickHouse {#start-clickhouse}
-
 <Tabs groupId="install-method">
 <TabItem value="docker" label="Docker" default>
+
+<VerticalStepper headerLevel="h3">
+
+### Start ClickHouse {#start-clickhouse-docker}
 
 Pull and run the ClickHouse server image with a password set:
 
@@ -55,39 +55,105 @@ docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 click
 ```
 :::
 
+### Open the ClickStack UI {#open-clickstack-ui-docker}
+
+Open [http://localhost:8123](http://localhost:8123) in your browser and click **ClickStack**.
+
+Enter the username `default` and the password `password` to connect to the local instance.
+
+<Image img={authenticate} alt="Authenticate" size="lg"/>
+
+### Create a source {#create-a-source-docker}
+
+If you have existing OpenTelemetry tables, ClickStack will detect them and create sources automatically.
+
+On a fresh installation, you will be prompted to create a source. Complete the **Table** field with the appropriate table name (e.g. `otel_logs`) and click **Save New Source**.
+
+<Image img={inferred_source} alt="Create Source" size="lg"/>
+
+If you don't have data yet, see [Ingesting data](/use-cases/observability/clickstack/ingesting-data) for available options.
+
+</VerticalStepper>
+
 </TabItem>
 <TabItem value="binary" label="Binary">
+
+<VerticalStepper headerLevel="h3">
+
+### Start ClickHouse {#start-clickhouse-binary}
 
 Download and start ClickHouse:
 
 ```shell
 curl https://clickhouse.com/ | sh
+```
 
+<details>
+<summary>Optional: Enable system log tables</summary>
+
+To explore ClickHouse's own internal logs and metrics, create a configuration snippet in your working directory before starting the server:
+
+```shell
+mkdir -p config.d && cat > config.d/query_logs.xml << 'EOF'
+<clickhouse>
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+    </query_log>
+    <query_thread_log>
+        <database>system</database>
+        <table>query_thread_log</table>
+    </query_thread_log>
+    <query_views_log>
+        <database>system</database>
+        <table>query_views_log</table>
+    </query_views_log>
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+    </metric_log>
+    <asynchronous_metric_log>
+        <database>system</database>
+        <table>asynchronous_metric_log</table>
+    </asynchronous_metric_log>
+</clickhouse>
+EOF
+```
+
+With this enabled, you can create a **Log Source** pointing to `system.query_log` after opening ClickStack:
+
+| Setting | Value |
+|---|---|
+| **Name** | `Query Logs` |
+| **Database** | `system` |
+| **Table** | `query_log` |
+| **Timestamp Column** | `event_time` |
+| **Default Select** | `event_time, query_kind, query, databases, tables, initial_user, projections, memory_usage, written_rows, read_rows, query_duration_ms` |
+
+</details>
+
+Start the server:
+
+```shell
 ./clickhouse server
 ```
 
-The `default` user has no password when running from the binary.
+### Open the ClickStack UI {#open-clickstack-ui-binary}
+
+Open [http://localhost:8123](http://localhost:8123) in your browser and click **ClickStack**. A connection to the local instance is created automatically.
+
+### Create a source {#create-a-source-binary}
+
+If you have existing OpenTelemetry tables, ClickStack will detect them and create sources automatically.
+
+If you don't have data yet, see [Ingesting data](/use-cases/observability/clickstack/ingesting-data) for available options.
+
+<Image img={inferred_source} alt="Create Source" size="lg"/>
+
+</VerticalStepper>
 
 </TabItem>
 </Tabs>
-
-### Navigate to the ClickStack UI {#navigate-to-clickstack-ui}
-
-Open [http://localhost:8123](http://localhost:8123) in your browser and click **ClickStack**.
-
-Enter your credentials. If using the Docker example above, the username is `default` and the password is `password`. If using the binary, the username is `default` with no password.
-
-<Image img={authenticate} alt="Authenticate" size="lg"/>
-
-### Create a source {#create-a-source}
-
-After logging in, you'll be prompted to create a data source. If you have existing OpenTelemetry tables, retain the default values and complete the `Table` field with the appropriate table name (e.g. `otel_logs`). All other settings should be auto-detected, allowing you to click `Save New Source`.
-
-If you don't have data yet, see ["Ingesting data"](/use-cases/observability/clickstack/ingesting-data) for available options.
-
-<Image img={create_source} alt="Create Source" size="lg"/>
-
-</VerticalStepper>
 
 ## Next steps {#next-steps}
 
