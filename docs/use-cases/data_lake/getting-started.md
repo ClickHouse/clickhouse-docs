@@ -28,7 +28,7 @@ Screenshots in this guide are from the [ClickHouse Cloud](https://console.clickh
 
 ## Query Iceberg data directly {#query-directly}
 
-The fastest way to start is with the `icebergS3()` table function — point it at an Iceberg table in S3 and query immediately, no setup required.
+The fastest way to start is with the [`icebergS3()`](/sql-reference/table-functions/iceberg) table function — point it at an Iceberg table in S3 and query immediately, no setup required.
 
 Inspect the schema:
 
@@ -50,13 +50,13 @@ LIMIT 5
 
 <Image img={iceberg_query_direct} alt="Iceberg Query"/>
 
-ClickHouse reads the Iceberg metadata directly from S3 and infers the schema automatically. The same approach works for Delta Lake (`deltaLake()`), Hudi (`hudi()`), and Paimon (`paimon()`).
+ClickHouse reads the Iceberg metadata directly from S3 and infers the schema automatically. The same approach works for [`deltaLake()`](/sql-reference/table-functions/deltalake), [`hudi()`](/sql-reference/table-functions/hudi), and [`paimon()`](/sql-reference/table-functions/paimon).
 
 **Learn more:** [Querying open table formats directly](/use-cases/data-lake/getting-started/querying-directly) covers all four formats, cluster variants for distributed reads, and storage backend options (S3, Azure, HDFS, local).
 
 ## Create a persistent table engine {#table-engine}
 
-For repeated access, create a table using the Iceberg table engine so you don't need to pass the path every time. The data stays in S3 — nothing is copied:
+For repeated access, create a table using the Iceberg table engine so you don't need to pass the path every time. The data stays in S3 — no data is duplicated:
 
 ```sql
 CREATE TABLE hits_iceberg
@@ -81,7 +81,7 @@ The table engine supports data caching, metadata caching, schema evolution, and 
 
 ## Connect to a catalog {#connect-catalog}
 
-Most organizations manage tables through a data catalog. ClickHouse can connect to a catalog using the `DataLakeCatalog` database engine, exposing all catalog tables as a ClickHouse database.
+Most organizations manage Iceberg tables through a data catalog to centralize the table metadata and data discovery. ClickHouse supports connecting to your catalog using the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine, exposing all catalog tables as a ClickHouse database. This is the more scalable path so as new Iceberg tables are created, they are always accessible in ClickHouse without additional work. 
 
 Here's an example connecting to [AWS Glue](/use-cases/data-lake/glue-catalog):
 
@@ -95,6 +95,8 @@ SETTINGS
     aws_secret_access_key = '<your-secret-key>'
 ```
 
+Each catalog type requires its own connection settings — see the [Catalogs guides](/use-cases/data-lake/reference) for the full list of supported catalogs and their configuration options.
+
 Browse tables and query:
 
 ```sql
@@ -106,7 +108,7 @@ SELECT count(*) FROM my_lake.`<database>.<table>`
 ```
 
 :::note
-Backticks are required around table names because ClickHouse doesn't natively support more than one namespace.
+Backticks are required around `<database>.<table>` because ClickHouse doesn't natively support more than one namespace.
 :::
 
 **Learn more:** [Connecting to a data catalog](/use-cases/data-lake/getting-started/connecting-catalogs) walks through a full Unity Catalog setup with Delta and Iceberg examples.
