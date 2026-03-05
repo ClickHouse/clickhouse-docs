@@ -1223,9 +1223,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить асинхронные вставки по умолчанию."}]}]} />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait&#95;for&#95;async&#95;insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
 
