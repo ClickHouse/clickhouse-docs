@@ -380,98 +380,94 @@ TableProvider API は、いくつかの強力な機能を提供します。
 
 存在しないテーブルに対して書き込みを行う場合、コネクタは適切なスキーマでテーブルを自動作成します。コネクタは次のようなインテリジェントなデフォルトを提供します:
 
-- **Engine**: 指定がない場合は `MergeTree()` がデフォルトになります。`engine` オプションを使用して、別のエンジン（例: `ReplacingMergeTree()`, `SummingMergeTree()` など）を指定できます。
-- **ORDER BY**: **必須** - 新しいテーブルを作成する際には、`order_by` オプションを明示的に指定する必要があります。コネクタは、指定されたすべてのカラムがスキーマ内に存在することを検証します。
-- **Nullable キーのサポート**: ORDER BY に Nullable なカラムが含まれている場合、自動的に `settings.allow_nullable_key=1` を追加します。
+* **Engine**: 指定がない場合は `MergeTree()` がデフォルトになります。`engine` オプションを使用して、別のエンジン (例: `ReplacingMergeTree()`, `SummingMergeTree()` など) を指定できます。
+* **ORDER BY**: **必須** - 新しいテーブルを作成する際には、`order_by` オプションを明示的に指定する必要があります。コネクタは、指定されたすべてのカラムがスキーマ内に存在することを検証します。
+* **Nullable キーのサポート**: ORDER BY に Nullable なカラムが含まれている場合、自動的に `settings.allow_nullable_key=1` を追加します。
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # カスタムエンジンを含むテーブル作成オプションを指定
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# カスタムエンジンを含むテーブル作成オプションを指定
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // 明示的なテーブル作成オプションとカスタムエンジンを指定
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// 明示的なテーブル作成オプションとカスタムエンジンを指定
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// ORDER BY を明示的に指定しているため、テーブルは自動的に作成される（必須）
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// 明示的なテーブル作成オプションとカスタムエンジンを指定
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // 明示的なテーブル作成オプションとカスタムエンジンを指定
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
 **ORDER BY は必須**: TableProvider API 経由で新しいテーブルを作成する際、`order_by` オプションは **必須** です。ORDER BY 句に使用するカラムを明示的に指定する必要があります。コネクタは、指定されたすべてのカラムがスキーマ内に存在することを検証し、いずれかのカラムが存在しない場合はエラーをスローします。
 
-**エンジンの選択**: デフォルトのエンジンは `MergeTree()` ですが、`engine` オプションを使用して任意の ClickHouse テーブルエンジン（例: `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()` など）を指定できます。
+**エンジンの選択**: デフォルトのエンジンは `MergeTree()` ですが、`engine` オプションを使用して任意の ClickHouse テーブルエンジン (例: `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()` など) を指定できます。
 :::
 
 ### TableProvider Connection Options \{#tableprovider-connection-options\}
@@ -497,17 +493,17 @@ df.write()
 
 これらのオプションは、テーブルがまだ存在せず、新規作成が必要な場合に使用します。
 
-| Option                      | Description                                                                 | Default Value     | Required |
-|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | ORDER BY 句に使用するカラム。複数カラムの場合はカンマ区切り                    | N/A               | **Yes**  |
-| `engine`                    | ClickHouse のテーブルエンジン（例: `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` など） | `MergeTree()`     | No       |
-| `settings.allow_nullable_key` | ORDER BY で Nullable なキーを許可（ClickHouse Cloud 向け）               | 自動検出**        | No       |
-| `settings.<key>`            | 任意の ClickHouse テーブルの setting                                       | N/A               | No       |
-| `cluster`                   | 分散テーブル用のクラスタ名                                                  | N/A               | No       |
-| `clickhouse.column.<name>.variant_types` | Variant カラム用の ClickHouse 型のカンマ区切りリスト（例: `String, Int64, Bool, JSON`）。型名は大文字小文字を区別します。カンマ後のスペースは任意です。 | N/A | No |
+| Option                                   | Description                                                                                            | Default Value | Required |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------- | -------- |
+| `order_by`                               | ORDER BY 句に使用するカラム。複数カラムの場合はカンマ区切り                                                                     | N/A           | **Yes**  |
+| `engine`                                 | ClickHouse のテーブルエンジン (例: `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` など)               | `MergeTree()` | No       |
+| `settings.allow_nullable_key`            | ORDER BY で Nullable なキーを許可 (ClickHouse Cloud 向け)                                                       | 自動検出**        | No       |
+| `settings.<key>`                         | 任意の ClickHouse テーブルの setting                                                                           | N/A           | No       |
+| `cluster`                                | 分散テーブル用のクラスタ名                                                                                          | N/A           | No       |
+| `clickhouse.column.<name>.variant_types` | Variant カラム用の ClickHouse 型のカンマ区切りリスト (例: `String, Int64, Bool, JSON`) 。型名は大文字小文字を区別します。カンマ後のスペースは任意です。 | N/A           | No       |
 
-\* 新しいテーブルを作成する場合、`order_by` オプションは必須です。指定したすべてのカラムはスキーマ内に存在している必要があります。  
-\** ORDER BY に Nullable カラムが含まれており、かつ明示的に指定されていない場合は、自動的に `1` に設定されます。
+* 新しいテーブルを作成する場合、`order_by` オプションは必須です。指定したすべてのカラムはスキーマ内に存在している必要があります。
+** ORDER BY に Nullable カラムが含まれており、かつ明示的に指定されていない場合は、自動的に `1` に設定されます。
 
 :::tip
 **ベストプラクティス**: ClickHouse Cloud では、ORDER BY のカラムが Nullable になる可能性がある場合、ClickHouse Cloud がこの setting を必須としているため、`settings.allow_nullable_key=1` を明示的に設定することを推奨します。

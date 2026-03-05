@@ -51,9 +51,9 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 请确保已具备：
 
-- SQL Server 的服务器地址、端口、用户名和密码。建议为 Streamkap 创建单独的用户和角色，以便访问你的 SQL Server 数据库。[查看我们的文档以获取配置详情。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
-- ClickHouse 的服务器地址、端口、用户名和密码。ClickHouse 中的 IP 访问列表决定了哪些服务可以连接到你的 ClickHouse 数据库。[请按照此处的说明进行配置。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- 你希望进行流式传输的表——目前先从一张表开始即可
+* SQL Server 的服务器地址、端口、用户名和密码。建议为 Streamkap 创建单独的用户和角色，以便访问你的 SQL Server 数据库。[查看我们的文档以获取配置详情。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server\&sa=D\&source=editors\&ust=1760992472358213\&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
+* ClickHouse 的服务器地址、端口、用户名和密码。ClickHouse 中的 IP 访问列表决定了哪些服务可以连接到你的 ClickHouse 数据库。[请按照此处的说明进行配置。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse\&sa=D\&source=editors\&ust=1760992472359060\&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
+* 你希望进行流式传输的表——目前先从一张表开始即可
 
 ## 将 SQL Server 设置为数据源 \{#setting-up-sql-server-as-a-source\}
 

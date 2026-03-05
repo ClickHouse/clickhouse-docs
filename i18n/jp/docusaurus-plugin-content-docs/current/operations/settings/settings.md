@@ -1221,9 +1221,7 @@ fuzzerは、すべてのセッションにわたるすべてのクエリからAS
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "非同期挿入をデフォルトで有効にします。"}]}]} />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
 true の場合、INSERT クエリのデータはキューに格納され、後でバックグラウンドでテーブルにフラッシュされます。wait&#95;for&#95;async&#95;insert が false の場合、INSERT クエリはほぼ即座に処理されます。true の場合、クライアントはデータがテーブルにフラッシュされるまで待機します。
 
@@ -12051,6 +12049,47 @@ true の場合、非同期挿入の処理が完了するまで待機します。
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 イベント時刻処理で window view の fire signal を待機する際のタイムアウト値
+
+## webassembly_udf_max_fuel \{#webassembly_udf_max_fuel\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="100000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "WebAssembly UDF インスタンスの 1 回の実行ごとに CPU 命令（fuel）を制限する新しい設定です。"}]}]} />
+
+WebAssembly UDF インスタンスの 1 回の実行ごとにおける fuel の上限です。各 WebAssembly 命令は一定量の fuel を消費します。
+制限を設けない場合は 0 を指定します。
+
+## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "WebAssembly UDF の入力ブロックサイズを制限する新しい設定。"}]}]} />
+
+1 つのブロックで WebAssembly UDF に渡される最大の行数です。すべての行を一度に処理するには 0 を指定します。
+
+## webassembly_udf_max_instances \{#webassembly_udf_max_instances\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "各関数あたり並列実行される WebAssembly UDF インスタンス数を制限するための新しい設定。"}]}]} />
+
+各関数あたり並列実行できる WebAssembly UDF インスタンスの最大数。
+
+## webassembly_udf_max_memory \{#webassembly_udf_max_memory\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="134217728" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "134217728"},{"label": "WebAssembly UDF インスタンスごとのメモリを制限するための新しい設定。"}]}]} />
+
+各 WebAssembly UDF インスタンスのメモリ上限 (バイト単位) 。
 
 ## window_view_clean_interval \{#window_view_clean_interval\}
 

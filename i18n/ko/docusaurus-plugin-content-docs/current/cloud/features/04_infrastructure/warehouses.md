@@ -52,23 +52,23 @@ _그림 2 - ClickHouse Cloud의 컴퓨트 분리_
 
 ## 웨어하우스란 무엇입니까? \{#what-is-a-warehouse\}
 
-ClickHouse Cloud에서 _웨어하우스(warehouse)_는 동일한 데이터를 공유하는 서비스 집합입니다.
+ClickHouse Cloud에서 &#95;웨어하우스(warehouse)&#95;는 동일한 데이터를 공유하는 서비스 집합입니다.
 각 웨어하우스에는 기본 서비스(가장 먼저 생성된 서비스)와 보조 서비스가 있습니다. 예를 들어, 아래 스크린샷에서는 두 개의 서비스를 가진 「DWH Prod」 웨어하우스를 볼 수 있습니다:
 
-- 기본 서비스 `DWH Prod`
-- 보조 서비스 `DWH Prod Subservice`
+* 기본 서비스 `DWH Prod`
+* 보조 서비스 `DWH Prod Subservice`
 
-<Image img={compute_8} size="lg" alt="기본 서비스와 보조 서비스를 포함한 웨어하우스 예시" background='white' />
+<Image img={compute_8} size="lg" alt="기본 서비스와 보조 서비스를 포함한 웨어하우스 예시" background="white" />
 
 <br />
 
-_그림 3 - 웨어하우스 예시_
+*그림 3 - 웨어하우스 예시*
 
 웨어하우스의 모든 서비스는 다음을 공유합니다:
 
-- 리전(예: us-east1)
-- Cloud 서비스 공급자(AWS, GCP 또는 Azure)
-- ClickHouse 데이터베이스 버전
+* 리전(예: us-east1)
+* Cloud 서비스 공급자(AWS, GCP 또는 Azure)
+* ClickHouse 데이터베이스 버전
 
 서비스는 소속된 웨어하우스 기준으로 정렬할 수 있습니다.
 

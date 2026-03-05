@@ -47,13 +47,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ## ClickHouse JDBC 드라이버 다운로드하기 \{#3-download-the-clickhouse-jdbc-driver\}
 
-  1. GitHub에서 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 드라이버 릴리스 페이지</a>를 방문하여 최신 JDBC 릴리스 버전을 확인하십시오
-  2. 릴리스 버전에서 &quot;Show all xx assets&quot;를 클릭한 다음 &quot;shaded&quot; 또는 &quot;all&quot; 키워드를 포함한 JAR 파일을 찾습니다. 예를 들어 `clickhouse-jdbc-0.5.0-all.jar`입니다.
-  3. JAR 파일을 Apache NiFi에서 액세스할 수 있는 폴더에 배치하고, 해당 절대 경로를 메모해 둡니다
+  1. GitHub에서 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 드라이버 릴리스 페이지</a>로 이동하여 최신 JDBC 릴리스 버전을 찾으십시오
+  2. 릴리스 버전에서 &quot;Show all xx assets&quot;를 클릭한 다음 &quot;shaded&quot; 또는 &quot;all&quot; 키워드를 포함한 JAR 파일을 찾으십시오. 예를 들어 `clickhouse-jdbc-0.5.0-all.jar`입니다.
+  3. JAR 파일을 Apache NiFi에서 접근할 수 있는 폴더에 두고, 해당 절대 경로를 기록해 둡니다
 
   ## `DBCPConnectionPool` Controller Service 추가 및 속성 구성 \{#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties\}
 
-  1. Apache NiFi에서 Controller Service를 구성하려면 「톱니바퀴」 버튼을 클릭하여 NiFi Flow Configuration 페이지로 이동합니다.
+  1. Apache NiFi에서 Controller Service를 구성하려면 「톱니바퀴」 아이콘을 클릭해 NiFi Flow Configuration 페이지로 이동합니다.
 
      <Image img={nifi01} size="sm" border alt="톱니바퀴 아이콘이 강조 표시된 NiFi Flow Configuration 페이지" />
 
@@ -71,17 +71,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   5. 「Properties」 섹션에서 다음 값을 입력합니다.
 
-  | 속성                 | 값                                                                  | 비고                                 |
-  | ------------------ | ------------------------------------------------------------------ | ---------------------------------- |
-  | 데이터베이스 연결 URL      | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 연결 URL의 HOSTNAME을 환경에 맞는 값으로 교체합니다 |
-  | 데이터베이스 드라이버 클래스 이름 | com.clickhouse.jdbc.ClickHouseDriver                               |                                    |
-  | 데이터베이스 드라이버 경로     | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 드라이버 JAR 파일의 절대 경로 |
-  | 데이터베이스 사용자 이름      | default                                                            | ClickHouse 사용자 이름                  |
-  | 비밀번호               | password                                                           | ClickHouse 비밀번호                    |
+  | 속성                 | 값                                                                  | 비고                                   |
+  | ------------------ | ------------------------------------------------------------------ | ------------------------------------ |
+  | 데이터베이스 연결 URL      | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 연결 URL에서 HOSTNAME을 환경에 맞는 값으로 변경하십시오 |
+  | 데이터베이스 드라이버 클래스 이름 | com.clickhouse.jdbc.ClickHouseDriver                               |                                      |
+  | 데이터베이스 드라이버 경로     | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 드라이버 JAR 파일의 절대 경로   |
+  | 데이터베이스 사용자 이름      | default                                                            | ClickHouse 사용자 이름                    |
+  | 비밀번호               | password                                                           | ClickHouse 비밀번호                      |
 
-  6. Settings 섹션에서 Controller Service의 이름을 추후 쉽게 식별할 수 있도록 &quot;ClickHouse JDBC&quot;로 변경합니다.
+  6. Settings 섹션에서 Controller Service의 이름을 쉽게 구분할 수 있도록 &quot;ClickHouse JDBC&quot;로 변경합니다.
 
-     <Image img={nifi05} size="lg" border alt="속성이 입력된 DBCPConnectionPool 구성 대화 상자" />
+     <Image img={nifi05} size="lg" border alt="속성이 입력된 DBCPConnectionPool 구성 대화상자" />
 
   7. &quot;번개&quot; 모양 아이콘을 클릭한 다음 &quot;Enable&quot; 버튼을 클릭하여 `DBCPConnectionPool` Controller Service를 활성화합니다
 
@@ -89,7 +89,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <br />
 
-     <Image img={nifi07} size="lg" border alt="컨트롤러 서비스 활성화 확인 대화상자" />
+     <Image img={nifi07} size="lg" border alt="컨트롤러 서비스 활성화 확인 대화 상자" />
 
   8. Controller Services 탭을 열어 Controller Service가 활성화되어 있는지 확인합니다
 
@@ -99,7 +99,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   1. 적절한 업스트림 및 다운스트림 프로세서와 함께 `ExecuteSQL` 프로세서를 추가합니다
 
-     <Image img={nifi09} size="md" border alt="워크플로 내 ExecuteSQL 프로세서가 표시된 NiFi 캔버스" />
+     <Image img={nifi09} size="md" border alt="워크플로에서 ExecuteSQL 프로세서가 표시된 NiFi 캔버스" />
 
   2. `ExecuteSQL` 프로세서의 「Properties」 섹션에서 다음 값을 입력합니다.
 
@@ -108,13 +108,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Database Connection Pooling Service | ClickHouse JDBC              | ClickHouse용으로 구성된 Controller Service를 선택하십시오 |
      | SQL select query                    | SELECT * FROM system.metrics | 여기에 쿼리를 입력하십시오                               |
 
-  3. `ExecuteSQL` 프로세서를 시작하십시오
+  3. `​​ExecuteSQL` 프로세서를 시작하십시오
 
-     <Image img={nifi10} size="lg" border alt="속성이 설정된 ExecuteSQL 프로세서 구성" />
+     <Image img={nifi10} size="lg" border alt="속성이 입력된 ExecuteSQL 프로세서 구성 화면" />
 
   4. 쿼리가 성공적으로 처리되었는지 확인하려면 출력 큐에 있는 `FlowFile` 중 하나를 확인하십시오.
 
-     <Image img={nifi11} size="lg" border alt="검사를 위해 준비된 FlowFile들이 표시된 큐 목록 대화 상자" />
+     <Image img={nifi11} size="lg" border alt="검사할 준비가 된 FlowFile이 표시된 큐 목록 대화 상자" />
 
   5. 보기 모드를 &quot;formatted&quot;로 전환하여 출력된 `FlowFile`의 결과를 확인합니다
 
@@ -133,7 +133,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Minimum Number of Records | 1000                | 최소 행 수가 병합되어 하나의 레코드를 이루도록 더 큰 값으로 변경합니다. 기본값은 1행입니다                  |
      | Maximum Number of Records | 10000               | &quot;Minimum Number of Records&quot;보다 더 큰 값으로 변경합니다. 기본값은 1,000행입니다 |
 
-  3. 여러 레코드가 하나로 병합되었는지 확인하려면 `MergeRecord` 프로세서의 입력과 출력을 확인하십시오. 출력은 여러 입력 레코드를 요소로 갖는 배열이라는 점에 유의하십시오.
+  3. 여러 레코드가 하나로 병합되었는지 확인하려면 `MergeRecord` 프로세서의 입력과 출력을 확인하십시오. 출력은 여러 입력 레코드로 구성된 배열이라는 점에 유의하십시오.
 
      입력
 
@@ -141,7 +141,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      출력
 
-     <Image img={nifi14} size="sm" border alt="병합된 레코드 배열을 보여 주는 MergeRecord 프로세서의 출력" />
+     <Image img={nifi14} size="sm" border alt="병합된 레코드 배열이 표시된 MergeRecord 프로세서 출력" />
 
   4. `PutDatabaseRecord` 프로세서의 「Properties」 섹션에서 다음 값을 입력하십시오
 
