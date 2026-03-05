@@ -149,7 +149,7 @@ Processed 8.87 million rows,
 
 ClickHouse client's result output indicates that ClickHouse executed a full table scan! Each single row of the 8.87 million rows of our table was streamed into ClickHouse. That doesn't scale.
 
-To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
+To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's columns) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
 ## ClickHouse index design {#clickhouse-index-design}
 
@@ -159,7 +159,7 @@ In traditional relational database management systems, the primary index would c
 
 Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse [MergeTree Engine Family](/engines/table-engines/mergetree-family/index.md) has been designed and optimized to handle massive data volumes. These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data. Data is quickly written to a table [part by part](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), with rules applied for merging the parts in the background. In ClickHouse each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a 'mark') per group of rows (called 'granule') - this technique is called **sparse index**.
 
-Sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key column(s). Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
+Sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key columns. Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
 
 The following illustrates in detail how ClickHouse is building and using its sparse primary index. Later on in the article, we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
 
@@ -288,7 +288,7 @@ The output of the ClickHouse client shows:
 - The table has a primary index with 1083 entries (called 'marks') and the size of the index is 96.93 KB.
 - In total, the table's data and mark files and primary index file together take 207.07 MB on disk.
 
-### Data is stored on disk ordered by primary key column(s) {#data-is-stored-on-disk-ordered-by-primary-key-columns}
+### Data is stored on disk ordered by primary key columns {#data-is-stored-on-disk-ordered-by-primary-key-columns}
 
 Our table that we created above has
 - a compound [primary key](/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries) `(UserID, URL)` and
@@ -600,7 +600,7 @@ The diagram above shows that mark 176 is the first index entry where both the mi
 </p>
 </details>
 
-In order to confirm (or not) that some row(s) in granule 176 contain a UserID column value of 749.927.693, all 8192 rows belonging to this granule need to be streamed into ClickHouse.
+In order to confirm (or not) that some rows in granule 176 contain a UserID column value of 749.927.693, all 8192 rows belonging to this granule need to be streamed into ClickHouse.
 
 To achieve this, ClickHouse needs to know the physical location of granule 176.
 
@@ -686,7 +686,7 @@ But what happens when a query is filtering on a column that is part of a compoun
 :::note
 We discuss a scenario when a query is explicitly not filtering on the first key column, but on a secondary key column.
 
-When a query is filtering on both the first key column and on any key column(s) after the first then ClickHouse is running binary search over the first key column's index marks.
+When a query is filtering on both the first key column and on any key columns after the first then ClickHouse is running binary search over the first key column's index marks.
 :::
 
 <br/>
@@ -823,7 +823,7 @@ The second index entry ('mark 1') is storing the minimum and maximum URL values 
 
 Because of the similarly high cardinality of UserID and URL, this secondary data skipping index can't help with excluding granules from being selected when our [query filtering on URL](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) is executed.
 
-The specific URL value that the query is looking for (i.e. 'http://public_search') very likely is between the minimum and maximum value stored by the index for each group of granules resulting in ClickHouse being forced to select the group of granules (because they might contain row(s) matching the query).
+The specific URL value that the query is looking for (i.e. 'http://public_search') very likely is between the minimum and maximum value stored by the index for each group of granules resulting in ClickHouse being forced to select the group of granules (because they might contain rows matching the query).
 
 ### A need to use multiple primary indexes {#a-need-to-use-multiple-primary-indexes}
 
@@ -1427,7 +1427,7 @@ An intuitive solution for that might be to use a [UUID](https://en.wikipedia.org
 
 For the fastest retrieval, the UUID column [would need to be the first key column](#the-primary-index-is-used-for-selecting-granules).
 
-We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key column(s)](#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](#optimal-compression-ratio-of-data-files).
+We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key columns](#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](#optimal-compression-ratio-of-data-files).
 
 A compromise between fastest retrieval and optimal data compression is to use a compound primary key where the UUID is the last key column, after low(er) cardinality key columns that are used to ensure a good compression ratio for some of the table's columns.
 
