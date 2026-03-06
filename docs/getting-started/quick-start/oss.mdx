@@ -7,7 +7,68 @@ title: 'ClickHouse OSS quick start'
 description: 'ClickHouse Quick Start guide'
 show_related_blogs: true
 doc_type: 'guide'
----
+---ClickHouse API
+1
+2
+3
+ClickHouse provides multiple APIs to interact with its database, including the HTTP interface and the Cloud API. These APIs allow developers to manage and query ClickHouse databases programmatically.
+
+HTTP Interface
+
+The HTTP interface allows you to use ClickHouse on any platform from any programming language in the form of a REST API. By default, the ClickHouse server listens for HTTP on port 8123, and HTTPS can be enabled on port 8443.
+
+Basic Usage
+
+To perform a query, you can send a GET or POST request to the ClickHouse server. For example, to create a table, you can use the following command:
+
+curl -X POST 'http://localhost:8123/?query=CREATE+TABLE+test+ (id+UInt32,+name+String)+ENGINE=Memory'
+Copy
+To insert data into the table, you can use:
+
+curl -X POST 'http://localhost:8123/?query=INSERT+INTO+test+VALUES' --data-binary '1,Hello\n2,World'
+Copy
+To read data from the table, you can use:
+
+curl 'http://localhost:8123/?query=SELECT+*+FROM+test'
+Copy
+Compression
+
+ClickHouse supports various compression methods to reduce network traffic, such as gzip, br, deflate, xz, zstd, lz4, bz2, and snappy. You can enable compression by appending the Content-Encoding header to your request.
+
+Authentication
+
+You can authenticate using HTTP Basic Authentication, URL parameters, or headers. For example, to use HTTP Basic Authentication:
+
+curl -u user:password 'http://localhost:8123/?query=SELECT+1'
+Copy
+Cloud API
+
+The ClickHouse Cloud API is a REST API designed for developers to manage organizations and services on ClickHouse Cloud. It allows you to create and manage services, provision API keys, and add or remove members in your organization.
+
+API Key Management
+
+You can create and manage API keys using the Cloud API. Each organization is limited to 100 API keys, and each key can make up to 10 requests per 10-second window. To create an API key, you can use the following endpoint:
+
+POST https://api.clickhouse.cloud/v1/keys
+Copy
+Terraform Provider
+
+ClickHouse provides an official Terraform Provider, allowing you to use Infrastructure as Code to create predictable, version-controlled configurations. You can view the Terraform provider docs in the Terraform registry.
+
+Swagger (OpenAPI) Endpoint
+
+The ClickHouse Cloud API is built on the OpenAPI specification, allowing for predictable client-side consumption. You can access the Swagger endpoint at https://api.clickhouse.cloud/v1.
+
+These APIs provide powerful tools for managing and interacting with ClickHouse databases, making it easier for developers to integrate ClickHouse into their applications and workflows.
+
+Learn more:
+1 -
+clickhouse.com
+2 -
+clickhouse.com
+3 -
+clickhouse.com
+
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
