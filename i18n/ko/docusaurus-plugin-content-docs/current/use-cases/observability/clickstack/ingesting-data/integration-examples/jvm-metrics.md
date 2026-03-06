@@ -129,7 +129,7 @@ OpenTelemetry Java 에이전트는 다음 JVM 메트릭을 자동으로 수집�
 
 애플리케이션이 에이전트와 함께 실행 중이면, 메트릭이 ClickStack으로 전송되는지 확인합니다.
 
-1. http://localhost:8080(또는 ClickStack URL)에서 HyperDX를 엽니다.
+1. `http://localhost:8080`(또는 ClickStack URL)에서 HyperDX를 엽니다.
 2. **Chart Explorer**로 이동합니다.
 3. `jvm.`으로 시작하는 메트릭을 검색합니다(예: `jvm.memory.used`, `jvm.gc.duration`, `jvm.thread.count`).
 
