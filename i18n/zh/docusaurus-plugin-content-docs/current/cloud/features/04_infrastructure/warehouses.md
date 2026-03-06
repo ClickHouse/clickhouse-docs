@@ -51,23 +51,23 @@ _图 2 - ClickHouse Cloud 中的计算分离_
 
 ## 什么是仓库？ \{#what-is-a-warehouse\}
 
-在 ClickHouse Cloud 中，_仓库（warehouse）_ 是共享同一数据的一组服务。
-每个仓库都有一个主服务（最先创建的服务）和一个或多个次级服务。例如，在下面的截图中，您可以看到一个名为 "DWH Prod" 的仓库，其中包含两个服务：
+在 ClickHouse Cloud 中，*仓库 (warehouse)&#x20;*&#x20;是共享同一数据的一组服务。
+每个仓库都有一个主服务 (最先创建的服务) 和次级服务。例如，在下面的截图中，您可以看到一个名为 &quot;DWH Prod&quot; 的仓库，其中包含两个服务：
 
-- 主服务 `DWH Prod`
-- 次级服务 `DWH Prod Subservice`
+* 主服务 `DWH Prod`
+* 次级服务 `DWH Prod Subservice`
 
-<Image img={compute_8} size="lg" alt="包含主服务和次级服务的仓库示例" background='white' />
+<Image img={compute_8} size="lg" alt="包含主服务和次级服务的仓库示例" background="white" />
 
 <br />
 
-_图 3 - 仓库示例_
+*图 3 - 仓库示例*
 
 同一仓库中的所有服务共享以下内容：
 
-- 区域（例如，us-east1）
-- 云服务提供商（AWS、GCP 或 Azure）
-- ClickHouse 数据库版本
+* 区域 (例如，us-east1) 
+* 云服务提供商 (AWS、GCP 或 Azure) 
+* ClickHouse 数据库版本
 
 您可以按照所属的仓库对服务进行排序。
 

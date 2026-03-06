@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 指定された精度で、数値データ列に対して各要素の重みに基づき[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
-結果は決定的であり（クエリの処理順序に依存しません）、Web ページの読み込み時間やバックエンドのレスポンス時間のような分布を表すシーケンスに対して最適化されています。
+結果は決定的であり (クエリの処理順序に依存しません) 、Web ページの読み込み時間やバックエンドのレスポンス時間のような分布を表すシーケンスに対して最適化されています。
 
-1つのクエリの中で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来可能なほど効率的には動作しません）。このような場合は [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
+1つのクエリの中で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、クエリは本来可能なほど効率的には動作しません) 。このような場合は [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 **精度**
 
@@ -31,7 +31,7 @@ doc_type: 'reference'
 :::
 
 :::note
-関数に値が一つも渡されない場合（`quantileTimingIf` を使用しているとき）、[NaN](/sql-reference/data-types/float#nan-and-inf) が返されます。これは、このようなケースを結果が 0 になるケースと区別するためです。`NaN` 値のソートに関する注意事項については、[ORDER BY 句](/sql-reference/statements/select/order-by) を参照してください。
+関数に値が一つも渡されない場合 (`quantileTimingIf` を使用しているとき) 、[NaN](/sql-reference/data-types/float#nan-and-inf) が返されます。これは、このようなケースを結果が 0 になるケースと区別するためです。`NaN` 値のソートに関する注意事項については、[ORDER BY 句](/sql-reference/statements/select/order-by) を参照してください。
 :::
 
 **構文**
@@ -48,7 +48,7 @@ quantileTimingWeighted(level)(expr, weight)
 
 **引数**
 
-* `expr` — カラムの値に対する式で、Float* 型の数値を返します。負の値が関数に渡された場合、その動作は未定義です。値が 30,000（ページ読み込み時間が 30 秒を超える場合）より大きいときは、30,000 と見なされます。[`Float*`](/sql-reference/data-types/float)
+* `expr` — カラムの値に対する式で、Float* 型の数値を返します。負の値が関数に渡された場合、その動作は未定義です。値が 30,000 (ページ読み込み時間が 30 秒を超える場合) より大きいときは、30,000 と見なされます。[`Float*`](/sql-reference/data-types/float)
 * `weight` — シーケンス要素の重みを格納したカラム。重みはその値の出現回数です。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**

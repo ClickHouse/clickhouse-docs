@@ -22,7 +22,7 @@ doc_type: 'reference'
   4096 (2^12) 個の 64 ビットスケッチが使用されます。
   状態のサイズは約 41 KB です。
 
-  相対誤差は 3.125%（95% 信頼水準）です。詳細は [相対誤差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html) を参照してください。
+  相対誤差は 3.125% (95% 信頼水準) です。詳細は [相対誤差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html) を参照してください。
 </details>
 
 **構文**

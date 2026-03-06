@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 结果取决于查询的执行顺序，且是非确定性的。
 
-在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，查询的效率低于理论上的最优情况）。
+在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，查询的效率低于理论上的最优情况) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 :::note

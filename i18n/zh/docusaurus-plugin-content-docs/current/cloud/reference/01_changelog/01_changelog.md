@@ -405,9 +405,9 @@ JDBC / Java 将会在 [0.8.0](https://github.com/ClickHouse/clickhouse-java/rele
 
 <Image img={beta_dashboards} size="lg" alt="ClickHouse Cloud 界面展示了带有可视化视图的新 Dashboards 测试版功能" border />
 
-### Query API endpoints（正式版） \{#query-api-endpoints-ga\}
+### Query API endpoints (正式版)  \{#query-api-endpoints-ga\}
 
-我们很高兴宣布 ClickHouse Cloud 中 Query API Endpoints（查询 API 端点）正式版发布。Query API Endpoints 允许你为已保存的查询快速创建 RESTful API 端点，只需点击几下即可在应用中消费数据，而无需处理语言客户端或复杂的身份认证。自初次发布以来，我们已经交付了多项改进，包括：
+我们很高兴宣布 ClickHouse Cloud 中 Query API Endpoints (查询 API 端点) 正式版发布。Query API Endpoints 允许你为已保存的查询快速创建 RESTful API 端点，只需点击几下即可在应用中消费数据，而无需处理语言客户端或复杂的身份认证。自初次发布以来，我们已经交付了多项改进，包括：
 
 * 降低端点延迟，尤其是冷启动时的延迟
 * 增强端点的 RBAC 控制

@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 它还提供了一些用于更新权重的方法：
 
-* Adam（默认使用）
+* Adam (默认使用) 
 * 普通 SGD
 * Momentum
 * Nesterov
@@ -49,7 +49,7 @@ AS state FROM train_data;
 在这里，我们还需要向 `train_data` 表中插入数据。
 参数的数量不是固定的，只取决于传递给 `linearRegressionState` 的参数个数。
 它们都必须是数值类型的值。
-请注意，目标值所在的列（也就是我们希望模型学会预测的值）需要作为第一个参数传入。
+请注意，目标值所在的列 (也就是我们希望模型学会预测的值) 需要作为第一个参数传入。
 
 2. 预测
 
@@ -96,14 +96,14 @@ stochasticLinearRegression([learning_rate, l2_regularization_coef, mini_batch_si
 
 * `learning_rate` — 在执行梯度下降步骤时用于步长的系数。学习率过大会导致模型权重发散趋于无穷大。默认值为 `0.00001`。[`Float64`](/sql-reference/data-types/float)
 * `l2_regularization_coef` — L2 正则化系数，有助于防止过拟合。默认值为 `0.1`。[`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 在一次梯度下降步骤中要计算梯度并求和的元素数量。纯随机梯度下降仅使用一个元素，而使用较小的小批量（约 10 个元素）可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
-* `method` — 更新权重的方法：`Adam`（默认）、`SGD`、`Momentum`、`Nesterov`。`Momentum` 和 `Nesterov` 需要稍多的计算和内存，但在随机梯度方法的收敛速度和稳定性方面通常更有优势。[`const String`](/sql-reference/data-types/string)
-* `target` — 需要学习并预测的目标值（因变量）。必须为数值类型。[`Float*`](/sql-reference/data-types/float)
-* `x1, x2, ...` — 特征值（自变量）。必须全部为数值类型。[`Float*`](/sql-reference/data-types/float)
+* `mini_batch_size` — 在一次梯度下降步骤中要计算梯度并求和的元素数量。纯随机梯度下降仅使用一个元素，而使用较小的小批量 (约 10 个元素) 可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `method` — 更新权重的方法：`Adam` (默认) 、`SGD`、`Momentum`、`Nesterov`。`Momentum` 和 `Nesterov` 需要稍多的计算和内存，但在随机梯度方法的收敛速度和稳定性方面通常更有优势。[`const String`](/sql-reference/data-types/string)
+* `target` — 需要学习并预测的目标值 (因变量) 。必须为数值类型。[`Float*`](/sql-reference/data-types/float)
+* `x1, x2, ...` — 特征值 (自变量) 。必须全部为数值类型。[`Float*`](/sql-reference/data-types/float)
 
 **返回值**
 
-返回训练好的线性回归模型权重。前面的值对应模型参数，最后一个值为偏置（bias）。使用 `evalMLMethod` 进行预测。[`Array(Float64)`](/sql-reference/data-types/array)
+返回训练好的线性回归模型权重。前面的值对应模型参数，最后一个值为偏置 (bias) 。使用 `evalMLMethod` 进行预测。[`Array(Float64)`](/sql-reference/data-types/array)
 
 **示例**
 

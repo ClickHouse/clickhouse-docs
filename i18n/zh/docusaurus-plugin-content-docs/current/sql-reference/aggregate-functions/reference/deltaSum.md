@@ -51,7 +51,7 @@ SELECT deltaSum(arrayJoin([1, 2, 3]))
 └────────────────────────────────┘
 ```
 
-**混合数值（忽略为负差值）**
+**混合数值 (忽略为负差值)&#x20;**
 
 ```sql title=Query
 SELECT deltaSum(arrayJoin([1, 2, 3, 0, 3, 4, 2, 3]))

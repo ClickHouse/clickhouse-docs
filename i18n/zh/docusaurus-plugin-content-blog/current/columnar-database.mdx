@@ -38,4 +38,4 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 <Image img={ColumnOriented} alt="列式数据库存储示意图" size="md" />
 
-对于分析型应用来说，列式数据库是首选，因为它允许在表中预先定义许多列以备后用，但在执行读取查询时，对未使用列不会产生额外开销（传统的 OLTP 数据库在查询时会读取整行数据，因为数据是按行而不是按列存储的）。列式数据库专为大数据处理和数据仓库而设计。它们通常通过由低成本硬件组成的分布式集群进行原生横向扩展，以提高吞吐量。ClickHouse 通过结合使用[分布式](https://clickhouse.com/docs/engines/table-engines/special/distributed)和[复制](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication)表来实现这一点。
+对于分析型应用来说，列式数据库是首选，因为它允许在表中预先定义许多列以备后用，但在执行读取查询时，对未使用列不会产生额外开销 (传统的 OLTP 数据库在查询时会读取整行数据，因为数据是按行而不是按列存储的) 。列式数据库专为大数据处理和数据仓库而设计。它们通常通过由低成本硬件组成的分布式集群进行原生横向扩展，以提高吞吐量。ClickHouse 通过结合使用[分布式](https://clickhouse.com/docs/engines/table-engines/special/distributed)和[复制](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication)表来实现这一点。

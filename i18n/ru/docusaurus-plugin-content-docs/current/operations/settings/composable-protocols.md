@@ -212,7 +212,7 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 не указан, для конечной точки используется `<http_handlers>` по умолчанию.
 
 Раздел пользовательских обработчиков имеет тот же формат, что и
-[`<http_handlers>`](/docs/en/operations/server-configuration-parameters/settings#http_handlers).
+[`<http_handlers>`](/docs/operations/server-configuration-parameters/settings#http_handlers).
 Изменения в разделе пользовательских обработчиков обнаруживаются при перезагрузке конфигурации, и
 соответствующая конечная точка автоматически перезапускается.
 

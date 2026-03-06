@@ -238,14 +238,14 @@ SELECT _path, * FROM azureBlobStorage(
 
 Это указание для ClickHouse при разборе файлов, партиционированных в стиле Hive, во время чтения. Оно не влияет на запись. Для симметричного чтения и записи используйте аргумент `partition_strategy`.
 
-Когда настройка `use_hive_partitioning` установлена в значение 1, ClickHouse обнаружит партиционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы партиций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути партиций, но с префиксом `_`.
+Когда настройка `use_hive_partitioning` установлена в значение 1, ClickHouse обнаружит партиционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы партиций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути партиций.
 
 **Пример**
 
 Использование виртуального столбца, созданного с помощью партиционирования в стиле Hive
 
 ```sql
-SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
 

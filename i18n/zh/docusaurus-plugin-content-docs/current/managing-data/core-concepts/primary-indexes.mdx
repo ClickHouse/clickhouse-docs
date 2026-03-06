@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-ClickHouse 中的稀疏主键索引用于高效定位[粒度（granules）](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 ^^primary key^^ 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
+ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 ^^primary key^^ 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
 
 ### 稀疏主索引的创建 \{#sparse-primary-index-creation\}
 
@@ -179,9 +179,9 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 ## 关键要点 \{#key-takeaways\}
 
-* **稀疏主索引（sparse primary index）** 帮助 ClickHouse 通过识别哪些 ^^granule^^ 可能包含满足查询条件的 ^^primary key^^ 列的行，从而跳过不必要的数据。
+* **稀疏主索引 (sparse primary index)&#x20;**&#x20;帮助 ClickHouse 通过识别哪些 ^^granule^^ 可能包含满足查询条件的 ^^primary key^^ 列的行，从而跳过不必要的数据。
 
-* 每个索引只存储 **每个 ^^granule^^ 的首行的 ^^primary key^^ 值**（一个 ^^granule^^ 默认包含 8,192 行），因此足够紧凑，可以完全放入内存。
+* 每个索引只存储 **每个 ^^granule^^ 的首行的 ^^primary key^^ 值** (一个 ^^granule^^ 默认包含 8,192 行) ，因此足够紧凑，可以完全放入内存。
 
 * ^^MergeTree^^ 表中的 **每个数据 part** 都有其 **自己的主索引**，并在查询执行期间独立使用。
 

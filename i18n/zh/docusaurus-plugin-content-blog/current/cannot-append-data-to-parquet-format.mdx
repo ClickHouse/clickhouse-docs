@@ -69,7 +69,7 @@ INSERT INTO default.parquet_test VALUES  (3, 'World'), (4, 'Bye');
 ./clickhouse client --queries-file parquet.sql
 ```
 
-现在，你会在 `data/default/parquet_test` 中看到两个文件（以及之后每次插入都会新增的一个新文件）。
+现在，你会在 `data/default/parquet_test` 中看到两个文件 (以及之后每次插入都会新增的一个新文件) 。
 
 :::note
 `engine_file_allow_create_multiple_files` 设置也适用于其他不支持追加写入的数据格式，例如 JSON 和 ORC。

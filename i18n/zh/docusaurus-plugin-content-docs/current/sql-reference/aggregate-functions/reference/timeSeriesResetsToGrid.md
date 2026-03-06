@@ -25,7 +25,7 @@ timeSeriesResetsToGrid(start_timestamp, end_timestamp, grid_step, staleness)(tim
 
 **参数**
 
-* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长（以秒为单位）。 - `staleness` — 指定被考虑样本的最大“陈旧时间”（staleness，单位为秒）。
+* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长 (以秒为单位) 。 - `staleness` — 指定被考虑样本的最大“陈旧时间” (staleness，单位为秒) 。
 
 **参数**
 

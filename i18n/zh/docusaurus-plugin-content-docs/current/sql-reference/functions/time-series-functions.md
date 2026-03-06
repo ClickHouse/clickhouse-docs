@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 引入版本：v24.1.0
 
-使用 STL（基于 Loess 的季节-趋势分解方法 [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)）将时间序列数据分解为季节成分、趋势成分和残差成分。
+使用 STL (基于 Loess 的季节-趋势分解方法 [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)) 将时间序列数据分解为季节成分、趋势成分和残差成分。
 
 **语法**
 
@@ -38,7 +38,7 @@ seriesDecomposeSTL(series, period)
 
 **返回值**
 
-返回一个包含四个数组的数组：第一个数组为季节性成分，第二个数组为趋势成分，第三个数组为残差成分，第四个数组为基线（季节性 + 趋势）成分。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+返回一个包含四个数组的数组：第一个数组为季节性成分，第二个数组为趋势成分，第三个数组为残差成分，第四个数组为基线 (季节性 + 趋势) 成分。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -124,7 +124,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 自 v23.12.0 引入
 
-使用 FFT（[快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）检测给定序列数据的周期。
+使用 FFT ([快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)) 检测给定序列数据的周期。
 
 **语法**
 
@@ -170,7 +170,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 引入版本：v26.1.0
 
-将指定的标签从一个标签组（`src_group`）复制到另一个标签组（`dest_group`）。
+将指定的标签从一个标签组 (`src_group`) 复制到另一个标签组 (`dest_group`) 。
 该函数会覆盖 `dest_group` 中该被复制标签之前的任何值。
 如果被复制的标签在 `src_group` 中不存在，则函数还会将其从 `dest_group` 中删除。
 该函数仿照 Prometheus 中
@@ -213,7 +213,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 引入于：v26.1.0
 
-将指定的标签从一组标签（`src_group`）复制到另一组标签（`dest_group`）。
+将指定的标签从一组标签 (`src_group`) 复制到另一组标签 (`dest_group`) 。
 该函数会替换 `dest_group` 中被复制标签的任何先前值。
 如果某些要复制的标签在 `src_group` 中不存在，则函数也会将它们从 `dest_group` 中移除。
 该函数模仿了 Prometheus
@@ -314,7 +314,7 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 
 * `start_timestamp` — 时间网格的起始时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 时间网格的结束时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 时间网格的步长（秒）。[`Decimal64`](/sql-reference/data-types/decimal) 或 [`Decimal32`](/sql-reference/data-types/decimal) 或 [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `step` — 时间网格的步长 (秒) 。[`Decimal64`](/sql-reference/data-types/decimal) 或 [`Decimal32`](/sql-reference/data-types/decimal) 或 [`UInt32/64`](/sql-reference/data-types/int-uint)
 * `values` — 数值数组 [`Array(Float*)`](/sql-reference/data-types/array) 或 [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
 **返回值**
@@ -521,7 +521,7 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 * `start_timestamp` — 范围的起始时间戳。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 范围的结束时间戳。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 范围的步长（单位：秒）。[`UInt32/64`](/sql-reference/data-types/int-uint) 或 [`Decimal32/64`](/sql-reference/data-types/decimal)
+* `step` — 范围的步长 (单位：秒) 。[`UInt32/64`](/sql-reference/data-types/int-uint) 或 [`Decimal32/64`](/sql-reference/data-types/decimal)
 
 **返回值**
 
@@ -726,13 +726,13 @@ timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, .
 **参数**
 
 * `id` — 时间序列的标识符。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UUID`](/sql-reference/data-types/uuid) 或 [`FixedString(16)`](/sql-reference/data-types/fixedstring)
-* `tags_array` — 由成对元素组成的数组（tag&#95;name, tag&#95;value）。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) 或 [`NULL`](/sql-reference/syntax#null)
+* `tags_array` — 由成对元素组成的数组 (tag&#95;name, tag&#95;value) 。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) 或 [`NULL`](/sql-reference/syntax#null)
 * `separate_tag_name_i` — 标签名称。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `separate_tag_value_i` — 标签值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable)
 
 **返回值**
 
-返回时间序列的标识符（即第一个参数本身）。
+返回时间序列的标识符 (即第一个参数本身) 。
 
 **示例**
 

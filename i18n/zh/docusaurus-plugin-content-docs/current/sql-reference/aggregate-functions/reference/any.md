@@ -25,13 +25,13 @@ doc_type: 'reference'
 在某些情况下，可以依赖于执行顺序。
 这适用于 `SELECT` 来自包含 `ORDER BY` 的子查询的情况。
 
-当 `SELECT` 查询带有 `GROUP BY` 子句或至少一个聚合函数时，ClickHouse（与 MySQL 不同）要求 `SELECT`、`HAVING` 和 `ORDER BY` 子句中的所有表达式都必须由键或聚合函数计算得出。
+当 `SELECT` 查询带有 `GROUP BY` 子句或至少一个聚合函数时，ClickHouse (与 MySQL 不同) 要求 `SELECT`、`HAVING` 和 `ORDER BY` 子句中的所有表达式都必须由键或聚合函数计算得出。
 换句话说，从表中选出的每一列都必须要么用于键，要么出现在聚合函数中。
 要获得类似 MySQL 的行为，可以将其他列放入 `any` 聚合函数中。
 
 :::note
 该函数的返回类型与输入相同，但会丢弃 LowCardinality。
-这意味着在没有任何输入行时，它会返回该类型的默认值（对于整数是 0，对于 `Nullable()` 列是 `Null`）。
+这意味着在没有任何输入行时，它会返回该类型的默认值 (对于整数是 0，对于 `Nullable()` 列是 `Null`) 。
 可以使用 -OrNull 组合器来修改这种行为。
 :::
 

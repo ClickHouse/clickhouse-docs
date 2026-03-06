@@ -24,13 +24,13 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 
 ## 引数 \{#arguments\}
 
-| パラメータ        | 説明                                                                                                                                                                                                                                                                                                        |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `path`            | [user_files_path](operations/server-configuration-parameters/settings.md#user_files_path) からのファイルへの相対パス。読み取り専用モードでは、次の[グロブ](#globs-in-path)パターンをサポートします：`*`、`?`、`{abc,def}`（`'abc'` と `'def'` は文字列）、および `{N..M}`（`N` と `M` は数値）。 |
-| `path_to_archive` | zip/tar/7z アーカイブへの相対パス。`path` と同じグロブパターンをサポートします。                                                                                                                                                                                                                             |
-| `format`          | ファイルの[フォーマット](/interfaces/formats)。                                                                                                                                                                                                                                                             |
-| `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                       |
-| `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                        |
+| パラメータ             | 説明                                                                                                                                                                                                                                           |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`            | [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) からのファイルへの相対パス。読み取り専用モードでは、次の[グロブ](#globs-in-path)パターンをサポートします：`*`、`?`、`{abc,def}` (`'abc'` と `'def'` は文字列) 、および `{N..M}` (`N` と `M` は数値) 。 |
+| `path_to_archive` | zip/tar/7z アーカイブへの相対パス。`path` と同じグロブパターンをサポートします。                                                                                                                                                                                            |
+| `format`          | ファイルの[フォーマット](/interfaces/formats)。                                                                                                                                                                                                          |
+| `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                    |
+| `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                   |
 
 ## 戻り値 \{#returned_value\}
 
@@ -79,12 +79,11 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 1    2    3
 ```
 
-# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
-1    3    2
+## ファイルから読み込む例 \{#examples-for-reading-from-a-file\}
 
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
+### CSV ファイルからの SELECT \{#select-from-a-csv-file\}
 
-1    2    3
+まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
@@ -96,19 +95,13 @@ $ cat /var/lib/clickhouse/user_files/test.csv
     78,43,45
 ```
 
-## ファイルから読み込む例 {#examples-for-reading-from-a-file}
-
-### CSV ファイルからの SELECT {#select-from-a-csv-file}
-
-まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
+次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
 
 ```sql
 SELECT * FROM
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 LIMIT 2;
 ```
-
-次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
 
 ```text
 ┌─column1─┬─column2─┬─column3─┐
@@ -117,13 +110,13 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
+### ファイルからテーブルにデータを挿入する \{#inserting-data-from-a-file-into-a-table\}
+
 ```sql
 INSERT INTO FUNCTION
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 VALUES (1, 2, 3), (3, 2, 1);
 ```
-
-### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 SELECT * FROM
@@ -137,25 +130,21 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
-```sql
-SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
-```
-
 `archive1.zip` および/または `archive2.zip` に含まれている `table.csv` からデータを読み込む:
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 ```
 
 ## パス内のグロブ \{#globs-in-path\}
 
 パスにはグロブを使用できます。ファイルは、接頭辞や接尾辞だけでなく、パターン全体に一致する必要があります。ただし 1 つだけ例外があり、パスが既存のディレクトリを指していて、かつグロブを使用していない場合は、そのディレクトリ内のすべてのファイルが選択されるように、パスの末尾に暗黙的に `*` が追加されます。
 
-- `*` — `/` 以外の任意の長さ（空文字列を含む）の文字列を表します。
-- `?` — 任意の 1 文字を表します。
-- `{some_string,another_string,yet_another_one}` — 文字列 `'some_string', 'another_string', 'yet_another_one'` のいずれかに置き換えられます。これらの文字列には `/` 記号を含めることができます。
-- `{N..M}` — `>= N` かつ `<= M` の任意の数値を表します。
-- `**` — ディレクトリ配下のすべてのファイルを再帰的に表します。
+* `*` — `/` 以外の任意の長さ (空文字列を含む) の文字列を表します。
+* `?` — 任意の 1 文字を表します。
+* `{some_string,another_string,yet_another_one}` — 文字列 `'some_string', 'another_string', 'yet_another_one'` のいずれかに置き換えられます。これらの文字列には `/` 記号を含めることができます。
+* `{N..M}` — `>= N` かつ `<= M` の任意の数値を表します。
+* `**` — ディレクトリ配下のすべてのファイルを再帰的に表します。
 
 `{}` を用いる構文は、[remote](remote.md) および [hdfs](hdfs.md) テーブル関数と同様です。
 
@@ -175,31 +164,31 @@ SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name St
 すべてのファイルに含まれる行数の合計を問い合わせます：
 
 ```sql
+SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+```
+
+同じ結果を得られる別のパス式:
+
+```sql
 SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
-同じ結果が得られる別のパス式:
+暗黙的な `*` を用いて、`some_dir` に含まれる行数の合計をクエリします:
 
 ```sql
 SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 ```
 
-暗黙的な `*` を用いて、`some_dir` の総行数を取得します:
-
-```sql
-SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
-```
-
 :::note
-ファイル一覧に先頭ゼロ付きの番号範囲が含まれている場合は、各桁を個別に中かっこで指定する構文を使うか、`?` を使用してください。
+ファイル一覧に先頭ゼロ付きの数値の範囲が含まれている場合は、各桁を個別に中かっこで指定する構文を使うか、`?` を使用してください。
 :::
 
 **例**
 
-`file000`、`file001`、...、`file999` という名前のファイルに含まれる行数の合計をクエリします。
+`file000`、`file001`、...、`file999` という名前のファイルに含まれる行数の合計を問い合わせます。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
@@ -207,47 +196,47 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 `big_dir/` ディレクトリ配下のすべてのファイルに対して、再帰的に行数の合計をクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
 
-ディレクトリ `big_dir/` 以下のすべてのフォルダに含まれる `file002` ファイルの全行数を、再帰的にクエリします。
+ディレクトリ `big_dir/` 配下の任意のフォルダにあるすべての `file002` ファイルに含まれる行数の合計を、再帰的にクエリします。
 
 ```sql
-SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
 ## 仮想カラム \{#virtual-columns\}
 
-- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
-- `_file` — ファイル名。型: `LowCardinality(String)`。
-- `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
+* `_path` — ファイルへのパス。型: `LowCardinality(String)`。
+* `_file` — ファイル名。型: `LowCardinality(String)`。
+* `_size` — ファイルサイズ (バイト単位) 。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
+* `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
 
-## use&#95;hive&#95;partitioning 設定 \{#hive-style-partitioning\}
+## use_hive_partitioning 設定 \{#hive-style-partitioning\}
 
-`use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス（`/name=value/`）内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列は、パーティションを表すパス内の名前と同じ名前を持ちますが、先頭に `_` が付きます。
+`use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス (`/name=value/`) 内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列は、パーティションを表すパス内の名前と同じ名前を持ちます。
 
 **例**
 
 Hive スタイルのパーティショニングで作成された仮想列を使用する。
 
 ```sql
-SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
-## 設定 {#settings}
+## 設定 \{#settings\}
 
-| Setting                                                                                                            | Description                                                                                                                                                                 |
-|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists)                   | 存在しないファイルから空の結果セットを `SELECT` できるようにします。デフォルトでは無効です。                                                                                            |
-| [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert)                     | `INSERT` の前にファイルの内容を切り詰められるようにします。デフォルトでは無効です。                                                                                                         |
-| [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | フォーマットにサフィックスがある場合、`INSERT` ごとに新しいファイルを作成できるようにします。デフォルトでは無効です。                                                                                       |
-| [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files)                       | 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。                                                                                                              |
-| [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists)                          | ストレージファイルからデータを読み取る方法です。`read`、`pread`、`mmap` のいずれかです（`mmap` は clickhouse-local のみ）。デフォルト値: clickhouse-server では `pread`、clickhouse-local では `mmap`。 |
+| Setting                                                                                                                                | Description                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [engine&#95;file&#95;empty&#95;if&#95;not&#95;exists](/operations/settings/settings#engine_file_empty_if_not_exists)                   | 存在しないファイルから空の結果セットを `SELECT` できるようにします。デフォルトでは無効です。                                                                                                    |
+| [engine&#95;file&#95;truncate&#95;on&#95;insert](/operations/settings/settings#engine_file_truncate_on_insert)                         | `INSERT` の前にファイルの内容を切り詰められるようにします。デフォルトでは無効です。                                                                                                         |
+| [engine&#95;file&#95;allow&#95;create&#95;multiple&#95;files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | フォーマットにサフィックスがある場合、`INSERT` ごとに新しいファイルを作成できるようにします。デフォルトでは無効です。                                                                                        |
+| [engine&#95;file&#95;skip&#95;empty&#95;files](operations/settings/settings.md#engine_file_skip_empty_files)                           | 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。                                                                                                                |
+| [storage&#95;file&#95;read&#95;method](/operations/settings/settings#engine_file_empty_if_not_exists)                                  | ストレージファイルからデータを読み取る方法です。`read`、`pread`、`mmap` のいずれかです (`mmap` は clickhouse-local のみ) 。デフォルト値: clickhouse-server では `pread`、clickhouse-local では `mmap`。 |
 
-## 関連項目 {#related}
+## 関連項目 \{#related\}
 
-- [仮想列](engines/table-engines/index.md#table_engines-virtual_columns)
-- [処理後にファイル名を変更する](operations/settings/settings.md#rename_files_after_processing)
+* [仮想列](engines/table-engines/index.md#table_engines-virtual_columns)
+* [処理後にファイル名を変更する](operations/settings/settings.md#rename_files_after_processing)

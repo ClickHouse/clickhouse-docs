@@ -67,10 +67,10 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 
 引入版本：v25.6.0
 
-使用 [Bech32 或 Bech32m](https://en.bitcoin.it/wiki/Bech32) 算法对二进制数据字符串以及人类可读部分（HRP）进行编码。
+使用 [Bech32 或 Bech32m](https://en.bitcoin.it/wiki/Bech32) 算法对二进制数据字符串以及人类可读部分 (HRP) 进行编码。
 
 :::note
-当使用 [`FixedString`](../data-types/fixedstring.md) 数据类型时，如果某个值未完全填满该行，则会用空字符（null 字符）进行填充。
+当使用 [`FixedString`](../data-types/fixedstring.md) 数据类型时，如果某个值未完全填满该行，则会用空字符 (null 字符) 进行填充。
 `bech32Encode` 函数会自动为 `hrp` 参数处理这些填充，但对于 `data` 参数，其值不能包含这些填充字符。
 因此，不建议将 [`FixedString`](../data-types/fixedstring.md) 数据类型用于数据值，除非您能确定它们全部具有相同长度，并确保 `FixedString` 列也被设置为该长度。
 :::
@@ -83,9 +83,9 @@ bech32Encode(hrp, data[, witver])
 
 **参数**
 
-* `hrp` — 一个由 `1 - 83` 个小写字符组成的字符串，用于指定代码的“human-readable part”（人类可读部分）。通常为 &#39;bc&#39; 或 &#39;tb&#39;。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `hrp` — 一个由 `1 - 83` 个小写字符组成的字符串，用于指定代码的“human-readable part” (人类可读部分) 。通常为 &#39;bc&#39; 或 &#39;tb&#39;。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `data` — 要编码的二进制数据字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — 可选。witness 版本号（默认 = 1）。一个 `UInt*`，用于指定要运行的算法版本。Bech32 使用 `0`，Bech32m 使用 `1` 或更大值。[`UInt*`](/sql-reference/data-types/int-uint)
+* `witver` — 可选。witness 版本号 (默认 = 1) 。一个 `UInt*`，用于指定要运行的算法版本。Bech32 使用 `0`，Bech32m 使用 `1` 或更大值。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -135,8 +135,8 @@ abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 
 | Type                       | Description                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------- |
-| `(U)Int*`                  | 以从最高有效位到最低有效位的顺序（大端序或“人类可读”顺序）输出二进制位。输出从最高有效的非零字节开始（前导零字节会被省略），但如果某个字节的最高有效位为零，则该字节仍然会输出 8 位二进制数字。 |
-| `Date` and `DateTime`      | 按照相应的整数进行格式化（`Date` 为自 epoch（Unix 纪元）起的天数，`DateTime` 为 Unix 时间戳的值）。                                |
+| `(U)Int*`                  | 以从最高有效位到最低有效位的顺序 (大端序或“人类可读”顺序) 输出二进制位。输出从最高有效的非零字节开始 (前导零字节会被省略) ，但如果某个字节的最高有效位为零，则该字节仍然会输出 8 位二进制数字。 |
+| `Date` and `DateTime`      | 按照相应的整数进行格式化 (`Date` 为自 epoch (Unix 纪元) 起的天数，`DateTime` 为 Unix 时间戳的值) 。                                |
 | `String` and `FixedString` | 将所有字节直接编码为 8 位二进制数。零字节不会被省略。                                                                       |
 | `Float*` and `Decimal`     | 按其在内存中的表示进行编码。由于我们使用小端架构，因此以小端序编码。前导或结尾的零字节不会被省略。                                                  |
 | `UUID`                     | 按大端序编码为字符串。                                                                                        |
@@ -211,7 +211,7 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 
 引入版本：v21.7.0
 
-该函数返回无符号整数二进制表示中所有 1 比特的位置（按升序排列）。
+该函数返回无符号整数二进制表示中所有 1 比特的位置 (按升序排列) 。
 对于有符号输入整数，会先将其转换为无符号整数。
 
 **语法**
@@ -393,13 +393,13 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 
 | Type                       | Description                                                                                           |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `(U)Int*`                  | 按从最高有效位到最低有效位的顺序（大端或“人类可读”顺序）打印十六进制数字（“nibbles”）。从最高有效的非零字节开始（忽略前导零字节），但对每个字节始终打印两位十六进制数字，即使高位为零也不省略。 |
-| `Date` and `DateTime`      | 格式化为对应的整数（`Date` 为自纪元以来的天数，`DateTime` 为 Unix 时间戳的值）。                                                  |
+| `(U)Int*`                  | 按从最高有效位到最低有效位的顺序 (大端或“人类可读”顺序) 打印十六进制数字 (“nibbles”) 。从最高有效的非零字节开始 (忽略前导零字节) ，但对每个字节始终打印两位十六进制数字，即使高位为零也不省略。 |
+| `Date` and `DateTime`      | 格式化为对应的整数 (`Date` 为自纪元以来的天数，`DateTime` 为 Unix 时间戳的值) 。                                                  |
 | `String` and `FixedString` | 所有字节都直接编码为两个十六进制数字。零字节不会被省略。                                                                          |
 | `Float*` and `Decimal`     | 按照其在内存中的表示进行编码。ClickHouse 在内部始终以小端方式表示这些值，因此编码结果也是小端顺序。前导或结尾的零字节不会被省略。                                |
 | `UUID`                     | 按大端顺序编码为字符串。                                                                                          |
 
-该函数使用大写字母 `A-F`，且不使用任何前缀（如 `0x`）或后缀（如 `h`）。
+该函数使用大写字母 `A-F`，且不使用任何前缀 (如 `0x`) 或后缀 (如 `h`) 。
 
 **语法**
 
@@ -482,10 +482,10 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 
 **扩展模式**
 
-接受一个范围掩码（元组）作为第一个参数，并接受至多 2 个无符号整数作为
+接受一个范围掩码 (元组) 作为第一个参数，并接受至多 2 个无符号整数作为
 其他参数。掩码中的每个数字用于配置对应参数左移的位数，从而在其范围内对参数进行缩放。
 
-当你需要让取值范围（或基数）差异很大的参数获得相似的分布时，范围扩展会很有用。
+当你需要让取值范围 (或基数) 差异很大的参数获得相似的分布时，范围扩展会很有用。
 例如：&#39;IP Address&#39; `(0...FFFFFFFF)` 和 &#39;Country code&#39; `(0...FF)`。与编码函数相同，最多只能使用 8 个数字。
 
 **语法**
@@ -574,7 +574,7 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 
 **扩展模式**
 
-将范围掩码（[Tuple](../../sql-reference/data-types/tuple.md)）作为第一个参数，
+将范围掩码 ([Tuple](../../sql-reference/data-types/tuple.md)) 作为第一个参数，
 并将最多 2 个[无符号整数](../../sql-reference/data-types/int-uint.md)
 作为其余参数。
 
@@ -637,7 +637,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**单个参数（展开模式）**
+**单个参数 (展开模式)&#x20;**
 
 ```sql title=Query
 -- If a single argument is provided with a tuple specifying bit shifts, the function
@@ -673,7 +673,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 
 引入版本：v24.6.0
 
-将 Morton 编码（ZCurve）解码为对应的无符号整数元组。
+将 Morton 编码 (ZCurve) 解码为对应的无符号整数元组。
 
 与 `mortonEncode` 函数一样，此函数有两种运行模式：
 
@@ -686,7 +686,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 
 **扩展模式**
 
-接收范围掩码（元组）作为第一个参数，编码值作为第二个参数。
+接收范围掩码 (元组) 作为第一个参数，编码值作为第二个参数。
 掩码中的每个数字用于配置范围缩减倍数：
 
 * `1` - 不缩减
@@ -695,7 +695,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
   ⋮
 * 最多缩减 8 倍。
 
-当你需要为范围（或基数）相差极大的参数获得相似分布时，范围扩展会很有用。例如：&#39;IP Address&#39; `(0...FFFFFFFF)` 和 &#39;Country code&#39; `(0...FF)`。与编码函数一样，这里同样最多限制为 8 个数字。
+当你需要为范围 (或基数) 相差极大的参数获得相似分布时，范围扩展会很有用。例如：&#39;IP Address&#39; `(0...FFFFFFFF)` 和 &#39;Country code&#39; `(0...FF)`。与编码函数一样，这里同样最多限制为 8 个数字。
 
 **语法**
 
@@ -739,7 +739,7 @@ SELECT mortonDecode(1, 1)
 ["1"]
 ```
 
-**扩展模式（缩减一个参数的范围）**
+**扩展模式 (缩减一个参数的范围)&#x20;**
 
 ```sql title=Query
 SELECT mortonDecode(tuple(2), 32768)
@@ -779,7 +779,7 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 
 引入于：v24.6.0
 
-为一组无符号整数计算 Morton 编码（Z 曲线，ZCurve）。
+为一组无符号整数计算 Morton 编码 (Z 曲线，ZCurve) 。
 
 该函数有两种运行模式：
 
@@ -792,7 +792,7 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 
 **扩展模式**
 
-接受一个范围掩码（[Tuple](../data-types/tuple.md)）作为第一个参数，以及最多 8 个[无符号整数](../data-types/int-uint.md)作为其他参数。
+接受一个范围掩码 ([Tuple](../data-types/tuple.md)) 作为第一个参数，以及最多 8 个[无符号整数](../data-types/int-uint.md)作为其他参数。
 
 掩码中的每个数字用于配置范围扩展倍数：
 
@@ -932,7 +932,7 @@ SELECT sqidDecode('gXHfJ1C6dN');
 
 自 v24.1.0 引入
 
-将数字转换为一个 [sqid](https://sqids.org/)（类似 YouTube 的 ID 字符串）。
+将数字转换为一个 [sqid](https://sqids.org/) (类似 YouTube 的 ID 字符串) 。
 
 **语法**
 
@@ -976,7 +976,7 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 如果在 `clickhouse-client` 中调用 `unbin`，二进制字符串将以 UTF-8 编码的形式显示。
 :::
 
-支持二进制数字 `0` 和 `1`。二进制数字的数量不必是 8 的倍数。如果参数字符串包含二进制数字以外的任何字符，结果是未定义的（不会抛出异常）。
+支持二进制数字 `0` 和 `1`。二进制数字的数量不必是 8 的倍数。如果参数字符串包含二进制数字以外的任何字符，结果是未定义的 (不会抛出异常) 。
 
 **语法**
 
@@ -990,7 +990,7 @@ unbin(arg)
 
 **返回值**
 
-返回一个二进制字符串（BLOB）。[`String`](/sql-reference/data-types/string)
+返回一个二进制字符串 (BLOB) 。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -1022,7 +1022,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 
 引入版本：v1.1.0
 
-执行与 [`hex`](#hex) 相反的操作。它将参数中的每一对十六进制数字解释为一个数值，并将其转换为该数值所表示的字节。返回值是一个二进制字符串（BLOB）。
+执行与 [`hex`](#hex) 相反的操作。它将参数中的每一对十六进制数字解释为一个数值，并将其转换为该数值所表示的字节。返回值是一个二进制字符串 (BLOB) 。
 
 如果想将结果转换为数值，可以使用 `reverse` 和 `reinterpretAs<Type>` 函数。
 
@@ -1034,7 +1034,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 同时支持大写和小写字母 `A-F`。
 十六进制数字的数量不必为偶数。
 如果是奇数，最后一位数字会被解释为 `00-0F` 字节中最低有效的半字节。
-如果参数字符串包含十六进制数字以外的任何内容，将返回某种与具体实现相关的结果（不会抛出异常）。
+如果参数字符串包含十六进制数字以外的任何内容，将返回某种与具体实现相关的结果 (不会抛出异常) 。
 对于数值参数，unhex() 不会执行 hex(N) 的逆运算。
 
 **语法**
@@ -1049,7 +1049,7 @@ unhex(arg)
 
 **返回值**
 
-返回一个二进制字符串（BLOB）。[`String`](/sql-reference/data-types/string)
+返回一个二进制字符串 (BLOB) 。[`String`](/sql-reference/data-types/string)
 
 **示例**
 

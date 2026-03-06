@@ -34,7 +34,7 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **使用例**
 
-**ウィンドウ関数の使用例（視覚的な図解付き）**
+**ウィンドウ関数の使用例 (視覚的な図解付き)&#x20;**
 
 ```sql title=Query
 SELECT

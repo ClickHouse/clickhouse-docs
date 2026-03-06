@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认的 logger，将日志发送到 ClickStack（由 [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) 驱动）。
+ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认的 logger，将日志发送到 ClickStack (由 [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) 驱动) 。
 
 **本指南集成：**
 
@@ -18,12 +18,12 @@ ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认的 lo
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✖️ 指标</td>
-      <td className="pe-2">✖️ 链路追踪（Traces）</td>
+      <td className="pe-2">✖️ 链路追踪 (Traces) </td>
     </tr>
   </tbody>
 </table>
 
-*若要发送指标或 APM/链路追踪（traces），你还需要为应用程序添加对应语言的集成。*
+*若要发送指标或 APM/链路追踪 (traces) ，你还需要为应用程序添加对应语言的集成。*
 
 ## 入门 \{#getting-started\}
 
@@ -65,15 +65,15 @@ export class CatsController {
 }
 ```
 
-### 替换 Nest 日志记录器（也适用于启动阶段） \{#replacing-the-nest-logger\}
+### 替换 Nest 日志记录器 (也适用于启动阶段)  \{#replacing-the-nest-logger\}
 
 :::note 重要
 这样做会放弃使用依赖注入机制，这意味着 `forRoot` 和 `forRootAsync` 不再需要，也不应被使用。请将它们从主模块中移除。
 :::
 
-使用依赖注入有一个小小的缺点。Nest 必须先启动应用程序（实例化模块和提供者、注入依赖等），在此过程中 `HyperDXNestLogger` 实例尚不可用，这意味着 Nest 会回退到其内部日志记录器。
+使用依赖注入有一个小小的缺点。Nest 必须先启动应用程序 (实例化模块和提供者、注入依赖等) ，在此过程中 `HyperDXNestLogger` 实例尚不可用，这意味着 Nest 会回退到其内部日志记录器。
 
-一种解决方案是在应用程序生命周期之外，使用 `createLogger` 函数创建日志记录器，并将其传递给 `NestFactory.create`。Nest 随后会将我们的自定义日志记录器（由 `createLogger` 方法返回的同一实例）包装进 Logger 类中，并将所有调用转发给它：
+一种解决方案是在应用程序生命周期之外，使用 `createLogger` 函数创建日志记录器，并将其传递给 `NestFactory.create`。Nest 随后会将我们的自定义日志记录器 (由 `createLogger` 方法返回的同一实例) 包装进 Logger 类中，并将所有调用转发给它：
 
 在 `main.ts` 文件中创建日志记录器
 

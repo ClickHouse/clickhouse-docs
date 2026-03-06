@@ -1,7 +1,7 @@
 ---
 description: 'Apache Iceberg、Delta Lake、Apache Hudi、Apache Paimon などのオープンなテーブル形式で保存されたデータに対して、ClickHouse を用いてクエリの実行、高速化、および分析を行います。'
 pagination_prev: null
-pagination_next: use-cases/data_lake/getting-started/index
+pagination_next: null
 slug: /use-cases/data-lake
 title: 'データレイクハウス'
 keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']

@@ -29,7 +29,7 @@ quantilesExactInclusive(level1, level2, ...)(expr)
 
 **パラメータ**
 
-* `level` — 分位数のレベル。0 から 1（両端を含む）までの定数浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数のレベル。0 から 1 (両端を含む) までの定数浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
 
 **引数**
 

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 引入版本：v20.1.0
 
-对位图列执行按位与（AND）运算，并返回其基数。
+对位图列执行按位与 (AND) 运算，并返回其基数。
 如果添加后缀组合子 [`-State`](/sql-reference/aggregate-functions/combinators#-state)，则返回一个位图对象。
 
 **语法**

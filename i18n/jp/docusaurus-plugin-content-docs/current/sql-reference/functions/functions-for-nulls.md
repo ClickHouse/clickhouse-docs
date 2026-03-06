@@ -312,7 +312,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 導入バージョン: v22.7.0
 
-引数のデータ型が `Nullable` かどうか（つまり `NULL` 値を許容するかどうか）をチェックします。
+引数のデータ型が `Nullable` かどうか (つまり `NULL` 値を許容するかどうか) をチェックします。
 
 **構文**
 
@@ -355,7 +355,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 導入バージョン: v20.3.0
 
-引数がゼロ（`0`）または `NULL` かどうかを判定します。
+引数がゼロ (`0`) または `NULL` かどうかを判定します。
 
 **構文**
 
