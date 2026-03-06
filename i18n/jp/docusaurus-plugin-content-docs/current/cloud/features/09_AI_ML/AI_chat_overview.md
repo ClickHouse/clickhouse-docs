@@ -1,14 +1,14 @@
 ---
-sidebar_label: 'Ask AI エージェントに質問'
+sidebar_label: 'ClickHouse Assistant エージェントに質問'
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud で Ask AI エージェントに質問する'
-description: 'ClickHouse Cloud における Ask AI チャット機能の説明'
+title: 'Cloud で ClickHouse Assistant エージェントに質問する'
+description: 'ClickHouse Cloud における ClickHouse Assistant チャット機能の説明'
 doc_type: 'reference'
 ---
 
-# Cloud で Ask AI エージェントを利用する \{#ask-ai-agent-in-cloud\}
+# Cloud で ClickHouse Assistant エージェントを利用する \{#ask-ai-agent-in-cloud\}
 
-「Ask AI」エージェントは、ClickHouse Cloud サービス上にホストされているデータに対して複雑な分析タスクを実行できる、すぐに利用可能なターンキー型の機能です。
+「ClickHouse Assistant」エージェントは、ClickHouse Cloud サービス上にホストされているデータに対して複雑な分析タスクを実行できる、すぐに利用可能なターンキー型の機能です。
 ユーザーは SQL を書いたりダッシュボードを操作したりする代わりに、求めている内容を自然言語で記述できます。
 アシスタントはクエリや可視化、サマリを生成して返し、アクティブなタブ、保存済みクエリ、スキーマの詳細、ダッシュボードといったコンテキストを考慮して精度を高めます。
 質問からインサイトへ、プロンプトから稼働中のダッシュボードや API へと素早く到達できるように設計された、埋め込み型アシスタントです。

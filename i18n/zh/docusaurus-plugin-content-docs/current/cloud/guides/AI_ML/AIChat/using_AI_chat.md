@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: '在 ClickHouse Cloud 中使用 Ask AI Chat'
-title: '在 ClickHouse Cloud 中使用 Ask AI Chat'
+sidebar_label: '在 ClickHouse Cloud 中使用 ClickHouse Assistant Chat'
+title: '在 ClickHouse Cloud 中使用 ClickHouse Assistant Chat'
 pagination_prev: null
 pagination_next: null
 description: '在 ClickHouse Cloud 控制台中启用和使用 AI Chat 功能的指南'
@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# 在 ClickHouse Cloud 中使用 Ask AI 聊天 \{#use-ask-ai-chat-in-clickhouse-cloud\}
+# 在 ClickHouse Cloud 中使用 ClickHouse Assistant 聊天 \{#use-ask-ai-chat-in-clickhouse-cloud\}
 
 > 本指南介绍如何在 ClickHouse Cloud 控制台中启用和使用 AI Chat 功能。
 
@@ -35,7 +35,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 ## 打开 AI Chat 面板 \{#open-panel\}
 
 1. 进入某个 ClickHouse Cloud 服务。
-2. 在左侧边栏中，点击标有 “Ask AI” 的闪光图标。
+2. 在左侧边栏中，点击标有 “ClickHouse Assistant” 的闪光图标。
 3. （快捷键）按 <kbd>⌘</kbd> + <kbd>'</kbd>（macOS）或 <kbd>Ctrl</kbd> + <kbd>'</kbd>（Linux/Windows）来切换打开/关闭。
 
 <Image img={img_open} alt="打开 AI Chat 抽屉" size="md"/>
