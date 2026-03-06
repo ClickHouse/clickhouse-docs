@@ -3,8 +3,8 @@ title: 'Querying open table formats directly'
 sidebar_label: 'Direct querying'
 slug: /use-cases/data-lake/getting-started/querying-directly
 sidebar_position: 1
-pagination_prev: use-cases/data_lake/getting-started/index
-pagination_next: use-cases/data_lake/getting-started/connecting-catalogs
+pagination_prev: use-cases/data_lake/getting-started
+pagination_next: use-cases/data_lake/guides/connecting-catalogs
 description: 'Use ClickHouse table functions to read Iceberg, Delta Lake, Hudi, and Paimon tables in object storage without any prior setup.'
 toc_max_heading_level: 2
 keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'table functions']
