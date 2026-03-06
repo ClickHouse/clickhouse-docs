@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumMapWithOverflow \{#sumMapWithOverflow\}
 
-도입: v20.1
+도입: v20.1.0
 
 `key` 배열에 지정된 키에 따라 `value` 배열을 합산합니다. 정렬된 순서의 키 배열과, 해당 키에 대해 합산된 값 배열의 두 배열로 구성된 튜플을 반환합니다.
 이 함수는 오버플로를 허용하는 방식으로 합산을 수행한다는 점에서 [`sumMap`](/sql-reference/aggregate-functions/reference/summap) 함수와 다릅니다. 즉, 합산 결과의 데이터 타입이 인수의 데이터 타입과 동일하게 반환됩니다.
@@ -72,7 +72,7 @@ GROUP BY timeslot;
 └─────────────────────┴────────────────────────────────────┴───────────────────────────────────┘
 ```
 
-**Tuple 구문을 사용한 동일한 결과**
+**동일한 결과를 보여주는 Tuple 문법 예시**
 
 ```sql title=Query
 SELECT

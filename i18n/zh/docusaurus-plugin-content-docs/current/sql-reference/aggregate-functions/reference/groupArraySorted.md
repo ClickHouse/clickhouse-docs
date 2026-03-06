@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySorted \{#groupArraySorted\}
 
-引入版本：v24.2
+引入版本：v24.2.0
 
 返回一个数组，包含按升序排列的前 N 个元素。
 

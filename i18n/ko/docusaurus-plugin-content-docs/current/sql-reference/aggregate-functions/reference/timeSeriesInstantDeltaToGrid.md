@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantDeltaToGrid \{#timeSeriesInstantDeltaToGrid\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 타임스탬프와 값의 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝으로 정의된 일정 간격의 시간 그리드에서 이 데이터로부터 [PromQL과 유사한 idelta](https://prometheus.io/docs/prometheus/latest/querying/functions/#idelta)를 계산하는 집계 함수입니다.
 그리드의 각 지점에 대해 `idelta`를 계산하기 위한 샘플은 지정된 시간 윈도우 내에서 선택됩니다.

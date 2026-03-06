@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## mannWhitneyUTest \{#mannWhitneyUTest\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 对来自两个总体的样本应用 Mann-Whitney 秩检验。
 

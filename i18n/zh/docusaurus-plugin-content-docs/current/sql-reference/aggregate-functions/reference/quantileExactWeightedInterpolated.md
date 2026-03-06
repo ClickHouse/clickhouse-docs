@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeightedInterpolated \{#quantileExactWeightedInterpolated\}
 
-新增于：v24.10
+新增于：v24.10.0
 
 使用线性插值计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑每个元素的权重。
 
@@ -54,7 +54,7 @@ SELECT quantileExactWeightedInterpolated(n, val) FROM t;
 └───────────────────────────────────────────┘
 ```
 
-**优先使用 quantileExactWeightedInterpolated 而不是 quantileInterpolatedWeighted**
+**优先选择 quantileExactWeightedInterpolated 而不是 quantileInterpolatedWeighted**
 
 ```sql title=Query
 SELECT

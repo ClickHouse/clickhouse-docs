@@ -4,8 +4,8 @@ sidebar_label: 'Accelerating queries'
 slug: /use-cases/data-lake/getting-started/accelerating-analytics
 sidebar_position: 3
 toc_max_heading_level: 3
-pagination_prev: use-cases/data_lake/getting-started/connecting-catalogs
-pagination_next: use-cases/data_lake/getting-started/writing-data
+pagination_prev: use-cases/data_lake/guides/connecting-catalogs
+pagination_next: use-cases/data_lake/guides/writing-data
 description: 'Load data from open table formats into ClickHouse MergeTree tables for dramatically faster analytical queries.'
 keywords: ['data lake', 'lakehouse', 'MergeTree', 'accelerate', 'analytics', 'inverted index', 'full-text index', 'INSERT INTO SELECT']
 doc_type: 'guide'

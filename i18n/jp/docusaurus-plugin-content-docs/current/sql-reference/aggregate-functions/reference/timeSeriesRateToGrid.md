@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesRateToGrid \{#timeSeriesRateToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアからなる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッド上で、このデータから [PromQL 風の rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) を計算する集約関数です。グリッド上の各ポイントについて、`rate` を計算するために使用するサンプルは、指定された時間ウィンドウ内のもののみが考慮されます。
 

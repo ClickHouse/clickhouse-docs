@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarSampStable \{#covarSampStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the sample covariance:
+표본 공분산을 계산합니다:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-It is similar to [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) but uses a numerically stable algorithm.
-As a result, `covarSampStable` is slower than `covarSamp` but provides a lower computational error.
+[`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp)와 유사하지만 수치적으로 안정적인 알고리즘을 사용합니다.
+결과적으로 `covarSampStable`은 `covarSamp`보다 느리지만 더 낮은 계산 오차를 제공합니다.
 
 **Syntax**
 
@@ -35,13 +35,13 @@ covarSampStable(x, y)
 - `x` — 첫 번째 변수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 두 번째 변수. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**반환값**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `inf` is returned. [`Float64`](/sql-reference/data-types/float)
+`x`와 `y` 사이의 표본 공분산을 반환합니다. `n <= 1`인 경우 `inf`가 반환됩니다. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**예시**
 
-**Basic sample covariance calculation with stable algorithm**
+**안정적인 알고리즘을 사용한 기본 표본 공분산 계산**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -64,7 +64,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-**Single value returns inf**
+**단일 값은 inf를 반환**
 
 ```sql title=Query
 SELECT covarSampStable(x_value, y_value)

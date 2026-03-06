@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmap \{#groupBitmap\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 부호 없는 정수 컬럼에서 비트맵(비트 배열)을 생성한 다음, 해당 비트맵에서 고유 값의 개수(카디널리티)를 반환합니다.
 `-State` 조합자 접미사를 추가하면 개수를 반환하는 대신 실제 [비트맵 객체](/sql-reference/functions/bitmap-functions)를 반환합니다.

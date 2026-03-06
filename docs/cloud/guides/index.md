@@ -12,7 +12,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 |-----|-----|
 | [Overview](/cloud/manage/backups/overview) | Provides an overview of backups in ClickHouse Cloud |
 | [Enabling the ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
-| [Use Ask AI chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
+| [Use ClickHouse Assistant chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
 | [Take a backup or restore a backup from the UI](/cloud/manage/backups/backup-restore-via-ui) | Page describing how to take a backup or restore a backup from the UI with your own bucket |
 | [Take a backup or restore a backup using commands](/cloud/manage/backups/backup-restore-via-commands) | Page describing how to take a backup or restore a backup with your own bucket using commands |
 | [Accessing GCS data securely](/cloud/data-sources/secure-gcs) | This article demonstrates how ClickHouse Cloud customers can access their GCS data securely |
@@ -53,7 +53,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Guide showing how to manage SQL console role assignments |
 | [Migrating from CMEK v1 to v2](/cloud/security/cmek-migration) | Migration instructions to move from legacy CMEK to version 2 |
 | [Multi tenancy](/cloud/bestpractices/multi-tenancy) | Best practices to implement multi tenancy |
-| [Optimizing Ask AI Agent Conversations with a Semantic Layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the Ask AI chat agent |
+| [Optimizing ClickHouse Assistant Agent Conversations with a Semantic Layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
 | [Private Networking Setup](/cloud/reference/byoc/onboarding/network) | Deploy ClickHouse on your own cloud infrastructure |

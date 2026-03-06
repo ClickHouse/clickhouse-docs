@@ -404,8 +404,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) インデックス
 - [`Set`](#set) インデックス
 - [`bloom_filter`](#bloom-filter) インデックス
-- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
-- [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス *(非推奨)*
+- [`tokenbf_v1`](#token-bloom-filter) インデックス *(非推奨)*
 - [`text`](#text) インデックス
 - [`vector_similarity`](#vector-similarity) インデックス
 
@@ -458,7 +458,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram ブルームフィルタ \{#n-gram-bloom-filter\}
+#### N-gram ブルームフィルタ *(非推奨)* \{#n-gram-bloom-filter\}
+
+:::note
+ClickHouse バージョン 26.2 以降で `text` 索引が一般提供 (GA) されたことに伴い、全文検索での `ngrambf_v1` 索引の利用は推奨されません。
+
+詳細については [&quot;text 索引による全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 各インデックスグラニュールは、指定されたカラムの [N-gram](https://en.wikipedia.org/wiki/N-gram) に対する [ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
@@ -504,8 +510,8 @@ AS
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-たとえば、1 つのグラニュールに `4300` 個の n グラムが含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
-この場合、他のパラメータは次のクエリを実行することで推定できます。
+たとえば、1 つのグラニュールに `4300` 個の n-gram が含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
+このとき、他のパラメータは次のクエリを実行することで推定できます。
 
 ```sql
 --- estimate number of bits in the filter
@@ -529,7 +535,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### トークン Bloom フィルター \{#token-bloom-filter\}
 
-トークン Bloom フィルターは `ngrambf_v1` と同様ですが、n-gram の代わりに、英数字以外の文字で区切られたトークン（文字列）を格納します。
+:::note
+ClickHouse バージョン 26.2 以降、`text` 索引が一般提供 (GA) となったため、全文検索用途での `tokenbf_v1` 索引の利用は推奨されません。
+
+詳細は [&quot;text 索引を用いた全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -1161,7 +1171,7 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 
 <CloudNotSupportedBadge />
 
-`set allow_experimental_statistics = 1` を有効にすると、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリの `COLUMNS` セクション内で統計を宣言します。
+統計の宣言は、`set allow_experimental_statistics = 1` を有効にしている場合、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラム定義セクションに記述します。
 
 ```sql
 CREATE TABLE tab
@@ -1173,7 +1183,7 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` 文を使用して統計情報を操作することもできます。
+`ALTER` 文でも統計情報を操作できます。
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;

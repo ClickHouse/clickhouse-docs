@@ -127,7 +127,7 @@ When creating a client instance, the following connection settings can be adjust
 | **session_id**?: string                                                  | Optional ClickHouse Session ID to send with every request.                          | -                       | -                                                                                          |
 | **keep_alive**?: `{ **enabled**?: boolean }`                             | Enabled by default in both Node.js and Web versions.                                | -                       | -                                                                                          |
 | **http_headers**?: `Record<string, string>`                              | Additional HTTP headers for outgoing ClickHouse requests.                           | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)        |
-| **roles**?: string \|  string[]                                          | ClickHouse role name(s) to attach to the outgoing requests.                         | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters) |
+| **roles**?: string \|  string[]                                          | ClickHouse role names to attach to the outgoing requests.                         | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js-specific configuration parameters {#nodejs-specific-configuration-parameters}
 
@@ -194,7 +194,7 @@ createClient({
 
 #### Connection overview {#connection-overview}
 
-The client implements a connection via HTTP(s) protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
+The client implements a connection via HTTP or HTTPS protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
 
 The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `url` (including
 protocol and port) and `password` values are specified via environment variables, and `default` user is used.
@@ -1286,16 +1286,16 @@ const client = createClient({
 This is an experimental feature that may change in backwards-incompatible ways in the future releases. The default implementation and settings the client provides should be sufficient for most use cases. Use this feature only if you're sure that you need it.
 :::
 
-By default, the client will configure the underlying HTTP(s) agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
+By default, the client will configure the underlying HTTP or HTTPS agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
 
-After 1.2.0, it is possible to provide a custom HTTP(s) agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
+After 1.2.0, it is possible to provide a custom HTTP or HTTPS agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
 - The `max_open_connections` and `tls` options will have _no effect_ and will be ignored by the client, as it is a part of the underlying agent configuration.
 - `keep_alive.enabled` will only regulate the default value of the `Connection` header (`true` -> `Connection: keep-alive`, `false` -> `Connection: close`).
 - While the idle keep-alive socket management will still work (as it isn't tied to the agent but to a particular socket itself), it is now possible to disable it entirely by setting the `keep_alive.idle_socket_ttl` value to `0`.
 
 #### Custom agent usage examples {#custom-agent-usage-examples}
 
-Using a custom HTTP(s) Agent without certificates:
+Using a custom HTTP or HTTPS Agent without certificates:
 
 ```ts
 const agent = new http.Agent({ // or https.Agent

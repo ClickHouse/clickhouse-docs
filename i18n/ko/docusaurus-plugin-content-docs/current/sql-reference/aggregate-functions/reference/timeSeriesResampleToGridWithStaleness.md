@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResampleToGridWithStaleness \{#timeSeriesResampleToGridWithStaleness\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 타임스탬프와 값의 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프 및 스텝(step)으로 정의되는 규칙적인 시간 그리드에 맞춰 이 데이터를 리샘플링하는 집계 함수입니다. 그리드의 각 지점에 대해 지정된 시간 구간 내에서 가장 최근 샘플이 선택됩니다.
 

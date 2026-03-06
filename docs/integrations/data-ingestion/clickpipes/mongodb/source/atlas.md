@@ -52,7 +52,7 @@ You can find them in the `Specific Privileges` section:
 
 <Image img={mongo_atlas_add_roles} alt="Configure user roles" size="lg" border/>
 
-You can further specify the cluster(s)/instance(s) you wish to grant access to ClickPipes user:
+You can further specify the clusters/instances you wish to grant access to ClickPipes user:
 
 <Image img={mongo_atlas_restrict_access} alt="Restrict cluster/instance acces" size="lg" border/>
 

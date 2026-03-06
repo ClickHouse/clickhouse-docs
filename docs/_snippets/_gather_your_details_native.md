@@ -4,7 +4,7 @@ import Image from '@theme/IdealImage';
 
 To connect to ClickHouse with native TCP you need this information:
 
-| Parameter(s)              | Description                                                                                                   |
+| Parameters              | Description                                                                                                   |
 |---------------------------|---------------------------------------------------------------------------------------------------------------|
 | `HOST` and `PORT`         | Typically, the port is 9440 when using TLS, or 9000 when not using TLS.                                       |
 | `DATABASE NAME`           | Out of the box there is a database named `default`, use the name of the database that you want to connect to. |

@@ -114,6 +114,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_minimum_perkey_rows](/operations/settings/settings#join_to_sort_minimum_perkey_rows) | `40` |
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
+| [allow_experimental_json_lazy_type_hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints) | `0` |
 | [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |

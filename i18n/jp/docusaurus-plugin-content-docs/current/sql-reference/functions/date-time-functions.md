@@ -36,7 +36,7 @@ SELECT
 
 ## UTCTimestamp \{#UTCTimestamp\}
 
-導入バージョン: v22.11
+導入バージョン: v22.11.0
 
 クエリの解析時点における現在の日付と時刻を返します。この関数は定数式です。
 
@@ -74,7 +74,7 @@ SELECT UTCTimestamp()
 
 ## YYYYMMDDToDate \{#YYYYMMDDToDate\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 年・月・日を表す数値を `Date` に変換します。
 この関数は、関数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) の逆の動作をします。
@@ -110,7 +110,7 @@ SELECT YYYYMMDDToDate(20230911);
 
 ## YYYYMMDDToDate32 \{#YYYYMMDDToDate32\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 年・月・日を表す数値を `Date32` に変換します。
 この関数は、関数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) の逆の変換を行います。
@@ -146,7 +146,7 @@ SELECT YYYYMMDDToDate32(20000507);
 
 ## YYYYMMDDhhmmssToDateTime \{#YYYYMMDDhhmmssToDateTime\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 年・月・日・時・分・秒を表す数値を `DateTime` に変換します。
 この関数は、関数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) の逆の動作をします。
@@ -183,7 +183,7 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 
 ## YYYYMMDDhhmmssToDateTime64 \{#YYYYMMDDhhmmssToDateTime64\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 年・月・日・時・分・秒を含む数値を `DateTime64` に変換します。
 この関数は、関数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) の逆です。
@@ -221,7 +221,7 @@ SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
 
 ## addDate \{#addDate\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 指定された `Date`、日時、または文字列としてエンコードされた日付／日時に時間間隔を加算します。
 加算の結果がデータ型の範囲外の値になる場合、結果は未定義です。
@@ -257,7 +257,7 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 
 ## addDays \{#addDays\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、またはそれらの文字列表現に、指定した日数を加算します。
 
@@ -297,7 +297,7 @@ SELECT
 └────────────────────┴─────────────────────────┴────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**INTERVAL の別構文を使用する**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
@@ -311,7 +311,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
 
 ## addHours \{#addHours\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付もしくは日時に、指定した時間を加算します。
 
@@ -351,7 +351,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使う**
+**別の INTERVAL 構文の使用**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
@@ -365,7 +365,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
 
 ## addInterval \{#addInterval\}
 
-導入バージョン: v22.11
+導入バージョン: v22.11.0
 
 あるインターバルに、別のインターバルまたはインターバルのタプルを加算します。
 
@@ -412,7 +412,7 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY)
 
 ## addMicroseconds \{#addMicroseconds\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日付時刻型、または文字列で表現された日付時刻に対して、指定したマイクロ秒数を加算します。
 
@@ -450,7 +450,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文を使用する**
+**INTERVAL の別構文を使用する**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -464,7 +464,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 
 ## addMilliseconds \{#addMilliseconds\}
 
-導入: v22.6
+導入: v22.6.0
 
 日付時刻型、または文字列表現の日付時刻に対して、指定したミリ秒数を加算します。
 
@@ -516,7 +516,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 
 ## addMinutes \{#addMinutes\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付もしくは日時に、指定した分を加算します。
 
@@ -556,7 +556,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の使用**
+**代替の INTERVAL 構文の使用**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
@@ -570,7 +570,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
 
 ## addMonths \{#addMonths\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付／日時に、指定した数の月を追加します。
 
@@ -624,7 +624,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
 
 ## addNanoseconds \{#addNanoseconds\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時型、または文字列表現の日時に、指定したナノ秒数を加算します。
 
@@ -676,7 +676,7 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
 
 ## addQuarters \{#addQuarters\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 `Date`、時刻付きの `DateTime`、またはそれらの日付／日時を文字列としてエンコードした値に対して、指定した数の四半期を加算します。
 
@@ -716,7 +716,7 @@ SELECT
 └────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の利用**
+**代替の INTERVAL 構文の使用**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -730,7 +730,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
 
 ## addSeconds \{#addSeconds\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付（`Date`）、日時（`DateTime`）、またはそれらを文字列で表現した値に、指定した秒数を加算します。
 
@@ -784,7 +784,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
 
 ## addTupleOfIntervals \{#addTupleOfIntervals\}
 
-導入バージョン: v22.11
+導入バージョン: v22.11.0
 
 日付または日時に対して、タプルで指定された複数のインターバルを順に加算します。
 
@@ -820,7 +820,7 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 
 ## addWeeks \{#addWeeks\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定した週数を、日付、日時、または文字列表現の日時／日付に加算します。
 
@@ -874,7 +874,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
 
 ## addYears \{#addYears\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付／日時に、指定した年数を加算します。
 
@@ -928,7 +928,7 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
 
 ## age \{#age\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 `startdate` と `enddate` の差の、指定した単位での値を返します。
 差は 1 ナノ秒の精度で計算されます。
@@ -1003,7 +1003,7 @@ SELECT
 
 ## changeDay \{#changeDay\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 日付または日時の「日」の部分を変更します。
 
@@ -1036,7 +1036,7 @@ SELECT changeDay('2024-01-31'::DateTime, 15)
 
 ## changeHour \{#changeHour\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 日付または日時の時コンポーネントを変更します。
 
@@ -1069,7 +1069,7 @@ SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
 
 ## changeMinute \{#changeMinute\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 `Date` または `DateTime` の分の値を変更します。
 
@@ -1102,7 +1102,7 @@ SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
 
 ## changeMonth \{#changeMonth\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 日付または日時の月の部分を変更します。
 
@@ -1135,7 +1135,7 @@ SELECT changeMonth('2024-01-01'::DateTime, 12)
 
 ## changeSecond \{#changeSecond\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 日付または日時の秒の部分を変更します。
 
@@ -1168,7 +1168,7 @@ SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
 
 ## changeYear \{#changeYear\}
 
-導入バージョン: v24.7
+導入バージョン: v24.7.0
 
 日付または日時の年の部分を変更します。
 
@@ -1201,7 +1201,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 
 ## dateDiff \{#dateDiff\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 指定した `unit` の境界が `startdate` と `enddate` の間でいくつ跨いだかを返します。
 差分は相対単位を用いて計算されます。例えば、2021-12-29 と 2022-01-01 の差分は、単位 day の場合は 3 日
@@ -1279,7 +1279,7 @@ SELECT
 
 ## dateName \{#dateName\}
 
-導入バージョン: v21.7
+導入バージョン: v21.7.0
 
 日付の指定された要素を返します。
 
@@ -1332,7 +1332,7 @@ SELECT
 
 ## dateTrunc \{#dateTrunc\}
 
-導入バージョン: v20.8
+導入バージョン: v20.8.0
 
 日付と時刻の値を、指定した日付/時刻要素まで切り捨てます。
 
@@ -1391,7 +1391,7 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 
 ## formatDateTime \{#formatDateTime\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定されたフォーマット文字列に従って、日付または日時をフォーマットします。`format` は定数式であるため、1 つの結果カラムに対して複数のフォーマットを使用することはできません。
 
@@ -1521,7 +1521,7 @@ LIMIT 10
 
 ## formatDateTimeInJodaSyntax \{#formatDateTimeInJodaSyntax\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 `formatDateTime` と似ていますが、MySQL スタイルではなく Joda スタイルで日時をフォーマットします。[Joda Time のドキュメント](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)を参照してください。
 
@@ -1589,7 +1589,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 
 ## fromDaysSinceYearZero \{#fromDaysSinceYearZero\}
 
-導入バージョン: v23.11
+導入バージョン: v23.11.0
 
 [紀元0年1月1日](https://en.wikipedia.org/wiki/Year_zero) からの経過日数が与えられると、[ISO 8601 で定義される先発グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)における対応する日付を返します。
 
@@ -1629,7 +1629,7 @@ fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 
 ## fromDaysSinceYearZero32 \{#fromDaysSinceYearZero32\}
 
-導入バージョン: v23.11
+導入バージョン: v23.11.0
 
 [西暦 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) から経過した日数を指定すると、[ISO 8601 で定義されるプロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)における対応する日付を返します。
 計算は MySQL の `FROM_DAYS()` 関数と同じです。結果が [`Date32`](../data-types/date32.md) 型の範囲内で表現できない場合、結果は未定義です。
@@ -1666,7 +1666,7 @@ fromDaysSinceYearZero32(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 
 ## fromModifiedJulianDay \{#fromModifiedJulianDay\}
 
-導入: v21.1
+導入: v21.1.0
 
 [修正ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)番号を、テキスト形式 `YYYY-MM-DD` による[先発グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付に変換します。この関数は、`-678941` から `2973483` までの日番号をサポートします（それぞれ 0000-01-01 および 9999-12-31 を表します）。サポート対象範囲外の日番号が指定された場合は、例外をスローします。
 
@@ -1700,7 +1700,7 @@ SELECT fromModifiedJulianDay(58849)
 
 ## fromModifiedJulianDayOrNull \{#fromModifiedJulianDayOrNull\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 [`fromModifiedJulianDay()`](#fromModifiedJulianDay) と似ていますが、例外をスローする代わりに `NULL` を返します。
 
@@ -1738,7 +1738,7 @@ SELECT fromModifiedJulianDayOrNull(60000000); -- invalid argument, returns NULL
 
 ## fromUTCTimestamp \{#fromUTCTimestamp\}
 
-導入: v22.1
+導入: v22.1.0
 
 UTC タイムゾーンの日時または日付の値を、指定したタイムゾーンの日時または日付の値に変換します。この関数は主に Apache Spark などのフレームワークとの互換性のために用意されています。
 
@@ -1775,7 +1775,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 ## fromUnixTimestamp \{#fromUnixTimestamp\}
 
-導入バージョン: v20.8
+導入バージョン: v20.8.0
 
 この関数は Unix タイムスタンプをカレンダー日付と一日の時刻に変換します。
 
@@ -1832,7 +1832,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 ## fromUnixTimestampInJodaSyntax \{#fromUnixTimestampInJodaSyntax\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 この関数は Unix タイムスタンプを日付および一日の時刻に変換します。
 
@@ -1875,7 +1875,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 
 ## makeDate \{#makeDate\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 次のいずれかから `Date` を生成します:
 
@@ -1928,7 +1928,7 @@ SELECT makeDate(2023, 42) AS date;
 
 ## makeDate32 \{#makeDate32\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 次のいずれかの指定から `Date32` を作成します:
 
@@ -1981,7 +1981,7 @@ SELECT makeDate(2023, 42) AS date;
 
 ## makeDateTime \{#makeDateTime\}
 
-導入: v22.6
+導入: v22.6.0
 
 年、月、日、時、分、秒から、オプションのタイムゾーンを指定して `DateTime` を生成します。
 
@@ -2021,7 +2021,7 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 
 ## makeDateTime64 \{#makeDateTime64\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 year、month、day、hour、minute、second から、オプションの fraction、precision、timezone を指定して `DateTime64` を生成します。
 
@@ -2063,7 +2063,7 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 
 ## monthName \{#monthName\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 日付または日時の値から、月の名前を文字列として返します。
 
@@ -2098,7 +2098,7 @@ SELECT monthName(date_value)
 
 ## now \{#now\}
 
-導入: v1.1
+導入: v1.1.0
 
 クエリ解析時点の現在の日時を返します。この関数は定数式です。
 
@@ -2146,7 +2146,7 @@ SELECT now('Asia/Istanbul')
 
 ## now64 \{#now64\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 クエリ解析時の現在の日時をサブ秒精度で返します。この関数は定数式です。
 
@@ -2181,7 +2181,7 @@ SELECT now64(), now64(9, 'Asia/Istanbul')
 
 ## nowInBlock \{#nowInBlock\}
 
-導入バージョン: v22.8
+導入バージョン: v22.8.0
 
 各データブロックを処理する瞬間の現在日時を返します。関数 [`now`](#now) と異なり、この関数は定数式ではないため、長時間実行されるクエリではブロックごとに異なる値が返されます。
 
@@ -2225,7 +2225,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## nowInBlock64 \{#nowInBlock64\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 各データブロックの処理時点における現在日時をミリ秒単位で返します。関数 [now64](#now64) と異なり、これは定数式ではなく、長時間実行されるクエリではブロックごとに異なる値が返されます。
 
@@ -2270,7 +2270,7 @@ FORMAT PrettyCompactMonoBlock
 
 ## serverTimezone \{#serverTimezone\}
 
-導入バージョン: v23.6
+導入バージョン: v23.6.0
 
 サーバーのタイムゾーン、つまり [`timezone`](/operations/server-configuration-parameters/settings#timezone) 設定の値を返します。
 関数が分散テーブルのコンテキストで実行される場合は、各分片に対応した値を持つ通常のカラムを生成します。それ以外の場合は、定数値を返します。
@@ -2307,7 +2307,7 @@ SELECT serverTimeZone()
 
 ## subDate \{#subDate\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 指定された `Date`、日時、または日付／日時を表す文字列から、時間間隔を減算します。
 減算結果がデータ型の範囲外になる場合、結果は未定義です。
@@ -2343,7 +2343,7 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 
 ## subtractDays \{#subtractDays\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date`、日時を含む `DateTime`、またはそれらを文字列で表現した値から、指定した日数を減算します。
 
@@ -2383,7 +2383,7 @@ SELECT
 └─────────────────────────┴──────────────────────────────┴─────────────────────────────────────┘
 ```
 
-**代替の INTERVAL 構文を使用する**
+**別の INTERVAL 構文を使用する**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
@@ -2397,7 +2397,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
 
 ## subtractHours \{#subtractHours\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または日付/日時の文字列表現から、指定した時間数を減算します。
 
@@ -2451,7 +2451,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
 
 ## subtractInterval \{#subtractInterval\}
 
-導入: v22.11
+導入: v22.11.0
 
 負の Interval を、別の Interval または Interval のタプルに加算します。
 
@@ -2497,7 +2497,7 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 
 ## subtractMicroseconds \{#subtractMicroseconds\}
 
-導入: v22.6
+導入: v22.6.0
 
 日時型、または文字列表現の日時から、指定したマイクロ秒数を減算します。
 
@@ -2535,7 +2535,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の使用**
+**別の INTERVAL 構文を使用する**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -2549,7 +2549,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 
 ## subtractMilliseconds \{#subtractMilliseconds\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時型、または文字列で表現された日時から、指定したミリ秒数を減算します。
 
@@ -2601,7 +2601,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 
 ## subtractMinutes \{#subtractMinutes\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付／日時から、指定した分を減算します。
 
@@ -2641,7 +2641,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の使用**
+**代替の INTERVAL 構文の利用**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
@@ -2655,7 +2655,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
 
 ## subtractMonths \{#subtractMonths\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列として表現された日付／日時から、指定した月数を減算します。
 
@@ -2709,7 +2709,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
 
 ## subtractNanoseconds \{#subtractNanoseconds\}
 
-導入: v20.1
+導入: v20.1.0
 
 日時型、または文字列表現の日時から、指定した数のナノ秒を減算します。
 
@@ -2761,7 +2761,7 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
 
 ## subtractQuarters \{#subtractQuarters\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 日付、日時、または文字列形式の日付／日時から、指定した数の四半期分を減算します。
 
@@ -2815,7 +2815,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
 
 ## subtractSeconds \{#subtractSeconds\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付/日時から指定した秒数を減算します。
 
@@ -2869,7 +2869,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
 
 ## subtractTupleOfIntervals \{#subtractTupleOfIntervals\}
 
-導入バージョン: v22.11
+導入バージョン: v22.11.0
 
 日付または日時から、タプルで指定された複数のインターバルを順に減算します。
 
@@ -2904,7 +2904,7 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 
 ## subtractWeeks \{#subtractWeeks\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定した週数を、`Date`、日時を表す `DateTime`、または `Date`／日時の文字列表現から減算します。
 
@@ -2944,7 +2944,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**別の INTERVAL 構文の使用**
+**INTERVAL の別構文を使用する**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
@@ -2958,7 +2958,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
 
 ## subtractYears \{#subtractYears\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、日時、または文字列表現の日付／日時から、指定した年数を減算します。
 
@@ -3012,7 +3012,7 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
 
 ## timeDiff \{#timeDiff\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 2つの日付または日時値の差を秒単位で返します。
 差は `enddate` - `startdate` として計算されます。
@@ -3078,7 +3078,7 @@ SELECT
 
 ## timeSlot \{#timeSlot\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 時刻を30分間隔の区間の開始時刻に丸めます。
 
@@ -3118,7 +3118,7 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
 
 ## timeSlots \{#timeSlots\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `StartTime` から開始して `Duration` 秒間継続する時間間隔について、その間に含まれる時点を、`Size` 秒単位で切り捨てた時刻の配列として返します。`Size` はオプションのパラメータで、デフォルトは 1800（30 分）です。
 
@@ -3166,7 +3166,7 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 
 ## timestamp \{#timestamp\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 最初の引数 `expr` を型 [`DateTime64(6)`](/sql-reference/data-types/datetime64) に変換します。
 2 番目の引数 `expr_time` が指定されている場合、変換後の値に指定された時間を加算します。
@@ -3214,7 +3214,7 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
 
 ## timezone \{#timezone\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 現在のセッションのタイムゾーン名を返すか、タイムゾーンのオフセットまたは名前を正規のタイムゾーン名に変換します。
 
@@ -3250,7 +3250,7 @@ SELECT timezone()
 
 ## timezoneOf \{#timezoneOf\}
 
-導入バージョン: v21.4
+導入バージョン: v21.4.0
 
 [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) 型の値のタイムゾーン名を返します。
 
@@ -3287,7 +3287,7 @@ SELECT timezoneOf(now());
 
 ## timezoneOffset \{#timezoneOffset\}
 
-導入バージョン: v21.6
+導入バージョン: v21.6.0
 
 [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) からのタイムゾーンオフセットを秒単位で返します。
 この関数は、指定された日時における夏時間および過去のタイムゾーン変更を考慮します。
@@ -3327,7 +3327,7 @@ timezoneOffset(Time) AS Offset_in_seconds,
 
 ## toDayOfMonth \{#toDayOfMonth\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date` または `DateTime` から、その月における日（1〜31）を返します。
 
@@ -3363,7 +3363,7 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toDayOfWeek \{#toDayOfWeek\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date` または `DateTime` の値に対して、その週の曜日番号を返します。
 
@@ -3414,7 +3414,7 @@ SELECT
 
 ## toDayOfYear \{#toDayOfYear\}
 
-導入バージョン: v18.4
+導入バージョン: v18.4.0
 
 `Date` または `DateTime` 型の値に対して、その年の中での通算日 (1〜366) を返します。
 
@@ -3450,7 +3450,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysSinceYearZero \{#toDaysSinceYearZero\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 指定した日付について、[ISO 8601 で定義されるプロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)における
 [西暦 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero) から経過した日数を返します。
@@ -3490,7 +3490,7 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'))
 
 ## toHour \{#toHour\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `DateTime` または `DateTime64` 値の時（0-23）を返します。
 
@@ -3526,7 +3526,7 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 
 ## toISOWeek \{#toISOWeek\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 日付、または時刻を含む日付の ISO 週番号を返します。
 
@@ -3580,7 +3580,7 @@ SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS
 
 ## toISOYear \{#toISOYear\}
 
-導入バージョン: v18.4
+導入バージョン: v18.4.0
 
 日付または日時を ISO 年番号に変換します。
 
@@ -3616,7 +3616,7 @@ toISOYear(toDateTime('2024-10-02 01:30:00')) as year2
 
 ## toLastDayOfMonth \{#toLastDayOfMonth\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、その月の最終日に切り上げます。
 
@@ -3656,7 +3656,7 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toLastDayOfWeek \{#toLastDayOfWeek\}
 
-導入バージョン: v23.5
+導入バージョン: v23.5.0
 
 日付または日時を、次の土曜日または日曜日に切り上げます。
 
@@ -3704,7 +3704,7 @@ toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 
 ## toMillisecond \{#toMillisecond\}
 
-導入: v24.2
+導入: v24.2.0
 
 `DateTime` または `DateTime64` 値のミリ秒部分 (0～999) を返します。
 
@@ -3740,7 +3740,7 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
 
 ## toMinute \{#toMinute\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date` または `DateTime` 型の値から、分（0〜59）を返します。
 
@@ -3776,7 +3776,7 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 
 ## toModifiedJulianDay \{#toModifiedJulianDay\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 テキスト形式 `YYYY-MM-DD` で表された[プロレプティック・グレゴリオ暦](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)の日付を、`Int32` 型の[修正ユリウス日](https://en.wikipedia.org/wiki/Julian_day#Variants)に変換します。この関数は `0000-01-01` から `9999-12-31` までの日付をサポートします。引数が日付としてパースできない場合、または日付が不正な場合は例外をスローします。
 
@@ -3810,7 +3810,7 @@ SELECT toModifiedJulianDay('2020-01-01')
 
 ## toModifiedJulianDayOrNull \{#toModifiedJulianDayOrNull\}
 
-導入: v21.1
+導入: v21.1.0
 
 [`toModifiedJulianDay()`](#toModifiedJulianDay) と同様ですが、例外をスローする代わりに `NULL` を返します。
 
@@ -3848,7 +3848,7 @@ SELECT toModifiedJulianDayOrNull('0000-00-00'); -- invalid date, returns NULL
 
 ## toMonday \{#toMonday\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、同じ週の月曜日に切り捨てます。日付を返します。
 
@@ -3888,7 +3888,7 @@ toMonday(toDate('2023-04-24'));              -- Already a Monday
 
 ## toMonth \{#toMonth\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date` または `DateTime` 型の値から、月 (1〜12) の値を返します。
 
@@ -3924,7 +3924,7 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toMonthNumSinceEpoch \{#toMonthNumSinceEpoch\}
 
-導入バージョン: v25.3
+導入バージョン: v25.3.0
 
 1970年からの経過月数を返します。
 
@@ -3956,7 +3956,7 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ## toQuarter \{#toQuarter\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定した `Date` または `DateTime` 値について、その年の四半期 (1～4) を返します。
 
@@ -3992,7 +3992,7 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 
 ## toRelativeDayNum \{#toRelativeDayNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、過去のある固定時点からの経過日数に変換します。
 その正確な時点は実装依存であり、この関数を単体で使用することは想定されていません。
@@ -4028,7 +4028,7 @@ SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01
 
 ## toRelativeHourNum \{#toRelativeHourNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、過去のある固定時点からの経過時間（時間数）に変換します。
 その基準となる時刻は実装依存の詳細であり、この関数を単体で使用することは意図されていません。
@@ -4064,7 +4064,7 @@ SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(
 
 ## toRelativeMinuteNum \{#toRelativeMinuteNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、過去のある固定時点からの経過分数に変換します。
 その時点がいつであるかは実装の詳細であり、この関数を単体で使用することは想定されていません。
@@ -4100,7 +4100,7 @@ SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinute
 
 ## toRelativeMonthNum \{#toRelativeMonthNum\}
 
-導入: v1.1
+導入: v1.1.0
 
 日付または日時を、過去のある固定時点から経過した月数に変換します。
 その正確な基準時点は実装依存であり、この関数を単体で使用することは意図されていません。
@@ -4136,7 +4136,7 @@ SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('202
 
 ## toRelativeQuarterNum \{#toRelativeQuarterNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、または日付と時刻を、過去のある固定時点から経過した四半期の数に変換します。
 その正確な時点は実装上の詳細であり、この関数を単独で使用することは想定されていません。
@@ -4172,7 +4172,7 @@ SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate(
 
 ## toRelativeSecondNum \{#toRelativeSecondNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、または日付と時刻を、過去のある固定時点からの経過秒数に変換します。
 その正確な時点は実装の詳細に属するため、この関数を単体で使用することは想定されていません。
@@ -4208,7 +4208,7 @@ SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecond
 
 ## toRelativeWeekNum \{#toRelativeWeekNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、過去のある固定基準時点からの経過週数に変換します。
 その基準時点の正確な値は実装依存であり、この関数を単体で使用することは想定されていません。
@@ -4244,7 +4244,7 @@ SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-
 
 ## toRelativeYearNum \{#toRelativeYearNum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、過去のある固定時点からの経過年数に変換します。
 その正確な基準時刻は実装依存の詳細であり、この関数を単体で使用することは想定されていません。
@@ -4280,7 +4280,7 @@ SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01
 
 ## toSecond \{#toSecond\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `DateTime` または `DateTime64` の値から秒の値（0〜59）を返します。
 
@@ -4316,7 +4316,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfDay \{#toStartOfDay\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付時刻を、その日の開始時刻まで切り捨てます。
 
@@ -4354,7 +4354,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfFifteenMinutes \{#toStartOfFifteenMinutes\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日時を直前の15分間隔の開始時刻に切り捨てます。
 
@@ -4398,7 +4398,7 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 
 ## toStartOfFiveMinutes \{#toStartOfFiveMinutes\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時を直前の 5 分単位区間の開始時刻に切り下げます。
 
@@ -4444,7 +4444,7 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfHour \{#toStartOfHour\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日時を、その時間の先頭（ちょうどの時刻）に切り下げます。
 
@@ -4483,7 +4483,7 @@ SELECT
 
 ## toStartOfISOYear \{#toStartOfISOYear\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、その ISO 年の最初の日まで切り捨てます。ISO 年は通常の暦年と異なる場合があります。詳細は [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date) を参照してください。
 
@@ -4521,7 +4521,7 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfInterval \{#toStartOfInterval\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 この関数は、`toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` という構文により、他の `toStartOf*()` 関数を一般化したものです。
 
@@ -4534,21 +4534,21 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 
 計算は特定の時点を基準として実行されます:
 
-| Interval                                                                                                                     | 開始点                    |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| YEAR                                                                                                                         | year 0                 |
-| QUARTER                                                                                                                      | 1900 Q1                |
-| MONTH                                                                                                                        | 1900 January           |
-| WEEK                                                                                                                         | 1970, 1st week (01-05) |
-| DAY                                                                                                                          | 1970-01-01             |
-| HOUR                                                                                                                         | (*)                    |
-| MINUTE                                                                                                                       | 1970-01-01 00:00:00    |
-| SECOND                                                                                                                       | 1970-01-01 00:00:00    |
-| MILLISECOND                                                                                                                  | 1970-01-01 00:00:00    |
-| MICROSECOND                                                                                                                  | 1970-01-01 00:00:00    |
-| NANOSECOND                                                                                                                   | 1970-01-01 00:00:00    |
-| (*) hour intervals are special: the calculation is always performed relative to 00:00:00 (midnight) of the current day. つまり、 |                        |
-| 有用なのは 1〜23 時の値のみです。                                                                                                          |                        |
+| Interval                                                                                                                | 開始点                    |
+| ----------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| YEAR                                                                                                                    | year 0                 |
+| QUARTER                                                                                                                 | 1900 Q1                |
+| MONTH                                                                                                                   | 1900 January           |
+| WEEK                                                                                                                    | 1970, 1st week (01-05) |
+| DAY                                                                                                                     | 1970-01-01             |
+| HOUR                                                                                                                    | (*)                    |
+| MINUTE                                                                                                                  | 1970-01-01 00:00:00    |
+| SECOND                                                                                                                  | 1970-01-01 00:00:00    |
+| MILLISECOND                                                                                                             | 1970-01-01 00:00:00    |
+| MICROSECOND                                                                                                             | 1970-01-01 00:00:00    |
+| NANOSECOND                                                                                                              | 1970-01-01 00:00:00    |
+| (*) hour intervals are special: the calculation is always performed relative to 00:00:00 (midnight) of the current day. |                        |
+| 有用なのは 1〜23 時の値のみです。                                                                                                     |                        |
 
 単位として `WEEK` が指定された場合、`toStartOfInterval` は週の開始日を月曜日とみなします。これは、デフォルトでは週の開始日が日曜日である `toStartOfWeek` 関数とは動作が異なる点に注意してください。
 
@@ -4586,7 +4586,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
 └──────────────────────────┘
 ```
 
-**起点の利用**
+**起点の指定**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'))
@@ -4600,7 +4600,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 
 ## toStartOfMicrosecond \{#toStartOfMicrosecond\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時をマイクロ秒境界まで切り捨てます。
 
@@ -4649,7 +4649,7 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfMillisecond \{#toStartOfMillisecond\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時をミリ秒単位に切り捨てます。
 
@@ -4698,7 +4698,7 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfMinute \{#toStartOfMinute\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日時を、その分の開始時点に切り下げます。
 
@@ -4740,7 +4740,7 @@ toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:0
 
 ## toStartOfMonth \{#toStartOfMonth\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、その月の1日に切り捨てます。
 
@@ -4778,7 +4778,7 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfNanosecond \{#toStartOfNanosecond\}
 
-導入バージョン: v22.6
+導入バージョン: v22.6.0
 
 日時をナノ秒単位に切り捨てます。
 
@@ -4827,7 +4827,7 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfQuarter \{#toStartOfQuarter\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、その四半期の初日に切り捨てます。四半期の初日は、1月1日、4月1日、7月1日、または10月1日のいずれかです。
 
@@ -4865,7 +4865,7 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfSecond \{#toStartOfSecond\}
 
-導入バージョン: v20.5
+導入バージョン: v20.5.0
 
 日時を秒単位に切り捨てます。
 
@@ -4914,7 +4914,7 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 
 ## toStartOfTenMinutes \{#toStartOfTenMinutes\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 日時を、その時刻を含む10分単位の区切りの開始時刻に切り下げます。
 
@@ -4958,7 +4958,7 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 ## toStartOfWeek \{#toStartOfWeek\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 日付、または日時を直前（同日を含む）の日曜日または月曜日に切り捨てます。
 
@@ -5006,7 +5006,7 @@ Row 1:
 
 ## toStartOfYear \{#toStartOfYear\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、その年の最初の日に切り捨てます。結果を `Date` オブジェクトとして返します。
 
@@ -5044,7 +5044,7 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toTimeWithFixedDate \{#toTimeWithFixedDate\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時から時刻部分を抽出します。
 返される結果は固定された基準時刻（現在は `1970-01-02`）からのオフセットですが、
@@ -5066,7 +5066,7 @@ toTimeWithFixedDate(date[, timezone])
 
 **返り値**
 
-日付または日時から、固定された基準時点（現在は 1970-01-02）へのオフセットとしての時間成分を返します。[`DateTime`](/sql-reference/data-types/datetime)
+日付または日時から、固定された基準時刻（現在は `1970-01-02`）へのオフセットとしての時間成分を返します。[`DateTime`](/sql-reference/data-types/datetime)
 
 **例**
 
@@ -5084,7 +5084,7 @@ SELECT toTimeWithFixedDate('2025-06-15 12:00:00'::DateTime) - toTimeWithFixedDat
 
 ## toTimezone \{#toTimezone\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `DateTime` または `DateTime64` を指定したタイムゾーンに変換します。
 データの内部値（UNIX 秒）は変更されません。
@@ -5140,7 +5140,7 @@ int32samoa: 1546300800
 
 ## toUTCTimestamp \{#toUTCTimestamp\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 特定のタイムゾーンに属する日付（`Date`）または日時（時刻付き `DateTime`）を、UTC タイムゾーンのタイムスタンプに変換します。この関数は主に Apache Spark や類似のフレームワークとの互換性のために提供されています。
 
@@ -5177,7 +5177,7 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
 
 ## toUnixTimestamp \{#toUnixTimestamp\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `String`、`Date`、`DateTime` を Unix タイムスタンプ（`1970-01-01 00:00:00 UTC` からの経過秒数）を表す `UInt32` に変換します。
 
@@ -5226,7 +5226,7 @@ from_date32:     1509840000
 
 ## toWeek \{#toWeek\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 この関数は、`date` または `datetime` に対する週番号を返します。`toWeek()` の 2 引数形式では、週の開始曜日を日曜日または月曜日のどちらにするか、および戻り値の範囲を `0`～`53` にするか `1`～`53` にするかを指定できます。
 
@@ -5292,7 +5292,7 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 
 ## toYYYYMM \{#toYYYYMM\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、年と月の番号 (YYYY * 100 + MM) を表す `UInt32` 型の数値に変換します。
 2 つ目の省略可能なタイムゾーン引数を指定できます。指定する場合、タイムゾーンは文字列定数でなければなりません。
@@ -5330,7 +5330,7 @@ SELECT toYYYYMM(now(), 'US/Eastern')
 
 ## toYYYYMMDD \{#toYYYYMMDD\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付、または時刻付きの日付を、年・月・日を含む `UInt32` 型の数値（YYYY * 10000 + MM * 100 + DD）に変換します。第2引数としてタイムゾーンをオプションで受け取ります。指定する場合、タイムゾーンは文字列定数である必要があります。
 
@@ -5365,7 +5365,7 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 
 ## toYYYYMMDDhhmmss \{#toYYYYMMDDhhmmss\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 日付または日時を、年・月・日・時・分・秒を含む `UInt64` 型の数値（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）に変換します。
 第 2 引数としてオプションのタイムゾーン引数を受け取れます。指定する場合、タイムゾーンは文字列定数である必要があります。
@@ -5379,11 +5379,11 @@ toYYYYMMDDhhmmss(datetime[, timezone])
 **引数**
 
 * `datetime` — 変換対象の日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `timezone` — 省略可能。変換に使用するタイムゾーン。指定する場合、タイムゾーンは文字列リテラルでなければなりません。[`String`](/sql-reference/data-types/string)
+* `timezone` — 省略可能。変換に使用するタイムゾーン。指定する場合、タイムゾーンは文字列定数である必要があります。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
-年、月、日、時、分、秒を含む `UInt64` 型の数値を返します (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss)。[`UInt64`](/sql-reference/data-types/int-uint)
+年、月、日、時、分、秒を含む `UInt64` 型の数値を返します（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **使用例**
 
@@ -5401,7 +5401,7 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 
 ## toYear \{#toYear\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `Date` または `DateTime` 型の値から西暦の年を返します。
 
@@ -5437,7 +5437,7 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toYearNumSinceEpoch \{#toYearNumSinceEpoch\}
 
-導入バージョン: v25.3
+導入バージョン: v25.3.0
 
 1970 年からの経過年数を返します。
 
@@ -5469,7 +5469,7 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 
 ## toYearWeek \{#toYearWeek\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 日付に対する年と週番号を返します。年の最初および最後の週については、結果に含まれる年が、引数として渡された日付の年と異なる場合があります。
 
@@ -5513,7 +5513,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 
 ## today \{#today\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 クエリ解析時点での現在の日付を返します。`toDate(now())` と同じです。
 
@@ -5551,7 +5551,7 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 
 ## yesterday \{#yesterday\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数を取らず、クエリ解析処理のいずれかの時点における昨日の日付を返します。
 

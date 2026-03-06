@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTest \{#studentTTest\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 2つの母集団からの標本に対して、スチューデントの t 検定 (Student&#39;s t-test) を適用します。
 

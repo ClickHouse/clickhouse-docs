@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesChangesToGrid \{#timeSeriesChangesToGrid\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 타임스탬프와 값의 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝(step)으로 정의된 정규 시간 그리드에서 이 데이터로부터 [PromQL과 유사한 changes](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)를 계산하는 집계 함수입니다. 그리드의 각 지점에 대해 `changes`를 계산할 때 사용되는 샘플은 지정된 시간 윈도우 내의 값들만 고려됩니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 数値データシーケンスに対して [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを使用して、おおよその[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 この関数は、シーケンス内の各要素の重みを考慮に入れます。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-도입된 버전: v25.4
+도입된 버전: v25.4.0
 
 지정된 컬럼을 실제로 압축하지 않고 압축 비율을 추정합니다.
 

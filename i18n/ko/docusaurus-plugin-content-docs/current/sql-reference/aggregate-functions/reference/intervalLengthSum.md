@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## intervalLengthSum \{#intervalLengthSum\}
 
-도입된 버전: v21.7
+도입된 버전: v21.7.0
 
 여러 개의 숫자 범위를 입력받아, 서로 겹치는 구간을 하나의 통합 범위로 합쳤을 때의 전체 길이를 계산합니다.
 

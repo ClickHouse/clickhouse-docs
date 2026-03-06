@@ -10,82 +10,178 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
 # azureBlobStorage 테이블 함수 \{#azureblobstorage-table-function\}
 
 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)에 있는 파일을 조회하거나 삽입할 수 있는 테이블 형태의 인터페이스를 제공합니다. 이 테이블 함수는 [s3 함수](../../sql-reference/table-functions/s3.md)와 유사합니다.
 
-
-
 ## 구문 \{#syntax\}
 
+<Tabs>
+<TabItem value="connection_string" label="연결 문자열" default>
+
+자격 증명이 연결 문자열에 포함되어 있으므로 별도의 `account_name`/`account_key` 인수가 필요하지 않습니다.
+
 ```sql
-azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
+azureBlobStorage(connection_string, container_name, blobpath [, format, compression, structure])
 ```
 
+</TabItem>
+<TabItem value="storage_account_url" label="스토리지 계정 URL">
+
+`account_name`과 `account_key`를 별도의 인수로 전달해야 합니다.
+
+```sql
+azureBlobStorage(storage_account_url, container_name, blobpath, account_name, account_key [, format, compression, structure])
+```
+
+</TabItem>
+<TabItem value="named_collection" label="네임드 컬렉션">
+
+지원되는 키의 전체 목록은 아래의 [Named Collections](#named-collections)를 참조하십시오.
+
+```sql
+azureBlobStorage(named_collection[, option=value [,..]])
+```
+
+</TabItem>
+</Tabs>
 
 ## Arguments \{#arguments\}
 
-| Argument                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `connection_string`\| `storage_account_url` | `connection_string`에는 계정 이름과 키가 포함됩니다([연결 문자열 생성](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account) 참조). 또는 여기에는 storage account URL을 지정하고, 계정 이름과 계정 키를 별도의 파라미터로 전달할 수도 있습니다(`account_name` 및 `account_key` 파라미터 참조). |
-| `container_name`                            | 컨테이너 이름                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `blobpath`                                  | 파일 경로입니다. 읽기 전용 모드에서 다음 와일드카드를 지원합니다: `*`, `**`, `?`, `{abc,def}`, `{N..M}`. 여기서 `N`, `M`은 숫자이고, `'abc'`, `'def'`는 문자열입니다.                                                                                                                                                                                                                                                                                                                   |
-| `account_name`                              | `storage_account_url`을 사용하는 경우, 계정 이름을 여기에서 지정할 수 있습니다.                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `account_key`                               | `storage_account_url`을 사용하는 경우, 계정 키를 여기에서 지정할 수 있습니다.                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `format`                                    | 파일의 [format](/sql-reference/formats)입니다.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `compression`                               | 지원되는 값: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. 기본적으로 파일 확장자를 기준으로 압축 방식을 자동으로 감지합니다(`auto`로 설정한 것과 동일합니다).                                                                                                                                                                                                                                                                                                                 | 
-| `structure`                                 | 테이블 구조입니다. 형식: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `partition_strategy`                        | 선택적 파라미터입니다. 지원되는 값: `WILDCARD` 또는 `HIVE`. `WILDCARD`는 경로에 `{_partition_id}`가 포함되어 있어야 하며, 이 부분이 파티션 키로 치환됩니다. `HIVE`는 와일드카드를 허용하지 않고, 경로를 테이블 루트로 가정하며, 파일 이름으로 Snowflake ID를 사용하고 확장자로 파일 포맷을 갖는 Hive 스타일의 파티션 디렉터리를 생성합니다. 기본값은 `WILDCARD`입니다.                                                                                                          |
-| `partition_columns_in_data_file`            | 선택적 파라미터입니다. `HIVE` 파티션 전략에서만 사용됩니다. 데이터 파일에 파티션 컬럼이 기록되어 있는지 ClickHouse에 알려줍니다. 기본값은 `false`입니다.                                                                                                                                                                                                                                                                                                                               |
-| `extra_credentials`                         | 인증을 위해 `client_id`와 `tenant_id`를 사용합니다. `extra_credentials`가 제공된 경우 `account_name`과 `account_key`보다 우선합니다.                                                                                                                                                                                                                                                                                                                                                     |
+| Argument                         | Description                                                                                                                                                                                                                                                                                                                                               |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `connection_string`              | 자격 증명(계정 이름 + 계정 키 또는 SAS 토큰)이 포함된 연결 문자열입니다. 이 방식을 사용할 때는 `account_name` 및 `account_key`를 별도로 전달하면 **안 됩니다**. 자세한 내용은 [연결 문자열 구성](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)을 참조하십시오. |
+| `storage_account_url`            | 스토리지 계정 엔드포인트 URL입니다(예: `https://myaccount.blob.core.windows.net/`). 이 방식을 사용할 때는 `account_name` 및 `account_key`도 반드시 함께 전달해야 합니다.                                                                                                                                                                                         |
+| `container_name`                 | 컨테이너 이름입니다.                                                                                                                                                                                                                                                                                                                                     |
+| `blobpath`                       | 파일 경로입니다. 읽기 전용 모드에서 다음 와일드카드를 지원합니다: `*`, `**`, `?`, `{abc,def}`, `{N..M}` (`N`, `M` — 숫자, `'abc'`, `'def'` — 문자열).                                                                                                                                                                                                  |
+| `account_name`                   | 스토리지 계정 이름입니다. SAS 없이 `storage_account_url`을 사용할 때는 **필수**이며, `connection_string`을 사용할 때는 전달하면 **안 됩니다**.                                                                                                                                                                                                              |
+| `account_key`                    | 스토리지 계정 키입니다. SAS 없이 `storage_account_url`을 사용할 때는 **필수**이며, `connection_string`을 사용할 때는 전달하면 **안 됩니다**.                                                                                                                                                                                                               |
+| `format`                         | 파일의 [format](/sql-reference/formats)입니다.                                                                                                                                                                                                                                                                                                          |
+| `compression`                    | 지원되는 값: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. 기본값으로는 파일 확장자를 기준으로 압축 방식을 자동 감지합니다(`auto`로 설정한 것과 동일).                                                                                                                                                                                      |
+| `structure`                      | 테이블의 구조입니다. 형식: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                               |
+| `partition_strategy`             | 선택 사항입니다. 지원되는 값: `WILDCARD` 또는 `HIVE`. `WILDCARD`는 경로에 `{_partition_id}`가 포함되어 있어야 하며, 이는 파티션 키로 대체됩니다. `HIVE`는 와일드카드를 허용하지 않으며 경로를 테이블 루트로 간주하고, 파일 이름으로 Snowflake ID를 사용하고 파일 형식을 확장자로 하는 Hive 스타일의 파티션 디렉터리를 생성합니다. 기본값은 `WILDCARD`입니다. |
+| `partition_columns_in_data_file` | 선택 사항입니다. `HIVE` 파티션 전략에서만 사용됩니다. ClickHouse가 파티션 컬럼이 데이터 파일에 함께 기록되어 있을 것으로 예상해야 하는지 여부를 지정합니다. 기본값은 `false`입니다.                                                                                                                                                                     |
+| `extra_credentials`              | 인증을 위해 `client_id` 및 `tenant_id`를 사용합니다. `extra_credentials`가 제공된 경우, `account_name` 및 `account_key`보다 우선적으로 사용됩니다.                                                                                                                                                                                                         |
 
+## 명명된 컬렉션 \{#named-collections\}
+
+인수는 [명명된 컬렉션](/operations/named-collections)을 사용해 전달할 수도 있습니다. 이 경우 다음 키를 사용할 수 있습니다:
+
+| Key                   | Required | Description                                                                            |
+| --------------------- | -------- | -------------------------------------------------------------------------------------- |
+| `container`           | Yes      | 컨테이너 이름입니다. 위치 인수 `container_name`에 해당합니다.                                             |
+| `blob_path`           | Yes      | 파일 경로(선택적 와일드카드 포함)입니다. 위치 인수 `blobpath`에 해당합니다.                                       |
+| `connection_string`   | No*      | 자격 증명이 포함된 연결 문자열입니다. `connection_string` 또는 `storage_account_url` 중 하나는 반드시 제공해야 합니다. |
+| `storage_account_url` | No*      | 스토리지 계정 엔드포인트 URL입니다. `connection_string` 또는 `storage_account_url` 중 하나는 반드시 제공해야 합니다. |
+| `account_name`        | No       | `storage_account_url`을 사용할 때 필요합니다.                                                    |
+| `account_key`         | No       | `storage_account_url`을 사용할 때 필요합니다.                                                    |
+| `format`              | No       | 파일 형식입니다.                                                                              |
+| `compression`         | No       | 압축 유형입니다.                                                                              |
+| `structure`           | No       | 테이블 구조입니다.                                                                             |
+| `client_id`           | No       | 인증에 사용하는 클라이언트 ID입니다.                                                                  |
+| `tenant_id`           | No       | 인증에 사용하는 테넌트 ID입니다.                                                                    |
+
+:::note
+명명된 컬렉션의 키 이름은 FUNCTION의 위치 인수 이름과 다릅니다: `container`( `container_name`이 아님), `blob_path`( `blobpath`가 아님).
+:::
+
+**예제:**
+
+```sql
+CREATE NAMED COLLECTION azure_my_data AS
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'mycontainer',
+    blob_path = 'data/*.parquet',
+    account_name = 'myaccount',
+    account_key = 'mykey...==',
+    format = 'Parquet';
+
+SELECT *
+FROM azureBlobStorage(azure_my_data)
+LIMIT 5;
+```
+
+또한 쿼리 실행 시 이름이 지정된 컬렉션의 값을 재정의할 수 있습니다.
+
+```sql
+SELECT *
+FROM azureBlobStorage(azure_my_data, blob_path = 'other_data/*.csv', format = 'CSVWithNames')
+LIMIT 5;
+```
 
 
 ## 반환 값 \{#returned_value\}
 
 지정된 파일에서 데이터를 읽거나 쓰기 위해 지정된 구조를 가진 테이블입니다.
 
-
-
 ## 예시 \{#examples\}
 
-[AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 테이블 엔진과 마찬가지로 Azurite 에뮬레이터를 사용하여 로컬 Azure Storage 개발을 할 수 있습니다. 자세한 내용은 [여기](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)를 참고하십시오. 아래에서는 Azurite가 호스트 이름 `azurite1`에서 사용 가능하다고 가정합니다.
-
-다음을 사용하여 Azure Blob Storage에 데이터를 기록합니다:
+### `storage_account_url` 형식을 사용하여 읽기 \{#reading-with-storage-account-url\}
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccount1',
-    'testcontainer', 'test_{_partition_id}.csv', 'devstoreaccount1', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==',
-    'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32') PARTITION BY column3 VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
+SELECT *
+FROM azureBlobStorage(
+    'https://myaccount.blob.core.windows.net/',
+    'mycontainer',
+    'data/*.parquet',
+    'myaccount',
+    'mykey...==',
+    'Parquet'
+)
+LIMIT 5;
 ```
 
-그런 다음 다음과 같이 읽을 수 있습니다
+
+### `connection_string` 형식으로 읽기 \{#reading-with-connection-string\}
 
 ```sql
-SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
-    'testcontainer', 'test_1.csv', 'devstoreaccount1', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==',
-    'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32');
+SELECT *
+FROM azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'data/*.csv',
+    'CSVWithNames'
+)
+LIMIT 5;
+```
+
+
+### 파티션을 사용한 쓰기 \{#writing-with-partitions\}
+
+```sql
+INSERT INTO TABLE FUNCTION azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'test_{_partition_id}.csv',
+    'CSV',
+    'auto',
+    'column1 UInt32, column2 UInt32, column3 UInt32'
+) PARTITION BY column3
+VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
+```
+
+그다음 특정 파티션을 다시 읽습니다:
+
+```sql
+SELECT *
+FROM azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'test_1.csv',
+    'CSV',
+    'auto',
+    'column1 UInt32, column2 UInt32, column3 UInt32'
+);
 ```
 
 ```response
-┌───column1─┬────column2─┬───column3─┐
-│     3     │       2    │      1    │
-└───────────┴────────────┴───────────┘
-```
-
-또는 connection&#95;string을 사용
-
-```sql
-SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;EndPointSuffix=core.windows.net',
-    'testcontainer', 'test_3.csv', 'CSV', 'auto' , 'column1 UInt32, column2 UInt32, column3 UInt32');
-```
-
-```text
-┌─count()─┐
-│      2  │
-└─────────┘
+┌─column1─┬─column2─┬─column3─┐
+│       3 │       2 │       1 │
+└─────────┴─────────┴─────────┘
 ```
 
 
@@ -95,8 +191,6 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 - `_file` — 파일 이름입니다. 타입: `LowCardinality(String)`.
 - `_size` — 파일 크기(바이트 단위)입니다. 타입: `Nullable(UInt64)`. 파일 크기를 알 수 없는 경우 값은 `NULL`입니다.
 - `_time` — 파일의 마지막 수정 시각입니다. 타입: `Nullable(DateTime)`. 시각을 알 수 없는 경우 값은 `NULL`입니다.
-
-
 
 ## 파티션 쓰기 \{#partitioned-write\}
 
@@ -111,11 +205,26 @@ INSERT 쿼리에 대해서만 지원합니다.
 **`HIVE` 파티션 전략 예**
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
+INSERT INTO TABLE FUNCTION azureBlobStorage(
+    azure_conf2,
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'cont',
+    blob_path = 'azure_table_root',
+    format = 'CSVWithNames',
+    compression = 'auto',
+    structure = 'year UInt16, country String, id Int32',
+    partition_strategy = 'hive'
+) PARTITION BY (year, country)
+VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
 ```
 
 ```result
-select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root/**.csvwithnames')
+SELECT _path, * FROM azureBlobStorage(
+    azure_conf2,
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'cont',
+    blob_path = 'azure_table_root/**.csvwithnames'
+)
 
    ┌─_path───────────────────────────────────────────────────────────────────────────┬─id─┬─year─┬─country─┐
 1. │ cont/azure_table_root/year=2021/country=Brazil/7351307847391293440.csvwithnames │  2 │ 2021 │ Brazil  │
@@ -173,4 +282,5 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 
 
 ## 관련 항목 \{#related\}
+
 - [AzureBlobStorage 테이블 엔진](engines/table-engines/integrations/azureBlobStorage.md)

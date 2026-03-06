@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilePrometheusHistogram \{#quantilePrometheusHistogram\}
 
-도입된 버전: v25.10
+도입된 버전: v25.10.0
 
 각 히스토그램 버킷의 누적 값과 상한(upper bound)을 고려하여 선형 보간(linear interpolation)을 사용해 히스토그램의 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapXor \{#groupBitmapXor\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 비트맵 컬럼의 XOR을 계산하고, 그 결과 비트맵의 기수성(cardinality)을 반환합니다.
 접미사 조합자 [`-State`](/sql-reference/aggregate-functions/combinators#-state)를 추가하면 비트맵 객체를 반환합니다.

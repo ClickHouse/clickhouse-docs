@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapOr \{#groupBitmapOr\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 计算 bitmap 列的 OR 运算并返回其基数。
 如果添加后缀组合子 [`-State`](/sql-reference/aggregate-functions/combinators#-state)，则返回一个 bitmap 对象。

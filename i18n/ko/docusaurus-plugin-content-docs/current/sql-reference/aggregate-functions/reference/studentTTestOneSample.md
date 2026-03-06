@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTestOneSample \{#studentTTestOneSample\}
 
-도입 버전: v25.10
+도입 버전: v25.10.0
 
 표본 평균이 알려진 모평균과 다른지 판단하기 위해 단일 표본 Student의 t-검정을 적용합니다.
 
@@ -58,7 +58,7 @@ SELECT studentTTestOneSample()(value, 20.0) FROM t;
 ```response title=Response
 ```
 
-**95% 신뢰구간 포함**
+**신뢰 구간 포함(95%)**
 
 ```sql title=Query
 SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;
@@ -71,5 +71,5 @@ SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;
 
 **함께 보기**
 
-* [Student&#39;s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test)
-* [studentTTest FUNCTION](/sql-reference/aggregate-functions/reference/studentttest)
+* [Student의 t-검정](https://en.wikipedia.org/wiki/Student%27s_t-test)
+* [studentTTest 함수](/sql-reference/aggregate-functions/reference/studentttest)

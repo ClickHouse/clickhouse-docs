@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmap \{#groupBitmap\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 符号なし整数型のカラムからビットマップ（ビット配列）を作成し、そのビットマップ内に含まれる一意な値の個数（カーディナリティ）を返します。
 `-State` コンビネータ用サフィックスを付与すると、個数を返す代わりに、実際の[ビットマップオブジェクト](/sql-reference/functions/bitmap-functions)を返します。

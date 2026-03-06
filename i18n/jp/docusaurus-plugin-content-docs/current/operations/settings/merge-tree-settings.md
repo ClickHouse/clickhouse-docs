@@ -555,7 +555,7 @@ Dynamic データ型のシリアライゼーションバージョンを指定し
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の設定が、
@@ -3010,6 +3010,15 @@ Vertical merge アルゴリズムを有効化するために必要となる、
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "新しい設定"}]}]}/>
 
 true の場合、vertical merge 時に論理削除処理が最適化されます。
+
+## vertical_merge_optimize_ttl_delete \{#vertical_merge_optimize_ttl_delete\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "有効期限 (TTL) により有効期限切れとなった行を削除する必要があるマージで、垂直マージアルゴリズムを許可します"}]}]}/>
+
+true の場合、有効期限 (TTL) による行削除処理が垂直マージで最適化されます。水平マージを強制するのではなく、
+有効期限 (TTL) フィルタを評価してマージアルゴリズムに渡し、行ソースにスキップフラグを設定します。
 
 ## vertical_merge_remote_filesystem_prefetch \{#vertical_merge_remote_filesystem_prefetch\}
 

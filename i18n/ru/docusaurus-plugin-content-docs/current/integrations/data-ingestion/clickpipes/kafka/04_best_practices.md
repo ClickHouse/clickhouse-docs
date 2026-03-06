@@ -39,10 +39,6 @@ Warpstream не учитывает этот параметр, что может 
 
 ### IAM \{#iam\}
 
-:::info
-Аутентификация IAM для MSK ClickPipe находится в бета-версии.
-:::
-
 ClickPipes поддерживает следующие способы аутентификации AWS MSK:
 
 * аутентификация [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html)
