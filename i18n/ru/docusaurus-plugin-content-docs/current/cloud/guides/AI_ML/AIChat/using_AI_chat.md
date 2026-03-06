@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'Использование чата Ask AI в ClickHouse Cloud'
-title: 'Использование чата Ask AI в ClickHouse Cloud'
+sidebar_label: 'Использование чата ClickHouse Assistant в ClickHouse Cloud'
+title: 'Использование чата ClickHouse Assistant в ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
-description: 'Руководство по включению и использованию функции чата Ask AI в консоли ClickHouse Cloud'
+description: 'Руководство по включению и использованию функции чата ClickHouse Assistant в консоли ClickHouse Cloud'
 keywords: ['AI', 'ClickHouse Cloud', 'Chat', 'SQL Console', 'Agent', 'Docs AI']
 show_related_blogs: true
 sidebar_position: 2
@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# Использование чата Ask AI в ClickHouse Cloud \{#use-ask-ai-chat-in-clickhouse-cloud\}
+# Использование чата ClickHouse Assistant в ClickHouse Cloud \{#use-ask-ai-chat-in-clickhouse-cloud\}
 
 > В этом руководстве объясняется, как включить и использовать функцию AI Chat в консоли ClickHouse Cloud.
 
@@ -35,7 +35,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 ## Откройте панель AI Chat \{#open-panel\}
 
 1. Откройте сервис ClickHouse Cloud.
-2. В левой боковой панели нажмите значок со звездой с подписью «Ask AI».
+2. В левой боковой панели нажмите значок со звездой с подписью «ClickHouse Assistant».
 3. (Горячая клавиша) Нажмите <kbd>⌘</kbd> + <kbd>'</kbd> (macOS) или <kbd>Ctrl</kbd> + <kbd>'</kbd> (Linux/Windows), чтобы открыть или закрыть панель.
 
 <Image img={img_open} alt="Открыть выезжающую панель AI Chat" size="md"/>
