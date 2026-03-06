@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 对于所有其他级别，返回数组中索引为 `level * size_of_array` 的元素。
 
-在一个查询中使用多个不同级别的 `quantile*` 函数时，它们的内部状态不会被合并（也就是说，查询的执行效率会低于最优）。在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles) 函数。
+在一个查询中使用多个不同级别的 `quantile*` 函数时，它们的内部状态不会被合并 (也就是说，查询的执行效率会低于最优) 。在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles) 函数。
 
 **Syntax**
 

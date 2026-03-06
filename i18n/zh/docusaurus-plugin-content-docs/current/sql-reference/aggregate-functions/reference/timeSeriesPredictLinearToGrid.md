@@ -25,7 +25,7 @@ timeSeriesPredictLinearToGrid(start_timestamp, end_timestamp, grid_step, stalene
 
 **参数**
 
-* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长（以秒为单位）。 - `staleness` — 指定所考虑样本的最大“陈旧度”（以秒为单位）。陈旧度窗口是左开右闭区间。 - `predict_offset` — 指定要添加到预测时间的偏移量（秒）。
+* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长 (以秒为单位) 。 - `staleness` — 指定所考虑样本的最大“陈旧度” (以秒为单位) 。陈旧度窗口是左开右闭区间。 - `predict_offset` — 指定要添加到预测时间的偏移量 (秒) 。
 
 **参数**
 
@@ -66,7 +66,7 @@ FROM
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**相同查询（数组参数版本）**
+**相同查询 (数组参数版本)&#x20;**
 
 ```sql title=Query
 WITH

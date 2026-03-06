@@ -16,7 +16,7 @@ ClickHouse 提供了多种处理时间序列数据的方法，从而可以在不
 常见操作包括按时间间隔对数据进行分组、处理时间序列数据中的缺口，以及计算不同时间段之间的变化。
 这些操作可以通过标准 SQL 语法结合 ClickHouse 的内置时间函数来完成。
 
-我们将使用 Wikistat（Wikipedia 页面浏览量数据）数据集来探索 ClickHouse 的时间序列查询能力：
+我们将使用 Wikistat (Wikipedia 页面浏览量数据) 数据集来探索 ClickHouse 的时间序列查询能力：
 
 ```sql
 CREATE TABLE wikistat
@@ -87,7 +87,7 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-这里使用的 [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) 函数会将给定时间转换为所在小时的起始（整点）时间。
+这里使用的 [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) 函数会将给定时间转换为所在小时的起始 (整点) 时间。
 还可以按年份、季度、月份或日期进行分组。
 
 ## 自定义分组时间间隔 \{#time-series-custom-grouping-intervals\}
@@ -216,11 +216,11 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 
 ## 滚动时间窗口 \{#time-series-rolling-time-windows\}
 
-有时，我们不想按时间区间的起始点（比如某一天或某一小时的开始）来处理，而是希望按时间窗口来处理。
+有时，我们不想按时间区间的起始点 (比如某一天或某一小时的开始) 来处理，而是希望按时间窗口来处理。
 假设我们想了解某个窗口内的 hits 总数，这个窗口不是按自然日划分，而是从下午 6 点开始，按 24 小时时长来划分。
 
 我们可以使用 [`date_diff()`](/docs/sql-reference/functions/date-time-functions#timeDiff) 函数来计算参考时间与每条记录时间之间的差值。
-在这个例子中，`day` 列将表示相差的天数（例如：1 天前、2 天前等）：
+在这个例子中，`day` 列将表示相差的天数 (例如：1 天前、2 天前等) ：
 
 ```sql
 SELECT    

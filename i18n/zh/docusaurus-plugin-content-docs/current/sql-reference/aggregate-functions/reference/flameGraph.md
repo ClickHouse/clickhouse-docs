@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 引入版本：v23.8.0
 
-使用堆栈跟踪列表构建一个 [火焰图（flamegraph）](https://www.brendangregg.com/flamegraphs.html)。
+使用堆栈跟踪列表构建一个 [火焰图 (flamegraph) ](https://www.brendangregg.com/flamegraphs.html)。
 输出一个字符串数组，可供 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) 工具使用，用于渲染该火焰图的 SVG。
 
 :::note
-在 `ptr != 0` 的情况下，flameGraph 会将具有相同 size 和 ptr 的分配（size &gt; 0）与释放（size &lt; 0）对应起来。
+在 `ptr != 0` 的情况下，flameGraph 会将具有相同 size 和 ptr 的分配 (size &gt; 0) 与释放 (size &lt; 0) 对应起来。
 只显示尚未被释放的分配。
 未对应上的释放操作会被忽略。
 :::
@@ -29,8 +29,8 @@ flameGraph(traces[, size[, ptr]])
 **参数**
 
 * `traces` — 堆栈回溯。[`Array(UInt64)`](/sql-reference/data-types/array)
-* `size` — 可选。用于内存分析的分配大小（默认值为 1）。[`UInt64`](/sql-reference/data-types/int-uint)
-* `ptr` — 可选。分配地址（默认值为 0）。[`UInt64`](/sql-reference/data-types/int-uint)
+* `size` — 可选。用于内存分析的分配大小 (默认值为 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
+* `ptr` — 可选。分配地址 (默认值为 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

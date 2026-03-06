@@ -7,7 +7,7 @@ keywords: ['chdb', 'clickhouse-local']
 doc_type: 'guide'
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) 是一个内置 ClickHouse 的命令行工具（CLI）。
+[clickhouse-local](/operations/utilities/clickhouse-local) 是一个内置 ClickHouse 的命令行工具 (CLI) 。
 它让用户无需安装服务器就能使用 ClickHouse 的强大功能。
 在本指南中，我们将学习如何在 chDB 中使用 clickhouse-local 数据库。
 

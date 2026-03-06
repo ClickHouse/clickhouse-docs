@@ -92,7 +92,7 @@ bitCount(x)
 返回 `x` 中被置为 1 的位数。[`UInt8`](../data-types/int-uint.md)。
 
 :::note
-该函数不会将输入值提升为更大的类型（[符号扩展](https://en.wikipedia.org/wiki/Sign_extension)）。
+该函数不会将输入值提升为更大的类型 ([符号扩展](https://en.wikipedia.org/wiki/Sign_extension)) 。
 例如：`bitCount(toUInt8(-1)) = 8`。
 :::
 
@@ -189,7 +189,7 @@ SELECT
 
 自 v1.1.0 引入
 
-对两个值执行按位或（OR）运算。
+对两个值执行按位或 (OR) 运算。
 
 **语法**
 
@@ -450,7 +450,7 @@ bitSlice(s, offset[, length])
 
 * `s` — 要进行切片的 String 或 FixedString。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `offset` —
-  起始位位置（以 1 为起始索引）。
+  起始位位置 (以 1 为起始索引) 。
 * 正值：从字符串开头开始计数。
 * 负值：从字符串末尾开始计数。
 
@@ -465,7 +465,7 @@ bitSlice(s, offset[, length])
 
 **返回值**
 
-返回一个包含所提取位的字符串，以二进制序列表示。结果始终填充到字节边界（8 位的倍数）。[`String`](/sql-reference/data-types/string)
+返回一个包含所提取位的字符串，以二进制序列表示。结果始终填充到字节边界 (8 位的倍数) 。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -532,7 +532,7 @@ SELECT bin(2), bitTest(2, 1);
 
 引入版本：v1.1.0
 
-返回对给定位置上所有位执行[逻辑合取](https://en.wikipedia.org/wiki/Logical_conjunction)（AND 运算符）后的结果。
+返回对给定位置上所有位执行[逻辑合取](https://en.wikipedia.org/wiki/Logical_conjunction) (AND 运算符) 后的结果。
 从右向左计数，从 0 开始。
 
 两个二进制位之间的逻辑 AND 运算，仅当两个输入位都为真时结果才为真。
@@ -582,7 +582,7 @@ SELECT bitTestAll(43, 0, 1, 3, 5, 2);
 
 引入版本：v1.1.0
 
-返回对给定数值中指定位置上的所有位执行[逻辑析取](https://en.wikipedia.org/wiki/Logical_disjunction)（OR 运算符）的结果。
+返回对给定数值中指定位置上的所有位执行[逻辑析取](https://en.wikipedia.org/wiki/Logical_disjunction) (OR 运算符) 的结果。
 位从右到左编号，起始为 0。
 
 两个位之间的逻辑 OR 在至少一个输入位为 true 时结果为 true。
@@ -632,7 +632,7 @@ SELECT bitTestAny(43, 4, 2);
 
 自 v1.1.0 起引入。
 
-对两个值执行按位异或（XOR）运算。
+对两个值执行按位异或 (XOR) 运算。
 
 **语法**
 

@@ -910,6 +910,18 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**괄호 없는 SQL 표준 구문**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
 도입된 버전: v21.9.0
@@ -1091,6 +1103,18 @@ SELECT currentUser()
 ┌─currentUser()─┐
 │ default       │
 └───────────────┘
+```
+
+**괄호 없이 사용하는 SQL 표준 구문**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
 ```
 
 ## defaultProfiles \{#defaultProfiles\}

@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 引入版本：v20.1.0
 
-计算两个位图的逻辑与（AND）运算。
+计算两个位图的逻辑与 (AND) 运算。
 
 **语法**
 
@@ -56,7 +56,7 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 
 自 v20.1.0 起引入
 
-返回两个 bitmap 进行逻辑与（AND）运算结果的基数。
+返回两个 bitmap 进行逻辑与 (AND) 运算结果的基数。
 
 **语法**
 
@@ -104,7 +104,7 @@ bitmapAndnot(bitmap1, bitmap2)
 
 **返回值**
 
-返回一个 bitmap（[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)），其中包含在第一个 bitmap 中存在但在第二个 bitmap 中不存在的已置位位（bit）。
+返回一个 bitmap ([`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)) ，其中包含在第一个 bitmap 中存在但在第二个 bitmap 中不存在的已置位位 (bit) 。
 
 **示例**
 
@@ -192,7 +192,7 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 
 引入于：v20.1.0
 
-返回位图中被设置为 1 的位数（基数，cardinality）。
+返回位图中被设置为 1 的位数 (基数，cardinality) 。
 
 **语法**
 
@@ -362,7 +362,7 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 首次引入版本：v20.1.0
 
-返回 bitmap 中最小已置位 bit 的位置。若所有 bit 均未置位，则返回 `UINT32_MAX`（如果 bitmap 包含超过 `2^64` 个 bit，则返回 `UINT64_MAX`）。
+返回 bitmap 中最小已置位 bit 的位置。若所有 bit 均未置位，则返回 `UINT32_MAX` (如果 bitmap 包含超过 `2^64` 个 bit，则返回 `UINT64_MAX`) 。
 
 **语法**
 
@@ -396,7 +396,7 @@ SELECT bitmapMin(bitmapBuild([3, 5, 2, 6])) AS res;
 
 引入版本：v20.1.0
 
-计算两个位图的逻辑或（OR）运算。
+计算两个位图的逻辑或 (OR) 运算。
 
 **语法**
 
@@ -430,7 +430,7 @@ SELECT bitmapToArray(bitmapOr(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) A
 
 引入于：v20.1.0
 
-返回两个 bitmap 进行逻辑或（OR）运算后结果的基数。
+返回两个 bitmap 进行逻辑或 (OR) 运算后结果的基数。
 
 **语法**
 
@@ -474,7 +474,7 @@ bitmapSubsetInRange(bitmap, start, end)
 
 **参数**
 
-* `bitmap` — 要从中提取子集的 bitmap。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `start` — 范围起始位置（包含）。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 范围结束位置（不包含）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `bitmap` — 要从中提取子集的 bitmap。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `start` — 范围起始位置 (包含) 。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 范围结束位置 (不包含) 。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -508,7 +508,7 @@ bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 
 **参数**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `range_start` — 范围起始位置（包含）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 子集的最大基数。[`UInt32`](/sql-reference/data-types/int-uint)
+* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `range_start` — 范围起始位置 (包含) 。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 子集的最大基数。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -600,7 +600,7 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 
 
 自 v20.1.0 起引入
 
-计算两个位图的对称差（XOR）。
+计算两个位图的对称差 (XOR) 。
 
 **语法**
 
@@ -634,7 +634,7 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 
 引入版本：v20.1.0
 
-返回两个 bitmap 的 XOR（对称差）的基数。
+返回两个 bitmap 的 XOR (对称差) 的基数。
 
 **语法**
 
@@ -678,7 +678,7 @@ subBitmap(bitmap, offset, cardinality_limit)
 
 **参数**
 
-* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `offset` — 从开头起要跳过的置位位数（从零开始计数）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 子集中包含的置位位的最大个数。[`UInt32`](/sql-reference/data-types/int-uint)
+* `bitmap` — Bitmap 对象。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。- `offset` — 从开头起要跳过的置位位数 (从零开始计数) 。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 子集中包含的置位位的最大个数。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

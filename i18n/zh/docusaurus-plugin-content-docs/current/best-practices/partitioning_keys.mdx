@@ -37,7 +37,7 @@ PARTITION BY toStartOfMonth(date)
 
 <Image img={partitions} size="lg" alt="分区" />
 
-ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示例中插入的 4 行数据拆分开来。然后，对于确定的每个分区，这些行会像[通常情况那样](/parts)一样，依次经过多个顺序步骤处理（① 排序，② 拆分为列，③ 压缩，④ 写入磁盘）。
+ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示例中插入的 4 行数据拆分开来。然后，对于确定的每个分区，这些行会像[通常情况那样](/parts)一样，依次经过多个顺序步骤处理 (① 排序，② 拆分为列，③ 压缩，④ 写入磁盘) 。
 
 如需更详细的分区说明，建议参阅[本指南](/partitions)。
 
@@ -47,7 +47,7 @@ ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示
 
 ## 分区的应用 \{#applications-of-partitioning\}
 
-分区是在 ClickHouse 中管理大型数据集的强大工具，尤其适用于可观测性和分析类用例。通过允许在一次元数据操作中删除、移动或归档整个分区（通常按时间或业务逻辑对齐），分区可以实现高效的数据生命周期管理。与逐行删除或复制操作相比，这种方式显著更快且资源占用更低。分区还能与 ClickHouse 的 TTL 和分层存储等特性良好集成，使你无需自定义编排即可实现数据保留策略或冷热存储策略。例如，近期数据可以保存在由 SSD 支撑的高速存储上，而较旧的分区则会自动迁移到更廉价的对象存储中。
+分区是在 ClickHouse 中管理大型数据集的强大工具，尤其适用于可观测性和分析类用例。通过允许在一次元数据操作中删除、移动或归档整个分区 (通常按时间或业务逻辑对齐) ，分区可以实现高效的数据生命周期管理。与逐行删除或复制操作相比，这种方式显著更快且资源占用更低。分区还能与 ClickHouse 的 TTL 和分层存储等特性良好集成，使你无需自定义编排即可实现数据保留策略或冷热存储策略。例如，近期数据可以保存在由 SSD 支撑的高速存储上，而较旧的分区则会自动迁移到更廉价的对象存储中。
 
 虽然分区可以提升某些工作负载的查询性能，但也可能对响应时间产生负面影响。
 
@@ -59,10 +59,10 @@ ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示
 
 ## 选择低基数的分区键 \{#choose-a-low-cardinality-partitioning-key\}
 
-需要特别注意的是，更多的 parts 会对查询性能产生负面影响。因此，如果 parts 的数量超过了配置好的限制（无论是[总量](/operations/settings/merge-tree-settings#max_parts_in_total)还是[按分区](/operations/settings/merge-tree-settings#parts_to_throw_insert)），ClickHouse 会在插入时返回一个 [“too many parts”](/knowledgebase/exception-too-many-parts) 错误。
+需要特别注意的是，更多的 parts 会对查询性能产生负面影响。因此，如果 parts 的数量超过了配置好的限制 (无论是[总量](/operations/settings/merge-tree-settings#max_parts_in_total)还是[按分区](/operations/settings/merge-tree-settings#parts_to_throw_insert)) ，ClickHouse 会在插入时返回一个 [“too many parts”](/knowledgebase/exception-too-many-parts) 错误。
 
-为分区键选择合适的**基数（cardinality）**至关重要。高基数分区键——即具有大量不同分区值的键——会导致 parts 数量激增。由于 ClickHouse 不会跨分区合并 parts，分区过多会产生过多未合并的 parts，最终触发 “Too many parts” 错误。[Merge 操作是必不可少的](/merges)，它可以减少存储碎片并优化查询速度，但在高基数分区的场景下，这种 merge 潜力会丧失。
+为分区键选择合适的**基数 (cardinality) **至关重要。高基数分区键——即具有大量不同分区值的键——会导致 parts 数量激增。由于 ClickHouse 不会跨分区合并 parts，分区过多会产生过多未合并的 parts，最终触发 “Too many parts” 错误。[Merge 操作是必不可少的](/merges)，它可以减少存储碎片并优化查询速度，但在高基数分区的场景下，这种 merge 潜力会丧失。
 
 相反，一个**低基数的分区键**——不同取值少于 100 到 1,000 个——通常是更优的选择。它有利于高效地合并 parts，保持较低的元数据开销，并避免在存储中创建过多对象。此外，ClickHouse 会在分区列上自动构建 MinMax 索引，这可以显著加速在这些列上进行过滤的查询。例如，当表按 `toStartOfMonth(date)` 进行分区时，按月份过滤可以让引擎完全跳过无关的分区及其 parts。
 
-虽然分区在某些查询模式下可以提升性能，但它本质上主要是一个数据管理特性。在很多情况下，由于数据碎片化加剧以及需要扫描的 parts 更多，跨所有分区进行查询甚至可能比使用未分区表更慢。请谨慎使用分区，并始终确保所选分区键是低基数的，同时与数据生命周期策略（例如基于 TTL 的保留策略）保持一致。如果不确定是否需要分区，可以先从不分区开始，再根据实际访问模式进行后续优化。
+虽然分区在某些查询模式下可以提升性能，但它本质上主要是一个数据管理特性。在很多情况下，由于数据碎片化加剧以及需要扫描的 parts 更多，跨所有分区进行查询甚至可能比使用未分区表更慢。请谨慎使用分区，并始终确保所选分区键是低基数的，同时与数据生命周期策略 (例如基于 TTL 的保留策略) 保持一致。如果不确定是否需要分区，可以先从不分区开始，再根据实际访问模式进行后续优化。

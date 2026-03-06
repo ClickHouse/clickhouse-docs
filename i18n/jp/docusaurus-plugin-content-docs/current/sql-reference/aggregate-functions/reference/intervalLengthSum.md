@@ -32,7 +32,7 @@ intervalLengthSum(start, end)
 
 **戻り値**
 
-すべての範囲（数値軸上の区間）の和集合の総延長を返します。引数の型に応じて、戻り値は UInt64 型または Float64 型になります。[`UInt64`](/sql-reference/data-types/int-uint) または [`Float64`](/sql-reference/data-types/float)
+すべての範囲 (数値軸上の区間) の和集合の総延長を返します。引数の型に応じて、戻り値は UInt64 型または Float64 型になります。[`UInt64`](/sql-reference/data-types/int-uint) または [`Float64`](/sql-reference/data-types/float)
 
 **例**
 

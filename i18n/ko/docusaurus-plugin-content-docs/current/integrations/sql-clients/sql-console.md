@@ -139,25 +139,25 @@ SQL 콘솔에서 새 쿼리를 생성하는 방법은 두 가지가 있습니다
 
 쿼리를 실행하려면 SQL Editor에 SQL 명령을 입력한 후 「Run」 버튼을 클릭하거나 `cmd / ctrl + enter` 단축키를 사용합니다. 여러 명령을 순차적으로 작성하고 실행하려면 각 명령 뒤에 세미콜론을 추가해야 합니다.
 
-쿼리 실행 옵션  
+쿼리 실행 옵션
 기본적으로 Run 버튼을 클릭하면 SQL Editor에 포함된 모든 명령이 실행됩니다. SQL 콘솔은 다음과 같은 두 가지 추가 쿼리 실행 옵션을 지원합니다:
 
-- 선택한 명령 실행
-- 커서 위치의 명령 실행
+* 선택한 명령 실행
+* 커서 위치의 명령 실행
 
 선택한 명령을 실행하려면 실행하려는 명령 또는 명령들의 순서를 선택한 후 「Run」 버튼을 클릭하거나 `cmd / ctrl + enter` 단축키를 사용합니다. 선택 영역이 있을 때는 SQL Editor 컨텍스트 메뉴(에디터 영역에서 마우스 오른쪽 버튼 클릭으로 열기)에서 「Run selected」를 선택할 수도 있습니다.
 
-<Image img={run_selected_query} size="lg" border alt="SQL 쿼리에서 선택한 부분만 실행하는 방법을 보여주는 화면"/>
+<Image img={run_selected_query} size="lg" border alt="SQL 쿼리에서 선택한 부분만 실행하는 방법을 보여주는 화면" />
 
 현재 커서 위치의 명령을 실행하는 방법은 두 가지입니다:
 
-- 확장 Run 옵션 메뉴에서 「At Cursor」를 선택하거나 해당 `cmd / ctrl + shift + enter` 키보드 단축키를 사용합니다
+* 확장 Run 옵션 메뉴에서 「At Cursor」를 선택하거나 해당 `cmd / ctrl + shift + enter` 키보드 단축키를 사용합니다
 
-<Image img={run_at_cursor_2} size="lg" border alt="확장 Run 옵션 메뉴의 Run at cursor 옵션"/>
+<Image img={run_at_cursor_2} size="lg" border alt="확장 Run 옵션 메뉴의 Run at cursor 옵션" />
 
-- SQL Editor 컨텍스트 메뉴에서 「Run at cursor」를 선택합니다
+* SQL Editor 컨텍스트 메뉴에서 「Run at cursor」를 선택합니다
 
-<Image img={run_at_cursor} size="lg" border alt="SQL Editor 컨텍스트 메뉴의 Run at cursor 옵션"/>
+<Image img={run_at_cursor} size="lg" border alt="SQL Editor 컨텍스트 메뉴의 Run at cursor 옵션" />
 
 :::note
 커서 위치에 있는 명령은 실행 시 노란색으로 깜빡입니다.

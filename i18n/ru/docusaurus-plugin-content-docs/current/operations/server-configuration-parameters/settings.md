@@ -5047,6 +5047,10 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
+## webassembly_udf_engine \{#webassembly_udf_engine\}
+
+<SettingsInfoBlock type="String" default_value="wasmtime" />Движок, используемый для выполнения UDF на WebAssembly. Поддерживаемые значения: &#39;wasmtime&#39; и &#39;wasmedge&#39;.
+
 ## workload_path \{#workload_path\}
 
 Каталог, используемый в качестве хранилища для всех запросов `CREATE WORKLOAD` и `CREATE RESOURCE`. По умолчанию используется папка `/workload/` в рабочем каталоге сервера.

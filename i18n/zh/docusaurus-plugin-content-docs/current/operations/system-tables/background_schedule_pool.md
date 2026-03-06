@@ -24,10 +24,10 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `database` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
 * `table` ([String](../../sql-reference/data-types/string.md)) — 表名。
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 表的 UUID。
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID（如果当前正在执行）（注意，它并不是真正的查询，而只是为在 `system.text_log` 中匹配日志而随机生成的 ID）。
-* `elapsed_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 任务执行时间（如果当前正在执行）。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID (如果当前正在执行)  (注意，它并不是真正的查询，而只是为在 `system.text_log` 中匹配日志而随机生成的 ID) 。
+* `elapsed_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 任务执行时间 (如果当前正在执行) 。
 * `log_name` ([String](../../sql-reference/data-types/string.md)) — 任务的日志名称。
-* `deactivated` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 任务是否已停用（始终为 false，因为已停用的任务会从池中移除）。
+* `deactivated` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 任务是否已停用 (始终为 false，因为已停用的任务会从池中移除) 。
 * `scheduled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 任务是否已被调度执行。
 * `delayed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 任务是否以延迟方式被调度。
 * `executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 任务当前是否正在执行。

@@ -11,7 +11,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 # 采样查询分析器 \{#sampling-query-profiler\}
 
-ClickHouse 运行一个采样分析器，用于分析查询的执行情况。通过该分析器，您可以找到在查询执行期间被最频繁调用的源代码函数/例程。您可以跟踪 CPU 时间以及包括空闲时间在内的实际耗时（wall-clock time）。
+ClickHouse 运行一个采样分析器，用于分析查询的执行情况。通过该分析器，您可以找到在查询执行期间被最频繁调用的源代码函数/例程。您可以跟踪 CPU 时间以及包括空闲时间在内的实际耗时 (wall-clock time) 。
 
 在 ClickHouse Cloud 中，查询分析器会自动启用，您可以按如下方式运行一个示例查询：
 
@@ -30,7 +30,7 @@ LIMIT 10
 SETTINGS allow_introspection_functions = 1
 ```
 
-在自托管部署中，要使用查询分析器（query profiler）：
+在自托管部署中，要使用查询分析器 (query profiler) ：
 
 * 配置服务器配置中的 [trace&#95;log](../../operations/server-configuration-parameters/settings.md#trace_log) 部分。
 

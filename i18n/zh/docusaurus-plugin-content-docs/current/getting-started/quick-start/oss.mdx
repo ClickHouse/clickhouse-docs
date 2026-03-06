@@ -141,8 +141,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       从 S3 中读取文件。它是一个表函数，这意味着其返回结果是一个表，
       该表可以：
 
-      1. 作为 `SELECT` 查询的数据源（允许你运行即席查询，同时将数据保留在 S3 中），或者……
-      2. 将该结果表插入到一个 `MergeTree` 表中（当你准备好将数据迁移到 ClickHouse 中时）
+      1. 作为 `SELECT` 查询的数据源 (允许你运行即席查询，同时将数据保留在 S3 中) ，或者……
+      2. 将该结果表插入到一个 `MergeTree` 表中 (当你准备好将数据迁移到 ClickHouse 中时) 
 
       一个即席查询示例如下：
 
@@ -221,7 +221,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     <TabItem value="local_file" label="本地">
       使用 [`file` 表引擎](/sql-reference/table-functions/file) 来
       读取本地文件。为方便起见，将文件复制到 `user_files` 目录
-      （该目录位于您下载 ClickHouse 二进制文件的目录下）。
+       (该目录位于您下载 ClickHouse 二进制文件的目录下) 。
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')

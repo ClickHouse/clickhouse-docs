@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 * `mark_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) 系列表引擎使用的[标记](/development/architecture#merge-tree)缓存。
 * `uncompressed_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) 系列表引擎使用的未压缩数据缓存。
-* 操作系统提供的页缓存（间接使用，用于实际数据文件）。
+* 操作系统提供的页缓存 (间接使用，用于实际数据文件) 。
 
 此外，还有多种其他缓存类型：
 

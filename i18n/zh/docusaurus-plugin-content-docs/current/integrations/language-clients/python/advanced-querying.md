@@ -358,7 +358,7 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 ## 读取格式 \{#read-formats\}
 
-读取格式用于控制客户端 `query`、`query_np` 和 `query_df` 方法返回值的数据类型。（`raw_query` 和 `query_arrow` 不会修改来自 ClickHouse 的原始数据，因此不适用格式控制。）例如，如果将 UUID 的读取格式从默认的 `native` 格式更改为可选的 `string` 格式，那么对 `UUID` 列的 ClickHouse 查询结果将以字符串形式返回（使用标准的 8-4-4-4-12 RFC 1422 格式），而不是 Python UUID 对象。
+读取格式用于控制客户端 `query`、`query_np` 和 `query_df` 方法返回值的数据类型。 (`raw_query` 和 `query_arrow` 不会修改来自 ClickHouse 的原始数据，因此不适用格式控制。) 例如，如果将 UUID 的读取格式从默认的 `native` 格式更改为可选的 `string` 格式，那么对 `UUID` 列的 ClickHouse 查询结果将以字符串形式返回 (使用标准的 8-4-4-4-12 RFC 1422 格式) ，而不是 Python UUID 对象。
 
 任何格式化函数的 “data type” 参数都可以包含通配符。该参数值必须是一个全部为小写的字符串。
 
@@ -376,7 +376,7 @@ set_read_format('IPv*', 'string')
 set_read_format('Date*', 'int')
 ```
 
-* 对整个查询，可以使用可选的 `query_formats` 字典参数。在这种情况下，任何属于指定数据类型的列（或子列）都会使用配置的格式。
+* 对整个查询，可以使用可选的 `query_formats` 字典参数。在这种情况下，任何属于指定数据类型的列 (或子列) 都会使用配置的格式。
 
 ```python
 # Return any UUID column as a string

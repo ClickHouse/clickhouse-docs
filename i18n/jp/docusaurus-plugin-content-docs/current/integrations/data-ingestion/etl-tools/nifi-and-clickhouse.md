@@ -48,12 +48,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ## ClickHouse JDBC ドライバをダウンロードする \{#3-download-the-clickhouse-jdbc-driver\}
 
   1. GitHub 上の <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC ドライバのリリースページ</a> にアクセスし、最新の JDBC リリースバージョンを確認します
-  2. 該当リリースのページで「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含む JAR ファイル（例: `clickhouse-jdbc-0.5.0-all.jar`）を探します。
+  2. 該当リリースのページで「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含む JAR ファイル (例: `clickhouse-jdbc-0.5.0-all.jar`) を探します。
   3. JAR ファイルを Apache NiFi からアクセス可能なフォルダに配置し、その絶対パスを記録しておきます
 
   ## `DBCPConnectionPool` コントローラサービスを追加し、プロパティを設定する \{#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties\}
 
-  1. Apache NiFi でコントローラサービスを設定するには、歯車アイコン（&quot;gear&quot; ボタン）をクリックして NiFi Flow Configuration ページを開きます
+  1. Apache NiFi でコントローラサービスを設定するには、歯車アイコン (&quot;gear&quot; ボタン) をクリックして NiFi Flow Configuration ページを開きます
 
      <Image img={nifi01} size="sm" border alt="歯車ボタンが強調表示された NiFi Flow Configuration ページ" />
 
@@ -65,27 +65,27 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi03} size="lg" border alt="DBCPConnectionPool が強調表示された Controller Service 選択ダイアログ" />
 
-  4. 追加したばかりの `DBCPConnectionPool` は、デフォルトでは無効 (Invalid) 状態になっています。歯車アイコン（&quot;gear&quot; ボタン）をクリックして設定を開始します
+  4. 追加したばかりの `DBCPConnectionPool` は、デフォルトでは無効 (Invalid) 状態になっています。歯車アイコン (&quot;gear&quot; ボタン) をクリックして設定を開始します
 
      <Image img={nifi04} size="lg" border alt="Invalid 状態の DBCPConnectionPool と gear ボタンが強調表示された Controller Services 一覧" />
 
   5. 「Properties」セクションで、次の値を入力します
 
-  | プロパティ                       | 値                                                                  | 備考                                    |
-  | --------------------------- | ------------------------------------------------------------------ | ------------------------------------- |
-  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 接続 URL 中の HOSTNAME を環境に応じたホスト名に置き換えます |
-  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                       |
-  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC ドライバ JAR ファイルへの絶対パス   |
-  | Database User               | default                                                            | ClickHouse ユーザー名                      |
-  | Password                    | password                                                           | ClickHouse パスワード                      |
+  | プロパティ           | 値                                                                  | 備考                                    |
+  | --------------- | ------------------------------------------------------------------ | ------------------------------------- |
+  | データベース接続 URL    | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 接続 URL 内の HOSTNAME を適切な値に置き換えてください。   |
+  | データベースドライバークラス名 | com.clickhouse.jdbc.ClickHouseDriver                               |                                       |
+  | データベースドライバーの場所  | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC ドライバー JAR ファイルへの絶対パス。 |
+  | データベースユーザー名     | default                                                            | ClickHouse のユーザー名。                    |
+  | パスワード           | password                                                           | ClickHouse のパスワード。                    |
 
-  6. Settings セクションで、コントローラサービスの名前を分かりやすくするために「ClickHouse JDBC」に変更します
+  6. Settings セクションで、コントローラサービスの名前を分かりやすいように「ClickHouse JDBC」に変更します
 
      <Image img={nifi05} size="lg" border alt="プロパティが入力済みの DBCPConnectionPool 設定ダイアログ" />
 
   7. 「lightning」ボタンをクリックし、続いて「Enable」ボタンをクリックして `DBCPConnectionPool` コントローラサービスを有効化します
 
-     <Image img={nifi06} size="lg" border alt="lightning ボタン（稲妻アイコン）が強調表示された Controller Services 一覧" />
+     <Image img={nifi06} size="lg" border alt="Controller Services 一覧で lightning ボタン（稲妻アイコン）が強調表示されている画面" />
 
      <br />
 
@@ -114,7 +114,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   4. クエリが正常に処理されたことを確認するには、出力キュー内の `FlowFile` のいずれかを確認してください
 
-     <Image img={nifi11} size="lg" border alt="検査の準備ができた FlowFile が表示されている List queue ダイアログ" />
+     <Image img={nifi11} size="lg" border alt="検査対象の FlowFile が一覧表示されている List queue ダイアログ" />
 
   5. 出力された `FlowFile` の結果を確認するには、ビューを「formatted」表示に切り替えます
 
@@ -133,11 +133,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Minimum Number of Records | 1000                | 1 つのレコードを構成するためにマージされる行の最小数を増やすよう、この値をより大きな値に設定します。デフォルトは 1 行です     |
      | Maximum Number of Records | 10000               | &quot;Minimum Number of Records&quot; より大きな値に設定します。デフォルトは 1,000 行です |
 
-  3. 複数のレコードが 1 つにマージされていることを確認するには、`MergeRecord` プロセッサの入力と出力を確認してください。出力は複数の入力レコードからなる配列となる点に注意してください
+  3. 複数のレコードが 1 つにマージされていることを確認するには、`MergeRecord` プロセッサの入力と出力を確認してください。出力は複数の入力レコードからなる配列となる点に注意してください。
 
      入力
 
-     <Image img={nifi13} size="sm" border alt="単一レコードの入力が表示されている MergeRecord プロセッサ" />
+     <Image img={nifi13} size="sm" border alt="単一レコードの入力を示す MergeRecord プロセッサ" />
 
      出力
 
@@ -157,7 +157,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   5. 各挿入に複数の行が含まれていることを確認するには、テーブルの行数が `MergeRecord` で定義されている「Minimum Number of Records」の値以上ずつ増加していることを確認します。
 
-     <Image img={nifi15} size="sm" border alt="宛先テーブルの行数を表示しているクエリ結果" />
+     <Image img={nifi15} size="sm" border alt="宛先テーブルの行数を示すクエリ結果" />
 
   6. おめでとうございます。Apache NiFi を使用して ClickHouse へのデータ取り込みに成功しました！
 </VerticalStepper>

@@ -21,8 +21,8 @@ ClickHouse Keeper 为数据复制和分布式 DDL 查询的执行提供协调服
 [ClickHouse Cloud](https://console.clickhouse.cloud/) 在多租户环境下，为成千上万的服务大规模使用 `clickhouse-keeper`。我们设计并构建 Keeper，是为了去除对基于 Java 的 ZooKeeper 实现的依赖。ClickHouse Keeper 解决了 ZooKeeper 的许多众所周知的缺点，并带来了额外改进，包括：
 
 * 得益于更好的压缩机制，快照和日志占用的磁盘空间大幅减少
-* 默认的数据包和节点数据大小不受限制（在 ZooKeeper 中为 1 MB）
-* 不存在 `zxid` 溢出问题（在 ZooKeeper 中每发生 20 亿次事务就会被迫重启）
+* 默认的数据包和节点数据大小不受限制 (在 ZooKeeper 中为 1 MB) 
+* 不存在 `zxid` 溢出问题 (在 ZooKeeper 中每发生 20 亿次事务就会被迫重启) 
 * 由于采用了更高效的分布式一致性协议，在网络分区之后恢复速度更快
 * 在相同数据量下占用更少的内存
 * 更易于部署和配置，并且不需要指定 JVM 堆大小或自定义垃圾回收实现
