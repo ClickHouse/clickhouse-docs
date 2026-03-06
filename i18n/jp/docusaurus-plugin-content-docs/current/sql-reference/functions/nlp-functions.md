@@ -81,7 +81,7 @@ detectLanguage(s)
 
 **戻り値**
 
-検出された言語の2文字のISOコードを返します。返されるその他の値: `un` = 不明（いずれの言語も検出できない場合）、`other` = 検出された言語に2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
+検出された言語の2文字のISOコードを返します。返されるその他の値: `un` = 不明 (いずれの言語も検出できない場合) 、`other` = 検出された言語に2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -113,7 +113,7 @@ detectLanguageMixed(s)
 
 **戻り値**
 
-キーが2文字のISO言語コードで、対応する値がその言語として検出されたテキストの割合（パーセンテージ）であるマップを返します [`Map(String, Float32)`](/sql-reference/data-types/map)
+キーが2文字のISO言語コードで、対応する値がその言語として検出されたテキストの割合 (パーセンテージ) であるマップを返します [`Map(String, Float32)`](/sql-reference/data-types/map)
 
 **例**
 
@@ -146,7 +146,7 @@ detectLanguageUnknown('s')
 
 **返される値**
 
-検出された言語の2文字のISOコードを返します。その他の返り値: `un` = 不明（いずれの言語も検出できない）、`other` = 検出された言語に2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
+検出された言語の2文字のISOコードを返します。その他の返り値: `un` = 不明 (いずれの言語も検出できない) 、`other` = 検出された言語に2文字コードが存在しない場合。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -196,7 +196,7 @@ C++
 
 導入バージョン: v22.2.0
 
-指定されたテキストデータのセンチメント（感情極性）を判定します。
+指定されたテキストデータのセンチメント (感情極性) を判定します。
 
 :::note 制限事項
 この関数は現在の実装では、組み込みの感情 Dictionary を使用しており、ロシア語にのみ対応します。
@@ -236,7 +236,8 @@ SELECT
 導入バージョン: v21.9.0
 
 指定された単語のレンマ化を実行します。
-この関数の実行には Dictionary が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから Dictionary を読み込む方法の詳細については、ページ [「Defining Dictionaries」](/sql-reference/dictionaries#local-file) を参照してください。
+この関数の実行には Dictionary が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから Dictionary を読み込む方法の詳細については、ページ [「Defining Dictionaries」](/docs/sql-reference/
++statements/create/dictionary/sources/local-file) を参照してください。
 
 **構文**
 

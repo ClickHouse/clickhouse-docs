@@ -115,7 +115,7 @@ extractAllGroupsVertical(s, regexp)
 
 **戻り値**
 
-配列の配列を返し、各内側の配列には 1 回のマッチでキャプチャされたグループが含まれます。各マッチは、その正規表現内のキャプチャグループ（グループ 1、グループ 2 など）に対応する要素を持つ配列を生成します。マッチが 1 つも見つからない場合は、空の配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+配列の配列を返し、各内側の配列には 1 回のマッチでキャプチャされたグループが含まれます。各マッチは、その正規表現内のキャプチャグループ (グループ 1、グループ 2 など) に対応する要素を持つ配列を生成します。マッチが 1 つも見つからない場合は、空の配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
 
 **例**
 
@@ -316,7 +316,7 @@ SELECT reverseBySeparator('abcde', '')
 区切り文字が文字列の先頭または末尾にある場合、あるいは複数の区切り文字が連続している場合には、空の部分文字列が生成されることがあります。
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）は、引数 `max_substrings > 0` のときに残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (デフォルト: `0`) は、引数 `max_substrings > 0` のときに残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
 :::
 
 次の場合、空の部分文字列が生成されることがあります:
@@ -362,7 +362,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 空白文字および句読点文字で区切られた文字列を、部分文字列の配列に分割します。
 
 :::note
-設定 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）は、引数 `max_substrings` が `0` より大きい場合に、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+設定 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (デフォルト: `0`) は、引数 `max_substrings` が `0` より大きい場合に、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
 :::
 
 **構文**
@@ -407,7 +407,7 @@ SELECT splitByNonAlpha('user@domain.com');
 * 元の文字列が空で、正規表現が空ではない場合
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）は、引数 `max_substrings > 0` のときに、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
+[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (デフォルト: `0`) は、引数 `max_substrings > 0` のときに、残りの文字列を結果配列の最後の要素に含めるかどうかを制御します。
 :::
 
 **構文**
@@ -518,7 +518,7 @@ SELECT splitByString('', 'abcde');
 空白文字で区切られた文字列を、部分文字列の配列に分割します。
 
 :::note
-引数 `max_substrings > 0` の場合に、結果配列の最後の要素に残りの文字列を含めるかどうかは、設定 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（デフォルト: `0`）で制御されます。
+引数 `max_substrings > 0` の場合に、結果配列の最後の要素に残りの文字列を含めるかどうかは、設定 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (デフォルト: `0`) で制御されます。
 :::
 
 **構文**
@@ -556,15 +556,15 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 利用可能なトークナイザー:
 
-* `splitByNonAlpha` は、英数字以外の ASCII 文字で文字列を分割します（関数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) も参照してください）。
-* `splitByString(S)` は、ユーザー定義の区切り文字列 `S` に沿って文字列を分割します（関数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString) も参照してください）。区切り文字はオプションのパラメータで指定でき、例えば `tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])` のように指定します。各文字列は複数文字（この例では `', '`）から構成されていてもかまいません。区切り文字リストを明示的に指定しない場合、デフォルトの区切り文字リストは単一の空白 `[' ']` です。
-* `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します（関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) も参照してください）。ngram の長さは 1 から 8 の整数のオプションパラメータで指定でき、例えば `tokens(value, 'ngrams', 3)` のように指定します。ngram のデフォルトサイズは、明示的に指定しない場合、3 です。
-* `sparseGrams(min_length, max_length, min_cutoff_length)` は、少なくとも `min_length` 文字、最大で（両端を含めて）`max_length` 文字の可変長 n-gram に文字列を分割します（関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) も参照してください）。明示的に指定しない場合、`min_length` と `max_length` のデフォルト値はそれぞれ 3 と 100 です。パラメータ `min_cutoff_length` を指定した場合、その長さ以上の n-gram のみが返されます。`ngrams(N)` と比較すると、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。例えば、`tokens(value, 'sparseGrams', 3, 5, 4)` は内部的には入力文字列から 3, 4, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
-* `array` はトークナイズを行わず、各行の値全体を 1 つのトークンとして扱います（関数 [array](/sql-reference/functions/array-functions.md/#array) も参照してください）。
+* `splitByNonAlpha` は、英数字以外の ASCII 文字で文字列を分割します (関数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) も参照してください) 。
+* `splitByString(S)` は、ユーザー定義の区切り文字列 `S` に沿って文字列を分割します (関数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString) も参照してください) 。区切り文字はオプションのパラメータで指定でき、例えば `tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])` のように指定します。各文字列は複数文字 (この例では `', '`) から構成されていてもかまいません。区切り文字リストを明示的に指定しない場合、デフォルトの区切り文字リストは単一の空白 `[' ']` です。
+* `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します (関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) も参照してください) 。ngram の長さは 1 から 8 の整数のオプションパラメータで指定でき、例えば `tokens(value, 'ngrams', 3)` のように指定します。ngram のデフォルトサイズは、明示的に指定しない場合、3 です。
+* `sparseGrams(min_length, max_length, min_cutoff_length)` は、少なくとも `min_length` 文字、最大で (両端を含めて) `max_length` 文字の可変長 n-gram に文字列を分割します (関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) も参照してください) 。明示的に指定しない場合、`min_length` と `max_length` のデフォルト値はそれぞれ 3 と 100 です。パラメータ `min_cutoff_length` を指定した場合、その長さ以上の n-gram のみが返されます。`ngrams(N)` と比較すると、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。例えば、`tokens(value, 'sparseGrams', 3, 5, 4)` は内部的には入力文字列から 3, 4, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
+* `array` はトークナイズを行わず、各行の値全体を 1 つのトークンとして扱います (関数 [array](/sql-reference/functions/array-functions.md/#array) も参照してください) 。
 
 `splitByString` トークナイザーの場合、トークンが [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成しないときには、より長い区切り文字を優先してマッチさせたい場合が多いでしょう。
-そのためには、区切り文字を長い順（長さの降順）に並べて渡してください。
-例えば、separators = `['%21', '%']` の場合、文字列 `%21abc` は `['abc']` にトークナイズされますが、separators = `['%', '%21']` の場合は `['21ac']` にトークナイズされます（これはおそらく意図した結果ではないでしょう）。
+そのためには、区切り文字を長い順 (長さの降順) に並べて渡してください。
+例えば、separators = `['%21', '%']` の場合、文字列 `%21abc` は `['abc']` にトークナイズされますが、separators = `['%', '%21']` の場合は `['21ac']` にトークナイズされます (これはおそらく意図した結果ではないでしょう) 。
 
 **構文**
 

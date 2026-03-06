@@ -27,7 +27,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
 <Tabs groupId="lake-format">
   <TabItem value="Iceberg" label="Apache Iceberg" default>
-    [`iceberg`](/sql-reference/table-functions/iceberg) 表函数（`icebergS3` 的别名）可直接从对象存储中读取 Iceberg 表。针对每种存储后端均有对应的变体：`icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal`。
+    [`iceberg`](/sql-reference/table-functions/iceberg) 表函数 (`icebergS3` 的别名) 可直接从对象存储中读取 Iceberg 表。针对每种存储后端均有对应的变体：`icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal`。
 
     **示例语法：**
 
@@ -68,7 +68,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
     ### 集群模式 \{#iceberg-cluster-variant\}
 
-    [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster) 函数可将读取操作分布到 ClickHouse 集群中的多个节点上。发起节点与所有节点建立连接，并动态分发数据文件。每个工作节点请求并处理任务，直至所有文件读取完毕。`icebergCluster` 是 `icebergS3Cluster` 的别名。此外，还提供适用于 Azure（[`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster)）和 HDFS（[`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster)）的变体版本。
+    [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster) 函数可将读取操作分布到 ClickHouse 集群中的多个节点上。发起节点与所有节点建立连接，并动态分发数据文件。每个工作节点请求并处理任务，直至所有文件读取完毕。`icebergCluster` 是 `icebergS3Cluster` 的别名。此外，还提供适用于 Azure ([`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster)) 和 HDFS ([`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster)) 的变体版本。
 
     **示例语法：**
 
@@ -79,7 +79,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
     icebergAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
     ```
 
-    **示例（ClickHouse Cloud）：**
+    **示例 (ClickHouse Cloud) ：**
 
     ```sql
     SELECT
@@ -96,7 +96,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
     ### 表引擎 \{#iceberg-table-engine\}
 
-    除了在每次查询中使用表函数外，您也可以使用 [`Iceberg` 表引擎](/engines/table-engines/integrations/iceberg) 创建持久化表。数据仍存储在对象存储中，按需读取——不会有任何数据被复制到 ClickHouse 中。其优势在于，表定义存储在 ClickHouse 中，可跨用户和会话共享，无需每个用户单独指定存储路径和凭据。每种存储后端均有对应的引擎变体：`IcebergS3`（或 `Iceberg` 别名）、`IcebergAzure`、`IcebergHDFS` 和 `IcebergLocal`。
+    除了在每次查询中使用表函数外，您也可以使用 [`Iceberg` 表引擎](/engines/table-engines/integrations/iceberg) 创建持久化表。数据仍存储在对象存储中，按需读取——不会有任何数据被复制到 ClickHouse 中。其优势在于，表定义存储在 ClickHouse 中，可跨用户和会话共享，无需每个用户单独指定存储路径和凭据。每种存储后端均有对应的引擎变体：`IcebergS3` (或 `Iceberg` 别名) 、`IcebergAzure`、`IcebergHDFS` 和 `IcebergLocal`。
 
     表引擎和表函数均支持[数据缓存](/engines/table-engines/integrations/iceberg#data-cache)，其缓存机制与 S3、AzureBlobStorage 和 HDFS 存储引擎相同。此外，[元数据缓存](/engines/table-engines/integrations/iceberg#metadata-cache)会将清单文件信息存储在内存中，从而减少对 Iceberg 元数据的重复读取。该缓存默认通过 `use_iceberg_metadata_files_cache` 设置启用。
 
@@ -145,11 +145,11 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
     Peak memory usage: 10.53 GiB.
     ```
 
-    有关支持的功能（包括分区裁剪、Schema 演进、时间旅行、缓存等），请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。如需完整参考，请参阅 [`iceberg` 表函数](/sql-reference/table-functions/iceberg)和 [`Iceberg` 表引擎](/engines/table-engines/integrations/iceberg)文档。
+    有关支持的功能 (包括分区裁剪、Schema 演进、时间旅行、缓存等) ，请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。如需完整参考，请参阅 [`iceberg` 表函数](/sql-reference/table-functions/iceberg)和 [`Iceberg` 表引擎](/engines/table-engines/integrations/iceberg)文档。
   </TabItem>
 
   <TabItem value="差异" label="Delta Lake">
-    [`deltaLake`](/sql-reference/table-functions/deltalake) 表函数（`deltaLakeS3` 的别名）用于从对象存储中读取 Delta Lake 表。其他后端也有对应的变体：`deltaLakeAzure` 和 `deltaLakeLocal`。
+    [`deltaLake`](/sql-reference/table-functions/deltalake) 表函数 (`deltaLakeS3` 的别名) 用于从对象存储中读取 Delta Lake 表。其他后端也有对应的变体：`deltaLakeAzure` 和 `deltaLakeLocal`。
 
     **示例语法：**
 
@@ -190,7 +190,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
     ### 集群变体 \{#delta-cluster-variant\}
 
-    [`deltaLakeCluster`](/sql-reference/table-functions/deltalakeCluster) 函数将读取操作分发至 ClickHouse 集群中的多个节点。发起节点动态地将数据文件调度至工作节点以进行并行处理。`deltaLakeS3Cluster` 是 `deltaLakeCluster` 的别名。此外，还提供 Azure 变体（[`deltaLakeAzureCluster`](/sql-reference/table-functions/deltalakeCluster)）。
+    [`deltaLakeCluster`](/sql-reference/table-functions/deltalakeCluster) 函数将读取操作分发至 ClickHouse 集群中的多个节点。发起节点动态地将数据文件调度至工作节点以进行并行处理。`deltaLakeS3Cluster` 是 `deltaLakeCluster` 的别名。此外，还提供 Azure 变体 ([`deltaLakeAzureCluster`](/sql-reference/table-functions/deltalakeCluster)) 。
 
     **示例语法：**
 
@@ -205,7 +205,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
     这些函数的 S3 变体可用于 Google Cloud Storage (GCS)。
     :::
 
-    **示例（ClickHouse Cloud）：**
+    **示例 (ClickHouse Cloud) ：**
 
     ```sql
     SELECT
@@ -263,7 +263,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
     Peak memory usage: 9.27 GiB.
     ```
 
-    有关支持的功能（包括存储后端、缓存等），请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。如需完整参考，请参阅 [`deltaLake` 表函数](/sql-reference/table-functions/deltalake)和 [`DeltaLake` 表引擎](/engines/table-engines/integrations/deltalake)文档。
+    有关支持的功能 (包括存储后端、缓存等) ，请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。如需完整参考，请参阅 [`deltaLake` 表函数](/sql-reference/table-functions/deltalake)和 [`DeltaLake` 表引擎](/engines/table-engines/integrations/deltalake)文档。
   </TabItem>
 
   <TabItem value="hudi" label="Apache Hudi">
@@ -294,13 +294,13 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
         ENGINE = Hudi(url [,aws_access_key_id, aws_secret_access_key])
     ```
 
-    有关受支持的功能（包括存储后端等），请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。完整参考请参见 [`hudi` 表函数](/sql-reference/table-functions/hudi) 和 [`Hudi` 表引擎](/engines/table-engines/integrations/hudi) 文档。
+    有关受支持的功能 (包括存储后端等) ，请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。完整参考请参见 [`hudi` 表函数](/sql-reference/table-functions/hudi) 和 [`Hudi` 表引擎](/engines/table-engines/integrations/hudi) 文档。
   </TabItem>
 
   <TabItem value="paimon" label="Apache Paimon">
     <ExperimentalBadge />
 
-    [`paimon`](/sql-reference/table-functions/paimon) 表函数（`paimonS3` 的别名）用于从对象存储中读取 Paimon 表。针对每种存储后端都有对应的变体：`paimonS3`、`paimonAzure`、`paimonHDFS` 和 `paimonLocal`。
+    [`paimon`](/sql-reference/table-functions/paimon) 表函数 (`paimonS3` 的别名) 用于从对象存储中读取 Paimon 表。针对每种存储后端都有对应的变体：`paimonS3`、`paimonAzure`、`paimonHDFS` 和 `paimonLocal`。
 
     **语法：**
 
@@ -317,7 +317,7 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
     ### 集群变体 \{#paimon-cluster-variant\}
 
-    [`paimonS3Cluster`](/sql-reference/table-functions/paimonCluster) 函数会在 ClickHouse 集群中的多个节点之间分布式地执行读取操作。发起请求的节点会将数据文件动态分派给工作节点，以便进行并行处理。`paimonCluster` 是 `paimonS3Cluster` 的别名。也提供适用于 Azure（[`paimonAzureCluster`](/sql-reference/table-functions/paimonCluster)）和 HDFS（[`paimonHDFSCluster`](/sql-reference/table-functions/paimonCluster)）的变体。
+    [`paimonS3Cluster`](/sql-reference/table-functions/paimonCluster) 函数会在 ClickHouse 集群中的多个节点之间分布式地执行读取操作。发起请求的节点会将数据文件动态分派给工作节点，以便进行并行处理。`paimonCluster` 是 `paimonS3Cluster` 的别名。也提供适用于 Azure ([`paimonAzureCluster`](/sql-reference/table-functions/paimonCluster)) 和 HDFS ([`paimonHDFSCluster`](/sql-reference/table-functions/paimonCluster)) 的变体。
 
     ```sql
     paimonS3Cluster(cluster_name, url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -332,6 +332,6 @@ ClickHouse 提供表函数，用于直接在对象存储中查询以开放表格
 
     Paimon 目前在 ClickHouse 中没有专用的表引擎。请使用上面的表函数来查询 Paimon 表。
 
-    有关受支持的特性（包括存储后端等），请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。完整参考请参见 [`paimon` 表函数](/sql-reference/table-functions/paimon) 文档。
+    有关受支持的特性 (包括存储后端等) ，请参阅[支持矩阵](/use-cases/data-lake/support-matrix#format-support)。完整参考请参见 [`paimon` 表函数](/sql-reference/table-functions/paimon) 文档。
   </TabItem>
 </Tabs>

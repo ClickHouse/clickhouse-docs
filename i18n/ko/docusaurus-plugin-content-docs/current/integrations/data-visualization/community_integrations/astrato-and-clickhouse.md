@@ -92,7 +92,7 @@ Data View 편집기에서 ClickHouse에 있는 모든 테이블과 스키마를 
 몇 단계만으로 Astrato에서 첫 차트를 생성할 수 있습니다.
 
 1. Visuals 패널을 엽니다.
-2. 시각화 유형을 선택합니다(예: "Column Bar Chart"부터 시작합니다).
+2. 시각화 유형을 선택합니다(예: &quot;Column Bar Chart&quot;부터 시작합니다).
 3. 차원(Dimension)을 추가합니다.
 4. 측정값(Measure)을 추가합니다.
 

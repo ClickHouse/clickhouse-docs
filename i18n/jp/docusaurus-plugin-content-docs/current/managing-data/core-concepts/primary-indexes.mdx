@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-ClickHouse のスパースなプライマリインデックスは、テーブルの ^^primary key^^ 列に対するクエリ条件に一致するデータを含んでいる可能性がある[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行ブロック）を効率的に特定するのに役立ちます。次のセクションでは、このインデックスがこれらの列の値からどのように構成されるかを説明します。
+ClickHouse のスパースなプライマリインデックスは、テーブルの ^^primary key^^ 列に対するクエリ条件に一致するデータを含んでいる可能性がある[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行ブロック) を効率的に特定するのに役立ちます。次のセクションでは、このインデックスがこれらの列の値からどのように構成されるかを説明します。
 
 ### 疎なプライマリインデックスの作成 \{#sparse-primary-index-creation\}
 
@@ -181,7 +181,7 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 * **疎なプライマリインデックス** により、ClickHouse は ^^primary key^^ 列に対するクエリ条件と一致しうる行を含む可能性のある ^^granule^^ を特定し、不要なデータの読み取りをスキップできます。
 
-* 各インデックスでは、**各 ^^granule^^（デフォルトでは 8,192 行）の先頭行の ^^primary key^^ の値のみ** を保持するため、インメモリに収まるほどコンパクトです。
+* 各インデックスでは、**各 ^^granule^^ (デフォルトでは 8,192 行) の先頭行の ^^primary key^^ の値のみ** を保持するため、インメモリに収まるほどコンパクトです。
 
 * ^^MergeTree^^ テーブルの **各データパート** は、それぞれ **専用のプライマリインデックス** を持ち、クエリ実行時には個別に使用されます。
 

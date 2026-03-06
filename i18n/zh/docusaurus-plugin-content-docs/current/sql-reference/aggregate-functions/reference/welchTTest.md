@@ -38,7 +38,7 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **返回值**
 
-返回一个包含两个或四个元素的 Tuple（如果指定了 `confidence_level` 参数）：计算得到的 t 统计量、计算得到的 p 值，以及可选的置信区间下界和置信区间上界。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含两个或四个元素的 Tuple (如果指定了 `confidence_level` 参数) ：计算得到的 t 统计量、计算得到的 p 值，以及可选的置信区间下界和置信区间上界。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 

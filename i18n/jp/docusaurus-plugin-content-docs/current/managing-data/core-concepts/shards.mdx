@@ -33,7 +33,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-各 ^^shard^^ はデータの一部を保持し、独立してクエリ可能な通常の ClickHouse テーブルとして動作します。ただし、そのシャードに対するクエリで処理されるのは、そのシャードに含まれるサブセットのみであり、これはデータ分布によっては妥当なユースケースになり得ます。一般的には、（多くの場合サーバーごとに）[distributed table](/docs/engines/table-engines/special/distributed) が全データセットに対する統一的なビューを提供します。この distributed table 自体はデータを保持せず、すべてのシャードに **SELECT** クエリを転送して結果を集約し、**INSERT** をルーティングしてデータを均等に分散させます。
+各 ^^shard^^ はデータの一部を保持し、独立してクエリ可能な通常の ClickHouse テーブルとして動作します。ただし、そのシャードに対するクエリで処理されるのは、そのシャードに含まれるサブセットのみであり、これはデータ分布によっては妥当なユースケースになり得ます。一般的には、 (多くの場合サーバーごとに) [distributed table](/docs/engines/table-engines/special/distributed) が全データセットに対する統一的なビューを提供します。この distributed table 自体はデータを保持せず、すべてのシャードに **SELECT** クエリを転送して結果を集約し、**INSERT** をルーティングしてデータを均等に分散させます。
 
 ## 分散テーブルの作成 \{#distributed-table-creation\}
 
@@ -62,9 +62,9 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 <br />
 
-① ^^分散テーブル^^ を対象とする INSERT（1 行のみ）が、テーブルをホストしている ClickHouse サーバーに、直接またはロードバランサー経由で送信されます。
+① ^^分散テーブル^^ を対象とする INSERT (1 行のみ) が、テーブルをホストしている ClickHouse サーバーに、直接またはロードバランサー経由で送信されます。
 
-② INSERT の各行（この例では 1 行）に対して、ClickHouse はシャーディングキー（ここでは rand()）を評価し、その結果を ^^シャード^^ サーバーの台数で割った余りを取り、その値をターゲットサーバーIDとして使用します（ID は 0 から始まり 1 ずつ増加します）。その後、その行は該当するサーバー上のテーブルの ^^シャード^^ に転送され、③ 挿入されます。
+② INSERT の各行 (この例では 1 行) に対して、ClickHouse はシャーディングキー (ここでは rand()) を評価し、その結果を ^^シャード^^ サーバーの台数で割った余りを取り、その値をターゲットサーバーIDとして使用します (ID は 0 から始まり 1 ずつ増加します) 。その後、その行は該当するサーバー上のテーブルの ^^シャード^^ に転送され、③ 挿入されます。
 
 次のセクションでは、SELECT フォワーディングの仕組みについて説明します。
 
@@ -76,7 +76,7 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 <br />
 
-① ^^distributed table^^ を対象とする SELECT 集約クエリが、対応する ClickHouse サーバーに送信されます（直接、またはロードバランサー経由）。
+① ^^distributed table^^ を対象とする SELECT 集約クエリが、対応する ClickHouse サーバーに送信されます (直接、またはロードバランサー経由) 。
 
 ② ^^distributed table^^ は、その対象テーブルのシャードを保持しているすべてのサーバーにクエリを転送し、各 ClickHouse サーバーはローカルの集約結果を **並列に** 計算します。
 
@@ -104,7 +104,7 @@ ClickHouse のレプリケーションは、複数サーバー間で **^^shard^^
 
 残りの処理は、レプリカがない構成の場合と[同様](#select-forwarding)であり、上の図には示していません。最初に対象となった ^^distributed table^^ をホストする ClickHouse サーバーがすべてのローカル結果を収集し、それらをマージして最終的なグローバル結果を生成し、クエリ送信元に返します。
 
-なお、② におけるクエリ転送戦略は ClickHouse で設定可能です。デフォルトでは（上の図とは異なり）、^^distributed table^^ は利用可能であればローカルの ^^replica^^ を[優先](/docs/operations/settings/settings#prefer_localhost_replica)しますが、他の負荷分散[戦略](/docs/operations/settings/settings#load_balancing)も使用できます。
+なお、② におけるクエリ転送戦略は ClickHouse で設定可能です。デフォルトでは (上の図とは異なり) 、^^distributed table^^ は利用可能であればローカルの ^^replica^^ を[優先](/docs/operations/settings/settings#prefer_localhost_replica)しますが、他の負荷分散[戦略](/docs/operations/settings/settings#load_balancing)も使用できます。
 
 ## もっと詳しい情報を探すには \{#where-to-find-more-information\}
 

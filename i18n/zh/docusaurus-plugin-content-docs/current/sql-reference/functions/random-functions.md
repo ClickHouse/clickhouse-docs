@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # 用于生成随机数的函数 \{#functions-for-generating-random-numbers\}
 
-本节中的所有函数只接受 0 个或 1 个参数。提供参数（如果有）的唯一作用是用于防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)，从而保证在同一行内对同一个随机函数的多次执行会返回不同的随机值。
+本节中的所有函数只接受 0 个或 1 个参数。提供参数 (如果有) 的唯一作用是用于防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)，从而保证在同一行内对同一个随机函数的多次执行会返回不同的随机值。
 
 相关内容
 
@@ -224,7 +224,7 @@ SELECT randBinomial(100, .75) FROM numbers(5)
 
 自 v22.11.0 引入
 
-返回一个服从均匀分布的随机 `Float64` 浮点数，取值范围在 `0`（包含）到 `1`（不包含）之间。
+返回一个服从均匀分布的随机 `Float64` 浮点数，取值范围在 `0` (包含) 到 `1` (不包含) 之间。
 
 **语法**
 
@@ -558,7 +558,7 @@ randPoisson(n[, x])
 **参数**
 
 * `n` — 发生次数的平均值。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 可选且会被忽略（不参与计算）。该参数唯一的用途是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
+* `x` — 可选且会被忽略 (不参与计算) 。该参数唯一的用途是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
 **返回值**
 
@@ -635,8 +635,8 @@ randUniform(min, max[, x])
 
 **参数**
 
-* `min` — 区间左边界（包含）。[`Float64`](/sql-reference/data-types/float)
-* `max` — 区间右边界（包含）。[`Float64`](/sql-reference/data-types/float)
+* `min` — 区间左边界 (包含) 。[`Float64`](/sql-reference/data-types/float)
+* `max` — 区间右边界 (包含) 。[`Float64`](/sql-reference/data-types/float)
 * `x` — 可选且会被忽略。此参数的唯一用途是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
 **返回值**
@@ -676,7 +676,7 @@ randomFixedString(length)
 
 **参数**
 
-* `length` — 字符串的字节长度（以字节为单位）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `length` — 字符串的字节长度 (以字节为单位) 。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -712,7 +712,7 @@ randomPrintableASCII(length[, x])
 
 **参数**
 
-* `length` — 字符串长度（字节数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 字符串长度 (字节数) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `x` — 可选参数，且会被忽略。该参数唯一的作用，是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
 **返回值**
@@ -775,7 +775,7 @@ SELECT randomString(5) AS str FROM numbers(2)
 引入版本：v20.5.0
 
 生成具有指定码点数量的随机 [UTF-8](https://en.wikipedia.org/wiki/UTF-8) 字符串。
-不会返回来自未分配的[平面](https://en.wikipedia.org/wiki/Plane_\(Unicode\))（第 4 到第 13 平面）的码点。
+不会返回来自未分配的[平面](https://en.wikipedia.org/wiki/Plane_\(Unicode\)) (第 4 到第 13 平面) 的码点。
 与 ClickHouse 服务器交互的客户端仍有可能无法正确显示生成的 UTF-8 字符串。
 
 **语法**
@@ -786,7 +786,7 @@ randomStringUTF8(length)
 
 **参数**
 
-* `length` — 字符串的长度（以 Unicode 码点为单位）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 字符串的长度 (以 Unicode 码点为单位) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

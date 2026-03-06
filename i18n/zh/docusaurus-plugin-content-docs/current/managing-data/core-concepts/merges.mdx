@@ -16,19 +16,19 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-## ClickHouse 中的 part 合并（part merges）是什么？ \{#what-are-part-merges-in-clickhouse\}
+## ClickHouse 中的 part 合并 (part merges) 是什么？ \{#what-are-part-merges-in-clickhouse\}
 
 <br />
 
 ClickHouse [之所以快速](/concepts/why-clickhouse-is-so-fast)，不仅体现在查询上，也体现在写入上，这要归功于其[存储层](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)，其工作方式类似于 [LSM trees](https://en.wikipedia.org/wiki/Log-structured_merge-tree)：
 
-① 向 [MergeTree 引擎](/engines/table-engines/mergetree-family)家族的表插入数据时，会创建已排序、不可变的 [data parts](/parts)（数据片段）。
+① 向 [MergeTree 引擎](/engines/table-engines/mergetree-family)家族的表插入数据时，会创建已排序、不可变的 [data parts](/parts) (数据片段) 。
 
-② 所有数据处理都被下放给**后台 part 合并（part merges）**。
+② 所有数据处理都被下放给**后台 part 合并 (part merges)&#x20;**。
 
 从而使数据写入既轻量又[高度高效](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other)。
 
-为了控制每张表中的 ^^parts^^ 数量并实现上述第 ② 点，ClickHouse 会在后台持续地将较小的 ^^parts^^（[按分区](/partitions#per-partition-merges)）合并为更大的 ^^parts^^，直到其压缩后的大小大约达到 [~150 GB](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)。
+为了控制每张表中的 ^^parts^^ 数量并实现上述第 ② 点，ClickHouse 会在后台持续地将较小的 ^^parts^^ ([按分区](/partitions#per-partition-merges)) 合并为更大的 ^^parts^^，直到其压缩后的大小大约达到 [~150 GB](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)。
 
 下图展示了这一后台合并过程的示意：
 
@@ -36,11 +36,11 @@ ClickHouse [之所以快速](/concepts/why-clickhouse-is-so-fast)，不仅体现
 
 <br />
 
-每当发生一次额外合并，对应 part 的 `merge level`（合并层级）就会加一。`0` 表示该 part 是新的，尚未被合并。已被合并进更大 ^^parts^^ 的 ^^parts^^ 会被标记为[非活动](/operations/system-tables/parts)，并在一段[可配置的](/operations/settings/merge-tree-settings#old_parts_lifetime)时间后（默认 8 分钟）最终被删除。随着时间推移，这会形成一个由合并 ^^parts^^ 构成的**树**。因此才称为 [MergeTree](/engines/table-engines/mergetree-family) 表。
+每当发生一次额外合并，对应 part 的 `merge level` (合并层级) 就会加一。`0` 表示该 part 是新的，尚未被合并。已被合并进更大 ^^parts^^ 的 ^^parts^^ 会被标记为[非活动](/operations/system-tables/parts)，并在一段[可配置的](/operations/settings/merge-tree-settings#old_parts_lifetime)时间后 (默认 8 分钟) 最终被删除。随着时间推移，这会形成一个由合并 ^^parts^^ 构成的**树**。因此才称为 [MergeTree](/engines/table-engines/mergetree-family) 表。
 
 ## 监控合并 \{#monitoring-merges\}
 
-在 [什么是表 parts](/parts) 示例中，我们[展示了](/parts#monitoring-table-parts)，ClickHouse 会在 [parts](/operations/system-tables/parts) 系统表中跟踪所有表的 ^^parts^^（部件）。我们使用了以下查询来获取示例表中每个活动部件的合并级别以及存储的行数：
+在 [什么是表 parts](/parts) 示例中，我们[展示了](/parts#monitoring-table-parts)，ClickHouse 会在 [parts](/operations/system-tables/parts) 系统表中跟踪所有表的 ^^parts^^ (部件) 。我们使用了以下查询来获取示例表中每个活动部件的合并级别以及存储的行数：
 
 ```sql
 SELECT
@@ -63,7 +63,7 @@ ORDER BY name ASC;
    └─────────────┴───────┴─────────┘
 ```
 
-[运行](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) 该查询现在显示，这四个 ^^part^^ 已经合并为单个最终 part（前提是该表中没有后续的插入操作）：
+[运行](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) 该查询现在显示，这四个 ^^part^^ 已经合并为单个最终 part (前提是该表中没有后续的插入操作) ：
 
 ```response
    ┌─name───────┬─level─┬─────rows─┐
@@ -81,9 +81,9 @@ ORDER BY name ASC;
 
 ① 活跃 ^^parts^^ 的数量。
 
-② part 合并，以方框形式进行可视化展示（方框大小反映 part 的大小）。
+② part 合并，以方框形式进行可视化展示 (方框大小反映 part 的大小) 。
 
-③ [写放大（Write amplification）](https://en.wikipedia.org/wiki/Write_amplification)。
+③ [写放大 (Write amplification) ](https://en.wikipedia.org/wiki/Write_amplification)。
 
 ## 并发合并 \{#concurrent-merges\}
 
@@ -107,11 +107,11 @@ ORDER BY name ASC;
 
 ## 内存优化合并 \{#memory-optimized-merges\}
 
-ClickHouse 不一定会像在[前一个示例](/merges#concurrent-merges)中示意的那样，一次性将所有要合并的 ^^parts^^ 全部加载到内存中。根据若干[因素](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210)，并为了降低内存消耗（以牺牲合并速度为代价），所谓的[垂直合并](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209)会将这些 ^^parts^^ 按块分段依次加载并合并，而不是一次性全部处理。
+ClickHouse 不一定会像在[前一个示例](/merges#concurrent-merges)中示意的那样，一次性将所有要合并的 ^^parts^^ 全部加载到内存中。根据若干[因素](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210)，并为了降低内存消耗 (以牺牲合并速度为代价) ，所谓的[垂直合并](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209)会将这些 ^^parts^^ 按块分段依次加载并合并，而不是一次性全部处理。
 
 ## 合并机制 \{#merge-mechanics\}
 
-下图展示了在 ClickHouse 中，由单个后台[合并线程](/merges#concurrent-merges)在默认情况下（未启用[纵向合并](/merges#memory-optimized-merges)）对 ^^parts^^ 执行合并的过程：
+下图展示了在 ClickHouse 中，由单个后台[合并线程](/merges#concurrent-merges)在默认情况下 (未启用[纵向合并](/merges#memory-optimized-merges)) 对 ^^parts^^ 执行合并的过程：
 
 <Image img={merges_03} size="lg" alt="PART 合并" />
 
@@ -135,7 +135,7 @@ part 的合并大致分为以下几个步骤：
 
 ### 标准合并 \{#standard-merges\}
 
-下图展示了标准 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中 ^^数据分片（parts）^^ 是如何合并的：
+下图展示了标准 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中 ^^数据分片 (parts) ^^ 是如何合并的：
 
 <Image img={merges_04} size="lg" alt="PART MERGES" />
 
@@ -147,7 +147,7 @@ part 的合并大致分为以下几个步骤：
 
 ### 替换合并 \{#replacing-merges\}
 
-[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 表中的数据部分（part）合并与[标准合并](/merges#standard-merges)类似，但只保留每一行的最新版本，较旧的版本会被丢弃：
+[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 表中的数据部分 (part) 合并与[标准合并](/merges#standard-merges)类似，但只保留每一行的最新版本，较旧的版本会被丢弃：
 
 <Image img={merges_05} size="lg" alt="数据部分合并" />
 
@@ -175,12 +175,12 @@ part 的合并大致分为以下几个步骤：
 
 ### 聚合合并 \{#aggregating-merges\}
 
-上文中的 `SummingMergeTree` 表示例是 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表的一种专用变体，允许在数据分片（part）合并期间，通过应用任意[90+ 个](/sql-reference/aggregate-functions/reference)聚合函数，实现[自动增量数据转换](https://www.youtube.com/watch?v=QDAJTKZT8y4)：
+上文中的 `SummingMergeTree` 表示例是 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表的一种专用变体，允许在数据分片 (part) 合并期间，通过应用任意[90+ 个](/sql-reference/aggregate-functions/reference)聚合函数，实现[自动增量数据转换](https://www.youtube.com/watch?v=QDAJTKZT8y4)：
 
 <Image img={merges_07} size="lg" alt="PART MERGES" />
 
 <br />
 
-上图中的 DDL 语句创建了一个以 `town` 作为 ^^sorting key^^（排序键）的 `AggregatingMergeTree` 表，确保磁盘上的数据按照该列排序，并生成相应的稀疏主键索引。
+上图中的 DDL 语句创建了一个以 `town` 作为 ^^sorting key^^ (排序键) 的 `AggregatingMergeTree` 表，确保磁盘上的数据按照该列排序，并生成相应的稀疏主键索引。
 
-在 ② 合并阶段，ClickHouse 会将所有具有相同 ^^sorting key^^ 的行合并为一行，该行存储[部分聚合状态](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization)（例如 `avg()` 所对应的 `sum` 和 `count`）。这些状态通过增量后台合并确保结果的准确性。
+在 ② 合并阶段，ClickHouse 会将所有具有相同 ^^sorting key^^ 的行合并为一行，该行存储[部分聚合状态](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (例如 `avg()` 所对应的 `sum` 和 `count`) 。这些状态通过增量后台合并确保结果的准确性。

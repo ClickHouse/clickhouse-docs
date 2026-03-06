@@ -21,7 +21,7 @@ import Image from '@theme/IdealImage';
 
 ## ClickHouse 中的表分片是什么？ \{#what-are-table-shards-in-clickhouse\}
 
-在传统的 [无共享（shared-nothing）](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse 集群中，当满足以下两种情况之一时会采用分片：① 数据量对单个服务器来说过大，② 单个服务器处理数据过慢。下图展示的是情形 ①： [uk&#95;price&#95;paid&#95;simple](/parts) 表的数据量超过了单机的容量：
+在传统的 [无共享 (shared-nothing) ](https://en.wikipedia.org/wiki/Shared-nothing_architecture) ClickHouse 集群中，当满足以下两种情况之一时会采用分片：① 数据量对单个服务器来说过大，② 单个服务器处理数据过慢。下图展示的是情形 ①： [uk&#95;price&#95;paid&#95;simple](/parts) 表的数据量超过了单机的容量：
 
 <Image img={image_01} size="lg" alt="分片" />
 
@@ -33,7 +33,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-每个 ^^分片（shard）^^ 持有数据的一个子集，并作为一个常规的 ClickHouse 表，可以被独立查询。不过，此类查询只会处理该子集；根据数据分布情况，这在某些场景下是可以接受的。通常，会使用一个[分布式表](/docs/engines/table-engines/special/distributed)（通常每台服务器一个）来提供整个数据集的统一视图。分布式表本身不存储数据，而是将 **SELECT** 查询转发到所有分片，汇总结果，并将 **INSERT** 请求路由到各分片以实现数据的均匀分布。
+每个 ^^分片 (shard) ^^ 持有数据的一个子集，并作为一个常规的 ClickHouse 表，可以被独立查询。不过，此类查询只会处理该子集；根据数据分布情况，这在某些场景下是可以接受的。通常，会使用一个[分布式表](/docs/engines/table-engines/special/distributed) (通常每台服务器一个) 来提供整个数据集的统一视图。分布式表本身不存储数据，而是将 **SELECT** 查询转发到所有分片，汇总结果，并将 **INSERT** 请求路由到各分片以实现数据的均匀分布。
 
 ## Distributed 表创建 \{#distributed-table-creation\}
 
@@ -52,7 +52,7 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 `ON CLUSTER` 子句会将该 DDL 语句变为[分布式 DDL 语句](/docs/sql-reference/distributed-ddl)，并指示 ClickHouse 在 `test_cluster` 的[集群定义](/architecture/replication/#configure-clickhouse-servers)中列出的所有服务器上创建该表。分布式 DDL 需要在[集群架构](/architecture/horizontal-scaling)中额外部署一个 [Keeper](https://clickhouse.com/clickhouse/keeper) 组件。
 
-对于[Distributed 引擎的参数](/docs/engines/table-engines/special/distributed#distributed-parameters)，我们需要指定 ^^集群^^ 名称（`test_cluster`）、分片目标表所在的数据库名（`uk`）、分片目标表的名称（`uk_price_paid_simple`），以及用于 INSERT 路由的 **分片键（sharding key）**。在本示例中，我们使用 [rand](/sql-reference/functions/random-functions#rand) 函数将行随机分配到各个分片。不过，依据具体使用场景，任何表达式——即使是复杂表达式——都可以用作分片键。下一节将演示 INSERT 路由的工作方式。
+对于[Distributed 引擎的参数](/docs/engines/table-engines/special/distributed#distributed-parameters)，我们需要指定 ^^集群^^ 名称 (`test_cluster`) 、分片目标表所在的数据库名 (`uk`) 、分片目标表的名称 (`uk_price_paid_simple`) ，以及用于 INSERT 路由的 **分片键 (sharding key)&#x20;**。在本示例中，我们使用 [rand](/sql-reference/functions/random-functions#rand) 函数将行随机分配到各个分片。不过，依据具体使用场景，任何表达式——即使是复杂表达式——都可以用作分片键。下一节将演示 INSERT 路由的工作方式。
 
 ## INSERT 路由 \{#insert-routing\}
 
@@ -62,9 +62,9 @@ ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 
 <br />
 
-① 将一条针对 ^^分布式表^^ 的 INSERT（本例中仅包含一行）发送到托管该表的 ClickHouse 服务器，可以直接发送，也可以通过负载均衡器转发。
+① 将一条针对 ^^分布式表^^ 的 INSERT (本例中仅包含一行) 发送到托管该表的 ClickHouse 服务器，可以直接发送，也可以通过负载均衡器转发。
 
-② 对于 INSERT 中的每一行（本例中只有一行），ClickHouse 计算分片键（此处为 `rand()`），将结果对 ^^shard^^ 服务器的数量取模，并将其作为目标服务器 ID（ID 从 0 开始，依次递增）。然后将该行转发到对应服务器，并在该服务器上的表 ^^shard^^ 中③执行插入。
+② 对于 INSERT 中的每一行 (本例中只有一行) ，ClickHouse 计算分片键 (此处为 `rand()`) ，将结果对 ^^shard^^ 服务器的数量取模，并将其作为目标服务器 ID (ID 从 0 开始，依次递增) 。然后将该行转发到对应服务器，并在该服务器上的表 ^^shard^^ 中③执行插入。
 
 下一节将说明 SELECT 转发的工作方式。
 

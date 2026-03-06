@@ -362,7 +362,7 @@ SELECT cosh(0)
 
 自 v22.2.0 引入
 
-将弧度转换为角度（度数）。
+将弧度转换为角度 (度数) 。
 
 **语法**
 
@@ -376,7 +376,7 @@ degrees(x)
 
 **返回值**
 
-返回 `x` 对应的角度值（以度为单位）。[`Float64`](/sql-reference/data-types/float)
+返回 `x` 对应的角度值 (以度为单位) 。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -394,7 +394,7 @@ SELECT degrees(3.141592653589793)
 
 引入版本：v1.1.0
 
-返回欧拉常数（e）。
+返回欧拉常数 (e) 。
 
 **语法**
 
@@ -953,7 +953,7 @@ SELECT pow(2, 3);
 引入版本：v22.3.0
 
 返回双样本比例 Z 检验的检验统计量——一种用于比较两个总体 x 和 y 的比例的统计检验方法。
-该函数同时支持用于标准误估计的合并（pooled）和非合并（unpooled）两种方法。
+该函数同时支持用于标准误估计的合并 (pooled) 和非合并 (unpooled) 两种方法。
 在合并版本中，会对两个比例取平均，并仅使用这一合并比例来估计标准误。
 在非合并版本中，会分别使用两个比例来估计标准误。
 
@@ -974,7 +974,7 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 
 **返回值**
 
-返回一个包含以下内容的 tuple：`z_stat`（Z 统计量）、`p_val`（P 值）、`ci_low`（置信区间下限）、`ci_high`（置信区间上限）。[`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含以下内容的 tuple：`z_stat` (Z 统计量) 、`p_val` (P 值) 、`ci_low` (置信区间下限) 、`ci_high` (置信区间上限) 。[`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -1004,7 +1004,7 @@ radians(x)
 
 **参数**
 
-* `x` — 输入的角度值（单位：度）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 输入的角度值 (单位：度) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
 **返回值**
 

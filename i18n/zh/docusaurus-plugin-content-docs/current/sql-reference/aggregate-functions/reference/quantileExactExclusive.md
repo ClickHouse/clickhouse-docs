@@ -20,7 +20,7 @@ doc_type: 'reference'
 为了获得精确值，所有传入的值会被合并到一个数组中，并对该数组进行完整排序。
 排序算法的复杂度为 `O(N·log(N))`，其中 `N = std::distance(first, last)` 次比较。
 
-在一个查询中同时使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于其潜在效率）。
+在一个查询中同时使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率低于其潜在效率) 。
 在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles) 函数。
 
 **语法**
@@ -31,7 +31,7 @@ quantileExactExclusive(level)(expr)
 
 **参数**
 
-* `level` — 分位数的 level（分位水平）。取值为 0 到 1 之间的常量浮点数（不包含 0 和 1）。我们建议使用范围在 `(0.01, 0.99)` 的 `level` 值。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数的 level (分位水平) 。取值为 0 到 1 之间的常量浮点数 (不包含 0 和 1) 。我们建议使用范围在 `(0.01, 0.99)` 的 `level` 值。[`Float*`](/sql-reference/data-types/float)
 
 **参数说明**
 

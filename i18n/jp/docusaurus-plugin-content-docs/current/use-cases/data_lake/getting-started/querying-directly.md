@@ -27,7 +27,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
 
 <Tabs groupId="lake-format">
   <TabItem value="Iceberg" label="Apache Iceberg" default>
-    [`iceberg`](/sql-reference/table-functions/iceberg) テーブル関数（`icebergS3` のエイリアス）は、オブジェクトストレージから直接 Iceberg テーブルを読み取ります。各ストレージバックエンドに対応するバリアントとして、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLocal` があります。
+    [`iceberg`](/sql-reference/table-functions/iceberg) テーブル関数 (`icebergS3` のエイリアス) は、オブジェクトストレージから直接 Iceberg テーブルを読み取ります。各ストレージバックエンドに対応するバリアントとして、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLocal` があります。
 
     **構文例：**
 
@@ -40,7 +40,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
     ```
 
     :::note GCSサポート
-    関数のS3バリアントは、Google Cloud Storage（GCS）に対しても使用できます。
+    関数のS3バリアントは、Google Cloud Storage (GCS) に対しても使用できます。
     :::
 
     **例：**
@@ -68,7 +68,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
 
     ### クラスターバリアント \{#iceberg-cluster-variant\}
 
-    [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster) 関数は、ClickHouse クラスター内の複数のノードに読み取り処理を分散します。イニシエーターノードはすべてのノードへの接続を確立し、データファイルを動的に割り当てます。各ワーカーノードは、すべてのファイルが読み取られるまでタスクを要求して処理します。`icebergCluster` は `icebergS3Cluster` のエイリアスです。Azure（[`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster)）および HDFS（[`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster)）向けのバリアントも用意されています。
+    [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster) 関数は、ClickHouse クラスター内の複数のノードに読み取り処理を分散します。イニシエーターノードはすべてのノードへの接続を確立し、データファイルを動的に割り当てます。各ワーカーノードは、すべてのファイルが読み取られるまでタスクを要求して処理します。`icebergCluster` は `icebergS3Cluster` のエイリアスです。Azure ([`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster)) および HDFS ([`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster)) 向けのバリアントも用意されています。
 
     **構文例：**
 
@@ -96,7 +96,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
 
     ### テーブルエンジン \{#iceberg-table-engine\}
 
-    すべてのクエリでテーブル関数を使用する代わりに、[`Iceberg` テーブルエンジン](/engines/table-engines/integrations/iceberg)を使用して永続テーブルを作成することができます。データは引き続きオブジェクトストレージに保存され、必要に応じて読み込まれます。ClickHouse にデータがコピーされることはありません。この方法の利点は、テーブル定義が ClickHouse に保存されるため、各ユーザーがストレージパスや認証情報を個別に指定することなく、ユーザーやセッションをまたいで共有できる点です。ストレージバックエンドごとにエンジンのバリアントが用意されています：`IcebergS3`（または `Iceberg` エイリアス）、`IcebergAzure`、`IcebergHDFS`、`IcebergLocal`。
+    すべてのクエリでテーブル関数を使用する代わりに、[`Iceberg` テーブルエンジン](/engines/table-engines/integrations/iceberg)を使用して永続テーブルを作成することができます。データは引き続きオブジェクトストレージに保存され、必要に応じて読み込まれます。ClickHouse にデータがコピーされることはありません。この方法の利点は、テーブル定義が ClickHouse に保存されるため、各ユーザーがストレージパスや認証情報を個別に指定することなく、ユーザーやセッションをまたいで共有できる点です。ストレージバックエンドごとにエンジンのバリアントが用意されています：`IcebergS3` (または `Iceberg` エイリアス) 、`IcebergAzure`、`IcebergHDFS`、`IcebergLocal`。
 
     テーブルエンジンとテーブル関数はいずれも[データキャッシュ](/engines/table-engines/integrations/iceberg#data-cache)をサポートしており、S3、AzureBlobStorage、およびHDFSストレージエンジンと同じキャッシュ機構を使用します。また、[メタデータキャッシュ](/engines/table-engines/integrations/iceberg#metadata-cache)はマニフェストファイルの情報をメモリに保持し、Icebergメタデータの繰り返し読み取りを削減します。このキャッシュは、`use_iceberg_metadata_files_cache` 設定によってデフォルトで有効化されています。
 
@@ -149,7 +149,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
   </TabItem>
 
   <TabItem value="デルタ" label="Delta Lake">
-    [`deltaLake`](/sql-reference/table-functions/deltalake) テーブル関数（`deltaLakeS3` のエイリアス）は、オブジェクトストレージから Delta Lake テーブルを読み取ります。他のバックエンド向けのバリアントとして、`deltaLakeAzure` および `deltaLakeLocal` があります。
+    [`deltaLake`](/sql-reference/table-functions/deltalake) テーブル関数 (`deltaLakeS3` のエイリアス) は、オブジェクトストレージから Delta Lake テーブルを読み取ります。他のバックエンド向けのバリアントとして、`deltaLakeAzure` および `deltaLakeLocal` があります。
 
     **構文例：**
 
@@ -162,7 +162,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
     ```
 
     :::note GCS サポート
-    関数のS3バリアントは、Google Cloud Storage（GCS）でも使用できます。
+    関数のS3バリアントは、Google Cloud Storage (GCS) でも使用できます。
     :::
 
     **例：**
@@ -190,7 +190,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
 
     ### クラスターバリアント \{#delta-cluster-variant\}
 
-    [`deltaLakeCluster`](/sql-reference/table-functions/deltalakeCluster) 関数は、ClickHouse クラスター内の複数のノードに読み取り処理を分散します。イニシエーターノードはデータファイルをワーカーノードへ動的にディスパッチし、並列処理を実現します。`deltaLakeS3Cluster` は `deltaLakeCluster` のエイリアスです。Azure 向けのバリアント（[`deltaLakeAzureCluster`](/sql-reference/table-functions/deltalakeCluster)）も利用可能です。
+    [`deltaLakeCluster`](/sql-reference/table-functions/deltalakeCluster) 関数は、ClickHouse クラスター内の複数のノードに読み取り処理を分散します。イニシエーターノードはデータファイルをワーカーノードへ動的にディスパッチし、並列処理を実現します。`deltaLakeS3Cluster` は `deltaLakeCluster` のエイリアスです。Azure 向けのバリアント ([`deltaLakeAzureCluster`](/sql-reference/table-functions/deltalakeCluster)) も利用可能です。
 
     **構文例：**
 
@@ -202,7 +202,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
     ```
 
     :::note GCS サポート
-    関数のS3バリアントは、Google Cloud Storage（GCS）に対しても使用できます。
+    関数のS3バリアントは、Google Cloud Storage (GCS) に対しても使用できます。
     :::
 
     **例 (ClickHouse Cloud):**
@@ -300,7 +300,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
   <TabItem value="paimon" label="Apache Paimon">
     <ExperimentalBadge />
 
-    [`paimon`](/sql-reference/table-functions/paimon) テーブル関数（`paimonS3` の別名）は、オブジェクトストレージから Paimon テーブルを読み込みます。ストレージバックエンドごとにバリアントがあり、`paimonS3`、`paimonAzure`、`paimonHDFS`、`paimonLocal` が用意されています。
+    [`paimon`](/sql-reference/table-functions/paimon) テーブル関数 (`paimonS3` の別名) は、オブジェクトストレージから Paimon テーブルを読み込みます。ストレージバックエンドごとにバリアントがあり、`paimonS3`、`paimonAzure`、`paimonHDFS`、`paimonLocal` が用意されています。
 
     **構文:**
 
@@ -317,7 +317,7 @@ ClickHouse は、オープンテーブル形式で保存されたデータをオ
 
     ### クラスター バリアント \{#paimon-cluster-variant\}
 
-    [`paimonS3Cluster`](/sql-reference/table-functions/paimonCluster) 関数は、ClickHouse クラスター内の複数ノードに読み取り処理を分散します。イニシエーターノードは、ワーカーノードにデータファイルを動的に割り当てて並列処理を行います。`paimonCluster` は `paimonS3Cluster` のエイリアスです。Azure 向け（[`paimonAzureCluster`](/sql-reference/table-functions/paimonCluster)）および HDFS 向け（[`paimonHDFSCluster`](/sql-reference/table-functions/paimonCluster)）のバリアントも存在します。
+    [`paimonS3Cluster`](/sql-reference/table-functions/paimonCluster) 関数は、ClickHouse クラスター内の複数ノードに読み取り処理を分散します。イニシエーターノードは、ワーカーノードにデータファイルを動的に割り当てて並列処理を行います。`paimonCluster` は `paimonS3Cluster` のエイリアスです。Azure 向け ([`paimonAzureCluster`](/sql-reference/table-functions/paimonCluster)) および HDFS 向け ([`paimonHDFSCluster`](/sql-reference/table-functions/paimonCluster)) のバリアントも存在します。
 
     ```sql
     paimonS3Cluster(cluster_name, url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])

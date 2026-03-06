@@ -63,7 +63,7 @@ SELECT * FROM primes(10);
 Первое простое число, большее 1e15.
 
 ```sql
-SELECT prime FROM primes() WHERE prime > toUInt64(1e15) LIMIT 1;
+SELECT prime FROM primes() WHERE prime > 1e15 LIMIT 1;
 ```
 
 ```response
@@ -72,12 +72,12 @@ SELECT prime FROM primes() WHERE prime > toUInt64(1e15) LIMIT 1;
   └──────────────────┘
 ```
 
-Решите задачу на сравнение по модулю для простых чисел в очень большом диапазоне: найдите первое простое число `p >= 10^15` такое, что `p` по модулю `65537` даёт остаток `1`.
+Решите задачу с модульным условием для простых чисел в очень большом диапазоне: найдите первое простое число `p >= 10^15` такое, что `p` по модулю `65537` даёт остаток `1`.
 
 ```sql
 SELECT prime
 FROM primes()
-WHERE prime >= toUInt64(1e15)
+WHERE prime >= 1e15
   AND prime % 65537 = 1
 LIMIT 1;
 ```
@@ -117,9 +117,9 @@ LIMIT 7;
 ```sql
 SELECT sum(prime)
 FROM primes()
-WHERE prime BETWEEN toUInt64(1e6) AND toUInt64(1e6) + 100
-   OR prime BETWEEN toUInt64(1e12) AND toUInt64(1e12) + 100
-   OR prime BETWEEN toUInt64(1e15) AND toUInt64(1e15) + 100
+WHERE prime BETWEEN 1e6 AND 1e6 + 100
+   OR prime BETWEEN 1e12 AND 1e12 + 100
+   OR prime BETWEEN 1e15 AND 1e15 + 100
    OR prime IN (9999999967, 9999999971, 9999999973)
    OR prime = 1000000000000037;
 ```
