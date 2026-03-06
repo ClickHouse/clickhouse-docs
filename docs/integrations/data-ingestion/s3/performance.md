@@ -53,7 +53,7 @@ Go to ①
 
 In ①, the size depends on the insert block size, which can be controlled with two settings:
 
-- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (default: `1048545` million rows)
+- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (default: `1048545` rows)
 - [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (default: `256 MiB`)
 
 When either the specified number of rows is collected in the insert block, or the configured amount of data is reached (whichever happens first), then this will trigger the block being written into a new part. The insert loop continues at step ①.
