@@ -898,7 +898,7 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 自 v1.1.0 引入
 
-创建一个数组，包含层次结构[字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中某个 key 的所有父节点。
+创建一个数组，包含层次结构[字典](/dictionary#hierarchical-dictionaries)中某个 key 的所有父节点。
 
 **语法**
 

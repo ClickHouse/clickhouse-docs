@@ -209,7 +209,7 @@ HTTP 레이어를 정의하려면 `protocols` 섹션에 새 기본 모듈을 추
 생략되면 해당 엔드포인트에는 기본 `<http_handlers>`가 적용됩니다.
 
 사용자 정의 핸들러 섹션은
-[`<http_handlers>`](/docs/en/operations/server-configuration-parameters/settings#http_handlers)과
+[`<http_handlers>`](/operations/server-configuration-parameters/settings#http_handlers)과
 동일한 형식을 따릅니다. 사용자 정의 핸들러 섹션에 대한 변경 사항은 구성 재로드 시
 감지되며, 해당 엔드포인트는 자동으로 다시 시작됩니다.
 

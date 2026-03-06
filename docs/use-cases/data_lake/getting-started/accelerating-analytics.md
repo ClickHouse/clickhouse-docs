@@ -15,9 +15,9 @@ In the [previous section](/use-cases/data-lake/getting-started/connecting-catalo
 
 MergeTree offers several advantages over reading open table formats directly:
 
-- **[Sparse primary index](/optimize/sparse-primary-indexes)** - Orders data on disk by a chosen key, allowing ClickHouse to skip over large ranges of irrelevant rows during queries.
-- **Enhanced data types** - Native support for types such as [JSON](/sql-reference/data-types/json), [LowCardinality](/sql-reference/data-types/lowcardinality), and [Enum](/sql-reference/data-types/enum), enabling more compact storage and faster processing.
-- **[Skip indices](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** and **[full-text indices](/engines/table-engines/mergetree-family/invertedindexes)** - Secondary index structures that let ClickHouse skip granules that don't match a query's filter predicates, particularly effective for text search workloads.
+- **[Sparse primary index](/guides/best-practices/sparse-primary-indexes)** - Orders data on disk by a chosen key, allowing ClickHouse to skip over large ranges of irrelevant rows during queries.
+- **Enhanced data types** - Native support for types such as [JSON](/best-practices/use-json-where-appropriate), [LowCardinality](/sql-reference/data-types/lowcardinality), and [Enum](/sql-reference/data-types/enum), enabling more compact storage and faster processing.
+- **[Skip indices](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** and **[full-text indices](/engines/table-engines/mergetree-family/textindexes)** - Secondary index structures that let ClickHouse skip granules that don't match a query's filter predicates, particularly effective for text search workloads.
 - **Fast inserts with automatic compaction** - ClickHouse is designed for high-throughput inserts and automatically merges data parts in the background, analogous to compaction in open table formats.
 - **Optimized for concurrent reads** - MergeTree columnar storage layout, combined with [multiple caching layers](/operations/caches), supports real-time analytical workloads with high concurrency - something open table formats are not designed for.
 
@@ -128,7 +128,7 @@ We create a MergeTree table with some effort to optimize the schema. Notice a fe
 
 - **No `Nullable` wrappers** - removing `Nullable` improves storage efficiency and query performance.
 - **`LowCardinality(String)`** on the `level`, `instance_type`, `thread_name` and `check_name` columns - dictionary-encodes a column with few distinct values for better compression and faster filtering.
-- **A [full-text index](/engines/table-engines/mergetree-family/invertedindexes)** on the `message` column - accelerates token-based text searches like `hasToken(message, 'error')`.
+- **A [full-text index](/engines/table-engines/mergetree-family/textindexes)** on the `message` column - accelerates token-based text searches like `hasToken(message, 'error')`.
 - **An `ORDER BY` key** of `(instance_type, thread_name, toStartOfMinute(event_time))` - aligns data on disk with common filter patterns so the [sparse primary index](/guides/best-practices/sparse-primary-indexes) can skip irrelevant granules.
 
 ```sql

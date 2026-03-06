@@ -235,8 +235,13 @@ SELECT
 
 引入版本：v21.9.0
 
+<<<<<<< HEAD
+对给定单词执行词形还原（lemmatization）。
+此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/statements/create/dictionary/sources/local-file)。
+=======
 对给定单词执行词形还原。
 此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/sql-reference/dictionaries#local-file)。
+>>>>>>> 6dad889ec4c69f94700881a02db3e9cfab1bccbd
 
 **语法**
 
