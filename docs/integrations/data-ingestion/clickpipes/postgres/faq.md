@@ -193,7 +193,7 @@ For Postgres versions 13 or lower, CTID range scans are very slow and therefore 
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-We don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe). This will slow down Postgres WAL decoding and reduce overall efficiency.
+Ensure that all tables you plan to replicate are added to the publication before adding them to the pipe. Avoid using `FOR ALL TABLES` unless you intend to replicate every table in the database. Otherwise, Postgres will decode and send WAL changes for all tables, including those not in the pipe, which increases load on the source database and reduces replication efficiency.
 
 If you include any table in your publication, make sure it has either a primary key or `REPLICA IDENTITY FULL`. If you have tables without a primary key, creating a publication for all tables will cause DELETE and UPDATE operations to fail on those tables.
 
