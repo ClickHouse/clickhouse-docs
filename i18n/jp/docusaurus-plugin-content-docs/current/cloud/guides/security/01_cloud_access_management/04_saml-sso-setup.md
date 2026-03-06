@@ -108,10 +108,10 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
 
   1. [ClickHouse Cloud](https://console.clickhouse.cloud) からログアウトします。
   2. アイデンティティプロバイダーで、ClickHouse アプリケーションに管理者ユーザーを割り当てます。
-  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId} （ショートカット URL）からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
+  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId}  (ショートカット URL) からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
   4. デフォルトの SAML ロールが Admin 以外である場合、新しい SAML ユーザーのロールを更新するために、ユーザーは一度ログアウトし、元の認証方法でログインし直す必要がある場合があります。
      * メールアドレス + パスワードのアカウントの場合は、`https://console.clickhouse.cloud/?with=email` を使用してください。
-     * ソーシャルログインの場合は、該当するボタン（**Continue with Google** または **Continue with Microsoft**）をクリックしてください。
+     * ソーシャルログインの場合は、該当するボタン (**Continue with Google** または **Continue with Microsoft**) をクリックしてください。
 
   :::note
   上記の `?with=email` 内の `email` はプレースホルダーではなく、文字通りのパラメータ値です。

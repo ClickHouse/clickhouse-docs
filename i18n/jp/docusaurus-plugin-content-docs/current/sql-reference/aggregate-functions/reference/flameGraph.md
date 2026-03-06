@@ -15,7 +15,7 @@ doc_type: 'reference'
 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) ユーティリティで flamegraph の SVG をレンダリングするために使用できる文字列配列を出力します。
 
 :::note
-`ptr != 0` の場合、flameGraph は同じ size と ptr を持つメモリ割り当て（size &gt; 0）および解放（size &lt; 0）を対応付けます。
+`ptr != 0` の場合、flameGraph は同じ size と ptr を持つメモリ割り当て (size &gt; 0) および解放 (size &lt; 0) を対応付けます。
 解放されていない割り当てのみが表示されます。
 対応付けられない解放は無視されます。
 :::
@@ -29,8 +29,8 @@ flameGraph(traces[, size[, ptr]])
 **引数**
 
 * `traces` — スタックトレース。[`Array(UInt64)`](/sql-reference/data-types/array)
-* `size` — 省略可能。メモリプロファイリング用の割り当てサイズ（デフォルトは 1）。[`UInt64`](/sql-reference/data-types/int-uint)
-* `ptr` — 省略可能。割り当てアドレス（デフォルトは 0）。[`UInt64`](/sql-reference/data-types/int-uint)
+* `size` — 省略可能。メモリプロファイリング用の割り当てサイズ (デフォルトは 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
+* `ptr` — 省略可能。割り当てアドレス (デフォルトは 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返される値**
 

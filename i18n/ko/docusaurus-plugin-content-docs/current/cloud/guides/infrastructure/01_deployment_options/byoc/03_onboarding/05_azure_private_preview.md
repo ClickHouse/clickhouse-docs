@@ -30,24 +30,22 @@ Azure에서 BYOC를 사용하면 자체 Azure 구독 내에서 ClickHouse를 실
 ## 온보딩 \{#onboarding\}
 
 <VerticalStepper headerLevel="h3">
+  ### 1. Terraform 모듈 적용
 
-### 1. Terraform 모듈 적용 \{#apply-terraform-module\}
+  BYOC Azure 온보딩을 시작하려면 **대상 테넌트와 구독**에서 ClickHouse에서 제공하는 [Azure용 Terraform 모듈](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure)을 적용하십시오.
 
-BYOC Azure 온보딩을 시작하려면 **대상 테넌트와 구독**에서 ClickHouse에서 제공하는 [Azure용 Terraform 모듈](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure)을 적용하십시오.
+  필요한 변수와 적용 단계는 모듈 문서를 참고하십시오. 적용이 완료되면 모듈이 Azure 환경에 필요한 ID와 권한을 설정합니다.
 
-필요한 변수와 적용 단계는 모듈 문서를 참고하십시오. 적용이 완료되면 모듈이 Azure 환경에 필요한 ID와 권한을 설정합니다.
+  ### 2. ClickHouse에 ID 제공
 
-### 2. ClickHouse에 ID 제공 \{#provide-ids\}
+  다음 정보를 ClickHouse 팀에 제공합니다:
 
-다음 정보를 ClickHouse 팀에 제공합니다:
+  * **대상 구독 ID** — BYOC 리소스가 생성될 Azure 구독
+  * **대상 테넌트 ID** — 해당 구독을 소유한 Azure AD(Entra) 테넌트
+  * **리전(Region)** — ClickHouse 서비스를 배포하려는 하나 이상의 Azure 리전
+  * **VNet CIDR 범위** — BYOC VNet에 사용할 IP 주소 범위
 
-- **대상 구독 ID** — BYOC 리소스가 생성될 Azure 구독
-- **대상 테넌트 ID** — 해당 구독을 소유한 Azure AD(Entra) 테넌트
-- **리전(Region)** — ClickHouse 서비스를 배포하려는 Azure 리전
-- **VNet CIDR 범위** — BYOC VNet에 사용할 IP 주소 범위
-
-ClickHouse 팀은 이 정보를 사용하여 BYOC 인프라를 생성하고 온보딩을 완료합니다.
-
+  ClickHouse 팀은 이 정보를 사용하여 BYOC 인프라를 생성하고 온보딩을 완료합니다.
 </VerticalStepper>
 
 ### 테넌트 간 인증 동작 방식 \{#cross-tenant-auth\}

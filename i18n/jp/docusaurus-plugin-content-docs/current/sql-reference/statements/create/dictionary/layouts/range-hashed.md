@@ -14,7 +14,7 @@ import TabItem from '@theme/TabItem';
 
 Dictionary はメモリ上に、範囲の順序付き配列とそれに対応する値を持つハッシュテーブル形式で格納されます。
 
-このストレージ方式は hashed と同様に機能し、キーに加えて日付/時刻（任意の数値型）の範囲を使用できます。
+このストレージ方式は hashed と同様に機能し、キーに加えて日付/時刻 (任意の数値型) の範囲を使用できます。
 
 例: テーブルには、各広告主向けの割引が次の形式で含まれています:
 
@@ -26,7 +26,7 @@ Dictionary はメモリ上に、範囲の順序付き配列とそれに対応す
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-日付範囲用のサンプルを使用するには、[structure](../attributes.md#composite-key) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` 要素を含める必要があります（`type` が指定されていない場合、デフォルトの型は Date になります）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
+日付範囲用のサンプルを使用するには、[structure](../attributes.md#composite-key) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` 要素を含める必要があります (`type` が指定されていない場合、デフォルトの型は Date になります) 。`type` には任意の数値型 (Date / DateTime / UInt64 / Int32 / その他) を指定できます。
 
 :::note
 `range_min` と `range_max` の値は `Int64` 型に収まる必要があります。
@@ -95,8 +95,8 @@ SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 アルゴリズムの詳細:
 
 * `id` が見つからない場合、またはその `id` に対する範囲が見つからない場合、属性型のデフォルト値を返します。
-* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返します。複数の範囲が見つかった場合は、その中から `range_max` が最小の範囲を返します。さらに複数の範囲が見つかり（複数の範囲が同じ `range_min` と `range_max` を持つ場合）、その中からランダムに 1 つの範囲を返します。
-* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返します。複数の範囲が見つかった場合は、その中から `range_max` が最大の範囲を返します。さらに複数の範囲が見つかり（複数の範囲が同じ `range_min` と `range_max` を持つ場合）、その中からランダムに 1 つの範囲を返します。
+* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返します。複数の範囲が見つかった場合は、その中から `range_max` が最小の範囲を返します。さらに複数の範囲が見つかり (複数の範囲が同じ `range_min` と `range_max` を持つ場合) 、その中からランダムに 1 つの範囲を返します。
+* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返します。複数の範囲が見つかった場合は、その中から `range_max` が最大の範囲を返します。さらに複数の範囲が見つかり (複数の範囲が同じ `range_min` と `range_max` を持つ場合) 、その中からランダムに 1 つの範囲を返します。
 * `range_max` が `NULL` の場合、その範囲は上限が開いた範囲になります。`NULL` は取りうる最大値として扱われます。`range_min` については、下限が開いた値として `1970-01-01` または `0` (-MAX&#95;INT) を使用できます。
 
 設定例:
@@ -256,7 +256,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 
 ## complex_key_range_hashed \{#complex_key_range_hashed\}
 
-Dictionary は、範囲とその対応する値の順序付き配列を持つハッシュテーブルの形式でメモリ上に格納されます（[range&#95;hashed](#range_hashed) を参照）。この種類のストレージ形式は、複合 [キー](../attributes.md#composite-key) で使用します。
+Dictionary は、範囲とその対応する値の順序付き配列を持つハッシュテーブルの形式でメモリ上に格納されます ([range&#95;hashed](#range_hashed) を参照) 。この種類のストレージ形式は、複合 [キー](../attributes.md#composite-key) で使用します。
 
 設定例:
 

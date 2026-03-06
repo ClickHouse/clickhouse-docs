@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**使用逗号作为分隔符（参数语法）**
+**使用逗号作为分隔符 (参数语法)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**使用逗号作为分隔符（参数语法）**
+**使用逗号作为分隔符 (参数语法)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

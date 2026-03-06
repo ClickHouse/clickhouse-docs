@@ -73,7 +73,7 @@ SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
 └──────────────┴─────────────────┴────────┘
 ```
 
-**在参数中使用元组（Tuple）**
+**在参数中使用元组 (Tuple)&#x20;**
 
 ```sql title=Query
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;

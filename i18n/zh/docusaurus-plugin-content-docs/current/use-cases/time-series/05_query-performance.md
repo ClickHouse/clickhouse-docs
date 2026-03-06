@@ -174,7 +174,7 @@ GROUP BY path, month;
 
 此目标表只有在向 `wikistat` 表插入新记录时才会写入数据，因此我们需要对其进行一些[回填](/docs/data-modeling/backfilling)。
 
-执行此操作的最简单方式是使用 [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 语句，利用该视图的 `SELECT` 查询（转换）[直接插入](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)到物化视图的目标表中：
+执行此操作的最简单方式是使用 [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 语句，利用该视图的 `SELECT` 查询 (转换) [直接插入](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)到物化视图的目标表中：
 
 ```sql
 INSERT INTO wikistat_top
@@ -186,14 +186,14 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-取决于原始数据集的基数（我们有 10 亿行数据！），这可能是一种内存占用很高的做法。你也可以选择一种占用内存极少的方案：
+取决于原始数据集的基数 (我们有 10 亿行数据！) ，这可能是一种内存占用很高的做法。你也可以选择一种占用内存极少的方案：
 
 * 使用 Null 表引擎创建一个临时表
 * 将一个与正常使用的物化视图相同的副本关联到该临时表
 * 使用 `INSERT INTO SELECT` 查询，将原始数据集中的所有数据复制到该临时表
 * 删除该临时表和临时物化视图。
 
-采用这种方法时，来自原始数据集的行会按数据块方式复制到临时表中（该表并不会存储这些行），并且针对每个数据块，会计算一个部分状态并写入目标表，在目标表中这些状态会在后台被增量合并。
+采用这种方法时，来自原始数据集的行会按数据块方式复制到临时表中 (该表并不会存储这些行) ，并且针对每个数据块，会计算一个部分状态并写入目标表，在目标表中这些状态会在后台被增量合并。
 
 ```sql
 CREATE TABLE wikistat_backfill

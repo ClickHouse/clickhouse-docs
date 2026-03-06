@@ -26,12 +26,12 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   * `CLIENT` — 表示该 span 描述发往某个远程服务的请求。
   * `PRODUCER` — 表示该 span 描述异步请求的发起方。该父 span 通常会在对应的子 CONSUMER span 之前结束，甚至可能早于子 span 开始。
   * `CONSUMER` — 表示该 span 描述异步 PRODUCER 请求的子 span。
-* `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的开始时间（微秒）。
-* `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的结束时间（微秒）。
+* `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的开始时间 (微秒) 。
+* `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` 的结束时间 (微秒) 。
 * `finish_date` ([Date](../../sql-reference/data-types/date.md)) — `trace span` 的结束日期。
 * `status_code` ([Enum8](../../sql-reference/data-types/enum.md)) — span 的状态码。
-* `status_message` ([String](../../sql-reference/data-types/string.md)) — 与 span 关联的错误消息（如果有）。当 status&#95;code 不是 ERROR 时为空。
-* `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 与 `trace span` 对应的[属性（Attribute）](https://opentelemetry.io/docs/go/instrumentation/#attributes)名称。根据 [OpenTelemetry](https://opentelemetry.io/) 标准中的建议进行填充。
+* `status_message` ([String](../../sql-reference/data-types/string.md)) — 与 span 关联的错误消息 (如果有) 。当 status&#95;code 不是 ERROR 时为空。
+* `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 与 `trace span` 对应的[属性 (Attribute) ](https://opentelemetry.io/docs/go/instrumentation/#attributes)名称。根据 [OpenTelemetry](https://opentelemetry.io/) 标准中的建议进行填充。
 * `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 与 `trace span` 对应的属性值。根据 `OpenTelemetry` 标准中的建议进行填充。
 
 **示例**

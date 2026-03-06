@@ -118,12 +118,12 @@ Postman 应用程序既可以通过网页浏览器使用，也可以下载为桌
 
 * 返回结果应包含组织的详细信息，并且 "status": 200。（如果收到 "status" 400 且没有组织信息，则说明配置不正确）。
 
-### 测试 "GET service details" \{#test-get-service-details\}
+### 测试 &quot;GET service details&quot; \{#test-get-service-details\}
 
-* 点击 "GET service details"
+* 点击 &quot;GET service details&quot;
 * 将 `organizationid` 和 `serviceid` 的值分别修改为 `{{orgid}}` 和 `{{serviceid}}`。
-* 点击 "Save"，然后点击右侧蓝色的 "Send" 按钮。
+* 点击 &quot;Save&quot;，然后点击右侧蓝色的 &quot;Send&quot; 按钮。
 
-<Image img={postman17} size="md" alt="服务列表" border/>
+<Image img={postman17} size="md" alt="服务列表" border />
 
-* 返回结果应包含状态码为 "status": 200 的服务列表及其详细信息。（如果你收到 "status" 400 且没有任何服务信息，说明你的配置不正确）。
+* 返回结果应包含状态码为 &quot;status&quot;: 200 的服务列表及其详细信息。 (如果你收到 &quot;status&quot; 400 且没有任何服务信息，说明你的配置不正确) 。

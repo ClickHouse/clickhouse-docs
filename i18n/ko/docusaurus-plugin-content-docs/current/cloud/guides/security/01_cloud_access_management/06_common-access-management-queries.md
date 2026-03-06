@@ -22,7 +22,7 @@ import CommonUserRolesContent from '@site/i18n/ko/docusaurus-plugin-content-docs
 
 ClickHouse Cloud 서비스에는 서비스가 생성될 때 함께 생성되는 `default`라는 Admin 사용자가 있습니다. 비밀번호는 서비스 생성 시 제공되며, **Admin** 역할을 가진 ClickHouse Cloud 사용자가 재설정할 수 있습니다.
 
-ClickHouse Cloud 서비스에 추가 SQL 사용자를 생성하면 각 사용자에게 SQL 사용자 이름과 비밀번호가 필요합니다. 이들에게 관리자 수준 권한을 부여하려면 새 사용자에게 `default_role` 역할을 할당하십시오. 예를 들어 `clickhouse_admin` 사용자를 추가하는 경우는 다음과 같습니다:
+ClickHouse Cloud 서비스에 추가 SQL 사용자를 생성하면 각 사용자에게 SQL 사용자 이름과 비밀번호가 필요합니다. 이들에게 관리자 수준 권한을 부여하려면 새 사용자들에게 `default_role` 역할을 할당하십시오. 예를 들어 `clickhouse_admin` 사용자를 추가하는 경우는 다음과 같습니다:
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin

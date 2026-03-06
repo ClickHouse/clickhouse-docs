@@ -25,7 +25,7 @@ timeSeriesChangesToGrid(start_timestamp, end_timestamp, grid_step, staleness)(ti
 
 **Parameters**
 
-* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长（秒）。 - `staleness` — 指定参与计算样本允许的最大“陈旧时间”（秒）。
+* `start_timestamp` — 指定网格的起始时间。 - `end_timestamp` — 指定网格的结束时间。 - `grid_step` — 指定网格的步长 (秒) 。 - `staleness` — 指定参与计算样本允许的最大“陈旧时间” (秒) 。
 
 **Arguments**
 

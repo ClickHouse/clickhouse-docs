@@ -12,13 +12,13 @@ doc_type: 'reference'
 
 算術関数は、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32`、`Float64` 型の任意の 2 つのオペランドに対して動作します。
 
-演算を実行する前に、両方のオペランドは結果型にキャストされます。結果型は（後述の各関数のドキュメントで別途指定されていない限り）次のように決定されます。
+演算を実行する前に、両方のオペランドは結果型にキャストされます。結果型は (後述の各関数のドキュメントで別途指定されていない限り) 次のように決定されます。
 
-* 両方のオペランドが 32 ビット以下の場合、結果型のサイズは、2 つのオペランドのうち大きい方よりも 1 段階大きい型のサイズになります（整数サイズの昇格）。例: `UInt8 + UInt16 = UInt32` や `Float32 * Float32 = Float64`。
+* 両方のオペランドが 32 ビット以下の場合、結果型のサイズは、2 つのオペランドのうち大きい方よりも 1 段階大きい型のサイズになります (整数サイズの昇格) 。例: `UInt8 + UInt16 = UInt32` や `Float32 * Float32 = Float64`。
 * どちらか一方のオペランドが 64 ビット以上の場合、結果型のサイズは 2 つのオペランドのうち大きい方と同じサイズになります。例: `UInt32 + UInt128 = UInt128` や `Float32 * Float64 = Float64`。
 * どちらか一方のオペランドが符号付きである場合、結果型も符号付きになり、そうでない場合は符号なしになります。例: `UInt32 * Int32 = Int64` や `UInt32 * UInt32 = UInt64`。
 
-これらのルールにより、結果型はあらゆる可能な結果を表現できる最小の型になります。これは値域の境界付近でオーバーフローのリスクを伴いますが、64 ビットという最大のネイティブ整数幅を利用して計算を高速に実行できるようにします。この挙動はまた、最大の整数型として 64 ビット整数（BIGINT）を提供する多くの他のデータベースとの互換性も保証します。
+これらのルールにより、結果型はあらゆる可能な結果を表現できる最小の型になります。これは値域の境界付近でオーバーフローのリスクを伴いますが、64 ビットという最大のネイティブ整数幅を利用して計算を高速に実行できるようにします。この挙動はまた、最大の整数型として 64 ビット整数 (BIGINT) を提供する多くの他のデータベースとの互換性も保証します。
 
 例:
 
@@ -295,7 +295,7 @@ inf
 導入バージョン: v22.12.0
 
 2つの Decimal 値に対して除算を実行します。結果の値の型は [Decimal256](/sql-reference/data-types/decimal) になります。
-結果のスケールは、`result_scale` 引数（`[0, 76]` の範囲の定数 Integer）で明示的に指定できます。指定しない場合、結果のスケールは与えられた引数のスケールの最大値になります。
+結果のスケールは、`result_scale` 引数 (`[0, 76]` の範囲の定数 Integer) で明示的に指定できます。指定しない場合、結果のスケールは与えられた引数のスケールの最大値になります。
 
 :::note
 これらの関数は通常の `divide` よりもかなり遅く動作します。
@@ -455,7 +455,7 @@ inf  42
 2 つの値 `x` を `y` で整数除算します。言い換えると、
 商を計算し、それを小さい方の整数へ切り捨てます。
 
-結果のビット幅は被除数（1 番目のパラメータ）と同じです。
+結果のビット幅は被除数 (1 番目のパラメータ) と同じです。
 
 0 による除算を行った場合、商が被除数の表現可能範囲に収まらない場合、
 または最小の負の数を -1 で除算した場合には、例外がスローされます。
@@ -642,7 +642,7 @@ isInfinite(x)
 
 **戻り値**
 
-`x` が無限大であれば `1`、それ以外の場合は `0`（`NaN` を含む）。
+`x` が無限大であれば `1`、それ以外の場合は `0` (`NaN` を含む) 。
 
 **例**
 
@@ -939,7 +939,7 @@ modulo(a, b)
 
 **引数**
 
-* `a` — 被除数 - `b` — 除数（法、モジュロ）
+* `a` — 被除数 - `b` — 除数 (法、モジュロ) 
 
 **戻り値**
 
@@ -1007,7 +1007,7 @@ moduloOrNull(x, y)
 **引数**
 
 * `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
-* `y` — 除数（modulus）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `y` — 除数 (modulus) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **返される値**
 
@@ -1040,7 +1040,7 @@ moduloOrZero(a, b)
 **引数**
 
 * `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
-* `b` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `b` — 除数 (法) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **戻り値**
 
@@ -1096,7 +1096,7 @@ SELECT multiply(5,5)
 導入バージョン: v22.12.0
 
 2 つの Decimal 型の値に対して乗算を実行します。結果の値の型は [Decimal256](/sql-reference/data-types/decimal) になります。
-結果のスケールは `result_scale` 引数（範囲 `[0, 76]` の const Integer）で明示的に指定できます。指定しない場合、結果のスケールは与えられた引数のうち最大のスケールになります。
+結果のスケールは `result_scale` 引数 (範囲 `[0, 76]` の const Integer) で明示的に指定できます。指定しない場合、結果のスケールは与えられた引数のうち最大のスケールになります。
 
 :::note
 これらの関数は通常の `multiply` よりもかなり遅く動作します。
@@ -1204,7 +1204,7 @@ SELECT negate(10)
 
 導入バージョン: v1.1.0
 
-2 つの値 `x` と `y` の和を計算します。エイリアス: `x + y`（演算子）。
+2 つの値 `x` と `y` の和を計算します。エイリアス: `x + y` (演算子) 。
 整数と日付、または整数と日時を加算できます。前者の演算では日付の日数を増やし、後者の演算では日時の秒数を増やします。
 
 **構文**
@@ -1260,7 +1260,7 @@ positiveModulo(x, y)
 **引数**
 
 * `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 除数 (法) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
 **返り値**
 
@@ -1295,7 +1295,7 @@ positiveModuloOrNull(x, y)
 **引数**
 
 * `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float).
-* `y` — 除数（法）。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float).
+* `y` — 除数 (法) 。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float).
 
 **戻り値**
 

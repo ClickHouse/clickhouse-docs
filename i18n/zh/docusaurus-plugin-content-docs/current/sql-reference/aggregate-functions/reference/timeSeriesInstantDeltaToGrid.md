@@ -28,10 +28,10 @@ timeSeriesInstantDeltaToGrid(start_timestamp, end_timestamp, grid_step, stalenes
 
 * `start_timestamp` — 指定网格的起始时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — 指定网格的结束时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — 指定网格的步长（以秒为单位）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 指定被考虑样本的最大“陈旧度”（以秒为单位）。陈旧度窗口为左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — 指定网格的步长 (以秒为单位) 。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 指定被考虑样本的最大“陈旧度” (以秒为单位) 。陈旧度窗口为左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**参数（函数参数）**
+**参数 (函数参数)&#x20;**
 
 * `timestamp` — 样本的时间戳。可以是单个值或数组。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Array(UInt32)`](/sql-reference/data-types/array) 或 [`Array(DateTime)`](/sql-reference/data-types/array)
 * `value` — 与该时间戳对应的时间序列值。可以是单个值或数组。[`Float*`](/sql-reference/data-types/float) 或 [`Array(Float*)`](/sql-reference/data-types/array)

@@ -1,12 +1,12 @@
 ---
-sidebar_label: '询问 AI 助手'
+sidebar_label: 'ClickHouse Assistant 助手'
 slug: /cloud/features/ai-ml/ask-ai
-title: '在 Cloud 中询问 AI 助手'
+title: '在 Cloud 中的 ClickHouse Assistant 助手'
 description: '对 ClickHouse Cloud 中 ClickHouse Assistant 聊天功能的说明'
 doc_type: 'reference'
 ---
 
-# 在 Cloud 中使用 ClickHouse Assistant 代理 \{#ask-ai-agent-in-cloud\}
+# 在 Cloud 中使用 ClickHouse Assistant 代理 \{#clickhouse-assistant-agent-in-cloud\}
 
 “ClickHouse Assistant” 代理是一种开箱即用的体验，允许用户在其 ClickHouse Cloud 服务中托管的数据之上触发复杂的分析任务。
 用户无需编写 SQL 或在各类仪表板间来回切换，只需用自然语言描述他们想要查找的内容。

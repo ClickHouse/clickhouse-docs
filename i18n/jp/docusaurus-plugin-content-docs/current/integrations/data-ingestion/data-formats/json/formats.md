@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 # その他の JSON フォーマットの扱い方 \{#handling-other-json-formats\}
 
-これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow)（`NDJSON`）の利用を想定してきました。このフォーマットでは、各 JSON 行のキーを列として解釈します。例えば次のようになります。
+これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の利用を想定してきました。このフォーマットでは、各 JSON 行のキーを列として解釈します。例えば次のようになります。
 
 ```sql
 SELECT *
@@ -83,7 +83,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-`JSONAsObject` フォーマットは、オブジェクトの構造が一貫していない場合の改行区切り JSON の読み取りにも有用です。例えば、あるキーの型が行ごとに異なる場合（あるときは文字列だが、別のときはオブジェクトであるなど）です。このようなケースでは、ClickHouse は `JSONEachRow` を使って安定したスキーマを推論できませんが、`JSONAsObject` を使うと、厳密な型の制約なしにデータを取り込むことができ、各 JSON 行をそのまま 1 つのカラムに保存できます。例えば、`JSONEachRow` が次の例でどのように失敗するかを確認してください。
+`JSONAsObject` フォーマットは、オブジェクトの構造が一貫していない場合の改行区切り JSON の読み取りにも有用です。例えば、あるキーの型が行ごとに異なる場合 (あるときは文字列だが、別のときはオブジェクトであるなど) です。このようなケースでは、ClickHouse は `JSONEachRow` を使って安定したスキーマを推論できませんが、`JSONAsObject` を使うと、厳密な型の制約なしにデータを取り込むことができ、各 JSON 行をそのまま 1 つのカラムに保存できます。例えば、`JSONEachRow` が次の例でどのように失敗するかを確認してください。
 
 ```sql
 SELECT count()
@@ -145,7 +145,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-JSON オブジェクトのリストをインポートするには、[`JSONEachRow`](/interfaces/formats/JSONEachRow) フォーマットを使用します（[list.json](../assets/list.json) ファイルからデータを挿入します）:
+JSON オブジェクトのリストをインポートするには、[`JSONEachRow`](/interfaces/formats/JSONEachRow) フォーマットを使用します ([list.json](../assets/list.json) ファイルからデータを挿入します) :
 
 ```sql
 INSERT INTO sometable
@@ -170,7 +170,7 @@ FROM sometable
 
 ## JSON オブジェクトキー \{#json-object-keys\}
 
-場合によっては、JSON オブジェクトのリストを、配列の要素ではなくオブジェクトのプロパティとしてエンコードすることもできます（例については [objects.json](../assets/objects.json) を参照してください）。
+場合によっては、JSON オブジェクトのリストを、配列の要素ではなくオブジェクトのプロパティとしてエンコードすることもできます (例については [objects.json](../assets/objects.json) を参照してください) 。
 
 ```bash
 cat objects.json
@@ -305,7 +305,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## JSON オブジェクトをパースせずに保存する \{#saving-json-objects-instead-of-parsing\}
 
-場合によっては、JSON オブジェクトをパースせずに、単一の `String`（または `JSON`）カラムに保存したい場合があります。これは、構造が異なる複数の JSON オブジェクトのリストを扱う際に有用です。例として、親リスト内に複数の異なる JSON オブジェクトが含まれている [このファイル](../assets/custom.json) を見てみましょう。
+場合によっては、JSON オブジェクトをパースせずに、単一の `String` (または `JSON`) カラムに保存したい場合があります。これは、構造が異なる複数の JSON オブジェクトのリストを扱う際に有用です。例として、親リスト内に複数の異なる JSON オブジェクトが含まれている [このファイル](../assets/custom.json) を見てみましょう。
 
 ```bash
 cat custom.json
@@ -355,11 +355,11 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-`JSONAsString` は、1 行につき 1 つの JSON オブジェクトが含まれる形式のファイル（通常は `JSONEachRow` フォーマットとともに使用されます）の場合にも、正常に動作することに注意してください。
+`JSONAsString` は、1 行につき 1 つの JSON オブジェクトが含まれる形式のファイル (通常は `JSONEachRow` フォーマットとともに使用されます) の場合にも、正常に動作することに注意してください。
 
 ## ネストされたオブジェクト用のスキーマ \{#schema-for-nested-objects\}
 
-[ネストされた JSON オブジェクト](../assets/list-nested.json) を扱う場合には、明示的なスキーマをさらに定義し、複合型（[`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview)、[`Tuple`](/sql-reference/data-types/tuple.md)）を使用してデータを読み込むことができます。
+[ネストされた JSON オブジェクト](../assets/list-nested.json) を扱う場合には、明示的なスキーマをさらに定義し、複合型 ([`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview)、[`Tuple`](/sql-reference/data-types/tuple.md)) を使用してデータを読み込むことができます。
 
 ```sql
 SELECT *
@@ -381,7 +381,7 @@ LIMIT 1
 SET input_format_import_nested_json = 1
 ```
 
-これにより、ネストされた JSON オブジェクトのキーをドット記法で参照できます（そのまま利用するには、これらのキーをバッククォート記号で囲むことを忘れないでください）:
+これにより、ネストされた JSON オブジェクトのキーをドット記法で参照できます (そのまま利用するには、これらのキーをバッククォート記号で囲むことを忘れないでください) :
 
 ```sql
 SELECT *

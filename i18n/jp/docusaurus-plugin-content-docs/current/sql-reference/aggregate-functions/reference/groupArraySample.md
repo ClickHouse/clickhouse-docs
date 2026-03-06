@@ -25,7 +25,7 @@ groupArraySample(max_size[, seed])(x)
 
 * `max_size` — 生成される配列の最大サイズ。[`UInt64`](/sql-reference/data-types/int-uint)
 * `seed` — 省略可能。乱数生成器のシード値。デフォルト値は 123456。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 引数（カラム名または式）。[`Any`](/sql-reference/data-types)
+* `x` — 引数 (カラム名または式) 。[`Any`](/sql-reference/data-types)
 
 **引数**
 

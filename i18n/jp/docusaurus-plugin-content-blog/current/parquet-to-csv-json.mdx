@@ -12,9 +12,9 @@ keywords: ['変換', 'Parquet', 'CSV', 'JSON']
 
 ## Parquet から CSV または JSON へのファイル変換 \{#converting-files-from-parquet-to-csv-or-json\}
 
-`clickhouse-local` を使用すると、ClickHouse がサポートするあらゆる [入力および出力フォーマット](https://clickhouse.com/docs/interfaces/formats) 間でファイルを変換できます（70 を超えるフォーマットに対応しています）。この記事では、S3 上の Parquet ファイルを CSV ファイルと JSON ファイルに変換する方法を説明します。
+`clickhouse-local` を使用すると、ClickHouse がサポートするあらゆる [入力および出力フォーマット](https://clickhouse.com/docs/interfaces/formats) 間でファイルを変換できます (70 を超えるフォーマットに対応しています) 。この記事では、S3 上の Parquet ファイルを CSV ファイルと JSON ファイルに変換する方法を説明します。
 
-最初から順に確認していきます。ClickHouse には、ファイル、データベース、その他のリソースから読み込み、データをテーブルに変換するための [table function](https://clickhouse.com/docs/sql-reference/table-functions/)（テーブル関数）が用意されています。例として、S3 にある Parquet ファイルを想定します。これを読み込むために `s3` table function を使用します（ClickHouse はファイル名に基づいて、それが Parquet ファイルであることを認識します）。
+最初から順に確認していきます。ClickHouse には、ファイル、データベース、その他のリソースから読み込み、データをテーブルに変換するための [table function](https://clickhouse.com/docs/sql-reference/table-functions/) (テーブル関数) が用意されています。例として、S3 にある Parquet ファイルを想定します。これを読み込むために `s3` table function を使用します (ClickHouse はファイル名に基づいて、それが Parquet ファイルであることを認識します) 。
 
 その前に、まずは `clickhouse` バイナリをダウンロードしましょう。
 
@@ -130,7 +130,7 @@ INTO OUTFILE 'house_prices.ndjson'"
 
 ## CSV を Parquet に変換する \{#convert-csv-to-parquet\}
 
-この操作は逆方向にも行えます。新しい CSV ファイルを簡単に読み込み、Parquet ファイルとして出力できます。ローカルファイル `house_prices.csv` は、ClickHouse で `file` テーブル関数を使って読み込むことができ、ClickHouse は拡張子が `.parquet` のファイル名に基づいてファイルを Parquet 形式で出力します（あるいは `FORMAT Parquet` 句を追加して明示的に指定することもできます）。
+この操作は逆方向にも行えます。新しい CSV ファイルを簡単に読み込み、Parquet ファイルとして出力できます。ローカルファイル `house_prices.csv` は、ClickHouse で `file` テーブル関数を使って読み込むことができ、ClickHouse は拡張子が `.parquet` のファイル名に基づいてファイルを Parquet 形式で出力します (あるいは `FORMAT Parquet` 句を追加して明示的に指定することもできます) 。
 
 ```bash
 ./clickhouse local -q "SELECT *
