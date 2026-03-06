@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactExclusive \{#quantilesExactExclusive\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 排他的手法 (exclusive method) を用いて、数値データシーケンスの複数の[分位数](https://en.wikipedia.org/wiki/Quantile) を異なるレベルで同時に厳密に計算します。
 

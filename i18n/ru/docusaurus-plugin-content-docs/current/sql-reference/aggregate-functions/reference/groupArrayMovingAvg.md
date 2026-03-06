@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingAvg \{#groupArrayMovingAvg\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Вычисляет скользящее среднее входных значений.
 

@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 このDictionaryはメモリには保存されず、リクエスト処理時にソースへ直接アクセスします。
 
-Dictionaryのキーは [UInt64](../../../data-types/int-uint.md) 型です。
+Dictionaryのキーは [UInt64](/sql-reference/data-types/int-uint.md) 型です。
 
 ローカルファイル以外のすべての種類の[ソース](../sources/#dictionary-sources)がサポートされています。
 
@@ -44,4 +44,4 @@ LAYOUT(DIRECT())
 
 ## complex_key_direct \{#complex_key_direct\}
 
-このストレージタイプは、複合[キー](../keys-and-fields.md#dictionary-key-and-fields)で使用します。`direct` と同様です。
+このストレージタイプは、複合[キー](../attributes.md#composite-key)で使用します。`direct` と同様です。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sum \{#sum\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 计算数值之和。
 

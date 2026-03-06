@@ -44,7 +44,7 @@ SELECT toTypeName(0), toTypeName(0 + 0), toTypeName(0 + 0 + 0), toTypeName(0 + 0
 
 ## abs \{#abs\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算 `x` 的绝对值。若 `x` 为无符号类型，则此函数无效果。若 `x` 为有符号类型，则返回一个无符号数。
 
@@ -76,7 +76,7 @@ SELECT abs(-0.5)
 
 ## avg2 \{#avg2\}
 
-在 v25.11 中引入
+在 v25.11.0 中引入
 
 计算并返回提供参数的平均值。
 支持数值和时间数据类型。
@@ -160,7 +160,7 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 
 ## byteSwap \{#byteSwap\}
 
-引入版本：v23.10
+引入版本：v23.10.0
 
 反转整数的字节顺序，即改变其[字节序](https://en.wikipedia.org/wiki/Endianness)。
 
@@ -245,7 +245,7 @@ SELECT byteSwap(123294967295)
 
 ## divide \{#divide\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 计算两个值 `a` 和 `b` 的商。返回值类型始终为 [Float64](/sql-reference/data-types/float)。
 整数除法由 `intDiv` 函数提供。
@@ -292,7 +292,7 @@ inf
 
 ## divideDecimal \{#divideDecimal\}
 
-引入版本：v22.12
+引入版本：v22.12.0
 
 对两个十进制数执行除法运算。结果值的类型为 [Decimal256](/sql-reference/data-types/decimal)。
 可以通过 `result_scale` 参数（取值范围为 `[0, 76]` 的常量整数 Integer）显式指定结果的小数位数（scale）。如果未指定，结果的小数位数为传入参数中 scale 的最大值。
@@ -348,7 +348,7 @@ SELECT toDecimal64(-12, 1) as a, toDecimal32(2.1, 1) as b, divideDecimal(a, b, 1
 
 ## divideOrNull \{#divideOrNull\}
 
-引入版本：v25.5
+引入版本：v25.5.0
 
 与 `divide` 相同，但在除数为零时返回 NULL。
 
@@ -380,7 +380,7 @@ SELECT divideOrNull(25, 0)
 
 ## gcd \{#gcd\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回两个值 a 和 b 的最大公约数。
 
@@ -414,7 +414,7 @@ SELECT gcd(12, 18)
 
 ## ifNotFinite \{#ifNotFinite\}
 
-引入自：v20.3
+引入自：v20.3.0
 
 检查一个浮点数值是否为有限数。
 
@@ -450,7 +450,7 @@ inf  42
 
 ## intDiv \{#intDiv\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对两个值 `x` 和 `y` 执行整数除法。换句话说，它计算向下舍入到不大于实际结果的最接近整数的商。
 
@@ -504,7 +504,7 @@ large number: While processing intDiv(1, 0.001) AS res, toTypeName(res).
 
 ## intDivOrNull \{#intDivOrNull\}
 
-引入于：v25.5
+引入于：v25.5.0
 
 与 `intDiv` 相同，但在除以零或将最小负数除以负一时返回 NULL。
 
@@ -547,7 +547,7 @@ SELECT intDivOrNull(-9223372036854775808, -1)
 
 ## intDivOrZero \{#intDivOrZero\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 与 `intDiv` 相同，但在发生除以零，或将最小负数值除以负一时返回零。
 
@@ -590,7 +590,7 @@ SELECT intDivOrZero(0.05, -1)
 
 ## isFinite \{#isFinite\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 如果 Float32 或 Float64 参数既不是无穷大也不是 `NaN`，则返回 `1`，否则该函数返回 `0`。
 
@@ -622,7 +622,7 @@ SELECT isFinite(inf)
 
 ## isInfinite \{#isInfinite\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 如果 Float32 或 Float64 参数为无穷大，则返回 `1`，否则该 FUNCTION 返回 `0`。
 注意，对于 `NaN` 会返回 `0`。
@@ -655,7 +655,7 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 
 ## isNaN \{#isNaN\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 如果 Float32 或 Float64 类型的参数为 `NaN`，则返回 `1`，否则返回 `0`。
 
@@ -687,7 +687,7 @@ SELECT isNaN(NaN)
 
 ## lcm \{#lcm\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回两个值 `x` 和 `y` 的最小公倍数。
 
@@ -722,7 +722,7 @@ SELECT lcm(6, 8)
 
 ## max2 \{#max2\}
 
-自 v21.11 起引入
+自 v21.11.0 起引入
 
 返回两个数值 `x` 和 `y` 中较大的值。
 
@@ -755,7 +755,7 @@ SELECT max2(-1, 2)
 
 ## midpoint \{#midpoint\}
 
-引入版本：v25.11
+引入版本：v25.11.0
 
 计算并返回给定参数的平均值。
 支持数值类型和时间类型。
@@ -839,7 +839,7 @@ SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toT
 
 ## min2 \{#min2\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 返回两个数值 `x` 和 `y` 中较小的一个。
 
@@ -872,7 +872,7 @@ SELECT min2(-1, 2)
 
 ## minus \{#minus\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算两个值 `a` 和 `b` 的差。结果始终为带符号值。
 类似于 `plus`，可以从日期或日期时间中减去一个整数。
@@ -916,7 +916,7 @@ SELECT minus(toDate('2025-01-01'),5)
 
 ## modulo \{#modulo\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 计算两个值 a 和 b 相除时的余数。
 
@@ -956,7 +956,7 @@ SELECT modulo(5, 2)
 
 ## moduloLegacy \{#moduloLegacy\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算除法的余数。这是使用 C++ `%` 运算符的遗留取模实现，对于负参数可能返回负结果。此函数用于与旧的表分区逻辑保持向后兼容。对于常规行为，请使用 `modulo` 或 `positiveModulo`。
 
@@ -989,7 +989,7 @@ SELECT moduloLegacy(10, 3)
 
 ## moduloOrNull \{#moduloOrNull\}
 
-引入版本：v25.5
+引入版本：v25.5.0
 
 计算 `a` 被 `b` 除时的余数。与函数 `modulo` 类似，但当右侧参数为 0 时，`moduloOrNull` 会返回 NULL。
 
@@ -1024,7 +1024,7 @@ SELECT moduloOrNull(5, 0)
 
 ## moduloOrZero \{#moduloOrZero\}
 
-引入版本：v20.3
+引入版本：v20.3.0
 
 与 modulo 类似，但当除数为零时返回零，而不是像 modulo 函数那样抛出异常。
 
@@ -1057,7 +1057,7 @@ SELECT moduloOrZero(5, 0)
 
 ## multiply \{#multiply\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 计算两个值 `x` 和 `y` 的乘积。
 
@@ -1090,7 +1090,7 @@ SELECT multiply(5,5)
 
 ## multiplyDecimal \{#multiplyDecimal\}
 
-引入版本：v22.12
+引入版本：v22.12.0
 
 对两个 decimal 执行乘法运算。结果类型为 [Decimal256](/sql-reference/data-types/decimal)。
 可以通过 `result_scale` 参数（取值范围为 `[0, 76]` 的常量 Integer）显式指定结果的 scale。若未指定，则结果的 scale 为所有输入参数中最大的 scale。
@@ -1128,7 +1128,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 25.2
 ```
 
-**与普通乘法的区别**
+**与常规乘法的区别**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1167,7 +1167,7 @@ While processing toDecimal64(-12.647987876, 9) AS a, toDecimal64(123.967645643, 
 
 ## negate \{#negate\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 对参数 `x` 取负。结果始终为有符号数。
 
@@ -1199,7 +1199,7 @@ SELECT negate(10)
 
 ## plus \{#plus\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算两个值 `x` 和 `y` 的和。别名：`x + y`（运算符）。
 可以将整数与日期，或整数与日期时间进行相加。前一种
@@ -1243,7 +1243,7 @@ SELECT plus(toDate('2025-01-01'),5)
 
 ## positiveModulo \{#positiveModulo\}
 
-引入自：v22.11
+引入自：v22.11.0
 
 计算 `x` 除以 `y` 时的余数。类似于函数
 `modulo`，但 `positiveModulo` 始终返回非负数。
@@ -1279,7 +1279,7 @@ SELECT positiveModulo(-1, 10)
 
 ## positiveModuloOrNull \{#positiveModuloOrNull\}
 
-引入于：v25.5
+引入于：v25.5.0
 
 计算 `a` 被 `b` 除时的余数。与函数 `positiveModulo` 类似，但当右侧参数为 0 时，`positiveModuloOrNull` 将返回 NULL。
 

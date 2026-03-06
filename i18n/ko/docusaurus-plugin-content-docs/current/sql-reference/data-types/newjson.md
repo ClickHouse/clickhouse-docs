@@ -1019,6 +1019,78 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
+## Lazy Type Hints (Experimental) \{#lazy-type-hints\}
+
+:::note
+이 기능은 실험적이며 `allow_experimental_json_lazy_type_hints` 설정을 활성화해야 합니다.
+:::
+
+`ALTER TABLE ... MODIFY COLUMN`을 사용하여 JSON 컬럼에 타입 힌트(type hint)를 추가하거나 수정하면, ClickHouse는 일반적으로 모든 데이터 파트를 재작성하여 새로운 타입 힌트를 구체화합니다. 수백 테라바이트에 이르는 대량 이력 데이터를 가진 테이블의 경우, 이는 비용이 매우 많이 들 수 있습니다.
+
+**Lazy type hints**를 사용하면 기존 데이터를 다시 쓰지 않고 메타데이터만으로 타입 힌트를 추가할 수 있습니다:
+
+* **기존 파트**: 쿼리 시점에 `Dynamic`에서 지정된 타입으로 캐스팅하여 타입 힌트를 적용합니다.
+* **새 파트**: `INSERT` 작업 중에 타입 힌트가 구체화됩니다.
+* **머지(Merge)**: 파트가 머지될 때 타입 힌트가 구체화됩니다.
+
+따라서 타입 힌트를 즉시 추가할 수 있으며, 일반적인 백그라운드 머지가 진행되는 동안 데이터가 점진적으로 변환됩니다.
+
+### Lazy Type Hints를 활성화하기 \{#enabling-lazy-type-hints\}
+
+```sql
+SET allow_experimental_json_lazy_type_hints = 1;
+```
+
+
+### 예시 \{#lazy-type-hints-example\}
+
+```sql title="Query"
+-- Create a table and insert data
+CREATE TABLE test_lazy (json JSON) ENGINE = MergeTree ORDER BY tuple();
+INSERT INTO test_lazy VALUES ('{"user_id": "123", "score": "95.5"}');
+
+-- Enable experimental setting
+SET allow_experimental_json_lazy_type_hints = 1;
+
+-- Add type hints - this completes instantly without mutation
+ALTER TABLE test_lazy MODIFY COLUMN json JSON(user_id UInt64, score Float64);
+
+-- Query the data - type hints are applied at read time
+SELECT json.user_id, toTypeName(json.user_id), json.score, toTypeName(json.score) FROM test_lazy;
+```
+
+```text title="Response"
+┌─json.user_id─┬─toTypeName(json.user_id)─┬─json.score─┬─toTypeName(json.score)─┐
+│          123 │ UInt64                   │       95.5 │ Float64                │
+└──────────────┴──────────────────────────┴────────────┴────────────────────────┘
+```
+
+
+### 뮤테이션이 발생하지 않았음을 검증하기 \{#verifying-no-mutation-occurred\}
+
+`ALTER`가 뮤테이션 없이 완료되었는지 확인하려면 `system.mutations` 테이블을 조회합니다:
+
+```sql
+SELECT * FROM system.mutations WHERE table = 'test_lazy' AND NOT is_done;
+```
+
+lazy type hints를 활성화한 상태에서는 이 쿼리가 어떤 행도 반환되지 않아, 이 연산이 메타데이터에만 영향을 미쳤음을 확인할 수 있습니다.
+
+
+### 타입 힌트 물질화하기 \{#materializing-type-hints\}
+
+기존 데이터의 타입 힌트를 물질화하려면 다음 중 하나를 수행합니다.
+
+1. **백그라운드 병합 대기**: ClickHouse는 파트가 병합될 때 타입 힌트를 자동으로 물질화합니다.
+2. **강제 병합**: 모든 파트를 즉시 병합하려면 `OPTIMIZE TABLE test_lazy FINAL`을 사용합니다.
+3. **파트 재작성**: 새로운 메타데이터로 파트를 다시 쓰려면 `ALTER TABLE test_lazy REWRITE PARTS`를 사용합니다.
+
+### 제한 사항 \{#lazy-type-hints-limitations\}
+
+* 이 기능은 실험적이며 향후 버전에서 변경될 수 있습니다.
+* 쿼리 시점의 타입 변환은 사전에 구체화된 타입과 비교해, 특히 큰 JSON 객체의 경우 성능 오버헤드가 상당할 수 있습니다.
+* 이 기능은 `typed_paths`(타입 힌트)를 수정할 때에만 적용되며, `max_dynamic_paths`, `SKIP`, `SKIP REGEXP`와 같은 다른 JSON 매개변수에는 여전히 뮤테이션이 필요합니다.
+
 ## JSON 타입 값 간의 비교 \{#comparison-between-values-of-the-json-type\}
 
 JSON 객체는 맵(Map)과 비슷한 방식으로 비교됩니다.

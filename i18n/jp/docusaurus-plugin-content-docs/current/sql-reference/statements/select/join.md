@@ -488,7 +488,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 場合によっては、`JOIN` の代わりに [IN](../../../sql-reference/operators/in.md) を使用した方が効率的です。
 
-ディメンションテーブルとの結合 (広告キャンペーン名などのディメンション属性を含む、比較的小さなテーブル) に `JOIN` が必要な場合、右側テーブルがクエリごとに再アクセスされるため、`JOIN` はあまり便利ではない可能性があります。そのようなケースでは、`JOIN` の代わりに使用すべき「dictionaries」機能があります。詳細については、[Dictionaries](../../create/dictionary/index.md) セクションを参照してください。
+ディメンションテーブルとの結合 (広告キャンペーン名などのディメンション属性を含む、比較的小さなテーブル) に `JOIN` が必要な場合、右側テーブルがクエリごとに再アクセスされるため、`JOIN` はあまり便利ではない可能性があります。そのようなケースでは、`JOIN` の代わりに使用すべき「dictionaries」機能があります。詳細については、[Dictionaries](/sql-reference/statements/create/dictionary/overview.md) セクションを参照してください。
 
 ### メモリ制限 \{#memory-limitations\}
 

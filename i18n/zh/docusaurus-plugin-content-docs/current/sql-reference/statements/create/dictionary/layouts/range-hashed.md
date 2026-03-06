@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-要对日期范围使用采样，请在[结构](../keys-and-fields.md#dictionary-key-and-fields)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type` 两个子元素（如果未指定 `type`，则会使用默认类型 Date）。`type` 可以是任意数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
+要对日期范围使用采样，请在[结构](../attributes.md#composite-key)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type` 两个子元素（如果未指定 `type`，则会使用默认类型 Date）。`type` 可以是任意数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
 
 :::note
 `range_min` 和 `range_max` 的值应能被表示为 `Int64` 类型。
@@ -256,7 +256,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 
 ## complex_key_range_hashed \{#complex_key_range_hashed\}
 
-字典以哈希表的形式保存在内存中，其中包含一个有序的区间数组及其对应的值（参见 [range&#95;hashed](#range_hashed)）。这种存储类型适用于复合[keys](../keys-and-fields.md#dictionary-key-and-fields)。
+字典以哈希表的形式保存在内存中，其中包含一个有序的区间数组及其对应的值（参见 [range&#95;hashed](#range_hashed)）。这种存储类型适用于复合[keys](../attributes.md#composite-key)。
 
 配置示例：
 

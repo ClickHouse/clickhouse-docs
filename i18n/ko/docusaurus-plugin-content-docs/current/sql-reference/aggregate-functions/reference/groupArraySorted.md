@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySorted \{#groupArraySorted\}
 
-도입 버전: v24.2
+도입 버전: v24.2.0
 
 처음 N개의 항목이 오름차순으로 정렬된 배열을 반환합니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySample \{#groupArraySample\}
 
-Введена в версии v20.3
+Введена в версии v20.3.0
 
 Создаёт массив выборочно взятых значений аргумента.
 Размер результирующего массива ограничен `max_size` элементами.
@@ -61,7 +61,7 @@ SELECT groupArraySample(3)(color) as newcolors FROM default.colors;
 └────────────────────────────┘
 ```
 
-**Пример с использованием значения seed**
+**Пример с указанием seed**
 
 ```sql title=Query
 -- Query with column name and different seed

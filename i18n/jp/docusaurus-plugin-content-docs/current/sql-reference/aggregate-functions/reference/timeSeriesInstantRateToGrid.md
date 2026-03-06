@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantRateToGrid \{#timeSeriesInstantRateToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、このデータから [PromQL ライクな irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate) を計算する集約関数です。グリッド上の各点について、`irate` を計算するために使用するサンプルは、指定された時間ウィンドウ内のものが考慮されます。
 

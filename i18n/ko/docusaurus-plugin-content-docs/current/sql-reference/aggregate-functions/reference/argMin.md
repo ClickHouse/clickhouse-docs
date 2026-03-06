@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argMin \{#argMin\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 최소 `val` 값에 해당하는 `arg` 값을 계산합니다. 최대값에 해당하는 동일한 `val`을 가진 행이 여러 개 있는 경우, 어떤 행의 `arg`가 반환될지는 정해져 있지 않습니다.
 두 부분인 `arg`와 `min`은 모두 [집계 함수](/sql-reference/aggregate-functions/index.md)처럼 동작하며, 처리 중에는 둘 다 [`Null`을 건너뛰고](/sql-reference/aggregate-functions/index.md#null-processing), `Null`이 아닌 값이 존재하면 `Null`이 아닌 값을 반환합니다.
@@ -68,7 +68,7 @@ SELECT argMin(a, b), min(b) FROM test;
 └──────────────┴────────┘
 ```
 
-**인수로 Tuple 사용하기**
+**인수에 Tuple을 사용하기**
 
 ```sql title=Query
 SELECT argMin(a, (b, a)), min(tuple(b, a)) FROM test;

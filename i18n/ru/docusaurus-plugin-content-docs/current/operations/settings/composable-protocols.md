@@ -165,6 +165,58 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 </protocols>
 ```
 
+### Пользовательские HTTP‑обработчики для каждого endpoint \{#custom-http-handlers-per-endpoint\}
+
+По умолчанию все записи протокола с `type=http` используют одну и ту же конфигурацию `<http_handlers>`. Это можно переопределить, добавив тег `<handlers>`, который указывает на другой конфигурационный раздел. Это позволяет каждому HTTP‑порту обслуживать свой собственный набор правил HTTP‑маршрутизации.
+
+Например, чтобы запустить альтернативный HTTP API на порту 8124 с собственными обработчиками:
+
+```xml
+<protocols>
+
+  <plain_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8123</port>
+  </plain_http>
+
+  <alt_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8124</port>
+    <handlers>http_handlers_alt</handlers>
+  </alt_http>
+
+</protocols>
+
+<!-- Default handlers used by plain_http (port 8123) -->
+<http_handlers>
+    <defaults/>
+</http_handlers>
+
+<!-- Alternative handlers used by alt_http (port 8124) -->
+<http_handlers_alt>
+    <rule>
+        <url>/custom</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>SELECT 'custom_endpoint'</query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers_alt>
+```
+
+В этом примере запросы к порту 8123 используют стандартные правила `<http_handlers>`,
+в то время как запросы к порту 8124 используют правила `<http_handlers_alt>`. Если `<handlers>`
+не указан, для конечной точки используется `<http_handlers>` по умолчанию.
+
+Раздел пользовательских обработчиков имеет тот же формат, что и
+[`<http_handlers>`](/docs/en/operations/server-configuration-parameters/settings#http_handlers).
+Изменения в разделе пользовательских обработчиков обнаруживаются при перезагрузке конфигурации, и
+соответствующая конечная точка автоматически перезапускается.
+
+
 ### Указание дополнительных параметров слоя \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 Некоторые модули могут иметь дополнительные параметры слоя. Например, слой TLS

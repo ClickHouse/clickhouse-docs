@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileGK \{#quantileGK\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 数値データ系列の[`quantile`](https://en.wikipedia.org/wiki/Quantile)を、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて計算します。
 
@@ -56,7 +56,7 @@ SELECT quantileGK(1, 0.25)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────┘
 ```
 
-**高精度な分位数**
+**より高精度な分位数**
 
 ```sql title=Query
 SELECT quantileGK(100, 0.25)(number + 1) FROM numbers(1000);

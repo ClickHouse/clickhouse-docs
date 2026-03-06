@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # Табличная функция dictionary \{#dictionary-table-function\}
 
-Отображает данные словаря [dictionary](../statements/create/dictionary/index.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
+Отображает данные словаря [dictionary](../statements/create/dictionary/overview.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
 ## Синтаксис \{#syntax\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarSampMatrix \{#covarSampMatrix\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 返回 N 个变量的样本协方差矩阵。
 

@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ## seriesDecomposeSTL \{#seriesDecomposeSTL\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 使用 STL（基于 Loess 的季节-趋势分解方法 [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)）将时间序列数据分解为季节成分、趋势成分和残差成分。
 
@@ -73,7 +73,7 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 
 ## seriesOutliersDetectTukey \{#seriesOutliersDetectTukey\}
 
-自 v24.2 起引入。
+自 v24.2.0 起引入。
 
 使用 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测序列数据中的异常值。
 
@@ -122,7 +122,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT \{#seriesPeriodDetectFFT\}
 
-自 v23.12 引入
+自 v23.12.0 引入
 
 使用 FFT（[快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）检测给定序列数据的周期。
 
@@ -168,7 +168,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## timeSeriesCopyTag \{#timeSeriesCopyTag\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
 将指定的标签从一个标签组（`src_group`）复制到另一个标签组（`dest_group`）。
 该函数会覆盖 `dest_group` 中该被复制标签之前的任何值。
@@ -211,7 +211,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesCopyTags \{#timeSeriesCopyTags\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 将指定的标签从一组标签（`src_group`）复制到另一组标签（`dest_group`）。
 该函数会替换 `dest_group` 中被复制标签的任何先前值。
@@ -254,7 +254,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesExtractTag \{#timeSeriesExtractTag\}
 
-自 v26.1 起引入
+自 v26.1.0 起引入
 
 从分组中提取指定标签的值。如果未找到则返回 NULL。
 另请参阅函数 [timeSeriesGroupToTags()](/sql-reference/functions/time-series-functions#timeSeriesGroupToTags)。
@@ -293,7 +293,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesFromGrid \{#timeSeriesFromGrid\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 将值数组 `[x1, x2, x3, ...]` 转换为元组数组
 `[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`。
@@ -337,7 +337,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
-自 v26.1 起提供
+自 v26.1.0 起提供
 
 返回与指定 group 关联的标签名称和值。
 另请参阅函数 [timeSeriesTagsToGroup()](/sql-reference/functions/time-series-functions#timeSeriesTagsToGroup)。
@@ -379,7 +379,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesIdToGroup \{#timeSeriesIdToGroup\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 返回与指定时间序列标识符关联的标签名称和值。
 另请参阅 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)。
@@ -420,7 +420,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesIdToTags \{#timeSeriesIdToTags\}
 
-自 v25.8 起可用
+自 v25.8.0 起可用
 
 返回与指定时间序列标识符关联的标签。
 另请参阅函数 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)。
@@ -460,7 +460,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesJoinTags \{#timeSeriesJoinTags\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
 将从一组标签中提取出的指定标签的值进行拼接。
 该函数在拼接的值之间插入分隔符，并返回一个新的标签组，
@@ -503,7 +503,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('src1'
 
 ## timeSeriesRange \{#timeSeriesRange\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 生成一个时间戳序列 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`。
 
@@ -543,7 +543,7 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 
 ## timeSeriesRemoveAllTagsExcept \{#timeSeriesRemoveAllTagsExcept\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
 从一组标签中移除除指定标签外的所有标签。
 另请参见函数 [timeSeriesRemoveTag()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTag)、[timeSeriesRemoveTags()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTags)。
@@ -581,7 +581,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTag \{#timeSeriesRemoveTag\}
 
-自 v26.1 引入
+自 v26.1.0 引入
 
 从一组标签中移除指定的标签。
 如果该组中不存在此标签，则原样返回这组标签。
@@ -625,7 +625,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTags \{#timeSeriesRemoveTags\}
 
-自 v26.1 起引入。
+自 v26.1.0 起引入。
 
 从一组标签中移除指定的标签。
 如果某些指定标签不在该标签组中，则函数会忽略它们。
@@ -666,7 +666,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesReplaceTag \{#timeSeriesReplaceTag\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 对标签 `src_tag` 的值应用正则表达式 `regex` 进行匹配。
 如果匹配成功，则返回结果中的标签 `dest_tag` 的值将是 `replacement` 展开的结果，
@@ -710,7 +710,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('servi
 
 ## timeSeriesStoreTags \{#timeSeriesStoreTags\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 在查询上下文中存储一个映射，用于关联时间序列的指定标识符与一组标签。
 函数 [timeSeriesIdToTags()](/sql-reference/functions/time-series-functions#timeSeriesIdToTags)
@@ -754,7 +754,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesTagsToGroup \{#timeSeriesTagsToGroup\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 返回与指定标签关联的标签组。
 如果在查询执行期间多次出现相同的标签组，则函数返回相同的标签组。
@@ -798,7 +798,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesThrowDuplicateSeriesIf \{#timeSeriesThrowDuplicateSeriesIf\}
 
-引入版本：v26.2
+引入版本：v26.2.0
 
 检查 `condition`，如果为 true，则抛出异常，异常信息为：
 `Multiple series have the same tags <tags>, duplicate series in the same result set are not allowed`。

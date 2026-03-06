@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantRateToGrid \{#timeSeriesInstantRateToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 该聚合函数将时间序列数据作为时间戳与数值的成对输入，并在由起始时间戳、结束时间戳和步长定义的规则时间网格上，从这些数据中计算 [类似 PromQL 的 irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate)。对于网格上的每个点，用于计算 `irate` 的样本都在指定的时间窗口内进行选取。
 

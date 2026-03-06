@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTestOneSample \{#studentTTestOneSample\}
 
-引入版本：v25.10
+引入版本：v25.10.0
 
 对单个样本应用单样本 Student t 检验，以确定样本均值是否不同于已知总体均值。
 
@@ -58,7 +58,7 @@ SELECT studentTTestOneSample()(value, 20.0) FROM t;
 ```response title=Response
 ```
 
-**带 95% 置信区间**
+**包含 95% 置信区间**
 
 ```sql title=Query
 SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;

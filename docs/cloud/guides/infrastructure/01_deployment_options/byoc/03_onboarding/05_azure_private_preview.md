@@ -41,7 +41,7 @@ Share the following with the ClickHouse team:
 
 - **Target subscription ID** — The Azure subscription where BYOC resources will be created
 - **Target tenant ID** — The Azure AD (Entra) tenant that owns that subscription
-- **Region** — The Azure region(s) where you want to deploy your ClickHouse services.
+- **Region** — The Azure regions where you want to deploy your ClickHouse services.
 - **VNet CIDR range** — The IP address range you would like used for the BYOC VNet. 
 
 The ClickHouse team will use these to create the BYOC infrastructure and complete the onboarding

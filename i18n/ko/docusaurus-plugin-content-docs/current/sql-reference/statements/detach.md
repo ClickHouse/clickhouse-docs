@@ -79,4 +79,4 @@ ClickHouse Cloud에서는 `PERMANENTLY` 절을 사용해야 합니다(예: `DETA
 **함께 보기**
 
 * [Materialized View](/sql-reference/statements/create/view#materialized-view)
-* [Dictionaries](./create/dictionary/index.md)
+* [Dictionaries](./create/dictionary/overview.md)

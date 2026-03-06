@@ -26,7 +26,7 @@ Estuary connects with ClickHouse via the Kafka ClickPipe. You don't need to main
 **Prerequisites**
 
 * An [Estuary account](https://dashboard.estuary.dev/register)
-* One or more [**captures**](https://docs.estuary.dev/concepts/captures/) in Estuary that pull data from your desired source(s)
+* One or more [**captures**](https://docs.estuary.dev/concepts/captures/) in Estuary that pull data from your desired sources
 * A ClickHouse Cloud account with ClickPipe permissions
 
 <VerticalStepper headerLevel="h3">

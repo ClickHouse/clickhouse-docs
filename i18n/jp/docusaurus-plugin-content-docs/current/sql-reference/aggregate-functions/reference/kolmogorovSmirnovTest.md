@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## kolmogorovSmirnovTest \{#kolmogorovSmirnovTest\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 2つの母集団からのサンプルに Kolmogorov-Smirnov 検定を適用します。
 
@@ -63,7 +63,7 @@ FROM
 └────────────────────────────────────────────────────┘
 ```
 
-**分布の違いの検定**
+**異なる分布の検定**
 
 ```sql title=Query
 SELECT kolmogorovSmirnovTest('two-sided', 'exact')(value, num)

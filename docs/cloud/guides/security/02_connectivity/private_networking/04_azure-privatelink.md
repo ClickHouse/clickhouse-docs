@@ -46,7 +46,7 @@ Additional charges may be applied to inter-region traffic. Please check the late
 1. Obtain Azure connection alias for Private Link
 1. Create a Private Endpoint in Azure
 1. Add the Private Endpoint Resource ID to your ClickHouse Cloud organization
-1. Add the Private Endpoint Resource ID to your service(s) allow list
+1. Add the Private Endpoint Resource ID to your services allow list
 1. Access your ClickHouse Cloud service using Private Link
 
 :::note
@@ -55,7 +55,7 @@ ClickHouse Cloud Azure PrivateLink has switched from using resourceGUID to Resou
 
 ## Attention {#attention}
 ClickHouse attempts to group your services to reuse the same published [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) within the Azure region. However, this grouping isn't guaranteed, especially if you spread your services across multiple ClickHouse organizations.
-If you already have Private Link configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add the Private Endpoint Resource ID to your service(s) allow list](#add-private-endpoint-id-to-services-allow-list).
+If you already have Private Link configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add the Private Endpoint Resource ID to your services allow list](#add-private-endpoint-id-to-services-allow-list).
 
 Find Terraform examples at the ClickHouse [Terraform Provider repository](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
@@ -305,7 +305,7 @@ Address: 10.0.0.4
 
 ### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-1}
 
-To add an endpoint to the organization, proceed to the [Add the Private Endpoint Resource ID to your service(s) allow list](#add-private-endpoint-id-to-services-allow-list) step. Adding the Private Endpoint Resource ID using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
+To add an endpoint to the organization, proceed to the [Add the Private Endpoint Resource ID to your services allow list](#add-private-endpoint-id-to-services-allow-list) step. Adding the Private Endpoint Resource ID using the ClickHouse Cloud console to the services allow list automatically adds it to organization.
 
 To remove an endpoint, open **Organization details -> Private Endpoints** and click the delete button to remove the endpoint.
 
@@ -369,7 +369,7 @@ After adding or removing a Private Endpoint, run the following command to apply 
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-## Add the Private Endpoint Resource ID to your service(s) allow list {#add-private-endpoint-id-to-services-allow-list}
+## Add the Private Endpoint Resource ID to your services allow list {#add-private-endpoint-id-to-services-allow-list}
 
 By default, a ClickHouse Cloud service isn't available over a Private Link connection even if the Private Link connection is approved and established. You need to explicitly add the Private Endpoint Resource ID for each service that should be available using Private Link.
 

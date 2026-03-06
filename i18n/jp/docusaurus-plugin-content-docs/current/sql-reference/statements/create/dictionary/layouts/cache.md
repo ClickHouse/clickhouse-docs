@@ -13,15 +13,15 @@ import TabItem from '@theme/TabItem';
 `cached` Dictionary レイアウトタイプは、固定数のセルを持つキャッシュ内に Dictionary を保持します。
 これらのセルには、頻繁に使用される要素が格納されます。
 
-Dictionary のキーは [UInt64](../../../data-types/int-uint.md) 型です。
+Dictionary のキーは [UInt64](/sql-reference/data-types/int-uint.md) 型です。
 
 Dictionary を検索する際、まずキャッシュが検索されます。各データブロックについて、キャッシュに存在しない、または古くなっているすべてのキーは、`SELECT attrs... FROM db.table WHERE id IN (k1, k2, ...)` を使用してソースから取得されます。取得したデータはキャッシュに書き込まれます。
 
 キーが Dictionary に存在しない場合、キャッシュ更新タスクが作成され、更新キューに追加されます。更新キューのプロパティは、`max_update_queue_size`、`update_queue_push_timeout_milliseconds`、`query_wait_timeout_milliseconds`、`max_threads_for_updates` の各設定で制御できます。
 
-cache Dictionary では、キャッシュ内データの有効期限 [lifetime](../lifetime.md#refreshing-dictionary-data-using-lifetime) を設定できます。データがセルに読み込まれてから `lifetime` を超える時間が経過した場合、そのセルの値は使用されず、キーは期限切れになります。キーは次に使用が必要になった時に再度リクエストされます。この動作は、設定項目 `allow_read_expired_keys` によって構成できます。
+cache Dictionary では、キャッシュ内データの有効期限 [lifetime](../lifetime.md) を設定できます。データがセルに読み込まれてから `lifetime` を超える時間が経過した場合、そのセルの値は使用されず、キーは期限切れになります。キーは次に使用が必要になった時に再度リクエストされます。この動作は、設定項目 `allow_read_expired_keys` によって構成できます。
 
-これは、Dictionary を保存するすべての方法の中で最も効率が低いものです。キャッシュの速度は、設定の適切さと使用シナリオに大きく依存します。キャッシュ型 Dictionary は、ヒット率が十分に高い場合（推奨 99% 以上）にのみ良好に動作します。平均ヒット率は [system.dictionaries](../../../../operations/system-tables/dictionaries.md) テーブルで確認できます。
+これは、Dictionary を保存するすべての方法の中で最も効率が低いものです。キャッシュの速度は、設定の適切さと使用シナリオに大きく依存します。キャッシュ型 Dictionary は、ヒット率が十分に高い場合（推奨 99% 以上）にのみ良好に動作します。平均ヒット率は [system.dictionaries](/operations/system-tables/dictionaries.md) テーブルで確認できます。
 
 `allow_read_expired_keys` 設定が 1（デフォルトは 0）に設定されている場合、Dictionary は非同期更新をサポートできます。クライアントがキーを要求し、それらがすべてキャッシュ内にあるものの、一部が期限切れの場合、Dictionary は期限切れキーをクライアントに返しつつ、ソースからの再取得を非同期で行います。
 

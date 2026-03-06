@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewSamp \{#skewSamp\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 计算序列的[样本偏度](https://en.wikipedia.org/wiki/Skewness)。
 

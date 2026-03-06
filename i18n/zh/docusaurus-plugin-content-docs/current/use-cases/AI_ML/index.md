@@ -18,6 +18,6 @@ ClickHouse 非常适合作为实时数据库来支撑机器学习工作负载。
 | Section                                                                        | Description                                                                                                                                   |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | [AI 聊天](/use-cases/AI_ML/AIChat)                                             | 本指南说明如何在 ClickHouse Cloud 控制台中启用并使用 AI Chat 功能。                                                |
-| [Semantic Layer（语义层）](/use-cases/AI_ML/AIChat/semantic-layer)             | 了解如何使用 AGENTS.md 自定义 Ask AI 聊天代理，以提供特定于业务的规则、计算逻辑和数据结构指引。    |
+| [Semantic Layer（语义层）](/use-cases/AI_ML/AIChat/semantic-layer)             | 了解如何使用 AGENTS.md 自定义 ClickHouse Assistant 聊天代理，以提供特定于业务的规则、计算逻辑和数据结构指引。    |
 | [MCP](/use-cases/AI/MCP)                                                       | 一系列指南，帮助您在 ClickHouse 中使用 Model Context Protocol (MCP)。                                                    |
 | [AI 驱动的 SQL 生成](/use-cases/AI/ai-powered-sql-generation)           | 此功能允许您使用自然语言描述您的数据需求，系统会将其转换为相应的 SQL 语句。 |

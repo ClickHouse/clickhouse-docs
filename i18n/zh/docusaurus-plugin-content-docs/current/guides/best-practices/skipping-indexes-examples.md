@@ -18,17 +18,19 @@ keywords: ['跳过索引', '数据跳过', '性能', '索引', '最佳实践']
 INDEX name expr TYPE type(...) [GRANULARITY N]
 ```
 
-ClickHouse 支持五种跳过索引类型：
+ClickHouse 支持六种跳过索引类型：
 
 | Index Type                                          | Description                 |
 | --------------------------------------------------- | --------------------------- |
 | **minmax**                                          | 跟踪每个 granule 中的最小值和最大值      |
 | **set(N)**                                          | 在每个 granule 中最多存储 N 个不同的值   |
+| **text**                                            | 针对分词后的字符串数据的倒排索引，用于全文搜索     |
 | **bloom&#95;filter([false&#95;positive&#95;rate])** | 用于存在检查的概率型过滤器               |
 | **ngrambf&#95;v1**                                  | 用于子串搜索的 N-gram Bloom 过滤器    |
 | **tokenbf&#95;v1**                                  | 用于全文搜索的基于 token 的 Bloom 过滤器 |
 
 每一节都会通过示例数据展示用法，并演示如何在查询执行中验证索引是否被使用。
+
 
 ## MinMax 索引 \{#minmax-index\}
 
@@ -60,6 +62,7 @@ SELECT count() FROM events WHERE ts >= now() - 3600;
 
 请参阅一个包含 `EXPLAIN` 和剪枝的[示例](/best-practices/use-data-skipping-indices-where-appropriate#example)。
 
+
 ## Set 索引 \{#set-index\}
 
 当本地（按块）基数较低时使用 `set` 索引；如果每个数据块中包含许多不同的值，则效果不明显。
@@ -76,6 +79,27 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 在[基本操作指南](/optimize/skipping-indexes#basic-operation)中展示了创建/物化流程以及应用前后的效果。
 
+
+## 用于全文搜索的文本索引（text） \{#textindex-for-full-text-search\}
+
+`text` 是一个基于分词文本数据构建的倒排索引。
+专为全文搜索型工作负载设计，能够高效且确定性地进行 token 和 term 查找。
+推荐用于自然语言或大规模文本搜索等使用场景。
+
+请参阅[使用文本索引进行全文搜索](/engines/table-engines/mergetree-family/textindexes)以获取更多详细信息和示例。
+
+```sql
+ALTER TABLE logs ADD INDEX msg_text msg TYPE text(tokenizer = splitByNonAlpha);
+ALTER TABLE logs MATERIALIZE INDEX msg_text;
+
+SELECT count() FROM logs WHERE hasAllTokens(msg, 'exception');
+```
+
+在[此处](/use-cases/observability/schema-design#text-index-for-full-text-search)文档中可以查看更完整的可观测性示例。
+
+与基于 Bloom 过滤器的索引相比，文本索引在分词和文本处理方面是完全确定性的且可完全调优的，但代价是会多消耗一些存储空间。
+
+
 ## 通用 Bloom 过滤器（标量） \{#generic-bloom-filter-scalar\}
 
 `bloom_filter` 索引非常适合用于“在干草堆里找针”式的等值/`IN` 成员匹配查询。它接受一个可选参数，用于指定假阳性（误报）率（默认值为 0.025）。
@@ -90,7 +114,12 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
-## 用于子串搜索的 N-gram Bloom 过滤器（ngrambf&#95;v1） \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+
+## 用于子串搜索的 N-gram Bloom 过滤器（ngrambf_v1） \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+
+> 注意：从 ClickHouse 26.2 版本开始，文本索引进入 GA 阶段后，不再推荐将基于 Bloom 过滤器的索引用于全文搜索。
+> 尽管它们更加紧凑，但由于其具有概率性，不可避免地会产生误报。
+> 此外，它们的可配置性也比较有限。
 
 `ngrambf_v1` 索引将字符串划分为 n-gram。它非常适用于 `LIKE '%...%'` 查询。它支持 String/FixedString/Map（通过 mapKeys/mapValues），并且可以调节大小、哈希次数和种子。有关更多详细信息，请参阅 [N-gram Bloom 过滤器](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 的文档。
 
@@ -126,7 +155,12 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 有关完整的调优指导，请参阅[参数文档](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)。
 
-## 用于基于单词搜索的 Token Bloom 过滤器（tokenbf&#95;v1） \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+
+## 用于基于单词搜索的 Token Bloom 过滤器（tokenbf_v1） \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+
+> 注意：自 ClickHouse 26.2 版本起文本索引进入一般可用（GA）阶段后，不再推荐使用基于 Bloom 过滤器的索引来做全文搜索。
+> 虽然它们更加紧凑，但由于其具有概率性，不可避免地会产生误报。
+> 此外，它们在可配置性方面也比较有限。
 
 `tokenbf_v1` 会为由非字母数字字符分隔的 token 建立索引。你应将其与 [`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` 单词模式或 `=` / `IN` 一起使用。它支持 `String` / `FixedString` / `Map` 类型。
 
@@ -144,6 +178,7 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
 可在[此处](/use-cases/observability/schema-design#bloom-filters-for-text-search)查看可观测性示例，以及关于 token 与 ngram 的使用指导。
+
 
 ## 在 CREATE TABLE 时添加索引（多个示例） \{#add-indexes-during-create-table-multiple-examples\}
 
@@ -166,6 +201,7 @@ ENGINE = MergeTree
 ORDER BY u64;
 ```
 
+
 ## 在现有数据上物化并验证 \{#materializing-on-existing-data-and-verifying\}
 
 你可以使用 `MATERIALIZE` 为现有的数据部分添加索引，并通过 `EXPLAIN` 或跟踪日志来检查裁剪效果，如下所示：
@@ -181,6 +217,7 @@ SET send_logs_level = 'trace';
 ```
 
 此[可运行的 minmax 示例](/best-practices/use-data-skipping-indices-where-appropriate#example)展示了 EXPLAIN 输出的结构及剪枝数量。
+
 
 ## 何时使用跳过索引，何时应避免使用 \{#when-use-and-when-to-avoid\}
 
@@ -210,6 +247,7 @@ WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';
 ```
 
+
 ## 注意事项与限制 \{#notes-and-caveats\}
 
 * 跳过索引仅支持在 [MergeTree 系列表](/engines/table-engines/mergetree-family/mergetree) 上使用；数据裁剪发生在 granule/block 级别。  
@@ -217,6 +255,7 @@ SETTINGS ignore_data_skipping_indices = 'msg_token';
 * 应使用 `EXPLAIN` 和 tracing 验证 Bloom 过滤器及其他跳过索引；通过调整粒度在裁剪效果与索引大小之间取得平衡。
 
 ## 相关文档 \{#related-docs\}
+
 - [数据跳过索引指南](/optimize/skipping-indexes)
 - [最佳实践指南](/best-practices/use-data-skipping-indices-where-appropriate)
 - [数据跳过索引管理](/sql-reference/statements/alter/skipping-index)

@@ -136,6 +136,15 @@ an unlimited number of discrete values).  This set contains all values in the bl
 
 The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index won't be applied because the index is empty due to exceeding max_size.
 
+<!-- vale off -->
+### text {#text}
+<!-- vale on -->
+
+For workloads that involve natural language or free-form text search (e.g., searching words or phrases in large text columns), ClickHouse provides a **text index** (a real inverted index).
+Text index supports efficient full-text search semantics and tokenized lookups. It is the recommended choice for full-text search queries because it provides deterministic token indexing and better performance for search functions such as `hasAnyToken`, `hasAllTokens` but also optimize all common text search functions.
+
+See the text index documentation for details [here](engines/table-engines/mergetree-family/textindexes.md).
+
 ### Bloom filter types {#bloom-filter-types}
 
 A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive isn't a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
@@ -146,14 +155,17 @@ There are three Data Skipping Index types based on Bloom filters:
 
 * The basic **bloom_filter** which takes a single optional parameter of the allowed "false positive" rate between 0 and 1 (if unspecified, .025 is used).
 
-* The specialized **tokenbf_v1**. It takes three parameters, all related to tuning the bloom filter used:  (1) the size of the filter in bytes (larger filters have fewer false positives, at some cost in storage), (2) number of hash functions applied (again, more hash filters reduce false positives), and (3) the seed for the bloom filter hash functions.  See the calculator [here](https://hur.st/bloomfilter/) for more detail on how these parameters affect bloom filter functionality.
+* The specialized **tokenbf_v1** *(Deprecated)*). It takes three parameters, all related to tuning the bloom filter used:  (1) the size of the filter in bytes (larger filters have fewer false positives, at some cost in storage), (2) number of hash functions applied (again, more hash filters reduce false positives), and (3) the seed for the bloom filter hash functions.  See the calculator [here](https://hur.st/bloomfilter/) for more detail on how these parameters affect bloom filter functionality.
 This index works only with String, FixedString, and Map datatypes. The input expression is split into character sequences separated by non-alphanumeric characters. For example, a column value of `This is a candidate for a "full text" search` will contain the tokens `This` `is` `a` `candidate` `for` `full` `text` `search`.  It is intended for use in LIKE, EQUALS, IN, hasToken() and similar searches for words and other values within longer strings.  For example, one possible use might be searching for a small number of class names or line numbers in a column of free form application log lines.
 
-* The specialized **ngrambf_v1**. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
+* The specialized **ngrambf_v1** *(Deprecated)*. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
   ```text
   'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
+
+> For full-text search workloads, the dedicated **text index** (see [Text index for full-text search](engines/table-engines/mergetree-family/textindexes.md)) is recommended over the deprecated *tokenbf_v1* or *ngrambf_v1* indexes.
+The text index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
 
 ## Skip index functions {#skip-index-functions}
 

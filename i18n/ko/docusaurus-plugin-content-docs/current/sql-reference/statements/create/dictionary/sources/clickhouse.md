@@ -61,7 +61,7 @@ import TabItem from '@theme/TabItem';
 | `db`               | 데이터베이스 이름입니다.                                                                                                                                               |
 | `table`            | 테이블 이름입니다.                                                                                                                                                  |
 | `where`            | 선택 조건입니다. 선택 사항입니다.                                                                                                                                         |
-| `invalidate_query` | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md#refreshing-dictionary-data-using-lifetime) 절을 참고하십시오.               |
+| `invalidate_query` | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md) 절을 참고하십시오.                                                         |
 | `secure`           | 연결에 SSL을 사용합니다.                                                                                                                                             |
 | `query`            | 사용자 정의 쿼리입니다. 선택 사항입니다.                                                                                                                                     |
 

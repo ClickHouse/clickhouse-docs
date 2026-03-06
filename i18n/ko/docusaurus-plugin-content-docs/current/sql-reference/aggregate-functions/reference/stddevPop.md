@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevPop \{#stddevPop\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 숫자형 데이터 시퀀스의 모표준편차를 반환합니다.
 결과는 [`varPop`](/sql-reference/aggregate-functions/reference/varPop)의 제곱근과 같습니다.

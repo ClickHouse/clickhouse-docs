@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
 | `db`                      | データベース名です。                                                                                                                                                           |
 | `table`                   | テーブル名です。                                                                                                                                                             |
 | `where`                   | 抽出条件です。条件の構文は MySQL の `WHERE` 句と同じで、たとえば `id > 10 AND id < 20` のように記述します。省略可能です。                                                                                     |
-| `invalidate_query`        | Dictionary の状態を確認するためのクエリです。省略可能です。詳細は [Refreshing dictionary data using LIFETIME](../lifetime.md#refreshing-dictionary-data-using-lifetime) セクションを参照してください。         |
+| `invalidate_query`        | Dictionary の状態を確認するためのクエリです。省略可能です。詳細は [Refreshing dictionary data using LIFETIME](../lifetime.md) セクションを参照してください。                                                   |
 | `fail_on_connection_loss` | 接続喪失時のサーバーの動作を制御します。`true` の場合、クライアントとサーバー間の接続が失われるとすぐに例外がスローされます。`false` の場合、ClickHouse サーバーは例外をスローする前にクエリの実行を 3 回再試行します。再試行により応答時間が増加する点に注意してください。デフォルト値: `false`。 |
 | `query`                   | カスタムクエリです。省略可能です。                                                                                                                                                    |
 

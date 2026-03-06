@@ -386,7 +386,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 
 参照:
 
-* 「[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)」。
+* 「[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)」。
 
 **例**
 

@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 字典以哈希表的形式完全存储在内存中。字典可以包含任意数量、具有任意标识符的元素。实际使用中，键的数量可以达到数千万级。
 
-字典键的类型为 [UInt64](../../../data-types/int-uint.md)。
+字典键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)。
 
 支持所有类型的数据源。更新时会完整读取数据（从文件或表中）。
 
@@ -89,7 +89,7 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 
 类似于 `hashed`，但在节省内存的同时会消耗更多 CPU 资源。
 
-字典键的类型为 [UInt64](../../../data-types/int-uint.md)。
+字典键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)。
 
 配置示例：
 
@@ -122,7 +122,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 ## complex_key_hashed \{#complex_key_hashed\}
 
-这种存储类型用于复合[键](../keys-and-fields.md#dictionary-key-and-fields)，类似于 `hashed`。
+这种存储类型用于复合[键](../attributes.md#composite-key)，类似于 `hashed`。
 
 配置示例：
 
@@ -153,7 +153,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 
 ## complex_key_sparse_hashed \{#complex_key_sparse_hashed\}
 
-此存储类型用于复合[键](../keys-and-fields.md#dictionary-key-and-fields)。类似于 [sparse_hashed](#sparse_hashed)。
+此存储类型用于复合[键](../attributes.md#composite-key)。类似于 [sparse_hashed](#sparse_hashed)。
 
 配置示例：
 

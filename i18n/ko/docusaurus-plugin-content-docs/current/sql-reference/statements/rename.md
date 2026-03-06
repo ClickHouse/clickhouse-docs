@@ -65,4 +65,4 @@ RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 
 **관련 문서**
 
-* [Dictionaries](./create/dictionary/index.md)
+* [Dictionaries](./create/dictionary/overview.md)

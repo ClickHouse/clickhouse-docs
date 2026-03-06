@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 딕셔너리는 해시 테이블(hash table) 형태로 전체가 메모리에 저장됩니다. 딕셔너리에는 어떤 식별자를 가진 요소든 개수 제한 없이 포함될 수 있습니다. 실제로는 키 개수가 수천만 개에 이를 수 있습니다.
 
-딕셔너리 키는 [UInt64](../../../data-types/int-uint.md) 타입입니다.
+딕셔너리 키는 [UInt64](/sql-reference/data-types/int-uint.md) 타입입니다.
 
 모든 유형의 소스를 지원합니다. 업데이트 시에는 데이터(파일 또는 테이블)는 전체를 한 번에 읽습니다.
 
@@ -93,7 +93,7 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 
 `hashed`와 유사하지만, 메모리를 더 적게 사용하는 대신 CPU 사용량이 더 많습니다.
 
-딕셔너리 키는 [UInt64](../../../data-types/int-uint.md) 타입입니다.
+딕셔너리 키는 [UInt64](/sql-reference/data-types/int-uint.md) 타입입니다.
 
 구성 예시:
 
@@ -105,7 +105,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 ```
 
 </TabItem>
-<TabItem value="xml" label="구성 파일">
+<TabItem value="xml" label="Configuration file">
 
 ```xml
 <layout>
@@ -126,7 +126,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 ## complex_key_hashed \{#complex_key_hashed\}
 
-이 저장 방식은 복합 [키](../keys-and-fields.md#dictionary-key-and-fields)에 사용합니다. `hashed`와 유사합니다.
+이 저장 방식은 복합 [키](../attributes.md#composite-key)에 사용합니다. `hashed`와 유사합니다.
 
 구성 예시는 다음과 같습니다.
 
@@ -157,7 +157,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 
 ## complex_key_sparse_hashed \{#complex_key_sparse_hashed\}
 
-이 저장소 유형은 복합 [키](../keys-and-fields.md#dictionary-key-and-fields)에 사용되는 유형입니다. [sparse_hashed](#sparse_hashed)와 유사합니다.
+이 저장소 유형은 복합 [키](../attributes.md#composite-key)에 사용되는 유형입니다. [sparse_hashed](#sparse_hashed)와 유사합니다.
 
 구성 예제:
 

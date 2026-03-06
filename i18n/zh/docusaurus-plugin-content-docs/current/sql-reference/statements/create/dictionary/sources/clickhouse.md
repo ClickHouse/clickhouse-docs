@@ -61,7 +61,7 @@ import TabItem from '@theme/TabItem';
 | `db`               | 数据库名称。                                                                                                                          |
 | `table`            | 表名。                                                                                                                             |
 | `where`            | 选择条件。可选。                                                                                                                        |
-| `invalidate_query` | 用于检查字典状态的查询。可选。更多信息参见 [Refreshing dictionary data using LIFETIME](../lifetime.md#refreshing-dictionary-data-using-lifetime) 章节。 |
+| `invalidate_query` | 用于检查字典状态的查询。可选。更多信息参见 [Refreshing dictionary data using LIFETIME](../lifetime.md) 章节。                                           |
 | `secure`           | 使用 SSL 进行连接。                                                                                                                    |
 | `query`            | 自定义查询。可选。                                                                                                                       |
 

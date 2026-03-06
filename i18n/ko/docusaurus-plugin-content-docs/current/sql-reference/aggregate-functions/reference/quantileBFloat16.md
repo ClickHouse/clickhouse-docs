@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileBFloat16 \{#quantileBFloat16\}
 
-도입 버전: v21.7
+도입 버전: v21.7.0
 
 [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) 수로 구성된 표본의 근사 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 계산합니다.
 

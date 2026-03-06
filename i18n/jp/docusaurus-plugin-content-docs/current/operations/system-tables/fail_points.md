@@ -14,13 +14,13 @@ doc_type: 'reference'
 
 ## カラム \{#columns\}
 
-- `name` ([String](/docs/en/sql-reference/data-types/string.md)) — フェイルポイントの名前。
-- `type` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — フェイルポイントの種別。取り得る値は次のとおりです：
+- `name` ([String](../../sql-reference/data-types/string.md)) — フェイルポイントの名前。
+- `type` ([Enum8](../../sql-reference/data-types/enum.md)) — フェイルポイントの種別。取り得る値は次のとおりです：
   - `'once'` — 1 回だけトリガーされ、その後自動的に無効化される。
   - `'regular'` — フェイルポイントに到達するたびにトリガーされる。
   - `'pauseable_once'` — 明示的に再開されるまで、1 回だけ実行をブロックする。
   - `'pauseable'` — 明示的に再開されるまで、フェイルポイントに到達するたびに実行をブロックする。
-- `enabled` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — 現在フェイルポイントが有効かどうか。`1` の場合は有効、`0` の場合は無効。
+- `enabled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 現在フェイルポイントが有効かどうか。`1` の場合は有効、`0` の場合は無効。
 
 ## 例 \{#example\}
 

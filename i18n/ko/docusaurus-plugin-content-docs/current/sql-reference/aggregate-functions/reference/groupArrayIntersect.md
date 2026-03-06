@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayIntersect \{#groupArrayIntersect\}
 
-도입 버전: v24.2
+도입 버전: v24.2.0
 
 주어진 배열들의 교집합을 반환합니다(모든 배열에 공통으로 포함된 모든 항목을 반환합니다).
 

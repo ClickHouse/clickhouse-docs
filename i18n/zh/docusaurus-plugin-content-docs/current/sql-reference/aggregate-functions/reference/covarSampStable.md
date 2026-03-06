@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarSampStable \{#covarSampStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the sample covariance:
+计算样本协方差：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-It is similar to [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) but uses a numerically stable algorithm.
-As a result, `covarSampStable` is slower than `covarSamp` but provides a lower computational error.
+它类似于 [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp)，但使用数值稳定算法。
+因此，`covarSampStable` 比 `covarSamp` 慢，但提供更低的计算误差。
 
 **Syntax**
 
@@ -30,18 +30,18 @@ As a result, `covarSampStable` is slower than `covarSamp` but provides a lower c
 covarSampStable(x, y)
 ```
 
-**Arguments**
+**参数**
 
 - `x` — 第一个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第二个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返回值**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `inf` is returned. [`Float64`](/sql-reference/data-types/float)
+返回 `x` 和 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `inf`。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Basic sample covariance calculation with stable algorithm**
+**使用稳定算法的基本样本协方差计算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -64,7 +64,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-**Single value returns inf**
+**单个值返回 inf**
 
 ```sql title=Query
 SELECT covarSampStable(x_value, y_value)

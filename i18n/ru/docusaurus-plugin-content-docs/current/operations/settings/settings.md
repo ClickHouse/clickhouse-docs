@@ -457,6 +457,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Если параметр установлен в true и выполнены условия `join_to_sort_minimum_perkey_rows` и `join_to_sort_maximum_table_rows`, правая таблица пересортировывается по ключу для повышения производительности левого или внутреннего хеш-соединения.
 
+## allow_experimental_json_lazy_type_hints \{#allow_experimental_json_lazy_type_hints\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новый экспериментальный параметр для ленивых подсказок типов JSON"}]}]} />
+
+Включает экспериментальные ленивые подсказки типов для типа JSON. Эта функция позволяет оптимизировать преобразования типа JSON за счёт отложенной оценки подсказок типов.
+
 ## allow_experimental_kafka_offsets_storage_in_keeper \{#allow_experimental_kafka_offsets_storage_in_keeper\}
 
 <ExperimentalBadge/>
@@ -495,13 +505,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 ## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]} />
 
 Разрешает создавать в таблицах столбцы типа [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md).
+
+Этот параметр не управляет тем, могут ли извлечённые подстолбцы кортежей иметь тип `Nullable` (например, из столбцов типов Dynamic, Variant, JSON или Tuple).
+Используйте `allow_nullable_tuple_in_extracted_subcolumns`, чтобы управлять тем, могут ли извлечённые подстолбцы кортежей иметь тип `Nullable`.
 
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
@@ -739,6 +752,24 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 - 0 — Запрещено.
 - 1 — Разрешено.
+
+## allow_nullable_tuple_in_extracted_subcolumns \{#allow_nullable_tuple_in_extracted_subcolumns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка, контролирующая, могут ли извлечённые подстолбцы типа Tuple быть Nullable."}]}]} />
+
+Определяет, могут ли извлечённые подстолбцы типа `Tuple(...)` иметь тип `Nullable(Tuple(...))`.
+
+* `false`: Возвращать `Tuple(...)` и использовать значения кортежа по умолчанию для строк, в которых подстолбец отсутствует.
+* `true`: Возвращать `Nullable(Tuple(...))` и использовать `NULL` для строк, в которых подстолбец отсутствует.
+
+Эта настройка управляет только поведением извлечённых подстолбцов.
+Она не управляет тем, могут ли в таблицах создаваться столбцы типа `Nullable(Tuple(...))`; это контролируется настройкой `allow_experimental_nullable_tuple_type`.
+
+ClickHouse использует значение этой настройки, загруженное при запуске сервера.
+Изменения, сделанные с помощью `SET` или `SETTINGS` на уровне запроса, не изменяют поведение извлечённых подстолбцов.
+Чтобы изменить поведение извлечённых подстолбцов, обновите `allow_nullable_tuple_in_extracted_subcolumns` в конфигурации профиля запуска (например, users.xml) и перезапустите сервер.
 
 ## allow_prefetched_read_pool_for_local_filesystem \{#allow_prefetched_read_pool_for_local_filesystem\}
 
@@ -1192,9 +1223,11 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## async_insert \{#async_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait_for_async_insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить асинхронные вставки по умолчанию."}]}]} />
+
+Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait&#95;for&#95;async&#95;insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
 
 ## async_insert_busy_timeout_decrease_rate \{#async_insert_busy_timeout_decrease_rate\}
 
@@ -2326,15 +2359,15 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]} />
 
-Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
+Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
 У данной настройки есть три возможных значения:
 
-- disable — дедупликация отключена для запроса `INSERT INTO`.
-- enable — дедупликация включена для запроса `INSERT INTO`.
-- backward_compatible_choice — дедупликация включена, если `insert_deduplicate` или `async_insert_deduplicate` включены для соответствующего типа вставки.
+* disable — дедупликация отключена для запроса `INSERT INTO`.
+* enable — дедупликация включена для запроса `INSERT INTO`.
+* backward&#95;compatible&#95;choice — дедупликация включена, если `insert_deduplicate` или `async_insert_deduplicate` включены для соответствующего типа вставки.
 
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
@@ -2520,6 +2553,15 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Включает логирование файлов метаданных Delta Lake в системную таблицу.
+
+## delta_lake_reload_schema_for_consistency \{#delta_lake_reload_schema_for_consistency\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка, определяющая, будет ли DeltaLake перезагружать схему перед каждым запросом для обеспечения согласованности."}]}]}/>
+
+Если настройка включена, схема перезагружается из метаданных DeltaLake перед выполнением каждого запроса, чтобы обеспечить
+согласованность между схемой, использованной во время анализа запроса, и схемой, использованной во время выполнения.
 
 ## delta_lake_snapshot_end_version \{#delta_lake_snapshot_end_version\}
 
@@ -7999,7 +8041,11 @@ ClickHouse использует эту настройку при чтении д
 
 ## mysql_datatypes_support_level \{#mysql_datatypes_support_level\}
 
-Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`.
+<SettingsInfoBlock type="MySQLDataTypesSupport" default_value="decimal,datetime64,date2Date32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "decimal,datetime64,date2Date32"},{"label": "Современные отображения типов MySQL включены по умолчанию."}]}]}/>
+
+Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`. Все современные отображения (`decimal`, `datetime64`, `date2Date32`) включены по умолчанию.
 
 - `decimal`: преобразовывать типы `NUMERIC` и `DECIMAL` в `Decimal`, когда это допускает точность.
 - `datetime64`: преобразовывать типы `DATETIME` и `TIMESTAMP` в `DateTime64` вместо `DateTime`, когда точность не равна `0`.
@@ -8662,7 +8708,9 @@ SELECT * FROM test2;
 
 ## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Оптимизация готова к промышленному использованию"}]}]} />
 
 Включает оптимизацию, которая объединяет агрегатные функции с одинаковым аргументом. Переписывает запрос, если он содержит как минимум две агрегатные функции [sum](/sql-reference/aggregate-functions/reference/sum), [count](/sql-reference/aggregate-functions/reference/count) или [avg](/sql-reference/aggregate-functions/reference/avg) с одинаковым аргументом, в [sumCount](/sql-reference/aggregate-functions/reference/sumcount).
 
@@ -11613,6 +11661,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использует отсечение партиций Paimon для табличных функций Paimon
 
+## use_partition_pruning \{#use_partition_pruning\}
+
+**Псевдонимы**: `use_partition_key`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Новая настройка, управляющая использованием в MergeTree ключа партиции для отсечения. \"use_partition_key\" является псевдонимом этой настройки."}]}]}/>
+
+Использовать ключ партиции для отсечения партиций во время выполнения запроса для таблиц MergeTree.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
+
 ## use_primary_key \{#use_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11774,15 +11837,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать структуру таблицы, в которую выполняется вставка, вместо определения схемы по данным. Возможные значения: 0 - отключено, 1 - включено, 2 - авто
 
-## use_text_index_dictionary_cache \{#use_text_index_dictionary_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Определяет, использовать ли кэш десериализованного блока словаря текстового индекса.
-Использование кэша блока словаря текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
-
 ## use_text_index_header_cache \{#use_text_index_header_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11800,6 +11854,15 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может существенно снизить задержку и повысить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_tokens_cache \{#use_text_index_tokens_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Следует ли использовать кэш десериализованной информации о токенах текстового индекса.
+Использование кэша токенов текстового индекса может значительно снизить задержку и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 

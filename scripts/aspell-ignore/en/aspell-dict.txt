@@ -2070,6 +2070,7 @@ cond
 conf
 config
 configs
+configurability
 conformant
 congruential
 conjuctive
@@ -2862,6 +2863,7 @@ mergetree
 messageID
 metacharacters
 metasymbols
+metric's
 metrica
 metroHash
 mfedotov

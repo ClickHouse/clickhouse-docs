@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeightedInterpolated \{#quantileExactWeightedInterpolated\}
 
-도입 버전: v24.10
+도입 버전: v24.10.0
 
 각 요소의 가중치를 고려하여 선형 보간법을 사용해 숫자 데이터 시퀀스의 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 
@@ -57,7 +57,7 @@ SELECT quantileExactWeightedInterpolated(n, val) FROM t;
 └───────────────────────────────────────────┘
 ```
 
-**quantileInterpolatedWeighted보다 quantileExactWeightedInterpolated 사용을 권장합니다**
+**quantileInterpolatedWeighted 대신 quantileExactWeightedInterpolated 사용을 권장합니다**
 
 ```sql title=Query
 SELECT

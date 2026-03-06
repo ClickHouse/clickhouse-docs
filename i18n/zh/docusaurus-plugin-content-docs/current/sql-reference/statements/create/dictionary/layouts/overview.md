@@ -78,11 +78,11 @@ LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 
 <br/>
 
-另请参阅 [CREATE DICTIONARY](../index.md) 以获取完整的 DDL 语法。
+另请参阅 [CREATE DICTIONARY](../overview.md) 以获取完整的 DDL 语法。
 
-布局名称中不包含单词 `complex-key*` 的字典，其键的类型为 [UInt64](../../../data-types/int-uint.md)；`complex-key*` 字典则具有复合键（复杂键，支持任意类型的组合）。
+布局名称中不包含单词 `complex-key*` 的字典，其键的类型为 [UInt64](/sql-reference/data-types/int-uint.md)；`complex-key*` 字典则具有复合键（复杂键，支持任意类型的组合）。
 
-**数值键示例**（列 key_column 的类型为 [UInt64](../../../data-types/int-uint.md)）：
+**数值键示例**（列 key_column 的类型为 [UInt64](/sql-reference/data-types/int-uint.md)）：
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -112,7 +112,7 @@ PRIMARY KEY key_column
 
 <br/>
 
-**复合键示例**（key 仅包含一个元素，类型为 [String](../../../data-types/string.md)）：
+**复合键示例**（key 仅包含一个元素，类型为 [String](/sql-reference/data-types/string.md)）：
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -158,4 +158,4 @@ ClickHouse 在发生与字典相关的错误时会抛出异常。
 - 无法加载正在访问的字典。
 - 查询 `cached` 字典时出错。
 
-可以在 [system.dictionaries](../../../../operations/system-tables/dictionaries.md) 表中查看字典列表及其状态。
+可以在 [system.dictionaries](/operations/system-tables/dictionaries.md) 表中查看字典列表及其状态。

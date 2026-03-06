@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-導入: v20.1
+導入: v20.1.0
 
 二値の目的変数に対するカテゴリ型特徴量の Information Value (IV) を計算します。
 
@@ -54,7 +54,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**ユーザーのデモグラフィック情報を含む複数のカテゴリカル特徴量**
+**ユーザー属性を含む複数のカテゴリカル特徴量**
 
 ```sql title=Query
 SELECT categoricalInformationValue(

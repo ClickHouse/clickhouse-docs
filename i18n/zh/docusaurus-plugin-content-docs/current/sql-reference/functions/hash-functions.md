@@ -37,7 +37,7 @@ SELECT cityHash64(tuple(NULL))
 
 ## BLAKE3 \{#BLAKE3\}
 
-引入版本：v22.10
+引入版本：v22.10.0
 
 计算 BLAKE3 哈希字符串，并将得到的字节序列作为 FixedString 返回。
 该密码学哈希函数借助 BLAKE3 Rust 库集成到 ClickHouse 中。
@@ -74,7 +74,7 @@ SELECT hex(BLAKE3('ABC'))
 
 ## MD4 \{#MD4\}
 
-在 v21.11 中引入
+在 v21.11.0 中引入
 
 计算给定字符串的 MD4 哈希值。
 
@@ -108,7 +108,7 @@ SELECT HEX(MD4('abc'));
 
 ## MD5 \{#MD5\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算给定字符串的 MD5 哈希值。
 
@@ -142,7 +142,7 @@ SELECT HEX(MD5('abc'));
 
 ## RIPEMD160 \{#RIPEMD160\}
 
-自 v24.10 引入
+自 v24.10.0 引入
 
 计算给定字符串的 RIPEMD-160 哈希值。
 
@@ -176,7 +176,7 @@ SELECT HEX(RIPEMD160('The quick brown fox jumps over the lazy dog'));
 
 ## SHA1 \{#SHA1\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算给定字符串的 SHA1 哈希值。
 
@@ -210,7 +210,7 @@ SELECT HEX(SHA1('abc'));
 
 ## SHA224 \{#SHA224\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 计算给定字符串的 SHA224 哈希。
 
@@ -244,7 +244,7 @@ SELECT HEX(SHA224('abc'));
 
 ## SHA256 \{#SHA256\}
 
-自 v1.1 起引入。
+自 v1.1.0 起引入。
 
 计算给定字符串的 SHA256 哈希值。
 
@@ -278,7 +278,7 @@ SELECT HEX(SHA256('abc'));
 
 ## SHA384 \{#SHA384\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算给定字符串的 SHA384 哈希值。
 
@@ -312,7 +312,7 @@ SELECT HEX(SHA384('abc'));
 
 ## SHA512 \{#SHA512\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 计算给定字符串的 SHA512 哈希值。
 
@@ -346,7 +346,7 @@ SELECT HEX(SHA512('abc'));
 
 ## SHA512_256 \{#SHA512_256\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 计算给定字符串的 SHA512&#95;256 哈希值。
 
@@ -380,7 +380,7 @@ SELECT HEX(SHA512_256('abc'));
 
 ## URLHash \{#URLHash\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 一种针对从 URL 获取并经过某种规范化处理后的字符串的快速、较高质量的非加密哈希函数。
 
@@ -440,7 +440,7 @@ SELECT URLHash('https://www.clickhouse.com/docs', 1);
 
 ## cityHash64 \{#cityHash64\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 生成 64 位的 [CityHash](https://github.com/google/cityhash) 哈希值。
 
@@ -515,7 +515,7 @@ SELECT groupBitXor(cityHash64(*)) FROM users;
 
 ## farmFingerprint64 \{#farmFingerprint64\}
 
-引入于：v20.12
+引入于：v20.12.0
 
 使用 `Fingerprint64` 方法生成 64 位的 [FarmHash](https://github.com/google/farmhash) 值。
 
@@ -558,7 +558,7 @@ SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 
 
 ## farmHash64 \{#farmHash64\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 使用 `Hash64` 方法生成 64 位的 [FarmHash](https://github.com/google/farmhash) 哈希值。
 
@@ -601,7 +601,7 @@ SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 
 ## gccMurmurHash \{#gccMurmurHash\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 使用与 [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191) 相同的种子，计算输入值的 64 位 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -639,7 +639,7 @@ SELECT
 
 ## halfMD5 \{#halfMD5\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将所有输入参数都[重新解释](/sql-reference/functions/type-conversion-functions#reinterpretAsString)为字符串，并为每个参数计算其 MD5 哈希值。然后将这些哈希组合在一起，对所得字符串再计算哈希值，取其前 8 个字节，并按大端字节序将其解释为 [UInt64](/sql-reference/data-types/int-uint)。该函数相对较慢（每个处理器核心每秒处理 500 万个短字符串）。
 
@@ -679,7 +679,7 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 
 ## hiveHash \{#hiveHash\}
 
-引入自：v20.1
+引入自：v20.1.0
 
 计算字符串的 “HiveHash” 值。
 它只是将 [`JavaHash`](#javaHash) 的符号位清零后的结果。
@@ -720,7 +720,7 @@ SELECT hiveHash('Hello, world!');
 
 ## icebergHash \{#icebergHash\}
 
-在 v25.5 中引入
+在 v25.5.0 中引入
 
 实现 Iceberg [hashing transform](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements) 逻辑
 
@@ -752,7 +752,7 @@ SELECT icebergHash(1.0 :: Float32)
 
 ## intHash32 \{#intHash32\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 计算 32 位整数的哈希值。
 
@@ -788,7 +788,7 @@ SELECT intHash32(42);
 
 ## intHash64 \{#intHash64\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算整数的 64 位哈希值。
 
@@ -824,7 +824,7 @@ SELECT intHash64(42);
 
 ## javaHash \{#javaHash\}
 
-在 v20.1 中引入
+在 v20.1.0 中引入
 
 从以下类型计算 JavaHash：
 
@@ -886,7 +886,7 @@ SELECT javaHash('Hello, world!');
 
 ## javaHashUTF16LE \{#javaHashUTF16LE\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 从字符串计算其 [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452)，假定该字符串的字节内容表示为 UTF-16LE 编码的字符串。
 
@@ -920,7 +920,7 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 
 ## jumpConsistentHash \{#jumpConsistentHash\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算整数的 [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf)。
 
@@ -955,7 +955,7 @@ SELECT jumpConsistentHash(256, 4)
 
 ## kafkaMurmurHash \{#kafkaMurmurHash\}
 
-引入于：v23.4
+引入于：v23.4.0
 
 使用与 [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) 相同的种子计算输入值的 32 位 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值，并清除最高位，以便与 [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328) 兼容。
 
@@ -991,7 +991,7 @@ SELECT
 
 ## keccak256 \{#keccak256\}
 
-引入版本：v25.4
+引入版本：v25.4.0
 
 计算给定字符串的 Keccak-256 密码学哈希值。
 此哈希函数在区块链应用中被广泛使用，尤其是在以太坊（Ethereum）中。
@@ -1026,7 +1026,7 @@ SELECT hex(keccak256('hello'))
 
 ## kostikConsistentHash \{#kostikConsistentHash\}
 
-引入版本：v22.6
+引入版本：v22.6.0
 
 由 Konstantin &#39;Kostik&#39; Oblakov 提出的时间和空间复杂度均为 O(1) 的一致性哈希算法。
 仅当 `n <= 32768` 时效率较高。
@@ -1064,7 +1064,7 @@ SELECT kostikConsistentHash(16045690984833335023, 2);
 
 ## metroHash64 \{#metroHash64\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 生成一个 64 位的 [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) 哈希值。
 
@@ -1103,7 +1103,7 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 
 ## murmurHash2_32 \{#murmurHash2_32\}
 
-引入于：v18.5
+引入于：v18.5.0
 
 计算输入值的 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -1142,7 +1142,7 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash2_64 \{#murmurHash2_64\}
 
-引入自：v18.10
+引入自：v18.10.0
 
 计算输入值的 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -1181,7 +1181,7 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash3_128 \{#murmurHash3_128\}
 
-自 v18.10 引入
+自 v18.10.0 引入
 
 计算输入值的 128 位 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -1215,7 +1215,7 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 
 ## murmurHash3_32 \{#murmurHash3_32\}
 
-引入于：v18.10
+引入于：v18.10.0
 
 生成一个 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -1254,7 +1254,7 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash3_64 \{#murmurHash3_64\}
 
-自 v18.10 起提供
+自 v18.10.0 起提供
 
 计算输入值的 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
@@ -1293,7 +1293,7 @@ SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## ngramMinHash \{#ngramMinHash\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram，并为每个 n-gram 计算哈希值，然后返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，并使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -1334,7 +1334,7 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 
 ## ngramMinHashArg \{#ngramMinHashArg\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram（n 元语法），并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 [`ngramMinHash`](#ngramMinHash) 函数计算得到。
 区分大小写。
@@ -1371,7 +1371,7 @@ SELECT ngramMinHashArg('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgCaseInsensitive \{#ngramMinHashArgCaseInsensitive\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值由 [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) 函数在相同输入下计算得出。
 该函数对大小写不敏感。
@@ -1408,7 +1408,7 @@ SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgCaseInsensitiveUTF8 \{#ngramMinHashArgCaseInsensitiveUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 ngramMinHashCaseInsensitiveUTF8 函数计算得到。
 该函数不区分大小写。
@@ -1423,7 +1423,7 @@ ngramMinHashArgCaseInsensitiveUTF8(string[, ngramsize, hashnum])
 
 * `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
 * `ngramsize` — 可选。n-gram 的长度，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
-* `hashnum` — 可选。用于计算结果的最小和最大哈希数，取值范围为 `1` 到 `25`，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值范围为 `1` 到 `25`，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -1445,7 +1445,7 @@ SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgUTF8 \{#ngramMinHashArgUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值是通过对相同输入调用 `ngramMinHashUTF8` 函数计算得到的。
 该函数区分大小写。
@@ -1482,7 +1482,7 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashCaseInsensitive \{#ngramMinHashCaseInsensitive\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将一个 ASCII 字符串按长度为 `ngramsize` 的 n-gram 拆分，并计算每个 n-gram 的哈希值，返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -1521,7 +1521,7 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 
 ## ngramMinHashCaseInsensitiveUTF8 \{#ngramMinHashCaseInsensitiveUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串按 `ngramsize` 个符号拆分为 n-gram，为每个 n-gram 计算哈希值，并返回包含这些哈希的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -1562,7 +1562,7 @@ SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashUTF8 \{#ngramMinHashUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串按 `ngramsize` 个字符拆分成 n-gram，为每个 n-gram 计算哈希值，并返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，并使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -1603,7 +1603,7 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 
 ## ngramSimHash \{#ngramSimHash\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram，并返回该 n-gram 的 `simhash`。
 
@@ -1640,7 +1640,7 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 
 ## ngramSimHashCaseInsensitive \{#ngramSimHashCaseInsensitive\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回这些 n-gram 的 `simhash`。
 大小写不敏感。
@@ -1679,7 +1679,7 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 
 ## ngramSimHashCaseInsensitiveUTF8 \{#ngramSimHashCaseInsensitiveUTF8\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将 UTF-8 字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回这些 n-gram 的 `simhash` 值。
 该函数对大小写不敏感。
@@ -1717,7 +1717,7 @@ SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 
 ## ngramSimHashUTF8 \{#ngramSimHashUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 UTF-8 编码的字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回该 n-gram 的 `simhash` 值。
 该函数区分大小写。
@@ -1756,7 +1756,7 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
 
 ## sipHash128 \{#sipHash128\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 与 [`sipHash64`](#sipHash64) 类似，但会生成 128 位哈希值，即最终的异或折叠（xor-folding）操作会进行到 128 位。
 
@@ -1796,7 +1796,7 @@ SELECT hex(sipHash128('foo', '\x01', 3));
 
 ## sipHash128Keyed \{#sipHash128Keyed\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 与 [`sipHash128`](#sipHash128) 相同，但额外接受一个显式密钥参数，而不是使用固定密钥。
 
@@ -1837,7 +1837,7 @@ SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x0
 
 ## sipHash128Reference \{#sipHash128Reference\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 类似于 [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128)，但实现的是 SipHash 原作者提出的 128 位算法。
 
@@ -1871,7 +1871,7 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 
 ## sipHash128ReferenceKeyed \{#sipHash128ReferenceKeyed\}
 
-引入于：v23.2
+引入于：v23.2.0
 
 与 [`sipHash128Reference`](#sipHash128Reference) 相同，但此外还接收一个显式的密钥参数，而不是使用固定密钥。
 
@@ -1906,7 +1906,7 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 
 ## sipHash64 \{#sipHash64\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 生成一个 64 位的 [SipHash](https://en.wikipedia.org/wiki/SipHash) 哈希值。
 
@@ -1954,7 +1954,7 @@ SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00
 
 ## sipHash64Keyed \{#sipHash64Keyed\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 类似于 [`sipHash64`](#sipHash64)，但还需要显式提供一个密钥参数，而不是使用固定密钥。
 
@@ -1989,7 +1989,7 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 
 ## wordShingleMinHash \{#wordShingleMinHash\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个 shingle 计算哈希值，并返回一个包含这些哈希值的 tuple。
 使用 `hashnum` 个最小哈希值来计算最小哈希，使用 `hashnum` 个最大哈希值来计算最大哈希。
@@ -2030,7 +2030,7 @@ SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management
 
 ## wordShingleMinHashArg \{#wordShingleMinHashArg\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），并返回其中单词哈希值最小和最大的 shingles，这些哈希值由在相同输入下调用 wordShingleMinHash 函数计算得出。
 该函数区分大小写。
@@ -2067,7 +2067,7 @@ SELECT wordShingleMinHashArg('ClickHouse® is a column-oriented database managem
 
 ## wordShingleMinHashArgCaseInsensitive \{#wordShingleMinHashArgCaseInsensitive\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串按每 `shinglesize` 个单词划分为若干分区片段（shingle），并返回其中单词哈希值最小和最大的分区片段。这些哈希值通过使用相同输入的 [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 函数计算得到。
 该函数不区分大小写。
@@ -2104,7 +2104,7 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® is a column-oriented d
 
 ## wordShingleMinHashArgCaseInsensitiveUTF8 \{#wordShingleMinHashArgCaseInsensitiveUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串按每 `shinglesize` 个单词拆分为多个分区片段（shingles），并返回其中单词哈希值最小和最大的分区片段，这些哈希值是通过对相同输入调用 [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) FUNCTION 计算得到的。
 该函数不区分大小写。
@@ -2141,7 +2141,7 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® is a column-orient
 
 ## wordShingleMinHashArgUTF8 \{#wordShingleMinHashArgUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词构成的分区片段（shingles），并返回在使用相同输入调用 [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 函数时，其最小和最大单词哈希值所对应的 shingles。
 该函数区分大小写。
@@ -2178,7 +2178,7 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® is a column-oriented database man
 
 ## wordShingleMinHashCaseInsensitive \{#wordShingleMinHashCaseInsensitive\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段（shingles），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -2219,7 +2219,7 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 ## wordShingleMinHashCaseInsensitiveUTF8 \{#wordShingleMinHashCaseInsensitiveUTF8\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个 word shingle 计算哈希值，并返回包含这些哈希的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，并使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -2260,7 +2260,7 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 ## wordShingleMinHashUTF8 \{#wordShingleMinHashUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
@@ -2301,7 +2301,7 @@ SELECT wordShingleMinHashUTF8('ClickHouse® is a column-oriented database manage
 
 ## wordShingleSimHash \{#wordShingleSimHash\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将 ASCII 字符串拆分成由 `shinglesize` 个单词组成的片段（shingles），并返回这些单词 shingle 对应的 `simhash` 值。
 区分大小写。
@@ -2340,7 +2340,7 @@ SELECT wordShingleSimHash('ClickHouse® is a column-oriented database management
 
 ## wordShingleSimHashCaseInsensitive \{#wordShingleSimHashCaseInsensitive\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段（shingles），并返回这些词片段的 `simhash`。
 该函数对大小写不敏感。
@@ -2379,7 +2379,7 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 ## wordShingleSimHashCaseInsensitiveUTF8 \{#wordShingleSimHashCaseInsensitiveUTF8\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将 UTF-8 编码的字符串按 `shinglesize` 个单词划分为 shingles（词片段），并返回这些词片段的 `simhash`。
 比较时不区分大小写。
@@ -2418,7 +2418,7 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 ## wordShingleSimHashUTF8 \{#wordShingleSimHashUTF8\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 将 UTF-8 字符串按 `shinglesize` 个单词拆分为若干分区片段（shingles），并返回这些单词 shingle 的 `simhash`。
 区分大小写。
@@ -2427,6 +2427,27 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 两个字符串计算得到的 `simhashes` 的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)越小，它们相同的可能性就越大。
 
 **语法**
+
+wordShingleSimHashUTF8(string[, shinglesize])
+
+**参数**
+
+`string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+`shinglesize` — 可选。词 shingle（词片）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+SELECT wordShingleSimHashUTF8(&#39;ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).&#39;) AS Hash;
+
+┌───────Hash─┐
+│ 2328277067 │
+└────────────┘
 
 ```sql
 wordShingleSimHashUTF8(string[, shinglesize])
@@ -2457,7 +2478,7 @@ SELECT wordShingleSimHashUTF8('ClickHouse® is a column-oriented database manage
 
 ## wyHash64 \{#wyHash64\}
 
-自 v22.7 起引入。
+自 v22.7.0 起引入。
 
 计算 64 位 [wyHash64](https://github.com/wangyi-fudan/wyhash) 哈希值。
 
@@ -2489,7 +2510,7 @@ SELECT wyHash64('ClickHouse') AS Hash;
 
 ## xxHash32 \{#xxHash32\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 计算字符串的 [xxHash](http://cyan4973.github.io/xxHash/)。
 
@@ -2525,7 +2546,7 @@ SELECT xxHash32('Hello, world!');
 
 ## xxHash64 \{#xxHash64\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 根据字符串计算一个 [xxHash](http://cyan4973.github.io/xxHash/)。
 
@@ -2561,7 +2582,7 @@ SELECT xxHash64('Hello, world!');
 
 ## xxh3 \{#xxh3\}
 
-自 v22.12 引入
+自 v22.12.0 引入
 
 计算一个 [XXH3](https://github.com/Cyan4973/xxHash) 64 位哈希值。
 
@@ -2593,7 +2614,7 @@ SELECT xxh3('ClickHouse')
 
 ## xxh3_128 \{#xxh3_128\}
 
-首次引入：v26.2
+首次引入：v26.2.0
 
 计算 [XXH3](https://github.com/Cyan4973/xxHash) 128 位哈希值。
 
@@ -2623,4 +2644,4 @@ SELECT hex(xxh3_128('ClickHouse'))
 3A038784C52804B4DBA43A038784C528
 ```
 
-{/*AUTOGENERATED_END*/ }
+{/*AUTOGENERATED_END*/}

@@ -320,7 +320,7 @@ Peak memory usage: 666.82 MiB.
 
 ### Выбор `LAYOUT` словаря \{#choosing-the-dictionary-layout\}
 
-Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
 
 ### Обновление словарей \{#refreshing-dictionaries\}
 

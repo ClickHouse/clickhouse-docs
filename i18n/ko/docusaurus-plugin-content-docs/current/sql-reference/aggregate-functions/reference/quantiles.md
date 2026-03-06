@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantiles \{#quantiles\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 숫자 데이터 시퀀스에 대해 서로 다른 여러 수준의 근사 [quantiles](https://en.wikipedia.org/wiki/Quantile)를 동시에 계산합니다.
 

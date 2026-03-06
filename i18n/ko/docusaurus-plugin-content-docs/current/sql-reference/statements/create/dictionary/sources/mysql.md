@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
 | `db`                      | 데이터베이스 이름입니다.                                                                                                                                                                          |
 | `table`                   | 테이블 이름입니다.                                                                                                                                                                             |
 | `where`                   | 선택 조건입니다. 조건의 구문은 MySQL의 `WHERE` 절과 동일하며, 예를 들어 `id > 10 AND id < 20`과 같습니다. 선택 사항입니다.                                                                                                 |
-| `invalidate_query`        | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md#refreshing-dictionary-data-using-lifetime) 섹션을 참고하십시오.                                         |
+| `invalidate_query`        | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md) 섹션을 참고하십시오.                                                                                   |
 | `fail_on_connection_loss` | 연결 손실 시 서버 동작을 제어합니다. `true`이면 클라이언트와 서버 간 연결이 끊어졌을 때 즉시 예외를 발생시킵니다. `false`이면 ClickHouse 서버가 예외를 발생시키기 전에 쿼리 실행을 최대 3번까지 재시도합니다. 재시도는 응답 시간이 증가하는 원인이 된다는 점에 유의하십시오. 기본값: `false`입니다. |
 | `query`                   | 사용자 정의 쿼리입니다. 선택 사항입니다.                                                                                                                                                                |
 

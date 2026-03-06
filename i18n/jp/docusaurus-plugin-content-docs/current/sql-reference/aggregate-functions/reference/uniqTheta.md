@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqTheta \{#uniqTheta\}
 
-導入バージョン: v21.6
+導入バージョン: v21.6.0
 
 [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework) を使用して、引数の異なる値の概算個数を計算します。
 

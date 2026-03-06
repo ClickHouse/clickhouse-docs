@@ -32,6 +32,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
             <port>636</port>
             <bind_dn>uid={user_name},ou=users,dc=example,dc=com</bind_dn>
             <verification_cooldown>300</verification_cooldown>
+            <follow_referrals>false</follow_referrals>
             <enable_tls>yes</enable_tls>
             <tls_minimum_protocol_version>tls1.2</tls_minimum_protocol_version>
             <tls_require_cert>demand</tls_require_cert>
@@ -76,6 +77,9 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
       * 注意，必须在 XML 中正确转义特殊字符。
 * `verification_cooldown` — 成功绑定尝试之后的一段时间（以秒为单位），在此期间内，所有连续请求在不联系 LDAP 服务器的情况下，都会被视为用户已成功认证。
   * 指定 `0`（默认）以禁用缓存，并强制对每个认证请求都联系 LDAP 服务器。
+* `follow_referrals` — 一个标志，用于指示是否允许 LDAP 客户端库自动跟随服务器返回的 LDAP 引用。默认值为 `false`。注意：此设置主要与 Microsoft Active Directory 环境相关，在这些环境中，对较高级别基础 DN（例如 `DC=example,DC=com`）执行子树搜索时，可能会返回引用/搜索引用（referrals/search references，例如 `DC=DomainDnsZones,...`）。
+  * 仅当你明确需要跨‑分区搜索并且你的环境已配置为允许此类搜索时，才指定为 `true`。
+  * 指定为 `false` 以不跟随引用。对于 AD 域根搜索，推荐使用此设置。
 * `enable_tls` — 用于启用与 LDAP 服务器安全连接的标志。
   * 指定 `no` 使用明文 `ldap://` 协议（不推荐）。
   * 指定 `yes` 使用基于 SSL/TLS 的 LDAP `ldaps://` 协议（推荐，默认）。

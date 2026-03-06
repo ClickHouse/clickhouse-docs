@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # dictionary テーブル関数 \{#dictionary-table-function\}
 
-[dictionary](../statements/create/dictionary/index.md) のデータを ClickHouse のテーブルとして扱います。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
+[dictionary](../statements/create/dictionary/overview.md) のデータを ClickHouse のテーブルとして扱います。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
 
 ## 構文 \{#syntax\}
 

@@ -17,6 +17,22 @@ import Image from '@theme/IdealImage';
 
 # Postgres용 ClickPipes FAQ \{#clickpipes-for-postgres-faq\}
 
+### 트랜잭션 롤백도 ClickHouse로 복제됩니까? \{#are-transaction-rollbacks-replicated\}
+
+아니요. CDC는 커밋된 트랜잭션만 복제합니다. 롤백된 트랜잭션은 ClickHouse로 복제되지 않습니다.
+
+### ClickHouse에서 데이터를 Postgres 원본보다 더 오래 보관할 수 있습니까? \{#retain-data-longer-in-clickhouse\}
+
+예. 원본 Postgres와 대상 ClickHouse의 데이터 보존은 서로 독립적입니다. 예를 들어, Postgres에는 최근 3개월치 데이터만 보관하면서 ClickHouse에는 전체 이력을 보관할 수 있습니다. Postgres에서 오래된 행을 삭제하면 ClickHouse로 복제되는 DELETE 이벤트가 생성되므로, 과거 데이터를 보존하려면 [publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate)에서 DELETE를 제외하거나 쿼리 계층에서 이를 처리해야 합니다.
+
+### Postgres에서 ClickHouse로 데이터가 전송되는 동안 데이터를 어떻게 보강할 수 있습니까? \{#data-enrichment\}
+
+CDC 대상 테이블을 기반으로 [materialized view(구체화된 뷰)](/materialized-view)를 사용하십시오. ClickHouse의 materialized view는 INSERT 트리거처럼 동작하므로, Postgres에서 복제된 각 행을 최종 대상 테이블에 기록하기 전에 변환하거나 조회 테이블과 조인하거나 추가 컬럼을 통해 보강할 수 있습니다.
+
+### 여러 Postgres 인스턴스에서 하나 또는 여러 개의 ClickHouse 서비스로 복제할 수 있습니까? \{#multi-region-multi-source\}
+
+예. 서로 다른 Postgres 인스턴스(서로 다른 AWS 리전 간도 포함)에서 하나 또는 여러 개의 ClickHouse 서비스로 연결되는 개별 ClickPipes를 생성할 수 있습니다. 예를 들어, 지연 시간이 짧은 분석을 위해 지역 Postgres 인스턴스에서 로컬 ClickHouse 클러스터로 데이터를 전송하는 동시에, 통합 리포팅을 위해 다른 리전에 있는 중앙 집중식 ClickHouse 클러스터로도 데이터를 전송할 수 있습니다. 리전 간 구성을 사용하는 경우 AWS 리전 간 데이터 전송 비용과 추가 네트워크 지연 시간이 발생한다는 점을 유의해야 합니다.
+
 ### 유휴 상태가 Postgres CDC ClickPipe에 어떤 영향을 미칩니까? \{#how-does-idling-affect-my-postgres-cdc-clickpipe\}
 
 ClickHouse Cloud 서비스가 유휴 상태인 경우에도 Postgres CDC ClickPipe는 데이터를 계속 동기화하며, 서비스는 다음 동기화 주기에 맞춰 수신 데이터를 처리하기 위해 자동으로 다시 활성화됩니다. 동기화가 완료되고 유휴 상태로 전환되는 시점이 되면, 서비스는 다시 유휴 상태로 돌아갑니다.
