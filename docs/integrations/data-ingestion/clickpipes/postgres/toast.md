@@ -47,7 +47,9 @@ You can set the `REPLICA IDENTITY` to `FULL` using the following SQL command:
 ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
-Refer to [this blog post](https://xata.io/blog/replica-identity-full-performance) for performance considerations when setting `REPLICA IDENTITY FULL`.
+:::warning
+Setting `REPLICA IDENTITY FULL` resolves the data correctness issue but can significantly increase WAL volume and degrade performance on the source database, as PostgreSQL must write the entire old row for every UPDATE and DELETE. Evaluate the trade-offs carefully, especially for high-throughput tables with large TOAST columns. Refer to [this blog post](https://xata.io/blog/replica-identity-full-performance) for more details on performance considerations when setting `REPLICA IDENTITY FULL`.
+:::
 
 ## Replication behavior when REPLICA IDENTITY FULL isn't set {#replication-behavior-when-replica-identity-full-is-not-set}
 

@@ -103,6 +103,14 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
+   :::warning
+   Avoid using `FOR ALL TABLES` unless you intend to replicate every table. Including unnecessary tables increases WAL traffic from Postgres to ClickPipes and reduces overall replication efficiency.
+   :::
+
+   :::note
+   ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
+   :::
+
 ## Configure network access {#configure-network-access}
 
 :::note
