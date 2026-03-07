@@ -223,6 +223,10 @@ Map<String, String> javaClientOptions = Map.of(
     ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS.getKey(), "5"
 );
 
+Map<String, String> serverSettings = Map.of(
+    "insert_deduplicate", "1"
+);
+
 ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
     url,
     username,
@@ -230,7 +234,7 @@ ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
     database,
     tableName,
     javaClientOptions,
-    Map.of(), // serverSettings
+    serverSettings,
     false // enableJsonSupportAsString
 );
 ```
@@ -370,6 +374,7 @@ The connector exposes the following additional metrics on top of Flink's existin
 
 - For optimal performance, ensure your DataStream element type is **not** a Generic type - see [here for Flink's type distinction](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class). Non-generic elements will avoid the serialization overhead incurred by Kryo and improve throughput to ClickHouse.
 - We recommend setting `maxBatchSize` to at least 1000 and ideally between 10,000 to 100,000. See [this guide on bulk inserts](https://clickhouse.com/docs/optimize/bulk-inserts) for more information.
+- To do OLTP-style deduplication or upsert to ClickHouse, refer to [this documentation page](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication). _Note: this is not to be confused with batch deduplication that happens on retries, detailed [below](#duplicate_batches)._
 
 ## Troubleshooting {#troubleshooting}
 
@@ -377,14 +382,9 @@ The connector exposes the following additional metrics on top of Flink's existin
 
 The following error may occur:
 
-<Tabs groupId="cannot_read_all_data_error">
-<TabItem value="Text" label="Text" default>
-
 ```text
 com.clickhouse.client.api.ServerException: Code: 33. DB::Exception: Cannot read all data. Bytes read: 9205. Bytes expected: 1100022.: (at row 9) : While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)
 ```
-</TabItem>
-</Tabs>
 
 **Cause**: Most commonly, the CANNOT_READ_ALL_DATA error means that your ClickHouse table schema has diverged from your Flink record schema. This can happen when one or the other is changed in a backwards incompatible way.
 
@@ -398,11 +398,15 @@ You may experience that the connector's throughput does not scale with the job's
 
 **Solution**: Monitor the `numRequestSubmitted` and `actualRecordsPerBatch` metrics to help determine how to tune your batch size (`maxBatchSize`) and how frequently to flush. Also, see [Advanced and recommended usage](#advanced-and-recommended-usage) for batch sizing recommendations.
 
-### I see lots of duplicate rows in my ClickHouse table {#duplicate_rows}
+### I see duplicate batches of rows in my ClickHouse table {#duplicate_batches}
 
-**Cause**: If one or more records in a batch fails to insert into ClickHouse, the connector will retry the **entire batch**. This may result in duplicate records landing in your ClickHouse table.
+**Cause**: If one or more records in a Flink batch fails to insert into ClickHouse because of a retryable failure, the connector will retry the **entire batch**. This may result in duplicate records landing in your ClickHouse table.
 
-**Solution**: A workaround is to use the [ReplacingMergeTree table engine](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replacingmergetree), which will filter duplicate rows by the sorting key (`ORDER BY` table section, not `PRIMARY KEY`) assuming one is set.
+**Solution**: Use the `MergeTree` or `Replicated*MergeTree` table engine and set the server session setting `insert_deduplicate=1` (see the [example](#client-options) above). Refer to [this documentation page](https://clickhouse.com/docs/guides/developer/deduplicating-inserts-on-retries#query-level-insert-deduplication) for how retry insert deduplication works.
+
+_Note 1: `insert_deduplicate=1` is on by default in ClickHouse_
+
+_Note 2: this solution relies on [synchronous inserts](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default), which is enabled by default and recommended for use with the Flink connector. Please ensure server session setting `async_insert=0` or omit `async_insert` entirely._
 
 ### I am missing rows in my ClickHouse table {#missing_rows}
 
