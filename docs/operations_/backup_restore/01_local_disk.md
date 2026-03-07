@@ -203,7 +203,14 @@ FROM Disk('backups', 'incremental-a.zip');
 ### Securing a backup {#assign-a-password-to-the-backup}
 
 Backups written to disk can have a password applied to the file.
-The password can be specified using the `password` setting:
+The password can be specified using the `password` setting.
+
+:::note
+Password protection is only supported for ZIP archives (`.zip`, `.zipx`).
+The backup path must end with `.zip` or `.zipx` for the password to be accepted.
+Using a password with any other format - including tar archives and non-archive paths - will
+result in a `BAD_ARGUMENTS` error: `Password is not applicable, backup cannot be encrypted`.
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
