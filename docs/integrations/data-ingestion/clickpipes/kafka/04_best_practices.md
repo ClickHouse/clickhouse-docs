@@ -21,7 +21,7 @@ To learn more about message compression in Kafka, we recommend starting with thi
 ## Limitations {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) isn't supported.
-- Using a large number of partitions can result in increased latency.  ClickPipes limits the number of partitions that each replica will read at once based on replica size, ranges from 10 (XS) to 240 (XL).  If there are many partitions with no or limited data, processing of those messages may be delayed.
+- Using a large number of partitions can result in increased latency.  ClickPipes limits the number of partitions that each replica will read at once based on replica size, ranging from 10 (XS) to 240 (XL).  If there are many partitions with no or limited data, processing of those messages may be delayed.
 - Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
