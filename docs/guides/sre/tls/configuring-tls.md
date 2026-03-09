@@ -168,6 +168,10 @@ For a full explanation of all options, visit https://clickhouse.com/docs/operati
     </keeper_server>
     ```
 
+    :::note
+    When ClickHouse Keeper is embedded in ClickHouse server (as shown above), Keeper uses the server's OpenSSL configuration defined in [step 5.6](#5-configure-tls-interfaces-on-clickhouse-nodes). If you run ClickHouse Keeper as a standalone process, you must add an `<openSSL>` section to the Keeper configuration file with the same CA certificate and node certificate/key settings. See [Configure OpenSSL for standalone ClickHouse Keeper](#configure-openssl-for-standalone-clickhouse-keeper) below for details.
+    :::
+
 2. Uncomment and update the keeper settings on all nodes and set the `<secure>` flag to 1:
     ```xml
     <zookeeper>
@@ -498,6 +502,48 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
+
+## Configure OpenSSL for standalone ClickHouse Keeper {#configure-openssl-for-standalone-clickhouse-keeper}
+
+When running ClickHouse Keeper as a standalone process (rather than embedded within ClickHouse server), the OpenSSL certificates and settings must be configured separately in the Keeper configuration file. Without this, Keeper will not be able to establish secure connections for client communication (`tcp_port_secure`) or Raft replication between Keeper nodes.
+
+Add the following `<openSSL>` section to the standalone ClickHouse Keeper configuration file on each node:
+
+:::note
+Each filename must be updated to match the node that it is being configured on.
+For example, update the `<certificateFile>` entry to be `chnode2.crt` when configuring on the `chnode2` host.
+:::
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/chnode1.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/chnode1.key</privateKeyFile>
+        <verificationMode>relaxed</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>relaxed</verificationMode>
+        <invalidCertificateHandler>
+            <name>RejectCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+The `<server>` section is used for incoming client connections on the secure Keeper port (`tcp_port_secure`). The `<client>` section is used for outgoing connections between Keeper nodes during Raft replication.
+
+:::note
+The certificate paths above use `/etc/clickhouse-keeper/certs/` which is the typical path for standalone Keeper installations. If you installed Keeper using a different path, adjust accordingly. The certificates themselves are the same ones created in [step 2](#2-create-tls-certificates).
+:::
 
 ## Summary {#summary}
 
