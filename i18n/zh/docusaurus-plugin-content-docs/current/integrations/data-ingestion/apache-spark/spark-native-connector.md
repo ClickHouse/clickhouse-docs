@@ -370,98 +370,94 @@ TableProvider API 提供了一些强大的功能：
 
 当向一个不存在的表写入数据时，连接器会根据合适的 schema 自动创建该表。连接器提供了智能默认值：
 
-- **Engine**：如果未指定，则默认为 `MergeTree()`。你可以通过 `engine` 选项指定不同的 engine（例如：`ReplacingMergeTree()`、`SummingMergeTree()` 等）。
-- **ORDER BY**：**必需** —— 创建新表时必须显式指定 `order_by` 选项。连接器会校验所有指定的列是否存在于 schema 中。
-- **Nullable Key 支持**：如果 ORDER BY 中包含 Nullable 列，会自动添加 `settings.allow_nullable_key=1`
+* **Engine**：如果未指定，则默认为 `MergeTree()`。你可以通过 `engine` 选项指定不同的 engine (例如：`ReplacingMergeTree()`、`SummingMergeTree()` 等) 。
+* **ORDER BY**：**必需** —— 创建新表时必须显式指定 `order_by` 选项。连接器会校验所有指定的列是否存在于 schema 中。
+* **Nullable Key 支持**：如果 ORDER BY 中包含 Nullable 列，会自动添加 `settings.allow_nullable_key=1`
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # 使用显式 ORDER BY（必需）自动创建表
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# 使用显式 ORDER BY（必需）自动创建表
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # 使用自定义 engine 指定建表选项
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# 使用自定义 engine 指定建表选项
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // 使用显式 ORDER BY（必需）自动创建表
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // 使用显式建表选项和自定义 engine
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// 使用显式 ORDER BY（必需）自动创建表
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // 使用显式 ORDER BY（必需）自动创建表
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// 使用显式建表选项和自定义 engine
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// 使用显式 ORDER BY（必需）自动创建表
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// 使用显式建表选项和自定义 engine
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // 使用显式建表选项和自定义 engine
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
 **必须指定 ORDER BY**：通过 TableProvider API 创建新表时，`order_by` 选项是**必需**的。你必须显式指定用于 ORDER BY 子句的列。连接器会校验所有指定列是否存在于 schema 中，如果有任意列缺失，则会抛出错误。
 
-**Engine 选择**：默认的 engine 是 `MergeTree()`，但你可以通过 `engine` 选项指定任意 ClickHouse 表引擎（例如：`ReplacingMergeTree()`、`SummingMergeTree()`、`AggregatingMergeTree()` 等）。
+**Engine 选择**：默认的 engine 是 `MergeTree()`，但你可以通过 `engine` 选项指定任意 ClickHouse 表引擎 (例如：`ReplacingMergeTree()`、`SummingMergeTree()`、`AggregatingMergeTree()` 等) 。
 :::
 
 ### TableProvider 连接选项 \{#tableprovider-connection-options\}
@@ -487,17 +483,17 @@ df.write()
 
 当目标表不存在且需要新建时，可使用以下选项：
 
-| Option                      | Description                                                                 | Default Value     | Required |
-|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | 用于 ORDER BY 子句的列。多个列使用逗号分隔                                   | N/A               | **Yes**  |
-| `engine`                    | ClickHouse 表引擎（例如 `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` 等） | `MergeTree()`     | No       |
-| `settings.allow_nullable_key` | 在 ORDER BY 中启用 Nullable 键（适用于 ClickHouse Cloud）                 | Auto-detected**   | No       |
-| `settings.<key>`            | 任意 ClickHouse 表级 SETTING                                               | N/A               | No       |
-| `cluster`                   | 分布式表的集群名称                                                           | N/A               | No       |
-| `clickhouse.column.<name>.variant_types` | Variant 列对应的 ClickHouse 类型列表，使用逗号分隔（例如 `String, Int64, Bool, JSON`）。类型名区分大小写。逗号后的空格可选。 | N/A | No |
+| Option                                   | Description                                                                              | Default Value   | Required |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------- | --------------- | -------- |
+| `order_by`                               | 用于 ORDER BY 子句的列。多个列使用逗号分隔                                                               | N/A             | **Yes**  |
+| `engine`                                 | ClickHouse 表引擎 (例如 `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` 等)        | `MergeTree()`   | No       |
+| `settings.allow_nullable_key`            | 在 ORDER BY 中启用 Nullable 键 (适用于 ClickHouse Cloud)                                         | Auto-detected** | No       |
+| `settings.<key>`                         | 任意 ClickHouse 表级 SETTING                                                                 | N/A             | No       |
+| `cluster`                                | 分布式表的集群名称                                                                                | N/A             | No       |
+| `clickhouse.column.<name>.variant_types` | Variant 列对应的 ClickHouse 类型列表，使用逗号分隔 (例如 `String, Int64, Bool, JSON`) 。类型名区分大小写。逗号后的空格可选。 | N/A             | No       |
 
-\* 在创建新表时，`order_by` 选项是必需的。所有指定的列必须存在于模式（schema）中。  
-\** 如果 ORDER BY 中包含 Nullable 列且未显式提供该设置，则会自动设置为 `1`。
+* 在创建新表时，`order_by` 选项是必需的。所有指定的列必须存在于模式 (schema) 中。
+** 如果 ORDER BY 中包含 Nullable 列且未显式提供该设置，则会自动设置为 `1`。
 
 :::tip
 **最佳实践**：对于 ClickHouse Cloud，如果你的 ORDER BY 列可能为 Nullable 类型，请显式设置 `settings.allow_nullable_key=1`，因为 ClickHouse Cloud 需要此 SETTING。

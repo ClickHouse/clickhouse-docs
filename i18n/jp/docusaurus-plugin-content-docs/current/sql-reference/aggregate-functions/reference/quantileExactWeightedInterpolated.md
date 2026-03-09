@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 補間された値を取得するために、渡されたすべての値を配列にまとめてから、それらに対応する重みに基づいてソートします。次に、重みに基づいて累積分布を構築し、[weighted percentile method](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) を用いて分位数の補間を行います。この際、重みと値を使って線形補間を実行し、分位数を計算します。
 
-1つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率に動作します）。この場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
+1つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来よりも非効率に動作します) 。この場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 `quantileInterpolatedWeighted` よりも `quantileExactWeightedInterpolated` の使用を強く推奨します。`quantileExactWeightedInterpolated` の方が `quantileInterpolatedWeighted` よりも精度が高いためです。
 詳細については以下の例を参照してください。

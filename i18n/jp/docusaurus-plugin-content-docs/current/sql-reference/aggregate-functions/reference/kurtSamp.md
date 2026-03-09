@@ -27,7 +27,7 @@ kurtSamp(expr)
 
 **戻り値**
 
-指定された分布の尖度を返します。`n <= 1`（`n` は標本サイズ）の場合、この関数は `nan` を返します。[`Float64`](/sql-reference/data-types/float)
+指定された分布の尖度を返します。`n <= 1` (`n` は標本サイズ) の場合、この関数は `nan` を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 

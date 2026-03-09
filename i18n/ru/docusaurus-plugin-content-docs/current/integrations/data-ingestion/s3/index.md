@@ -996,7 +996,7 @@ sudo -u clickhouse \
 
 #### Определение кластера \{#define-a-cluster\}
 
-Кластеры ClickHouse задаются в разделе конфигурации `<remote_servers>`. В этом примере определён один кластер `cluster_1S_2R`, который состоит из одного шарда с двумя репликами. Реплики расположены на хостах `chnode1` и `chnode2`.
+Кластеры ClickHouse задаются в разделе конфигурации `<remote_servers>`. В этом примере определён один кластер `cluster_1S_2R`, который состоит из одного сегмента с двумя репликами. Реплики расположены на хостах `chnode1` и `chnode2`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>

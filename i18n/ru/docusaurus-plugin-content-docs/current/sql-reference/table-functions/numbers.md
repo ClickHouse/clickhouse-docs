@@ -81,7 +81,7 @@ SELECT toDate('2010-01-01') + number AS d FROM numbers(365);
 ```sql
 SELECT number
 FROM numbers()
-WHERE number >= toUInt64(1e15)
+WHERE number >= 1e15
   AND bitAnd(sipHash64(number), 0xFFFFF) = 0
 LIMIT 1;
 ```

@@ -57,7 +57,7 @@ SELECT bitmapToArray(bitmapAnd(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 
 導入バージョン: v20.1.0
 
-2つのビットマップの論理積（AND）の基数を返します。
+2つのビットマップの論理積 (AND) の基数を返します。
 
 **構文**
 
@@ -193,7 +193,7 @@ SELECT bitmapBuild([1, 2, 3, 4, 5]) AS res, toTypeName(res);
 
 導入バージョン: v20.1.0
 
-bitmap 内で 1 にセットされているビットの数（基数）を返します。
+bitmap 内で 1 にセットされているビットの数 (基数) を返します。
 
 **構文**
 
@@ -363,7 +363,7 @@ SELECT bitmapMax(bitmapBuild([1, 2, 3, 4, 5])) AS res;
 
 導入バージョン: v20.1.0
 
-ビットマップ内でセットされている最小のビットの位置を返します。すべてのビットが未セットの場合は `UINT32_MAX` を返します（ビットマップに `2^64` を超えるビットが含まれる場合は `UINT64_MAX` を返します）。
+ビットマップ内でセットされている最小のビットの位置を返します。すべてのビットが未セットの場合は `UINT32_MAX` を返します (ビットマップに `2^64` を超えるビットが含まれる場合は `UINT64_MAX` を返します) 。
 
 **構文**
 
@@ -475,7 +475,7 @@ bitmapSubsetInRange(bitmap, start, end)
 
 **引数**
 
-* `bitmap` — 部分集合を抽出する対象のビットマップ。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `start` — 範囲の開始位置（含む）。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 範囲の終了位置（含まない）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `bitmap` — 部分集合を抽出する対象のビットマップ。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `start` — 範囲の開始位置 (含む) 。[`UInt*`](/sql-reference/data-types/int-uint) - `end` — 範囲の終了位置 (含まない) 。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -509,7 +509,7 @@ bitmapSubsetLimit(bitmap, range_start, cardinality_limit)
 
 **引数**
 
-* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `range_start` — 範囲の開始位置（含む）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 部分集合の最大カーディナリティ。[`UInt32`](/sql-reference/data-types/int-uint)
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction)。 - `range_start` — 範囲の開始位置 (含む) 。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 部分集合の最大カーディナリティ。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -601,7 +601,7 @@ SELECT bitmapToArray(bitmapTransform(bitmapBuild([1, 2, 3, 4, 5]), [2, 4], [20, 
 
 v20.1.0 で導入
 
-2 つのビットマップの対称差（XOR）を計算します。
+2 つのビットマップの対称差 (XOR) を計算します。
 
 **構文**
 
@@ -635,7 +635,7 @@ SELECT bitmapToArray(bitmapXor(bitmapBuild([1, 2, 3]), bitmapBuild([3, 4, 5]))) 
 
 導入バージョン: v20.1.0
 
-2つのビットマップの XOR（対称差）の基数（cardinality）を返します。
+2つのビットマップの XOR (対称差) の基数 (cardinality) を返します。
 
 **構文**
 
@@ -679,7 +679,7 @@ subBitmap(bitmap, offset, cardinality_limit)
 
 **引数**
 
-* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — 先頭からスキップするセットされたビット数（0 起算）。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 部分集合に含めるセットされたビット数の最大値。[`UInt32`](/sql-reference/data-types/int-uint)
+* `bitmap` — Bitmap オブジェクト。[`AggregateFunction(groupBitmap, T)`](/sql-reference/data-types/aggregatefunction). - `offset` — 先頭からスキップするセットされたビット数 (0 起算) 。[`UInt32`](/sql-reference/data-types/int-uint) - `cardinality_limit` — 部分集合に含めるセットされたビット数の最大値。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 

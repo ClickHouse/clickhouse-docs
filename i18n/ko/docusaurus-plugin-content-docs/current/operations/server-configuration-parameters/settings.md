@@ -5037,6 +5037,10 @@ ClickHouse는 서버의 모든 테이블에 대해 이 설정을 사용합니다
 ```
 
 
+## webassembly_udf_engine \{#webassembly_udf_engine\}
+
+<SettingsInfoBlock type="String" default_value="wasmtime" />WebAssembly UDF를 실행하는 데 사용되는 엔진입니다. 사용할 수 있는 값은 &#39;wasmtime&#39;과 &#39;wasmedge&#39;입니다.
+
 ## workload_path \{#workload_path\}
 
 모든 `CREATE WORKLOAD` 및 `CREATE RESOURCE` 쿼리의 저장 위치로 사용되는 디렉터리입니다. 기본적으로 서버 작업 디렉터리 아래의 `/workload/` 폴더가 사용됩니다.

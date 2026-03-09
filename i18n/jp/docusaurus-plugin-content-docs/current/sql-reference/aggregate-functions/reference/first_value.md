@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 # first_value \{#first_value\}
 
-これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたものです。Window Functions では `NULL` 値を処理する必要が生じることがあります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
+これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたものです。Window Functions では `NULL` 値を処理する必要が生じることがあります (デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します) 。
 
-この関数は、NULL を考慮する修飾子（`RESPECT NULLS`）の指定をサポートしており、[Window Functions](../../window-functions/index.md) および通常の集約処理の両方で使用できます。
+この関数は、NULL を考慮する修飾子 (`RESPECT NULLS`) の指定をサポートしており、[Window Functions](../../window-functions/index.md) および通常の集約処理の両方で使用できます。
 
-`any` と同様に、Window Functions を使用しない場合、ソースストリームがソートされていなければ結果はランダムになり、戻り値の型は入力の型と一致します（NULL が返されるのは、入力が Nullable 型である場合、または -OrNull コンビネータが追加されている場合のみです）。
+`any` と同様に、Window Functions を使用しない場合、ソースストリームがソートされていなければ結果はランダムになり、戻り値の型は入力の型と一致します (NULL が返されるのは、入力が Nullable 型である場合、または -OrNull コンビネータが追加されている場合のみです) 。
 
 ## 使用例 \{#examples\}
 

@@ -29,7 +29,7 @@ groupArrayLast(max_size)(x)
 **引数**
 
 * `max_size` — 結果配列の最大サイズ。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 引数（カラム名または式）。[`Any`](/sql-reference/data-types)
+* `x` — 引数 (カラム名または式) 。[`Any`](/sql-reference/data-types)
 
 **戻り値**
 

@@ -105,7 +105,7 @@ WHERE code = '200'
 Granules 是 ClickHouse 中的数据处理单元，每个 Granule 通常包含 8192 行记录。要了解 Granules 以及它们的过滤方式的更多细节，建议阅读 [本指南](/guides/best-practices/sparse-primary-indexes#mark-files-are-used-for-locating-granules)。
 
 :::note
-在排序键（ordering key）中，对位置更靠后的键进行过滤，其效率不如对元组中更靠前的键进行过滤。原因详见 [此处](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
+在排序键 (ordering key) 中，对位置更靠后的键进行过滤，其效率不如对元组中更靠前的键进行过滤。原因详见 [此处](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)
 :::
 
 ## 多键过滤 \{#multi-key-filtering\}
@@ -155,7 +155,7 @@ WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= 
 
 ClickHouse 也可以利用排序键来实现高效排序。具体来说：
 
-当启用 [optimize&#95;read&#95;in&#95;order](/sql-reference/statements/select/order-by#optimization-of-data-reading) 设置时（默认启用），ClickHouse 服务器会使用表索引，并按照 ORDER BY 键的顺序读取数据。这样，在指定 LIMIT 的情况下，即可避免读取全部数据。因此，针对大数据集但 LIMIT 较小的查询，处理速度会更快。详细说明参见[此处](/sql-reference/statements/select/order-by#optimization-of-data-reading)和[此处](/docs/knowledgebase/async_vs_optimize_read_in_order#what-about-optimize_read_in_order)。
+当启用 [optimize&#95;read&#95;in&#95;order](/sql-reference/statements/select/order-by#optimization-of-data-reading) 设置时 (默认启用) ，ClickHouse 服务器会使用表索引，并按照 ORDER BY 键的顺序读取数据。这样，在指定 LIMIT 的情况下，即可避免读取全部数据。因此，针对大数据集但 LIMIT 较小的查询，处理速度会更快。详细说明参见[此处](/sql-reference/statements/select/order-by#optimization-of-data-reading)和[此处](/docs/knowledgebase/async_vs_optimize_read_in_order#what-about-optimize_read_in_order)。
 
 但这要求所使用的键彼此对齐。
 

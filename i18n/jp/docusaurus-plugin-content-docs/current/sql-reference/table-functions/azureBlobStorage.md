@@ -237,14 +237,14 @@ SELECT _path, * FROM azureBlobStorage(
 
 これは、読み取り時に ClickHouse が Hive スタイルのパーティション分割ファイルを解析するためのヒントとなる設定です。書き込み時には影響しません。読み取りと書き込みの動作を対称にしたい場合は、`partition_strategy` 引数を使用してください。
 
-`use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス内の Hive スタイルのパーティション分割（`/name=value/`）を検出し、クエリ内でパーティション列を仮想カラムとして使用できるようにします。これらの仮想カラムは、パーティション分割されたパス内の名前と同じ名前を持ちますが、先頭に `_` が付きます。
+`use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス内の Hive スタイルのパーティション分割 (`/name=value/`) を検出し、クエリ内でパーティション列を仮想カラムとして使用できるようにします。これらの仮想カラムは、パーティション分割されたパス内の名前と同じ名前を持ちます。
 
 **Example**
 
 Hive スタイルのパーティション分割で作成された仮想カラムを使用する。
 
 ```sql
-SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
 

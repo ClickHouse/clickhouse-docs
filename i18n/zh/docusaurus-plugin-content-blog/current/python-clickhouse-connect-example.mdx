@@ -122,6 +122,6 @@ query: [SELECT max(key), avg(metric) FROM new_table] returns:
 ```
 
 :::tip
-如果使用的是较旧版本的 Python（例如 `3.9.6`），可能会遇到与 `urllib3` 库相关的 `ImportError`。
+如果使用的是较旧版本的 Python (例如 `3.9.6`) ，可能会遇到与 `urllib3` 库相关的 `ImportError`。
 在这种情况下，可以将 Python 环境升级到较新的版本，或者在 requirements.txt 文件中将 `urllib3` 的版本固定为 `1.26.15`。
 :::

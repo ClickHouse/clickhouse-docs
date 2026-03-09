@@ -1225,7 +1225,7 @@ fuzzer는 모든 세션의 모든 쿼리에서 AST 조각을 축적하여 시간
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 async insert를 활성화합니다."}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "기본적으로 비동기 INSERT를 활성화합니다."}]}]} />
 
 true인 경우, INSERT 쿼리로 들어온 데이터는 큐에 저장된 뒤 백그라운드에서 테이블로 플러시됩니다. wait&#95;for&#95;async&#95;insert가 false이면 INSERT 쿼리는 거의 즉시 처리되고, 그렇지 않으면 클라이언트는 데이터가 테이블로 플러시될 때까지 대기합니다.
 
@@ -12047,6 +12047,47 @@ ClickHouse가 벡터 유사도 인덱스를 사용하는 쿼리에 대해 재점
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 이벤트 시간(event time) 처리에서 window view fire signal을 기다리는 대기 시간 제한입니다.
+
+## webassembly_udf_max_fuel \{#webassembly_udf_max_fuel\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="100000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "WebAssembly UDF 인스턴스 실행마다 CPU 명령어(fuel)를 제한하기 위한 새로운 설정입니다."}]}]} />
+
+WebAssembly UDF 인스턴스가 한 번 실행될 때의 fuel 한도입니다. 각 WebAssembly 명령어는 일정량의 fuel을 소모합니다.
+제한을 두지 않으려면 0으로 설정하십시오.
+
+## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "WebAssembly UDF의 입력 블록 크기를 제한하기 위한 새 설정입니다."}]}]} />
+
+하나의 블록에서 WebAssembly UDF로 전달되는 최대 행 수입니다. 0으로 설정하면 모든 행을 한 번에 처리합니다.
+
+## webassembly_udf_max_instances \{#webassembly_udf_max_instances\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "함수당 병렬로 실행될 수 있는 WebAssembly UDF 인스턴스 수를 제한하기 위한 새로운 설정입니다."}]}]} />
+
+함수당 병렬로 실행될 수 있는 WebAssembly UDF 인스턴스의 최대 수입니다.
+
+## webassembly_udf_max_memory \{#webassembly_udf_max_memory\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="134217728" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "134217728"},{"label": "WebAssembly UDF 인스턴스별 메모리 상한을 제한하는 새로운 설정입니다."}]}]} />
+
+WebAssembly UDF 인스턴스별 메모리 상한을 바이트 단위로 지정하는 설정입니다.
 
 ## window_view_clean_interval \{#window_view_clean_interval\}
 

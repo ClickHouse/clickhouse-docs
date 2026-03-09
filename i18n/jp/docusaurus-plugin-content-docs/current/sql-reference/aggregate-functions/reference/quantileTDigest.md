@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 この関数のパフォーマンスは、[`quantile`](/sql-reference/aggregate-functions/reference/quantile) や [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) のパフォーマンスよりも劣ります。ただし、State サイズと精度の比率という観点では、この関数は `quantile` よりもはるかに優れています。
 
-1 つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部 State は結合されません（つまり、そのクエリは本来よりも効率が悪くなります）。このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
+1 つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部 State は結合されません (つまり、そのクエリは本来よりも効率が悪くなります) 。このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 **構文**
 

@@ -29,11 +29,11 @@ sparkbar(buckets[, min_x, max_x])(x, y)
 
 **参数**
 
-* `buckets` — 段（区间）的数量。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `buckets` — 段 (区间) 的数量。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `min_x` — 可选。区间起点。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 * `max_x` — 可选。区间终点。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**参数（Arguments）**
+**参数 (Arguments)&#x20;**
 
 * `x` — 包含数值的字段。[`const String`](/sql-reference/data-types/string)
 * `y` — 包含数值出现频率的字段。[`const String`](/sql-reference/data-types/string)

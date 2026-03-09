@@ -13,9 +13,9 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import authenticate from '@site/static/images/clickstack/deployment/embedded/authenticate.png';
-import create_source from '@site/static/images/clickstack/deployment/embedded/create-source.png';
+import inferred_source from '@site/static/images/clickstack/deployment/embedded/inferred-source.png';
 
-ClickStack 直接集成在 ClickHouse 服务器二进制可执行文件中。这意味着您可以在自己的 ClickHouse 实例上直接访问 ClickStack UI（HyperDX），而无需部署任何其他组件。此部署方式类似于公共演示站点 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，但会在您自己的 ClickHouse 实例和数据之上运行。
+ClickStack 直接集成在 ClickHouse 服务器二进制可执行文件中。这意味着您可以在自己的 ClickHouse 实例上直接访问 ClickStack UI (HyperDX) ，而无需部署任何其他组件。此部署方式类似于公共演示站点 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，但会在您自己的 ClickHouse 实例和数据之上运行。
 
 
 ### 适用场景 \{#suitable-for\}
@@ -35,62 +35,121 @@ ClickStack 直接集成在 ClickHouse 服务器二进制可执行文件中。这
 
 ## 部署步骤 \{#deployment-steps\}
 
-<VerticalStepper headerLevel="h3">
-
-### 启动 ClickHouse \{#start-clickhouse\}
-
 <Tabs groupId="install-method">
-<TabItem value="docker" label="Docker" default>
+  <TabItem value="docker" label="Docker" default>
+    <VerticalStepper headerLevel="h3">
+      ### 启动 ClickHouse
 
-拉取并运行 ClickHouse 服务器镜像，并设置密码：
+      拉取并运行 ClickHouse 服务器镜像，并设置密码：
 
-```shell
-docker run --rm -it -p 8123:8123 -e CLICKHOUSE_PASSWORD=password clickhouse/clickhouse-server:head-alpine
-```
+      ```shell
+      docker run --rm -it -p 8123:8123 -e CLICKHOUSE_PASSWORD=password clickhouse/clickhouse-server:head-alpine
+      ```
 
-:::tip 无密码运行
-如果您希望在无密码的情况下运行，则必须显式启用默认访问管理：
+      :::tip 无密码运行
+      如果您希望在不设置密码的情况下运行，则必须显式启用默认访问管理：
 
-```shell
-docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 clickhouse/clickhouse-server:head-alpine
-```
-:::
+      ```shell
+      docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 clickhouse/clickhouse-server:head-alpine
+      ```
 
-</TabItem>
-<TabItem value="binary" label="Binary">
+      :::
 
-下载并启动 ClickHouse：
+      ### 打开 ClickStack UI
 
-```shell
-curl https://clickhouse.com/ | sh
+      在浏览器中打开 [http://localhost:8123](http://localhost:8123)，然后单击 **ClickStack**。
 
-./clickhouse server
-```
+      输入用户名 `default` 和密码 `password`，以连接到本地实例。
 
-使用二进制方式运行时，`default` 用户没有密码。
+      <Image img={authenticate} alt="身份验证" size="lg" />
 
-</TabItem>
+      ### 创建 Source
+
+      如果您已有 OpenTelemetry 表，ClickStack 会自动检测并创建相应的 Source。
+
+      在全新安装的环境中，系统会提示您创建一个 Source。将 **Table** 字段填写为相应的表名 (例如 `otel_logs`) ，然后单击 **Save New Source**。
+
+      <Image img={inferred_source} alt="创建 Source" size="lg" />
+
+      如果您尚无数据，请参阅 [数据摄取](/use-cases/observability/clickstack/ingesting-data) 以了解可用选项。
+    </VerticalStepper>
+  </TabItem>
+
+  <TabItem value="binary" label="二进制">
+    <VerticalStepper headerLevel="h3">
+      ### 启动 ClickHouse
+
+      下载并启动 ClickHouse：
+
+      ```shell
+      curl https://clickhouse.com/ | sh
+      ```
+
+      <details>
+        <summary>可选：启用系统日志表</summary>
+
+        若要探索 ClickHouse 自身的内部日志和指标，请在启动服务器之前，在当前工作目录中创建一个配置片段：
+
+        ```shell
+        mkdir -p config.d && cat > config.d/query_logs.xml << 'EOF'
+        <clickhouse>
+            <query_log>
+                <database>system</database>
+                <table>query_log</table>
+            </query_log>
+            <query_thread_log>
+                <database>system</database>
+                <table>query_thread_log</table>
+            </query_thread_log>
+            <query_views_log>
+                <database>system</database>
+                <table>query_views_log</table>
+            </query_views_log>
+            <metric_log>
+                <database>system</database>
+                <table>metric_log</table>
+            </metric_log>
+            <asynchronous_metric_log>
+                <database>system</database>
+                <table>asynchronous_metric_log</table>
+            </asynchronous_metric_log>
+        </clickhouse>
+        EOF
+        ```
+
+        启用该配置后，您可以在打开 ClickStack 后创建一个指向 `system.query_log` 的 **Log Source**：
+
+        | 设置            | 值                                                                                                                                       |
+        | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+        | **名称**        | `Query Logs`                                                                                                                            |
+        | **数据库**       | `system`                                                                                                                                |
+        | **表**         | `query_log`                                                                                                                             |
+        | **时间戳列**      | `event_time`                                                                                                                            |
+        | **默认 Select** | `event_time, query_kind, query, databases, tables, initial_user, projections, memory_usage, written_rows, read_rows, query_duration_ms` |
+      </details>
+
+      启动服务器：
+
+      ```shell
+      ./clickhouse server
+      ```
+
+      ### 打开 ClickStack UI
+
+      在浏览器中打开 [http://localhost:8123](http://localhost:8123)，然后单击 **ClickStack**。系统会自动创建与本地实例的连接。
+
+      ### 创建 Source
+
+      如果您已有 OpenTelemetry 表，ClickStack 会自动检测并创建相应的 Source。
+
+      如果您尚无数据，请参阅 [数据摄取](/use-cases/observability/clickstack/ingesting-data) 以了解可用选项。
+
+      <Image img={inferred_source} alt="创建 Source" size="lg" />
+    </VerticalStepper>
+  </TabItem>
 </Tabs>
 
-### 访问 ClickStack UI \{#navigate-to-clickstack-ui\}
-
-在浏览器中打开 [http://localhost:8123](http://localhost:8123)，然后点击 **ClickStack**。
-
-输入您的凭据。如果使用的是上面的 Docker 示例，用户名为 `default`，密码为 `password`。如果使用的是二进制方式，用户名为 `default`，且无密码。
-
-<Image img={authenticate} alt="Authenticate" size="lg"/>
-
-### 创建数据源 \{#create-a-source\}
-
-登录后，系统会提示您创建数据源。如果您已有现成的 OpenTelemetry 表，保留默认值，并在 `Table` 字段中填写相应的表名（例如 `otel_logs`）。其他所有设置应会被自动检测，您只需点击 `Save New Source` 即可。
-
-如果您尚无任何数据，请参阅 ["Ingesting data"](/use-cases/observability/clickstack/ingesting-data) 了解可用选项。
-
-<Image img={create_source} alt="Create Source" size="lg"/>
-
-</VerticalStepper>
-
-## 后续步骤 \{#next-steps\}
+## 后续步骤 {#next-steps}
 
 如果您已经准备好从评估阶段迈向正式使用，可以考虑以下面向生产环境的部署方案：
 
