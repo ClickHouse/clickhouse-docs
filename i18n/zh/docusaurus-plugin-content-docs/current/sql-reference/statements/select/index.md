@@ -80,7 +80,7 @@ COLUMNS('regexp')
 CREATE TABLE default.col_names (aa Int8, ab Int8, bc Int8) ENGINE = TinyLog
 ```
 
-以下查询从名称中包含 `a` 字符的所有列中查询数据。
+以下查询从名称中包含 `a` 字符的所有列中选择数据。
 
 ```sql
 SELECT COLUMNS('a') FROM col_names

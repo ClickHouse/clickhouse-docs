@@ -76,49 +76,49 @@ flowchart TB
 
 ### 可观测性 \{#observability\}
 
-[可观测性](/docs/observability/overview) 对于理解和调试 LLM 应用至关重要。与传统软件不同，LLM 应用涉及复杂的、非确定性的交互，因而更难监控和调试。Langfuse 提供了全面的追踪能力，帮助你准确理解应用中正在发生的一切。
+[可观测性](/docs/observability/overview) 对于理解和调试 LLM 应用至关重要。与传统软件不同，LLM 应用涉及复杂且非确定性的交互，因此很难监控和调试。Langfuse 提供全面的跟踪能力，帮助你准确理解应用中正在发生的一切。
 
-_📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=observability)，了解 Langfuse 可观测性以及如何将其集成到你的应用中。_
+_📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=observability)，了解 Langfuse Observability 以及如何将其集成到你的应用中。_
 
 <Tabs groupId="observability">
-<TabItem value="trace-details" label="Trace 详情">
+<TabItem value="trace-details" label="Trace Details">
 
-Trace 允许你追踪应用中每一次 LLM 调用和其他相关逻辑。
+跟踪记录让你能够追踪应用中每一次 LLM 调用和其他相关逻辑。
 
 <video src="https://static.langfuse.com/docs-videos/trace-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="sessions" label="会话">
+<TabItem value="sessions" label="Sessions">
 
-Session 允许你追踪多轮对话或基于 Agent 的多步工作流。
+会话让你能够追踪多轮对话或智能体工作流。
 
 <video src="https://static.langfuse.com/docs-videos/sessions-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="timeline" label="时间线">
+<TabItem value="timeline" label="Timeline">
 
 通过检查时间线视图来调试延迟问题。
 
 <video src="https://static.langfuse.com/docs-videos/timeline-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="users" label="用户">
+<TabItem value="users" label="Users">
 
 添加你自己的 `userId` 以监控每个用户的成本和使用情况。你也可以选择在自己的系统中创建指向此视图的深度链接。
 
 <video src="https://static.langfuse.com/docs-videos/users-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="agent-graphs" label="Agent 图">
+<TabItem value="agent-graphs" label="Agent Graphs">
 
-可以使用图形来可视化 LLM Agent，以展示复杂 Agent 工作流的执行路径。
+LLM 智能体可以可视化为图，以展示复杂智能体工作流的流程。
 
 <video src="https://static.langfuse.com/docs-videos/langgraph-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="dashboard" label="仪表盘">
+<TabItem value="dashboard" label="Dashboard">
 
-在仪表盘中查看质量、成本和延迟指标，以监控你的 LLM 应用。
+在仪表板中查看质量、成本和延迟指标，以监控你的 LLM 应用。
 
 <video src="https://static.langfuse.com/docs-videos/dashboard.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
@@ -185,19 +185,19 @@ _📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watc
 
 ### 评估与数据集 \{#evaluation\}
 
-[评估](/docs/evaluation/overview) 对于确保你的 LLM 应用的质量和可靠性至关重要。Langfuse 提供灵活的评估工具，可适配你的特定需求，无论你是在开发环境中进行测试，还是在生产环境中监控性能。
+[评估](/docs/evaluation/overview) 对于确保你的 LLM 应用的质量和可靠性至关重要。Langfuse 提供灵活的评估工具，可适应你的特定需求，无论你是在开发环境中测试，还是在生产环境中监控性能。
 
-_📹 想了解更多？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=evaluation)，了解 Langfuse Evaluation 以及如何利用它改进你的 LLM 应用。_
+_📹 想了解更多？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=evaluation)，了解 Langfuse Evaluation 以及如何使用它来改进你的 LLM 应用。_
 
 <Tabs groupId="evaluation">
 <TabItem value="analytics" label="分析">
 
-在 Langfuse 控制台中可视化评估结果。
+在 Langfuse 仪表板中绘制评估结果。
 
 <video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="user-feedback" label="用户反馈">
+<TabItem value="user-feedback" label="User Feedback">
 
 收集用户反馈。可通过我们的 Browser SDK 在前端采集，也可以通过服务端 SDK 或 API 采集。视频中包含示例应用。
 
@@ -206,28 +206,28 @@ _📹 想了解更多？[**观看端到端演示**](https://langfuse.com/watch-d
 </TabItem>
 <TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
 
-在生产或开发环境中的 trace 上运行完全托管的 LLM-as-a-judge 评估。可应用于应用中的任意步骤，以执行分步评估。
+在生产或开发环境中的跟踪记录上运行完全托管的 LLM-as-a-judge 评估。可应用于应用中的任意步骤，以执行分步评估。
 
 <video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="experiments" label="实验">
+<TabItem value="experiments" label="Experiments">
 
-在用户界面中直接基于数据集评估提示词和模型。无需编写自定义代码。
+直接在用户界面中基于数据集评估提示和模型。无需编写自定义代码。
 
 <video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="annotation-queue" label="标注队列">
+<TabItem value="annotation-queue" label="Annotation Queue">
 
-通过 Annotation Queues 中的人类标注，为你的评估工作流建立基线。
+通过标注队列中的人工标注，为你的评估工作流建立基线。
 
 <video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="custom-evals" label="自定义评估">
+<TabItem value="custom-evals" label="Custom Evals">
 
-添加自定义评估结果，支持数值、布尔值和分类值。
+添加自定义评估结果；支持数值、布尔值和分类值。
 
 ```bash
 POST /api/public/scores

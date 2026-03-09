@@ -129,7 +129,7 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
 すべてのオプションの詳細な説明については、https://clickhouse.com/docs/operations/clickhouse-keeper/ を参照してください。
 :::
 
-1. ClickHouse サーバーの `config.xml` 内にある `<clickhouse>` タグの内側に、次の設定を追加します。
+1. ClickHouse サーバーの `config.xml` の `<clickhouse>` タグ内に、以下を追加します。
 
     :::note
     本番環境では、`config.d` ディレクトリ内の個別の `.xml` 設定ファイルを使用することを推奨します。
@@ -170,6 +170,10 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     </keeper_server>
     ```
 
+    :::note
+    ClickHouse Keeper が ClickHouse サーバーに組み込まれている場合（上記のとおり）、Keeper は [step 5.6](#5-configure-tls-interfaces-on-clickhouse-nodes) で定義されたサーバーの OpenSSL 設定を使用します。ClickHouse Keeper をスタンドアロンプロセスとして実行する場合は、同じ CA 証明書およびノード証明書/秘密鍵の設定を含む `<openSSL>` セクションを Keeper の設定ファイルに追加する必要があります。詳細については、以下の [Configure OpenSSL for standalone ClickHouse Keeper](#configure-openssl-for-standalone-clickhouse-keeper) を参照してください。
+    :::
+
 2. すべてのノードで Keeper の設定をコメント解除して更新し、`<secure>` フラグを 1 に設定します。
     ```xml
     <zookeeper>
@@ -191,13 +195,13 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     </zookeeper>
     ```
 
-3. 次のクラスタ設定を `chnode1` と `chnode2` に追加・更新します。`chnode3` は ClickHouse Keeper のクォーラム用として使用します。
+3. 以下のクラスタ設定を `chnode1` と `chnode2` に追加・更新します。`chnode3` は ClickHouse Keeper のクォーラム用に使用されます。
 
     :::note
-    この構成では、1 つの例示用クラスタのみを設定します。テスト用のサンプルクラスタは削除するかコメントアウトするか、既存クラスタでテストを行う場合は、そのポートを更新し、`<secure>` オプションを追加する必要があります。インストール時や `users.xml` ファイルで `default` USER にパスワードを設定している場合は、`<user` および `<password>` を設定する必要があります。
+    この構成では、例として 1 つのクラスタのみを設定します。テスト用のサンプルクラスタは削除するかコメントアウトするか、またはテスト対象の既存クラスタがある場合は、ポートを更新して `<secure>` オプションを追加する必要があります。インストール時または `users.xml` ファイルで `default` ユーザーにパスワードが設定されている場合は、`<user` および `<password>` を設定する必要があります。
     :::
 
-    次の設定により、2 台のサーバー（各ノード 1 台ずつ）に、1 分片・2 レプリカ構成のクラスタが作成されます。
+    以下の設定では、2 台のサーバー（各ノードに 1 台ずつ）上に、1 シャード 2 レプリカのクラスタを作成します。
     ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -221,8 +225,7 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     </remote_servers>
     ```
 
-4. テスト用に ReplicatedMergeTree テーブルを作成できるよう、マクロの値を定義します。`chnode1` の設定:
-
+4. テスト用に ReplicatedMergeTree テーブルを作成できるように、マクロ値を定義します。`chnode1` では次のように設定します。
     ```xml
     <macros>
         <shard>1</shard>
@@ -230,7 +233,7 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     </macros>
     ```
 
-    `chnode2` の設定:
+    `chnode2` では次のように設定します。
     ```xml
     <macros>
         <shard>1</shard>
@@ -508,6 +511,49 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
+
+## スタンドアロンの ClickHouse Keeper 向けに OpenSSL を設定する \{#configure-openssl-for-standalone-clickhouse-keeper\}
+
+ClickHouse Keeper をスタンドアロン プロセスとして実行する場合 (ClickHouse サーバーに組み込むのではなく) 、OpenSSL の証明書と設定は Keeper の設定ファイルで個別に設定する必要があります。これを行わないと、Keeper はクライアント通信用のセキュアな接続 (`tcp_port_secure`) や、Keeper ノード間の Raft レプリケーションのためのセキュアな接続を確立できません。
+
+各ノードのスタンドアロン ClickHouse Keeper 設定ファイルに、次の `<openSSL>` セクションを追加します。
+
+:::note
+各ファイル名は、設定対象のノードに合わせて更新する必要があります。
+たとえば、`chnode2` ホストで設定する場合は、`<certificateFile>` の項目を `chnode2.crt` に更新します。
+:::
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/chnode1.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/chnode1.key</privateKeyFile>
+        <verificationMode>relaxed</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>relaxed</verificationMode>
+        <invalidCertificateHandler>
+            <name>RejectCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+`<server>` セクションは、セキュアな Keeper ポート (`tcp_port_secure`) で受信するクライアント接続に使用します。`<client>` セクションは、Raft レプリケーション中に Keeper ノード間で確立される送信接続に使用します。
+
+:::note
+上記の証明書パスには `/etc/clickhouse-keeper/certs/` を使用しています。これはスタンドアロンの Keeper インストールで一般的なパスです。別のパスで Keeper をインストールした場合は、それに合わせて調整してください。証明書自体は、[手順 2](#2-create-tls-certificates) で作成したものと同じです。
+:::
+
 
 ## 要約 \{#summary\}
 

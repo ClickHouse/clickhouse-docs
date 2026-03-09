@@ -11661,6 +11661,19 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использует отсечение партиций Paimon для табличных функций Paimon
 
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Включает кэш метаданных файлов Parquet."}]}]} />
+
+Если параметр включён, формат Parquet может использовать кэш метаданных Parquet.
+
+Возможные значения:
+
+* 0 - Отключено
+* 1 - Включено
+
 ## use_partition_pruning \{#use_partition_pruning\}
 
 **Псевдонимы**: `use_partition_key`

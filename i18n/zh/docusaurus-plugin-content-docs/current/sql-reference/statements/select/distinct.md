@@ -69,7 +69,7 @@ ClickHouse 支持在单个查询中对不同的列分别使用 `DISTINCT` 和 `O
 └───┴───┘
 ```
 
-查询数据：
+选择数据：
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b ASC;
@@ -83,7 +83,7 @@ SELECT DISTINCT a FROM t1 ORDER BY b ASC;
 └───┘
 ```
 
-按不同的排序方向查询数据：
+按不同的排序方向选择数据：
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b DESC;

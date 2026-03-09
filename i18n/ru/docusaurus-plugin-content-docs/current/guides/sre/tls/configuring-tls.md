@@ -132,8 +132,8 @@ import Image from '@theme/IdealImage';
 1. Добавьте следующий блок внутрь тега `<clickhouse>` в файле `config.xml` сервера ClickHouse.
 
     :::note
-    Для продуктивных сред рекомендуется использовать отдельный конфигурационный файл `.xml` в директории `config.d`.
-    Для получения дополнительной информации посетите https://clickhouse.com/docs/operations/configuration-files/
+    Для продуктивных сред рекомендуется использовать отдельный `.xml` файл конфигурации в каталоге `config.d`.
+    Для получения дополнительной информации см. https://clickhouse.com/docs/operations/configuration-files/
     :::
 
     ```xml
@@ -170,6 +170,10 @@ import Image from '@theme/IdealImage';
     </keeper_server>
     ```
 
+    :::note
+    Когда ClickHouse Keeper встроен в сервер ClickHouse (как показано выше), Keeper использует конфигурацию OpenSSL сервера, заданную в [шаге 5.6](#5-configure-tls-interfaces-on-clickhouse-nodes). Если вы запускаете ClickHouse Keeper как автономный процесс, необходимо добавить раздел `<openSSL>` в файл конфигурации Keeper с теми же настройками сертификата CA и сертификата/ключа узла. Подробности см. ниже в разделе [Configure OpenSSL for standalone ClickHouse Keeper](#configure-openssl-for-standalone-clickhouse-keeper).
+    :::
+
 2. Раскомментируйте и обновите настройки Keeper на всех узлах и установите флаг `<secure>` в значение 1:
     ```xml
     <zookeeper>
@@ -197,7 +201,7 @@ import Image from '@theme/IdealImage';
     В этой конфигурации настроен только один пример кластера. Тестовые примерные кластеры должны быть либо удалены, либо закомментированы, либо, если уже существует кластер, который тестируется, его порт должен быть обновлён и должна быть добавлена опция `<secure>`. Параметры `<user` и `<password>` должны быть заданы, если пользователь `default` изначально был настроен с паролем при установке или в файле `users.xml`.
     :::
 
-    Следующая конфигурация создаёт кластер с одним сегментом и двумя репликами на двух серверах (по одной на каждом узле).
+    Следующая конфигурация создаёт кластер с одной репликой шарда на двух серверах (по одной на каждом узле).
     ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -507,6 +511,49 @@ import Image from '@theme/IdealImage';
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
+
+## Настройка OpenSSL для автономного ClickHouse Keeper \{#configure-openssl-for-standalone-clickhouse-keeper\}
+
+При запуске ClickHouse Keeper как автономного процесса (а не встроенного в сервер ClickHouse) сертификаты и параметры OpenSSL необходимо настраивать отдельно в файле конфигурации Keeper. Без этого Keeper не сможет устанавливать защищенные соединения ни для взаимодействия с клиентами (`tcp_port_secure`), ни для Raft-репликации между узлами Keeper.
+
+Добавьте следующий раздел `<openSSL>` в файл конфигурации автономного ClickHouse Keeper на каждом узле:
+
+:::note
+Имя каждого файла необходимо изменить в соответствии с узлом, на котором выполняется настройка.
+Например, при настройке на хосте `chnode2` укажите в записи `<certificateFile>` значение `chnode2.crt`.
+:::
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/chnode1.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/chnode1.key</privateKeyFile>
+        <verificationMode>relaxed</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>relaxed</verificationMode>
+        <invalidCertificateHandler>
+            <name>RejectCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+Раздел `<server>` используется для входящих клиентских подключений к защищённому порту Keeper (`tcp_port_secure`). Раздел `<client>` используется для исходящих подключений между узлами Keeper в процессе репликации Raft.
+
+:::note
+В приведённых выше путях к сертификатам используется `/etc/clickhouse-keeper/certs/` — это типичный путь для автономных установок Keeper. Если вы установили Keeper в другой каталог, внесите соответствующие изменения. Сами сертификаты — те же, что были созданы на [шаге 2](#2-create-tls-certificates).
+:::
+
 
 ## Итоги \{#summary\}
 
