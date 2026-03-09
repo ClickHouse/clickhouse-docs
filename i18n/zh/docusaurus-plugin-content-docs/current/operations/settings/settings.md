@@ -11615,6 +11615,19 @@ Cloud 默认值：`1`
 
 对 Paimon 表函数使用 Paimon 分区裁剪
 
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "启用 Parquet 文件元数据缓存。"}]}]}/>
+
+开启后，Parquet 格式可使用 Parquet 元数据缓存。
+
+可能的取值：
+
+- 0 - 禁用
+- 1 - 启用
+
 ## use_partition_pruning \{#use_partition_pruning\}
 
 **别名**: `use_partition_key`

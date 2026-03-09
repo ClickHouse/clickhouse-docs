@@ -99,15 +99,15 @@ ClickHouse Cloud の [public APIs](https://clickhouse.com/docs/cloud/manage/api/
 
 クラスタを水平スケーリングするには、API 経由で `PATCH` リクエストを送信し、レプリカ数を調整します。以下のスクリーンショットは、`3` レプリカのクラスタを `6` レプリカにスケールアウトする API 呼び出しと、そのレスポンスの例です。
 
-<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border/>
+<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border />
 
 *`numReplicas` を更新するための `PATCH` リクエスト*
 
-<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border/>
+<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border />
 
 *`PATCH` リクエストからのレスポンス*
 
-スケーリング処理が進行中の間に、新しいスケーリングリクエストを発行したり、連続して複数のリクエストを発行したりした場合、スケーリングサービスは途中の状態を無視し、最終的なレプリカ数に収束します。
+スケーリング処理が進行中の間に、新しいスケーリングリクエスト (または連続した複数のリクエスト) を発行した場合、スケーリングサービスは途中の状態を無視し、最終的なレプリカ数に収束します。
 
 ### UI 経由での水平方向スケーリング \{#horizontal-scaling-via-ui\}
 

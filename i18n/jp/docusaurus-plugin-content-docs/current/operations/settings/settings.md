@@ -11633,6 +11633,19 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 
 Paimon テーブル関数で Paimon のパーティションプルーニングを使用します
 
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Parquet ファイルのメタデータ キャッシュを有効にします。"}]}]}/>
+
+有効にすると、Parquet 形式で Parquet メタデータ キャッシュを使用できます。
+
+設定可能な値:
+
+- 0 - 無効
+- 1 - 有効
+
 ## use_partition_pruning \{#use_partition_pruning\}
 
 **別名**: `use_partition_key`

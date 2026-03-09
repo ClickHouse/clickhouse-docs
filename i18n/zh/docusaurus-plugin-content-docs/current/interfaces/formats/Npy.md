@@ -62,7 +62,7 @@ FROM file('example_array.npy', Npy)
 └───────────────┘
 ```
 
-### 查询数据 \{#selecting-data\}
+### 选择数据 \{#selecting-data\}
 
 可以使用 `clickhouse-client` 运行以下命令，将 ClickHouse 表中的数据查询出来并保存为 Npy 格式的文件：
 

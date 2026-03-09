@@ -95,9 +95,9 @@ ClickHouse Cloud의 [public APIs](https://clickhouse.com/docs/cloud/manage/api/s
 서비스는 수평 확장을 통해 최대 20개의 레플리카까지 확장할 수 있습니다. 추가 레플리카가 필요한 경우 지원 팀에 문의하십시오.
 :::
 
-### API를 통한 수평 확장 \{#horizontal-scaling-via-api\}
+### API를 통한 수평 스케일링 \{#horizontal-scaling-via-api\}
 
-클러스터를 수평 확장하려면 API를 통해 `PATCH` 요청을 전송하여 레플리카 수를 조정합니다. 아래 스크린샷은 레플리카가 `3`개인 클러스터를 `6`개의 레플리카로 확장하는 API 호출과 그에 대한 응답을 보여줍니다.
+클러스터를 수평 스케일링하려면 API를 통해 `PATCH` 요청을 보내 레플리카 수를 조정합니다. 아래 스크린샷은 레플리카가 `3`개인 클러스터를 `6`개 레플리카로 스케일 아웃하는 API 호출과 그에 해당하는 응답을 보여줍니다.
 
 <Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border/>
 
@@ -107,7 +107,7 @@ ClickHouse Cloud의 [public APIs](https://clickhouse.com/docs/cloud/manage/api/s
 
 *`PATCH` 요청에 대한 응답*
 
-이미 하나의 스케일링 작업이 진행 중인 상태에서 새로운 스케일링 요청을 보내거나 여러 요청을 연속해서 보내는 경우, 스케일링 서비스는 중간 상태를 무시하고 최종 레플리카 수에 맞춰 상태를 수렴합니다.
+이미 하나의 스케일링 작업이 진행 중인 상태에서 새로운 스케일링 요청(또는 여러 요청을 연속해서)을 보내면, 스케일링 서비스는 중간 상태를 무시하고 최종 레플리카 수에 맞춰 수렴합니다.
 
 ### UI를 통한 수평 확장 \{#horizontal-scaling-via-ui\}
 
