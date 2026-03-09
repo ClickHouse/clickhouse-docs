@@ -13,5 +13,5 @@ doc_type: 'reference'
 ClickHouse Cloud 提供如下智能代理能力，将这一流程压缩到几秒或几分钟，
 使产品经理可以直接询问“上周客户流失激增的原因是什么？”，并立即获得不仅是答案，还有对应的底层查询、可视化结果以及可供进一步探索的后续问题建议。
 
-* [Ask AI agent](/cloud/features/ai-ml/ask-ai)
+* [ClickHouse Assistant agent](/cloud/features/ai-ml/ask-ai)
 * [Remote MCP server](/cloud/features/ai-ml/remote-mcp)

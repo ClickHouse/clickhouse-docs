@@ -129,7 +129,7 @@ Using `catchup: False` with `dbt run --full-refresh` will **discard all existing
 This feature is in beta and available starting from **dbt-clickhouse version 1.10**. The API may change based on community feedback.
 :::
 
-By default, dbt-clickhouse creates and manages both the target table and the materialized view(s) within a single model (the [implicit target](#implicit-target) approach described above). This approach has some limitations:
+By default, dbt-clickhouse creates and manages both the target table and the materialized views within a single model (the [implicit target](#implicit-target) approach described above). This approach has some limitations:
 
 - All resources (target table + MVs) share the same configuration. If multiple MVs are pointing to the same target table, they must be defined together using `UNION ALL` syntax.
 - All these resources cannot be iterated separately, all need to be managed using the same model file.
@@ -290,7 +290,7 @@ There are a few reasons why this can happen:
 
 #### There's duplicate data after a run is executed {#duplicate-data}
 Possible reasons:
-- Both `catchup=True` on the materialized view(s) and `repopulate_from_mvs_on_full_refresh=True` on the target table may be enabled: Keep only one of them depending on the operations you want to run. Check the [configuration section](#explicit-target-configuration) for more details.
+- Both `catchup=True` on the materialized views and `repopulate_from_mvs_on_full_refresh=True` on the target table may be enabled: Keep only one of them depending on the operations you want to run. Check the [configuration section](#explicit-target-configuration) for more details.
 - Target table is not defined with `WHERE 0`: target table should be created empty, but the internal query may insert data if the `WHERE 0` is not included. Make sure the clause is included.
 
 #### Data loss during active ingestion after a `dbt run --full-refresh` is executed {#data-loss-active-ingestion}
@@ -410,9 +410,9 @@ The following table summarizes the safety of each operation when inserts are act
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create materialized view(s) | ⚠️ **Materialized view is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
+| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create materialized views | ⚠️ **Materialized view is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
 | Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The materialized view is updated atomically. |
-| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop materialized view(s)<br/>4. Exchange tables<br/>5. Recreate materialized view(s) | ⚠️ **Materialized view is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
+| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop materialized views<br/>4. Exchange tables<br/>5. Recreate materialized views | ⚠️ **Materialized view is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
 
 #### Explicit target operations {#ingestion-explicit-target}
 

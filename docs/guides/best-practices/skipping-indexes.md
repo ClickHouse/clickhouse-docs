@@ -155,14 +155,17 @@ There are three Data Skipping Index types based on Bloom filters:
 
 * The basic **bloom_filter** which takes a single optional parameter of the allowed "false positive" rate between 0 and 1 (if unspecified, .025 is used).
 
-* The specialized **tokenbf_v1**. It takes three parameters, all related to tuning the bloom filter used:  (1) the size of the filter in bytes (larger filters have fewer false positives, at some cost in storage), (2) number of hash functions applied (again, more hash filters reduce false positives), and (3) the seed for the bloom filter hash functions.  See the calculator [here](https://hur.st/bloomfilter/) for more detail on how these parameters affect bloom filter functionality.
+* The specialized **tokenbf_v1** *(Deprecated)*). It takes three parameters, all related to tuning the bloom filter used:  (1) the size of the filter in bytes (larger filters have fewer false positives, at some cost in storage), (2) number of hash functions applied (again, more hash filters reduce false positives), and (3) the seed for the bloom filter hash functions.  See the calculator [here](https://hur.st/bloomfilter/) for more detail on how these parameters affect bloom filter functionality.
 This index works only with String, FixedString, and Map datatypes. The input expression is split into character sequences separated by non-alphanumeric characters. For example, a column value of `This is a candidate for a "full text" search` will contain the tokens `This` `is` `a` `candidate` `for` `full` `text` `search`.  It is intended for use in LIKE, EQUALS, IN, hasToken() and similar searches for words and other values within longer strings.  For example, one possible use might be searching for a small number of class names or line numbers in a column of free form application log lines.
 
-* The specialized **ngrambf_v1**. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
+* The specialized **ngrambf_v1** *(Deprecated)*. This index functions the same as the token index.  It takes one additional parameter before the Bloom filter settings, the size of the ngrams to index.  An ngram is a character string of length `n` of any characters, so the string `A short string` with an ngram size of 4 would be indexed as:
   ```text
   'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
+
+> For full-text search workloads, the dedicated **text index** (see [Text index for full-text search](engines/table-engines/mergetree-family/textindexes.md)) is recommended over the deprecated *tokenbf_v1* or *ngrambf_v1* indexes.
+The text index provides a true inverted index with better search performance, more predictable behavior, and greater flexibility and performance compared with token-based Bloom filter indexes.
 
 ## Skip index functions {#skip-index-functions}
 

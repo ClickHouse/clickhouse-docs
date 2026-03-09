@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4046 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -250,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -801,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -2039,6 +2041,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake

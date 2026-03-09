@@ -503,13 +503,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 ## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的实验性设置"}]}]} />
 
 允许在表中创建 [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) 类型的列。
+
+此设置不控制提取的 Tuple 子列是否可以为 `Nullable` (例如，从 Dynamic、Variant、JSON 或 Tuple 列中提取的子列) 。
+请使用 `allow_nullable_tuple_in_extracted_subcolumns` 来控制提取的 Tuple 子列是否可以为 `Nullable`。
 
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
@@ -748,6 +751,24 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 - 0 — 不允许。
 - 1 — 允许。
+
+## allow_nullable_tuple_in_extracted_subcolumns \{#allow_nullable_tuple_in_extracted_subcolumns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新的设置，用于控制提取的 Tuple 子列是否可以为 nullable。"}]}]} />
+
+控制类型为 `Tuple(...)` 的提取子列是否可以被定义为 `Nullable(Tuple(...))`。
+
+* `false`：返回 `Tuple(...)`，并在子列缺失的行上使用元组的默认值。
+* `true`：返回 `Nullable(Tuple(...))`，并在子列缺失的行上使用 `NULL`。
+
+此设置仅控制提取子列的行为。
+它不控制是否可以在表中创建 `Nullable(Tuple(...))` 列；这由 `allow_experimental_nullable_tuple_type` 控制。
+
+ClickHouse 使用在服务器启动时加载的该设置值。
+通过 `SET` 或查询级别的 `SETTINGS` 所做的更改不会改变提取子列的行为。
+若要更改提取子列的行为，请在启动时的 profile 配置 (例如 users.xml) 中更新 `allow_nullable_tuple_in_extracted_subcolumns`，并重启服务器。
 
 ## allow_prefetched_read_pool_for_local_filesystem \{#allow_prefetched_read_pool_for_local_filesystem\}
 

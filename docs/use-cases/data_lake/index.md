@@ -1,7 +1,7 @@
 ---
 description: 'Use ClickHouse to query, accelerate, and analyze data in open table formats such as Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon.'
 pagination_prev: null
-pagination_next: use-cases/data_lake/getting-started/index
+pagination_next: null
 slug: /use-cases/data-lake
 title: 'Data Lakehouse'
 keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']

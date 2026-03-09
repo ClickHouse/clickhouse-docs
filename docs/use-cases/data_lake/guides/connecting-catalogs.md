@@ -4,8 +4,8 @@ sidebar_label: 'Connecting to catalogs'
 slug: /use-cases/data-lake/getting-started/connecting-catalogs
 sidebar_position: 2
 toc_max_heading_level: 3
-pagination_prev: use-cases/data_lake/getting-started/querying-directly
-pagination_next: use-cases/data_lake/getting-started/accelerating-analytics
+pagination_prev: use-cases/data_lake/guides/querying-directly
+pagination_next: use-cases/data_lake/guides/accelerating-analytics
 description: 'Connect ClickHouse to external data catalogs using the DataLakeCatalog database engine to expose catalog tables as native ClickHouse databases.'
 keywords: ['data lake', 'lakehouse', 'catalog', 'glue', 'unity', 'rest', 'lakekeeper', 'nessie', 'OneLake']
 doc_type: 'guide'

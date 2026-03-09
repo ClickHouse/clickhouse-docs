@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'ClickHouse Cloud에서 Ask AI 채팅 사용하기'
-title: 'ClickHouse Cloud에서 Ask AI 채팅 사용하기'
+sidebar_label: 'ClickHouse Cloud에서 ClickHouse Assistant 채팅 사용하기'
+title: 'ClickHouse Cloud에서 ClickHouse Assistant 채팅 사용하기'
 pagination_prev: null
 pagination_next: null
 description: 'ClickHouse Cloud Console에서 AI Chat 기능을 활성화하고 사용하는 방법을 설명하는 가이드'
@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# ClickHouse Cloud에서 Ask AI 채팅 사용하기 \{#use-ask-ai-chat-in-clickhouse-cloud\}
+# ClickHouse Cloud에서 ClickHouse Assistant 채팅 사용하기 \{#use-ask-ai-chat-in-clickhouse-cloud\}
 
 > 이 가이드는 ClickHouse Cloud Console에서 AI Chat 기능을 활성화하고 사용하는 방법을 설명합니다.
 
@@ -35,7 +35,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 ## AI Chat 패널 열기 \{#open-panel\}
 
 1. ClickHouse Cloud 서비스로 이동합니다.
-2. 왼쪽 사이드바에서 「Ask AI」라고 표시된 반짝이 아이콘을 클릭합니다.
+2. 왼쪽 사이드바에서 「ClickHouse Assistant」라고 표시된 반짝이 아이콘을 클릭합니다.
 3. (단축키) <kbd>⌘</kbd> + <kbd>'</kbd> (macOS) 또는 <kbd>Ctrl</kbd> + <kbd>'</kbd> (Linux/Windows)를 눌러 열기/닫기를 전환합니다.
 
 <Image img={img_open} alt="AI Chat 플라이아웃 열기" size="md"/>

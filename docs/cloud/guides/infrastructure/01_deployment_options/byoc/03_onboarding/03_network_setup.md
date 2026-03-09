@@ -134,8 +134,8 @@ Once your VPC endpoint is created and the connection is approved, you need to ad
    - Copy the Endpoint ID (it will look like `vpce-xxxxxxxxxxxxxxxxx`)
 
 2. **Contact ClickHouse Support**:
-   - Provide the Endpoint ID(s) to ClickHouse Support
-   - Specify which ClickHouse service(s) should allow access from this endpoint
+   - Provide the Endpoint IDs to ClickHouse Support
+   - Specify which ClickHouse services should allow access from this endpoint
    - ClickHouse Support will add the Endpoint ID to the service allowlist
 
 ### Connect to ClickHouse via PrivateLink {#step-4-connect-via-privatelink}

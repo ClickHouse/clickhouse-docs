@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'ClickHouse Cloud で Ask AI チャットを使用する'
-title: 'ClickHouse Cloud で Ask AI チャットを使用する'
+sidebar_label: 'ClickHouse Cloud で ClickHouse Assistant チャットを使用する'
+title: 'ClickHouse Cloud で ClickHouse Assistant チャットを使用する'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse Cloud コンソールで Ask AI チャット機能を有効化して利用するためのガイド'
+description: 'ClickHouse Cloud コンソールで ClickHouse Assistant チャット機能を有効化して利用するためのガイド'
 keywords: ['AI', 'ClickHouse Cloud', 'Chat', 'SQL Console', 'Agent', 'Docs AI']
 show_related_blogs: true
 sidebar_position: 2
@@ -22,7 +22,7 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# ClickHouse Cloud で Ask AI チャットを使用する \{#use-ask-ai-chat-in-clickhouse-cloud\}
+# ClickHouse Cloud で ClickHouse Assistant チャットを使用する \{#use-ask-ai-chat-in-clickhouse-cloud\}
 
 > このガイドでは、ClickHouse Cloud コンソールで AI Chat 機能を有効にして利用する方法を説明します。
 
@@ -35,7 +35,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 ## AI Chat パネルを開く \{#open-panel\}
 
 1. いずれかの ClickHouse Cloud サービスに移動します。
-2. 左側のサイドバーで「Ask AI」とラベル付けされたスパークルアイコンをクリックします。
+2. 左側のサイドバーで「ClickHouse Assistant」とラベル付けされたスパークルアイコンをクリックします。
 3. （ショートカット）<kbd>⌘</kbd> + <kbd>'</kbd>（macOS）または <kbd>Ctrl</kbd> + <kbd>'</kbd>（Linux/Windows）を押して開閉を切り替えます。
 
 <Image img={img_open} alt="AI Chat フライアウトを開く" size="md"/>

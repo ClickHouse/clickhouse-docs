@@ -161,6 +161,7 @@ try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 ## 转换表 \{#conversion-tables\}
 
 如果下表中未提到某个转换对，则不支持该转换。例如，`Date` 列不能读取为 `java.sql.Timestamp`，因为其中不包含时间部分。
+驱动不会将整数值转换为任何日期/时间值。调用 `pstmt.setLong("timestamp", 1772132359L)` 会导致将 `1772132359` 作为数字写入到服务器，在那里它会被视为以秒为单位的 UTC Unix 时间戳。
 
 ### 使用 `PreparedStatement#setObject` 写入值 \{#writing-values-setobject\}
 

@@ -168,7 +168,7 @@ Currently, we don't support defining custom data type mappings as part of the pi
 
 ### How are JSON and JSONB columns replicated from Postgres? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
 
-JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String column(s). We're actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
+JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String columns. We're actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
 
 ### What happens to inserts when a mirror is paused? {#what-happens-to-inserts-when-a-mirror-is-paused}
 
