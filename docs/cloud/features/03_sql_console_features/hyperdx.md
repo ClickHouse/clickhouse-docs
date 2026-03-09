@@ -13,7 +13,7 @@ import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx_c
 
 <PrivatePreviewBadge/>
 
-HyperDX is the user interface for [**ClickStack**](/use-cases/observability/clickstack) - a production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
+HyperDX is the user interface for [**ClickStack**](/use-cases/observability/clickstack) - a production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics, and session data in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
 
 HyperDX is a purpose-built frontend for exploring and visualizing observability data, supporting both Lucene-style and SQL queries, interactive dashboards, alerting, trace exploration, and more—all optimized for ClickHouse as the backend.
 
