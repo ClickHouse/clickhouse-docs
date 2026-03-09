@@ -3450,6 +3450,22 @@ CAP_SYS_NICE capability가 필요하며, 없으면 아무 효과도 없습니다
 
 <SettingsInfoBlock type="Double" default_value="0.5" />사용자 공간 페이지 캐시에서 보호된 큐의 크기가 캐시 전체 크기에서 차지하는 비율입니다.
 
+## parquet_metadata_cache_max_entries \{#parquet_metadata_cache_max_entries\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />Parquet 메타데이터 파일 캐시의 최대 항목 수입니다. 0이면 비활성화됨을 의미합니다.
+
+## parquet_metadata_cache_policy \{#parquet_metadata_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" />Parquet 메타데이터 캐시 정책의 이름입니다.
+
+## parquet_metadata_cache_size \{#parquet_metadata_cache_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="536870912" />Parquet 메타데이터 캐시의 최대 크기(단위: 바이트)입니다. 0은 비활성화됨을 의미합니다.
+
+## parquet_metadata_cache_size_ratio \{#parquet_metadata_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />Parquet 메타데이터 캐시에서 보호 큐의 크기(SLRU 정책인 경우)를 캐시 전체 크기를 기준으로 한 비율로 나타낸 값입니다.
+
 ## part_log \{#part_log\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)와 관련된 이벤트를 기록합니다. 예를 들어 데이터 추가나 병합 작업이 있습니다. 이 로그를 사용하여 병합 알고리즘을 시뮬레이션하고 그 특성을 비교할 수 있습니다. 병합 과정을 시각화할 수도 있습니다.

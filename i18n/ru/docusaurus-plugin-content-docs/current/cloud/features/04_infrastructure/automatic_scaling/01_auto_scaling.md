@@ -99,15 +99,15 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 Чтобы горизонтально масштабировать кластер, выполните `PATCH`‑запрос через API для изменения количества реплик. На скриншотах ниже показан вызов API для масштабирования кластера с `3` до `6` реплик и соответствующий ответ.
 
-<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border/>
+<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border />
 
 *`PATCH`‑запрос для обновления `numReplicas`*
 
-<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border/>
+<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border />
 
 *Ответ на `PATCH`‑запрос*
 
-Если вы отправите новый запрос на масштабирование или несколько запросов подряд, пока один уже выполняется, сервис масштабирования будет игнорировать промежуточные состояния и в итоге установит конечное количество реплик.
+Если вы отправляете новый запрос на масштабирование (или несколько запросов подряд), пока один уже выполняется, сервис масштабирования игнорирует промежуточные состояния и в итоге устанавливает конечное количество реплик.
 
 ### Горизонтальное масштабирование через интерфейс \{#horizontal-scaling-via-ui\}
 

@@ -11628,6 +11628,19 @@ distributed cache가 사용되는 경우 userspace page cache를 사용합니다
 
 Paimon 테이블 함수에서 Paimon 파티션 프루닝을 사용합니다
 
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Parquet 파일 메타데이터 캐시를 활성화합니다."}]}]}/>
+
+사용하도록 설정하면 Parquet 형식에서 Parquet 메타데이터 캐시를 사용할 수 있습니다.
+
+가능한 값:
+
+- 0 - 비활성화
+- 1 - 활성화
+
 ## use_partition_pruning \{#use_partition_pruning\}
 
 **별칭**: `use_partition_key`

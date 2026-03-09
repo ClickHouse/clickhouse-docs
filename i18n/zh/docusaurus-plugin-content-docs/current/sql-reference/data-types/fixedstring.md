@@ -62,7 +62,7 @@ FROM FixedStringTable;
 
 请注意，`FixedString(N)` 值的长度是固定的。即使 `FixedString(N)` 值仅由空字节填充，[length](/sql-reference/functions/array-functions#length) 函数也会返回 `N`，但在这种情况下，[empty](/sql-reference/functions/array-functions#empty) 函数返回 `1`。
 
-使用 `WHERE` 子句查询数据时，结果会根据条件的写法而有所不同：
+使用 `WHERE` 子句选择数据时，结果会根据条件的写法而有所不同：
 
 * 如果使用相等运算符 `=`、`==` 或 `equals` 函数，ClickHouse *不会* 将 `\0` 字符考虑在内。也就是说，查询 `SELECT * FROM FixedStringTable WHERE name = 'a';` 和 `SELECT * FROM FixedStringTable WHERE name = 'a\0';` 会返回相同的结果。
 * 如果使用 `LIKE` 子句，ClickHouse *会* 将 `\0` 字符考虑在内，因此可能需要在过滤条件中显式指定 `\0` 字符。

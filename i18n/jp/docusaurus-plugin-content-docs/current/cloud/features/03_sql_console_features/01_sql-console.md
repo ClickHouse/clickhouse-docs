@@ -290,22 +290,22 @@ ORDER BY
 
 SQL コンソールは 10 種類のチャートタイプをサポートしており、チャート設定ペインのチャートタイプセレクターから選択できます。たとえば、先ほどのチャートタイプを Bar から Area に簡単に変更できます。
 
-<Image img={change_from_bar_to_area} size="md" alt="棒グラフからエリアチャートへの変更" />
+<Image img={change_from_bar_to_area} size="md" alt='Change from Bar chart to Area' />
 
-チャートのタイトルは、データを提供するクエリの名前と一致します。クエリ名を更新すると、チャートタイトルも同様に更新されます。
+チャートタイトルは、データを提供するクエリの名前と一致します。クエリ名を更新すると、チャートタイトルも同様に更新されます。
 
-<Image img={update_query_name} size="md" alt="クエリ名の更新" />
+<Image img={update_query_name} size="md" alt='Update query name' />
 
-さらに高度なチャートの設定は、チャート設定ペインの「Advanced」セクションで調整できます。まず、次の設定を変更します。
+さらに高度なチャートの特性も、チャート設定ペインの「Advanced」セクションで調整できます。まず、次の設定を変更します。
 
-* サブタイトル
-* 軸タイトル
-* x 軸のラベルの向き
+- サブタイトル
+- 軸タイトル
+- x 軸のラベルの向き
 
-チャートはこれらの変更に応じて更新されます。
+チャートはそれに応じて更新されます。
 
-<Image img={update_subtitle_etc} size="md" alt="サブタイトルなどの更新" />
+<Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-ユースケースによっては、フィールドごとに軸スケールを個別に調整する必要がある場合があります。これは、チャート設定ペインの「Advanced」セクションで軸範囲の最小値と最大値を指定することで行えます。たとえば、上記のチャートは一見問題ありませんが、`trip_total` と `fare_total` フィールド間の相関関係を示すには、軸範囲を少し調整する必要があります。
+シナリオによっては、各フィールドの軸スケールを個別に調整する必要がある場合もあります。これは、チャート設定ペインの「Advanced」セクションで軸範囲の最小値と最大値を指定することで行えます。例として、上記のチャートは見た目は良好ですが、`trip_total` フィールドと `fare_total` フィールドの相関関係を示すには、軸範囲を少し調整する必要があります。
 
-<Image img={adjust_axis_scale} size="md" alt="軸スケールの調整" />
+<Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />
