@@ -13,18 +13,18 @@ ClickHouse 提供多种部署选项，以满足不同客户的需求，在控制
 
 ## ClickHouse Cloud \{#clickhouse-cloud\}
 
-ClickHouse Cloud 是一项完全托管的云原生服务，在免除自建与自管运维复杂性的前提下，提供 ClickHouse 的强大功能与高性能。
-此选项非常适合优先考虑快速部署、弹性扩展以及尽可能降低运维开销的用户。
-ClickHouse Cloud 负责基础设施的全部环节，包括资源供应、扩缩容、维护和更新，使用户可以将精力完全专注于数据分析和应用开发。
-它提供按使用量计费和自动扩缩容，确保分析型工作负载具备可靠且高性价比的性能。该服务在 AWS、GCP 和 Azure 上均可用，并支持通过云市场直接计费。
+ClickHouse Cloud 是一项完全托管的云原生服务，无需自行管理运维的复杂性，即可提供 ClickHouse 的强大能力和高速性能。
+如果您优先考虑快速部署、可扩展性以及尽可能降低管理开销，此选项非常理想。
+ClickHouse Cloud 负责预配、扩缩容、维护和更新，让用户能够将全部精力专注于数据分析和应用开发。
+它提供基于使用量的定价和自动扩缩容，确保分析工作负载获得可靠且高性价比的性能。该服务可在 AWS、GCP 和 Azure 上使用，并支持通过云市场直接计费。
 
-了解更多关于 [ClickHouse Cloud](/getting-started/quick-start/cloud) 的信息。
+进一步了解 [ClickHouse Cloud](/getting-started/quick-start/cloud)。
 
-## 自带云环境（Bring Your Own Cloud） \{#byoc\}
+## 自带云环境 (Bring Your Own Cloud)  \{#byoc\}
 
-ClickHouse 自带云环境（Bring Your Own Cloud，简称 BYOC）使组织能够在自己的云环境中部署和管理 ClickHouse，同时利用托管服务层。此选项在 ClickHouse Cloud 的全托管体验与完全自管部署的完全控制之间架起桥梁。借助 ClickHouse BYOC，用户可以保留对其数据、基础设施和安全策略的控制权，以满足特定合规和监管要求，同时将补丁更新、监控和扩缩容等运维任务交由 ClickHouse 负责。该模式在提供私有云部署灵活性的同时，兼具托管服务的优势，适用于在安全、治理和数据驻留方面具有严格要求的大规模企业级部署。
+ClickHouse 自带云环境 (Bring Your Own Cloud，简称 BYOC) 使组织能够在自己的云环境中部署和管理 ClickHouse，同时利用托管服务层。此选项在 ClickHouse Cloud 的全托管体验与完全自管理部署的完全控制之间架起桥梁。借助 ClickHouse BYOC，用户可以保留对数据、基础设施和安全策略的控制权，以满足特定合规和监管要求，同时将补丁更新、监控和扩缩容等运维任务交由 ClickHouse 负责。该模式在提供私有云部署灵活性的同时，兼具托管服务的优势，适用于在安全、治理和数据驻留方面具有严格要求的大规模企业级部署。
 
-进一步了解[自带云环境（Bring Your Own Cloud）](/cloud/reference/byoc/overview)。
+进一步了解[自带云环境 (Bring Your Own Cloud) ](/cloud/reference/byoc/overview)。
 
 ## ClickHouse Private \{#clickhouse-private\}
 

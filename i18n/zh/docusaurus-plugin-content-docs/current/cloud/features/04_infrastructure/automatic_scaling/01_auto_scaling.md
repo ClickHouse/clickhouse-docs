@@ -99,15 +99,15 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用率的自动扩缩容
 
 要对集群进行水平扩缩容，可通过 API 发送 `PATCH` 请求来调整副本数量。下方截图展示了一个将 `3` 个副本的集群扩容到 `6` 个副本的 API 调用，以及相应的响应结果。
 
-<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border/>
+<Image img={scaling_patch_request} size="lg" alt="Scaling PATCH request" border />
 
 *用于更新 `numReplicas` 的 `PATCH` 请求*
 
-<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border/>
+<Image img={scaling_patch_response} size="md" alt="Scaling PATCH response" border />
 
 *`PATCH` 请求返回的响应*
 
-如果在某个扩缩容操作仍在进行时再次发起新的扩缩容请求，或连续发起多个请求，扩缩容服务会忽略中间状态，并最终收敛到目标副本数量。
+如果在某个扩缩容操作仍在进行时再次发起新的扩缩容请求 (或连续发起多个请求) ，扩缩容服务会忽略中间状态，并最终收敛到目标副本数量。
 
 ### 通过 UI 进行横向扩展 \{#horizontal-scaling-via-ui\}
 
