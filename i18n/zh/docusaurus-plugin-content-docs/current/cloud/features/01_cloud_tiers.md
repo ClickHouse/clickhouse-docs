@@ -243,7 +243,7 @@ ClickHouse Cloud 提供多个不同的服务层级。
 面向大规模、关键业务部署，满足严苛的安全与合规要求。
 
 - 包含 Scale 中的所有内容，**另外还提供：**
-- 灵活伸缩：标准规格（`1:4 vCPU:memory ratio`），以及 `HighMemory (1:8 ratio)` 和 `HighCPU (1:2 ratio)` 自定义规格。
+- 灵活伸缩：标准规格（`1:4 vCPU:memory ratio`），以及 `HighMemory (1:8 ratio)` 自定义规格。
 - 提供最高级别的性能与韧性保障。
 - 支持企业级安全：
   - 单点登录（SSO）

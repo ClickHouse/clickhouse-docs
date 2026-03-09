@@ -35,7 +35,7 @@ For Enterprise tier services scaling works as follows:
 - **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.
 - **Vertical scaling**:
   - Standard profiles (1:4) will support vertical autoscaling.
-  - Custom profiles (`highMemory` and `highCPU`) don't support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
+  - Custom profiles (`highMemory`) don't support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
 
 :::note
 Scaling in ClickHouse Cloud happens in what we call a ["Make Before Break" (MBB)](/cloud/features/mbb) approach.
