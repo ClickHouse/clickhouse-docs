@@ -34,15 +34,15 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 <Image img={InsertMechanics} size="lg" border alt="ClickHouse における挿入ブロックサイズのメカニズム" />
 
-`INSERT INTO SELECT` を実行する際、ClickHouse はデータの一部を受け取り、受信したデータから ① メモリ上に（少なくとも 1 つ、[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key) ごとに）挿入ブロックを形成します。ブロック内のデータはソートされ、テーブルエンジン固有の最適化が適用されます。その後、データは圧縮され、② 新しい data part の形式でデータベースストレージに書き込まれます。
+`INSERT INTO SELECT` を実行する際、ClickHouse はデータの一部を受け取り、受信したデータから ① メモリ内に（少なくとも 1 つの、[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key) ごとの）挿入ブロックを形成します。ブロック内のデータはソートされ、テーブルエンジン固有の最適化が適用されます。その後、データは圧縮され、② 新しいデータパーツの形式でデータベースストレージに書き込まれます。
 
-挿入ブロックサイズは、ClickHouse サーバーの [ディスクファイル I/O 使用量](https://en.wikipedia.org/wiki/Category:Disk_file_systems) とメモリ使用量の両方に影響します。より大きな挿入ブロックはより多くのメモリを使用しますが、より大きく数の少ない初期の data part を生成します。大量のデータをロードする際に ClickHouse が作成する必要がある part の数が少ないほど、必要なディスクファイル I/O と自動[バックグラウンドマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)は少なくなります。
+挿入ブロックサイズは、ClickHouse サーバーの [ディスクファイル I/O 使用量](https://en.wikipedia.org/wiki/Category:Disk_file_systems) とメモリ使用量の両方に影響します。より大きな挿入ブロックはより多くのメモリを使用しますが、より大きく、数の少ない初期データパーツを生成します。大量のデータをロードする際に ClickHouse が作成する必要のあるパーツが少ないほど、必要なディスクファイル I/O と自動[バックグラウンドマージ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)も少なくなります。
 
-`INSERT INTO SELECT` クエリをインテグレーションテーブルエンジンまたはテーブル関数と組み合わせて使用する場合、データは ClickHouse サーバー側からプルされます。
+`INSERT INTO SELECT` クエリをインテグレーションテーブルエンジンまたはテーブル関数と組み合わせて使用する場合、データは ClickHouse サーバーによってプルされます。 
 
 <Image img={Pull} size="lg" border alt="ClickHouse における外部ソースからのデータプル" />
 
-データが完全にロードされるまで、サーバーはループを実行し続けます。
+データが完全にロードされるまで、サーバーはループを実行します。
 
 ```bash
 ① Pull and parse the next portion of data and form an in-memory data block (one per partitioning key) from it.
@@ -52,15 +52,14 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 Go to ① 
 ```
 
-①では、サイズは挿入ブロックサイズに依存し、これは次の 2 つの設定で制御できます。
+① では、サイズは挿入ブロックサイズに依存し、これは次の 2 つの設定で制御できます。
 
-* [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)（デフォルト: `1048545` 百万行）
-* [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（デフォルト: `256 MiB`）
+- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)（デフォルト: `1048545` 行）
+- [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（デフォルト: `256 MiB`）
 
-挿入ブロック内に指定した行数が集まるか、設定したデータ量に到達すると（先に到達した方）、その時点でブロックが新しいパートとして書き込まれます。挿入ループはステップ ① に戻ります。
+挿入ブロックに指定した行数が集まるか、設定したデータ量に達すると（どちらか早い方）、その時点でブロックが新しいパーツとして書き込まれます。挿入ループはステップ ① に進みます。
 
-`min_insert_block_size_bytes` の値は、圧縮前のメモリ上のブロックサイズ（オンディスクの圧縮後パートサイズではない）を表す点に注意してください。また、ClickHouse はデータを行単位ではなく[ブロック](/operations/settings/settings#max_block_size)単位でストリーミングおよび[処理](https://clickhouse.com/company/events/query-performance-introspection)するため、作成されるブロックおよびパートが設定された行数やバイト数を厳密に満たすことはほとんどありません。そのため、これらの設定は最小しきい値を指定するものです。
-
+`min_insert_block_size_bytes` の値は、圧縮前のメモリ内ブロックサイズを示すことに注意してください（圧縮後のオンディスクパーツサイズではありません）。また、ClickHouse はデータを行ごとの[ブロック](/operations/settings/settings#max_block_size)単位でストリーミングし、[処理](https://clickhouse.com/company/events/query-performance-introspection)するため、作成されるブロックおよびパーツに設定した行数やバイト数が正確に含まれることはまれです。したがって、これらの設定は最小しきい値を指定します。
 
 #### マージに注意する \{#be-aware-of-merges\}
 
