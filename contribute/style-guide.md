@@ -1,6 +1,6 @@
 # ClickHouse docs style guide
 
-In this document, you will find a number of style guidelines for writing ClickHouse
+In this document, you will find style guidelines for writing ClickHouse
 documentation. As documentation is a collective effort, these guidelines are 
 intended to help all of us ensure we maintain quality and consistency across our
 documentation.
@@ -81,7 +81,7 @@ import clickhouse-local-3 from '@site/static/images/chdb/guides/clickhouse-local
 import Image from '@theme/IdealImage';
 ```
 
-To render images we use a fork of the IdealImage plugin. This generates multiple variants of an image, [asynchronously loading them as well as selecting the most appropriate based on the network connection](https://github.com/stereobooster/react-ideal-image/blob/master/introduction.md).
+To render images we use a fork of the IdealImage plugin. This generates multiple variants of an image, [asynchronously loading them and selecting the most appropriate based on the network connection](https://github.com/stereobooster/react-ideal-image/blob/master/introduction.md).
 
 Ensure you import the `Image` component as shown above.
 
@@ -95,7 +95,7 @@ Here is some example text which refers to the image below:
 Here is another paragraph...
 ```
 
-This component takes a number of props:
+This component takes several props:
 
 1. `img` - the imported image
 2. `alt` - mandatory alternate text specified
@@ -180,7 +180,7 @@ Code will be inserted here
 \```
 ```
 
-You will then use `docs-start-1`, `docs-end-1` comments for the first snippet, `docs-start-2`, `docs-end-2` for the second snippet and so on.
+You will then use `docs-start-1`, `docs-end-1` comments for the first snippet, `docs-start-2`, `docs-end-2` for the second snippet, and so forth.
 
 ### Highlighting
 
@@ -283,7 +283,7 @@ export function Anchor(props) {
 
 ### Floating pages
 
-In order to prevent pages from becoming 'floating' or 'orphaned' it is
+To prevent pages from becoming 'floating' or 'orphaned' it is
 necessary that you add a newly created page to `sidebars.js`. We have a [custom
 docusaurus plugin](plugins/checkFloatingPages.js) to catch dangling pages.
 
@@ -377,7 +377,7 @@ Your v0.7.x content here...
 
 #### API 2: External Snippets (Legacy)
 
-This approach uses separate snippet files for each version. Note that this method has limitations with TOC generation.
+This approach uses separate snippet files for each version. This method has limitations with TOC generation.
 
 Versioned folders are structured as follows:
 
@@ -507,7 +507,7 @@ match then it remains hidden.
 ## Vale
 
 Vale is a command-line tool that brings code-like linting to prose.
-We have a number of rules set up to ensure that our documentation is
+We have rules set up to ensure that our documentation is
 consistent in style.
 
 The style rules are located at `/styles/ClickHouse`, and largely based
