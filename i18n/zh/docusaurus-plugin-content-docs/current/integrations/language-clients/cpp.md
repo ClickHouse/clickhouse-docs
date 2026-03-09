@@ -120,7 +120,7 @@ client.Insert("greetings", block);
 ```
 
 
-### 选择数据 \{#example-select\}
+### 查询数据 \{#example-select\}
 
 要执行返回数据的查询，请使用 `Select` 方法，并提供一个回调函数来处理结果。查询结果会以 `Block` 对象的形式返回，反映 ClickHouse 原生的列式数据表示方式。
 
