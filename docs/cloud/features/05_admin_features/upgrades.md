@@ -22,7 +22,7 @@ With ClickHouse Cloud you never have to worry about patching and upgrades. We ro
 :::note
 We're introducing a new upgrade mechanism, a concept we call "make before break" (or MBB). With this new approach, we add updated replicas before removing the old ones during the upgrade operation. This results in more seamless upgrades that are less disruptive to running workloads.
 
-As part of this change, historical system table data will be retained for up to a maximum of 30 days as part of upgrade events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure won't be retained as part of the migration to the new organization tiers.
+As part of this change, historical system table data will be retained for up to a maximum of 30 days as part of upgrade events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP, and older than January 14, 2025, for services on Azure won't be retained as part of the migration to the new organization tiers.
 :::
 
 ## Version compatibility {#version-compatibility}
@@ -35,7 +35,7 @@ You can't manage the service-level default `compatibility` setting for your serv
 
 ## Maintenance mode {#maintenance-mode}
 
-At times, it may be necessary for us to update your service, which could require us to disable certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time.
+At times, we may need to update your service, which could require disabling certain features such as scaling or idling. In rare cases, we may need to take action on a service that is experiencing issues and bring it back to a healthy state. During such maintenance, you will see a banner on the service page that says _"Maintenance in progress"_. You may still be able to use the service for queries during this time.
 
 You won't be charged for the time that the service is under maintenance. _Maintenance mode_ is a rare occurrence and shouldn't be confused with regular service upgrades.
 
