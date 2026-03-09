@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud における ClickHouse Assistant チャット機
 doc_type: 'reference'
 ---
 
-# Cloud で ClickHouse Assistant エージェントを利用する \{#ask-ai-agent-in-cloud\}
+# Cloud で ClickHouse Assistant エージェントを利用する \{#clickhouse-assistant-agent-in-cloud\}
 
 「ClickHouse Assistant」エージェントは、ClickHouse Cloud サービス上にホストされているデータに対して複雑な分析タスクを実行できる、すぐに利用可能なターンキー型の機能です。
 ユーザーは SQL を書いたりダッシュボードを操作したりする代わりに、求めている内容を自然言語で記述できます。

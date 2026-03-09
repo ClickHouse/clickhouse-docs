@@ -29,7 +29,7 @@ mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_ind
 
 **参数**
 
-* `alternative` — 可选。备择假设。&#39;two-sided&#39;（默认）：两个总体在随机意义上不相同。&#39;greater&#39;：第一个样本中的值在随机意义上大于第二个样本中的值。&#39;less&#39;：第一个样本中的值在随机意义上小于第二个样本中的值。[`String`](/sql-reference/data-types/string)
+* `alternative` — 可选。备择假设。&#39;two-sided&#39; (默认) ：两个总体在随机意义上不相同。&#39;greater&#39;：第一个样本中的值在随机意义上大于第二个样本中的值。&#39;less&#39;：第一个样本中的值在随机意义上小于第二个样本中的值。[`String`](/sql-reference/data-types/string)
 * `continuity_correction` — 可选。如果不为 0，则在计算 p 值的正态近似时应用连续性校正。默认值为 1。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **参数说明**

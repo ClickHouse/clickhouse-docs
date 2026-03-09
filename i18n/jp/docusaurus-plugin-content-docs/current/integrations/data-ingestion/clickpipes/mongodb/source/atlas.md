@@ -45,20 +45,20 @@ MongoDB Atlas コンソールにログインしたら、左側のナビゲーシ
 
 ClickPipes ではパスワード認証が必須です。
 
-<Image img={mongo_atlas_add_user} alt="データベースユーザーの追加" size="lg" border/>
+<Image img={mongo_atlas_add_user} alt="データベースユーザーの追加" size="lg" border />
 
 ClickPipes には、次のロールを持つユーザーが必要です。
 
-- `readAnyDatabase`
-- `clusterMonitor`
+* `readAnyDatabase`
+* `clusterMonitor`
 
 これらは `Specific Privileges` セクションで設定できます。
 
-<Image img={mongo_atlas_add_roles} alt="ユーザーロールの構成" size="lg" border/>
+<Image img={mongo_atlas_add_roles} alt="ユーザーロールの構成" size="lg" border />
 
 さらに、ClickPipes ユーザーへのアクセスを許可するクラスタやインスタンスを詳細に指定することもできます。
 
-<Image img={mongo_atlas_restrict_access} alt="クラスタ／インスタンスへのアクセス制限" size="lg" border/>
+<Image img={mongo_atlas_restrict_access} alt="クラスタ／インスタンスへのアクセス制限" size="lg" border />
 
 ## 次のステップ \{#whats-next\}
 

@@ -71,34 +71,34 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
     * `base_dn` — 用于构造 LDAP 搜索基础 DN 的模板。
       * 最终的 DN 将在 LDAP 搜索期间，通过将模板中所有 `{user_name}` 和 `{bind_dn}` 子串替换为实际用户名和 bind DN 来构造。
     * `scope` — LDAP 搜索的作用域。
-      * 可接受的值为：`base`、`one_level`、`children`、`subtree`（默认）。
+      * 可接受的值为：`base`、`one_level`、`children`、`subtree` (默认) 。
     * `search_filter` — 用于构造 LDAP 搜索过滤器的模板。
       * 最终的过滤器将在 LDAP 搜索期间，通过将模板中所有 `{user_name}`、`{bind_dn}` 和 `{base_dn}` 子串替换为实际用户名、bind DN 和 base DN 来构造。
       * 注意，必须在 XML 中正确转义特殊字符。
-* `verification_cooldown` — 成功绑定尝试之后的一段时间（以秒为单位），在此期间内，所有连续请求在不联系 LDAP 服务器的情况下，都会被视为用户已成功认证。
-  * 指定 `0`（默认）以禁用缓存，并强制对每个认证请求都联系 LDAP 服务器。
-* `follow_referrals` — 一个标志，用于指示是否允许 LDAP 客户端库自动跟随服务器返回的 LDAP 引用。默认值为 `false`。注意：此设置主要与 Microsoft Active Directory 环境相关，在这些环境中，对较高级别基础 DN（例如 `DC=example,DC=com`）执行子树搜索时，可能会返回引用/搜索引用（referrals/search references，例如 `DC=DomainDnsZones,...`）。
+* `verification_cooldown` — 成功绑定尝试之后的一段时间 (以秒为单位) ，在此期间内，所有连续请求在不联系 LDAP 服务器的情况下，都会被视为用户已成功认证。
+  * 指定 `0` (默认) 以禁用缓存，并强制对每个认证请求都联系 LDAP 服务器。
+* `follow_referrals` — 一个标志，用于指示是否允许 LDAP 客户端库自动跟随服务器返回的 LDAP 引用。默认值为 `false`。注意：此设置主要与 Microsoft Active Directory 环境相关，在这些环境中，对较高级别基础 DN (例如 `DC=example,DC=com`) 执行子树搜索时，可能会返回引用/搜索引用 (referrals/search references，例如 `DC=DomainDnsZones,...`) 。
   * 仅当你明确需要跨‑分区搜索并且你的环境已配置为允许此类搜索时，才指定为 `true`。
   * 指定为 `false` 以不跟随引用。对于 AD 域根搜索，推荐使用此设置。
 * `enable_tls` — 用于启用与 LDAP 服务器安全连接的标志。
-  * 指定 `no` 使用明文 `ldap://` 协议（不推荐）。
-  * 指定 `yes` 使用基于 SSL/TLS 的 LDAP `ldaps://` 协议（推荐，默认）。
-  * 指定 `starttls` 使用传统的 StartTLS 协议（明文 `ldap://` 协议，升级为 TLS）。
+  * 指定 `no` 使用明文 `ldap://` 协议 (不推荐) 。
+  * 指定 `yes` 使用基于 SSL/TLS 的 LDAP `ldaps://` 协议 (推荐，默认) 。
+  * 指定 `starttls` 使用传统的 StartTLS 协议 (明文 `ldap://` 协议，升级为 TLS) 。
 * `tls_minimum_protocol_version` — SSL/TLS 的最小协议版本。
-  * 可接受的值为：`ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2`（默认）。
+  * 可接受的值为：`ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2` (默认) 。
 * `tls_require_cert` — SSL/TLS 对端证书验证行为。
-  * 可接受的值为：`never`、`allow`、`try`、`demand`（默认）。
+  * 可接受的值为：`never`、`allow`、`try`、`demand` (默认) 。
 * `tls_cert_file` — 证书文件路径。
 * `tls_key_file` — 证书密钥文件路径。
 * `tls_ca_cert_file` — CA 证书文件路径。
 * `tls_ca_cert_dir` — 包含 CA 证书的目录路径。
-* `tls_cipher_suite` — 允许的密码套件（使用 OpenSSL 表示法）。
+* `tls_cipher_suite` — 允许的密码套件 (使用 OpenSSL 表示法) 。
 
 ## LDAP 外部认证器 \{#ldap-external-authenticator\}
 
-可以使用远程 LDAP 服务器作为验证本地定义用户（在 `users.xml` 或本地访问控制路径中定义的用户）密码的一种方式。为此，在用户定义中，将原本的 `password` 或类似字段替换为之前定义的 LDAP 服务器名称。
+可以使用远程 LDAP 服务器作为验证本地定义用户 (在 `users.xml` 或本地访问控制路径中定义的用户) 密码的一种方式。为此，在用户定义中，将原本的 `password` 或类似字段替换为之前定义的 LDAP 服务器名称。
 
-在每次登录尝试时，ClickHouse 会尝试使用提供的凭证，对 [LDAP 服务器定义](#ldap-server-definition) 中由 `bind_dn` 参数指定的 DN 执行“绑定”操作，如果成功，则认为该用户已通过认证。这通常被称为“简单绑定（simple bind）”方法。
+在每次登录尝试时，ClickHouse 会尝试使用提供的凭证，对 [LDAP 服务器定义](#ldap-server-definition) 中由 `bind_dn` 参数指定的 DN 执行“绑定”操作，如果成功，则认为该用户已通过认证。这通常被称为“简单绑定 (simple bind) ”方法。
 
 **示例**
 
@@ -129,7 +129,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 
 ## LDAP 外部用户目录 \{#ldap-external-user-directory\}
 
-除了本地定义的用户之外，还可以使用远程 LDAP 服务器作为用户定义的来源。为此，需要在 `config.xml` 文件的 `users_directories` 部分中的 `ldap` 部分里，指定之前定义好的 LDAP 服务器名称（参见 [LDAP Server Definition](#ldap-server-definition)）。
+除了本地定义的用户之外，还可以使用远程 LDAP 服务器作为用户定义的来源。为此，需要在 `config.xml` 文件的 `users_directories` 部分中的 `ldap` 部分里，指定之前定义好的 LDAP 服务器名称 (参见 [LDAP Server Definition](#ldap-server-definition)) 。
 
 在每次登录尝试时，ClickHouse 会首先尝试在本地查找用户定义并按常规方式进行身份验证。如果未找到该用户，ClickHouse 将假定该用户已在外部 LDAP 目录中定义，并尝试使用提供的凭证在 LDAP 服务器上对指定的 DN 执行 bind 操作。如果成功，该用户将被视为存在并通过认证。用户会被分配在 `roles` 部分中指定列表里的角色。此外，还可以执行 LDAP search 操作，并将结果转换后视为角色名称；如果同时配置了 `role_mapping` 部分，则这些角色将被分配给该用户。所有这些都意味着必须启用由 SQL 驱动的[访问控制与账户管理](/operations/access-rights#access-control-usage)，并且需要通过 [CREATE ROLE](/sql-reference/statements/create/role) 语句来创建角色。
 
@@ -172,7 +172,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 </clickhouse>
 ```
 
-请注意，`user_directories` 部分中 `ldap` 小节引用的 `my_ldap_server`，必须是在 `config.xml` 中事先定义并完成配置的 LDAP 服务器（参见 [LDAP Server Definition](#ldap-server-definition)）。
+请注意，`user_directories` 部分中 `ldap` 小节引用的 `my_ldap_server`，必须是在 `config.xml` 中事先定义并完成配置的 LDAP 服务器 (参见 [LDAP Server Definition](#ldap-server-definition)) 。
 
 **参数**
 
@@ -185,7 +185,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
     * `base_dn` — 用于构造 LDAP 搜索基础 DN 的模板。
       * 最终 DN 将通过在每次 LDAP 搜索期间，用实际用户名、绑定 DN 和用户 DN 分别替换模板中的 `{user_name}`、`{bind_dn}` 和 `{user_dn}` 子串来构造。
     * `scope` — LDAP 搜索的范围。
-      * 可接受的取值为：`base`、`one_level`、`children`、`subtree`（默认）。
+      * 可接受的取值为：`base`、`one_level`、`children`、`subtree` (默认) 。
     * `search_filter` — 用于构造 LDAP 搜索过滤器的模板。
       * 最终过滤器将通过在每次 LDAP 搜索期间，用实际用户名、绑定 DN、用户 DN 和基础 DN 分别替换模板中的 `{user_name}`、`{bind_dn}`、`{user_dn}` 和 `{base_dn}` 子串来构造。
       * 注意，必须在 XML 中对特殊字符进行正确转义。

@@ -76,7 +76,7 @@ import TabItem from '@theme/TabItem';
 
     #### 隔离可观测性工作负载 \{#isolating-workloads\}
 
-    如果你在一个已经支持其他工作负载（例如实时应用分析）的**现有 ClickHouse Cloud 服务**中新增 ClickStack，强烈建议将可观测性流量进行隔离。
+    如果你在一个已经支持其他工作负载 (例如实时应用分析) 的**现有 ClickHouse Cloud 服务**中新增 ClickStack，强烈建议将可观测性流量进行隔离。
 
     使用 [**Managed Warehouses**](/cloud/reference/warehouses) 创建一个专用于 ClickStack 的**子服务**。这样可以：
 
@@ -178,7 +178,7 @@ import TabItem from '@theme/TabItem';
     * **避免将 ClickHouse 对外暴露**，除非明确需要这样做。默认情况下，除非修改 `listen_host`，ClickHouse 只绑定到 `localhost`。
     * **使用身份验证方式**，例如密码、证书、SSH 密钥或[外部身份验证器](/operations/external-authenticators)。
     * **限制访问**，使用 IP 过滤和 `HOST` 子句。参见 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
-    * **启用基于角色的访问控制（RBAC）** 以授予更细粒度的访问权限。请参阅 [operations/access-rights](/operations/access-rights)。
+    * **启用基于角色的访问控制 (RBAC)&#x20;**&#x20;以授予更细粒度的访问权限。请参阅 [operations/access-rights](/operations/access-rights)。
     * **使用 [quotas](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles) 和只读模式强制执行配额和限制。**
     * **对静态数据进行加密**，并使用安全的外部存储。请参阅 [operations/storing-data](/operations/storing-data) 和 [cloud/security/CMEK](/cloud/security/cmek)。
     * **避免硬编码凭证。** 在 ClickHouse Cloud 中使用 [命名集合](/operations/named-collections) 或 IAM 角色。
@@ -190,7 +190,7 @@ import TabItem from '@theme/TabItem';
 
     ClickStack UI 使用的 ClickHouse 用户只需设置为 `readonly` 用户,并授予修改以下设置的权限:
 
-    * `max_rows_to_read`（至少允许到 100 万行）
+    * `max_rows_to_read` (至少允许到 100 万行) 
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`

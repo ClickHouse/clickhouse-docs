@@ -237,14 +237,14 @@ SELECT _path, * FROM azureBlobStorage(
 
 이 설정은 ClickHouse가 읽기 시점에 Hive 스타일로 파티셔닝된 파일을 파싱하도록 하는 힌트입니다. 쓰기에는 아무런 영향을 주지 않습니다. 읽기와 쓰기를 대칭적으로 유지하려면 `partition_strategy` 인자를 사용하십시오.
 
-`use_hive_partitioning` 설정을 1로 설정하면, ClickHouse는 경로(`/name=value/`)에서 Hive 스타일 파티셔닝을 감지하고 쿼리에서 파티션 컬럼을 가상 컬럼으로 사용할 수 있습니다. 이 가상 컬럼은 파티션 경로에 있는 컬럼과 동일한 이름을 가지되, 앞에 `_`가 붙습니다.
+`use_hive_partitioning` 설정을 1로 설정하면, ClickHouse는 경로(`/name=value/`)에서 Hive 스타일 파티셔닝을 감지하고 쿼리에서 파티션 컬럼을 가상 컬럼으로 사용할 수 있습니다. 이 가상 컬럼은 파티션 경로에 있는 컬럼과 동일한 이름을 가집니다.
 
 **예시**
 
 Hive 스타일 파티셔닝으로 생성된 가상 컬럼 사용
 
 ```sql
-SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 哈希函数可用于对元素进行确定性的伪随机打乱。
 
-Simhash 是一种哈希函数，对相近（相似）的参数会返回相近的哈希值。
+Simhash 是一种哈希函数，对相近 (相似) 的参数会返回相近的哈希值。
 
 大多数哈希函数可以接受任意数量、任意类型的参数。
 
@@ -24,7 +24,7 @@ SELECT cityHash64(tuple(NULL))
 :::
 
 :::note
-要计算整张表所有内容的哈希值，请使用 `sum(cityHash64(tuple(*)))`（或其他哈希函数）。`tuple` 可确保不会跳过包含 NULL 值的行，`sum` 则可确保行的顺序不影响结果。
+要计算整张表所有内容的哈希值，请使用 `sum(cityHash64(tuple(*)))` (或其他哈希函数) 。`tuple` 可确保不会跳过包含 NULL 值的行，`sum` 则可确保行的顺序不影响结果。
 :::
 
 {/* 
@@ -487,7 +487,7 @@ SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
-**计算整张表的校验和（精确到行顺序）**
+**计算整张表的校验和 (精确到行顺序)&#x20;**
 
 ```sql title=Query
 CREATE TABLE users (
@@ -641,13 +641,13 @@ SELECT
 
 引入于：v1.1.0
 
-将所有输入参数都[重新解释](/sql-reference/functions/type-conversion-functions#reinterpretAsString)为字符串，并为每个参数计算其 MD5 哈希值。然后将这些哈希组合在一起，对所得字符串再计算哈希值，取其前 8 个字节，并按大端字节序将其解释为 [UInt64](/sql-reference/data-types/int-uint)。该函数相对较慢（每个处理器核心每秒处理 500 万个短字符串）。
+将所有输入参数都[重新解释](/sql-reference/functions/type-conversion-functions#reinterpretAsString)为字符串，并为每个参数计算其 MD5 哈希值。然后将这些哈希组合在一起，对所得字符串再计算哈希值，取其前 8 个字节，并按大端字节序将其解释为 [UInt64](/sql-reference/data-types/int-uint)。该函数相对较慢 (每个处理器核心每秒处理 500 万个短字符串) 。
 
 建议改用 [`sipHash64`](#sipHash64) 函数。
 
 该函数接受可变数量的输入参数。
 参数可以是任意受支持的数据类型。
-对于某些数据类型，即使参数类型不同（例如不同大小的整数、具有相同数据的具名和匿名 Tuple、以及具有相同数据的 Map 与对应的 Array(Tuple(key, value)) 类型），只要取值相同，计算得到的哈希值也可能相同。
+对于某些数据类型，即使参数类型不同 (例如不同大小的整数、具有相同数据的具名和匿名 Tuple、以及具有相同数据的 Map 与对应的 Array(Tuple(key, value)) 类型) ，只要取值相同，计算得到的哈希值也可能相同。
 
 **语法**
 
@@ -702,7 +702,7 @@ hiveHash(arg)
 
 **返回值**
 
-返回输入字符串计算得到的 Hive 哈希值（“hive hash”）。[`Int32`](/sql-reference/data-types/int-uint)
+返回输入字符串计算得到的 Hive 哈希值 (“hive hash”) 。[`Int32`](/sql-reference/data-types/int-uint)
 
 **示例**
 
@@ -736,7 +736,7 @@ icebergHash(value)
 
 **返回值**
 
-返回一个 32 位 Murmur3 哈希值（x86 变体，种子为 0），类型为 [`Int32`](/sql-reference/data-types/int-uint)
+返回一个 32 位 Murmur3 哈希值 (x86 变体，种子为 0) ，类型为 [`Int32`](/sql-reference/data-types/int-uint)
 
 **示例**
 
@@ -792,7 +792,7 @@ SELECT intHash32(42);
 
 计算整数的 64 位哈希值。
 
-该哈希函数相对较快（甚至比 [`intHash32`](#intHash32) 更快），但不是密码学意义上的哈希函数。
+该哈希函数相对较快 (甚至比 [`intHash32`](#intHash32) 更快) ，但不是密码学意义上的哈希函数。
 
 **语法**
 
@@ -841,7 +841,7 @@ SELECT intHash64(42);
 
 :::note
 Java 仅支持计算有符号整数的哈希值，
-因此如果需要计算无符号整数的哈希值，必须先将它们转换（cast）为相应的有符号 ClickHouse 类型。
+因此如果需要计算无符号整数的哈希值，必须先将它们转换 (cast) 为相应的有符号 ClickHouse 类型。
 :::
 
 **语法**
@@ -994,7 +994,7 @@ SELECT
 引入版本：v25.4.0
 
 计算给定字符串的 Keccak-256 密码学哈希值。
-此哈希函数在区块链应用中被广泛使用，尤其是在以太坊（Ethereum）中。
+此哈希函数在区块链应用中被广泛使用，尤其是在以太坊 (Ethereum) 中。
 
 **语法**
 
@@ -1336,7 +1336,7 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 
 引入于：v21.1.0
 
-将 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram（n 元语法），并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 [`ngramMinHash`](#ngramMinHash) 函数计算得到。
+将 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram (n 元语法) ，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 [`ngramMinHash`](#ngramMinHash) 函数计算得到。
 区分大小写。
 
 **语法**
@@ -1585,7 +1585,7 @@ ngramMinHashUTF8(string[, ngramsize, hashnum])
 
 **返回值**
 
-返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple`](/sql-reference/data-types/tuple)
+返回一个包含两个哈希值 (最小值和最大值) 的元组。[`Tuple`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -1758,7 +1758,7 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
 
 引入版本：v1.1.0
 
-与 [`sipHash64`](#sipHash64) 类似，但会生成 128 位哈希值，即最终的异或折叠（xor-folding）操作会进行到 128 位。
+与 [`sipHash64`](#sipHash64) 类似，但会生成 128 位哈希值，即最终的异或折叠 (xor-folding) 操作会进行到 128 位。
 
 :::tip 新项目请使用 `sipHash128Reference`
 这个 128 位变种与参考实现不同，安全性更弱。
@@ -1991,7 +1991,7 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 
 引入版本：v21.1.0
 
-将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个 shingle 计算哈希值，并返回一个包含这些哈希值的 tuple。
+将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段 (shingles) ，为每个 shingle 计算哈希值，并返回一个包含这些哈希值的 tuple。
 使用 `hashnum` 个最小哈希值来计算最小哈希，使用 `hashnum` 个最大哈希值来计算最大哈希。
 大小写敏感。
 
@@ -2007,7 +2007,7 @@ wordShingleMinHash(string[, shinglesize, hashnum])
 **参数**
 
 * `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。word shingle（词片段）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。word shingle (词片段) 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 可选。用于计算结果的最小和最大哈希的数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -2032,7 +2032,7 @@ SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management
 
 引入版本：v1.1.0
 
-将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），并返回其中单词哈希值最小和最大的 shingles，这些哈希值由在相同输入下调用 wordShingleMinHash 函数计算得出。
+将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的分区片段 (shingles) ，并返回其中单词哈希值最小和最大的 shingles，这些哈希值由在相同输入下调用 wordShingleMinHash 函数计算得出。
 该函数区分大小写。
 
 **语法**
@@ -2069,7 +2069,7 @@ SELECT wordShingleMinHashArg('ClickHouse® is a column-oriented database managem
 
 引入版本：v21.1.0
 
-将一个 ASCII 字符串按每 `shinglesize` 个单词划分为若干分区片段（shingle），并返回其中单词哈希值最小和最大的分区片段。这些哈希值通过使用相同输入的 [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 函数计算得到。
+将一个 ASCII 字符串按每 `shinglesize` 个单词划分为若干分区片段 (shingle) ，并返回其中单词哈希值最小和最大的分区片段。这些哈希值通过使用相同输入的 [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 函数计算得到。
 该函数不区分大小写。
 
 **语法**
@@ -2106,7 +2106,7 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® is a column-oriented d
 
 引入版本：v21.1.0
 
-将 UTF-8 字符串按每 `shinglesize` 个单词拆分为多个分区片段（shingles），并返回其中单词哈希值最小和最大的分区片段，这些哈希值是通过对相同输入调用 [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) FUNCTION 计算得到的。
+将 UTF-8 字符串按每 `shinglesize` 个单词拆分为多个分区片段 (shingles) ，并返回其中单词哈希值最小和最大的分区片段，这些哈希值是通过对相同输入调用 [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) FUNCTION 计算得到的。
 该函数不区分大小写。
 
 **语法**
@@ -2118,7 +2118,7 @@ wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 **参数**
 
 * `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。word shingle（词片段）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。word shingle (词片段) 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -2143,7 +2143,7 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® is a column-orient
 
 引入版本：v21.1.0
 
-将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词构成的分区片段（shingles），并返回在使用相同输入调用 [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 函数时，其最小和最大单词哈希值所对应的 shingles。
+将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词构成的分区片段 (shingles) ，并返回在使用相同输入调用 [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 函数时，其最小和最大单词哈希值所对应的 shingles。
 该函数区分大小写。
 
 **语法**
@@ -2180,7 +2180,7 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® is a column-oriented database man
 
 引入版本：v21.1.0
 
-将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段（shingles），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
+将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段 (shingles) ，为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
 该函数对大小写不敏感。
 
@@ -2196,7 +2196,7 @@ wordShingleMinHashCaseInsensitive(string[, shinglesize, hashnum])
 **参数**
 
 * `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。word shingle（词片段）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。word shingle (词片段) 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 可选。用于计算结果的最小哈希和最大哈希的数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -2221,7 +2221,7 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 引入于：v21.1.0
 
-将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个 word shingle 计算哈希值，并返回包含这些哈希的元组。
+将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段 (shingles) ，为每个 word shingle 计算哈希值，并返回包含这些哈希的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，并使用 `hashnum` 个最大哈希来计算最大哈希。
 该函数对大小写不敏感。
 
@@ -2262,7 +2262,7 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 引入版本：v21.1.0
 
-将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段（shingles），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
+将一个 UTF-8 字符串拆分为由 `shinglesize` 个单词组成的分区片段 (shingles) ，为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
 使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
 区分大小写。
 
@@ -2278,12 +2278,12 @@ wordShingleMinHashUTF8(string[, shinglesize, hashnum])
 **参数**
 
 * `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。word shingle（词片段）的大小，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。word shingle (词片段) 的大小，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值范围为 `1` 到 `25`，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+返回一个包含两个哈希值 (最小值和最大值) 的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -2303,7 +2303,7 @@ SELECT wordShingleMinHashUTF8('ClickHouse® is a column-oriented database manage
 
 引入于：v21.1.0
 
-将 ASCII 字符串拆分成由 `shinglesize` 个单词组成的片段（shingles），并返回这些单词 shingle 对应的 `simhash` 值。
+将 ASCII 字符串拆分成由 `shinglesize` 个单词组成的片段 (shingles) ，并返回这些单词 shingle 对应的 `simhash` 值。
 区分大小写。
 
 可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起使用，用于检测近似重复的字符串。
@@ -2318,7 +2318,7 @@ wordShingleSimHash(string[, shinglesize])
 **参数**
 
 * `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。word shingle（词片段）的大小，取值为 `1` 到 `25` 之间的任意整数。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。word shingle (词片段) 的大小，取值为 `1` 到 `25` 之间的任意整数。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2342,7 +2342,7 @@ SELECT wordShingleSimHash('ClickHouse® is a column-oriented database management
 
 引入于：v21.1.0
 
-将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段（shingles），并返回这些词片段的 `simhash`。
+将一个 ASCII 字符串拆分为由 `shinglesize` 个单词组成的片段 (shingles) ，并返回这些词片段的 `simhash`。
 该函数对大小写不敏感。
 
 可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复的字符串。
@@ -2381,7 +2381,7 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 引入于：v1.1.0
 
-将 UTF-8 编码的字符串按 `shinglesize` 个单词划分为 shingles（词片段），并返回这些词片段的 `simhash`。
+将 UTF-8 编码的字符串按 `shinglesize` 个单词划分为 shingles (词片段) ，并返回这些词片段的 `simhash`。
 比较时不区分大小写。
 
 可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复字符串。
@@ -2420,7 +2420,7 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 引入版本：v21.1.0
 
-将 UTF-8 字符串按 `shinglesize` 个单词拆分为若干分区片段（shingles），并返回这些单词 shingle 的 `simhash`。
+将 UTF-8 字符串按 `shinglesize` 个单词拆分为若干分区片段 (shingles) ，并返回这些单词 shingle 的 `simhash`。
 区分大小写。
 
 可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测部分重复的字符串。
@@ -2433,7 +2433,7 @@ wordShingleSimHashUTF8(string[, shinglesize])
 **参数**
 
 `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
-`shinglesize` — 可选。词 shingle（词片）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+`shinglesize` — 可选。词 shingle (词片) 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2456,7 +2456,7 @@ wordShingleSimHashUTF8(string[, shinglesize])
 **参数**
 
 * `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 可选。词 shingle（词片）的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 可选。词 shingle (词片) 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

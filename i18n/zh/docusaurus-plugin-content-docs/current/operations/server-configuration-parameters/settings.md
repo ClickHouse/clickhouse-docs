@@ -5039,6 +5039,10 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 ```
 
 
+## webassembly_udf_engine \{#webassembly_udf_engine\}
+
+<SettingsInfoBlock type="String" default_value="wasmtime" />用于执行 WebAssembly UDF 的引擎。可选值为 &#39;wasmtime&#39; 和 &#39;wasmedge&#39;。
+
 ## workload_path \{#workload_path\}
 
 用作存储所有 `CREATE WORKLOAD` 和 `CREATE RESOURCE` 查询的目录。默认情况下，使用服务器工作目录下的 `/workload/` 文件夹。

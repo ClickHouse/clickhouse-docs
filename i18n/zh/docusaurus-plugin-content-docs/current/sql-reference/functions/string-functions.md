@@ -28,7 +28,7 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 在 v20.1.0 中引入
 
-使用 CRC-32-IEEE 802.3 多项式和初始值 `0xffffffff`（zlib 实现）计算字符串的 CRC32 校验和。
+使用 CRC-32-IEEE 802.3 多项式和初始值 `0xffffffff` (zlib 实现) 计算字符串的 CRC32 校验和。
 
 **语法**
 
@@ -199,7 +199,7 @@ SELECT ascii('234')
 
 引入于：v25.6.0
 
-对 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）字符串进行解码。
+对 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) 字符串进行解码。
 如果字符串不是有效的 Base32 编码格式，将抛出异常。
 
 **语法**
@@ -445,7 +445,7 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 自 v18.16.0 引入
 
-采用 URL 安全字母表，对字符串进行 [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）编码。
+采用 URL 安全字母表，对字符串进行 [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) 编码。
 
 **语法**
 
@@ -587,9 +587,9 @@ compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 
 * `s1` — 要比较的第一个字符串。[`String`](/sql-reference/data-types/string)
 * `s2` — 要比较的第二个字符串。[`String`](/sql-reference/data-types/string)
-* `s1_offset` — 在 `s1` 中开始比较的位置（从 0 开始）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `s2_offset` — 在 `s2` 中开始比较的位置（从 0 开始的索引）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `num_bytes` — 在两个字符串中要比较的最大字节数。如果 `s1_offset`（或 `s2_offset`）+ `num_bytes` 超过输入字符串的末尾，则会相应减少 `num_bytes`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s1_offset` — 在 `s1` 中开始比较的位置 (从 0 开始) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — 在 `s2` 中开始比较的位置 (从 0 开始的索引) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — 在两个字符串中要比较的最大字节数。如果 `s1_offset` (或 `s2_offset`) + `num_bytes` 超过输入字符串的末尾，则会相应减少 `num_bytes`。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -805,7 +805,7 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 在不同进制之间转换数字。
 
 该函数将数字从一种进制转换为另一种进制。它支持从 2 到 36 的进制。
-对于大于 10 的进制，使用字母 A-Z（不区分大小写）表示数字 10-35。
+对于大于 10 的进制，使用字母 A-Z (不区分大小写) 表示数字 10-35。
 
 此函数与 MySQL 的 CONV() 函数兼容。
 
@@ -817,7 +817,7 @@ conv(number, from_base, to_base)
 
 **参数**
 
-* `number` — 要转换的数值。可以是字符串或数值类型。 - `from_base` — 源基数（2–36）。必须是整数。 - `to_base` — 目标基数（2–36）。必须是整数。
+* `number` — 要转换的数值。可以是字符串或数值类型。 - `from_base` — 源基数 (2–36) 。必须是整数。 - `to_base` — 目标基数 (2–36) 。必须是整数。
 
 **返回值**
 
@@ -1164,7 +1164,7 @@ endsWithCaseInsensitive(s, suffix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `suffix` — 要检查的后缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -1267,9 +1267,9 @@ SELECT endsWithUTF8('данных', 'ых');
 该函数会移除 HTML 标签、注释以及 script/style 元素，只保留文本内容。它执行以下操作：
 
 * 移除所有 HTML/XML 标签
-* 移除注释（`<!-- -->`）
+* 移除注释 (`<!-- -->`) 
 * 移除 script 和 style 元素及其内容
-* 处理 CDATA 段（原样复制）
+* 处理 CDATA 段 (原样复制) 
 * 正确处理并规范化空白字符
 
 注意：HTML 实体不会被解码，如有需要应使用单独的函数进行处理。
@@ -1349,8 +1349,8 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 引入版本：v24.1.0
 
-根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示（ToUnicode 算法）。
-如果发生错误（例如输入无效），则返回原始输入字符串。
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 机制，返回域名的 Unicode (UTF-8) 表示 (ToUnicode 算法) 。
+如果发生错误 (例如输入无效) ，则返回原始输入字符串。
 请注意，由于大小写归一化，多次调用 [`idnaEncode()`](#idnaEncode) 和 [`idnaDecode()`](#idnaDecode) 不一定会返回原始字符串。
 
 **语法**
@@ -1365,7 +1365,7 @@ idnaDecode(s)
 
 **返回值**
 
-按照 IDNA 机制返回输入字符串的 Unicode（UTF-8）表示形式。[`String`](/sql-reference/data-types/string)
+按照 IDNA 机制返回输入字符串的 Unicode (UTF-8) 表示形式。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -1385,8 +1385,8 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 引入版本：v24.1.0
 
-根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 ASCII 表示形式（ToASCII 算法）。
-输入字符串必须是 UTF 编码（例如 UTF-8）且可转换为 ASCII 字符串，否则会抛出异常。
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 机制，返回域名的 ASCII 表示形式 (ToASCII 算法) 。
+输入字符串必须是 UTF 编码 (例如 UTF-8) 且可转换为 ASCII 字符串，否则会抛出异常。
 
 :::note
 不会对百分号编码进行解码，也不会修剪制表符、空格或控制字符。
@@ -1481,7 +1481,7 @@ SELECT initcap('John''s cat won''t eat.');
 如果不满足这一假设，不会抛出异常，结果是未定义的。
 
 :::note
-此函数不会自动检测语言，例如对于土耳其语，结果可能并不完全正确（i/İ 与 i/I）。
+此函数不会自动检测语言，例如对于土耳其语，结果可能并不完全正确 (i/İ 与 i/I) 。
 如果某个码点在大写和小写时 UTF-8 字节序列的长度不同，则该码点的结果可能不正确。
 :::
 
@@ -1537,7 +1537,7 @@ SELECT initcapUTF8('не тормозит')
 
 引入版本：v25.9.0
 
-如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。针对正向场景（输入 *是* 有效 ASCII）进行了优化。
+如果输入的 String 或 FixedString 仅包含 ASCII 字节 (0x00–0x7F) ，则返回 1，否则返回 0。针对正向场景 (输入 *是* 有效 ASCII) 进行了优化。
 
 **语法**
 
@@ -1720,7 +1720,7 @@ Hello
 
 引入于：v21.8.0
 
-从左侧开始使用空格或指定字符串（必要时可重复多次）填充，直到结果字符串达到指定的 `length`。
+从左侧开始使用空格或指定字符串 (必要时可重复多次) 填充，直到结果字符串达到指定的 `length`。
 
 **语法**
 
@@ -1758,7 +1758,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 引入于：v21.8.0
 
-从左侧使用空格或指定字符串（必要时可重复多次）填充 UTF-8 字符串，直到结果字符串达到给定长度。
+从左侧使用空格或指定字符串 (必要时可重复多次) 填充 UTF-8 字符串，直到结果字符串达到给定长度。
 与按字节数计算字符串长度的 [`leftPad`](#leftPad) 不同，这里的字符串长度按 Unicode 码点数计算。
 
 **语法**
@@ -2326,7 +2326,7 @@ lo
 
 引入版本：v21.8.0
 
-从右侧使用空格或指定字符串（必要时可重复多次）填充字符串，直到结果字符串达到指定的 `length`。
+从右侧使用空格或指定字符串 (必要时可重复多次) 填充字符串，直到结果字符串达到指定的 `length`。
 
 **语法**
 
@@ -2364,7 +2364,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 自 v21.8.0 起提供
 
-从右侧开始使用空格或指定字符串（必要时可重复多次）对字符串进行填充，直到结果字符串达到给定长度。
+从右侧开始使用空格或指定字符串 (必要时可重复多次) 对字符串进行填充，直到结果字符串达到给定长度。
 与按字节计算字符串长度的 [`rightPad`](#rightPad) 不同，这里的字符串长度按 Unicode 码点计量。
 
 **语法**
@@ -2483,7 +2483,7 @@ SELECT soundex('aksel')
 
 自 v23.5.0 起引入。
 
-将空格字符（` `）按指定次数重复连接。
+将空格字符 (` `) 按指定次数重复连接。
 
 **语法**
 
@@ -2710,7 +2710,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 自 v25.9.0 引入
 
-检查字符串是否以给定字符串（不区分大小写）开头。
+检查字符串是否以给定字符串 (不区分大小写) 开头。
 
 **语法**
 
@@ -2758,7 +2758,7 @@ startsWithCaseInsensitiveUTF8(s, prefix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `prefix` — 要检查的前缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -3120,7 +3120,7 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 
 自 v20.1.0 引入
 
-将字符串中的任意无效 UTF-8 字符替换为替换字符 `�`（U+FFFD），从而转换为有效的 UTF-8 编码。
+将字符串中的任意无效 UTF-8 字符替换为替换字符 `�` (U+FFFD) ，从而转换为有效的 UTF-8 编码。
 当遇到多个连续的无效字符时，会合并为单个替换字符。
 
 **语法**
@@ -3157,7 +3157,7 @@ c
 自 v20.1.0 引入
 
 从字符串的开头和结尾移除指定的字符。
-默认情况下，会移除常见的空白字符（ASCII）。
+默认情况下，会移除常见的空白字符 (ASCII) 。
 
 **语法**
 
@@ -3195,7 +3195,7 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 自 v20.1.0 起引入
 
 从字符串开头移除指定字符。
-默认情况下，会移除常见的空白（ASCII）字符。
+默认情况下，会移除常见的空白 (ASCII) 字符。
 
 **语法**
 
@@ -3233,7 +3233,7 @@ SELECT trimLeft('ClickHouse', 'Click');
 引入于：v20.1.0
 
 从字符串末尾移除指定字符。
-默认会移除常见的空白（ASCII）字符。
+默认会移除常见的空白 (ASCII) 字符。
 
 **语法**
 
@@ -3406,7 +3406,7 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 引入版本：v24.1.0
 
-根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示形式（使用 ToUnicode 算法）。
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 机制，返回域名的 Unicode (UTF-8) 表示形式 (使用 ToUnicode 算法) 。
 在发生错误时，它会返回空字符串，而不是抛出异常。
 
 **语法**
@@ -3515,8 +3515,8 @@ SELECT upper('clickhouse')
 如果这一假设不成立，则不会抛出异常，且结果未定义。
 
 :::note
-该函数不会检测语言，例如对于土耳其语，结果可能不完全正确（i/İ vs. i/I）。
-如果某个码点的大写和小写形式的 UTF-8 字节序列长度不同（例如 `ẞ` 和 `ß`），则该码点的结果可能不正确。
+该函数不会检测语言，例如对于土耳其语，结果可能不完全正确 (i/İ vs. i/I) 。
+如果某个码点的大写和小写形式的 UTF-8 字节序列长度不同 (例如 `ẞ` 和 `ß`) ，则该码点的结果可能不正确。
 :::
 
 **语法**

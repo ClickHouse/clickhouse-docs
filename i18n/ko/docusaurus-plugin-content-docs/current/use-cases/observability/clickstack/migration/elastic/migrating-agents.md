@@ -22,9 +22,9 @@ import migrating_agents from '@site/static/images/use-cases/observability/clicks
 
 Elastic Stack은 여러 관측성(Observability) 데이터 수집 에이전트를 제공합니다. 구체적으로는 다음과 같습니다.
 
-- [Beats 제품군](https://www.elastic.co/beats) - [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat), [Packetbeat](https://www.elastic.co/beats/packetbeat) 등 - 은 모두 `libbeat` 라이브러리를 기반으로 합니다. 이러한 Beats는 Lumberjack 프로토콜을 통해 [Elasticsearch, Kafka, Redis 또는 Logstash로 데이터 전송](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output)을 지원합니다.
-- [`Elastic Agent`](https://www.elastic.co/elastic-agent)는 로그, 메트릭, 트레이스를 수집할 수 있는 통합 에이전트입니다. 이 에이전트는 [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet)를 통해 중앙에서 관리할 수 있으며, Elasticsearch, Logstash, Kafka 또는 Redis로 출력할 수 있습니다.
-- Elastic은 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 배포판도 제공합니다. 현재는 Fleet Server로 오케스트레이션할 수 없지만, ClickStack으로 마이그레이션할 때 더 유연하고 개방적인 경로를 제공합니다.
+* [Beats 제품군](https://www.elastic.co/beats) - [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat), [Packetbeat](https://www.elastic.co/beats/packetbeat) 등 - 은 모두 `libbeat` 라이브러리를 기반으로 합니다. 이러한 Beats는 Lumberjack 프로토콜을 통해 [Elasticsearch, Kafka, Redis 또는 Logstash로 데이터 전송](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output)을 지원합니다.
+* [`Elastic Agent`](https://www.elastic.co/elastic-agent)는 로그, 메트릭, 트레이스를 수집할 수 있는 통합 에이전트입니다. 이 에이전트는 [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet)를 통해 중앙에서 관리할 수 있으며, Elasticsearch, Logstash, Kafka 또는 Redis로 출력할 수 있습니다.
+* Elastic은 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 배포판도 제공합니다. 현재는 Fleet Server로 오케스트레이션할 수 없지만, ClickStack으로 마이그레이션할 때 더 유연하고 개방적인 경로를 제공합니다.
 
 가장 적합한 마이그레이션 경로는 현재 사용 중인 에이전트에 따라 달라집니다. 다음 섹션에서는 주요 에이전트 유형별 마이그레이션 옵션을 설명합니다. 목표는 마이그레이션 과정에서의 부담을 최소화하고, 가능한 경우 전환 기간 동안 기존 에이전트를 계속 사용할 수 있도록 하는 것입니다.
 

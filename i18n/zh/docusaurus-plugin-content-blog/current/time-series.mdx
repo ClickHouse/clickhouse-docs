@@ -20,7 +20,7 @@ ClickHouse 是一种面向 [OLAP](https://clickhouse.com/docs/faq/general/olap) 
 
 首先，有 **[specialized codecs](https://clickhouse.com/docs/sql-reference/statements/create/table#specialized-codecs)**，可以高效处理典型的时间序列数据。既可以使用通用算法，例如 `DoubleDelta` 和 `Gorilla`，也可以使用 ClickHouse 特有的 `T64` 等。
 
-其次，时间序列查询通常只访问最近的数据，例如最近一天或一周的数据。因此，采用同时配备高速 NVMe/SSD 磁盘和大容量 HDD 磁盘的服务器是合理的。ClickHouse 的 [TTL](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree/##table_engine-mergetree-multiple-volumes) 功能允许你配置将最新的热点数据保存在高速磁盘上，并随着数据老化逐步将其迁移到较慢的磁盘上。如果你的场景有此需求，还可以对更旧的数据进行汇总（rollup）或直接删除。
+其次，时间序列查询通常只访问最近的数据，例如最近一天或一周的数据。因此，采用同时配备高速 NVMe/SSD 磁盘和大容量 HDD 磁盘的服务器是合理的。ClickHouse 的 [TTL](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree/##table_engine-mergetree-multiple-volumes) 功能允许你配置将最新的热点数据保存在高速磁盘上，并随着数据老化逐步将其迁移到较慢的磁盘上。如果你的场景有此需求，还可以对更旧的数据进行汇总 (rollup) 或直接删除。
 
 尽管这有悖于 ClickHouse 存储和处理原始数据的理念，你仍然可以使用 [materialized views](https://clickhouse.com/docs/sql-reference/statements/create/view) 来满足更加严苛的延迟或成本要求。
 

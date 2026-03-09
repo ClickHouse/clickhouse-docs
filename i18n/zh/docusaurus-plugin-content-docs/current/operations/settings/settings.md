@@ -12036,6 +12036,47 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 在事件时间处理过程中等待 Window View 触发信号的超时时间
 
+## webassembly_udf_max_fuel \{#webassembly_udf_max_fuel\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="100000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "用于限制 WebAssembly UDF 实例每次执行可消耗 CPU 指令（fuel）数量的新设置。"}]}]} />
+
+每个 WebAssembly UDF 实例单次执行的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。
+设置为 0 表示不设上限。
+
+## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于限制 WebAssembly UDF 输入数据块大小的新增设置。"}]}]} />
+
+在单个数据块中传递给 WebAssembly UDF 的最大行数。设置为 0 表示一次性处理所有行。
+
+## webassembly_udf_max_instances \{#webassembly_udf_max_instances\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "新增设置，用于限制每个函数中可并行运行的 WebAssembly UDF 实例数量。"}]}]} />
+
+每个函数中可并行运行的 WebAssembly UDF 实例的最大数量。
+
+## webassembly_udf_max_memory \{#webassembly_udf_max_memory\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="134217728" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "134217728"},{"label": "用于限制每个 WebAssembly UDF 实例可用内存的新设置。"}]}]} />
+
+每个 WebAssembly UDF 实例的内存限制 (以字节为单位) 。
+
 ## window_view_clean_interval \{#window_view_clean_interval\}
 
 <ExperimentalBadge/>

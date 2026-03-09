@@ -49,35 +49,35 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   1. Перейдите на <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">страницу релизов драйвера ClickHouse JDBC</a> на GitHub и найдите последнюю доступную версию JDBC-драйвера
   2. В разделе релиза нажмите на &quot;Show all xx assets&quot; и найдите JAR-файл, в имени которого есть ключевое слово &quot;shaded&quot; или &quot;all&quot;, например `clickhouse-jdbc-0.5.0-all.jar`
-  3. Поместите JAR-файл в каталог, доступный Apache NiFi, и запишите его абсолютный путь
+  3. Поместите JAR-файл в каталог, доступный Apache NiFi, и запомните его абсолютный путь
 
   ## Добавьте службу контроллера `DBCPConnectionPool` и настройте её свойства \{#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties\}
 
-  1. Чтобы настроить Controller Service в Apache NiFi, перейдите на страницу NiFi Flow Configuration, нажав кнопку с иконкой шестерёнки
+  1. Чтобы настроить Controller Service в Apache NiFi, перейдите на страницу конфигурации потока NiFi (NiFi Flow Configuration), нажав кнопку с изображением шестерёнки
 
-     <Image img={nifi01} size="sm" border alt="Страница NiFi Flow Configuration с выделенной кнопкой с иконкой шестерёнки" />
+     <Image img={nifi01} size="sm" border alt="Страница NiFi Flow Configuration с выделенной кнопкой-шестерёнкой" />
 
   2. Выберите вкладку Controller Services и добавьте новый Controller Service, нажав кнопку `+` в правом верхнем углу
 
      <Image img={nifi02} size="lg" border alt="Вкладка Controller Services с выделенной кнопкой добавления" />
 
-  3. Найдите `DBCPConnectionPool` и нажмите кнопку Add
+  3. Найдите `DBCPConnectionPool` и нажмите кнопку &quot;Add&quot;
 
      <Image img={nifi03} size="lg" border alt="Диалог выбора Controller Service с выделенным DBCPConnectionPool" />
 
   4. Только что добавленная служба контроллера `DBCPConnectionPool` по умолчанию будет находиться в статусе Invalid. Нажмите кнопку с иконкой «шестерёнки», чтобы начать настройку
 
-     <Image img={nifi04} size="lg" border alt="Список Controller Services с DBCPConnectionPool в состоянии Invalid и выделенной кнопкой с иконкой шестерёнки" />
+     <Image img={nifi04} size="lg" border alt="Список Controller Services с DBCPConnectionPool в статусе Invalid и выделенной кнопкой с иконкой шестерёнки" />
 
   5. В разделе Properties введите следующие значения
 
-  | Property                    | Value                                                              | Remark                                                        |
-  | --------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------- |
-  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Замените HOSTNAME в URL подключения соответствующим значением |
-  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                                               |
-  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Абсолютный путь к JAR-файлу JDBC-драйвера ClickHouse          |
-  | Database User               | default                                                            | Имя пользователя ClickHouse                                   |
-  | Password                    | password                                                           | Пароль ClickHouse                                             |
+  | Свойство                          | Значение                                                           | Примечание                                             |
+  | --------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
+  | URL подключения к базе данных     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Замените HOSTNAME в URL подключения на нужное значение |
+  | Имя класса драйвера базы данных   | com.clickhouse.jdbc.ClickHouseDriver                               |                                                        |
+  | Расположение драйвера базы данных | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Абсолютный путь к JAR-файлу JDBC-драйвера ClickHouse   |
+  | Пользователь базы данных          | default                                                            | Имя пользователя ClickHouse                            |
+  | Пароль                            | password                                                           | Пароль ClickHouse                                      |
 
   6. В разделе Settings измените имя Controller Service на ClickHouse JDBC для удобства
 
@@ -85,11 +85,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   7. Активируйте Controller Service `DBCPConnectionPool`, нажав кнопку с изображением молнии, а затем кнопку «Enable»
 
-     <Image img={nifi06} size="lg" border alt="Список Controller Services с выделенной кнопкой-молнией" />
+     <Image img={nifi06} size="lg" border alt="Список Controller Services с выделенной кнопкой с иконкой молнии" />
 
      <br />
 
-     <Image img={nifi07} size="lg" border alt="Диалог подтверждения включения Controller Service (Enable Controller Service)" />
+     <Image img={nifi07} size="lg" border alt="Диалог подтверждения включения Controller Service" />
 
   8. Проверьте вкладку Controller Services и убедитесь, что Controller Service включён
 
@@ -97,7 +97,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ## Чтение из таблицы с помощью процессора `ExecuteSQL` \{#5-read-from-a-table-using-the-executesql-processor\}
 
-  1. Добавьте процессор `ExecuteSQL`, а также соответствующие предшествующие и последующие процессоры
+  1. Добавьте процессор `ExecuteSQL`, а также соответствующие предыдущие и последующие процессоры
 
      <Image img={nifi09} size="md" border alt="Рабочая область NiFi с процессором ExecuteSQL в составе рабочего процесса" />
 
@@ -112,13 +112,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi10} size="lg" border alt="Окно настройки процессора ExecuteSQL с заполненными свойствами" />
 
-  4. Чтобы убедиться, что запрос был успешно обработан, просмотрите один из объектов `FlowFile` в выходной очереди
+  4. Чтобы убедиться, что запрос был успешно выполнен, изучите один из `FlowFile` в выходной очереди
 
      <Image img={nifi11} size="lg" border alt="Диалог списка очереди, показывающий FlowFile, готовые к проверке" />
 
   5. Переключите вид на &quot;formatted&quot;, чтобы просмотреть результат выходного `FlowFile`
 
-     <Image img={nifi12} size="lg" border alt="Просмотр содержимого FlowFile с результатами запроса в отформатированном виде" />
+     <Image img={nifi12} size="lg" border alt="Просмотрщик содержимого FlowFile, отображающий результаты запроса в отформатированном виде" />
 
   ## Запись в таблицу с помощью процессоров `MergeRecord` и `PutDatabaseRecord` \{#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor\}
 
@@ -131,13 +131,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Record Reader             | `JSONTreeReader`    | Выберите соответствующий Record Reader                                                                              |
      | Record Writer             | `JSONReadSetWriter` | Выберите соответствующий Record Writer                                                                              |
      | Minimum Number of Records | 1000                | Установите большее значение, чтобы минимальное количество строк объединялось в одну запись. По умолчанию — 1 строка |
-     | Maximum Number of Records | 10000               | Установите значение больше, чем «Minimum Number of Records». По умолчанию — 1 000 строк                             |
+     | Maximum Number of Records | 10000               | Установите значение больше, чем &quot;Minimum Number of Records&quot;. По умолчанию — 1 000 строк                   |
 
-  3. Чтобы убедиться, что несколько записей объединены в одну, проверьте входные и выходные данные процессора `MergeRecord`. Обратите внимание, что выходные данные представляют собой массив, содержащий несколько входных записей.
+  3. Чтобы убедиться, что несколько записей объединены в одну, просмотрите входные и выходные данные процессора `MergeRecord`. Обратите внимание, что выходные данные представляют собой массив из нескольких входных записей.
 
      Входные данные
 
-     <Image img={nifi13} size="sm" border alt="Входные данные процессора MergeRecord с одиночными записями" />
+     <Image img={nifi13} size="sm" border alt="Входные данные процессора MergeRecord с отдельными записями" />
 
      Результат
 

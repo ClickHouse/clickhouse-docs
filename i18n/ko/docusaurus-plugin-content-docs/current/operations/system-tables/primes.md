@@ -44,7 +44,7 @@ SELECT * FROM system.primes LIMIT 10;
 1e15보다 큰 첫 번째 소수.
 
 ```sql
-SELECT prime FROM system.primes WHERE prime > toUInt64(1e15) LIMIT 1;
+SELECT prime FROM system.primes WHERE prime > 1e15 LIMIT 1;
 ```
 
 ```response

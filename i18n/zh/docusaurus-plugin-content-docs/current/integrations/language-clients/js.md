@@ -113,22 +113,22 @@ const client = createClient({
 
 在创建客户端实例时，可以调整以下连接设置：
 
-| 设置项                                                                   | 说明                                                                                   | 默认值                  | 相关内容                                                                                   |
-|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------|
-| **url**?: string                                                         | ClickHouse 实例的 URL。                                                                | `http://localhost:8123` | [URL 配置文档](./js.md#url-configuration)                                                 |
-| **pathname**?: string                                                    | 可选的路径名，在客户端解析 ClickHouse URL 之后追加。                                  | `''`                    | [带 pathname 的代理文档](./js.md#proxy-with-a-pathname)                                   |
-| **request_timeout**?: number                                             | 请求超时时间（毫秒）。                                                                 | `30_000`                | -                                                                                          |
-| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 启用压缩。                                                                             | -                       | [压缩文档](./js.md#compression)                                                           |
-| **username**?: string                                                    | 代表其发起请求的用户名。                                                               | `default`               | -                                                                                          |
-| **password**?: string                                                    | 用户密码。                                                                             | `''`                    | -                                                                                          |
-| **application**?: string                                                 | 使用该 Node.js 客户端的应用名称。                                                      | `clickhouse-js`         | -                                                                                          |
-| **database**?: string                                                    | 要使用的数据库名称。                                                                   | `default`               | -                                                                                          |
-| **clickhouse_settings**?: ClickHouseSettings                             | 应用于所有请求的 ClickHouse 设置。                                                     | `{}`                    | -                                                                                          |
-| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | 客户端内部日志配置。                                                                   | -                       | [日志记录文档](./js.md#logging-nodejs-only)                                               |
-| **session_id**?: string                                                  | 可选的 ClickHouse 会话 ID，会随每个请求一起发送。                                     | -                       | -                                                                                          |
-| **keep_alive**?: `{ **enabled**?: boolean }`                             | 在 Node.js 和 Web 版本中默认启用。                                                     | -                       | -                                                                                          |
-| **http_headers**?: `Record<string, string>`                              | 发往 ClickHouse 的请求所附加的额外 HTTP 头部。                                         | -                       | [带认证的反向代理文档](./js.md#reverse-proxy-with-authentication)                         |
-| **roles**?: string \|  string[]                                          | 要附加到出站请求的 ClickHouse 角色名称。                                               | -                       | [在 HTTP 接口中使用角色](/interfaces/http#setting-role-with-query-parameters)             |
+| 设置项                                                                      | 说明                                 | 默认值                     | 相关内容                                                                  |
+| ------------------------------------------------------------------------ | ---------------------------------- | ----------------------- | --------------------------------------------------------------------- |
+| **url**?: string                                                         | ClickHouse 实例的 URL。                | `http://localhost:8123` | [URL 配置文档](./js.md#url-configuration)                                 |
+| **pathname**?: string                                                    | 可选的路径名，在客户端解析 ClickHouse URL 之后追加。 | `''`                    | [带 pathname 的代理文档](./js.md#proxy-with-a-pathname)                     |
+| **request&#95;timeout**?: number                                         | 请求超时时间 (毫秒) 。                      | `30_000`                | -                                                                     |
+| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 启用压缩。                              | -                       | [压缩文档](./js.md#compression)                                           |
+| **username**?: string                                                    | 代表其发起请求的用户名。                       | `default`               | -                                                                     |
+| **password**?: string                                                    | 用户密码。                              | `''`                    | -                                                                     |
+| **application**?: string                                                 | 使用该 Node.js 客户端的应用名称。              | `clickhouse-js`         | -                                                                     |
+| **database**?: string                                                    | 要使用的数据库名称。                         | `default`               | -                                                                     |
+| **clickhouse&#95;settings**?: ClickHouseSettings                         | 应用于所有请求的 ClickHouse 设置。            | `{}`                    | -                                                                     |
+| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | 客户端内部日志配置。                         | -                       | [日志记录文档](./js.md#logging-nodejs-only)                                 |
+| **session&#95;id**?: string                                              | 可选的 ClickHouse 会话 ID，会随每个请求一起发送。   | -                       | -                                                                     |
+| **keep&#95;alive**?: `{ **enabled**?: boolean }`                         | 在 Node.js 和 Web 版本中默认启用。           | -                       | -                                                                     |
+| **http&#95;headers**?: `Record<string, string>`                          | 发往 ClickHouse 的请求所附加的额外 HTTP 头部。   | -                       | [带认证的反向代理文档](./js.md#reverse-proxy-with-authentication)               |
+| **roles**?: string |  string[]                                           | 要附加到出站请求的 ClickHouse 角色名称。         | -                       | [在 HTTP 接口中使用角色](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js 专用配置参数 \{#nodejs-specific-configuration-parameters\}
 
@@ -195,9 +195,9 @@ createClient({
 
 #### 连接概述 \{#connection-overview\}
 
-客户端通过 HTTP(s) 协议建立连接。对 RowBinary 的支持正在推进中，参见[相关 issue](https://github.com/ClickHouse/clickhouse-js/issues/216)。
+客户端通过 HTTP 或 HTTPS 协议建立连接。对 RowBinary 的支持正在推进中，参见[相关 issue](https://github.com/ClickHouse/clickhouse-js/issues/216)。
 
-下面的示例演示如何配置与 ClickHouse Cloud 的连接。假定通过环境变量提供 `url`（包含协议和端口）和 `password` 的值，并使用 `default` 用户。
+下面的示例演示如何配置与 ClickHouse Cloud 的连接。假定通过环境变量提供 `url` (包含协议和端口) 和 `password` 的值，并使用 `default` 用户。
 
 **示例：** 使用环境变量进行配置来创建一个 Node.js 客户端实例。
 
@@ -212,6 +212,7 @@ const client = createClient({
 ```
 
 客户端代码仓库包含多个使用环境变量的示例，例如[在 ClickHouse Cloud 中创建表](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)、[使用异步插入](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts)等。
+
 
 #### 连接池（仅限 Node.js） \{#connection-pool-nodejs-only\}
 
@@ -1284,23 +1285,23 @@ const client = createClient({
 })
 ```
 
-### 自定义 HTTP/HTTPS agent（实验性功能，仅适用于 Node.js） \{#custom-httphttps-agent-experimental-nodejs-only\}
+### 自定义 HTTP/HTTPS agent (实验性功能，仅适用于 Node.js)  \{#custom-httphttps-agent-experimental-nodejs-only\}
 
 :::warning
 这是一个实验性功能，在未来的发布中可能会以向后不兼容的方式发生变更。客户端提供的默认实现和设置对于大多数使用场景应该已经足够。仅当您确定确实需要时，才使用此功能。
 :::
 
-默认情况下，客户端会使用客户端配置中提供的设置（例如 `max_open_connections`、`keep_alive.enabled`、`tls`）来配置底层 HTTP(s) agent，用于处理与 ClickHouse 服务器的连接。此外，如果使用了 TLS 证书，底层 agent 会配置所需的证书，并强制使用正确的 TLS 认证头部。
+默认情况下，客户端会使用客户端配置中提供的设置 (例如 `max_open_connections`、`keep_alive.enabled`、`tls`) 来配置底层 HTTP 或 HTTPS agent，用于处理与 ClickHouse 服务器的连接。此外，如果使用了 TLS 证书，底层 agent 会配置所需的证书，并强制使用正确的 TLS 认证头部。
 
-从 1.2.0 起，可以为客户端提供自定义的 HTTP(s) agent，以替换默认的底层 agent。在网络配置较为复杂的情况下，这可能会比较有用。如果提供了自定义 agent，将会有以下注意事项：
+从 1.2.0 起，可以为客户端提供自定义的 HTTP 或 HTTPS agent，以替换默认的底层 agent。在网络配置较为复杂的情况下，这可能会比较有用。如果提供了自定义 agent，将会有以下注意事项：
 
-- `max_open_connections` 和 `tls` 选项将 _不再生效_，并会被客户端忽略，因为它们属于底层 agent 的配置部分。
-- `keep_alive.enabled` 只会控制 `Connection` 头的默认值（`true` -> `Connection: keep-alive`，`false` -> `Connection: close`）。
-- 虽然空闲 keep-alive socket 的管理仍然有效（因为这并不依赖于 agent，而是依赖于具体的 socket 本身），但现在可以通过将 `keep_alive.idle_socket_ttl` 的值设置为 `0` 来将其完全禁用。
+* `max_open_connections` 和 `tls` 选项将 *不再生效*，并会被客户端忽略，因为它们属于底层 agent 的配置部分。
+* `keep_alive.enabled` 只会控制 `Connection` 头的默认值 (`true` -&gt; `Connection: keep-alive`，`false` -&gt; `Connection: close`) 。
+* 虽然空闲 keep-alive socket 的管理仍然有效 (因为这并不依赖于 agent，而是依赖于具体的 socket 本身) ，但现在可以通过将 `keep_alive.idle_socket_ttl` 的值设置为 `0` 来将其完全禁用。
 
 #### 自定义 Agent 使用示例 \{#custom-agent-usage-examples\}
 
-在不使用证书的情况下使用自定义 HTTP(S) Agent：
+在不使用证书的情况下使用自定义 HTTP 或 HTTPS Agent：
 
 ```ts
 const agent = new http.Agent({ // or https.Agent
@@ -1363,7 +1364,8 @@ const client = createClient({
 })
 ```
 
-在同时使用证书 *和* 自定义 *HTTPS* Agent 时，很可能需要通过 `set_basic_auth_header` 设置（在 1.2.0 中引入）来禁用默认的授权头，因为它会与 TLS 头产生冲突。所有 TLS 头都应由用户手动提供。
+在同时使用证书 *和* 自定义 *HTTPS* Agent 时，很可能需要通过 `set_basic_auth_header` 设置 (在 1.2.0 中引入) 来禁用默认的授权头，因为它会与 TLS 头产生冲突。所有 TLS 头都应由用户手动提供。
+
 
 ## 已知限制（Node.js/web） \{#known-limitations-nodejsweb\}
 

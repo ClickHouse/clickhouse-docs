@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 引入版本：v20.1.0
 
-接收一个带有无类别域间路由（CIDR）前缀长度的 IPv4 地址，并返回该子网的地址范围，作为包含两个 IPv4 值的元组：该子网内的第一个地址和最后一个地址。
+接收一个带有无类别域间路由 (CIDR) 前缀长度的 IPv4 地址，并返回该子网的地址范围，作为包含两个 IPv4 值的元组：该子网内的第一个地址和最后一个地址。
 IPv6 版本请参见 [`IPv6CIDRToRange`](#IPv4CIDRToRange)。
 
 **语法**
@@ -56,7 +56,7 @@ SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 
 引入于：v1.1.0
 
-将 32 位整数转换为其 IPv4 地址的点分十进制字符串表示形式（A.B.C.D 格式）。
+将 32 位整数转换为其 IPv4 地址的点分十进制字符串表示形式 (A.B.C.D 格式) 。
 采用大端字节序解释输入值。
 
 **语法**
@@ -91,7 +91,7 @@ IPv4NumToString(3232235521)
 
 自 v1.1.0 引入
 
-将 32 位整数转换为 IPv4 地址的点分十进制字符串表示（A.B.C.D 格式），
+将 32 位整数转换为 IPv4 地址的点分十进制字符串表示 (A.B.C.D 格式) ，
 类似于 [`IPv4NumToString`](#IPv4NumToString)，但会使用 `xxx` 来替代最后一个八位组。
 
 **语法**
@@ -141,7 +141,7 @@ LIMIT 10
 
 引入版本：v1.1.0
 
-将点分十进制表示法的 IPv4 地址字符串（A.B.C.D 格式）转换为对应的 32 位整数形式。（是 [`IPv4NumToString`](#IPv4NumToString) 的反向操作）。
+将点分十进制表示法的 IPv4 地址字符串 (A.B.C.D 格式) 转换为对应的 32 位整数形式。 (是 [`IPv4NumToString`](#IPv4NumToString) 的反向操作) 。
 如果 IPv4 地址格式无效，则会抛出异常。
 
 **语法**
@@ -176,7 +176,7 @@ IPv4StringToNum('192.168.0.1')
 
 引入于：v22.3.0
 
-将点分十进制表示法（A.B.C.D 格式）的 IPv4 地址字符串转换为对应的 32 位整数表示形式。如果 IPv4 地址格式无效，则返回 `0`。
+将点分十进制表示法 (A.B.C.D 格式) 的 IPv4 地址字符串转换为对应的 32 位整数表示形式。如果 IPv4 地址格式无效，则返回 `0`。
 
 **语法**
 
@@ -212,7 +212,7 @@ SELECT
 
 自 v22.3.0 引入
 
-将 32 位整数转换为其 IPv4 地址的点分十进制字符串表示（A.B.C.D 格式），如果 IPv4 地址格式无效，则返回 `NULL`。
+将 32 位整数转换为其 IPv4 地址的点分十进制字符串表示 (A.B.C.D 格式) ，如果 IPv4 地址格式无效，则返回 `NULL`。
 
 **语法**
 
@@ -282,7 +282,7 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 
 自 v20.1.0 起可用
 
-接收带有无类别域间路由（CIDR）前缀长度的 IPv6 地址，并返回该子网的地址范围，作为包含两个 IPv6 值的元组：该子网中的最小地址和最大地址。
+接收带有无类别域间路由 (CIDR) 前缀长度的 IPv6 地址，并返回该子网的地址范围，作为包含两个 IPv6 值的元组：该子网中的最小地址和最大地址。
 IPv4 版本请参见 [`IPv4CIDRToRange`](#IPv4CIDRToRange)。
 
 **语法**
@@ -318,7 +318,7 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 
 引入版本：v1.1.0
 
-将 IPv6 地址从二进制形式（FixedString(16)）转换为其标准文本表示形式。
+将 IPv6 地址从二进制形式 (FixedString(16)) 转换为其标准文本表示形式。
 IPv4 映射的 IPv6 地址显示为 `::ffff:111.222.33.44` 格式。
 
 **语法**
@@ -411,7 +411,7 @@ LIMIT 10
 
 引入版本：v1.1.0
 
-将 IPv6 地址从其标准文本表示转换为二进制格式（`FixedString(16)`）。
+将 IPv6 地址从其标准文本表示转换为二进制格式 (`FixedString(16)`) 。
 接受格式为 `::ffff:111.222.33.44.` 的 IPv4 映射的 IPv6 地址。
 如果 IPv6 地址格式无效，将抛出异常。
 
@@ -454,7 +454,7 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 
 自 v22.3.0 引入
 
-将 IPv6 地址从其标准文本表示形式转换为二进制格式（`FixedString(16)`）。
+将 IPv6 地址从其标准文本表示形式转换为二进制格式 (`FixedString(16)`) 。
 接受格式为 `::ffff:111.222.33.44.` 的 IPv4 映射 IPv6 地址。
 如果 IPv6 地址格式无效，则返回默认值 `::`。
 
@@ -492,7 +492,7 @@ SELECT
 
 引入版本：v22.3.0
 
-将 IPv6 地址从其标准文本表示形式转换为二进制格式（`FixedString(16)`）。
+将 IPv6 地址从其标准文本表示形式转换为二进制格式 (`FixedString(16)`) 。
 接受格式为 `::ffff:111.222.33.44.` 的 IPv4 映射到 IPv6 的地址。
 如果 IPv6 地址格式无效，则返回 `NULL`。
 
@@ -572,7 +572,7 @@ SELECT
 
 引入版本：v21.4.0
 
-判断某个 IP 地址是否落在以 [无类别域间路由（Classless Inter-Domain Routing，CIDR）](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表示的网络范围内。
+判断某个 IP 地址是否落在以 [无类别域间路由 (Classless Inter-Domain Routing，CIDR) ](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表示的网络范围内。
 
 该函数接受以字符串形式表示的 IPv4 和 IPv6 地址及网络。如果 IP 地址和 CIDR 的 IP 版本不一致，则返回 `0`。
 
@@ -772,7 +772,7 @@ SELECT toIPv4(2130706433);
 引入版本：v22.3.0
 
 将字符串或 `UInt32` 形式的 IPv4 地址转换为 [`IPv4`](../data-types/ipv4.md) 类型。
-如果 IPv4 地址格式无效，则返回 `0.0.0.0`（值为 0 的 IPv4 地址），或返回指定的 IPv4 默认值。
+如果 IPv4 地址格式无效，则返回 `0.0.0.0` (值为 0 的 IPv4 地址) ，或返回指定的 IPv4 默认值。
 
 **语法**
 
@@ -822,7 +822,7 @@ SELECT
 * 以点分十进制表示的 IPv4 地址字符串。
 * IPv4 地址的整数表示。
 
-不支持的参数（返回 `NULL`）：
+不支持的参数 (返回 `NULL`) ：
 
 * 无效的 IP 地址格式。
 * IPv6 地址。
@@ -864,14 +864,14 @@ SELECT
 首次引入于：v23.1.0
 
 将输入值转换为 [IPv4](../data-types/ipv4.md) 类型的值，但在出错时返回全零 IPv4 地址。
-类似于 [`toIPv4`](#toIPv4)，但在转换出错时返回全零 IPv4 地址（`0.0.0.0`），而不是抛出异常。
+类似于 [`toIPv4`](#toIPv4)，但在转换出错时返回全零 IPv4 地址 (`0.0.0.0`) ，而不是抛出异常。
 
 支持的参数：
 
 * 点分十进制表示法的 IPv4 地址字符串表示。
 * IPv4 地址的整数表示形式。
 
-不支持的参数（返回全零 IPv4 地址）：
+不支持的参数 (返回全零 IPv4 地址) ：
 
 * 无效的 IP 地址格式。
 * IPv6 地址。
@@ -889,7 +889,7 @@ toIPv4OrZero(x)
 
 **返回值**
 
-成功时返回一个 IPv4 地址，否则返回 IPv4 零地址（`0.0.0.0`）。[`IPv4`](/sql-reference/data-types/ipv4)
+成功时返回一个 IPv4 地址，否则返回 IPv4 零地址 (`0.0.0.0`) 。[`IPv4`](/sql-reference/data-types/ipv4)
 
 **示例**
 
@@ -913,7 +913,7 @@ SELECT
 
 将 IPv6 地址的字符串或 `UInt128` 形式转换为 [`IPv6`](../data-types/ipv6.md) 类型。
 对于字符串，如果 IPv6 地址格式无效，则返回空值。
-类似于 [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) 和 [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) 函数，这些函数用于在 IPv6 地址与二进制格式（即 `FixedString(16)`）之间进行转换。
+类似于 [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) 和 [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) 函数，这些函数用于在 IPv6 地址与二进制格式 (即 `FixedString(16)`) 之间进行转换。
 
 如果输入字符串包含一个有效的 IPv4 地址，则返回该 IPv4 地址对应的等价 IPv6 地址。
 
@@ -965,7 +965,7 @@ SELECT toIPv6('127.0.0.1');
 引入于：v22.3.0
 
 将 IPv6 地址的字符串形式或 `UInt128` 形式转换为 [`IPv6`](../data-types/ipv6.md) 类型。
-如果 IPv6 地址格式无效，则返回 `::`（全零 IPv6 地址）或指定的 IPv6 默认值。
+如果 IPv6 地址格式无效，则返回 `::` (全零 IPv6 地址) 或指定的 IPv6 默认值。
 
 **语法**
 
@@ -1013,10 +1013,10 @@ SELECT
 支持的参数：
 
 * 标准表示法的 IPv6 地址字符串。
-* IPv4 地址的字符串表示（会被转换为 IPv4-mapped IPv6）。
+* IPv4 地址的字符串表示 (会被转换为 IPv4-mapped IPv6) 。
 * IPv6 地址的二进制表示。
 
-不支持的参数（返回 `NULL`）：
+不支持的参数 (返回 `NULL`) ：
 
 * 无效的 IP 地址格式。
 * 格式错误的 IPv6 地址。
@@ -1058,15 +1058,15 @@ SELECT
 引入于：v23.1.0
 
 将输入值转换为 [IPv6](../data-types/ipv6.md) 类型的值，但在出错时返回全零 IPv6 地址。
-类似于 [`toIPv6`](#toIPv6)，但在转换出错时返回全零 IPv6 地址（`::`），而不是抛出异常。
+类似于 [`toIPv6`](#toIPv6)，但在转换出错时返回全零 IPv6 地址 (`::`) ，而不是抛出异常。
 
 支持的参数：
 
 * 使用标准记法表示的 IPv6 地址字符串。
-* IPv4 地址的字符串表示（会转换为 IPv4-mapped IPv6）。
+* IPv4 地址的字符串表示 (会转换为 IPv4-mapped IPv6) 。
 * IPv6 地址的二进制表示。
 
-不支持的参数（返回全零 IPv6 地址）：
+不支持的参数 (返回全零 IPv6 地址) ：
 
 * 非法的 IP 地址格式。
 * 格式错误的 IPv6 地址。

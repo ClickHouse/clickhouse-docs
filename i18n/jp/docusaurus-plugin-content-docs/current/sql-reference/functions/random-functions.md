@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # 乱数を生成する関数 \{#functions-for-generating-random-numbers\}
 
-このセクションのすべての関数は、引数を 0 個または 1 個だけ取ります。引数（指定された場合）の唯一の用途は、[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) を防ぎ、同じ行内で同じ乱数関数を 2 回評価した場合でも、異なる乱数値が返されるようにすることです。
+このセクションのすべての関数は、引数を 0 個または 1 個だけ取ります。引数 (指定された場合) の唯一の用途は、[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) を防ぎ、同じ行内で同じ乱数関数を 2 回評価した場合でも、異なる乱数値が返されるようにすることです。
 
 関連コンテンツ
 
@@ -195,7 +195,7 @@ randBinomial(experiments, probability[, x])
 **引数**
 
 * `experiments` — 実験の回数 [`UInt64`](/sql-reference/data-types/int-uint)
-* `probability` — 各実験における成功確率（`0` から `1` の間の値） [`Float64`](/sql-reference/data-types/float)
+* `probability` — 各実験における成功確率 (`0` から `1` の間の値)  [`Float64`](/sql-reference/data-types/float)
 * `x` — 省略可能であり、評価も無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
 **戻り値**
@@ -523,7 +523,7 @@ randNormal(mean, stddev[, x])
 
 **戻り値**
 
-指定した正規分布から抽出された乱数（Float64）を返します。[`Float64`](/sql-reference/data-types/float)
+指定した正規分布から抽出された乱数 (Float64) を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 
@@ -635,8 +635,8 @@ randUniform(min, max[, x])
 
 **引数**
 
-* `min` — 範囲の左側の境界値（含む）。[`Float64`](/sql-reference/data-types/float)
-* `max` — 範囲の右側の境界値（含む）。[`Float64`](/sql-reference/data-types/float)
+* `min` — 範囲の左側の境界値 (含む) 。[`Float64`](/sql-reference/data-types/float)
+* `max` — 範囲の右側の境界値 (含む) 。[`Float64`](/sql-reference/data-types/float)
 * `x` — オプションの引数であり、無視されます。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことにあります。[`Any`](/sql-reference/data-types)
 
 **戻り値**
@@ -712,7 +712,7 @@ randomPrintableASCII(length[, x])
 
 **引数**
 
-* `length` — 文字列の長さ（バイト数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 文字列の長さ (バイト数) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `x` — 省略可能で、評価はされません。この引数の唯一の目的は、同じ関数呼び出しがクエリ内で複数回使用される場合に、[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) が行われるのを防ぐことにあります。[`Any`](/sql-reference/data-types)
 
 **戻り値**
@@ -750,7 +750,7 @@ randomString(length[, x])
 
 **引数**
 
-* `length` — 文字列の長さ（バイト数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 文字列の長さ (バイト数) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `x` — オプションであり、無視されます。この引数の唯一の目的は、クエリ内で同じ関数呼び出しが複数回使用される場合に、[共通部分式除去](/sql-reference/functions/overview#common-subexpression-elimination)が行われるのを防ぐことです。[`Any`](/sql-reference/data-types)
 
 **戻り値**
@@ -775,7 +775,7 @@ SELECT randomString(5) AS str FROM numbers(2)
 導入バージョン: v20.5.0
 
 指定したコードポイント数を持つランダムな [UTF-8](https://en.wikipedia.org/wiki/UTF-8) 文字列を生成します。
-未割り当ての[面](https://en.wikipedia.org/wiki/Plane_\(Unicode\))（第 4 面から第 13 面まで）のコードポイントは返されません。
+未割り当ての[面](https://en.wikipedia.org/wiki/Plane_\(Unicode\)) (第 4 面から第 13 面まで) のコードポイントは返されません。
 ClickHouse サーバーと通信しているクライアント側で、生成された UTF-8 文字列を正しく表示できない可能性が依然としてあります。
 
 **構文**
@@ -786,7 +786,7 @@ randomStringUTF8(length)
 
 **引数**
 
-* `length` — 文字列の長さ（コードポイント数）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 文字列の長さ (コードポイント数) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返される値**
 

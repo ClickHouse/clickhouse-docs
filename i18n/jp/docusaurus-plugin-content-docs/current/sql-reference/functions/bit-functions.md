@@ -92,7 +92,7 @@ bitCount(x)
 `x` で 1 に設定されているビットの数を返します。[`UInt8`](../data-types/int-uint.md)。
 
 :::note
-この関数は入力値をより大きな型に変換しません（[符号拡張](https://en.wikipedia.org/wiki/Sign_extension)は行いません）。
+この関数は入力値をより大きな型に変換しません ([符号拡張](https://en.wikipedia.org/wiki/Sign_extension)は行いません) 。
 たとえば、`bitCount(toUInt8(-1)) = 8` です。
 :::
 
@@ -450,7 +450,7 @@ bitSlice(s, offset[, length])
 
 * `s` — スライス対象の String または FixedString。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
 * `offset` —
-  開始ビット位置（1 始まりのインデックス）を指定します。
+  開始ビット位置 (1 始まりのインデックス) を指定します。
 * 正の値: 文字列の先頭から数えます。
 * 負の値: 文字列の末尾から数えます。
 
@@ -465,7 +465,7 @@ bitSlice(s, offset[, length])
 
 **戻り値**
 
-抽出されたビットを 2 進数列として表現した文字列を返します。結果は常にバイト境界（8 ビットの倍数）に揃うようにパディングされます。[`String`](/sql-reference/data-types/string)
+抽出されたビットを 2 進数列として表現した文字列を返します。結果は常にバイト境界 (8 ビットの倍数) に揃うようにパディングされます。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -532,7 +532,7 @@ SELECT bin(2), bitTest(2, 1);
 
 導入バージョン: v1.1.0
 
-指定された位置にあるすべてのビットに対する[論理積](https://en.wikipedia.org/wiki/Logical_conjunction)（AND 演算子）の結果を返します。
+指定された位置にあるすべてのビットに対する[論理積](https://en.wikipedia.org/wiki/Logical_conjunction) (AND 演算子) の結果を返します。
 右端のビットを 0 として、右から左へ番号を振ります。
 
 2 つのビットの論理 AND は、両方の入力ビットが真のとき、かつそのときに限り真になります。
@@ -582,7 +582,7 @@ SELECT bitTestAll(43, 0, 1, 3, 5, 2);
 
 導入バージョン: v1.1.0
 
-数値の指定されたビット位置にあるすべてのビットに対する[論理和](https://en.wikipedia.org/wiki/Logical_disjunction)（OR 演算子）の結果を返します。
+数値の指定されたビット位置にあるすべてのビットに対する[論理和](https://en.wikipedia.org/wiki/Logical_disjunction) (OR 演算子) の結果を返します。
 右から左に数え、最下位ビットを 0 とします。
 
 2 つのビット間の論理 OR は、入力ビットの少なくとも一方が true の場合に true になります。

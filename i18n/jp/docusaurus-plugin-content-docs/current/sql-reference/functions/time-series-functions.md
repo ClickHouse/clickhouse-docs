@@ -40,7 +40,7 @@ seriesDecomposeSTL(series, period)
 
 **返される値**
 
-4 つの配列から構成される配列を返します。1 つ目の配列は季節成分、2 つ目の配列はトレンド成分、3 つ目の配列は残差成分、4 つ目の配列はベースライン（季節性 + トレンド）成分です。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+4 つの配列から構成される配列を返します。1 つ目の配列は季節成分、2 つ目の配列はトレンド成分、3 つ目の配列は残差成分、4 つ目の配列はベースライン (季節性 + トレンド) 成分です。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
 
 **例**
 
@@ -126,7 +126,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 導入: v23.12.0
 
-FFT（[高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）を使用して、指定された時系列データの周期を検出します。
+FFT ([高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)) を使用して、指定された時系列データの周期を検出します。
 
 **構文**
 
@@ -172,7 +172,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 導入バージョン: v26.1.0
 
-指定したタグを、あるタググループ（`src_group`）から別のタググループ（`dest_group`）へコピーします。
+指定したタグを、あるタググループ (`src_group`) から別のタググループ (`dest_group`) へコピーします。
 この関数は、`dest_group` 内にすでに存在するコピー対象タグの値を置き換えます。
 コピー対象のタグが `src_group` に存在しない場合、この関数は `dest_group` からもそのタグを削除します。
 この関数は Prometheus の
@@ -215,7 +215,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 導入バージョン: v26.1.0
 
-指定したタグを、あるタググループ（`src_group`）から別のタググループ（`dest_group`）へコピーします。
+指定したタグを、あるタググループ (`src_group`) から別のタググループ (`dest_group`) へコピーします。
 この関数は、`dest_group` 内にあるコピー対象タグの既存の値をすべて置き換えます。
 コピー対象タグの一部が `src_group` に存在しない場合、そのタグは `dest_group` からも削除されます。
 この関数は、Prometheus の
@@ -316,7 +316,7 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 
 * `start_timestamp` — グリッドの開始。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — グリッドの終了。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — グリッドの間隔（秒単位）。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `step` — グリッドの間隔 (秒単位) 。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
 * `values` — 値の配列。[`Array(Float*)`](/sql-reference/data-types/array) または [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
 **戻り値**
@@ -523,7 +523,7 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 * `start_timestamp` — 範囲の開始。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 範囲の終了。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 範囲のステップ（秒単位）。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
+* `step` — 範囲のステップ (秒単位) 。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
 
 **戻り値**
 
@@ -737,7 +737,7 @@ timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, .
 
 **返される値**
 
-時系列の識別子を返します（つまり、最初の引数をそのまま返します）。
+時系列の識別子を返します (つまり、最初の引数をそのまま返します) 。
 
 **使用例**
 

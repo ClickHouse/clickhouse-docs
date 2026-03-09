@@ -93,8 +93,8 @@ Astrato использует Pushdown SQL для выполнения запро
 
 1. Откройте панель визуализации
 2. Выберите тип визуализации (начнём с Column Bar Chart)
-3. Добавьте измерение(я)
-4. Добавьте меру(ы)
+3. Добавьте измерения
+4. Добавьте меры
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 

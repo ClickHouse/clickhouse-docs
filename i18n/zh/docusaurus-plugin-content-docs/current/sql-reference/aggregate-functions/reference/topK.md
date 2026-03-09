@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 引入版本：v1.1.0
 
-返回一个数组，其中包含指定列中近似出现次数最多的值。结果数组按照值的近似出现频率降序排序（而不是按值本身排序）。
+返回一个数组，其中包含指定列中近似出现次数最多的值。结果数组按照值的近似出现频率降序排序 (而不是按值本身排序) 。
 
 实现了用于 TopK 分析的 [Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) 算法，基于 [Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) 中的 reduce-and-combine 算法。
 

@@ -51,9 +51,9 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 次の情報を用意しておいてください。
 
-- SQL Server のサーバーアドレス、ポート、ユーザー名、パスワード。Streamkap が SQL Server データベースへアクセスできるよう、専用のユーザーとロールを作成することを推奨します。[設定方法についてはドキュメントを参照してください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
-- ClickHouse のサーバーアドレス、ポート、ユーザー名、パスワード。ClickHouse の IP アクセスリストによって、どのサービスが ClickHouse データベースに接続できるかが決まります。[こちらの手順に従ってください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- ストリーミングするテーブル（まずは 1 つから始めてください）
+* SQL Server のサーバーアドレス、ポート、ユーザー名、パスワード。Streamkap が SQL Server データベースへアクセスできるよう、専用のユーザーとロールを作成することを推奨します。[設定方法についてはドキュメントを参照してください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server\&sa=D\&source=editors\&ust=1760992472358213\&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
+* ClickHouse のサーバーアドレス、ポート、ユーザー名、パスワード。ClickHouse の IP アクセスリストによって、どのサービスが ClickHouse データベースに接続できるかが決まります。[こちらの手順に従ってください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse\&sa=D\&source=editors\&ust=1760992472359060\&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
+* ストリーミングするテーブル (まずは 1 つから始めてください)
 
 ## SQL Server をデータソースとしてセットアップする \{#setting-up-sql-server-as-a-source\}
 
