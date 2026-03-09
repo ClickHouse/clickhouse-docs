@@ -1,7 +1,7 @@
 ---
 description: 'Apache Iceberg, Delta Lake, Apache Hudi, Apache Paimon과 같은 오픈 테이블 포맷의 데이터를 ClickHouse로 쿼리하고 가속화하며 분석합니다.'
 pagination_prev: null
-pagination_next: use-cases/data_lake/getting-started/index
+pagination_next: null
 slug: /use-cases/data-lake
 title: '데이터 레이크하우스'
 keywords: ['데이터 레이크', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']

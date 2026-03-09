@@ -58,7 +58,7 @@ import permissions from '@site/static/images/integrations/data-ingestion/clickpi
   ## 选择数据格式 \{#select-data-format\}
 
   1. 选择文件类型
-  2. 选择文件压缩方式（`detect automatically`、`none`、`gzip`、`brotli`、`xz` 或 `zstd`）
+  2. 选择文件压缩方式 (`detect automatically`、`none`、`gzip`、`brotli`、`xz` 或 `zstd`) 
   3. 完成其他与格式相关的配置，例如针对逗号分隔格式指定所使用的分隔符
   4. 点击 **Parse information**
 

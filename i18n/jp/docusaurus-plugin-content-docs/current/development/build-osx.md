@@ -14,7 +14,7 @@ doc_type: 'guide'
 [Quick Start](/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
 :::
 
-ClickHouse は、macOS 10.15 (Catalina) 以降の macOS 上で、x86_64 (Intel) および arm64 (Apple Silicon) 向けにコンパイルできます。
+ClickHouse は、macOS 10.15 (Catalina) 以降の macOS 上で、x86&#95;64 (Intel) および arm64 (Apple Silicon) 向けにコンパイルできます。
 
 コンパイラとしては、Homebrew の Clang のみがサポートされています。
 
@@ -32,13 +32,13 @@ brew install ccache cmake ninja libtool gettext llvm lld binutils grep findutils
 ```
 
 :::note
-Apple はデフォルトで大文字・小文字を区別しないファイルシステムを使用します。通常はコンパイルには影響しません（特に scratch での make は問題なく動作します）が、`git mv` のようなファイル操作で問題が発生することがあります。
+Apple はデフォルトで大文字・小文字を区別しないファイルシステムを使用します。通常はコンパイルには影響しません (特に scratch での make は問題なく動作します) が、`git mv` のようなファイル操作で問題が発生することがあります。
 macOS 上で本格的な開発を行う場合は、ソースコードを大文字・小文字を区別するディスクボリュームに保存していることを確認してください。たとえば、[こちらの手順](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830) を参照してください。
 :::
 
 ## ClickHouse をビルドする \{#build-clickhouse\}
 
-ビルドには、Homebrew 版の Clang コンパイラを使用する必要があります。
+ClickHouse をビルドするには Homebrew の Clang コンパイラを使用する必要があります。
 
 ```bash
 cd ClickHouse
@@ -94,13 +94,13 @@ cmake --build build
 sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-ファイルが正しいことを検証します：
+ファイルが正しいことを確認します：
 
 ```bash
 plutil /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-ファイルを読み込む（または再起動する）：
+ファイルを読み込む (または再起動する) ：
 
 ```bash
 sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist

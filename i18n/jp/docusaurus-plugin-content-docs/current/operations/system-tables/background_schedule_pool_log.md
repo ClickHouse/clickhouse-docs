@@ -22,12 +22,12 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントの日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時刻。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのイベントの時刻。
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — バックグラウンドタスクに関連付けられたクエリの識別子（これは実際のクエリではなく、`system.text_log` 内のログを突き合わせるためにランダムに生成される ID です）。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — バックグラウンドタスクに関連付けられたクエリの識別子 (これは実際のクエリではなく、`system.text_log` 内のログを突き合わせるためにランダムに生成される ID です) 。
 * `database` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — データベース名。
 * `table` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — テーブル名。
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — バックグラウンドタスクが属するテーブルの UUID。
 * `log_name` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — バックグラウンドタスクの名前。
-* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — タスク実行時間（ミリ秒単位）。
+* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — タスク実行時間 (ミリ秒単位) 。
 * `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 発生した例外のエラーコード。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 発生したエラーのテキストメッセージ。
 

@@ -14,9 +14,9 @@ keywords: ['示例数据集', 'tpch', '基准测试', '示例数据', '性能测
 **参考文献**
 
 * [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291)（Poess 等，2000）
-* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5)（Boncz 等，2013）
-* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138)（Dresseler 等，2020）
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess 等，2000) 
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz 等，2013) 
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler 等，2020) 
 
 ## 数据生成与导入 \{#data-generation-and-import\}
 
@@ -34,7 +34,7 @@ make
 ./dbgen -s 100
 ```
 
-为了加快速度，你可以使用“分块（chunked）”生成（在多个进程中并行执行）：
+为了加快速度，你可以使用“分块 (chunked) ”生成 (在多个进程中并行执行) ：
 
 ```bash
 for i in $(seq 1 8); do
@@ -56,7 +56,7 @@ wait
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.000.000    | 26.69 GB                        |
 
-（ClickHouse 中的压缩大小取自 `system.tables.total_bytes`，并基于下述表定义。）
+ (ClickHouse 中的压缩大小取自 `system.tables.total_bytes`，并基于下述表定义。) 
 
 现在在 ClickHouse 中创建表。表定义可以在 ClickHouse 仓库中的 [`init.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/tpc-h/init.sql) 文件中找到。
 
@@ -109,4 +109,4 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 **正确性**
 
-除非特别说明，查询结果与官方结果一致。要进行验证，请使用规模因子 = 1（`dbgen`，见上文）生成一个 TPC-H 数据库，并与 [tpch-kit 中的预期结果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) 进行比较。
+除非特别说明，查询结果与官方结果一致。要进行验证，请使用规模因子 = 1 (`dbgen`，见上文) 生成一个 TPC-H 数据库，并与 [tpch-kit 中的预期结果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) 进行比较。

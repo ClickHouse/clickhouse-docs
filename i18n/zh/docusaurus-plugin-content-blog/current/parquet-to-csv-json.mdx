@@ -12,9 +12,9 @@ keywords: ['转换', 'Parquet', 'CSV', 'JSON']
 
 ## 将文件从 Parquet 转换为 CSV 或 JSON \{#converting-files-from-parquet-to-csv-or-json\}
 
-你可以使用 `clickhouse-local` 在 ClickHouse 支持的任意[输入和输出格式](https://clickhouse.com/docs/interfaces/formats)之间转换文件（目前支持 70 多种格式）。在本文中，我们将演示如何把存储在 S3 中的一个 Parquet 文件转换为 CSV 和 JSON 文件。
+你可以使用 `clickhouse-local` 在 ClickHouse 支持的任意[输入和输出格式](https://clickhouse.com/docs/interfaces/formats)之间转换文件 (目前支持 70 多种格式) 。在本文中，我们将演示如何把存储在 S3 中的一个 Parquet 文件转换为 CSV 和 JSON 文件。
 
-我们先从最基础的开始。ClickHouse 提供了一组[表函数](https://clickhouse.com/docs/sql-reference/table-functions/)，可以从文件、数据库和其他资源中读取数据，并将其转换为表。为演示这一点，假设我们在 S3 中有一个 Parquet 文件。我们将使用 `s3` 表函数来读取它（ClickHouse 会根据文件名判断它是一个 Parquet 文件）。
+我们先从最基础的开始。ClickHouse 提供了一组[表函数](https://clickhouse.com/docs/sql-reference/table-functions/)，可以从文件、数据库和其他资源中读取数据，并将其转换为表。为演示这一点，假设我们在 S3 中有一个 Parquet 文件。我们将使用 `s3` 表函数来读取它 (ClickHouse 会根据文件名判断它是一个 Parquet 文件) 。
 
 但在此之前，先下载 `clickhouse` 二进制文件：
 
@@ -130,7 +130,7 @@ INTO OUTFILE 'house_prices.ndjson'"
 
 ## 将 CSV 转换为 Parquet \{#convert-csv-to-parquet\}
 
-这个转换是双向的——我们可以轻松读取新的 CSV 文件，并将其输出为 Parquet 文件。本地文件 `house_prices.csv` 可以通过 ClickHouse 中的 `file` 表函数读取，而 ClickHouse 会根据以 `.parquet` 结尾的文件名将输出写成 Parquet 格式（或者我们也可以显式添加 `FORMAT Parquet` 子句）：
+这个转换是双向的——我们可以轻松读取新的 CSV 文件，并将其输出为 Parquet 文件。本地文件 `house_prices.csv` 可以通过 ClickHouse 中的 `file` 表函数读取，而 ClickHouse 会根据以 `.parquet` 结尾的文件名将输出写成 Parquet 格式 (或者我们也可以显式添加 `FORMAT Parquet` 子句) ：
 
 ```bash
 ./clickhouse local -q "SELECT *

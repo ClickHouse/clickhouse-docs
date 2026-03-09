@@ -14,7 +14,7 @@ doc_type: 'guide'
 Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](/get-started/quick-start).
 :::
 
-ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или более поздней версии.
+ClickHouse можно скомпилировать на macOS x86&#95;64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или более поздней версии.
 
 В качестве компилятора поддерживается только Clang из Homebrew.
 
@@ -38,7 +38,7 @@ Apple по умолчанию использует файловую систем
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 
-Для сборки необходимо использовать компилятор Clang из Homebrew:
+Для сборки ClickHouse необходимо использовать компилятор Clang из Homebrew:
 
 ```bash
 cd ClickHouse

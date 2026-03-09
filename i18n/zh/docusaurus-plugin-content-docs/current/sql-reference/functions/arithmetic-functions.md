@@ -12,13 +12,13 @@ doc_type: 'reference'
 
 算术函数适用于任意两个操作数，其类型可以是 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32` 或 `Float64`。
 
-在执行运算之前，两个操作数都会被转换为结果类型。结果类型按如下规则确定（除非下面函数文档中另有说明）：
+在执行运算之前，两个操作数都会被转换为结果类型。结果类型按如下规则确定 (除非下面函数文档中另有说明) ：
 
-* 如果两个操作数的宽度都不超过 32 位，则结果类型的大小为两者中较大类型之后的下一个更大类型的大小（整数大小提升）。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
+* 如果两个操作数的宽度都不超过 32 位，则结果类型的大小为两者中较大类型之后的下一个更大类型的大小 (整数大小提升) 。例如，`UInt8 + UInt16 = UInt32` 或 `Float32 * Float32 = Float64`。
 * 如果其中一个操作数为 64 位或更多位宽，则结果类型的大小与两者中较大的操作数类型相同。例如，`UInt32 + UInt128 = UInt128` 或 `Float32 * Float64 = Float64`。
 * 如果其中一个操作数是有符号类型，则结果类型也将是有符号类型，否则它将是无符号类型。例如，`UInt32 * Int32 = Int64` 或 `UInt32 * UInt32 = UInt64`。
 
-这些规则确保结果类型将是能够表示所有可能结果的最小类型。虽然这在数值范围边界附近引入了溢出的风险，但它确保了可以使用最大本机 64 位整数宽度进行快速计算。这种行为还保证了与许多将 64 位整数（BIGINT）作为最大整数类型的其他数据库之间的兼容性。
+这些规则确保结果类型将是能够表示所有可能结果的最小类型。虽然这在数值范围边界附近引入了溢出的风险，但它确保了可以使用最大本机 64 位整数宽度进行快速计算。这种行为还保证了与许多将 64 位整数 (BIGINT) 作为最大整数类型的其他数据库之间的兼容性。
 
 示例：
 
@@ -166,7 +166,7 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 
 下面的示例可以按如下方式计算：
 
-1. 将十进制整数转换为其在大端格式下对应的十六进制表示，例如 3351772109 -&gt; C7 C7 FB CD（4 字节）
+1. 将十进制整数转换为其在大端格式下对应的十六进制表示，例如 3351772109 -&gt; C7 C7 FB CD (4 字节) 
 2. 反转字节顺序，例如 C7 C7 FB CD -&gt; CD FB C7 C7
 3. 在假定为大端格式的前提下，将结果转换回整数，例如 CD FB C7 C7 -&gt; 3455829959
    此函数的一个用例是反转 IPv4 地址：
@@ -295,7 +295,7 @@ inf
 引入版本：v22.12.0
 
 对两个十进制数执行除法运算。结果值的类型为 [Decimal256](/sql-reference/data-types/decimal)。
-可以通过 `result_scale` 参数（取值范围为 `[0, 76]` 的常量整数 Integer）显式指定结果的小数位数（scale）。如果未指定，结果的小数位数为传入参数中 scale 的最大值。
+可以通过 `result_scale` 参数 (取值范围为 `[0, 76]` 的常量整数 Integer) 显式指定结果的小数位数 (scale) 。如果未指定，结果的小数位数为传入参数中 scale 的最大值。
 
 :::note
 该函数的执行速度明显慢于常规的 `divide`。
@@ -310,7 +310,7 @@ divideDecimal(x, y[, result_scale])
 
 **参数**
 
-* `x` — 第一个参数值：[Decimal](/sql-reference/data-types/decimal)。- `y` — 第二个参数值：[Decimal](/sql-reference/data-types/decimal)。- `result_scale` — 结果的小数刻度（精度）。类型为 [Int/UInt](/sql-reference/data-types/int-uint)。
+* `x` — 第一个参数值：[Decimal](/sql-reference/data-types/decimal)。- `y` — 第二个参数值：[Decimal](/sql-reference/data-types/decimal)。- `result_scale` — 结果的小数刻度 (精度) 。类型为 [Int/UInt](/sql-reference/data-types/int-uint)。
 
 **返回值**
 
@@ -454,7 +454,7 @@ inf  42
 
 对两个值 `x` 和 `y` 执行整数除法。换句话说，它计算向下舍入到不大于实际结果的最接近整数的商。
 
-结果与被除数（第一个参数）具有相同的位宽。
+结果与被除数 (第一个参数) 具有相同的位宽。
 
 当除数为零、商不在被除数类型的取值范围内，或将最小负数除以 -1 时，会抛出异常。
 
@@ -639,7 +639,7 @@ isInfinite(x)
 
 **返回值**
 
-如果 x 为无穷大则返回 `1`，否则返回 `0`（包括 `NaN` 情况）。
+如果 x 为无穷大则返回 `1`，否则返回 `0` (包括 `NaN` 情况) 。
 
 **示例**
 
@@ -936,7 +936,7 @@ modulo(a, b)
 
 **参数**
 
-* `a` — 被除数，`b` — 除数（模数）
+* `a` — 被除数，`b` — 除数 (模数) 
 
 **返回值**
 
@@ -1004,7 +1004,7 @@ moduloOrNull(x, y)
 **参数**
 
 * `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+* `y` — 除数 (模数) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
 **返回值**
 
@@ -1037,7 +1037,7 @@ moduloOrZero(a, b)
 **参数**
 
 * `a` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
-* `b` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
+* `b` — 除数 (模数) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
 **返回值**
 
@@ -1093,7 +1093,7 @@ SELECT multiply(5,5)
 引入版本：v22.12.0
 
 对两个 decimal 执行乘法运算。结果类型为 [Decimal256](/sql-reference/data-types/decimal)。
-可以通过 `result_scale` 参数（取值范围为 `[0, 76]` 的常量 Integer）显式指定结果的 scale。若未指定，则结果的 scale 为所有输入参数中最大的 scale。
+可以通过 `result_scale` 参数 (取值范围为 `[0, 76]` 的常量 Integer) 显式指定结果的 scale。若未指定，则结果的 scale 为所有输入参数中最大的 scale。
 
 :::note
 这些函数的运行速度明显慢于常规的 `multiply`。
@@ -1183,7 +1183,7 @@ negate(x)
 
 **返回值**
 
-返回 -x（即 x 的相反数）
+返回 -x (即 x 的相反数) 
 
 **示例**
 
@@ -1201,7 +1201,7 @@ SELECT negate(10)
 
 引入版本：v1.1.0
 
-计算两个值 `x` 和 `y` 的和。别名：`x + y`（运算符）。
+计算两个值 `x` 和 `y` 的和。别名：`x + y` (运算符) 。
 可以将整数与日期，或整数与日期时间进行相加。前一种
 操作会增加该日期中的天数，后一种操作会增加该日期时间中的秒数。
 
@@ -1259,7 +1259,7 @@ positiveModulo(x, y)
 **参数**
 
 * `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — 除数 (模数) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
 **返回值**
 
@@ -1293,7 +1293,7 @@ positiveModuloOrNull(x, y)
 
 **参数**
 
-* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。- `y` — 除数（模数）。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
+* `x` — 被除数。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。- `y` — 除数 (模数) 。[`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float)。
 
 **返回值**
 

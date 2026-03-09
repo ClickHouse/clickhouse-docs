@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**カンマを区切り文字として使用する（パラメータ構文）**
+**カンマを区切り文字として使用する (パラメータ構文)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**カンマを区切り文字として使用する（引数構文）**
+**カンマを区切り文字として使用する (引数構文)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

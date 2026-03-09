@@ -29,7 +29,7 @@ groupArrayLast(max_size)(x)
 **参数**
 
 * `max_size` — 结果数组的最大长度。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 参数（列名或表达式）。[`Any`](/sql-reference/data-types)
+* `x` — 参数 (列名或表达式) 。[`Any`](/sql-reference/data-types)
 
 **返回值**
 

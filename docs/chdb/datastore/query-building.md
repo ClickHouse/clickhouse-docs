@@ -341,10 +341,10 @@ join(right, on=None, how='inner', left_on=None, right_on=None) -> DataStore
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `right` | DataStore | *required* | Right DataStore to join |
-| `on` | str/list | `None` | Column(s) to join on |
+| `on` | str/list | `None` | Columns to join on |
 | `how` | str | `'inner'` | Join type: 'inner', 'left', 'right', 'outer' |
-| `left_on` | str/list | `None` | Left join column(s) |
-| `right_on` | str/list | `None` | Right join column(s) |
+| `left_on` | str/list | `None` | Left join columns |
+| `right_on` | str/list | `None` | Right join columns |
 
 **Examples:**
 

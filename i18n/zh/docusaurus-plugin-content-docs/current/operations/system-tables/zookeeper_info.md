@@ -35,7 +35,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `watch_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — watch 数量。
 * `ephemerals_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 临时节点数量。
 * `approximate_data_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据的大致大小。
-* `followers` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 领导者的从属节点（followers）数量。此字段仅由领导节点公开。
+* `followers` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 领导者的从属节点 (followers) 数量。此字段仅由领导节点公开。
 * `synced_followers` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 已与主节点完成同步的 follower 数量。此字段仅在主节点上可见。
 * `pending_syncs` ([UInt64](../../sql-reference/data-types/int-uint.md)) — leader 节点的待同步数量。该字段仅在 leader 节点上暴露。
 * `open_file_descriptor_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 当前已打开的文件描述符数量。仅在 Unix 平台上可用。

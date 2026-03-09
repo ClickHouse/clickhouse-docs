@@ -16,7 +16,7 @@ ClickHouse は時系列データを扱うための複数の方法を提供して
 一般的な操作には、時間間隔ごとのデータのグループ化、時系列データの欠損の扱い、異なる期間間の変化量の計算などがあります。
 これらの操作は、標準的な SQL 構文と ClickHouse の組み込み時間関数を組み合わせて実行できます。
 
-ここでは、Wikistat（Wikipedia ページビューのデータ）データセットを用いて、ClickHouse の時系列クエリ機能を見ていきます。
+ここでは、Wikistat (Wikipedia ページビューのデータ) データセットを用いて、ClickHouse の時系列クエリ機能を見ていきます。
 
 ```sql
 CREATE TABLE wikistat
@@ -220,7 +220,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 例えば、日単位ではなく、「午後 6 時を起点とした 24 時間」という期間ごとの合計ヒット数を把握したいとします。
 
 [`date_diff()`](/docs/sql-reference/functions/date-time-functions#timeDiff) 関数を使うと、基準となる時刻と各レコードの時刻との差を計算できます。
-この例では、`day` 列は日数の差（例: 1 日前、2 日前など）を表します。
+この例では、`day` 列は日数の差 (例: 1 日前、2 日前など) を表します。
 
 ```sql
 SELECT    

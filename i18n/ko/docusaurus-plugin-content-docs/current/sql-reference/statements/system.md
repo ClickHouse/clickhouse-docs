@@ -108,6 +108,10 @@ mark 캐시를 초기화합니다.
 
 iceberg 메타데이터 캐시를 초기화합니다.
 
+## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
+
+parquet 메타데이터 캐시를 초기화합니다.
+
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 텍스트 인덱스의 헤더, 딕셔너리 및 포스팅 캐시를 비웁니다.

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ハッシュ関数は、要素を決定論的に疑似ランダムな順序へシャッフルするために使用できます。
 
-Simhash は、近い（類似した）引数に対して近いハッシュ値を返すハッシュ関数です。
+Simhash は、近い (類似した) 引数に対して近いハッシュ値を返すハッシュ関数です。
 
 ほとんどのハッシュ関数は、任意の型の引数を任意個受け付けます。
 
@@ -24,7 +24,7 @@ SELECT cityHash64(tuple(NULL))
 :::
 
 :::note
-テーブル全体の内容のハッシュを計算するには、`sum(cityHash64(tuple(*)))`（または他のハッシュ関数）を使用します。`tuple` によって、NULL 値を含む行がスキップされるのを防ぎます。`sum` によって、行の順序に依存しないようにします。
+テーブル全体の内容のハッシュを計算するには、`sum(cityHash64(tuple(*)))` (または他のハッシュ関数) を使用します。`tuple` によって、NULL 値を含む行がスキップされるのを防ぎます。`sum` によって、行の順序に依存しないようにします。
 :::
 
 {/* 
@@ -642,13 +642,13 @@ SELECT
 
 導入バージョン: v1.1.0
 
-すべての入力パラメータを文字列として[解釈し](/sql-reference/functions/type-conversion-functions#reinterpretAsString)、それぞれについて MD5 ハッシュ値を計算します。次に、これらのハッシュを結合し、結果の文字列に対して再度ハッシュを計算し、その先頭 8 バイトを取り出して、ビッグエンディアンのバイト順で [UInt64](/sql-reference/data-types/int-uint) 型として解釈します。この関数は比較的低速です（プロセッサコアあたり毎秒 500 万件の短い文字列）。
+すべての入力パラメータを文字列として[解釈し](/sql-reference/functions/type-conversion-functions#reinterpretAsString)、それぞれについて MD5 ハッシュ値を計算します。次に、これらのハッシュを結合し、結果の文字列に対して再度ハッシュを計算し、その先頭 8 バイトを取り出して、ビッグエンディアンのバイト順で [UInt64](/sql-reference/data-types/int-uint) 型として解釈します。この関数は比較的低速です (プロセッサコアあたり毎秒 500 万件の短い文字列) 。
 
 代わりに [`sipHash64`](#sipHash64) 関数の使用を検討してください。
 
 この関数は可変個数の入力パラメータを取ります。
 引数にはサポートされている任意のデータ型を使用できます。
-一部のデータ型では、引数の型が異なる場合でも（サイズの異なる整数、同一データを持つ名前付きおよび名前なしの Tuple、同一データを持つ Map と対応する Array(Tuple(key, value)) 型など）、同じ値に対してハッシュ関数が計算する値が同一になる場合があります。
+一部のデータ型では、引数の型が異なる場合でも (サイズの異なる整数、同一データを持つ名前付きおよび名前なしの Tuple、同一データを持つ Map と対応する Array(Tuple(key, value)) 型など) 、同じ値に対してハッシュ関数が計算する値が同一になる場合があります。
 
 **構文**
 
@@ -737,7 +737,7 @@ icebergHash(value)
 
 **戻り値**
 
-32 ビットの Murmur3 ハッシュ（シード値 0 の x86 版）を返します。型は [`Int32`](/sql-reference/data-types/int-uint) です。
+32 ビットの Murmur3 ハッシュ (シード値 0 の x86 版) を返します。型は [`Int32`](/sql-reference/data-types/int-uint) です。
 
 **例**
 
@@ -793,7 +793,7 @@ SELECT intHash32(42);
 
 整数の 64 ビットハッシュ値を計算します。
 
-このハッシュ関数は比較的高速で（[`intHash32`](#intHash32) よりも高速です）が、暗号学的ハッシュ関数ではありません。
+このハッシュ関数は比較的高速で ([`intHash32`](#intHash32) よりも高速です) が、暗号学的ハッシュ関数ではありません。
 
 **構文**
 
@@ -1489,7 +1489,7 @@ ASCII 文字列を、`ngramsize` 個の文字から成る n-gram に分割し、
 `hashnum` 個の最小ハッシュを用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュを用いて最大ハッシュを計算します。
 大文字小文字は区別されません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使用して、類似（半重複）した文字列を検出するために使用できます。
+[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使用して、類似 (半重複) した文字列を検出するために使用できます。
 2 つの文字列に対して、返されるハッシュが両方の文字列で同じであれば、それらの文字列は同一とみなされます。
 
 **構文**
@@ -1504,7 +1504,7 @@ ngramMinHashCaseInsensitive(string[, ngramsize, hashnum])
 
 **戻り値**
 
-2 つのハッシュ値（最小値と最大値）から成るタプル。[Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md))。[`Tuple`](/sql-reference/data-types/tuple)
+2 つのハッシュ値 (最小値と最大値) から成るタプル。[Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md))。[`Tuple`](/sql-reference/data-types/tuple)
 
 **例**
 
@@ -1608,7 +1608,7 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 
 ASCII 文字列を `ngramsize` 文字からなる n-gram に分割し、その n-gram の `simhash` を返します。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を使用して、類似した（部分的に重複する）文字列の検出に利用できます。2 つの文字列について計算された `simhashes` の [Hamming 距離](https://en.wikipedia.org/wiki/Hamming_distance) が小さいほど、それら 2 つの文字列が同じである可能性が高くなります。
+[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を使用して、類似した (部分的に重複する) 文字列の検出に利用できます。2 つの文字列について計算された `simhashes` の [Hamming 距離](https://en.wikipedia.org/wiki/Hamming_distance) が小さいほど、それら 2 つの文字列が同じである可能性が高くなります。
 
 **構文**
 
@@ -2013,11 +2013,11 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 
 導入バージョン: v21.1.0
 
-ASCII 文字列を、`shinglesize` 語からなる部分（shingle）に分割し、それぞれの word shingle に対してハッシュ値を計算し、これらのハッシュ値からなるタプルを返します。
+ASCII 文字列を、`shinglesize` 語からなる部分 (shingle) に分割し、それぞれの word shingle に対してハッシュ値を計算し、これらのハッシュ値からなるタプルを返します。
 `hashnum` 個の最小ハッシュを用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュを用いて最大ハッシュを計算します。
 大文字と小文字は区別されます。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使用して、類似（部分的に重複）した文字列を検出できます。
+[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を使用して、類似 (部分的に重複) した文字列を検出できます。
 2 つの文字列について、返されるハッシュ値が両方の文字列で同じであれば、それらの文字列は同一です。
 
 **構文**
@@ -2029,12 +2029,12 @@ wordShingleMinHash(string[, shinglesize, hashnum])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（word shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。ワードシングル (word shingle) のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 省略可能。結果を計算するために使用される最小および最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-2 つのハッシュ値（最小値と最大値）を要素とするタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+2 つのハッシュ値 (最小値と最大値) を要素とするタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
 **例**
 
@@ -2054,7 +2054,7 @@ SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management
 
 導入バージョン: v1.1.0
 
-ASCII 文字列を、`shinglesize` 語ずつのパーツ（シングル）に分割し、同じ入力に対して wordShingleMinHash 関数で計算された単語ハッシュのうち、最小値と最大値を持つシングルを返します。
+ASCII 文字列を、`shinglesize` 語ずつのパーツ (シングル) に分割し、同じ入力に対して wordShingleMinHash 関数で計算された単語ハッシュのうち、最小値と最大値を持つシングルを返します。
 大文字と小文字は区別されます。
 
 **構文**
@@ -2091,7 +2091,7 @@ SELECT wordShingleMinHashArg('ClickHouse® is a column-oriented database managem
 
 導入バージョン: v21.1.0
 
-ASCII 文字列を `shinglesize` 語ごとのパーツ（シングル）に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 関数で計算された単語ハッシュの最小値および最大値を持つシングルを返します。
+ASCII 文字列を `shinglesize` 語ごとのパーツ (シングル) に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 関数で計算された単語ハッシュの最小値および最大値を持つシングルを返します。
 大文字小文字は区別しません。
 
 **構文**
@@ -2103,7 +2103,7 @@ wordShingleMinHashArgCaseInsensitive(string[, shinglesize, hashnum])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。単語シングル（word shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。単語シングル (word shingle) のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 省略可能。結果の計算に使用される最小および最大ハッシュの個数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -2128,7 +2128,7 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® is a column-oriented d
 
 導入バージョン: v21.1.0
 
-UTF-8 文字列を `shinglesize` 語ずつの部分（shingle）に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) 関数で計算される、単語ハッシュ値が最小および最大となる shingle を返します。
+UTF-8 文字列を `shinglesize` 語ずつの部分 (shingle) に分割し、同じ入力に対して [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) 関数で計算される、単語ハッシュ値が最小および最大となる shingle を返します。
 大文字と小文字を区別しません。
 
 **構文**
@@ -2140,7 +2140,7 @@ wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（word shingle）のサイズ。`1` から `25` までの任意の値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。ワードシングル (word shingle) のサイズ。`1` から `25` までの任意の値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 省略可能。結果の計算に使用される最小ハッシュと最大ハッシュの個数。`1` から `25` までの任意の値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -2165,7 +2165,7 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® is a column-orient
 
 導入バージョン: v21.1.0
 
-UTF-8 文字列を、`shinglesize` 語ずつの部分（shingle）に分割し、同じ入力に対して [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 関数で計算した単語ハッシュの最小値および最大値を持つ shingle を返します。
+UTF-8 文字列を、`shinglesize` 語ずつの部分 (shingle) に分割し、同じ入力に対して [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 関数で計算した単語ハッシュの最小値および最大値を持つ shingle を返します。
 大文字と小文字は区別されます。
 
 **構文**
@@ -2202,7 +2202,7 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® is a column-oriented database man
 
 導入バージョン: v21.1.0
 
-ASCII 文字列を `shinglesize` 語からなる部分列（shingle）に分割し、それぞれの shingle についてハッシュ値を計算し、そのハッシュ値を要素とするタプルを返します。
+ASCII 文字列を `shinglesize` 語からなる部分列 (shingle) に分割し、それぞれの shingle についてハッシュ値を計算し、そのハッシュ値を要素とするタプルを返します。
 `hashnum` 個の最小ハッシュを使って最小ハッシュを計算し、`hashnum` 個の最大ハッシュを使って最大ハッシュを計算します。
 大文字・小文字は区別しません。
 
@@ -2223,7 +2223,7 @@ wordShingleMinHashCaseInsensitive(string[, shinglesize, hashnum])
 
 **返される値**
 
-2 つのハッシュ値（最小値と最大値）からなるタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+2 つのハッシュ値 (最小値と最大値) からなるタプルを返します。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
 **例**
 
@@ -2243,11 +2243,11 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 導入バージョン: v21.1.0
 
-UTF-8 文字列を、`shinglesize` 語からなるシングル（shingle）に分割し、各単語シングルのハッシュ値を計算して、それらのハッシュを要素とするタプルを返します。
+UTF-8 文字列を、`shinglesize` 語からなるシングル (shingle) に分割し、各単語シングルのハッシュ値を計算して、それらのハッシュを要素とするタプルを返します。
 `hashnum` 個の最小ハッシュを使用して最小ハッシュを計算し、`hashnum` 個の最大ハッシュを使用して最大ハッシュを計算します。
 大文字と小文字を区別しません。
 
-[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を用いて、類似（準重複）文字列を検出するために使用できます。
+[`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) を用いて、類似 (準重複) 文字列を検出するために使用できます。
 2 つの文字列に対して、返されるハッシュが両方の文字列で同じであれば、それらの文字列は同一です。
 
 **構文**
@@ -2259,7 +2259,7 @@ wordShingleMinHashCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。ワードシングル (shingle) のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 省略可能。結果の計算に使用する最小ハッシュと最大ハッシュの数。`1` から `25` までの任意の数値。デフォルト値は `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -2284,7 +2284,7 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 導入バージョン: v21.1.0
 
-UTF-8 文字列を `shinglesize` 語からなる部分（ワードシングル）に分割し、それぞれのワードシングルごとにハッシュ値を計算し、そのハッシュ値からなるタプルを返します。
+UTF-8 文字列を `shinglesize` 語からなる部分 (ワードシングル) に分割し、それぞれのワードシングルごとにハッシュ値を計算し、そのハッシュ値からなるタプルを返します。
 `hashnum` 個の最小ハッシュを用いて最小ハッシュを計算し、`hashnum` 個の最大ハッシュを用いて最大ハッシュを計算します。
 大文字小文字を区別します。
 
@@ -2300,7 +2300,7 @@ wordShingleMinHashUTF8(string[, shinglesize, hashnum])
 **引数**
 
 * `string` — ハッシュ値を計算する対象の文字列。 [`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（word shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。 [`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。ワードシングル (word shingle) のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。 [`UInt8`](/sql-reference/data-types/int-uint)
 * `hashnum` — 省略可能。結果の計算に使用される最小ハッシュ値および最大ハッシュ値の数。`1` から `25` までの任意の数値。デフォルト値は `6`。 [`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -2325,10 +2325,10 @@ SELECT wordShingleMinHashUTF8('ClickHouse® is a column-oriented database manage
 
 導入バージョン: v21.1.0
 
-ASCII 文字列を `shinglesize` 語から成るパーツ（shingle）に分割し、その単語 shingle の `simhash` を返します。
+ASCII 文字列を `shinglesize` 語から成るパーツ (shingle) に分割し、その単語 shingle の `simhash` を返します。
 大文字と小文字を区別します。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、類似（セミ重複）文字列の検出に使用できます。
+[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、類似 (セミ重複) 文字列の検出に使用できます。
 2 つの文字列から計算された `simhash` の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
 
 **構文**
@@ -2340,7 +2340,7 @@ wordShingleSimHash(string[, shinglesize])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。ワードシングル（word shingle）のサイズで、`1` から `25` までの任意の整数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。ワードシングル (word shingle) のサイズで、`1` から `25` までの任意の整数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **返り値**
 
@@ -2364,7 +2364,7 @@ SELECT wordShingleSimHash('ClickHouse® is a column-oriented database management
 
 導入バージョン: v21.1.0
 
-ASCII文字列を、`shinglesize` 語から成る部分（シングル）に分割し、単語シングルの `simhash` を返します。
+ASCII文字列を、`shinglesize` 語から成る部分 (シングル) に分割し、単語シングルの `simhash` を返します。
 大文字小文字は区別されません。
 
 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を用いた、部分的に重複した文字列の検出に使用できます。
@@ -2403,10 +2403,10 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 導入バージョン: v1.1.0
 
-UTF-8 エンコードされた文字列を、長さ `shinglesize` 語の単語シングル（shingle）の集合に分割し、各単語シングルの `simhash` を返します。
+UTF-8 エンコードされた文字列を、長さ `shinglesize` 語の単語シングル (shingle) の集合に分割し、各単語シングルの `simhash` を返します。
 大文字と小文字は区別しません。
 
-[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、類似（半重複）文字列の検出に利用できます。
+[`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) と組み合わせて、類似 (半重複) 文字列の検出に利用できます。
 2 つの文字列から計算された `simhashes` 間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)が小さいほど、それらの文字列が同一である可能性が高くなります。
 
 **構文**
@@ -2417,7 +2417,7 @@ wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 
 `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
 
-`shinglesize` — 省略可能。シングル（word shingle）のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+`shinglesize` — 省略可能。シングル (word shingle) のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2440,7 +2440,7 @@ wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 **引数**
 
 * `string` — ハッシュを計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。シングル（word shingle）のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。シングル (word shingle) のサイズで、`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2464,7 +2464,7 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 導入バージョン: v21.1.0
 
-UTF-8 文字列を `shinglesize` 語からなるシングル（単語列）に分割し、単語シングルの `simhash` を返します。
+UTF-8 文字列を `shinglesize` 語からなるシングル (単語列) に分割し、単語シングルの `simhash` を返します。
 大文字と小文字は区別されます。
 
 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) を用いた、ほぼ重複した文字列の検出に使用できます。
@@ -2479,7 +2479,7 @@ wordShingleSimHashUTF8(string[, shinglesize])
 **引数**
 
 * `string` — ハッシュ値を計算する対象の文字列。[`String`](/sql-reference/data-types/string)
-* `shinglesize` — 省略可能。単語シーケンス（shingle）のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `shinglesize` — 省略可能。単語シーケンス (shingle) のサイズ。`1` から `25` までの任意の数値。デフォルト値は `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 

@@ -51,7 +51,7 @@ It is possible to create extra services that share the same data with your exist
 ## What is a warehouse? {#what-is-a-warehouse}
 
 In ClickHouse Cloud, a _warehouse_ is a set of services that share the same data.
-Each warehouse has a primary service (this service was created first) and secondary service(s). For example, in the screenshot below you can see a warehouse "DWH Prod" with two services:
+Each warehouse has a primary service (this service was created first) and secondary services. For example, in the screenshot below you can see a warehouse "DWH Prod" with two services:
 
 - Primary service `DWH Prod`
 - Secondary service `DWH Prod Subservice`

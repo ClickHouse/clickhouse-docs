@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 また、重みを更新するための手法をいくつか提供します:
 
-* Adam（デフォルト）
+* Adam (デフォルト) 
 * 単純な SGD
 * Momentum
 * Nesterov
@@ -49,7 +49,7 @@ AS state FROM train_data;
 ここでは、`train_data` テーブルにもデータを挿入する必要があります。
 パラメータ数は固定ではなく、`linearRegressionState` に渡す引数の数だけに依存します。
 それらはすべて数値である必要があります。
-目的値（予測対象として学習したい値）を格納するカラムは、最初の引数として渡す点に注意してください。
+目的値 (予測対象として学習したい値) を格納するカラムは、最初の引数として渡す点に注意してください。
 
 2. 予測
 
@@ -96,10 +96,10 @@ stochasticLinearRegression([learning_rate, l2_regularization_coef, mini_batch_si
 
 * `learning_rate` — 勾配降下法のステップを実行する際のステップ幅に掛ける係数。学習率が大きすぎると、モデルの重みが無限大になる可能性があります。デフォルトは `0.00001`。[`Float64`](/sql-reference/data-types/float)
 * `l2_regularization_coef` — 過学習を抑制するための L2 正則化係数。デフォルトは `0.1`。[`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 勾配降下法の 1 ステップを実行するために、勾配を計算して合計する要素数を設定します。純粋な確率的勾配降下法では 1 つの要素を使用しますが、小さなバッチ（約 10 要素）にすると、勾配降下のステップがより安定します。デフォルトは `15`。[`UInt64`](/sql-reference/data-types/int-uint)
-* `method` — 重みを更新するためのメソッド: `Adam`（デフォルト）、`SGD`、`Momentum`、`Nesterov`。`Momentum` と `Nesterov` はわずかに多くの計算とメモリを必要としますが、確率的勾配法の収束速度と安定性の観点で有用な場合があります。[`const String`](/sql-reference/data-types/string)
-* `target` — 予測対象となる値（従属変数）。数値型でなければなりません。[`Float*`](/sql-reference/data-types/float)
-* `x1, x2, ...` — 特徴量の値（独立変数）。すべて数値でなければなりません。[`Float*`](/sql-reference/data-types/float)
+* `mini_batch_size` — 勾配降下法の 1 ステップを実行するために、勾配を計算して合計する要素数を設定します。純粋な確率的勾配降下法では 1 つの要素を使用しますが、小さなバッチ (約 10 要素) にすると、勾配降下のステップがより安定します。デフォルトは `15`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `method` — 重みを更新するためのメソッド: `Adam` (デフォルト) 、`SGD`、`Momentum`、`Nesterov`。`Momentum` と `Nesterov` はわずかに多くの計算とメモリを必要としますが、確率的勾配法の収束速度と安定性の観点で有用な場合があります。[`const String`](/sql-reference/data-types/string)
+* `target` — 予測対象となる値 (従属変数) 。数値型でなければなりません。[`Float*`](/sql-reference/data-types/float)
+* `x1, x2, ...` — 特徴量の値 (独立変数) 。すべて数値でなければなりません。[`Float*`](/sql-reference/data-types/float)
 
 **返される値**
 

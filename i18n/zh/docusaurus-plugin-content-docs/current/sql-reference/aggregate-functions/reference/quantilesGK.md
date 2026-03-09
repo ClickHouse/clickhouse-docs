@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 Greenwald-Khanna 算法是一种用于在数据流上高效计算分位数的算法。
 该算法由 Michael Greenwald 和 Sanjeev Khanna 于 2001 年提出。
-该算法极其高效，仅使用 O(log n) 空间，并对每个元素只需 O(log log n) 时间（其中 n 为输入大小）。
+该算法极其高效，仅使用 O(log n) 空间，并对每个元素只需 O(log log n) 时间 (其中 n 为输入大小) 。
 它同样具有很高的精度，可以在可控精度下提供近似的分位数值。
 
 **语法**

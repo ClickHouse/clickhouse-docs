@@ -22,11 +22,11 @@ import migrating_agents from '@site/static/images/use-cases/observability/clicks
 
 Платформа Elastic Stack предоставляет ряд агентов для сбора данных наблюдаемости. В частности:
 
-- Семейство [Beats](https://www.elastic.co/beats) — такие как [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat) и [Packetbeat](https://www.elastic.co/beats/packetbeat) — все они основаны на библиотеке `libbeat`. Эти Beats поддерживают [отправку данных в Elasticsearch, Kafka, Redis или Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) по протоколу Lumberjack.
-- [`Elastic Agent`](https://www.elastic.co/elastic-agent) представляет собой унифицированный агент, способный собирать логи, метрики и трассировки. Этот агент может централизованно управляться через [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) и поддерживает отправку данных в Elasticsearch, Logstash, Kafka или Redis.
-- Elastic также предоставляет дистрибутив [OpenTelemetry Collector — EDOT](https://www.elastic.co/docs/reference/opentelemetry). Хотя в настоящее время он не может управляться через Fleet Server, он предлагает более гибкий и открытый путь для пользователей, мигрирующих на ClickStack.
+* Семейство [Beats](https://www.elastic.co/beats) — такие как [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat) и [Packetbeat](https://www.elastic.co/beats/packetbeat) — все они основаны на библиотеке `libbeat`. Эти Beats поддерживают [отправку данных в Elasticsearch, Kafka, Redis или Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) по протоколу Lumberjack.
+* [`Elastic Agent`](https://www.elastic.co/elastic-agent) представляет собой унифицированный агент, способный собирать логи, метрики и трассировки. Этот агент может централизованно управляться через [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) и поддерживает отправку данных в Elasticsearch, Logstash, Kafka или Redis.
+* Elastic также предоставляет дистрибутив [OpenTelemetry Collector — EDOT](https://www.elastic.co/docs/reference/opentelemetry). Хотя в настоящее время он не может управляться через Fleet Server, он предлагает более гибкий и открытый путь для пользователей, мигрирующих на ClickStack.
 
-Оптимальный путь миграции зависит от того, какие агент(ы) используются в данный момент. В последующих разделах мы описываем варианты миграции для каждого основного типа агента. Наша цель — свести к минимуму сложности и, где возможно, позволить пользователям продолжать использовать свои существующие агенты в ходе перехода.
+Оптимальный путь миграции зависит от того, какие агенты используются в данный момент. В последующих разделах мы описываем варианты миграции для каждого основного типа агента. Наша цель — свести к минимуму сложности и, где возможно, позволить пользователям продолжать использовать свои существующие агенты в ходе перехода.
 
 ## Предпочтительный путь миграции \{#prefered-migration-path\}
 

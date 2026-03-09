@@ -136,15 +136,15 @@ There are two ways to create a new query in the SQL console.
 
 ### Running a query {#running-a-query}
 
-To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
+To run a query, type your SQL command or commands into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
 Query Execution Options
 By default, clicking the run button will run all commands contained in the SQL Editor. The SQL console supports two other query execution options:
 
-- Run selected command(s)
+- Run selected commands
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected commands, highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
 <Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
 

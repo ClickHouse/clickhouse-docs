@@ -31,8 +31,8 @@ timeSeriesResampleToGridWithStaleness(start_timestamp, end_timestamp, grid_step,
 
 * `start_timestamp` — 指定网格的起始时间戳。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — 指定网格的结束时间戳。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — 指定网格的步长（单位：秒）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness_window` — 指定最近样本的最大允许“陈旧”时间（单位：秒）。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — 指定网格的步长 (单位：秒) 。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness_window` — 指定最近样本的最大允许“陈旧”时间 (单位：秒) 。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **自变量**
 

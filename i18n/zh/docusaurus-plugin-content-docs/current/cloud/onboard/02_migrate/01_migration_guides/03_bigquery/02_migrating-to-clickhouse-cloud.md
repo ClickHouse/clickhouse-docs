@@ -151,15 +151,15 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 如[此处](/migrations/bigquery)所述，与 BigQuery 一样，ClickHouse 不会对表主键列的取值强制唯一性。
 
-与 BigQuery 中的分簇（clustering）类似，ClickHouse 表的数据在磁盘上按照主键列的顺序进行存储。查询优化器会利用这一排序来避免重新排序、减少用于连接的内存占用，并支持对 limit 子句进行短路执行。
-与 BigQuery 不同，ClickHouse 会基于主键列值自动创建[（稀疏）主索引](/guides/best-practices/sparse-primary-indexes)。该索引用于加速所有包含主键列过滤条件的查询。具体来说：
+与 BigQuery 中的分簇 (clustering) 类似，ClickHouse 表的数据在磁盘上按照主键列的顺序进行存储。查询优化器会利用这一排序来避免重新排序、减少用于连接的内存占用，并支持对 limit 子句进行短路执行。
+与 BigQuery 不同，ClickHouse 会基于主键列值自动创建[ (稀疏) 主索引](/guides/best-practices/sparse-primary-indexes)。该索引用于加速所有包含主键列过滤条件的查询。具体来说：
 
-- 内存和磁盘效率对于 ClickHouse 常见的使用规模至关重要。数据以称为 part 的数据块写入 ClickHouse 表，并在后台根据一定规则对 part 进行合并。在 ClickHouse 中，每个 part 都有自己的主索引。当 part 被合并时，合并后 part 的主索引也会被合并。请注意，这些索引并不是为每一行构建的，而是一个 part 的主索引是每一组行对应一个索引条目——这种技术称为稀疏索引。
-- 稀疏索引之所以可行，是因为 ClickHouse 会按照指定的键在磁盘上存储一个 part 的行。稀疏主索引并不是像基于 B-Tree 的索引那样直接定位单行数据，而是通过对索引条目做二分查找，快速定位可能匹配查询的行组。然后，这些被定位出的潜在匹配行组会并行地以流式方式送入 ClickHouse 引擎，以查找真正的匹配。这样的索引设计使主索引可以保持较小（完全常驻于主内存中），同时显著加速查询执行时间，尤其是数据分析场景中常见的范围查询。更多细节请参考[这篇深入指南](/guides/best-practices/sparse-primary-indexes)。
+* 内存和磁盘效率对于 ClickHouse 常见的使用规模至关重要。数据以称为 part 的数据块写入 ClickHouse 表，并在后台根据一定规则对 part 进行合并。在 ClickHouse 中，每个 part 都有自己的主索引。当 part 被合并时，合并后 part 的主索引也会被合并。请注意，这些索引并不是为每一行构建的，而是一个 part 的主索引是每一组行对应一个索引条目——这种技术称为稀疏索引。
+* 稀疏索引之所以可行，是因为 ClickHouse 会按照指定的键在磁盘上存储一个 part 的行。稀疏主索引并不是像基于 B-Tree 的索引那样直接定位单行数据，而是通过对索引条目做二分查找，快速定位可能匹配查询的行组。然后，这些被定位出的潜在匹配行组会并行地以流式方式送入 ClickHouse 引擎，以查找真正的匹配。这样的索引设计使主索引可以保持较小 (完全常驻于主内存中) ，同时显著加速查询执行时间，尤其是数据分析场景中常见的范围查询。更多细节请参考[这篇深入指南](/guides/best-practices/sparse-primary-indexes)。
 
-<Image img={bigquery_5} size="md" alt="ClickHouse Primary keys"/>
+<Image img={bigquery_5} size="md" alt="ClickHouse Primary keys" />
 
-在 ClickHouse 中，所选择的主键不仅决定索引本身，还会决定数据写入磁盘的顺序。由于这一点，它会显著影响压缩率，进而影响查询性能。使大多数字段的值以连续顺序写入的排序键，将有利于所选压缩算法（以及编码器）更高效地压缩数据。
+在 ClickHouse 中，所选择的主键不仅决定索引本身，还会决定数据写入磁盘的顺序。由于这一点，它会显著影响压缩率，进而影响查询性能。使大多数字段的值以连续顺序写入的排序键，将有利于所选压缩算法 (以及编码器) 更高效地压缩数据。
 
 > 表中的所有列都会根据指定排序键的值进行排序，而不论这些列本身是否包含在排序键中。例如，如果使用 `CreationDate` 作为排序键，那么所有其他列中的取值顺序将与 `CreationDate` 列中的值顺序保持一致。可以指定多个排序键——其排序语义与 `SELECT` 查询中的 `ORDER BY` 子句相同。
 

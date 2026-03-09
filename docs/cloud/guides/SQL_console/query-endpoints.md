@@ -85,7 +85,7 @@ More documentation around saved queries can be found in section ["Saving a query
 ### Configuring the query API endpoint {#configuring-the-query-api-endpoint}
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`.
-You'll be prompted to specify which API key(s) should be able to access the endpoint:
+You'll be prompted to specify which API keys should be able to access the endpoint:
 
 <Image img={endpoints_configure} size="md" alt="Configure query endpoint" />
 

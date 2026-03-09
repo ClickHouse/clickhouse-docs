@@ -26,11 +26,11 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   * `CLIENT` — スパンが何らかのリモートサービスへのリクエストを表していることを示します。
   * `PRODUCER` — スパンが非同期リクエストの起点となる処理を表していることを示します。この親スパンは、対応する子の CONSUMER スパンよりも前に終了することが多く、場合によっては子スパンが開始する前に終了します。
   * `CONSUMER` — スパンが非同期 PRODUCER リクエストの子を表していることを示します。
-* `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の開始時刻（マイクロ秒）。
-* `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の終了時刻（マイクロ秒）。
+* `start_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の開始時刻 (マイクロ秒) 。
+* `finish_time_us` ([UInt64](../../sql-reference/data-types/int-uint.md)) — `trace span` の終了時刻 (マイクロ秒) 。
 * `finish_date` ([Date](../../sql-reference/data-types/date.md)) — `trace span` の終了日。
 * `status_code` ([Enum8](../../sql-reference/data-types/enum.md)) — スパンのステータスコード。
-* `status_message` ([String](../../sql-reference/data-types/string.md)) — スパンに関連付けられたエラーメッセージ（存在する場合）。status&#95;code が ERROR でない場合は空です。
+* `status_message` ([String](../../sql-reference/data-types/string.md)) — スパンに関連付けられたエラーメッセージ (存在する場合) 。status&#95;code が ERROR でない場合は空です。
 * `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — `trace span` に応じた [Attribute](https://opentelemetry.io/docs/go/instrumentation/#attributes) 名。 [OpenTelemetry](https://opentelemetry.io/) 標準の推奨事項に従って設定されます。
 * `attribute.values` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — `trace span` に応じた Attribute の値。`OpenTelemetry` 標準の推奨事項に従って設定されます。
 
