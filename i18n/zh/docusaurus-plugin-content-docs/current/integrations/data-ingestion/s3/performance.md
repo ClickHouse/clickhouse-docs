@@ -34,11 +34,11 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 <Image img={InsertMechanics} size="lg" border alt="ClickHouse 中插入块大小的机制" />
 
-在执行 `INSERT INTO SELECT` 时，ClickHouse 会接收到一部分数据，并从这些数据中 ① 构建出（至少）一个内存中的插入块（按[分区键](/engines/table-engines/mergetree-family/custom-partitioning-key) 划分）。该块中的数据会被排序，并应用表引擎特定的优化。随后数据被压缩，并以一个新的数据 part 的形式 ② 写入到数据库存储中。
+在执行 `INSERT INTO SELECT` 时，ClickHouse 会接收到一部分数据，并从这些数据中 ① 构建出（至少）一个内存中的插入块（每个[分区键](/engines/table-engines/mergetree-family/custom-partitioning-key)对应一个）。该块中的数据会被排序，并应用表引擎特定的优化。随后数据会被压缩，并以新的数据分区片段的形式 ② 写入到数据库存储中。
 
-插入块大小会同时影响 ClickHouse 服务器的 [磁盘文件 I/O 使用情况](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和内存使用情况。更大的插入块会占用更多内存，但会生成更大且数量更少的初始 part。ClickHouse 在加载大量数据时需要创建的 part 越少，所需的磁盘文件 I/O 和自动[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges) 就越少。
+插入块大小会同时影响 ClickHouse 服务器的 [磁盘文件 I/O 使用情况](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和内存使用情况。更大的插入块会占用更多内存，但会生成更大且数量更少的初始分区片段。ClickHouse 在加载大量数据时需要创建的分区片段越少，所需的磁盘文件 I/O 和自动[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)就越少。
 
-当将 `INSERT INTO SELECT` 查询与集成表引擎或表函数组合使用时，数据会由 ClickHouse 服务器拉取：
+当将 `INSERT INTO SELECT` 查询与集成表引擎或表函数组合使用时，数据会由 ClickHouse 服务器拉取： 
 
 <Image img={Pull} size="lg" border alt="在 ClickHouse 中从外部源拉取数据" />
 
@@ -52,15 +52,14 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 Go to ① 
 ```
 
-在 ① 中，大小取决于插入块的大小，可以通过两个设置进行控制：
+在 ① 中，其大小取决于插入块大小，而插入块大小可以通过两个设置进行控制：
 
-* [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)（默认值：`1048545` 百万行）
-* [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（默认值：`256 MiB`）
+- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)（默认值：`1048545` 行）
+- [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（默认值：`256 MiB`）
 
-当插入块中累积到指定数量的行，或者达到配置的数据量（以先发生者为准）时，就会触发将该块写入一个新的 part。插入循环随后回到步骤 ① 继续执行。
+当插入块中收集到指定数量的行，或者达到配置的数据量（以先发生者为准）时，就会触发将该块写入一个新的分区片段。插入循环随后继续回到步骤 ①。
 
-请注意，`min_insert_block_size_bytes` 的值表示内存中未压缩的块大小（而不是压缩后的磁盘 part 大小）。另外需要注意的是，创建出来的块和 part 很少会精确包含配置的行数或字节数，因为 ClickHouse 是按行‑[块](/operations/settings/settings#max_block_size)粒度对数据进行流式[处理](https://clickhouse.com/company/events/query-performance-introspection)的。因此，这些设置指定的是最小阈值。
-
+请注意，`min_insert_block_size_bytes` 的值表示内存中未压缩的块大小（而不是磁盘上压缩后的分区片段大小）。另外还要注意，创建出来的块和分区片段很少会精确包含配置的行数或字节数，因为 ClickHouse 是以行[块](/operations/settings/settings#max_block_size)为粒度对数据进行流式[处理](https://clickhouse.com/company/events/query-performance-introspection)的。因此，这些设置指定的是最小阈值。
 
 #### 注意合并操作 \{#be-aware-of-merges\}
 
