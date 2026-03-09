@@ -131,7 +131,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 当 ClickHouse 插入数据时，会按主键对行进行排序。如果 `Version` 列不在主键中，ClickHouse 会隐式地将其作为最后一个字段加入主键，并使用它进行排序。
 
-## 选择数据 \{#selecting-data\}
+## 查询数据 \{#selecting-data\}
 
 ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据部件中，甚至不保证在同一台物理服务器上。这对于数据写入以及之后的数据部件合并都成立。此外，ClickHouse 会使用多个线程处理 `SELECT` 查询，因此无法预测结果集中各行的顺序。这意味着，如果需要从 `VersionedCollapsingMergeTree` 表中获取完全“折叠”的数据，就必须进行聚合。
 

@@ -69,7 +69,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ## SELECT 和 INSERT \{#select-and-insert\}
 
 要插入数据，请使用包含带有 `-State` 后缀聚合函数的 [INSERT SELECT](../../../sql-reference/statements/insert-into.md) 查询。
-从 `AggregatingMergeTree` 表中选择数据时，使用 `GROUP BY` 子句，并使用与插入数据时相同的聚合函数，但需改用带有 `-Merge` 后缀的版本。
+从 `AggregatingMergeTree` 表中查询数据时，使用 `GROUP BY` 子句，并使用与插入数据时相同的聚合函数，但需改用带有 `-Merge` 后缀的版本。
 
 在 `SELECT` 查询的结果中，`AggregateFunction` 类型的值在所有 ClickHouse 输出格式中都采用与实现相关的二进制表示形式。例如，如果使用 `SELECT` 查询将数据转储为 `TabSeparated` 格式，则可以通过 `INSERT` 查询将该转储重新加载回去。
 
