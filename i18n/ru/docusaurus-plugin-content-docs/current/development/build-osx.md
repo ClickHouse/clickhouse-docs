@@ -11,7 +11,7 @@ doc_type: 'guide'
 # Как собрать ClickHouse на macOS для macOS \{#how-to-build-clickhouse-on-macos-for-macos\}
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
-Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](https://clickhouse.com/docs/get-started/quick-start).
+Вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](/get-started/quick-start).
 :::
 
 ClickHouse можно скомпилировать на macOS x86&#95;64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или более поздней версии.
