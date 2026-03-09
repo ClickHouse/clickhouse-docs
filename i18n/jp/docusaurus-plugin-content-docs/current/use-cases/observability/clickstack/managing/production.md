@@ -178,7 +178,7 @@ import TabItem from '@theme/TabItem';
     * **明示的にその意図がある場合を除き、ClickHouse を外部に公開しないでください。** デフォルトでは、`listen_host` を変更しない限り、ClickHouse は `localhost` のみにバインドされます。
     * **認証手段を使用**します。パスワード、証明書、SSHキー、[外部認証機構](/operations/external-authenticators) などがあります。
     * IP フィルタリングと `HOST` 句を使用して、**アクセスを制限**します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。
-    * **ロールベースアクセス制御（RBAC）を有効に**して、きめ細かな権限付与を行います。詳細は [operations/access-rights](/operations/access-rights) を参照してください。
+    * **ロールベースアクセス制御 (RBAC) を有効に**して、きめ細かな権限付与を行います。詳細は [operations/access-rights](/operations/access-rights) を参照してください。
     * **クォータおよびその他の制限を厳格に適用**するには、[クォータ](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles)、および読み取り専用モードを使用します。
     * **保存されているデータを暗号化**し、安全な外部ストレージを使用してください。[operations/storing-data](/operations/storing-data) および [cloud/security/CMEK](/cloud/security/cmek) を参照してください。
     * **認証情報のハードコードは避けてください。** [named collections](/operations/named-collections) または ClickHouse Cloud の IAM ロールを使用してください。
@@ -190,7 +190,7 @@ import TabItem from '@theme/TabItem';
 
     ClickStack UIのClickHouseユーザーは、以下の設定を変更するアクセス権を持つ`readonly`ユーザーのみで十分です:
 
-    * `max_rows_to_read`（少なくとも 100 万行まで）
+    * `max_rows_to_read` (少なくとも 100 万行まで) 
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`

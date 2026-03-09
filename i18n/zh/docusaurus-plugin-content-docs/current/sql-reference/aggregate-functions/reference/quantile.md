@@ -17,7 +17,7 @@ doc_type: 'reference'
 结果是非确定性的。
 若要获取精确分位数，请使用 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 函数。
 
-在一个查询中使用多个带有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率会低于本可以达到的水平）。
+在一个查询中使用多个带有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率会低于本可以达到的水平) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 请注意，对于空的数值序列，`quantile` 将返回 NaN，而它的 `quantile*` 变体将根据具体变体返回 NaN 或该序列类型的默认值。

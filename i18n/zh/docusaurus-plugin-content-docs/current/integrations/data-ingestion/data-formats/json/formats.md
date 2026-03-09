@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 # 处理其他 JSON 格式 \{#handling-other-json-formats\}
 
-此前的 JSON 数据加载示例假定使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow)（`NDJSON`）。这种格式会将每一行 JSON 中的键读取为列。例如：
+此前的 JSON 数据加载示例假定使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 。这种格式会将每一行 JSON 中的键读取为列。例如：
 
 ```sql
 SELECT *
@@ -83,7 +83,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-在对象结构不一致的情况下，`JSONAsObject` 格式在读取按行分隔（newline-delimited）的 JSON 时也非常有用。比如，当某个键在不同行中的类型不一致（有时是字符串，有时又是对象）。在这类场景中，ClickHouse 无法使用 `JSONEachRow` 推断出稳定的模式，而 `JSONAsObject` 允许在不进行严格类型约束的前提下摄取数据，将每一行 JSON 作为整体存储在单个列中。比如，请注意 `JSONEachRow` 在下面的示例中是如何无法处理的：
+在对象结构不一致的情况下，`JSONAsObject` 格式在读取按行分隔 (newline-delimited) 的 JSON 时也非常有用。比如，当某个键在不同行中的类型不一致 (有时是字符串，有时又是对象) 。在这类场景中，ClickHouse 无法使用 `JSONEachRow` 推断出稳定的模式，而 `JSONAsObject` 允许在不进行严格类型约束的前提下摄取数据，将每一行 JSON 作为整体存储在单个列中。比如，请注意 `JSONEachRow` 在下面的示例中是如何无法处理的：
 
 ```sql
 SELECT count()
@@ -145,7 +145,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-要导入一组 JSON 对象，我们可以使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) 格式（从 [list.json](../assets/list.json) 文件中插入数据）：
+要导入一组 JSON 对象，我们可以使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) 格式 (从 [list.json](../assets/list.json) 文件中插入数据) ：
 
 ```sql
 INSERT INTO sometable
@@ -170,7 +170,7 @@ FROM sometable
 
 ## JSON 对象键 \{#json-object-keys\}
 
-在某些情况下，JSON 对象的列表可以表示为对象属性，而不是数组元素（示例参见 [objects.json](../assets/objects.json)）：
+在某些情况下，JSON 对象的列表可以表示为对象属性，而不是数组元素 (示例参见 [objects.json](../assets/objects.json)) ：
 
 ```bash
 cat objects.json
@@ -305,7 +305,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## 将 JSON 对象直接保存而不进行解析 \{#saving-json-objects-instead-of-parsing\}
 
-在某些情况下，可能希望将 JSON 对象保存到单个 `String`（或 `JSON`）列中，而不是对其进行解析。当处理结构各不相同的一组 JSON 对象时，这样做会很有用。以[这个文件](../assets/custom.json)为例，其中在一个父列表中包含多个不同的 JSON 对象：
+在某些情况下，可能希望将 JSON 对象保存到单个 `String` (或 `JSON`) 列中，而不是对其进行解析。当处理结构各不相同的一组 JSON 对象时，这样做会很有用。以[这个文件](../assets/custom.json)为例，其中在一个父列表中包含多个不同的 JSON 对象：
 
 ```bash
 cat custom.json
@@ -355,11 +355,11 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-请注意，对于每行一个 JSON 对象的文件（通常与 `JSONEachRow` 格式一起使用），`JSONAsString` 也可以很好地工作。
+请注意，对于每行一个 JSON 对象的文件 (通常与 `JSONEachRow` 格式一起使用) ，`JSONAsString` 也可以很好地工作。
 
 ## 嵌套对象的模式 \{#schema-for-nested-objects\}
 
-在处理[嵌套 JSON 对象](../assets/list-nested.json)时，我们还可以显式定义模式，并使用复杂类型（[`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview) 或 [`Tuple`](/sql-reference/data-types/tuple.md)）来加载数据：
+在处理[嵌套 JSON 对象](../assets/list-nested.json)时，我们还可以显式定义模式，并使用复杂类型 ([`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview) 或 [`Tuple`](/sql-reference/data-types/tuple.md)) 来加载数据：
 
 ```sql
 SELECT *
@@ -381,7 +381,7 @@ LIMIT 1
 SET input_format_import_nested_json = 1
 ```
 
-这使我们可以使用点号表示法来引用嵌套的 JSON 对象键（记得将这些键名用反引号包裹起来才能生效）：
+这使我们可以使用点号表示法来引用嵌套的 JSON 对象键 (记得将这些键名用反引号包裹起来才能生效) ：
 
 ```sql
 SELECT *

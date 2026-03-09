@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 为了得到插值后的值，首先将传入的所有数值合并成一个数组，然后按照对应的权重进行排序。接着使用[加权百分位数方法](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method)进行分位数插值：基于权重构建累积分布，然后使用权重和数值进行线性插值来计算分位数。
 
-在同一个查询中使用多个具有不同分位水平的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于理论上的最优情况）。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
+在同一个查询中使用多个具有不同分位水平的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率低于理论上的最优情况) 。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **语法**
 

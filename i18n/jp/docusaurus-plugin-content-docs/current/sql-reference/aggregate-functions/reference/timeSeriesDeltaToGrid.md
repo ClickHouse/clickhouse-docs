@@ -31,7 +31,7 @@ timeSeriesDeltaToGrid(start&#95;timestamp, end&#95;timestamp, grid&#95;step, sta
 
 `grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
 
-`staleness` — 対象とするサンプルの最大の「古さ（staleness）」を秒単位で指定します。staleness ウィンドウは左開・右閉の区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+`staleness` — 対象とするサンプルの最大の「古さ (staleness) 」を秒単位で指定します。staleness ウィンドウは左開・右閉の区間です。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **Arguments**
 
@@ -90,7 +90,7 @@ timeSeriesDeltaToGrid(start_timestamp, end_timestamp, grid_step, staleness)(time
 * `start_timestamp` — グリッドの開始を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — グリッドの終了を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 対象とするサンプルの最大の「古さ（staleness）」を秒単位で指定します。staleness ウィンドウは左開・右閉の区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 対象とするサンプルの最大の「古さ (staleness) 」を秒単位で指定します。staleness ウィンドウは左開・右閉の区間です。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **Arguments**
 

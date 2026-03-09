@@ -25,8 +25,8 @@ kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_ind
 
 **参数**
 
-* `alternative` — 备择假设。（可选，默认值：&#39;two-sided&#39;。）令 `F(x) and G(x)` 分别为第一和第二个分布的 CDF（累积分布函数）。&#39;two-sided&#39;：原假设是样本来自同一分布，例如对所有 x 都有 `F(x) = G(x)`，备择假设则为分布不相同。&#39;greater&#39;：原假设是第一组样本的取值在随机意义上小于第二组样本，例如第一个分布的 CDF 位于第二个分布之上，因此也在其左侧。这实际意味着对所有 x 都有 `F(x) >= G(x)`。在这种情况下，备择假设是至少存在一个 x 使得 `F(x) < G(x)`。&#39;less&#39;：原假设是第一组样本的取值在随机意义上大于第二组样本，例如第一个分布的 CDF 位于第二个分布之下，因此也在其右侧。这实际意味着对所有 x 都有 `F(x) <= G(x)`。在这种情况下，备择假设是至少存在一个 x 使得 `F(x) > G(x)`。[`String`](/sql-reference/data-types/string)
-* `computation_method` — 用于计算 p-value 的方法。（可选，默认值：&#39;auto&#39;。）&#39;exact&#39;：使用检验统计量的精确概率分布进行计算。除小样本外，计算开销大且低效。&#39;asymp&#39;（&#39;asymptotic&#39;）：使用近似方法进行计算。对于大样本量，精确和渐近 p-value 非常接近。&#39;auto&#39;：当样本数量的最大值小于 10&#39;000 时使用 &#39;exact&#39; 方法。[`String`](/sql-reference/data-types/string)
+* `alternative` — 备择假设。 (可选，默认值：&#39;two-sided&#39;。) 令 `F(x) and G(x)` 分别为第一和第二个分布的 CDF (累积分布函数) 。&#39;two-sided&#39;：原假设是样本来自同一分布，例如对所有 x 都有 `F(x) = G(x)`，备择假设则为分布不相同。&#39;greater&#39;：原假设是第一组样本的取值在随机意义上小于第二组样本，例如第一个分布的 CDF 位于第二个分布之上，因此也在其左侧。这实际意味着对所有 x 都有 `F(x) >= G(x)`。在这种情况下，备择假设是至少存在一个 x 使得 `F(x) < G(x)`。&#39;less&#39;：原假设是第一组样本的取值在随机意义上大于第二组样本，例如第一个分布的 CDF 位于第二个分布之下，因此也在其右侧。这实际意味着对所有 x 都有 `F(x) <= G(x)`。在这种情况下，备择假设是至少存在一个 x 使得 `F(x) > G(x)`。[`String`](/sql-reference/data-types/string)
+* `computation_method` — 用于计算 p-value 的方法。 (可选，默认值：&#39;auto&#39;。) &#39;exact&#39;：使用检验统计量的精确概率分布进行计算。除小样本外，计算开销大且低效。&#39;asymp&#39; (&#39;asymptotic&#39;) ：使用近似方法进行计算。对于大样本量，精确和渐近 p-value 非常接近。&#39;auto&#39;：当样本数量的最大值小于 10&#39;000 时使用 &#39;exact&#39; 方法。[`String`](/sql-reference/data-types/string)
 
 **参数列表**
 

@@ -27,7 +27,7 @@ kurtSamp(expr)
 
 **返回值**
 
-返回给定分布的峰度。如果 `n <= 1`（其中 `n` 为样本大小），则函数返回 `nan`。[`Float64`](/sql-reference/data-types/float)
+返回给定分布的峰度。如果 `n <= 1` (其中 `n` 为样本大小) ，则函数返回 `nan`。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 

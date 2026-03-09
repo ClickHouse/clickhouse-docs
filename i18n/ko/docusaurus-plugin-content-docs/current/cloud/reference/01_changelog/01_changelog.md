@@ -430,7 +430,7 @@ ClickHouse Cloud에서 Query API Endpoints의 GA(General Availability) 버전을
 * 결과 스트리밍
 * 모든 ClickHouse 호환 출력 포맷 지원
 
-이러한 개선 사항에 더해, 기존 프레임워크를 활용하여 ClickHouse Cloud 서비스에 대해 임의의 SQL 쿼리를 실행할 수 있는 범용 쿼리 API 엔드포인트도 제공하게 되었습니다. 범용 엔드포인트는 서비스 설정 페이지에서 활성화하고 구성할 수 있습니다.
+이러한 개선 사항에 더해, 기존 프레임워크를 활용하여 여러 ClickHouse Cloud 서비스에 대해 임의의 SQL 쿼리를 실행할 수 있는 범용 쿼리 API 엔드포인트도 제공하게 되었습니다. 범용 엔드포인트는 서비스 설정 페이지에서 활성화하고 구성할 수 있습니다.
 
 시작하려면 [Query API Endpoints 문서](/cloud/get-started/query-endpoints)를 참조하십시오.
 

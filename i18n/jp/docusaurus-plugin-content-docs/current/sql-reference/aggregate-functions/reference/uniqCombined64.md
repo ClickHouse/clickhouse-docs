@@ -14,7 +14,7 @@ doc_type: 'reference'
 引数の異なる値の概算個数を計算します。
 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) と同じですが、String 型だけでなくすべてのデータ型に対して 64 ビットハッシュを使用します。
 
-この関数は決定的に結果を返します（クエリ処理順序には依存しません）。
+この関数は決定的に結果を返します (クエリ処理順序には依存しません) 。
 
 :::note
 すべての型に対して 64 ビットハッシュを使用するため、非 String 型に対して 32 ビットハッシュを使用する [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) のように、`UINT_MAX` を大きく超えるカーディナリティに対して非常に大きな誤差が発生することはありません。
@@ -44,7 +44,7 @@ uniqCombined64(x[, ...])
 
 **パラメーター**
 
-* `HLL_precision` — 省略可能です。HyperLogLog におけるセル数の 2 を底とする対数値です。デフォルト値は 17 で、実質的に 96 KiB の領域を使用します（2^17 個のセル、各 6 ビット）。範囲：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
+* `HLL_precision` — 省略可能です。HyperLogLog におけるセル数の 2 を底とする対数値です。デフォルト値は 17 で、実質的に 96 KiB の領域を使用します (2^17 個のセル、各 6 ビット) 。範囲：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **引数**
 

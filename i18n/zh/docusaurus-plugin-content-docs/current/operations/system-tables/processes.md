@@ -20,11 +20,11 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 * `is_initial_query` ([UInt8](../../sql-reference/data-types/)) — 表示该查询是直接由用户发起，还是在分布式查询执行过程中由 ClickHouse 服务器发起。
 * `user` ([String](../../sql-reference/data-types/)) — 发起查询的用户。请注意，对于分布式处理，查询会以默认用户的身份发送到远程服务器。该字段包含的是该特定查询的用户名，而不是由此查询触发的其他查询的用户名。
-* `query_id` ([String](../../sql-reference/data-types/)) — 查询 ID（若已定义）。
+* `query_id` ([String](../../sql-reference/data-types/)) — 查询 ID (若已定义) 。
 * `address` ([IPv6](../../sql-reference/data-types/)) — 发出查询的 IP 地址。对于分布式处理，该字段的值也是相同的。要跟踪分布式查询最初是从哪个节点发起的，请在查询发起端服务器上查看 system.processes。
 * `port` ([UInt16](../../sql-reference/data-types/)) — 客户端发出该查询时使用的端口。
-* `initial_user` ([String](../../sql-reference/data-types/)) — 执行初始查询的用户名（在分布式查询执行中使用）。
-* `initial_query_id` ([String](../../sql-reference/data-types/)) — 初始查询 ID（用于分布式查询执行）。
+* `initial_user` ([String](../../sql-reference/data-types/)) — 执行初始查询的用户名 (在分布式查询执行中使用) 。
+* `initial_query_id` ([String](../../sql-reference/data-types/)) — 初始查询 ID (用于分布式查询执行) 。
 * `initial_address` ([IPv6](../../sql-reference/data-types/)) — 父查询发起自的 IP 地址。
 * `initial_port` ([UInt16](../../sql-reference/data-types/)) — 客户端用于发起父查询的端口。
 * `interface` ([UInt8](../../sql-reference/data-types/)) — 用于发送查询的接口类型。TCP = 1，HTTP = 2，GRPC = 3，MYSQL = 4，POSTGRESQL = 5，LOCAL = 6，TCP&#95;INTERSERVER = 7。
@@ -37,13 +37,13 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `client_version_patch` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端版本的补丁号部分。
 * `http_method` ([UInt8](../../sql-reference/data-types/)) — 启动查询的 HTTP 方法。可能的取值为：0 — 查询是从 TCP 接口发起的。1 — 使用了 GET 方法。2 — 使用了 POST 方法。
 * `http_user_agent` ([String](../../sql-reference/data-types/)) — 在 HTTP 查询中传递的 HTTP 头部 User-Agent 字段。
-* `http_referer` ([String](../../sql-reference/data-types/)) — 在 HTTP 请求中传递的 Referer HTTP 头部（包含发出该请求的页面的完整或部分地址）。
+* `http_referer` ([String](../../sql-reference/data-types/)) — 在 HTTP 请求中传递的 Referer HTTP 头部 (包含发出该请求的页面的完整或部分地址) 。
 * `forwarded_for` ([String](../../sql-reference/data-types/)) — HTTP 查询中传入的 X-Forwarded-For HTTP 头部。
-* `quota_key` ([String](../../sql-reference/data-types/)) — 在 quotas 设置中指定的配额键（参见 keyed）。
+* `quota_key` ([String](../../sql-reference/data-types/)) — 在 quotas 设置中指定的配额键 (参见 keyed) 。
 * `distributed_depth` ([UInt64](../../sql-reference/data-types/)) — 查询在服务器节点之间进行内部重传的次数。
-* `elapsed` ([Float64](../../sql-reference/data-types/)) — 自请求开始执行以来的时间（以秒为单位）。
+* `elapsed` ([Float64](../../sql-reference/data-types/)) — 自请求开始执行以来的时间 (以秒为单位) 。
 * `is_cancelled` ([UInt8](../../sql-reference/data-types/)) — 查询是否已被取消。
-* `is_all_data_sent` ([UInt8](../../sql-reference/data-types/)) — 是否已将全部数据发送给客户端（即查询已在服务器端完成）。
+* `is_all_data_sent` ([UInt8](../../sql-reference/data-types/)) — 是否已将全部数据发送给客户端 (即查询已在服务器端完成) 。
 * `read_rows` ([UInt64](../../sql-reference/data-types/)) — 从表中读取的行数。对于分布式处理，在请求端服务器上，该值表示所有远程服务器的总和。
 * `read_bytes` ([UInt64](../../sql-reference/data-types/)) — 从表中读取的未压缩字节数。对于分布式处理，在请求方服务器上，该值表示所有远程服务器的总和。
 * `total_rows_approx` ([UInt64](../../sql-reference/data-types/)) — 需要读取的行总数的近似值。对于分布式处理，在请求端服务器上，该值表示所有远程服务器的总和。在请求处理期间，当发现新的待处理数据源时，该值可能会被更新。

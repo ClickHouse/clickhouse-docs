@@ -75,6 +75,22 @@ Features:
 - 빠르고 반응성이 뛰어난 성능
 - 오픈 소스이며 MIT 라이선스를 사용
 
+### Dory \{#dory\}
+
+[Dory](https://github.com/dorylab/dory)는 AI에 최적화된 SQL 워크스페이스로, ClickHouse에 대한 일급 지원을 제공하며 AI 기능이 내장되어 있습니다.
+
+기능:
+
+* SQL 생성, 설명, 디버깅을 위한 AI Copilot
+* 통합 워크스페이스에서 여러 ClickHouse 클러스터를 관리하고 쿼리
+* 스키마를 인식하는 SQL 자동 완성과 멀티 탭 쿼리 워크스페이스
+* 필터링 및 시각화를 포함한 쿼리 결과의 대화형 탐색
+* 데이터셋 이해를 위한 AI 기반 테이블 요약
+* SSH 터널을 지원하는 Direct ClickHouse 연결
+* 라이트, 다크 등 다양한 테마를 지원하는 현대적인 개발자 친화적 인터페이스
+* 크로스 플랫폼 데스크톱 앱(macOS, Windows, Linux) 및 Docker 지원
+* 오픈 소스이며 MIT 라이선스를 따름
+
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
 [ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)는 Mermaid.js 다이어그램을 사용하여 ClickHouse 테이블 간 관계를 시각화하는 강력한 오픈 소스 웹 애플리케이션입니다. 직관적인 인터페이스로 데이터베이스와 테이블을 탐색하고, 선택적으로 행 개수와 크기 정보를 포함한 테이블 메타데이터를 살펴보며, 대화형 스키마 다이어그램을 내보낼 수 있습니다.

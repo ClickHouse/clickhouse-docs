@@ -166,18 +166,18 @@ consumer.max.partition.fetch.bytes=1048576
 为了使 MSK Connect 能够连接到 ClickHouse，我们建议将 MSK 集群部署在带有 Private NAT、可访问互联网的私有子网中。下面提供了相关设置步骤。请注意，虽然也支持使用公共子网，但并不推荐，因为需要持续为 ENI 分配 Elastic IP 地址，[AWS 在此提供了更多详细信息](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
 
 1. **创建私有子网：** 在 VPC 中创建一个新的子网，并将其指定为私有子网。该子网不应具有直接访问互联网的能力。
-1. **创建 NAT Gateway：** 在 VPC 的公共子网中创建一个 NAT Gateway。NAT Gateway 允许私有子网中的实例连接到互联网或其他 AWS 服务，但阻止互联网主动与这些实例建立连接。
-1. **更新路由表：** 添加一条路由，将发往互联网的流量指向 NAT Gateway。
-1. **确保安全组和网络 ACL 配置：** 配置 [security groups（安全组）](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) 和 [network ACLs（网络访问控制列表）](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)，以允许相关流量。
-   1. 从 MSK Connect worker ENI 到 MSK broker 的 TLS 端口（通常为 9094）。
-   1. 从 MSK Connect worker ENI 到 ClickHouse 端点：9440（原生 TLS）或 8443（HTTPS）。
-   1. 在 broker 的安全组上允许来自 MSK Connect worker 安全组的入站流量。
-   1. 对于自托管的 ClickHouse，开放服务器中配置的端口（HTTP 默认为 8123）。
-1. **将安全组附加到 MSK：** 确保这些安全组已附加到 MSK 集群和 MSK Connect workers。
-1. **与 ClickHouse Cloud 的连通性：**
+2. **创建 NAT Gateway：** 在 VPC 的公共子网中创建一个 NAT Gateway。NAT Gateway 允许私有子网中的实例连接到互联网或其他 AWS 服务，但阻止互联网主动与这些实例建立连接。
+3. **更新路由表：** 添加一条路由，将发往互联网的流量指向 NAT Gateway。
+4. **确保安全组和网络 ACL 配置：** 配置 [security groups (安全组) ](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) 和 [network ACLs (网络访问控制列表) ](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)，以允许相关流量。
+   1. 从 MSK Connect worker ENI 到 MSK broker 的 TLS 端口 (通常为 9094) 。
+   2. 从 MSK Connect worker ENI 到 ClickHouse 端点：9440 (原生 TLS) 或 8443 (HTTPS) 。
+   3. 在 broker 的安全组上允许来自 MSK Connect worker 安全组的入站流量。
+   4. 对于自托管的 ClickHouse，开放服务器中配置的端口 (HTTP 默认为 8123) 。
+5. **将安全组附加到 MSK：** 确保这些安全组已附加到 MSK 集群和 MSK Connect workers。
+6. **与 ClickHouse Cloud 的连通性：**
    1. 公共端点 + IP 允许名单：需要从私有子网经由 NAT 出口访问。
-   1. 在可用地区使用私有连通性（例如 VPC peering/PrivateLink/VPN）。确保已启用 VPC DNS hostnames/resolution，并且 DNS 能解析私有端点。
-1. **验证连通性（快速检查清单）：**
+   2. 在可用地区使用私有连通性 (例如 VPC peering/PrivateLink/VPN) 。确保已启用 VPC DNS hostnames/resolution，并且 DNS 能解析私有端点。
+7. **验证连通性 (快速检查清单) ：**
    1. 在 connector 运行环境中，解析 MSK bootstrap DNS，并通过 TLS 连接到 broker 端口。
-   1. 在端口 9440 与 ClickHouse 建立 TLS 连接（或使用 8443 进行 HTTPS）。
-   1. 如果使用 AWS 服务（Glue/Secrets Manager），允许对这些端点的出口访问。
+   2. 在端口 9440 与 ClickHouse 建立 TLS 连接 (或使用 8443 进行 HTTPS) 。
+   3. 如果使用 AWS 服务 (Glue/Secrets Manager) ，允许对这些端点的出口访问。

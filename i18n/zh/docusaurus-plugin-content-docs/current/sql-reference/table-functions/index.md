@@ -21,9 +21,9 @@ doc_type: 'reference'
 | [deltaLake](/sql-reference/table-functions/deltalake)                                  | 为存储在 Amazon S3 中的 Delta Lake 表提供类似表的只读接口。                                                                             |
 | [deltaLakeCluster](/sql-reference/table-functions/deltalakeCluster)                    | 是 deltaLake 表函数的扩展。                                                                                                   |
 | [字典](/sql-reference/table-functions/dictionary)                                        | 以 ClickHouse 表的形式展示字典数据。其工作方式与 Dictionary 引擎相同。                                                                       |
-| [executable](/engines/table-functions/executable)                                      | `executable` 表函数基于您在脚本中定义的、将行输出到 **stdout** 的用户定义函数（UDF）的输出创建一张表。                                                     |
-| [file](/sql-reference/table-functions/file)                                            | 一种表引擎，它提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file()`，处理对象存储（如 S3、GCS 或 MinIO）中的 bucket 时使用 `s3()`。 |
-| [fileCluster](/sql-reference/table-functions/fileCluster)                              | 在集群中的多个节点上并行处理匹配指定路径的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符，并将文件读取任务委派给工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此反复，直到所有任务完成（即所有文件都被读取）。 |
+| [executable](/engines/table-functions/executable)                                      | `executable` 表函数基于您在脚本中定义的、将行输出到 **stdout** 的用户定义函数 (UDF) 的输出创建一张表。                                                     |
+| [file](/sql-reference/table-functions/file)                                            | 一种表引擎，它提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file()`，处理对象存储 (如 S3、GCS 或 MinIO) 中的 bucket 时使用 `s3()`。 |
+| [fileCluster](/sql-reference/table-functions/fileCluster)                              | 在集群中的多个节点上并行处理匹配指定路径的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符，并将文件读取任务委派给工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此反复，直到所有任务完成 (即所有文件都被读取) 。 |
 | [format](/sql-reference/table-functions/format)                                        | 按照指定的输入格式从参数中解析数据。若未指定 structure 参数，则会从数据中自动推断结构。                                                                     |
 | [gcs](/sql-reference/table-functions/gcs)                                              | 提供类似表的接口，可对 Google Cloud Storage 中的数据执行 `SELECT` 和 `INSERT` 操作。需要具备 `Storage Object User` IAM 角色。                     |
 | [fuzzJSON](/sql-reference/table-functions/fuzzJSON)                                    | 对 JSON 字符串进行随机扰动处理。                                                                                                   |
@@ -56,7 +56,7 @@ doc_type: 'reference'
 | [timeSeriesSelector](/sql-reference/table-functions/timeSeriesSelector)                | 从 TimeSeries 表中读取时间序列数据，根据选择器进行过滤，并限定时间戳在指定时间区间内。                                                                     |
 | [timeSeriesTags](/sql-reference/table-functions/timeSeriesTags)                        | timeSeriesTags 表函数返回表 `db_name.time_series_table` 所使用的标签表，该表的表引擎为 TimeSeries。                                         |
 | [zeros](/sql-reference/table-functions/zeros)                                          | 用于测试场景，是生成大量行的最快方式。类似于 `system.zeros` 和 `system.zeros_mt` 系统表。                                                        |
-| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含名为 `generate_series` 的单列（类型为 UInt64）的表，该列包含从 start 到 stop（包含端点）之间的所有整数。                                        |
+| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含名为 `generate_series` 的单列 (类型为 UInt64) 的表，该列包含从 start 到 stop (包含端点) 之间的所有整数。                                        |
 | [odbc](/sql-reference/table-functions/odbc)                                            | 返回一张通过 ODBC 连接的表。                                                                                                     |
 | [postgresql](/sql-reference/table-functions/postgresql)                                | 允许对存储在远程 PostgreSQL 服务器上的数据进行 `SELECT` 和 `INSERT` 查询。                                                                 |
 | [redis](/sql-reference/table-functions/redis)                                          | 该表函数可将 ClickHouse 与 Redis 集成。                                                                                         |

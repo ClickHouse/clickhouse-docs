@@ -1554,26 +1554,157 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper \{#orm-support-dapper\}
 
-`ClickHouse.Driver` 可以与 Dapper 一起使用，但不支持匿名对象。
+`ClickHouse.Driver` 支持与 Dapper 配合使用。驱动程序会自动将 Dapper 的 `@parameter` 语法转换为 ClickHouse 原生的 `{parameter:Type}` 语法，并根据 .NET 值推断参数类型。
 
-**可运行示例：**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**不支持：**
+使用 `ClickHouseDataSource` 可正确管理连接生命周期：
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
 
+
+#### 参数传递方式 \{#dapper-parameter-passing\}
+
+支持所有标准的 Dapper 参数传递方式：
+
+**匿名对象：**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**POCO 类：**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**字典：**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (来自字典或匿名对象) ：**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+
+#### 将查询结果映射到 POCO \{#dapper-pocos\}
+
+Dapper 按名称 (不区分大小写) 将列映射到属性：
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+
+#### ClickHouse 原生参数语法 \{#dapper-clickhouse-param-syntax\}
+
+当你需要显式控制类型时，请在 SQL 中直接使用 ClickHouse 的 `{param:Type}` 语法，并使用 `Dictionary<string, object>` 提供参数值。不要对同一个参数同时混用 `@param` 语法和 `{param:Type}` 语法。
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+
+#### WHERE IN \{#dapper-where-in\}
+
+**Dapper 原生的 IN 展开可正常工作：**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper 会将其重写为 `WHERE id IN (@Ids1, @Ids2, @Ids3)`，驱动程序随后会转换每个展开后的参数。
+
+**ClickHouse 的 `has()` 配合 Array 参数也可正常工作：**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+#### 自定义类型处理器 \{#dapper-type-handlers\}
+
+某些 ClickHouse 类型 (例如 `ITuple`、`BigInteger` 和 `ClickHouseDecimal`) 需要在启动时注册对应的处理器：
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+有关类型处理程序实现的示例，请参见 [Dapper 示例](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs)。
+
+
+#### Dapper.Contrib \{#dapper-contrib\}
+
+`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法（`SCOPE_IDENTITY`、方括号）。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+属性名称必须与 ClickHouse 列名完全一致（区分大小写）。
+
+#### 限制 \{#dapper-limitations\}
+
+| What | Status | Details |
+|---|---|---|
+| Tuple as **result** | 可正常工作 | 需要注册 `SqlMapper.TypeHandler<ITuple>` |
+| Tuple as **parameter** | 尚不支持 | Dapper 无法将 `ITuple`/`Tuple<>` 序列化为 `DbParameter` 的值 |
+| Nested types as parameter | 尚不支持 | 原因相同——Dapper 会拒绝将复杂类型用作参数值 |
+| Geo types as parameter | 尚不支持 | Point、Ring、Polygon、LineString、MultiLineString、MultiPolygon |
+| `Dapper.Contrib.Insert<T>()` | 尚不支持 | 会生成 SQL Server 特有的语法 |
+| `Nothing` type | 尚不支持 | 没有有意义的 .NET 表示 |
 
 ### Linq2db \{#orm-support-linq2db\}
 

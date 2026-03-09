@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 `INTO OUTFILE` 句は、`SELECT` クエリの結果を **クライアント** 側のファイルにリダイレクトします。
 
-圧縮ファイルをサポートします。圧縮方式はファイル名の拡張子によって自動検出されます（デフォルトではモード `'auto'` が使用されます）。または、`COMPRESSION` 句で明示的に指定することもできます。特定の圧縮方式に対する圧縮レベルは、`LEVEL` 句で指定できます。
+圧縮ファイルをサポートします。圧縮方式はファイル名の拡張子によって自動検出されます (デフォルトではモード `'auto'` が使用されます) 。または、`COMPRESSION` 句で明示的に指定することもできます。特定の圧縮方式に対する圧縮レベルは、`LEVEL` 句で指定できます。
 
 **構文**
 
@@ -26,7 +26,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 * この機能は [command-line client](../../../interfaces/cli.md) と [clickhouse-local](../../../operations/utilities/clickhouse-local.md) で利用できます。したがって、[HTTP interface](/interfaces/http) 経由で送信されたクエリはエラーになります。
 * 同じファイル名のファイルがすでに存在する場合、そのクエリはエラーになります。
-* デフォルトの [出力フォーマット](../../../interfaces/formats.md) は `TabSeparated`（command-line client のバッチモードと同様）です。変更するには [FORMAT](format.md) 句を使用します。
+* デフォルトの [出力フォーマット](../../../interfaces/formats.md) は `TabSeparated` (command-line client のバッチモードと同様) です。変更するには [FORMAT](format.md) 句を使用します。
 * クエリ内で `AND STDOUT` が指定されている場合、ファイルに書き込まれる出力は標準出力にも表示されます。圧縮を使用している場合は、標準出力には非圧縮の出力が表示されます。
 * クエリ内で `APPEND` が指定されている場合、出力は既存のファイルに追記されます。圧縮を使用している場合、`APPEND` は使用できません。
 * 既存のファイルに書き込む場合は、`APPEND` または `TRUNCATE` を使用する必要があります。

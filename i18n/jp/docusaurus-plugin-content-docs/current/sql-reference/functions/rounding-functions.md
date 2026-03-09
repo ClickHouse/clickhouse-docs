@@ -25,7 +25,7 @@ doc_type: 'reference'
 導入バージョン: v1.1.0
 
 [`floor`](#floor) と同様ですが、`x` 以上となる値のうち最小の丸め結果を返します。
-丸めによってオーバーフローが発生する場合（例: `ceiling(255, -1)`）、結果は未定義となります。
+丸めによってオーバーフローが発生する場合 (例: `ceiling(255, -1)`) 、結果は未定義となります。
 
 **構文**
 
@@ -79,7 +79,7 @@ SELECT ceiling(123.45, -1)
 整数引数に対しては、`N` に負の値を指定することで丸めを行えます。
 `N` が 0 以上の場合、この関数は `x` をそのまま返します。
 
-丸めによってオーバーフローが発生した場合（例: `floor(-128, -1)`）、結果は未定義です。
+丸めによってオーバーフローが発生した場合 (例: `floor(-128, -1)`) 、結果は未定義です。
 
 **構文**
 
@@ -133,9 +133,9 @@ SELECT floor(123.45, -1)
 * `N = 0` の場合、最も近い整数に丸めます。
 
 この関数は、指定した桁の位で最も近い数値を返します。
-入力値が2つの隣接する数値から等距離にある場合、`Float*` 型の入力に対しては銀行家の丸めを使用し、その他の数値型（`Decimal*`）に対してはゼロから遠ざかる方向に丸めます。
+入力値が2つの隣接する数値から等距離にある場合、`Float*` 型の入力に対しては銀行家の丸めを使用し、その他の数値型 (`Decimal*`) に対してはゼロから遠ざかる方向に丸めます。
 
-丸めによってオーバーフローが発生する場合（例: `round(255, -1)`）、結果は未定義です。
+丸めによってオーバーフローが発生する場合 (例: `round(255, -1)`) 、結果は未定義です。
 
 **構文**
 
@@ -204,7 +204,7 @@ roundAge(num)
 
 **引数**
 
-* `age` — 年齢（年単位）を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+* `age` — 年齢 (年単位) を表す数値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **返り値**
 
@@ -238,7 +238,7 @@ SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54,
 丸める値がちょうど 2 つの値の中間にある場合、この関数は banker&#39;s rounding と呼ばれる丸め方法を使用します。これは IEEE 754 で定義されている浮動小数点数のデフォルトの丸め方法です。
 
 * `N > 0` の場合、小数点以下 `N` 桁に丸めます
-* `N < 0` の場合、小数点より左側（整数部）を `N` の位で丸めます
+* `N < 0` の場合、小数点より左側 (整数部) を `N` の位で丸めます
 * `N = 0` の場合、最も近い整数に丸めます
 
 :::info Notes
@@ -273,7 +273,7 @@ roundBankers(x[, N])
 
 **戻り値**
 
-banker&#39;s rounding（銀行家の丸め）手法で丸められた値を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
+banker&#39;s rounding (銀行家の丸め) 手法で丸められた値を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Decimal*`](/sql-reference/data-types/decimal) または [`Float*`](/sql-reference/data-types/float)
 
 **例**
 
@@ -393,7 +393,7 @@ SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 10
 
 導入バージョン: v1.1.0
 
-数値を、直前の（非負整数の）2 の冪に切り下げます。
+数値を、直前の (非負整数の) 2 の冪に切り下げます。
 数値が 1 未満の場合は `0` を返します。
 
 **構文**
@@ -408,7 +408,7 @@ roundToExp2(num)
 
 **戻り値**
 
-`num` を、それ以下で最大の（2 の非負整数乗である）値に切り捨てて返します。`num < 1` の場合は `0` を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+`num` を、それ以下で最大の (2 の非負整数乗である) 値に切り捨てて返します。`num < 1` の場合は `0` を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **例**
 

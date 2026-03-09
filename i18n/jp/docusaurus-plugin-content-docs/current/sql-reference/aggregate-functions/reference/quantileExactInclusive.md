@@ -13,14 +13,14 @@ doc_type: 'reference'
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と同様に、数値データ系列の厳密な [quantile](https://en.wikipedia.org/wiki/Quantile) を計算します。
 
-この関数は [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と等価ですが、[R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) で説明されている、分位数を計算するための inclusive method（包括的手法）を使用します。
+この関数は [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と等価ですが、[R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) で説明されている、分位数を計算するための inclusive method (包括的手法) を使用します。
 
 この関数を使用する場合、分位数は次のように計算されます。与えられた分位数 p に対する補間式は、ソート済み配列 x に対して `x[floor((n-1)*p)] + ((n-1)*p - floor((n-1)*p)) * (x[floor((n-1)*p)+1] - x[floor((n-1)*p)])` という形になります。
 
 厳密な値を取得するために、渡されたすべての値は 1 つの配列にまとめられ、その後完全にソートされます。
 ソートアルゴリズムの計算量は `O(N·log(N))` であり、ここで `N = std::distance(first, last)` は比較回数です。
 
-クエリ内で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来よりも非効率に動作します）。
+クエリ内で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、クエリは本来よりも非効率に動作します) 。
 このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
 
 **構文**
@@ -31,7 +31,7 @@ quantileExactInclusive(level)(expr)
 
 **パラメータ**
 
-* `level` — 分位数のレベル。0 から 1（両端を含む）までの定数の浮動小数点値。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数のレベル。0 から 1 (両端を含む) までの定数の浮動小数点値。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
 
 **引数**
 

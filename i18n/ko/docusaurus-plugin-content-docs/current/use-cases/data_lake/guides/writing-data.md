@@ -1,32 +1,32 @@
 ---
-title: '向开放表格式写入数据'
-sidebar_label: '写入数据湖'
+title: '오픈 테이블 형식에 데이터 쓰기'
+sidebar_label: '데이터 레이크에 쓰기'
 slug: /use-cases/data-lake/getting-started/writing-data
 sidebar_position: 4
 toc_max_heading_level: 3
-pagination_prev: use-cases/data_lake/getting-started/accelerating-analytics
+pagination_prev: use-cases/data_lake/guides/accelerating-analytics
 pagination_next: null
-description: '将 ClickHouse 中的数据写回对象存储中的 Iceberg 表，用于长期存储和下游消费。'
-keywords: ['数据湖', '湖仓', '写入', 'iceberg', 'reverse ETL', 'INSERT INTO', 'IcebergS3']
+description: '장기 보관 및 다운스트림 활용을 위해 ClickHouse의 데이터를 객체 스토리지의 Iceberg 테이블에 다시 씁니다.'
+keywords: ['데이터 레이크', '레이크하우스', '쓰기', 'iceberg', '리버스 ETL', 'INSERT INTO', 'IcebergS3']
 doc_type: 'guide'
 ---
 
-在前面的指南中，你在原始位置就地查询开放表格式的数据，并将其加载到 MergeTree 中以实现快速分析。在许多架构中，数据还需要沿相反方向流动——从 ClickHouse 回写到湖仓格式。通常出于以下两种场景的需求：
+이전 가이드에서는 오픈 테이블 형식을 제자리에서 쿼리하고, 빠른 분석을 위해 데이터를 MergeTree에 로드했습니다. 많은 아키텍처에서는 데이터가 반대 방향으로도 흘러야 합니다. 즉, ClickHouse에서 다시 레이크하우스 형식으로 데이터를 내보내야 합니다. 일반적으로 이는 다음 두 가지 시나리오에서 필요합니다.
 
-- **卸载到长期存储** - 数据首先进入 ClickHouse，作为实时分析层，为仪表盘和运维报表提供支持。当数据超出其实时分析窗口后，可以将其写出到对象存储中的 Iceberg，以一种持久、具备成本效益且可互操作的格式进行保留。
-- **Reverse ETL** - 在 ClickHouse 内执行的转换、聚合和增强（enrichment）操作会生成派生数据集，下游工具和其他团队需要消费这些数据。将这些结果写入 Iceberg 表，可以让它们在更广泛的数据生态系统中可用。
+* **장기 스토리지로 오프로드** - 데이터는 실시간 분석 계층으로 ClickHouse에 유입되어 대시보드와 운영 보고를 지원합니다. 데이터가 실시간 활용 구간을 지나면, 상호 운용 가능한 형식으로 내구성 있게 그리고 비용 효율적으로 보관할 수 있도록 객체 스토리지의 Iceberg에 기록할 수 있습니다.
+* **리버스 ETL** - ClickHouse 내부에서 수행한 변환, 집계, 보강을 통해 파생 데이터세트가 생성되며, 이를 다운스트림 도구와 다른 팀에서 활용해야 합니다. 이러한 결과를 Iceberg 테이블에 기록하면 더 넓은 데이터 생태계 전반에서 사용할 수 있습니다.
 
-在这两种情况下，`INSERT INTO SELECT` 都可以用于将数据从 ClickHouse 表移动到存储在对象存储中的 Iceberg 表中。
+두 경우 모두 `INSERT INTO SELECT`를 사용하면 ClickHouse 테이블의 데이터를 객체 스토리지에 저장된 Iceberg 테이블로 이동할 수 있습니다.
 
 :::note
-当前对开放表格式的写入**仅支持 Iceberg 表**。对 Delta Lake 表的部分支持正在开发中。这些表不能由 catalog 管理。
+오픈 테이블 형식에 대한 쓰기는 현재 **Iceberg 테이블만** 지원합니다. Delta Lake 테이블에 대한 부분 지원은 현재 개발 중입니다. 테이블은 catalog에서 관리되지 않아야 합니다.
 :::
 
-## 准备源数据集 \{#prepare-source\}
+## 소스 데이터셋 준비 \{#prepare-source\}
 
-在本指南中，我们将使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid) 数据集——一份涵盖英格兰和威尔士所有住宅房产交易的公开记录。
+이 가이드에서는 [UK Price Paid](/getting-started/example-datasets/uk-price-paid) 데이터셋을 사용합니다. 이 데이터셋은 잉글랜드와 웨일스의 모든 주거용 부동산 거래를 담은 공개 기록입니다.
 
-### 创建并写入 MergeTree 表 \{#create-source-table\}
+### MergeTree 테이블 생성 및 데이터 삽입 \{#create-source-table\}
 
 ```sql
 CREATE DATABASE uk;
@@ -52,7 +52,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-直接从公共 CSV 数据源向该表写入数据：
+공개 CSV 소스에서 테이블에 직접 데이터를 채우세요:
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -96,14 +96,13 @@ FROM url(
 Peak memory usage: 485.15 MiB.
 ```
 
+## Iceberg 테이블에 데이터 쓰기 \{#write-iceberg\}
 
-## 将数据写入 Iceberg 表 \{#write-iceberg\}
+### Iceberg 테이블 생성 \{#create-iceberg-table\}
 
-### 创建 Iceberg 表 \{#create-iceberg-table\}
+Iceberg에 데이터를 쓰려면 [`IcebergS3` 테이블 엔진](/engines/table-engines/integrations/iceberg)을 사용해 테이블을 생성하십시오.
 
-要将数据写入 Iceberg，请使用 [`IcebergS3` 表引擎](/engines/table-engines/integrations/iceberg)创建一个表。
-
-请注意，与 MergeTree 源表相比，Iceberg 表的模式必须进行简化。ClickHouse 支持比 Iceberg 和其底层 Parquet 文件更丰富的类型系统——诸如 `Enum`、`LowCardinality` 和 `UInt8` 等类型在 Iceberg 中不受支持，必须映射为兼容类型。
+스키마는 MergeTree 소스보다 더 단순해야 합니다. ClickHouse는 Iceberg와 기반 Parquet 파일보다 더 풍부한 타입 시스템을 지원하므로 `Enum`, `LowCardinality`, `UInt8`와 같은 타입은 Iceberg에서 지원되지 않으며, 호환되는 타입으로 매핑해야 합니다.
 
 ```sql
 CREATE TABLE uk.uk_iceberg
@@ -126,10 +125,9 @@ CREATE TABLE uk.uk_iceberg
 ENGINE = IcebergS3('https://datasets-documentation.s3.amazonaws.com/lake_formats/iceberg_uk_price_paid/', '<aws_access_key>', '<aws_secret_key>', '<session_token>')
 ```
 
+### 데이터의 일부를 삽입합니다 \{#insert-subset\}
 
-### 插入数据子集 \{#insert-subset\}
-
-使用 `INSERT INTO SELECT` 将 MergeTree 表中的数据写入 Iceberg 表。在此示例中，我们仅写入伦敦的交易记录：
+`INSERT INTO SELECT`를 사용하여 MergeTree 테이블의 데이터를 Iceberg 테이블에 삽입합니다. 이 예제에서는 런던 거래만 삽입합니다:
 
 ```sql
 SET allow_experimental_insert_into_iceberg = 1;
@@ -142,10 +140,9 @@ WHERE town = 'LONDON'
 Peak memory usage: 371.60 MiB.
 ```
 
+### Iceberg 테이블 쿼리 \{#query-iceberg\}
 
-### 查询 Iceberg 表 \{#query-iceberg\}
-
-数据现在作为 Iceberg 存储在对象存储中，可以通过 ClickHouse（或任何其他可读取 Iceberg 的工具）进行查询：
+이제 데이터는 객체 스토리지에 Iceberg 형식으로 저장되며, ClickHouse 또는 Iceberg를 읽을 수 있는 다른 도구에서 쿼리할 수 있습니다:
 
 ```sql
 SELECT
@@ -174,12 +171,11 @@ LIMIT 10
 Peak memory usage: 12.19 MiB.
 ```
 
+## 집계 결과 저장 \{#write-aggregates\}
 
-## 写入聚合结果 \{#write-aggregates\}
+Iceberg 테이블은 원시 행만 저장하는 데 그치지 않습니다. 집계 및 변환의 출력, 즉 ClickHouse 내부에서 수행된 ETL 프로세스의 결과도 저장할 수 있습니다. 이는 사전 계산된 요약을 레이크하우스에 게시하여 후속 시스템에서 활용할 수 있도록 하는 데 유용합니다.
 
-Iceberg 表不仅限于存储原始行。它们还可以保存聚合与转换的输出——即在 ClickHouse 内执行的 ETL 流程结果。这对于将预计算的汇总结果发布到数据湖仓以供下游消费非常有用。
-
-### 为聚合数据创建 Iceberg 表 \{#create-aggregate-table\}
+### 집계용 Iceberg 테이블 생성 \{#create-aggregate-table\}
 
 ```sql
 CREATE TABLE uk.uk_avg_town
@@ -190,10 +186,9 @@ CREATE TABLE uk.uk_avg_town
 ENGINE = IcebergS3('https://datasets-documentation.s3.amazonaws.com/lake_formats/iceberg_uk_avg_town/', '<aws_access_key>', '<aws_secret_key>', '<session_token>')
 ```
 
+### 집계 데이터 삽입 \{#insert-aggregates\}
 
-### 插入聚合数据 \{#insert-aggregates\}
-
-按城镇计算平均房价，并将结果直接写入 Iceberg 表中：
+지역별 평균 부동산 가격을 계산하고 결과를 Iceberg에 직접 기록합니다:
 
 ```sql
 INSERT INTO uk.uk_avg_town SELECT
@@ -206,10 +201,9 @@ GROUP BY town
 Peak memory usage: 4.18 MiB.
 ```
 
+### 집계된 테이블 쿼리하기 \{#query-aggregates\}
 
-### 查询聚合表 \{#query-aggregates\}
-
-其他工具以及其他 ClickHouse 实例现在都可以读取这个预先计算的数据集：
+이제 다른 도구와 다른 ClickHouse 인스턴스에서 이 사전 계산된 데이터세트를 읽을 수 있습니다:
 
 ```sql
 SELECT
