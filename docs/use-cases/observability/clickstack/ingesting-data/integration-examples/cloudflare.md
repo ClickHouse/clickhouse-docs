@@ -247,8 +247,6 @@ If data is in ClickHouse but not visible in HyperDX, check the data source confi
 
 ## Next steps {#next-steps}
 
-Now that you have Cloudflare logs flowing into ClickStack:
-
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for security events (WAF blocks, bot traffic spikes, error rate thresholds)
 - Optimize [retention policies](/use-cases/observability/clickstack/ttl) based on your data volume
 - Create additional dashboards for specific use cases (API performance, cache optimization, geographic traffic analysis)

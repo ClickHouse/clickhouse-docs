@@ -20,15 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Kafka Metrics with ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Apache Kafka performance metrics with ClickStack by using the OpenTelemetry JMX Metric Gatherer. You'll learn how to:
-
-- Enable JMX on Kafka brokers and configure the JMX Metric Gatherer
-- Send Kafka metrics to ClickStack via OTLP
-- Use a pre-built dashboard to visualize Kafka performance (broker throughput, consumer lag, partition health, request latency)
-
-A demo dataset with sample metrics is available if you want to test the integration before configuring your production Kafka cluster.
-
-Time required: 10-15 minutes
+Monitor Apache Kafka performance metrics in ClickStack using the OTel JMX Metric Gatherer. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with an existing Kafka deployment {#existing-kafka}
@@ -380,6 +372,12 @@ Test connectivity:
 # From JMX exporter to ClickStack
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
+
+## Next steps {#next-steps}
+
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (under-replicated partitions, consumer lag growth, request latency spikes)
+- Create additional dashboards for specific use cases (per-topic throughput, consumer group monitoring)
+- Monitor multiple Kafka brokers by adding additional JMX Metric Gatherer instances with unique `kafka.broker.id` resource attributes
 
 ## Going to production {#going-to-production}
 

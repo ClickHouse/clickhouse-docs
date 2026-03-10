@@ -20,17 +20,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to capture distributed traces from your existing Nginx installation and visualize them in ClickStack. You'll learn how to:
-
-- Add the OpenTelemetry module to Nginx
-- Configure Nginx to send traces to ClickStack's OTLP endpoint
-- Verify traces are appearing in HyperDX
-- Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
-
-A demo dataset with sample traces is available if you want to test the integration before configuring your production Nginx.
-
-Time Required: 5-10 minutes
-::::
+Capture distributed traces from Nginx in ClickStack using the OpenTelemetry Nginx module. Includes a demo dataset and pre-built dashboard.
+:::
 
 ## Integration with existing Nginx {#existing-nginx}
 
@@ -319,7 +310,10 @@ tail -f /var/log/nginx/access.log
 ```
 
 ## Next steps {#next-steps}
-If you want to explore further, here are some next steps to experiment with your dashboard
 
-- Set up alerts for critical metrics (error rates, latency thresholds)
-- Create additional dashboards for specific use cases (API monitoring, security events)
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
+- Create additional [dashboards](/use-cases/observability/clickstack/dashboards) for specific use cases (API monitoring, security events)
+
+## Going to production {#going-to-production}
+
+This guide sends traces directly from the Nginx OpenTelemetry module to ClickStack's OTLP endpoint. For production deployments, we recommend running your own OTel Collector as a gateway to provide batching and resilience. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.
