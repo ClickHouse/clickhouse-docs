@@ -61,7 +61,7 @@ SHOW TABLES;
 
 Example output:
 
-```
+```response
 ┌─name─────────────────────┐
 │icebench.my_iceberg_table │   
 └──────────────────────────┘
