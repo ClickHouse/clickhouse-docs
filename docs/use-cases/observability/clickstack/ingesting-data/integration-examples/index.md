@@ -25,6 +25,7 @@ For production deployments, we recommend running integrations as OpenTelemetry C
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
+| [MongoDB Logs](/use-cases/observability/clickstack/integrations/mongodb-logs) | Collect MongoDB server logs |
 | [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Collect MySQL slow query/error logs |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Trace Nginx HTTP requests |
