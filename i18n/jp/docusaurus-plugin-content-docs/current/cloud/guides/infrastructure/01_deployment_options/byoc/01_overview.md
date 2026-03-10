@@ -56,9 +56,12 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 
 ### 計画中の機能（現在は未サポート） \{#planned-features-currently-unsupported\}
 
-- SQL コンソール
-- ClickPipes（Kafka, S3）
-- ClickPipes（CDC）
-- オートスケーリング
+以下の機能は、Bring Your Own Cloud (BYOC) デプロイメントでは制限があるか、まだ完全にはサポートされていません。    
+
+- SQL Console: 標準の SQL コンソールは BYOC デプロイメントでは利用できませんが、ロードマップに含まれています。
+- ClickPipes Support: 現在、Kafka や Kinesis などのストリーミング連携をサポートするプライベートプレビューとして利用できます。追加の連携（CDC、オブジェクトストレージなど）はロードマップに含まれています。 
+- Autoscaling: 今後のリリースで追加予定です。
 - MySQL インターフェース
-- [AWS KMS](https://aws.amazon.com/kms/)、別名 CMEK（customer-managed encryption keys）
+- AWS KMS（別名 CMEK（顧客管理暗号化キー））
+- Advanced Dashboard: ブラウザが直接アクセスでき、そのエンドポイントを使用して ClickHouse サーバーに直接接続できる必要がある、クライアント専用の UI です。VPC のネットワークポリシーによって ClickHouse エンドポイントへのブラウザからの受信アクセスが制限されている場合、Advanced Dashboard は機能しません。
+- Monitoring Dashboards: 現在、監視ダッシュボードで利用できるのはメモリ割り当てメトリクスのみです。追加メトリクスのサポートは現在進行中で、今後のリリースで利用可能になる予定です。

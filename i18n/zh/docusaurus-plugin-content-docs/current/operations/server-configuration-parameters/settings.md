@@ -2768,6 +2768,14 @@ ClickHouse 使用前缀反序列化线程池中的线程，并行读取 MergeTre
 ```
 
 
+## max_snapshot_commit_thread_pool_free_size \{#max_snapshot_commit_thread_pool_free_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />如果快照提交线程池中的空闲线程数超过 `max_snapshot_commit_thread_pool_free_size`，ClickHouse 将释放这些空闲线程占用的资源，并缩小线程池的大小。必要时可以重新创建线程。
+
+## max_snapshot_commit_thread_pool_size \{#max_snapshot_commit_thread_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="64" />用于提交快照的线程数量。
+
 ## max_table_num_to_throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

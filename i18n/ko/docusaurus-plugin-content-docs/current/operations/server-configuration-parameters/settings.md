@@ -2770,6 +2770,14 @@ RAM과 스왑 공간이 적은 호스트에서는 [`max_server_memory_usage_to_r
 ```
 
 
+## max_snapshot_commit_thread_pool_free_size \{#max_snapshot_commit_thread_pool_free_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />스냅샷 커밋 스레드 풀의 유휴 스레드 수가 `max_snapshot_commit_thread_pool_free_size`를 초과하면 ClickHouse는 유휴 스레드가 점유한 리소스를 해제하고 풀 크기를 줄입니다. 필요한 경우 스레드를 다시 생성할 수 있습니다.
+
+## max_snapshot_commit_thread_pool_size \{#max_snapshot_commit_thread_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="64" />스냅샷 커밋에 사용하는 스레드 수입니다.
+
 ## max_table_num_to_throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

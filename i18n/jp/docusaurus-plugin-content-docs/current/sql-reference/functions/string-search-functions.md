@@ -1187,7 +1187,7 @@ SELECT locate('ca', 'abcabc')
 
 re2 のデフォルト動作と異なり、`.` は改行にもマッチします。これを無効にするには、パターンの先頭に `(?-s)` を付けてください。
 
-パターンは両端で自動的にアンカーされます (パターンが先頭に `^` を、末尾に `$` を付けたかのように扱われます) 。
+パターンはアンカーされません。文字列全体に一致させるには、`^` と `$` を使用して自分でパターンをアンカーしてください。
 
 部分文字列を検索したいだけであれば、代わりに [`like`](#like) や [`position`](#position) 関数を使用できます。これらはこの関数よりもはるかに高速に動作します。
 
@@ -1234,6 +1234,18 @@ SELECT match('Hello World', 'goodbye.*')
 ┌─match('Hello World', 'goodbye.*')─┐
 │                                 0 │
 └───────────────────────────────────┘
+```
+
+**部分文字列の検索**
+
+```sql title=Query
+SELECT match('abcde', 'b.*d'), match('abcde', '^b.*d$')
+```
+
+```response title=Response
+┌─match('abcde', 'b.*d')─┬─match('abcde', '^b.*d$')─┐
+│                       1 │                         0 │
+└─────────────────────────┴───────────────────────────┘
 ```
 
 ## multiFuzzyMatchAllIndices \{#multiFuzzyMatchAllIndices\}
