@@ -10,6 +10,8 @@ keywords: ['clickstack', 'text-to-chart', 'AI', 'visualization', 'Chart Explorer
 ---
 
 import Image from '@theme/IdealImage';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import text_to_chart from '@site/static/images/clickstack/text-to-chart/text-to-chart.png';
 import chart_explorer from '@site/static/images/clickstack/text-to-chart/chart-explorer.png';
 import create_connection from '@site/static/images/clickstack/text-to-chart/create-connection.png';
@@ -24,19 +26,22 @@ Text-to-Chart requires an [Anthropic API key](https://console.anthropic.com/). S
 
 For open source deployments, pass the key as an environment variable. The method varies by deployment type:
 
-**Docker (All-in-One or Local Mode)**
+<Tabs groupId="deployMethod">
+<TabItem value="docker-aio" label="Docker (All-in-One or Local Mode)" default>
 
 ```bash
 docker run -e ANTHROPIC_API_KEY='<YOUR_KEY>' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-**Docker (HyperDX Only)**
+</TabItem>
+<TabItem value="docker-hyperdx" label="Docker (HyperDX Only)">
 
 ```bash
 docker run -e ANTHROPIC_API_KEY='<YOUR_KEY>' -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 
-**Docker Compose**
+</TabItem>
+<TabItem value="docker-compose" label="Docker Compose">
 
 Add the variable to your `.env` file or set it directly in the `docker-compose.yaml`:
 
@@ -47,7 +52,8 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
 ```
 
-**Helm**
+</TabItem>
+<TabItem value="helm" label="Helm">
 
 Pass the key using `--set`:
 
@@ -56,6 +62,9 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
   --set env[0].name=ANTHROPIC_API_KEY \
   --set env[0].value=<YOUR_KEY>
 ```
+
+</TabItem>
+</Tabs>
 
 ## Using Text-to-Chart {#using-text-to-chart}
 
