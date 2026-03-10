@@ -2238,6 +2238,14 @@ parts (N). Merges are processing significantly slower than inserts`.
 такой доле случаев, последующие столбцы не загружаются в память. Это позволяет сократить
 использование памяти за счёт того, что бесполезные столбцы первичного ключа не загружаются.
 
+## propagate_types_serialization_versions_to_nested_types \{#propagate_types_serialization_versions_to_nested_types\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "По умолчанию распространять версию сериализации типов данных на вложенные типы"}]}]}/>
+
+Если установлено значение true, версии сериализации, такие как `string_serialization_version`, будут распространяться на вложенные типы, такие как Array/Map/Nullable/JSON/etc. Если отключено, версия сериализации будет применяться только к столбцам верхнего уровня этого типа и элементам Tuple.
+
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 
 <SettingsInfoBlock type="Float" default_value="0.9375" />
