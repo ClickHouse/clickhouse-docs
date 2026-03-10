@@ -42,7 +42,7 @@ import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/exam
 
 **The following guide assumes you have deployed Open Source ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started/oss), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, you can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
 
-This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
+This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhouse.com), which you can connect to from your local ClickStack deployment.
 
 :::warning Not supported with Managed ClickStack
 Remote databases aren't supported when using Managed ClickStack. This dataset is therefore not supported. 
