@@ -207,7 +207,14 @@ FROM Disk('backups', 'incremental-a.zip');
 ### Защита резервной копии \{#assign-a-password-to-the-backup\}
 
 К файлам резервных копий, записанным на диск, можно применить пароль.
-Пароль можно указать с помощью настройки `password`:
+Пароль можно указать с помощью SETTING `password`.
+
+:::note
+Защита паролем поддерживается только для ZIP-архивов (`.zip`, `.zipx`).
+Чтобы пароль был принят, путь к резервной копии должен оканчиваться на `.zip` или `.zipx`.
+Использование пароля с любым другим форматом — включая tar-архивы и пути, не являющиеся архивами, — приведёт
+к ошибке `BAD_ARGUMENTS`: `Password is not applicable, backup cannot be encrypted`.
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -216,14 +223,13 @@ SETTINGS password='qwerty'
 ```
 
 Для восстановления резервной копии, защищённой паролем, необходимо снова
-указать пароль с помощью настройки `password`:
+указать пароль с помощью SETTING `password`:
 
 ```sql
 RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### Резервные копии в виде tar-архивов \{#backups-as-tar-archives\}
 
