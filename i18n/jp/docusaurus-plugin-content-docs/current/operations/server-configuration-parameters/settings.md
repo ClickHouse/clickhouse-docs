@@ -2771,6 +2771,14 @@ RAM とスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 ```
 
 
+## max_snapshot_commit_thread_pool_free_size \{#max_snapshot_commit_thread_pool_free_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />スナップショットコミットスレッドプール内のアイドルスレッド数が `max_snapshot_commit_thread_pool_free_size` を超えると、ClickHouse はアイドル状態のスレッドが占有しているリソースを解放し、プールサイズを縮小します。必要に応じて、スレッドは再び作成できます。
+
+## max_snapshot_commit_thread_pool_size \{#max_snapshot_commit_thread_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="64" />スナップショットのコミットに使用するスレッド数。
+
 ## max_table_num_to_throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

@@ -1188,9 +1188,9 @@ SELECT locate('ca', 'abcabc')
 
 re2의 기본 동작과 달리 `.` 은 줄 바꿈 문자도 매칭합니다. 이를 비활성화하려면 패턴 앞에 `(?-s)` 를 붙이십시오.
 
-패턴은 양 끝이 자동으로 앵커 처리됩니다(패턴이 `^` 로 시작하고 `$` 로 끝나는 것과 동일하게 동작합니다).
+패턴은 앵커 처리되지 않습니다. 전체 문자열과 일치시키려면 `^` 와 `$` 를 사용해 직접 패턴에 앵커를 지정하십시오.
 
-부분 문자열만 찾으려는 경우 [`like`](#like) 또는 [`position`](#position) 함수를 대신 사용할 수 있습니다. 이 함수들은 이 함수보다 훨씬 빠르게 동작합니다.
+부분 문자열을 검색하려는 경우 [`like`](#like) 또는 [`position`](#position) 함수를 대신 사용할 수 있으며, 이 함수보다 훨씬 빠르게 동작합니다.
 
 대체 연산자 문법: `haystack REGEXP pattern`.
 
@@ -1235,6 +1235,18 @@ SELECT match('Hello World', 'goodbye.*')
 ┌─match('Hello World', 'goodbye.*')─┐
 │                                 0 │
 └───────────────────────────────────┘
+```
+
+**부분 문자열 매칭**
+
+```sql title=Query
+SELECT match('abcde', 'b.*d'), match('abcde', '^b.*d$')
+```
+
+```response title=Response
+┌─match('abcde', 'b.*d')─┬─match('abcde', '^b.*d$')─┐
+│                       1 │                         0 │
+└─────────────────────────┴───────────────────────────┘
 ```
 
 ## multiFuzzyMatchAllIndices \{#multiFuzzyMatchAllIndices\}

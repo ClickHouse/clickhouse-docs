@@ -1184,9 +1184,9 @@ SELECT locate('ca', 'abcabc')
 
 与 re2 的默认行为不同，`.` 会匹配换行符。若要禁用此行为，请在模式前加上 `(?-s)`。
 
-模式会在两端自动锚定 (就好像模式以 `^` 开头并以 `$` 结尾) 。
+模式不会自动锚定。若要匹配整个字符串，请使用 `^` 和 `$` 自行锚定模式。
 
-如果你只想查找子字符串，可以改用函数 [`like`](#like) 或 [`position`](#position) —— 它们的执行速度远快于此函数。
+如果你只想查找子字符串，可以改用函数 [`like`](#like) 或 [`position`](#position)，它们的执行速度远快于此函数。
 
 替代运算符语法：`haystack REGEXP pattern`。
 
@@ -1231,6 +1231,18 @@ SELECT match('Hello World', 'goodbye.*')
 ┌─match('Hello World', 'goodbye.*')─┐
 │                                 0 │
 └───────────────────────────────────┘
+```
+
+**匹配子串**
+
+```sql title=Query
+SELECT match('abcde', 'b.*d'), match('abcde', '^b.*d$')
+```
+
+```response title=Response
+┌─match('abcde', 'b.*d')─┬─match('abcde', '^b.*d$')─┐
+│                       1 │                         0 │
+└─────────────────────────┴───────────────────────────┘
 ```
 
 ## multiFuzzyMatchAllIndices \{#multiFuzzyMatchAllIndices\}

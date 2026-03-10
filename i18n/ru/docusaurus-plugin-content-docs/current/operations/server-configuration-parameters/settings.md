@@ -2774,6 +2774,14 @@ ClickHouse использует потоки пула десериализаци
 ```
 
 
+## max_snapshot_commit_thread_pool_free_size \{#max_snapshot_commit_thread_pool_free_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />Если количество бездействующих потоков в пуле потоков фиксации снимков превышает `max_snapshot_commit_thread_pool_free_size`, ClickHouse освободит ресурсы, занимаемые бездействующими потоками, и уменьшит размер пула. При необходимости потоки могут быть созданы заново.
+
+## max_snapshot_commit_thread_pool_size \{#max_snapshot_commit_thread_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="64" />Количество потоков для фиксации снимка.
+
 ## max_table_num_to_throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
