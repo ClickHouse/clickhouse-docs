@@ -122,6 +122,7 @@ Prompts can reference any column or attribute available in your configured data 
 ## Limitations {#limitations}
 
 - Text-to-chart currently supports Anthropic as the LLM provider. Support for additional providers, including OpenAI, is planned for future releases.
+- Only logs and traces are supported as data sources. Prometheus metrics are not yet supported.
 - Chart accuracy depends on the clarity of the prompt and the structure of the underlying data. If a generated chart does not match expectations, try rephrasing the prompt or specifying column names explicitly.
 
 ## Further reading {#further-reading}
