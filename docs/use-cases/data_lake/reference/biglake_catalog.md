@@ -49,17 +49,6 @@ SETTINGS
     warehouse = 'gs://<bucket_name>/<optional-prefix>';
 ```
 
-Replace the placeholders:
-
-| Setting | Description |
-|--------|--------------|
-| `google_adc_client_id` | OAuth 2.0 client ID from Google Cloud Console (e.g. `123456789-xxx.apps.googleusercontent.com`) |
-| `google_adc_client_secret` | OAuth 2.0 client secret for the same application |
-| `google_adc_refresh_token` | Refresh token from the OAuth flow (long-lived token used to obtain access tokens) |
-| `google_adc_quota_project_id` | Google Cloud project ID used for quota and billing |
-| `warehouse` | GCS URI of the bucket (and optional prefix) that contains your Iceberg tables, e.g. `gs://my-bucket` or `gs://my-bucket/warehouse` |
-
-
 ## Querying BigLake Metastore tables using ClickHouse {#querying-biglake-metastore-tables}
 
 Once the connection is created, you can query tables registered in the BigLake Metastore.
