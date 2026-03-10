@@ -4,7 +4,7 @@ title: 'Text-to-Chart'
 sidebar_label: 'Text-to-Chart'
 pagination_prev: null
 pagination_next: null
-description: 'Generate charts from natural language prompts in ClickStack using the AI-powered text-to-chart feature.'
+description: 'Generate charts from natural language prompts in ClickStack using the AI-powered Text-to-Chart feature.'
 doc_type: 'guide'
 keywords: ['clickstack', 'text-to-chart', 'AI', 'visualization', 'Chart Explorer', 'natural language', 'observability']
 ---
@@ -14,13 +14,13 @@ import text_to_chart from '@site/static/images/clickstack/text-to-chart/text-to-
 import chart_explorer from '@site/static/images/clickstack/text-to-chart/chart-explorer.png';
 import create_connection from '@site/static/images/clickstack/text-to-chart/create-connection.png';
 
-ClickStack's text-to-chart feature allows you to create visualizations by describing what you want to see in plain text. Rather than manually selecting metrics, filters, and group-by fields, you can type a prompt such as "error rates by service over the last 24 hours" and ClickStack will generate the corresponding chart automatically.
+ClickStack's Text-to-Chart feature allows you to create visualizations by describing what you want to see in plain text. Rather than manually selecting metrics, filters, and group-by fields, you can type a prompt such as "error rates by service over the last 24 hours" and ClickStack will generate the corresponding chart automatically.
 
 This feature uses a large language model (LLM) to convert your text prompt into a query, then builds the visualization in the [Chart Explorer](/use-cases/observability/clickstack/dashboards#navigate-chart-explorer). It works with any configured data source.
 
 ## Prerequisites {#prerequisites}
 
-Text-to-chart requires an [Anthropic API key](https://console.anthropic.com/). Set the `ANTHROPIC_API_KEY` environment variable when starting ClickStack.
+Text-to-Chart requires an [Anthropic API key](https://console.anthropic.com/). Set the `ANTHROPIC_API_KEY` environment variable when starting ClickStack.
 
 For open source deployments, pass the key as an environment variable. The method varies by deployment type:
 
@@ -57,7 +57,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
   --set env[0].value=<YOUR_KEY>
 ```
 
-## Using text-to-chart {#using-text-to-chart}
+## Using Text-to-Chart {#using-text-to-chart}
 
 <VerticalStepper headerLevel="h3">
 
@@ -87,7 +87,7 @@ ClickStack converts the prompt into a query and renders the visualization automa
 
 ## Trying it with demo data {#demo-data}
 
-The quickest way to try text-to-chart is with the [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) Docker image and the [remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data):
+The quickest way to try Text-to-Chart is with the [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) Docker image and the [remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data):
 
 ```bash
 docker run -e ANTHROPIC_API_KEY='<YOUR_KEY>' -p 8080:8080 clickhouse/clickstack-local:latest
@@ -121,7 +121,7 @@ Prompts can reference any column or attribute available in your configured data 
 
 ## Limitations {#limitations}
 
-- Text-to-chart currently supports Anthropic as the LLM provider. Support for additional providers, including OpenAI, is planned for future releases.
+- Text-to-Chart currently supports Anthropic as the LLM provider. Support for additional providers, including OpenAI, is planned for future releases.
 - Only logs and traces are supported as data sources. Prometheus metrics are not yet supported.
 - Chart accuracy depends on the clarity of the prompt and the structure of the underlying data. If a generated chart does not match expectations, try rephrasing the prompt or specifying column names explicitly.
 
