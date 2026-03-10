@@ -40,7 +40,7 @@ Refer to [Manage SQL console role assignments](/cloud/guides/sql-console/manage-
 | SQL console read only | Read only access to databases within the service.                                              |
 | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
 
-## Console Permissions
+## Console Permissions {#console-permissions}
 
 The table below describes the ClickHouse console and SQL console permissions. More information is linked in the header for each category.
 
@@ -84,4 +84,3 @@ The table below describes the ClickHouse console and SQL console permissions. Mo
 | control-plane:service:manage-clickstack-api | Manage ClickStack API access and related integrations. |
 | **SQL console role mapping** ([more info](/cloud/guides/sql-console/manage-sql-console-role-assignments)) | Manage SQL console role assignments |
 | sql-console:database:access | Passwordless access to the database via SQL console (may only be used with sql-console-admin or sql-console-readonly) |
-
