@@ -11,6 +11,8 @@ keywords: ['MongoDB', 'logs', 'OTEL', 'ClickStack', 'database monitoring', 'slow
 
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
 import search_view from '@site/static/images/clickstack/mongodb/search-view.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
@@ -68,7 +70,7 @@ sudo systemctl restart mongod
 docker restart <mongodb-container>
 ```
 
-#### Create custom OTel collector configuration {#custom-otel}
+#### Create a custom OTel collector configuration for MongoDB {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -140,7 +142,8 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Mount your MongoDB log directory so the collector can read them
 
-##### Option 1: Docker Compose {#docker-compose}
+<Tabs groupId="deployMethod">
+<TabItem value="docker-compose" label="Docker Compose" default>
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -156,7 +159,8 @@ services:
       # ... other volumes ...
 ```
 
-##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+</TabItem>
+<TabItem value="docker-run" label="Docker Run (All-in-One Image)">
 
 If you're using the all-in-one image with docker, run:
 ```bash
@@ -168,11 +172,14 @@ docker run --name clickstack \
   clickhouse/clickstack-all-in-one:latest
 ```
 
+</TabItem>
+</Tabs>
+
 :::note
 Ensure the ClickStack collector has appropriate permissions to read the MongoDB log files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in HyperDX {#verifying-logs}
+#### Verify Logs in HyperDX {#verifying-logs}
 
 Once configured, log into HyperDX and verify that logs are flowing:
 
@@ -288,7 +295,7 @@ Once ClickStack is running:
 
 #### <TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
-#### Import Pre-built Dashboard {#import-dashboard}
+#### Import pre-built dashboard {#import-dashboard}
 
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
