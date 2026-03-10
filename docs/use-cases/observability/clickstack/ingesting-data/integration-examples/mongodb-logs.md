@@ -316,17 +316,21 @@ For the demo dataset, set the time range to include **2026-03-09 00:00:00 - 2026
 
 ## Troubleshooting {#troubleshooting}
 
-**Verify the effective config includes your filelog receiver:**
+### No logs appearing in HyperDX {#no-logs}
+
+Verify the effective config includes your filelog receiver:
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-**Check for collector errors:**
+Check for errors in the collector logs:
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
 ```
 
-**Verify MongoDB is outputting JSON logs (4.4+):**
+### Logs not parsing correctly {#logs-not-parsing}
+
+Verify MongoDB is outputting JSON logs (4.4+):
 ```bash
 tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
 ```

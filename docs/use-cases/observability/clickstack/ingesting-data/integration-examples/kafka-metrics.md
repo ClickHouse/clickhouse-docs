@@ -287,7 +287,7 @@ For the demo dataset, set the time range to **2025-11-05 16:00:00 - 2025-11-06 1
 
 ## Troubleshooting {#troubleshooting}
 
-#### No metrics appearing in HyperDX {#no-metrics}
+### No metrics appearing in HyperDX {#no-metrics}
 
 **Verify API key is set and passed to the container:**
 
@@ -331,7 +331,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### Authentication errors {#auth-errors}
+### Authentication errors {#auth-errors}
 
 If you see `Authorization failed` or `401 Unauthorized`:
 
@@ -344,7 +344,7 @@ docker compose down
 docker compose up -d
 ```
 
-#### Port conflicts with Kafka client commands {#port-conflicts}
+### Port conflicts with Kafka client commands {#port-conflicts}
 
 When running Kafka commands from within the Kafka container, you may see:
 
@@ -357,7 +357,7 @@ Prefix commands with `unset JMX_PORT &&`:
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### Network connectivity issues {#network-issues}
+### Network connectivity issues {#network-issues}
 
 If the JMX exporter logs show `Connection refused`:
 
