@@ -157,19 +157,20 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 
 다음 설정을 사용할 수 있습니다:
 
-| Setting                                                                      | 기본값                            | 설명                                                                                       |
-| ---------------------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------- |
-| `max_broken_tables_ratio`                                                    | 1                              | 오래된 테이블 수와 전체 테이블 수의 비율이 이 값보다 큰 경우, 레플리카를 자동으로 복구하지 않습니다                                |
-| `max_replication_lag_to_enqueue`                                             | 50                             | 레플리카의 복제 지연이 이 값보다 큰 경우, 쿼리를 실행하려 할 때 예외를 발생시킵니다                                         |
-| `wait_entry_commited_timeout_sec`                                            | 3600                           | 타임아웃을 초과했지만 이니시에이터 호스트가 아직 쿼리를 실행하지 않은 경우, 레플리카는 쿼리 취소를 시도합니다                            |
-| `collection_name`                                                            |                                | 클러스터 인증에 대한 모든 정보가 정의된 서버 설정(config)의 컬렉션 이름입니다                                          |
-| `check_consistency`                                                          | true                           | 로컬 메타데이터와 Keeper의 메타데이터 일관성을 검사하며, 불일치가 있으면 레플리카를 복구합니다                                  |
-| `max_retries_before_automatic_recovery`                                      | 10                             | 레플리카를 손실된 것으로 표시하고 스냅샷에서 복구하기 전에 큐 엔트리 실행을 시도하는 최대 횟수입니다(0은 무한대를 의미합니다)                  |
-| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 활성화된 경우, Replicated 데이터베이스에서 DDL을 처리할 때 가능하다면 갱신 가능 구체화 뷰의 임시 테이블에 대한 DDL 생성 및 교환을 건너뜁니다 |
-| `logs_to_keep`                                                               | 1000                           | Replicated 데이터베이스에 대해 ZooKeeper에 보존할 로그의 기본 개수입니다.                                       |
-| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper 내 데이터베이스의 경로입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                              |
-| `default_replica_shard_name`                                                 | `{shard}`                      | 데이터베이스에서 레플리카의 세그먼트 이름입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                              |
-| `default_replica_name`                                                       | `{replica}`                    | 데이터베이스에서 레플리카의 이름입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                                   |
+| Setting                                                                      | 기본값                            | 설명                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `max_broken_tables_ratio`                                                    | 1                              | 오래된 테이블 수와 전체 테이블 수의 비율이 이 값보다 큰 경우, 레플리카를 자동으로 복구하지 않습니다                                                                                                                                               |
+| `max_replication_lag_to_enqueue`                                             | 50                             | 레플리카의 복제 지연이 이 값보다 큰 경우, 쿼리를 실행하려 할 때 예외를 발생시킵니다                                                                                                                                                        |
+| `wait_entry_commited_timeout_sec`                                            | 3600                           | 타임아웃을 초과했지만 이니시에이터 호스트가 아직 쿼리를 실행하지 않은 경우, 레플리카는 쿼리 취소를 시도합니다                                                                                                                                           |
+| `collection_name`                                                            |                                | 클러스터 인증에 대한 모든 정보가 정의된 서버 설정(config)의 컬렉션 이름입니다                                                                                                                                                         |
+| `check_consistency`                                                          | true                           | 로컬 메타데이터와 Keeper의 메타데이터 일관성을 검사하며, 불일치가 있으면 레플리카를 복구합니다                                                                                                                                                 |
+| `max_retries_before_automatic_recovery`                                      | 10                             | 레플리카를 손실된 것으로 표시하고 스냅샷에서 복구하기 전에 큐 엔트리 실행을 시도하는 최대 횟수입니다(0은 무한대를 의미합니다)                                                                                                                                 |
+| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 활성화된 경우, Replicated 데이터베이스에서 DDL을 처리할 때 가능하다면 갱신 가능 구체화 뷰의 임시 테이블에 대한 DDL 생성 및 교환을 건너뜁니다                                                                                                                |
+| `logs_to_keep`                                                               | 1000                           | Replicated 데이터베이스에 대해 ZooKeeper에 보존할 로그의 기본 개수입니다.                                                                                                                                                      |
+| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper 내 데이터베이스의 경로입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                                                                                                                                             |
+| `default_replica_shard_name`                                                 | `{shard}`                      | 데이터베이스에서 레플리카의 세그먼트 이름입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                                                                                                                                             |
+| `default_replica_name`                                                       | `{replica}`                    | 데이터베이스에서 레플리카의 이름입니다. 데이터베이스 생성 시 인수가 생략되면 이 값이 사용됩니다.                                                                                                                                                  |
+| `internal_replication`                                                       | false                          | 이 Replicated 데이터베이스의 클러스터로 생성된 분산 테이블(Distributed table)이 데이터를 레플리카 중 하나로 전송할지(내부 복제는 클러스터의 레플리카가 자체적으로 복제를 수행함을 의미합니다), 아니면 모든 레플리카로 전송할지(내부 복제를 사용하지 않으면 분산 테이블이 삽입된 데이터를 모든 레플리카로 전송함을 의미합니다)를 지정합니다 |
 
 기본값은 구성 파일에서 변경할 수 있습니다
 
@@ -185,6 +186,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
         <default_replica_path>/clickhouse/databases/{uuid}</default_replica_path>
         <default_replica_shard_name>{shard}</default_replica_shard_name>
         <default_replica_name>{replica}</default_replica_name>
+        <internal_replication>false</internal_replication>
     </database_replicated>
 </clickhouse>
 ```

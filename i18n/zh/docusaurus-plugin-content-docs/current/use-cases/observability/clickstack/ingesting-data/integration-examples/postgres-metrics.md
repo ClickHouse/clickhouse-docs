@@ -19,15 +19,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 PostgreSQL 指标 \{#postgres-metrics-clickstack\}
 
 :::note[TL;DR]
-本指南介绍如何通过配置 OTel collector 的 PostgreSQL 接收器（receiver），使用 ClickStack 监控 PostgreSQL 性能指标。您将学会如何：
-
-- 配置 OTel collector 以采集 PostgreSQL 指标
-- 使用自定义配置部署 ClickStack
-- 使用预构建的仪表板可视化 PostgreSQL 性能（事务、连接、数据库大小、缓存命中率）
-
-如果您希望在为生产环境中的 PostgreSQL 数据库配置集成之前先进行测试，可以使用包含示例指标的演示数据集。
-
-所需时间：10–15 分钟
+通过 OTel 的 PostgreSQL 接收器，在 ClickStack 中监控 PostgreSQL 性能指标。包含演示数据集和预置仪表板。
 :::
 
 ## 集成现有 PostgreSQL \{#existing-postgres\}
@@ -270,11 +262,9 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 
 ## 后续步骤 \{#next-steps\}
 
-在完成 PostgreSQL 指标监控配置后：
-
-- 为关键阈值（连接数限制、高回滚率、低缓存命中率）配置[告警](/use-cases/observability/clickstack/alerts)
-- 启用 `pg_stat_statements` 扩展以实现查询级监控
-- 通过复制接收器配置，并为其指定不同的端点和服务名称来监控多个 PostgreSQL 实例
+* 为关键阈值 (连接数限制、高回滚率、低缓存命中率) 配置[告警](/use-cases/observability/clickstack/alerts)
+* 启用 `pg_stat_statements` 扩展以实现查询级监控
+* 通过复制接收器配置，并为其指定不同的端点和服务名称来监控多个 PostgreSQL 实例
 
 ## 上线生产环境 \{#going-to-production\}
 

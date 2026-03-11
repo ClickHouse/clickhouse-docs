@@ -16,18 +16,10 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack による JVM メトリクスの監視 \{#jvm-clickstack\}
+# ClickStack を使用した JVM メトリクスの監視 \{#jvm-clickstack\}
 
 :::note[TL;DR]
-このガイドでは、OpenTelemetry Java agent を使用してメトリクスを収集し、ClickStack で JVM アプリケーションを監視する方法を説明します。次のことができるようになります:
-
-- OpenTelemetry Java agent を JVM アプリケーションにアタッチする
-- エージェントを構成し、OTLP 経由で ClickStack にメトリクスを送信する
-- あらかじめ用意されたダッシュボードを使用して、ヒープメモリ、ガベージコレクション、スレッド、および CPU を可視化する
-
-本番アプリケーションをインスツルメントする前に統合をテストしたい場合に備えて、サンプルメトリクスを含むデモデータセットも利用できます。
-
-所要時間: 5〜10分
+OpenTelemetry Java エージェントを使用して ClickStack で JVM アプリケーションを監視します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
 :::
 
 ## 既存の JVM アプリケーションとの統合 \{#existing-jvm\}
@@ -284,10 +276,8 @@ ClickStack がリモートホスト上にある場合、アプリケーション
 
 ## 次のステップ \{#next-steps\}
 
-JVM メトリクスが ClickStack に送信されるようになったので、次の点を検討してください:
-
-- 高いヒープ使用率、頻繁な GC 一時停止、スレッド枯渇といった重要なメトリクスに対する [アラート](/use-cases/observability/clickstack/alerts) を設定する
-- オブザーバビリティ データを一元化するために、[その他の ClickStack 連携](/use-cases/observability/clickstack/integration-guides) を検討する
+- ヒープ使用率の増加、頻繁な GC 一時停止、スレッド枯渇などの重要なメトリクスに対する [アラート](/use-cases/observability/clickstack/alerts) を設定する
+- オブザーバビリティ データを一元化するために、[その他の ClickStack 統合](/use-cases/observability/clickstack/integration-guides) を確認する
 
 ## 本番環境への移行 \{#going-to-production\}
 
