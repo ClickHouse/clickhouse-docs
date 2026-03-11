@@ -182,7 +182,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
     "consumer.override.max.poll.records": "5000",
     "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
-    "errors.retry.timeout": "60",
+    "errors.retry.timeout": "60000",
     "exactlyOnce": "false",
     "hostname": "localhost",
     "port": "8443",
@@ -753,19 +753,20 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse.
   It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
   - 3 - UNEXPECTED_END_OF_FILE
+  - 107 - FILE_DOESNT_EXIST
   - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
   - 202 - TOO_MANY_SIMULTANEOUS_QUERIES
   - 203 - NO_FREE_CONNECTION
   - 209 - SOCKET_TIMEOUT
   - 210 - NETWORK_ERROR
+  - 241 - MEMORY_LIMIT_EXCEEDED
   - 242 - TABLE_IS_READ_ONLY
   - 252 - TOO_MANY_PARTS
   - 285 - TOO_FEW_LIVE_REPLICAS
   - 319 - UNKNOWN_STATUS_OF_INSERT
   - 425 - SYSTEM_ERROR
   - 999 - KEEPER_EXCEPTION
-  - 1002 - UNKNOWN_EXCEPTION
 - `SocketTimeoutException` - This is thrown when the socket times out.
 - `UnknownHostException` - This is thrown when the host can't be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
