@@ -45,3 +45,6 @@ Certain **required** notifications such as **Payment failed** aren't configurabl
 ## Supported notifications {#supported-notifications}
 
 Currently, we send out notifications related to billing (payment failure, usage exceeded ascertain threshold, etc.) as well as notifications related to scaling events (scaling completed, scaling blocked etc.).
+
+:::note
+Credit threshold notifications are currently only available for organizations with committed spend contracts. Pay-as-you-go (PAYG) organizations do not receive these notifications. :::
