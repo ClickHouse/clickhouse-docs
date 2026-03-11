@@ -29,7 +29,8 @@ You can use it when you want to get the power of ClickHouse in a programming lan
 **NEW!** DataStore provides a pandas-compatible API that combines familiar pandas syntax with ClickHouse performance.
 
 :::tip Get Started on Hex
-Ready to try ClickHouse in Hex? Follow the <a href="https://app.hex.tech/partnerships/app/chDB-Tutorial-032XsQ4qoKtlXxcw49joav/latest" target="_blank">getting started tutorial</a> to set up your first connection. Want more time to explore? Sign up for an <a href="https://app.hex.tech/signup/clickhouse-30" target="_blank">extended 30-day Hex trial</a> with full access to ClickHouse integrations.
+- 📖 <a href="https://app.hex.tech/partnerships/app/chDB-Tutorial-032XsQ4qoKtlXxcw49joav/latest" target="_blank"><b>Getting Started Tutorial</b></a> — set up your first connection
+- 🚀 <a href="https://app.hex.tech/signup/clickhouse-30" target="_blank"><b>Extended 30-day Hex Trial</b></a> — full access to ClickHouse integrations
 :::
 
 ### One-Line Migration {#one-line-migration}
