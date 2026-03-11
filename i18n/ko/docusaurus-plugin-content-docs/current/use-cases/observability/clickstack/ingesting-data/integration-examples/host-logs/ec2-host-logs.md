@@ -26,16 +26,7 @@ import TabItem from '@theme/TabItem';
 # ClickStack로 EC2 호스트 로그 모니터링 \{#ec2-host-logs-clickstack\}
 
 :::note[요약]
-인스턴스에 OpenTelemetry Collector를 설치하여 ClickStack을 사용해 EC2 시스템 로그를 모니터링할 수 있습니다. Collector는 EC2 메타데이터(인스턴스 ID, 리전, 가용 영역, 인스턴스 유형)를 로그에 자동으로 추가합니다. 이 안내서에서는 다음 내용을 다룹니다:
-
-- EC2 인스턴스에 OpenTelemetry Collector를 설치하고 구성하는 방법
-- EC2 메타데이터를 사용해 로그를 자동으로 보강하는 방법
-- OTLP를 통해 로그를 ClickStack으로 전송하는 방법
-- 미리 구축된 대시보드를 사용해 클라우드 컨텍스트와 함께 EC2 호스트 로그를 시각화하는 방법
-
-샘플 로그와 시뮬레이션된 EC2 메타데이터를 포함한 데모 데이터셋이 테스트용으로 제공됩니다.
-
-소요 시간: 10-15분
+EC2 메타데이터 자동 보강(인스턴스 ID, 리전, AZ, 인스턴스 유형) 기능과 함께 OpenTelemetry Collector를 사용하여 ClickStack에서 EC2 시스템 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 EC2 인스턴스와의 통합 \{#existing-ec2\}
@@ -588,9 +579,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## 다음 단계 {#next-steps}
 
-EC2 호스트 로그 모니터링 설정을 완료한 후 다음 작업을 수행합니다.
-
 - 중요한 시스템 이벤트(서비스 장애, 인증 실패, 디스크 경고)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
 - 특정 리소스를 모니터링하기 위해 EC2 메타데이터 속성(리전, 인스턴스 유형, 인스턴스 ID)으로 필터링합니다.
-- 포괄적인 트러블슈팅을 위해 EC2 호스트 로그를 애플리케이션 로그와 연관시킵니다.
+- 포괄적인 문제 해결을 위해 EC2 호스트 로그를 애플리케이션 로그와 연관시킵니다.
 - 보안 모니터링(SSH 시도, sudo 사용, 방화벽 차단)을 위한 사용자 정의 대시보드를 생성합니다.
+
+## 프로덕션 환경으로 전환 {#going-to-production}
+
+이 가이드에서는 호스트 수준 모니터링에 권장되는 프로덕션 패턴으로 EC2 인스턴스에 OpenTelemetry 수집기를 직접 설치합니다. 여러 인스턴스에 걸쳐 수집기를 관리하려면 구성 관리 도구(Ansible, Chef, Puppet) 또는 Kubernetes 환경에서는 OpenTelemetry Operator 사용을 고려하십시오. 프로덕션 구성에 대해서는 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.
