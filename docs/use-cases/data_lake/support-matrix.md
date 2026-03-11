@@ -48,18 +48,18 @@ ClickHouse integrates with four lakehouse table formats: [Apache Iceberg](/engin
 | Time travel / snapshots | ✅ | Via `iceberg_timestamp_ms` or `iceberg_snapshot_id` settings. See [Time travel](/engines/table-engines/integrations/iceberg#time-travel). |
 | Position deletes | ✅ | See [Processing deleted rows](/engines/table-engines/integrations/iceberg#deleted-rows). |
 | Equality deletes | ✅ | Table engine only, from v25.8+. See [Processing deleted rows](/engines/table-engines/integrations/iceberg#deleted-rows). |
-| Merge-on-read | ⚠️ | Experimental. Supported for [delete operations](/sql-reference/table-functions/iceberg#deleting-data). |
+| Merge-on-read | ⚠️ | Experimental. Supported for [delete operations](/sql-reference/table-functions/iceberg#iceberg-writes-delete). |
 | Format versions | ⚠️ | v1 and v2 supported. V3 not supported. |
 | Column statistics | ✅ | |
 | Bloom filters / puffin files | ❌ | Bloom filter indexes in puffin files not supported |
 | Virtual columns | ✅ | `_path`, `_file`, `_size`, `_time`, `_etag`. See [Virtual columns](/sql-reference/table-functions/iceberg#virtual-columns). |
 |  |  |  |
 | **Write features** | | |
-| Table creation | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. From v25.7+. See [Creating a table](/sql-reference/table-functions/iceberg#creating-a-table). |
-| INSERT | ✅ | Beta from 26.2. Requires `allow_insert_into_iceberg = 1`. See [Inserting data](/sql-reference/table-functions/iceberg#inserting-data). |
-| DELETE | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. Via `ALTER TABLE ... DELETE WHERE`. See [Deleting data](/sql-reference/table-functions/iceberg#deleting-data). |
-| ALTER TABLE (schema changes) | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. Add, drop, modify, rename columns. See [Schema evolution](/sql-reference/table-functions/iceberg#schema-evolution-1). |
-| Compaction | ⚠️ | Experimental. Requires `allow_experimental_iceberg_compaction = 1`. Merges position delete files into data files. See [Compaction](/sql-reference/table-functions/iceberg#compaction). Other Iceberg compaction operations not supported. |
+| Table creation | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. From v25.7+. See [Creating a table](/sql-reference/table-functions/iceberg#create-iceberg-table). |
+| INSERT | ✅ | Beta from 26.2. Requires `allow_insert_into_iceberg = 1`. See [Inserting data](/sql-reference/table-functions/iceberg#writes-inserts). |
+| DELETE | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. Via `ALTER TABLE ... DELETE WHERE`. See [Deleting data](/sql-reference/table-functions/iceberg#iceberg-writes-delete). |
+| ALTER TABLE (schema changes) | ✅ | Experimental. Requires `allow_insert_into_iceberg = 1`. Add, drop, modify, rename columns. See [Schema evolution](/sql-reference/table-functions/iceberg#iceberg-writes-schema-evolution). |
+| Compaction | ⚠️ | Experimental. Requires `allow_experimental_iceberg_compaction = 1`. Merges position delete files into data files. See [Compaction](/sql-reference/table-functions/iceberg#iceberg-writes-compaction). Other Iceberg compaction operations not supported. |
 | UPDATE / MERGE | ❌ | Not supported. See Compaction. |
 | Copy-on-write | ❌ | Not supported |
 | Expire snapshots | ❌ | Not supported |
@@ -90,7 +90,7 @@ From version 25.6, ClickHouse reads Delta Lake tables using the Delta Lake Rust 
 | Table function | ✅ | [`deltaLake()`](/sql-reference/table-functions/deltalake) with variants per backend |
 | Table engine | ✅ | [`DeltaLake`](/engines/table-engines/integrations/deltalake) |
 | Cluster-distributed reads | ✅ | [`deltaLakeCluster`](/sql-reference/table-functions/deltalakeCluster), [`deltaLakeAzureCluster`](/sql-reference/table-functions/deltalakeCluster) |
-| Named collections | ✅ | [Named collection](/sql-reference/table-functions/deltalake#named-collection) |
+| Named collections | ✅ | [Named collection](/sql-reference/table-functions/deltalake#arguments) |
 | **Read features** | | |
 | Read support | ✅ | Full SELECT support with all ClickHouse SQL functions |
 | Partition pruning | ✅ |  Requires Delta Kernel. |
