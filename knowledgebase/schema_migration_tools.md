@@ -118,7 +118,7 @@ These are the tools we generally recommend for ClickHouse users based on maturit
 
 [clicko](https://github.com/arsura/clicko) is a Go-based migration runner inspired by Goose, designed specifically for ClickHouse. It supports versioned SQL files and Go function migrations, and is available both as a CLI and an embeddable Go library.
 
-**Why it works well for ClickHouse:** clicko supports custom table engines for the migration tracking table, insert quorum, and cluster-aware DDL — making it a natural fit for self-hosted sharded deployments where general-purpose runners fall short.
+**Why it works well for ClickHouse:** clicko focuses on the operational details that matter for sharded clusters — custom table engines for the migration tracking table, insert quorum to ensure writes are replicated before being considered applied, and cluster-aware DDL propagation.
 
 **What to watch out for:** Smaller community than golang-migrate or Goose. No schema diffing or autogeneration.
 
