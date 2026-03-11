@@ -125,5 +125,5 @@ Selecting this option will allow you to select the day of the week/time window f
 </div>
 <br/>
 :::note
-While scheduled upgrades follow the defined schedule, exceptions apply for critical security patches and vulnerability fixes. In cases where an urgent security issue is identified, upgrades may be performed outside the scheduled window. Customers will be notified of such exceptions as necessary.
+While scheduled upgrades follow the defined schedule, exceptions apply to critical security patches and vulnerability fixes, as well as to scenarios where potential issues could lead to data corruption or data loss. In cases where an urgent security issue is identified, upgrades may be performed outside the scheduled window. Customers will be notified of such exceptions as necessary.
 :::
