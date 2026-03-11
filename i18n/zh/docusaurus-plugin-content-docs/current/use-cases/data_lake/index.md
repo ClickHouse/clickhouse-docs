@@ -1,7 +1,7 @@
 ---
 description: '使用 ClickHouse 对 Apache Iceberg、Delta Lake、Apache Hudi 和 Apache Paimon 等开放表格式中的数据进行查询、加速和分析。'
 pagination_prev: null
-pagination_next: use-cases/data_lake/getting-started/index
+pagination_next: null
 slug: /use-cases/data-lake
 title: '数据湖仓'
 keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']

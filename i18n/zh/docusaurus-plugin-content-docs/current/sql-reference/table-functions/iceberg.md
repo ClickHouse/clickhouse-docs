@@ -532,6 +532,104 @@ y: 993
 ```
 
 
+### 过期快照 \{#iceberg-expire-snapshots\}
+
+Iceberg 表在每次 INSERT、DELETE 或 UPDATE 操作时都会累积快照。随着时间推移，这可能会导致大量快照及其关联的数据文件。`expire_snapshots` 命令会删除旧快照，并清理不再被任何保留快照引用的数据文件。
+
+**语法：**
+
+```sql
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(['timestamp']);
+```
+
+保留哪些快照由[保留策略](#iceberg-snapshot-retention-policy)决定（表属性 `min-snapshots-to-keep`、`max-snapshot-age-ms` 以及针对各个 ref 的覆盖设置）。无论是否提供时间戳参数，都会始终评估保留策略。
+
+可选的 `timestamp` 参数是一个日期时间字符串（例如 `'2024-06-01 00:00:00'`），按**服务器时区**解释。它相当于一个安全保险丝：`timestamp-ms` 等于或晚于该值的快照会受到保护，不会过期，即使按照保留策略本应过期也是如此。这样可确保不会删除任何比给定时间点更新的快照。
+
+未提供时间戳时，只有保留策略决定哪些快照会过期。
+
+**示例：**
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+-- Create some snapshots by inserting data
+INSERT INTO iceberg_table VALUES (1);
+INSERT INTO iceberg_table VALUES (2);
+INSERT INTO iceberg_table VALUES (3);
+
+-- Expire using retention policy; additionally protect snapshots newer than the timestamp
+ALTER TABLE iceberg_table EXECUTE expire_snapshots('2025-01-01 00:00:00');
+
+-- Expire using retention policy only (no additional fuse)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots();
+```
+
+**输出：**
+
+该命令返回一个包含两列（`metric_name String`、`metric_value Int64`）的表，每个指标占一行。指标名称遵循 [Iceberg 规范](https://iceberg.apache.org/docs/latest/spark-procedures/#output)：
+
+| metric_name | 描述 |
+|---|---|
+| `deleted_data_files_count` | 已删除的数据文件数量 |
+| `deleted_position_delete_files_count` | 已删除的位置删除文件数量 |
+| `deleted_equality_delete_files_count` | 已删除的等值删除文件数量 |
+| `deleted_manifest_files_count` | 已删除的 manifest 文件数量 |
+| `deleted_manifest_lists_count` | 已删除的 manifest 列表文件数量 |
+| `deleted_statistics_files_count` | 已删除的统计信息文件数量（当前始终为 0） |
+
+该命令执行以下步骤：
+
+1. 评估保留策略（见下文），以确定哪些快照必须保留
+2. 如果提供了时间戳参数，还会额外保护该时间戳及之后的所有快照
+3. 使既未被策略保留、也未被时间戳保险丝保护的快照过期
+4. 计算哪些文件仅与已过期的快照相关联
+5. 生成不包含已过期快照的新元数据
+6. 物理删除不可达的 manifest 列表、manifest 文件和数据文件
+
+#### 快照保留策略 \{#iceberg-snapshot-retention-policy\}
+
+`expire_snapshots` 命令遵循 [Iceberg 快照保留策略](https://iceberg.apache.org/spec/#snapshot-retention-policy)。保留规则通过 Iceberg 表属性以及按引用的覆盖配置进行设置：
+
+| 属性                                     | 范围 | 默认值              | 说明                               |
+| -------------------------------------- | -- | ---------------- | -------------------------------- |
+| `history.expire.min-snapshots-to-keep` | 表  | 1                | 每个分支祖先链中要保留的最少快照数                |
+| `history.expire.max-snapshot-age-ms`   | 表  | 432000000 (5 天)  | 分支中快照可保留的最大时长 (毫秒)               |
+| `history.expire.max-ref-age-ms`        | 表  | ∞ (永不)           | 快照引用 (分支或标签) 在被移除前可存在的最大时长 (毫秒)  |
+
+每个快照引用 (Iceberg 元数据中的 `refs`) 都可以通过以下按引用字段覆盖这些设置：`min-snapshots-to-keep`、`max-snapshot-age-ms` 和 `max-ref-age-ms`。
+
+**保留规则评估：**
+
+* **对于每个分支** (包括 `main`) ：从分支头开始遍历其祖先链。只要满足以下任一条件，就会保留该快照：
+  * 该快照属于链中前 `min-snapshots-to-keep` 个快照之一
+  * 该快照的年龄未超过 `max-snapshot-age-ms` (即 `now - timestamp-ms <= max-snapshot-age-ms`) 
+* **对于标签**：带标签的快照会被保留；如果标签已超过其 `max-ref-age-ms`，则会移除该标签引用
+* **非 main 引用** 如果其年龄超过 `max-ref-age-ms`，则会被完全移除 (`main` 分支永远不会被移除) 
+* 指向不存在快照的 **悬空引用** 会在发出警告后被移除
+* **当前快照始终会被保留**，无论保留设置如何
+
+**所需权限：**
+
+需要 `ALTER TABLE EXECUTE` 权限，它在 ClickHouse 访问控制层级中是 `ALTER TABLE` 的子权限。你可以单独授予该权限，也可以通过其父权限授予：
+
+```sql
+-- Grant only EXECUTE permission
+GRANT ALTER TABLE EXECUTE ON my_iceberg_table TO my_user;
+
+-- Or grant all ALTER TABLE permissions (includes ALTER TABLE EXECUTE)
+GRANT ALTER TABLE ON my_iceberg_table TO my_user;
+```
+
+:::note
+
+* 仅支持 Iceberg 格式版本 2 的表 (v1 快照不保证提供 `manifest-list`，而安全识别待清理文件需要它) 
+* 当前快照始终会被保留，即使其早于指定时间戳
+* 要求启用 `allow_insert_into_iceberg` 设置
+* 当 ClickHouse 更新元数据时，catalog 自身的授权机制 (REST catalog auth、AWS Glue IAM 等) 仍会独立生效
+  :::
+
+
 ## 另请参阅 \{#see-also\}
 
 * [Iceberg 引擎](/engines/table-engines/integrations/iceberg.md)

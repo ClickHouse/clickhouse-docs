@@ -224,7 +224,7 @@ Baseline your evaluation workflow with human annotations via Annotation Queues.
 </TabItem>
 <TabItem value="custom-evals" label="Custom Evals">
 
-Add custom evaluation results, supports numeric, boolean and categorical values.
+Add custom evaluation results; supports numeric, boolean, and categorical values.
 
 ```bash
 POST /api/public/scores

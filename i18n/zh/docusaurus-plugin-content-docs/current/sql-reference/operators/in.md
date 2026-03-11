@@ -20,9 +20,9 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 如果左侧是一个被索引的单个列，而右侧是一个常量集合，系统会使用该索引来处理查询。
 
-不要显式列出过多的值（例如数百万个）。如果数据集很大，请将其放入一个临时表中（例如，参见 [External data for query processing](../../engines/table-engines/special/external-data.md) 一节），然后再使用子查询。
+不要显式列出过多的值 (例如数百万个) 。如果数据集很大，请将其放入一个临时表中 (例如，参见 [External data for query processing](../../engines/table-engines/special/external-data.md) 一节) ，然后再使用子查询。
 
-运算符的右侧可以是常量表达式的集合、由常量表达式构成的元组的集合（如上面的示例所示），或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
+运算符的右侧可以是常量表达式的集合、由常量表达式构成的元组的集合 (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
 
 ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 在这种情况下，它会将右侧的值转换为左侧的类型，
@@ -46,9 +46,9 @@ SELECT '1' IN (SELECT 1);
 └──────────────────────┘
 ```
 
-如果运算符右侧是表名（例如 `UserID IN users`），这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，并需要对其进行过滤。
+如果运算符右侧是表名 (例如 `UserID IN users`) ，这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，并需要对其进行过滤。
 
-如果运算符右侧是使用 Set 引擎（始终驻留在 RAM 中的预先准备的数据集）的表名，则不会在每次查询时重复创建该数据集。
+如果运算符右侧是使用 Set 引擎 (始终驻留在 RAM 中的预先准备的数据集) 的表名，则不会在每次查询时重复创建该数据集。
 
 子查询可以指定多列来过滤元组。
 
@@ -129,7 +129,7 @@ FROM t_null
 
 ## 分布式子查询 \{#distributed-subqueries\}
 
-对于带有子查询的 `IN` 运算符（类似于 `JOIN` 运算符），有两种用法：普通的 `IN` / `JOIN` 和 `GLOBAL IN` / `GLOBAL JOIN`。它们在分布式查询处理中的执行方式不同。
+对于带有子查询的 `IN` 运算符 (类似于 `JOIN` 运算符) ，有两种用法：普通的 `IN` / `JOIN` 和 `GLOBAL IN` / `GLOBAL JOIN`。它们在分布式查询处理中的执行方式不同。
 
 :::note
 请注意，下文描述的算法可能会因 [settings](../../operations/settings/settings.md) 中的 `distributed_product_mode` 设置而表现不同。
@@ -217,11 +217,11 @@ SELECT UserID FROM distributed_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-临时表 `_data1` 将随查询一起发送到每个远程服务器（临时表的名称由具体实现决定）。
+临时表 `_data1` 将随查询一起发送到每个远程服务器 (临时表的名称由具体实现决定) 。
 
 这比使用普通的 `IN` 更高效，但请注意以下几点：
 
-1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。（对于普通的 `IN`，不需要这样做。）
+1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。 (对于普通的 `IN`，不需要这样做。) 
 2. 临时表会被发送到所有远程服务器。传输时不会考虑网络拓扑结构。例如，如果有 10 台远程服务器位于距离发起请求的服务器很远的数据中心，则数据会通过与该远程数据中心的网络链路被发送 10 次。在使用 `GLOBAL IN` 时，尽量避免使用大型数据集。
 3. 向远程服务器传输数据时，无法对网络带宽限制进行配置，这可能会导致网络过载。
 4. 尽量将数据合理分布到各个服务器上，以避免经常需要使用 `GLOBAL IN`。

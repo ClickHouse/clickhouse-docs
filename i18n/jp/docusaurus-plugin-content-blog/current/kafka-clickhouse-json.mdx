@@ -25,7 +25,7 @@ docker run --name broker -p 9092:9092 apache/kafka:3.8.1
 ## Kafka にデータを取り込む \{#ingest-data-into-kafka\}
 
 これが起動したら、データを取り込む必要があります。
-Wikimedia の最近の変更（Recent changes）フィードはストリーミングデータの優れたソースなので、それを `wiki_events` トピックに取り込みましょう。
+Wikimedia の最近の変更 (Recent changes) フィードはストリーミングデータの優れたソースなので、それを `wiki_events` トピックに取り込みましょう。
 
 ```bash
 curl -N https://stream.wikimedia.org/v2/stream/recentchange 2>/dev/null |

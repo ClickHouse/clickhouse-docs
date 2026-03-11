@@ -2048,6 +2048,14 @@ parts (N). Merges are processing significantly slower than inserts`
 
 如果在某个数据部分中，主键某一列的值发生变化的次数至少达到该比例，则跳过将其后续列加载到内存中。这样可以通过不加载不必要的主键列来节省内存。
 
+## propagate_types_serialization_versions_to_nested_types \{#propagate_types_serialization_versions_to_nested_types\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "默认将数据类型的序列化版本传播到嵌套类型"}]}]} />
+
+如果为 true，则像 string&#95;serialization&#95;version 这样的序列化版本会传播到 Array/Map/Nullable/JSON 等嵌套类型内部。如果禁用，则该序列化版本仅对该类型的顶层列和 Tuple 元素生效。
+
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 
 <SettingsInfoBlock type="Float" default_value="0.9375" />

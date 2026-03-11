@@ -4,7 +4,7 @@ import Image from '@theme/IdealImage';
 
 ネイティブ TCP で ClickHouse に接続するには、次の情報が必要です。
 
-| Parameter(s)              | Description                                                |
+| Parameters                | Description                                                |
 | ------------------------- | ---------------------------------------------------------- |
 | `HOST` and `PORT`         | 通常、TLS を使用する場合はポート 9440、TLS を使用しない場合は 9000 です。             |
 | `DATABASE NAME`           | デフォルトで `default` という名前のデータベースが用意されています。接続したいデータベース名を指定します。 |

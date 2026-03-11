@@ -76,10 +76,10 @@ stochasticLogisticRegression([learning_rate, l2_regularization_coef, mini_batch_
 
 * `learning_rate` — 勾配降下ステップを実行する際のステップ長にかかる係数です。学習率が大きすぎると、モデルの重みが発散してしまう可能性があります。デフォルトは `0.00001` です。[`Float64`](/sql-reference/data-types/float)
 * `l2_regularization_coef` — 過学習の防止に役立つ場合がある L2 正則化係数です。デフォルトは `0.1`。[`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 勾配降下の1ステップを実行するために、勾配を計算して合計する要素数を設定します。純粋な確率的勾配降下法では1要素のみを使用しますが、小さなバッチ（約10要素）を使用すると、勾配ステップがより安定します。デフォルトは `15`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `mini_batch_size` — 勾配降下の1ステップを実行するために、勾配を計算して合計する要素数を設定します。純粋な確率的勾配降下法では1要素のみを使用しますが、小さなバッチ (約10要素) を使用すると、勾配ステップがより安定します。デフォルトは `15`。[`UInt64`](/sql-reference/data-types/int-uint)
 * `method` — 重みを更新するためのメソッド: デフォルトは `Adam` で、他に `SGD`、`Momentum`、`Nesterov` を指定できます。`Momentum` と `Nesterov` は計算量とメモリ使用量がやや増加しますが、確率的勾配法における収束速度と安定性の面で有用な場合があります。[`String`](/sql-reference/data-types/string)
 * `target` — 目的変数となる二値分類ラベル。[-1, 1] の範囲でなければなりません。[`Float`](/sql-reference/data-types/float)
-* `x1, x2, ...` — 特徴量（独立変数）の値です。すべて数値型である必要があります。[`Float`](/sql-reference/data-types/float)
+* `x1, x2, ...` — 特徴量 (独立変数) の値です。すべて数値型である必要があります。[`Float`](/sql-reference/data-types/float)
 
 **返り値**
 

@@ -2770,6 +2770,14 @@ RAM과 스왑 공간이 적은 호스트에서는 [`max_server_memory_usage_to_r
 ```
 
 
+## max_snapshot_commit_thread_pool_free_size \{#max_snapshot_commit_thread_pool_free_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />스냅샷 커밋 스레드 풀의 유휴 스레드 수가 `max_snapshot_commit_thread_pool_free_size`를 초과하면 ClickHouse는 유휴 스레드가 점유한 리소스를 해제하고 풀 크기를 줄입니다. 필요한 경우 스레드를 다시 생성할 수 있습니다.
+
+## max_snapshot_commit_thread_pool_size \{#max_snapshot_commit_thread_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="64" />스냅샷 커밋에 사용하는 스레드 수입니다.
+
 ## max_table_num_to_throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -3449,6 +3457,22 @@ CAP_SYS_NICE capability가 필요하며, 없으면 아무 효과도 없습니다
 ## page_cache_size_ratio \{#page_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />사용자 공간 페이지 캐시에서 보호된 큐의 크기가 캐시 전체 크기에서 차지하는 비율입니다.
+
+## parquet_metadata_cache_max_entries \{#parquet_metadata_cache_max_entries\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />Parquet 메타데이터 파일 캐시의 최대 항목 수입니다. 0이면 비활성화됨을 의미합니다.
+
+## parquet_metadata_cache_policy \{#parquet_metadata_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" />Parquet 메타데이터 캐시 정책의 이름입니다.
+
+## parquet_metadata_cache_size \{#parquet_metadata_cache_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="536870912" />Parquet 메타데이터 캐시의 최대 크기(단위: 바이트)입니다. 0은 비활성화됨을 의미합니다.
+
+## parquet_metadata_cache_size_ratio \{#parquet_metadata_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />Parquet 메타데이터 캐시에서 보호 큐의 크기(SLRU 정책인 경우)를 캐시 전체 크기를 기준으로 한 비율로 나타낸 값입니다.
 
 ## part_log \{#part_log\}
 
@@ -5036,6 +5060,10 @@ ClickHouse는 서버의 모든 테이블에 대해 이 설정을 사용합니다
 <wait_dictionaries_load_at_startup>true</wait_dictionaries_load_at_startup>
 ```
 
+
+## webassembly_udf_engine \{#webassembly_udf_engine\}
+
+<SettingsInfoBlock type="String" default_value="wasmtime" />WebAssembly UDF를 실행하는 데 사용되는 엔진입니다. 사용할 수 있는 값은 &#39;wasmtime&#39;과 &#39;wasmedge&#39;입니다.
 
 ## workload_path \{#workload_path\}
 

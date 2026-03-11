@@ -25,7 +25,7 @@ timeSeriesPredictLinearToGrid(start_timestamp, end_timestamp, grid_step, stalene
 
 **Parameters**
 
-* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ（秒）を指定します。 - `staleness` — 対象とするサンプルの最大の「古さ」（秒）を指定します。staleness ウィンドウは左開・右閉の区間です。 - `predict_offset` — 予測時刻に加算するオフセット秒数を指定します。
+* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ (秒) を指定します。 - `staleness` — 対象とするサンプルの最大の「古さ」 (秒) を指定します。staleness ウィンドウは左開・右閉の区間です。 - `predict_offset` — 予測時刻に加算するオフセット秒数を指定します。
 
 **Arguments**
 

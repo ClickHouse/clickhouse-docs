@@ -35,11 +35,11 @@ studentTTest([confidence_level])(sample_data, sample_index)
 **引数**
 
 * `sample_data` — サンプルデータ。[`Integer`](/sql-reference/data-types/int-uint) または [`Float`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `sample_index` — サンプルのインデックス（番号）。[`Integer`](/sql-reference/data-types/int-uint)
+* `sample_index` — サンプルのインデックス (番号) 。[`Integer`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-2 つの要素、または（省略可能な `confidence_level` が指定されている場合は）4 つの要素を持つタプルを返します。内容は、計算された t 統計量、計算された p 値、[計算された信頼区間の下限]、[計算された信頼区間の上限] です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+2 つの要素、または (省略可能な `confidence_level` が指定されている場合は) 4 つの要素を持つタプルを返します。内容は、計算された t 統計量、計算された p 値、[計算された信頼区間の下限]、[計算された信頼区間の上限] です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **例**
 

@@ -22,7 +22,7 @@ singleValueOrNull(x)
 
 **参数**
 
-* `x` — 任意数据类型的列，但不包括 Map、Array 或 Tuple（这些类型不能为 Nullable 类型）。[`Any`](/sql-reference/data-types)
+* `x` — 任意数据类型的列，但不包括 Map、Array 或 Tuple (这些类型不能为 Nullable 类型) 。[`Any`](/sql-reference/data-types)
 
 **返回值**
 

@@ -66,7 +66,7 @@ Ok.
 0 rows in set. Elapsed: 0.134 sec.
 ```
 
-クエリキャッシュの利用を要求するクエリを実行します（クエリの末尾に `SETTINGS use_query_cache=true` を追加します）:
+クエリキャッシュの利用を要求するクエリを実行します (クエリの末尾に `SETTINGS use_query_cache=true` を追加します) :
 
 ```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
@@ -147,9 +147,9 @@ Ok.
 [c-red-qc-36-server-0] 2023.05.29 12:06:17.932043 [ 454 ] {a047527c-9d55-4e6b-9747-0ccad8787515} \<Trace\> QueryCache: クエリ SELECT name FROM query_cache_test  WHERE age > 1000 FORMAT `Null` SETTINGS に対するエントリが見つかりました
 ```
 
-1回目の実行では、エントリが見つからなかったため（`No entry found for query SELECT...`）、ClickHouse がそのクエリ結果のエントリを保存しました（`Stored result of query SELECT...`）。
+1回目の実行では、エントリが見つからなかったため (`No entry found for query SELECT...`) 、ClickHouse がそのクエリ結果のエントリを保存しました (`Stored result of query SELECT...`) 。
 
-2回目の実行では、既に保存されていたエントリが見つかったため（`Entry found for query SELECT...`）、クエリはクエリキャッシュを利用しました。
+2回目の実行では、既に保存されていたエントリが見つかったため (`Entry found for query SELECT...`) 、クエリはクエリキャッシュを利用しました。
 
 ## SQL だけを使用する \{#using-just-sql\}
 
@@ -215,6 +215,6 @@ Query id: d536555e-b8ab-4cd4-9741-c04e95612bec
 
 直近の結果では、クエリ `SELECT 1 SETTINGS use_query_cache=true;` が初めて実行された際に `QueryCacheMisses` が 1 回発生し、2 回目の実行に関連する `QueryCacheHits` イベントがあることが分かります。
 
-また、デフォルトの最大キャッシュエントリーサイズは 1,048,576 バイト（= 1 MiB）であり、結果はデフォルトでは 60 秒間しかキャッシュに保存されないことにも注意してください（たとえば `SETTINGS` で `query_cache_ttl=300` を指定すると、クエリキャッシュの結果を 5 分間保存できます）。
+また、デフォルトの最大キャッシュエントリーサイズは 1,048,576 バイト (= 1 MiB) であり、結果はデフォルトでは 60 秒間しかキャッシュに保存されないことにも注意してください (たとえば `SETTINGS` で `query_cache_ttl=300` を指定すると、クエリキャッシュの結果を 5 分間保存できます) 。
 
 ClickHouse Query Cache に関するより詳細な情報は[こちら](https://clickhouse.com/docs/operations/query-cache)で確認できます。

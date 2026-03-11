@@ -34,7 +34,7 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **例**
 
-**ウィンドウ関数での使用例（視覚的表現付き）**
+**ウィンドウ関数での使用例 (視覚的表現付き)&#x20;**
 
 ```sql title=Query
 SELECT

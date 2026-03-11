@@ -303,6 +303,6 @@ Our chart will be updated accordingly:
 
 <Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can be done in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />

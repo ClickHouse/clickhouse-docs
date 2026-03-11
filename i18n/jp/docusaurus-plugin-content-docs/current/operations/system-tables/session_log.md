@@ -12,7 +12,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud />
 
-すべてのログインおよびログアウトイベント（成功・失敗）に関する情報を含みます。
+すべてのログインおよびログアウトイベント (成功・失敗) に関する情報を含みます。
 
 Columns:
 

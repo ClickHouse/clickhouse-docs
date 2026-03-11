@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 ビットマップ型のカラムに対して OR 演算を行い、そのカーディナリティを返します。
 サフィックスコンビネータ [`-State`](/sql-reference/aggregate-functions/combinators#-state) を付与した場合は、ビットマップオブジェクトを返します。
-これは `groupBitmapMerge`（[`groupBitmap`](/sql-reference/aggregate-functions/reference/groupbitmap) に [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) コンビネータのサフィックスを付けたもの）と同等です。
+これは `groupBitmapMerge` ([`groupBitmap`](/sql-reference/aggregate-functions/reference/groupbitmap) に [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) コンビネータのサフィックスを付けたもの) と同等です。
 
 **構文**
 

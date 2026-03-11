@@ -912,6 +912,18 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**Синтаксис стандарта SQL без скобок**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
 Введена в версии: v21.9.0
@@ -1093,6 +1105,18 @@ SELECT currentUser()
 ┌─currentUser()─┐
 │ default       │
 └───────────────┘
+```
+
+**Стандартный синтаксис SQL без скобок**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
 ```
 
 ## defaultProfiles \{#defaultProfiles\}

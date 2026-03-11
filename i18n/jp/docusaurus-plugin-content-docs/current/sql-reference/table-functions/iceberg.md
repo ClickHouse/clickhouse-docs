@@ -536,6 +536,104 @@ y: 993
 ```
 
 
+### スナップショットの期限切れ処理 \{#iceberg-expire-snapshots\}
+
+Iceberg テーブルでは、INSERT、DELETE、または UPDATE を実行するたびにスナップショットが蓄積されます。時間の経過とともに、多数のスナップショットと関連するデータファイルが増えていく可能性があります。`expire_snapshots` コマンドは、古いスナップショットを削除し、保持されているどのスナップショットからも参照されなくなったデータファイルをクリーンアップします。
+
+**構文:**
+
+```sql
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(['timestamp']);
+```
+
+どのスナップショットを保持するかは、[保持ポリシー](#iceberg-snapshot-retention-policy) (テーブルプロパティ `min-snapshots-to-keep`、`max-snapshot-age-ms`、および参照ごとのオーバーライド) によって決まります。保持ポリシーは、タイムスタンプ引数が指定されているかどうかにかかわらず、常に評価されます。
+
+オプションの `timestamp` 引数は日時文字列 (例: `'2024-06-01 00:00:00'`) で、**サーバーのタイムゾーン**で解釈されます。これは安全弁として機能します。この値以上の `timestamp-ms` を持つスナップショットは、保持ポリシーでは期限切れになる場合でも、期限切れ処理の対象から保護されます。これにより、指定した時点より新しいスナップショットが削除されないことを保証できます。
+
+タイムスタンプが指定されていない場合、どのスナップショットを期限切れにするかは保持ポリシーのみによって決まります。
+
+**例:**
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+-- Create some snapshots by inserting data
+INSERT INTO iceberg_table VALUES (1);
+INSERT INTO iceberg_table VALUES (2);
+INSERT INTO iceberg_table VALUES (3);
+
+-- Expire using retention policy; additionally protect snapshots newer than the timestamp
+ALTER TABLE iceberg_table EXECUTE expire_snapshots('2025-01-01 00:00:00');
+
+-- Expire using retention policy only (no additional fuse)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots();
+```
+
+**出力:**
+
+このコマンドは、メトリクスごとに1行を含む、2つのカラム (`metric_name String`、`metric_value Int64`) からなるテーブルを返します。メトリクス名は [Iceberg spec](https://iceberg.apache.org/docs/latest/spark-procedures/#output) に従います。
+
+| metric&#95;name                       | 説明                                  |
+| ------------------------------------- | ----------------------------------- |
+| `deleted_data_files_count`            | 削除されたデータファイル数                       |
+| `deleted_position_delete_files_count` | 削除された position delete ファイル数         |
+| `deleted_equality_delete_files_count` | 削除された equality delete ファイル数         |
+| `deleted_manifest_files_count`        | 削除されたマニフェストファイル数                    |
+| `deleted_manifest_lists_count`        | 削除されたマニフェストリストファイル数                 |
+| `deleted_statistics_files_count`      | 削除された statistics ファイル数 (現時点では常に 0)  |
+
+このコマンドは次の手順を実行します。
+
+1. 保持ポリシー (以下を参照) を評価し、保持する必要があるスナップショットを判定します
+2. タイムスタンプ引数が指定されている場合は、そのタイムスタンプ以降のすべてのスナップショットも追加で保護します
+3. ポリシーで保持されず、かつタイムスタンプによる保護対象でもないスナップショットを期限切れにします
+4. 期限切れになったスナップショットにのみ関連付けられているファイルを特定します
+5. 期限切れになったスナップショットを含まない新しいメタデータを生成します
+6. 到達不能になったマニフェストリスト、マニフェストファイル、およびデータファイルを物理的に削除します
+
+
+#### スナップショット保持ポリシー \{#iceberg-snapshot-retention-policy\}
+
+`expire_snapshots` コマンドは、[Iceberg snapshot retention policy](https://iceberg.apache.org/spec/#snapshot-retention-policy) に従います。保持設定は、Iceberg のテーブルプロパティと参照ごとのオーバーライドで構成されます。
+
+| Property | Scope | Default | 説明 |
+|---|---|---|---|
+| `history.expire.min-snapshots-to-keep` | Table | 1 | 各ブランチの祖先チェーンで保持するスナップショットの最小数 |
+| `history.expire.max-snapshot-age-ms` | Table | 432000000 (5 days) | ブランチで保持するスナップショットの最大経過時間（ミリ秒） |
+| `history.expire.max-ref-age-ms` | Table | ∞ (never) | スナップショット参照（ブランチまたはタグ）自体が削除されるまでの最大経過時間（ミリ秒） |
+
+各スナップショット参照（Iceberg メタデータ内の `refs`）では、参照ごとのフィールド `min-snapshots-to-keep`、`max-snapshot-age-ms`、`max-ref-age-ms` を使って、これらの値をオーバーライドできます。
+
+**保持の評価:**
+
+- **各ブランチ**（`main` を含む）について: ブランチヘッドから開始して祖先チェーンをたどります。スナップショットは、次のいずれかの条件が真である間、保持されます:
+  - そのスナップショットが、チェーン内の先頭から `min-snapshots-to-keep` 個に含まれている
+  - そのスナップショットの経過時間が `max-snapshot-age-ms` 以内である（つまり、`now - timestamp-ms <= max-snapshot-age-ms`）
+- **タグ**について: タグ付けされたスナップショットは保持されます。ただし、タグが `max-ref-age-ms` を超過している場合、そのタグ参照は削除されます
+- **`main` 以外の参照**で、経過時間が `max-ref-age-ms` を超えているものは完全に削除されます（`main` ブランチが削除されることはありません）
+- 存在しないスナップショットを指す**ダングリング参照**は、警告とともに削除されます
+- **現在のスナップショットは常に保持されます**。保持設定に関係ありません
+
+**必要な権限:**
+
+`ALTER TABLE EXECUTE` 権限が必要です。これは ClickHouse のアクセス制御階層において `ALTER TABLE` の子権限です。この権限を個別に付与することも、親権限を通じて付与することもできます。
+
+```sql
+-- Grant only EXECUTE permission
+GRANT ALTER TABLE EXECUTE ON my_iceberg_table TO my_user;
+
+-- Or grant all ALTER TABLE permissions (includes ALTER TABLE EXECUTE)
+GRANT ALTER TABLE ON my_iceberg_table TO my_user;
+```
+
+:::note
+
+- サポートされるのは Iceberg フォーマットバージョン 2 のテーブルのみです（v1 スナップショットでは、クリーンアップ対象のファイルを安全に特定するために必要な `manifest-list` が保証されません）
+- 現在のスナップショットは、指定されたタイムスタンプより古い場合でも、常に保持されます
+- `allow_insert_into_iceberg` 設定を有効にする必要があります
+- ClickHouse がメタデータを更新する際には、カタログ自体の認可（REST catalog の認証、AWS Glue IAM など）が別途適用されます
+:::
+
 ## 関連項目 \{#see-also\}
 
 * [Iceberg エンジン](/engines/table-engines/integrations/iceberg.md)

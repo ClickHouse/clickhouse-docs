@@ -6,14 +6,14 @@ description: 'ClickHouse Cloud における ClickHouse Assistant チャット機
 doc_type: 'reference'
 ---
 
-# Cloud で ClickHouse Assistant エージェントを利用する \{#ask-ai-agent-in-cloud\}
+# Cloud で ClickHouse Assistant エージェントに質問する \{#clickhouse-assistant-agent-in-cloud\}
 
-「ClickHouse Assistant」エージェントは、ClickHouse Cloud サービス上にホストされているデータに対して複雑な分析タスクを実行できる、すぐに利用可能なターンキー型の機能です。
-ユーザーは SQL を書いたりダッシュボードを操作したりする代わりに、求めている内容を自然言語で記述できます。
-アシスタントはクエリや可視化、サマリを生成して返し、アクティブなタブ、保存済みクエリ、スキーマの詳細、ダッシュボードといったコンテキストを考慮して精度を高めます。
-質問からインサイトへ、プロンプトから稼働中のダッシュボードや API へと素早く到達できるように設計された、埋め込み型アシスタントです。
+「ClickHouse Assistant」エージェントは、ClickHouse Cloud サービスでホストされているデータに対して複雑な分析タスクを実行できる、すぐに使えるターンキー型の機能です。
+SQL を書いたりダッシュボードを操作したりする代わりに、ユーザーは探している内容を自然言語で説明できます。
+アシスタントは生成されたクエリ、可視化、または要約で応答し、アクティブなタブ、保存済みクエリ、スキーマの詳細、ダッシュボードなどのコンテキストを取り込んで精度を向上させることもできます。
+質問からインサイトへ、プロンプトから実際に動作するダッシュボードや API へと素早く進めるように設計された、埋め込み型アシスタントです。
 
-この機能には、コンソールから直接 ClickHouse ドキュメントに関する個別の質問を行うための「Docs AI」サブエージェントも組み込まれています。
-何百ページものドキュメントを検索する代わりに、「How do I configure materialized views?」や「What&#39;s the difference between ReplacingMergeTree and AggregatingMergeTree?」のような直接的な質問を行い、関連するコード例やソースドキュメントへのリンク付きで、正確な回答を受け取ることができます。
+この機能には、コンソールから直接 ClickHouse ドキュメントについて具体的な質問ができる「Docs AI」サブエージェントも組み込まれています。
+何百ページものドキュメントを検索する代わりに、ユーザーは &quot;How do I configure materialized views?&quot; や &quot;What&#39;s the difference between ReplacingMergeTree and AggregatingMergeTree?&quot; のような直接的な質問を行い、関連するコード例やソースドキュメントへのリンクとともに、正確な回答を受け取ることができます。
 
-詳細については [guides](/use-cases/AI_ML/AIChat) セクションを参照してください。
+詳細については、[guides](/use-cases/AI_ML/AIChat) セクションを参照してください。

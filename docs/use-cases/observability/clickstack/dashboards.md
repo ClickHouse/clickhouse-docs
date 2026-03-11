@@ -37,6 +37,10 @@ The **Chart Explorer** interface in HyperDX allows you to visualize metrics, tra
 
 Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — users define metrics to aggregate across selected dimensions.
 
+:::tip AI-powered chart generation
+ClickStack also supports creating charts from natural language prompts using the [text-to-chart](/use-cases/observability/clickstack/text-to-chart) feature. Describe what you want to see, and ClickStack generates the visualization automatically.
+:::
+
 For example, you might chart the number of errors (`count()`) grouped by service name.
 
 For the examples below, we use the remote dataset available at [sql.clickhouse.com](https://sql.clickhouse.com), described in the guide ["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data). **You can also reproduce these examples by visiting [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).**
