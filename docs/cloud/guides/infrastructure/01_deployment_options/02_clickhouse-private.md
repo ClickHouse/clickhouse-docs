@@ -13,7 +13,6 @@ import private_gov_architecture from '@site/static/images/cloud/reference/privat
 
 ClickHouse Private is a self-deployed package consisting of the same proprietary version of ClickHouse that runs on ClickHouse Cloud and our ClickHouse Operator, configured for separation of compute and storage. 
 
-
 :::note Note
 ClickHouse Private is designed for large enterprises deploying > 2 TB memory requiring full control over their dedicated infrastructure. Customers are responsible for managing all infrastructure and should be knowledgeable on operating ClickHouse at scale. This option is only available by [contacting us](https://clickhouse.com/company/contact?loc=nav).
 :::
@@ -46,7 +45,6 @@ ClickHouse Private is currently supported in the following configurations:
 | AWS         | Elastic Kubernetes Service (EKS) | Simple Storage Service (S3) | Available    |
 | GCP         | Google Kubernetes Service (GKS)  | Google Cloud Storage (GCS)  | Preview      |
 | Bare metal  | Kubernetes                       | AIStor (NVMe required)      | Preview      | 
-
 
 ## Onboarding process {#onboarding-process}
 
