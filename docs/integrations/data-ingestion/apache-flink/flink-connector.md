@@ -400,19 +400,17 @@ You may experience that the connector's throughput does not scale with the job's
 
 ### I see duplicate batches of rows in my ClickHouse table {#duplicate_batches}
 
-**Cause**: If one or more records in a Flink batch fails to insert into ClickHouse because of a retryable failure, the connector will retry the **entire batch**. Depending on how your connector and ClickHouse server are configured, this may result in duplicate records landing in your ClickHouse table.
+**Cause**: If one or more records in a Flink batch fails to insert into ClickHouse because of a retryable failure, the connector will retry the **entire batch**. If [insert deduplication](https://clickhouse.com/docs/guides/developer/deduplicating-inserts-on-retries#query-level-insert-deduplication) is disabled, this may result in duplicate records landing in your ClickHouse table. Otherwise, it's possible that the deduplication window or window duration may be too small and is expiring blocks before the connector retries them.
 
 **Solution**:
-1. Use the `*MergeTree` or `Replicated*MergeTree` table engine and set the server session setting `insert_deduplicate=1` (see the [example](#client-options) above). Refer to [this documentation page](https://clickhouse.com/docs/guides/developer/deduplicating-inserts-on-retries#query-level-insert-deduplication) for how retry insert deduplication works.
-2. If `insert_deduplicate=1` and you still see duplicates, the deduplication window or window duration may be too small and is expiring blocks before the connector retries them. In this case, adjust the following `*MergeTree` table settings on your ClickHouse server:
-   - If using the `Replicated*MergeTree` table engine: increase either/both [replicated_deduplication_window](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window) or [replicated_deduplication_window_seconds](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds).
-   - If using any other `*MergeTree` table engine: increase [non_replicated_deduplication_window](https://clickhouse.com/docs/operations/settings/merge-tree-settings#non_replicated_deduplication_window).
+- If your table is using a `Replicated*MergeTree` table engine:
+  1. ensure the server session setting `insert_deduplicate=1` (see the [example](#client-options) above for how to set it, if necessary). Note that `insert_deduplicate` is on by default for replicated tables.
+  2. if necessary, increase either/both the `MergeTree` table settings [`replicated_deduplication_window`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window) or [`replicated_deduplication_window_seconds`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds).
+- If your table is using a non-replicated `*MergeTree` table engine, increase the `MergeTree` table setting [`non_replicated_deduplication_window`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#non_replicated_deduplication_window).
 
-_Note 1: `insert_deduplicate=1` is on by default for replicated tables_
+_Note 1: this solution relies on [synchronous inserts](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default), which is recommended for use with the Flink connector. Please ensure server session setting `async_insert=0`._
 
-_Note 2: this solution relies on [synchronous inserts](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default), which is enabled by default and recommended for use with the Flink connector. Please ensure server session setting `async_insert=0` or omit `async_insert` entirely._
-
-_Note 3: a large number for `(non_)replicated_deduplication_window` may slow down inserts because more entries need to be compared._
+_Note 2: a large number for `(non_)replicated_deduplication_window` may slow down inserts because more entries need to be compared._
 
 ### I am missing rows in my ClickHouse table {#missing_rows}
 
