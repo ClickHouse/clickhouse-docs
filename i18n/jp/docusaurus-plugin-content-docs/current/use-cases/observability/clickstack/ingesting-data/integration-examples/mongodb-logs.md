@@ -315,19 +315,24 @@ OTel `filelog` レシーバーを使用して、MongoDBサーバーのログ (4.
 
 ## トラブルシューティング
 
-**実際に適用されている設定に `filelog` レシーバーが含まれていることを確認します。**
+### HyperDX にログが表示されない場合
+
+実際に適用されている設定に `filelog` レシーバーが含まれていることを確認します。
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-**コレクターのエラーを確認する:**
+コレクターのログでエラーを確認します:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
 ```
 
-**MongoDB が JSON 形式のログを出力していることを確認します (4.4+) ：**
+
+### ログが正しく解析されない場合
+
+MongoDB が JSON 形式のログを出力していることを確認します (4.4+) ：
 
 ```bash
 tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
@@ -336,11 +341,11 @@ tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
 出力が有効なJSONでない場合は、お使いのMongoDBのバージョンで従来のテキストログ形式 (4.4以前) が使用されている可能性があります。`json_parser`オペレーターを`regex_parser`に置き換えるか、MongoDB 4.4以降にアップグレードする必要があります。
 
 
-## 次のステップ
+## 次のステップ \{#verify-demo-logs\}
 
 * 重大なイベント (エラーの急増、スロークエリのしきい値) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定します
 * 特定のユースケース (レプリカセットの監視、接続追跡) 向けに追加の[ダッシュボード](/use-cases/observability/clickstack/dashboards)を作成します
 
-## 本番環境への移行
+## 本番環境への移行 \{#dashboards\}
 
 このガイドでは、すばやくセットアップできるよう、ClickStack に組み込まれている OpenTelemetry Collector を拡張した構成を使用しています。本番環境にデプロイする場合は、独自の OTel Collector を実行し、データを ClickStack の OTLP エンドポイントに送信することを推奨します。本番環境向けの設定については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry)を参照してください。
