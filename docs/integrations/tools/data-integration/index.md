@@ -12,4 +12,5 @@ doc_type: 'landing-page'
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|
 | [Easypanel](/integrations/easypanel) | Easypanel allows you to deploy ClickHouse on your own server                                                                    |
 | [Retool](/integrations/retool)    | Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data. |
+| [Middleware](/integrations/middleware) | Connect ClickHouse with Middleware for observability and monitoring workflows. |
 | [Splunk](/integrations/audit-splunk)     | Store ClickHouse Cloud audit logs into Splunk.                                                                                  |
