@@ -1,14 +1,14 @@
 ---
-description: 'Apache Iceberg、Delta Lake、Apache Hudi、Apache Paimon などのオープンなテーブル形式で保存されたデータに対して、ClickHouse を用いてクエリの実行、高速化、および分析を行います。'
+description: 'Apache Iceberg、Delta Lake、Apache Hudi、Apache Paimon などのオープンなテーブル形式でデータをクエリし、高速化し、分析するために ClickHouse を使用します。'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: 'データレイクハウス'
-keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']
+keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
-ClickHouse は [Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi)、[Apache Paimon](/sql-reference/table-functions/paimon) などのオープンなレイクハウスのテーブル形式と統合されています。これにより、オブジェクトストレージ上のこれらの形式で既に保存されているデータに ClickHouse から接続し、既存のデータレイク基盤と ClickHouse の分析能力を組み合わせて活用できます。
+ClickHouse は、[Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi)、[Apache Paimon](/sql-reference/table-functions/paimon) などのオープンなレイクハウスのオープンなテーブル形式と統合されています。これにより、ユーザーはオブジェクトストレージ全体でこれらの形式ですでに保存されているデータに ClickHouse を接続し、既存のデータレイク基盤と ClickHouse の分析能力を組み合わせることができます。
 
 ## ClickHouse とオープンテーブルフォーマットを組み合わせて利用する理由 \{#why-clickhouse-uses-lake-formats\}
 
@@ -38,14 +38,15 @@ ClickHouse は、オブジェクトストレージ上のオープンなテーブ
 
 サポートされているカタログは次のとおりです:
 
-| Catalog | Guide |
-|---------|-------|
-| AWS Glue | [Glue Catalog ガイド](/use-cases/data-lake/glue-catalog) |
-| Databricks Unity Catalog | [Unity Catalog ガイド](/use-cases/data-lake/unity-catalog) |
-| Iceberg REST Catalog | [REST Catalog ガイド](/use-cases/data-lake/rest-catalog) |
-| Lakekeeper | [Lakekeeper Catalog ガイド](/use-cases/data-lake/lakekeeper-catalog) |
-| Project Nessie | [Nessie Catalog ガイド](/use-cases/data-lake/nessie-catalog) |
-| Microsoft OneLake | [OneLake Catalog ガイド](/use-cases/data-lake/onelake-catalog) |
+| Catalog                  | Guide                                                             |
+| ------------------------ | ----------------------------------------------------------------- |
+| AWS Glue                 | [Glue Catalog ガイド](/use-cases/data-lake/glue-catalog)             |
+| BigLake Metastore        | [BigLake Metastore ガイド](/use-cases/data-lake/biglake-catalog)     |
+| Databricks Unity Catalog | [Unity Catalog ガイド](/use-cases/data-lake/unity-catalog)           |
+| Iceberg REST Catalog     | [REST Catalog ガイド](/use-cases/data-lake/rest-catalog)             |
+| Lakekeeper               | [Lakekeeper Catalog ガイド](/use-cases/data-lake/lakekeeper-catalog) |
+| Project Nessie           | [Nessie Catalog ガイド](/use-cases/data-lake/nessie-catalog)         |
+| Microsoft OneLake        | [OneLake Catalog ガイド](/use-cases/data-lake/onelake-catalog)       |
 
 [カタログへの接続](/use-cases/data-lake/getting-started/connecting-catalogs)に関する入門ガイドを参照してください。
 

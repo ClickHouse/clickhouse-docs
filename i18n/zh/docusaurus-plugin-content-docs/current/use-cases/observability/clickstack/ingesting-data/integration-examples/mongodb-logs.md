@@ -315,19 +315,24 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## 故障排查
 
-**验证当前生效的配置是否包含 filelog 接收器：**
+### HyperDX 中未显示日志
+
+验证当前生效的配置是否包含 filelog 接收器：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-**检查采集器错误：**
+检查采集器日志中的错误：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
 ```
 
-**确认 MongoDB 是否输出 JSON 日志 (4.4+) ：**
+
+### 日志未正确解析
+
+确认 MongoDB 是否输出 JSON 日志 (4.4+) ：
 
 ```bash
 tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
@@ -336,11 +341,11 @@ tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
 如果输出不是有效的 JSON，你的 MongoDB 版本可能使用的是旧版文本日志格式 (4.4 之前) 。你需要将 `json_parser` 运算符替换为 `regex_parser`，或者升级到 MongoDB 4.4+。
 
 
-## 后续步骤
+## 后续步骤 \{#verify-demo-logs\}
 
 * 为关键事件设置[告警](/use-cases/observability/clickstack/alerts) (如错误激增、慢查询阈值) 
 * 针对特定用例创建更多[仪表板](/use-cases/observability/clickstack/dashboards) (如副本集监控、连接跟踪)
 
-## 进入生产环境
+## 进入生产环境 \{#dashboards\}
 
 本指南基于 ClickStack 内置的 OpenTelemetry Collector，便于快速完成设置。对于生产部署，我们建议运行您自己的 OTel collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

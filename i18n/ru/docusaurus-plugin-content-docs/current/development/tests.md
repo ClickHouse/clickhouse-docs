@@ -9,6 +9,22 @@ doc_type: 'guide'
 
 # Проверка ClickHouse \{#testing-clickhouse\}
 
+## Типы тестов \{#test-types\}
+
+В ClickHouse есть следующие типы тестов:
+
+* [Функциональные тесты](#functional-tests) — набор запросов и скриптов, включающий следующие пересекающиеся подмножества
+  * [Быстрый тест](#running-fast-tests) — минимальное подмножество
+  * [Тесты без состояния](#running-stateless-tests), которые не требуют заполнения баз данных данными
+  * Последовательные тесты, которые нельзя запускать параллельно
+* [Интеграционные тесты](#integration-tests), запускаемые с помощью `pytest` в кластере
+* [Модульные тесты](#unit-tests)
+* [Тесты производительности](#performance-tests)
+* [Тесты сборки](#build-tests)
+* [Санитайзеры](#sanitizers)
+* [Фаззеры](#fuzzing)
+  и некоторые другие, см. разделы ниже.
+
 ## Функциональные тесты \{#functional-tests\}
 
 Функциональные тесты — наиболее простые и удобные в использовании.
@@ -48,14 +64,14 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 
 ### Запуск быстрых тестов \{#running-fast-tests\}
 
-Для запуска подмножества тестов (называемого «Fast test») может потребоваться достаточно мощная машина. Приведённые ниже шаги проверены на экземпляре `t3.2xlarge` AWS amd64 Ubuntu со 100 ГБ хранилища.
+Для запуска подмножества тестов (называемого "быстрый тест") может потребоваться достаточно мощная машина. Приведённые ниже шаги работают на экземпляре AWS `t3.2xlarge` amd64 Ubuntu со 100 ГБ хранилища.
 
 1. Установите необходимые зависимости и войдите в систему заново.
 
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 ```
 
 2. Получите исходный код.
@@ -65,10 +81,10 @@ git clone --single-branch https://github.com/ClickHouse/ClickHouse
 cd ClickHouse
 ```
 
-3. Соберите код и запустите подмножество тестов (называемое «Fast test»).
+3. Соберите код и запустите "быстрые тесты".
 
 ```sh
-python3 -m ci.praktika run "Fast test"
+python -m ci.praktika run fast
 ```
 
 В итоге вы должны получить
@@ -79,7 +95,6 @@ Failed: 0, Passed: 7394, Skipped: 1795
 
 Если вы планируете оставить выполнение без присмотра, вы можете использовать `nohup` или `disown`, чтобы процесс продолжал работать после разрыва `ssh`-подключения.
 
-
 ### Запуск stateless-тестов \{#running-stateless-tests\}
 
 Для запуска stateless-тестов потребуется достаточно мощная машина. Следующее работает на инстансе AWS `m7i.8xlarge` с архитектурой amd64 под управлением Ubuntu и 200 ГБ дискового пространства.
@@ -89,7 +104,7 @@ Failed: 0, Passed: 7394, Skipped: 1795
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 sudo tee /etc/docker/daemon.json <<'EOF'
 {
   "ipv6": true,
@@ -109,14 +124,14 @@ cd ClickHouse
 3. Соберите код.
 
 ```sh
-python3 -m ci.praktika run "Build (amd_debug)"
+python -m ci.praktika run build_debug
 cp ci/tmp/build/programs/clickhouse ci/tmp
 ```
 
 4. Запустите stateless-тесты, которые можно запускать параллельно.
 
 ```sh
-python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+python -m ci.praktika run functional
 ```
 
 В результате вы должны получить
@@ -124,6 +139,8 @@ python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
 ```sh
 Failed: 0, Passed: 8497, Skipped: 103
 ```
+
+Примечание. Вызовы `python -m ci.praktika run` запускают конкретное задание непрерывной интеграции; подробнее о ClickHouse CI можно прочитать [здесь](continuous-integration.md#running-stateless-tests).
 
 
 ### Добавление нового теста \{#adding-a-new-test\}
@@ -179,35 +196,28 @@ SELECT 1
 
 Список доступных тегов:
 
-| Tag name                          | Назначение                                                                        | Пример использования                                                |
-| --------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `disabled`                        | Тест не выполняется                                                               |                                                                     |
-| `long`                            | Время выполнения теста увеличивается с 1 до 10 минут                              |                                                                     |
-| `deadlock`                        | Тест запускается в цикле в течение длительного времени                            |                                                                     |
-| `race`                            | То же, что и `deadlock`. Предпочтителен `deadlock`                                |                                                                     |
-| `shard`                           | Требуется, чтобы сервер слушал `127.0.0.*`                                        |                                                                     |
-| `distributed`                     | То же, что и `shard`. Предпочтителен `shard`                                      |                                                                     |
-| `global`                          | То же, что и `shard`. Предпочтителен `shard`                                      |                                                                     |
-| `zookeeper`                       | Для выполнения теста требуется Zookeeper или ClickHouse Keeper                    | Тест использует `ReplicatedMergeTree`                               |
-| `replica`                         | То же, что и `zookeeper`. Предпочтителен `zookeeper`                              |                                                                     |
-| `no-fasttest`                     | Тест не выполняется в режиме [Fast test](continuous-integration.md#fast-test)     | Тест использует движок таблиц `MySQL`, который отключён в Fast test |
-| `fasttest-only`                   | Тест выполняется только в режиме [Fast test](continuous-integration.md#fast-test) |                                                                     |
-| `no-[asan, tsan, msan, ubsan]`    | Отключает тесты в сборке с [санитайзерами](#sanitizers)                           | Тест выполняется под QEMU, который не работает с санитайзерами      |
-| `no-replicated-database`          |                                                                                   |                                                                     |
-| `no-ordinary-database`            |                                                                                   |                                                                     |
-| `no-parallel`                     | Отключает параллельный запуск других тестов вместе с этим                         | Тест читает из таблиц `system`, и инварианты могут быть нарушены    |
-| `no-parallel-replicas`            |                                                                                   |                                                                     |
-| `no-debug`                        | Отключает тесты в сборках Debug                                                   |                                                                     |
-| `no-release`                      | Отключает тесты в сборках Release                                                 |                                                                     |
-| `no-stress`                       |                                                                                   |                                                                     |
-| `no-polymorphic-parts`            |                                                                                   |                                                                     |
-| `no-random-settings`              |                                                                                   |                                                                     |
-| `no-random-merge-tree-settings`   |                                                                                   |                                                                     |
-| `no-backward-compatibility-check` |                                                                                   |                                                                     |
-| `no-cpu-x86_64`                   |                                                                                   |                                                                     |
-| `no-cpu-aarch64`                  |                                                                                   |                                                                     |
-| `no-cpu-ppc64le`                  |                                                                                   |                                                                     |
-| `no-s3-storage`                   |                                                                                   |                                                                     |
+| Tag name                       | Назначение                                                                          | Пример использования                                                |
+| ------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `disabled`                     | Тест не выполняется                                                                 |                                                                     |
+| `long`                         | Время выполнения теста увеличивается с 1 до 10 минут                                |                                                                     |
+| `deadlock`                     | Тест запускается в цикле в течение длительного времени                              |                                                                     |
+| `race`                         | То же, что и `deadlock`. Предпочтителен `deadlock`                                  |                                                                     |
+| `shard`                        | Требуется, чтобы сервер слушал `127.0.0.*`                                          |                                                                     |
+| `distributed`                  | То же, что и `shard`. Предпочтителен `shard`                                        |                                                                     |
+| `global`                       | То же, что и `shard`. Предпочтителен `shard`                                        |                                                                     |
+| `zookeeper`                    | Для выполнения теста требуется Zookeeper или ClickHouse Keeper                      | Тест использует `ReplicatedMergeTree`                               |
+| `replica`                      | То же, что и `zookeeper`. Предпочтителен `zookeeper`                                |                                                                     |
+| `no-fasttest`                  | Тест не выполняется в режиме [Fast test](#test-types)                               | Тест использует движок таблиц `MySQL`, который отключён в Fast test |
+| `fasttest-only`                | Тест выполняется только в режиме [Fast test](#test-types)                           |                                                                     |
+| `no-[asan, tsan, msan, ubsan]` | Отключает тесты в сборке с [санитайзерами](#sanitizers)                             | Тест выполняется под QEMU, который не работает с санитайзерами      |
+| `no-replicated-database`       | Отключает тест, если база данных по умолчанию использует `ReplicatedDatabaseEngine` |                                                                     |
+| `no-ordinary-database`         | Отключает тест, если движок базы данных по умолчанию — `Ordinary`                   |                                                                     |
+| `no-parallel`                  | Отключает параллельный запуск других тестов вместе с этим                           | Тест читает из таблиц `system`, и инварианты могут быть нарушены    |
+| `no-parallel-replicas`         | Отключает тест, когда включены параллельные реплики                                 |                                                                     |
+| `no-debug`                     | Отключает тесты в сборках Debug                                                     |                                                                     |
+| `no-release`                   | Отключает тесты в сборках Release                                                   |                                                                     |
+
+Также поддерживаются следующие опции: `no-stress`, `no-polymorphic-parts`, `no-random-settings`, `no-random-merge-tree-settings`, `no-backward-compatibility-check`, `no-cpu-x86_64`, `no-cpu-aarch64`, `no-cpu-ppc64le`, `no-s3-storage`.
 
 В дополнение к приведённым выше настройкам вы можете использовать флаги `USE_*` из `system.build_options` для указания использования отдельных возможностей ClickHouse.
 Например, если ваш тест использует таблицу MySQL, вам следует добавить тег `use-mysql`.
@@ -336,11 +346,6 @@ $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 
 Есть отдельный тест для кворумных вставок.
 Он поднимает кластер ClickHouse на отдельных серверах и эмулирует различные варианты отказов: разделение сети, потерю пакетов (между узлами ClickHouse, между ClickHouse и ZooKeeper, между сервером ClickHouse и клиентом и т.д.), `kill -9`, `kill -STOP` и `kill -CONT`, аналогично [Jepsen](https://aphyr.com/tags/Jepsen). Затем тест проверяет, что все подтверждённые вставки были записаны, а все отклонённые — нет.
-
-Кворумный тест был написан отдельной командой до того, как ClickHouse стал открытым исходным кодом.
-Эта команда больше не работает с ClickHouse.
-Тест был случайно написан на Java.
-По этим причинам кворумный тест должен быть переписан и перенесён в интеграционные тесты.
 
 ## Ручное тестирование \{#manual-testing\}
 

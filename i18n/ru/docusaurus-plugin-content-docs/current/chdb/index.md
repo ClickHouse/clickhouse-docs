@@ -29,6 +29,12 @@ chDB — это быстрый встраиваемый in-process SQL OLAP‑д
 
 **НОВИНКА!** DataStore предоставляет совместимый с pandas API, который сочетает привычный синтаксис pandas с производительностью ClickHouse.
 
+:::tip Начало работы в Hex
+
+* 📖 <a href="https://app.hex.tech/partnerships/app/chDB-Tutorial-032XsQ4qoKtlXxcw49joav/latest" target="_blank"><b>Руководство по началу работы</b></a> — настройте первое подключение
+* 🚀 <a href="https://app.hex.tech/signup/clickhouse-30" target="_blank"><b>Расширенная 30-дневная пробная версия Hex</b></a> — полный доступ к интеграциям ClickHouse
+  :::
+
 ### Однострочная миграция \{#one-line-migration\}
 
 ```python
