@@ -39,7 +39,7 @@ _Fig. 1 - One Service in ClickHouse Cloud_
 
 Rather than having just one service, you could create multiple services that have access to the same shared storage, allowing you to dedicate resources to specific workloads without having to duplicate data. This concept is called **compute-compute separation**. 
 
-Compute-compute separation mean each service has its own set of replicas and endpoint, but use the same object storage folder and accesses the same tables, views, etc. This means you can choose the right size compute to your workload. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. 
+Compute-compute separation mean each service has its own set of replicas and endpoint, but use the same object storage folder and accesses the same tables, views, etc. This means you can choose the right size compute for your workload. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory on multiple replicas. 
 
 Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
@@ -85,7 +85,7 @@ _Fig. 4 - user Alice was created in Service 1, but she can use the same credenti
 
 ### Network access control {#network-access-control}
 
-It is often useful to restrict specific services from being used by other applications or ad-hoc users. This can be done by using network restrictions, similar to how it is configured currently for regular services (navigate to **Settings** in the service tab in the specific service in ClickHouse Cloud console).
+A way to restrict access to specific services is to use network restrictions, similar to how it is configured currently for standalone services (navigate to **Settings** in the service tab in the specific service in ClickHouse Cloud console). This is useful to limit usage to services by other applications or ad-hoc users.
 
 You can apply IP filtering setting to each service separately, which means you can control which application can access which service. This allows you to restrict users from using specific services:
 
@@ -95,11 +95,11 @@ You can apply IP filtering setting to each service separately, which means you c
 
 _Fig. 5 - Alice is restricted to access Service 2 because of the network settings_
 
-ClickHouse roles and grants can also be applied here to control access to the data when users are connecting as an individual (as opposed to the _default_ user)
+ClickHouse roles and grants can also be applied here to control access to the data when users are connecting as an individual (as opposed to the _default_ user). 
 
 ### Read vs read-write {#read-vs-read-write}
 
-Services can be either read-write or read only. Writing in this case refers to being able to write to ClickHouse. Both service types can read externally.  Sometimes it is useful to restrict write access to a specific service and allow writes to Clickhouse only by a subset of services in a warehouse. This can be done when creating the second and nth services (the first service should always be read-write):
+Services can be either **read-write** or **read=only**. Writing in this case refers to being able to write to ClickHouse. Both service types can write to external apps. Sometimes it is useful to restrict write access to a specific service and allow writes to Clickhouse only by a subset of services in a warehouse. This can be done when creating the second and nth services (the first service will always be read-write):
 
 <Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse"/>
 
@@ -108,9 +108,8 @@ Services can be either read-write or read only. Writing in this case refers to b
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
-1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
-2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. They're **not** executed on read-only (RO) services.
-3. Read-only services can still write externally, just not in ClickHouse. 
+1. Read-only services currently supports user management operations (create, drop, etc).
+2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. 
 :::
 
 ## Scaling {#scaling}
@@ -118,11 +117,13 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 Each service in a warehouse can be adjusted to your workload in terms of:
 - Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
 - Size of nodes (replicas)
-- If the service should scale automatically
+- If the service should scale automatically (horizontally and vertically)
 - If the service should be idled on inactivity
 
 ## Changes in behavior {#changes-in-behavior}
-Once compute-compute is enabled for a service (at least one secondary service was created), the `clusterAllReplicas()` function call with the `default` cluster name will utilize only replicas from the service where it was called. That means, if there are two services connected to the same dataset, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown. If needed, you can still call `clusterAllReplicas('all_groups.default', system, processes)` for example to reach all replicas.
+Once compute-compute is enabled for a service (at least one secondary service was created), the `clusterAllReplicas()` function call with the `default` cluster name will access replicas from the service where it was called. 
+If there are two services are in the same warehouse, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown. 
+You can still call `clusterAllReplicas('all_groups.default', system, processes)` to reach all replicas in the warehouse. 
 
 
 :::note
@@ -132,25 +133,35 @@ Child single services can scale vertically unlike single parent services.
 
 ## Limitations {#limitations}
 
-1. **Sometimes workloads can't be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be edge cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
+### Workload Isolation Limitations
 
-3. **All read-write services are doing background merge operations by default.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. 
-Note that read-only services don't execute background merges, thus they don't spend their resources on this operation. Our support does have the ability to turn off merges on a service. 
+ Some workloads can't be isolated to specific services; there are edge cases where one workload in one service will affect another service in the warehouse. These include:
 
-4. **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a RW service, all other RW services in the WH may perform reading data from S3 and writing data to the database.
+-  **All read-write services handle background merge operations by default.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. 
+Note that read-only services don't execute background merges, thus they don't spend their resources on this operation. Our support has the ability to turn off merges on a service.
 
-5. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** As a result, a second service performs background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services aren't affected and will be idled without delay.
+- **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a read/write service, all other read/write services on the warehouse may perform reading data from S3 and writing data to the database.
 
-6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
+- **Inserts on one read-write service can prevent another read-write service from idling if idling is enabled.** There are situations where
+ one service performs background merge operations for another service. Those background operations can prevent the second service from idling. Once the background operations are finished, the service will idled. Read-only services aren't affected.
+
+### Helpful Callouts {#callouts}
+
+- **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level.
+
+For example:
 
 ```sql
 CREATE DATABASE db_test_ddl_single_query_setting
 SETTINGS distributed_ddl_task_timeout=0
 ```
+If you manually stop a service you will need to start it up again in order for queries to be executed. 
 
-7. **Currently there is a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
+- **Currently there is a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
 
-8. **Primary services cannot have only one replica** While secondary services can have one replica, the primary service must have at least 2. 
+- **Primary services cannot have only one replica** While secondary services can have one replica, the primary service must have at least 2. 
+
+- **Primary service idling** Today, the default behavior is that the primary service cannot auto-idling. It is disabled once the secondary service is created. To enable this, contact support to enable parent service idling. Parent service auto-idling will be enabled by default in Q2 2026 (existing services will have access to the feature, new services will have it enabled by default). 
 
 ## Pricing {#pricing}
 
@@ -163,7 +174,7 @@ Please refer to the pricing calculator on the [pricing](https://clickhouse.com/p
 - As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.
 - If you restore a backup from a primary service of a warehouse, it will be restored to a completely new service, not connected to the existing warehouse. You can then add more services to the new service immediately after the restore is finished.
 
-## Using warehouses {#using-warehouses}
+## How to set up a warehouse {#setup-warehouses}
 
 ### Creating a warehouse {#creating-a-warehouse}
 
