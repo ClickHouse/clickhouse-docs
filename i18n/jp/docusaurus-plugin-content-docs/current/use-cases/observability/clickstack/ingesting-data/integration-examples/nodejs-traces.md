@@ -19,19 +19,10 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack による Node.js トレースの監視 \{#nodejs-traces-clickstack\}
+# ClickStack による Node.js アプリケーション・トレースの監視 \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
-このガイドでは、Node.js アプリケーションから分散トレースを収集し、OpenTelemetry の自動インストゥルメンテーションを使用して ClickStack 上で可視化する方法を説明します。以下の内容を学びます:
-
-- 自動インストゥルメンテーション付きで Node.js 用の OpenTelemetry をインストールおよび構成する方法
-- ClickStack の OTLP エンドポイントへトレースを送信する方法
-- HyperDX 上でトレースが表示されていることを確認する方法
-- アプリケーションパフォーマンスを可視化するために、あらかじめ用意されたダッシュボードを利用する方法
-
-本番アプリケーションを計測する前に統合をテストしたい場合のために、サンプルトレースを含むデモ用データセットが用意されています。
-
-所要時間: 10〜15 分
+自動インストルメンテーションを使用して、Node.js アプリケーションの分散トレースを ClickStack で収集します。デモ用データセットと、あらかじめ用意されたダッシュボードが含まれています。
 :::
 
 ## 既存の Node.js アプリケーションとの統合 \{#existing-nodejs\}
@@ -238,10 +229,8 @@ OTLP エンドポイントに正常に接続できるはずです。
 
 ## 次のステップ \{#next-steps\}
 
-さらに活用したい場合は、ダッシュボードで次のようなことを試してみてください。
-
-- 重要なメトリクス（エラー率、レイテンシーのしきい値）向けに[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- 特定のユースケース（API モニタリング、セキュリティイベント）向けの追加ダッシュボードを作成する
+* 重要なメトリクス (エラー率、レイテンシーのしきい値) 向けに[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* 特定のユースケース (API モニタリング、セキュリティイベント) 向けの追加ダッシュボードを作成する
 
 ## 本番運用への移行 \{#going-to-production\}
 
