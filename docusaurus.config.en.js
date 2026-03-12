@@ -146,6 +146,12 @@ const config = {
                 "https://github.com/ClickHouse/ClickHouse/tree/master/docs/en/" +
                 docPath
               );
+            } else if (docPath.startsWith("kubernetes-operator/")) {
+              const operatorPath = docPath.replace("kubernetes-operator/", "");
+              return (
+                "https://github.com/ClickHouse/clickhouse-operator/blob/main/docs/" +
+                operatorPath
+              );
             } else {
               return (
                 "https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/" +
