@@ -21,18 +21,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickStack로 호스트 로그 모니터링하기 \{#host-logs-clickstack\}
+# ClickStack를 사용한 호스트 로그 모니터링 \{#host-logs-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry collector를 구성하여 systemd, 커널(kernel), SSH, cron 및 기타 시스템 서비스의 로그를 수집함으로써 ClickStack으로 호스트 시스템 로그를 모니터링하는 방법을 설명합니다. 다음 내용을 학습하게 됩니다:
-
-- OTel collector가 시스템 로그 파일을 읽도록 구성하는 방법
-- 사용자 정의 구성을 적용하여 ClickStack을 배포하는 방법
-- 미리 준비된 대시보드를 사용해 호스트 로그 인사이트(오류, 경고, 서비스 활동)를 시각화하는 방법
-
-운영 환경 호스트를 구성하기 전에 통합을 테스트하려는 경우, 샘플 로그가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 5~10분
+:::note[TL;DR]
+OTel `filelog` receiver를 사용해 ClickStack에서 호스트 시스템 로그(syslog, auth, kernel)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 호스트와의 통합 \{#existing-hosts\}
@@ -484,14 +476,12 @@ tail -5 /var/log/system.log
 사용 중인 형식이 여기와 다르다면 [Create custom OTel collector configuration](#custom-otel) 섹션에서 해당 형식에 맞는 설정 탭을 선택하십시오.
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-호스트 로그 모니터링을 설정한 후에는 다음 작업을 수행할 수 있습니다.
-
-- 중요한 시스템 이벤트(서비스 장애, 인증 실패, 디스크 경고)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
-- 특정 단위별로 필터링하여 개별 서비스를 모니터링합니다.
-- 포괄적인 문제 해결을 위해 호스트 로그와 애플리케이션 로그를 연관시킵니다.
-- 보안 관측을 위한 맞춤 대시보드(SSH 시도, sudo 사용, 방화벽 차단 등)를 생성합니다.
+* 중요한 시스템 이벤트(서비스 장애, 인증 실패, 디스크 경고)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
+* 특정 단위별로 필터링하여 개별 서비스를 모니터링합니다.
+* 포괄적인 문제 해결을 위해 호스트 로그와 애플리케이션 로그를 연관시킵니다.
+* 보안 관측을 위한 맞춤 대시보드(SSH 시도, sudo 사용, 방화벽 차단 등)를 생성합니다.
 
 ## 프로덕션 환경으로 이전하기 {#going-to-production}
 

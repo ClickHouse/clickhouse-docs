@@ -17,18 +17,10 @@ import example_dashboard from '@site/static/images/clickstack/redis-metrics-dash
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 Redis 메트릭 모니터링하기 \{#redis-metrics-clickstack\}
+# ClickStack를 사용한 Redis 메트릭 모니터링 \{#redis-metrics-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry collector의 Redis receiver를 구성하여 ClickStack을 사용해 Redis 성능 메트릭을 모니터링하는 방법을 설명합니다. 다음 내용을 알 수 있습니다:
-
-- Redis 메트릭을 수집하도록 OTel collector를 구성하는 방법
-- 사용자 정의 구성을 적용하여 ClickStack을 배포하는 방법
-- 미리 만들어진 대시보드를 사용해 Redis 성능(초당 명령 수, 메모리 사용량, 연결된 클라이언트 수, 캐시 성능)을 시각화하는 방법
-
-운영 환경 Redis를 구성하기 전에 통합을 미리 테스트해 보고자 하는 경우, 샘플 메트릭이 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 약 5~10분
+:::note[TL;DR]
+OTel Redis receiver를 사용해 ClickStack에서 Redis 성능 메트릭을 모니터링합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Redis와의 통합 \{#existing-redis\}
@@ -420,10 +412,12 @@ docker exec <clickstack-container> telnet redis 6379
 Docker Compose 파일 또는 `docker run` 명령에서 두 컨테이너가 동일한 네트워크를 사용하도록 구성하십시오.
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-추가로 살펴보고 싶다면, 모니터링을 활용해 다음과 같은 작업을 시도해 보십시오.
+* 중요한 메트릭(메모리 사용량 임계값, 연결 제한, 캐시 적중률 하락)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오.
+* 특정 사용 사례(복제 지연, 지속성 성능)를 위한 추가 대시보드를 생성하십시오.
+* 서로 다른 엔드포인트와 서비스 이름으로 receiver 구성을 복사하여 여러 Redis 인스턴스를 모니터링하십시오.
 
-- 중요한 메트릭(메모리 사용량 임계값, 연결 제한, 캐시 적중률 하락)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오.
-- 특정 사용 사례(복제 지연, 지속성 성능)를 위한 추가 대시보드를 생성하십시오.
-- 서로 다른 엔드포인트와 서비스 이름으로 receiver 구성을 복사하여 여러 Redis 인스턴스를 모니터링하십시오.
+## 프로덕션 환경으로 전환하기 \{#troubleshooting\}
+
+이 가이드는 빠르게 설정할 수 있도록 ClickStack에 내장된 OpenTelemetry Collector를 확장합니다. 프로덕션 환경에 배포할 때는 자체 OTel collector를 실행하고 데이터를 ClickStack의 OTLP 엔드포인트로 전송하는 것을 권장합니다. 프로덕션 구성은 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.

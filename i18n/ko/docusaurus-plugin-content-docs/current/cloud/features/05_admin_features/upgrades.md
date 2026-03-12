@@ -110,28 +110,28 @@ Basic 티어 서비스는 Fast 릴리스 채널 이후 곧 업그레이드됩니
 - 더 느린 채널로 이동해도 서비스가 다운그레이드되지는 않으며, 해당 채널에서 더 새로운 버전이 제공될 때까지 현재 버전으로 유지됩니다. 예: Regular → Slow, Fast → Regular 또는 Slow
 :::
 
-## 예약된 업그레이드 \{#scheduled-upgrades\}
+## 예약 업그레이드 \{#scheduled-upgrades\}
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
 
-Enterprise 티어에 속한 서비스에 대해 업그레이드 시간대를 구성할 수 있습니다.
+Enterprise 티어의 서비스에 대해 업그레이드 시간대를 구성할 수 있습니다.
 
-업그레이드를 예약하려는 서비스를 선택한 후, 왼쪽 메뉴에서 `Settings`를 선택하십시오. 아래로 스크롤하여 `Scheduled upgrades`를 찾습니다.
+업그레이드 일정을 지정하려는 서비스를 선택한 다음, 왼쪽 메뉴에서 `Settings`를 선택합니다. 아래로 스크롤하여 `Scheduled upgrades`로 이동합니다.
 
 <div class="eighty-percent">
-    <Image img={scheduled_upgrades} size="lg" alt="예약된 업그레이드" border/>
+    <Image img={scheduled_upgrades} size="lg" alt="Scheduled upgrades" border/>
 </div>
 
 <br/>
 
-이 옵션을 선택하면 데이터베이스 및 Cloud 업그레이드를 위한 요일과 시간대를 선택할 수 있습니다.
+이 옵션을 선택하면 데이터베이스 및 클라우드 업그레이드의 요일/시간대를 선택할 수 있습니다.
 
 <div class="eighty-percent">
-    <Image img={scheduled_upgrade_window} size="lg" alt="예약된 업그레이드 시간대" border/>
+    <Image img={scheduled_upgrade_window} size="lg" alt="Scheduled upgrade window" border/>
 </div>
 
 <br/>
 
 :::note
-예약된 업그레이드는 정의된 일정에 따라 진행되지만, 중요한 보안 패치 및 취약점 수정에는 예외가 적용됩니다. 긴급한 보안 문제가 발견된 경우, 예약된 시간대 외에 업그레이드가 수행될 수 있습니다. 이러한 예외가 발생하는 경우 필요에 따라 고객에게 별도로 안내됩니다.
+예약 업그레이드는 정의된 일정에 따라 진행되지만, 중요한 보안 패치 및 취약점 수정과 잠재적인 문제가 데이터 손상 또는 데이터 손실로 이어질 수 있는 시나리오에는 예외가 적용됩니다. 긴급한 보안 문제가 식별되는 경우에는 예약된 시간대 외에 업그레이드가 수행될 수 있습니다. 이러한 예외 사항은 필요한 경우 고객에게 안내됩니다.
 :::
