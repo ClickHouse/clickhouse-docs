@@ -25,6 +25,12 @@ import dashboard_edit from '@site/static/images/use-cases/observability/hyperdx-
 import dashboard_clickhouse from '@site/static/images/use-cases/observability/hyperdx-dashboard-clickhouse.png';
 import dashboard_services from '@site/static/images/use-cases/observability/hyperdx-dashboard-services.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
+import edit_filters from '@site/static/images/clickstack/dashboards/edit-filters.png';
+import add_filter from '@site/static/images/clickstack/dashboards/add-filter.png';
+import saved_filters from '@site/static/images/clickstack/dashboards/saved-filters.png';
+import filtered_dashboard from '@site/static/images/clickstack/dashboards/filtered-dashboard.png';
+import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
+import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
@@ -169,6 +175,57 @@ Dashboards are accessible from the left-hand menu, with built-in search to quick
 
 ## Dashboards - Tagging {#tagging}
 <Tagging />
+
+## Custom filters {#custom-filters}
+
+In addition to the [free-text filters](#filter-dashboards) available on all dashboards, saved dashboards support custom dropdown filters populated by data queried from ClickHouse. These provide reusable, point-and-click filter controls so that dashboard viewers can filter without writing expressions manually.
+
+<Image img={filter_dropdown} alt="Services dropdown filter showing available service names" size="lg"/>
+
+The following steps demonstrate adding a custom filter to the dashboard created in the ["Creating dashboards"](#creating-dashboards) section.
+
+<VerticalStepper headerLevel="h3">
+
+### Open the Edit Filters dialog {#open-edit-filters}
+
+Open a saved dashboard and select **Edit Filters** from the toolbar.
+
+<Image img={edit_filters} alt="Edit Filters button in the dashboard toolbar" size="lg"/>
+
+### Add a new filter {#add-new-filter}
+
+Click **Add new filter**. Configure the filter by providing a **Name**, selecting a **Data source**, and entering a **Filter expression** — a SQL column or expression whose distinct values will populate the dropdown. Click **Save filter**.
+
+For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source.
+
+<Image img={add_filter} alt="Add filter dialog with Name, Data source, and Filter expression fields" size="md"/>
+
+The Filters modal shows all configured filters for the dashboard. From here you can edit or delete existing filters, or add additional ones.
+
+<Image img={saved_filters} alt="Filters modal showing a configured Services filter" size="md"/>
+
+### Use the filter {#use-filter}
+
+Close the Filters modal. The new dropdown filter appears below the search bar. Click it to see the available values, then select one to filter all visualizations on the dashboard.
+
+<Image img={filtered_dashboard} alt="Dashboard filtered to the frontend service" size="lg"/>
+
+</VerticalStepper>
+
+:::note
+Custom dropdown filters are available on saved dashboards. For an example of this pattern in action, see the [Kubernetes dashboard](#kubernetes-dashboard), which provides built-in dropdown filters for Pod, Deployment, Node name, Namespace, and Cluster.
+:::
+
+## Drilldown to search {#drilldown-to-search}
+
+Dashboard tiles support drilldown to the Search page. Click on a data point in a visualization to open a context menu with the following options:
+
+- **View All Events** — navigates to the Search page showing all events from the selected time window.
+- **Filter by group** — navigates to the Search page filtered to a specific series.
+
+<Image img={drilldown} alt="Drilldown context menu showing View All Events and Filter by group options" size="lg"/>
+
+This is useful for investigating specific spikes or anomalies spotted in a dashboard — you can quickly pivot from an aggregated view to the underlying individual events.
 
 ## Presets {#presets}
 
