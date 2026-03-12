@@ -210,18 +210,19 @@ SELECT tokens('abc def', 'ngrams', 3);
 Preprocessor 参数的典型用例包括：
 
 
-1. 转换为小写或大写以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（见下方第一个示例）。
+1. 转换为小写/大写，或进行大小写折叠以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)。
+3. 删除或转换不需要的字符或子串，例如重音符号等，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)、[removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8)。
 
 预处理器表达式必须将类型为 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 的输入值转换为相同类型的值。
-如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值（即不会抛出异常）。
+如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值 (即不会抛出异常) 。
 
 示例：
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 此外，预处理器表达式必须只能引用定义该文本索引所基于的列或表达式。
 
@@ -286,6 +287,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 示例：
 
+
 ```sql
 CREATE TABLE table
 (
@@ -298,8 +300,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**其他参数（可选）**。
-
+**其他参数 (可选)&#x20;**。
 
 <details markdown="1">
   <summary>可选高级参数</summary>
@@ -307,21 +308,21 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
   以下高级参数的默认值在几乎所有场景下都能很好地工作。
   我们不建议修改它们。
 
-  可选参数 `dictionary_block_size`（默认值：512）指定字典块的大小（以行数计）。
+  可选参数 `dictionary_block_size` (默认值：512) 指定字典块的大小 (以行数计) 。
 
-  可选参数 `dictionary_block_frontcoding_compression`（默认值：1）指定字典块是否使用 front coding 作为压缩方式。
+  可选参数 `dictionary_block_frontcoding_compression` (默认值：1) 指定字典块是否使用 front coding 作为压缩方式。
 
-  可选参数 `posting_list_block_size`（默认值：1048576）指定倒排列表（posting list）块的大小（以行数计）。
+  可选参数 `posting_list_block_size` (默认值：1048576) 指定倒排列表 (posting list) 块的大小 (以行数计) 。
 
-  可选参数 `posting_list_codec`（默认值：`none）指定倒排列表使用的编解码器：
+  可选参数 `posting_list_codec` (默认值：`none) 指定倒排列表使用的编解码器：
 
   * `none` - 倒排列表在存储时不进行额外压缩。
-  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。会减慢 SELECT 查询的速度，目前不推荐使用。
+  * `bitpacking` - 先应用[差分 (delta) 编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (均在固定大小的块内完成) 。会减慢 SELECT 查询的速度，目前不推荐使用。
 </details>
 
 *索引粒度。*
 文本索引在 ClickHouse 内部实现为一种[跳过索引](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types)类型。
-但是，与其他跳过索引不同，文本索引使用“无限粒度”（1 亿）。
+但是，与其他跳过索引不同，文本索引使用“无限粒度” (1 亿) 。
 这一点可以从文本索引的表定义中看出。
 
 示例：

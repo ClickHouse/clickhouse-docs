@@ -22,16 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 # ClickStack による systemd ログの監視 \{#systemd-logs-clickstack\}
 
-:::note[要約]
-このガイドでは、OpenTelemetry Collector を journald receiver とともに実行することで、ClickStack を使って systemd ジャーナルログを監視する方法を説明します。次のことを学びます。
-
-- OpenTelemetry Collector をデプロイして systemd ジャーナルエントリを読み取る
-- OTLP 経由で systemd ログを ClickStack に送信する
-- あらかじめ用意されたダッシュボードを使って、systemd ログから得られるインサイト (サービスの状態、エラー、認証イベント) を可視化する
-
-本番システムを構成する前に統合をテストしたい場合のために、サンプルログを含むデモデータセットも用意されています。
-
-所要時間: 10〜15分
+:::note[TL;DR]
+OpenTelemetry コレクターの journald receiver を使用して、ClickStack で systemd ジャーナルログを収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存システムとの統合 \{#existing-systems\}
@@ -365,6 +357,12 @@ otelcol-contrib --config=otel-config.yaml
 
 2. **テキストエクスポート方式を使用する**（デモと同様）。`filelog` receiver で journald のテキストエクスポートを読み取る
 
+
+## 次のステップ \{#next-steps\}
+
+* 重要なシステムイベント (サービス障害、認証失敗、OOM kill) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定します
+* 特定のユースケース (SSH セキュリティ監視、サービスの健全性) 向けに、追加の[ダッシュボード](/use-cases/observability/clickstack/dashboards)を作成します
+* 特定の systemd ユニットでフィルタリングしてノイズを減らし、重要なサービスに集中します
 
 ## 本番環境での運用 \{#going-to-production\}
 

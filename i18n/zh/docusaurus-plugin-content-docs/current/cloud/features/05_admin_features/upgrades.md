@@ -113,21 +113,24 @@ Basic 等级服务会在快速发布通道之后不久进行升级。
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
 
-用户可以为 Enterprise 级别的服务配置升级时间窗口。
+您可以为 Enterprise 等级的服务配置升级时间窗口。
 
-选择你希望设置计划升级的服务，然后在左侧菜单中选择 `Settings`。向下滚动到 `Scheduled upgrades`。
+选择您希望指定计划升级的服务，然后从左侧菜单中选择 `Settings`。向下滚动到 `Scheduled upgrades`。
 
 <div class="eighty-percent">
     <Image img={scheduled_upgrades} size="lg" alt="计划升级" border/>
 </div>
+
 <br/>
 
-选择此选项后，用户可以为数据库和云服务升级选择一周中的日期和时间窗口。
+选择此选项后，您可以为数据库和云服务升级选择一周中的日期/时间窗口。
 
 <div class="eighty-percent">
     <Image img={scheduled_upgrade_window} size="lg" alt="计划升级时间窗口" border/>
 </div>
+
 <br/>
+
 :::note
-虽然计划升级会遵循已定义的时间表，但关键安全补丁和漏洞修复可能会例外。当发现紧急安全问题时，升级可能在计划时间窗口之外执行。如有必要，我们会就此类例外情况通知客户。
+虽然计划升级会遵循已定义的时间表，但关键安全补丁和漏洞修复，以及潜在可能导致数据损坏或数据丢失的情形，均适用例外情况。在发现紧急安全问题时，升级可能会在计划时间窗口之外执行。客户将在必要时收到有关此类例外情况的通知。
 :::
