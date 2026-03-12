@@ -346,6 +346,10 @@ We only utilize service provider-initiated SSO. This means users go to `https://
 
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud/?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 
+:::note
+If you do not want users with your company's domain to be directed to an organization when they enter an email address at https://console.clickhouse.cloud, submit a support ticket to manually update your SSO settings to remove this behavior.
+:::
+
 ## Additional information {#additional-information}
 
 Security is our top priority when it comes to authentication. For this reason, we made a few decisions when implementing SSO that we need you to know.
