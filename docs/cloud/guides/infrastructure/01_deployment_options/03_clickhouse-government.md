@@ -49,4 +49,3 @@ ClickHouse Government is currently supported in the following configurations:
 ## Onboarding process {#onboarding-process}
 
 Customers may [contact us](https://clickhouse.com/company/contact?loc=nav) to request a call to review ClickHouse Government for their use case. Use cases meeting minimum size requirements and deployed to supported configurations will be reviewed. Onboarding is limited. The installation process involves following an install guide for the specific environment where ClickHouse will be deployed using images and Helm charts downloaded from AWS ECR.
-
