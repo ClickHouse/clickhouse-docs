@@ -1,9 +1,9 @@
 ---
 sidebar_label: '개요'
 slug: /migrations/elastic-overview
-description: 'Snowflake에서 ClickHouse로 이전'
-keywords: ['Snowflake']
-title: 'Snowflake에서 ClickHouse로 이전'
+description: 'Elasticsearch에서 ClickHouse로 마이그레이션'
+keywords: ['Elasticsearch']
+title: 'Elasticsearch에서 ClickHouse로 마이그레이션'
 show_related_blogs: true
 doc_type: 'landing-page'
 ---

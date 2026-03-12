@@ -9,6 +9,22 @@ doc_type: 'guide'
 
 # ClickHouse 테스트 \{#testing-clickhouse\}
 
+## 테스트 유형 \{#test-types\}
+
+ClickHouse에는 다음과 같은 테스트가 있습니다:
+
+- [기능 테스트](#functional-tests) - 다음과 같은 서로 일부가 겹치는 하위 집합을 포함하는 쿼리 및 스크립트 모음
+  - [빠른 테스트](#running-fast-tests) - 가장 작은 하위 집합
+  - 데이터를 데이터베이스에 채울 필요가 없는 [상태 비저장 테스트](#running-stateless-tests)
+  - 병렬로 실행할 수 없는 순차 테스트
+- 클러스터에서 `pytest`로 실행되는 [통합 테스트](#integration-tests)
+- [단위 테스트](#unit-tests)
+- [성능 테스트](#performance-tests)
+- [빌드 테스트](#build-tests)
+- [Sanitizers](#sanitizers)
+- [퍼저](#fuzzing)
+그 밖의 몇 가지 테스트도 있으며, 아래 섹션을 참조하십시오.
+
 ## Functional tests \{#functional-tests\}
 
 기능 테스트는 가장 단순하면서도 사용하기 편리한 테스트입니다.
@@ -48,14 +64,14 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 
 ### 빠른 테스트 실행 \{#running-fast-tests\}
 
-일부 테스트 하위 집합(이하 「Fast test」)을 실행하려면 상당한 성능의 머신이 필요할 수 있습니다. 다음 예시는 100 GB 스토리지가 있는 `t3.2xlarge` AWS amd64 Ubuntu 인스턴스에서 동작합니다.
+일부 테스트 하위 집합(이를 "빠른 테스트"라고 함)을 실행하려면 상당한 성능의 머신이 필요할 수 있습니다. 다음은 100 GB 스토리지가 있는 `t3.2xlarge` AWS amd64 Ubuntu 인스턴스에서 동작합니다.
 
 1. 필수 구성 요소를 설치한 후 다시 로그인합니다.
 
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 ```
 
 2. 소스 코드를 가져옵니다.
@@ -65,10 +81,10 @@ git clone --single-branch https://github.com/ClickHouse/ClickHouse
 cd ClickHouse
 ```
 
-3. 코드를 빌드하고 「Fast test」라는 이름의 일부 테스트를 실행합니다.
+3. 코드를 빌드하고 "빠른 테스트"를 실행합니다.
 
 ```sh
-python3 -m ci.praktika run "Fast test"
+python -m ci.praktika run fast
 ```
 
 다음과 같은 결과가 표시되어야 합니다.
@@ -77,8 +93,7 @@ python3 -m ci.praktika run "Fast test"
 Failed: 0, Passed: 7394, Skipped: 1795
 ```
 
-실행을 계속 지켜보지 않을 때에는 `ssh` 연결이 끊어진 뒤에도 계속 실행되도록 `nohup` 또는 `disown`을 사용할 수 있습니다.
-
+실행을 계속 지켜보지 않을 경우 `ssh` 연결이 끊어진 뒤에도 계속 실행되도록 `nohup` 또는 `disown`을 사용할 수 있습니다.
 
 ### 상태 비저장 테스트 실행 \{#running-stateless-tests\}
 
@@ -89,7 +104,7 @@ Failed: 0, Passed: 7394, Skipped: 1795
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 sudo tee /etc/docker/daemon.json <<'EOF'
 {
   "ipv6": true,
@@ -109,14 +124,14 @@ cd ClickHouse
 3. 코드를 빌드합니다.
 
 ```sh
-python3 -m ci.praktika run "Build (amd_debug)"
+python -m ci.praktika run build_debug
 cp ci/tmp/build/programs/clickhouse ci/tmp
 ```
 
 4. 병렬로 실행할 수 있는 stateless 테스트를 수행합니다.
 
 ```sh
-python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+python -m ci.praktika run functional
 ```
 
 다음과 같은 결과가 출력됩니다
@@ -124,6 +139,8 @@ python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
 ```sh
 Failed: 0, Passed: 8497, Skipped: 103
 ```
+
+참고. `python -m ci.praktika run` 호출은 특정 CI 작업을 실행합니다. ClickHouse CI에 관한 자세한 내용은 [여기](continuous-integration.md#running-stateless-tests)에서 확인할 수 있습니다.
 
 
 ### 새 테스트 추가하기 \{#adding-a-new-test\}
@@ -179,35 +196,28 @@ SELECT 1
 
 사용 가능한 태그 목록:
 
-| Tag name                          | What it does                                                      | Usage example                                       |
-| --------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------- |
-| `disabled`                        | 테스트가 실행되지 않습니다                                                    |                                                     |
-| `long`                            | 테스트 실행 시간이 1분에서 10분으로 늘어납니다                                       |                                                     |
-| `deadlock`                        | 테스트를 오랜 시간 루프로 실행합니다                                              |                                                     |
-| `race`                            | `deadlock`과 동일합니다. `deadlock` 사용을 권장합니다                           |                                                     |
-| `shard`                           | 서버가 `127.0.0.*`에서 수신하도록 설정되어야 합니다                                 |                                                     |
-| `distributed`                     | `shard`와 동일합니다. `shard` 사용을 권장합니다                                 |                                                     |
-| `global`                          | `shard`와 동일합니다. `shard` 사용을 권장합니다                                 |                                                     |
-| `zookeeper`                       | 테스트 실행에 Zookeeper 또는 ClickHouse Keeper가 필요합니다                     | 테스트에서 `ReplicatedMergeTree`를 사용합니다                  |
-| `replica`                         | `zookeeper`와 동일합니다. `zookeeper` 사용을 권장합니다                         |                                                     |
-| `no-fasttest`                     | [Fast test](continuous-integration.md#fast-test)에서 테스트를 실행하지 않습니다 | 테스트에서 Fast test에서 비활성화된 `MySQL` table engine을 사용합니다 |
-| `fasttest-only`                   | [Fast test](continuous-integration.md#fast-test)에서만 테스트를 실행합니다    |                                                     |
-| `no-[asan, tsan, msan, ubsan]`    | [sanitizers](#sanitizers)로 빌드된 환경에서 테스트를 비활성화합니다                  | 테스트가 sanitizers와 호환되지 않는 QEMU에서 실행됩니다               |
-| `no-replicated-database`          |                                                                   |                                                     |
-| `no-ordinary-database`            |                                                                   |                                                     |
-| `no-parallel`                     | 이 테스트와 다른 테스트를 병렬로 실행하는 것을 비활성화합니다                                | 테스트가 `system` 테이블에서 읽기를 수행하며, 불변 조건이 깨질 수 있습니다      |
-| `no-parallel-replicas`            |                                                                   |                                                     |
-| `no-debug`                        | Debug 빌드에서 테스트를 비활성화합니다                                           |                                                     |
-| `no-release`                      | Release 빌드에서 테스트를 비활성화합니다                                         |                                                     |
-| `no-stress`                       |                                                                   |                                                     |
-| `no-polymorphic-parts`            |                                                                   |                                                     |
-| `no-random-settings`              |                                                                   |                                                     |
-| `no-random-merge-tree-settings`   |                                                                   |                                                     |
-| `no-backward-compatibility-check` |                                                                   |                                                     |
-| `no-cpu-x86_64`                   |                                                                   |                                                     |
-| `no-cpu-aarch64`                  |                                                                   |                                                     |
-| `no-cpu-ppc64le`                  |                                                                   |                                                     |
-| `no-s3-storage`                   |                                                                   |                                                     |
+| Tag name                       | What it does                                              | Usage example                                       |
+| ------------------------------ | --------------------------------------------------------- | --------------------------------------------------- |
+| `disabled`                     | 테스트가 실행되지 않습니다                                            |                                                     |
+| `long`                         | 테스트 실행 시간이 1분에서 10분으로 늘어납니다                               |                                                     |
+| `deadlock`                     | 테스트를 오랜 시간 루프로 실행합니다                                      |                                                     |
+| `race`                         | `deadlock`과 동일합니다. `deadlock` 사용을 권장합니다                   |                                                     |
+| `shard`                        | 서버가 `127.0.0.*`에서 수신하도록 설정되어야 합니다                         |                                                     |
+| `distributed`                  | `shard`와 동일합니다. `shard` 사용을 권장합니다                         |                                                     |
+| `global`                       | `shard`와 동일합니다. `shard` 사용을 권장합니다                         |                                                     |
+| `zookeeper`                    | 테스트 실행에 Zookeeper 또는 ClickHouse Keeper가 필요합니다             | 테스트에서 `ReplicatedMergeTree`를 사용합니다                  |
+| `replica`                      | `zookeeper`와 동일합니다. `zookeeper` 사용을 권장합니다                 |                                                     |
+| `no-fasttest`                  | [Fast test](#test-types)에서 테스트를 실행하지 않습니다                 | 테스트에서 Fast test에서 비활성화된 `MySQL` table engine을 사용합니다 |
+| `fasttest-only`                | [Fast test](#test-types)에서만 테스트를 실행합니다                    |                                                     |
+| `no-[asan, tsan, msan, ubsan]` | [sanitizers](#sanitizers)로 빌드된 환경에서 테스트를 비활성화합니다          | 테스트가 sanitizers와 호환되지 않는 QEMU에서 실행됩니다               |
+| `no-replicated-database`       | 기본 데이터베이스가 `ReplicatedDatabaseEngine`를 사용할 때 테스트를 비활성화합니다 |                                                     |
+| `no-ordinary-database`         | 기본 데이터베이스 엔진이 `Ordinary`일 때 테스트를 비활성화합니다                  |                                                     |
+| `no-parallel`                  | 이 테스트와 다른 테스트를 병렬로 실행하는 것을 비활성화합니다                        | 테스트가 `system` 테이블에서 읽기를 수행하며, 불변 조건이 깨질 수 있습니다      |
+| `no-parallel-replicas`         | 병렬 레플리카가 활성화된 경우 테스트를 비활성화합니다                             |                                                     |
+| `no-debug`                     | Debug 빌드에서 테스트를 비활성화합니다                                   |                                                     |
+| `no-release`                   | Release 빌드에서 테스트를 비활성화합니다                                 |                                                     |
+
+다음 옵션도 지원됩니다: `no-stress`, `no-polymorphic-parts`, `no-random-settings`, `no-random-merge-tree-settings`, `no-backward-compatibility-check`, `no-cpu-x86_64`, `no-cpu-aarch64`, `no-cpu-ppc64le`, `no-s3-storage`.
 
 위 태그들 외에도, 특정 ClickHouse 기능의 사용 여부를 정의하기 위해 `system.build_options`의 `USE_*` 플래그를 사용할 수 있습니다.
 예를 들어, 테스트에서 `MySQL` 테이블을 사용하는 경우 `use-mysql` 태그를 추가해야 합니다.
@@ -336,11 +346,6 @@ $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 
 쿼럼 INSERT에 대한 별도의 테스트가 있습니다.
 이 테스트는 별도의 서버에서 ClickHouse 클러스터를 실행하고, 다양한 장애 상황을 에뮬레이트합니다. 예를 들어 네트워크 분할, 패킷 드롭(ClickHouse 노드 간, ClickHouse와 ZooKeeper 간, ClickHouse 서버와 클라이언트 간 등), `kill -9`, `kill -STOP`, `kill -CONT` 등을 [Jepsen](https://aphyr.com/tags/Jepsen)과 유사한 방식으로 수행합니다. 그런 다음 테스트는 성공한 INSERT가 모두 기록되었고, 거부된 INSERT는 기록되지 않았는지 확인합니다.
-
-쿼럼 테스트는 ClickHouse가 오픈 소스로 공개되기 전에 별도의 팀이 작성했습니다.
-이 팀은 더 이상 ClickHouse에서 일하지 않습니다.
-테스트는 우연히 Java로 작성되었습니다.
-이러한 이유로, 쿼럼 테스트는 다시 작성하여 통합 테스트로 옮겨야 합니다.
 
 ## 수동 테스트 \{#manual-testing\}
 
