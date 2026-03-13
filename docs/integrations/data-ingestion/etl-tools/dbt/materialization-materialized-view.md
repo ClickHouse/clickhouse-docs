@@ -14,7 +14,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-A `materialized_view` materialization should be a `SELECT` from an existing (source) table. Unlike PostgreSQL, a ClickHouse materialized view is not "static" (and has no corresponding REFRESH operation). Instead, it acts as an **insert trigger**, inserting new rows into a target table by applying the defined `SELECT` transformation on rows inserted into the source table. See the [ClickHouse materialized view documentation](/materialized-view) for more details on how materialized views work in ClickHouse.
+A `materialized_view` materialization should be a `SELECT` from an existing (source) table. Unlike PostgreSQL, a ClickHouse materialized view is not "static" (and has no corresponding REFRESH operation). Instead, it acts as an **insert trigger**, inserting new rows into a target table by applying the defined `SELECT` transformation on rows inserted into the source table. See the [ClickHouse materialized view documentation](/docs/materialized-views) for more details on how materialized views work in ClickHouse.
 
 :::note
 For general materialization concepts and shared configurations (engine, order_by, partition_by, etc.), see the [Materializations](/integrations/dbt/materializations) page.

@@ -17,7 +17,7 @@ If you are a pay as you go customer and your amount due in a billing period for 
 
 :::tip
 This default payment threshold amount can be adjusted below $10,000.
-If you wish to do so, [contact support](support@clickhouse.com).
+If you wish to do so, [contact support](mailto:support@clickhouse.com).
 :::
 
 A failed charge will result in the suspension of your services after a 14 day grace period.

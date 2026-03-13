@@ -508,7 +508,7 @@ Here's an excerpt from the CSV file you're using in table format. The
     Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary
     traffic to our S3 bucket. In other cases, you might configure it
     differently. For details, see [Refreshing dictionary data using
-    LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime).
+    LIFETIME](/sql-reference/statements/create/dictionary/lifetime).
     :::
 
     2.  Now import it:
@@ -653,5 +653,5 @@ should only retrieve the columns you actually need.
     "pg_clickhouse OCI Image on GitHub"
   [Postgres image]: https://hub.docker.com/_/postgres
     "Postgres OCI Image on Docker Hub"
-  [Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
+  [Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime
     "ClickHouse Doc: Refreshing dictionary data using LIFETIME"

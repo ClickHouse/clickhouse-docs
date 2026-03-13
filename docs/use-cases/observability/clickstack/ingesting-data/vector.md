@@ -410,7 +410,7 @@ Navigate to the search view for `October 20th, 2025` to explore the data and beg
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack">
 
-The following guide assumes you have set up ClickStack Open Source with the [Getting Started guide](use-cases/observability/clickstack/getting-started/managed).
+The following guide assumes you have set up ClickStack Open Source with the [Getting Started guide](/use-cases/observability/clickstack/getting-started/oss).
 
 <VerticalStepper headerLevel="h3">
 

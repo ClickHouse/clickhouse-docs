@@ -863,7 +863,7 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 Впервые представлена в: v1.1.0
 
-Создаёт массив, содержащий всех родителей ключа в [иерархическом словаре](/docs/sql-reference/statements/create/dictionary/layouts/hierarchical#hierarchical-dictionaries).
+Создаёт массив, содержащий всех родителей ключа в [иерархическом словаре](/dictionary#hierarchical-dictionaries).
 
 **Синтаксис**
 

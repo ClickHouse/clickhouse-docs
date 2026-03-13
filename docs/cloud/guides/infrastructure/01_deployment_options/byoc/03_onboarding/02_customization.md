@@ -80,4 +80,4 @@ When available, this feature will allow you to:
 * Maintain full control over role permissions and trust relationships
 :::
 
-For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge).
+For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).

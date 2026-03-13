@@ -163,7 +163,7 @@ The performance advantage comes from the fundamental architectural difference:
 | **Network hops**        | Zero (local device)                 | Every disk operation requires network round trip   |
 | **Performance scaling** | Scales linearly with concurrency    | Limited by provisioned IOPS                        |
 
-For more details on the performance benefits of NVMe storage, see [NVMe-powered performance](/cloud/managed-postgres/overview#nvme-performance).
+For more details on the performance benefits of NVMe storage, see [NVMe-powered performance](/cloud/managed-postgres#nvme-performance).
 
 ## Cost-effectiveness {#cost-effectiveness}
 
@@ -184,5 +184,5 @@ The complete benchmark data, configurations, and detailed metrics are available 
 
 - [PeerDB: Comparing Postgres managed services](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase)
 - [pgbench documentation](https://www.postgresql.org/docs/current/pgbench.html)
-- [Managed Postgres overview](/cloud/managed-postgres/overview)
+- [Managed Postgres overview](/cloud/managed-postgres)
 - [Scaling your Postgres instance](/cloud/managed-postgres/scaling)
