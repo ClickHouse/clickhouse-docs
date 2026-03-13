@@ -398,19 +398,28 @@ You may experience that the connector's throughput does not scale with the job's
 
 **Solution**: Monitor the `numRequestSubmitted` and `actualRecordsPerBatch` metrics to help determine how to tune your batch size (`maxBatchSize`) and how frequently to flush. Also, see [Advanced and recommended usage](#advanced-and-recommended-usage) for batch sizing recommendations.
 
-### I see duplicate batches of rows in my ClickHouse table {#duplicate_batches}
+[//]: # (TODO: uncomment this section once https://github.com/ClickHouse/flink-connector-clickhouse/issues/121 is closed)
+[//]: # (### I see duplicate batches of rows in my ClickHouse table {#duplicate_batches})
 
-**Cause**: If one or more records in a Flink batch fails to insert into ClickHouse because of a retryable failure, the connector will retry the **entire batch**. If [insert deduplication](https://clickhouse.com/docs/guides/developer/deduplicating-inserts-on-retries#query-level-insert-deduplication) is disabled, this may result in duplicate records landing in your ClickHouse table. Otherwise, it's possible that the deduplication window or window duration may be too small and is expiring blocks before the connector retries them.
+[//]: # ()
+[//]: # (**Cause**: If one or more records in a Flink batch fails to insert into ClickHouse because of a retryable failure, the connector will retry the **entire batch**. If [insert deduplication]&#40;https://clickhouse.com/docs/guides/developer/deduplicating-inserts-on-retries#query-level-insert-deduplication&#41; is disabled, this may result in duplicate records landing in your ClickHouse table. Otherwise, it's possible that the deduplication window or window duration may be too small and is expiring blocks before the connector retries them.)
 
-**Solution**:
-- If your table is using a `Replicated*MergeTree` table engine:
-  1. ensure the server session setting `insert_deduplicate=1` (see the [example](#client-options) above for how to set it, if necessary). Note that `insert_deduplicate` is on by default for replicated tables.
-  2. if necessary, increase either/both the `MergeTree` table settings [`replicated_deduplication_window`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window) or [`replicated_deduplication_window_seconds`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds).
-- If your table is using a non-replicated `*MergeTree` table engine, increase the `MergeTree` table setting [`non_replicated_deduplication_window`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#non_replicated_deduplication_window).
+[//]: # ()
+[//]: # (**Solution**:)
 
-_Note 1: this solution relies on [synchronous inserts](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default), which is recommended for use with the Flink connector. Please ensure server session setting `async_insert=0`._
+[//]: # (- If your table is using a `Replicated*MergeTree` table engine:)
 
-_Note 2: a large number for `(non_)replicated_deduplication_window` may slow down inserts because more entries need to be compared._
+[//]: # (  1. ensure the server session setting `insert_deduplicate=1` &#40;see the [example]&#40;#client-options&#41; above for how to set it, if necessary&#41;. Note that `insert_deduplicate` is on by default for replicated tables.)
+
+[//]: # (  2. if necessary, increase either/both the `MergeTree` table settings [`replicated_deduplication_window`]&#40;https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window&#41; or [`replicated_deduplication_window_seconds`]&#40;https://clickhouse.com/docs/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds&#41;.)
+
+[//]: # (- If your table is using a non-replicated `*MergeTree` table engine, increase the `MergeTree` table setting [`non_replicated_deduplication_window`]&#40;https://clickhouse.com/docs/operations/settings/merge-tree-settings#non_replicated_deduplication_window&#41;.)
+
+[//]: # ()
+[//]: # (_Note 1: this solution relies on [synchronous inserts]&#40;https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default&#41;, which is recommended for use with the Flink connector. Please ensure server session setting `async_insert=0`._)
+
+[//]: # ()
+[//]: # (_Note 2: a large number for `&#40;non_&#41;replicated_deduplication_window` may slow down inserts because more entries need to be compared._)
 
 ### I am missing rows in my ClickHouse table {#missing_rows}
 
