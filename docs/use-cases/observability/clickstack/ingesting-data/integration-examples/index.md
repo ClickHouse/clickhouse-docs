@@ -23,6 +23,7 @@ For production deployments, we recommend running integrations as OpenTelemetry C
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Forward Lambda logs with Rotel |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | Forward CloudWatch log groups |
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
+| [Kafka Logs](/use-cases/observability/clickstack/integrations/kafka-logs) | Collect Kafka broker logs |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
 | [MongoDB Logs](/use-cases/observability/clickstack/integrations/mongodb-logs) | Collect MongoDB server logs |
