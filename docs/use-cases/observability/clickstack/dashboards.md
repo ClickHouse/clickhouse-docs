@@ -30,6 +30,7 @@ import add_filter from '@site/static/images/clickstack/dashboards/add-filter.png
 import saved_filters from '@site/static/images/clickstack/dashboards/saved-filters.png';
 import filtered_dashboard from '@site/static/images/clickstack/dashboards/filtered-dashboard.png';
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
+import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
@@ -209,6 +210,12 @@ The Filters modal shows all configured filters for the dashboard. From here you 
 Close the Filters modal. The new dropdown filter appears below the search bar. Click it to see the available values, then select one to filter all visualizations on the dashboard.
 
 <Image img={filtered_dashboard} alt="Dashboard filtered to the frontend service" size="lg"/>
+
+### (Optional) Save filter values as default {#save-default-filters}
+
+To persist a filter selection as the dashboard default, choose **Save Query & Filters as Default** from the dashboard menu. The dashboard will always open with the selected filters applied. To reset, select **Remove Default Query & Filters** from the same menu.
+
+<Image img={save_filter_values} alt="Dashboard menu showing Save Query and Filters as Default option" size="lg"/>
 
 </VerticalStepper>
 
