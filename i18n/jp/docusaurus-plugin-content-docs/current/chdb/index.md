@@ -29,6 +29,12 @@ ClickHouse サーバーに接続することなく、プログラミング言語
 
 **新機能！** DataStore は、おなじみの pandas 構文と ClickHouse のパフォーマンスを組み合わせた、pandas 互換の API を提供します。
 
+:::tip Hex で始める
+
+* 📖 <a href="https://app.hex.tech/partnerships/app/chDB-Tutorial-032XsQ4qoKtlXxcw49joav/latest" target="_blank"><b>入門チュートリアル</b></a> — 最初の接続をセットアップする
+* 🚀 <a href="https://app.hex.tech/signup/clickhouse-30" target="_blank"><b>Hex 30日間延長トライアル</b></a> — ClickHouse インテグレーションへのフルアクセス
+  :::
+
 ### 1行でのマイグレーション \{#one-line-migration\}
 
 ```python

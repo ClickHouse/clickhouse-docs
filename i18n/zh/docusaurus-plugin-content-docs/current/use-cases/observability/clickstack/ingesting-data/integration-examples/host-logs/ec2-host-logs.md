@@ -25,16 +25,7 @@ import TabItem from '@theme/TabItem';
 # 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
 
 :::note[摘要]
-通过在实例上安装 OpenTelemetry Collector，使用 ClickStack 监控 EC2 系统日志。Collector 会自动为日志补充 EC2 元数据（实例 ID、区域、可用区、实例类型）。你将学习如何：
-
-- 在 EC2 实例上安装并配置 OpenTelemetry Collector
-- 自动使用 EC2 元数据丰富日志
-- 通过 OTLP 将日志发送到 ClickStack
-- 使用预构建的仪表板，在云环境上下文中可视化 EC2 主机日志
-
-提供了一个包含示例日志和模拟 EC2 元数据的演示数据集，可用于测试。
-
-预计耗时：10–15 分钟
+使用 OpenTelemetry Collector 并自动补充 EC2 元数据 (实例 ID、区域、可用区、实例类型) ，在 ClickStack 中收集并可视化 EC2 系统日志。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 EC2 实例集成 \{#existing-ec2\}
@@ -587,9 +578,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## 后续步骤 {#next-steps}
 
-在完成 EC2 主机日志监控配置之后：
-
 - 为关键系统事件（服务故障、身份验证失败、磁盘告警）设置[告警](/use-cases/observability/clickstack/alerts)
 - 按 EC2 元数据属性（区域、实例类型、实例 ID）进行过滤，以监控特定资源
-- 将 EC2 主机日志与应用日志进行关联分析，以便更全面地进行故障排查
-- 创建用于安全监控的自定义仪表盘（SSH 登录尝试、sudo 使用情况、防火墙拦截）
+- 将 EC2 主机日志与应用日志进行关联分析，以便更全面地进行故障排除
+- 创建用于安全监控的自定义仪表板（SSH 登录尝试、sudo 使用情况、防火墙拦截）
+
+## 用于生产环境
+
+本指南将 OpenTelemetry Collector 直接安装在 EC2 实例上，这是主机级监控推荐采用的生产部署模式。若需在大量实例间统一管理 collector，可考虑使用配置管理工具 (Ansible、Chef、Puppet) ，或在 Kubernetes 环境中使用 OpenTelemetry Operator。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

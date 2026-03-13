@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: 'Лейкхаус данных (Data Lakehouse)'
-keywords: ['озеро данных', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']
+keywords: ['озеро данных', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
@@ -28,7 +28,7 @@ ClickHouse может выполнять запросы к открытым фо
 
 ### Непосредственное чтение данных \{#read-data-directly\}
 
-ClickHouse предоставляет [табличные функции](/sql-reference/table-functions) и [движки](/engines/table-engines/integrations) для прямого чтения открытых табличных форматов из объектного хранилища. Такие функции, как [`iceberg()`](/sql-reference/table-functions/iceberg), [`deltaLake()`](/sql-reference/table-functions/deltalake), [`hudi()`](/sql-reference/table-functions/hudi) и [`paimon()`](/sql-reference/table-functions/paimon), позволяют пользователям выполнять запросы к таблицам в форматах озёр данных (data lake) в рамках SQL-выражения без какой-либо предварительной конфигурации. Существуют версии этих функций для большинства распространённых объектных хранилищ, таких как S3, Azure Blob Storage и GCS. Для этих функций также существуют эквивалентные Движки таблиц, которые можно использовать для создания таблиц в ClickHouse, ссылающихся на размещённые в объектном хранилище таблицы в форматах озёр данных, — что делает выполнение запросов более удобным.
+ClickHouse предоставляет [табличные функции](/sql-reference/table-functions) и [движки](/engines/table-engines/integrations) для прямого чтения открытых табличных форматов из объектного хранилища. Такие функции, как [`iceberg()`](/sql-reference/table-functions/iceberg), [`deltaLake()`](/sql-reference/table-functions/deltalake), [`hudi()`](/sql-reference/table-functions/hudi) и [`paimon()`](/sql-reference/table-functions/paimon), позволяют пользователям выполнять запросы к таблицам в открытых табличных форматах в рамках SQL-выражения без какой-либо предварительной конфигурации. Существуют версии этих функций для большинства распространённых объектных хранилищ, таких как S3, Azure Blob Storage и GCS. Для этих функций также существуют эквивалентные Движки таблиц, которые можно использовать для создания таблиц в ClickHouse, ссылающихся на размещённые в объектном хранилище таблицы в открытых табличных форматах, — что делает выполнение запросов более удобным.
 
 См. наше руководство по началу работы: по [непосредственному выполнению запросов](/use-cases/data-lake/getting-started/querying-directly) или по [подключению к каталогу данных](/use-cases/data-lake/getting-started/connecting-catalogs).
 
@@ -38,14 +38,15 @@ ClickHouse предоставляет [табличные функции](/sql-r
 
 Поддерживаемые каталоги:
 
-| Catalog | Guide |
-|---------|-------|
-| AWS Glue | [Руководство по каталогу Glue](/use-cases/data-lake/glue-catalog) |
-| Databricks Unity Catalog | [Руководство по каталогу Unity](/use-cases/data-lake/unity-catalog) |
-| Iceberg REST Catalog | [Руководство по REST-каталогу](/use-cases/data-lake/rest-catalog) |
-| Lakekeeper | [Руководство по каталогу Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) |
-| Project Nessie | [Руководство по каталогу Nessie](/use-cases/data-lake/nessie-catalog) |
-| Microsoft OneLake | [Руководство по каталогу OneLake](/use-cases/data-lake/onelake-catalog) |
+| Catalog                  | Guide                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| AWS Glue                 | [Руководство по каталогу Glue](/use-cases/data-lake/glue-catalog)             |
+| BigLake Metastore        | [Руководство по BigLake Metastore](/use-cases/data-lake/biglake-catalog)      |
+| Databricks Unity Catalog | [Руководство по каталогу Unity](/use-cases/data-lake/unity-catalog)           |
+| Iceberg REST Catalog     | [Руководство по REST-каталогу](/use-cases/data-lake/rest-catalog)             |
+| Lakekeeper               | [Руководство по каталогу Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) |
+| Project Nessie           | [Руководство по каталогу Nessie](/use-cases/data-lake/nessie-catalog)         |
+| Microsoft OneLake        | [Руководство по каталогу OneLake](/use-cases/data-lake/onelake-catalog)       |
 
 См. руководство по началу работы, посвящённое [подключению к каталогам](/use-cases/data-lake/getting-started/connecting-catalogs).
 

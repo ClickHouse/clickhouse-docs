@@ -187,15 +187,17 @@ Settings:
 * `optimize` — プランを表示する前にクエリプランの最適化を適用するかどうかを制御します。デフォルト: 1。
 * `header` — ステップの出力ヘッダーを表示します。デフォルト: 0。
 * `description` — ステップの説明を表示します。デフォルト: 1。
-* `indexes` — 使用された索引、それぞれの索引に対してフィルタリングされたパーツ数およびフィルタリングされたグラニュール数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。ClickHouse &gt;= v25.9 以降、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ有用な出力を表示します。
-* `projections` — 解析されたすべての PROJECTION と、その PROJECTION のプライマリキー条件に基づくパーツレベルのフィルタリングへの影響を表示します。各 PROJECTION について、このセクションには、PROJECTION のプライマリキーを使用して評価されたパーツ数、行数、マーク数、レンジ数などの統計情報が含まれます。また、PROJECTION 自体を読み取ることなく、このフィルタリングによってスキップされたデータパーツの数も表示します。PROJECTION が実際に読み取りに使用されたのか、それともフィルタリングのために解析されたのみなのかは、`description` フィールドによって判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
+* `indexes` — 使用された索引、それぞれの索引に対してフィルタリングされたパーツ数およびフィルタリングされた granule 数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。ClickHouse &gt;= v25.9 以降、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ適切な出力を表示します。
+* `projections` — 解析されたすべてのプロジェクションと、プロジェクションの主キー条件に基づくパートレベルのフィルタリングへの影響を表示します。各プロジェクションについて、このセクションには、プロジェクションの主キーを使用して評価されたパーツ数、行数、マーク数、レンジ数などの統計情報が含まれます。また、プロジェクション自体を読み取ることなく、このフィルタリングによってスキップされたデータパートの数も表示します。プロジェクションが実際に読み取りに使用されたのか、それともフィルタリングのために解析されたのみなのかは、`description` フィールドによって判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
 * `actions` — ステップのアクションに関する詳細情報を表示します。デフォルト: 0。
-* `sorting` — ソートされた出力を生成する各プランステップについて、ソート内容の説明を表示します。デフォルト: 0。
+* `sorting` — ソート済みの出力を生成する各プランステップについて、ソート内容の説明を表示します。デフォルト: 0。
 * `keep_logical_steps` — JOIN に対する論理プランステップを、物理的な JOIN 実装へ変換せずに保持します。デフォルト: 0。
 * `json` — クエリプランのステップを [JSON](/interfaces/formats/JSON) 形式の 1 行として表示します。デフォルト: 0。[TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 形式を使用して不要なエスケープを避けることを推奨します。
 * `input_headers` — ステップの入力ヘッダーを表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
 * `column_structure` — 名前と型に加えて、ヘッダー内のカラム構造も表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
 * `distributed` — 分散テーブルまたは並列レプリカに対してリモートノード上で実行されたクエリプランを表示します。デフォルト: 0。
+* `compact` — 有効にすると、式ステップと詳細なアクション情報 (入力、関数、別名、出力位置) をプランから非表示にします。`actions = 1` の場合にのみ効果があります。デフォルト: 0。
+* `pretty` — 階層を視覚化するために、インデントの代わりに罫線文字 (├──, └──, │) を使用してプランツリーを表示します。また、JOIN ステップのプロパティをインラインで整形します。デフォルト: 0。
 
 `json=1` の場合、ステップ名には一意なステップ識別子を含む追加のサフィックスが付きます。
 
@@ -269,14 +271,14 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-`header` = 1 の場合、`Header` キーがカラムの配列としてステップに追加されます。
 
-例：
+`header` = 1 の場合、カラムの配列として `Header` キーがステップに追加されます。
+
+例:
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
-
 
 ```json
 [
@@ -311,12 +313,12 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー（文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`）と、以下の任意のキーを持ちます:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
 
-* `Name` — 索引名（現在は `Skip` 索引用でのみ使用されます）。
+* `Name` — 索引名 (現在は `Skip` 索引用でのみ使用されます) 。
 * `Keys` — 索引で使用されるカラムの配列。
 * `Condition` — 使用される条件。
-* `Description` — 索引の説明（現在は `Skip` 索引用でのみ使用されます）。
+* `Description` — 索引の説明 (現在は `Skip` 索引用でのみ使用されます) 。
 * `Parts` — 索引が適用される前後のパーツ数。
 * `Granules` — 索引が適用される前後のグラニュール数。
 * `Ranges` — 索引が適用された後のグラニュール範囲の数。
@@ -369,7 +371,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 
 * `Name` — プロジェクション名。
 * `Condition` — そのプロジェクションで使用されるプライマリキー条件。
-* `Description` — プロジェクションの使用方法の説明（例：パーツレベルのフィルタリング）。
+* `Description` — プロジェクションの使用方法の説明 (例：パーツレベルのフィルタリング) 。
 * `Selected Parts` — プロジェクションによって選択されたパーツ数。
 * `Selected Marks` — 選択されたマーク数。
 * `Selected Ranges` — 選択されたレンジ数。
@@ -377,6 +379,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 * `Filtered Parts` — パーツレベルのフィルタリングによりスキップされたパーツ数。
 
 例：
+
 
 ```json
 "Node Type": "ReadFromMergeTree",
@@ -405,7 +408,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
-
 
 `actions` = 1 の場合、どのキーが追加されるかはステップの種類によって異なります。
 
@@ -466,6 +468,23 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+`compact = 1` の場合、各 `Expression` ステップは削除されます。これに加えて、`actions = 1` が設定されている場合は、`Actions` 行と `Positions` 行が非表示になり、ステップの説明だけが残ります。
+
+```sql
+EXPLAIN actions = 1, compact = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Aggregating
+Keys: modulo(__table1.number, 4_UInt8)
+Aggregates:
+    sum(__table1.number)
+      Function: sum(UInt64) → UInt64
+      Arguments: __table1.number
+Skip merging: 0
+  ReadFromSystemNumbers
+```
+
 `distributed` = 1 の場合、出力にはローカルのクエリプランだけでなく、リモートノード上で実行されるクエリプランも含まれます。これは分散クエリの分析やデバッグに役立ちます。
 
 分散テーブルを用いた例：
@@ -509,6 +528,21 @@ Expression ((Project names + Projection))
 ```
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
+
+`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示されます:
+
+
+```sql
+EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Expression ((Project names + Projection))
+└──Aggregating
+   └──Expression ((Before GROUP BY + Change column names to column identifiers))
+      └──ReadFromSystemNumbers
+```
+
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 

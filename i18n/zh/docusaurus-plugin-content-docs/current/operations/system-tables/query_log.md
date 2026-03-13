@@ -69,7 +69,8 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 * `columns` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — 查询中出现的列的名称。
 * `partitions` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — 查询中包含的分区名称。
 * `projections` ([String](../../sql-reference/data-types/string.md)) — 查询执行期间使用的投影名称。
-* `views` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — 查询中出现的（物化或实时）视图名称。
+* `skip_indices` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — 查询执行期间使用的数据跳过索引名称
+* `views` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — 查询中出现的 (物化或实时) 视图名称。
 * `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 异常代码。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 异常信息。
 * `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)。如果查询成功完成，则该字段为空字符串。
@@ -82,8 +83,8 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
 * `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于执行该查询的 IP 地址。当通过代理连接且已设置 [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) 时，这里记录的是客户端地址，而非代理地址。
 * `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 客户端用于发出该查询的端口。当通过代理连接且启用了 [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) 时，该值将是客户端的端口而不是代理的端口。
-* `initial_user` ([String](../../sql-reference/data-types/string.md)) — 执行初始查询的用户名（用于分布式查询执行）。
-* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID（在分布式查询执行中）。
+* `initial_user` ([String](../../sql-reference/data-types/string.md)) — 执行初始查询的用户名 (用于分布式查询执行) 。
+* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 初始查询的 ID (在分布式查询执行中) 。
 * `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 父查询发起时的 IP 地址。
 * `initial_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 客户端用于发起父查询的端口。
 * `initial_query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 分布式查询执行时的初始查询开始时间。
@@ -105,26 +106,26 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
   * 1 — 使用了 `GET` 方法。
   * 2 — 使用了 `POST` 方法。
 * `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — 在 HTTP 请求中传递的 HTTP 首部字段 `User-Agent`。
-* `http_referer` ([String](../../sql-reference/data-types/string.md)) — HTTP 首部字段 `Referer`，在 HTTP 请求中传递（包含发起该请求的页面的完整或部分地址）。
+* `http_referer` ([String](../../sql-reference/data-types/string.md)) — HTTP 首部字段 `Referer`，在 HTTP 请求中传递 (包含发起该请求的页面的完整或部分地址) 。
 * `forwarded_for` ([String](../../sql-reference/data-types/string.md)) — 在 HTTP 请求中传递的 HTTP 首部字段 `X-Forwarded-For`。
-* `quota_key` ([String](../../sql-reference/data-types/string.md)) — 在 [quotas](../../operations/quotas.md) 设置中指定的 `quota key`（参见 `keyed`）。
+* `quota_key` ([String](../../sql-reference/data-types/string.md)) — 在 [quotas](../../operations/quotas.md) 设置中指定的 `quota key` (参见 `keyed`) 。
 * `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 修订版本号。
 * `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — 用于衡量不同指标的 ProfileEvents。其详细说明见表 [system.events](/operations/system-tables/events)。
 * `Settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) — 客户端执行查询时被修改的设置项。要启用对设置变更的日志记录，请将 `log_query_settings` 参数设置为 1。
 * `log_comment` ([String](../../sql-reference/data-types/string.md)) — 日志备注。可以设置为任意字符串，长度不得超过 [max&#95;query&#95;size](../../operations/settings/settings.md#max_query_size)。如果未定义，则为空字符串。
 * `thread_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 参与查询执行的线程 ID。这些线程不一定是同时运行的。
 * `peak_threads_usage` ([UInt64)](../../sql-reference/data-types/int-uint.md)) — 执行该查询时同时运行的线程的最大数量。
-* `used_aggregate_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中所使用的 `aggregate functions`（聚合函数）的规范名称。
+* `used_aggregate_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中所使用的 `aggregate functions` (聚合函数) 的规范名称。
 * `used_aggregate_function_combinators` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `aggregate functions combinators` 的规范名称。
 * `used_database_engines` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行期间使用的 `database engines` 的规范名称。
 * `used_data_type_families` ([Array(String)](../../sql-reference/data-types/array.md)) — 查询执行期间使用到的 `data type families` 的规范名称。
-* `used_dictionaries` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行期间使用的 `dictionaries`（字典）的规范名称。对于使用 XML 文件配置的字典，其规范名称就是该字典的名称；对于通过 SQL 语句创建的字典，其规范名称为该对象的完全限定名称。
-* `used_formats` ([Array(String)](../../sql-reference/data-types/array.md)) — 查询执行期间使用的 `formats` 的规范名称。`
+* `used_dictionaries` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行期间使用的 `dictionaries` (字典) 的规范名称。对于使用 XML 文件配置的字典，其规范名称就是该字典的名称；对于通过 SQL 语句创建的字典，其规范名称为该对象的完全限定名称。
+* `used_formats` ([Array(String)](../../sql-reference/data-types/array.md)) — 查询执行期间使用的 `formats` 的规范名称。
 * `used_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `functions` 的规范名称。
 * `used_storages` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `storages` 的规范名称。
 * `used_table_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `table functions` 的规范名称。
-* `used_executable_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行期间使用的 `executable user defined functions`（可执行用户自定义函数）的规范名称。
-* `used_sql_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `sql user defined functions`（SQL 用户自定义函数）的规范名称。
+* `used_executable_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行期间使用的 `executable user defined functions` (可执行用户自定义函数) 的规范名称。
+* `used_sql_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — 在查询执行过程中使用的 `sql user defined functions` (SQL 用户自定义函数) 的规范名称。
 * `used_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - 在查询执行过程中已成功验证通过的权限。
 * `missing_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - 在查询执行期间缺少的权限。
 * `query_cache_usage` ([Enum8](../../sql-reference/data-types/enum.md)) — 查询执行期间对 [query cache](../query-cache.md) 的使用方式。可能的取值：
