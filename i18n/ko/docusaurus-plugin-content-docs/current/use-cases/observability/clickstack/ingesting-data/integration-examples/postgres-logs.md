@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # ClickStack를 사용한 PostgreSQL 로그 모니터링 \{#postgres-logs-clickstack\}
 
 :::note[TL;DR]
-이 가이드는 OpenTelemetry collector를 구성하여 PostgreSQL 서버 로그를 수집하도록 설정함으로써 ClickStack를 사용해 PostgreSQL을 모니터링하는 방법을 설명합니다. 다음과 같은 내용을 알 수 있습니다:
-
-- 구조화된 파싱을 위해 PostgreSQL이 로그를 CSV 형식으로 출력하도록 구성하기
-- 로그 수집을 위한 맞춤형 OTel collector 구성 파일 작성하기
-- 사용자 정의 구성을 사용하여 ClickStack 배포하기
-- 미리 준비된 대시보드를 사용해 PostgreSQL 로그 인사이트(에러, 느린 쿼리, 연결 상태)를 시각화하기
-
-운영 환경의 PostgreSQL을 구성하기 전에 연동을 테스트하고자 하는 경우, 샘플 로그가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 10-15분
+OTel `filelog` receiver를 사용해 ClickStack에서 PostgreSQL 서버 로그(CSV 형식)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 PostgreSQL과의 통합 \{#existing-postgres\}
@@ -378,14 +369,12 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-PostgreSQL 로그 모니터링을 설정한 후에는 다음 작업을 진행합니다.
-
-- 중요한 이벤트(연결 실패, 느린 쿼리, 오류 급증)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
-- 포괄적인 데이터베이스 모니터링을 위해 로그를 [PostgreSQL metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics)와 연관시킵니다.
-- 애플리케이션별 쿼리 패턴을 위한 사용자 지정 대시보드를 생성합니다.
-- 성능 요구 사항에 따라 느린 쿼리를 식별할 수 있도록 `log_min_duration_statement`를 구성합니다.
+* 중요한 이벤트(연결 실패, 느린 쿼리, 오류 급증)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
+* 포괄적인 데이터베이스 모니터링을 위해 로그를 [PostgreSQL metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics)와 연관시킵니다.
+* 애플리케이션별 쿼리 패턴을 위한 사용자 지정 대시보드를 생성합니다.
+* 성능 요구 사항에 따라 느린 쿼리를 식별할 수 있도록 `log_min_duration_statement`를 구성합니다.
 
 ## 프로덕션 환경으로 전환하기 {#going-to-production}
 

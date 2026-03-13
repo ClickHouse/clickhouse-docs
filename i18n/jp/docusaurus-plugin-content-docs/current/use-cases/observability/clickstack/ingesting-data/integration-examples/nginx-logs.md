@@ -18,19 +18,10 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack を使用した Nginx ログの監視 \{#nginx-clickstack\}
+# ClickStack による Nginx ログの監視 \{#nginx-clickstack\}
 
-:::note[要約]
-このガイドでは、OpenTelemetry collector を構成して Nginx のアクセスログを取り込むことで、ClickStack を使って Nginx を監視する方法を説明します。次のことを学びます。
-
-- Nginx を構成して JSON 形式のログを出力する
-- ログのインジェスト用にカスタムの OTel collector 設定を作成する
-- カスタム設定を使って ClickStack をデプロイする
-- あらかじめ用意されたダッシュボードを使用して Nginx メトリクスを可視化する
-
-本番環境の Nginx を設定する前にこの連携をテストしたい場合に使用できる、サンプルログ付きのデモデータセットも用意されています。
-
-所要時間: 5〜10 分
+:::note[TL;DR]
+OTel `filelog` レシーバーを使用して、ClickStack で Nginx のアクセスログ（JSON 形式）を収集・可視化します。デモ用データセットと、あらかじめ用意されたダッシュボードが含まれます。
 :::
 
 ## 既存の Nginx との統合 \{#existing-nginx\}
@@ -353,9 +344,11 @@ docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 ```
 
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-さらに活用したい場合は、ダッシュボードで次のようなことを試してみてください。
+* 重要なメトリクス (エラー率、レイテンシのしきい値) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* 特定のユースケース (API モニタリング、セキュリティイベント) 向けに追加の[ダッシュボード](/use-cases/observability/clickstack/dashboards)を作成する
 
-- 重要なメトリクス（エラー率、レイテンシのしきい値）に対するアラートを設定する
-- 特定のユースケース（API モニタリング、セキュリティイベント）向けに追加のダッシュボードを作成する
+## 本番環境への移行
+
+このガイドでは、すばやくセットアップできるよう、ClickStack に組み込まれている OpenTelemetry Collector をベースにしています。本番環境にデプロイする場合は、独自の OTel Collector を実行し、データを ClickStack の OTLP エンドポイントに送信することを推奨します。本番環境向けの構成については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry)を参照してください。

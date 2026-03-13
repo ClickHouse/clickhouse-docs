@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 PostgreSQL 日志 \{#postgres-logs-clickstack\}
 
 :::note[要点速览]
-本指南介绍如何通过配置 OpenTelemetry collector 来摄取 PostgreSQL 服务器日志，从而使用 ClickStack 监控 PostgreSQL。你将学习如何：
-
-- 将 PostgreSQL 配置为以 CSV 格式输出日志，以便进行结构化解析
-- 为日志摄取创建自定义 OTel collector 配置
-- 使用你的自定义配置部署 ClickStack
-- 使用预构建的仪表盘可视化 PostgreSQL 日志信息（错误、慢查询、连接情况）
-
-如果你希望在为生产环境 PostgreSQL 配置前先测试集成，可使用包含示例日志的演示数据集。
-
-所需时间：10–15 分钟
+使用 OTel `filelog` 接收器，在 ClickStack 中收集并可视化 PostgreSQL 服务器日志 (CSV 格式) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 PostgreSQL 的集成 \{#existing-postgres\}
@@ -378,14 +369,12 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 
-## 后续步骤 {#next-steps}
+## 后续步骤
 
-在完成 PostgreSQL 日志监控配置之后：
-
-- 为关键事件（连接失败、慢查询、错误激增）配置[告警](/use-cases/observability/clickstack/alerts)
-- 将日志与[PostgreSQL 指标](/use-cases/observability/clickstack/integrations/postgresql-metrics)关联，实现全面的数据库监控
-- 创建自定义仪表板，以可视化特定于应用的查询模式
-- 配置 `log_min_duration_statement`，以根据你的性能要求识别相应的慢查询
+* 为关键事件 (连接失败、慢查询、错误激增) 配置[告警](/use-cases/observability/clickstack/alerts)
+* 将日志与[PostgreSQL 指标](/use-cases/observability/clickstack/integrations/postgresql-metrics)关联，实现全面的数据库监控
+* 创建自定义仪表板，以可视化特定于应用的查询模式
+* 配置 `log_min_duration_statement`，以根据你的性能要求识别相应的慢查询
 
 ## 迁移到生产环境 {#going-to-production}
 

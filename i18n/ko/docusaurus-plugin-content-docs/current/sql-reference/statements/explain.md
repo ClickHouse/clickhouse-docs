@@ -196,9 +196,11 @@ Settings:
 * `sorting` — 정렬된 출력을 생성하는 각 플랜 단계에 대한 정렬 설명을 출력합니다. 기본값: 0.
 * `keep_logical_steps` — 조인에 대해 논리 플랜 단계를 유지하고, 이를 물리 조인 구현으로 변환하지 않습니다. 기본값: 0.
 * `json` — 쿼리 플랜 단계를 [JSON](/interfaces/formats/JSON) 형식의 행으로 출력합니다. 기본값: 0. 불필요한 이스케이프를 피하기 위해 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 형식을 사용하는 것이 좋습니다.
-* `input_headers` - 단계에 대한 입력 헤더를 출력합니다. 기본값: 0. 주로 입력‑출력 헤더 불일치와 관련된 문제를 디버깅하려는 개발자에게만 유용합니다.
-* `column_structure` - 이름과 타입뿐 아니라 헤더에 있는 컬럼의 구조도 함께 출력합니다. 기본값: 0. 주로 입력‑출력 헤더 불일치와 관련된 문제를 디버깅하려는 개발자에게만 유용합니다.
+* `input_headers` — 단계에 대한 입력 헤더를 출력합니다. 기본값: 0. 주로 입력‑출력 헤더 불일치와 관련된 문제를 디버깅하려는 개발자에게만 유용합니다.
+* `column_structure` — 이름과 타입뿐 아니라 헤더에 있는 컬럼의 구조도 함께 출력합니다. 기본값: 0. 주로 입력‑출력 헤더 불일치와 관련된 문제를 디버깅하려는 개발자에게만 유용합니다.
 * `distributed` — 분산 테이블 또는 병렬 레플리카에 대해 원격 노드에서 실행된 쿼리 플랜을 표시합니다. 기본값: 0.
+* `compact` — 이 설정을 활성화하면 플랜에서 expression 단계와 자세한 동작 정보(입력, 함수, 별칭, 출력 위치)를 숨깁니다. `actions = 1`일 때만 영향을 미칩니다. 기본값: 0.
+* `pretty` — 들여쓰기 대신 선 그리기 문자(├──, └──, │)를 사용하여 계층 구조를 시각화한 플랜 트리를 출력합니다. 또한 조인 단계 속성을 인라인 형식으로 출력합니다. 기본값: 0.
 
 `json=1`인 경우 단계 이름에는 고유한 단계 식별자가 접미사로 추가됩니다.
 
@@ -272,14 +274,14 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-`header` = 1인 경우, `Header` 키가 단계에 컬럼 배열로 추가됩니다.
+
+`header` = 1이면 `Header` 키가 해당 단계에 컬럼 배열 형태로 추가됩니다.
 
 예시:
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
-
 
 ```json
 [
@@ -381,6 +383,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 
 예시:
 
+
 ```json
 "Node Type": "ReadFromMergeTree",
 "Projections": [
@@ -408,7 +411,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
-
 
 `actions` = 1인 경우, 추가되는 키는 단계 유형에 따라 달라집니다.
 
@@ -469,7 +471,24 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
-`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿼리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
+`compact = 1`인 경우 각 `Expression` 단계가 제거됩니다. 또한 `actions = 1`이 설정되면 `Actions` 및 `Positions` 줄이 숨겨져 단계 설명만 남습니다:
+
+```sql
+EXPLAIN actions = 1, compact = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Aggregating
+Keys: modulo(__table1.number, 4_UInt8)
+Aggregates:
+    sum(__table1.number)
+      Function: sum(UInt64) → UInt64
+      Arguments: __table1.number
+Skip merging: 0
+  ReadFromSystemNumbers
+```
+
+`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿌리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
 
 분산 테이블을 사용한 예:
 
@@ -512,6 +531,20 @@ Expression ((Project names + Projection))
 ```
 
 두 예제 모두에서 쿼리 플랜은 로컬 및 원격 단계를 포함한 전체 실행 흐름을 보여줍니다.
+
+`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시됩니다:
+
+
+```sql
+EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Expression ((Project names + Projection))
+└──Aggregating
+   └──Expression ((Before GROUP BY + Change column names to column identifiers))
+      └──ReadFromSystemNumbers
+```
 
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}

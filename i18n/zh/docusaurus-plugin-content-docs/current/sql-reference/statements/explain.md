@@ -213,9 +213,11 @@ QUERY id: 0
 * `sorting` — 为每个生成已排序输出的计划步骤打印排序描述。默认值：0。
 * `keep_logical_steps` — 保留用于 JOIN 的逻辑计划步骤，而不是将其转换为物理 JOIN 实现。默认值：0。
 * `json` — 以 [JSON](/interfaces/formats/JSON) 格式将查询计划步骤输出为一行。默认值：0。建议使用 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 格式以避免不必要的转义。
-* `input_headers` - 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
-* `column_structure` - 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `input_headers` — 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `column_structure` — 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
 * `distributed` — 显示在远程节点上针对分布式表或并行副本执行的查询计划。默认值：0。
+* `compact` — 启用时，从计划中隐藏表达式步骤和详细的执行行为信息 (输入、函数、别名和输出位置) 。仅在 actions = 1 时生效。默认值：0。
+* `pretty` — 使用线条绘制字符 (├──、└──、│) 而不是缩进来打印计划树，以便直观展示层级结构。还会以内联方式格式化 JOIN 步骤属性。默认值：0。
 
 当 `json=1` 时，步骤名称将包含一个带有唯一步骤标识符的额外后缀。
 
@@ -289,14 +291,14 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-当 `header` = 1 时，`Header` 键会作为列数组添加到该步骤中。
+
+当 `header` = 1 时，会将 `Header` 键作为列数组添加到该步骤中。
 
 示例：
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
-
 
 ```json
 [
@@ -331,12 +333,12 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键（字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`），以及可选的键：
+当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
 
-* `Name` — 索引名称（目前仅对 `Skip` 索引使用）。
+* `Name` — 索引名称 (目前仅对 `Skip` 索引使用) 。
 * `Keys` — 索引所使用列的数组。
 * `Condition` — 实际使用的条件。
-* `Description` — 索引描述（目前仅对 `Skip` 索引使用）。
+* `Description` — 索引描述 (目前仅对 `Skip` 索引使用) 。
 * `Parts` — 应用索引前后分区片段的数量。
 * `Granules` — 应用索引前后粒度单元的数量。
 * `Ranges` — 应用索引后粒度单元区间的数量。
@@ -389,7 +391,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 
 * `Name` — PROJECTION 名称。
 * `Condition` — 使用的 PROJECTION 主键条件。
-* `Description` — 关于该 PROJECTION 使用方式的描述（例如分区片段级过滤）。
+* `Description` — 关于该 PROJECTION 使用方式的描述 (例如分区片段级过滤) 。
 * `Selected Parts` — 该 PROJECTION 选中的分区片段数量。
 * `Selected Marks` — 选中的标记数量。
 * `Selected Ranges` — 选中的范围数量。
@@ -397,6 +399,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 * `Filtered Parts` — 由于分区片段级过滤而被跳过的分区片段数量。
 
 示例：
+
 
 ```json
 "Node Type": "ReadFromMergeTree",
@@ -425,7 +428,6 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
-
 
 当 `actions` = 1 时，添加的键取决于步骤类型。
 
@@ -486,6 +488,23 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+当 `compact = 1` 时，每个 `Expression` 步骤都会被删除。同时，如果设置了 `actions = 1`，则会隐藏 `Actions` 和 `Positions` 行，只保留步骤描述：
+
+```sql
+EXPLAIN actions = 1, compact = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Aggregating
+Keys: modulo(__table1.number, 4_UInt8)
+Aggregates:
+    sum(__table1.number)
+      Function: sum(UInt64) → UInt64
+      Arguments: __table1.number
+Skip merging: 0
+  ReadFromSystemNumbers
+```
+
 当 `distributed` = 1 时，输出不仅包含本地查询计划，还包含将在远程节点上执行的查询计划。这对于分析和调试分布式查询非常有用。
 
 分布式表示例：
@@ -529,6 +548,21 @@ Expression ((Project names + Projection))
 ```
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
+
+当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示：
+
+
+```sql
+EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Expression ((Project names + Projection))
+└──Aggregating
+   └──Expression ((Before GROUP BY + Change column names to column identifiers))
+      └──ReadFromSystemNumbers
+```
+
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 

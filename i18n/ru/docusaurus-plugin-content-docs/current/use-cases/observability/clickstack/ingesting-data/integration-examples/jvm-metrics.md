@@ -17,18 +17,10 @@ import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-da
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# Мониторинг JVM‑метрик с помощью ClickStack \{#jvm-clickstack\}
+# Мониторинг метрик JVM в ClickStack \{#jvm-clickstack\}
 
 :::note[Кратко]
-В этом руководстве показано, как мониторить JVM‑приложения с помощью ClickStack, используя Java‑агент OpenTelemetry для сбора метрик. Вы узнаете, как:
-
-- Подключить Java‑агент OpenTelemetry к вашему JVM‑приложению
-- Настроить агент на отправку метрик в ClickStack через OTLP
-- Использовать готовую панель для визуализации кучи памяти, сборки мусора, потоков и ЦП
-
-Демонстрационный набор данных с примерами метрик доступен, если вы хотите протестировать интеграцию, прежде чем инструментировать ваши продуктивные приложения.
-
-Требуемое время: 5–10 минут
+Мониторьте JVM‑приложения в ClickStack с помощью Java‑агента OpenTelemetry. Доступны демо‑набор данных и готовая панель мониторинга.
 :::
 
 ## Интеграция с существующим JVM‑приложением \{#existing-jvm\}
@@ -287,10 +279,8 @@ echo $OTEL_METRICS_EXPORTER
 
 ## Следующие шаги \{#next-steps\}
 
-Теперь, когда метрики JVM поступают в ClickStack, рекомендуется:
-
-- Настроить [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик, таких как высокое использование heap, частые паузы GC или исчерпание потоков
-- Изучить [другие интеграции ClickStack](/use-cases/observability/clickstack/integration-guides), чтобы объединить данные вашей обсервабилити
+* Настроить [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик, таких как высокое использование heap, частые паузы GC или исчерпание потоков
+* Изучить [другие интеграции ClickStack](/use-cases/observability/clickstack/integration-guides), чтобы объединить данные вашей обсервабилити
 
 ## Переход в продакшен \{#going-to-production\}
 
