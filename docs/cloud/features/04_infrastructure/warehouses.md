@@ -29,10 +29,9 @@ Each ClickHouse Cloud service includes:
 - An endpoint (or multiple endpoints created via ClickHouse Cloud UI console) to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`) for local and third party app connections 
 - An object storage folder where the service stores all the data and part of the metadata:
 
-
 <Image img={compute_1} size="md" alt="Single Service in ClickHouse Cloud" />
 
-<br />
+<br/>
 
 _Fig. 1 - Single service in ClickHouse Cloud_
 
@@ -46,7 +45,7 @@ Compute-compute separation also allows you to separate read operations from writ
 
 <Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
 
-<br />
+<br/>
 
 _Fig. 2 - Compute separation in ClickHouse Cloud_
 
@@ -61,7 +60,7 @@ For example, in the screenshot below, you can see a warehouse "DWH Prod" consist
 
 <Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
 
-<br />
+<br/>
 
 _Fig. 3 - Warehouse example_
 
@@ -82,7 +81,7 @@ A different endpoint is used for each service, but the same username and passwor
 
 <Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
-<br />
+<br/>
 
 _Fig. 4 - User Alice was created in Service 1, but she can use the same credentials to access all services that share same data_
 
@@ -98,7 +97,7 @@ In the example below, Alice is restricted from accessing service 2 in the wareho
 
 <Image img={compute_4} size="md" alt="Network access control settings"/>
 
-<br />
+<br/>
 
 _Fig. 5 - Alice is restricted from accessing service 2 because of network access control settings_
 
@@ -122,7 +121,7 @@ You can do so for the second service and any additional services you create, how
 
 <Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse"/>
 
-<br />
+<br/>
 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
@@ -157,7 +156,6 @@ SELECT * FROM clusterAllReplicas('all_groups.default', system, processes)
 Secondary single-node services can scale vertically, while primary single-node services cannot.
 :::
 
-
 ## Limitations {#limitations}
 
 ### Workload isolation limitations
@@ -186,9 +184,7 @@ SETTINGS distributed_ddl_task_timeout=0
 If you manually stop a service, you will need to start it up again in order for queries to be executed. 
 
 - **There is currently a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
-
 - **Primary services cannot have only one replica** While secondary services can have one replica, the primary service must have at least 2. 
-
 - **Primary service idling** Today, the default behavior is that the primary service cannot auto-idling. It is disabled once the secondary service is created. To enable this, contact support to enable parent service idling. Parent service auto-idling will be enabled by default in Q2 2026 (existing services will have access to the feature, new services will have it enabled by default). 
 
 ## Pricing {#pricing}
@@ -210,7 +206,7 @@ To create a warehouse, you need to create a second service that will share the d
 
 <Image img={compute_7} size="md" alt="Creating a new service in a warehouse"/>
 
-<br />
+<br/>
 
 _Fig. 7 - Click the plus sign to create a new service in a warehouse_
 
