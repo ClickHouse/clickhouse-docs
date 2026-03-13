@@ -244,8 +244,6 @@ SELECT count() FROM cloudflare_http_logs;
 
 ## 后续步骤 \{#next-steps\}
 
-现在，您已将 Cloudflare 日志导入 ClickStack：
-
 * 为安全事件设置[告警](/use-cases/observability/clickstack/alerts) (例如 WAF 拦截、机器人流量激增和错误率阈值)
 * 根据您的数据量优化[数据保留策略](/use-cases/observability/clickstack/ttl)
 * 针对特定用例创建更多仪表板 (例如 API 性能、缓存优化和地理流量分析)

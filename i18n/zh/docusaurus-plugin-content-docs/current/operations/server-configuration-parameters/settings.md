@@ -2950,6 +2950,14 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 此设置可以在运行时修改，并会立即生效。已在运行中的查询将保持不变。
 :::
 
+## max_zookeeper_pooled_connections \{#max_zookeeper_pooled_connections\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+共享池中每个 ZooKeeper 集群可按需延迟初始化的 ZooKeeper 会话的最大数量。
+
+值为 `0` 时，将禁用连接池，并继续使用单个会话。
+
 ## memory_worker_correct_memory_tracker \{#memory_worker_correct_memory_tracker\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

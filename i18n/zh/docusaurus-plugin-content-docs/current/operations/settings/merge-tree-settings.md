@@ -2786,6 +2786,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 
 如果启用，该“过多分区片段”计数器将依赖 Keeper 中的共享数据，而不是本地副本状态。仅在 ClickHouse Cloud 中可用。
 
+## shared_merge_tree_use_zookeeper_connection_pool \{#shared_merge_tree_use_zookeeper_connection_pool\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+
+如果启用，SharedMergeTree 会使用一个服务器级 ZooKeeper 会话池中的会话。
+
 ## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 
 <ExperimentalBadge/>

@@ -25,6 +25,13 @@ import dashboard_edit from '@site/static/images/use-cases/observability/hyperdx-
 import dashboard_clickhouse from '@site/static/images/use-cases/observability/hyperdx-dashboard-clickhouse.png';
 import dashboard_services from '@site/static/images/use-cases/observability/hyperdx-dashboard-services.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
+import edit_filters from '@site/static/images/clickstack/dashboards/edit-filters.png';
+import add_filter from '@site/static/images/clickstack/dashboards/add-filter.png';
+import saved_filters from '@site/static/images/clickstack/dashboards/saved-filters.png';
+import filtered_dashboard from '@site/static/images/clickstack/dashboards/filtered-dashboard.png';
+import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
+import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
+import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
 ClickStack는 이벤트 시각화를 지원하며, ClickStack UI(HyperDX)에 차트 작성 기능이 기본 제공됩니다. 이러한 차트는 대시보드에 추가하여 다른 사용자와 공유할 수 있습니다.
@@ -171,11 +178,66 @@ Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할
 
 <Tagging />
 
+## 사용자 지정 필터 \{#dashboard-listing-search\}
+
+모든 대시보드에서 사용할 수 있는 [자유 텍스트 필터](#filter-dashboards) 외에도, 저장된 대시보드는 ClickHouse에서 쿼리한 데이터로 채워지는 사용자 지정 드롭다운 필터를 지원합니다. 이를 통해 재사용 가능한 클릭 기반 필터 컨트롤을 제공하므로, 대시보드 사용자는 표현식을 수동으로 작성하지 않고도 필터링할 수 있습니다.
+
+<Image img={filter_dropdown} alt="사용 가능한 서비스 이름을 보여주는 서비스 드롭다운 필터" size="lg" />
+
+다음 단계에서는 [&quot;대시보드 만들기&quot;](#creating-dashboards) 섹션에서 만든 대시보드에 사용자 지정 필터를 추가하는 방법을 설명합니다.
+
+<VerticalStepper headerLevel="h3">
+  ### Edit Filters 대화상자 열기
+
+  저장된 대시보드를 열고 도구 모음에서 **Edit Filters**를 선택하십시오.
+
+  <Image img={edit_filters} alt="대시보드 도구 모음의 Edit Filters 버튼" size="lg" />
+
+  ### 새 필터 추가
+
+  **Add new filter**를 클릭하십시오. **Name**을 입력하고, **Data source**를 선택하고, **Filter expression**을 입력하여 필터를 구성합니다. 여기에는 드롭다운을 채울 서로 다른 값을 반환하는 SQL 컬럼 또는 표현식을 지정합니다. **Save filter**를 클릭하십시오.
+
+  예를 들어, 트레이스 데이터용 서비스 필터를 추가하려면 `Traces` 데이터 소스에서 `ServiceName`을 필터 표현식으로 사용하십시오.
+
+  <Image img={add_filter} alt="Name, Data source, Filter expression 필드가 있는 Add filter 대화상자" size="md" />
+
+  Filters 모달에는 대시보드에 구성된 모든 필터가 표시됩니다. 여기에서 기존 필터를 편집하거나 삭제하거나, 추가 필터를 더할 수 있습니다.
+
+  <Image img={saved_filters} alt="구성된 Services 필터를 보여주는 Filters 모달" size="md" />
+
+  ### 필터 사용
+
+  Filters 모달을 닫으십시오. 새 드롭다운 필터가 검색 창 아래에 표시됩니다. 이를 클릭하여 사용 가능한 값을 확인한 다음 하나를 선택하면 대시보드의 모든 시각화에 필터가 적용됩니다.
+
+  <Image img={filtered_dashboard} alt="frontend 서비스로 필터링된 대시보드" size="lg" />
+
+  ### (선택 사항) 필터 값을 기본값으로 저장
+
+  필터 선택을 대시보드 기본값으로 유지하려면 대시보드 메뉴에서 **Save Query &amp; Filters as Default**를 선택하십시오. 그러면 대시보드는 선택한 필터가 적용된 상태로 항상 열립니다. 재설정하려면 같은 메뉴에서 **Remove Default Query &amp; Filters**를 선택하십시오.
+
+  <Image img={save_filter_values} alt="Save Query and Filters as Default 옵션을 보여주는 대시보드 메뉴" size="lg" />
+</VerticalStepper>
+
+:::note
+사용자 지정 드롭다운 필터는 저장된 대시보드에서 사용할 수 있습니다. 이 패턴이 실제로 적용된 예시는 [Kubernetes 대시보드](#kubernetes-dashboard)를 참조하십시오. 여기에는 파드, 배포, 노드 이름, 네임스페이스, 클러스터에 대한 기본 제공 드롭다운 필터가 포함되어 있습니다.
+:::
+
+## 검색으로 드릴다운 \{#drilldown-to-search\}
+
+대시보드 타일은 검색 페이지로의 드릴다운을 지원합니다. 시각화에서 데이터 포인트를 클릭하면 다음 옵션이 포함된 컨텍스트 메뉴가 열립니다.
+
+- **View All Events** — 선택한 시간 창의 모든 이벤트를 표시하는 검색 페이지로 이동합니다.
+- **Filter by group** — 특정 시리즈로 필터링된 검색 페이지로 이동합니다.
+
+<Image img={drilldown} alt="Drilldown context menu showing View All Events and Filter by group options" size="lg"/>
+
+이 기능은 대시보드에서 발견된 특정 급증 현상이나 이상 징후를 조사할 때 유용합니다. 집계된 보기에서 기본이 되는 개별 이벤트로 빠르게 전환할 수 있습니다.
+
 ## 사전 설정 \{#presets\}
 
 HyperDX는 기본 대시보드를 포함해 배포됩니다.
 
-### ClickHouse 대시보드 {#clickhouse-dashboard}
+### ClickHouse 대시보드 \{#clickhouse-dashboard\}
 
 이 대시보드는 ClickHouse 모니터링을 위한 시각화를 제공합니다. 이 대시보드로 이동하려면 왼쪽 메뉴에서 선택하면 됩니다.
 
@@ -195,7 +257,7 @@ HyperDX는 기본 대시보드를 포함해 배포됩니다.
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 대시보드 {#services-dashboard}
+### Services 대시보드 \{#services-dashboard\}
 
 Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화된 서비스를 표시합니다. 이를 위해서는 트레이스를 수집하고 유효한 Traces 데이터 소스를 구성해야 합니다.
 
