@@ -19,16 +19,20 @@ import Image from '@theme/IdealImage';
 
 ## What is compute-compute separation? {#what-is-compute-compute-separation}
 
-Compute-compute separation is available for Scale and Enterprise tiers.
+In ClickHouse Cloud, compute runs on dedicated CPU and memory clusters called **services**. 
 
 Each ClickHouse Cloud service includes:
-- A group of two or more ClickHouse nodes (or replicas) is required, but the child services can be single replica.
+- ClickHouse nodes (referred to as **replicas**)
 - An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
+
+The initial service you create is the primary service. Subsequently, you can create additional services that have access to the 
 
 :::note
 Child single services can scale vertically unlike single parent services.
 :::
+
+Compute-compute separation is available for Scale and Enterprise tiers.
 
 <Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
 
