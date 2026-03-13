@@ -429,17 +429,17 @@ AWS 向けの BYOC（Bring Your Own Cloud）がベータ版として利用可能
 
 <Image img={beta_dashboards} size="lg" alt="ClickHouse Cloud インターフェースに、新しいダッシュボードのベータ版機能と可視化が表示されている画面" border />
 
-### Query API エンドポイント（GA） \{#query-api-endpoints-ga\}
+### Query API エンドポイント (GA)  \{#query-api-endpoints-ga\}
 
 ClickHouse Cloud における Query API エンドポイントの GA リリースをお知らせします。Query API エンドポイントを使用すると、保存済みクエリ向けの RESTful API エンドポイントを数クリックで立ち上げ、言語クライアントや認証の複雑さに煩わされることなく、アプリケーションでデータを利用し始めることができます。初回リリース以降、次のような多くの改善を行いました。
 
-* エンドポイントのレイテンシ削減（特にコールドスタート時）
+* エンドポイントのレイテンシ削減 (特にコールドスタート時) 
 * エンドポイントの RBAC 制御の強化
 * 設定可能な CORS 許可ドメイン
 * 結果のストリーミング
 * ClickHouse 互換のすべての出力フォーマットのサポート
 
-これらの改善に加えて、既存のフレームワークを活用し、ClickHouse Cloud サービスに対して任意の SQL クエリを実行できる汎用 Query API エンドポイントを提供開始します。汎用エンドポイントは、サービスの設定ページから有効化および構成できます。
+これらの改善に加えて、既存のフレームワークを活用し、複数の ClickHouse Cloud サービスに対して任意の SQL クエリを実行できる汎用 Query API エンドポイントを提供開始します。汎用エンドポイントは、サービスの設定ページから有効化および構成できます。
 
 開始手順については、[Query API エンドポイントのドキュメント](/cloud/get-started/query-endpoints)を参照してください。
 

@@ -61,3 +61,7 @@ Asynchronous inserts can be enabled for a particular user, or for a specific que
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
   ```
+
+:::note
+Asynchronous inserts do not apply to `INSERT INTO ... SELECT` queries. When the insert contains a `SELECT` clause, the query is always executed synchronously regardless of the `async_insert` setting.
+:::

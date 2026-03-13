@@ -23,7 +23,6 @@ import sparsePrimaryIndexes09b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes09c from '@site/static/images/guides/best-practices/sparse-primary-indexes-09c.png';
 import sparsePrimaryIndexes10 from '@site/static/images/guides/best-practices/sparse-primary-indexes-10.png';
 import sparsePrimaryIndexes11 from '@site/static/images/guides/best-practices/sparse-primary-indexes-11.png';
-import sparsePrimaryIndexes12a from '@site/static/images/guides/best-practices/sparse-primary-indexes-12a.png';
 import sparsePrimaryIndexes12b1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-1.png';
 import sparsePrimaryIndexes12b2 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12b-2.png';
 import sparsePrimaryIndexes12c1 from '@site/static/images/guides/best-practices/sparse-primary-indexes-12c-1.png';
@@ -150,7 +149,7 @@ Processed 8.87 million rows,
 
 ClickHouse client's result output indicates that ClickHouse executed a full table scan! Each single row of the 8.87 million rows of our table was streamed into ClickHouse. That doesn't scale.
 
-To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
+To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's columns) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
 ## ClickHouse index design {#clickhouse-index-design}
 
@@ -160,7 +159,7 @@ In traditional relational database management systems, the primary index would c
 
 Considering the challenges associated with B-Tree indexes, table engines in ClickHouse utilise a different approach. The ClickHouse [MergeTree Engine Family](/engines/table-engines/mergetree-family/index.md) has been designed and optimized to handle massive data volumes. These tables are designed to receive millions of row inserts per second and store very large (100s of Petabytes) volumes of data. Data is quickly written to a table [part by part](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage), with rules applied for merging the parts in the background. In ClickHouse each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. At the very large scale that ClickHouse is designed for, it is paramount to be very disk and memory efficient. Therefore, instead of indexing every row, the primary index for a part has one index entry (known as a 'mark') per group of rows (called 'granule') - this technique is called **sparse index**.
 
-Sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key column(s). Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
+Sparse indexing is possible because ClickHouse is storing the rows for a part on disk ordered by the primary key columns. Instead of directly locating single rows (like a B-Tree based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows (granules) are then in parallel streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it can, and must, completely fit into the main memory), whilst still significantly speeding up query execution times: especially for range queries that are typical in data analytics use cases.
 
 The following illustrates in detail how ClickHouse is building and using its sparse primary index. Later on in the article, we will discuss some best practices for choosing, removing, and ordering the table columns that are used to build the index (primary key columns).
 
@@ -289,7 +288,7 @@ The output of the ClickHouse client shows:
 - The table has a primary index with 1083 entries (called 'marks') and the size of the index is 96.93 KB.
 - In total, the table's data and mark files and primary index file together take 207.07 MB on disk.
 
-### Data is stored on disk ordered by primary key column(s) {#data-is-stored-on-disk-ordered-by-primary-key-columns}
+### Data is stored on disk ordered by primary key columns {#data-is-stored-on-disk-ordered-by-primary-key-columns}
 
 Our table that we created above has
 - a compound [primary key](/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries) `(UserID, URL)` and
@@ -319,7 +318,7 @@ ClickHouse is a <a href="https://clickhouse.com/docs/introduction/distinctive-fe
   - then by `URL`,
   - and lastly by `EventTime`:
 
-<Image img={sparsePrimaryIndexes01} size="md" alt="Sparse Primary Indices 01" background="white"/>
+<Image img={sparsePrimaryIndexes01} size="lg" alt="Sparse Primary Indices 01" />
 
 `UserID.bin`, `URL.bin`, and `EventTime.bin` are the data files on disk where the values of the `UserID`, `URL`, and `EventTime` columns are stored.
 
@@ -341,7 +340,7 @@ Column values aren't physically stored inside granules: granules are just a logi
 The following diagram shows how the (column values of) 8.87 million rows of our table
 are organized into 1083 granules, as a result of the table's DDL statement containing the setting `index_granularity` (set to its default value of 8192).
 
-<Image img={sparsePrimaryIndexes02} size="md" alt="Sparse Primary Indices 02" background="white"/>
+<Image img={sparsePrimaryIndexes02} size="lg" alt="Sparse Primary Indices 02" />
 
 The first (based on physical order on disk) 8192 rows (their column values) logically belong to granule 0, then the next 8192 rows (their column values) belong to granule 1 and so on.
 
@@ -371,11 +370,11 @@ For example
 - the first index entry ('mark 0' in the diagram below) is storing the key column values of the first row of granule 0 from the diagram above,
 - the second index entry ('mark 1' in the diagram below) is storing the key column values of the first row of granule 1 from the diagram above, and so on.
 
-<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" background="white"/>
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" />
 
 In total the index has 1083 entries for our table with 8.87 million rows and 1083 granules:
 
-<Image img={sparsePrimaryIndexes03b} size="md" alt="Sparse Primary Indices 03b" background="white"/>
+<Image img={sparsePrimaryIndexes03b} size="lg" alt="Sparse Primary Indices 03b" />
 
 :::note
 - For tables with [adaptive index granularity](/whats-new/changelog/2019.md/#experimental-features-1), there is also one "final" additional mark stored in the primary index that records the values of the primary key columns of the last table row, but because we disabled adaptive index granularity (in order to simplify the discussions in this guide, as well as make the diagrams and results reproducible), the index of our example table doesn't include this final mark.
@@ -587,7 +586,7 @@ We discuss that second stage in more detail in the following section.
 
 The following diagram illustrates a part of the primary index file for our table.
 
-<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" background="white"/>
+<Image img={sparsePrimaryIndexes04} size="lg" alt="Sparse Primary Indices 04" />
 
 As discussed above, via a binary search over the index's 1083 UserID marks, mark 176 was identified. Its corresponding granule 176 can therefore possibly contain rows with a UserID column value of 749.927.693.
 
@@ -601,7 +600,7 @@ The diagram above shows that mark 176 is the first index entry where both the mi
 </p>
 </details>
 
-In order to confirm (or not) that some row(s) in granule 176 contain a UserID column value of 749.927.693, all 8192 rows belonging to this granule need to be streamed into ClickHouse.
+In order to confirm (or not) that some rows in granule 176 contain a UserID column value of 749.927.693, all 8192 rows belonging to this granule need to be streamed into ClickHouse.
 
 To achieve this, ClickHouse needs to know the physical location of granule 176.
 
@@ -609,7 +608,7 @@ In ClickHouse the physical locations of all granules for our table are stored in
 
 The following diagram shows the three mark files `UserID.mrk`, `URL.mrk`, and `EventTime.mrk` that store the physical locations of the granules for the table's `UserID`, `URL`, and `EventTime` columns.
 
-<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" background="white"/>
+<Image img={sparsePrimaryIndexes05} size="lg" alt="Sparse Primary Indices 05" />
 
 We have discussed how the primary index is a flat uncompressed array file (primary.idx), containing index marks that are numbered starting at 0.
 
@@ -658,7 +657,7 @@ The indirection provided by mark files avoids storing, directly within the prima
 
 The following diagram and the text below illustrate how for our example query ClickHouse locates granule 176 in the UserID.bin data file.
 
-<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes06} size="lg" alt="Sparse Primary Indices 06" />
 
 We discussed earlier in this guide that ClickHouse selected the primary index mark 176 and therefore granule 176 as possibly containing matching rows for our query.
 
@@ -687,7 +686,7 @@ But what happens when a query is filtering on a column that is part of a compoun
 :::note
 We discuss a scenario when a query is explicitly not filtering on the first key column, but on a secondary key column.
 
-When a query is filtering on both the first key column and on any key column(s) after the first then ClickHouse is running binary search over the first key column's index marks.
+When a query is filtering on both the first key column and on any key columns after the first then ClickHouse is running binary search over the first key column's index marks.
 :::
 
 <br/>
@@ -770,7 +769,7 @@ We have marked the key column values for the first table rows for each granule i
 
 Suppose UserID had low cardinality. In this case it would be likely that the same UserID value is spread over multiple table rows and granules and therefore index marks. For index marks with the same UserID, the URL values for the index marks are sorted in ascending order (because the table rows are ordered first by UserID and then by URL). This allows efficient filtering as described below:
 
-<Image img={sparsePrimaryIndexes07} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes07} size="lg" alt="Sparse Primary Indices 06" />
 
 There are three different scenarios for the granule selection process for our abstract sample data in the diagram above:
 
@@ -784,7 +783,7 @@ There are three different scenarios for the granule selection process for our ab
 
 When the UserID has high cardinality then it is unlikely that the same UserID value is spread over multiple table rows and granules. This means the URL values for the index marks aren't monotonically increasing:
 
-<Image img={sparsePrimaryIndexes08} size="md" alt="Sparse Primary Indices 06" background="white"/>
+<Image img={sparsePrimaryIndexes08} size="lg" alt="Sparse Primary Indices 06" />
 
 As we can see in the diagram above, all shown marks whose URL values are smaller than W3 are getting selected for streaming its associated granule's rows into the ClickHouse engine.
 
@@ -814,7 +813,7 @@ ALTER TABLE hits_UserID_URL MATERIALIZE INDEX url_skipping_index;
 ```
 ClickHouse now created an additional index that is storing - per group of 4 consecutive [granules](#data-is-organized-into-granules-for-parallel-data-processing) (note the `GRANULARITY 4` clause in the `ALTER TABLE` statement above) - the minimum and maximum URL value:
 
-<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" background="white"/>
+<Image img={sparsePrimaryIndexes13a} size="lg" alt="Sparse Primary Indices 13a" />
 
 The first index entry ('mark 0' in the diagram above) is storing the minimum and maximum URL values for the [rows belonging to the first 4 granules of our table](#data-is-organized-into-granules-for-parallel-data-processing).
 
@@ -824,7 +823,7 @@ The second index entry ('mark 1') is storing the minimum and maximum URL values 
 
 Because of the similarly high cardinality of UserID and URL, this secondary data skipping index can't help with excluding granules from being selected when our [query filtering on URL](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) is executed.
 
-The specific URL value that the query is looking for (i.e. 'http://public_search') very likely is between the minimum and maximum value stored by the index for each group of granules resulting in ClickHouse being forced to select the group of granules (because they might contain row(s) matching the query).
+The specific URL value that the query is looking for (i.e. 'http://public_search') very likely is between the minimum and maximum value stored by the index for each group of granules resulting in ClickHouse being forced to select the group of granules (because they might contain rows matching the query).
 
 ### A need to use multiple primary indexes {#a-need-to-use-multiple-primary-indexes}
 
@@ -850,15 +849,15 @@ However, the three options differ in how transparent that additional table is to
 
 When creating a **second table** with a different primary key then queries must be explicitly send to the table version best suited for the query, and new data must be inserted explicitly into both tables in order to keep the tables in sync:
 
-<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" background="white"/>
+<Image img={sparsePrimaryIndexes09a} size="lg" alt="Sparse Primary Indices 09a" />
 
 With a **materialized view** the additional table is implicitly created and data is automatically kept in sync between both tables:
 
-<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" background="white"/>
+<Image img={sparsePrimaryIndexes09b} size="lg" alt="Sparse Primary Indices 09b" />
 
 And the **projection** is the most transparent option because next to automatically keeping the implicitly created (and hidden) additional table in sync with data changes, ClickHouse will automatically choose the most effective table version for queries:
 
-<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" background="white"/>
+<Image img={sparsePrimaryIndexes09c} size="lg" alt="Sparse Primary Indices 09c" />
 
 In the following we discuss this three options for creating and using multiple primary indexes in more detail and with real examples.
 
@@ -905,11 +904,11 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 Because we switched the order of the columns in the primary key, the inserted rows are now stored on disk in a different lexicographical order (compared to our [original table](#a-table-with-a-primary-key)) and therefore also the 1083 granules of that table are containing different values than before:
 
-<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" background="white"/>
+<Image img={sparsePrimaryIndexes10} size="lg" alt="Sparse Primary Indices 10" />
 
 This is the resulting primary key:
 
-<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" background="white"/>
+<Image img={sparsePrimaryIndexes11} size="lg" alt="Sparse Primary Indices 11" />
 
 That can now be used to significantly speed up the execution of our example query filtering on the URL column in order to calculate the top 10 users that most frequently clicked on the URL "http://public_search":
 ```sql
@@ -1053,11 +1052,11 @@ Ok.
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the implicitly created table
 - Effectively the implicitly created table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
-<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" background="white"/>
+<Image img={sparsePrimaryIndexes12b1} size="lg" alt="Sparse Primary Indices 12b1" />
 
 ClickHouse is storing the [column data files](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), the [mark files](#mark-files-are-used-for-locating-granules) (*.mrk2) and the [primary index](#the-primary-index-has-one-entry-per-granule) (primary.idx) of the implicitly created table in a special folder withing the ClickHouse server's data directory:
 
-<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" background="white"/>
+<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" />
 
 :::
 
@@ -1137,11 +1136,11 @@ ALTER TABLE hits_UserID_URL
 - please note that projections don't make queries that use ORDER BY more efficient, even if the ORDER BY matches the projection's ORDER BY statement (see https://github.com/ClickHouse/ClickHouse/issues/47333)
 - Effectively the implicitly created hidden table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
-<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white"/>
+<Image img={sparsePrimaryIndexes12c1} size="lg" alt="Sparse Primary Indices 12c1" />
 
 ClickHouse is storing the [column data files](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin), the [mark files](#mark-files-are-used-for-locating-granules) (*.mrk2) and the [primary index](#the-primary-index-has-one-entry-per-granule) (primary.idx) of the hidden table in a special folder (marked in orange in the screenshot below) next to the source table's data files, mark files, and primary index files:
 
-<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" background="white"/>
+<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" />
 
 :::
 
@@ -1396,7 +1395,7 @@ In the following we illustrate why it's beneficial for the compression ratio of 
 
 The diagram below sketches the on-disk order of rows for a primary key where the key columns are ordered by cardinality in ascending order:
 
-<Image img={sparsePrimaryIndexes14a} size="md" alt="Sparse Primary Indices 14a" background="white"/>
+<Image img={sparsePrimaryIndexes14a} size="lg" alt="Sparse Primary Indices 14a" />
 
 We discussed that [the table's row data is stored on disk ordered by primary key columns](#data-is-stored-on-disk-ordered-by-primary-key-columns).
 
@@ -1408,7 +1407,7 @@ and locality (the more similar the data is, the better the compression ratio is)
 
 In contrast to the diagram above, the diagram below sketches the on-disk order of rows for a primary key where the key columns are ordered by cardinality in descending order:
 
-<Image img={sparsePrimaryIndexes14b} size="md" alt="Sparse Primary Indices 14b" background="white"/>
+<Image img={sparsePrimaryIndexes14b} size="lg" alt="Sparse Primary Indices 14b" />
 
 Now the table's rows are first ordered by their `ch` value, and rows that have the same `ch` value are ordered by their `cl` value.
 But because the first key column `ch` has high cardinality, it is unlikely that there are rows with the same `ch` value. And because of that is is also unlikely that `cl` values are ordered (locally - for rows with the same `ch` value).
@@ -1428,7 +1427,7 @@ An intuitive solution for that might be to use a [UUID](https://en.wikipedia.org
 
 For the fastest retrieval, the UUID column [would need to be the first key column](#the-primary-index-is-used-for-selecting-granules).
 
-We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key column(s)](#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](#optimal-compression-ratio-of-data-files).
+We discussed that because [a ClickHouse table's row data is stored on disk ordered by primary key columns](#data-is-stored-on-disk-ordered-by-primary-key-columns), having a very high cardinality column (like a UUID column) in a primary key or in a compound primary key before columns with lower cardinality [is detrimental for the compression ratio of other table columns](#optimal-compression-ratio-of-data-files).
 
 A compromise between fastest retrieval and optimal data compression is to use a compound primary key where the UUID is the last key column, after low(er) cardinality key columns that are used to ensure a good compression ratio for some of the table's columns.
 
@@ -1444,7 +1443,7 @@ The following diagram shows
 - the insert order of rows when the content changes (for example because of keystrokes typing the text into the text-area) and
 - the on-disk order of the data from the inserted rows when the `PRIMARY KEY (hash)` is used:
 
-<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" background="white"/>
+<Image img={sparsePrimaryIndexes15a} size="lg" alt="Sparse Primary Indices 15a" />
 
 Because the `hash` column is used as the primary key column
 - specific rows can be retrieved [very quickly](#the-primary-index-is-used-for-selecting-granules), but
@@ -1458,7 +1457,7 @@ The following diagram shows
 - the insert order of rows when the content changes (for example because of keystrokes typing the text into the text-area) and
 - the on-disk order of the data from the inserted rows when the compound `PRIMARY KEY (fingerprint, hash)` is used:
 
-<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" background="white"/>
+<Image img={sparsePrimaryIndexes15b} size="lg" alt="Sparse Primary Indices 15b" />
 
 Now the rows on disk are first ordered by `fingerprint`, and for rows with the same fingerprint value, their `hash` value determines the final order.
 

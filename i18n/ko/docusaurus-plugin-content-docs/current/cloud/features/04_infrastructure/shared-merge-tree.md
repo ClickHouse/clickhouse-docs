@@ -14,25 +14,25 @@ import Image from '@theme/IdealImage';
 
 # SharedMergeTree table engine \{#sharedmergetree-table-engine\}
 
-SharedMergeTree 테이블 엔진 계열은 ReplicatedMergeTree 엔진을 대체하는 클라우드 네이티브 방식의 엔진으로, 공유 스토리지(예: Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage) 위에서 동작하도록 최적화되어 있습니다. 모든 MergeTree 엔진 타입마다 이에 상응하는 SharedMergeTree 엔진이 있으며, 예를 들어 SharedReplacingMergeTree는 ReplicatedReplacingMergeTree를 대체합니다.
+SharedMergeTree 테이블 엔진 계열은 공유 스토리지(예: Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage) 상에서 작동하도록 최적화된, ReplicatedMergeTree 엔진을 대체하는 클라우드 네이티브 방식의 엔진입니다. 각 MergeTree 엔진 유형마다 이에 대응하는 SharedMergeTree가 있으며, 예를 들어 SharedReplacingMergeTree는 ReplicatedReplacingMergeTree를 대체합니다.
 
-SharedMergeTree 테이블 엔진 계열은 ClickHouse Cloud의 핵심 기반입니다. 최종 사용자는 ReplicatedMergeTree 기반 엔진 대신 SharedMergeTree 엔진 계열을 사용하기 위해 별도로 변경해야 할 사항이 없습니다. SharedMergeTree는 다음과 같은 추가 이점을 제공합니다:
+SharedMergeTree 테이블 엔진 계열은 ClickHouse Cloud를 구동합니다. 최종 사용자가 ReplicatedMergeTree 기반 엔진 대신 SharedMergeTree 엔진 계열을 사용하기 위해 변경해야 할 것은 없습니다. 다음과 같은 추가 이점을 제공합니다:
 
 - 더 높은 삽입 처리량
-- 백그라운드 머지 처리량 향상
+- 백그라운드 병합 처리량 향상
 - 뮤테이션 처리량 향상
 - 더 빠른 스케일 업 및 스케일 다운 작업
-- `SELECT` 쿼리에 대한 더 가벼운 강한 일관성 제공
+- select 쿼리에 대해 더 경량의 강한 일관성
 
-SharedMergeTree가 제공하는 중요한 개선 사항 중 하나는 ReplicatedMergeTree와 비교하여 컴퓨트와 스토리지 간의 분리를 한층 더 심화한다는 점입니다. 아래에서 ReplicatedMergeTree가 컴퓨트와 스토리지를 어떻게 분리하는지 확인할 수 있습니다:
+SharedMergeTree가 제공하는 중요한 개선 사항 중 하나는 ReplicatedMergeTree와 비교해 컴퓨트와 스토리지의 분리를 한층 더 심화한다는 점입니다. 아래에서 ReplicatedMergeTree가 컴퓨트와 스토리지를 어떻게 분리하는지 확인할 수 있습니다:
 
-<Image img={shared_merge_tree} alt="ReplicatedMergeTree 다이어그램" size="md"  />
+<Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
 
-위 그림에서 보듯이, ReplicatedMergeTree의 데이터는 객체 스토리지에 저장되지만, 메타데이터는 여전히 각 clickhouse-server에 상주합니다. 이는 모든 복제 작업마다 메타데이터도 모든 레플리카에 복제되어야 함을 의미합니다.
+보시다시피, ReplicatedMergeTree에 저장된 데이터는 객체 스토리지에 있더라도 메타데이터는 여전히 각 clickhouse-servers에 상주합니다. 이는 모든 복제 작업마다 메타데이터도 모든 레플리카에 복제되어야 함을 의미합니다.
 
-<Image img={shared_merge_tree_2} alt="메타데이터를 포함한 ReplicatedMergeTree 다이어그램" size="md"  />
+<Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
-ReplicatedMergeTree와 달리 SharedMergeTree는 레플리카 간의 직접 통신을 필요로 하지 않습니다. 대신 모든 통신은 공유 스토리지와 clickhouse-keeper를 통해 이루어집니다. SharedMergeTree는 비동기 리더리스 복제를 구현하며, 조정 및 메타데이터 저장을 위해 clickhouse-keeper를 사용합니다. 이는 서비스가 스케일 업 및 스케일 다운될 때 메타데이터를 별도로 복제할 필요가 없음을 의미합니다. 그 결과 복제, 뮤테이션, 머지 및 스케일 업 작업이 더 빨라집니다. SharedMergeTree는 각 테이블에 대해 수백 개의 레플리카를 허용하여, 세그먼트 없이도 동적으로 스케일링하는 것이 가능해집니다. ClickHouse Cloud에서는 쿼리에 더 많은 컴퓨트 리소스를 활용하기 위해 분산 쿼리 실행 방식이 사용됩니다.
+ReplicatedMergeTree와 달리 SharedMergeTree는 레플리카끼리 서로 통신할 필요가 없습니다. 대신 모든 통신은 공유 스토리지와 clickhouse-keeper를 통해 이루어집니다. SharedMergeTree는 비동기 리더리스 복제를 구현하며, 조정과 메타데이터 저장을 위해 clickhouse-keeper를 사용합니다. 즉, 서비스가 스케일 업 또는 스케일 다운되더라도 메타데이터를 복제할 필요가 없습니다. 그 결과 복제, 뮤테이션, 병합, 스케일 업 작업이 더 빨라집니다. SharedMergeTree는 각 테이블에 대해 수백 개의 레플리카를 허용하므로, 샤드 없이도 동적으로 스케일링할 수 있습니다. ClickHouse Cloud에서는 하나의 쿼리에 더 많은 컴퓨트 리소스를 활용하기 위해 분산 쿼리 실행 방식이 사용됩니다.
 
 ## 인트로스펙션 \{#introspection\}
 

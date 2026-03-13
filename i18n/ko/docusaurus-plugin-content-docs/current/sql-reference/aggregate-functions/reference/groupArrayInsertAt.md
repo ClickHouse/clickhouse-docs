@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayInsertAt \{#groupArrayInsertAt\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열의 지정된 위치에 값을 삽입합니다.
 
@@ -64,7 +64,7 @@ SELECT groupArrayInsertAt('-')(toString(number), number * 2) FROM numbers(5);
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**기본값 및 크기 매개변수 사용법**
+**기본값 및 크기 매개변수와 함께 사용하기**
 
 ```sql title=Query
 SELECT groupArrayInsertAt('-', 5)(toString(number), number * 2) FROM numbers(5);
@@ -76,7 +76,7 @@ SELECT groupArrayInsertAt('-', 5)(toString(number), number * 2) FROM numbers(5);
 └───────────────────────────────────────────────────────────────────┘
 ```
 
-**동일 위치로의 멀티스레드 삽입**
+**동일 위치에 대한 멀티스레드 삽입**
 
 ```sql title=Query
 SELECT groupArrayInsertAt(number, 0) FROM numbers_mt(10) SETTINGS max_block_size = 1;

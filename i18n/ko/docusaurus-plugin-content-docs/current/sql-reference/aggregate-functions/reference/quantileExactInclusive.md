@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactInclusive \{#quantileExactInclusive\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact)와 유사하게, 숫자 데이터 시퀀스의 정확한 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapAnd \{#groupBitmapAnd\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 비트맵 컬럼에 AND 연산을 수행하고 그 기수(cardinality)를 반환합니다.
 접미사 조합자 [`-State`](/sql-reference/aggregate-functions/combinators#-state)를 추가하면 비트맵 객체를 반환합니다.
@@ -55,7 +55,7 @@ SELECT groupBitmapAnd(z) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%'
 └───────────────────┘
 ```
 
-**-State 조합자 사용**
+**-State 조합자 사용하기**
 
 ```sql title=Query
 SELECT arraySort(bitmapToArray(groupBitmapAndState(z))) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%');

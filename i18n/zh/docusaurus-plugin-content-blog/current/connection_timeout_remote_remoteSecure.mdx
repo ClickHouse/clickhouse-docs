@@ -45,7 +45,7 @@ Code: 209. DB::NetException: Timeout: connect timed out: 18.218.245.169:9440 (hc
 ```
 
 **解决方法**
-要增加连接超时时间，请将 [`connect_timeout_with_failover_secure_ms`](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.h#L67) 从默认的 100ms 设置为更高的值（例如 1 秒）。
+要增加连接超时时间，请将 [`connect_timeout_with_failover_secure_ms`](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.h#L67) 从默认的 100ms 设置为更高的值 (例如 1 秒) 。
 
 ```
 4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud:9440', DATABASE, TABLE, 'USER', 'USER_PASSWORD') SETTINGS connect_timeout_with_failover_secure_ms = 1000

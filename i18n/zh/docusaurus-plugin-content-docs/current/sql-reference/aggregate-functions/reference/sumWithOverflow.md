@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumWithOverflow \{#sumWithOverflow\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算数值的总和，结果类型与输入参数相同。
 如果总和超过该数据类型的最大值，则发生溢出并按溢出结果计算。

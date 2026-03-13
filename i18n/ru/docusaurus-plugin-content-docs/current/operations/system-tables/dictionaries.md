@@ -10,7 +10,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud />
 
-Содержит информацию о [словарях](../../sql-reference/statements/create/dictionary/index.md).
+Содержит информацию о [словарях](../../sql-reference/statements/create/dictionary/overview.md).
 
 Столбцы:
 

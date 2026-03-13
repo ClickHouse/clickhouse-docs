@@ -13,15 +13,15 @@ import TabItem from '@theme/TabItem';
 `cached` 字典布局类型会将字典存储在具有固定数量单元格的缓存中。
 这些单元格包含经常使用的元素。
 
-字典键的类型是 [UInt64](../../../data-types/int-uint.md)。
+字典键的类型是 [UInt64](/sql-reference/data-types/int-uint.md)。
 
 在查找字典时，首先会搜索缓存。对于每个数据块，所有在缓存中未找到或已过期的键会通过 `SELECT attrs... FROM db.table WHERE id IN (k1, k2, ...)` 向源请求。接收到的数据随后会写入缓存。
 
 如果在字典中未找到键，则会创建更新缓存任务并将其加入更新队列。可以通过 `max_update_queue_size`、`update_queue_push_timeout_milliseconds`、`query_wait_timeout_milliseconds`、`max_threads_for_updates` 这些设置控制更新队列属性。
 
-对于缓存字典，可以设置缓存中数据的过期 [lifetime](../lifetime.md#refreshing-dictionary-data-using-lifetime)。如果自单元格中数据加载以来已经过去的时间超过 `lifetime`，则不会使用该单元格的值，并且该键会变为过期状态。下次需要使用该键时会重新请求。可以通过设置 `allow_read_expired_keys` 配置此行为。
+对于缓存字典，可以设置缓存中数据的过期 [lifetime](../lifetime.md)。如果自单元格中数据加载以来已经过去的时间超过 `lifetime`，则不会使用该单元格的值，并且该键会变为过期状态。下次需要使用该键时会重新请求。可以通过设置 `allow_read_expired_keys` 配置此行为。
 
-这是所有存储字典方式中效率最低的一种。缓存速度强烈依赖于正确的设置和使用场景。仅当命中率足够高时（建议 99% 及以上），缓存类型的字典才会有良好表现。可以在 [system.dictionaries](../../../../operations/system-tables/dictionaries.md) 表中查看平均命中率。
+这是所有存储字典方式中效率最低的一种。缓存速度强烈依赖于正确的设置和使用场景。仅当命中率足够高时（建议 99% 及以上），缓存类型的字典才会有良好表现。可以在 [system.dictionaries](/operations/system-tables/dictionaries.md) 表中查看平均命中率。
 
 如果将设置 `allow_read_expired_keys` 设为 1（默认值为 0），则字典可以支持异步更新。如果客户端请求了一组键，这些键都在缓存中，但其中一些已过期，则字典会向客户端返回这些过期键，并从源端异步请求它们。
 

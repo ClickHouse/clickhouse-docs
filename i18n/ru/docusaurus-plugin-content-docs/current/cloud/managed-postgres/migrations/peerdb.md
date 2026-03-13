@@ -63,9 +63,52 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 Чтобы воспроизвести структуру исходной базы данных в целевой, необходимо получить дамп схемы исходной базы. Для этого можно использовать `pg_dump`, чтобы создать дамп только схемы вашей исходной базы данных PostgreSQL:
 
+<details>
+  <summary>Установка pg&#95;dump</summary>
+
+  **Ubuntu:**
+
+  Обновите списки пакетов:
+
+  ```shell
+  sudo apt update
+  ```
+
+  Установите клиент PostgreSQL:
+
+  ```shell
+  sudo apt install postgresql-client
+  ```
+
+  **macOS:**
+
+  Метод 1: Использование Homebrew (рекомендуется)
+
+  Установите Homebrew, если он ещё не установлен:
+
+  ```shell
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+  Установите PostgreSQL:
+
+  ```shell
+  brew install postgresql
+  ```
+
+  Проверьте установку:
+
+  ```shell
+  pg_dump --version
+  ```
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
+
+
+#### Удаление ограничений UNIQUE и индексов из дампа схемы \{#migration-peerdb-remove-constraints-indexes\}
 
 Прежде чем применять дамп к целевой базе данных, необходимо удалить ограничения UNIQUE и индексы из файла дампа, чтобы процесс ингестии данных PeerDB в целевые таблицы не блокировался этими ограничениями и индексами. Их можно удалить с помощью:
 

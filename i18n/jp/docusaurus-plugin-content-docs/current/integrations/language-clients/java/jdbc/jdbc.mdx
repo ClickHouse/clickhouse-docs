@@ -29,13 +29,13 @@ import TabItem from '@theme/TabItem';
 >
   <Version>
     :::note
-    `clickhouse-jdbc`は最新のJavaクライアントを使用して標準JDBCインターフェースを実装しています。
+    `clickhouse-jdbc`は最新のJavaクライアントを使用して標準的なJDBCインターフェースを実装しています。
     パフォーマンスや直接アクセスが重要な場合は、最新のJavaクライアントを直接使用することを推奨します。
     :::
 
     ## 環境要件 \{#environment-requirements\}
 
-    * [OpenJDK](https://openjdk.java.net) バージョン 8 以上
+    * [OpenJDK](https://openjdk.java.net) バージョン &gt;= 8
 
     ### セットアップ \{#setup\}
 
@@ -46,7 +46,7 @@ import TabItem from '@theme/TabItem';
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.9.6</version>
+            <version>0.9.7</version>
             <classifier>all</classifier>
         </dependency>
         ```
@@ -55,24 +55,24 @@ import TabItem from '@theme/TabItem';
       <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.9.6:all")
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.7:all")
         ```
       </TabItem>
 
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.9.6:all'
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.7:all'
         ```
       </TabItem>
     </Tabs>
 
-    クラスパスに jar を追加する必要があるアプリケーションで JDBC ドライバーを使用している場合は、次の場所から jar をダウンロードしてクラスパスに追加する必要があります：
+    クラスパスにjarを追加する必要があるアプリケーションでJDBCドライバーを使用している場合は、以下からjarをダウンロードしてクラスパスに追加してください:
 
-    * [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) からダウンロードしてクラスパスに追加します
-      * バージョン `0.9.4` 以降では、アーティファクト https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all が利用可能です。
-      * すべての shaded 依存関係を含む JAR を取得するには、修飾子 `all` を使用してください。
-    * または公式リポジトリの[こちら](https://github.com/ClickHouse/clickhouse-java/releases)から入手できます
+    * [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) から jar をダウンロードし、クラスパスに追加します
+      * バージョン `0.9.4` 以降は、アーティファクト https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all が利用可能です。
+      * すべての shaded 依存関係を含む JAR を取得するには、クラスファイア `all` を指定してください。
+    * または公式リポジトリの[こちら](https://github.com/ClickHouse/clickhouse-java/releases)からダウンロードできます
 
     ## 設定 \{#configuration\}
 
@@ -80,10 +80,12 @@ import TabItem from '@theme/TabItem';
 
     :::note
     `com.clickhouse.jdbc.ClickHouseDriver`は、新旧両方のJDBC実装のためのファサードクラスです。デフォルトでは新しいJDBC実装が使用されます。
-    接続プロパティで`clickhouse.jdbc.v1`プロパティを`true`に設定すると、古いJDBC実装を使用できます。
+    システムプロパティ `clickhouse.jdbc.v1` を `true` に設定することで、古いJDBC実装を使用できます。このプロパティはDriverクラスを呼び出す前に設定する必要があります。
 
-    `com.clickhouse.jdbc.Driver` は新しい JDBC 実装です。
-    `com.clickhouse.jdbc.DriverV1` は旧 JDBC 実装です。
+    バージョンを切り替える別の方法として、各バージョンの Driver クラスを直接使用することもできます。
+
+    * `com.clickhouse.jdbc.Driver` は新しい JDBC 実装 (V2) です。
+    * `com.clickhouse.jdbc.DriverV1` は旧バージョンの JDBC 実装 (V1) です。
 
     :::
 
@@ -94,33 +96,34 @@ import TabItem from '@theme/TabItem';
 
     URL の構文については、次の点に注意してください:
 
-    * URL で指定できるエンドポイントは **1 つのみ** です
-    * プロトコルがデフォルトの &#39;HTTP&#39; 以外の場合は、明示的に指定する必要があります
-    * デフォルトの &#39;8123&#39; 以外のポートを使用する場合は、ポート番号を明示的に指定する必要があります
-    * ドライバーはポート番号からプロトコルを推測しないので、必ず明示的に指定してください
-    * プロトコルを明示している場合は、`ssl` パラメータは不要です。
+    * URL にはエンドポイントを **1 つだけ指定できます**
+    * プロトコルがデフォルトの「HTTP」以外の場合は、明示的に指定する必要があります
+    * デフォルトの &#39;8123&#39; 以外のポートを使用する場合は、そのポート番号を明示的に指定する必要があります
+    * ドライバーはポート番号からプロトコルを推測しないため、プロトコルを必ず明示的に指定する必要があります
+    * プロトコルを明示的に指定している場合は、`ssl` パラメーターを指定する必要はありません。
 
     ### 接続プロパティ \{#connection-properties\}
 
-    主要な設定パラメータは[Javaクライアント](/integrations/language-clients/java/client#client-configuration)で定義されています。これらはそのままドライバに渡してください。ドライバには、クライアント設定には含まれない独自のプロパティがあり、以下に記載されています。
+    主要な設定パラメータは[Javaクライアント](/integrations/language-clients/java/client#client-configuration)で定義されています。これらはそのままドライバに渡す必要があります。ドライバにはクライアント設定に含まれない独自のプロパティがあり、以下に記載されています。
 
     **ドライバープロパティ**:
 
-    | プロパティ                               | デフォルト値   | 説明                                                                                                           |
-    | ----------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
-    | `disable_frameworks_detection`      | `true`   | User-Agent に基づくフレームワークの検出を無効にする                                                                              |
-    | `jdbc_ignore_unsupported_values`    | `false`  | ドライバーの動作に影響しない場合は `SQLFeatureNotSupportedException` をスローしません                                                 |
-    | `clickhouse.jdbc.v1`                | `false`  | 新しい JDBC 実装ではなく旧来の JDBC 実装を使用する                                                                              |
-    | `default_query_settings`            | `null`   | クエリ実行時にデフォルトのクエリ設定を渡せるようにする                                                                                  |
-    | `jdbc_resultset_auto_close`         | `true`   | `Statement` のクローズ時に `ResultSet` を自動的にクローズします                                                                 |
-    | `beta.row_binary_for_simple_insert` | `false`  | `RowBinary` writer に基づく `PreparedStatement` 実装を使用します。`INSERT INTO ... VALUES` クエリでのみ動作します。                   |
-    | `jdbc_resultset_auto_close`         | `true`   | `Statement` をクローズすると `ResultSet` も自動的にクローズします                                                                |
-    | `jdbc_use_max_result_rows`          | `false`  | サーバープロパティ `max_result_rows` を使用して、クエリから返される行数を制限します。有効にすると、ユーザーが設定したオーバーフローモードを上書きします。詳細は JavaDoc を参照してください。 |
-    | `jdbc_sql_parser`                   | `JAVACC` | 使用する SQL パーサーを構成します。利用可能なオプション: `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`。                                  |
+    | プロパティ                               | デフォルト値   | 説明                                                                                                             |
+    | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+    | `disable_frameworks_detection`      | `true`   | User-Agent を用いたフレームワーク検出を無効にする                                                                                 |
+    | `jdbc_ignore_unsupported_values`    | `false`  | ドライバーの動作に影響しない箇所では `SQLFeatureNotSupportedException` を抑制します                                                    |
+    | `clickhouse.jdbc.v1`                | `false`  | 新しい JDBC 実装ではなく旧 JDBC 実装を使用する                                                                                  |
+    | `default_query_settings`            | `null`   | クエリ実行時にデフォルトのクエリ設定を渡せるようにする                                                                                    |
+    | `jdbc_resultset_auto_close`         | `true`   | `Statement` をクローズするときに `ResultSet` を自動的にクローズします                                                                |
+    | `beta.row_binary_for_simple_insert` | `false`  | `RowBinary` writer に基づく `PreparedStatement` 実装を使用します。`INSERT INTO ... VALUES` クエリでのみ動作します。                     |
+    | `jdbc_resultset_auto_close`         | `true`   | `Statement` をクローズすると `ResultSet` も自動的にクローズされます                                                                 |
+    | `jdbc_use_max_result_rows`          | `false`  | サーバープロパティ `max_result_rows` によって、クエリが返す行数を制限できるようにします。有効にすると、ユーザーが設定したオーバーフローモードを上書きします。詳細は JavaDoc を参照してください。 |
+    | `jdbc_sql_parser`                   | `JAVACC` | 使用する SQL パーサーを設定します。選択肢は `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC` です。                                        |
+    | `remember_last_set_roles`           | `true`   | 接続に対して最後に設定されたロールを保持する。                                                                                        |
 
     :::note サーバー設定
 
-    すべてのサーバー設定には `clickhouse_setting_` のプレフィックスを付ける必要があります（クライアント[設定](/integrations/language-clients/java/client#server-settings)と同様）。
+    すべてのサーバー設定には `clickhouse_setting_` のプレフィックスを付ける必要があります (クライアント[設定](/integrations/language-clients/java/client#server-settings)と同様) 。
 
     ```java
     Properties config = new Properties();
@@ -135,7 +138,7 @@ import TabItem from '@theme/TabItem';
 
     :::
 
-    **設定例**:
+    **設定例**：
 
     ```java
     Properties properties = new Properties();
@@ -153,11 +156,11 @@ import TabItem from '@theme/TabItem';
     // credentials shoud be passed in `Properties`. Here it is just for example.
     ```
 
-    注記: JDBC URL およびプロパティを URL エンコードする必要はありません。自動的にエンコードされます。
+    注記: JDBC URL や接続プロパティを URL エンコードする必要はありません。自動的にエンコードされます。
 
     ### クライアント識別 \{#client-identification\}
 
-    リクエストの発信元アプリケーションを識別する方法は2つあります：接続プロパティで `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME` を設定するか、`java.sql.Connection#setClientInfo(String name, String value)` メソッドを使用してください。
+    リクエストの発信元アプリケーションを識別する方法は2つあります。接続プロパティで `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME` を設定するか、`java.sql.Connection#setClientInfo(String name, String value)` メソッドを使用します。
 
     ```java showLineNumbers
     Properties properties = new Properties();
@@ -169,7 +172,7 @@ import TabItem from '@theme/TabItem';
     conn.setClientInfo(com.clickhouse.jdbc.ClientInfoProperties.APPLICATION_NAME.getKey(), "my-app-01");
     ```
 
-    どちらの方法でも、クエリログの `http_user_agent` の値は以下のようになります:
+    どちらの方法でも、クエリログの `http_user_agent` の値は次のようになります。
 
     ```
     my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
@@ -177,7 +180,7 @@ import TabItem from '@theme/TabItem';
 
     ### 操作の識別 \{#operation-identification\}
 
-    JDBCドライバーは各操作に対して `query_id` を生成します（現時点では、サーバー例外に含まれています）。
+    JDBCドライバーは各操作ごとに `query_id` を生成します (現在はサーバー例外に含まれています) 。
 
     操作に対して `log_comment` を設定するには、`com.clickhouse.jdbc.StatementImpl#getLocalSettings` メソッドを使用します。これには、
     `Statement` または `PreparedStatement` を事前に `com.clickhouse.jdbc.StatementImpl` にキャストする必要があります。
@@ -187,7 +190,7 @@ import TabItem from '@theme/TabItem';
     stmt.getLocalSettings().logComment("some-comment");
     ```
 
-    **注意:** `localSettings` はスレッド間で共有されるため、このアプローチはステートメントのシングルスレッド使用にのみ有効です。
+    **注意:** `localSettings` はスレッド間で共有されるため、この方法が有効なのはステートメントを単一スレッドで使用する場合に限られます。
 
     ## サポートされるデータ型 \{#supported-data-types\}
 
@@ -197,12 +200,12 @@ import TabItem from '@theme/TabItem';
 
     以下のマッピングが適用されます:
 
-    * `ResultSet#getObject(columnIndex)` メソッドは、対応する Java クラスのオブジェクトを返します（`Int8` -&gt; `java.lang.Byte`、`Int16` -&gt; `java.lang.Short` など）。
-    * `ResultSetMetaData#getColumnType(columnIndex)` メソッドは、対応する JDBC 型を返します（`Int8` -&gt; `java.lang.Byte`、`Int16` -&gt; `java.lang.Short` など）。
+    * `ResultSet#getObject(columnIndex)` メソッドは、対応する Java クラスのオブジェクトを返します (`Int8` -&gt; `java.lang.Byte`、`Int16` -&gt; `java.lang.Short` など) 。
+    * `ResultSetMetaData#getColumnType(columnIndex)` メソッドは、対応する JDBC 型を返します (`Int8` -&gt; `java.lang.Byte`、`Int16` -&gt; `java.lang.Short` など) 。
 
     マッピングを変更する方法はいくつかあります:
 
-    * `ResultSet#getObject(columnIndex, class)` メソッドは値を `class` 型に変換しようとします。変換処理にはいくつかの制約があります。詳しくは各セクションを参照してください。
+    * `ResultSet#getObject(columnIndex, class)` メソッドは、値を指定された `class` 型に変換しようとします。変換にはいくつかの制限があります。詳細は各セクションを参照してください。
 
     **数値型**
 
@@ -228,13 +231,14 @@ import TabItem from '@theme/TabItem';
     | Decimal256   | DECIMAL  | java.math.BigDecimal |
     | Bool         | BOOLEAN  | java.lang.Boolean    |
 
-    * 数値型同士は相互に変換可能です。したがって、`Int8` を `Float64` として取得したり、その逆も可能です。
+    * 数値型同士は相互に変換可能です。たとえば、`Int8` を `Float64` として取得したり、その逆に `Float64` を `Int8` として取得することも可能です。
       * `rs.getObject(1, Float64.class)` は、`Int8` カラムの値を `Float64` 型として返します。
       * `rs.getLong(1)` は、`Int8` カラムの値を `Long` 型として返します。
       * `rs.getByte(1)` は、`Int16` カラムの値が `Byte` の範囲に収まる場合、その値を `Byte` 型として返します。
-    * 広い型から狭い型への変換は、データ破損の危険性があるため推奨できません。
-    * `Bool` 型は数値としても扱えます。
-    * すべての数値型は `java.lang.String` として読み取ることができます。
+    * より広い型からより狭い型への変換は、データ破損のリスクがあるため推奨されません。
+    * `Bool` 型は数値型としても扱われます。
+    * すべての数値型は `java.lang.String` として取得できます。
+    * Java の `Float.MAX_VALUE` を `Float` として保存すると問題が発生します (https://github.com/ClickHouse/clickhouse-java/issues/809)。同じ値を `Double` として保存すると、この問題は解決します。
 
     **文字列型**
 
@@ -243,8 +247,8 @@ import TabItem from '@theme/TabItem';
     | String       | VARCHAR | java.lang.String |
     | FixedString  | VARCHAR | java.lang.String |
 
-    * `String` は `java.lang.String` 型または `byte[]` 型としてのみ読み取れます。
-    * `FixedString` は値をそのまま読み出しますが、カラムの長さに達するまで末尾がゼロバイト（\0）でパディングされます。（たとえば、`FixedString(10)` で `'John'` を指定した場合、`'John\0\0\0\0\0\0\0\0\0'` として読み取られます。）
+    * `String` は `java.lang.String` または `byte[]` としてのみ読み取れます。
+    * `FixedString` は値をそのまま読み取り、カラムの長さに達するまで末尾をゼロバイト (\0) で埋めます。 (たとえば、`FixedString(10)` で `'John'` を指定した場合、`'John\0\0\0\0\0\0\0\0\0'` として読み取られます。)
 
     **Enum型**
 
@@ -254,9 +258,9 @@ import TabItem from '@theme/TabItem';
     | Enum16       | OTHER  | java.lang.String |
 
     * `Enum8` および `Enum16` は、デフォルトで `java.lang.String` にマッピングされます。
-    * Enum の値は、対応する getter メソッドか `getObject(columnIndex, Integer.class)` メソッドを使用して数値型として取得できます。
-    * `Enum16` は内部的に short 型に、`Enum8` は byte 型にマッピングされます。データ破損のリスクがあるため、`Enum16` を byte 型として読み取ることは避けてください。
-    * Enum の値は、`PreparedStatement` で文字列値または数値として設定できます。
+    * Enum の値は、専用の getter メソッドまたは `getObject(columnIndex, Integer.class)` メソッドを使用して数値として読み取ることができます。
+    * `Enum16` は内部的には `short` 型に、`Enum8` は `byte` 型にマッピングされます。データ破損のリスクがあるため、`Enum16` を `byte` 型として読み出すことは避けてください。
+    * Enum の値は、`PreparedStatement` で文字列または数値として設定できます。
 
     **日付/時刻型**
 
@@ -269,13 +273,13 @@ import TabItem from '@theme/TabItem';
     | Time         | TIME      | java.sql.Time      |
     | Time64       | TIME      | java.sql.Time      |
 
-    * 日付／時刻型は、JDBC との互換性を高めるために `java.sql` 型にマッピングされます。ただし、`ResultSet#getObject(columnIndex, Class<T>)` の第 2 引数に対応するクラスを渡すことで、`java.time.LocalDate`、`java.time.LocalDateTime`、`java.time.LocalTime` を取得することもできます。
-      * `rs.getObject(1, java.time.LocalDate.class)` は、`Date` カラムの値を `java.time.LocalDate` として返します。
-      * `rs.getObject(1, java.time.LocalDateTime.class)` は、`DateTime` カラムの値を `java.time.LocalDateTime` として返します。
-      * `rs.getObject(1, java.time.LocalTime.class)` は、`Time` カラムの値を `java.time.LocalTime` として返します。
-    * `Date`, `Date32`, `Time`, `Time64` はサーバーのタイムゾーン設定に依存しません。
-    * `DateTime`、`DateTime64` はサーバーまたはセッションのタイムゾーン設定の影響を受けます。
-    * `DateTime` および `DateTime64` は、`getObject(colIndex, ZonedDateTime.class)` を使うと `ZonedDateTime` として取得できます。
+    * Date / Time 型は、JDBC との互換性を高めるために `java.sql` 型にマッピングされます。ただし、`ResultSet#getObject(columnIndex, Class<T>)` の第 2 引数として対応するクラスを指定することで、`java.time.LocalDate`、`java.time.LocalDateTime`、`java.time.LocalTime` を取得することも可能です。
+      * `rs.getObject(1, java.time.LocalDate.class)` は、`Date` カラムの値を `java.time.LocalDate` 型で返します。
+      * `rs.getObject(1, java.time.LocalDateTime.class)` は、`DateTime` カラムの値を `java.time.LocalDateTime` 型で返します。
+      * `rs.getObject(1, java.time.LocalTime.class)` は、`Time` カラムの値を `java.time.LocalTime` 型で返します。
+    * `Date`、`Date32`、`Time`、`Time64` はサーバーのタイムゾーンの影響を受けません。
+    * `DateTime`, `DateTime64` はサーバーまたはセッションのタイムゾーンに依存します。
+    * `DateTime` および `DateTime64` は、`getObject(colIndex, ZonedDateTime.class)` を使用すると `ZonedDateTime` として取得できます。
 
     **ネスト型**
 
@@ -286,25 +290,25 @@ import TabItem from '@theme/TabItem';
     | Map          | JAVA&#95;OBJECT | java.util.Map             |
     | Nested       | ARRAY           | java.sql.Array            |
 
-    * `Array` は、JDBC との互換性を保つため、デフォルトでは `java.sql.Array` にマッピングされます。これは、返される配列値の型情報をより多く持たせる目的もあり、型推論に有用です。
-    * `Array` は `getResultSet()` メソッドを実装しており、元の配列と同じ内容の `java.sql.ResultSet` を返します。
-    * コレクション型を `java.lang.String` として読み出すべきではありません。配列内の文字列値に引用符が付与されないなど、データの表現方法として妥当ではないためです（例: 配列内の文字列値に対して引用符が付かないなど）。
-    * `Map` は、値を `getObject(columnIndex, Class<T>)` メソッドでしか読み取れないため、`JAVA_OBJECT` にマッピングされます。
-      * `Map` は名前付きカラムを持たないため、`java.sql.Struct` ではありません。
-    * `Tuple` は異なる型の要素を含めることができるため `Object[]` にマッピングされており、`List` を使用することはできません。
-    * `Tuple` は `getObject(columnIndex, Array.class)` メソッドを使用することで `Array` として読み取ることができます。この場合、`Array#baseTypeName` は `Tuple` カラムの定義を返します。
+    * `Array` は、JDBC との互換性を保つため、デフォルトでは `java.sql.Array` にマッピングされます。これは、返される配列値についてより多くの情報を提供できるようにする目的もあり、型推論に有用です。
+    * `Array` は `getResultSet()` メソッドを実装しており、元の配列と同じ内容を持つ `java.sql.ResultSet` を返します。
+    * コレクション型を `java.lang.String` として読み取るべきではありません。配列内の文字列値に引用符が付かないなど、データの表現方法として妥当ではないためです。
+    * `Map` は、値を `getObject(columnIndex, Class<T>)` メソッドでのみ読み取れるため、`JAVA_OBJECT` にマッピングされます。
+      * `Map` は名前付きカラムを持たないため、`java.sql.Struct` 型ではありません。
+    * `Tuple` は異なる型を含み得るため `Object[]` にマッピングされており、`List` として扱うことは適切ではありません。
+    * `Tuple` は `getObject(columnIndex, Array.class)` メソッドを使用することで `Array` として取得できます。この場合、`Array#baseTypeName` は `Tuple` カラム定義を返します。
 
     **配列の書き込み**
 
     `java.sql.Connection#createArrayOf` を使用して `java.sql.Array` オブジェクトをインスタンス化してください。このオブジェクトは、異なるデータベース間で配列の扱いを統一するために設計されています。
     `Array` のファクトリメソッドに設定を渡すには、`Connection` オブジェクトが必要です。
 
-    このメソッドは 2 つの引数を受け取ります：
+    このメソッドは 2 つの引数を取ります。
 
-    * `typeName` - 配列要素の型名。たとえば `Array(Int32)` -&gt; `"Int32"`。
-    * `elements` - 実際の配列要素です。例えば `[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}` と指定します。
+    * `typeName` - 配列要素の型名。たとえば、`Array(Int32)` -&gt; `"Int32"`。
+    * `elements` - 配列に含まれる実際の要素。例えば、`[[1, 2, 3], [4, 5, 6]]` -&gt; `new Integer[][] {{1, 2, 3}, {4, 5, 6}}`。
 
-    `Tuple` は `Object[]` または `java.sql.Struct` として表現できます（タプルの書き込み方法については以下を参照してください）。
+    Tuple は `Object[]` または `java.sql.Struct` として表現できます (タプルの書き込み方法については下記を参照してください) 。
 
     **例**
 
@@ -321,7 +325,7 @@ import TabItem from '@theme/TabItem';
     **配列の読み取り**
 
     `Array` オブジェクトを読み取るには `ResultSet#getArray(columnIndex)` を使用してください。このオブジェクトを使用して、任意のネスト深度の配列にアクセスできます。
-    `Array#getResultSet()` メソッドを使用すると、配列要素を `java.sql.ResultSet` としてより統一的な方法で読み取ることができます。配列要素の正確な型が不明な場合に有用です。
+    `Array#getResultSet()` メソッドを使用すると、配列要素を `java.sql.ResultSet` としてより統一的に読み取ることができます。配列要素の正確な型が不明な場合に便利です。
 
     **例**
 
@@ -350,7 +354,7 @@ import TabItem from '@theme/TabItem';
     **Tuple の書き込み**
 
     タプルは `com.clickhouse.data.Tuple` オブジェクトにマッピングされ、`setObject(columnIndex, tuple)` メソッドを呼び出してこのオブジェクトとして書き込む必要があります。
-    移植性を高めるために、タプルの書き込みには `java.sql.Struct` オブジェクトを使用することも可能です。
+    移植性を高めるために、タプルの書き込みには `java.sql.Struct` オブジェクトを使用することもできます。
 
     **例**
 
@@ -374,7 +378,7 @@ import TabItem from '@theme/TabItem';
 
     **Tuple の読み取り**
 
-    メソッド `getObject(columnIndex)` は `Object[]` を返します。`getObject(columnIndex, Array.class)` メソッドを使用することで、タプルを `java.sql.Array` として読み取ることができます。
+    メソッド `getObject(columnIndex)` は `Object[]` を返します。`getObject(columnIndex, Array.class)` メソッドを使用すると、タプルを `java.sql.Array` として読み取ることができます。
 
     **例**
 
@@ -397,7 +401,7 @@ import TabItem from '@theme/TabItem';
 
     **Mapの書き込み**
 
-    `Map` 型はキーと値のペアを必要とするため（`java.sql.Struct` はキーと値のペアをサポートしないため）、`java.collections.Map` オブジェクトとしてのみ書き込むことができます。
+    Map はキーと値のペアを必要とするため (`java.sql.Struct` はキーと値のペアをサポートしません) 、`java.collections.Map` オブジェクトとしてのみ書き込めます。
 
     **例**
 
@@ -413,9 +417,9 @@ import TabItem from '@theme/TabItem';
     }
     ```
 
-    **Map の読み取り**
+    **地図の読み方**
 
-    `Map` は `getObject(columnIndex, Map.class)` メソッドを使用することで `java.collections.Map` オブジェクトとして読み取ることができます。
+    `Map` 型は、`getObject(columnIndex, Map.class)` メソッドを使用することで `java.collections.Map` オブジェクトとして読み取れます。
 
     **例**
 
@@ -435,13 +439,13 @@ import TabItem from '@theme/TabItem';
 
     **Nested 型への書き込み**
 
-    `java.sql.Connection#createStruct` を使用して `java.sql.Struct` オブジェクトをインスタンス化します。このオブジェクトは、複数のデータベース間でネストされたデータの扱いを統一するために設計されています。
-    Struct のファクトリメソッドに設定を渡すには、Connection オブジェクトが必要です。
+    `java.sql.Connection#createStruct` を使用して `java.sql.Struct` オブジェクトをインスタンス化します。このオブジェクトは、複数のデータベース間でネスト構造の扱いを統一するために設計されています。
+    `Struct` のファクトリメソッドに設定を渡すには、`Connection` オブジェクトが必要です。
 
-    このメソッドは 2 つの引数を受け取ります：
+    このメソッドは2つの引数を受け取ります：
 
     * `typeName` - ネストされた要素の型名。例えば `Nested(Tuple(Int32, String))` -&gt; `"Nested(Tuple(Int32, String))"`。
-    * `elements` - ネストされた実際の要素を表します。たとえば `[1, 'test']` -&gt; `new Object[] {1, 'test'}` のように指定します。
+    * `elements` - ネストされた要素そのものです。たとえば `[1, 'test']` -&gt; `new Object[] {1, 'test'}` となります。
 
     **例**
 
@@ -457,9 +461,8 @@ import TabItem from '@theme/TabItem';
 
     **Nested 型の読み取り**
 
-    `Nested` オブジェクトを読み取るには、`ResultSet#getStruct(columnIndex, StructDescriptor)` を使用します。このオブジェクトを使うと、どれだけ深くネストされていてもアクセスできます。
-    `Struct#getResultSet()` メソッドを使用すると、ネストされた要素を `java.sql.ResultSet` と同様の、より一貫した方法で読み取ることができます。
-    これは、ネストされた要素の正確な型が不明な場合に有用です。
+    `Nested` オブジェクトを読み取るには、`ResultSet#getStruct(columnIndex, StructDescriptor)` を使用します。このオブジェクトを使うと、任意の深さにネストされた要素へアクセスできます。
+    `Struct#getResultSet()` メソッドを使用すると、ネストされた要素を `java.sql.ResultSet` と同様の、より一貫した方法で読み取ることができます。これは、ネストされた要素の正確な型が不明な場合に有用です。
 
     **例**
 
@@ -495,8 +498,8 @@ import TabItem from '@theme/TabItem';
 
     **Nullable型とLowCardinality型**
 
-    * `Nullable` と `LowCardinality` は、他の型をラップする特殊な型です。
-    * `Nullable` は、`ResultSetMetaData` で返される型名に影響します
+    * `Nullable` と `LowCardinality` は他の型をラップする特殊な型です。
+    * `Nullable` は、`ResultSetMetaData` が返す型名の形式に影響します。
 
     **特殊型**
 
@@ -506,23 +509,17 @@ import TabItem from '@theme/TabItem';
     | IPv4                    | OTHER     | java.net.Inet4Address |
     | IPv6                    | OTHER     | java.net.Inet6Address |
     | JSON                    | OTHER     | java.lang.String      |
-    | AggregateFunction       | OTHER     | （バイナリ表現）              |
-    | SimpleAggregateFunction | （ラップされた型） | （ラップされたクラス）           |
+    | AggregateFunction       | OTHER     | (バイナリ表現)              |
+    | SimpleAggregateFunction | (ラップされた型) | (ラップされたクラス)           |
 
-    * `UUID` は JDBC の標準型には含まれませんが、JDK には含まれています。デフォルトでは `getObject()` メソッドから `java.util.UUID` が返されます。
-    * `UUID` は、`getObject(columnIndex, String.class)` メソッドを使用することで、`String` として読み取りおよび書き込みが可能です。
-    * `IPv4` と `IPv6` は JDBC の標準型ではありませんが、JDK には含まれています。デフォルトでは、`getObject()` メソッドから `java.net.Inet4Address` と `java.net.Inet6Address` のオブジェクトが返されます。
-    * `getObject(columnIndex, String.class)` メソッドを使用すると、`IPv4` および `IPv6` を `String` 型として読み書きできます。
+    * `UUID` は JDBC 標準の型ではありませんが、JDK に含まれています。デフォルトでは、`getObject()` メソッドから `java.util.UUID` が返されます。
+    * `getObject(columnIndex, String.class)` メソッドを使用すると、`UUID` を `String` として読み書きできます。
+    * `IPv4` と `IPv6` は JDBC の標準型ではありませんが、JDK の一部です。デフォルトでは、`getObject()` メソッドで取得すると `java.net.Inet4Address` と `java.net.Inet6Address` が返されます。
+    * `IPv4` および `IPv6` は、`getObject(columnIndex, String.class)` メソッドを使用することで `String` として読み書きできます。
 
     ### 日付、時刻、タイムゾーンの処理 \{#handling-dates-times-and-timezones\}
 
-    `java.sql.Date`、`java.sql.Time`、および `java.sql.Timestamp` はタイムゾーン計算の扱いを複雑にする可能性があります。これらはもちろんサポートされていますが、
-    [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) パッケージの使用を検討してください。`ZonedDateTime` および
-    `OffsetDateTime` は、java.sql.Timestamp、java.sql.Date、java.sql.Time を置き換える優れた選択肢です。
-
-    :::note[Date vs DateTime]
-    `Date` はタイムゾーンなしで保存されますが、`DateTime` はタイムゾーン付きで保存されます。注意を怠ると予期しない結果を招く可能性があります。
-    :::
+    ドライバーが日付/時刻およびタイムスタンプを処理する際の一般的な落とし穴や動作ロジックについては、[日付/時刻ガイド](/integrations/language-clients/java/jdbc_date_time_guide)を参照してください。
 
     ## 接続の作成 \{#creating-connection\}
 
@@ -613,11 +610,11 @@ import TabItem from '@theme/TabItem';
 
     ### ログ \{#logging\}
 
-    このドライバはログ記録に [slf4j](https://www.slf4j.org/) を使用し、`classpath` 上で最初に見つかった利用可能な実装を使用します。
+    このドライバはログに [slf4j](https://www.slf4j.org/) を使用し、`classpath` 上で最初に利用可能な実装を使用します。
 
     ### 大量挿入時のJDBCタイムアウトの解決 \{#resolving-jdbc-timeout-on-large-inserts\}
 
-    ClickHouseで実行時間が長くなる大規模な挿入（INSERT）を行う際、次のようなJDBCタイムアウトエラーが発生することがあります:
+    ClickHouseで実行時間が長くなる大規模な挿入 (INSERT) を行う際、次のようなJDBCタイムアウトエラーが発生することがあります:
 
     ```plaintext
     Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
@@ -627,7 +624,7 @@ import TabItem from '@theme/TabItem';
 
     #### Mac OS \{#mac-os\}
 
-    macOSでは、以下の設定を調整することで問題を解決できます:
+    macOS では、以下の設定値を調整することでこの問題を解消できます。
 
     * `net.inet.tcp.keepidle`: 60000
     * `net.inet.tcp.keepintvl`: 45000
@@ -637,9 +634,9 @@ import TabItem from '@theme/TabItem';
 
     #### Linux \{#linux\}
 
-    Linuxでは、同等の設定のみでは問題が解決しない場合があります。Linuxがソケットのキープアライブ設定を扱う方法の違いにより、追加の手順が必要です。以下の手順に従ってください：
+    Linuxでは、同等の設定を行っただけでは問題が解決しない場合があります。Linuxにおけるソケットのキープアライブ設定の扱いが異なるため、追加の手順が必要です。以下の手順に従ってください：
 
-    1. `/etc/sysctl.conf` などの設定ファイルで、以下の Linux カーネルパラメータを調整します:
+    1. `/etc/sysctl.conf` または関連する設定ファイルで、以下の Linux カーネルパラメータを調整します：
 
     * `net.inet.tcp.keepidle`: 60000
     * `net.inet.tcp.keepintvl`: 45000
@@ -648,15 +645,15 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60（この値をデフォルトの 300 秒より短くすることも検討できます）
+    * `net.ipv4.tcp_keepalive_time`: 60 (デフォルトの 300 秒から短くすることも検討できます)
 
-    2. カーネルパラメータを変更したら、次のコマンドを実行して変更を適用します:
+    2. カーネルパラメータを変更したら、次のコマンドを実行して変更内容を反映させます：
 
     ```shell
     sudo sysctl -p
     ```
 
-    これらの設定を行った後、クライアントがソケットでKeep Aliveオプションを有効にしていることを確認する必要があります:
+    これらの設定を行った後は、クライアント側でソケットの Keep Alive オプションが有効になっていることを確認する必要があります:
 
     ```java
     properties.setProperty("socket_keepalive", "true");
@@ -666,33 +663,33 @@ import TabItem from '@theme/TabItem';
 
     ### 主な変更点 \{#key-changes\}
 
-    | 機能                                | V1（旧）    | V2（新）                     |
-    | --------------------------------- | -------- | ------------------------- |
-    | トランザクション対応                        | 一部サポートあり | サポートなし                    |
-    | レスポンスのカラム名変更                      | 一部サポートあり | サポートなし                    |
-    | 複数文 SQL                           | サポートなし   | 許可されていない                  |
-    | 名前付きパラメーター                        | サポートあり   | サポートなし（JDBC 仕様に準拠していないため） |
-    | `PreparedStatement` によるデータストリーミング | サポートあり   | サポートなし                    |
+    | 機能                                 | V1 (旧) | V2 (新)                |
+    | ---------------------------------- | ------ | --------------------- |
+    | トランザクション対応                         | 一部サポート | サポートなし                |
+    | レスポンスカラム名の変更                       | 一部サポート | サポートなし                |
+    | マルチステートメントSQL                      | サポートなし | 許可されていない              |
+    | 名前付きパラメーター                         | サポートあり | サポートなし (JDBC仕様に含まれない) |
+    | `PreparedStatement` を使ったストリーミングデータ | サポートあり | サポートなし                |
 
-    * JDBC V2 はより軽量になるよう実装されており、一部の機能が削除されています。
-      * ストリーミングデータ機能は JDBC 仕様および Java の仕様に含まれていないため、JDBC V2 ではサポートされていません。
-    * JDBC V2 では明示的な設定が必要です。フェイルオーバーのデフォルト構成はありません。
-      * プロトコルは URL で明示的に指定する必要があります。ポート番号に基づくプロトコルの自動判別は行われません。
+    * JDBC V2 はより軽量な実装として設計されており、その過程で一部の機能が削除されています。
+      * ストリーミングデータは JDBC 仕様や Java 自体の機能には含まれていないため、JDBC V2 ではサポートされません。
+    * JDBC V2 では明示的な設定が必要です。フェイルオーバー用のデフォルト設定は用意されていません。
+      * プロトコルは URL 内で明示的に指定する必要があります。ポート番号に基づいてプロトコルを暗黙的に判別することはありません。
 
-    ### 設定の変更 \{#configuration-changes\}
+    ### 設定変更 \{#configuration-changes\}
 
-    列挙型は2種類のみです:
+    列挙型は次の2種類のみです:
 
-    * `com.clickhouse.jdbc.DriverProperties` - ドライバー固有の構成プロパティです。
-    * `com.clickhouse.client.api.ClientConfigProperties` - クライアントの構成プロパティです。クライアント構成の変更については、[Java クライアントのドキュメント](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config)を参照してください。
+    * `com.clickhouse.jdbc.DriverProperties` - ドライバー独自の設定プロパティです。
+    * `com.clickhouse.client.api.ClientConfigProperties` - クライアント構成プロパティです。クライアント構成の変更点については、[Java クライアントのドキュメント](/integrations/language-clients/java/client#migration_from_v1_config)を参照してください。
 
     接続プロパティは次のように解析されます:
 
-    * URL を最初に解析してプロパティを取得し、その値が他のすべてのプロパティを上書きします。
-    * ドライバーのプロパティはクライアント側に渡されません。
-    * エンドポイント（ホスト、ポート、プロトコル）は URL から解析されます。
+    * まず URL からプロパティを解析し、そこで指定された値が他のすべてのプロパティより優先されます。
+    * ドライバーのプロパティはクライアント側には渡されません。
+    * エンドポイント (ホスト、ポート、プロトコル) は URL から解析して取得されます。
 
-    Example:
+    例:
 
     ```java
     String url = "jdbc:ch://my-server:8443/default?" +
@@ -734,7 +731,7 @@ import TabItem from '@theme/TabItem';
     | Decimal256   | ✅        | DECIMAL     | java.math.BigDecimal | DECIMAL     | java.math.BigDecimal                      |
     | Bool         | ✅        | BOOLEAN     | java.lang.Boolean    | BOOLEAN     | java.lang.Boolean                         |
 
-    * 最大の違いは、移植性を高めるために符号なし型を Java の型にマッピングしている点です。
+    * 最大の違いは、移植性を高めるために符号なし型が Java の型にマッピングされるようになった点です。
 
     **文字列型**
 
@@ -744,21 +741,21 @@ import TabItem from '@theme/TabItem';
     | FixedString  | ✅        | VARCHAR     | java.lang.String | VARCHAR     | java.lang.String |
 
     * `FixedString` は両方のバージョンで、そのままの値として読み出されます。たとえば、`'John'` を格納した `FixedString(10)` は `'John\0\0\0\0\0\0\0\0\0'` として読み出されます。
-    * `PreparedStatement#setBytes` を使用した場合、その値は `unhex('<hex_string>')` に変換され、その後 `String` として読み取られます。
-    * 文字列は UTF-8 エンコーディングで保存されます。
+    * `PreparedStatement#setBytes` が使用されると、値は `unhex('<hex_string>')` に変換され、その結果が `String` として読み取られます。
+    * 文字列は UTF-8 でエンコードされて保存されます。
 
-    **日付/時刻型**
+    **日付／時刻型**
 
-    | ClickHouse 型 | V1 との互換性 | JDBC 型 (V2) | Java クラス (V2)      | JDBC 型 (V1) | Java クラス (V1)            |
-    | ------------ | -------- | ----------- | ------------------ | ----------- | ------------------------ |
-    | Date         | ❌        | DATE        | java.sql.Date      | DATE        | java.time.LocalDate      |
-    | Date32       | ❌        | DATE        | java.sql.Date      | DATE        | java.time.LocalDate      |
-    | DateTime     | ❌        | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP   | java.time.OffsetDateTime |
-    | DateTime64   | ❌        | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP   | java.time.OffsetDateTime |
-    | Time         | ✅        | TIME        | java.sql.Time      | 新しい型/非対応    | 新しい型/非対応                 |
-    | Time64       | ✅        | TIME        | java.sql.Time      | 新しい型／未サポート  | 新しい型／未サポート               |
+    | ClickHouse 型 | V1 との互換性 | JDBC 型 (V2) | Java クラス (V2)      | JDBC 型 (V1)  | Java クラス (V1)            |
+    | ------------ | -------- | ----------- | ------------------ | ------------ | ------------------------ |
+    | Date         | ❌        | DATE        | java.sql.Date      | DATE         | java.time.LocalDate      |
+    | Date32       | ❌        | DATE        | java.sql.Date      | DATE         | java.time.LocalDate      |
+    | DateTime     | ❌        | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP    | java.time.OffsetDateTime |
+    | DateTime64   | ❌        | TIMESTAMP   | java.sql.Timestamp | TIMESTAMP    | java.time.OffsetDateTime |
+    | Time         | ✅        | TIME        | java.sql.Time      | 新しい型/未サポート   | 新しい型/未サポート               |
+    | Time64       | ✅        | TIME        | java.sql.Time      | 新しい型/サポート対象外 | 新しい型/サポート対象外             |
 
-    * `Time` と `Time64` は、V2 でのみ新しい型としてサポートされます。
+    * `Time` と `Time64` は、V2 でのみサポートされる新しい型です。
     * `DateTime` と `DateTime64` は、JDBC との互換性を高めるために `java.sql.Timestamp` にマッピングされます。
 
     **Enum型**
@@ -771,22 +768,22 @@ import TabItem from '@theme/TabItem';
 
     **ネスト型**
 
-    | ClickHouse 型 | V1 との互換性 | JDBC 型 (V2)     | Java クラス (V2)  | JDBC 型 (V1) | Java クラス (V1)          |
-    | ------------ | -------- | --------------- | -------------- | ----------- | ---------------------- |
-    | Array        | ❌        | ARRAY           | java.sql.Array | ARRAY       | Object[] またはプリミティブ型の配列 |
-    | Tuple        | ❌        | OTHER           | Object[]       | STRUCT      | java.sql.Struct        |
-    | Map          | ❌        | JAVA&#95;OBJECT | java.util.Map  | STRUCT      | java.util.Map          |
-    | Nested       | ❌        | ARRAY           | java.sql.Array | STRUCT      | java.sql.Struct        |
+    | ClickHouse 型 | V1 との互換性 | JDBC 型 (V2)     | Java クラス (V2)  | JDBC 型 (V1) | Java クラス (V1)         |
+    | ------------ | -------- | --------------- | -------------- | ----------- | --------------------- |
+    | Array        | ❌        | ARRAY           | java.sql.Array | ARRAY       | Object[] またはプリミティブ型配列 |
+    | Tuple        | ❌        | OTHER           | Object[]       | STRUCT      | java.sql.Struct       |
+    | Map          | ❌        | JAVA&#95;OBJECT | java.util.Map  | STRUCT      | java.util.Map         |
+    | Nested       | ❌        | ARRAY           | java.sql.Array | STRUCT      | java.sql.Struct       |
 
-    * V2 では、`Array` は JDBC との互換性を維持するため、デフォルトで `java.sql.Array` にマッピングされます。これは返される配列値について、より多くの情報を提供するためでもあり、型推論に有用です。
-    * In V2 では `Array` が `getResultSet()` メソッドを実装し、元の配列と同一の内容を持つ `java.sql.ResultSet` を返します。
-    * V1 では `Map` に対して `STRUCT` を使用しますが、常に `java.util.Map` オブジェクトを返します。V2 では、`Map` を `JAVA_OBJECT` にマッピングすることでこれを修正しています。
+    * In V2 では、`Array` は JDBC との互換性を維持するため、デフォルトで `java.sql.Array` にマッピングされます。これは返される配列値に関する情報量を増やし、型推論に役立てるためでもあります。
+    * In V2 では、`Array` は `getResultSet()` メソッドを実装し、元の配列と同一の内容を持つ `java.sql.ResultSet` を返します。
+    * V1 では `Map` に対して `STRUCT` を使用していますが、常に `java.util.Map` オブジェクトを返します。V2 では、`Map` を `JAVA_OBJECT` にマッピングすることでこの問題を解消しています。
     * V1 は `Tuple` に対して `STRUCT` を使用しますが、常に `List<Object>` オブジェクトを返します。V2 では `Tuple` を `OTHER` にマッピングし、デフォルトで `Object[]` を返します。
-    * V2ではタプルを書き込むための `com.clickhouse.data.Tuple#Tuple` が導入されました。これにより、値がタプルか配列かを判別しやすくなります。
-    * `PreparedStatement#setBytes` と `ResultSet#getBytes` はコレクション型に対しては使用できません。これらのメソッドはバイナリ文字列を扱うために設計されています。
-    * 通常、`Array` 型の読み書きには `java.sql.Array` を使用します。JDBC ドライバはこの方式を完全にサポートしています。
-    * V2 では `Nested` は `Array` にマッピングされ、タプルの配列として表現されます。
-    * V2 では `java.sql.Struct` に対するサポートは限定的です。`Struct` は Array 型と非常によく似た型であり、キーと値のペアをサポートしないためです。`Struct` は `Tuple` の値を書き込むために使用できます。
+    * V2ではタプルの書き込みに使用する `com.clickhouse.data.Tuple#Tuple` が導入されました。これにより、値がタプルか配列かを簡単に判別できるようになりました。
+    * `PreparedStatement#setBytes` と `ResultSet#getBytes` はコレクション型に対しては使用できません。これらのメソッドはバイト列を扱うためのものです。
+    * 通常、Array 型の読み書きには `java.sql.Array` を使用します。JDBC ドライバーはこれに完全対応しています。
+    * V2 では `Nested` は `Array` にマッピングされ、タプルの配列として扱われます。
+    * V2 では `java.sql.Struct` に対するサポートは部分的なものにとどまります。これは、`Struct` が Array 型と非常によく似た型であり、キーと値のペアをサポートしないためです。`Struct` は `Tuple` 値の書き込みに使用できます。
 
     **地理型**
 
@@ -799,47 +796,47 @@ import TabItem from '@theme/TabItem';
 
     **Nullable型とLowCardinality型**
 
-    * `Nullable` と `LowCardinality` は、他の型をラップする特殊な型です。
+    * `Nullable` と `LowCardinality` は他の型をラップする特殊な型です。
     * V2 ではこれらの型に変更はありません。
 
     **特殊型**
 
-    | ClickHouse 型            | V1 との互換性 | JDBC 型 (V2) | Java クラス (V2)         | JDBC 型 (V1) | Java クラス (V1)         |
-    | ----------------------- | -------- | ----------- | --------------------- | ----------- | --------------------- |
-    | JSON                    | ❌        | OTHER       | java.lang.String      | 非対応         | 非対応                   |
-    | AggregateFunction       | ✅        | OTHER       | （バイナリ表現）              | OTHER       | （バイナリ表現）              |
-    | SimpleAggregateFunction | ✅        | （ラップされた型）   | （ラップされたクラス）           | （ラップされた型）   | （ラップされたクラス）           |
-    | UUID                    | ✅        | OTHER       | java.util.UUID        | VARCHAR     | java.util.UUID        |
-    | IPv4                    | ✅        | OTHER       | java.net.Inet4Address | VARCHAR     | java.net.Inet4Address |
-    | IPv6                    | ✅        | OTHER       | java.net.Inet6Address | VARCHAR     | java.net.Inet6Address |
-    | Dynamic                 | ❌        | OTHER       | java.lang.Object      | サポートなし      | サポートなし                |
-    | Variant                 | ❌        | OTHER       | java.lang.Object      | サポートなし      | サポートなし                |
+    | ClickHouse 型            | V1 互換 | JDBC 型 (V2) | Java クラス (V2)         | JDBC 型 (V1) | Java クラス (V1)         |
+    | ----------------------- | ----- | ----------- | --------------------- | ----------- | --------------------- |
+    | JSON                    | ❌     | OTHER       | java.lang.String      | サポートされていません | サポートされていません           |
+    | AggregateFunction       | ✅     | OTHER       | (バイナリ表現)              | OTHER       | (バイナリ表現)              |
+    | SimpleAggregateFunction | ✅     | (ラップされた型)   | (ラップされたクラス)           | (ラップされた型)   | (ラップされたクラス)           |
+    | UUID                    | ✅     | OTHER       | java.util.UUID        | VARCHAR     | java.util.UUID        |
+    | IPv4                    | ✅     | OTHER       | java.net.Inet4Address | VARCHAR     | java.net.Inet4Address |
+    | IPv6                    | ✅     | OTHER       | java.net.Inet6Address | VARCHAR     | java.net.Inet6Address |
+    | Dynamic                 | ❌     | OTHER       | java.lang.Object      | サポートなし      | サポートなし                |
+    | Variant                 | ❌     | OTHER       | java.lang.Object      | サポートなし      | サポートなし                |
 
     * V1 では `UUID` に対して `VARCHAR` を使用しますが、常に `java.util.UUID` オブジェクトを返します。V2 では、`UUID` を `OTHER` にマッピングすることでこの問題を解消し、`java.util.UUID` オブジェクトを返します。
     * V1 では `IPv4` と `IPv6` に対して `VARCHAR` を使用しますが、常に `java.net.Inet4Address` および `java.net.Inet6Address` オブジェクトを返します。V2 では、`IPv4` と `IPv6` を `OTHER` にマッピングすることでこの問題を解消し、`java.net.Inet4Address` および `java.net.Inet6Address` オブジェクトを返します。
     * `Dynamic` と `Variant` は V2 で導入された新しい型です。V1 ではサポートされていません。
-    * `JSON` は `Dynamic` 型に基づく型であるため、V2 でのみサポートされています。
-    * IPv4およびIPv6の値は、`getBytes(columnIndex)` メソッドを使用して `byte[]` として読み取ることもできます。ただし、これらの型には専用クラスを使用することを推奨します。
-    * V2 では、IP アドレスを数値として読み取ることはサポートされていません。IP アドレスの変換は `InetAddress` クラス側で行う方がより適切な実装と考えられているためです。
+    * `JSON` は `Dynamic` 型を基盤としているため、V2 でのみサポートされています。
+    * IPv4およびIPv6の値は、`getBytes(columnIndex)` メソッドを使用して `byte[]` として読み取ることもできます。ただし、これらの型については専用クラスを使用することが推奨されます。
+    * V2 では、IP アドレスを数値として読み取ることはサポートしていません。IP アドレスの数値への変換は、`InetAddress` クラス群で行う方がより適切な実装と考えられているためです。
 
     ### データベースメタデータの変更 \{#database-metadata-changes\}
 
-    * V2 ではデータベースを指す用語として `Schema` のみを使用します。`Catalog` という用語は今後の使用のために予約されています。
-    * V2 は `DatabaseMetaData.supportsTransactions()` および `DatabaseMetaData.supportsSavepoints()` に対して `false` を返します。この挙動は今後の開発で変更される予定です。
+    * V2 ではデータベースを指す名称として `Schema` のみを使用します。`Catalog` という名称は将来のために予約されています。
+    * V2 は `DatabaseMetaData.supportsTransactions()` および `DatabaseMetaData.supportsSavepoints()` に対して `false` を返します。これは今後の開発で変更される予定です。
   </Version>
 
   <Version>
-    `clickhouse-jdbc`は標準のJDBCインターフェースを実装しています。[clickhouse-client](/integrations/sql-clients/sql-console)上に構築されており、カスタム型マッピング、トランザクションサポート、標準的な同期`UPDATE`および`DELETE`文などの追加機能を提供するため、レガシーアプリケーションやツールと容易に使用できます。
+    `clickhouse-jdbc`は標準のJDBCインターフェースを実装しています。[clickhouse-client](/integrations/sql-clients/sql-console)の上に構築されており、カスタム型マッピング、トランザクションサポート、標準的な同期の`UPDATE`および`DELETE`文などの追加機能を提供するため、レガシーなアプリケーションやツールでも簡単に使用できます。
 
     :::note
-    最新のJDBC（0.7.2）バージョンはClient-V1を使用しています
+    最新のJDBC (0.7.2) バージョンはClient-V1を使用しています
     :::
 
-    `clickhouse-jdbc` APIは同期的に動作し、一般的に SQL の解析や型のマッピング／変換などの追加オーバーヘッドが発生します。パフォーマンスが重要な場合、または ClickHouse へより直接的にアクセスしたい場合は、[clickhouse-client](/integrations/sql-clients/sql-console)の使用を検討してください。
+    `clickhouse-jdbc` APIは同期的に動作し、一般に SQL の解析や型のマッピング／変換などのオーバーヘッドが大きくなります。パフォーマンスが重要な場合、または ClickHouse へより直接的にアクセスしたい場合は、[clickhouse-client](/integrations/sql-clients/sql-console)の使用を検討してください。
 
     ## 環境要件 \{#v07-environment-requirements\}
 
-    * [OpenJDK](https://openjdk.java.net) バージョン 8 以上
+    * [OpenJDK](https://openjdk.java.net) バージョン &gt;= 8
 
     ### セットアップ \{#v07-setup\}
 
@@ -874,7 +871,7 @@ import TabItem from '@theme/TabItem';
       </TabItem>
     </Tabs>
 
-    バージョン `0.5.0` 以降、クライアントにバンドルされた Apache HTTP Client を使用しています。このパッケージの共有版が存在しないため、ロガーを依存関係として追加する必要があります。
+    バージョン `0.5.0` 以降は、クライアントに同梱されている Apache HTTP Client を使用しています。このパッケージには共有ライブラリ版がないため、ロガーを依存関係として追加する必要があります。
 
     <Tabs groupId="client-v1-compression-deps">
       <TabItem value="maven" label="Maven">
@@ -907,37 +904,37 @@ import TabItem from '@theme/TabItem';
 
     **ドライバークラス**: `com.clickhouse.jdbc.ClickHouseDriver`
 
-    **URL構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`、例えば:
+    **URL構文**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`。例えば：
 
     * `jdbc:ch://localhost` は `jdbc:clickhouse:http://localhost:8123` と等価です
     * `jdbc:ch:https://localhost` は `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT` と同じです。
-    * `jdbc:ch:grpc://localhost` は `jdbc:clickhouse:grpc://localhost:9100` と同じです。
+    * `jdbc:ch:grpc://localhost` は `jdbc:clickhouse:grpc://localhost:9100` と同じです
 
     **接続プロパティ**:
 
-    | プロパティ                      | デフォルト値  | 説明                                                                                                                                                                                                                                                                                                                                                                                |
-    | -------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `continueBatchOnError`     | `false` | エラー発生時もバッチ処理を継続するかどうか                                                                                                                                                                                                                                                                                                                                                             |
-    | `createDatabaseIfNotExist` | `false` | データベースが存在しない場合に自動的に作成するかどうか                                                                                                                                                                                                                                                                                                                                                       |
-    | `custom_http_headers`      |         | カンマ区切りのカスタム HTTP ヘッダー。例：`User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                     |
-    | `custom_http_params`       |         | カンマ区切りで指定するカスタム HTTP クエリパラメータ。例：`extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                  |
-    | `nullAsDefault`            | `0`     | `0` - null 値をそのまま扱い、null を許容しないカラムに null を挿入しようとした場合は例外をスローする; `1` - null 値をそのまま扱い、挿入時の null チェックを無効にする; `2` - クエリ実行および挿入の両方で、null を対応するデータ型のデフォルト値に置き換える                                                                                                                                                                                                                         |
-    | `jdbcCompliance`           | `true`  | 標準的な同期型の UPDATE/DELETE 文および疑似トランザクションをサポートするかどうか                                                                                                                                                                                                                                                                                                                                  |
-    | `typeMappings`             |         | ClickHouse データ型と Java クラスの対応付けをカスタマイズします。これにより、[`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) および [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) の両方の戻り値に影響します。例: `UInt128=java.lang.String,UInt256=java.lang.String` |
-    | `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) が Array / Tuple 型の列に対して java.sql.Array / java.sql.Struct を返すかどうかを指定します。                                                                                                                                                                                                         |
+    | プロパティ                      | デフォルト値  | 説明                                                                                                                                                                                                                                                                                                                                                                                   |
+    | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | `continueBatchOnError`     | `false` | エラー発生時にバッチ処理を継続するかどうか                                                                                                                                                                                                                                                                                                                                                                |
+    | `createDatabaseIfNotExist` | `false` | データベースが存在しない場合に作成するかどうか                                                                                                                                                                                                                                                                                                                                                              |
+    | `custom_http_headers`      |         | カンマ区切りで指定するカスタム HTTP ヘッダー。例：`User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                    |
+    | `custom_http_params`       |         | カンマ区切りのカスタム HTTP クエリパラメータ。例：`extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                         |
+    | `nullAsDefault`            | `0`     | `0` - null 値はそのまま扱い、null を許容しないカラムに null を挿入しようとした場合は例外をスローする; `1` - null 値はそのまま扱い、挿入時の null チェックを無効にする; `2` - クエリおよび挿入の両方で、null を対応するデータ型のデフォルト値に置き換える                                                                                                                                                                                                                              |
+    | `jdbcCompliance`           | `true`  | 標準的な同期型の UPDATE/DELETE 文および疑似トランザクションをサポートするかどうか                                                                                                                                                                                                                                                                                                                                     |
+    | `typeMappings`             |         | ClickHouse データ型と Java クラスの対応付けをカスタマイズします。これにより、[`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) および [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) の両方の戻り値に影響を与えます。例えば、`UInt128=java.lang.String,UInt256=java.lang.String` |
+    | `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) が Array / Tuple 型に対して java.sql.Array / java.sql.Struct を返すかどうかを指定します。                                                                                                                                                                                                              |
 
     注記: 詳細については[JDBC固有の設定](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java)を参照してください。
 
     ## サポートされるデータ型 \{#v07-supported-data-types\}
 
-    JDBCドライバは、クライアントライブラリと同一のデータ形式をサポートします。
+    JDBCドライバは、クライアントライブラリと同じデータ形式をサポートします。
 
     :::note
 
-    * AggregatedFunction - :warning: `SELECT * FROM table ...` 構文はサポートされません
-    * 10進数 - 一貫性を保つため、21.9 以降では `SET output_format_decimal_trailing_zeros=1` を設定します
-    * Enum - 文字列値と整数値のどちらとしても扱える
-    * UInt64 - client-v1 では `long` にマッピングされます
+    * AggregatedFunction - :warning: `SELECT * FROM table ...` はサポートされません
+    * Decimal 型 - 一貫性を保つため、バージョン 21.9 以降では `SET output_format_decimal_trailing_zeros=1` を設定します
+    * Enum - 文字列値および整数値の両方として扱える
+    * UInt64 - client-v1 では `long` 型にマッピングされます
       :::
 
     ## 接続の作成 \{#v07-creating-connection\}
@@ -987,7 +984,7 @@ import TabItem from '@theme/TabItem';
 
     ### 入力テーブル関数の使用 \{#with-input-table-function\}
 
-    高いパフォーマンスを発揮できるオプション:
+    高い性能を持つオプション:
 
     ```java showLineNumbers
     try (PreparedStatement ps = conn.prepareStatement(
@@ -1002,11 +999,11 @@ import TabItem from '@theme/TabItem';
     }
     ```
 
-    * 可能な限り [input 関数のドキュメント](/sql-reference/table-functions/input/) を参照してください
+    * 可能な限り[input 関数のドキュメント](/sql-reference/table-functions/input/)を参照してください
 
     ### プレースホルダーを使用した挿入 \{#insert-with-placeholders\}
 
-    このオプションは小規模な INSERT 処理にのみ推奨されます。長大な SQL 式が必要となり、それがクライアント側でパースされて CPU とメモリを消費するためです:
+    このオプションは小規模な INSERT の場合にのみ推奨されます。クライアント側でパースされて CPU とメモリを消費する長い SQL 式が必要になるためです:
 
     ```java showLineNumbers
     try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
@@ -1090,15 +1087,15 @@ import TabItem from '@theme/TabItem';
     `HttpClient` は JDK 11 以降でのみサポートされています。
     :::
 
-    JDBCドライバーはデフォルトで`HttpClient`を使用します。以下のプロパティを設定することで、ClickHouse JDBCコネクタが使用するHTTPライブラリを変更できます:
+    JDBCドライバーはデフォルトで`HttpClient`を使用します。次のプロパティを設定して、ClickHouse JDBCコネクタが使用するHTTPライブラリを変更できます。
 
     ```java
     properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
     ```
 
-    対応する値の完全な一覧は以下の通りです:
+    対応する値の一覧は以下のとおりです：
 
-    | プロパティ値                      | HTTPライブラリ           |
+    | プロパティ値                      | HTTP ライブラリ          |
     | --------------------------- | ------------------- |
     | HTTP&#95;CLIENT             | `HttpClient`        |
     | HTTP&#95;URL&#95;CONNECTION | `HttpURLConnection` |
@@ -1112,18 +1109,18 @@ import TabItem from '@theme/TabItem';
 
     ## SSLプロパティ \{#ssl-properties\}
 
-    | 名前                   | デフォルト値 | 利用可能な値       | 説明                                                 |
+    | 名前                   | デフォルト値 | 選択可能な値       | 説明                                                 |
     | -------------------- | ------ | ------------ | -------------------------------------------------- |
-    | `ssl`                | false  | true, false  | 接続で SSL/TLS を有効にするかどうかを指定します                       |
-    | `sslmode`            | strict | strict, none | サーバーの SSL/TLS 証明書を検証するかどうかを指定します                   |
-    | `sslrootcert`        |        |              | SSL/TLS ルート証明書ファイルへのパス                             |
+    | `ssl`                | false  | true, false  | 接続で SSL/TLS を有効にするかどうか                             |
+    | `sslmode`            | strict | strict, none | SSL/TLS 証明書を検証するかどうか                               |
+    | `sslrootcert`        |        |              | SSL/TLS ルート証明書へのパス                                 |
     | `sslcert`            |        |              | SSL/TLS 証明書ファイルへのパス                                |
     | `sslkey`             |        |              | PKCS#8 形式の RSA 鍵                                   |
-    | `key_store_type`     |        | JKS, PKCS12  | `KeyStore`/`TrustStore` ファイルのタイプまたはフォーマットを指定します    |
+    | `key_store_type`     |        | JKS, PKCS12  | `KeyStore`/`TrustStore` ファイルの種類または形式を指定します         |
     | `trust_store`        |        |              | `TrustStore` ファイルへのパス                              |
     | `key_store_password` |        |              | `KeyStore` 設定で指定された `KeyStore` ファイルにアクセスするためのパスワード |
 
-    これらのプロパティを設定することで、JavaアプリケーションとClickHouseサーバー間の通信は暗号化された接続上で行われ、データ転送中のセキュリティが強化されます。
+    これらのプロパティを設定することで、Java アプリケーションと ClickHouse サーバー間の通信が暗号化された接続経由で行われ、送信中のデータのセキュリティが強化されます。
 
     ```java showLineNumbers
       String url = "jdbc:ch://your-server:8443/system";
@@ -1145,13 +1142,13 @@ import TabItem from '@theme/TabItem';
 
     ## 大量挿入時のJDBCタイムアウトの解決 \{#v07-resolving-jdbc-timeout-on-large-inserts\}
 
-    ClickHouseで実行時間が長くなる大規模な挿入（INSERT）を行う際、次のようなJDBCタイムアウトエラーが発生することがあります:
+    ClickHouseで実行時間が長くなる大規模な挿入 (INSERT) を行う際、次のようなJDBCタイムアウトエラーが発生することがあります:
 
     ```plaintext
     Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
     ```
 
-    これらのエラーはデータ挿入プロセスを妨げ、システムの安定性に影響を与える可能性があります。この問題に対処するには、クライアントOSのタイムアウト関連設定をいくつか調整する必要があります。
+    これらのエラーはデータ挿入プロセスを中断させ、システムの安定性に影響を及ぼす可能性があります。この問題に対処するには、クライアントOS側のタイムアウト関連設定をいくつか調整する必要があります。
 
     ### Mac OS \{#v07-mac-os\}
 
@@ -1167,7 +1164,7 @@ import TabItem from '@theme/TabItem';
 
     Linuxでは、同等の設定のみでは問題が解決しない場合があります。Linuxがソケットのキープアライブ設定を扱う方法の違いにより、追加の手順が必要です。以下の手順に従ってください：
 
-    1. `/etc/sysctl.conf` または関連する設定ファイルで、以下の Linux カーネルパラメータを調整します：
+    1. `/etc/sysctl.conf` または関連する設定ファイルで次の Linux カーネルパラメータを調整します。
 
     * `net.inet.tcp.keepidle`: 60000
     * `net.inet.tcp.keepintvl`: 45000
@@ -1176,25 +1173,25 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60（デフォルトの 300 秒からこの値を引き下げることも検討できます）
+    * `net.ipv4.tcp_keepalive_time`: 60 (この値をデフォルトの 300 秒から短くすることも検討できます)
 
-    2. カーネルパラメータを変更したら、次のコマンドを実行して変更を反映します:
+    2. カーネルパラメータを変更したら、次のコマンドを実行して変更を適用します：
 
     ```shell
     sudo sysctl -p
     ```
 
-    これらの設定を行った後、クライアントがソケットでKeep Aliveオプションを有効にしていることを確認する必要があります:
+    これらの設定を行った後、クライアント側でソケットの Keep-Alive オプションが有効になっていることを確認する必要があります:
 
     ```java
     properties.setProperty("socket_keepalive", "true");
     ```
 
     :::note
-    現在、ソケットのキープアライブを設定する際は、Apache HTTP Clientライブラリを使用する必要があります。`clickhouse-java`がサポートする他の2つのHTTPクライアントライブラリでは、ソケットオプションの設定が許可されていないためです。詳細なガイドについては、[HTTPライブラリの設定](#v07-configuring-http-library)を参照してください。
+    現在、ソケットのキープアライブを設定する際は Apache HTTP Client ライブラリを使用する必要があります。`clickhouse-java` がサポートする他の2つの HTTP クライアントライブラリではソケットオプションの設定ができないためです。詳細なガイドは [HTTPライブラリの設定](#v07-configuring-http-library) を参照してください。
     :::
 
-    または、JDBC URLに同等のパラメータを追加することもできます。
+    または JDBC URL に同等のパラメータを追加することもできます。
 
     JDBCドライバーのデフォルトのソケットおよび接続タイムアウト値は30秒です。大規模なデータ挿入操作をサポートするために、このタイムアウト値を長く設定できます。`ClickHouseClient`の`options`メソッドを使用し、`ClickHouseClientOption`で定義されている`SOCKET_TIMEOUT`および`CONNECTION_TIMEOUT`オプションを指定してください：
 

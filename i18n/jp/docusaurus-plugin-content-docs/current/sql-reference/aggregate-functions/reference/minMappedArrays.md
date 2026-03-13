@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## minMappedArrays \{#minMappedArrays\}
 
-導入されたバージョン: v20.5
+導入されたバージョン: v20.5.0
 
 `key` 配列で指定されたキーに従って、`value` 配列から最小値を計算します。
 

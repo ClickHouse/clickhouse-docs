@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 ## groupBitmap \{#groupBitmap\}
 
-引入于：v20.1
+引入于：v20.1.0
 
-从一个无符号整数列创建一个位图（比特数组），然后返回该位图中唯一值的数量（基数）。
+从一个无符号整数列创建一个位图 (比特数组) ，然后返回该位图中唯一值的数量 (基数) 。
 通过在函数名后添加 `-State` 组合器后缀，函数将不再返回计数，而是返回实际的[位图对象](/sql-reference/functions/bitmap-functions)。
 
 **语法**

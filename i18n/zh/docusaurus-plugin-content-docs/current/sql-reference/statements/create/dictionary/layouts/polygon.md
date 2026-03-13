@@ -7,9 +7,9 @@ description: "配置多边形字典以执行点在多边形内的查找。"
 doc_type: "reference"
 ---
 
-import CloudDetails from "@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/create/dictionary/_snippet_dictionary_in_cloud.md"
-import Tabs from "@theme/Tabs"
-import TabItem from "@theme/TabItem"
+import CloudDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/create/dictionary/_snippet_dictionary_in_cloud.md';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 `polygon`（`POLYGON`）字典针对点在多边形内的查询进行了优化，本质上是一种&quot;反向地理编码&quot;查找。
 给定一个坐标（纬度/经度），它能高效地从多个多边形（如国家或地区边界）中找出包含该点的多边形/区域。
@@ -91,7 +91,7 @@ import TabItem from "@theme/TabItem"
 | `POLYGON_INDEX_CELL` | 还会使用相同的选项创建上述网格。对于每个叶单元格，会在位于该单元格的所有多边形片段上构建索引，从而能够快速响应查询。                                                                                     |
 | `POLYGON`            | `POLYGON_INDEX_CELL` 的同义词。                                                                                                                     |
 
-字典查询使用标准的[函数](../../../functions/ext-dict-functions.md)进行操作。
+字典查询使用标准的[函数](/sql-reference/functions/ext-dict-functions.md)进行操作。
 一个重要的区别在于，此处的键是您希望查找其所在多边形的点。
 
 **示例**
@@ -111,7 +111,8 @@ SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, '
 
 **示例**
 
-您可以通过 SELECT 查询从多边形字典中读取列，只需在字典配置或相应的 DDL 查询中开启 `store_polygon_key_column = 1` 即可。
+
+你可以通过 SELECT 查询从多边形字典中读取列，只需在字典配置或相应的 DDL 查询中启用 `store_polygon_key_column = 1`。
 
 ```sql title="Query"
 CREATE TABLE polygons_test_table

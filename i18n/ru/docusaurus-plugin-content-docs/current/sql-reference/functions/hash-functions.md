@@ -37,7 +37,7 @@ SELECT cityHash64(tuple(NULL))
 
 ## BLAKE3 \{#BLAKE3\}
 
-Введена в версии v22.10
+Введена в версии v22.10.0
 
 Вычисляет хеш-значение BLAKE3 и возвращает полученный набор байт в виде FixedString.
 Эта криптографическая хеш-функция интегрирована в ClickHouse с использованием библиотеки BLAKE3 на языке Rust.
@@ -74,7 +74,7 @@ SELECT hex(BLAKE3('ABC'))
 
 ## MD4 \{#MD4\}
 
-Добавлена в версии v21.11
+Добавлена в версии v21.11.0
 
 Вычисляет хеш MD4 для заданной строки.
 
@@ -108,7 +108,7 @@ SELECT HEX(MD4('abc'));
 
 ## MD5 \{#MD5\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Вычисляет MD5‑хэш заданной строки.
 
@@ -142,7 +142,7 @@ SELECT HEX(MD5('abc'));
 
 ## RIPEMD160 \{#RIPEMD160\}
 
-Добавлено в версии: v24.10
+Добавлено в версии: v24.10.0
 
 Вычисляет хеш RIPEMD-160 для заданной строки.
 
@@ -176,7 +176,7 @@ SELECT HEX(RIPEMD160('The quick brown fox jumps over the lazy dog'));
 
 ## SHA1 \{#SHA1\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Вычисляет хэш SHA1 для указанной строки.
 
@@ -210,7 +210,7 @@ SELECT HEX(SHA1('abc'));
 
 ## SHA224 \{#SHA224\}
 
-Добавлено в версии: v1.1
+Добавлено в версии: v1.1.0
 
 Вычисляет SHA224-хэш для указанной строки.
 
@@ -244,7 +244,7 @@ SELECT HEX(SHA224('abc'));
 
 ## SHA256 \{#SHA256\}
 
-Впервые добавлена в версии: v1.1
+Впервые добавлена в версии: v1.1.0
 
 Вычисляет хэш SHA256 для заданной строки.
 
@@ -278,7 +278,7 @@ SELECT HEX(SHA256('abc'));
 
 ## SHA384 \{#SHA384\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Вычисляет хэш SHA384 для заданной строки.
 
@@ -312,7 +312,7 @@ SELECT HEX(SHA384('abc'));
 
 ## SHA512 \{#SHA512\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Вычисляет хэш SHA512 для заданной строки.
 
@@ -346,7 +346,7 @@ SELECT HEX(SHA512('abc'));
 
 ## SHA512_256 \{#SHA512_256\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Вычисляет хеш SHA512&#95;256 для указанной строки.
 
@@ -380,7 +380,7 @@ SELECT HEX(SHA512_256('abc'));
 
 ## URLHash \{#URLHash\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Быстрая, достаточно качественная некриптографическая хеш-функция для строки, полученной из URL после некоторой нормализации.
 
@@ -440,7 +440,7 @@ SELECT URLHash('https://www.clickhouse.com/docs', 1);
 
 ## cityHash64 \{#cityHash64\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает 64-битное хэш-значение [CityHash](https://github.com/google/cityhash).
 
@@ -515,7 +515,7 @@ SELECT groupBitXor(cityHash64(*)) FROM users;
 
 ## farmFingerprint64 \{#farmFingerprint64\}
 
-Появилась в версии: v20.12
+Появилась в версии: v20.12.0
 
 Возвращает 64-битное значение [FarmHash](https://github.com/google/farmhash), используя метод `Fingerprint64`.
 
@@ -558,7 +558,7 @@ SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 
 
 ## farmHash64 \{#farmHash64\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает 64-битный [FarmHash](https://github.com/google/farmhash), используя метод `Hash64`.
 
@@ -601,7 +601,7 @@ SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 
 ## gccMurmurHash \{#gccMurmurHash\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Вычисляет 64-битный хеш [MurmurHash2](https://github.com/aappleby/smhasher) от входного значения, используя то же значение seed, что и в [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191).
 
@@ -639,7 +639,7 @@ SELECT
 
 ## halfMD5 \{#halfMD5\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 [Интерпретирует](/sql-reference/functions/type-conversion-functions#reinterpretAsString) все входные
 параметры как строки и вычисляет для каждого из них значение хеша MD5. Затем объединяет хеши, берёт первые 8 байт хеша
@@ -682,7 +682,7 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 
 ## hiveHash \{#hiveHash\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Вычисляет «HiveHash» по строке.
 Это просто [`JavaHash`](#javaHash) с обнулёнными знаковыми битами.
@@ -694,6 +694,26 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 :::
 
 **Синтаксис**
+
+hiveHash(arg)
+
+**Аргументы**
+
+arg — входная строка, подлежащая хэшированию. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает вычисленное значение хеша «hive hash» для входной строки. [`Int32`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+SELECT hiveHash(&#39;Hello, world!&#39;);
+
+┌─hiveHash(&#39;Hello, world!&#39;)─┐
+│                 267439093 │
+└───────────────────────────┘
 
 ```sql
 hiveHash(arg)
@@ -723,7 +743,7 @@ SELECT hiveHash('Hello, world!');
 
 ## icebergHash \{#icebergHash\}
 
-Введено в: v25.5
+Введено в: v25.5.0
 
 Реализует логику [хеширующего преобразования](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements) Iceberg
 
@@ -755,7 +775,7 @@ SELECT icebergHash(1.0 :: Float32)
 
 ## intHash32 \{#intHash32\}
 
-Впервые представлена в версии: v1.1
+Впервые представлена в версии: v1.1.0
 
 Вычисляет 32-битный хеш от целого числа.
 
@@ -791,7 +811,7 @@ SELECT intHash32(42);
 
 ## intHash64 \{#intHash64\}
 
-Появилась в версии v1.1
+Появилась в версии v1.1.0
 
 Вычисляет 64-битный хеш целого числа.
 
@@ -827,7 +847,7 @@ SELECT intHash64(42);
 
 ## javaHash \{#javaHash\}
 
-Добавлено в версии v20.1
+Добавлено в версии v20.1.0
 
 Вычисляет JavaHash для:
 
@@ -889,7 +909,7 @@ SELECT javaHash('Hello, world!');
 
 ## javaHashUTF16LE \{#javaHashUTF16LE\}
 
-Появилась в версии v20.1
+Появилась в версии v20.1.0
 
 Вычисляет хеш [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) из строки, предполагая, что она содержит байты строки в кодировке UTF-16LE.
 
@@ -923,7 +943,7 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 
 ## jumpConsistentHash \{#jumpConsistentHash\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Вычисляет [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf) для целого числа.
 
@@ -958,7 +978,7 @@ SELECT jumpConsistentHash(256, 4)
 
 ## kafkaMurmurHash \{#kafkaMurmurHash\}
 
-Добавлена в: v23.4
+Добавлена в: v23.4.0
 
 Вычисляет 32-битный хеш [MurmurHash2](https://github.com/aappleby/smhasher) от входного значения, используя то же значение seed, что и в [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482), и обнуляя старший бит, чтобы быть совместимой с [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328).
 
@@ -994,7 +1014,7 @@ SELECT
 
 ## keccak256 \{#keccak256\}
 
-Введена в версии: v25.4
+Введена в версии: v25.4.0
 
 Вычисляет криптографический хеш Keccak-256 для указанной строки.
 Эта хеш-функция широко используется в блокчейн-приложениях, в частности в Ethereum.
@@ -1029,7 +1049,7 @@ SELECT hex(keccak256('hello'))
 
 ## kostikConsistentHash \{#kostikConsistentHash\}
 
-Впервые появился в: v22.6
+Впервые появился в: v22.6.0
 
 Консистентный алгоритм хеширования с O(1) по времени и по памяти, разработанный Konstantin &#39;Kostik&#39; Oblakov.
 Эффективен только при `n <= 32768`.
@@ -1067,7 +1087,7 @@ SELECT kostikConsistentHash(16045690984833335023, 2);
 
 ## metroHash64 \{#metroHash64\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает 64-битное значение хеша [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/).
 
@@ -1106,7 +1126,7 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 
 ## murmurHash2_32 \{#murmurHash2_32\}
 
-Появилась в версии: v18.5
+Появилась в версии: v18.5.0
 
 Вычисляет хэш входного значения с помощью алгоритма [MurmurHash2](https://github.com/aappleby/smhasher).
 
@@ -1145,7 +1165,7 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash2_64 \{#murmurHash2_64\}
 
-Появилась в версии: v18.10
+Появилась в версии: v18.10.0
 
 Вычисляет хеш [MurmurHash2](https://github.com/aappleby/smhasher) для входного значения.
 
@@ -1184,7 +1204,7 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash3_128 \{#murmurHash3_128\}
 
-Добавлено в: v18.10
+Добавлено в: v18.10.0
 
 Вычисляет 128-битный хэш [MurmurHash3](https://github.com/aappleby/smhasher) от входного значения.
 
@@ -1218,7 +1238,7 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 
 ## murmurHash3_32 \{#murmurHash3_32\}
 
-Введена в версии v18.10
+Введена в версии v18.10.0
 
 Возвращает хеш-значение [MurmurHash3](https://github.com/aappleby/smhasher).
 
@@ -1257,7 +1277,7 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## murmurHash3_64 \{#murmurHash3_64\}
 
-Введена в версии: v18.10
+Введена в версии: v18.10.0
 
 Вычисляет хеш [MurmurHash3](https://github.com/aappleby/smhasher) от входного значения.
 
@@ -1296,7 +1316,7 @@ SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 
 ## ngramMinHash \{#ngramMinHash\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Разбивает ASCII-строку на n-граммы из `ngramsize` символов, вычисляет хеш-значения для каждой n-граммы и возвращает кортеж с этими хешами.
 Использует `hashnum` минимальных хешей для вычисления минимального хеша и `hashnum` максимальных хешей для вычисления максимального хеша.
@@ -1337,7 +1357,7 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 
 ## ngramMinHashArg \{#ngramMinHashArg\}
 
-Впервые представлен в версии: v21.1
+Впервые представлен в версии: v21.1.0
 
 Разбивает ASCII-строку на n-граммы из `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хешами, вычисленными функцией [`ngramMinHash`](#ngramMinHash) с теми же входными данными.
 Чувствителен к регистру.
@@ -1374,7 +1394,7 @@ SELECT ngramMinHashArg('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgCaseInsensitive \{#ngramMinHashArgCaseInsensitive\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Разбивает ASCII-строку на n-граммы из `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хешами, вычисленными функцией [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) с теми же входными данными.
 Работает без учета регистра.
@@ -1411,7 +1431,7 @@ SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgCaseInsensitiveUTF8 \{#ngramMinHashArgCaseInsensitiveUTF8\}
 
-Добавлена в: v21.1
+Добавлена в: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы длиной `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хешами, вычисленными функцией ngramMinHashCaseInsensitiveUTF8 с теми же входными данными.
 Функция нечувствительна к регистру.
@@ -1448,7 +1468,7 @@ SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashArgUTF8 \{#ngramMinHashArgUTF8\}
 
-Добавлена в: v21.1
+Добавлена в: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов и возвращает n-граммы с минимальным и максимальным хэшами, вычисленными функцией `ngramMinHashUTF8` с теми же входными данными.
 Функция чувствительна к регистру.
@@ -1485,7 +1505,7 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashCaseInsensitive \{#ngramMinHashCaseInsensitive\}
 
-Введена в версии v21.1
+Введена в версии v21.1.0
 
 Разбивает ASCII-строку на n-граммы из `ngramsize` символов, вычисляет хэш-значения для каждой n-граммы и возвращает кортеж с этими хэшами.
 Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
@@ -1524,7 +1544,7 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 
 ## ngramMinHashCaseInsensitiveUTF8 \{#ngramMinHashCaseInsensitiveUTF8\}
 
-Введена в версии v21.1
+Введена в версии v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы по `ngramsize` символов, вычисляет хеш-значения для каждой n-граммы и возвращает кортеж с этими хешами.
 Использует `hashnum` минимальных хешей для вычисления минимального хеша и `hashnum` максимальных хешей для вычисления максимального хеша.
@@ -1565,7 +1585,7 @@ SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 
 ## ngramMinHashUTF8 \{#ngramMinHashUTF8\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы длиной `ngramsize` символов, вычисляет хеш-значения для каждой n-граммы и возвращает кортеж с этими хешами.
 Использует `hashnum` минимальных хешей для вычисления минимального хеша и `hashnum` максимальных хешей для вычисления максимального хеша.
@@ -1606,7 +1626,7 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 
 ## ngramSimHash \{#ngramSimHash\}
 
-Появилась в версии: v21.1
+Появилась в версии: v21.1.0
 
 Разбивает ASCII-строку на n-граммы длиной `ngramsize` символов и возвращает значение `simhash` для этих n-грамм.
 
@@ -1644,7 +1664,7 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 
 ## ngramSimHashCaseInsensitive \{#ngramSimHashCaseInsensitive\}
 
-Добавлена в версии: v21.1
+Добавлена в версии: v21.1.0
 
 Разбивает ASCII-строку на n-граммы из `ngramsize` символов и возвращает `simhash` этих n-грамм.
 Функция нечувствительна к регистру.
@@ -1683,7 +1703,7 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 
 ## ngramSimHashCaseInsensitiveUTF8 \{#ngramSimHashCaseInsensitiveUTF8\}
 
-Введена в: v21.1
+Введена в: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы из `ngramsize` символов и возвращает n-граммный `simhash`.
 Функция нечувствительна к регистру.
@@ -1721,7 +1741,7 @@ SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 
 ## ngramSimHashUTF8 \{#ngramSimHashUTF8\}
 
-Появилась в версии: v21.1
+Появилась в версии: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на n-граммы по `ngramsize` символов и возвращает `simhash` для этих n-грамм.
 Функция чувствительна к регистру.
@@ -1760,7 +1780,7 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
 
 ## sipHash128 \{#sipHash128\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Аналог [`sipHash64`](#sipHash64), но возвращает 128-битное хеш-значение, т.е. финальное состояние после xor-свёртки рассчитывается до 128 бит.
 
@@ -1800,7 +1820,7 @@ SELECT hex(sipHash128('foo', '\x01', 3));
 
 ## sipHash128Keyed \{#sipHash128Keyed\}
 
-Появилась в версии: v23.2
+Появилась в версии: v23.2.0
 
 То же, что и [`sipHash128`](#sipHash128), но дополнительно принимает явный аргумент ключа вместо использования фиксированного ключа.
 
@@ -1841,7 +1861,7 @@ SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x0
 
 ## sipHash128Reference \{#sipHash128Reference\}
 
-Появилась в версии: v23.2
+Появилась в версии: v23.2.0
 
 Аналог [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128), но реализует 128-битный алгоритм, предложенный оригинальными авторами SipHash.
 
@@ -1875,7 +1895,7 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 
 ## sipHash128ReferenceKeyed \{#sipHash128ReferenceKeyed\}
 
-Добавлено в: v23.2
+Добавлено в: v23.2.0
 
 Аналог [`sipHash128Reference`](#sipHash128Reference), но вместо фиксированного ключа принимает явный ключ в качестве аргумента.
 
@@ -1910,7 +1930,7 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 
 ## sipHash64 \{#sipHash64\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Возвращает 64-битное хэш-значение [SipHash](https://en.wikipedia.org/wiki/SipHash).
 
@@ -1958,7 +1978,7 @@ SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00
 
 ## sipHash64Keyed \{#sipHash64Keyed\}
 
-Введена в версии v23.2
+Введена в версии v23.2.0
 
 Аналог функции [`sipHash64`](#sipHash64), но принимает дополнительный явный аргумент ключа вместо использования фиксированного ключа.
 
@@ -1993,7 +2013,7 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 
 ## wordShingleMinHash \{#wordShingleMinHash\}
 
-Впервые появилась в: v21.1
+Впервые появилась в: v21.1.0
 
 Разбивает ASCII-строку на части (shingles) по `shinglesize` слов, вычисляет хэш-значения для каждого такого шингла и возвращает кортеж с этими хэшами.
 Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
@@ -2034,7 +2054,7 @@ SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management
 
 ## wordShingleMinHashArg \{#wordShingleMinHashArg\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Разбивает строку в кодировке ASCII на части (шинглы) по `shinglesize` слов в каждом и возвращает шинглы с минимальными и максимальными хешами слов, вычисленными функцией wordShingleMinHash с теми же входными данными.
 Функция чувствительна к регистру.
@@ -2071,7 +2091,7 @@ SELECT wordShingleMinHashArg('ClickHouse® is a column-oriented database managem
 
 ## wordShingleMinHashArgCaseInsensitive \{#wordShingleMinHashArgCaseInsensitive\}
 
-Добавлена в версии: v21.1
+Добавлена в версии: v21.1.0
 
 Разбивает строку в кодировке ASCII на части (шинглы) по `shinglesize` слов в каждом и возвращает шинглы с минимальными и максимальными хешами слов, вычисленными функцией [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) для тех же входных данных.
 Функция регистронезависима.
@@ -2108,7 +2128,7 @@ SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® is a column-oriented d
 
 ## wordShingleMinHashArgCaseInsensitiveUTF8 \{#wordShingleMinHashArgCaseInsensitiveUTF8\}
 
-Впервые представлена в: v21.1
+Впервые представлена в: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов каждая и возвращает шинглы с минимальным и максимальным хешами слов, вычисленными функцией [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) с теми же входными данными.
 Функция регистронезависимая.
@@ -2145,7 +2165,7 @@ SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® is a column-orient
 
 ## wordShingleMinHashArgUTF8 \{#wordShingleMinHashArgUTF8\}
 
-Впервые появилась в версии: v21.1
+Впервые появилась в версии: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на части (шинглы), каждый из которых содержит по `shinglesize` слов, и возвращает шинглы с минимальным и максимальным хэшами слов, вычисленными функцией [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) с теми же входными данными.
 Функция чувствительна к регистру.
@@ -2182,7 +2202,7 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® is a column-oriented database man
 
 ## wordShingleMinHashCaseInsensitive \{#wordShingleMinHashCaseInsensitive\}
 
-Добавлена в версии: v21.1
+Добавлена в версии: v21.1.0
 
 Разбивает ASCII-строку на части (шинглы) по `shinglesize` слов, вычисляет хеш-значения для каждого шингла и возвращает кортеж этих хешей.
 Использует `hashnum` минимальных значений хеша для вычисления минимального хеша и `hashnum` максимальных значений хеша для вычисления максимального хеша.
@@ -2223,7 +2243,7 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 ## wordShingleMinHashCaseInsensitiveUTF8 \{#wordShingleMinHashCaseInsensitiveUTF8\}
 
-Добавлена в версии: v21.1
+Добавлена в версии: v21.1.0
 
 Разбивает строку в кодировке UTF-8 на части (шинглы), состоящие из `shinglesize` слов, вычисляет хэш-значения для каждого шингла и возвращает кортеж с этими хэшами.
 Использует `hashnum` минимальных хэшей для вычисления минимального хэша и `hashnum` максимальных хэшей для вычисления максимального хэша.
@@ -2264,7 +2284,7 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 ## wordShingleMinHashUTF8 \{#wordShingleMinHashUTF8\}
 
-Введена в: v21.1
+Введена в: v21.1.0
 
 Разбивает строку UTF-8 на части (шинглы) по `shinglesize` слов, вычисляет хеш-значения для каждого словесного шингла и возвращает кортеж с этими хешами.
 Использует `hashnum` минимальных хешей для вычисления минимального хеша и `hashnum` максимальных хешей для вычисления максимального хеша.
@@ -2305,7 +2325,7 @@ SELECT wordShingleMinHashUTF8('ClickHouse® is a column-oriented database manage
 
 ## wordShingleSimHash \{#wordShingleSimHash\}
 
-Введена в версии v21.1
+Введена в версии v21.1.0
 
 Разбивает строку ASCII на части (шинглы) по `shinglesize` слов и возвращает `simhash` шингла.
 Чувствительна к регистру.
@@ -2344,7 +2364,7 @@ SELECT wordShingleSimHash('ClickHouse® is a column-oriented database management
 
 ## wordShingleSimHashCaseInsensitive \{#wordShingleSimHashCaseInsensitive\}
 
-Введена в: v21.1
+Введена в: v21.1.0
 
 Разбивает ASCII-строку на части (shingles) по `shinglesize` слов и возвращает `simhash` для этих шинглов.
 Функция регистронезависима.
@@ -2383,7 +2403,7 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® is a column-oriented data
 
 ## wordShingleSimHashCaseInsensitiveUTF8 \{#wordShingleSimHashCaseInsensitiveUTF8\}
 
-Впервые представлен в: v1.1
+Впервые представлен в: v1.1.0
 
 Разбивает строку в кодировке UTF-8 на части (шинглы) по `shinglesize` слов и возвращает `simhash` словесных шинглов.
 Функция регистронезависима.
@@ -2422,7 +2442,7 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® is a column-oriented 
 
 ## wordShingleSimHashUTF8 \{#wordShingleSimHashUTF8\}
 
-Впервые появилась в версии v21.1
+Впервые появилась в версии v21.1.0
 
 Разбивает строку в кодировке UTF-8 на части (шинглы) длиной `shinglesize` слов и возвращает `simhash` этих словесных шинглов.
 Функция чувствительна к регистру.
@@ -2461,7 +2481,7 @@ SELECT wordShingleSimHashUTF8('ClickHouse® is a column-oriented database manage
 
 ## wyHash64 \{#wyHash64\}
 
-Введена в версии: v22.7
+Введена в версии: v22.7.0
 
 Вычисляет 64-битное значение хеша [wyHash64](https://github.com/wangyi-fudan/wyhash).
 
@@ -2493,7 +2513,7 @@ SELECT wyHash64('ClickHouse') AS Hash;
 
 ## xxHash32 \{#xxHash32\}
 
-Добавлена в версии: v20.1
+Добавлена в версии: v20.1.0
 
 Вычисляет значение хеш-функции [xxHash](http://cyan4973.github.io/xxHash/) для строки.
 
@@ -2529,7 +2549,7 @@ SELECT xxHash32('Hello, world!');
 
 ## xxHash64 \{#xxHash64\}
 
-Появилась в версии v20.1
+Появилась в версии v20.1.0
 
 Вычисляет хеш-сумму [xxHash](http://cyan4973.github.io/xxHash/) для строки.
 
@@ -2565,7 +2585,7 @@ SELECT xxHash64('Hello, world!');
 
 ## xxh3 \{#xxh3\}
 
-Добавлена в: v22.12
+Добавлена в: v22.12.0
 
 Вычисляет 64-битный хеш по алгоритму [XXH3](https://github.com/Cyan4973/xxHash).
 
@@ -2597,7 +2617,7 @@ SELECT xxh3('ClickHouse')
 
 ## xxh3_128 \{#xxh3_128\}
 
-Добавлена в: v26.2
+Добавлена в: v26.2.0
 
 Вычисляет 128-битный хеш по алгоритму [XXH3](https://github.com/Cyan4973/xxHash).
 

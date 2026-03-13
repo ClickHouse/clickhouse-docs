@@ -48,17 +48,22 @@ ClickHouse의 비동기 insert는 클라이언트 측 배치가 불가능할 때
 
 비동기 insert는 특정 사용자 또는 특정 쿼리에 대해 활성화할 수 있습니다:
 
-- 사용자 수준에서 비동기 insert를 활성화합니다. 이 예시에서는 `default` 사용자를 사용합니다. 다른 사용자를 생성한 경우 해당 사용자 이름으로 바꾸십시오:
+* 사용자 수준에서 비동기 insert를 활성화합니다. 이 예시에서는 `default` 사용자를 사용합니다. 다른 사용자를 생성한 경우 해당 사용자 이름으로 바꾸십시오:
   ```sql
   ALTER USER default SETTINGS async_insert = 1
   ```
-- insert 쿼리의 SETTINGS 절을 사용하여 비동기 insert 설정을 지정할 수 있습니다:
+* insert 쿼리의 SETTINGS 절을 사용하여 비동기 insert 설정을 지정할 수 있습니다:
   ```sql
   INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=1 VALUES (...)
   ```
-- ClickHouse 프로그래밍 언어 클라이언트를 사용할 때 연결 매개변수로 비동기 insert 설정을 지정할 수도 있습니다.
+* ClickHouse 프로그래밍 언어 클라이언트를 사용할 때 연결 매개변수로 비동기 insert 설정을 지정할 수도 있습니다.
 
   예를 들어, ClickHouse Cloud에 연결하기 위해 ClickHouse Java JDBC 드라이버를 사용할 때는 JDBC 연결 문자열에서 다음과 같이 설정합니다:
+
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
   ```
+
+:::note
+비동기 insert는 `INSERT INTO ... SELECT` 쿼리에는 적용되지 않습니다. insert에 `SELECT` 절이 포함된 경우 `async_insert` 설정과 관계없이 해당 쿼리는 항상 동기적으로 실행됩니다.
+:::

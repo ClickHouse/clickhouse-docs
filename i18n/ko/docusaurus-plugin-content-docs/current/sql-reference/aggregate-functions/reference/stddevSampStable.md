@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSampStable \{#stddevSampStable\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 결과는 [varSamp](../../../sql-reference/aggregate-functions/reference/varSamp.md)의 제곱근과 같습니다. [stddevSamp](../reference/stddevSamp.md)과는 달리 이 FUNCTION은 수치적으로 안정된 알고리즘을 사용합니다. 동작 속도는 느리지만 계산 오차가 더 작습니다.
 

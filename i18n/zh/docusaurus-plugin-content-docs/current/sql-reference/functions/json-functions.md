@@ -49,7 +49,7 @@ ClickHouse 提供了一组用于处理简化 JSON 的特殊函数。所有这些
 
 ## JSONAllPaths \{#JSONAllPaths\}
 
-引入版本：v24.8
+引入版本：v24.8.0
 
 返回 JSON 列中每一行所存储的所有路径的列表。
 
@@ -88,7 +88,7 @@ SELECT json, JSONAllPaths(json) FROM test;
 
 ## JSONAllPathsWithTypes \{#JSONAllPathsWithTypes\}
 
-自 v24.8 引入
+自 v24.8.0 引入
 
 返回 JSON 列中每一行所存储的所有路径及其数据类型的列表。
 
@@ -127,7 +127,7 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 
 ## JSONArrayLength \{#JSONArrayLength\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 返回最外层 JSON 数组中元素的数量。
 如果输入的 JSON 字符串无效，该函数返回 `NULL`。
@@ -167,7 +167,7 @@ SELECT
 
 ## JSONDynamicPaths \{#JSONDynamicPaths\}
 
-自 v24.8 引入
+自 v24.8.0 引入
 
 返回作为 JSON 列中单独子列存储的动态路径列表。
 
@@ -206,7 +206,7 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 
 ## JSONDynamicPathsWithTypes \{#JSONDynamicPathsWithTypes\}
 
-引入于：v24.8
+引入于：v24.8.0
 
 返回 JSON 列中每一行里，以独立子列形式存储的动态路径及其类型列表。
 
@@ -245,7 +245,7 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 
 ## JSONExtract \{#JSONExtract\}
 
-自 v19.14 引入
+自 v19.14.0 引入
 
 解析 JSON，并按指定的 ClickHouse 数据类型提取值。
 
@@ -282,7 +282,7 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 
 ## JSONExtractArrayRaw \{#JSONExtractArrayRaw\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 返回一个数组，其元素为 JSON 数组中的各个元素，每个元素以未解析的原始字符串形式表示。
 
@@ -318,7 +318,7 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 
 ## JSONExtractArrayRawCaseInsensitive \{#JSONExtractArrayRawCaseInsensitive\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 返回一个数组，其中包含 JSON 数组的各个元素，每个元素以未解析的字符串形式表示，并使用不区分大小写的键匹配。此函数类似于 [`JSONExtractArrayRaw`](#JSONExtractArrayRaw)。
 
@@ -352,7 +352,7 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 
 ## JSONExtractBool \{#JSONExtractBool\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 解析 JSON 并提取 Bool 类型的值。
 
@@ -388,7 +388,7 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 
 ## JSONExtractBoolCaseInsensitive \{#JSONExtractBoolCaseInsensitive\}
 
-自 v25.8 起引入。
+自 v25.8.0 起引入。
 
 解析 JSON，并通过不区分大小写的键名匹配提取布尔值。该函数类似于 [`JSONExtractBool`](#JSONExtractBool)。
 
@@ -422,7 +422,7 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 
 ## JSONExtractCaseInsensitive \{#JSONExtractCaseInsensitive\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 解析 JSON，并使用不区分大小写的键进行匹配，提取指定 ClickHouse 数据类型的值。此函数类似于 [`JSONExtract`](#JSONExtract)。
 
@@ -467,7 +467,7 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 
 ## JSONExtractFloat \{#JSONExtractFloat\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 解析 JSON 并提取 `Float` 类型值。
 
@@ -503,7 +503,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 
 ## JSONExtractFloatCaseInsensitive \{#JSONExtractFloatCaseInsensitive\}
 
-自 v25.8 版本引入
+自 v25.8.0 版本引入
 
 解析 JSON，并使用不区分大小写的键匹配提取 Float 类型的值。该函数类似于 [`JSONExtractFloat`](#JSONExtractFloat)。
 
@@ -537,7 +537,7 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 
 ## JSONExtractInt \{#JSONExtractInt\}
 
-首次引入于：v20.1
+首次引入于：v20.1.0
 
 解析 JSON 并提取 Int 类型的值。
 
@@ -573,7 +573,7 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 
 ## JSONExtractIntCaseInsensitive \{#JSONExtractIntCaseInsensitive\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 解析 JSON，并通过不区分大小写的键匹配来提取 Int 类型的值。此函数类似于 [`JSONExtractInt`](#JSONExtractInt)。
 
@@ -617,7 +617,7 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 
 ## JSONExtractKeys \{#JSONExtractKeys\}
 
-自 v21.11 引入
+自 v21.11.0 引入
 
 解析一个 JSON 字符串并提取其中的键。
 
@@ -653,7 +653,7 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 
 ## JSONExtractKeysAndValues \{#JSONExtractKeysAndValues\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 从 JSON 中解析键值对，其中值为指定的 ClickHouse 数据类型。
 
@@ -690,7 +690,7 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 
 ## JSONExtractKeysAndValuesCaseInsensitive \{#JSONExtractKeysAndValuesCaseInsensitive\}
 
-引入自：v25.8
+引入自：v25.8.0
 
 使用对键名大小写不敏感的匹配方式，从 JSON 中解析键值对。此函数类似于 [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues)。
 
@@ -725,7 +725,7 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 
 ## JSONExtractKeysAndValuesRaw \{#JSONExtractKeysAndValuesRaw\}
 
-自 v20.4 起引入
+自 v20.4.0 起引入
 
 返回一个由元组组成的数组，每个元组包含 JSON 对象中的键和值。所有值都以未解析的字符串形式表示。
 
@@ -761,7 +761,7 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 
 ## JSONExtractKeysAndValuesRawCaseInsensitive \{#JSONExtractKeysAndValuesRawCaseInsensitive\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 使用不区分大小写的键匹配，从 JSON 中提取原始键值对。此函数类似于 [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw)。
 
@@ -795,7 +795,7 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 
 ## JSONExtractKeysCaseInsensitive \{#JSONExtractKeysCaseInsensitive\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 解析 JSON 字符串，并通过不区分大小写的键匹配导航到嵌套对象，从中提取键。此函数类似于 [`JSONExtractKeys`](#JSONExtractKeys)。
 
@@ -839,7 +839,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 
 ## JSONExtractRaw \{#JSONExtractRaw\}
 
-自 v20.1 版本引入
+自 v20.1.0 版本引入
 
 以未解析的字符串形式返回 JSON 的一部分。
 
@@ -875,7 +875,7 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 
 ## JSONExtractRawCaseInsensitive \{#JSONExtractRawCaseInsensitive\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 使用不区分大小写的键名匹配，从 JSON 中返回部分内容作为未解析字符串。此函数类似于 [`JSONExtractRaw`](#JSONExtractRaw)。
 
@@ -909,7 +909,7 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 
 ## JSONExtractString \{#JSONExtractString\}
 
-自 v20.1 版本引入
+自 v20.1.0 版本引入
 
 解析 JSON 并提取 String 类型的值。
 
@@ -945,7 +945,7 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 
 ## JSONExtractStringCaseInsensitive \{#JSONExtractStringCaseInsensitive\}
 
-自 v25.8 引入
+自 v25.8.0 引入
 
 解析 JSON，并使用不区分大小写的键匹配来提取字符串。此函数类似于 [`JSONExtractString`](#JSONExtractString)。
 
@@ -989,7 +989,7 @@ John
 
 ## JSONExtractUInt \{#JSONExtractUInt\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 解析 JSON 并提取 `UInt` 类型的值。
 
@@ -1025,7 +1025,7 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 
 ## JSONExtractUIntCaseInsensitive \{#JSONExtractUIntCaseInsensitive\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 解析 JSON，并使用不区分大小写的键名匹配来提取 `UInt` 类型的值。此函数类似于 [`JSONExtractUInt`](#JSONExtractUInt)。
 
@@ -1059,7 +1059,7 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 
 ## JSONHas \{#JSONHas\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 检查 JSON 文档中是否存在提供的值（一个或多个）。
 
@@ -1095,7 +1095,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 
 ## JSONKey \{#JSONKey\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 按索引（从 1 开始计数）返回 JSON 对象字段的键名。如果 JSON 以字符串形式传入，函数会先对其进行解析。第二个参数是 JSON 路径，用于在嵌套对象中导航。该函数返回指定位置上的键名。
 
@@ -1129,7 +1129,7 @@ a
 
 ## JSONLength \{#JSONLength\}
 
-自 v20.1 版本起引入
+自 v20.1.0 版本起引入
 
 返回 JSON 数组或 JSON 对象的长度。
 如果值不存在或类型不匹配，则返回 `0`。
@@ -1166,14 +1166,14 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 
 ## JSONMergePatch \{#JSONMergePatch\}
 
-引入版本：v23.10
+引入版本：v23.10.0
 
 返回合并多个 JSON 对象所得的合并后 JSON 对象字符串。
 
 **语法**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **别名**: `jsonMergePatch`
@@ -1191,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **用法示例**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response
@@ -1203,7 +1203,7 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 
 ## JSONSharedDataPaths \{#JSONSharedDataPaths\}
 
-引入版本：v24.8
+引入版本：v24.8.0
 
 返回 JSON 列中共享数据结构所保存的路径列表。
 
@@ -1242,7 +1242,7 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 
 ## JSONSharedDataPathsWithTypes \{#JSONSharedDataPathsWithTypes\}
 
-自 v24.8 引入
+自 v24.8.0 引入
 
 返回 JSON 列中每一行的共享数据结构里所存储的路径列表及其类型。
 
@@ -1281,7 +1281,7 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 
 ## JSONType \{#JSONType\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 返回 JSON 值的类型。若该值不存在，则会返回 `Null=0`。
 
@@ -1317,9 +1317,9 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS \{#JSON_EXISTS\}
+## JSON_EXISTS \{#JSON_EXISTS\}
 
-引入版本：v21.8
+引入版本：v21.8.0
 
 如果 JSON 文档中存在该值，则返回 `1`。
 如果该值不存在，则返回 `0`。
@@ -1366,9 +1366,9 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY \{#JSON_QUERY\}
+## JSON_QUERY \{#JSON_QUERY\}
 
-引入版本：v21.8
+引入版本：v21.8.0
 
 解析 JSON，并以 JSON 数组或 JSON 对象的形式提取某个值。
 如果该值不存在，将返回一个空字符串。
@@ -1407,9 +1407,9 @@ String
 ```
 
 
-## JSON&#95;VALUE \{#JSON_VALUE\}
+## JSON_VALUE \{#JSON_VALUE\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 解析 JSON 并将某个值提取为 JSON 标量返回。如果该值不存在，默认返回空字符串。
 
@@ -1454,7 +1454,7 @@ world
 
 ## dynamicElement \{#dynamicElement\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 从 `Dynamic` 列中提取具有指定类型的列值。
 
@@ -1497,7 +1497,7 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 
 ## dynamicType \{#dynamicType\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 返回 `Dynamic` 列中每一行对应的变体类型名称。
 
@@ -1539,7 +1539,7 @@ SELECT d, dynamicType(d) FROM test;
 
 ## isDynamicElementInSharedData \{#isDynamicElementInSharedData\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
 对于 Dynamic 列中那些以共享变体格式存储（而不是作为独立子列存储）的行返回 true。
 
@@ -1582,7 +1582,7 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 
 ## isValidJSON \{#isValidJSON\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 检查传入的字符串是否为有效的 JSON。
 
@@ -1638,7 +1638,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
-引入版本：v21.4
+引入版本：v21.4.0
 
 从名为 `field_name` 的字段值中解析布尔值（true/false）。
 结果类型为 `UInt8`。
@@ -1693,7 +1693,7 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractFloat \{#simpleJSONExtractFloat\}
 
-自 v21.4 起引入
+自 v21.4.0 起引入
 
 从名为 `field_name` 的字段值中解析 `Float64` 类型的数值。
 如果 `field_name` 是字符串字段，则会尝试从字符串开头解析一个数字。
@@ -1748,7 +1748,7 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractInt \{#simpleJSONExtractInt\}
 
-自 v21.4 引入
+自 v21.4.0 引入
 
 从名为 `field_name` 的字段值中解析 `Int64` 类型的值。
 如果 `field_name` 是字符串字段，则尝试从字符串开头解析一个数字。
@@ -1803,7 +1803,7 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractRaw \{#simpleJSONExtractRaw\}
 
-引入版本：v21.4
+引入版本：v21.4.0
 
 返回名为 `field_name` 的字段值，类型为 `String`，包含分隔符在内。
 
@@ -1855,7 +1855,7 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractString \{#simpleJSONExtractString\}
 
-引入版本：v21.4
+引入版本：v21.4.0
 
 从名为 `field_name` 的字段值中解析被双引号包裹的 `String`。
 
@@ -1909,7 +1909,7 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractUInt \{#simpleJSONExtractUInt\}
 
-引入版本：v21.4
+引入版本：v21.4.0
 
 从名为 `field_name` 的字段值中解析出 `UInt64`。
 如果 `field_name` 是字符串字段，则会尝试从字符串开头解析一个数字。
@@ -1964,7 +1964,7 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONHas \{#simpleJSONHas\}
 
-自 v21.4 起引入
+自 v21.4.0 起引入
 
 检查是否存在名为 `field_name` 的字段。
 
@@ -2011,7 +2011,7 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 
 ## toJSONString \{#toJSONString\}
 
-引入版本：v21.7
+引入版本：v21.7.0
 
 将一个值序列化为其 JSON 表示形式。支持多种数据类型和嵌套结构。
 64 位[整数](../data-types/int-uint.md)或更大的整数（例如 `UInt64` 或 `Int128`）默认会被包裹在引号中。[output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers) 控制此行为。

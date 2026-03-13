@@ -76,7 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置三个设置项才能使用文本索引：
+如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置以下三个设置项，才能使用文本索引：
 
 ```sql
 SET enable_full_text_index = true;
@@ -87,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 或者，你也可以将 [compatibility](../../../operations/settings/settings#compatibility) 设置提高到 `26.2` 或更高版本，但这会影响许多设置，并且通常需要事先进行测试。
 :::
 
-可以在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引，语法如下：
+要创建文本索引，请使用以下语法：
 
 ```sql
 CREATE TABLE table
@@ -113,6 +113,14 @@ CREATE TABLE table
 ENGINE = MergeTree
 ORDER BY key
 ```
+
+文本索引可以在下列类型的列上定义：
+
+* [String](/sql-reference/data-types/string.md) 和 [FixedString](/sql-reference/data-types/fixedstring.md)，
+* [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md)，以及
+* [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数）。
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 和 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 类型的列也受支持，包括 `Array(Nullable(String or FixedString))`。
 
 或者，要为现有表添加一个文本索引：
 
@@ -204,9 +212,10 @@ Preprocessor 参数的典型用例包括：
 
 1. 转换为小写或大写以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（见下方第一个示例）。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](./sql-reference/functions/string-replace-functions.md/#translate)。
+3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)。
 
 预处理器表达式必须将类型为 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 的输入值转换为相同类型的值。
+如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值（即不会抛出异常）。
 
 示例：
 
@@ -254,7 +263,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-预处理器也可以与 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列配合使用。
 在这种情况下，预处理器表达式会逐个转换数组元素。
 
 示例：
@@ -274,7 +282,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-要在基于 [Map](/sql-reference/data-types/map.md) 类型列的文本索引中定义预处理器，用户需要先决定该索引是建立在 Map 的键上还是值上。
+要在针对 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要先决定该索引是基于 Map 的键还是值构建的。
 
 示例：
 
@@ -790,21 +798,21 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### 缓存 \{#caching\}
 
 有多种缓存可用于在内存中缓冲文本索引的部分内容（参见[实现细节](#implementation)部分）。
-当前，对文本索引的反序列化字典块、头部信息以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
-可以通过以下 SETTING 启用这些缓存：[use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
+当前，对文本索引的反序列化头部信息、tokens（标记）以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
+可以通过以下 SETTING 启用这些缓存：[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、[use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
 默认情况下，所有缓存均为禁用状态。
 要清除这些缓存，请使用语句 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches)。
 
 请参考以下服务端 SETTING 来配置这些缓存。
 
-#### 字典块缓存设置 \{#caching-dictionary\}
+#### 词元缓存设置 \{#caching-tokens\}
 
 | 设置                                                                                                                                                     | 说明                                                                                                           |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 文本索引字典块缓存策略名称。                                                                                   |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | 缓存中反序列化的字典块最大数量。                                                                               |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | 文本索引字典块缓存中受保护队列相对于缓存总大小的比例。                                                         |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 文本索引词元缓存策略名称。                                                                  |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 缓存中反序列化的词元最大数量。                                                              |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 文本索引词元缓存中受保护队列相对于缓存总大小的比例。  |
 
 #### 头部缓存设置 \{#caching-header\}
 
@@ -898,6 +906,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这个过程使用在初始合并阶段创建的旧行号到新行号的映射。
 这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
 如果源分区片段中索引尚未物化（materialized），则会先构建该索引，将其写入一个临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起合并。
+
+**Debugging**
+
+可以使用表函数 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) 来查看和分析文本索引。
 
 ## 示例：Hacker News 数据集 \{#hacker-news-dataset\}
 

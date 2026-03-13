@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 Executable pool은 프로세스 풀에서 데이터를 로드할 수 있게 합니다.
 이 소스는 모든 데이터를 한 번에 소스에서 로드해야 하는 딕셔너리 레이아웃과는 함께 동작하지 않습니다.
 
-Executable pool은 딕셔너리가 다음 레이아웃 중 하나를 사용하여 [저장](../layouts/#ways-to-store-dictionaries-in-memory)되는 경우에 동작합니다:
+Executable pool은 딕셔너리가 다음 레이아웃 중 하나를 사용하여 [저장](../layouts/#storing-dictionaries-in-memory)되는 경우에 동작합니다:
 
 * `cache`
 * `complex_key_cache`

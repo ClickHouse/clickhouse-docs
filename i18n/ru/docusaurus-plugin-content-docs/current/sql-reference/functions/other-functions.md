@@ -26,14 +26,14 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## FQDN \{#FQDN\}
 
-Добавлено в: v20.1
+Добавлено в: v20.1.0
 
 Возвращает полное доменное имя сервера ClickHouse.
 
 **Синтаксис**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **Псевдонимы**: `fullHostName`
@@ -62,7 +62,7 @@ SELECT fqdn()
 
 ## MACNumToString \{#MACNumToString\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Интерпретирует число типа [`UInt64`](/sql-reference/data-types/int-uint) как MAC-адрес в формате big endian.
 Возвращает соответствующий MAC-адрес в формате `AA:BB:CC:DD:EE:FF` (числа в шестнадцатеричном виде, разделённые двоеточиями) в виде строки.
@@ -97,7 +97,7 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 
 ## MACStringToNum \{#MACStringToNum\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Обратная функция к MACNumToString. Если MAC-адрес имеет некорректный формат, возвращает 0.
 
@@ -129,7 +129,7 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 
 ## MACStringToOUI \{#MACStringToOUI\}
 
-Впервые представлена в версии v1.1
+Впервые представлена в версии v1.1.0
 
 Принимает MAC-адрес в формате AA:BB:CC:DD:EE:FF (разделённые двоеточиями числа в шестнадцатеричном виде) и возвращает первые три октета в виде числа типа UInt64. Если MAC-адрес имеет некорректный формат, функция возвращает 0.
 
@@ -161,7 +161,7 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 
 ## authenticatedUser \{#authenticatedUser\}
 
-Введена в версии: v25.11
+Введена в версии: v25.11.0
 
 Если пользователь сеанса был переключён с помощью команды EXECUTE AS, эта функция возвращает имя исходного пользователя, использованного для аутентификации и создания сеанса.
 Псевдоним: authUser()
@@ -199,7 +199,7 @@ EXECUTE as u1;
 
 ## bar \{#bar\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Строит столбчатую диаграмму.
 Рисует полосу шириной, пропорциональной (x - min), и равной `width` символам при x = max.
@@ -267,7 +267,7 @@ ORDER BY h ASC
 
 ## blockNumber \{#blockNumber\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает монотонно возрастающий порядковый номер [блока](../../development/architecture.md#block), содержащего строку.
 Возвращаемый номер блока обновляется по возможности (best-effort), поэтому может быть не полностью точным.
@@ -325,7 +325,7 @@ FROM
 
 ## blockSerializedSize \{#blockSerializedSize\}
 
-Введена в: v20.3
+Введена в: v20.3.0
 
 Возвращает несжатый размер в байтах блока значений на диске.
 
@@ -359,7 +359,7 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 
 ## blockSize \{#blockSize\}
 
-Впервые появилась в версии v1.1
+Впервые появилась в версии v1.1.0
 
 В ClickHouse запросы обрабатываются в [блоках](/development/architecture#block) (фрагментах).
 Эта функция возвращает размер (количество строк) блока, для которого она была вызвана.
@@ -399,7 +399,7 @@ FROM system.numbers LIMIT 5
 
 ## buildId \{#buildId\}
 
-Добавлено в: v20.5
+Добавлено в: v20.5.0
 
 Возвращает идентификатор сборки (build ID), который компилятор сгенерировал для исполняемого бинарного файла сервера ClickHouse.
 Если функция выполняется в контексте distributed таблицы, она генерирует обычный столбец со значениями для каждого сегмента.
@@ -435,7 +435,7 @@ SELECT buildId()
 
 ## byteSize \{#byteSize\}
 
-Добавлена в: v21.1
+Добавлена в: v21.1.0
 
 Возвращает оценку размера своих аргументов в памяти в несжатом виде (в байтах).
 Для аргументов типа `String` функция возвращает длину строки + 8 (длина).
@@ -483,7 +483,7 @@ SELECT byteSize(NULL, 1, 0.3, '')
 
 ## catboostEvaluate \{#catboostEvaluate\}
 
-Добавлено в: v22.9
+Добавлено в: v22.9.0
 
 Выполняет оценку внешней модели catboost. [CatBoost](https://catboost.ai) — это open-source библиотека градиентного бустинга, разработанная компанией Yandex для задач машинного обучения.
 Функция принимает путь к модели catboost и аргументы модели (признаки).
@@ -492,9 +492,9 @@ SELECT byteSize(NULL, 1, 0.3, '')
 
 1. Сборка библиотеки для оценки catboost
 
-Перед оценкой моделей catboost необходимо сделать доступной библиотеку `libcatboostmodel.<so|dylib>`. См. [документацию CatBoost](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) о том, как её скомпилировать.
+Перед оценкой моделей catboost необходимо сделать доступной библиотеку `libcatboostmodel.&lt;so|dylib&gt;`. См. [документацию CatBoost](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) о том, как её скомпилировать.
 
-Затем укажите путь к `libcatboostmodel.<so|dylib>` в конфигурации ClickHouse:
+Затем укажите путь к `libcatboostmodel.&lt;so|dylib&gt;` в конфигурации ClickHouse:
 
 ```xml
 <clickhouse>
@@ -548,7 +548,7 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 
 ## colorOKLABToSRGB \{#colorOKLABToSRGB\}
 
-Добавлена в: v26.2
+Добавлена в: v26.2.0
 
 Преобразует цвет из перцептивного цветового пространства OKLab в цветовое пространство sRGB.
 
@@ -607,7 +607,7 @@ SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb;
 └──────────────────────────┘
 ```
 
-**Преобразовать OKLAB в sRGB (UInt8)**
+**Преобразование OKLAB в sRGB (UInt8)**
 
 ```sql title=Query
 WITH colorOKLABToSRGB((0.7, 0.1, 0.54)) AS t
@@ -622,7 +622,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorOKLCHToSRGB \{#colorOKLCHToSRGB\}
 
-Введена в: v25.7
+Введена в: v25.7.0
 
 Преобразует цвет из перцептуального цветового пространства **OKLCH** в привычное цветовое пространство **sRGB**.
 
@@ -688,7 +688,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorSRGBToOKLAB \{#colorSRGBToOKLAB\}
 
-Добавлена в версии: v26.2
+Добавлена в версии: v26.2.0
 
 Преобразует цвет, закодированный в цветовом пространстве **sRGB**, в перцептивно равномерное цветовое пространство **OKLAB**.
 
@@ -736,7 +736,7 @@ SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab;
 
 ## colorSRGBToOKLCH \{#colorSRGBToOKLCH\}
 
-Добавлено в: v25.7
+Добавлено в: v25.7.0
 
 Преобразует цвет, закодированный в цветовом пространстве **sRGB**, в перцептуально равномерное цветовое пространство **OKLCH**.
 
@@ -787,7 +787,7 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
 
 ## connectionId \{#connectionId\}
 
-Введена в: v21.3
+Введена в: v21.3.0
 
 Возвращает идентификатор соединения клиента, который отправил текущий запрос.
 Эта функция наиболее полезна при отладке.
@@ -824,7 +824,7 @@ SELECT connectionId();
 
 ## countDigits \{#countDigits\}
 
-Введена в версии: v20.8
+Введена в версии: v20.8.0
 
 Возвращает количество десятичных цифр, необходимых для представления значения.
 
@@ -875,7 +875,7 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 
 ## currentDatabase \{#currentDatabase\}
 
-Введено в версии v1.1
+Введено в версии v1.1.0
 
 Возвращает имя текущей базы данных.
 Полезно в параметрах движка таблицы в запросах `CREATE TABLE`, где нужно указать базу данных.
@@ -912,9 +912,21 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**Синтаксис стандарта SQL без скобок**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
-Введена в версии: v21.9
+Введена в версии: v21.9.0
 
 Возвращает массив профилей настроек для текущего пользователя.
 
@@ -948,7 +960,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-Начиная с версии: v25.2
+Начиная с версии: v25.2.0
 
 Возвращает текущий идентификатор запроса.
 
@@ -982,7 +994,7 @@ SELECT currentQueryID();
 
 ## currentRoles \{#currentRoles\}
 
-Впервые появилось в версии: v21.9
+Впервые появилось в версии: v21.9.0
 
 Возвращает массив ролей, назначенных текущему пользователю.
 
@@ -1016,7 +1028,7 @@ SELECT currentRoles();
 
 ## currentSchemas \{#currentSchemas\}
 
-Появилась в версии: v23.7
+Появилась в версии: v23.7.0
 
 То же, что функция [`currentDatabase`](#currentDatabase), но
 
@@ -1060,7 +1072,7 @@ SELECT currentSchemas(true)
 
 ## currentUser \{#currentUser\}
 
-Впервые появилась в версии: v20.1
+Впервые появилась в версии: v20.1.0
 
 Возвращает имя текущего пользователя.
 В случае распределённого запроса возвращается имя пользователя, который инициировал запрос.
@@ -1095,9 +1107,21 @@ SELECT currentUser()
 └───────────────┘
 ```
 
+**Стандартный синтаксис SQL без скобок**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
+```
+
 ## defaultProfiles \{#defaultProfiles\}
 
-Появилось в версии: v21.9
+Появилось в версии: v21.9.0
 
 Возвращает массив имен профилей настроек по умолчанию для текущего пользователя.
 
@@ -1131,7 +1155,7 @@ SELECT defaultProfiles();
 
 ## defaultRoles \{#defaultRoles\}
 
-Введена в версии: v21.9
+Введена в версии: v21.9.0
 
 Возвращает массив ролей по умолчанию для текущего пользователя.
 
@@ -1165,7 +1189,7 @@ SELECT defaultRoles();
 
 ## defaultValueOfArgumentType \{#defaultValueOfArgumentType\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Возвращает значение по умолчанию для указанного типа данных.
 Не учитывает значения по умолчанию, заданные пользователем для столбцов.
@@ -1212,7 +1236,7 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 
 ## defaultValueOfTypeName \{#defaultValueOfTypeName\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает значение по умолчанию для указанного имени типа.
 
@@ -1258,7 +1282,7 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 
 ## displayName \{#displayName\}
 
-Появилась в версии v22.11
+Появилась в версии v22.11.0
 
 Возвращает значение `display_name` из [config](/operations/configuration-files) или полное доменное имя (FQDN) сервера, если оно не задано.
 
@@ -1292,7 +1316,7 @@ SELECT displayName();
 
 ## dumpColumnStructure \{#dumpColumnStructure\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Выводит подробное описание внутренней структуры столбца и его типа данных.
 
@@ -1326,7 +1350,7 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 
 ## enabledProfiles \{#enabledProfiles\}
 
-Добавлена в версии: v21.9
+Добавлена в версии: v21.9.0
 
 Возвращает массив названий профилей настроек, которые активны для текущего пользователя.
 
@@ -1360,7 +1384,7 @@ SELECT enabledProfiles();
 
 ## enabledRoles \{#enabledRoles\}
 
-Впервые добавлена в: v21.9
+Впервые добавлена в: v21.9.0
 
 Возвращает массив ролей, которые включены для текущего пользователя.
 
@@ -1394,7 +1418,7 @@ SELECT enabledRoles();
 
 ## errorCodeToName \{#errorCodeToName\}
 
-Появилась в версии: v20.12
+Появилась в версии: v20.12.0
 
 Возвращает текстовое название числового кода ошибки ClickHouse.
 Соответствие числовых кодов ошибок их названиям приведено [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp).
@@ -1429,7 +1453,7 @@ SELECT errorCodeToName(252);
 
 ## file \{#file\}
 
-Появилась в версии: v21.3
+Появилась в версии: v21.3.0
 
 Читает содержимое файла как строку и загружает данные в указанный столбец.
 Содержимое файла не интерпретируется.
@@ -1464,7 +1488,7 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 
 ## filesystemAvailable \{#filesystemAvailable\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Возвращает объём свободного места в файловой системе, на которой размещено постоянное хранилище базы данных.
 Возвращаемое значение всегда меньше общего свободного места ([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)), поскольку часть пространства зарезервирована для операционной системы.
@@ -1499,9 +1523,9 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 
 ## filesystemCapacity \{#filesystemCapacity\}
 
-Добавлена в версии: v20.1
+Добавлена в версии: v20.1.0
 
-Возвращает емкость файловой системы в байтах.
+Возвращает ёмкость файловой системы в байтах.
 Требуется настроить [path](../../operations/server-configuration-parameters/settings.md#path) к каталогу с данными.
 
 **Синтаксис**
@@ -1534,7 +1558,7 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 
 ## filesystemUnreserved \{#filesystemUnreserved\}
 
-Представлена в: v22.12
+Представлена в: v22.12.0
 
 Возвращает общий объём свободного дискового пространства в файловой системе, где размещено постоянное хранилище базы данных (ранее `filesystemFree`).
 См. также [`filesystemAvailable`](#filesystemAvailable).
@@ -1569,7 +1593,7 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 
 ## finalizeAggregation \{#finalizeAggregation\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Для заданного состояния агрегации эта функция возвращает результат агрегации (или финализированное состояние при использовании комбинатора [-State](../../sql-reference/aggregate-functions/combinators.md#-state)).
 
@@ -1624,7 +1648,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-Добавлено в: v25.10
+Добавлено в: v25.10.0
 
 Меняет местами координаты x и y геометрических объектов. Эта операция переставляет широту и долготу местами, что полезно при преобразовании между различными системами координат или исправлении порядка координат.
 
@@ -1700,7 +1724,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-Впервые появился в: v23.10
+Впервые появился в: v23.10.0
 
 Возвращает отформатированную, при необходимости многострочную, версию указанного SQL‑запроса. Генерирует исключение в случае ошибки разбора.
 [example:multiline]
@@ -1737,7 +1761,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-Введено в: v23.11
+Введено в: v23.11.0
 
 Возвращает отформатированный, возможно многострочный, вариант заданного SQL-запроса. В случае ошибки разбора возвращает NULL.
 [example:multiline]
@@ -1774,7 +1798,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-Появилась в версии: v23.10
+Появилась в версии: v23.10.0
 
 Аналогична formatQuery(), но возвращаемая форматированная строка не содержит переводов строки. Генерирует исключение в случае ошибки разбора.
 [example:multiline]
@@ -1807,7 +1831,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-Появилась в версии: v23.11
+Появилась в версии: v23.11.0
 
 Аналогична formatQuery(), но возвращаемая отформатированная строка не содержит переводов строки. Возвращает NULL в случае ошибки парсинга.
 [example:multiline]
@@ -1840,7 +1864,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatReadableDecimalSize \{#formatReadableDecimalSize\}
 
-Появилась в версии v22.11
+Появилась в версии v22.11.0
 
 Функция принимает размер (количество байт) и возвращает удобочитаемый округлённый размер с суффиксом (KB, MB и т. д.) в виде строки.
 
@@ -1858,7 +1882,7 @@ formatReadableDecimalSize(x)
 
 **Возвращаемое значение**
 
-Возвращает человекочитаемый, округлённый размер с суффиксом в виде строки. [`String`](/sql-reference/data-types/string)
+Возвращает удобочитаемый, округлённый размер с суффиксом в виде строки. [`String`](/sql-reference/data-types/string)
 
 **Примеры**
 
@@ -1881,7 +1905,7 @@ SELECT
 
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
-Введена в версии: v20.10
+Введена в версии: v20.10.0
 
 Эта функция, получая число, возвращает округлённое значение с суффиксом (тысяча, миллион, миллиард и т. д.) в виде строки.
 
@@ -1923,7 +1947,7 @@ SELECT
 
 ## formatReadableSize \{#formatReadableSize\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Для заданного размера (количества байт) эта функция возвращает человекочитаемый, округлённый размер с суффиксом (KiB, MiB и т. д.) в виде строки.
 
@@ -1967,7 +1991,7 @@ SELECT
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
 
-Добавлена в версии: v20.12
+Добавлена в версии: v20.12.0
 
 При заданном интервале времени в секундах эта функция возвращает его в виде строки, включающей годы/месяцы/дни/часы/минуты/секунды/миллисекунды/микросекунды/наносекунды.
 
@@ -2025,7 +2049,7 @@ SELECT
 
 ## fuzzQuery \{#fuzzQuery\}
 
-Впервые появилась в: v26.2
+Впервые появилась в: v26.2.0
 
 Разбирает заданную строку запроса и применяет к ней случайные мутации AST (fuzzing). Возвращает «зафаззенный» запрос в виде строки. Недетерминирована: каждый вызов может давать различный результат. Требует `allow_fuzz_query_functions = 1`.
 
@@ -2056,7 +2080,7 @@ SET allow_fuzz_query_functions = 1; SELECT fuzzQuery('SELECT 1');
 
 ## generateRandomStructure \{#generateRandomStructure\}
 
-Добавлена в версии: v23.5
+Добавлена в версии: v23.5.0
 
 Генерирует случайную структуру таблицы в формате `column1_name column1_type, column2_name column2_type, ...`.
 
@@ -2109,7 +2133,7 @@ c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCar
 
 ## generateSerialID \{#generateSerialID\}
 
-Введена в версии: v25.1
+Введена в версии: v25.1.0
 
 Генерирует и возвращает последовательные числа, начиная с предыдущего значения счётчика.
 Эта функция принимает строковый аргумент — идентификатор серии, а также необязательное начальное значение.
@@ -2157,7 +2181,7 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
-**вызов для столбца**
+**вызов в виде столбца**
 
 ```sql title=Query
 SELECT *, generateSerialID('id1') FROM test_table
@@ -2185,7 +2209,7 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
-**со стартовым значением для второго вызова**
+**повторный вызов с начальным значением**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2199,7 +2223,7 @@ SELECT generateSerialID('id2', 100)
 
 ## getClientHTTPHeader \{#getClientHTTPHeader\}
 
-Введена в версии: v24.5
+Введена в версии: v24.5.0
 
 Получает значение HTTP-заголовка.
 Если такого заголовка нет или текущий запрос не выполняется через HTTP-интерфейс, функция возвращает пустую строку.
@@ -2243,7 +2267,7 @@ SELECT getClientHTTPHeader('Content-Type');
 
 ## getMacro \{#getMacro\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Возвращает значение макроса из конфигурационного файла сервера.
 Макросы определяются в разделе [`<macros>`](/operations/server-configuration-parameters/settings#macros) конфигурационного файла и могут использоваться для различения серверов по удобным именам, даже при сложных именах хостов.
@@ -2279,7 +2303,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-Впервые представлена в версии: v25.1
+Впервые представлена в версии: v25.1.0
 
 Возвращает максимальную длину имени таблицы в указанной базе данных.
 
@@ -2313,7 +2337,7 @@ SELECT getMaxTableNameLengthForDatabase('default');
 
 ## getMergeTreeSetting \{#getMergeTreeSetting\}
 
-Впервые представлена в: v25.6
+Впервые представлена в: v25.6.0
 
 Возвращает текущее значение настройки MergeTree.
 
@@ -2347,7 +2371,7 @@ SELECT getMergeTreeSetting('index_granularity');
 
 ## getOSKernelVersion \{#getOSKernelVersion\}
 
-Впервые появилась в версии: v21.11
+Впервые появилась в версии: v21.11.0
 
 Возвращает строку, содержащую версию ядра ОС.
 
@@ -2381,7 +2405,7 @@ SELECT getOSKernelVersion();
 
 ## getServerPort \{#getServerPort\}
 
-Добавлена в версии: v21.10
+Добавлена в версии: v21.10.0
 
 Возвращает номер порта сервера для заданного протокола.
 
@@ -2415,7 +2439,7 @@ SELECT getServerPort('tcp_port');
 
 ## getServerSetting \{#getServerSetting\}
 
-Добавлено в версии: v25.6
+Добавлено в версии: v25.6.0
 
 Возвращает текущее значение указанного серверного параметра.
 
@@ -2449,7 +2473,7 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 
 ## getSetting \{#getSetting\}
 
-Появилась в версии: v20.7
+Появилась в версии: v20.7.0
 
 Возвращает текущее значение настройки.
 
@@ -2488,7 +2512,7 @@ SELECT getSetting('enable_analyzer');
 
 ## getSettingOrDefault \{#getSettingOrDefault\}
 
-Впервые представлен в: v24.10
+Впервые представлен в: v24.10.0
 
 Возвращает текущее значение настройки или значение по умолчанию, указанное во втором аргументе, если настройка не задана в текущем профиле.
 
@@ -2525,7 +2549,7 @@ NULL
 
 ## getSizeOfEnumType \{#getSizeOfEnumType\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает число элементов в указанном типе [`Enum`](../../sql-reference/data-types/enum.md).
 
@@ -2559,7 +2583,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-Добавлена в: v23.3
+Добавлена в: v23.3.0
 
 Принимает выражение или идентификатор и константную строку с именем подстолбца.
 
@@ -2568,6 +2592,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **Синтаксис**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **Аргументы**
@@ -2589,7 +2614,7 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 
 ## getTypeSerializationStreams \{#getTypeSerializationStreams\}
 
-Введена в версии v22.6
+Введена в версии v22.6.0
 
 Перечисляет пути потоков сериализации для типа данных.
 Эта функция предназначена для использования при разработке.
@@ -2632,7 +2657,7 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 
 ## globalVariable \{#globalVariable\}
 
-Впервые появилась в версии v20.5
+Впервые появилась в версии v20.5.0
 
 Принимает строковый константный аргумент и возвращает значение глобальной переменной с этим именем. Эта функция предназначена исключительно для совместимости с MySQL и не требуется и не приносит пользы при обычной работе ClickHouse. Определено лишь несколько фиктивных глобальных переменных.
 
@@ -2664,7 +2689,7 @@ SELECT globalVariable('max_allowed_packet')
 
 ## hasColumnInTable \{#hasColumnInTable\}
 
-Добавлена в версии v1.1
+Добавлена в версии v1.1.0
 
 Проверяет, существует ли указанный столбец в таблице базы данных.
 Для элементов во вложенной структуре данных функция проверяет наличие столбца.
@@ -2713,7 +2738,7 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 
 ## hasThreadFuzzer \{#hasThreadFuzzer\}
 
-Добавлена в версии v20.6
+Добавлена в версии v20.6.0
 
 Возвращает, включён ли thread fuzzer.
 Эта функция предназначена только для тестирования и отладки.
@@ -2748,7 +2773,7 @@ SELECT hasThreadFuzzer()
 
 ## hostName \{#hostName\}
 
-Введена в: v20.5
+Введена в: v20.5.0
 
 Возвращает имя хоста, на котором была выполнена эта функция.
 Если функция выполняется на удалённом сервере (распределённая обработка), возвращается имя удалённого сервера.
@@ -2787,7 +2812,7 @@ SELECT hostName()
 
 ## icebergBucket \{#icebergBucket\}
 
-Впервые представлен в версии v25.5
+Впервые представлен в версии v25.5.0
 
 Реализует логику для [преобразования bucket в Iceberg](https://iceberg.apache.org/spec/#bucket-transform-details.)
 
@@ -2820,7 +2845,7 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 
 ## icebergTruncate \{#icebergTruncate\}
 
-Введена в версии: v25.3
+Введена в версии: v25.3.0
 
 Реализует логику трансформации truncate в Iceberg: https://iceberg.apache.org/spec/#truncate-transform-details.
 
@@ -2852,7 +2877,7 @@ ice
 
 ## identity \{#identity\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Эта функция возвращает аргумент, который вы ей передаёте, что полезно для отладки и тестирования. Она позволяет обойти использование индексов и оценить производительность полного сканирования. Анализатор запросов игнорирует всё, что находится внутри функций identity, при поиске индексов для использования в запросе, а также отключает свёртку констант.
 
@@ -2884,7 +2909,7 @@ SELECT identity(42)
 
 ## ignore \{#ignore\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Принимает произвольные аргументы и безусловно возвращает `0`.
 
@@ -2918,7 +2943,7 @@ SELECT ignore(0, 'ClickHouse', NULL)
 
 ## indexHint \{#indexHint\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Эта функция предназначена для отладки и интроспекции.
 Она игнорирует свой аргумент и всегда возвращает 1.
@@ -2997,7 +3022,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 
 ## initialQueryID \{#initialQueryID\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает идентификатор исходного текущего запроса.
 Другие параметры запроса можно получить из поля `initial_query_id` в [`system.query_log`](../../operations/system-tables/query_log.md).
@@ -3038,7 +3063,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 
 ## initialQueryStartTime \{#initialQueryStartTime\}
 
-Появилось в версии: v25.4
+Появилось в версии: v25.4.0
 
 Возвращает время начала исходного запроса.
 `initialQueryStartTime` возвращает одинаковое значение на разных сегментах.
@@ -3077,7 +3102,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 
 ## initializeAggregation \{#initializeAggregation\}
 
-Появилась в версии v20.6
+Появилась в версии v20.6.0
 
 Вычисляет результат агрегатной функции на основе одного значения.
 Эту функцию можно использовать для инициализации агрегатных функций с комбинатором [-State](../../sql-reference/aggregate-functions/combinators.md#-state).
@@ -3130,7 +3155,7 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 
 ## isConstant \{#isConstant\}
 
-Добавлена в: v20.3
+Добавлена в: v20.3.0
 
 Возвращает, является ли аргумент константным выражением.
 Константное выражение — это выражение, результат которого известен во время анализа запроса, то есть до выполнения.
@@ -3166,7 +3191,7 @@ FROM (SELECT 43 AS x)
 └────────────────────────┘
 ```
 
-**Константа и функция**
+**Константа в функции**
 
 ```sql title=Query
 WITH 3.14 AS pi
@@ -3206,7 +3231,7 @@ SELECT isConstant(now())
 
 ## isDecimalOverflow \{#isDecimalOverflow\}
 
-Появилась в версии: v20.8
+Появилась в версии: v20.8.0
 
 Проверяет, имеет ли десятичное число слишком много цифр, чтобы корректно поместиться в тип данных Decimal с заданной точностью.
 
@@ -3244,7 +3269,7 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 
 ## joinGet \{#joinGet\}
 
-Введена в версии v18.16
+Введена в версии v18.16.0
 
 Позволяет извлекать данные из таблицы таким же образом, как из словаря.
 Получает данные из таблиц Join с использованием указанного ключа соединения.
@@ -3316,7 +3341,7 @@ SELECT joinGet(some_table, 'name', 1, 11);
 
 ## joinGetOrNull \{#joinGetOrNull\}
 
-Появилось в: v20.4
+Появилось в: v20.4.0
 
 Позволяет извлекать данные из таблицы таким же образом, как из словаря.
 Получает данные из таблиц с движком Join, используя указанный ключ соединения.
@@ -3361,7 +3386,7 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 
 ## lowCardinalityIndices \{#lowCardinalityIndices\}
 
-Добавлена в версии: v18.12
+Добавлена в версии: v18.12.0
 
 Возвращает позицию значения в словаре столбца типа [LowCardinality](../data-types/lowcardinality.md). Отсчет позиций начинается с 1. Поскольку LowCardinality используют отдельные словари для каждой части, эта функция может возвращать разные позиции для одного и того же значения в разных частях.
 
@@ -3414,7 +3439,7 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 
 ## lowCardinalityKeys \{#lowCardinalityKeys\}
 
-Добавлена в: v18.12
+Добавлена в: v18.12.0
 
 Возвращает значения словаря для столбца типа [LowCardinality](../data-types/lowcardinality.md).
 Если размер блока меньше или больше размера словаря, результат будет усечён или дополнен значениями по умолчанию.
@@ -3469,7 +3494,7 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 
 ## materialize \{#materialize\}
 
-Впервые введена в: v1.1
+Впервые введена в: v1.1.0
 
 Преобразует константу в полноценный столбец, содержащий одно значение.
 Полноценные столбцы и константы по-разному представлены в памяти.
@@ -3510,7 +3535,7 @@ Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal ty
 
 ## minSampleSizeContinuous \{#minSampleSizeContinuous\}
 
-Появилась в: v23.10
+Появилась в: v23.10.0
 
 Вычисляет минимально необходимый размер выборки для A/B‑теста, сравнивающего средние значения непрерывной метрики в двух выборках.
 
@@ -3553,13 +3578,37 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 
 ## minSampleSizeConversion \{#minSampleSizeConversion\}
 
-Введена в версии: v22.6
+Введена в версии: v22.6.0
 
 Вычисляет минимально необходимый размер выборки для A/B‑теста, сравнивающего конверсии (доли) в двух выборках.
 
 Использует формулу, описанную в [этой статье](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a). Предполагается, что размеры экспериментальной и контрольной групп равны. Возвращает размер выборки, требуемый для одной группы (т.е. размер выборки, необходимый для всего эксперимента, вдвое больше возвращаемого значения).
 
 **Синтаксис**
+
+minSampleSizeConversion(baseline, mde, power, alpha)
+
+**Аргументы**
+
+`baseline` — Базовая конверсия. [`Float*`](/sql-reference/data-types/float)
+
+`mde` — Минимально обнаруживаемый эффект (MDE) в процентных пунктах (например, для базовой конверсии 0.25 значение MDE 0.03 означает ожидаемое изменение до 0.25 ± 0.03). [`Float*`](/sql-reference/data-types/float)
+
+`power` — Требуемая статистическая мощность теста (1 - вероятность ошибки второго рода). [`Float*`](/sql-reference/data-types/float)
+
+`alpha` — Требуемый уровень значимости теста (вероятность ошибки первого рода). [`Float*`](/sql-reference/data-types/float)
+
+**Возвращаемое значение**
+
+Возвращает именованный `Tuple` с 3 элементами: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`. Это соответственно: требуемый объем выборки; нижняя граница диапазона значений, не обнаруживаемых при указанном требуемом объеме выборки (рассчитывается как `baseline - mde`); верхняя граница диапазона значений, не обнаруживаемых при указанном требуемом объеме выборки (рассчитывается как `baseline + mde`). [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**Примеры**
+
+**minSampleSizeConversion**
+
+SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample&#95;size
+
+(3396.077603219163,0.22,0.28)
 
 ```sql
 minSampleSizeConversion(baseline, mde, power, alpha)
@@ -3590,7 +3639,7 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 
 ## neighbor \{#neighbor\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Возвращает значение из столбца на заданном смещении от текущей строки.
 Эта функция устарела и является ошибкоопасной, поскольку работает с физическим порядком блоков данных, который может не соответствовать логическому порядку, ожидаемому пользователями.
@@ -3658,42 +3707,9 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-Появилась в версии: v23.2
-
-Эта функция используется внутри движка ClickHouse и не предназначена для прямого использования.
-
-Возвращает массив кортежей, сформированный из нескольких массивов.
-
-Первый аргумент должен быть константным массивом строк, задающим имена результирующего `Tuple`.
-Остальные аргументы должны быть массивами одинакового размера.
-
-**Синтаксис**
-
-```sql
-```
-
-**Аргументы**
-
-* нет.
-
-**Возвращаемое значение**
-
-**Примеры**
-
-**Вложенные**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
-Введена в: v20.8
+Введена в: v20.8.0
 
 Заменяет литералы, последовательности литералов и сложные псевдонимы (содержащие пробелы, более двух цифр или имеющие длину не менее 36 байт, например UUID) на плейсхолдер `?`.
 
@@ -3727,7 +3743,7 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 
 ## normalizeQueryKeepNames \{#normalizeQueryKeepNames\}
 
-Добавлено в версии: v21.2
+Добавлено в версии: v21.2.0
 
 Заменяет литералы и последовательности литералов на плейсхолдер `?`, но не заменяет сложные псевдонимы (содержащие пробелы, более двух цифр или длиной не менее 36 байт, например UUID).
 Это помогает лучше анализировать сложные логи запросов.
@@ -3762,7 +3778,7 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 
 ## normalizedQueryHash \{#normalizedQueryHash\}
 
-Введено в версии: v20.8
+Введено в версии: v20.8.0
 
 Возвращает одинаковые 64-битные хэш-значения для похожих запросов, не учитывая значения литералов.
 Может быть полезно при анализе журнала запросов.
@@ -3797,7 +3813,7 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 
 ## normalizedQueryHashKeepNames \{#normalizedQueryHashKeepNames\}
 
-Добавлена в: v21.2
+Добавлена в: v21.2.0
 
 Подобно [`normalizedQueryHash`](#normalizedQueryHash), возвращает идентичные 64‑битные хеш‑значения без учета значений литералов для похожих запросов, но при этом не заменяет сложные псевдонимы (содержащие пробелы, более двух цифр или имеющие длину не менее 36 байт, например UUID) на заполнитель перед хешированием.
 Может быть полезна при анализе журналов запросов.
@@ -3836,7 +3852,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## parseReadableSize \{#parseReadableSize\}
 
-Введена в: v24.6
+Введена в: v24.6.0
 
 Получив строку, содержащую размер в байтах и единицу измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т. д. (т. е. в формате [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или с десятичной единицей измерения объёма данных), эта функция возвращает соответствующее количество байт.
 Если функция не может разобрать входное значение, она выбрасывает исключение.
@@ -3876,7 +3892,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 
 ## parseReadableSizeOrNull \{#parseReadableSizeOrNull\}
 
-Впервые появилась в версии: v24.6
+Впервые появилась в версии: v24.6.0
 
 Если на вход подаётся строка, содержащая размер в байтах и единицу измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т.д. (то есть стандарт [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или десятичная единица измерения объёма данных в байтах), эта функция возвращает соответствующее количество байт.
 Если функции не удаётся разобрать входное значение, она возвращает `NULL`.
@@ -3917,7 +3933,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseReadableSizeOrZero \{#parseReadableSizeOrZero\}
 
-Введено в: v24.6
+Введено в: v24.6.0
 
 При передаче строки, в которой указан размер и единица измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т.д. (то есть единица из стандарта [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или десятичная единица измерения объёма данных), эта функция возвращает соответствующее количество байт.
 Если функция не может разобрать входное значение, она возвращает `0`.
@@ -3958,7 +3974,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseTimeDelta \{#parseTimeDelta\}
 
-Добавлена в версии: v22.7
+Добавлена в версии: v22.7.0
 
 Разбирает последовательность чисел, за которыми следует обозначение единицы времени.
 
@@ -4021,7 +4037,7 @@ SELECT parseTimeDelta('1yr2mo')
 
 ## partitionId \{#partitionId\}
 
-Появилась в версии: v21.4
+Появилась в версии: v21.4.0
 
 Вычисляет [ID партиции](../../engines/table-engines/mergetree-family/custom-partitioning-key.md).
 
@@ -4079,7 +4095,7 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 
 ## queryID \{#queryID\}
 
-Введена в версии: v21.9
+Введена в версии: v21.9.0
 
 Возвращает идентификатор текущего запроса.
 Другие параметры запроса могут быть получены из поля `query_id` в таблице [`system.query_log`](../../operations/system-tables/query_log.md).
@@ -4120,7 +4136,7 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 
 ## revision \{#revision\}
 
-Появилась в версии: v22.7
+Появилась в версии: v22.7.0
 
 Возвращает текущую ревизию сервера ClickHouse.
 
@@ -4154,7 +4170,7 @@ SELECT revision()
 
 ## rowNumberInAllBlocks \{#rowNumberInAllBlocks\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Возвращает уникальный номер строки для каждой обработанной строки.
 
@@ -4212,7 +4228,7 @@ SETTINGS max_block_size = 2
 
 ## rowNumberInBlock \{#rowNumberInBlock\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Функция `rowNumberInBlock` для каждого [блока](../../development/architecture.md#block) возвращает номер текущей строки.
 
@@ -4271,7 +4287,7 @@ FROM
 
 ## runningAccumulate \{#runningAccumulate\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Накапливает состояния агрегатной функции для каждой строки блока данных.
 
@@ -4321,7 +4337,7 @@ FROM numbers(5);
 
 ## runningConcurrency \{#runningConcurrency\}
 
-Введена в версии: v21.3
+Введена в версии: v21.3.0
 
 Вычисляет количество параллельных событий.
 Каждое событие имеет время начала и время окончания.
@@ -4374,7 +4390,7 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 
 ## runningDifference \{#runningDifference\}
 
-Появилась в: v1.1
+Появилась в: v1.1.0
 
 Вычисляет разность между значениями двух последовательных строк в блоке данных.
 Возвращает `0` для первой строки, а для последующих строк — разность с предыдущей строкой.
@@ -4459,7 +4475,7 @@ WHERE diff != 1;
 
 ## runningDifferenceStartingWithFirstValue \{#runningDifferenceStartingWithFirstValue\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Вычисляет разность между последовательными значениями строк в блоке данных, но, в отличие от [`runningDifference`](#runningDifference), возвращает фактическое значение первой строки вместо `0`.
 
@@ -4508,7 +4524,7 @@ FROM numbers(5);
 
 ## serverUUID \{#serverUUID\}
 
-Появилась в версии: v20.1
+Появилась в версии: v20.1.0
 
 Возвращает случайный и уникальный UUID (v4), сгенерированный при первом запуске сервера.
 UUID сохраняется, т.е. при втором, третьем и последующих запусках сервера возвращается тот же UUID.
@@ -4543,7 +4559,7 @@ SELECT serverUUID();
 
 ## shardCount \{#shardCount\}
 
-Впервые появился в: v21.9
+Впервые появился в: v21.9.0
 
 Возвращает общее количество сегментов для распределённого запроса.
 Если запрос не является распределённым, возвращается значение `0`.
@@ -4582,7 +4598,7 @@ SELECT shardCount() FROM shard_count_example;
 
 ## shardNum \{#shardNum\}
 
-Введена в версии v21.9
+Введена в версии v21.9.0
 
 Возвращает индекс сегмента, который обрабатывает часть данных в распределённом запросе.
 Индексы начинаются с `1`.
@@ -4621,7 +4637,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 
 ## showCertificate \{#showCertificate\}
 
-Появилась в версии: v22.6
+Появилась в версии: v22.6.0
 
 Отображает информацию о текущем SSL-сертификате сервера, если он настроен.
 См. раздел [Настройка TLS](/guides/sre/tls/configuring-tls) для получения дополнительной информации о том, как настроить ClickHouse для использования сертификатов OpenSSL для проверки соединений.
@@ -4654,7 +4670,7 @@ SELECT showCertificate() FORMAT LineAsString;
 
 ## sleep \{#sleep\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Приостанавливает выполнение запроса на указанное количество секунд.
 Функция в основном используется для тестирования и отладки.
@@ -4705,7 +4721,7 @@ SELECT sleep(2);
 
 ## sleepEachRow \{#sleepEachRow\}
 
-Введён в версии: v1.1
+Введён в версии: v1.1.0
 
 Приостанавливает выполнение запроса на заданное количество секунд для каждой строки в результирующем наборе.
 
@@ -4755,13 +4771,14 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-Появилась в версии: v23.8
+Появилась в версии: v23.8.0
 
 Функция преобразует структуру таблицы ClickHouse в схему формата CapnProto
 
 **Синтаксис**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **Аргументы**
@@ -4788,7 +4805,7 @@ struct MessageName
 
 ## structureToProtobufSchema \{#structureToProtobufSchema\}
 
-Введена в версии v23.8
+Введена в версии v23.8.0
 
 Преобразует структуру таблицы ClickHouse в схему в формате Protobuf.
 
@@ -4829,7 +4846,7 @@ message MessageName
 
 ## tcpPort \{#tcpPort\}
 
-Введена в: v20.12
+Введена в: v20.12.0
 
 Возвращает номер TCP-порта [нативного интерфейса](/interfaces/tcp), который прослушивает сервер.
 Если выполняется в контексте distributed таблицы, эта функция генерирует обычный столбец со значениями для каждого сегмента.
@@ -4865,7 +4882,7 @@ SELECT tcpPort()
 
 ## throwIf \{#throwIf\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Генерирует исключение, если аргумент x имеет значение true.
 Чтобы использовать аргумент `error_code`, необходимо включить параметр конфигурации `allow_custom_error_code_in_throw`.
@@ -4901,7 +4918,7 @@ Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 
 ## toColumnTypeName \{#toColumnTypeName\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 Возвращает внутреннее имя типа данных переданного значения.
 В отличие от функции [`toTypeName`](#toTypeName), возвращаемый тип данных потенциально включает внутренние обёртки типов столбцов, такие как `Const` и `LowCardinality`.
@@ -4936,7 +4953,7 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 
 ## toTypeName \{#toTypeName\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Возвращает имя типа переданного аргумента.
 Если передано значение `NULL`, функция возвращает тип `Nullable(Nothing)`, который соответствует внутреннему представлению `NULL` в ClickHouse.
@@ -4971,7 +4988,7 @@ SELECT toTypeName(123)
 
 ## transactionID \{#transactionID\}
 
-Добавлено в версии: v22.6
+Добавлено в версии: v22.6.0
 
 <ExperimentalBadge />
 
@@ -5029,7 +5046,7 @@ ROLLBACK;
 
 ## transactionLatestSnapshot \{#transactionLatestSnapshot\}
 
-Добавлена в версии: v22.6
+Добавлена в версии: v22.6.0
 
 <ExperimentalBadge />
 
@@ -5081,7 +5098,7 @@ ROLLBACK;
 
 ## transactionOldestSnapshot \{#transactionOldestSnapshot\}
 
-Добавлено в: v22.6
+Добавлено в: v22.6.0
 
 <ExperimentalBadge />
 
@@ -5133,7 +5150,7 @@ ROLLBACK;
 
 ## transform \{#transform\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Преобразует значение в соответствии с явно заданным отображением одних элементов в другие.
 
@@ -5218,7 +5235,7 @@ LIMIT 10
 
 ## uniqThetaIntersect \{#uniqThetaIntersect\}
 
-Введена в версии: v22.9
+Введена в версии: v22.9.0
 
 Принимает два объекта uniqThetaSketch и вычисляет их пересечение (операция над множествами ∩); результатом является новый uniqThetaSketch.
 
@@ -5254,7 +5271,7 @@ FROM
 
 ## uniqThetaNot \{#uniqThetaNot\}
 
-Появилась в версии: v22.9
+Появилась в версии: v22.9.0
 
 Операция a&#95;not&#95;b (операция над множествами ×) между двумя объектами uniqThetaSketch, результатом которой является новый uniqThetaSketch.
 
@@ -5290,7 +5307,7 @@ FROM
 
 ## uniqThetaUnion \{#uniqThetaUnion\}
 
-Добавлено в: v22.9
+Добавлено в: v22.9.0
 
 Два объекта uniqThetaSketch используются для вычисления объединения (операция объединения множеств ∪), результатом является новый uniqThetaSketch.
 
@@ -5326,7 +5343,7 @@ FROM
 
 ## uptime \{#uptime\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Возвращает время работы сервера в секундах.
 Если выполняется в контексте distributed таблицы, эта функция генерирует обычный столбец со значениями для каждого сегмента.
@@ -5362,7 +5379,7 @@ SELECT uptime() AS Uptime
 
 ## variantElement \{#variantElement\}
 
-Введена в версии: v25.2
+Введена в версии: v25.2.0
 
 Извлекает столбец заданного типа из столбца типа `Variant`.
 
@@ -5403,7 +5420,7 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 
 ## variantType \{#variantType\}
 
-Добавлено в: v24.2
+Добавлено в: v24.2.0
 
 Возвращает имя типа Variant для каждой строки столбца `Variant`. Если строка содержит NULL, для неё возвращается значение &#39;None&#39;.
 
@@ -5442,7 +5459,7 @@ SELECT variantType(v) FROM test;
 
 ## version \{#version\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Возвращает текущую версию ClickHouse в виде строки формата: `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`.
 Если выполняется в контексте distributed таблицы, эта функция формирует обычный столбец со значениями, соответствующими каждому сегменту.
@@ -5478,7 +5495,7 @@ SELECT version()
 
 ## visibleWidth \{#visibleWidth\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Вычисляет приблизительную ширину при выводе значений в консоль в текстовом формате с разделителем-табуляцией (tab-separated).
 Эта функция используется системой для реализации форматов Pretty.
@@ -5514,7 +5531,7 @@ SELECT visibleWidth(NULL)
 
 ## zookeeperSessionUptime \{#zookeeperSessionUptime\}
 
-Появилась в версии: v21.11
+Появилась в версии: v21.11.0
 
 Возвращает время работы текущей сессии ZooKeeper в секундах.
 

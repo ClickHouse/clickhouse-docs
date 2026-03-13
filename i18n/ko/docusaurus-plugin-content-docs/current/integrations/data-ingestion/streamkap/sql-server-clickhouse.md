@@ -51,9 +51,9 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 다음을 준비했는지 확인합니다:
 
-- SQL Server 서버 주소, 포트, 사용자 이름, 비밀번호. Streamkap이 SQL Server 데이터베이스에 접근할 수 있도록 별도의 사용자와 역할을 생성하는 것을 권장합니다. [구성 방법은 문서를 참고하십시오.](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
-- ClickHouse 서버 주소, 포트, 사용자 이름, 비밀번호. ClickHouse의 IP 허용 목록은 어떤 서비스가 ClickHouse 데이터베이스에 연결할 수 있는지를 결정합니다. [여기 안내를 따르십시오.](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- 스트리밍할 테이블 — 우선은 하나의 테이블부터 시작하십시오.
+* SQL Server 서버 주소, 포트, 사용자 이름, 비밀번호. Streamkap이 SQL Server 데이터베이스에 접근할 수 있도록 별도의 사용자와 역할을 생성하는 것을 권장합니다. [구성 방법은 문서를 참고하십시오.](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server\&sa=D\&source=editors\&ust=1760992472358213\&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
+* ClickHouse 서버 주소, 포트, 사용자 이름, 비밀번호. ClickHouse의 IP 허용 목록은 어떤 서비스가 ClickHouse 데이터베이스에 연결할 수 있는지를 결정합니다. [여기 안내를 따르십시오.](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse\&sa=D\&source=editors\&ust=1760992472359060\&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
+* 스트리밍할 테이블 — 우선은 하나의 테이블부터 시작하십시오.
 
 ## SQL Server를 소스로 설정하기 \{#setting-up-sql-server-as-a-source\}
 

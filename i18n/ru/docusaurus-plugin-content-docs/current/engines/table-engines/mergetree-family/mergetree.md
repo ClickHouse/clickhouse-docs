@@ -404,11 +404,10 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) индекс
 - [`Set`](#set) индекс
 - [`bloom_filter`](#bloom-filter) индекс
-- [`ngrambf_v1`](#n-gram-bloom-filter) индекс
-- [`tokenbf_v1`](#token-bloom-filter) индекс
-- [`text`]({#text}) индекс
-- [`vector_similarity`]({#vector-similarity}) индекс
-- [`unknown`]({#unknown}) индекс
+- [`ngrambf_v1`](#n-gram-bloom-filter) индекс *(Устарело)*
+- [`tokenbf_v1`](#token-bloom-filter) индекс *(Устарело)*
+- [`text`](#text) индекс
+- [`vector_similarity`](#vector-similarity) индекс
 
 #### Индекс MinMax \{#minmax\}
 
@@ -459,7 +458,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-граммный фильтр Блума \{#n-gram-bloom-filter\}
+#### N-граммный фильтр Блума *(Устаревший)* \{#n-gram-bloom-filter\}
+
+:::note
+С момента, когда индекс `text` стал общедоступным (GA), начиная с версии ClickHouse 26.2, индекс `ngrambf_v1` больше не рекомендуется для полнотекстового поиска.
+
+Подробности см. на странице [&quot;Полнотекстовый поиск с текстовыми индексами&quot;](./textindexes.md).
+:::
 
 Каждая гранула индекса хранит [фильтр Блума](https://en.wikipedia.org/wiki/Bloom_filter) для [n-грамм](https://en.wikipedia.org/wiki/N-gram) указанных столбцов.
 
@@ -530,7 +535,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Блум-фильтр по токенам \{#token-bloom-filter\}
 
-Блум-фильтр по токенам аналогичен `ngrambf_v1`, но хранит токены (последовательности, разделённые символами, не являющимися буквенно-цифровыми), а не n-граммы.
+:::note
+С момента общей доступности (GA) индекса `text`, начиная с версии ClickHouse 26.2, индекс `tokenbf_v1` больше не рекомендуется для полнотекстового поиска.
+
+См. страницу [&quot;Full-text search with text indexes&quot;](./textindexes.md) для подробностей.
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -1163,7 +1172,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 <CloudNotSupportedBadge />
 
-Объявление статистики задаётся в секции `COLUMNS` запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
+Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
 
 ```sql
 CREATE TABLE tab

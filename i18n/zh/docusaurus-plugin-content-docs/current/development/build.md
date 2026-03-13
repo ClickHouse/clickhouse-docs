@@ -10,16 +10,16 @@ doc_type: 'guide'
 # 如何在 Linux 上构建 ClickHouse \{#how-to-build-clickhouse-on-linux\}
 
 :::info 无需自行构建 ClickHouse！
-你可以按照[快速开始](https://clickhouse.com/#quick-start)中的说明安装预编译的 ClickHouse。
+你可以按照[快速开始](https://clickhouse.com/docs/get-started/quick-start)中的说明安装预编译的 ClickHouse。
 :::
 
 ClickHouse 可以在以下平台上构建：
 
-- x86_64
-- AArch64
-- PowerPC 64 LE（实验性）
-- s390/x（实验性）
-- RISC-V 64（实验性）
+* x86&#95;64
+* AArch64
+* PowerPC 64 LE (实验性) 
+* s390/x (实验性) 
+* RISC-V 64 (实验性)
 
 ## 前提条件 \{#assumptions\}
 
@@ -85,7 +85,7 @@ mkdir build
 cd build
 ```
 
-你可以为不同的构建类型使用多个目录（例如 `build_release`、`build_debug` 等）。
+你可以为不同的构建类型使用多个目录 (例如 `build_release`、`build_debug` 等) 。
 
 可选：如果你安装了多个编译器版本，可以指定要使用的具体编译器。
 
@@ -94,8 +94,8 @@ export CC=clang-21
 export CXX=clang++-21
 ```
 
-出于开发目的，推荐使用调试构建（debug builds）。
-与发布构建（release builds）相比，它们使用更低的编译器优化级别（`-O`），从而带来更好的调试体验。
+出于开发目的，推荐使用调试构建 (debug builds) 。
+与发布构建 (release builds) 相比，它们使用更低的编译器优化级别 (`-O`) ，从而带来更好的调试体验。
 此外，类型为 `LOGICAL_ERROR` 的内部异常会立即导致崩溃，而不会被优雅地捕获和处理。
 
 ```sh
@@ -112,7 +112,7 @@ cmake -D CMAKE_BUILD_TYPE=Debug ..
 ninja clickhouse
 ```
 
-如果你想构建所有二进制文件（工具和测试），请直接运行不带任何参数的 ninja：
+如果你想构建所有二进制文件 (工具和测试) ，请直接运行不带任何参数的 ninja：
 
 ```sh
 ninja
@@ -121,8 +121,11 @@ ninja
 你可以使用参数 `-j` 来控制并行构建任务的数量：
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`、`clickhouse-client` 以及类似的二进制文件是 `programs/` 目录中的符号链接，这些链接在构建完成后指向 `clickhouse` 可执行文件。
 
 :::tip
 CMake 为这些命令提供了快捷方式：

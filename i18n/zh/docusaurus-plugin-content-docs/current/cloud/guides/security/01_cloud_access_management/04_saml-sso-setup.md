@@ -54,7 +54,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
   * [配置 Okta SAML](#configure-okta-saml)
   * [配置 Google SAML](#configure-google-saml)
-  * [配置 Azure（Microsoft）SAML](#configure-azure-microsoft-saml)
+  * [配置 Azure (Microsoft) SAML](#configure-azure-microsoft-saml)
   * [配置 Duo SAML](#configure-duo-saml)
 
   :::tip
@@ -108,10 +108,10 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
   1. 登出 [ClickHouse Cloud](https://console.clickhouse.cloud)。
   2. 在您的身份提供商中，将该管理员用户分配给 ClickHouse 应用程序。
-  3. 让该用户通过 https://console.clickhouse.cloud/?connection={orgId}（快捷 URL）登录。这可以通过您在前面步骤中创建的书签完成。在用户首次登录之前，他们不会出现在 ClickHouse Cloud 中。
+  3. 让该用户通过 https://console.clickhouse.cloud/?connection={orgId} (快捷 URL) 登录。这可以通过您在前面步骤中创建的书签完成。在用户首次登录之前，他们不会出现在 ClickHouse Cloud 中。
   4. 如果默认 SAML 角色不是 Admin，则用户可能需要登出并使用其原有的认证方式重新登录，以更新新 SAML 用户的角色。
      * 对于电子邮箱 + 密码帐户，请使用 `https://console.clickhouse.cloud/?with=email`。
-     * 对于社交登录，请点击相应按钮（**Continue with Google** 或 **Continue with Microsoft**）。
+     * 对于社交登录，请点击相应按钮 (**Continue with Google** 或 **Continue with Microsoft**)
 
   :::note
   上面 `?with=email` 中的 `email` 是字面参数值，而不是占位符。

@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 Executable pool はプロセスのプールからデータをロードできます。
 このソースは、ソースからすべてのデータをロードする必要がある Dictionary レイアウトでは動作しません。
 
-Executable pool は、Dictionary が次のいずれかのレイアウトを用いて[保存されている](../layouts/#ways-to-store-dictionaries-in-memory)場合に動作します:
+Executable pool は、Dictionary が次のいずれかのレイアウトを用いて[保存されている](../layouts/#storing-dictionaries-in-memory)場合に動作します:
 
 * `cache`
 * `complex_key_cache`

@@ -154,6 +154,57 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
+### エンドポイントごとのカスタム HTTP ハンドラ \{#custom-http-handlers-per-endpoint\}
+
+デフォルトでは、すべての `type=http` プロトコルエントリは同じ `<http_handlers>` 設定を共有します。これを上書きするには、別の設定セクションを指す `<handlers>` タグを追加します。これにより、各 HTTP ポートごとに異なる HTTP ルーティングルールのセットを提供できます。
+
+たとえば、ポート 8124 で独自のハンドラ構成を持つ代替 HTTP API を実行するには、次のようにします。
+
+```xml
+<protocols>
+
+  <plain_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8123</port>
+  </plain_http>
+
+  <alt_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8124</port>
+    <handlers>http_handlers_alt</handlers>
+  </alt_http>
+
+</protocols>
+
+<!-- Default handlers used by plain_http (port 8123) -->
+<http_handlers>
+    <defaults/>
+</http_handlers>
+
+<!-- Alternative handlers used by alt_http (port 8124) -->
+<http_handlers_alt>
+    <rule>
+        <url>/custom</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>SELECT 'custom_endpoint'</query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers_alt>
+```
+
+この例では、ポート 8123 へのリクエストには標準の `<http_handlers>` ルールが使用され、
+ポート 8124 へのリクエストには `<http_handlers_alt>` ルールが使用されます。`<handlers>` が省略された場合、そのエンドポイントでは既定の `<http_handlers>` が使用されます。
+
+カスタムハンドラーのセクションは、
+[`<http_handlers>`](/docs/operations/server-configuration-parameters/settings#http_handlers) と同じ形式に従います。
+カスタムハンドラーのセクションへの変更は設定の再読み込み時に検出され、
+対応するエンドポイントは自動的に再起動されます。
+
+
 ### 追加のレイヤーパラメータの指定 \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 一部のモジュールには、追加のレイヤーパラメータが含まれる場合があります。たとえば、TLS レイヤーでは

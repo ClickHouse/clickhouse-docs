@@ -104,4 +104,4 @@ EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 
 **另请参阅**
 
-* [字典](./create/dictionary/index.md)
+* [字典](./create/dictionary/overview.md)

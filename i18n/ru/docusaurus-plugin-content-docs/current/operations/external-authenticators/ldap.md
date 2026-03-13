@@ -32,6 +32,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
             <port>636</port>
             <bind_dn>uid={user_name},ou=users,dc=example,dc=com</bind_dn>
             <verification_cooldown>300</verification_cooldown>
+            <follow_referrals>false</follow_referrals>
             <enable_tls>yes</enable_tls>
             <tls_minimum_protocol_version>tls1.2</tls_minimum_protocol_version>
             <tls_require_cert>demand</tls_require_cert>
@@ -76,6 +77,9 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
       * Обратите внимание, что специальные символы должны быть корректно экранированы в XML.
 * `verification_cooldown` — период времени в секундах после успешной попытки привязки, в течение которого пользователь считается успешно аутентифицированным для всех последующих запросов без обращения к LDAP‑серверу.
   * Укажите `0` (значение по умолчанию), чтобы отключить кеширование и принудительно обращаться к LDAP‑серверу для каждого запроса аутентификации.
+* `follow_referrals` — флаг, позволяющий клиентской библиотеке LDAP автоматически переходить по LDAP‑рефералам, возвращаемым сервером. По умолчанию `false`. Примечание: этот параметр в основном актуален для сред Microsoft Active Directory, где поиски поддеревьев на высокоуровневом базовом DN (например, `DC=example,DC=com`) могут возвращать рефералы/ссылки поиска (например, `DC=DomainDnsZones,...`).
+  * Укажите `true` только в том случае, если вам явно нужны кросс‑партиционные (cross‑partition) поиски и ваша среда настроена на их поддержку.
+  * Укажите `false`, чтобы не переходить по рефералам. Это рекомендуется для поисков по корню домена AD.
 * `enable_tls` — флаг, включающий использование защищенного соединения с LDAP‑сервером.
   * Укажите `no` для незашифрованного протокола `ldap://` (не рекомендуется).
   * Укажите `yes` для протокола LDAP поверх SSL/TLS `ldaps://` (рекомендуется, используется по умолчанию).

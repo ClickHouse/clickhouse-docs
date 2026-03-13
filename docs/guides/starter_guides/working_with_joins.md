@@ -61,7 +61,7 @@ If a row has more than one match, then all matches are returned (meaning that th
 
 <Image img={inner_join} alt="Inner Join" />
 
-This query finds the genre(s) for each movie by joining the `movies` table with the `genres` table:
+This query finds the genres for each movie by joining the `movies` table with the `genres` table:
 
 ```sql
 SELECT
@@ -178,7 +178,7 @@ LIMIT 10;
 └──────┴────┴──────────┴─────────────┘
 ```
 
-While the previous example query alone didn’t make much sense, it can be extended with a `WHERE` clause for associating matching rows to replicate `INNER JOIN` behavior for finding the genre(s) for each movie:
+While the previous example query alone didn’t make much sense, it can be extended with a `WHERE` clause for associating matching rows to replicate `INNER JOIN` behavior for finding the genres for each movie:
 
 ```sql
 SELECT

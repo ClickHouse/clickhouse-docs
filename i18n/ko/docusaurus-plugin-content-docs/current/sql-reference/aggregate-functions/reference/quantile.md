@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 숫자 데이터 시퀀스의 근사 [`quantile`](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 

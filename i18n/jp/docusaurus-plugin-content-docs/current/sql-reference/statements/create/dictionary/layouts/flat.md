@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 このレイアウトタイプは、Dictionary を保存するために利用可能なすべての手法の中で、最も高いパフォーマンスを提供します。
 :::
 
-Dictionary のキーは [UInt64](../../../data-types/int-uint.md) 型であり、値は `max_array_size`（デフォルト — 500,000）に制限されます。
+Dictionary のキーは [UInt64](/sql-reference/data-types/int-uint.md) 型であり、値は `max_array_size`（デフォルト — 500,000）に制限されます。
 Dictionary の作成時に、これより大きなキーが見つかった場合、ClickHouse は例外をスローし、Dictionary を作成しません。
 Dictionary のフラット配列の初期サイズは、`initial_array_size` 設定（デフォルト — 1024）によって制御されます。
 

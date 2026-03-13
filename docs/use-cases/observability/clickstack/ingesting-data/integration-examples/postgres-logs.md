@@ -21,16 +21,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring PostgreSQL Logs with ClickStack {#postgres-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor PostgreSQL with ClickStack by configuring the OpenTelemetry collector to ingest PostgreSQL server logs. You'll learn how to:
-
-- Configure PostgreSQL to output logs in CSV format for structured parsing
-- Create a custom OTel collector configuration for log ingestion
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize PostgreSQL log insights (errors, slow queries, connections)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production PostgreSQL.
-
-Time Required: 10-15 minutes
+Collect and visualize PostgreSQL server logs (CSV format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing PostgreSQL {#existing-postgres}
@@ -367,8 +358,6 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 ## Next steps {#next-steps}
-
-After setting up PostgreSQL logs monitoring:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, slow queries, error spikes)
 - Correlate logs with [PostgreSQL metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) for comprehensive database monitoring

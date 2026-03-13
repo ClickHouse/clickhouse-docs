@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Dictionary はハッシュテーブルの形式で完全にメモリ上に保存されます。Dictionary には、任意の識別子を持つ任意個数の要素を含めることができます。実際には、キーの数は数千万件に達することがあります。
 
-Dictionary キーの型は [UInt64](../../../data-types/int-uint.md) です。
+Dictionary キーの型は [UInt64](/sql-reference/data-types/int-uint.md) です。
 
 すべての種類のソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）は全体が読み込まれます。
 
@@ -93,7 +93,7 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 
 `hashed` と同様ですが、メモリ使用量を削減する代わりに CPU 使用量が増加します。
 
-Dictionary のキーは [UInt64](../../../data-types/int-uint.md) 型です。
+Dictionary のキーは [UInt64](/sql-reference/data-types/int-uint.md) 型です。
 
 設定例:
 
@@ -126,7 +126,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 ## complex_key_hashed \{#complex_key_hashed\}
 
-このストレージ形式は、複合[キー](../keys-and-fields.md#dictionary-key-and-fields)を持つ Dictionary 向けです。`hashed` と同様です。
+このストレージ形式は、複合[キー](../attributes.md#composite-key)を持つ Dictionary 向けです。`hashed` と同様です。
 
 設定例：
 
@@ -157,7 +157,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 
 ## complex_key_sparse_hashed \{#complex_key_sparse_hashed\}
 
-このストレージは、複合[キー](../keys-and-fields.md#dictionary-key-and-fields)向けに使用します。[sparse_hashed](#sparse_hashed)と類似しています。
+このストレージは、複合[キー](../attributes.md#composite-key)向けに使用します。[sparse_hashed](#sparse_hashed)と類似しています。
 
 構成例:
 

@@ -30,19 +30,19 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 하드웨어 규모 외에도 ClickHouse의 데이터 insert 메커니즘(단일 노드)의 성능과 리소스 사용량에는 **insert 블록 크기(insert block size)**와 **insert 병렬성(insert parallelism)** 두 가지 주요 요인이 영향을 미칩니다.
 
-### Insert block size \{#insert-block-size\}
+### 삽입 블록 크기 \{#insert-block-size\}
 
-<Image img={InsertMechanics} size="lg" border alt="ClickHouse에서 Insert 블록 크기 동작 방식" />
+<Image img={InsertMechanics} size="lg" border alt="ClickHouse의 삽입 블록 크기 동작 방식" />
 
-`INSERT INTO SELECT`를 수행하면, ClickHouse는 일부 데이터를 수신하고, 수신된 데이터로부터 ① (각 [파티셔닝 키(partitioning key)](/engines/table-engines/mergetree-family/custom-partitioning-key)마다) 최소 하나의 메모리 상의 insert 블록을 생성합니다. 블록의 데이터는 정렬되며, 테이블 엔진별 최적화가 적용됩니다. 이후 데이터는 압축되어 새로운 데이터 파트 형태로 ② 데이터베이스 스토리지에 기록됩니다.
+`INSERT INTO SELECT`를 수행하면 ClickHouse는 일부 데이터 조각을 받아서, 수신된 데이터로부터 ① (각 [파티셔닝 키](/engines/table-engines/mergetree-family/custom-partitioning-key)마다) 메모리 내 삽입 블록을 최소 하나 생성합니다. 블록의 데이터는 정렬되며, 테이블 엔진별 최적화가 적용됩니다. 그런 다음 데이터는 압축되어 새로운 데이터 파트 형태로 ② 데이터베이스 스토리지에 기록됩니다.
 
-insert 블록 크기는 ClickHouse 서버의 [디스크 파일 I/O 사용량](https://en.wikipedia.org/wiki/Category:Disk_file_systems)과 메모리 사용량 모두에 영향을 줍니다. 더 큰 insert 블록은 더 많은 메모리를 사용하지만 더 크고 수가 적은 초기 파트를 생성합니다. ClickHouse가 대량의 데이터를 로드하기 위해 생성해야 하는 파트 수가 적을수록, 필요한 디스크 파일 I/O와 자동 [백그라운드 머지 작업](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)량도 줄어듭니다.
+삽입 블록 크기는 ClickHouse 서버의 [디스크 파일 I/O 사용량](https://en.wikipedia.org/wiki/Category:Disk_file_systems)과 메모리 사용량 모두에 영향을 줍니다. 더 큰 삽입 블록은 더 많은 메모리를 사용하지만, 더 크고 수가 더 적은 초기 파트를 생성합니다. ClickHouse가 대량의 데이터를 적재하기 위해 생성해야 하는 파트 수가 적을수록, 필요한 디스크 파일 I/O와 자동 [백그라운드 병합](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)도 줄어듭니다.
 
-통합 테이블 엔진 또는 테이블 함수와 함께 `INSERT INTO SELECT` 쿼리를 사용하는 경우, 데이터는 ClickHouse 서버에서 가져옵니다:
+통합 테이블 엔진 또는 테이블 함수와 함께 `INSERT INTO SELECT` 쿼리를 사용하는 경우, 데이터는 ClickHouse 서버가 가져옵니다: 
 
-<Image img={Pull} size="lg" border alt="ClickHouse에서 외부 소스에서 데이터를 가져오는 방식" />
+<Image img={Pull} size="lg" border alt="ClickHouse에서 외부 소스로부터 데이터를 가져오기" />
 
-데이터가 완전히 로드될 때까지 서버는 다음과 같은 루프를 반복 실행합니다:
+데이터가 완전히 적재될 때까지 서버는 다음 루프를 실행합니다:
 
 ```bash
 ① Pull and parse the next portion of data and form an in-memory data block (one per partitioning key) from it.
@@ -54,13 +54,12 @@ Go to ①
 
 ①에서 크기는 삽입 블록 크기에 따라 달라지며, 이는 두 가지 설정으로 제어할 수 있습니다:
 
-* [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (기본값: `1048545` million 행)
-* [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (기본값: `256 MiB`)
+- [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (기본값: `1048545`행)
+- [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (기본값: `256 MiB`)
 
-지정된 행 수가 삽입 블록에 모이거나 구성된 데이터 양에 도달하면(둘 중 먼저 충족되는 조건), 이 블록을 새로운 파트에 기록하는 작업이 트리거됩니다. 이후 삽입 루프는 ①단계로 돌아가 계속 진행됩니다.
+삽입 블록에 지정된 행 수가 모이거나, 설정된 데이터 양에 도달하면(둘 중 먼저 발생하는 조건) 블록이 새로운 파트에 기록되도록 트리거됩니다. 그런 다음 삽입 루프는 ① 단계로 계속 진행됩니다.
 
-`min_insert_block_size_bytes` 값은 압축되지 않은 메모리 상의 블록 크기를 의미하며(디스크에 저장되는 압축된 파트 크기가 아님), 또한 ClickHouse가 데이터를 행-[블록](/operations/settings/settings#max_block_size) 단위로 스트리밍하고 [처리](https://clickhouse.com/company/events/query-performance-introspection)하기 때문에, 생성되는 블록과 파트가 구성된 행 수나 바이트 수와 정확히 일치하는 경우는 드뭅니다. 따라서 이러한 설정은 최소 임계값을 지정하는 역할을 합니다.
-
+`min_insert_block_size_bytes` 값은 압축되지 않은 메모리 내 블록 크기를 의미하며(디스크상의 압축된 파트 크기가 아님), ClickHouse는 데이터를 행-[블록](/operations/settings/settings#max_block_size) 단위로 스트리밍하고 [처리](https://clickhouse.com/company/events/query-performance-introspection)하므로 생성된 블록과 파트에는 설정된 행 수나 바이트 수가 정확히 들어맞는 경우가 드뭅니다. 따라서 이러한 설정은 최소 임곗값을 지정합니다.
 
 #### 병합에 유의하십시오 \{#be-aware-of-merges\}
 

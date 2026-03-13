@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeighted \{#quantileExactWeighted\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を、各要素の重みを考慮して正確に計算します。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 このため、渡された値が頻繁に繰り返される場合、この関数は [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) よりも少ないRAMを消費します。
 この関数を `quantileExact` の代わりに使用し、重みを 1 に指定できます。
 
-1 つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率になります）。
+1 つのクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来よりも非効率になります) 。
 このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 **構文**

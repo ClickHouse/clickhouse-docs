@@ -26,7 +26,7 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 ## CRC32 \{#CRC32\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 CRC-32-IEEE 802.3 다항식과 초기값 `0xffffffff`(zlib 구현)을 사용하여 문자열의 CRC32 체크섬을 계산합니다.
 
@@ -60,7 +60,7 @@ SELECT CRC32('ClickHouse')
 
 ## CRC32IEEE \{#CRC32IEEE\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 CRC-32-IEEE 802.3 다항식을 사용하여 문자열의 CRC32 체크섬(checksum)을 계산합니다.
 
@@ -94,7 +94,7 @@ SELECT CRC32IEEE('ClickHouse');
 
 ## CRC64 \{#CRC64\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 CRC-64-ECMA 다항식을 사용해 문자열의 CRC64 체크섬을 계산합니다.
 
@@ -128,7 +128,7 @@ SELECT CRC64('ClickHouse');
 
 ## appendTrailingCharIfAbsent \{#appendTrailingCharIfAbsent\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열 `s`가 비어 있지 않고 문자 `c`로 끝나지 않으면, 문자열 `s`의 끝에 문자 `c`를 추가합니다.
 
@@ -163,7 +163,7 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 
 ## ascii \{#ascii\}
 
-도입된 버전: v22.11
+도입된 버전: v22.11.0
 
 문자열 `s`의 첫 번째 문자에 대한 ASCII 코드 포인트를 `Int32`로 반환합니다.
 
@@ -197,7 +197,7 @@ SELECT ascii('234')
 
 ## base32Decode \{#base32Decode\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648)로 인코딩된 문자열을 디코딩합니다.
 문자열이 올바른 Base32 인코딩이 아니면 예외가 발생합니다.
@@ -232,7 +232,7 @@ SELECT base32Decode('IVXGG33EMVSA====');
 
 ## base32Encode \{#base32Encode\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 문자열을 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)로 인코딩합니다.
 
@@ -266,7 +266,7 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-도입 버전: v22.7
+도입 버전: v22.7.0
 
 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3)로 인코딩된 문자열을 디코딩합니다.
 문자열이 유효한 Base58 인코딩 형식이 아니면 예외가 발생합니다.
@@ -301,7 +301,7 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 
 ## base58Encode \{#base58Encode\}
 
-도입 버전: v22.7
+도입 버전: v22.7.0
 
 문자열을 [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) 방식으로 인코딩합니다.
 
@@ -335,7 +335,7 @@ SELECT base58Encode('ClickHouse');
 
 ## base64Decode \{#base64Decode\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 [RFC 4648](https://en.wikipedia.org/wiki/Base64)에 따라 [Base64](https://en.wikipedia.org/wiki/Base64) 표현으로 인코딩된 문자열을 디코딩합니다.
 오류가 발생하면 예외를 던집니다.
@@ -372,7 +372,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 
 ## base64Encode \{#base64Encode\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 RFC 4648에 따라 문자열을 [Base64](https://en.wikipedia.org/wiki/Base64) 표현으로 인코딩합니다.
 
@@ -408,7 +408,7 @@ SELECT base64Encode('clickhouse')
 
 ## base64URLDecode \{#base64URLDecode\}
 
-도입 버전: v24.6
+도입 버전: v24.6.0
 
 RFC 4648에 따라 URL-안전(URL-safe) 알파벳을 사용하는 [Base64](https://en.wikipedia.org/wiki/Base64) 표현에서 문자열을 디코딩합니다.
 오류가 발생하면 예외를 발생시킵니다.
@@ -443,7 +443,7 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## base64URLEncode \{#base64URLEncode\}
 
-도입 버전: v18.16
+도입 버전: v18.16.0
 
 URL-안전한 알파벳을 사용하는 [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) 표현으로 문자열을 인코딩합니다.
 
@@ -477,7 +477,7 @@ SELECT base64URLEncode('https://clickhouse.com')
 
 ## basename \{#basename\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 문자열에서 마지막 슬래시 또는 백슬래시 이후의 부분을 추출합니다.
 이 FUNCTION은 경로에서 파일 이름을 추출하는 데 자주 사용됩니다.
@@ -522,7 +522,7 @@ SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────────┘
 ```
 
-**경로 구분 기호가 없는 문자열**
+**경로 구분자가 없는 문자열**
 
 ```sql title=Query
 SELECT 'some-file-name' AS a, basename(a)
@@ -536,7 +536,7 @@ SELECT 'some-file-name' AS a, basename(a)
 
 ## byteHammingDistance \{#byteHammingDistance\}
 
-도입된 버전: v23.9
+도입된 버전: v23.9.0
 
 두 바이트 문자열 간의 [해밍 거리](https://en.wikipedia.org/wiki/Hamming_distance)를 계산합니다.
 
@@ -573,7 +573,7 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 
 ## compareSubstrings \{#compareSubstrings\}
 
-도입 버전: v25.2
+도입 버전: v25.2.0
 
 두 문자열을 사전식으로 비교합니다.
 
@@ -616,7 +616,7 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 
 ## concat \{#concat\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 인자를 이어 붙입니다.
 
@@ -665,7 +665,7 @@ SELECT concat(42, 144)
 
 ## concatAssumeInjective \{#concatAssumeInjective\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`concat`](#concat)과 비슷하지만, `concat(s1, s2, ...) → sn`이 단사(injective)라고 가정합니다.
 즉, 서로 다른 인자에 대해 서로 다른 결과를 반환합니다.
@@ -704,7 +704,7 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 
 ## concatWithSeparator \{#concatWithSeparator\}
 
-도입 버전: v22.12
+도입 버전: v22.12.0
 
 지정된 구분자를 사이에 두고 제공된 문자열들을 연결합니다.
 
@@ -741,7 +741,7 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 
 ## concatWithSeparatorAssumeInjective \{#concatWithSeparatorAssumeInjective\}
 
-도입 버전: v22.12
+도입 버전: v22.12.0
 
 [`concatWithSeparator`](#concatWithSeparator)와 유사하지만 `concatWithSeparator(sep[,exp1, exp2, ... ]) → result`가 단사 함수라고 가정합니다.
 함수가 서로 다른 인수에 대해 서로 다른 결과를 반환하면 단사 함수라고 합니다.
@@ -800,7 +800,7 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 서로 다른 진법 간에 숫자를 변환합니다.
 
@@ -867,7 +867,7 @@ SELECT conv('1010', 2, 8)
 
 ## convertCharset \{#convertCharset\}
 
-도입: v1.1
+도입: v1.1.0
 
 인코딩 `from`에서 인코딩 `to`로 문자열 `s`를 변환하여 반환합니다.
 
@@ -903,7 +903,7 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 
 ## damerauLevenshteinDistance \{#damerauLevenshteinDistance\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 두 바이트 문자열 간의 [Damerau-Levenshtein 거리](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)를 계산합니다.
 
@@ -938,7 +938,7 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 
 ## decodeHTMLComponent \{#decodeHTMLComponent\}
 
-도입 버전: v23.9
+도입 버전: v23.9.0
 
 문자열에 포함된 HTML 엔티티를 해당 문자로 디코딩합니다.
 
@@ -972,7 +972,7 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 
 ## decodeXMLComponent \{#decodeXMLComponent\}
 
-도입 버전: v21.2
+도입 버전: v21.2.0
 
 문자열에 포함된 XML 엔티티를 대응하는 문자로 디코딩합니다.
 
@@ -984,7 +984,7 @@ decodeXMLComponent(s)
 
 **인수**
 
-* `s` — 디코딩할 XML 엔터티를 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `s` — 디코딩할 XML 엔티티를 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
 
 **반환값**
 
@@ -1006,7 +1006,7 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 
 ## editDistance \{#editDistance\}
 
-도입된 버전: v23.9
+도입된 버전: v23.9.0
 
 두 개의 바이트 문자열 사이의 [편집 거리](https://en.wikipedia.org/wiki/Edit_distance)를 계산합니다.
 
@@ -1043,7 +1043,7 @@ SELECT editDistance('clickhouse', 'mouse')
 
 ## editDistanceUTF8 \{#editDistanceUTF8\}
 
-도입 버전: v24.6
+도입 버전: v24.6.0
 
 두 개의 UTF8 문자열 간 [편집 거리](https://en.wikipedia.org/wiki/Edit_distance)를 계산합니다.
 
@@ -1080,7 +1080,7 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 
 ## encodeXMLComponent \{#encodeXMLComponent\}
 
-도입된 버전: v21.1
+도입된 버전: v21.1.0
 
 문자열을 XML 텍스트 노드나 속성에 사용할 수 있도록 문자를 이스케이프합니다.
 
@@ -1116,7 +1116,7 @@ SELECT
 
 ## endsWith \{#endsWith\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 문자열이 지정된 접미사로 끝나는지 여부를 확인합니다.
 
@@ -1151,7 +1151,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-도입 버전: v25.9
+도입 버전: v25.9.0
 
 문자열이 주어진 접미사로 끝나는지 대소문자를 구분하지 않고 확인합니다.
 
@@ -1186,7 +1186,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-도입 버전: v25.9
+도입 버전: v25.9.0
 
 문자열 `s`가 대소문자를 구분하지 않고 `suffix`로 끝나는지 여부를 반환합니다.
 문자열이 올바른 UTF-8로 인코딩된 텍스트를 포함한다고 가정합니다.
@@ -1223,7 +1223,7 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
-도입된 버전: v23.8
+도입된 버전: v23.8.0
 
 문자열 `s`가 `suffix`로 끝나는지 여부를 반환합니다.
 문자열에 유효한 UTF-8로 인코딩된 텍스트가 포함되어 있다고 가정합니다.
@@ -1260,7 +1260,7 @@ SELECT endsWithUTF8('данных', 'ых');
 
 ## extractTextFromHTML \{#extractTextFromHTML\}
 
-도입: v21.3
+도입: v21.3.0
 
 HTML 또는 XHTML에서 텍스트 콘텐츠를 추출합니다.
 
@@ -1313,7 +1313,7 @@ SELECT extractTextFromHTML('
 
 ## firstLine \{#firstLine\}
 
-도입: v23.7
+도입: v23.7.0
 
 여러 줄로 이루어진 문자열의 첫 번째 줄을 반환합니다.
 
@@ -1347,7 +1347,7 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 ## idnaDecode \{#idnaDecode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 도메인 이름을 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 메커니즘에 따라 ToUnicode 알고리즘을 사용한 Unicode(UTF-8) 표현으로 반환합니다.
 오류가 발생하는 경우(예: 입력이 유효하지 않은 경우) 입력 문자열을 그대로 반환합니다.
@@ -1383,7 +1383,7 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 ## idnaEncode \{#idnaEncode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 도메인 이름에 대해 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 메커니즘에 따른 ASCII 표현(ToASCII 알고리즘)을 반환합니다.
 입력 문자열은 UTF-8로 인코딩되어 있어야 하며 ASCII 문자열로 변환 가능해야 합니다. 그렇지 않으면 예외가 발생합니다.
@@ -1422,7 +1422,7 @@ SELECT idnaEncode('straße.münchen.de')
 
 ## initcap \{#initcap\}
 
-도입된 버전: v23.7
+도입된 버전: v23.7.0
 
 각 단어의 첫 글자는 대문자로, 나머지는 소문자로 변환합니다.
 단어는 영숫자 문자로 이루어진 연속된 문자열이며, 비영숫자 문자로 구분됩니다.
@@ -1460,7 +1460,7 @@ SELECT initcap('building for fast')
 └──────────────────────────────┘
 ```
 
-**작은따옴표나 대문자가 포함된 단어에 대한 알려진 동작 예**
+**아포스트로피나 대문자가 포함된 단어에 대한 알려진 동작 예시**
 
 ```sql title=Query
 SELECT initcap('John''s cat won''t eat.');
@@ -1474,7 +1474,7 @@ SELECT initcap('John''s cat won''t eat.');
 
 ## initcapUTF8 \{#initcapUTF8\}
 
-도입된 버전: v23.7
+도입된 버전: v23.7.0
 
 [`initcap`](#initcap)과 같이, `initcapUTF8`은 각 단어의 첫 글자를 대문자로, 나머지를 소문자로 변환합니다.
 문자열에 유효한 UTF-8로 인코딩된 텍스트가 포함되어 있다고 가정합니다.
@@ -1486,6 +1486,26 @@ SELECT initcap('John''s cat won''t eat.');
 :::
 
 **구문**
+
+initcapUTF8(s)
+
+**인수**
+
+`s` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string)
+
+**반환값**
+
+각 단어의 첫 글자를 대문자로 변환한 `s`를 반환합니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**사용 예시**
+
+SELECT initcapUTF8(&#39;не тормозит&#39;)
+
+┌─initcapUTF8(&#39;не тормозит&#39;)─┐
+│ Не Тормозит                │
+└────────────────────────────┘
 
 ```sql
 initcapUTF8(s)
@@ -1515,13 +1535,14 @@ SELECT initcapUTF8('не тормозит')
 
 ## isValidASCII \{#isValidASCII\}
 
-도입된 버전: v25.9
+도입된 버전: v25.9.0
 
 입력 `String` 또는 `FixedString`이 ASCII 바이트(0x00–0x7F)만 포함하면 1을, 그렇지 않으면 0을 반환합니다. 입력이 유효한 ASCII인 경우에 최적화되어 있습니다.
 
 **구문**
 
 ```sql
+isValidASCII(str)
 ```
 
 **별칭**: `isASCII`
@@ -1545,7 +1566,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ## isValidUTF8 \{#isValidUTF8\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 바이트 시퀀스가 유효한 UTF-8 인코딩 텍스트인지 확인합니다.
 
@@ -1579,7 +1600,7 @@ SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
 
 ## jaroSimilarity \{#jaroSimilarity\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 두 바이트 문자열 간의 [Jaro similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity)를 계산합니다.
 
@@ -1614,7 +1635,7 @@ SELECT jaroSimilarity('clickhouse', 'click')
 
 ## jaroWinklerSimilarity \{#jaroWinklerSimilarity\}
 
-도입된 버전: v24.1
+도입된 버전: v24.1.0
 
 두 바이트 문자열 간의 [Jaro-Winkler 유사도](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)를 계산합니다.
 
@@ -1649,7 +1670,7 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 
 ## left \{#left\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 문자열 `s`의 왼쪽에서부터 지정한 `offset` 길이의 부분 문자열을 반환합니다.
 
@@ -1697,7 +1718,7 @@ Hello
 
 ## leftPad \{#leftPad\}
 
-도입된 버전: v21.8
+도입된 버전: v21.8.0
 
 문자열의 왼쪽을 공백 또는 지정한 문자열(필요하다면 여러 번 반복)로 채워, 결과 문자열의 길이가 지정된 `length`에 도달할 때까지 패딩합니다.
 
@@ -1735,7 +1756,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 ## leftPadUTF8 \{#leftPadUTF8\}
 
-도입: v21.8
+도입: v21.8.0
 
 UTF8 문자열의 왼쪽을 공백 또는 지정된 문자열(필요하다면 여러 번 반복)로 채워, 결과 문자열이 지정한 길이에 도달할 때까지 패딩합니다.
 문자열 길이를 바이트 단위로 측정하는 [`leftPad`](#leftPad)와 달리, 여기서는 문자열 길이를 코드 포인트 기준으로 측정합니다.
@@ -1772,7 +1793,7 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 
 ## leftUTF8 \{#leftUTF8\}
 
-도입 버전: v22.1
+도입 버전: v22.1.0
 
 UTF-8로 인코딩된 문자열 `s`에서 왼쪽에서부터 지정된 `offset`에서 시작하는 부분 문자열을 반환합니다.
 
@@ -1820,7 +1841,7 @@ SELECT leftUTF8('Привет', -4)
 
 ## lengthUTF8 \{#lengthUTF8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열의 길이를 바이트나 문자 수가 아니라 Unicode 코드 포인트 수로 반환합니다.
 문자열이 유효한 UTF-8 인코딩 텍스트라고 가정합니다.
@@ -1858,7 +1879,7 @@ SELECT lengthUTF8('Здравствуй, мир!')
 
 ## lower \{#lower\}
 
-도입: v1.1
+도입: v1.1.0
 
 ASCII 문자열을 소문자로 변환합니다.
 
@@ -1894,7 +1915,7 @@ SELECT lower('CLICKHOUSE')
 
 ## lowerUTF8 \{#lowerUTF8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열이 올바른 UTF-8 인코딩 텍스트라고 가정하고, 문자열을 소문자로 변환합니다. 이 가정이 충족되지 않더라도 예외는 발생하지 않으며 결과는 정의되지 않습니다.
 
@@ -1926,7 +1947,7 @@ münchen
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [NFC 정규화 형식](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)에 따라 UTF-8 문자열을 정규화합니다.
 
@@ -1964,7 +1985,7 @@ length(nfc_normalized);
 
 ## normalizeUTF8NFD \{#normalizeUTF8NFD\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 UTF-8 문자열을 [NFD 정규화 형식](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)에 따라 정규화합니다.
 
@@ -2002,7 +2023,7 @@ SELECT
 
 ## normalizeUTF8NFKC \{#normalizeUTF8NFKC\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [NFKC 정규화 형식](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)에 따라 UTF-8 문자열을 정규화합니다.
 
@@ -2038,7 +2059,7 @@ SELECT
 
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 [NFKD 정규화 형식](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)에 따라 UTF-8 문자열을 정규화합니다.
 
@@ -2074,7 +2095,7 @@ SELECT
 
 ## punycodeDecode \{#punycodeDecode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 [Punycode](https://en.wikipedia.org/wiki/Punycode)로 인코딩된 문자열을 UTF-8로 인코딩된 일반 텍스트로 디코딩하여 반환합니다.
 유효한 Punycode 인코딩 문자열이 제공되지 않으면 예외가 발생합니다.
@@ -2109,7 +2130,7 @@ SELECT punycodeDecode('Mnchen-3ya')
 
 ## punycodeEncode \{#punycodeEncode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 문자열의 [Punycode](https://en.wikipedia.org/wiki/Punycode) 표현을 반환합니다.
 문자열은 UTF-8로 인코딩되어 있어야 하며, 그렇지 않은 경우 동작이 정의되지 않습니다.
@@ -2144,7 +2165,7 @@ SELECT punycodeEncode('München')
 
 ## regexpExtract \{#regexpExtract\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 `haystack`에서 정규식 패턴과 일치하며 지정된 정규식 그룹 인덱스에 해당하는 첫 번째 문자열을 추출합니다.
 
@@ -2186,7 +2207,7 @@ SELECT
 
 ## repeat \{#repeat\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 지정된 횟수만큼 문자열을 반복하여 이어 붙입니다.
 
@@ -2221,7 +2242,7 @@ SELECT repeat('abc', 10)
 
 ## reverseUTF8 \{#reverseUTF8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열에서 유니코드 코드 포인트 시퀀스를 역순으로 뒤집습니다.
 문자열에 유효한 UTF-8 인코딩 텍스트가 포함되어 있다고 가정합니다.
@@ -2255,7 +2276,7 @@ esuoHkcilC
 
 ## right \{#right\}
 
-도입된 버전: v22.1
+도입된 버전: v22.1.0
 
 문자열 `s`의 오른쪽 끝에서부터 지정된 `offset`을 기준으로 한 부분 문자열을 반환합니다.
 
@@ -2303,7 +2324,7 @@ lo
 
 ## rightPad \{#rightPad\}
 
-도입된 버전: v21.8
+도입된 버전: v21.8.0
 
 문자열의 오른쪽 끝을 공백 또는 지정한 문자열(필요하면 여러 번 반복)로 채워, 결과 문자열의 길이가 지정된 `length`에 도달할 때까지 패딩합니다.
 
@@ -2341,7 +2362,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 ## rightPadUTF8 \{#rightPadUTF8\}
 
-도입된 버전: v21.8
+도입된 버전: v21.8.0
 
 문자열을 오른쪽에서부터 공백 또는 지정된 문자열(필요하면 여러 번 반복)을 사용해 채워, 결과 문자열이 지정된 길이에 도달할 때까지 패딩합니다.
 문자열 길이를 바이트 단위로 측정하는 [`rightPad`](#rightPad)와 달리, 여기서는 문자열 길이를 코드 포인트 단위로 측정합니다.
@@ -2378,7 +2399,7 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 
 ## rightUTF8 \{#rightUTF8\}
 
-도입된 버전: v22.1
+도입된 버전: v22.1.0
 
 UTF-8로 인코딩된 문자열 `s`에서 오른쪽 끝에서 `offset`만큼 떨어진 위치부터 시작하는 부분 문자열을 반환합니다.
 
@@ -2426,7 +2447,7 @@ SELECT rightUTF8('Привет', -4)
 
 ## soundex \{#soundex\}
 
-도입된 버전: v23.4
+도입된 버전: v23.4.0
 
 문자열의 [Soundex code](https://en.wikipedia.org/wiki/Soundex)를 반환합니다.
 
@@ -2460,7 +2481,7 @@ SELECT soundex('aksel')
 
 ## space \{#space\}
 
-도입 버전: v23.5
+도입 버전: v23.5.0
 
 지정된 횟수만큼 공백(` `) 문자를 이어 붙입니다.
 
@@ -2494,7 +2515,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 주어진 문자열에서 최소 길이가 `n`인 모든 부분 문자열을 찾습니다.
 이때 해당 부분 문자열 양 끝 경계에 있는 (n-1)-그램의 해시 값이
@@ -2534,7 +2555,7 @@ SELECT sparseGrams('alice', 3)
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 주어진 문자열에서 길이가 최소 `n`인 모든 부분 문자열 중에서,
 부분 문자열 경계에 있는 (n-1)-그램의 해시가
@@ -2574,7 +2595,7 @@ SELECT sparseGramsHashes('alice', 3)
 
 ## sparseGramsHashesUTF8 \{#sparseGramsHashesUTF8\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 주어진 UTF-8 문자열에서 길이가 최소 `n` 이상인 모든 부분 문자열의 해시를 찾습니다. 이때 부분 문자열의 경계에 있는 (n-1)-그램의 해시는 부분 문자열 내부에 있는 어떤 (n-1)-그램의 해시보다도 반드시 커야 합니다.
 입력으로 UTF-8 문자열을 받으며, 잘못된 UTF-8 시퀀스가 들어오면 예외를 발생시킵니다.
@@ -2613,7 +2634,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 ## sparseGramsUTF8 \{#sparseGramsUTF8\}
 
-도입 버전: v25.5
+도입 버전: v25.5.0
 
 주어진 UTF-8 문자열에서 길이가 최소 `n` 이상인 모든 부분 문자열을 찾습니다. 이때 부분 문자열의 양 끝에 있는 (n-1)-gram의 해시 값이, 그 부분 문자열 내부에 있는 모든 (n-1)-gram의 해시 값보다 엄격히 커야 합니다.
 입력으로 UTF-8 문자열을 받으며, 잘못된 UTF-8 시퀀스가 포함된 경우 예외를 발생시킵니다.
@@ -2652,7 +2673,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 
 ## startsWith \{#startsWith\}
 
-도입됨: v1.1
+도입됨: v1.1.0
 
 문자열이 지정한 문자열로 시작하는지 확인합니다.
 
@@ -2687,7 +2708,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-도입 버전: v25.9
+도입 버전: v25.9.0
 
 문자열이 대소문자를 구분하지 않고 지정된 문자열로 시작하는지 확인합니다.
 
@@ -2722,7 +2743,7 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-도입된 버전: v25.9
+도입된 버전: v25.9.0
 
 문자열이 대소문자를 구분하지 않는 지정된 접두사로 시작하는지 확인합니다.
 문자열이 유효한 UTF-8 인코딩 텍스트를 포함한다고 가정합니다.
@@ -2759,7 +2780,7 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
-도입: v23.8
+도입: v23.8.0
 
 문자열이 지정된 접두사로 시작하는지 확인합니다.
 문자열이 유효한 UTF-8로 인코딩된 텍스트라고 가정합니다.
@@ -2796,7 +2817,7 @@ SELECT startsWithUTF8('приставка', 'при')
 
 ## stringBytesEntropy \{#stringBytesEntropy\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 문자열의 바이트 분포에 대한 Shannon 엔트로피를 계산합니다.
 
@@ -2830,7 +2851,7 @@ SELECT stringBytesEntropy('Hello, world!')
 
 ## stringBytesUniq \{#stringBytesUniq\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 문자열에서 서로 다른 바이트 수를 계산합니다.
 
@@ -2864,7 +2885,7 @@ SELECT stringBytesUniq('Hello')
 
 ## stringJaccardIndex \{#stringJaccardIndex\}
 
-도입된 버전: v23.11
+도입된 버전: v23.11.0
 
 두 바이트 문자열 간의 [Jaccard similarity index](https://en.wikipedia.org/wiki/Jaccard_index)를 계산합니다.
 
@@ -2899,7 +2920,7 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 
 ## stringJaccardIndexUTF8 \{#stringJaccardIndexUTF8\}
 
-도입된 버전: v23.11
+도입된 버전: v23.11.0
 
 [`stringJaccardIndex`](#stringJaccardIndex)와 유사하지만 UTF-8로 인코딩된 문자열에 대해 동작합니다.
 
@@ -2934,7 +2955,7 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 
 ## substring \{#substring\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열 `s`에서 지정된 바이트 인덱스 `offset`부터 시작하는 부분 문자열을 반환합니다.
 바이트 수는 1부터 세기 시작하며, 다음과 같은 규칙을 따릅니다.
@@ -2978,7 +2999,7 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 
 ## substringIndex \{#substringIndex\}
 
-도입 버전: v23.7
+도입 버전: v23.7.0
 
 Spark 또는 MySQL에서와 같이, 구분자 `delim`이 `count`번 나타나기 전까지의 `s`의 부분 문자열을 반환합니다.
 
@@ -3016,7 +3037,7 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 
 ## substringIndexUTF8 \{#substringIndexUTF8\}
 
-도입된 버전: v23.7
+도입된 버전: v23.7.0
 
 구분자 `delim`이 `count`번 등장하기 전까지의 `s` 부분 문자열을, 유니코드 코드 포인트 기준으로 반환합니다.
 문자열에 유효한 UTF-8로 인코딩된 텍스트가 포함되어 있다고 가정합니다.
@@ -3052,7 +3073,7 @@ www.straßen-in-europa
 
 ## substringUTF8 \{#substringUTF8\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 문자열 `s`에서 지정된 코드 포인트 인덱스 `offset`에서 시작하는 부분 문자열을 반환합니다.
 코드 포인트는 다음 규칙에 따라 `1`부터 셉니다:
@@ -3097,12 +3118,33 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 
 ## toValidUTF8 \{#toValidUTF8\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
-문자열에서 잘못된 UTF-8 문자를 대체 문자 `�`(U+FFFD)로 치환하여, 유효한 UTF-8 인코딩의 문자열로 변환합니다.
+문자열에서 잘못된 UTF-8 문자를 대체 문자 `�` (U+FFFD)로 치환하여, 유효한 UTF-8 인코딩의 문자열로 변환합니다.
 여러 개의 연속된 잘못된 문자는 대체 문자 하나로 축약됩니다.
 
 **구문**
+
+toValidUTF8(s)
+
+**인수**
+
+s — String 데이터 타입의 객체로 표현되는 임의의 바이트 집합. String
+
+**반환값**
+
+유효한 UTF-8 문자열을 반환합니다. String
+
+**예시**
+
+사용 예시
+
+SELECT toValidUTF8(&#39;\x61\xF0\x80\x80\x80b&#39;)
+
+c
+┌─toValidUTF8(&#39;a����b&#39;)─┐
+│ a�b                   │
+└───────────────────────┘
 
 ```sql
 toValidUTF8(s)
@@ -3133,7 +3175,7 @@ c
 
 ## trimBoth \{#trimBoth\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 문자열의 시작과 끝에서 지정된 문자를 제거합니다.
 기본적으로 일반적인 공백(ASCII) 문자를 제거합니다.
@@ -3171,7 +3213,7 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 
 ## trimLeft \{#trimLeft\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 문자열 시작 부분에서 지정된 문자를 제거합니다.
 기본적으로 일반적인 ASCII 공백 문자를 제거합니다.
@@ -3184,7 +3226,7 @@ trimLeft(input[, trim_characters])
 
 **별칭**: `ltrim`
 
-**인수**
+**इन수**
 
 * `input` — 문자를 제거할 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `trim_characters` — 선택 사항입니다. 제거할 문자입니다. 지정하지 않으면 일반 공백 문자가 제거됩니다. [`String`](/sql-reference/data-types/string)
@@ -3209,7 +3251,7 @@ SELECT trimLeft('ClickHouse', 'Click');
 
 ## trimRight \{#trimRight\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 문자열 끝에서 지정된 문자를 제거합니다.
 기본적으로 일반적인 공백(ASCII) 문자를 제거합니다.
@@ -3247,7 +3289,7 @@ SELECT trimRight('ClickHouse','House');
 
 ## tryBase32Decode \{#tryBase32Decode\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 문자열을 입력으로 받아 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 인코딩 방식으로 디코딩합니다.
 
@@ -3281,7 +3323,7 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 [`base58Decode`](#base58Decode)와 유사하지만 오류 발생 시 빈 문자열을 반환합니다.
 
@@ -3315,7 +3357,7 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 
 ## tryBase64Decode \{#tryBase64Decode\}
 
-도입 버전: v18.16
+도입 버전: v18.16.0
 
 [`base64Decode`](#base64Decode)와 같지만, 오류가 발생하면 빈 문자열을 반환합니다.
 
@@ -3349,7 +3391,7 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 
 ## tryBase64URLDecode \{#tryBase64URLDecode\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 [`base64URLDecode`](#base64URLDecode)와 유사하지만, 오류가 발생하면 빈 문자열을 반환합니다.
 
@@ -3383,7 +3425,7 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## tryIdnaEncode \{#tryIdnaEncode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) 메커니즘에 따라 도메인 이름을 Unicode(UTF-8) 표현(ToUnicode 알고리즘)으로 변환하여 반환합니다.
 오류가 발생하는 경우 예외를 던지는 대신 빈 문자열을 반환합니다.
@@ -3418,7 +3460,7 @@ SELECT tryIdnaEncode('straße.münchen.de')
 
 ## tryPunycodeDecode \{#tryPunycodeDecode\}
 
-도입 버전: v24.1
+도입 버전: v24.1.0
 
 `punycodeDecode`와 같지만, 유효한 Punycode로 인코딩된 문자열이 제공되지 않은 경우 빈 문자열을 반환합니다.
 
@@ -3452,7 +3494,7 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 
 ## upper \{#upper\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열에 포함된 ASCII 라틴 문자를 대문자로 변환합니다.
 
@@ -3488,7 +3530,7 @@ SELECT upper('clickhouse')
 
 ## upperUTF8 \{#upperUTF8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 문자열이 올바른 UTF-8로 인코딩된 텍스트라고 가정하고, 문자열을 대문자로 변환합니다.
 이 가정이 위배되더라도 예외는 발생하지 않으며, 결과는 정의되지 않습니다.

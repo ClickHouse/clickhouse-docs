@@ -3746,6 +3746,61 @@
       "source": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hippa-services",
       "destination": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hipaa-services",
       "permanent": true
+    },
+    {
+      "source": "/docs/operations/compression_codecs",
+      "destination": "/docs/sql-reference/statements/create/table#column_compression_codec",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/server-configuration-parameters/users",
+      "destination": "/docs/operations/settings/settings-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/performance",
+      "destination": "/docs/operations/optimizing-performance/sampling-query-profiler",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/access-rights/users",
+      "destination": "/docs/operations/access-rights",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/settings/settings_users",
+      "destination": "/docs/operations/settings/settings-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/resource-management/resource_pools",
+      "destination": "/docs/operations/workload-scheduling",
+      "permanent": true
+    },
+    {
+      "source": "/docs/whats-new",
+      "destination": "/docs/whats-new/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/whats-new/TODO",
+      "destination": "/docs/whats-new/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/byoc/faq/:path*",
+      "destination": "/docs/cloud/reference/byoc/reference/faq",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-quotas-and-query-complexity",
+      "destination": "/docs/knowledgebase/about-quotas-and-query-complexity",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/dbt/materialized-views",
+      "destination": "/docs/integrations/dbt/materialization-materialized-view",
+      "permanent": true
     }
   ]
 }

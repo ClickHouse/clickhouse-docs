@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactExclusive \{#quantileExactExclusive\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と同様に、数値データ列の厳密な [分位数](https://en.wikipedia.org/wiki/Quantile) を計算します。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 厳密な値を取得するために、渡されたすべての値は配列にまとめられ、その配列が完全にソートされます。
 ソートアルゴリズムの計算量は `O(N·log(N))` であり、ここで `N = std::distance(first, last)` 回の比較が行われます。
 
-クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来よりも非効率に動作します）。
+クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、クエリは本来よりも非効率に動作します) 。
 このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
 
 **構文**
@@ -55,7 +55,7 @@ SELECT quantileExactExclusive(0.25)(number) FROM numbers(5);
 └──────────────────────────────────────┘
 ```
 
-**複数の分位点の計算**
+**複数の分位数レベルの計算**
 
 ```sql title=Query
 SELECT quantileExactExclusive(0.1)(number), quantileExactExclusive(0.9)(number) FROM numbers(10);

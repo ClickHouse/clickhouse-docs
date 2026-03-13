@@ -14,7 +14,7 @@ doc_type: 'reference'
 そのため、このセクションで示す例は、事前に設定を行わない限り、[ClickHouse Fiddle](https://fiddle.clickhouse.com/) やクイックリリース環境および本番デプロイメント環境のデフォルト設定では、例外をスローします。
 :::
 
-参照リストの作成方法については、「[Dictionaries](../statements/create/dictionary/embedded#embedded-dictionaries)」セクションを参照してください。
+参照リストの作成方法については、「[Dictionaries](../statements/create/dictionary/embedded)」セクションを参照してください。
 
 ## 複数のジオベース \{#multiple-geobases\}
 
@@ -385,7 +385,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-指定した地域の人口を取得します。人口は geobase 対応のファイルに記録できます。セクション [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries) を参照してください。地域に対して人口が記録されていない場合は 0 を返します。geobase では、子地域には人口が記録されていても、親地域には記録されていない場合があります。
+指定した地域の人口を取得します。人口は geobase 対応のファイルに記録できます。セクション [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded) を参照してください。地域に対して人口が記録されていない場合は 0 を返します。geobase では、子地域には人口が記録されていても、親地域には記録されていない場合があります。
 
 **構文**
 

@@ -85,7 +85,7 @@ ClickHouse는 [uap-core](https://github.com/ua-parser/uap-core)를 지원하며,
 
 ### 속성 값 수집 \{#collecting-attribute-values\}
 
-여러 개의 정규식에 매칭된 값들을 리프 노드의 값뿐만 아니라 함께 반환해야 하는 경우가 있습니다. 이때는 전용 함수 [`dictGetAll`](../../../functions/ext-dict-functions.md#dictGetAll)을 사용할 수 있습니다. 어떤 노드가 타입 `T`의 속성 값을 가지면 `dictGetAll`은 0개 이상의 값을 포함하는 `Array(T)`를 반환합니다.
+여러 개의 정규식에 매칭된 값들을 리프 노드의 값뿐만 아니라 함께 반환해야 하는 경우가 있습니다. 이때는 전용 함수 [`dictGetAll`](/sql-reference/functions/ext-dict-functions.md#dictGetAll)을 사용할 수 있습니다. 어떤 노드가 타입 `T`의 속성 값을 가지면 `dictGetAll`은 0개 이상의 값을 포함하는 `Array(T)`를 반환합니다.
 
 기본적으로 키마다 반환되는 매치(일치 항목)의 개수에는 상한이 없습니다. 선택적인 네 번째 인수로 상한을 `dictGetAll`에 전달할 수 있습니다. 배열은 *위상 순서(topological order)*로 채워지며, 이는 자식 노드가 부모 노드보다 앞에 오고, 형제 노드는 소스에 나온 순서를 따른다는 의미입니다.
 
@@ -155,7 +155,7 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 ## ClickHouse Cloud에서 정규식 트리 딕셔너리 사용 \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 [`YAMLRegExpTree`](../sources/yamlregexptree.md) 소스는 ClickHouse 오픈 소스에서는 동작하지만 ClickHouse Cloud에서는 동작하지 않습니다.
-ClickHouse Cloud에서 regexp 트리 딕셔너리를 사용하려면, 먼저 ClickHouse 오픈 소스에서 YAML 파일을 사용해 로컬에 regexp 트리 딕셔너리를 생성한 다음, `dictionary` 테이블 함수와 [INTO OUTFILE](../../select/into-outfile.md) 절을 사용하여 이 딕셔너리를 CSV 파일로 내보냅니다.
+ClickHouse Cloud에서 regexp 트리 딕셔너리를 사용하려면, 먼저 ClickHouse 오픈 소스에서 YAML 파일을 사용해 로컬에 regexp 트리 딕셔너리를 생성한 다음, `dictionary` 테이블 함수와 [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md) 절을 사용하여 이 딕셔너리를 CSV 파일로 내보냅니다.
 
 ```sql
 SELECT * FROM dictionary(regexp_dict) INTO OUTFILE('regexp_dict.csv')
@@ -193,7 +193,7 @@ CREATE TABLE regexp_dictionary_source_table
 ) ENGINE=Memory;
 ```
 
-그런 다음 로컬 CSV를 다음과 같이 업데이트합니다.
+그런 다음 로컬 CSV 파일을 다음과 같이 사용합니다.
 
 ```bash
 clickhouse client \
@@ -206,7 +206,7 @@ clickhouse client \
     FORMAT CSV" < regexp_dict.csv
 ```
 
-자세한 내용은 [Insert Local Files](/integrations/data-ingestion/insert-local-files)를 참조하십시오. 소스 테이블을 초기화한 후에는 테이블 소스를 기반으로 RegexpTree를 생성할 수 있습니다.
+자세한 내용은 [Insert Local Files](/integrations/data-ingestion/insert-local-files) 문서를 참조하십시오. 소스 테이블을 초기화한 후에는 테이블 소스를 기반으로 RegexpTree를 생성할 수 있습니다.
 
 ```sql
 CREATE DICTIONARY regexp_dict

@@ -21,6 +21,7 @@ To learn more about message compression in Kafka, we recommend starting with thi
 ## Limitations {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) isn't supported.
+- Using a large number of partitions can result in increased latency.  ClickPipes limits the number of partitions that each replica will read at once based on replica size, ranging from 10 (XS) to 240 (XL).  If there are many partitions with no or limited data, processing of those messages may be delayed.
 - Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
@@ -35,10 +36,6 @@ Warpstream doesn't respect this setting, which can cause unexpected pipe failure
 to 8MB (or lower) when configuring your WarpStream agent to prevent ClickPipes failures.
 
 ### IAM {#iam}
-
-:::info
-IAM Authentication for the MSK ClickPipe is a beta feature.
-:::
 
 ClickPipes supports the following AWS MSK authentication
 
@@ -104,7 +101,7 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
                 "AWS": "arn:aws:iam::12345678912:role/CH-S3-your-clickhouse-cloud-role"
             },
             "Action": "sts:AssumeRole"
-        },
+        }
     ]
 }
 ```

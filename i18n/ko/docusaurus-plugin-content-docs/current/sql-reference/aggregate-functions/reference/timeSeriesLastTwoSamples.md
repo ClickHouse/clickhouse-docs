@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesLastTwoSamples \{#timeSeriesLastTwoSamples\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 PromQL과 유사한 `irate` 및 `idelta` 계산을 위한 시계열 데이터 리샘플링 집계 함수입니다.
 

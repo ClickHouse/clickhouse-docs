@@ -247,7 +247,7 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 ## SHOW DICTIONARIES \{#show-dictionaries\}
 
-Оператор `SHOW DICTIONARIES` отображает список [словарей](./create/dictionary/index.md).
+Оператор `SHOW DICTIONARIES` отображает список [словарей](./create/dictionary/overview.md).
 
 ### Синтаксис \{#syntax-4\}
 

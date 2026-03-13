@@ -105,7 +105,7 @@ Users configured with a different authentication method will be retained until a
 
 To assign your first admin user via SAML:
 1. Log out of [ClickHouse Cloud](https://console.clickhouse.cloud).
-2. In your identity provider, assign the admin user to the ClickHouse application(s).
+2. In your identity provider, assign the admin user to the ClickHouse applications.
 3. Ask the user to log in via https://console.clickhouse.cloud/?connection={orgId} (shortcut URL). This may be via a bookmark you created in the prior steps. The user won't appear in ClickHouse Cloud until their first login.
 4. If the default SAML role is anything other than Admin, the user may need to log out and log back in with their original authentication method to update the new SAML user's role. 
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
@@ -345,6 +345,10 @@ We only utilize service provider-initiated SSO. This means users go to `https://
 ### Multi-org SSO {#multi-org-sso}
 
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud/?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
+
+:::note
+If you do not want users with your company's domain to be directed to an organization when they enter an email address at https://console.clickhouse.cloud, submit a support ticket to manually update your SSO settings to remove this behavior.
+:::
 
 ## Additional information {#additional-information}
 

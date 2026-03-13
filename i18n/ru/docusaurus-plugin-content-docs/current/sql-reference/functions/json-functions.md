@@ -49,7 +49,7 @@ doc_type: 'reference'
 
 ## JSONAllPaths \{#JSONAllPaths\}
 
-Представлена в версии v24.8
+Представлена в версии v24.8.0
 
 Возвращает список всех путей, хранящихся в каждой строке JSON-столбца.
 
@@ -88,7 +88,7 @@ SELECT json, JSONAllPaths(json) FROM test;
 
 ## JSONAllPathsWithTypes \{#JSONAllPathsWithTypes\}
 
-Добавлено в версии: v24.8
+Добавлено в версии: v24.8.0
 
 Возвращает список всех путей и их типов данных, хранящихся в каждой строке JSON-столбца.
 
@@ -127,7 +127,7 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 
 ## JSONArrayLength \{#JSONArrayLength\}
 
-Появилась в версии: v23.2
+Появилась в версии: v23.2.0
 
 Возвращает количество элементов во внешнем JSON‑массиве.
 Функция возвращает `NULL`, если входная JSON‑строка некорректна.
@@ -167,7 +167,7 @@ SELECT
 
 ## JSONDynamicPaths \{#JSONDynamicPaths\}
 
-Добавлено в: v24.8
+Добавлено в: v24.8.0
 
 Возвращает список динамических путей, которые хранятся в виде отдельных подстолбцов в JSON-столбце.
 
@@ -206,7 +206,7 @@ SELECT json, JSONDynamicPaths(json) FROM test;
 
 ## JSONDynamicPathsWithTypes \{#JSONDynamicPathsWithTypes\}
 
-Добавлено в: v24.8
+Добавлено в: v24.8.0
 
 Возвращает список динамических путей, которые хранятся как отдельные подстолбцы, и их типов в каждой строке JSON-столбца.
 
@@ -245,7 +245,7 @@ SELECT json, JSONDynamicPathsWithTypes(json) FROM test;
 
 ## JSONExtract \{#JSONExtract\}
 
-Добавлена в версии: v19.14
+Добавлена в версии: v19.14.0
 
 Парсит JSON и извлекает значение заданного типа данных ClickHouse.
 
@@ -282,7 +282,7 @@ SELECT JSONExtract('{"a": "hello", "b": [-100, 200.0, 300]}', 'Tuple(String, Arr
 
 ## JSONExtractArrayRaw \{#JSONExtractArrayRaw\}
 
-Появилась в версии: v20.1
+Появилась в версии: v20.1.0
 
 Возвращает массив с элементами JSON-массива, каждый из которых представлен как необработанная строка.
 
@@ -318,7 +318,7 @@ SELECT JSONExtractArrayRaw('{"a": "hello", "b": [-100, 200.0, "hello"]}', 'b') A
 
 ## JSONExtractArrayRawCaseInsensitive \{#JSONExtractArrayRawCaseInsensitive\}
 
-Добавлено в: v25.8
+Добавлено в: v25.8.0
 
 Возвращает массив с элементами JSON-массива, каждый из которых представлен в виде неразобранной строки, с использованием сопоставления ключей без учета регистра. Эта функция аналогична [`JSONExtractArrayRaw`](#JSONExtractArrayRaw).
 
@@ -352,7 +352,7 @@ SELECT JSONExtractArrayRawCaseInsensitive('{"Items": [1, 2, 3]}', 'ITEMS')
 
 ## JSONExtractBool \{#JSONExtractBool\}
 
-Добавлена в версии: v20.1
+Добавлена в версии: v20.1.0
 
 Разбирает JSON и извлекает значение типа Bool.
 
@@ -388,7 +388,7 @@ SELECT JSONExtractBool('{"passed": true}', 'passed') AS res;
 
 ## JSONExtractBoolCaseInsensitive \{#JSONExtractBoolCaseInsensitive\}
 
-Добавлена в версии: v25.8
+Добавлена в версии: v25.8.0
 
 Парсит JSON и извлекает логическое значение, используя регистронезависимый поиск по ключу. Эта функция аналогична [`JSONExtractBool`](#JSONExtractBool).
 
@@ -422,7 +422,7 @@ SELECT JSONExtractBoolCaseInsensitive('{"IsActive": true}', 'isactive')
 
 ## JSONExtractCaseInsensitive \{#JSONExtractCaseInsensitive\}
 
-Добавлена в: v25.8
+Добавлена в: v25.8.0
 
 Разбирает JSON и извлекает значение указанного типа данных ClickHouse, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtract`](#JSONExtract).
 
@@ -467,7 +467,7 @@ SELECT JSONExtractCaseInsensitive('{"List": [1, 2, 3]}', 'list', 'Array(Int32)')
 
 ## JSONExtractFloat \{#JSONExtractFloat\}
 
-Появилась в версии: v20.1
+Появилась в версии: v20.1.0
 
 Разбирает JSON и извлекает значение типа Float.
 
@@ -503,7 +503,7 @@ SELECT JSONExtractFloat('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 2) AS re
 
 ## JSONExtractFloatCaseInsensitive \{#JSONExtractFloatCaseInsensitive\}
 
-Впервые представлена в: v25.8
+Впервые представлена в: v25.8.0
 
 Разбирает JSON и извлекает значение типа Float, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractFloat`](#JSONExtractFloat).
 
@@ -537,7 +537,7 @@ SELECT JSONExtractFloatCaseInsensitive('{"Price": 12.34}', 'PRICE')
 
 ## JSONExtractInt \{#JSONExtractInt\}
 
-Добавлено в версии: v20.1
+Добавлено в версии: v20.1.0
 
 Разбирает JSON и извлекает значение типа Int.
 
@@ -573,7 +573,7 @@ SELECT JSONExtractInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 1) AS res;
 
 ## JSONExtractIntCaseInsensitive \{#JSONExtractIntCaseInsensitive\}
 
-Добавлена в: v25.8
+Добавлена в: v25.8.0
 
 Разбирает JSON и извлекает значение типа Int, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractInt`](#JSONExtractInt).
 
@@ -617,7 +617,7 @@ SELECT JSONExtractIntCaseInsensitive('{"DATA": {"COUNT": 42}}', 'data', 'Count')
 
 ## JSONExtractKeys \{#JSONExtractKeys\}
 
-Добавлена в версии: v21.11
+Добавлена в версии: v21.11.0
 
 Разбирает строку в формате JSON и извлекает ключи.
 
@@ -653,7 +653,7 @@ SELECT JSONExtractKeys('{"a": "hello", "b": [-100, 200.0, 300]}') AS res;
 
 ## JSONExtractKeysAndValues \{#JSONExtractKeysAndValues\}
 
-Появилось в версии: v20.1
+Появилось в версии: v20.1.0
 
 Разбирает пары ключ-значение из JSON-документа, в котором значения имеют заданный тип данных ClickHouse.
 
@@ -690,7 +690,7 @@ SELECT JSONExtractKeysAndValues('{"x": {"a": 5, "b": 7, "c": 11}}', 'Int8', 'x')
 
 ## JSONExtractKeysAndValuesCaseInsensitive \{#JSONExtractKeysAndValuesCaseInsensitive\}
 
-Добавлена в: v25.8
+Добавлена в: v25.8.0
 
 Извлекает пары ключ–значение из JSON с регистронезависимым сопоставлением ключей. Эта функция аналогична функции [`JSONExtractKeysAndValues`](#JSONExtractKeysAndValues).
 
@@ -725,7 +725,7 @@ SELECT JSONExtractKeysAndValuesCaseInsensitive('{"Name": "Alice", "AGE": 30}', '
 
 ## JSONExtractKeysAndValuesRaw \{#JSONExtractKeysAndValuesRaw\}
 
-Добавлена в версии: v20.4
+Добавлена в версии: v20.4.0
 
 Возвращает массив кортежей с ключами и значениями из объекта JSON. Все значения представлены в виде необработанных строк.
 
@@ -761,7 +761,7 @@ SELECT JSONExtractKeysAndValuesRaw('{"a": [-100, 200.0], "b": "hello"}') AS res;
 
 ## JSONExtractKeysAndValuesRawCaseInsensitive \{#JSONExtractKeysAndValuesRawCaseInsensitive\}
 
-Добавлена в версии: v25.8
+Добавлена в версии: v25.8.0
 
 Извлекает необработанные пары ключ-значение из JSON, сопоставляя ключи без учета регистра. Эта функция похожа на [`JSONExtractKeysAndValuesRaw`](#JSONExtractKeysAndValuesRaw).
 
@@ -795,7 +795,7 @@ SELECT JSONExtractKeysAndValuesRawCaseInsensitive('{"Name": "Alice", "AGE": 30}'
 
 ## JSONExtractKeysCaseInsensitive \{#JSONExtractKeysCaseInsensitive\}
 
-Добавлено в: v25.8
+Добавлено в: v25.8.0
 
 Разбирает строку JSON и извлекает ключи, используя регистронезависимое сравнение ключей для перехода к вложенным объектам. Эта функция аналогична [`JSONExtractKeys`](#JSONExtractKeys).
 
@@ -839,7 +839,7 @@ SELECT JSONExtractKeysCaseInsensitive('{"User": {"name": "John", "AGE": 25}}', '
 
 ## JSONExtractRaw \{#JSONExtractRaw\}
 
-Добавлен в версии: v20.1
+Добавлен в версии: v20.1.0
 
 Возвращает часть JSON в виде строки без парсинга.
 
@@ -875,7 +875,7 @@ SELECT JSONExtractRaw('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') AS res;
 
 ## JSONExtractRawCaseInsensitive \{#JSONExtractRawCaseInsensitive\}
 
-Добавлено в: v25.8
+Добавлено в: v25.8.0
 
 Возвращает часть JSON в виде необработанной строки, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractRaw`](#JSONExtractRaw).
 
@@ -909,7 +909,7 @@ SELECT JSONExtractRawCaseInsensitive('{"Object": {"key": "value"}}', 'OBJECT')
 
 ## JSONExtractString \{#JSONExtractString\}
 
-Добавлена в версии v20.1
+Добавлена в версии v20.1.0
 
 Разбирает JSON и извлекает значение типа String.
 
@@ -945,7 +945,7 @@ SELECT JSONExtractString('{"a": "hello", "b": [-100, 200.0, 300]}', 'a') AS res;
 
 ## JSONExtractStringCaseInsensitive \{#JSONExtractStringCaseInsensitive\}
 
-Появилась в версии v25.8
+Появилась в версии v25.8.0
 
 Разбирает JSON и извлекает строку, используя регистронезависимое сопоставление ключей. Эта функция аналогична [`JSONExtractString`](#JSONExtractString).
 
@@ -989,7 +989,7 @@ John
 
 ## JSONExtractUInt \{#JSONExtractUInt\}
 
-Появился в версии: v20.1
+Появился в версии: v20.1.0
 
 Анализирует JSON и извлекает значение типа UInt.
 
@@ -1025,7 +1025,7 @@ SELECT JSONExtractUInt('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', -1) AS re
 
 ## JSONExtractUIntCaseInsensitive \{#JSONExtractUIntCaseInsensitive\}
 
-Появилась в версии v25.8
+Появилась в версии v25.8.0
 
 Разбирает JSON и извлекает значение типа UInt, используя регистронезависимое сравнение ключей. Эта функция аналогична [`JSONExtractUInt`](#JSONExtractUInt).
 
@@ -1059,7 +1059,7 @@ SELECT JSONExtractUIntCaseInsensitive('{"COUNT": 789}', 'count')
 
 ## JSONHas \{#JSONHas\}
 
-Появилось в версии: v20.1
+Появилось в версии: v20.1.0
 
 Проверяет наличие указанного значения (значений) в JSON-документе.
 
@@ -1095,7 +1095,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 'b', 4) = 0;
 
 ## JSONKey \{#JSONKey\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Возвращает ключ поля JSON-объекта по его индексу (нумерация с единицы). Если JSON передаётся в виде строки, он сначала разбирается. Второй аргумент — это JSON-путь для перехода во вложенные объекты. Функция возвращает имя ключа в указанной позиции.
 
@@ -1129,7 +1129,7 @@ a
 
 ## JSONLength \{#JSONLength\}
 
-Добавлена в версии: v20.1
+Добавлена в версии: v20.1.0
 
 Возвращает длину JSON-массива или JSON-объекта.
 Если значение не существует или имеет неверный тип, будет возвращено `0`.
@@ -1166,14 +1166,14 @@ SELECT JSONLength('{"a": "hello", "b": [-100, 200.0, 300]}') = 2;
 
 ## JSONMergePatch \{#JSONMergePatch\}
 
-Добавлено в версии: v23.10
+Добавлено в версии: v23.10.0
 
 Возвращает строку JSON-объекта, полученного слиянием нескольких JSON-объектов.
 
 **Синтаксис**
 
 ```sql
-jsonMergePatch(json1[, json2, ...])
+JSONMergePatch(json1[, json2, ...])
 ```
 
 **Псевдонимы**: `jsonMergePatch`
@@ -1191,7 +1191,7 @@ jsonMergePatch(json1[, json2, ...])
 **Пример использования**
 
 ```sql title=Query
-SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
+SELECT JSONMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name": "zoey"}') AS res;
 ```
 
 ```response title=Response
@@ -1203,7 +1203,7 @@ SELECT jsonMergePatch('{"a":1}', '{"name": "joey"}', '{"name": "tom"}', '{"name"
 
 ## JSONSharedDataPaths \{#JSONSharedDataPaths\}
 
-Введено в: v24.8
+Введено в: v24.8.0
 
 Возвращает список путей, которые хранятся в общей структуре данных JSON-столбца.
 
@@ -1242,7 +1242,7 @@ SELECT json, JSONSharedDataPaths(json) FROM test;
 
 ## JSONSharedDataPathsWithTypes \{#JSONSharedDataPathsWithTypes\}
 
-Появилось в: v24.8
+Появилось в: v24.8.0
 
 Возвращает список путей, которые хранятся в общей структуре данных, и соответствующих типов для каждой строки в JSON-столбце.
 
@@ -1281,7 +1281,7 @@ SELECT json, JSONSharedDataPathsWithTypes(json) FROM test;
 
 ## JSONType \{#JSONType\}
 
-Введена в версии: v20.1
+Введена в версии: v20.1.0
 
 Возвращает тип JSON-значения. Если значение отсутствует, будет возвращено `Null=0`.
 
@@ -1317,9 +1317,9 @@ SELECT JSONType('{"a": "hello", "b": [-100, 200.0, 300]}', 'b') = 'Array';
 ```
 
 
-## JSON&#95;EXISTS \{#JSON_EXISTS\}
+## JSON_EXISTS \{#JSON_EXISTS\}
 
-Появилась в версии v21.8.
+Появилась в версии v21.8.0.
 
 Если значение существует в JSON-документе, будет возвращено `1`.
 Если значение не существует, будет возвращено `0`.
@@ -1366,9 +1366,9 @@ SELECT JSON_EXISTS('{"hello":["world"]}', '$.hello[0]');
 ```
 
 
-## JSON&#95;QUERY \{#JSON_QUERY\}
+## JSON_QUERY \{#JSON_QUERY\}
 
-Появилось в: v21.8
+Появилось в: v21.8.0
 
 Разбирает JSON и извлекает значение в виде JSON-массива или JSON-объекта.
 Если значение отсутствует, будет возвращена пустая строка.
@@ -1407,9 +1407,9 @@ String
 ```
 
 
-## JSON&#95;VALUE \{#JSON_VALUE\}
+## JSON_VALUE \{#JSON_VALUE\}
 
-Введена в версии: v21.11
+Введена в версии: v21.11.0
 
 Разбирает JSON и извлекает значение в виде скалярного значения JSON. Если значение отсутствует, по умолчанию будет возвращена пустая строка.
 
@@ -1454,7 +1454,7 @@ world
 
 ## dynamicElement \{#dynamicElement\}
 
-Впервые появился в: v24.1
+Впервые появился в: v24.1.0
 
 Извлекает столбец с указанным типом из столбца `Dynamic`.
 
@@ -1499,7 +1499,7 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 
 ## dynamicType \{#dynamicType\}
 
-Появилась в версии v24.1
+Появилась в версии v24.1.0
 
 Возвращает имя варианта типа для каждой строки столбца `Dynamic`.
 
@@ -1542,7 +1542,7 @@ SELECT d, dynamicType(d) FROM test;
 
 ## isDynamicElementInSharedData \{#isDynamicElementInSharedData\}
 
-Добавлена в версии v24.1
+Добавлена в версии v24.1.0
 
 Возвращает true для строк в столбце типа Dynamic, которые хранятся в общем формате варианта (shared variant format), а не как отдельные подстолбцы.
 
@@ -1585,9 +1585,9 @@ SELECT d, isDynamicElementInSharedData(d) FROM test;
 
 ## isValidJSON \{#isValidJSON\}
 
-Впервые появилась в версии: v20.1
+Впервые появилась в версии: v20.1.0
 
-Проверяет, что переданная строка является корректным JSON-документом.
+Проверяет, что переданная строка является корректным JSON.
 
 **Синтаксис**
 
@@ -1641,7 +1641,7 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
-Добавлено в: v21.4
+Добавлено в: v21.4.0
 
 Извлекает логическое значение `true` или `false` из значения поля с именем `field_name`.
 Результат имеет тип `UInt8`.
@@ -1696,7 +1696,7 @@ SELECT simpleJSONExtractBool(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractFloat \{#simpleJSONExtractFloat\}
 
-Введена в версии: v21.4
+Введена в версии: v21.4.0
 
 Извлекает значение типа `Float64` из значения поля с именем `field_name`.
 Если `field_name` является строковым полем, функция пытается разобрать число с начала строки.
@@ -1751,7 +1751,7 @@ SELECT simpleJSONExtractFloat(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractInt \{#simpleJSONExtractInt\}
 
-Добавлена в версии v21.4
+Добавлена в версии v21.4.0
 
 Извлекает значение типа `Int64` из поля с именем `field_name`.
 Если `field_name` — строковое поле, функция пытается распарсить число с начала строки.
@@ -1806,7 +1806,7 @@ SELECT simpleJSONExtractInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractRaw \{#simpleJSONExtractRaw\}
 
-Появилась в версии: v21.4
+Появилась в версии: v21.4.0
 
 Возвращает значение поля с именем `field_name` в виде строки (`String`), включая разделители.
 
@@ -1858,7 +1858,7 @@ SELECT simpleJSONExtractRaw(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractString \{#simpleJSONExtractString\}
 
-Введена в версии: v21.4
+Введена в версии: v21.4.0
 
 Извлекает строку типа `String`, заключённую в двойные кавычки, из значения поля с именем `field_name`.
 
@@ -1912,7 +1912,7 @@ SELECT simpleJSONExtractString(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONExtractUInt \{#simpleJSONExtractUInt\}
 
-Добавлена в версии: v21.4
+Добавлена в версии: v21.4.0
 
 Извлекает `UInt64` из значения поля с именем `field_name`.
 Если `field_name` — строковое поле, функция пытается разобрать число с начала строки.
@@ -1967,7 +1967,7 @@ SELECT simpleJSONExtractUInt(json, 'foo') FROM jsons ORDER BY json;
 
 ## simpleJSONHas \{#simpleJSONHas\}
 
-Появилась в версии: v21.4
+Появилась в версии: v21.4.0
 
 Проверяет, существует ли поле с именем `field_name`.
 
@@ -2014,7 +2014,7 @@ SELECT simpleJSONHas(json, 'bar') FROM jsons;
 
 ## toJSONString \{#toJSONString\}
 
-Введена в версии v21.7
+Введена в версии v21.7.0
 
 Сериализует значение в его представление в формате JSON. Поддерживаются различные типы данных и вложенные структуры.
 64-битные [целые числа](../data-types/int-uint.md) и более разрядные (такие как `UInt64` или `Int128`) по умолчанию заключаются в кавычки. Поведение контролируется настройкой [output&#95;format&#95;json&#95;quote&#95;64bit&#95;integers](/operations/settings/formats#output_format_json_quote_64bit_integers).

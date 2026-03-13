@@ -9,10 +9,10 @@ doc_type: 'reference'
 # 딕셔너리 작업용 함수 \{#functions-for-working-with-dictionaries\}
 
 :::note
-[DDL 쿼리](../statements/create/dictionary/index.md)로 생성된 딕셔너리의 경우 `dict_name` 매개변수는 `<database>.<dict_name>` 형식으로 완전하게 지정해야 합니다. 그렇지 않으면 현재 데이터베이스가 사용됩니다.
+[DDL 쿼리](../statements/create/dictionary/overview.md)로 생성된 딕셔너리의 경우 `dict_name` 매개변수는 `<database>.<dict_name>` 형식으로 완전하게 지정해야 합니다. 그렇지 않으면 현재 데이터베이스가 사용됩니다.
 :::
 
-딕셔너리 연결 및 설정에 대한 자세한 내용은 [Dictionaries](../statements/create/dictionary/index.md)를 참조하십시오.
+딕셔너리 연결 및 설정에 대한 자세한 내용은 [Dictionaries](../statements/create/dictionary/overview.md)를 참조하십시오.
 
 ## 예시 딕셔너리 \{#example-dictionary\}
 
@@ -302,7 +302,7 @@ LAYOUT(REGEXP_TREE);
 
 ## dictGet \{#dictGet\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 딕셔너리에서 값을 조회합니다.
 
@@ -362,7 +362,7 @@ LIMIT 3;
 
 ## dictGetAll \{#dictGetAll\}
 
-도입된 버전: v23.5
+도입된 버전: v23.5.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `All` 데이터 유형으로 변환합니다.
 
@@ -411,7 +411,7 @@ SELECT
 
 ## dictGetChildren \{#dictGetChildren\}
 
-도입 버전: v21.4
+도입 버전: v21.4.0
 
 첫 번째 수준 자식들을 인덱스 배열로 반환합니다. [dictGetHierarchy](#dictGetHierarchy)의 역변환입니다.
 
@@ -447,7 +447,7 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 
 ## dictGetDate \{#dictGetDate\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 관계없이 `Date` 데이터 타입으로 변환합니다.
 
@@ -489,7 +489,7 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 
 ## dictGetDateOrDefault \{#dictGetDateOrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `Date` 데이터 유형으로 변환하거나, 키를 찾을 수 없는 경우 제공된 기본값을 반환합니다.
 
@@ -539,7 +539,7 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 
 ## dictGetDateTime \{#dictGetDateTime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `DateTime` 데이터 타입으로 변환합니다.
 
@@ -581,7 +581,7 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 
 ## dictGetDateTimeOrDefault \{#dictGetDateTimeOrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 무관하게 딕셔너리 속성 값을 `DateTime` 데이터 형식으로 변환하며, 키를 찾을 수 없는 경우에는 제공된 기본값을 반환합니다.
 
@@ -631,7 +631,7 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 
 ## dictGetDescendants \{#dictGetDescendants\}
 
-도입 버전: v21.4
+도입 버전: v21.4.0
 
 [`dictGetChildren`](#dictGetChildren) FUNCTION을 `level` 단계만큼 재귀적으로 적용한 것과 같이 모든 하위 요소를 반환합니다.
 
@@ -677,7 +677,7 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 
 ## dictGetFloat32 \{#dictGetFloat32\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 무관하게 `Float32` 데이터 타입으로 변환합니다.
 
@@ -719,7 +719,7 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 
 ## dictGetFloat32OrDefault \{#dictGetFloat32OrDefault\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리(Dictionary) 설정과 관계없이 딕셔너리 속성 값을 `Float32` 데이터 타입으로 변환하거나, 키가 존재하지 않으면 제공된 기본값을 반환합니다.
 
@@ -769,7 +769,7 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 
 ## dictGetFloat64 \{#dictGetFloat64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 상관없이 딕셔너리 속성 값을 `Float64` 데이터 타입으로 변환합니다.
 
@@ -811,7 +811,7 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 
 ## dictGetFloat64OrDefault \{#dictGetFloat64OrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `Float64` 데이터 타입으로 변환하거나, 키를 찾을 수 없으면 제공된 기본값을 반환합니다.
 
@@ -861,9 +861,9 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 ## dictGetHierarchy \{#dictGetHierarchy\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
-[계층 딕셔너리](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)에서 주어진 키의 모든 부모를 포함하는 배열을 반환합니다.
+[계층 딕셔너리](/docs/sql-reference/statements/create/dictionary/layouts/hierarchical#hierarchical-dictionaries)에서 주어진 키의 모든 부모를 포함하는 배열을 반환합니다.
 
 **구문**
 
@@ -897,7 +897,7 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 
 ## dictGetIPv4 \{#dictGetIPv4\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 관계없이 `IPv4` 데이터 타입으로 변환합니다.
 
@@ -939,7 +939,7 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 
 ## dictGetIPv4OrDefault \{#dictGetIPv4OrDefault\}
 
-도입된 버전: v23.1
+도입된 버전: v23.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `IPv4` 데이터 형식으로 변환하며, 키가 존재하지 않으면 제공된 기본값을 반환합니다.
 
@@ -989,7 +989,7 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 
 ## dictGetIPv6 \{#dictGetIPv6\}
 
-도입 버전: v23.1
+도입 버전: v23.1.0
 
 딕셔너리의 속성 값을 딕셔너리 설정과 무관하게 `IPv6` 데이터 타입으로 변환합니다.
 
@@ -1031,7 +1031,7 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 
 ## dictGetIPv6OrDefault \{#dictGetIPv6OrDefault\}
 
-도입된 버전: v23.1
+도입된 버전: v23.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `IPv6` 데이터 타입으로 변환하거나, 키가 존재하지 않으면 제공된 기본값을 반환합니다.
 
@@ -1081,7 +1081,7 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 
 ## dictGetInt16 \{#dictGetInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `Int16` 데이터 타입으로 변환합니다.
 
@@ -1123,7 +1123,7 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 
 ## dictGetInt16OrDefault \{#dictGetInt16OrDefault\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `Int16` 데이터 타입으로 변환하거나, 키가 존재하지 않을 경우 제공된 기본값을 반환합니다.
 
@@ -1173,7 +1173,7 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 
 ## dictGetInt32 \{#dictGetInt32\}
 
-v1.1에 도입되었습니다.
+v1.1.0에 도입되었습니다.
 
 딕셔너리 속성 값을 딕셔너리 설정과 관계없이 `Int32` 데이터 타입으로 변환합니다.
 
@@ -1215,7 +1215,7 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 
 ## dictGetInt32OrDefault \{#dictGetInt32OrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `Int32` 데이터 타입으로 변환하며, 키가 존재하지 않으면 제공된 기본값을 반환합니다.
 
@@ -1265,7 +1265,7 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 
 ## dictGetInt64 \{#dictGetInt64\}
 
-도입: v1.1
+도입: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 구성과 관계없이 `Int64` 데이터 타입으로 변환합니다.
 
@@ -1307,7 +1307,7 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 
 ## dictGetInt64OrDefault \{#dictGetInt64OrDefault\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `Int64` 데이터 유형으로 변환하거나, 키를 찾을 수 없으면 제공된 기본값을 반환합니다.
 
@@ -1357,7 +1357,7 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 
 ## dictGetInt8 \{#dictGetInt8\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 구성과 관계없이 `Int8` 데이터 타입으로 변환합니다.
 
@@ -1399,7 +1399,7 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 
 ## dictGetInt8OrDefault \{#dictGetInt8OrDefault\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `Int8` 데이터 타입으로 변환하거나, 키를 찾을 수 없는 경우 제공된 기본값을 반환합니다.
 
@@ -1449,7 +1449,7 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 
 ## dictGetKeys \{#dictGetKeys\}
 
-도입 버전: v25.12
+도입 버전: v25.12.0
 
 지정한 값과 같은 속성을 가진 딕셔너리 키를 반환합니다. 단일 속성에 대해서 `dictGet` 함수의 역방향 기능을 수행합니다.
 
@@ -1491,7 +1491,7 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 
 ## dictGetOrDefault \{#dictGetOrDefault\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 딕셔너리에서 값을 조회하며, 키가 존재하지 않으면 기본값을 반환합니다.
 
@@ -1504,8 +1504,8 @@ dictGetOrDefault('dict_name', attr_names, id_expr, default_value)
 **인수**
 
 * `dict_name` — 딕셔너리 이름. [`String`](/sql-reference/data-types/string)
-* `attr_names` — 딕셔너리의 컬럼 이름 또는 컬럼 이름 튜플. [`String`](/sql-reference/data-types/string) 또는 [`Tuple(String)`](/sql-reference/data-types/tuple)
-* `id_expr` — 키 값. `UInt64/Tuple(T)`를 반환하는 표현식. [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `attr_names` — 딕셔너리의 컬럼 이름 또는 컬럼 이름의 튜플. [`String`](/sql-reference/data-types/string) 또는 [`Tuple(String)`](/sql-reference/data-types/tuple)
+* `id_expr` — 키 값. `UInt64` 또는 `Tuple(T)`를 반환하는 표현식. [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Tuple(T)`](/sql-reference/data-types/tuple)
 * `default_value` — 키를 찾을 수 없을 때 반환할 기본값. 타입은 해당 속성의 데이터 타입과 일치해야 합니다.
 
 **반환 값**
@@ -1528,7 +1528,7 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 
 ## dictGetOrNull \{#dictGetOrNull\}
 
-도입된 버전: v21.4
+도입된 버전: v21.4.0
 
 딕셔너리에서 값을 조회하며, 키가 존재하지 않으면 NULL을 반환합니다.
 
@@ -1569,7 +1569,7 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 
 ## dictGetString \{#dictGetString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 구성과 무관하게 `String` 데이터 타입으로 변환합니다.
 
@@ -1611,7 +1611,7 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 
 ## dictGetStringOrDefault \{#dictGetStringOrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `String` 데이터 타입으로 변환하거나, 키를 찾을 수 없으면 제공된 기본값을 반환합니다.
 
@@ -1661,7 +1661,7 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 
 ## dictGetUInt16 \{#dictGetUInt16\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `UInt16` 데이터 유형으로 변환합니다.
 
@@ -1703,7 +1703,7 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 
 ## dictGetUInt16OrDefault \{#dictGetUInt16OrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `UInt16` 데이터 타입으로 변환하거나, 키가 존재하지 않는 경우 제공된 기본값을 반환합니다.
 
@@ -1753,7 +1753,7 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 
 ## dictGetUInt32 \{#dictGetUInt32\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 관계없이 `UInt32` 데이터 타입으로 변환합니다.
 
@@ -1795,7 +1795,7 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 
 ## dictGetUInt32OrDefault \{#dictGetUInt32OrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `UInt32` 데이터 타입으로 변환하거나, 키가 존재하지 않는 경우 제공된 기본값을 반환합니다.
 
@@ -1845,7 +1845,7 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 
 ## dictGetUInt64 \{#dictGetUInt64\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 관계없이 `UInt64` 데이터 타입으로 변환합니다.
 
@@ -1887,7 +1887,7 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 
 ## dictGetUInt64OrDefault \{#dictGetUInt64OrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 설정과 관계없이 딕셔너리 속성 값을 `UInt64` 데이터 타입으로 변환하거나, 키를 찾을 수 없는 경우 제공된 기본값을 반환합니다.
 
@@ -1937,7 +1937,7 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 
 ## dictGetUInt8 \{#dictGetUInt8\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 구성과 무관하게 딕셔너리 속성 값을 `UInt8` 데이터 타입으로 변환합니다.
 
@@ -1979,7 +1979,7 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 
 ## dictGetUInt8OrDefault \{#dictGetUInt8OrDefault\}
 
-도입: v1.1
+도입: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `UInt8` 데이터 형식으로 변환하거나, 키를 찾을 수 없는 경우 제공된 기본값을 반환합니다.
 
@@ -2029,7 +2029,7 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 
 ## dictGetUUID \{#dictGetUUID\}
 
-도입: v1.1
+도입: v1.1.0
 
 딕셔너리 구성과 관계없이 딕셔너리 속성 값을 `UUID` 데이터 타입으로 변환합니다.
 
@@ -2071,7 +2071,7 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 
 ## dictGetUUIDOrDefault \{#dictGetUUIDOrDefault\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리 속성 값을 딕셔너리 설정과 무관하게 `UUID` 데이터 타입으로 변환하거나, 키가 존재하지 않으면 제공된 기본값을 반환합니다.
 
@@ -2121,7 +2121,7 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 
 ## dictHas \{#dictHas\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 딕셔너리에 키가 존재하는지 확인합니다.
 
@@ -2170,7 +2170,7 @@ SELECT dictHas('hierarchical_dictionary', 7);
 
 ## dictIsIn \{#dictIsIn\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 딕셔너리의 전체 계층 체인에서 키의 상위 항목을 검사합니다.
 

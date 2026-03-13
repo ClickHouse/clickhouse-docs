@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## singleValueOrNull \{#singleValueOrNull\}
 
-引入于：v21.9
+引入于：v21.9.0
 
 聚合函数 `singleValueOrNull` 用于实现子查询操作符，例如 `x = ALL (SELECT ...)`。它会检查数据中是否只有一个唯一且非 NULL 的值。
 如果只有一个唯一值，则返回该值；如果没有任何值，或存在至少两个不同的值，则返回 NULL。
@@ -22,7 +22,7 @@ singleValueOrNull(x)
 
 **参数**
 
-* `x` — 任意数据类型的列，但不包括 Map、Array 或 Tuple（这些类型不能为 Nullable 类型）。[`Any`](/sql-reference/data-types)
+* `x` — 任意数据类型的列，但不包括 Map、Array 或 Tuple (这些类型不能为 Nullable 类型) 。[`Any`](/sql-reference/data-types)
 
 **返回值**
 

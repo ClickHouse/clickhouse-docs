@@ -10,7 +10,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud />
 
-[딕셔너리](../../sql-reference/statements/create/dictionary/index.md)에 대한 정보를 제공합니다.
+[딕셔너리](../../sql-reference/statements/create/dictionary/overview.md)에 대한 정보를 제공합니다.
 
 컬럼:
 

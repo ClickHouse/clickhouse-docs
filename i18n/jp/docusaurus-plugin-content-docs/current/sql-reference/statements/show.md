@@ -246,7 +246,7 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 ## SHOW DICTIONARIES \{#show-dictionaries\}
 
-`SHOW DICTIONARIES` ステートメントは、[Dictionaries](./create/dictionary/index.md) の一覧を表示します。
+`SHOW DICTIONARIES` ステートメントは、[Dictionaries](./create/dictionary/overview.md) の一覧を表示します。
 
 ### 構文 \{#syntax-4\}
 

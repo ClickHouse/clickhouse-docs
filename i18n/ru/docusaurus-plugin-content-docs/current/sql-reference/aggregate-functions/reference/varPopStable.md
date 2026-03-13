@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## varPopStable \{#varPopStable\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Возвращает дисперсию генеральной совокупности.
 В отличие от [`varPop`](/sql-reference/aggregate-functions/reference/varPop), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм.

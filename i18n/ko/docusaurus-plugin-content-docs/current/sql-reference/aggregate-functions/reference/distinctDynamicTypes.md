@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctDynamicTypes \{#distinctDynamicTypes\}
 
-도입된 버전: v24.9
+도입된 버전: v24.9.0
 
 [Dynamic](https://clickhouse.com/docs/sql-reference/data-types/dynamic) 컬럼에 저장된 서로 다른 데이터 타입 목록을 계산합니다.
 

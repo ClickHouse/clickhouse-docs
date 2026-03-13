@@ -191,7 +191,7 @@
     display: none;
   }
 
-  .navRight a {
+  .navRight a:not(:global(.DocSearch-Button)) {
     display: none;
   }
 

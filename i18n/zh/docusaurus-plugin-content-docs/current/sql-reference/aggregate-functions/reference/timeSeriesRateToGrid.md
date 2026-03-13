@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesRateToGrid \{#timeSeriesRateToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 聚合函数，接受由时间戳和值构成的时间序列数据对，并在由起始时间戳、结束时间戳和步长定义的规则时间网格上，从这些数据计算[类似 PromQL 的 rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate)。对于网格上的每个点，用于计算 `rate` 的样本会被限制在指定的时间窗口内。
 
@@ -27,10 +27,10 @@ timeSeriesRateToGrid(start_timestamp, end_timestamp, grid_step, staleness)(times
 
 * `start_timestamp` — 指定网格的起始时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — 指定网格的结束时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — 指定网格的步长（单位：秒）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 指定被考虑样本的最大“陈旧度”（单位：秒）。陈旧度窗口是一个左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — 指定网格的步长 (单位：秒) 。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 指定被考虑样本的最大“陈旧度” (单位：秒) 。陈旧度窗口是一个左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**参数（Arguments）**
+**参数 (Arguments)&#x20;**
 
 * `timestamp` — 样本的时间戳。可以是单个值或数组。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Array(UInt32)`](/sql-reference/data-types/array) 或 [`Array(DateTime)`](/sql-reference/data-types/array)
 * `value` — 与该时间戳对应的时间序列值。可以是单个值或数组。[`Float*`](/sql-reference/data-types/float) 或 [`Array(Float*)`](/sql-reference/data-types/array)
@@ -69,7 +69,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**使用数组形式的参数**
+**使用数组参数**
 
 ```sql title=Query
 WITH

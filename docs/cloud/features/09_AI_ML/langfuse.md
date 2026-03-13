@@ -74,7 +74,7 @@ flowchart TB
 
 ### Observability {#observability}
 
-[Observability](/docs/observability/overview) is essential for understanding and debugging LLM applications. Unlike traditional software, LLM applications involve complex, non-deterministic interactions that can be challenging to monitor and debug. Langfuse provides comprehensive tracing capabilities that help you understand exactly what's happening in your application.
+[Observability](/docs/observability/overview) is essential for understanding and debugging LLM applications. Unlike traditional software, LLM applications involve complex and non-deterministic interactions that can be challenging to monitor and debug. Langfuse provides comprehensive tracing capabilities that help you understand exactly what's happening in your application.
 
 _📹 Want to learn more? [**Watch end-to-end walkthrough**](https://langfuse.com/watch-demo?tab=observability) of Langfuse Observability and how to integrate it with your application._
 
@@ -224,7 +224,7 @@ Baseline your evaluation workflow with human annotations via Annotation Queues.
 </TabItem>
 <TabItem value="custom-evals" label="Custom Evals">
 
-Add custom evaluation results, supports numeric, boolean and categorical values.
+Add custom evaluation results; supports numeric, boolean, and categorical values.
 
 ```bash
 POST /api/public/scores

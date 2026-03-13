@@ -22,9 +22,9 @@ import migrating_agents from '@site/static/images/use-cases/observability/clicks
 
 Elastic Stack 提供了多种用于可观测性数据采集的代理。具体包括：
 
-- [Beats 系列](https://www.elastic.co/beats)，例如 [Filebeat](https://www.elastic.co/beats/filebeat)、[Metricbeat](https://www.elastic.co/beats/metricbeat) 和 [Packetbeat](https://www.elastic.co/beats/packetbeat)，都基于 `libbeat` 库构建。这些 Beats 支持通过 Lumberjack 协议[将数据发送到 Elasticsearch、Kafka、Redis 或 Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output)。
-- [`Elastic Agent`](https://www.elastic.co/elastic-agent) 是一个统一代理，能够采集日志、指标和链路追踪。该代理可以通过 [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) 进行集中管理，并支持将数据输出到 Elasticsearch、Logstash、Kafka 或 Redis。
-- Elastic 还提供了 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 的一个发行版。尽管目前它无法由 Fleet Server 进行编排，但如果你正在迁移到 ClickStack，它为你提供了一条更加灵活和开放的路径。
+* [Beats 系列](https://www.elastic.co/beats)，例如 [Filebeat](https://www.elastic.co/beats/filebeat)、[Metricbeat](https://www.elastic.co/beats/metricbeat) 和 [Packetbeat](https://www.elastic.co/beats/packetbeat)，都基于 `libbeat` 库构建。这些 Beats 支持通过 Lumberjack 协议[将数据发送到 Elasticsearch、Kafka、Redis 或 Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output)。
+* [`Elastic Agent`](https://www.elastic.co/elastic-agent) 是一个统一代理，能够采集日志、指标和链路追踪。该代理可以通过 [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) 进行集中管理，并支持将数据输出到 Elasticsearch、Logstash、Kafka 或 Redis。
+* Elastic 还提供了 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 的一个发行版。尽管目前它无法由 Fleet Server 进行编排，但如果你正在迁移到 ClickStack，它为你提供了一条更加灵活和开放的路径。
 
 最佳迁移路径取决于当前正在使用的代理类型。在接下来的小节中，我们将分别介绍每种主要代理类型的迁移选项。我们的目标是尽量减少迁移阻力，并在可能的情况下允许你在过渡期间继续使用现有代理。
 

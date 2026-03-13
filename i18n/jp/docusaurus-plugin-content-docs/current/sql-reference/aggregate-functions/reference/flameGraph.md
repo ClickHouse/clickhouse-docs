@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## flameGraph \{#flameGraph\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 スタックトレースの一覧から [flamegraph](https://www.brendangregg.com/flamegraphs.html) を生成します。
 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) ユーティリティで flamegraph の SVG をレンダリングするために使用できる文字列配列を出力します。
 
 :::note
-`ptr != 0` の場合、flameGraph は同じ size と ptr を持つメモリ割り当て（size &gt; 0）および解放（size &lt; 0）を対応付けます。
+`ptr != 0` の場合、flameGraph は同じ size と ptr を持つメモリ割り当て (size &gt; 0) および解放 (size &lt; 0) を対応付けます。
 解放されていない割り当てのみが表示されます。
 対応付けられない解放は無視されます。
 :::
@@ -29,8 +29,8 @@ flameGraph(traces[, size[, ptr]])
 **引数**
 
 * `traces` — スタックトレース。[`Array(UInt64)`](/sql-reference/data-types/array)
-* `size` — 省略可能。メモリプロファイリング用の割り当てサイズ（デフォルトは 1）。[`UInt64`](/sql-reference/data-types/int-uint)
-* `ptr` — 省略可能。割り当てアドレス（デフォルトは 0）。[`UInt64`](/sql-reference/data-types/int-uint)
+* `size` — 省略可能。メモリプロファイリング用の割り当てサイズ (デフォルトは 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
+* `ptr` — 省略可能。割り当てアドレス (デフォルトは 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -49,7 +49,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-**メモリクエリプロファイラに基づき、すべてのアロケーションを表示するフレームグラフの作成**
+**メモリクエリプロファイラに基づいて、すべてのアロケーションを表示する flamegraph を生成する**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -60,7 +60,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-**メモリクエリプロファイラに基づき、解放されていないアロケーションを可視化するフレームグラフを構築する**
+**メモリクエリプロファイラに基づき、解放されていないアロケーションを表示するフレームグラフの作成**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -71,7 +71,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-**メモリクエリプロファイラに基づいてフレームグラフを生成し、特定時点におけるアクティブなメモリ割り当てを表示します**
+**メモリクエリプロファイラに基づき、特定時点におけるアクティブなメモリアロケーションを表示するフレームグラフを構築する**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

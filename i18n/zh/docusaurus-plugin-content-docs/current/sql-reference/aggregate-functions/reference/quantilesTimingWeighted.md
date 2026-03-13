@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantilesTimingWeighted \{#quantilesTimingWeighted\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 在给定精度下，同时按不同水平计算数值数据序列的多个[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑序列中每个元素的权重。
 
 此函数等价于 [`quantileTimingWeighted`](/sql-reference/aggregate-functions/reference/quantiletimingweighted)，但允许在一次遍历中计算多个分位水平，比多次调用单个分位函数更加高效。
 
-结果是确定性的（不依赖于查询处理顺序）。该函数针对描述分布的序列进行了优化，例如网页加载时间或后端响应时间。
+结果是确定性的 (不依赖于查询处理顺序) 。该函数针对描述分布的序列进行了优化，例如网页加载时间或后端响应时间。
 
 **精度**
 
@@ -42,7 +42,7 @@ quantilesTimingWeighted(level1, level2, ...)(expr, weight)
 
 **参数说明**
 
-* `expr` — 针对列值进行计算的表达式，返回 `Float*` 类型的数值。如果向函数传递负值，其行为未定义。如果值大于 30,000（页面加载时间超过 30 秒），则会被视为 30,000。[`Float*`](/sql-reference/data-types/float)
+* `expr` — 针对列值进行计算的表达式，返回 `Float*` 类型的数值。如果向函数传递负值，其行为未定义。如果值大于 30,000 (页面加载时间超过 30 秒) ，则会被视为 30,000。[`Float*`](/sql-reference/data-types/float)
 * `weight` — 序列元素权重所在的列。权重表示该数值出现的次数。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
