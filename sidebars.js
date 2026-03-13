@@ -1039,6 +1039,7 @@ const sidebars = {
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
+        'integrations/data-ingestion/apache-flink/flink-connector',
         'integrations/data-ingestion/aws-glue/index',
         {
           type: 'category',
