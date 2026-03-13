@@ -158,7 +158,7 @@ Secondary single-node services can scale vertically, while primary single-node s
 
 ## Limitations {#limitations}
 
-### Workload isolation limitations
+### Workload isolation limitations {#workload-isolation-limitations}
 
 Some workloads can't be isolated to specific services; there are edge cases where one workload in one service will affect another service in the warehouse. These include:
 
