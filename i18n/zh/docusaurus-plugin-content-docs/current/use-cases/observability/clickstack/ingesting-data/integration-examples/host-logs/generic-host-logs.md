@@ -23,15 +23,7 @@ import TabItem from '@theme/TabItem';
 # 使用 ClickStack 监控主机日志 \{#host-logs-clickstack\}
 
 :::note[摘要]
-本指南介绍如何通过配置 OpenTelemetry collector，从 systemd、内核、SSH、cron 以及其他系统服务收集日志，从而使用 ClickStack 监控主机系统日志。您将学会如何：
-
-- 配置 OTel collector 读取系统日志文件
-- 使用自定义配置部署 ClickStack
-- 使用预构建的仪表板可视化主机日志信息（错误、警告、服务活动）
-
-如果希望在为生产主机进行配置之前先测试集成，可以使用带有示例日志的演示数据集。
-
-预计耗时：5–10 分钟
+使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化主机系统日志 (syslog、auth 和 kernel) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有主机集成 \{#existing-hosts\}
@@ -485,12 +477,10 @@ tail -5 /var/log/system.log
 
 ## 后续步骤 {#next-steps}
 
-在完成主机日志监控配置之后：
-
 - 为关键系统事件（服务故障、认证失败、磁盘告警）设置[告警](/use-cases/observability/clickstack/alerts)
 - 按特定单元过滤，以监控特定服务
-- 将主机日志与应用日志进行关联，以实现全面排查故障
-- 创建用于安全监控的自定义仪表盘（SSH 尝试、sudo 使用情况、防火墙拦截）
+- 关联主机日志与应用日志，以进行全面的故障排查
+- 创建用于安全监控的自定义仪表板（SSH 尝试、sudo 使用情况、防火墙拦截）
 
 ## 部署到生产环境 {#going-to-production}
 

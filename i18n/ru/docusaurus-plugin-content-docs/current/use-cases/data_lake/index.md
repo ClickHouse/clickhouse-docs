@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: 'Лейкхаус данных (Data Lakehouse)'
-keywords: ['озеро данных', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']
+keywords: ['озеро данных', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
@@ -38,14 +38,15 @@ ClickHouse предоставляет [табличные функции](/sql-r
 
 Поддерживаемые каталоги:
 
-| Catalog | Guide |
-|---------|-------|
-| AWS Glue | [Руководство по каталогу Glue](/use-cases/data-lake/glue-catalog) |
-| Databricks Unity Catalog | [Руководство по каталогу Unity](/use-cases/data-lake/unity-catalog) |
-| Iceberg REST Catalog | [Руководство по REST-каталогу](/use-cases/data-lake/rest-catalog) |
-| Lakekeeper | [Руководство по каталогу Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) |
-| Project Nessie | [Руководство по каталогу Nessie](/use-cases/data-lake/nessie-catalog) |
-| Microsoft OneLake | [Руководство по каталогу OneLake](/use-cases/data-lake/onelake-catalog) |
+| Catalog                  | Guide                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| AWS Glue                 | [Руководство по каталогу Glue](/use-cases/data-lake/glue-catalog)             |
+| BigLake Metastore        | [Руководство по BigLake Metastore](/use-cases/data-lake/biglake-catalog)      |
+| Databricks Unity Catalog | [Руководство по каталогу Unity](/use-cases/data-lake/unity-catalog)           |
+| Iceberg REST Catalog     | [Руководство по REST-каталогу](/use-cases/data-lake/rest-catalog)             |
+| Lakekeeper               | [Руководство по каталогу Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) |
+| Project Nessie           | [Руководство по каталогу Nessie](/use-cases/data-lake/nessie-catalog)         |
+| Microsoft OneLake        | [Руководство по каталогу OneLake](/use-cases/data-lake/onelake-catalog)       |
 
 См. руководство по началу работы, посвящённое [подключению к каталогам](/use-cases/data-lake/getting-started/connecting-catalogs).
 

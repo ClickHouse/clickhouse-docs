@@ -17,20 +17,11 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使った Nginx トレースのモニタリング \{#nginx-traces-clickstack\}
+# ClickStack による Nginx トレースの監視 \{#nginx-traces-clickstack\}
 
 :::note[TL;DR]
-このガイドでは、既存の Nginx インストールから分散トレースを収集し、ClickStack で可視化する方法を説明します。次の内容を学びます：
-
-- Nginx に OpenTelemetry モジュールを追加する
-- Nginx を設定して ClickStack の OTLP エンドポイントにトレースを送信する
-- HyperDX にトレースが表示されていることを確認する
-- あらかじめ用意されたダッシュボードを使ってリクエスト性能（レイテンシ、エラー、スループット）を可視化する
-
-本番環境の Nginx を設定する前に統合をテストしたい場合のために、サンプルトレースを含むデモ用データセットも用意されています。
-
-所要時間：5〜10 分
-::::
+OpenTelemetry Nginx モジュールを使用して、Nginx からの分散トレースを ClickStack で収集します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
+:::
 
 ## 既存の Nginx との統合 \{#existing-nginx\}
 
@@ -330,7 +321,9 @@ tail -f /var/log/nginx/access.log
 
 ## 次のステップ \{#next-steps\}
 
-さらに深く活用したい場合は、ダッシュボードで次のようなことを試してみてください。
+* 重要なメトリクス (エラー率、レイテンシのしきい値) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* 特定のユースケース向けに追加の[ダッシュボード](/use-cases/observability/clickstack/dashboards)を作成する (API モニタリング、セキュリティイベントなど)
 
-- 重要なメトリクス（エラー率、レイテンシのしきい値）に対するアラートを設定する
-- 特定のユースケース向けに追加のダッシュボードを作成する（API モニタリング、セキュリティイベントなど）
+## 本番環境での運用 \{#going-to-production\}
+
+このガイドでは、トレースを Nginx OpenTelemetry モジュールから ClickStack の OTLP エンドポイントに直接送信します。本番環境にデプロイする場合は、バッチ処理と耐障害性を確保するため、ゲートウェイとして独自の OTel collector を実行することを推奨します。本番環境向けの設定については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。

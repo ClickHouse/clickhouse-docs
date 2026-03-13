@@ -29,6 +29,12 @@ chDB 是一个由 [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2
 
 **新功能！** DataStore 提供了一个与 pandas 兼容的 API，将熟悉的 pandas 语法与 ClickHouse 的高性能相结合。
 
+:::tip 在 Hex 上开始使用
+
+* 📖 <a href="https://app.hex.tech/partnerships/app/chDB-Tutorial-032XsQ4qoKtlXxcw49joav/latest" target="_blank"><b>入门教程</b></a> — 设置您的第一个连接
+* 🚀 <a href="https://app.hex.tech/signup/clickhouse-30" target="_blank"><b>Hex 30 天延长试用</b></a> — 完整访问 ClickHouse 集成功能
+  :::
+
 ### 一行代码迁移 \{#one-line-migration\}
 
 ```python
