@@ -5,7 +5,7 @@ slug: /use-cases/data-lake/support-matrix
 sidebar_position: 3
 pagination_prev: null
 pagination_next: null
-description: 'Comprehensive support matrices for ClickHouse lakehouse format integrations and data catalog connections.'
+description: 'Comprehensive support matrices for ClickHouse open table format integrations and data catalog connections.'
 keywords: ['data lake', 'lakehouse', 'support', 'iceberg', 'delta lake', 'hudi', 'paimon', 'catalog', 'features']
 doc_type: 'reference'
 ---
@@ -13,11 +13,11 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This page provides comprehensive support matrices for ClickHouse's lakehouse integrations. It covers the features available for each lakehouse table format, the catalogs ClickHouse can connect to, and the capabilities supported by each catalog.
+This page provides comprehensive support matrices for ClickHouse's data lake integrations. It covers the features available for each open table format, the catalogs ClickHouse can connect to, and the capabilities supported by each catalog.
 
-## Lakehouse format support {#format-support}
+## Open table format support {#format-support}
 
-ClickHouse integrates with four lakehouse table formats: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), and [Apache Paimon](/sql-reference/table-functions/paimon). Select a format below to view its support matrix.
+ClickHouse integrates with four open table formats: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), and [Apache Paimon](/sql-reference/table-functions/paimon). Select a format below to view its support matrix.
 
 **Legend:** ✅ Supported | ⚠️ Partial / Experimental | ❌ Not supported
 

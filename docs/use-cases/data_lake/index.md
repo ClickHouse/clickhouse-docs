@@ -3,18 +3,18 @@ description: 'Use ClickHouse to query, accelerate, and analyze data in open tabl
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
-title: 'Data Lakehouse'
+title: 'Data Lake'
 keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
-ClickHouse integrates with open lakehouse table formats, including [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), and [Apache Paimon](/sql-reference/table-functions/paimon). This allows users to connect ClickHouse to data already stored in these formats across object storage, combining the analytical power of ClickHouse with their existing data lake infrastructure.
+ClickHouse integrates with open table formats, including [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), and [Apache Paimon](/sql-reference/table-functions/paimon). This allows users to connect ClickHouse to data already stored in these formats across object storage, combining the analytical power of ClickHouse with their existing data lake infrastructure.
 
 ## Why use ClickHouse with open table formats? {#why-clickhouse-uses-lake-formats}
 
 ### Query existing data in place {#querying-data-in-place}
 
-ClickHouse can query open table formats directly in object storage without duplicating data. Organizations standardized on Iceberg, Delta Lake, Hudi, or Paimon can point ClickHouse at existing tables and immediately use its SQL dialect, analytical functions, and efficient native Parquet reader. At the same time, tools like [clickhouse-local](/operations/utilities/clickhouse-local) and [chDB](/chdb) enable exploratory, ad hoc analysis across more than 70 file formats in remote storage, allowing users to interactively explore lakehouse datasets with no infrastructure setup.
+ClickHouse can query open table formats directly in object storage without duplicating data. Organizations standardized on Iceberg, Delta Lake, Hudi, or Paimon can point ClickHouse at existing tables and immediately use its SQL dialect, analytical functions, and efficient native Parquet reader. At the same time, tools like [clickhouse-local](/operations/utilities/clickhouse-local) and [chDB](/chdb) enable exploratory, ad hoc analysis across more than 70 file formats in remote storage, allowing users to interactively explore data lake datasets with no infrastructure setup.
 
 Users can achieve this with either direct reading, using [table functions and table engines](/use-cases/data-lake/getting-started/querying-directly), or by [connecting to a data catalogue](/use-cases/data-lake/getting-started/connecting-catalogs).
 
