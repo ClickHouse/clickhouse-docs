@@ -25,9 +25,16 @@ import dashboard_edit from '@site/static/images/use-cases/observability/hyperdx-
 import dashboard_clickhouse from '@site/static/images/use-cases/observability/hyperdx-dashboard-clickhouse.png';
 import dashboard_services from '@site/static/images/use-cases/observability/hyperdx-dashboard-services.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
+import edit_filters from '@site/static/images/clickstack/dashboards/edit-filters.png';
+import add_filter from '@site/static/images/clickstack/dashboards/add-filter.png';
+import saved_filters from '@site/static/images/clickstack/dashboards/saved-filters.png';
+import filtered_dashboard from '@site/static/images/clickstack/dashboards/filtered-dashboard.png';
+import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
+import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
+import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack 支持对事件进行可视化，并在 ClickStack UI（HyperDX）中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
+ClickStack 支持对事件进行可视化，并在 ClickStack UI (HyperDX) 中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
 
 可视化可以基于 traces、metrics、logs，或任意用户自定义的宽表事件 schema 创建。
 
@@ -171,11 +178,66 @@ ClickStack 还支持使用 [text-to-chart](/use-cases/observability/clickstack/t
 
 <Tagging />
 
+## 自定义筛选器 \{#dashboard-listing-search\}
+
+除了所有仪表板都支持的[自由文本筛选器](#filter-dashboards)外，已保存的仪表板还支持自定义下拉筛选器，其选项由从 ClickHouse 查询得到的数据填充。这类筛选器提供可复用的点选式筛选控件，使仪表板查看者无需手动编写表达式即可进行筛选。
+
+<Image img={filter_dropdown} alt="显示可用服务名称的服务下拉筛选器" size="lg" />
+
+以下步骤演示如何为[“创建仪表板”](#creating-dashboards)部分中创建的仪表板添加自定义筛选器。
+
+<VerticalStepper headerLevel="h3">
+  ### 打开“编辑筛选器”对话框
+
+  打开一个已保存的仪表板，然后在工具栏中选择**编辑筛选器**。
+
+  <Image img={edit_filters} alt="仪表板工具栏中的“编辑筛选器”按钮" size="lg" />
+
+  ### 添加新筛选器
+
+  点击**添加新筛选器**。通过填写**名称**、选择**数据源**并输入**筛选表达式**来配置筛选器——即一个 SQL 列或表达式，其去重后的值将填充到下拉列表中。点击**保存筛选器**。
+
+  例如，要为链路追踪数据添加服务筛选器，可使用 `ServiceName` 作为筛选表达式，并选择 `Traces` 数据源。
+
+  <Image img={add_filter} alt="包含“名称”、“数据源”和“筛选表达式”字段的“添加筛选器”对话框" size="md" />
+
+  “筛选器”弹窗会显示为该仪表板配置的所有筛选器。你可以在此编辑或删除现有筛选器，也可以添加其他筛选器。
+
+  <Image img={saved_filters} alt="显示已配置 Services 筛选器的“筛选器”弹窗" size="md" />
+
+  ### 使用筛选器
+
+  关闭“筛选器”弹窗。新的下拉筛选器会显示在搜索栏下方。点击它可查看可用值，然后选择一个值，以筛选该仪表板上的所有可视化内容。
+
+  <Image img={filtered_dashboard} alt="已筛选到 frontend 服务的仪表板" size="lg" />
+
+  ### &#x20;(可选) 将筛选值保存为默认值
+
+  若要将某个筛选选择保存为仪表板的默认值，请在仪表板菜单中选择**将查询和筛选器保存为默认值**。之后，该仪表板打开时将始终应用所选筛选器。若要重置，请从同一菜单中选择**移除默认查询和筛选器**。
+
+  <Image img={save_filter_values} alt="显示“将查询和筛选器保存为默认值”选项的仪表板菜单" size="lg" />
+</VerticalStepper>
+
+:::note
+自定义下拉筛选器可用于已保存的仪表板。有关此模式实际应用的示例，请参见 [Kubernetes 仪表板](#kubernetes-dashboard)，其中为 pod (容器组) 、部署、节点名称、命名空间和集群提供了内置下拉筛选器。
+:::
+
+## 下钻至搜索 \{#tagging\}
+
+仪表板图块支持下钻到“搜索”页面。在可视化中单击某个数据点，会打开一个包含以下选项的上下文菜单：
+
+* **查看所有事件** — 跳转到“搜索”页面，显示所选时间窗口内的所有事件。
+* **按组筛选** — 跳转到“搜索”页面，并按特定序列进行筛选。
+
+<Image img={drilldown} alt="显示“查看所有事件”和“按组筛选”选项的下钻上下文菜单" size="lg" />
+
+这对于调查在仪表板中发现的特定峰值或异常非常有用——您可以快速从聚合视图切换到其底层的单个事件。
+
 ## 预设 \{#presets\}
 
 HyperDX 部署时即提供开箱即用的仪表板。
 
-### ClickHouse 仪表盘 {#clickhouse-dashboard}
+### ClickHouse 仪表盘 \{#clickhouse-dashboard\}
 
 此仪表盘提供用于监控 ClickHouse 的可视化界面。要打开该仪表盘，请在左侧菜单中选择它。
 
@@ -195,7 +257,7 @@ HyperDX 部署时即提供开箱即用的仪表板。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 仪表板 {#services-dashboard}
+### Services 仪表板 \{#services-dashboard\}
 
 Services 仪表板会基于链路追踪数据展示当前处于活动状态的服务。使用该功能前，用户需要先采集 traces 并配置一个有效的 Traces 数据源。
 

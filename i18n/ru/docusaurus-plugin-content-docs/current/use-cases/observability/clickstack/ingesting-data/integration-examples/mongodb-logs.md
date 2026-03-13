@@ -311,21 +311,26 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   <Image img={example_dashboard} alt="Панель мониторинга логов MongoDB" />
 </VerticalStepper>
 
-## Устранение неполадок {#troubleshooting}
+## Устранение неполадок
 
-**Убедитесь, что в итоговую конфигурацию включён ваш приёмник filelog:**
+### В HyperDX не отображаются логи
+
+Убедитесь, что в итоговую конфигурацию включён ваш приёмник filelog:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-**Проверьте наличие ошибок коллектора:**
+Проверьте наличие ошибок в логах коллектора:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
 ```
 
-**Убедитесь, что MongoDB выводит логи в формате JSON (4.4+):**
+
+### Логи обрабатываются некорректно
+
+Убедитесь, что MongoDB выводит логи в формате JSON (4.4+):
 
 ```bash
 tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
@@ -333,11 +338,12 @@ tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
 
 Если вывод не является корректным JSON, возможно, в вашей версии MongoDB используется устаревший текстовый формат лога (до 4.4). Вам нужно заменить оператор `json_parser` на `regex_parser` или обновить MongoDB до версии 4.4+.
 
+
 ## Следующие шаги {#next-steps}
 
 - Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критических событий (всплески ошибок, пороговые значения для медленных запросов)
 - Создайте дополнительные [панели мониторинга](/use-cases/observability/clickstack/dashboards) для конкретных сценариев использования (мониторинг набора реплик, отслеживание соединений)
 
-## Переход к промышленной эксплуатации \{#going-to-production\}
+## Переход к промышленной эксплуатации {#going-to-production}
 
 В этом руководстве для быстрой настройки используется встроенный в ClickStack OpenTelemetry Collector. Для развертываний в промышленной эксплуатации мы рекомендуем запускать собственный OTel Collector и отправлять данные в OTLP-эндпоинт ClickStack. См. раздел [Отправка данных OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) с конфигурацией для промышленной эксплуатации.

@@ -40,7 +40,7 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 下方显示的日期表示 ClickHouse **开始向各发布通道分阶段推送** 的时间，而不是您的各个服务实际完成升级的时间。
 
 * 推送过程是自动执行的，并会在数周内逐步完成
-* 已配置预定升级时间窗的服务，会在通道推送结束后的下一周内，于其预定时间窗内完成升级
+* 已配置预定升级时间窗的服务，会在通道推送结束后的下一周内，于其预定时间窗内完成升级 (从周一 00:00 UTC 开始)
 * 由于推送暂停 (例如节假日冻结) 或健康监控，推送完成时间可能会被延迟
 
 若要在生产环境升级前进行预先测试，建议对非生产服务使用 Fast 或 Regular 通道，对生产服务使用 Slow 通道。
@@ -48,6 +48,19 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 
 <ReleaseSchedule
   releases={[
+  {
+   changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+   version: '26.2',
+   fast_start_date: '待定',
+   fast_end_date: '待定',
+   regular_start_date: '待定',
+   regular_end_date: '待定',
+   slow_start_date: '待定',
+   slow_end_date: '待定',
+   fast_progress: 'green',
+   regular_progress: 'green',
+   slow_progress: 'green'
+  },
   {
    changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
    version: '25.12',

@@ -23,6 +23,7 @@ ClickStack предоставляет несколько способов орг
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Пересылка логов Lambda с помощью Rotel       |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs)     | Пересылка групп логов CloudWatch             |
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics)                | Мониторинг производительности JVM            |
+| [Kafka Logs](/use-cases/observability/clickstack/integrations/kafka-logs)                  | Сбор логов брокера Kafka                     |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics)            | Мониторинг производительности Kafka          |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes)                  | Мониторинг кластеров K8s                     |
 | [MongoDB Logs](/use-cases/observability/clickstack/integrations/mongodb-logs)              | Сбор логов сервера MongoDB                   |
