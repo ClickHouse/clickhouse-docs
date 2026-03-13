@@ -3464,6 +3464,42 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────────┘
 ```
 
+## toDaysInMonth \{#toDaysInMonth\}
+
+導入バージョン: v25.5.0
+
+`Date` または `DateTime` の月の日数を返します。
+
+戻り値の範囲は 28 ～ 31 です。
+
+**構文**
+
+```sql
+toDaysInMonth(datetime)
+```
+
+**引数**
+
+* `datetime` — 月の日数を取得する対象の日付、または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**戻り値**
+
+指定された日付または日時が属する月の日数を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT toDaysInMonth(toDate('2023-02-01')), toDaysInMonth(toDate('2024-02-01')), toDaysInMonth(toDate('2023-01-01'))
+```
+
+```response title=Response
+┌─toDaysInMonth(toDate('2023-02-01'))─┬─toDaysInMonth(toDate('2024-02-01'))─┬─toDaysInMonth(toDate('2023-01-01'))─┐
+│                                  28 │                                  29 │                                  31 │
+└─────────────────────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
+```
+
 ## toDaysSinceYearZero \{#toDaysSinceYearZero\}
 
 導入バージョン: v23.9.0

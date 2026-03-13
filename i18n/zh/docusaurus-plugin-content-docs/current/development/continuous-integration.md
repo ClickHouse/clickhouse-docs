@@ -7,25 +7,23 @@ title: '持续集成（CI）'
 doc_type: 'reference'
 ---
 
-# 持续集成（CI） \{#continuous-integration-ci\}
+# 持续集成 (CI) \{#continuous-integration-ci\}
 
-当你提交一个 pull request 时，ClickHouse 的[持续集成（CI）系统](tests.md#test-automation)会对你的代码运行一些自动检查。
-这会在代码仓库维护者（ClickHouse 团队成员）审查了你的代码并在 pull request 上添加 `can be tested` 标签之后进行。
-检查结果会显示在 GitHub 的 pull request 页面上，如 [GitHub 检查文档](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)所述。
+当你提交一个拉取请求时，ClickHouse 的[持续集成 (CI) 系统](tests.md#test-automation)会对你的代码运行一些自动检查。
+这会在代码仓库维护者（ClickHouse 团队成员）审查了你的代码并在你的拉取请求上添加 `can be tested` 标签之后进行。
+检查结果会显示在 GitHub 的拉取请求页面上，如 [GitHub 检查文档](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)所述。
 如果某项检查失败，你可能需要修复它。
-本页面概述了你可能遇到的检查类型，以及可以采取的修复措施。
+本页面概述了你可能遇到的检查，以及可以采取的修复措施。
 
 如果看起来检查失败与你的更改无关，则可能是暂时性故障或基础设施问题。
-向该 pull request 推送一个空提交以重新运行 CI 检查：
+向该拉取请求推送一个空提交以重新运行 CI 检查：
 
 ```shell
-git reset
 git commit --allow-empty
 git push
 ```
 
-如果你不确定该怎么做，请向维护人员寻求帮助。
-
+如果你不确定该怎么做，请向维护者寻求帮助。
 
 ## 与 master 合并 \{#merge-with-master\}
 
@@ -100,22 +98,73 @@ python -m ci.praktika run "Style check" --test cpp
 除 Python 3 和 Docker 外，无需其他任何依赖。
 
 
-## 快速测试 \{#fast-test\}
+## Running stateless tests \{#running-stateless-tests\}
 
-通常这是在 PR 上运行的第一个检查。
-它会构建 ClickHouse 并运行大部分[无状态功能测试](tests.md#functional-tests)，但会省略部分测试。
-如果该步骤失败，在修复之前不会启动后续检查。
-查看报告以确定哪些测试失败，然后按照[这里](/development/tests#running-a-test-locally)的说明在本地重现失败。
+本地安装并使用默认设置的 ClickHouse 可能适用于某些特定测试用例，但无法正确运行所有测试查询。在 CI 中，每个作业都会安装特定的 ClickHouse 配置（例如 S3 存储、Parallel Replicas），手动复现这些配置可能会很繁琐。为避免这种情况，你可以在本地使用与 CI 相同的编排方式复现任意 CI 作业——无需手动配置。
 
-#### 在本地运行快速测试： \{#running-fast-test-locally\}
+#### 前置条件 \{#ci-prerequisites\}
+
+* Python 3 (仅限标准库) 
+* Docker
+
+如有需要，请先在 Ubuntu 上安装 Docker，然后重新登录：
 
 ```sh
-python -m ci.praktika run "Fast test" [--test some_test_name]
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker "$USER"
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
 ```
 
-这些命令会拉取 `clickhouse/fast-test` Docker 镜像，并在容器化环境中运行该作业。
-只需 Python 3 和 Docker，无需其他依赖。
 
+#### 在本地运行 CI 作业 \{#run-ci-job-locally\}
+
+从 CI 报告中任选一个作业，并在本地运行：
+
+```bash
+python -m ci.praktika run "<JOB_NAME>"
+```
+
+* 始终按 CI 报告中的原样准确引用作业名称 (其中可能包含空格和逗号) ，例如：`"Stateless tests (amd_debug, parallel)"`。这样会使用与 CI 中相同的 ClickHouse 配置，并运行相同的测试。
+* 作业名称中的架构和构建类型 (例如 `amd_debug`) 是 CI 特有的标签。在本地运行时，它们不起作用——作业会使用你提供的二进制文件，以及你当前运行所在的架构。作业名称只决定 ClickHouse 配置和测试集 (除非通过 `--test` 覆盖) 。
+* 在 CI 中，功能测试会拆分为多个批次，以更高效地利用资源。例如，`"Stateless tests (amd_debug, parallel)"` 和 `"Stateless tests (amd_debug, sequential)"` 合起来覆盖完整范围：可安全并行的测试会并发运行，其余测试则顺序运行。这种拆分通过在可能的情况下最大化并行度来缩短 CI 总耗时。要在本地复现完整的测试范围，请将这两个批次都运行一遍。
+* 此外，还有一个 `"Fast test"` CI 作业，它会运行范围有限的功能测试，以验证 ClickHouse 的基本功能——它使用不包含全部可选模块的构建，也是发现回归问题的最快方式。你也可以用同样的方法在本地运行它。将你的 ClickHouse 二进制文件放到默认搜索路径之一 (`./ci/tmp/clickhouse`、`./build/programs/clickhouse` 或 `./clickhouse`) ——否则该作业会先尝试构建 ClickHouse：
+  ```bash
+  python -m ci.praktika run "Fast test"
+  ```
+
+
+#### 在 CI 作业中运行特定测试 \{#run-specific-tests-within-ci-job\}
+
+使用 `--test` 时，该作业会准备与 CI 中使用的相同 ClickHouse 配置，但仅运行所选测试：
+
+```bash
+python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+  --test 00001_select1
+```
+
+* 你可以指定多个测试名称：
+  ```bash
+  python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+    --test 00001_select1 00002_log_and_exception_messages_formatting
+  ```
+* 提示：如果你对 ClickHouse 配置没有特殊要求，只需运行特定测试，请使用别名 `functional`，而不是完整的作业名称：
+  ```bash
+  python -m ci.praktika run functional --test 00001_select1
+  ```
+
+
+#### 其他自定义选项 \{#additional-customization-options\}
+
+* `--path PATH` — ClickHouse 二进制文件的自定义路径。默认情况下，运行器会按以下顺序搜索：`./ci/tmp/clickhouse`、`./build/programs/clickhouse`、`./clickhouse`。
+* `--count N` — 将每个测试重复运行 N 次。
+* `--workers N` — 覆盖根据机器容量自动计算出的并行工作线程数。
 
 ## 构建检查 \{#build-check\}
 

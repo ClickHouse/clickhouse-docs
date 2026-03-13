@@ -185,7 +185,7 @@ ALTER TABLE table DROP INDEX text_idx;
 Если строки-разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
-Чтобы понять, как токенизатор разбивает входную строку, можно использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens):
+Чтобы понять, как токенизатор разбивает входную строку, можно использовать функции [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) и [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern):
 
 Пример:
 
@@ -210,9 +210,9 @@ SELECT tokens('abc def', 'ngrams', 3);
 Типичные варианты использования аргумента препроцессора включают следующее:
 
 
-1. Приведение к нижнему или верхнему регистру для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8) (см. первый пример ниже).
+1. Приведение к нижнему/верхнему регистру или свёртка регистра для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8).
 2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
-3. Удаление или преобразование нежелательных символов или подстрок, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate).
+3. Удаление или преобразование нежелательных символов или подстрок, таких как диакритические знаки, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate), [removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8).
 
 Выражение препроцессора должно преобразовывать входное значение типа [String](/sql-reference/data-types/string.md) или [FixedString](/sql-reference/data-types/fixedstring.md) в значение того же типа.
 Если текстовый индекс был построен по столбцу типа `Nullable(T)` или `LowCardinality(T)`, то выражение препроцессора должно принимать значения типов Nullable(T) или LowCardinality(T) (то есть не приводить к выбросу исключения).
@@ -221,7 +221,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 Кроме того, выражение препроцессора должно ссылаться только на столбец или выражение, на основе которых определён текстовый индекс.
 
@@ -287,6 +288,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 Пример:
 
+
 ```sql
 CREATE TABLE table
 (
@@ -299,8 +301,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**Дополнительные аргументы (необязательные)**.
-
+**Другие аргументы (необязательно)**.
 
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>

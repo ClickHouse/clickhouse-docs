@@ -18,18 +18,10 @@ import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 Redis 로그 모니터링하기 \{#redis-clickstack\}
+# ClickStack를 사용한 Redis 로그 모니터링 \{#redis-clickstack\}
 
 :::note[요약]
-이 가이드는 OpenTelemetry collector를 구성하여 Redis 서버 로그를 수집하도록 하고, ClickStack으로 Redis를 모니터링하는 방법을 다룹니다. 이 문서를 통해 다음 내용을 알 수 있습니다:
-
-- Redis 로그 형식을 파싱하도록 OTel collector를 구성하는 방법
-- 사용자 정의 설정으로 ClickStack을 배포하는 방법
-- 미리 준비된 대시보드를 사용하여 Redis Metrics(연결 수, 명령 수, 메모리, 오류)를 시각화하는 방법
-
-프로덕션 Redis를 구성하기 전에 연동을 테스트하고 싶다면 샘플 로그가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 5-10분
+OTel `filelog` receiver를 사용해 ClickStack에서 Redis 서버 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Redis와의 통합 \{#existing-redis\}
@@ -395,9 +387,11 @@ Redis 로그의 형식이 다른 경우 `regex_parser` operator에서 정규식 
 * 예시: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-더 살펴보고 싶다면, 대시보드를 활용하여 시도해 볼 수 있는 다음 단계를 살펴보십시오.
+* 중요 메트릭(오류율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오.
+* 특정 사용 사례(API 모니터링, 보안 이벤트)를 위한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 생성하십시오.
 
-- 중요 메트릭(오류율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오.
-- 특정 사용 사례(API 모니터링, 보안 이벤트)를 위한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 생성하십시오.
+## 프로덕션 환경으로 전환하기
+
+이 가이드는 빠르게 설정할 수 있도록 ClickStack에 기본 제공되는 OpenTelemetry Collector를 확장합니다. 프로덕션 배포에서는 자체 OTel Collector를 실행하고 데이터를 ClickStack의 OTLP 엔드포인트로 전송하는 방식을 권장합니다. 프로덕션 구성은 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.

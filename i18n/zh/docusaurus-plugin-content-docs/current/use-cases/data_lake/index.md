@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: '数据湖仓'
-keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']
+keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
@@ -38,14 +38,15 @@ ClickHouse 提供了[表函数](/sql-reference/table-functions)和[引擎](/engi
 
 当前支持的 catalog 包括：
 
-| Catalog | 指南 |
-|---------|-------|
-| AWS Glue | [Glue Catalog 指南](/use-cases/data-lake/glue-catalog) |
-| Databricks Unity Catalog | [Unity Catalog 指南](/use-cases/data-lake/unity-catalog) |
-| Iceberg REST Catalog | [REST Catalog 指南](/use-cases/data-lake/rest-catalog) |
-| Lakekeeper | [Lakekeeper Catalog 指南](/use-cases/data-lake/lakekeeper-catalog) |
-| Project Nessie | [Nessie Catalog 指南](/use-cases/data-lake/nessie-catalog) |
-| Microsoft OneLake | [OneLake Catalog 指南](/use-cases/data-lake/onelake-catalog) |
+| Catalog                  | 指南                                                               |
+| ------------------------ | ---------------------------------------------------------------- |
+| AWS Glue                 | [Glue Catalog 指南](/use-cases/data-lake/glue-catalog)             |
+| BigLake Metastore        | [BigLake Metastore 指南](/use-cases/data-lake/biglake-catalog)     |
+| Databricks Unity Catalog | [Unity Catalog 指南](/use-cases/data-lake/unity-catalog)           |
+| Iceberg REST Catalog     | [REST Catalog 指南](/use-cases/data-lake/rest-catalog)             |
+| Lakekeeper               | [Lakekeeper Catalog 指南](/use-cases/data-lake/lakekeeper-catalog) |
+| Project Nessie           | [Nessie Catalog 指南](/use-cases/data-lake/nessie-catalog)         |
+| Microsoft OneLake        | [OneLake Catalog 指南](/use-cases/data-lake/onelake-catalog)       |
 
 请参阅[连接到 catalog](/use-cases/data-lake/getting-started/connecting-catalogs)的入门指南。
 
