@@ -39,7 +39,7 @@ Scheduled upgrade windows are available for all release channels for services in
 The dates shown below indicate when ClickHouse **begins the rollout** to each release channel, not when your individual service will be upgraded.
 
 - Rollouts are automated and occur gradually over multiple weeks
-- Services with configured scheduled upgrade windows are upgraded during their scheduled window in the week after the channel rollout ends
+- Services with configured scheduled upgrade windows are upgraded during their scheduled window in the week after the channel rollout ends (starting on Monday 00:00 UTC)
 - Rollout completion may be delayed due to rollout pauses (e.g., holiday freezes) or health monitoring
 
 For advance testing before production upgrades, use the Fast or Regular channel for non-production services and the Slow channel for production services.

@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: 'Data Lakehouse'
-keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']
+keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
 doc_type: 'landing-page'
 ---
 
@@ -41,6 +41,7 @@ Supported catalogs include:
 | Catalog | Guide |
 |---------|-------|
 | AWS Glue | [Glue Catalog guide](/use-cases/data-lake/glue-catalog) |
+| BigLake Metastore | [BigLake Metastore guide](/use-cases/data-lake/biglake-catalog) |
 | Databricks Unity Catalog | [Unity Catalog guide](/use-cases/data-lake/unity-catalog) |
 | Iceberg REST Catalog | [REST Catalog guide](/use-cases/data-lake/rest-catalog) |
 | Lakekeeper | [Lakekeeper Catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
