@@ -62,3 +62,18 @@ After completing the above configuration steps, create a support ticket with the
 * The availability zones these subnets are in
 
 Our team will review your configuration and complete the provisioning from our side.
+
+## Customer-managed IAM roles {#customer-managed-iam-roles}
+
+For organizations with advanced security requirements or strict compliance policies, you can provide your own IAM roles instead of having ClickHouse Cloud create them. This approach gives you complete control over IAM permissions and allows you to enforce your organization's security policies.
+
+:::info
+Customer-managed IAM roles are currently in private preview. If you require this capability, please contact ClickHouse Support to discuss your specific requirements and timeline.
+
+When available, this feature will allow you to:
+* Provide pre-configured IAM roles for ClickHouse Cloud to use
+* Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
+* Maintain full control over role permissions and trust relationships
+:::
+
+For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge).
