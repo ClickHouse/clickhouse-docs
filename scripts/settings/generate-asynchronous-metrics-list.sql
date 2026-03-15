@@ -1,4 +1,4 @@
--- Generate a Markdown list of all CurrentMetrics with descriptions
+-- Generate a Markdown list of all asynchronous metrics with descriptions
 SELECT
     arrayStringConcat(
         groupArray(formatted_entry),
@@ -6,9 +6,9 @@ SELECT
     )
 FROM (
     SELECT concat('### ', metric, ' {#', lower(metric), '}', char(10), char(10), description) as formatted_entry
-    FROM system.metrics
+    FROM system.asynchronous_metrics
     ORDER BY metric
 )
 LIMIT 1
-INTO OUTFILE 'temp-metrics-list.md' TRUNCATE
+INTO OUTFILE 'temp-asynchronous-metrics-list.md' TRUNCATE
 FORMAT LineAsString
