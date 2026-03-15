@@ -19,11 +19,11 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
-      src: "/docs/jp/js/kapa_config.js",
+      src: "/docs/ko/js/kapa_config.js",
       async: false,
     },
     {
-      src: "/docs/jp/js/kapa_widget.js",
+      src: "/docs/ko/js/kapa_widget.js",
       async: true,
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
@@ -44,9 +44,9 @@ const config = {
   },
   title: "ClickHouse Docs",
   tagline:
-    "ドキュメント、クイックスタートガイド、ユーザーガイド、技術リファレンス、FAQ など、多様な情報をご提供します。",
+      "다양한 정보를 제공합니다: 문서, 빠른 시작 가이드, 사용자 가이드, 기술 참조, 자주 묻는 질문 등.",
   url: "https://clickhouse.com",
-  baseUrl: "/docs/jp/",
+  baseUrl: "/docs/ko/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -56,8 +56,8 @@ const config = {
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
-    defaultLocale: "jp",
-    locales: ["en", "jp", "zh", "ru"],
+    defaultLocale: "ko",
+    locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -79,6 +79,11 @@ const config = {
         label: "Русский",
         htmlLang: "ru",
         path: "ru",
+      },
+      ko: {
+        label: "한국어",
+        htmlLang: "ko",
+        path: "ko",
       }
     },
   },
@@ -130,16 +135,16 @@ const config = {
         },
         blog: {
           path: "knowledgebase",
-          blogTitle: "ClickHouse ナレッジベース",
-          blogDescription: "ナレッジベース",
-          blogSidebarTitle: "すべてのKB記事",
+          blogTitle: "ClickHouse 지식베이스",
+          blogDescription: "지식베이스",
+          blogSidebarTitle: "모든 KB 문서",
           routeBasePath: "/knowledgebase",
           postsPerPage: 10,
           blogSidebarCount: "ALL",
           feedOptions: {
             type: "all",
-            title: "ClickHouse ナレッジベースフィード",
-            description: "ClickHouse ナレッジベースに投稿された記事のフィード",
+            title: "ClickHouse 지식베이스 피드",
+            description: "ClickHouse 지식베이스에 게시된 문서 피드",
             copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
             language: "en",
             createFeedItems: async (params) => {
@@ -204,12 +209,12 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       metadata: [
-        {name: 'Accept-Language', content: 'ja-JP,ja;q=0.9'},
+        {name: 'Accept-Language', content: 'ko-KR,ko;q=0.9'},
       ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
-        indexName: "clickhouse-jp",
+        indexName: "clickhouse-ko",
         contextualSearch: false,
         searchPagePath: "search",
       },
@@ -235,19 +240,19 @@ const config = {
         style: "light",
         links: [
           {
-            label: "Trademark",
+            label: "상표",
             to: "https://clickhouse.com/legal/trademark-policy",
           },
           {
-            label: "Privacy",
+            label: "개인정보 보호",
             to: "https://clickhouse.com/legal/privacy-policy",
           },
           {
-            label: "Security",
+            label: "보안",
             to: "https://trust.clickhouse.com/",
           },
           {
-            label: "Terms of Service",
+            label: "서비스 약관",
             to: "https://clickhouse.com/legal/agreements/terms-of-service",
           },
         ],
@@ -293,6 +298,23 @@ const config = {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
+    secondaryNavItems: [
+      {
+        type: "dropdown",
+        hoverable: "false",
+        html:
+          '<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+          '<path d="M6.95 12.6496L9.75 5.26628H11.0333L13.8333 12.6496H12.55L11.9 10.7663H8.91667L8.25 12.6496H6.95ZM9.28333 9.69961H11.5L10.4167 6.64961H10.3667L9.28333 9.69961ZM2.08333 10.7996L1.21667 9.93294L4.33333 6.83294C3.94444 6.39961 3.60556 5.95228 3.31667 5.49094C3.02778 5.03005 2.77222 4.54405 2.55 4.03294H3.83333C4.02222 4.41072 4.22222 4.74672 4.43333 5.04094C4.64444 5.33561 4.89444 5.64405 5.18333 5.96628C5.63889 5.47739 6.01667 4.97472 6.31667 4.45828C6.61667 3.94139 6.86667 3.3885 7.06667 2.79961H0.25V1.58294H4.55V0.349609H5.78333V1.58294H10.0833V2.79961H8.3C8.07778 3.53294 7.78333 4.24116 7.41667 4.92428C7.05 5.60783 6.59444 6.25516 6.05 6.86628L7.53333 8.36628L7.06667 9.63294L5.16667 7.73294L2.08333 10.7996Z" fill="currentColor"/>\n' +
+          "</svg>",
+        position: "right",
+        items: [
+          {
+            label: "English",
+            to: "/",
+          },
+        ],
+      },
+    ],
   },
 };
 
