@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 ClickHouse Cloud supports secure role-based access to Iceberg data stored in object storage (typically S3) by using an ARN-based AWS IAM trust relationship. This guide follows the same secure-setup pattern as [Accessing S3 data securely](/cloud/data-sources/secure-s3), and adds Iceberg-specific configuration in ClickHouse.
 
-## Overview
+## Overview {#overview}
 
 - Obtain the ClickHouse Cloud service IAM role ARN.
 - Create an IAM role in your AWS account that ClickHouse can assume.
@@ -50,7 +50,7 @@ This ARN is required for the trust policy on the AWS IAM role that will access y
 
 5. Attach an IAM policy with S3 and catalog permissions suited to your Iceberg workflow.
 
-#### Read-only Iceberg S3 policy
+#### Read-only Iceberg S3 policy (#read-only-iceberg-s3-policy)
 
 ```json
 {
@@ -75,7 +75,7 @@ This ARN is required for the trust policy on the AWS IAM role that will access y
 }
 ```
 
-#### Glue Data Catalog permissions (optional, if using Glue catalog)
+#### Glue Data Catalog permissions (optional, if using Glue catalog) {#glue-data-catalog-permissions}
 
 ```json
 {
@@ -101,7 +101,7 @@ This ARN is required for the trust policy on the AWS IAM role that will access y
 
 ## Configure Iceberg access in ClickHouse Cloud {#configure-iceberg-access}
 
-### Option A: Iceberg table function with role ARN
+### Option A: Iceberg table function with role ARN {#iceberg-table-function-with-role-arn}
 
 Use the `icebergS3` table function with the `NOSIGN` option and role-based credentials. ClickHouse Cloud will call STS to assume the role.
 
@@ -114,7 +114,7 @@ FROM icebergS3(
 );
 ```
 
-### Option B: Persistent Iceberg table engine
+### Option B: Persistent Iceberg table engine {#persistent-iceberg-table-engine}
 
 ```sql
 CREATE TABLE iceberg_secure (
@@ -129,7 +129,7 @@ ENGINE = IcebergS3(
 );
 ```
 
-### Option C: Glue catalog + IcebergS3
+### Option C: Glue catalog + IcebergS3 {#glue-catalog-plus-icebergs3}
 
 ```sql
 CREATE TABLE my_db.my_table
@@ -148,7 +148,7 @@ SETTINGS
 
 > Note: When using Glue catalog, ensure your IAM role has both S3 and Glue read/list permissions.
 
-## Validate access
+## Validate access {#validate-access}
 
 1. Run a simple query:
 
@@ -187,7 +187,7 @@ curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.r
 }
 ```
 
-## Troubleshooting
+## Troubleshooting {#troubelshooting}
 
 - Verify the role ARN from ClickHouse Cloud service settings.
 - Ensure your bucket/objects are in the same region as the Iceberg queries to reduce latency and cost.
