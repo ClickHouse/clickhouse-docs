@@ -50,7 +50,7 @@ This ARN is required for the trust policy on the AWS IAM role that will access y
 
 5. Attach an IAM policy with S3 and catalog permissions suited to your Iceberg workflow.
 
-#### Read-only Iceberg S3 policy (#read-only-iceberg-s3-policy)
+#### Read-only Iceberg S3 policy {#read-only-iceberg-s3-policy}
 
 ```json
 {
