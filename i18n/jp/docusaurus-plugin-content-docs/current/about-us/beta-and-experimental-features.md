@@ -74,7 +74,7 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 
 ## 実験的な設定 \{#experimental-settings\}
 
-| 名前                                                                                                                                                                                                                                  | 既定値                     |
+| 名前                                                                                                                                                                                                                                  | デフォルト値                  |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
 | [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
@@ -130,6 +130,7 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [allow&#95;experimental&#95;prql&#95;dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                                                                        | `0`                     |
 | [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                                            | `0`                     |
+| [allow&#95;experimental&#95;expire&#95;snapshots](/operations/settings/settings#allow_experimental_expire_snapshots)                                                                                                                | `0`                     |
 | [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                                        | `0`                     |
 | [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | ``                      |
 | [make&#95;distributed&#95;plan](/operations/settings/settings#make_distributed_plan)                                                                                                                                                | `0`                     |

@@ -11,7 +11,7 @@ keywords: ['データレイク', 'レイクハウス', 'MergeTree', '高速化',
 doc_type: 'guide'
 ---
 
-[前のセクション](/use-cases/data-lake/getting-started/connecting-catalogs)では、ClickHouse をデータカタログに接続し、オープンテーブル形式を直接クエリしました。保存先のままデータをクエリできるのは便利ですが、レイクハウス形式は、ダッシュボードや運用レポートを支える低レイテンシかつ高並行性のワークロード向けには最適化されていません。こうしたユースケースでは、ClickHouse の [MergeTree](/engines/table-engines/mergetree-family/mergetree) エンジンにデータを読み込むことで、はるかに高いパフォーマンスを得られます。
+[前のセクション](/use-cases/data-lake/getting-started/connecting-catalogs)では、ClickHouse をデータカタログに接続し、オープンテーブル形式を直接クエリしました。保存先のままデータをクエリできるのは便利ですが、オープンテーブル形式は、ダッシュボードや運用レポートを支える低レイテンシかつ高並行性のワークロード向けには最適化されていません。こうしたユースケースでは、ClickHouse の [MergeTree](/engines/table-engines/mergetree-family/mergetree) エンジンにデータを読み込むことで、はるかに高いパフォーマンスを得られます。
 
 MergeTree には、オープンテーブル形式を直接読み取る場合と比べて、いくつかの利点があります。
 
@@ -90,9 +90,9 @@ FROM unity.`icebench.single_day_log`
 1 row in set. Elapsed: 1.265 sec.
 ```
 
-## lakehouseテーブルに対してクエリを実行する \{#query-lakehouse\}
+## データレイクテーブルに対してクエリを実行する \{#query-lakehouse\}
 
-スレッド名とインスタンスタイプでログを絞り込み、メッセージテキスト内のエラーを検索し、結果をロガーごとにグループ化するクエリを実行します。
+スレッド名とインスタンスタイプでログをフィルタリングし、メッセージテキスト内のエラーを検索し、結果をロガーごとにグループ化するクエリを実行します。
 
 ```sql
 SELECT
@@ -163,7 +163,7 @@ ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 
 ### カタログからデータを挿入する \{#insert-data\}
 
-`INSERT INTO SELECT` を使用して、レイクハウステーブルから約3億件のデータを ClickHouse のテーブルに読み込みます。
+`INSERT INTO SELECT` を使用して、データレイクテーブルから約3億件のデータを ClickHouse のテーブルに読み込みます。
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`

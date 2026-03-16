@@ -7,25 +7,23 @@ title: '지속적 통합 (CI)'
 doc_type: 'reference'
 ---
 
-# Continuous Integration (CI) \{#continuous-integration-ci\}
+# 지속적 통합 (CI) \{#continuous-integration-ci\}
 
-풀 리퀘스트를 제출하면 ClickHouse [continuous integration (CI) 시스템](tests.md#test-automation)이 코드에 대해 일련의 자동 검사를 실행합니다.
-이는 저장소 메인테이너(ClickHouse 팀 구성원)가 코드를 검토하고 풀 리퀘스트에 `can be tested` 라벨을 추가한 이후에 수행됩니다.
-검사 결과는 [GitHub checks 문서](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)에 설명된 것처럼 GitHub 풀 리퀘스트 페이지에 표시됩니다.
-검사가 실패하면 이를 수정해야 할 수도 있습니다.
-이 페이지에서는 마주칠 수 있는 각종 검사와, 이를 수정하기 위해 취할 수 있는 조치에 대해 개괄적으로 설명합니다.
+pull request를 제출하면 ClickHouse [지속적 통합 (CI) 시스템](tests.md#test-automation)이 코드에 대해 몇 가지 자동 검사를 실행합니다.
+이 작업은 저장소 메인테이너(ClickHouse 팀 구성원)가 코드를 검토하고 pull request에 `can be tested` 레이블을 추가한 후에 이루어집니다.
+검사 결과는 [GitHub checks 문서](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)에 설명된 대로 GitHub pull request 페이지에 표시됩니다.
+검사에 실패하면 이를 수정해야 할 수도 있습니다.
+이 페이지에서는 마주칠 수 있는 검사와 이를 수정하기 위해 할 수 있는 일에 대한 개요를 제공합니다.
 
-검사 실패가 변경 사항과 관련이 없어 보인다면, 일시적인 실패 또는 인프라 문제일 수 있습니다.
-CI 검사를 다시 시작하려면 풀 리퀘스트에 빈 커밋을 푸시하십시오:
+검사 실패가 변경 사항과 관련이 없어 보인다면, 일시적인 실패이거나 인프라 문제일 수 있습니다.
+CI 검사를 다시 시작하려면 pull request에 빈 커밋을 푸시하세요:
 
 ```shell
-git reset
 git commit --allow-empty
 git push
 ```
 
-확실하지 않은 점이 있다면 메인테이너에게 도움을 요청하십시오.
-
+어떻게 해야 할지 잘 모르겠다면 메인테이너에게 도움을 요청하세요.
 
 ## master와 병합 \{#merge-with-master\}
 
@@ -100,22 +98,73 @@ python -m ci.praktika run "Style check" --test cpp
 Python 3와 Docker 외에는 추가 종속성이 필요하지 않습니다.
 
 
-## Fast test \{#fast-test\}
+## Running stateless tests \{#running-stateless-tests\}
 
-일반적으로 PR에 대해 가장 먼저 실행되는 검사입니다.
-ClickHouse를 빌드하고 [stateless functional tests](tests.md#functional-tests)의 대부분을 실행하며, 일부는 건너뜁니다.
-이 검사가 실패하면 문제가 해결될 때까지 이후 검사는 시작되지 않습니다.
-어떤 테스트가 실패했는지 보고서를 확인한 후, [여기](/development/tests#running-a-test-locally)에 설명된 대로 로컬에서 해당 실패를 재현하십시오.
+기본 설정으로 로컬에 설치된 ClickHouse는 특정 테스트 사례에서는 작동할 수 있지만, 모든 테스트 쿼리를 올바르게 실행할 수는 없습니다. CI에서는 각 작업이 특정 ClickHouse 구성(예: S3 스토리지, Parallel Replicas)을 설치하므로, 이를 수동으로 재현하는 것은 번거로울 수 있습니다. 이를 피하려면 CI와 동일한 오케스트레이션을 사용해 어떤 CI 작업이든 로컬에서 재현할 수 있습니다 — 수동 구성은 필요하지 않습니다.
 
-#### 로컬에서 빠른 테스트 실행하기: \{#running-fast-test-locally\}
+#### 사전 준비 사항 \{#ci-prerequisites\}
+
+* Python 3 (표준 라이브러리만)
+* Docker
+
+필요한 경우 Ubuntu에 Docker를 설치한 후 다시 로그인하십시오:
 
 ```sh
-python -m ci.praktika run "Fast test" [--test some_test_name]
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker "$USER"
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
 ```
 
-이 명령어들은 `clickhouse/fast-test` Docker 이미지를 가져와 컨테이너 환경에서 작업을 실행합니다.
-Python 3와 Docker만 있으면 되며, 그 외의 추가 종속성은 필요하지 않습니다.
 
+#### CI Job을 로컬에서 실행하기 \{#run-ci-job-locally\}
+
+CI 리포트에서 아무 Job 이름이나 선택한 다음 로컬에서 실행하세요:
+
+```bash
+python -m ci.praktika run "<JOB_NAME>"
+```
+
+* 작업 이름은 CI 보고서에 표시된 그대로(공백과 쉼표가 포함될 수 있음) 반드시 정확히 따옴표로 감싸십시오. 예: `"Stateless tests (amd_debug, parallel)"`. 이렇게 하면 CI와 동일한 ClickHouse 구성이 설정되고 동일한 테스트가 실행됩니다.
+* 작업 이름에 포함된 아키텍처와 빌드 유형(예: `amd_debug`)은 CI 전용 레이블입니다. 로컬에서 실행할 때는 영향을 주지 않습니다 — 제공한 바이너리와 현재 실행 중인 아키텍처가 그대로 사용됩니다. 작업 이름은 ClickHouse 구성과 테스트 세트만 결정합니다(`--test`로 재정의하지 않는 한).
+* CI에서는 리소스를 더 효율적으로 활용하기 위해 기능 테스트를 여러 배치로 나눕니다. 예를 들어, `"Stateless tests (amd_debug, parallel)"`와 `"Stateless tests (amd_debug, sequential)"`를 함께 실행하면 전체 범위를 모두 포괄합니다. 병렬 실행이 가능한 테스트는 동시에 실행되고, 나머지는 순차적으로 실행됩니다. 이러한 분할은 가능한 곳에서 병렬성을 최대화하여 전체 CI 시간을 줄입니다. 로컬에서 전체 테스트 범위를 재현하려면 두 배치를 모두 실행하십시오.
+* 또한 기본적인 ClickHouse 기능을 검증하기 위해 제한된 범위의 기능 테스트를 실행하는 `"Fast test"` CI 작업도 있습니다 — 이 작업은 모든 선택적 모듈이 포함되지 않은 빌드를 사용하며, 회귀를 가장 빠르게 포착할 수 있는 방법입니다. 로컬에서도 같은 방식으로 실행할 수 있습니다. ClickHouse 바이너리를 기본 검색 경로 중 하나(`./ci/tmp/clickhouse`, `./build/programs/clickhouse`, 또는 `./clickhouse`)에 배치하십시오. 그렇지 않으면 작업이 먼저 ClickHouse를 빌드하려고 시도합니다:
+  ```bash
+  python -m ci.praktika run "Fast test"
+  ```
+
+
+#### CI 작업 내에서 특정 테스트 실행 \{#run-specific-tests-within-ci-job\}
+
+`--test`를 사용하면 작업에서 CI에 사용되는 것과 동일한 ClickHouse 설정을 준비하고, 선택한 테스트만 실행합니다.
+
+```bash
+python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+  --test 00001_select1
+```
+
+* 여러 테스트 이름을 지정할 수 있습니다:
+  ```bash
+  python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+    --test 00001_select1 00002_log_and_exception_messages_formatting
+  ```
+* 팁: 아무 ClickHouse 구성이나 사용해도 되고 특정 테스트만 실행하면 되는 경우, 전체 작업 이름 대신 별칭 `functional`을 사용하십시오:
+  ```bash
+  python -m ci.praktika run functional --test 00001_select1
+  ```
+
+
+#### 추가 사용자 지정 옵션 \{#additional-customization-options\}
+
+* `--path PATH` — ClickHouse 바이너리에 대한 사용자 지정 경로입니다. 기본적으로 러너는 `./ci/tmp/clickhouse`, `./build/programs/clickhouse`, `./clickhouse` 순서로 검색합니다.
+* `--count N` — 각 테스트를 N번 반복합니다.
+* `--workers N` — 시스템 용량을 기준으로 자동 계산된 병렬 작업자 수를 재정의합니다.
 
 ## 빌드 확인 \{#build-check\}
 

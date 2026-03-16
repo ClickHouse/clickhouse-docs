@@ -19,19 +19,10 @@ import example_dashboard from '@site/static/images/clickstack/mysql/example-dash
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# Monitoring MySQL Logs with ClickStack \{#mysql-logs-clickstack\}
+# ClickStack を使用した MySQL ログの監視 \{#mysql-logs-clickstack\}
 
 :::note[TL;DR]
-このガイドでは、OpenTelemetry collector を構成して MySQL サーバーログを取り込むことで、ClickStack を使って MySQL を監視する方法を解説します。次の内容を学びます:
-
-- MySQL を構成してエラーログとスロークエリログを出力する
-- ログのインジェスト用にカスタムの OTel collector 設定を作成する
-- カスタム設定を使って ClickStack をデプロイする
-- あらかじめ用意されたダッシュボードを使って、MySQL ログから得られるインサイト（エラー、スロークエリ、接続）を可視化する
-
-本番環境の MySQL を構成する前に連携をテストしたい場合のために、サンプルログを含むデモ用データセットが用意されています。
-
-所要時間: 10〜15 分
+OTel `filelog` receiver を使用して、ClickStack で MySQL のエラーログとスロークエリログを収集・可視化します。デモ用データセットとあらかじめ用意されたダッシュボードが含まれています。
 :::
 
 ## 既存の MySQL との統合 \{#existing-mysql\}
@@ -460,13 +451,11 @@ head -5 /var/log/mysql/error.log
 フォーマットが大きく異なる場合は、設定内の正規表現パターンを調整してください。
 
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-MySQL ログ監視の設定が完了したら、次の作業を行います。
-
-- 重大なイベント（接続失敗、しきい値を超えるスロークエリ、エラーの急増）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- クエリパターンごとのスロークエリ分析用にカスタムダッシュボードを作成する
-- 観測されたクエリパフォーマンスの傾向に基づいて `long_query_time` を調整する
+* 重大なイベント (接続失敗、しきい値を超えるスロークエリ、エラーの急増) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* クエリパターンごとのスロークエリ分析用にカスタムダッシュボードを作成する
+* 観測されたクエリパフォーマンスの傾向に基づいて `long_query_time` を調整する
 
 ## 本番運用に向けて {#going-to-production}
 

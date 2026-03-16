@@ -16,18 +16,10 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した PostgreSQL メトリクスの監視 \{#postgres-metrics-clickstack\}
+# ClickStack による PostgreSQL メトリクスの監視 \{#postgres-metrics-clickstack\}
 
 :::note[TL;DR]
-このガイドでは、OpenTelemetry collector の PostgreSQL receiver を構成し、ClickStack で PostgreSQL のパフォーマンスメトリクスを監視する方法を説明します。次のことを学べます:
-
-- PostgreSQL メトリクスを収集するように OTel collector を構成する
-- カスタム設定を適用した ClickStack をデプロイする
-- 事前構築済みのダッシュボードを使用して PostgreSQL のパフォーマンス（トランザクション、接続数、データベースサイズ、キャッシュヒット率）を可視化する
-
-本番環境の PostgreSQL データベースを設定する前にインテグレーションをテストしたい場合のために、サンプルメトリクスを含むデモデータセットも利用できます。
-
-所要時間: 10〜15 分
+OTel PostgreSQL receiver を使用して、ClickStack で PostgreSQL のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
 :::
 
 ## 既存の PostgreSQL との統合 \{#existing-postgres\}
@@ -270,11 +262,9 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 
 ## 次のステップ \{#next-steps\}
 
-PostgreSQL メトリクスの監視をセットアップしたら、次のことを実施します:
-
-- 重要なしきい値（接続数上限、高いロールバック率、低いキャッシュヒット率）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- `pg_stat_statements` 拡張機能でクエリレベルの監視を有効にする
-- 異なるエンドポイントとサービス名でレシーバー設定を複製して、複数の PostgreSQL インスタンスを監視する
+* 重要なしきい値 (接続数上限、高いロールバック率、低いキャッシュヒット率) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* `pg_stat_statements` 拡張機能でクエリレベルの監視を有効にする
+* 異なるエンドポイントとサービス名でレシーバー設定を複製して、複数の PostgreSQL インスタンスを監視する
 
 ## 本番環境への移行 \{#going-to-production\}
 
