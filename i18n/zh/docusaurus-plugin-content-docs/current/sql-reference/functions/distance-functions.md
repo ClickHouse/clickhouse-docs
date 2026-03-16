@@ -21,7 +21,7 @@ doc_type: '参考文档'
 
 引入于：v21.11.0
 
-计算 `L1` 空间中两点之间的距离（向量的元素为坐标）（1-范数，即 [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离）。
+计算 `L1` 空间中两点之间的距离 (向量的元素为坐标)  (1-范数，即 [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离) 。
 
 **语法**
 
@@ -74,7 +74,7 @@ L1Norm(vector)
 
 **返回值**
 
-返回 L1 范数或 [出租车几何（taxicab geometry）](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+返回 L1 范数或 [出租车几何 (taxicab geometry) ](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
 **示例**
 
@@ -94,7 +94,7 @@ SELECT L1Norm((1, 2))
 
 引入版本：v21.11.0
 
-在 `L1` 空间（[出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry)）中，计算给定向量的单位向量（元组的元素表示坐标）。
+在 `L1` 空间 ([出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry)) 中，计算给定向量的单位向量 (元组的元素表示坐标) 。
 
 **语法**
 
@@ -130,7 +130,7 @@ SELECT L1Normalize((1, 2))
 
 引入版本：v21.11.0
 
-计算欧几里得空间中两个点之间的距离（将向量的各元素视为坐标）（[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)）。
+计算欧几里得空间中两个点之间的距离 (将向量的各元素视为坐标)  ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **语法**
 
@@ -167,7 +167,7 @@ SELECT L2Distance((1, 2), (2, 3))
 
 自 v25.10.0 引入
 
-计算欧几里得空间中两个点之间的近似距离（向量的各个分量作为坐标）（参见 [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)）。
+计算欧几里得空间中两个点之间的近似距离 (向量的各个分量作为坐标)  (参见 [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **语法**
 
@@ -181,7 +181,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 * `vectors` — 向量。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 参考向量。[`Array(T)`](/sql-reference/data-types/array)
-* `p` — 在距离计算中从每个向量元素中使用的位数（1 到该元素的位宽）。量化级别控制精度与速度之间的权衡。使用较少的位可以带来更快的 I/O 和计算速度，但精度会降低；使用更多的位可以提高精度，但会牺牲性能。[`UInt`](/sql-reference/data-types/int-uint)
+* `p` — 在距离计算中从每个向量元素中使用的位数 (1 到该元素的位宽) 。量化级别控制精度与速度之间的权衡。使用较少的位可以带来更快的 I/O 和计算速度，但精度会降低；使用更多的位可以提高精度，但会牺牲性能。[`UInt`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -243,7 +243,7 @@ SELECT L2Norm((1, 2))
 
 引入版本：v21.11.0
 
-在欧几里得空间中，计算给定向量（元组的元素为各坐标）的单位向量（基于[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）。
+在欧几里得空间中，计算给定向量 (元组的元素为各坐标) 的单位向量 (基于[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **语法**
 
@@ -316,7 +316,7 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 引入版本：v22.7.0
 
-计算向量元素平方和的平方根（[`L2Norm`](#L2Norm)）的平方。
+计算向量元素平方和的平方根 ([`L2Norm`](#L2Norm)) 的平方。
 
 **语法**
 
@@ -352,7 +352,7 @@ SELECT L2SquaredNorm((1, 2))
 
 引入版本：v21.11.0
 
-计算两个点在 `L_{inf}` 空间中的距离（向量的元素为坐标），即使用[最大范数（maximum norm）](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))。
+计算两个点在 `L_{inf}` 空间中的距离 (向量的元素为坐标) ，即使用[最大范数 (maximum norm) ](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))。
 
 **语法**
 
@@ -369,7 +369,7 @@ LinfDistance(vector1, vector2)
 
 **返回值**
 
-返回无穷范数（Infinity-norm）距离。[`Float64`](/sql-reference/data-types/float)
+返回无穷范数 (Infinity-norm) 距离。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -425,7 +425,7 @@ SELECT LinfNorm((1, -2))
 
 引入于：v21.11.0
 
-在 `L_{inf}` 空间中使用[最大范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))，计算给定向量的单位向量（元组的元素为该向量的各坐标）。
+在 `L_{inf}` 空间中使用[最大范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))，计算给定向量的单位向量 (元组的元素为该向量的各坐标) 。
 
 **语法**
 
@@ -461,7 +461,7 @@ SELECT LinfNormalize((3, 4))
 
 引入于：v21.11.0
 
-计算 `Lp` 空间中两个点之间的距离（向量的元素作为坐标，[p 范数距离](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)）。
+计算 `Lp` 空间中两个点之间的距离 (向量的元素作为坐标，[p 范数距离](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)) 。
 
 **语法**
 
@@ -503,9 +503,9 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 
 特殊情况：
 
-* 当 p=1 时，等价于 L1Norm（曼哈顿距离）。
-* 当 p=2 时，等价于 L2Norm（欧几里得距离）。
-* 当 p=∞ 时，等价于 LinfNorm（最大范数）。
+* 当 p=1 时，等价于 L1Norm (曼哈顿距离) 。
+* 当 p=2 时，等价于 L2Norm (欧几里得距离) 。
+* 当 p=∞ 时，等价于 LinfNorm (最大范数) 。
 
 **语法**
 
@@ -542,7 +542,7 @@ SELECT LpNorm((1, -2), 2)
 
 引入于：v21.11.0
 
-计算给定向量在 `Lp` 空间中的单位向量（将元组中的元素视为坐标，并使用 [p-范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)）。
+计算给定向量在 `Lp` 空间中的单位向量 (将元组中的元素视为坐标，并使用 [p-范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)) 。
 
 **语法**
 
@@ -579,7 +579,7 @@ SELECT LpNormalize((3, 4), 5)
 
 引入于：v1.1.0
 
-计算两个向量之间的[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)（元组的元素为坐标）。返回值越小，向量越相似。
+计算两个向量之间的[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) (元组的元素为坐标) 。返回值越小，向量越相似。
 
 **语法**
 
@@ -616,7 +616,7 @@ SELECT cosineDistance((1, 2), (2, 3));
 
 自 v26.1.0 引入
 
-计算两个点之间的近似[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)（将向量的各分量视为坐标）。返回值越小，向量之间越相似。
+计算两个点之间的近似[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) (将向量的各分量视为坐标) 。返回值越小，向量之间越相似。
 
 **语法**
 
@@ -630,7 +630,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 * `vectors` — 向量。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 参考向量。[`Array(T)`](/sql-reference/data-types/array)
-* `p` — 在距离计算中，从每个向量元素中使用的位数（1 到元素位宽）。量化级别控制精度与速度之间的权衡。使用较少的位可以更快完成 I/O 和计算，但精度会降低；使用更多的位则可以提高精度，但会牺牲性能。[`UInt`](/sql-reference/data-types/int-uint)
+* `p` — 在距离计算中，从每个向量元素中使用的位数 (1 到元素位宽) 。量化级别控制精度与速度之间的权衡。使用较少的位可以更快完成 I/O 和计算，但精度会降低；使用更多的位则可以提高精度，但会牺牲性能。[`UInt`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

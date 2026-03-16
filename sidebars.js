@@ -1039,6 +1039,7 @@ const sidebars = {
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
+        'integrations/data-ingestion/apache-flink/flink-connector',
         'integrations/data-ingestion/aws-glue/index',
         {
           type: 'category',
@@ -1929,6 +1930,7 @@ const sidebars = {
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
         'use-cases/observability/clickstack/dashboards',
+        'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',

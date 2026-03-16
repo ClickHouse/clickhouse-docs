@@ -134,12 +134,12 @@ select a,b,c from {{ source('raw', 'table_2') }}
 此功能处于 beta 阶段，并从 **dbt-clickhouse 1.10 版本** 开始可用。API 可能会根据社区反馈而变更。
 :::
 
-默认情况下，dbt-clickhouse 会在单个模型中创建并管理目标表和 materialized view（即上文所述的[隐式目标](#implicit-target)方法）。这种方式存在一些限制：
+默认情况下，dbt-clickhouse 会在单个模型中创建并管理目标表和 materialized view (即上文所述的[隐式目标](#implicit-target)方法) 。这种方式存在一些限制：
 
-- 所有资源（目标表 + MV）共享同一套配置。如果多个 MV 指向同一个目标表，必须使用 `UNION ALL` 语法在同一处定义。
-- 这些资源无法单独迭代处理，必须通过同一个模型文件统一管理。
-- 无法方便地单独控制每个 MV 的名称。
-- 目标表与 MV 之间共享所有配置，难以分别为每个资源单独配置，也不容易判断每项配置分别属于哪个资源。
+* 所有资源 (目标表 + MV) 共享同一套配置。如果多个 MV 指向同一个目标表，必须使用 `UNION ALL` 语法在同一处定义。
+* 这些资源无法单独迭代处理，必须通过同一个模型文件统一管理。
+* 无法方便地单独控制每个 MV 的名称。
+* 目标表与 MV 之间共享所有配置，难以分别为每个资源单独配置，也不容易判断每项配置分别属于哪个资源。
 
 **显式目标** 功能允许你将目标表单独定义为常规的 `table` 物化方式，然后在 materialized view 模型中引用该目标表。
 
@@ -309,8 +309,8 @@ GROUP BY event_date, event_type
 
 可能原因：
 
-- materialized view 上设置了 `catchup=True`，并且目标表上设置了 `repopulate_from_mvs_on_full_refresh=True`：根据你希望执行的操作，仅保留其中一个。有关更多细节，请查看[配置章节](#explicit-target-configuration)。
-- 目标表未使用 `WHERE 0` 定义：目标表应在创建时为空，但如果未包含 `WHERE 0`，内部查询可能会插入数据。请确保包含该子句。
+* materialized view 上设置了 `catchup=True`，并且目标表上设置了 `repopulate_from_mvs_on_full_refresh=True`：根据你希望执行的操作，仅保留其中一个。有关更多细节，请查看[配置章节](#explicit-target-configuration)。
+* 目标表未使用 `WHERE 0` 定义：目标表应在创建时为空，但如果未包含 `WHERE 0`，内部查询可能会插入数据。请确保包含该子句。
 
 #### 在执行 `dbt run --full-refresh` 后进行活跃摄取时的数据丢失 \{#data-loss-active-ingestion\}
 
@@ -437,11 +437,11 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 #### 隐式目标操作 \{#ingestion-implicit-target\}
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| First `dbt run` | 1. 创建目标表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 创建 materialized view | ⚠️ **在步骤 1 到 3 之间，materialized view 处于“盲区”。** 在此时间窗口内插入到源表的任何行都不会被捕获。 |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 安全。materialized view 会以原子方式更新。 |
-| `dbt run --full-refresh` | 1. 创建备份表<br/>2. 插入数据（如果 `catchup=True`）<br/>3. 删除 materialized view<br/>4. 交换表<br/>5. 重新创建 materialized view | ⚠️ **在重新创建期间，materialized view 处于“盲区”。** 在步骤 3 到 5 之间插入到源表的数据不会出现在新的目标表中。 |
+| Operation                | Internal process                                                                                                   | Safety while inserts are happening                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| First `dbt run`          | 1. 创建目标表<br />2. 插入数据 (如果 `catchup=True`) <br />3. 创建 materialized view                                            | ⚠️ **在步骤 1 到 3 之间，materialized view 处于“盲区”。** 在此时间窗口内插入到源表的任何行都不会被捕获。     |
+| Subsequent `dbt run`     | `ALTER TABLE ... MODIFY QUERY`                                                                                     | ✅ 安全。materialized view 会以原子方式更新。                                          |
+| `dbt run --full-refresh` | 1. 创建备份表<br />2. 插入数据 (如果 `catchup=True`) <br />3. 删除 materialized view<br />4. 交换表<br />5. 重新创建 materialized view | ⚠️ **在重新创建期间，materialized view 处于“盲区”。** 在步骤 3 到 5 之间插入到源表的数据不会出现在新的目标表中。 |
 
 #### 显式目标操作 \{#ingestion-explicit-target\}
 

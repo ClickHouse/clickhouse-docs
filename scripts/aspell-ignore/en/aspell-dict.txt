@@ -840,6 +840,7 @@ MV's
 MVCC
 MacBook
 MacOS
+manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -3921,6 +3922,7 @@ unnest
 unoptimized
 unparsed
 unpooled
+unprocessable
 unrealiable
 unreplicated
 unresolvable

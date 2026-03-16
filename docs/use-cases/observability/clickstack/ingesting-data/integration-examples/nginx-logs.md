@@ -20,16 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Nginx Logs with ClickStack {#nginx-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Nginx with ClickStack by configuring the OpenTelemetry collector to ingest Nginx access logs. You'll learn how to:
-
-- Configure Nginx to output JSON-formatted logs
-- Create a custom OTel collector configuration for log ingestion
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize Nginx metrics
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production Nginx.
-
-Time Required: 5-10 minutes
+Collect and visualize Nginx access logs (JSON format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing Nginx {#existing-nginx}
@@ -341,7 +332,10 @@ docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 ```
 
 ## Next steps {#next-steps}
-If you want to explore further, here are some next steps to experiment with your dashboard
 
-- Set up alerts for critical metrics (error rates, latency thresholds)
-- Create additional dashboards for specific use cases (API monitoring, security events)
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
+- Create additional [dashboards](/use-cases/observability/clickstack/dashboards) for specific use cases (API monitoring, security events)
+
+## Going to production {#going-to-production}
+
+This guide extends ClickStack's built-in OpenTelemetry Collector for quick setup. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

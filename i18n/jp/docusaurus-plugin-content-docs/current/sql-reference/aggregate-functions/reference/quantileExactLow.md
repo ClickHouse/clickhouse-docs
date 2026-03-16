@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 その他のレベルについては、`level * size_of_array` の値に対応するインデックスの要素が返されます。
 
-`quantile*` 関数を同じクエリ内で異なるレベルで複数使用する場合、内部状態はまとめて処理されません（そのため、クエリの効率は本来よりも低くなります）。このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
+`quantile*` 関数を同じクエリ内で異なるレベルで複数使用する場合、内部状態はまとめて処理されません (そのため、クエリの効率は本来よりも低くなります) 。このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
 
 **構文**
 

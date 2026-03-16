@@ -144,10 +144,10 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   上記の例では、`my_first_table`は4つのカラムを持つ[`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md)テーブルです:
 
-  * `user_id`: 32ビット符号なし整数（[UInt32](../../sql-reference/data-types/int-uint.md)）
+  * `user_id`: 32ビット符号なし整数 ([UInt32](../../sql-reference/data-types/int-uint.md)) 
   * `message`: 他のデータベースシステムにおける `VARCHAR`、`BLOB`、`CLOB` などの型に代わる [String](../../sql-reference/data-types/string.md) データ型
   * `timestamp`: ある瞬間を表す [DateTime](../../sql-reference/data-types/datetime.md) 値
-  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md)）
+  * `metric`: 32ビット浮動小数点数 ([Float32](../../sql-reference/data-types/float.md)) 
 
   :::note テーブルエンジン
   テーブルエンジンは以下を決定します：
@@ -163,7 +163,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   #### プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
 
-  先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です（プライマリキーの実装は、少し意外に感じられるかもしれません）：
+  先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です (プライマリキーの実装は、少し意外に感じられるかもしれません) ：
 
   * ClickHouse のプライマリキーは、テーブル内の各行に対し&#x3066;***一意ではありません***
 

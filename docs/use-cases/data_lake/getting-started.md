@@ -1,5 +1,5 @@
 ---
-title: 'Getting started with lakehouse table formats'
+title: 'Getting started with open table formats'
 sidebar_label: 'Getting started'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1

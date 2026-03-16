@@ -2587,9 +2587,9 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Когда настройка включена, допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
+При включении допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
 
 ## type_json_skip_duplicated_paths \{#type_json_skip_duplicated_paths\}
 

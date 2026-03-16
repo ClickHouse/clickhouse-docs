@@ -381,92 +381,88 @@ API TableProvider предоставляет ряд мощных функций:
 
 При записи в несуществующую таблицу коннектор автоматически создаёт таблицу с соответствующей схемой. Коннектор предоставляет разумные значения по умолчанию:
 
-- **Движок (Engine)**: По умолчанию используется `MergeTree()`, если явно не указан. Вы можете указать другой движок с помощью опции `engine` (например, `ReplacingMergeTree()`, `SummingMergeTree()` и т. д.)
-- **ORDER BY**: **Обязательно** — при создании новой таблицы вы должны явно указать опцию `order_by`. Коннектор проверяет, что все указанные столбцы существуют в схеме.
-- **Поддержка ключей с типом Nullable**: Автоматически добавляет `settings.allow_nullable_key=1`, если ORDER BY содержит столбцы типа Nullable
+* **Движок (Engine)**: По умолчанию используется `MergeTree()`, если явно не указан. Вы можете указать другой движок с помощью опции `engine` (например, `ReplacingMergeTree()`, `SummingMergeTree()` и т. д.)
+* **ORDER BY**: **Обязательно** — при создании новой таблицы вы должны явно указать опцию `order_by`. Коннектор проверяет, что все указанные столбцы существуют в схеме.
+* **Поддержка ключей с типом Nullable**: Автоматически добавляет `settings.allow_nullable_key=1`, если ORDER BY содержит столбцы типа Nullable
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # Задание параметров создания таблицы с пользовательским движком
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# Задание параметров создания таблицы с пользовательским движком
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // С явными параметрами создания таблицы и пользовательским движком
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// С явными параметрами создания таблицы и пользовательским движком
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// С явными параметрами создания таблицы и пользовательским движком
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // С явными параметрами создания таблицы и пользовательским движком
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
@@ -498,17 +494,17 @@ df.write()
 
 Эти параметры используются, когда таблица ещё не существует и её нужно создать:
 
-| Параметр                    | Описание                                                                    | Значение по умолчанию | Обязательный |
-|-----------------------------|-----------------------------------------------------------------------------|------------------------|--------------|
-| `order_by`                  | Столбец или столбцы, используемые в выражении ORDER BY. Несколько столбцов указываются через запятую | Н/Д                    | **Да**       |
-| `engine`                    | Движок таблицы ClickHouse (например, `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, и т. д.) | `MergeTree()`          | Нет          |
-| `settings.allow_nullable_key` | Включить Nullable-ключи в ORDER BY (для ClickHouse Cloud)               | Определяется автоматически** | Нет   |
-| `settings.<key>`            | Любой параметр таблицы ClickHouse                                           | Н/Д                    | Нет          |
-| `cluster`                   | Имя кластера для distributed таблиц                                        | Н/Д                    | Нет          |
-| `clickhouse.column.<name>.variant_types` | Список типов ClickHouse для столбцов типа Variant, разделённый запятыми (например, `String, Int64, Bool, JSON`). Имена типов чувствительны к регистру. Пробелы после запятых необязательны. | Н/Д | Нет |
+| Параметр                                 | Описание                                                                                                                                                                                    | Значение по умолчанию        | Обязательный |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `order_by`                               | Столбцы, используемые в выражении ORDER BY. Несколько столбцов указываются через запятую                                                                                                    | Н/Д                          | **Да**       |
+| `engine`                                 | Движок таблицы ClickHouse (например, `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, и т. д.)                                                                                  | `MergeTree()`                | Нет          |
+| `settings.allow_nullable_key`            | Включить Nullable-ключи в ORDER BY (для ClickHouse Cloud)                                                                                                                                   | Определяется автоматически** | Нет          |
+| `settings.<key>`                         | Любой параметр таблицы ClickHouse                                                                                                                                                           | Н/Д                          | Нет          |
+| `cluster`                                | Имя кластера для distributed таблиц                                                                                                                                                         | Н/Д                          | Нет          |
+| `clickhouse.column.<name>.variant_types` | Список типов ClickHouse для столбцов типа Variant, разделённый запятыми (например, `String, Int64, Bool, JSON`). Имена типов чувствительны к регистру. Пробелы после запятых необязательны. | Н/Д                          | Нет          |
 
-\* Параметр `order_by` обязателен при создании новой таблицы. Все указанные столбцы должны существовать в схеме.  
-\** Автоматически устанавливается в `1`, если ORDER BY содержит столбцы типа Nullable и параметр не задан явно.
+* Параметр `order_by` обязателен при создании новой таблицы. Все указанные столбцы должны существовать в схеме.
+** Автоматически устанавливается в `1`, если ORDER BY содержит столбцы типа Nullable и параметр не задан явно.
 
 :::tip
 **Рекомендация**: Для ClickHouse Cloud явно задайте `settings.allow_nullable_key=1`, если ваши столбцы в ORDER BY могут быть Nullable, так как ClickHouse Cloud требует этот параметр.

@@ -2587,7 +2587,7 @@ SHOW CREATE 쿼리에서 식별자에 사용할 인용부호 스타일을 설정
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 이 설정을 활성화하면 `{"a" : 42, "a" : {"b" : 42}}`처럼 일부 키가 중복되어 있으나 그중 하나가 중첩된 객체인 JSON도 파싱되도록 허용됩니다.
 

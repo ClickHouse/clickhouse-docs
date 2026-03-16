@@ -115,11 +115,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
 
-## 부분 문자열 검색을 위한 N-그램 블룸 필터(ngrambf_v1) \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+## 부분 문자열 검색을 위한 N-그램 블룸 필터(ngrambf_v1) *(사용 중단됨)* \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
 
-> 참고: ClickHouse 26.2 버전부터 텍스트 인덱스가 일반적으로 사용 가능(GA)이 됨에 따라, 전체 텍스트 검색 용도로는 블룸 필터 기반 인덱스를 더 이상 권장하지 않습니다.
-> 블룸 필터는 더 compact하지만, 확률적 구조이기 때문에 거짓 양성이 발생하는 경향이 있습니다.
-> 또한, 설정 가능한 범위도 제한적입니다.
+:::note
+ClickHouse 버전 `>= 26.2`에서는 전체 텍스트 검색에 `ngrambf_v1` 인덱스를 사용하는 방식이 더 이상 사용되지 않으며, 대신 `text` 인덱스를 사용해야 합니다(자세한 내용은 [여기](/engines/table-engines/mergetree-family/textindexes)를 참조하십시오).
+:::
 
 `ngrambf_v1` 인덱스는 문자열을 N-그램으로 분할합니다. `LIKE '%...%'` 패턴을 사용하는 쿼리에 효과적으로 동작합니다. String/FixedString/맵(`mapKeys`/`mapValues`를 통해)을 지원하며, 크기, 해시 개수, 시드 값을 조정할 수 있습니다. 자세한 내용은 [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 문서를 참조하십시오.
 
@@ -156,11 +156,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 튜닝 방법 전반에 대한 안내는 [매개변수 문서](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)를 참조하십시오.
 
 
-## 단어 기반 검색을 위한 토큰 블룸 필터(tokenbf_v1) \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+## 단어 기반 검색을 위한 토큰 블룸 필터(tokenbf_v1) *(지원 중단 예정)* \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
 
-> 참고: ClickHouse 26.2 버전부터 텍스트 인덱스가 일반 제공(GA)이 되면서, 전체 텍스트 검색 용도로는 블룸 필터 기반 인덱스 사용을 더 이상 권장하지 않습니다.
-> 블룸 필터는 더 compact하지만, 확률적 특성 때문에 오탐(false positive)을 발생시키는 경향이 있습니다.
-> 또한, 구성 옵션이 제한적입니다.
+:::note
+전체 텍스트 검색에 `tokenbf_v1` 인덱스를 사용하는 방식은 ClickHouse 버전 `>= 26.2`부터 `text` 인덱스를 대신 사용하는 것으로 지원 중단되었습니다(자세한 내용은 [여기](/engines/table-engines/mergetree-family/textindexes)를 참고하십시오).
+:::
 
 `tokenbf_v1`는 영숫자가 아닌 문자로 구분된 토큰을 인덱싱합니다. [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` 단어 패턴, 또는 `=`/`IN` 연산자와 함께 사용하는 것이 좋습니다. `String`/`FixedString`/`Map` 타입을 지원합니다.
 

@@ -19,14 +19,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring JVM Metrics with ClickStack {#jvm-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor JVM applications with ClickStack using the OpenTelemetry Java agent to collect metrics. You'll learn how to:
-- Attach the OpenTelemetry Java agent to your JVM application
-- Configure the agent to send metrics to ClickStack via OTLP
-- Use a pre-built dashboard to visualize heap memory, garbage collection, threads, and CPU
-
-A demo dataset with sample metrics is available if you want to test the integration before instrumenting your production applications.
-
-Time Required: 5-10 minutes
+Monitor JVM applications in ClickStack using the OpenTelemetry Java agent. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing JVM application {#existing-jvm}
@@ -279,8 +272,6 @@ If ClickStack is on a remote host, ensure port 4318 is accessible from your appl
 Ensure you're using the latest stable agent version (currently 2.22.0), as newer versions often include performance improvements.
 
 ## Next steps {#next-steps}
-
-Now that you have JVM metrics flowing into ClickStack, consider:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics like high heap usage, frequent GC pauses, or thread exhaustion
 - Explore [other ClickStack integrations](/use-cases/observability/clickstack/integration-guides) to unify your observability data

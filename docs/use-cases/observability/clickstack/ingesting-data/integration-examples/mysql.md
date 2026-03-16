@@ -21,16 +21,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring MySQL Logs with ClickStack {#mysql-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor MySQL with ClickStack by configuring the OpenTelemetry collector to ingest MySQL server logs. You'll learn how to:
-
-- Configure MySQL to output error logs and slow query logs
-- Create a custom OTel collector configuration for log ingestion
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize MySQL log insights (errors, slow queries, connections)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production MySQL.
-
-Time Required: 10-15 minutes
+Collect and visualize MySQL error and slow query logs in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing MySQL {#existing-mysql}
@@ -447,8 +438,6 @@ Expected format:
 If your format differs significantly, adjust the regex patterns in the configuration.
 
 ## Next steps {#next-steps}
-
-After setting up MySQL logs monitoring:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, slow queries exceeding thresholds, error spikes)
 - Create custom dashboards for slow query analysis by query pattern

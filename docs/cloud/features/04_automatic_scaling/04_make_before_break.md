@@ -24,7 +24,7 @@ The image below shows how this might happen for a cluster with 3 replicas where 
 
 <Image img={mbb_diagram} size="lg" alt="Example diagram for a cluster with 3 replicas which gets vertically scaled" />
 
-Overall, MBB leads to a seamless, less disruptive scaling and upgrade experience compared to the break-first approach previously utilized.
+Overall, MBB provides a seamless and less disruptive scaling and upgrade experience compared to the previously used break-first approach.
 
 With MBB, there are some key behaviors that you need to be aware of:
 

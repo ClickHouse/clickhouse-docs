@@ -19,10 +19,10 @@ doc_type: 'reference'
   此函数对聚合中的所有参数计算哈希值，然后在计算中使用这些哈希值。
   它使用 [KMV](https://datasketches.apache.org/docs/Theta/InverseEstimate.html) 算法来近似计算不同参数值的数量。
 
-  使用了 4096（2^12）个 64 位 sketch。
+  使用了 4096 (2^12) 个 64 位 sketch。
   状态大小约为 41 KB。
 
-  相对误差为 3.125%（95% 置信水平），详情参见[相对误差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html)。
+  相对误差为 3.125% (95% 置信水平) ，详情参见[相对误差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html)。
 </details>
 
 **语法**

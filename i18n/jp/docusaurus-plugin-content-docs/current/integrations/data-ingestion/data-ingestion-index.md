@@ -20,7 +20,7 @@ ClickHouse は、データ統合および変換のために数多くのソリュ
 | [Artie](/integrations/artie)                                     | 本番データを ClickHouse に複製し、顧客向けアナリティクス、運用ワークフロー、および本番環境での Agentic AI を実現する、フルマネージドのリアルタイムデータストリーミングプラットフォームです。                                          |
 | [Azure Synapse](/integrations/azure-synapse)                     | Microsoft Azure が提供するフルマネージドのクラウド型分析サービスであり、ビッグデータとデータウェアハウジングを統合し、SQL、Apache Spark、データパイプラインを用いて、大規模なデータ統合・変換・分析を簡素化します。 |
 | [Azure Data Factory](/integrations/azure-data-factory)           | クラウドベースのデータ統合サービスであり、大規模なデータワークフローを作成、スケジュール、およびオーケストレーションすることができます。 |
-| [Apache Beam](/integrations/apache-beam)                         | バッチおよびストリーム（継続的）データ処理パイプラインの定義と実行を可能にする、オープンソースの統一プログラミングモデルです。                                                                                 |
+| [Apache Beam](/integrations/apache-beam)                         | バッチおよびストリーム (継続的) データ処理パイプラインの定義と実行を可能にする、オープンソースの統一プログラミングモデルです。                                                                                 |
 | [BladePipe](/integrations/bladepipe)                         | サブセカンドレイテンシでリアルタイムなエンドツーエンドのデータ統合を実現し、プラットフォーム間のシームレスなデータフローを可能にするツールです。                                                                                |
 | [dbt](/integrations/dbt)                                         | アナリティクスエンジニアが、単に SELECT 文を書くことで、データウェアハウス内のデータを変換できるようにします。                                                                                                                                |
 | [dlt](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse) | Python スクリプトに追加して使用できるオープンソースライブラリであり、多様でしばしば扱いにくいデータソースから、適切に構造化された最新のデータセットへデータをロードできます。                                                                            |

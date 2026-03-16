@@ -52,7 +52,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
   ```sql
   ALTER USER default SETTINGS async_insert = 1
   ```
-- 你可以在插入语句中通过 `SETTINGS` 子句指定异步插入相关设置：
+- 你可以在插入查询中通过 `SETTINGS` 子句指定异步插入相关设置：
   ```sql
   INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=1 VALUES (...)
   ```
@@ -62,3 +62,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
   ```
+
+:::note
+异步插入不适用于 `INSERT INTO ... SELECT` 查询。当插入包含 `SELECT` 子句时，无论 `async_insert` 设置如何，该查询始终会同步执行。
+:::

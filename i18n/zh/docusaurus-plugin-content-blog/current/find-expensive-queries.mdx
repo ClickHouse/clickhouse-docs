@@ -56,7 +56,7 @@ LIMIT 10;
 `initial_query_id` 表示在接收请求的节点上发起的分布式查询执行的初始查询 ID。`query_id` 则是指在其他节点上执行的子查询的 ID。更多详情请参见[这篇文章](https://clickhouse.com/docs/knowledgebase/find-expensive-queries#initial_query_id-vs-query_id)。
 :::
 
-你可以使用查询 ID 获取该查询的更多详细信息。让我们来分析一下上面运行时间最长的查询（第一个查询）：
+你可以使用查询 ID 获取该查询的更多详细信息。让我们来分析一下上面运行时间最长的查询 (第一个查询) ：
 
 ```sql
 SELECT query
@@ -64,7 +64,7 @@ FROM clusterAllReplicas(default, system.query_log)
 WHERE initial_query_id = '7fc488a5-838f-410d-88ee-2f492825a26b'
 ```
 
-原来这正是我们用来向名为 `youtube` 的表中插入数十亿行数据的查询（参见 [YouTube dislikes 数据集](https://clickhouse.com/docs/getting-started/example-datasets/youtube-dislikes)）：
+原来这正是我们用来向名为 `youtube` 的表中插入数十亿行数据的查询 (参见 [YouTube dislikes 数据集](https://clickhouse.com/docs/getting-started/example-datasets/youtube-dislikes)) ：
 
 ```sql
 INSERT INTO youtube
@@ -95,7 +95,7 @@ FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/yo
 
 ## initial_query_id VS query_id \{#initial_query_id-vs-query_id\}
 
-请注意，在 ClickHouse 集群环境（例如 ClickHouse Cloud）中，`initial_query_id` 表示在接收请求的节点上发起的分布式查询执行的初始查询 ID；此时 `query_id` 字段则包含在其他节点上执行的子查询 ID。
+请注意，在 ClickHouse 集群环境 (例如 ClickHouse Cloud) 中，`initial_query_id` 表示在接收请求的节点上发起的分布式查询执行的初始查询 ID；此时 `query_id` 字段则包含在其他节点上执行的子查询 ID。
 
 如果我们在上面的查询中添加 `query_id`，就会将搜索范围限定为 `initial_query_id` = `a7262fa2-bd8b-4b51-a359-621ccf282417` 和对应的 `hostname()`：
 
@@ -142,7 +142,7 @@ LIMIT 10 FORMAT Pretty;
 └────────────────────────┴────────────┴─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴────────┴─────────┴───────────┴───────────────────────┘
 ```
 
-请注意，我们从多个主机（不同的集群节点）得到了多条结果。
+请注意，我们从多个主机 (不同的集群节点) 得到了多条结果。
 
 为了进一步精确筛选并只获取子查询，我们还可以在 WHERE 子句中添加 `query_id != initial_query_id` 条件：
 
@@ -163,7 +163,7 @@ ORDER BY memory_usage DESC
 LIMIT 10 FORMAT Pretty;
 ```
 
-返回在远程节点上执行的所有子查询（相对于最初发出该查询的节点而言的远程节点）：
+返回在远程节点上执行的所有子查询 (相对于最初发出该查询的节点而言的远程节点) ：
 
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓

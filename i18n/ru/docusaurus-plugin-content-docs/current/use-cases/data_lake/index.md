@@ -1,7 +1,7 @@
 ---
 description: 'Используйте ClickHouse для выполнения запросов, ускорения и анализа данных в открытых табличных форматах, таких как Apache Iceberg, Delta Lake, Apache Hudi и Apache Paimon.'
 pagination_prev: null
-pagination_next: use-cases/data_lake/getting-started/index
+pagination_next: null
 slug: /use-cases/data-lake
 title: 'Лейкхаус данных (Data Lakehouse)'
 keywords: ['озеро данных', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake']

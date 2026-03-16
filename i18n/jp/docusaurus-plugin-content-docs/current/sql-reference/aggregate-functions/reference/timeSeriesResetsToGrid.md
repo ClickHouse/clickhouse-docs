@@ -25,7 +25,7 @@ timeSeriesResetsToGrid(start_timestamp, end_timestamp, grid_step, staleness)(tim
 
 **パラメータ**
 
-* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ幅を秒単位で指定します。 - `staleness` — 対象とするサンプルの許容される最大の「staleness」（古さ）を秒単位で指定します。
+* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ幅を秒単位で指定します。 - `staleness` — 対象とするサンプルの許容される最大の「staleness」 (古さ) を秒単位で指定します。
 
 **引数**
 

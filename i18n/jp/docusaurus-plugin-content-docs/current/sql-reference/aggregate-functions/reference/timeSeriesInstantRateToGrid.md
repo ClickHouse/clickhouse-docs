@@ -28,7 +28,7 @@ timeSeriesInstantRateToGrid(start_timestamp, end_timestamp, grid_step, staleness
 * `start_timestamp` — グリッドの開始を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — グリッドの終了を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 対象とするサンプルの最大の「古さ（staleness）」を秒で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 対象とするサンプルの最大の「古さ (staleness) 」を秒で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **Arguments**
 

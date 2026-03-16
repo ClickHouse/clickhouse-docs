@@ -123,8 +123,11 @@ ninja
 `-j` 매개변수를 사용하여 병렬 빌드 작업의 개수를 제어할 수 있습니다.
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`, `clickhouse-client` 및 유사한 바이너리는 빌드가 완료된 후 `clickhouse` 실행 파일을 가리키는 `programs/` 디렉터리의 심볼릭 링크입니다.
 
 :::tip
 CMake에는 위 명령들을 위한 단축 명령이 있습니다:

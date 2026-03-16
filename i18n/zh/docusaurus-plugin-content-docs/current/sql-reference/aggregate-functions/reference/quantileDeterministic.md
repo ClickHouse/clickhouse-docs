@@ -17,7 +17,7 @@ doc_type: 'reference'
 结果是确定性的。
 若要获得精确分位数，请使用 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 函数。
 
-在同一个查询中对不同分位等级（level）使用多个 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率会低于理论上的最优效率）。
+在同一个查询中对不同分位等级 (level) 使用多个 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率会低于理论上的最优效率) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **语法**

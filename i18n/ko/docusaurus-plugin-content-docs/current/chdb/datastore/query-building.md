@@ -350,10 +350,10 @@ join(right, on=None, how='inner', left_on=None, right_on=None) -> DataStore
 | Parameter  | Type      | Default    | Description                                                              |
 | ---------- | --------- | ---------- | ------------------------------------------------------------------------ |
 | `right`    | DataStore | *required* | 조인할 오른쪽 DataStore                                                        |
-| `on`       | str/list  | `None`     | 조인에 사용할 컬럼(들)                                                            |
+| `on`       | str/list  | `None`     | 조인에 사용할 컬럼                                                               |
 | `how`      | str       | `'inner'`  | 조인 유형: &#39;inner&#39;, &#39;left&#39;, &#39;right&#39;, &#39;outer&#39; |
-| `left_on`  | str/list  | `None`     | 왼쪽 조인에서 사용할 컬럼(들)                                                        |
-| `right_on` | str/list  | `None`     | 오른쪽 조인에서 사용할 컬럼(들)                                                       |
+| `left_on`  | str/list  | `None`     | 왼쪽 조인에서 사용할 컬럼                                                           |
+| `right_on` | str/list  | `None`     | 오른쪽 조인에서 사용할 컬럼                                                          |
 
 **예시:**
 

@@ -42,7 +42,7 @@ import DemoArchitecture from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **В данном руководстве предполагается, что вы развернули Open Source-версию ClickStack, используя [инструкции для образа «всё в одном»](/use-cases/observability/clickstack/getting-started/oss) или [режим Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) и выполнили начальное создание пользователя. Либо вы можете пропустить всю локальную настройку и просто подключиться к нашему размещённому демо ClickStack [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com), которое использует этот набор данных.**
 
-В этом руководстве используется пример набора данных, размещённый в общедоступной песочнице ClickHouse по адресу [sql.clickhouse.com](https://sql.clickhpouse.com), к которой вы можете подключиться из локального развертывания ClickStack.
+В этом руководстве используется пример набора данных, размещённый в общедоступной песочнице ClickHouse по адресу [sql.clickhouse.com](https://sql.clickhouse.com), к которой вы можете подключиться из локального развертывания ClickStack.
 
 :::warning Недоступно с Managed ClickStack
 Удалённые базы данных не поддерживаются при использовании Managed ClickStack. Поэтому этот набор данных недоступен.

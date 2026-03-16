@@ -11,7 +11,7 @@ keywords: ['data lake', 'lakehouse', 'write', 'iceberg', 'reverse ETL', 'INSERT 
 doc_type: 'guide'
 ---
 
-In the previous guides, you queried open table formats in place and loaded data into MergeTree for fast analytics. In many architectures, data also needs to flow in the other direction - from ClickHouse back into lakehouse formats. Two common scenarios drive this:
+In the previous guides, you queried open table formats in place and loaded data into MergeTree for fast analytics. In many architectures, data also needs to flow in the other direction - from ClickHouse back into open table formats. Two common scenarios drive this:
 
 - **Offloading to long-term storage** - Data arrives in ClickHouse as a real-time analytics layer, powering dashboards and operational reporting. Once the data ages beyond its real-time window, it can be written out to Iceberg in object storage for durable, cost-effective retention in an interoperable format.
 - **Reverse ETL** - Transformations, aggregations, and enrichment performed inside ClickHouse produce derived datasets that downstream tools and other teams need to consume. Writing these results to Iceberg tables makes them available across the broader data ecosystem.

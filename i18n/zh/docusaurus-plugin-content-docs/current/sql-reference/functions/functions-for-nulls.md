@@ -22,7 +22,7 @@ doc_type: 'reference'
 引入版本：v1.1.0
 
 对于类型为 [`Nullable`](../data-types/nullable.md) 的值，返回其对应的非 `Nullable` 类型值。
-如果原始值为 `NULL`，则返回结果是任意的（未定义）。
+如果原始值为 `NULL`，则返回结果是任意的 (未定义) 。
 
 另请参阅：函数 [`ifNull`](#ifNull) 和 [`coalesce`](#coalesce)。
 
@@ -312,7 +312,7 @@ SELECT x FROM t_null WHERE isNull(y);
 
 引入版本：v22.7.0
 
-检查参数的数据类型是否为 `Nullable`（即是否允许 `NULL` 值）。
+检查参数的数据类型是否为 `Nullable` (即是否允许 `NULL` 值) 。
 
 **语法**
 
@@ -355,7 +355,7 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 自 v20.3.0 引入
 
-检查参数是否为零（`0`）或 `NULL`。
+检查参数是否为零 (`0`) 或 `NULL`。
 
 **语法**
 
