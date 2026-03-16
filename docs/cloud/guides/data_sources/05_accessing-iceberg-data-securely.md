@@ -139,11 +139,11 @@ ENGINE = IcebergS3(
   extra_credentials(role_arn='arn:aws:iam::<ACCOUNT_ID>:role/<ClickHouseIcebergRole>')
 )
 SETTINGS
-  storage_catalog_type = 'glue',
-  storage_warehouse = '<your_warehouse>',
-  object_storage_endpoint = 's3://<YOUR_BUCKET>/',
-  storage_region = '<REGION>',
-  storage_catalog_url = 'https://glue.<REGION>.amazonaws.com/iceberg/v1';
+  catalog_type = 'glue',
+  warehouse = '<your_warehouse>',
+  storage_endpoint = 's3://<YOUR_BUCKET>/',
+  region = '<REGION>'
+  aws_role_arn = 'arn:aws:iam::<ACCOUNT_ID>:role/<ClickHouseIcebergRole>';
 ```
 
 > Note: When using Glue catalog, ensure your IAM role has both S3 and Glue read/list permissions.
