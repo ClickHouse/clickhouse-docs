@@ -2953,6 +2953,14 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 この設定は実行時に変更可能で、即時に反映されます。すでに実行中のクエリには影響しません。
 :::
 
+## max_zookeeper_pooled_connections \{#max_zookeeper_pooled_connections\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+共有プール内で、各ZooKeeperクラスタに対して遅延初期化されるZooKeeperセッションの最大数です。
+
+`0` を指定すると、プール接続は無効になり、単一のセッションを引き続き使用します。
+
 ## memory_worker_correct_memory_tracker \{#memory_worker_correct_memory_tracker\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

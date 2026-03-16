@@ -11,7 +11,7 @@ keywords: ['数据湖', 'lakehouse', 'MergeTree', '加速', '分析', '倒排索
 doc_type: 'guide'
 ---
 
-在[上一节](/use-cases/data-lake/getting-started/connecting-catalogs)中，您已将 ClickHouse 连接到数据目录，并直接查询了开放表格式。虽然原位查询数据很方便，但湖仓格式并未针对支撑仪表板和运营报表的低延迟、高并发工作负载进行优化。对于这些用例，将数据加载到 ClickHouse 的 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 引擎中可以显著提升性能。
+在[上一节](/use-cases/data-lake/getting-started/connecting-catalogs)中，您已将 ClickHouse 连接到数据目录，并直接查询了开放表格式。虽然原位查询数据很方便，但开放表格式并未针对支撑仪表板和运营报表的低延迟、高并发工作负载进行优化。对于这些用例，将数据加载到 ClickHouse 的 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 引擎中可以显著提升性能。
 
 与直接读取开放表格式相比，MergeTree 具有以下优势：
 
@@ -36,6 +36,7 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql';
 ```
 
+
 ### 查看表列表 \{#list-tables\}
 
 ```sql
@@ -46,6 +47,7 @@ SHOW TABLES FROM unity
 │ unity.single_day_log                               │
 └────────────────────────────────────────────────────┘
 ```
+
 
 ### 查看模式 \{#explore-schema\}
 
@@ -90,7 +92,8 @@ FROM unity.`icebench.single_day_log`
 1 row in set. Elapsed: 1.265 sec.
 ```
 
-## 对 lakehouse 表执行查询 \{#query-lakehouse\}
+
+## 对数据湖表执行查询 \{#query-lakehouse\}
 
 让我们运行一个查询：按线程名称和实例类型筛选日志，在消息文本中搜索错误，并按 logger 对结果进行分组：
 
@@ -119,6 +122,7 @@ Peak memory usage: 4.35 GiB.
 ```
 
 该查询耗时接近 **9 秒**，因为 ClickHouse 必须对对象存储中的所有 Parquet 文件执行全表扫描。虽然可以通过分区提升性能，但像 `logger_name` 这样的列基数可能过高，难以实现有效分区。我们也没有诸如 [文本索引](/engines/table-engines/mergetree-family/mergetree#text) 之类的索引来进一步缩小扫描范围。这正是 MergeTree 的优势所在。
+
 
 ## 将数据导入 MergeTree \{#load-data\}
 
@@ -161,9 +165,10 @@ ENGINE = MergeTree
 ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 ```
 
-### 从 catalog 中插入数据 \{#insert-data\}
 
-使用 `INSERT INTO SELECT` 将 lakehouse 表中的约 3 亿行数据加载到我们的 ClickHouse 表中：
+### 从目录中插入数据 \{#insert-data\}
+
+使用 `INSERT INTO SELECT` 将数据湖表中的约 3 亿行数据导入到我们的 ClickHouse 表中：
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`

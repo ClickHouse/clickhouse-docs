@@ -18,19 +18,10 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 Nginx 로그 모니터링하기 \{#nginx-clickstack\}
+# ClickStack를 사용한 Nginx 로그 모니터링 \{#nginx-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry collector를 구성하여 Nginx 액세스 로그를 수집하고, 이를 통해 ClickStack으로 Nginx를 모니터링하는 방법을 설명합니다. 다음 내용을 학습하게 됩니다:
-
-- Nginx가 JSON 형식으로 로그를 출력하도록 구성하기
-- 로그 수집을 위한 사용자 정의 OTel collector 설정 생성하기
-- 사용자 정의 설정으로 ClickStack 배포하기
-- 미리 준비된 대시보드를 사용하여 Nginx 메트릭 시각화하기
-
-운영 환경의 Nginx를 구성하기 전에 연동을 테스트하고자 하는 경우, 샘플 로그가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 5-10분
+:::note[TL;DR]
+OTel `filelog` receiver를 사용해 ClickStack에서 Nginx 액세스 로그(JSON 형식)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Nginx와의 통합 \{#existing-nginx\}
@@ -353,9 +344,11 @@ docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 ```
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-더 살펴보고 싶다면, 대시보드를 활용하여 다음과 같은 작업을 추가로 시도해 볼 수 있습니다.
+* 중요 메트릭(에러율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정해 보십시오.
+* 특정 사용 사례(API 모니터링, 보안 이벤트)에 대한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 생성해 보십시오.
 
-- 중요 메트릭(에러율, 지연 시간 임계값)에 대한 알림을 설정해 보십시오.
-- 특정 사용 사례(API 모니터링, 보안 이벤트)에 대한 추가 대시보드를 생성해 보십시오.
+## 프로덕션으로 전환하기
+
+이 가이드는 빠르게 설정할 수 있도록 ClickStack에 기본 제공되는 OpenTelemetry Collector를 확장해 사용합니다. 프로덕션 배포에서는 자체 OTel Collector를 실행하여 데이터를 ClickStack의 OTLP 엔드포인트로 전송하는 것을 권장합니다. 프로덕션 구성에 대해서는 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.

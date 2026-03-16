@@ -9,6 +9,22 @@ doc_type: 'guide'
 
 # 测试 ClickHouse \{#testing-clickhouse\}
 
+## 测试类型 \{#test-types\}
+
+ClickHouse 中有以下测试：
+
+- [功能测试](#functional-tests) - 一组查询和脚本，包括以下几个相互交叉的子集
+  - [快速测试](#running-fast-tests) - 最小子集
+  - [无状态测试](#running-stateless-tests) ，不需要向数据库填充数据
+  - 不能并行运行的顺序测试
+- [集成测试](#integration-tests)，由 `pytest` 在集群中运行
+- [单元测试](#unit-tests)
+- [性能测试](#performance-tests)
+- [构建测试](#build-tests)
+- [Sanitizer 工具](#sanitizers)
+- [模糊测试](#fuzzing)
+以及其他一些测试，详见下文各节。
+
 ## 功能测试 \{#functional-tests\}
 
 功能测试是最简单、最易使用的一类测试。
@@ -48,14 +64,14 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 
 ### 运行快速测试 \{#running-fast-tests\}
 
-要运行一部分测试（称为“Fast test”），你可能需要一台性能相对较强的机器。以下步骤已在 `t3.2xlarge` AWS amd64 Ubuntu 实例（100 GB 存储）上验证可行。
+要运行一部分测试（称为“快速测试”），你可能需要一台性能相当不错的机器。以下步骤可在带有 100 GB 存储的 `t3.2xlarge` AWS amd64 Ubuntu 实例上运行。
 
-1. 安装依赖并重新登录。
+1. 安装先决条件并重新登录。
 
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 ```
 
 2. 获取源代码。
@@ -65,20 +81,19 @@ git clone --single-branch https://github.com/ClickHouse/ClickHouse
 cd ClickHouse
 ```
 
-3. 构建代码并运行一部分测试（称为“Fast test”）。
+3. 构建代码并运行“快速测试”。
 
 ```sh
-python3 -m ci.praktika run "Fast test"
+python -m ci.praktika run fast
 ```
 
-你应当得到
+你应该会得到
 
 ```sh
 Failed: 0, Passed: 7394, Skipped: 1795
 ```
 
-如果需要无人值守地运行，可以使用 `nohup` 或 `disown`，以便在 `ssh` 连接断开后进程仍能继续运行。
-
+如果你让它在无人值守的情况下运行，可以使用 `nohup` 或 `disown`，以便在 `ssh` 连接断开后它仍继续运行。
 
 ### 运行无状态测试 \{#running-stateless-tests\}
 
@@ -89,7 +104,7 @@ Failed: 0, Passed: 7394, Skipped: 1795
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 sudo tee /etc/docker/daemon.json <<'EOF'
 {
   "ipv6": true,
@@ -109,14 +124,14 @@ cd ClickHouse
 3. 构建代码。
 
 ```sh
-python3 -m ci.praktika run "Build (amd_debug)"
+python -m ci.praktika run build_debug
 cp ci/tmp/build/programs/clickhouse ci/tmp
 ```
 
 4. 运行无状态测试，这些测试可以并行运行。
 
 ```sh
-python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+python -m ci.praktika run functional
 ```
 
 你应当会看到
@@ -124,6 +139,8 @@ python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
 ```sh
 Failed: 0, Passed: 8497, Skipped: 103
 ```
+
+注意：`python -m ci.praktika run` 命令会运行特定的持续集成作业。有关 ClickHouse CI 的更多信息，请参阅[此处](continuous-integration.md#running-stateless-tests)。
 
 
 ### 添加新测试 \{#adding-a-new-test\}
@@ -156,7 +173,7 @@ sudo ./install.sh
 
 ### 限制测试运行 \{#restricting-test-runs\}
 
-一项测试可以带有零个或多个 *标签（tags）*，用于指定该测试在 CI 中运行时所受的上下文限制。
+一项测试可以带有零个或多个 *标签 (tags)&#x20;*，用于指定该测试在 CI 中运行时所受的上下文限制。
 
 对于 `.sql` 测试，标签写在第一行，作为一行 SQL 注释：
 
@@ -179,35 +196,28 @@ SELECT 1
 
 可用标签列表：
 
-| Tag name                          | 功能说明                                                       | 使用示例                                    |
-| --------------------------------- | ---------------------------------------------------------- | --------------------------------------- |
-| `disabled`                        | 不运行该测试                                                     |                                         |
-| `long`                            | 将测试的执行时间从 1 分钟延长到 10 分钟                                    |                                         |
-| `deadlock`                        | 将测试长时间循环运行                                                 |                                         |
-| `race`                            | 与 `deadlock` 相同。优先使用 `deadlock`                            |                                         |
-| `shard`                           | 要求服务器监听 `127.0.0.*`                                        |                                         |
-| `distributed`                     | 与 `shard` 相同。优先使用 `shard`                                  |                                         |
-| `global`                          | 与 `shard` 相同。优先使用 `shard`                                  |                                         |
-| `zookeeper`                       | 测试需要 Zookeeper 或 ClickHouse Keeper 才能运行                    | 测试使用 `ReplicatedMergeTree`              |
-| `replica`                         | 与 `zookeeper` 相同。优先使用 `zookeeper`                          |                                         |
-| `no-fasttest`                     | 在 [Fast test](continuous-integration.md#fast-test) 中不运行该测试 | 测试使用在 Fast test 中被禁用的 `MySQL` 表引擎       |
-| `fasttest-only`                   | 仅在 [Fast test](continuous-integration.md#fast-test) 中运行该测试 |                                         |
-| `no-[asan, tsan, msan, ubsan]`    | 在带有 [sanitizers](#sanitizers) 的构建中禁用该测试                    | 测试在 QEMU 下运行，而 QEMU 无法与 sanitizers 配合使用 |
-| `no-replicated-database`          |                                                            |                                         |
-| `no-ordinary-database`            |                                                            |                                         |
-| `no-parallel`                     | 禁止与其他测试并行运行                                                | 测试从 `system` 表读取数据，可能破坏不变式              |
-| `no-parallel-replicas`            |                                                            |                                         |
-| `no-debug`                        | 在 Debug 构建中禁用该测试                                           |                                         |
-| `no-release`                      | 在 Release 构建中禁用该测试                                         |                                         |
-| `no-stress`                       |                                                            |                                         |
-| `no-polymorphic-parts`            |                                                            |                                         |
-| `no-random-settings`              |                                                            |                                         |
-| `no-random-merge-tree-settings`   |                                                            |                                         |
-| `no-backward-compatibility-check` |                                                            |                                         |
-| `no-cpu-x86_64`                   |                                                            |                                         |
-| `no-cpu-aarch64`                  |                                                            |                                         |
-| `no-cpu-ppc64le`                  |                                                            |                                         |
-| `no-s3-storage`                   |                                                            |                                         |
+| Tag name                       | 功能说明                                       | 使用示例                                    |
+| ------------------------------ | ------------------------------------------ | --------------------------------------- |
+| `disabled`                     | 不运行该测试                                     |                                         |
+| `long`                         | 将测试的执行时间从 1 分钟延长到 10 分钟                    |                                         |
+| `deadlock`                     | 将测试长时间循环运行                                 |                                         |
+| `race`                         | 与 `deadlock` 相同。优先使用 `deadlock`            |                                         |
+| `shard`                        | 要求服务器监听 `127.0.0.*`                        |                                         |
+| `distributed`                  | 与 `shard` 相同。优先使用 `shard`                  |                                         |
+| `global`                       | 与 `shard` 相同。优先使用 `shard`                  |                                         |
+| `zookeeper`                    | 测试需要 Zookeeper 或 ClickHouse Keeper 才能运行    | 测试使用 `ReplicatedMergeTree`              |
+| `replica`                      | 与 `zookeeper` 相同。优先使用 `zookeeper`          |                                         |
+| `no-fasttest`                  | 在 [Fast test](#test-types) 中不运行该测试         | 测试使用在 Fast test 中被禁用的 `MySQL` 表引擎       |
+| `fasttest-only`                | 仅在 [Fast test](#test-types) 中运行该测试         |                                         |
+| `no-[asan, tsan, msan, ubsan]` | 在带有 [sanitizers](#sanitizers) 的构建中禁用该测试    | 测试在 QEMU 下运行，而 QEMU 无法与 sanitizers 配合使用 |
+| `no-replicated-database`       | 当默认数据库使用 `ReplicatedDatabaseEngine` 时禁用该测试 |                                         |
+| `no-ordinary-database`         | 当默认数据库引擎为 `Ordinary` 时禁用该测试                |                                         |
+| `no-parallel`                  | 禁止与其他测试并行运行                                | 测试从 `system` 表读取数据，可能破坏不变式              |
+| `no-parallel-replicas`         | 当启用并行副本时禁用该测试                              |                                         |
+| `no-debug`                     | 在 Debug 构建中禁用该测试                           |                                         |
+| `no-release`                   | 在 Release 构建中禁用该测试                         |                                         |
+
+还支持以下选项：`no-stress`、`no-polymorphic-parts`、`no-random-settings`、`no-random-merge-tree-settings`、`no-backward-compatibility-check`、`no-cpu-x86_64`、`no-cpu-aarch64`、`no-cpu-ppc64le`、`no-s3-storage`。
 
 除上述设置外，你还可以使用 `system.build_options` 中的 `USE_*` 标志来定义是否使用特定的 ClickHouse 特性。
 例如，如果你的测试使用了 MySQL 表，则应添加标签 `use-mysql`。
@@ -332,15 +342,10 @@ $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 ## 其他测试 \{#miscellaneous-tests\}
 
 在 `tests/external_models` 中有针对机器学习模型的测试。
-这些测试目前不再维护，必须迁移为集成测试。
+这些测试没有更新，必须转移到集成测试中。
 
 有一个单独的测试用于 quorum 插入。
-该测试在独立的服务器上运行 ClickHouse 集群，并模拟各种故障场景：网络分裂、丢包（ClickHouse 节点之间、ClickHouse 与 ZooKeeper 之间、ClickHouse 服务器与客户端之间等）、`kill -9`、`kill -STOP` 和 `kill -CONT`，类似 [Jepsen](https://aphyr.com/tags/Jepsen)。然后该测试检查，所有已确认的插入是否都已写入，以及所有被拒绝的插入是否都未写入。
-
-Quorum 测试是在 ClickHouse 开源之前由一个独立团队编写的。
-该团队已不再参与 ClickHouse 的工作。
-该测试当时是意外地用 Java 编写的。
-出于上述原因，需要将 quorum 测试重写并迁移为集成测试。
+该测试在独立的服务器上运行 ClickHouse 集群，并模拟各种故障场景：网络分区、数据包丢失（ClickHouse 节点之间、ClickHouse 与 ZooKeeper 之间、ClickHouse 服务器与客户端之间等）、`kill -9`、`kill -STOP` 和 `kill -CONT`，类似 [Jepsen](https://aphyr.com/tags/Jepsen)。然后该测试会检查，所有已确认的插入都已写入，而所有被拒绝的插入都未写入。
 
 ## 手动测试 \{#manual-testing\}
 

@@ -1,12 +1,12 @@
 ---
-title: 'Начало работы с форматами таблиц lakehouse'
+title: 'Начало работы с открытыми табличными форматами'
 sidebar_label: 'Начало работы'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
 pagination_prev: null
 pagination_next: use-cases/data_lake/guides/querying-directly
-description: 'Практическое введение в выполнение запросов, ускорение и запись данных обратно в открытых форматах таблиц с ClickHouse.'
-keywords: ['озера данных', 'lakehouse', 'начало работы', 'iceberg', 'delta lake', 'hudi', 'paimon']
+description: 'Практическое введение в выполнение запросов, ускорение и запись данных обратно в открытых табличных форматах с ClickHouse.'
+keywords: ['озеро данных', 'lakehouse', 'начало работы', 'iceberg', 'delta lake', 'hudi', 'paimon']
 doc_type: 'guide'
 ---
 

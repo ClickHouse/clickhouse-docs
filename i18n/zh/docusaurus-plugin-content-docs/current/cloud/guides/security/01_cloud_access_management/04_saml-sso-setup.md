@@ -343,9 +343,13 @@ Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft En
 
 我们只支持由服务提供方发起的 SSO。这意味着用户访问 `https://console.clickhouse.cloud`，输入其电子邮件地址后，将被重定向至 IdP 进行身份验证。已经通过你的 IdP 完成身份验证的用户，可以使用直接链接自动登录到你的组织，而无需在登录页面再次输入电子邮件地址。
 
-### 多组织 SSO \{#multi-org-sso\}
+### 多个组织 SSO \{#multi-org-sso\}
 
-ClickHouse Cloud 通过为每个组织提供单独的连接来支持多组织 SSO。使用直接链接（`https://console.clickhouse.cloud/?connection={organizationid}`）登录到各自的组织。在登录另一个组织之前，请务必先从当前组织注销。
+ClickHouse Cloud 通过为每个组织提供独立连接来支持多个组织 SSO。使用直接链接 (`https://console.clickhouse.cloud/?connection={organizationid}`) 登录到各自的组织。在登录另一个组织之前，请务必先从当前组织注销。
+
+:::note
+如果您不希望使用贵公司域名的用户在 https://console.clickhouse.cloud 输入电子邮件地址时被自动定向到某个组织，请提交支持工单，手动更新您的 SSO 设置以移除此行为。
+:::
 
 ## 附加信息 {#additional-information}
 
