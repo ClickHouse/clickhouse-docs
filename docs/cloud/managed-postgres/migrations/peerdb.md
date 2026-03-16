@@ -148,11 +148,107 @@ If you click on the source peer, you can see a list of running commands which Pe
 3. We then do FETCH commands to pull data from the source database and then PeerDB syncs them to the target database.
 
 ## Post-migration tasks {#migration-peerdb-considerations}
+:::note 
+These steps may vary based on your specific use case and application requirements. The key is to ensure data consistency, minimize downtime, and validate the integrity of the migrated data before fully switching over to the new system.
+:::
+
 After the migration is complete:
 
-- **Recreate database objects**: Remember to manually recreate indexes, constraints, and triggers in the target database, as these aren't migrated automatically.
-- **Test your application**: Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected.
-- **Clean up resources**: Once you're satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
+- **Run pre-cutover validation checks**
+
+Compare key tables between source and target before switching traffic:
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+
+
+- **Stop writes on the source system**
+
+Pause application writes first. As an additional safeguard, set the source database to read-only during cutover:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+If rollback is needed, you can re-enable writes:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+- **Confirm replication is fully caught up**
+
+Check that the latest row in one or more high-write tables matches on source and target:
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+- **Recreate and enable constraints, indexes, and triggers**
+
+If you removed or deferred constraints/indexes for ingestion, re-apply them now. Also reset the replication role on target if you previously set it to `replica`:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+- **Reset sequences on target tables**
+
+After data load, align sequences with current table values:
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+	FOR r IN
+		SELECT
+			n.nspname AS schema_name,
+			c.relname AS table_name,
+			a.attname AS column_name,
+			pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+		FROM pg_class c
+		JOIN pg_namespace n ON n.oid = c.relnamespace
+		JOIN pg_attribute a ON a.attrelid = c.oid
+		WHERE c.relkind = 'r'
+			AND a.attnum > 0
+			AND NOT a.attisdropped
+			AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+	LOOP
+		IF r.seq_name IS NOT NULL THEN
+			EXECUTE format(
+				'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+				r.seq_name, r.column_name, r.schema_name, r.table_name
+			);
+		END IF;
+	END LOOP;
+END $$;
+```
+
+- **Cut over application traffic**
+
+Once validation passes and sequences/constraints are in place:
+1. Point read traffic to ClickHouse Managed Postgres.
+2. Point write traffic to ClickHouse Managed Postgres.
+3. Monitor application errors, constraint violations, and database health.
+
+- **Clean up resources**
+
+Once you're satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB.
 
 :::info Replication slots
 If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you're done with the migration to avoid unnecessary resource usage.
