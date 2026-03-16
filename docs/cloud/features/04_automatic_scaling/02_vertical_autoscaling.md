@@ -16,15 +16,36 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
-Scale and Enterprise services support autoscaling based on CPU and memory usage. We constantly monitor the historical usage of a service over a lookback window (spanning the past 30 hours) to make scaling decisions. If the usage rises above or falls below certain thresholds, we scale the service appropriately to match the demand.
+Scale and Enterprise tier services support autoscaling based on CPU and memory usage. Service usage is constantly monitored over a lookback window to make scaling decisions. If the usage rises above or falls below certain thresholds, the service is scaled appropriately to match the demand.
 
-For non-MBB services, CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, to 25% in case of a 50% upper threshold), CPU allocation is halved.
+## CPU-based Scaling
 
-For services already utilizing the MBB scaling approach, scaling up happens at a CPU threshold of 75%, and scale down happens at half of that threshold, or 37.5%.
+CPU Scaling is based on target tracking which calculates the exact CPU allocation needed to keep utilization at a target level. A scaling action is only triggered if current CPU utilization falls outside a defined band:
+
+| Parameter | Value | Meaning |
+|---|---|---|
+| Target utilization | 53% | The utilization level ClickHouse aims to maintain |
+| High watermark | 75% | Triggers scale-up when CPU exceeds this threshold |
+| Low watermark | 37.5% | Triggers scale-down when CPU falls below this threshold |
+
+The recommender evaluates CPU utilization based on historical usage, and determines a recommended CPU size using this formula:
+```
+recommended_cpu = max_cpu_usage / target_utilization
+```
+
+If the CPU utilization is between 37.5%–75% of allocated capacity, no scaling action is taken. Outside that band, the recommender computes the exact size needed to land back at 53% utilization, and the service is scaled accordingly.
+
+### Example
+
+A service allocated 4 vCPU experiences a spike to 3.8 vCPU usage (~95% utilization), crossing the 75% high watermark. The recommender calculates: `3.8 / 0.53 ≈ 7.2 vCPU`, and rounds up to the next available size (8 vCPU). Once load subsides and usage drops below 37.5% (1.5 vCPU), the recommender scales back down proportionally.
+
+## Memory-based Scaling
 
 Memory-based auto-scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOM (out of memory) errors are encountered.
 
-The **larger** of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of `1` CPU and `4 GiB` memory.
+## Scaling Decision
+
+The larger of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of 1 CPU and 4 GiB memory.
 
 ## Configuring vertical auto scaling {#configuring-vertical-auto-scaling}
 
@@ -43,7 +64,5 @@ You can also choose to set these values the same, essentially "pinning" the serv
 It's important to note that this will disable any auto scaling on the cluster, and your service won't be protected against increases in CPU or memory usage beyond these settings.
 
 :::note
-For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling.
-Custom profiles won't support vertical autoscaling or manual vertical scaling at launch.
-However, these services can be scaled vertically by contacting support.
+For Enterprise tier services, standard 1:4 profiles will support vertical autoscaling. Custom profiles don’t support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
 :::

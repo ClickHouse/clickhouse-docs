@@ -42,8 +42,9 @@ This balances the need for existing queries to complete, while at the same time 
 
 ## Learn more {#learn-more}
 
-- [Vertical Autoscaling](/cloud/features/autoscaling/vertical) — Automatic CPU and memory scaling based on usage
-- [Horizontal Scaling](/cloud/features/autoscaling/horizontal) — Manual replica scaling via API or UI
+- [Vertical autoscaling](/cloud/features/autoscaling/vertical) — Automatic CPU and memory scaling based on usage
+- [Horizontal scaling](/cloud/features/autoscaling/horizontal) — Manual replica scaling via API or UI
 - [Make Before Break (MBB)](/cloud/features/mbb) — How ClickHouse Cloud performs seamless scaling operations
-- [Automatic Idling](/cloud/features/autoscaling/idling) — Cost savings through automatic service suspension
-- [Scaling Recommendations](/cloud/features/autoscaling/scaling-recommendations) — Understanding scaling recommendations from the 2-window recommender
+- [Automatic idling](/cloud/features/autoscaling/idling) — Cost savings through automatic service suspension
+- [Scaling recommendations](/cloud/features/autoscaling/scaling-recommendations) — Understanding scaling recommendations
+- [Scheduled scaling](/cloud/features/autoscaling/scaling-recommendations) — Understanding the Scheduled Scaling feature, which lets you define exactly when your service should scale up or down, independent of real-time metrics
