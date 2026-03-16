@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'configure unordered mode'
+sidebar_label: 'Configure unordered mode'
 sidebar_position: 3
 title: 'Configuring unordered mode for continuous ingestion'
 slug: /integrations/clickpipes/object-storage/s3/unordered-mode
