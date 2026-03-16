@@ -68,7 +68,9 @@ For all services, ClickPipes traffic will originate from a default region based 
 - **us-east-1**: For all services in AWS `us-east-1`.
 - **ap-south-1**: For services in AWS `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **ap-northeast-2**: For services in AWS `ap-northeast-2` created on or after 14 Nov 2025 (services created before this date use `us-east-2` IPs).
+- **ap-southeast-1**: For services in AWS `ap-southeast-1` created on or after 4 Mar 2026 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-2**: For services in AWS `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
+- **ap-southeast-3**: For services in AWS `ap-southeast-3` created on or after 6 Mar 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **us-east-2**: For all other regions not explicitly listed (including GCP and Azure regions).
 
@@ -79,9 +81,10 @@ For all services, ClickPipes traffic will originate from a default region based 
 | **us-east-1**                         | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`      |
 | **us-east-2**                         | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                                     |
 | **ap-south-1** (from 25 Jun 2025)     | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                   |
-| **ap-northeast-2** (from 14 Nov 2025) | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104` 
-                    |
+| **ap-northeast-2** (from 14 Nov 2025) | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104`                                                            |
+| **ap-southeast-1** (from 4 Mar 2026)  | `13.215.65.134`, `18.139.118.108`, `47.130.197.47`, `54.251.134.219`, `54.254.98.29`, `54.255.153.106`                                                |
 | **ap-southeast-2** (from 25 Jun 2025) | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
+| **ap-southeast-3** (from 6 Mar 2026)  | `16.78.195.195`, `43.218.184.235`, `16.79.88.54`, `16.78.153.162`, `16.79.6.125`, `108.137.52.155`                                                   |
 | **us-west-2** (from 24 Jun 2025)      | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
