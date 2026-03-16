@@ -26,12 +26,13 @@ Iceberg tables.
 
 ## Configuring Glue in AWS {#configuring}
 
-To connect to the glue catalog, you will need to identify the region of your 
-catalog and provide an access and secret key. 
+To connect to the Glue catalog, identify the region of your catalog and use one of the following authentication options:
+
+- Access key and secret key
+- IAM role (recommended for ClickHouse Cloud): see [Accessing Iceberg data securely](/cloud/data-sources/secure-iceberg)
 
 :::note
-Currently, the Glue catalog only supports access and secret keys, but we will 
-support additional authentication approaches in the future.
+ClickHouse Cloud supports IAM-role-based access for S3/Iceberg workloads. For Glue Catalog specifically, provide permissions using an assumed role and permissions scoped to Glue + S3 resources.
 :::
 
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
