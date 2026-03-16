@@ -23,6 +23,7 @@ ClickStack은 ClickHouse 인스턴스로 관측성 데이터를 수집하는 다
 | [Rotel을 사용한 AWS Lambda 로그](/use-cases/observability/clickstack/integrations/aws-lambda) | Rotel로 Lambda 로그 전달     |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs)  | CloudWatch 로그 그룹 전달     |
 | [JVM 메트릭](/use-cases/observability/clickstack/integrations/jvm-metrics)                 | JVM 성능 모니터링             |
+| [Kafka 로그](/use-cases/observability/clickstack/integrations/kafka-logs)                 | Kafka broker 로그 수집      |
 | [Kafka 메트릭](/use-cases/observability/clickstack/integrations/kafka-metrics)             | Kafka 성능 모니터링           |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes)               | K8s 클러스터 모니터링           |
 | [MongoDB 로그](/use-cases/observability/clickstack/integrations/mongodb-logs)             | MongoDB 서버 로그 수집        |

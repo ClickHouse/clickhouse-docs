@@ -1,11 +1,11 @@
 ---
-title: '레이크하우스 테이블 형식 시작하기'
+title: '오픈 테이블 포맷 시작하기'
 sidebar_label: '시작하기'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
 pagination_prev: null
 pagination_next: use-cases/data_lake/guides/querying-directly
-description: 'ClickHouse를 사용해 개방형 테이블 형식의 데이터를 쿼리하고, 가속하며, 다시 기록하는 방법을 실습을 통해 소개합니다.'
+description: 'ClickHouse를 사용해 개방형 테이블 형식의 데이터를 쿼리하고, 가속화하며, 다시 쓰는 방법을 실습을 통해 소개합니다.'
 keywords: ['데이터 레이크', 'lakehouse', '시작하기', 'iceberg', 'delta lake', 'hudi', 'paimon']
 doc_type: 'guide'
 ---

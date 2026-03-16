@@ -5,20 +5,19 @@ slug: /use-cases/data-lake/support-matrix
 sidebar_position: 3
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse のレイクハウス形式統合およびデータカタログ連携に関する包括的なサポートマトリクス。'
-keywords: ['データレイク', 'レイクハウス', 'サポート', 'iceberg', 'delta lake', 'hudi', 'paimon', 'カタログ', '機能']
+description: 'ClickHouse のオープンなテーブル形式統合およびデータカタログ接続に関する包括的なサポートマトリクス。'
+keywords: ['データレイク', 'レイクハウス', 'サポート', 'iceberg', 'delta lake', 'hudi', 'paimon', 'カタログ', 'features']
 doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-このページでは、ClickHouse のレイクハウス統合に関する包括的なサポートマトリックスを示します。各レイクハウステーブル形式で利用可能な機能、ClickHouse が接続可能なカタログ、および各カタログでサポートされている機能について説明します。
+このページでは、ClickHouse のデータレイク統合に関する包括的なサポートマトリクスを提供します。各オープンなテーブル形式で利用可能な機能、ClickHouse が接続できるカタログ、および各カタログでサポートされる機能について説明します。
 
+## オープンなテーブル形式のサポート \{#format-support\}
 
-## レイクハウス形式のサポート \{#format-support\}
-
-ClickHouse は次の 4 種類のレイクハウス向けテーブル形式と統合されています: [Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi)、および [Apache Paimon](/sql-reference/table-functions/paimon) です。サポートマトリクスを表示するには、以下から形式を選択してください。
+ClickHouse は次の 4 種類のオープンなテーブル形式と統合されています: [Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi)、および [Apache Paimon](/sql-reference/table-functions/paimon) です。サポートマトリクスを表示するには、以下から形式を選択してください。
 
 **凡例:** ✅ サポートあり | ⚠️ 部分的 / 実験的 | ❌ サポートなし
 

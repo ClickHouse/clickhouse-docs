@@ -1,11 +1,11 @@
 ---
-title: 'Lakehouse 表格式入门'
+title: '开放表格式入门'
 sidebar_label: '入门'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
 pagination_prev: null
 pagination_next: use-cases/data_lake/guides/querying-directly
-description: '通过实践了解如何使用 ClickHouse 在开放表格式中查询、加速并回写数据。'
+description: '通过动手实践了解如何使用 ClickHouse 在开放表格式中查询、加速并写回数据。'
 keywords: ['数据湖', 'lakehouse', '入门', 'iceberg', 'delta lake', 'hudi', 'paimon']
 doc_type: 'guide'
 ---

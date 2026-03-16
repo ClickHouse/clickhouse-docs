@@ -24,17 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # ClickStack を使用した AWS CloudWatch Logs の監視 \{#cloudwatch-clickstack\}
 
 :::note[要点まとめ]
-このガイドでは、OpenTelemetry Collector の AWS CloudWatch receiver を使用して、AWS CloudWatch のログを ClickStack に転送する方法を説明します。次の内容を学びます:
-
-- OpenTelemetry Collector を構成して CloudWatch からログを取得する
-- AWS の認証情報および IAM 権限を設定する
-- OTLP 経由で CloudWatch Logs を ClickStack に送信する
-- ロググループのフィルタリングと自動検出を行う
-- 事前構築済みのダッシュボードを使用して CloudWatch ログパターンを可視化する
-
-本番の AWS 環境を設定する前に統合をテストしたい場合のために、サンプルログを含むデモデータセットを利用できます。
-
-所要時間の目安: 10〜15 分
+OpenTelemetry Collector の CloudWatch receiver を使用して、AWS CloudWatch のログを ClickStack に転送します。名前付きロググループと自動検出に対応しています。デモ用データセットと事前構築済みのダッシュボードが含まれます。
 :::
 
 ## 概要 \{#overview\}
@@ -487,13 +477,11 @@ groups:
     limit: 50  # Reduce from 100 to 50
 ```
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-CloudWatch のログが ClickStack に流れ込むようになったら、次のステップとして以下を検討してください。
-
-- 重大なイベント（接続失敗、エラー急増）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- ログが ClickStack にあるので、保持期間の調整や S3 へのアーカイブによって CloudWatch コストを削減する
-- 収集設定から除外することでノイズの多いロググループをフィルタリングし、インジェスト量を削減する
+* 重大なイベント (接続失敗、エラー急増) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* ログが ClickStack にあるので、保持期間の調整や S3 へのアーカイブによって CloudWatch コストを削減する
+* 収集設定から除外することでノイズの多いロググループをフィルタリングし、インジェスト量を削減する
 
 ## 本番環境への移行 {#going-to-production}
 

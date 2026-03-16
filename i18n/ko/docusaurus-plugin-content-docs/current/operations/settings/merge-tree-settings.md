@@ -2896,6 +2896,14 @@ Cloud에서만 사용할 수 있습니다.
 
 이 설정을 활성화하면 too many parts 카운터가 로컬 레플리카 상태가 아니라 Keeper에 있는 공유 데이터를 기준으로 동작합니다. ClickHouse Cloud에서만 사용할 수 있습니다
 
+## shared_merge_tree_use_zookeeper_connection_pool \{#shared_merge_tree_use_zookeeper_connection_pool\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "새 설정"}]}]}/>
+
+활성화하면 SharedMergeTree는 서버 수준의 풀링된 ZooKeeper 세션 중 하나를 사용합니다.
+
 ## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 
 <ExperimentalBadge/>
