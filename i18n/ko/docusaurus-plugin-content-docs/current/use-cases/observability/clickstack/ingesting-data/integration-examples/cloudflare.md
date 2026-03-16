@@ -244,8 +244,6 @@ SELECT count() FROM cloudflare_http_logs;
 
 ## 다음 단계 \{#next-steps\}
 
-이제 Cloudflare 로그가 ClickStack으로 수집되고 있으므로:
-
 * 보안 이벤트(WAF 차단, 봇 트래픽 급증, 오류율 임계값)를 위한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오
 * 데이터 볼륨에 맞춰 [보존 정책](/use-cases/observability/clickstack/ttl)을 최적화하십시오
 * 특정 사용 사례(API 성능, 캐시 최적화, 지역별 트래픽 분석)에 맞는 추가 대시보드를 생성하십시오

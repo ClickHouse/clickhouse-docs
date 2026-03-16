@@ -18,20 +18,11 @@ import view_traces from '@site/static/images/clickstack/nginx-traces-search-view
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 Nginx 트레이스 모니터링하기 \{#nginx-traces-clickstack\}
+# ClickStack를 사용한 Nginx 트레이스 모니터링 \{#nginx-traces-clickstack\}
 
-:::note[요약]
-이 가이드는 기존에 운영 중인 Nginx 환경에서 분산 트레이스를 수집하고, 이를 ClickStack에서 시각화하는 방법을 설명합니다. 다음 내용을 학습하게 됩니다:
-
-- Nginx에 OpenTelemetry 모듈 추가하기
-- Nginx를 구성하여 트레이스를 ClickStack의 OTLP 엔드포인트로 전송하도록 설정하기
-- HyperDX에 트레이스가 정상적으로 표시되는지 확인하기
-- 미리 만들어진 대시보드를 사용하여 요청 성능(지연 시간, 오류, 처리량)을 시각화하기
-
-운영 중인 Nginx를 구성하기 전에 통합을 먼저 테스트하고자 하는 경우, 샘플 트레이스가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 약 5~10분
-::::
+:::note[TL;DR]
+OpenTelemetry Nginx 모듈을 사용하여 ClickStack에서 Nginx의 분산 트레이스를 수집합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::
 
 ## 기존 Nginx와의 통합 \{#existing-nginx\}
 
@@ -332,7 +323,9 @@ tail -f /var/log/nginx/access.log
 
 ## 다음 단계 \{#next-steps\}
 
-더 살펴보고 싶다면, 대시보드를 활용하여 다음과 같은 작업을 시도해 보십시오.
+* 중요한 메트릭(오류율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오.
+* 특정 사용 사례(API 모니터링, 보안 이벤트)를 위한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 구성하십시오.
 
-- 중요한 메트릭(오류율, 지연 시간 임계값)에 대한 알림을 설정하십시오.
-- 특정 사용 사례(API 모니터링, 보안 이벤트)를 위한 추가 대시보드를 구성하십시오.
+## 프로덕션 환경으로 전환하기 \{#going-to-production\}
+
+이 가이드에서는 Nginx OpenTelemetry 모듈에서 ClickStack의 OTLP 엔드포인트로 트레이스를 직접 전송합니다. 프로덕션 배포에서는 배치 처리와 복원력을 제공하는 게이트웨이로 자체 OTel collector를 실행하는 것을 권장합니다. 프로덕션 환경 구성은 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.

@@ -7,5 +7,5 @@
 如果你无法在客户端对数据进行批量处理，ClickHouse 支持将批处理转移到服务器端的异步插入（[参见异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)）。
 
 :::tip 
-无论插入的批量大小如何，我们建议将插入查询的数量控制在每秒大约 1 条插入查询。这样建议的原因在于，创建出来 parts 会在后台被合并成更大的 parts（以优化读查询性能），而每秒发送过多的插入查询可能会导致后台合并无法跟上新 parts 产生的速度。不过，当你使用异步插入时，可以采用更高的每秒插入查询速率（参见[异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)）。 
+无论插入的批量大小如何，我们建议将插入查询的数量控制在每秒大约 1 条插入查询。这样建议的原因在于，创建出来的数据部分会在后台被合并成更大的部分（以优化读查询性能），而每秒发送过多的插入查询可能会导致后台合并无法跟上新部分产生的速度。不过，当你使用异步插入时，可以采用更高的每秒插入查询速率（参见[异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)）。 
 :::
