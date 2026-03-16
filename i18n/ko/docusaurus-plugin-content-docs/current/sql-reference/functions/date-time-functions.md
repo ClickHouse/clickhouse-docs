@@ -3465,6 +3465,42 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────────┘
 ```
 
+## toDaysInMonth \{#toDaysInMonth\}
+
+도입 버전: v25.5.0
+
+`Date` 또는 `DateTime`의 해당 월에 있는 일 수를 반환합니다.
+
+반환 값은 28~31 범위입니다.
+
+**구문**
+
+```sql
+toDaysInMonth(datetime)
+```
+
+**인수**
+
+* `datetime` — 해당 월의 일 수를 구할 날짜 또는 날짜와 시간입니다. [`Date`](/sql-reference/data-types/date) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**반환 값**
+
+지정된 날짜/시간이 속한 월의 일 수를 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT toDaysInMonth(toDate('2023-02-01')), toDaysInMonth(toDate('2024-02-01')), toDaysInMonth(toDate('2023-01-01'))
+```
+
+```response title=Response
+┌─toDaysInMonth(toDate('2023-02-01'))─┬─toDaysInMonth(toDate('2024-02-01'))─┬─toDaysInMonth(toDate('2023-01-01'))─┐
+│                                  28 │                                  29 │                                  31 │
+└─────────────────────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
+```
+
 ## toDaysSinceYearZero \{#toDaysSinceYearZero\}
 
 도입 버전: v23.9.0

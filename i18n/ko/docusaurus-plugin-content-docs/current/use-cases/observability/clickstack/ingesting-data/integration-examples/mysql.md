@@ -19,19 +19,10 @@ import example_dashboard from '@site/static/images/clickstack/mysql/example-dash
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 MySQL 로그 모니터링하기 \{#mysql-logs-clickstack\}
+# ClickStack를 사용한 MySQL 로그 모니터링 \{#mysql-logs-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry collector를 구성하여 MySQL 서버 로그를 수집하고, ClickStack으로 MySQL을 모니터링하는 방법을 설명합니다. 다음 내용을 학습할 수 있습니다:
-
-- MySQL이 오류 로그와 느린 쿼리 로그를 출력하도록 구성하기
-- 로그 수집용 사용자 정의 OTel collector 구성 생성하기
-- 사용자 정의 구성을 사용해 ClickStack 배포하기
-- 미리 준비된 대시보드를 사용해 MySQL 로그 분석 결과(오류, 느린 쿼리, 연결)를 시각화하기
-
-프로덕션 MySQL을 구성하기 전에 통합을 테스트하려는 경우, 샘플 로그가 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 10~15분
+:::note[TL;DR]
+OTel `filelog` receiver를 사용해 ClickStack에서 MySQL 에러 로그와 슬로우 쿼리 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 MySQL과의 연동 \{#existing-mysql\}
@@ -460,13 +451,11 @@ head -5 /var/log/mysql/error.log
 형식이 크게 다르면 설정의 정규식 패턴을 조정하십시오.
 
 
-## 다음 단계 {#next-steps}
+## 다음 단계
 
-MySQL 로그 모니터링을 설정한 후 다음 단계를 진행합니다:
-
-- 중요 이벤트(연결 실패, 임계값을 초과하는 느린 쿼리, 오류 급증)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다
-- 쿼리 패턴별 느린 쿼리 분석을 위한 사용자 지정 대시보드를 만듭니다
-- 관찰된 쿼리 성능 패턴에 따라 `long_query_time`을 조정합니다
+* 중요 이벤트(연결 실패, 임계값을 초과하는 느린 쿼리, 오류 급증)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다
+* 쿼리 패턴별 느린 쿼리 분석을 위한 사용자 지정 대시보드를 만듭니다
+* 관찰된 쿼리 성능 패턴에 따라 `long_query_time`을 조정합니다
 
 ## 프로덕션 환경으로 전환 {#going-to-production}
 

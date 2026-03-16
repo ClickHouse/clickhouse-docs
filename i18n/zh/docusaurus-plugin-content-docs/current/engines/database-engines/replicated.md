@@ -157,19 +157,20 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 
 支持以下设置：
 
-| Setting（设置项）                                                                 | Default（默认值）                   | Description（说明）                                                  |
-| ---------------------------------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------- |
-| `max_broken_tables_ratio`                                                    | 1                              | 当失效或损坏表占所有表的比例大于该值时，不会自动恢复副本                                     |
-| `max_replication_lag_to_enqueue`                                             | 50                             | 当副本复制延迟大于该值时，尝试执行查询将抛出异常                                         |
-| `wait_entry_commited_timeout_sec`                                            | 3600                           | 如果超时时间超过该值且发起节点尚未执行该查询，副本将尝试取消该查询                                |
-| `collection_name`                                                            |                                | 在 server 配置中定义的集合名称，其中定义了用于集群认证的所有信息                             |
-| `check_consistency`                                                          | true                           | 检查本地元数据与 Keeper 中元数据的一致性，如不一致则对副本进行恢复                            |
-| `max_retries_before_automatic_recovery`                                      | 10                             | 在将副本标记为丢失并从快照中恢复之前，尝试执行队列条目的最大次数（0 表示无限）                         |
-| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 如果启用，在处理 Replicated 数据库中的 DDL 时，在可能的情况下会跳过创建和交换可刷新的物化视图的临时表的 DDL |
-| `logs_to_keep`                                                               | 1000                           | 在 ZooKeeper 中为 Replicated 数据库保留的默认日志条目数量。                        |
-| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper 中数据库的路径。在创建数据库且省略相关参数时使用。                              |
-| `default_replica_shard_name`                                                 | `{shard}`                      | 数据库中该副本所属分片的名称。在创建数据库且省略相关参数时使用。                                 |
-| `default_replica_name`                                                       | `{replica}`                    | 数据库中该副本的名称。在创建数据库且省略相关参数时使用。                                     |
+| Setting (设置项)                                                                | Default (默认值)                  | Description (说明)                                                                                         |
+| ---------------------------------------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `max_broken_tables_ratio`                                                    | 1                              | 当失效或损坏表占所有表的比例大于该值时，不会自动恢复副本                                                                             |
+| `max_replication_lag_to_enqueue`                                             | 50                             | 当副本复制延迟大于该值时，尝试执行查询将抛出异常                                                                                 |
+| `wait_entry_commited_timeout_sec`                                            | 3600                           | 如果超时时间超过该值且发起节点尚未执行该查询，副本将尝试取消该查询                                                                        |
+| `collection_name`                                                            |                                | 在 server 配置中定义的集合名称，其中定义了用于集群认证的所有信息                                                                     |
+| `check_consistency`                                                          | true                           | 检查本地元数据与 Keeper 中元数据的一致性，如不一致则对副本进行恢复                                                                    |
+| `max_retries_before_automatic_recovery`                                      | 10                             | 在将副本标记为丢失并从快照中恢复之前，尝试执行队列条目的最大次数 (0 表示无限)                                                                |
+| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 如果启用，在处理 Replicated 数据库中的 DDL 时，在可能的情况下会跳过创建和交换可刷新的物化视图的临时表的 DDL                                         |
+| `logs_to_keep`                                                               | 1000                           | 在 ZooKeeper 中为 Replicated 数据库保留的默认日志条目数量。                                                                |
+| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper 中数据库的路径。在创建数据库且省略相关参数时使用。                                                                      |
+| `default_replica_shard_name`                                                 | `{shard}`                      | 数据库中该副本所属分片的名称。在创建数据库且省略相关参数时使用。                                                                         |
+| `default_replica_name`                                                       | `{replica}`                    | 数据库中该副本的名称。在创建数据库且省略相关参数时使用。                                                                             |
+| `internal_replication`                                                       | false                          | 使用此 Replicated 数据库的集群所创建的分布式表，是将数据发送到某一个副本 (内部复制表示集群中的副本会自行完成复制) ，还是发送到所有副本 (无内部复制表示分布式表会将插入的数据发送到所有副本)  |
 
 默认值可以在配置文件中重写。
 
@@ -185,6 +186,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
         <default_replica_path>/clickhouse/databases/{uuid}</default_replica_path>
         <default_replica_shard_name>{shard}</default_replica_shard_name>
         <default_replica_name>{replica}</default_replica_name>
+        <internal_replication>false</internal_replication>
     </database_replicated>
 </clickhouse>
 ```
