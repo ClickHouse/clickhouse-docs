@@ -220,6 +220,8 @@ var reader = await client.ExecuteReaderAsync(
 | BatchSize | `int` | 100,000 | Number of rows per batch |
 | MaxDegreeOfParallelism | `int` | 1 | Number of parallel batch uploads |
 | Format | `RowBinaryFormat` | `RowBinary` | Binary format: `RowBinary` or `RowBinaryWithDefaults` |
+| ColumnTypes | `IReadOnlyDictionary<string, string>` | `null` | Column name → ClickHouse type string. Skips the schema probe query when set. |
+| UseSchemaCache | `bool` | `false` | Cache full table schema per (database, table) for the client's lifetime. |
 
 All `QueryOptions` properties are also available on `InsertOptions`.
 
@@ -240,6 +242,48 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+#### Skipping the schema probe query {#skip-schema-query}
+
+By default, `InsertBinaryAsync` sends a `SELECT ... WHERE 1=0` query before each insert to discover column types. For high-throughput scenarios, you can eliminate this overhead with two options:
+
+**Option 1: Provide column types explicitly**
+
+When you know the table schema at compile time, pass it directly via `ColumnTypes`. No schema query is sent at all:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**Option 2: Cache the schema**
+
+When you insert into the same table repeatedly, set `UseSchemaCache = true` to query the schema once and reuse it for subsequent inserts on the same `ClickHouseClient` instance:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+* `ColumnTypes` takes priority over `UseSchemaCache`. If both are set, the explicit types are used.
+* The schema cache does not detect `ALTER TABLE` changes. If you modify the table schema, create a new `ClickHouseClient` or avoid `UseSchemaCache` for that table.
+* The cache is scoped to the `ClickHouseClient` instance and keyed by (database, table). Different column subsets on the same table share a single cached schema.
+:::
 
 ## ClickHouseClient {#clickhouse-client}
 
@@ -381,7 +425,7 @@ var options = new InsertOptions
 ```
 
 :::note
-* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types.
+* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types. To skip this query, use [`InsertOptions.ColumnTypes` or `InsertOptions.UseSchemaCache`](#skip-schema-query).
 * When `MaxDegreeOfParallelism > 1`, batches are uploaded in parallel. Sessions are not compatible with parallel insertion; either disable sessions or set `MaxDegreeOfParallelism = 1`.
 * Use `RowBinaryFormat.RowBinaryWithDefaults` in `InsertOptions.Format` if you want the server to apply DEFAULT values for columns not provided.
 :::
