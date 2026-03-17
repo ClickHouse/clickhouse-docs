@@ -566,18 +566,6 @@ SQL の代替言語である PRQL を有効にします。
 
 パートのUUIDに基づいてSELECTクエリのデータを重複排除するための実験的機能
 
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**別名**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "設定名が変更されました。以前の名前は `allow_experimental_statistic` です。"}]}]}/>
-
-[statistics](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) を定義したカラムを作成し、[statistics を操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)できるようにします。
-
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -865,9 +853,17 @@ AVX2 命令が利用可能な場合に、「JSON*」関数で simdjson ライブ
 スパースや Replicated などの特殊なシリアライゼーション種別を持つカラムを、完全なカラム表現に変換することなく出力できるようにします。
 これにより、フォーマット処理時の不要なデータコピーを回避するのに役立ちます。
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**別名**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "カラムのSTATISTICSは現在 GA です"}]}]}/>
+
+[STATISTICS](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) を持つカラムを定義し、[STATISTICS を操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)できるようにします。
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **別名**: `allow_statistic_optimize`
 
@@ -875,7 +871,7 @@ AVX2 命令が利用可能な場合に、「JSON*」関数で simdjson ライブ
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "この最適化をデフォルトで有効にします。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "この設定の名前が変更されました。以前の名前は `allow_statistic_optimize` です。"}]}]}/>
 
-クエリの最適化に統計情報を使用できるようにします。
+クエリの最適化にSTATISTICSを使用できるようにします
 
 ## allow_suspicious_codecs \{#allow_suspicious_codecs\}
 
@@ -11904,24 +11900,20 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "この最適化をデフォルトで有効にします。"}]}]}/>
 
-/// 'use_primary_key' および 'use_skip_indexes' と一貫性を保つため、'allow_statistics_optimize' より推奨
-統計を用いてクエリを最適化できるようにします
+/// preferred over 'allow_statistics_optimize' because of consistency with 'use_primary_key' and 'use_skip_indexes'
+クエリの最適化にSTATISTICSを使用できるようにします
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "statistics キャッシュを有効化"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "STATISTICS キャッシュを有効化"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-すべてのパーツの統計情報を読み込むオーバーヘッドを回避するために、クエリで statistics キャッシュを使用します
+すべてのパーツのSTATISTICSを読み込むオーバーヘッドを回避するために、クエリでSTATISTICSキャッシュを使用します
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
   たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
 * `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります (関数 [array](/sql-reference/functions/array-functions.md/#array) を参照) 。
+* `unicode_word` は、Unicode の単語境界規則 (UAX #29 に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (`:` は文字、`.` と `'` は同種の文字用) とともにトークンを構成します。非 ASCII の Unicode 文字は 1 文字のトークンになります。ストップワード (設定可能で、デフォルトでは一般的な CJK 句読点) はスキップされます。オプション引数 `stop_words` は文字列の配列として指定できます。たとえば `tokenizer = unicode_word(['，', '。'])` のように指定します。
 
 利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 

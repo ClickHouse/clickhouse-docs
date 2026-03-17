@@ -388,7 +388,7 @@ helm install my-clickstack clickstack/clickstack \
 
 ### 其他资源 {#additional-resources}
 
-- [ClickStack 入门指南](/docs/use-cases/observability/clickstack/getting-started/index) - ClickStack 简介
-- [ClickStack Helm 图表仓库](https://github.com/ClickHouse/ClickStack-helm-charts) - 图表源代码与 values 配置参考
+- [ClickStack 入门指南](/use-cases/observability/clickstack/getting-started) - ClickStack 简介
+- [ClickStack Helm chart 仓库](https://github.com/ClickHouse/ClickStack-helm-charts) - chart 源代码与 values 配置参考
 - [Kubernetes 文档](https://kubernetes.io/docs/) - Kubernetes 参考
 - [Helm 文档](https://helm.sh/docs/) - Helm 参考
