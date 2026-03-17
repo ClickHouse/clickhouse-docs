@@ -5,20 +5,19 @@ slug: /use-cases/data-lake/support-matrix
 sidebar_position: 3
 pagination_prev: null
 pagination_next: null
-description: 'Подробные матрицы поддержки для интеграций ClickHouse с форматом lakehouse и подключений к каталогам данных.'
-keywords: ['озера данных', 'lakehouse', 'поддержка', 'iceberg', 'delta lake', 'hudi', 'paimon', 'каталог', 'возможности']
+description: 'Подробные матрицы поддержки для интеграций ClickHouse с открытыми табличными форматами и подключений к каталогам данных.'
+keywords: ['data lake', 'lakehouse', 'support', 'iceberg', 'delta lake', 'hudi', 'paimon', 'catalog', 'features']
 doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Эта страница содержит сводные матрицы совместимости lakehouse-интеграций ClickHouse. В них перечислены доступные возможности для каждого формата lakehouse-таблиц, каталоги, к которым может подключаться ClickHouse, а также функции, поддерживаемые каждым каталогом.
+На этой странице представлены подробные матрицы поддержки для интеграций ClickHouse с озёрами данных. Здесь описаны возможности, доступные для каждого открытого табличного формата, каталоги, к которым может подключаться ClickHouse, а также функции, поддерживаемые каждым каталогом.
 
+## Поддержка открытых табличных форматов \{#format-support\}
 
-## Поддержка lakehouse-форматов \{#format-support\}
-
-ClickHouse интегрируется с четырьмя lakehouse-форматами таблиц: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi) и [Apache Paimon](/sql-reference/table-functions/paimon). Выберите формат ниже, чтобы просмотреть матрицу поддержки.
+ClickHouse интегрируется с четырьмя открытыми табличными форматами: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi) и [Apache Paimon](/sql-reference/table-functions/paimon). Выберите формат ниже, чтобы просмотреть матрицу поддержки.
 
 **Условные обозначения:** ✅ Поддерживается | ⚠️ Частично / экспериментально | ❌ Не поддерживается
 

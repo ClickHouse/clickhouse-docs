@@ -24,17 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 AWS CloudWatch 日志 \{#cloudwatch-clickstack\}
 
 :::note[摘要]
-本指南演示如何使用 OpenTelemetry Collector 的 AWS CloudWatch receiver 将 AWS CloudWatch 日志转发到 ClickStack。您将学习如何：
-
-- 配置 OpenTelemetry Collector 以从 CloudWatch 拉取日志
-- 设置 AWS 凭证和 IAM 权限
-- 通过 OTLP 将 CloudWatch 日志发送到 ClickStack
-- 过滤并自动发现日志组
-- 使用预构建的仪表板可视化 CloudWatch 日志模式
-
-如果您希望在配置生产 AWS 环境之前先测试集成，可以使用提供的包含示例日志的演示数据集。
-
-所需时间：10–15 分钟
+使用 OpenTelemetry Collector 的 CloudWatch receiver 将 AWS CloudWatch 日志转发到 ClickStack。支持命名日志组和自动发现。包含演示数据集和预置仪表板。
 :::
 
 ## 概览 \{#overview\}
@@ -489,11 +479,9 @@ groups:
 
 ## 后续步骤 {#next-steps}
 
-现在 CloudWatch 日志已经持续流入 ClickStack：
-
-- 为关键事件（连接失败、错误激增）[配置告警](/use-cases/observability/clickstack/alerts)
-- 既然日志已经在 ClickStack 中，可以通过调整保留期或归档到 S3 来降低 CloudWatch 成本
-- 通过在收集器配置中排除噪声较大的日志组来过滤噪声，从而减少摄取量
+- 为关键事件（连接失败、错误激增）[设置告警](/use-cases/observability/clickstack/alerts)
+- 既然日志已经在 ClickStack 中，可以通过调整保留期限或归档到 S3 来降低 CloudWatch 成本
+- 通过将噪声较大的日志组从 Collector 配置中移除来过滤噪声，从而减少摄取量
 
 ## 进入生产环境 {#going-to-production}
 

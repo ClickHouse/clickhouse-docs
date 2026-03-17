@@ -185,15 +185,111 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 ## 移行後のタスク \{#migration-peerdb-considerations\}
 
-移行が完了したら、次の作業を実施してください。
-
-- **データベースオブジェクトの再作成**: ターゲットデータベースでは、インデックス、制約、トリガーは自動では移行されないため、手動で再作成する必要があることに注意してください。
-- **アプリケーションのテスト**: すべてが想定どおり動作していることを確認するため、ClickHouse Managed Postgres インスタンスに対してアプリケーションをテストしてください。
-- **リソースのクリーンアップ**: 移行結果に満足し、アプリケーションの接続先を ClickHouse Managed Postgres に切り替えたら、リソースをクリーンアップするために PeerDB 上のミラーとピアを削除できます。
-
-:::info Replication slots
-継続的なレプリケーションを有効にした場合、PeerDB はソースの PostgreSQL データベース上に**レプリケーションスロット**を作成します。不要なリソース消費を避けるため、移行が完了した後はこのレプリケーションスロットをソースデータベースから手動で削除してください。
+:::note
+これらの手順は、具体的なユースケースやアプリケーションの要件に応じて異なる場合があります。重要なのは、新しいシステムへ完全に切り替える前に、データの一貫性を確保し、ダウンタイムを最小限に抑え、移行後のデータの整合性を検証することです。
 :::
+
+移行が完了したら:
+
+* **カットオーバー前の検証チェックを実施する**
+
+トラフィックを切り替える前に、ソースとターゲットの主要なテーブルを比較します:
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+* **ソースシステムへの書き込みを停止する**
+
+まず、アプリケーションからの書き込みを一時停止します。追加の安全策として、カットオーバー中はソースデータベースを読み取り専用に設定します。
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+ロールバックが必要な場合は、書き込みを再び有効にできます。
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+* **レプリケーションが完全に追いついていることを確認する**
+
+1 つ以上の書き込み量の多いテーブルで、最新の行がソースとターゲットで一致していることを確認します:
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+* **制約、索引、トリガーを再作成して有効にする**
+
+インジェストのために制約や索引を削除した、または適用を後回しにしていた場合は、ここで再適用します。また、以前に `replica` に設定していた場合は、ターゲット側のレプリケーションロールもリセットします。
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+* **移行先テーブルのシーケンスをリセットする**
+
+データのロード後、テーブル内の現在の値に合わせてシーケンスを調整します:
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+    FOR r IN
+        SELECT
+            n.nspname AS schema_name,
+            c.relname AS table_name,
+            a.attname AS column_name,
+            pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attribute a ON a.attrelid = c.oid
+        WHERE c.relkind = 'r'
+            AND a.attnum > 0
+            AND NOT a.attisdropped
+            AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+    LOOP
+        IF r.seq_name IS NOT NULL THEN
+            EXECUTE format(
+                'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+                r.seq_name, r.column_name, r.schema_name, r.table_name
+            );
+        END IF;
+    END LOOP;
+END $$;
+```
+
+* **アプリケーショントラフィックを切り替える**
+
+検証が完了し、シーケンスと制約が整ったら:
+
+1. 読み取りトラフィックの向き先を ClickHouse Managed Postgres に切り替えます。
+2. 書き込みトラフィックの向き先を ClickHouse Managed Postgres に切り替えます。
+3. アプリケーションエラー、制約違反、データベースの健全性を監視します。
+
+* **リソースをクリーンアップする**
+
+移行に問題がないことを確認し、アプリケーションが ClickHouse Managed Postgres を使用するように切り替えたら、PeerDB のミラーとピアを削除できます。
+
+:::info レプリケーションスロット
+継続的レプリケーションを有効にした場合、PeerDB はソース PostgreSQL データベース上に **レプリケーションスロット** を作成します。不要なリソース消費を避けるため、移行完了後にソースデータベースからレプリケーションスロットを手動で削除してください。
+:::
+
 
 ## 参考資料 \{#migration-peerdb-references\}
 

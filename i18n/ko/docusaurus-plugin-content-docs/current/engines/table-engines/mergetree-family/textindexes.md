@@ -185,7 +185,7 @@ ALTER TABLE table DROP INDEX text_idx;
 구분자 문자열들이 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)를 형성하는 경우에는 임의의 순서로 전달해도 됩니다.
 :::
 
-토크나이저가 입력 문자열을 어떻게 분리하는지 이해하려면 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 함수를 사용할 수 있습니다:
+토크나이저가 입력 문자열을 어떻게 분리하는지 이해하려면 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 및 [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern) 함수를 사용할 수 있습니다:
 
 예시:
 
@@ -211,18 +211,19 @@ SELECT tokens('abc def', 'ngrams', 3);
 Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 
 
-1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), 아래 첫 번째 예제 참고).
-2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
-3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate)).
+1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
+2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
+3. 악센트와 같은 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate), [removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8)).
 
 전처리기 표현식은 [String](/sql-reference/data-types/string.md) 또는 [FixedString](/sql-reference/data-types/fixedstring.md) 타입의 입력 값을 동일한 타입의 값으로 변환해야 합니다.
-텍스트 인덱스가 `Nullable(T)` 또는 `LowCardinality(T)` 타입 컬럼에 대해 생성된 경우, 전처리기 표현식은 널 허용 값 또는 LowCardinality 값도 입력으로 허용해야 합니다(즉, 예외를 발생시키면 안 됩니다).
+텍스트 인덱스가 `Nullable(T)` 또는 `LowCardinality(T)` 타입 컬럼에 대해 생성된 경우, 전처리기 표현식은 널 허용 값 또는 low-cardinality 값도 입력으로 허용해야 합니다(즉, 예외를 발생시키면 안 됩니다).
 
 예:
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 또한 전처리기 표현식은 텍스트 인덱스가 정의된 컬럼이나 해당 컬럼을 기반으로 한 표현식만 참조해야 합니다.
 
@@ -288,6 +289,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 예시:
 
+
 ```sql
 CREATE TABLE table
 (
@@ -300,8 +302,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**기타 매개변수(선택 사항)**.
-
+**기타 인수(선택 사항)**.
 
 <details markdown="1">
   <summary>선택적 고급 파라미터</summary>

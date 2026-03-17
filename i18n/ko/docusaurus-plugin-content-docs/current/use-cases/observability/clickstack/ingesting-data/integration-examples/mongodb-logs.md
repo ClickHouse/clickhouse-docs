@@ -315,19 +315,23 @@ OTel `filelog` 수신기를 사용하여 ClickStack에서 MongoDB 서버 로그(
 
 ## 문제 해결
 
-**실제로 적용된 구성에 filelog 리시버가 포함되어 있는지 확인하십시오:**
+### HyperDX에 로그가 표시되지 않음 {#no-logs}
+
+실제로 적용된 구성에 filelog 수신기가 포함되어 있는지 확인하십시오:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-**Collector에서 발생한 오류를 확인하십시오:**
+Collector 로그에서 오류를 확인하십시오:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
 ```
 
-**MongoDB가 JSON 형식의 로그를 출력하는지 확인하십시오(4.4+):**
+### 로그가 올바르게 파싱되지 않는 경우
+
+MongoDB가 JSON 형식의 로그를 출력하는지 확인하십시오(4.4+):
 
 ```bash
 tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
@@ -336,11 +340,11 @@ tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
 출력이 유효한 JSON이 아니라면, 사용 중인 MongoDB 버전에서 레거시 텍스트 로그 형식(4.4 이전)을 사용하고 있을 수 있습니다. 이 경우 `json_parser` 연산자를 `regex_parser`로 바꾸거나 MongoDB 4.4+로 업그레이드해야 합니다.
 
 
-## 다음 단계
+## 다음 단계 \{#verify-demo-logs\}
 
 * 중요한 이벤트(오류 급증, 느린 쿼리 임곗값)에 대한 [경고](/use-cases/observability/clickstack/alerts)를 구성하세요
 * 특정 사용 사례(레플리카 세트 모니터링, 연결 추적)를 위한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 만드세요
 
-## 프로덕션 환경으로 전환하기
+## 프로덕션 환경으로 전환하기 \{#dashboards\}
 
 이 가이드는 빠르게 설정할 수 있도록 ClickStack에 기본 제공되는 OpenTelemetry Collector를 확장해 사용합니다. 프로덕션 환경에 배포할 때는 자체 OTel collector를 실행하고 데이터를 ClickStack의 OTLP 엔드포인트로 전송하는 방식을 권장합니다. 프로덕션 구성을 위한 자세한 내용은 [OpenTelemetry 데이터 전송](/use-cases/observability/clickstack/ingesting-data/opentelemetry)을 참조하십시오.

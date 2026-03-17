@@ -2830,6 +2830,14 @@ ClickHouse Cloud でのみ利用可能です。
 
 有効にすると、「too many parts」カウンタはローカルレプリカの状態ではなく、Keeper 内の共有データに基づいて動作します。ClickHouse Cloud でのみ利用可能です。
 
+## shared_merge_tree_use_zookeeper_connection_pool \{#shared_merge_tree_use_zookeeper_connection_pool\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "New setting"}]}]} />
+
+有効にすると、SharedMergeTree はサーバーレベルのプールされた ZooKeeper セッションのいずれかを使用します。
+
 ## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 
 <ExperimentalBadge/>

@@ -38,7 +38,6 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Connect to ClickHouse](/cloud/reference/byoc/connect) | Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints |
 | [Connecting ClickHouse Cloud to Azure Blob Storage](/cloud/data-sources/secure-azure) | This article demonstrates how ClickHouse Cloud customers can access their Azure data securely |
 | [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
-| [Customized Setup](/cloud/reference/byoc/onboarding/customization) | Deploy ClickHouse on your own cloud infrastructure with a customized setup |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |
 | [Data masking in ClickHouse](/cloud/guides/data-masking) | A guide to data masking in ClickHouse |
 | [Database audit log](/cloud/security/audit-logging/database-audit-log) | This page describes how you can review the database audit log |
