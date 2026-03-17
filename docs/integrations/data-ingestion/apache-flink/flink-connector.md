@@ -373,8 +373,8 @@ The connector exposes the following additional metrics on top of Flink's existin
 ## Advanced and recommended usage {#advanced-and-recommended-usage}
 
 - For optimal performance, ensure your DataStream element type is **not** a Generic type - see [here for Flink's type distinction](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class). Non-generic elements will avoid the serialization overhead incurred by Kryo and improve throughput to ClickHouse.
-- We recommend setting `maxBatchSize` to at least 1000 and ideally between 10,000 to 100,000. See [this guide on bulk inserts](https://clickhouse.com/docs/optimize/bulk-inserts) for more information.
-- To do OLTP-style deduplication or upsert to ClickHouse, refer to [this documentation page](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication). _Note: this is not to be confused with batch deduplication that happens on retries, detailed [below](#duplicate_batches)._
+- We recommend setting `maxBatchSize` to at least 1000 and ideally between 10,000 to 100,000. See [this guide on bulk inserts](/optimize/bulk-inserts) for more information.
+- To do OLTP-style deduplication or upsert to ClickHouse, refer to [this documentation page](/guides/developer/deduplication#options-for-deduplication). _Note: this is not to be confused with batch deduplication that happens on retries._
 
 ## Troubleshooting {#troubleshooting}
 
