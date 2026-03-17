@@ -11,7 +11,7 @@ keywords: ['data lake', 'lakehouse', 'MergeTree', 'accelerate', 'analytics', 'in
 doc_type: 'guide'
 ---
 
-In the [previous section](/use-cases/data-lake/getting-started/connecting-catalogs), you connected ClickHouse to a data catalog and queried open table formats directly. While querying data in place is convenient, lakehouse formats are not optimized for the low-latency, high-concurrency workloads that power dashboards and operational reporting. For these use cases, loading data into ClickHouse's [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine delivers dramatically better performance.
+In the [previous section](/use-cases/data-lake/getting-started/connecting-catalogs), you connected ClickHouse to a data catalog and queried open table formats directly. While querying data in place is convenient, open table formats are not optimized for the low-latency, high-concurrency workloads that power dashboards and operational reporting. For these use cases, loading data into ClickHouse's [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine delivers dramatically better performance.
 
 MergeTree offers several advantages over reading open table formats directly:
 
@@ -90,7 +90,7 @@ FROM unity.`icebench.single_day_log`
 1 row in set. Elapsed: 1.265 sec.
 ```
 
-## Query over the lakehouse table {#query-lakehouse}
+## Query over the data lake table {#query-lakehouse}
 
 Let's run a query that filters logs by thread name and instance type, searches the message text for errors, and groups results by logger:
 
@@ -163,7 +163,7 @@ ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 
 ### Insert data from the catalog {#insert-data}
 
-Use `INSERT INTO SELECT` to load the ~300m from the lakehouse table into our ClickHouse table:
+Use `INSERT INTO SELECT` to load the ~300m from the data lake table into our ClickHouse table:
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`
