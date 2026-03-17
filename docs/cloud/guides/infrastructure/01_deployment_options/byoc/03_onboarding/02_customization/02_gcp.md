@@ -16,7 +16,7 @@ If you prefer to use an existing VPC to deploy ClickHouse BYOC instead of having
 
 ### Configure your existing VPC {#configure-existing-vpc}
 
-1. Allocate at least 1 private subnet in a [region supported by ClickHouse BYOC](/cloud/reference/byoc/supported-regions) for the ClickHouse Kubernetes (GKE) cluster. Ensure the subnet has a minimum CIDR range of `/24` (e.g., 10.0.0.0/24) to provide sufficient IP addresses for GKE cluster nodes.
+1. Allocate at least 1 private subnet in a [region supported by ClickHouse BYOC](/cloud/reference/supported-regions) for the ClickHouse Kubernetes (GKE) cluster. Ensure the subnet has a minimum CIDR range of `/24` (e.g., 10.0.0.0/24) to provide sufficient IP addresses for GKE cluster nodes.
 2. Within the private subnet, allocate at least 1 secondary IPv4 range that will be used for GKE cluster pods. The secondary range should be at least `/23` to provide sufficient IP addresses for GKE cluster pods.
 3. Enable **Private Google Access** on the subnet. This allows GKE nodes to reach Google APIs and services without requiring external IP addresses.
 
