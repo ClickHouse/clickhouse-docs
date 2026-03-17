@@ -1165,13 +1165,11 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 - `_block_offset` — ブロック内の行に対して挿入時に割り当てられた元の行番号で、SETTING `enable_block_offset_column` が有効な場合はマージ時も保持される。
 - `_disk_name` — ストレージに使用されているディスク名。
 
-## カラム統計 \{#column-statistics\}
+## カラム STATISTICS \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-統計の宣言は、`set allow_experimental_statistics = 1` を有効にしている場合、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラム定義セクションに記述します。
+STATISTICS の宣言は、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラムセクションにあります。
 
 ```sql
 CREATE TABLE tab
@@ -1183,16 +1181,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` 文でも統計情報を操作できます。
+`ALTER` 文を使って STATISTICS を操作することもできます:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
-`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
-
+これらの軽量な STATISTICS は、カラム内の値の分布に関する情報を集約します。STATISTICS は各パートに保存され、挿入のたびに更新されます。
+`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に使用できます。
 
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
 

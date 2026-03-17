@@ -511,7 +511,8 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 * `splitByString(S)` разбивает строки по определённым пользовательским строкам-разделителям `S` (см. также функцию [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)). Разделители можно задать с помощью необязательного параметра, например, `tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`. Обратите внимание, что каждая строка может состоять из нескольких символов (`', '` в примере). Список разделителей по умолчанию, если он не задан явно, — это один пробел `[' ']`.
 * `ngrams(N)` разбивает строки на одинаковые по размеру `N`-граммы (см. также функцию [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)). Длину n-граммы можно задать с помощью необязательного целочисленного параметра от 1 до 8, например, `tokens(value, 'ngrams', 3)`. Размер n-граммы по умолчанию, если он не задан явно, равен 3.
 * `sparseGrams(min_length, max_length, min_cutoff_length)` разбивает строки на n-граммы переменной длины как минимум из `min_length` и не более чем из `max_length` (включительно) символов (см. также функцию [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)). Если не указано явно, значения `min_length` и `max_length` по умолчанию равны 3 и 100. Если передан параметр `min_cutoff_length`, возвращаются только n-граммы с длиной не меньше `min_cutoff_length`. По сравнению с `ngrams(N)` токенайзер `sparseGrams` создаёт n-граммы переменной длины, что позволяет более гибко представлять исходный текст. Например, `tokens(value, 'sparseGrams', 3, 5, 4)` внутренне формирует 3-, 4-, 5-граммы из входной строки, но возвращаются только 4- и 5-граммы.
-* `array` не выполняет токенизацию, то есть каждое значение в строке (элемент массива) является токеном (см. также функцию [array](/sql-reference/functions/array-functions.md/#array)).
+* `array` не выполняет токенизацию, то есть каждое значение строки является токеном (см. также функцию [array](/sql-reference/functions/array-functions.md/#array)).
+* `unicode_word` разбивает строки на токены, используя правила границ слов Unicode (аналогично UAX #29). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (`:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII становятся односимвольными токенами. Стоп-слова (настраиваются, по умолчанию это распространённые знаки препинания CJK) пропускаются. Необязательный параметр `stop_words` можно указать как массив строк, например, `tokens(value, 'unicode_word', ['，', '。'])`.
 
 В случае токенайзера `splitByString`, если токены не образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), вам, вероятно, нужно, чтобы при сопоставлении более длинные разделители имели приоритет.
 Для этого передавайте разделители в порядке убывания длины.
@@ -526,17 +527,19 @@ tokens(value, 'splitByString'[, separators])
 tokens(value, 'ngrams'[, n])
 tokens(value, 'sparseGrams'[, min_length, max_length[, min_cutoff_length]])
 tokens(value, 'array')
+tokens(value, 'unicode_word'[, stop_words])
 ```
 
 **Аргументы**
 
 * `value` — Входная строка. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр; если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicode_word`. Необязательный параметр; если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 * `n` — Используется только если аргумент `tokenizer` равен `ngrams`: необязательный параметр, определяющий длину n-грамм. Если явно не задан, по умолчанию используется значение `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — Используется только если аргумент `tokenizer` равен `split`: необязательный параметр, определяющий строки-разделители. Если явно не задан, по умолчанию используется `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий минимальную длину граммы, по умолчанию `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `max_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий максимальную длину граммы, по умолчанию `100`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `min_cutoff_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий минимальную длину отсечения. [`const UInt8`](/sql-reference/data-types/int-uint)
+* `stop_words` — Используется только если аргумент `tokenizer` равен `unicode_word`: необязательный параметр, определяющий стоп-слова. Если явно не задан, по умолчанию используются распространённые знаки пунктуации CJK. [`const Array(String)`](/sql-reference/data-types/array)
 
 **Returned value**
 
@@ -591,12 +594,13 @@ tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
 **Аргументы**
 
 * `value` — Входная строка. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр; если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicode_word`. Необязательный параметр; если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 * `n` — Используется только если аргумент `tokenizer` равен `ngrams`: необязательный параметр, определяющий длину n-грамм. Если явно не задан, по умолчанию используется значение `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — Используется только если аргумент `tokenizer` равен `split`: необязательный параметр, определяющий строки-разделители. Если явно не задан, по умолчанию используется `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий минимальную длину граммы, по умолчанию `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `max_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий максимальную длину граммы, по умолчанию `100`. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `min_cutoff_length` — Используется только если аргумент `tokenizer` равен `sparseGrams`: необязательный параметр, определяющий минимальную длину отсечения. [`const UInt8`](/sql-reference/data-types/int-uint)
+* `stop_words` — Используется только если аргумент `tokenizer` равен `unicode_word`: необязательный параметр, определяющий стоп-слова. Если явно не задан, по умолчанию используются распространённые знаки пунктуации CJK. [`const Array(String)`](/sql-reference/data-types/array)
 
 **Returned value**
 

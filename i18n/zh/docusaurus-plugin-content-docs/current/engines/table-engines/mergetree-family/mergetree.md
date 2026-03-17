@@ -1164,13 +1164,11 @@ ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在
 - `_block_offset` — 行在插入时被分配的块内原始行号，在启用 `enable_block_offset_column` 设置时合并过程中会保留。
 - `_disk_name` — 用于存储的磁盘名称。
 
-## 列统计信息 \{#column-statistics\}
+## 列统计 \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-在启用 `set allow_experimental_statistics = 1` 时，统计信息的声明位于 `*MergeTree*` 系列表的 `CREATE` 查询的列（columns）部分。
+对于 `*MergeTree*` 系列的表，列统计的声明位于 `CREATE` 查询的列部分：
 
 ```sql
 CREATE TABLE tab
@@ -1182,16 +1180,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-我们也可以使用 `ALTER` 语句来调整统计信息。
+我们也可以使用 `ALTER` 语句来操作列统计：
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-这些轻量级统计信息汇总了列中值的分布情况。统计信息存储在每个数据片段中，并在每次插入时都会更新。
-只有在启用 `set use_statistics = 1` 时，它们才会用于 `PREWHERE` 优化。
-
+这些轻量级列统计汇总了列中值分布的信息。列统计存储在每个分区片段中，并会在每次插入时更新。
+只有在启用 `set use_statistics = 1` 时，它们才能用于 `prewhere` 优化。
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 

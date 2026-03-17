@@ -1166,13 +1166,11 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 - `_block_offset` — Исходный номер строки в блоке, который был назначен при вставке и сохраняется при слияниях, когда включена настройка `enable_block_offset_column`.
 - `_disk_name` — Имя диска, на котором хранятся данные.
 
-## Статистика по столбцам \{#column-statistics\}
+## Статистика столбцов \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
+Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*`:
 
 ```sql
 CREATE TABLE tab
@@ -1184,16 +1182,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-Мы также можем изменять статистику с помощью команд `ALTER`.
+Мы также можем управлять статистикой с помощью операторов `ALTER`:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-Эта лёгкая статистика агрегирует информацию о распределении значений по столбцам. Статистика хранится в каждой части и обновляется при каждой вставке.
-Её можно использовать для оптимизации `PREWHERE` только при включённой настройке `set use_statistics = 1`.
-
+Эта лёгкая статистика агрегирует информацию о распределении значений в столбцах. Статистика хранится в каждой части и обновляется при каждой вставке.
+Её можно использовать для оптимизации `prewhere` только если включить `set use_statistics = 1`.
 
 ### Доступные типы статистики столбцов \{#available-types-of-column-statistics\}
 

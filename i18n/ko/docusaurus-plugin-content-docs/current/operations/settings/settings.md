@@ -568,18 +568,6 @@ SQL의 대안인 PRQL을 활성화합니다.
 
 part UUID를 기반으로 하는 SELECT 쿼리용 실험적 데이터 중복 제거
 
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**별칭(Aliases)**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "설정 이름이 변경되었습니다. 이전 이름은 `allow_experimental_statistic`입니다."}]}]}/>
-
-컬럼에 [통계(statistics)](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)를 정의하고, [통계를 조작](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)할 수 있도록 합니다.
-
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -867,17 +855,25 @@ AVX2 명령어 집합을 사용할 수 있는 경우 'JSON*' 함수에서 simdjs
 Sparse 및 Replicated와 같은 특수 직렬화 방식이 적용된 컬럼을 전체 컬럼 표현으로 변환하지 않고 그대로 출력하도록 허용합니다.
 이는 포맷팅 과정에서 불필요한 데이터 복사를 방지하는 데 도움이 됩니다.
 
+## allow_statistics \{#allow_statistics\}
+
+**Aliases**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "이제 컬럼 통계가 정식 기능(GA)입니다"}]}]}/>
+
+이 절을 사용하면 컬럼을 [statistics](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)와 함께 정의하고 [manipulate statistics](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)할 수 있습니다.
+
 ## allow_statistics_optimize \{#allow_statistics_optimize\}
 
-<BetaBadge/>
-
-**Aliases**: `allow_statistic_optimize`
+**별칭**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "기본적으로 이 최적화를 활성화합니다."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "설정 이름이 변경되었습니다. 이전 이름은 `allow_statistic_optimize`입니다."}]}]}/>
 
-쿼리 최적화를 위해 통계 사용을 허용합니다.
+이 절을 사용하면 통계를 사용하여 쿼리를 최적화할 수 있습니다.
 
 ## allow_suspicious_codecs \{#allow_suspicious_codecs\}
 
@@ -11900,24 +11896,20 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Enable this optimization by default."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "기본적으로 이 최적화를 활성화합니다."}]}]}/>
 
 /// 'use_primary_key' 및 'use_skip_indexes'와의 일관성을 위해 'allow_statistics_optimize'보다 선호됩니다
-쿼리 최적화를 위해 통계 사용을 허용합니다
+이 절을 사용하면 STATISTICS를 사용하여 쿼리를 최적화할 수 있습니다.
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "statistics 캐시 활성화"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "새 설정"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "STATISTICS 캐시 활성화"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "새 설정"}]}]}/>
 
-각 파트의 통계를 로드하는 오버헤드를 피하기 위해 쿼리에서 statistics 캐시를 사용합니다.
+각 파트의 STATISTICS를 로드하는 오버헤드를 피하기 위해 쿼리에서 STATISTICS 캐시를 사용합니다.
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

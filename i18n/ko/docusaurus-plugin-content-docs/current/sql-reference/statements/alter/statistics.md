@@ -7,12 +7,9 @@ title: '컬럼 통계 관리'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # 컬럼 통계 조작 \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 
