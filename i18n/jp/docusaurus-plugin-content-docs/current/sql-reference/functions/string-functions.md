@@ -571,6 +571,43 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
+## caseFoldUTF8 \{#caseFoldUTF8\}
+
+導入バージョン: v26.3.0
+
+UTF-8文字列にUnicodeのケースフォールディングを適用し、大文字と小文字を区別しない比較に適した、小文字化に近い正規化形式に変換します。
+
+標準のUnicodeケースフォールディングを適用します。ケースフォールディングの影響を受けない互換文字
+(例: ローマ数字、丸囲み数字) は保持されますが、`ﬃ` のような一部の合字は、Unicodeケースフォールディング自体によって展開されるため、引き続き分解される点に注意してください。
+
+**構文**
+
+```sql
+caseFoldUTF8(str)
+```
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+ケースフォールディングされた UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なケースフォールディング**
+
+```sql title=Query
+SELECT caseFoldUTF8('Straße')
+```
+
+```response title=Response
+┌─caseFoldUTF8('Straße')─┐
+│ strasse                 │
+└─────────────────────────┘
+```
+
 ## compareSubstrings \{#compareSubstrings\}
 
 バージョン v25.2.0 で導入。
@@ -800,7 +837,7 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-導入: v1.1.0
+導入: v25.10.0
 
 異なる基数間で数値を変換します。
 
@@ -1925,6 +1962,43 @@ SELECT lowerUTF8('München') as Lowerutf8;
 münchen
 ```
 
+## naturalSortKey \{#naturalSortKey\}
+
+導入バージョン: v25.11.0
+
+この関数は自然順でソートするために使用されます。
+
+**構文**
+
+```sql
+naturalSortKey(s)
+```
+
+**別名**: `NATURAL_SORT_KEY`
+
+**引数**
+
+* `s` — ナチュラルソートキーに変換する文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+`s` から生成されたナチュラルソートキー。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT s FROM t ORDER BY naturalSortKey(s)
+```
+
+```response title=Response
+┌─s───┐
+│ a1  │
+| a02 │
+└─────┘
+```
+
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
 導入バージョン: v21.11.0
@@ -2035,6 +2109,43 @@ SELECT
 ┌─original─┬─nfkc_normalized─┐
 │ ① ② ③  │ 1 2 3           │
 └──────────┴─────────────────┘
+```
+
+## normalizeUTF8NFKCCasefold \{#normalizeUTF8NFKCCasefold\}
+
+導入バージョン: v26.3.0
+
+UTF-8 文字列を [NFKC&#95;Casefold 正規化形式](https://unicode.org/reports/tr44/#NFKC_Casefold)に従って正規化します。これは、NFKC 正規化を適用した後にケースフォールディングを行うものです。
+識別子の大文字と小文字を区別しないマッチングに有用です。
+
+**構文**
+
+```sql
+normalizeUTF8NFKCCasefold(str)
+```
+
+**引数**
+
+* `str` — UTF-8 エンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+UTF-8 文字列の NFKC&#95;Casefold 正規化形式を返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT
+    'Ä ① Hello' AS original,
+    normalizeUTF8NFKCCasefold('Ä ① Hello') AS nfkc_cf_normalized;
+```
+
+```response title=Response
+┌─original───┬─nfkc_cf_normalized─┐
+│ Ä ① Hello │ ä 1 hello           │
+└────────────┴────────────────────┘
 ```
 
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
@@ -2183,6 +2294,42 @@ SELECT
 ┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┐
 │ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
+```
+
+## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
+
+導入バージョン: v26.3.0
+
+NFD による文字の分解、結合文字 (Unicode カテゴリ Mn) の除去、その後の NFC による再構成によって、UTF-8 文字列からダイアクリティカルマーク (アクセント記号) を削除します。
+
+**構文**
+
+```sql
+removeDiacriticsUTF8(str)
+```
+
+**別名**: `removeAccentsUTF8`
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+発音区別符号が削除された UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なアクセント除去**
+
+```sql title=Query
+SELECT removeDiacriticsUTF8('café résumé naïve')
+```
+
+```response title=Response
+┌─removeDiacriticsUTF8('café résumé naïve')─┐
+│ cafe resume naive                          │
+└────────────────────────────────────────────┘
 ```
 
 ## repeat \{#repeat\}

@@ -5,20 +5,19 @@ slug: /use-cases/data-lake/support-matrix
 sidebar_position: 3
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse 레이크하우스 포맷 통합 및 데이터 카탈로그 연결에 대한 종합적인 지원 매트릭스입니다.'
-keywords: ['데이터 레이크', '레이크하우스', '지원', 'iceberg', 'delta lake', 'hudi', 'paimon', '카탈로그', '기능']
+description: 'ClickHouse 오픈 테이블 포맷 통합 및 데이터 카탈로그 연결에 대한 종합적인 지원 매트릭스입니다.'
+keywords: ['data lake', 'lakehouse', 'support', 'iceberg', 'delta lake', 'hudi', 'paimon', 'catalog', 'features']
 doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-이 페이지는 ClickHouse의 레이크하우스 통합에 대한 종합적인 지원 매트릭스를 제공합니다. 각 레이크하우스 테이블 형식에서 사용 가능한 기능, ClickHouse가 연결할 수 있는 카탈로그, 그리고 각 카탈로그에서 지원하는 기능을 다룹니다.
+이 페이지는 ClickHouse의 데이터 레이크 통합에 대한 종합적인 지원 매트릭스를 제공합니다. 각 오픈 테이블 포맷에서 사용할 수 있는 기능, ClickHouse가 연결할 수 있는 카탈로그, 그리고 각 카탈로그에서 지원되는 기능을 다룹니다.
 
+## 오픈 테이블 포맷 지원 \{#format-support\}
 
-## 레이크하우스 포맷 지원 \{#format-support\}
-
-ClickHouse는 네 가지 레이크하우스 테이블 형식을 통합 지원합니다: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), [Apache Paimon](/sql-reference/table-functions/paimon). 아래에서 형식을 선택하여 해당 지원 매트릭스를 확인하십시오.
+ClickHouse는 네 가지 오픈 테이블 포맷을 통합 지원합니다: [Apache Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), [Apache Hudi](/engines/table-engines/integrations/hudi), [Apache Paimon](/sql-reference/table-functions/paimon). 아래에서 형식을 선택하여 해당 지원 매트릭스를 확인하십시오.
 
 **범례:** ✅ 지원됨 | ⚠️ 부분 지원 / 실험적 | ❌ 지원되지 않음
 

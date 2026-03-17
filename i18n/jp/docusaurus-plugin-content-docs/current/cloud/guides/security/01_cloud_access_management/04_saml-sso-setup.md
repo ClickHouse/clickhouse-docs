@@ -343,9 +343,13 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 ClickHouse Cloud では、サービスプロバイダー開始型 SSO のみを利用しています。これは、ユーザーが `https://console.clickhouse.cloud` にアクセスしてメールアドレスを入力すると、認証のために IdP にリダイレクトされる方式であることを意味します。すでに IdP によって認証されているユーザーは、ログインページでメールアドレスを入力することなく、組織に自動的にログインできるダイレクトリンクを使用できます。
 
-### 複数組織向け SSO \{#multi-org-sso\}
+### 複数組織向け SSO \{#configure-your-admin-user\}
 
 ClickHouse Cloud は、組織ごとに個別の接続を提供することで、複数組織向け SSO をサポートします。各組織にログインするには、ダイレクトリンク (`https://console.clickhouse.cloud/?connection={organizationid}`) を使用してください。別の組織にログインする前に、現在ログインしている組織から必ずログアウトしてください。
+
+:::note
+https://console.clickhouse.cloud でメールアドレスを入力した際に、貴社ドメインのユーザーが特定の組織に誘導されないようにする場合は、この動作を無効にするため、SSO 設定の手動更新を依頼するサポートチケットを提出してください。
+:::
 
 ## 追加情報 {#additional-information}
 

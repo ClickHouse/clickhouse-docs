@@ -31,14 +31,14 @@ import Image from '@theme/IdealImage';
 
 通常情况下，我们建议在以下情形下进行反规范化：
 
-- 对于变化不频繁，或者可以容忍数据在可用于分析查询前存在一定延迟（即可以通过批处理完全重载数据）的表进行反规范化。
+- 对变化不频繁的表，或者可以容忍在数据可用于分析查询前存在一定延迟的表进行反规范化，即数据可以通过批处理完全重新加载。
 - 避免对多对多关系进行反规范化。这可能会导致当单个源行发生变化时，需要更新大量行。
-- 避免对高基数关系进行反规范化。如果一个表中的每一行在另一张表中有成千上万条关联记录，则这些关系需要通过 `Array` 来表示——要么是原始类型数组，要么是元组数组。一般来说，不建议数组中包含超过 1000 个元组。
-- 与其将所有列都反规范化为嵌套对象，不如考虑仅使用物化视图（见下文）来反规范化某个统计值。
+- 避免对高基数关系进行反规范化。如果一个表中的每一行在另一张表中有成千上万条关联记录，则这些关系需要表示为 `Array`——要么是原始类型，要么是元组。一般来说，不建议使用包含超过 1000 个元组的数组。
+- 与其将所有列都反规范化为嵌套对象，不如考虑仅通过 materialized views（见下文）来反规范化某个统计值。
 
 并非所有信息都需要反规范化——只需对那些需要被频繁访问的关键信息进行反规范化即可。
 
-反规范化工作可以在 ClickHouse 中完成，也可以在上游系统中完成，例如使用 Apache Flink。
+反规范化工作既可以在 ClickHouse 中处理，也可以在上游完成，例如使用 [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md)。
 
 ## 避免对频繁更新的数据进行反规范化 \{#avoid-denormalization-on-frequently-updated-data\}
 
@@ -379,4 +379,4 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 
 ### 流式处理 \{#streaming\}
 
-用户也可以选择在 ClickHouse 之外、在数据插入之前，使用诸如 [Apache Flink](https://flink.apache.org/) 等流式技术来执行这一过程。或者，也可以使用增量[物化视图](/guides/developer/cascading-materialized-views)，在数据插入时执行这一处理流程。
+你也可以选择在 ClickHouse 之外、插入之前，使用诸如 [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md) 等流式技术来执行这一过程。或者，也可以使用增量 [materialized views](/guides/developer/cascading-materialized-views)，在数据插入时执行这一处理过程。

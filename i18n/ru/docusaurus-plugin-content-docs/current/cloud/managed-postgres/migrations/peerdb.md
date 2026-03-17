@@ -185,15 +185,111 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 ## Задачи после миграции \{#migration-peerdb-considerations\}
 
+:::note
+Эти шаги могут различаться в зависимости от вашего сценария использования и требований приложения. Главное — обеспечить согласованность данных, свести к минимуму время простоя и проверить целостность перенесённых данных, прежде чем полностью переходить на новую систему.
+:::
+
 После завершения миграции:
 
-- **Воссоздайте объекты базы данных**: Не забудьте вручную воссоздать индексы, ограничения и триггеры в целевой базе данных, поскольку они не переносятся автоматически.
-- **Протестируйте приложение**: Обязательно протестируйте приложение с экземпляром ClickHouse Managed Postgres, чтобы убедиться, что всё работает как ожидается.
-- **Освободите ресурсы**: Когда вы будете удовлетворены результатами миграции и переключите приложение на использование ClickHouse Managed Postgres, вы можете удалить объекты mirror и peers в PeerDB, чтобы освободить ресурсы.
+* **Выполните проверки перед переключением**
+
+Перед переключением трафика сравните ключевые таблицы в исходной и целевой системах:
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+* **Остановите запись в исходную систему**
+
+Сначала приостановите запись со стороны приложения. В качестве дополнительной меры предосторожности переведите исходную базу данных в режим только для чтения на время переключения:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+Если потребуется откат, вы можете снова включить операции записи:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+* **Подтвердите, что репликация полностью синхронизирована**
+
+Проверьте, что последняя строка в одной или нескольких таблицах с высокой интенсивностью записи совпадает в источнике и в целевой базе:
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+* **Заново создайте и включите ограничения, индексы и триггеры**
+
+Если вы удалили ограничения/индексы или отложили их на время ингестии, примените их снова. Также сбросьте роль репликации на целевой стороне, если ранее устанавливали её в `replica`:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+* **Сбросьте последовательности для целевых таблиц**
+
+После загрузки данных приведите значения последовательностей в соответствие с текущими значениями в таблицах:
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+    FOR r IN
+        SELECT
+            n.nspname AS schema_name,
+            c.relname AS table_name,
+            a.attname AS column_name,
+            pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attribute a ON a.attrelid = c.oid
+        WHERE c.relkind = 'r'
+            AND a.attnum > 0
+            AND NOT a.attisdropped
+            AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+    LOOP
+        IF r.seq_name IS NOT NULL THEN
+            EXECUTE format(
+                'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+                r.seq_name, r.column_name, r.schema_name, r.table_name
+            );
+        END IF;
+    END LOOP;
+END $$;
+```
+
+* **Переключите трафик приложения**
+
+После того как проверка пройдена, а последовательности и ограничения настроены:
+
+1. Направьте трафик чтения в ClickHouse Managed Postgres.
+2. Направьте трафик записи в ClickHouse Managed Postgres.
+3. Мониторьте ошибки приложения, нарушения ограничений и состояние базы данных.
+
+* **Очистите ресурсы**
+
+После того как вы убедитесь, что миграция прошла успешно, и переведёте приложение на использование ClickHouse Managed Postgres, можно удалить mirror и peers в PeerDB.
 
 :::info Слоты репликации
-Если вы включили непрерывную репликацию, PeerDB создаст **слот репликации** в исходной базе данных PostgreSQL. Обязательно удалите слот репликации вручную в исходной базе данных после завершения миграции, чтобы избежать ненужного расхода ресурсов.
+Если вы включили непрерывную репликацию, PeerDB создаст **слот репликации** в исходной базе данных PostgreSQL. После завершения миграции обязательно удалите слот репликации вручную из исходной базы данных, чтобы избежать лишнего расхода ресурсов.
 :::
+
 
 ## Справочные материалы \{#migration-peerdb-references\}
 

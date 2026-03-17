@@ -17,18 +17,10 @@ import example_dashboard from '@site/static/images/clickstack/postgres/postgres-
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack으로 PostgreSQL 메트릭 모니터링하기 \{#postgres-metrics-clickstack\}
+# ClickStack를 사용한 PostgreSQL 메트릭 모니터링 \{#postgres-metrics-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry collector의 PostgreSQL receiver를 구성하여 ClickStack을 사용해 PostgreSQL 성능 메트릭을 모니터링하는 방법을 설명합니다. 다음 내용을 학습할 수 있습니다:
-
-- PostgreSQL 메트릭을 수집하도록 OTel collector 구성하기
-- 사용자 정의 구성을 사용해 ClickStack 배포하기
-- 미리 준비된 대시보드를 사용해 PostgreSQL 성능(트랜잭션, 연결 수, 데이터베이스 크기, 캐시 히트 비율) 시각화하기
-
-운영 PostgreSQL 데이터베이스를 구성하기 전에 이 통합을 테스트하려는 경우, 샘플 메트릭이 포함된 데모 데이터셋을 사용할 수 있습니다.
-
-소요 시간: 10–15분
+:::note[TL;DR]
+OTel PostgreSQL receiver를 사용해 ClickStack에서 PostgreSQL 성능 메트릭을 모니터링합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함됩니다.
 :::
 
 ## 기존 PostgreSQL과의 통합 \{#existing-postgres\}
@@ -274,11 +266,9 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 
 ## 다음 단계 \{#next-steps\}
 
-PostgreSQL 메트릭 모니터링을 설정한 후 다음 단계를 수행합니다.
-
-- 중요한 임계값(연결 제한, 높은 롤백 비율, 낮은 캐시 적중률)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
-- `pg_stat_statements` 확장을 사용하여 쿼리 수준 모니터링을 활성화합니다.
-- 서로 다른 엔드포인트와 서비스 이름을 사용하여 receiver 구성을 복제하고, 여러 PostgreSQL 인스턴스를 모니터링합니다.
+* 중요한 임계값(연결 제한, 높은 롤백 비율, 낮은 캐시 적중률)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
+* `pg_stat_statements` 확장을 사용하여 쿼리 수준 모니터링을 활성화합니다.
+* 서로 다른 엔드포인트와 서비스 이름을 사용하여 receiver 구성을 복제하고, 여러 PostgreSQL 인스턴스를 모니터링합니다.
 
 ## 프로덕션 환경으로 이전하기 \{#going-to-production\}
 

@@ -9,6 +9,22 @@ doc_type: 'guide'
 
 # ClickHouse のテスト \{#testing-clickhouse\}
 
+## テストの種類 \{#test-types\}
+
+ClickHouse には、次のテストがあります。
+
+- [機能テスト](#functional-tests) - 以下のような一部重複するサブセットを含む、クエリとスクリプトのセット
+  - [Fast test](#running-fast-tests) - 最小のサブセット
+  - データベースにデータを投入する必要がない [ステートレステスト](#running-stateless-tests)
+  - 並列実行できない逐次テスト
+- [統合テスト](#integration-tests) - クラスタで `pytest` によって実行されます
+- [ユニットテスト](#unit-tests)
+- [パフォーマンステスト](#performance-tests)
+- [ビルドテスト](#build-tests)
+- [サニタイザ](#sanitizers)
+- [ファザー](#fuzzing)
+そのほかにもいくつかあります。詳細は以下のセクションを参照してください。
+
 ## 機能テスト \{#functional-tests\}
 
 機能テストは最もシンプルで扱いやすいテストです。
@@ -48,14 +64,14 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 
 ### Fast test を実行する \{#running-fast-tests\}
 
-テストサブセット（「Fast test」）を実行するには、そこそこの性能を備えたマシンが必要になる場合があります。以下の手順は、100 GB のストレージを備えた `t3.2xlarge` AWS amd64 Ubuntu インスタンスで動作確認されています。
+テストサブセット (「Fast test」) を実行するには、そこそこの性能を備えたマシンが必要になる場合があります。以下の手順は、100 GB のストレージを備えた `t3.2xlarge` AWS amd64 Ubuntu インスタンスで動作確認されています。
 
 1. 前提条件をインストールし、再ログインします。
 
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 ```
 
 2. ソースコードを取得します。
@@ -65,10 +81,10 @@ git clone --single-branch https://github.com/ClickHouse/ClickHouse
 cd ClickHouse
 ```
 
-3. コードをビルドし、「Fast test」と名付けられたテストサブセットを実行します。
+3. コードをビルドし、「fast tests」を実行します。
 
 ```sh
-python3 -m ci.praktika run "Fast test"
+python -m ci.praktika run fast
 ```
 
 次のような結果になるはずです
@@ -89,7 +105,7 @@ Failed: 0, Passed: 7394, Skipped: 1795
 ```sh
 sudo apt-get update
 sudo apt-get install docker.io
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker "$USER"
 sudo tee /etc/docker/daemon.json <<'EOF'
 {
   "ipv6": true,
@@ -109,14 +125,14 @@ cd ClickHouse
 3. コードをビルドします。
 
 ```sh
-python3 -m ci.praktika run "Build (amd_debug)"
+python -m ci.praktika run build_debug
 cp ci/tmp/build/programs/clickhouse ci/tmp
 ```
 
 4. 並列実行が可能なステートレスなテストを実行します。
 
 ```sh
-python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+python -m ci.praktika run functional
 ```
 
 次のような結果が得られるはずです
@@ -124,6 +140,8 @@ python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
 ```sh
 Failed: 0, Passed: 8497, Skipped: 103
 ```
+
+注。`python -m ci.praktika run` を実行すると、特定の継続的インテグレーションジョブが実行されます。ClickHouse CI の詳細については、[こちら](continuous-integration.md#running-stateless-tests)を参照してください。
 
 
 ### 新しいテストの追加 \{#adding-a-new-test\}
@@ -179,35 +197,28 @@ SELECT 1
 
 利用可能なタグの一覧は次のとおりです:
 
-| Tag name                          | What it does                                               | Usage example                                    |
-| --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------ |
-| `disabled`                        | テストは実行されません                                                |                                                  |
-| `long`                            | テストの実行時間が 1 分から 10 分に延長されます                                |                                                  |
-| `deadlock`                        | テストが長時間ループで実行されます                                          |                                                  |
-| `race`                            | `deadlock` と同じです。`deadlock` を優先して使用してください                  |                                                  |
-| `shard`                           | サーバーが `127.0.0.*` をリッスンする必要があります                           |                                                  |
-| `distributed`                     | `shard` と同じです。`shard` を優先して使用してください                        |                                                  |
-| `global`                          | `shard` と同じです。`shard` を優先して使用してください                        |                                                  |
-| `zookeeper`                       | テストの実行に Zookeeper または ClickHouse Keeper が必要です              | テストで `ReplicatedMergeTree` を使用します                |
-| `replica`                         | `zookeeper` と同じです。`zookeeper` を優先して使用してください                |                                                  |
-| `no-fasttest`                     | [Fast test](continuous-integration.md#fast-test) では実行されません | テストで Fast test では無効化されている `MySQL` テーブルエンジンを使用します |
-| `fasttest-only`                   | [Fast test](continuous-integration.md#fast-test) のみで実行されます |                                                  |
-| `no-[asan, tsan, msan, ubsan]`    | [sanitizers](#sanitizers) を有効にしたビルドではテストを実行しません            | テストは sanitizers と互換性のない QEMU 上で実行されます            |
-| `no-replicated-database`          |                                                            |                                                  |
-| `no-ordinary-database`            |                                                            |                                                  |
-| `no-parallel`                     | このテストと他のテストを並行実行しないようにします                                  | テストは `system` テーブルを読み取り、不変条件が壊れる可能性があります         |
-| `no-parallel-replicas`            |                                                            |                                                  |
-| `no-debug`                        | Debug ビルドではテストを実行しません                                      |                                                  |
-| `no-release`                      | Release ビルドではテストを実行しません                                    |                                                  |
-| `no-stress`                       |                                                            |                                                  |
-| `no-polymorphic-parts`            |                                                            |                                                  |
-| `no-random-settings`              |                                                            |                                                  |
-| `no-random-merge-tree-settings`   |                                                            |                                                  |
-| `no-backward-compatibility-check` |                                                            |                                                  |
-| `no-cpu-x86_64`                   |                                                            |                                                  |
-| `no-cpu-aarch64`                  |                                                            |                                                  |
-| `no-cpu-ppc64le`                  |                                                            |                                                  |
-| `no-s3-storage`                   |                                                            |                                                  |
+| Tag name                       | What it does                                                   | Usage example                                    |
+| ------------------------------ | -------------------------------------------------------------- | ------------------------------------------------ |
+| `disabled`                     | テストは実行されません                                                    |                                                  |
+| `long`                         | テストの実行時間が 1 分から 10 分に延長されます                                    |                                                  |
+| `deadlock`                     | テストが長時間ループで実行されます                                              |                                                  |
+| `race`                         | `deadlock` と同じです。`deadlock` を優先して使用してください                      |                                                  |
+| `shard`                        | サーバーが `127.0.0.*` をリッスンする必要があります                               |                                                  |
+| `distributed`                  | `shard` と同じです。`shard` を優先して使用してください                            |                                                  |
+| `global`                       | `shard` と同じです。`shard` を優先して使用してください                            |                                                  |
+| `zookeeper`                    | テストの実行に Zookeeper または ClickHouse Keeper が必要です                  | テストで `ReplicatedMergeTree` を使用します                |
+| `replica`                      | `zookeeper` と同じです。`zookeeper` を優先して使用してください                    |                                                  |
+| `no-fasttest`                  | [Fast test](#test-types) では実行されません                             | テストで Fast test では無効化されている `MySQL` テーブルエンジンを使用します |
+| `fasttest-only`                | [Fast test](#test-types) のみで実行されます                             |                                                  |
+| `no-[asan, tsan, msan, ubsan]` | [sanitizers](#sanitizers) を有効にしたビルドではテストを実行しません                | テストは sanitizers と互換性のない QEMU 上で実行されます            |
+| `no-replicated-database`       | デフォルトデータベースで `ReplicatedDatabaseEngine` を使用している場合、このテストを無効にします |                                                  |
+| `no-ordinary-database`         | デフォルトのデータベースエンジンが `Ordinary` の場合、このテストを無効にします                  |                                                  |
+| `no-parallel`                  | このテストと他のテストを並行実行しないようにします                                      | テストは `system` テーブルを読み取り、不変条件が壊れる可能性があります         |
+| `no-parallel-replicas`         | parallel replicas が有効な場合、このテストを無効にします                          |                                                  |
+| `no-debug`                     | Debug ビルドではテストを実行しません                                          |                                                  |
+| `no-release`                   | Release ビルドではテストを実行しません                                        |                                                  |
+
+次のオプションもサポートされています: `no-stress`, `no-polymorphic-parts`, `no-random-settings`, `no-random-merge-tree-settings`, `no-backward-compatibility-check`, `no-cpu-x86_64`, `no-cpu-aarch64`, `no-cpu-ppc64le`, `no-s3-storage`.
 
 上記の設定に加えて、特定の ClickHouse 機能を使用するかどうかを指定するために、`system.build_options` の `USE_*` フラグを使用できます。
 たとえば、テストで MySQL テーブルを使用する場合は、タグ `use-mysql` を追加する必要があります。
@@ -332,15 +343,10 @@ $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 ## その他のテスト \{#miscellaneous-tests\}
 
 `tests/external_models` には機械学習モデル向けのテストがあります。
-これらのテストはメンテナンスされておらず、インテグレーションテストに移行する必要があります。
+これらのテストは更新されておらず、統合テストに移行する必要があります。
 
 クォーラムインサート用の個別のテストがあります。
-このテストでは、ClickHouse クラスターを別々のサーバー上で実行し、さまざまな障害ケースをシミュレートします。ネットワーク分断、パケットドロップ（ClickHouse ノード間、ClickHouse と ZooKeeper 間、ClickHouse サーバーとクライアント間など）、`kill -9`、`kill -STOP`、`kill -CONT` といったものです。[Jepsen](https://aphyr.com/tags/Jepsen) に似ています。その後、このテストは、ACK されたすべての挿入が書き込まれており、拒否されたすべての挿入が書き込まれていないことを検証します。
-
-クォーラムテストは、ClickHouse がオープンソース化される前に別のチームによって作成されました。
-このチームは現在 ClickHouse に関わっていません。
-テストは不運にも Java で実装されています。
-これらの理由により、クォーラムテストは書き直してインテグレーションテストに移動する必要があります。
+このテストでは、ClickHouse クラスタを別々のサーバー上で実行し、さまざまな障害ケースをエミュレートします。ネットワーク分断、パケットロス (ClickHouse ノード間、ClickHouse と ZooKeeper 間、ClickHouse サーバーとクライアント間など)、`kill -9`、`kill -STOP`、`kill -CONT` です。[Jepsen](https://aphyr.com/tags/Jepsen) のようなものです。その後、このテストは、受理されたすべての挿入が書き込まれ、拒否されたすべての挿入が書き込まれていないことを確認します。
 
 ## 手動テスト \{#manual-testing\}
 
