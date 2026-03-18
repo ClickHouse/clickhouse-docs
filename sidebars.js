@@ -1116,7 +1116,19 @@ const sidebars = {
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
         'integrations/data-ingestion/etl-tools/estuary',
-        'integrations/data-ingestion/etl-tools/fivetran/index',
+        {
+          type: 'category',
+          label: 'Fivetran',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: { type: 'doc', id: 'integrations/data-ingestion/etl-tools/fivetran/index' },
+          items: [
+            'integrations/data-ingestion/etl-tools/fivetran/setup-guide',
+            'integrations/data-ingestion/etl-tools/fivetran/reference',
+            'integrations/data-ingestion/etl-tools/fivetran/troubleshooting',
+          ],
+        },
         'integrations/data-ingestion/etl-tools/nifi-and-clickhouse',
         'integrations/data-ingestion/etl-tools/vector-to-clickhouse',
         {
