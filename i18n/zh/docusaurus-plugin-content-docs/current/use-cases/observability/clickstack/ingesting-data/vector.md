@@ -250,7 +250,7 @@ import TabItem from '@theme/TabItem';
 为了提供一个更完整的示例，我们在下面使用一个 **Nginx 日志文件**。
 
 <Tabs groupId="example-dataset-options">
-  <TabItem value="托管版 ClickStack" label="托管版 ClickStack" default>
+  <TabItem value="managed-clickstack" label="托管版 ClickStack" default>
     以下指南假定您已创建托管 ClickStack 服务并记录了服务凭据。如果尚未完成,请遵循托管 ClickStack 的[入门指南](/use-cases/observability/clickstack/getting-started/managed),直至进入配置 Vector 的步骤。
 
     <VerticalStepper headerLevel="h3">
@@ -264,7 +264,7 @@ import TabItem from '@theme/TabItem';
 
       ### 创建数据库和表
 
-      Vector 要求在数据摄取之前先定义表和架构。
+      Vector 要求在数据摄取之前先定义表和 schema。
 
       首先创建一个数据库。可以通过 [ClickHouse Cloud 控制台](/cloud/get-started/sql-console)完成此操作。
 
@@ -346,7 +346,7 @@ import TabItem from '@theme/TabItem';
 
       ### 启动 Vector
 
-      首先创建数据目录以记录文件偏移量,然后使用以下命令启动 Vector。
+      首先创建数据目录以记录文件偏移量，然后使用以下命令启动 Vector。
 
       ```bash
       mkdir ./.vector-data
@@ -365,11 +365,11 @@ import TabItem from '@theme/TabItem';
 
       <Image img={create_vector_datasource} alt="创建 Vector 数据源" size="lg" />
 
-      该配置假定使用 Nginx 模式,其中 `time_local` 列用作时间戳。这是主键中声明的时间戳列。该列为必需项。
+      该配置假定使用 Nginx schema，其中 `time_local` 列用作时间戳。这是主键中声明的时间戳列。该列为必需项。
 
       我们还指定了默认选择为 `time_local, remote_addr, status, request`,用于定义日志视图中返回哪些列。
 
-      在上述示例中,数据中并不存在 `Body` 列,而是将其定义为 SQL 表达式:
+      在上述示例中，数据中并不存在 `Body` 列，而是将其定义为 SQL 表达式：
 
       ```sql
       concat(
@@ -390,7 +390,7 @@ import TabItem from '@theme/TabItem';
 
       此操作从结构化字段重构日志行。
 
-      有关其他可用选项,请参阅[配置参考](/use-cases/observability/clickstack/config)。
+      有关其他可用选项，请参阅[配置参考](/use-cases/observability/clickstack/config)。
 
       ### 探索数据
 
@@ -401,7 +401,7 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 
   <TabItem value="oss-clickstack" label="ClickStack 开源版">
-    以下指南假设您已通过[入门指南](use-cases/observability/clickstack/getting-started/managed)完成 ClickStack 开源版的部署配置。
+    以下指南假设您已通过[入门指南](/use-cases/observability/clickstack/getting-started/oss)完成 ClickStack 开源版的部署配置。
 
     <VerticalStepper headerLevel="h3">
       ### 安装 Vector
@@ -414,7 +414,7 @@ import TabItem from '@theme/TabItem';
 
       ### 创建数据库和表
 
-      Vector 要求在数据摄取之前先定义表和架构。
+      Vector 要求在数据摄取之前先定义表和 schema。
 
       首先创建一个数据库。这可以通过 [ClickHouse Web 用户界面](/interfaces/http#web-ui) 在 [http://localhost:8123/play](http://localhost:8123/play) 完成。使用默认用户名和密码 `api:api`。
 
@@ -454,7 +454,7 @@ import TabItem from '@theme/TabItem';
 
       ### 复制 Vector 配置
 
-      使用 Vector 向 ClickStack 摄取数据时,应直接发送到 ClickHouse,绕过收集器公开的 OTLP 端点。
+      使用 Vector 向 ClickStack 摄取数据时，应直接发送到 ClickHouse，绕过 Collector 公开的 OTLP 端点。
 
       复制 Vector 配置并创建文件 `nginx.yaml`。
 
@@ -517,7 +517,7 @@ import TabItem from '@theme/TabItem';
 
       我们还指定了默认选择为 `time_local, remote_addr, status, request`,用于定义日志视图中返回哪些列。
 
-      在上述示例中,数据中并不存在 `Body` 列,而是将其定义为 SQL 表达式:
+      在上述示例中，数据中并不存在 `Body` 列，而是将其定义为 SQL 表达式：
 
       ```sql
       concat(
@@ -538,11 +538,11 @@ import TabItem from '@theme/TabItem';
 
       此操作从结构化字段重构日志行。
 
-      有关其他可用选项,请参阅[配置参考](/use-cases/observability/clickstack/config)。
+      有关其他可用选项，请参阅[配置参考](/use-cases/observability/clickstack/config)。
 
       ### 导航到 ClickStack UI
 
-      在浏览器中访问 ClickStack UI [http://localhost:8080](http://localhost:8080)。如果您尚未完成初始配置,请创建用户。
+      在浏览器中访问 ClickStack UI [http://localhost:8080](http://localhost:8080)。如果您尚未完成初始配置，请创建用户。
 
       <Image img={hyperdx_login} alt="登录 ClickStack" size="lg" />
 

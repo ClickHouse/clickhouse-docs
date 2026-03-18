@@ -160,38 +160,6 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
-## detectProgrammingLanguage \{#detectProgrammingLanguage\}
-
-Появилась в версии: v22.2.0
-
-Определяет язык программирования по заданному фрагменту исходного кода.
-
-**Синтаксис**
-
-```sql
-detectProgrammingLanguage('source_code')
-```
-
-**Аргументы**
-
-* `source_code` — строковое представление исходного кода для анализа. [`String`](/sql-reference/data-types/string)
-
-**Возвращаемое значение**
-
-Возвращает язык программирования в виде [`String`](/sql-reference/data-types/string)
-
-**Примеры**
-
-**Определение фрагмента кода на C++**
-
-```sql title=Query
-SELECT detectProgrammingLanguage('#include <iostream>')
-```
-
-```response title=Response
-C++
-```
-
 ## detectTonality \{#detectTonality\}
 
 Добавлено в: v22.2.0
@@ -236,7 +204,8 @@ SELECT
 Введена в версии: v21.9.0
 
 Выполняет лемматизацию заданного слова.
-Для работы этой функции требуются словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. на странице [&quot;Определение словарей&quot;](/sql-reference/statements/create/dictionary/sources/local-file).
+Для работы этой функции необходимы словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. раздел [«Определение словарей»](/docs/sql-reference/
++statements/create/dictionary/sources/local-file).
 
 **Синтаксис**
 

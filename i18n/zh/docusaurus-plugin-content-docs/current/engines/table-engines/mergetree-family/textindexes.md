@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   与 `ngrams(N)` 相比，`sparseGrams` 分词器会生成可变长度的 N-gram，从而可以更灵活地表示原始文本。
   例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成长度为 3、4、5 的 n-gram，但只返回长度为 4 和 5 的 n-gram。
 * `array` 不执行任何分词操作，即每一行的值都是一个 token (参见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
+* `unicode_word` 使用 Unicode 单词边界规则 (类似 UAX #29) 将字符串拆分为 token。ASCII 字母数字字符和下划线会与连接符一起构成 token (`:` 用于字母，`.` 和 `'` 用于相同类型的字符)。非 ASCII Unicode 字符会成为单字符 token。停用词 (可配置，默认值为常见的 CJK 标点符号) 会被跳过。可以将可选参数 `stop_words` 指定为字符串数组，例如：`tokenizer = unicode_word(['，', '。'])`。
 
 所有可用的 tokenizer 都列在 [system.tokenizers](../../../operations/system-tables/tokenizers.md) 中。
 

@@ -32,16 +32,16 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
 用于可选增强访问控制系统的设置。
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                 | Default |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 权限。                                                                                                                                                                                                                                                        | `true`  |
-| `role_cache_expiration_time_seconds`            | 设置角色自上次访问以来在 Role Cache 中保存的时间（秒）。                                                                                                                                                                                                                                                          | `600`   |
-| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                 | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
-| `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中针对某个设置定义的约束，是否会覆盖该设置上先前的约束（这些先前约束定义在其他 profile 中），包括新约束未显式设置的字段。该选项还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                              | `true`  |
-| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                    | `false` |
-| `throw_on_unmatched_row_policies`               | 设置在读取表时，如果该表存在 ROW POLICY，但其中没有任何一条适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                         | `false` |
-| `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                       | Default |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 权限。                                                                                                                                                                                                                                                              | `true`  |
+| `role_cache_expiration_time_seconds`            | 设置角色自上次访问以来在 Role Cache 中保存的时间 (秒) 。                                                                                                                                                                                                                                                              | `600`   |
+| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                       | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表 (`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`) 仍对所有人可访问；并且如果授予了某个 `SHOW` 权限 (例如 `SHOW USERS`) ，则相应的 system 表 (即 `system.users`) 将可访问。 | `true`  |
+| `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中针对某个设置定义的约束，是否会覆盖该设置上先前的约束 (这些先前约束定义在其他 profile 中) ，包括新约束未显式设置的字段。该选项还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                  | `true`  |
+| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                          | `false` |
+| `throw_on_unmatched_row_policies`               | 设置在读取表时，如果该表存在 ROW POLICY，但其中没有任何一条适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                               | `false` |
+| `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                                   | `true`  |
 
 Example:
 
@@ -762,12 +762,13 @@ ClickHouse 重新加载配置并检查新变更的时间间隔
 
 ## custom_settings_prefixes \{#custom_settings_prefixes\}
 
-[自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。前缀之间必须以逗号分隔。
+用于 [自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。
+多个前缀应以逗号分隔。
 
 **示例**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **另请参阅**

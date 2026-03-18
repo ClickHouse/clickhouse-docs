@@ -65,9 +65,6 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)     | `0`       |
 | [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                 | ``        |
 | [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                   | `1000`    |
-| [allow&#95;statistics&#95;optimize](/operations/settings/settings#allow_statistics_optimize)                                           | `1`       |
-| [use&#95;statistics](/operations/settings/settings#use_statistics)                                                                     | `1`       |
-| [use&#95;statistics&#95;cache](/operations/settings/settings#use_statistics_cache)                                                     | `1`       |
 | [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                 | `1`       |
 | [allow&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_insert_into_iceberg)                                       | `0`       |
 | [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                   | `1`       |
@@ -116,7 +113,6 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [join&#95;to&#95;sort&#95;maximum&#95;table&#95;rows](/operations/settings/settings#join_to_sort_maximum_table_rows)                                                                                                                | `10000`                 |
 | [allow&#95;experimental&#95;join&#95;right&#95;table&#95;sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting)                                                                                        | `0`                     |
 | [allow&#95;experimental&#95;json&#95;lazy&#95;type&#95;hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints)                                                                                                | `0`                     |
-| [allow&#95;experimental&#95;statistics](/operations/settings/settings#allow_experimental_statistics)                                                                                                                                | `0`                     |
 | [allow&#95;experimental&#95;window&#95;view](/operations/settings/settings#allow_experimental_window_view)                                                                                                                          | `0`                     |
 | [window&#95;view&#95;clean&#95;interval](/operations/settings/settings#window_view_clean_interval)                                                                                                                                  | `60`                    |
 | [window&#95;view&#95;heartbeat&#95;interval](/operations/settings/settings#window_view_heartbeat_interval)                                                                                                                          | `15`                    |
