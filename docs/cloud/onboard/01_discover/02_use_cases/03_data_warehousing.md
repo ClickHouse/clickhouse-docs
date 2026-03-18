@@ -2,13 +2,13 @@
 slug: /cloud/get-started/cloud/use-cases/data_lake_and_warehouse
 title: 'Data warehousing'
 description: 'Build modern data warehousing architectures with ClickHouse Cloud combining the flexibility of data lakes with database performance'
-keywords: ['use cases', 'data lake and warehouse']
+keywords: ['data warehousing', 'data lake', 'Iceberg', 'Delta Lake', 'Hudi', 'Parquet', 'open table formats', 'hybrid architecture']
 sidebar_label: 'Data warehousing'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cases/datalakehouse_01.png';
+import data_warehousing from '@site/static/images/cloud/onboard/discover/use_cases/data-warehousing.png';
 
 Data lakes provide flexible, scalable storage for all types of data on cloud
 object storage. By adding open table formats and a high-performance query engine
@@ -31,7 +31,7 @@ layers that combine the flexibility of lake storage with data warehouse
 capabilities. You can substitute components and evolve each layer
 independently.
 
-<Image img={datalakehouse_01} alt="Components of a data lake architecture" size="md"/>
+<Image img={data_warehousing} alt="Components of a data lake architecture" size="md"/>
 
 | Component               | Description                                                                                                                                                                                                                                                                                                                                    |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -39,7 +39,7 @@ independently.
 | **Query engine**        | Processes analytical queries against data in object storage, using the metadata and optimizations provided by the table format layer. Supports SQL and other query languages to analyze large volumes of data efficiently.                                                                                     |
 | **Metadata catalog**    | The [data catalog](https://clickhouse.com/engineering-resources/data-catalog) acts as a central repository for metadata, storing and managing table definitions, schemas, partitioning information, and access control policies. Enables data discovery, lineage tracking, and governance across the data platform.                             |
 | **Table format layer**  | The [table format layer](https://clickhouse.com/engineering-resources/open-table-formats) manages the logical organization of data files into tables, providing database-like features such as ACID transactions, schema enforcement and evolution, time travel, and performance optimizations like data skipping and clustering. |
-| **Object storage**      | This layer provides scalable, durable, and cost-effective storage for all data files and metadata. It handles the physical persistence of data in an open format, enabling direct access from multiple tools and systems.                                                                                                                          |
+| **Object storage**      | This layer provides scalable, durable, and cost-effective storage for all data files and metadata. It persists data in open formats, enabling direct access from multiple tools and systems.                                                                                                                          |
 | **Client applications** | Various tools and applications that connect to the platform to query data, visualize insights, or build data products. These can include BI tools, data science notebooks, custom applications, and ETL/ELT tools.                                                                                                                            |
 
 ## Benefits of combining data lakes with a query engine {#benefits-of-this-architecture}
@@ -55,7 +55,7 @@ significant advantages over both traditional data warehouses and raw data lakes:
 | 2 | **Component flexibility and interchangeability** | With a data lake architecture, you can substitute individual components like query engines or table formats without replacing the entire system. This reduces vendor lock-in and lets you adapt to changing needs without disruptive migrations. |
 | 3 | **Open format support**                          | Data is stored in open file formats like Parquet, allowing direct access from various tools without vendor lock-in, unlike proprietary data warehouse formats that restrict access to their ecosystem.                                                                                                                                                                                                                              |
 | 4 | **AI/ML integration**                            | Open storage formats give machine learning frameworks and Python/R libraries direct access to data, whereas data warehouses typically require you to extract data before using it for advanced analytics.                                                                                                                                                                                                                                         |
-| 5 | **Independent scaling**                          | Storage and compute are separated, allowing each to scale independently based on actual needs, unlike many data warehouses, where they scale together.                                                                                                                                                                                                                                                                              |
+| 5 | **Independent scaling**                          | Storage and compute are separated, allowing each to scale independently based on actual needs, unlike many data warehouses that scale them together.                                                                                                                                                                                                                                                                              |
 
 ### What open table formats add to your data lake {#compared-to-data-lakes}
 
