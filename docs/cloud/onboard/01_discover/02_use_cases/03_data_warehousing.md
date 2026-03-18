@@ -13,7 +13,7 @@ import data_warehousing from '@site/static/images/cloud/onboard/discover/use_cas
 Data lakes provide flexible, scalable storage for all types of data on cloud
 object storage. By adding open table formats and a high-performance query engine
 like ClickHouse, you can bring database-grade capabilities — ACID transactions,
-schema enforcement, fast analytical queries — to your data lake without
+schema enforcement, and fast analytical queries to your data lake without
 sacrificing its flexibility.
 
 This combination supports traditional analytics and modern AI/ML workloads in
