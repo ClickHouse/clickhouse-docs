@@ -89,7 +89,6 @@ Select `clickhouse-cloud` and authenticate via OAuth using your credentials for 
 
 ### Visual Studio Code {#visual-studio-code}
 
-
 Add the following configuration to your `.vscode/mcp.json`:
 
 ```json
