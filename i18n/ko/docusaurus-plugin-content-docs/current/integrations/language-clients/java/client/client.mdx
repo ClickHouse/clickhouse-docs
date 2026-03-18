@@ -16,6 +16,14 @@ import Version from '@theme/ClientVersionDropdown/Version';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
 
 <ClientVersionDropdown
   versions={[

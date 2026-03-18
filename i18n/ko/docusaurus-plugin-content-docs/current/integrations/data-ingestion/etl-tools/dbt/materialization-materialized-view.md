@@ -15,11 +15,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-`materialized_view` materialization은 기존(소스) 테이블에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 「정적(static)」이 아니며, 이에 대응하는 REFRESH 작업도 없습니다. 대신 **삽입 트리거(insert trigger)**처럼 동작하여, 소스 테이블에 행이 삽입될 때 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view 설명서](/materialized-view)를 참고하십시오.
+`materialized_view` materialization은 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 "정적"이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
 
 :::note
-일반적인 materialization 개념과 공통 설정(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하십시오.
-:::
+일반적인 materialization 개념과 공통 구성(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
+:::”
 
 ## 대상 테이블 관리 방식 \{#target-table-management\}
 

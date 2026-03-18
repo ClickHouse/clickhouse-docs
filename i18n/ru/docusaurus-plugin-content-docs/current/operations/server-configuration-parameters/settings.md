@@ -764,12 +764,13 @@ ClickHouse перезагружает встроенные словари каж
 
 ## custom_settings_prefixes \{#custom_settings_prefixes\}
 
-Список префиксов для [пользовательских настроек](/operations/settings/query-level#custom_settings). Префиксы должны быть разделены запятыми.
+Список префиксов для [пользовательских настроек](/operations/settings/query-level#custom_settings).
+Несколько префиксов должны быть разделены запятыми.
 
 **Пример**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **См. также**

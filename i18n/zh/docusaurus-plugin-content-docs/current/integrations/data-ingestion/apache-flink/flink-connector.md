@@ -377,8 +377,8 @@ csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
 ## 高级用法与推荐配置 \{#advanced-and-recommended-usage\}
 
 * 为获得最佳性能，请确保 DataStream 的元素类型**不是**泛型类型——请参阅[此处有关 Flink 类型区分的说明](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class)。非泛型元素可避免 Kryo 带来的序列化开销，并提高写入 ClickHouse 的吞吐量。
-* 我们建议将 `maxBatchSize` 设置为至少 1000，理想情况下在 10,000 到 100,000 之间。更多信息请参阅[这篇关于批量插入的指南](https://clickhouse.com/docs/optimize/bulk-inserts)。
-* 如需在 ClickHouse 中执行 OLTP 风格的去重或 upsert，请参阅[此文档页面](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication)。*注意：不要将其与重试时发生的批次去重混淆，详见[下文](#duplicate_batches)。*
+* 我们建议将 `maxBatchSize` 设置为至少 1000，理想情况下在 10,000 到 100,000 之间。更多信息请参阅[这篇关于批量插入的指南](/optimize/bulk-inserts)。
+* 如需在 ClickHouse 中执行 OLTP 风格的去重或 upsert，请参阅[此文档页面](/guides/developer/deduplication#options-for-deduplication)。*注意：不要将其与重试时发生的批次去重混淆。*
 
 ## 故障排查 \{#troubleshooting\}
 

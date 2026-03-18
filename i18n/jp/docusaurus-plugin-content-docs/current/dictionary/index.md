@@ -322,12 +322,12 @@ Peak memory usage: 666.82 MiB.
 
 `LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
 
-### Dictionary の更新 \{#refreshing-dictionaries\}
+### 辞書の更新 \{#refreshing-dictionaries\}
 
-`LIFETIME` を `MIN 600 MAX 900` として Dictionary に指定しています。LIFETIME は Dictionary の更新間隔を表し、ここで指定した値により 600～900 秒のランダムな間隔で定期的に再読み込みが行われます。このランダムな間隔は、多数のサーバーで更新を行う際に、Dictionary のソースへの負荷を分散するために必要です。更新中も Dictionary の旧バージョンに対するクエリは引き続き実行可能であり、クエリがブロックされるのは初回ロード時のみです。`(LIFETIME(0))` を設定すると、Dictionary が更新されなくなる点に注意してください。  
-Dictionary は `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的に再読み込みできます。
+`LIFETIME` を `MIN 600 MAX 900` として辞書に指定しています。LIFETIME は辞書の更新間隔であり、ここでの値により 600～900 秒のランダムな間隔で定期的に再読み込みが行われます。このランダムな間隔は、多数のサーバーで更新を行う際に、辞書ソースへの負荷を分散するために必要です。更新中も辞書の旧バージョンには引き続きクエリでき、クエリがブロックされるのは初回ロード時のみです。`(LIFETIME(0))` を設定すると、辞書が更新されなくなる点に注意してください。
+辞書は `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的に再読み込みできます。
 
-ClickHouse や Postgres のようなデータベースソースの場合、クエリのレスポンスに基づいて実際に変更があった場合にのみ Dictionary を更新するように設定でき、一定間隔での更新に代えてこの方式を利用できます。詳細は[こちら](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)を参照してください。
+ClickHouse や Postgres のようなデータベースソースでは、定期的な間隔ではなく、実際に変更があった場合にのみ辞書を更新するクエリを設定できます（これを判定するのはクエリのレスポンスです）。詳細は[こちら](/sql-reference/statements/create/dictionary/lifetime)を参照してください。
 
 ### その他の Dictionary タイプ \{#other-dictionary-types\}
 
