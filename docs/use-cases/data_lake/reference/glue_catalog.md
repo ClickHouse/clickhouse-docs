@@ -35,14 +35,12 @@ For AWS Role auth, AWS Role Session Name is an additional optional field.
 You will need to enable it using `SET allow_database_glue_catalog = 1;`
 :::
 
-
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
 
 With your AWS Glue Catalog configured, you can authenticate and establish a 
 connection between ClickHouse and AWS Glue Catalog.
 
-
-### AWS Access Key/Secret
+### AWS Access Key/Secret {#aws-access-key-secret}
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -54,7 +52,7 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-### AWS Role
+### AWS Role {#aws-role}
 ```sql title="Query"
 CREATE DATABASE glue
 ENGINE = DataLakeCatalog
