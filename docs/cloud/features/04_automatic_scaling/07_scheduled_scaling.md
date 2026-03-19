@@ -27,9 +27,9 @@ Scheduled Scaling is currently available in **Private Preview**. To enable it fo
 
 To configure a schedule, navigate to your service in the ClickHouse Cloud console and go to settings. From there, select **Schedule Override** and add a new rule.
 
-<Image img={scheduled_scaling_1} size="lg" alt="The Scaling Schedules interface in the ClickHouse Cloud console, showing time-based scaling rules" border/>
+<Image img={scheduled_scaling_1} size="md" alt="The Scaling Schedules interface in the ClickHouse Cloud console, showing time-based scaling rules" border/>
 
-<Image img={scheduled_scaling_2} size="lg" alt="Configuring a scheduled scaling rule in the ClickHouse Cloud console" border/>
+<Image img={scheduled_scaling_2} size="md" alt="Configuring a scheduled scaling rule in the ClickHouse Cloud console" border/>
 
 Each rule requires:
 
