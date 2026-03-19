@@ -59,7 +59,7 @@ ClickHouse サーバーは、上図の例にある 4 行の挿入データを、
 
 <br />
 
-上の図に示されているように、異なるパーティションに属するパーツは決してマージされません。高いカーディナリティを持つパーティションキーを選択すると、何千ものパーティションに分散したパーツはマージ候補にならず、事前設定された上限を超えて、悪名高い `Too many ^^parts^^` エラーを引き起こします。この問題への対処は簡単で、[カーディナリティがおおよそ 1,000〜10,000 程度](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121)となる妥当なパーティションキーを選択するだけです。
+上の図に示されているように、異なるパーティションに属するパーツは決してマージされません。高いカーディナリティを持つパーティションキーを選択すると、何千ものパーティションに分散したパーツはマージ候補にならず、事前設定された上限を超えて、悪名高い `Too many parts` エラーを引き起こします。この問題への対処は簡単で、[カーディナリティがおおよそ 1,000〜10,000 程度](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121)となる妥当なパーティションキーを選択するだけです。
 
 ## パーティションの監視 \{#monitoring-partitions\}
 

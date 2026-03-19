@@ -46,7 +46,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  默认情况下,新组织将采用 Scale 层级,并创建 3 个^^副本^^,每个副本配置 4 个 vCPU 和 16 GiB 内存。Scale 层级默认启用[垂直自动扩展](/manage/scaling#vertical-auto-scaling)。您可以稍后在&quot;Plans&quot;页面更改组织层级。
+  默认情况下,新组织将采用 Scale 层级,并创建 3 个副本,每个副本配置 4 个 vCPU 和 16 GiB 内存。Scale 层级默认启用[垂直自动扩展](/manage/scaling#vertical-auto-scaling)。您可以稍后在&quot;Plans&quot;页面更改组织层级。
 
   如有需要，可通过指定副本的最小和最大数量来自定义服务资源以进行扩缩容。准备就绪后，选择 `Create service`。
 
@@ -166,12 +166,12 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   * 在 ClickHouse 中，表中每一行的主&#x952E;***不是唯一的***
 
-  ClickHouse 表的^^主键^^决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据 (称为 **索引粒度**) 都会在^^主键^^索引文件中创建一个条目。这种粒度设计形成了一个可以轻松放入内存的 **^^稀疏索引^^**，而 granule 则表示在 `SELECT` 查询期间会被处理的最小列数据条带。
+  ClickHouse 表的主键决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据 (称为 **索引粒度**) 都会在主键索引文件中创建一个条目。这种粒度设计形成了一个可以轻松放入内存的 **稀疏索引**，而 granule 则表示在 `SELECT` 查询期间会被处理的最小列数据条带。
 
-  ^^主键^^可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`，
-  则该键为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则 ^^主键^^ 必须是排序键的子集。
+  主键可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`，
+  则该键为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则 主键 必须是排序键的子集。
 
-  ^^主键^^同时也是^^排序键^^，为 `(user_id, timestamp)` 这一元组。因此，每个列文件中存储的数据会先按 `user_id`，再按 `timestamp` 排序。
+  主键同时也是排序键，为 `(user_id, timestamp)` 这一元组。因此，每个列文件中存储的数据会先按 `user_id`，再按 `timestamp` 排序。
 
   如需深入了解 ClickHouse 的核心概念，请参阅[“核心概念”](../../managing-data/core-concepts/index.md)。
 

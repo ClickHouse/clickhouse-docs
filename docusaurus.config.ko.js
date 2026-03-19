@@ -19,11 +19,11 @@ function skipIndex(items) {
 const config = {
   scripts: [
     {
-      src: "/docs/zh/js/kapa_config.js",
+      src: "/docs/ko/js/kapa_config.js",
       async: false,
     },
     {
-      src: "/docs/zh/js/kapa_widget.js",
+      src: "/docs/ko/js/kapa_widget.js",
       async: true,
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
@@ -44,9 +44,9 @@ const config = {
   },
   title: "ClickHouse Docs",
   tagline:
-    "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
+      "다양한 정보를 제공합니다: 문서, 빠른 시작 가이드, 사용자 가이드, 기술 참조, 자주 묻는 질문 등.",
   url: "https://clickhouse.com",
-  baseUrl: "/docs/zh/",
+  baseUrl: "/docs/ko/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
@@ -56,7 +56,7 @@ const config = {
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
-    defaultLocale: "zh",
+    defaultLocale: "ko",
     locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
@@ -135,16 +135,16 @@ const config = {
         },
         blog: {
           path: "knowledgebase",
-          blogTitle: "ClickHouse 知识库",
-          blogDescription: "知识库",
-          blogSidebarTitle: "所有KB文章",
+          blogTitle: "ClickHouse 지식베이스",
+          blogDescription: "지식베이스",
+          blogSidebarTitle: "모든 KB 문서",
           routeBasePath: "/knowledgebase",
           postsPerPage: 10,
           blogSidebarCount: "ALL",
           feedOptions: {
             type: "all",
-            title: "ClickHouse 知识库信息流",
-            description: "在ClickHouse知识库中发布的文章信息流",
+            title: "ClickHouse 지식베이스 피드",
+            description: "ClickHouse 지식베이스에 게시된 문서 피드",
             copyright: `Copyright &copy; 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc. ClickHouse Docs provided under the Creative Commons CC BY-NC-SA 4.0 license. ClickHouse&reg; is a registered trademark of ClickHouse, Inc.`,
             language: "en",
             createFeedItems: async (params) => {
@@ -209,12 +209,12 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       metadata: [
-        {name: 'Accept-Language', content: 'zh-CN,zh;q=0.9'},
+        {name: 'Accept-Language', content: 'ko-KR,ko;q=0.9'},
       ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
-        indexName: "clickhouse-zh",
+        indexName: "clickhouse-ko",
         contextualSearch: false,
         searchPagePath: "search",
       },
@@ -240,19 +240,19 @@ const config = {
         style: "light",
         links: [
           {
-            label: "商标",
+            label: "상표",
             to: "https://clickhouse.com/legal/trademark-policy",
           },
           {
-            label: "隐私",
+            label: "개인정보 보호",
             to: "https://clickhouse.com/legal/privacy-policy",
           },
           {
-            label: "安全",
+            label: "보안",
             to: "https://trust.clickhouse.com/",
           },
           {
-            label: "服务条款",
+            label: "서비스 약관",
             to: "https://clickhouse.com/legal/agreements/terms-of-service",
           },
         ],

@@ -55,7 +55,8 @@ export default function DocItemLayout({children}) {
     if (
         location.pathname.endsWith('/docs/jp/') ||
         location.pathname.endsWith('/docs/ru/') ||
-        location.pathname.endsWith('/docs/zh/')
+        location.pathname.endsWith('/docs/zh/') ||
+        location.pathname.endsWith('/docs/ko/')
     ) {
       isDocsHome = true
     }

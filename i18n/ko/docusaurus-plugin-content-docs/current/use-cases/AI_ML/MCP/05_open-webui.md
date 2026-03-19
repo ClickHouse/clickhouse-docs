@@ -81,7 +81,7 @@ http://localhost:8000/docs로 이동하면 생성된 엔드포인트 목록을 �
 
 <Image img={ToolsPage} alt="Open WebUI 도구" size="md" />
 
-도구 URL로 http://localhost:8000을(를) 추가합니다:
+도구 URL로 `http://localhost:8000`을(를) 추가합니다:
 
 <Image img={AddTool} alt="Open WebUI 도구" size="md" />
 
