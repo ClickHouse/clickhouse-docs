@@ -64,8 +64,26 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 
 ClickHouse 支持 SQL 风格和 C 风格的注释：
 
-- SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
-- C 风格的注释从 `/*` 开始到 `*/` 结束，可以跨多行。同样不需要空格。
+* SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
+* C 风格的注释：
+  * `//` (或多于 2 个 `/` 字符) 后跟文本，并一直延续到行尾。`/` 之后不需要空格。
+  * 从 `/*` 到 `*/` 的注释可以跨多行。同样不需要空格。
+  * C 风格的注释可以嵌套。
+
+例如：
+
+```sql
+/*
+ * Compute the number of days between two dates.
+ * /* Returns NULL if either argument is NULL */
+ */
+SELECT
+    dateDiff('day', toDate('2024-01-01'), toDate('2024-12-31')) AS days_in_year, -- 365
+    dateDiff('day', toDate('2020-01-01'), today()) AS days_since  #! since 2020
+    ///////////////////////////////////////////////////////////////////
+    # TODO: add hour/minute variants
+```
+
 
 ## 关键字 \{#keywords\}
 

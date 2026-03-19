@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 토큰이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
+* `unicode_word`는 Unicode 단어 경계 규칙(UAX #29와 유사)을 사용해 문자열을 토큰으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 토큰을 구성합니다(문자의 경우 `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). 비-ASCII Unicode 문자는 한 글자짜리 토큰이 됩니다. 불용어(stop words)는 건너뛰며(구성 가능, 기본값은 일반적인 CJK 문장부호), 선택적 매개변수 `stop_words`를 문자열 배열로 지정할 수 있습니다. 예를 들어 `tokenizer = unicode_word(['，', '。'])`와 같이 설정합니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 
@@ -382,9 +383,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` 및 `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) 및 `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals))는 주어진 검색어 전체와 일치합니다.
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals))는 주어진 검색어 전체에 매칭합니다.
 
 예시:
 
@@ -392,12 +393,9 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-텍스트 인덱스는 `=` 및 `!=` 연산자를 지원하지만, 같음/같지 않음 조건 검색은 `array` tokenizer를 사용할 때에만 의미가 있습니다 (`array` tokenizer는 인덱스에 전체 행 값을 그대로 저장합니다).
+#### `IN` \{#functions-example-in\}
 
-
-#### `IN` 및 `NOT IN` \{#functions-example-in-notin\}
-
-`IN` ([in](/sql-reference/functions/in-functions)) 및 `NOT IN` ([notIn](/sql-reference/functions/in-functions))은(는) `equals` 및 `notEquals` 함수와 비슷하지만, 모든 검색어와 일치시키거나(`IN`), 어떤 검색어와도 일치시키지 않도록(`NOT IN`) 합니다.
+`IN` ([in](/sql-reference/functions/in-functions))은 `equals`와 비슷하지만, 모든 검색어에 매칭합니다.
 
 예시:
 
@@ -405,17 +403,22 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-`=` 및 `!=`와 동일한 제약이 적용됩니다. 즉, `IN` 및 `NOT IN`은 `array` 토크나이저와 함께 사용하는 경우에만 의미가 있습니다.
+:::note
+텍스트 인덱스에서는 `NOT IN` (`notIn`)이 지원되지 않습니다.
+:::
 
-
-#### `LIKE`, `NOT LIKE` 및 `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` 및 `match` \{#functions-example-like-match\}
 
 :::note
 현재 이 함수들은 인덱스 토크나이저가 `splitByNonAlpha`, `ngrams` 또는 `sparseGrams`인 경우에만 필터링에 텍스트 인덱스를 사용합니다.
 :::
 
-텍스트 인덱스와 함께 `LIKE`([like](/sql-reference/functions/string-search-functions.md/#like)), `NOT LIKE`([notLike](/sql-reference/functions/string-search-functions.md/#notLike)), 그리고 [match](/sql-reference/functions/string-search-functions.md/#match) 함수를 사용하려면 ClickHouse가 검색어에서 완전한 토큰을 추출할 수 있어야 합니다.
-`ngrams` 토크나이저를 사용하는 인덱스의 경우, 와일드카드 사이에 있는 검색 문자열의 길이가 ngram 길이와 같거나 더 길면 이 조건을 충족합니다.
+:::note
+`NOT LIKE` (`notLike`)는 텍스트 인덱스에서 지원되지 않습니다.
+:::
+
+텍스트 인덱스와 함께 `LIKE`([like](/sql-reference/functions/string-search-functions.md/#like)) 및 [match](/sql-reference/functions/string-search-functions.md/#match) 함수를 사용하려면 ClickHouse가 검색어에서 완전한 토큰을 추출할 수 있어야 합니다.
+`ngrams` 토크나이저를 사용하는 인덱스의 경우, 와일드카드 사이의 검색 문자열 길이가 ngram 길이와 같거나 더 길면 이 조건을 충족합니다.
 
 `splitByNonAlpha` 토크나이저를 사용하는 텍스트 인덱스 예:
 

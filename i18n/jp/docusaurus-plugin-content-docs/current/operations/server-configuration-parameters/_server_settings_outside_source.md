@@ -332,20 +332,20 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 <SystemLogParameters />
 
 
-## custom&#95;settings&#95;prefixes \{#custom_settings_prefixes\}
+## custom_settings_prefixes \{#custom_settings_prefixes\}
 
-[カスタム設定](/operations/settings/query-level#custom_settings) に使用するプレフィックスのリスト。プレフィックスはカンマ区切りで指定する必要があります。
+[custom settings](/operations/settings/query-level#custom_settings) に使用されるプレフィックスの一覧です。
+複数のプレフィックスはカンマで区切る必要があります。
 
-**例**
+**Example**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
-**関連情報**
+**関連項目**
 
-* [カスタム設定](/operations/settings/query-level#custom_settings)
-
+- [Custom settings](/operations/settings/query-level#custom_settings)
 
 ## core&#95;dump \{#core_dump\}
 
@@ -1893,16 +1893,16 @@ PostgreSQL プロトコル経由でクライアントと通信するためのポ
 
 アクセス制御システムにおける任意の改善用設定です。
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                             | Default |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `on_cluster_queries_require_cluster_grant`      | `ON CLUSTER` クエリに `CLUSTER` 権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                            | `true`  |
-| `role_cache_expiration_time_seconds`            | ロールが最後にアクセスされてからロールキャッシュに保持される時間（秒）を設定します。                                                                                                                                                                                                                                                                                                                              | `600`   |
-| `select_from_information_schema_requires_grant` | `SELECT * FROM information_schema.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには通常のテーブルと同様に `GRANT SELECT ON information_schema.<table>` が必要です。                                                                                                                                                                                        | `true`  |
-| `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行する際に権限が必要かどうか（権限が不要な場合は任意のユーザーが実行可能かどうか）を設定します。true に設定した場合、このクエリには system 以外のテーブルと同様に `GRANT SELECT ON system.<table>` が必要です。例外として、いくつかの system テーブル（`tables`、`columns`、`databases`、および `one`、`contributors` のような一部の定数テーブル）は依然として全員がアクセス可能です。また、`SHOW` 権限（例: `SHOW USERS`）が付与されている場合、対応する system テーブル（つまり `system.users`）にはアクセスできます。 | `true`  |
-| `settings_constraints_replace_previous`         | ある設定に対して設定プロファイル内で定義された制約が、その設定に対する以前の制約（他のプロファイルで定義されたもの）による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効にします。                                                                                                                                                                                                                        | `true`  |
-| `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                             | `false` |
-| `throw_on_unmatched_row_policies`               | テーブルに行ポリシーが存在するにもかかわらず、現在のユーザーに対応する行ポリシーが 1 つもない場合に、そのテーブルから読み取ろうとしたときに例外をスローするかどうかを設定します。                                                                                                                                                                                                                                                                              | `false` |
-| `users_without_row_policies_can_read_rows`      | パーミッシブな行ポリシーを持たないユーザーが `SELECT` クエリを使用して行を読み取れるかどうかを設定します。たとえば、ユーザー A と B がいて、行ポリシーが A に対してのみ定義されている場合、この設定が true であればユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はどの行も閲覧できません。                                                                                                                                                                                         | `true`  |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                                     | Default |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `on_cluster_queries_require_cluster_grant`      | `ON CLUSTER` クエリに `CLUSTER` 権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                                    | `true`  |
+| `role_cache_expiration_time_seconds`            | ロールが最後にアクセスされてからロールキャッシュに保持される時間 (秒) を設定します。                                                                                                                                                                                                                                                                                                                                    | `600`   |
+| `select_from_information_schema_requires_grant` | `SELECT * FROM information_schema.<table>` を実行する際に権限が必要かどうか (権限が不要な場合は任意のユーザーが実行可能かどうか) を設定します。true に設定した場合、このクエリには通常のテーブルと同様に `GRANT SELECT ON information_schema.<table>` が必要です。                                                                                                                                                                                              | `true`  |
+| `select_from_system_db_requires_grant`          | `SELECT * FROM system.<table>` を実行する際に権限が必要かどうか (権限が不要な場合は任意のユーザーが実行可能かどうか) を設定します。true に設定した場合、このクエリには system 以外のテーブルと同様に `GRANT SELECT ON system.<table>` が必要です。例外として、いくつかの system テーブル (`tables`、`columns`、`databases`、および `one`、`contributors` のような一部の定数テーブル) は依然として全員がアクセス可能です。また、`SHOW` 権限 (例: `SHOW USERS`) が付与されている場合、対応する system テーブル (つまり `system.users`) にはアクセスできます。 | `true`  |
+| `settings_constraints_replace_previous`         | ある設定に対して設定プロファイル内で定義された制約が、その設定に対する以前の制約 (他のプロファイルで定義されたもの) による動作を、新しい制約で設定されていないフィールドも含めて打ち消すかどうかを設定します。また、`changeable_in_readonly` 制約タイプを有効にします。                                                                                                                                                                                                                              | `true`  |
+| `table_engines_require_grant`                   | 特定のテーブルエンジンを使用してテーブルを作成する際に権限が必要かどうかを設定します。                                                                                                                                                                                                                                                                                                                                     | `false` |
+| `throw_on_unmatched_row_policies`               | テーブルに行ポリシーが存在するにもかかわらず、現在のユーザーに対応する行ポリシーが 1 つもない場合に、そのテーブルから読み取ろうとしたときに例外をスローするかどうかを設定します。                                                                                                                                                                                                                                                                                      | `false` |
+| `users_without_row_policies_can_read_rows`      | パーミッシブな行ポリシーを持たないユーザーが `SELECT` クエリを使用して行を読み取れるかどうかを設定します。たとえば、ユーザー A と B がいて、行ポリシーが A に対してのみ定義されている場合、この設定が true であればユーザー B はすべての行を閲覧できます。この設定が false の場合、ユーザー B はどの行も閲覧できません。                                                                                                                                                                                                 | `true`  |
 
 例:
 

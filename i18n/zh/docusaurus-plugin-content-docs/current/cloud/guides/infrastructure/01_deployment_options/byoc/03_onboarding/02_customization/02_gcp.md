@@ -16,7 +16,7 @@ import byoc_gcp_subnet from '@site/static/images/cloud/reference/byoc-gcp-subnet
 
 ### 配置现有 VPC \{#configure-existing-vpc\}
 
-1. 在 [ClickHouse BYOC 支持的区域](/cloud/reference/byoc/supported-regions)中，至少为 ClickHouse Kubernetes (GKE) 集群分配 1 个私有子网。确保该子网的 CIDR 范围至少为 `/24` (例如 10.0.0.0/24) ，以便为 GKE 集群节点提供充足的 IP 地址。
+1. 在 [ClickHouse BYOC 支持的区域](/cloud/reference/supported-regions)中，至少为 ClickHouse Kubernetes (GKE) 集群分配 1 个私有子网。确保该子网的 CIDR 范围至少为 `/24` (例如 10.0.0.0/24) ，以便为 GKE 集群节点提供充足的 IP 地址。
 2. 在该私有子网中，至少分配 1 个用于 GKE 集群 Pod (容器组) 的次级 IPv4 地址范围。该次级范围至少应为 `/23`，以便为 GKE 集群 Pod (容器组) 提供充足的 IP 地址。
 3. 在该子网上启用 **Private Google Access**。这样，GKE 节点无需外部 IP 地址即可访问 Google API 和服务。
 

@@ -51,7 +51,7 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
   {
    changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
    version: '26.2',
-   fast_start_date: '待定',
+   fast_start_date: '2026-03-30',
    fast_end_date: '待定',
    regular_start_date: '待定',
    regular_end_date: '待定',
@@ -67,12 +67,13 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
    fast_start_date: '2026-02-10',
    fast_end_date: '2026-02-11',
    regular_start_date: '2026-03-09',
-   regular_end_date: '待定',
-   slow_start_date: '待定',
+   regular_end_date: '2026-03-18',
+   slow_start_date: '2026-04-06',
    slow_end_date: '待定',
    fast_progress: 'green',
    regular_progress: 'green',
-   slow_progress: 'green'
+   slow_progress: 'green',
+   regular_delay_note: '配置了预定升级时间窗的服务，将在 3 月 23 日之后的下一周内，于其预定时间窗内接收 25.12 版本',
  },
  {
    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
@@ -86,7 +87,6 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
    fast_progress: 'green',
    regular_progress: 'green',
    slow_progress: 'green',
-   regular_delay_note: '配置了预定升级时间窗的服务，将在 3 月 16 日之后的下一周内，于其预定时间窗内接收 25.10 版本',
  },
  {
   changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
