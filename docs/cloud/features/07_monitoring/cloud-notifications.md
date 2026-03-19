@@ -62,19 +62,11 @@ ClickHouse sends service notifications when a certain alert condition is trigger
 
 ## ClickPipes notifications {#clickpipes-notifications}
 
-ClickHouse sends ClickPipes notifications when a certain alert condition is triggered. See below for more information on ClickPipes notifications for ClickHouse Cloud:
-
-| Notify when | Specific alert condition | Default notification channels | Resolution steps |
-|---|---|---|---|
-| … | … | … | … |
+ClickHouse sends ClickPipes notifications when your ClickPipe is experiencing failures or issues. 
 
 ## Billing notifications {#billing-notifications}
 
-ClickHouse sends billing notifications when a certain alert condition is triggered. See below for more information on billing notifications for ClickHouse Cloud:
-
-| Notify when | Specific alert condition | Default notification channels | Resolution steps |
-|---|---|---|---|
-| … | … | … | … |
+ClickHouse sends billing notifications for payment issues, and when prepaid commitments reach certain consumption thresholds. 
 
 ## Supported notifications {#supported-notifications}
 
