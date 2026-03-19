@@ -1913,6 +1913,10 @@ ReadBuffer/WriteBuffer 所用 IO 缓冲区的分配次数。
 
 Iceberg 元数据 File 在 Iceberg 元数据缓存中未命中，因此必须从 (远程) 磁盘读取的次数。
 
+### IcebergMetadataFilesCacheStaleMisses \{#icebergmetadatafilescachestalemisses\}
+
+在缓存中命中 Iceberg 元数据文件，但因被视为已过期而必须从 (远程) 磁盘读取的次数。
+
 ### IcebergMetadataFilesCacheWeightLost \{#icebergmetadatafilescacheweightlost\}
 
 从 Iceberg 元数据缓存中淘汰的估算字节数。

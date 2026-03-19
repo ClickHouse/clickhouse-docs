@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 토큰이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
+* `unicode_word`는 Unicode 단어 경계 규칙(UAX #29와 유사)을 사용해 문자열을 토큰으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 토큰을 구성합니다(문자의 경우 `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). 비-ASCII Unicode 문자는 한 글자짜리 토큰이 됩니다. 불용어(stop words)는 건너뛰며(구성 가능, 기본값은 일반적인 CJK 문장부호), 선택적 매개변수 `stop_words`를 문자열 배열로 지정할 수 있습니다. 예를 들어 `tokenizer = unicode_word(['，', '。'])`와 같이 설정합니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 

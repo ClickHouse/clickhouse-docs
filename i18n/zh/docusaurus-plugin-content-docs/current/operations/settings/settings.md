@@ -566,18 +566,6 @@ Cloud 默认值：`1`。
 
 基于 part UUID 的 SELECT 查询实验性去重功能
 
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**别名**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。之前的名称为 `allow_experimental_statistic`。"}]}]}/>
-
-允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
-
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -866,15 +854,23 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 允许输出具有 Sparse 和 Replicated 等特殊序列化类型的列，而无需将其转换为完整列表示形式。
 这有助于在格式化期间避免不必要的数据复制。
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**别名**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "列统计信息现已正式可用"}]}]} />
+
+允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **别名**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]} />
 
 允许使用统计信息来优化查询。
 
@@ -4985,6 +4981,14 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 - manifest_list_entry - 上述所有内容 + avro manifest list 中的条目。
 - manifest_file_metadata - 上述所有内容 + 遍历到的 avro manifest 文件中的元数据。
 - manifest_file_entry - 上述所有内容 + 遍历到的 avro manifest 文件中的条目。
+
+## iceberg_metadata_staleness_ms \{#iceberg_metadata_staleness_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置，允许在 READ 操作期间使用缓存的元数据版本，以避免从远程目录获取"}]}]} />
+
+如果该值非零，且存在比给定过期窗口更新的缓存元数据快照，则跳过从远程目录获取 Iceberg 元数据。值为 0 表示始终从远程目录获取最新的元数据版本。将此项设为非零，可以用一定的元数据陈旧性换取更低的读操作延迟。
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -11889,24 +11893,20 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]} />
 
-/// 建议优先使用 'use_statistics' 而不是 'allow_statistics_optimize'，以与 'use_primary_key' 和 'use_skip_indexes' 的命名保持一致
+/// 建议优先使用 &#39;use&#95;statistics&#39; 而不是 &#39;allow&#95;statistics&#95;optimize&#39;，以与 &#39;use&#95;primary&#95;key&#39; 和 &#39;use&#95;skip&#95;indexes&#39; 的命名保持一致
 允许使用统计信息来优化查询
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新设置"}]}]}/>
 
-在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
+在查询中使用统计信息缓存，以避免加载每个分片统计信息所带来的开销
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

@@ -1913,6 +1913,10 @@ Iceberg のメタデータファイルがキャッシュ内で見つかった回
 
 Iceberg メタデータキャッシュ内で Iceberg メタデータファイルが見つからず、 (リモート) ディスクから読み取る必要があった回数。
 
+### IcebergMetadataFilesCacheStaleMisses \{#icebergmetadatafilescachestalemisses\}
+
+Iceberg メタデータファイルがキャッシュ内で見つかったものの、古くなっていると判断され、**（リモート）ディスクから読み取る必要がある**とされた回数。
+
 ### IcebergMetadataFilesCacheWeightLost \{#icebergmetadatafilescacheweightlost\}
 
 Iceberg メタデータキャッシュから削除されたおおよそのバイト数。

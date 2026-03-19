@@ -1914,6 +1914,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество случаев, когда файлы метаданных Iceberg не находились в кэше метаданных Iceberg, и их приходилось считывать с (удалённого) диска.
 
+### IcebergMetadataFilesCacheStaleMisses \{#icebergmetadatafilescachestalemisses\}
+
+Количество случаев, когда файлы метаданных Iceberg находились в кэше, но считались устаревшими, поэтому их пришлось считывать с (удалённого) диска.
+
 ### IcebergMetadataFilesCacheWeightLost \{#icebergmetadatafilescacheweightlost\}
 
 Приблизительное количество байтов, вытесненных из кэша метаданных Iceberg.

@@ -568,18 +568,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальное удаление дубликатов данных для SELECT-запросов на основе UUID частей таблицы
 
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**Псевдонимы**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Параметр был переименован. Предыдущее имя — `allow_experimental_statistic`."}]}]}/>
-
-Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
-
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -867,15 +855,23 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 Позволяет выводить столбцы со специальными вариантами сериализации, такими как разреженный (Sparse) и Replicated, без преобразования их в полное представление столбца.
 Это позволяет избежать лишнего копирования данных при форматировании вывода.
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**Псевдонимы**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Статистика столбцов теперь общедоступна"}]}]} />
+
+Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **Псевдонимы**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Включает эту оптимизацию по умолчанию."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "Настройка была переименована. Предыдущее имя — `allow_statistic_optimize`."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Включить эту оптимизацию по умолчанию."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "SETTING была переименована. Предыдущее имя — `allow_statistic_optimize`."}]}]}/>
 
 Разрешает использовать статистику для оптимизации запросов
 
@@ -4992,6 +4988,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - manifest_list_entry - Всё вышеперечисленное + записи avro-списка манифестов.
 - manifest_file_metadata - Всё вышеперечисленное + метаданные из avro-файлов манифестов, проходящих при обходе.
 - manifest_file_entry - Всё вышеперечисленное + записи из avro-файлов манифестов, проходящих при обходе.
+
+## iceberg_metadata_staleness_ms \{#iceberg_metadata_staleness_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новый SETTING, позволяющий использовать кэшированную версию метаданных при операциях READ, чтобы избежать получения данных из удалённого каталога"}]}]}/>
+
+Если значение не равно нулю, пропускается получение метаданных iceberg из удалённого каталога, если существует кэшированный снимок метаданных, более новый, чем заданное окно устаревания. Ноль означает, что последняя версия метаданных всегда будет запрашиваться из удалённого каталога. Установка этого SETTING в ненулевое значение означает компромисс: большая устарелость в обмен на меньшую задержку операций чтения.
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -11934,24 +11938,20 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]} />
 
 /// предпочтительна по сравнению с `allow_statistics_optimize`, поскольку согласуется с `use_primary_key` и `use_skip_indexes`
 Включает использование статистики для оптимизации запросов
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
-Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
+Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
