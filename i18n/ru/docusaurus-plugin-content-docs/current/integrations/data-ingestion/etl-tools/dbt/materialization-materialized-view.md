@@ -13,12 +13,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Materialized Views \{#materialized-views\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
-Материализация `materialized_view` должна быть `SELECT`‑запросом к существующей (исходной) таблице. В отличие от PostgreSQL, materialized view в ClickHouse не является «статичной» (и не имеет соответствующей операции REFRESH). Вместо этого она работает как **триггер вставки**, добавляя новые строки в целевую таблицу, применяя заданное `SELECT`‑преобразование к строкам, вставляемым в исходную таблицу. См. [документацию по materialized view в ClickHouse](/materialized-view) для получения дополнительных сведений о том, как materialized view работает в ClickHouse.
+Материализация `materialized_view` должна быть `SELECT`‑запросом к существующей (исходной) таблице. В отличие от PostgreSQL, materialized view в ClickHouse не является «статичной» (и не имеет соответствующей операции REFRESH). Вместо этого она работает как **триггер вставки**, добавляя новые строки в целевую таблицу, применяя заданное `SELECT`‑преобразование к строкам, вставляемым в исходную таблицу. См. [документацию по materialized view в ClickHouse](/docs/materialized-views) для получения дополнительных сведений о том, как materialized view работает в ClickHouse.
 
 :::note
-Общие концепции материализаций и их общие настройки (engine, order_by, partition_by и т. д.) см. на странице [Materializations](/integrations/dbt/materializations).
+Общие концепции материализаций и их общие настройки (engine, order&#95;by, partition&#95;by и т. д.) см. на странице [Materializations](/integrations/dbt/materializations).
 :::
 
 ## Как управляется целевая таблица \{#target-table-management\}
