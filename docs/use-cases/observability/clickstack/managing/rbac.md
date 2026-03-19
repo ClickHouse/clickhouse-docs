@@ -13,9 +13,8 @@ keywords: ['clickstack', 'rbac', 'roles', 'permissions', 'access control', 'secu
 import Image from '@theme/IdealImage';
 import rbac_section from '@site/static/images/clickstack/rbac/rbac-section.png';
 import add_role_modal from '@site/static/images/clickstack/rbac/add-role-modal.png';
-import fine_grained from '@site/static/images/clickstack/rbac/fine-grained.png';
+import access_rules from '@site/static/images/clickstack/rbac/access-rules.png';
 import security_policies from '@site/static/images/clickstack/rbac/security-policies.png';
-import data_scopes from '@site/static/images/clickstack/rbac/data-scopes.png';
 import team_members from '@site/static/images/clickstack/rbac/team-members.png';
 import edit_team_member from '@site/static/images/clickstack/rbac/edit-team-member.png';
 
@@ -27,11 +26,10 @@ RBAC is available in Managed ClickStack deployments. For ClickStack Open Source,
 
 ## Overview {#overview}
 
-ClickStack RBAC operates at three levels:
+ClickStack RBAC operates at two levels:
 
 - **Resource-level permissions** — control whether a role can access specific resource types, and at what level (no access, read, or manage).
 - **Fine-grained access rules** — optionally restrict access to individual resources within a category based on conditions like name or tag.
-- **Data scopes** — apply row-level filtering to ClickHouse queries using SQL conditions.
 
 ClickStack ships with three built-in system roles, and you can create custom roles to match your team's access requirements.
 
@@ -57,7 +55,7 @@ Open **Team Settings** and scroll to **RBAC Roles**.
 
 ### Add a new role {#step-add-role}
 
-Click **+ Add Role**. Enter a **Role Name** (for example, `Developer` or `On-Call`) and optionally add a **Description**.
+Click **+ Add Role**. Enter a **Role Name** and optionally add a **Description**.
 
 ### Configure permissions and save {#step-configure}
 
@@ -92,17 +90,7 @@ Each access rule consists of a **condition** and an **access level**. Conditions
 
 You can add multiple rules per resource. Rules combine with OR logic — a resource is accessible if it matches any rule. Resources that don't match any rule are denied access by default.
 
-In this example, the role can only read dashboards with "test" in the name.
-
-<Image img={fine_grained} alt="Fine-grained access rules" size="md"/>
-
-## Data scopes {#data-scopes}
-
-Data scopes apply row-level filtering to ClickHouse queries, restricting which rows are returned from the database. Each scope targets a specific database and table, and applies a ClickHouse `WHERE` condition that's automatically added when a user with that role runs a query.
-
-To add a data scope, click **+ Add Data Scope** in the role configuration, select a **Database** and **Table**, then enter a **Condition** — for example, `service_name = 'my-service'`.
-
-<Image img={data_scopes} alt="Data scopes" size="md"/>
+<Image img={access_rules} alt="Fine-grained access rules" size="md"/>
 
 ## Assigning roles to team members {#assigning-roles}
 
@@ -117,7 +105,7 @@ The **Team Settings** page lists all team members with their current role. To ch
 You can set a default role for new users under [Security policies](#security-policies). New users who auto-join the team are automatically assigned this role.
 
 :::warning
-When a new member joins the team, their SQL console permissions in ClickHouse Cloud are reassigned to match the ClickStack role.
+When a new member joins the team, their [SQL console](/integrations/sql-clients/sql-console) permissions in ClickHouse Cloud are reassigned to match the ClickStack role.
 :::
 
 ## Security policies {#security-policies}
