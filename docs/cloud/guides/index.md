@@ -22,7 +22,9 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
 | [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
+| [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC FAQ](/cloud/reference/byoc/reference/faq) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC GCP private networking setup](/cloud/reference/byoc/onboarding/network-gcp) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC observability](/cloud/reference/byoc/observability) | Monitor and observe your BYOC ClickHouse deployment using built-in dashboards and Prometheus metrics |
 | [BYOC operations and maintenance](/cloud/reference/byoc/operations) | Deploy ClickHouse on your own cloud infrastructure |
@@ -57,7 +59,6 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Optimizing ClickHouse Assistant agent conversations with a semantic layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
-| [Private networking setup](/cloud/reference/byoc/onboarding/network) | Deploy ClickHouse on your own cloud infrastructure |
 | [Query API Endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
