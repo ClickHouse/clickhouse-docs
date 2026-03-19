@@ -458,168 +458,168 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ## Dictionary を作成する \{#create-a-dictionary\}
 
 ClickHouse サービス内のテーブルに関連付けられた Dictionary を作成します。
-テーブルと Dictionary は、ニューヨーク市の各地区（neighborhood）ごとに 1 行を持つ CSV ファイルに基づいています。
+テーブルと Dictionary は、ニューヨーク市の各地区 (neighborhood) ごとに 1 行を持つ CSV ファイルに基づいています。
 
-これらの地区は、ニューヨーク市の 5 つの行政区（Bronx, Brooklyn, Manhattan, Queens, Staten Island）および Newark Airport (EWR) にマッピングされています。
+これらの地区は、ニューヨーク市の 5 つの行政区 (Bronx, Brooklyn, Manhattan, Queens, Staten Island) および Newark Airport (EWR) にマッピングされています。
 
 以下は、使用している CSV ファイルの一部をテーブル形式で示したものです。
 ファイル内の `LocationID` カラムは、trips テーブル内の `pickup_nyct2010_gid` カラムおよび `dropoff_nyct2010_gid` カラムと対応しています:
 
-| LocationID | Borough       |  Zone                   | service_zone |
-  | ---------: | ------------- | ----------------------- | ------------ |
-  |          1 | EWR           | Newark Airport          | EWR          |
-  |          2 | Queens        | Jamaica Bay             | Boro Zone    |
-  |          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-  |          4 | Manhattan     | Alphabet City           | Yellow Zone  |
-  |          5 | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------: | ------------- | ----------------------- | ---------------- |
+|          1 | EWR           | Newark Airport          | EWR              |
+|          2 | Queens        | Jamaica Bay             | Boro Zone        |
+|          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+|          4 | Manhattan     | Alphabet City           | Yellow Zone      |
+|          5 | Staten Island | Arden Heights           | Boro Zone        |
 
-1.  引き続き Postgres 上で、`clickhouse_raw_query` 関数を使用して
-    ClickHouse の [dictionary] `taxi_zone_dictionary` を作成し、
-    S3 上の CSV ファイルから Dictionary を読み込みます:
+1. 引き続き Postgres 上で、`clickhouse_raw_query` 関数を使用して
+   ClickHouse の [dictionary] `taxi_zone_dictionary` を作成し、
+   S3 上の CSV ファイルから Dictionary を読み込みます:
 
-    ```sql
-    SELECT clickhouse_raw_query($$
-        CREATE DICTIONARY taxi.taxi_zone_dictionary (
-            LocationID Int64 DEFAULT 0,
-            Borough String,
-            zone String,
-            service_zone String
-        )
-        PRIMARY KEY LocationID
-        SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-        LIFETIME(MIN 0 MAX 0)
-        LAYOUT(HASHED_ARRAY())
-    $$, 'host=localhost dbname=taxi');
-    ```
+   ```sql
+   SELECT clickhouse_raw_query($$
+       CREATE DICTIONARY taxi.taxi_zone_dictionary (
+           LocationID Int64 DEFAULT 0,
+           Borough String,
+           zone String,
+           service_zone String
+       )
+       PRIMARY KEY LocationID
+       SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+       LIFETIME(MIN 0 MAX 0)
+       LAYOUT(HASHED_ARRAY())
+   $$, 'host=localhost dbname=taxi');
+   ```
 
-    :::note
-    `LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの
-    不要なトラフィックを避けることができます。別のケースでは、異なる値を
-    設定することもあります。詳細については、[Refreshing dictionary data using
-    LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime) を参照してください。
-    :::
+   :::note
+   `LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの
+   不要なトラフィックを避けることができます。別のケースでは、異なる値を
+   設定することもあります。詳細については、[Refreshing dictionary data using
+   LIFETIME](/sql-reference/statements/create/dictionary/lifetime) を参照してください。
+   :::
 
-    2.  次に、これをインポートします:
+   2. 次に、これをインポートします:
 
-    ```sql
-    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
-    FROM SERVER taxi_srv INTO taxi;
-    ```
+   ```sql
+   IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
+   FROM SERVER taxi_srv INTO taxi;
+   ```
 
-    3.  クエリできることを確認します:
+   3. クエリできることを確認します:
 
-    ```pgsql
-    taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone
-    ------------+-----------+-----------------------------------------------+--------------
-             77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
-            106 | Brooklyn  | Gowanus                                       | Boro Zone
-            103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
-    (3 rows)
-    ```
+   ```pgsql
+   taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
+    LocationID |  Borough  |                     Zone                      | service_zone
+   ------------+-----------+-----------------------------------------------+--------------
+            77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
+           106 | Brooklyn  | Gowanus                                       | Boro Zone
+           103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
+   (3 rows)
+   ```
 
-    4.  問題なく動作していることが確認できました。次に `dictGet` 関数を使用して、
-        クエリ内で borough の名前を取得します。このクエリでは、
-        LaGuardia か JFK のいずれかの空港で終了するタクシー乗車数を、
-        borough ごとに集計します:
+   4. 問題なく動作していることが確認できました。次に `dictGet` 関数を使用して、
+      クエリ内で borough の名前を取得します。このクエリでは、
+      LaGuardia か JFK のいずれかの空港で終了するタクシー乗車数を、
+      borough ごとに集計します:
 
-    ```pgsql
-    taxi=# SELECT
-            count(1) AS total,
-            COALESCE(NULLIF(dictGet(
-                'taxi.taxi_zone_dictionary', 'Borough',
-                toUInt64(pickup_nyct2010_gid)
-            ), ''), 'Unknown') AS borough_name
-        FROM taxi.trips
-        WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-        GROUP BY borough_name
-        ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-     23683 | Unknown
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (7 rows)
+   ```pgsql
+   taxi=# SELECT
+           count(1) AS total,
+           COALESCE(NULLIF(dictGet(
+               'taxi.taxi_zone_dictionary', 'Borough',
+               toUInt64(pickup_nyct2010_gid)
+           ), ''), 'Unknown') AS borough_name
+       FROM taxi.trips
+       WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+       GROUP BY borough_name
+       ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+    23683 | Unknown
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (7 rows)
 
-    Time: 66.245 ms
-    ```
+   Time: 66.245 ms
+   ```
 
-    このクエリは、LaGuardia か JFK のいずれかの空港で終了するタクシー乗車数を、
-    borough ごとに集計します。pickup 側の地区が不明な乗車がかなり多いことに
-    注目してください。
+   このクエリは、LaGuardia か JFK のいずれかの空港で終了するタクシー乗車数を、
+   borough ごとに集計します。pickup 側の地区が不明な乗車がかなり多いことに
+   注目してください。
 
 ## 結合を実行する \{#perform-a-join\}
 
 `taxi_zone_dictionary` と `trips` テーブルを結合するクエリをいくつか作成します。
 
-1.  まずは、上の空港に関するクエリと同様に動作する、シンプルな `JOIN` から始めます:
+1. まずは、上の空港に関するクエリと同様に動作する、シンプルな `JOIN` から始めます:
 
-    ```pgsql
-    taxi=# SELECT
-        count(1) AS total,
-        "Borough"
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-      ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-    WHERE pickup_nyct2010_gid > 0
-      AND dropoff_nyct2010_gid IN (132, 138)
-    GROUP BY "Borough"
-    ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (6 rows)
+   ```pgsql
+   taxi=# SELECT
+       count(1) AS total,
+       "Borough"
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+     ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+   WHERE pickup_nyct2010_gid > 0
+     AND dropoff_nyct2010_gid IN (132, 138)
+   GROUP BY "Borough"
+   ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (6 rows)
 
-    Time: 48.449 ms
-    ```
+   Time: 48.449 ms
+   ```
 
-    :::note
-    上記の `JOIN` クエリの出力は、（「Unknown」値が含まれていない点を除き）上で示した
-    `dictGet` クエリと同じであることに注意してください。内部的には、ClickHouse は実際には
-    `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を呼び出していますが、
-    `JOIN` 構文の方が SQL 開発者にはより馴染みがあります。
-    :::
+   :::note
+   上記の `JOIN` クエリの出力は、 (「Unknown」値が含まれていない点を除き) 上で示した
+   `dictGet` クエリと同じであることに注意してください。内部的には、ClickHouse は実際には
+   `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を呼び出していますが、
+   `JOIN` 構文の方が SQL 開発者にはより馴染みがあります。
+   :::
 
-    ```pgsql
-    taxi=# explain SELECT
-            count(1) AS total,
-            "Borough"
-        FROM taxi.trips
-        JOIN taxi.taxi_zone_dictionary
-          ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-        WHERE pickup_nyct2010_gid > 0
-          AND dropoff_nyct2010_gid IN (132, 138)
-        GROUP BY "Borough"
-        ORDER BY total DESC;
-                                  QUERY PLAN
-    -----------------------------------------------------------------------
-     Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
-       Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
-    (2 rows)
-    Time: 2.012 ms
-    ```
+   ```pgsql
+   taxi=# explain SELECT
+           count(1) AS total,
+           "Borough"
+       FROM taxi.trips
+       JOIN taxi.taxi_zone_dictionary
+         ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+       WHERE pickup_nyct2010_gid > 0
+         AND dropoff_nyct2010_gid IN (132, 138)
+       GROUP BY "Borough"
+       ORDER BY total DESC;
+                                 QUERY PLAN
+   -----------------------------------------------------------------------
+    Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
+      Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
+   (2 rows)
+   Time: 2.012 ms
+   ```
 
-2.  このクエリは、チップ額が最も高い 1000 件のトリップについて行を返し、その後、
-    各行ごとに Dictionary と内部結合を行います:
+2. このクエリは、チップ額が最も高い 1000 件のトリップについて行を返し、その後、
+   各行ごとに Dictionary と内部結合を行います:
 
-    ```sql
-    taxi=# SELECT *
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-        ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
-    WHERE tip_amount > 0
-    ORDER BY tip_amount DESC
-    LIMIT 1000;
-    ```
+   ```sql
+   taxi=# SELECT *
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+       ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
+   WHERE tip_amount > 0
+   ORDER BY tip_amount DESC
+   LIMIT 1000;
+   ```
 
 :::note
 一般的に、PostgreSQL と ClickHouse では `SELECT *` の使用は避けます。
@@ -628,24 +628,18 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
 
 [tutorial]: /tutorial "ClickHouse 上級チュートリアル"
 
-[psql]: https://www.postgresql.org/docs/current/app-psql.html
-    "PostgreSQL クライアントアプリケーション: psql"
+[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL クライアントアプリケーション: psql"
 
-[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
-    "SQL コマンド: EXPLAIN"
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL コマンド: EXPLAIN"
 
 [dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上の pg_clickhouse"
 
-[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases
-    "GitHub 上の pg_clickhouse リリース"
+[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub 上の pg_clickhouse リリース"
 
-[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "GitHub 上の pg_clickhouse OCI イメージ"
+[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "GitHub 上の pg_clickhouse OCI イメージ"
 
-[Postgres image]: https://hub.docker.com/_/postgres
-    "Docker Hub 上の Postgres OCI イメージ"
+[Postgres image]: https://hub.docker.com/_/postgres "Docker Hub 上の Postgres OCI イメージ"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
-    "ClickHouse ドキュメント: LIFETIME を使用した Dictionary データの更新"
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "ClickHouse ドキュメント: LIFETIME を使用した Dictionary データの更新"

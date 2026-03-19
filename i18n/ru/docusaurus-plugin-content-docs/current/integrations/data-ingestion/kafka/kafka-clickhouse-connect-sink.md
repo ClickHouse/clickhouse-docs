@@ -121,6 +121,9 @@ schemas.enable=false
 | `dateTimeFormats`                               | Форматы даты и времени для разбора полей схемы DateTime64, разделенные `;` (например, `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                                                                                                     | `""`                                                     |
 | `tolerateStateMismatch`                         | Позволяет коннектору отбрасывать записи &quot;раньше&quot;, чем текущее смещение, сохраненное AFTER&#95;PROCESSING (например, если отправлено смещение 5, а последнее записанное смещение было 250). Следует использовать для восстановления ингестии после сбоя, а после завершения вернуть значение `"false"`. | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | Будет игнорировать партицию при сборе сообщений для вставки (но только если `exactlyOnce` равно `false`). Примечание о производительности: чем больше задач коннектора, тем меньше партиций kafka назначается на задачу - это может означать уменьшающуюся отдачу.                                               | `"false"`                                                |
+| `bufferCount` (с версии v1.3.6)                 | Количество записей для буферизации в памяти перед сбросом в ClickHouse. `0` отключает внутреннюю буферизацию. Буферизация не поддерживается при `exactlyOnce=true`.                                                                                                                                              | `"0"`                                                    |
+| `bufferFlushTime` (с v1.3.6)                    | Максимальное время буферизации записей в миллисекундах перед сбросом, когда `exactlyOnce=false`. `0` отключает сброс по времени. Значение по умолчанию — `0`. Требуется только для порога по времени. Работает только при `bufferCount > 0`.                                                                     | `"0"`                                                    |
+| `reportInsertedOffsets` (начиная с v1.3.6)      | Включает возврат из `preCommit` только успешно вставленных смещений (вместо `currentOffsets`), когда `exactlyOnce=false`. Это не применяется, когда `ignorePartitionsWhenBatching=true`: в этом случае по-прежнему возвращаются `currentOffsets`.                                                                | `"false"`                                                |
 
 ### Целевые таблицы \{#target-tables\}
 
@@ -296,6 +299,38 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
     "value.converter": "org.apache.kafka.connect.storage.StringConverter",
     "customInsertFormat": "true",
     "insertFormat": "CSV"
+  }
+}
+```
+
+
+### Внутренняя буферизация \{#internal-buffering\}
+
+Внутренняя буферизация позволяет задаче sink накапливать записи из нескольких вызовов `poll()` и отправлять их в ClickHouse более крупными пакетами. Это может повысить пропускную способность в сценариях, где каждый опрос дает множество небольших пакетов для каждой партиции.
+
+Основное поведение:
+
+* `bufferCount` определяет, сколько записей буферизуется перед отправкой.
+* `bufferFlushTime` задает максимальное время ожидания (в миллисекундах) перед отправкой буферизованных записей.
+* `bufferFlushTime` действует только при `bufferCount > 0`.
+* `bufferCount=0` и `bufferFlushTime=0` оставляют буферизацию отключенной (поведение по умолчанию).
+* Буферизация не поддерживается, если `exactlyOnce=true`.
+
+Почему буферизация несовместима с режимом exactly-once:
+Буферизация изменяет границы пакетов, что нарушает дедупликацию блоков ClickHouse и автомат состояний смещений connector.
+Чтобы устранить эту проблему, либо отключите режим exactly-once, указав `exactlyOnce=false` в конфигурации connector, либо отключите буферизацию, установив `bufferCount=0`.
+
+Пример:
+
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "exactlyOnce": "false",
+    "bufferCount": "5000",
+    "bufferFlushTime": "2000"
   }
 }
 ```

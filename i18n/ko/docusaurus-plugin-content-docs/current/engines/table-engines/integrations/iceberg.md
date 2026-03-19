@@ -280,25 +280,24 @@ ClickHouse에서 `Iceberg` 테이블 엔진을 사용할 때, 시스템은 Icebe
 
 ### 가장 최신 파일 선택 \{#most-recent-file\}
 
-위 규칙으로 후보 파일을 식별한 후, 시스템은 그중 가장 최신 파일을 결정합니다:
+위 규칙을 사용해 후보 파일을 식별한 후, 시스템은 그중 어떤 파일이 가장 최신인지 결정합니다:
 
 * `iceberg_recent_metadata_file_by_last_updated_ms_field`가 활성화된 경우:
-  * `last-updated-ms` 값이 가장 큰 파일이 선택됩니다.
+  * `last-updated-ms` 값이 가장 큰 파일이 선택됩니다
 
 * 그렇지 않은 경우:
-  * 버전 번호가 가장 높은 파일이 선택됩니다.
-  * (버전은 `V.metadata.json` 또는 `V-uuid.metadata.json` 형식의 파일 이름에서 `V`로 나타납니다)
+  * 버전 번호가 가장 높은 파일이 선택됩니다
+  * (버전은 `V.metadata.json` 또는 `V-uuid.metadata.json` 형식의 파일 이름에서 `V`로 표시됩니다)
 
-**참고**: 언급된 모든 설정은 엔진 수준 설정이며, 아래와 같이 테이블 생성 시점에 지정해야 합니다:
+**참고**: 언급된 모든 설정(명시적으로 달리 지정되지 않는 한)은 엔진 수준 설정이며, 아래와 같이 테이블 생성 시 지정해야 합니다:
 
-```sql
+```sql 
 CREATE TABLE example_table ENGINE = Iceberg(
     's3://bucket/path/to/iceberg_table'
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';
 ```
 
-**참고**: 일반적으로 Iceberg Catalog는 메타데이터 결정(해결)을 처리하지만, ClickHouse의 `Iceberg` 테이블 엔진은 S3에 저장된 파일을 Iceberg 테이블로 직접 해석하므로 이러한 결정 규칙을 이해하는 것이 중요합니다.
-
+**참고**: 일반적으로 Iceberg Catalog는 메타데이터 결정을 처리하지만, ClickHouse의 `Iceberg` 테이블 엔진은 S3에 저장된 파일을 Iceberg 테이블로 직접 해석하므로 이러한 결정 규칙을 이해하는 것이 중요합니다.
 
 ## 데이터 캐시 \{#data-cache\}
 
@@ -307,6 +306,35 @@ CREATE TABLE example_table ENGINE = Iceberg(
 ## 메타데이터 캐시 \{#metadata-cache\}
 
 `Iceberg` 테이블 엔진과 테이블 함수는 매니페스트 파일, 매니페스트 목록 및 메타데이터 JSON 정보를 저장하는 메타데이터 캐시를 지원합니다. 캐시는 메모리에 저장됩니다. 이 기능은 `use_iceberg_metadata_files_cache` 설정으로 제어되며, 기본적으로 활성화되어 있습니다.
+
+## 비동기 메타데이터 프리페치 \{#async-metadata-prefetch\}
+
+비동기 메타데이터 프리페치는 `iceberg_metadata_async_prefetch_period_ms`를 설정하여 `Iceberg` 테이블 생성 시 활성화할 수 있습니다. 이 값을 0(기본값)으로 설정하거나 메타데이터 캐싱이 활성화되어 있지 않으면 비동기 프리페치는 비활성화됩니다.
+이 기능을 활성화하려면 0이 아닌 밀리초 값을 지정해야 합니다. 이 값은 프리페치 주기 간의 간격을 나타냅니다.
+
+활성화되면 서버는 원격 catalog를 나열하고 새 메타데이터 버전을 감지하는 백그라운드 작업을 주기적으로 실행합니다. 그런 다음 이를 파싱하고 snapshot을 재귀적으로 순회하면서 활성 manifest list 파일과 manifest 파일을 가져옵니다.
+이미 메타데이터 cache에 있는 파일은 다시 다운로드하지 않습니다. 각 프리페치 주기가 끝나면 최신 메타데이터 snapshot을 메타데이터 cache에서 사용할 수 있습니다.
+
+```sql
+CREATE TABLE example_table ENGINE = Iceberg(
+    's3://bucket/path/to/iceberg_table'
+) SETTINGS
+    iceberg_metadata_async_prefetch_period_ms = 60000;
+```
+
+읽기 작업에서 비동기 메타데이터 프리페치를 최대한 활용하려면 `iceberg_metadata_staleness_ms` 매개변수를 Query 또는 Session 매개변수로 지정해야 합니다. 기본적으로(0 - 지정되지 않음) 각 쿼리의 컨텍스트에서 서버는 원격 catalog에서 최신 메타데이터를 가져옵니다.
+메타데이터 최신성 저하에 대한 허용 범위를 지정하면 서버는 원격 catalog를 호출하지 않고 캐시된 메타데이터 snapshot 버전을 사용할 수 있습니다. 캐시에 메타데이터 버전이 있고 지정된 최신성 저하 허용 시간 내에 다운로드된 경우, 해당 버전이 쿼리 처리에 사용됩니다.
+그렇지 않으면 원격 catalog에서 최신 버전을 가져옵니다.
+
+```sql
+SELECT count() FROM icebench_table WHERE ...
+SETTINGS iceberg_metadata_staleness_ms=120000
+```
+
+**참고**: 비동기 메타데이터 프리페치는 `ICEBERG_SCEDULE_POOL`에서 실행됩니다. 이는 활성 `Iceberg` 테이블의 백그라운드 작업을 처리하는 서버 측 스레드 풀입니다. 이 스레드 풀의 크기는 서버 구성 매개변수 `iceberg_background_schedule_pool_size`로 제어되며, 기본값은 10입니다.
+
+**참고**: 비동기 프리페치가 활성화된 경우, 현재는 메타데이터 캐시 크기가 모든 활성 테이블의 최신 메타데이터 스냅샷 전체를 저장하기에 충분하다고 가정합니다.
+
 
 ## 같이 보기 \{#see-also\}
 
