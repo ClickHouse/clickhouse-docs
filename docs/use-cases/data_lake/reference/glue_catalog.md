@@ -29,7 +29,7 @@ To connect to the glue catalog, you will need:
 - AWS region of your catalog
 - Access Key ID/Access Secret Key (v25.12+) or AWS Role ARN (v26.2+)
 
-For AWS Role ARN, we also support AWS Role Session Name (optional). 
+For AWS Role ARN, AWS Role Session Name is an additional optional field. 
 
 :::note
 You will need to enable it using: SET allow_database_glue_catalog = 1;
@@ -38,7 +38,7 @@ You will need to enable it using: SET allow_database_glue_catalog = 1;
 
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
 
-With your AWS Glue Catalog configured and authentication in place, establish a 
+With your AWS Glue Catalog configured and authentication, establish a 
 connection between ClickHouse and AWS Glue Catalog.
 
 
@@ -60,7 +60,7 @@ CREATE DATABASE glue
 ENGINE = DataLakeCatalog
 SETTINGS
     catalog_type = 'glue',
-    region = 'us-east-2',
+    region = 'us-west-2',
     aws_role_arn = 'arn:aws:iam::1111111111:role/test_role',
     aws_role_session_name = 'clickhouse-glue-session' 
 ```
@@ -219,7 +219,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## Loading data from your Data Lake into ClickHouse {#loading-data-into-clickhouse}
 
-If you need to load data from Databricks into ClickHouse, start by creating a 
+If you need to load data from Glue into ClickHouse, start by creating a 
 local ClickHouse table:
 
 ```sql title="Query"
