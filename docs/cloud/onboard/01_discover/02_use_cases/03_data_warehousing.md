@@ -70,7 +70,7 @@ significant advantages over both traditional data warehouses and raw data lakes:
 ClickHouse serves as the analytical query engine in a data lake architecture.
 It can directly query Parquet files in S3, Azure Blob Storage, or Google Cloud
 Storage using its columnar engine to return fast results even on massive datasets.
-This means you can analyze your lake data without moving or transforming it first.
+This allows you can take advantage of ClickHouse's performance directly on the data without ever moving it. 
 
 For more advanced capabilities, ClickHouse integrates with open table formats
 like Apache Iceberg, Delta Lake, and Apache Hudi. You can connect to these table
