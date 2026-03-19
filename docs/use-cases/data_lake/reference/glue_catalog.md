@@ -29,7 +29,7 @@ To connect to the glue catalog, you will need:
 - AWS region of your catalog
 - Access Key ID/Access Secret Key (v25.12+) or AWS Role ARN (v26.2+)
 
-For AWS Role ARN, AWS Role Session Name is an additional optional field. 
+For AWS Role auth, AWS Role Session Name is an additional optional field. 
 
 :::note
 You will need to enable it using: SET allow_database_glue_catalog = 1;
