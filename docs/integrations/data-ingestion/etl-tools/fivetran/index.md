@@ -26,7 +26,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 The destination connector is developed and maintained together by ClickHouse and Fivetran. The source code is available on [GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination).
 
-
 :::note
 [ClickHouse Cloud destination](https://fivetran.com/docs/destinations/clickhouse) is currently in **Beta** but we are working to make it generally available soon.
 :::
@@ -42,7 +41,6 @@ The destination connector is developed and maintained together by ClickHouse and
     allowfullscreen>
   </iframe>
 </div>
-
 
 ## Key features {#key-features}
 
