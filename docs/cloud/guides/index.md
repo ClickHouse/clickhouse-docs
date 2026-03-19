@@ -11,7 +11,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | Page | Description |
 |-----|-----|
 | [Overview](/cloud/manage/backups/overview) | Provides an overview of backups in ClickHouse Cloud |
-| [Enabling the ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
+| [Enable and connect ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
 | [Use ClickHouse Assistant chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
 | [Take a backup or restore a backup from the UI](/cloud/manage/backups/backup-restore-via-ui) | Page describing how to take a backup or restore a backup from the UI with your own bucket |
 | [Take a backup or restore a backup using commands](/cloud/manage/backups/backup-restore-via-commands) | Page describing how to take a backup or restore a backup with your own bucket using commands |
