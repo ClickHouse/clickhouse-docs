@@ -1,7 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/data_lake_and_warehouse
 title: 'Data warehousing'
-description: 'Build modern data warehousing architectures with ClickHouse Cloud combining the flexibility of data lakes with database performance'
+description: 'Build modern data warehouse architectures by combining the flexibility of data lakes with ClickHouse Cloud's performance'
 keywords: ['data warehousing', 'data lake', 'Iceberg', 'Delta Lake', 'Hudi', 'Parquet', 'open table formats', 'hybrid architecture']
 sidebar_label: 'Data warehousing'
 doc_type: 'guide'
@@ -11,14 +11,12 @@ import Image from '@theme/IdealImage';
 import data_warehousing from '@site/static/images/cloud/onboard/discover/use_cases/data-warehousing.png';
 
 Data lakes provide flexible, scalable storage for all types of data on cloud
-object storage. By adding open table formats and a high-performance query engine
-like ClickHouse, you can bring database-grade capabilities — ACID transactions,
+Data lakes leverage cloud object storage to store all types of data in a flexible and scalable way. By adding open table formats and a high-performance query engine
+like ClickHouse to it, you can bring database-grade capabilities — ACID transactions,
 schema enforcement, and fast analytical queries to your data lake without
-sacrificing its flexibility.
+sacrificing flexibility.
 
-This combination supports traditional analytics and modern AI/ML workloads in
-a unified platform, giving you warehouse-level performance on top of open,
-cost-effective lake storage.
+This combination brings performance together with interoperable, cost effective storage to support your traditional analytics and modern AI/ML workloads.
 
 :::tip ClickHouse Academy
 Take the free [Data Warehousing with ClickHouse](https://clickhouse.com/learn/data-warehousing) course to learn more.
@@ -33,16 +31,16 @@ independently.
 
 <Image img={data_warehousing} alt="Components of a data lake architecture" size="md"/>
 
-| Component               | Description                                                                                                                                                                                                                                                                                                                                    |
+| Layer               | Description                                                                                                                                                                                                                                                                                                                                    |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Data sources**        | Common data sources include operational databases, streaming platforms, IoT devices, application logs, and external providers.                                                                                                                                                                                                              |
 | **Query engine**        | Processes analytical queries against data in object storage, using the metadata and optimizations provided by the table format layer. Supports SQL and other query languages to analyze large volumes of data efficiently.                                                                                     |
-| **Metadata catalog**    | The [data catalog](https://clickhouse.com/engineering-resources/data-catalog) acts as a central repository for metadata, storing and managing table definitions, schemas, partitioning information, and access control policies. Enables data discovery, lineage tracking, and governance across the data platform.                             |
-| **Table format layer**  | The [table format layer](https://clickhouse.com/engineering-resources/open-table-formats) manages the logical organization of data files into tables, providing database-like features such as ACID transactions, schema enforcement and evolution, time travel, and performance optimizations like data skipping and clustering. |
+| **Technical data catalog**    | The [data catalog](https://clickhouse.com/engineering-resources/data-catalog) acts as a central repository for metadata, storing and managing table definitions, schemas, partitioning information, and access control policies. Enables data discovery, lineage tracking, and governance across the data platform.                             |
+| **Table format**  | The [table format](https://clickhouse.com/engineering-resources/open-table-formats) manages the logical organization of data files into tables, providing database-like features such as ACID transactions, schema enforcement and evolution, time travel, and performance optimizations like data skipping and clustering. |
 | **Object storage**      | This layer provides scalable, durable, and cost-effective storage for all data files and metadata. It persists data in open formats, enabling direct access from multiple tools and systems.                                                                                                                          |
 | **Client applications** | Various tools and applications that connect to the platform to query data, visualize insights, or build data products. These can include BI tools, data science notebooks, custom applications, and ETL/ELT tools.                                                                                                                            |
 
-## Benefits of combining data lakes with a query engine {#benefits-of-this-architecture}
+## Benefits of combining data lakes with a data warehouse {#benefits-of-this-architecture}
 
 Adding open table formats and a dedicated query engine to your data lake offers
 significant advantages over both traditional data warehouses and raw data lakes:
@@ -74,10 +72,9 @@ It can directly query Parquet files in S3, Azure Blob Storage, or Google Cloud
 Storage using its columnar engine to return fast results even on massive datasets.
 This means you can analyze your lake data without moving or transforming it first.
 
-For more advanced data management, ClickHouse integrates with open table formats
-like Apache Iceberg, Delta Lake, and Apache Hudi. You can connect these table
-formats directly or through metadata catalogs like AWS Glue, Unity, or other
-catalog services — and still get fast query performance.
+For more advanced capabilities, ClickHouse integrates with open table formats
+like Apache Iceberg, Delta Lake, and Apache Hudi. You can connect to these table
+formats directly or through data catalogs like AWS Glue Catalog, Unity Catalog, Iceberg REST and more — and still get fast query performance.
 
 With ClickHouse as your query engine, you get the speed of a dedicated analytical
 database while keeping the openness of your data lake: interchangeable components,
