@@ -264,7 +264,7 @@ Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야
 
       ### 데이터베이스 및 테이블 생성하기
 
-      Vector는 데이터를 수집하기 전에 테이블과 스키마를 정의해야 합니다.
+      Vector는 데이터를 수집하기 전에 테이블과 스키마가 정의되어 있어야 합니다.
 
       먼저 데이터베이스를 생성하세요. [ClickHouse Cloud 콘솔](/cloud/get-started/sql-console)을 통해 수행할 수 있습니다.
 
@@ -363,7 +363,7 @@ Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야
 
       로그 데이터 소스를 생성하세요. 데이터 소스가 없는 경우 첫 로그인 시 생성 안내가 표시됩니다. 데이터 소스가 이미 있는 경우 Team Settings로 이동하여 새 데이터 소스를 추가하세요.
 
-      <Image img={create_vector_datasource} alt="Vector용 데이터 소스 생성" size="lg" />
+      <Image img={create_vector_datasource} alt="데이터 소스 생성 - Vector" size="lg" />
 
       이 구성은 타임스탬프로 사용되는 `time_local` 컬럼을 포함한 Nginx 스키마를 가정합니다. 이는 기본 키에 선언된 타임스탬프 컬럼입니다. 이 컬럼은 필수입니다.
 
@@ -401,7 +401,7 @@ Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야
   </TabItem>
 
   <TabItem value="oss-clickstack" label="오픈 소스 ClickStack">
-    다음 가이드는 [시작 가이드](use-cases/observability/clickstack/getting-started/managed)를 사용하여 ClickStack Open Source를 설정한 것으로 가정합니다.
+    다음 가이드는 [시작 가이드](/use-cases/observability/clickstack/getting-started/oss)를 사용하여 ClickStack Open Source를 설정한 것으로 가정합니다.
 
     <VerticalStepper headerLevel="h3">
       ### Vector 설치하기
@@ -418,7 +418,7 @@ Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야
 
       먼저 데이터베이스를 생성합니다. 이는 [http://localhost:8123/play](http://localhost:8123/play)의 [ClickHouse 웹 사용자 인터페이스](/interfaces/http#web-ui)를 통해 수행할 수 있습니다. 기본 사용자 이름과 비밀번호 `api:api`를 사용하세요.
 
-      <Image img={play_ui} alt="ClickStack UI 체험" size="lg" />
+      <Image img={play_ui} alt="ClickStack Play UI" size="lg" />
 
       `logs` 데이터베이스를 생성하세요:
 
@@ -511,13 +511,13 @@ Vector를 ClickStack과 함께 사용할 때는 스키마를 직접 정의해야
 
       `Team -> Sources`를 통해 로그 데이터 소스를 생성하세요
 
-      <Image img={create_vector_datasource_oss} alt="데이터 소스 생성 - Vector" size="lg" />
+      <Image img={create_vector_datasource_oss} alt="Vector용 데이터 소스 생성" size="lg" />
 
       이 구성은 타임스탬프로 사용되는 `time_local` 컬럼을 포함한 Nginx 스키마를 가정합니다. 이는 기본 키에 선언된 타임스탬프 컬럼입니다. 이 컬럼은 필수입니다.
 
-      또한 기본 select를 `time_local, remote_addr, status, request`로 지정하였으며, 이는 로그 뷰에서 반환되는 컬럼들을 정의합니다.
+      또한 기본 select를 `time_local, remote_addr, status, request`로 지정하여 로그 뷰에서 반환되는 컬럼을 정의합니다.
 
-      위 예시에서 `Body` 컬럼은 데이터에 실제로 존재하지 않으며, 대신 다음과 같은 SQL 표현식으로 정의됩니다:
+      위 예시에서 `Body` 컬럼은 데이터에 존재하지 않으며, 대신 다음과 같은 SQL 표현식으로 정의됩니다:
 
       ```sql
       concat(
