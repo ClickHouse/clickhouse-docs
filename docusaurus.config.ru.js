@@ -5,7 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
-import glossaryTransformer from "./plugins/glossary-transformer.js";
+// import glossaryTransformer from "./plugins/glossary-transformer.js";
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
@@ -163,7 +163,7 @@ const config = {
               blogPath
             );
           },
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },

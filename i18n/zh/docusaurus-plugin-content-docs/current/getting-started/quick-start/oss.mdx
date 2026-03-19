@@ -94,7 +94,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## 插入数据 \{#insert-data\}
 
-  您可以使用熟悉的 `INSERT INTO TABLE` 命令操作 ClickHouse,但需要理解的是,每次向 `MergeTree` 表插入数据都会在存储中创建我们所称的 **分区片段**。这些 ^^分区片段^^ 随后会由 ClickHouse 在后台进行合并。
+  您可以使用熟悉的 `INSERT INTO TABLE` 命令操作 ClickHouse,但需要理解的是,每次向 `MergeTree` 表插入数据都会在存储中创建我们所称的 **分区片段**。这些 分区片段 随后会由 ClickHouse 在后台进行合并。
 
   在 ClickHouse 中,我们建议一次性批量插入大量数据行(单次插入数万甚至数百万行),以最小化后台进程中需要合并的 [**分区片段**](/parts) 数量。
 

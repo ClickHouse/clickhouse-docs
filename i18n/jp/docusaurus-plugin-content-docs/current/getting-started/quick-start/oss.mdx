@@ -96,7 +96,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## データの挿入 \{#insert-data\}
 
-  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらの^^パート^^は後でClickHouseによってバックグラウンドでマージされます。
+  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらのパートは後でClickHouseによってバックグラウンドでマージされます。
 
   ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行 (数万行から数百万行) をバルク挿入します。
 

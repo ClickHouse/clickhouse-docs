@@ -22,13 +22,13 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 ^^primary key^^ 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
+ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 primary key 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
 
 ### 稀疏主索引的创建 \{#sparse-primary-index-creation\}
 
 为了演示稀疏主索引是如何构建的，我们会结合一些动画来说明 [uk&#95;price&#95;paid&#95;simple](/parts) 表。
 
-作为[回顾](/parts)，在我们的示例表①中，^^primary key^^ 为 (town, street)，② 插入的数据会被③存储到磁盘上，根据 ^^primary key^^ 列的取值排序并压缩，每一列单独存储在各自的文件中：
+作为[回顾](/parts)，在我们的示例表①中，primary key 为 (town, street)，② 插入的数据会被③存储到磁盘上，根据 primary key 列的取值排序并压缩，每一列单独存储在各自的文件中：
 
 <Image img={visual01} size="lg" />
 
@@ -38,7 +38,7 @@ ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guide
 
 在处理时，每一列的数据会被④在逻辑上划分为多个 granule——每个 granule 覆盖 8,192 行——这是 ClickHouse 数据处理机制所使用的最小单元。
 
-这种 ^^granule^^ 结构也是主索引之所以是**稀疏的**：ClickHouse 并不会为每一行建立索引，而是只存储每个 ^^granule^^ 中一行的 ^^primary key^^ 值——具体来说，是第一行的值。这样每个 ^^granule^^ 就对应一个索引项：
+这种 granule 结构也是主索引之所以是**稀疏的**：ClickHouse 并不会为每一行建立索引，而是只存储每个 granule 中一行的 primary key 值——具体来说，是第一行的值。这样每个 granule 就对应一个索引项：
 
 <Image img={visual02} size="lg" />
 
@@ -46,7 +46,7 @@ ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guide
 
 <br />
 
-得益于这种稀疏性，主索引足够小，可以完整地放入内存中，从而为在 ^^primary key^^ 列上带有谓词条件的查询提供快速过滤。在下一节中，我们将展示它如何帮助加速此类查询。
+得益于这种稀疏性，主索引足够小，可以完整地放入内存中，从而为在 primary key 列上带有谓词条件的查询提供快速过滤。在下一节中，我们将展示它如何帮助加速此类查询。
 
 ### 主索引的使用 \{#primary-index-usage\}
 
@@ -58,7 +58,7 @@ ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guide
 
 <br />
 
-① 示例查询在两个 ^^primary key^^ 列上都包含过滤条件：`town = 'LONDON' AND street = 'OXFORD STREET'`。
+① 示例查询在两个 primary key 列上都包含过滤条件：`town = 'LONDON' AND street = 'OXFORD STREET'`。
 
 ② 为了加速查询，ClickHouse 会将表的主索引加载到内存中。
 
@@ -88,7 +88,7 @@ GROUP BY part_name;
    └───────────┴─────────┘
 ```
 
-此查询显示了当前某个数据 ^^parts^^ 的主索引中的前 10 条记录。请注意，这些 ^^parts^^ 会在后台持续被[合并](/merges)为更大的 ^^parts^^：
+此查询显示了当前某个数据 parts 的主索引中的前 10 条记录。请注意，这些 parts 会在后台持续被[合并](/merges)为更大的 parts：
 
 ```sql
 SELECT 
@@ -116,7 +116,7 @@ LIMIT 10;
     └───────┴────────────────┴──────────────────┘
 ```
 
-最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句来查看如何利用所有数据 ^^parts^^ 的主索引来跳过那些不可能包含满足示例查询谓词的行的 granule。这些 granule 将不会被加载和处理：
+最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句来查看如何利用所有数据 parts 的主索引来跳过那些不可能包含满足示例查询谓词的行的 granule。这些 granule 将不会被加载和处理：
 
 ```sql
 EXPLAIN indexes = 1
@@ -146,7 +146,7 @@ WHERE
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-请注意，上面 EXPLAIN 输出的第 13 行显示，在所有数据 ^^parts^^ 中的 3,609 个 granule 里，只有 3 个被主键索引的分析选中参与处理。其余 granule 则被完全跳过。
+请注意，上面 EXPLAIN 输出的第 13 行显示，在所有数据 parts 中的 3,609 个 granule 里，只有 3 个被主键索引的分析选中参与处理。其余 granule 则被完全跳过。
 
 我们还可以通过直接运行该查询来观察到，大部分数据都会被跳过：
 
@@ -179,13 +179,13 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 ## 关键要点 \{#key-takeaways\}
 
-* **稀疏主索引 (sparse primary index)&#x20;**&#x20;帮助 ClickHouse 通过识别哪些 ^^granule^^ 可能包含满足查询条件的 ^^primary key^^ 列的行，从而跳过不必要的数据。
+* **稀疏主索引 (sparse primary index)&#x20;**&#x20;帮助 ClickHouse 通过识别哪些 granule 可能包含满足查询条件的 primary key 列的行，从而跳过不必要的数据。
 
-* 每个索引只存储 **每个 ^^granule^^ 的首行的 ^^primary key^^ 值** (一个 ^^granule^^ 默认包含 8,192 行) ，因此足够紧凑，可以完全放入内存。
+* 每个索引只存储 **每个 granule 的首行的 primary key 值** (一个 granule 默认包含 8,192 行) ，因此足够紧凑，可以完全放入内存。
 
-* ^^MergeTree^^ 表中的 **每个数据 part** 都有其 **自己的主索引**，并在查询执行期间独立使用。
+* MergeTree 表中的 **每个数据 part** 都有其 **自己的主索引**，并在查询执行期间独立使用。
 
-* 在查询过程中，索引使 ClickHouse 能够 **跳过 ^^granule^^**，从而降低 I/O 和内存使用，同时提升性能。
+* 在查询过程中，索引使 ClickHouse 能够 **跳过 granule**，从而降低 I/O 和内存使用，同时提升性能。
 
 * 你可以使用 `mergeTreeIndex` 表函数来 **检查索引内容**，并通过 `EXPLAIN` 子句监控索引使用情况。
 
