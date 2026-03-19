@@ -78,11 +78,11 @@ LAYOUT(LAYOUT_TYPE(param value)) -- параметры макета
 
 <br/>
 
-См. также [CREATE DICTIONARY](../index.md) для полного синтаксиса DDL.
+См. также [CREATE DICTIONARY](../overview.md) для полного синтаксиса DDL.
 
-Словари, в имени макета которых нет слова `complex-key*`, имеют ключ типа [UInt64](../../../data-types/int-uint.md), а словари с `complex-key*` имеют составной ключ (сложный, с произвольными типами).
+Словари, в имени макета которых нет слова `complex-key*`, имеют ключ типа [UInt64](/sql-reference/data-types/int-uint.md), а словари с `complex-key*` имеют составной ключ (сложный, с произвольными типами).
 
-**Пример числового ключа** (столбец `key_column` имеет тип [UInt64](../../../data-types/int-uint.md)):
+**Пример числового ключа** (столбец `key_column` имеет тип [UInt64](/sql-reference/data-types/int-uint.md)):
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -112,7 +112,7 @@ PRIMARY KEY key_column
 
 <br/>
 
-**Пример составного ключа** (ключ состоит из одного элемента типа [String](../../../data-types/string.md)):
+**Пример составного ключа** (ключ состоит из одного элемента типа [String](/sql-reference/data-types/string.md)):
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -158,4 +158,4 @@ ClickHouse генерирует исключение при ошибках, св
 - Не удалось загрузить словарь, к которому выполняется обращение.
 - Ошибка при запросе к словарю типа `cached`.
 
-Вы можете просмотреть список словарей и их статусы в таблице [system.dictionaries](../../../../operations/system-tables/dictionaries.md).
+Вы можете просмотреть список словарей и их статусы в таблице [system.dictionaries](/operations/system-tables/dictionaries.md).

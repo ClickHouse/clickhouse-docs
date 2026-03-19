@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileBFloat16 \{#quantileBFloat16\}
 
-Добавлена в: v21.7
+Добавлена в: v21.7.0
 
 Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки из чисел формата [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format).
 

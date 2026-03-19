@@ -127,7 +127,7 @@ When creating a client instance, the following connection settings can be adjust
 | **session_id**?: string                                                  | Optional ClickHouse Session ID to send with every request.                          | -                       | -                                                                                          |
 | **keep_alive**?: `{ **enabled**?: boolean }`                             | Enabled by default in both Node.js and Web versions.                                | -                       | -                                                                                          |
 | **http_headers**?: `Record<string, string>`                              | Additional HTTP headers for outgoing ClickHouse requests.                           | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)        |
-| **roles**?: string \|  string[]                                          | ClickHouse role name(s) to attach to the outgoing requests.                         | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters) |
+| **roles**?: string \|  string[]                                          | ClickHouse role names to attach to the outgoing requests.                         | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js-specific configuration parameters {#nodejs-specific-configuration-parameters}
 
@@ -194,7 +194,7 @@ createClient({
 
 #### Connection overview {#connection-overview}
 
-The client implements a connection via HTTP(s) protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
+The client implements a connection via HTTP or HTTPS protocol. RowBinary support is on track, see the [related issue](https://github.com/ClickHouse/clickhouse-js/issues/216).
 
 The following example demonstrates how to set up a connection against ClickHouse Cloud. It assumes `url` (including
 protocol and port) and `password` values are specified via environment variables, and `default` user is used.
@@ -1056,8 +1056,8 @@ Configurations parameters are:
 The logging is an experimental feature and is subject to change in the future.
 :::
 
-The default logger implementation emits log records into `stdout` via `console.debug/info/warn/error` methods.
-You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `OFF`):
+The default logger implementation emits log records into `stdout` via `console.debug/info` methods and `stderr` via `console.warn/error` methods.
+You can customize the logging logic via providing a `LoggerClass`, and choose the desired log level via `level` parameter (default is `WARN`):
 
 ```typescript
 import type { Logger } from '@clickhouse/client'
@@ -1092,7 +1092,7 @@ class MyLogger implements Logger {
 const client = createClient({
   log: {
     LoggerClass: MyLogger,
-    level: ClickHouseLogLevel
+    level: ClickHouseLogLevel.DEBUG,
   }
 })
 ```
@@ -1161,14 +1161,14 @@ If you're happy with the performance and don't experience any issues, it is reco
 You can find the correct Keep-Alive timeout value in the server response headers by running the following command:
 
 ```sh
-curl -v --data-binary "SELECT 1" <clickhouse_url>
+curl -is --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 Check the values of `Connection` and `Keep-Alive` headers in the response. For example:
 
 ```text
-< Connection: Keep-Alive
-< Keep-Alive: timeout=10
+Connection: Keep-Alive
+Keep-Alive: timeout=10
 ```
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
@@ -1177,19 +1177,19 @@ In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `
 
 If you're experiencing `socket hang up` errors even when using the latest version of the client, there are the following options to resolve this issue:
 
-* Enable logs with at least `WARN` log level. This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
+* Enable logs with at least `WARN` log level (default). This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
   
   ```ts
   const client = createClient({
     log: { level: ClickHouseLogLevel.WARN },
   })
   ```
-  
-* Check your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
 
-* Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200–500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
+* Make sure that the desired configuration is applied to the correct client instance. If you have multiple client instances in your application, double-check that the one you're using for queries has the correct `keep_alive.idle_socket_ttl` value.
 
-* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
+* Reduce the `keep_alive.idle_socket_ttl` setting in the client configuration by 500 milliseconds. In certain situations, for example, high network latency between client and server, it could be beneficial, ruling out the situation where an outgoing request could obtain a socket that the server is going to close.
+
+* If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to a load balancer or other network components closing long-lived connections or long running requests. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
 
   ```ts
   const client = createClient({
@@ -1217,6 +1217,31 @@ If you're experiencing `socket hang up` errors even when using the latest versio
     },
   })
   ```
+
+* Rule out potential issues with the rest of the network stack including Node.js itself by running a simple command-line test with the same ClickHouse instance and the same network path (i.e. from the same machine or network segment, e.g. a Kubernetes pod), for example, using `curl`:
+
+  ```sh
+  curl -is --user '<user>:<password>' --data-binary "SELECT 1" <clickhouse_url>
+  ```
+
+   You might want to run it in a loop for several minutes. If you see similar errors in `curl`, it is likely that the issue is not related to the client configuration, but rather to the network stack or the server configuration.
+
+* To test the connection with plain Node.js functionality, you can try to create a simple HTTP request to the ClickHouse server using the built-in `fetch` API:
+
+```ts
+  const response = await fetch('<clickhouse_url>?query=SELECT+1', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from('<user>:<password>').toString('base64'),
+    }
+  })
+```
+
+* In some cases the application code or the framework adapters can add a preemptive `ping()` before the actual query execution, which can lead to a situation where the `ping()` request is successful, but the subsequent query request fails with a "socket hang up" error due to the same underlying issue with idle connections. If you see that pattern in the logs, try to check if there is an option to disable preemptive pings in your framework or application code. This should also help with reducing the probability of getting rate limited by any of the intermediate network components.
+
+* Make sure that the application itself is getting enough CPU time and the network is not throttled by the hosting provider. Various means of monitoring like GC pause metrics, event loop lag metrics, and similar ones can also be helpful to rule out potential resource starvation issues.
+
+* Try checking your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
 
 ### Read-only users {#read-only-users}
 
@@ -1261,16 +1286,16 @@ const client = createClient({
 This is an experimental feature that may change in backwards-incompatible ways in the future releases. The default implementation and settings the client provides should be sufficient for most use cases. Use this feature only if you're sure that you need it.
 :::
 
-By default, the client will configure the underlying HTTP(s) agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
+By default, the client will configure the underlying HTTP or HTTPS agent using the settings provided in the client configuration (such as `max_open_connections`, `keep_alive.enabled`, `tls`), which will handle the connections to the ClickHouse server. Additionally, if TLS certificates are used, the underlying agent will be configured with the necessary certificates, and the correct TLS auth headers will be enforced.
 
-After 1.2.0, it is possible to provide a custom HTTP(s) agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
+After 1.2.0, it is possible to provide a custom HTTP or HTTPS agent to the client, replacing the default underlying one. It could be useful in case of tricky network configurations. The following conditions apply if a custom agent is provided:
 - The `max_open_connections` and `tls` options will have _no effect_ and will be ignored by the client, as it is a part of the underlying agent configuration.
 - `keep_alive.enabled` will only regulate the default value of the `Connection` header (`true` -> `Connection: keep-alive`, `false` -> `Connection: close`).
 - While the idle keep-alive socket management will still work (as it isn't tied to the agent but to a particular socket itself), it is now possible to disable it entirely by setting the `keep_alive.idle_socket_ttl` value to `0`.
 
 #### Custom agent usage examples {#custom-agent-usage-examples}
 
-Using a custom HTTP(s) Agent without certificates:
+Using a custom HTTP or HTTPS Agent without certificates:
 
 ```ts
 const agent = new http.Agent({ // or https.Agent

@@ -1,28 +1,28 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: '使用语义层自定义 Ask AI 聊天'
-title: '使用语义层优化 Ask AI Agent 对话'
+sidebar_label: '使用语义层自定义 ClickHouse Assistant 聊天'
+title: '使用语义层优化 ClickHouse Assistant Agent 对话'
 pagination_prev: null
 pagination_next: null
-description: '使用 AGENTS.md 为 Ask AI 聊天 Agent 提供自定义业务逻辑和数据相关指令的指南'
+description: '使用 AGENTS.md 为 ClickHouse Assistant 聊天 Agent 提供自定义业务逻辑和数据相关指令的指南'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 使用语义层自定义 Ask AI 聊天 \{#customize-ask-ai-chat-with-a-semantic-layer\}
+# 使用语义层自定义 ClickHouse Assistant 聊天 \{#customize-clickhouse-assistant-chat-with-a-semantic-layer\}
 
-Ask AI 聊天代理可以通过 **AGENTS.md** 进行自定义，从而理解你特定的业务逻辑、数据结构和领域知识——这是一条特殊的已保存查询，用作代理系统提示的语义层。
+ClickHouse Assistant 聊天代理可以通过 **AGENTS.md** 进行自定义，从而理解你特定的业务逻辑、数据结构和领域知识——这是一条特殊的已保存查询，用作代理系统提示的语义层。
 
 通过创建一个 AGENTS.md 文件，你可以提供自定义指令，这些指令会在每次对话开始时被注入，用于根据你组织独特的需求、计算方式和约定来引导 SQL 查询生成和数据分析。
 
 ## 工作原理 \{#how-it-works\}
 
-当您在 Cloud 控制台中保存一个名为 "AGENTS.md"（区分大小写）的查询时：
+当您在 Cloud 控制台中保存一个名为 &quot;AGENTS.md&quot; (区分大小写) 的查询时：
 
-1. Ask AI 聊天代理在发送消息时会自动加载此文件
+1. ClickHouse Assistant 聊天代理在发送消息时会自动加载此文件
 2. 文件内容会被放入结构化内容标签中，并注入到代理的 system prompt 中
-3. 这些指令会应用于该服务中的所有 Ask AI 聊天会话
+3. 这些指令会应用于该服务中的所有 ClickHouse Assistant 聊天会话
 
 ## 创建 AGENTS.md \{#creating-agents-md\}
 

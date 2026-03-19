@@ -348,6 +348,7 @@ const sidebars = {
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/extensions',
         'cloud/managed-postgres/settings',
+        'cloud/managed-postgres/upgrades',
         'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/faq',
         {
@@ -566,7 +567,16 @@ const sidebars = {
             },
             // "integrations/language-clients/java/index",
             'integrations/language-clients/java/client/client',
-            'integrations/language-clients/java/jdbc/jdbc',
+            {
+              type: 'category',
+              label: 'JDBC',
+              collapsed: true,
+              collapsible: true,
+              items: [
+                'integrations/language-clients/java/jdbc/jdbc',
+                'integrations/language-clients/java/date_time_guide',
+              ],
+            },
             'integrations/language-clients/java/r2dbc',
           ],
         },
@@ -1029,6 +1039,7 @@ const sidebars = {
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
+        'integrations/data-ingestion/apache-flink/flink-connector',
         'integrations/data-ingestion/aws-glue/index',
         {
           type: 'category',
@@ -1919,6 +1930,7 @@ const sidebars = {
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
         'use-cases/observability/clickstack/dashboards',
+        'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
@@ -1934,6 +1946,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/managing/admin',
+            'use-cases/observability/clickstack/managing/estimating-resources',
             'use-cases/observability/clickstack/managing/production',
             'use-cases/observability/clickstack/managing/materialized_views',
             'use-cases/observability/clickstack/managing/performance_tuning',
@@ -1969,6 +1982,7 @@ const sidebars = {
           ],
         },
         'use-cases/observability/clickstack/api-reference',
+        'use-cases/observability/clickstack/faq',
         {
           type: 'category',
           label: 'Integration partners',

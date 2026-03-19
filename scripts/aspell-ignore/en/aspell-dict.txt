@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4036 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -150,7 +150,6 @@ Bugfix
 BuildID
 BuilderBinAarch
 BuilderBinAmd
-bytea
 Bytebase
 CCPA
 CCTOOLS
@@ -225,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -249,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -800,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -837,6 +840,7 @@ MV's
 MVCC
 MacBook
 MacOS
+manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -1956,6 +1960,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
@@ -2037,6 +2042,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake
@@ -2065,6 +2071,7 @@ cond
 conf
 config
 configs
+configurability
 conformant
 congruential
 conjuctive
@@ -2857,6 +2864,7 @@ mergetree
 messageID
 metacharacters
 metasymbols
+metric's
 metrica
 metroHash
 mfedotov
@@ -3913,6 +3921,7 @@ unnest
 unoptimized
 unparsed
 unpooled
+unprocessable
 unrealiable
 unreplicated
 unresolvable

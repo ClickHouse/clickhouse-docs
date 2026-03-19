@@ -108,10 +108,10 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
 
   1. [ClickHouse Cloud](https://console.clickhouse.cloud) からログアウトします。
   2. アイデンティティプロバイダーで、ClickHouse アプリケーションに管理者ユーザーを割り当てます。
-  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId} （ショートカット URL）からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
+  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId}  (ショートカット URL) からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
   4. デフォルトの SAML ロールが Admin 以外である場合、新しい SAML ユーザーのロールを更新するために、ユーザーは一度ログアウトし、元の認証方法でログインし直す必要がある場合があります。
      * メールアドレス + パスワードのアカウントの場合は、`https://console.clickhouse.cloud/?with=email` を使用してください。
-     * ソーシャルログインの場合は、該当するボタン（**Continue with Google** または **Continue with Microsoft**）をクリックしてください。
+     * ソーシャルログインの場合は、該当するボタン (**Continue with Google** または **Continue with Microsoft**) をクリックしてください。
 
   :::note
   上記の `?with=email` 内の `email` はプレースホルダーではなく、文字通りのパラメータ値です。
@@ -343,9 +343,13 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 ClickHouse Cloud では、サービスプロバイダー開始型 SSO のみを利用しています。これは、ユーザーが `https://console.clickhouse.cloud` にアクセスしてメールアドレスを入力すると、認証のために IdP にリダイレクトされる方式であることを意味します。すでに IdP によって認証されているユーザーは、ログインページでメールアドレスを入力することなく、組織に自動的にログインできるダイレクトリンクを使用できます。
 
-### 複数組織向け SSO \{#multi-org-sso\}
+### 複数組織向け SSO \{#configure-your-admin-user\}
 
 ClickHouse Cloud は、組織ごとに個別の接続を提供することで、複数組織向け SSO をサポートします。各組織にログインするには、ダイレクトリンク (`https://console.clickhouse.cloud/?connection={organizationid}`) を使用してください。別の組織にログインする前に、現在ログインしている組織から必ずログアウトしてください。
+
+:::note
+https://console.clickhouse.cloud でメールアドレスを入力した際に、貴社ドメインのユーザーが特定の組織に誘導されないようにする場合は、この動作を無効にするため、SSO 設定の手動更新を依頼するサポートチケットを提出してください。
+:::
 
 ## 追加情報 {#additional-information}
 

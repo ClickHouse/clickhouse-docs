@@ -26,7 +26,7 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-引入于：v25.12
+引入于：v25.12.0
 
 使用指定的哈希算法和密钥，为给定消息计算 HMAC（基于哈希的消息认证码）。
 
@@ -100,6 +100,7 @@ HMAC(mode, message, key)
 
 **参数**
 
+
 * `mode` — 哈希算法名称（不区分大小写）。支持：md5、sha1、sha224、sha256、sha384、sha512。[`String`](/sql-reference/data-types/string)
 * `message` — 用于计算 HMAC 的消息。[`String`](/sql-reference/data-types/string)
 * `key` — 用于 HMAC 的密钥（秘钥）。[`String`](/sql-reference/data-types/string)
@@ -151,9 +152,9 @@ SELECT
 └─────────────┴───────────┘
 ```
 
-## aes&#95;decrypt&#95;mysql \{#aes&#95;decrypt&#95;mysql\}
+## aes_decrypt_mysql \{#aes_decrypt_mysql\}
 
-引入自：v20.12
+引入自：v20.12.0
 
 解密由 MySQL 的 [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 函数加密的数据。
 
@@ -189,7 +190,7 @@ aes_decrypt_mysql(mode, ciphertext, key[, iv])
 **解密 MySQL 数据**
 
 ```sql title=Query
--- 让我们解密之前用 MySQL 加密的数据：
+-- Let's decrypt data we've previously encrypted with MySQL:
 mysql> SET  block_encryption_mode='aes-256-ofb';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -206,18 +207,19 @@ SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '1234567891012131
 
 ```response title=Response
 ┌─plaintext─┐
-│ 秘密      │
+│ Secret    │
 └───────────┘
 ```
 
-## aes&#95;encrypt&#95;mysql \{#aes&#95;encrypt&#95;mysql\}
 
-引入版本：v20.12
+## aes_encrypt_mysql \{#aes_encrypt_mysql\}
+
+引入版本：v20.12.0
 
 以与 MySQL 的 `AES_ENCRYPT` 函数相同的方式加密文本。
 生成的密文可以使用 MySQL 的 `AES_DECRYPT` 函数解密。
 对相同输入，生成的密文与 `encrypt` 函数相同。
-当 `key` 或 `iv` 的长度超过通常的限制时，`aes_encrypt_mysql` 会遵循 MySQL `aes_encrypt` 的行为，即“折叠”`key` 并忽略 `iv` 的多余位。
+当 `key` 或 `iv` 的长度超过其通常要求时，`aes_encrypt_mysql` 会遵循 MySQL `aes_encrypt` 的行为，即对 `key` 进行“折叠”，并忽略 `iv` 的多余位。
 
 支持的加密模式为：
 
@@ -247,7 +249,7 @@ aes_encrypt_mysql(mode, plaintext, key[, iv])
 **相同输入比较**
 
 ```sql title=Query
--- 给定相同的输入，encrypt 和 aes_encrypt_mysql 生成相同的密文：
+-- Given equal input encrypt and aes_encrypt_mysql produce the same ciphertext:
 SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') = aes_encrypt_mysql('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') AS ciphertexts_equal;
 ```
 
@@ -257,27 +259,27 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 └───────────────────┘
 ```
 
-**密钥过长导致加密失败**
+**密钥过长时加密失败**
 
 ```sql title=Query
--- 但当密钥或初始化向量长度超过预期时,encrypt 会失败:
+-- But encrypt fails when key or iv is longer than expected:
 SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123');
 ```
 
 ```response title=Response
-从服务器收到异常（版本 22.6.1）：
-代码：36. DB::Exception: 从 localhost:9000 收到。DB::Exception: 密钥大小无效：期望 32，实际 33：处理 encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123') 时。
+Received exception from server (version 22.6.1):
+Code: 36. DB::Exception: Received from localhost:9000. DB::Exception: Invalid key size: 33 expected 32: While processing encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
 ```
 
 **MySQL 兼容性**
 
 ```sql title=Query
--- aes_encrypt_mysql 生成与 MySQL 兼容的输出：
+-- aes_encrypt_mysql produces MySQL-compatible output:
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123')) AS ciphertext;
 ```
 
 ```response title=Response
-┌─密文───┐
+┌─ciphertext───┐
 │ 24E9E4966469 │
 └──────────────┘
 ```
@@ -285,19 +287,20 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 **使用更长的 IV 会得到相同的结果**
 
 ```sql title=Query
--- 注意，即使提供更长的 IV 也会产生相同的结果
+-- Notice how supplying even longer IV produces the same result
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123456')) AS ciphertext
 ```
 
 ```response title=Response
-┌─密文───┐
+┌─ciphertext───┐
 │ 24E9E4966469 │
 └──────────────┘
 ```
 
+
 ## decrypt \{#decrypt\}
 
-自 v20.12 引入
+自 v20.12.0 引入
 
 此函数使用以下模式，对经 AES 加密的二进制字符串进行解密：
 
@@ -331,7 +334,7 @@ decrypt(mode, ciphertext, key[, iv, aad])
 **正确解密已加密的数据**
 
 ```sql title=Query
--- 重用 encrypt 函数示例中的表
+-- Re-using the table from the encrypt function example
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
@@ -355,7 +358,7 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 ```
 
 ```response title=Response
--- 注意仅有部分数据被正确解密，其余部分为乱码，这是因为加密时使用的 `mode`、`key` 或 `iv` 参数不同所致。
+-- Notice how only a portion of the data was properly decrypted, and the rest is gibberish since either `mode`, `key`, or `iv` were different upon encryption.
 ┌─comment──────────────┬─plaintext──┐
 │ aes-256-gcm          │ OQ�E
                              �t�7T�\���\�   │
@@ -371,9 +374,10 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
+
 ## encrypt \{#encrypt\}
 
-自 v20.12 引入
+自 v20.12.0 引入
 
 使用 AES 按下列任一模式将明文加密为密文：
 
@@ -415,20 +419,20 @@ CREATE TABLE encryption_test
 ENGINE = MergeTree;
 
 INSERT INTO encryption_test VALUES
-('aes-256-ofb 无 IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),
-('aes-256-ofb 无 IV，不同密钥', encrypt('aes-256-ofb', 'Secret', 'keykeykeykeykeykeykeykeykeykeyke')),
-('aes-256-ofb 带 IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')),
-('aes-256-cbc 无 IV', encrypt('aes-256-cbc', 'Secret', '12345678910121314151617181920212'));
+('aes-256-ofb no IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212')),
+('aes-256-ofb no IV, different key', encrypt('aes-256-ofb', 'Secret', 'keykeykeykeykeykeykeykeykeykeyke')),
+('aes-256-ofb with IV', encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv')),
+('aes-256-cbc no IV', encrypt('aes-256-cbc', 'Secret', '12345678910121314151617181920212'));
 
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
 ```response title=Response
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
-│ aes-256-ofb 无 IV                │ B4972BDC4459                     │
-│ aes-256-ofb 无 IV, 不同密钥      │ 2FF57C092DC9                     │
-│ aes-256-ofb 带 IV                │ 5E6CB398F653                     │
-│ aes-256-cbc 无 IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
+│ aes-256-ofb no IV                │ B4972BDC4459                     │
+│ aes-256-ofb no IV, different key │ 2FF57C092DC9                     │
+│ aes-256-ofb with IV              │ 5E6CB398F653                     │
+│ aes-256-cbc no IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
@@ -450,9 +454,10 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
 
+
 ## tryDecrypt \{#tryDecrypt\}
 
-自 v22.10 起引入
+自 v22.10.0 起引入
 
 类似于 `decrypt` 函数，但在因使用错误密钥而解密失败时返回 `NULL`。
 
@@ -479,8 +484,8 @@ tryDecrypt(mode, ciphertext, key[, iv, aad])
 **创建表并插入数据**
 
 ```sql title=Query
--- 创建一个表，其中 user_id 是唯一用户标识符，encrypted 是加密字符串字段，iv 是解密/加密的初始向量。
--- 假设用户知道自己的 ID 和解密该加密字段的密钥：
+-- Let's create a table where user_id is the unique user id, encrypted is an encrypted string field, iv is an initial vector for decrypt/encrypt.
+-- Assume that users know their id and the key to decrypt the encrypted field:
 CREATE TABLE decrypt_null
 (
     dt DateTime,
@@ -490,13 +495,13 @@ CREATE TABLE decrypt_null
 )
 ENGINE = MergeTree;
 
--- 插入一些数据：
+-- Insert some data:
 INSERT INTO decrypt_null VALUES
 ('2022-08-02 00:00:00', 1, encrypt('aes-256-gcm', 'value1', 'keykeykeykeykeykeykeykeykeykey01', 'iv1'), 'iv1'),
 ('2022-09-02 00:00:00', 2, encrypt('aes-256-gcm', 'value2', 'keykeykeykeykeykeykeykeykeykey02', 'iv2'), 'iv2'),
 ('2022-09-02 00:00:01', 3, encrypt('aes-256-gcm', 'value3', 'keykeykeykeykeykeykeykeykeykey03', 'iv3'), 'iv3');
 
--- 尝试使用单个密钥解密
+-- Try decrypt with one key
 SELECT
     dt,
     user_id,

@@ -551,7 +551,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置
@@ -2048,6 +2048,14 @@ parts (N). Merges are processing significantly slower than inserts`
 
 如果在某个数据部分中，主键某一列的值发生变化的次数至少达到该比例，则跳过将其后续列加载到内存中。这样可以通过不加载不必要的主键列来节省内存。
 
+## propagate_types_serialization_versions_to_nested_types \{#propagate_types_serialization_versions_to_nested_types\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "默认将数据类型的序列化版本传播到嵌套类型"}]}]} />
+
+如果为 true，则像 string&#95;serialization&#95;version 这样的序列化版本会传播到 Array/Map/Nullable/JSON 等嵌套类型内部。如果禁用，则该序列化版本仅对该类型的顶层列和 Tuple 元素生效。
+
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 
 <SettingsInfoBlock type="Float" default_value="0.9375" />
@@ -2730,6 +2738,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 
 在可能的情况下从 leader 副本读取虚拟分区片段。仅在 ClickHouse Cloud 中可用
 
+## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
+
+<SettingsInfoBlock type="Seconds" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "新增设置"}]}]}/>
+
+在后台尝试更新副本集的频率。
+
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2769,6 +2785,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Cloud sync"}]}]}/>
 
 如果启用，该“过多分区片段”计数器将依赖 Keeper 中的共享数据，而不是本地副本状态。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_use_zookeeper_connection_pool \{#shared_merge_tree_use_zookeeper_connection_pool\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+
+如果启用，SharedMergeTree 会使用一个服务器级 ZooKeeper 会话池中的会话。
 
 ## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 
@@ -2834,6 +2858,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 这是表级磁盘，其路径/endpoint 应该指向表数据，而不是数据库数据。仅可用于 s3_plain/s3_plain_rewritable/web。
+
+## table_readonly \{#table_readonly\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于将表标记为只读、禁止插入和修改的新设置"}]}]}/>
+
+如果设置为 `true`，则该表处于只读模式。任何向该表插入数据或修改其内容的操作都会失败。
 
 ## temporary_directories_lifetime \{#temporary_directories_lifetime\}
 
@@ -2952,6 +2984,15 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting"}]}]}/>
 
 如果为 true，则会在纵向合并过程中优化轻量级删除。
+
+## vertical_merge_optimize_ttl_delete \{#vertical_merge_optimize_ttl_delete\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "允许对需要删除因生存时间 (TTL) 过期行的合并使用纵向合并算法"}]}]}/>
+
+如果为 `true`，在纵向合并中会对行生存时间 (TTL) 删除进行优化。不会强制执行横向合并，
+而是对生存时间 (TTL) 过滤器进行计算，并将其传递给合并算法，由合并算法在行来源中设置跳过标记。
 
 ## vertical_merge_remote_filesystem_prefetch \{#vertical_merge_remote_filesystem_prefetch\}
 

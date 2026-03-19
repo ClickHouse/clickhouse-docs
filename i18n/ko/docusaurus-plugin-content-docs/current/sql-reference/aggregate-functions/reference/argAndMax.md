@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argAndMax \{#argAndMax\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 최대 `val` 값에 해당하는 `arg` 및 `val` 값을 계산합니다.
 최대가 되는 동일한 `val` 값을 가진 행이 여러 개 있는 경우, 어떤 `arg` 및 `val` 조합이 반환될지는 비결정적입니다.
@@ -53,7 +53,7 @@ SELECT argAndMax(user, salary) FROM salary;
 └─────────────────────────┘
 ```
 
-**NULL 처리를 포함한 확장 예제**
+**NULL 처리 확장 예제**
 
 ```sql title=Query
 CREATE TABLE test
@@ -74,7 +74,7 @@ SELECT argMax(a, b), argAndMax(a, b), max(b) FROM test;
 └──────────────┴─────────────────┴────────┘
 ```
 
-**인수로 Tuple 사용하기**
+**Tuple을 인수로 사용하기**
 
 ```sql title=Query
 SELECT argAndMax(a, (b,a)) FROM test;

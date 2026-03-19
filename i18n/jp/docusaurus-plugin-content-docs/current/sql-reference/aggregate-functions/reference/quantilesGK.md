@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesGK \{#quantilesGK\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 数値データ系列に対して、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて、複数の異なるレベルの[分位点](https://en.wikipedia.org/wiki/Quantile)を同時に計算します。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 Greenwald-Khanna アルゴリズムは、データストリーム上の分位点を高い効率で計算するために用いられるアルゴリズムです。
 このアルゴリズムは 2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。
-このアルゴリズムは非常に効率的であり、要素ごとに O(log n) のメモリ空間と O(log log n) の時間しか必要としません（ここで n は入力サイズです）。
+このアルゴリズムは非常に効率的であり、要素ごとに O(log n) のメモリ空間と O(log log n) の時間しか必要としません (ここで n は入力サイズです) 。
 また、高い精度を備えており、制御可能な精度で近似分位点値を提供します。
 
 **構文**

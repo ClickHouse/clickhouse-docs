@@ -160,12 +160,12 @@ In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster
 1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet shouldn't have direct access to the internet.
 1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
 1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
-1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic.
+1. **Ensure Security Groups and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic.
    1. From MSK Connect worker ENIs to MSK brokers on TLS port (commonly 9094).
    1. From MSK Connect worker ENIs to ClickHouse endpoint: 9440 (native TLS) or 8443 (HTTPS).
    1. Allow inbound on broker SG from the MSK Connect worker SG.
    1. For self-hosted ClickHouse, open the port configured in your server (default 8123 for HTTP).
-1. **Attach Security Group(s) to MSK:** Ensure that these security groups are attached to your MSK cluster and MSK Connect workers.
+1. **Attach Security Groups to MSK:** Ensure that these security groups are attached to your MSK cluster and MSK Connect workers.
 1. **Connectivity to ClickHouse Cloud:**
    1. Public endpoint + IP allowlist: requires NAT egress from private subnets.
    1. Private connectivity where available (e.g., VPC peering/PrivateLink/VPN). Ensure VPC DNS hostnames/resolution are enabled and DNS can resolve the private endpoint.

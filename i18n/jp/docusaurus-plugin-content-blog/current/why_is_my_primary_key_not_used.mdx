@@ -105,7 +105,7 @@ PrimaryKey
 Granules は ClickHouse におけるデータ処理の単位であり、通常はそれぞれ 8192 行を含みます。Granules の詳細およびそれらがどのようにフィルタリングされるかについては、[このガイド](/guides/best-practices/sparse-primary-indexes#mark-files-are-used-for-locating-granules) を参照することをお勧めします。
 
 :::note
-ソートキー内で後方に位置するキーを条件にフィルタリングする場合は、タプルの先頭側（前方）にあるキーを条件にフィルタリングする場合ほど効率的ではありません。その理由については [こちら](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) を参照してください。
+ソートキー内で後方に位置するキーを条件にフィルタリングする場合は、タプルの先頭側 (前方) にあるキーを条件にフィルタリングする場合ほど効率的ではありません。その理由については [こちら](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) を参照してください。
 :::
 
 ## 複数キーでのフィルタリング \{#multi-key-filtering\}
@@ -155,7 +155,7 @@ WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= 
 
 ClickHouse は、効率的なソートのためにソートキーも活用できます。具体的には、次のとおりです。
 
-[optimize&#95;read&#95;in&#95;order](/sql-reference/statements/select/order-by#optimization-of-data-reading) 設定が有効な場合（デフォルトでは有効）、ClickHouse サーバーはテーブルインデックスを使用し、ORDER BY キーの順序でデータを読み取ります。これにより、LIMIT が指定されている場合にすべてのデータを読み取らずに済みます。そのため、大量データに対して小さい LIMIT を指定したクエリは、より高速に処理されます。詳細については[こちら](/sql-reference/statements/select/order-by#optimization-of-data-reading)および[こちら](/docs/knowledgebase/async_vs_optimize_read_in_order#what-about-optimize_read_in_order)を参照してください。
+[optimize&#95;read&#95;in&#95;order](/sql-reference/statements/select/order-by#optimization-of-data-reading) 設定が有効な場合 (デフォルトでは有効) 、ClickHouse サーバーはテーブルインデックスを使用し、ORDER BY キーの順序でデータを読み取ります。これにより、LIMIT が指定されている場合にすべてのデータを読み取らずに済みます。そのため、大量データに対して小さい LIMIT を指定したクエリは、より高速に処理されます。詳細については[こちら](/sql-reference/statements/select/order-by#optimization-of-data-reading)および[こちら](/docs/knowledgebase/async_vs_optimize_read_in_order#what-about-optimize_read_in_order)を参照してください。
 
 ただし、そのためには使用するキーを揃える必要があります。
 

@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## array \{#array\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 関数の引数から配列を作成します。
 
@@ -73,7 +73,7 @@ There is no supertype for types Int32, DateTime, Int8 ...
 
 ## arrayAUCPR \{#arrayAUCPR\}
 
-導入バージョン: v20.4
+導入バージョン: v20.4.0
 
 適合率–再現率 (PR) 曲線の下側の面積を計算します。
 適合率–再現率 (PR) 曲線は、すべてのしきい値について、縦軸に適合率、横軸に再現率をプロットすることで作成します。
@@ -129,7 +129,7 @@ SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayAll \{#arrayAll\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 ラムダ `func(x [, y1, y2, ... yN])` がすべての要素に対して true を返す場合は `1` を返し、そうでない場合は `0` を返します。
 
@@ -174,7 +174,7 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 
 ## arrayAvg \{#arrayAvg\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 配列の要素の平均値を返します。
 
@@ -221,7 +221,7 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 
 ## arrayCompact \{#arrayCompact\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 配列から連続する重複要素（`null` 値も含む）を削除します。結果の配列内の値の順序は、元の配列内での順序に従います。
 
@@ -254,7 +254,7 @@ SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
 
 ## arrayConcat \{#arrayConcat\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数として渡された配列を結合します。
 
@@ -287,7 +287,7 @@ SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
 
 ## arrayCount \{#arrayCount\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `func(arr1[i], ..., arrN[i])` が true を返す要素の数を返します。
 `func` が指定されていない場合、配列内のゼロ以外の要素の数を返します。
@@ -324,7 +324,7 @@ SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
 
 ## arrayCumSum \{#arrayCumSum\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 元の配列の要素に対する部分和（累積和）からなる配列を返します。`lambda` 関数が指定されている場合、各位置の配列要素に `lambda` を適用した結果について和が計算されます。
 
@@ -369,7 +369,7 @@ SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
 
 ## arrayCumSumNonNegative \{#arrayCumSumNonNegative\}
 
-導入されたバージョン: v18.12
+導入されたバージョン: v18.12.0
 
 元の配列の要素について、累積部分和（ランニングサム）の配列を返し、累積和が負になった場合はゼロに置き換えます。ラムダ関数が指定されている場合は、各位置の配列要素にラムダを適用した結果に対して和が計算されます。
 
@@ -414,7 +414,7 @@ SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
 
 ## arrayDifference \{#arrayDifference\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列内の隣接する要素同士の差分から成る配列を返します。
 結果の配列の最初の要素は 0、2 番目は `arr[1] - arr[0]`、3 番目は `arr[2] - arr[1]` というように続きます。
@@ -461,7 +461,7 @@ SELECT arrayDifference([0, 10000000000000000000]);
 
 ## arrayDistinct \{#arrayDistinct\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列から重複した要素を取り除いた配列を返します。
 
@@ -494,7 +494,7 @@ SELECT arrayDistinct([1, 2, 2, 3, 1]);
 
 ## arrayDotProduct \{#arrayDotProduct\}
 
-導入バージョン: v23.5
+導入バージョン: v23.5.0
 
 2つの配列の内積を返します。
 
@@ -548,7 +548,7 @@ SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UI
 
 ## arrayElement \{#arrayElement\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `n` を任意の整数型として、指定された配列のインデックス `n` の要素を取得します。
 インデックスが配列の範囲外の場合は、デフォルト値（数値は 0、文字列は空文字列など）を返します。
@@ -622,7 +622,7 @@ SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 
 ## arrayElementOrNull \{#arrayElementOrNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された配列の、インデックス `n` の要素を取得します。`n` には任意の整数型を指定できます。
 インデックスが配列の範囲外の場合、デフォルト値ではなく `NULL` が返されます。
@@ -682,7 +682,7 @@ NULL
 
 ## arrayEnumerate \{#arrayEnumerate\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列 `[1, 2, 3, ..., length (arr)]` を返します。
 
@@ -742,7 +742,7 @@ ARRAY JOIN
 
 ## arrayEnumerateDense \{#arrayEnumerateDense\}
 
-導入バージョン: v18.12
+導入バージョン: v18.12.0
 
 元の配列と同じサイズの配列を返します。各要素は、元の配列内でその要素が最初に出現する位置を表します。
 
@@ -775,7 +775,7 @@ SELECT arrayEnumerateDense([10, 20, 10, 30])
 
 ## arrayEnumerateDenseRanked \{#arrayEnumerateDenseRanked\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 元の配列と同じサイズの配列を返し、元の配列内で各要素が最初に出現する位置を示します。多次元配列を列挙する際に、配列のどの深さまでたどるかを指定できます。
 
@@ -828,7 +828,7 @@ SELECT arrayEnumerateDenseRanked(1,[[10,10,30,20],[40,50,10,30]],2);
 [[1,1,2,3],[4,5,1,2]]
 ```
 
-**clear&#95;depth を増加させた例**
+**clear&#95;depth を増やした例**
 
 ```sql title=Query
 -- Changing clear_depth=2 results in the enumeration occurring separately for each row anew.
@@ -843,7 +843,7 @@ SELECT arrayEnumerateDenseRanked(2,[[10,10,30,20],[40,50,10,30]],2);
 
 ## arrayEnumerateUniq \{#arrayEnumerateUniq\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 元の配列と同じ長さの配列を返し、各要素について、その値を持つ要素群の中での出現順序を示します。
 
@@ -928,7 +928,7 @@ LIMIT 10
 
 ## arrayEnumerateUniqRanked \{#arrayEnumerateUniqRanked\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 元の配列と同じ次元を持つ配列（または多次元配列）を返します。
 各要素について、その要素と同じ値を持つ要素の中での位置を示します。
@@ -1011,7 +1011,7 @@ SELECT arrayEnumerateUniqRanked(2,[[1, 2, 3],[2, 2, 1],[3]], 2);
 
 ## arrayExcept \{#arrayExcept\}
 
-導入: v25.9
+導入: v25.9.0
 
 `except` に存在しない `source` の要素だけを、元の順序を保った配列として返します。
 
@@ -1083,7 +1083,7 @@ SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
 
 ## arrayExists \{#arrayExists\}
 
-導入: v1.1
+導入: v1.1.0
 
 ソース配列内に、`func(x[, y1, y2, ... yN])` が true を返す要素が 1 つ以上存在する場合は `1` を返します。存在しない場合は `0` を返します。
 
@@ -1118,7 +1118,7 @@ SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
 
 ## arrayFill \{#arrayFill\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 `arrayFill` 関数は、ソース配列を最初の要素から最後の要素まで順に処理し、
 ソース配列および条件配列の要素を用いて、各位置でラムダ条件を評価します。
@@ -1167,7 +1167,7 @@ SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2,
 
 ## arrayFilter \{#arrayFilter\}
 
-導入: v1.1
+導入: v1.1.0
 
 ソース配列の各要素にラムダ関数を適用し、その結果が true を返す要素だけを含む配列を返します。
 
@@ -1217,7 +1217,7 @@ SELECT
 
 ## arrayFirst \{#arrayFirst\}
 
-導入: v1.1
+導入: v1.1.0
 
 `func(x[, y1, y2, ... yN])` が true を返すソース配列内の最初の要素を返します。該当する要素がない場合はデフォルト値を返します。
 
@@ -1260,7 +1260,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayFirstIndex \{#arrayFirstIndex\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `func(x[, y1, y2, ... yN])` が true を返す最初の要素の索引を元の配列の中から返し、該当する要素がない場合は &#39;0&#39; を返します。
 
@@ -1272,9 +1272,7 @@ arrayFirstIndex(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr]
 
 **引数**
 
-* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素に適用されるラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)
-* `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
-* `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素に適用されるラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda) - `source_arr` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array) - `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を渡すための N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
 
 **返される値**
 
@@ -1305,7 +1303,7 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
 
 ## arrayFirstOrNull \{#arrayFirstOrNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `func(x[, y1, y2, ... yN])` が true を返すソース配列内の最初の要素を返します。該当する要素がない場合は `NULL` を返します。
 
@@ -1350,7 +1348,7 @@ NULL Nullable(UInt8)
 
 ## arrayFlatten \{#arrayFlatten\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 配列の配列をフラットな配列に変換します。
 
@@ -1392,7 +1390,7 @@ SELECT arrayFlatten([[[1]], [[2], [3]]]);
 
 ## arrayFold \{#arrayFold\}
 
-導入バージョン: v23.10
+導入バージョン: v23.10.0
 
 1 つ以上の同じ長さの配列にラムダ関数を適用し、その結果をアキュムレータに蓄積します。
 
@@ -1463,7 +1461,7 @@ SELECT arrayFold(
 
 ## arrayIntersect \{#arrayIntersect\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 複数の配列を引数に取り、すべての入力配列に存在する要素からなる配列を返します。結果には一意の値のみが含まれます。
 
@@ -1500,7 +1498,7 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 2つの配列の [Jaccard指数](https://en.wikipedia.org/wiki/Jaccard_index) を返します。
 
@@ -1534,7 +1532,7 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 
 ## arrayJoin \{#arrayJoin\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `arrayJoin` 関数は、配列を含む行を入力として受け取り、それを展開して複数の行を生成します — 配列内の各要素ごとに 1 行ずつ生成されます。
 これは、同じ行の中で入力値を出力値に対応付ける ClickHouse の通常の関数や、
@@ -1573,7 +1571,7 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-**arrayJoin はクエリのすべての句に影響します**
+**arrayJoin はクエリのすべての部分に影響します**
 
 ```sql title=Query
 -- The arrayJoin function affects all sections of the query, including the WHERE section. Notice the result 2, even though the subquery returned 1 row.
@@ -1623,7 +1621,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**最適化による予期せぬ結果**
+**最適化による想定外の結果**
 
 ```sql title=Query
 -- Using multiple arrayJoin with the same expression may not produce the expected result due to optimizations.
@@ -1744,7 +1742,7 @@ GROUP BY
 
 ## arrayLast \{#arrayLast\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 ソース配列の要素のうち、ラムダ `func(x [, y1, y2, ... yN])` が true を返す最後の要素を返します。該当する要素がない場合は、デフォルト値を返します。
 
@@ -1756,10 +1754,7 @@ arrayLast(func(x[, y1, ..., yN]), source[, cond1, ... , condN_arr])
 
 **引数**
 
-* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素に対して動作するラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)
-
-- `source` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1, ... , condN]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素に適用されるラムダ関数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source` — 処理対象となるソース配列。[`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1, ... , condN]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列。[`Array(T)`](/sql-reference/data-types/array)。
 
 **戻り値**
 
@@ -1790,7 +1785,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayLastIndex \{#arrayLastIndex\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `func(x[, y1, y2, ... yN])` が true を返す、元の配列内で最後に現れる要素の索引を返します。該当する要素がない場合は &#39;0&#39; を返します。
 
@@ -1835,7 +1830,7 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
 
 ## arrayLastOrNull \{#arrayLastOrNull\}
 
-導入: v1.1
+導入: v1.1.0
 
 ラムダ式 `func(x [, y1, y2, ... yN])` が true を返す、入力配列の要素のうち最後のものを返します。該当する要素がない場合は `NULL` を返します。
 
@@ -1880,7 +1875,7 @@ NULL Nullable(UInt8)
 
 ## arrayLevenshteinDistance \{#arrayLevenshteinDistance\}
 
-導入バージョン: v25.4
+導入バージョン: v25.4.0
 
 2つの配列間のレーベンシュタイン距離を計算します。
 
@@ -1913,7 +1908,7 @@ SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
 
 ## arrayLevenshteinDistanceWeighted \{#arrayLevenshteinDistanceWeighted\}
 
-導入: v25.4
+導入: v25.4.0
 
 2つの配列に対して、各要素ごとに任意の重みを指定して Levenshtein 距離を計算します。
 配列と重み配列の要素数は一致している必要があります。
@@ -1948,7 +1943,7 @@ SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 
 
 ## arrayMap \{#arrayMap\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 元の配列の各要素にラムダ関数を適用した結果の配列を返します。
 
@@ -1992,7 +1987,7 @@ SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
 
 ## arrayMax \{#arrayMax\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 入力配列の最大の要素を返します。
 
@@ -2039,7 +2034,7 @@ SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayMin \{#arrayMin\}
 
-導入: v21.1
+導入: v21.1.0
 
 ソース配列の最小要素を返します。
 
@@ -2086,7 +2081,7 @@ SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayNormalizedGini \{#arrayNormalizedGini\}
 
-導入バージョン: v25.1
+導入バージョン: v25.1.0
 
 正規化ジニ係数を計算します。
 
@@ -2120,7 +2115,7 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 
 ## arrayPartialReverseSort \{#arrayPartialReverseSort\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 この関数は `arrayReverseSort` と同じですが、追加の引数 `limit` により部分的なソートが可能です。
 
@@ -2201,7 +2196,7 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 元の配列と同じサイズの配列を返します。このとき、範囲 `[1..limit]` の要素は元の配列からランダムに選ばれた部分集合になります。残りの `(limit..n]` の位置には、`[1..limit]` の範囲に含まれない要素が未定義の順序で格納されます。
 `limit` の値は `[1..n]` の範囲でなければなりません。この範囲外の値は、完全な `arrayShuffle` を実行するのと同等です。
@@ -2294,7 +2289,7 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 
 ## arrayPartialSort \{#arrayPartialSort\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 この関数は `arraySort` と同様ですが、ソートする要素数を制限するための追加引数 `limit` を受け取ります。
 
@@ -2374,7 +2369,7 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPopBack \{#arrayPopBack\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列の末尾の要素を削除します。
 
@@ -2407,7 +2402,7 @@ SELECT arrayPopBack([1, 2, 3]) AS res;
 
 ## arrayPopFront \{#arrayPopFront\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列の先頭要素を削除します。
 
@@ -2440,7 +2435,7 @@ SELECT arrayPopFront([1, 2, 3]) AS res;
 
 ## arrayProduct \{#arrayProduct\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 入力配列内の要素の積を返します。
 
@@ -2487,7 +2482,7 @@ SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
 
 ## arrayPushBack \{#arrayPushBack\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列の末尾に要素を 1 つ追加します。
 
@@ -2531,7 +2526,7 @@ SELECT arrayPushBack(['a'], 'b') AS res;
 
 ## arrayPushFront \{#arrayPushFront\}
 
-導入: v1.1
+導入: v1.1.0
 
 配列の先頭に要素を 1 つ追加します。
 
@@ -2574,7 +2569,7 @@ SELECT arrayPushFront(['b'], 'a') AS res;
 
 ## arrayROCAUC \{#arrayROCAUC\}
 
-導入バージョン: v20.4
+導入バージョン: v20.4.0
 
 ROC（Receiver Operating Characteristic）曲線の下の面積を計算します。
 ROC 曲線は、すべてのしきい値について、縦軸に真陽性率 (TPR)、横軸に偽陽性率 (FPR) をプロットすることで作成されます。
@@ -2631,7 +2626,7 @@ SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayRandomSample \{#arrayRandomSample\}
 
-導入バージョン: v23.10
+導入バージョン: v23.10.0
 
 入力配列から、`samples` 個のランダムな要素からなる部分集合を返します。`samples` が入力配列のサイズを超える場合、サンプル数は配列サイズに制限されます。つまり、すべての配列要素が返されますが、その順序は保証されません。この関数は、フラットな配列とネストされた配列の両方を処理します。
 
@@ -2675,7 +2670,7 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 
 ## arrayReduce \{#arrayReduce\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列要素に集約関数を適用し、その結果を返します。
 集約関数の名前は、シングルクォートで囲んだ文字列として渡します（例: `'max'`、`'sum'`）。
@@ -2739,7 +2734,7 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 ## arrayReduceInRanges \{#arrayReduceInRanges\}
 
-導入バージョン: v20.4
+導入バージョン: v20.4.0
 
 指定された範囲内の配列要素に集約関数を適用し、各範囲に対応する結果を要素とする配列を返します。
 この関数は、複数の `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)` を実行した場合と同じ結果を返します。
@@ -2781,7 +2776,7 @@ SELECT arrayReduceInRanges(
 
 ## arrayRemove \{#arrayRemove\}
 
-導入バージョン: v25.11
+導入バージョン: v25.11.0
 
 配列から、指定した値と等しいすべての要素を削除します。
 NULL 同士は等しいものとして扱われます。
@@ -2796,7 +2791,7 @@ arrayRemove(arr, elem)
 
 **引数**
 
-* `arr` — Array(T), `elem` — T
+* `arr` — Array(T) - `elem` — T
 
 **戻り値**
 
@@ -2827,7 +2822,7 @@ SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
 
 ## arrayResize \{#arrayResize\}
 
-導入: v1.1
+導入: v1.1.0
 
 配列の長さを変更します。
 
@@ -2875,7 +2870,7 @@ SELECT arrayResize([1], 3, NULL);
 
 ## arrayReverse \{#arrayReverse\}
 
-導入されたバージョン: v1.1
+導入されたバージョン: v1.1.0
 
 指定された配列内の要素の順序を逆にします。
 
@@ -2912,7 +2907,7 @@ SELECT arrayReverse([1, 2, 3])
 
 ## arrayReverseFill \{#arrayReverseFill\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 `arrayReverseFill` 関数は、ソース配列を最後の要素から最初の要素へと順番に処理し、ソース配列および条件配列の要素を用いて各位置でラムダ式の条件を評価します。位置 i において条件が false と評価された場合、その要素は、その時点での配列の状態における位置 i+1 の要素で置き換えられます。最後の要素は、条件に関わらず常に保持されます。
 
@@ -2957,7 +2952,7 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 
 ## arrayReverseSort \{#arrayReverseSort\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列の要素を降順にソートします。
 関数 `f` が指定されている場合、配列要素に関数を適用した結果に基づいて配列がソートされ、その後、そのソート結果が反転されます。
@@ -3011,7 +3006,7 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 入力配列を複数の配列に分割します。`func(x[, y1, ..., yN])` がゼロ以外を返すと、その要素の右側で配列が分割されます。末尾の要素の後では配列は分割されません。
 
@@ -3046,7 +3041,7 @@ SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arrayRotateLeft \{#arrayRotateLeft\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 指定された要素数分だけ配列を左方向に回転します。`n` が負の値の場合は、その絶対値分だけ右方向に回転したものとして扱われます。
 
@@ -3089,7 +3084,7 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
 
 ## arrayRotateRight \{#arrayRotateRight\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 配列を、指定した要素数だけ右方向に回転させます。`n` が負の値の場合は、その絶対値分だけ左方向に回転させたものとして扱われます。
 
@@ -3134,7 +3129,7 @@ SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
 
 ## arrayShiftLeft \{#arrayShiftLeft\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 配列を指定された要素数だけ左方向にシフトします。
 新しい要素には、指定された引数、または配列要素型のデフォルト値が設定されます。
@@ -3189,7 +3184,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
 
 ## arrayShiftRight \{#arrayShiftRight\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 配列を、指定された要素数だけ右にシフトします。
 新しい要素は、指定した引数、または配列要素型のデフォルト値で埋められます。
@@ -3246,7 +3241,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
 
 ## arrayShingles \{#arrayShingles\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 入力配列から、指定した長さの連続した部分配列（文字列における n-gram に類似する shingle）を要素とする配列を生成します。
 
@@ -3280,7 +3275,7 @@ SELECT arrayShingles([1, 2, 3, 4], 3) as res;
 
 ## arrayShuffle \{#arrayShuffle\}
 
-導入: v23.2
+導入: v23.2.0
 
 元の配列と同じサイズで、要素がシャッフルされた順序で含まれる配列を返します。
 要素は、それらの要素の取り得るすべての順列が等しい確率で現れるように並べ替えられます。
@@ -3316,7 +3311,7 @@ SELECT arrayShuffle([1, 2, 3, 4]);
 [1,4,2,3]
 ```
 
-**シード未指定時の例（結果は安定）**
+**シードなしの例（結果は安定）**
 
 ```sql title=Query
 SELECT arrayShuffle([1, 2, 3, 4], 41);
@@ -3329,7 +3324,7 @@ SELECT arrayShuffle([1, 2, 3, 4], 41);
 
 ## arraySimilarity \{#arraySimilarity\}
 
-導入バージョン: v25.4
+導入バージョン: v25.4.0
 
 重み付き Levenshtein 距離に基づいて、2 つの配列の類似度を `0` から `1` の範囲で計算します。
 
@@ -3365,7 +3360,7 @@ SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5
 
 ## arraySlice \{#arraySlice\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `NULL` 要素を含む、配列の部分配列（スライス）を返します。
 
@@ -3400,7 +3395,7 @@ SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
 
 ## arraySort \{#arraySort\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された配列の要素を昇順にソートします。
 ラムダ関数 `f` が指定された場合、配列の各要素にラムダを適用した結果に基づいてソート順が決定されます。
@@ -3466,7 +3461,7 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 
 ## arraySplit \{#arraySplit\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 ソース配列を複数の配列に分割します。`func(x [, y1, ..., yN])` がゼロ以外の値を返した要素の直前で配列が分割されます。最初の要素の前では分割されません。
 
@@ -3478,10 +3473,7 @@ arraySplit(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 
 **引数**
 
-* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素を処理するラムダ関数です。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)
-
-- `source_arr` — 分割対象となるソース配列 [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列 [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — ソース配列（`x`）および条件配列（`y`）の要素を処理するラムダ関数です。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda) - `source_arr` — 分割対象となるソース配列 [`Array(T)`](/sql-reference/data-types/array) - `[, cond1_arr, ... , condN_arr]` — 省略可。ラムダ関数に追加の引数を提供する N 個の条件配列 [`Array(T)`](/sql-reference/data-types/array)
 
 **返される値**
 
@@ -3502,7 +3494,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arraySum \{#arraySum\}
 
-導入: v21.1
+導入: v21.1.0
 
 入力配列の要素の合計を返します。
 
@@ -3511,7 +3503,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **構文**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **引数**
@@ -3549,7 +3541,7 @@ SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
 
 ## arraySymmetricDifference \{#arraySymmetricDifference\}
 
-導入バージョン: v25.4
+導入バージョン: v25.4.0
 
 複数の配列を受け取り、すべての入力配列に共通して存在しない要素からなる配列を返します。結果には一意な値のみが含まれます。
 
@@ -3584,14 +3576,14 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 
 ```response title=Response
 ┌─empty_symmetric_difference─┬─non_empty_symmetric_difference─┐
-│ []                         │ [3]                            │
+│ []                         │ [3,2]                          │
 └────────────────────────────┴────────────────────────────────┘
 ```
 
 
 ## arrayUnion \{#arrayUnion\}
 
-導入バージョン: v24.10
+導入バージョン: v24.10.0
 
 複数の配列を受け取り、ソース配列のいずれかに含まれるすべての要素を含む配列を返します。結果には重複のない値のみが含まれます。
 
@@ -3629,7 +3621,7 @@ arrayUnion([1, 3, NULL], [2, 3, NULL]) as null_example
 
 ## arrayUniq \{#arrayUniq\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数が 1 つだけ渡された場合、その配列内の異なる要素の数をカウントします。
 複数の引数が渡された場合、複数の配列において同じ位置にある要素から構成される **タプル** のうち、異なるものの数をカウントします。
@@ -3689,7 +3681,7 @@ SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
 
 ## arrayWithConstant \{#arrayWithConstant\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 長さが `length` で、すべての要素が定数 `x` の配列を作成します。
 
@@ -3723,7 +3715,7 @@ SELECT arrayWithConstant(3, 1)
 
 ## arrayZip \{#arrayZip\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 複数の配列を 1 つの配列に結合します。結果の配列には、ソース配列の対応する要素が、引数の並び順でタプルにまとめられて格納されます。
 
@@ -3756,7 +3748,7 @@ SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
 
 ## arrayZipUnaligned \{#arrayZipUnaligned\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 複数の配列を 1 つの配列に結合し、長さが揃っていない配列（長さが異なる配列）も許容します。結果の配列には、引数で指定された順序に従って、元の各配列の対応する要素がタプルとしてまとめられて格納されます。
 
@@ -3789,7 +3781,7 @@ SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
 
 ## countEqual \{#countEqual\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列内の要素のうち、`x` と等しいものの個数を返します。`arrayCount(elem -> elem = x, arr)` と同等です。
 
@@ -3825,7 +3817,7 @@ SELECT countEqual([1, 2, NULL, NULL], NULL)
 
 ## empty \{#empty\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 入力配列が空かどうかを判定します。
 
@@ -3866,7 +3858,7 @@ SELECT empty([]);
 
 ## emptyArrayDate \{#emptyArrayDate\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の `Date` 型配列を返します
 
@@ -3899,7 +3891,7 @@ SELECT emptyArrayDate
 
 ## emptyArrayDateTime \{#emptyArrayDateTime\}
 
-導入: v1.1
+導入: v1.1.0
 
 空の DateTime 配列を返します
 
@@ -3932,7 +3924,7 @@ SELECT emptyArrayDateTime
 
 ## emptyArrayFloat32 \{#emptyArrayFloat32\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の Float32 配列を返します。
 
@@ -3965,7 +3957,7 @@ SELECT emptyArrayFloat32
 
 ## emptyArrayFloat64 \{#emptyArrayFloat64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の Float64 型配列を返します
 
@@ -3998,7 +3990,7 @@ SELECT emptyArrayFloat64
 
 ## emptyArrayInt16 \{#emptyArrayInt16\}
 
-導入: v1.1
+導入: v1.1.0
 
 空の Int16 配列を返します
 
@@ -4031,7 +4023,7 @@ SELECT emptyArrayInt16
 
 ## emptyArrayInt32 \{#emptyArrayInt32\}
 
-導入: v1.1
+導入: v1.1.0
 
 空の Int32 配列を返します
 
@@ -4064,7 +4056,7 @@ SELECT emptyArrayInt32
 
 ## emptyArrayInt64 \{#emptyArrayInt64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の Int64 配列を返します。
 
@@ -4097,7 +4089,7 @@ SELECT emptyArrayInt64
 
 ## emptyArrayInt8 \{#emptyArrayInt8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の Int8 配列を返します。
 
@@ -4130,7 +4122,7 @@ SELECT emptyArrayInt8
 
 ## emptyArrayString \{#emptyArrayString\}
 
-導入: v1.1
+導入: v1.1.0
 
 空の String 配列を返します。
 
@@ -4163,7 +4155,7 @@ SELECT emptyArrayString
 
 ## emptyArrayToSingle \{#emptyArrayToSingle\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の配列を受け取り、デフォルト値を要素とする 1 要素配列を返します。
 
@@ -4208,7 +4200,7 @@ SELECT emptyArrayToSingle(a), emptyArrayToSingle(b), emptyArrayToSingle(c) FROM 
 
 ## emptyArrayUInt16 \{#emptyArrayUInt16\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の UInt16 配列を返します。
 
@@ -4241,7 +4233,7 @@ SELECT emptyArrayUInt16
 
 ## emptyArrayUInt32 \{#emptyArrayUInt32\}
 
-導入: v1.1
+導入: v1.1.0
 
 空の UInt32 配列を返します
 
@@ -4274,7 +4266,7 @@ SELECT emptyArrayUInt32
 
 ## emptyArrayUInt64 \{#emptyArrayUInt64\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 空の UInt64 型配列を返します。
 
@@ -4307,7 +4299,7 @@ SELECT emptyArrayUInt64
 
 ## emptyArrayUInt8 \{#emptyArrayUInt8\}
 
-導入バージョン：v1.1
+導入バージョン：v1.1.0
 
 空の UInt8 型の配列を返します。
 
@@ -4340,32 +4332,61 @@ SELECT emptyArrayUInt8
 
 ## has \{#has\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
-配列に指定した要素が含まれているかどうかを返します。
+配列に指定した要素が含まれているか、map に指定したキーが含まれているか、または JSON オブジェクトに指定したパスが含まれているかどうかを返します。
+
+JSON では、ドット記法 (例: &#39;a.b.c&#39;) を使用したネストしたパスがサポートされます。
 
 最初の引数が定数配列で、2 番目の引数がカラムまたは式である場合、`has(constant_array, column)` は `column IN (constant_array)` と同様に動作し、最適化のためにプライマリキーおよびデータスキップ索引を利用できます。たとえば、`has([1, 10, 100], id)` は、`id` が `PRIMARY KEY` の一部であればプライマリキー索引を活用できます。
 
-この最適化は、カラムに単調関数が適用されている場合（例: `has([...], toDate(ts))`）にも適用されます。
+この最適化は、カラムに単調関数が適用されている場合 (例: `has([...], toDate(ts))`) にも適用されます。
 
 **構文**
 
-```sql
 has(arr, x)
+
+**引数**
+
+`arr` — 元の配列。Array(T)
+`x` — 配列内で検索する値。
+
+**戻り値**
+
+配列が指定された要素を含む場合は `1` を返し、含まない場合は `0` を返します。UInt8
+
+**例**
+
+基本的な使用方法
+
+SELECT has([1, 2, 3], 2)
+
+Response:
+1
+
+見つかりません
+
+SELECT has([1, 2, 3], 4)
+
+Response:
+0
+
+```sql
+has(haystack, needle)
 ```
 
 **引数**
 
-* `arr` — 元の配列。[`Array(T)`](/sql-reference/data-types/array)
-* `x` — 配列内で検索する値。
+* `haystack` — 元の配列、マップ、または JSON。[`Array`](/sql-reference/data-types/array) または [`Map`](/sql-reference/data-types/map) または [`JSON`](/sql-reference/data-types/newjson)
+* `needle` — 検索する値 (配列の要素、マップのキー、または JSON のパス文字列) 。
 
 **戻り値**
 
-配列が指定された要素を含む場合は `1` を返し、含まない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+`haystack` に指定した `needle` が含まれている場合は `1` を返し、含まれていない場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **例**
 
-**基本的な使用方法**
+**配列の基本的な使用方法**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 2)
@@ -4375,7 +4396,7 @@ SELECT has([1, 2, 3], 2)
 1
 ```
 
-**見つかりません**
+**配列が見つかりません**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 4)
@@ -4385,10 +4406,30 @@ SELECT has([1, 2, 3], 4)
 0
 ```
 
+**Map の基本的な使用方法**
+
+```sql title=Query
+SELECT has(map('a', 1, 'b', 2), 'b')
+```
+
+```response title=Response
+1
+```
+
+**JSON パス**
+
+```sql title=Query
+SELECT has('{"a": {"b": 1}}'::JSON, 'a.b')
+```
+
+```response title=Response
+1
+```
+
 
 ## hasAll \{#hasAll\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 一方の配列が他方の配列の部分集合かどうかをチェックします。
 
@@ -4479,7 +4520,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
 
 ## hasAny \{#hasAny\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 2 つの配列に、少なくとも 1 つ共通する要素があるかどうかをチェックします。
 
@@ -4559,7 +4600,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
 
 ## hasSubstr \{#hasSubstr\}
 
-導入バージョン: v20.6
+導入バージョン: v20.6.0
 
 `array2` のすべての要素が、`array1` の中にまったく同じ順序で出現するかどうかをチェックします。
 したがって、この関数は `array1 = prefix + array2 + suffix` が成り立つ場合に限り `1` を返します。
@@ -4630,7 +4671,7 @@ SELECT hasSubstr(['a', 'b'], ['a'])
 1
 ```
 
-**順序が定義された配列**
+**順序が正しい配列**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
@@ -4673,7 +4714,7 @@ Raises a `NO_COMMON_TYPE` exception
 
 ## indexOf \{#indexOf\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 配列内に値 &#39;x&#39; を持つ要素がある場合、その最初の要素のインデックス（1 始まり）を返します。
 配列に検索対象の値が含まれていない場合、関数は `0` を返します。
@@ -4720,7 +4761,7 @@ SELECT indexOf([1, 3, NULL, NULL], NULL)
 
 ## indexOfAssumeSorted \{#indexOfAssumeSorted\}
 
-導入: v24.12
+導入: v24.12.0
 
 配列内に値 &#39;x&#39; を持つ要素が存在する場合、その最初の要素のインデックス（`1` から始まる）を返します。
 検索対象の値が配列内に存在しない場合、関数は `0` を返します。
@@ -4760,7 +4801,7 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 
 ## kql_array_sort_asc \{#kql_array_sort_asc\}
 
-導入バージョン: v23.10
+導入バージョン: v23.10.0
 
 1つ以上の配列を昇順にソートします。最初の配列がソートされ、そのソート順に合わせて後続の配列も並べ替えられます。NULL 値は末尾に配置されます。これは KQL (Kusto Query Language) 互換の関数です。
 
@@ -4795,7 +4836,7 @@ SELECT kql_array_sort_asc([3, 1, 2])
 
 ## kql_array_sort_desc \{#kql_array_sort_desc\}
 
-導入バージョン: v23.10
+導入バージョン: v23.10.0
 
 1 つ以上の配列を降順にソートします。最初の配列がソートされ、そのソート結果に合わせて 2 番目以降の配列の要素が並べ替えられます。NULL 値は末尾に配置されます。これは KQL (Kusto Query Language) 互換の関数です。
 
@@ -4830,7 +4871,7 @@ SELECT kql_array_sort_desc([3, 1, 2])
 
 ## length \{#length\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列または配列の長さを計算します。
 
@@ -4926,7 +4967,7 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 
 ## notEmpty \{#notEmpty\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 入力配列が空でないかどうかをチェックします。
 
@@ -4967,7 +5008,7 @@ SELECT notEmpty([1,2]);
 
 ## range \{#range\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 `start` から `end - 1` までを、`step` ごとの間隔で並べた数値の配列を返します。
 
@@ -4975,7 +5016,7 @@ SELECT notEmpty([1,2]);
 
 * `UInt8/16/32/64`
 
-* `Int8/16/32/64`
+* `Int8/16/32/64]`
 
 * すべての引数 `start`、`end`、`step` は上記のいずれかの型でなければなりません。返される配列の要素の型は、引数のスーパータイプになります。
 
@@ -5016,7 +5057,7 @@ SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
 
 ## replicate \{#replicate\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 単一の値を要素とする配列を作成します。
 
@@ -5052,7 +5093,7 @@ SELECT replicate(1, ['a', 'b', 'c']);
 
 ## reverse \{#reverse\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 入力配列の要素、または入力文字列の文字の順序を逆順にします。
 

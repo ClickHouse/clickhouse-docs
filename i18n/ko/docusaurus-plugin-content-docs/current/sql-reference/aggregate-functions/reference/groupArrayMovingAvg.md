@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingAvg \{#groupArrayMovingAvg\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 입력 값의 이동 평균을 계산합니다.
 

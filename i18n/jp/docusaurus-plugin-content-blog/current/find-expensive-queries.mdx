@@ -56,7 +56,7 @@ LIMIT 10;
 `initial_query_id` は、リクエストを受信したノードから開始される分散クエリ実行における最初のクエリの ID を表します。`query_id` には、別のノード上で実行される子クエリの ID が含まれます。詳細は [この記事](https://clickhouse.com/docs/knowledgebase/find-expensive-queries#initial_query_id-vs-query_id) を参照してください。
 :::
 
-クエリ ID を使用して、クエリに関するより詳細な情報を取得できます。上記の最も実行時間の長いクエリ（先頭のもの）を調査してみましょう。
+クエリ ID を使用して、クエリに関するより詳細な情報を取得できます。上記の最も実行時間の長いクエリ (先頭のもの) を調査してみましょう。
 
 ```sql
 SELECT query
@@ -64,7 +64,7 @@ FROM clusterAllReplicas(default, system.query_log)
 WHERE initial_query_id = '7fc488a5-838f-410d-88ee-2f492825a26b'
 ```
 
-これは、`youtube` という名前のテーブルに数十億行のデータを挿入するために使用したクエリであることが分かりました（[YouTube dislikes dataset](https://clickhouse.com/docs/getting-started/example-datasets/youtube-dislikes) を参照）：
+これは、`youtube` という名前のテーブルに数十億行のデータを挿入するために使用したクエリであることが分かりました ([YouTube dislikes dataset](https://clickhouse.com/docs/getting-started/example-datasets/youtube-dislikes) を参照) ：
 
 ```sql
 INSERT INTO youtube
@@ -95,7 +95,7 @@ FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/yo
 
 ## initial_query_id VS query_id \{#initial_query_id-vs-query_id\}
 
-クラスタ構成の ClickHouse 環境（ClickHouse Cloud など）では、`initial_query_id` はリクエストを受け付けたノードから起動される分散クエリ実行における、最初に発行されたクエリの ID を表します。
+クラスタ構成の ClickHouse 環境 (ClickHouse Cloud など) では、`initial_query_id` はリクエストを受け付けたノードから起動される分散クエリ実行における、最初に発行されたクエリの ID を表します。
 この場合、`query_id` フィールドには、別のノード上で実行される子クエリの ID が含まれます。
 
 上記のクエリに `query_id` を追加すると、`initial_query_id` = `a7262fa2-bd8b-4b51-a359-621ccf282417` と `hostname()` を軸に検索を絞り込めます。
@@ -143,7 +143,7 @@ LIMIT 10 FORMAT Pretty;
 └────────────────────────┴────────────┴─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴────────┴─────────┴───────────┴───────────────────────┘
 ```
 
-複数のホスト（異なるクラスターノード）から結果が返ってきていることに注意してください。
+複数のホスト (異なるクラスターノード) から結果が返ってきていることに注意してください。
 
 さらに絞り込み、子クエリだけを取得するには、`query_id != initial_query_id` という条件を WHERE 句に追加することもできます。
 

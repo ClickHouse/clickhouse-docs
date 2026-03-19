@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined64 \{#uniqCombined64\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 서로 다른 인수 값의 개수를 근사치로 계산합니다.
 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined)와 동일하지만, `String` 데이터 타입에만 64비트 해시를 사용하는 대신 모든 데이터 타입에 대해 64비트 해시를 사용합니다.
@@ -68,7 +68,7 @@ SELECT uniqCombined64(number) FROM numbers(1e10);
 └────────────────────────┘
 ```
 
-**uniqCombined와 비교**
+**uniqCombined와의 비교**
 
 ```sql title=Query
 -- uniqCombined64 with large dataset

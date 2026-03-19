@@ -110,7 +110,7 @@ Once your service has been provisioned, ensure the the service is selected and c
 From the ClickHouse Cloud landing page, select the service for which you wish to enable managed ClickStack.
 
 :::important Estimating resources
-This guide assumes you have provisioned sufficient resources to handle the volume of observability data you plan to ingest and query with ClickStack. To estimate the required resources, refer to the [production guide](/use-cases/observability/clickstack/production#estimating-resources). 
+This guide assumes you have provisioned sufficient resources to handle the volume of observability data you plan to ingest and query with ClickStack. To estimate the required resources, refer to the [Estimating Resources](/use-cases/observability/clickstack/estimating-resources) guide. 
 
 If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications aren't disrupted, while keeping the datasets accessible from both services.
 :::

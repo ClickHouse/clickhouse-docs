@@ -51,7 +51,7 @@ Using ClickHouse for observability data requires users to embrace SQL-based obse
 
 SQL-based observability is for you if:
 
-- You or your team(s) are familiar with SQL (or want to learn it)
+- You or your team members are familiar with SQL (or want to learn it)
 - You prefer adhering to open standards like OpenTelemetry to avoid lock-in and achieve extensibility.
 - You're willing to run an ecosystem fueled by open-source innovation from collection to storage and visualization.
 - You envision some growth to medium or large volumes of observability data under management (or even very large volumes)
@@ -60,7 +60,7 @@ SQL-based observability is for you if:
 
 SQL-based observability may not be for you if:
 
-- Learning (or generating!) SQL isn't appealing to you or your team(s).
+- Learning (or generating!) SQL isn't appealing to you or your team members.
 - You're looking for a packaged, end-to-end observability experience.
 - Your observability data volumes are too small to make any significant difference (e.g. &lt;150 GiB) and aren't forecasted to grow.
 - Your use case is metrics-heavy and needs PromQL. In that case, you can still use ClickHouse for logs and tracing beside Prometheus for metrics, unifying it at the presentation layer with Grafana.

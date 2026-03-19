@@ -10,9 +10,9 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
-计算分类特征相对于二元目标变量的信息值（Information Value，IV）。
+计算分类特征相对于二元目标变量的信息值 (Information Value，IV) 。
 
 对于每个类别，函数计算：`(P(tag = 1) - P(tag = 0)) × (log(P(tag = 1)) - log(P(tag = 0)))`
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 Information Value 是一种统计量，用于在预测建模中衡量分类特征与二元目标变量之间关系的强度。
 绝对值越大表示预测能力越强。
 
-结果表示每个离散（分类）特征 `[category1, category2, ...]` 在预测 `tag` 值的模型中的贡献程度。
+结果表示每个离散 (分类) 特征 `[category1, category2, ...]` 在预测 `tag` 值的模型中的贡献程度。
 
 **语法**
 
@@ -55,7 +55,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**包含用户人口统计学信息的多个分类特征**
+**包含用户人口统计特征的多个分类特征**
 
 ```sql title=Query
 SELECT categoricalInformationValue(

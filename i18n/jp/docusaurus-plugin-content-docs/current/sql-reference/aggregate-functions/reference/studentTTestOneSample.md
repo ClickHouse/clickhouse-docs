@@ -10,9 +10,9 @@ doc_type: 'reference'
 
 ## studentTTestOneSample \{#studentTTestOneSample\}
 
-導入バージョン: v25.10
+導入バージョン: v25.10.0
 
-既知の母平均と比較して、標本平均が異なるかどうかを判定するために、1標本 t 検定（Student&#39;s t-test）を適用します。
+既知の母平均と比較して、標本平均が異なるかどうかを判定するために、1標本 t 検定 (Student&#39;s t-test) を適用します。
 
 標本が正規分布に従うと仮定します。帰無仮説は「標本平均は母平均に等しい」です。
 
@@ -20,12 +20,12 @@ doc_type: 'reference'
 
 **注意:**
 
-* 少なくとも 2 個の観測値が必要です。そうでない場合、結果は `(nan, nan)` となり（要求された信頼区間も `nan` になります）。
-* 入力が定数、またはほぼ定数の場合、標準誤差がゼロ（もしくは実質的にゼロ）となるため、`nan` が返されます。
+* 少なくとも 2 個の観測値が必要です。そうでない場合、結果は `(nan, nan)` となり (要求された信頼区間も `nan` になります) 。
+* 入力が定数、またはほぼ定数の場合、標準誤差がゼロ (もしくは実質的にゼロ) となるため、`nan` が返されます。
 
 **関連情報**
 
-* [Student&#39;s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test)
+* [スチューデントのt検定](https://en.wikipedia.org/wiki/Student%27s_t-test)
 * [studentTTest 関数](/sql-reference/aggregate-functions/reference/studentttest)
 
 **構文**
@@ -41,11 +41,11 @@ studentTTestOneSample([confidence_level])(sample_data, population_mean)
 **引数**
 
 * `sample_data` — 標本データ。[`Integer`](/sql-reference/data-types/int-uint) または [`Float`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `population_mean` — 検定対象となる既知の母平均（通常は定数）。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `population_mean` — 検定対象となる既知の母平均 (通常は定数) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
 **返される値**
 
-2 要素、または `confidence_level` が指定された場合は 4 要素からなるタプルを返します：算出された t 統計量、算出された p 値（両側検定）、[算出された信頼区間の下限]、[算出された信頼区間の上限]。信頼区間は、指定された信頼水準における標本平均の区間推定です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+2 要素、または `confidence_level` が指定された場合は 4 要素からなるタプルを返します：算出された t 統計量、算出された p 値 (両側検定) 、[算出された信頼区間の下限]、[算出された信頼区間の上限]。信頼区間は、指定された信頼水準における標本平均の区間推定です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **使用例**
 
@@ -58,7 +58,7 @@ SELECT studentTTestOneSample()(value, 20.0) FROM t;
 ```response title=Response
 ```
 
-**信頼区間（95%）付き**
+**信頼区間あり (95%)&#x20;**
 
 ```sql title=Query
 SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;

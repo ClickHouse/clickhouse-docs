@@ -58,7 +58,7 @@ URL 함수에는 두 가지 유형이 있습니다:
 
 ## URLHierarchy \{#URLHierarchy\}
 
-도입: v1.1
+도입: v1.1.0
 
 경로와 쿼리 문자열에서 `/`, `?`, `#` 기호를 기준으로 URL을 순차적으로 잘라 얻은 부분 문자열들을 요소로 하는 배열을 반환합니다. 연속된 구분 기호는 하나로 취급됩니다. 결과 배열의 첫 번째 요소에는 프로토콜과 호스트가 포함되며, 이후 요소들은 경로가 점차 길어지면서 계층 구조를 이루도록 구성됩니다.
 
@@ -90,7 +90,7 @@ SELECT URLHierarchy('https://example.com/a/b?c=1')
 
 ## URLPathHierarchy \{#URLPathHierarchy\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 URL의 경로(path) 구성 요소를 포함하는 배열을 반환하며, 끝은 `/`, `?`, `#` 기호에서 잘립니다. `URLHierarchy`와 달리 결과에는 프로토콜과 호스트가 포함되지 않고 경로(path)부터 시작합니다. 연속된 구분 문자는 하나로 간주됩니다.
 
@@ -122,7 +122,7 @@ SELECT URLPathHierarchy('https://example.com/a/b?c=1')
 
 ## cutFragment \{#cutFragment\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 `#` 기호를 포함한 프래그먼트 식별자(fragment identifier)를 제거합니다.
 
@@ -156,7 +156,7 @@ SELECT cutFragment('http://example.com/path?query=value#fragment123');
 
 ## cutQueryString \{#cutQueryString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 물음표를 포함한 쿼리 문자열을 제거합니다.
 
@@ -190,7 +190,7 @@ SELECT cutQueryString('http://example.com/path?query=value&param=123#fragment');
 
 ## cutQueryStringAndFragment \{#cutQueryStringAndFragment\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 물음표(?)와 해시 기호(#)를 포함하여 쿼리 문자열과 프래그먼트 식별자를 제거합니다.
 
@@ -224,7 +224,7 @@ SELECT cutQueryStringAndFragment('http://example.com/path?query=value&param=123#
 
 ## cutToFirstSignificantSubdomain \{#cutToFirstSignificantSubdomain\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 최상위 서브도메인부터 [첫 번째 중요한 서브도메인](/sql-reference/functions/url-functions#firstSignificantSubdomain)까지를 포함하는 도메인 부분을 반환합니다.
 
@@ -261,7 +261,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainCustom \{#cutToFirstSignificantSubdomainCustom\}
 
-도입된 버전: v21.1
+도입된 버전: v21.1.0
 
 최상위 서브도메인부터 첫 번째 중요한 서브도메인까지를 포함하는 도메인 부분을 반환합니다. 사용자 지정 [TLD 목록](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 이름을 인수로 받습니다. 최신 TLD 목록이 필요하거나 별도의 사용자 지정 목록이 있는 경우 이 FUNCTION이 유용합니다.
 
@@ -305,7 +305,7 @@ foo.there-is-no-such-domain
 
 ## cutToFirstSignificantSubdomainCustomRFC \{#cutToFirstSignificantSubdomainCustomRFC\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 첫 번째 의미 있는 서브도메인까지의 상위 수준 서브도메인을 포함하는 도메인 부분을 반환합니다.
 사용자 정의 [TLD 목록](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) 이름을 인자로 받습니다.
@@ -353,7 +353,7 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 
 ## cutToFirstSignificantSubdomainCustomWithWWW \{#cutToFirstSignificantSubdomainCustomWithWWW\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 최상위 서브도메인부터 첫 번째 유의미한 서브도메인까지 포함하는 도메인 부분을 반환하며, &#39;www&#39;는 제거하지 않습니다. 사용자 지정 TLD 목록 이름을 인수로 받습니다. 최신 TLD 목록이 필요하거나 사용자 지정 목록을 사용하는 경우에 유용합니다.
 
@@ -398,7 +398,7 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 ## cutToFirstSignificantSubdomainCustomWithWWWRFC \{#cutToFirstSignificantSubdomainRFC\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 `www`를 제거하지 않고, 상위 서브도메인들을 포함하여 첫 번째 의미 있는 서브도메인까지의 도메인 부분을 반환합니다.
 사용자 정의 TLD 목록 이름을 인수로 받습니다.
@@ -444,7 +444,7 @@ www.example.custom
 
 ## cutToFirstSignificantSubdomainRFC \{#cutToFirstSignificantSubdomainWithWWW\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 최상위 서브도메인부터 [&quot;first significant subdomain&quot;](/sql-reference/functions/url-functions#firstSignificantSubdomain)까지를 포함하는 도메인 부분을 반환합니다. [`cutToFirstSignificantSubdomain`](#cutToFirstSignificantSubdomain)과 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.
 
@@ -480,7 +480,7 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWW \{#cutToFirstSignificantSubdomainWithWWWRFC\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 최상위 서브도메인부터 「첫 번째 유의미한 서브도메인(first significant subdomain)」까지를 포함하는 도메인 부분을 반환하며, &#39;www.&#39; 접두사는 제거하지 않습니다.
 
@@ -519,9 +519,9 @@ SELECT
 
 ## cutToFirstSignificantSubdomainWithWWWRFC \{#cutURLParameter\}
 
-도입된 버전: v22.10
+도입된 버전: v22.10.0
 
-최상위 서브도메인부터 「첫 번째 중요한 서브도메인(first significant subdomain)」까지를 포함하는 도메인 부분을, &#39;www&#39;를 제거하지 않고 반환합니다. [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW)와 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.
+최상위 서브도메인부터 「첫 번째 중요한 서브도메인(first significant subdomain)」까지를 포함하는 도메인 부분을, 「www」를 제거하지 않고 반환합니다. [`cutToFirstSignificantSubdomainWithWWW`](#cutToFirstSignificantSubdomainWithWWW)와 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.
 
 **구문**
 
@@ -555,7 +555,7 @@ SELECT
 
 ## cutURLParameter \{#cutWWW\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `name` 파라미터가 포함된 URL에서 해당 파라미터를 제거합니다.
 이 FUNCTION은 파라미터 이름의 문자를 인코딩하거나 디코딩하지 않으며, 예를 들어 `Client ID`와 `Client%20ID`는 서로 다른 파라미터 이름으로 취급됩니다.
@@ -593,7 +593,7 @@ SELECT
 
 ## cutWWW \{#decodeURLComponent\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL 도메인의 앞에 `www.`가 붙어 있으면 제거합니다.
 
@@ -627,7 +627,7 @@ SELECT cutWWW('http://www.example.com/path?query=value#fragment');
 
 ## decodeURLComponent \{#decodeURLFormComponent\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL로 인코딩된 문자열을 입력으로 받아 디코딩하여 원래의 사람이 읽을 수 있는 형태로 복원합니다.
 
@@ -661,7 +661,7 @@ SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS Decod
 
 ## decodeURLFormComponent \{#domain\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 `+` 기호를 공백으로 변환하고 퍼센트 인코딩된 문자를 디코딩하는 폼 인코딩 규칙([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html))을 사용하여 URL로 인코딩된 문자열을 디코딩합니다.
 
@@ -695,7 +695,7 @@ SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') A
 
 ## domain \{#domainRFC\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 URL에서 호스트 이름(hostname)을 추출합니다.
 
@@ -731,7 +731,7 @@ SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
 
 ## domainRFC \{#domainWithoutWWW\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 URL에서 호스트명을 추출합니다.
 [`domain`](#domain)과 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.
@@ -768,7 +768,7 @@ SELECT
 
 ## domainWithoutWWW \{#domainWithoutWWWRFC\}
 
-도입: v1.1
+도입: v1.1.0
 
 URL의 도메인에서 앞에 오는 `www.`를 제거한 값을 반환합니다.
 
@@ -802,7 +802,7 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 
 ## domainWithoutWWWRFC \{#encodeURLComponent\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 선행 `www.`가 있을 경우 이를 제거한 도메인을 반환합니다. [`domainWithoutWWW`](#domainWithoutWWW)와 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 따릅니다.
 
@@ -838,7 +838,7 @@ SELECT
 
 ## encodeURLComponent \{#encodeURLFormComponent\}
 
-도입 버전: v22.3
+도입 버전: v22.3.0
 
 일반 문자열을 입력으로 받아 특수 문자를 해당 퍼센트 인코딩 값으로 대체한 URL 인코딩(퍼센트 인코딩) 형식으로 변환합니다.
 
@@ -872,7 +872,7 @@ SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedUR
 
 ## encodeURLFormComponent \{#extractURLParameter\}
 
-도입된 버전: v22.3
+도입된 버전: v22.3.0
 
 공백 문자를 + 기호로 변환하고 특수 문자를 퍼센트 인코딩하는 폼 인코딩 규칙([RFC-1866](https://www.rfc-editor.org/rfc/rfc1866.html))에 따라 문자열을 인코딩합니다.
 
@@ -906,7 +906,7 @@ SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS En
 
 ## extractURLParameter \{#extractURLParameterNames\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에 `name` 매개변수가 존재하면 해당 값을 반환하고, 존재하지 않으면 빈 문자열을 반환합니다.
 해당 이름을 가진 매개변수가 여러 개 있을 경우 첫 번째 항목을 반환합니다.
@@ -943,7 +943,7 @@ SELECT extractURLParameter('http://example.com/?param1=value1&param2=value2', 'p
 
 ## extractURLParameterNames \{#extractURLParameters\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL 매개변수의 이름에 해당하는 문자열 배열을 반환합니다.
 값은 디코딩되지 않습니다.
@@ -978,7 +978,7 @@ SELECT extractURLParameterNames('http://example.com/?param1=value1&param2=value2
 
 ## extractURLParameters \{#firstSignificantSubdomain\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL 매개변수와 일치하는 `name=value` 형식의 문자열 배열을 반환합니다.
 값은 디코딩되지 않습니다.
@@ -1013,7 +1013,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 
 ## firstSignificantSubdomain \{#firstSignificantSubdomainCustom\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 「first significant subdomain(첫 번째 중요한 서브도메인)」을 반환합니다.
 
@@ -1027,6 +1027,7 @@ SELECT extractURLParameters('http://example.com/?param1=value1&param2=value2');
 **구문(Syntax)**
 
 ```sql
+firstSignificantSubdomain(url)
 ```
 
 **인수**
@@ -1048,7 +1049,7 @@ SELECT firstSignificantSubdomain('https://news.clickhouse.com/')
 
 ## firstSignificantSubdomainCustom \{#firstSignificantSubdomainCustomRFC\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 사용자 정의 TLD(최상위 도메인) 목록을 사용하여 URL의 첫 번째 유의미한 서브도메인을 반환합니다. 사용자 정의 TLD 목록 이름은 어떤 도메인 접미사를 최상위 도메인으로 취급할지 정의하는 구성 이름을 가리킵니다. 이는 비표준 TLD 계층 구조를 사용하는 환경에서 유용합니다. 이 FUNCTION은 프로토콜과 그 이후의 모든 부분이 제거되어 있다고 가정하는 단순화된 URL 파싱 알고리즘을 사용합니다.
 
@@ -1081,7 +1082,7 @@ example
 
 ## firstSignificantSubdomainCustomRFC \{#firstSignificantSubdomainRFC\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 `firstSignificantSubdomainCustom`와 유사하지만, 단순화된 알고리즘 대신 RFC 3986을 준수하는 URL 파싱을 사용합니다.
 
@@ -1114,13 +1115,14 @@ example
 
 ## firstSignificantSubdomainRFC \{#fragment\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 RFC 1034에 따라 「첫 번째 유의미한 서브도메인(first significant subdomain)」을 반환합니다.
 
 **구문**
 
 ```sql
+firstSignificantSubdomainRFC(url)
 ```
 
 **인수**
@@ -1133,7 +1135,7 @@ RFC 1034에 따라 「첫 번째 유의미한 서브도메인(first significant 
 
 ## fragment \{#netloc\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 앞에 붙는 해시 기호(#)를 제외한 fragment 식별자(fragment identifier)를 반환합니다.
 
@@ -1167,7 +1169,7 @@ SELECT fragment('https://clickhouse.com/docs/getting-started/quick-start/cloud#1
 
 ## netloc \{#path\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 URL에서 네트워크 위치(`username:password@host:port`)를 추출합니다.
 
@@ -1201,7 +1203,7 @@ SELECT netloc('http://paul@www.example.com:80/');
 
 ## path \{#pathFull\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 쿼리 문자열을 제외한 경로(path)를 반환합니다.
 
@@ -1235,7 +1237,7 @@ SELECT path('https://clickhouse.com/docs/sql-reference/functions/url-functions/?
 
 ## pathFull \{#port\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 [`path`](#path)와 동일하지만, URL의 쿼리 문자열과 프래그먼트까지 포함합니다.
 
@@ -1269,7 +1271,7 @@ SELECT pathFull('https://clickhouse.com/docs/sql-reference/functions/url-functio
 
 ## port \{#portRFC\}
 
-도입: v20.5
+도입: v20.5.0
 
 URL에서 포트를 반환하며, URL에 포트가 없거나 URL을 파싱할 수 없는 경우 `default_port`를 반환합니다.
 
@@ -1304,7 +1306,7 @@ SELECT port('https://clickhouse.com:8443/docs'), port('https://clickhouse.com/do
 
 ## portRFC \{#protocol\}
 
-도입 버전: v22.10
+도입 버전: v22.10.0
 
 포트 번호를 반환하며, URL에 포트가 없거나 URL을 파싱할 수 없는 경우에는 `default_port`를 반환합니다.
 [`port`](#port)와 유사하지만, [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.
@@ -1340,7 +1342,7 @@ SELECT port('http://user:password@example.com:8080/'), portRFC('http://user:pass
 
 ## protocol \{#queryString\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 URL에서 프로토콜을 추출합니다.
 
@@ -1376,7 +1378,7 @@ SELECT protocol('https://clickhouse.com/');
 
 ## queryString \{#queryStringAndFragment\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL의 쿼리 문자열에서 처음 물음표(`?`)를 제외하고, `#` 문자와 그 이후의 모든 내용을 제외한 문자열을 반환합니다.
 
@@ -1410,7 +1412,7 @@ SELECT queryString('https://clickhouse.com/docs?query=value&param=123#section');
 
 ## queryStringAndFragment \{#topLevelDomain\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 쿼리 문자열과 프래그먼트 식별자를 반환합니다.
 
@@ -1444,7 +1446,7 @@ SELECT queryStringAndFragment('https://clickhouse.com/docs?query=value&param=123
 
 ## topLevelDomain \{#topLevelDomainRFC\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 URL에서 최상위 도메인을 추출합니다.
 
@@ -1490,7 +1492,7 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 
 ## topLevelDomainRFC
 
-도입된 버전: v22.10
+도입된 버전: v22.10.0
 
 URL에서 최상위 도메인을 추출합니다.
 [`topLevelDomain`](#topLevelDomain)과 유사하지만 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)을 준수합니다.

@@ -38,10 +38,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### Предварительные требования \{#prerequisites\}
 
-- Запущенный экземпляр ClickStack
-- Функции AWS Lambda для мониторинга
-- AWS CLI, настроенный с соответствующими правами доступа
-- Роль выполнения Lambda с правами на добавление слоёв
+* Запущенный экземпляр ClickStack
+* Функции AWS Lambda для мониторинга
+* AWS CLI, настроенный с соответствующими правами доступа
+* Роль выполнения Lambda с правами на добавление слоёв
 
 <VerticalStepper headerLevel="h4">
   #### Выберите подходящий слой расширения Rotel Lambda Extension

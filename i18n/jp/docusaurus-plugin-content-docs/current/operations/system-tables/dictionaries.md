@@ -10,7 +10,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud />
 
-[辞書](../../sql-reference/statements/create/dictionary/index.md)に関する情報を含みます。
+[辞書](../../sql-reference/statements/create/dictionary/overview.md)に関する情報を含みます。
 
 列：
 

@@ -148,7 +148,7 @@ WHERE id > (SELECT max(id) FROM mysql_copy);
 ## 相关内容 \{#related\}
 
 - [`MySQL` 表引擎](../../engines/table-engines/integrations/mysql.md)
-- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources#mysql)
+- [将 MySQL 用作字典源](/sql-reference/statements/create/dictionary/sources/mysql)
 - [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 - [mysql_map_fixed_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_fixed_string_to_text_in_show_columns)
 - [mysql_map_string_to_text_in_show_columns](operations/settings/settings.md#mysql_map_string_to_text_in_show_columns)

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactLow \{#quantileExactLow\}
 
-Добавлена в версии v20.8
+Добавлена в версии v20.8.0
 
 Аналогично функции [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact), эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 
@@ -57,7 +57,7 @@ SELECT quantileExactLow(number) FROM numbers(10);
 └──────────────────────────┘
 ```
 
-**Вычисление квантиля для заданного уровня**
+**Вычисление квантиля для указанного уровня**
 
 ```sql title=Query
 SELECT quantileExactLow(0.1)(number) FROM numbers(10);

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArray \{#groupArray\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인수 값으로 이루어진 배열을 생성합니다.
 값은 임의의(비결정적인) 순서로 배열에 추가될 수 있습니다.
@@ -31,7 +31,7 @@ groupArray(max_size)(x)
 
 **매개변수**
 
-* `max_size` — 선택 사항입니다. 결과 배열의 크기를 `max_size`개의 요소로 제한합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+* `max_size` — 선택 사항입니다. 결과 배열의 크기를 `max_size` 개 요소로 제한합니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
 **인수**
 

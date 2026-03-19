@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactExclusive \{#quantileExactExclusive\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact)와 유사하게, 숫자 데이터 시퀀스의 정확한 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 
@@ -55,7 +55,7 @@ SELECT quantileExactExclusive(0.25)(number) FROM numbers(5);
 └──────────────────────────────────────┘
 ```
 
-**여러 분위수 수준 계산하기**
+**여러 분위수 레벨 계산하기**
 
 ```sql title=Query
 SELECT quantileExactExclusive(0.1)(number), quantileExactExclusive(0.9)(number) FROM numbers(10);

@@ -16,11 +16,11 @@ doc_type: 'reference'
 
 ## extractKeyValuePairs \{#extractKeyValuePairs\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 任意の文字列からキーと値のペアを抽出します。文字列は 100% キー・バリュー形式で構造化されている必要はありません。
 
-ノイズ（例: ログファイル）を含んでいても問題ありません。解釈対象となるキー・バリュー形式は、関数の引数で指定する必要があります。
+ノイズ (例: ログファイル) を含んでいても問題ありません。解釈対象となるキー・バリュー形式は、関数の引数で指定する必要があります。
 
 キーと値のペアは、キーに続いて `key_value_delimiter` と値が並ぶ形で構成されます。引用符付きのキーおよび値にも対応しています。キーと値のペア同士は、ペア区切り文字で区切られている必要があります。
 
@@ -60,7 +60,7 @@ doc_type: 'reference'
             └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**クオート文字としての単一引用符**
+**クオート文字としてのシングルクォート**
 
 ```sql
             arthur :) select extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
@@ -142,7 +142,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
             └──────────────┘
 ```
 
-**エスケープシーケンス非対応環境でのエスケープ**
+**エスケープシーケンス非サポート時の挙動**
 
 ```sql
             arthur :) select extractKeyValuePairs('age:a\\x0A\\n\\0') as kv
@@ -159,6 +159,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairs(input)
 ```
 
 **別名**: `str_to_map`, `mapFromString`
@@ -173,12 +174,12 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## extractKeyValuePairsWithEscaping \{#extractKeyValuePairsWithEscaping\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 `extractKeyValuePairs` と同じですが、エスケープシーケンスに対応しています。
 
 サポートされるエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v`, `\0`。
-標準外のエスケープシーケンスは、次のいずれかに該当しない限り、そのまま（バックスラッシュを含めて）返されます:
+標準外のエスケープシーケンスは、次のいずれかに該当しない限り、そのまま (バックスラッシュを含めて) 返されます:
 `\\`, `'`, `"`, `backtick`, `/`, `=` または ASCII 制御文字 (`c <= 31`)。
 
 この関数は、事前エスケープおよび事後エスケープが適さないユースケースに適しています。例えば、次の入力文字列を考えます:
@@ -206,6 +207,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 **構文**
 
 ```sql
+extractKeyValuePairsWithEscaping(input)
 ```
 
 **引数**
@@ -218,7 +220,7 @@ unexpected&#95;quoting&#95;character&#95;strategy=promote
 
 ## map \{#map\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 キーと値のペアから、`Map(key, value)` 型の値を作成します。
 
@@ -253,7 +255,7 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3)
 
 ## mapAdd \{#mapAdd\}
 
-導入バージョン: v20.7
+導入バージョン: v20.7.0
 
 すべてのキーを集約し、それぞれのキーに対応する値を合計します。
 
@@ -295,7 +297,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1]))
 
 ## mapAll \{#mapAll\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 マップ内のすべてのキーと値のペアに対して、ある条件が成り立つかどうかを判定します。
 `mapAll` は高階関数です。
@@ -330,7 +332,7 @@ SELECT mapAll((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 
 ## mapApply \{#mapApply\}
 
-導入バージョン: v22.3
+導入バージョン: v22.3.0
 
 関数を map の各要素に適用します。
 
@@ -363,7 +365,7 @@ SELECT mapApply((k, v) -> (k, v * 2), map('k1', 1, 'k2', 2))
 
 ## mapConcat \{#mapConcat\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 複数の `map` を、そのキーの等値性に基づいて連結します。
 同じキーを持つ要素が複数の入力 `map` に存在する場合、すべての要素が結果の `map` に追加されますが、演算子 `[]` で参照できるのは最初の要素のみです。
@@ -396,14 +398,14 @@ SELECT mapConcat(map('k1', 'v1'), map('k2', 'v2'))
 
 ## mapContainsKey \{#mapContainsKey\}
 
-導入バージョン: v21.2
+導入バージョン: v21.2.0
 
 マップにキーが含まれているかどうかを判定します。
 
 **構文**
 
 ```sql
-mapContains(map, key)
+mapContainsKey(map, key)
 ```
 
 **エイリアス**: `mapContains`
@@ -431,7 +433,7 @@ SELECT mapContainsKey(map('k1', 'v1', 'k2', 'v2'), 'k1')
 
 ## mapContainsKeyLike \{#mapContainsKeyLike\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 マップに、`LIKE` で指定したパターンに一致するキーが含まれているかを判定します。
 
@@ -473,7 +475,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 
 ## mapContainsValue \{#mapContainsValue\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 マップに指定した値が含まれているかどうかを判定します。
 
@@ -506,7 +508,7 @@ SELECT mapContainsValue(map('k1', 'v1', 'k2', 'v2'), 'v1')
 
 ## mapContainsValueLike \{#mapContainsValueLike\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 マップに、指定したパターンに対して `LIKE` マッチする値が含まれているかをチェックします。
 
@@ -548,7 +550,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 
 ## mapExists \{#mapExists\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 マップ内の少なくとも 1 つのキーと値のペアについて、条件が成り立つかどうかをテストします。
 `mapExists` は高階関数です。
@@ -583,7 +585,7 @@ SELECT mapExists((k, v) -> v = 1, map('k1', 1, 'k2', 2))
 
 ## mapExtractKeyLike \{#mapExtractKeyLike\}
 
-導入: v23.4
+導入: v23.4.0
 
 文字列キーを持つ map と `LIKE` パターンを引数に取り、この関数はキーがそのパターンにマッチする要素のみを含む map を返します。
 
@@ -625,7 +627,7 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 
 ## mapExtractValueLike \{#mapExtractValueLike\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 文字列値を持つマップと `LIKE` パターンを指定すると、この関数は値がそのパターンに一致する要素のみを含むマップを返します。
 
@@ -667,7 +669,7 @@ SELECT mapExtractValueLike(a, 'a%') FROM tab;
 
 ## mapFilter \{#mapFilter\}
 
-導入バージョン: v22.3
+導入バージョン: v22.3.0
 
 マップの各要素に関数を適用し、その結果に基づいてマップをフィルタリングします。
 
@@ -700,9 +702,9 @@ SELECT mapFilter((k, v) -> v > 1, map('k1', 1, 'k2', 2))
 
 ## mapFromArrays \{#mapFromArrays\}
 
-v23.3 で導入。
+v23.3.0 で導入。
 
-キーの配列（またはマップ）と値の配列（またはマップ）からマップを作成します。
+キーの配列 (またはマップ) と値の配列 (またはマップ) からマップを作成します。
 この関数は、構文 `CAST([...], 'Map(key_type, value_type)')` の便利な代替手段です。
 
 **構文**
@@ -734,7 +736,7 @@ SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
 {'a':1,'b':2,'c':3}
 ```
 
-**map 型を入力とする場合**
+**map を入力とする場合**
 
 ```sql title=Query
 SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
@@ -746,7 +748,7 @@ SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
 
 ## mapKeys \{#mapKeys\}
 
-導入バージョン: v21.2
+導入バージョン: v21.2.0
 
 指定されたマップのキーを返します。
 この関数は、設定 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
@@ -781,7 +783,7 @@ SELECT mapKeys(map('k1', 'v1', 'k2', 'v2'))
 
 ## mapPartialReverseSort \{#mapPartialReverseSort\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 map の要素を降順にソートし、追加の limit 引数によって先頭の一部だけをソートできます。
 func 関数が指定されている場合、map のキーと値に func 関数を適用した結果に基づいてソート順が決まります。
@@ -816,7 +818,7 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapPartialSort \{#mapPartialSort\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 `map` の要素を昇順にソートします。追加の `limit` 引数を指定することで、一部のみを対象とした「部分ソート」が可能です。
 `func` 関数が指定されている場合は、`map` のキーおよび値に `func` 関数を適用した結果に基づいてソート順が決定されます。
@@ -851,11 +853,11 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapPopulateSeries \{#mapPopulateSeries\}
 
-導入バージョン: v20.10
+導入バージョン: v20.10.0
 
 整数キーを持つマップにおいて、欠けているキーと値のペアを補完します。
 既存の最大値より大きいキーも拡張できるように、最大キーを指定できます。
-より正確には、この関数は、キーが最小キーから最大キー（指定されている場合は `max` 引数）までステップ幅 1 の数列を形成し、それに対応する値を持つマップを返します。
+より正確には、この関数は、キーが最小キーから最大キー (指定されている場合は `max` 引数) までステップ幅 1 の数列を形成し、それに対応する値を持つマップを返します。
 あるキーに値が指定されていない場合、そのキーの値としてデフォルト値が使用されます。
 キーが重複している場合、先に出現した値のみがそのキーに関連付けられます。
 
@@ -888,7 +890,7 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6)
 {1:10, 2:0, 3:0, 4:0, 5:20, 6:0}
 ```
 
-**マップされた配列を使う場合**
+**マップを構成する配列を使用する場合**
 
 ```sql title=Query
 SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
@@ -900,7 +902,7 @@ SELECT mapPopulateSeries([1, 2, 4], [11, 22, 44], 5)
 
 ## mapReverseSort \{#mapReverseSort\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 map の要素を降順に並べ替えます。
 `func` 関数が指定されている場合、map のキーおよび値に `func` 関数を適用した結果によってソート順が決まります。
@@ -934,7 +936,7 @@ SELECT mapReverseSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapSort \{#mapSort\}
 
-Introduced in: v23.4
+Introduced in: v23.4.0
 
 マップの要素を昇順で並べ替えます。
 `func` 関数が指定されている場合、マップのキーと値に `func` 関数を適用した結果によってソート順が決まります。
@@ -968,7 +970,7 @@ SELECT mapSort((k, v) -> v, map('k1', 3, 'k2', 1, 'k3', 2))
 
 ## mapSubtract \{#mapSubtract\}
 
-導入バージョン: v20.7
+導入バージョン: v20.7.0
 
 すべてのキーを取得し、対応する値同士の差を計算します。
 
@@ -998,7 +1000,7 @@ SELECT mapSubtract(map(1, 1), map(1, 1))
 {1:0}
 ```
 
-**タプルマップを使用する場合**
+**タプルの場合**
 
 ```sql title=Query
 SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1]))
@@ -1010,7 +1012,7 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapUpdate \{#mapUpdate\}
 
-導入バージョン: v22.3
+導入バージョン: v22.3.0
 
 2つのマップを受け取り、2つ目のマップの対応するキーの値で値を更新した1つ目のマップを返します。
 
@@ -1043,7 +1045,7 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10))
 
 ## mapValues \{#mapValues\}
 
-導入バージョン: v21.2
+導入バージョン: v21.2.0
 
 指定された map の値を返します。
 この関数は、[`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) の設定を有効にすることで最適化できます。

@@ -57,11 +57,11 @@ ClickHouse は、次の結合の種類をサポートしています。
 ## INNER JOIN \{#inner-join\}
 
 `INNER JOIN` は、結合キーが一致する各行ペアごとに、左側のテーブルの行のカラム値と右側のテーブルの行のカラム値を組み合わせた結果を返します。
-ある行に複数の一致がある場合は、それらの一致行がすべて返されます（つまり、結合キーが一致した行に対しては [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) が生成されます）。
+ある行に複数の一致がある場合は、それらの一致行がすべて返されます (つまり、結合キーが一致した行に対しては [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) が生成されます) 。
 
 <Image img={inner_join} alt="Inner Join" />
 
-このクエリは、`movies` テーブルと `genres` テーブルを結合することで、各映画のジャンル（複数ある場合はすべて）を取得します。
+このクエリは、`movies` テーブルと `genres` テーブルを結合することで、各映画のジャンルを取得します。
 
 ```sql
 SELECT
@@ -180,7 +180,7 @@ LIMIT 10;
 └──────┴────┴──────────┴─────────────┘
 ```
 
-前のクエリ例だけではあまり意味がありませんでしたが、`WHERE` 句を追加して拡張することで、対応する行をひも付け、各映画のジャンルを求めるための `INNER JOIN` と同様の動作を再現できます。
+前のクエリ例だけではあまり意味がありませんでしたが、`WHERE` 句を追加して拡張することで、対応する行を関連付け、各映画のジャンルを求めるための `INNER JOIN` と同様の動作を再現できます。
 
 ```sql
 SELECT
@@ -200,7 +200,7 @@ LIMIT 10;
 
 ClickHouse は、クエリの `WHERE` 句に結合式がある場合、`CROSS JOIN` を `INNER JOIN` に[書き換え](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/Core/Settings.h#L896)ます。
 
-その例のクエリについては、[EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) で確認できます（クエリが[実行](https://youtu.be/hP6G2Nlz_cA)される前に書き換えられる、構文的に最適化されたバージョンを返します）。
+その例のクエリについては、[EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) で確認できます (クエリが[実行](https://youtu.be/hP6G2Nlz_cA)される前に書き換えられる、構文的に最適化されたバージョンを返します) 。
 
 ```sql
 EXPLAIN SYNTAX

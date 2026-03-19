@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## varSampStable \{#varSampStable\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 데이터 집합의 표본 분산(sample variance)을 계산합니다. [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp)와 달리 [수치적으로 안정적인](https://en.wikipedia.org/wiki/Numerical_stability) 알고리즘을 사용합니다. 속도는 느리지만 계산 오차가 더 낮습니다.
 
@@ -23,11 +23,11 @@ $$
 
 <br />
 
-Where:
+여기서:
 
-- $x$ is each individual data point in the data set
-- $\bar{x}$ is the arithmetic mean of the data set
-- $n$ is the number of data points in the data set
+- $x$는 데이터 집합의 각 개별 데이터 포인트입니다
+- $\bar{x}$는 데이터 집합의 산술 평균입니다
+- $n$은 데이터 집합의 데이터 포인트 수입니다
 
 **Syntax**
 
@@ -35,17 +35,17 @@ Where:
 varSampStable(x)
 ```
 
-**Arguments**
+**인수**
 
-- `x` — The population for which you want to calculate the sample variance. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+- `x` — 표본 분산을 계산할 모집단입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal*`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**반환값**
 
-Returns the sample variance of the input data set. [`Float64`](/sql-reference/data-types/float)
+입력 데이터 집합의 표본 분산을 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**예시**
 
-**Computing stable sample variance**
+**안정적인 표본 분산 계산**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_data;

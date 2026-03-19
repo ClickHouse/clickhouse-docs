@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 숫자 데이터 시퀀스의 [quantile](https://en.wikipedia.org/wiki/Quantile)을 정확히 계산합니다.
 

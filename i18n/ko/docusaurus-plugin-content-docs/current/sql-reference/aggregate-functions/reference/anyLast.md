@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## anyLast \{#anyLast\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 컬럼에서 마지막으로 나타난 값을 선택합니다.
 

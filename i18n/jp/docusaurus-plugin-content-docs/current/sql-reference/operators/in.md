@@ -20,9 +20,9 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 左辺が索引に含まれる単一のカラムで、右辺が定数の集合である場合、システムはクエリの処理に索引を使用します。
 
-あまり多くの値を明示的に列挙しないでください（たとえば数百万件）。データセットが大きい場合は、一時テーブルに入れて（例として、セクション [External data for query processing](../../engines/table-engines/special/external-data.md) を参照）、そのうえでサブクエリを使用してください。
+あまり多くの値を明示的に列挙しないでください (たとえば数百万件) 。データセットが大きい場合は、一時テーブルに入れて (例として、セクション [External data for query processing](../../engines/table-engines/special/external-data.md) を参照) 、そのうえでサブクエリを使用してください。
 
-演算子の右辺には、定数式の集合、定数式を含むタプルの集合（上記の例で示したもの）、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
+演算子の右辺には、定数式の集合、定数式を含むタプルの集合 (上記の例で示したもの) 、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
 
 ClickHouse では、`IN` サブクエリの左辺と右辺で型が異なることを許容します。
 この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 関数が適用されたかのように動作します。
@@ -46,9 +46,9 @@ SELECT '1' IN (SELECT 1);
 └──────────────────────┘
 ```
 
-演算子の右辺がテーブル名である場合（例えば `UserID IN users`）、これはサブクエリ `UserID IN (SELECT * FROM users)` と等価です。クエリと一緒に送信される外部データを扱う場合に使用します。例えば、フィルタリング対象のユーザー ID の集合をロードした一時テーブル &#39;users&#39; とクエリを一緒に送信できます。
+演算子の右辺がテーブル名である場合 (例えば `UserID IN users`) 、これはサブクエリ `UserID IN (SELECT * FROM users)` と等価です。クエリと一緒に送信される外部データを扱う場合に使用します。例えば、フィルタリング対象のユーザー ID の集合をロードした一時テーブル &#39;users&#39; とクエリを一緒に送信できます。
 
-演算子の右辺が Set エンジン（常に RAM 上にある準備済みデータセット）を使用するテーブル名である場合、そのデータセットはクエリごとに再作成されません。
+演算子の右辺が Set エンジン (常に RAM 上にある準備済みデータセット) を使用するテーブル名である場合、そのデータセットはクエリごとに再作成されません。
 
 サブクエリでは、タプルをフィルタリングするために複数のカラムを指定できます。
 
@@ -129,7 +129,7 @@ FROM t_null
 
 ## 分散サブクエリ \{#distributed-subqueries\}
 
-サブクエリを伴う `IN` 演算子（`JOIN` 演算子と同様）には 2 通りの使い方があります: 通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` です。これらは分散クエリ処理時の実行方法が異なります。
+サブクエリを伴う `IN` 演算子 (`JOIN` 演算子と同様) には 2 通りの使い方があります: 通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` です。これらは分散クエリ処理時の実行方法が異なります。
 
 :::note
 以下で説明するアルゴリズムは、[settings](../../operations/settings/settings.md) の `distributed_product_mode` 設定によって動作が異なる場合があります。
@@ -217,11 +217,11 @@ SELECT UserID FROM distributed_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-一時テーブル `_data1` は、クエリとともにすべてのリモートサーバーに送信されます（一時テーブルの名前は実装に依存します）。
+一時テーブル `_data1` は、クエリとともにすべてのリモートサーバーに送信されます (一時テーブルの名前は実装に依存します) 。
 
 これは通常の `IN` を使用するよりも効率的です。ただし、次の点に注意してください。
 
-1. 一時テーブルを作成する場合、データは一意化されません。ネットワーク経由で送信されるデータ量を減らすには、副クエリで DISTINCT を指定します（通常の `IN` の場合はこれを行う必要はありません）。
+1. 一時テーブルを作成する場合、データは一意化されません。ネットワーク経由で送信されるデータ量を減らすには、副クエリで DISTINCT を指定します (通常の `IN` の場合はこれを行う必要はありません) 。
 2. 一時テーブルはすべてのリモートサーバーに送信されます。送信時にネットワークトポロジーは考慮されません。たとえば、10 台のリモートサーバーが、リクエスト元サーバーから非常に離れたデータセンターに存在する場合、そのリモートデータセンターへのチャネル上でデータは 10 回送信されます。`GLOBAL IN` を使用する際は、大きなデータセットは避けるようにしてください。
 3. データをリモートサーバーへ送信する際、ネットワーク帯域幅に対する制限は設定できません。ネットワークを過負荷にしてしまう可能性があります。
 4. 日常的に `GLOBAL IN` を使用しなくて済むように、データをサーバー間に分散配置するようにしてください。
@@ -239,7 +239,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_predicate>)
 ```
 
-`some_predicate` の選択度が十分に高くない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値を超えたときに例外がスローされることに注意してください。
+`some_predicate` の選択度が十分に高くない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は (デフォルトで) `throw` に設定されており、これらのしきい値を超えたときに例外がスローされることに注意してください。
 
 ### Distributed Subqueries と max_parallel_replicas \{#distributed-subqueries-and-max_parallel_replicas\}
 

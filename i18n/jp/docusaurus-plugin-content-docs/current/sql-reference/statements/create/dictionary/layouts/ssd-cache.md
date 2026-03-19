@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 `cache` と同様ですが、データは SSD に、索引は RAM に保存します。更新キューに関連する cache Dictionary のすべての設定は、SSD cache Dictionary にも適用できます。
 
-Dictionary キーの型は [UInt64](../../../data-types/int-uint.md) です。
+Dictionary キーの型は [UInt64](/sql-reference/data-types/int-uint.md) です。
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>
@@ -52,4 +52,4 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 
 ## complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
-このストレージタイプは、複合[キー](../keys-and-fields.md#dictionary-key-and-fields)を持つ Dictionary 向けに使用します。`ssd_cache` と同様です。
+このストレージタイプは、複合[キー](../attributes.md#composite-key)を持つ Dictionary 向けに使用します。`ssd_cache` と同様です。

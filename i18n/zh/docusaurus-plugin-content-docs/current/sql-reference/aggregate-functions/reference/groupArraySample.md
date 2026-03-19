@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySample \{#groupArraySample\}
 
-自 v20.3 起引入
+自 v20.3.0 起引入
 
 创建一个由参数值样本组成的数组。
 结果数组的大小限制为 `max_size` 个元素。
@@ -25,7 +25,7 @@ groupArraySample(max_size[, seed])(x)
 
 * `max_size` — 结果数组的最大长度。[`UInt64`](/sql-reference/data-types/int-uint)
 * `seed` — 可选。随机数生成器的种子。默认值：123456。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 参数（列名或表达式）。[`Any`](/sql-reference/data-types)
+* `x` — 参数 (列名或表达式) 。[`Any`](/sql-reference/data-types)
 
 **参数**
 
@@ -74,7 +74,7 @@ SELECT groupArraySample(3, 987654321)(color) as newcolors FROM default.colors;
 └────────────────────────────┘
 ```
 
-**将表达式作为参数使用**
+**使用表达式作为参数**
 
 ```sql title=Query
 -- Query with expression as argument

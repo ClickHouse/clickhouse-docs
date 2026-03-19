@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtSamp \{#kurtSamp\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 시퀀스의 [표본 첨도(sample kurtosis)](https://en.wikipedia.org/wiki/Kurtosis)를 계산합니다.
 

@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Словарь не хранится в памяти и при обработке запроса напрямую обращается к источнику.
 
-Ключ словаря имеет тип [UInt64](../../../data-types/int-uint.md).
+Ключ словаря имеет тип [UInt64](/sql-reference/data-types/int-uint.md).
 
 Поддерживаются все типы [источников](../sources/#dictionary-sources), за исключением локальных файлов.
 
@@ -44,4 +44,4 @@ LAYOUT(DIRECT())
 
 ## complex_key_direct \{#complex_key_direct\}
 
-Этот тип хранилища предназначен для использования с составными [ключами](../keys-and-fields.md#dictionary-key-and-fields). Аналогичен типу `direct`.
+Этот тип хранилища предназначен для использования с составными [ключами](../attributes.md#composite-key). Аналогичен типу `direct`.

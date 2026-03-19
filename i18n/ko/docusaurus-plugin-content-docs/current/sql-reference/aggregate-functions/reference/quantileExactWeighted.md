@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeighted \{#quantileExactWeighted\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 숫자 데이터 시퀀스에 대해 각 요소의 가중치를 고려하여 [quantile](https://en.wikipedia.org/wiki/Quantile)을 정확하게 계산합니다.
 

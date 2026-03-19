@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedSum \{#exponentialTimeDecayedSum\}
 
-도입된 버전: v21.12
+도입된 버전: v21.12.0
 
 시계열의 시간 인덱스 `t`에서 지수적으로 평활화된 이동 평균값들의 합을 반환합니다.
 

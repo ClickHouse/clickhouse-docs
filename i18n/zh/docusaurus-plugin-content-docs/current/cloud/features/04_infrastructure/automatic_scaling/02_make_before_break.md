@@ -11,7 +11,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import mbb_diagram from '@site/static/images/cloud/features/mbb/vertical_scaling.png';
 
-ClickHouse Cloud 在执行集群升级和集群扩缩容时采用 **Make Before Break（MBB，“先建后拆”）** 策略。
+ClickHouse Cloud 在执行集群升级和集群扩缩容时采用 **Make Before Break (MBB，“先建后拆”)&#x20;**&#x20;策略。
 在这种策略下，会先向集群添加新的副本，然后再从集群中移除旧的副本。
 这与“先拆后建”的策略相反，后者会先移除旧副本，再添加新副本。
 
@@ -25,7 +25,7 @@ MBB 策略有以下几个优点：
 
 <Image img={mbb_diagram} size="lg" alt="具有 3 个副本并进行垂直扩缩容的集群示意图示例" />
 
-总体而言，与之前采用的“先拆后建”策略相比，MBB 能够实现更平滑、干扰更小的扩缩容和升级体验。
+总体而言，与之前采用的“先拆后建”策略相比，MBB 可提供平滑且干扰更小的扩缩容和升级体验。
 
 在使用 MBB 时，有一些关键行为需要你注意：
 

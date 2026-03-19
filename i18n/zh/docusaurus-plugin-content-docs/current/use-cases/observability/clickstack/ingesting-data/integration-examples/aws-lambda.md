@@ -38,10 +38,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### 前置条件 \{#prerequisites\}
 
-- 已在运行的 ClickStack 实例
-- 一个或多个需要监控的 AWS Lambda 函数
-- 已配置且具有相应权限的 AWS CLI
-- 具有添加 Layer 权限的 Lambda 执行角色
+* 已在运行的 ClickStack 实例
+* 一个或多个需要监控的 AWS Lambda 函数
+* 已配置且具有相应权限的 AWS CLI
+* 具有添加 Layer 权限的 Lambda 执行角色
 
 <VerticalStepper headerLevel="h4">
   #### 选择合适的 Rotel Lambda Extension 层

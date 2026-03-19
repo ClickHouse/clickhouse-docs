@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## simpleLinearRegression \{#simpleLinearRegression\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 단순(일변량) 선형 회귀를 수행합니다.
 
@@ -42,7 +42,7 @@ SELECT arrayReduce('simpleLinearRegression', [0, 1, 2, 3], [0, 1, 2, 3]);
 └───────────────────────────────────────────────────────────────────┘
 ```
 
-**절편을 포함한 선형 회귀**
+**절편을 포함한 선형 적합**
 
 ```sql title=Query
 SELECT arrayReduce('simpleLinearRegression', [0, 1, 2, 3], [3, 4, 5, 6]);

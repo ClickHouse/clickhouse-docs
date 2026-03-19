@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 * `mark_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) 系列表引擎使用的[标记](/development/architecture#merge-tree)缓存。
 * `uncompressed_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) 系列表引擎使用的未压缩数据缓存。
-* 操作系统提供的页缓存（间接使用，用于实际数据文件）。
+* 操作系统提供的页缓存 (间接使用，用于实际数据文件) 。
 
 此外，还有多种其他缓存类型：
 
@@ -27,7 +27,7 @@ doc_type: 'reference'
 * [向量相似度索引](../engines/table-engines/mergetree-family/annindexes.md)缓存。
 * [文本索引](../engines/table-engines/mergetree-family/textindexes.md#caching)缓存。
 * [Avro 格式](/interfaces/formats/Avro) Schema 缓存。
-* [字典](../sql-reference/statements/create/dictionary/index.md)数据缓存。
+* [字典](../sql-reference/statements/create/dictionary/overview.md)数据缓存。
 * Schema 推断缓存。
 * 基于 S3、Azure、本地以及其他磁盘的[文件系统缓存](storing-data.md)。
 * [用户态页缓存](/operations/userspace-page-cache)

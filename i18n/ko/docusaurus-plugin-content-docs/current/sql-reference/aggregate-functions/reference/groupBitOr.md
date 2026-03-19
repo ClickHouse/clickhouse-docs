@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitOr \{#groupBitOr\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 일련의 숫자에 대해 비트 단위 OR 연산을 수행합니다.
 

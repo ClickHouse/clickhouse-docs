@@ -87,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 В качестве альтернативы вы можете увеличить параметр [compatibility](../../../operations/settings/settings#compatibility) до `26.2` или новее, однако это затрагивает множество настроек и обычно требует предварительного тестирования.
 :::
 
-Текстовые индексы можно определять для столбцов типов [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)) с использованием следующего синтаксиса:
+Чтобы создать текстовый индекс, используйте следующий синтаксис:
 
 ```sql
 CREATE TABLE table
@@ -113,6 +113,14 @@ CREATE TABLE table
 ENGINE = MergeTree
 ORDER BY key
 ```
+
+Текстовые индексы можно определять для столбцов следующих типов:
+
+* [String](/sql-reference/data-types/string.md) и [FixedString](/sql-reference/data-types/fixedstring.md),
+* [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md), и
+* [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)).
+
+Также поддерживаются столбцы типа [Nullable(T)](/sql-reference/data-types/nullable.md) и [LowCardinality()](/sql-reference/data-types/lowcardinality.md), включая `Array(Nullable(String or FixedString))`.
 
 Также можно добавить текстовый индекс к существующей таблице:
 
@@ -148,7 +156,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Аргумент tokenizer (обязательный)**. Аргумент `tokenizer` задаёт токенизатор:
+**Аргумент tokenizer (обязательный)**. Аргумент `tokenizer` определяет используемый токенизатор:
 
 
 * `splitByNonAlpha` разбивает строки по небуквенно-цифровым ASCII-символам (см. функцию [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)).
@@ -177,7 +185,7 @@ ALTER TABLE table DROP INDEX text_idx;
 Если строки-разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
-Чтобы понять, как токенизатор разбивает входную строку, можно использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens):
+Чтобы понять, как токенизатор разбивает входную строку, можно использовать функции [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) и [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern):
 
 Пример:
 
@@ -202,17 +210,19 @@ SELECT tokens('abc def', 'ngrams', 3);
 Типичные варианты использования аргумента препроцессора включают следующее:
 
 
-1. Приведение к нижнему или верхнему регистру для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8) (см. первый пример ниже).
-2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
-3. Удаление или преобразование нежелательных символов или подстрок, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](./sql-reference/functions/string-replace-functions.md/#translate).
+1. Приведение к нижнему/верхнему регистру или свёртка регистра для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8).
+2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
+3. Удаление или преобразование нежелательных символов или подстрок, таких как диакритические знаки, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate), [removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8).
 
 Выражение препроцессора должно преобразовывать входное значение типа [String](/sql-reference/data-types/string.md) или [FixedString](/sql-reference/data-types/fixedstring.md) в значение того же типа.
+Если текстовый индекс был построен по столбцу типа `Nullable(T)` или `LowCardinality(T)`, то выражение препроцессора должно принимать значения типов Nullable(T) или LowCardinality(T) (то есть не приводить к выбросу исключения).
 
 Примеры:
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 Кроме того, выражение препроцессора должно ссылаться только на столбец или выражение, на основе которых определён текстовый индекс.
 
@@ -254,7 +264,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-Препроцессор также может использоваться со столбцами типа [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md).
 В этом случае выражение препроцессора применяется к элементам массива по отдельности.
 
 Пример:
@@ -279,6 +288,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 Пример:
 
+
 ```sql
 CREATE TABLE table
 (
@@ -291,8 +301,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**Дополнительные аргументы (необязательно)**.
-
+**Другие аргументы (необязательно)**.
 
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>
@@ -791,21 +800,22 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### Кэширование \{#caching\}
 
 Доступны различные кэши для буферизации частей текстового индекса в памяти (см. раздел [Implementation Details](#implementation)).
-В настоящее время доступны кэши для десериализованных блоков словаря, заголовков и списков вхождений текстового индекса для снижения объёма операций ввода-вывода.
-Их можно включить с помощью настроек [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
+В настоящее время доступны кэши для десериализованных заголовков, токенов и списков вхождений текстового индекса для снижения объёма операций ввода-вывода.
+Их можно включить с помощью настроек [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
+
 По умолчанию все кэши отключены.
 Чтобы очистить кэши, используйте команду [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches).
 
 Для настройки кэшей используйте следующие параметры сервера.
 
-#### Настройки кэша блоков словаря \{#caching-dictionary\}
+#### Настройки кэша токенов \{#caching-tokens\}
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | Имя политики кэширования блоков словаря текстового индекса.                                                   |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | Максимальный размер кэша в байтах.                                                                             |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | Максимальное количество десериализованных блоков словаря в кэше.                                               |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | Размер защищённой очереди в кэше блоков словаря текстового индекса относительно общего размера кэша.          |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | Имя политики кэширования токенов текстового индекса.                                                           |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | Максимальный размер кэша в байтах.                                                                             |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | Максимальное количество десериализованных токенов в кэше.                                                      |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | Размер защищённой очереди в кэше токенов текстового индекса относительно общего размера кэша.                  |
 
 #### Настройки кэша заголовков \{#caching-header\}
 
@@ -900,6 +910,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 Номера строк в списках вхождений также пересчитываются, чтобы отразить их новые позиции в объединённой части данных, с использованием отображения старых номеров строк в новые, которое создаётся на начальной фазе слияния.
 Этот метод слияния текстовых индексов подобен тому, как объединяются [проекции](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) со столбцом `_part_offset`.
 Если индекс не материализован в исходной части, он строится, записывается во временный файл и затем объединяется с индексами из других частей и из других временных файлов индексов.
+
+**Отладка**
+
+Табличная функция [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) может быть использована для анализа текстовых индексов.
 
 ## Пример: набор данных Hacker News \{#hacker-news-dataset\}
 

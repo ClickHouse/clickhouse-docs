@@ -403,10 +403,10 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) 索引
 - [`Set`](#set) 索引
 - [`bloom_filter`](#bloom-filter) 索引
-- [`ngrambf_v1`](#n-gram-bloom-filter) 索引
-- [`tokenbf_v1`](#token-bloom-filter) 索引
-- [`text`]({#text}) 索引
-- [`vector_similarity`]({#vector-similarity}) 索引
+- [`ngrambf_v1`](#n-gram-bloom-filter) 索引 *(已废弃)*
+- [`tokenbf_v1`](#token-bloom-filter) 索引 *(已废弃)*
+- [`text`](#text) 索引
+- [`vector_similarity`](#vector-similarity) 索引
 
 #### MinMax 跳过索引 \{#minmax\}
 
@@ -457,7 +457,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram 布隆过滤器 \{#n-gram-bloom-filter\}
+#### N-gram 布隆过滤器 *(已弃用)* \{#n-gram-bloom-filter\}
+
+:::note
+自 ClickHouse 26.2 版本起，`text` 索引进入 GA 阶段，因此不再推荐使用 `ngrambf_v1` 索引进行全文检索。
+
+详情参见 [&quot;Full-text search with text indexes&quot;](./textindexes.md) 页面。
+:::
 
 每个索引粒度都会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
@@ -528,7 +534,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Token 布隆过滤器 \{#token-bloom-filter\}
 
-`token bloom filter` 与 `ngrambf_v1` 类似，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
+:::note
+从 ClickHouse 26.2 版本开始，`text` 索引进入 GA（一般可用）阶段后，不再推荐使用 `tokenbf_v1` 索引来进行全文搜索。
+
+有关详细信息，请参阅 [“使用 text 索引的全文搜索”](./textindexes.md) 页面。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -1160,7 +1170,7 @@ ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在
 
 <CloudNotSupportedBadge />
 
-在启用 `set allow_experimental_statistics = 1` 时，对于 `*MergeTree*` 系列表，可以在 `CREATE` 查询的列（columns）部分中声明统计信息。
+在启用 `set allow_experimental_statistics = 1` 时，统计信息的声明位于 `*MergeTree*` 系列表的 `CREATE` 查询的列（columns）部分。
 
 ```sql
 CREATE TABLE tab

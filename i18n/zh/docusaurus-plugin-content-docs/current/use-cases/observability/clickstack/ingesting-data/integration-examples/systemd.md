@@ -22,15 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
 
 :::note[TL;DR]
-本指南演示如何通过运行带有 `journald` receiver 的 OpenTelemetry Collector，使用 ClickStack 监控 systemd journal 日志。您将学习如何：
-
-- 部署 OpenTelemetry Collector 来读取 systemd 日志条目
-- 通过 OTLP 将 systemd 日志发送到 ClickStack
-- 使用预构建的仪表板可视化 systemd 日志洞察（服务状态、错误、身份验证事件）
-
-如果您希望在为生产系统配置之前先测试集成，我们提供了带有示例日志的演示数据集。
-
-所需时间：10–15 分钟
+借助 OpenTelemetry Collector 的 journald 接收器，在 ClickStack 中收集并可视化 systemd journal 日志。包含演示数据集和预构建仪表板。
+:::
 
 :::
 
@@ -357,6 +350,12 @@ otelcol-contrib --config=otel-config.yaml
 ```
 
 2. **使用文本导出方案**（类似 demo），让 `filelog` receiver 读取 journald 导出文件
+
+## 后续步骤 \{#next-steps\}
+
+* 为关键系统事件设置[告警](/use-cases/observability/clickstack/alerts) (如服务故障、身份验证失败、OOM 终止) 
+* 为特定用例创建更多[仪表板](/use-cases/observability/clickstack/dashboards) (如 SSH 安全监控、服务健康状态) 
+* 按特定的 systemd 单元进行筛选，以减少噪声并聚焦于关键服务
 
 wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.115.0/otelcol-contrib_0.115.0_linux_amd64.tar.gz
 tar -xzf otelcol-contrib_0.115.0_linux_amd64.tar.gz

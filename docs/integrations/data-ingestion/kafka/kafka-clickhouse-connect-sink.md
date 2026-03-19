@@ -102,7 +102,7 @@ The full table of configuration options:
 | `database`                                      | ClickHouse database name                                                                                                                                                                                                           | `default`                                                |
 | `connector.class` (Required)                    | Connector Class(explicit set and keep as the default value)                                                                                                                                                                        | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
 | `tasks.max`                                     | The number of Connector Tasks                                                                                                                                                                                                      | `"1"`                                                    |
-| `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                                                                                                      | `"60"`                                                   |
+| `errors.retry.timeout`                          | Kafka Connect max retry duction in milliseconds. `0` for no retries. `-1` for infinite retries. Recommended value is more then "10000" ms (10 seconds)  Timeout                                                                                                                                                                                                      | `"0"`                                                   |
 | `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                                                                                                               | `"false"`                                                |
 | `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                                                                                                      | `""`                                                     |
 | `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you're passing keys (and not defined in worker config).                                                                                                                 | `"org.apache.kafka.connect.storage.StringConverter"`     |
@@ -117,7 +117,7 @@ The full table of configuration options:
 | `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. `ON CLUSTER clusterNameInConfigFileDefinition`) for exactly-once connect_state table (see [Distributed DDL Queries](/sql-reference/distributed-ddl)   | `""`                                                     |
 | `bypassRowBinary`                               | Allows disabling use of RowBinary and RowBinaryWithDefaults for Schema-based data (Avro, Protobuf, etc.) - should only be used when data will have missing columns, and Nullable/Default are unacceptable                          | `"false"`                                                |
 | `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, separated by `;` (e.g. `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                              | `""`                                                     |
-| `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                             | `"false"`                                                |
+| `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset). Should be used to fix ingestion after failure and should be reverted back to `"false"` once done.                                                             | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | Will ignore partition when collecting messages for insert (though only if `exactlyOnce` is `false`). Performance Note: The more connector tasks, the fewer kafka partitions assigned per task - this can mean diminishing returns. | `"false"`                                                |
 
 ### Target tables {#target-tables}
@@ -182,7 +182,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
     "consumer.override.max.poll.records": "5000",
     "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
-    "errors.retry.timeout": "60",
+    "errors.retry.timeout": "60000",
     "exactlyOnce": "false",
     "hostname": "localhost",
     "port": "8443",
@@ -753,19 +753,20 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse.
   It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
   - 3 - UNEXPECTED_END_OF_FILE
+  - 107 - FILE_DOESNT_EXIST
   - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
   - 202 - TOO_MANY_SIMULTANEOUS_QUERIES
   - 203 - NO_FREE_CONNECTION
   - 209 - SOCKET_TIMEOUT
   - 210 - NETWORK_ERROR
+  - 241 - MEMORY_LIMIT_EXCEEDED
   - 242 - TABLE_IS_READ_ONLY
   - 252 - TOO_MANY_PARTS
   - 285 - TOO_FEW_LIVE_REPLICAS
   - 319 - UNKNOWN_STATUS_OF_INSERT
   - 425 - SYSTEM_ERROR
   - 999 - KEEPER_EXCEPTION
-  - 1002 - UNKNOWN_EXCEPTION
 - `SocketTimeoutException` - This is thrown when the socket times out.
 - `UnknownHostException` - This is thrown when the host can't be resolved.
 - `IOException` - This is thrown when there is a problem with the network.

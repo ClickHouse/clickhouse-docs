@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 Node.js Trace \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
-本指南演示如何从你的 Node.js 应用中采集分布式 Trace，并利用 OpenTelemetry 自动埋点在 ClickStack 中进行可视化。你将学到如何：
-
-- 为 Node.js 安装并配置 OpenTelemetry 自动埋点
-- 将 Trace 发送到 ClickStack 的 OTLP 端点
-- 验证 Trace 是否出现在 HyperDX 中
-- 使用预构建的 Dashboard 可视化应用性能
-
-如果你希望在为生产应用添加埋点之前先测试集成效果，我们提供了一个包含示例 Trace 的演示数据集。
-
-预计耗时：10–15 分钟
+使用 OpenTelemetry 自动埋点，在 ClickStack 中采集来自 Node.js 应用的分布式链路追踪。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Node.js 应用集成 \{#existing-nodejs\}
@@ -238,10 +229,8 @@ curl -v http://localhost:4318/v1/traces
 
 ## 后续步骤 \{#next-steps\}
 
-如需进一步探索，可以参考以下步骤来继续试用你的仪表盘：
-
 - 为关键指标（错误率、延迟阈值）设置[告警](/use-cases/observability/clickstack/alerts)
-- 为特定使用场景（API 监控、安全事件）创建额外的仪表盘
+- 为特定使用场景（API 监控、安全事件）创建额外的仪表板
 
 ## 进入生产环境 \{#going-to-production\}
 

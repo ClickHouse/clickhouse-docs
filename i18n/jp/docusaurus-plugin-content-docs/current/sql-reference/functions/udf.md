@@ -9,8 +9,19 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ユーザー定義関数 (UDF) \{#executable-user-defined-functions\}
+
+# UDFs User Defined Functions \{#udfs-user-defined-functions\}
+
+ClickHouse は複数の種類のユーザー定義関数 (UDFs) をサポートしています:
+
+- [Executable UDFs](#executable-user-defined-functions) は外部プログラムやスクリプト (Python、Bash など) を起動し、STDIN / STDOUT を介してデータブロックをストリーミングします。ClickHouse を再コンパイルせずに既存のコードやツールを統合するために利用します。プロセス内で実行される方式と比べて呼び出しごとのオーバーヘッドは大きくなりますが、より重いロジックや、異なるランタイムが必要な場合に最適です。
+- [SQL UDFs](#sql-user-defined-functions) は `CREATE FUNCTION` により、純粋に SQL だけで定義されます。クエリプランにインライン展開され (プロセス境界はありません)、軽量であるため、式のロジックの再利用や複雑な計算カラムの単純化に最適です。
+- [Experimental WebAssembly UDFs](#webassembly-user-defined-functions) は WebAssembly にコンパイルされたコードを、サーバープロセス内のサンドボックスで実行します。外部実行ファイルよりも呼び出しごとのオーバーヘッドが小さく、ネイティブ拡張よりも高い分離性を提供するため、WASM をターゲットにできる言語 (例: C/C++/Rust) で書かれたカスタムアルゴリズムに適しています。
+
+## 実行可能ユーザー定義関数 \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
@@ -115,6 +126,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
+
 ### Python スクリプトからの UDF \{#udf-python\}
 
 この例では、`STDIN` から値を読み取り、それを文字列として返す UDF を作成します。
@@ -123,7 +135,7 @@ XML または YAML のいずれかの設定で `test_function` を作成しま�
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
-    ファイル `test_function.xml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function.xml`）。
+    ファイル `test_function.xml`（デフォルトのパス設定の場合は `/etc/clickhouse-server/test_function.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function.xml"
     <functions>
@@ -143,7 +155,7 @@ XML または YAML のいずれかの設定で `test_function` を作成しま�
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
-    ファイル `test_function.yaml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function.yaml`）。
+    ファイル `test_function.yaml`（デフォルトのパス設定の場合は `/etc/clickhouse-server/test_function.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function.yaml"
     functions:
@@ -180,13 +192,14 @@ SELECT test_function_python(toUInt64(2));
 
 ```text title="Result"
 ┌─test_function_python(2)─┐
-│ 値 2                    │
+│ Value 2                 │
 └─────────────────────────┘
 ```
 
-### `STDIN` から 2 つの値を読み取り、その合計を JSON オブジェクトとして返す \{#udf-stdin\}
 
-XML または YAML の設定を使用して、名前付き引数を取り、フォーマットに [JSONEachRow](/interfaces/formats/JSONEachRow) を指定した `test_function_sum_json` を作成します。
+### `STDIN` から 2 つの値を読み取り、それらの合計を JSON オブジェクトとして返す \{#udf-stdin\}
+
+名前付き引数と [JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットを使用して、XML または YAML の設定で `test_function_sum_json` を作成します。
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -264,14 +277,15 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
+
 ### `command` 設定でパラメータを使用する \{#udf-parameters-in-command\}
 
-実行可能なユーザー定義関数は、`command` 設定で指定された定数パラメータを受け取ることができます（これは `executable` 型のユーザー定義関数でのみ動作します）。\
+実行可能なユーザー定義関数は、`command` 設定で指定された定数パラメータを受け取ることができます（これは `executable` 型のユーザー定義関数でのみ動作します）。
 また、シェルによる引数展開に起因する脆弱性を防ぐために、`execute_direct` オプションが必要です。
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
-    ファイル `test_function_parameter_python.xml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function_parameter_python.xml`）。
+    File `test_function_parameter_python.xml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function_parameter_python.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function_parameter_python.xml"
     <functions>
@@ -291,7 +305,7 @@ SELECT test_function_sum_json(2, 2);
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
-    ファイル `test_function_parameter_python.yaml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function_parameter_python.yaml`）。
+    File `test_function_parameter_python.yaml`（デフォルトのパス設定では `/etc/clickhouse-server/test_function_parameter_python.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function_parameter_python.yaml"
     functions:
@@ -328,9 +342,10 @@ SELECT test_function_parameter_python(1)(2);
 
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ パラメータ1の値2                  │
+│ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
+
 
 ### シェルスクリプトを使った UDF \{#udf-shell-script\}
 
@@ -405,6 +420,7 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
+
 ## エラー処理 \{#error-handling\}
 
 一部の関数は、データが無効な場合に例外をスローすることがあります。
@@ -438,5 +454,53 @@ ClickHouse では、関数（演算子）の引数は常に評価されます。
 
 ラムダ式を用いてカスタム関数を作成するには、[CREATE FUNCTION](../statements/create/function.md) ステートメントを使用します。これらの関数を削除するには、[DROP FUNCTION](../statements/drop.md#drop-function) ステートメントを使用します。
 
+## WebAssembly ユーザー定義関数 \{#webassembly-user-defined-functions\}
+
+<CloudNotSupportedBadge/>
+
+<ExperimentalBadge/>
+
+WebAssembly ユーザー定義関数 (WASM UDF) を使用すると、WebAssembly にコンパイルされた独自コードを ClickHouse サーバープロセス内で実行できます。
+
+### クイックスタート \{#quick-start\}
+
+ClickHouse の設定で実験的な WebAssembly サポートを有効にします。
+
+```xml
+<clickhouse>
+    <allow_experimental_webassembly_udf>true</allow_experimental_webassembly_udf>
+</clickhouse>
+```
+
+コンパイル済みの WASM モジュールを system テーブルに挿入します。
+
+```sql
+INSERT INTO system.webassembly_modules (name, code)
+SELECT 'my_module', base64Decode('AGFzbQEAAAA...');
+```
+
+WASM モジュールを使用して関数を作成します:
+
+```sql
+CREATE FUNCTION my_function
+LANGUAGE WASM
+ABI ROW_DIRECT
+FROM 'my_module'
+ARGUMENTS (x UInt32, y UInt32)
+RETURNS UInt32;
+```
+
+クエリでこの関数を使用します:
+
+```sql
+SELECT my_function(10, 20);
+```
+
+
+### 詳細情報 \{#more-information\}
+
+詳しくは、[WebAssembly ユーザー定義関数](wasm_udf.md) のドキュメントを参照してください。
+
 ## 関連コンテンツ \{#related-content\}
+
 - [ClickHouse Cloudのユーザー定義関数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

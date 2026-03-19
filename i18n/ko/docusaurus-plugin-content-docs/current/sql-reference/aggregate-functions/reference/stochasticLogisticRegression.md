@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stochasticLogisticRegression \{#stochasticLogisticRegression\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 이 함수는 확률적 로지스틱 회귀(Stochastic Logistic Regression)를 구현합니다.
 이진 분류 문제에 사용할 수 있으며, [`stochasticLinearRegression`](/sql-reference/aggregate-functions/reference/stochasticlinearregression)과 동일한 사용자 정의 매개변수를 지원하고 동일한 방식으로 작동합니다.
@@ -40,9 +40,9 @@ AS state FROM train_data;
 모든 값은 숫자 값이어야 합니다.
 예측하려는 목표 값을 포함하는 컬럼은 첫 번째 인수로 삽입됩니다.
 
-예측된 레이블은 [-1, 1] 범위에 있어야 합니다.
+예측된 레이블은 [-1, 1] 범위 내에 있어야 합니다.
 
-2. 예측하기
+2. 예측
 
 저장된 상태를 사용하여 객체가 `1` 레이블을 가질 확률을 예측할 수 있습니다.
 
@@ -62,7 +62,7 @@ SELECT result < 1.1 AND result > 0.5 FROM
 evalMLMethod(model, param1, param2) AS result FROM test_data)
 ```
 
-그러면 결과는 레이블(label)이 됩니다.
+그러면 결과는 레이블이 됩니다.
 
 `test_data`는 `train_data`와 유사한 테이블이지만 목표 값을 포함하지 않을 수 있습니다.
 
@@ -74,10 +74,10 @@ stochasticLogisticRegression([learning_rate, l2_regularization_coef, mini_batch_
 
 **인수**
 
-* `learning_rate` — 경사 하강법 단계를 수행할 때 단계 길이에 곱해지는 계수입니다. 학습률이 너무 크면 모델의 가중치가 무한대로 발산할 수 있습니다. 기본값은 `0.00001`입니다. [`Float64`](/sql-reference/data-types/float)
+* `learning_rate` — 경사 하강법 단계를 수행할 때 스텝 크기에 곱해지는 계수입니다. 학습률이 너무 크면 모델의 가중치가 무한대로 발산할 수 있습니다. 기본값은 `0.00001`입니다. [`Float64`](/sql-reference/data-types/float)
 * `l2_regularization_coef` — 과적합을 방지하는 데 도움이 될 수 있는 L2 정규화 계수입니다. 기본값은 `0.1`입니다. [`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 한 번의 경사 하강법(gradient descent) 단계를 수행하기 위해 기울기를 계산하고 합산할 요소의 개수를 설정합니다. 완전한 확률적 경사 하강법은 한 개의 요소만 사용하지만, 약 10개 정도의 작은 배치를 사용하면 경사 하강 단계가 더 안정적입니다. 기본값은 `15`입니다. [`UInt64`](/sql-reference/data-types/int-uint)
-* `method` — 가중치를 갱신하는 방법입니다: 기본값은 `Adam`이며, `SGD`, `Momentum`, `Nesterov`를 사용할 수 있습니다. `Momentum`과 `Nesterov`는 계산과 메모리가 조금 더 많이 필요하지만, 확률적 경사 하강법의 수렴 속도와 안정성을 높이는 데 유용합니다. [`String`](/sql-reference/data-types/string)
+* `mini_batch_size` — 한 번의 경사 하강법(gradient descent) 단계를 수행하기 위해 기울기를 계산하고 합산할 데이터 요소의 개수를 설정합니다. 순수한 확률적 경사 하강법은 한 개의 요소만 사용하지만, 약 10개 정도의 작은 배치를 사용하면 경사 하강법 단계가 더 안정적입니다. 기본값은 `15`입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+* `method` — 가중치를 갱신하는 방법입니다: 기본값은 `Adam`이며, `SGD`, `Momentum`, `Nesterov`를 사용할 수 있습니다. `Momentum`과 `Nesterov`는 계산량과 메모리가 조금 더 많이 필요하지만, 확률적 경사 하강법의 수렴 속도와 안정성을 향상하는 데 유용합니다. [`String`](/sql-reference/data-types/string)
 * `target` — 이진 분류용 타깃 레이블입니다. 값은 [-1, 1] 범위 내에 있어야 합니다. [`Float`](/sql-reference/data-types/float)
 * `x1, x2, ...` — 특성 값(독립 변수)입니다. 모두 숫자 타입이어야 합니다. [`Float`](/sql-reference/data-types/float)
 

@@ -42,7 +42,7 @@ import DemoArchitecture from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 **다음 가이드는 [all-in-one 이미지용 안내](/use-cases/observability/clickstack/getting-started/oss) 또는 [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only)를 사용해 오픈 소스 ClickStack을 배포하고, 초기 사용자 생성을 완료했다고 가정합니다. 또는 로컬 설정을 모두 건너뛰고, 동일한 데이터셋을 사용하는 ClickStack 호스팅 데모인 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)에 바로 연결해도 됩니다.**
 
-이 가이드에서는 공개 ClickHouse playground인 [sql.clickhouse.com](https://sql.clickhpouse.com)에 호스팅된 샘플 데이터셋을 사용하며, 로컬 ClickStack 배포에서 이 데이터셋에 연결할 수 있습니다.
+이 가이드에서는 공개 ClickHouse playground인 [sql.clickhouse.com](https://sql.clickhouse.com)에 호스팅된 샘플 데이터셋을 사용하며, 로컬 ClickStack 배포에서 이 데이터셋에 연결할 수 있습니다.
 
 :::warning Managed ClickStack에서 지원되지 않음
 Managed ClickStack에서는 원격 데이터베이스가 지원되지 않습니다. 따라서 이 데이터셋도 지원되지 않습니다.

@@ -14,13 +14,13 @@ failpoint는 실행 중에 `SYSTEM ENABLE FAILPOINT` 및 `SYSTEM DISABLE FAILPOI
 
 ## 컬럼 \{#columns\}
 
-- `name` ([String](/docs/en/sql-reference/data-types/string.md)) — failpoint의 이름입니다.
-- `type` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — failpoint의 유형입니다. 가능한 값은 다음과 같습니다.
+- `name` ([String](../../sql-reference/data-types/string.md)) — failpoint의 이름입니다.
+- `type` ([Enum8](../../sql-reference/data-types/enum.md)) — failpoint의 유형입니다. 가능한 값은 다음과 같습니다.
   - `'once'` — 한 번만 트리거된 뒤 자동으로 비활성화됩니다.
   - `'regular'` — failpoint에 도달할 때마다 트리거됩니다.
   - `'pauseable_once'` — 명시적으로 재개될 때까지 한 번 실행을 차단합니다.
   - `'pauseable'` — 명시적으로 재개될 때까지 failpoint에 도달할 때마다 실행을 차단합니다.
-- `enabled` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — failpoint가 현재 활성화되어 있는지 여부입니다. `1`은 활성화, `0`은 비활성화를 의미합니다.
+- `enabled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — failpoint가 현재 활성화되어 있는지 여부입니다. `1`은 활성화, `0`은 비활성화를 의미합니다.
 
 ## 예제 \{#example\}
 

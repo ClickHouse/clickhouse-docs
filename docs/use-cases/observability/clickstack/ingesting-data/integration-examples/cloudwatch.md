@@ -24,16 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring AWS CloudWatch Logs with ClickStack {#cloudwatch-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's AWS CloudWatch receiver. You'll learn how to:
-- Configure the OpenTelemetry Collector to pull logs from CloudWatch
-- Set up AWS credentials and IAM permissions
-- Send CloudWatch logs to ClickStack via OTLP
-- Filter and autodiscover log groups
-- Use a pre-built dashboard to visualize CloudWatch log patterns
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production AWS environment.
-
-Time Required: 10-15 minutes
+Forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's CloudWatch receiver. Supports named log groups and autodiscovery. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Overview {#overview}
@@ -471,8 +462,6 @@ groups:
 ```
 
 ## Next steps {#next-steps}
-
-Now that you have CloudWatch logs flowing into ClickStack:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, error spikes)
 - Reduce CloudWatch costs by adjusting retention periods or archiving to S3, now that you have logs in ClickStack

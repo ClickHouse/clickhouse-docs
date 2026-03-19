@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 ## uniqCombined64 \{#uniqCombined64\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 计算不同参数值的近似数量。
 它与 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) 相同，但对所有数据类型都使用 64 位哈希，而不仅仅是对 String 数据类型使用。
 
-此函数以确定性的方式返回结果（结果不依赖于查询处理顺序）。
+此函数以确定性的方式返回结果 (结果不依赖于查询处理顺序) 。
 
 :::note
 由于它对所有类型都使用 64 位哈希，因此在基数显著大于 `UINT_MAX` 时，结果不会像使用 32 位哈希处理非 String 类型的 [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined) 那样出现非常高的误差。
@@ -44,7 +44,7 @@ uniqCombined64(x[, ...])
 
 **参数**
 
-* `HLL_precision` — 可选。HyperLogLog 中单元格数量的二进制对数。默认值为 17，对应约 96 KiB 的空间（2^17 个单元格，每个 6 位）。范围：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
+* `HLL_precision` — 可选。HyperLogLog 中单元格数量的二进制对数。默认值为 17，对应约 96 KiB 的空间 (2^17 个单元格，每个 6 位) 。范围：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **参数说明**
 

@@ -27,7 +27,7 @@ doc_type: 'reference'
 * [ベクトル類似性インデックス](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
 * [テキストインデックス](../engines/table-engines/mergetree-family/textindexes.md#caching) キャッシュ。
 * [Avro format](/interfaces/formats/Avro) スキーマキャッシュ。
-* [Dictionaries](../sql-reference/statements/create/dictionary/index.md) データキャッシュ。
+* [Dictionaries](../sql-reference/statements/create/dictionary/overview.md) データキャッシュ。
 * スキーマ推論キャッシュ。
 * S3、Azure、ローカルおよびその他のディスクを対象とした [Filesystem cache](storing-data.md)。
 * [Userspace page cache](/operations/userspace-page-cache)。

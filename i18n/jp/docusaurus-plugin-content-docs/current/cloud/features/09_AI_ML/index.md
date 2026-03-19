@@ -13,5 +13,5 @@ doc_type: 'reference'
 ClickHouse Cloud は、以下のエージェント型機能を提供することで、このプロセスに要する時間を数秒から数分にまで短縮し、
 プロダクトマネージャーが「先週の解約率急増を引き起こしている要因は何か？」と質問した際に、その答えだけでなく、基となるクエリやビジュアライゼーション、さらに深掘りするための次の問いを即座に受け取れるようにします。
 
-* [Ask AI agent](/cloud/features/ai-ml/ask-ai)
+* [ClickHouse Assistant agent](/cloud/features/ai-ml/ask-ai)
 * [Remote MCP server](/cloud/features/ai-ml/remote-mcp)

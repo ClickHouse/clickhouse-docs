@@ -129,4 +129,4 @@ SELECT * FROM mongodb(
 ## 相关 \{#related\}
 
 - [`MongoDB` 表引擎](engines/table-engines/integrations/mongodb.md)
-- [将 MongoDB 用作字典源](../statements/create/dictionary/sources.md#mongodb)
+- [将 MongoDB 用作字典源](../statements/create/dictionary/sources/mongodb.md)

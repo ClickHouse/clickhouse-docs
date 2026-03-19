@@ -30,6 +30,16 @@ DataStore는 ClickHouse의 강력한 SQL 집계 기능을 활용하여 포괄적
 **예시:**
 
 ```python
+from pathlib import Path
+Path("sales.csv").write_text("""\
+region,product,category,amount,quantity,price,date,order_id
+East,Widget,Electronics,5200,10,120,2024-01-15,1001
+West,Gadget,Electronics,800,5,160,2024-02-20,1002
+East,Gizmo,Home,6500,3,100,2024-03-10,1003
+North,Widget,Electronics,4500,6,150,2024-06-18,1004
+West,Gadget,Electronics,2000,8,250,2024-09-14,1005
+""")
+
 from chdb import datastore as pd
 
 ds = pd.read_csv("sales.csv")

@@ -1,18 +1,18 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: 'Customizing Ask AI chat with a semantic layer'
-title: 'Optimizing Ask AI Agent Conversations with a Semantic Layer'
+sidebar_label: 'Customizing ClickHouse Assistant chat with a semantic layer'
+title: 'Optimizing ClickHouse Assistant Agent Conversations with a Semantic Layer'
 pagination_prev: null
 pagination_next: null
-description: 'Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the Ask AI chat agent'
+description: 'Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Customize Ask AI chat with a semantic layer
+# Customize ClickHouse Assistant chat with a semantic layer
 
-The Ask AI chat agent can be customized to understand your specific business logic, data structures, and domain knowledge through **AGENTS.md**—a special saved query that acts as a semantic layer over the agent's system prompt.
+The ClickHouse Assistant chat agent can be customized to understand your specific business logic, data structures, and domain knowledge through **AGENTS.md**—a special saved query that acts as a semantic layer over the agent's system prompt.
 
 By creating an AGENTS.md file, you can provide custom instructions that are injected at the start of every conversation to guide SQL query generation and data analysis based on your organization's unique requirements, calculations, and conventions.
 
@@ -20,9 +20,9 @@ By creating an AGENTS.md file, you can provide custom instructions that are inje
 
 When you save a query named "AGENTS.md" (case-sensitive) in the Cloud Console:
 
-1. The Ask AI chat agent automatically loads this file when a message is sent
+1. The ClickHouse Assistant chat agent automatically loads this file when a message is sent
 2. The content is placed within a structured content tag and injected into the agent's system prompt
-3. The instructions are applied to all Ask AI chat conversations in that service
+3. The instructions are applied to all ClickHouse Assistant chat conversations in that service
 
 ## Creating AGENTS.md {#creating-agents-md}
 

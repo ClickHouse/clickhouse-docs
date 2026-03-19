@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedSum \{#exponentialTimeDecayedSum\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 時系列について、時間インデックス `t` における指数平滑移動平均値の合計を返します。
 
@@ -34,7 +34,7 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **使用例**
 
-**ウィンドウ関数の使用例（視覚的な図解付き）**
+**ウィンドウ関数の使用例 (視覚的な図解付き)&#x20;**
 
 ```sql title=Query
 SELECT

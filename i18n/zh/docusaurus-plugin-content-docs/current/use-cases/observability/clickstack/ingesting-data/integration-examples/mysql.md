@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 MySQL 日志 \{#mysql-logs-clickstack\}
 
 :::note[摘要]
-本指南演示如何通过配置 OpenTelemetry collector 来摄取 MySQL 服务器日志，从而使用 ClickStack 监控 MySQL。你将了解如何：
-
-- 配置 MySQL 输出错误日志和慢查询日志
-- 为日志摄取创建自定义 OTel collector 配置
-- 使用自定义配置部署 ClickStack
-- 使用预构建的仪表板可视化 MySQL 日志洞察（错误、慢查询、连接）
-
-如果你希望在配置生产环境 MySQL 之前先测试集成，可以使用提供的包含示例日志的演示数据集。
-
-预计耗时：10–15 分钟
+使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化 MySQL 错误日志和慢查询日志。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 MySQL 集成 \{#existing-mysql\}
@@ -460,13 +451,11 @@ head -5 /var/log/mysql/error.log
 如果格式存在较大差异，请在配置中相应调整正则表达式模式。
 
 
-## 后续步骤 {#next-steps}
+## 后续步骤
 
-在完成 MySQL 日志监控配置后：
-
-- 为关键事件（连接失败、超过阈值的慢查询、错误激增）设置[告警](/use-cases/observability/clickstack/alerts)
-- 按查询模式创建自定义仪表板，用于慢查询分析
-- 根据实际观测到的查询性能特征调优 `long_query_time`
+* 为关键事件 (连接失败、超过阈值的慢查询、错误激增) 设置[告警](/use-cases/observability/clickstack/alerts)
+* 按查询模式创建自定义仪表板，用于慢查询分析
+* 根据实际观测到的查询性能特征调优 `long_query_time`
 
 ## 进入生产环境 {#going-to-production}
 

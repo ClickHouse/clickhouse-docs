@@ -198,4 +198,4 @@ SELECT * FROM mysql_table
 ## 함께 보기 \{#see-also\}
 
 - [MySQL 테이블 함수](../../../sql-reference/table-functions/mysql.md)
-- [MySQL을 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources#mysql)
+- [MySQL을 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources/mysql)

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stochasticLogisticRegression \{#stochasticLogisticRegression\}
 
-引入版本:v20.1
+引入版本：v20.1.0
 
 该函数实现随机逻辑回归。
 可用于二元分类问题,支持与 [`stochasticLinearRegression`](/sql-reference/aggregate-functions/reference/stochasticlinearregression) 相同的自定义参数,工作方式也相同。
@@ -40,7 +40,7 @@ AS state FROM train_data;
 所有参数都必须是数值类型。
 注意,包含目标值(即我们要预测的值)的列需要作为第一个参数插入。
 
-预测标签必须在 [-1, 1] 区间内。
+预测标签取值必须位于区间 [-1, 1] 内。
 
 2. 预测
 
@@ -75,11 +75,11 @@ stochasticLogisticRegression([learning_rate, l2_regularization_coef, mini_batch_
 **参数**
 
 * `learning_rate` — 在执行梯度下降步骤时的步长系数。过大的学习率可能导致模型权重发散到无穷大。默认值为 `0.00001`。[`Float64`](/sql-reference/data-types/float)
-* `l2_regularization_coef` — L2 正则化系数，可以帮助防止过拟合。默认值为 `0.1`。[`Float64`](/sql-reference/data-types/float)
-* `mini_batch_size` — 设置在执行一次梯度下降时，将对多少个元素计算并累加梯度。纯随机梯度下降仅使用一个元素，但使用较小的批量（约 10 个元素）可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
-* `method` — 用于更新权重的方法：`Adam`（默认）、`SGD`、`Momentum`、`Nesterov`。`Momentum` 和 `Nesterov` 需要更多的计算和内存开销，但在随机梯度方法的收敛速度和稳定性方面往往更有优势。[`String`](/sql-reference/data-types/string)
+* `l2_regularization_coef` — L2 正则化系数，有助于防止过拟合。默认值为 `0.1`。[`Float64`](/sql-reference/data-types/float)
+* `mini_batch_size` — 设置在执行一次梯度下降时，要对多少个元素计算并累加梯度。而纯随机梯度下降仅使用一个元素，但使用较小的批量 (约 10 个元素) 可以使梯度更新更加稳定。默认值为 `15`。[`UInt64`](/sql-reference/data-types/int-uint)
+* `method` — 用于更新权重的方法：`Adam` (默认) 、`SGD`、`Momentum`、`Nesterov`。`Momentum` 和 `Nesterov` 需要更多的计算和内存开销，但在随机梯度方法的收敛速度和稳定性方面往往更有优势。[`String`](/sql-reference/data-types/string)
 * `target` — 二分类目标标签。取值必须位于区间 [-1, 1] 内。[`Float`](/sql-reference/data-types/float)
-* `x1, x2, ...` — 特征值（自变量）。全部必须为数值类型。[`Float`](/sql-reference/data-types/float)
+* `x1, x2, ...` — 特征值 (自变量) 。全部必须为数值类型。[`Float`](/sql-reference/data-types/float)
 
 **返回值**
 

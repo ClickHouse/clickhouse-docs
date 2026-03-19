@@ -91,7 +91,7 @@ import TabItem from "@theme/TabItem"
 | `POLYGON_INDEX_CELL` | 上記で説明したグリッドも、同じオプションで作成します。各リーフセルごとに、そのセルに含まれるすべてのポリゴン断片に対して索引を構築し、高速なクエリ応答を可能にします。                                                                                                     |
 | `POLYGON`            | `POLYGON_INDEX_CELL` の別名です。                                                                                                                                                             |
 
-Dictionaryのクエリは、Dictionaryを操作するための標準的な[関数](../../../functions/ext-dict-functions.md)を使用して実行されます。
+Dictionaryのクエリは、Dictionaryを操作するための標準的な[関数](/sql-reference/functions/ext-dict-functions.md)を使用して実行されます。
 重要な違いは、ここでのキーが、そのキーを含むポリゴンを検索したい地点になるという点です。
 
 **例**
@@ -111,7 +111,8 @@ SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, '
 
 **例**
 
-ポリゴン Dictionary からカラムを読み取るには、SELECT クエリを使用し、Dictionary の設定または対応する DDL クエリで `store_polygon_key_column = 1` を有効にしてください。
+
+`SELECT` クエリでポリゴン Dictionary からカラムを読み取ることができます。そのためには、Dictionary の設定または対応する DDL クエリで `store_polygon_key_column = 1` を有効にしてください。
 
 ```sql title="Query"
 CREATE TABLE polygons_test_table

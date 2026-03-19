@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewPop \{#skewPop\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 시퀀스의 [왜도](https://en.wikipedia.org/wiki/Skewness)를 계산합니다.
 

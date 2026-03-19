@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedAvg \{#exponentialTimeDecayedAvg\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 時刻 `t` における時系列データの値に対する指数平滑化された加重移動平均を返します。
 
@@ -34,7 +34,7 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **例**
 
-**ウィンドウ関数での使用例（視覚的表現付き）**
+**ウィンドウ関数での使用例 (視覚的表現付き)&#x20;**
 
 ```sql title=Query
 SELECT

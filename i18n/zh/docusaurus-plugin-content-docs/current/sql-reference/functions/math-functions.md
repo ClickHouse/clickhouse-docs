@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 ## acos \{#acos\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回参数的反余弦值。
 
@@ -50,7 +50,7 @@ SELECT acos(0.5);
 
 ## acosh \{#acosh\}
 
-自 v20.12 版本引入
+自 v20.12.0 版本引入
 
 返回反双曲余弦函数的值。
 
@@ -82,7 +82,7 @@ SELECT acosh(1)
 
 ## asin \{#asin\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 计算给定参数的反正弦值。
 对于范围在 `[-1, 1]` 内的参数，返回值范围为 `[-pi() / 2, pi() / 2]`。
@@ -95,11 +95,11 @@ asin(x)
 
 **参数**
 
-* `x` — 用于计算反双曲正弦的参数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 用于计算反正弦的参数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
 **返回值**
 
-返回给定参数 `x` 的反双曲正弦值 [`Float64`](/sql-reference/data-types/float)
+返回给定参数 `x` 的反正弦值 [`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -135,7 +135,7 @@ nan nan nan nan
 
 ## asinh \{#asinh\}
 
-自 v20.12 起可用
+自 v20.12.0 起可用
 
 返回反双曲正弦值。
 
@@ -167,7 +167,7 @@ SELECT asinh(0)
 
 ## atan \{#atan\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回参数的反正切值。
 
@@ -199,7 +199,7 @@ SELECT atan(1);
 
 ## atan2 \{#atan2\}
 
-引入版本：v20.12
+引入版本：v20.12.0
 
 返回欧几里得平面中，从正 x 轴到指向点 `(x, y) ≠ (0, 0)` 的射线之间的角度，结果以弧度表示。
 
@@ -232,7 +232,7 @@ SELECT atan2(1, 1)
 
 ## atanh \{#atanh\}
 
-引入版本：v20.12
+引入版本：v20.12.0
 
 返回反双曲正切函数的值。
 
@@ -264,7 +264,7 @@ SELECT atanh(0)
 
 ## cbrt \{#cbrt\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回参数的立方根。
 
@@ -296,7 +296,7 @@ SELECT cbrt(8);
 
 ## cos \{#cos\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回参数的余弦值。
 
@@ -328,7 +328,7 @@ SELECT cos(0);
 
 ## cosh \{#cosh\}
 
-自 v20.12 引入
+自 v20.12.0 引入
 
 返回参数的双曲余弦值。
 
@@ -360,9 +360,9 @@ SELECT cosh(0)
 
 ## degrees \{#degrees\}
 
-自 v22.2 引入
+自 v22.2.0 引入
 
-将弧度转换为角度（度数）。
+将弧度转换为角度 (度数) 。
 
 **语法**
 
@@ -376,7 +376,7 @@ degrees(x)
 
 **返回值**
 
-返回 `x` 对应的角度值（以度为单位）。[`Float64`](/sql-reference/data-types/float)
+返回 `x` 对应的角度值 (以度为单位) 。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -392,9 +392,9 @@ SELECT degrees(3.141592653589793)
 
 ## e \{#e\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
-返回欧拉常数（e）。
+返回欧拉常数 (e) 。
 
 **语法**
 
@@ -424,7 +424,7 @@ SELECT e();
 
 ## erf \{#erf\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 如果 `x` 是非负数，则 `erf(x/(σ√2))` 表示一个标准差为 `σ` 的正态分布随机变量，其取值与期望值之差的绝对值大于 `x` 的概率。
 
@@ -458,7 +458,7 @@ SELECT erf(3 / sqrt(2))
 
 ## erfc \{#erfc\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回与 `1-erf(x)` 接近的数值，并且在 `x` 较大时不会损失精度。
 
@@ -490,7 +490,7 @@ SELECT erfc(0);
 
 ## exp \{#exp\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回 e 的 `x` 次幂，其中 `x` 是传递给该函数的参数。
 
@@ -524,7 +524,7 @@ SELECT round(exp(-1), 4)
 
 ## exp10 \{#exp10\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回 10 的给定参数次幂。
 
@@ -556,7 +556,7 @@ SELECT exp10(2);
 
 ## exp2 \{#exp2\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回 2 的给定参数次方。
 
@@ -588,7 +588,7 @@ SELECT exp2(3);
 
 ## factorial \{#factorial\}
 
-引入版本：v22.11
+引入版本：v22.11.0
 
 计算整数的阶乘。
 0 的阶乘为 1。同样地，`factorial()` 函数对于任何负数参数都返回 `1`。
@@ -622,7 +622,7 @@ factorial(10)
 
 ## hypot \{#hypot\}
 
-引入于：v20.12
+引入于：v20.12.0
 
 返回直角三角形斜边的长度。
 `hypot` 可以避免在对非常大或非常小的数值进行平方运算时出现的问题。
@@ -656,7 +656,7 @@ SELECT hypot(1, 1)
 
 ## intExp10 \{#intExp10\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 类似于 [exp10](#exp10)，但返回 `UInt64` 类型的数值。
 
@@ -688,7 +688,7 @@ SELECT intExp10(2);
 
 ## intExp2 \{#intExp2\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 与 [exp2](#exp2) 类似，但返回一个 `UInt64` 数值。
 
@@ -720,7 +720,7 @@ SELECT intExp2(3);
 
 ## lgamma \{#lgamma\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 返回伽马函数的对数。
 
@@ -752,7 +752,7 @@ SELECT lgamma(5);
 
 ## log \{#log\}
 
-自 v1.1 版本起引入
+自 v1.1.0 版本起引入
 
 返回参数的自然对数。
 
@@ -786,7 +786,7 @@ SELECT log(10);
 
 ## log10 \{#log10\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回参数的以 10 为底的对数。
 
@@ -818,7 +818,7 @@ SELECT log10(100);
 
 ## log1p \{#log1p\}
 
-自 v20.12 版本引入
+自 v20.12.0 版本引入
 
 计算 log(1+x) 的值。
 对于较小的 `x` 值，log1p(x) 的计算比 log(1+x) 更精确。
@@ -851,7 +851,7 @@ SELECT log1p(0)
 
 ## log2 \{#log2\}
 
-首次引入于：v1.1
+首次引入于：v1.1.0
 
 返回参数的以 2 为底的对数。
 
@@ -883,7 +883,7 @@ SELECT log2(8);
 
 ## pi \{#pi\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回圆周率 π。
 
@@ -915,7 +915,7 @@ SELECT pi();
 
 ## pow \{#pow\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回 x 的 y 次幂。
 
@@ -950,10 +950,10 @@ SELECT pow(2, 3);
 
 ## proportionsZTest \{#proportionsZTest\}
 
-引入版本：v22.3
+引入版本：v22.3.0
 
 返回双样本比例 Z 检验的检验统计量——一种用于比较两个总体 x 和 y 的比例的统计检验方法。
-该函数同时支持用于标准误估计的合并（pooled）和非合并（unpooled）两种方法。
+该函数同时支持用于标准误估计的合并 (pooled) 和非合并 (unpooled) 两种方法。
 在合并版本中，会对两个比例取平均，并仅使用这一合并比例来估计标准误。
 在非合并版本中，会分别使用两个比例来估计标准误。
 
@@ -974,7 +974,7 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 
 **返回值**
 
-返回一个包含以下内容的 tuple：`z_stat`（Z 统计量）、`p_val`（P 值）、`ci_low`（置信区间下限）、`ci_high`（置信区间上限）。[`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含以下内容的 tuple：`z_stat` (Z 统计量) 、`p_val` (P 值) 、`ci_low` (置信区间下限) 、`ci_high` (置信区间上限) 。[`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -992,7 +992,7 @@ SELECT proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled');
 
 ## radians \{#radians\}
 
-自 v22.2 起引入
+自 v22.2.0 起引入
 
 将角度转换为弧度。
 
@@ -1004,7 +1004,7 @@ radians(x)
 
 **参数**
 
-* `x` — 输入的角度值（单位：度）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 输入的角度值 (单位：度) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
 **返回值**
 
@@ -1024,7 +1024,7 @@ SELECT radians(180)
 
 ## sigmoid \{#sigmoid\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 计算 sigmoid 函数：`1 / (1 + exp(-x))`。sigmoid 函数将任意实数映射到区间 (0, 1)，并广泛用于机器学习中。
 
@@ -1056,7 +1056,7 @@ SELECT sigmoid(0)
 
 ## sign \{#sign\}
 
-自 v21.2 起引入
+自 v21.2.0 起引入
 
 返回实数的符号值。
 
@@ -1108,7 +1108,7 @@ SELECT sign(-1)
 
 ## sin \{#sin\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 返回参数的正弦值。
 
@@ -1140,7 +1140,7 @@ SELECT sin(1.23)
 
 ## sinh \{#sinh\}
 
-自 v20.12 起引入。
+自 v20.12.0 起引入。
 
 返回双曲正弦值。
 
@@ -1172,7 +1172,7 @@ SELECT sinh(0)
 
 ## sqrt \{#sqrt\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回参数的平方根。
 
@@ -1204,7 +1204,7 @@ SELECT sqrt(16);
 
 ## tan \{#tan\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回参数的正切值。
 
@@ -1236,7 +1236,7 @@ SELECT tan(0);
 
 ## tanh \{#tanh\}
 
-自 v20.1 引入
+自 v20.1.0 引入
 
 返回双曲正切值。
 
@@ -1268,7 +1268,7 @@ SELECT tanh(0)
 
 ## tgamma \{#tgamma\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回 Gamma 函数。
 
@@ -1300,7 +1300,7 @@ SELECT tgamma(5);
 
 ## widthBucket \{#widthBucket\}
 
-引入版本：v23.3
+引入版本：v23.3.0
 
 在直方图中返回参数 `operand` 所落入的桶编号。该直方图包含 `count` 个等宽桶，覆盖范围为 `low` 到 `high`。如果 `operand` 小于 `low`，则返回 0；如果 `operand` 大于等于 `high`，则返回 `count`+1。
 另有一个不区分大小写的别名 `WIDTH_BUCKET`，用于与其他数据库兼容。

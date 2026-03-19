@@ -22,12 +22,12 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 具有微秒精度的事件时间。
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — 与后台任务关联的查询标识符（注意，它不是实际的查询，而是随机生成的 ID，用于在 `system.text_log` 中匹配日志）。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 与后台任务关联的查询标识符 (注意，它不是实际的查询，而是随机生成的 ID，用于在 `system.text_log` 中匹配日志) 。
 * `database` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 数据库名称。
 * `table` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 表名。
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 后台任务所属表的 UUID。
 * `log_name` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 后台任务名称。
-* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 任务执行时长（毫秒）。
+* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 任务执行时长 (毫秒) 。
 * `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 发生异常的错误码。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 所发生错误的文本信息。
 
