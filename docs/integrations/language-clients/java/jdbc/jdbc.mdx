@@ -48,7 +48,7 @@ We recommend using the latest java client directly if performance/direct access 
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.9.7</version>
+            <version>0.9.8</version>
             <classifier>all</classifier>
         </dependency>
         ```
@@ -58,14 +58,14 @@ We recommend using the latest java client directly if performance/direct access 
 
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.9.7:all")
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.8:all")
         ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.9.7:all'
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.8:all'
         ```
 
     </TabItem>
@@ -177,8 +177,10 @@ conn.setClientInfo(com.clickhouse.jdbc.ClientInfoProperties.APPLICATION_NAME.get
 
 Both ways will result in the following `http_user_agent` value in the query log:
 ```
-my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+my-app-01/1.0 jdbc-v2/0.9.7 clickhouse-java-v2/0.9.6 (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
 ```
+
+**Note:** We recommend using `app_name/version` format for `client_name` property because it helps to identify the application in the query log. 
 
 ### Operation Identification {#operation-identification}
 
