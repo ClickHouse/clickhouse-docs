@@ -40,7 +40,7 @@ Quick reference:
 
 **Error message:**
 
-```
+```sh
 code: 168, message: AST is too big. Maximum: 50000
 ```
 
@@ -63,7 +63,7 @@ code: 168, message: AST is too big. Maximum: 50000
 
 **Error message:**
 
-```
+```sh
 code: 62, message: Max query size exceeded
 ```
 
@@ -83,7 +83,7 @@ code: 62, message: Max query size exceeded
 
 **Error message:**
 
-```
+```sh
 code: 241, message: (total) memory limit exceeded: would use 14.01 GiB
 ```
 
@@ -105,7 +105,7 @@ If the connector pod itself is killed by OOM (no error in ClickHouse logs), the 
 
 **Error message:**
 
-```
+```sh
 code: 341, message: Not finished because some replicas are inactive right now
 ```
 
@@ -133,7 +133,7 @@ code: 341, message: Not finished because some replicas are inactive right now
 
 **Error message:**
 
-```
+```sh
 Failed to alter table ... all_replicas_active ... failed after 600 attempts
 ```
 
@@ -162,7 +162,7 @@ Failed to alter table ... all_replicas_active ... failed after 600 attempts
 
 **Error message:**
 
-```
+```sh
 code: 341, message: Database name schema was occupied by another replica
 ```
 
@@ -180,7 +180,7 @@ code: 341, message: Database name schema was occupied by another replica
 
 **Error message:**
 
-```
+```sh
 ClickHouse connection error: unexpected EOF
 ```
 
@@ -203,7 +203,7 @@ Or `FAILURE_WITH_TASK` with no stack trace in Fivetran logs.
 
 **Error message:**
 
-```
+```sh
 Failed to truncate table ... cause: truncate before time is zero
 ```
 
@@ -220,7 +220,7 @@ Failed to truncate table ... cause: truncate before time is zero
 
 **Error message:**
 
-```
+```sh
 cause: can't map type UInt64 to Fivetran types
 ```
 
@@ -238,7 +238,7 @@ cause: can't map type UInt64 to Fivetran types
 
 **Error message:**
 
-```
+```sh
 Failed to alter table ... cause: no primary keys for table
 ```
 
@@ -255,7 +255,7 @@ Failed to alter table ... cause: no primary keys for table
 
 **Error message:**
 
-```
+```sh
 user is missing the required grants on *.*: ALTER, CREATE DATABASE, CREATE TABLE, INSERT, SELECT
 ```
 
@@ -321,7 +321,7 @@ See the [data deduplication](/integrations/fivetran/reference#deduplication) ref
 
 ### Primary key and ORDER BY optimization {#primary-key-optimization}
 
-Fivetran replicates the source table's primary key as the ClickHouse `ORDER BY` clause. When the source has no PK, `_fivetran_id` (a UUID) becomes the sorting key, which leads to poor query performance because ClickHouse builds its [sparse primary index](/optimize/sparse-primary-indexes) from the `ORDER BY` columns.
+Fivetran replicates the source table's primary key as the ClickHouse `ORDER BY` clause. When the source has no PK, `_fivetran_id` (a UUID) becomes the sorting key, which leads to poor query performance because ClickHouse builds its [sparse primary index](/guides/best-practices/sparse-primary-indexes) from the `ORDER BY` columns.
 
 **Recommendations:**
 

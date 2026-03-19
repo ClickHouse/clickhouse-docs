@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
+  - website: 'https://github.com/ClickHouse/clickhouse-fivetran-destination'
 keywords: ['fivetran', 'data movement', 'etl', 'clickhouse destination', 'automated data platform', 'history mode', 'SCD Type 2']
 ---
 
@@ -19,26 +20,33 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## Overview {#overview}
 
-[Fivetran](https://www.fivetran.com) is an automated data movement platform that extracts data from sources, transforms it, and loads it into destinations.
+[Fivetran](https://www.fivetran.com) is the automated data movement platform moving data out of, into and across your cloud data platforms.
 
-The [ClickHouse Cloud destination](https://fivetran.com/docs/destinations/clickhouse) allows you to load data from any Fivetran-supported source into ClickHouse Cloud. The connector is currently in **Beta** and supports [History Mode (SCD Type 2)](https://fivetran.com/docs/destinations/clickhouse) for tracking complete record change history.
+[ClickHouse Cloud](https://clickhouse.com/cloud) is supported as a [Fivetran destination](https://fivetran.com/docs/destinations/clickhouse), allowing users to load data from various sources into ClickHouse. Open Source ClickHouse version is not supported as destination.
 
-The destination connector is developed and maintained by ClickHouse. The source code is available on [GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination).
+The destination connector is developed and maintained together by ClickHouse and Fivetran. The source code is available on [GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination).
 
-## Supported setups {#supported-setups}
 
-| Setup | Supported |
-|-------|-----------|
-| ClickHouse Cloud (all tiers) | Yes |
-| ClickHouse Cloud BYOC | Yes |
-| Self-hosted ClickHouse (MergeTree only) | No |
+:::note
+[ClickHouse Cloud destination](https://fivetran.com/docs/destinations/clickhouse) is currently in **Beta** but we are working to make it generally available soon.
+:::
 
-The connector requires [SharedMergeTree](/cloud/reference/shared-merge-tree)-based engines and uses the `Replicated` database engine internally.
+<div class='vimeo-container'>
+  <iframe src="//www.youtube.com/embed/sWe5JHW3lAs"
+    width="640"
+    height="360"
+    frameborder="0"
+    allow="autoplay;
+    fullscreen;
+    picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
 
 ## Key features {#key-features}
 
 - **Automatic schema creation** — destination tables and databases are created automatically based on source schema.
-- **SharedReplacingMergeTree** — all destination tables use `SharedReplacingMergeTree` versioned by `_fivetran_synced` for automatic deduplication.
 - **History Mode (SCD Type 2)** — preserves complete history of all record versions for point-in-time analysis and audit trails.
 - **Retry on network failures** — transient network errors are retried with exponential backoff. Duplicates from retries are handled by `ReplacingMergeTree`.
 - **Configurable batch sizes** — tune write, select, mutation, and hard delete batch sizes via a JSON configuration file.

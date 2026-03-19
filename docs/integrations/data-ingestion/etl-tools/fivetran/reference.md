@@ -32,7 +32,7 @@ The Fivetran ClickHouse destination maps [Fivetran data types](https://fivetran.
 | JSON | [String](/sql-reference/data-types/string) \* |
 
 :::note
-\* BINARY, XML, and JSON are stored as [String](/sql-reference/data-types/string) because ClickHouse's `String` type can represent an arbitrary set of bytes. The destination adds a column comment to indicate the original data type. The ClickHouse [JSON](/sql-reference/data-types/json) data type is not used as it was marked as obsolete and never recommended for production usage.
+\* BINARY, XML, and JSON are stored as [String](/sql-reference/data-types/string) because ClickHouse's `String` type can represent an arbitrary set of bytes. The destination adds a column comment to indicate the original data type. The ClickHouse [JSON](/sql-reference/data-types/newjson) data type is not used as it was marked as obsolete and never recommended for production usage.
 :::
 
 ## Destination table structure {#table-structure}

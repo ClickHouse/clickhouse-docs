@@ -21,7 +21,7 @@ import clickhouse_setup_guide4 from '@site/static/images/integrations/data-inges
 To connect Fivetran to ClickHouse Cloud, you need:
 
 - A Fivetran account with [permission to add destinations](https://fivetran.com/docs/using-fivetran/fivetran-dashboard/account-settings/role-based-access-control#legacyandnewrbacmodel).
-- A ClickHouse Cloud service. See the [Quick Start Guide](/getting-started/cloud-quick-start) if you need to create one. Copy the `default` user credentials when the service is created — the password is shown only once.
+- A ClickHouse Cloud service. See the [Quick Start Guide](/getting-started/quick-start/cloud) if you need to create one. Copy the `default` user credentials when the service is created — the password is shown only once.
 
 ### Create a dedicated Fivetran user (recommended) {#create-user}
 
