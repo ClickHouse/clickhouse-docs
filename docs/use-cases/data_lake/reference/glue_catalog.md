@@ -38,7 +38,7 @@ You will need to enable it using `SET allow_database_glue_catalog = 1;`
 
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
 
-With your AWS Glue Catalog configured and authentication, establish a 
+With your AWS Glue Catalog configured, you can authenticate and establish a 
 connection between ClickHouse and AWS Glue Catalog.
 
 
