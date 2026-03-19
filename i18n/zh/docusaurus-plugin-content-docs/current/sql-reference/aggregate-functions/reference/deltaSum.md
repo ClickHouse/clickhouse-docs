@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## deltaSum \{#deltaSum\}
 
-自 v21.3 引入
+自 v21.3.0 引入
 
 对相邻行之间的算术差值求和。
 如果差值为负，则会被忽略不计。
@@ -51,7 +51,7 @@ SELECT deltaSum(arrayJoin([1, 2, 3]))
 └────────────────────────────────┘
 ```
 
-**混合值（忽略为负的差值）**
+**混合数值 (忽略为负差值)&#x20;**
 
 ```sql title=Query
 SELECT deltaSum(arrayJoin([1, 2, 3, 0, 3, 4, 2, 3]))
@@ -63,7 +63,7 @@ SELECT deltaSum(arrayJoin([1, 2, 3, 0, 3, 4, 2, 3]))
 └───────────────────────────────────────────────┘
 ```
 
-**浮点数值**
+**浮点值**
 
 ```sql title=Query
 SELECT deltaSum(arrayJoin([2.25, 3, 4.5]))

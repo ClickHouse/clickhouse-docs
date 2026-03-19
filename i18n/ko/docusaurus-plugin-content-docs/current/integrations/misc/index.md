@@ -1,6 +1,6 @@
 ---
 slug: /integrations/misc
-keywords: ['Retool', 'Easypanel', 'Splunk']
+keywords: ['시각적 인터페이스', 'GUI', '프록시', '서드파티 통합']
 title: '도구'
 description: '도구 섹션 랜딩 페이지'
 doc_type: 'landing-page'

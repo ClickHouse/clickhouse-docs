@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactInclusive \{#quantilesExactInclusive\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 포함 방식(inclusive method)을 사용하여 수치 데이터 시퀀스의 여러 [분위수](https://en.wikipedia.org/wiki/Quantile)를 서로 다른 레벨에서 동시에 정확하게 계산합니다.
 

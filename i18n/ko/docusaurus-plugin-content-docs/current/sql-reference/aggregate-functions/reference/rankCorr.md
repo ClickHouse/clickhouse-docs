@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## rankCorr \{#rankCorr\}
 
-도입 버전: v20.9
+도입 버전: v20.9.0
 
 순위 상관 계수를 계산합니다.
 

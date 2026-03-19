@@ -9,9 +9,19 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# User Defined Function (UDF) \{#executable-user-defined-functions\}
+# UDFs User Defined Functions \{#udfs-user-defined-functions\}
+
+ClickHouse는 여러 유형의 사용자 정의 함수(UDF, User Defined Function)를 지원합니다:
+
+- [Executable UDFs](#executable-user-defined-functions)는 외부 프로그램 또는 스크립트(Python, Bash 등)를 실행하고 STDIN / STDOUT을 통해 블록 단위로 데이터를 스트리밍합니다. ClickHouse를 다시 컴파일하지 않고 기존 코드나 도구를 통합하는 데 사용할 수 있습니다. 호출당 오버헤드는 프로세스 내 옵션보다 더 크므로, 더 무거운 로직이나 다른 런타임이 필요한 경우에 가장 적합합니다.
+- [SQL UDFs](#sql-user-defined-functions)는 `CREATE FUNCTION`을 사용해 순수하게 SQL로 정의됩니다. 쿼리 플랜에 인라인/전개되어(프로세스 경계가 없음) 가벼우며, 표현식 로직을 재사용하거나 복잡한 계산 컬럼을 단순화하는 데 이상적입니다.
+- [Experimental WebAssembly UDFs](#webassembly-user-defined-functions)는 서버 프로세스 내의 샌드박스 안에서 WebAssembly로 컴파일된 코드를 실행합니다. 외부 실행 파일보다 호출당 오버헤드가 낮으면서도 네이티브 확장보다 더 나은 격리를 제공하므로, WASM을 타깃으로 컴파일할 수 있는 언어(C/C++/Rust 등)로 작성된 사용자 정의 알고리즘에 적합합니다.
+
+## 실행 가능한 User Defined Function (UDF) \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
@@ -48,11 +58,7 @@ ClickHouse는 데이터를 처리하기 위해 임의의 외부 실행 프로그
 
 명령은 `STDIN`에서 인수를 읽고 결과를 `STDOUT`으로 출력해야 합니다. 명령은 인수를 반복적으로 처리해야 하며, 하나의 인수 청크를 처리한 후에는 다음 청크를 기다려야 합니다.
 
-
-
 ## 실행형 사용자 정의 함수(UDF) \{#executable-user-defined-functions\}
-
-
 
 ## 예시 \{#examples\}
 
@@ -119,6 +125,7 @@ SELECT test_function_sum(2, 2);
 │                       4 │
 └─────────────────────────┘
 ```
+
 
 ### Python 스크립트에서 사용하는 UDF \{#udf-python\}
 
@@ -189,10 +196,10 @@ SELECT test_function_python(toUInt64(2));
 └─────────────────────────┘
 ```
 
-### `STDIN`에서 두 개의 값을 읽고 JSON 객체로 합계를 반환합니다 \{#udf-stdin\}
 
-XML 또는 YAML 구성을 사용하여 이름이 있는 인수와 [JSONEachRow](/interfaces/formats/JSONEachRow) 형식을 갖는 `test_function_sum_json`을 생성합니다.
+### `STDIN`에서 두 값을 읽어 그 합을 JSON 객체로 반환합니다 \{#udf-stdin\}
 
+XML 또는 YAML 구성을 사용하여 이름이 있는 인자와 [JSONEachRow](/interfaces/formats/JSONEachRow) 포맷으로 `test_function_sum_json`을 생성합니다.
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -270,6 +277,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
+
 ### `command` 설정에서 매개변수 사용 \{#udf-parameters-in-command\}
 
 실행 가능한 사용자 정의 함수는 `command` 설정에 구성된 상수 매개변수를 받을 수 있습니다(`executable` 타입의 사용자 정의 함수에만 작동합니다).
@@ -277,7 +285,7 @@ SELECT test_function_sum_json(2, 2);
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
-    파일 `test_function_parameter_python.xml`(기본 경로 설정에서는 `/etc/clickhouse-server/test_function_parameter_python.xml`).
+    파일 `test_function_parameter_python.xml`(기본 경로 설정에서는 `/etc/clickhouse-server/test_function_parameter_python.xml`에 위치합니다).
 
     ```xml title="/etc/clickhouse-server/test_function_parameter_python.xml"
     <functions>
@@ -297,7 +305,7 @@ SELECT test_function_sum_json(2, 2);
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
-    파일 `test_function_parameter_python.yaml`(기본 경로 설정에서는 `/etc/clickhouse-server/test_function_parameter_python.yaml`).
+    파일 `test_function_parameter_python.yaml`(기본 경로 설정에서는 `/etc/clickhouse-server/test_function_parameter_python.yaml`에 위치합니다).
 
     ```yml title="/etc/clickhouse-server/test_function_parameter_python.yaml"
     functions:
@@ -315,7 +323,7 @@ SELECT test_function_sum_json(2, 2);
 
 <br />
 
-`user_scripts` 폴더 내부에 `test_function_parameter_python.py` 스크립트 파일을 생성하십시오(기본 경로 설정에서는 `/var/lib/clickhouse/user_scripts/test_function_parameter_python.py`).
+`user_scripts` 폴더 안에 스크립트 파일 `test_function_parameter_python.py`를 생성합니다(기본 경로 설정에서는 `/var/lib/clickhouse/user_scripts/test_function_parameter_python.py`에 위치합니다).
 
 ```python
 #!/usr/bin/python3
@@ -332,12 +340,12 @@ if __name__ == "__main__":
 SELECT test_function_parameter_python(1)(2);
 ```
 
-
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
 │ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
+
 
 ### 셸 스크립트를 사용하는 UDF \{#udf-shell-script\}
 
@@ -419,16 +427,12 @@ SELECT test_shell(number) FROM numbers(10);
 이 경우 쿼리가 취소되고 오류 메시지가 클라이언트에 반환됩니다.
 분산 처리 환경에서는 서버 중 하나에서 예외가 발생하면 다른 서버들도 해당 쿼리 중단을 시도합니다.
 
-
-
 ## 인수 표현식의 평가 \{#evaluation-of-argument-expressions\}
 
 대부분의 프로그래밍 언어에서는 특정 연산자의 경우 인수 중 일부가 평가되지 않을 수 있습니다.
 이러한 연산자로는 보통 `&&`, `||`, `?:` 가 있습니다.
 ClickHouse에서는 함수(연산자)의 인수는 항상 평가됩니다.
 이는 각 행을 개별적으로 계산하는 대신, 컬럼 파트 전체를 한 번에 평가하기 때문입니다.
-
-
 
 ## 분산 쿼리 처리를 위한 함수 실행 \{#performing-functions-for-distributed-query-processing\}
 
@@ -446,13 +450,57 @@ ClickHouse에서는 함수(연산자)의 인수는 항상 평가됩니다.
 
 쿼리에서 어떤 함수가 요청자 서버에서 실행되지만 이를 원격 서버에서 실행해야 하는 경우, 해당 함수를 'any' 집계 함수로 감싸거나 `GROUP BY`의 키에 추가할 수 있습니다.
 
-
-
 ## SQL User Defined Functions \{#sql-user-defined-functions\}
 
 람다 표현식으로 정의한 사용자 정의 함수는 [CREATE FUNCTION](../statements/create/function.md) SQL 문을 사용해 생성할 수 있습니다. 이러한 함수를 삭제하려면 [DROP FUNCTION](../statements/drop.md#drop-function) SQL 문을 사용합니다.
 
+## WebAssembly User Defined Functions \{#webassembly-user-defined-functions\}
 
+<CloudNotSupportedBadge/>
+
+<ExperimentalBadge/>
+
+WebAssembly User Defined Functions (WASM UDFs)는 WebAssembly로 컴파일된 사용자 정의 코드를 ClickHouse 서버 프로세스 내에서 실행할 수 있게 합니다.
+
+### 빠른 시작 \{#quick-start\}
+
+ClickHouse 설정에서 실험적 WebAssembly 지원을 활성화하십시오:
+
+```xml
+<clickhouse>
+    <allow_experimental_webassembly_udf>true</allow_experimental_webassembly_udf>
+</clickhouse>
+```
+
+컴파일된 WASM 모듈을 system 테이블에 삽입합니다:
+
+```sql
+INSERT INTO system.webassembly_modules (name, code)
+SELECT 'my_module', base64Decode('AGFzbQEAAAA...');
+```
+
+WASM 모듈을 사용하여 FUNCTION을 생성합니다:
+
+```sql
+CREATE FUNCTION my_function
+LANGUAGE WASM
+ABI ROW_DIRECT
+FROM 'my_module'
+ARGUMENTS (x UInt32, y UInt32)
+RETURNS UInt32;
+```
+
+쿼리에서 해당 FUNCTION을 사용하십시오:
+
+```sql
+SELECT my_function(10, 20);
+```
+
+
+### 추가 정보 \{#more-information\}
+
+자세한 내용은 [WebAssembly 사용자 정의 함수(UDF)](wasm_udf.md) 문서를 참조하십시오.
 
 ## 관련 콘텐츠 \{#related-content\}
+
 - [ClickHouse Cloud에서의 사용자 정의 함수](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

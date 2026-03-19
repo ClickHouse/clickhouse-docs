@@ -4,7 +4,7 @@ description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse 
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
 doc_type: 'guide'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion', 'compression', 'gzip', 'zstd', 'lz4', 'snappy']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -91,6 +91,23 @@ You have familiarized yourself with the [ClickPipes intro](../index.md) and setu
 
 The supported formats are:
 - [JSON](/interfaces/formats/JSON)
+
+## Compression {#compression}
+
+ClickPipes for Kinesis automatically detects and decompresses compressed records. Unlike Kafka, where the client library handles decompression transparently, Kinesis delivers raw bytes — ClickPipes handles this for you with no configuration required.
+
+The following compression codecs are supported:
+
+- **gzip**
+- **zstd**
+- **lz4**
+- **snappy** (framed format)
+
+Compression is detected automatically via magic bytes in each record. If no known compression signature is found, the record is treated as uncompressed. The detected compression type is also surfaced during schema inference, so the sample data preview in the UI will correctly show the decompressed data.
+
+:::note
+Auto-detection is safe for text-based formats like JSON and CSV, as printable ASCII characters will never collide with compression magic bytes.
+:::
 
 ## Supported data types {#supported-data-types}
 

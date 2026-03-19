@@ -140,4 +140,3 @@ Automatic storage scaling is on the roadmap for Managed Postgres. This feature w
 - [Settings and configuration](/cloud/managed-postgres/settings)
 - [Read replicas](/cloud/managed-postgres/read-replicas)
 - [High availability](/cloud/managed-postgres/high-availability)
-- [Performance benchmarks](/cloud/managed-postgres/benchmarks)

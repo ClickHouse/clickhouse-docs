@@ -75,6 +75,22 @@ doc_type: 'reference'
 - 快速且响应灵敏的性能
 - 开源并采用 MIT 许可证
 
+### Dory \{#dory\}
+
+[Dory](https://github.com/dorylab/dory) AI 原生 SQL 工作空间，对 ClickHouse 提供一流支持，并内置 AI 能力。
+
+功能特性：
+
+* 用于 SQL 生成、解释和调试的 AI Copilot
+* 在统一工作空间中管理和查询多个 ClickHouse 集群
+* 具备 Schema 感知能力的 SQL 自动补全和多标签查询工作空间
+* 支持过滤和可视化的交互式查询结果探索
+* AI 驱动的数据表摘要，便于理解数据集
+* 直接连接 ClickHouse，支持 SSH 隧道
+* 现代、对开发者友好的界面，支持浅色、深色及主题
+* 跨平台桌面应用 (macOS、Windows、Linux) ，并支持 Docker
+* 开源并采用 MIT 许可
+
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
 [ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一个用于通过 Mermaid.js 图表可视化 ClickHouse 表关系的强大开源 Web 应用。你可以通过直观界面浏览数据库和数据表，利用可选的行数与大小信息探索表元数据，并导出交互式 schema 图。
@@ -348,6 +364,19 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - Native RBAC - UI 权限直接来源于 ClickHouse 授权
 
 [ClickLens 源码](https://github.com/ntk148v/clicklens)
+
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com) 是一个专为 **团队** 和 **安全数据访问** 打造的开源 ClickHouse Web 界面。与需要直接数据库凭证的传统客户端不同，CHouse UI 提供强大的 **基于角色的访问控制（RBAC）** 层，使管理员可以在不暴露底层凭证的情况下授予细粒度权限。
+
+关键特性包括：
+
+- **企业级安全** - 服务器端凭证加密、详细审计日志和访问控制规则。
+- **团队协作** - 定义自定义角色（例如，为分析师配置特定表访问）并安全共享查询。
+- **AI 驱动洞察** - 集成 LLM 支持，用于查询优化和可视化解释。
+- **完整工具集** - 提供功能完善的 SQL 编辑器、监控仪表盘、模式（schema）浏览器以及无缝的数据导入/导出功能。
+
+[CHouse UI 源码](https://github.com/daun-gatal/chouse-ui)
 
 ## 商业版 \{#commercial\}
 

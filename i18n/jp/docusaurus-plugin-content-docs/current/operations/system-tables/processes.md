@@ -23,7 +23,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `query_id` ([String](../../sql-reference/data-types/)) — 定義されている場合のクエリ ID。
 * `address` ([IPv6](../../sql-reference/data-types/)) — クエリが送信された元の IP アドレスです。分散処理でも同様です。分散クエリが元々どこから送信されたかを追跡するには、クエリ送信元サーバー上の system.processes を参照します。
 * `port` ([UInt16](../../sql-reference/data-types/)) — クエリ送信元のクライアントポート。
-* `initial_user` ([String](../../sql-reference/data-types/)) — 初回のクエリを実行したユーザーの名前（分散クエリ実行時）。
+* `initial_user` ([String](../../sql-reference/data-types/)) — 初回のクエリを実行したユーザーの名前 (分散クエリ実行時) 。
 * `initial_query_id` ([String](../../sql-reference/data-types/)) — 分散クエリ実行における初期クエリの ID。
 * `initial_address` ([IPv6](../../sql-reference/data-types/)) — 親クエリが実行された元の IP アドレス。
 * `initial_port` ([UInt16](../../sql-reference/data-types/)) — 親クエリを送信する際に使用されたクライアントポート。
@@ -37,13 +37,13 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `client_version_patch` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client または他の TCP クライアントのバージョン番号のパッチ部分。
 * `http_method` ([UInt8](../../sql-reference/data-types/)) — クエリを開始した HTTP メソッド。取り得る値: 0 — クエリが TCP インターフェースから実行された。1 — GET メソッドが使用された。2 — POST メソッドが使用された。
 * `http_user_agent` ([String](../../sql-reference/data-types/)) — HTTP クエリで送信された HTTP ヘッダー `User-Agent` の値。
-* `http_referer` ([String](../../sql-reference/data-types/)) — HTTP クエリで送信される HTTP ヘッダー Referer（クエリを発行したページの絶対 URL または部分的なアドレスを含む）。
+* `http_referer` ([String](../../sql-reference/data-types/)) — HTTP クエリで送信される HTTP ヘッダー Referer (クエリを発行したページの絶対 URL または部分的なアドレスを含む) 。
 * `forwarded_for` ([String](../../sql-reference/data-types/)) — HTTP クエリで送信された HTTP ヘッダー X-Forwarded-For。
-* `quota_key` ([String](../../sql-reference/data-types/)) — quotas 設定で指定されたクオータキー（`keyed` を参照）。
+* `quota_key` ([String](../../sql-reference/data-types/)) — quotas 設定で指定されたクオータキー (`keyed` を参照) 。
 * `distributed_depth` ([UInt64](../../sql-reference/data-types/)) — クエリが内部的にサーバーノード間で再送信された回数。
-* `elapsed` ([Float64](../../sql-reference/data-types/)) — リクエスト実行の開始からの経過時間（秒）。
+* `elapsed` ([Float64](../../sql-reference/data-types/)) — リクエスト実行の開始からの経過時間 (秒) 。
 * `is_cancelled` ([UInt8](../../sql-reference/data-types/)) — クエリがキャンセルされたかどうかを示します。
-* `is_all_data_sent` ([UInt8](../../sql-reference/data-types/)) — すべてのデータがクライアントに送信されたかどうか（言い換えると、サーバー側でクエリの処理が完了したかどうか）。
+* `is_all_data_sent` ([UInt8](../../sql-reference/data-types/)) — すべてのデータがクライアントに送信されたかどうか (言い換えると、サーバー側でクエリの処理が完了したかどうか) 。
 * `read_rows` ([UInt64](../../sql-reference/data-types/)) — テーブルから読み出された行の数。分散処理の場合、要求元サーバーでは、すべてのリモートサーバーで読み出された行数の合計となります。
 * `read_bytes` ([UInt64](../../sql-reference/data-types/)) — テーブルから読み取られた非圧縮バイト数。分散処理の場合、要求元サーバー上では、すべてのリモートサーバー分を合計した値になります。
 * `total_rows_approx` ([UInt64](../../sql-reference/data-types/)) — 読み取られる行の総数のおおよその値を表します。分散処理においては、要求元サーバーでは、これはすべてのリモートサーバー分を合算した値になります。処理すべき新たなソースが判明した場合には、リクエスト処理中に更新されることがあります。

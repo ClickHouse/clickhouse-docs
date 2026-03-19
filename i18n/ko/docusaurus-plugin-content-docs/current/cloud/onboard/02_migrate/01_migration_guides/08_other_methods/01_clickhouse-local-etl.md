@@ -85,7 +85,7 @@ Mac에서 `clickhouse-local`을 실행하려면 `./clickhouse local`을 사용�
 
 <AddARemoteSystem />
 
-## Example 1: Migrating from MySQL to ClickHouse Cloud with an Integration engine \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
+## Example: Migrating from MySQL to ClickHouse Cloud with an Integration engine \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
 
 소스 MySQL 데이터베이스에서 데이터를 읽기 위해 [integration table engine](/engines/table-engines/integrations/mysql/)을(를) 사용합니다. 이 엔진은 [mysql table function](/sql-reference/table-functions/mysql/)에 의해 필요할 때마다 즉석에서 생성됩니다. 그리고 ClickHouse Cloud 서비스의 대상 테이블에 데이터를 쓰기 위해 [remoteSecure table function](/sql-reference/table-functions/remote/)을(를) 사용합니다.
 
@@ -126,18 +126,3 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 데이터는 `clickhouse-local` 호스트 머신에 로컬로 저장되지 않습니다. 대신 데이터는 소스 MySQL 테이블에서 읽어 온 다음
 바로 ClickHouse Cloud 서비스의 대상 테이블로 기록됩니다.
 :::
-
-
-## 예제 2: JDBC bridge를 사용하여 MySQL에서 ClickHouse Cloud로 마이그레이션 \{#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge\}
-
-[JDBC integration table engine](/engines/table-engines/integrations/jdbc.md)([jdbc table function](/sql-reference/table-functions/jdbc.md)에 의해 동적으로 생성됨)과 [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge), MySQL JDBC 드라이버를 함께 사용하여 원본 MySQL 데이터베이스에서 데이터를 읽고, [remoteSecure table function](/sql-reference/table-functions/remote.md)을 사용하여 대상 ClickHouse Cloud 서비스의 테이블에 데이터를 씁니다.
-
-<Image img={ch_local_04} size='lg' alt='자가 관리형 ClickHouse 마이그레이션'  />
-
-### 대상 ClickHouse Cloud 서비스에서의 작업: \{#on-the-destination-clickhouse-cloud-service-1\}
-
-#### 대상 데이터베이스를 생성합니다: \{#create-the-destination-database-1\}
-
-```sql
-  CREATE DATABASE db
-```

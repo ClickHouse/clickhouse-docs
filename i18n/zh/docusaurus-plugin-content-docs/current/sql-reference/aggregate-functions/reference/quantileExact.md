@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 因此，该函数会消耗 `O(n)` 的内存，其中 `n` 是传入值的数量。
 不过，对于值数量较少的情况，该函数非常高效。
 
-在一个查询中使用多个具有不同分位水平的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率会低于本可以达到的水平）。
+在一个查询中使用多个具有不同分位水平的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率会低于本可以达到的水平) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **语法**

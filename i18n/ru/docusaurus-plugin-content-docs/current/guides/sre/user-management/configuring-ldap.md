@@ -17,7 +17,9 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 ClickHouse можно настроить на использование LDAP для аутентификации пользователей базы данных. В этом руководстве приведён простой пример интеграции ClickHouse с системой LDAP, которая аутентифицирует пользователей по общедоступному каталогу.
 
-## 1. Настройка параметров подключения LDAP в ClickHouse \{#1-configure-ldap-connection-settings-in-clickhouse\}
+<VerticalStepper headerLevel="h2">
+
+## Настройка подключения LDAP в ClickHouse \{#1-configure-ldap-connection-settings-in-clickhouse\}
 
 1. Протестируйте подключение к этому публичному серверу LDAP:
     ```bash
@@ -25,7 +27,6 @@ ClickHouse можно настроить на использование LDAP д
     ```
 
     Ответ будет примерно таким:
-    
     ```response
     # extended LDIF
     #
@@ -77,7 +78,7 @@ ClickHouse можно настроить на использование LDAP д
     :::
 
     :::note
-    Дополнительные сведения о параметрах LDAP см. на [странице документации LDAP](../../../operations/external-authenticators/ldap.md).
+    Подробнее о настройке LDAP см. на [странице документации LDAP](../../../operations/external-authenticators/ldap.md).
     :::
 
 3. Добавьте раздел `<ldap>` в раздел `<user_directories>` для настройки сопоставления ролей пользователей. Этот раздел определяет, когда пользователь аутентифицирован и какую роль он получит. В этом базовом примере любой пользователь, аутентифицирующийся в LDAP, получит роль `scientists_role`, которая будет определена на следующем шаге в ClickHouse. Раздел должен выглядеть примерно так:
@@ -108,32 +109,32 @@ ClickHouse можно настроить на использование LDAP д
     |Parameter |Description                   |Example              |
     |----------|------------------------------|---------------------|
     |server    |метка, определённая в предыдущем разделе ldap_servers|test_ldap_server|
-    |roles      |имена ролей в ClickHouse, к которым будут сопоставлены пользователи|scientists_role|
-    |base_dn   |базовый путь, с которого начинается поиск групп с пользователем|dc=example,dc=com|
-    |search_filter|фильтр поиска LDAP для определения групп, выбираемых для сопоставления пользователей|`(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))`|
+    |roles      |имя ролей в ClickHouse, с которыми будут сопоставлены пользователи|scientists_role|
+    |base_dn   |базовый путь, с которого начинается поиск групп с пользователем        |dc=example,dc=com|
+    |search_filter|фильтр поиска LDAP для определения групп, выбираемых для сопоставления пользователей    |`(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))`|
     |attribute |из какого атрибута должно возвращаться значение|cn|
 
 4. Перезапустите сервер ClickHouse, чтобы применить настройки.
 
-## 2. Настройте роли и разрешения базы данных ClickHouse \{#2-configure-clickhouse-database-roles-and-permissions\}
+## Настройка ролей и разрешений базы данных ClickHouse \{#2-configure-clickhouse-database-roles-and-permissions\}
 
 :::note
-В этом разделе предполагается, что в ClickHouse включены управление доступом на уровне SQL и управление учётными записями (SQL Access Control and Account Management). Инструкции по включению см. в руководстве [SQL Users and Roles](index.md).
+Процедуры в этом разделе предполагают, что в ClickHouse включены управление доступом на основе SQL и управление учётными записями. Чтобы включить их, см. [руководство по пользователям и ролям SQL](index.md).
 :::
 
-1. Создайте роль в ClickHouse с тем же именем, которое использовалось в разделе сопоставления ролей в файле `config.xml`:
+1. Создайте в ClickHouse роль с тем же именем, которое указано в разделе сопоставления ролей файла `config.xml`
     ```sql
     CREATE ROLE scientists_role;
     ```
 
-2. Назначьте необходимые привилегии этой роли. Следующий оператор назначает административные привилегии любому пользователю, который может пройти аутентификацию через LDAP:
+2. Предоставьте роли необходимые привилегии. Следующая инструкция предоставляет административные привилегии любому пользователю, который может пройти аутентификацию через LDAP:
     ```sql
     GRANT ALL ON *.* TO scientists_role;
     ```
 
-## 3. Тестирование конфигурации LDAP \{#3-test-the-ldap-configuration\}
+## Тестирование конфигурации LDAP \{#3-test-the-ldap-configuration\}
 
-1. Войдите в систему с помощью клиента ClickHouse
+1. Войдите с помощью клиента ClickHouse
     ```bash
     $ clickhouse-client --user einstein --password password
     ClickHouse client version 22.2.2.1.
@@ -144,10 +145,10 @@ ClickHouse можно настроить на использование LDAP д
     ```
 
     :::note
-    Используйте команду `ldapsearch` на шаге 1, чтобы просмотреть всех пользователей, доступных в каталоге. Для всех этих пользователей пароль — `password`.
+    Используйте команду `ldapsearch` из шага 1, чтобы просмотреть всех пользователей, доступных в каталоге; для всех пользователей пароль — `password`
     :::
 
-2.  Проверьте, что пользователь был корректно сопоставлен с ролью `scientists_role` и имеет права администратора
+2.  Убедитесь, что пользователь был корректно сопоставлен с ролью `scientists_role` и имеет права администратора
     ```sql
     SHOW DATABASES
     ```
@@ -169,6 +170,8 @@ ClickHouse можно настроить на использование LDAP д
 
     9 rows in set. Elapsed: 0.004 sec.
     ```
+
+</VerticalStepper>
 
 ## Итоги \{#summary\}
 

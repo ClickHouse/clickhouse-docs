@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## sparkbar \{#sparkbar\}
 
-引入于：v21.11
+引入于：v21.11.0
 
 该函数在区间 `[min_x, max_x]` 内，为取值 `x` 及其重复次数 `y` 绘制频率直方图。
 所有落入同一桶中的 `x` 的重复次数会被取平均值，因此数据应当预先聚合。
@@ -29,11 +29,11 @@ sparkbar(buckets[, min_x, max_x])(x, y)
 
 **参数**
 
-* `buckets` — 段（区间）的数量。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `buckets` — 段 (区间) 的数量。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `min_x` — 可选。区间起点。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 * `max_x` — 可选。区间终点。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**参数（Arguments）**
+**参数 (Arguments)&#x20;**
 
 * `x` — 包含数值的字段。[`const String`](/sql-reference/data-types/string)
 * `y` — 包含数值出现频率的字段。[`const String`](/sql-reference/data-types/string)
@@ -60,7 +60,7 @@ SELECT sparkbar(9)(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date F
 └──────────────────────────────┘
 ```
 
-**指定区间的情况**
+**指定区间时**
 
 ```sql title=Query
 SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date FROM spark_bar_data GROUP BY event_date);

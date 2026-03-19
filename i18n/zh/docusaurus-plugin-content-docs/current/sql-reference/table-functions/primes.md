@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 # primes 表函数 \{#primes-table-function\}
 
-* `primes()` – 返回一个具有无限行、仅包含名为 `prime` 的单列（UInt64）的表，该列按升序包含从 2 开始的素数。使用 `LIMIT`（以及可选的 `OFFSET`）来限制行数。
+* `primes()` – 返回一个具有无限行、仅包含名为 `prime` 的单列 (UInt64) 的表，该列按升序包含从 2 开始的素数。使用 `LIMIT` (以及可选的 `OFFSET`) 来限制行数。
 
-* `primes(N)` – 返回一个仅包含 `prime` 列（UInt64）的表，该列包含从 2 开始的前 `N` 个素数。
+* `primes(N)` – 返回一个仅包含 `prime` 列 (UInt64) 的表，该列包含从 2 开始的前 `N` 个素数。
 
-* `primes(N, M)` – 返回一个仅包含 `prime` 列（UInt64）的表，该列包含从第 `N` 个素数开始的 `M` 个素数（素数索引从 0 开始计数）。
+* `primes(N, M)` – 返回一个仅包含 `prime` 列 (UInt64) 的表，该列包含从第 `N` 个素数开始的 `M` 个素数 (素数索引从 0 开始计数) 。
 
-* `primes(N, M, S)` – 返回一个仅包含 `prime` 列（UInt64）的表，该列包含从第 `N` 个素数开始、按步长 `S`（按素数索引）的 `M` 个素数（素数索引从 0 开始计数）。返回的素数对应索引 `N, N + S, N + 2S, ..., N + (M - 1)S`。`S` 必须 `>= 1`。
+* `primes(N, M, S)` – 返回一个仅包含 `prime` 列 (UInt64) 的表，该列包含从第 `N` 个素数开始、按步长 `S` (按素数索引) 的 `M` 个素数 (素数索引从 0 开始计数) 。返回的素数对应索引 `N, N + S, N + 2S, ..., N + (M - 1)S`。`S` 必须 `>= 1`。
 
 这与 [`system.primes`](/operations/system-tables/primes) 系统表类似。
 
@@ -63,7 +63,7 @@ SELECT * FROM primes(10);
 第一个大于 1e15 的素数。
 
 ```sql
-SELECT prime FROM primes() WHERE prime > toUInt64(1e15) LIMIT 1;
+SELECT prime FROM primes() WHERE prime > 1e15 LIMIT 1;
 ```
 
 ```response
@@ -77,7 +77,7 @@ SELECT prime FROM primes() WHERE prime > toUInt64(1e15) LIMIT 1;
 ```sql
 SELECT prime
 FROM primes()
-WHERE prime >= toUInt64(1e15)
+WHERE prime >= 1e15
   AND prime % 65537 = 1
 LIMIT 1;
 ```
@@ -111,15 +111,15 @@ LIMIT 7;
 
 ### 注意事项 \{#notes\}
 
-* 速度最快的是使用默认步长（`1`）的简单区间形式和点过滤查询，例如 `primes(N)` 或 `primes() LIMIT N`。这些形式使用经过优化的素数生成器，可以高效地计算非常大的素数。
-* 对于无界数据源（`primes()` / `system.primes`），可以在生成过程中应用诸如 `prime BETWEEN ...`、`prime IN (...)` 或 `prime = ...` 这样的简单值过滤器，以限制搜索的取值范围。例如，下面的查询几乎可以瞬间完成：
+* 速度最快的是使用默认步长 (`1`) 的简单区间形式和点过滤查询，例如 `primes(N)` 或 `primes() LIMIT N`。这些形式使用经过优化的素数生成器，可以高效地计算非常大的素数。
+* 对于无界数据源 (`primes()` / `system.primes`) ，可以在生成过程中应用诸如 `prime BETWEEN ...`、`prime IN (...)` 或 `prime = ...` 这样的简单值过滤器，以限制搜索的取值范围。例如，下面的查询几乎可以瞬间完成：
 
 ```sql
 SELECT sum(prime)
 FROM primes()
-WHERE prime BETWEEN toUInt64(1e6) AND toUInt64(1e6) + 100
-   OR prime BETWEEN toUInt64(1e12) AND toUInt64(1e12) + 100
-   OR prime BETWEEN toUInt64(1e15) AND toUInt64(1e15) + 100
+WHERE prime BETWEEN 1e6 AND 1e6 + 100
+   OR prime BETWEEN 1e12 AND 1e12 + 100
+   OR prime BETWEEN 1e15 AND 1e15 + 100
    OR prime IN (9999999967, 9999999971, 9999999973)
    OR prime = 1000000000000037;
 ```
@@ -132,5 +132,5 @@ WHERE prime BETWEEN toUInt64(1e6) AND toUInt64(1e6) + 100
 1 row in set. Elapsed: 0.090 sec. 
 ```
 
-* 这种数值范围优化不适用于带有 `WHERE` 的有界表函数（`primes(N)`、`primes(offset, count[, step])`），因为这些变体是按素数序号定义一个有限表的，为了保持语义，必须在生成该表之后再应用 `WHERE` 过滤条件。
-* 使用非零偏移量和/或大于 1 的步长（`primes(offset, count)` / `primes(offset, count, step)`）可能会更慢，因为内部可能需要先生成并跳过额外的质数。如果你不需要偏移量或步长，可以省略这两个参数。
+* 这种数值范围优化不适用于带有 `WHERE` 的有界表函数 (`primes(N)`、`primes(offset, count[, step])`) ，因为这些变体是按素数序号定义一个有限表的，为了保持语义，必须在生成该表之后再应用 `WHERE` 过滤条件。
+* 使用非零偏移量和/或大于 1 的步长 (`primes(offset, count)` / `primes(offset, count, step)`) 可能会更慢，因为内部可能需要先生成并跳过额外的质数。如果你不需要偏移量或步长，可以省略这两个参数。

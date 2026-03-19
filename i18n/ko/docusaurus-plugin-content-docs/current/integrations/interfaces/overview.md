@@ -32,6 +32,11 @@ ClickHouse 서버는 숙련된 사용자를 위한 내장 시각화 인터페이
 * Play UI: 브라우저에서 `/play`를 엽니다.
 * Advanced Dashboard: 브라우저에서 `/dashboard`를 엽니다.
 * ClickHouse 엔지니어를 위한 바이너리 심볼 뷰어: 브라우저에서 `/binary`를 엽니다.
+* 관측성을 위한 ClickStack UI: 브라우저에서 `/clickstack`을 엽니다.
+
+:::info[ClickStack]
+이 버전의 ClickStack은 로컬 디버깅과 신속한 분석에 적합하지만, 프로덕션 환경을 위한 것은 아닙니다. 프로덕션 환경에 적합한 완전한 기능의 ClickStack은 [Open Source ClickStack](/use-cases/observability/clickstack/getting-started/oss)을 참조하십시오.
+:::
 
 또한 ClickHouse와 함께 사용할 수 있는 다양한 서드파티 라이브러리도 있습니다:
 

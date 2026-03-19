@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## seriesDecomposeSTL \{#seriesDecomposeSTL\}
 
-Добавлена в версии: v24.1
+Добавлена в версии: v24.1.0
 
 Разлагает временной ряд с использованием STL [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf) на сезонную, трендовую и остаточную составляющие.
 
@@ -75,7 +75,7 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 
 ## seriesOutliersDetectTukey \{#seriesOutliersDetectTukey\}
 
-Введена в версии: v24.2
+Введена в версии: v24.2.0
 
 Обнаруживает выбросы в данных временных рядов с помощью [ограждений Тьюки (Tukey Fences)](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences).
 
@@ -110,7 +110,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 └───────────────────────────────────┘
 ```
 
-**Выявление выбросов с настраиваемыми параметрами**
+**Обнаружение выбросов с пользовательскими параметрами**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
@@ -124,7 +124,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT \{#seriesPeriodDetectFFT\}
 
-Добавлено в: v23.12
+Добавлено в: v23.12.0
 
 Определяет период заданных данных временного ряда с помощью FFT — [быстрого преобразования Фурье](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
 
@@ -170,7 +170,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## timeSeriesCopyTag \{#timeSeriesCopyTag\}
 
-Добавлено в версии: v26.1
+Добавлено в версии: v26.1.0
 
 Копирует указанный тег из одной группы тегов (`src_group`) в другую (`dest_group`).
 Функция заменяет любые предыдущие значения копируемого тега в `dest_group`.
@@ -213,7 +213,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesCopyTags \{#timeSeriesCopyTags\}
 
-Введена в: v26.1
+Введена в: v26.1.0
 
 Копирует указанные теги из одной группы тегов (`src_group`) в другую (`dest_group`).
 Функция заменяет все предыдущие значения скопированных тегов в `dest_group`.
@@ -256,7 +256,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesExtractTag \{#timeSeriesExtractTag\}
 
-Добавлена в: v26.1
+Добавлена в: v26.1.0
 
 Извлекает значение указанного тега из группы. Возвращает NULL, если тег не найден.
 См. также функцию [timeSeriesGroupToTags()](/sql-reference/functions/time-series-functions#timeSeriesGroupToTags).
@@ -295,7 +295,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesFromGrid \{#timeSeriesFromGrid\}
 
-Введена в версии: v25.8
+Введена в версии: v25.8.0
 
 Преобразует массив значений `[x1, x2, x3, ...]` в массив кортежей
 `[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`.
@@ -339,7 +339,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
-Добавлена в версии: v26.1
+Добавлена в версии: v26.1.0
 
 Возвращает имена и значения тегов, связанных с указанной группой.
 См. также функцию [timeSeriesTagsToGroup()](/sql-reference/functions/time-series-functions#timeSeriesTagsToGroup).
@@ -381,7 +381,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesIdToGroup \{#timeSeriesIdToGroup\}
 
-Добавлена в версии: v26.1
+Добавлена в версии: v26.1.0
 
 Возвращает имена и значения тегов, связанных с указанным идентификатором временного ряда.
 См. также функцию [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags).
@@ -422,7 +422,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesIdToTags \{#timeSeriesIdToTags\}
 
-Появилась в версии: v25.8
+Появилась в версии: v25.8.0
 
 Возвращает теги, связанные с указанным идентификатором временного ряда.
 См. также функцию [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags).
@@ -462,7 +462,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesJoinTags \{#timeSeriesJoinTags\}
 
-Добавлена в: v26.1
+Добавлена в: v26.1.0
 
 Объединяет значения указанных тегов, извлечённых из группы тегов.
 Функция вставляет разделитель между объединёнными значениями и возвращает новую группу тегов
@@ -505,7 +505,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('src1'
 
 ## timeSeriesRange \{#timeSeriesRange\}
 
-Введена в версии: v25.8
+Введена в версии: v25.8.0
 
 Генерирует диапазон меток времени [start&#95;timestamp, start&#95;timestamp + step, start&#95;timestamp + 2 * step, ..., end&#95;timestamp].
 
@@ -545,7 +545,7 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 
 ## timeSeriesRemoveAllTagsExcept \{#timeSeriesRemoveAllTagsExcept\}
 
-Добавлена в версии v26.1
+Добавлена в версии v26.1.0
 
 Удаляет все теги, кроме указанных, из группы тегов.
 См. также функции [timeSeriesRemoveTag()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTag),
@@ -584,7 +584,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTag \{#timeSeriesRemoveTag\}
 
-Введена в версии v26.1
+Введена в версии v26.1.0
 
 Удаляет указанный тег из группы тегов.
 Если в группе нет такого тега, группа возвращается без изменений.
@@ -628,7 +628,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTags \{#timeSeriesRemoveTags\}
 
-Впервые появилась в версии v26.1
+Впервые появилась в версии v26.1.0
 
 Удаляет указанные теги из группы тегов.
 Если некоторых из указанных тегов нет в группе тегов, функция их игнорирует.
@@ -670,7 +670,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesReplaceTag \{#timeSeriesReplaceTag\}
 
-Впервые представлено в: v26.1
+Впервые представлено в: v26.1.0
 
 Сопоставляет регулярное выражение `regex` со значением тега `src_tag`.
 Если сопоставление успешно, значение тега `dest_tag` в результирующем наборе будет подстановкой `replacement`,
@@ -714,7 +714,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('servi
 
 ## timeSeriesStoreTags \{#timeSeriesStoreTags\}
 
-Добавлено в версии: v25.8
+Добавлено в версии: v25.8.0
 
 Сохраняет в контексте запроса соответствие между указанным идентификатором временного ряда и набором тегов.
 Функции [timeSeriesIdToTags()](/sql-reference/functions/time-series-functions#timeSeriesIdToTags)
@@ -758,7 +758,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesTagsToGroup \{#timeSeriesTagsToGroup\}
 
-Введена в версии v26.1
+Введена в версии v26.1.0
 
 Возвращает группу тегов, связанную с указанными тегами.
 Если одна и та же группа тегов встречается несколько раз при выполнении запроса, функция возвращает одну и ту же группу.
@@ -798,6 +798,56 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 ┌─group1─┬─group2─┬─empty_group─┬─same_group2─┬─throwIf(notEquals(same_group2, group2))─┬─timeSeriesGroupToTags(group2)──┐
 │      1 │      2 │           0 │           2 │                                       0 │ [('__name__','http_failures')] │
 └────────┴────────┴─────────────┴─────────────┴─────────────────────────────────────────┴────────────────────────────────┘
+```
+
+## timeSeriesThrowDuplicateSeriesIf \{#timeSeriesThrowDuplicateSeriesIf\}
+
+Добавлена в версии v26.2.0.
+
+Проверяет `condition` и, если оно истинно, генерирует исключение со следующим сообщением:
+`Multiple series have the same tags <tags>, duplicate series in the same result set are not allowed`.
+Если `condition` ложно, функция возвращает `0`.
+Эта функция аналогична [throwIf()](/sql-reference/functions/other-functions#throwIf),
+но использует другой код ошибки и по‑другому форматирует сообщение об ошибке.
+
+**Синтаксис**
+
+```sql
+timeSeriesThrowDuplicateSeriesIf(condition, group)
+```
+
+**Аргументы**
+
+* `condition` — Условие для проверки, обычно задаётся с помощью функции [count()](/sql-reference/aggregate-functions/reference/count#count), тип — [`UInt8`](/sql-reference/data-types/int-uint)
+* `group` — Группа тегов, тип — [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает значение `0`. Тип — [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+CREATE TABLE test(tags Array(Tuple(String, String))) engine=Memory;
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- OK
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- Throws exception "Multiple series have the same tags {'__name__': 'up'}"
+```
+
+```response title=Response
 ```
 
 {/*AUTOGENERATED_END*/ }

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4035 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -84,6 +84,7 @@ BSON
 BSONEachRow
 BUZZHOUSE
 BYOC
+BYTEA
 BZIP
 Backblaze
 BackgroundBufferFlushSchedulePool
@@ -223,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -247,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -798,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -835,6 +840,7 @@ MV's
 MVCC
 MacBook
 MacOS
+manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -958,6 +964,7 @@ NetworkSendBytes
 NetworkSendDrop
 NetworkSendErrors
 NetworkSendPackets
+NextJS
 Nginx
 NiFi
 NoSQL
@@ -1620,6 +1627,7 @@ WALs
 WSFG
 WarpStream
 Warpstream
+WebSocket
 WebUI
 Websocket
 Welch's
@@ -1952,6 +1960,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
@@ -2033,6 +2042,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake
@@ -2061,6 +2071,7 @@ cond
 conf
 config
 configs
+configurability
 conformant
 congruential
 conjuctive
@@ -2853,6 +2864,7 @@ mergetree
 messageID
 metacharacters
 metasymbols
+metric's
 metrica
 metroHash
 mfedotov
@@ -3015,6 +3027,7 @@ nullability
 nullable
 nullables
 nullptr
+nuls
 num
 numerics
 nypd
@@ -3690,6 +3703,7 @@ timeZoneOffset
 timeslot
 timeslots
 timespan
+timestamptz
 timezones
 tinylog
 tmp
@@ -3907,6 +3921,7 @@ unnest
 unoptimized
 unparsed
 unpooled
+unprocessable
 unrealiable
 unreplicated
 unresolvable

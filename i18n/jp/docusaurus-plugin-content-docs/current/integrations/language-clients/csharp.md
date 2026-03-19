@@ -42,9 +42,6 @@ ClickHouse に接続するための公式の C# クライアントです。
 
 `ClickHouse.Driver` は、次の .NET バージョンに対応しています。
 
-* .NET Framework 4.6.2
-* .NET Framework 4.8
-* .NET Standard 2.1
 * .NET 6.0
 * .NET 8.0
 * .NET 9.0
@@ -355,8 +352,8 @@ using ClickHouse.Driver;
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("id", 1L);
-parameters.Add("name", "Alice");
+parameters.AddParameter("id", 1L);
+parameters.AddParameter("name", "Alice");
 
 await client.ExecuteNonQueryAsync(
     "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
@@ -413,7 +410,7 @@ var options = new InsertOptions
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("max_id", 100L);
+parameters.AddParameter("max_id", 100L);
 
 var reader = await client.ExecuteReaderAsync(
     "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
@@ -683,7 +680,7 @@ while (reader.Read())
 3. **SQL の型ヒントでタイムゾーンを指定する。** `Unspecified` の DateTime 値を、UTC ではない DateTime カラムに対するパラメータとして使用する場合は、SQL 内にタイムゾーンを含めます:
    ```csharp
    var parameters = new ClickHouseParameterCollection();
-   parameters.Add("dt", myDateTime);
+   parameters.AddParameter("dt", myDateTime);
 
    await client.ExecuteNonQueryAsync(
        "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
@@ -1556,26 +1553,157 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper \{#orm-support-dapper\}
 
-`ClickHouse.Driver` は Dapper と併用できますが、anonymous objects（匿名オブジェクト）はサポート対象外です。
+`ClickHouse.Driver` は Dapper で利用できます。このドライバーは、Dapper の `@parameter` 構文を ClickHouse ネイティブの `{parameter:Type}` 構文に自動的に変換し、型は .NET の値から推論されます。
 
-**動作サンプル:**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**サポート対象外:**
+接続のライフタイムを適切に管理するには、`ClickHouseDataSource` を使用します。
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
 
+#### パラメーターの受け渡し方法 \{#dapper-parameter-passing\}
+
+標準的な Dapper のパラメーター指定方法はすべてサポートされています。
+
+**匿名オブジェクト:**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**POCO クラス:**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**Dictionary:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (Dictionary または匿名オブジェクトから作成) :**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+
+#### POCO へのクエリ \{#dapper-pocos\}
+
+Dapper は、名前に基づいてカラムをプロパティにマッピングします (大文字と小文字は区別されません) ：
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+
+#### ClickHouseネイティブのパラメーター構文 \{#dapper-clickhouse-param-syntax\}
+
+明示的に型を制御する必要がある場合は、パラメーター値に `Dictionary<string, object>` を使用し、SQL 内で ClickHouse の `{param:Type}` 構文を直接使用してください。同じパラメーターに対して `@param` 構文と `{param:Type}` 構文を併用しないでください。
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+#### WHERE IN \{#dapper-where-in\}
+
+**Dapper のネイティブな `IN` 展開を利用できます:**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper はこれを `WHERE id IN (@Ids1, @Ids2, @Ids3)` に書き換え、ドライバーは展開された各パラメーターを変換します。
+
+**ClickHouse の `has()` は、Array パラメーターでも使用できます。**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+
+#### カスタム型ハンドラー \{#dapper-type-handlers\}
+
+`ITuple`、`BigInteger`、`ClickHouseDecimal` などの一部の ClickHouse 型では、起動時にハンドラーを登録する必要があります。
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+[Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs)で、型ハンドラー実装の例を確認してください。
+
+
+#### Dapper.Contrib \{#dapper-contrib\}
+
+`GetAll<T>()` と `Get<T>(id)` は動作します。`Insert<T>()` は動作しません。SQL Server の構文 (`SCOPE_IDENTITY`、角括弧) を生成するためです。代わりに、`ClickHouseClient` ネイティブの `InsertBinaryAsync` メソッドを使用することを推奨します。
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+プロパティ名は ClickHouse のカラム名と完全に一致する必要があります (大文字と小文字は区別されます) 。
+
+
+#### 制限事項 \{#dapper-limitations\}
+
+| What | Status | Details |
+|---|---|---|
+| **結果**としての Tuple | 動作します | `SqlMapper.TypeHandler<ITuple>` の登録が必要です |
+| **パラメーター**としての Tuple | サポートされていません | Dapper は `ITuple`/`Tuple<>` を `DbParameter` の値としてシリアライズできません |
+| パラメーターとしてのネストされた型 | サポートされていません | 同じ理由で、Dapper は複合型をパラメーター値として受け付けません |
+| パラメーターとしての Geo 型 | サポートされていません | Point、Ring、Polygon、LineString、MultiLineString、MultiPolygon |
+| `Dapper.Contrib.Insert<T>()` | サポートされていません | SQL Server 固有の構文を生成します |
+| `Nothing` 型 | サポートされていません | 対応する有意な .NET 表現がありません |
 
 ### Linq2db \{#orm-support-linq2db\}
 

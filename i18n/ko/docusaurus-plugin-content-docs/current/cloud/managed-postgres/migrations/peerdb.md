@@ -63,9 +63,52 @@ import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 대상 데이터베이스에 소스 데이터베이스 구성을 동일하게 반영하려면 소스 데이터베이스의 스키마 덤프를 확보해야 합니다. `pg_dump`를 사용하여 소스 PostgreSQL 데이터베이스의 스키마만 포함된 스키마 전용 덤프를 생성할 수 있습니다:
 
+<details>
+  <summary>pg&#95;dump 설치</summary>
+
+  **Ubuntu:**
+
+  패키지 목록을 업데이트합니다:
+
+  ```shell
+  sudo apt update
+  ```
+
+  PostgreSQL 클라이언트를 설치합니다:
+
+  ```shell
+  sudo apt install postgresql-client
+  ```
+
+  **macOS:**
+
+  방법 1: Homebrew 사용(권장)
+
+  Homebrew가 없는 경우 설치합니다:
+
+  ```shell
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+  PostgreSQL을 설치합니다:
+
+  ```shell
+  brew install postgresql
+  ```
+
+  설치를 확인합니다:
+
+  ```shell
+  pg_dump --version
+  ```
+</details>
+
 ```shell
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
+
+
+#### 스키마 덤프에서 고유 제약 조건과 인덱스 제거 \{#migration-peerdb-remove-constraints-indexes\}
 
 대상 데이터베이스에 이를 적용하기 전에 PeerDB가 대상 테이블로 데이터를 수집할 때 이러한 제약으로 인해 차단되지 않도록 덤프 파일에서 UNIQUE 제약 조건과 인덱스를 제거해야 합니다. 이는 다음과 같이 제거할 수 있습니다:
 
@@ -142,15 +185,111 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 ## 마이그레이션 후 작업 \{#migration-peerdb-considerations\}
 
-마이그레이션이 완료된 후에는 다음 작업을 수행하십시오.
+:::note
+이 단계들은 구체적인 사용 사례와 애플리케이션 요구 사항에 따라 달라질 수 있습니다. 핵심은 데이터 일관성을 보장하고, 다운타임을 최소화하며, 새 시스템으로 완전히 전환하기 전에 마이그레이션된 데이터의 무결성을 검증하는 것입니다.
+:::
 
-- **데이터베이스 객체 재생성**: 대상 데이터베이스에서는 인덱스, 제약 조건(constraints), 트리거가 자동으로 마이그레이션되지 않으므로 수동으로 다시 생성해야 합니다.
-- **애플리케이션 테스트**: 모든 것이 예상대로 동작하는지 확인하기 위해 애플리케이션을 ClickHouse Managed Postgres 인스턴스를 대상으로 테스트합니다.
-- **리소스 정리**: 마이그레이션 결과에 만족하고 애플리케이션이 ClickHouse Managed Postgres를 사용하도록 전환했다면, PeerDB에서 mirror와 peer를 삭제하여 리소스를 정리할 수 있습니다.
+마이그레이션이 완료된 후:
+
+* **컷오버 전 검증 수행**
+
+트래픽을 전환하기 전에 소스와 대상의 주요 테이블을 비교하십시오:
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+* **소스 시스템의 쓰기 작업 중지**
+
+먼저 애플리케이션의 쓰기 작업을 일시 중지합니다. 추가적인 보호 조치로, 컷오버 중에는 소스 데이터베이스를 읽기 전용으로 설정하십시오:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+롤백이 필요한 경우 쓰기를 다시 활성화할 수 있습니다:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+* **복제가 완전히 동기화되었는지 확인합니다**
+
+쓰기 부하가 높은 하나 이상의 테이블에서 최신 행이 소스와 대상에서 일치하는지 확인하세요:
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+* **제약 조건, 인덱스 및 트리거 다시 생성 및 활성화**
+
+수집을 위해 제약 조건/인덱스를 제거하거나 적용을 미뤘다면, 지금 다시 적용하십시오. 또한 이전에 대상의 복제 역할을 `replica`로 설정했다면 이를 재설정하십시오:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+* **대상 테이블의 시퀀스 재설정**
+
+데이터를 로드한 후 현재 테이블 값에 맞게 시퀀스를 조정합니다:
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+    FOR r IN
+        SELECT
+            n.nspname AS schema_name,
+            c.relname AS table_name,
+            a.attname AS column_name,
+            pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attribute a ON a.attrelid = c.oid
+        WHERE c.relkind = 'r'
+            AND a.attnum > 0
+            AND NOT a.attisdropped
+            AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+    LOOP
+        IF r.seq_name IS NOT NULL THEN
+            EXECUTE format(
+                'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+                r.seq_name, r.column_name, r.schema_name, r.table_name
+            );
+        END IF;
+    END LOOP;
+END $$;
+```
+
+* **애플리케이션 트래픽 전환**
+
+검증이 완료되고 시퀀스/제약 조건이 모두 적용되면 다음을 수행하세요:
+
+1. 읽기 트래픽이 ClickHouse Managed Postgres를 가리키도록 전환하세요.
+2. 쓰기 트래픽이 ClickHouse Managed Postgres를 가리키도록 전환하세요.
+3. 애플리케이션 오류, 제약 조건 위반, 데이터베이스 상태를 모니터링하세요.
+
+* **리소스 정리**
+
+마이그레이션 결과가 만족스럽고 애플리케이션이 ClickHouse Managed Postgres를 사용하도록 전환되었다면, PeerDB에서 미러와 피어를 삭제할 수 있습니다.
 
 :::info 복제 슬롯
-지속적인 복제를 활성화한 경우 PeerDB는 소스 PostgreSQL 데이터베이스에 **replication slot**을 생성합니다. 불필요한 리소스 사용을 방지하려면 마이그레이션을 완료한 후 소스 데이터베이스에서 replication slot을 수동으로 삭제해야 합니다.
+지속적 복제를 활성화한 경우, PeerDB는 소스 PostgreSQL 데이터베이스에 **복제 슬롯**을 생성합니다. 마이그레이션이 완료된 후에는 불필요한 리소스 사용을 방지하기 위해 소스 데이터베이스에서 복제 슬롯을 수동으로 삭제하세요.
 :::
+
 
 ## 참고 자료 \{#migration-peerdb-references\}
 

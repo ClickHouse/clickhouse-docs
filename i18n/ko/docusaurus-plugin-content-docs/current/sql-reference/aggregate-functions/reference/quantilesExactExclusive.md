@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactExclusive \{#quantilesExactExclusive\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 배타적(exclusive) 방법을 사용하여 숫자 데이터 시퀀스의 여러 [분위수(quantiles)](https://en.wikipedia.org/wiki/Quantile)를 서로 다른 레벨에서 동시에 정확하게 계산합니다.
 

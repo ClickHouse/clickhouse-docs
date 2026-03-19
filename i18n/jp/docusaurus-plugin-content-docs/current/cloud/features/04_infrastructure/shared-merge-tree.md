@@ -12,27 +12,27 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# SharedMergeTree テーブルエンジン \{#sharedmergetree-table-engine\}
+# SharedMergeTree table engine \{#sharedmergetree-table-engine\}
 
-SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するように最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの代替です。あらゆる種類の MergeTree エンジンに対応する SharedMergeTree が用意されており、たとえば SharedReplacingMergeTree は ReplicatedReplacingMergeTree の代わりとなります。
+SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するよう最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの置き換えです。各 MergeTree エンジンタイプにはそれぞれ対応する SharedMergeTree があり、たとえば SharedReplacingMergeTree は ReplicatedReplacingMergeTree を置き換えます。
 
-SharedMergeTree テーブルエンジンファミリーは ClickHouse Cloud の基盤となっています。エンドユーザー側では、ReplicatedMergeTree ベースのエンジンの代わりに SharedMergeTree エンジンファミリーを利用し始めるために、特別な変更は必要ありません。SharedMergeTree は次のような追加の利点を提供します:
+SharedMergeTree テーブルエンジンファミリーは ClickHouse Cloud を支えています。エンドユーザーにとっては、ReplicatedMergeTree ベースのエンジンの代わりに SharedMergeTree エンジンファミリーを使い始めるにあたって、何も変更する必要はありません。さらに、次のような利点があります:
 
 - より高い挿入スループット
 - バックグラウンドマージのスループット向上
 - ミューテーションのスループット向上
 - スケールアップおよびスケールダウン操作の高速化
-- `SELECT` クエリに対する、より軽量な強整合性
+- select クエリに対する、より軽量な強い一貫性
 
-SharedMergeTree の大きな改善点の 1 つは、ReplicatedMergeTree と比較して、コンピュートとストレージの分離をより徹底して実現していることです。以下に、ReplicatedMergeTree がどのようにコンピュートとストレージを分離しているかを示します:
+SharedMergeTree がもたらす大きな改善点の 1 つは、ReplicatedMergeTree と比べて、コンピュートとストレージをより深く分離していることです。以下では、ReplicatedMergeTree がどのようにコンピュートとストレージを分離しているかを確認できます:
 
-<Image img={shared_merge_tree} alt="ReplicatedMergeTree の図" size="md"  />
+<Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
 
-ご覧のとおり、ReplicatedMergeTree ではデータ自体はオブジェクトストレージに保存されていますが、メタデータは依然として各 clickhouse-server 上に存在しています。これは、あらゆるレプリケーション処理において、メタデータもすべてのレプリカ間でレプリケートする必要があることを意味します。
+ご覧のとおり、ReplicatedMergeTree に保存されるデータはオブジェクトストレージ上にあるものの、メタデータは依然として各 clickhouse-server 上に存在しています。これは、レプリケートされるすべての操作において、メタデータもすべてのレプリカに複製する必要があることを意味します。
 
-<Image img={shared_merge_tree_2} alt="メタデータ付き ReplicatedMergeTree の図" size="md"  />
+<Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
-ReplicatedMergeTree と異なり、SharedMergeTree ではレプリカ同士が直接通信する必要はありません。代わりに、すべての通信は共有ストレージと clickhouse-keeper を通じて行われます。SharedMergeTree は非同期のリーダーレスレプリケーションを実装し、clickhouse-keeper をコーディネーションおよびメタデータの保存に利用します。これは、サービスをスケールアップおよびスケールダウンしても、メタデータをレプリケートする必要がないことを意味します。その結果、レプリケーション、ミューテーション、マージ、およびスケールアップ操作が高速になります。SharedMergeTree はテーブルごとに数百のレプリカをサポートし、シャードを用いずに動的なスケーリングを可能にします。ClickHouse Cloud では、クエリに対してより多くのコンピュートリソースを活用するために、分散クエリ実行アプローチが採用されています。
+ReplicatedMergeTree とは異なり、SharedMergeTree ではレプリカ同士が相互に通信する必要はありません。代わりに、すべての通信は共有ストレージと clickhouse-keeper を通じて行われます。SharedMergeTree は非同期のリーダーレスレプリケーションを実装しており、調整とメタデータ保存のために clickhouse-keeper を使用します。つまり、サービスのスケールアップやスケールダウンに応じてメタデータを複製する必要がありません。その結果、レプリケーション、ミューテーション、マージ、スケールアップ操作がより高速になります。SharedMergeTree では各テーブルで数百のレプリカを利用できるため、シャードなしで動的にスケールすることが可能です。ClickHouse Cloud では、1 つのクエリにより多くのコンピュートリソースを活用するために、分散クエリ実行アプローチが使用されています。
 
 ## 内部情報の確認 \{#introspection\}
 

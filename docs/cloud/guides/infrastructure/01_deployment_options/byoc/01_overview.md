@@ -25,7 +25,7 @@ BYOC is designed specifically for large-scale deployments, and requires customer
 **Supported Cloud Service Providers:**
 * AWS (GA)
 * GCP (Private Preview). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
-* Azure (Roadmap). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
+* Azure (Private Preview). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
 
 **Supported Cloud Regions:**
 All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
@@ -54,9 +54,11 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 
-- SQL Console
-- ClickPipes (Kafka, S3)
-- ClickPipes (CDC)
-- Autoscaling
+The following features have limitations or are not fully supported in Bring Your Own Cloud (BYOC) deployments.    
+- SQL Console: The standard SQL console is not available for BYOC deployments, but is on our roadmap.
+- ClickPipes Support: Currently available in private preview with streaming integrations such as Kafka, Kinesis supported. Additional integrations (CDC, object storage etc.) are on the roadmap. 
+- Autoscaling: On the roadmap to add to future releases.
 - MySQL interface
-- [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
+- AWS KMS aka CMEK (customer-managed encryption keys)
+- Advanced Dashboard: The client-only UI that requires your browser to have direct access and be able to connect directly to your ClickHouse server using its endpoint. If your VPC network policies restrict inbound browser access to the ClickHouse endpoint, the advanced dashboard will not function.
+- Monitoring Dashboards: Currently, only memory allocation metrics are available in the monitoring dashboard. Support for additional metrics is in progress and expected to be available in a future release.

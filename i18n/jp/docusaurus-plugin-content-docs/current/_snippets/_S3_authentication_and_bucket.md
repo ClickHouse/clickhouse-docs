@@ -65,7 +65,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 
   <Image size="md" img={s3_7} alt="ユーザー一覧で新しく作成されたIAMユーザーを見つける" border force />
 
-  9. ARN（Amazon Resource Name）をコピーし、バケットのアクセスポリシーを構成する際に使用できるよう保存しておきます。
+  9. ARN (Amazon Resource Name) をコピーし、バケットのアクセスポリシーを構成する際に使用できるよう保存しておきます。
 
   <Image size="md" img={s3_8} alt="IAMユーザーのARNをコピー" border force />
 

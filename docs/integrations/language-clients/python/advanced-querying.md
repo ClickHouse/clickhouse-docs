@@ -369,7 +369,7 @@ set_read_format('IPv*', 'string')
 # Return all Date types as the underlying epoch second or epoch day
 set_read_format('Date*', 'int')
 ```
-- For an entire query, using the optional `query_formats` dictionary argument. In that case any column (or subcolumn) of the specified data types(s) will use the configured format.
+- For an entire query, using the optional `query_formats` dictionary argument. In that case any column (or subcolumn) of the specified data types will use the configured format.
 ```python
 # Return any UUID column as a string
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})

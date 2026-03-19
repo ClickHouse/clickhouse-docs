@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantDeltaToGrid \{#timeSeriesInstantDeltaToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 この集約関数は、タイムスタンプと値のペアとして与えられた時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で [PromQL ライクな idelta](https://prometheus.io/docs/prometheus/latest/querying/functions/#idelta) を計算します。
 グリッド上の各ポイントについて、`idelta` を計算するために考慮されるサンプルは、指定された時間ウィンドウ内のものです。
@@ -29,7 +29,7 @@ timeSeriesInstantDeltaToGrid(start_timestamp, end_timestamp, grid_step, stalenes
 * `start_timestamp` — グリッドの開始を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — グリッドの終了を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 対象とするサンプルの最大 staleness（古さ）を秒単位で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 対象とするサンプルの最大 staleness (古さ) を秒単位で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **Arguments**
 

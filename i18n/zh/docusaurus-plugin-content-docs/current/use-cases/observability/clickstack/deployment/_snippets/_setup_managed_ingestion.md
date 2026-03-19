@@ -36,7 +36,7 @@ import TabItem from '@theme/TabItem';
     该命令应包含预先填充好的连接凭据。
 
     :::note[部署到生产环境]
-    虽然此命令使用 `default` 用户连接托管 ClickStack,但在[投入生产](/use-cases/observability/clickstack/production#create-a-user)并修改配置时,您应该创建一个专用用户。
+    虽然此命令使用 `default` 用户连接托管 ClickStack,但在[投入生产](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)并修改配置时,您应该创建一个专用用户。
     :::
 
     运行此命令即可启动 ClickStack 收集器,OTLP 端点将在端口 4317(gRPC)和 4318(HTTP)上暴露。如果您已配置 OpenTelemetry 插桩和代理,可立即开始向这些端点发送遥测数据。
@@ -75,7 +75,7 @@ import TabItem from '@theme/TabItem';
     <br />
   </TabItem>
 
-  <TabItem value="Vector" label="Vector" default>
+  <TabItem value="vector" label="Vector" default>
     [Vector](https://vector.dev) 是一款高性能、厂商无关的可观测性数据管道,因其灵活性与低资源占用,在日志摄取场景中尤为流行。
 
     在将 Vector 与 ClickStack 一起使用时,用户需要自行定义 schema。这些 schema 可以遵循 OpenTelemetry 约定,也可以完全自定义,用于表示用户自定义的事件结构。

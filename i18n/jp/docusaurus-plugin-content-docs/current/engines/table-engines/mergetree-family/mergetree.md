@@ -283,6 +283,56 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
 
+### 主キー内の決定論的式に対する索引の利用 \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+主キーにはカラム名だけでなく、式を含めることができます。これらの式は単純な関数チェーンに限定されず、決定論的である限り、任意の式ツリー（たとえば、入れ子になった関数や複合式）にすることができます。
+
+式は、同じ入力値に対して常に同じ結果を返す場合に **決定論的** と呼ばれます（例: `length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()`。`now()` や `rand()` はこれに当てはまりません）。主キーに決定論的な式が含まれている場合、ClickHouse はクエリ内の定数値に対してそれらの式を適用し、その結果を用いて主キー索引に対する条件を構築できます。これにより、`=`, `IN`, `has` のような述語に対してデータスキップが可能になります。
+
+一般的なユースケースとしては、主キーをコンパクトに保ちつつ（例: 長い `String` の代わりにハッシュを保存する）、元のカラムに対する述語でも索引を利用できるようにする、というものがあります。
+
+決定論的（だが単射ではない）主キーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+索引を使用できる述語の例：
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+これらの場合、ClickHouse は `length('alice')`（およびその他の定数）を一度だけ計算し、その長さの値を使ってプライマリキー索引内の範囲を絞り込みます。文字列の長さは**単射ではない**ため、異なる `user_id` 文字列が同じ長さになることがあります。そのため、索引が余分な granule（偽陽性）を読み取る可能性があります。元の述語（`user_id = ...`、`IN` など）は読み取り後にも適用されるため、結果の正しさは保たれます。
+
+決定的な式がさらに**単射**（使用されている引数型に対して、異なる入力から同じ出力が生成されない）でもある場合、ClickHouse は `!=`、`NOT IN`、`NOT has(...)` といった否定形に対しても索引を効果的に使用できます。たとえば、`reverse(p)` および `hex(p)` は `String` に対して単射です。
+
+単射なプライマリキーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+より複雑な単射な式もサポートされています。たとえば、次のようなものがあります。
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+索引を利用できる述語の例:
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### 部分的に単調なプライマリキーに対する索引の利用 \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 例として、月の日付を考えます。1 か月という範囲では[単調な数列](https://en.wikipedia.org/wiki/Monotonic_function)ですが、より長い期間では単調ではありません。このようなものは部分的に単調な数列です。ユーザーが部分的に単調なプライマリキーでテーブルを作成すると、ClickHouse は通常どおりスパースな索引を作成します。ユーザーがこの種類のテーブルからデータを取得する際、ClickHouse はクエリ条件を解析します。ユーザーが索引の 2 つのマークの間のデータを取得しようとし、かつその 2 つのマークが同じ 1 か月の範囲内に収まっている場合、ClickHouse はクエリのパラメータと索引マークとの距離を計算できるため、この特定のケースでは索引を使用できます。
@@ -354,10 +404,10 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) インデックス
 - [`Set`](#set) インデックス
 - [`bloom_filter`](#bloom-filter) インデックス
-- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
-- [`tokenbf_v1`](#token-bloom-filter) インデックス
-- [`text`]({#text}) インデックス
-- [`vector_similarity`]({#vector-similarity}) インデックス
+- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス *(非推奨)*
+- [`tokenbf_v1`](#token-bloom-filter) インデックス *(非推奨)*
+- [`text`](#text) インデックス
+- [`vector_similarity`](#vector-similarity) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 
@@ -408,7 +458,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram ブルームフィルタ \{#n-gram-bloom-filter\}
+#### N-gram ブルームフィルタ *(非推奨)* \{#n-gram-bloom-filter\}
+
+:::note
+ClickHouse バージョン 26.2 以降で `text` 索引が一般提供 (GA) されたことに伴い、全文検索での `ngrambf_v1` 索引の利用は推奨されません。
+
+詳細については [&quot;text 索引による全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 各インデックスグラニュールは、指定されたカラムの [N-gram](https://en.wikipedia.org/wiki/N-gram) に対する [ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
@@ -454,8 +510,8 @@ AS
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-たとえば、1 つのグラニュールに `4300` 個の n グラムが含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
-この場合、他のパラメータは次のクエリを実行することで推定できます。
+たとえば、1 つのグラニュールに `4300` 個の n-gram が含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
+このとき、他のパラメータは次のクエリを実行することで推定できます。
 
 ```sql
 --- estimate number of bits in the filter
@@ -479,7 +535,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### トークン Bloom フィルター \{#token-bloom-filter\}
 
-トークン Bloom フィルターは `ngrambf_v1` と同様ですが、n-gram の代わりに、英数字以外の文字で区切られたトークン（文字列）を格納します。
+:::note
+ClickHouse バージョン 26.2 以降、`text` 索引が一般提供 (GA) となったため、全文検索用途での `tokenbf_v1` 索引の利用は推奨されません。
+
+詳細は [&quot;text 索引を用いた全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -1111,7 +1171,7 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 
 <CloudNotSupportedBadge />
 
-`set allow_experimental_statistics = 1` を有効にすると、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリの `COLUMNS` セクション内で統計を宣言します。
+統計の宣言は、`set allow_experimental_statistics = 1` を有効にしている場合、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラム定義セクションに記述します。
 
 ```sql
 CREATE TABLE tab
@@ -1123,7 +1183,7 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` 文を使用して統計情報を操作することもできます。
+`ALTER` 文でも統計情報を操作できます。
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;

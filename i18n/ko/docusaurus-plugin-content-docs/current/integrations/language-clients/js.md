@@ -116,22 +116,22 @@ const client = createClient({
 
 클라이언트 인스턴스를 생성할 때 다음과 같은 연결 설정을 조정할 수 있습니다.
 
-| Setting                                                                  | 설명                                                                                 | 기본값                  | 참고                                                                                       |
-|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------|
-| **url**?: string                                                         | ClickHouse 인스턴스 URL입니다.                                                       | `http://localhost:8123` | [URL 구성 문서](./js.md#url-configuration)                                                 |
-| **pathname**?: string                                                    | 클라이언트가 ClickHouse URL을 파싱한 뒤 URL에 추가할 선택적 경로(pathname)입니다.   | `''`                    | [pathname을 사용하는 프록시 문서](./js.md#proxy-with-a-pathname)                          |
-| **request_timeout**?: number                                             | 요청 타임아웃(밀리초)입니다.                                                        | `30_000`                | -                                                                                          |
-| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 압축을 활성화합니다.                                                                 | -                       | [압축 문서](./js.md#compression)                                                           |
-| **username**?: string                                                    | 요청을 실행하는 사용자 이름입니다.                                                   | `default`               | -                                                                                          |
-| **password**?: string                                                    | 사용자 비밀번호입니다.                                                              | `''`                    | -                                                                                          |
-| **application**?: string                                                 | Node.js 클라이언트를 사용하는 애플리케이션 이름입니다.                              | `clickhouse-js`         | -                                                                                          |
-| **database**?: string                                                    | 사용할 데이터베이스 이름입니다.                                                      | `default`               | -                                                                                          |
-| **clickhouse_settings**?: ClickHouseSettings                             | 모든 요청에 적용할 ClickHouse 설정입니다.                                            | `{}`                    | -                                                                                          |
-| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | 내부 클라이언트 로그 구성입니다.                                                    | -                       | [로깅 문서](./js.md#logging-nodejs-only)                                                   |
-| **session_id**?: string                                                  | 모든 요청에 함께 전송할 선택적 ClickHouse 세션 ID입니다.                            | -                       | -                                                                                          |
-| **keep_alive**?: `{ **enabled**?: boolean }`                             | Node.js 및 Web 버전 모두에서 기본적으로 활성화됩니다.                               | -                       | -                                                                                          |
-| **http_headers**?: `Record<string, string>`                              | ClickHouse로 전송되는 요청에 추가할 HTTP 헤더입니다.                                | -                       | [인증이 포함된 리버스 프록시 문서](./js.md#reverse-proxy-with-authentication)             |
-| **roles**?: string \|  string[]                                          | 나가는 요청에 첨부할 ClickHouse 역할(role) 이름입니다.                              | -                       | [HTTP 인터페이스에서 역할(role) 사용하기](/interfaces/http#setting-role-with-query-parameters) |
+| Setting                                                                  | 설명                                                         | 기본값                     | 참고                                                                                |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------- |
+| **url**?: string                                                         | ClickHouse 인스턴스 URL입니다.                                    | `http://localhost:8123` | [URL 구성 문서](./js.md#url-configuration)                                            |
+| **pathname**?: string                                                    | 클라이언트가 ClickHouse URL을 파싱한 뒤 URL에 추가할 선택적 경로(pathname)입니다. | `''`                    | [pathname을 사용하는 프록시 문서](./js.md#proxy-with-a-pathname)                            |
+| **request&#95;timeout**?: number                                         | 요청 타임아웃(밀리초)입니다.                                           | `30_000`                | -                                                                                 |
+| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 압축을 활성화합니다.                                                | -                       | [압축 문서](./js.md#compression)                                                      |
+| **username**?: string                                                    | 요청을 실행하는 사용자 이름입니다.                                        | `default`               | -                                                                                 |
+| **password**?: string                                                    | 사용자 비밀번호입니다.                                               | `''`                    | -                                                                                 |
+| **application**?: string                                                 | Node.js 클라이언트를 사용하는 애플리케이션 이름입니다.                          | `clickhouse-js`         | -                                                                                 |
+| **database**?: string                                                    | 사용할 데이터베이스 이름입니다.                                          | `default`               | -                                                                                 |
+| **clickhouse&#95;settings**?: ClickHouseSettings                         | 모든 요청에 적용할 ClickHouse 설정입니다.                               | `{}`                    | -                                                                                 |
+| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | 내부 클라이언트 로그 구성입니다.                                         | -                       | [로깅 문서](./js.md#logging-nodejs-only)                                              |
+| **session&#95;id**?: string                                              | 모든 요청에 함께 전송할 선택적 ClickHouse 세션 ID입니다.                     | -                       | -                                                                                 |
+| **keep&#95;alive**?: `{ **enabled**?: boolean }`                         | Node.js 및 Web 버전 모두에서 기본적으로 활성화됩니다.                        | -                       | -                                                                                 |
+| **http&#95;headers**?: `Record<string, string>`                          | ClickHouse로 전송되는 요청에 추가할 HTTP 헤더입니다.                       | -                       | [인증이 포함된 리버스 프록시 문서](./js.md#reverse-proxy-with-authentication)                   |
+| **roles**?: string |  string[]                                           | 나가는 요청에 첨부할 ClickHouse 역할(role) 이름입니다.                     | -                       | [HTTP 인터페이스에서 역할(role) 사용하기](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js 전용 구성 매개변수 \{#nodejs-specific-configuration-parameters\}
 
@@ -199,7 +199,7 @@ createClient({
 
 #### 연결 개요 \{#connection-overview\}
 
-클라이언트는 HTTP(s) 프로토콜을 통해 연결을 구현합니다. RowBinary 지원은 진행 중이며, [관련 이슈](https://github.com/ClickHouse/clickhouse-js/issues/216)를 참고하십시오.
+클라이언트는 HTTP 또는 HTTPS 프로토콜을 통해 연결을 구현합니다. RowBinary 지원은 진행 중이며, [관련 이슈](https://github.com/ClickHouse/clickhouse-js/issues/216)를 참고하십시오.
 
 다음 예제는 ClickHouse Cloud에 대한 연결을 설정하는 방법을 보여 줍니다. `url`(프로토콜 및 포트를 포함)과 `password` 값은 환경 변수로 지정되고, `default` 사용자가 사용된다고 가정합니다.
 
@@ -1073,8 +1073,8 @@ createClient({
 로깅은 실험적 기능으로, 향후 변경될 수 있습니다.
 :::
 
-기본 로거 구현은 `console.debug/info/warn/error` 메서드를 사용하여 `stdout`으로 로그 레코드를 출력합니다.
-`LoggerClass`를 제공하여 로깅 동작을 사용자 정의할 수 있으며, `level` 매개변수(기본값은 `OFF`)를 통해 원하는 로그 레벨을 선택할 수 있습니다:
+기본 로거 구현은 `console.debug/info` 메서드를 사용하여 `stdout`으로, `console.warn/error` 메서드를 사용하여 `stderr`로 로그 레코드를 출력합니다.
+`LoggerClass`를 제공하여 로깅 동작을 사용자 정의할 수 있으며, `level` 매개변수(기본값은 `WARN`)를 통해 원하는 로그 레벨을 선택할 수 있습니다:
 
 ```typescript
 import type { Logger } from '@clickhouse/client'
@@ -1109,7 +1109,7 @@ class MyLogger implements Logger {
 const client = createClient({
   log: {
     LoggerClass: MyLogger,
-    level: ClickHouseLogLevel
+    level: ClickHouseLogLevel.DEBUG,
   }
 })
 ```
@@ -1180,14 +1180,14 @@ const client = createClient({
 다음 명령을 실행하면 서버 응답 헤더에서 올바른 Keep-Alive timeout 값을 확인할 수 있습니다.
 
 ```sh
-curl -v --data-binary "SELECT 1" <clickhouse_url>
+curl -is --data-binary "SELECT 1" <clickhouse_url>
 ```
 
 응답에서 `Connection` 및 `Keep-Alive` 헤더 값을 확인합니다. 예를 들어:
 
 ```text
-< Connection: Keep-Alive
-< Keep-Alive: timeout=10
+Connection: Keep-Alive
+Keep-Alive: timeout=10
 ```
 
 이 경우 `keep_alive_timeout`은 10초이며, 유휴 소켓을 기본값보다 조금 더 오래 열어 두기 위해 `keep_alive.idle_socket_ttl` 값을 9000 또는 9500밀리초까지 높여 볼 수 있습니다. 서버가 클라이언트보다 먼저 연결을 종료한다는 것을 나타내는 발생 가능한 「Socket hang-up」 오류를 모니터링하고, 오류가 사라질 때까지 해당 값을 점진적으로 낮추십시오.
@@ -1197,19 +1197,19 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 최신 버전의 클라이언트를 사용하고 있음에도 `socket hang up` 오류가 발생하는 경우, 다음과 같은 방법으로 이 문제를 해결할 수 있습니다:
 
-* 최소한 `WARN` 로그 레벨로 로그를 활성화합니다. 이렇게 하면 애플리케이션 코드에 미처 소비되지 않았거나 떠 있는(dangling) 스트림이 있는지 확인할 수 있습니다. 전송 계층에서 이러한 스트림을 WARN 레벨로 로그에 남기며, 이는 서버가 소켓을 닫는 상황으로 이어질 수 있기 때문입니다. 클라이언트 설정에서 다음과 같이 로깅을 활성화할 수 있습니다:
-  
+* 기본값인 최소 `WARN` 로그 레벨로 로그를 활성화합니다. 이렇게 하면 애플리케이션 코드에 미처 소비되지 않았거나 떠 있는(dangling) 스트림이 있는지 확인할 수 있습니다. 전송 계층에서 이러한 스트림을 WARN 레벨로 로그에 남기며, 이는 서버가 소켓을 닫는 상황으로 이어질 수 있기 때문입니다. 클라이언트 설정에서 다음과 같이 로깅을 활성화할 수 있습니다:
+
   ```ts
   const client = createClient({
     log: { level: ClickHouseLogLevel.WARN },
   })
   ```
-  
-* [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint 규칙을 활성화하여 애플리케이션 코드를 점검합니다. 이 규칙은 처리되지 않은 promise를 식별하는 데 도움이 되며, 이러한 promise가 남아 있는 스트림과 소켓으로 이어질 수 있습니다.
 
-* ClickHouse 서버 설정에서 `keep_alive.idle_socket_ttl` 설정 값을 약간 줄입니다. 예를 들어 클라이언트와 서버 간 네트워크 지연 시간이 큰 경우, `keep_alive.idle_socket_ttl`을 200–500밀리초 정도 추가로 줄여서, 서버가 곧 닫으려는 소켓을 발신 요청이 잡는 상황을 방지하는 것이 도움이 될 수 있습니다. 
+* 원하는 설정이 올바른 클라이언트 인스턴스에 적용되었는지 확인합니다. 애플리케이션에 여러 클라이언트 인스턴스가 있는 경우, 쿼리에 사용 중인 인스턴스가 올바른 `keep_alive.idle_socket_ttl` 값을 가지고 있는지 다시 확인하십시오.
 
-* 들어오는 데이터나 나가는 데이터가 없는 장시간 실행 쿼리(예: 장시간 실행되는 `INSERT FROM SELECT`) 중에 이 오류가 발생하는 경우, 로드 밸런서가 유휴 연결을 닫기 때문일 수 있습니다. 이러한 장시간 실행 쿼리 동안 다음 ClickHouse 설정 조합을 사용하여, 쿼리 실행 중에 주기적으로 일부 데이터가 오가도록 하는 방식을 시도할 수 있습니다:
+* 클라이언트 설정에서 `keep_alive.idle_socket_ttl` 값을 500밀리초 줄입니다. 예를 들어 클라이언트와 서버 간 네트워크 지연 시간이 큰 경우, 이를 줄이는 것이 도움이 될 수 있으며, 서버가 곧 닫으려는 소켓을 발신 요청이 잡는 상황을 방지할 수 있습니다.
+
+* 들어오는 데이터나 나가는 데이터가 없는 장시간 실행 쿼리(예: 장시간 실행되는 `INSERT FROM SELECT`) 중에 이 오류가 발생하는 경우, 로드 밸런서나 기타 네트워크 구성 요소가 장기간 지속되는 연결 또는 장시간 실행되는 요청을 닫기 때문일 수 있습니다. 이러한 장시간 실행 쿼리 동안 다음 ClickHouse 설정 조합을 사용하여, 쿼리 실행 중에 주기적으로 일부 데이터가 오가도록 하는 방식을 시도할 수 있습니다:
 
   ```ts
   const client = createClient({
@@ -1224,9 +1224,10 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
     },
   })
   ```
+
   다만 최근 Node.js 버전에서는 수신되는 헤더의 총 크기에 16KB 제한이 있다는 점을 유의해야 합니다. 진행 상황 헤더가 일정 개수(테스트에서는 약 70–80개)를 초과하여 수신되면 예외가 발생합니다.
 
-  네트워크 구간에서의 대기 시간을 완전히 피하는 방식으로, 전혀 다른 접근 방식을 사용할 수도 있습니다. HTTP 인터페이스의 「연결이 끊어져도 뮤테이션이 취소되지 않는다」는 "특징"을 활용하면 됩니다. 자세한 내용은 [이 예시 (part 2)](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)를 참고하십시오.
+  네트워크 구간에서의 대기 시간을 완전히 피하는 방식으로, 전혀 다른 접근 방식을 사용할 수도 있습니다. HTTP 인터페이스의 「연결이 끊어져도 뮤테이션이 취소되지 않는다」는 &quot;특징&quot;을 활용하면 됩니다. 자세한 내용은 [이 예시 (part 2)](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)를 참고하십시오.
 
 * Keep-Alive 기능을 완전히 비활성화할 수도 있습니다. 이 경우 클라이언트는 각 요청에 `Connection: close` 헤더를 추가하며, 내부 HTTP 에이전트는 연결을 재사용하지 않습니다. 유휴 소켓이 존재하지 않으므로 `keep_alive.idle_socket_ttl` 설정은 무시됩니다. 각 요청마다 새로운 연결이 설정되므로 추가 오버헤드가 발생합니다.
 
@@ -1237,6 +1238,32 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
     },
   })
   ```
+
+* 동일한 ClickHouse 인스턴스와 동일한 네트워크 경로(예: 동일한 머신 또는 네트워크 세그먼트, 예: Kubernetes 파드)에서 간단한 커맨드라인 테스트를 실행하여, Node.js 자체를 포함한 나머지 네트워크 스택과 관련된 잠재적인 문제를 배제합니다. 예를 들어 `curl`을 사용할 수 있습니다:
+
+  ```sh
+  curl -is --user '<user>:<password>' --data-binary "SELECT 1" <clickhouse_url>
+  ```
+
+  이 명령을 몇 분 동안 반복 실행해 볼 수 있습니다. `curl`에서도 유사한 오류가 발생한다면, 문제는 클라이언트 설정이 아니라 네트워크 스택이나 서버 설정과 더 관련이 있을 가능성이 큽니다.
+
+* 기본 Node.js 기능만으로 연결을 테스트하기 위해, 내장된 `fetch` API를 사용하여 ClickHouse 서버로 단순한 HTTP 요청을 생성해 볼 수 있습니다.
+
+```ts
+  const response = await fetch('<clickhouse_url>?query=SELECT+1', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + Buffer.from('<user>:<password>').toString('base64'),
+    }
+  })
+```
+
+
+* 경우에 따라 애플리케이션 코드나 프레임워크 어댑터가 실제 쿼리 실행 전에 미리 `ping()` 호출을 추가할 수 있습니다. 이때 동일한 유휴 연결 문제로 인해 `ping()` 요청은 성공하지만, 뒤이은 쿼리 요청은 「socket hang up」 오류로 실패하는 상황이 발생할 수 있습니다. 로그에서 이러한 패턴이 보이면, 사용 중인 프레임워크나 애플리케이션 코드에서 사전 `ping()`을 비활성화할 수 있는 옵션이 있는지 확인하십시오. 이는 중간 네트워크 구성 요소에서 rate limiting에 걸릴 가능성을 줄이는 데에도 도움이 됩니다.
+
+* 애플리케이션 자체가 충분한 CPU 시간을 확보하고 있으며, 네트워크가 호스팅 제공자에 의해 제한되고 있지 않은지 확인해야 합니다. GC 일시 중지(GC pause) 메트릭, 이벤트 루프 지연(event loop lag) 메트릭 등 다양한 모니터링 수단을 활용하면 잠재적인 리소스 부족 문제를 배제하는 데 도움이 됩니다.
+
+* [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint 규칙을 활성화한 상태에서 애플리케이션 코드를 점검해 보십시오. 이 규칙은 처리되지 않은 promise를 식별하는 데 도움이 되며, 이러한 promise가 남아 있는 스트림과 소켓으로 이어질 수 있습니다.
 
 ### 읽기 전용 사용자 \{#read-only-users\}
 
@@ -1284,17 +1311,17 @@ const client = createClient({
 이는 향후 릴리스에서 이전 버전과 호환되지 않는 방식으로 변경될 수 있는 실험적 기능입니다. 대부분의 사용 사례에는 클라이언트가 제공하는 기본 구현과 설정만으로 충분합니다. 이 기능이 실제로 필요하다고 확신되는 경우에만 사용하십시오.
 :::
 
-기본적으로 클라이언트는 클라이언트 설정(`max_open_connections`, `keep_alive.enabled`, `tls` 등)에 따라 기본 HTTP(s) 에이전트(agent)를 구성하며, 이 에이전트가 ClickHouse 서버로의 연결을 처리합니다. 또한 TLS 인증서를 사용하는 경우, 기본 에이전트는 필요한 인증서로 구성되며 올바른 TLS 인증 헤더가 적용됩니다.
+기본적으로 클라이언트는 클라이언트 설정(`max_open_connections`, `keep_alive.enabled`, `tls` 등)에 따라 기본 HTTP 또는 HTTPS 에이전트(agent)를 구성하며, 이 에이전트가 ClickHouse 서버로의 연결을 처리합니다. 또한 TLS 인증서를 사용하는 경우, 기본 에이전트는 필요한 인증서로 구성되며 올바른 TLS 인증 헤더가 적용됩니다.
 
-버전 1.2.0부터는 기본 에이전트를 대체할 수 있도록 사용자 정의 HTTP(s) 에이전트를 클라이언트에 제공할 수 있습니다. 이는 네트워크 구성이 까다로운 환경에서 유용할 수 있습니다. 사용자 정의 에이전트를 제공하는 경우 다음 조건이 적용됩니다:
+버전 1.2.0부터는 기본 에이전트를 대체할 수 있도록 사용자 정의 HTTP 또는 HTTPS 에이전트를 클라이언트에 제공할 수 있습니다. 이는 네트워크 구성이 까다로운 환경에서 유용할 수 있습니다. 사용자 정의 에이전트를 제공하는 경우 다음 조건이 적용됩니다:
 
-- `max_open_connections` 및 `tls` 옵션은 _효과가 없으며_ 클라이언트에서 무시됩니다. 이 옵션들은 기본 에이전트 설정의 일부이기 때문입니다.
-- `keep_alive.enabled`는 `Connection` 헤더의 기본값만 제어합니다(`true` -> `Connection: keep-alive`, `false` -> `Connection: close`).
-- 유휴 keep-alive 소켓 관리는 (에이전트가 아니라 개별 소켓 자체에 묶여 있으므로) 계속 동작하지만, 이제 `keep_alive.idle_socket_ttl` 값을 `0`으로 설정하여 이를 완전히 비활성화할 수 있습니다.
+* `max_open_connections` 및 `tls` 옵션은 *효과가 없으며* 클라이언트에서 무시됩니다. 이 옵션들은 기본 에이전트 설정의 일부이기 때문입니다.
+* `keep_alive.enabled`는 `Connection` 헤더의 기본값만 제어합니다(`true` -&gt; `Connection: keep-alive`, `false` -&gt; `Connection: close`).
+* 유휴 keep-alive 소켓 관리는 (에이전트가 아니라 개별 소켓 자체에 묶여 있으므로) 계속 동작하지만, 이제 `keep_alive.idle_socket_ttl` 값을 `0`으로 설정하여 이를 완전히 비활성화할 수 있습니다.
 
 #### 커스텀 에이전트 사용 예시 \{#custom-agent-usage-examples\}
 
-인증서 없이 커스텀 HTTP(s) Agent를 사용하는 예:
+인증서 없이 커스텀 HTTP 또는 HTTPS Agent를 사용하는 예:
 
 ```ts
 const agent = new http.Agent({ // or https.Agent
@@ -1331,7 +1358,7 @@ const client = createClient({
 })
 ```
 
-상호 TLS를 사용하는 사용자 정의 HTTPS 에이전트 사용:
+상호 TLS를 사용하는 커스텀 HTTPS 에이전트 사용:
 
 ```ts
 const agent = new https.Agent({

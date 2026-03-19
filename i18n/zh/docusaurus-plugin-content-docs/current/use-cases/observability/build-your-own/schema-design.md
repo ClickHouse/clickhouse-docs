@@ -588,7 +588,7 @@ LIMIT 5
 
 ## 使用字典 \{#using-dictionaries\}
 
-[Dictionaries](/sql-reference/dictionaries) 是 ClickHouse 的[关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供一种内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式，用于表示来自各种内部和外部[数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
+[Dictionaries](/sql-reference/statements/create/dictionary) 是 ClickHouse 的[关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供一种内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式，用于表示来自各种内部和外部[数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
 <Image img={observability_12} alt="Observability and dictionaries" size="md"/>
 
@@ -726,7 +726,7 @@ SELECT
 FROM geoip_url
 ```
 
-为了在 ClickHouse 中进行低延迟的 IP 查询，我们将利用字典在内存中存储 Geo IP 数据的键到属性的映射关系。ClickHouse 提供了一个 `ip_trie` [字典结构](/sql-reference/dictionaries#ip_trie)，用于将网络前缀（CIDR 块）映射到坐标和国家代码。下面的查询使用这种布局，并以上述表作为数据源来定义一个字典。
+为了在 ClickHouse 中进行低延迟的 IP 查询，我们将利用字典在内存中存储 Geo IP 数据的键到属性的映射关系。ClickHouse 提供了一个 `ip_trie` [字典结构](/sql-reference/statements/create/dictionary/layouts/ip-trie)，用于将网络前缀（CIDR 块）映射到坐标和国家代码。下面的查询使用这种布局，并以上述表作为数据源来定义一个字典。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -741,7 +741,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-我们可以从该字典中查询行，以确认此数据集可用于查询：
+我们可以从该字典中查询几行，以确认此数据集可用于查找：
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -838,10 +838,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [User-Agent 字符串](https://en.wikipedia.org/wiki/User_agent) 的解析是一个经典的正则表达式问题，也是基于日志和 trace 的数据集中的常见需求。ClickHouse 通过 Regular Expression Tree Dictionaries 高效解析 User-Agent。
 
-正则表达式树字典在 ClickHouse 开源版本中通过 `YAMLRegExpTree` 字典源类型定义，该类型提供包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，其所需结构的详细信息可以在[这里](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到。下面我们重点介绍使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 User-Agent 解析，并加载适用于受支持 CSV 格式的字典。此方法兼容开源版和 ClickHouse Cloud。
+正则表达式树字典在 ClickHouse 开源版本中通过 `YAMLRegExpTree` 字典源类型定义，该类型提供包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，其所需结构的详细信息可以在[这里](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到。下面我们重点介绍使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 User-Agent 解析，并加载适用于受支持 CSV 格式的字典。此方法兼容开源版和 ClickHouse Cloud。
 
 :::note
-在下面的示例中，我们使用的是 2024 年 6 月的最新 uap-core User-Agent 解析正则表达式快照。最新文件（会不定期更新）可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。你可以按照[这里](/sql-reference/dictionaries#collecting-attribute-values)的步骤，将其加载到下文使用的 CSV 文件中。
+在下面的示例中，我们使用的是 2024 年 6 月的最新 uap-core User-Agent 解析正则表达式快照。最新文件（会不定期更新）可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。你可以按照[这里](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values)的步骤，将其加载到下文使用的 CSV 文件中。
 :::
 
 创建以下 Memory 表。这些表保存用于解析设备、浏览器和操作系统的正则表达式。
@@ -875,7 +875,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-可以使用 `url` 表函数，从以下公开托管的 CSV 文件中填充这些表：
+可以使用 `url` 表函数，从下列公开托管的 CSV 文件中填充这些表：
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -1031,7 +1031,7 @@ Os:     ('Other','0','0','0')
 
 - [字典进阶主题](/dictionary#advanced-dictionary-topics)
 - [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [字典](/sql-reference/dictionaries)
+- [字典](/sql-reference/statements/create/dictionary)
 
 ## 加速查询 \{#accelerating-queries\}
 
@@ -1471,56 +1471,71 @@ Peak memory usage: 27.85 MiB.
 
 **一般来说，当主键与目标的非主键列或表达式之间存在强相关性，并且用户查找的值较为稀有（即这些值只出现在很少的 granule 中）时，它们会更为有效。**
 
-### 文本搜索的布隆过滤器 \{#bloom-filters-for-text-search\}
+### 用于全文搜索的文本索引 \{#text-index-for-full-text-search\}
 
-对于可观测性查询,当需要执行文本搜索时,辅助索引非常有用。 具体而言,基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。 需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。 这意味着查询时只能匹配 token(或完整单词)。 若需要更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。 它将字符串拆分为指定大小的 ngram,从而实现子词匹配。
+ClickHouse 为全文搜索提供了专用的[文本索引](/engines/table-engines/mergetree-family/textindexes)。
+该索引会在分词后的文本数据之上构建倒排索引，从而支持基于 token 的快速搜索。
 
-要评估将生成并因此匹配的标记,可以使用 `tokens` 函数:
+文本索引从 ClickHouse 26.2 版本开始可用。
 
-```sql
-SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+它可以定义在 MergeTree 表中的以下列类型上：[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 这两个 map 函数）列。
 
-┌─tokens────────────────────────────────────────────┐
-│ ['https','www','zanbil','ir','m','filter','b113'] │
-└───────────────────────────────────────────────────┘
+文本索引在定义时需要一个 `tokenizer` 参数。可选地，可以指定一个预处理函数，在分词前对输入字符串进行转换。
 
-1 row in set. Elapsed: 0.008 sec.
-```
+推荐用于在索引中执行搜索的函数包括：`hasAnyTokens` 和 `hasAllTokens`。
+当存在文本索引时，一些传统的字符串搜索函数也会自动得到优化。详细说明和受支持的函数请参阅[此处](/engines/table-engines/mergetree-family/textindexes#using-a-text-index)和[此处](/engines/table-engines/mergetree-family/textindexes#functions-example-hasanytokens-hasalltokens)的文档。
 
-`ngram` 函数提供了类似的能力，其中 `ngram` 的大小可以通过第二个参数指定：`
+在下面的示例中，我们使用一个结构化日志数据集。
 
 ```sql
-SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
-
-┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-1 row in set. Elapsed: 0.008 sec.
+CREATE TABLE otel_logs
+(
+        `Body` String,
+        `Timestamp` DateTime,
+        `ServiceName` LowCardinality(String),
+        `Status` UInt16,
+        `RequestProtocol` LowCardinality(String),
+        `RunTime` UInt32,
+        `Size` UInt32,
+        `UserAgent` String,
+        `Referer` String,
+        `RemoteUser` String,
+        `RequestType` LowCardinality(String),
+        `RequestPath` String,
+        `RemoteAddress` IPv4,
+        `RefererDomain` String,
+        `RequestPage` String,
+        `SeverityText` LowCardinality(String),
+        `SeverityNumber` UInt8
+)
+ENGINE = MergeTree
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-:::note 倒排索引
-ClickHouse 对倒排索引作为二级索引提供了实验性支持。我们目前不建议将其用于日志数据集,但预计当其达到生产就绪状态时,将取代基于令牌的布隆过滤器。
-:::
-
-在本示例中,我们使用结构化日志数据集。假设我们希望统计 `Referer` 列中包含 `ultra` 的日志数量。
+我们也可以在没有文本索引的情况下使用 `hasAnyTokens`，但查询会对 Body 列执行较慢的完整扫描：
 
 ```sql
 SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
+FROM otel_logs
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-┌─count()─┐
-│  114514 │
-└─────────┘
+Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
-1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
 
-这里我们需要匹配 ngram 大小为 3 的情况。因此我们创建一个 `ngrambf_v1` 索引。
+
+#### 添加文本索引 \{#adding-a-text-index\}
+
+可以在创建表时为 Body 列添加文本索引：
 
 ```sql
-CREATE TABLE otel_logs_bloom
+CREATE TABLE otel_logs_index_body
 (
         `Body` String,
         `Timestamp` DateTime,
@@ -1539,122 +1554,281 @@ CREATE TABLE otel_logs_bloom
         `RequestPage` String,
         `SeverityText` LowCardinality(String),
         `SeverityNumber` UInt8,
-        INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+         INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000
 )
 ENGINE = MergeTree
-ORDER BY (Timestamp)
+ORDER BY Timestamp
+SETTINGS index_granularity = 8192
 ```
 
-此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要进行调优,其取值依赖于唯一 ngram/token 的个数以及过滤器返回真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+或者稍后使用 `ALTER TABLE` 添加：
 
+```sql
+ALTER TABLE otel_logs ADD INDEX idx_body Body TYPE text(tokenizer = splitByNonAlpha) GRANULARITY 100000000;
+ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
+```
 
-如果调优得当，性能提升会非常显著：
+如果我们再次运行相同的 SELECT 查询，将会通过文本索引进行查找。
+访问的数据量将从数 GB 降至数 MB，性能大约提升 45 倍。
 
 ```sql
 SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-┌─count()─┐
-│   182   │
-└─────────┘
+FROM otel_logs_index_body
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
 
-1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
-Peak memory usage: 129.60 KiB.
+Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.013 sec. Processed 20.41 million rows, 20.41 MB (1.59 billion rows/s., 1.59 GB/s.)
+Peak memory usage: 15.23 MiB.
 ```
 
-:::note 示例说明
-上述内容仅用于示例说明。我们建议用户在插入日志时就从日志中提取结构化信息，而不是尝试通过基于 token 的布隆过滤器来优化文本搜索。不过，在某些情况下，用户可能会有堆栈跟踪或其他较大的字符串字段，此时由于结构不够固定，文本搜索仍然可能有用。
-:::
 
-关于使用布隆过滤器的一些通用准则：
+#### 使用预处理器 \{#using-a-preprocessor\}
 
-Bloom 过滤器的目标是过滤[颗粒（granules）](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)，从而避免需要加载某个列的所有值并执行线性扫描。可以使用带有参数 `indexes=1` 的 `EXPLAIN` 子句来识别被跳过的颗粒数量。请参考下方针对原始表 `otel_logs_v2` 和带有 ngram Bloom 过滤器的表 `otel_logs_bloom` 的查询结果。
+在此数据集中，Body 列包含一个 JSON 格式的字符串，其中有多个键值对（例如 `msg`、`id`、`ctx`、`attr` 等）。
+
+假设我们只关心在 `msg` 字段中搜索。
+与其为整个 JSON 字符串建立索引，不如定义一个预处理器，在分词之前仅提取 `msg` 字段的值。
+
+例如：
 
 ```sql
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_v2
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_v2)                     │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │
-│               Condition: true                                      │
-│               Parts: 9/9                                           │
-│               Granules: 1278/1278                                  │
-└────────────────────────────────────────────────────────────────────┘
-
-10 rows in set. Elapsed: 0.016 sec.
-
-EXPLAIN indexes = 1
-SELECT count()
-FROM otel_logs_bloom
-WHERE Referer LIKE '%ultra%'
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│       Expression (Before GROUP BY)                                 │
-│       Filter ((WHERE + Change column names to column identifiers)) │
-│       ReadFromMergeTree (default.otel_logs_bloom)                  │
-│       Indexes:                                                     │
-│               PrimaryKey                                           │ 
-│               Condition: true                                      │
-│               Parts: 8/8                                           │
-│               Granules: 1276/1276                                  │
-│               Skip                                                 │
-│               Name: idx_span_attr_value                            │
-│               Description: ngrambf_v1 GRANULARITY 1                │
-│               Parts: 8/8                                           │
-│               Granules: 517/1276                                   │
-└────────────────────────────────────────────────────────────────────┘
+ INDEX idx_text Body TYPE text(tokenizer = splitByNonAlpha,
+                               preprocessor = JSONExtract(Body, 'msg', 'String'))
 ```
 
-通常只有当布隆过滤器比列本身更小时，它才会更快。如果它更大，则性能提升通常可以忽略不计。使用以下查询比较过滤器与列的大小：
+在本示例中，预处理器会：
 
+* 减少需要分词和建立索引的文本量
+* 减小索引大小
+* 降低误报概率
+* 提升查询性能
+
+```sql
+SELECT count()
+FROM otel_logs_text_body_preprocessed
+WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+
+Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
+
+   ┌─count()─┐
+1. │   27281 │
+   └─────────┘
+
+1 row in set. Elapsed: 0.006 sec. Processed 13.54 million rows, 13.54 MB (2.45 billion rows/s., 2.45 GB/s.)
+Peak memory usage: 1.95 MiB.
+```
+
+与未预处理的索引相比，性能可提升约 2 倍。
+
+使用预处理器可以将索引体积从数 GB 缩小到几百 KB，约为原始大小的 0.01%。
 
 ```sql
 SELECT
-        name,
-        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
-GROUP BY name
-ORDER BY sum(data_compressed_bytes) DESC
-
-┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
-└─────────┴─────────────────┴───────────────────┴───────┘
-
-1 row in set. Elapsed: 0.018 sec.
-
-SELECT
-        `table`,
-        formatReadableSize(data_compressed_bytes) AS compressed_size,
-        formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+    `table`,
+    formatReadableSize(data_compressed_bytes) AS compressed_size,
+    formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
-WHERE `table` = 'otel_logs_bloom'
+WHERE startsWith(`table`, 'otel_logs')
 
-┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
-│ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
-└─────────────────┴─────────────────┴───────────────────┘
+Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
-1 row in set. Elapsed: 0.004 sec.
+   ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
+1. │ otel_logs_text_index_body_preprocessed  │ 423.98 KiB      │ 424.29 KiB        │
+2. │ otel_logs_text_index_body               │ 2.76 GiB        │ 2.78 GiB          │
+   └─────────────────────────────────────────┴─────────────────┴───────────────────┘
 ```
 
-在上面的示例中，我们可以看到次级 Bloom 过滤器索引的大小为 12MB——仅约为该列本身压缩后 56MB 大小的五分之一。
+**其他文本搜索索引
 
-Bloom 过滤器通常需要进行大量调优。我们建议参考[此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter)的说明，以帮助识别最优设置。Bloom 过滤器在插入和合并操作时也可能带来较大开销。在将 Bloom 过滤器应用到生产环境之前，应评估其对写入性能的影响。
+有关二级跳过索引的更多详细信息，请参阅[此处](/optimize/skipping-indexes#skip-index-functions)。
 
-关于二级跳过索引的更多细节可以在[此处](/optimize/skipping-indexes#skip-index-functions)找到。
 
+<details markdown="1">
+  <summary>文本搜索的布隆过滤器</summary>
+
+  :::note
+  `ngrambf_v1` 和 `tokenbf_v1` 索引不再推荐用于全文搜索。
+  :::
+
+  基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。 需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。 这意味着查询时只能匹配 token(或完整单词)。 若需要更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。 它将字符串拆分为指定大小的 ngram,从而实现子词匹配。
+
+  要评估将生成并因此匹配的标记,可以使用 `tokens` 函数:
+
+  ```sql
+  SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+
+  ┌─tokens────────────────────────────────────────────┐
+  │ ['https','www','zanbil','ir','m','filter','b113'] │
+  └───────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  `ngram` 函数提供了类似的能力，其中 `ngram` 的大小可以通过第二个参数指定：
+
+  ```sql
+  SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
+
+  ┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
+  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+  1 row in set. Elapsed: 0.008 sec.
+  ```
+
+  在本示例中,我们使用结构化日志数据集。假设我们希望统计 `Referer` 列中包含 `ultra` 的日志数量。
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─count()─┐
+  │  114514 │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
+  ```
+
+  这里我们需要匹配 ngram 大小为 3 的情况。因此我们创建一个 `ngrambf_v1` 索引。
+
+  ```sql
+  CREATE TABLE otel_logs_bloom
+  (
+          `Body` String,
+          `Timestamp` DateTime,
+          `ServiceName` LowCardinality(String),
+          `Status` UInt16,
+          `RequestProtocol` LowCardinality(String),
+          `RunTime` UInt32,
+          `Size` UInt32,
+          `UserAgent` String,
+          `Referer` String,
+          `RemoteUser` String,
+          `RequestType` LowCardinality(String),
+          `RequestPath` String,
+          `RemoteAddress` IPv4,
+          `RefererDomain` String,
+          `RequestPage` String,
+          `SeverityText` LowCardinality(String),
+          `SeverityNumber` UInt8,
+          INDEX idx_span_attr_value Referer TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1
+  )
+  ENGINE = MergeTree
+  ORDER BY (Timestamp)
+  ```
+
+  此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要进行调优,其取值依赖于唯一 ngram/token 的个数以及过滤器返回真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+
+  如果调优得当，此处的加速效果将十分显著：
+
+  ```sql
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+  ┌─count()─┐
+  │   182   │
+  └─────────┘
+
+  1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
+  Peak memory usage: 129.60 KiB.
+  ```
+
+  :::note 仅供示例
+  以上内容仅用于说明目的。我们建议用户在插入时从日志中提取结构，而非尝试使用基于 token 的布隆过滤器来优化文本搜索。但在某些情况下，用户拥有堆栈跟踪或其他大型 String，由于其结构不够确定，文本搜索仍可发挥作用。
+  :::
+
+  以下是使用布隆过滤器的一些通用准则：
+
+  布隆过滤器的目标是过滤[颗粒](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design),从而避免加载某列的所有值并执行线性扫描。带有参数 `indexes=1` 的 `EXPLAIN` 子句可用于识别已跳过的颗粒数量。请参考以下针对原始表 `otel_logs_v2` 和带有 ngram 布隆过滤器的表 `otel_logs_bloom` 的查询响应。
+
+  ```sql
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_v2
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_v2)                     │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │
+  │               Condition: true                                      │
+  │               Parts: 9/9                                           │
+  │               Granules: 1278/1278                                  │
+  └────────────────────────────────────────────────────────────────────┘
+
+  10 rows in set. Elapsed: 0.016 sec.
+
+  EXPLAIN indexes = 1
+  SELECT count()
+  FROM otel_logs_bloom
+  WHERE Referer LIKE '%ultra%'
+
+  ┌─explain────────────────────────────────────────────────────────────┐
+  │ Expression ((Project names + Projection))                          │
+  │   Aggregating                                                      │
+  │       Expression (Before GROUP BY)                                 │
+  │       Filter ((WHERE + Change column names to column identifiers)) │
+  │       ReadFromMergeTree (default.otel_logs_bloom)                  │
+  │       Indexes:                                                     │
+  │               PrimaryKey                                           │ 
+  │               Condition: true                                      │
+  │               Parts: 8/8                                           │
+  │               Granules: 1276/1276                                  │
+  │               Skip                                                 │
+  │               Name: idx_span_attr_value                            │
+  │               Description: ngrambf_v1 GRANULARITY 1                │
+  │               Parts: 8/8                                           │
+  │               Granules: 517/1276                                   │
+  └────────────────────────────────────────────────────────────────────┘
+  ```
+
+  布隆过滤器通常只有在其大小小于列本身时才会更快。如果过滤器更大，则性能提升可能微乎其微。请使用以下查询比较过滤器与列的大小：
+
+  ```sql
+  SELECT
+          name,
+          formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+          formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+          round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+  FROM system.columns
+  WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
+  GROUP BY name
+  ORDER BY sum(data_compressed_bytes) DESC
+
+  ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+  │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
+  └─────────┴─────────────────┴───────────────────┴───────┘
+
+  1 row in set. Elapsed: 0.018 sec.
+
+  SELECT
+          `table`,
+          formatReadableSize(data_compressed_bytes) AS compressed_size,
+          formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
+  FROM system.data_skipping_indices
+  WHERE `table` = 'otel_logs_bloom'
+
+  ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
+  │ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
+  └─────────────────┴─────────────────┴───────────────────┘
+
+  1 row in set. Elapsed: 0.004 sec.
+  ```
+
+  在上述示例中，我们可以看到辅助布隆过滤器索引为 12MB——几乎比列本身 56MB 的压缩大小小 5 倍。
+
+  布隆过滤器可能需要大量调优。我们建议参考[此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter)的说明，这些说明有助于确定最优配置。布隆过滤器在插入和合并时也可能带来较高的开销。在将布隆过滤器添加到生产环境之前，应评估其对插入性能的影响。
+</details>
 
 ### 从 Map 中抽取 \{#extracting-from-maps\}
 

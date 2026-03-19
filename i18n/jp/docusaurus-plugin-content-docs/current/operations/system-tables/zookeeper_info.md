@@ -41,7 +41,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `open_file_descriptor_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — オープンしているファイルディスクリプタの数。Unixプラットフォームでのみ使用可能です。
 * `max_file_descriptor_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 最大ファイルディスクリプタ数。Unix プラットフォームでのみ利用可能です。
 * `connections` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper への接続数。
-* `outstanding` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper の未処理リクエスト数（outstanding）。
+* `outstanding` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper の未処理リクエスト数 (outstanding) 。
 * `zxid` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper の zxid。
 * `node_count` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper のノード数。
 * `snapshot_dir_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper のスナップショットディレクトリのサイズ。

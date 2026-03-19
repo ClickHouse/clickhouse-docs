@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # 驱动程序和接口 \{#drivers-and-interfaces\}
 
-ClickHouse 提供了两个网络接口（可选用 TLS 封装以增强安全性）：
+ClickHouse 提供了两个网络接口 (可选用 TLS 封装以增强安全性) ：
 
 * [HTTP](http.md)，有完整文档且可直接使用，十分方便。
 * [原生 TCP](../interfaces/tcp.md)，开销更小。
@@ -32,6 +32,11 @@ ClickHouse 服务器为高级用户提供了内置的可视化界面：
 * Play UI：在浏览器中打开 `/play`；
 * 高级仪表盘：在浏览器中打开 `/dashboard`；
 * 面向 ClickHouse 工程师的二进制符号查看器：在浏览器中打开 `/binary`；
+* ClickStack 可观测性 UI：在浏览器中打开 `/clickstack`；
+
+:::info[ClickStack]
+此版本的 ClickStack 非常适合本地调试和快速排查问题，但并不适用于生产环境。若需生产就绪的完整功能版 ClickStack，请参阅 [开源 ClickStack](/use-cases/observability/clickstack/getting-started/oss)。
+:::
 
 此外，还有大量第三方库可用于与 ClickHouse 进行集成：
 

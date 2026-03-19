@@ -1018,6 +1018,78 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
+## 惰性类型提示 (实验性)  \{#lazy-type-hints\}
+
+:::note
+此功能为实验性功能，需要启用设置 `allow_experimental_json_lazy_type_hints`。
+:::
+
+当你使用 `ALTER TABLE ... MODIFY COLUMN` 在 JSON 列上添加或修改类型提示时，ClickHouse 通常会重写所有分区片段以物化新的类型提示。对于拥有海量历史数据 (数百 TB) 的表而言，这样的开销可能极其巨大。
+
+**惰性类型提示** 允许以仅修改元数据的方式添加类型提示，而无需重写已有数据：
+
+* **旧分区片段**：在查询时，通过将 `Dynamic` 转换为目标类型来应用类型提示
+* **新分区片段**：在执行 `INSERT` 操作时物化类型提示
+* **合并操作**：在分区片段合并时物化类型提示
+
+这意味着你可以立即添加类型提示，而数据会在正常的后台合并过程中逐步完成转换。
+
+### 启用延迟类型提示 \{#enabling-lazy-type-hints\}
+
+```sql
+SET allow_experimental_json_lazy_type_hints = 1;
+```
+
+
+### 示例 \{#lazy-type-hints-example\}
+
+```sql title="Query"
+-- Create a table and insert data
+CREATE TABLE test_lazy (json JSON) ENGINE = MergeTree ORDER BY tuple();
+INSERT INTO test_lazy VALUES ('{"user_id": "123", "score": "95.5"}');
+
+-- Enable experimental setting
+SET allow_experimental_json_lazy_type_hints = 1;
+
+-- Add type hints - this completes instantly without mutation
+ALTER TABLE test_lazy MODIFY COLUMN json JSON(user_id UInt64, score Float64);
+
+-- Query the data - type hints are applied at read time
+SELECT json.user_id, toTypeName(json.user_id), json.score, toTypeName(json.score) FROM test_lazy;
+```
+
+```text title="Response"
+┌─json.user_id─┬─toTypeName(json.user_id)─┬─json.score─┬─toTypeName(json.score)─┐
+│          123 │ UInt64                   │       95.5 │ Float64                │
+└──────────────┴──────────────────────────┴────────────┴────────────────────────┘
+```
+
+
+### 验证未发生变更 \{#verifying-no-mutation-occurred\}
+
+可以通过检查 `system.mutations` 表来确认 `ALTER` 是否在未触发变更的情况下完成：
+
+```sql
+SELECT * FROM system.mutations WHERE table = 'test_lazy' AND NOT is_done;
+```
+
+启用惰性类型提示后，此查询不会返回任何行，从而确认该操作只是元数据操作。
+
+
+### 物化类型提示 \{#materializing-type-hints\}
+
+要在现有数据中物化类型提示，可以：
+
+1. **等待后台合并**：当分区片段被合并时，ClickHouse 会自动物化类型提示
+2. **强制合并**：使用 `OPTIMIZE TABLE test_lazy FINAL` 立即合并所有分区片段
+3. **重写分区片段**：使用 `ALTER TABLE test_lazy REWRITE PARTS` 按新的元数据重写分区片段
+
+### 限制 \{#lazy-type-hints-limitations\}
+
+* 此功能为实验性功能，将来版本中可能发生变化
+* 与预先物化的类型相比，在查询时进行类型转换会带来显著的性能开销，特别是对于大型 JSON 对象
+* 此功能仅在修改 `typed_paths` (类型提示) 时适用；其他 JSON 参数如 `max_dynamic_paths`、`SKIP` 或 `SKIP REGEXP` 仍然需要通过 mutation 来修改
+
 ## JSON 类型值的比较 \{#comparison-between-values-of-the-json-type\}
 
 JSON 对象的比较规则与 Map 类型类似。

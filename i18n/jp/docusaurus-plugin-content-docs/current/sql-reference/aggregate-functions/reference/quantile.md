@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の近似的な [`quantile`](https://en.wikipedia.org/wiki/Quantile) を計算します。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 結果は非決定的です。
 厳密な quantile を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 関数を使用してください。
 
-クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来より非効率に動作します）。
+クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来より非効率に動作します) 。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 空の数値シーケンスに対しては、`quantile` は NaN を返しますが、`quantile*` の各バリアントは、バリアントに応じて NaN かそのシーケンスタイプのデフォルト値のいずれかを返すことに注意してください。

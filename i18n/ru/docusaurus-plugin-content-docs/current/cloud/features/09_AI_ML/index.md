@@ -13,5 +13,5 @@ doc_type: 'reference'
 ClickHouse Cloud предлагает следующие агентные возможности, которые сокращают эти сроки до секунд или минут,
 что позволяет продакт-менеджеру спросить: «Что стало причиной всплеска оттока на прошлой неделе?» и сразу получить не только ответ, но и исходный запрос, визуализацию и возможные следующие вопросы для исследования.
 
-* [Ask AI agent](/cloud/features/ai-ml/ask-ai)
+* [агент ClickHouse Assistant](/cloud/features/ai-ml/ask-ai)
 * [Remote MCP server](/cloud/features/ai-ml/remote-mcp)

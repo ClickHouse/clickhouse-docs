@@ -184,7 +184,7 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
 - Everything in Scale, **plus**
-- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
+- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` custom profiles.
 - Provides the highest levels of performance and resilience guarantees.
 - Supports enterprise-grade security:
   - Single Sign On (SSO)

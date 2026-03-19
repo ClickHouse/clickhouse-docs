@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-引入版本：v23.1
+引入版本：v23.1.0
 
 创建一个由最后的参数值组成的数组。
 例如，`groupArrayLast(1)(x)` 等价于 `[anyLast(x)]`。
@@ -29,7 +29,7 @@ groupArrayLast(max_size)(x)
 **参数**
 
 * `max_size` — 结果数组的最大长度。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 参数（列名或表达式）。[`Any`](/sql-reference/data-types)
+* `x` — 参数 (列名或表达式) 。[`Any`](/sql-reference/data-types)
 
 **返回值**
 

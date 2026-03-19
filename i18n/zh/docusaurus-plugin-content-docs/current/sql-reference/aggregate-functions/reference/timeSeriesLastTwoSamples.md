@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesLastTwoSamples \{#timeSeriesLastTwoSamples\}
 
-自 v25.6 引入
+自 v25.6.0 引入
 
 用于对时间序列数据进行重采样，以支持类似 PromQL 中 irate 和 idelta 的计算的聚合函数。
 

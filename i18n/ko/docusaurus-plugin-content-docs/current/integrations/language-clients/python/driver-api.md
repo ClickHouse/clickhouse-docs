@@ -369,14 +369,15 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 
 `Client.command` 메서드는 일반적으로 데이터를 반환하지 않거나 전체 데이터셋이 아닌 단일 기본 타입 값 또는 배열 값을 반환하는 SQL 쿼리를 ClickHouse 서버로 전송할 때 사용합니다. 이 메서드는 다음 매개변수를 받습니다:
 
-| Parameter     | Type             | Default    | Description                                                                                                                                                   |
-|---------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cmd           | str              | *Required* | 단일 값 또는 여러 값으로 이루어진 단일 행을 반환하는 ClickHouse SQL 문입니다.                                                                                  |
-| parameters    | dict or iterable | *None*     | [parameters 설명](#parameters-argument)을 참고하십시오.                                                                                                        |
-| data          | str or bytes     | *None*     | POST body로 명령에 함께 포함할 수 있는 선택적 데이터입니다.                                                                                                   |
-| settings      | dict             | *None*     | [settings 설명](#settings-argument)을 참고하십시오.                                                                                                            |
-| use_database  | bool             | True       | 클라이언트 생성 시 지정한 데이터베이스를 사용합니다. False인 경우, 명령은 연결된 사용자에 대해 ClickHouse 서버의 기본 데이터베이스를 사용합니다.               |
-| external_data | ExternalData     | *None*     | 쿼리에서 사용할 파일 또는 바이너리 데이터를 포함하는 `ExternalData` 객체입니다. [고급 쿼리(External Data)](advanced-querying.md#external-data)를 참고하십시오. |
+| Parameter              | Type             | Default    | Description                                                                                                                              |
+| ---------------------- | ---------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| cmd                    | str              | *Required* | 단일 값 또는 여러 값으로 이루어진 단일 행을 반환하는 ClickHouse SQL 문입니다.                                                                                      |
+| parameters             | dict or iterable | *None*     | [parameters 설명](#parameters-argument)을 참고하십시오.                                                                                           |
+| data                   | str or bytes     | *None*     | POST body로 명령에 함께 포함할 수 있는 선택적 데이터입니다.                                                                                                   |
+| settings               | dict             | *None*     | [settings 설명](#settings-argument)을 참고하십시오.                                                                                               |
+| use&#95;database       | bool             | True       | 클라이언트 생성 시 지정한 데이터베이스를 사용합니다. False인 경우, 명령은 연결된 사용자에 대해 ClickHouse 서버의 기본 데이터베이스를 사용합니다.                                                |
+| external&#95;data      | ExternalData     | *None*     | 쿼리에서 사용할 파일 또는 바이너리 데이터를 포함하는 `ExternalData` 객체입니다. [고급 쿼리(External Data)](advanced-querying.md#external-data)를 참고하십시오.                  |
+| transport&#95;settings | dict             | *None*     | 이 요청에 포함할 선택적 HTTP 헤더 딕셔너리입니다. 각 키-값 쌍은 HTTP 헤더로 추가됩니다(예: `{'X-Custom-Header': 'value'}`). 프록시 인증, 요청 추적 또는 중간 인프라에 필요한 헤더를 전달할 때 유용합니다. |
 
 ### 명령 예시 \{#command-examples\}
 
@@ -468,21 +469,22 @@ result = client.command(
 
 `Client.query` 메서드는 ClickHouse 서버에서 단일 「배치(batch)」 데이터셋을 가져오는 주요 방법입니다. 이 메서드는 HTTP 위에서 Native ClickHouse 포맷을 사용하여 대규모 데이터셋(최대 약 100만 행)을 효율적으로 전송합니다. 이 메서드는 다음과 같은 매개변수를 받습니다:
 
-| Parameter           | Type             | Default    | Description                                                                                                                                                                        |
-|---------------------|------------------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| query               | str              | *Required* | ClickHouse SQL SELECT 또는 DESCRIBE 쿼리입니다.                                                                                                                                     |
-| parameters          | dict or iterable | *None*     | [parameters 설명](#parameters-argument)을 참고하십시오.                                                                                                                             |
-| settings            | dict             | *None*     | [settings 설명](#settings-argument)을 참고하십시오.                                                                                                                                 |
-| query_formats       | dict             | *None*     | 결과 값에 대한 데이터 타입 서식을 지정합니다. Advanced Usage (Read Formats)를 참고하십시오.                                                                                          |
-| column_formats      | dict             | *None*     | 컬럼별 데이터 타입 서식을 지정합니다. Advanced Usage (Read Formats)를 참고하십시오.                                                                                                  |
-| encoding            | str              | *None*     | ClickHouse String 컬럼을 Python 문자열로 인코딩할 때 사용하는 인코딩입니다. 설정하지 않으면 Python 기본값인 `UTF-8`이 사용됩니다.                                                   |
-| use_none            | bool             | True       | ClickHouse null 값에 대해 Python *None* 타입을 사용합니다. False인 경우 ClickHouse null 값에 대해 데이터 타입 기본값(예: 0)을 사용합니다. 참고로 성능상의 이유로 NumPy/Pandas에서는 기본값이 False입니다. |
-| column_oriented     | bool             | False      | 결과를 행 시퀀스가 아닌 컬럼 시퀀스로 반환합니다. Python 데이터를 다른 컬럼 지향 데이터 포맷으로 변환하는 데 유용합니다.                                                            |
-| query_tz            | str              | *None*     | `zoneinfo` 데이터베이스의 타임존 이름입니다. 이 타임존이 쿼리가 반환하는 모든 datetime 또는 Pandas Timestamp 객체에 적용됩니다.                                                     |
-| column_tzs          | dict             | *None*     | 컬럼 이름을 타임존 이름에 매핑하는 딕셔너리입니다. `query_tz`와 유사하지만, 컬럼마다 서로 다른 타임존을 지정할 수 있습니다.                                                          |
-| use_extended_dtypes | bool             | True       | Pandas 확장 dtypes(예: StringArray)와 ClickHouse NULL 값에 대해 pandas.NA 및 pandas.NaT를 사용합니다. `query_df` 및 `query_df_stream` 메서드에만 적용됩니다.                       |
-| external_data       | ExternalData     | *None*     | 쿼리에서 사용할 파일 또는 바이너리 데이터를 포함하는 ExternalData 객체입니다. [Advanced Queries (External Data)](advanced-querying.md#external-data)를 참고하십시오.              |
-| context             | QueryContext     | *None*     | 재사용 가능한 QueryContext 객체로, 위의 메서드 인자를 캡슐화하는 데 사용할 수 있습니다. [Advanced Queries (QueryContexts)](advanced-querying.md#querycontexts)를 참고하십시오.      |
+| Parameter                   | Type             | Default    | Description                                                                                                                                         |
+| --------------------------- | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| query                       | str              | *Required* | ClickHouse SQL SELECT 또는 DESCRIBE 쿼리입니다.                                                                                                            |
+| parameters                  | dict or iterable | *None*     | [parameters 설명](#parameters-argument)을 참고하십시오.                                                                                                      |
+| settings                    | dict             | *None*     | [settings 설명](#settings-argument)을 참고하십시오.                                                                                                          |
+| query&#95;formats           | dict             | *None*     | 결과 값에 대한 데이터 타입 서식을 지정합니다. Advanced Usage (Read Formats)를 참고하십시오.                                                                                   |
+| column&#95;formats          | dict             | *None*     | 컬럼별 데이터 타입 서식을 지정합니다. Advanced Usage (Read Formats)를 참고하십시오.                                                                                        |
+| encoding                    | str              | *None*     | ClickHouse String 컬럼을 Python 문자열로 인코딩할 때 사용하는 인코딩입니다. 설정하지 않으면 Python 기본값인 `UTF-8`이 사용됩니다.                                                          |
+| use&#95;none                | bool             | True       | ClickHouse null 값에 대해 Python *None* 타입을 사용합니다. False인 경우 ClickHouse null 값에 대해 데이터 타입 기본값(예: 0)을 사용합니다. 참고로 성능상의 이유로 NumPy/Pandas에서는 기본값이 False입니다. |
+| column&#95;oriented         | bool             | False      | 결과를 행 시퀀스가 아닌 컬럼 시퀀스로 반환합니다. Python 데이터를 다른 컬럼 지향 데이터 포맷으로 변환하는 데 유용합니다.                                                                            |
+| query&#95;tz                | str              | *None*     | `zoneinfo` 데이터베이스의 타임존 이름입니다. 이 타임존이 쿼리가 반환하는 모든 datetime 또는 Pandas Timestamp 객체에 적용됩니다.                                                            |
+| column&#95;tzs              | dict             | *None*     | 컬럼 이름을 타임존 이름에 매핑하는 딕셔너리입니다. `query_tz`와 유사하지만, 컬럼마다 서로 다른 타임존을 지정할 수 있습니다.                                                                         |
+| use&#95;extended&#95;dtypes | bool             | True       | Pandas 확장 dtypes(예: StringArray)와 ClickHouse NULL 값에 대해 pandas.NA 및 pandas.NaT를 사용합니다. `query_df` 및 `query_df_stream` 메서드에만 적용됩니다.                  |
+| external&#95;data           | ExternalData     | *None*     | 쿼리에서 사용할 파일 또는 바이너리 데이터를 포함하는 ExternalData 객체입니다. [Advanced Queries (External Data)](advanced-querying.md#external-data)를 참고하십시오.                   |
+| context                     | QueryContext     | *None*     | 재사용 가능한 QueryContext 객체로, 위의 메서드 인자를 캡슐화하는 데 사용할 수 있습니다. [Advanced Queries (QueryContexts)](advanced-querying.md#querycontexts)를 참고하십시오.            |
+| transport&#95;settings      | dict             | *None*     | 이 요청에 포함할 HTTP 헤더의 선택적 딕셔너리입니다. 각 키-값 쌍은 HTTP 헤더로 추가됩니다(예: `{'X-Custom-Header': 'value'}`). 프록시 인증, 요청 추적 또는 중간 인프라에 필요한 헤더를 전달하는 데 유용합니다.          |
 
 ### 쿼리 예제 \{#query-examples\}
 
@@ -632,20 +634,20 @@ ClickHouse Connect는 NumPy, Pandas, Arrow 데이터 형식에 특화된 쿼리 
 
 ClickHouse에 여러 레코드를 삽입할 때는 `Client.insert` 메서드를 사용합니다. 이 메서드는 다음 매개변수를 받습니다:
 
-| Parameter          | Type                              | Default    | Description                                                                                                                                                                                   |
-|--------------------|-----------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| table              | str                               | *Required* | 데이터를 삽입할 ClickHouse 테이블입니다. 데이터베이스를 포함한 전체 테이블 이름도 사용할 수 있습니다.                                                                                           |
-| data               | Sequence of Sequences             | *Required* | 삽입할 데이터의 행렬입니다. 각 원소가 행(각 행은 컬럼 값 시퀀스)인 행 지향 시퀀스이거나, 각 원소가 컬럼(각 컬럼은 행 값 시퀀스)인 컬럼 지향 시퀀스일 수 있습니다.                                 |
-| column_names       | Sequence of str, or str           | '*'        | 데이터 행렬에 대한 column_names 리스트입니다. 대신 '*'를 사용하면 ClickHouse Connect가 테이블의 모든 컬럼 이름을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다.                               |
-| database           | str                               | ''         | insert 대상 데이터베이스 이름입니다. 지정하지 않으면 클라이언트에 설정된 데이터베이스가 사용됩니다.                                                                                            |
-| column_types       | Sequence of ClickHouseType        | *None*     | ClickHouseType 인스턴스 리스트입니다. column_types와 column_type_names 둘 다 지정되지 않은 경우 ClickHouse Connect가 테이블의 모든 컬럼 타입을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다.   |
-| column_type_names  | Sequence of ClickHouse type names | *None*     | ClickHouse 데이터 타입 이름 리스트입니다. column_types와 column_type_names 둘 다 지정되지 않은 경우 ClickHouse Connect가 테이블의 모든 컬럼 타입을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다. |
-| column_oriented    | bool                              | False      | True이면 `data` 인자를 컬럼들의 시퀀스로 간주하여 데이터 삽입을 위한 피벗 변환이 필요하지 않습니다. 그렇지 않으면 `data`를 행들의 시퀀스로 해석합니다.                                           |
-| settings           | dict                              | *None*     | [settings 설명](#settings-argument)을 참고하십시오.                                                                                                                                            |
-| context            | InsertContext                     | *None*     | 재사용 가능한 InsertContext 객체를 사용하여 위 메서드 인자들을 캡슐화할 수 있습니다. [고급 Insert(InsertContexts)](advanced-inserting.md#insertcontexts)를 참고하십시오.                          |
-| transport_settings | dict                              | *None*     | 전송 레벨 설정(HTTP 헤더 등)에 대한 선택적 딕셔너리입니다.                                                                                                                                     |
+| Parameter                 | Type                              | Default     | Description                                                                                                                                                 |
+| ------------------------- | --------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| table                     | str                               | *Required*  | 데이터를 삽입할 ClickHouse 테이블입니다. 데이터베이스를 포함한 전체 테이블 이름도 사용할 수 있습니다.                                                                                              |
+| data                      | Sequence of Sequences             | *Required*  | 삽입할 데이터의 행렬입니다. 각 원소가 행(각 행은 컬럼 값 시퀀스)인 행 지향 시퀀스이거나, 각 원소가 컬럼(각 컬럼은 행 값 시퀀스)인 컬럼 지향 시퀀스일 수 있습니다.                                                            |
+| column&#95;names          | Sequence of str, or str           | &#39;*&#39; | 데이터 행렬에 대한 column&#95;names 리스트입니다. 대신 &#39;*&#39;를 사용하면 ClickHouse Connect가 테이블의 모든 컬럼 이름을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다.                                |
+| database                  | str                               | &#39;&#39;  | insert 대상 데이터베이스 이름입니다. 지정하지 않으면 클라이언트에 설정된 데이터베이스가 사용됩니다.                                                                                                  |
+| column&#95;types          | Sequence of ClickHouseType        | *None*      | ClickHouseType 인스턴스 리스트입니다. column&#95;types와 column&#95;type&#95;names 둘 다 지정되지 않은 경우 ClickHouse Connect가 테이블의 모든 컬럼 타입을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다.  |
+| column&#95;type&#95;names | Sequence of ClickHouse type names | *None*      | ClickHouse 데이터 타입 이름 리스트입니다. column&#95;types와 column&#95;type&#95;names 둘 다 지정되지 않은 경우 ClickHouse Connect가 테이블의 모든 컬럼 타입을 가져오기 위해 사전 쿼리(pre-query)를 실행합니다. |
+| column&#95;oriented       | bool                              | False       | True이면 `data` 인자를 컬럼들의 시퀀스로 간주하여 데이터 삽입을 위한 피벗 변환이 필요하지 않습니다. 그렇지 않으면 `data`를 행들의 시퀀스로 해석합니다.                                                               |
+| settings                  | dict                              | *None*      | [settings 설명](#settings-argument)을 참고하십시오.                                                                                                                  |
+| context                   | InsertContext                     | *None*      | 재사용 가능한 InsertContext 객체를 사용하여 위 메서드 인자들을 캡슐화할 수 있습니다. [고급 Insert(InsertContexts)](advanced-inserting.md#insertcontexts)를 참고하십시오.                           |
+| transport&#95;settings    | dict                              | *None*      | 이 요청에 포함할 HTTP 헤더의 선택적 딕셔너리입니다. 각 키-값 쌍은 HTTP 헤더로 추가됩니다(예: `{'X-Custom-Header': 'value'}`). 프록시 인증, 요청 추적 또는 중간 인프라에서 요구하는 헤더 전달에 유용합니다.                    |
 
-이 메서드는 "command" 메서드에서 설명한 것과 같은 쿼리 요약(query summary) 딕셔너리를 반환합니다. 어떤 이유로든 insert가 실패하면 예외가 발생합니다.
+이 메서드는 &quot;command&quot; 메서드에서 설명한 것과 같은 쿼리 요약(query summary) 딕셔너리를 반환합니다. 어떤 이유로든 insert가 실패하면 예외가 발생합니다.
 
 Pandas DataFrame, PyArrow Table, Arrow 기반 DataFrame과 함께 동작하는 특수화된 insert 메서드에 대해서는 [고급 Insert(Specialized Insert Methods)](advanced-inserting.md#specialized-insert-methods)를 참고하십시오.
 

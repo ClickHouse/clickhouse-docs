@@ -360,13 +360,16 @@ SETTINGS
     ...
 ```
 
-## S3Queue 有序模式 \{#ordered-mode\}
+## S3Queue `ordered` 模式 \{#ordered-mode\}
 
 `S3Queue` 处理模式允许在 ZooKeeper 中存储更少的元数据，但有一个限制：后续按时间添加的文件，其名称在字母数字顺序上必须更大。
 
 `S3Queue` 的 `ordered` 模式与 `unordered` 模式一样，支持 `(s3queue_)processing_threads_num` 设置（`s3queue_` 前缀是可选的），该设置用于控制在服务器本地处理 `S3` 文件的线程数量。
-此外，`ordered` 模式还引入了另一个名为 `(s3queue_)buckets` 的设置，表示“逻辑线程”。这意味着在分布式场景下，当存在多个带有 `S3Queue` 表副本的服务器时，该设置用于定义处理单元的数量。例如，每个 `S3Queue` 副本上的每个处理线程都会尝试锁定某个用于处理的 `bucket`，每个 `bucket` 通过文件名的哈希映射到特定的一组文件。因此，在分布式场景下，强烈建议将 `(s3queue_)buckets` 设置值配置为至少不小于副本数量，或更大。`buckets` 的数量大于副本数量是没有问题的。最优的场景是将 `(s3queue_)buckets` 设置为 `number_of_replicas` 与 `(s3queue_)processing_threads_num` 的乘积。
-不推荐在 `24.6` 之前的版本中使用 `(s3queue_)processing_threads_num` 设置。
+
+对于未启用分区的 `ordered` 模式，ClickHouse 可以从上次处理的键继续列出 S3 对象，以避免重新列出此前整个前缀下的历史内容。在带 bucket 的 `ordered` 模式中，为避免跳过尚未处理的文件，恢复点会保守地选择为所有 bucket 中最小的已处理键。
+此恢复列举优化仅用于未启用分区的 `ordered` 模式下基于 S3 的队列（不适用于 AzureQueue，也不适用于设置了 `partitioning_mode` 的情况）。
+此外，`ordered` 模式还引入了另一个名为 `(s3queue_)buckets` 的设置，表示“逻辑线程”。这意味着在分布式场景下，当存在多个带有 `S3Queue` 表副本的服务器时，该设置用于定义处理单元的数量。例如，每个 `S3Queue` 副本上的每个处理线程都会尝试锁定某个用于处理的 `bucket`，每个 `bucket` 通过文件名的哈希映射到特定文件。因此，在分布式场景下，强烈建议将 `(s3queue_)buckets` 设置为至少等于副本数量，或更大。bucket 的数量大于副本数量是没有问题的。最优的场景是将 `(s3queue_)buckets` 设置为 `number_of_replicas` 与 `(s3queue_)processing_threads_num` 的乘积。
+不建议在 `24.6` 之前的版本中使用 `(s3queue_)processing_threads_num` 设置。
 `(s3queue_)buckets` 设置从 `24.6` 版本开始可用。
 
 ## 从 S3Queue 表引擎中执行 SELECT 查询 \{#select\}

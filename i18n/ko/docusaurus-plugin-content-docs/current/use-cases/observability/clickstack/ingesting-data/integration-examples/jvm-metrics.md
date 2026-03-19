@@ -17,18 +17,10 @@ import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-da
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 JVM 메트릭 모니터링하기 \{#jvm-clickstack\}
+# ClickStack를 이용한 JVM 메트릭 모니터링 \{#jvm-clickstack\}
 
 :::note[TL;DR]
-이 가이드는 OpenTelemetry Java agent를 사용해 메트릭을 수집하고 ClickStack로 JVM 애플리케이션을 모니터링하는 방법을 설명합니다. 다음 내용을 다룹니다.
-
-- JVM 애플리케이션에 OpenTelemetry Java agent를 연결하는 방법
-- agent가 OTLP를 통해 ClickStack로 메트릭을 전송하도록 설정하는 방법
-- 미리 구성된 대시보드를 사용해 힙 메모리, 가비지 컬렉션, 스레드, CPU를 시각화하는 방법
-
-운영 애플리케이션에 계측을 적용하기 전에 통합을 테스트해 볼 수 있도록 샘플 메트릭이 포함된 데모 데이터셋이 제공됩니다.
-
-소요 시간: 5~10분
+OpenTelemetry Java agent를 사용해 ClickStack에서 JVM 애플리케이션을 모니터링합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 JVM 애플리케이션과의 통합 \{#existing-jvm\}
@@ -287,10 +279,8 @@ ClickStack이 원격 호스트에 있는 경우, 애플리케이션 서버에서
 
 ## 다음 단계 \{#next-steps\}
 
-이제 JVM 메트릭이 ClickStack으로 수집되도록 구성했으므로, 다음 단계를 고려하십시오:
-
-- 높은 힙 사용량, 잦은 GC 일시 중지, 스레드 고갈과 같은 중요 메트릭에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오
-- 관측성 데이터를 통합하기 위해 [다른 ClickStack 연동](/use-cases/observability/clickstack/integration-guides)을 살펴보십시오
+- 높은 힙 사용량, 잦은 GC 일시 중지 또는 스레드 고갈과 같은 중요 메트릭에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오
+- 관측성 데이터를 통합하기 위해 [다른 ClickStack 통합](/use-cases/observability/clickstack/integration-guides)을 살펴보십시오
 
 ## 프로덕션 환경으로 이동 \{#going-to-production\}
 

@@ -15,3 +15,4 @@ keywords: ['ClickStack サンプルデータセット', 'ClickStack デモデー
 | [Sample Data](sample-data.md) | デモ環境から取得したログ、トレース、メトリクスを含むサンプルデータセットを読み込みます |
 | [Local Data](local-data.md) | ローカルシステムのメトリクスとログを収集し、分析のために ClickStack に送信します |
 | [Remote Demo Data](remote-demo-data.md) | リモートのデモクラスターに接続し、問題を調査します |
+| [Session Replay Demo](session-replay.md) | セッションリプレイ用にデモ Web アプリケーションをインストルメントし、ClickStack で操作内容を確認します |

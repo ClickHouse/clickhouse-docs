@@ -108,8 +108,6 @@ ClickStack용 Helm 차트는 [여기](https://github.com/ClickHouse/ClickStack-h
   통합된 ClickHouse 인스턴스에 대한 기본 연결을 재정의할 수 있습니다. 자세한 내용은 [&quot;ClickHouse Cloud 사용&quot;](#using-clickhouse-cloud)을 참조하세요.
   :::
 
-  대체 ClickHouse 인스턴스를 사용하는 예시는 [&quot;ClickHouse Cloud 연결 생성&quot;](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)을 참조하세요.
-
   ### 값 사용자 지정 (선택 사항)
 
   `--set` 플래그를 사용하여 설정을 사용자 지정할 수 있습니다. 예를 들면 다음과 같습니다:
@@ -118,13 +116,13 @@ ClickStack용 Helm 차트는 [여기](https://github.com/ClickHouse/ClickStack-h
   helm install my-clickstack clickstack/clickstack --set key=value
   ```
 
-  또는 `values.yaml` 파일을 편집하십시오. 기본값을 확인하려면:
+  또는 `values.yaml` 파일을 편집하십시오. 기본값을 가져오려면:
 
   ```shell
   helm show values clickstack/clickstack > values.yaml
   ```
 
-  설정 예시:
+  구성 예시:
 
   ```yaml
   replicaCount: 2
@@ -172,7 +170,7 @@ ClickStack용 Helm 차트는 [여기](https://github.com/ClickHouse/ClickStack-h
     API_KEY: <base64-encoded-api-key>
   ```
 
-  클러스터에 시크릿을 적용하세요:
+  해당 시크릿을 클러스터에 적용하세요:
 
   ```shell
   kubectl apply -f secrets.yaml
@@ -180,7 +178,7 @@ ClickStack용 Helm 차트는 [여기](https://github.com/ClickHouse/ClickStack-h
 
   #### 사용자 지정 시크릿 생성
 
-  필요한 경우, 사용자 정의 Kubernetes 시크릿을 수동으로 생성하세요:
+  원하는 경우 수동으로 사용자 지정 Kubernetes 시크릿을 생성할 수 있습니다:
 
   ```shell
   kubectl create secret generic hyperdx-secret \
@@ -189,7 +187,7 @@ ClickStack용 Helm 차트는 [여기](https://github.com/ClickHouse/ClickStack-h
 
   #### 시크릿 참조
 
-  `values.yaml`에서 시크릿을 참조하려면:
+  `values.yaml`에서 시크릿을 참조하려면 다음과 같이 설정합니다:
 
   ```yaml
   hyperdx:

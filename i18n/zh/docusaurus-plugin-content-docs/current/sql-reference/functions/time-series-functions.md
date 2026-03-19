@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 ## seriesDecomposeSTL \{#seriesDecomposeSTL\}
 
-引入版本：v24.1
+引入版本：v24.1.0
 
-使用 STL（基于 Loess 的季节-趋势分解方法 [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)）将时间序列数据分解为季节成分、趋势成分和残差成分。
+使用 STL (基于 Loess 的季节-趋势分解方法 [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)) 将时间序列数据分解为季节成分、趋势成分和残差成分。
 
 **语法**
 
@@ -38,7 +38,7 @@ seriesDecomposeSTL(series, period)
 
 **返回值**
 
-返回一个包含四个数组的数组：第一个数组为季节性成分，第二个数组为趋势成分，第三个数组为残差成分，第四个数组为基线（季节性 + 趋势）成分。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+返回一个包含四个数组的数组：第一个数组为季节性成分，第二个数组为趋势成分，第三个数组为残差成分，第四个数组为基线 (季节性 + 趋势) 成分。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -73,7 +73,7 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 
 ## seriesOutliersDetectTukey \{#seriesOutliersDetectTukey\}
 
-自 v24.2 起引入。
+自 v24.2.0 起引入。
 
 使用 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测序列数据中的异常值。
 
@@ -122,9 +122,9 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT \{#seriesPeriodDetectFFT\}
 
-自 v23.12 引入
+自 v23.12.0 引入
 
-使用 FFT（[快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）检测给定序列数据的周期。
+使用 FFT ([快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform)) 检测给定序列数据的周期。
 
 **语法**
 
@@ -168,9 +168,9 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## timeSeriesCopyTag \{#timeSeriesCopyTag\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
-将指定的标签从一个标签组（`src_group`）复制到另一个标签组（`dest_group`）。
+将指定的标签从一个标签组 (`src_group`) 复制到另一个标签组 (`dest_group`) 。
 该函数会覆盖 `dest_group` 中该被复制标签之前的任何值。
 如果被复制的标签在 `src_group` 中不存在，则函数还会将其从 `dest_group` 中删除。
 该函数仿照 Prometheus 中
@@ -211,9 +211,9 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesCopyTags \{#timeSeriesCopyTags\}
 
-引入于：v26.1
+引入于：v26.1.0
 
-将指定的标签从一组标签（`src_group`）复制到另一组标签（`dest_group`）。
+将指定的标签从一组标签 (`src_group`) 复制到另一组标签 (`dest_group`) 。
 该函数会替换 `dest_group` 中被复制标签的任何先前值。
 如果某些要复制的标签在 `src_group` 中不存在，则函数也会将它们从 `dest_group` 中移除。
 该函数模仿了 Prometheus
@@ -254,7 +254,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesExtractTag \{#timeSeriesExtractTag\}
 
-自 v26.1 起引入
+自 v26.1.0 起引入
 
 从分组中提取指定标签的值。如果未找到则返回 NULL。
 另请参阅函数 [timeSeriesGroupToTags()](/sql-reference/functions/time-series-functions#timeSeriesGroupToTags)。
@@ -293,7 +293,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesFromGrid \{#timeSeriesFromGrid\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 将值数组 `[x1, x2, x3, ...]` 转换为元组数组
 `[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`。
@@ -314,7 +314,7 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 
 * `start_timestamp` — 时间网格的起始时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 时间网格的结束时间。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 时间网格的步长（秒）。[`Decimal64`](/sql-reference/data-types/decimal) 或 [`Decimal32`](/sql-reference/data-types/decimal) 或 [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `step` — 时间网格的步长 (秒) 。[`Decimal64`](/sql-reference/data-types/decimal) 或 [`Decimal32`](/sql-reference/data-types/decimal) 或 [`UInt32/64`](/sql-reference/data-types/int-uint)
 * `values` — 数值数组 [`Array(Float*)`](/sql-reference/data-types/array) 或 [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
 **返回值**
@@ -337,7 +337,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
-自 v26.1 起提供
+自 v26.1.0 起提供
 
 返回与指定 group 关联的标签名称和值。
 另请参阅函数 [timeSeriesTagsToGroup()](/sql-reference/functions/time-series-functions#timeSeriesTagsToGroup)。
@@ -379,7 +379,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesIdToGroup \{#timeSeriesIdToGroup\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 返回与指定时间序列标识符关联的标签名称和值。
 另请参阅 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)。
@@ -420,7 +420,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesIdToTags \{#timeSeriesIdToTags\}
 
-自 v25.8 起可用
+自 v25.8.0 起可用
 
 返回与指定时间序列标识符关联的标签。
 另请参阅函数 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)。
@@ -460,7 +460,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesJoinTags \{#timeSeriesJoinTags\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
 将从一组标签中提取出的指定标签的值进行拼接。
 该函数在拼接的值之间插入分隔符，并返回一个新的标签组，
@@ -503,7 +503,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('src1'
 
 ## timeSeriesRange \{#timeSeriesRange\}
 
-引入于：v25.8
+引入于：v25.8.0
 
 生成一个时间戳序列 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`。
 
@@ -521,7 +521,7 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 * `start_timestamp` — 范围的起始时间戳。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 范围的结束时间戳。[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 范围的步长（单位：秒）。[`UInt32/64`](/sql-reference/data-types/int-uint) 或 [`Decimal32/64`](/sql-reference/data-types/decimal)
+* `step` — 范围的步长 (单位：秒) 。[`UInt32/64`](/sql-reference/data-types/int-uint) 或 [`Decimal32/64`](/sql-reference/data-types/decimal)
 
 **返回值**
 
@@ -543,7 +543,7 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 
 ## timeSeriesRemoveAllTagsExcept \{#timeSeriesRemoveAllTagsExcept\}
 
-引入版本：v26.1
+引入版本：v26.1.0
 
 从一组标签中移除除指定标签外的所有标签。
 另请参见函数 [timeSeriesRemoveTag()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTag)、[timeSeriesRemoveTags()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTags)。
@@ -581,7 +581,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTag \{#timeSeriesRemoveTag\}
 
-自 v26.1 引入
+自 v26.1.0 引入
 
 从一组标签中移除指定的标签。
 如果该组中不存在此标签，则原样返回这组标签。
@@ -625,7 +625,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTags \{#timeSeriesRemoveTags\}
 
-自 v26.1 起引入。
+自 v26.1.0 起引入。
 
 从一组标签中移除指定的标签。
 如果某些指定标签不在该标签组中，则函数会忽略它们。
@@ -666,7 +666,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesReplaceTag \{#timeSeriesReplaceTag\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 对标签 `src_tag` 的值应用正则表达式 `regex` 进行匹配。
 如果匹配成功，则返回结果中的标签 `dest_tag` 的值将是 `replacement` 展开的结果，
@@ -710,7 +710,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('servi
 
 ## timeSeriesStoreTags \{#timeSeriesStoreTags\}
 
-引入版本：v25.8
+引入版本：v25.8.0
 
 在查询上下文中存储一个映射，用于关联时间序列的指定标识符与一组标签。
 函数 [timeSeriesIdToTags()](/sql-reference/functions/time-series-functions#timeSeriesIdToTags)
@@ -726,13 +726,13 @@ timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, .
 **参数**
 
 * `id` — 时间序列的标识符。[`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UUID`](/sql-reference/data-types/uuid) 或 [`FixedString(16)`](/sql-reference/data-types/fixedstring)
-* `tags_array` — 由成对元素组成的数组（tag&#95;name, tag&#95;value）。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) 或 [`NULL`](/sql-reference/syntax#null)
+* `tags_array` — 由成对元素组成的数组 (tag&#95;name, tag&#95;value) 。[`Array(Tuple(String, String))`](/sql-reference/data-types/array) 或 [`NULL`](/sql-reference/syntax#null)
 * `separate_tag_name_i` — 标签名称。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `separate_tag_value_i` — 标签值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable)
 
 **返回值**
 
-返回时间序列的标识符（即第一个参数本身）。
+返回时间序列的标识符 (即第一个参数本身) 。
 
 **示例**
 
@@ -754,7 +754,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesTagsToGroup \{#timeSeriesTagsToGroup\}
 
-引入于：v26.1
+引入于：v26.1.0
 
 返回与指定标签关联的标签组。
 如果在查询执行期间多次出现相同的标签组，则函数返回相同的标签组。
@@ -794,6 +794,56 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 ┌─group1─┬─group2─┬─empty_group─┬─same_group2─┬─throwIf(notEquals(same_group2, group2))─┬─timeSeriesGroupToTags(group2)──┐
 │      1 │      2 │           0 │           2 │                                       0 │ [('__name__','http_failures')] │
 └────────┴────────┴─────────────┴─────────────┴─────────────────────────────────────────┴────────────────────────────────┘
+```
+
+## timeSeriesThrowDuplicateSeriesIf \{#timeSeriesThrowDuplicateSeriesIf\}
+
+引入版本：v26.2.0
+
+检查 `condition`，如果为 true，则抛出异常，异常信息为：
+`Multiple series have the same tags <tags>, duplicate series in the same result set are not allowed`。
+如果 `condition` 为 false，则函数返回 `0`。
+该函数类似于 [throwIf()](/sql-reference/functions/other-functions#throwIf)，
+但使用了不同的错误码，并以不同的方式格式化错误消息。
+
+**语法**
+
+```sql
+timeSeriesThrowDuplicateSeriesIf(condition, group)
+```
+
+**参数**
+
+* `condition` — 要检查的条件，通常为函数 [count()](/sql-reference/aggregate-functions/reference/count#count) 的返回值，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+* `group` — 标签组。类型为 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回值为 `0`，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**示例**
+
+```sql title=Query
+CREATE TABLE test(tags Array(Tuple(String, String))) engine=Memory;
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- OK
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- Throws exception "Multiple series have the same tags {'__name__': 'up'}"
+```
+
+```response title=Response
 ```
 
 {/*AUTOGENERATED_END*/ }

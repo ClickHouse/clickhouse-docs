@@ -20,8 +20,9 @@ Kafka에서 메시지 압축에 대해 더 알아보려면 이 [가이드](https
 
 ## 제한 사항 \{#limitations\}
 
-- [`DEFAULT`](/sql-reference/statements/create/table#default)는 지원되지 않습니다.
-- 개별 메시지는 기본적으로 가장 작은 XS 레플리카 크기로 실행할 때 8MB(비압축 기준), 더 큰 레플리카 크기에서는 16MB(비압축 기준)로 제한됩니다. 이 한도를 초과하는 메시지는 오류와 함께 거부됩니다. 더 큰 메시지 크기가 필요하면 지원팀으로 문의하십시오.
+* [`DEFAULT`](/sql-reference/statements/create/table#default)는 지원되지 않습니다.
+* 많은 수의 파티션을 사용하면 지연 시간이 증가할 수 있습니다. ClickPipes는 레플리카 크기에 따라 각 레플리카가 한 번에 읽을 수 있는 파티션 수를 제한하며, 그 범위는 10개(XS)에서 240개(XL)입니다. 데이터가 없거나 매우 적은 파티션이 많으면 해당 메시지 처리에 지연이 발생할 수 있습니다.
+* 개별 메시지는 기본적으로 가장 작은 XS 레플리카 크기로 실행할 때 8MB(비압축 기준), 더 큰 레플리카 크기에서는 16MB(비압축 기준)로 제한됩니다. 이 한도를 초과하는 메시지는 오류와 함께 거부됩니다. 더 큰 메시지 크기가 필요하면 지원팀으로 문의하십시오.
 
 ## 전달 시맨틱스 \{#delivery-semantics\}
 
@@ -37,10 +38,6 @@ ClickPipes는 Kafka `max.fetch_bytes` 설정을 사용하여, 한 번에 단일 
 Warpstream이 이 설정을 준수하지 않아 예기치 않은 파이프 장애가 발생할 수 있습니다.  ClickPipes 장애를 방지하기 위해 Warpstream 에이전트를 구성할 때 Warpstream 전용 설정인 `kafkaMaxFetchPartitionBytesUncompressedOverride` 값을 8MB(또는 그보다 작게)로 설정할 것을 강력히 권장합니다.
 
 ### IAM \{#iam\}
-
-:::info
-MSK ClickPipe에 대한 IAM 인증은 베타 기능입니다.
-:::
 
 ClickPipes는 다음과 같은 AWS MSK 인증 방식을 지원합니다.
 
@@ -107,7 +104,7 @@ IAM role ARN으로 MSK에 인증하는 경우, 해당 역할을 위임받을 수
                 "AWS": "arn:aws:iam::12345678912:role/CH-S3-your-clickhouse-cloud-role"
             },
             "Action": "sts:AssumeRole"
-        },
+        }
     ]
 }
 ```

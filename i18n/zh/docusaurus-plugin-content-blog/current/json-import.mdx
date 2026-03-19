@@ -32,7 +32,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 ## 实用设置 \{#useful-settings\}
 
-* `input_format_skip_unknown_fields` 允许插入 JSON 数据，即使其中包含表结构中不存在的额外字段（这些字段会被丢弃）。
+* `input_format_skip_unknown_fields` 允许插入 JSON 数据，即使其中包含表结构中不存在的额外字段 (这些字段会被丢弃) 。
 * `input_format_import_nested_json` 允许将嵌套 JSON 对象插入到 [Nested](https://clickhouse.com/docs/sql-reference/data-types/nested-data-structures/nested/) 类型的列中。
 
 :::note

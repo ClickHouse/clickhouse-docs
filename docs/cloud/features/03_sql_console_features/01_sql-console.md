@@ -132,15 +132,15 @@ There are two ways to create a new query in the SQL console.
 
 ### Running a query {#running-a-query}
 
-To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
+To run a query, type your SQL command or commands into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
 Query Execution Options
 By default, clicking the run button will run all commands contained in the SQL Editor. The SQL console supports two other query execution options:
 
-- Run selected command(s)
+- Run selected commands
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected commands, highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
 <Image img={run_selected_query} size="md" alt='run selected query' />
 
@@ -303,6 +303,6 @@ Our chart will be updated accordingly:
 
 <Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can be done in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantDeltaToGrid \{#timeSeriesInstantDeltaToGrid\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 该聚合函数接收由时间戳和值成对组成的时间序列数据，并在由起始时间戳、结束时间戳和步长所描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 idelta](https://prometheus.io/docs/prometheus/latest/querying/functions/#idelta)。
 对于网格上的每个点，会在指定时间窗口内选取样本用于计算 `idelta`。
@@ -28,10 +28,10 @@ timeSeriesInstantDeltaToGrid(start_timestamp, end_timestamp, grid_step, stalenes
 
 * `start_timestamp` — 指定网格的起始时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — 指定网格的结束时间。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — 指定网格的步长（以秒为单位）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 指定被考虑样本的最大“陈旧度”（以秒为单位）。陈旧度窗口为左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — 指定网格的步长 (以秒为单位) 。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 指定被考虑样本的最大“陈旧度” (以秒为单位) 。陈旧度窗口为左开右闭区间。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**参数（函数参数）**
+**参数 (函数参数)&#x20;**
 
 * `timestamp` — 样本的时间戳。可以是单个值或数组。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Array(UInt32)`](/sql-reference/data-types/array) 或 [`Array(DateTime)`](/sql-reference/data-types/array)
 * `value` — 与该时间戳对应的时间序列值。可以是单个值或数组。[`Float*`](/sql-reference/data-types/float) 或 [`Array(Float*)`](/sql-reference/data-types/array)

@@ -15,3 +15,4 @@ keywords: ['ClickStack 示例数据集', 'ClickStack 演示数据', '可观测�
 | [Sample Data](sample-data.md) | 加载一个包含来自我们演示环境的日志、追踪和指标的示例数据集 |
 | [Local Data](local-data.md) | 采集本地系统的指标和日志，并发送到 ClickStack 进行分析 |
 | [Remote Demo Data](remote-demo-data.md) | 连接到我们的远程演示集群并分析一个问题 |
+| [Session Replay Demo](session-replay.md) | 为一个演示 Web 应用接入埋点以启用会话回放，并在 ClickStack 中查看你的交互 |

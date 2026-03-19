@@ -1,5 +1,5 @@
 ---
-description: '行ポリシーに関するドキュメント'
+description: 'Row Policy に関するドキュメント'
 sidebar_label: 'ROW POLICY'
 sidebar_position: 41
 slug: /sql-reference/statements/create/row-policy
@@ -7,7 +7,7 @@ title: 'CREATE ROW POLICY'
 doc_type: 'reference'
 ---
 
-[行ポリシー](../../../guides/sre/user-management/index.md#row-policy-management)を作成します。行ポリシーとは、ユーザーがテーブルから参照できる行を決定するために使用されるフィルターです。
+[行ポリシー](../../../guides/sre/user-management/index.md#row-policy-management)を作成します。つまり、ユーザーがテーブルからどの行を読み取れるかを判断するために使用されるフィルタリングです。
 
 :::tip
 行ポリシーは、読み取り専用アクセスを持つユーザーに対してのみ意味があります。ユーザーがテーブルを変更したり、テーブル間でパーティションをコピーできる場合、行ポリシーによる制限は意味をなさなくなります。
@@ -34,18 +34,6 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 
 キーワード `ALL` は、現在のユーザーを含むすべての ClickHouse ユーザーを意味します。キーワード `ALL EXCEPT` は、すべてのユーザーのリストから特定のユーザーを除外することができます。例えば、`CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost` のようになります。
 
-:::note
-テーブルに行ポリシーが 1 つも定義されていない場合、どのユーザーもそのテーブルからすべての行を `SELECT` できます。テーブルに 1 つ以上の行ポリシーを定義すると、それらの行ポリシーが現在のユーザー向けに定義されているかどうかに関係なく、テーブルへのアクセスは行ポリシーに依存するようになります。例えば、次のポリシーは:
-
-`CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
-
-ユーザー `mira` と `peter` が `b != 1` の行を参照することを禁止し、その他の記載されていないユーザー（例えばユーザー `paul`）は `mydb.table1` からは一切行を参照できません。
-
-これが望ましくない場合は、次のような行ポリシーをもう 1 つ追加することで解決できます。
-
-`CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
-:::
-
 ## AS 句 \{#as-clause\}
 
 同じテーブルおよび同じユーザーに対して、同時に複数のポリシーを有効にすることができます。そのため、複数のポリシーに含まれる条件を組み合わせる方法が必要になります。
@@ -70,7 +58,7 @@ row_is_visible = (one or more of the permissive policies' conditions are non-zer
                  (all of the restrictive policies's conditions are non-zero)
 ```
 
-例として、次のようなポリシーが挙げられます。
+たとえば、次のポリシーがあります。
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
@@ -91,9 +79,10 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ユーザー `peter` に対しては、`b=1` かつ `c=2` の両方を満たす場合にのみ table1 の行を参照できるように設定しつつ、
 mydb 内の他のテーブルには、そのユーザーに対して `b=1` のポリシーのみが適用されるようにします。
 
-## ON CLUSTER 句 \{#on-cluster-clause\}
 
-クラスター上で行ポリシーを作成できるようにします。[Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
+## ON CLUSTER Clause \{#on-cluster-clause\}
+
+クラスター上で行ポリシーを作成できるようになります。[Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
 ## 例 \{#examples\}
 

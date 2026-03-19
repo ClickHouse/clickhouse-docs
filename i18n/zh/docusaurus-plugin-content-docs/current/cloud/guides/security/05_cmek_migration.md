@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 ---
 
-我们正在提升客户托管加密密钥（CMEK）服务的安全性。现在，所有服务都会为每个服务配置一个唯一的 AWS 角色，用于授权使用客户密钥对服务进行加密和解密。这个新角色只会在服务配置界面中显示。
+我们正在提升客户托管加密密钥 (CMEK) 服务的安全性。现在，所有服务都会为每个服务配置一个唯一的 AWS 角色，用于授权使用客户密钥对服务进行加密和解密。这个新角色只会在服务配置界面中显示。
 
-此新流程同时支持 OpenAPI 和 Terraform。更多信息请参阅我们的文档（[增强加密](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[官方 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)）。
+此新流程同时支持 OpenAPI 和 Terraform。更多信息请参阅我们的文档 ([增强加密](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[官方 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)) 。
 
 :::warning
 使用 CMEK v1 的客户必须在 2026 年 6 月 1 日之前完成服务迁移。此日期之后，客户托管密钥将默认轮换为 ClickHouse 托管密钥。客户可以在默认迁移完成后，将密钥再次轮换回客户托管密钥。
@@ -44,7 +44,7 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 ```
 
 7. 在 ClickHouse Cloud 中提交一个支持工单，告知我们可以启用新的方法。此更改需要重启服务，请告知对您来说最合适的服务重启日期/时间。
-8. 在我们重启服务之后，前往 AWS 中的 KMS 密钥，并从密钥策略（Key Policy）中移除以下内容：
+8. 在我们重启服务之后，前往 AWS 中的 KMS 密钥，并从密钥策略 (Key Policy) 中移除以下内容：
 
 ```json
 {
@@ -91,7 +91,7 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 
 4. 在 ClickHouse Cloud 中，使用该服务名称创建一个支持工单，告知我们可以启用新的方法。此更改需要重启服务，如有合适的重启日期/时间，请提前告知我们。
 5. 在我们重启服务之后，您可以将 `transparent&#95;data&#95;encryption.enabled` 设置更新为 `'True'`，并在 Terraform 中移除 tier 设置后执行 apply。这样不会导致任何实际变更。
-6. 前往您在 AWS 中的 KMS 密钥，并在密钥策略（Key Policy）中移除以下内容：
+6. 前往您在 AWS 中的 KMS 密钥，并在密钥策略 (Key Policy) 中移除以下内容：
 
 ```json
 {

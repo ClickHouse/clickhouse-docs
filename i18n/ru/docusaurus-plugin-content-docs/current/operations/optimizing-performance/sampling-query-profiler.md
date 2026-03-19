@@ -52,14 +52,16 @@ SETTINGS allow_introspection_functions = 1
 
 * Используйте функции интроспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle` ([introspection functions](../../sql-reference/functions/introspection.md)), чтобы получить имена функций и их позиции в коде ClickHouse. Чтобы получить профиль для какого-либо запроса, вам нужно агрегировать данные из таблицы `trace_log`. Вы можете агрегировать данные по отдельным функциям или по целым стекам трассировки.
 
-Если вам нужно визуализировать информацию из `trace_log`, попробуйте [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) и [speedscope](https://github.com/laplab/clickhouse-speedscope).
+Если вам нужно визуализировать информацию из `trace_log`, попробуйте [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) и [speedscope](https://www.speedscope.app).
 
 ## Пример \{#example\}
 
 В этом примере мы:
 
 * Фильтруем данные `trace_log` по идентификатору запроса и текущей дате.
+
 * Агрегируем по стек-трейсу.
+
 * Используя функции интроспекции, получим отчет о следующем:
 
   * Именах символов и соответствующих им функциях исходного кода.

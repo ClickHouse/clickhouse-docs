@@ -16,6 +16,22 @@ import Image from '@theme/IdealImage';
 
 # ClickPipes for Postgres FAQ
 
+### Are transaction rollbacks replicated to ClickHouse? {#are-transaction-rollbacks-replicated}
+
+No. CDC replicates only committed transactions. Rolled-back transactions are never sent to ClickHouse.
+
+### Can I keep data in ClickHouse longer than in my source Postgres? {#retain-data-longer-in-clickhouse}
+
+Yes. Your source Postgres and destination ClickHouse have independent retention. For example, you can keep only 3 months of data in Postgres while retaining the full history in ClickHouse. Deleting old rows in Postgres generates DELETE events that are replicated to ClickHouse, so if you want to preserve historical data you should either exclude DELETEs from your [publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate) or handle them at the query layer.
+
+### How can I enrich data as it flows from Postgres to ClickHouse? {#data-enrichment}
+
+Use [materialized views](/materialized-views) on top of your CDC destination tables. Materialized views in ClickHouse act as insert triggers, so each row replicated from Postgres can be transformed, joined with lookup tables, or enriched with additional columns before being written to a final target table.
+
+### Can I replicate from multiple Postgres instances into one or more ClickHouse services? {#multi-region-multi-source}
+
+Yes. You can create separate ClickPipes from different Postgres instances (including across AWS regions) into one or more ClickHouse services. For example, you could send data from a regional Postgres to a local ClickHouse cluster for low-latency analytics, and simultaneously to a centralized ClickHouse cluster in another region for consolidated reporting. Keep in mind that cross-region setups incur AWS cross-region data transfer costs and additional network latency.
+
 ### How does idling affect my Postgres CDC ClickPipe? {#how-does-idling-affect-my-postgres-cdc-clickpipe}
 
 If your ClickHouse Cloud service is idling, your Postgres CDC ClickPipe will continue to sync data, your service will wake-up at the next sync interval to handle the incoming data. Once the sync is finished and the idle period is reached, your service will go back to idling.
@@ -152,7 +168,7 @@ Currently, we don't support defining custom data type mappings as part of the pi
 
 ### How are JSON and JSONB columns replicated from Postgres? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
 
-JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String column(s). We're actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
+JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickHouse supports a native [JSON type](/sql-reference/data-types/newjson), you can create a materialized view over the ClickPipes tables to perform the translation if needed. Alternatively, you can use [JSON functions](/sql-reference/functions/json-functions) directly on the String columns. We're actively working on a feature that replicates JSON and JSONB columns directly to the JSON type in ClickHouse. This feature is expected to be available in a few months.
 
 ### What happens to inserts when a mirror is paused? {#what-happens-to-inserts-when-a-mirror-is-paused}
 

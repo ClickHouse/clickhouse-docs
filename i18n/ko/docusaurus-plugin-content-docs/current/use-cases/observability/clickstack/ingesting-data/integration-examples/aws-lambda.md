@@ -38,10 +38,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### 사전 준비사항 \{#prerequisites\}
 
-- 실행 중인 ClickStack 인스턴스
-- 모니터링할 AWS Lambda 함수(들)
-- 적절한 권한으로 구성된 AWS CLI
-- 레이어를 추가할 수 있는 권한이 있는 Lambda 실행 역할
+* 실행 중인 ClickStack 인스턴스
+* 모니터링할 AWS Lambda 함수들
+* 적절한 권한으로 구성된 AWS CLI
+* 레이어를 추가할 수 있는 권한이 있는 Lambda 실행 역할
 
 <VerticalStepper headerLevel="h4">
   #### 적절한 Rotel Lambda Extension 레이어를 선택하세요

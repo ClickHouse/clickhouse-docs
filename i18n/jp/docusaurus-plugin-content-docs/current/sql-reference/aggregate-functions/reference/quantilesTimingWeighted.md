@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantilesTimingWeighted \{#quantilesTimingWeighted\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データのシーケンスに対して、各要素の重みを考慮しつつ、異なるレベルの複数の[分位数](https://en.wikipedia.org/wiki/Quantile)を、指定された精度で同時に計算します。
 
 この関数は [`quantileTimingWeighted`](/sql-reference/aggregate-functions/reference/quantiletimingweighted) と同等ですが、複数の分位レベルを1回の処理で計算できるため、個々の分位関数を個別に呼び出すよりも効率的です。
 
-結果は決定的であり（クエリの処理順序に依存しません）、Webページの読み込み時間やバックエンドのレスポンスタイムのような分布を表すシーケンスでの利用に最適化されています。
+結果は決定的であり (クエリの処理順序に依存しません) 、Webページの読み込み時間やバックエンドのレスポンスタイムのような分布を表すシーケンスでの利用に最適化されています。
 
 **精度**
 
@@ -42,7 +42,7 @@ quantilesTimingWeighted(level1, level2, ...)(expr, weight)
 
 **引数**
 
-* `expr` — カラム値に対する式で、Float* 型の数値を返します。負の値が関数に渡された場合、その動作は未定義です。値が 30,000（ページ読み込み時間が 30 秒を超えるもの）より大きい場合は、30,000 とみなされます。[`Float*`](/sql-reference/data-types/float)
+* `expr` — カラム値に対する式で、Float* 型の数値を返します。負の値が関数に渡された場合、その動作は未定義です。値が 30,000 (ページ読み込み時間が 30 秒を超えるもの) より大きい場合は、30,000 とみなされます。[`Float*`](/sql-reference/data-types/float)
 * `weight` — シーケンス要素の重みを持つカラム。重みは値の出現回数です。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**

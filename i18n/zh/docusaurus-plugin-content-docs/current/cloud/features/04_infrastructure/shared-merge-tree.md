@@ -13,25 +13,25 @@ import Image from '@theme/IdealImage';
 
 # SharedMergeTree 表引擎 \{#sharedmergetree-table-engine\}
 
-SharedMergeTree 表引擎家族是对 ReplicatedMergeTree 引擎的云原生替代方案，经过优化以在共享存储之上运行（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 版本，例如 SharedReplacingMergeTree 替代 ReplicatedReplacingMergeTree。
+SharedMergeTree 表引擎家族是 ReplicatedMergeTree 引擎的云原生替代方案，经过优化以在共享存储之上运行（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 版本，例如 SharedReplacingMergeTree 替代 ReplicatedReplacingMergeTree。
 
 SharedMergeTree 表引擎家族为 ClickHouse Cloud 提供支持。对于终端用户而言，无需进行任何更改，即可开始使用 SharedMergeTree 引擎家族来替代基于 ReplicatedMergeTree 的引擎。它带来了以下额外优势：
 
-- 更高的写入吞吐量
+- 更高的插入吞吐量
 - 更高的后台合并吞吐量
-- 更高的变更（mutation）吞吐量
+- 更高的变更吞吐量
 - 更快速的扩容和缩容操作
-- 为查询提供更加轻量的强一致性保证
+- 为 select 查询提供更加轻量的强一致性保证
 
-SharedMergeTree 带来的一个重要改进是，相比 ReplicatedMergeTree，它在计算与存储之间提供了更深度的解耦。下面展示了 ReplicatedMergeTree 是如何分离计算与存储的：
+SharedMergeTree 带来的一个重要改进是，相比 ReplicatedMergeTree，它在计算与存储之间实现了更深层次的分离。下面展示了 ReplicatedMergeTree 如何分离计算与存储：
 
 <Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
 
-可以看到，即使 ReplicatedMergeTree 中的数据存储在对象存储中，元数据仍然保存在每个 clickhouse-server 实例上。这意味着对于每一次复制操作，元数据也需要在所有副本上进行复制。
+可以看到，即使 ReplicatedMergeTree 中的数据存储在对象存储中，元数据仍然保存在每个 clickhouse-server 上。这意味着对于每一次复制操作，元数据也需要在所有副本上进行复制。
 
 <Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
-与 ReplicatedMergeTree 不同，SharedMergeTree 不需要副本之间互相通信。相反，所有通信都通过共享存储和 clickhouse-keeper 完成。SharedMergeTree 实现了异步的无主复制，并使用 clickhouse-keeper 进行协调和元数据存储。这意味着当你的服务进行扩容和缩容时，无需复制元数据。这带来了更快速的复制、变更（mutation）、合并以及扩容操作。SharedMergeTree 允许每张表拥有数百个副本，从而在无需分片的情况下实现动态伸缩。在 ClickHouse Cloud 中，会使用分布式查询执行方式，为单个查询利用更多的计算资源。
+与 ReplicatedMergeTree 不同，SharedMergeTree 不需要副本之间互相通信。相反，所有通信都通过共享存储和 clickhouse-keeper 完成。SharedMergeTree 实现了异步的无主复制，并使用 clickhouse-keeper 进行协调和元数据存储。这意味着当你的服务扩容和缩容时，无需复制元数据。这带来了更快速的复制、变更、合并以及扩容操作。SharedMergeTree 允许每张表拥有数百个副本，从而可以在无需分片的情况下实现动态伸缩。在 ClickHouse Cloud 中，会使用分布式查询执行方式，为单个查询利用更多的计算资源。
 
 ## 内省 \{#introspection\}
 

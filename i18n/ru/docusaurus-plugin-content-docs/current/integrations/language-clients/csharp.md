@@ -42,9 +42,6 @@ import connection_details_csharp from '@site/static/images/_snippets/connection-
 
 `ClickHouse.Driver` поддерживает следующие версии .NET:
 
-* .NET Framework 4.6.2
-* .NET Framework 4.8
-* .NET Standard 2.1
 * .NET 6.0
 * .NET 8.0
 * .NET 9.0
@@ -355,8 +352,8 @@ using ClickHouse.Driver;
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("id", 1L);
-parameters.Add("name", "Alice");
+parameters.AddParameter("id", 1L);
+parameters.AddParameter("name", "Alice");
 
 await client.ExecuteNonQueryAsync(
     "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
@@ -413,7 +410,7 @@ var options = new InsertOptions
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("max_id", 100L);
+parameters.AddParameter("max_id", 100L);
 
 var reader = await client.ExecuteReaderAsync(
     "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
@@ -683,7 +680,7 @@ while (reader.Read())
 3. **Указывайте часовой пояс в подсказках типов SQL.** При использовании параметров с `Unspecified` значениями DateTime, записываемыми в столбцы с часовым поясом, отличным от UTC, включайте часовой пояс в SQL:
    ```csharp
    var parameters = new ClickHouseParameterCollection();
-   parameters.Add("dt", myDateTime);
+   parameters.AddParameter("dt", myDateTime);
 
    await client.ExecuteNonQueryAsync(
        "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
@@ -1557,26 +1554,158 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper \{#orm-support-dapper\}
 
-`ClickHouse.Driver` можно использовать с Dapper, но анонимные объекты при этом не поддерживаются.
+`ClickHouse.Driver` работает с Dapper. Драйвер автоматически преобразует синтаксис Dapper `@parameter` в собственный синтаксис ClickHouse `{parameter:Type}`, при этом типы определяются по значениям .NET.
 
-**Рабочий пример:**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**Не поддерживается:**
+Используйте `ClickHouseDataSource` для корректного управления жизненным циклом подключения:
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
 
+#### Способы передачи параметров \{#dapper-parameter-passing\}
+
+Поддерживаются все стандартные способы передачи параметров в Dapper:
+
+**Анонимные объекты:**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**Классы POCO:**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**Словарь:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (из словаря или анонимного объекта):**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+
+#### Выполнение запросов с получением POCO-объектов \{#dapper-pocos\}
+
+Dapper сопоставляет столбцы со свойствами по имени (без учёта регистра):
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+
+#### Синтаксис параметров ClickHouse \{#dapper-clickhouse-param-syntax\}
+
+Когда нужен явный контроль над типами, используйте синтаксис ClickHouse `{param:Type}` непосредственно в SQL вместе с `Dictionary<string, object>` для значений параметров. Не комбинируйте синтаксис `@param` и синтаксис `{param:Type}` для одного и того же параметра.
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+
+#### WHERE IN \{#dapper-where-in\}
+
+**Встроенное раскрытие IN в Dapper работает:**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper переписывает это как `WHERE id IN (@Ids1, @Ids2, @Ids3)`, а драйвер преобразует каждый из развёрнутых параметров.
+
+**`has()` в ClickHouse с параметром типа Array тоже работает:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+
+#### Пользовательские обработчики типов \{#dapper-type-handlers\}
+
+Для некоторых типов ClickHouse, например `ITuple`, `BigInteger` и `ClickHouseDecimal`, необходимо зарегистрировать обработчики при запуске:
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+Пример реализации обработчика типов см. в [примере Dapper](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs).
+
+
+#### Dapper.Contrib \{#dapper-contrib\}
+
+`GetAll<T>()` и `Get<T>(id)` работают. `Insert<T>()` не работает — он генерирует синтаксис SQL Server (`SCOPE_IDENTITY`, квадратные скобки). Вместо него рекомендуется использовать нативный метод `InsertBinaryAsync` клиента `ClickHouseClient`.
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+Имена свойств должны в точности совпадать с именами столбцов ClickHouse (с учетом регистра).
+
+
+#### Ограничения \{#dapper-limitations\}
+
+| Что                          | Статус            | Подробности                                                                      |
+| ---------------------------- | ----------------- | -------------------------------------------------------------------------------- |
+| Tuple в **результате**       | Работает          | Требуется регистрация `SqlMapper.TypeHandler<ITuple>`                            |
+| Tuple как **параметр**       | Не поддерживается | Dapper не может сериализовать `ITuple`/`Tuple<>` в значение `DbParameter`        |
+| Вложенные типы как параметр  | Не поддерживается | По той же причине — Dapper отклоняет сложные типы в качестве значений параметров |
+| Геотипы как параметр         | Не поддерживается | Point, Ring, Polygon, LineString, MultiLineString, MultiPolygon                  |
+| `Dapper.Contrib.Insert<T>()` | Не поддерживается | Генерирует синтаксис, специфичный для SQL Server                                 |
+| Тип `Nothing`                | Не поддерживается | В .NET отсутствует осмысленное представление                                     |
 
 ### Linq2db \{#orm-support-linq2db\}
 

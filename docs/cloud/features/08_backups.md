@@ -23,13 +23,13 @@ ClickHouse Cloud backups are a combination of "full" and "incremental" backups t
 
 In the screenshot below, the solid line squares show full backups and the dotted line squares show incremental backups. The solid line rectangle around the squares denotes the retention period and the backups that are visible to the end user, which can be used for a backup restore. In the scenario below, backups are being taken every 24 hours and are retained for 2 days.
 
-On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and we now have a full and incremental backup available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
+On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and both full and incremental backups are available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
 
 <Image img={backup_chain} size="lg" alt="Backup chain example in ClickHouse Cloud" />
 
 ### Default backup policy {#default-backup-policy}
 
-In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage.
+Backups are metered and billed separately from storage in the Basic, Scale, and Enterprise tiers.
 All services will default to one daily backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console.
 Each backup will be retained for at least 24 hours.
 

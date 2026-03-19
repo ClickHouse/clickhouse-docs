@@ -11,7 +11,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 # サンプリングクエリプロファイラ \{#sampling-query-profiler\}
 
-ClickHouse にはクエリ実行を解析できるサンプリングプロファイラが搭載されています。プロファイラを使用すると、クエリ実行中に最も頻繁に使用されたソースコード内のルーチンを特定できます。CPU 時間と、アイドル時間を含むウォールクロック時間（実時間）を追跡できます。
+ClickHouse にはクエリ実行を解析できるサンプリングプロファイラが搭載されています。プロファイラを使用すると、クエリ実行中に最も頻繁に使用されたソースコード内のルーチンを特定できます。CPU 時間と、アイドル時間を含むウォールクロック時間 (実時間) を追跡できます。
 
 クエリプロファイラは ClickHouse Cloud では自動的に有効化されており、次のようにサンプルクエリを実行できます。
 
@@ -52,7 +52,7 @@ SETTINGS allow_introspection_functions = 1
 
 * `addressToLine`、`addressToLineWithInlines`、`addressToSymbol`、`demangle` などの [introspection 関数](../../sql-reference/functions/introspection.md) を使用して、ClickHouse コード内の関数名およびその位置を取得します。特定のクエリについてプロファイルを取得するには、`trace_log` テーブルからデータを集約する必要があります。個々の関数単位、またはスタックトレース全体単位でデータを集約できます。
 
-`trace_log` の情報を可視化する必要がある場合は、[flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) や [speedscope](https://github.com/laplab/clickhouse-speedscope) の使用を検討してください。
+`trace_log` の情報を可視化する必要がある場合は、[flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) や [speedscope](https://www.speedscope.app) の使用を検討してください。
 
 ## 例 \{#example\}
 
