@@ -1946,6 +1946,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/managing/admin',
+            'use-cases/observability/clickstack/managing/estimating-resources',
             'use-cases/observability/clickstack/managing/production',
             'use-cases/observability/clickstack/managing/materialized_views',
             'use-cases/observability/clickstack/managing/performance_tuning',

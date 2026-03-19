@@ -130,7 +130,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[This guide](/use-cases/observability/schema-design#bloom-filters-for-text-search) shows practical examples and when to use token vs ngram.
+[This guide](/use-cases/observability/schema-design#text-index-for-full-text-search) shows practical examples and when to use token vs ngram.
 
 **Parameter optimization helpers:**
 
@@ -171,7 +171,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-See observability examples and guidance on token vs ngram [here](/use-cases/observability/schema-design#bloom-filters-for-text-search).
+See observability examples and guidance on token vs ngram [here](/use-cases/observability/schema-design#text-index-for-full-text-search).
 
 ## Add indexes during CREATE TABLE (multiple examples) {#add-indexes-during-create-table-multiple-examples}
 

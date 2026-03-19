@@ -40,7 +40,7 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
 以下の日付は、各リリースチャネルに対して ClickHouse が**ロールアウトを開始する**タイミングを示しており、個々のサービスがアップグレードされるタイミングではありません。
 
 * ロールアウトは自動で実行され、複数週にわたって段階的に行われます
-* スケジュールされたアップグレードウィンドウが設定されているサービスは、チャネルのロールアウト完了後の週に、そのスケジュールされたウィンドウ内でアップグレードされます
+* スケジュールされたアップグレードウィンドウが設定されているサービスは、チャネルのロールアウト完了後の週に (UTC の月曜日 00:00 開始)、そのスケジュールされたウィンドウ内でアップグレードされます
 * ロールアウトの一時停止 (例：ホリデーシーズン中のフリーズ) やヘルスモニタリングにより、ロールアウト完了が遅延する場合があります
 
 本番環境をアップグレードする前に事前テストを行う場合は、非本番環境のサービスには Fast または Regular チャネルを、本番環境のサービスには Slow チャネルを使用してください。
@@ -48,6 +48,19 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
 
 <ReleaseSchedule
   releases={[
+  {
+   changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+   version: '26.2',
+   fast_start_date: 'TBD',
+   fast_end_date: 'TBD',
+   regular_start_date: 'TBD',
+   regular_end_date: 'TBD',
+   slow_start_date: 'TBD',
+   slow_end_date: 'TBD',
+   fast_progress: 'green',
+   regular_progress: 'green',
+   slow_progress: 'green'
+  },
   {
    changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
    version: '25.12',

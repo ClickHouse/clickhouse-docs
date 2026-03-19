@@ -26,7 +26,7 @@ Yes. Your source Postgres and destination ClickHouse have independent retention.
 
 ### How can I enrich data as it flows from Postgres to ClickHouse? {#data-enrichment}
 
-Use [materialized views](/materialized-view) on top of your CDC destination tables. Materialized views in ClickHouse act as insert triggers, so each row replicated from Postgres can be transformed, joined with lookup tables, or enriched with additional columns before being written to a final target table.
+Use [materialized views](/materialized-views) on top of your CDC destination tables. Materialized views in ClickHouse act as insert triggers, so each row replicated from Postgres can be transformed, joined with lookup tables, or enriched with additional columns before being written to a final target table.
 
 ### Can I replicate from multiple Postgres instances into one or more ClickHouse services? {#multi-region-multi-source}
 

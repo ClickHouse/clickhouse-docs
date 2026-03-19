@@ -11,7 +11,7 @@ keywords: ['데이터 레이크', '레이크하우스', 'MergeTree', '가속화'
 doc_type: 'guide'
 ---
 
-[이전 섹션](/use-cases/data-lake/getting-started/connecting-catalogs)에서는 ClickHouse를 데이터 카탈로그에 연결하고 오픈 테이블 포맷을 직접 쿼리했습니다. 원본 위치의 데이터를 그대로 쿼리하는 방식은 편리하지만, 레이크하우스 포맷은 대시보드와 운영 보고를 뒷받침하는 저지연·고동시성 워크로드에 최적화되어 있지 않습니다. 이러한 사용 사례에서는 데이터를 ClickHouse의 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 엔진에 로드하면 성능이 크게 향상됩니다.
+[이전 섹션](/use-cases/data-lake/getting-started/connecting-catalogs)에서는 ClickHouse를 데이터 카탈로그에 연결하고 오픈 테이블 포맷을 직접 쿼리했습니다. 원본 위치의 데이터를 그대로 쿼리하는 방식은 편리하지만, 오픈 테이블 포맷은 대시보드와 운영 보고를 뒷받침하는 저지연·고동시성 워크로드에 최적화되어 있지 않습니다. 이러한 사용 사례에서는 데이터를 ClickHouse의 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 엔진에 로드하면 성능이 크게 향상됩니다.
 
 MergeTree는 오픈 테이블 포맷을 직접 읽는 방식보다 다음과 같은 여러 장점을 제공합니다:
 
@@ -90,7 +90,7 @@ FROM unity.`icebench.single_day_log`
 1 row in set. Elapsed: 1.265 sec.
 ```
 
-## 레이크하우스 테이블에 대해 쿼리 실행 \{#query-lakehouse\}
+## 데이터 레이크 테이블에 대해 쿼리 실행 \{#query-lakehouse\}
 
 스레드 이름과 인스턴스 유형으로 로그를 필터링하고, 메시지 텍스트에서 오류를 검색하며, 로거별로 결과를 그룹화하는 쿼리를 실행해 보겠습니다:
 
@@ -163,7 +163,7 @@ ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 
 ### 카탈로그에서 데이터 삽입 \{#insert-data\}
 
-레이크하우스 테이블의 약 3억 건 데이터를 ClickHouse 테이블에 적재하려면 `INSERT INTO SELECT`를 사용하십시오:
+데이터 레이크 테이블의 약 3억 건 데이터를 ClickHouse 테이블에 적재하려면 `INSERT INTO SELECT`를 사용하십시오:
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`

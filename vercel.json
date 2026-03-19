@@ -47,6 +47,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/reference/byoc/onboarding/customization",
+      "destination": "/docs/cloud/reference/byoc/onboarding/customization-aws",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/cloud/reference/byoc/onboarding/customization",
+      "destination": "/docs/cloud/reference/byoc/onboarding/customization-aws",
+      "permanent": true
+    },
+    {
       "source": "/docs/knowledgebase/why-clickhouse-is-so-fast",
       "destination": "/docs/concepts/why-clickhouse-is-so-fast",
       "permanent": true

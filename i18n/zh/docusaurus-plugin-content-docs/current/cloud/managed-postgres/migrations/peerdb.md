@@ -185,15 +185,111 @@ ALTER ROLE <target_role> SET session_replication_role = replica;
 
 ## 迁移后的任务 \{#migration-peerdb-considerations\}
 
-在迁移完成之后：
+:::note
+这些步骤可能会因您的具体使用场景和应用需求而异。关键是要确保数据一致性、尽量减少停机时间，并在完全切换到新系统之前验证迁移后数据的完整性。
+:::
 
-- **重新创建数据库对象**：请记得在目标数据库中手动重新创建索引、约束和触发器，因为这些不会被自动迁移。
-- **测试你的应用程序**：请确保针对 ClickHouse Managed Postgres 实例测试你的应用程序，以确认一切按预期运行。
-- **清理资源**：当你对迁移结果满意并已将应用程序切换为使用 ClickHouse Managed Postgres 之后，可以在 PeerDB 中删除 mirror 和 peer，以清理资源。
+迁移完成后：
+
+* **执行切换前验证检查**
+
+在切换流量之前，比较源端和目标端的关键表：
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+* **停止源系统的写入**
+
+先暂停应用写入。作为额外的保护措施，在切换期间将源数据库设为只读：
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+如果需要回滚，您可以重新开启写入：
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+* **确认复制已完全追平**
+
+检查一个或多个写入量较高的表中最新的行在源端和目标端是否一致：
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+* **重新创建并启用约束、索引和触发器**
+
+如果你为了摄取而移除了约束/索引，或将其延后处理，请现在重新应用。此外，如果你之前将目标端的复制角色设置为 `replica`，也请立即将其重置：
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+* **重置目标表的序列**
+
+数据导入后，使序列与当前表中的值保持一致：
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+    FOR r IN
+        SELECT
+            n.nspname AS schema_name,
+            c.relname AS table_name,
+            a.attname AS column_name,
+            pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attribute a ON a.attrelid = c.oid
+        WHERE c.relkind = 'r'
+            AND a.attnum > 0
+            AND NOT a.attisdropped
+            AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+    LOOP
+        IF r.seq_name IS NOT NULL THEN
+            EXECUTE format(
+                'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+                r.seq_name, r.column_name, r.schema_name, r.table_name
+            );
+        END IF;
+    END LOOP;
+END $$;
+```
+
+* **切换应用流量**
+
+验证通过且序列和约束已就位后：
+
+1. 将读流量切换到 ClickHouse Managed Postgres。
+2. 将写流量切换到 ClickHouse Managed Postgres。
+3. 监控应用错误、约束违反情况以及数据库健康状况。
+
+* **清理资源**
+
+当你确认迁移无误，并且已将应用切换为使用 ClickHouse Managed Postgres 后，即可删除 PeerDB 中的镜像和对等端。
 
 :::info 复制槽
-如果你启用了持续复制，PeerDB 会在源 PostgreSQL 数据库上创建一个 **复制槽（replication slot）**。在完成迁移之后，请务必从源数据库中手动删除该复制槽，以避免不必要的资源占用。
+如果你启用了持续复制，PeerDB 会在源 PostgreSQL 数据库上创建一个**复制槽**。迁移完成后，请务必从源数据库中手动删除该复制槽，以避免不必要的资源占用。
 :::
+
 
 ## 参考资料 \{#migration-peerdb-references\}
 

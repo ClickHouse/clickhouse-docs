@@ -1,9 +1,9 @@
 ---
-title: 'Customized Setup'
-slug: /cloud/reference/byoc/onboarding/customization
-sidebar_label: 'Customized Setup'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding']
-description: 'Deploy ClickHouse on your own cloud infrastructure'
+title: 'AWS Customized Setup'
+slug: /cloud/reference/byoc/onboarding/customization-aws
+sidebar_label: 'AWS Customized Setup'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'AWS', 'VPC']
+description: 'Deploy ClickHouse BYOC into your existing AWS VPC'
 doc_type: 'reference'
 ---
 
@@ -12,11 +12,7 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-## Customer-managed VPC (BYO-VPC) {#customer-managed-vpc}
-
-:::note
-This is only supported in **AWS** currently. GCP support is on the roadmap.
-:::
+## Customer-managed VPC (BYO-VPC) for AWS {#customer-managed-vpc-aws}
 
 If you prefer to use an existing VPC to deploy ClickHouse BYOC instead of having ClickHouse Cloud provision a new VPC, follow the steps below. This approach provides greater control over your network configuration and allows you to integrate ClickHouse BYOC into your existing network infrastructure.
 
@@ -37,10 +33,10 @@ If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need 
 
 ### Ensure Network Connectivity {#ensure-network-connectivity}
 
-**Outbound Internet Access**  
+**Outbound Internet Access**
 Your VPC must permit at least outbound internet access so that ClickHouse BYOC components can communicate with the Tailscale control plane. Tailscale is used to provide secure, zero-trust networking for private management operations. Initial registration and setup with Tailscale require public internet connectivity, which can be achieved either directly or via a NAT gateway. This connectivity is required to maintain both the privacy and security of your BYOC deployment.
 
-**DNS Resolution**  
+**DNS Resolution**
 Ensure your VPC has working DNS resolution and doesn't block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers as well as ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
 
 ### Configure your AWS account {#configure-aws-account}
@@ -65,7 +61,7 @@ After completing the above configuration steps, create a support ticket with the
 * The Private Subnet IDs you've allocated for ClickHouse
 * The availability zones these subnets are in
 
-Our team will review your configuration and complete the provisioning from our side. 
+Our team will review your configuration and complete the provisioning from our side.
 
 ## Customer-managed IAM roles {#customer-managed-iam-roles}
 
@@ -80,4 +76,4 @@ When available, this feature will allow you to:
 * Maintain full control over role permissions and trust relationships
 :::
 
-For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge).
+For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).

@@ -5,20 +5,19 @@ slug: /use-cases/data-lake/support-matrix
 sidebar_position: 3
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse 湖仓格式集成与数据目录连接的全面支持矩阵。'
-keywords: ['数据湖', '湖仓', '支持', 'iceberg', 'delta lake', 'hudi', 'paimon', '目录', '特性']
+description: 'ClickHouse 开放表格式集成与数据目录连接的全面支持矩阵。'
+keywords: ['data lake', 'lakehouse', 'support', 'iceberg', 'delta lake', 'hudi', 'paimon', 'catalog', 'features']
 doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-本页提供 ClickHouse 湖仓集成的全面支持矩阵，涵盖各湖仓表格式可用的特性、ClickHouse 可连接的数据目录，以及每个目录所支持的具体功能。
+本页提供 ClickHouse 数据湖集成的全面支持矩阵。内容涵盖各开放表格式可用的功能、ClickHouse 可连接的目录，以及每个目录所支持的能力。
 
+## 开放表格式支持 \{#format-support\}
 
-## Lakehouse 格式支持 \{#format-support\}
-
-ClickHouse 集成支持四种 lakehouse 表格式：[Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi) 和 [Apache Paimon](/sql-reference/table-functions/paimon)。在下方选择一种格式以查看对应的支持矩阵。
+ClickHouse 集成支持四种开放表格式：[Apache Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake)、[Apache Hudi](/engines/table-engines/integrations/hudi) 和 [Apache Paimon](/sql-reference/table-functions/paimon)。在下方选择一种格式以查看对应的支持矩阵。
 
 **图例：** ✅ 已支持 | ⚠️ 部分支持 / 实验性 | ❌ 不支持
 

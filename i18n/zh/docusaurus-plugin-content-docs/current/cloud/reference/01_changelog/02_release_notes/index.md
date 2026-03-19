@@ -6,8 +6,8 @@ doc_type: 'changelog'
 keywords: ['更新日志', '发布说明', '更新', '新功能', 'Cloud 变更']
 ---
 
-{/* 下方目录是基于 YAML front matter 自动生成的，
-     使用脚本：https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
+{/* 下方目录基于 YAML front matter 自动生成，
+     使用的脚本：https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
      如果发现任何错误，请直接编辑各页面的 YAML front matter。
   */ }
 
@@ -15,6 +15,7 @@ keywords: ['更新日志', '发布说明', '更新', '新功能', 'Cloud 变更'
 
 | 页面                                                        | 描述                                                   |
 | --------------------------------------------------------- | ---------------------------------------------------- |
+| [v26.2 Changelog for Cloud](/changelogs/26.2)             | v26.2 的 Cloud 版本变更日志                                 |
 | [v25.12 Changelog for Cloud](/changelogs/25.12)           | v25.12 的 Cloud 版本变更日志                                |
 | [v25.10 Changelog for Cloud](/changelogs/25.10)           | v25.10 的 Cloud 版本变更日志                                |
 | [v25.8 Changelog for Cloud](/changelogs/25.8)             | v25.8 的快速发布版本变更日志                                    |

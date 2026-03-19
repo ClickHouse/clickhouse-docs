@@ -200,7 +200,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 ポート 8124 へのリクエストには `<http_handlers_alt>` ルールが使用されます。`<handlers>` が省略された場合、そのエンドポイントでは既定の `<http_handlers>` が使用されます。
 
 カスタムハンドラーのセクションは、
-[`<http_handlers>`](/docs/operations/server-configuration-parameters/settings#http_handlers) と同じ形式に従います。
+[`<http_handlers>`](/operations/server-configuration-parameters/settings#http_handlers) と同じ形式に従います。
 カスタムハンドラーのセクションへの変更は設定の再読み込み時に検出され、
 対応するエンドポイントは自動的に再起動されます。
 

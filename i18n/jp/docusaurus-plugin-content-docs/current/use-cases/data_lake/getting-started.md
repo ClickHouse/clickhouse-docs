@@ -1,12 +1,12 @@
 ---
-title: 'レイクハウステーブル形式入門'
-sidebar_label: 'はじめに'
+title: 'オープンテーブル形式の利用開始'
+sidebar_label: '利用開始'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
 pagination_prev: null
 pagination_next: use-cases/data_lake/guides/querying-directly
-description: 'ClickHouse を使用して、オープンなテーブル形式のデータをクエリし、高速化し、書き戻すための実践的な入門ガイドです。'
-keywords: ['データレイク', 'レイクハウス', 'はじめに', 'iceberg', 'delta lake', 'hudi', 'paimon']
+description: 'ClickHouse を使用して、オープンテーブル形式でデータをクエリし、高速化し、書き戻すための実践的な入門ガイドです。'
+keywords: ['データレイク', 'レイクハウス', '利用開始', 'iceberg', 'delta lake', 'hudi', 'paimon']
 doc_type: 'guide'
 ---
 

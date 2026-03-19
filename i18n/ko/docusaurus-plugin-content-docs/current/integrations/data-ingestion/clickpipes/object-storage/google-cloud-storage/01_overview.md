@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
+import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
@@ -33,13 +34,81 @@ GCS ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할
 
 ### Continuous ingestion \{#continuous-ingestion\}
 
-연속 수집이 활성화되면 ClickPipes는 지정된 경로에서 데이터를 계속해서 수집합니다. 수집 순서를 결정하기 위해 GCS ClickPipe는 파일의 암묵적인 [사전식 순서](#continuous-ingestion-lexicographical-order)에 의존합니다.
+연속 수집이 활성화되면 ClickPipes는 지정된 경로에서 데이터를 계속해서 수집합니다. 수집 순서를 결정하기 위해 GCS ClickPipe는 기본적으로 파일의 암묵적인 [사전식 순서](#continuous-ingestion-lexicographical-order)에 의존합니다. 또한 [버킷에 대한 알림을 제공하도록 구성된](https://docs.cloud.google.com/storage/docs/reporting-changes#command-line) [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) 구독을 사용하여 파일을 [임의의 순서](#continuous-ingestion-any-order)로 수집하도록 구성할 수도 있습니다.
 
 #### 사전식 순서 \{#continuous-ingestion-lexicographical-order\}
 
 GCS ClickPipe는 파일이 버킷에 사전식(lexicographical) 순서로 추가된다고 가정하며, 이 암묵적인 순서에 의존해 파일을 순차적으로 수집합니다. 이는 새 파일의 이름이 마지막으로 수집된 파일 이름보다 사전식으로 더 큰 값이어야 한다는 의미입니다. 예를 들어 `file1`, `file2`, `file3`라는 이름의 파일은 순차적으로 수집되지만, 버킷에 새 `file 0`이 추가되면 해당 파일 이름이 마지막으로 수집된 파일보다 사전식으로 크지 않기 때문에 **무시**됩니다.
 
 이 모드에서 GCS ClickPipe는 지정된 경로의 **모든 파일**을 처음 한 번 로드한 뒤, 설정 가능한 간격(기본값 30초)으로 새 파일을 주기적으로 폴링(polling)합니다. 특정 파일이나 시점부터 수집을 시작하는 것은 **불가능**하며, ClickPipes는 항상 지정된 경로의 모든 파일을 로드합니다.
+
+#### 순서 없음 \{#continuous-ingestion-any-order\}
+
+:::note
+비정렬 모드(unordered mode)는 public 버킷에서는 **지원되지 않습니다**. 이 모드를 사용하려면 **Service Account** 인증과 버킷에 연결된 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) 구독이 필요합니다.
+:::
+
+[Google Cloud Pub/Sub](https://docs.cloud.google.com/storage/docs/pubsub-notifications) 구독을 설정하여 버킷에서 전송되는 알림을 수신하도록 구성하면, 암묵적인 순서가 없는 파일을 수집하도록 GCS ClickPipe를 설정할 수 있습니다. 이를 통해 ClickPipes는 객체 생성 이벤트를 수신하고, 파일 이름 규칙과 관계없이 새 파일을 수집할 수 있습니다.
+
+이 모드에서 GCS ClickPipe는 선택한 경로에 있는 **모든 파일**을 초기 로드한 뒤, 해당 경로와 일치하는 Pub/Sub 구독을 통해 전달되는 객체 알림을 계속 수신합니다. 이미 처리한 파일에 대한 메시지, 경로와 일치하지 않는 파일, 다른 유형의 이벤트에 대해서는 모두 **무시**합니다. 특정 파일이나 특정 시점부터 수집을 시작하는 것은 **불가능하며**, ClickPipes는 항상 선택한 경로의 모든 파일을 로드합니다.
+
+##### Pub/Sub 알림 설정 \{#pubsub-setup\}
+
+비순서 모드를 사용하려면 GCS 버킷에서 Pub/Sub 토픽으로 자동 알림을 구성해야 합니다. Pub/Sub 토픽과 구독을 생성한 다음 버킷에 대한 알림을 설정하려면 Pub/Sub 알림에 대한 [공식 문서](https://docs.cloud.google.com/storage/docs/pubsub-notifications)를 참조하십시오.
+
+알림을 생성하려면 다음을 수행하십시오:
+
+```bash
+# Create a Pub/Sub notification for new objects in the bucket
+gcloud storage buckets notifications create "gs://${YOUR_BUCKET_NAME}" \
+    --topic="projects/${YOUR_PROJECT_ID}/topics/${YOUR_TOPIC_NAME}" \
+    --event-types="OBJECT_FINALIZE" \
+    --payload-format="json"
+```
+
+
+##### 서비스 계정에 권한 부여 \{#pubsub-permissions\}
+
+Unordered 모드에서는 **Service Account** 인증이 필요합니다. ClickPipes에서 사용하는 서비스 계정에는 다음 권한이 필요합니다.
+
+1. **GCS 버킷의 객체 읽기** — 데이터 파일을 가져오는 데 필요합니다.
+2. **Pub/Sub 구독의 메시지 읽기** — 객체 알림을 수신하는 데 필요합니다.
+3. **Pub/Sub 구독 조회** — 구독이 존재하는지 확인하고 메타데이터를 가져오는 데 필요합니다.
+
+다음 `gcloud` 명령으로 이러한 권한을 부여하십시오.
+
+```bash
+# 1. Grant read access to the GCS bucket
+gcloud storage buckets add-iam-policy-binding "gs://${YOUR_BUCKET_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+# 2. Grant read access to the Pub/Sub subscription
+gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/pubsub.subscriber"
+
+# 3. Grant permission to get the Pub/Sub subscription metadata
+gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
+  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/pubsub.viewer"
+```
+
+
+##### ClickPipe 구성 \{#pubsub-clickpipe-config\}
+
+ClickHouse Cloud 콘솔에서 **Data Sources &gt; Create ClickPipe**로 이동한 다음 Google Cloud Storage를 선택합니다. 인증 방식으로 **Service Account**를 사용하여 GCS 버킷에 연결하기 위한 세부 정보를 입력하고, 서비스 계정 키 JSON 파일을 업로드합니다. 그런 다음 **Incoming data**를 클릭합니다.
+
+**Continuous ingestion**을 활성화하면 새 **Any order** 수집 옵션이 표시됩니다. 그런 후 다음 형식으로 Pub/Sub 구독 경로를 입력합니다:
+
+```text
+projects/${YOUR_PROJECT_ID}/subscriptions/${YOUR_SUBSCRIPTION_NAME}
+```
+
+<Image img={gcs_subscription_input} alt="GCS의 순서 없는 모드" size="lg" border />
+
+<br />
+
 
 ### 파일 패턴 매칭 \{#file-pattern-matching\}
 
@@ -89,11 +158,18 @@ GCS ClickPipe는 공용 및 비공용 버킷을 지원합니다. [Requester Pays
 
 [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer) 역할을 버킷 수준에서 부여해야 합니다. 이 역할에는 ClickPipes가 지정된 버킷에서 객체 목록을 조회하고 가져올 수 있도록 하는 [`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) 및 [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM 권한이 포함됩니다.
 
+#### Pub/Sub 구독 \{#pubsub-subscription\}
+
+[unordered mode](#continuous-ingestion-any-order)를 사용할 때 서비스 계정에는 Pub/Sub 구독에 대해 다음 역할이 있어야 합니다.
+
+* [`roles/pubsub.subscriber`](https://cloud.google.com/pubsub/docs/access-control#roles) — 메시지를 수신하고 확인(acknowledge)하는 역할입니다.
+* [`roles/pubsub.viewer`](https://cloud.google.com/pubsub/docs/access-control#roles) — 구독 메타데이터를 조회하는 역할입니다.
+
 ### 인증 \{#authentication\}
 
-:::note
-서비스 계정 인증은 아직 지원되지 않습니다.
-:::
+#### 서비스 계정 \{#service-account\}
+
+Pub/Sub 알림과 함께 [unordered mode](#continuous-ingestion-any-order)를 사용하는 경우 Service Account 인증이 필요합니다. 인증 방법으로 **Service Account**를 선택한 다음 서비스 계정 키 JSON 파일을 업로드하십시오.
 
 #### HMAC 자격 증명 \{#hmac-credentials\}
 
