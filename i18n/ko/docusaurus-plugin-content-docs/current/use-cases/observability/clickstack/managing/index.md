@@ -16,8 +16,9 @@ keywords: ['ClickStack 관리', '성능', 'materialized views', '관리 명령']
 | 섹션 | 설명 |
 |--------|-------------|
 | [기본 관리](/use-cases/observability/clickstack/admin) | ClickStack에서 일반적인 관리 작업을 수행하는 방법을 소개합니다. |
+| [리소스 산정](/use-cases/observability/clickstack/estimating-resources) | 수집 볼륨을 기준으로 Managed ClickStack의 컴퓨트 리소스 규모를 산정하는 방법을 안내합니다. |
 | [프로덕션 환경 준비](/use-cases/observability/clickstack/production) | 프로덕션 환경에서 ClickStack을 실행하기 전에 권장 단계와 모범 사례를 설명합니다. |
-| [Materialized views](/use-cases/observability/clickstack/materialized_views) | ClickStack에서 materialized view를 사용하여 쿼리 성능을 향상시키는 방법을 자세히 설명합니다. |
+| [materialized view](/use-cases/observability/clickstack/materialized_views) | ClickStack에서 materialized view를 사용하여 쿼리 성능을 향상시키는 방법을 자세히 설명합니다. |
 | [성능 튜닝](/use-cases/observability/clickstack/performance_tuning) | 대규모 워크로드에 맞게 ClickStack을 튜닝하는 방법을 종합적으로 안내합니다. |
 
 ## 핵심 ClickHouse 개념 \{#core-concepts\}

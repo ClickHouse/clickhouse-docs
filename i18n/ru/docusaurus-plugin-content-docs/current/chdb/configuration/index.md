@@ -65,8 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-Дополнительные сведения см. в разделе [Logging](logging.md).
-
+Подробности см. в разделе [Logging](../debugging/logging.md).
 
 ### Настройка кэша \{#cache\}
 

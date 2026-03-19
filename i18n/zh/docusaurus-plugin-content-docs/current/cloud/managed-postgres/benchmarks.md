@@ -165,15 +165,15 @@ Postgres by ClickHouse 非常适合以下类型的应用：
 
 ### NVMe 架构优势 \{#nvme-advantage\}
 
-性能优势来源于底层架构上的根本差异：
+性能优势源于底层架构上的根本差异：
 
-| 方面                    | NVMe 存储（Managed Postgres）       | 网络附加存储（Provisioned IOPS）                   |
+| Aspect                  | NVMe Storage (Managed Postgres)     | Network-Attached Storage (Provisioned IOPS)        |
 |-------------------------|-------------------------------------|----------------------------------------------------|
-| **IOPS**                | 从 10 万到几乎无限                  | 预置 16,000                                        |
-| **网络跳数（Network hops）** | 零（本地设备）                     | 每次磁盘操作都需要一次网络往返                     |
-| **性能扩展能力（Performance scaling）** | 随并发线性扩展                     | 受限于预置的 IOPS                                  |
+| **IOPS**                | 10 万到几乎无限                     | 预配置 16,000                                      |
+| **Network hops**        | 零（本地设备）                      | 每次磁盘操作都需要一次网络往返                     |
+| **Performance scaling** | 随并发线性扩展                      | 受限于预配置的 IOPS                                |
 
-有关 NVMe 存储性能优势的更多详细信息，请参阅 [NVMe-powered performance](/cloud/managed-postgres/overview#nvme-performance)。
+有关 NVMe 存储性能优势的更多详细信息，请参阅 [NVMe-powered performance](/cloud/managed-postgres#nvme-performance)。
 
 ## 成本效益 \{#cost-effectiveness\}
 
@@ -194,5 +194,5 @@ Postgres by ClickHouse 非常适合以下类型的应用：
 
 - [PeerDB：Postgres 托管服务对比](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase)
 - [pgbench 文档](https://www.postgresql.org/docs/current/pgbench.html)
-- [Postgres 托管服务概览](/cloud/managed-postgres/overview)
-- [扩展 Postgres 实例](/cloud/managed-postgres/scaling)
+- [Managed Postgres 概览](/cloud/managed-postgres)
+- [扩展您的 Postgres 实例](/cloud/managed-postgres/scaling)

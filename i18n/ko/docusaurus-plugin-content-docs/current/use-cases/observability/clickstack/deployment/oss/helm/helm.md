@@ -388,7 +388,7 @@ helm install my-clickstack clickstack/clickstack \
 
 ### 추가 리소스 {#additional-resources}
 
-- [ClickStack 시작 가이드](/docs/use-cases/observability/clickstack/getting-started/index) - ClickStack 소개
+- [ClickStack 시작 가이드](/use-cases/observability/clickstack/getting-started) - ClickStack 소개
 - [ClickStack Helm 차트 리포지토리](https://github.com/ClickHouse/ClickStack-helm-charts) - 차트 소스 코드 및 values 참조
-- [Kubernetes 문서](https://kubernetes.io/docs/) - Kubernetes 참조 문서
-- [Helm 문서](https://helm.sh/docs/) - Helm 참조 문서
+- [Kubernetes 문서](https://kubernetes.io/docs/) - Kubernetes 참조
+- [Helm 문서](https://helm.sh/docs/) - Helm 참조

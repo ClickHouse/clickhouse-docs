@@ -289,9 +289,9 @@ ClickHouse 支持读取使用以下删除方法的 Iceberg 表：
 
 * 否则：
   * 会选择版本号最高的文件
-  * （版本号在文件名中以 `V` 的形式出现，文件名格式如 `V.metadata.json` 或 `V-uuid.metadata.json`）
+  *  (版本号在文件名中以 `V` 的形式出现，文件名格式如 `V.metadata.json` 或 `V-uuid.metadata.json`) 
 
-**注意**：上述所有设置都是引擎级别设置，必须在创建表时进行指定，如下所示：
+**注意**：上述所有设置 (除非另有明确说明) 都是引擎级别设置，必须在创建表时进行指定，如下所示：
 
 ```sql
 CREATE TABLE example_table ENGINE = Iceberg(
@@ -309,6 +309,35 @@ CREATE TABLE example_table ENGINE = Iceberg(
 ## 元数据缓存 \{#metadata-cache\}
 
 `Iceberg` 表引擎和表函数支持元数据缓存，用于存储清单文件、清单列表以及元数据 JSON 的信息。该缓存存储在内存中。此功能通过设置 `use_iceberg_metadata_files_cache` 进行控制，默认启用。
+
+## 异步元数据预取 \{#async-metadata-prefetch\}
+
+在创建 `Iceberg` 表时，可通过设置 `iceberg_metadata_async_prefetch_period_ms` 启用异步元数据预取。如果该值设置为 0 (默认值) ，或者未启用元数据缓存，则异步预取会被禁用。
+要启用此功能，应设置一个非零的毫秒值。该值表示两次预取周期之间的间隔。
+
+如果启用，服务器将运行一个周期性的后台操作，列出远程目录并检测新的元数据版本。随后会对其进行解析，并递归遍历 snapshot，获取活跃的 manifest list File 和 manifest File。
+元数据缓存中已存在的 File 不会被重复下载。每次预取周期结束时，最新的元数据 snapshot 都会在元数据缓存中可用。
+
+```sql
+CREATE TABLE example_table ENGINE = Iceberg(
+    's3://bucket/path/to/iceberg_table'
+) SETTINGS
+    iceberg_metadata_async_prefetch_period_ms = 60000;
+```
+
+为了在读取操作中充分利用异步元数据预取，`iceberg_metadata_staleness_ms` 参数应指定为查询参数或会话参数。默认情况下 (0 - 未指定) ，在每个查询的上下文中，服务器都会从远程目录获取最新的元数据。
+通过指定可容忍的元数据陈旧时间，服务器可以在不调用远程目录的情况下使用缓存中的元数据快照版本。如果缓存中存在元数据版本，且它是在给定的陈旧时间窗口内下载的，则将使用该版本来处理查询。
+否则，将从远程目录获取最新版本。
+
+```sql
+SELECT count() FROM icebench_table WHERE ...
+SETTINGS iceberg_metadata_staleness_ms=120000
+```
+
+**注意**：异步元数据预取在 `ICEBERG_SCEDULE_POOL` 中运行。该线程池是服务器端用于对活跃 `Iceberg` 表执行后台操作的线程池。该线程池的大小由服务器配置参数 `iceberg_background_schedule_pool_size` 控制 (默认值为 10) 。
+
+**注意**：当前预期是，如果启用了异步预取，元数据缓存的大小应足以为所有活跃表完整容纳最新的元数据快照。
+
 
 ## 另请参阅 \{#see-also\}
 
