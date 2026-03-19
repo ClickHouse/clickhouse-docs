@@ -70,7 +70,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      slow_end_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
-     slow_progress: 'green'
+     slow_progress: 'green',
      regular_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Mar 23',
    },
    {
