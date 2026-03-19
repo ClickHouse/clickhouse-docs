@@ -23,7 +23,7 @@ This is distinct from metric-based autoscaling, which responds dynamically to CP
 
 Scheduled Scaling is currently available in **Private Preview**. To enable it for your organization, contact the ClickHouse support team.
 
-## Setting up a scaling schedule
+## Setting up a scaling schedule {#setting-up-a-scaling-schedule}
 
 To configure a schedule, navigate to your service in the ClickHouse Cloud console and go to settings. From there, select **Schedule Override** and add a new rule.
 
@@ -39,7 +39,7 @@ Each rule requires:
 
 Multiple rules can be combined to form a full weekly schedule. For example, you might scale out to 5 replicas every weekday at 6 AM and scale back to 2 replicas at 8 PM.
 
-## Use cases
+## Use cases {#use-cases}
 
 **Batch and ETL workloads:** Scale up before a nightly ingest job runs and scale back down once it completes, avoiding over-provisioning during idle daytime hours.
 

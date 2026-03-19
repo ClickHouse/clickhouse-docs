@@ -18,7 +18,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 Scale and Enterprise tier services support autoscaling based on CPU and memory usage. Service usage is constantly monitored over a lookback window to make scaling decisions. If the usage rises above or falls below certain thresholds, the service is scaled appropriately to match the demand.
 
-## CPU-based Scaling
+## CPU-based Scaling {#cpu-based-scaling}
 
 CPU Scaling is based on target tracking which calculates the exact CPU allocation needed to keep utilization at a target level. A scaling action is only triggered if current CPU utilization falls outside a defined band:
 
@@ -29,21 +29,21 @@ CPU Scaling is based on target tracking which calculates the exact CPU allocatio
 | Low watermark | 37.5% | Triggers scale-down when CPU falls below this threshold |
 
 The recommender evaluates CPU utilization based on historical usage, and determines a recommended CPU size using this formula:
-```
+```text
 recommended_cpu = max_cpu_usage / target_utilization
 ```
 
 If the CPU utilization is between 37.5%–75% of allocated capacity, no scaling action is taken. Outside that band, the recommender computes the exact size needed to land back at 53% utilization, and the service is scaled accordingly.
 
-### Example
+### Example {#cpu-scaling-example}
 
 A service allocated 4 vCPU experiences a spike to 3.8 vCPU usage (~95% utilization), crossing the 75% high watermark. The recommender calculates: `3.8 / 0.53 ≈ 7.2 vCPU`, and rounds up to the next available size (8 vCPU). Once load subsides and usage drops below 37.5% (1.5 vCPU), the recommender scales back down proportionally.
 
-## Memory-based Scaling
+## Memory-based Scaling {#memory-based-scaling}
 
 Memory-based auto-scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOM (out of memory) errors are encountered.
 
-## Scaling Decision
+## Scaling Decision {#scaling-decision}
 
 The larger of the CPU or memory recommendation is picked, and CPU and memory allocated to the service are scaled in lockstep increments of 1 CPU and 4 GiB memory.
 

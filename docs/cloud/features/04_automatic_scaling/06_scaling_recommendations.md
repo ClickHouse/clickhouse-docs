@@ -14,7 +14,7 @@ When usage increases, the system references the long window so it can scale up i
 
 By integrating these two perspectives, the recommender intelligently balances responsiveness with stability.
 
-## Benefits
+## Benefits {#benefits}
 
 - **Cost optimization:** Right-size your services to avoid paying for unused resources while maintaining performance.
 - **Proactive scaling:** Get ahead of potential performance issues before they impact your workloads.
