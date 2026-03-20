@@ -1929,7 +1929,19 @@ const sidebars = {
         'use-cases/observability/clickstack/config',
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
-        'use-cases/observability/clickstack/dashboards',
+        {
+          type: 'category',
+          label: 'Dashboards',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/dashboards/index',
+          },
+          collapsed: false,
+          collapsible: true,
+          items: [
+            'use-cases/observability/clickstack/dashboards/sql-visualizations',
+          ],
+        },
         'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
