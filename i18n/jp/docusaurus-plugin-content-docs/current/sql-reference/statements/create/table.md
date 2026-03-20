@@ -44,28 +44,35 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 列およびテーブルにコメントを追加できます。
 
 
-### 他のテーブルと同様のスキーマを使用する場合 \{#with-a-schema-similar-to-other-table\}
+### 既存のテーブルのスキーマを使用する場合 \{#with-a-schema-similar-to-other-table\}
+
+ClickHouse では、既存のテーブルのスキーマとデータをコピーできます。
+
+既存のテーブルのスキーマを複製するには:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine]
 ```
 
-別のテーブルと同じ構造のテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。
+これにより、別のテーブルと同じ構造のテーブルが作成されます。
 
 
-### 他のテーブルからスキーマとデータをクローンする場合 \{#with-a-schema-and-data-cloned-from-another-table\}
+### 既存のテーブルのスキーマとデータを使う場合 \{#with-a-schema-and-data-cloned-from-another-table\}
+
+既存のテーブルのスキーマとデータを複製するには:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone CLONE AS [db.]table [ENGINE = engine]
 ```
 
-別のテーブルと同じ構造を持つテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。新しいテーブルが作成された後、`db2.name2` のすべてのパーティションがそのテーブルにアタッチされます。言い換えると、`db2.name2` のデータは作成時に `db.table_name` にクローンされます。このクエリは次のものと等価です：
+これにより、既存のテーブルと同じスキーマおよびデータを持つテーブルが作成されます。新しいテーブルが作成されると、その後 `db.table` のすべてのパーティションがそれにアタッチされます。つまり、`db.table` のデータは作成時に `db2.table_clone` に複製されます。このクエリは、次のクエリと同等です。
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
-ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine];
+ALTER TABLE [db2.]table_clone ATTACH PARTITION ALL FROM [db.]table;
 ```
 
+どちらの機能でも、テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、元のテーブル (`db.table`) と同じエンジンが使用されます。
 
 ### テーブル関数から \{#from-a-table-function\}
 
@@ -267,14 +274,14 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ```
 
 
-## プライマリキー \{#primary-key\}
+## Primary Key \{#primary-key\}
 
-テーブル作成時に[プライマリキー](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)を定義できます。プライマリキーは次の 2 通りの方法で指定できます。
+テーブル作成時に[primary key](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)を定義できます。Primary key は次の 2 通りの方法で指定できます。
 
-* 列リスト内で指定する
+- カラムリスト内
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...,
     PRIMARY KEY(expr1[, expr2,...])
@@ -282,10 +289,10 @@ CREATE TABLE db.table_name
 ENGINE = engine;
 ```
 
-* 列リスト外
+- カラムリスト外
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )
@@ -294,9 +301,8 @@ PRIMARY KEY(expr1[, expr2,...]);
 ```
 
 :::tip
-1 つのクエリで両方の方法を併用することはできません。
-:::
-
+1 つのクエリで両方の方法を組み合わせることはできません。
+:::”}]}numerusformassistant to=final code ылеит  天天中彩票公司? No, must correct malformed quote. Let's resend proper JSON only.numerusformassistant to=final  天天中彩票中奖completion code 彩票直属ិបjson_stringify? Let's provide corrected.િવ?】【”】【{
 
 ## 制約 \{#constraints\}
 
@@ -727,7 +733,7 @@ WHERE CounterID <12345;
 **構文**
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )

@@ -15,9 +15,9 @@ doc_type: 'guide'
 
 MergeTree には、オープンテーブル形式を直接読み取る場合と比べて、いくつかの利点があります。
 
-* **[スパースプライマリ索引](/optimize/sparse-primary-indexes)** - 選択したキーに基づいてディスク上のデータを並べ替えることで、クエリ時に無関係な広い範囲の行を ClickHouse がスキップできるようにします。
-* **強化されたデータ型** - [JSON](/sql-reference/data-types/json)、[LowCardinality](/sql-reference/data-types/lowcardinality)、[Enum](/sql-reference/data-types/enum) などの型をネイティブにサポートし、よりコンパクトな保存と高速な処理を実現します。
-* **[スキップ索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** と **[全文索引](/engines/table-engines/mergetree-family/invertedindexes)** - クエリのフィルタ述語に一致しないグラニュールを ClickHouse がスキップできるようにする二次索引構造で、特にテキスト検索ワークロードで効果を発揮します。
+* **[スパースプライマリ索引](/guides/best-practices/sparse-primary-indexes)** - 選択したキーに基づいてディスク上のデータを並べ替えることで、クエリ時に無関係な広い範囲の行を ClickHouse がスキップできるようにします。
+* **強化されたデータ型** - [JSON](/best-practices/use-json-where-appropriate)、[LowCardinality](/sql-reference/data-types/lowcardinality)、[Enum](/sql-reference/data-types/enum) などの型をネイティブにサポートし、よりコンパクトな保存と高速な処理を実現します。
+* **[スキップ索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** と **[全文索引](/engines/table-engines/mergetree-family/textindexes)** - クエリのフィルタ述語に一致しないグラニュールを ClickHouse がスキップできるようにする二次索引構造で、特にテキスト検索ワークロードで効果を発揮します。
 * **自動コンパクションを伴う高速 INSERT** - ClickHouse は高スループットの INSERT 向けに設計されており、バックグラウンドでデータパーツを自動的にマージします。これは、オープンテーブル形式における compaction に相当します。
 * **同時読み取り向けに最適化** - MergeTree の列指向ストレージレイアウトは、[複数のキャッシュレイヤー](/operations/caches) と組み合わせることで、高い並行性を伴うリアルタイム分析ワークロードをサポートします。これは、オープンテーブル形式が想定していない特性です。
 
@@ -128,7 +128,7 @@ Peak memory usage: 4.35 GiB.
 
 * **`Nullable` ラッパーを使用しない** - `Nullable` を取り除くことで、ストレージ効率とクエリ性能が向上します。
 * **`level`、`instance_type`、`thread_name`、`check_name` の各カラムに `LowCardinality(String)` を使用** - 異なる値が少ないカラムを Dictionary エンコードし、圧縮率を高めるとともにフィルタリングを高速化します。
-* **`message` カラムの [全文索引](/engines/table-engines/mergetree-family/invertedindexes)** - `hasToken(message, 'error')` のようなトークンベースのテキスト検索を高速化します。
+* **`message` カラムの [全文索引](/engines/table-engines/mergetree-family/textindexes)** - `hasToken(message, 'error')` のようなトークンベースのテキスト検索を高速化します。
 * **`(instance_type, thread_name, toStartOfMinute(event_time))` の `ORDER BY` キー** - 一般的なフィルタパターンに合わせてディスク上のデータを配置し、[スパースプライマリ索引](/guides/best-practices/sparse-primary-indexes) が無関係なグラニュールをスキップできるようにします。
 
 ```sql

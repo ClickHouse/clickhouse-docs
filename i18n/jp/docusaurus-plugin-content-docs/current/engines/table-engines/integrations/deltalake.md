@@ -20,105 +20,101 @@ import TabItem from '@theme/TabItem';
 DeltaLake テーブルを作成するには、事前に S3、GCP、または Azure ストレージ上にテーブルが存在している必要があります。このコマンドでは新しいテーブルを作成するための DDL パラメータは指定できません。
 
 <Tabs>
-<TabItem value="S3" label="S3" default>
+  <TabItem value="S3" label="S3" default>
+    **構文**
 
-**構文**
+    ```sql
+    CREATE TABLE table_name
+    ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,] [extra_credentials])
+    ```
 
-```sql
-CREATE TABLE table_name
-ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
-```
+    **エンジンパラメータ**
 
-**エンジンパラメータ**
+    * `url` — 既存の Delta Lake テーブルへのパスを含むバケットの URL。
+    * `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期的に有効な認証情報。リクエストの認証に使用できます。パラメータは省略可能です。認証情報が指定されていない場合は、設定ファイルで指定されたものが使用されます。
+    * `extra_credentials` - 省略可能。ClickHouse Cloud でロールベースのアクセスに使用する `role_arn` を渡すために使用します。設定手順については [Secure S3](/cloud/data-sources/secure-s3) を参照してください。
 
-- `url` — 既存の Delta Lake テーブルへのパスを含むバケットの URL。
-- `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) アカウントユーザーの長期的に有効な認証情報。リクエストの認証に使用できます。パラメータは省略可能です。認証情報が指定されていない場合は、設定ファイルで指定されたものが使用されます。
+    エンジンパラメータは [Named Collections](/operations/named-collections.md) を使用して指定できます。
 
-エンジンパラメータは [Named Collections](/operations/named-collections.md) を使用して指定できます。
+    **例**
 
-**例**
+    ```sql
+    CREATE TABLE deltalake
+    ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
+    ```
 
-```sql
-CREATE TABLE deltalake
-ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
-```
+    名前付きコレクションの使用:
 
-名前付きコレクションの使用:
+    ```xml
+    <clickhouse>
+        <named_collections>
+            <deltalake_conf>
+                <url>http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/</url>
+                <access_key_id>ABC123<access_key_id>
+                <secret_access_key>Abc+123</secret_access_key>
+            </deltalake_conf>
+        </named_collections>
+    </clickhouse>
+    ```
 
-```xml
-<clickhouse>
-    <named_collections>
-        <deltalake_conf>
-            <url>http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/</url>
-            <access_key_id>ABC123<access_key_id>
-            <secret_access_key>Abc+123</secret_access_key>
-        </deltalake_conf>
-    </named_collections>
-</clickhouse>
-```
+    ```sql
+    CREATE TABLE deltalake
+    ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
+    ```
+  </TabItem>
 
-```sql
-CREATE TABLE deltalake
-ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
-```
-</TabItem>
+  <TabItem value="GCP" label="GCP" default>
+    **構文**
 
-<TabItem value="GCP" label="GCP" default>
+    ```sql
+    -- HTTPS URL を使用する（推奨）
+    CREATE TABLE table_name
+    ENGINE = DeltaLake('https://storage.googleapis.com/<bucket>/<path>/', '<access_key_id>', '<secret_access_key>')
+    ```
 
-**構文**
+    :::note[サポートされない gsutil URI]
+    `gs://clickhouse-docs-example-bucket` のような gsutil URI はサポートされません。`https://storage.googleapis.com` で始まる URL を使用してください。
+    :::
 
-```sql
--- HTTPS URL を使用する（推奨）
-CREATE TABLE table_name
-ENGINE = DeltaLake('https://storage.googleapis.com/<bucket>/<path>/', '<access_key_id>', '<secret_access_key>')
-```
+    **引数**
 
-:::note[サポートされない gsutil URI]
-`gs://clickhouse-docs-example-bucket` のような gsutil URI はサポートされません。`https://storage.googleapis.com` で始まる URL を使用してください。
-:::
+    * `url` — Delta Lake テーブルへの GCS バケット URL。`https://storage.googleapis.com/<bucket>/<path>/`
+      形式 (GCS XML API エンドポイント) を使用する必要があります。または `gs://<bucket>/<path>/` を指定すると自動変換されます。
+    * `access_key_id` — GCS Access Key。Google Cloud Console → Cloud Storage → Settings → Interoperability から作成します。
+    * `secret_access_key` — GCS のシークレット。
 
-**引数**
+    **名前付きコレクション**
 
-- `url` — Delta Lake テーブルへの GCS バケット URL。`https://storage.googleapis.com/<bucket>/<path>/`
-   形式（GCS XML API エンドポイント）を使用する必要があります。または `gs://<bucket>/<path>/` を指定すると自動変換されます。
-- `access_key_id` — GCS Access Key。Google Cloud Console → Cloud Storage → Settings → Interoperability から作成します。
-- `secret_access_key` — GCS のシークレット。
+    名前付きコレクションを使用することもできます。
+    例:
 
-**名前付きコレクション**
+    ```sql
+    CREATE NAMED COLLECTION gcs_creds AS
+    access_key_id = '<access_key>',
+    secret_access_key = '<secret>';
 
-名前付きコレクションを使用することもできます。
-例:
+    CREATE TABLE gcpDeltaLake
+    ENGINE = DeltaLake(gcs_creds, url = 'https://storage.googleapis.com/<bucket>/<path>')
+    ```
+  </TabItem>
 
-```sql
-CREATE NAMED COLLECTION gcs_creds AS
-access_key_id = '<access_key>',
-secret_access_key = '<secret>';
+  <TabItem value="Azure" label="Azure" default>
+    **構文**
 
-CREATE TABLE gcpDeltaLake
-ENGINE = DeltaLake(gcs_creds, url = 'https://storage.googleapis.com/<bucket>/<path>')
-```
-   
-</TabItem>
+    ```sql
+    CREATE TABLE table_name
+    ENGINE = DeltaLake(connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression])
+    ```
 
-<TabItem value="Azure" label="Azure" default>
+    **引数**
 
-**構文**
-
-```sql
-CREATE TABLE table_name
-ENGINE = DeltaLake(connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression])
-```
-
-**引数**
-
-- `connection_string` — Azure 接続文字列
-- `storage_account_url` — Azure ストレージアカウントの URL（例: https://account.blob.core.windows.net）
-- `container_name` — Azure コンテナー名
-- `blobpath` — コンテナー内の Delta Lake テーブルへのパス
-- `account_name` — Azure ストレージアカウント名
-- `account_key` — Azure ストレージアカウントキー
-
-</TabItem>
+    * `connection_string` — Azure 接続文字列
+    * `storage_account_url` — Azure ストレージアカウントの URL (例: https://account.blob.core.windows.net) 
+    * `container_name` — Azure コンテナー名
+    * `blobpath` — コンテナー内の Delta Lake テーブルへのパス
+    * `account_name` — Azure ストレージアカウント名
+    * `account_key` — Azure ストレージアカウントキー
+  </TabItem>
 </Tabs>
 
 ## DeltaLake テーブルを使用したデータ書き込み \{#insert-data\}

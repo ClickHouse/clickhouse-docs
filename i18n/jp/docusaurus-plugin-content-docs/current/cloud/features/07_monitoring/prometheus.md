@@ -224,36 +224,43 @@ Grafana Cloud を使用している場合、Grafana 内の Alloy メニューに
 
 <br />
 
-これにより、認証トークンを使用して Grafana Cloud エンドポイントにデータを送信するための `prometheus.remote_write` コンポーネントを含むように Alloy が構成されます。ユーザーは、その後、ClickHouse Cloud Prometheus Endpoint 用のスクレイパーを含めるように Alloy の設定（Linux の場合は `/etc/alloy/config.alloy`）を変更するだけでかまいません。
+これにより、認証トークンを使用して Grafana Cloud エンドポイントにデータを送信するための `prometheus.remote_write` コンポーネントを含むように Alloy が構成されます。ユーザーは、その後、ClickHouse Cloud Prometheus Endpoint 用のスクレイパーを含めるように Alloy の設定 (Linux の場合は `/etc/alloy/config.alloy`) を変更するだけでかまいません。
 
 以下は、ClickHouse Cloud Endpoint からメトリクスをスクレイプするための `prometheus.scrape` コンポーネントと、自動的に構成される `prometheus.remote_write` コンポーネントを含む Alloy のサンプル構成です。`basic_auth` 設定コンポーネントには、それぞれユーザー名とパスワードとして Cloud API key の ID とシークレットが含まれている点に注意してください。
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
 
-  honor_labels = true
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<clickhouse_org_id>/prometheus"
 
-  basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  params = {
+  "filtered_metrics" = ["true"],
   }
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+  honor_labels    = true
+  scrape_interval = "30s"
+  scrape_timeout  = "25s"
+
+  basic_auth {
+  username = "<clickhouse_api_key_id>"
+  password = "<clickhouse_api_key_secret>"
+  }
+
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
 }
 
-prometheus.remote_write "metrics_service" {
+  prometheus.remote_write "grafana_cloud" {
   endpoint {
-        url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-        basic_auth {
-          username = "<Grafana API username>"
-          password = "<grafana API token>"
-    }
+  url = "https://<grafana_prometheus_url>/api/prom/push"
+
+  basic_auth {
+  username = "<grafana_username>"
+  password = "<grafana_api_token>"
+  }
   }
 }
 ```
@@ -266,22 +273,28 @@ prometheus.remote_write "metrics_service" {
 セルフマネージド版 Grafana のユーザーは、Alloy エージェントのインストール手順を[こちら](https://grafana.com/docs/alloy/latest/get-started/install/)で確認できます。ここでは、ユーザーが Alloy を構成し、Prometheus のメトリクスを目的の送信先に送信するよう既に設定済みであることを前提とします。以下の `prometheus.scrape` コンポーネントにより、Alloy は ClickHouse Cloud のエンドポイントをスクレイプします。スクレイプされたメトリクスは `prometheus.remote_write` が受信することを想定しています。これが存在しない場合は、`forward_to` キーをターゲットの送信先に合わせて調整してください。
 
 ```yaml
-prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+// prometheus.scrape component causes Alloy to scrape the ClickHouse Cloud Prometheus endpoint.
+  // Adjust the forward_to key to match your remote_write receiver if it differs.
+  prometheus.scrape "clickhouse_cloud" {
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
+
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<organizationId>/prometheus"
+
+  params = {
+  "filtered_metrics" = ["true"],
+  }
 
   honor_labels = true
 
   basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  username = "<KEY_ID>"
+  password = "<KEY_SECRET>"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
 }
 ```
 

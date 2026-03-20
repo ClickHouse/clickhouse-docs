@@ -2494,6 +2494,14 @@ Pretty 格式的行数上限。
 
 使用 REPLACE 语句替代 INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于去除文本输出格式中 FixedString 值末尾空字节的新设置"}]}]}/>
+
+去除文本输出格式中 FixedString 值末尾的空字节。例如，`toFixedString('John', 8)` 会打印为 `John`，而不是 `John\0\0\0\0`。
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

@@ -44,27 +44,34 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 컬럼과 테이블에 주석을 추가할 수 있습니다.
 
 
-### 다른 테이블과 유사한 스키마 사용하기 \{#with-a-schema-similar-to-other-table\}
+### 기존 테이블과 유사한 스키마 사용 \{#with-a-schema-similar-to-other-table\}
+
+ClickHouse는 기존 테이블의 스키마와 데이터를 복사하는 기능을 지원합니다. 
+
+기존 테이블의 스키마를 복제하려면:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine]
 ```
 
-다른 테이블과 동일한 구조를 가진 테이블을 생성합니다. 이 테이블에 대해 다른 엔진을 지정할 수 있습니다. 엔진을 지정하지 않으면 `db2.name2` 테이블과 동일한 엔진이 사용됩니다.
+이렇게 하면 다른 테이블과 동일한 구조를 가진 테이블이 생성됩니다. 
 
+### 기존 테이블의 스키마와 데이터 사용 \{#with-a-schema-and-data-cloned-from-another-table\}
 
-### 다른 테이블의 스키마와 데이터를 복제하여 생성 \{#with-a-schema-and-data-cloned-from-another-table\}
+기존 테이블의 스키마와 데이터를 복제하려면:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone CLONE AS [db.]table [ENGINE = engine]
 ```
 
-다른 테이블과 동일한 구조의 테이블을 생성합니다. 테이블에 대해 다른 엔진을 지정할 수 있습니다. 엔진을 지정하지 않으면 `db2.name2` 테이블과 동일한 엔진이 사용됩니다. 새 테이블이 생성된 후 `db2.name2`의 모든 파티션이 새 테이블에 연결됩니다. 다시 말해, 생성 시 `db2.name2`의 데이터가 `db.table_name`으로 복제됩니다. 이 쿼리는 다음과 동일합니다:
+이는 기존 테이블과 동일한 스키마와 데이터를 가진 테이블을 생성합니다. 새 테이블이 생성된 후 `db.table`의 모든 파티션이 여기에 attached 상태로 추가됩니다. 다시 말해, 생성 시점에 `db.table`의 데이터가 `db2.table_clone`으로 복제됩니다. 이 쿼리는 다음과 동일합니다:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
-ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine];
+ALTER TABLE [db2.]table_clone ATTACH PARTITION ALL FROM [db.]table;
 ```
+
+두 기능 모두에서 테이블에 서로 다른 엔진을 지정할 수 있습니다. 엔진을 지정하지 않으면 원본 테이블(`db.table`)에 사용된 것과 동일한 엔진이 사용됩니다.
 
 
 ### 테이블 함수(Table Function)에서 \{#from-a-table-function\}
@@ -274,7 +281,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 * 컬럼 목록에 포함하여 지정
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...,
     PRIMARY KEY(expr1[, expr2,...])
@@ -285,7 +292,7 @@ ENGINE = engine;
 * 컬럼 목록 외부
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )
@@ -728,7 +735,7 @@ SELECT * FROM base.t1;
 **구문**
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )

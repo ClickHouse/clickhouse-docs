@@ -51,7 +51,7 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
   {
    changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
    version: '26.2',
-   fast_start_date: 'TBD',
+   fast_start_date: '2026-03-30',
    fast_end_date: 'TBD',
    regular_start_date: 'TBD',
    regular_end_date: 'TBD',
@@ -67,12 +67,13 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
    fast_start_date: '2026-02-10',
    fast_end_date: '2026-02-11',
    regular_start_date: '2026-03-09',
-   regular_end_date: 'TBD',
-   slow_start_date: 'TBD',
+   regular_end_date: '2026-03-18',
+   slow_start_date: '2026-04-06',
    slow_end_date: 'TBD',
    fast_progress: 'green',
    regular_progress: 'green',
-   slow_progress: 'green'
+   slow_progress: 'green',
+   regular_delay_note: 'スケジュールされたアップグレードウィンドウを持つサービスは、3月23日の翌週に、そのスケジュールされたウィンドウ内で 25.12 へアップグレードされます',
  },
  {
    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
@@ -86,7 +87,6 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
    fast_progress: 'green',
    regular_progress: 'green',
    slow_progress: 'green',
-   regular_delay_note: 'スケジュールされたアップグレードウィンドウを持つサービスは、3月16日の翌週に、そのスケジュールされたウィンドウ内で 25.10 へアップグレードされます',
  },
  {
   changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',

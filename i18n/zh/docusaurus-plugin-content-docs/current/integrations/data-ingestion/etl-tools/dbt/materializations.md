@@ -331,7 +331,7 @@ ALTER TABLE ... DELETE
 
 `materialized_view` 物化方式会创建一个 ClickHouse [materialized view](/sql-reference/statements/create/view#materialized-view)，其充当插入触发器，自动将来自源表的新行进行转换并插入到目标表中。这是 dbt-clickhouse 中最强大的物化方式之一。
 
-由于内容较多，该物化方式有其专门的页面。**[前往 Materialized Views 指南](/integrations/dbt/materialized-views)** 查看完整文档。
+由于内容较多，该物化方式有其专门的页面。**[前往 Materialized Views 指南](/integrations/dbt/materialization-materialized-view)** 查看完整文档。
 
 ## 物化：dictionary（实验性） \{#materialization-dictionary\}
 
