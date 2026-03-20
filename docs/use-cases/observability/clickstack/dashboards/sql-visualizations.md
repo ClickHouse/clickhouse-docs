@@ -31,7 +31,7 @@ From there:
 
 ## Query parameters {#query-parameters}
 
-Query parameters allow your SQL to reference the dashboard's current time range and granularity. They use the ClickHouse parameterized query syntax: `{paramName:Type}`.
+[Query parameters](/sql-reference/syntax#defining-and-using-query-parameters) allow your SQL to reference the dashboard's current time range and granularity. They use the ClickHouse parameterized query syntax: `{paramName:Type}`.
 
 ### Available parameters {#available-parameters}
 
@@ -113,7 +113,7 @@ When a **Source** is selected on the chart and dashboard filters are active, `$_
 
 ## How query results are plotted {#how-results-are-plotted}
 
-HyperDX automatically maps result columns to chart elements based on column types. The mapping rules differ by chart type.
+ClickStack automatically maps result columns to chart elements based on column types. The mapping rules differ by chart type.
 
 ### Line and Stacked Bar charts {#line-and-stacked-bar-charts}
 
