@@ -76,3 +76,7 @@ Currently, we send out notifications related to billing (payment failure, usage 
 
 - [Cloud Console monitoring](/cloud/monitoring/cloud-console) — Built-in dashboards for service health, resources, and query performance
 - [Monitoring overview](/cloud/monitoring) — Compare all monitoring approaches for ClickHouse Cloud
+
+:::note
+Credit threshold notifications are currently only available for organizations with committed spend contracts. Pay-as-you-go (PAYG) organizations do not receive these notifications.
+:::
