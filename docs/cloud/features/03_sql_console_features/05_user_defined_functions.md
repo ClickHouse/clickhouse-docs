@@ -101,8 +101,8 @@ zip is_business_hours.zip main.py
 3. On the user-defined functions page, click **Set up a UDF**. A configuration panel opens on the right side of the screen.
 4. Enter a function name. For this example, use `isBusinessHours`.
 5. Select a function type, either **Executable pool** or **Executable**:
-    - **Executable pool**: The script runs on every query.
-    - **Executable**: A pool of persistent processes is maintained, and a process is taken from the pool for reads.
+    - **Executable pool**: A pool of persistent processes is maintained, and a process is taken from the pool for reads.
+    - **Executable**: The script runs on every query.
 6. For this example, use the default settings. For a full list of configuration parameters, see [Executable user-defined functions](/sql-reference/functions/udf#executable-user-defined-functions).
 7. Click **Browse File** to upload the `.zip` file created at the start of this tutorial.
 8. Add a new argument. For this example, add an argument `timestamp` with type `DateTime`.
