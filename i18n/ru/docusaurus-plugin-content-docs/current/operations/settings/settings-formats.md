@@ -2495,6 +2495,14 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 Использовать оператор REPLACE вместо INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка для удаления конечных нулевых байтов из значений FixedString в текстовых форматах вывода"}]}]} />
+
+Удаляет конечные нулевые байты из значений FixedString в текстовых форматах вывода. Например, `toFixedString('John', 8)` выводится как `John` вместо `John\0\0\0\0`.
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

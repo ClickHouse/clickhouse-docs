@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   与 `ngrams(N)` 相比，`sparseGrams` 分词器会生成可变长度的 N-gram，从而可以更灵活地表示原始文本。
   例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成长度为 3、4、5 的 n-gram，但只返回长度为 4 和 5 的 n-gram。
 * `array` 不执行任何分词操作，即每一行的值都是一个 token (参见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
+* `unicode_word` 使用 Unicode 单词边界规则 (类似 UAX #29) 将字符串拆分为 token。ASCII 字母数字字符和下划线会与连接符一起构成 token (`:` 用于字母，`.` 和 `'` 用于相同类型的字符)。非 ASCII Unicode 字符会成为单字符 token。
 
 所有可用的 tokenizer 都列在 [system.tokenizers](../../../operations/system-tables/tokenizers.md) 中。
 
@@ -380,9 +381,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` 和 `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=`（[equals](/sql-reference/functions/comparison-functions.md/#equals)）和 `!=`（[notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)）会匹配整个给定的搜索词。
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) 会匹配整个给定的搜索词。
 
 示例：
 
@@ -390,12 +391,10 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-文本索引支持 `=` 和 `!=`，但等值和不等值查询只有在使用 `array` 分词器时才有意义（因为它会让索引存储整行的值）。
 
+#### `IN` \{#functions-example-in\}
 
-#### `IN` 和 `NOT IN` \{#functions-example-in-notin\}
-
-`IN`（[in](/sql-reference/functions/in-functions)）和 `NOT IN`（[notIn](/sql-reference/functions/in-functions)）与函数 `equals` 和 `notEquals` 类似，但它们分别匹配全部（`IN`）或不匹配任何（`NOT IN`）搜索项。
+`IN` ([in](/sql-reference/functions/in-functions)) 与 `equals` 类似，但会匹配所有搜索词。
 
 示例：
 
@@ -403,16 +402,21 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-适用与 `=` 和 `!=` 相同的限制，也就是说，`IN` 和 `NOT IN` 只有在与 `array` 分词器配合使用时才有意义。
+:::note
+文本索引不支持 `NOT IN` (`notIn`)。
+:::
 
-
-#### `LIKE`、`NOT LIKE` 和 `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` 和 `match` \{#functions-example-like-match\}
 
 :::note
 目前只有当索引的 tokenizer 为 `splitByNonAlpha`、`ngrams` 或 `sparseGrams` 时，这些函数才会使用文本索引进行过滤。
 :::
 
-要在文本索引中使用 `LIKE`（[like](/sql-reference/functions/string-search-functions.md/#like)）、`NOT LIKE`（[notLike](/sql-reference/functions/string-search-functions.md/#notLike)）以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 token。
+:::note
+文本索引不支持 `NOT LIKE` (`notLike`) 。
+:::
+
+要在文本索引中使用 `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) 以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 token。
 对于使用 `ngrams` tokenizer 的索引，如果通配符之间所搜索字符串的长度大于或等于 ngram 的长度，则满足该条件。
 
 使用 `splitByNonAlpha` tokenizer 的文本索引示例：
