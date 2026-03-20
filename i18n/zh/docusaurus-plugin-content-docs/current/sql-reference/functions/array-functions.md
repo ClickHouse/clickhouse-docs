@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## array \{#array\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 根据函数参数创建一个数组。
 
@@ -72,7 +72,7 @@ There is no supertype for types Int32, DateTime, Int8 ...
 
 ## arrayAUCPR \{#arrayAUCPR\}
 
-引入版本：v20.4
+引入版本：v20.4.0
 
 计算精确率-召回率（PR）曲线下的面积。
 精确率-召回率曲线是通过在所有阈值下，以精确率为 y 轴、召回率为 x 轴绘制得到的。
@@ -128,7 +128,7 @@ SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayAll \{#arrayAll\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 如果 lambda `func(x [, y1, y2, ... yN])` 对所有元素都返回 true，则返回 `1`，否则返回 `0`。
 
@@ -173,7 +173,7 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 
 ## arrayAvg \{#arrayAvg\}
 
-自 v21.1 版本引入
+自 v21.1.0 版本引入
 
 返回源数组中元素的平均值。
 
@@ -220,7 +220,7 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 
 ## arrayCompact \{#arrayCompact\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 从数组中删除连续的重复元素，包括 `null` 值。结果数组中各元素的顺序与源数组中的顺序一致。
 
@@ -253,7 +253,7 @@ SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
 
 ## arrayConcat \{#arrayConcat\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将传入的数组参数合并为一个数组。
 
@@ -286,7 +286,7 @@ SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
 
 ## arrayCount \{#arrayCount\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回使 `func(arr1[i], ..., arrN[i])` 返回 true 的元素个数。
 如果未指定 `func`，则返回数组中非零元素的个数。
@@ -323,7 +323,7 @@ SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
 
 ## arrayCumSum \{#arrayCumSum\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个数组，数组中的元素是源数组元素的前缀（累积）和。若指定了一个 lambda 函数，则会在每个位置对数组元素应用该 lambda 后再进行求和。
 
@@ -368,7 +368,7 @@ SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
 
 ## arrayCumSumNonNegative \{#arrayCumSumNonNegative\}
 
-引入版本：v18.12
+引入版本：v18.12.0
 
 返回源数组元素的部分（前缀、累积）和组成的数组，并将任何为负的累积和值替换为零。若指定了 lambda 函数，则在每个位置先对数组元素应用该 lambda，再根据结果计算累积和。
 
@@ -413,7 +413,7 @@ SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
 
 ## arrayDifference \{#arrayDifference\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算由相邻数组元素的差值构成的数组。
 结果数组的第一个元素为 0，第二个元素为 `arr[1] - arr[0]`，第三个为 `arr[2] - arr[1]`，以此类推。
@@ -460,7 +460,7 @@ SELECT arrayDifference([0, 10000000000000000000]);
 
 ## arrayDistinct \{#arrayDistinct\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个仅包含原数组中各不相同元素的数组。
 
@@ -493,7 +493,7 @@ SELECT arrayDistinct([1, 2, 2, 3, 1]);
 
 ## arrayDotProduct \{#arrayDotProduct\}
 
-引入版本：v23.5
+引入版本：v23.5.0
 
 返回两个数组的点积。
 
@@ -547,7 +547,7 @@ SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UI
 
 ## arrayElement \{#arrayElement\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 获取给定数组中索引为 `n` 的元素，其中 `n` 可以是任意整数类型。
 如果索引超出数组范围，则返回默认值（数字为 0，字符串为空字符串等），
@@ -620,7 +620,7 @@ SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 
 ## arrayElementOrNull \{#arrayElementOrNull\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 获取给定数组中索引为 `n` 的元素，其中 `n` 可以是任意整数类型。
 如果索引超出了数组的范围，则返回 `NULL`，而不是默认值。
@@ -680,7 +680,7 @@ NULL
 
 ## arrayEnumerate \{#arrayEnumerate\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 返回数组 `[1, 2, 3, ..., length (arr)]`
 
@@ -740,7 +740,7 @@ ARRAY JOIN
 
 ## arrayEnumerateDense \{#arrayEnumerateDense\}
 
-引入版本：v18.12
+引入版本：v18.12.0
 
 返回一个与源数组大小相同的数组，表示每个元素在源数组中首次出现的位置。
 
@@ -773,7 +773,7 @@ SELECT arrayEnumerateDense([10, 20, 10, 30])
 
 ## arrayEnumerateDenseRanked \{#arrayEnumerateDenseRanked\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 返回一个与源数组大小相同的数组，用于标记每个元素在源数组中首次出现的位置。它支持对多维数组进行枚举，并且可以指定在数组中向内展开的层级深度。
 
@@ -826,7 +826,7 @@ SELECT arrayEnumerateDenseRanked(1,[[10,10,30,20],[40,50,10,30]],2);
 [[1,1,2,3],[4,5,1,2]]
 ```
 
-**提高 clear&#95;depth 的示例**
+**使用更大 clear&#95;depth 的示例**
 
 ```sql title=Query
 -- Changing clear_depth=2 results in the enumeration occurring separately for each row anew.
@@ -841,7 +841,7 @@ SELECT arrayEnumerateDenseRanked(2,[[10,10,30,20],[40,50,10,30]],2);
 
 ## arrayEnumerateUniq \{#arrayEnumerateUniq\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个与源数组大小相同的数组，对每个元素给出其在所有具有相同值的元素中的位置。
 
@@ -926,7 +926,7 @@ LIMIT 10
 
 ## arrayEnumerateUniqRanked \{#arrayEnumerateUniqRanked\}
 
-自 v20.1 版本引入
+自 v20.1.0 版本引入
 
 返回一个与源数组维度相同的一维或多维数组，
 对每个元素给出其在所有相同值元素中的序号。
@@ -1009,7 +1009,7 @@ SELECT arrayEnumerateUniqRanked(2,[[1, 2, 3],[2, 2, 1],[3]], 2);
 
 ## arrayExcept \{#arrayExcept\}
 
-引入于：v25.9
+引入于：v25.9.0
 
 返回一个数组，其中包含 `source` 中在 `except` 中不存在的元素，并保留原始顺序。
 
@@ -1081,7 +1081,7 @@ SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
 
 ## arrayExists \{#arrayExists\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 如果源数组中至少有一个元素使 `func(x[, y1, y2, ... yN])` 返回 true，则返回 `1`，否则返回 `0`。
 
@@ -1116,7 +1116,7 @@ SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
 
 ## arrayFill \{#arrayFill\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 `arrayFill` 函数按顺序处理源数组，从第一个元素到最后一个元素，
 在每个位置使用源数组和条件数组中的元素对一个 lambda 条件进行求值。
@@ -1164,7 +1164,7 @@ SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2,
 
 ## arrayFilter \{#arrayFilter\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 返回一个数组，其中只包含源数组中使 lambda 函数返回 true 的元素。
 
@@ -1214,7 +1214,7 @@ SELECT
 
 ## arrayFirst \{#arrayFirst\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回源数组中第一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素，否则返回默认值。
 
@@ -1257,7 +1257,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayFirstIndex \{#arrayFirstIndex\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 返回源数组中第一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素的索引，否则返回 &#39;0&#39;。
 
@@ -1300,7 +1300,7 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
 
 ## arrayFirstOrNull \{#arrayFirstOrNull\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回源数组中第一个使得 `func(x[, y1, y2, ... yN])` 返回 true 的元素，否则返回 `NULL`。
 
@@ -1345,7 +1345,7 @@ NULL Nullable(UInt8)
 
 ## arrayFlatten \{#arrayFlatten\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将嵌套数组转换为扁平数组。
 
@@ -1387,7 +1387,7 @@ SELECT arrayFlatten([[[1]], [[2], [3]]]);
 
 ## arrayFold \{#arrayFold\}
 
-自 v23.10 版本引入
+自 v23.10.0 版本引入
 
 对一个或多个等长数组应用一个 lambda 函数，并将结果累积到累加器中。
 
@@ -1458,7 +1458,7 @@ SELECT arrayFold(
 
 ## arrayIntersect \{#arrayIntersect\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 接受多个数组，并返回一个数组，其中只包含在所有源数组中都出现的元素。结果中仅包含唯一值。
 
@@ -1474,7 +1474,7 @@ arrayIntersect(arr, arr1, ..., arrN)
 
 **返回值**
 
-返回一个数组，包含所有 N 个数组共有的、不重复的元素。[`Array(T)`](/sql-reference/data-types/array)
+返回一个数组，包含所有 N 个数组共有的、不重复的元素。[`Array(T)`](/sql-reference/data-types/array)。
 
 **示例**
 
@@ -1495,7 +1495,7 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
-自 v23.7 版本引入
+自 v23.7.0 版本引入
 
 返回两个数组的 [Jaccard 指数](https://en.wikipedia.org/wiki/Jaccard_index)。
 
@@ -1529,7 +1529,7 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 
 ## arrayJoin \{#arrayJoin\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 `arrayJoin` 函数接收一行包含数组的记录并将其展开，为数组中的每个元素生成一行。
 这与 ClickHouse 中的常规函数（Regular Functions）不同，后者是在同一行内将输入值映射为输出值，
@@ -1569,7 +1569,7 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-**arrayJoin 会影响查询的所有部分**
+**arrayJoin 会影响查询的所有子句**
 
 ```sql title=Query
 -- The arrayJoin function affects all sections of the query, including the WHERE section. Notice the result 2, even though the subquery returned 1 row.
@@ -1619,7 +1619,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**优化导致的非预期结果**
+**由于优化导致的非预期结果**
 
 ```sql title=Query
 -- Using multiple arrayJoin with the same expression may not produce the expected result due to optimizations.
@@ -1740,7 +1740,7 @@ GROUP BY
 
 ## arrayLast \{#arrayLast\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回源数组中最后一个使 lambda `func(x [, y1, y2, ... yN])` 返回 true 的元素；如果不存在这样的元素，则返回默认值。
 
@@ -1752,10 +1752,7 @@ arrayLast(func(x[, y1, ..., yN]), source[, cond1, ... , condN_arr])
 
 **参数**
 
-* `func(x[, y1, ..., yN])` — 在源数组（`x`）和条件数组（`y`）的元素上进行操作的 lambda 函数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。
-
-- `source` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。
-- `[, cond1, ... , condN]` — 可选。为 lambda 函数提供附加参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
+* `func(x[, y1, ..., yN])` — 在源数组（`x`）和条件数组（`y`）的元素上进行操作的 lambda 函数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1, ... , condN]` — 可选。为 lambda 函数提供附加参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
 
 **返回值**
 
@@ -1786,7 +1783,7 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 
 ## arrayLastIndex \{#arrayLastIndex\}
 
-自 v1.1 起引入。
+自 v1.1.0 起引入。
 
 返回源数组中最后一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素的索引；如果不存在这样的元素，则返回 `0`。
 
@@ -1831,7 +1828,7 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
 
 ## arrayLastOrNull \{#arrayLastOrNull\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回源数组中最后一个使得 lambda `func(x [, y1, y2, ... yN])` 返回 true 的元素，否则返回 `NULL`。
 
@@ -1843,10 +1840,7 @@ arrayLastOrNull(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr]
 
 **参数**
 
-* `func(x [, y1, ..., yN])` — 一个 lambda 函数，用于处理源数组 (`x`) 和条件数组 (`y`) 的元素。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。
-
-- `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。
-- `[, cond1_arr, ... , condN_arr]` — 可选。提供给 lambda 函数的额外参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
+* `func(x [, y1, ..., yN])` — 一个 lambda 函数，用于处理源数组 (`x`) 和条件数组 (`y`) 的元素。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1_arr, ... , condN_arr]` — 可选。提供给 lambda 函数的额外参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
 
 **返回值**
 
@@ -1877,7 +1871,7 @@ NULL Nullable(UInt8)
 
 ## arrayLevenshteinDistance \{#arrayLevenshteinDistance\}
 
-引入自：v25.4
+引入自：v25.4.0
 
 计算两个数组之间的 Levenshtein 距离。
 
@@ -1910,7 +1904,7 @@ SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
 
 ## arrayLevenshteinDistanceWeighted \{#arrayLevenshteinDistanceWeighted\}
 
-自 v25.4 版本引入
+自 v25.4.0 版本引入
 
 计算两个数组的 Levenshtein 距离，并为每个元素使用自定义权重。
 数组的元素数量应当与其对应的权重数量一致。
@@ -1945,7 +1939,7 @@ SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 
 
 ## arrayMap \{#arrayMap\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回通过对原始数组的每个元素应用 lambda 函数得到的数组。
 
@@ -1989,7 +1983,7 @@ SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
 
 ## arrayMax \{#arrayMax\}
 
-自 v21.1 版本引入
+自 v21.1.0 版本引入
 
 返回源数组中的最大元素。
 
@@ -2036,7 +2030,7 @@ SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayMin \{#arrayMin\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 返回原始数组中的最小元素。
 
@@ -2083,7 +2077,7 @@ SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 
 ## arrayNormalizedGini \{#arrayNormalizedGini\}
 
-在 v25.1 中引入
+在 v25.1.0 中引入
 
 计算标准化的 Gini 系数。
 
@@ -2117,7 +2111,7 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 
 ## arrayPartialReverseSort \{#arrayPartialReverseSort\}
 
-自 v23.2 版本引入
+自 v23.2.0 版本引入
 
 此函数与 `arrayReverseSort` 相同，但额外增加了一个 `limit` 参数，用于只对部分元素进行排序。
 
@@ -2197,7 +2191,7 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
-引入于：v23.2
+引入于：v23.2.0
 
 返回一个与原始数组大小相同的数组，其中区间 `[1..limit]` 内的元素是原始数组的一个随机子集。剩余区间 `(limit..n]` 包含不在 `[1..limit]` 区间内的元素，顺序未定义。
 `limit` 的取值范围应为 `[1..n]`。超出该范围的取值等价于执行完整的 `arrayShuffle`：
@@ -2290,7 +2284,7 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 
 ## arrayPartialSort \{#arrayPartialSort\}
 
-自 v23.2 版本引入
+自 v23.2.0 版本引入
 
 此函数与 `arraySort` 相同，但多了一个 `limit` 参数，用于实现部分排序。
 
@@ -2371,7 +2365,7 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 
 ## arrayPopBack \{#arrayPopBack\}
 
-自 v1.1 起引入。
+自 v1.1.0 起引入。
 
 从数组中移除最后一个元素。
 
@@ -2404,7 +2398,7 @@ SELECT arrayPopBack([1, 2, 3]) AS res;
 
 ## arrayPopFront \{#arrayPopFront\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 从数组中删除第一个元素。
 
@@ -2437,7 +2431,7 @@ SELECT arrayPopFront([1, 2, 3]) AS res;
 
 ## arrayProduct \{#arrayProduct\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 返回源数组中元素的乘积。
 
@@ -2484,7 +2478,7 @@ SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
 
 ## arrayPushBack \{#arrayPushBack\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 在数组末尾添加一个元素。
 
@@ -2528,7 +2522,7 @@ SELECT arrayPushBack(['a'], 'b') AS res;
 
 ## arrayPushFront \{#arrayPushFront\}
 
-自 v1.1 起引入。
+自 v1.1.0 起引入。
 
 将一个元素添加到数组的开头。
 
@@ -2571,7 +2565,7 @@ SELECT arrayPushFront(['b'], 'a') AS res;
 
 ## arrayROCAUC \{#arrayROCAUC\}
 
-引入版本：v20.4
+引入版本：v20.4.0
 
 计算受试者工作特征（ROC）曲线下的面积。
 ROC 曲线是通过在所有阈值上，以真正例率（TPR）为纵轴、假正例率（FPR）为横轴绘制得到的。
@@ -2628,7 +2622,7 @@ SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 
 ## arrayRandomSample \{#arrayRandomSample\}
 
-引入版本：v23.10
+引入版本：v23.10.0
 
 返回由输入数组中 `samples` 个随机元素组成的子集。如果 `samples` 大于输入数组的大小，则样本数量会被限制为数组的大小，即返回数组中的所有元素，但不保证其顺序。该函数既能处理一维数组，也能处理嵌套数组。
 
@@ -2672,7 +2666,7 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 
 ## arrayReduce \{#arrayReduce\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对数组元素应用聚合函数并返回其结果。
 聚合函数的名称以单引号括起的字符串形式传入，例如 `'max'`、`'sum'`。
@@ -2736,7 +2730,7 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 ## arrayReduceInRanges \{#arrayReduceInRanges\}
 
-引入版本：v20.4
+引入版本：v20.4.0
 
 对给定区间内的数组元素应用聚合函数，并返回一个数组，其中包含每个区间对应的结果。
 该函数返回的结果与分别对每个区间多次调用 `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)` 所得到的结果相同。
@@ -2778,7 +2772,7 @@ SELECT arrayReduceInRanges(
 
 ## arrayRemove \{#arrayRemove\}
 
-自 v25.11 引入
+自 v25.11.0 引入
 
 从数组中移除所有等于给定值的元素。
 将 `NULL` 视为相等。
@@ -2824,7 +2818,7 @@ SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
 
 ## arrayResize \{#arrayResize\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 修改数组长度。
 
@@ -2872,7 +2866,7 @@ SELECT arrayResize([1], 3, NULL);
 
 ## arrayReverse \{#arrayReverse\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将给定数组中的元素顺序反转。
 
@@ -2909,7 +2903,7 @@ SELECT arrayReverse([1, 2, 3])
 
 ## arrayReverseFill \{#arrayReverseFill\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 `arrayReverseFill` 函数按顺序处理源数组，从最后一个元素到第一个元素，在每个位置使用源数组和条件数组中的元素计算一个 lambda 条件。当条件在位置 i 的求值结果为 false 时，函数会将该元素替换为当前数组状态中位置 i+1 的元素。无论条件为何，最后一个元素始终会被保留。
 
@@ -2954,7 +2948,7 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 
 ## arrayReverseSort \{#arrayReverseSort\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 对数组元素进行降序排序。
 如果指定了函数 `f`，则根据该函数应用于数组元素后的结果对给定数组进行排序，然后再反转排序后的数组。
@@ -3011,7 +3005,7 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将源数组拆分为多个数组。当 `func(x[, y1, ..., yN])` 返回非零值时，数组会在该元素右侧进行拆分。数组不会在最后一个元素之后被拆分。
 
@@ -3046,7 +3040,7 @@ SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arrayRotateLeft \{#arrayRotateLeft\}
 
-自 v23.8 起引入
+自 v23.8.0 起引入
 
 将数组循环左移指定的元素个数。`n` 为负值时，等价于按其绝对值将数组向右旋转。
 
@@ -3089,7 +3083,7 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
 
 ## arrayRotateRight \{#arrayRotateRight\}
 
-引入于：v23.8
+引入于：v23.8.0
 
 按指定的元素个数将数组向右旋转。`n` 为负数时，视为按该负数的绝对值向左旋转。
 
@@ -3132,7 +3126,7 @@ SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
 
 ## arrayShiftLeft \{#arrayShiftLeft\}
 
-引入自：v23.8
+引入自：v23.8.0
 
 将数组向左移位指定数量的元素。
 新元素将使用提供的参数，或数组元素类型的默认值进行填充。
@@ -3187,7 +3181,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
 
 ## arrayShiftRight \{#arrayShiftRight\}
 
-引入于：v23.8
+引入于：v23.8.0
 
 将数组按指定的元素个数向右移动。
 新位置上的元素使用提供的参数或数组元素类型的默认值填充。
@@ -3244,7 +3238,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
 
 ## arrayShingles \{#arrayShingles\}
 
-引入于：v24.1
+引入于：v24.1.0
 
 生成一个由 shingles 组成的数组（类似于字符串的 ngrams），即由输入数组中具有指定长度的连续子数组构成的数组。
 
@@ -3278,7 +3272,7 @@ SELECT arrayShingles([1, 2, 3, 4], 3) as res;
 
 ## arrayShuffle \{#arrayShuffle\}
 
-自 v23.2 版本引入
+自 v23.2.0 版本引入
 
 返回一个与原始数组大小相同的数组，数组中的元素以随机顺序排列。
 元素会被重新排序，使得这些元素的每一种排列出现的概率都相同。
@@ -3327,7 +3321,7 @@ SELECT arrayShuffle([1, 2, 3, 4], 41);
 
 ## arraySimilarity \{#arraySimilarity\}
 
-自 v25.4 引入
+自 v25.4.0 引入
 
 基于加权 Levenshtein 距离计算两个数组的相似度，取值范围为 `0` 到 `1`。
 
@@ -3363,7 +3357,7 @@ SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5
 
 ## arraySlice \{#arraySlice\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回数组的一个切片，并保留其中的 `NULL` 元素。
 
@@ -3398,7 +3392,7 @@ SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
 
 ## arraySort \{#arraySort\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对给定数组中的元素进行升序排序。
 如果指定了 lambda 函数 `f`，则排序顺序由将该 lambda 应用于数组中每个元素所得到的结果决定。
@@ -3464,7 +3458,7 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 
 ## arraySplit \{#arraySplit\}
 
-引入于：v20.1
+引入于：v20.1.0
 
 将源数组拆分为多个子数组。当 `func(x [, y1, ..., yN])` 返回非零值时，数组会在该元素的左侧进行拆分。数组不会在第一个元素之前进行拆分。
 
@@ -3497,7 +3491,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 
 ## arraySum \{#arraySum\}
 
-在 v21.1 中引入。
+在 v21.1.0 中引入。
 
 返回源数组中元素的总和。
 
@@ -3506,7 +3500,7 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 **语法**
 
 ```sql
-arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
+arraySum([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
 **参数**
@@ -3544,7 +3538,7 @@ SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
 
 ## arraySymmetricDifference \{#arraySymmetricDifference\}
 
-引入于：v25.4
+引入于：v25.4.0
 
 接受多个数组并返回一个数组，其中包含未在所有源数组中同时出现的元素。结果仅包含唯一值。
 
@@ -3580,14 +3574,14 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 
 ```response title=Response
 ┌─empty_symmetric_difference─┬─non_empty_symmetric_difference─┐
-│ []                         │ [3]                            │
+│ []                         │ [3,2]                          │
 └────────────────────────────┴────────────────────────────────┘
 ```
 
 
 ## arrayUnion \{#arrayUnion\}
 
-引入版本：v24.10
+引入版本：v24.10.0
 
 接受多个数组并返回一个数组，该数组包含任一源数组中出现的所有元素。结果只包含不重复的值。
 
@@ -3625,7 +3619,7 @@ arrayUnion([1, 3, NULL], [2, 3, NULL]) as null_example
 
 ## arrayUniq \{#arrayUniq\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 对于传入的单个参数，计算数组中不同元素的数量。
 对于传入的多个参数，计算由多个数组中相同位置的元素组成的不同**元组**的数量。
@@ -3684,7 +3678,7 @@ SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
 
 ## arrayWithConstant \{#arrayWithConstant\}
 
-自 v20.1 版本引入
+自 v20.1.0 版本引入
 
 创建一个长度为 `length`、由常量 `x` 填充的数组。
 
@@ -3718,7 +3712,7 @@ SELECT arrayWithConstant(3, 1)
 
 ## arrayZip \{#arrayZip\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 将多个数组组合为一个数组。生成的数组按照参数的先后顺序，将源数组中对应位置的元素分组为元组。
 
@@ -3751,7 +3745,7 @@ SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
 
 ## arrayZipUnaligned \{#arrayZipUnaligned\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 将多个数组合并为单个数组，允许数组之间长度不一致（不同长度的数组）。结果数组按参数列出的顺序，将源数组中对应位置的元素分组为元组。
 
@@ -3784,7 +3778,7 @@ SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
 
 ## countEqual \{#countEqual\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回数组中等于 `x` 的元素个数。等价于 `arrayCount(elem -> elem = x, arr)`。
 
@@ -3820,7 +3814,7 @@ SELECT countEqual([1, 2, NULL, NULL], NULL)
 
 ## empty \{#empty\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 检查输入数组是否为空。
 
@@ -3861,7 +3855,7 @@ SELECT empty([]);
 
 ## emptyArrayDate \{#emptyArrayDate\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 Date 类型数组
 
@@ -3894,7 +3888,7 @@ SELECT emptyArrayDate
 
 ## emptyArrayDateTime \{#emptyArrayDateTime\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个空的 DateTime 类型数组
 
@@ -3927,7 +3921,7 @@ SELECT emptyArrayDateTime
 
 ## emptyArrayFloat32 \{#emptyArrayFloat32\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 Float32 数组
 
@@ -3960,7 +3954,7 @@ SELECT emptyArrayFloat32
 
 ## emptyArrayFloat64 \{#emptyArrayFloat64\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 Float64 数组
 
@@ -3993,7 +3987,7 @@ SELECT emptyArrayFloat64
 
 ## emptyArrayInt16 \{#emptyArrayInt16\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 返回一个空的 Int16 类型数组
 
@@ -4026,7 +4020,7 @@ SELECT emptyArrayInt16
 
 ## emptyArrayInt32 \{#emptyArrayInt32\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个空的 Int32 类型数组
 
@@ -4059,7 +4053,7 @@ SELECT emptyArrayInt32
 
 ## emptyArrayInt64 \{#emptyArrayInt64\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 Int64 数组
 
@@ -4092,7 +4086,7 @@ SELECT emptyArrayInt64
 
 ## emptyArrayInt8 \{#emptyArrayInt8\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 Int8 数组
 
@@ -4125,7 +4119,7 @@ SELECT emptyArrayInt8
 
 ## emptyArrayString \{#emptyArrayString\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个空的 String 类型数组
 
@@ -4158,7 +4152,7 @@ SELECT emptyArrayString
 
 ## emptyArrayToSingle \{#emptyArrayToSingle\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 接受一个空数组，并返回一个仅包含单个元素的数组，该元素为默认值。
 
@@ -4203,7 +4197,7 @@ SELECT emptyArrayToSingle(a), emptyArrayToSingle(b), emptyArrayToSingle(c) FROM 
 
 ## emptyArrayUInt16 \{#emptyArrayUInt16\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个空的 UInt16 数组
 
@@ -4236,7 +4230,7 @@ SELECT emptyArrayUInt16
 
 ## emptyArrayUInt32 \{#emptyArrayUInt32\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 返回一个空的 UInt32 数组
 
@@ -4269,7 +4263,7 @@ SELECT emptyArrayUInt32
 
 ## emptyArrayUInt64 \{#emptyArrayUInt64\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 返回一个空的 UInt64 数组
 
@@ -4302,7 +4296,7 @@ SELECT emptyArrayUInt64
 
 ## emptyArrayUInt8 \{#emptyArrayUInt8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一个空的 UInt8 数组
 
@@ -4335,32 +4329,34 @@ SELECT emptyArrayUInt8
 
 ## has \{#has\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
-返回数组是否包含指定的元素。
+返回数组是否包含指定元素、map 是否包含指定 key，或 JSON 对象是否包含指定路径。
+
+对于 JSON，支持使用点号表示法 (例如 &#39;a.b.c&#39;) 来表示嵌套路径。
 
 当第一个参数是常量数组，第二个参数是列或表达式时，`has(constant_array, column)` 的行为类似于 `column IN (constant_array)`，并且可以使用主键和数据跳过索引进行优化。例如，如果 `id` 是 `PRIMARY KEY` 的一部分，则 `has([1, 10, 100], id)` 可以利用主键索引。
 
-当对该列应用单调函数时（例如 `has([...], toDate(ts))`），同样适用此优化。
+当对该列应用单调函数时 (例如 `has([...], toDate(ts))`) ，同样适用此优化。
 
 **语法**
 
 ```sql
-has(arr, x)
+has(haystack, needle)
 ```
 
 **参数**
 
-* `arr` — 源数组。[`Array(T)`](/sql-reference/data-types/array)
-* `x` — 要在数组中查找的值。
+* `haystack` — 源数组、Map 或 JSON。[`Array`](/sql-reference/data-types/array) 或 [`Map`](/sql-reference/data-types/map) 或 [`JSON`](/sql-reference/data-types/newjson)
+* `needle` — 要查找的值 (数组中的元素、Map 中的键或 JSON 中的路径字符串) 。
 
 **返回值**
 
-如果数组包含指定元素则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+如果 `haystack` 包含指定的 `needle` 则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**基本用法**
+**数组基本用法**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 2)
@@ -4370,7 +4366,7 @@ SELECT has([1, 2, 3], 2)
 1
 ```
 
-**未找到**
+**未找到数组**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 4)
@@ -4380,10 +4376,30 @@ SELECT has([1, 2, 3], 4)
 0
 ```
 
+**基本用法**
+
+```sql title=Query
+SELECT has(map('a', 1, 'b', 2), 'b')
+```
+
+```response title=Response
+1
+```
+
+**JSON 路径**
+
+```sql title=Query
+SELECT has('{"a": {"b": 1}}'::JSON, 'a.b')
+```
+
+```response title=Response
+1
+```
+
 
 ## hasAll \{#hasAll\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 检查一个数组是否为另一个数组的子集。
 
@@ -4451,7 +4467,7 @@ SELECT hasAll(['a', 'b'], ['a'])
 1
 ```
 
-**没有公共元素类型的数组**
+**没有共同类型的数组**
 
 ```sql title=Query
 SELECT hasAll([1], ['a'])
@@ -4474,7 +4490,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
 
 ## hasAny \{#hasAny\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 检查两个数组是否存在公共元素。
 
@@ -4541,7 +4557,7 @@ SELECT hasAny([[1, 2], [3, 4]], ['a', 'c'])
 Raises a `NO_COMMON_TYPE` exception
 ```
 
-**数组的数组**
+**嵌套数组**
 
 ```sql title=Query
 SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
@@ -4554,7 +4570,7 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
 
 ## hasSubstr \{#hasSubstr\}
 
-引入于：v20.6
+引入于：v20.6.0
 
 检查 array2 的所有元素是否以完全相同的顺序出现在 array1 中。
 因此，当且仅当 array1 = prefix + array2 + suffix 时，该函数返回 `1`。
@@ -4635,7 +4651,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
 1
 ```
 
-**顺序不合法的数组**
+**顺序不正确的数组**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
@@ -4645,7 +4661,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
 0
 ```
 
-**数组嵌套数组**
+**数组的数组**
 
 ```sql title=Query
 SELECT hasSubstr([[1, 2], [3, 4], [5, 6]], [[1, 2], [3, 4]])
@@ -4668,7 +4684,7 @@ Raises a `NO_COMMON_TYPE` exception
 
 ## indexOf \{#indexOf\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 如果数组中存在值为 &#39;x&#39; 的元素，则返回第一个值为 &#39;x&#39; 的元素的索引（从 1 开始）。
 如果数组不包含要查找的值，则函数返回 `0`。
@@ -4715,7 +4731,7 @@ SELECT indexOf([1, 3, NULL, NULL], NULL)
 
 ## indexOfAssumeSorted \{#indexOfAssumeSorted\}
 
-引入于：v24.12
+引入于：v24.12.0
 
 如果数组中包含值为 &#39;x&#39; 的元素，则返回第一个此类元素的索引（从 `1` 开始计数）。
 如果数组不包含要查找的值，则函数返回 `0`。
@@ -4753,9 +4769,79 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 ```
 
 
+## kql_array_sort_asc \{#kql_array_sort_asc\}
+
+引入于：v23.10.0
+
+按升序对一个或多个数组进行排序。第一个数组会被排序，后续数组会根据第一个数组的排序结果进行重排。Null 值会被放在末尾。此函数用于与 KQL（Kusto Query Language）保持兼容。
+
+**语法**
+
+```sql
+kql_array_sort_asc(array1[, array2, ..., nulls_last])
+```
+
+**参数**
+
+* `array1` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 可选。需要根据 `array1` 的排序结果一同重排的附加数组。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 可选。布尔值，指示是否应将 null 放在最后。默认值为 true。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回按升序排序后的数组组成的元组。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT kql_array_sort_asc([3, 1, 2])
+```
+
+```response title=Response
+([1, 2, 3])
+```
+
+
+## kql_array_sort_desc \{#kql_array_sort_desc\}
+
+引入版本：v23.10.0
+
+按降序对一个或多个数组进行排序。第一个数组会被排序，后续数组会根据第一个数组排序后的顺序进行重排。NULL 值会被放在末尾。这是一个用于兼容 KQL（Kusto Query Language）的函数。
+
+**语法**
+
+```sql
+kql_array_sort_desc(array1[, array2, ..., nulls_last])
+```
+
+**参数**
+
+* `array1` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `array2` — 可选的额外数组，将根据 `array1` 的排序顺序进行重排。[`Array(T)`](/sql-reference/data-types/array)
+* `nulls_last` — 可选布尔值，指示是否应将 `null` 排在最后，默认值为 `true`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回按降序排序的数组的元组。[`Tuple(Array, ...)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT kql_array_sort_desc([3, 1, 2])
+```
+
+```response title=Response
+([3, 2, 1])
+```
+
+
 ## length \{#length\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 计算字符串或数组的长度。
 
@@ -4850,7 +4936,7 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 
 ## notEmpty \{#notEmpty\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 检查输入数组是否为非空。
 
@@ -4891,7 +4977,7 @@ SELECT notEmpty([1,2]);
 
 ## range \{#range\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 返回一个由数字组成的数组，从 `start` 开始，以 `step` 为步长，直到 `end - 1` 结束。
 
@@ -4940,7 +5026,7 @@ SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
 
 ## replicate \{#replicate\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 创建一个仅包含单个值的数组。
 
@@ -4976,7 +5062,7 @@ SELECT replicate(1, ['a', 'b', 'c']);
 
 ## reverse \{#reverse\}
 
-首次引入版本：v1.1
+首次引入版本：v1.1.0
 
 反转输入数组中元素的顺序，或反转输入字符串中的字符顺序。
 

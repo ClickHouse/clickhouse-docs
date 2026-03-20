@@ -168,7 +168,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 根据上述查询以及 [MCC 列表](https://en.wikipedia.org/wiki/Mobile_country_code)，基站数量最多的国家包括：美国、德国和俄罗斯。
 
-您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来对这些值进行解码。
+您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/statements/create/dictionary/index.md) 来对这些值进行解码。
+
 
 ## 使用场景：集成地理数据 \{#use-case\}
 

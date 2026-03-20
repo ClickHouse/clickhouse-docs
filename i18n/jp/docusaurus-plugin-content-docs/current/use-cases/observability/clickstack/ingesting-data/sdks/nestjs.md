@@ -10,7 +10,7 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 ---
 
 ClickStack 用 NestJS インテグレーションを利用すると、ロガーを新たに作成するか、デフォルトの
-ロガーを使用して、ログを ClickStack に送信できます（[nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) を利用）。
+ロガーを使用して、ログを ClickStack に送信できます ([nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) を利用) 。
 
 **このガイドで扱う機能:**
 
@@ -66,15 +66,15 @@ export class CatsController {
 }
 ```
 
-### Nest のロガーの差し替え（ブートストラップ時も含む） \{#replacing-the-nest-logger\}
+### Nest のロガーの差し替え (ブートストラップ時も含む)  \{#replacing-the-nest-logger\}
 
 :::note Important
 これを行うと依存性注入を利用した設定はできなくなるため、`forRoot` および `forRootAsync` は不要となり、使用すべきではありません。メインモジュールからこれらを削除してください。
 :::
 
-依存性注入を利用する方法には、小さな欠点が 1 つあります。Nest はまずアプリケーションをブートストラップする必要があります（モジュールやプロバイダのインスタンス化、依存関係の注入など）。この処理の間は `HyperDXNestLogger` のインスタンスがまだ利用可能ではないため、Nest は組み込みロガーにフォールバックします。
+依存性注入を利用する方法には、小さな欠点が 1 つあります。Nest はまずアプリケーションをブートストラップする必要があります (モジュールやプロバイダのインスタンス化、依存関係の注入など) 。この処理の間は `HyperDXNestLogger` のインスタンスがまだ利用可能ではないため、Nest は組み込みロガーにフォールバックします。
 
-1 つの解決策としては、`createLogger` 関数を使ってアプリケーションのライフサイクル外でロガーを作成し、それを `NestFactory.create` に渡すことです。すると Nest は、Logger クラスの内部でカスタムロガー（`createLogger` メソッドから返される同じインスタンス）をラップし、すべての呼び出しをそのロガーに転送します。
+1 つの解決策としては、`createLogger` 関数を使ってアプリケーションのライフサイクル外でロガーを作成し、それを `NestFactory.create` に渡すことです。すると Nest は、Logger クラスの内部でカスタムロガー (`createLogger` メソッドから返される同じインスタンス) をラップし、すべての呼び出しをそのロガーに転送します。
 
 `main.ts` ファイルでロガーを作成します
 

@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## L1Distance \{#L1Distance\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 `L1` 공간(1-노름, [택시 기하학](https://en.wikipedia.org/wiki/Taxicab_geometry) 거리)에서 두 점 사이의 거리를 계산합니다. 여기서 벡터의 원소들은 해당 공간에서의 좌표입니다.
 
@@ -56,7 +56,7 @@ SELECT L1Distance((1, 2), (2, 3))
 
 ## L1Norm \{#L1Norm\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 벡터의 각 원소의 절댓값 합을 계산합니다.
 
@@ -92,7 +92,7 @@ SELECT L1Norm((1, 2))
 
 ## L1Normalize \{#L1Normalize\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 주어진 벡터(튜플의 각 요소는 좌표임)의 단위 벡터를 `L1` 공간([택시 기하학](https://en.wikipedia.org/wiki/Taxicab_geometry))에서 계산합니다.
 
@@ -128,7 +128,7 @@ SELECT L1Normalize((1, 2))
 
 ## L2Distance \{#L2Distance\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 유클리드 공간에서 두 점 사이의 거리([유클리드 거리](https://en.wikipedia.org/wiki/Euclidean_distance))를 계산합니다(벡터의 원소는 좌표입니다).
 
@@ -165,7 +165,7 @@ SELECT L2Distance((1, 2), (2, 3))
 
 ## L2DistanceTransposed \{#L2DistanceTransposed\}
 
-도입: v25.10
+도입: v25.10.0
 
 유클리드 공간에서 두 점(벡터의 값이 좌표를 의미함) 사이의 근사 거리를 계산합니다([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
@@ -205,7 +205,7 @@ SELECT L2DistanceTransposed(vec, array(1, 2), 16) FROM qbit;
 
 ## L2Norm \{#L2Norm\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 벡터 요소 각각을 제곱한 값의 합에 대한 제곱근을 계산합니다.
 
@@ -241,7 +241,7 @@ SELECT L2Norm((1, 2))
 
 ## L2Normalize \{#L2Normalize\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 주어진 벡터(튜플의 요소가 좌표인 경우)의 유클리드 공간에서의 단위 벡터를 계산합니다([유클리드 거리(Euclidean distance)](https://en.wikipedia.org/wiki/Euclidean_distance)를 사용합니다).
 
@@ -277,7 +277,7 @@ SELECT L2Normalize((3, 4))
 
 ## L2SquaredDistance \{#L2SquaredDistance\}
 
-도입된 버전: v22.7
+도입된 버전: v22.7.0
 
 두 벡터에서 대응하는 각 원소의 차이를 제곱한 값의 합을 계산합니다.
 
@@ -314,7 +314,7 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 ## L2SquaredNorm \{#L2SquaredNorm\}
 
-도입된 버전: v22.7
+도입된 버전: v22.7.0
 
 벡터 요소 제곱합의 제곱근( [`L2Norm`](#L2Norm) )을 제곱한 값을 계산합니다.
 
@@ -350,7 +350,7 @@ SELECT L2SquaredNorm((1, 2))
 
 ## LinfDistance \{#LinfDistance\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 두 점(벡터의 각 원소는 좌표) 사이의 거리를 `L_{inf}` 공간([maximum norm](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\)))에서 계산합니다.
 
@@ -365,7 +365,7 @@ LinfDistance(vector1, vector2)
 **인수**
 
 * `vector1` — 첫 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 두 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 두 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/array) 또는 [`Array(T)`](/sql-reference/data-types/array)
 
 **반환 값**
 
@@ -387,7 +387,7 @@ SELECT LinfDistance((1, 2), (2, 3))
 
 ## LinfNorm \{#LinfNorm\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 벡터 요소의 절댓값 중 최댓값을 계산합니다.
 
@@ -423,7 +423,7 @@ SELECT LinfNorm((1, -2))
 
 ## LinfNormalize \{#LinfNormalize\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 주어진 벡터(튜플의 요소가 좌표)를 `L_{inf}` 공간에서의 단위 벡터로 정규화합니다([최대 노름(maximum norm)](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))을 사용하여 계산합니다).
 
@@ -459,7 +459,7 @@ SELECT LinfNormalize((3, 4))
 
 ## LpDistance \{#LpDistance\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 두 점(벡터의 원소를 좌표로 가정)을 `Lp` 공간에서의 거리([p-노름 거리](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm))로 계산합니다.
 
@@ -497,7 +497,7 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 
 ## LpNorm \{#LpNorm\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 벡터의 p-노름을 계산합니다. 이는 각 원소의 절댓값을 p제곱한 뒤 모두 더한 값의 p제곱근입니다.
 
@@ -540,7 +540,7 @@ SELECT LpNorm((1, -2), 2)
 
 ## LpNormalize \{#LpNormalize\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 `Lp` 공간에서 [p-노름](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)을 사용하여 (튜플의 요소를 좌표로 하는) 주어진 벡터의 단위 벡터를 계산합니다.
 
@@ -577,7 +577,7 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 두 벡터(튜플의 원소가 좌표)를 대상으로 [코사인 거리](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)를 계산합니다. 반환 값이 작을수록 두 벡터가 더 유사합니다.
 
@@ -592,7 +592,7 @@ cosineDistance(vector1, vector2)
 **인수(Arguments)**
 
 * `vector1` — 첫 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 두 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 두 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/array) 또는 [`Array(T)`](/sql-reference/data-types/array)
 
 **반환 값(Returned value)**
 
@@ -614,7 +614,7 @@ SELECT cosineDistance((1, 2), (2, 3));
 
 ## cosineDistanceTransposed \{#cosineDistanceTransposed\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 두 점(벡터의 값은 좌표임) 사이의 [코사인 거리](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)를 근사적으로 계산합니다. 반환 값이 작을수록 벡터가 더 유사합니다.
 

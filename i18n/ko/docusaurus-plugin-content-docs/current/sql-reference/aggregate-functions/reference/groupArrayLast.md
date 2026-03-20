@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-도입 버전: v23.1
+도입 버전: v23.1.0
 
 마지막 인자 값들로 구성된 배열을 생성합니다.
 예를 들어, `groupArrayLast(1)(x)`는 `[anyLast(x)]`와 동일합니다.

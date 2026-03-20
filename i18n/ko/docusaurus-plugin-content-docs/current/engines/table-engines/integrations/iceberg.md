@@ -7,8 +7,6 @@ title: 'Iceberg 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
 # Iceberg table engine \{#iceberg-table-engine\}
 
 :::warning 
@@ -20,8 +18,6 @@ Iceberg Table Engine도 사용 가능하지만 일부 제약이 있을 수 있�
 :::
 
 이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache [Iceberg](https://iceberg.apache.org/) 테이블과의 읽기 전용 통합 기능을 제공합니다.
-
-
 
 ## 테이블 생성 \{#create-table\}
 
@@ -55,7 +51,7 @@ CREATE TABLE iceberg_table_local
 CREATE TABLE iceberg_table ENGINE=IcebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
 ```
 
-이름이 지정된 컬렉션 사용하기:
+Named Collections 사용:
 
 ```xml
 <clickhouse>
@@ -79,8 +75,6 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 테이블 엔진 `Iceberg`는 이제 `IcebergS3`의 별칭으로 사용됩니다.
 
-
-
 ## 스키마 진화 \{#schema-evolution\}
 현재 ClickHouse를 사용하면 시간이 지나면서 스키마가 변경된 Iceberg 테이블을 읽을 수 있습니다. 현재는 컬럼이 추가되거나 제거되고, 순서가 변경된 테이블을 읽는 것을 지원합니다. 또한 NULL을 허용하지 않던 컬럼을 `NULL` 값을 허용하는 컬럼으로 변경할 수도 있습니다. 추가로, 단순 타입에 대한 허용되는 형 변환도 지원합니다. 구체적으로:  
 * int -> long
@@ -91,42 +85,39 @@ CREATE TABLE iceberg_table ENGINE=IcebergS3(iceberg_conf, filename = 'test_table
 
 동적 스키마 추론(dynamic schema inference)을 사용하여 생성 이후 스키마가 변경된 테이블을 읽으려면, 테이블을 생성할 때 `allow_dynamic_metadata_for_data_lakes = true`로 설정하십시오.
 
-
-
 ## Partition pruning \{#partition-pruning\}
 
 ClickHouse는 Iceberg 테이블에 대한 SELECT 쿼리 실행 시 파티션 프루닝(partition pruning)을 지원하여 관련 없는 데이터 파일을 건너뛰어 쿼리 성능을 최적화합니다. 파티션 프루닝을 활성화하려면 `use_iceberg_partition_pruning = 1`로 설정합니다. Iceberg 파티션 프루닝에 대한 자세한 내용은 https://iceberg.apache.org/spec/#partitioning 을(를) 참조하십시오.
-
-
 
 ## 시간 여행 \{#time-travel\}
 
 ClickHouse는 Iceberg 테이블에 대해 시간 여행을 지원하여 특정 타임스탬프나 스냅샷 ID를 기준으로 과거 데이터를 쿼리할 수 있습니다.
 
+## 삭제된 행이 포함된 테이블 처리 \{#deleted-rows\}
 
+ClickHouse는 다음 삭제 방법을 사용하는 Iceberg 테이블 읽기를 지원합니다:
 
-## 삭제된 행을 포함하는 테이블 처리 \{#deleted-rows\}
+- [Position deletes](https://iceberg.apache.org/spec/#position-delete-files)
+- [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files) (버전 25.8+부터 지원)
 
-현재는 [position deletes](https://iceberg.apache.org/spec/#position-delete-files)가 있는 Iceberg 테이블만 지원합니다.
+다음 삭제 방법은 **지원하지 않습니다**:
 
-다음과 같은 삭제 방식은 **지원하지 않습니다**:
-
-* [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
-* [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors) (v3에서 도입됨)
+- [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors) (v3에서 도입됨)
 
 ### 기본 사용법 \{#basic-usage\}
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_timestamp_ms = 1714636800000
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_timestamp_ms = 1714636800000
 ```
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_snapshot_id = 3547395809148285433
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_snapshot_id = 3547395809148285433
 ```
 
 참고: 하나의 쿼리에서 `iceberg_timestamp_ms`와 `iceberg_snapshot_id` 매개변수를 동시에 지정할 수 없습니다.
+
 
 ### 중요한 고려 사항 \{#important-considerations\}
 
@@ -145,39 +136,39 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 다음 연산 순서를 고려하십시오.
 
 ```sql
--- Create a table with two columns
- CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
- order_number int, 
- product_code string
- ) 
- USING iceberg 
- OPTIONS ('format-version'='2')
+ -- Create a table with two columns
+  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+  order_number int, 
+  product_code string
+  ) 
+  USING iceberg 
+  OPTIONS ('format-version'='2')
 
 -- Insert data into the table
- INSERT INTO spark_catalog.db.time_travel_example VALUES 
-   (1, 'Mars')
+  INSERT INTO spark_catalog.db.time_travel_example VALUES 
+    (1, 'Mars')
 
- ts1 = now() // A piece of pseudo code
+  ts1 = now() // A piece of pseudo code
 
 -- Alter table to add a new column
- ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
-
- ts2 = now()
+  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+ 
+  ts2 = now()
 
 -- Insert data into the table
- INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
-  ts3 = now()
+   ts3 = now()
 
 -- Query the table at each timestamp
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
 +------------+------------+
 |order_number|product_code|
@@ -185,7 +176,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 |           1|        Mars|
 +------------+------------+
 
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -200,9 +191,10 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 * ts1 및 ts2 시점에서는 원래의 두 개 컬럼만 표시됩니다.
 * ts3 시점에서는 세 개 컬럼이 모두 표시되며, 첫 번째 행의 price 값은 NULL입니다.
 
-#### 시나리오 2: 과거 스키마와 현재 스키마 간 차이 \{#scenario-2\}
 
-현재 시점에 타임 트래블 쿼리를 실행하면, 현재 테이블과는 다른 스키마가 표시될 수 있습니다:
+#### 시나리오 2: 과거 스키마와 현재 스키마 간의 차이 \{#scenario-2\}
+
+현재 시점에 대해 타임 트래블 쿼리를 실행하면 현재 테이블과는 다른 스키마가 표시될 수 있습니다:
 
 ```sql
 -- Create a table
@@ -240,12 +232,12 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     +------------+------------+-----+
 ```
 
-이는 `ALTER TABLE`이 새로운 스냅샷을 생성하지 않고, 현재 테이블에 대해서는 Spark가 스냅샷이 아니라 최신 메타데이터 파일에서 `schema_id` 값을 가져오기 때문에 발생합니다.
+이는 `ALTER TABLE`이 새로운 스냅샷을 생성하지 않고, 현재 테이블의 경우 Spark가 스냅샷이 아니라 최신 메타데이터 파일에서 `schema_id` 값을 가져오기 때문입니다.
 
 
 #### 시나리오 3: 과거 스키마와 현재 스키마 간 차이 \{#scenario-3\}
 
-두 번째로, time travel을 수행할 때 테이블에 어떤 데이터도 아직 기록되지 않았던 시점의 상태는 조회할 수 없습니다.
+두 번째로, time travel을 수행할 때 테이블에 어떤 데이터도 아직 기록되지 않았던 시점의 상태는 조회할 수 없습니다:
 
 ```sql
 -- Create a table
@@ -312,13 +304,9 @@ CREATE TABLE example_table ENGINE = Iceberg(
 
 `Iceberg` 테이블 엔진과 테이블 함수는 `S3`, `AzureBlobStorage`, `HDFS` 스토리지와 마찬가지로 데이터 캐시 기능을 지원합니다. 자세한 내용은 [여기](../../../engines/table-engines/integrations/s3.md#data-cache)를 참고하십시오.
 
-
-
 ## 메타데이터 캐시 \{#metadata-cache\}
 
 `Iceberg` 테이블 엔진과 테이블 함수는 매니페스트 파일, 매니페스트 목록 및 메타데이터 JSON 정보를 저장하는 메타데이터 캐시를 지원합니다. 캐시는 메모리에 저장됩니다. 이 기능은 `use_iceberg_metadata_files_cache` 설정으로 제어되며, 기본적으로 활성화되어 있습니다.
-
-
 
 ## 같이 보기 \{#see-also\}
 

@@ -1,28 +1,28 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: 'セマンティックレイヤーによる Ask AI チャットのカスタマイズ'
-title: 'セマンティックレイヤーを用いた Ask AI エージェントとの会話の最適化'
+sidebar_label: 'セマンティックレイヤーによる ClickHouse Assistant チャットのカスタマイズ'
+title: 'セマンティックレイヤーを用いた ClickHouse Assistant エージェントとの会話の最適化'
 pagination_prev: null
 pagination_next: null
-description: 'AGENTS.md を使用して、Ask AI チャットエージェントにカスタムビジネスロジックとデータ特有の指示を与えるためのガイド'
+description: 'AGENTS.md を使用して、ClickHouse Assistant チャットエージェントにカスタムビジネスロジックとデータ特有の指示を与えるためのガイド'
 keywords: ['AI', 'ClickHouse Cloud', 'エージェント', 'AGENTS.md', 'セマンティックレイヤー', 'カスタム指示', 'システムプロンプト']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# セマンティックレイヤーで Ask AI チャットをカスタマイズする \{#customize-ask-ai-chat-with-a-semantic-layer\}
+# セマンティックレイヤーで ClickHouse Assistant チャットをカスタマイズする \{#customize-clickhouse-assistant-chat-with-a-semantic-layer\}
 
-Ask AI チャットエージェントは、**AGENTS.md** を通じて、ビジネス固有のロジック、データ構造、ドメイン知識を理解するようにカスタマイズできます。これは、エージェントのシステムプロンプトに対するセマンティックレイヤーとして機能する特別な保存済みクエリです。
+ClickHouse Assistant チャットエージェントは、**AGENTS.md** を通じて、ビジネス固有のロジック、データ構造、ドメイン知識を理解するようにカスタマイズできます。これは、エージェントのシステムプロンプトに対するセマンティックレイヤーとして機能する特別な保存済みクエリです。
 
 AGENTS.md ファイルを作成することで、すべての会話の冒頭に挿入されるカスタムインストラクションを提供でき、組織固有の要件、計算方法、慣習に基づいて SQL クエリ生成とデータ分析をガイドできます。
 
 ## 仕組み \{#how-it-works\}
 
-Cloud Console で「AGENTS.md」という名前（大文字と小文字を区別する）のクエリを保存すると、次のことが起こります：
+Cloud Console で「AGENTS.md」という名前 (大文字と小文字を区別する) のクエリを保存すると、次のことが起こります：
 
-1. Ask AI チャットエージェントは、メッセージが送信されると自動的にこのファイルを読み込みます
+1. ClickHouse Assistant チャットエージェントは、メッセージが送信されると自動的にこのファイルを読み込みます
 2. コンテンツは構造化コンテンツタグ内に配置され、エージェントのシステムプロンプトに注入されます
-3. そのサービス内のすべての Ask AI チャットの会話に、これらの指示が適用されます
+3. そのサービス内のすべての ClickHouse Assistant チャットの会話に、これらの指示が適用されます
 
 ## AGENTS.md を作成する \{#creating-agents-md\}
 

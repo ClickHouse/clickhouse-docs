@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactHigh \{#quantileExactHigh\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact)와 유사하게, 숫자 데이터 시퀀스의 정확한 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 
@@ -57,7 +57,7 @@ SELECT quantileExactHigh(number) FROM numbers(10);
 └───────────────────────────┘
 ```
 
-**특정 분위수 계산**
+**특정 분위수 수준 계산**
 
 ```sql title=Query
 SELECT quantileExactHigh(0.1)(number) FROM numbers(10);

@@ -110,7 +110,7 @@ Once your service has been provisioned, ensure the the service is selected and c
 From the ClickHouse Cloud landing page, select the service for which you wish to enable managed ClickStack.
 
 :::important Estimating resources
-This guide assumes you have provisioned sufficient resources to handle the volume of observability data you plan to ingest and query with ClickStack. To estimate the required resources, refer to the [production guide](/use-cases/observability/clickstack/production#estimating-resources). 
+This guide assumes you have provisioned sufficient resources to handle the volume of observability data you plan to ingest and query with ClickStack. To estimate the required resources, refer to the [Estimating Resources](/use-cases/observability/clickstack/estimating-resources) guide. 
 
 If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications aren't disrupted, while keeping the datasets accessible from both services.
 :::
@@ -167,7 +167,7 @@ To get started quickly, copy and run the Docker command shown.
 **Modify this command with your service credentials, recorded when you created your service.**
 
 :::note[Deploying to production]
-While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.
+While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed) and modifying your configuration.
 :::
 
 Running this single command starts the ClickStack collector with OTLP endpoints exposed on ports 4317 (gRPC) and 4318 (HTTP). If you already have OpenTelemetry instrumentation and agents, you can immediately begin sending telemetry data to these endpoints. 

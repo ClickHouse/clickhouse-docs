@@ -142,26 +142,41 @@ SET send_logs_level='trace';
 
 此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而将不会应用索引。
 
+{/* vale off */ }
+
+
+### text \{#text\}
+
+{/* vale on */ }
+
+对于涉及自然语言或自由形式文本搜索的工作负载（例如在大型文本列中搜索单词或短语），ClickHouse 提供了一种**文本索引**（真正的倒排索引）。
+文本索引支持高效的全文搜索语义和基于分词的查找。由于它提供了确定性的词元（token）索引，并且在诸如 `hasAnyToken`、`hasAllTokens` 等搜索函数以及所有常见文本搜索函数上具备更好的性能，因此是全文搜索查询的推荐选择。
+
+有关详细信息，请参阅[此处](engines/table-engines/mergetree-family/textindexes.md)的文本索引文档。
+
 
 ### Bloom filter 类型 \{#bloom-filter-types\}
 
-*Bloom filter*（布隆过滤器）是一种数据结构，它以极高的空间效率实现集合成员测试，但代价是存在一定概率的误报。对于跳过索引而言，误报并不是一个重要问题，因为唯一的劣势是会多读取一些不必要的数据块。然而，存在误报的可能性也意味着被索引的表达式通常应当为 true，否则可能会跳过有效数据。
+*Bloom filter* (布隆过滤器) 是一种数据结构，它以极高的空间效率实现集合成员测试，但代价是存在一定概率的误报。对于跳过索引而言，误报并不是一个重要问题，因为唯一的劣势是会多读取一些不必要的数据块。然而，存在误报的可能性也意味着被索引的表达式通常应当为 true，否则可能会跳过有效数据。
 
-由于 Bloom filter 能够更高效地处理大量离散值的成员测试，它适用于会产生较多待测试值的条件表达式。特别是，Bloom filter 索引可以应用于数组（数组中的每个值都会被测试），以及映射（通过使用 `mapKeys` 或 `mapValues` 函数将键或值转换为数组）。
+由于 Bloom filter 能够更高效地处理大量离散值的成员测试，它适用于会产生较多待测试值的条件表达式。特别是，Bloom filter 索引可以应用于数组 (数组中的每个值都会被测试) ，以及映射 (通过使用 `mapKeys` 或 `mapValues` 函数将键或值转换为数组) 。
 
 基于 Bloom filter 的数据跳过索引类型有三种：
 
-* 基本的 **bloom&#95;filter**，它接受一个可选参数，用于指定允许的“误报率”（false positive rate），在 0 到 1 之间（如果未指定，则使用 0.025）。
+* 基本的 **bloom&#95;filter**，它接受一个可选参数，用于指定允许的“误报率” (false positive rate) ，在 0 到 1 之间 (如果未指定，则使用 0.025) 。
 
-* 专用的 **tokenbf&#95;v1**。它接受三个参数，全部与所使用的 Bloom filter 调优相关：(1) 过滤器的大小（字节数，过滤器越大，误报越少，但存储成本更高），(2) 应用的哈希函数数量（同样，更多的哈希函数可以减少误报），(3) Bloom filter 哈希函数的种子。有关这些参数如何影响 Bloom filter 功能的更多细节，请参见[此处](https://hur.st/bloomfilter/)的计算器。  
+* 专用的 **tokenbf&#95;v1**&#x20;*&#x20;(已弃用)&#x20;*)。它接受三个参数，全部与所使用的 Bloom filter 调优相关：(1) 过滤器的大小 (字节数，过滤器越大，误报越少，但存储成本更高) ，(2) 应用的哈希函数数量 (同样，更多的哈希函数可以减少误报) ，(3) Bloom filter 哈希函数的种子。有关这些参数如何影响 Bloom filter 功能的更多细节，请参见[此处](https://hur.st/bloomfilter/)的计算器。
   该索引仅适用于 String、FixedString 和 Map 数据类型。输入表达式会按非字母数字字符进行拆分，分成多个字符序列。例如，列值 `This is a candidate for a "full text" search` 将包含标记 `This` `is` `a` `candidate` `for` `full` `text` `search`。它旨在用于 LIKE、EQUALS、IN、`hasToken()` 以及类似的在较长字符串中搜索单词和其他值的查询。例如，一个可能的用例是在包含自由格式应用日志行的列中，搜索少量类名或行号。
 
-* 专用的 **ngrambf&#95;v1**。此索引的工作方式与 token 索引相同。它在 Bloom filter 设置之前额外接受一个参数，即要索引的 ngram 大小。ngram 是长度为 `n` 的任意字符字符串，因此，对于字符串 `A short string`，在 ngram 大小为 4 时，会被索引为：
+* 专用的 **ngrambf&#95;v1**&#x20;*&#x20;(已弃用)&#x20;*。此索引的工作方式与 token 索引相同。它在 Bloom filter 设置之前额外接受一个参数，即要索引的 ngram 大小。ngram 是长度为 `n` 的任意字符字符串，因此，对于字符串 `A short string`，在 ngram 大小为 4 时，会被索引为：
   ```text
   'A sh', ' sho', 'shor', 'hort', 'ort ', 'rt s', 't st', ' str', 'stri', 'trin', 'ring'
   ```
 
 该索引同样可用于文本搜索，特别是对于没有单词间空格分隔的语言，例如中文。
+
+> 对于全文搜索工作负载，建议使用专用的 **text index** (参见[全文搜索的 Text index](engines/table-engines/mergetree-family/textindexes.md)) ，而不是已弃用的 *tokenbf&#95;v1* 或 *ngrambf&#95;v1* 索引。
+> text index 提供了真正的倒排索引；与基于 token 的 Bloom filter 索引相比，它具有更好的搜索性能、更可预测的行为，以及更高的灵活性和性能。
 
 ## 跳过索引函数 \{#skip-index-functions\}
 

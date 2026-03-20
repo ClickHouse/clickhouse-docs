@@ -27,7 +27,7 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 
 * AWS（GA）
 * GCP（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
-* Azure（Roadmap）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
+* Azure（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
 
 **支持的云区域：**
 在我们的[支持的区域](https://clickhouse.com/docs/cloud/reference/supported-regions)文档中列出的所有**公共区域**均可用于 BYOC 部署。目前不支持私有区域。
@@ -54,11 +54,14 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
 - **集成**：完整列表见[此页面](/integrations)。
 
-### 计划中的功能（当前不支持） \{#planned-features-currently-unsupported\}
+### 计划中的功能（当前暂不支持） \{#planned-features-currently-unsupported\}
 
-- SQL 控制台
-- ClickPipes（Kafka, S3）
-- ClickPipes（CDC，变更数据捕获）
-- 自动扩缩容（Autoscaling）
+以下功能在 Bring Your Own Cloud (BYOC) 部署中存在限制，或尚未得到完整支持。    
+
+- SQL 控制台：BYOC 部署暂不提供标准 SQL 控制台，但该功能已列入路线图。
+- ClickPipes 支持：目前以私有预览形式提供，支持 Kafka、Kinesis 等流式集成。其他集成（如 CDC、对象存储等）已列入路线图。 
+- 自动扩缩容：已列入路线图，将在未来版本中添加。
 - MySQL 接口
-- [AWS KMS](https://aws.amazon.com/kms/)，即 CMEK（客户管理的加密密钥）
+- AWS KMS，也称 CMEK（客户管理的加密密钥）
+- 高级仪表板：这是一个纯客户端 UI，要求您的浏览器能够直接访问并通过其端点直接连接到您的 ClickHouse 服务器。如果您的 VPC 网络策略限制浏览器对 ClickHouse 端点的入站访问，高级仪表板将无法正常工作。
+- 监控仪表板：目前，监控仪表板仅提供内存分配指标。对更多指标的支持正在开发中，预计将在未来版本中提供。

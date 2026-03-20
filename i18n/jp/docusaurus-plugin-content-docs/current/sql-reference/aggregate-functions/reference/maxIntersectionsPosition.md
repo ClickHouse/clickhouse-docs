@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersectionsPosition \{#maxIntersectionsPosition\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [`maxIntersections`](/sql-reference/aggregate-functions/reference/maxintersections) 関数の出現位置を計算するための集約関数です。
 

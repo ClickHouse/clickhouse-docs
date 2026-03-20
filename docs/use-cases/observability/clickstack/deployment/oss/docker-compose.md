@@ -68,7 +68,7 @@ You can override the default connection to the integrated ClickHouse instance. F
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
+For an example of using an alternative ClickHouse instance, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 
 ### Complete connection details {#complete-connection-details}
 

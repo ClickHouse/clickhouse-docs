@@ -91,8 +91,8 @@ In here, you're able to join data, as well as, **create governed dimensions and 
 In just a few steps, you can build your first chart in Astrato.
 1. Open visuals panel
 2. Select a visual (lets start with Column Bar Chart)
-3. Add dimension(s)
-4. Add measure(s)
+3. Add dimensions
+4. Add measures
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 

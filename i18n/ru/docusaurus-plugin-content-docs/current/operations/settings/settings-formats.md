@@ -466,6 +466,18 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Пропускать столбцы с неподдерживаемыми типами при определении схемы для формата CapnProto
 
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка, которая позволяет разобрать и обработать оставшиеся данные в буфере, если соединение неожиданно закрывается"}]}]}/>
+
+Когда эта опция включена, если соединение неожиданно закрывается, любые оставшиеся данные в буфере будут разобраны и обработаны, а не приведут к ошибке.
+
+:::note
+Включение этой опции отключает параллельный разбор и делает дедупликацию невозможной.
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -971,6 +983,38 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Ограничивает размер блоков, формируемых при разборе данных во входных форматах, в байтах. Используется во входных форматах, основанных на строках, когда блок формируется на стороне ClickHouse.
 0 означает отсутствие ограничения по размеру в байтах.
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для ограничения максимального времени ожидания в миллисекундах до того, как блок будет сформирован входным форматом"}]}]} />
+
+Ограничивает максимальное время ожидания в миллисекундах перед формированием блока при разборе во входных форматах, ориентированных на строки. Значение 0 означает отсутствие ограничения.
+
+:::note
+Этот параметр работает только в том случае, если включен `input_format_connection_handling`. Установка значения также отключает параллельный разбор и делает дедупликацию невозможной.
+:::
+
+:::note
+Для потоковых вставок также необходимо установить `min_insert_block_size_rows=0` и `min_insert_block_size_bytes=0`. В противном случае разобранные блоки по-прежнему могут накапливаться в памяти на этапе укрупнения блоков до достижения этих порогов, что препятствует своевременным вставкам.
+:::
+
+**Пример: потоковая загрузка последних изменений Википедии в ClickHouse**
+
+```bash
+clickhouse-client --query 'CREATE TABLE wikipedia_edits (data JSON)'
+
+curl -sS --globoff -H 'Accept: application/json' --no-buffer \
+  'https://stream.wikimedia.org/v2/stream/recentchange' \
+  | clickhouse-client \
+      --query 'INSERT INTO wikipedia_edits FORMAT JSONAsObject' \
+      --input_format_max_block_wait_ms 1000 \
+      --input_format_connection_handling 1 \
+      --min_insert_block_size_rows 0 \
+      --min_insert_block_size_bytes 0
+```
+
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -2543,9 +2587,9 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Когда настройка включена, допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
+При включении допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
 
 ## type_json_skip_duplicated_paths \{#type_json_skip_duplicated_paths\}
 

@@ -162,6 +162,58 @@ HTTP 레이어를 정의하려면 `protocols` 섹션에 새 기본 모듈을 추
 ```
 
 
+### 엔드포인트별 사용자 정의 HTTP 핸들러 \{#custom-http-handlers-per-endpoint\}
+
+기본적으로 모든 `type=http` 프로토콜 항목은 동일한 `<http_handlers>` 구성을 공유합니다. 다른 구성 섹션을 가리키는 `<handlers>` 태그를 추가하여 이를 재정의할 수 있습니다. 이를 통해 각 HTTP 포트에서 서로 다른 HTTP 라우팅 규칙 집합을 사용하도록 설정할 수 있습니다.
+
+예를 들어, 포트 8124에서 자체 핸들러를 사용하는 별도의 HTTP API를 실행하려면 다음과 같이 합니다:
+
+```xml
+<protocols>
+
+  <plain_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8123</port>
+  </plain_http>
+
+  <alt_http>
+    <type>http</type>
+    <host>127.0.0.1</host>
+    <port>8124</port>
+    <handlers>http_handlers_alt</handlers>
+  </alt_http>
+
+</protocols>
+
+<!-- Default handlers used by plain_http (port 8123) -->
+<http_handlers>
+    <defaults/>
+</http_handlers>
+
+<!-- Alternative handlers used by alt_http (port 8124) -->
+<http_handlers_alt>
+    <rule>
+        <url>/custom</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>SELECT 'custom_endpoint'</query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers_alt>
+```
+
+이 예제에서 8123 포트로 들어오는 요청은 표준 `<http_handlers>` 규칙을 사용하고,
+8124 포트로 들어오는 요청은 `<http_handlers_alt>` 규칙을 사용합니다. `<handlers>`가
+생략되면 해당 엔드포인트에는 기본 `<http_handlers>`가 적용됩니다.
+
+사용자 정의 핸들러 섹션은
+[`<http_handlers>`](/operations/server-configuration-parameters/settings#http_handlers)과
+동일한 형식을 따릅니다. 사용자 정의 핸들러 섹션에 대한 변경 사항은 구성 재로드 시
+감지되며, 해당 엔드포인트는 자동으로 다시 시작됩니다.
+
+
 ### 추가 레이어 매개변수 지정 \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 일부 모듈에는 추가 레이어 매개변수가 있을 수 있습니다. 예를 들어, TLS 레이어에서는

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarSampMatrix \{#covarSampMatrix\}
 
-도입: v23.2
+도입: v23.2.0
 
 N개의 변수에 대한 표본 공분산 행렬을 반환합니다.
 

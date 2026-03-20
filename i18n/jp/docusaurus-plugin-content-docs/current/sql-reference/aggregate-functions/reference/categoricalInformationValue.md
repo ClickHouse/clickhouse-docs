@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-導入: v20.1
+導入: v20.1.0
 
 二値の目的変数に対するカテゴリ型特徴量の Information Value (IV) を計算します。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 Information Value は、予測モデルにおいて、カテゴリ型特徴量と二値の目的変数との関係の強さを測定するために用いられる統計量です。
 絶対値が大きいほど、予測力が高いことを示します。
 
-この関数の結果は、`tag` の値を予測する学習モデルに対して、各離散（カテゴリ型）特徴量 `[category1, category2, ...]` がどの程度寄与しているかを示します。
+この関数の結果は、`tag` の値を予測する学習モデルに対して、各離散 (カテゴリ型) 特徴量 `[category1, category2, ...]` がどの程度寄与しているかを示します。
 
 **構文**
 
@@ -54,7 +54,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**ユーザーのデモグラフィック情報を含む複数のカテゴリカル特徴量**
+**ユーザー属性を含む複数のカテゴリカル特徴量**
 
 ```sql title=Query
 SELECT categoricalInformationValue(

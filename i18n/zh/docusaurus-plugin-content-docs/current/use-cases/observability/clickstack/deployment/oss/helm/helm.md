@@ -55,7 +55,7 @@ ClickStack 的 Helm 图表可以在[这里](https://github.com/ClickHouse/ClickS
 
   ### 添加 ClickStack Helm 仓库
 
-  添加 ClickStack Helm 仓库:
+  添加 ClickStack Helm 仓库：
 
   ```shell
   helm repo add clickstack https://clickhouse.github.io/ClickStack-helm-charts
@@ -107,8 +107,6 @@ ClickStack 的 Helm 图表可以在[这里](https://github.com/ClickHouse/ClickS
   :::note 覆盖默认连接
   您可以覆盖集成 ClickHouse 实例的默认连接。详情请参阅[&quot;使用 ClickHouse Cloud&quot;](#using-clickhouse-cloud)。
   :::
-
-  有关使用其他 ClickHouse 实例的示例,请参阅[&quot;创建 ClickHouse Cloud 连接&quot;](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)。
 
   ### 自定义配置值(可选)
 

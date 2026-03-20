@@ -124,6 +124,6 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 * Измените значения для `organizationid` и `serviceid` на `{{orgid}}` и `{{serviceid}}` соответственно.
 * Нажмите «Save», затем синюю кнопку «Send» справа.
 
-<Image img={postman17} size="md" alt="List of services" border/>
+<Image img={postman17} size="md" alt="List of services" border />
 
 * В ответе должен вернуться список ваших сервисов и их параметров со статусом 200. (Если вы получаете статус 400 без информации о сервисах, ваша конфигурация настроена некорректно).

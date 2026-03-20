@@ -24,13 +24,13 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 
 ## Аргументы \{#arguments\}
 
-| Параметр          | Описание                                                                                                                                                                                                                                                                                                       |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `path`            | Относительный путь к файлу от [user_files_path](operations/server-configuration-parameters/settings.md#user_files_path). В режиме только чтения поддерживает следующие [шаблоны (globs)](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` — строки) и `{N..M}` (где `N` и `M` — числа).               |
-| `path_to_archive` | Относительный путь к архиву в формате zip/tar/7z. Поддерживает те же шаблоны, что и `path`.                                                                                                                                                                                                                     |
-| `format`          | [Формат](/interfaces/formats) файла.                                                                                                                                                                                                                                                                            |
-| `structure`       | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                      |
-| `compression`     | Тип существующего сжатия при использовании в запросе `SELECT` или требуемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.                                                                                                               |
+| Параметр          | Описание                                                                                                                                                                                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `path`            | Относительный путь к файлу от [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path). В режиме только чтения поддерживает следующие [шаблоны (globs)](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` — строки) и `{N..M}` (где `N` и `M` — числа). |
+| `path_to_archive` | Относительный путь к архиву в формате zip/tar/7z. Поддерживает те же шаблоны, что и `path`.                                                                                                                                                                                                                  |
+| `format`          | [Формат](/interfaces/formats) файла.                                                                                                                                                                                                                                                                         |
+| `structure`       | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                    |
+| `compression`     | Тип существующего сжатия при использовании в запросе `SELECT` или требуемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.                                                                                                             |
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -79,12 +79,11 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 1    2    3
 ```
 
-# cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
-1    3    2
+## Примеры чтения из файла \{#examples-for-reading-from-a-file\}
 
-# cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
+### SELECT из CSV-файла \{#select-from-a-csv-file\}
 
-1    2    3
+Сначала задайте параметр `user_files_path` в конфигурации сервера и подготовьте файл `test.csv`:
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
@@ -96,19 +95,13 @@ $ cat /var/lib/clickhouse/user_files/test.csv
     78,43,45
 ```
 
-## Примеры чтения из файла {#examples-for-reading-from-a-file}
-
-### SELECT из CSV-файла {#select-from-a-csv-file}
-
-Сначала задайте параметр `user_files_path` в конфигурации сервера и подготовьте файл `test.csv`:
+Затем прочитайте данные из `test.csv` в таблицу и выберите ее первые две строки:
 
 ```sql
 SELECT * FROM
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 LIMIT 2;
 ```
-
-Затем прочитайте данные из `test.csv` в таблицу и выберите ее первые две строки:
 
 ```text
 ┌─column1─┬─column2─┬─column3─┐
@@ -117,13 +110,13 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
+### Загрузка данных из файла в таблицу \{#inserting-data-from-a-file-into-a-table\}
+
 ```sql
 INSERT INTO FUNCTION
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 VALUES (1, 2, 3), (3, 2, 1);
 ```
-
-### Загрузка данных из файла в таблицу {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 SELECT * FROM
@@ -137,25 +130,21 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
+Чтение данных из файла `table.csv`, размещённого в `archive1.zip` и/или `archive2.zip`:
+
 ```sql
 SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
-```
-
-Чтение данных из `table.csv`, находящегося в `archive1.zip` и/или `archive2.zip`:
-
-```sql
-SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
 ## Глоб-шаблоны в пути \{#globs-in-path\}
 
 В путях можно использовать глоб-шаблоны. Файлы должны соответствовать всему шаблону пути, а не только суффиксу или префиксу. Есть одно исключение: если путь указывает на существующий каталог и не использует глоб-шаблоны, к пути неявно добавляется `*`, чтобы были выбраны все файлы в каталоге.
 
-- `*` — Обозначает произвольное количество символов, кроме `/`, включая пустую строку.
-- `?` — Обозначает один произвольный символ.
-- `{some_string,another_string,yet_another_one}` — Подставляет любую из строк `'some_string', 'another_string', 'yet_another_one'`. Строки могут содержать символ `/`.
-- `{N..M}` — Обозначает любое число `>= N` и `<= M`.
-- `**` — Обозначает все файлы внутри каталога рекурсивно.
+* `*` — Обозначает произвольное количество символов, кроме `/`, включая пустую строку.
+* `?` — Обозначает один произвольный символ.
+* `{some_string,another_string,yet_another_one}` — Подставляет любую из строк `'some_string', 'another_string', 'yet_another_one'`. Строки могут содержать символ `/`.
+* `{N..M}` — Обозначает любое число `>= N` и `<= M`.
+* `**` — Обозначает все файлы внутри каталога рекурсивно.
 
 Конструкции с `{}` аналогичны табличным функциям [remote](remote.md) и [hdfs](hdfs.md).
 
@@ -175,19 +164,19 @@ SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name St
 Выполните запрос, чтобы получить общее число строк во всех файлах:
 
 ```sql
+SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+```
+
+Альтернативное выражение пути, дающее тот же результат:
+
+```sql
 SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
-Альтернативное выражение пути, которое позволяет добиться того же результата:
+Выполните запрос, чтобы получить общее число строк в `some_dir`, используя неявный символ `*`:
 
 ```sql
 SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
-```
-
-Выполните запрос, чтобы получить общее количество строк в `some_dir`, используя неявный символ `*`:
-
-```sql
-SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
 ```
 
 :::note
@@ -199,55 +188,55 @@ SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String,
 Выполните запрос общего количества строк в файлах с именами `file000`, `file001`, ... , `file999`:
 
 ```sql
+SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
+```
+
+**Пример**
+
+Выполните запрос, чтобы рекурсивно получить общее количество строк во всех файлах в каталоге `big_dir/`:
+
+```sql
 SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ```
 
 **Пример**
 
-Выполните запрос, чтобы рекурсивно получить общее количество строк во всех файлах каталога `big_dir/`:
+Выполните запрос, чтобы рекурсивно получить общее количество строк во всех файлах `file002`, находящихся в любых папках каталога `big_dir/`:
 
 ```sql
 SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
-**Пример**
-
-Рекурсивно выполните запрос общего числа строк во всех файлах `file002`, находящихся в любых папках каталога `big_dir/`:
-
-```sql
-SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
-```
-
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — имя файла. Тип: `LowCardinality(String)`.
-- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
-- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
+* `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — имя файла. Тип: `LowCardinality(String)`.
+* `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
+* `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 
-## настройка use&#95;hive&#95;partitioning \{#hive-style-partitioning\}
+## настройка use_hive_partitioning \{#hive-style-partitioning\}
 
-Когда настройка `use_hive_partitioning` имеет значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути, но с префиксом `_`.
+Когда настройка `use_hive_partitioning` имеет значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути.
 
 **Пример**
 
 Использование виртуального столбца, создаваемого при секционировании в стиле Hive
 
 ```sql
-SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
-## Настройки {#settings}
+## Настройки \{#settings\}
 
-| Настройка                                                                                                          | Описание                                                                                                                                                                                                          |
-|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists)                   | позволяет получать пустой набор данных из несуществующего файла. По умолчанию отключено.                                                                                   |
-| [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert)                     | позволяет очищать файл перед вставкой в него. По умолчанию отключено.                                                                                                      |
-| [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.                                                                     |
-| [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files)                       | позволяет пропускать пустые файлы при чтении. По умолчанию отключено.                                                                                                      |
-| [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists)                          | метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap` (только для `clickhouse-local`). Значение по умолчанию: `pread` для `clickhouse-server`, `mmap` для `clickhouse-local`. |
+| Настройка                                                                                                                              | Описание                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [engine&#95;file&#95;empty&#95;if&#95;not&#95;exists](/operations/settings/settings#engine_file_empty_if_not_exists)                   | позволяет получать пустой набор данных из несуществующего файла. По умолчанию отключено.                                                                                                         |
+| [engine&#95;file&#95;truncate&#95;on&#95;insert](/operations/settings/settings#engine_file_truncate_on_insert)                         | позволяет очищать файл перед вставкой в него. По умолчанию отключено.                                                                                                                            |
+| [engine&#95;file&#95;allow&#95;create&#95;multiple&#95;files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. По умолчанию отключено.                                                                                            |
+| [engine&#95;file&#95;skip&#95;empty&#95;files](operations/settings/settings.md#engine_file_skip_empty_files)                           | позволяет пропускать пустые файлы при чтении. По умолчанию отключено.                                                                                                                            |
+| [storage&#95;file&#95;read&#95;method](/operations/settings/settings#engine_file_empty_if_not_exists)                                  | метод чтения данных из файла хранилища, один из: `read`, `pread`, `mmap` (только для `clickhouse-local`). Значение по умолчанию: `pread` для `clickhouse-server`, `mmap` для `clickhouse-local`. |
 
-## См. также {#related}
+## См. также \{#related\}
 
-- [Виртуальные столбцы](engines/table-engines/index.md#table_engines-virtual_columns)
-- [Переименование файлов после обработки](operations/settings/settings.md#rename_files_after_processing)
+* [Виртуальные столбцы](engines/table-engines/index.md#table_engines-virtual_columns)
+* [Переименование файлов после обработки](operations/settings/settings.md#rename_files_after_processing)

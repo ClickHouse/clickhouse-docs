@@ -23,7 +23,7 @@ doc_type: "reference"
 
 ## ULIDStringToDateTime \{#ULIDStringToDateTime\}
 
-도입: v23.3
+도입: v23.3.0
 
 FUNCTION은 [ULID](https://github.com/ulid/spec)에서 타임스탬프를 추출합니다.
 
@@ -59,7 +59,7 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 
 ## generateULID \{#generateULID\}
 
-도입 버전: v23.2
+도입 버전: v23.2.0
 
 [Universally Unique Lexicographically Sortable Identifier (ULID)](https://github.com/ulid/spec)를 생성합니다.
 
@@ -91,7 +91,7 @@ SELECT generateULID()
 └────────────────────────────┘
 ```
 
-**하나의 행에서 여러 값을 생성해야 하는 경우의 사용 예**
+**하나의 행에 여러 값을 생성해야 할 때의 사용 예**
 
 ```sql title=Query
 SELECT generateULID(1), generateULID(2)

@@ -26,14 +26,14 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## FQDN \{#FQDN\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
-ClickHouse 서버의 정규화된 도메인 이름(FQDN, Fully Qualified Domain Name)을 반환합니다.
+ClickHouse 서버의 정규화된 도메인 이름(fully qualified domain name, FQDN)을 반환합니다.
 
 **구문**
 
 ```sql
-fqdn()
+FQDN()
 ```
 
 **별칭**: `fullHostName`
@@ -62,7 +62,7 @@ SELECT fqdn()
 
 ## MACNumToString \{#MACNumToString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [`UInt64`](/sql-reference/data-types/int-uint) 숫자를 빅 엔디언(Big Endian) 형식의 MAC 주소로 해석합니다.
 해당 숫자에 대응하는 MAC 주소를 문자열로 반환하며, 형식은 `AA:BB:CC:DD:EE:FF` (콜론으로 구분된 16진수 숫자)입니다.
@@ -97,7 +97,7 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 
 ## MACStringToNum \{#MACStringToNum\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 MACNumToString의 역함수입니다. MAC 주소의 형식이 유효하지 않으면 0을 반환합니다.
 
@@ -129,7 +129,7 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 
 ## MACStringToOUI \{#MACStringToOUI\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 AA:BB:CC:DD:EE:FF 형식(콜론으로 구분된 16진수 숫자)의 MAC 주소가 주어지면, 앞의 세 옥텟을 UInt64 값으로 반환합니다. MAC 주소 형식이 잘못된 경우 0을 반환합니다.
 
@@ -161,7 +161,7 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 
 ## authenticatedUser \{#authenticatedUser\}
 
-도입 버전: v25.11
+도입 버전: v25.11.0
 
 세션 사용자가 `EXECUTE AS` 명령으로 변경된 경우, 이 FUNCTION은 인증 및 세션 생성에 사용된 원래 사용자의 이름을 반환합니다.
 별칭(Alias): authUser()
@@ -199,7 +199,7 @@ EXECUTE as u1;
 
 ## bar \{#bar\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 막대 차트를 생성합니다.
 (x - min)에 비례하는 너비를 가지며, x = max일 때 width 개의 문자 길이가 되도록 띠(band)를 그립니다.
@@ -267,7 +267,7 @@ ORDER BY h ASC
 
 ## blockNumber \{#blockNumber\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 행이 포함된 [block](../../development/architecture.md#block)의 단조 증가하는 시퀀스 번호를 반환합니다.
 반환되는 block 번호는 best-effort 방식으로 업데이트되므로 완전히 정확하지 않을 수 있습니다.
@@ -325,7 +325,7 @@ FROM
 
 ## blockSerializedSize \{#blockSerializedSize\}
 
-도입 버전: v20.3
+도입 버전: v20.3.0
 
 디스크에 저장된 값들의 블록이 비압축 상태일 때의 크기를 바이트 단위로 반환합니다.
 
@@ -359,7 +359,7 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 
 ## blockSize \{#blockSize\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 ClickHouse에서는 쿼리가 [블록](/development/architecture#block) (청크) 단위로 처리됩니다.
 이 함수는 호출된 블록의 크기(행 수)를 반환합니다.
@@ -399,7 +399,7 @@ FROM system.numbers LIMIT 5
 
 ## buildId \{#buildId\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 실행 중인 ClickHouse 서버 바이너리에 대해 컴파일러가 생성한 빌드 ID를 반환합니다.
 분산 테이블 컨텍스트에서 실행되는 경우 이 함수는 각 세그먼트에 해당하는 값을 갖는 일반 컬럼을 생성합니다.
@@ -435,7 +435,7 @@ SELECT buildId()
 
 ## byteSize \{#byteSize\}
 
-도입 버전: v21.1
+도입 버전: v21.1.0
 
 인수들의 메모리 상 비압축 바이트 크기를 추정한 값을 반환합니다.
 `String` 인수의 경우 문자열 길이에 8(길이 정보)을 더한 값을 반환합니다.
@@ -483,7 +483,7 @@ SELECT byteSize(NULL, 1, 0.3, '')
 
 ## catboostEvaluate \{#catboostEvaluate\}
 
-도입된 버전: v22.9
+도입된 버전: v22.9.0
 
 외부 CatBoost 모델을 평가합니다. [CatBoost](https://catboost.ai)는 Yandex에서 머신 러닝을 위해 개발한 오픈 소스 그래디언트 부스팅 라이브러리입니다.
 CatBoost 모델의 경로와 모델 매개변수(특징)를 인수로 받습니다.
@@ -548,7 +548,7 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 
 ## colorOKLABToSRGB \{#colorOKLABToSRGB\}
 
-도입된 버전: v26.2
+도입된 버전: v26.2.0
 
 OKLab 지각 색 공간의 색상을 sRGB 색 공간으로 변환합니다.
 
@@ -605,7 +605,7 @@ SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb;
 └──────────────────────────┘
 ```
 
-**OKLAB를 sRGB(UInt8)로 변환**
+**OKLAB을 sRGB(UInt8)로 변환**
 
 ```sql title=Query
 WITH colorOKLABToSRGB((0.7, 0.1, 0.54)) AS t
@@ -620,7 +620,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorOKLCHToSRGB \{#colorOKLCHToSRGB\}
 
-도입된 버전: v25.7
+도입된 버전: v25.7.0
 
 **OKLCH** 지각 색 공간의 색을 익숙한 **sRGB** 색 공간으로 변환합니다.
 
@@ -686,7 +686,7 @@ SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 
 ## colorSRGBToOKLAB \{#colorSRGBToOKLAB\}
 
-도입 버전: v26.2
+도입 버전: v26.2.0
 
 **sRGB** 색 공간으로 인코딩된 색상을 지각적으로 균일한 **OKLAB** 색 공간으로 변환합니다.
 
@@ -701,7 +701,7 @@ OKLab은 계산 비용을 낮게 유지하면서도 지각적으로 균일하도
 변환은 두 단계로 구성됩니다:
 
 1. sRGB에서 Linear sRGB로 변환
-2. Linear sRGB에서 OKLab으로 변환
+   2) Linear sRGB에서 OKLab으로 변환
 
 **구문**
 
@@ -734,7 +734,7 @@ SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab;
 
 ## colorSRGBToOKLCH \{#colorSRGBToOKLCH\}
 
-도입된 버전: v25.7
+도입된 버전: v25.7.0
 
 **sRGB** 색 공간으로 인코딩된 색상을 지각적으로 균일한 **OKLCH** 색 공간으로 변환합니다.
 
@@ -785,7 +785,7 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
 
 ## connectionId \{#connectionId\}
 
-도입된 버전: v21.3
+도입된 버전: v21.3.0
 
 현재 쿼리를 전송한 클라이언트의 연결 ID를 반환합니다.
 이 함수는 디버깅 시에 가장 유용합니다.
@@ -822,7 +822,7 @@ SELECT connectionId();
 
 ## countDigits \{#countDigits\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 값을 표현하는 데 필요한 십진 자릿수의 개수를 반환합니다.
 
@@ -873,7 +873,7 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 
 ## currentDatabase \{#currentDatabase\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 현재 데이터베이스의 이름을 반환합니다.
 데이터베이스를 지정해야 하는 `CREATE TABLE` 쿼리의 테이블 엔진 매개변수에서 유용합니다.
@@ -910,9 +910,21 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+**괄호 없는 SQL 표준 구문**
+
+```sql title=Query
+SELECT CURRENT_DATABASE
+```
+
+```response title=Response
+┌─CURRENT_DATABASE─┐
+│ default          │
+└──────────────────┘
+```
+
 ## currentProfiles \{#currentProfiles\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 현재 사용자에게 적용된 설정 프로파일 배열을 반환합니다.
 
@@ -946,7 +958,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-도입된 버전: v
+도입된 버전: v25.2.0
 
 현재 쿼리 ID를 반환합니다.
 
@@ -980,7 +992,7 @@ SELECT currentQueryID();
 
 ## currentRoles \{#currentRoles\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 현재 사용자에게 할당된 역할 배열을 반환합니다.
 
@@ -1014,7 +1026,7 @@ SELECT currentRoles();
 
 ## currentSchemas \{#currentSchemas\}
 
-도입: v23.7
+도입: v23.7.0
 
 함수 [`currentDatabase`](#currentDatabase)와 동일하지만,
 
@@ -1058,7 +1070,7 @@ SELECT currentSchemas(true)
 
 ## currentUser \{#currentUser\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 현재 사용자의 이름을 반환합니다.
 분산 쿼리인 경우 쿼리를 시작한 사용자의 이름을 반환합니다.
@@ -1093,9 +1105,21 @@ SELECT currentUser()
 └───────────────┘
 ```
 
+**괄호 없이 사용하는 SQL 표준 구문**
+
+```sql title=Query
+SELECT CURRENT_USER
+```
+
+```response title=Response
+┌─CURRENT_USER─┐
+│ default      │
+└──────────────┘
+```
+
 ## defaultProfiles \{#defaultProfiles\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 현재 사용자의 기본 설정 프로필 이름 배열을 반환합니다.
 
@@ -1129,7 +1153,7 @@ SELECT defaultProfiles();
 
 ## defaultRoles \{#defaultRoles\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 현재 사용자에 대해 설정된 기본 역할의 배열을 반환합니다.
 
@@ -1163,7 +1187,7 @@ SELECT defaultRoles();
 
 ## defaultValueOfArgumentType \{#defaultValueOfArgumentType\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 주어진 데이터 타입의 기본값을 반환합니다.
 사용자가 설정한 사용자 정의 컬럼의 기본값은 포함하지 않습니다.
@@ -1210,7 +1234,7 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 
 ## defaultValueOfTypeName \{#defaultValueOfTypeName\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 타입 이름의 기본값을 반환합니다.
 
@@ -1256,7 +1280,7 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 
 ## displayName \{#displayName\}
 
-도입 버전: v22.11
+도입 버전: v22.11.0
 
 [config](/operations/configuration-files)의 `display_name` 값이 설정되어 있으면 해당 값을, 설정되지 않았다면 서버의 FQDN(Fully Qualified Domain Name, 정규화된 도메인 이름)을 반환합니다.
 
@@ -1290,7 +1314,7 @@ SELECT displayName();
 
 ## dumpColumnStructure \{#dumpColumnStructure\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 컬럼의 내부 구조와 데이터 타입을 자세히 출력합니다.
 
@@ -1324,7 +1348,7 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 
 ## enabledProfiles \{#enabledProfiles\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 현재 사용자에게 활성화되어 있는 설정 프로파일 이름의 배열을 반환합니다.
 
@@ -1358,7 +1382,7 @@ SELECT enabledProfiles();
 
 ## enabledRoles \{#enabledRoles\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 현재 사용자에게 활성화된 역할의 배열을 반환합니다.
 
@@ -1392,7 +1416,7 @@ SELECT enabledRoles();
 
 ## errorCodeToName \{#errorCodeToName\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 숫자형 ClickHouse 오류 코드에 대한 이름(문자열)을 반환합니다.
 숫자형 오류 코드와 오류 이름 간의 매핑은 [여기](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp)에서 확인할 수 있습니다.
@@ -1427,7 +1451,7 @@ SELECT errorCodeToName(252);
 
 ## file \{#file\}
 
-도입된 버전: v21.3
+도입된 버전: v21.3.0
 
 파일을 문자열로 읽어서 지정된 컬럼에 데이터를 로드합니다.
 파일 내용은 해석되지 않습니다.
@@ -1462,7 +1486,7 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 
 ## filesystemAvailable \{#filesystemAvailable\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 데이터베이스 영구 저장소를 호스팅하는 파일 시스템에서 사용 가능한 여유 공간의 양을 반환합니다.
 운영 체제를 위해 일부 공간이 예약되므로, 반환되는 값은 항상 파일 시스템의 전체 여유 공간([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved))보다 작습니다.
@@ -1497,7 +1521,7 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 
 ## filesystemCapacity \{#filesystemCapacity\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 파일 시스템의 총 용량을 바이트 단위로 반환합니다.
 데이터 디렉터리의 [path](../../operations/server-configuration-parameters/settings.md#path)가 설정되어 있어야 합니다.
@@ -1532,7 +1556,7 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 
 ## filesystemUnreserved \{#filesystemUnreserved\}
 
-도입 버전: v22.12
+도입 버전: v22.12.0
 
 데이터베이스 영구 저장소를 호스팅하는 파일 시스템의 총 여유 공간(이전 이름: `filesystemFree`)을 반환합니다.
 [`filesystemAvailable`](#filesystemAvailable)도 참조하십시오.
@@ -1567,7 +1591,7 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 
 ## finalizeAggregation \{#finalizeAggregation\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 집계 상태를 입력으로 받아, 이 함수는 집계 결과(또는 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 콤비네이터를 사용할 때는 최종화된 상태)를 반환합니다.
 
@@ -1622,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-도입 버전: v25.10
+도입 버전: v25.10.0
 
 기하 객체의 x, y 좌표를 뒤바꿉니다. 이 연산은 위도와 경도를 서로 바꾸므로, 서로 다른 좌표계 간 변환이나 좌표 순서 교정에 유용합니다.
 
@@ -1698,7 +1722,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-도입 버전: v
+도입 버전: v23.10.0
 
 지정된 SQL 쿼리를 포맷팅한 버전(여러 줄이 될 수 있음)을 반환합니다. 구문 분석 오류가 발생하면 예외를 던집니다.
 [example:multiline]
@@ -1735,7 +1759,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-도입된 버전: v
+도입된 버전: v23.11.0
 
 지정된 SQL 쿼리를 서식화한 문자열을 반환하며, 이 문자열은 여러 줄로 구성될 수 있습니다. 구문 분석 오류가 발생한 경우 NULL을 반환합니다.
 [example:multiline]
@@ -1772,9 +1796,9 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-도입 버전: v
+도입 버전: v23.10.0
 
-formatQuery()와 유사하지만, 반환되는 형식화된 문자열에는 개행 문자가 포함되지 않습니다. 파싱 오류가 발생하면 예외를 던집니다.
+formatQuery()와 유사하지만, 반환되는 포맷된 문자열에는 개행 문자가 포함되지 않습니다. 파싱 오류가 발생하면 예외를 던집니다.
 [example:multiline]
 
 **구문**
@@ -1805,7 +1829,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-도입 버전: v
+도입 버전: v23.11.0
 
 formatQuery()와 유사하지만, 반환되는 포맷된 문자열에는 줄 바꿈이 포함되지 않습니다. 구문 분석 오류가 발생한 경우 NULL을 반환합니다.
 [example:multiline]
@@ -1838,7 +1862,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatReadableDecimalSize \{#formatReadableDecimalSize\}
 
-도입 버전: v22.11
+도입 버전: v22.11.0
 
 바이트 단위 크기(바이트 수)를 입력하면, 이 FUNCTION은 접미사(KB, MB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
 
@@ -1879,7 +1903,7 @@ SELECT
 
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
-도입 버전: v20.10
+도입 버전: v20.10.0
 
 숫자를 입력하면 이 함수는 반올림된 숫자에 접미사(천, 백만, 십억 등)를 붙인 문자열을 반환합니다.
 
@@ -1921,7 +1945,7 @@ SELECT
 
 ## formatReadableSize \{#formatReadableSize\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 바이트 단위 크기를 입력하면, 이 함수는 접미사(KiB, MiB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
 
@@ -1965,7 +1989,7 @@ SELECT
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
 
-도입 버전: v20.12
+도입 버전: v20.12.0
 
 초 단위의 시간 간격(delta)이 주어지면, 이 함수는 연/월/일/시/분/초/밀리초/마이크로초/나노초 단위로 표현된 시간 차이를 문자열로 반환합니다.
 
@@ -2021,9 +2045,40 @@ SELECT
 └────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
+## fuzzQuery \{#fuzzQuery\}
+
+도입: v26.2.0
+
+지정된 쿼리 문자열을 파싱한 뒤, AST에 임의의 뮤테이션(퍼징)을 적용합니다. 퍼징된 쿼리를 문자열로 반환합니다. 비결정적인 동작이므로 호출할 때마다 서로 다른 결과가 생성될 수 있습니다. `allow_fuzz_query_functions = 1` 설정이 필요합니다.
+
+**구문**
+
+```sql
+fuzzQuery(query)
+```
+
+**인수**
+
+* `query` — 퍼징(fuzzing)을 적용할 SQL 쿼리입니다. [String](../../sql-reference/data-types/string.md)
+
+**반환 값**
+
+퍼징된 쿼리를 나타내는 쿼리 문자열 [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**기본**
+
+```sql title=Query
+SET allow_fuzz_query_functions = 1; SELECT fuzzQuery('SELECT 1');
+```
+
+```response title=Response
+```
+
 ## generateRandomStructure \{#generateRandomStructure\}
 
-도입 버전: v23.5
+도입 버전: v23.5.0
 
 `column1_name column1_type, column2_name column2_type, ...` 형식의 무작위 테이블 구조를 생성합니다.
 
@@ -2076,7 +2131,7 @@ c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCar
 
 ## generateSerialID \{#generateSerialID\}
 
-도입된 버전: v25.1
+도입된 버전: v25.1.0
 
 이전 카운터 값부터 시작하는 연속된 숫자를 생성하여 반환합니다.
 이 함수는 문자열 인자를 사용하며, 시리즈 식별자와 선택적인 시작 값을 인자로 받습니다.
@@ -2124,7 +2179,7 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
-**컬럼 호출**
+**컬럼 단위 호출**
 
 ```sql title=Query
 SELECT *, generateSerialID('id1') FROM test_table
@@ -2152,7 +2207,7 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
-**시작 값이 있는 두 번째 호출**
+**시작 값을 지정한 두 번째 호출**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2166,7 +2221,7 @@ SELECT generateSerialID('id2', 100)
 
 ## getClientHTTPHeader \{#getClientHTTPHeader\}
 
-도입 버전: v24.5
+도입 버전: v24.5.0
 
 HTTP 헤더의 값을 가져옵니다.
 해당 헤더가 없거나 현재 요청이 HTTP 인터페이스를 통해 수행되는 요청이 아닌 경우, 함수는 빈 문자열을 반환합니다.
@@ -2210,7 +2265,7 @@ SELECT getClientHTTPHeader('Content-Type');
 
 ## getMacro \{#getMacro\}
 
-도입 버전: v20.1
+도입 버전: v20.1.0
 
 서버 구성 파일에서 매크로의 값을 반환합니다.
 매크로는 구성 파일의 [`<macros>`](/operations/server-configuration-parameters/settings#macros) 섹션에 정의되며, 호스트명이 복잡하더라도 서버를 구분하기 쉬운 이름으로 식별하는 데 사용할 수 있습니다.
@@ -2246,7 +2301,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-도입 버전: v
+도입 버전: v25.1.0
 
 지정된 데이터베이스에서 허용되는 최대 테이블 이름 길이를 반환합니다.
 
@@ -2280,7 +2335,7 @@ SELECT getMaxTableNameLengthForDatabase('default');
 
 ## getMergeTreeSetting \{#getMergeTreeSetting\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 현재 MergeTree 설정 값을 반환합니다.
 
@@ -2314,7 +2369,7 @@ SELECT getMergeTreeSetting('index_granularity');
 
 ## getOSKernelVersion \{#getOSKernelVersion\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 OS 커널 버전을 나타내는 문자열을 반환합니다.
 
@@ -2348,7 +2403,7 @@ SELECT getOSKernelVersion();
 
 ## getServerPort \{#getServerPort\}
 
-도입 버전: v21.10
+도입 버전: v21.10.0
 
 지정된 프로토콜에 해당하는 서버의 포트 번호를 반환합니다.
 
@@ -2382,7 +2437,7 @@ SELECT getServerPort('tcp_port');
 
 ## getServerSetting \{#getServerSetting\}
 
-도입된 버전: v25.6
+도입된 버전: v25.6.0
 
 서버 설정 이름을 지정하면 해당 설정의 현재 값을 반환합니다.
 
@@ -2416,7 +2471,7 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 
 ## getSetting \{#getSetting\}
 
-도입 버전: v20.7
+도입 버전: v20.7.0
 
 현재 설정값을 반환합니다.
 
@@ -2455,7 +2510,7 @@ SELECT getSetting('enable_analyzer');
 
 ## getSettingOrDefault \{#getSettingOrDefault\}
 
-도입 버전: v24.10
+도입 버전: v24.10.0
 
 현재 설정 값이 있으면 해당 값을 반환하고, 현재 프로필에 해당 설정이 지정되어 있지 않으면 두 번째 인수로 지정된 기본값을 반환합니다.
 
@@ -2492,7 +2547,7 @@ NULL
 
 ## getSizeOfEnumType \{#getSizeOfEnumType\}
 
-도입: v1.1
+도입: v1.1.0
 
 주어진 [`Enum`](../../sql-reference/data-types/enum.md)에 포함된 필드 수를 반환합니다.
 
@@ -2526,7 +2581,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-도입된 버전: v
+도입된 버전: v23.3.0
 
 식 또는 식별자, 그리고 하위 컬럼 이름을 나타내는 상수 문자열을 인수로 받습니다.
 
@@ -2535,6 +2590,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 **구문**
 
 ```sql
+getSubcolumn(nested_value, subcolumn_name)
 ```
 
 **인수**
@@ -2556,7 +2612,7 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 
 ## getTypeSerializationStreams \{#getTypeSerializationStreams\}
 
-도입된 버전: v22.6
+도입된 버전: v22.6.0
 
 데이터 타입의 스트림 경로를 나열합니다.
 이 FUNCTION은 개발 목적으로 사용하도록 설계되었습니다.
@@ -2599,7 +2655,7 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 
 ## globalVariable \{#globalVariable\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 상수 문자열 인자를 받아 해당 이름의 전역 변수 값을 반환합니다. 이 FUNCTION은 MySQL과의 호환성을 위한 것이며, 일반적인 ClickHouse 운영에서는 필요하지도 유용하지도 않습니다. 일부 더미 전역 변수만 정의되어 있습니다.
 
@@ -2631,7 +2687,7 @@ SELECT globalVariable('max_allowed_packet')
 
 ## hasColumnInTable \{#hasColumnInTable\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 특정 컬럼이 데이터베이스 테이블에 존재하는지 확인합니다.
 중첩 데이터 구조의 요소인 경우, 함수는 해당 컬럼이 존재하는지 확인합니다.
@@ -2668,7 +2724,7 @@ SELECT hasColumnInTable('system','metrics','metric')
 1
 ```
 
-**존재하지 않는 컬럼 확인하기**
+**존재하지 않는 컬럼을 확인**
 
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','non-existing_column')
@@ -2680,7 +2736,7 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 
 ## hasThreadFuzzer \{#hasThreadFuzzer\}
 
-도입 버전: v20.6
+도입 버전: v20.6.0
 
 thread fuzzer가 활성화되어 있는지 여부를 반환합니다.
 이 함수는 테스트와 디버깅에만 유용합니다.
@@ -2715,7 +2771,7 @@ SELECT hasThreadFuzzer()
 
 ## hostName \{#hostName\}
 
-도입된 버전: v20.5
+도입된 버전: v20.5.0
 
 이 함수가 실행된 호스트 이름을 반환합니다.
 함수가 원격 서버에서 실행되면(분산 처리) 원격 서버 이름을 반환합니다.
@@ -2754,7 +2810,7 @@ SELECT hostName()
 
 ## icebergBucket \{#icebergBucket\}
 
-도입된 버전: v25.5
+도입된 버전: v25.5.0
 
 [iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.)에 대한 로직을 구현합니다.
 
@@ -2787,7 +2843,7 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 
 ## icebergTruncate \{#icebergTruncate\}
 
-도입된 버전: v25.3
+도입된 버전: v25.3.0
 
 Iceberg truncate 변환(transform)의 로직을 구현합니다: https://iceberg.apache.org/spec/#truncate-transform-details.
 
@@ -2819,7 +2875,7 @@ ice
 
 ## identity \{#identity\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 이 함수는 전달된 인수를 그대로 반환하며, 디버깅과 테스트에 유용합니다. 인덱스 사용을 우회하여 전체 스캔 시의 성능을 확인할 수 있습니다. 쿼리 분석기는 사용할 인덱스를 찾을 때 `identity` 함수 내부의 모든 내용을 무시하며, 상수 폴딩도 비활성화합니다.
 
@@ -2851,7 +2907,7 @@ SELECT identity(42)
 
 ## ignore \{#ignore\}
 
-도입: v1.1
+도입: v1.1.0
 
 임의의 인자를 받아들여 무조건 `0`을 반환합니다.
 
@@ -2885,7 +2941,7 @@ SELECT ignore(0, 'ClickHouse', NULL)
 
 ## indexHint \{#indexHint\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 이 함수는 디버깅과 내부 상태 확인을 위한 것입니다.
 인자를 무시하고 항상 1을 반환합니다.
@@ -2964,7 +3020,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 
 ## initialQueryID \{#initialQueryID\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 초기(원본) 현재 쿼리의 ID를 반환합니다.
 쿼리의 다른 매개변수는 [`system.query_log`](../../operations/system-tables/query_log.md)의 `initial_query_id` 필드에서 추출할 수 있습니다.
@@ -3005,7 +3061,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 
 ## initialQueryStartTime \{#initialQueryStartTime\}
 
-도입된 버전: v25.4
+도입된 버전: v25.4.0
 
 초기 쿼리의 시작 시간을 반환합니다.
 `initialQueryStartTime`는 서로 다른 세그먼트에서도 동일한 결과를 반환합니다.
@@ -3044,7 +3100,7 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 
 ## initializeAggregation \{#initializeAggregation\}
 
-도입 버전: v20.6
+도입 버전: v20.6.0
 
 단일 값을 기반으로 집계 함수의 결과를 계산합니다.
 이 함수는 [-State](../../sql-reference/aggregate-functions/combinators.md#-state) 컴비네이터가 있는 집계 함수를 초기화하는 데 사용할 수 있습니다.
@@ -3097,7 +3153,7 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 
 ## isConstant \{#isConstant\}
 
-도입된 버전: v20.3
+도입된 버전: v20.3.0
 
 인수가 상수 표현식인지 여부를 반환합니다.
 상수 표현식은 실행 이전, 즉 쿼리 분석 중에 결과를 알 수 있는 표현식입니다.
@@ -3173,7 +3229,7 @@ SELECT isConstant(now())
 
 ## isDecimalOverflow \{#isDecimalOverflow\}
 
-도입 버전: v20.8
+도입 버전: v20.8.0
 
 지정된 정밀도(precision)를 가진 `Decimal` 데이터 타입에 정상적으로 저장될 수 있는 자릿수 범위를 초과하는지 확인합니다.
 
@@ -3211,7 +3267,7 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 
 ## joinGet \{#joinGet\}
 
-도입된 버전: v18.16
+도입된 버전: v18.16.0
 
 딕셔너리에서 데이터를 추출하는 것과 동일한 방식으로 테이블에서 데이터를 추출할 수 있습니다.
 지정된 조인 키를 사용하여 Join 테이블에서 데이터를 가져옵니다.
@@ -3253,7 +3309,7 @@ SELECT joinGet(db_test.id_val, 'val', toUInt32(1));
 └─────────────────────────────────────────────┘
 ```
 
-**현재 데이터베이스의 테이블 사용**
+**현재 데이터베이스 내 테이블 사용**
 
 ```sql title=Query
 USE db_test;
@@ -3283,7 +3339,7 @@ SELECT joinGet(some_table, 'name', 1, 11);
 
 ## joinGetOrNull \{#joinGetOrNull\}
 
-도입 버전: v20.4
+도입 버전: v20.4.0
 
 딕셔너리에서 데이터를 추출하는 것과 같은 방식으로 테이블에서 데이터를 추출할 수 있습니다.
 지정된 조인 키(join key)를 사용하여 Join 테이블에서 데이터를 가져옵니다.
@@ -3328,7 +3384,7 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 
 ## lowCardinalityIndices \{#lowCardinalityIndices\}
 
-도입된 버전: v18.12
+도입된 버전: v18.12.0
 
 [LowCardinality](../data-types/lowcardinality.md) 컬럼의 딕셔너리에서 값의 위치를 반환합니다. 위치는 1부터 시작합니다. LowCardinality 컬럼은 파트별 딕셔너리를 사용하므로, 이 함수는 서로 다른 파트에서 동일한 값에 대해 서로 다른 위치를 반환할 수 있습니다.
 
@@ -3381,7 +3437,7 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 
 ## lowCardinalityKeys \{#lowCardinalityKeys\}
 
-도입된 버전: v18.12
+도입된 버전: v18.12.0
 
 [LowCardinality](../data-types/lowcardinality.md) 컬럼의 딕셔너리 값을 반환합니다.
 블록 크기가 딕셔너리 크기보다 작거나 큰 경우, 결과는 잘리거나 기본값으로 채워져 확장됩니다.
@@ -3436,7 +3492,7 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 
 ## materialize \{#materialize\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 상수를 단일 값을 포함하는 전체 컬럼으로 변환합니다.
 전체 컬럼과 상수는 메모리에서 서로 다르게 표현됩니다.
@@ -3477,7 +3533,7 @@ Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal ty
 
 ## minSampleSizeContinuous \{#minSampleSizeContinuous\}
 
-도입된 버전: v23.10
+도입된 버전: v23.10.0
 
 두 표본의 연속형 지표 평균을 비교하는 A/B 테스트에 필요한 최소 표본 크기를 계산합니다.
 
@@ -3520,7 +3576,7 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 
 ## minSampleSizeConversion \{#minSampleSizeConversion\}
 
-도입된 버전: v22.6
+도입된 버전: v22.6.0
 
 두 표본에서 전환율(비율)을 비교하는 A/B 테스트를 위해 필요한 최소 표본 크기를 계산합니다.
 
@@ -3557,7 +3613,7 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 
 ## neighbor \{#neighbor\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 현재 행에서 지정된 오프셋에 위치한 컬럼의 값을 반환합니다.
 이 함수는 데이터 블록의 물리적 순서에 대해 동작하므로, 이 순서가 사용자에게 기대되는 논리적 순서와 일치하지 않을 수 있어 사용이 중단(deprecated)되었으며 오류를 유발하기 쉽습니다.
@@ -3625,42 +3681,9 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-## nested \{#nested\}
-
-도입 버전: v
-
-이 FUNCTION은 ClickHouse 엔진 내부에서 사용되며, 직접 사용하도록 설계되지 않았습니다.
-
-여러 배열에서 튜플의 배열을 반환합니다.
-
-첫 번째 인수는 결과 튜플(Tuple)의 이름을 결정하는 상수 String 배열이어야 합니다.
-나머지 인수는 모두 동일한 크기의 배열이어야 합니다.
-
-**문법**
-
-```sql
-```
-
-**인수**
-
-* 없음.
-
-**반환값**
-
-**예시**
-
-**중첩**
-
-```sql title=Query
-SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
-```
-
-```response title=Response
-```
-
 ## normalizeQuery \{#normalizeQuery\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 리터럴, 리터럴 시퀀스, 그리고 공백을 포함하거나 숫자가 두 자리보다 많거나 UUID처럼 길이가 최소 36바이트인 복잡한 별칭을 플레이스홀더 `?`로 치환합니다.
 
@@ -3694,7 +3717,7 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 
 ## normalizeQueryKeepNames \{#normalizeQueryKeepNames\}
 
-도입된 버전: v21.2
+도입된 버전: v21.2.0
 
 리터럴과 연속된 리터럴들을 플레이스홀더 `?`로 대체하지만, 공백을 포함하거나 숫자가 2개를 초과해 포함되어 있거나 UUID처럼 최소 36바이트 길이인 복잡한 별칭은 대체하지 않습니다.
 이는 복잡한 쿼리 로그를 더 잘 분석하는 데 도움이 됩니다.
@@ -3729,7 +3752,7 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 
 ## normalizedQueryHash \{#normalizedQueryHash\}
 
-도입된 버전: v20.8
+도입된 버전: v20.8.0
 
 유사한 쿼리에 대해 리터럴 값들은 제외하고 동일한 64비트 해시 값을 반환합니다.
 쿼리 로그를 분석하는 데 도움이 됩니다.
@@ -3764,7 +3787,7 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 
 ## normalizedQueryHashKeepNames \{#normalizedQueryHashKeepNames\}
 
-도입된 버전: v21.2
+도입된 버전: v21.2.0
 
 [`normalizedQueryHash`](#normalizedQueryHash)와 마찬가지로 유사한 쿼리에서 리터럴 값은 제외하고 동일한 64비트 해시 값을 반환하지만, 해시 계산 전에 공백을 포함하거나, 두 자리보다 많은 숫자를 포함하거나, UUID처럼 최소 36바이트 길이인 복잡한 별칭을 플레이스홀더로 대체하지 않습니다.
 쿼리 로그를 분석하는 데 유용할 수 있습니다.
@@ -3803,7 +3826,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## parseReadableSize \{#parseReadableSize\}
 
-도입 버전: v24.6
+도입 버전: v24.6.0
 
 바이트 크기와 단위(예: `B`, `KiB`, `KB`, `MiB`, `MB` 등, 즉 [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 또는 10진 바이트 단위)가 포함된 문자열이 주어지면, 이 함수는 해당하는 바이트 수를 반환합니다.
 함수가 입력값을 파싱하지 못하면 예외를 발생시킵니다.
@@ -3843,9 +3866,9 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 
 ## parseReadableSizeOrNull \{#parseReadableSizeOrNull\}
 
-도입된 버전: v24.6
+도입된 버전: v24.6.0
 
-바이트 크기를 나타내는 문자열이 주어졌을 때, 단위로 `B`, `KiB`, `KB`, `MiB`, `MB` 등(예: [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 또는 10진 바이트 단위)을 사용할 수 있으며, 이 함수는 해당하는 바이트 수를 반환합니다.
+바이트 크기를 나타내는 문자열이 주어졌을 때, 단위로 `B`, `KiB`, `KB`, `MiB`, `MB` 등(예: [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 또는 10진수 바이트 단위)을 사용할 수 있으며, 이 함수는 해당하는 바이트 수를 반환합니다.
 함수가 입력 값을 해석하지 못하면 `NULL`을 반환합니다.
 
 이 함수의 역연산은 [`formatReadableSize`](#formatReadableSize)와 [`formatReadableDecimalSize`](#formatReadableDecimalSize)입니다.
@@ -3884,7 +3907,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseReadableSizeOrZero \{#parseReadableSizeOrZero\}
 
-도입 버전: v24.6
+도입 버전: v24.6.0
 
 바이트 크기와 단위인 `B`, `KiB`, `KB`, `MiB`, `MB` 등(즉, [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) 또는 10진수 바이트 단위)이 포함된 문자열이 주어지면, 이 함수는 해당하는 바이트 수를 반환합니다.
 입력 값을 파싱하지 못하면 `0`을 반환합니다.
@@ -3925,7 +3948,7 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 
 ## parseTimeDelta \{#parseTimeDelta\}
 
-도입 버전: v22.7
+도입 버전: v22.7.0
 
 시간 단위를 나타내는 문자열이 뒤따르는 숫자 나열을 파싱합니다.
 
@@ -3988,7 +4011,7 @@ SELECT parseTimeDelta('1yr2mo')
 
 ## partitionId \{#partitionId\}
 
-도입된 버전: v21.4
+도입된 버전: v21.4.0
 
 [파티션 ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)를 계산합니다.
 
@@ -4046,7 +4069,7 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 
 ## queryID \{#queryID\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 현재 쿼리의 ID를 반환합니다.
 쿼리의 다른 매개변수는 [`system.query_log`](../../operations/system-tables/query_log.md) 테이블의 `query_id` 필드에서 추출할 수 있습니다.
@@ -4087,9 +4110,9 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 
 ## revision \{#revision\}
 
-도입 버전: v22.7
+도입 버전: v22.7.0
 
-현재 ClickHouse 서버의 리비전 값을 반환합니다.
+현재 ClickHouse 서버의 리비전을 반환합니다.
 
 **구문**
 
@@ -4121,7 +4144,7 @@ SELECT revision()
 
 ## rowNumberInAllBlocks \{#rowNumberInAllBlocks\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 처리되는 각 행에 대해 고유한 행 번호를 반환합니다.
 
@@ -4179,7 +4202,7 @@ SETTINGS max_block_size = 2
 
 ## rowNumberInBlock \{#rowNumberInBlock\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `rowNumberInBlock`가 처리하는 각 [블록](../../development/architecture.md#block)에 대해 현재 행의 번호를 반환합니다.
 
@@ -4238,7 +4261,7 @@ FROM
 
 ## runningAccumulate \{#runningAccumulate\}
 
-도입: v1.1
+도입: v1.1.0
 
 데이터 블록의 각 행에 대해 집계 함수의 상태를 누적합니다.
 
@@ -4288,7 +4311,7 @@ FROM numbers(5);
 
 ## runningConcurrency \{#runningConcurrency\}
 
-도입 버전: v21.3
+도입 버전: v21.3.0
 
 동시에 발생하는 이벤트 수를 계산합니다.
 각 이벤트는 시작 시간과 종료 시간을 가집니다.
@@ -4341,7 +4364,7 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 
 ## runningDifference \{#runningDifference\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 데이터 블록에서 연속된 두 행의 값 차이를 계산합니다.
 첫 번째 행에 대해서는 `0`을 반환하고, 이후 행에 대해서는 이전 행과의 차이를 반환합니다.
@@ -4426,7 +4449,7 @@ WHERE diff != 1;
 
 ## runningDifferenceStartingWithFirstValue \{#runningDifferenceStartingWithFirstValue\}
 
-도입: v1.1
+도입: v1.1.0
 
 데이터 블록에서 연속된 행 값 간의 차이를 계산합니다. 단, [`runningDifference`](#runningDifference)와는 달리 첫 번째 행에 대해서는 `0`이 아니라 실제 값을 반환합니다.
 
@@ -4475,7 +4498,7 @@ FROM numbers(5);
 
 ## serverUUID \{#serverUUID\}
 
-도입된 버전: v20.1
+도입된 버전: v20.1.0
 
 서버가 처음 시작될 때 생성되는 무작위이면서 고유한 UUID (v4)를 반환합니다.
 이 UUID는 영구적으로 저장되므로, 두 번째, 세 번째 등 이후 서버 시작 시에도 동일한 UUID를 반환합니다.
@@ -4510,7 +4533,7 @@ SELECT serverUUID();
 
 ## shardCount \{#shardCount\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 분산 쿼리에 대한 총 세그먼트 수를 반환합니다.
 쿼리가 분산되지 않은 경우 상수 값 `0`을 반환합니다.
@@ -4549,7 +4572,7 @@ SELECT shardCount() FROM shard_count_example;
 
 ## shardNum \{#shardNum\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 분산 쿼리에서 데이터의 일부를 처리하는 세그먼트의 인덱스를 반환합니다.
 인덱스는 `1`부터 시작합니다.
@@ -4588,7 +4611,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 
 ## showCertificate \{#showCertificate\}
 
-도입: v22.6
+도입: v22.6.0
 
 현재 서버에 SSL(Secure Sockets Layer) 인증서가 설정되어 있는 경우 해당 인증서 정보를 표시합니다.
 연결을 검증하도록 ClickHouse에서 OpenSSL 인증서를 사용하도록 구성하는 방법에 대한 자세한 내용은 [Configuring TLS](/guides/sre/tls/configuring-tls)를 참조하십시오.
@@ -4621,7 +4644,7 @@ SELECT showCertificate() FORMAT LineAsString;
 
 ## sleep \{#sleep\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 초 동안 쿼리 실행을 일시 중지합니다.
 이 함수는 주로 테스트 및 디버깅 용도로 사용됩니다.
@@ -4672,7 +4695,7 @@ SELECT sleep(2);
 
 ## sleepEachRow \{#sleepEachRow\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 결과 집합의 각 행에 대해 지정된 초만큼 쿼리 실행을 일시 중지합니다.
 
@@ -4722,13 +4745,14 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-도입 버전: v
+도입 버전: v23.8.0
 
 ClickHouse 테이블 구조를 CapnProto 형식의 스키마로 변환하는 함수입니다.
 
 **구문**
 
 ```sql
+structureToCapnProtoSchema(table_structure, message)
 ```
 
 **인수**
@@ -4755,7 +4779,7 @@ struct MessageName
 
 ## structureToProtobufSchema \{#structureToProtobufSchema\}
 
-도입 버전: v23.8
+도입 버전: v23.8.0
 
 ClickHouse 테이블 구조를 Protobuf 형식의 스키마로 변환합니다.
 
@@ -4796,7 +4820,7 @@ message MessageName
 
 ## tcpPort \{#tcpPort\}
 
-도입된 버전: v20.12
+도입된 버전: v20.12.0
 
 서버가 수신 대기하는 [native interface](/interfaces/tcp) TCP 포트 번호를 반환합니다.
 분산 테이블 컨텍스트에서 실행되는 경우, 이 함수는 각 세그먼트에 해당하는 값을 갖는 일반 컬럼을 생성합니다.
@@ -4832,7 +4856,7 @@ SELECT tcpPort()
 
 ## throwIf \{#throwIf\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 인자 x가 true인 경우 예외를 발생시킵니다.
 `error_code` 인자를 사용하려면 설정 매개변수 `allow_custom_error_code_in_throw`가 활성화되어 있어야 합니다.
@@ -4868,7 +4892,7 @@ Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 
 ## toColumnTypeName \{#toColumnTypeName\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 지정된 값의 데이터 타입에 대한 내부 이름을 반환합니다.
 [`toTypeName`](#toTypeName) 함수와는 달리, 반환되는 데이터 타입에는 `Const`, `LowCardinality`와 같은 내부 래퍼 컬럼이 포함될 수 있습니다.
@@ -4903,7 +4927,7 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 
 ## toTypeName \{#toTypeName\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 전달된 인수의 타입 이름을 반환합니다.
 `NULL`이 전달되면 함수는 ClickHouse의 내부 `NULL` 표현에 해당하는 타입 `Nullable(Nothing)`을 반환합니다.
@@ -4938,7 +4962,7 @@ SELECT toTypeName(123)
 
 ## transactionID \{#transactionID\}
 
-도입 버전: v22.6
+도입 버전: v22.6.0
 
 <ExperimentalBadge />
 
@@ -4996,7 +5020,7 @@ ROLLBACK;
 
 ## transactionLatestSnapshot \{#transactionLatestSnapshot\}
 
-도입된 버전: v22.6
+도입된 버전: v22.6.0
 
 <ExperimentalBadge />
 
@@ -5048,7 +5072,7 @@ ROLLBACK;
 
 ## transactionOldestSnapshot \{#transactionOldestSnapshot\}
 
-도입 버전: v22.6
+도입 버전: v22.6.0
 
 <ExperimentalBadge />
 
@@ -5100,7 +5124,7 @@ ROLLBACK;
 
 ## transform \{#transform\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 일부 요소를 다른 요소로 매핑하는 방식이 명시적으로 정의된 매핑에 따라 값을 변환합니다.
 
@@ -5185,7 +5209,7 @@ LIMIT 10
 
 ## uniqThetaIntersect \{#uniqThetaIntersect\}
 
-도입 버전: v22.9
+도입 버전: v22.9.0
 
 두 uniqThetaSketch 객체 사이의 교집합(집합 연산 ∩)을 계산하며, 결과는 새로운 uniqThetaSketch입니다.
 
@@ -5221,7 +5245,7 @@ FROM
 
 ## uniqThetaNot \{#uniqThetaNot\}
 
-도입 버전: v22.9
+도입 버전: v22.9.0
 
 두 개의 uniqThetaSketch 객체에 대해 a&#95;not&#95;b 계산(집합 연산인 차집합)을 수행하며, 결과는 새로운 uniqThetaSketch입니다.
 
@@ -5257,7 +5281,7 @@ FROM
 
 ## uniqThetaUnion \{#uniqThetaUnion\}
 
-도입 버전: v22.9
+도입 버전: v22.9.0
 
 두 개의 uniqThetaSketch 객체에 대해 합집합 연산(집합 연산 ∪)을 수행하며, 결과는 새로운 uniqThetaSketch 객체입니다.
 
@@ -5293,7 +5317,7 @@ FROM
 
 ## uptime \{#uptime\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 서버 업타임(가동 시간)을 초 단위로 반환합니다.
 분산 테이블에서 실행되는 경우, 이 함수는 각 세그먼트에 해당하는 값을 가진 일반 컬럼을 생성합니다.
@@ -5329,7 +5353,7 @@ SELECT uptime() AS Uptime
 
 ## variantElement \{#variantElement\}
 
-도입된 버전: v25.2
+도입된 버전: v25.2.0
 
 `Variant` 컬럼에서 지정된 타입의 컬럼을 추출합니다.
 
@@ -5370,7 +5394,7 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 
 ## variantType \{#variantType\}
 
-도입된 버전: v24.2
+도입된 버전: v24.2.0
 
 `Variant` 컬럼의 각 행에 대해 variant 타입 이름을 반환합니다. 행에 NULL이 포함되어 있으면 해당 행에 대해서는 「None」을 반환합니다.
 
@@ -5409,7 +5433,7 @@ SELECT variantType(v) FROM test;
 
 ## version \{#version\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 현재 ClickHouse의 버전을 `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release` 형식의 문자열로 반환합니다.
 분산 테이블의 컨텍스트에서 실행되는 경우, 이 함수는 각 세그먼트에 해당하는 값을 가진 일반 컬럼을 생성합니다.
@@ -5445,7 +5469,7 @@ SELECT version()
 
 ## visibleWidth \{#visibleWidth\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 텍스트 형식(탭으로 구분)으로 값을 콘솔에 출력할 때의 대략적인 너비를 계산합니다.
 이 함수는 시스템에서 Pretty 포맷을 구현하는 데 사용됩니다.
@@ -5481,7 +5505,7 @@ SELECT visibleWidth(NULL)
 
 ## zookeeperSessionUptime \{#zookeeperSessionUptime\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 현재 ZooKeeper 세션의 가동 시간을 초 단위로 반환합니다.
 

@@ -74,51 +74,51 @@ flowchart TB
 
 ## 기능 \{#features\}
 
-### 관측성 \{#observability\}
+### Observability \{#observability\}
 
-[관측성](/docs/observability/overview)은 LLM 애플리케이션을 이해하고 디버깅하는 데 필수적입니다. 전통적인 소프트웨어와 달리 LLM 애플리케이션은 복잡하고 비결정적인 상호작용을 포함하므로 모니터링과 디버깅이 어렵습니다. Langfuse는 애플리케이션에서 실제로 어떤 일이 발생하는지 정확히 파악할 수 있도록 포괄적인 트레이싱 기능을 제공합니다.
+[Observability](/docs/observability/overview)는 LLM 애플리케이션을 이해하고 디버깅하는 데 필수적입니다. 기존 소프트웨어와 달리 LLM 애플리케이션은 복잡하고 비결정적인 상호작용을 수반하므로 모니터링하고 디버깅하기가 어려울 수 있습니다. Langfuse는 애플리케이션에서 정확히 어떤 일이 일어나고 있는지 이해하는 데 도움이 되는 포괄적인 트레이싱 기능을 제공합니다.
 
-_📹 더 자세히 알고 싶다면, Langfuse 관측성 기능과 이를 애플리케이션에 통합하는 방법을 다룬 [**엔드 투 엔드 데모 영상**](https://langfuse.com/watch-demo?tab=observability)을 시청하십시오._
+_📹 더 자세히 알고 싶으신가요? Langfuse Observability와 이를 애플리케이션에 통합하는 방법에 대한 [**엔드 투 엔드 데모 영상**](https://langfuse.com/watch-demo?tab=observability)을 시청해 보세요._
 
 <Tabs groupId="observability">
-<TabItem value="trace-details" label="Trace 세부 정보">
+<TabItem value="trace-details" label="Trace Details">
 
-트레이스를 사용하여 모든 LLM 호출과 애플리케이션의 기타 관련 로직을 추적할 수 있습니다.
+트레이스를 사용하면 앱의 모든 LLM 호출과 기타 관련 로직을 추적할 수 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/trace-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="sessions" label="세션">
+<TabItem value="sessions" label="Sessions">
 
-세션을 사용하면 다단계 대화나 에이전트 기반 워크플로를 추적할 수 있습니다.
+세션을 사용하면 여러 단계의 대화나 에이전트형 워크플로를 추적할 수 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/sessions-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="timeline" label="타임라인">
+<TabItem value="timeline" label="Timeline">
 
-타임라인 뷰를 확인하여 지연(latency) 문제를 디버깅하십시오.
+타임라인 뷰를 살펴보며 지연 시간 문제를 디버깅합니다.
 
 <video src="https://static.langfuse.com/docs-videos/timeline-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="users" label="사용자">
+<TabItem value="users" label="Users">
 
-각 사용자에 대한 비용과 사용량을 모니터링할 수 있도록 `userId`를 추가하십시오. 필요에 따라 시스템에서 이 뷰로 바로 이동하는 딥 링크를 생성할 수 있습니다.
+각 사용자별 비용과 사용량을 모니터링할 수 있도록 자체 `userId`를 추가합니다. 필요하다면 시스템에서 이 뷰로 연결되는 딥 링크를 만들 수도 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/users-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="agent-graphs" label="에이전트 그래프">
+<TabItem value="agent-graphs" label="Agent Graphs">
 
-LLM 에이전트를 그래프로 시각화하여 복잡한 에이전트 워크플로의 흐름을 보여줄 수 있습니다.
+LLM 에이전트는 그래프로 시각화하여 복잡한 에이전트형 워크플로의 흐름을 보여줄 수 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/langgraph-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
-<TabItem value="dashboard" label="대시보드">
+<TabItem value="dashboard" label="Dashboard">
 
-대시보드에서 품질, 비용, 지연 시간과 관련된 메트릭을 확인하여 LLM 애플리케이션을 모니터링하십시오.
+대시보드에서 품질, 비용, 지연 시간 지표를 확인하여 LLM 애플리케이션을 모니터링합니다.
 
 <video src="https://static.langfuse.com/docs-videos/dashboard.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
@@ -183,51 +183,51 @@ Playground에서 프롬프트를 즉시 테스트하십시오.
 </TabItem>
 </Tabs>
 
-### 평가 & 데이터셋 \{#evaluation\}
+### 평가 & datasets \{#evaluation\}
 
-[평가](/docs/evaluation/overview)는 LLM 애플리케이션의 품질과 신뢰성을 보장하는 데 매우 중요합니다. Langfuse는 개발 환경에서의 테스트부터 프로덕션 성능 모니터링까지, 구체적인 요구사항에 맞게 사용할 수 있는 유연한 평가 도구를 제공합니다.
+[평가](/docs/evaluation/overview)는 LLM 애플리케이션의 품질과 신뢰성을 보장하는 데 매우 중요합니다. Langfuse는 개발 중 테스트하든 프로덕션 성능을 모니터링하든, 구체적인 요구 사항에 맞게 조정할 수 있는 유연한 평가 도구를 제공합니다.
 
-_📹 더 알고 싶다면 Langfuse Evaluation과 이를 활용해 LLM 애플리케이션을 개선하는 방법에 대한 [**엔드 투 엔드 워크스루 데모 영상**](https://langfuse.com/watch-demo?tab=evaluation)을 시청하십시오._
+_📹 더 알고 싶으신가요? Langfuse Evaluation과 이를 사용해 LLM 애플리케이션을 개선하는 방법에 대한 [**엔드 투 엔드 데모 영상**](https://langfuse.com/watch-demo?tab=evaluation)을 시청해 보세요._
 
 <Tabs groupId="evaluation">
 <TabItem value="analytics" label="Analytics">
 
-Langfuse Dashboard에서 평가 결과를 시각화합니다.
+Langfuse 대시보드에서 평가 결과를 시각화합니다.
 
 <video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
 <TabItem value="user-feedback" label="User Feedback">
 
-사용자로부터 피드백을 수집합니다. Browser SDK를 사용하는 프론트엔드나 SDKS 또는 API를 사용하는 서버 측에서 캡처할 수 있습니다. 영상에는 예시 애플리케이션이 포함되어 있습니다.
+사용자로부터 피드백을 수집합니다. 프런트엔드에서는 Browser SDK를 통해, 서버 측에서는 SDKs 또는 API를 통해 수집할 수 있습니다. 영상에는 예제 애플리케이션이 포함되어 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/scores-user-feedback.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
 <TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
 
-프로덕션 또는 개발 트레이스에서 완전 관리형 LLM-as-a-judge 평가를 실행합니다. 애플리케이션 내 임의의 단계에 적용하여 단계별(step-wise) 평가를 수행할 수 있습니다.
+프로덕션 또는 개발 트레이스에서 완전 관리형 LLM-as-a-judge 평가를 실행합니다. 애플리케이션 내 모든 단계에 적용해 단계별 평가를 수행할 수 있습니다.
 
 <video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
 <TabItem value="experiments" label="Experiments">
 
-데이터셋에 대해 프롬프트와 모델을 사용자 인터페이스에서 직접 평가합니다. 별도의 커스텀 코드는 필요하지 않습니다.
+사용자 인터페이스에서 직접 데이터셋에 대해 프롬프트와 모델을 평가합니다. 별도의 커스텀 코드는 필요하지 않습니다.
 
 <video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
 <TabItem value="annotation-queue" label="Annotation Queue">
 
-Annotation Queue를 통한 사람 기반 어노테이션으로 평가 워크플로의 기준선을 마련합니다.
+Annotation Queue를 통한 사람의 어노테이션으로 평가 워크플로의 기준선을 마련합니다.
 
 <video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
 
 </TabItem>
 <TabItem value="custom-evals" label="Custom Evals">
 
-사용자 정의 평가 결과를 추가합니다. 숫자형, 불리언(boolean), 범주형 값을 지원합니다.
+커스텀 평가 결과를 추가할 수 있으며, 숫자형, 불리언, 범주형 값을 지원합니다.
 
 ```bash
 POST /api/public/scores

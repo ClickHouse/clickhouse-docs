@@ -58,7 +58,7 @@ import permissions from '@site/static/images/integrations/data-ingestion/clickpi
   ## データ形式を選択する \{#select-data-format\}
 
   1. ファイルタイプを選択します。
-  2. ファイル圧縮形式を選択します（`detect automatically`, `none`, `gzip`, `brotli`, `xz`, `zstd` のいずれか）。
+  2. ファイル圧縮形式を選択します (`detect automatically`, `none`, `gzip`, `brotli`, `xz`, `zstd` のいずれか) 。
   3. カンマ区切り形式で使用される区切り文字など、追加のフォーマット固有の設定を行います。
   4. **Parse information** をクリックします。
 

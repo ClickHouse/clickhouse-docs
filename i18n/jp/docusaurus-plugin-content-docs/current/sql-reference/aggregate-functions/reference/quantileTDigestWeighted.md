@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 数値データシーケンスに対して [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを使用して、おおよその[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 この関数は、シーケンス内の各要素の重みを考慮に入れます。
@@ -22,7 +22,7 @@ State サイズと精度の比率という観点では、この関数は `quanti
 
 結果はクエリの実行順序に依存し、非決定的です。
 
-同じクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来可能な場合ほど効率的に動作しません）。
+同じクエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来可能な場合ほど効率的に動作しません) 。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 :::note

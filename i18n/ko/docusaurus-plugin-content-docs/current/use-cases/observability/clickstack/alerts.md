@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'ClickStack로 검색하기'
+title: 'ClickStack에서 알림 사용하기'
 sidebar_label: '알림'
 pagination_prev: null
 pagination_next: null
@@ -24,14 +24,12 @@ import remove_chart_alert from '@site/static/images/use-cases/observability/remo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+ClickStack에는 알림 기능이 기본으로 포함되어 있어 로그, 메트릭, 트레이스 전반에서 팀이 실시간으로 문제를 감지하고 대응할 수 있습니다.
 
-## ClickStack의 경보(Alerting) \{#alerting-in-clickstack\}
+알림은 HyperDX 인터페이스에서 직접 생성할 수 있으며 Slack, PagerDuty와 같은 대표적인 알림 시스템과 연동됩니다.
 
-ClickStack에는 경보(Alerting)에 대한 기본 제공 기능이 포함되어 있어 로그, 메트릭, 트레이스 전반에서 팀이 문제를 실시간으로 감지하고 대응할 수 있습니다.
+알림 기능은 ClickStack 데이터 전반에서 원활하게 동작하여 시스템 상태를 추적하고, 성능 회귀(regression)를 포착하며, 주요 비즈니스 이벤트를 모니터링하는 데 도움이 됩니다.
 
-경보는 HyperDX 인터페이스에서 직접 생성할 수 있으며, Slack, PagerDuty와 같은 널리 사용되는 알림 시스템과 연동됩니다.
-
-경보 기능은 ClickStack 데이터 전반에서 원활하게 작동하여 시스템 상태를 추적하고 성능 회귀를 감지하며 핵심 비즈니스 이벤트를 모니터링하는 데 도움이 됩니다.
 
 ## 알림 유형 \{#types-of-alerts\}
 

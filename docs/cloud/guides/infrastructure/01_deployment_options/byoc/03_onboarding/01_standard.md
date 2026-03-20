@@ -21,7 +21,7 @@ With standard onboarding, you simply provide a dedicated AWS account/GCP project
 
 Customers are strongly recommended to prepare a **dedicated** AWS account or GCP project for hosting the ClickHouse BYOC deployment to ensure better isolation in terms of permissions and resources. ClickHouse will deploy a dedicated set of cloud resources (VPC, Kubernetes cluster, IAM roles, S3 buckets, etc.) in your account.
 
-If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization) documentation.
+If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) documentation.
 
 ## Request access {#request-access}
 

@@ -142,203 +142,204 @@ GRANT SELECT(foo) ON db.table* TO john -- wrong
 
 ClickHouse 中的权限层级如下所示：
 
-* [`ALL`](#all)
-  * [`访问控制`](#access-management)
-    * `ALLOW SQL SECURITY NONE`
-    * `ALTER QUOTA`
-    * `ALTER ROLE`
-    * `ALTER ROW POLICY`
-    * `ALTER SETTINGS PROFILE`
-    * `ALTER USER`
-    * `CREATE QUOTA`
-    * `CREATE ROLE`
-    * `CREATE ROW POLICY`
-    * `CREATE SETTINGS PROFILE`
-    * `CREATE USER`
-    * `DROP QUOTA`
-    * `DROP ROLE`
-    * `DROP ROW POLICY`
-    * `DROP SETTINGS PROFILE`
-    * `DROP USER`
-    * `ROLE ADMIN`
-    * `SHOW ACCESS`
-      * `SHOW QUOTAS`
-      * `SHOW ROLES`
-      * `SHOW ROW POLICIES`
-      * `SHOW SETTINGS PROFILES`
-      * `SHOW USERS`
-  * [`ALTER`](#alter)
-    * `ALTER DATABASE`
-      * `ALTER DATABASE SETTINGS`
-    * `ALTER TABLE`
-      * `ALTER COLUMN`
-        * `ALTER ADD COLUMN`
-        * `ALTER CLEAR COLUMN`
-        * `ALTER COMMENT COLUMN`
-        * `ALTER DROP COLUMN`
-        * `ALTER MATERIALIZE COLUMN`
-        * `ALTER MODIFY COLUMN`
-        * `ALTER RENAME COLUMN`
-      * `ALTER CONSTRAINT`
-        * `ALTER ADD CONSTRAINT`
-        * `ALTER DROP CONSTRAINT`
-      * `ALTER DELETE`
-      * `ALTER FETCH PARTITION`
-      * `ALTER FREEZE PARTITION`
-      * `ALTER INDEX`
-        * `ALTER ADD INDEX`
-        * `ALTER CLEAR INDEX`
-        * `ALTER DROP INDEX`
-        * `ALTER MATERIALIZE INDEX`
-        * `ALTER ORDER BY`
-        * `ALTER SAMPLE BY`
-      * `ALTER MATERIALIZE TTL`
-      * `ALTER MODIFY COMMENT`
-      * `ALTER MOVE PARTITION`
-      * `ALTER PROJECTION`
-      * `ALTER SETTINGS`
-      * `ALTER STATISTICS`
-        * `ALTER ADD STATISTICS`
-        * `ALTER DROP STATISTICS`
-        * `ALTER MATERIALIZE STATISTICS`
-        * `ALTER MODIFY STATISTICS`
-      * `ALTER TTL`
-      * `ALTER UPDATE`
-    * `ALTER VIEW`
-      * `ALTER VIEW MODIFY QUERY`
-      * `ALTER VIEW REFRESH`
-      * `ALTER VIEW MODIFY SQL SECURITY`
-  * [`BACKUP`](#backup)
-  * [`CLUSTER`](#cluster)
-  * [`CREATE`](#create)
-    * `CREATE ARBITRARY TEMPORARY TABLE`
-      * `CREATE TEMPORARY TABLE`
-    * `CREATE DATABASE`
-    * `CREATE DICTIONARY`
-    * `CREATE FUNCTION`
-    * `CREATE RESOURCE`
-    * `CREATE TABLE`
-    * `CREATE VIEW`
-    * `CREATE WORKLOAD`
-  * [`dictGet`](#dictget)
-  * [`displaySecretsInShowAndSelect`](#displaysecretsinshowandselect)
-  * [`DROP`](#drop)
-    * `DROP DATABASE`
-    * `DROP DICTIONARY`
-    * `DROP FUNCTION`
-    * `DROP RESOURCE`
-    * `DROP TABLE`
-    * `DROP VIEW`
-    * `DROP WORKLOAD`
-  * [`INSERT`](#insert)
-  * [`内省`](#introspection)
-    * `addressToLine`
-    * `addressToLineWithInlines`
-    * `addressToSymbol`
-    * `demangle`
-  * `KILL QUERY`
-  * `KILL TRANSACTION`
-  * `在分片之间移动分区`
-  * [`命名集合管理`](#named-collection-admin)
-    * `ALTER NAMED COLLECTION`
-    * `CREATE NAMED COLLECTION`
-    * `DROP NAMED COLLECTION`
-    * `NAMED COLLECTION`
-    * `SHOW NAMED COLLECTIONS`
-    * `SHOW NAMED COLLECTIONS SECRETS`
-  * [`OPTIMIZE`](#optimize)
-  * [`SELECT`](#select)
-  * [`SET DEFINER`](/sql-reference/statements/create/view#sql_security)
-  * [`SHOW`](#show)
-    * `SHOW COLUMNS`
-    * `SHOW DATABASES`
-    * `SHOW DICTIONARIES`
-    * `SHOW TABLES`
-  * `SHOW FILESYSTEM CACHES`
-  * [`来源`](#sources)
-    * `AZURE`
-    * `FILE`
-    * `HDFS`
-    * `HIVE`
-    * `JDBC`
-    * `KAFKA`
-    * `MONGO`
-    * `MYSQL`
-    * `NATS`
-    * `ODBC`
-    * `POSTGRES`
-    * `RABBITMQ`
-    * `REDIS`
-    * `REMOTE`
-    * `S3`
-    * `SQLITE`
-    * `URL`
-  * [`SYSTEM`](#system)
-    * `SYSTEM CLEANUP`
-    * `SYSTEM DROP CACHE`
-      * `SYSTEM DROP COMPILED EXPRESSION CACHE`
-      * `SYSTEM DROP CONNECTIONS CACHE`
-      * `SYSTEM DROP DISTRIBUTED CACHE`
-      * `SYSTEM DROP DNS CACHE`
-      * `SYSTEM DROP FILESYSTEM CACHE`
-      * `SYSTEM DROP FORMAT SCHEMA CACHE`
-      * `SYSTEM DROP MARK CACHE`
-      * `SYSTEM DROP MMAP CACHE`
-      * `SYSTEM DROP PAGE CACHE`
-      * `SYSTEM DROP PRIMARY INDEX CACHE`
-      * `SYSTEM DROP QUERY CACHE`
-      * `SYSTEM DROP S3 CLIENT CACHE`
-      * `SYSTEM DROP SCHEMA CACHE`
-      * `SYSTEM DROP UNCOMPRESSED CACHE`
-    * `SYSTEM DROP PRIMARY INDEX CACHE`
-    * `SYSTEM DROP REPLICA`
-    * `SYSTEM FAILPOINT`
-    * `SYSTEM FETCHES`
-    * `SYSTEM FLUSH`
-      * `SYSTEM FLUSH ASYNC INSERT QUEUE`
-      * `SYSTEM FLUSH LOGS`
-    * `SYSTEM JEMALLOC`
-    * `SYSTEM KILL QUERY`
-    * `SYSTEM KILL TRANSACTION`
-    * `SYSTEM LISTEN`
-    * `SYSTEM LOAD PRIMARY KEY`
-    * `SYSTEM MERGES`
-    * `SYSTEM MOVES`
-    * `SYSTEM PULLING REPLICATION LOG`
-    * `SYSTEM REDUCE BLOCKING PARTS`
-    * `SYSTEM REPLICATION QUEUES`
-    * `SYSTEM REPLICA READINESS`
-    * `SYSTEM RESTART DISK`
-    * `SYSTEM RESTART REPLICA`
-    * `SYSTEM RESTORE REPLICA`
-    * `SYSTEM RELOAD`
-      * `SYSTEM RELOAD ASYNCHRONOUS METRICS`
-      * `SYSTEM RELOAD CONFIG`
-        * `SYSTEM RELOAD DICTIONARY`
-        * `SYSTEM RELOAD EMBEDDED DICTIONARIES`
-        * `SYSTEM RELOAD FUNCTION`
-        * `SYSTEM RELOAD MODEL`
-        * `SYSTEM RELOAD USERS`
-    * `SYSTEM SENDS`
-      * `SYSTEM DISTRIBUTED SENDS`
-      * `SYSTEM REPLICATED SENDS`
-    * `SYSTEM SHUTDOWN`
-    * `SYSTEM SYNC DATABASE REPLICA`
-    * `SYSTEM SYNC FILE CACHE`
-    * `SYSTEM SYNC FILESYSTEM CACHE`
-    * `SYSTEM SYNC REPLICA`
-    * `SYSTEM SYNC TRANSACTION LOG`
-    * `SYSTEM THREAD FUZZER`
-    * `SYSTEM TTL MERGES`
-    * `SYSTEM UNFREEZE`
-    * `SYSTEM UNLOAD PRIMARY KEY`
-    * `SYSTEM VIEWS`
-    * `SYSTEM VIRTUAL PARTS UPDATE`
-    * `SYSTEM WAIT LOADING PARTS`
-  * [`TABLE ENGINE`](#table-engine)
-  * [`TRUNCATE`](#truncate)
-  * `UNDROP TABLE`
-* [`NONE`](#none)
+- [`ALL`](#all)
+  - [`访问管理`](#access-management)
+    - `ALLOW SQL SECURITY NONE`
+    - `ALTER QUOTA`
+    - `ALTER ROLE`
+    - `ALTER ROW POLICY`
+    - `ALTER SETTINGS PROFILE`
+    - `ALTER USER`
+    - `CREATE QUOTA`
+    - `CREATE ROLE`
+    - `CREATE ROW POLICY`
+    - `CREATE SETTINGS PROFILE`
+    - `CREATE USER`
+    - `DROP QUOTA`
+    - `DROP ROLE`
+    - `DROP ROW POLICY`
+    - `DROP SETTINGS PROFILE`
+    - `DROP USER`
+    - `ROLE ADMIN`
+    - `SHOW ACCESS`
+      - `SHOW QUOTAS`
+      - `SHOW ROLES`
+      - `SHOW ROW POLICIES`
+      - `SHOW SETTINGS PROFILES`
+      - `SHOW USERS`
+  - [`ALTER`](#alter)
+    - `ALTER DATABASE`
+      - `ALTER DATABASE SETTINGS`
+    - `ALTER TABLE`
+      - `ALTER COLUMN`
+        - `ALTER ADD COLUMN`
+        - `ALTER CLEAR COLUMN`
+        - `ALTER COMMENT COLUMN`
+        - `ALTER DROP COLUMN`
+        - `ALTER MATERIALIZE COLUMN`
+        - `ALTER MODIFY COLUMN`
+        - `ALTER RENAME COLUMN`
+      - `ALTER CONSTRAINT`
+        - `ALTER ADD CONSTRAINT`
+        - `ALTER DROP CONSTRAINT`
+      - `ALTER DELETE`
+      - `ALTER FETCH PARTITION`
+      - `ALTER FREEZE PARTITION`
+      - `ALTER INDEX`
+        - `ALTER ADD INDEX`
+        - `ALTER CLEAR INDEX`
+        - `ALTER DROP INDEX`
+        - `ALTER MATERIALIZE INDEX`
+        - `ALTER ORDER BY`
+        - `ALTER SAMPLE BY`
+      - `ALTER MATERIALIZE TTL`
+      - `ALTER MODIFY COMMENT`
+      - `ALTER MOVE PARTITION`
+      - `ALTER PROJECTION`
+      - `ALTER SETTINGS`
+      - `ALTER STATISTICS`
+        - `ALTER ADD STATISTICS`
+        - `ALTER DROP STATISTICS`
+        - `ALTER MATERIALIZE STATISTICS`
+        - `ALTER MODIFY STATISTICS`
+      - `ALTER TTL`
+      - `ALTER UPDATE`
+      - `ALTER TABLE EXECUTE`
+    - `ALTER VIEW`
+      - `ALTER VIEW MODIFY QUERY`
+      - `ALTER VIEW REFRESH`
+      - `ALTER VIEW MODIFY SQL SECURITY`
+  - [`BACKUP`](#backup)
+  - [`CLUSTER`](#cluster)
+  - [`CREATE`](#create)
+    - `CREATE ARBITRARY TEMPORARY TABLE`
+      - `CREATE TEMPORARY TABLE`
+    - `CREATE DATABASE`
+    - `CREATE DICTIONARY`
+    - `CREATE FUNCTION`
+    - `CREATE RESOURCE`
+    - `CREATE TABLE`
+    - `CREATE VIEW`
+    - `CREATE WORKLOAD`
+  - [`dictGet`](#dictget)
+  - [`displaySecretsInShowAndSelect`](#displaysecretsinshowandselect)
+  - [`DROP`](#drop)
+    - `DROP DATABASE`
+    - `DROP DICTIONARY`
+    - `DROP FUNCTION`
+    - `DROP RESOURCE`
+    - `DROP TABLE`
+    - `DROP VIEW`
+    - `DROP WORKLOAD`
+  - [`INSERT`](#insert)
+  - [`自省`](#introspection)
+    - `addressToLine`
+    - `addressToLineWithInlines`
+    - `addressToSymbol`
+    - `demangle`
+  - `KILL QUERY`
+  - `KILL TRANSACTION`
+  - `在分片之间移动分区`
+  - [`NAMED COLLECTION ADMIN`](#named-collection-admin)
+    - `ALTER NAMED COLLECTION`
+    - `CREATE NAMED COLLECTION`
+    - `DROP NAMED COLLECTION`
+    - `NAMED COLLECTION`
+    - `SHOW NAMED COLLECTIONS`
+    - `SHOW NAMED COLLECTIONS SECRETS`
+  - [`OPTIMIZE`](#optimize)
+  - [`SELECT`](#select)
+  - [`SET DEFINER`](/sql-reference/statements/create/view#sql_security)
+  - [`SHOW`](#show)
+    - `SHOW COLUMNS`
+    - `SHOW DATABASES`
+    - `SHOW DICTIONARIES`
+    - `SHOW TABLES`
+  - `SHOW FILESYSTEM CACHES`
+  - [`SOURCES`](#sources)
+    - `AZURE`
+    - `FILE`
+    - `HDFS`
+    - `HIVE`
+    - `JDBC`
+    - `KAFKA`
+    - `MONGO`
+    - `MYSQL`
+    - `NATS`
+    - `ODBC`
+    - `POSTGRES`
+    - `RABBITMQ`
+    - `REDIS`
+    - `REMOTE`
+    - `S3`
+    - `SQLITE`
+    - `URL`
+  - [`SYSTEM`](#system)
+    - `SYSTEM CLEANUP`
+    - `SYSTEM DROP CACHE`
+      - `SYSTEM DROP COMPILED EXPRESSION CACHE`
+      - `SYSTEM DROP CONNECTIONS CACHE`
+      - `SYSTEM DROP DISTRIBUTED CACHE`
+      - `SYSTEM DROP DNS CACHE`
+      - `SYSTEM DROP FILESYSTEM CACHE`
+      - `SYSTEM DROP FORMAT SCHEMA CACHE`
+      - `SYSTEM DROP MARK CACHE`
+      - `SYSTEM DROP MMAP CACHE`
+      - `SYSTEM DROP PAGE CACHE`
+      - `SYSTEM DROP PRIMARY INDEX CACHE`
+      - `SYSTEM DROP QUERY CACHE`
+      - `SYSTEM DROP S3 CLIENT CACHE`
+      - `SYSTEM DROP SCHEMA CACHE`
+      - `SYSTEM DROP UNCOMPRESSED CACHE`
+    - `SYSTEM DROP PRIMARY INDEX CACHE`
+    - `SYSTEM DROP REPLICA`
+    - `SYSTEM FAILPOINT`
+    - `SYSTEM FETCHES`
+    - `SYSTEM FLUSH`
+      - `SYSTEM FLUSH ASYNC INSERT QUEUE`
+      - `SYSTEM FLUSH LOGS`
+    - `SYSTEM JEMALLOC`
+    - `SYSTEM KILL QUERY`
+    - `SYSTEM KILL TRANSACTION`
+    - `SYSTEM LISTEN`
+    - `SYSTEM LOAD PRIMARY KEY`
+    - `SYSTEM MERGES`
+    - `SYSTEM MOVES`
+    - `SYSTEM PULLING REPLICATION LOG`
+    - `SYSTEM REDUCE BLOCKING PARTS`
+    - `SYSTEM REPLICATION QUEUES`
+    - `SYSTEM REPLICA READINESS`
+    - `SYSTEM RESTART DISK`
+    - `SYSTEM RESTART REPLICA`
+    - `SYSTEM RESTORE REPLICA`
+    - `SYSTEM RELOAD`
+      - `SYSTEM RELOAD ASYNCHRONOUS METRICS`
+      - `SYSTEM RELOAD CONFIG`
+        - `SYSTEM RELOAD DICTIONARY`
+        - `SYSTEM RELOAD EMBEDDED DICTIONARIES`
+        - `SYSTEM RELOAD FUNCTION`
+        - `SYSTEM RELOAD MODEL`
+        - `SYSTEM RELOAD USERS`
+    - `SYSTEM SENDS`
+      - `SYSTEM DISTRIBUTED SENDS`
+      - `SYSTEM REPLICATED SENDS`
+    - `SYSTEM SHUTDOWN`
+    - `SYSTEM SYNC DATABASE REPLICA`
+    - `SYSTEM SYNC FILE CACHE`
+    - `SYSTEM SYNC FILESYSTEM CACHE`
+    - `SYSTEM SYNC REPLICA`
+    - `SYSTEM SYNC TRANSACTION LOG`
+    - `SYSTEM THREAD FUZZER`
+    - `SYSTEM TTL MERGES`
+    - `SYSTEM UNFREEZE`
+    - `SYSTEM UNLOAD PRIMARY KEY`
+    - `SYSTEM VIEWS`
+    - `SYSTEM VIRTUAL PARTS UPDATE`
+    - `SYSTEM WAIT LOADING PARTS`
+  - [`TABLE ENGINE`](#table-engine)
+  - [`TRUNCATE`](#truncate)
+  - `UNDROP TABLE`
+- [`NONE`](#none)
 
 以下是该层级关系的处理方式示例：
 
@@ -442,22 +443,23 @@ GRANT INSERT(x,y) ON db.table TO john
   - `ALTER MOVE PARTITION`。级别：`TABLE`。别名：`ALTER MOVE PART`、`MOVE PARTITION`、`MOVE PART`
   - `ALTER FETCH PARTITION`。级别：`TABLE`。别名：`ALTER FETCH PART`、`FETCH PARTITION`、`FETCH PART`
   - `ALTER FREEZE PARTITION`。级别：`TABLE`。别名：`FREEZE PARTITION`
+  - `ALTER EXECUTE`。级别：`TABLE`。别名：`ALTER TABLE EXECUTE`
   - `ALTER VIEW`。级别：`GROUP`
   - `ALTER VIEW REFRESH`。级别：`VIEW`。别名：`REFRESH VIEW`
   - `ALTER VIEW MODIFY QUERY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY QUERY`
   - `ALTER VIEW MODIFY SQL SECURITY`。级别：`VIEW`。别名：`ALTER TABLE MODIFY SQL SECURITY`
 
-以下是该层级的使用示例：
+以下是该层级的处理示例：
 
 - `ALTER` 权限包含所有其他 `ALTER*` 权限。
 - `ALTER CONSTRAINT` 包含 `ALTER ADD CONSTRAINT` 和 `ALTER DROP CONSTRAINT` 权限。
 
-**说明**
+**注意**
 
 - `MODIFY SETTING` 权限允许修改表引擎设置。它不影响设置或服务器配置参数。
-- `ATTACH` 操作需要具有 [CREATE](#create) 权限。
-- `DETACH` 操作需要具有 [DROP](#drop) 权限。
-- 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止一次 mutation，需要具有启动该 mutation 的相应权限。例如，如果你想停止 `ALTER UPDATE` 查询，你需要具有 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
+- `ATTACH` 操作需要 [CREATE](#create) 权限。
+- `DETACH` 操作需要 [DROP](#drop) 权限。
+- 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止 mutation，你需要拥有启动该 mutation 的权限。例如，如果你想停止 `ALTER UPDATE` 查询，则需要 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
 
 ### BACKUP \{#backup\}
 

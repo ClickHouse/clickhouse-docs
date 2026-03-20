@@ -25,31 +25,15 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 ```
 
 
-## USING 절 \{#using-clause\}
+## USING Clause \{#using-clause\}
 
-조건을 지정하여 행을 필터링합니다. 조건을 평가한 결과가 해당 행에서 0이 아닌 값이면 그 행이 표시됩니다.
-
-
+이 절을 사용하면 조건을 지정하여 행을 필터링할 수 있습니다. 사용자는 해당 행에 대해 조건 계산 결과가 0이 아니면 그 행을 보게 됩니다.
 
 ## TO 절 \{#to-clause\}
 
 `TO` 섹션에서는 이 policy가 적용되어야 하는 사용자와 역할 목록을 지정할 수 있습니다. 예를 들어 `CREATE ROW POLICY ... TO accountant, john@localhost` 와 같이 사용할 수 있습니다.
 
 키워드 `ALL` 은 현재 사용자를 포함한 모든 ClickHouse 사용자를 의미합니다. 키워드 `ALL EXCEPT` 은 전체 사용자 목록에서 일부 사용자를 제외할 수 있습니다. 예를 들어 `CREATE ROW POLICY ... TO ALL EXCEPT accountant, john@localhost` 와 같이 사용할 수 있습니다.
-
-:::note
-어떤 테이블에 대해서도 row policy가 정의되어 있지 않으면, 모든 사용자가 그 테이블에서 `SELECT` 를 통해 모든 행을 조회할 수 있습니다. 테이블에 하나 이상의 row policy를 정의하면, 현재 사용자에 대해 해당 row policy가 정의되어 있는지와 관계없이 테이블에 대한 접근은 row policy에 따라 결정됩니다. 예를 들어, 다음과 같은 policy는
-
-`CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter`
-
-사용자 `mira` 와 `peter` 가 `b != 1` 인 행을 보지 못하도록 제한하며, 언급되지 않은 다른 모든 사용자(예: 사용자 `paul`)는 `mydb.table1` 에서 어떤 행도 볼 수 없게 됩니다.
-
-이것이 바람직하지 않다면, 다음과 같이 row policy를 하나 더 추가하여 해결할 수 있습니다.
-
-`CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
-:::
-
-
 
 ## AS 절 \{#as-clause\}
 
@@ -75,7 +59,7 @@ row_is_visible = (one or more of the permissive policies' conditions are non-zer
                  (all of the restrictive policies's conditions are non-zero)
 ```
 
-예를 들어, 다음과 같은 정책을 들 수 있습니다.
+예를 들어, 다음과 같은 정책이 있습니다:
 
 ```sql
 CREATE ROW POLICY pol1 ON mydb.table1 USING b=1 TO mira, peter
@@ -99,8 +83,6 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ## ON CLUSTER 절 \{#on-cluster-clause\}
 
 이 절을 사용하면 클러스터에서 행 정책을 생성할 수 있습니다. 자세한 내용은 [분산 DDL](../../../sql-reference/distributed-ddl.md)을 참고하십시오.
-
-
 
 ## 예시 \{#examples\}
 

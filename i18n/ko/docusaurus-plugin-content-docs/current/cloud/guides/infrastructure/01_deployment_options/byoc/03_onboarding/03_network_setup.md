@@ -86,71 +86,70 @@ ClickHouse에 프라이빗하게 액세스할 수 있도록, 사용자 피어링
 AWS PrivateLink은 VPC 피어링이나 인터넷 게이트웨이 없이도 ClickHouse BYOC 서비스에 대한 안전한 프라이빗 연결을 제공합니다. 트래픽은 AWS 네트워크 내에서만 흐르며, 공용 인터넷을 통과하지 않습니다.
 
 <VerticalStepper headerLevel="h3">
+  ### PrivateLink 설정 요청
 
-### PrivateLink 설정 요청 \{#step-1-request-privatelink-setup\}
+  BYOC 배포에 대한 PrivateLink 설정을 요청하려면 [ClickHouse Support](https://clickhouse.com/cloud/bring-your-own-cloud)에 문의하십시오. 이 단계에서는 별도의 구체적인 정보가 필요하지 않으며, PrivateLink 연결을 설정하려 한다는 점만 알리면 됩니다.
 
-BYOC 배포에 대한 PrivateLink 설정을 요청하려면 [ClickHouse Support](https://clickhouse.com/cloud/bring-your-own-cloud)에 문의하십시오. 이 단계에서는 별도의 구체적인 정보가 필요하지 않으며, PrivateLink 연결을 설정하려 한다는 점만 알리면 됩니다.
+  ClickHouse Support는 **프라이빗 로드 밸런서**와 **PrivateLink 서비스 엔드포인트**를 포함한 필요한 인프라 구성 요소를 활성화합니다.
 
-ClickHouse Support는 **프라이빗 로드 밸런서**와 **PrivateLink 서비스 엔드포인트**를 포함한 필요한 인프라 구성 요소를 활성화합니다.
+  ### VPC에 엔드포인트 생성
 
-### VPC에 엔드포인트 생성 \{#step-2-create-endpoint\}
+  ClickHouse Support 측에서 PrivateLink가 활성화된 후, ClickHouse PrivateLink 서비스에 연결하기 위해 클라이언트 애플리케이션 VPC에 VPC 엔드포인트를 생성해야 합니다.
 
-ClickHouse Support 측에서 PrivateLink가 활성화된 후, ClickHouse PrivateLink 서비스에 연결하기 위해 클라이언트 애플리케이션 VPC에 VPC 엔드포인트를 생성해야 합니다.
+  1. **엔드포인트 서비스 이름 확인**:
+     * ClickHouse Support가 엔드포인트 서비스 이름을 제공합니다.
+     * AWS VPC 콘솔의 「Endpoint Services」에서 해당 이름을 확인할 수도 있습니다(서비스 이름으로 필터링하거나 ClickHouse 서비스를 찾으십시오).
 
-1. **엔드포인트 서비스 이름 확인**:
-   - ClickHouse Support가 엔드포인트 서비스 이름을 제공합니다.
-   - AWS VPC 콘솔의 「Endpoint Services」에서 해당 이름을 확인할 수도 있습니다(서비스 이름으로 필터링하거나 ClickHouse 서비스를 찾으십시오).
+  <Image img={byoc_privatelink_1} size="lg" alt="BYOC PrivateLink Service Endpoint" border />
 
-<Image img={byoc_privatelink_1} size="lg" alt="BYOC PrivateLink Service Endpoint" border />
+  2. **VPC 엔드포인트 생성**:
+     * AWS VPC 콘솔 → 「Endpoints」 → 「Create Endpoint」로 이동합니다.
+     * 「Find service by name」을 선택하고 ClickHouse Support에서 제공한 엔드포인트 서비스 이름을 입력합니다.
+     * VPC를 선택하고 서브넷을 선택합니다(가용 영역마다 하나씩 선택하는 것을 권장합니다).
+     * **중요**: 엔드포인트에 대해 「Private DNS names」를 활성화하십시오. DNS 해석이 올바르게 동작하려면 이 설정이 필요합니다.
+     * 엔드포인트용 보안 그룹을 선택하거나 생성합니다.
+     * 「Create Endpoint」를 클릭합니다.
 
-2. **VPC 엔드포인트 생성**:
-   - AWS VPC 콘솔 → 「Endpoints」 → 「Create Endpoint」로 이동합니다.
-   - 「Find service by name」을 선택하고 ClickHouse Support에서 제공한 엔드포인트 서비스 이름을 입력합니다.
-   - VPC를 선택하고 서브넷을 선택합니다(가용 영역마다 하나씩 선택하는 것을 권장합니다).
-   - **중요**: 엔드포인트에 대해 「Private DNS names」를 활성화하십시오. DNS 해석이 올바르게 동작하려면 이 설정이 필요합니다.
-   - 엔드포인트용 보안 그룹을 선택하거나 생성합니다.
-   - 「Create Endpoint」를 클릭합니다.
+  :::important
+  **DNS 요구 사항**:
 
-:::important
-**DNS 요구 사항**: 
-- VPC 엔드포인트를 생성할 때 「Private DNS names」를 활성화하십시오.
-- VPC 설정에서 「DNS Hostnames」가 활성화되어 있는지 확인하십시오(VPC Settings → DNS resolution 및 DNS hostnames).
+  * VPC 엔드포인트를 생성할 때 「Private DNS names」를 활성화하십시오.
+  * VPC 설정에서 「DNS Hostnames」가 활성화되어 있는지 확인하십시오(VPC Settings → DNS resolution 및 DNS hostnames).
 
-이 설정은 PrivateLink DNS가 올바르게 동작하는 데 필요합니다.
-:::
+  이 설정은 PrivateLink DNS가 올바르게 동작하는 데 필요합니다.
+  :::
 
-3. **엔드포인트 연결 승인**:
-   - 엔드포인트를 생성한 후, 연결 요청을 승인해야 합니다.
-   - VPC 콘솔에서 「Endpoint Connections」로 이동합니다. 
-   - ClickHouse에서 온 연결 요청을 찾아 「Accept」를 클릭하여 승인합니다.
+  3. **엔드포인트 연결 승인**:
+     * 엔드포인트를 생성한 후, 연결 요청을 승인해야 합니다.
+     * VPC 콘솔에서 「Endpoint Connections」로 이동합니다.
+     * ClickHouse에서 온 연결 요청을 찾아 「Accept」를 클릭하여 승인합니다.
 
-<Image img={byoc_privatelink_2} size="lg" alt="BYOC PrivateLink Approve" border />
+  <Image img={byoc_privatelink_2} size="lg" alt="BYOC PrivateLink Approve" border />
 
-### 서비스 허용 목록에 엔드포인트 ID 추가 \{#step-3-add-endpoint-id-allowlist\}
+  ### 서비스 허용 목록에 엔드포인트 ID 추가
 
-VPC 엔드포인트가 생성되고 연결이 승인된 후, PrivateLink를 통해 액세스하려는 각 ClickHouse 서비스의 허용 목록(allowlist)에 엔드포인트 ID를 추가해야 합니다.
+  VPC 엔드포인트가 생성되고 연결이 승인된 후, PrivateLink를 통해 액세스하려는 각 ClickHouse 서비스의 허용 목록(allowlist)에 엔드포인트 ID를 추가해야 합니다.
 
-1. **엔드포인트 ID 확인**:
-   - AWS VPC 콘솔에서 「Endpoints」로 이동합니다.
-   - 새로 생성한 엔드포인트를 선택합니다.
-   - 엔드포인트 ID를 복사합니다(예: `vpce-xxxxxxxxxxxxxxxxx` 형식).
+  1. **엔드포인트 ID 확인**:
+     * AWS VPC 콘솔에서 「Endpoints」로 이동합니다.
+     * 새로 생성한 엔드포인트를 선택합니다.
+     * 엔드포인트 ID를 복사합니다(예: `vpce-xxxxxxxxxxxxxxxxx` 형식).
 
-2. **ClickHouse Support에 문의**:
-   - 엔드포인트 ID를 ClickHouse Support에 전달합니다.
-   - 이 엔드포인트에서 어떤 ClickHouse 서비스에 대한 액세스를 허용해야 하는지 명시합니다.
-   - ClickHouse Support는 서비스 허용 목록에 해당 엔드포인트 ID를 추가합니다.
+  2. **ClickHouse Support에 문의**:
+     * 엔드포인트 ID들을 ClickHouse Support에 전달합니다.
+     * 이 엔드포인트에서 어떤 ClickHouse 서비스들에 대한 액세스를 허용해야 하는지 명시합니다.
+     * ClickHouse Support는 서비스 허용 목록에 해당 엔드포인트 ID를 추가합니다.
 
-### PrivateLink를 통해 ClickHouse에 연결 \{#step-4-connect-via-privatelink\}
+  ### PrivateLink를 통해 ClickHouse에 연결
 
-엔드포인트 ID가 허용 목록에 추가되면, PrivateLink 엔드포인트를 사용하여 ClickHouse 서비스에 연결할 수 있습니다.
+  엔드포인트 ID가 허용 목록에 추가되면, PrivateLink 엔드포인트를 사용하여 ClickHouse 서비스에 연결할 수 있습니다.
 
-PrivateLink 엔드포인트 형식은 공용 엔드포인트와 유사하지만, `vpce` 서브도메인이 포함됩니다. 예시는 다음과 같습니다.
+  PrivateLink 엔드포인트 형식은 공용 엔드포인트와 유사하지만, `vpce` 서브도메인이 포함됩니다. 예시는 다음과 같습니다.
 
-- **공용 엔드포인트**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
-- **PrivateLink 엔드포인트**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+  * **공용 엔드포인트**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+  * **PrivateLink 엔드포인트**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 
-VPC 내 DNS 해석은 `vpce` 서브도메인 형식을 사용할 때 트래픽을 자동으로 PrivateLink 엔드포인트를 통해 라우팅합니다.
-
+  VPC 내 DNS 해석은 `vpce` 서브도메인 형식을 사용할 때 트래픽을 자동으로 PrivateLink 엔드포인트를 통해 라우팅합니다.
 </VerticalStepper>
 
 ### PrivateLink 액세스 제어 \{#privatelink-access-control\}
@@ -173,6 +172,6 @@ BYOC 엔드포인트용 PrivateLink DNS(`*.vpce.{subdomain}` 형식 사용)은 A
 
 이를 통해 `vpce` 서브도메인을 사용하는 연결은 추가 DNS 구성이 없어도 자동으로 PrivateLink 엔드포인트를 통해 라우팅됩니다.
 
-## VPC 피어링(GCP) 및 Private Service Connect(GCP) \{#setup-gcp\}
+## VPC 피어링(GCP) 및 Private Service Connect(GCP) {#setup-gcp}
 
 GCP VPC 피어링과 Private Service Connect는 GCP 기반 BYOC 배포에서 유사한 프라이빗 연결을 제공합니다. 이 기능은 현재 개발 중입니다. GCP BYOC 배포에서 VPC 피어링이나 Private Service Connect가 필요한 경우, 사용 가능 여부와 설정 요건을 논의하기 위해 [ClickHouse Support에 문의](https://clickhouse.com/cloud/bring-your-own-cloud)하십시오.

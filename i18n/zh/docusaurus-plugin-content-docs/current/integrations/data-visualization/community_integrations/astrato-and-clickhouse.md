@@ -92,7 +92,7 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 通过以下几个步骤，即可在 Astrato 中创建你的第一个图表。
 
 1. 打开可视化面板
-2. 选择一种可视化图表（先从柱状图 Column Bar Chart 开始）
+2. 选择一种可视化图表 (先从柱状图 Column Bar Chart 开始) 
 3. 添加维度
 4. 添加度量值
 

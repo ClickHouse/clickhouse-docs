@@ -172,8 +172,6 @@ hyperdx:
   existingConfigSourcesKey: "sources.json"
 ```
 
-如需查看连接 ClickHouse Cloud 的完整示例，请参阅 [&quot;创建 ClickHouse Cloud 连接&quot;](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)。
-
 
 ## 外部 OTel collector \{#external-otel-collector\}
 

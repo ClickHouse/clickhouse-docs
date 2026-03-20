@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## groupConcat \{#groupConcat\}
 
-導入バージョン: v24.8
+導入バージョン: v24.8.0
 
 文字列のグループから連結された文字列を算出します。オプションで区切り文字を指定でき、さらに要素数の上限も指定できます。
 
@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**カンマを区切り文字として使用する（パラメータ構文）**
+**カンマを区切り文字として使用する (パラメータ構文)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**カンマを区切り文字として使う（引数の構文）**
+**カンマを区切り文字として使用する (引数構文)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

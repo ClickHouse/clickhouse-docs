@@ -18,6 +18,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [HOST {LOCAL | NAME 'name' | REGEXP 'name_regexp' | IP 'address' | LIKE 'pattern'} [,...] | ANY | NONE]
     [VALID UNTIL datetime]
     [IN access_storage_type]
+    [ROLE role [,...]]
     [DEFAULT ROLE role [,...]]
     [DEFAULT DATABASE database | NONE]
     [GRANTEES {user | role | ANY | NONE} [,...] [EXCEPT {user | role} [,...]]]
@@ -222,24 +223,22 @@ CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty'
 
 `mira` は、ClickHouse サーバーが稼働しているホスト上でクライアントアプリケーションを起動する必要があります。
 
-ユーザーアカウント `john` を作成し、そのアカウントにロールを割り当て、これらのロールをデフォルトとして設定します。
+ユーザーアカウント `john` を作成し、ロールを割り当てます。
 
 ```sql
-CREATE USER john DEFAULT ROLE role1, role2;
+CREATE USER john ROLE role1, role2;
 ```
 
-ユーザーアカウント `john` を作成し、その後付与するすべてのロールをデフォルトロールとして設定します：
+ユーザーアカウント `john` を作成し、ロールを割り当て、その一部をデフォルトロールとして設定します：
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE role1;
 ```
 
-将来 `john` にロールを割り当てると、それらは自動的にデフォルトロールになります。
-
-ユーザーアカウント `john` を作成し、将来割り当てられるロールのうち `role1` と `role2` 以外はすべて自動的にデフォルトロールになるように設定します:
+または
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE ALL EXCEPT role2;
 ```
 
 ユーザーアカウント `john` を作成し、`john` が自分の権限を `jack` アカウントのユーザーに付与できるようにします：

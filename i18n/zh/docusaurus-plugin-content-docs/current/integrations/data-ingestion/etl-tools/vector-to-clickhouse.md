@@ -23,7 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 实时分析日志对于生产应用程序至关重要。
-ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出色的压缩能力（日志压缩率可达 [170 倍](https://clickhouse.com/blog/log-compression-170x)）以及快速聚合海量数据的能力。
+ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出色的压缩能力 (日志压缩率可达 [170 倍](https://clickhouse.com/blog/log-compression-170x)) 以及快速聚合海量数据的能力。
 
 本指南将介绍如何使用流行的数据管道工具 [Vector](https://vector.dev/docs/about/what-is-vector/) 来跟踪 Nginx 日志文件并将其发送到 ClickHouse。
 以下步骤同样适用于跟踪任何类型的日志文件。
@@ -55,7 +55,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
   ```
 
   :::note
-  由于目前尚不需要主键，因此将 **ORDER BY** 设置为 **tuple()**（空元组）。
+  由于目前尚不需要主键，因此将 **ORDER BY** 设置为 **tuple()** (空元组) 。
   :::
 
   ## 配置 Nginx \{#2--configure-nginx\}
@@ -92,7 +92,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
   Vector 可以收集、转换和路由日志、指标和追踪数据(称为 **sources**)到多个不同的供应商(称为 **sinks**)中,包括开箱即用地兼容 ClickHouse。
   Sources 和 sinks 在名为 **vector.toml** 的配置文件中定义。
 
-  1. 下面的 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，它会以尾部跟踪（tail）的方式读取 **my&#95;access.log** 文件末尾的新内容，同时还定义了一个 **sink**，将数据写入上面定义的 **access&#95;logs** 表：
+  1. 下面的 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，它会以尾部跟踪 (tail) 的方式读取 **my&#95;access.log** 文件末尾的新内容，同时还定义了一个 **sink**，将数据写入上面定义的 **access&#95;logs** 表：
 
   ```bash
   [sources.nginx_logs]

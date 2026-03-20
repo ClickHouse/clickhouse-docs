@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialMovingAverage \{#exponentialMovingAverage\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 指定された時間における値の指数移動平均を計算します。
 
@@ -30,7 +30,7 @@ exponentialMovingAverage(x)(value, timeunit)
 **引数**
 
 * `value` — 値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
-* `timeunit` — 時間単位。時間単位はタイムスタンプ（秒）ではなく、時間間隔のインデックスです。`intDiv` を使用して計算できます。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `timeunit` — 時間単位。時間単位はタイムスタンプ (秒) ではなく、時間間隔のインデックスです。`intDiv` を使用して計算できます。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
 **返される値**
 

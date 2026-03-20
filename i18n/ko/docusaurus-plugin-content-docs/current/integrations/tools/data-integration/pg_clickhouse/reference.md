@@ -350,7 +350,7 @@ DROP FOREIGN TABLE uact CASCADE;
 
 ## DML SQL Reference \{#dml-sql-reference\}
 
-아래 SQL [DML] 구문에서는 pg&#95;clickhouse를 사용합니다. 예제는 [make-logs.sql]로 생성되는 다음 ClickHouse 테이블을 기반으로 합니다.
+아래 SQL [DML] 구문에서는 pg&#95;clickhouse를 사용합니다. 예제는 다음 ClickHouse 테이블을 기반으로 합니다.
 
 ```sql
 CREATE TABLE logs (
@@ -561,6 +561,14 @@ try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
 (5 rows)
 ```
 
+:::warning
+매개변수화된 실행은 [근본적인 버그]가 [수정됨]으로 표시된 25.8 버전보다 이전 ClickHouse에서는
+[http 드라이버](#create-server)가 DateTime 시간대를 올바르게 변환하지 못하게 합니다.
+PostgreSQL이 `PREPARE`를 사용하지 않더라도 매개변수화된 쿼리 플랜을 사용할 때가 있다는 점에
+유의해야 합니다. 시간대 변환의 정확성이 필요한 쿼리에서 25.8 이상으로 업그레이드할 수 없는
+경우에는 대신 [binary 드라이버](#create-server)를 사용하십시오.
+:::
+
 pg&#95;clickhouse는 집계 연산을 평소와 같이 push down 하며, 이는 [EXPLAIN](#explain) verbose 출력에서 확인할 수 있습니다:
 
 ```pgsql
@@ -655,13 +663,14 @@ LOAD
 SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
 ```
 
-기본값은 `join_use_nulls 1`입니다. 빈 문자열로 설정하면 ClickHouse 서버의 설정을 사용합니다.
+기본값은 `join_use_nulls 1`입니다. 빈 문자열로 설정하면 ClickHouse 서버의 설정으로 되돌아갑니다.
 
 ```sql
 SET pg_clickhouse.session_settings = '';
 ```
 
-이 구문은 각 항목이 쉼표로 구분되고, 각 키와 값이 한 칸 이상의 공백으로 구분되는 키/값 쌍 목록입니다. 키는 [ClickHouse settings]와 일치해야 합니다. 값에 포함된 공백, 쉼표, 백슬래시는 역슬래시로 이스케이프합니다:
+이 구문은 각 항목이 쉼표로 구분되고, 각 키와 값이 한 칸 이상의 공백으로 구분되는 키/값 쌍 목록입니다. 키는 [ClickHouse settings]와 일치해야 합니다. 값에 포함된 공백,
+쉼표, 백슬래시는 역슬래시로 이스케이프합니다:
 
 ```sql
 SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
@@ -674,7 +683,7 @@ SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
 ```
 
-가독성을 중시하고 여러 설정을 지정해야 한다면 다음과 같이 여러 줄로 작성하십시오:
+가독성을 중요시하고 많은 설정을 지정해야 한다면, 다음과 같이 여러 줄로 나누어 작성하십시오:
 
 ```sql
 SET pg_clickhouse.session_settings TO $$
@@ -695,7 +704,13 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg&#95;clickhouse는 설정을 검증하지 않고, 모든 쿼리에 대해 설정을 그대로 ClickHouse에 전달합니다. 따라서 각 ClickHouse 버전에 존재하는 모든 설정을 지원합니다.
+일부 설정은 pg&#95;clickhouse 자체의 동작을 방해하는 경우 무시됩니다. 이에 해당하는 설정은 다음과 같습니다:
+
+* `date_time_output_format`: http 드라이버에서는 이 값이 &quot;iso&quot;로 설정되어야 합니다
+* `format_tsv_null_representation`: http 드라이버에서는 기본값이어야 합니다
+* `output_format_tsv_crlf_end_of_line`: http 드라이버에서는 기본값이어야 합니다
+
+Otherwise, pg&#95;clickhouse는 설정을 검증하지 않고, 모든 쿼리에 대해 설정을 그대로 ClickHouse에 전달합니다. 따라서 각 ClickHouse 버전에 존재하는 모든 설정을 지원합니다.
 
 pg&#95;clickhouse는 `pg_clickhouse.session_settings`를 설정하기 전에 로드되어야 합니다. 이를 위해 [shared library preloading]을 사용하거나, 확장에 포함된 객체 중 하나를 사용하여 로드되도록 하면 됩니다.
 
@@ -751,18 +766,16 @@ shared_preload_libraries = pg_clickhouse
 메모리를 절약하고 세션마다 발생하는 로드 오버헤드를 줄이는 데 유용하지만, 라이브러리를 업데이트할 때는 클러스터를 재시작해야 합니다.
 
 
-## FUNCTION 및 연산자 참조 \{#function-and-operator-reference\}
+## 데이터 타입 \{#data-types\}
 
-### 데이터 타입 \{#data-types\}
-
-pg_clickhouse는 다음 ClickHouse 데이터 타입을 PostgreSQL 데이터 타입으로 매핑합니다.
+pg_clickhouse는 다음 ClickHouse 데이터 타입을 PostgreSQL 데이터 타입으로 매핑합니다. [IMPORT FOREIGN SCHEMA](#import-foreign-schema)는 컬럼을 가져올 때 PostgreSQL 컬럼의 첫 번째 타입을 사용하며, 추가 타입은 [CREATE FOREIGN TABLE](#create-foreign-table) SQL 문에서 사용할 수 있습니다:
 
 | ClickHouse |    PostgreSQL    |             비고             |
-| -----------|------------------|-------------------------------|
+|------------|------------------|-------------------------------|
 | Bool       | boolean          |                               |
 | Date       | date             |                               |
 | Date32     | date             |                               |
-| DateTime   | timestamp        |                               |
+| DateTime   | timestamptz      |                               |
 | Decimal    | numeric          |                               |
 | Float32    | real             |                               |
 | Float64    | double precision |                               |
@@ -773,12 +786,131 @@ pg_clickhouse는 다음 ClickHouse 데이터 타입을 PostgreSQL 데이터 타�
 | Int64      | bigint           |                               |
 | Int8       | smallint         |                               |
 | JSON       | jsonb            | HTTP 엔진에서만 사용         |
-| String     | text             |                               |
+| String     | text, bytea      |                               |
 | UInt16     | integer          |                               |
 | UInt32     | bigint           |                               |
 | UInt64     | bigint           | BIGINT 최대값을 초과하는 값에서 오류 발생 |
 | UInt8      | smallint         |                               |
 | UUID       | uuid             |                               |
+
+추가 비고와 세부 사항은 아래를 참조하십시오.
+
+### BYTEA \{#bytea\}
+
+ClickHouse는 PostgreSQL의 [BYTEA] 타입에 해당하는 타입을 제공하지 않지만,
+[String] 타입에 임의의 바이트를 저장할 수 있습니다. 일반적으로 ClickHouse 문자열은
+PostgreSQL의 [TEXT]에 매핑되어야 하지만, 바이너리 데이터를 사용하는 경우 [BYTEA]에
+매핑하십시오. 예시:
+
+```sql
+-- Create clickHouse table with String columns.
+SELECT clickhouse_raw_query($$
+    CREATE TABLE bytes (
+        c1 Int8, c2 String, c3 String
+    ) ENGINE = MergeTree ORDER BY (c1);
+$$);
+
+-- Create foreign table with BYTEA columns.
+CREATE FOREIGN TABLE bytes (
+    c1 int,
+    c2 BYTEA,
+    c3 BYTEA
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Insert binary data into the foreign table.
+INSERT INTO bytes
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the results.
+SELECT * FROM bytes;
+```
+
+마지막 `SELECT` 쿼리의 출력 결과는 다음과 같습니다:
+
+```pgsql
+ c1 |                             c2                             |                 c3
+----+------------------------------------------------------------+------------------------------------
+  1 | \x1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | \xae3b28cde02542f81acce8783245430d
+  2 | \x5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | \x23e7c6cacb8383f878ad093b0027d72b
+  3 | \x53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | \x7e969132fc656148b97b6a2ee8bc83c1
+  4 | \x4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | \x8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+ClickHouse 컬럼에 nul 바이트가 포함된 경우, [TEXT] 컬럼을 사용하는 외부 테이블은 올바른 값을 출력하지 않으니 주의하십시오:
+
+```sql
+-- Create foreign table with TEXT columns.
+CREATE FOREIGN TABLE texts (
+    c1 int,
+    c2 TEXT,
+    c3 TEXT
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Encode binary data as hex.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+출력 결과:
+
+```pgsql
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b
+  3 | 53ac2c1fa83c8f64603fe9568d883331                         | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+2번째와 3번째 행에는 잘린 값이 포함되어 있습니다. 이는 PostgreSQL이 nul 종료 문자열(nul-terminated string)을 사용하며, 문자열 내에 nul을 지원하지 않기 때문입니다.
+
+[TEXT] 컬럼에 이진 값을 삽입하면 성공적으로 처리되며 예상대로 작동합니다:
+
+```sql
+-- Insert via text columns:
+TRUNCATE texts;
+INSERT INTO texts
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the data.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+텍스트 컬럼은 올바르게 표시됩니다:
+
+```pgdsql
+
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b0027d72b
+  3 | 53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+하지만 이를 [BYTEA]로 읽을 때는 그렇지 않습니다:
+
+```pgsql
+# SELECT * FROM bytes;
+ c1 |                                                           c2                                                           |                                   c3
+----+------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------
+  1 | \x5c783162663766306363383231643331313738363136613535613865306335323637373733353339376364646536663431353361396664336437 | \x5c786165336232386364653032353432663831616363653837383332343534333064
+  2 | \x5c783566366539653132636438353932373132653633383031366634623161326537333233306565343064623439386330663062316463383431 | \x5c783233653763366361636238333833663837386164303933623030323764373262
+  3 | \x5c783533616332633166613833633866363436303366653935363864383833333331303037643632383164653333306134623565373238663965 | \x5c783765393639313332666336353631343862393762366132656538626338336331
+  4 | \x5c783465336332653463623735343261343531373361386461633933396464633462633735323032653334326562633736396230663564613266 | \x5c783865663330663434633635343830643132623635306162366232623034323435
+(4 rows)
+```
+
+:::tip
+원칙적으로 인코딩된 문자열에는 [TEXT] 컬럼만 사용하고, 이진 데이터에는 [BYTEA] 컬럼만 사용하며, 두 유형을 절대 서로 바꿔 사용하지 않습니다.
+:::
+
+
+## FUNCTION 및 연산자 참조 \{#function-and-operator-reference\}
 
 ### 함수 \{#functions\}
 
@@ -858,6 +990,7 @@ ClickHouse 외부 테이블을 쿼리하기 위해 조건절(`HAVING`, `WHERE`)�
 * `btrim`: [trimBoth](https://clickhouse.com/docs/sql-reference/functions/string-functions#trimboth)
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+*   `md5`: [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
 
 ### 사용자 정의 함수 \{#custom-functions\}
 
@@ -1019,9 +1152,25 @@ Copyright (c) 2025-2026, ClickHouse
     "PostgreSQL 문서: 달러 인용 문자열 상수"
 
 [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
+    "PostgreSQL 문서: 공유 라이브러리 사전 로드"
 
-"PostgreSQL 문서: 공유 라이브러리 사전 로드
-  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+[PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
     "PostgreSQL 문서: PREPARE 관련 참고 사항"
-  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+
+[query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
     "ClickHouse 문서: ClickHouse에서 prepared statement의 대안"
+
+[underlying bug]: https://github.com/ClickHouse/ClickHouse/issues/85847
+    "ClickHouse/ClickHouse#85847 multipart form의 일부 쿼리에서 settings를 읽지 않는 문제"
+
+[fixed]: https://github.com/ClickHouse/ClickHouse/pull/85570
+    "ClickHouse/ClickHouse#85570 multipart를 사용하는 HTTP 수정"
+
+[BYTEA]: https://www.postgresql.org/docs/current/datatype-binary.html
+    "PostgreSQL 문서: 이진 데이터 타입"
+
+[String]: https://clickhouse.com/docs/sql-reference/data-types/string
+    "ClickHouse 문서: String"
+
+[TEXT]: https://www.postgresql.org/docs/current/datatype-character.html
+    "PostgreSQL 문서: 문자 데이터 타입"

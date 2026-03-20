@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigestWeighted \{#quantileTDigestWeighted\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 使用 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 算法计算数值数据序列的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 该函数会将序列中每个成员的权重考虑在内。
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 结果取决于查询的执行顺序，且是非确定性的。
 
-在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，查询的效率低于理论上的最优情况）。
+在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，查询的效率低于理论上的最优情况) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 :::note

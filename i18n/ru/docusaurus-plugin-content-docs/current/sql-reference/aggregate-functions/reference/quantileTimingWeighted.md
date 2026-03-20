@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTimingWeighted \{#quantileTimingWeighted\}
 
-Появилась в версии: v1.1
+Появилась в версии: v1.1.0
 
 С заданной точностью вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с учётом веса каждого элемента последовательности.
 

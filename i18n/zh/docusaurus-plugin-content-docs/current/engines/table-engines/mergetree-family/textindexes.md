@@ -7,12 +7,7 @@ title: '使用文本索引的全文搜索'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 使用文本索引进行全文搜索 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 文本索引（也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)）可以对文本数据进行快速全文搜索。
 文本索引存储从词元到包含该词元的行号的映射关系。
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-返回值
-
-```text
-25.4
-```
-
-或者如果设置为任何小于 26.2 的值，则需要再配置三个额外的设置才能使用文本索引：
+如果返回值小于 `26.2`（例如 `25.4`），则需要额外配置以下三个设置项，才能使用文本索引：
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 或者，你也可以将 [compatibility](../../../operations/settings/settings#compatibility) 设置提高到 `26.2` 或更高版本，但这会影响许多设置，并且通常需要事先进行测试。
 :::
 
-可以在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引，语法如下：
+要创建文本索引，请使用以下语法：
 
 ```sql
 CREATE TABLE table
@@ -125,7 +114,15 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
-或者，可以为现有表添加一个文本索引：
+文本索引可以在下列类型的列上定义：
+
+* [String](/sql-reference/data-types/string.md) 和 [FixedString](/sql-reference/data-types/fixedstring.md)，
+* [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md)，以及
+* [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数）。
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 和 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 类型的列也受支持，包括 `Array(Nullable(String or FixedString))`。
+
+或者，要为现有表添加一个文本索引：
 
 ```sql
 ALTER TABLE table
@@ -147,7 +144,7 @@ ALTER TABLE table
 
 ```
 
-如果你向已有表添加一个索引，我们建议为该表中已有的分区片段物化该索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会退回到较慢的穷举扫描）。
+如果你向已有表添加一个索引，我们建议为表中现有的分区片段物化此索引（否则，在这些尚未建立索引的分区片段上进行搜索时，将会回退到较慢的穷举扫描方式）。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
@@ -162,20 +159,20 @@ ALTER TABLE table DROP INDEX text_idx;
 **Tokenizer 参数（必填）**。`tokenizer` 参数指定要使用的分词器：
 
 
-* `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串（参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)）。
-* `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串（参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)）。
+* `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串 (参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
+* `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串 (参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。
   可以通过可选参数指定分隔符，例如：`tokenizer = splitByString([', ', '; ', '\n', '\\'])`。
-  请注意，每个分隔字符串可以由多个字符组成（示例中的 `', '`）。
-  如果未显式指定（例如 `tokenizer = splitByString`），则默认的分隔符列表为单个空格 `[' ']`。
-* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram（参见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)）。
+  请注意，每个分隔字符串可以由多个字符组成 (示例中的 `', '`) 。
+  如果未显式指定 (例如 `tokenizer = splitByString`) ，则默认的分隔符列表为单个空格 `[' ']`。
+* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram (参见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)) 。
   ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokenizer = ngrams(3)`。
-  如果未显式指定（例如 `tokenizer = ngrams`），则默认的 ngram 大小为 3。
-* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length`（含）之间的可变长度 n-gram（参见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。
+  如果未显式指定 (例如 `tokenizer = ngrams`) ，则默认的 ngram 大小为 3。
+* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length` (含) 之间的可变长度 n-gram (参见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)) 。
   如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。
   如果提供了参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。
   与 `ngrams(N)` 相比，`sparseGrams` 分词器会生成可变长度的 N-gram，从而可以更灵活地表示原始文本。
   例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成长度为 3、4、5 的 n-gram，但只返回长度为 4 和 5 的 n-gram。
-* `array` 不执行任何分词操作，即每一行的值都是一个 token（参见函数 [array](/sql-reference/functions/array-functions.md/#array)）。
+* `array` 不执行任何分词操作，即每一行的值都是一个 token (参见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
 
 所有可用的 tokenizer 都列在 [system.tokenizers](../../../operations/system-tables/tokenizers.md) 中。
 
@@ -188,7 +185,7 @@ ALTER TABLE table DROP INDEX text_idx;
 如果这些分隔字符串碰巧构成一个 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)，则可以以任意顺序传递。
 :::
 
-要理解 tokenizer 如何拆分输入字符串，可以使用 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数：
+要理解 tokenizer 如何拆分输入字符串，可以使用 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 和 [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern) 函数：
 
 示例：
 
@@ -203,27 +200,29 @@ SELECT tokens('abc def', 'ngrams', 3);
 ```
 
 *处理非 ASCII 输入。*
-虽然原则上可以在任何语言和字符集的文本数据上构建文本索引，但目前我们建议仅对采用扩展 ASCII 字符集（即西方语言）的输入这样做。
+虽然原则上可以在任何语言和字符集的文本数据上构建文本索引，但目前我们建议仅对采用扩展 ASCII 字符集 (即西方语言) 的输入这样做。
 特别是中文、日文和韩文目前缺乏完善的索引支持，这可能会导致索引体积巨大以及查询时间较长。
-我们计划在未来添加专门的、按语言定制的分词器（tokenizer），以更好地处理这些情况。
+我们计划在未来添加专门的、按语言定制的分词器 (tokenizer) ，以更好地处理这些情况。
 :::
 
-**Preprocessor 参数（可选）**。Preprocessor 指的是在分词之前应用于输入字符串的一个表达式。
+**Preprocessor 参数 (可选)&#x20;**。Preprocessor 指的是在分词之前应用于输入字符串的一个表达式。
 
-Preprocessor 参数的典型用例包括：
+Preprocessor 参数的典型用例包括
 
 
-1. 转换为小写或大写以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（见下方第一个示例）。
-2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 删除或转换不需要的字符或子串，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](./sql-reference/functions/string-replace-functions.md/#translate)。
+1. 转换为小写/大写，或进行大小写折叠以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
+2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
+3. 删除或转换不需要的字符或子串，例如重音符号等，例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)、[removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8)。
 
 预处理器表达式必须将类型为 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 的输入值转换为相同类型的值。
+如果文本索引是建立在类型为 `Nullable(T)` 或 `LowCardinality(T)` 的列上，那么预处理器表达式应当能够接受可为空或低基数的值 (即不会抛出异常) 。
 
 示例：
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 此外，预处理器表达式必须只能引用定义该文本索引所基于的列或表达式。
 
@@ -265,7 +264,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-预处理器也可以与 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列配合使用。
 在这种情况下，预处理器表达式会逐个转换数组元素。
 
 示例：
@@ -285,9 +283,10 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-要在基于 [Map](/sql-reference/data-types/map.md) 类型列的文本索引中定义预处理器，用户需要先决定该索引是建立在 Map 的键上还是值上。
+要在针对 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要先决定该索引是基于 Map 的键还是值构建的。
 
 示例：
+
 
 ```sql
 CREATE TABLE table
@@ -301,8 +300,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**其他参数（可选）**。
-
+**其他参数 (可选)&#x20;**。
 
 <details markdown="1">
   <summary>可选高级参数</summary>
@@ -310,21 +308,21 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
   以下高级参数的默认值在几乎所有场景下都能很好地工作。
   我们不建议修改它们。
 
-  可选参数 `dictionary_block_size`（默认值：512）指定字典块的大小（以行数计）。
+  可选参数 `dictionary_block_size` (默认值：512) 指定字典块的大小 (以行数计) 。
 
-  可选参数 `dictionary_block_frontcoding_compression`（默认值：1）指定字典块是否使用 front coding 作为压缩方式。
+  可选参数 `dictionary_block_frontcoding_compression` (默认值：1) 指定字典块是否使用 front coding 作为压缩方式。
 
-  可选参数 `posting_list_block_size`（默认值：1048576）指定倒排列表（posting list）块的大小（以行数计）。
+  可选参数 `posting_list_block_size` (默认值：1048576) 指定倒排列表 (posting list) 块的大小 (以行数计) 。
 
-  可选参数 `posting_list_codec`（默认值：`none）指定倒排列表使用的编解码器：
+  可选参数 `posting_list_codec` (默认值：`none) 指定倒排列表使用的编解码器：
 
   * `none` - 倒排列表在存储时不进行额外压缩。
-  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。会减慢 SELECT 查询的速度，目前不推荐使用。
+  * `bitpacking` - 先应用[差分 (delta) 编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (均在固定大小的块内完成) 。会减慢 SELECT 查询的速度，目前不推荐使用。
 </details>
 
 *索引粒度。*
 文本索引在 ClickHouse 内部实现为一种[跳过索引](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types)类型。
-但是，与其他跳过索引不同，文本索引使用“无限粒度”（1 亿）。
+但是，与其他跳过索引不同，文本索引使用“无限粒度” (1 亿) 。
 这一点可以从文本索引的表定义中看出。
 
 示例：
@@ -801,21 +799,21 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### 缓存 \{#caching\}
 
 有多种缓存可用于在内存中缓冲文本索引的部分内容（参见[实现细节](#implementation)部分）。
-当前，对文本索引的反序列化字典块、头部信息以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
-可以通过以下 SETTING 启用这些缓存：[use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
+当前，对文本索引的反序列化头部信息、tokens（标记）以及 posting lists（倒排列表）都提供了缓存，以减少 I/O。
+可以通过以下 SETTING 启用这些缓存：[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、[use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
 默认情况下，所有缓存均为禁用状态。
 要清除这些缓存，请使用语句 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches)。
 
 请参考以下服务端 SETTING 来配置这些缓存。
 
-#### 字典块缓存设置 \{#caching-dictionary\}
+#### 词元缓存设置 \{#caching-tokens\}
 
 | 设置                                                                                                                                                     | 说明                                                                                                           |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 文本索引字典块缓存策略名称。                                                                                   |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | 缓存中反序列化的字典块最大数量。                                                                               |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | 文本索引字典块缓存中受保护队列相对于缓存总大小的比例。                                                         |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 文本索引词元缓存策略名称。                                                                  |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 最大缓存大小（以字节为单位）。                                                                                 |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 缓存中反序列化的词元最大数量。                                                              |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 文本索引词元缓存中受保护队列相对于缓存总大小的比例。  |
 
 #### 头部缓存设置 \{#caching-header\}
 
@@ -909,6 +907,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这个过程使用在初始合并阶段创建的旧行号到新行号的映射。
 这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
 如果源分区片段中索引尚未物化（materialized），则会先构建该索引，将其写入一个临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起合并。
+
+**Debugging**
+
+可以使用表函数 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) 来查看和分析文本索引。
 
 ## 示例：Hacker News 数据集 \{#hacker-news-dataset\}
 

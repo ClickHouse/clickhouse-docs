@@ -19,9 +19,9 @@ doc_type: 'reference'
 
 ## L1Distance \{#L1Distance\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-`L1` 空間（1-ノルム（[タクシー幾何](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離））において、2 つの点（ベクトルの要素を座標とみなしたもの）間の距離を計算します。
+`L1` 空間 (1-ノルム ([タクシー幾何](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離) ) において、2 つの点 (ベクトルの要素を座標とみなしたもの) 間の距離を計算します。
 
 **構文**
 
@@ -56,7 +56,7 @@ SELECT L1Distance((1, 2), (2, 3))
 
 ## L1Norm \{#L1Norm\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 ベクトルの各要素の絶対値の総和を計算します。
 
@@ -74,7 +74,7 @@ L1Norm(vector)
 
 **戻り値**
 
-L1 ノルム（[taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離）を返します。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+L1 ノルム ([taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離) を返します。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
 **例**
 
@@ -92,9 +92,9 @@ SELECT L1Norm((1, 2))
 
 ## L1Normalize \{#L1Normalize\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-与えられたベクトル（タプルの要素が座標）について、`L1` 空間（[タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)）における単位ベクトルを計算します。
+与えられたベクトル (タプルの要素が座標) について、`L1` 空間 ([タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry)) における単位ベクトルを計算します。
 
 **構文**
 
@@ -128,9 +128,9 @@ SELECT L1Normalize((1, 2))
 
 ## L2Distance \{#L2Distance\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-ユークリッド空間において、2 つの点（ベクトルの要素が座標を表す）間の距離（[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)）を計算します。
+ユークリッド空間において、2 つの点 (ベクトルの要素が座標を表す) 間の距離 ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) を計算します。
 
 **構文**
 
@@ -143,7 +143,7 @@ L2Distance(vector1, vector2)
 **引数**
 
 * `vector1` — 最初のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2 つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 2 つ目のベクトル。[`Tuple(T)`](/sql-reference/data-types/array) または [`Array(T)`](/sql-reference/data-types/array)
 
 **戻り値**
 
@@ -165,9 +165,9 @@ SELECT L2Distance((1, 2), (2, 3))
 
 ## L2DistanceTransposed \{#L2DistanceTransposed\}
 
-v25.10 で導入。
+v25.10.0 で導入。
 
-ユークリッド空間において、2 点間のユークリッド距離（ベクトルの値を座標とみなす）の近似値を計算します（[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)）。
+ユークリッド空間において、2 点間のユークリッド距離 (ベクトルの値を座標とみなす) の近似値を計算します ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **構文**
 
@@ -181,7 +181,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 * `vectors` — ベクトル。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 参照ベクトル。[`Array(T)`](/sql-reference/data-types/array)
-* `p` — 距離計算において各ベクトル要素から使用するビット数（1 から要素のビット幅まで）。量子化レベルは精度と速度のトレードオフを制御します。使用するビット数を減らすと I/O と計算が高速になりますが精度は低下し、ビット数を増やすと性能を犠牲にして精度が向上します。[`UInt`](/sql-reference/data-types/int-uint)
+* `p` — 距離計算において各ベクトル要素から使用するビット数 (1 から要素のビット幅まで) 。量子化レベルは精度と速度のトレードオフを制御します。使用するビット数を減らすと I/O と計算が高速になりますが精度は低下し、ビット数を増やすと性能を犠牲にして精度が向上します。[`UInt`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -205,7 +205,7 @@ SELECT L2DistanceTransposed(vec, array(1, 2), 16) FROM qbit;
 
 ## L2Norm \{#L2Norm\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 ベクトルの各要素の二乗和の平方根を計算します。
 
@@ -241,9 +241,9 @@ SELECT L2Norm((1, 2))
 
 ## L2Normalize \{#L2Normalize\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-ユークリッド空間において（[ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance) を用いて）、与えられたベクトル（タプルの要素が座標）に対する単位ベクトルを計算します。
+ユークリッド空間において ([ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance) を用いて) 、与えられたベクトル (タプルの要素が座標) に対する単位ベクトルを計算します。
 
 **構文**
 
@@ -277,7 +277,7 @@ SELECT L2Normalize((3, 4))
 
 ## L2SquaredDistance \{#L2SquaredDistance\}
 
-導入バージョン: v22.7
+導入バージョン: v22.7.0
 
 2つのベクトルにおける対応する要素同士の差の二乗和を計算します。
 
@@ -314,9 +314,9 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 
 ## L2SquaredNorm \{#L2SquaredNorm\}
 
-導入バージョン: v22.7
+導入バージョン: v22.7.0
 
-ベクトル要素の二乗和の平方根（[`L2Norm`](#L2Norm)）の二乗を計算します。
+ベクトル要素の二乗和の平方根 ([`L2Norm`](#L2Norm)) の二乗を計算します。
 
 **構文**
 
@@ -350,9 +350,9 @@ SELECT L2SquaredNorm((1, 2))
 
 ## LinfDistance \{#LinfDistance\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-`L_{inf}` 空間（[最大ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))）において、2 点（ベクトルの要素を座標とみなした点）間の距離を計算します。
+`L_{inf}` 空間 ([最大ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))) において、2 点 (ベクトルの要素を座標とみなした点) 間の距離を計算します。
 
 **構文**
 
@@ -387,7 +387,7 @@ SELECT LinfDistance((1, 2), (2, 3))
 
 ## LinfNorm \{#LinfNorm\}
 
-導入されたバージョン: v21.11
+導入されたバージョン: v21.11.0
 
 ベクトルの要素の絶対値の最大値を計算します。
 
@@ -423,9 +423,9 @@ SELECT LinfNorm((1, -2))
 
 ## LinfNormalize \{#LinfNormalize\}
 
-導入: v21.11
+導入: v21.11.0
 
-与えられたベクトル（タプルの要素が座標）について、`L_{inf}` 空間における単位ベクトルを（[最大ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))を用いて）計算します。
+与えられたベクトル (タプルの要素が座標) について、`L_{inf}` 空間における単位ベクトルを ([最大ノルム](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))を用いて) 計算します。
 
 **構文**
 
@@ -459,9 +459,9 @@ SELECT LinfNormalize((3, 4))
 
 ## LpDistance \{#LpDistance\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-`Lp` 空間における 2 点間の距離（ベクトルの要素を座標とみなしたときの距離）を計算します（[p-ノルム距離](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)）。
+`Lp` 空間における 2 点間の距離 (ベクトルの要素を座標とみなしたときの距離) を計算します ([p-ノルム距離](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)) 。
 
 **構文**
 
@@ -474,7 +474,7 @@ LpDistance(vector1, vector2, p)
 **引数**
 
 * `vector1` — 1 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 2 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/array) または [`Array(T)`](/sql-reference/data-types/array)
 * `p` — 冪指数。取りうる値は `[1; inf)` の実数。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **返される値**
@@ -497,15 +497,15 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 
 ## LpNorm \{#LpNorm\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
-ベクトルの p-ノルム（p 次ノルム）を計算します。これは、その要素の絶対値を p 乗したものの総和の p 乗根です。
+ベクトルの p-ノルム (p 次ノルム) を計算します。これは、その要素の絶対値を p 乗したものの総和の p 乗根です。
 
 特別なケース:
 
-* p=1 のとき、L1Norm（マンハッタン距離）と等価です。
-* p=2 のとき、L2Norm（ユークリッド距離）と等価です。
-* p=∞ のとき、LinfNorm（最大ノルム）と等価です。
+* p=1 のとき、L1Norm (マンハッタン距離) と等価です。
+* p=2 のとき、L2Norm (ユークリッド距離) と等価です。
+* p=∞ のとき、LinfNorm (最大ノルム) と等価です。
 
 **構文**
 
@@ -540,9 +540,9 @@ SELECT LpNorm((1, -2), 2)
 
 ## LpNormalize \{#LpNormalize\}
 
-導入: v21.11
+導入: v21.11.0
 
-与えられたベクトル（タプルの要素が座標）について、`Lp` 空間における単位ベクトルを（[p-norm](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm) を使用して）計算します。
+与えられたベクトル (タプルの要素が座標) について、`Lp` 空間における単位ベクトルを ([p-norm](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm) を使用して) 計算します。
 
 **構文**
 
@@ -577,9 +577,9 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
-2 つのベクトル間の[コサイン距離](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)を計算します（タプルの各要素は座標を表します）。返される値が小さいほど、ベクトル同士の類似度が高くなります。
+2 つのベクトル間の[コサイン距離](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)を計算します (タプルの各要素は座標を表します) 。返される値が小さいほど、ベクトル同士の類似度が高くなります。
 
 **構文**
 
@@ -592,7 +592,7 @@ cosineDistance(vector1, vector2)
 **引数**
 
 * `vector1` — 1 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 2 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/array) または [`Array(T)`](/sql-reference/data-types/array)
 
 **返される値**
 
@@ -614,9 +614,9 @@ SELECT cosineDistance((1, 2), (2, 3));
 
 ## cosineDistanceTransposed \{#cosineDistanceTransposed\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
-2 つの点間の近似的な[コサイン距離](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)を計算します（ベクトルの値を座標とみなします）。返される値が小さいほど、ベクトル同士はより類似しています。
+2 つの点間の近似的な[コサイン距離](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)を計算します (ベクトルの値を座標とみなします) 。返される値が小さいほど、ベクトル同士はより類似しています。
 
 **構文**
 
@@ -630,7 +630,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 * `vectors` — ベクトル。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 参照ベクトル。[`Array(T)`](/sql-reference/data-types/array)
-* `p` — 距離計算において各ベクトル要素から使用するビット数（1 から要素のビット幅まで）。量子化レベルにより、精度と速度のトレードオフが決まります。使用するビット数が少ないほど I/O と計算は高速になりますが精度は低下し、ビット数が多いほど精度は向上しますがパフォーマンスは低下します。[`UInt`](/sql-reference/data-types/int-uint)
+* `p` — 距離計算において各ベクトル要素から使用するビット数 (1 から要素のビット幅まで) 。量子化レベルにより、精度と速度のトレードオフが決まります。使用するビット数が少ないほど I/O と計算は高速になりますが精度は低下し、ビット数が多いほど精度は向上しますがパフォーマンスは低下します。[`UInt`](/sql-reference/data-types/int-uint)
 
 **返される値**
 

@@ -39,7 +39,7 @@ Scheduled upgrade windows are available for all release channels for services in
 The dates shown below indicate when ClickHouse **begins the rollout** to each release channel, not when your individual service will be upgraded.
 
 - Rollouts are automated and occur gradually over multiple weeks
-- Services with configured scheduled upgrade windows are upgraded during their scheduled window in the week after the channel rollout ends
+- Services with configured scheduled upgrade windows are upgraded during their scheduled window in the week after the channel rollout ends (starting on Monday 00:00 UTC)
 - Rollout completion may be delayed due to rollout pauses (e.g., holiday freezes) or health monitoring
 
 For advance testing before production upgrades, use the Fast or Regular channel for non-production services and the Slow channel for production services.
@@ -47,10 +47,10 @@ For advance testing before production upgrades, use the Fast or Regular channel 
 
 <ReleaseSchedule releases={[
     {
-     changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
-     version: '25.12',
-     fast_start_date: '2026-02-10',
-     fast_end_date: '2026-02-11',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+     version: '26.2',
+     fast_start_date: '2026-03-30',
+     fast_end_date: 'TBD',
      regular_start_date: 'TBD',
      regular_end_date: 'TBD',
      slow_start_date: 'TBD',
@@ -58,6 +58,20 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green'
+    },
+    {
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
+     version: '25.12',
+     fast_start_date: '2026-02-10',
+     fast_end_date: '2026-02-11',
+     regular_start_date: '2026-03-09',
+     regular_end_date: '2026-03-18',
+     slow_start_date: '2026-04-06',
+     slow_end_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Mar 23',
    },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
@@ -65,13 +79,12 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_start_date: '2025-12-11',
      fast_end_date: '2025-12-15',
      regular_start_date: '2026-01-23',
-     regular_end_date: 'TBD',
-     slow_start_date: 'TBD',
+     regular_end_date: '2026-03-10',
+     slow_start_date: '2026-03-23',
      slow_end_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.10 during their scheduled window in the week after rollout completes',
    },
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',

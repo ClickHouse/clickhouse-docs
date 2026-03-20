@@ -16,7 +16,7 @@ keywords: ['高开销查询', '内存使用量']
 
 关于此查询有几点说明：
 
-* 结果是基于过去一天（`now() - toIntervalDay(1))`）的数据计算的，但你可以轻松修改时间区间
+* 结果是基于过去一天 (`now() - toIntervalDay(1))`) 的数据计算的，但你可以轻松修改时间区间
 * 它假定你有一个名为 `default` 的集群，这也是你在 [ClickHouse Cloud](https://console.clickhouse.cloud) 中集群的名称。请将 `default` 更改为你自己的集群名称
 * 如果你没有集群，请参见本文末尾列出的查询
 

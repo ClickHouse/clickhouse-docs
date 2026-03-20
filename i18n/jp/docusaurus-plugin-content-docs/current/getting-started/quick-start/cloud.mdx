@@ -47,7 +47,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つの^^replica^^が作成されます。Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。組織ティアは、後で「Plans」ページで変更できます。
+  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのreplicaが作成されます。Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。組織ティアは、後で「Plans」ページで変更できます。
 
   必要に応じて、レプリカのスケール範囲となる最小サイズと最大サイズを指定して、サービスリソースをカスタマイズします。準備ができたら、`Create service`を選択します。
 
@@ -144,10 +144,10 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   上記の例では、`my_first_table`は4つのカラムを持つ[`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md)テーブルです:
 
-  * `user_id`: 32ビット符号なし整数（[UInt32](../../sql-reference/data-types/int-uint.md)）
+  * `user_id`: 32ビット符号なし整数 ([UInt32](../../sql-reference/data-types/int-uint.md)) 
   * `message`: 他のデータベースシステムにおける `VARCHAR`、`BLOB`、`CLOB` などの型に代わる [String](../../sql-reference/data-types/string.md) データ型
   * `timestamp`: ある瞬間を表す [DateTime](../../sql-reference/data-types/datetime.md) 値
-  * `metric`: 32ビット浮動小数点数（[Float32](../../sql-reference/data-types/float.md)）
+  * `metric`: 32ビット浮動小数点数 ([Float32](../../sql-reference/data-types/float.md)) 
 
   :::note テーブルエンジン
   テーブルエンジンは以下を決定します：
@@ -163,15 +163,15 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   #### プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
 
-  先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です（プライマリキーの実装は、少し意外に感じられるかもしれません）：
+  先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です (プライマリキーの実装は、少し意外に感じられるかもしれません) ：
 
   * ClickHouse のプライマリキーは、テーブル内の各行に対し&#x3066;***一意ではありません***
 
-  ClickHouseテーブルの^^主キー^^は、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、^^主キー^^インデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**^^スパースインデックス^^**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
+  ClickHouseテーブルの主キーは、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、主キーインデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**スパースインデックス**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
 
-  ^^プライマリキー^^は `PRIMARY KEY` パラメータを使用して定義できます。`PRIMARY KEY` を指定せずにテーブルを定義した場合、キーは `ORDER BY` 句で指定されたタプルになります。`PRIMARY KEY` と `ORDER BY` の両方を指定した場合、^^プライマリキー^^はソート順を構成する列のサブセットである必要があります。
+  プライマリキーは `PRIMARY KEY` パラメータを使用して定義できます。`PRIMARY KEY` を指定せずにテーブルを定義した場合、キーは `ORDER BY` 句で指定されたタプルになります。`PRIMARY KEY` と `ORDER BY` の両方を指定した場合、プライマリキーはソート順を構成する列のサブセットである必要があります。
 
-  ^^プライマリキー^^は^^ソートキー^^でもあり、`(user_id, timestamp)`のタプルです。したがって、各カラムファイルに格納されるデータは、`user_id`、次に`timestamp`の順でソートされます。
+  プライマリキーはソートキーでもあり、`(user_id, timestamp)`のタプルです。したがって、各カラムファイルに格納されるデータは、`user_id`、次に`timestamp`の順でソートされます。
 
   ClickHouseの中核概念について詳しく知るには、[&quot;コア概念&quot;](../../managing-data/core-concepts/index.md)を参照してください。
 

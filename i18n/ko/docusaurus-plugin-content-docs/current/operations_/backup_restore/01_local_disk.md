@@ -203,7 +203,14 @@ FROM Disk('backups', 'incremental-a.zip');
 ### 백업 보호 \{#assign-a-password-to-the-backup\}
 
 디스크에 기록되는 백업 파일에는 비밀번호를 설정할 수 있습니다.
-비밀번호는 `password` 설정을 사용하여 지정할 수 있습니다:
+비밀번호는 `password` 설정을 사용하여 지정할 수 있습니다.
+
+:::note
+비밀번호 보호는 ZIP 아카이브(`.zip`, `.zipx`)에서만 지원됩니다.
+비밀번호가 적용되려면 백업 경로가 `.zip` 또는 `.zipx`로 끝나야 합니다.
+tar 아카이브 및 아카이브가 아닌 경로를 포함한 다른 형식에서 비밀번호를 사용하면
+`BAD_ARGUMENTS` 오류가 발생합니다: `Password is not applicable, backup cannot be encrypted`.
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -211,14 +218,13 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-암호로 보호된 백업을 복원하려면 다시 `password` 설정을 사용하여 암호를 지정해야 합니다:
+비밀번호로 보호된 백업을 복원하려면 다시 `password` 설정을 사용하여 비밀번호를 지정해야 합니다:
 
 ```sql
 RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### tar 아카이브 형식의 백업 \{#backups-as-tar-archives\}
 

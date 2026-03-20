@@ -46,7 +46,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  기본적으로 새 조직은 Scale 티어에 배치되며, 각각 4개의 vCPU와 16 GiB RAM을 가진 3개의 ^^레플리카^^가 생성됩니다. Scale 티어에서는 [수직 자동 확장](/manage/scaling#vertical-auto-scaling)이 기본적으로 활성화됩니다. 조직 티어는 나중에 &#39;Plans&#39; 페이지에서 변경하실 수 있습니다.
+  기본적으로 새 조직은 Scale 티어에 배치되며, 각각 4개의 vCPU와 16 GiB RAM을 가진 3개의 레플리카가 생성됩니다. Scale 티어에서는 [수직 자동 확장](/manage/scaling#vertical-auto-scaling)이 기본적으로 활성화됩니다. 조직 티어는 나중에 &#39;Plans&#39; 페이지에서 변경하실 수 있습니다.
 
   필요한 경우 레플리카가 확장될 최소 및 최대 크기를 지정하여 서비스 리소스를 사용자 정의하세요. 준비가 완료되면 `Create service`를 선택하십시오.
 
@@ -166,15 +166,15 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   * ClickHouse의 primary key는 테이블의 각 행마다 ***고유할 필요는 없습니다***
 
-  ClickHouse 테이블의 ^^기본 키(primary key)^^는 데이터가 디스크에 기록될 때 정렬되는 방식을 결정합니다. 8,192개의 행 또는 10MB의
-  데이터(**인덱스 그래뉼리티(index granularity)**라고 함)마다 ^^기본 키^^ 인덱스 파일에 항목이 생성됩니다. 이러한 그래뉼리티 개념은
-  메모리에 쉽게 적재할 수 있는 **^^희소 인덱스(sparse index)^^**를 생성하며, 그래뉼은 `SELECT` 쿼리 처리 시 가장 작은 단위의
+  ClickHouse 테이블의 기본 키(primary key)는 데이터가 디스크에 기록될 때 정렬되는 방식을 결정합니다. 8,192개의 행 또는 10MB의
+  데이터(**인덱스 그래뉼리티(index granularity)**라고 함)마다 기본 키 인덱스 파일에 항목이 생성됩니다. 이러한 그래뉼리티 개념은
+  메모리에 쉽게 적재할 수 있는 **희소 인덱스(sparse index)**를 생성하며, 그래뉼은 `SELECT` 쿼리 처리 시 가장 작은 단위의
   컬럼 데이터 스트라이프를 나타냅니다.
 
-  ^^기본 키(primary key)^^는 `PRIMARY KEY` 매개변수를 사용하여 정의할 수 있습니다. `PRIMARY KEY`를 지정하지 않고 테이블을 정의하면,
-  키는 `ORDER BY` 절에 지정된 튜플이 됩니다. `PRIMARY KEY`와 `ORDER BY`를 모두 지정하는 경우, ^^기본 키(primary key)^^는 정렬 순서의 하위 집합이어야 합니다.
+  기본 키(primary key)는 `PRIMARY KEY` 매개변수를 사용하여 정의할 수 있습니다. `PRIMARY KEY`를 지정하지 않고 테이블을 정의하면,
+  키는 `ORDER BY` 절에 지정된 튜플이 됩니다. `PRIMARY KEY`와 `ORDER BY`를 모두 지정하는 경우, 기본 키(primary key)는 정렬 순서의 하위 집합이어야 합니다.
 
-  ^^기본 키(primary key)^^는 동시에 ^^정렬 키(sorting key)^^이며, `(user_id, timestamp)`의 튜플로 구성됩니다. 따라서 각 컬럼 파일에 저장된 데이터는 `user_id`, 그 다음 `timestamp` 순으로 정렬됩니다.
+  기본 키(primary key)는 동시에 정렬 키(sorting key)이며, `(user_id, timestamp)`의 튜플로 구성됩니다. 따라서 각 컬럼 파일에 저장된 데이터는 `user_id`, 그 다음 `timestamp` 순으로 정렬됩니다.
 
   ClickHouse의 핵심 개념에 대한 자세한 내용은 [&quot;핵심 개념&quot;](../../managing-data/core-concepts/index.md)을 참조하세요.
 

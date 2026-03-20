@@ -108,8 +108,6 @@ ClickStack 用の Helm チャートは[こちら](https://github.com/ClickHouse/
   統合されたClickHouseインスタンスへのデフォルト接続を上書きすることができます。詳細は、[&quot;ClickHouse Cloudの使用&quot;](#using-clickhouse-cloud)を参照してください。
   :::
 
-  別のClickHouseインスタンスを使用する例については、[&quot;ClickHouse Cloud接続の作成&quot;](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)を参照してください。
-
   ### 値のカスタマイズ（任意）
 
   `--set`フラグを使用して設定をカスタマイズできます。例:
@@ -118,7 +116,7 @@ ClickStack 用の Helm チャートは[こちら](https://github.com/ClickHouse/
   helm install my-clickstack clickstack/clickstack --set key=value
   ```
 
-  または、`values.yaml` を編集してください。デフォルト値を取得するには:
+  または、`values.yaml` を編集してください。デフォルト値を取得するには、次を実行します:
 
   ```shell
   helm show values clickstack/clickstack > values.yaml
@@ -180,7 +178,7 @@ ClickStack 用の Helm チャートは[こちら](https://github.com/ClickHouse/
 
   #### カスタムシークレットの作成
 
-  必要に応じて、カスタムKubernetesシークレットを手動で作成できます:
+  必要に応じて、カスタム Kubernetes シークレットを手動で作成できます。
 
   ```shell
   kubectl create secret generic hyperdx-secret \

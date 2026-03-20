@@ -7,12 +7,7 @@ title: '텍스트 인덱스를 활용한 전문 검색'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-
 # 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-<BetaBadge />
 
 텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
@@ -35,7 +30,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: I, have, two, dogs, and, a, cat
 ```
 
-일반적으로 검색 시 대소문자를 구분하지 않으므로 토큰을 소문자로 변환합니다:
+일반적으로는 대소문자를 구분하지 않고 검색하므로 토큰을 모두 소문자로 변환합니다:
 
 ```result
 1: the, cat, likes, mice
@@ -43,7 +38,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 3: i, have, two, dogs, and, a, cat
 ```
 
-또한 거의 모든 행에 나타나는 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
+또한 거의 모든 행에서 등장하므로 &quot;I&quot;, &quot;the&quot;, &quot;and&quot;와 같은 불용어도 제거합니다.
 
 ```result
 1: cat, likes, mice
@@ -81,13 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-반환합니다
-
-```text
-25.4
-```
-
-또는 26.2보다 작은 값을 사용하는 경우 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
+`26.2`보다 작은 값(예: `25.4`)을 반환하는 경우, 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
 
 ```sql
 SET enable_full_text_index = true;
@@ -98,7 +87,7 @@ SET use_skip_indexes_on_data_read = true;
 또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
 :::
 
-텍스트 인덱스는 다음 구문을 사용하여 [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md), 그리고 [Map](/sql-reference/data-types/map.md) 컬럼( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 맵 함수 사용)을 대상으로 정의할 수 있습니다:
+텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
 
 ```sql
 CREATE TABLE table
@@ -125,6 +114,14 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
+텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
+
+* [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
+* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+
+[Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
+
 또는 기존 테이블에 텍스트 인덱스를 추가하려면 다음과 같이 합니다.
 
 ```sql
@@ -147,13 +144,13 @@ ALTER TABLE table
 
 ```
 
-이미 존재하는 테이블에 인덱스를 추가하는 경우, 기존 테이블 파트에 대해 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 대신 느린 전수 검색(brute-force scan)으로 처리됩니다.
+이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 전수 검색(brute-force scan)으로 수행됩니다.
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
-텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오
+텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오.
 
 ```sql
 ALTER TABLE table DROP INDEX text_idx;
@@ -188,7 +185,7 @@ ALTER TABLE table DROP INDEX text_idx;
 구분자 문자열들이 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)를 형성하는 경우에는 임의의 순서로 전달해도 됩니다.
 :::
 
-토크나이저가 입력 문자열을 어떻게 분리하는지 이해하려면 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 함수를 사용할 수 있습니다:
+토크나이저가 입력 문자열을 어떻게 분리하는지 이해하려면 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 및 [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern) 함수를 사용할 수 있습니다:
 
 예시:
 
@@ -214,17 +211,19 @@ SELECT tokens('abc def', 'ngrams', 3);
 Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 
 
-1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), 아래 첫 번째 예제 참고).
-2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
-3. 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](./sql-reference/functions/string-replace-functions.md/#translate)).
+1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
+2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
+3. 악센트와 같은 불필요한 문자 또는 부분 문자열을 제거하거나 변환(예: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate), [removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8)).
 
 전처리기 표현식은 [String](/sql-reference/data-types/string.md) 또는 [FixedString](/sql-reference/data-types/fixedstring.md) 타입의 입력 값을 동일한 타입의 값으로 변환해야 합니다.
+텍스트 인덱스가 `Nullable(T)` 또는 `LowCardinality(T)` 타입 컬럼에 대해 생성된 경우, 전처리기 표현식은 널 허용 값 또는 low-cardinality 값도 입력으로 허용해야 합니다(즉, 예외를 발생시키면 안 됩니다).
 
 예:
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 또한 전처리기 표현식은 텍스트 인덱스가 정의된 컬럼이나 해당 컬럼을 기반으로 한 표현식만 참조해야 합니다.
 
@@ -252,7 +251,7 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, 'Foo');
 ```
 
-다음과 같습니다:
+다음과 동일합니다:
 
 ```sql
 CREATE TABLE table
@@ -266,7 +265,6 @@ ORDER BY tuple();
 SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-전처리기는 [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md) 컬럼에도 사용할 수 있습니다.
 이 경우 전처리기 표현식은 배열 요소를 각각 변환합니다.
 
 예시:
@@ -291,6 +289,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 예시:
 
+
 ```sql
 CREATE TABLE table
 (
@@ -303,8 +302,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**기타 매개변수(선택 사항)**.
-
+**기타 인수(선택 사항)**.
 
 <details markdown="1">
   <summary>선택적 고급 파라미터</summary>
@@ -803,21 +801,22 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### 캐싱 \{#caching\}
 
 텍스트 인덱스의 일부를 메모리에 버퍼링하기 위해 다양한 캐시를 사용할 수 있습니다(섹션 [구현 세부 정보](#implementation) 참조).
-현재는 I/O를 줄이기 위해 텍스트 인덱스의 역직렬화된 딕셔너리 블록, 헤더 및 포스팅 리스트에 대한 캐시가 제공됩니다.
-캐시는 설정 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)를 통해 활성화할 수 있습니다.
+현재는 I/O를 줄이기 위해 텍스트 인덱스의 역직렬화된 헤더, 토큰 및 포스팅 리스트에 대한 캐시가 제공됩니다.
+캐시는 설정 [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache), [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)를 통해 활성화할 수 있습니다.
+
 기본적으로 모든 캐시는 비활성화되어 있습니다.
 캐시를 비우려면 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches) SQL 문을 사용합니다.
 
 캐시를 구성하려면 다음 서버 설정을 참조하십시오.
 
-#### 딕셔너리 블록 캐시 설정 \{#caching-dictionary\}
+#### 토큰 캐시 설정 \{#caching-tokens\}
 
 | Setting                                                                                                                                                  | 설명                                                                                                            |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | 텍스트 인덱스 딕셔너리 블록 캐시 정책 이름입니다.                                                              |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | 캐시의 최대 크기(바이트)입니다.                                                                                |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | 캐시에 저장되는 역직렬화된 딕셔너리 블록의 최대 개수입니다.                                                    |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | 텍스트 인덱스 딕셔너리 블록 캐시에서 보호 큐의 크기를 캐시 전체 크기에 대해 나타내는 비율입니다.              |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | 텍스트 인덱스 토큰 캐시 정책 이름입니다.                                                                       |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | 캐시의 최대 크기(바이트)입니다.                                                                                |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | 캐시에 저장되는 역직렬화된 토큰의 최대 개수입니다.                                                             |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | 텍스트 인덱스 토큰 캐시에서 보호 큐의 크기를 캐시 전체 크기에 대해 나타내는 비율입니다.                       |
 
 #### 헤더 캐시 설정 \{#caching-header\}
 
@@ -912,6 +911,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 포스팅 리스트의 행 번호 또한 병합된 데이터 파트에서의 새로운 위치를 반영하도록 재계산되며, 이를 위해 초기 병합 단계에서 생성된 기존 행 번호에서 새로운 행 번호로의 매핑을 사용합니다.
 텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field)이 병합되는 방식과 유사합니다.
 소스 파트에 인덱스가 구체화되어 있지 않은 경우, 인덱스를 먼저 생성해 임시 파일에 기록한 다음, 다른 파트와 다른 임시 인덱스 파일의 인덱스와 함께 병합합니다.
+
+**디버깅**
+
+테이블 함수 [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md)를 사용하여 텍스트 인덱스를 살펴볼 수 있습니다.
 
 ## 예시: Hackernews 데이터셋 \{#hacker-news-dataset\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTiming \{#quantileTiming\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 지정된 정밀도로 수치 데이터 시퀀스의 [quantile](https://en.wikipedia.org/wiki/Quantile)을 계산합니다.
 

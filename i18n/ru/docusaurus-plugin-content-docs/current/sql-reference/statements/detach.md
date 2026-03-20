@@ -79,4 +79,4 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 **См. также**
 
 * [Материализованное представление](/sql-reference/statements/create/view#materialized-view)
-* [Словари](../../sql-reference/dictionaries/index.md)
+* [Словари](./create/dictionary/overview.md)

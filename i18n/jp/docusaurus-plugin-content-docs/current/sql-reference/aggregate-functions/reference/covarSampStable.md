@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarSampStable \{#covarSampStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the sample covariance:
+標本共分散を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-It is similar to [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) but uses a numerically stable algorithm.
-As a result, `covarSampStable` is slower than `covarSamp` but provides a lower computational error.
+[`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) に似ていますが、数値的に安定したアルゴリズムを使用します。
+その結果、`covarSampStable` は `covarSamp` より遅いですが、計算誤差が小さくなります。
 
 **Syntax**
 
@@ -30,18 +30,18 @@ As a result, `covarSampStable` is slower than `covarSamp` but provides a lower c
 covarSampStable(x, y)
 ```
 
-**Arguments**
+**引数**
 
-- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
-- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
+- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**戻り値**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `inf` is returned. [`Float64`](/sql-reference/data-types/float)
+`x` と `y` の間の標本共分散を返します。`n <= 1` の場合、`inf` が返されます。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Basic sample covariance calculation with stable algorithm**
+**安定したアルゴリズムによる基本的な標本共分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -64,7 +64,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-**Single value returns inf**
+**単一の値はinfを返す**
 
 ```sql title=Query
 SELECT covarSampStable(x_value, y_value)

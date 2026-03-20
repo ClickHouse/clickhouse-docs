@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## groupConcat \{#groupConcat\}
 
-도입 버전: v24.8
+도입 버전: v24.8.0
 
 문자열 그룹을 하나의 문자열로 이어 붙여 계산하며, 필요에 따라 구분자를 사용할 수 있고, 최대 요소 개수를 제한할 수도 있습니다.
 
@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**쉼표를 구분자로 사용하기 (매개변수 구문)**
+**쉼표를 구분자로 사용하는 방법(매개변수 구문)**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -74,7 +74,7 @@ SELECT groupConcat(Name, ', ') FROM Employees;
 John, Jane, Bob
 ```
 
-**연결할 값 개수 제한하기**
+**연결되는 요소 개수 제한하기**
 
 ```sql title=Query
 SELECT groupConcat(', ', 2)(Name) FROM Employees;

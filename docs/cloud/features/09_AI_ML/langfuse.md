@@ -74,7 +74,7 @@ flowchart TB
 
 ### Observability {#observability}
 
-[Observability](/docs/observability/overview) is essential for understanding and debugging LLM applications. Unlike traditional software, LLM applications involve complex, non-deterministic interactions that can be challenging to monitor and debug. Langfuse provides comprehensive tracing capabilities that help you understand exactly what's happening in your application.
+[Observability](https://langfuse.com/docs/observability/overview) is essential for understanding and debugging LLM applications. Unlike traditional software, LLM applications involve complex, non-deterministic interactions that can be challenging to monitor and debug. Langfuse provides comprehensive tracing capabilities that help you understand exactly what's happening in your application.
 
 _📹 Want to learn more? [**Watch end-to-end walkthrough**](https://langfuse.com/watch-demo?tab=observability) of Langfuse Observability and how to integrate it with your application._
 
@@ -124,7 +124,7 @@ See quality, cost, and latency metrics in the dashboard to monitor your LLM appl
 </Tabs>
 ### Prompt management {#prompt-management}
 
-[Prompt Management](/docs/prompt-management/overview) is critical in building effective LLM applications. Langfuse provides tools to help you manage, version, and optimize your prompts throughout the development lifecycle.
+[Prompt Management](https://langfuse.com/docs/prompt-management/overview) is critical in building effective LLM applications. Langfuse provides tools to help you manage, version, and optimize your prompts throughout the development lifecycle.
 
 _📹 Want to learn more? [**Watch end-to-end walkthrough**](https://langfuse.com/watch-demo?tab=prompt) of Langfuse Prompt Management and how to integrate it with your application._
 
@@ -182,7 +182,7 @@ Track changes to your prompts to understand how they evolve over time.
 
 ### Evaluation & datasets {#evaluation}
 
-[Evaluation](/docs/evaluation/overview) is crucial for ensuring the quality and reliability of your LLM applications. Langfuse provides flexible evaluation tools that adapt to your specific needs, whether you're testing in development or monitoring production performance.
+[Evaluation](https://langfuse.com/docs/evaluation/overview) is crucial for ensuring the quality and reliability of your LLM applications. Langfuse provides flexible evaluation tools that adapt to your specific needs, whether you're testing in development or monitoring production performance.
 
 _📹 Want to learn more? [**Watch end-to-end walkthrough**](https://langfuse.com/watch-demo?tab=evaluation) of Langfuse Evaluation and how to use it to improve your LLM application._
 
@@ -224,7 +224,7 @@ Baseline your evaluation workflow with human annotations via Annotation Queues.
 </TabItem>
 <TabItem value="custom-evals" label="Custom Evals">
 
-Add custom evaluation results, supports numeric, boolean and categorical values.
+Add custom evaluation results; supports numeric, boolean, and categorical values.
 
 ```bash
 POST /api/public/scores

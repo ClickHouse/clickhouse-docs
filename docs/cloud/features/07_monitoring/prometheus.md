@@ -228,30 +228,37 @@ The following shows an example configuration for Alloy with a `prometheus.scrape
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
 
-  honor_labels = true
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<clickhouse_org_id>/prometheus"
 
-  basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  params = {
+  "filtered_metrics" = ["true"],
   }
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+  honor_labels    = true
+  scrape_interval = "30s"
+  scrape_timeout  = "25s"
+
+  basic_auth {
+  username = "<clickhouse_api_key_id>"
+  password = "<clickhouse_api_key_secret>"
+  }
+
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
 }
 
-prometheus.remote_write "metrics_service" {
+  prometheus.remote_write "grafana_cloud" {
   endpoint {
-        url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-        basic_auth {
-          username = "<Grafana API username>"
-          password = "<grafana API token>"
-    }
+  url = "https://<grafana_prometheus_url>/api/prom/push"
+
+  basic_auth {
+  username = "<grafana_username>"
+  password = "<grafana_api_token>"
+  }
   }
 }
 ```
@@ -263,22 +270,28 @@ Note the `honor_labels` configuration parameter needs to be set to `true` for th
 Self-managed users of Grafana can find the instructions for installing the Alloy agent [here](https://grafana.com/docs/alloy/latest/get-started/install/). We assume users have configured Alloy to send Prometheus metrics to their desired destination. The `prometheus.scrape` component below causes Alloy to scrape the ClickHouse Cloud Endpoint. We assume `prometheus.remote_write` receives the scraped metrics. Adjust the `forward_to key` to the target destination if this doesn't exist.
 
 ```yaml
-prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+// prometheus.scrape component causes Alloy to scrape the ClickHouse Cloud Prometheus endpoint.
+  // Adjust the forward_to key to match your remote_write receiver if it differs.
+  prometheus.scrape "clickhouse_cloud" {
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
+
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<organizationId>/prometheus"
+
+  params = {
+  "filtered_metrics" = ["true"],
+  }
 
   honor_labels = true
 
   basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  username = "<KEY_ID>"
+  password = "<KEY_SECRET>"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
 }
 ```
 

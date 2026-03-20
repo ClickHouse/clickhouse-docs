@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## seriesDecomposeSTL \{#seriesDecomposeSTL\}
 
-도입된 버전: v24.1
+도입된 버전: v24.1.0
 
 STL [(Loess 기반 계절-추세 분해 절차, Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf)을 사용하여 시계열 데이터를 계절 성분, 추세 성분, 잔차 성분으로 분해합니다.
 
@@ -75,7 +75,7 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 
 ## seriesOutliersDetectTukey \{#seriesOutliersDetectTukey\}
 
-도입된 버전: v24.2
+도입된 버전: v24.2.0
 
 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences)를 사용하여 시계열 데이터에서 이상치를 탐지합니다.
 
@@ -110,7 +110,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 └───────────────────────────────────┘
 ```
 
-**사용자 정의 매개변수 기반 이상치 감지**
+**사용자 정의 매개변수를 사용한 이상치 감지**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
@@ -124,7 +124,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT \{#seriesPeriodDetectFFT\}
 
-도입 버전: v23.12
+도입 버전: v23.12.0
 
 FFT(Fast Fourier Transform, 고속 푸리에 변환)을 사용하여 주어진 시계열 데이터의 주기를 찾습니다. [Fast Fourier transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform)
 
@@ -156,7 +156,7 @@ SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4,
 └────────────────────────┘
 ```
 
-**복잡한 패턴 기반 기간 감지**
+**복잡한 패턴을 이용한 주기 탐지**
 
 ```sql title=Query
 SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0
@@ -170,7 +170,7 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## timeSeriesCopyTag \{#timeSeriesCopyTag\}
 
-도입: v26.1
+도입: v26.1.0
 
 지정된 태그를 한 태그 그룹(`src_group`)에서 다른 태그 그룹(`dest_group`)으로 복사합니다.
 이 함수는 `dest_group`에 이미 존재하던 해당 태그의 모든 기존 값을 대체합니다.
@@ -213,7 +213,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesCopyTags \{#timeSeriesCopyTags\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 지정된 태그를 한 태그 그룹(`src_group`)에서 다른 태그 그룹(`dest_group`)으로 복사합니다.
 이 함수는 `dest_group`에서 복사된 태그의 기존 값을 모두 대체합니다.
@@ -256,7 +256,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesExtractTag \{#timeSeriesExtractTag\}
 
-도입된 버전: v26.1
+도입된 버전: v26.1.0
 
 그룹에서 지정된 태그의 값을 추출합니다. 해당 태그를 찾을 수 없으면 NULL을 반환합니다.
 함수 [timeSeriesGroupToTags()](/sql-reference/functions/time-series-functions#timeSeriesGroupToTags)도 참고하십시오.
@@ -295,7 +295,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesFromGrid \{#timeSeriesFromGrid\}
 
-도입 버전: v25.8
+도입 버전: v25.8.0
 
 값 배열 `[x1, x2, x3, ...]`을(를) 튜플의 배열
 `[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]`로 변환합니다.
@@ -339,7 +339,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
-도입된 버전: v26.1
+도입된 버전: v26.1.0
 
 지정된 그룹과 관련된 태그 이름과 값을 반환합니다.
 함수 [timeSeriesTagsToGroup()](/sql-reference/functions/time-series-functions#timeSeriesTagsToGroup)도 참고하십시오.
@@ -381,7 +381,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesIdToGroup \{#timeSeriesIdToGroup\}
 
-도입: v26.1
+도입: v26.1.0
 
 지정된 시계열 식별자와 연관된 태그의 이름과 값을 반환합니다.
 함수 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)도 참고하십시오.
@@ -422,7 +422,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesIdToTags \{#timeSeriesIdToTags\}
 
-도입된 버전: v25.8
+도입된 버전: v25.8.0
 
 지정된 시계열 식별자와 연결된 태그를 반환합니다.
 함수 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags)도 참고하십시오.
@@ -462,7 +462,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesJoinTags \{#timeSeriesJoinTags\}
 
-도입: v26.1
+도입: v26.1.0
 
 태그 그룹에서 추출한 지정된 태그 값들을 조인합니다.
 함수는 조인된 값들 사이에 구분자를 삽입하고,
@@ -505,7 +505,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('src1'
 
 ## timeSeriesRange \{#timeSeriesRange\}
 
-도입 버전: v25.8
+도입 버전: v25.8.0
 
 타임스탬프 범위 [start&#95;timestamp, start&#95;timestamp + step, start&#95;timestamp + 2 * step, ..., end&#95;timestamp]를 생성합니다.
 
@@ -545,7 +545,7 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 
 ## timeSeriesRemoveAllTagsExcept \{#timeSeriesRemoveAllTagsExcept\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 태그 그룹에서 지정된 태그들을 제외한 나머지 모든 태그를 제거합니다.
 함수 [timeSeriesRemoveTag()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTag),
@@ -584,7 +584,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTag \{#timeSeriesRemoveTag\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 태그 그룹에서 지정된 태그를 제거합니다.
 그룹에 해당 태그가 없으면 그룹은 변경되지 않은 상태로 반환됩니다.
@@ -628,7 +628,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTags \{#timeSeriesRemoveTags\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 지정된 태그를 태그 그룹에서 제거합니다.
 지정된 태그 중 일부가 태그 그룹에 없으면 FUNCTION은 해당 태그를 무시합니다.
@@ -670,7 +670,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesReplaceTag \{#timeSeriesReplaceTag\}
 
-도입된 버전: v26.1
+도입된 버전: v26.1.0
 
 태그 `src_tag`의 값에 정규식 `regex`를 적용해 일치 여부를 확인합니다.
 일치하는 경우, 반환되는 그룹에서 태그 `dest_tag`의 값은 `replacement`를 확장한 결과가 되며,
@@ -714,7 +714,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('servi
 
 ## timeSeriesStoreTags \{#timeSeriesStoreTags\}
 
-도입: v25.8
+도입: v25.8.0
 
 쿼리 컨텍스트에 지정된 시계열 식별자와 태그 집합 간의 매핑을 저장합니다.
 함수 [timeSeriesIdToTags()](/sql-reference/functions/time-series-functions#timeSeriesIdToTags)와
@@ -758,7 +758,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesTagsToGroup \{#timeSeriesTagsToGroup\}
 
-도입 버전: v26.1
+도입 버전: v26.1.0
 
 지정된 태그 집합에 해당하는 태그 그룹을 반환합니다.
 쿼리 실행 중에 동일한 태그 그룹이 여러 번 발견되면 함수는 동일한 그룹을 반환합니다.
@@ -798,6 +798,56 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 ┌─group1─┬─group2─┬─empty_group─┬─same_group2─┬─throwIf(notEquals(same_group2, group2))─┬─timeSeriesGroupToTags(group2)──┐
 │      1 │      2 │           0 │           2 │                                       0 │ [('__name__','http_failures')] │
 └────────┴────────┴─────────────┴─────────────┴─────────────────────────────────────────┴────────────────────────────────┘
+```
+
+## timeSeriesThrowDuplicateSeriesIf \{#timeSeriesThrowDuplicateSeriesIf\}
+
+도입된 버전: v26.2.0
+
+`condition`을 평가하여 참이면 다음 메시지와 함께 예외를 발생시킵니다.
+`Multiple series have the same tags <tags>, duplicate series in the same result set are not allowed`.
+`condition`이 거짓이면 함수는 `0`을 반환합니다.
+이 함수는 [throwIf()](/sql-reference/functions/other-functions#throwIf)와 유사하지만,
+다른 오류 코드를 사용하고 오류 메시지를 다르게 서식을 지정합니다.
+
+**구문**
+
+```sql
+timeSeriesThrowDuplicateSeriesIf(condition, group)
+```
+
+**인수**
+
+* `condition` — 확인할 조건입니다. 일반적으로 함수 [count()](/sql-reference/aggregate-functions/reference/count#count)를 포함합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+* `group` — 태그 그룹입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+`0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**예시**
+
+```sql title=Query
+CREATE TABLE test(tags Array(Tuple(String, String))) engine=Memory;
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- OK
+
+INSERT INTO test VALUES ([('__name__', 'up')]);
+
+SELECT timeSeriesTagsToGroup(tags) AS group
+FROM test
+GROUP BY group
+HAVING timeSeriesThrowDuplicateSeriesIf(count() > 1, group) = 0;  -- Throws exception "Multiple series have the same tags {'__name__': 'up'}"
+```
+
+```response title=Response
 ```
 
 {/*AUTOGENERATED_END*/ }

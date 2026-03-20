@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 ## varSamp \{#varSamp\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculate the sample variance of a data set.
+データセットの標本分散を計算します。
 
-The sample variance is calculated using the formula:
+標本分散は次の式を使用して計算されます：
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n-1}
@@ -23,37 +23,37 @@ $$
 
 <br />
 
-Where:
+ここで：
 
-- $x$ is each individual data point in the data set
-- $\bar{x}$ is the arithmetic mean of the data set
-- $n$ is the number of data points in the data set
+- $x$ はデータセット内の各データポイント
+- $\bar{x}$ はデータセットの算術平均
+- $n$ はデータセット内のデータポイントの数
 
-この関数は、入力データセットがより大きな母集団からの標本であることを前提としています。母集団全体の分散を計算する場合(完全なデータセットがある場合)は、代わりに[`varPop`](/sql-reference/aggregate-functions/reference/varPop)を使用してください。
+この関数は、入力データセットがより大きな母集団からの標本であることを前提としています。母集団全体の分散を計算する場合（完全なデータセットがある場合）は、代わりに[`varPop`](/sql-reference/aggregate-functions/reference/varPop)を使用してください。
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`varSampStable`](/sql-reference/aggregate-functions/reference/varsampstable) function. It works slower but provides a lower computational error.
+この関数は数値的に不安定なアルゴリズムを使用しています。計算に[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`varSampStable`](/sql-reference/aggregate-functions/reference/varsampstable)関数を使用してください。処理は遅くなりますが、計算誤差が小さくなります。
 :::
 
-**Syntax**
+**構文**
 
 ```sql
 varSamp(x)
 ```
 
-**Aliases**: `VAR_SAMP`
+**エイリアス**: `VAR_SAMP`
 
-**Arguments**
+**引数**
 
-- `x` — The population for which you want to calculate the sample variance. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+- `x` — 標本分散を計算したい母集団。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal*`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**戻り値**
 
-Returns the sample variance of the input data set `x`. [`Float64`](/sql-reference/data-types/float)
+入力データセット `x` の標本分散を返します。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Computing sample variance**
+**標本分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_data;

@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 ## quantileTiming \{#quantileTiming\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 以给定精度计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-结果是确定的（不依赖于查询处理顺序）。
+结果是确定的 (不依赖于查询处理顺序) 。
 该函数针对描述分布的序列进行了优化，例如网页加载时间或后端响应时间。
 
-在一个查询中使用多个具有不同级别的 `quantile*` 函数时，其内部状态不会被合并（也就是说，查询的执行效率会低于最佳情况）。
+在一个查询中使用多个具有不同级别的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，查询的执行效率会低于最佳情况) 。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **精度**
@@ -33,7 +33,7 @@ doc_type: 'reference'
 :::
 
 :::note
-如果没有向函数传递任何值（使用 `quantileTimingIf` 时），则会返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。这样做的目的是将这些情况与结果为零的情况区分开来。有关对 `NaN` 值排序的说明，请参阅 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
+如果没有向函数传递任何值 (使用 `quantileTimingIf` 时) ，则会返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。这样做的目的是将这些情况与结果为零的情况区分开来。有关对 `NaN` 值排序的说明，请参阅 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
 :::
 
 **语法**
@@ -50,11 +50,11 @@ quantileTiming(level)(expr)
 
 **参数说明**
 
-* `expr` — 针对列值的表达式，返回 Float* 类型的数字。如果向函数传入负值，其行为未定义。如果该值大于 30,000（页面加载时间超过 30 秒），则会被截断为 30,000。[`Float*`](/sql-reference/data-types/float)
+* `expr` — 针对列值的表达式，返回 Float* 类型的数字。如果向函数传入负值，其行为未定义。如果该值大于 30,000 (页面加载时间超过 30 秒) ，则会被截断为 30,000。[`Float*`](/sql-reference/data-types/float)
 
 **返回值**
 
-指定水平的分位数。如果没有向函数传入任何值（在使用 `quantileTimingIf` 时），则返回 NaN。这样做是为了将这些情况与结果为零的情况区分开来。[`Float32`](/sql-reference/data-types/float)
+指定水平的分位数。如果没有向函数传入任何值 (在使用 `quantileTimingIf` 时) ，则返回 NaN。这样做是为了将这些情况与结果为零的情况区分开来。[`Float32`](/sql-reference/data-types/float)
 
 **示例**
 

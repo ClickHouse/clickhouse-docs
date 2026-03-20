@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 # 在 Linux 上为 E2K 构建 \{#build-on-linux-for-e2k\}
 
-ClickHouse 对 E2K（Elbrus-2000）的支持仍处于实验阶段，目前只能在原生模式下使用最小化配置进行编译，并依赖 e2k 定制构建的库，例如 boost、jemalloc、libunwind、zstd。
+ClickHouse 对 E2K (Elbrus-2000) 的支持仍处于实验阶段，目前只能在原生模式下使用最小化配置进行编译，并依赖 e2k 定制构建的库，例如 boost、jemalloc、libunwind、zstd。
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 

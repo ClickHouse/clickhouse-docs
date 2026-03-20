@@ -21,17 +21,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 # ClickStack を使用した PostgreSQL ログの監視 \{#postgres-logs-clickstack\}
 
-:::note[概要]
-このガイドでは、OpenTelemetry Collector を設定して PostgreSQL サーバーログを取り込むことで、ClickStack を使って PostgreSQL を監視する方法を説明します。次の内容を学びます。
-
-- 構造化して解析できるように、PostgreSQL がログを CSV 形式で出力するように設定する
-- ログのインジェスト用のカスタム OTel collector 設定を作成する
-- カスタム設定を使用して ClickStack をデプロイする
-- あらかじめ用意されたダッシュボードを使用して、PostgreSQL ログから得られるインサイト（エラー、スロークエリ、接続状況）を可視化する
-
-本番環境の PostgreSQL を設定する前に連携をテストしたい場合は、サンプルログを含むデモ用データセットを利用できます。
-
-所要時間: 10〜15 分
+:::note[TL;DR]
+OTel `filelog` レシーバーを使用して、PostgreSQL サーバーログ（CSV 形式）を ClickStack で収集し、可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
 :::
 
 ## 既存の PostgreSQL との統合 \{#existing-postgres\}
@@ -378,14 +369,12 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-PostgreSQL ログ監視の設定が完了したら、次の作業を行ってください：
-
-- 重要なイベント（接続失敗、遅いクエリ、エラーの急増）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- 包括的なデータベース監視のために、ログを[PostgreSQL メトリクス](/use-cases/observability/clickstack/integrations/postgresql-metrics)と相関付ける
-- アプリケーション固有のクエリパターン向けにカスタムダッシュボードを作成する
-- パフォーマンス要件に応じた遅いクエリを特定するために `log_min_duration_statement` を設定する
+* 重要なイベント (接続失敗、遅いクエリ、エラーの急増) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* 包括的なデータベース監視のために、ログを[PostgreSQL メトリクス](/use-cases/observability/clickstack/integrations/postgresql-metrics)と相関付ける
+* アプリケーション固有のクエリパターン向けにカスタムダッシュボードを作成する
+* パフォーマンス要件に応じた遅いクエリを特定するために `log_min_duration_statement` を設定する
 
 ## 本番環境への移行 {#going-to-production}
 
