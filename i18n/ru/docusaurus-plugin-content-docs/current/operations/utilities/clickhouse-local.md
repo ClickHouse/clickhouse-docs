@@ -241,6 +241,44 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 Также существуют аргументы для каждой конфигурационной переменной ClickHouse, которые чаще используются вместо `--config-file`.
 
+## Команды \{#commands\}
+
+### Команда LS \{#ls-command\}
+
+Выводит список всех файлов в текущем рабочем каталоге, доступных для `clickhouse-local`.
+
+Вы можете выполнить её в интерактивном режиме так:
+
+```sql
+ClickHouse local version 26.3.1.1.
+
+:) ls
+
+SELECT _file AS file
+FROM file('*', 'One')
+ORDER BY file ASC
+```
+
+```text title="Response"
+┌─file────────┐
+│ file1.csv   │
+│ file2.json  │
+│ file3.xml   │
+└─────────────┘
+```
+
+Вы также можете выполнить это в виде запроса, используя аргумент `-q`:
+
+```sh
+./clickhouse-local -q ls
+```
+
+```text title="Response"
+file1.csv
+file2.json
+file3.xml
+```
+
 ## Примеры \{#examples\}
 
 ```bash
@@ -305,7 +343,7 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 
 ## Дополнительные материалы \{#related-content-1\}
 
-- [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
-- [Загрузка данных в ClickHouse — часть 1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- [Анализ крупных реальных наборов данных: более 100 лет метеонаблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
-- Блог: [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [Загрузка данных в ClickHouse — часть 1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
+* [Анализ крупных реальных наборов данных: более 100 лет метеонаблюдений в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+* Блог: [Извлечение, преобразование и выполнение запросов к данным в локальных файлах с использованием clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)

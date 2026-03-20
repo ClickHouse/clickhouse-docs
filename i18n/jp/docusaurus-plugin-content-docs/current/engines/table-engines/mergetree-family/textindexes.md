@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
   たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
 * `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります (関数 [array](/sql-reference/functions/array-functions.md/#array) を参照) 。
+* `unicode_word` は、Unicode の単語境界規則 (UAX #29 に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (`:` は文字、`.` と `'` は同種の文字用) とともにトークンを構成します。非 ASCII の Unicode 文字は 1 文字のトークンになります。
 
 利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 
@@ -381,9 +382,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` と `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) と `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) は、指定された検索語句全体と一致します。
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) は、指定された検索語全体にマッチします。
 
 例:
 
@@ -391,12 +392,9 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-テキスト索引は `=` と `!=` をサポートしますが、`array` tokenizer を使う場合にのみ、等号／不等号による検索が意味を持ちます（その場合、索引には行全体の値が格納されるためです）。
+#### `IN` \{#functions-example-in\}
 
-
-#### `IN` と `NOT IN` \{#functions-example-in-notin\}
-
-`IN` ([in](/sql-reference/functions/in-functions)) と `NOT IN` ([notIn](/sql-reference/functions/in-functions)) は `equals` および `notEquals` 関数と似ていますが、`IN` はいずれかの検索語に一致するもの、`NOT IN` はいずれの検索語にも一致しないものにマッチします。
+`IN` ([in](/sql-reference/functions/in-functions)) は `equals` 関数と似ていますが、すべての検索語にマッチします。
 
 例:
 
@@ -404,16 +402,22 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-`=` および `!=` と同じ制限が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザーと併用する場合にのみ有効です。
+:::note
+`NOT IN` (`notIn`) はテキスト索引ではサポートされていません。
+:::
 
 
-#### `LIKE`, `NOT LIKE` および `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` および `match` \{#functions-example-like-match\}
 
 :::note
 これらの関数がテキストインデックスをフィルタリングに利用するのは、インデックスの tokenizer が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
 :::
 
-テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like))、`NOT LIKE` ([notLike](/sql-reference/functions/string-search-functions.md/#notLike))、および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
+:::note
+`NOT LIKE` (`notLike`) はテキスト索引ではサポートされません。
+:::
+
+テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
 `ngrams` tokenizer を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
 
 `splitByNonAlpha` tokenizer を持つテキストインデックスの例:
@@ -422,7 +426,7 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 SELECT count() FROM table WHERE comment LIKE 'support%';
 ```
 
-この例の `support` は、`support`、`supports`、`supporting` などにマッチし得ます。
+`support` の例では、`support`、`supports`、`supporting` などにマッチし得ます。
 この種のクエリは部分文字列クエリであり、テキスト索引によって高速化することはできません。
 
 LIKE クエリでテキスト索引を活用するには、LIKE パターンを次のように書き換える必要があります。

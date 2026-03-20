@@ -76,7 +76,7 @@ flowchart TB
 
 ### Обсервабилити \{#observability\}
 
-[Обсервабилити](/docs/observability/overview) имеет ключевое значение для понимания и отладки LLM-приложений. В отличие от традиционного ПО, LLM-приложения включают сложные и недетерминированные взаимодействия, которые трудно отслеживать и отлаживать. Langfuse предоставляет расширенные возможности трассировки, которые помогают точно понять, что происходит в вашем приложении.
+[Обсервабилити](https://langfuse.com/docs/observability/overview) имеет ключевое значение для понимания и отладки LLM-приложений. В отличие от традиционного ПО, LLM-приложения включают сложные и недетерминированные взаимодействия, которые трудно отслеживать и отлаживать. Langfuse предоставляет расширенные возможности трассировки, которые помогают точно понять, что происходит в вашем приложении.
 
 *📹 Хотите узнать больше? [**Посмотрите сквозной обзор**](https://langfuse.com/watch-demo?tab=observability) Langfuse Observability и того, как интегрировать его с вашим приложением.*
 
@@ -120,123 +120,108 @@ flowchart TB
 
 ### Управление промптами \{#prompt-management\}
 
-[Управление промптами](/docs/prompt-management/overview) критически важно для создания эффективных LLM-приложений. Langfuse предоставляет инструменты, которые помогают управлять промптами, версионировать их и оптимизировать на протяжении всего жизненного цикла разработки.
+[Управление промптами](https://langfuse.com/docs/prompt-management/overview) критически важно для создания эффективных LLM-приложений. Langfuse предоставляет инструменты, которые помогают управлять промптами, версионировать их и оптимизировать на протяжении всего жизненного цикла разработки.
 
-_📹 Хотите узнать больше? [**Посмотрите сквозной обзор**](https://langfuse.com/watch-demo?tab=prompt) Langfuse Prompt Management и его интеграции с вашим приложением._
+*📹 Хотите узнать больше? [**Посмотрите сквозной обзор**](https://langfuse.com/watch-demo?tab=prompt) Langfuse Prompt Management и его интеграции с вашим приложением.*
 
 <Tabs groupId="prompt-management">
-<TabItem value="create" label="Create">
+  <TabItem value="create" label="Create">
+    Создавайте новые промпты через UI, SDKS или API.
 
-Создавайте новые промпты через UI, SDKS или API.
+    <video src="https://static.langfuse.com/docs-videos/create-update-prompts.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/create-update-prompts.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="version-control" label="Version Control">
+    Совместно версионируйте и редактируйте промпты через UI, API или SDKS.
 
-</TabItem>
-<TabItem value="version-control" label="Version Control">
+    <video src="https://static.langfuse.com/docs-videos/create-prompt-version.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-Совместно версионируйте и редактируйте промпты через UI, API или SDKS.
+  <TabItem value="deploy" label="Deploy">
+    Развёртывайте промпты в продакшн или любую другую среду с помощью меток — без изменений кода.
 
-<video src="https://static.langfuse.com/docs-videos/create-prompt-version.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/deploy-prompt.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="deploy" label="Deploy">
+  <TabItem value="metrics" label="Metrics">
+    Сравнивайте задержку, стоимость и метрики качества для разных версий ваших промптов.
 
-Развёртывайте промпты в продакшн или любую другую среду с помощью меток — без изменений кода.
+    <video src="https://static.langfuse.com/docs-videos/prompt-metrics.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/deploy-prompt.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="test-in-playground" label="Test in Playground">
+    Мгновенно тестируйте ваши промпты в песочнице (playground).
 
-</TabItem>
-<TabItem value="metrics" label="Metrics">
+    <video src="https://static.langfuse.com/docs-videos/prompt-to-playground.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-Сравнивайте задержку, стоимость и метрики качества для разных версий ваших промптов.
+  <TabItem value="link-with-traces" label="Link with Traces">
+    Связывайте промпты с трейсами, чтобы понять, как они работают в контексте вашего LLM-приложения.
 
-<video src="https://static.langfuse.com/docs-videos/prompt-metrics.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/linked-generations.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="test-in-playground" label="Test in Playground">
+  <TabItem value="track-changes" label="Track Changes">
+    Отслеживайте изменения в ваших промптах, чтобы понимать, как они меняются со временем.
 
-Мгновенно тестируйте ваши промпты в песочнице (playground).
-
-<video src="https://static.langfuse.com/docs-videos/prompt-to-playground.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="link-with-traces" label="Link with Traces">
-
-Связывайте промпты с трейсами, чтобы понять, как они работают в контексте вашего LLM-приложения.
-
-<video src="https://static.langfuse.com/docs-videos/linked-generations.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="track-changes" label="Track Changes">
-
-Отслеживайте изменения в ваших промптах, чтобы понимать, как они меняются со временем.
-
-<video src="https://static.langfuse.com/docs-videos/track-changes.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
+    <video src="https://static.langfuse.com/docs-videos/track-changes.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 </Tabs>
 
 ### Оценка и наборы данных \{#evaluation\}
 
-[Оценка](/docs/evaluation/overview) имеет решающее значение для обеспечения качества и надежности ваших LLM-приложений. Langfuse предоставляет гибкие инструменты оценки, которые адаптируются к вашим конкретным потребностям, независимо от того, проводите ли вы тестирование в процессе разработки или отслеживаете производительность в продакшене.
+[Оценка](https://langfuse.com/docs/evaluation/overview) имеет решающее значение для обеспечения качества и надежности ваших LLM-приложений. Langfuse предоставляет гибкие инструменты оценки, которые адаптируются к вашим конкретным потребностям, независимо от того, проводите ли вы тестирование в процессе разработки или отслеживаете производительность в продакшене.
 
-_📹 Хотите узнать больше? [**Посмотрите сквозной обзор**](https://langfuse.com/watch-demo?tab=evaluation) Langfuse Evaluation и того, как использовать его для улучшения вашего LLM-приложения._
+*📹 Хотите узнать больше? [**Посмотрите сквозной обзор**](https://langfuse.com/watch-demo?tab=evaluation) Langfuse Evaluation и того, как использовать его для улучшения вашего LLM-приложения.*
 
 <Tabs groupId="evaluation">
-<TabItem value="analytics" label="Analytics">
+  <TabItem value="analytics" label="Analytics">
+    Стройте графики результатов оценки на дашборде Langfuse.
 
-Стройте графики результатов оценки на дашборде Langfuse.
+    <video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="user-feedback" label="User Feedback">
+    Собирайте обратную связь от ваших пользователей. Ее можно собирать на фронтенде через наш Browser SDK, на стороне сервера через SDKs или API. В видео также показан пример приложения.
 
-</TabItem>
-<TabItem value="user-feedback" label="User Feedback">
+    <video src="https://static.langfuse.com/docs-videos/scores-user-feedback.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-Собирайте обратную связь от ваших пользователей. Ее можно собирать на фронтенде через наш Browser SDK, на стороне сервера через SDKs или API. В видео также показан пример приложения.
+  <TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
+    Запускайте полностью управляемые оценки LLM-as-a-Judge на продакшен- или dev-трейсах. Их можно применять к любому шагу внутри вашего приложения для пошаговой оценки.
 
-<video src="https://static.langfuse.com/docs-videos/scores-user-feedback.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
+  <TabItem value="experiments" label="Experiments">
+    Оценивайте промпты и модели на наборах данных напрямую в пользовательском интерфейсе. Пользовательский код не требуется.
 
-Запускайте полностью управляемые оценки LLM-as-a-Judge на продакшен- или dev-трейсах. Их можно применять к любому шагу внутри вашего приложения для пошаговой оценки.
+    <video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="annotation-queue" label="Annotation Queue">
+    Задайте базовый уровень для вашего процесса оценки с помощью человеческих аннотаций через очереди аннотаций.
 
-</TabItem>
-<TabItem value="experiments" label="Experiments">
+    <video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-Оценивайте промпты и модели на наборах данных напрямую в пользовательском интерфейсе. Пользовательский код не требуется.
+  <TabItem value="custom-evals" label="Custom Evals">
+    Добавляйте пользовательские результаты оценки; поддерживаются числовые, булевы и категориальные значения.
 
-<video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    ```bash
+    POST /api/public/scores
+    ```
 
-</TabItem>
-<TabItem value="annotation-queue" label="Annotation Queue">
+    Добавляйте оценки через Python или JS SDK.
 
-Задайте базовый уровень для вашего процесса оценки с помощью человеческих аннотаций через очереди аннотаций.
-
-<video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="custom-evals" label="Custom Evals">
-
-Добавляйте пользовательские результаты оценки; поддерживаются числовые, булевы и категориальные значения.
-
-```bash
-POST /api/public/scores
-```
-
-Добавляйте оценки через Python или JS SDK.
-
-```python title="Example (Python)"
-langfuse.score(
-  trace_id="123",
-  name="my_custom_evaluator",
-  value=0.5,
-)
-```
-
-</TabItem>
+    ```python title="Example (Python)"
+    langfuse.score(
+      trace_id="123",
+      name="my_custom_evaluator",
+      value=0.5,
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## Быстрый старт \{#quickstarts\}

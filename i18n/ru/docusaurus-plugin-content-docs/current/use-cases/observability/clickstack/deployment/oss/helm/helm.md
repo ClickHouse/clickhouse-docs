@@ -386,9 +386,9 @@ helm install my-clickstack clickstack/clickstack \
 - [Руководство по конфигурации](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — ключи API, секреты и настройка входного шлюза
 - [Развертывания в Cloud](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — конфигурации GKE, EKS, AKS и рекомендации по лучшим практикам для production
 
-### Дополнительные ресурсы {#additional-resources}
+### Дополнительные ресурсы
 
-- [Руководство по началу работы с ClickStack](/docs/use-cases/observability/clickstack/getting-started/index) — введение в ClickStack
-- [Репозиторий Helm-чартов ClickStack](https://github.com/ClickHouse/ClickStack-helm-charts) — исходный код чартов и справочник по значениям
-- [Документация Kubernetes](https://kubernetes.io/docs/) — справочные материалы по Kubernetes
-- [Документация Helm](https://helm.sh/docs/) — справочные материалы по Helm
+* [Руководство по началу работы с ClickStack](/use-cases/observability/clickstack/getting-started) — введение в ClickStack
+* [Репозиторий Helm-чартов ClickStack](https://github.com/ClickHouse/ClickStack-helm-charts) — исходный код чартов и справочник по значениям
+* [Документация Kubernetes](https://kubernetes.io/docs/) — справочные материалы по Kubernetes
+* [Документация Helm](https://helm.sh/docs/) — справочные материалы по Helm

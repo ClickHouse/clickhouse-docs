@@ -386,9 +386,9 @@ helm install my-clickstack clickstack/clickstack \
 - [構成ガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API キー、シークレット、およびイングレスのセットアップ
 - [Cloud デプロイメント](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE、EKS、AKS の構成と本番運用のベストプラクティス
 
-### 追加リソース {#additional-resources}
+### 追加リソース
 
-- [ClickStack 入門ガイド](/docs/use-cases/observability/clickstack/getting-started/index) - ClickStack の概要
-- [ClickStack Helm チャートリポジトリ](https://github.com/ClickHouse/ClickStack-helm-charts) - チャートのソースコードと values のリファレンス
-- [Kubernetes ドキュメント](https://kubernetes.io/docs/) - Kubernetes リファレンス
-- [Helm ドキュメント](https://helm.sh/docs/) - Helm リファレンス
+* [ClickStack 入門ガイド](/use-cases/observability/clickstack/getting-started) - ClickStack の概要
+* [ClickStack Helm チャートリポジトリ](https://github.com/ClickHouse/ClickStack-helm-charts) - チャートのソースコードと values のリファレンス
+* [Kubernetes ドキュメント](https://kubernetes.io/docs/) - Kubernetes リファレンス
+* [Helm ドキュメント](https://helm.sh/docs/) - Helm リファレンス

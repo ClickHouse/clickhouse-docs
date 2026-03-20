@@ -4,33 +4,40 @@ sidebar_label: 'AWS Glue 目录'
 title: 'AWS Glue 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将逐步演示如何使用 ClickHouse 和 AWS Glue 数据目录查询 S3 存储桶中的数据。'
-keywords: ['Glue', '数据湖']
+description: '在本指南中，我们将逐步介绍如何使用 ClickHouse 和 AWS Glue 数据目录查询 S3 存储桶中的数据。'
+keywords: ['Glue', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge />
+<BetaBadge/>
 
-ClickHouse 支持与多个目录集成（Unity、Glue、Polaris 等）。在本指南中，我们将向您展示如何使用 ClickHouse 和 Glue Data Catalog 查询 S3 存储桶中的数据。
+ClickHouse 支持与多个目录集成（Unity、Glue、Polaris 等）。在本指南中，我们将逐步介绍如何使用 ClickHouse 和 Glue 数据目录查询 S3 存储桶中的数据。
 
 :::note
-Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
+Glue 支持许多不同的表格式，但此集成仅支持 Iceberg 表。
 :::
 
 ## 在 AWS 中配置 Glue \{#configuring\}
 
-要连接到 Glue 数据目录，您需要确定目录所在的区域，并提供访问密钥和秘密访问密钥。 
+要连接到 Glue 目录，您需要：
+
+- 目录所在的 AWS 区域
+- Access Key ID/Access Secret Key (v25.12+) 或 AWS 角色 ARN (v26.2+)
+
+对于 AWS 角色身份验证，AWS 角色会话名称是一个额外的可选字段。
 
 :::note
-当前 Glue 数据目录仅支持使用访问密钥和秘密访问密钥进行访问，但我们将在未来支持更多的身份验证方式。
+您需要使用 `SET allow_database_glue_catalog = 1;` 启用该功能。
 :::
 
 ## 在 Glue 数据目录与 ClickHouse 之间创建连接 \{#connecting\}
 
-在完成 Unity Catalog 的配置并设置好身份验证后，即可在 ClickHouse 与 Unity Catalog 之间建立连接。
+完成 AWS Glue 目录配置后，您可以进行身份验证，并在 ClickHouse 与 AWS Glue 目录之间建立连接。
+
+### AWS 访问密钥/密钥 \{#aws-access-key-secret\}
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -40,6 +47,18 @@ SETTINGS
     region = 'us-west-2', 
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
+```
+
+### AWS 角色 \{#aws-role\}
+
+```sql title="Query"
+CREATE DATABASE glue
+ENGINE = DataLakeCatalog
+SETTINGS
+    catalog_type = 'glue',
+    region = 'us-west-2',
+    aws_role_arn = 'arn:aws:iam::1111111111:role/glue_role',
+    aws_role_session_name = 'clickhouse-glue-session' 
 ```
 
 ## 使用 ClickHouse 查询 Glue 数据目录 \{#query-glue-catalog\}
@@ -196,7 +215,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## 将数据湖中的数据加载到 ClickHouse \{#loading-data-into-clickhouse\}
 
-如果您需要从 Databricks 向 ClickHouse 加载数据，请首先创建一个本地 ClickHouse 表：
+如果您需要从 Glue 向 ClickHouse 加载数据，请首先创建一个本地 ClickHouse 表：
 
 ```sql title="Query"
 CREATE TABLE hits

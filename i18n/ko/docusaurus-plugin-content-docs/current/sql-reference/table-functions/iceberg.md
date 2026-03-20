@@ -14,7 +14,7 @@ Amazon S3, Azure, HDFS 또는 로컬에 저장된 Apache [Iceberg](https://icebe
 ## 구문 \{#syntax\}
 
 ```sql
-icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3(named_collection[, option=value [,..]])
 
 icebergAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -30,8 +30,10 @@ icebergLocal(named_collection[, option=value [,..]])
 
 ## Arguments \{#arguments\}
 
-인수에 대한 설명은 각각 `s3`, `azureBlobStorage`, `HDFS`, `file` 테이블 함수의 인수 설명과 동일합니다.  
+인수에 대한 설명은 각각 `s3`, `azureBlobStorage`, `HDFS`, `file` 테이블 함수의 인수 설명과 동일합니다.
 `format`은 Iceberg 테이블에서 데이터 파일의 형식을 나타냅니다.
+
+`icebergS3`의 경우, ClickHouse Cloud에서 역할 기반 액세스를 위한 `role_arn`을 전달하는 데 선택적 `extra_credentials` 매개변수를 사용할 수 있습니다. 구성 단계는 [Secure S3](/cloud/data-sources/secure-s3)를 참조하십시오.
 
 ### 반환 값 \{#returned-value\}
 
