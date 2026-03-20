@@ -15,7 +15,7 @@ import Details from '@theme/Details';
 The JSON column type is production-ready from ClickHouse 25.3+. Earlier versions are not recommended for production use.
 :::
 
-Your data arrives as JSON. ClickHouse gives you several ways to store it — from fully typed columns to a raw String. The right choice depends on how predictable your schema is and whether you need field-level queries.
+Your data arrives as JSON. ClickHouse gives you several ways to store it, from fully typed columns to a raw String. The right choice depends on how predictable your schema is and whether you need field-level queries.
 
 **Scope:** This page covers schema design decisions for storing JSON data. It does not cover [JSON input/output formats](/interfaces/formats/JSON), [JSON functions](/sql-reference/functions/json-functions), or query syntax. For background on the JSON column type itself, see [Use JSON where appropriate](/best-practices/use-json-where-appropriate).
 
@@ -27,7 +27,7 @@ Your data arrives as JSON. ClickHouse gives you several ways to store it — fro
   **→** [Typed columns](#typed-columns)
 - **If** most fields are stable but some section is dynamic or unpredictable
   **→** [Hybrid (typed + JSON)](#hybrid)
-- **If** the entire structure is dynamic — keys appear and disappear across records
+- **If** the entire structure is dynamic, with keys that appear and disappear across records
   **→** [Native JSON column](#native-json)
 - **If** you only store and retrieve the JSON blob without field-level queries
   **→** [Opaque String storage](#opaque-storage)
@@ -42,7 +42,7 @@ Don't confuse the JSON *format* with the JSON *column type*. You can insert JSON
 
 **When to use:** The JSON structure is fully known at design time. Fields and types don't change between records. Even complex nested structures (arrays of objects, nested maps) can be expressed with [`Array`](/sql-reference/data-types/array), [`Tuple`](/sql-reference/data-types/tuple), and [`Nested`](/sql-reference/data-types/nested-data-structures/nested) types.
 
-**Trade-offs:** Schema changes require `ALTER TABLE`. No flexibility for unexpected fields — they are silently dropped on insert unless the schema is updated.
+**Trade-offs:** Schema changes require `ALTER TABLE`. Unexpected fields are silently dropped on insert unless the schema is updated.
 
 <Details summary="Setup, verification, and gotchas">
 
@@ -85,7 +85,7 @@ SELECT service, level, duration_ms FROM events WHERE service = 'api'
 
 ### Hybrid (typed columns + JSON) \{#hybrid\}
 
-**When to use:** A core set of fields is stable (timestamps, IDs, status codes), but part of the payload is dynamic — user-defined attributes, tags, metadata, or extension fields that vary across records.
+**When to use:** A core set of fields is stable (timestamps, IDs, status codes), but part of the payload is dynamic. Think user-defined attributes, tags, metadata, or extension fields that vary across records.
 
 **Trade-offs:** Full performance on typed columns, flexibility on the JSON column. The JSON column still carries insert overhead and storage cost for its dynamic portion.
 
@@ -127,13 +127,13 @@ FORMAT PrettyJSONEachRow
 
 **Watch out for**
 
-- Use [type hints](/sql-reference/data-types/newjson) on JSON paths you know ahead of time. Hints bypass the discriminator column and store the path like a regular typed column — same performance, no overhead.
+- Use [type hints](/sql-reference/data-types/newjson) on JSON paths you know ahead of time. Hints bypass the discriminator column and store the path like a regular typed column, with the same performance and no overhead.
 - Use `SKIP` or `SKIP REGEXP` for paths you never query (debug metadata, internal tracing IDs) to save storage and reduce subcolumn count.
-- Set `max_dynamic_paths` proportional to the number of distinct paths you actually query. The default (1024) works for most cases — lower it if your dynamic section is narrow.
+- Set `max_dynamic_paths` proportional to the number of distinct paths you actually query. The default (1024) works for most cases. Lower it if your dynamic section is narrow.
 - Don't set `max_dynamic_paths` above 10,000. High values increase resource consumption and reduce efficiency.
 
 :::note Dotted keys
-Keys with dots (e.g., `http.status_code`) are treated as nested paths by default — `{"http.status_code": 200}` is stored the same as `{"http": {"status_code": 200}}`. This is common with OTel attributes. Use type hints to control how dotted paths are stored, or enable `json_type_escape_dots_in_keys` (25.8+).
+Keys with dots (e.g., `http.status_code`) are treated as nested paths by default, so `{"http.status_code": 200}` is stored the same as `{"http": {"status_code": 200}}`. This is common with OTel attributes. Use type hints to control how dotted paths are stored, or enable `json_type_escape_dots_in_keys` (25.8+).
 :::
 
 </Details>
@@ -142,7 +142,7 @@ Keys with dots (e.g., `http.status_code`) are treated as nested paths by default
 
 ### Native JSON column \{#native-json\}
 
-**When to use:** The structure is genuinely unpredictable — keys appear and disappear across records. User-generated schemas, plugin systems, or data-lake ingestion where upstream schema is not controlled.
+**When to use:** The structure is genuinely unpredictable, with keys that appear and disappear across records. User-generated schemas, plugin systems, or data-lake ingestion where you don't control the upstream schema.
 
 **Trade-offs:** Slower inserts than typed columns. Slower full-object reads than String. Storage overhead from subcolumn management. Works well for field-level queries on specific paths.
 
@@ -193,7 +193,7 @@ SELECT data.page FROM dynamic_events WHERE data.event_type = 'click'
 
 ### Opaque String storage \{#opaque-storage\}
 
-**When to use:** JSON documents are stored and retrieved whole — passed through to an application, archived, or forwarded downstream. No field-level filtering or aggregation inside ClickHouse.
+**When to use:** JSON documents are stored and retrieved whole, then passed through to an application, archived, or forwarded downstream. No field-level filtering or aggregation inside ClickHouse.
 
 **Trade-offs:** Fastest inserts and simplest schema. No field-level queries without runtime parsing (`JSONExtract` family), which is slow at scale.
 
