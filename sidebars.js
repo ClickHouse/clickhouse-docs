@@ -1146,6 +1146,7 @@ const sidebars = {
             id: 'integrations/tools/data-integration/index',
           },
           items: [
+            'integrations/tools/data-integration/middleware/index',
             'integrations/tools/data-integration/retool/index',
             'integrations/tools/data-integration/easypanel/index',
             'integrations/tools/data-integration/splunk/index',
