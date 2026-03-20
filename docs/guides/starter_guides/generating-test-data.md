@@ -32,13 +32,13 @@ INSERT INTO user_events
 SELECT
   generateUUIDv4() AS event_id,
   rand() % 10000 AS user_id,
-  arrayJoin(['click','view','purchase']) AS event_type,
+  arrayElement(['click','view','purchase'], toUInt32(rand()) % 3 + 1) AS event_type,
   now() - INTERVAL rand() % 3600*24 SECOND AS event_time
 FROM numbers(1000000);
 ```
 
 * `rand() % 10000`: uniform distribution of 10k users
-* `arrayJoin(...)`: randomly selects one of three event types
+* `arrayElement(...)`: randomly selects one of three event types
 * Timestamps spread over the previous 24 hours
 
 ---
