@@ -1,5 +1,6 @@
 ---
-description: 'Расширение табличной функции paimon, которое позволяет обрабатывать файлы из Apache Paimon параллельно на нескольких узлах указанного кластера.'
+description: 'Расширение табличной функции paimon, которое позволяет обрабатывать файлы
+  из Apache Paimon параллельно на множестве узлов указанного кластера.'
 sidebar_label: 'paimonCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/paimonCluster
@@ -15,22 +16,24 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Это расширение табличной функции [paimon](/sql-reference/table-functions/paimon.md).
 
-Позволяет обрабатывать файлы из Apache [Paimon](https://paimon.apache.org/) параллельно на множестве узлов заданного кластера. На инициаторе создаётся подключение ко всем узлам кластера, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут выполнены.
+Позволяет обрабатывать файлы из Apache [Paimon](https://paimon.apache.org/) параллельно на множестве узлов, входящих в указанный кластер. На инициаторе создаётся подключение ко всем узлам кластера, и каждый файл динамически распределяется между ними. На рабочем узле у инициатора запрашивается следующая задача для обработки, и она выполняется. Это повторяется до тех пор, пока все задачи не будут выполнены.
 
 ## Синтаксис \{#syntax\}
 
 ```sql
-paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
 paimonAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 
 paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 ```
 
+
 ## Аргументы \{#arguments\}
 
-- `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
-- Описание всех остальных аргументов совпадает с описанием аргументов эквивалентной табличной функции [paimon](/sql-reference/table-functions/paimon.md).
+* `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
+* Описание всех остальных аргументов совпадает с описанием аргументов эквивалентной табличной функции [paimon](/sql-reference/table-functions/paimon.md).
+* Необязательный параметр `extra_credentials` можно использовать для передачи `role_arn` для доступа на основе ролей в ClickHouse Cloud. Шаги по настройке см. в разделе [Secure S3](/cloud/data-sources/secure-s3).
 
 **Возвращаемое значение**
 
@@ -46,4 +49,4 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 **См. также**
 
-- [Табличная функция Paimon](sql-reference/table-functions/paimon.md)
+- [табличная функция paimon](sql-reference/table-functions/paimon.md)

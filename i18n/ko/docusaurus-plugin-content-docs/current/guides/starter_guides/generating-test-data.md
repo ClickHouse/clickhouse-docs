@@ -8,16 +8,16 @@ doc_type: 'guide'
 keywords: ['무작위 데이터', '테스트 데이터']
 ---
 
-# ClickHouse에서 랜덤 테스트 데이터 생성하기 \{#generating-random-test-data-in-clickhouse\}
+# ClickHouse에서 무작위 테스트 데이터 생성 \{#generating-random-test-data-in-clickhouse\}
 
-랜덤 데이터 생성은 새로운 사용 사례를 시험하거나 구현을 벤치마크할 때 유용합니다.
-ClickHouse에는 많은 경우 외부 데이터 생성기가 필요 없을 정도로 [랜덤 데이터를 생성하기 위한 다양한 함수](/sql-reference/functions/random-functions)가 있습니다.
+무작위 데이터 생성은 새로운 사용 사례를 테스트하거나 구현을 벤치마킹할 때 유용합니다.
+ClickHouse에는 많은 경우 외부 데이터 생성기가 필요 없을 정도로 [무작위 데이터를 생성하기 위한 다양한 함수](/sql-reference/functions/random-functions)가 있습니다.
 
-이 가이드는 무작위성 요구 사항이 서로 다른 랜덤 데이터세트를 ClickHouse에서 생성하는 여러 예제를 제공합니다.
+이 가이드는 무작위성 요구 사항이 서로 다른 데이터 세트를 ClickHouse에서 생성하는 여러 예제를 제공합니다.
 
 ## 간단한 균등 분포 데이터 세트 \{#simple-uniform-dataset\}
 
-**사용 예**: 무작위 타임스탬프와 이벤트 유형을 가진 사용자 이벤트의 테스트용 데이터 세트를 빠르게 생성합니다.
+**사용 사례**: 무작위 타임스탬프와 이벤트 유형을 가진 사용자 이벤트의 데이터 세트를 빠르게 생성합니다.
 
 ```sql
 CREATE TABLE user_events (
@@ -32,16 +32,16 @@ INSERT INTO user_events
 SELECT
   generateUUIDv4() AS event_id,
   rand() % 10000 AS user_id,
-  arrayJoin(['click','view','purchase']) AS event_type,
+  arrayElement(['click','view','purchase'], toUInt32(rand()) % 3 + 1) AS event_type,
   now() - INTERVAL rand() % 3600*24 SECOND AS event_time
 FROM numbers(1000000);
 ```
 
 * `rand() % 10000`: 1만 명의 사용자에 대해 균등 분포
-* `arrayJoin(...)`: 세 가지 이벤트 유형 중 하나를 무작위로 선택
-* 지난 24시간에 걸쳐 분포된 타임스탬프
+* `arrayElement(...)`: 세 가지 이벤트 유형 중 하나를 무작위로 선택
+* 타임스탬프는 지난 24시간에 걸쳐 분포됨
 
-***
+---
 
 ## 지수 분포 \{#exponential-distribution\}
 
@@ -68,6 +68,7 @@ FROM numbers(500000);
 
 ***
 
+
 ## 시간 분포 이벤트(Poisson) \{#poisson-distribution\}
 
 **사용 사례**: 특정 시간대(예: 피크 시간대) 주변에 집중적으로 도착하는 이벤트를 시뮬레이션합니다.
@@ -91,32 +92,34 @@ FROM numbers(200000);
 
 ***
 
+
 ## 시간에 따라 변하는 정규 분포 \{#time-varying-normal-distribution\}
 
-**사용 예**: 시간에 따라 변하는 시스템 메트릭(예: CPU 사용량)을 모사할 때 사용합니다.
+**사용 사례**: 시간에 따라 변하는 시스템 메트릭(예: CPU 사용량)을 모사합니다.
 
 ```sql
-CREATE TABLE cpu_metrics (
-  host String,
-  ts DateTime,
-  usage Float32
+CREATE TABLE IF NOT EXISTS cpu_metrics (
+    host String,
+    ts   DateTime,
+    usage Float32
 ) ENGINE = MergeTree
 ORDER BY (host, ts);
 
 INSERT INTO cpu_metrics
 SELECT
-  arrayJoin(['host1','host2','host3']) AS host,
-  now() - INTERVAL number SECOND AS ts,
-  greatest(0.0, least(100.0,
-    randNormal(50 + 30*sin(toUInt32(ts)%86400/86400*2*pi()), 10)
-  )) AS usage
+    arrayJoin(['host1','host2','host3']) AS host,
+    now() - INTERVAL number SECOND AS ts,
+    greatest(0.0, least(100.0,
+        (50 + 30 * sin(toUInt32(number) % 86400 / 86400.0 * 2 * pi()))
+        + randNormal(0, 10)
+    )) AS usage
 FROM numbers(10000);
 ```
 
-* `usage`는 하루 주기의 사인파에 랜덤성이 더해진 값을 따릅니다
-* 값은 [0,100] 범위로 제한됩니다
+* `usage`는 하루 주기의 사인파에 무작위성이 더해진 값을 따릅니다
+* 값은 \[0,100] 범위로 제한됩니다
 
-***
+---
 
 ## 범주형 및 중첩 데이터 \{#categorical-and-nested-data\}
 
@@ -144,6 +147,7 @@ FROM numbers(20000);
 :::tip
 더 많은 예제를 보려면 [Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 블로그를 참고하십시오.
 :::
+
 
 ## 랜덤 테이블 생성하기 \{#generating-random-tables\}
 
@@ -224,6 +228,7 @@ LIMIT 1000;
 
 DESCRIBE TABLE fully_random_table;
 ```
+
 
 ```response
    ┌─name─┬─type─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

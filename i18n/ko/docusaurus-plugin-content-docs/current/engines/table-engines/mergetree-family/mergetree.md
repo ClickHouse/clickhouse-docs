@@ -578,16 +578,16 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 | 함수/연산자/인덱스                                                                                                                | 기본 키 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | 텍스트 |
 | ------------------------------------------------------------------------------------------------------------------------- | ---- | ------ | -------------- | -------------- | ---------------- | ---------------- | --- |
-| [equals(=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [equals (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✗   |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✗   |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗    | ✗      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗    | ✗      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗    | ✗      | ✔              | ✗              | ✗                | ✗                | ✗   |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✗   |
 | [less (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                      | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [보다 큼 (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                   | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [lessOrEquals (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                     | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
@@ -603,6 +603,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗    | ✗      | ✗              | ✔              | ✗                | ✗                | ✗   |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
@@ -1179,11 +1180,9 @@ ClickHouse 22.3에서 22.7까지의 버전은 다른 캐시 구성을 사용하�
 
 ## 컬럼 통계 \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-통계 선언은 `set allow_experimental_statistics = 1`을 활성화한 경우 `*MergeTree*` 패밀리 테이블에 대한 `CREATE` 쿼리의 컬럼 섹션에서 정의됩니다.
+통계 선언은 `*MergeTree*` 계열 테이블에 대한 `CREATE` 쿼리의 컬럼 섹션에 있습니다:
 
 ```sql
 CREATE TABLE tab
@@ -1195,16 +1194,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-또한 `ALTER` SQL 문을 사용하여 통계를 관리할 수도 있습니다.
+또한 `ALTER` 문으로 통계를 조작할 수도 있습니다:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-이 경량 통계는 컬럼 값들의 분포에 대한 정보를 집계합니다. 통계는 각 파트(part)에 저장되며, 각 INSERT가 수행될 때마다 업데이트됩니다.
-`set use_statistics = 1`을 활성화한 경우에만 PREWHERE 최적화를 위해 사용할 수 있습니다.
-
+이 경량 통계는 컬럼 값 분포에 대한 정보를 집계합니다. 통계는 각 파트에 저장되며, 각 삽입이 들어올 때마다 갱신됩니다.
+`set use_statistics = 1`을 활성화한 경우에만 prewhere 최적화에 사용할 수 있습니다.
 
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 

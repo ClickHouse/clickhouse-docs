@@ -1,18 +1,15 @@
 ---
-description: '列統計の操作方法に関するドキュメント'
-sidebar_label: '統計'
+description: '列統計情報の操作に関するドキュメント'
+sidebar_label: 'STATISTICS'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
-title: '列統計の操作'
+title: '列統計情報の操作'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # 列統計の操作 \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 
@@ -41,5 +38,5 @@ ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
 :::note
-統計情報は、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル（[レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む）でのみサポートされています。
+統計情報は、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル ([レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む) でのみサポートされています。
 :::
