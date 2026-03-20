@@ -52,12 +52,12 @@ ClickHouse sends service notifications when a certain alert condition is trigger
 
 | Notify when | Specific alert condition | Default notification channels | Resolution steps |
 |---|---|---|---|
-| Cluster can not be scaled up | When recommended cluster size exceeds vertical scaling maximum limit. New notification is generated when recommended cluster size changes. | | Consider raising maximum size per replica autoscaling limit. See [scaling](/cloud/manage/scaling). |
+| Cluster can not be scaled up | When recommended cluster size exceeds vertical scaling maximum limit. New notification is generated when recommended cluster size changes. | | Consider raising maximum size per replica autoscaling limit. See [scaling](/manage/scaling). |
 | Too many parts error | When 'too many parts' error is detected. Notification will only trigger once per calendar day. | Administrator users will receive an email. | Consider batching inserts. See [Exception: Too many parts](/knowledgebase/exception-too-many-parts). |
 | Failed mutations | When a mutation is in a failed state for 15 mins. Notification will only trigger once per calendar day. | Administrator users will receive an email. | Kill failed mutation. See [Avoid mutations](/best-practices/avoid-mutations). |
 | High query concurrency | When query concurrency exceeds 1,000 per replica. Notification will only trigger once per calendar day. | Administrator users will receive an email. | Consider adding replicas. |
 | Cluster scaling completed | When a cluster's size changes. | | N/A |
-| Cluster can not be scaled down | When recommended cluster size exceeds vertical scaling maximum limit. New notification is generated when recommended cluster size changes. | | Consider lowering minimum size per replica autoscaling limit. See [scaling](/cloud/manage/scaling). |
+| Cluster can not be scaled down | When recommended cluster size exceeds vertical scaling maximum limit. New notification is generated when recommended cluster size changes. | | Consider lowering minimum size per replica autoscaling limit. See [scaling](/manage/scaling). |
 | ClickHouse version changed | When ClickHouse service version update is beginning, and when it has completed. | | N/A |
 
 ## ClickPipes notifications {#clickpipes-notifications}
