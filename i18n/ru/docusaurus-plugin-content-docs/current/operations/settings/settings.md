@@ -550,6 +550,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Использует при выполнении SELECT-запроса до `max_parallel_replicas` реплик из каждого сегмента. Чтение выполняется параллельно и координируется динамически. 0 — отключено, 1 — включено, при сбое они молча отключаются, 2 — включено, при сбое выбрасывается исключение.
 
+## allow_experimental_polyglot_dialect \{#allow_experimental_polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка для включения диалекта polyglot SQL transpiler."}]}]} />
+
+Включает polyglot SQL transpiler — преобразует SQL из более чем 30 диалектов (MySQL, PostgreSQL, SQLite, Snowflake, DuckDB и т. д.) в SQL для ClickHouse.
+
 ## allow_experimental_prql_dialect \{#allow_experimental_prql_dialect\}
 
 <ExperimentalBadge/>
@@ -567,18 +577,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Экспериментальное удаление дубликатов данных для SELECT-запросов на основе UUID частей таблицы
-
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**Псевдонимы**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Параметр был переименован. Предыдущее имя — `allow_experimental_statistic`."}]}]}/>
-
-Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
 
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
@@ -867,15 +865,23 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 Позволяет выводить столбцы со специальными вариантами сериализации, такими как разреженный (Sparse) и Replicated, без преобразования их в полное представление столбца.
 Это позволяет избежать лишнего копирования данных при форматировании вывода.
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**Псевдонимы**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Статистика столбцов теперь общедоступна"}]}]} />
+
+Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **Псевдонимы**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Включает эту оптимизацию по умолчанию."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "Настройка была переименована. Предыдущее имя — `allow_statistic_optimize`."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Включить эту оптимизацию по умолчанию."}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "SETTING была переименована. Предыдущее имя — `allow_statistic_optimize`."}]}]}/>
 
 Разрешает использовать статистику для оптимизации запросов
 
@@ -1353,13 +1359,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
-Включает автоматическое переключение на выполнение с параллельными репликами на основе собранной статистики. Требуется включить `parallel_replicas_local_plan` и указать `cluster_for_parallel_replicas`.
+Включает автоматическое переключение на выполнение с параллельными репликами на основе собранной статистики. Требуются `enable_analyzer = 1`, `enable_parallel_replicas != 0`, `parallel_replicas_local_plan = 1` и указание `cluster_for_parallel_replicas`.
 0 — отключено, 1 — включено, 2 — включен только сбор статистики (переключение на выполнение с параллельными репликами отключено).
 
 ## azure_allow_parallel_part_upload \{#azure_allow_parallel_part_upload\}
@@ -4992,6 +4998,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - manifest_list_entry - Всё вышеперечисленное + записи avro-списка манифестов.
 - manifest_file_metadata - Всё вышеперечисленное + метаданные из avro-файлов манифестов, проходящих при обходе.
 - manifest_file_entry - Всё вышеперечисленное + записи из avro-файлов манифестов, проходящих при обходе.
+
+## iceberg_metadata_staleness_ms \{#iceberg_metadata_staleness_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новый SETTING, позволяющий использовать кэшированную версию метаданных при операциях READ, чтобы избежать получения данных из удалённого каталога"}]}]}/>
+
+Если значение не равно нулю, пропускается получение метаданных iceberg из удалённого каталога, если существует кэшированный снимок метаданных, более новый, чем заданное окно устаревания. Ноль означает, что последняя версия метаданных всегда будет запрашиваться из удалённого каталога. Установка этого SETTING в ненулевое значение означает компромисс: большая устарелость в обмен на меньшую задержку операций чтения.
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -9297,6 +9311,14 @@ FROM default.fuse_tbl AS __table1
 
 Блокирует цикл ожидания запросов на сервере на указанное количество секунд.
 
+## polyglot_dialect \{#polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": ""},{"label": "Новая настройка для указания исходного SQL-диалекта для polyglot-транспайлера."}]}]} />
+
+Исходный SQL-диалект для polyglot-транспайлера (например, &#39;sqlite&#39;, &#39;mysql&#39;, &#39;postgresql&#39;, &#39;snowflake&#39;, &#39;duckdb&#39;).
+
 ## postgresql_connection_attempt_timeout \{#postgresql_connection_attempt_timeout\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
@@ -11934,24 +11956,20 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]} />
 
 /// предпочтительна по сравнению с `allow_statistics_optimize`, поскольку согласуется с `use_primary_key` и `use_skip_indexes`
 Включает использование статистики для оптимизации запросов
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
-Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
+Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

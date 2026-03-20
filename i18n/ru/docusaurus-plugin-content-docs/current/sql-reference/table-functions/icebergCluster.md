@@ -1,6 +1,6 @@
 ---
 description: 'Расширение табличной функции iceberg, позволяющее обрабатывать файлы
-  из Apache Iceberg параллельно на множестве узлов в заданном кластере.'
+  из Apache Iceberg параллельно на многих узлах в заданном кластере.'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
@@ -8,16 +8,16 @@ title: 'icebergCluster'
 doc_type: 'reference'
 ---
 
-# Табличная функция icebergCluster \{#icebergcluster-table-function\}
+# icebergCluster Table Function \{#icebergcluster-table-function\}
 
 Это расширение табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
 
-Позволяет параллельно обрабатывать файлы Apache [Iceberg](https://iceberg.apache.org/) на многих узлах в заданном кластере. На узле-инициаторе создаётся соединение со всеми узлами кластера, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут завершены.
+Позволяет параллельно обрабатывать файлы из Apache [Iceberg](https://iceberg.apache.org/) на многих узлах в заданном кластере. На узле-инициаторе создаётся соединение со всеми узлами кластера, и каждый файл динамически распределяется между ними. На рабочем узле у инициатора запрашивается следующая задача для обработки, и она обрабатывается. Это повторяется до тех пор, пока все задачи не будут завершены.
 
 ## Синтаксис \{#syntax\}
 
 ```sql
-icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 icebergAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -31,6 +31,7 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 
 * `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
 * Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
+* Необязательный параметр `extra_credentials` можно использовать для передачи `role_arn` для доступа на основе ролей в ClickHouse Cloud. Сведения о настройке см. в разделе [Secure S3](/cloud/data-sources/secure-s3).
 
 **Возвращаемое значение**
 
@@ -44,13 +45,13 @@ SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/c
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
-- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — имя файла. Тип: `LowCardinality(String)`.
-- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
-- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
+* `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+* `_file` — имя файла. Тип: `LowCardinality(String)`.
+* `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+* `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+* `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
 **См. также**
 
-- [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
-- [Табличная функция Iceberg](sql-reference/table-functions/iceberg.md)
+* [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
+* [Табличная функция Iceberg](sql-reference/table-functions/iceberg.md)

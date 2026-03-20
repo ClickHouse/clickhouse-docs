@@ -22,7 +22,7 @@ Standard Onboarding을 사용하는 경우 전용 AWS 계정/GCP 프로젝트만
 
 권한 및 리소스 측면에서 더 나은 격리를 보장하기 위해 ClickHouse BYOC 배포를 호스팅할 **전용** AWS 계정 또는 GCP 프로젝트를 미리 준비할 것을 강력히 권장합니다. ClickHouse는 해당 계정 내에 전용 Cloud 리소스 집합(VPC, Kubernetes 클러스터, IAM 역할, S3 버킷 등)을 배포합니다.
 
-보다 맞춤화된 구성이 필요한 경우(예: 기존 VPC에 배포하는 경우), [Customized Onboarding](/cloud/reference/byoc/onboarding/customization) 문서를 참고하십시오.
+보다 맞춤화된 구성이 필요한 경우(예: 기존 VPC에 배포하는 경우), [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) 문서를 참고하십시오.
 
 ## 액세스 요청 \{#request-access\}
 
