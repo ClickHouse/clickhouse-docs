@@ -14,7 +14,7 @@ The modern data warehouse no longer tightly couples storage and compute. Instead
 
 By adding open table formats and a high-performance query engine like ClickHouse to cloud object storage, you get database-grade capabilities — ACID transactions, schema enforcement, and fast analytical queries — without sacrificing the openness of your data lake. This combination brings performance together with interoperable, cost-effective storage to support your traditional analytics and modern AI/ML workloads.
 
-## What this architecture gives you {#benefits}
+## What this architecture provides {#benefits}
 
 By combining open object storage and table formats with ClickHouse as your query engine, you get:
 
@@ -48,7 +48,7 @@ You can also migrate from existing data warehouses like Snowflake, BigQuery, and
 
 You can query data directly from object stores like S3 and GCS, or from data lakes with open table formats like [Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), and [Hudi](/engines/table-engines/integrations/hudi). You can connect to these formats directly or through data catalogs like [AWS Glue Catalog](/use-cases/data-lake/glue-catalog), [Unity Catalog](/use-cases/data-lake/unity-catalog), and [Iceberg REST](/use-cases/data-lake/rest-catalog).
 
-Queries on [materialized views](/materialized-views) are fast because their summarized results are automatically stored in dedicated tables, making applications that rely on them more responsive no matter how much data you're analyzing. While other database providers hide accelerating features behind higher pricing tiers or additional charges, ClickHouse Cloud offers the [query cache](/operations/query-cache), [sparse indexes](/optimize/skipping-indexes), and [projections](/data-modeling/projections) out of the box for repeated and latency-sensitive queries.
+Queries on [materialized views](/materialized-views) are fast because their summarized results are automatically stored in dedicated tables, making downstream querying more responsive no matter how much data you're analyzing. While other database providers hide accelerating features behind higher pricing tiers or additional charges, ClickHouse Cloud offers the [query cache](/operations/query-cache), [sparse indexes](/optimize/skipping-indexes), and [projections](/data-modeling/projections) out of the box for repeated and latency-sensitive queries.
 
 ClickHouse supports 70+ file formats and SQL functions for working with dates, arrays, JSON, geo, and approximate aggregations at scale.
 
