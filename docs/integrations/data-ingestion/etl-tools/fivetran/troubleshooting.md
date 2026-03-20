@@ -185,7 +185,6 @@ The Fivetran destination checks that all replicas are active before performing o
 - Schedule syncs when all nodes are available if you scale down during off-hours.
 - Monitor the ClickHouse Cloud console for service issues.
 
-
 ## Debugging operations {#debugging}
 
 When diagnosing failures:
@@ -194,7 +193,7 @@ When diagnosing failures:
 
 For connector bugs, [create a GitHub issue](https://github.com/ClickHouse/clickhouse-fivetran-destination/issues) or contact [ClickHouse Support](/about-us/support).
 
-### Debugging Fivetran syncs {#debugging}
+### Debugging Fivetran syncs {#debugging-fivetran-syncs}
 
 Use the following queries to diagnose sync failures on the ClickHouse side.
 

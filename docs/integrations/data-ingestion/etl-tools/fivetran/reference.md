@@ -140,7 +140,7 @@ SETTINGS index_granularity = 8192
 
 In this case, the `id` column is chosen as a table sorting key.
 
-### Multiple primary keys in the source table
+### Multiple primary keys in the source table {#multiple-pks}
 
 If the source table has multiple primary keys, they are used in order of their appearance in the Fivetran source table
 definition.
@@ -163,7 +163,7 @@ SETTINGS index_granularity = 8192
 
 In this case, `id` and `name` columns are chosen as table sorting keys.
 
-### No primary keys in the source table
+### No primary keys in the source table {#no-pks}
 
 If the source table has no primary keys, a unique identifier will be added by Fivetran as a `_fivetran_id` column.
 Consider an `events` table that only has the `event` (`STRING`) and `timestamp` (`LOCALDATETIME`) columns in the source.
@@ -184,7 +184,7 @@ SETTINGS index_granularity = 8192
 
 Since `_fivetran_id` is unique and there are no other primary key options, it is used as a table sorting key.
 
-### Selecting the latest version of the data without duplicates
+### Selecting the latest version of the data without duplicates {#selecting-latest-version}
 
 `SharedReplacingMergeTree` performs background data deduplication
 [only during merges at an unknown time](/engines/table-engines/mergetree-family/replacingmergetree).
@@ -201,10 +201,9 @@ SETTINGS select_sequential_consistency = 1;
 
 See also [Duplicate records with ReplacingMergeTree](/integrations/fivetran/troubleshooting#duplicate-records) in the troubleshooting guide.
 
-## Retries on network failures
+## Retries on network failures {#retries-on-network-failures}
 
 The ClickHouse Cloud destination retries transient network errors using the exponential backoff algorithm.
 This is safe even when the destination inserts the data, as any potential duplicates are handled by
 the `SharedReplacingMergeTree` table engine, either during background merges,
 or when querying the data with `SELECT FINAL`.
-
