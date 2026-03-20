@@ -43,27 +43,32 @@ The destination connector is developed and maintained together by ClickHouse and
 </div>
 
 ## Key features {#key-features}
-
-- **Automatic schema creation** — destination tables and databases are created automatically based on source schema.
-- **History Mode (SCD Type 2)** — preserves complete history of all record versions for point-in-time analysis and audit trails.
-- **Retry on network failures** — transient network errors are retried with exponential backoff. Duplicates from retries are handled by `ReplacingMergeTree`.
-- **Configurable batch sizes** — tune write, select, mutation, and hard delete batch sizes via a JSON configuration file.
+- **ClickHouse Cloud compatible**: use your ClickHouse Cloud database as a Fivetran destination.
+- **SaaS deployment model**: fully managed by Fivetran, no need to manage your own infrastructure.
+- **History Mode (SCD Type 2)**: preserves complete history of all record versions for point-in-time analysis and audit trails.
+- **Configurable batch sizes**: You can adapt Fivetran to your particular use case by tuning write, select, mutation, and hard delete batch sizes via a JSON configuration file.
 
 ## Limitations {#limitations}
-
+- Schema migrations is not supported yet, but we are working on it.
 - Adding, removing, or modifying primary key columns is not supported.
 - Custom ClickHouse settings on `CREATE TABLE` statements are not supported.
-- Role-based grants are not fully supported — the connector's grants check only queries direct user grants. Use [direct grants](/integrations/fivetran/troubleshooting#role-based-grants) instead.
+- Role-based grants are not fully supported. The connector's grants check only queries direct user grants. Use [direct grants](/integrations/fivetran/troubleshooting#role-based-grants) instead.
 
 ## Related pages {#related-pages}
-
-- [Setup Guide](/integrations/fivetran/setup-guide) — step-by-step configuration instructions
-- [Technical Reference](/integrations/fivetran/reference) — type mappings, table engines, metadata columns
-- [Troubleshooting & Best Practices](/integrations/fivetran/troubleshooting) — common errors and optimization tips
-
-## Additional resources {#additional-resources}
-
-- [Fivetran ClickHouse destination docs](https://fivetran.com/docs/destinations/clickhouse)
-- [Fivetran ClickHouse setup guide](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
+- [Setup Guide](/integrations/fivetran/setup-guide): step-by-step configuration instructions
+- [Technical Reference](/integrations/fivetran/reference): type mappings, table engines, metadata columns
+- [Troubleshooting & Best Practices](/integrations/fivetran/troubleshooting): common errors and optimization tips
 - [ClickHouse Fivetran destination on GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination)
-- [ClickHouse Support](/about-us/support)
+
+## Setup guide {#setup-guide}
+- If you're looking for configurations and general technical details, please refer to the [technical reference](/integrations/fivetran/reference).
+- For a comprehensive guide, check the [setup guide](https://fivetran.com/docs/destinations/clickhouse/setup-guide) in the Fivetran documentation.
+
+## Contact and support {#contact-us}
+
+The ClickHouse Fivetran destination has a split ownership model:
+
+- **ClickHouse** develops and maintains the destination connector code.
+- **Fivetran** hosts the connector and is responsible for data movement, pipeline scheduling, and source connectors.
+
+Both Fivetran and ClickHouse provide support for the Fivetran ClickHouse destination. For general inquiries, we recommend reaching out to Fivetran, as they are the experts on the Fivetran platform. For any ClickHouse-specific questions or issues, our support team is happy to help. Create a [support ticket](/about-us/support) to ask a question or report an issue.
