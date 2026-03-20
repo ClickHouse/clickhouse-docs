@@ -40,7 +40,7 @@ SELECT isBusinessHours('2026-03-20 10:00:00'::DateTime), isBusinessHours('2026-0
 You should get back the result:
 
 ```response
-1	0
+1   0
 ```
 
 4. You can use the `DROP FUNCTION` command to remove the UDF you just created:
@@ -90,7 +90,7 @@ EOF
 
 Now compress the file into a ZIP archive:
 
-```
+```bash
 zip is_business_hours.zip main.py
 ```
 
@@ -124,8 +124,8 @@ SELECT isBusinessHours('2026-03-20 10:00:00'::DateTime), isBusinessHours('2026-0
 
 You should see the result:
 
-```
-true	false
+```response
+true    false
 ```
 
 ### Create a new version {#create-new-version}
