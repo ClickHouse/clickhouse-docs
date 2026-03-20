@@ -63,9 +63,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
 | [session_timezone](/operations/settings/settings#session_timezone) | `` |
 | [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
-| [use_statistics](/operations/settings/settings#use_statistics) | `1` |
-| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 | [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
@@ -115,7 +112,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_experimental_json_lazy_type_hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints) | `0` |
-| [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -127,6 +123,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_database_hms_catalog](/operations/settings/settings#allow_experimental_database_hms_catalog) | `0` |
 | [allow_experimental_kusto_dialect](/operations/settings/settings#allow_experimental_kusto_dialect) | `0` |
 | [allow_experimental_prql_dialect](/operations/settings/settings#allow_experimental_prql_dialect) | `0` |
+| [allow_experimental_polyglot_dialect](/operations/settings/settings#allow_experimental_polyglot_dialect) | `0` |
+| [polyglot_dialect](/operations/settings/settings#polyglot_dialect) | `` |
 | [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler) | `0` |
 | [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction) | `0` |
 | [allow_experimental_expire_snapshots](/operations/settings/settings#allow_experimental_expire_snapshots) | `0` |
