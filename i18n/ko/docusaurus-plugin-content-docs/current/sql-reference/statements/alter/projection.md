@@ -309,6 +309,48 @@ v24.8부터는 새로운 테이블 수준 설정 [`deduplicate_merge_projection_
 - `drop`: 영향을 받는 프로젝션 테이블 파트를 드롭합니다. 쿼리는 해당 프로젝션 파트에 대해서는 원본 테이블 파트를 사용합니다.
 - `rebuild`: 영향을 받는 프로젝션 파트를 다시 빌드하여 원본 테이블 파트의 데이터와 일관성을 유지합니다.
 
+## 제한 사항 \{#limitations\}
+
+프로젝션의 `ORDER BY` 절에서는 `ALIAS` 컬럼을 사용할 수 없습니다. 예를 들어:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` 컬럼은 물리적으로 저장되지 않고 쿼리 시점에 즉석에서 계산되므로, 정렬 표현식을 평가하는 프로젝션 파트 쓰기 경로에서는 사용할 수 없습니다.
+
+대신 `MATERIALIZED` 컬럼을 사용하거나 표현식을 직접 인라인으로 작성하십시오:
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
+
 ## 함께 보기 \{#see-also\}
 
 - ["머지 과정에서의 프로젝션 제어" (블로그 게시물)](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)

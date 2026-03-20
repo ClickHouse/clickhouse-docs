@@ -25,9 +25,9 @@ import Image from '@theme/IdealImage';
 
 예. 원본 Postgres와 대상 ClickHouse의 데이터 보존은 서로 독립적입니다. 예를 들어, Postgres에는 최근 3개월치 데이터만 보관하면서 ClickHouse에는 전체 이력을 보관할 수 있습니다. Postgres에서 오래된 행을 삭제하면 ClickHouse로 복제되는 DELETE 이벤트가 생성되므로, 과거 데이터를 보존하려면 [publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate)에서 DELETE를 제외하거나 쿼리 계층에서 이를 처리해야 합니다.
 
-### Postgres에서 ClickHouse로 데이터가 전송되는 동안 데이터를 어떻게 보강할 수 있습니까? \{#data-enrichment\}
+### Postgres에서 ClickHouse로 데이터가 흐르는 동안 데이터를 어떻게 보강할 수 있습니까? \{#data-enrichment\}
 
-CDC 대상 테이블을 기반으로 [materialized view(구체화된 뷰)](/materialized-view)를 사용하십시오. ClickHouse의 materialized view는 INSERT 트리거처럼 동작하므로, Postgres에서 복제된 각 행을 최종 대상 테이블에 기록하기 전에 변환하거나 조회 테이블과 조인하거나 추가 컬럼을 통해 보강할 수 있습니다.
+CDC 대상 테이블 위에 [materialized views](/materialized-views)를 사용하십시오. ClickHouse의 materialized view는 INSERT 트리거처럼 동작하므로, Postgres에서 복제된 각 행은 최종 대상 테이블에 기록되기 전에 변환되거나, 조회 테이블과 조인되거나, 추가 컬럼으로 보강될 수 있습니다.
 
 ### 여러 Postgres 인스턴스에서 하나 또는 여러 개의 ClickHouse 서비스로 복제할 수 있습니까? \{#multi-region-multi-source\}
 
