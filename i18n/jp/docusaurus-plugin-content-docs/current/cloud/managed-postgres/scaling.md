@@ -139,6 +139,5 @@ Managed Postgres では、自動ストレージスケーリングへの対応を
 ## 追加のリソース \{#resources\}
 
 - [設定と構成](/cloud/managed-postgres/settings)
-- [読み取りレプリカ](/cloud/managed-postgres/read-replicas)
+- [リードレプリカ](/cloud/managed-postgres/read-replicas)
 - [高可用性](/cloud/managed-postgres/high-availability)
-- [パフォーマンス ベンチマーク](/cloud/managed-postgres/benchmarks)

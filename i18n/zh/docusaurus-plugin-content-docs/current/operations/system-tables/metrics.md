@@ -870,6 +870,14 @@ Iceberg 元数据缓存的大小（以字节为单位）
 
 Iceberg 元数据缓存中已缓存的 File 数量
 
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Iceberg 表后台调度池中的任务数量上限。
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Iceberg 表后台调度池中的任务数量。
+
 ### IndexMarkCacheBytes \{#indexmarkcachebytes\}
 
 二级索引的 mark cache 总大小（以字节为单位）

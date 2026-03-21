@@ -1,7 +1,8 @@
 ---
 slug: /integrations/prometheus
-sidebar_label: 'Prometheus'
-title: 'Prometheus'
+sidebar_label: 'Prometheus 엔드포인트'
+sidebar_position: 4
+title: 'Prometheus 호환 메트릭 엔드포인트'
 description: 'ClickHouse 메트릭을 Prometheus로 내보내기'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -14,7 +15,6 @@ import prometheus_grafana_alloy from '@site/static/images/integrations/prometheu
 import prometheus_grafana_metrics_explorer from '@site/static/images/integrations/prometheus-grafana-metrics-explorer.png';
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
-
 
 # Prometheus 통합 \{#prometheus-integration\}
 
@@ -230,30 +230,37 @@ Grafana Cloud를 사용하는 경우, Grafana에서 Alloy 메뉴로 이동한 �
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
 
-  honor_labels = true
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<clickhouse_org_id>/prometheus"
 
-  basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  params = {
+  "filtered_metrics" = ["true"],
   }
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+  honor_labels    = true
+  scrape_interval = "30s"
+  scrape_timeout  = "25s"
+
+  basic_auth {
+  username = "<clickhouse_api_key_id>"
+  password = "<clickhouse_api_key_secret>"
+  }
+
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
 }
 
-prometheus.remote_write "metrics_service" {
+  prometheus.remote_write "grafana_cloud" {
   endpoint {
-        url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-        basic_auth {
-          username = "<Grafana API username>"
-          password = "<grafana API token>"
-    }
+  url = "https://<grafana_prometheus_url>/api/prom/push"
+
+  basic_auth {
+  username = "<grafana_username>"
+  password = "<grafana_api_token>"
+  }
   }
 }
 ```
@@ -266,22 +273,28 @@ prometheus.remote_write "metrics_service" {
 Grafana를 자가 관리형으로 운영하는 사용자는 Alloy 에이전트 설치 방법을 [여기](https://grafana.com/docs/alloy/latest/get-started/install/)에서 확인할 수 있습니다. Alloy가 Prometheus 메트릭을 원하는 대상으로 전송하도록 이미 구성되어 있다고 가정합니다. 아래의 `prometheus.scrape` 컴포넌트는 Alloy가 ClickHouse Cloud Endpoint에서 메트릭을 수집하도록 합니다. 또한 `prometheus.remote_write`가 수집된 메트릭을 수신한다고 가정합니다. 이 구성이 존재하지 않는 경우 대상에 맞게 `forward_to key`를 조정하십시오.
 
 ```yaml
-prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+// prometheus.scrape component causes Alloy to scrape the ClickHouse Cloud Prometheus endpoint.
+  // Adjust the forward_to key to match your remote_write receiver if it differs.
+  prometheus.scrape "clickhouse_cloud" {
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
+
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<organizationId>/prometheus"
+
+  params = {
+  "filtered_metrics" = ["true"],
+  }
 
   honor_labels = true
 
   basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  username = "<KEY_ID>"
+  password = "<KEY_SECRET>"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
 }
 ```
 
@@ -313,3 +326,11 @@ instances:
 <br />
 
 <Image img={prometheus_datadog} size="md" alt="Prometheus와 Datadog 통합" />
+
+
+## 관련 페이지 \{#related\}
+
+* [모니터링 개요](/cloud/monitoring) — ClickHouse Cloud의 모든 모니터링 방식 비교
+* [Cloud Console 모니터링](/cloud/monitoring/cloud-console) — 외부 도구 없이 사용할 수 있는 기본 제공 대시보드
+* [커뮤니티 및 파트너 통합](/cloud/monitoring/integrations) — Datadog agent 통합 및 커뮤니티 솔루션
+* [시스템 테이블 쿼리](/cloud/monitoring/system-tables) — 시스템 메트릭에 SQL로 직접 액세스

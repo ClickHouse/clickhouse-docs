@@ -764,12 +764,13 @@ ClickHouse перезагружает встроенные словари каж
 
 ## custom_settings_prefixes \{#custom_settings_prefixes\}
 
-Список префиксов для [пользовательских настроек](/operations/settings/query-level#custom_settings). Префиксы должны быть разделены запятыми.
+Список префиксов для [пользовательских настроек](/operations/settings/query-level#custom_settings).
+Несколько префиксов должны быть разделены запятыми.
 
 **Пример**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **См. также**
@@ -1569,6 +1570,10 @@ ClickHouse перезагружает встроенные словари каж
 </http_server_default_response>
 ```
 
+
+## iceberg_background_schedule_pool_size \{#iceberg_background_schedule_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />Размер пула потоков для асинхронного получения актуальных метаданных из удалённого каталога Iceberg; этот пул используется совместно всеми активными таблицами.
 
 ## iceberg_catalog_threadpool_pool_size \{#iceberg_catalog_threadpool_pool_size\}
 
