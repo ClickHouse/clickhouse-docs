@@ -6,13 +6,13 @@ keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
 doc_type: 'guide'
 ---
 
-When it comes to handling updates analytical and transactional databases diverge significantly due to their underlying design philosophies and target use cases.
+When it comes to handling updates, analytical and transactional databases diverge significantly due to their underlying design philosophies and target use cases.
 For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control ([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)).
 This allows for safe and reliable modifications even in high-concurrency environments.
 
 Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations.
-While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O.
-Alternatively, tables can be restructured to convert delete and update into appended operations where they are processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
+While it does natively support in-place updates and deletes, they must be used carefully to avoid high I/O.
+Alternatively, tables can be restructured to convert deletes and updates into append operations that are processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
 
 This guide provides an overview of available update methods in ClickHouse, and helps you choose the right update strategy for your use case.
 
@@ -20,7 +20,7 @@ This guide provides an overview of available update methods in ClickHouse, and h
 
 There are two fundamental approaches to updating data in ClickHouse:
 
-1. Using **specialized table engines** that handle updates through inserts via specialized table engines
+1. Using **specialized table engines** that handle updates through inserts
 2. Using **declarative updates** like [`UPDATE ... SET`](/sql-reference/statements/update) or [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) statements
 
 Within each of the two categories above, there are several ways to update data.
@@ -43,7 +43,7 @@ There are other [engine types](/engines/table-engines/mergetree-family) too, but
 
 ### When to use declarative updates
 
-Declarative UPDATE statements can be more straightforward for simple update operations without the complexity of managing deduplication logic, but they are generally better suited for updating smaller numbers of rows, less frequently, than with specialised engines.
+Declarative UPDATE statements can be more straightforward for simple update operations without the complexity of managing deduplication logic, but they are generally better suited for updating smaller numbers of rows, less frequently, than with specialized engines.
 
 | Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
 |--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -74,7 +74,7 @@ Benchmarks show it can be up to 4,700x faster than mutations for single-row upda
 
 To update a row, simply insert a new version with the same sorting key values and a higher version number. Older versions are removed during background merges. Since deduplication is eventual (it only happens during merges), you should use the `FINAL` modifier or equivalent query logic to get correct, deduplicated results. The `FINAL` modifier adds query overhead ranging from 21-550% depending on the data.
 
-ReplacingMergeTree cannot update sorting key values. It also supports a `Deleted` column for logical deletes.
+`ReplacingMergeTree` can't update sorting key values. It also supports a `Deleted` column for logical deletes.
 
 Read more: [ReplacingMergeTree guide](/guides/replacing-merge-tree) | [ReplacingMergeTree reference](/engines/table-engines/mergetree-family/replacingmergetree)
 
@@ -233,7 +233,7 @@ The following table summarizes query performance overhead based on [benchmarks](
 | Method | Query slowdown | Memory overhead | Notes |
 |--------|----------------|-----------------|-------|
 | [Mutations](/sql-reference/statements/alter/update) | Baseline | Baseline | Full speed after completion; data physically rewritten |
-| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | Variable | Variable | Instant visibility; perform degrades if many updates accumulate |
+| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | Variable | Variable | Instant visibility; performance degrades if many updates accumulate |
 | [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18% (avg ~12%) | +20–210% | Most efficient for queries; best for updating ≤10% of table |
 | [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550% (avg ~280%) | 20–200× baseline | Must read all row versions; heaviest query overhead |
 | [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | Similar to ReplacingMergeTree | Similar to ReplacingMergeTree | Column-level coalescing adds comparable overhead |

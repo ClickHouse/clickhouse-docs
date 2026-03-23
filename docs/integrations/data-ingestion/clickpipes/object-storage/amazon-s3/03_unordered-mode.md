@@ -157,7 +157,7 @@ S3 doesn't allow multiple overlapping notification rules for the same event type
 }
 ```
 
-**3.** Create an inline policy for the IAM role with the [required permissions](/01_overview.md/#permissions) to read objects from S3 and manage messages in the SQS queue. Replace `<bucket-arn>` and `<sqs-queue-arn>` with the appropriate values:
+**3.** Create an inline policy for the IAM role with the [required permissions](/integrations/clickpipes/object-storage/s3/overview#permissions) to read objects from S3 and manage messages in the SQS queue. Replace `<bucket-arn>` and `<sqs-queue-arn>` with the appropriate values:
 
 ```json
 {
