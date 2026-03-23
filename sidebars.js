@@ -635,6 +635,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/unordered-mode',
               ],
             },
             {
@@ -645,6 +646,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/unordered-mode',
               ],
             },
             {
