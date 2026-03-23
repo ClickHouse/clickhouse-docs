@@ -111,7 +111,7 @@ The ClickHouse Cloud destination uses
 
 Every column except primary (ordering) keys and Fivetran metadata columns is created
 as [Nullable(T)](/sql-reference/data-types/nullable), where `T` is a
-ClickHouse Cloud type based on the [data types mapping](#data-types-mapping).
+ClickHouse Cloud type based on the [data types mapping](#type-mapping).
 
 Every destination table includes the following metadata columns:
 
