@@ -526,7 +526,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Data Lakes',
+      label: 'Data lakes',
       collapsed: false,
       collapsible: false,
       link: { type: 'doc', id: 'sql-reference/datalakes' },
@@ -537,7 +537,7 @@ const sidebars = {
   integrations: [
     {
       type: 'category',
-      label: 'All Integrations',
+      label: 'All integrations',
       link: {
         type: 'doc',
         id: 'integrations/index',
@@ -603,7 +603,7 @@ const sidebars = {
         'integrations/language-clients/csharp',
         {
           type: 'category',
-          label: 'Third-party Clients',
+          label: 'Third-party clients',
           collapsed: true,
           collapsible: true,
           items: [
@@ -839,7 +839,7 @@ const sidebars = {
         'interfaces/cli',
         {
           type: 'category',
-          label: 'Drivers and Interfaces',
+          label: 'Drivers and interfaces',
           collapsed: true,
           collapsible: true,
           link: { type: 'doc', id: 'integrations/interfaces/overview' },
@@ -1178,7 +1178,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'interfaces/third-party/integrations',
-              label: 'Third-party Libraries',
+              label: 'Third-party libraries',
             },
           ],
         },
@@ -1678,7 +1678,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'For pandas Users',
+          label: 'For pandas users',
           collapsed: true,
           collapsible: true,
           items: [
