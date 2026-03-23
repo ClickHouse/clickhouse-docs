@@ -160,38 +160,6 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
-## detectProgrammingLanguage \{#detectProgrammingLanguage\}
-
-도입 버전: v22.2.0
-
-주어진 소스 코드 조각에서 프로그래밍 언어를 판별합니다.
-
-**구문**
-
-```sql
-detectProgrammingLanguage('source_code')
-```
-
-**인자**
-
-* `source_code` — 분석할 소스 코드를 나타내는 문자열입니다. [`String`](/sql-reference/data-types/string)
-
-**반환 값**
-
-프로그래밍 언어를 나타내는 [`String`](/sql-reference/data-types/string)을 반환합니다.
-
-**예시**
-
-**C++ 코드 탐지**
-
-```sql title=Query
-SELECT detectProgrammingLanguage('#include <iostream>')
-```
-
-```response title=Response
-C++
-```
-
 ## detectTonality \{#detectTonality\}
 
 도입 버전: v22.2.0
@@ -235,9 +203,9 @@ SELECT
 
 도입 버전: v21.9.0
 
-지정된 단어에 대한 표제어 추출(lemmatization)을 수행합니다.
-이 함수가 동작하려면 딕셔너리가 필요하며, [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)에서 가져올 수 있습니다. 로컬 파일에서 딕셔너리를 로드하는 방법에 대한 자세한 내용은 [&quot;딕셔너리 정의하기&quot;](/sql-reference/statements/create/dictionary/sources/local-file) 페이지를 참조하십시오.
-이 함수가 작동하려면 딕셔너리가 필요하며, [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)에서 얻을 수 있습니다. 로컬 파일에서 딕셔너리를 로드하는 방법에 대한 자세한 내용은 [「Defining Dictionaries」 페이지](/sql-reference/dictionaries#local-file)를 참조하십시오.
+주어진 단어에 대해 표제어 추출(레마화)을 수행합니다.
+이 함수가 작동하려면 딕셔너리가 필요하며, [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models)에서 얻을 수 있습니다. 로컬 파일에서 딕셔너리를 로드하는 방법에 대한 자세한 내용은 [「Defining Dictionaries」 페이지](/docs/sql-reference/
++statements/create/dictionary/sources/local-file)를 참조하십시오.
 
 **구문**
 

@@ -66,7 +66,24 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 ClickHouse는 SQL 스타일과 C 스타일 주석을 모두 지원합니다.
 
 - SQL 스타일 주석은 `--`, `#!` 또는 `# `로 시작하여 줄 끝까지 이어집니다. `--`와 `#!` 뒤의 공백은 생략할 수 있습니다.
-- C 스타일 주석은 `/*`와 `*/` 사이에 작성되며, 여러 줄에 걸칠 수 있습니다. 공백 역시 필수는 아닙니다.
+- C 스타일 주석:
+  - `//`(또는 `/` 문자가 2개를 초과하는 경우) 뒤에 텍스트를 작성하며 줄 끝까지 이어집니다. `/` 뒤의 공백은 필수가 아닙니다.
+  - 여러 줄 주석은 `/*`부터 `*/`까지 작성할 수 있습니다. 공백 역시 필수가 아닙니다.
+  - C 스타일 주석은 중첩할 수 있습니다.
+
+예를 들어:
+
+```sql
+/*
+ * Compute the number of days between two dates.
+ * /* Returns NULL if either argument is NULL */
+ */
+SELECT
+    dateDiff('day', toDate('2024-01-01'), toDate('2024-12-31')) AS days_in_year, -- 365
+    dateDiff('day', toDate('2020-01-01'), today()) AS days_since  #! since 2020
+    ///////////////////////////////////////////////////////////////////
+    # TODO: add hour/minute variants
+```
 
 ## 키워드 \{#keywords\}
 

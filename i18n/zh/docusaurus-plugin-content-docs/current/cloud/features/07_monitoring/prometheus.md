@@ -1,7 +1,8 @@
 ---
 slug: /integrations/prometheus
-sidebar_label: 'Prometheus'
-title: 'Prometheus'
+sidebar_label: 'Prometheus 端点'
+sidebar_position: 4
+title: '兼容 Prometheus 的指标端点'
 description: '将 ClickHouse 指标导出到 Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -14,7 +15,6 @@ import prometheus_grafana_alloy from '@site/static/images/integrations/prometheu
 import prometheus_grafana_metrics_explorer from '@site/static/images/integrations/prometheus-grafana-metrics-explorer.png';
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
-
 
 # Prometheus 集成 \{#prometheus-integration\}
 
@@ -224,36 +224,43 @@ scrape_configs:
 
 <br />
 
-这会将 Alloy 配置为使用 `prometheus.remote_write` 组件，通过认证令牌将数据发送到 Grafana Cloud 端点。之后，用户只需要修改 Alloy 配置（在 Linux 上位于 `/etc/alloy/config.alloy`），以添加一个用于抓取 ClickHouse Cloud Prometheus 端点的 scraper。
+这会将 Alloy 配置为使用 `prometheus.remote_write` 组件，通过认证令牌将数据发送到 Grafana Cloud 端点。之后，用户只需要修改 Alloy 配置 (在 Linux 上位于 `/etc/alloy/config.alloy`) ，以添加一个用于抓取 ClickHouse Cloud Prometheus 端点的 scraper。
 
 下面是一个 Alloy 配置示例，其中包含一个用于从 ClickHouse Cloud 端点抓取指标的 `prometheus.scrape` 组件，以及自动配置好的 `prometheus.remote_write` 组件。请注意，`basic_auth` 配置组件中分别将 Cloud API key ID 和 secret 用作用户名和密码。
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
 
-  honor_labels = true
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<clickhouse_org_id>/prometheus"
 
-  basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  params = {
+  "filtered_metrics" = ["true"],
   }
 
-  forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+  honor_labels    = true
+  scrape_interval = "30s"
+  scrape_timeout  = "25s"
+
+  basic_auth {
+  username = "<clickhouse_api_key_id>"
+  password = "<clickhouse_api_key_secret>"
+  }
+
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
 }
 
-prometheus.remote_write "metrics_service" {
+  prometheus.remote_write "grafana_cloud" {
   endpoint {
-        url = "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-        basic_auth {
-          username = "<Grafana API username>"
-          password = "<grafana API token>"
-    }
+  url = "https://<grafana_prometheus_url>/api/prom/push"
+
+  basic_auth {
+  username = "<grafana_username>"
+  password = "<grafana_api_token>"
+  }
   }
 }
 ```
@@ -266,22 +273,28 @@ prometheus.remote_write "metrics_service" {
 Grafana 的自管理用户可以在[此处](https://grafana.com/docs/alloy/latest/get-started/install/)找到安装 Alloy agent 的说明。我们假设用户已经将 Alloy 配置为将 Prometheus 指标发送到其期望的目标端。下面的 `prometheus.scrape` 组件会使 Alloy 抓取 ClickHouse Cloud 端点的指标。我们假设 `prometheus.remote_write` 会接收这些被抓取的指标。如果没有该目标，请将 `forward_to` 键调整为目标端。
 
 ```yaml
-prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+// prometheus.scrape component causes Alloy to scrape the ClickHouse Cloud Prometheus endpoint.
+  // Adjust the forward_to key to match your remote_write receiver if it differs.
+  prometheus.scrape "clickhouse_cloud" {
   targets = [{
-        __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+  __address__ = "api.clickhouse.cloud",
   }]
+
+  scheme       = "https"
+  metrics_path = "/v1/organizations/<organizationId>/prometheus"
+
+  params = {
+  "filtered_metrics" = ["true"],
+  }
 
   honor_labels = true
 
   basic_auth {
-        username = "KEY_ID"
-        password = "KEY_SECRET"
+  username = "<KEY_ID>"
+  password = "<KEY_SECRET>"
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
 }
 ```
 
@@ -313,3 +326,11 @@ instances:
 <br />
 
 <Image img={prometheus_datadog} size="md" alt="Prometheus 与 Datadog 的集成" />
+
+
+## 相关页面 \{#related\}
+
+* [监控概述](/cloud/monitoring) — 比较 ClickHouse Cloud 的所有监控方式
+* [Cloud 控制台监控](/cloud/monitoring/cloud-console) — 无需外部工具的内置仪表板
+* [社区和合作伙伴集成](/cloud/monitoring/integrations) — Datadog agent 集成和社区解决方案
+* [查询系统表](/cloud/monitoring/system-tables) — 通过 SQL 直接访问系统指标

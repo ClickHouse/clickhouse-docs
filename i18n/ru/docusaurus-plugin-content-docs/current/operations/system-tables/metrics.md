@@ -871,6 +871,14 @@ SELECT * FROM system.metrics LIMIT 10
 
 Количество кэшированных файлов в кэше метаданных Iceberg
 
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Лимит на количество задач в фоновом пуле планировщика для таблиц Iceberg.
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Количество задач в фоновом пуле планировщика для таблиц Iceberg.
+
 ### IndexMarkCacheBytes \{#indexmarkcachebytes\}
 
 Общий размер кэша меток вторичных индексов в байтах
@@ -1518,6 +1526,18 @@ SELECT * FROM system.metrics LIMIT 10
 ### SendScalars \{#sendscalars\}
 
 Количество подключений, отправляющих скалярные данные на удалённые серверы.
+
+### SerializationCacheBytesInMemory \{#serializationcachebytesinmemory\}
+
+Общий размер кэша сериализации в байтах, включающий только значения
+
+### SerializationCacheBytesInMemoryAllocated \{#serializationcachebytesinmemoryallocated\}
+
+Общий размер кэша сериализации в байтах, включая ключи и накладные расходы от пустых слотов
+
+### SerializationCacheCount \{#serializationcachecount\}
+
+Общее количество записей в кэше сериализации
 
 ### SharedCatalogDropDetachLocalTablesErrors \{#sharedcatalogdropdetachlocaltableserrors\}
 
