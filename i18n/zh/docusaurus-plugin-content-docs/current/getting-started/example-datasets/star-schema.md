@@ -13,10 +13,12 @@ keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'be
 
 参考文献：
 
-* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf)（O&#39;Neil 等人）, 2009
-* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927)（Rabl 等人）, 2013
+* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil 等人) , 2009
+* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl 等人) , 2013
 
-首先，检出 Star Schema Benchmark 仓库并编译数据生成器：
+## 数据生成 \{#data-generation\}
+
+首先，检出星型模式基准仓库并编译数据生成器：
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -34,8 +36,9 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-接下来在 ClickHouse 中创建表：
+## 创建表 \{#create-tables\}
 
+现在在 ClickHouse 中创建表：
 
 ```sql
 CREATE TABLE customer
@@ -122,6 +125,9 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
+
+## 导入数据 \{#import-data\}
+
 可以通过以下方式导入数据：
 
 ```bash
@@ -132,9 +138,11 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-在许多 ClickHouse 的使用场景中，会将多张表转换为一张反规范化的扁平表。
-该步骤是可选的，下面的查询同时给出了其原始形式以及为反规范化表改写后的形式。
 
+## 反规范化表 \{#denormalized-table\}
+
+在 ClickHouse 的许多用例中，多个表会被转换为一张反规范化的扁平表。
+此步骤是可选的——下方列出了查询的原始形式以及针对反规范化表重写后的格式。
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -179,16 +187,24 @@ AS SELECT
     p.P_COLOR AS P_COLOR,
     p.P_TYPE AS P_TYPE,
     p.P_SIZE AS P_SIZE,
-    p.P_CONTAINER AS P_CONTAINER
+    p.P_CONTAINER AS P_CONTAINER,
+    d.D_YEAR AS D_YEAR,
+    d.D_YEARMONTHNUM AS D_YEARMONTHNUM,
+    d.D_YEARMONTH AS D_YEARMONTH,
+    d.D_WEEKNUMINYEAR AS D_WEEKNUMINYEAR
 FROM lineorder AS l
 INNER JOIN customer AS c ON c.C_CUSTKEY = l.LO_CUSTKEY
 INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
-INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
+INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY
+INNER JOIN date AS d ON d.D_DATEKEY = l.LO_ORDERDATE;
 ```
+
+
+## 查询 \{#queries\}
 
 这些查询是由 `./qgen -s <scaling_factor>` 生成的。以下是 `s = 100` 时的示例查询：
 
-Q1.1
+### Q1.1 \{#q1-1\}
 
 ```sql
 SELECT
@@ -216,7 +232,8 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-问题 1.2
+
+### Q1.2 \{#q1-2\}
 
 ```sql
 SELECT
@@ -244,7 +261,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-问题 1.3
+### Q1.3 \{#q1-3\}
 
 ```sql
 SELECT
@@ -268,14 +285,13 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    toISOWeek(LO_ORDERDATE) = 6
-    AND toYear(LO_ORDERDATE) = 1994
+    D_WEEKNUMINYEAR = 6
+    AND D_YEAR = 1994
     AND LO_DISCOUNT BETWEEN 5 AND 7
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-问题 2.1
-
+### Q2.1 \{#q2-1\}
 
 ```sql
 SELECT
@@ -320,7 +336,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.2
+
+### Q2.2 \{#q2-2\}
 
 ```sql
 SELECT
@@ -364,7 +381,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.3
+
+### Q2.3 \{#q2-3\}
 
 ```sql
 SELECT
@@ -398,7 +416,7 @@ SELECT
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
 FROM lineorder_flat
-WHERE P_BRAND = 'MFGR#2239' AND S_REGION = 'EUROPE'
+WHERE P_BRAND = 'MFGR#2221' AND S_REGION = 'EUROPE'
 GROUP BY
     year,
     P_BRAND
@@ -407,7 +425,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q3.1
+
+### Q3.1 \{#q3-1\}
 
 ```sql
 SELECT
@@ -458,8 +477,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.2
 
+### Q3.2 \{#q3-2\}
 
 ```sql
 SELECT
@@ -488,7 +507,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-反规范化表：
+非规范化表：
 
 ```sql
 SELECT
@@ -511,7 +530,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.3
+
+### Q3.3 \{#q3-3\}
 
 ```sql
 SELECT
@@ -541,7 +561,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -564,7 +584,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.4
+
+### Q3.4 \{#q3-4\}
 
 ```sql
 SELECT
@@ -615,8 +636,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q4.1
 
+### 问题 4.1 \{#q4-1\}
 
 ```sql
 SELECT
@@ -662,7 +683,8 @@ ORDER BY
     C_NATION ASC;
 ```
 
-问题 4.2
+
+### 问题 4.2 \{#q4-2\}
 
 ```sql
 SELECT
@@ -719,7 +741,8 @@ ORDER BY
     P_CATEGORY ASC;
 ```
 
-Q4.3
+
+### Q4.3 \{#q4-3\}
 
 ```sql
 SELECT
@@ -763,7 +786,8 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    S_NATION = 'UNITED STATES'
+    C_REGION = 'AMERICA'
+    AND S_NATION = 'UNITED STATES'
     AND (year = 1997 OR year = 1998)
     AND P_CATEGORY = 'MFGR#14'
 GROUP BY

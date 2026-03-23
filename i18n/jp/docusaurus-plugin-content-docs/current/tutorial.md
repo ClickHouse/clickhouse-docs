@@ -238,7 +238,7 @@ doc_type: 'guide'
       </p>
     </details>
 
-  * 各乗車の所要時間を分単位で計算して、その結果を所要時間ごとにグループ化します：
+  * 各乗車の所要時間を分単位で計算し、結果を所要時間ごとにグループ化します：
 
     ```sql
     SELECT
@@ -403,7 +403,7 @@ doc_type: 'guide'
   ```
 
   :::note
-  `LIFETIME` を 0 に設定すると、S3 バケットへの不要なトラフィックを回避するために自動更新が無効になります。その他の場合は、異なる設定を行うことができます。詳細については、[LIFETIME を使用した Dictionary データの更新](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime) を参照してください。
+  `LIFETIME` を 0 に設定すると、S3 バケットへの不要なトラフィックを回避するために自動更新が無効になります。その他の場合は、異なる設定を行うことができます。詳細については、[LIFETIME を使用した Dictionary データの更新](/sql-reference/statements/create/dictionary/lifetime) を参照してください。
   :::
 
   3. 正しく動作していることを確認します。次のクエリでは 265 行、つまり各地区ごとに 1 行が返されるはずです:
@@ -411,15 +411,15 @@ doc_type: 'guide'
      SELECT * FROM taxi_zone_dictionary
      ```
 
-  4. Dictionary から値を取得するには、`dictGet` 関数（[またはそのバリエーション](./sql-reference/functions/ext-dict-functions.md)）を使用します。Dictionary 名、取得したい値の属性名、およびキー（この例では `taxi_zone_dictionary` の `LocationID` カラム）を引数として渡します。
+  4. Dictionary から値を取得するには、`dictGet` 関数 ([またはそのバリエーション](./sql-reference/functions/ext-dict-functions.md)) を使用します。Dictionary 名、取得したい値の属性名、およびキー (この例では `taxi_zone_dictionary` の `LocationID` カラム) を引数として渡します。
 
-     たとえば、次のクエリは `LocationID` が 132 の `Borough`（JFK 空港に対応）を返します。
+     たとえば、次のクエリは、`LocationID` が 132 の `Borough` (JFK 空港に対応) を返します：
 
      ```sql
      SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
      ```
 
-     JFK は Queens（クイーンズ区）にあります。値の取得にかかる時間がほぼ 0 であることを確認してください:
+     JFK は Queens (クイーンズ区) にあります。値の取得にかかる時間がほぼ 0 であることを確認してください:
 
      ```response
      ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -429,7 +429,7 @@ doc_type: 'guide'
      1 rows in set. Elapsed: 0.004 sec.
      ```
 
-  5. Dictionary にキーが存在するかどうかを確認するには `dictHas` 関数を使用します。たとえば、次のクエリは `1`（ClickHouse では「true」を表します）を返します。
+  5. Dictionary にキーが存在するかどうかを確認するには `dictHas` 関数を使用します。たとえば、次のクエリは `1` (ClickHouse では「true」を表します) を返します。
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 132)
      ```
@@ -439,7 +439,7 @@ doc_type: 'guide'
      SELECT dictHas('taxi_zone_dictionary', 4567)
      ```
 
-  7. Use the `dictGet` 関数を使用して、クエリ内で行政区の名前を取得します。例:
+  7. クエリ内で行政区名を取得するには `dictGet` 関数を使用します。例:
 
      ```sql
      SELECT
@@ -451,7 +451,7 @@ doc_type: 'guide'
      ORDER BY total DESC
      ```
 
-     このクエリは、ラガーディア空港または JFK 空港で終了するタクシー乗車数を行政区ごとに集計します。結果は次のようになり、乗車地点（pickup）の地区情報が不明な乗車がかなり多いことに注目してください。
+     このクエリは、ラガーディア空港または JFK 空港で終了するタクシー乗車数を行政区ごとに集計します。結果は次のようになり、乗車地点 (pickup) の地区情報が不明な乗車がかなり多いことに注目してください。
 
      ```response
      ┌─total─┬─borough_name──┐
@@ -484,7 +484,7 @@ doc_type: 'guide'
      ORDER BY total DESC
      ```
 
-     レスポンスは `dictGet` クエリのものと同じに見えます。
+     レスポンスは `dictGet` クエリと同じに見えます。
 
      ```response
      ┌─total─┬─Borough───────┐
@@ -500,7 +500,7 @@ doc_type: 'guide'
      ```
 
      :::note
-     上記の `JOIN` クエリの出力は、直前の `dictGetOrDefault` を使用したクエリと同一です（ただし `Unknown` の値は含まれません）。内部的には、ClickHouse が `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を実際には呼び出していますが、`JOIN` 構文の方が SQL 開発者にはよりなじみがあります。
+     上記の `JOIN` クエリの出力は、直前の `dictGetOrDefault` を使用したクエリと同一です (ただし `Unknown` の値は含まれません) 。内部的には、ClickHouse が `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を実際には呼び出していますが、`JOIN` 構文の方が SQL 開発者にはよりなじみがあります。
      :::
 
   2. このクエリは、チップ額が最も高い 1000 件の乗車に対応する行を返し、その後、それぞれの行を Dictionary と内部結合します。

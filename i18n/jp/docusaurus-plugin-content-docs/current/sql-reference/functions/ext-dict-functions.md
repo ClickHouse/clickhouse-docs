@@ -862,7 +862,7 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 導入バージョン: v1.1.0
 
-[階層型 Dictionary](/dictionary#hierarchical-dictionaries) 内のキーについて、そのすべての親を含む配列を返します。
+[階層型 Dictionary](/docs/sql-reference/statements/create/dictionary/layouts/hierarchical#hierarchical-dictionaries) 内のキーについて、そのすべての親を含む配列を返します。
 
 **構文**
 

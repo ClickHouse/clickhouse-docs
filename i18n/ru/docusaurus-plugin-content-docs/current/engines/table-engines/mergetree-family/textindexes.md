@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` генерирует n-граммы переменной длины, обеспечивая более гибкое представление исходного текста.
   Например, `tokenizer = sparseGrams(3, 5, 4)` внутренне генерирует 3-, 4-, 5-граммы из входной строки, но возвращает только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т.е. каждое значение строки является токеном (см. функцию [array](/sql-reference/functions/array-functions.md/#array)).
+* `unicodeWord` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 
 Все доступные токенизаторы перечислены в [system.tokenizers](../../../operations/system-tables/tokenizers.md).
 
@@ -200,9 +201,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 ```
 
 *Работа с не-ASCII входными данными.*
-Хотя текстовые индексы в принципе могут быть построены поверх текстовых данных на любом языке и с любым набором символов, в данный момент мы рекомендуем делать это только для входных данных в расширенном наборе символов ASCII, то есть для западноевропейских языков.
-В частности, для китайского, японского и корейского языков в настоящее время отсутствует полноценная поддержка индексации, что может приводить к потенциально огромным размерам индекса и длительному времени выполнения запросов.
-В будущем мы планируем добавить специализированные языко-специфичные токенизаторы, чтобы лучше обрабатывать такие случаи.
+Текстовые индексы можно строить на основе текстовых данных на любом языке и в любой кодировке.
+Для текста, содержащего символы вне ASCII, рекомендуется токенизатор `unicodeWord`, так как он корректно обрабатывает границы слов Unicode, включая символы CJK.
 :::
 
 **Аргумент препроцессора (необязательный)**. Под препроцессором здесь понимается выражение, которое применяется к входной строке перед токенизацией.
@@ -381,9 +381,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` и `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) и `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) сопоставляют весь указанный поисковый термин целиком.
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) сопоставляет весь указанный поисковый термин целиком.
 
 Пример:
 
@@ -391,12 +391,10 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-Текстовый индекс поддерживает `=` и `!=`, однако поиск по равенству и неравенству имеет смысл только с токенизатором `array` (он приводит к тому, что индекс хранит значения всей строки целиком).
 
+#### `IN` \{#functions-example-in\}
 
-#### `IN` и `NOT IN` \{#functions-example-in-notin\}
-
-`IN` ([in](/sql-reference/functions/in-functions)) и `NOT IN` ([notIn](/sql-reference/functions/in-functions)) аналогичны функциям `equals` и `notEquals`, но они совпадают либо со всеми (`IN`), либо ни с одним (`NOT IN`) из указанных поисковых терминов.
+`IN` ([in](/sql-reference/functions/in-functions)) аналогична `equals`, но сопоставляет все поисковые термины.
 
 Пример:
 
@@ -404,16 +402,21 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-Действуют те же ограничения, что и для `=` и `!=`, то есть использовать `IN` и `NOT IN` имеет смысл только в сочетании с токенизатором `array`.
+:::note
+`NOT IN` (`notIn`) не поддерживается текстовым индексом.
+:::
 
-
-#### `LIKE`, `NOT LIKE` и `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` и `match` \{#functions-example-like-match\}
 
 :::note
 В настоящее время эти функции используют текстовый индекс для фильтрации только в том случае, если токенизатор индекса — `splitByNonAlpha`, `ngrams` или `sparseGrams`.
 :::
 
-Чтобы использовать `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)), `NOT LIKE` ([notLike](/sql-reference/functions/string-search-functions.md/#notLike)) и функцию [match](/sql-reference/functions/string-search-functions.md/#match) с текстовыми индексами, ClickHouse должен иметь возможность извлекать полные токены из поискового шаблона.
+:::note
+`NOT LIKE` (`notLike`) не поддерживается текстовым индексом.
+:::
+
+Чтобы использовать `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) и функцию [match](/sql-reference/functions/string-search-functions.md/#match) с текстовыми индексами, ClickHouse должен иметь возможность извлекать полные токены из поискового шаблона.
 Для индекса с токенизатором `ngrams` это возможно, если длина искомых подстрок между символами подстановки не меньше длины n-граммы.
 
 Пример для текстового индекса с токенизатором `splitByNonAlpha`:

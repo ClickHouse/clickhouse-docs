@@ -1681,7 +1681,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` 및 `Get<T>(id)`는 작동합니다. `Insert<T>()`는 작동하지 않습니다. SQL Server 구문(`SCOPE_IDENTITY`, 대괄호)을 생성하기 때문입니다. 대신 `ClickHouseClient`의 기본 `InsertBinaryAsync` 메서드를 사용하는 것이 좋습니다.
+`GetAll<T>()` 및 `Get<T>(id)`는 작동합니다. `Insert<T>()`는 작동하지 않습니다. SQL Server 구문(`SCOPE_IDENTITY`, `[]`)을 생성하기 때문입니다. 대신 `ClickHouseClient` 네이티브 `InsertBinaryAsync` 메서드를 사용하는 것이 좋습니다.
 
 ```csharp
 [Table("test.users")]
@@ -1692,7 +1692,6 @@ var one = await connection.GetAsync<UserRecord>(1);
 ```
 
 속성 이름은 ClickHouse 컬럼 이름과 정확히 일치해야 합니다(대소문자를 구분함).
-
 
 #### 제한 사항 \{#dapper-limitations\}
 

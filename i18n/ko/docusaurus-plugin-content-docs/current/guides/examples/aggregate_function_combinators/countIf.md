@@ -7,19 +7,13 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-
-
 # countIf \{#countif\}
-
-
 
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 조합자는 [`count`](/sql-reference/aggregate-functions/reference/count)
 함수에 적용하여, `countIf` 집계 조합자 함수를 사용해
 조건이 참인 행의 개수를 셀 수 있습니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -31,7 +25,8 @@ CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO login_attempts VALUES
     (1, '2024-01-01 10:00:00', 1),
@@ -59,5 +54,6 @@ GROUP BY user_id;
 
 
 ## 함께 보기 \{#see-also\}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -17,7 +17,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이터를 직접 쿼리할 수 있는 테이블 함수(table function)를 제공합니다. 이를 위해 외부 카탈로그에 연결할 필요가 없습니다. AWS Athena가 S3에서 데이터를 읽는 방식과 유사하게, 저장된 위치에서 바로 데이터를 쿼리합니다.
 
-함수 호출에 스토리지 경로와 자격 증명을 직접 전달하면 나머지는 ClickHouse가 처리합니다. 모든 ClickHouse SQL 구문과 함수를 사용할 수 있으며, 쿼리는 ClickHouse의 병렬 실행과 [효율적인 네이티브 Parquet 리더](/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)의 이점을 누릴 수 있습니다.
+함수 호출에 스토리지 경로와 자격 증명을 직접 전달하면 나머지는 ClickHouse가 처리합니다. 모든 ClickHouse SQL 구문과 함수를 사용할 수 있으며, 쿼리는 ClickHouse의 병렬 실행과 [효율적인 네이티브 Parquet 리더](https://clickhouse.com/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)의 이점을 누릴 수 있습니다.
 
 :::note 서버, local 또는 chDB
 이 가이드의 단계는 기존 ClickHouse 서버 설치 환경에서 실행할 수 있습니다. 임시로 쿼리해야 하는 경우에는 서버를 실행하지 않고도 [clickhouse-local](/operations/utilities/clickhouse-local)을 사용해 동일한 워크플로를 수행할 수 있습니다. 약간만 조정하면 ClickHouse의 인프로세스 배포판인 [chDB](/chdb)를 사용해 이 과정을 수행할 수도 있습니다.

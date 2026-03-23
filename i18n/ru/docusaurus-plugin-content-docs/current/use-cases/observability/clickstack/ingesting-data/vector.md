@@ -357,7 +357,7 @@ import TabItem from '@theme/TabItem';
 
       Перейдите в ваш управляемый сервис ClickStack и выберите «ClickStack» в меню слева. Если вы уже завершили онбординг, интерфейс ClickStack откроется в новой вкладке, и вы будете автоматически аутентифицированы. Если нет, пройдите онбординг и выберите «Запустить ClickStack» после выбора Vector в качестве источника ввода.
 
-      <Image img={launch_clickstack_vector} alt="Запустите ClickStack с Vector" size="lg" />
+      <Image img={launch_clickstack_vector} alt="Запустите ClickStack для Vector" size="lg" />
 
       ### Создайте источник данных
 
@@ -401,7 +401,7 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 
   <TabItem value="oss-clickstack" label="ClickStack с открытым исходным кодом">
-    В данном руководстве предполагается, что вы уже настроили ClickStack Open Source, следуя [руководству по началу работы](use-cases/observability/clickstack/getting-started/managed).
+    В данном руководстве предполагается, что вы уже настроили ClickStack Open Source, следуя [руководству по началу работы](/use-cases/observability/clickstack/getting-started/oss).
 
     <VerticalStepper headerLevel="h3">
       ### Установка Vector
@@ -414,7 +414,7 @@ import TabItem from '@theme/TabItem';
 
       ### Создайте базу данных и таблицу
 
-      Для Vector необходимо определить таблицу и схему до начала ингестии данных.
+      Для Vector необходимо определить таблицу и схему до начала загрузки данных.
 
       Сначала создайте базу данных. Это можно сделать через [веб-интерфейс ClickHouse](/interfaces/http#web-ui) по адресу [http://localhost:8123/play](http://localhost:8123/play). Используйте имя пользователя и пароль по умолчанию `api:api`.
 
@@ -454,7 +454,7 @@ import TabItem from '@theme/TabItem';
 
       ### Скопируйте конфигурацию Vector
 
-      Ингестия в ClickStack для Vector должна осуществляться напрямую в ClickHouse, минуя OTLP-эндпоинт, предоставляемый коллектором.
+      Ингестия в ClickStack для Vector должна осуществляться напрямую в ClickHouse, минуя OTLP-конечную точку, предоставляемую коллектором.
 
       Скопируйте конфигурацию Vector и создайте файл `nginx.yaml`.
 
@@ -511,13 +511,13 @@ import TabItem from '@theme/TabItem';
 
       Создайте источник данных для логов через `Team -> Sources`
 
-      <Image img={create_vector_datasource_oss} alt="Создать источник данных для Vector" size="lg" />
+      <Image img={create_vector_datasource_oss} alt="Создать источник данных — Vector" size="lg" />
 
-      Конфигурация предполагает схему Nginx со столбцом `time_local`, используемым в качестве временной метки. Этот столбец временной метки объявлен в первичном ключе. Этот столбец обязателен.
+      Конфигурация предполагает схему Nginx со столбцом `time_local`, используемым в качестве временной метки. Это столбец временной метки, объявленный в первичном ключе. Этот столбец является обязательным.
 
-      Мы также указали значение по умолчанию для select: `time_local, remote_addr, status, request`, что определяет, какие столбцы возвращаются в представлении логов.
+      Мы также указали значение по умолчанию для select: `time_local, remote_addr, status, request`, которое определяет, какие столбцы возвращаются в представлении логов.
 
-      В приведённом выше примере столбец `Body` отсутствует в данных. Вместо этого он задан как SQL-выражение:
+      В приведённом выше примере столбец `Body` отсутствует в данных. Вместо этого он определяется как SQL-выражение:
 
       ```sql
       concat(
@@ -536,7 +536,7 @@ import TabItem from '@theme/TabItem';
       )
       ```
 
-      Это восстанавливает строку журнала из структурированных полей.
+      Это восстанавливает строку лога из структурированных полей.
 
       Другие доступные параметры см. в [справочнике по конфигурации](/use-cases/observability/clickstack/config).
 

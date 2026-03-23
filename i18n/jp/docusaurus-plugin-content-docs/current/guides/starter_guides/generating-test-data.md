@@ -17,7 +17,7 @@ ClickHouse には、外部のデータジェネレーターを用意する必要
 
 ## シンプルな一様データセット \{#simple-uniform-dataset\}
 
-**ユースケース**: ランダムなタイムスタンプとイベント種別を持つユーザーイベントのデータセットを手早く生成する。
+**ユースケース**: ランダムなタイムスタンプとイベントタイプを持つユーザーイベントのデータセットを手早く生成する。
 
 ```sql
 CREATE TABLE user_events (
@@ -32,16 +32,16 @@ INSERT INTO user_events
 SELECT
   generateUUIDv4() AS event_id,
   rand() % 10000 AS user_id,
-  arrayJoin(['click','view','purchase']) AS event_type,
+  arrayElement(['click','view','purchase'], toUInt32(rand()) % 3 + 1) AS event_type,
   now() - INTERVAL rand() % 3600*24 SECOND AS event_time
 FROM numbers(1000000);
 ```
 
 * `rand() % 10000`: 一様分布で 1 万人のユーザー
-* `arrayJoin(...)`: 3 種類のイベントタイプのうち 1 つをランダムに選択
+* `arrayElement(...)`: 3 種類のイベントタイプのうち 1 つをランダムに選択
 * タイムスタンプは過去 24 時間にわたって分布
 
-***
+---
 
 ## 指数分布 \{#exponential-distribution\}
 
@@ -64,13 +64,14 @@ FROM numbers(500000);
 ```
 
 * 直近の一定期間にわたる一様なタイムスタンプ
-* `randExponential(1/10)` — 合計値のほとんどが 0 付近となり、最小値を 15 としてオフセットされる（[ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]）
+* `randExponential(1/10)` — 合計値のほとんどが 0 付近となり、最小値を 15 としてオフセットされる ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]) 
 
 ***
 
-## 時間分布イベント（ポアソン） \{#poisson-distribution\}
 
-**ユースケース**: 特定の時間帯（例: ピーク時間帯）に集中して発生するイベントをシミュレートする。
+## 時間分布イベント (ポアソン)  \{#poisson-distribution\}
+
+**ユースケース**: 特定の時間帯 (例: ピーク時間帯) に集中して発生するイベントをシミュレートする。
 
 ```sql
 CREATE TABLE events (
@@ -91,25 +92,27 @@ FROM numbers(200000);
 
 ***
 
+
 ## 時間とともに変化する正規分布 \{#time-varying-normal-distribution\}
 
-**ユースケース**: 時間とともに変化するシステムメトリクス（例：CPU 使用率）を模擬します。
+**ユースケース**: 時間とともに変化するシステムメトリクス (例：CPU 使用率) を模擬します。
 
 ```sql
-CREATE TABLE cpu_metrics (
-  host String,
-  ts DateTime,
-  usage Float32
+CREATE TABLE IF NOT EXISTS cpu_metrics (
+    host String,
+    ts   DateTime,
+    usage Float32
 ) ENGINE = MergeTree
 ORDER BY (host, ts);
 
 INSERT INTO cpu_metrics
 SELECT
-  arrayJoin(['host1','host2','host3']) AS host,
-  now() - INTERVAL number SECOND AS ts,
-  greatest(0.0, least(100.0,
-    randNormal(50 + 30*sin(toUInt32(ts)%86400/86400*2*pi()), 10)
-  )) AS usage
+    arrayJoin(['host1','host2','host3']) AS host,
+    now() - INTERVAL number SECOND AS ts,
+    greatest(0.0, least(100.0,
+        (50 + 30 * sin(toUInt32(number) % 86400 / 86400.0 * 2 * pi()))
+        + randNormal(0, 10)
+    )) AS usage
 FROM numbers(10000);
 ```
 
@@ -118,9 +121,10 @@ FROM numbers(10000);
 
 ***
 
+
 ## カテゴリカルおよびネストされたデータ \{#categorical-and-nested-data\}
 
-**ユースケース**: 複数の興味・関心を持つユーザープロファイルを作成する場合。
+**ユースケース**: 複数の興味・関心を持つユーザープロファイルを作成する。
 
 ```sql
 CREATE TABLE user_profiles (
@@ -139,7 +143,7 @@ FROM numbers(20000);
 ```
 
 * 長さ 1～3 のランダムな配列
-* 各インタレストごとのユーザー別スコアが 3 つ
+* 各興味・関心ごとに、ユーザーごとのスコアが 3 つ
 
 :::tip
 さらに多くの例については、[Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) ブログを参照してください。
@@ -224,6 +228,7 @@ LIMIT 1000;
 
 DESCRIBE TABLE fully_random_table;
 ```
+
 
 ```response
    ┌─name─┬─type─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

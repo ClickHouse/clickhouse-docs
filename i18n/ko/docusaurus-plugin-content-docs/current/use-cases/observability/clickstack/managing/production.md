@@ -17,6 +17,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ResourceEstimation from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managing/_snippets/_resource_estimation.md';
 
 운영 환경에 ClickStack을 배포할 때는 보안, 안정성 및 올바른 구성을 보장하기 위해 추가로 고려해야 할 사항이 있습니다. 이러한 사항은 사용 중인 배포판이 오픈 소스인지 관리형인지에 따라 달라집니다.
 
@@ -49,30 +50,7 @@ import TabItem from '@theme/TabItem';
 
     ### 리소스 추정 \{#estimating-resources\}
 
-    **Managed ClickStack**를 배포할 때에는 수집 및 쿼리 워크로드를 모두 처리할 수 있도록 충분한 컴퓨트 리소스를 프로비저닝하는 것이 중요합니다. 아래의 추정치는 수집하려는 관측성 데이터 볼륨에 따라 **기본 시작점**을 제공합니다.
-
-    다음과 같은 가정을 기반으로 권장 사항이 제시됩니다:
-
-    * 데이터 볼륨은 월별 **비압축 수집 볼륨**을 의미하며, 로그와 트레이스 모두에 적용됩니다.
-    * 쿼리 패턴은 관측성 사용 사례에서 일반적인 형태로, 대부분의 쿼리는 보통 최근 24시간과 같은 **최신 데이터**를 대상으로 합니다.
-    * 수집은 **월 전체에 비교적 균등하게** 이루어진다고 가정합니다. 버스트 트래픽 또는 스파이크가 예상되는 경우, 추가 여유 용량을 프로비저닝해야 합니다.
-    * 스토리지는 ClickHouse Cloud 객체 스토리지를 통해 별도로 처리되며, 보존의 제한 요소가 되지 않는다고 가정합니다. 장기간 보존되는 데이터는 자주 액세스되지 않는다고 가정합니다.
-
-    더 긴 기간을 정기적으로 조회하는 액세스 패턴, 무거운 집계를 수행하는 쿼리, 또는 많은 수의 동시 사용자를 지원해야 하는 경우에는 더 많은 컴퓨트가 필요할 수 있습니다.
-
-    #### 권장 기본 사이징 \{#recommended-sizing\}
-
-    | 월별 수집 볼륨           | 권장 컴퓨트               |
-    | ------------------ | -------------------- |
-    | &lt; 10 TB / month | 2 vCPU × 3 replicas  |
-    | 10–50 TB / month   | 4 vCPU × 3 replicas  |
-    | 50–100 TB / month  | 8 vCPU × 3 replicas  |
-    | 100–500 TB / month | 30 vCPU × 3 replicas |
-    | 1 PB+ / month      | 59 vCPU × 3 replicas |
-
-    :::note
-    이 값들은 **추정치일 뿐**이며 초기 기준선으로 사용해야 합니다. 실제 요구 사항은 쿼리 복잡도, 동시성, 보존 정책, 수집 처리량의 변동에 따라 달라집니다. 항상 리소스 사용량을 모니터링하고, 필요에 따라 확장하십시오.
-    :::
+    <ResourceEstimation />
 
     #### 관측성 워크로드 격리 \{#isolating-workloads\}
 
@@ -109,7 +87,7 @@ import TabItem from '@theme/TabItem';
     # Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
     ```
 
-    컨테이너 격리 및 액세스 강화에 대한 자세한 내용은 [Docker 네트워킹 문서](https://docs.docker.com/network/)를 참조하세요.
+    컨테이너 격리 및 액세스 강화에 대한 자세한 내용은 [Docker 네트워킹 문서](https://docs.docker.com/network/)를 참조하십시오.
 
     ### 세션 시크릿 설정 \{#session-secret\}
 
@@ -151,9 +129,9 @@ import TabItem from '@theme/TabItem';
 
     시크릿을 소스 제어에 커밋하지 마십시오. 프로덕션 환경에서는 환경 변수 관리 도구(예: Docker Secrets, HashiCorp Vault 또는 환경별 CI/CD 구성)를 사용하십시오.
 
-    ### 안전한 수집 \{#secure-ingestion\}
+    ### 수집 보안 \{#secure-ingestion\}
 
-    모든 수집은 ClickStack 배포판의 OpenTelemetry(OTel) collector가 노출하는 OTLP 포트를 통해 이루어져야 합니다. 기본적으로 시작 시 생성되는 보안 수집 API key가 필요합니다. 이 키는 OTel 포트로 데이터를 전송할 때 필요하며, HyperDX UI의 「Team Settings → API Keys」에서 확인할 수 있습니다.
+    모든 수집은 ClickStack 배포판의 OpenTelemetry(OTel) collector가 노출하는 OTLP 포트를 통해 이루어져야 합니다. 기본적으로 시작 시 생성되는 보안 수집 API key가 필요합니다. 이 키는 OTel 포트로 데이터를 전송할 때 필요하며, HyperDX UI의 `Team Settings → API Keys`에서 확인할 수 있습니다.
 
     <Image img={ingestion_key} alt="수집 키" size="lg" />
 
@@ -173,10 +151,10 @@ import TabItem from '@theme/TabItem';
 
     ClickHouse OSS는 기본적으로 강력한 보안 기능을 제공합니다. 하지만 이를 사용하려면 구성이 필요합니다:
 
-    * `tcp_port_secure` 및 `config.xml`의 `<openSSL>`을 통해 **TLS를 사용**하십시오. 자세한 내용은 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)를 참조하십시오.
-    * `default` 사용자에 대해 **강력한 비밀번호를 설정**하거나 비활성화하십시오.
+    * **TLS를 사용**하십시오. `tcp_port_secure` 및 `config.xml`의 `<openSSL>`을 통해 설정합니다. 자세한 내용은 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)를 참조하십시오.
+    * **강력한 비밀번호를 설정**하거나 `default` 사용자를 비활성화하십시오.
     * **명시적으로 그렇게 설정하려는 경우가 아니라면 ClickHouse를 외부에서 접근 가능하도록 노출하지 마십시오.** 기본적으로 ClickHouse는 `listen_host`를 수정하지 않는 한 `localhost`에만 바인딩합니다.
-    * 비밀번호, 인증서, SSH 키 또는 [외부 인증자(external authenticators)](/operations/external-authenticators)와 같은 **인증 방법을 사용하십시오**.
+    * **비밀번호, 인증서, SSH 키 또는 [외부 인증자(external authenticators)](/operations/external-authenticators)와 같은 인증 방법을 사용하십시오**.
     * IP 필터링과 `HOST` 절을 사용하여 **접근을 제한**합니다. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)를 참고하십시오.
     * **역할 기반 접근 제어(Role-Based Access Control, RBAC)를 활성화**하여 세분화된 권한을 설정합니다. [operations/access-rights](/operations/access-rights)를 참고하십시오.
     * **쿼터와 제한을 강제 적용**하기 위해 [쿼터](/operations/quotas), [설정 프로필](/operations/settings/settings-profiles), 그리고 읽기 전용 모드를 사용합니다.
