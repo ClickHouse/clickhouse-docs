@@ -35,7 +35,9 @@ CREATE TABLE rankings_tiny
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = MergeTree ORDER BY ();
+)
+ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_tiny
 (
@@ -55,7 +57,9 @@ CREATE TABLE rankings_1node
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = MergeTree ORDER BY ();
+)
+ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_1node
 (
@@ -75,7 +79,9 @@ CREATE TABLE rankings_5nodes_on_single
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = MergeTree ORDER BY ();
+)
+ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_5nodes_on_single
 (

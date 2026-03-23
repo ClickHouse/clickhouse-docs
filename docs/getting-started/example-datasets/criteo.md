@@ -54,7 +54,9 @@ CREATE TABLE criteo_log (
     cat24 String,
     cat25 String,
     cat26 String
-) ENGINE = MergeTree ORDER BY ();
+)
+ENGINE = MergeTree
+ORDER BY ();
 ```
 
 Insert the data:
