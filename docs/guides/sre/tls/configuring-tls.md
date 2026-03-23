@@ -559,19 +559,19 @@ Set `<verificationMode>` inside the `<server>` or `<client>` section of `<openSS
 
 | Mode | Description |
 |------|-------------|
-| `none` | No certificate verification. The connection is encrypted but the peer's identity isn't checked. **Insecure — use only for testing.** |
-| `relaxed` | Verifies the peer certificate if one is presented, but doesn't fail if no certificate is provided. This is the mode used in the examples above. |
-| `once` | **Server-side:** requests and verifies the client certificate only during the initial handshake — subsequent renegotiations don't request a new certificate. **Client-side:** behaves the same as `relaxed`. |
-| `strict` | Requires and fully verifies the peer certificate. The connection fails if the certificate is missing, expired, or not signed by a trusted CA. **Recommended for production.** |
+| `none` | No certificate verification. The connection is encrypted but the peer's identity is not checked. Only use this for testing. |
+| `relaxed` | Verifies the peer certificate if one is presented, but does not fail if no certificate is provided. |
+| `once` | On the server side, verifies the client certificate on the initial handshake only and skips renegotiation. On the client side, behaves the same as `relaxed`. |
+| `strict` | Requires and fully verifies the peer certificate. The connection fails if the certificate is missing, expired, or not signed by a trusted CA. Recommended for production. |
 
 ### Invalid certificate handlers {#invalid-certificate-handlers}
 
-Set `<invalidCertificateHandler>` inside the `<server>` or `<client>` section of `<openSSL>`. This handler determines what happens when certificate verification fails. On the server side, it controls the response to invalid client certificates. On the client side, it controls the response to invalid server certificates:
+Set `<invalidCertificateHandler>` inside the `<server>` or `<client>` section of `<openSSL>`. This handler determines what happens when certificate verification fails. On the server side, it controls the response to invalid client certificates. On the client side, it controls the response to invalid server certificates.
 
 | Handler | Description |
 |---------|-------------|
 | `RejectCertificateHandler` | Rejects the connection if the certificate is invalid. This is the default and recommended setting. |
-| `AcceptCertificateHandler` | Accepts the connection even if the certificate is invalid. **Insecure — use only for testing.** |
+| `AcceptCertificateHandler` | Accepts the connection even if the certificate is invalid. Only use this for testing. |
 
 ### Example: disabling certificate verification {#disabling-certificate-verification}
 
