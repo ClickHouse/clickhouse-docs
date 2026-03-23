@@ -82,6 +82,14 @@ Connected to ClickHouse server version 23.4.1 revision 54462.
 Warnings:
  * Linux transparent hugepages are set to "always". Check /sys/kernel/mm/transparent_hugepage/enabled
 
+On Linux kernels earlier than `5.10`, set Transparent Huge Pages to `madvise` instead of `always`:
+
+```bash
+echo madvise | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
+```
+
+For Linux kernel `5.10` and newer (including typical WSL2 kernels), this warning is generally not critical.
+
 marspc2. :)
 ```
 
