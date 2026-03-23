@@ -16,6 +16,14 @@ import Version from '@theme/ClientVersionDropdown/Version';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
 
 <ClientVersionDropdown
   versions={[
@@ -31,7 +39,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     用于通过其协议与数据库服务器通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。
     该库提供自己的 API 用于向服务器发送请求，并提供用于处理不同二进制数据格式 (RowBinary* 和 Native*) 的工具。
 
-    ## 设置 \{#setup\}
+    ## 配置 \{#setup\}
 
     * Maven Central (项目页面) ：https://mvnrepository.com/artifact/com.clickhouse/client-v2
     * Nightly 构建版本 (仓库链接) ：https://central.sonatype.com/repository/maven-snapshots/
@@ -45,7 +53,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>client-v2</artifactId>
-            <version>0.9.7</version>
+            <version>0.9.8</version>
         </dependency>
         ```
       </TabItem>
@@ -53,14 +61,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="gradle-kt" label="Gradle（Kotlin）">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation("com.clickhouse:client-v2:0.9.7")
+        implementation("com.clickhouse:client-v2:0.9.8")
         ```
       </TabItem>
 
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation 'com.clickhouse:client-v2:0.9.7'
+        implementation 'com.clickhouse:client-v2:0.9.8'
         ```
       </TabItem>
     </Tabs>
@@ -139,7 +147,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ## 客户端配置 \{#client-configuration\}
 
     <Tabs groupId="client-config">
-      <TabItem value="连接" label="连接与端点">
+      <TabItem value="创建" label="连接与端点">
         | Method                                                                  | Arguments                                                        | Description                                         | Default   | Key                         |
         | ----------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | --------- | --------------------------- |
         | `addEndpoint(String endpoint)`                                          | `endpoint` - URL 格式的服务器地址                                        | 将服务器端点添加到可用服务器列表。目前仅支持一个端点。                         | `none`    | `none`                      |
@@ -208,13 +216,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="代理" label="代理">
-        | 方法                                                | 参数                                                       | 描述             | 默认值 | 键                                        |
-        | ------------------------------------------------- | -------------------------------------------------------- | -------------- | --- | ---------------------------------------- |
-        | `addProxy(ProxyType type, String host, int port)` | `type` - 代理类型<br />`host` - 代理主机名或 IP<br />`port` - 代理端口 | 设置用于与服务器通信的代理。 | -   | `proxy_type`, `proxy_host`, `proxy_port` |
-        | `setProxyCredentials(String user, String pass)`   | `user` - 代理用户名<br />`pass` - 密码                          | 设置用于代理认证的用户凭据。 | -   | `proxy_user`, `proxy_password`           |
+        | Method                                            | Arguments                                                | Description    | Default | Key                                      |
+        | ------------------------------------------------- | -------------------------------------------------------- | -------------- | ------- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - 代理类型<br />`host` - 代理主机名或 IP<br />`port` - 代理端口 | 设置用于与服务器通信的代理。 | -       | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - 代理用户名<br />`pass` - 密码                          | 设置用于代理认证的用户凭据。 | -       | `proxy_user`, `proxy_password`           |
       </TabItem>
 
-      <TabItem value="http" label="HTTP 与请求头">
+      <TabItem value="http" label="HTTP 与头部">
         | Method                                      | Arguments                              | Description                                                                                                     | Default | Key                                      |
         | ------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------- |
         | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 用于启用/禁用的标志位                | 设置是否应记住 HTTP cookie 并将其发送回服务器。                                                                                  | -       | -                                        |
@@ -224,15 +232,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `useHttpFormDataForQuery(boolean enable)`   | `enable` - 启用/禁用标志                     | 设置是否应将查询参数作为 HTTP 表单数据放在请求体中，而不是放在 URL 中。仅在启用服务器端压缩时生效。如果启用了客户端级压缩，对于带参数的查询请求将会禁用该压缩，因为每个参数都会作为 multipart 内容发送。 | `false` | `client.http.use_form_request_for_query` |
       </TabItem>
 
-      <TabItem value="server-settings" label="服务器设置">
-        | 方法                                              | 参数                                | 描述                                                                                                     | 默认值       | 键                        |
+      <TabItem value="服务器设置" label="服务器设置">
+        | Method                                          | Arguments                         | Description                                                                                            | Default   | Key                      |
         | ----------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ------------------------ |
         | `serverSetting(String name, String value)`      | `name` - 设置名称<br />`value` - 设置值  | 设置随每个查询一起发送到服务器的设置。单次操作的设置可以覆盖它。[设置列表](/operations/settings/query-level)                               | `none`    | `none`                   |
         | `serverSetting(String name, Collection values)` | `name` - 设置名称<br />`values` - 设置值 | 设置随每个查询一起发送到服务器的、包含多个值的设置，例如 [roles](/interfaces/http#setting-role-with-query-parameters)              | `none`    | `none`                   |
         | `setOption("custom_settings_prefix", value)`    | `value` - 前缀字符串                   | 设置传递给服务器的自定义服务器设置的前缀，应与服务器配置保持一致。参见 [ClickHouse 文档](/operations/settings/query-level#custom_settings)。 | `custom_` | `custom_settings_prefix` |
       </TabItem>
 
-      <TabItem value="时区" label="时区">
+      <TabItem value="timezone" label="时区">
         | Method                                         | Arguments                     | Description                                       | Default | Key                    |
         | ---------------------------------------------- | ----------------------------- | ------------------------------------------------- | ------- | ---------------------- |
         | `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - 启用/禁用开关 | 设置在解码 `DateTime` 和 `Date` 列值时客户端是否应使用服务器时区。       | `true`  | `use_server_time_zone` |
@@ -336,7 +344,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ```
 
-    当通过 `setOption` 方法设置选项时 (无论是 `Client.Builder` 还是操作设置类) ，自定义头名称应以 `http_header_` 为前缀。此情况下，方法 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 可能会很有用。
+    当通过 `setOption` 方法设置选项时 (无论是 `Client.Builder` 还是操作设置类) ，自定义头部名称应以 `http_header_` 为前缀。此情况下，方法 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 可能会很有用。
 
     ## 常用术语定义 \{#common-definitions\}
 
@@ -345,7 +353,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     [支持的格式](/interfaces/formats) 的枚举类型，包含 ClickHouse 支持的所有格式。
 
     * `raw` - 用户需要自行对原始数据进行转码
-    * `full` - 客户端可以自行对数据进行转码，并可接收原始数据流
+    * `full` - 客户端可以自行对数据进行转码，并接受原始数据流
     * `-` - ClickHouse 不支持对该格式执行此操作
 
     此客户端版本支持：
@@ -359,9 +367,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     |  raw |  raw |
     | [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |  raw |  raw |
     | [Template](/interfaces/formats/Template)                                                                     |  raw |  raw |
-    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  raw |   *  |
-    | [CSV](/interfaces/formats/CSV)                                                                               |  raw |  raw |
-    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  raw |  raw |
+    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  原始  |   *  |
+    | [CSV](/interfaces/formats/CSV)                                                                               |  原始  |  原始  |
+    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  原始  |  raw |
     | [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |  raw |  raw |
     | [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |  raw |  raw |
     | [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |  raw |  raw |
@@ -391,19 +399,19 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |  raw |  raw |
     | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |  raw |  raw |
     | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |  raw |  raw |
-    | [TSKV](/interfaces/formats/TSKV)                                                                             |  原始  |  原始  |
-    | [Pretty](/interfaces/formats/Pretty)                                                                         |   -  |  原始  |
-    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   *  |  原始  |
-    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -  |  原始  |
-    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   *  |  原始  |
-    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -  |  原始  |
-    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   *  |  原始  |
-    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -  |  原始  |
-    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   *  |  原始  |
-    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -  |  原始  |
-    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   *  |  原始  |
-    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -  |  原始  |
-    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   *  |  原始  |
+    | [TSKV](/interfaces/formats/TSKV)                                                                             |  raw |  raw |
+    | [Pretty](/interfaces/formats/Pretty)                                                                         |   -  |  raw |
+    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   *  |  raw |
+    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -  |  raw |
+    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   *  |  raw |
+    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -  |  raw |
+    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   *  |  raw |
+    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -  |  raw |
+    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   *  |  raw |
+    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -  |  raw |
+    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   *  |  raw |
+    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -  |  raw |
+    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   *  |  raw |
     | [Prometheus](/interfaces/formats/Prometheus)                                                                 |   -  |  raw |
     | [Protobuf](/interfaces/formats/Protobuf)                                                                     |  raw |  raw |
     | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |  raw |  raw |
@@ -423,9 +431,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           | full |   -  |
     | [Native](/interfaces/formats/Native)                                                                         | full |  raw |
     | [Null](/interfaces/formats/Null)                                                                             |   *  |  raw |
-    | [XML](/interfaces/formats/XML)                                                                               |   -  |  raw |
-    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |  raw |  raw |
-    | [LineAsString](/interfaces/formats/LineAsString)                                                             |  raw |  raw |
+    | [XML](/interfaces/formats/XML)                                                                               |   -  |  原始  |
+    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |  原始  |  原始  |
+    | [LineAsString](/interfaces/formats/LineAsString)                                                             |  原始  |  raw |
     | [Regexp](/interfaces/formats/Regexp)                                                                         |  raw |   *  |
     | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |  raw |  raw |
     | [MsgPack](/interfaces/formats/MsgPack)                                                                       |  raw |  raw |
@@ -481,7 +489,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     向数据库发送写入请求。对象列表会被转换为高效的内部格式，然后发送到服务器。列表项所属的类应事先使用 `register(Class, TableSchema)` 方法进行注册。
 
-    **方法签名**
+    **签名**
 
     ```java
     client.insert(String tableName, List<?> data, InsertSettings settings)
@@ -519,7 +527,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **配置方法**
 
-    | 方法                                              | 说明                                                     |
+    | 方法                                              | 描述                                                     |
     | ----------------------------------------------- | ------------------------------------------------------ |
     | `setQueryId(String queryId)`                    | 设置将要分配给该操作的查询 ID。默认值：`null`。                           |
     | `setDeduplicationToken(String token)`           | 设置去重令牌。该令牌将发送到服务器，并可用于标识查询。默认值：`null`。                 |
@@ -537,10 +545,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     应尽快关闭该对象以释放连接，因为在完全读取完之前，该连接无法复用。
     :::
 
-    | 方法                              | 说明                                             |
-    | ------------------------------- | ---------------------------------------------- |
-    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                              |
-    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 由应用程序 (通过操作设置) 指定，或由服务器生成。 |
+    | 方法                              | 描述                                              |
+    | ------------------------------- | ----------------------------------------------- |
+    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                               |
+    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 可由应用程序 (通过操作设置) 指定，或由服务器分配。 |
 
     ## 查询 API \{#query-api\}
 
@@ -548,7 +556,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     按原样发送 `sqlQuery`。响应格式由查询设置指定。`QueryResponse` 将持有对响应流的引用，该响应流应由能够处理该格式的读取器来消费。
 
-    **方法签名**
+    **签名**
 
     ```java
     CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
@@ -559,7 +567,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `sqlQuery` - 单条 SQL 语句。该查询按原样发送到服务器。
 
-    `settings` - 请求相关设置。
+    `settings` - 请求设置。
 
     **返回值**
 
@@ -613,7 +621,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **返回值**
 
-    `QueryResponse` 类型的 Future —— 包含结果数据集以及如服务器端指标等附加信息。使用完数据集后，应关闭 Response 对象。
+    类型为 `QueryResponse` 的 Future —— 结果数据集以及服务器端指标等附加信息。使用完数据集后应关闭 Response 对象。
 
     **示例**
 
@@ -685,16 +693,16 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **配置方法**
 
-    | 方法                                                | 说明                                                                                                  |
+    | 方法                                                | 描述                                                                                                  |
     | ------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
     | `setQueryId(String queryId)`                      | 设置将分配给该操作的查询 ID。                                                                                    |
     | `setFormat(ClickHouseFormat format)`              | 设置响应格式。完整列表请参见 `RowBinaryWithNamesAndTypes`。                                                        |
-    | `setMaxExecutionTime(Integer maxExecutionTime)`   | 设置服务器端该操作的最大执行时间，不影响读取超时。                                                                           |
-    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | 请求服务器在查询完成后再发送响应。                                                                                   |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | 设置操作在服务器上的执行时间，不影响读取超时。                                                                             |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | 请求服务器在发送响应之前等待查询结束。                                                                                 |
     | `setUseServerTimeZone(Boolean useServerTimeZone)` | 服务端时区 (参见客户端配置) 将用于解析操作结果中的日期/时间类型值。默认值为 `false`。                                                   |
     | `setUseTimeZone(String timeZone)`                 | 请求服务器在时间转换时使用 `timeZone`。详见 [session&#95;timezone](/operations/settings/settings#session_timezone)。 |
-    | `serverSetting(String name, String value)`        | 为某个操作设置独立的服务器端配置。                                                                                   |
-    | `serverSetting(String name, Collection values)`   | 为某个操作设置可包含多个值的单个服务器端设置。集合中的项应为 `String` 类型的值。                                                       |
+    | `serverSetting(String name, String value)`        | 为操作设置单独的服务器配置项。                                                                                     |
+    | `serverSetting(String name, Collection values)`   | 为某个操作设置可包含多个值的单个服务器配置项。集合中的元素应为 `String` 值。                                                         |
     | `setDBRoles(Collection dbRoles)`                  | 设置在执行操作前要生效的数据库角色。集合中的元素应为 `String` 值。                                                              |
     | `setOption(String option, Object value)`          | 以原始格式设置配置选项。这不是服务器端设置。                                                                              |
 
@@ -703,10 +711,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     用于保存查询执行结果的响应对象。仅在客户端已从服务器收到响应时才可用。
 
     :::note
-    应尽快关闭此对象以释放连接，因为在完全读取完上一个响应的全部数据之前，该连接无法被复用。
+    应尽快关闭该对象以释放连接，因为在完全读取完上一个响应的全部数据之前，该连接无法被复用。
     :::
 
-    | 方法                              | 说明                                          |
+    | 方法                              | 描述                                          |
     | ------------------------------- | ------------------------------------------- |
     | `ClickHouseFormat getFormat()`  | 返回响应数据的编码格式。                                |
     | `InputStream getInputStream()`  | 返回按指定格式编码的未压缩数据字节流。                         |
@@ -723,9 +731,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### getTableSchema(String table) \{#gettableschemastring-table\}
 
-    获取 `table` 的表结构。
+    获取 `table` 的表 schema。
 
-    **方法签名**
+    **签名**
 
     ```java
     TableSchema getTableSchema(String table)
@@ -744,7 +752,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
-    从 SQL 语句中获取表结构。
+    从 SQL 语句中获取 schema。
 
     **签名**
 
@@ -754,7 +762,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **参数**
 
-    `sql` - “SELECT” SQL 语句，其 schema 将被返回。
+    `sql` - &quot;SELECT&quot; SQL 语句，其 schema 将被返回。
 
     **返回值**
 
@@ -812,7 +820,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为类型灵活读取时的默认选择。支持嵌套数组。
     * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适用于由与 Java 原始类型兼容的值构成的一维数组。
     * `getStringArray(...)` - 用于读取 `Array(String)` (以及以名称表示的枚举值) 。
-    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值或嵌套数组的数组。
+    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值和嵌套数组的数组。
 
     所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
     基于名称的方法每次调用时都需要执行一次索引查找。
@@ -835,12 +843,12 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     **`GenericRecord` 方法**
 
     * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为灵活类型读取的默认选项。支持嵌套数组。
-    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适用于由与 Java 原始类型兼容的值构成的一维数组。
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适合用于元素值与 Java 原始类型兼容的一维数组。
     * `getStringArray(...)` - 用于 `Array(String)` 类型 (以及以名称表示的枚举值) 。
-    * `getObjectArray(...)` - 适用于任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值和嵌套数组的数组。
+    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值和嵌套数组的数组。
 
-    所有方法都提供基于索引和基于名称的重载。索引从 1 开始。基于索引的重载会直接访问列。
-    基于名称的方法每次都需要进行索引查找。
+    所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
+    基于名称的方法每次调用时都需要执行一次索引查找。
 
     ````java
     try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
@@ -1144,9 +1152,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    * 只需调用一个方法，无需额外创建请求对象。
+    * 只需调用一个方法。无需另外创建请求对象。
     * 当所有数据复制完成后，请求体流会自动关闭。
-    * new low-level API is available `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`。`com.clickhouse.client.api.DataStreamWriter` 用于实现自定义数据写入逻辑，例如从队列读取数据。
+    * new low-level API is available `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`。`com.clickhouse.client.api.DataStreamWriter` 用于实现自定义数据写入逻辑，例如从
+      队列读取数据。
 
     ### 读取数据
 
@@ -1171,7 +1180,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     该库即将被弃用。对于新项目，请使用最新的 [Java 客户端](/integrations/language-clients/java/client/client.mdx)
     :::
 
-    ## 设置
+    ## 配置
 
     <Tabs groupId="client-v1-setup">
       <TabItem value="maven" label="Maven">
@@ -1185,7 +1194,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         ```
       </TabItem>
 
-      <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
         implementation("com.clickhouse:clickhouse-http-client:0.7.2")
@@ -1214,7 +1223,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         ```
       </TabItem>
 
-      <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
         implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
@@ -1325,7 +1334,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         ```
       </TabItem>
 
-      <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/org.lz4/lz4-java
         implementation("org.lz4:lz4-java:1.8.0")
@@ -1345,7 +1354,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     此外，您还可以通过以下方式禁用压缩。
 
     1. 在连接 URL 中将 `compress` 设置为 `0` 来禁用压缩：`http://localhost:8123/default?compress=0`
-    2. 在客户端配置中禁用：
+    2. 通过客户端配置禁用：
 
     ```java showLineNumbers
     ClickHouseClient client = ClickHouseClient.builder()
@@ -1440,10 +1449,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     以下选项用于配置自动发现功能：
 
-    | 属性                              | 默认值     | 说明                                                        |
+    | 属性                              | 默认值     | 描述                                                        |
     | ------------------------------- | ------- | --------------------------------------------------------- |
     | auto&#95;discovery              | `false` | 客户端是否应从 system 表以及/或 clickhouse-keeper/zookeeper 中发现更多节点。 |
-    | node&#95;discovery&#95;interval | `0`     | 节点发现的时间间隔 (毫秒) 。值为 0 或负数表示只进行一次发现。                        |
+    | node&#95;discovery&#95;interval | `0`     | 节点发现间隔以 Milliseconds 为单位；值为 0 或负数表示仅进行一次发现。               |
     | node&#95;discovery&#95;limit    | `100`   | 单次可发现的最大节点数；值为 0 或负数表示不限制。                                |
 
     ### 负载均衡
@@ -1451,7 +1460,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Java 客户端会根据负载均衡策略选择 ClickHouse 节点来发送请求。一般来说，负载均衡策略负责以下工作：
 
     1. 从托管的节点列表中获取一个节点。
-    2. 管理节点状态。
+    2. 管理节点的状态。
     3. (可选) 在启用自动发现时，为节点发现调度后台进程并执行健康检查。
 
     以下是可用于配置负载均衡的一组选项：
@@ -1459,19 +1468,19 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | 属性                            | 默认值                                      | 描述                                                                                                                                                                                                                                                    |
     | ----------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | load&#95;balancing&#95;policy | `""`                                     | 负载均衡策略可以是以下之一： <li>`firstAlive` - 请求将被发送到受管节点列表中第一个健康节点</li><li>`random` - 请求将被发送到受管节点列表中随机选取的一个节点</li><li>`roundRobin` - 请求将按照轮询方式依次发送到受管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完全限定类名 - 自定义负载均衡策略</li>如果未指定该策略，请求将被发送到受管节点列表中的第一个节点 |
-    | load&#95;balancing&#95;tags   | `""`                                     | 用于筛选节点的负载均衡标签。仅向具有指定标签的节点发送请求。                                                                                                                                                                                                                        |
-    | health&#95;check&#95;interval | `0`                                      | 健康检查的时间间隔 (毫秒) 。值为 0 或负数表示只执行一次检查。                                                                                                                                                                                                                    |
+    | load&#95;balancing&#95;tags   | `""`                                     | 用于过滤节点的负载均衡标签。请求仅发送至具有指定标签的节点。                                                                                                                                                                                                                        |
+    | health&#95;check&#95;interval | `0`                                      | 健康检查间隔 (以毫秒为单位) ，零或负值表示仅执行一次。                                                                                                                                                                                                                         |
     | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | 健康检查方法。可以是以下之一： <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过执行 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 协议级检查，通常更快</li>                                                                                                   |
-    | node&#95;check&#95;interval   | `0`                                      | 以毫秒为单位的节点检查间隔，负数将被视为 0。仅当自上次检查以来已过去指定的时间时，才会检查该节点的状态。<br />`health_check_interval` 和 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，对节点列表 (全部节点或故障节点) 执行状态检查，而 `node_check_interval` 则指定针对某个特定节点，自上次检查以来两次检查之间至少需要间隔的时间。             |
+    | node&#95;check&#95;interval   | `0`                                      | 以毫秒为单位的节点检查间隔，负数将被视为 0。仅当自上次检查以来已过去指定的时间时，才会检查该节点的状态。<br />`health_check_interval` 和 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台作业，对节点列表 (全部节点或故障节点) 执行状态检查，而 `node_check_interval` 则指定针对某个特定节点，自上次检查以来两次检查之间至少需要间隔的时间。             |
     | check&#95;all&#95;nodes       | `false`                                  | 是否对所有节点执行健康检查，还是仅检查故障节点。                                                                                                                                                                                                                              |
 
-    ### 故障转移和重试
+    ### 故障切换和重试
 
-    Java 客户端提供一些配置选项，用于设置故障转移和失败查询的重试行为：
+    Java 客户端提供一些配置选项，用于设置故障切换和失败查询的重试行为：
 
-    | 属性                                 | 默认值    | 说明                                                                                                                         |
+    | 属性                                 | 默认值    | 描述                                                                                                                         |
     | ---------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
-    | failover                           | `0`    | 单个请求允许执行故障转移的最大次数。为零或负值时表示不进行故障转移。发生故障转移时，请求会根据负载均衡策略被发送到其他节点，以从故障中恢复。                                                     |
+    | 故障切换                               | `0`    | 请求发生故障切换的最大次数。零或负值表示不进行故障切换。故障切换会将失败的请求发送到不同的节点 (根据负载均衡策略) ，以从故障切换中恢复。                                                     |
     | retry                              | `0`    | 单个请求允许重试的最大次数。为零或负值时表示不进行重试。仅当 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时，才会在同一节点上对该请求进行重试。                                     |
     | repeat&#95;on&#95;session&#95;lock | `true` | 当会话被锁定时，是否重复执行直到会话超时 (根据 `session_timeout` 或 `connect_timeout`) 。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会对该失败请求进行重试。 |
 

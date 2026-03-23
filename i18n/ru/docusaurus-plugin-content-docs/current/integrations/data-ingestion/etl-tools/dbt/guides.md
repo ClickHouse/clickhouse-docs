@@ -1046,60 +1046,60 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 Более подробную информацию о снимках dbt см. [по ссылке](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
-## Использование seed-файлов \{#using-seeds\}
+## Использование seed-файлов \{#further-information\}
 
-dbt предоставляет возможность загружать данные из CSV-файлов. Эта функциональность не подходит для загрузки больших экспортов базы данных и больше предназначена для небольших файлов, обычно используемых для таблиц кодов и [словарей](../../../../sql-reference/dictionaries/index.md), например, для сопоставления кодов стран с названиями стран. В простом примере мы генерируем и затем загружаем список кодов жанров, используя функциональность seed.
+dbt предоставляет возможность загружать данные из CSV-файлов. Эта функциональность не подходит для загрузки больших экспортов базы данных и больше предназначена для небольших файлов, обычно используемых для таблиц кодов и [словарей](/dictionary), например, для сопоставления кодов стран с названиями стран. В простом примере мы генерируем и затем загружаем список кодов жанров, используя функциональность seed.
 
 1. Мы генерируем список кодов жанров из нашего существующего набора данных. Из каталога dbt используйте `clickhouse-client`, чтобы создать файл `seeds/genre_codes.csv`:
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
-    "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
-    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
+   "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
+   LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
+   ```
 
 2. Выполните команду `dbt seed`. Это создаст новую таблицу `genre_codes` в нашей базе данных `imdb_dbt` (как определено в конфигурации схемы) с строками из нашего CSV-файла.
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt seed
+   17:03:23  Running with dbt=1.1.0
+   17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
+   17:03:23
+   17:03:24  Concurrency: 1 threads (target='dev')
+   17:03:24
+   17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
+   17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
+   17:03:24
+   17:03:24  Finished running 1 seed in 1.62s.
+   17:03:24
+   17:03:24  Completed successfully
+   17:03:24
+   17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
 
 3. Подтвердите, что они были загружены:
 
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```
+   ```sql
+   SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+   ```
 
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
+   ```response
+   +-------+----+
+   |genre  |code|
+   +-------+----+
+   |Drama  |DRA |
+   |Romance|ROM |
+   |Short  |SHO |
+   |Mystery|MYS |
+   |Adult  |ADU |
+   |Family |FAM |
 
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
-    ```
+   |Action |ACT |
+   |Sci-Fi |SCI |
+   |Horror |HOR |
+   |War    |WAR |
+   +-------+----+=
+   ```
 
 ## Дополнительная информация {#further-information}
 

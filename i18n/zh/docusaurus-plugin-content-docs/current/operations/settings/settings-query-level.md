@@ -76,25 +76,39 @@ SELECT value FROM system.settings where name='async_insert';
 
 ## 自定义设置 \{#custom_settings\}
 
-除了通用的[设置](/operations/settings/settings.md)之外，用户还可以定义自定义设置。
+除了常见的[settings](/operations/settings/settings.md)之外，用户还可以定义自定义设置。
+自定义设置允许您传递**会话特定参数**，并可在查询、策略或函数中引用这些参数。这在您需要执行以下操作时非常有用：
 
-自定义设置名称必须以前缀列表中的某个预定义前缀开头。该前缀列表需要在服务器配置文件的 [custom&#95;settings&#95;prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) 参数中声明。
+* 根据用户身份或所属组织筛选数据
+* 根据上下文应用不同的业务逻辑
+* 在同一会话的多次查询之间保留有状态信息
+
+自定义设置名称必须以某个前缀开头，而此前缀必须来自您定义的预定义前缀列表。
+前缀列表可通过 [`custom_settings_prefixes`](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) 服务器 settings 指定，并在服务器配置文件中定义。
+
+在下面的示例中，`SQL_` 被选为自定义前缀：
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
-若要定义自定义设置，请使用 `SET` 命令：
+:::note
+在 ClickHouse Cloud 中，无法指定自定义前缀。
+所有自定义用户设置都以 `SQL_` 为前缀。
+:::
+
+要定义自定义设置，请使用 `SET` 命令：
 
 ```sql
-SET custom_a = 123;
+SET SQL_a = 123;
 ```
 
-要获取某个自定义设置的当前值，请使用 `getSetting()` 函数：
+要获取自定义设置的当前值，请使用 `getSetting()` function：
 
 ```sql
-SELECT getSetting('custom_a');
+SELECT getSetting('SQL_a');
 ```
+
 
 ## 示例 \{#examples\}
 

@@ -30,27 +30,25 @@ Query API endpoint는 API 키 수준의 IP 허용 목록(whitelist)을 준수합
 Query API endpoint를 호출할 수 있는 클라이언트를 제한하려면 다음 단계를 수행합니다:
 
 <VerticalStepper headerLevel="h4">
+  #### API 키 설정 열기
 
-#### API 키 설정 열기 \{#open-settings\}
+  1. ClickHouse Cloud Console → **Organization** → **API Keys**로 이동합니다.
 
-1. ClickHouse Cloud Console → **Organization** → **API Keys**로 이동합니다.
+  <Image img={console_api_keys} size="md" alt="API Keys" />
 
-<Image img={console_api_keys} alt="API Keys"/>
+  2. Query API endpoint에 사용되는 API 키 옆의 **Edit**를 클릭합니다.
 
-2. Query API endpoint에 사용되는 API 키 옆의 **Edit**를 클릭합니다.
+  <Image img={edit_api_key} size="md" alt="Edit" />
 
-<Image img={edit_api_key} alt="Edit"/>
+  #### 허용할 IP 주소 추가
 
-#### 허용할 IP 주소 추가 \{#add-ips\}
+  1. **Allow access to this API Key** 섹션에서 **Specific locations**를 선택합니다.
+  2. IP 주소 또는 CIDR 범위를 입력합니다(예: `203.0.113.1` 또는 `203.0.113.0/24`).
+  3. 필요에 따라 여러 항목을 추가합니다.
 
-1. **Allow access to this API Key** 섹션에서 **Specific locations**를 선택합니다.
-2. IP 주소 또는 CIDR 범위를 입력합니다(예: `203.0.113.1` 또는 `203.0.113.0/24`).
-3. 필요에 따라 여러 항목을 추가합니다.
+  <Image img={specific_locations} size="md" alt="Specific locations" />
 
-<Image img={specific_locations} alt="Specific locations"/>
-
-Query API endpoint를 생성하려면 Admin Console Role과 적절한 권한이 부여된 API 키가 필요합니다.
-
+  Query API endpoint를 생성하려면 Admin Console Role과 적절한 권한이 부여된 API 키가 필요합니다.
 </VerticalStepper>
 
 :::tip Guide

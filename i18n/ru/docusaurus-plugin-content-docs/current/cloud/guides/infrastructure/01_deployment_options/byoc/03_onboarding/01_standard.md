@@ -22,7 +22,7 @@ import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-ser
 
 Клиентам настоятельно рекомендуется подготовить **выделенный** AWS-аккаунт или GCP-проект для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию с точки зрения прав доступа и ресурсов. ClickHouse развернет выделенный набор облачных ресурсов (VPC, кластер Kubernetes, роли IAM, бакеты S3 и т. д.) в вашей учетной записи.
 
-Если вам требуется более гибкая, настраиваемая конфигурация (например, развертывание в существующую VPC), обратитесь к документации [Customized Onboarding](/cloud/reference/byoc/onboarding/customization).
+Если вам требуется более гибкая, настраиваемая конфигурация (например, развертывание в существующую VPC), обратитесь к документации [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws).
 
 ## Запрос доступа \{#request-access\}
 
