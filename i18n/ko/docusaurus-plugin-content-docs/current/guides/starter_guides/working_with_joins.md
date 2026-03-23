@@ -61,7 +61,7 @@ ClickHouse는 다음과 같은 조인 유형을 지원합니다:
 
 <Image img={inner_join} alt="Inner Join" />
 
-이 쿼리는 `movies` 테이블과 `genres` 테이블을 조인하여 각 영화의 장르를 찾습니다:
+이 쿼리는 `movies` 테이블과 `genres` 테이블을 조인하여 각 영화의 장르를 조회합니다:
 
 ```sql
 SELECT
@@ -233,7 +233,7 @@ LIMIT 10;
 └─────────────────────────────────────────────┘
 ```
 
-구문상 최적화된 `CROSS JOIN` 쿼리 버전에서 `INNER JOIN` 절에는 `ALL` 키워드가 포함되어 있으며, 이는 `CROSS JOIN`을 `INNER JOIN`으로 다시 쓸 때에도 `CROSS JOIN`의 데카르트 곱 의미론이 유지되도록 명시적으로 추가된 것입니다. `INNER JOIN`의 경우 데카르트 곱은 [비활성화](/operations/settings/settings#join_default_strictness)할 수 있습니다.
+구문상 최적화된 `CROSS JOIN` 쿼리 버전의 `INNER JOIN` 절에는 `ALL` 키워드가 포함되어 있으며, 이는 `CROSS JOIN`을 `INNER JOIN`으로 다시 쓸 때에도 `CROSS JOIN`의 데카르트 곱 의미론이 유지되도록 명시적으로 추가된 것입니다. `INNER JOIN`의 경우 데카르트 곱은 [비활성화](/operations/settings/settings#join_default_strictness)할 수 있습니다.
 
 ```sql
 ALL

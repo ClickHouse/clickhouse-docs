@@ -12,9 +12,9 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# Движок таблиц SharedMergeTree \{#sharedmergetree-table-engine\}
+# Движок таблицы SharedMergeTree \{#sharedmergetree-table-engine\}
 
-Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть SharedReplacingMergeTree заменяет ReplicatedReplacingMergeTree.
+Семейство движков таблиц SharedMergeTree — это облачная замена движков ReplicatedMergeTree, оптимизированная для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует аналог SharedMergeTree, то есть SharedReplacingMergeTree заменяет ReplicatedReplacingMergeTree.
 
 Семейство движков таблиц SharedMergeTree лежит в основе ClickHouse Cloud. Конечному пользователю не нужно ничего менять, чтобы начать использовать семейство движков SharedMergeTree вместо движков на основе ReplicatedMergeTree. Оно предоставляет следующие дополнительные преимущества:
 
@@ -22,17 +22,17 @@ import Image from '@theme/IdealImage';
 - Улучшенная пропускная способность фоновых слияний
 - Улучшенная пропускная способность мутаций
 - Более быстрые операции масштабирования вверх и вниз
-- Более «лёгкая» сильная согласованность для запросов `SELECT`
+- Более lightweight сильная согласованность для запросов select
 
 Существенное улучшение, которое приносит SharedMergeTree, заключается в более глубоком разделении вычислений и хранилища по сравнению с ReplicatedMergeTree. Ниже показано, как ReplicatedMergeTree разделяет вычисления и хранилище:
 
-<Image img={shared_merge_tree} alt="Схема ReplicatedMergeTree" size="md"  />
+<Image img={shared_merge_tree} alt="ReplicatedMergeTree Diagram" size="md"  />
 
-Как видно, хотя данные ReplicatedMergeTree и хранятся в объектном хранилище, метаданные по-прежнему находятся на каждом из серверов ClickHouse. Это означает, что для каждой реплицируемой операции метаданные также должны быть реплицированы на все реплики.
+Как видно, хотя данные, хранящиеся в ReplicatedMergeTree, находятся в объектном хранилище, метаданные по-прежнему размещаются на каждом из clickhouse-servers. Это означает, что для каждой реплицируемой операции метаданные также должны реплицироваться на все реплики.
 
-<Image img={shared_merge_tree_2} alt="Схема ReplicatedMergeTree с метаданными" size="md"  />
+<Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
-В отличие от ReplicatedMergeTree, SharedMergeTree не требует, чтобы реплики напрямую обменивались данными друг с другом. Вместо этого весь обмен происходит через общее хранилище и clickhouse-keeper. SharedMergeTree реализует асинхронную репликацию без лидера и использует clickhouse-keeper для координации и хранения метаданных. Это означает, что метаданные не нужно реплицировать при изменении масштаба сервиса. Это приводит к более быстрой репликации, выполнению мутаций, слияниям и операциям масштабирования. SharedMergeTree поддерживает сотни реплик для каждой таблицы, что делает возможным динамическое масштабирование без шардов. В ClickHouse Cloud используется подход распределённого выполнения запросов для задействования большего количества вычислительных ресурсов на один запрос.
+В отличие от ReplicatedMergeTree, SharedMergeTree не требует, чтобы реплики взаимодействовали друг с другом. Вместо этого всё взаимодействие происходит через общее хранилище и clickhouse-keeper. SharedMergeTree реализует асинхронную репликацию без лидера и использует clickhouse-keeper для координации и хранения метаданных. Это означает, что метаданные не нужно реплицировать при масштабировании сервиса вверх и вниз. Это приводит к более быстрой репликации, мутациям, слияниям и операциям масштабирования вверх. SharedMergeTree позволяет иметь сотни реплик для каждой таблицы, что делает возможным динамическое масштабирование без шардов. В ClickHouse Cloud используется подход распределённого выполнения запросов, чтобы задействовать больше вычислительных ресурсов для одного запроса.
 
 ## Интроспекция \{#introspection\}
 

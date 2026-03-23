@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import authenticate from '@site/static/images/clickstack/deployment/embedded/authenticate.png';
-import create_source from '@site/static/images/clickstack/deployment/embedded/create-source.png';
+import inferred_source from '@site/static/images/clickstack/deployment/embedded/inferred-source.png';
 
 ClickStack は ClickHouse サーバーのバイナリに直接バンドルされています。つまり、追加のコンポーネントをデプロイすることなく、ClickHouse インスタンスから ClickStack UI (HyperDX) にアクセスできます。このデプロイメントは [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) で公開されているデモと似ていますが、実際には自身の ClickHouse インスタンスとデータに対して実行されます。
 
@@ -35,62 +35,121 @@ ClickStack は ClickHouse サーバーのバイナリに直接バンドルされ
 
 ## デプロイ手順 \{#deployment-steps\}
 
-<VerticalStepper headerLevel="h3">
-
-### ClickHouse を起動する \{#start-clickhouse\}
-
 <Tabs groupId="install-method">
-<TabItem value="docker" label="Docker" default>
+  <TabItem value="docker" label="Docker" default>
+    <VerticalStepper headerLevel="h3">
+      ### ClickHouse を起動する
 
-パスワードを設定して ClickHouse サーバーイメージを取得して起動します:
+      パスワードを設定して ClickHouse サーバーイメージを取得して起動します:
 
-```shell
-docker run --rm -it -p 8123:8123 -e CLICKHOUSE_PASSWORD=password clickhouse/clickhouse-server:head-alpine
-```
+      ```shell
+      docker run --rm -it -p 8123:8123 -e CLICKHOUSE_PASSWORD=password clickhouse/clickhouse-server:head-alpine
+      ```
 
-:::tip パスワードなしで実行する場合
-パスワードなしで実行する場合は、`default` のデフォルトアクセス管理機能を明示的に有効にする必要があります:
+      :::tip パスワードなしで実行する
+      パスワードなしで実行したい場合は、デフォルトのアクセス管理機能を明示的に有効化する必要があります:
 
-```shell
-docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 clickhouse/clickhouse-server:head-alpine
-```
-:::
+      ```shell
+      docker run --rm -it -p 8123:8123 -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 clickhouse/clickhouse-server:head-alpine
+      ```
 
-</TabItem>
-<TabItem value="binary" label="バイナリ">
+      :::
 
-ClickHouse をダウンロードして起動します:
+      ### ClickStack UI を開く
 
-```shell
-curl https://clickhouse.com/ | sh
+      ブラウザで [http://localhost:8123](http://localhost:8123) を開き、**ClickStack** をクリックします。
 
-./clickhouse server
-```
+      ローカルインスタンスに接続するため、ユーザー名 `default` とパスワード `password` を入力します。
 
-バイナリから実行する場合、`default` ユーザーにはパスワードが設定されていません。
+      <Image img={authenticate} alt="認証" size="lg" />
 
-</TabItem>
+      ### ソースを作成する
+
+      既存の OpenTelemetry テーブルがある場合、ClickStack はそれらを検出し、自動的にソースを作成します。
+
+      新規インストールの場合は、ソースの作成を求められます。**Table** フィールドに適切なテーブル名 (例: `otel_logs`) を入力し、**Save New Source** をクリックします。
+
+      <Image img={inferred_source} alt="ソースの作成" size="lg" />
+
+      まだデータがない場合は、利用可能なオプションについて [Ingesting data](/use-cases/observability/clickstack/ingesting-data) を参照してください。
+    </VerticalStepper>
+  </TabItem>
+
+  <TabItem value="binary" label="Binary">
+    <VerticalStepper headerLevel="h3">
+      ### ClickHouse を起動する
+
+      ClickHouse をダウンロードして起動します:
+
+      ```shell
+      curl https://clickhouse.com/ | sh
+      ```
+
+      <details>
+        <summary>オプション: システムログテーブルを有効化する</summary>
+
+        ClickHouse 自身の内部ログとメトリクスを確認するには、サーバーを起動する前に作業ディレクトリに設定スニペットを作成します:
+
+        ```shell
+        mkdir -p config.d && cat > config.d/query_logs.xml << 'EOF'
+        <clickhouse>
+            <query_log>
+                <database>system</database>
+                <table>query_log</table>
+            </query_log>
+            <query_thread_log>
+                <database>system</database>
+                <table>query_thread_log</table>
+            </query_thread_log>
+            <query_views_log>
+                <database>system</database>
+                <table>query_views_log</table>
+            </query_views_log>
+            <metric_log>
+                <database>system</database>
+                <table>metric_log</table>
+            </metric_log>
+            <asynchronous_metric_log>
+                <database>system</database>
+                <table>asynchronous_metric_log</table>
+            </asynchronous_metric_log>
+        </clickhouse>
+        EOF
+        ```
+
+        これを有効にすると、ClickStack を開いた後に `system.query_log` を指す **Log Source** を作成できます:
+
+        | 設定                   | 値                                                                                                                                       |
+        | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+        | **Name**             | `Query Logs`                                                                                                                            |
+        | **Database**         | `system`                                                                                                                                |
+        | **Table**            | `query_log`                                                                                                                             |
+        | **Timestamp Column** | `event_time`                                                                                                                            |
+        | **Default Select**   | `event_time, query_kind, query, databases, tables, initial_user, projections, memory_usage, written_rows, read_rows, query_duration_ms` |
+      </details>
+
+      サーバーを起動します:
+
+      ```shell
+      ./clickhouse server
+      ```
+
+      ### ClickStack UI を開く
+
+      ブラウザで [http://localhost:8123](http://localhost:8123) を開き、**ClickStack** をクリックします。ローカルインスタンスへの接続は自動的に作成されます。
+
+      ### ソースを作成する
+
+      既存の OpenTelemetry テーブルがある場合、ClickStack はそれらを検出し、自動的にソースを作成します。
+
+      まだデータがない場合は、利用可能なオプションについて [Ingesting data](/use-cases/observability/clickstack/ingesting-data) を参照してください。
+
+      <Image img={inferred_source} alt="ソースの作成" size="lg" />
+    </VerticalStepper>
+  </TabItem>
 </Tabs>
 
-### ClickStack UI を開く \{#navigate-to-clickstack-ui\}
-
-ブラウザで [http://localhost:8123](http://localhost:8123) を開き、**ClickStack** をクリックします。
-
-認証情報を入力します。上記の Docker の例を使用している場合、ユーザー名は `default`、パスワードは `password` です。バイナリを使用している場合、ユーザー名は `default` でパスワードは不要です。
-
-<Image img={authenticate} alt="認証" size="lg"/>
-
-### ソースを作成する \{#create-a-source\}
-
-ログイン後、データソースの作成画面が表示されます。既存の OpenTelemetry テーブルがある場合は、デフォルト値はそのままにし、`Table` フィールドに適切なテーブル名（例: `otel_logs`）を入力します。その他の設定は自動検出されるため、そのまま `Save New Source` をクリックします。
-
-まだデータがない場合は、利用可能なオプションについて ["Ingesting data"](/use-cases/observability/clickstack/ingesting-data) を参照してください。
-
-<Image img={create_source} alt="ソースの作成" size="lg"/>
-
-</VerticalStepper>
-
-## 次のステップ \{#next-steps\}
+## 次のステップ {#next-steps}
 
 評価を終えて本番運用に進む準備ができたら、次の本番向けデプロイメントを検討してください：
 

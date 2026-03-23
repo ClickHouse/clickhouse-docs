@@ -371,7 +371,7 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 Read formats는 클라이언트의 `query`, `query_np`, `query_df` 메서드가 반환하는 값의 데이터 타입을 제어합니다. (`raw_query`와 `query_arrow`는 ClickHouse로부터 들어오는 데이터를 수정하지 않으므로 포맷 제어가 적용되지 않습니다.) 예를 들어 UUID에 대한 read format을 기본값인 `native` 포맷에서 대체 포맷인 `string` 포맷으로 변경하면, `UUID` 컬럼에 대한 ClickHouse 쿼리 결과는 Python UUID 객체 대신 문자열 값(표준 8-4-4-4-12 RFC 1422 형식 사용)으로 반환됩니다.
 
-모든 포매팅 함수의 &quot;data type&quot; 인수에는 와일드카드를 포함할 수 있습니다. 포맷은 소문자로 된 단일 문자열입니다.
+모든 포매팅 함수의 「data type」 인수에는 와일드카드를 포함할 수 있습니다. 포맷은 소문자로 된 단일 문자열입니다.
 
 Read formats는 여러 수준에서 설정할 수 있습니다:
 
@@ -394,7 +394,7 @@ set_read_format('Date*', 'int')
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})
 ```
 
-* 특정 컬럼 값에 대해서는 선택적 `column_formats` 딕셔너리 인자를 사용할 수 있습니다. 키는 ClickHouse가 반환하는 컬럼 이름이며, 값은 데이터 컬럼에 대한 포맷이거나, ClickHouse 타입 이름을 키로 하고 쿼리 포맷을 값으로 갖는 2단계 &quot;format&quot; 딕셔너리입니다. 이 2차 딕셔너리는 Tuple 또는 Map과 같은 중첩 컬럼 타입에 사용할 수 있습니다.
+* 특정 컬럼 값에 대해서는 선택적 `column_formats` 딕셔너리 인자를 사용할 수 있습니다. 키는 ClickHouse가 반환하는 컬럼 이름이며, 값은 데이터 컬럼에 대한 포맷이거나, ClickHouse 타입 이름을 키로 하고 쿼리 포맷을 값으로 갖는 2단계 「format」 딕셔너리입니다. 이 2차 딕셔너리는 Tuple 또는 Map과 같은 중첩 컬럼 타입에 사용할 수 있습니다.
 
 ```python
 # Return IPv6 values in the `dev_address` column as strings

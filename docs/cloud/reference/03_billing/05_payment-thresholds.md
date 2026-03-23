@@ -17,7 +17,7 @@ If you are a pay as you go customer and your amount due in a billing period for 
 
 :::tip
 This default payment threshold amount can be adjusted below $10,000.
-If you wish to do so, [contact support](support@clickhouse.com).
+If you wish to do so, [contact support](mailto:support@clickhouse.com).
 :::
 
 A failed charge will result in the suspension of your services after a 14 day grace period.
@@ -38,3 +38,7 @@ As you can see from the above example - there was a threshold invoice sent durin
 
 If your organization reaches 90% of the payment threshold and is on-track to exceed the payment threshold mid-period, the billing contact email associated with the organization will receive an email notification.
 You will also receive an email notification as well as an invoice when you exceed the payment threshold.
+
+:::note
+Payment threshold notifications are not currently supported for PAYG orgs
+:::

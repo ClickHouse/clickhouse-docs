@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 導入バージョン: v25.6.0
 
-タイムスタンプと値のペアとして与えられたタイムシリーズデータを、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッドに再サンプリングする集約関数です。グリッド上の各ポイントについて、（指定された時間ウィンドウ内で）最も新しいサンプルが選択されます。
+タイムスタンプと値のペアとして与えられたタイムシリーズデータを、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッドに再サンプリングする集約関数です。グリッド上の各ポイントについて、 (指定された時間ウィンドウ内で) 最も新しいサンプルが選択されます。
 
 エイリアス: `timeSeriesLastToGrid`。
 
@@ -31,8 +31,8 @@ timeSeriesResampleToGridWithStaleness(start_timestamp, end_timestamp, grid_step,
 
 * `start_timestamp` — グリッドの開始時刻を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — グリッドの終了時刻を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — グリッドのステップ（秒）を指定します。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness_window` — 最新サンプルに許容される最大の「staleness」（古さ、秒）を指定します。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — グリッドのステップ (秒) を指定します。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness_window` — 最新サンプルに許容される最大の「staleness」 (古さ、秒) を指定します。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **引数**
 

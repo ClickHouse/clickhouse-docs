@@ -16,6 +16,14 @@ import Version from '@theme/ClientVersionDropdown/Version';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
 
 <ClientVersionDropdown versions={[
 {
@@ -44,7 +52,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8</version>
 </dependency>
 ```
 
@@ -53,14 +61,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.7")
+implementation("com.clickhouse:client-v2:0.9.8")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.7'
+implementation 'com.clickhouse:client-v2:0.9.8'
 ```
 
 </TabItem>

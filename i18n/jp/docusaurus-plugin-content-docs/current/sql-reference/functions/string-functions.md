@@ -28,7 +28,7 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 導入バージョン: v20.1.0
 
-CRC-32-IEEE 802.3 多項式と初期値 `0xffffffff`（zlib による実装）を用いて、文字列の CRC32 チェックサムを計算します。
+CRC-32-IEEE 802.3 多項式と初期値 `0xffffffff` (zlib による実装) を用いて、文字列の CRC32 チェックサムを計算します。
 
 **構文**
 
@@ -199,7 +199,7 @@ SELECT ascii('234')
 
 導入バージョン: v25.6.0
 
-[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）でエンコードされた文字列をデコードします。
+[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) でエンコードされた文字列をデコードします。
 文字列が有効な Base32 エンコード形式でない場合は、例外がスローされます。
 
 **構文**
@@ -374,7 +374,7 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 
 導入バージョン: v18.16.0
 
-文字列を [Base64](https://en.wikipedia.org/wiki/Base64) 形式でエンコードします（RFC 4648 に準拠）。
+文字列を [Base64](https://en.wikipedia.org/wiki/Base64) 形式でエンコードします (RFC 4648 に準拠) 。
 
 **構文**
 
@@ -445,7 +445,7 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 導入バージョン: v18.16.0
 
-文字列を [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）表現に、URL セーフなアルファベットを使用してエンコードします。
+文字列を [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) 表現に、URL セーフなアルファベットを使用してエンコードします。
 
 **構文**
 
@@ -571,6 +571,43 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
+## caseFoldUTF8 \{#caseFoldUTF8\}
+
+導入バージョン: v26.3.0
+
+UTF-8文字列にUnicodeのケースフォールディングを適用し、大文字と小文字を区別しない比較に適した、小文字化に近い正規化形式に変換します。
+
+標準のUnicodeケースフォールディングを適用します。ケースフォールディングの影響を受けない互換文字
+(例: ローマ数字、丸囲み数字) は保持されますが、`ﬃ` のような一部の合字は、Unicodeケースフォールディング自体によって展開されるため、引き続き分解される点に注意してください。
+
+**構文**
+
+```sql
+caseFoldUTF8(str)
+```
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+ケースフォールディングされた UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なケースフォールディング**
+
+```sql title=Query
+SELECT caseFoldUTF8('Straße')
+```
+
+```response title=Response
+┌─caseFoldUTF8('Straße')─┐
+│ strasse                 │
+└─────────────────────────┘
+```
+
 ## compareSubstrings \{#compareSubstrings\}
 
 バージョン v25.2.0 で導入。
@@ -587,9 +624,9 @@ compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 
 * `s1` — 比較する最初の文字列。[`String`](/sql-reference/data-types/string)
 * `s2` — 比較する2番目の文字列。[`String`](/sql-reference/data-types/string)
-* `s1_offset` — 比較を開始する `s1` 内の位置（0始まりのインデックス）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `s2_offset` — 比較を開始する `s2` 内の位置（0始まりのインデックス）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `num_bytes` — 両方の文字列で比較するバイト数の上限。`s1_offset`（または `s2_offset`） + `num_bytes` が入力文字列の末尾を超える場合、`num_bytes` はそれに応じて調整されます。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s1_offset` — 比較を開始する `s1` 内の位置 (0始まりのインデックス) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — 比較を開始する `s2` 内の位置 (0始まりのインデックス) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — 両方の文字列で比較するバイト数の上限。`s1_offset` (または `s2_offset`)  + `num_bytes` が入力文字列の末尾を超える場合、`num_bytes` はそれに応じて調整されます。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -800,12 +837,12 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-導入: v1.1.0
+導入: v25.10.0
 
 異なる基数間で数値を変換します。
 
 この関数は、ある基数で表された数値を別の基数に変換します。サポートされる基数は 2 から 36 です。
-10 を超える基数では、数字 10〜35 を表すために文字 A～Z（大文字小文字は区別されません）が使用されます。
+10 を超える基数では、数字 10〜35 を表すために文字 A～Z (大文字小文字は区別されません) が使用されます。
 
 この関数は MySQL の `CONV()` 関数と互換性があります。
 
@@ -1201,7 +1238,7 @@ endsWithCaseInsensitiveUTF8(s, suffix)
 **引数**
 
 * `s` — チェックする文字列。[`String`](/sql-reference/data-types/string)
-* `suffix` — 大文字小文字を区別せずに照合する末尾文字列（サフィックス）。[`String`](/sql-reference/data-types/string)
+* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (サフィックス) 。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -1267,9 +1304,9 @@ HTML または XHTML からテキストコンテンツを抽出します。
 この関数は HTML タグ、コメント、script/style 要素を削除し、テキストコンテンツのみを残します。次の処理を行います:
 
 * すべての HTML/XML タグの削除
-* コメント（`<!-- -->`）の削除
+* コメント (`<!-- -->`) の削除
 * script および style 要素とその内容の削除
-* CDATA セクションの処理（内容をそのままコピー）
+* CDATA セクションの処理 (内容をそのままコピー) 
 * 空白文字の適切な処理と正規化
 
 注意: HTML エンティティはデコードされません。必要に応じて別の関数で処理してください。
@@ -1349,8 +1386,8 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode (UTF-8) 表現（ToUnicode アルゴリズム）を返します。
-エラーが発生した場合（例えば入力が不正な場合）、入力された文字列がそのまま返されます。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode (UTF-8) 表現 (ToUnicode アルゴリズム) を返します。
+エラーが発生した場合 (例えば入力が不正な場合) 、入力された文字列がそのまま返されます。
 大文字・小文字の正規化が行われるため、[`idnaEncode()`](#idnaEncode) と [`idnaDecode()`](#idnaDecode) を繰り返し適用しても、元の文字列が必ずしも返されるとは限らない点に注意してください。
 
 **構文**
@@ -1385,7 +1422,7 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）メカニズムに従って、ドメイン名の ASCII 表現（ToASCII アルゴリズム）を返します。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の ASCII 表現 (ToASCII アルゴリズム) を返します。
 入力文字列は UTF でエンコードされており、ASCII 文字列として表現可能である必要があります。そうでない場合は例外がスローされます。
 
 :::note
@@ -1652,7 +1689,7 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 
 導入バージョン: v22.1.0
 
-文字列 `s` の先頭（左側）からの `offset` で指定された位置から始まる部分文字列を返します。
+文字列 `s` の先頭 (左側) からの `offset` で指定された位置から始まる部分文字列を返します。
 
 **構文**
 
@@ -1700,7 +1737,7 @@ Hello
 
 導入バージョン: v21.8.0
 
-文字列の左側を、スペースまたは指定した文字列（必要に応じて複数回繰り返し）で埋め、結果の文字列が指定された `length` に達するまでパディングします。
+文字列の左側を、スペースまたは指定した文字列 (必要に応じて複数回繰り返し) で埋め、結果の文字列が指定された `length` に達するまでパディングします。
 
 **構文**
 
@@ -1738,7 +1775,7 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 導入バージョン: v21.8.0
 
-UTF-8 文字列の左側を空白または指定した文字列（必要に応じて複数回繰り返し）で埋め、結果の文字列が指定された長さに達するまでパディングします。
+UTF-8 文字列の左側を空白または指定した文字列 (必要に応じて複数回繰り返し) で埋め、結果の文字列が指定された長さに達するまでパディングします。
 文字列長をバイト数で測定する [`leftPad`](#leftPad) とは異なり、ここでは文字列長はコードポイント数で測定されます。
 
 **構文**
@@ -1841,7 +1878,7 @@ lengthUTF8(s)
 
 **戻り値**
 
-文字列 `s` の長さ（Unicode コードポイント数）。[`UInt64`](/sql-reference/data-types/int-uint)
+文字列 `s` の長さ (Unicode コードポイント数) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
@@ -1923,6 +1960,43 @@ SELECT lowerUTF8('München') as Lowerutf8;
 
 ```response title=Response
 münchen
+```
+
+## naturalSortKey \{#naturalSortKey\}
+
+導入バージョン: v25.11.0
+
+この関数は自然順でソートするために使用されます。
+
+**構文**
+
+```sql
+naturalSortKey(s)
+```
+
+**別名**: `NATURAL_SORT_KEY`
+
+**引数**
+
+* `s` — ナチュラルソートキーに変換する文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+`s` から生成されたナチュラルソートキー。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT s FROM t ORDER BY naturalSortKey(s)
+```
+
+```response title=Response
+┌─s───┐
+│ a1  │
+| a02 │
+└─────┘
 ```
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
@@ -2037,6 +2111,43 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
+## normalizeUTF8NFKCCasefold \{#normalizeUTF8NFKCCasefold\}
+
+導入バージョン: v26.3.0
+
+UTF-8 文字列を [NFKC&#95;Casefold 正規化形式](https://unicode.org/reports/tr44/#NFKC_Casefold)に従って正規化します。これは、NFKC 正規化を適用した後にケースフォールディングを行うものです。
+識別子の大文字と小文字を区別しないマッチングに有用です。
+
+**構文**
+
+```sql
+normalizeUTF8NFKCCasefold(str)
+```
+
+**引数**
+
+* `str` — UTF-8 エンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+UTF-8 文字列の NFKC&#95;Casefold 正規化形式を返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT
+    'Ä ① Hello' AS original,
+    normalizeUTF8NFKCCasefold('Ä ① Hello') AS nfkc_cf_normalized;
+```
+
+```response title=Response
+┌─original───┬─nfkc_cf_normalized─┐
+│ Ä ① Hello │ ä 1 hello           │
+└────────────┴────────────────────┘
+```
+
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
 
 導入バージョン: v21.11.0
@@ -2092,7 +2203,7 @@ punycodeDecode(s)
 
 **返り値**
 
-入力値のプレーンテキスト（Punycode エンコード前の文字列）を返します。[`String`](/sql-reference/data-types/string)
+入力値のプレーンテキスト (Punycode エンコード前の文字列) を返します。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -2185,6 +2296,42 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
+
+導入バージョン: v26.3.0
+
+NFD による文字の分解、結合文字 (Unicode カテゴリ Mn) の除去、その後の NFC による再構成によって、UTF-8 文字列からダイアクリティカルマーク (アクセント記号) を削除します。
+
+**構文**
+
+```sql
+removeDiacriticsUTF8(str)
+```
+
+**別名**: `removeAccentsUTF8`
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+発音区別符号が削除された UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なアクセント除去**
+
+```sql title=Query
+SELECT removeDiacriticsUTF8('café résumé naïve')
+```
+
+```response title=Response
+┌─removeDiacriticsUTF8('café résumé naïve')─┐
+│ cafe resume naive                          │
+└────────────────────────────────────────────┘
+```
+
 ## repeat \{#repeat\}
 
 導入バージョン: v20.1.0
@@ -2258,7 +2405,7 @@ esuoHkcilC
 
 導入バージョン: v22.1.0
 
-文字列 `s` の末尾（右端）からのオフセット `offset` を開始位置として、部分文字列を返します。
+文字列 `s` の末尾 (右端) からのオフセット `offset` を開始位置として、部分文字列を返します。
 
 **構文**
 
@@ -2306,7 +2453,7 @@ lo
 
 導入されたバージョン: v21.8.0
 
-文字列の右端を、スペースまたは指定した文字列（必要に応じて複数回繰り返し）でパディングし、結果の文字列の長さが指定された `length` に達するまで続けます。
+文字列の右端を、スペースまたは指定した文字列 (必要に応じて複数回繰り返し) でパディングし、結果の文字列の長さが指定された `length` に達するまで続けます。
 
 **構文**
 
@@ -2344,7 +2491,7 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 導入バージョン: v21.8.0
 
-文字列の右側を、スペースまたは指定した文字列で（必要に応じて繰り返し）埋めて、結果の文字列が指定された長さに達するまでパディングします。
+文字列の右側を、スペースまたは指定した文字列で (必要に応じて繰り返し) 埋めて、結果の文字列が指定された長さに達するまでパディングします。
 文字列の長さをバイト数で測定する [`rightPad`](#rightPad) と異なり、ここでは文字列の長さはコードポイント数で測定されます。
 
 **構文**
@@ -2463,7 +2610,7 @@ SELECT soundex('aksel')
 
 導入バージョン: v23.5.0
 
-指定された回数分のスペース（` `）を連結した文字列を返します。
+指定された回数分のスペース (` `) を連結した文字列を返します。
 
 **構文**
 
@@ -2994,7 +3141,7 @@ substringIndex(s, delim, count)
 
 * `s` — 部分文字列を抽出する対象の文字列。[`String`](/sql-reference/data-types/string)
 * `delim` — 分割に使用する区切り文字。[`String`](/sql-reference/data-types/string)
-* `count` — 部分文字列を抽出する前に数える区切り文字の出現回数。`count` が正の場合、（左から数えて）最後の区切り文字より左側のすべてが返されます。`count` が負の場合、（右から数えて）最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
+* `count` — 部分文字列を抽出する前に数える区切り文字の出現回数。`count` が正の場合、 (左から数えて) 最後の区切り文字より左側のすべてが返されます。`count` が負の場合、 (右から数えて) 最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -3136,7 +3283,7 @@ c
 導入バージョン: v20.1.0
 
 文字列の先頭および末尾から、指定された文字を削除します。
-デフォルトでは、一般的な空白（ASCII）文字を削除します。
+デフォルトでは、一般的な空白 (ASCII) 文字を削除します。
 
 **構文**
 
@@ -3174,7 +3321,7 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 導入バージョン: v20.1.0
 
 文字列の先頭から指定された文字を削除します。
-デフォルトでは、一般的な空白文字（ASCII）を削除します。
+デフォルトでは、一般的な空白文字 (ASCII) を削除します。
 
 **構文**
 
@@ -3212,7 +3359,7 @@ SELECT trimLeft('ClickHouse', 'Click');
 導入バージョン: v20.1.0
 
 文字列の末尾から指定された文字を削除します。
-デフォルトでは、一般的な空白（ASCII）文字を削除します。
+デフォルトでは、一般的な空白 (ASCII) 文字を削除します。
 
 **構文**
 
@@ -3385,7 +3532,7 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の Unicode (UTF-8) による表現（ToUnicode アルゴリズム）を返します。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の Unicode (UTF-8) による表現 (ToUnicode アルゴリズム) を返します。
 エラーが発生した場合は、例外をスローせず空の文字列を返します。
 
 **構文**
@@ -3494,8 +3641,8 @@ SELECT upper('clickhouse')
 この仮定に反する場合でも、例外はスローされず、結果は未定義です。
 
 :::note
-この関数は言語を判別しません。そのため、トルコ語などでは結果が完全には正しくない場合があります（i/İ と i/I など）。
-あるコードポイントについて、大文字と小文字で UTF-8 のバイト列の長さが異なる場合（`ẞ` と `ß` など）、そのコードポイントについては正しくない結果になる可能性があります。
+この関数は言語を判別しません。そのため、トルコ語などでは結果が完全には正しくない場合があります (i/İ と i/I など) 。
+あるコードポイントについて、大文字と小文字で UTF-8 のバイト列の長さが異なる場合 (`ẞ` と `ß` など) 、そのコードポイントについては正しくない結果になる可能性があります。
 :::
 
 **構文**

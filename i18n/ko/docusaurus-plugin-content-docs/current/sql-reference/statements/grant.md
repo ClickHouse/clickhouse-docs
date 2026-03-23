@@ -148,203 +148,204 @@ GRANT SELECT(foo) ON db.table* TO john -- wrong
 
 ClickHouse에서 권한의 계층 구조는 다음과 같습니다.
 
-* [`ALL`](#all)
-  * [`액세스 관리`](#access-management)
-    * `ALLOW SQL SECURITY NONE`
-    * `ALTER QUOTA`
-    * `ALTER ROLE`
-    * `ALTER ROW POLICY`
-    * `ALTER SETTINGS PROFILE`
-    * `ALTER USER`
-    * `CREATE QUOTA`
-    * `CREATE ROLE`
-    * `CREATE ROW POLICY`
-    * `CREATE SETTINGS PROFILE`
-    * `CREATE USER`
-    * `DROP QUOTA`
-    * `DROP ROLE`
-    * `DROP ROW POLICY`
-    * `DROP SETTINGS PROFILE`
-    * `DROP USER`
-    * `ROLE ADMIN`
-    * `SHOW ACCESS`
-      * `SHOW QUOTAS`
-      * `SHOW ROLES`
-      * `SHOW ROW POLICIES`
-      * `SHOW SETTINGS PROFILES`
-      * `SHOW USERS`
-  * [`ALTER`](#alter)
-    * `ALTER DATABASE`
-      * `ALTER DATABASE SETTINGS`
-    * `ALTER TABLE`
-      * `ALTER COLUMN`
-        * `ALTER ADD COLUMN`
-        * `ALTER CLEAR COLUMN`
-        * `ALTER COMMENT COLUMN`
-        * `ALTER DROP COLUMN`
-        * `ALTER MATERIALIZE COLUMN`
-        * `ALTER MODIFY COLUMN`
-        * `ALTER RENAME COLUMN`
-      * `ALTER CONSTRAINT`
-        * `ALTER ADD CONSTRAINT`
-        * `ALTER DROP CONSTRAINT`
-      * `ALTER DELETE`
-      * `ALTER FETCH PARTITION`
-      * `ALTER FREEZE PARTITION`
-      * `ALTER INDEX`
-        * `ALTER ADD INDEX`
-        * `ALTER CLEAR INDEX`
-        * `ALTER DROP INDEX`
-        * `ALTER MATERIALIZE INDEX`
-        * `ALTER ORDER BY`
-        * `ALTER SAMPLE BY`
-      * `ALTER MATERIALIZE TTL`
-      * `ALTER MODIFY COMMENT`
-      * `ALTER MOVE PARTITION`
-      * `ALTER PROJECTION`
-      * `ALTER SETTINGS`
-      * `ALTER STATISTICS`
-        * `ALTER ADD STATISTICS`
-        * `ALTER DROP STATISTICS`
-        * `ALTER MATERIALIZE STATISTICS`
-        * `ALTER MODIFY STATISTICS`
-      * `ALTER TTL`
-      * `ALTER UPDATE`
-    * `ALTER VIEW`
-      * `ALTER VIEW MODIFY QUERY`
-      * `ALTER VIEW REFRESH`
-      * `ALTER VIEW MODIFY SQL SECURITY`
-  * [`BACKUP`](#backup)
-  * [`CLUSTER`](#cluster)
-  * [`CREATE`](#create)
-    * `CREATE ARBITRARY TEMPORARY TABLE`
-      * `CREATE TEMPORARY TABLE`
-    * `CREATE DATABASE`
-    * `CREATE DICTIONARY`
-    * `CREATE FUNCTION`
-    * `CREATE RESOURCE`
-    * `CREATE TABLE`
-    * `CREATE VIEW`
-    * `CREATE WORKLOAD`
-  * [`dictGet`](#dictget)
-  * [`displaySecretsInShowAndSelect`](#displaysecretsinshowandselect)
-  * [`DROP`](#drop)
-    * `DROP DATABASE`
-    * `DROP DICTIONARY`
-    * `DROP FUNCTION`
-    * `DROP RESOURCE`
-    * `DROP TABLE`
-    * `DROP VIEW`
-    * `DROP WORKLOAD`
-  * [`INSERT`](#insert)
-  * [`INTROSPECTION`](#introspection)
-    * `addressToLine`
-    * `addressToLineWithInlines`
-    * `addressToSymbol`
-    * `demangle`
-  * `KILL QUERY`
-  * `KILL TRANSACTION`
-  * `MOVE PARTITION BETWEEN SHARDS`
-  * [`NAMED COLLECTION ADMIN`](#named-collection-admin)
-    * `ALTER NAMED COLLECTION`
-    * `CREATE NAMED COLLECTION`
-    * `DROP NAMED COLLECTION`
-    * `NAMED COLLECTION`
-    * `SHOW NAMED COLLECTIONS`
-    * `SHOW NAMED COLLECTIONS SECRETS`
-  * [`OPTIMIZE`](#optimize)
-  * [`SELECT`](#select)
-  * [`SET DEFINER`](/sql-reference/statements/create/view#sql_security)
-  * [`SHOW`](#show)
-    * `SHOW COLUMNS`
-    * `SHOW DATABASES`
-    * `SHOW DICTIONARIES`
-    * `SHOW TABLES`
-  * `SHOW FILESYSTEM CACHES`
-  * [`SOURCES`](#sources)
-    * `AZURE`
-    * `FILE`
-    * `HDFS`
-    * `HIVE`
-    * `JDBC`
-    * `KAFKA`
-    * `MONGO`
-    * `MYSQL`
-    * `NATS`
-    * `ODBC`
-    * `POSTGRES`
-    * `RABBITMQ`
-    * `REDIS`
-    * `REMOTE`
-    * `S3`
-    * `SQLITE`
-    * `URL`
-  * [`SYSTEM`](#system)
-    * `SYSTEM CLEANUP`
-    * `SYSTEM DROP CACHE`
-      * `SYSTEM DROP COMPILED EXPRESSION CACHE`
-      * `SYSTEM DROP CONNECTIONS CACHE`
-      * `SYSTEM DROP DISTRIBUTED CACHE`
-      * `SYSTEM DROP DNS CACHE`
-      * `SYSTEM DROP FILESYSTEM CACHE`
-      * `SYSTEM DROP FORMAT SCHEMA CACHE`
-      * `SYSTEM DROP MARK CACHE`
-      * `SYSTEM DROP MMAP CACHE`
-      * `SYSTEM DROP PAGE CACHE`
-      * `SYSTEM DROP PRIMARY INDEX CACHE`
-      * `SYSTEM DROP QUERY CACHE`
-      * `SYSTEM DROP S3 CLIENT CACHE`
-      * `SYSTEM DROP SCHEMA CACHE`
-      * `SYSTEM DROP UNCOMPRESSED CACHE`
-    * `SYSTEM DROP PRIMARY INDEX CACHE`
-    * `SYSTEM DROP REPLICA`
-    * `SYSTEM FAILPOINT`
-    * `SYSTEM FETCHES`
-    * `SYSTEM FLUSH`
-      * `SYSTEM FLUSH ASYNC INSERT QUEUE`
-      * `SYSTEM FLUSH LOGS`
-    * `SYSTEM JEMALLOC`
-    * `SYSTEM KILL QUERY`
-    * `SYSTEM KILL TRANSACTION`
-    * `SYSTEM LISTEN`
-    * `SYSTEM LOAD PRIMARY KEY`
-    * `SYSTEM MERGES`
-    * `SYSTEM MOVES`
-    * `SYSTEM PULLING REPLICATION LOG`
-    * `SYSTEM REDUCE BLOCKING PARTS`
-    * `SYSTEM REPLICATION QUEUES`
-    * `SYSTEM REPLICA READINESS`
-    * `SYSTEM RESTART DISK`
-    * `SYSTEM RESTART REPLICA`
-    * `SYSTEM RESTORE REPLICA`
-    * `SYSTEM RELOAD`
-      * `SYSTEM RELOAD ASYNCHRONOUS METRICS`
-      * `SYSTEM RELOAD CONFIG`
-        * `SYSTEM RELOAD DICTIONARY`
-        * `SYSTEM RELOAD EMBEDDED DICTIONARIES`
-        * `SYSTEM RELOAD FUNCTION`
-        * `SYSTEM RELOAD MODEL`
-        * `SYSTEM RELOAD USERS`
-    * `SYSTEM SENDS`
-      * `SYSTEM DISTRIBUTED SENDS`
-      * `SYSTEM REPLICATED SENDS`
-    * `SYSTEM SHUTDOWN`
-    * `SYSTEM SYNC DATABASE REPLICA`
-    * `SYSTEM SYNC FILE CACHE`
-    * `SYSTEM SYNC FILESYSTEM CACHE`
-    * `SYSTEM SYNC REPLICA`
-    * `SYSTEM SYNC TRANSACTION LOG`
-    * `SYSTEM THREAD FUZZER`
-    * `SYSTEM TTL MERGES`
-    * `SYSTEM UNFREEZE`
-    * `SYSTEM UNLOAD PRIMARY KEY`
-    * `SYSTEM VIEWS`
-    * `SYSTEM VIRTUAL PARTS UPDATE`
-    * `SYSTEM WAIT LOADING PARTS`
-  * [`TABLE ENGINE`](#table-engine)
-  * [`TRUNCATE`](#truncate)
-  * `UNDROP TABLE`
-* [`NONE`](#none)
+- [`ALL`](#all)
+  - [`ACCESS MANAGEMENT`](#access-management)
+    - `ALLOW SQL SECURITY NONE`
+    - `ALTER QUOTA`
+    - `ALTER ROLE`
+    - `ALTER ROW POLICY`
+    - `ALTER SETTINGS PROFILE`
+    - `ALTER USER`
+    - `CREATE QUOTA`
+    - `CREATE ROLE`
+    - `CREATE ROW POLICY`
+    - `CREATE SETTINGS PROFILE`
+    - `CREATE USER`
+    - `DROP QUOTA`
+    - `DROP ROLE`
+    - `DROP ROW POLICY`
+    - `DROP SETTINGS PROFILE`
+    - `DROP USER`
+    - `ROLE ADMIN`
+    - `SHOW ACCESS`
+      - `SHOW QUOTAS`
+      - `SHOW ROLES`
+      - `SHOW ROW POLICIES`
+      - `SHOW SETTINGS PROFILES`
+      - `SHOW USERS`
+  - [`ALTER`](#alter)
+    - `ALTER DATABASE`
+      - `ALTER DATABASE SETTINGS`
+    - `ALTER TABLE`
+      - `ALTER COLUMN`
+        - `ALTER ADD COLUMN`
+        - `ALTER CLEAR COLUMN`
+        - `ALTER COMMENT COLUMN`
+        - `ALTER DROP COLUMN`
+        - `ALTER MATERIALIZE COLUMN`
+        - `ALTER MODIFY COLUMN`
+        - `ALTER RENAME COLUMN`
+      - `ALTER CONSTRAINT`
+        - `ALTER ADD CONSTRAINT`
+        - `ALTER DROP CONSTRAINT`
+      - `ALTER DELETE`
+      - `ALTER FETCH PARTITION`
+      - `ALTER FREEZE PARTITION`
+      - `ALTER INDEX`
+        - `ALTER ADD INDEX`
+        - `ALTER CLEAR INDEX`
+        - `ALTER DROP INDEX`
+        - `ALTER MATERIALIZE INDEX`
+        - `ALTER ORDER BY`
+        - `ALTER SAMPLE BY`
+      - `ALTER MATERIALIZE TTL`
+      - `ALTER MODIFY COMMENT`
+      - `ALTER MOVE PARTITION`
+      - `ALTER PROJECTION`
+      - `ALTER SETTINGS`
+      - `ALTER STATISTICS`
+        - `ALTER ADD STATISTICS`
+        - `ALTER DROP STATISTICS`
+        - `ALTER MATERIALIZE STATISTICS`
+        - `ALTER MODIFY STATISTICS`
+      - `ALTER TTL`
+      - `ALTER UPDATE`
+      - `ALTER TABLE EXECUTE`
+    - `ALTER VIEW`
+      - `ALTER VIEW MODIFY QUERY`
+      - `ALTER VIEW REFRESH`
+      - `ALTER VIEW MODIFY SQL SECURITY`
+  - [`BACKUP`](#backup)
+  - [`CLUSTER`](#cluster)
+  - [`CREATE`](#create)
+    - `CREATE ARBITRARY TEMPORARY TABLE`
+      - `CREATE TEMPORARY TABLE`
+    - `CREATE DATABASE`
+    - `CREATE DICTIONARY`
+    - `CREATE FUNCTION`
+    - `CREATE RESOURCE`
+    - `CREATE TABLE`
+    - `CREATE VIEW`
+    - `CREATE WORKLOAD`
+  - [`dictGet`](#dictget)
+  - [`displaySecretsInShowAndSelect`](#displaysecretsinshowandselect)
+  - [`DROP`](#drop)
+    - `DROP DATABASE`
+    - `DROP DICTIONARY`
+    - `DROP FUNCTION`
+    - `DROP RESOURCE`
+    - `DROP TABLE`
+    - `DROP VIEW`
+    - `DROP WORKLOAD`
+  - [`INSERT`](#insert)
+  - [`INTROSPECTION`](#introspection)
+    - `addressToLine`
+    - `addressToLineWithInlines`
+    - `addressToSymbol`
+    - `demangle`
+  - `KILL QUERY`
+  - `KILL TRANSACTION`
+  - `MOVE PARTITION BETWEEN SHARDS`
+  - [`NAMED COLLECTION ADMIN`](#named-collection-admin)
+    - `ALTER NAMED COLLECTION`
+    - `CREATE NAMED COLLECTION`
+    - `DROP NAMED COLLECTION`
+    - `NAMED COLLECTION`
+    - `SHOW NAMED COLLECTIONS`
+    - `SHOW NAMED COLLECTIONS SECRETS`
+  - [`OPTIMIZE`](#optimize)
+  - [`SELECT`](#select)
+  - [`SET DEFINER`](/sql-reference/statements/create/view#sql_security)
+  - [`SHOW`](#show)
+    - `SHOW COLUMNS`
+    - `SHOW DATABASES`
+    - `SHOW DICTIONARIES`
+    - `SHOW TABLES`
+  - `SHOW FILESYSTEM CACHES`
+  - [`SOURCES`](#sources)
+    - `AZURE`
+    - `FILE`
+    - `HDFS`
+    - `HIVE`
+    - `JDBC`
+    - `KAFKA`
+    - `MONGO`
+    - `MYSQL`
+    - `NATS`
+    - `ODBC`
+    - `POSTGRES`
+    - `RABBITMQ`
+    - `REDIS`
+    - `REMOTE`
+    - `S3`
+    - `SQLITE`
+    - `URL`
+  - [`SYSTEM`](#system)
+    - `SYSTEM CLEANUP`
+    - `SYSTEM DROP CACHE`
+      - `SYSTEM DROP COMPILED EXPRESSION CACHE`
+      - `SYSTEM DROP CONNECTIONS CACHE`
+      - `SYSTEM DROP DISTRIBUTED CACHE`
+      - `SYSTEM DROP DNS CACHE`
+      - `SYSTEM DROP FILESYSTEM CACHE`
+      - `SYSTEM DROP FORMAT SCHEMA CACHE`
+      - `SYSTEM DROP MARK CACHE`
+      - `SYSTEM DROP MMAP CACHE`
+      - `SYSTEM DROP PAGE CACHE`
+      - `SYSTEM DROP PRIMARY INDEX CACHE`
+      - `SYSTEM DROP QUERY CACHE`
+      - `SYSTEM DROP S3 CLIENT CACHE`
+      - `SYSTEM DROP SCHEMA CACHE`
+      - `SYSTEM DROP UNCOMPRESSED CACHE`
+    - `SYSTEM DROP PRIMARY INDEX CACHE`
+    - `SYSTEM DROP REPLICA`
+    - `SYSTEM FAILPOINT`
+    - `SYSTEM FETCHES`
+    - `SYSTEM FLUSH`
+      - `SYSTEM FLUSH ASYNC INSERT QUEUE`
+      - `SYSTEM FLUSH LOGS`
+    - `SYSTEM JEMALLOC`
+    - `SYSTEM KILL QUERY`
+    - `SYSTEM KILL TRANSACTION`
+    - `SYSTEM LISTEN`
+    - `SYSTEM LOAD PRIMARY KEY`
+    - `SYSTEM MERGES`
+    - `SYSTEM MOVES`
+    - `SYSTEM PULLING REPLICATION LOG`
+    - `SYSTEM REDUCE BLOCKING PARTS`
+    - `SYSTEM REPLICATION QUEUES`
+    - `SYSTEM REPLICA READINESS`
+    - `SYSTEM RESTART DISK`
+    - `SYSTEM RESTART REPLICA`
+    - `SYSTEM RESTORE REPLICA`
+    - `SYSTEM RELOAD`
+      - `SYSTEM RELOAD ASYNCHRONOUS METRICS`
+      - `SYSTEM RELOAD CONFIG`
+        - `SYSTEM RELOAD DICTIONARY`
+        - `SYSTEM RELOAD EMBEDDED DICTIONARIES`
+        - `SYSTEM RELOAD FUNCTION`
+        - `SYSTEM RELOAD MODEL`
+        - `SYSTEM RELOAD USERS`
+    - `SYSTEM SENDS`
+      - `SYSTEM DISTRIBUTED SENDS`
+      - `SYSTEM REPLICATED SENDS`
+    - `SYSTEM SHUTDOWN`
+    - `SYSTEM SYNC DATABASE REPLICA`
+    - `SYSTEM SYNC FILE CACHE`
+    - `SYSTEM SYNC FILESYSTEM CACHE`
+    - `SYSTEM SYNC REPLICA`
+    - `SYSTEM SYNC TRANSACTION LOG`
+    - `SYSTEM THREAD FUZZER`
+    - `SYSTEM TTL MERGES`
+    - `SYSTEM UNFREEZE`
+    - `SYSTEM UNLOAD PRIMARY KEY`
+    - `SYSTEM VIEWS`
+    - `SYSTEM VIRTUAL PARTS UPDATE`
+    - `SYSTEM WAIT LOADING PARTS`
+  - [`TABLE ENGINE`](#table-engine)
+  - [`TRUNCATE`](#truncate)
+  - `UNDROP TABLE`
+- [`없음`](#none)
 
 이 계층이 처리되는 방식의 예:
 
@@ -421,51 +422,52 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### ALTER \{#alter\}
 
-다음과 같은 권한 계층 구조에 따라 [ALTER](../../sql-reference/statements/alter/index.md) 쿼리를 실행할 수 있습니다.
+다음과 같은 권한 계층에 따라 [ALTER](../../sql-reference/statements/alter/index.md) 쿼리를 실행할 수 있습니다.
 
-- `ALTER`. 레벨: `COLUMN`.
-  - `ALTER TABLE`. 레벨: `GROUP`
-  - `ALTER UPDATE`. 레벨: `COLUMN`. 별칭: `UPDATE`
-  - `ALTER DELETE`. 레벨: `COLUMN`. 별칭: `DELETE`
-  - `ALTER COLUMN`. 레벨: `GROUP`
-  - `ALTER ADD COLUMN`. 레벨: `COLUMN`. 별칭: `ADD COLUMN`
-  - `ALTER DROP COLUMN`. 레벨: `COLUMN`. 별칭: `DROP COLUMN`
-  - `ALTER MODIFY COLUMN`. 레벨: `COLUMN`. 별칭: `MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`. 레벨: `COLUMN`. 별칭: `COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`. 레벨: `COLUMN`. 별칭: `CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`. 레벨: `COLUMN`. 별칭: `RENAME COLUMN`
-  - `ALTER INDEX`. 레벨: `GROUP`. 별칭: `INDEX`
-  - `ALTER ORDER BY`. 레벨: `TABLE`. 별칭: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`. 레벨: `TABLE`. 별칭: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`. 레벨: `TABLE`. 별칭: `ADD INDEX`
-  - `ALTER DROP INDEX`. 레벨: `TABLE`. 별칭: `DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`. 레벨: `TABLE`. 별칭: `MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`. 레벨: `TABLE`. 별칭: `CLEAR INDEX`
-  - `ALTER CONSTRAINT`. 레벨: `GROUP`. 별칭: `CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`. 레벨: `TABLE`. 별칭: `ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`. 레벨: `TABLE`. 별칭: `DROP CONSTRAINT`
-  - `ALTER TTL`. 레벨: `TABLE`. 별칭: `ALTER MODIFY TTL`, `MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`. 레벨: `TABLE`. 별칭: `MATERIALIZE TTL`
-  - `ALTER SETTINGS`. 레벨: `TABLE`. 별칭: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
-  - `ALTER MOVE PARTITION`. 레벨: `TABLE`. 별칭: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
-  - `ALTER FETCH PARTITION`. 레벨: `TABLE`. 별칭: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
-  - `ALTER FREEZE PARTITION`. 레벨: `TABLE`. 별칭: `FREEZE PARTITION`
-  - `ALTER VIEW`. 레벨: `GROUP`
-  - `ALTER VIEW REFRESH`. 레벨: `VIEW`. 별칭: `REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`. 레벨: `VIEW`. 별칭: `ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`. 레벨: `VIEW`. 별칭: `ALTER TABLE MODIFY SQL SECURITY`
+- `ALTER`. Level: `COLUMN`.
+  - `ALTER TABLE`. Level: `GROUP`
+  - `ALTER UPDATE`. Level: `COLUMN`. Aliases: `UPDATE`
+  - `ALTER DELETE`. Level: `COLUMN`. Aliases: `DELETE`
+  - `ALTER COLUMN`. Level: `GROUP`
+  - `ALTER ADD COLUMN`. Level: `COLUMN`. Aliases: `ADD COLUMN`
+  - `ALTER DROP COLUMN`. Level: `COLUMN`. Aliases: `DROP COLUMN`
+  - `ALTER MODIFY COLUMN`. Level: `COLUMN`. Aliases: `MODIFY COLUMN`
+  - `ALTER COMMENT COLUMN`. Level: `COLUMN`. Aliases: `COMMENT COLUMN`
+  - `ALTER CLEAR COLUMN`. Level: `COLUMN`. Aliases: `CLEAR COLUMN`
+  - `ALTER RENAME COLUMN`. Level: `COLUMN`. Aliases: `RENAME COLUMN`
+  - `ALTER INDEX`. Level: `GROUP`. Aliases: `INDEX`
+  - `ALTER ORDER BY`. Level: `TABLE`. Aliases: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
+  - `ALTER SAMPLE BY`. Level: `TABLE`. Aliases: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
+  - `ALTER ADD INDEX`. Level: `TABLE`. Aliases: `ADD INDEX`
+  - `ALTER DROP INDEX`. Level: `TABLE`. Aliases: `DROP INDEX`
+  - `ALTER MATERIALIZE INDEX`. Level: `TABLE`. Aliases: `MATERIALIZE INDEX`
+  - `ALTER CLEAR INDEX`. Level: `TABLE`. Aliases: `CLEAR INDEX`
+  - `ALTER CONSTRAINT`. Level: `GROUP`. Aliases: `CONSTRAINT`
+  - `ALTER ADD CONSTRAINT`. Level: `TABLE`. Aliases: `ADD CONSTRAINT`
+  - `ALTER DROP CONSTRAINT`. Level: `TABLE`. Aliases: `DROP CONSTRAINT`
+  - `ALTER TTL`. Level: `TABLE`. Aliases: `ALTER MODIFY TTL`, `MODIFY TTL`
+  - `ALTER MATERIALIZE TTL`. Level: `TABLE`. Aliases: `MATERIALIZE TTL`
+  - `ALTER SETTINGS`. Level: `TABLE`. Aliases: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
+  - `ALTER MOVE PARTITION`. Level: `TABLE`. Aliases: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
+  - `ALTER FETCH PARTITION`. Level: `TABLE`. Aliases: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
+  - `ALTER FREEZE PARTITION`. Level: `TABLE`. Aliases: `FREEZE PARTITION`
+  - `ALTER EXECUTE`. Level: `TABLE`. Aliases: `ALTER TABLE EXECUTE`
+  - `ALTER VIEW`. Level: `GROUP`
+  - `ALTER VIEW REFRESH`. Level: `VIEW`. Aliases: `REFRESH VIEW`
+  - `ALTER VIEW MODIFY QUERY`. Level: `VIEW`. Aliases: `ALTER TABLE MODIFY QUERY`
+  - `ALTER VIEW MODIFY SQL SECURITY`. Level: `VIEW`. Aliases: `ALTER TABLE MODIFY SQL SECURITY`
 
-이 계층 구조가 적용되는 방식의 예는 다음과 같습니다.
+이 계층이 적용되는 방식의 예는 다음과 같습니다.
 
 - `ALTER` 권한에는 다른 모든 `ALTER*` 권한이 포함됩니다.
 - `ALTER CONSTRAINT` 권한에는 `ALTER ADD CONSTRAINT` 및 `ALTER DROP CONSTRAINT` 권한이 포함됩니다.
 
 **참고**
 
-- `MODIFY SETTING` 권한은 테이블 엔진 설정을 수정할 수 있게 합니다. 이 권한은 기타 설정이나 서버 구성 파라미터에는 영향을 주지 않습니다.
-- `ATTACH` 연산에는 [CREATE](#create) 권한이 필요합니다.
-- `DETACH` 연산에는 [DROP](#drop) 권한이 필요합니다.
-- [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 쿼리로 mutation을 중지하려면, 해당 mutation을 시작할 수 있는 권한이 있어야 합니다. 예를 들어 `ALTER UPDATE` 쿼리를 중지하려면 `ALTER UPDATE`, `ALTER TABLE` 또는 `ALTER` 권한이 필요합니다.
+- `MODIFY SETTING` 권한은 테이블 엔진 설정을 수정할 수 있게 합니다. 이 권한은 설정이나 서버 구성 매개변수에는 영향을 주지 않습니다.
+- `ATTACH` 작업에는 [CREATE](#create) 권한이 필요합니다.
+- `DETACH` 작업에는 [DROP](#drop) 권한이 필요합니다.
+- [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 쿼리로 mutation을 중지하려면, 이 mutation을 시작할 수 있는 권한이 있어야 합니다. 예를 들어 `ALTER UPDATE` 쿼리를 중지하려면 `ALTER UPDATE`, `ALTER TABLE` 또는 `ALTER` 권한이 필요합니다.
 
 ### BACKUP \{#backup\}
 

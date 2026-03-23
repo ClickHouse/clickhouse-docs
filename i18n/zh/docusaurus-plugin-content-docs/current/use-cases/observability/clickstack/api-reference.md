@@ -15,7 +15,6 @@ import api_key from '@site/static/images/clickstack/api-key-personal.png';
 
 ClickStack 提供了一个 REST API，用于以编程方式管理仪表盘、告警和数据源。该 API 既适用于 **Managed ClickStack**（ClickHouse Cloud），也适用于 **ClickStack Open Source** 部署，但二者在端点和认证方式上有所不同。
 
-
 ## API 参考文档 \{#api-docs\}
 
 <Tabs>
@@ -76,7 +75,7 @@ curl --user $KEY_ID:$KEY_SECRET \
 
 获取 API key：
 
-1. 在你的 ClickStack URL 打开 HyperDX（例如：http://localhost:8080）
+1. 在你的 ClickStack URL 打开 HyperDX (例如：http://localhost:8080)
 2. 如有需要，创建账号或登录
 3. 前往 **Team Settings → API Keys**
 4. 复制你的 **Personal API Access Key**

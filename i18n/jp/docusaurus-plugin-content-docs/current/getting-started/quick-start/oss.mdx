@@ -96,9 +96,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## データの挿入 \{#insert-data\}
 
-  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらの^^パート^^は後でClickHouseによってバックグラウンドでマージされます。
+  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらのパートは後でClickHouseによってバックグラウンドでマージされます。
 
-  ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行（数万行から数百万行）をバルク挿入します。
+  ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行 (数万行から数百万行) をバルク挿入します。
 
   このガイドでは、その点についてはひとまず考慮しません。以下のコマンドを実行して、テーブルに数行のデータを挿入してください：
 
@@ -143,10 +143,10 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       S3 からファイルを読み込みます。これはテーブル関数であり、結果として得られるテーブルは
       次のように利用できます:
 
-      1. `SELECT` クエリのソースとして使用する（アドホッククエリを実行しつつ、
-         データは S3 に残しておく）、または…
-      2. 得られたテーブルを `MergeTree` テーブルに挿入する（データを ClickHouse に
-         取り込む準備ができたとき）
+      1. `SELECT` クエリのソースとして使用する (アドホッククエリを実行しつつ、
+         データは S3 に残しておく) 、または…
+      2. 得られたテーブルを `MergeTree` テーブルに挿入する (データを ClickHouse に
+         取り込む準備ができたとき) 
 
       アドホッククエリは次のようになります:
 
@@ -224,7 +224,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
     <TabItem value="local_file" label="ローカル">
       ローカルファイルを読み取るには、[`file` テーブルエンジン](/sql-reference/table-functions/file) を使用します。簡単のため、ファイルを `user_files` ディレクトリにコピーしてください
-      （`user_files` ディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります）。
+       (`user_files` ディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります) 。
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')

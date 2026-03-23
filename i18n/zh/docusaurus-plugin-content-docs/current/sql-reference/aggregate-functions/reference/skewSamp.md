@@ -27,7 +27,7 @@ skewSamp(expr)
 
 **返回值**
 
-返回给定分布的偏度。如果 `n <= 1`（`n` 是样本大小），则函数返回 `nan`。[`Float64`](/sql-reference/data-types/float)
+返回给定分布的偏度。如果 `n <= 1` (`n` 是样本大小) ，则函数返回 `nan`。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 

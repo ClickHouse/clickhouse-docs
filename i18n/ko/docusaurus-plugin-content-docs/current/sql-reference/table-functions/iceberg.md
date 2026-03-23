@@ -544,6 +544,135 @@ y: 993
 ```
 
 
+### 스냅샷 만료 \{#iceberg-expire-snapshots\}
+
+Iceberg 테이블은 각 INSERT, DELETE 또는 UPDATE 작업이 수행될 때마다 스냅샷을 누적합니다. 시간이 지나면 많은 수의 스냅샷과 관련 데이터 파일이 쌓일 수 있습니다. `expire_snapshots` 명령은 오래된 스냅샷을 제거하고, 유지된 스냅샷 중 어느 것에서도 더 이상 참조되지 않는 데이터 파일을 정리합니다.
+
+**구문:**
+
+```sql
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(
+    ['timestamp']
+    [, expire_before = 'timestamp']
+    [, retention_period = '3d']
+    [, retain_last = 100]
+    [, snapshot_ids = [1, 2, 3, 4]]
+    [, dry_run = 1]
+);
+```
+
+기본적으로 유지할 스냅샷은 [보존 정책](#iceberg-snapshot-retention-policy)(테이블 속성 `min-snapshots-to-keep`, `max-snapshot-age-ms` 및 ref별 재정의)에 따라 결정됩니다. `snapshot_ids`를 지정하면 보존 정책을 우회하며, 나열된 스냅샷만 만료 대상으로 고려됩니다.
+
+**인수:**
+
+* `'timestamp'` (위치 인수) 또는 `expire_before = 'timestamp'` — **서버의 타임존**으로 해석되는 datetime 문자열입니다(예: `'2024-06-01 00:00:00'`). 안전장치 역할을 합니다. `timestamp-ms`가 이 값과 같거나 이후인 스냅샷은 보존 정책에 따라 원래 만료 대상이더라도 만료되지 않도록 보호됩니다. `snapshot_ids`와 함께 사용할 수 있으며, 이 경우 목록에 있는 스냅샷 중 timestamp와 같거나 더 최신인 항목은 만료되지 않습니다.
+* `retention_period = '<duration>'` — 이번 호출에만 테이블 수준의 `history.expire.max-snapshot-age-ms`를 재정의합니다. 이 기간보다 오래된 스냅샷(현재 시점을 기준으로 계산)이 만료 후보가 됩니다. 값은 하나 이상의 `{number}{unit}` 쌍을 이어 붙인 duration 문자열입니다. 지원되는 단위: `y` (365일), `w` (7일), `d` (24시간), `h` (60분), `m` (60초), `s` (1초), `ms` (1밀리초). 단위는 조합할 수 있으며, 예: `'3d'`, `'12h'`, `'1d12h30m'`, `'500ms'`.
+* `retain_last = N` — 이번 호출에만 테이블 수준의 `history.expire.min-snapshots-to-keep`를 재정의합니다. 기간과 관계없이 최소 `N`개의 스냅샷은 항상 유지됩니다.
+* `snapshot_ids = [id1, id2, ...]` — 나열된 스냅샷 ID만 정확히 만료합니다(현재 스냅샷, 브랜치 또는 태그가 참조하는 스냅샷은 제외). 이 모드는 보존 정책을 완전히 우회하며 `retention_period` 또는 `retain_last`와 함께 사용할 수 없습니다.
+* `dry_run = 1` — 무엇이 만료될지를 계산하고, 새 메타데이터를 기록하거나 파일을 삭제하지 않은 상태로 메트릭을 반환합니다.
+
+:::note
+`retention_period` 및 `retain_last`는 **테이블 수준의** 기본 보존 설정만 재정의합니다. Iceberg 테이블 속성에 구성된 ref별(브랜치/태그) 보존 재정의(예: `refs.<branch>.min-snapshots-to-keep`)는 절대 재정의되지 않으며, 항상 테이블 메타데이터에 지정된 대로 적용됩니다.
+:::
+
+**예시:**
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+-- Create some snapshots by inserting data
+INSERT INTO iceberg_table VALUES (1);
+INSERT INTO iceberg_table VALUES (2);
+INSERT INTO iceberg_table VALUES (3);
+
+-- Expire using retention policy only
+ALTER TABLE iceberg_table EXECUTE expire_snapshots();
+
+-- Expire with a safety fuse: protect snapshots newer than the timestamp (positional syntax)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots('2025-01-01 00:00:00');
+
+-- Same using the named argument form
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(expire_before = '2025-01-01 00:00:00');
+
+-- Override retention parameters for one execution
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '3d', retain_last = 10);
+
+-- Expire explicit snapshots
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(snapshot_ids = [101, 102, 103]);
+
+-- Dry-run preview (no metadata updates, no file deletes)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '1d', dry_run = 1);
+```
+
+**출력:**
+
+이 명령은 두 개의 컬럼(`metric_name String`, `metric_value Int64`)으로 구성된 테이블을 반환하며, 각 메트릭마다 1개의 행이 포함됩니다. 메트릭 이름은 [Iceberg 사양](https://iceberg.apache.org/docs/latest/spark-procedures/#output)을 따릅니다.
+
+
+| metric&#95;name                       | 설명                            |
+| ------------------------------------- | ----------------------------- |
+| `deleted_data_files_count`            | 삭제된 데이터 파일 수                  |
+| `deleted_position_delete_files_count` | 삭제된 position delete 파일 수      |
+| `deleted_equality_delete_files_count` | 삭제된 equality delete 파일 수      |
+| `deleted_manifest_files_count`        | 삭제된 매니페스트 파일 수                |
+| `deleted_manifest_lists_count`        | 삭제된 매니페스트 목록 파일 수             |
+| `deleted_statistics_files_count`      | 삭제된 통계 파일 수(현재는 항상 0)         |
+| `dry_run`                             | 드라이 런 모드에서는 `1`, 일반 실행에서는 `0` |
+
+이 명령은 다음 단계를 수행합니다:
+
+1. 보존 정책(아래 참조)을 평가하여 보존해야 하는 스냅샷을 결정합니다
+2. 타임스탬프 인수가 제공된 경우 해당 타임스탬프와 같거나 그 이후의 모든 스냅샷도 추가로 보호합니다
+3. 정책에 따라 보존되지 않고 타임스탬프 안전장치로도 보호되지 않는 스냅샷을 만료시킵니다
+4. 만료된 스냅샷에만 연결된 파일을 계산합니다
+5. 일반 모드에서는 만료된 스냅샷을 제외한 새 메타데이터를 생성합니다
+6. 일반 모드에서는 더 이상 참조할 수 없는 매니페스트 목록, 매니페스트 파일, 데이터 파일을 물리적으로 삭제합니다
+7. `dry_run = 1` 모드에서는 5단계와 6단계를 건너뛰고 계산된 메트릭만 반환합니다
+
+#### 스냅샷 보존 정책 \{#iceberg-snapshot-retention-policy\}
+
+`expire_snapshots` 명령은 [Iceberg 스냅샷 보존 정책](https://iceberg.apache.org/spec/#snapshot-retention-policy)을 따릅니다. 보존 설정은 Iceberg 테이블 속성과 참조별 재정의 설정을 통해 구성됩니다.
+
+| Property                               | Scope | Default                                                                    | Description                                   |
+| -------------------------------------- | ----- | -------------------------------------------------------------------------- | --------------------------------------------- |
+| `history.expire.min-snapshots-to-keep` | Table | `iceberg_expire_default_min_snapshots_to_keep` (default `1`)               | 각 브랜치의 조상 체인에서 유지할 스냅샷의 최소 개수                 |
+| `history.expire.max-snapshot-age-ms`   | Table | `iceberg_expire_default_max_snapshot_age_ms` (default `432000000`, 5 days) | 브랜치에서 유지할 스냅샷의 최대 보존 기간(ms)                   |
+| `history.expire.max-ref-age-ms`        | Table | `iceberg_expire_default_max_ref_age_ms` (default `∞`)                      | 스냅샷 참조(브랜치 또는 태그) 자체가 제거되기 전까지 허용되는 최대 기간(ms) |
+
+각 스냅샷 참조(Iceberg 메타데이터의 `refs`)는 참조별 필드인 `min-snapshots-to-keep`, `max-snapshot-age-ms`, `max-ref-age-ms`를 사용해 이 설정을 재정의할 수 있습니다.
+
+**보존 평가:**
+
+* **각 브랜치**(`main` 포함): 브랜치 헤드부터 시작해 조상 체인을 따라 검사합니다. 다음 조건 중 하나라도 참이면 스냅샷이 유지됩니다.
+  * 해당 스냅샷이 체인에서 처음 `min-snapshots-to-keep`개에 포함됩니다
+  * 해당 스냅샷의 생성 시점이 `max-snapshot-age-ms` 이내입니다(즉, `now - timestamp-ms <= max-snapshot-age-ms`)
+* **태그**: 태그가 가리키는 스냅샷은 태그의 `max-ref-age-ms`를 초과하지 않는 한 유지되며, 초과하면 태그 참조가 제거됩니다
+* **`main`이 아닌 참조** 중 사용 기간이 `max-ref-age-ms`를 초과한 것은 완전히 제거됩니다(`main` 브랜치는 제거되지 않음)
+* 존재하지 않는 스냅샷을 가리키는 **dangling 참조**는 경고와 함께 제거됩니다
+* **현재 스냅샷은 항상 유지**되며, 보존 설정과 관계없습니다
+
+**필수 권한:**
+
+`ALTER TABLE EXECUTE` 권한이 필요합니다. 이 권한은 ClickHouse 접근 제어 계층에서 `ALTER TABLE`의 하위 권한입니다. 이 권한만 별도로 부여하거나 상위 권한을 통해 부여할 수 있습니다.
+
+```sql
+-- Grant only EXECUTE permission
+GRANT ALTER TABLE EXECUTE ON my_iceberg_table TO my_user;
+
+-- Or grant all ALTER TABLE permissions (includes ALTER TABLE EXECUTE)
+GRANT ALTER TABLE ON my_iceberg_table TO my_user;
+```
+
+:::note
+
+* Iceberg 형식 버전 2 테이블만 지원됩니다(v1 스냅샷은 정리 시 파일을 안전하게 식별하는 데 필요한 `manifest-list`를 보장하지 않기 때문입니다)
+* 현재 스냅샷은 지정된 타임스탬프보다 오래된 경우에도 항상 유지됩니다
+* `allow_insert_into_iceberg` 설정을 활성화해야 합니다
+* `allow_experimental_expire_snapshots` 설정을 활성화해야 합니다
+* ClickHouse가 메타데이터를 업데이트할 때는 카탈로그 자체의 인증/권한 부여(REST catalog auth, AWS Glue IAM 등)가 별도로 적용됩니다
+  :::
+
+
 ## 같이 보기 \{#see-also\}
 
 * [Iceberg 엔진](/engines/table-engines/integrations/iceberg.md)

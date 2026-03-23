@@ -27,11 +27,11 @@ keywords: ['文字列置換']
 
 導入バージョン: v20.1.0
 
-`pattern` 文字列を、引数として渡された値（文字列、整数など）でフォーマットします。Python におけるフォーマットと同様の動作です。
+`pattern` 文字列を、引数として渡された値 (文字列、整数など) でフォーマットします。Python におけるフォーマットと同様の動作です。
 パターン文字列内には、波括弧 `{}` で囲まれた置換フィールドを含めることができます。
 波括弧で囲まれていない部分はリテラル文字列とみなされ、そのまま出力にコピーされます。
 リテラルな波括弧文字は、`{{` および `}}` を 2 つ続けて書くことでエスケープできます。
-フィールド名には（0 から始まる）数値を指定するか、空にすることができ、空の場合は単調増加する数値が暗黙的に割り当てられます。
+フィールド名には (0 から始まる) 数値を指定するか、空にすることができ、空の場合は単調増加する数値が暗黙的に割り当てられます。
 
 **構文**
 
@@ -90,7 +90,7 @@ overlay(s, replace, offset[, length])
 
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `replace` — 置換文字列。[`const String`](/sql-reference/data-types/string)
-* `offset` — 整数型 `Int`（1 始まりのインデックス）。`offset` が負の場合は、文字列 `s` の末尾から数えます。[`Int`](/sql-reference/data-types/int-uint)
+* `offset` — 整数型 `Int` (1 始まりのインデックス) 。`offset` が負の場合は、文字列 `s` の末尾から数えます。[`Int`](/sql-reference/data-types/int-uint)
 * `length` — 省略可能な整数型 `Int`。`length` は、入力文字列 `s` 内で置き換える部分文字列の長さを指定します。`length` が指定されていない場合、`s` から削除されるバイト数は `replace` の長さと同じになり、指定されている場合は `length` バイトが削除されます。[`Int`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -141,7 +141,7 @@ overlayUTF8(s, replace, offset[, length])
 
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `replace` — 置換に用いる文字列。[`const String`](/sql-reference/data-types/string)
-* `offset` — 整数型 `Int`（1 始まりのインデックス）。`offset` が負の場合は、入力文字列 `s` の末尾から数えます。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `offset` — 整数型 `Int` (1 始まりのインデックス) 。`offset` が負の場合は、入力文字列 `s` の末尾から数えます。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `length` — 省略可能。入力文字列 `s` の中で置換対象となる部分文字列の長さを指定します。`length` が指定されていない場合、`s` から削除される文字数は `replace` の長さと等しくなり、指定されている場合は `length` 文字が削除されます。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
@@ -166,7 +166,7 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 
 導入バージョン: v24.8.0
 
-`printf` 関数は、C++ の printf 関数と同様に、指定されたフォーマット文字列に引数として渡された値（文字列、整数、浮動小数点数など）を埋め込んで整形します。
+`printf` 関数は、C++ の printf 関数と同様に、指定されたフォーマット文字列に引数として渡された値 (文字列、整数、浮動小数点数など) を埋め込んで整形します。
 フォーマット文字列には、`%` 文字で始まる書式指定子を含めることができます。
 `%` とその後に続く書式指定子に含まれない部分はリテラルテキストと見なされ、そのまま出力にコピーされます。
 リテラルとしての `%` 文字は `%%` でエスケープできます。
@@ -329,7 +329,7 @@ replaceRegexpAll(haystack, pattern, replacement)
 
 * `haystack` — 検索対象の入力文字列。[`String`](/sql-reference/data-types/string)
 * `pattern` — 検索する正規表現パターン。[`const String`](/sql-reference/data-types/string)
-* `replacement` — パターンを置換する文字列。サブスティテューション（後方参照など）を含めることができます。[`const String`](/sql-reference/data-types/string)
+* `replacement` — パターンを置換する文字列。サブスティテューション (後方参照など) を含めることができます。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -365,9 +365,9 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 
 導入バージョン: v1.1.0
 
-`haystack` 内で、正規表現 `pattern`（re2 構文）にマッチする最初の部分文字列を、文字列 `replacement` で置き換えます。
+`haystack` 内で、正規表現 `pattern` (re2 構文) にマッチする最初の部分文字列を、文字列 `replacement` で置き換えます。
 `replacement` には置換シーケンス `\0-\9` を含めることができます。
-置換シーケンス `\1-\9` は第 1〜第 9 キャプチャグループ（サブマッチ）に対応し、置換シーケンス `\0` はマッチした全体の文字列に対応します。
+置換シーケンス `\1-\9` は第 1〜第 9 キャプチャグループ (サブマッチ) に対応し、置換シーケンス `\0` はマッチした全体の文字列に対応します。
 `pattern` または `replacement` 文字列中でリテラルの `\` 文字を使用するには、`\` を使ってエスケープしてください。
 また、文字列リテラルでは、さらにエスケープが必要になる場合があることにも注意してください。
 

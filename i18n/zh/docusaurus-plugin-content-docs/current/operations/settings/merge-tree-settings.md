@@ -2048,6 +2048,14 @@ parts (N). Merges are processing significantly slower than inserts`
 
 如果在某个数据部分中，主键某一列的值发生变化的次数至少达到该比例，则跳过将其后续列加载到内存中。这样可以通过不加载不必要的主键列来节省内存。
 
+## propagate_types_serialization_versions_to_nested_types \{#propagate_types_serialization_versions_to_nested_types\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "默认将数据类型的序列化版本传播到嵌套类型"}]}]} />
+
+如果为 true，则像 string&#95;serialization&#95;version 这样的序列化版本会传播到 Array/Map/Nullable/JSON 等嵌套类型内部。如果禁用，则该序列化版本仅对该类型的顶层列和 Tuple 元素生效。
+
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 
 <SettingsInfoBlock type="Float" default_value="0.9375" />
@@ -2777,6 +2785,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Cloud sync"}]}]}/>
 
 如果启用，该“过多分区片段”计数器将依赖 Keeper 中的共享数据，而不是本地副本状态。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_use_zookeeper_connection_pool \{#shared_merge_tree_use_zookeeper_connection_pool\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+
+如果启用，SharedMergeTree 会使用一个服务器级 ZooKeeper 会话池中的会话。
 
 ## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 

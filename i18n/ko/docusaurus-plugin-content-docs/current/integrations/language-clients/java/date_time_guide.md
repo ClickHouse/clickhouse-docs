@@ -161,6 +161,7 @@ try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 ## 변환 표 \{#conversion-tables\}
 
 아래 표에 변환 쌍이 나와 있지 않다면 해당 변환은 지원되지 않습니다. 예를 들어 `Date` 컬럼에는 시간 정보가 없으므로 `java.sql.Timestamp`로 읽을 수 없습니다.
+Driver는 정수 값을 어떤 날짜/시간 값으로도 변환하지 않습니다. `pstmt.setLong("timestamp", 1772132359L)`를 호출하면 서버에는 `1772132359`가 숫자 값으로 기록되며, 이는 초 단위의 UTC Unix 타임스탬프로 간주됩니다.
 
 ### `PreparedStatement#setObject`로 값 기록하기 \{#writing-values-setobject\}
 

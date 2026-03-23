@@ -30,11 +30,11 @@ import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-p
 
 # Azure Private Link \{#azure-private-link\}
 
-<ScalePlanFeatureBadge feature="Azure Private Link"/>
+<ScalePlanFeatureBadge feature="Azure Private Link" />
 
-このガイドでは、Azure Private Link を使用して、Azure（お客様所有のサービスおよび Microsoft パートナーのサービスを含む）と ClickHouse Cloud 間で、仮想ネットワーク経由のプライベート接続を提供する方法を説明します。Azure Private Link はネットワークアーキテクチャを簡素化し、データをパブリックインターネットに公開することなく、Azure 内のエンドポイント間の接続を保護します。
+このガイドでは、Azure Private Link を使用して、Azure (お客様所有のサービスおよび Microsoft パートナーのサービスを含む) と ClickHouse Cloud 間で、仮想ネットワーク経由のプライベート接続を提供する方法を説明します。Azure Private Link はネットワークアーキテクチャを簡素化し、データをパブリックインターネットに公開することなく、Azure 内のエンドポイント間の接続を保護します。
 
-<Image img={azure_pe} size="lg" alt="Private Link の概要" background='white' />
+<Image img={azure_pe} size="lg" alt="Private Link の概要" background="white" />
 
 Azure は Private Link 経由でリージョンをまたいだ接続をサポートしています。これにより、ClickHouse サービスをデプロイしている異なるリージョンにある VNet 間で接続を確立できます。
 
@@ -45,10 +45,10 @@ Azure は Private Link 経由でリージョンをまたいだ接続をサポー
 **Azure Private Link を有効にするには、次の手順を完了してください。**
 
 1. Private Link 用の Azure 接続エイリアスを取得する
-1. Azure でプライベート エンドポイントを作成する
-1. プライベート エンドポイントのリソース ID を ClickHouse Cloud の組織に追加する
-1. プライベート エンドポイントのリソース ID をサービスの許可リストに追加する
-1. Private Link を使用して ClickHouse Cloud サービスにアクセスする
+2. Azure でプライベート エンドポイントを作成する
+3. プライベート エンドポイントのリソース ID を ClickHouse Cloud の組織に追加する
+4. プライベート エンドポイントのリソース ID をサービスの許可リストに追加する
+5. Private Link を使用して ClickHouse Cloud サービスにアクセスする
 
 :::note
 ClickHouse Cloud の Azure PrivateLink は、`resourceGUID` から Resource ID フィルタの利用へ切り替わりました。後方互換性があるため、引き続き `resourceGUID` を使用できますが、Resource ID フィルタへの移行を推奨します。移行するには、Resource ID を使って新しいエンドポイントを作成し、それをサービスに関連付けてから、従来の `resourceGUID` ベースのエンドポイントを削除してください。

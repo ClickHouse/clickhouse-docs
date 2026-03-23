@@ -54,7 +54,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
   * [配置 Okta SAML](#configure-okta-saml)
   * [配置 Google SAML](#configure-google-saml)
-  * [配置 Azure（Microsoft）SAML](#configure-azure-microsoft-saml)
+  * [配置 Azure (Microsoft) SAML](#configure-azure-microsoft-saml)
   * [配置 Duo SAML](#configure-duo-saml)
 
   :::tip
@@ -108,10 +108,10 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
   1. 登出 [ClickHouse Cloud](https://console.clickhouse.cloud)。
   2. 在您的身份提供商中，将该管理员用户分配给 ClickHouse 应用程序。
-  3. 让该用户通过 https://console.clickhouse.cloud/?connection={orgId}（快捷 URL）登录。这可以通过您在前面步骤中创建的书签完成。在用户首次登录之前，他们不会出现在 ClickHouse Cloud 中。
+  3. 让该用户通过 https://console.clickhouse.cloud/?connection={orgId} (快捷 URL) 登录。这可以通过您在前面步骤中创建的书签完成。在用户首次登录之前，他们不会出现在 ClickHouse Cloud 中。
   4. 如果默认 SAML 角色不是 Admin，则用户可能需要登出并使用其原有的认证方式重新登录，以更新新 SAML 用户的角色。
      * 对于电子邮箱 + 密码帐户，请使用 `https://console.clickhouse.cloud/?with=email`。
-     * 对于社交登录，请点击相应按钮（**Continue with Google** 或 **Continue with Microsoft**）。
+     * 对于社交登录，请点击相应按钮 (**Continue with Google** 或 **Continue with Microsoft**)
 
   :::note
   上面 `?with=email` 中的 `email` 是字面参数值，而不是占位符。
@@ -343,9 +343,13 @@ Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft En
 
 我们只支持由服务提供方发起的 SSO。这意味着用户访问 `https://console.clickhouse.cloud`，输入其电子邮件地址后，将被重定向至 IdP 进行身份验证。已经通过你的 IdP 完成身份验证的用户，可以使用直接链接自动登录到你的组织，而无需在登录页面再次输入电子邮件地址。
 
-### 多组织 SSO \{#multi-org-sso\}
+### 多个组织 SSO \{#multi-org-sso\}
 
-ClickHouse Cloud 通过为每个组织提供单独的连接来支持多组织 SSO。使用直接链接（`https://console.clickhouse.cloud/?connection={organizationid}`）登录到各自的组织。在登录另一个组织之前，请务必先从当前组织注销。
+ClickHouse Cloud 通过为每个组织提供独立连接来支持多个组织 SSO。使用直接链接 (`https://console.clickhouse.cloud/?connection={organizationid}`) 登录到各自的组织。在登录另一个组织之前，请务必先从当前组织注销。
+
+:::note
+如果您不希望使用贵公司域名的用户在 https://console.clickhouse.cloud 输入电子邮件地址时被自动定向到某个组织，请提交支持工单，手动更新您的 SSO 设置以移除此行为。
+:::
 
 ## 附加信息 {#additional-information}
 

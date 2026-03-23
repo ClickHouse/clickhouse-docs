@@ -52,7 +52,7 @@ Make sure you have:
 
 - SQL Server server address, port, username, and password. It's recommended to create a separate user and role for Streamkap to access your SQL Server database.[Check out our docs for the configuration.](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
 - ClickHouse server address, port, username, and password. IP access lists in ClickHouse determine what services can connect to your ClickHouse database.[Follow the instructions here.](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- The table(s) you want to stream—start with one for now
+- The tables you want to stream—start with one for now
 
 ## Setting Up SQL Server as a Source {#setting-up-sql-server-as-a-source}
 

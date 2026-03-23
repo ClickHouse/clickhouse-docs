@@ -115,7 +115,7 @@ extractAllGroupsVertical(s, regexp)
 
 **返回值**
 
-返回一个数组的数组，其中每个内层数组包含一次匹配中捕获到的分组。每次匹配会生成一个数组，其元素对应正则表达式中的捕获分组（分组 1、分组 2 等）。如果未找到任何匹配，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
+返回一个数组的数组，其中每个内层数组包含一次匹配中捕获到的分组。每次匹配会生成一个数组，其元素对应正则表达式中的捕获分组 (分组 1、分组 2 等) 。如果未找到任何匹配，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -191,7 +191,7 @@ reverseBySeparator(string[, separator])
 **参数**
 
 * `string` — 要对其分区片段顺序进行反转的输入字符串。[`String`](/sql-reference/data-types/string)
-* `separator` — 用于识别分区片段的分隔字符串。如果未提供，则使用 &#39;.&#39;（点）。默认值：&#39;.&#39; [`String`](/sql-reference/data-types/string)
+* `separator` — 用于识别分区片段的分隔字符串。如果未提供，则使用 &#39;.&#39; (点) 。默认值：&#39;.&#39; [`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -263,11 +263,11 @@ SELECT reverseBySeparator('abcde', '')
 
 引入于：v1.1.0
 
-将由指定常量字符串 `separator`（长度恰为一个字符）分隔的字符串拆分为子字符串数组。
+将由指定常量字符串 `separator` (长度恰为一个字符) 分隔的字符串拆分为子字符串数组。
 如果分隔符出现在字符串的开头或结尾，或存在多个连续分隔符，则可能产生空子字符串。
 
 :::note
-SETTINGS [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制当参数 `max_substrings > 0` 时，是否在结果数组的最后一个元素中包含剩余字符串。
+SETTINGS [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (默认值：`0`) 用于控制当参数 `max_substrings > 0` 时，是否在结果数组的最后一个元素中包含剩余字符串。
 :::
 
 在以下情况下可能会返回空子字符串：
@@ -313,7 +313,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 将由空白和标点字符分隔的字符串拆分为子字符串数组。
 
 :::note
-设置项 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
+设置项 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (默认值：`0`) 用于控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
 :::
 
 **语法**
@@ -358,7 +358,7 @@ SELECT splitByNonAlpha('user@domain.com');
 * 原始字符串为空而正则表达式非空时。
 
 :::note
-通过设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`），可以控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
+通过设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (默认值：`0`) ，可以控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
 :::
 
 **语法**
@@ -417,7 +417,7 @@ SELECT splitByRegexp('', 'abcde');
 * 原始字符串 `s` 为空而分隔符不为空
 
 :::note
-[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
+[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (默认值：`0`) 控制当参数 `max_substrings > 0` 时，是否将剩余字符串包含在结果数组的最后一个元素中。
 :::
 
 **语法**
@@ -469,7 +469,7 @@ SELECT splitByString('', 'abcde');
 将以空白字符分隔的字符串拆分为子字符串数组。
 
 :::note
-设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余字符串。
+设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (默认值：`0`) 控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余字符串。
 :::
 
 **语法**
@@ -507,15 +507,15 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 可用的 tokenizer：
 
-* `splitByNonAlpha` 使用非字母数字的 ASCII 字符来拆分字符串（另见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)）。
-* `splitByString(S)` 使用用户定义的分隔字符串 `S` 来拆分字符串（另见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)）。可以通过可选参数指定分隔符列表，例如：`tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`。注意，每个分隔字符串可以由多个字符组成（如示例中的 `', '`）。如果未显式指定，默认的分隔符列表是单个空格字符 `[' ']`。
-* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram（另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)）。ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokens(value, 'ngrams', 3)`。如果未显式指定，默认的 ngram 长度为 3。
-* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length`（含）之间的可变长度 n-gram（另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。如果提供参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。与 `ngrams(N)` 相比，`sparseGrams` tokenizer 生成可变长度的 N-gram，从而可以更灵活地表示原始文本。例如，`tokens(value, 'sparseGrams', 3, 5, 4)` 会在内部从输入字符串生成 3、4、5-gram，但只返回 4 和 5-gram。
-* `array` 不进行任何 tokenization，即每行的值本身就是一个 token（另见函数 [array](/sql-reference/functions/array-functions.md/#array)）。
+* `splitByNonAlpha` 使用非字母数字的 ASCII 字符来拆分字符串 (另见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
+* `splitByString(S)` 使用用户定义的分隔字符串 `S` 来拆分字符串 (另见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。可以通过可选参数指定分隔符列表，例如：`tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`。注意，每个分隔字符串可以由多个字符组成 (如示例中的 `', '`) 。如果未显式指定，默认的分隔符列表是单个空格字符 `[' ']`。
+* `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram (另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)) 。ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokens(value, 'ngrams', 3)`。如果未显式指定，默认的 ngram 长度为 3。
+* `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length` (含) 之间的可变长度 n-gram (另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)) 。如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。如果提供参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。与 `ngrams(N)` 相比，`sparseGrams` tokenizer 生成可变长度的 N-gram，从而可以更灵活地表示原始文本。例如，`tokens(value, 'sparseGrams', 3, 5, 4)` 会在内部从输入字符串生成 3、4、5-gram，但只返回 4 和 5-gram。
+* `array` 不进行任何 tokenization，即每行的值本身就是一个 token (另见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
 
 对于 `splitByString` tokenizer，如果这些 token 并不构成一个 [前缀码](https://en.wikipedia.org/wiki/Prefix_code)，通常希望在匹配时优先选择更长的分隔符。
 要做到这一点，请按照分隔符长度的降序传入它们。
-例如，在 separators = `['%21', '%']` 时，字符串 `%21abc` 会被拆分为 `['abc']`；而在 separators = `['%', '%21']` 时，则会被拆分为 `['21ac']`（这很可能不是预期结果）。
+例如，在 separators = `['%21', '%']` 时，字符串 `%21abc` 会被拆分为 `['abc']`；而在 separators = `['%', '%21']` 时，则会被拆分为 `['21ac']` (这很可能不是预期结果) 。
 
 **语法**
 
@@ -531,7 +531,7 @@ tokens(value, 'array')
 **参数**
 
 * `value` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 要使用的 tokenizer（分词器）。可用参数为 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 tokenizer (分词器) 。可用参数为 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 * `n` — 仅当参数 `tokenizer` 为 `ngrams` 时相关：可选参数，用于定义 n-gram 的长度。如未显式设置，默认为 `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 仅当参数 `tokenizer` 为 `split` 时相关：可选参数，用于定义分隔符字符串。如未显式设置，默认为 `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最小 gram 长度，默认为 3。[`const UInt8`](/sql-reference/data-types/int-uint)
@@ -562,6 +562,56 @@ SELECT tokens('abc def', 'ngrams', 3) AS tokens;
 
 ```response title=Response
 ['abc','bc ','c d',' de','def']
+```
+
+## tokensForLikePattern \{#tokensForLikePattern\}
+
+引入版本：v26.3.0
+
+使用指定的 tokenizer 将 LIKE 模式字符串拆分为 token。
+
+与 `tokens` 函数不同，此函数能够识别 LIKE 模式语义
+(例如前导和尾随通配符) ，并应用 tokenizer 特有的
+规则来提取用于模式匹配的有意义 token。
+
+它支持与 `tokens` 函数相同的参数集；`tokenizer` 之后的附加
+参数将根据所选 tokenizer 进行解释
+(例如，`ngrams` 的 `n`、`splitByString` 的 `separators`，
+以及 `sparseGrams` 的 `min_length` / `max_length` [/ `min_cutoff_length`]) 。
+
+此函数主要用于调试和测试，
+并在内部用于分析 LIKE 模式的 token 化行为。
+
+**语法**
+
+```sql
+tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
+```
+
+**参数**
+
+* `value` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `tokenizer` — 要使用的 tokenizer (分词器) 。可用参数为 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `n` — 仅当参数 `tokenizer` 为 `ngrams` 时相关：可选参数，用于定义 n-gram 的长度。如未显式设置，默认为 `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
+* `separators` — 仅当参数 `tokenizer` 为 `split` 时相关：可选参数，用于定义分隔符字符串。如未显式设置，默认为 `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
+* `min_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最小 gram 长度，默认为 3。[`const UInt8`](/sql-reference/data-types/int-uint)
+* `max_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最大 gram 长度，默认为 100。[`const UInt8`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最小截断长度。[`const UInt8`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回由输入字符串生成的 token 数组。[`Array`](/sql-reference/data-types/array)
+
+**示例**
+
+**默认 tokenizer**
+
+```sql title=Query
+SELECT tokensForLikePattern('%test1,test2,test3%') AS tokens;
+```
+
+```response title=Response
+['test2']
 ```
 
 {/*AUTOGENERATED_END*/ }

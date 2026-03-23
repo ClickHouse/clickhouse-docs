@@ -27,11 +27,11 @@ keywords: ['字符串替换']
 
 引入版本：v20.1.0
 
-使用参数中给出的值（字符串、整数等）对 `pattern` 字符串进行格式化，类似于 Python 中的字符串格式化。
+使用参数中给出的值 (字符串、整数等) 对 `pattern` 字符串进行格式化，类似于 Python 中的字符串格式化。
 `pattern` 字符串可以包含由花括号 `{}` 包围的替换字段。
 任何不在花括号中的内容都被视为字面文本，并原样复制到输出中。
 字面量花括号字符可以通过成对花括号进行转义：`{{` 和 `}}`。
-字段名可以是数字（从 0 开始）或为空（为空时会隐式按递增的数字进行编号）。
+字段名可以是数字 (从 0 开始) 或为空 (为空时会隐式按递增的数字进行编号) 。
 
 **语法**
 
@@ -90,7 +90,7 @@ overlay(s, replace, offset[, length])
 
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `replace` — 替换字符串。[`const String`](/sql-reference/data-types/string)
-* `offset` — 整数类型 `Int`（从 1 开始计数）。如果 `offset` 为负数，则从字符串 `s` 的末尾开始计数。[`Int`](/sql-reference/data-types/int-uint)
+* `offset` — 整数类型 `Int` (从 1 开始计数) 。如果 `offset` 为负数，则从字符串 `s` 的末尾开始计数。[`Int`](/sql-reference/data-types/int-uint)
 * `length` — 可选。整数类型 `Int`。`length` 指定在输入字符串 `s` 中要被替换的片段长度。如果未指定 `length`，则从 `s` 中移除的字节数等于 `replace` 的长度；否则移除 `length` 个字节。[`Int`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -141,7 +141,7 @@ overlayUTF8(s, replace, offset[, length])
 
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `replace` — 替换字符串。[`const String`](/sql-reference/data-types/string)
-* `offset` — 整数类型 `Int`（从 1 开始计数）。如果 `offset` 为负数，则从输入字符串 `s` 的末尾开始计数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `offset` — 整数类型 `Int` (从 1 开始计数) 。如果 `offset` 为负数，则从输入字符串 `s` 的末尾开始计数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `length` — 可选。指定在输入字符串 `s` 中要替换的片段的长度。如果未指定 `length`，则从 `s` 中移除的字符数等于 `replace` 的长度，否则移除 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
@@ -166,7 +166,7 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 
 引入自：v24.8.0
 
-`printf` 函数会使用参数中提供的值（字符串、整数、浮点数等）来格式化给定的字符串，类似于 C++ 中的 printf 函数。
+`printf` 函数会使用参数中提供的值 (字符串、整数、浮点数等) 来格式化给定的字符串，类似于 C++ 中的 printf 函数。
 格式字符串中可以包含以 `%` 字符开头的格式说明符。
 不在 `%` 及其后续格式说明符中的任何内容都被视为字面文本，并原样复制到输出中。
 作为字面量使用的 `%` 字符可以通过 `%%` 进行转义。
@@ -365,9 +365,9 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 
 引入版本：v1.1.0
 
-将 `haystack` 中第一个与正则表达式 `pattern`（re2 语法）匹配的子字符串替换为字符串 `replacement`。
+将 `haystack` 中第一个与正则表达式 `pattern` (re2 语法) 匹配的子字符串替换为字符串 `replacement`。
 `replacement` 可以包含替换占位符 `\0-\9`。
-占位符 `\1-\9` 分别对应第 1 到第 9 个捕获组（子匹配），占位符 `\0` 对应整个匹配结果。
+占位符 `\1-\9` 分别对应第 1 到第 9 个捕获组 (子匹配) ，占位符 `\0` 对应整个匹配结果。
 要在 `pattern` 或 `replacement` 字符串中使用字面量 `\` 字符，需要使用 `\` 对其进行转义。
 另请注意，字符串字面量本身需要额外的转义。
 

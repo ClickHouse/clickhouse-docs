@@ -2586,7 +2586,7 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 启用后，将允许解析类似 `{"a" : 42, "a" : {"b" : 42}}` 的 JSON，即某个键被重复使用，但其中一个对应的值是嵌套对象的情况。
 

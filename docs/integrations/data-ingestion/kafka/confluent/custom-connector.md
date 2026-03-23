@@ -84,7 +84,7 @@ Navigate to `Connectors` -> `Add Connector` and use the following settings (note
 
 #### Specify the connection endpoints {#specify-the-connection-endpoints}
 You need to specify the allow-list of endpoints that the connector can access.
-You must use a fully-qualified domain name (FQDN) when adding the networking egress endpoint(s).
+You must use a fully-qualified domain name (FQDN) when adding the networking egress endpoints.
 Example: `u57swl97we.eu-west-1.aws.clickhouse.com:8443`
 
 :::note

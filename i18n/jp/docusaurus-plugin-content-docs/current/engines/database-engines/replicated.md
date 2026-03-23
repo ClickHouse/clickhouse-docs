@@ -157,19 +157,20 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 
 サポートされている設定は次のとおりです:
 
-| Setting                                                                      | Default                        | Description                                                                               |
-| ---------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------- |
-| `max_broken_tables_ratio`                                                    | 1                              | 停止状態（stale）のテーブル数と全テーブル数の比率がこの値より大きい場合、レプリカを自動復旧しない                                       |
-| `max_replication_lag_to_enqueue`                                             | 50                             | レプリケーション遅延がこの値より大きい場合、レプリカはクエリを実行しようとすると例外をスローする                                          |
-| `wait_entry_commited_timeout_sec`                                            | 3600                           | タイムアウトを超過した場合、イニシエータホストがまだそのクエリを実行していなければ、レプリカはそのクエリのキャンセルを試みる                            |
-| `collection_name`                                                            |                                | クラスタ認証に関するすべての情報が定義されている、サーバー設定内のコレクションの名前                                                |
-| `check_consistency`                                                          | true                           | ローカルメタデータと Keeper 内のメタデータの整合性をチェックし、不整合がある場合はレプリカの復旧を行う                                   |
-| `max_retries_before_automatic_recovery`                                      | 10                             | レプリカを失われたものとしてマークしスナップショットから復旧する前に、キューエントリの実行を試行する最大回数（0 は無制限を意味する）                       |
-| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 有効にすると、Replicated データベースで DDL を処理する際、可能な場合はリフレッシュ可能なマテリアライズドビューの一時テーブルの DDL の作成と交換をスキップする |
-| `logs_to_keep`                                                               | 1000                           | Replicated データベースに対して ZooKeeper に保持するログのデフォルト件数。                                          |
-| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper におけるデータベースへのパス。データベース作成時に引数が省略された場合に使用される。                                      |
-| `default_replica_shard_name`                                                 | `{shard}`                      | データベース内のレプリカのシャード名。データベース作成時に引数が省略された場合に使用される。                                            |
-| `default_replica_name`                                                       | `{replica}`                    | データベース内のレプリカ名。データベース作成時に引数が省略された場合に使用される。                                                 |
+| Setting                                                                      | Default                        | Description                                                                                                                                                                                 |
+| ---------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `max_broken_tables_ratio`                                                    | 1                              | 停止状態 (stale) のテーブル数と全テーブル数の比率がこの値より大きい場合、レプリカを自動復旧しない                                                                                                                                       |
+| `max_replication_lag_to_enqueue`                                             | 50                             | レプリケーション遅延がこの値より大きい場合、レプリカはクエリを実行しようとすると例外をスローする                                                                                                                                            |
+| `wait_entry_commited_timeout_sec`                                            | 3600                           | タイムアウトを超過した場合、イニシエータホストがまだそのクエリを実行していなければ、レプリカはそのクエリのキャンセルを試みる                                                                                                                              |
+| `collection_name`                                                            |                                | クラスタ認証に関するすべての情報が定義されている、サーバー設定内のコレクションの名前                                                                                                                                                  |
+| `check_consistency`                                                          | true                           | ローカルメタデータと Keeper 内のメタデータの整合性をチェックし、不整合がある場合はレプリカの復旧を行う                                                                                                                                     |
+| `max_retries_before_automatic_recovery`                                      | 10                             | レプリカを失われたものとしてマークしスナップショットから復旧する前に、キューエントリの実行を試行する最大回数 (0 は無制限を意味する)                                                                                                                        |
+| `allow_skipping_old_temporary_tables_ddls_of_refreshable_materialized_views` | false                          | 有効にすると、Replicated データベースで DDL を処理する際、可能な場合はリフレッシュ可能なマテリアライズドビューの一時テーブルの DDL の作成と交換をスキップする                                                                                                   |
+| `logs_to_keep`                                                               | 1000                           | Replicated データベースに対して ZooKeeper に保持するログのデフォルト件数。                                                                                                                                            |
+| `default_replica_path`                                                       | `/clickhouse/databases/{uuid}` | ZooKeeper におけるデータベースへのパス。データベース作成時に引数が省略された場合に使用される。                                                                                                                                        |
+| `default_replica_shard_name`                                                 | `{shard}`                      | データベース内のレプリカのシャード名。データベース作成時に引数が省略された場合に使用される。                                                                                                                                              |
+| `default_replica_name`                                                       | `{replica}`                    | データベース内のレプリカ名。データベース作成時に引数が省略された場合に使用される。                                                                                                                                                   |
+| `internal_replication`                                                       | false                          | この Replicated データベースのクラスタを使用して作成された分散テーブルが、いずれか 1 つのレプリカにデータを送信するか (内部レプリケーションは、クラスタ内のレプリカが自律的にレプリケーションを行うことを意味する) 、またはすべてのレプリカに送信するか (内部レプリケーションなしは、分散テーブルが挿入されたデータをすべてのレプリカに送信することを意味する)  |
 
 デフォルト値は設定ファイルで上書きできます。
 
@@ -185,6 +186,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
         <default_replica_path>/clickhouse/databases/{uuid}</default_replica_path>
         <default_replica_shard_name>{shard}</default_replica_shard_name>
         <default_replica_name>{replica}</default_replica_name>
+        <internal_replication>false</internal_replication>
     </database_replicated>
 </clickhouse>
 ```

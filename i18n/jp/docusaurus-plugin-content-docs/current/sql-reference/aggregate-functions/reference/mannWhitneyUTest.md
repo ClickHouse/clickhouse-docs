@@ -29,7 +29,7 @@ mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_ind
 
 **パラメータ**
 
-* `alternative` — 省略可。対立仮説。`two-sided`（デフォルト）：2つの母集団は確率的に等しくない。`greater`：1つ目のサンプルの値は、2つ目のサンプルの値より確率的に大きい。`less`：1つ目のサンプルの値は、2つ目のサンプルの値より確率的に小さい。[`String`](/sql-reference/data-types/string)
+* `alternative` — 省略可。対立仮説。`two-sided` (デフォルト) ：2つの母集団は確率的に等しくない。`greater`：1つ目のサンプルの値は、2つ目のサンプルの値より確率的に大きい。`less`：1つ目のサンプルの値は、2つ目のサンプルの値より確率的に小さい。[`String`](/sql-reference/data-types/string)
 * `continuity_correction` — 省略可。0 でない場合、p 値の正規近似において連続性補正を適用します。デフォルト値は 1。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **引数**

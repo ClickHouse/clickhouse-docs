@@ -20,24 +20,27 @@ etc.). In this guide, we will walk you through the steps to query your data in
 S3 buckets using ClickHouse and the Glue Data Catalog.
 
 :::note
-Glue supports many different table formats, but this integration only supports 
-Iceberg tables.
+Glue supports many different table formats, but this integration only supports Iceberg tables.
 :::
 
 ## Configuring Glue in AWS {#configuring}
 
-To connect to the glue catalog, you will need to identify the region of your 
-catalog and provide an access and secret key. 
+To connect to the glue catalog, you will need:
+- AWS region of your catalog
+- Access Key ID/Access Secret Key (v25.12+) or AWS Role ARN (v26.2+)
+
+For AWS Role auth, AWS Role Session Name is an additional optional field. 
 
 :::note
-Currently, the Glue catalog only supports access and secret keys, but we will 
-support additional authentication approaches in the future.
+You will need to enable it using `SET allow_database_glue_catalog = 1;`
 :::
 
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
 
-With your Unity Catalog configured and authentication in place, establish a 
-connection between ClickHouse and Unity Catalog.
+With your AWS Glue Catalog configured, you can authenticate and establish a 
+connection between ClickHouse and AWS Glue Catalog.
+
+### AWS Access Key/Secret {#aws-access-key-secret}
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -47,6 +50,17 @@ SETTINGS
     region = 'us-west-2', 
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
+```
+
+### AWS Role {#aws-role}
+```sql title="Query"
+CREATE DATABASE glue
+ENGINE = DataLakeCatalog
+SETTINGS
+    catalog_type = 'glue',
+    region = 'us-west-2',
+    aws_role_arn = 'arn:aws:iam::1111111111:role/glue_role',
+    aws_role_session_name = 'clickhouse-glue-session' 
 ```
 
 ## Query the Glue data catalog using ClickHouse {#query-glue-catalog}
@@ -203,7 +217,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## Loading data from your Data Lake into ClickHouse {#loading-data-into-clickhouse}
 
-If you need to load data from Databricks into ClickHouse, start by creating a 
+If you need to load data from Glue into ClickHouse, start by creating a 
 local ClickHouse table:
 
 ```sql title="Query"

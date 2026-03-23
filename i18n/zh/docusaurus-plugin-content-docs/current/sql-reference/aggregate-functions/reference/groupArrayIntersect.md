@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 引入版本：v24.2.0
 
-返回给定数组的交集（返回出现在所有给定数组中的所有元素）。
+返回给定数组的交集 (返回出现在所有给定数组中的所有元素) 。
 
 **语法**
 
@@ -21,7 +21,7 @@ groupArrayIntersect(x)
 
 **参数**
 
-* `x` — 参数（列名或表达式）。[`Any`](/sql-reference/data-types)
+* `x` — 参数 (列名或表达式) 。[`Any`](/sql-reference/data-types)
 
 **返回值**
 

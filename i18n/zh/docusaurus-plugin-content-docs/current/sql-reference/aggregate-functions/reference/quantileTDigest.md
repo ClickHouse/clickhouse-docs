@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 该函数的性能低于 [`quantile`](/sql-reference/aggregate-functions/reference/quantile) 或 [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)。就状态大小与精度之间的比率而言，该函数比 `quantile` 好得多。
 
-在查询中使用多个具有不同 level 的 `quantile*` 函数时，内部状态不会被合并（也就是说，查询的执行效率低于理论上可以达到的效率）。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
+在查询中使用多个具有不同 level 的 `quantile*` 函数时，内部状态不会被合并 (也就是说，查询的执行效率低于理论上可以达到的效率) 。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **语法**
 

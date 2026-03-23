@@ -20,19 +20,10 @@ import example_dashboard from '@site/static/images/clickstack/nodejs/example-tra
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack로 Node.js 트레이스 모니터링하기 \{#nodejs-traces-clickstack\}
+# ClickStack를 사용한 Node.js 트레이스 모니터링 \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
-이 가이드는 Node.js 애플리케이션에서 분산 트레이스를 수집하고, OpenTelemetry 자동 계측을 사용하여 ClickStack에서 이를 시각화하는 방법을 안내합니다. 다음 내용을 학습하게 됩니다:
-
-- 자동 계측을 사용하여 Node.js용 OpenTelemetry를 설치하고 구성하기
-- 트레이스를 ClickStack의 OTLP 엔드포인트로 전송하기
-- HyperDX에서 트레이스가 정상적으로 표시되는지 확인하기
-- 미리 준비된 대시보드를 사용해 애플리케이션 성능 시각화하기
-
-프로덕션 애플리케이션을 계측하기 전에 연동을 테스트해 보고 싶은 경우, 샘플 트레이스가 포함된 데모 데이터셋이 제공됩니다.
-
-소요 시간: 10-15분
+OpenTelemetry 자동 계측을 사용해 ClickStack에서 Node.js 애플리케이션의 분산 트레이스를 수집합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Node.js 애플리케이션과의 통합 \{#existing-nodejs\}
@@ -58,7 +49,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ClickStack의 OTLP 엔드포인트로 트레이스를 전송하기 위한 수집 API key입니다.
 
-1. ClickStack URL에서 HyperDX를 엽니다 (예: http://localhost:8080)
+1. ClickStack URL에서 HyperDX를 엽니다 (예: `http://localhost:8080`)
 2. 필요하면 계정을 생성하거나 로그인합니다.
 3. **Team Settings → API Keys**로 이동합니다.
 4. **Ingestion API Key**를 복사합니다.
@@ -129,7 +120,7 @@ docker run -d --name clickstack-demo \
 
 ClickStack의 OTLP 엔드포인트로 트레이스를 전송하려면 API key가 필요합니다.
 
-1. ClickStack URL(예: http://localhost:8080)에서 HyperDX를 엽니다.
+1. ClickStack URL(예: `http://localhost:8080`)에서 HyperDX를 엽니다.
 2. 필요하다면 계정을 생성하거나 로그인합니다.
 3. **Team Settings → API Keys**로 이동합니다.
 4. **Ingestion API Key(수집 API key)**를 복사합니다.
@@ -240,10 +231,8 @@ OTLP 엔드포인트에 성공적으로 연결되어야 합니다.
 
 ## 다음 단계 \{#next-steps\}
 
-더 살펴보고자 한다면, 대시보드를 기반으로 다음과 같은 작업을 시도해 볼 수 있습니다:
-
-- 중요 메트릭(에러 비율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
-- 특정 사용 사례(API 모니터링, 보안 이벤트)에 대한 추가 대시보드를 생성합니다.
+* 중요 메트릭(에러 비율, 지연 시간 임계값)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정합니다.
+* 특정 사용 사례(API 모니터링, 보안 이벤트)에 대한 추가 대시보드를 생성합니다.
 
 ## 프로덕션 환경으로 전환하기 \{#going-to-production\}
 

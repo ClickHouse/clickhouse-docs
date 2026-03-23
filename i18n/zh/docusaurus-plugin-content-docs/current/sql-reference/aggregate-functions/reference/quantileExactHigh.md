@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 对于所有其他水平，返回索引位置对应于 `level * size_of_array` 的元素。
 
-在查询中使用多个带有不同水平的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于理论上的最优情况）。
+在查询中使用多个带有不同水平的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率低于理论上的最优情况) 。
 在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles) 函数。
 
 **语法**

@@ -358,7 +358,7 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 ## 読み取りフォーマット \{#read-formats\}
 
-読み取りフォーマットは、クライアントの `query`、`query_np`、`query_df` メソッドから返される値のデータ型を制御します（`raw_query` と `query_arrow` は ClickHouse から受信したデータを変更しないため、フォーマット制御は適用されません）。たとえば、UUID の読み取りフォーマットをデフォルトの `native` フォーマットから代替の `string` フォーマットに変更すると、UUID 型カラムに対する ClickHouse のクエリ結果は、Python の UUID オブジェクトではなく、（標準的な 8-4-4-4-12 の RFC 1422 形式を使用した）文字列値として返されます。
+読み取りフォーマットは、クライアントの `query`、`query_np`、`query_df` メソッドから返される値のデータ型を制御します (`raw_query` と `query_arrow` は ClickHouse から受信したデータを変更しないため、フォーマット制御は適用されません) 。たとえば、UUID の読み取りフォーマットをデフォルトの `native` フォーマットから代替の `string` フォーマットに変更すると、UUID 型カラムに対する ClickHouse のクエリ結果は、Python の UUID オブジェクトではなく、 (標準的な 8-4-4-4-12 の RFC 1422 形式を使用した) 文字列値として返されます。
 
 任意のフォーマット関数の &quot;data type&quot; 引数にはワイルドカードを含めることができます。フォーマット指定は、小文字のみから成る 1 つの文字列です。
 
@@ -376,7 +376,7 @@ set_read_format('IPv*', 'string')
 set_read_format('Date*', 'int')
 ```
 
-* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型のいずれかのカラム（またはサブカラム）には、設定されたフォーマットが適用されます。
+* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型のカラム (またはサブカラム) はすべて、設定されたフォーマットを使用します。
 
 ```python
 # Return any UUID column as a string

@@ -236,7 +236,7 @@ SELECT
 Введена в версии: v21.9.0
 
 Выполняет лемматизацию заданного слова.
-Для работы этой функции необходимы словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. раздел [«Определение словарей»](/sql-reference/dictionaries#local-file).
+Для работы этой функции требуются словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. на странице [&quot;Определение словарей&quot;](/sql-reference/statements/create/dictionary/sources/local-file).
 
 **Синтаксис**
 

@@ -110,11 +110,11 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
-## N-gram Bloom filter (ngrambf\_v1) for substring search {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
+## N-gram Bloom filter (ngrambf\_v1) for substring search *(Deprecated)* {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
-> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
-Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
-Furthermore, they offer limited configurability.
+:::note
+The usage of `ngrambf_v1` indexes for full-text search is deprecated in ClickHouse versions `>= 26.2` in favor of `text` indexes (see [here](/engines/table-engines/mergetree-family/textindexes) for further details).
+:::
 
 The `ngrambf_v1` index splits strings into n-grams. It works well for `LIKE '%...%'` queries. It supports String/FixedString/Map (via mapKeys/mapValues), as well as tunable size, hash count, and seed. See the documentation for [N-gram bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for further details.
 
@@ -130,7 +130,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[This guide](/use-cases/observability/schema-design#bloom-filters-for-text-search) shows practical examples and when to use token vs ngram.
+[This guide](/use-cases/observability/schema-design#text-index-for-full-text-search) shows practical examples and when to use token vs ngram.
 
 **Parameter optimization helpers:**
 
@@ -150,11 +150,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) for complete tuning guidance.  
 
-## Token Bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
+## Token Bloom filter (tokenbf\_v1) for word-based search *(Deprecated)* {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-> Note: With text indexes generally availability (GA) starting from ClickHouse version 26.2, bloom filter–based indexes are not recommended anymore for full text search.
-Although they are more compact, unfortunately they tend to produce false positives because they are probabilistic.
-Furthermore, they offer limited configurability.
+:::note
+The usage of `tokenbf_v1` indexes for full-text search is deprecated in ClickHouse versions `>= 26.2` in favor of `text` indexes (see [here](/engines/table-engines/mergetree-family/textindexes) for further details).
+:::
 
 `tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
@@ -171,7 +171,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-See observability examples and guidance on token vs ngram [here](/use-cases/observability/schema-design#bloom-filters-for-text-search).
+See observability examples and guidance on token vs ngram [here](/use-cases/observability/schema-design#text-index-for-full-text-search).
 
 ## Add indexes during CREATE TABLE (multiple examples) {#add-indexes-during-create-table-multiple-examples}
 

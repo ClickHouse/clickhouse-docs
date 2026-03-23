@@ -17,7 +17,7 @@ doc_type: 'reference'
 結果は決定的です。
 厳密な分位数を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 関数を使用します。
 
-クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率になります）。
+クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来よりも非効率になります) 。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用します。
 
 **構文**

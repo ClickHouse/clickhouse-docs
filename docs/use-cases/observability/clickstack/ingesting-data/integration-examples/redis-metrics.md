@@ -19,15 +19,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Redis Metrics with ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Redis performance metrics with ClickStack by configuring the OpenTelemetry collector's Redis receiver. You'll learn how to:
-
-- Configure the OTel collector to collect Redis Metrics
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize Redis performance (commands/sec, memory usage, connected clients, cache performance)
-
-A demo dataset with sample metrics is available if you want to test the integration before configuring your production Redis.
-
-Time required: 5-10 minutes
+Monitor Redis performance metrics in ClickStack using the OTel Redis receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing Redis {#existing-redis}
@@ -398,8 +390,10 @@ Ensure your Docker Compose file or `docker run` commands place both containers o
 
 ## Next steps {#next-steps}
 
-If you want to explore further, here are some next steps to experiment with your monitoring:
-
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
 - Create additional dashboards for specific use cases (replication lag, persistence performance)
 - Monitor multiple Redis instances by duplicating the receiver configuration with different endpoints and service names
+
+## Going to production {#going-to-production}
+
+This guide extends ClickStack's built-in OpenTelemetry Collector for quick setup. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

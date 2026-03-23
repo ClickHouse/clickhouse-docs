@@ -353,7 +353,7 @@ helm install my-clickstack clickstack/clickstack \
 - [Cloud deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, AKS configurations and production best practices
 
 ### Additional resources {#additional-resources}
-- [ClickStack getting started guide](/docs/use-cases/observability/clickstack/getting-started/index) - Introduction to ClickStack
+- [ClickStack getting started guide](/use-cases/observability/clickstack/getting-started) - Introduction to ClickStack
 - [ClickStack Helm charts repository](https://github.com/ClickHouse/ClickStack-helm-charts) - Chart source code and values reference
 - [Kubernetes documentation](https://kubernetes.io/docs/) - Kubernetes reference
 - [Helm documentation](https://helm.sh/docs/) - Helm reference

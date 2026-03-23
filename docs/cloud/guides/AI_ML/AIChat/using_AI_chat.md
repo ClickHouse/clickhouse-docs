@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'Use Ask AI chat in ClickHouse Cloud'
-title: 'Use Ask AI chat in ClickHouse Cloud'
+sidebar_label: 'Use ClickHouse Assistant chat in ClickHouse Cloud'
+title: 'Use ClickHouse Assistant chat in ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console'
@@ -21,7 +21,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Use Ask AI chat in ClickHouse Cloud
+# Use ClickHouse Assistant chat in ClickHouse Cloud
 
 > This guide explains how to enable and use the AI Chat feature in the ClickHouse Cloud Console.
 
@@ -34,7 +34,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 ## Open the AI Chat panel {#open-panel}
 
 1. Navigate to a ClickHouse Cloud service.
-2. In the left sidebar, click the sparkle icon labeled “Ask AI”.
+2. In the left sidebar, click the sparkle icon labeled “ClickHouse Assistant”.
 3. (Shortcut) Press <kbd>⌘</kbd> + <kbd>'</kbd> (macOS) or <kbd>Ctrl</kbd> + <kbd>'</kbd> (Linux/Windows) to toggle open.
 
 <Image img={img_open} alt="Open AI Chat flyout" size="md"/>

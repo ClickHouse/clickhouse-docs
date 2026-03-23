@@ -10,7 +10,7 @@ keywords: ['NLP', '自然语言处理']
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 自然语言处理（NLP）函数 \{#natural-language-processing-nlp-functions\}
+# 自然语言处理 (NLP) 函数 \{#natural-language-processing-nlp-functions\}
 
 <ExperimentalBadge />
 
@@ -235,7 +235,8 @@ SELECT
 
 引入版本：v21.9.0
 
-对给定单词执行词形还原。
+对给定单词执行词形还原（lemmatization）。
+此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/statements/create/dictionary/sources/local-file)。
 此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/sql-reference/dictionaries#local-file)。
 
 **语法**
@@ -299,7 +300,7 @@ SELECT arrayMap(x -> stem('en', x),
 ['I','think','it','is','a','bless','in','disguis']
 ```
 
-## 同义词（synonyms） \{#synonyms\}
+## 同义词 (synonyms)  \{#synonyms\}
 
 引入版本：v21.9.0
 
@@ -310,10 +311,10 @@ SELECT arrayMap(x -> stem('en', x),
 * `plain`
 * `wordnet`
 
-对于 `plain` 扩展类型，你需要提供一个纯文本文件的路径，其中每一行对应一个同义词集合（synonym set）。
+对于 `plain` 扩展类型，你需要提供一个纯文本文件的路径，其中每一行对应一个同义词集合 (synonym set) 。
 该行中的单词必须用空格或制表符分隔。
 
-对于 `wordnet` 扩展类型，你需要提供一个包含 WordNet 词库（thesaurus）的目录路径。
+对于 `wordnet` 扩展类型，你需要提供一个包含 WordNet 词库 (thesaurus) 的目录路径。
 该词库中必须包含 WordNet sense index。
 
 **语法**
