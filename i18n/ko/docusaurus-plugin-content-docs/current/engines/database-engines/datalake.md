@@ -65,7 +65,7 @@ catalog_type,
 
 ## 예시 \{#examples\}
 
-`DataLakeCatalog` 엔진 사용 예시는 아래 섹션을 참고하십시오.
+`DataLakeCatalog` 엔진 사용 예시는 아래 섹션을 참조하십시오.
 
 * [Unity Catalog](/use-cases/data-lake/unity-catalog)
 * [Glue Catalog](/use-cases/data-lake/glue-catalog)
@@ -83,6 +83,6 @@ SETTINGS
    auth_scope = auth_scope, 
    onelake_client_id = client_id, 
    onelake_client_secret = client_secret;
-SHOW TABLES IN databse_name;       
+SHOW TABLES IN database_name;
 SELECT count() from database_name.table_name;
 ```

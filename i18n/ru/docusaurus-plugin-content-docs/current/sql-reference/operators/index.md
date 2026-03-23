@@ -216,16 +216,26 @@ EXTRACT(part FROM date);
 
 Параметр `part` указывает, какую часть даты нужно извлечь. Доступны следующие значения:
 
-* `DAY` — день месяца. Возможные значения: 1–31.
-* `MONTH` — номер месяца. Возможные значения: 1–12.
-* `YEAR` — год.
 * `SECOND` — секунда. Возможные значения: 0–59.
 * `MINUTE` — минута. Возможные значения: 0–59.
 * `HOUR` — час. Возможные значения: 0–23.
+* `DAY` — день месяца. Возможные значения: 1–31.
+* `WEEK` — номер недели по ISO 8601. Возможные значения: 1–53.
+* `MONTH` — номер месяца. Возможные значения: 1–12.
+* `QUARTER` — квартал. Возможные значения: 1–4.
+* `YEAR` — год.
+* `EPOCH` — временная метка Unix (секунды с 1970-01-01 00:00:00 UTC). Примечание: для `DateTime64` дробная часть секунды отбрасывается.
+* `DOW` — день недели (совместимо с PostgreSQL). 0 = воскресенье, 6 = суббота.
+* `DOY` — день года. Возможные значения: 1–366.
+* `ISODOW` — день недели по ISO. 1 = понедельник, 7 = воскресенье.
+* `ISOYEAR` — год нумерации недель по ISO 8601.
+* `CENTURY` — век. Например, 2024 год относится к 21-му веку.
+* `DECADE` — десятилетие (год, делённый на 10). Например, для 2024 года десятилетие равно 202.
+* `MILLENNIUM` — тысячелетие. Например, 2024 год относится к 3-му тысячелетию.
 
 Параметр `part` не зависит от регистра.
 
-Параметр `date` задает дату или время, которое нужно обработать. Поддерживаются типы [Date](../../sql-reference/data-types/date.md) и [DateTime](../../sql-reference/data-types/datetime.md).
+Параметр `date` задает дату или время, которое нужно обработать. Поддерживаются типы [Date](../../sql-reference/data-types/date.md), [Date32](../../sql-reference/data-types/date32.md), [DateTime](../../sql-reference/data-types/datetime.md) и [DateTime64](../../sql-reference/data-types/datetime64.md).
 
 Примеры:
 
@@ -233,6 +243,9 @@ EXTRACT(part FROM date);
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
 SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
+SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
+SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
+SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
 ```
 
 В следующем примере создается таблица, и в неё вставляется значение типа `DateTime`.
@@ -269,6 +282,7 @@ FROM test.Orders;
 ```
 
 Дополнительные примеры можно найти в [tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql).
+
 
 ### INTERVAL \{#interval\}
 

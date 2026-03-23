@@ -309,6 +309,48 @@ ClickHouse 通常会尽可能少地读取数据，并使用一些技巧来识别
 - `drop`：丢弃受影响的 PROJECTION 表分区片段。对于受影响的 PROJECTION 分区片段，查询将回退到原始表分区片段。
 - `rebuild`：重建受影响的 PROJECTION 分区片段，以保持与原始表分区片段中的数据一致。
 
+## 限制 \{#limitations\}
+
+无法在 PROJECTION 的 `ORDER BY` 子句中使用 `ALIAS` 列。例如：
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` 列不会被实际存储，而是在查询时动态计算，因此在对排序表达式求值时，它们在 PROJECTION 部分的写入路径中不可用。
+
+请改用 `MATERIALIZED` 列，或直接内联该表达式：
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
+
 ## 另请参阅 \{#see-also\}
 
 - ["在合并过程中控制 Projections"（博客文章）](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)
