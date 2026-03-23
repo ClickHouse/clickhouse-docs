@@ -26,7 +26,7 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-) ENGINE = Log;
+) ENGINE = MergeTree ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
