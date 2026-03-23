@@ -45,7 +45,7 @@ Various types of failures can occur when ingesting data, which can result in par
 
 ## Configure a service account {#configure-service-account}
 
-**1.** Configure a [service account](http://docs.cloud.google.com/iam/docs/keys-create-delete) with the [required permissions](/01_overview.md/#permissions) to allow ClickPipes to list and fetch objects in the specified bucket, as well as consume and monitor notifications from the Pub/Sub subscription.
+**1.** Configure a [service account](http://docs.cloud.google.com/iam/docs/keys-create-delete) with the [required permissions](/integrations/clickpipes/object-storage/gcs/overview#permissions) to allow ClickPipes to list and fetch objects in the specified bucket, as well as consume and monitor notifications from the Pub/Sub subscription.
 
 **1.1.** This step can be performed in the Google Cloud Console, using the `gcloud` client or your preferred programmatic interface for Google Cloud. For example, using `gcloud`:
 
