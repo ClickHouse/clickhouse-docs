@@ -13,12 +13,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # materialized view \{#materialized-views\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
-`materialized_view` マテリアライゼーションは、既存の（ソース）テーブルに対する `SELECT` として定義する必要があります。PostgreSQL と異なり、ClickHouse の materialized view は「静的」ではなく（対応する REFRESH 操作もありません）。代わりに **INSERT トリガー** のように動作し、ソーステーブルに行が挿入されるたびに、その行に対して定義済みの `SELECT` 変換を適用し、その結果をターゲットテーブルに新たな行として挿入します。ClickHouse における materialized view の動作の詳細については、[ClickHouse materialized view documentation](/materialized-view) を参照してください。
+`materialized_view` マテリアライゼーションは、既存の (ソース) テーブルに対する `SELECT` として定義する必要があります。PostgreSQL と異なり、ClickHouse の materialized view は「静的」ではなく (対応する REFRESH 操作もありません) 。代わりに **INSERT トリガー** のように動作し、ソーステーブルに行が挿入されるたびに、その行に対して定義済みの `SELECT` 変換を適用し、その結果をターゲットテーブルに新たな行として挿入します。ClickHouse における materialized view の動作の詳細については、[ClickHouse materialized view documentation](/docs/materialized-views) を参照してください。
 
 :::note
-一般的なマテリアライゼーションの概念や、共通設定（engine、order_by、partition_by など）については、[Materializations](/integrations/dbt/materializations) ページを参照してください。
+一般的なマテリアライゼーションの概念や、共通設定 (engine、order&#95;by、partition&#95;by など) については、[Materializations](/integrations/dbt/materializations) ページを参照してください。
 :::
 
 ## ターゲットテーブルの管理方法 \{#target-table-management\}

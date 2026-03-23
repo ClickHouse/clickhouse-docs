@@ -16,6 +16,14 @@ import Version from '@theme/ClientVersionDropdown/Version';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
 
 <ClientVersionDropdown
   versions={[
@@ -45,7 +53,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>client-v2</artifactId>
-            <version>0.9.7</version>
+            <version>0.9.8</version>
         </dependency>
         ```
       </TabItem>
@@ -53,14 +61,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation("com.clickhouse:client-v2:0.9.7")
+        implementation("com.clickhouse:client-v2:0.9.8")
         ```
       </TabItem>
 
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation 'com.clickhouse:client-v2:0.9.7'
+        implementation 'com.clickhouse:client-v2:0.9.8'
         ```
       </TabItem>
     </Tabs>
@@ -72,7 +80,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Объект Client инициализируется с помощью `com.clickhouse.client.api.Client.Builder#build()`. Каждый клиент имеет собственный контекст, объекты между клиентами не разделяются.
     Builder предоставляет методы конфигурации для удобной настройки.
 
-    Пример:
+    Example:
 
     ```java showLineNumbers
      Client client = new Client.Builder()
@@ -123,13 +131,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Для проверки сертификатов и ключей используйте такие инструменты, как [openssl](https://docs.openssl.org/master/man1/openssl/):
 
     * проверить целостность ключа: `openssl rsa -in [key-file.key] -check -noout`
-    * проверьте, что в клиентском сертификате значение CN совпадает с именем пользователя:
+    * проверьте, что CN в клиентском сертификате соответствует имени пользователя:
       * получить CN из пользовательского сертификата — `openssl x509 -noout -subject -in [user.cert]`
       * проверить, что то же значение установлено в базе данных: `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (запрос вернёт `auth_params` с содержимым вида ` {"common_names":["some_user"]}`)
 
     :::
 
-    ## Конфигурация \{#configuration\}
+    ## Настройка \{#configuration\}
 
     Все настройки задаются методами экземпляра (так называемыми методами конфигурации), которые однозначно определяют область действия и контекст каждого значения.
     Ключевые параметры конфигурации задаются на одном уровне (клиент или операция) и не переопределяют друг друга.
@@ -139,31 +147,31 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ## Настройка клиента \{#client-configuration\}
 
     <Tabs groupId="client-config">
-      <TabItem value="подключение" label="Подключение и точки подключения">
-        | Method                                                                  | Arguments                                                                                                 | Description                                                                                                    | Default   | Key                         |
-        | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | --------------------------- |
-        | `addEndpoint(String endpoint)`                                          | `endpoint` - адрес сервера в формате URL                                                                  | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`    | `none`                      |
-        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - протокол подключения<br />`host` - IP-адрес или имя хоста<br />`secure` - использовать HTTPS | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`    | `none`                      |
-        | `enableConnectionPool(boolean enable)`                                  | `enable` - флаг включения/отключения                                                                      | Устанавливает, включен ли пул соединений                                                                       | `true`    | `connection_pool_enabled`   |
-        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - число соединений                                                                       | Устанавливает, сколько соединений клиент может открыть к каждому endpoint-у сервера.                           | `10`      | `max_open_connections`      |
-        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает TTL соединения, по истечении которого соединение будет считаться неактивным                      | `-1`      | `connection_ttl`            |
-        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает тайм-аут Keep-Alive для HTTP-соединения. Установите `0`, чтобы отключить Keep-Alive.             | -         | `http_keep_alive_timeout`   |
-        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` или `FIFO`                                                                            | Выбирает стратегию повторного использования соединений, которую должен применять пул соединений                | `FIFO`    | `connection_reuse_strategy` |
-        | `setDefaultDatabase(String database)`                                   | `database` - имя базы данных                                                                              | Устанавливает базу данных по умолчанию.                                                                        | `default` | `database`                  |
+      <TabItem value="connection" label="Подключение и конечные точки">
+        | Метод                                                                   | Аргументы                                                                                                 | Описание                                                                                                       | По умолчанию | Ключ                        |
+        | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------- |
+        | `addEndpoint(String endpoint)`                                          | `endpoint` - адрес сервера в формате URL                                                                  | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`       | `none`                      |
+        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - протокол подключения<br />`host` - IP-адрес или имя хоста<br />`secure` - использовать HTTPS | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`       | `none`                      |
+        | `enableConnectionPool(boolean enable)`                                  | `enable` - флаг включения/отключения                                                                      | Устанавливает, включен ли пул соединений                                                                       | `true`       | `connection_pool_enabled`   |
+        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - число соединений                                                                       | Устанавливает, сколько соединений клиент может открыть к каждому endpoint-у сервера.                           | `10`         | `max_open_connections`      |
+        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает TTL соединения, по истечении которого соединение будет считаться неактивным                      | `-1`         | `connection_ttl`            |
+        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает тайм-аут Keep-Alive для HTTP-соединения. Установите `0`, чтобы отключить Keep-Alive.             | -            | `http_keep_alive_timeout`   |
+        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` или `FIFO`                                                                            | Выбирает стратегию повторного использования соединений, которую должен применять пул соединений                | `FIFO`       | `connection_reuse_strategy` |
+        | `setDefaultDatabase(String database)`                                   | `database` - имя базы данных                                                                              | Устанавливает базу данных по умолчанию.                                                                        | `default`    | `database`                  |
       </TabItem>
 
-      <TabItem value="аутентификация" label="Аутентификация">
-        | Метод                                                | Аргументы                                                      | Описание                                                                                                                                                             | По умолчанию | Ключ                  |
-        | ---------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------- |
-        | `setUsername(String username)`                       | `username` - имя пользователя для аутентификации               | Задает имя пользователя для метода аутентификации, который будет выбран дальнейшей конфигурацией                                                                     | `default`    | `user`                |
-        | `setPassword(String password)`                       | `password` - секретное значение                                | Задает секрет для аутентификации по паролю и фактически выбирает этот метод аутентификации                                                                           | -            | `password`            |
-        | `setAccessToken(String accessToken)`                 | `accessToken` - строка access-токена                           | Задает access-токен для аутентификации и тем самым выбирает соответствующий метод аутентификации                                                                     | -            | `access_token`        |
-        | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - флаг для включения SSL-аутентификации | Устанавливает клиентский SSL-сертификат как метод аутентификации.                                                                                                    | -            | `ssl_authentication`  |
-        | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - флаг включения/отключения                     | Определяет, следует ли использовать базовую HTTP-аутентификацию для аутентификации по паре пользователь-пароль. Решает проблемы с паролями, содержащими спецсимволы. | `true`       | `http_use_basic_auth` |
-        | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - закодированный bearer-токен                    | Определяет, следует ли использовать Bearer-аутентификацию и какой токен использовать. Токен будет отправлен как есть.                                                | -            | `bearer_token`        |
+      <TabItem value="Аутентификация" label="Аутентификация">
+        | Method                                               | Arguments                                                      | Description                                                                                                                                                             | Default   | Key                   |
+        | ---------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | --------------------- |
+        | `setUsername(String username)`                       | `username` - имя пользователя для аутентификации               | Задает имя пользователя для метода аутентификации, который будет выбран дальнейшей настройкой                                                                           | `default` | `user`                |
+        | `setPassword(String password)`                       | `password` - секретное значение                                | Задает секретное значение для аутентификации по паролю и фактически выбирает этот метод аутентификации                                                                  | -         | `password`            |
+        | `setAccessToken(String accessToken)`                 | `accessToken` - строка токена доступа                          | Задает токен доступа для аутентификации и тем самым выбирает соответствующий метод аутентификации                                                                       | -         | `access_token`        |
+        | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - флаг для включения SSL-аутентификации | Устанавливает аутентификацию по клиентскому SSL-сертификату.                                                                                                            | -         | `ssl_authentication`  |
+        | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - флаг включения/отключения                     | Определяет, следует ли использовать базовую HTTP-аутентификацию для аутентификации по имени пользователя и паролю. Решает проблемы с паролями, содержащими спецсимволы. | `true`    | `http_use_basic_auth` |
+        | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - закодированный bearer-токен                    | Указывает, следует ли использовать Bearer-аутентификацию и какой токен использовать. Токен будет отправлен как есть.                                                    | -         | `bearer_token`        |
       </TabItem>
 
-      <TabItem value="таймауты" label="Тайм-ауты и повторные попытки">
+      <TabItem value="таймауты" label="Таймауты и повторные попытки">
         | Method                                                       | Arguments                                                        | Description                                                                                     | Default                                                      | Key                          |
         | ------------------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------- |
         | `setConnectTimeout(long timeout, ChronoUnit unit)`           | `timeout` - значение тайм-аута<br />`unit` - единица времени     | Устанавливает тайм-аут установления соединения для любого исходящего подключения.               | -                                                            | `connection_timeout`         |
@@ -175,13 +183,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="сокет" label="Параметры сокетов">
-        | Method                               | Arguments                               | Description                                                                                                                 | Default | Key                  |
-        | ------------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-        | `setSocketRcvbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера приёма TCP-сокета. Этот буфер находится вне управляемой JVM памяти.                             | `8196`  | `socket_rcvbuf`      |
-        | `setSocketSndbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера отправки TCP-сокета. Этот буфер находится вне управляемой JVM памяти.                           | `8196`  | `socket_sndbuf`      |
-        | `setSocketKeepAlive(boolean value)`  | `value` - флаг для включения/выключения | Устанавливает опцию `SO_KEEPALIVE` для каждого TCP-сокета. TCP Keep-Alive включает механизм проверки активности соединения. | -       | `socket_keepalive`   |
-        | `setSocketTcpNodelay(boolean value)` | `value` - флаг для включения/выключения | Устанавливает опцию `SO_NODELAY` для каждого TCP-сокета. Эта опция TCP заставляет сокет отправлять данные как можно скорее. | -       | `socket_tcp_nodelay` |
-        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - количество секунд     | Устанавливает время задержки (linger) для каждого TCP-сокета, созданного клиентом.                                          | -       | `socket_linger`      |
+        | Метод                                | Аргументы                               | Описание                                                                                                                    | По умолчанию | Ключ                 |
+        | ------------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------ | -------------------- |
+        | `setSocketRcvbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера приёма TCP-сокета. Этот буфер находится вне управляемой JVM памяти.                             | `8196`       | `socket_rcvbuf`      |
+        | `setSocketSndbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера отправки TCP-сокета. Этот буфер находится вне управляемой JVM памяти.                           | `8196`       | `socket_sndbuf`      |
+        | `setSocketKeepAlive(boolean value)`  | `value` - флаг для включения/выключения | Устанавливает опцию `SO_KEEPALIVE` для каждого TCP-сокета. TCP Keep-Alive включает механизм проверки активности соединения. | -            | `socket_keepalive`   |
+        | `setSocketTcpNodelay(boolean value)` | `value` - флаг для включения/выключения | Устанавливает опцию `SO_NODELAY` для каждого TCP-сокета. Эта опция TCP заставляет сокет отправлять данные как можно скорее. | -            | `socket_tcp_nodelay` |
+        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - количество секунд     | Устанавливает время задержки (linger) для каждого TCP-сокета, созданного клиентом.                                          | -            | `socket_linger`      |
       </TabItem>
 
       <TabItem value="сжатие" label="Сжатие">
@@ -195,7 +203,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `disableNativeCompression`                | `disable` — флаг отключения           | Отключает нативное сжатие. Если установлено в `true`, нативное сжатие будет отключено.                                     | `false`               | `disable_native_compression`               |
       </TabItem>
 
-      <TabItem value="SSL" label="SSL и безопасность">
+      <TabItem value="ssl" label="SSL и безопасность">
         | Method                                      | Arguments                                 | Description                                                                                                                   | Default | Key                  |
         | ------------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
         | `setSSLTrustStore(String path)`             | `path` - путь к файлу в локальной системе | Указывает, должен ли клиент использовать SSL truststore для проверки подлинности хоста сервера.                               | -       | `trust_store`        |
@@ -208,10 +216,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="прокси" label="Прокси">
-        | Метод                                             | Аргументы                                                                                                 | Описание                                                                                 | По умолчанию | Ключ                                     |
-        | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------ | ---------------------------------------- |
-        | `addProxy(ProxyType type, String host, int port)` | `type` - тип прокси<br />`host` - имя хоста или IP-адрес прокси-сервера<br />`port` - порт прокси-сервера | Устанавливает прокси-сервер, который будет использоваться для взаимодействия с сервером. | -            | `proxy_type`, `proxy_host`, `proxy_port` |
-        | `setProxyCredentials(String user, String pass)`   | `user` - имя пользователя прокси<br />`pass` - пароль                                                     | Задает учетные данные для аутентификации на прокси-сервере.                              | -            | `proxy_user`, `proxy_password`           |
+        | Method                                            | Arguments                                                                                                 | Description                                                                              | Default | Key                                      |
+        | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - тип прокси<br />`host` - имя хоста или IP-адрес прокси-сервера<br />`port` - порт прокси-сервера | Устанавливает прокси-сервер, который будет использоваться для взаимодействия с сервером. | -       | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - имя пользователя прокси<br />`pass` - пароль                                                     | Задает учетные данные для аутентификации на прокси-сервере.                              | -       | `proxy_user`, `proxy_password`           |
       </TabItem>
 
       <TabItem value="http" label="HTTP и заголовки">
@@ -225,11 +233,11 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="настройки-сервера" label="Настройки сервера">
-        | Метод                                           | Аргументы                                                 | Описание                                                                                                                                                                                            | По умолчанию | Ключ                     |
-        | ----------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------ |
-        | `serverSetting(String name, String value)`      | `name` - имя настройки<br />`value` - значение настройки  | Указывает, какие настройки передавать серверу вместе с каждым запросом. Настройки отдельных операций могут их переопределять. [Список настроек](/operations/settings/query-level)                   | `none`       | `none`                   |
-        | `serverSetting(String name, Collection values)` | `name` - имя настройки<br />`values` - значения настройки | Указывает, какие настройки с множественными значениями передавать серверу, например [роли](/interfaces/http#setting-role-with-query-parameters)                                                     | `none`       | `none`                   |
-        | `setOption("custom_settings_prefix", value)`    | `value` - строковый префикс                               | Задаёт префикс для пользовательских настроек, передаваемых на сервер. Должен соответствовать конфигурации сервера. См. [документацию ClickHouse](/operations/settings/query-level#custom_settings). | `custom_`    | `custom_settings_prefix` |
+        | Method                                          | Arguments                                                 | Description                                                                                                                                                                                         | Default   | Key                      |
+        | ----------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------ |
+        | `serverSetting(String name, String value)`      | `name` - имя настройки<br />`value` - значение настройки  | Указывает, какие настройки передавать серверу вместе с каждым запросом. Настройки отдельных операций могут их переопределять. [Список настроек](/operations/settings/query-level)                   | `none`    | `none`                   |
+        | `serverSetting(String name, Collection values)` | `name` - имя настройки<br />`values` - значения настройки | Указывает, какие настройки с множественными значениями передавать серверу, например [роли](/interfaces/http#setting-role-with-query-parameters)                                                     | `none`    | `none`                   |
+        | `setOption("custom_settings_prefix", value)`    | `value` - строковый префикс                               | Задаёт префикс для пользовательских настроек, передаваемых на сервер. Должен соответствовать конфигурации сервера. См. [документацию ClickHouse](/operations/settings/query-level#custom_settings). | `custom_` | `custom_settings_prefix` |
       </TabItem>
 
       <TabItem value="часовой пояс" label="Часовой пояс">
@@ -267,7 +275,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Поле `http_user_agent` задаётся в соответствии с общим форматом заголовка `User-Agent`: `application-name[/version] [(operating-system; architecture; ...)]`.
     Этот набор значений повторяется для каждого уровня: приложение, клиентская библиотека, HTTP-клиентская библиотека. Значение, заданное методом `setClientName`, стоит первым в списке.
 
-    Например:
+    For example:
 
     ```java showLineNumbers
     client.setClientName("my-app-01/1.0");
@@ -380,61 +388,61 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |       raw      |       raw       |
     | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |        -       |       raw       |
     | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |       raw      |       raw       |
-    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |        *       |       raw       |
-    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |        -       |     как есть    |
-    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |        *       |       raw       |
-    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |        -       |     как есть    |
+    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |       raw      |       raw       |
+    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |        *       |       raw       |
+    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |        -       |       raw       |
+    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |       raw      |       raw       |
     | [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |        *       |       raw       |
-    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |        -       |       raw       |
-    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |    как есть    |     как есть    |
+    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |       raw      |       raw       |
+    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |       raw      |       raw       |
     | [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               |       raw      |       raw       |
-    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |       raw      |     как есть    |
+    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |       raw      |       raw       |
     | [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 |       raw      |       raw       |
-    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |       raw      |     как есть    |
-    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |       raw      |     как есть    |
-    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |    как есть    |     как есть    |
+    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |       raw      |       raw       |
+    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |       raw      |       raw       |
+    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |       raw      |       raw       |
     | [TSKV](/interfaces/formats/TSKV)                                                                             |       raw      |       raw       |
-    | [Pretty](/interfaces/formats/Pretty)                                                                         |        *       |       raw       |
-    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |        -       |       raw       |
-    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |        *       |       raw       |
-    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |        -       |       raw       |
-    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |        *       |       raw       |
-    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |        -       |       raw       |
-    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |        *       |       raw       |
-    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |        -       |       raw       |
-    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |        *       |       raw       |
-    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |        -       |       raw       |
-    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |        *       |       raw       |
-    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |        -       |       raw       |
-    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |        *       |       raw       |
+    | [Pretty](/interfaces/formats/Pretty)                                                                         |        -       |       raw       |
+    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |        *       |       raw       |
+    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |        -       |       raw       |
+    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |        *       |       raw       |
+    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |        -       |       raw       |
+    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |        *       |       raw       |
+    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |        -       |       raw       |
+    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |        *       |       raw       |
+    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |        -       |       raw       |
+    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |        *       |       raw       |
+    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |        -       |       raw       |
+    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |        *       |       raw       |
+    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |        -       |       raw       |
     | [Protobuf](/interfaces/formats/Protobuf)                                                                     |       raw      |       raw       |
     | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |       raw      |       raw       |
     | [ProtobufList](/interfaces/formats/ProtobufList)                                                             |       raw      |       raw       |
     | [Avro](/interfaces/formats/Avro)                                                                             |       raw      |       raw       |
-    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |       raw      |        -        |
+    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |       raw      |        *        |
     | [Parquet](/interfaces/formats/Parquet)                                                                       |       raw      |       raw       |
-    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |       raw      |        *        |
+    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |       raw      |        -        |
     | [Arrow](/interfaces/formats/Arrow)                                                                           |       raw      |       raw       |
     | [ArrowStream](/interfaces/formats/ArrowStream)                                                               |       raw      |       raw       |
     | [ORC](/interfaces/formats/ORC)                                                                               |       raw      |       raw       |
-    | [One](/interfaces/formats/One)                                                                               |       raw      |        -        |
+    | [One](/interfaces/formats/One)                                                                               |       raw      |        *        |
     | [Npy](/interfaces/formats/Npy)                                                                               |       raw      |       raw       |
     | [RowBinary](/interfaces/formats/RowBinary)                                                                   |      full      |       full      |
-    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         |      full      |      полная     |
-    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 |     полная     |      полный     |
-    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           |      full      |        *        |
-    | [Native](/interfaces/formats/Native)                                                                         |      full      |  необработанный |
-    | [Null](/interfaces/formats/Null)                                                                             |        -       |       raw       |
-    | [XML](/interfaces/formats/XML)                                                                               |        *       |       raw       |
+    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         |      full      |      полный     |
+    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 |     полный     |      полный     |
+    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           |     полный     |        -        |
+    | [Native](/interfaces/formats/Native)                                                                         |      full      |       raw       |
+    | [Null](/interfaces/formats/Null)                                                                             |        *       |       raw       |
+    | [XML](/interfaces/formats/XML)                                                                               |        -       |       raw       |
     | [CapnProto](/interfaces/formats/CapnProto)                                                                   |       raw      |       raw       |
-    | [LineAsString](/interfaces/formats/LineAsString)                                                             |    как есть    |       raw       |
-    | [Regexp](/interfaces/formats/Regexp)                                                                         |       raw      |        -        |
+    | [LineAsString](/interfaces/formats/LineAsString)                                                             |       raw      |       raw       |
+    | [Regexp](/interfaces/formats/Regexp)                                                                         |       raw      |        *        |
     | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |       raw      |       raw       |
-    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |       raw      |     как есть    |
-    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |       raw      |        *        |
-    | [DWARF](/interfaces/formats/DWARF)                                                                           |       raw      |        -        |
-    | [Markdown](/interfaces/formats/Markdown)                                                                     |        *       |       raw       |
-    | [Form](/interfaces/formats/Form)                                                                             |       raw      |        -        |
+    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |       raw      |       raw       |
+    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |       raw      |        -        |
+    | [DWARF](/interfaces/formats/DWARF)                                                                           |       raw      |        *        |
+    | [Markdown](/interfaces/formats/Markdown)                                                                     |        -       |       raw       |
+    | [Form](/interfaces/formats/Form)                                                                             |       raw      |        *        |
 
     ## API вставки \{#insert-api\}
 
@@ -500,7 +508,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **Возвращаемое значение**
 
-    Future типа `InsertResponse` — это результат операции и дополнительная информация, например метрики сервера.
+    Future типа `InsertResponse` — результат операции и дополнительная информация, например метрики на стороне сервера.
 
     **Примеры**
 
@@ -519,17 +527,17 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     Параметры конфигурации операций вставки.
 
-    **Методы конфигурации**
+    **Методы настройки**
 
-    | Метод                                           | Описание                                                                                                                                                                                                 |
+    | Метод                                           | Description                                                                                                                                                                                              |
     | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `setQueryId(String queryId)`                    | Устанавливает идентификатор запроса, который будет присвоен операции. Значение по умолчанию: `null`.                                                                                                     |
     | `setDeduplicationToken(String token)`           | Устанавливает токен дедупликации. Этот токен будет отправлен на сервер и может использоваться для идентификации запроса. Значение по умолчанию: `null`.                                                  |
     | `setInputStreamCopyBufferSize(int size)`        | Размер буфера копирования. Буфер используется при выполнении операций записи для копирования данных из входного потока, предоставленного пользователем, в выходной поток. Значение по умолчанию: `8196`. |
-    | `serverSetting(String name, String value)`      | Устанавливает индивидуальную настройку сервера для операции.                                                                                                                                             |
+    | `serverSetting(String name, String value)`      | Задаёт отдельные настройки сервера для операции.                                                                                                                                                         |
     | `serverSetting(String name, Collection values)` | Устанавливает отдельную серверную настройку с несколькими значениями для данной операции. Элементы коллекции должны быть значениями типа `String`.                                                       |
     | `setDBRoles(Collection dbRoles)`                | Задаёт роли БД, которые будут установлены перед выполнением операции. Элементы коллекции должны быть значениями типа `String`.                                                                           |
-    | `setOption(String option, Object value)`        | Устанавливает параметр конфигурации в «сыром» виде. Это не настройка сервера.                                                                                                                            |
+    | `setOption(String option, Object value)`        | Задаёт параметр настройки в необработанном формате. Это не настройка сервера.                                                                                                                            |
 
     ### InsertResponse \{#insertresponse\}
 
@@ -539,10 +547,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Этот объект необходимо закрыть как можно скорее, чтобы освободить соединение, так как соединение нельзя повторно использовать, пока все данные предыдущего ответа не будут полностью прочитаны.
     :::
 
-    | Метод                           | Описание                                                                                                    |
-    | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-    | `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                                     |
-    | `String getQueryId()`           | Возвращает идентификатор запроса, назначенный операции приложением (через настройки операции) или сервером. |
+    | Метод                           | Описание                                                                                                        |
+    | ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+    | `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                                         |
+    | `String getQueryId()`           | Возвращает идентификатор запроса, назначенный для операции приложением (через настройки операции или сервером). |
 
     ## API запросов \{#query-api\}
 
@@ -559,13 +567,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **Параметры**
 
-    `sqlQuery` — один SQL-оператор. Запрос отправляется на сервер как есть.
+    `sqlQuery` — одна SQL-команда. Запрос отправляется на сервер как есть.
 
     `settings` — настройки запроса.
 
     **Возвращаемое значение**
 
-    Future с типом `QueryResponse` — результирующий набор данных и дополнительная информация, например метрики на стороне сервера. Объект Response следует закрыть после чтения набора данных.
+    Future типа `QueryResponse` — результирующий набор данных и дополнительная информация, например метрики на стороне сервера. Объект Response следует закрыть после чтения набора данных.
 
     **Примеры**
 
@@ -607,15 +615,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **Параметры**
 
-    `sqlQuery` - SQL-выражение с плейсхолдерами `{}`.
+    `sqlQuery` — SQL-выражение с плейсхолдерами `{}`.
 
-    `queryParams` — словарь переменных для подстановки значений при формировании SQL-выражения на стороне сервера.
+    `queryParams` — map переменных для подстановки значений при формировании SQL-выражения на стороне сервера.
 
     `settings` — настройки запроса.
 
     **Возвращаемое значение**
 
-    Future типа `QueryResponse` — результирующий набор данных и дополнительная информация, например метрики на стороне сервера. Объект `Response` должен быть закрыт после полного чтения набора данных.
+    Future типа `QueryResponse` — результирующий набор данных и дополнительная информация, например метрики на стороне сервера. Объект Response следует закрыть после чтения набора данных.
 
     **Примеры**
 
@@ -645,7 +653,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
 
-    Запрашивает данные в формате `RowBinaryWithNamesAndTypes`. Возвращает результат в виде коллекции. Скорость чтения такая же, как у reader, но для хранения всего набора данных требуется больше памяти.
+    Запрашивает данные в формате `RowBinaryWithNamesAndTypes`. Возвращает результат в виде коллекции. Скорость чтения такая же, как у ридера, но для хранения всего датасета требуется больше памяти.
 
     **Сигнатуры**
 
@@ -696,8 +704,8 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | `setUseServerTimeZone(Boolean useServerTimeZone)` | Часовой пояс сервера (см. конфигурацию клиента) будет использоваться для разбора значений типов даты и времени в результате выполнения операции. По умолчанию `false`. |
     | `setUseTimeZone(String timeZone)`                 | Запрашивает, чтобы сервер использовал часовой пояс `timeZone` для преобразования времени. См. [session&#95;timezone](/operations/settings/settings#session_timezone).  |
     | `serverSetting(String name, String value)`        | Устанавливает отдельные настройки сервера для операции.                                                                                                                |
-    | `serverSetting(String name, Collection values)`   | Устанавливает отдельную серверную настройку с несколькими значениями для операции. Элементы коллекции должны быть значениями типа `String`.                            |
-    | `setDBRoles(Collection dbRoles)`                  | Задаёт роли БД, которые будут назначены перед выполнением операции. Элементы коллекции должны быть значениями типа `String`.                                           |
+    | `serverSetting(String name, Collection values)`   | Устанавливает отдельную серверную настройку с несколькими значениями для данной операции. Элементы коллекции должны быть значениями типа `String`.                     |
+    | `setDBRoles(Collection dbRoles)`                  | Задаёт роли БД, которые будут установлены перед выполнением операции. Элементы коллекции должны быть значениями типа `String`.                                         |
     | `setOption(String option, Object value)`          | Устанавливает параметр конфигурации в «сыром» виде. Это не настройка сервера.                                                                                          |
 
     ### QueryResponse \{#queryresponse\}
@@ -705,16 +713,16 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     Объект ответа, содержащий результат выполнения запроса. Доступен только в том случае, если клиент получил ответ от сервера.
 
     :::note
-    Этот объект следует закрыть как можно скорее, чтобы освободить соединение, поскольку соединение нельзя повторно использовать, пока все данные предыдущего ответа не будут полностью прочитаны.
+    Этот объект необходимо закрыть как можно скорее, чтобы освободить соединение, так как соединение нельзя повторно использовать, пока все данные предыдущего ответа не будут полностью прочитаны.
     :::
 
-    | Метод                           | Описание                                                                                                    |
-    | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-    | `ClickHouseFormat getFormat()`  | Возвращает формат, в котором закодированы данные в ответе.                                                  |
-    | `InputStream getInputStream()`  | Возвращает несжатый поток байтов с данными в указанном формате.                                             |
-    | `OperationMetrics getMetrics()` | Возвращает объект, содержащий метрики операции.                                                             |
-    | `String getQueryId()`           | Возвращает идентификатор запроса, назначенный операции приложением (через настройки операции) или сервером. |
-    | `TimeZone getTimeZone()`        | Возвращает часовой пояс, который должен использоваться для обработки типов Date/DateTime в ответе.          |
+    | Метод                           | Описание                                                                                                        |
+    | ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+    | `ClickHouseFormat getFormat()`  | Возвращает формат, в котором закодированы данные в ответе.                                                      |
+    | `InputStream getInputStream()`  | Возвращает несжатый поток байтов данных в указанном формате.                                                    |
+    | `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                                         |
+    | `String getQueryId()`           | Возвращает идентификатор запроса, назначенный для операции приложением (через настройки операции или сервером). |
+    | `TimeZone getTimeZone()`        | Возвращает часовой пояс, который следует использовать при обработке типов Date/DateTime в ответе.               |
 
     ### Примеры \{#examples\}
 
@@ -727,7 +735,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     Извлекает схему таблицы `table`.
 
-    **Подписи**
+    **Сигнатуры**
 
     ```java
     TableSchema getTableSchema(String table)
@@ -746,7 +754,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
 
-    Извлекает схему из SQL-выражения.
+    Извлекает схему из SQL-команды.
 
     **Сигнатуры**
 
@@ -804,15 +812,15 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     * метод `queryRecords()`, который возвращает `com.clickhouse.client.api.query.Records` — итератор по объектам `GenericRecord`. Этот метод использует потоковый подход
       (данные не загружаются в память) и применяет `GenericRecord` для доступа к данным.
 
-    **Примечание:** потоковый подход требует быстрого чтения; в противном случае может произойти тайм-аут записи на сервере, так как данные читаются непосредственно из сетевого потока.
+    **Примечание:** потоковый подход требует быстрого чтения; в противном случае может произойти таймаут записи на сервере, так как данные читаются непосредственно из сетевого потока.
 
     ### Чтение массивов \{#reading-arrays\}
 
     **Методы `ClickHouseBinaryFormatReader`**
 
     * `getList(...)` — читает любой `Array(...)` как `List<T>`. Оптимальный вариант по умолчанию для гибкого типизированного чтения. Поддерживает вложенные массивы.
-    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` — наиболее подходят для одномерных массивов значений, совместимых с примитивными типами.
-    * `getStringArray(...)` — для `Array(String)` (и значений перечислений, представленных в виде имён).
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - наиболее подходят для одномерных массивов значений, совместимых с примитивными типами.
+    * `getStringArray(...)` - для `Array(String)` (и значений перечислений, представленных в виде имён).
     * `getObjectArray(...)` - универсальный вариант для любого типа элементов `Array(...)`, включая вложенные массивы. Используйте его для чтения массивов с Nullable-значениями и вложенных массивов.
 
     Перегрузки на основе индекса и имени доступны для всех методов. Индексация начинается с 1. Методы, использующие индекс, выполняют прямой доступ к столбцу.
@@ -835,12 +843,12 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **Методы `GenericRecord`**
 
-    * `getList(...)` — читает любой `Array(...)` как `List<T>`. Хороший вариант по умолчанию для гибкого типизированного чтения. Поддерживает вложенные массивы.
+    * `getList(...)` - читает любой `Array(...)` как `List<T>`. Оптимальный вариант по умолчанию для гибкого типизированного чтения. Поддерживает вложенные массивы.
     * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` — наиболее подходят для одномерных массивов значений, совместимых с примитивными типами.
-    * `getStringArray(...)` — для `Array(String)` (и значений перечислений, заданных по имени).
-    * `getObjectArray(...)` - универсальный метод для любого типа элементов `Array(...)`, включая вложенные массивы. Используйте его для чтения массивов со значениями Nullable и вложенными массивами.
+    * `getStringArray(...)` - для `Array(String)` (и значений перечислений, представленных в виде имён).
+    * `getObjectArray(...)` - универсальный вариант для любого типа элементов `Array(...)`, включая вложенные массивы. Используйте его для чтения массивов с Nullable-значениями и вложенных массивов.
 
-    Перегрузки по индексу и по имени доступны для всех методов. Нумерация индексов начинается с 1. Методы, основанные на индексе, обеспечивают прямой доступ к столбцу.
+    Перегрузки на основе индекса и имени доступны для всех методов. Индексация начинается с 1. Методы, использующие индекс, выполняют прямой доступ к столбцу.
     Методы, основанные на имени, при каждом вызове выполняют поиск индекса.
 
     ````java
@@ -1285,7 +1293,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     См. [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
-    ## API вставки данных
+    ## API вставки
 
     ```java showLineNumbers
 
@@ -1359,7 +1367,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### Несколько запросов
 
-    Выполните несколько запросов в рабочем потоке последовательно в рамках одного сеанса:
+    Выполните несколько запросов в рабочем потоке последовательно в рамках одной сессии:
 
     ```java showLineNumbers
     CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
@@ -1441,23 +1449,23 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     Следующие параметры отвечают за настройку автоматического обнаружения:
 
-    | Свойство                        | Значение по умолчанию | Описание                                                                                                                                      |
-    | ------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-    | auto&#95;discovery              | `false`               | Определяет, должен ли клиент автоматически обнаруживать дополнительные узлы из системных таблиц и/или через clickhouse-keeper/ZooKeeper.      |
-    | node&#95;discovery&#95;interval | `0`                   | Интервал обнаружения узлов в миллисекундах; нулевое или отрицательное значение означает однократное обнаружение.                              |
-    | node&#95;discovery&#95;limit    | `100`                 | Максимальное количество узлов, которые могут быть обнаружены за один раз; нулевое или отрицательное значение означает отсутствие ограничения. |
+    | Свойство                        | По умолчанию | Описание                                                                                                                                      |
+    | ------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+    | auto&#95;discovery              | `false`      | Следует ли клиенту автоматически обнаруживать дополнительные узлы из системных таблиц и/или через clickhouse-keeper или ZooKeeper.            |
+    | node&#95;discovery&#95;interval | `0`          | Интервал обнаружения узлов в миллисекундах; нулевое или отрицательное значение означает однократное обнаружение.                              |
+    | node&#95;discovery&#95;limit    | `100`        | Максимальное количество узлов, которые могут быть обнаружены за один раз; нулевое или отрицательное значение означает отсутствие ограничений. |
 
     ### Балансировка нагрузки
 
     Java-клиент выбирает узел ClickHouse для отправки запросов в соответствии с политикой балансировки нагрузки. В общем случае политика балансировки нагрузки отвечает за следующее:
 
-    1. Выбрать узел из списка управляемых узлов.
+    1. Получить узел из списка управляемых узлов.
     2. Управление состоянием узла.
     3. При необходимости запланируйте фоновый процесс обнаружения узлов (если автообнаружение включено) и запуск проверки их работоспособности.
 
     Ниже приведён список параметров для настройки балансировки нагрузки:
 
-    | Свойство                      | Значение по умолчанию                    | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+    | Свойство                      | По умолчанию                             | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
     | ----------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | load&#95;balancing&#95;policy | `""`                                     | Политика балансировки нагрузки может иметь одно из следующих значений: <li>`firstAlive` — запрос отправляется первому работоспособному узлу из списка управляемых узлов</li><li>`random` — запрос отправляется случайному узлу из списка управляемых узлов </li><li>`roundRobin` — запросы по очереди отправляются на каждый узел из списка управляемых узлов</li><li>полное имя класса, реализующего интерфейс `ClickHouseLoadBalancingPolicy`, — пользовательская политика балансировки нагрузки</li>Если политика не указана, запрос отправляется на первый узел из списка управляемых узлов |
     | load&#95;balancing&#95;tags   | `""`                                     | Теги балансировки нагрузки для фильтрации узлов. Запросы отправляются только на узлы с указанными тегами.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -1470,11 +1478,11 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     Java-клиент предоставляет параметры конфигурации для настройки поведения отказоустойчивости и повторных попыток при сбоях запросов:
 
-    | Свойство                           | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                    |
-    | ---------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | failover                           | `0`                   | Максимальное число переключений (failover) для одного запроса. Нулевое или отрицательное значение означает отсутствие failover. При failover неуспешный запрос отправляется на другой узел (в соответствии с политикой балансировки нагрузки) для восстановления после сбоя.                |
-    | retry                              | `0`                   | Максимальное количество повторных попыток выполнения запроса. Нулевое или отрицательное значение означает, что повторные попытки не выполняются. Повторная отправка запроса выполняется на тот же узел и только в том случае, если сервер ClickHouse возвращает код ошибки `NETWORK_ERROR`. |
-    | repeat&#95;on&#95;session&#95;lock | `true`                | Следует ли повторно выполнять запрос, если сеанс заблокирован до истечения времени ожидания (в соответствии с `session_timeout` или `connect_timeout`). Неудачный запрос повторяется, если сервер ClickHouse возвращает код ошибки `SESSION_IS_LOCKED`                                      |
+    | Свойство                           | По умолчанию | Описание                                                                                                                                                                                                                                                                     |
+    | ---------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | failover                           | `0`          | Максимальное число переключений (failover) для одного запроса. Нулевое или отрицательное значение означает отсутствие failover. При failover неуспешный запрос отправляется на другой узел (в соответствии с политикой балансировки нагрузки) для восстановления после сбоя. |
+    | retry                              | `0`          | Максимальное количество повторных попыток для запроса. Нулевое или отрицательное значение означает отсутствие повторных попыток. Повторная попытка выполняется на том же узле и только в том случае, если сервер ClickHouse возвращает код ошибки `NETWORK_ERROR`            |
+    | repeat&#95;on&#95;session&#95;lock | `true`       | Следует ли повторно выполнять запрос, если сессия заблокирована, до истечения таймаута (в соответствии с `session_timeout` или `connect_timeout`). Неудачный запрос повторяется, если сервер ClickHouse возвращает код ошибки `SESSION_IS_LOCKED`                            |
 
     ### Добавление пользовательских HTTP-заголовков
 

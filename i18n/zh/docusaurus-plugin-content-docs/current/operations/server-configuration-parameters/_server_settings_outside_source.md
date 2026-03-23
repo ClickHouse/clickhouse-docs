@@ -332,14 +332,14 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 <SystemLogParameters />
 
 
-## custom&#95;settings&#95;prefixes \{#custom_settings_prefixes\}
+## custom_settings_prefixes \{#custom_settings_prefixes\}
 
 [自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。多个前缀之间必须以逗号分隔。
 
 **示例**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **另请参阅**
@@ -1893,16 +1893,16 @@ curl 127.0.0.1:9363/metrics
 
 访问控制系统可选增强功能的相关设置。
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                   | Default |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                          | `true`  |
-| `role_cache_expiration_time_seconds`            | 设置自上次访问以来角色在 Role Cache 中保留的时间（以秒为单位）。                                                                                                                                                                                                                                                        | `600`   |
-| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                    | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
-| `settings_constraints_replace_previous`         | 设置配置文件中针对某个设置的约束，是否会覆盖该设置上先前的约束（在其他配置文件中定义），包括那些未被新约束显式设置的字段。它还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                             | `true`  |
-| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时是否需要授权。                                                                                                                                                                                                                                                                         | `false` |
-| `throw_on_unmatched_row_policies`               | 设置当从某个具有行策略的表中读取数据时，如果没有任何行策略适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                                 | `false` |
-| `users_without_row_policies_can_read_rows`      | 设置没有宽松行策略的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了行策略，那么当此设置为 true 时，用户 B 将看到所有行；当此设置为 false 时，用户 B 将看不到任何行。                                                                                                                                                                     | `true`  |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                         | Default |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                                | `true`  |
+| `role_cache_expiration_time_seconds`            | 设置自上次访问以来角色在 Role Cache 中保留的时间 (以秒为单位) 。                                                                                                                                                                                                                                                            | `600`   |
+| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                          | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表 (`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`) 仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限 (例如 `SHOW USERS`) ，则相应的 system 表 (即 `system.users`) 将可访问。 | `true`  |
+| `settings_constraints_replace_previous`         | 设置配置文件中针对某个设置的约束，是否会覆盖该设置上先前的约束 (在其他配置文件中定义) ，包括那些未被新约束显式设置的字段。它还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                                 | `true`  |
+| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时是否需要授权。                                                                                                                                                                                                                                                                               | `false` |
+| `throw_on_unmatched_row_policies`               | 设置当从某个具有行策略的表中读取数据时，如果没有任何行策略适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                                       | `false` |
+| `users_without_row_policies_can_read_rows`      | 设置没有宽松行策略的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了行策略，那么当此设置为 true 时，用户 B 将看到所有行；当此设置为 false 时，用户 B 将看不到任何行。                                                                                                                                                                           | `true`  |
 
 示例：
 

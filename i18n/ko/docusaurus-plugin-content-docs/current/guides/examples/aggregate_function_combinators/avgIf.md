@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
 title: 'avgIf'
-description: 'avgIf 조합자(combinator)의 사용 예시'
+description: 'avgIf 결합자의 사용 예시'
 keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-
-
 # avgIf \{#avgif\}
-
-
 
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자(combinator)는 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 함수에 적용하여, 조건이 참인 행의 값들에 대한 산술 평균을
 집계 결합자 함수인 `avgIf`로 계산합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -31,7 +25,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -57,5 +52,6 @@ FROM sales;
 
 
 ## 같이 보기 \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 결합자`](/sql-reference/aggregate-functions/combinators#-if)

@@ -432,7 +432,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 引入版本：v25.10.0
 
-与 [`hasAnyTokens`](#hasAnyTokens) 类似，但当 `needle` 字符串或数组中的所有标记都与 `input` 字符串匹配时返回 1，否则返回 0。如果 `input` 是一列，则返回所有满足此条件的行。
+与 [`hasAnyTokens`](#hasAnyTokens) 类似，但当 `needle` 字符串或数组中的所有标记都与 `input` 字符串匹配时返回 1，否则返回 0。如果 `input` 是列，则返回满足此条件的所有行。
 
 :::note
 为获得最佳性能,应为列 `input` 定义 [text index](../../engines/table-engines/mergetree-family/textindexes)。
@@ -461,7 +461,7 @@ hasAllTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `unicodeWord`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -561,7 +561,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys 示例**
+**使用 mapKeys 的示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -573,7 +573,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues 示例**
+**使用 mapValues 的示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -599,7 +599,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 在搜索之前,函数会对以下内容进行分词(tokenize):
 
 * `input` 参数 (始终) ，以及
-* `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出) 
+* `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出)
   使用为 text 索引指定的分词器。
   如果该列未定义 text 索引，则会使用 `splitByNonAlpha` 分词器。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个 token——不会进行额外的分词。
@@ -619,7 +619,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable) 或 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array) 或 [`Array(Nullable(String))`](/sql-reference/data-types/array) 或 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记 (token) 。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `unicodeWord`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## 説明 \{#description\}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) および [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) および [`If`](/sql-reference/aggregate-functions/combinators#-if)
 コンビネータは、[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 関数に適用でき、`quantilesTimingArrayIf` 集約コンビネータ関数を使用して、
 条件が真の行に対して配列内のタイミング値の分位数を計算できます。
@@ -26,7 +26,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
@@ -59,6 +60,8 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
+
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

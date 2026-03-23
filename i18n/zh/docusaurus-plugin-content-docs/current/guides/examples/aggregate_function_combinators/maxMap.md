@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxMap'
 title: 'maxMap'
-description: 'maxMap 组合子使用示例'
+description: '使用 maxMap 组合器的示例'
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'
 doc_type: 'reference'
@@ -24,7 +24,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -61,5 +62,6 @@ GROUP BY timeslot;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`max`](/sql-reference/aggregate-functions/reference/max)
+* [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)

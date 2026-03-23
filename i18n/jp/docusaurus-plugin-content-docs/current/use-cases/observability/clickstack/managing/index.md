@@ -13,12 +13,13 @@ keywords: ['managing ClickStack', 'performance', 'materialized views', 'admin co
 
 ## 管理者ガイド \{#admin-guides\}
 
-| セクション | 説明 |
-|--------|-------------|
-| [基本的な管理](/use-cases/observability/clickstack/admin) | ClickStack で一般的な管理タスクを実行するための入門ガイド。 |
-| [本番運用への移行](/use-cases/observability/clickstack/production) | ClickStack を本番環境で稼働させる前に推奨される手順とベストプラクティス。 |
+| セクション                                                                        | 説明                                                       |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------- |
+| [基本的な管理](/use-cases/observability/clickstack/admin)                          | ClickStack で一般的な管理タスクを実行するための入門ガイド。                      |
+| [リソースの見積もり](/use-cases/observability/clickstack/estimating-resources)        | 取り込み量に基づいて Managed ClickStack のコンピュートリソースをサイジングするためのガイド。 |
+| [本番運用への移行](/use-cases/observability/clickstack/production)                   | ClickStack を本番環境で稼働させる前に推奨される手順とベストプラクティス。               |
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | ClickStack で materialized view を使用してクエリ性能を向上させるための詳細ガイド。 |
-| [パフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning) | 大規模ワークロード向けに ClickStack をチューニングするための包括的なガイド。 |
+| [パフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning)      | 大規模ワークロード向けに ClickStack をチューニングするための包括的なガイド。             |
 
 ## Core ClickHouse concepts \{#core-concepts\}
 
