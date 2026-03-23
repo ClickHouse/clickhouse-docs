@@ -26,8 +26,7 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-)
-ENGINE = MergeTree
+) ENGINE = MergeTree
 ORDER BY ();
 
 INSERT INTO api_responses VALUES

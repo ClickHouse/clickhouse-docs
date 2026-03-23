@@ -25,8 +25,7 @@ CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
     is_successful UInt8
-)
-ENGINE = MergeTree
+) ENGINE = MergeTree
 ORDER BY ();
 
 INSERT INTO login_attempts VALUES

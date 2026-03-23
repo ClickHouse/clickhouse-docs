@@ -25,8 +25,7 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-)
-ENGINE = MergeTree
+) ENGINE = MergeTree
 ORDER BY ();
 
 INSERT INTO sales VALUES

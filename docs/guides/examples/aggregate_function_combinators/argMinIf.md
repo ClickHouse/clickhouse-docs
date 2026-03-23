@@ -30,8 +30,7 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-)
-ENGINE = MergeTree
+) ENGINE = MergeTree
 ORDER BY ();
 
 INSERT INTO product_prices VALUES

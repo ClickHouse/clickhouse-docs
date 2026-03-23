@@ -26,8 +26,7 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-)
-ENGINE = MergeTree
+) ENGINE = MergeTree
 ORDER BY ();
 
 INSERT INTO metrics VALUES

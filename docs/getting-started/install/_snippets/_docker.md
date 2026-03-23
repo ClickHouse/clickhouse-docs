@@ -194,7 +194,6 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32)
-    ENGINE = MergeTree
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
     ORDER BY ();
 EOSQL
