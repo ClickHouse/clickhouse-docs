@@ -1634,7 +1634,7 @@ See the [Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/e
 
 #### Dapper.Contrib {#dapper-contrib}
 
-`GetAll<T>()` and `Get<T>(id)` work. `Insert<T>()` does not — it generates SQL Server syntax (`SCOPE_IDENTITY`, square brackets). It is recommended to use the `ClickHouseClient` native `InsertBinaryAsync` method instead.
+`GetAll<T>()` and `Get<T>(id)` work. `Insert<T>()` does not — it generates SQL Server syntax (`SCOPE_IDENTITY`, `[]`). It is recommended to use the `ClickHouseClient` native `InsertBinaryAsync` method instead.
 
 ```csharp
 [Table("test.users")]
