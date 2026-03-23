@@ -549,6 +549,109 @@ The `<server>` section is used for incoming client connections on the secure Kee
 The certificate paths above use `/etc/clickhouse-keeper/certs/` which is the typical path for standalone Keeper installations. If you installed Keeper using a different path, adjust accordingly. The certificates themselves are the same ones created in [step 2](#2-create-tls-certificates).
 :::
 
+## OpenSSL verification modes and certificate handlers {#openssl-verification-modes}
+
+The `<openSSL>` configuration supports several options for `<verificationMode>` and `<invalidCertificateHandler>` that control how ClickHouse validates TLS certificates. These settings apply to clickhouse-server, clickhouse-client, and standalone ClickHouse Keeper.
+
+### Verification modes {#verification-modes}
+
+Set `<verificationMode>` inside the `<server>` or `<client>` section of `<openSSL>`:
+
+| Mode | Description |
+|------|-------------|
+| `none` | No certificate verification. The connection is encrypted but the peer's identity isn't checked. **Insecure — use only for testing.** |
+| `relaxed` | Verifies the peer certificate if one is presented, but doesn't fail if no certificate is provided. This is the mode used in the examples above. |
+| `once` | **Server-side:** requests and verifies the client certificate only during the initial handshake — subsequent renegotiations don't request a new certificate. **Client-side:** behaves the same as `relaxed`. |
+| `strict` | Requires and fully verifies the peer certificate. The connection fails if the certificate is missing, expired, or not signed by a trusted CA. **Recommended for production.** |
+
+### Invalid certificate handlers {#invalid-certificate-handlers}
+
+Set `<invalidCertificateHandler>` inside the `<server>` or `<client>` section of `<openSSL>`. This handler determines what happens when certificate verification fails. On the server side, it controls the response to invalid client certificates. On the client side, it controls the response to invalid server certificates:
+
+| Handler | Description |
+|---------|-------------|
+| `RejectCertificateHandler` | Rejects the connection if the certificate is invalid. This is the default and recommended setting. |
+| `AcceptCertificateHandler` | Accepts the connection even if the certificate is invalid. **Insecure — use only for testing.** |
+
+### Example: disabling certificate verification {#disabling-certificate-verification}
+
+:::warning
+Disabling certificate verification removes TLS identity checks and exposes connections to man-in-the-middle attacks. Only use this configuration in isolated development or testing environments.
+:::
+
+To skip certificate verification entirely (for example, when using self-signed certificates in a test environment), set `verificationMode` to `none` and use `AcceptCertificateHandler`.
+
+For `clickhouse-client`, you can also use the `--accept-invalid-certificate` CLI flag, which applies both settings automatically.
+
+**clickhouse-client** (`/etc/clickhouse-client/config.xml`):
+
+```xml
+<openSSL>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**clickhouse-server** (`config.xml` or a file in `config.d/`). The `<server>` section still requires certificate and key paths because the server must present its own certificate to clients, even when it isn't verifying theirs:
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-server/certs/server.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-server/certs/server.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-server/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**Standalone ClickHouse Keeper** (Keeper configuration file):
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/keeper.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/keeper.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
 ## Summary {#summary}
 
 This article focused on getting a ClickHouse environment configured with TLS. The settings will differ for different requirements in production environments; for example, certificate verification levels, protocols, ciphers, etc. But you should now have a good understanding of the steps involved in configuring and implementing secure connections.
