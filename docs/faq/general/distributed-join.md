@@ -19,5 +19,3 @@ When the data isn't co-located, ClickHouse allows a broadcast JOIN, when parts o
 As of 2025, ClickHouse doesn't perform the shuffle-join algorithm, which means redistribution of the both sides of the join over network across the cluster according to the join keys.
 
 For more information on joins in ClickHouse, more generally see the ["JOIN clause"](/sql-reference/statements/select/join#supported-types-of-join) page.
-
-
