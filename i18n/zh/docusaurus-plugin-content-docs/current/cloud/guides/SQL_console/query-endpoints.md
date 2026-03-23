@@ -91,7 +91,7 @@ import TabItem from '@theme/TabItem';
 
   选择 API key 后，你将被要求：
 
-  * 选择用于运行查询的 Database 角色 (`Full access`、`Read only` 或 `Create a custom role`) 
+  * 选择用于运行查询的 Database 角色 (`Full access`、`Read only` 或 `Create a custom role`)
   * 指定允许跨域资源共享 (CORS) 的域名
 
   选择这些选项后，查询 API endpoint 会被自动创建。

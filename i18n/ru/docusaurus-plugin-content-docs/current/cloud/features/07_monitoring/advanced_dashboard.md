@@ -2,7 +2,7 @@
 description: 'Расширенная панель мониторинга в ClickHouse Cloud'
 keywords: ['мониторинг', 'обсервабилити', 'расширенная панель мониторинга', 'панель мониторинга', 'панель мониторинга обсервабилити']
 sidebar_label: 'Расширенная панель мониторинга'
-sidebar_position: 45
+sidebar_position: 7
 slug: /cloud/manage/monitor/advanced-dashboard
 title: 'Расширенная панель мониторинга в ClickHouse Cloud'
 doc_type: 'guide'

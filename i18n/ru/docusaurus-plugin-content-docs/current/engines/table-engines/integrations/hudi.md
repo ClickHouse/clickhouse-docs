@@ -1,9 +1,9 @@
 ---
-description: 'Этот движок обеспечивает доступ только для чтения к существующим таблицам Apache Hudi в Amazon S3.'
+description: 'Этот движок предоставляет доступ только для чтения к существующим таблицам Apache Hudi в Amazon S3.'
 sidebar_label: 'Hudi'
 sidebar_position: 86
 slug: /engines/table-engines/integrations/hudi
-title: 'Движок таблиц Hudi'
+title: 'Табличный движок Hudi'
 doc_type: 'reference'
 ---
 
@@ -17,13 +17,14 @@ doc_type: 'reference'
 
 ```sql
 CREATE TABLE hudi_table
-    ENGINE = Hudi(url, [aws_access_key_id, aws_secret_access_key,])
+    ENGINE = Hudi(url, [aws_access_key_id, aws_secret_access_key,] [extra_credentials])
 ```
 
 **Параметры движка**
 
 * `url` — URL бакета с путём к существующей таблице Hudi.
 * `aws_access_key_id`, `aws_secret_access_key` — долгосрочные учетные данные пользователя учётной записи [AWS](https://aws.amazon.com/). Их можно использовать для аутентификации запросов. Параметр является необязательным. Если учетные данные не указаны, используются значения из файла конфигурации.
+* `extra_credentials` — Необязательно. Используется для передачи `role_arn` для доступа на основе ролей в ClickHouse Cloud. См. [Secure S3](/cloud/data-sources/secure-s3) для настройки.
 
 Параметры движка можно задать с помощью [Named Collections](/operations/named-collections.md).
 
@@ -53,4 +54,4 @@ CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 
 ## См. также \{#see-also\}
 
-- [табличная функция Hudi](/sql-reference/table-functions/hudi.md)
+* [табличная функция Hudi](/sql-reference/table-functions/hudi.md)

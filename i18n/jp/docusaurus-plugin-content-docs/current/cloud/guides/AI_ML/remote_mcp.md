@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'リモート MCP サーバーを有効化する'
-title: 'ClickHouse Cloud のリモート MCP サーバーを有効化する'
+sidebar_label: 'リモート MCP サーバーを有効にする'
+title: 'ClickHouse Cloud Remote MCP Server を有効にして接続する'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse Cloud のリモート MCP を有効化して使用する方法を説明します。'
+description: 'このガイドでは、ClickHouse Cloud Remote MCP を有効にして使用する方法を説明します'
 keywords: ['AI', 'ClickHouse Cloud', 'MCP']
 show_related_blogs: true
 sidebar_position: 1
@@ -22,74 +22,137 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-# ClickHouse Cloud リモート MCP サーバーの有効化 \{#enabling-the-clickhouse-cloud-remote-mcp-server\}
+このガイドでは、ClickHouse Cloud Remote MCP Server を有効にし、一般的な開発ツールで使用できるように設定する方法を説明します。
 
-> このガイドでは、ClickHouse Cloud リモート MCP サーバーを有効化して使用する方法を説明します。ここでは例として Claude Code を MCP クライアントとして使用しますが、MCP をサポートする任意の LLM クライアントを使用できます。
+**前提条件**
 
-<VerticalStepper headerLevel="h2">
+* 稼働中の [ClickHouse Cloud サービス](/getting-started/quick-start/cloud)
+* 任意の IDE または AI エージェント型開発ツール
 
-## ClickHouse Cloud サービスでリモート MCP サーバーを有効化する \{#enable-remote-mcp-server\}
 
-1. ClickHouse Cloud サービスに接続し、`Connect` ボタンをクリックして、対象サービスの Remote MCP Server を有効化します。
+## Cloud 向けのリモートMCPサーバーを有効にする \{#enable-remote-mcp-server\}
 
-<Image img={img1} alt="Connect モーダルで MCP を選択" size="md"/>
+リモートMCPサーバーを有効にする対象の ClickHouse Cloud サービスに接続し、左側のメニューにある `Connect` ボタンをクリックします。
+接続の詳細が表示されたボックスが開きます。
 
-<Image img={img2} alt="MCP Server を有効化" size="md"/>
+&quot;Connect with MCP&quot; を選択します:
 
-2. `Connect` ビュー、または以下に表示されている ClickHouse Cloud MCP Server の URL をコピーします。
+<Image img={img1} alt="ConnectモーダルでMCPを選択" size="md" />
+
+ボタンをオンに切り替えて、そのサービスの MCP を有効にします:
+
+<Image img={img2} alt="MCPサーバーを有効化" size="md" />
+
+表示された URL をコピーします。これは以下のものと同じです:
 
 ```bash
 https://mcp.clickhouse.cloud/mcp
 ```
 
-## Claude Code に ClickHouse MCP Server を追加する \{#add-clickhouse-mcp-server-claude-code\}
 
-1. 作業ディレクトリ内で、次のコマンドを実行して ClickHouse Cloud MCP Server の設定を Claude Code に追加します。この例では、Claude Code の設定内で MCP サーバーに `clickhouse_cloud` という名前を付けています。
+## 開発用にリモートMCPをセットアップする \{#setup-clickhouse-cloud-remote-mcp-server\}
+
+以下から使用するIDEまたはツールを選択し、該当するセットアップ手順に従ってください。
+
+### Claude Code \{#claude-code\}
+
+作業ディレクトリで次のコマンドを実行し、ClickHouse Cloud MCP Server の設定を Claude Code に追加します。
 
 ```bash
-claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
+claude mcp add --transport http clickhouse-cloud https://mcp.clickhouse.cloud/mcp
 ```
 
-1b. 使用している MCP クライアントによっては、JSON 設定を直接編集することもできます
+次に、Claude Code を起動します。
+
+```bash
+claude
+```
+
+次のコマンドを実行して、MCPサーバーを一覧表示します。
+
+```bash
+/mcp
+```
+
+`clickhouse-cloud` を選択し、ClickHouse Cloud の認証情報を使用して OAuth で認証します。
+
+### Claude Web UI \{#claude-web\}
+
+1. **Customize** &gt; **Connectors** に移動します
+2. 「+」アイコンをクリックし、**Add custom connector** を選択します
+3. カスタムコネクタに `clickhouse-cloud` などの名前を付けて追加します
+4. 新しく追加した `clickhouse-cloud` コネクタをクリックし、**Connect** をクリックします
+5. OAuth 経由で ClickHouse Cloud の認証情報を使用して認証します
+
+### Cursor \{#cursor\}
+
+1. [Cursor Marketplace](https://cursor.com/marketplace) でMCPサーバーを探してインストールします。
+2. ClickHouseを検索し、任意のサーバーで「Add to Cursor」をクリックしてインストールします
+3. OAuthで認証します。
+
+### Visual Studio Code \{#visual-studio-code\}
+
+次の設定を `.vscode/mcp.json` に追加してください。
 
 ```json
 {
-  "mcpServers": {
-    "clickhouse-remote": {
+  "servers": {
+    "clickhouse-cloud": {
+      "type": "http",
       "url": "https://mcp.clickhouse.cloud/mcp"
     }
   }
 }
 ```
 
-2. 作業ディレクトリ内で Claude Code を起動する
+詳細は、[Visual Studio Code のドキュメント](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)を参照してください
 
-```bash
-[user@host ~/Documents/repos/mcp_test] $ claude
+
+### Windsurf \{#windsurf\}
+
+以下の設定で `mcp_config.json` ファイルを編集します。
+
+```json
+{
+  "mcpServers": {
+    "clickhouse-cloud": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.clickhouse.cloud/mcp"]
+    }
+  }
+}
 ```
 
-## OAuth を使用して ClickHouse Cloud に対して認証する \{#authenticate-via-oauth\}
+詳細については、[Windsurf ドキュメント](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp)を参照してください。
 
-1. 最初のセッションでは、Claude Code がブラウザウィンドウを開きます。そうでない場合は、Claude Code で `/mcp` コマンドを実行し、`clickhouse_cloud` MCP サーバーを選択して接続を開始できます。
+### Zed \{#zed\}
 
-2. ClickHouse Cloud の認証情報を使用して認証します。
+ClickHouse をカスタムサーバーとして追加します。
+Zed の設定の **context&#95;servers** に、次の内容を追加します。
 
-<Image img={img3} alt="OAuth 接続フロー" size="sm"/>
+```json
+{
+  "context_servers": {
+    "clickhouse-cloud": {
+      "url": "https://mcp.clickhouse.cloud/mcp"
+    }
+  }
+}
+```
 
-<Image img={img4} alt="OAuth 接続フローの成功" size="sm"/>
+Zed は、初めてサーバーに接続すると、OAuth による認証を求めるプロンプトを表示するはずです。
+詳細については、[Zed のドキュメント](https://zed.dev/docs/ai/mcp#as-custom-servers)を参照してください
 
-## Claude Code から ClickHouse Cloud Remote MCP Server を使用する \{#use-rempte-mcp-from-claude-code\}
 
-1. Claude Code でリモート MCP サーバーが接続されていることを確認します。
+### Codex \{#codex\}
 
-<Image img={img5} alt="Claude Code MCP 成功" size="md"/>
+CLI を使用して ClickHouse Cloud MCP サーバーを追加するには、次のコマンドを実行します。
 
-<Image img={img6} alt="Claude Code MCP の詳細" size="md"/>
+```bash
+codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
+```
 
-2. おめでとうございます。これで Claude Code から ClickHouse Cloud Remote MCP Server を使用できるようになりました。
 
-<Image img={img7} alt="Claude Code MCP の利用例" size="md"/>
+## 関連コンテンツ \{#related-content\}
 
-この例では Claude Code を使用しましたが、同様の手順に従うことで、MCP をサポートする任意の LLM クライアントを使用できます。
-
-</VerticalStepper>
+* [ClickHouse agent のスキル](https://github.com/ClickHouse/agent-skills)

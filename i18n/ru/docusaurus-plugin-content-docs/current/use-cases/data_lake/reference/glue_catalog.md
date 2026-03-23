@@ -5,38 +5,43 @@ title: 'Каталог AWS Glue'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве мы пошагово покажем, как выполнять запросы к
- вашим данным в бакетах S3 с помощью ClickHouse и AWS Glue Data Catalog.'
-keywords: ['Glue', 'Озеро данных']
+ вашим данным в S3 бакетах с помощью ClickHouse и каталога данных Glue.'
+keywords: ['Glue', 'озера данных']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge />
+<BetaBadge/>
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue,
-Polaris и т.д.). В этом руководстве мы пошагово разберём, как выполнять
-запросы к вашим данным в S3-бакетах, используя ClickHouse и Glue Data Catalog.
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris, 
+и т. д.). В этом руководстве мы пошагово разберём, как выполнять запросы к вашим данным в 
+S3 бакетах, используя ClickHouse и каталог данных Glue.
 
 :::note
-Glue поддерживает множество различных форматов таблиц, но в рамках этой
-интеграции доступны только таблицы Iceberg.
+Glue поддерживает множество различных форматов таблиц, но в рамках этой интеграции поддерживаются только таблицы Iceberg.
 :::
 
 ## Настройка Glue в AWS \{#configuring\}
 
-Чтобы подключиться к каталогу Glue, необходимо определить регион вашего 
-каталога и указать ключ доступа (access key) и секретный ключ (secret key).
+Чтобы подключиться к каталогу данных Glue, вам потребуется:
+
+- регион AWS вашего каталога
+- Access Key ID/Access Secret Key (v25.12+) или AWS Role ARN (v26.2+)
+
+При аутентификации с помощью AWS Role дополнительным необязательным полем является AWS Role Session Name. 
 
 :::note
-В настоящее время каталог Glue поддерживает только аутентификацию с помощью access key и secret key, но в будущем мы добавим поддержку дополнительных методов аутентификации.
+Необходимо включить это с помощью `SET allow_database_glue_catalog = 1;`
 :::
 
 ## Создание подключения между каталогом данных Glue и ClickHouse \{#connecting\}
 
-После настройки Unity Catalog и аутентификации создайте
-подключение между ClickHouse и Unity Catalog.
+После настройки AWS Glue Catalog вы можете пройти аутентификацию и установить 
+подключение между ClickHouse и AWS Glue Catalog.
+
+### Ключ доступа и секретный ключ AWS \{#aws-access-key-secret\}
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -47,6 +52,20 @@ SETTINGS
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
 ```
+
+
+### Роль AWS \{#aws-role\}
+
+```sql title="Query"
+CREATE DATABASE glue
+ENGINE = DataLakeCatalog
+SETTINGS
+    catalog_type = 'glue',
+    region = 'us-west-2',
+    aws_role_arn = 'arn:aws:iam::1111111111:role/glue_role',
+    aws_role_session_name = 'clickhouse-glue-session' 
+```
+
 
 ## Выполнение запросов к каталогу данных Glue с помощью ClickHouse \{#query-glue-catalog\}
 
@@ -201,9 +220,10 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   └─────────────────────────────────────────────────────────┘
 ```
 
-## Загрузка данных из вашего Data Lake в ClickHouse \{#loading-data-into-clickhouse\}
+## Загрузка данных из вашего озера данных в ClickHouse \{#loading-data-into-clickhouse\}
 
-Если вам нужно загрузить данные из Databricks в ClickHouse, сначала создайте локальную таблицу ClickHouse:
+Если вам нужно загрузить данные из Glue в ClickHouse, сначала создайте 
+локальную таблицу ClickHouse:
 
 ```sql title="Query"
 CREATE TABLE hits

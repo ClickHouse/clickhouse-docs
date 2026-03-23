@@ -1681,7 +1681,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` と `Get<T>(id)` は動作します。`Insert<T>()` は動作しません。SQL Server の構文 (`SCOPE_IDENTITY`、角括弧) を生成するためです。代わりに、`ClickHouseClient` ネイティブの `InsertBinaryAsync` メソッドを使用することを推奨します。
+`GetAll<T>()` と `Get<T>(id)` は動作します。`Insert<T>()` は動作しません。SQL Server の構文 (`SCOPE_IDENTITY`、`[]`) を生成するためです。代わりに、`ClickHouseClient` ネイティブの `InsertBinaryAsync` メソッドを使用することを推奨します。
 
 ```csharp
 [Table("test.users")]
