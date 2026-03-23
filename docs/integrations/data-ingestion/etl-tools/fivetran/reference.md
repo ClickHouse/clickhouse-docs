@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Reference'
+sidebar_label: 'Technical Reference'
 slug: /integrations/fivetran/reference
 sidebar_position: 3
 description: 'Type mappings, table engine details, metadata columns, and debugging queries for the Fivetran ClickHouse destination.'

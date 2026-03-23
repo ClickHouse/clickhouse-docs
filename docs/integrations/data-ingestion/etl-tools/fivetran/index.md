@@ -55,9 +55,8 @@ The destination connector is developed and maintained together by ClickHouse and
 - Role-based grants are not fully supported. The connector's grants check only queries direct user grants. Use [direct grants](/integrations/fivetran/troubleshooting#role-based-grants) instead.
 
 ## Related pages {#related-pages}
-- [Setup Guide](/integrations/fivetran/setup-guide): step-by-step configuration instructions
-- [Technical Reference](/integrations/fivetran/reference): type mappings, table engines, metadata columns
-- [Troubleshooting & Best Practices](/integrations/fivetran/troubleshooting): common errors and optimization tips
+- [Technical Reference](/integrations/fivetran/reference): type mappings, table engines, metadata columns and advanced configurations
+- [Troubleshooting & Best Practices](/integrations/fivetran/troubleshooting): common errors and optimization tips and debugging queries
 - [ClickHouse Fivetran destination on GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination)
 
 ## Setup guide {#setup-guide}

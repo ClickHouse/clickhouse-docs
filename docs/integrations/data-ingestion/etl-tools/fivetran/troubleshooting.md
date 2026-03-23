@@ -28,7 +28,7 @@ code: 62, message: Max query size exceeded
 
 **Solution:**
 
-Lower `mutation_batch_size` and `hard_delete_batch_size` in the [advanced configuration](/docs/en/integrations/data-ingestion/etl-tools/fivetran/reference#advanced-configuration) file. Both default to `1500` and accept values between `200` and `1500`.
+Lower `mutation_batch_size` and `hard_delete_batch_size` in the [advanced configuration](/integrations/fivetran/reference#advanced-configuration) file. Both default to `1500` and accept values between `200` and `1500`.
 
 ---
 
@@ -154,7 +154,7 @@ ClickHouse uses `SharedReplacingMergeTree` for Fivetran destination tables. Dupl
 SELECT * FROM schema.table FINAL WHERE ...
 ```
 
-See the [data deduplication](/integrations/fivetran/reference#deduplication) reference for more details.
+See the [table-structure](/integrations/fivetran/reference#table-structure) reference for more details.
 
 ### Primary key and ORDER BY optimization {#primary-key-optimization}
 
