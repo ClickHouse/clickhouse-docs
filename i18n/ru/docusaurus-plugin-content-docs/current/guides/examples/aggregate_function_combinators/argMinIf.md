@@ -14,8 +14,8 @@ doc_type: 'reference'
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin),
 чтобы с помощью агрегатной функции-комбинатора `argMinIf` найти значение `arg`, которое соответствует минимальному значению `val` среди строк, для которых условие истинно.
 
-Функция `argMinIf` полезна, когда нужно найти значение, связанное 
-с минимальным значением `val` в наборе данных, но только для строк, которые удовлетворяют определённому 
+Функция `argMinIf` полезна, когда нужно найти значение, связанное
+с минимальным значением `val` в наборе данных, но только для строк, которые удовлетворяют определённому
 условию.
 
 ## Пример использования \{#example-usage\}
@@ -29,7 +29,8 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO product_prices VALUES
     (1, 10.99, '2024-01-01 10:00:00', 1),
@@ -60,7 +61,8 @@ GROUP BY product_id;
 ```
 
 ## См. также \{#see-also\}
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
+* [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

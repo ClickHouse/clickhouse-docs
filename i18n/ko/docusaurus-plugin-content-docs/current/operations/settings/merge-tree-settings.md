@@ -270,10 +270,10 @@ true인 경우, 이 레플리카는 파트를 머지하지 않고 항상 다른 
 
 ## auto_statistics_types \{#auto_statistics_types\}
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "minmax, uniq"},{"label": "기본적으로 자동 통계를 활성화"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "minmax, uniq"},{"label": "기본적으로 자동 통계를 활성화"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": ""},{"label": "새 설정"}]}]}/>
 
-적용 가능한 모든 컬럼에 대해 자동으로 계산할 통계 유형의 쉼표로 구분된 목록입니다.
-지원되는 통계 유형: tdigest, countmin, minmax, uniq.
+적합한 모든 컬럼에서 자동으로 계산할 통계 타입의 쉼표로 구분된 목록입니다.
+지원되는 통계 타입: tdigest, countmin, minmax, uniq.
 
 ## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 
@@ -2453,6 +2453,27 @@ ClickHouse Keeper에서 제거됩니다.
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
 더 이상 사용되지 않는 설정으로, 아무 작업도 수행하지 않습니다.
+
+## replicated_fetches_min_part_level \{#replicated_fetches_min_part_level\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "새 설정"}]}]} />
+
+다른 레플리카에서 가져올 최소 파트 레벨입니다. 이 임곗값보다 레벨이 낮은 파트는 보류됩니다
+(복제 대기열에 유지되며 각 스케줄링 주기마다 다시 평가되고, 영구적으로 건너뛰지는 않습니다).
+1을 사용하면 레벨 0(머지되지 않은) 파트 가져오기를 보류하여 대량 수집 중 복제 오버헤드를 줄일 수 있습니다.
+기본값: 0(레벨과 관계없이 모든 파트를 가져옵니다).
+
+## replicated_fetches_min_part_level_timeout_seconds \{#replicated_fetches_min_part_level_timeout_seconds\}
+
+<SettingsInfoBlock type="UInt64" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "새 설정"}]}]} />
+
+replicated&#95;fetches&#95;min&#95;part&#95;level보다 낮은 파트도 가져오도록 전환되는 제한 시간이며, 단위는 초입니다.
+시간 제한을 비활성화하려면 0을 사용하십시오(최소 레벨보다 낮은 파트는 머지될 때까지 무기한 연기됩니다).
+기본값: 300(5분 후 강제로 가져옵니다).
 
 ## replicated_max_mutations_in_one_entry \{#replicated_max_mutations_in_one_entry\}
 

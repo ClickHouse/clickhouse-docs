@@ -376,9 +376,9 @@ csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
 
 ## 고급 및 권장 사용법 \{#advanced-and-recommended-usage\}
 
-- 최적의 성능을 위해 DataStream 요소 타입이 **Generic 타입이 아니어야 합니다**. Flink의 타입 구분에 대해서는 [여기](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class)를 참조하십시오. Generic이 아닌 요소는 Kryo로 인해 발생하는 직렬화 오버헤드를 피할 수 있어 ClickHouse로의 처리량을 향상시킵니다.
-- `maxBatchSize`는 최소 1000으로, 이상적으로는 10,000~100,000 범위로 설정하는 것을 권장합니다. 자세한 내용은 [대량 삽입에 대한 이 가이드](https://clickhouse.com/docs/optimize/bulk-inserts)를 참조하십시오.
-- ClickHouse에서 OLTP 스타일의 중복 제거 또는 upsert를 수행하려면 [이 문서 페이지](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication)를 참조하십시오. _참고: 이는 아래의 [중복 배치](#duplicate_batches)에서 자세히 설명하는, 재시도 시 발생하는 배치 중복 제거와 혼동하면 안 됩니다._
+* 최적의 성능을 위해 DataStream 요소 타입이 **Generic 타입이 아니어야 합니다**. Flink의 타입 구분에 대해서는 [여기](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class)를 참조하십시오. Generic이 아닌 요소는 Kryo로 인해 발생하는 직렬화 오버헤드를 피할 수 있어 ClickHouse로의 처리량을 향상시킵니다.
+* `maxBatchSize`는 최소 1000으로, 이상적으로는 10,000~100,000 범위로 설정하는 것을 권장합니다. 자세한 내용은 [대량 삽입에 대한 이 가이드](/optimize/bulk-inserts)를 참조하십시오.
+* ClickHouse에서 OLTP 스타일의 중복 제거 또는 upsert를 수행하려면 [이 문서 페이지](/guides/developer/deduplication#options-for-deduplication)를 참조하십시오. *참고: 이는 재시도 시 발생하는 배치 중복 제거와 혼동하면 안 됩니다.*
 
 ## 문제 해결 \{#troubleshooting\}
 

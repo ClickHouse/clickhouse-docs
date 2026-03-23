@@ -278,7 +278,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## auto_statistics_types \{#auto_statistics_types\}
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "minmax, uniq"},{"label": "Автоматическое включение статистики по умолчанию"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "minmax, uniq"},{"label": "Автоматическое включение статистики по умолчанию"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": ""},{"label": "Новая настройка"}]}]} />
 
 Список типов статистики, разделённых запятыми, которые автоматически вычисляются для всех подходящих столбцов.
 Поддерживаемые типы статистики: tdigest, countmin, minmax, uniq.
@@ -2574,6 +2574,27 @@ ZooKeeper в кластерах большого масштаба.
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
 Устаревший параметр, не используется.
+
+## replicated_fetches_min_part_level \{#replicated_fetches_min_part_level\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Минимальный уровень части для получения с других реплик. Части с уровнем ниже этого порога откладываются
+(остаются в очереди репликации и повторно проверяются в каждом цикле планирования, а не пропускаются навсегда).
+Используйте значение 1, чтобы отложить получение частей уровня 0 (без слияния), снижая накладные расходы на репликацию во время интенсивной ингестии.
+По умолчанию: 0 (получение всех частей независимо от уровня).
+
+## replicated_fetches_min_part_level_timeout_seconds \{#replicated_fetches_min_part_level_timeout_seconds\}
+
+<SettingsInfoBlock type="UInt64" default_value="300" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "Новая настройка"}]}]} />
+
+Таймаут в секундах, по истечении которого часть с уровнем ниже replicated&#95;fetches&#95;min&#95;part&#95;level всё равно будет получена.
+Используйте 0, чтобы отключить таймаут (части с уровнем ниже минимального будут откладываться на неопределённый срок до слияния).
+По умолчанию: 300 (принудительное получение через 5 минут).
 
 ## replicated_max_mutations_in_one_entry \{#replicated_max_mutations_in_one_entry\}
 

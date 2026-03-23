@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/minMap'
 title: 'minMap'
-description: 'minMap 组合子使用示例'
+description: 'minMap 组合器使用示例'
 keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
 doc_type: 'reference'
@@ -25,7 +25,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -62,5 +63,6 @@ GROUP BY timeslot;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`min`](/sql-reference/aggregate-functions/reference/min)
+* [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

@@ -43,6 +43,12 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026 年 3 月 20 日 \{#march-20-2026\}
+
+- **Usage Breakdown 的自定义日期范围：**您现在可以在 usage breakdown 页面使用自定义日期范围，查看所有计费维度下的用量成本。
+  选择开始和结束日期（含当日），即可按特定时间段筛选用量成本，并将结果下载为 CSV。
+  日期范围最长为 31 天。
+
 ## 2026 年 2 月 20 日 \{#february-20-2026\}
 
 - **ClickPipes：** 处于非活动状态的反向私有终端节点现在会在经过指定的宽限期后自动删除。这样可以确保未使用或配置错误的终端节点不会在后端系统中被无限期保留。更多详情请参阅自动清理[文档](/integrations/clickpipes/aws-privatelink#automatic-cleanup)。

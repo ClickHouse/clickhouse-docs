@@ -10,10 +10,9 @@ doc_type: 'guide'
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-ABS ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Azure Blob Storage в ClickHouse Cloud. Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой «exactly-once».
+ABS ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Azure Blob Storage в ClickHouse Cloud. Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой «ровно один раз».
 
-ABS ClickPipes можно развернуть и управлять ими вручную через ClickPipes UI, а также программно с помощью [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe).
-
+ABS ClickPipes можно развернуть и управлять ими вручную через ClickPipes UI, а также программно с помощью [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
 
 ## Поддерживаемые форматы \{#supported-formats\}
 

@@ -3,7 +3,7 @@ description: 'ClickHouse Cloudの高度なダッシュボード'
 keywords: ['monitoring', 'observability', 'advanced dashboard', 'dashboard', 'observability
     dashboard']
 sidebar_label: '高度なダッシュボード'
-sidebar_position: 45
+sidebar_position: 7
 slug: /cloud/manage/monitor/advanced-dashboard
 title: 'ClickHouse Cloudの高度なダッシュボード'
 doc_type: 'guide'
@@ -25,7 +25,7 @@ import Image from '@theme/IdealImage';
 提供するための軽量ツールで、パフォーマンスのボトルネック、システム障害、
 非効率性を事前に把握するのに役立ちます。
 
-高度なダッシュボードは、ClickHouse OSS（オープンソースソフトウェア）と
+高度なダッシュボードは、ClickHouse OSS (オープンソースソフトウェア) と
 Cloudの両方で利用可能です。この記事では、Cloudでの高度なダッシュボードの
 使用方法を説明します。
 

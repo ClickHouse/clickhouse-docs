@@ -1683,7 +1683,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法（`SCOPE_IDENTITY`、方括号）。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
+`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法 (`SCOPE_IDENTITY`、`[]`) 。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
 
 ```csharp
 [Table("test.users")]
@@ -1693,7 +1693,8 @@ var all = await connection.GetAllAsync<UserRecord>();
 var one = await connection.GetAsync<UserRecord>(1);
 ```
 
-属性名称必须与 ClickHouse 列名完全一致（区分大小写）。
+属性名称必须与 ClickHouse 列名完全一致 (区分大小写) 。
+
 
 #### 限制 \{#dapper-limitations\}
 

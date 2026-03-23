@@ -43,6 +43,12 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026년 3월 20일 \{#march-20-2026\}
+
+* **Usage Breakdown 화면의 사용자 지정 날짜 범위:** 이제 사용자 지정 날짜 범위를 사용해 Usage Breakdown 화면에서 모든 청구 차원에 걸친 사용 비용을 확인할 수 있습니다.
+  시작일과 종료일(포함)을 선택해 특정 기간의 비용을 필터링하고 결과를 CSV로 다운로드할 수 있습니다.
+  날짜 범위는 최대 31일로 제한됩니다.
+
 ## 2026년 2월 20일 \{#february-20-2026\}
 
 - **ClickPipes:** 비활성 상태인 Reverse private endpoint는 설정된 유예 기간이 지나면 이제 자동으로 제거됩니다. 이를 통해 사용되지 않거나 잘못 구성된 엔드포인트가 백엔드에 무기한 남지 않도록 합니다. 자세한 내용은 자동 정리 [문서](/integrations/clickpipes/aws-privatelink#automatic-cleanup)를 참조하십시오.

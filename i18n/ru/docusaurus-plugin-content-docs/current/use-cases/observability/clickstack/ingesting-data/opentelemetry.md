@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
     Это позволяет использовать стандартизированную ингестию, жёстко заданные схемы и готовую совместимость с интерфейсом ClickStack (HyperDX). Применение стандартной схемы обеспечивает автоматическое определение источников и преднастроенные сопоставления столбцов.
     :::
 
-    Для получения более подробной информации см. раздел «[Развертывание коллектора](/use-cases/observability/clickstack/ingesting-data/otel-collector)».
+    Для получения более подробной информации см. [&quot;Развертывание коллектора&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector).
 
     ### Отправка данных в коллектор
 
@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -162,7 +162,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
