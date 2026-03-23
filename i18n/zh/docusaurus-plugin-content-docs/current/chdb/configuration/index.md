@@ -65,8 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-有关详细信息，请参阅[日志记录](logging.md)。
-
+详见[日志配置](../debugging/logging.md)。
 
 ### 缓存配置 \{#cache\}
 

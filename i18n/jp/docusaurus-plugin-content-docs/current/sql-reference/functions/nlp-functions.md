@@ -160,38 +160,6 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
-## detectProgrammingLanguage \{#detectProgrammingLanguage\}
-
-導入バージョン: v22.2.0
-
-指定されたソースコードのスニペットからプログラミング言語を判定します。
-
-**構文**
-
-```sql
-detectProgrammingLanguage('source_code')
-```
-
-**引数**
-
-* `source_code` — 解析対象となるソースコードの文字列表現。[`String`](/sql-reference/data-types/string)
-
-**戻り値**
-
-プログラミング言語を表す[`String`](/sql-reference/data-types/string)を返します。
-
-**例**
-
-**C++ コードの検出**
-
-```sql title=Query
-SELECT detectProgrammingLanguage('#include <iostream>')
-```
-
-```response title=Response
-C++
-```
-
 ## detectTonality \{#detectTonality\}
 
 導入バージョン: v22.2.0
@@ -236,6 +204,8 @@ SELECT
 導入バージョン: v21.9.0
 
 指定された単語のレンマ化を実行します。
+この関数の実行には Dictionary が必要で、[GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) から取得できます。ローカルファイルから Dictionary を読み込む方法の詳細については、ページ [「Defining Dictionaries」](/docs/sql-reference/
++statements/create/dictionary/sources/local-file) を参照してください。
 
 **構文**
 
