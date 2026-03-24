@@ -1,20 +1,18 @@
 ---
 slug: /updating-data/overview
-title: '概要'
-description: 'ClickHouse でデータを更新する方法'
-keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
+title: 'ClickHouseの更新'
+description: '利用可能な更新方法と、ワークロードに適した方法の選び方を説明するガイドです。'
+keywords: ['更新', 'データの更新', 'ミューテーション', '論理更新']
 doc_type: 'guide'
+sidebar_label: '更新の操作'
 ---
 
-更新処理の扱いに関しては、分析用データベースとトランザクションデータベースは、その基盤となる設計思想と想定ユースケースの違いにより、大きく異なります。
-たとえば PostgreSQL は、行指向で ACID 準拠のリレーショナルデータベースであり、堅牢でトランザクション性のある更新および削除操作をサポートし、Multi-Version Concurrency Control ([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)) などの仕組みによってデータの一貫性と完全性を保証します。
-これにより、高い同時実行性の環境でも安全かつ信頼性の高い変更が可能になります。
+更新の処理に関しては、分析データベースとトランザクションデータベースでは、基盤となる設計思想と対象ユースケースが異なるため、更新の扱い方にも違いがあります。
+ClickHouseは、読み取り負荷の高い分析処理と高スループットの追記専用操作向けに最適化された[カラム指向データベース](/intro#row-oriented-vs-column-oriented-storage)です。
+実運用では、削除や更新を追記操作に変換し、それらを非同期または読み取り時に処理できるようにするため、テーブル構造を見直すことがよくあります。これにより、高スループットのデータインジェストにおけるClickHouseの強みを生かせます。
+ClickHouseは、更新と削除のための堅牢な操作もサポートしています。
 
-一方、ClickHouse は、読み取り中心のアナリティクスと高スループットな追記専用処理に最適化されたカラム指向データベースです。
-インプレースの更新と削除をネイティブにサポートしていますが、大量の I/O を招かないよう注意して使用する必要があります。
-別の方法として、テーブルを再構成し、削除や更新を追記型の操作に変換して、非同期および／または読み取り時に処理させることもできます。これにより、リアルタイムなデータ操作よりも、高スループットなデータインジェストと効率的なクエリパフォーマンスに重点を置くという設計方針が反映されます。
-
-このガイドでは、ClickHouse で利用可能な更新方法の概要を示し、ユースケースに応じて適切な更新戦略を選択できるようにします。
+このガイドでは、ClickHouseで利用可能な更新方法の概要を説明し、ワークロードに適した更新戦略を選べるようにします。
 
 ## 更新戦略の選択 \{#choosing-an-update-strategy\}
 
@@ -26,30 +24,29 @@ ClickHouse でデータを更新するには、基本的に 2 つの主要なア
 上記 2 つのカテゴリそれぞれの中に、データを更新するためのいくつかの方法があります。
 それぞれに利点とパフォーマンス特性があるため、データモデルと更新しようとしているデータ量に基づいて、適切な方法を選択する必要があります。
 
-### 専用テーブルエンジンを使用するタイミング \{#when-to-use-specialized-table-engines\}
+### 専用テーブルエンジンを使用するタイミング \{#when-to-choose-specialised-table-engines\}
 
 大量の更新、頻繁な行レベルの変更、あるいは更新および削除イベントの連続的なストリームを処理する必要がある場合は、専用テーブルエンジンを使用する方が適しています。
 
 一般的に利用されるエンジンは次のとおりです。
 
-| Engine                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
-|---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 大量のデータを更新する場合に使用します。このテーブルエンジンは、マージ時のデータ重複排除に最適化されています。                                                                                                                            |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | データが断片的に到着し、行全体の置き換えではなくカラムレベルでの統合が必要な場合に使用します。                                                                                                                                            |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 個々の行を頻繁に更新する場合、または時間とともに変化するオブジェクトの最新状態を保持する必要があるシナリオで使用します。たとえば、ユーザーアクティビティや記事の統計を追跡する場合などです。                                                     |
+| Engine                                                                             | Syntax                               | When to use                                                                                    |
+| ---------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 大量のデータを更新する場合に使用します。このテーブルエンジンは、マージ時のデータ重複排除に最適化されています。                                        |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | データが断片的に到着し、行全体の置き換えではなくカラムレベルでの統合が必要な場合に使用します。                                                |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 個々の行を頻繁に更新する場合、または時間とともに変化するオブジェクトの最新状態を保持する必要があるシナリオで使用します。たとえば、ユーザーアクティビティや記事の統計を追跡する場合などです。 |
 
-MergeTree ファミリーのテーブルエンジンはバックグラウンドでデータパーツをマージするため、_結果整合性_ を提供します。マージが完了するまでの間もテーブルをクエリする際に適切な重複排除を行うには、[`FINAL`](/sql-reference/statements/select/from#final-modifier) キーワードを使用する必要があります。
+MergeTree ファミリーのテーブルエンジンはバックグラウンドでデータパーツをマージするため、*結果整合性* を提供します。マージが完了するまでの間もテーブルをクエリする際に適切な重複排除を行うには、[`FINAL`](/sql-reference/statements/select/from#final-modifier) キーワードを使用する必要があります。
 他にも [engine types](/engines/table-engines/mergetree-family) は存在しますが、ここで挙げたものが最も一般的に使用されるものです。
 
-### 宣言的な更新を使用するタイミング \{#when-to-use-declarative-updates\}
+### 宣言的な更新を使用するタイミング \{#when-to-use-declaritive-updates\}
 
 宣言的な UPDATE 文は、重複排除ロジックを管理する複雑さなしに単純な更新操作を行う場合、より分かりやすいことがありますが、一般的には、専用エンジンの場合と比べて、少ない行数をそれほど頻繁ではなく更新する用途により適しています。
 
-| Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
-|--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | データを即座にディスクに更新する必要がある場合に使用します（例: コンプライアンス対応）。`SELECT` のパフォーマンスに悪影響を与えます。                                                                                                                |
-| [On-the-fly updates](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | 少量のデータを更新する場合に使用します。以降のすべての `SELECT` クエリで更新後のデータが即座に返されますが、ディスク上では最初は内部的に更新済みとしてマークされるだけです。`SET apply_mutations_on_fly = 1;` を使用して有効にします。 |
-| [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | 少量のデータ（テーブルの約 10% まで）を更新する場合に使用します。列全体を書き換えることなく、即時可視化のためのパッチ用パーツを作成します。`SELECT` クエリにオーバーヘッドを追加しますが、レイテンシは予測可能です。                              |
+| Method                                                    | Syntax                         | When to use                                                                                                                                                                                                                                         |
+| --------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [論理更新](/sql-reference/statements/update)   | `UPDATE [table] SET ... WHERE` | ほとんどのシナリオで、特に application やワークフローの一部として頻繁に小規模な UPDATE (テーブルの約 10% まで) を実行する場合に使用します。たとえば、あるユーザーが自分のイベント履歴を削除したいものの、イベントが多数のユーザーを含むマルチテナントテーブル全体に分散している場合です。このアプローチでは、列全体を書き換えることなく、即時可視化のためのパッチ用パーツを作成します。`SELECT` クエリにオーバーヘッドを追加しますが、レイテンシは予測可能です。 |
+| [Update mutation](/sql-reference/statements/alter/update) | `ALTER TABLE [table] UPDATE`   | より大規模なデータ管理を行う際、特に更新内容がテーブルのパーティション分割に沿っている場合に使用します。たとえば、月単位でパーティション分割されたテーブルで、ある月に含まれるすべての行のカラムを更新する必要がある場合です。                                                                                                                                     |
 
 ## 専用テーブルエンジンを利用した更新 \{#insert-based-updates\}
 
@@ -156,30 +153,124 @@ HAVING sum(Sign) > 0
 
 これらのメソッドは、[MergeTree ファミリー](/engines/table-engines/mergetree-family) エンジンを使用するテーブルで動作します。
 
-| Method | Syntax | Best for | Trade-offs |
-|--------|--------|----------|------------|
-| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | 物理削除が必要なコンプライアンス要件; 頻度の低いバルク更新 | I/O 負荷が高い; カラムを書き換える |
-| [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 小規模な更新 (~0.1〜10% の行); パフォーマンスが求められる高頻度の更新 | SELECT のオーバーヘッドが増える; パッチ用パーツが上限にカウントされる |
-| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` と `apply_mutations_on_fly=1` の併用 | 即時反映; 実行できるオペレーション数が限定的 | Keeper への依存; スケールは数十件程度のオペレーションまでに制限される |
+| Method                                      | Syntax                     | Best for                                           | Trade-offs                              |
+| ------------------------------------------- | -------------------------- | -------------------------------------------------- | --------------------------------------- |
+| [ミューテーション](#mutations)                     | `ALTER TABLE ... UPDATE`   | 頻度の低いバルク更新。特に、更新内容がテーブルのパーティション分割に対応している場合に適しています。 | I/O 負荷が高い; カラムを書き換える                    |
+| [論理更新](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 小規模な更新 (~0.1〜10% の行); パフォーマンスが求められる高頻度の更新          | SELECT のオーバーヘッドが増える; パッチ用パーツが上限にカウントされる |
 
 ### ミューテーション \{#mutations\}
 
-ミューテーション（`ALTER TABLE ... UPDATE`）は、`WHERE` 式に一致する行を含むすべてのパーツを書き換えます。これにより、ディスク上の物理データが確実に変更されます。
+ミューテーション (`ALTER TABLE ... UPDATE`) は、`WHERE` 式に一致する行を含むすべてのパーツを書き換えます。
 
 ```sql
 ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
 ```
 
-コンプライアンス上、物理データの確実な削除が求められる場合や、I/O のオーバーヘッドを許容できるまれな一括更新操作を行う場合に、mutation を使用します。
-
-Mutation は I/O 負荷がかなり高く、`WHERE` 式に一致するすべてのパーツを書き換えます。この処理にはアトミック性はなく、mutated パーツが準備できしだい元のパーツと置き換えられます。そのため、mutation の実行中に開始された `SELECT` クエリは、すでに mutation 済みのパーツのデータと、まだ mutation されていないパーツのデータを両方参照します。進行状況は [`system.mutations`](/operations/system-tables/mutations) テーブル経由で追跡できます。
+ミューテーションは I/O 負荷がかなり高く、`WHERE` 式に一致するすべてのパーツを書き換えます。
+この処理にはアトミック性はありません。
+ミューテーション済みのパーツが準備できしだい元のパーツと置き換えられるため、ミューテーションの実行中に開始された `SELECT` クエリは、すでに ミューテーション済みのパーツのデータと、まだ ミューテーションされていないパーツのデータを両方参照します。
+進行状況は [`system.mutations`](/operations/system-tables/mutations) テーブル経由で追跡できます。
 
 :::warning
-Mutation は I/O 負荷が高く、クラスタの `SELECT` パフォーマンスに影響を与える可能性があるため、使用は最小限に抑えるべきです。Mutation のキュー投入が処理速度より速くなると、クエリ パフォーマンスは低下します。`system.mutations` を用いてキューを監視してください。
+ミューテーションは I/O 負荷が高く、クラスタの `SELECT` パフォーマンスに影響を与える可能性があるため、使用は最小限に抑えるべきです。ミューテーションのキュー投入が処理速度より速くなると、クエリ パフォーマンスは低下します。`system.mutations` を用いてキューを監視してください。
 :::
 
 詳細: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
 
+
+#### オンザフライのミューテーション \{#on-the-fly-mutations\}
+
+`ALTER TABLE ... UPDATE` によるミューテーションでは、変更後の値がクエリ結果に反映されるまで、バックグラウンドプロセスでミューテーションが適用されるのを待つ必要がある場合があります。
+ClickHouse では、&quot;オンザフライのミューテーション&quot; によってこの動作を変更できます。
+オンザフライのミューテーションが有効な場合、更新された行は即座に更新済みとしてマークされ、以降の `SELECT` クエリでは変更後の値が自動的に返されます。
+
+オンザフライのミューテーションは、クエリレベルの設定 `apply_mutations_on_fly` を有効にすることで、`MergeTree` ファミリーのテーブルで使用できます。
+
+```sql
+SET apply_mutations_on_fly = 1;
+```
+
+<details>
+  <summary>例</summary>
+
+  テーブルを作成し、いくつかのミューテーションを実行してみましょう。
+
+  ```sql
+  CREATE TABLE test_on_fly_mutations (id UInt64, v String)
+  ENGINE = MergeTree ORDER BY id;
+
+  -- オンザフライのミューテーションが有効でない場合の
+  -- デフォルトの動作を示すため、ミューテーションのバックグラウンドでのマテリアライズを無効にする
+  SYSTEM STOP MERGES test_on_fly_mutations;
+  SET mutations_sync = 0;
+
+  -- 新しいテーブルにいくつかの行を挿入する
+  INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
+
+  -- 行の値を更新する
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
+  ```
+
+  `SELECT` クエリで更新結果をチェックしてみましょう。
+
+  ```sql
+  -- オンザフライのミューテーションを明示的に無効にする
+  SET apply_mutations_on_fly = 0;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  新しいテーブルに対してクエリを実行した時点では、行の値はまだ更新されていないことに注意してください。
+
+  ```response
+  ┌─id─┬─v─┐
+  │  1 │ a │
+  │  2 │ b │
+  │  3 │ c │
+  └────┴───┘
+  ```
+
+  次に、オンザフライのミューテーションを有効にするとどうなるかを見てみましょう。
+
+  ```sql
+  -- オンザフライのミューテーションを有効にする
+  SET apply_mutations_on_fly = 1;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  これで、ミューテーションが適用されるのを待たなくても、`SELECT` クエリは直ちに正しい結果を返します。
+
+  ```response
+  ┌─id─┬─v─┐
+  │  3 │ c │
+  └────┴───┘
+  ```
+</details>
+
+
+##### パフォーマンスへの影響 \{#performance-impact\}
+
+オンザフライのミューテーションが有効化されている場合、ミューテーションはすぐにはマテリアライズされず、`SELECT` クエリの実行時にのみ適用されます。ただし、ミューテーション自体は引き続きバックグラウンドで非同期にマテリアライズされており、これは負荷の高い処理である点に注意してください。
+
+送信されるミューテーション数が、一定期間にバックグラウンドで処理されるミューテーション数を継続的に上回ると、適用待ちの未マテリアライズなミューテーションのキューは増え続けます。その結果、最終的に `SELECT` クエリのパフォーマンスが低下します。
+
+未マテリアライズなミューテーションの無制限な増加を防ぐため、設定 `apply_mutations_on_fly` は、`number_of_mutations_to_throw` や `number_of_mutations_to_delay` などの他の `MergeTree` レベルの設定とあわせて有効にすることを推奨します。
+
+##### サブクエリおよび非決定的関数のサポート \{#support-for-subqueries-and-non-deterministic-functions\}
+
+オンザフライのミューテーションでは、サブクエリと非決定的関数のサポートは限定的です。サポートされるのは、結果のサイズが適切な範囲内にあるスカラーサブクエリのみです (このサイズは設定 `mutations_max_literal_size_to_replace` で制御されます) 。また、定数の非決定的関数のみがサポートされます (例: 関数 `now()`) 。
+
+これらの動作は、次の設定によって制御されます。
+
+| Setting                                           | 説明                                                                               | デフォルト            |
+| ------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------- |
+| `mutations_execute_nondeterministic_on_initiator` | `true` の場合、非決定的関数はイニシエーター レプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルに置き換えられます。    | `false`          |
+| `mutations_execute_subqueries_on_initiator`       | `true` の場合、スカラーサブクエリはイニシエーター レプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルに置き換えられます。 | `false`          |
+| `mutations_max_literal_size_to_replace`           | `UPDATE` および `DELETE` クエリ内で置き換える、シリアライズされたリテラルの最大サイズ (バイト) 。                     | `16384` (16 KiB) |
 
 ### 論理更新 \{#lightweight-updates\}
 
@@ -222,27 +313,27 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 
 ミューテーションとそれに続く `SELECT` クエリの両方で、`apply_mutations_on_fly = 1` の設定を有効にする必要があります。ミューテーション条件は ClickHouse Keeper に保存され、すべてメモリ上に保持され、クエリ実行時にオンザフライで適用されます。
 
-ミューテーションは依然としてデータ更新に使用される点に注意してください。単に、その結果が即座にマテリアライズされないだけです。ミューテーション自体はバックグラウンドで非同期プロセスとして適用され続け、通常のミューテーションと同等の重いオーバーヘッドが発生します。また、この操作で利用できる式にも制限があります（[詳細](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)を参照）。
+ミューテーションは依然としてデータ更新に使用される点に注意してください。単に、その結果が即座にマテリアライズされないだけです。ミューテーション自体はバックグラウンドで非同期プロセスとして適用され続け、通常のミューテーションと同等の重いオーバーヘッドが発生します。また、この操作で利用できる式にも制限があります ([詳細](#support-for-subqueries-and-non-deterministic-functions)を参照) 。
 
 :::warning
-オンザフライミューテーションは、少数の操作に対してのみ使用すべきです。多くても数十件程度に抑えてください。Keeper は条件をメモリに保持するため、使い過ぎるとクラスタの安定性に影響します。Keeper への高負荷は、無関係なテーブルにも影響するセッションタイムアウトを引き起こす可能性があります。
+オンザフライのミューテーションは、少数の操作に対してのみ使用すべきです。多くても数十件程度に抑えてください。Keeper は条件をメモリに保持するため、使い過ぎるとクラスタの安定性に影響します。Keeper への高負荷は、無関係なテーブルにも影響するセッションタイムアウトを引き起こす可能性があります。
 :::
 
-詳細はこちら: [On-the-fly mutations](/guides/developer/on-the-fly-mutations)
+詳細: [On-the-fly mutations](#on-the-fly-mutations)
 
 
 ## 比較のまとめ \{#comparison-summary\}
 
 次の表は、[ベンチマーク](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks) に基づくクエリパフォーマンスのオーバーヘッドをまとめたものです。ミューテーションは、ミューテーション完了後にクエリがフルスピードで実行され、データが物理的に書き換えられるため、ベースラインとして扱います。
 
-| Method | Query slowdown | Memory overhead | Notes |
-|--------|----------------|-----------------|-------|
-| [Mutations](/sql-reference/statements/alter/update) | ベースライン | ベースライン | 完了後はフルスピードで実行される; データは物理的に書き換えられる |
-| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | 可変 | 可変 | 即時に可視化される; 多数の更新が蓄積するとパフォーマンスが低下する |
-| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18% (平均 ~12%) | +20–210% | クエリに対して最も効率的; テーブルの ≤10% を更新する場合に最適 |
-| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550% (平均 ~280%) | ベースラインの 20–200× | すべての行バージョンを読み取る必要があり、クエリオーバーヘッドが最も大きい |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | ReplacingMergeTree と同程度 | ReplacingMergeTree と同程度 | カラムレベルの統合により同程度のオーバーヘッドが追加される |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | 集約に依存 | 集約に依存 | オーバーヘッドはクエリの複雑さに依存する |
+| Method                                                                                       | Query slowdown          | Memory overhead         | Notes                                 |
+| -------------------------------------------------------------------------------------------- | ----------------------- | ----------------------- | ------------------------------------- |
+| [ミューテーション](/sql-reference/statements/alter/update)                                          | ベースライン                  | ベースライン                  | 完了後はフルスピードで実行される; データは物理的に書き換えられる     |
+| [On-the-fly ミューテーション](#on-the-fly-mutations)                                                | 可変                      | 可変                      | 即時に可視化される; 多数の更新が蓄積するとパフォーマンスが低下する    |
+| [論理更新](/sql-reference/statements/update#lightweight-update-requirements)      | 7–18% (平均 ~12%)         | +20–210%                | クエリに対して最も効率的; テーブルの ≤10% を更新する場合に最適   |
+| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL`                                 | 21–550% (平均 ~280%)      | ベースラインの 20–200×         | すべての行バージョンを読み取る必要があり、クエリオーバーヘッドが最も大きい |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | ReplacingMergeTree と同程度 | ReplacingMergeTree と同程度 | カラムレベルの統合により同程度のオーバーヘッドが追加される         |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)           | 集約に依存                   | 集約に依存                   | オーバーヘッドはクエリの複雑さに依存する                  |
 
 ## 参考資料 \{#more-resources\}
 

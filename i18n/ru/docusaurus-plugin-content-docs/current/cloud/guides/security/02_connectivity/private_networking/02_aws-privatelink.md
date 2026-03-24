@@ -21,7 +21,7 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 
 # AWS PrivateLink \{#aws-privatelink\}
 
-<ScalePlanFeatureBadge feature="AWS PrivateLink"/>
+<ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
 Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) для организации защищённого подключения между VPC, сервисами AWS, локальными системами и ClickHouse Cloud, не выводя трафик в общедоступный интернет. В этом документе описаны шаги по подключению к ClickHouse Cloud с использованием AWS PrivateLink.
 
@@ -29,43 +29,44 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 
 :::note
 ClickHouse Cloud поддерживает [межрегиональный PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) из следующих регионов:
-- sa-east-1
-- il-central-1
-- me-central-1
-- me-south-1
-- eu-central-2
-- eu-north-1
-- eu-south-2
-- eu-west-3
-- eu-south-1
-- eu-west-2
-- eu-west-1
-- eu-central-1
-- ca-west-1
-- ca-central-1
-- ap-northeast-1
-- ap-southeast-2
-- ap-southeast-1
-- ap-northeast-2
-- ap-northeast-3
-- ap-south-1
-- ap-southeast-4
-- ap-southeast-3
-- ap-south-2
-- ap-east-1
-- af-south-1
-- us-west-2
-- us-west-1
-- us-east-2
-- us-east-1
-Особенности тарификации: AWS будет взимать плату с пользователей за передачу данных между регионами, см. цены [здесь](https://aws.amazon.com/privatelink/pricing/).
-:::
+
+* sa-east-1
+* il-central-1
+* me-south-1
+* eu-central-2
+* eu-north-1
+* eu-south-2
+* eu-west-3
+* eu-south-1
+* eu-west-2
+* eu-west-1
+* eu-central-1
+* ca-west-1
+* ca-central-1
+* ap-northeast-1
+* ap-southeast-2
+* ap-southeast-1
+* ap-northeast-2
+* ap-northeast-3
+* ap-south-1
+* ap-southeast-4
+* ap-southeast-3
+* ap-south-2
+* ap-east-1
+* af-south-1
+* us-west-2
+* us-west-1
+* us-east-2
+* us-east-1
+  Особенности тарификации: AWS будет взимать плату с пользователей за передачу данных между регионами, см. цены [здесь](https://aws.amazon.com/privatelink/pricing/).
+  :::
 
 **Выполните следующие шаги, чтобы включить AWS PrivateLink**:
-1. Получите «Service name» конечной точки (Endpoint).
-1. Создайте AWS Endpoint.
-1. Добавьте «Endpoint ID» в организацию ClickHouse Cloud.
-1. Добавьте «Endpoint ID» в список разрешённых (allow list) для сервиса ClickHouse.
+
+1. Получите «endpoint service name» конечной точки (Endpoint).
+2. Создайте AWS Endpoint.
+3. Добавьте «Endpoint ID» в организацию ClickHouse Cloud.
+4. Добавьте «Endpoint ID» в список разрешённых (allow list) для сервиса ClickHouse.
 
 Примеры Terraform см. [здесь](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 

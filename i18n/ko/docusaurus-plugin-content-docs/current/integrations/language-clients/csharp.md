@@ -1810,9 +1810,352 @@ await table.BulkCopyAsync(options, products);
 ```
 
 
-### Entity framework core \{#orm-support-ef-core\}
+### Entity Framework Core \{#orm-support-ef-core\}
 
-현재 Entity Framework Core는 지원되지 않습니다.
+ClickHouse용 공식 Entity Framework Core 프로바이더입니다. C# 클래스를 ClickHouse 테이블에 매핑하고, LINQ로 쿼리하며, 익숙한 EF Core 패턴을 사용해 `SaveChanges`를 통해 데이터를 삽입할 수 있습니다.
+
+* **NuGet**: [`ClickHouse.EntityFrameworkCore`](https://www.nuget.org/packages/ClickHouse.EntityFrameworkCore)
+* **소스**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
+
+:::note
+이 프로바이더는 초기 개발 단계에 있습니다. **읽기 전용 쿼리**와 **삽입**을 지원합니다. UPDATE, DELETE, 마이그레이션, 조인, 서브쿼리는 아직 구현되지 않았습니다.
+:::
+
+#### 설치 \{#ef-core-installation\}
+
+```bash
+dotnet add package ClickHouse.EntityFrameworkCore
+```
+
+.NET 10.0 및 EF Core 10이 필요합니다.
+
+
+#### 퀵 스타트 \{#ef-core-quick-start\}
+
+엔터티와 `DbContext`를 정의한 후 LINQ로 쿼리합니다.
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+public class PageView
+{
+    public long Id { get; set; }
+    public string Path { get; set; }
+    public DateOnly Date { get; set; }
+    public string UserAgent { get; set; }
+}
+
+public class AnalyticsContext : DbContext
+{
+    public DbSet<PageView> PageViews { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseClickHouse("Host=localhost;Database=analytics");
+}
+
+// Query
+await using var ctx = new AnalyticsContext();
+
+var topPages = await ctx.PageViews
+    .Where(v => v.Date >= new DateOnly(2024, 1, 1))
+    .GroupBy(v => v.Path)
+    .Select(g => new { Path = g.Key, Views = g.Count() })
+    .OrderByDescending(x => x.Views)
+    .Take(10)
+    .ToListAsync();
+```
+
+
+#### 지원되는 타입 \{#ef-core-types\}
+
+| 범주          | ClickHouse 타입                                                                           | CLR 타입                                                             |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **정수**      | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
+| **큰 정수**    | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                       |
+| **부동소수점**   | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                  |
+| **Decimal** | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` 또는 `ClickHouseDecimal`                                   |
+| **Bool**    | `Bool`                                                                                  | `bool`                                                             |
+| **문자열**     | `String`, `FixedString(N)`                                                              | `string`                                                           |
+| **열거형**     | `Enum8(...)`, `Enum16(...)`                                                             | `string` 또는 C# `enum`                                              |
+| **날짜/시간**   | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                             |
+| **시간**      | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                         |
+| **UUID**    | `UUID`                                                                                  | `Guid`                                                             |
+| **네트워크**    | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                        |
+| **배열**      | `Array(T)`                                                                              | `T[]` 또는 `List<T>`                                                 |
+| **맵**       | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                  |
+| **Tuple**   | `Tuple(T1, ...)`                                                                        | `Tuple<...>` 또는 `ValueTuple<...>`                                  |
+| **Variant** | `Variant(T1, T2, ...)`                                                                  | `object`                                                           |
+| **Dynamic** | `Dynamic`                                                                               | `object`                                                           |
+| **JSON**    | `Json`                                                                                  | `JsonNode` 또는 `string`                                             |
+| **지리 공간**   | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` 및 해당 배열, `Geometry`의 경우 `object`            |
+| **래퍼**      | `Nullable(T)`, `LowCardinality(T)`                                                      | 자동으로 래핑 해제됨                                                        |
+
+`Decimal128`/`Decimal256` 컬럼의 전체 정밀도가 필요한 경우 `decimal` 대신 `ClickHouse.Driver.Numerics`의 `ClickHouseDecimal`을 사용하십시오. .NET `decimal`은 유효 자릿수가 28~29자리로 제한됩니다.
+
+#### 지원되는 LINQ 작업 \{#ef-core-linq\}
+
+**쿼리:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+
+**GROUP BY 및 집계:** `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max`와 함께 사용하는 `GroupBy` — `HAVING`(`.GroupBy()` 후의 `.Where()`), 단일 프로젝션의 여러 집계, 그리고 집계 결과에 대한 `OrderBy`를 지원합니다.
+
+**String 메서드:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat`(및 `+` 오퍼레이터)
+
+**수학 함수:** 표준 `Math` 및 `MathF` 메서드는 산술, 로그, 삼각, 유틸리티 함수를 포함해 해당 ClickHouse 함수로 변환됩니다.
+
+#### 데이터 삽입 \{#ef-core-insert\}
+
+`SaveChanges`는 드라이버에서 제공하는 네이티브 `InsertBinaryAsync` API를 사용합니다 — GZip으로 압축한 RowBinary 인코딩을 사용하므로, 매개변수화된 SQL보다 훨씬 효율적입니다:
+
+```csharp
+await using var ctx = new AnalyticsContext();
+
+ctx.PageViews.Add(new PageView
+{
+    Id = 1,
+    Path = "/home",
+    Date = new DateOnly(2024, 6, 15),
+    UserAgent = "Mozilla/5.0"
+});
+
+await ctx.SaveChangesAsync();
+```
+
+엔터티는 저장 후 다른 EF Core 공급자와 마찬가지로 `Added`에서 `Unchanged`로 전환됩니다.
+
+**Batch size**는 설정할 수 있으며, 기본값은 1000입니다:
+
+```csharp
+optionsBuilder.UseClickHouse("Host=localhost", o => o.MaxBatchSize(5000));
+```
+
+
+#### 대량 삽입 \{#ef-core-bulk-insert\}
+
+처리량이 높은 적재 작업에는 `SaveChanges` 대신 `BulkInsertAsync`를 사용하세요. 이는 `DbContext`의 확장 메서드로, EF Core의 변경 추적기, identity resolution, 상태 관리를 완전히 우회하고 RowBinary 인코딩과 GZip 압축을 사용해 드라이버의 `InsertBinaryAsync`를 직접 호출합니다.
+
+따라서 삽입 후 엔터티 추적이 필요하지 않은 대규모 데이터 세트를 적재하는 데 적합합니다:
+
+```csharp
+var events = Enumerable.Range(0, 100_000)
+    .Select(i => new PageView
+    {
+        Id = i,
+        Path = $"/page/{i}",
+        Date = DateOnly.FromDateTime(DateTime.Today)
+    });
+
+long rowsInserted = await ctx.BulkInsertAsync(events);
+```
+
+입력은 어떤 `IEnumerable<T>`이든 사용할 수 있으며, 모든 엔터티를 메모리에 load하지 않고 스트리밍 방식으로 처리합니다. 반환값은 삽입된 행 수입니다. 삽입 후 엔터티는 `DbContext`에 attached 상태가 아니므로 `Added` → `Unchanged` 상태 전이는 발생하지 않습니다.
+
+
+#### 열거형 \{#ef-core-enums\}
+
+ClickHouse `Enum8`/`Enum16` 컬럼은 `string` 속성 또는 C# `enum` 타입에 매핑할 수 있습니다. C# 열거형을 사용하면 프로바이더가 열거형과 해당 문자열 표현 간에 자동으로 변환합니다:
+
+```csharp
+public enum Status { Active, Inactive, Pending }
+
+public class User
+{
+    public long Id { get; set; }
+    public Status Status { get; set; }
+}
+
+// Query with enum values
+var active = await ctx.Users
+    .Where(u => u.Status == Status.Active)
+    .ToListAsync();
+```
+
+#### 사용자 지정 타입 변환 \{#ef-core-value-converters\}
+
+EF Core의 `ValueConverter` 시스템을 사용하면 사용자 지정 타입을 프로바이더가 이미 지원하는 타입에 매핑할 수 있습니다. 프로바이더는 사용자 지정 타입을 직접 처리하지 않으며, EF Core가 경계 지점에서 이를 변환합니다.
+
+**속성별 변환:**
+
+```csharp
+public class Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+}
+
+public class Order
+{
+    public long Id { get; set; }
+    public Money Price { get; set; }
+}
+
+// In OnModelCreating:
+modelBuilder.Entity<Order>()
+    .Property(o => o.Price)
+    .HasConversion(
+        m => $"{m.Amount}|{m.Currency}",
+        s => new Money
+        {
+            Amount = decimal.Parse(s.Split('|')[0]),
+            Currency = s.Split('|')[1]
+        })
+    .HasColumnType("String");
+```
+
+**재사용 가능한 컨버터 클래스:**
+
+```csharp
+public class MoneyConverter : ValueConverter<Money, string>
+{
+    public MoneyConverter() : base(
+        m => $"{m.Amount}|{m.Currency}",
+        s => Parse(s)) { }
+
+    private static Money Parse(string s)
+    {
+        var parts = s.Split('|');
+        return new Money { Amount = decimal.Parse(parts[0]), Currency = parts[1] };
+    }
+}
+
+// Apply to a single property:
+.HasConversion<MoneyConverter>()
+
+// Or apply to all properties of a type via conventions:
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Properties<Money>()
+        .HaveConversion<MoneyConverter>();
+}
+```
+
+#### 컬럼 타입 어노테이션 \{#ef-core-column-types\}
+
+`string`, `int`, `DateTime` 등과 같은 스칼라 타입의 경우 프로바이더가 ClickHouse 타입을 자동으로 추론합니다. 매개변수화된 타입과 래퍼 타입은 ClickHouse 타입을 명시적으로 지정해야 합니다.
+
+**데이터 어노테이션(특성) 사용:**
+
+```csharp
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+[Table("sensor_readings")]
+public class SensorReading
+{
+    public long Id { get; set; }
+
+    [Column(TypeName = "Array(String)")]
+    public string[] Tags { get; set; }
+
+    [Column(TypeName = "Map(String, String)")]
+    public Dictionary<string, string> Metadata { get; set; }
+
+    [Column(TypeName = "Nullable(Float64)")]
+    public double? Value { get; set; }
+
+    [Column(TypeName = "Decimal128(18)")]
+    public decimal HighPrecision { get; set; }
+}
+```
+
+**`OnModelCreating`에서 Fluent API 사용하기:**
+
+```csharp
+modelBuilder.Entity<SensorReading>(e =>
+{
+    e.ToTable("sensor_readings");
+    e.Property(x => x.Tags).HasColumnType("Array(String)");
+    e.Property(x => x.Metadata).HasColumnType("Map(String, String)");
+    e.Property(x => x.Value).HasColumnType("Nullable(Float64)");
+    e.Property(x => x.Category).HasColumnType("LowCardinality(String)");
+    e.Property(x => x.HighPrecision).HasColumnType("Decimal128(18)");
+});
+```
+
+`Array(Nullable(Int32))` 및 `LowCardinality(Nullable(String))`와 같은 중첩 래퍼도 지원되며, provider는 모든 중첩 단계에서 `Nullable`과 `LowCardinality`를 자동으로 언래핑합니다.
+
+#### Variant 및 Dynamic 컬럼 \{#ef-core-variant-dynamic\}
+
+ClickHouse `Variant(T1, T2, ...)` 및 `Dynamic` 컬럼은 .NET에서 `object`에 매핑됩니다. `object`는 자동으로 타입을 추론하기에는 너무 일반적이므로, `.HasColumnType()`을 통해 저장소 타입을 명시적으로 지정해야 합니다:
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public object? Payload { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Payload).HasColumnType("Variant(String, UInt64, Array(UInt64))");
+// or:
+entity.Property(e => e.Payload).HasColumnType("Dynamic");
+```
+
+읽을 때는 값이 저장된 discriminator에 해당하는 .NET 타입(예: `string`, `ulong`, `ulong[]`)으로 자동 역직렬화됩니다.
+
+#### JSON 컬럼 \{#ef-core-json\}
+
+이 프로바이더는 ClickHouse의 `Json` 컬럼 타입을 지원하며, 이를 `System.Text.Json.Nodes.JsonNode`(기본) 또는 `string`(자동 `ValueConverter`를 통해)으로 매핑합니다:
+
+```csharp
+using System.Text.Json.Nodes;
+
+public class Event
+{
+    public long Id { get; set; }
+    public JsonNode? Data { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+JSON 읽기 및 쓰기는 `SaveChanges`와 `BulkInsertAsync` 모두에서 작동합니다:
+
+```csharp
+ctx.Events.Add(new Event
+{
+    Id = 1,
+    Data = JsonNode.Parse("""{"action": "click", "x": 100, "y": 200}""")
+});
+await ctx.SaveChangesAsync();
+
+var ev = await ctx.Events.Where(e => e.Id == 1).SingleAsync();
+string action = ev.Data!["action"]!.GetValue<string>(); // "click"
+```
+
+raw JSON 문자열을 선호한다면, 해당 속성을 `Json` 컬럼 타입의 `string`으로 매핑하십시오 — 프로바이더는 `ValueConverter`를 자동으로 적용합니다:
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public string? Data { get; set; }  // raw JSON string
+}
+
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+:::note
+
+* **JSON 경로 변환 없음** — LINQ의 `entity.Data["name"]`는 ClickHouse의 `data.name` SQL 구문으로 변환되지 않습니다. JSON이 아닌 컬럼으로 필터링하고, JSON은 메모리에서 확인하십시오.
+* **NULL 의미 체계** — ClickHouse의 JSON 타입은 NULL 값에 대해 SQL NULL이 아니라 `{}`(빈 객체)를 반환합니다.
+* **정수 정밀도** — ClickHouse JSON은 모든 정수를 `Int64`로 저장합니다. `JsonNode`를 통해 읽을 때는 `GetValue<int>()` 대신 `GetValue<long>()`를 사용하십시오.
+  :::
+
+#### 제한 사항 \{#ef-core-limitations\}
+
+| 기능                                           | 상태                                               |
+| -------------------------------------------- | ------------------------------------------------ |
+| SELECT / WHERE / ORDER BY / GROUP BY         | 지원                                               |
+| `SaveChanges` / `BulkInsertAsync`를 통한 INSERT | 지원                                               |
+| UPDATE / DELETE                              | 지원되지 않음 (ClickHouse 뮤테이션은 비동기식이므로 OLTP와 호환되지 않음) |
+| 마이그레이션                                       | 지원되지 않음                                          |
+| 조인, 서브쿼리, 집합 연산                              | 지원되지 않음                                          |
+| 트랜잭션                                         | no-op (ClickHouse는 ACID 트랜잭션을 지원하지 않음)           |
+| 서버 생성 값(자동 증가)                               | 지원되지 않음                                          |
+| 중첩 타입                                        | 지원되지 않음                                          |
+| JSON 경로 쿼리 변환 (`.Data["key"]` in LINQ)       | 지원되지 않음                                          |
+| JSON으로 소유 엔터티 표현 (`.ToJson()`)               | 지원되지 않음                                          |
 
 ## 제한 사항 \{#limitations\}
 
