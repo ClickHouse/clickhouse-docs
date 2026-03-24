@@ -7,13 +7,10 @@ doc_type: 'guide'
 sidebar_label: 'Choosing an update strategy'
 ---
 
-When it comes to handling updates, analytical and transactional databases take different approaches to updates due to their underlying design philosophies and target use cases.
-
-For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control ([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)).
-This allows for safe and reliable modifications even in high-concurrency environments.
-
-ClickHouse on the other hand is a column-oriented database which is optimized for read-heavy analytics and high throughput append-only operations.
-In practice tables are often restructured to convert deletes and updates into append operations that are processed asynchronously and/or at read time, capitalising on ClickHouse's strengths for high-throughput data ingestion. While in-place updates and deletes are fully supported in ClickHouse, choosing the right strategy for the workload at hand is important.
+When it comes to handling updates, analytical and transactional databases take different approaches to how they handle updates due to their underlying design philosophies and target use cases.
+ClickHouse is a [column-oriented database](/intro#row-oriented-vs-column-oriented-storage) which is optimized for read-heavy analytics and high throughput append-only operations.
+In practice, tables are often restructured to convert deletes and updates into append operations that are processed asynchronously and/or at read time, capitalizing on ClickHouse's strengths for high-throughput data ingestion.
+ClickHouse also supports robust update and delete operations.
 
 This guide provides an overview of the available update methods in ClickHouse, and helps you choose the right update strategy for your workload.
 
@@ -48,8 +45,8 @@ Declarative UPDATE statements can be more straightforward for simple update oper
 
 | Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
 |--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
-| [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | Use for updating small amounts of data (up to ~10% of table). Creates patch parts for immediate visibility without rewriting entire columns. Adds overhead to `SELECT` queries but has predictable latency.                              |
+| [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | Use this in most scenarios, particularly when running frequent, small UPDATEs (up to ~10% of table) as part of your application or workflows. For example, a user wants to delete their event history, and events are spread across a multi-tenant table with many users. This approach creates patch parts for immediate visibility without rewriting entire columns. It adds overhead to `SELECT` queries but has predictable latency.                              |
+| [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | Use this when performing larger scale data management, particularly when an update aligns with your table partitioning. For example, you need to update a column of all rows within a month, in a table partitioned by month.                                                                                                            |
 
 ## Updates using specialized table engines {#insert-based-updates}
 
@@ -156,20 +153,21 @@ These methods work with tables using [MergeTree family](/engines/table-engines/m
 
 | Method | Syntax | Best for | Trade-offs |
 |--------|--------|----------|------------|
-| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | Compliance requiring physical removal; infrequent bulk updates | Heavy I/O; rewrites columns |
+| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | Infrequent bulk updates, well suited for when an update aligns with your table partitioning. | Heavy I/O; rewrites columns |
 | [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | Small updates (~0.1-10% of rows); frequent updates needing performance | Adds SELECT overhead; patch parts count toward limits |
 
 ### Mutations {#mutations}
 
-Mutations (`ALTER TABLE ... UPDATE`) rewrite all parts containing rows that match the `WHERE` expression. This guarantees physical data modification on disk.
+Mutations (`ALTER TABLE ... UPDATE`) rewrite all parts containing rows that match the `WHERE` expression.
 
 ```sql
 ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
 ```
 
-Use mutations when regulatory compliance requires guaranteed physical data removal, or for infrequent bulk update operations where you can tolerate the I/O overhead.
-
-Mutations are quite I/O-heavy, rewriting all parts that match the `WHERE` expression. There is no atomicity to this process—parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. You can track the state of progress via the [`system.mutations`](/operations/system-tables/mutations) table.
+Mutations are I/O-heavy, rewriting all parts that match the `WHERE` expression.
+There is no atomicity to this process.
+Parts get substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet.
+You can track the state of progress via the [`system.mutations`](/operations/system-tables/mutations) table.
 
 :::warning
 Mutations are I/O intensive and should be used sparingly as they can impact cluster `SELECT` performance. If mutations queue faster than they process, query performance will degrade. Monitor the queue via `system.mutations`.
@@ -179,7 +177,7 @@ Read more: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
 
 #### On-the-fly mutations {#on-the-fly-mutations}
 
-With mutations via `ALTER TABLE ... UPDATE` you may have to wait for your mutations to be applied via a background process to see the changed values reflected in your queries without use of `FINAL`.
+With mutations via `ALTER TABLE ... UPDATE` you may have to wait for your mutations to be applied via a background process to see the changed values reflected in your queries.
 ClickHouse offers a way to change this behavior through "on-the-fly mutations".
 When on-the-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values.
 
