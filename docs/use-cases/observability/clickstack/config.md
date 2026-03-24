@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/config
-title: 'Configuration Options'
+title: 'Configuration options'
 pagination_prev: null
 pagination_next: null
 description: 'Configuration options for ClickStack - The ClickHouse Observability Stack'

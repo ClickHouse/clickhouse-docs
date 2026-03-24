@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/local-data
-title: 'Local Logs & Metrics'
+title: 'Local logs & metrics'
 sidebar_position: 1
 pagination_prev: null
 pagination_next: null

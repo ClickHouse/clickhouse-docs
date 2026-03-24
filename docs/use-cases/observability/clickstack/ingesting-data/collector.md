@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
 sidebar_label: 'OpenTelemetry collector'
-title: 'ClickStack OpenTelemetry Collector'
+title: 'ClickStack OpenTelemetry collector'
 doc_type: 'guide'
 toc_max_heading_level: 2
 keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 'OTel collector configuration', 'OpenTelemetry ClickHouse']
@@ -191,7 +191,7 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-By default, the ClickStack OpenTelemetry Collector isn't secured when deployed outside of the Open Source distributions and doesn't require authentication on its OTLP ports.
+By default, the ClickStack OpenTelemetry collector isn't secured when deployed outside of the Open Source distributions and doesn't require authentication on its OTLP ports.
 
 To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. For example:
 

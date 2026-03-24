@@ -1,5 +1,5 @@
 ---
-title: 'Date and time data types - Time-series'
+title: 'Date and time data types - time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types

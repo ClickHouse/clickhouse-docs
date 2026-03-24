@@ -1,5 +1,5 @@
 ---
-title: 'BYOC Observability'
+title: 'BYOC observability'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'Observability'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'observability', 'monitoring', 'Prometheus', 'Grafana']

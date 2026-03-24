@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'Integrate LibreChat'
-title: 'Set Up ClickHouse MCP Server with LibreChat and ClickHouse Cloud'
+title: 'Set up ClickHouse MCP server with LibreChat and ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker.'

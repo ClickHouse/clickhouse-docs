@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/oss
-title: 'Getting Started with Open Source ClickStack'
-sidebar_label: 'Open Source'
+title: 'Getting started with open source ClickStack'
+sidebar_label: 'Open source'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with Open Source ClickStack'

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Data Types'
+sidebar_label: 'Data types'
 sidebar_position: 5
 keywords: ['clickhouse', 'go', 'golang', 'types', 'data types', 'complex types']
 description: 'Go type mappings and complex type support in clickhouse-go.'
 slug: /integrations/language-clients/go/data-types
-title: 'Data Types'
+title: 'Data types'
 doc_type: 'reference'
 ---
 

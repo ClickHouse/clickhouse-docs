@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/systemd-logs
-title: 'Monitoring Systemd Logs with ClickStack'
-sidebar_label: 'Systemd/Journald Logs'
+title: 'Monitoring Systemd logs with ClickStack'
+sidebar_label: 'Systemd/Journald logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Systemd and Journald Logs with ClickStack'

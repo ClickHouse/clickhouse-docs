@@ -3,7 +3,7 @@ description: 'Dataset containing 1.3 million records of historical data on the m
   of hotels, restaurants and cafes with the dishes along with their prices.'
 sidebar_label: 'New York Public Library "what''s on the menu?" dataset'
 slug: /getting-started/example-datasets/menus
-title: 'New York Public Library "What''s on the Menu?" Dataset'
+title: 'New York Public Library "What''s on the Menu?" dataset'
 doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---

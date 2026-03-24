@@ -1,7 +1,7 @@
 ---
 slug: /about-us/adopters
 sidebar_label: 'Adopters'
-title: 'ClickHouse Adopters'
+title: 'ClickHouse adopters'
 sidebar_position: 60
 description: 'A list of companies using ClickHouse and their success stories'
 keywords: ['ClickHouse adopters', 'success stories', 'case studies', 'company testimonials', 'ClickHouse users']

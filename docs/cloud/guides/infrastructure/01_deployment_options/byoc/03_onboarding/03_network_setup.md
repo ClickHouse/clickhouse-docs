@@ -1,7 +1,7 @@
 ---
-title: 'Private Networking Setup'
+title: 'Private networking setup'
 slug: /cloud/reference/byoc/onboarding/network
-sidebar_label: 'Private Networking Setup'
+sidebar_label: 'Private networking setup'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'vpc peering', 'privatelink']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'

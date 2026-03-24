@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
-title: 'ClickHouse C# Driver'
+title: 'ClickHouse C# driver'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
