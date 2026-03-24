@@ -51,4 +51,3 @@ If connection validation fails, verify that:
 ## Additional resources {#additional-resources}
 
 - [Middleware website](https://middleware.io/)
-- [ClickHouse security best practices](/guides/sre/network-ports)
