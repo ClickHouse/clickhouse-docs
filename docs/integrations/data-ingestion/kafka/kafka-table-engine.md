@@ -26,7 +26,7 @@ The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse)
 If you're on ClickHouse Cloud, we recommend using **[ClickPipes](/integrations/clickpipes)** instead. ClickPipes natively supports private network connections, scaling ingestion and cluster resources independently, and comprehensive monitoring for streaming Kafka data into ClickHouse.
 :::
 
-You can use the Kafka table engine to ingest data from Kafka topics into ClickHouse. The engine is designed to continuously consume and stream messages to attached materialized views, which then insert data into target tables for persistent storage. For this reason, you should be broadly familiar with [materialized views](../../../guides/developer/cascading-materialized-views.md) and [Merge Tree family tables](../../../engines/table-engines/mergetree-family/index.md) when using the Kafka table engine to read data from Apache Kafka and other Kafka API-compatible brokers.
+You can use the Kafka table engine to ingest data from Kafka topics into ClickHouse. The engine is designed to continuously consume and stream messages to attached materialized views, which then insert data into target tables for persistent storage. For this reason, you should be broadly familiar with [materialized views](/guides/developer/cascading-materialized-views) and [Merge Tree family tables](/engines/table-engines/mergetree-family) when using the Kafka table engine to read data from Apache Kafka and other Kafka API-compatible brokers.
 
 <Image img={kafka_01} size="lg" alt="Kafka table engine architecture diagram" style={{width: '80%'}} />
 
@@ -90,12 +90,12 @@ The dataset contains 200,000 rows, so it should be available in the specified to
 
 [//]: # "TODO We should not teach users to select directly from the Kafka table, since this approach isn't reliable. When we rollout the v2 engine, we can reconsider, but now we should direct users to finish setting up and check ingestion progress in the system catalog table."
 
-Before ClickHouse can ingest data from a Kafka topic, you must first provide details on how to connect to and authenticate with your Kafka broker, as well as how to interpret the data. In this example, the Kafka broker uses simple authentication (SASL), the source data is `JSON`-encoded and no schema registry is used. For a complete overview of all the supported formats, features, and configuration options, see the [reference documentation](../../../engines/table-engines/integrations/kafka).
+Before ClickHouse can ingest data from a Kafka topic, you must first provide details on how to connect to and authenticate with your Kafka broker, as well as how to interpret the data. In this example, the Kafka broker uses simple authentication (SASL), the source data is `JSON`-encoded and no schema registry is used. For a complete overview of all the supported formats, features, and configuration options, see the [reference documentation](/engines/table-engines/integrations/kafka).
 
 <Tabs groupId="auth-configuration">
 <TabItem value="chcloud" label="ClickHouse Cloud">
 
-In ClickHouse Cloud, you can provide inline credentials in the Kafka table engine `CREATE TABLE` statement using the `SETTINGS` clause. See the [reference documentation](../../../engines/table-engines/integrations/kafka.md#creating-a-table) for supported setting configurations.
+In ClickHouse Cloud, you can provide inline credentials in the Kafka table engine `CREATE TABLE` statement using the `SETTINGS` clause. See the [reference documentation](/engines/table-engines/integrations/kafka#creating-a-table) for supported setting configurations.
 
 :::info
 It is **not** possible to connect to brokers using TLS/SSL from ClickHouse Cloud, since there is no mechanism to upload and rotate certificates yet — only SASL is supported. If this is a requirement for your use case, we recommend using [ClickPipes](/integrations/clickpipes) or the [Kafka Connect Sink](/integrations/kafka/clickhouse-kafka-connect-sink) instead.
@@ -148,7 +148,7 @@ SETTINGS kafka_broker_list='<host>:<port>',
 </TabItem>
 <TabItem value="ch" label="Self-hosted ClickHouse">
 
-In self-hosted ClickHouse, you can configure credentials using [configuration files](../../../operations/configuration-files.md), [named collections](../../../operations/named-collections.md#named-collections-for-accessing-kafka), or inline in the `CREATE TABLE` statement using the [`SETTINGS` clause](../../../engines/table-engines/integrations/kafka.md#creating-a-table).
+In self-hosted ClickHouse, you can configure credentials using [configuration files](/operations/configuration-files), [named collections](/operations/named-collections#named-collections-for-accessing-kafka), or inline in the `CREATE TABLE` statement using the [`SETTINGS` clause](/engines/table-engines/integrations/kafka#creating-a-table).
 
 :::tip
 Inline credentials are a good fit for prototyping (e.g., to follow the steps in this guide). For production environments, or environments with a large number of tables reading from the same broker, we recommend using configuration files or named collections to manage credentials.
@@ -169,11 +169,11 @@ The Kafka table engine supports extended configuration using ClickHouse config f
 </clickhouse>
 ```
 
-See the [reference documentation](../../../engines/table-engines/integrations/kafka.md#configuration) for supported configuration keys.
+See the [reference documentation](/engines/table-engines/integrations/kafka#configuration) for supported configuration keys.
 
 **Named collections**
 
-You can use [named collections](../../../operations/named-collections.md#named-collections-for-accessing-kafka) to securely store and reuse credentials across multiple `CREATE TABLE` statements.
+You can use [named collections](/operations/named-collections#named-collections-for-accessing-kafka) to securely store and reuse credentials across multiple `CREATE TABLE` statements.
 
 ```sql
 CREATE NAMED COLLECTION my_kafka_cluster AS
@@ -223,11 +223,11 @@ SETTINGS kafka_topic_list='github',
          kafka_num_consumers = 1;
 ```
 
-See the [reference documentation](../../../engines/table-engines/integrations/kafka.md#configuration) for supported configuration keys and [this guide](./kafka-table-engine-named-collections.md) for a complete walkthrough of using named collections with the Kafka table engine.
+See the [reference documentation](/engines/table-engines/integrations/kafka#configuration) for supported configuration keys and [this guide](/integrations/data-ingestion/kafka/kafka-table-engine-named-collections) for a complete walkthrough of using named collections with the Kafka table engine.
 
 **Inline**
 
-You can provide inline credentials in the Kafka table engine `CREATE TABLE` statement using the `SETTINGS` clause. See the [reference documentation](../../../engines/table-engines/integrations/kafka.md#creating-a-table) for supported setting configurations.
+You can provide inline credentials in the Kafka table engine `CREATE TABLE` statement using the `SETTINGS` clause. See the [reference documentation](/engines/table-engines/integrations/kafka#creating-a-table) for supported setting configurations.
 
 :::info
 It is **not** possible to configure certificates to connect to brokers using TLS/SSL using this method, since the required options are not exposed via SQL — only SASL is supported. If this is the case, use one of the other methods instead.
@@ -288,7 +288,7 @@ The Kafka table engine is designed for one-time data retrieval. You should **nev
 
 ##### 4. Create a target table {#4-create-a-target-table}
 
-Once you define the schema of your Kafka table engine table, you must create a target table that will persist the data in ClickHouse. If the schema of your target table is the same as the schema you defined for the ingestion table (`github_queue`), you can use the [`CREATE TABLE AS` syntax](../../../sql-reference/statements/create/table#with-a-schema-similar-to-other-table-with-a-schema-similar-to-other-table) to copy that schema over.
+Once you define the schema of your Kafka table engine table, you must create a target table that will persist the data in ClickHouse. If the schema of your target table is the same as the schema you defined for the ingestion table (`github_queue`), you can use the [`CREATE TABLE AS` syntax](/sql-reference/statements/create/table#with-a-schema-similar-to-other-table) to copy that schema over.
 
 ```sql
 CREATE TABLE github AS github_queue
@@ -296,7 +296,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, repo_name, created_at);
 ```
 
-This table must use an engine of the [Merge Tree family](../../../engines/table-engines/mergetree-family/index.md). For simplicity, this example uses the `MergeTree()` engine, but you should evaluate the best fit for your use case.
+This table must use an engine of the [Merge Tree family](/engines/table-engines/mergetree-family). For simplicity, this example uses the `MergeTree()` engine, but you should evaluate the best fit for your use case.
 
 ##### 5. Create a materialized view {#5-create-a-materialized-view}
 
@@ -328,7 +328,7 @@ It's important to note that the Kafka table engine processes data in discrete ba
 └─────────┘
 ```
 
-To monitor ingestion progress and debug errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](../../../operations/system-tables/kafka_consumers). If your deployment has multiple replicas (e.g., ClickHouse Cloud), you must use the [`clusterAllReplicas`](../../../sql-reference/table-functions/cluster.md) table function.
+To monitor ingestion progress and debug errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](/operations/system-tables/kafka_consumers). If your deployment has multiple replicas (e.g., ClickHouse Cloud), you must use the [`clusterAllReplicas`](/sql-reference/table-functions/cluster) table function.
 
 ```sql
 SELECT * FROM clusterAllReplicas('default',system.kafka_consumers)
@@ -344,7 +344,7 @@ ORDER BY assignments.partition_id ASC;
 
 **System tables**
 
-To troubleshoot errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](../../../operations/system-tables/kafka_consumers).
+To troubleshoot errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](/operations/system-tables/kafka_consumers).
 
 ```sql
 SELECT * FROM clusterAllReplicas('default',system.kafka_consumers)
@@ -360,14 +360,14 @@ Logging for the Kafka table engine is reported in the ClickHouse server logs, wh
 
 **System tables**
 
-To troubleshoot errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](../../../operations/system-tables/kafka_consumers).
+To troubleshoot errors with the Kafka consumer, you can query the [`system.kafka_consumers` system table](/operations/system-tables/kafka_consumers).
 
 ```sql
 SELECT * FROM system.kafka_consumers
 ORDER BY assignments.partition_id ASC;
 ```
 
-If your deployment has multiple replicas, you must use the [`clusterAllReplicas`](../../../sql-reference/table-functions/cluster.md) table function.
+If your deployment has multiple replicas, you must use the [`clusterAllReplicas`](/sql-reference/table-functions/cluster) table function.
 
 **Log files**
 
@@ -398,15 +398,15 @@ ATTACH TABLE github_queue;
 
 ##### Using Kafka metadata {#using-kafka-metadata}
 
-In addition to the message value, the Kafka table engine also exposes Kafka metadata fields like the message key, headers, and others as [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These virtual columns are prefixed with `_` and can be added as columns in your target table on creation.
+In addition to the message value, the Kafka table engine also exposes Kafka metadata fields like the message key, headers, and others as [virtual columns](/engines/table-engines#table_engines-virtual_columns). These virtual columns are prefixed with `_` and can be added as columns in your target table on creation.
 
-If you want to add metadata columns to an existing target table, you must first [detach](../../../sql-reference/statements/detach.md) the Kafka table to stop data ingestion.
+If you want to add metadata columns to an existing target table, you must first [detach](/sql-reference/statements/detach) the Kafka table to stop data ingestion.
 
 ```sql
 DETACH TABLE github_queue;
 ```
 
-To add new columns to the target table for persisting Kafka metadata, use the [`ALTER TABLE...ADD COLUMN` statement](../../../sql-reference/statements/alter/column.md). For example:
+To add new columns to the target table for persisting Kafka metadata, use the [`ALTER TABLE...ADD COLUMN` statement](/sql-reference/statements/alter/column). For example:
 
 ```sql
 ALTER TABLE github
@@ -451,13 +451,13 @@ LIMIT 10;
 | jpn | CommitCommentEvent | 2011-02-12 12:24:31 | github | 0 |
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
-See the [reference documentation](../../../engines/table-engines/integrations/kafka.md#virtual-columns) for a complete list of supported Kafka metadata fields.
+See the [reference documentation](/engines/table-engines/integrations/kafka#virtual-columns) for a complete list of supported Kafka metadata fields.
 
 ##### Modifying table settings {#modifying-table-settings}
 
 To modify Kafka table settings, we recommend **dropping and recreating** the table with the new configuration. The materialized view does not need to be modified - message consumption will automatically resume from the last committed offset when the table is recreated.
 
-While you can use [`ALTER TABLE...MODIFY SETTING`](../../../sql-reference//statements/alter/setting.md) for simple settings like `kafka_max_block_size`, dropping and recreating is more reliable (and often required) for significant configuration changes such as broker lists, consumer groups, topics, or authentication settings.
+While you can use [`ALTER TABLE...MODIFY SETTING`](/sql-reference/statements/alter/setting) for simple settings like `kafka_max_block_size`, dropping and recreating is more reliable (and often required) for significant configuration changes such as broker lists, consumer groups, topics, or authentication settings.
 
 ##### Handling malformed messages {#handling-malformed-messages}
 
@@ -489,7 +489,7 @@ You may need [quorum-based inserts](/operations/settings/settings#insert_quorum)
 If you're on ClickHouse Cloud, it's important to note that private network connections are not supported. This means that your broker(s) must be configured for public access.
 :::
 
-You can use the Kafka table engine to write data from ClickHouse to Kafka topics. The engine is designed to push messages to a topic when triggered by direct inserts or updates in attached materialized views. For this reason, you should be broadly familiar with [materialized views](../../../guides/developer/cascading-materialized-views.md) when using the Kafka table engine to write data to Apache Kafka and other Kafka API-compatible brokers.
+You can use the Kafka table engine to write data from ClickHouse to Kafka topics. The engine is designed to push messages to a topic when triggered by direct inserts or updates in attached materialized views. For this reason, you should be broadly familiar with [materialized views](/guides/developer/cascading-materialized-views) when using the Kafka table engine to write data to Apache Kafka and other Kafka API-compatible brokers.
 
 <Image img={kafka_02} size="lg" alt="Kafka table engine with inserts diagram" />
 
