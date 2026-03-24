@@ -41,7 +41,7 @@ const sidebars = {
             'getting-started/install/macos',
             'getting-started/install/windows',
             'getting-started/install/docker',
-            'getting-started/install/quick-install-curl',
+            'getting-started/install/quick-install',
             'getting-started/install/advanced',
           ],
         },
