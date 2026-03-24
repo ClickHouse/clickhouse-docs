@@ -4,6 +4,8 @@ sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
 description: 'Using the Kafka table engine to read data from and write data to Apache Kafka and other Kafka API-compatible brokers (e.g. Redpanda, Amazon MSK)'
 title: 'Using the Kafka table engine'
+doc_type: 'guide'
+keywords: ['Kafka', 'table engine', 'streaming', 'Redpanda', 'Amazon MSK', 'message queue']
 ---
 
 import Image from '@theme/IdealImage';
