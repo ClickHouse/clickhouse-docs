@@ -160,26 +160,32 @@ The rest of the documentation in this category covers the details of the ClickHo
 
 ClickHouse supports two official Go clients. These clients are complementary and intentionally support different use cases.
 
-* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - High level language client which supports either the Go standard database/sql interface or the native interface.
+* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - High level language client which supports either the Go standard `database/sql` interface or the native ClickHouse API.
 * [ch-go](https://github.com/ClickHouse/ch-go) - Low level client. Native interface only.
 
 clickhouse-go provides a high-level interface, allowing users to query and insert data using row-orientated semantics and batching that are lenient with respect to data types - values will be converted provided no precision loss is potentially incurred. ch-go, meanwhile, provides an optimized column-orientated interface that provides fast data block streaming with low CPU and memory overhead at the expense of type strictness and more complex usage.
 
-From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
+From version 2.3, clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users need to proxy or load balance traffic.
 
-The clickhouse-go client provides two API interfaces for communicating with ClickHouse:
+### Four ways to connect {#four-ways-to-connect}
 
-* ClickHouse client-specific API
-* `database/sql` standard - generic interface around SQL databases provided by Golang.
+clickhouse-go gives you two independent choices: **which API** to use and **which transport** to use. These combine into four connection modes:
 
-While the `database/sql` provides a database-agnostic interface, allowing developers to abstract their data store, it enforces some typing and query semantics that impact performance. For this reason, the client-specific API should be used where [performance is important](https://github.com/clickHouse/clickHouse-go#benchmark). However, users who wish to integrate ClickHouse into tooling, which supports multiple databases, may prefer to use the standard interface.
+|  | **TCP** (Native protocol, port 9000/9440) | **HTTP** (port 8123/8443) |
+|:---|:---:|:---:|
+| **ClickHouse API** (`clickhouse.Open`) | Default — best performance | Set `Protocol: clickhouse.HTTP` |
+| **`database/sql` API** (`OpenDB` / `sql.Open`) | `clickhouse://host:9000` | `http://host:8123` |
 
-Both interfaces encode data using the [native format](/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
+**Choosing an API:** Pick the ClickHouse API for maximum performance and the full feature set (progress callbacks, columnar inserts, rich type support). Pick `database/sql` when you need to integrate with ORMs or tools that expect a standard Go database interface.
 
-|                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
-|:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
-|   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
-| `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
+**Choosing a transport:** TCP is faster and is the default. Switch to HTTP when your infrastructure requires it — for example, when connecting through an HTTP load balancer or proxy, or when you need HTTP-specific features like sessions with temporary tables, or additional compression algorithms (`gzip`, `deflate`, `br`).
+
+Both APIs use the native binary encoding regardless of transport, so HTTP carries no serialization overhead.
+
+|                    | Native format | TCP transport | HTTP transport | Bulk write | Struct marshaling | Compression | Progress callbacks |
+|:------------------:|:-------------:|:-------------:|:--------------:|:----------:|:-----------------:|:-----------:|:------------------:|
+|   ClickHouse API   |       ✅       |       ✅       |       ✅        |     ✅      |         ✅         |      ✅      |         ✅          |
+| `database/sql` API |       ✅       |       ✅       |       ✅        |     ✅      |                   |      ✅      |                    |
 
 ### Choosing a client {#choosing-a-client}
 
@@ -265,7 +271,7 @@ The client supports:
 
 When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
 
-* `Protocol` - either Native or HTTP. HTTP is only supported currently for the [database/sql API](#database-sql-api).
+* `Protocol` - either `Native` (TCP, default) or `HTTP`. See [TCP vs HTTP](#tcp-vs-http).
 * `TLS` - TLS options. A non-nil value enables TLS. See [TLS](#using-tls).
 * `Addr` - a slice of addresses including port.
 * `Auth` - Authentication detail. See [Authentication](#authentication).
@@ -565,7 +571,43 @@ if err := batch.Send(); err != nil {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
-Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression-sql) for further details.
+Additional compression techniques are available when using HTTP transport: `gzip`, `deflate`, and `br`. See [database/sql API - Compression](#compression-sql) for details.
+
+### TCP vs HTTP {#tcp-vs-http}
+
+The transport is a single config switch — everything else in this guide applies to both. Here is what changes:
+
+| | TCP (Native protocol) | HTTP |
+|:---|:---|:---|
+| **Default port** | 9000 (plain), 9440 (TLS) | 8123 (plain), 8443 (TLS) |
+| **Enable** | Default — omit `Protocol` | `Protocol: clickhouse.HTTP` or use an `http://` DSN |
+| **Compression** | `lz4`, `zstd` | `lz4`, `zstd`, `gzip`, `deflate`, `br` |
+| **Sessions** | Built-in (always active) | Explicit — pass `session_id` as a setting |
+| **HTTP headers** | — | `HttpHeaders`, `HttpUrlPath`, `HttpMaxConnsPerHost` |
+| **Custom transport** | — | `TransportFunc` |
+| **JWT auth** | — | `GetJWT` (ClickHouse Cloud HTTPS) |
+| **OpenTelemetry (`WithSpan`)** | ✅ | Server supports it; client does not yet send `traceparent` header |
+
+To switch either API to HTTP:
+
+```go
+// ClickHouse API over HTTP
+conn, err := clickhouse.Open(&clickhouse.Options{
+    Addr:     []string{"host:8123"},
+    Protocol: clickhouse.HTTP,
+    // ... auth, etc.
+})
+
+// database/sql over HTTP — via Options
+conn := clickhouse.OpenDB(&clickhouse.Options{
+    Addr:     []string{"host:8123"},
+    Protocol: clickhouse.HTTP,
+    // ... auth, etc.
+})
+
+// database/sql over HTTP — via DSN
+conn, err := sql.Open("clickhouse", "http://host:8123?username=user&password=pass")
+```
 
 ## ClickHouse API {#clickhouse-api}
 
@@ -1249,7 +1291,11 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 ### Open telemetry {#open-telemetry}
 
-ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this.
+ClickHouse supports [trace context propagation](/operations/opentelemetry/) on both TCP and HTTP transports. When using TCP, the client serializes the span into the native binary protocol. Use `clickhouse.WithSpan` to attach a span to a query via the context.
+
+:::note HTTP transport limitation
+While ClickHouse server accepts the standard `traceparent` / `tracestate` HTTP headers, the clickhouse-go HTTP transport does not currently send them — `WithSpan` has no effect over HTTP. As a workaround, you can set the header manually via `HttpHeaders` in the connection options.
+:::
 
 ```go
 var count uint64
@@ -1397,7 +1443,11 @@ func ConnectDSNHTTP() error {
 
 #### Sessions {#sessions}
 
-While native connections inherently have a session, connections over HTTP require the user to create a session id for passing in a context as a setting. This allows the use of features, e.g., Temporary tables, which are bound to a session.
+:::note HTTP only
+Sessions are only needed when using the HTTP transport. Native TCP connections have a built-in session automatically.
+:::
+
+When using HTTP, pass a `session_id` as a setting to enable session-bound features such as temporary tables.
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -1833,7 +1883,11 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 ### Open telemetry {#open-telemetry-sql}
 
-ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this. This isn't supported when HTTP is used as transport.
+ClickHouse supports [trace context propagation](/operations/opentelemetry/) on both TCP and HTTP transports. Use `clickhouse.WithSpan` to attach a span to a query via the context.
+
+:::note HTTP transport limitation
+While ClickHouse server accepts the standard `traceparent` / `tracestate` HTTP headers, the clickhouse-go HTTP transport does not currently send them — `WithSpan` has no effect over HTTP. As a workaround, you can set the header manually via `HttpHeaders` in the connection options.
+:::
 
 ```go
 var count uint64
