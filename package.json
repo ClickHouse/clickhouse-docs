@@ -29,6 +29,7 @@
     "check-kb": "./scripts/check-kb.sh",
     "check-markdown": "./scripts/check-markdown.sh",
     "check-prose": "./scripts/vale/check-prose.sh",
+    "check-casing": "python3 scripts/check-sentence-casing.py",
     "generate:rss": "./scripts/changelog/cloud-changelog-rss.sh"
   },
   "dependencies": {

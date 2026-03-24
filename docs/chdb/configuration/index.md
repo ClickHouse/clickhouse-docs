@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Configuration'
+title: 'DataStore configuration'
 sidebar_label: 'Overview'
 slug: /chdb/configuration
 description: 'Configure DataStore execution engine, logging, caching, and profiling'

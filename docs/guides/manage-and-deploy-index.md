@@ -1,5 +1,5 @@
 ---
-title: 'Manage and Deploy Overview'
+title: 'Manage and deploy overview'
 description: 'Overview page for Manage and Deploy'
 slug: /guides/manage-and-deploy-index
 doc_type: 'landing-page'

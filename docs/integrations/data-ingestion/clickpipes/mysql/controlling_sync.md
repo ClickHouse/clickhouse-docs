@@ -1,5 +1,5 @@
 ---
-title: 'Controlling the Syncing of a MySQL ClickPipe'
+title: 'Controlling the syncing of a MySQL ClickPipe'
 description: 'Doc for controllling the sync a MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'

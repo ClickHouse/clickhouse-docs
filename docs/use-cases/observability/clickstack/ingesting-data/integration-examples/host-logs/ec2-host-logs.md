@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs/ec2
-title: 'Monitoring EC2 Host Logs with ClickStack'
-sidebar_label: 'EC2 Host Logs'
+title: 'Monitoring EC2 host logs with ClickStack'
+sidebar_label: 'EC2 host logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring EC2 Host Logs with ClickStack'

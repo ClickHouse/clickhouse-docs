@@ -2,7 +2,7 @@
 sidebar_label: 'Google Cloud SQL'
 description: 'Set up Google Cloud SQL Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
-title: 'Google Cloud SQL Postgres Source Setup Guide'
+title: 'Google Cloud SQL Postgres source setup guide'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'logical decoding', 'firewall']
 integration:

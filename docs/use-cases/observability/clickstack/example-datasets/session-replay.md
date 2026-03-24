@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/example-datasets/session-replay-demo
-title: 'Session Replay Demo'
+title: 'Session replay demo'
 sidebar_position: 4
 pagination_prev: null
 pagination_next: null

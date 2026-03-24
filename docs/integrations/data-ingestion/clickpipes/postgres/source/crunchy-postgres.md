@@ -2,7 +2,7 @@
 sidebar_label: 'Crunchy Bridge Postgres'
 description: 'Set up Crunchy Bridge Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres Source Setup Guide'
+title: 'Crunchy Bridge Postgres source setup guide'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
 doc_type: 'guide'
 integration:

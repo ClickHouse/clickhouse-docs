@@ -622,7 +622,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'ClickPipes for Object Storage',
+          label: 'ClickPipes for object storage',
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
@@ -1794,7 +1794,7 @@ const sidebars = {
         },
         {
           type: 'link',
-          label: 'chDB Intro Video',
+          label: 'chDB intro video',
           href: 'https://www.youtube.com/watch?v=e_yL0dlX6k4',
         },
         {
@@ -1860,7 +1860,7 @@ const sidebars = {
           items: [
             {
               type: 'category',
-              label: 'Open Source',
+              label: 'Open source',
               collapsed: true,
               collapsible: true,
               link: {

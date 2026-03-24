@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - Pandas-Compatible API'
+title: 'DataStore - Pandas-compatible API'
 sidebar_label: 'Overview'
 slug: /chdb/datastore
 description: 'DataStore provides a pandas-compatible API with SQL optimization for high-performance data analysis'

@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
 sidebar_label: 'Integrate PydanticAI'
-title: 'How to build a PydanticAI agent using ClickHouse MCP Server.'
+title: 'How to build a PydanticAI agent using ClickHouse MCP server.'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how to build a PydanticAI agent that can interact with ClickHouse MCP Server.'
+description: 'Learn how to build a PydanticAI agent that can interact with ClickHouse MCP server.'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a PydanticAI agent using ClickHouse MCP Server
+# How to build a PydanticAI agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) agent that
-can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Example notebook
 This example can be found as a notebook in the [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
@@ -68,9 +68,9 @@ env = {
 }
 ```
 
-## Initialize MCP Server and PydanticAI agent {#initialize-mcp}
+## Initialize MCP server and PydanticAI agent {#initialize-mcp}
 
-Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground:
+Now configure the ClickHouse MCP server to point at the ClickHouse SQL playground:
 
 ```python
 from pydantic_ai import Agent

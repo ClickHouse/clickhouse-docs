@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Data Catalogs'
+sidebar_label: 'Data catalogs'
 slug: /manage/data-catalogs
-title: 'Data Catalogs'
+title: 'Data catalogs'
 description: 'Data catalog integrations for ClickHouse Cloud'
 doc_type: 'landing-page'
 keywords: ['data catalogs', 'cloud features', 'data lake', 'iceberg', 'integrations']
