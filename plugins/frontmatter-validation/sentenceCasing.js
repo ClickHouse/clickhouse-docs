@@ -106,7 +106,12 @@ function loadExceptions(ymlPath) {
  * Returns an array of capitalized words that violate the rule.
  */
 function checkSentenceCasing(text, regexPatterns, literalWords) {
-  const words = text.split(/\s+/);
+  // Strip quoted substrings before checking — words inside quotes are
+  // typically proper names (e.g. "What's on the Menu?") and should be exempt.
+  const textWithoutQuotes = text.replace(/"[^"]*"|"[^"]*"|'[^']*'/g, match =>
+    ' '.repeat(match.length)
+  );
+  const words = textWithoutQuotes.split(/\s+/);
   const violations = [];
 
   for (let i = 1; i < words.length; i++) {

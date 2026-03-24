@@ -943,6 +943,7 @@ exceptions:
   - Marimo
   - MCP
   - Metastore
+  - Middleware
   - MinIO
   - Moose
   - MSK
