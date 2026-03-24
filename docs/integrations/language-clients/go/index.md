@@ -218,7 +218,7 @@ mkdir my-clickhouse-app && cd my-clickhouse-app
 cat > go.mod <<-END
   module my-clickhouse-app
 
-  go 1.18
+  go 1.21
 
   require github.com/ClickHouse/clickhouse-go/v2 main
 END
@@ -259,7 +259,9 @@ The client supports:
 | Client Version | Golang Versions |
 |:--------------:|:---------------:|
 |  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
-|     >= 2.3     |       1.18      |
+|  >= 2.3, < 2.41 |       1.18+     |
+|     >= 2.41    |      1.21+      |
+|     >= 2.43    |      1.24+      |
 
 ## ClickHouse client API {#clickhouse-client-api}
 
