@@ -1,36 +1,30 @@
 ---
-title: 'Named Collection을 사용하여 ClickHouse와 Kafka 연동하기'
+title: 'Named Collection을 사용하여 ClickHouse와 Kafka 통합하기'
 description: 'Named Collection을 사용하여 ClickHouse를 Kafka와 연결하는 방법'
 keywords: ['named collection', '사용 방법', 'kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # 이름이 지정된 컬렉션(named collection)을 사용한 ClickHouse와 Kafka 통합 \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
-
 
 ## 소개 \{#introduction\}
 
 이 가이드에서는 named collections를 사용하여 ClickHouse를 Kafka에 연결하는 방법을 설명합니다. named collections용 구성 파일을 사용하면 다음과 같은 장점이 있습니다:
-- 설정을 중앙에서 보다 쉽게 관리할 수 있습니다.
-- SQL 테이블 정의를 변경하지 않고도 설정을 변경할 수 있습니다.
-- 단일 구성 파일만 확인하여 설정을 더 쉽게 검토하고 문제를 해결할 수 있습니다.
+
+* 설정을 중앙에서 보다 쉽게 관리할 수 있습니다.
+* SQL 테이블 정의를 변경하지 않고도 설정을 변경할 수 있습니다.
+* 단일 구성 파일만 확인하여 설정을 더 쉽게 검토하고 문제를 해결할 수 있습니다.
 
 이 가이드는 Apache Kafka 3.4.1 및 ClickHouse 24.5.1에서 테스트되었습니다.
-
-
 
 ## 가정 \{#assumptions\}
 
 이 문서는 다음 조건을 충족하고 있다고 가정합니다:
+
 1. 정상적으로 동작하는 Kafka 클러스터
 2. 구성되어 실행 중인 ClickHouse 클러스터
 3. 기본적인 SQL 지식과 ClickHouse 및 Kafka 구성에 대한 이해
-
-
 
 ## 사전 요구 사항 \{#prerequisites\}
 
@@ -44,7 +38,6 @@ Named collection을 생성하는 USER에게 필요한 액세스 권한이 있는
 ```
 
 액세스 제어를 활성화하는 방법에 대한 자세한 내용은 [User Management Guide](./../../../guides/sre/user-management/index.md)를 참조하십시오.
-
 
 ## 구성 \{#configuration\}
 
@@ -102,10 +95,9 @@ Named collection을 생성하는 USER에게 필요한 액세스 권한이 있는
 ### 구성 참고 사항 \{#configuration-notes\}
 
 1. Kafka 주소와 관련 설정을 Kafka 클러스터 구성에 맞게 조정하십시오.
-2. `<kafka>` 앞에 있는 섹션에는 ClickHouse Kafka 엔진 파라미터가 포함되어 있습니다. 전체 파라미터 목록은 [Kafka 엔진 파라미터](/engines/table-engines/integrations/kafka)를 참고하십시오.
-3. `<kafka>` 섹션에는 추가적인 Kafka 구성 옵션이 포함되어 있습니다. 더 많은 옵션은 [librdkafka 구성](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)을 참고하십시오.
+2. `<kafka>` 앞에 있는 섹션에는 ClickHouse Kafka 엔진 파라미터가 포함되어 있습니다. 전체 파라미터 목록은 [Kafka 엔진 파라미터](/engines/table-engines/integrations/kafka)를 참조하십시오.
+3. `<kafka>` 섹션에는 추가적인 Kafka 구성 옵션이 포함되어 있습니다. 더 많은 옵션은 [librdkafka 구성](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)을 참조하십시오.
 4. 이 예시는 `SASL_SSL` 보안 프로토콜과 `PLAIN` 메커니즘을 사용합니다. Kafka 클러스터 구성에 따라 이러한 설정을 조정하십시오.
-
 
 ## 테이블과 데이터베이스 생성 \{#creating-tables-and-databases\}
 
@@ -193,8 +185,7 @@ SELECT
 FROM second_kafka_table;
 ```
 
-
-## 설정 검증하기 \{#verifying-the-setup\}
+## 설정 확인하기 \{#verifying-the-setup\}
 
 이제 각 Kafka 클러스터에서 해당 Consumer Group을 확인할 수 있습니다:
 
@@ -225,4 +216,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-이로써 named collection을 사용하여 ClickHouse와 Kafka를 연동하기 위한 설정이 완료됩니다. Kafka 설정을 ClickHouse의 `config.xml` 파일로 중앙집중화하면 설정을 더 쉽게 관리하고 조정할 수 있어, 보다 간소하고 효율적인 통합을 구현할 수 있습니다.
+이로써 named collection을 사용하여 ClickHouse와 Kafka를 통합하기 위한 설정이 완료됩니다. Kafka 설정을 ClickHouse의 `config.xml` 파일로 중앙집중화하면 설정을 더 쉽게 관리하고 조정할 수 있어, 보다 간소하고 효율적인 통합을 구현할 수 있습니다.

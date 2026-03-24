@@ -2,7 +2,7 @@
 title: '部署选项'
 slug: /infrastructure/deployment-options
 description: '适用于 ClickHouse 客户的部署选项'
-keywords: ['自有云（BYOC，bring your own cloud）', 'byoc', '私有', '政府', '自托管']
+keywords: ['自带云环境（BYOC，bring your own cloud）', 'byoc', '私有', '政府', '自部署']
 doc_type: 'reference'
 ---
 

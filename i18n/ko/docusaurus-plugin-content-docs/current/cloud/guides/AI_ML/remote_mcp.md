@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
 sidebar_label: '원격 MCP 서버 활성화'
-title: 'ClickHouse Cloud Remote MCP Server 활성화 및 연결'
+title: 'ClickHouse Cloud 원격 MCP 서버 활성화 및 연결'
 pagination_prev: null
 pagination_next: null
 description: '이 가이드에서는 ClickHouse Cloud Remote MCP를 활성화하고 사용하는 방법을 설명합니다'
@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-이 가이드에서는 ClickHouse Cloud Remote MCP Server를 활성화하고, 일반적인 개발자 도구에서 사용할 수 있도록 설정하는 방법을 설명합니다.
+이 가이드에서는 ClickHouse Cloud 원격 MCP 서버를 활성화하고, 일반적인 개발자 도구에서 사용할 수 있도록 설정하는 방법을 설명합니다.
 
 **사전 요구 사항**
 

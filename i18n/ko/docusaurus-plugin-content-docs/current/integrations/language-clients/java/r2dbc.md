@@ -1,11 +1,11 @@
 ---
 sidebar_label: 'R2DBC 드라이버'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+keywords: ['clickhouse', 'java', '드라이버', '통합', 'r2dbc']
 description: 'ClickHouse R2DBC 드라이버'
 slug: /integrations/java/r2dbc
 title: 'R2DBC 드라이버'
-doc_type: 'reference'
+doc_type: '참조'
 integration:
   - support_level: 'core'
   - category: 'language_client'

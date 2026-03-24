@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'リモート MCP サーバーを有効にする'
-title: 'ClickHouse Cloud Remote MCP Server を有効にして接続する'
+sidebar_label: 'リモートMCPサーバーを有効にする'
+title: 'ClickHouse Cloud リモートMCPサーバーを有効にして接続する'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、ClickHouse Cloud Remote MCP を有効にして使用する方法を説明します'
@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-このガイドでは、ClickHouse Cloud Remote MCP Server を有効にし、一般的な開発ツールで使用できるように設定する方法を説明します。
+このガイドでは、ClickHouse Cloud リモートMCPサーバー を有効にし、一般的な開発ツールで使用できるようにセットアップする方法を説明します。
 
 **前提条件**
 

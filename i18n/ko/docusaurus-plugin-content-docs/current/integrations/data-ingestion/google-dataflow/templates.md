@@ -2,14 +2,13 @@
 sidebar_label: 'Templates'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: 'Google Dataflow Templates를 사용하여 데이터를 ClickHouse로 수집할 수 있습니다'
-title: 'Google Dataflow Templates'
+description: 'Google Dataflow 템플릿를 사용하여 데이터를 ClickHouse로 수집할 수 있습니다'
+title: 'Google Dataflow templates'
 doc_type: 'guide'
 keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # Google Dataflow 템플릿 \{#google-dataflow-templates\}
 

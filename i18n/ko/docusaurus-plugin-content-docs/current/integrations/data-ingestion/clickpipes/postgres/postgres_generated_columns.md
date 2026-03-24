@@ -1,7 +1,7 @@
 ---
 title: 'Postgres 생성 컬럼: 주의할 점과 모범 사례'
 slug: /integrations/clickpipes/postgres/generated_columns
-description: '복제 중인 테이블에서 PostgreSQL 생성 컬럼을 사용할 때 유의해야 할 중요한 사항을 설명하는 페이지입니다.'
+description: '복제된 테이블에서 PostgreSQL 생성 컬럼을 사용할 때 유의해야 할 중요한 사항을 설명하는 페이지입니다.'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '데이터 수집', '실시간 동기화']
 integration:
@@ -9,7 +9,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-PostgreSQL의 생성 컬럼을 복제되는 테이블에서 사용할 때에는 몇 가지 중요한 사항을 유의해야 합니다. 이러한 사항들은 복제 프로세스와 대상 시스템의 데이터 일관성에 영향을 줄 수 있습니다.
+PostgreSQL의 생성 컬럼을 복제된 테이블에서 사용할 때에는 몇 가지 중요한 사항을 유의해야 합니다. 이러한 사항들은 복제 프로세스와 대상 시스템의 데이터 일관성에 영향을 줄 수 있습니다.
 
 ## 생성 컬럼의 문제점 \{#the-problem-with-generated-columns\}
 

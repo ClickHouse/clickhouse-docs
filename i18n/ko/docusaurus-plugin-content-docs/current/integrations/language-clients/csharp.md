@@ -16,7 +16,6 @@ import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
-
 # ClickHouse C# client \{#clickhouse-c-client\}
 
 ClickHouse에 연결하기 위한 공식 C# 클라이언트입니다.

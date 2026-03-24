@@ -1,6 +1,6 @@
 ---
-title: 'Обработка столбцов TOAST'
-description: 'Узнайте, как обрабатывать столбцы TOAST при репликации данных из PostgreSQL в ClickHouse.'
+title: 'Обработка TOAST-столбцов'
+description: 'Узнайте, как обрабатывать TOAST-столбцы при репликации данных из PostgreSQL в ClickHouse.'
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
@@ -9,7 +9,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-При репликации данных из PostgreSQL в ClickHouse важно понимать ограничения и особенности работы со столбцами TOAST (The Oversized-Attribute Storage Technique). Это руководство поможет вам выявлять и корректно обрабатывать столбцы TOAST в процессе репликации.
+При репликации данных из PostgreSQL в ClickHouse важно понимать ограничения и особенности работы с TOAST-столбцами (The Oversized-Attribute Storage Technique). Это руководство поможет вам выявлять и корректно обрабатывать TOAST-столбцы в процессе репликации.
 
 ## Что такое TOAST-столбцы в PostgreSQL? \{#what-are-toast-columns-in-postgresql\}
 

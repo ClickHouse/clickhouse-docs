@@ -2,7 +2,7 @@
 title: 'Модель выполнения DataStore'
 sidebar_label: 'Модель выполнения'
 slug: /chdb/datastore/execution-model
-description: 'Разбор отложенных вычислений, механизмов запуска выполнения и кэширования в DataStore'
+description: 'Разбор отложенных вычислений, триггеров выполнения и кэширования в DataStore'
 keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---

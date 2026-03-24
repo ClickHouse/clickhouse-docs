@@ -1,6 +1,6 @@
 ---
 sidebar_label: '介绍'
-description: '直接在 PostgreSQL 中对 ClickHouse 运行分析查询，而无需重写任何 SQL 语句'
+description: '直接在 PostgreSQL 中对 ClickHouse 运行分析查询，无需重写任何 SQL'
 slug: '/integrations/pg_clickhouse'
 title: 'pg_clickhouse 参考文档'
 doc_type: 'landing-page'

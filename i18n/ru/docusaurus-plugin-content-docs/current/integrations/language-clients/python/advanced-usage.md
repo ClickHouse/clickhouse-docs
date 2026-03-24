@@ -8,7 +8,7 @@ title: 'Расширенные возможности'
 doc_type: 'reference'
 ---
 
-# Продвинутое использование \{#advanced-usage\}
+# Расширенные возможности \{#advanced-usage\}
 
 ## Низкоуровневый API \{#raw-api\}
 

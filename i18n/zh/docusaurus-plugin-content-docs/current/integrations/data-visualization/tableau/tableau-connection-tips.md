@@ -1,10 +1,10 @@
 ---
-sidebar_label: '连接提示'
+sidebar_label: '连接建议'
 sidebar_position: 3
 slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: '使用 ClickHouse 官方连接器时的 Tableau 连接建议。'
-title: '连接提示'
+title: '连接建议'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -13,7 +13,6 @@ integration:
 
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # 连接建议 \{#connection-tips\}
 

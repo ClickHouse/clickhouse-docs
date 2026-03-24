@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-本指南介绍如何启用 ClickHouse Cloud Remote MCP Server，并将其配置为可与常见的开发者工具配合使用。
+本指南介绍如何启用 ClickHouse Cloud 远程 MCP 服务器，并将其配置为可与常见的开发者工具配合使用。
 
 **前提条件**
 

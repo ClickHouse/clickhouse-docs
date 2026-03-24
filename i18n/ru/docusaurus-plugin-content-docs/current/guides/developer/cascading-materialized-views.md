@@ -2,7 +2,7 @@
 slug: /guides/developer/cascading-materialized-views
 title: 'Каскадные материализованные представления'
 description: 'Как использовать несколько материализованных представлений для исходной таблицы.'
-keywords: ['materialized view', 'агрегация']
+keywords: ['материализованное представление', 'агрегация']
 doc_type: 'guide'
 ---
 

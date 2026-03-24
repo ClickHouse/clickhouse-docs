@@ -2,8 +2,8 @@
 slug: /integrations/s3/performance
 sidebar_position: 2
 sidebar_label: 'パフォーマンス最適化'
-title: 'S3 の書き込みおよび読み取りパフォーマンスの最適化'
-description: 'S3 の読み取りおよび書き込みパフォーマンスの最適化'
+title: 'S3 の insert および読み取りパフォーマンスの最適化'
+description: 'S3 の読み取りおよび insert パフォーマンスの最適化'
 doc_type: 'guide'
 keywords: ['s3', 'performance', 'optimization', 'object storage', 'data loading']
 ---
@@ -17,13 +17,13 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-このセクションでは、[s3 テーブル関数](/sql-reference/table-functions/s3) を使用して S3 からデータを読み取りおよび挿入する際のパフォーマンス最適化に焦点を当てます。
+このセクションでは、[s3 テーブル関数](/sql-reference/table-functions/s3) を使用して S3 からデータを読み取りおよび insert する際のパフォーマンス最適化に焦点を当てます。
 
 :::info
 **本ガイドで説明する手法は、[GCS](/sql-reference/table-functions/gcs) や [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage) など、独自の専用テーブル関数を持つ他のオブジェクトストレージ実装にも適用できます。**
 :::
 
-挿入パフォーマンスを向上させるためにスレッド数やブロックサイズをチューニングする前に、まずは S3 への INSERT の仕組みを理解することをお勧めします。すでに INSERT の仕組みに慣れている場合や、すぐに役立つヒントだけを知りたい場合は、以下の[サンプルデータセット](/integrations/s3/performance#example-dataset)に進んでください。
+insert パフォーマンスを向上させるためにスレッド数やブロックサイズをチューニングする前に、まずは S3 への insert の仕組みを理解することをお勧めします。すでに insert の仕組みに慣れている場合や、すぐに役立つヒントだけを知りたい場合は、以下の[サンプルデータセット](/integrations/s3/performance#example-dataset)に進んでください.
 
 
 ## 挿入メカニズム（単一ノード） \{#insert-mechanics-single-node\}

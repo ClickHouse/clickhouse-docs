@@ -1,16 +1,15 @@
 ---
 slug: /guides/developer/ttl
-sidebar_label: 'TTL (время жизни)'
+sidebar_label: 'TTL (time to live)'
 sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', 'устаревшие', 'данные']
-description: 'TTL (время жизни) — это возможность перемещать, удалять или агрегировать строки или столбцы по истечении определённого промежутка времени.'
-title: 'Управление данными с использованием TTL (времени жизни)'
+description: 'TTL (time to live) — это возможность перемещать, удалять или агрегировать строки или столбцы по истечении определённого интервала времени.'
+title: 'управление сроком жизни данных (time to live)'
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 
 # Управление сроком жизни данных (TTL, time to live) \{#manage-data-with-ttl-time-to-live\}
 

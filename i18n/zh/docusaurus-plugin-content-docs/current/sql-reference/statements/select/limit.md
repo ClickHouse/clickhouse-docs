@@ -119,13 +119,33 @@ SELECT * FROM (
 └───┘
 ```
 
-第 6 行之所以被包含在结果中，是因为它与第 5 行具有相同的值（`2`）。
+第 6 行之所以被包含在结果中，是因为它与第 5 行具有相同的值 (`2`) 。
+
+当使用 `OFFSET` 关键字指定偏移量时，也是如此：
+
+```sql
+SELECT * FROM (
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 3 OFFSET 2 WITH TIES
+```
+
+```response
+┌─n─┐
+│ 1 │
+│ 1 │
+│ 2 │
+│ 2 │
+└───┘
+```
+
+跳过前 2 行并取 3 行通常会返回 `1, 1, 2`，但第二个 `2` 也会被包含在结果中，因为它与最后一行并列。
 
 :::note
 `WITH TIES` 不支持与负的 LIMIT 值一起使用。
 :::
 
 此修饰符可以与 [`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修饰符组合使用。
+
 
 ## 注意事项 \{#considerations\}
 

@@ -906,6 +906,8 @@ ClickHouse가 데이터가 만료된 것을 감지하면 예정되지 않은(off
 
 `MergeTree` 계열의 테이블 엔진은 여러 블록 디바이스에 데이터를 저장할 수 있습니다. 예를 들어 특정 테이블의 데이터가 암묵적으로 「핫(hot)」 데이터와 「콜드(cold)」 데이터로 나뉘는 경우에 유용합니다. 가장 최근 데이터는 자주 조회되지만 필요한 공간은 많지 않습니다. 반대로 꼬리가 두꺼운(long-tail) 특성을 가진 과거 데이터는 드물게 조회됩니다. 여러 디스크를 사용할 수 있는 경우, 「핫」 데이터는 빠른 디스크(예: NVMe SSD 또는 메모리)에, 「콜드」 데이터는 상대적으로 느린 디스크(예: HDD)에 저장하도록 구성할 수 있습니다.
 
+이는 S3 및 기타 객체 스토리지 디스크를 포함한 모든 디스크 타입에 적용됩니다. 예를 들어 단일 볼륨 내에서 데이터를 여러 S3 버킷에 분산할 수 있으며, 로컬 디스크에서 S3로 데이터를 이동하는 계층형 정책을 만들 수도 있습니다. 자세한 내용은 [여러 볼륨과 함께 S3 디스크 사용하기](#s3-multiple-volumes)를 참조하십시오.
+
 데이터 파트는 `MergeTree` 엔진 테이블에서 이동 가능한 최소 단위입니다. 하나의 파트에 속한 데이터는 하나의 디스크에 저장됩니다. 데이터 파트는 사용자 설정에 따라 백그라운드에서 디스크 간에 이동될 수 있으며, [ALTER](/sql-reference/statements/alter/partition) 쿼리를 통해서도 이동할 수 있습니다.
 
 ### 용어 \{#terms\}
@@ -1155,10 +1157,82 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [외부 스토리지 옵션 구성](/operations/storing-data.md/#configuring-external-storage)도 참고하십시오.
 
-공유 스토리지에서 단일 writer와 다중 reader 시나리오로 비복제 MergeTree 테이블을 설정할 수 있습니다. 이는 읽기 노드에서 설정할 수 있는 파트 목록 자동 새로 고침 기능을 통해 제공됩니다. 이 기능에는 레플리카 간에 공유되는 파일 시스템 메타데이터(또는 테이블 로컬 디스크에서 `table_disk = true` 설정)가 필요합니다. 자세한 내용은 [refresh&#95;parts&#95;interval 및 table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)를 참고하십시오.
+
+### 여러 볼륨에서 S3 디스크 사용 \{#s3-multiple-volumes\}
+
+S3(및 기타 객체 스토리지) 디스크는 로컬 디스크와 동일한 방식으로 다중 디스크 및 다중 볼륨 스토리지 정책에서 사용할 수 있습니다. 이를 통해 단일 볼륨 내 여러 S3 버킷에 데이터를 분산하거나(JBOD 방식), S3 볼륨을 사용해 계층형 스토리지 정책을 구성할 수 있습니다.
+
+예를 들어, 두 개의 S3 버킷에 데이터를 라운드 로빈 방식으로 분산하려면 다음과 같습니다:
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+로컬 볼륨과 S3 볼륨을 계층형 정책으로 함께 사용할 수도 있습니다. 예를 들어 데이터가 오래되면 로컬 SSD에서 S3로 이동하도록 설정할 수 있습니다:
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+S3 인증에 `use_environment_credentials`를 사용하는 경우, 환경 자격 증명(`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`)은 모든 S3 디스크에서 공유됩니다. 디스크별로 서로 다른 환경 자격 증명을 사용하는 것은 불가능합니다. 각 S3 디스크마다 서로 다른 자격 증명이 필요한 경우에는 대신 디스크별로 명시적인 `access_key_id` 및 `secret_access_key` 설정을 사용하십시오.
+:::
+
+공유 스토리지에서 단일 writer와 다중 reader 시나리오로 비복제 MergeTree 테이블을 설정할 수 있습니다. 이는 읽기 노드에서 설정할 수 있는 파트 목록 자동 갱신 기능을 통해 제공됩니다. 이 기능에는 레플리카 간에 공유되는 파일 시스템 메타데이터(또는 테이블 로컬 디스크에서 `table_disk = true` 설정)가 필요합니다. 자세한 내용은 [refresh&#95;parts&#95;interval 및 table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)를 참조하십시오.
 
 :::note 캐시 구성
-ClickHouse 22.3에서 22.7까지의 버전은 다른 캐시 구성을 사용하므로, 해당 버전을 사용하는 경우 [로컬 캐시 사용](/operations/storing-data.md/#using-local-cache)을 참고하십시오.
+ClickHouse 22.3에서 22.7까지의 버전은 다른 캐시 구성을 사용하므로, 해당 버전을 사용하는 경우 [로컬 캐시 사용](/operations/storing-data.md/#using-local-cache)을 참조하십시오.
 :::
 
 
