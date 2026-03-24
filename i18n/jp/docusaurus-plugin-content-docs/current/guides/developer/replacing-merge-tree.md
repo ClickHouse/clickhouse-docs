@@ -1,15 +1,16 @@
 ---
 slug: /guides/replacing-merge-tree
-title: 'ReplacingMergeTree'
-description: 'ClickHouse における ReplacingMergeTree エンジンの使用'
+title: 'ReplacingMergeTree エンジンの使用'
+description: 'ClickHouse における ReplacingMergeTree エンジンの使用ガイド'
 keywords: ['replacingmergetree', 'inserts', 'deduplication']
 doc_type: 'guide'
+sidebar_label: 'ReplacingMergeTree エンジンの使用'
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 
-トランザクションデータベースは更新および削除を伴うトランザクションワークロードに最適化されていますが、OLAP データベースはそのような操作に対する保証は相対的に弱くなります。その代わりに、分析クエリを大幅に高速化するために、バッチで挿入される不変データ向けに最適化されています。ClickHouse はミューテーションによる更新操作と、行を削除する軽量な手段の両方を提供しますが、前述のとおりカラム指向の構造であるため、これらの操作は慎重にスケジュールする必要があります。これらの操作は非同期で処理され、単一スレッドで実行され、（更新の場合）ディスク上のデータを書き換える必要があります。そのため、多数の細かな変更には使用すべきではありません。
+トランザクションデータベースは更新および削除を伴うトランザクションワークロードに最適化されていますが、OLAP データベースはそのような操作に対する保証は相対的に弱くなります。その代わりに、分析クエリを大幅に高速化するために、バッチで insert される不変データ向けに最適化されています。ClickHouse はミューテーションによる更新操作と、行を削除する軽量な手段の両方を提供しますが、前述のとおりカラム指向の構造であるため、これらの操作は慎重にスケジュールする必要があります。これらの操作は非同期で処理され、単一スレッドで実行され、 (更新の場合) ディスク上のデータを書き換える必要があります。そのため、多数の細かな変更には使用すべきではありません。
 上記のような使用パターンを避けつつ更新および削除対象の行ストリームを処理するために、ClickHouse のテーブルエンジンである ReplacingMergeTree を使用できます。
 
 

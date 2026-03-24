@@ -552,7 +552,22 @@ const sidebars = {
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
         'integrations/language-clients/cpp',
-        'integrations/language-clients/go/index',
+        {
+          type: 'category',
+          label: 'Go',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/language-clients/go/index',
+          },
+          items: [
+            'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/clickhouse-api',
+            'integrations/language-clients/go/database-sql-api',
+            'integrations/language-clients/go/data-types',
+          ],
+        },
         'integrations/language-clients/js',
         {
           type: 'category',
