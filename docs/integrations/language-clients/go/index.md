@@ -1303,15 +1303,17 @@ Due to a more straightforward interface and official support for nesting, we rec
 
 #### Geo types {#geo-types}
 
-The client supports the geo types Point, Ring, Polygon, and Multi Polygon. These fields are in Golang using the package [github.com/paulmach/orb](https://github.com/paulmach/orb).
+The client supports the geo types Point, Ring, LineString, Polygon, MultiPolygon, and MultiLineString. These types are represented in Go using the [github.com/paulmach/orb](https://github.com/paulmach/orb) package.
 
 ```go
 if err = conn.Exec(ctx, `
     CREATE TABLE example (
             point Point,
             ring Ring,
+            lineString LineString,
             polygon Polygon,
-            mPolygon MultiPolygon
+            mPolygon MultiPolygon,
+            mLineString MultiLineString
         )
         Engine Memory
     `); err != nil {
@@ -1329,6 +1331,11 @@ if err = batch.Append(
     orb.Ring{
         orb.Point{1, 2},
         orb.Point{1, 2},
+    },
+    orb.LineString{
+        orb.Point{1, 2},
+        orb.Point{3, 4},
+        orb.Point{5, 6},
     },
     orb.Polygon{
         orb.Ring{
@@ -1362,6 +1369,16 @@ if err = batch.Append(
             },
         },
     },
+    orb.MultiLineString{
+        orb.LineString{
+            orb.Point{1, 2},
+            orb.Point{3, 4},
+        },
+        orb.LineString{
+            orb.Point{5, 6},
+            orb.Point{7, 8},
+        },
+    },
 ); err != nil {
     return err
 }
@@ -1371,15 +1388,18 @@ if err = batch.Send(); err != nil {
 }
 
 var (
-    point    orb.Point
-    ring     orb.Ring
-    polygon  orb.Polygon
-    mPolygon orb.MultiPolygon
+    point       orb.Point
+    ring        orb.Ring
+    lineString  orb.LineString
+    polygon     orb.Polygon
+    mPolygon    orb.MultiPolygon
+    mLineString orb.MultiLineString
 )
 
-if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygon, &mPolygon); err != nil {
+if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &lineString, &polygon, &mPolygon, &mLineString); err != nil {
     return err
 }
+fmt.Printf("point=%v, ring=%v, lineString=%v, polygon=%v, mPolygon=%v, mLineString=%v\n", point, ring, lineString, polygon, mPolygon, mLineString)
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
