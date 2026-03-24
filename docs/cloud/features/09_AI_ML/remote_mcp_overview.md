@@ -1,11 +1,10 @@
 ---
-sidebar_label: "Remote MCP server"
+sidebar_label: 'Remote MCP server'
 slug: /cloud/features/ai-ml/remote-mcp
-title: "Remote MCP in Cloud"
-description: "Description of the remote MCP functionality in ClickHouse Cloud"
-keywords:
-  ["AI", "ClickHouse Cloud", "MCP", "Model Context Protocol", "remote MCP"]
-doc_type: "reference"
+title: 'Remote MCP in Cloud'
+description: 'Description of the remote MCP functionality in ClickHouse Cloud'
+keywords: ['AI', 'ClickHouse Cloud', 'MCP', 'Model Context Protocol', 'remote MCP']
+doc_type: 'reference'
 ---
 
 # Remote MCP server in Cloud
