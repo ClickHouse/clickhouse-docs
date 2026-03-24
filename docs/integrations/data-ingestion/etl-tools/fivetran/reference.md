@@ -37,8 +37,9 @@ You can execute these statements in the ClickHouse SQL console.
 
 The ClickHouse Cloud destination supports an optional JSON configuration file for advanced use cases. This file allows you to fine-tune destination behavior by overriding the default settings that control batch sizes, parallelism, connection pools, and request timeouts.
 
-> NOTE: This configuration is entirely optional. If no file is uploaded, the destination uses
-> sensible defaults that work well for most use cases.
+:::note
+This configuration is entirely optional. If no file is uploaded, the destination uses sensible defaults that work well for most use cases. 
+:::
 
 The file must be valid JSON and conform to the schema described below.
 
