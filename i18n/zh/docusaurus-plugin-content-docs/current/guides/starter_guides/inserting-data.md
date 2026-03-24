@@ -87,7 +87,7 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 ### 使用官方 ClickHouse 客户端 \{#use-official-clickhouse-clients\}
 
 ClickHouse 为最流行的编程语言提供了客户端。
-这些客户端经过优化，以确保插入被正确执行，并且对异步插入提供了原生支持：要么像 [Go 客户端](/integrations/go#async-insert)那样直接支持，要么通过在查询、用户或连接级别启用相关设置而间接支持。
+这些客户端经过优化，以确保插入被正确执行，并且对异步插入提供了原生支持：要么像 [Go 客户端](/integrations/language-clients/go/clickhouse-api#async-insert)那样直接支持，要么通过在查询、用户或连接级别启用相关设置而间接支持。
 
 有关可用 ClickHouse 客户端和驱动程序的完整列表，请参见 [Clients and Drivers](/interfaces/cli)。
 
