@@ -1,9 +1,10 @@
 ---
 slug: /updating-data/overview
-title: 'Overview'
-description: 'How to update data in ClickHouse'
+title: 'Updates in ClickHouse'
+description: 'Guide to what update methods are available and how to select the correct method for your workload.'
 keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
 doc_type: 'guide'
+sidebar_label: 'Choosing an update strategy'
 ---
 
 When it comes to handling updates, analytical and transactional databases take different approaches to updates due to their underlying design philosophies and target use cases.
@@ -48,7 +49,6 @@ Declarative UPDATE statements can be more straightforward for simple update oper
 | Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
 |--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
-| [On-the-fly updates](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. Enable using `SET apply_mutations_on_fly = 1;`.  |
 | [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | Use for updating small amounts of data (up to ~10% of table). Creates patch parts for immediate visibility without rewriting entire columns. Adds overhead to `SELECT` queries but has predictable latency.                              |
 
 ## Updates using specialized table engines {#insert-based-updates}
@@ -158,7 +158,6 @@ These methods work with tables using [MergeTree family](/engines/table-engines/m
 |--------|--------|----------|------------|
 | [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | Compliance requiring physical removal; infrequent bulk updates | Heavy I/O; rewrites columns |
 | [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | Small updates (~0.1-10% of rows); frequent updates needing performance | Adds SELECT overhead; patch parts count toward limits |
-| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` with `apply_mutations_on_fly=1` | Immediate visibility; limited number of operations | Keeper dependency; scale limited to dozens of ops |
 
 ### Mutations {#mutations}
 
@@ -177,6 +176,100 @@ Mutations are I/O intensive and should be used sparingly as they can impact clus
 :::
 
 Read more: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
+
+#### On-the-fly mutations {#on-the-fly-mutations}
+
+With mutations via `ALTER TABLE ... UPDATE` you may have to wait for your mutations to be applied via a background process to see the changed values reflected in your queries without use of `FINAL`.
+ClickHouse offers a way to change this behavior through "on-the-fly mutations".
+When on-the-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values.
+
+On-the-fly mutations can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
+
+```sql
+SET apply_mutations_on_fly = 1;
+```
+
+<details>
+<summary>Example</summary>
+
+Let's create a table and run some mutations:
+
+```sql
+CREATE TABLE test_on_fly_mutations (id UInt64, v String)
+ENGINE = MergeTree ORDER BY id;
+
+-- Disable background materialization of mutations to showcase
+-- default behavior when on-the-fly mutations are not enabled
+SYSTEM STOP MERGES test_on_fly_mutations;
+SET mutations_sync = 0;
+
+-- Insert some rows in our new table
+INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
+
+-- Update the values of the rows
+ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
+ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
+ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
+ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
+```
+
+Let's check the result of the updates via a `SELECT` query:
+
+```sql
+-- Explicitly disable on-the-fly-mutations
+SET apply_mutations_on_fly = 0;
+
+SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+```
+
+Note that the values of the rows haven't yet been updated when we query the new table:
+
+```response
+┌─id─┬─v─┐
+│  1 │ a │
+│  2 │ b │
+│  3 │ c │
+└────┴───┘
+```
+
+Let's now see what happens when we enable on-the-fly mutations:
+
+```sql
+-- Enable on-the-fly mutations
+SET apply_mutations_on_fly = 1;
+
+SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+```
+
+The `SELECT` query now returns the correct result immediately, without having to wait for the mutations to be applied:
+
+```response
+┌─id─┬─v─┐
+│  3 │ c │
+└────┴───┘
+```
+
+</details>
+
+##### Performance impact {#performance-impact}
+
+When on-the-fly mutations are enabled, mutations aren't materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
+
+If the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of unmaterialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
+
+We suggest enabling the setting `apply_mutations_on_fly` together with other `MergeTree`-level settings such as `number_of_mutations_to_throw` and `number_of_mutations_to_delay` to restrict the infinite growth of unmaterialized mutations.
+
+##### Support for subqueries and non-deterministic functions {#support-for-subqueries-and-non-deterministic-functions}
+
+On-the-fly mutations have limited support with subqueries and non-deterministic functions. Only scalar subqueries with a result that have a reasonable size (controlled by the setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. the function `now()`).
+
+These behaviors are controlled by the following settings:
+
+| Setting | Description | Default |
+|---|---|---|
+| `mutations_execute_nondeterministic_on_initiator` | If true, non-deterministic functions are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. | `false` |
+| `mutations_execute_subqueries_on_initiator` | If true, scalar subqueries are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. | `false` |
+| `mutations_max_literal_size_to_replace` | The maximum size of serialized literals in bytes to replace in `UPDATE` and `DELETE` queries. | `16384` (16 KiB) |
 
 ### Lightweight updates {#lightweight-updates}
 
