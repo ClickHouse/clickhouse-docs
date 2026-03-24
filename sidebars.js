@@ -350,6 +350,7 @@ const sidebars = {
         'cloud/managed-postgres/settings',
         'cloud/managed-postgres/upgrades',
         'cloud/managed-postgres/benchmarks',
+        'cloud/managed-postgres/openapi',
         'cloud/managed-postgres/faq',
         {
           type: 'category',
