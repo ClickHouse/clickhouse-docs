@@ -302,16 +302,19 @@ When opening a connection, an Options struct can be used to control client behav
 * `Addr` - a slice of addresses including port.
 * `Auth` - Authentication detail. See [Authentication](#authentication).
 * `DialContext` - custom dial function to determine how connections are established.
-* `Debug` - true/false to enable debugging.
-* `Debugf` - provides a function to consume debug output. Requires `debug` to be set to true.
+* `Debug` - (Deprecated, use `Logger` instead) true/false to enable debug logging to stdout.
+* `Debugf` - (Deprecated, use `Logger` instead) provides a custom function to consume debug output. Requires `Debug` to be set to true.
+* `Logger` - structured logger using Go's standard `log/slog` package. See [Logging](#logging).
 * `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](#using-context) allows settings to be set per query.
 * `Compression` - enable compression for blocks. See [Compression](#compression).
-* `DialTimeout` - the maximum time to establish a connection. Defaults to `1s`.
+* `DialTimeout` - the maximum time to establish a connection. Defaults to `30s`.
 * `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to `MaxIdleConns+5`.
 * `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to `5`.
 * `ConnMaxLifetime` - maximum lifetime to keep a connection available. Defaults to 1hr. Connections are destroyed after this time, with new connections added to the pool as required.
 * `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
 * `BlockBufferSize` - maximum number of blocks to decode into the buffer at once. Larger values will increase parallelization at the expense of memory. Block sizes are query dependent so while you can set this on the connection, we recommend you override per query based on the data it returns. Defaults to `2`.
+* `GetJWT` - callback function that returns a JWT token for authentication with ClickHouse Cloud.
+* `TransportFunc` - provides a custom HTTP transport. The default transport is passed as an argument allowing selective overrides. Only applies when using the HTTP protocol.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -358,6 +361,51 @@ There is no guarantee the same connection in a pool will be used for subsequent 
 Also, note that the `ConnMaxLifetime` is by default 1hr. This can lead to cases where the load to ClickHouse becomes unbalanced if nodes leave the cluster. This can occur when a node becomes unavailable, connections will balance to the other nodes. These connections will persist and not be refreshed for 1hr by default, even if the problematic node returns to the cluster. Consider lowering this value in heavy workload cases.
 
 Connection polling is enabled for both Native (TCP) and HTTP protocol.
+
+#### Logging {#logging}
+
+The client supports structured logging via Go's standard `log/slog` package using the `Logger` field in `Options`. The older `Debug` and `Debugf` fields are deprecated but still work for backward compatibility (priority: `Debugf` > `Logger` > no-op).
+
+```go
+import (
+    "log/slog"
+    "os"
+)
+
+// JSON structured logging
+logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+    Level: slog.LevelDebug,
+}))
+
+conn, err := clickhouse.Open(&clickhouse.Options{
+    Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
+    Auth: clickhouse.Auth{
+        Database: env.Database,
+        Username: env.Username,
+        Password: env.Password,
+    },
+    Logger: logger,
+})
+```
+
+You can also enrich the logger with application-level context:
+
+```go
+baseLogger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+    Level: slog.LevelInfo,
+}))
+enrichedLogger := baseLogger.With(
+    slog.String("service", "my-service"),
+    slog.String("environment", "production"),
+)
+
+conn, err := clickhouse.Open(&clickhouse.Options{
+    // ...
+    Logger: enrichedLogger,
+})
+```
+
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/logger_test.go)
 
 ### Using TLS {#using-tls}
 
@@ -473,10 +521,11 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
 
-Two connection strategies are available:
+Three connection strategies are available:
 
 * `ConnOpenInOrder` (default)  - addresses are consumed in order. Later addresses are only utilized in case of failure to connect using addresses earlier in the list. This is effectively a failure-over strategy.
 * `ConnOpenRoundRobin` - Load is balanced across the addresses using a round-robin strategy.
+* `ConnOpenRandom` - A node is selected at random from the list of addresses.
 
 This can be controlled through the option `ConnOpenStrategy`
 
@@ -614,6 +663,37 @@ return batch.Send()
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
 For a full summary of supported go types for each column type, see [Type Conversions](#type-conversions).
+
+### Ephemeral columns {#ephemeral-columns}
+
+[Ephemeral columns](https://clickhouse.com/docs/sql-reference/statements/create/table#ephemeral) are write-only columns that exist only during insertion — they are not stored and cannot be selected. They are useful for computing derived column values at insert time.
+
+```go
+ctx := context.Background()
+ddl := `
+CREATE OR REPLACE TABLE test
+(
+    id UInt64,
+    unhexed String EPHEMERAL,
+    hexed FixedString(4) DEFAULT unhex(unhexed)
+)
+ENGINE = MergeTree
+ORDER BY id`
+
+if err := conn.Exec(ctx, ddl); err != nil {
+    return err
+}
+
+// Insert by providing the ephemeral column value
+if err := conn.Exec(ctx, "INSERT INTO test (id, unhexed) VALUES (1, '5a90b714')"); err != nil {
+    return err
+}
+
+// Only non-ephemeral columns can be queried
+rows, err := conn.Query(ctx, "SELECT id, hexed, hex(hexed) FROM test")
+```
+
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ephemeral_native.go)
 
 ### Querying rows {#querying-rows}
 
@@ -836,6 +916,46 @@ Handling of timezone information depends on the ClickHouse type and whether the 
 * **Date/Date32**
   * At **insert** time, the timezone of any date is considered when converting the date to a unix timestamp, i.e., it will be offset by the timezone prior to storage as a date, as Date types have no locale in ClickHouse. If this isn't specified in a string value, the local timezone will be used.
   * At **select** time, dates are scanned into `time.Time{}` or `sql.NullTime{}` instances will be returned without timezone information.
+
+#### Time/Time64 types {#timetime64-types}
+
+The `Time` and `Time64` column types store time-of-day values without a date component. Both are mapped to Go's `time.Duration`.
+
+* `Time` stores the time with second precision.
+* `Time64(precision)` supports sub-second precision (like `DateTime64`), where precision is 0–9.
+
+```go
+if err = conn.Exec(ctx, `
+    CREATE TABLE example (
+        col1 Time,
+        col2 Time64(3)
+    ) Engine Memory
+`); err != nil {
+    return err
+}
+
+batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
+if err != nil {
+    return err
+}
+defer batch.Close()
+
+if err = batch.Append(
+    14*time.Hour+30*time.Minute+15*time.Second,
+    14*time.Hour+30*time.Minute+15*time.Second+500*time.Millisecond,
+); err != nil {
+    return err
+}
+if err = batch.Send(); err != nil {
+    return err
+}
+
+var col1, col2 time.Duration
+if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != nil {
+    return err
+}
+fmt.Printf("col1=%v, col2=%v\n", col1, col2)
+```
 
 #### Array {#array}
 
