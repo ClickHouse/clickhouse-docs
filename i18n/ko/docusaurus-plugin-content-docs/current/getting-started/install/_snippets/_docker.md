@@ -197,7 +197,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 `/docker-entrypoint-initdb.d` 아래의 스크립트는 파일 이름 기준으로 **알파벳 순서**로 실행됩니다. 스크립트 간에 의존성이 있는 경우(예: 뷰를 생성하는 스크립트가 참조되는 테이블을 생성하는 스크립트 이후에 실행되어야 하는 경우), 파일 이름이 올바른 순서로 정렬되도록 해야 합니다.
 :::
 
-또한, 초기화 동안 clickhouse-client에서 사용할 환경 변수 `CLICKHOUSE_USER` 및 `CLICKHOUSE_PASSWORD`를 지정할 수 있습니다.
+또한, 초기화 동안 clickhouse-client에서 사용할 환경 변수 `CLICKHOUSE_USER` &amp; `CLICKHOUSE_PASSWORD`를 지정할 수 있습니다.
 
 예를 들어, 다른 사용자와 데이터베이스를 추가하려면 `/docker-entrypoint-initdb.d/init-db.sh`에 다음 내용을 추가하십시오:
 
@@ -207,6 +207,7 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32) ENGINE = Log;
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
+    ORDER BY ();
 EOSQL
 ```

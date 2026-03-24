@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
-description: 'quantilesTimingIf コンビネータの使用例'
+description: 'quantilesTimingIf コンビネーターの使用例'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
@@ -24,7 +24,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_time_ms UInt32,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', 82, 1),
@@ -59,16 +60,16 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingIf` 関数は、成功したリクエスト（is&#95;successful = 1）のみを対象に分位数を計算します。
+`quantilesTimingIf` 関数は、成功したリクエスト (is&#95;successful = 1) のみを対象に分位数を計算します。
 返される配列には、次の分位数がこの順序で含まれます：
 
-* 0（最小値）
-* 0.25（第1四分位数）
-* 0.5（中央値）
-* 0.75（第3四分位数）
-* 0.95（95パーセンタイル）
-* 0.99（99パーセンタイル）
-* 1.0（最大値）
+* 0 (最小値) 
+* 0.25 (第1四分位数) 
+* 0.5 (中央値) 
+* 0.75 (第3四分位数) 
+* 0.95 (95パーセンタイル) 
+* 0.99 (99パーセンタイル) 
+* 1.0 (最大値) 
 
 ```response title="Response"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
@@ -78,6 +79,8 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
+
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If コンビネーター`](/sql-reference/aggregate-functions/combinators#-if)

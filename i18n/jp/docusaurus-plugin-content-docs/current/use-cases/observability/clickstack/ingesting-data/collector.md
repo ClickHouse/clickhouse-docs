@@ -281,7 +281,7 @@ OpenTelemetry は、ユーザーが活用できる以下の処理およびフィ
 
 ユーザーが Operator や [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) を用いて過度なイベント処理を行うことは避けることを推奨します。これらは、特に JSON パースでは、かなりのメモリおよび CPU のオーバーヘッドを招く可能性があります。いくつかの例外（具体的には、k8s メタデータの追加など、コンテキスト認識型のエンリッチ）を除き、ClickHouse ではマテリアライズドビューやカラムを用いて、挿入時にすべての処理を実行することが可能です。詳細については、[Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql) を参照してください。
 
-### 例 {#example-processing}
+### 例
 
 次の構成は、この[非構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)を収集するための例です。この構成は、エージェントロールで動作するコレクターがデータを ClickStack ゲートウェイに送信する際に使用できます。
 
@@ -303,20 +303,20 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
     spike_limit_mib: 256
 exporters:
-  # HTTP設定
+  # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
 
-  # gRPC設定（代替）
+  # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -325,7 +325,7 @@ exporters:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 同一ホスト上で2つのコレクターが実行されているため変更
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]
@@ -338,22 +338,23 @@ service:
 
 より高度な設定については、[OpenTelemetry Collector のドキュメント](https://opentelemetry.io/docs/collector/) を参照してください。
 
+
 ## 挿入の最適化 {#optimizing-inserts}
 
 ClickStack collector 経由で Observability データを ClickHouse に挿入する際に、高い挿入性能と強い一貫性保証を両立するには、いくつかの単純なルールに従う必要があります。OTel collector を正しく構成すれば、これらのルールに従うことは容易になります。これにより、ClickHouse を初めて利用するユーザーが直面しがちな[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)も回避できます。
 
-### バッチ処理 {#batching}
+### バッチ処理
 
 デフォルトでは、ClickHouse に送信された各 insert に対して、ClickHouse はその insert のデータと、あわせて保存する必要があるその他のメタデータを含むストレージパーツを即座に作成します。したがって、各 insert に少量のデータしか含まない大量の insert を送信するよりも、各 insert により多くのデータを含めた少数の insert を送信するほうが、必要な書き込み回数を削減できます。データは一度に少なくとも 1,000 行以上の、十分に大きなバッチで挿入することを推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)を参照してください。
 
 デフォルトでは、ClickHouse への insert は同期的に実行され、内容が同一であれば冪等です。merge tree エンジンファミリーのテーブルに対しては、ClickHouse はデフォルトで自動的に [insert の重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)を行います。これは、次のようなケースでも insert が安全に扱えることを意味します。
 
-- (1) データを受け取るノードに問題がある場合、insert クエリはタイムアウト（またはより具体的なエラー）となり、ACK（確認応答）を受け取りません。
-- (2) データ自体はノードによって書き込まれたものの、ネットワーク障害によりクエリ送信元へ ACK を返せない場合、送信元はタイムアウトまたはネットワークエラーを受け取ります。
+* (1) データを受け取るノードに問題がある場合、insert クエリはタイムアウト (またはより具体的なエラー) となり、ACK (確認応答) を受け取りません。
+* (2) データ自体はノードによって書き込まれたものの、ネットワーク障害によりクエリ送信元へ ACK を返せない場合、送信元はタイムアウトまたはネットワークエラーを受け取ります。
 
-collector の視点からは、(1) と (2) を区別するのは難しい場合があります。しかし、どちらの場合でも、ACK が返ってこなかった insert はそのまま直ちにリトライできます。リトライした insert クエリが同じ順序で同じデータを含んでいる限り、元の（ACK されなかった）insert が成功していれば、ClickHouse はリトライされた insert を自動的に無視します。
+collector の視点からは、(1) と (2) を区別するのは難しい場合があります。しかし、どちらの場合でも、ACK が返ってこなかった insert はそのまま直ちにリトライできます。リトライした insert クエリが同じ順序で同じデータを含んでいる限り、元の (ACK されなかった) insert が成功していれば、ClickHouse はリトライされた insert を自動的に無視します。
 
-このため、ClickStack に含まれる OTel collector では [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) を使用しています。これにより、上記の要件を満たす行の一貫したバッチとして insert が送信されます。collector に高いスループット（毎秒イベント数）が想定されており、各 insert で少なくとも 5,000 イベントを送信できる場合、通常はパイプラインで必要となるバッチ処理はこれだけで十分です。この場合、collector は batch processor の `timeout` に達する前にバッチをフラッシュし、パイプライン全体のレイテンシを低く保ちつつ、バッチサイズの一貫性を確保します。
+このため、ClickStack に含まれる OTel collector では [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) を使用しています。これにより、上記の要件を満たす行の一貫したバッチとして insert が送信されます。collector に高いスループット (毎秒イベント数) が想定されており、各 insert で少なくとも 10,000 イベントを送信できる場合、通常はパイプラインで必要となるバッチ処理はこれだけで十分です。メモリに余裕があれば、100,000 までの値を使用できます。この場合、collector は batch processor の `timeout` に達する前にバッチをフラッシュし、パイプライン全体のレイテンシを低く保ちつつ、バッチサイズの一貫性を確保します。
 
 ### 非同期挿入を使用する \{#use-asynchronous-inserts\}
 

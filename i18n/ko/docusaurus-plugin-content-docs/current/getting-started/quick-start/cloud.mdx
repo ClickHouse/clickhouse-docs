@@ -48,9 +48,9 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   기본적으로 새 조직은 Scale 티어에 배치되며, 각각 4개의 vCPU와 16 GiB RAM을 가진 3개의 레플리카가 생성됩니다. Scale 티어에서는 [수직 자동 확장](/manage/scaling#vertical-auto-scaling)이 기본적으로 활성화됩니다. 조직 티어는 나중에 &#39;Plans&#39; 페이지에서 변경하실 수 있습니다.
 
-  필요한 경우 레플리카가 확장될 최소 및 최대 크기를 지정하여 서비스 리소스를 사용자 정의하세요. 준비가 완료되면 `Create service`를 선택하십시오.
+  필요한 경우 레플리카가 확장될 최소 및 최대 크기를 지정하여 서비스 리소스를 사용자 지정하세요. 준비가 완료되면 `Create service`를 선택하십시오.
 
-  <Image img={scaling_limits} size="md" alt="확장 한도" border />
+  <Image img={scaling_limits} size="md" alt="확장 제한" border />
 
   <br />
 
@@ -61,13 +61,13 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   ClickHouse에 연결하는 방법은 두 가지입니다:
 
   * 웹 기반 SQL 콘솔을 사용해 연결하십시오
-  * 애플리케이션과 연동하기
+  * 애플리케이션 연결
 
   <br />
 
   ### SQL 콘솔을 사용하여 연결하기 \{#connect-using-sql-console\}
 
-  빠른 시작을 위해 ClickHouse는 웹 기반 SQL 콘솔을 제공하며, 온보딩을 완료하면 해당 콘솔로 자동으로 이동합니다.
+  빠르게 시작할 수 있도록 ClickHouse는 웹 기반 SQL 콘솔을 제공하며, 온보딩을 완료하면 해당 콘솔로 자동으로 이동합니다.
 
   <Image img={createservice8} size="md" alt="SQL 콘솔" border />
 
@@ -89,7 +89,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   내비게이션 메뉴에서 연결 버튼을 클릭하십시오. 모달 창이 열리며 서비스 자격 증명과 인터페이스 또는 언어 클라이언트로 연결하는 방법에 대한 지침이 표시됩니다.
 
-  <Image img={service_connect} size="md" alt="Service Connect" border />
+  <Image img={service_connect} size="md" alt="서비스 연결" border />
 
   <br />
 
@@ -99,7 +99,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   ClickHouse는 데이터와 함께할 때 더욱 강력합니다! 데이터를 추가하는 방법은 여러 가지가 있으며, 대부분의 방법은 탐색 메뉴에서 접근할 수 있는 Data Sources 페이지에서 이용하실 수 있습니다.
 
-  <Image img={data_sources} size="md" alt="데이터 원본" border />
+  <Image img={data_sources} size="md" alt="데이터 소스" border />
 
   <br />
 
@@ -108,8 +108,8 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   * S3, Postgres, Kafka, GCS 등의 데이터 소스에서 데이터 수집을 시작할 수 있도록 ClickPipe를 설정합니다
   * SQL 콘솔 사용하기
   * ClickHouse 클라이언트 사용하기
-  * 파일 업로드 - 지원되는 형식: JSON, CSV, TSV
-  * 파일 URL에서 데이터 업로드하기
+  * 파일 업로드  - 지원되는 형식: JSON, CSV, TSV
+  * 파일 URL로 데이터 업로드하기
 
   ### ClickPipes \{#clickpipes\}
 
@@ -167,7 +167,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   * ClickHouse의 primary key는 테이블의 각 행마다 ***고유할 필요는 없습니다***
 
   ClickHouse 테이블의 기본 키(primary key)는 데이터가 디스크에 기록될 때 정렬되는 방식을 결정합니다. 8,192개의 행 또는 10MB의
-  데이터(**인덱스 그래뉼리티(index granularity)**라고 함)마다 기본 키 인덱스 파일에 항목이 생성됩니다. 이러한 그래뉼리티 개념은
+  데이터(**인덱스 그래뉼리티(index granularity)**라고 함)마다 기본 키 인덱스 파일에 엔트리가 생성됩니다. 이러한 그래뉼리티 개념은
   메모리에 쉽게 적재할 수 있는 **희소 인덱스(sparse index)**를 생성하며, 그래뉼은 `SELECT` 쿼리 처리 시 가장 작은 단위의
   컬럼 데이터 스트라이프를 나타냅니다.
 
@@ -300,7 +300,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
   ```
 
-  1. 다음 명령으로 `my_first_table`에 데이터를 삽입합니다.
+  1. 다음 명령을 실행하여 `my_first_table`에 데이터를 삽입합니다:
 
   <br />
 

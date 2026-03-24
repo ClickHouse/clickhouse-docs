@@ -13,12 +13,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Materialized Views \{#materialized-views\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
-`materialized_view` 物化类型应当是对已有（源）表执行的 `SELECT` 查询。与 PostgreSQL 不同，ClickHouse 中的 materialized view 不是“静态”的（也没有对应的 REFRESH 操作）。相反，它充当一个**插入触发器**，对插入到源表中的行应用已定义的 `SELECT` 转换，并将得到的新行插入到目标表中。有关 ClickHouse 中 materialized view 工作方式的更多细节，请参阅 [ClickHouse materialized view 文档](/materialized-view)。
+`materialized_view` 物化类型应当是对已有 (源) 表执行的 `SELECT` 查询。与 PostgreSQL 不同，ClickHouse 中的 materialized view 不是“静态”的 (也没有对应的 REFRESH 操作) 。相反，它充当一个**插入触发器**，对插入到源表中的行应用已定义的 `SELECT` 转换，并将得到的新行插入到目标表中。有关 ClickHouse 中 materialized view 工作方式的更多细节，请参阅 [ClickHouse materialized view 文档](/docs/materialized-views)。
 
 :::note
-关于通用的物化概念和共享配置（engine、order_by、partition_by 等），请参阅 [Materializations](/integrations/dbt/materializations) 页面。
+关于通用的物化概念和共享配置 (engine、order&#95;by、partition&#95;by 等) ，请参阅 [Materializations](/integrations/dbt/materializations) 页面。
 :::
 
 ## 如何管理目标表 \{#target-table-management\}

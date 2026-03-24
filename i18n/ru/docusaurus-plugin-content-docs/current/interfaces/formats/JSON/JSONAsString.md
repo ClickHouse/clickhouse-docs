@@ -15,17 +15,17 @@ doc_type: 'reference'
 
 ## Описание \{#description\}
 
-В этом формате один JSON-объект интерпретируется как одно значение. 
-Если на вход передано несколько JSON-объектов (разделённых запятыми), они интерпретируются как отдельные строки. 
-Если входные данные заключены в квадратные скобки, они интерпретируются как массив JSON-объектов.
+В этом формате один объект JSON интерпретируется как одно значение.
+Если на вход передано несколько объектов JSON (разделённых запятыми), они интерпретируются как отдельные строки.
+Если входные данные заключены в `[]`, они интерпретируются как массив объектов JSON.
 
 :::note
-Этот формат может быть разобран только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
-Остальные столбцы должны быть заданы с помощью [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view), 
-либо опущены. 
+Этот формат может быть разобран только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md).
+Остальные столбцы должны быть заданы с помощью [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view),
+либо опущены.
 :::
 
-После того как вы сериализуете весь JSON-объект в значение типа String, вы можете использовать [JSON-функции](/sql-reference/functions/json-functions.md) для его обработки.
+После того как вы сериализуете весь объект JSON в значение типа String, вы можете использовать [JSON-функции](/sql-reference/functions/json-functions.md) для его обработки.
 
 ## Пример использования \{#example-usage\}
 

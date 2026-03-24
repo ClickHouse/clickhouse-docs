@@ -548,6 +548,16 @@ Cloud 默认值：`1`。
 
 在执行 SELECT 查询时，每个分片最多使用 `max_parallel_replicas` 个副本。读取将被并行化并动态协调。0 - 禁用，1 - 启用，在发生故障时静默禁用，2 - 启用，在发生故障时抛出异常。
 
+## allow_experimental_polyglot_dialect \{#allow_experimental_polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于启用 polyglot SQL 转译器方言的新设置。"}]}]} />
+
+启用 polyglot SQL 转译器——可将来自 30 多种方言 (MySQL、PostgreSQL、SQLite、Snowflake、DuckDB 等) 的 SQL 转译为 ClickHouse SQL。
+
 ## allow_experimental_prql_dialect \{#allow_experimental_prql_dialect\}
 
 <ExperimentalBadge/>
@@ -565,18 +575,6 @@ Cloud 默认值：`1`。
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 基于 part UUID 的 SELECT 查询实验性去重功能
-
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**别名**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。之前的名称为 `allow_experimental_statistic`。"}]}]}/>
-
-允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
 
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
@@ -866,15 +864,23 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 允许输出具有 Sparse 和 Replicated 等特殊序列化类型的列，而无需将其转换为完整列表示形式。
 这有助于在格式化期间避免不必要的数据复制。
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**别名**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "列统计信息现已正式可用"}]}]} />
+
+允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **别名**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]} />
 
 允许使用统计信息来优化查询。
 
@@ -1349,14 +1355,14 @@ Cloud 默认值：`104857600` (100 MiB).
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]} />
 
-基于收集到的统计信息，自动切换为使用并行副本执行。需要启用 `parallel_replicas_local_plan` 并提供 `cluster_for_parallel_replicas`。
-0 - 关闭，1 - 开启，2 - 仅收集统计信息（不切换为使用并行副本执行）。
+基于收集到的统计信息，自动切换为使用并行副本执行。需要 `enable_analyzer = 1`、`enable_parallel_replicas != 0`、`parallel_replicas_local_plan = 1` 并提供 `cluster_for_parallel_replicas`。
+0 - 关闭，1 - 开启，2 - 仅收集统计信息 (不切换为使用并行副本执行) 。
 
 ## azure_allow_parallel_part_upload \{#azure_allow_parallel_part_upload\}
 
@@ -3162,6 +3168,17 @@ FORMAT PrettyCompactMonoBlock
 
 即使针对非 SharedMergeTree（SharedMergeTree 为仅在 Cloud 中提供的引擎），也启用分布式索引分析。
 
+## distributed_index_analysis_only_on_coordinator \{#distributed_index_analysis_only_on_coordinator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}]} />
+
+如果启用，分布式索引分析将仅在协调节点上运行。
+这样可以避免在谓词包含子查询时 (例如 `IN (SELECT ...)`) 产生 O(N^2) 的衍生查询，
+因为否则每个从副本都会各自独立触发分布式索引分析；
+但如果子查询中使用了大表，也会降低分布式索引分析的效率。
+
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3554,6 +3571,16 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "轻量级更新被移至 Beta 阶段。为设置 'allow_experimental_lightweight_update' 添加了一个别名。"}]}]}/>
 
 允许使用轻量级更新。
+
+## enable_materialized_cte \{#enable_materialized_cte\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+
+启用物化公共表表达式，该设置将优先于 enable&#95;global&#95;with&#95;statement
 
 ## enable_memory_bound_merging_of_aggregation_results \{#enable_memory_bound_merging_of_aggregation_results\}
 
@@ -4198,6 +4225,14 @@ SELECT * FROM test;
 └─────┴────────┘
 ```
 
+
+## finalize_projection_parts_synchronously \{#finalize_projection_parts_synchronously\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于在 INSERT 期间同步完成投影分区片段的新设置，以降低峰值内存使用量。"}]}]} />
+
+启用后，投影分区片段会在 INSERT 期间同步完成，从而降低峰值内存使用量，但代价是 S3 上传并行度会降低。默认情况下，每个投影的输出流都会保持打开状态，直到整个分区片段 (包括所有投影) 完成；这样可以让 S3 上传重叠进行，但峰值内存占用会随着投影数量增加而上升。此设置仅影响 INSERT 路径；合并和变更已经是同步完成投影的。
 
 ## flatten_nested \{#flatten_nested\}
 
@@ -4985,6 +5020,14 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 - manifest_list_entry - 上述所有内容 + avro manifest list 中的条目。
 - manifest_file_metadata - 上述所有内容 + 遍历到的 avro manifest 文件中的元数据。
 - manifest_file_entry - 上述所有内容 + 遍历到的 avro manifest 文件中的条目。
+
+## iceberg_metadata_staleness_ms \{#iceberg_metadata_staleness_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置，允许在 READ 操作期间使用缓存的元数据版本，以避免从远程目录获取"}]}]} />
+
+如果该值非零，且存在比给定过期窗口更新的缓存元数据快照，则跳过从远程目录获取 Iceberg 元数据。值为 0 表示始终从远程目录获取最新的元数据版本。将此项设为非零，可以用一定的元数据陈旧性换取更低的读操作延迟。
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -9259,6 +9302,14 @@ ClickHouse 服务器：
 
 在服务器的查询等待循环中阻塞指定的秒数。
 
+## polyglot_dialect \{#polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": ""},{"label": "用于指定 polyglot 转译器源 SQL 方言的新设置。"}]}]} />
+
+polyglot 转译器的源 SQL 方言 (例如：&#39;sqlite&#39;、&#39;mysql&#39;、&#39;postgresql&#39;、&#39;snowflake&#39;、&#39;duckdb&#39;) 。
+
 ## postgresql_connection_attempt_timeout \{#postgresql_connection_attempt_timeout\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
@@ -11889,24 +11940,20 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]} />
 
-/// 建议优先使用 'use_statistics' 而不是 'allow_statistics_optimize'，以与 'use_primary_key' 和 'use_skip_indexes' 的命名保持一致
+/// 建议优先使用 &#39;use&#95;statistics&#39; 而不是 &#39;allow&#95;statistics&#95;optimize&#39;，以与 &#39;use&#95;primary&#95;key&#39; 和 &#39;use&#95;skip&#95;indexes&#39; 的命名保持一致
 允许使用统计信息来优化查询
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新设置"}]}]}/>
 
-在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
+在查询中使用统计信息缓存，以避免加载每个分片统计信息所带来的开销
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

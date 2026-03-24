@@ -1,5 +1,5 @@
 ---
-description: '指定したクラスター内の複数ノードで、URL から取得したファイルを並列処理できるようにします。'
+description: '指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できるようにします。'
 sidebar_label: 'urlCluster'
 sidebar_position: 201
 slug: /sql-reference/table-functions/urlCluster
@@ -19,12 +19,12 @@ urlCluster(cluster_name, URL, format, structure)
 
 ## 引数 \{#arguments\}
 
-| 引数           | 説明                                                                                                                                                     |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name` | リモートおよびローカルサーバーへのアドレスおよび接続パラメーターの集合を構成するために使用されるクラスター名。                                             |
-| `URL`          | `GET` リクエストを受け付け可能な HTTP または HTTPS サーバーのアドレス。型: [String](../../sql-reference/data-types/string.md)。                           |
-| `format`       | データの[フォーマット](/sql-reference/formats)。型: [String](../../sql-reference/data-types/string.md)。                                                 |
-| `structure`    | `'UserID UInt64, Name String'` の形式のテーブル構造。カラム名と型を決定する。型: [String](../../sql-reference/data-types/string.md)。                    |
+| 引数             | 説明                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| `cluster_name` | リモートおよびローカルサーバーへのアドレスおよび接続パラメーターの集合を構成するために使用されるクラスタ名。                                                      |
+| `URL`          | `GET` リクエストを受け付け可能な HTTP または HTTPS サーバーのアドレス。型: [String](../../sql-reference/data-types/string.md)。          |
+| `format`       | データの[フォーマット](/sql-reference/formats)。型: [String](../../sql-reference/data-types/string.md)。                  |
+| `structure`    | `'UserID UInt64, Name String'` の形式のテーブル構造。カラム名と型を決定する。型: [String](../../sql-reference/data-types/string.md)。 |
 
 ## 戻り値 \{#returned_value\}
 
@@ -32,7 +32,7 @@ urlCluster(cluster_name, URL, format, structure)
 
 ## 例 \{#examples\}
 
-`String` 列と [UInt32](../../sql-reference/data-types/int-uint.md) 型の列を含むテーブルについて、[CSV](/interfaces/formats/CSV) 形式で応答する HTTP サーバー経由で先頭 3 行を取得します。
+`String` カラムと [UInt32](../../sql-reference/data-types/int-uint.md) 型のカラムを含むテーブルについて、[CSV](/interfaces/formats/CSV) フォーマットで応答する HTTP サーバー経由で先頭 3 行を取得します。
 
 1. 標準の Python 3 ツールを使用して基本的な HTTP サーバーを作成し、起動します。
 
@@ -58,10 +58,10 @@ SELECT * FROM urlCluster('cluster_simple','http://127.0.0.1:12345', CSV, 'column
 
 ## URL のグロブ \{#globs-in-url\}
 
-波括弧 `{ }` 内のパターンは、シャード集合の生成やフェイルオーバーアドレスの指定に使用されます。サポートされているパターンの型と例については、[remote](remote.md#globs-in-addresses) 関数の説明を参照してください。
-パターン内の文字 `|` はフェイルオーバーアドレスを指定するために使用されます。これらはパターン内で列挙された順に試行されます。生成されるアドレスの数は、[glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 設定によって制限されます。
+`{ }` 内のパターンは、分片の集合を生成したり、フェイルオーバーアドレスを指定したりするために使用されます。サポートされているパターンの型と例については、[remote](remote.md#globs-in-addresses) 関数の説明を参照してください。
+パターン内の文字 `|` はフェイルオーバーアドレスを指定するために使用されます。これらはパターン内で列挙された順に試行されます。生成されるアドレスの数は、[glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 設定によって制限されます。
 
 ## 関連項目 \{#related\}
 
--   [HDFS エンジン](/engines/table-engines/integrations/hdfs)
--   [URL テーブル関数](/engines/table-engines/special/url)
+* [HDFS エンジン](/engines/table-engines/integrations/hdfs)
+* [URL テーブル関数](/engines/table-engines/special/url)

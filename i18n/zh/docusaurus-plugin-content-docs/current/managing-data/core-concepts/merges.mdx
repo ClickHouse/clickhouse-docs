@@ -40,7 +40,7 @@ ClickHouse [之所以快速](/concepts/why-clickhouse-is-so-fast)，不仅体现
 
 ## 监控合并 \{#monitoring-merges\}
 
-在 [什么是表 parts](/parts) 示例中，我们[展示了](/parts#monitoring-table-parts)，ClickHouse 会在 [parts](/operations/system-tables/parts) 系统表中跟踪所有表的 parts (部件) 。我们使用了以下查询来获取示例表中每个活动部件的合并级别以及存储的行数：
+在 [什么是表 parts](/parts) 示例中，我们[展示了](/parts#monitoring-table-parts)，ClickHouse 会在 [parts](/operations/system-tables/parts) 系统表中跟踪所有表的 parts。我们使用了以下查询来获取示例表中每个活动部件的合并级别以及存储的行数：
 
 ```sql
 SELECT
@@ -52,7 +52,7 @@ WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
 ```
 
-[先前文档中展示的](/parts#monitoring-table-parts) 查询结果表明，该示例表包含四个活动的 parts，每个都是由最初插入的 parts 经单次合并生成的：
+[先前文档中展示的](/parts#monitoring-table-parts) 查询结果表明，该示例表包含四个活动的 ^^parts^^，每个都是由最初插入的 ^^parts^^ 经单次合并生成的：
 
 ```response
    ┌─name────────┬─level─┬────rows─┐
@@ -63,7 +63,7 @@ ORDER BY name ASC;
    └─────────────┴───────┴─────────┘
 ```
 
-[运行](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) 该查询现在显示，这四个 part 已经合并为单个最终 part (前提是该表中没有后续的插入操作) ：
+[运行](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) 该查询现在显示，这四个 parts 此后已合并为一个最终的 part (前提是该表中没有进一步的插入操作) ：
 
 ```response
    ┌─name───────┬─level─┬─────rows─┐
@@ -79,31 +79,32 @@ ORDER BY name ASC;
 
 上面展示的仪表板捕获了整个过程，从最初的数据写入到最终合并为单个 part：
 
-① 活跃 parts 的数量。
+① 活跃 ^^parts^^ 的数量。
 
 ② part 合并，以方框形式进行可视化展示 (方框大小反映 part 的大小) 。
 
 ③ [写放大 (Write amplification) ](https://en.wikipedia.org/wiki/Write_amplification)。
 
+
 ## 并发合并 \{#concurrent-merges\}
 
-单个 ClickHouse 服务器会使用多个后台[合并线程](/operations/server-configuration-parameters/settings#background_pool_size)来执行对 parts 的并发合并：
+单个 ClickHouse 服务器使用多个后台[合并线程](/operations/server-configuration-parameters/settings#background_pool_size)来执行 parts 的并发合并：
 
-<Image img={merges_02} size="lg" alt="PART 合并" />
+<Image img={merges_02} size="lg" alt='PART MERGES'/>
 
-<br />
+<br/>
 
-每个合并线程会执行如下循环：
+每个合并线程都会执行一个循环：
 
 ① 决定接下来要合并哪些 parts，并将这些 parts 加载到内存中。
 
-② 在内存中将这些 parts 合并为一个更大的 part。
+② 在内存中将这些 parts 合并成一个更大的 part。
 
 ③ 将合并后的 part 写入磁盘。
 
-然后回到 ①
+转到 ①
 
-请注意，增加 CPU 核心数量和内存容量可以提高后台合并的吞吐量。
+请注意，增加 CPU 核心数量和 RAM 容量可以提高后台合并的吞吐量。
 
 ## 内存优化合并 \{#memory-optimized-merges\}
 
@@ -135,52 +136,52 @@ part 的合并大致分为以下几个步骤：
 
 ### 标准合并 \{#standard-merges\}
 
-下图展示了标准 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中 数据分片 (parts)  是如何合并的：
+下图展示了标准 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表中的 parts 是如何合并的：
 
-<Image img={merges_04} size="lg" alt="PART MERGES" />
+<Image img={merges_04} size="lg" alt='PART 合并'/>
 
-<br />
+<br/>
 
-上图中的 DDL 语句创建了一个带有 排序键 `(town, street)` 的 `MergeTree` 表，[这意味着](/parts#what-are-table-parts-in-clickhouse) 磁盘上的数据会按这些列进行排序，并相应生成稀疏主索引。
+上图中的 DDL 语句创建了一个 sorting key 为 `(town, street)` 的 `MergeTree` 表，[这意味着](/parts#what-are-table-parts-in-clickhouse) 磁盘上的数据按这些列排序，并相应生成稀疏主键索引。
 
-① 将已解压且预排序的表列，② 在保持由表的 排序键 定义的全局排序顺序的前提下进行合并，③ 生成新的稀疏主索引，④ 将合并后的列文件和索引压缩后作为一个新的数据分片存储到磁盘上。
+① 已解压且预先排序的表列会在 ② 保持由表的 sorting key 定义的全局排序顺序的同时进行合并，③ 生成新的稀疏主键索引，④ 将合并后的列文件和索引压缩后作为一个新的 part 存储到磁盘上。
 
 ### 替换合并 \{#replacing-merges\}
 
-[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 表中的数据部分 (part) 合并与[标准合并](/merges#standard-merges)类似，但只保留每一行的最新版本，较旧的版本会被丢弃：
+[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 表中的 parts 合并与[标准合并](/merges#standard-merges)类似，但只保留每一行的最新版本，较旧的版本会被丢弃：
 
-<Image img={merges_05} size="lg" alt="数据部分合并" />
+<Image img={merges_05} size="lg" alt='PART 合并'/>
 
-<br />
+<br/>
 
-上图中的 DDL 语句创建了一个 `ReplacingMergeTree` 表，使用 sorting key `(town, street, id)`，这意味着磁盘上的数据会按照这些列排序，并相应生成稀疏主键索引。
+上图中的 DDL 语句创建了一个 `ReplacingMergeTree` 表，其 sorting key 为 `(town, street, id)`，这意味着磁盘上的数据按这些列排序，并相应生成稀疏主键索引。
 
-② 合并操作与标准 `MergeTree` 表类似，会在保持全局排序顺序的前提下，合并解压后的预排序列。
+② 合并的工作方式与标准 `MergeTree` 表类似，会在保持全局排序顺序的同时合并解压后、预先排序的列。
 
-不过，`ReplacingMergeTree` 会移除具有相同 sorting key 的重复行，并仅根据其所在数据部分的创建时间戳保留最新的一行。
+不过，`ReplacingMergeTree` 会删除具有相同 sorting key 的重复行，并根据其所在 part 的创建时间戳仅保留最新的一行。
 
-<br />
+<br/>
 
 ### 求和合并 \{#summing-merges\}
 
 在 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 表的 parts 合并过程中，数值数据会自动汇总：
 
-<Image img={merges_06} size="lg" alt="分片合并" />
+<Image img={merges_06} size="lg" alt='PART 合并'/>
 
-<br />
+<br/>
 
-上图中的 DDL 语句定义了一个 `SummingMergeTree` 表，使用 `town` 作为 sorting key。这意味着磁盘上的数据会按该列排序，并据此创建稀疏主键索引。
+上图中的 DDL 语句定义了一个以 `town` 作为 sorting key 的 `SummingMergeTree` 表，这意味着磁盘上的数据按该列排序，并相应创建稀疏主键索引。
 
-在步骤 ② 的合并过程中，ClickHouse 会将所有具有相同 sorting key 的行合并为一行，同时对数值列的值进行求和。
+在 ② 合并步骤中，ClickHouse 会将所有具有相同 sorting key 的行替换为一行，同时对数值列的值求和。
 
 ### 聚合合并 \{#aggregating-merges\}
 
-上文中的 `SummingMergeTree` 表示例是 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表的一种专用变体，允许在数据分片 (part) 合并期间，通过应用任意[90+ 个](/sql-reference/aggregate-functions/reference)聚合函数，实现[自动增量数据转换](https://www.youtube.com/watch?v=QDAJTKZT8y4)：
+上文中的 `SummingMergeTree` 表示例是 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 表的一种专用变体，它允许在 parts 合并期间应用任意[90+](/sql-reference/aggregate-functions/reference)聚合函数，以实现[自动增量数据转换](https://www.youtube.com/watch?v=QDAJTKZT8y4)：
 
-<Image img={merges_07} size="lg" alt="PART MERGES" />
+<Image img={merges_07} size="lg" alt='PART 合并'/>
 
-<br />
+<br/>
 
-上图中的 DDL 语句创建了一个以 `town` 作为 sorting key (排序键) 的 `AggregatingMergeTree` 表，确保磁盘上的数据按照该列排序，并生成相应的稀疏主键索引。
+上图中的 DDL 语句创建了一个以 `town` 作为 sorting key 的 `AggregatingMergeTree` 表，确保磁盘上的数据按该列排序，并生成相应的稀疏主键索引。
 
-在 ② 合并阶段，ClickHouse 会将所有具有相同 sorting key 的行合并为一行，该行存储[部分聚合状态](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (例如 `avg()` 所对应的 `sum` 和 `count`) 。这些状态通过增量后台合并确保结果的准确性。
+在 ② 合并期间，ClickHouse 会将所有具有相同 sorting key 的行替换为一行，该行存储[部分聚合状态](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization)（例如用于 `avg()` 的 `sum` 和 `count`）。这些状态通过增量后台合并确保结果准确。

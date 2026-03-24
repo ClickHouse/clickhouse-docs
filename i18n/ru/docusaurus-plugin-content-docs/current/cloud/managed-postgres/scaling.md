@@ -139,6 +139,5 @@ WAL-G обеспечивает:
 ## Дополнительные материалы \{#resources\}
 
 - [Настройки и конфигурация](/cloud/managed-postgres/settings)
-- [Реплики только для чтения](/cloud/managed-postgres/read-replicas)
+- [Реплики для чтения](/cloud/managed-postgres/read-replicas)
 - [Высокая доступность](/cloud/managed-postgres/high-availability)
-- [Бенчмарки производительности](/cloud/managed-postgres/benchmarks)

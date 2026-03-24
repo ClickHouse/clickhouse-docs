@@ -869,6 +869,14 @@ Iceberg メタデータキャッシュのサイズ (バイト単位)
 
 Iceberg メタデータキャッシュ内のキャッシュされているファイル数
 
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Iceberg テーブル用のバックグラウンドスケジュールプール内のタスク数の上限。
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Iceberg テーブル用のバックグラウンドスケジュールプール内のタスク数。
+
 ### IndexMarkCacheBytes \{#indexmarkcachebytes\}
 
 セカンダリ索引のマークキャッシュの合計サイズ (バイト単位)
@@ -1516,6 +1524,18 @@ S3リクエスト数
 ### SendScalars \{#sendscalars\}
 
 スカラー値のデータをリモートサーバーに送信している接続数。
+
+### SerializationCacheBytesInMemory \{#serializationcachebytesinmemory\}
+
+値のみを含むシリアライズキャッシュの合計サイズ (バイト)
+
+### SerializationCacheBytesInMemoryAllocated \{#serializationcachebytesinmemoryallocated\}
+
+キーおよび空のスロットによるオーバーヘッドを含む、シリアライズキャッシュの合計サイズ（バイト）
+
+### SerializationCacheCount \{#serializationcachecount\}
+
+シリアライズキャッシュ内のエントリ総数
 
 ### SharedCatalogDropDetachLocalTablesErrors \{#sharedcatalogdropdetachlocaltableserrors\}
 

@@ -1,5 +1,5 @@
 ---
-description: 'paimon 表函数的扩展，它允许在指定集群中的多个节点上并行处理来自 Apache Paimon 的文件。'
+description: '对 paimon 表函数的扩展，它允许在指定集群中的多个节点上并行处理来自 Apache Paimon 的文件。'
 sidebar_label: 'paimonCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/paimonCluster
@@ -20,7 +20,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 ## 语法 \{#syntax\}
 
 ```sql
-paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
 paimonAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 
@@ -29,8 +29,9 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 ## 参数 \{#arguments\}
 
-- `cluster_name` — 用于构建远程和本地服务器地址及连接参数集合的集群名称。
-- 其他所有参数的说明与等价的 [paimon](/sql-reference/table-functions/paimon.md) 表函数中的参数说明相同。
+* `cluster_name` — 用于构建远程和本地服务器地址及连接参数集合的集群名称。
+* 其他所有参数的说明与等价的 [paimon](/sql-reference/table-functions/paimon.md) 表函数中的参数说明相同。
+* 可使用可选的 `extra_credentials` 参数传递 `role_arn`，以便在 ClickHouse Cloud 中进行基于角色的访问。有关配置步骤，请参见 [Secure S3](/cloud/data-sources/secure-s3)。
 
 **返回值**
 
@@ -38,12 +39,12 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，则值为 `NULL`。
-- `_time` — 文件最近一次修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
-- `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，则值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小 (以字节为单位) 。类型：`Nullable(UInt64)`。如果文件大小未知，则值为 `NULL`。
+* `_time` — 文件最近一次修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
+* `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，则值为 `NULL`。
 
 **另请参阅**
 
-- [Paimon 表函数](sql-reference/table-functions/paimon.md)
+* [Paimon 表函数](sql-reference/table-functions/paimon.md)
