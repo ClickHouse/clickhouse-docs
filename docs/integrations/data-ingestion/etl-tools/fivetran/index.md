@@ -22,7 +22,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 [Fivetran](https://www.fivetran.com) is the automated data movement platform moving data out of, into and across your cloud data platforms.
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) is supported as a [Fivetran destination](https://fivetran.com/docs/destinations/clickhouse), allowing users to load data from various sources into ClickHouse. Open Source ClickHouse version is not supported as destination.
+[ClickHouse Cloud](https://clickhouse.com/cloud) is supported as a [Fivetran destination](https://fivetran.com/docs/destinations/clickhouse), allowing you to load data from various sources into ClickHouse. Open Source ClickHouse version isn't supported as a destination.
 
 The destination connector is developed and maintained together by ClickHouse and Fivetran. The source code is available on [GitHub](https://github.com/ClickHouse/clickhouse-fivetran-destination).
 
