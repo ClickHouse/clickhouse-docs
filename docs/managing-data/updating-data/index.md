@@ -10,5 +10,5 @@ In this section of the documentation, you will learn how you can update your dat
 
 | Page                                                            | Description                                                                                                                                                      |
 |-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Choosing an update ](/updating-data/overview)                  | Provides an overview of the differences in updating data between ClickHouse and OLTP databases, as well as the various methods available to do so in ClickHouse. | |
+| [Working with updates](/updating-data/overview)                  | Provides an overview of the differences in updating data between ClickHouse and OLTP databases, as well as the various methods available to do so in ClickHouse. | |
 | [Working with ReplacingMergeTree](/guides/replacing-merge-tree) | Learn how to update using the ReplacingMergeTree.                                                                                                                |
