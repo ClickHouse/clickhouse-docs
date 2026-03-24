@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumMap'
 title: 'sumMap'
-description: 'sumMap 콤비네이터 사용 예'
-keywords: ['sum', '맵', '콤비네이터', '예제', 'sumMap']
+description: 'sumMap 조합자 사용 예시'
+keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-
-
 # sumMap \{#summap\}
-
-
 
 ## 설명 \{#description\}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 조합자는 [`sum`](/sql-reference/aggregate-functions/reference/sum)
-함수에 적용하여 `sumMap` 
-집계 조합자 함수를 사용해 각 키별로 맵 안의 값들의 합을 계산할 수 있습니다.
-
-
+[`맵`](/sql-reference/aggregate-functions/combinators#-map) 조합자는 [`sum`](/sql-reference/aggregate-functions/reference/sum)
+함수에 적용할 수 있으며, `sumMap` 
+집계 조합자 함수를 사용하여 각 키에 따라 맵의 값 합계를 계산합니다.
 
 ## 사용 예시 \{#example-usage\}
 
@@ -32,7 +26,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -70,5 +65,6 @@ GROUP BY timeslot;
 
 
 ## 함께 보기 \{#see-also\}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`맵 조합자`](/sql-reference/aggregate-functions/combinators#-map)

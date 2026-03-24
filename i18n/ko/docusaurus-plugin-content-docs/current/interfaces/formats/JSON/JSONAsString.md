@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 ## 설명 \{#description\}
 
-이 형식에서는 단일 JSON 객체가 하나의 값으로 해석됩니다.  
-입력에 여러 JSON 객체(쉼표로 구분됨)가 포함되어 있으면 각 객체는 별도의 행으로 해석됩니다.  
-입력 데이터가 대괄호로 둘러싸여 있으면 JSON 객체 배열로 해석됩니다.
+이 형식에서는 단일 JSON 객체가 하나의 값으로 해석됩니다.
+입력에 여러 JSON 객체(쉼표로 구분됨)가 포함되어 있으면 각 객체는 별도의 행으로 해석됩니다.
+입력 데이터가 `[]`로 둘러싸여 있으면 JSON 객체의 배열로 해석됩니다.
 
 :::note
-이 형식은 [String](/sql-reference/data-types/string.md) 타입의 단일 필드를 가진 테이블에 대해서만 파싱할 수 있습니다.  
-나머지 컬럼은 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 또는 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)로 설정하거나,  
-생략해야 합니다.  
+이 형식은 [String](/sql-reference/data-types/string.md) 타입의 단일 필드를 가진 테이블에 대해서만 파싱할 수 있습니다.
+나머지 컬럼은 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 또는 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)로 설정하거나,
+생략해야 합니다.
 :::
 
 전체 JSON 객체를 String으로 직렬화한 후 [JSON functions](/sql-reference/functions/json-functions.md)을 사용하여 처리할 수 있습니다.

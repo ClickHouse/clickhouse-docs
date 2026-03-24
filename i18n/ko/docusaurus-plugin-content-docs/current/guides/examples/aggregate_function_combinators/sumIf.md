@@ -7,19 +7,13 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-
-
 # sumIf \{#sumif\}
-
-
 
 ## 설명 \{#description\}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자(combinator)는 [`sum`](/sql-reference/aggregate-functions/reference/sum)
-함수에 적용하여 조건이 참인 행의 값 합계를 계산하는 데 사용할 수 있으며,
-이때 `sumIf` 집계 결합자 함수를 사용합니다.
-
-
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 조합자는 [`sum`](/sql-reference/aggregate-functions/reference/sum)
+함수에 적용하여 조건이 참인 행의 값 합계를 계산할 수 있으며,
+이때 `sumIf` 집계 조합자 함수를 사용합니다.
 
 ## 사용 예 \{#example-usage\}
 
@@ -31,7 +25,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -54,6 +49,7 @@ FROM sales;
 1. │                  776.50 │
    └───────────────────────┘
 ```
+
 
 ### 가격 방향별 거래량 계산 \{#calculate-trading-vol-price-direction\}
 
@@ -89,8 +85,8 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 주식 종목별 거래량 계산 \{#calculate-trading-volume\}
 
+### 주식 종목별 거래량 계산 \{#calculate-trading-volume\}
 
 이 예제에서는 [ClickHouse playground](https://sql.clickhouse.com/)에 제공되는 `stock` 테이블을 사용하여 2006년에 당시 가장 큰 기술 기업 3곳의 주식 종목(symbol)별 거래량을 계산합니다.
 
@@ -127,5 +123,6 @@ ORDER BY month;
 
 
 ## 함께 보기 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If 조합자`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`If 조합자`](/sql-reference/aggregate-functions/combinators#-if)

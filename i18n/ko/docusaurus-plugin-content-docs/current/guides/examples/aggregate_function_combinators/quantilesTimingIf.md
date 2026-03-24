@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
-description: 'quantilesTimingIf 조합자(combinator) 사용 예제'
+description: 'quantilesTimingIf 결합자 사용 예제'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf \{#quantilestimingif\}
-
-
 
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자(combinator)는 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 함수에 적용하여, 조건이 참인 행의 타이밍 값에 대한 분위수를
 `quantilesTimingIf` 집계 결합자 함수를 사용해 계산합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -31,7 +25,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_time_ms UInt32,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', 82, 1),
@@ -87,5 +82,6 @@ GROUP BY endpoint;
 
 
 ## 같이 보기 \{#see-also\}
+
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 결합자`](/sql-reference/aggregate-functions/combinators#-if)

@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 ## -If \{#-if\}
 
-后缀 -If 可以附加到任意聚合函数的名称后面。此时，聚合函数会额外接受一个参数——条件（`UInt8` 类型）。聚合函数只会处理触发该条件的行。如果条件一次都没有被触发，则返回默认值（通常为 0 或空字符串）。
+后缀 -If 可以附加到任意聚合函数的名称后面。此时，聚合函数会额外接受一个参数——条件 (`UInt8` 类型) 。聚合函数只会处理触发该条件的行。如果条件一次都没有被触发，则返回默认值 (通常为 0 或空字符串) 。
 
 示例：`sumIf(column, cond)`、`countIf(cond)`、`avgIf(x, cond)`、`quantilesTimingIf(level1, level2)(x, cond)`、`argMinIf(arg, val, cond)` 等。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ## -Array \{#-array\}
 
-可以将 -Array 后缀附加到任意聚合函数上。在这种情况下，聚合函数接受类型为 `Array(T)`（数组）的参数，而不是类型为 `T` 的参数。如果聚合函数接受多个参数，则这些参数必须是长度相同的数组。在处理数组时，该聚合函数的行为与原始聚合函数在所有数组元素上的行为相同。
+可以将 -Array 后缀附加到任意聚合函数的名称后。在这种情况下，聚合函数接受类型为 `Array(T)` (数组) 的参数，而不是类型为 `T` 的参数。如果聚合函数接受多个参数，则这些参数必须是长度相同的数组。在处理数组时，该聚合函数的行为与原始聚合函数在所有数组元素上的行为相同。
 
 示例 1：`sumArray(arr)` —— 对所有 `arr` 数组中的所有元素求和。在这个例子中，也可以更简单地写成：`sum(arraySum(arr))`。
 
@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 ## -Map \{#-map\}
 
-可以为任意聚合函数添加 `-Map` 后缀。这样会创建一个以 `Map` 类型作为参数的聚合函数，并使用指定的聚合函数分别聚合该 `Map` 中每个键对应的值。结果同样为 `Map` 类型。
+可以附加到任意聚合函数的名称后 `-Map` 后缀。这样会创建一个以 `Map` 类型作为参数的聚合函数，并使用指定的聚合函数分别聚合该 `Map` 中每个键对应的值。结果同样为 `Map` 类型。
 
 **示例**
 
@@ -40,7 +40,8 @@ CREATE TABLE map_map(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO map_map VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [10, 10, 10])),
@@ -64,7 +65,7 @@ GROUP BY timeslot;
 
 ## -SimpleState \{#-simplestate\}
 
-应用此组合子后，聚合函数会返回相同的值，但类型不同。它是一个可以存储在表中的 [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md)，用于与 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表配合使用。
+如果应用此组合器，聚合函数会返回相同的值，但类型不同。它是一个可以存储在表中的 [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md)，用于与 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表配合使用。
 
 **语法**
 
@@ -98,7 +99,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 ## -State \{#-state\}
 
-如果你应用这个组合子，聚合函数不会返回最终结果值（例如 [uniq](/sql-reference/aggregate-functions/reference/uniq) 函数的唯一值个数），而是返回聚合的中间状态（对于 `uniq`，这是用于计算唯一值个数的哈希表）。这是一个 `AggregateFunction(...)` 类型，可以用于后续处理，或者存储在表中以便稍后完成聚合。
+如果应用此组合器，聚合函数不会返回最终结果值 (例如 [uniq](/sql-reference/aggregate-functions/reference/uniq) 函数的唯一值个数) ，而是返回聚合的中间状态 (对于 `uniq`，这是用于计算唯一值个数的哈希表) 。这是一个 `AggregateFunction(...)` 类型，可以用于后续处理，或者存储在表中以便稍后完成聚合。
 
 :::note
 请注意，由于中间状态中的数据顺序可能发生变化，-MapState 对于相同数据并不是不变的，不过这并不影响对此数据的摄取。
@@ -106,15 +107,15 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 要处理这些状态，请使用：
 
-- [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表引擎。
-- [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation) 函数。
-- [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate) 函数。
-- [-Merge](#-merge) 组合子。
-- [-MergeState](#-mergestate) 组合子。
+* [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表引擎。
+* [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation) 函数。
+* [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate) 函数。
+* [-Merge](#-merge) 组合器。
+* [-MergeState](#-mergestate) 组合器。
 
 ## -Merge \{#-merge\}
 
-如果使用此组合器，聚合函数会将中间聚合状态作为参数，合并这些状态以完成聚合，并返回最终结果值。
+如果应用此组合器，聚合函数会将中间聚合状态作为参数，合并这些状态以完成聚合，并返回最终结果值。
 
 ## -MergeState \{#-mergestate\}
 
@@ -127,7 +128,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ## -Distinct \{#-distinct\}
 
 每个唯一的参数组合只会被聚合一次。重复的值会被忽略。
-示例：`sum(DISTINCT x)`（或 `sumDistinct(x)`）、`groupArray(DISTINCT x)`（或 `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（或 `corrStableDistinct(x, y)`）等。
+示例：`sum(DISTINCT x)` (或 `sumDistinct(x)`) 、`groupArray(DISTINCT x)` (或 `groupArrayDistinct(x)`) 、`corrStable(DISTINCT x, y)` (或 `corrStableDistinct(x, y)`) 等。
 
 ## -OrDefault \{#-ordefault\}
 
@@ -332,4 +333,4 @@ FROM people
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* 博客文章：[在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

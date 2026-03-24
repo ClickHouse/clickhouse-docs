@@ -221,11 +221,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions`는 `InsertBinaryAsync`를 사용한 대량 삽입 작업에 특화된 설정을 추가하여 `QueryOptions`를 확장합니다.
 
-| Property               | Type              | Default     | Description                                   |
-| ---------------------- | ----------------- | ----------- | --------------------------------------------- |
-| BatchSize              | `int`             | 100,000     | 배치당 행 개수                                      |
-| MaxDegreeOfParallelism | `int`             | 1           | 병렬로 업로드되는 배치 수                                |
-| Format                 | `RowBinaryFormat` | `RowBinary` | 이진 포맷: `RowBinary` 또는 `RowBinaryWithDefaults` |
+| 속성                     | Type                                  | Default     | Description                                           |
+| ---------------------- | ------------------------------------- | ----------- | ----------------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000     | 배치당 행 개수                                              |
+| MaxDegreeOfParallelism | `int`                                 | 1           | 병렬로 업로드되는 배치 수                                        |
+| Format                 | `RowBinaryFormat`                     | `RowBinary` | 이진 포맷: `RowBinary` 또는 `RowBinaryWithDefaults`         |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`      | 컬럼 이름 → ClickHouse 타입 문자열입니다. 설정하면 스키마 프로브 쿼리를 건너뜁니다. |
+| UseSchemaCache         | `bool`                                | `false`     | 클라이언트 수명 동안 (데이터베이스, 테이블)별 전체 테이블 스키마를 캐시합니다.         |
 
 모든 `QueryOptions` 속성은 `InsertOptions`에서도 동일하게 사용할 수 있습니다.
 
@@ -246,6 +248,49 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+#### 스키마 확인용 쿼리 스키핑 \{#skip-schema-query\}
+
+기본적으로 `InsertBinaryAsync`는 각 삽입 전에 컬럼 타입을 확인하기 위해 `SELECT ... WHERE 1=0` 쿼리를 전송합니다. 높은 처리량이 필요한 환경에서는 두 가지 방법으로 이 오버헤드를 없앨 수 있습니다:
+
+**옵션 1: 컬럼 타입을 명시적으로 지정**
+
+컴파일 시점에 테이블 스키마를 알고 있다면 `ColumnTypes`를 통해 직접 전달하십시오. 그러면 스키마 쿼리가 전혀 전송되지 않습니다:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**옵션 2: 스키마 캐시 사용**
+
+동일한 테이블에 반복해서 삽입하는 경우, 스키마를 한 번만 쿼리한 뒤 동일한 `ClickHouseClient` 인스턴스에서 이후 삽입에 재사용할 수 있도록 `UseSchemaCache = true`로 설정하십시오:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes`는 `UseSchemaCache`보다 우선합니다. 둘 다 설정된 경우에는 명시적으로 지정한 타입이 사용됩니다.
+* 스키마 캐시는 `ALTER TABLE` 변경 사항을 감지하지 않습니다. 테이블 스키마를 수정한 경우 새 `ClickHouseClient`를 생성하거나 해당 테이블에서는 `UseSchemaCache`를 사용하지 마십시오.
+* 캐시는 `ClickHouseClient` 인스턴스 범위로 한정되며, (데이터베이스, 테이블)를 키로 사용합니다. 동일한 테이블의 서로 다른 컬럼 하위 집합은 하나의 캐시된 스키마를 공유합니다.
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -392,7 +437,7 @@ var options = new InsertOptions
 
 :::note
 
-* 클라이언트는 INSERT 전에 `SELECT * FROM <table> WHERE 1=0`을 통해 테이블 구조를 자동으로 가져옵니다. 제공하는 값은 대상 컬럼 타입과 일치해야 합니다.
+* 클라이언트는 INSERT 전에 `SELECT * FROM <table> WHERE 1=0`을 통해 테이블 구조를 자동으로 가져옵니다. 제공하는 값은 대상 컬럼 타입과 일치해야 합니다. 이 쿼리를 건너뛰려면 [`InsertOptions.ColumnTypes` 또는 `InsertOptions.UseSchemaCache`](#skip-schema-query)를 사용하십시오.
 * `MaxDegreeOfParallelism > 1`인 경우 배치가 병렬로 업로드됩니다. 세션은 병렬 삽입과 호환되지 않으므로, 세션을 비활성화하거나 `MaxDegreeOfParallelism = 1`로 설정해야 합니다.
 * 값이 제공되지 않은 컬럼에 대해 서버가 DEFAULT 값을 적용하도록 하려면, `InsertOptions.Format`에서 `RowBinaryFormat.RowBinaryWithDefaults`를 사용하십시오.
   :::
@@ -1681,7 +1726,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` 및 `Get<T>(id)`는 작동합니다. `Insert<T>()`는 작동하지 않습니다. SQL Server 구문(`SCOPE_IDENTITY`, 대괄호)을 생성하기 때문입니다. 대신 `ClickHouseClient`의 기본 `InsertBinaryAsync` 메서드를 사용하는 것이 좋습니다.
+`GetAll<T>()` 및 `Get<T>(id)`는 작동합니다. `Insert<T>()`는 작동하지 않습니다. SQL Server 구문(`SCOPE_IDENTITY`, `[]`)을 생성하기 때문입니다. 대신 `ClickHouseClient` 네이티브 `InsertBinaryAsync` 메서드를 사용하는 것이 좋습니다.
 
 ```csharp
 [Table("test.users")]
@@ -1692,7 +1737,6 @@ var one = await connection.GetAsync<UserRecord>(1);
 ```
 
 속성 이름은 ClickHouse 컬럼 이름과 정확히 일치해야 합니다(대소문자를 구분함).
-
 
 #### 제한 사항 \{#dapper-limitations\}
 

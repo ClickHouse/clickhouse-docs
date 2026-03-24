@@ -22,13 +22,13 @@ import TabItem from '@theme/TabItem';
 ## 发送 OpenTelemetry 数据 \{#sending-otel-data\}
 
 <Tabs groupId="os-type">
-  <TabItem value="托管版 ClickStack" label="托管版 ClickStack" default>
+  <TabItem value="managed-clickstack" label="托管 ClickStack" default>
     ### 安装 ClickStack OpenTelemetry collector
 
     要向托管 ClickStack 发送数据，应以[gateway 角色](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)部署一个 OTel collector。兼容 OTel 的埋点会通过基于 HTTP 或 gRPC 的 OTLP 将事件发送到该 collector。
 
     :::note 我们推荐使用 ClickStack OpenTelemetry collector
-    这使您能够受益于标准化的摄取、统一的 schema 约束，以及与 ClickStack UI（HyperDX）的开箱即用兼容性。使用默认 schema 可启用自动来源识别和预配置的列映射。
+    这使您能够受益于标准化的摄取、统一的 schema 约束，以及与 ClickStack UI (HyperDX) 的开箱即用兼容性。使用默认 schema 可启用自动来源识别和预配置的列映射。
     :::
 
     更多详情请参阅[《部署 collector》](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -100,7 +100,7 @@ import TabItem from '@theme/TabItem';
     如果您使用的是 [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) 发行版，则需要自行负责将数据写入 ClickHouse。可以通过以下方式实现：
 
     * 运行您自己的 OpenTelemetry collector，并将其指向 ClickHouse——参见下文。
-    * 使用其他工具（例如 [Vector](https://vector.dev/)、[Fluentd](https://www.fluentd.org/) 等），或默认的 [OTel contrib collector 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，直接发送到 ClickHouse。
+    * 使用其他工具 (例如 [Vector](https://vector.dev/)、[Fluentd](https://www.fluentd.org/) 等) ，或默认的 [OTel contrib collector 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，直接发送到 ClickHouse。
 
     :::note 我们推荐使用 ClickStack OpenTelemetry collector
     这使您能够受益于标准化的摄取、统一的 schema 约束，以及与 HyperDX UI 的开箱即用兼容性。使用默认 schema 可启用自动来源识别和预配置的列映射。
@@ -131,7 +131,7 @@ import TabItem from '@theme/TabItem';
     OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
     ```
 
-    Agent 同样应在任何 OTLP 通信中包含此授权头。例如，如果在 agent 角色中部署 [OTel collector 的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，则可以使用 OTLP exporter。下面展示了一个读取该[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)的 agent 配置示例。注意需要指定授权密钥（即 `<YOUR_API_INGESTION_KEY>`，用于数据摄取的 API 密钥）。
+    Agent 同样应在任何 OTLP 通信中包含此授权头。例如，如果在 agent 角色中部署 [OTel collector 的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，则可以使用 OTLP exporter。下面展示了一个读取该[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)的 agent 配置示例。注意需要指定授权密钥 (即 `<YOUR_API_INGESTION_KEY>`，用于数据摄取的 API 密钥) 。
 
     ```yaml
     # clickhouse-agent-config.yaml
@@ -162,7 +162,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:

@@ -221,11 +221,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions` 扩展了 `QueryOptions`，用于配置通过 `InsertBinaryAsync` 执行批量插入操作的特定设置。
 
-| Property               | Type              | Default     | Description                                 |
-| ---------------------- | ----------------- | ----------- | ------------------------------------------- |
-| BatchSize              | `int`             | 100,000     | 每个批次包含的行数                                   |
-| MaxDegreeOfParallelism | `int`             | 1           | 并行上传的批次数量                                   |
-| Format                 | `RowBinaryFormat` | `RowBinary` | 二进制格式：`RowBinary` 或 `RowBinaryWithDefaults` |
+| Property               | Type                                  | 默认值        | 描述                                          |
+| ---------------------- | ------------------------------------- | ----------- | ------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000     | 每个批次包含的行数                                   |
+| MaxDegreeOfParallelism | `int`                                 | 1           | 并行上传的批次数量                                   |
+| Format                 | `RowBinaryFormat`                     | `RowBinary` | 二进制格式：`RowBinary` 或 `RowBinaryWithDefaults` |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`      | 列名 → ClickHouse 类型字符串。设置后可跳过 schema 探测查询。   |
+| UseSchemaCache         | `bool`                                | `false`     | 在客户端的整个生命周期内，按 (数据库、表) 缓存完整的表 schema。       |
 
 所有 `QueryOptions` 的属性在 `InsertOptions` 中同样可用。
 
@@ -246,6 +248,50 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+
+#### 跳过 schema 探测查询 \{#skip-schema-query\}
+
+默认情况下，`InsertBinaryAsync` 会在每次 insert 之前先发送一条 `SELECT ... WHERE 1=0` 查询，以探测列类型。对于高吞吐场景，可以通过以下两种方式消除这部分额外开销：
+
+**选项 1：显式提供列类型**
+
+如果你在编译时就已知表 schema，可通过 `ColumnTypes` 直接传入。这样就完全不会发送 schema 查询：
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**选项 2：缓存 schema**
+
+当你反复向同一个表执行 insert 时，将 `UseSchemaCache = true`，这样只需查询一次 schema，并可在同一个 `ClickHouseClient` 实例的后续 insert 中重复使用它：
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes` 的优先级高于 `UseSchemaCache`。如果两者都已设置，则使用显式指定的类型。
+* schema 缓存不会检测 `ALTER TABLE` 带来的更改。如果你修改了表的 schema，请创建一个新的 `ClickHouseClient`，或不要对该表使用 `UseSchemaCache`。
+* 缓存的作用域仅限于 `ClickHouseClient` 实例，并以 (数据库、表) 作为键。同一张表的不同列子集会共享同一个已缓存的 schema。
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -392,7 +438,7 @@ var options = new InsertOptions
 
 :::note
 
-* 客户端在插入前会通过 `SELECT * FROM <table> WHERE 1=0` 自动获取表结构。提供的值必须与目标列类型匹配。
+* 客户端在插入前会通过 `SELECT * FROM <table> WHERE 1=0` 自动获取表结构。提供的值必须与目标列类型匹配。要跳过此查询，请使用 [`InsertOptions.ColumnTypes` 或 `InsertOptions.UseSchemaCache`](#skip-schema-query)。
 * 当 `MaxDegreeOfParallelism > 1` 时，批量数据会被并行上传。Session 与并行插入不兼容；要么禁用 Session，要么将 `MaxDegreeOfParallelism = 1`。
 * 如果希望服务端为未提供的列应用 DEFAULT 默认值，请在 `InsertOptions.Format` 中使用 `RowBinaryFormat.RowBinaryWithDefaults`。
   :::
@@ -1683,7 +1729,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法（`SCOPE_IDENTITY`、方括号）。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
+`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法 (`SCOPE_IDENTITY`、`[]`) 。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
 
 ```csharp
 [Table("test.users")]
@@ -1693,7 +1739,8 @@ var all = await connection.GetAllAsync<UserRecord>();
 var one = await connection.GetAsync<UserRecord>(1);
 ```
 
-属性名称必须与 ClickHouse 列名完全一致（区分大小写）。
+属性名称必须与 ClickHouse 列名完全一致 (区分大小写) 。
+
 
 #### 限制 \{#dapper-limitations\}
 

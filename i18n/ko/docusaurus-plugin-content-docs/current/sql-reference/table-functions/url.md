@@ -54,7 +54,7 @@ SELECT * FROM test_table;
 ## URL의 글롭 패턴 \{#globs-in-url\}
 
 중괄호 `{ }` 안의 패턴은 세그먼트 집합을 생성하거나 장애 조치(failover) 주소를 지정하는 데 사용됩니다. 지원되는 패턴 유형과 예시는 [remote](remote.md#globs-in-addresses) 함수 설명을 참조하십시오.
-패턴 내부의 문자 `|` 는 장애 조치 주소를 지정하는 데 사용됩니다. 이 주소들은 패턴에 나열된 순서대로 차례로 사용됩니다. 생성되는 주소 개수는 [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 설정에 의해 제한됩니다.
+패턴 내부의 문자 `|`는 장애 조치 주소를 지정하는 데 사용됩니다. 이 주소들은 패턴에 나열된 순서대로 차례로 사용됩니다. 생성되는 주소 개수는 [glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 설정에 의해 제한됩니다.
 
 ## 가상 컬럼 \{#virtual-columns\}
 

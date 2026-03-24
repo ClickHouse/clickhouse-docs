@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse의 Array 데이터 유형에 대한 문서'
+description: 'ClickHouse의 Array 데이터 타입에 대한 문서'
 sidebar_label: 'Array(T)'
 sidebar_position: 32
 slug: /sql-reference/data-types/array
@@ -19,7 +19,7 @@ doc_type: 'reference'
 array(T)
 ```
 
-대괄호도 사용할 수 있습니다.
+`[]`도 사용할 수 있습니다.
 
 ```sql
 []

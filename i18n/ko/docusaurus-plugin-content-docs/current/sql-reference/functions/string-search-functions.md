@@ -445,10 +445,11 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 검색 전에 함수가 토큰화를 수행합니다
 
-* `input` 인자(항상 사용), 그리고
-* `needle` 인수(가 [String](../../sql-reference/data-types/string.md)로 전달된 경우)에는 텍스트 인덱스(text index)에 대해 지정된 토크나이저가 사용됩니다.
-  컬럼에 텍스트 인덱스가 정의되어 있지 않으면 `splitByNonAlpha` 토크나이저가 대신 사용됩니다.
-  `needle` 인수가 [Array(String)](../../sql-reference/data-types/array.md) 타입인 경우 각 배열 요소는 하나의 토큰으로 간주되며, 추가 토큰화는 수행되지 않습니다.
+* `input` 인수(항상), 그리고
+* `needle` 인수([String](../../sql-reference/data-types/string.md)로 전달된 경우)는
+  텍스트 인덱스에 지정된 토크나이저를 사용합니다.
+  컬럼에 텍스트 인덱스가 정의되어 있지 않으면 대신 `splitByNonAlpha` 토크나이저를 사용합니다.
+  `needle` 인수의 타입이 [Array(String)](../../sql-reference/data-types/array.md)인 경우, 각 배열 요소는 하나의 토큰으로 처리되며 추가 토큰화는 수행되지 않습니다.
 
 중복된 토큰은 무시됩니다.
 예를 들어, needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;]는 [&#39;ClickHouse&#39;]와 동일하게 처리됩니다.
@@ -465,7 +466,7 @@ hasAllTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. 데이터 타입은 [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Array(String)`](/sql-reference/data-types/array), [`Array(FixedString)`](/sql-reference/data-types/array) 중 하나일 수 있습니다.
 * `needles` — 검색할 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
+* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
 
 **반환 값**
 
@@ -531,7 +532,7 @@ SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
 └──────────────────────────────────────────────┘
 ```
 
-**배열 및 맵 컬럼의 사용 예제**
+**배열 및 맵 컬럼의 사용 예시**
 
 ```sql title=Query
 CREATE TABLE log (
@@ -565,7 +566,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys 사용 예**
+**mapKeys 사용 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -623,7 +624,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Nullable(String)`](/sql-reference/data-types/nullable) 또는 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 또는 [`Array(String)`](/sql-reference/data-types/array) 또는 [`Array(FixedString)`](/sql-reference/data-types/array) 또는 [`Array(Nullable(String))`](/sql-reference/data-types/array) 또는 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array) 형식일 수 있습니다.
 * `needles` — 검색 대상 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 
 **반환 값**
 
