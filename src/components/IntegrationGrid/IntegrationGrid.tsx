@@ -4,11 +4,8 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useColorMode } from "@docusaurus/theme-common";
 import CUICard from "@site/src/components/CUICard";
 import styles from "./styles.module.scss";
-import { strapi } from "@strapi/client";
+import { useStrapiClient } from "@site/src/lib/useStrapiClient";
 
-const strapiClient = strapi({ baseURL: "https://cms.clickhouse.com:1337/api" });
-
-// Strapi v5 flat response format (used for live CMS data)
 type CMSIntegrationData = {
   id: number;
   documentId: string;
@@ -27,31 +24,6 @@ type CMSIntegrationData = {
   };
 };
 
-// Strapi v4 response format (used for the static fallback JSON)
-type CMSIntegrationDataV4 = {
-  id: number;
-  attributes: {
-    name: string;
-    slug: string;
-    category: string;
-    supportLevel: string;
-    docsLink?: string;
-    logo?: {
-      data?: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-    logo_dark?: {
-      data?: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-  };
-};
 
 type IntegrationData = {
   slug: string;
@@ -192,8 +164,7 @@ const categoryMapping: { [key: string]: string } = {
   SQL_CLIENT: "SQL client",
 };
 
-// Transform Strapi v5 (flat) CMS data to the expected format
-function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
+function transformCMSData(cmsData: CMSIntegrationData[], baseUrl: string): IntegrationData[] {
   return cmsData.map((item) => {
     const integrationTypes = item.category
       ? [categoryMapping[item.category] || item.category]
@@ -204,10 +175,10 @@ function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
       slug: item.slug.startsWith("/") ? item.slug : `/${item.slug}`,
       docsLink: item.docsLink,
       integration_logo: item.logo?.url
-        ? `https://cms.clickhouse.com:1337${item.logo.url}`
+        ? `${baseUrl}${item.logo.url}`
         : "",
       integration_logo_dark: item.logo_dark?.url
-        ? `https://cms.clickhouse.com:1337${item.logo_dark.url}`
+        ? `${baseUrl}${item.logo_dark.url}`
         : undefined,
       integration_type: integrationTypes,
       integration_title: item.name,
@@ -216,83 +187,50 @@ function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
   });
 }
 
-// Transform Strapi v4 (nested attributes) data — used for the static fallback JSON
-function transformFallbackData(cmsData: CMSIntegrationDataV4[]): IntegrationData[] {
-  return cmsData.map((item) => {
-    const integrationTypes = item.attributes.category
-      ? [categoryMapping[item.attributes.category] || item.attributes.category]
-      : [];
-    const integrationTier = item.attributes.supportLevel?.toLowerCase() || "";
 
-    return {
-      slug: item.attributes.slug.startsWith("/")
-        ? item.attributes.slug
-        : `/${item.attributes.slug}`,
-      docsLink: item.attributes.docsLink,
-      integration_logo: item.attributes.logo?.data?.attributes.url
-        ? `https://cms.clickhouse.com:1337${item.attributes.logo.data.attributes.url}`
-        : "",
-      integration_logo_dark: item.attributes.logo_dark?.data?.attributes.url
-        ? `https://cms.clickhouse.com:1337${item.attributes.logo_dark.data.attributes.url}`
-        : undefined,
-      integration_type: integrationTypes,
-      integration_title: item.attributes.name,
-      integration_tier: integrationTier,
-    };
-  });
-}
-
-// Configuration: Set to true to fetch from CMS, false to use only static fallback
 const USE_CMS_ENDPOINT = true;
 
-// Custom hook for fetching CMS data
 function useCMSIntegrations() {
   const [integrations, setIntegrations] = useState<IntegrationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const fallbackPath = useBaseUrl("/integrations-fallback.json");
+  const { client: strapiClient, strapiBaseUrl } = useStrapiClient();
 
   useEffect(() => {
     const fetchIntegrations = async () => {
-      // Step 1: Load fallback data first for immediate display
       try {
         const fallbackResponse = await fetch(fallbackPath, {
-          cache: "no-cache", // Always revalidate with server to get fresh data
+          cache: "no-cache",
         });
 
         if (fallbackResponse.ok) {
           const fallbackData = await fallbackResponse.json();
-          const transformedData = transformFallbackData(fallbackData.data || []);
+          const transformedData = transformCMSData(fallbackData.data || [], strapiBaseUrl);
           setIntegrations(transformedData);
           setError(null);
-          setLoading(false); // Show content immediately with fallback data
-          console.log("Loaded fallback integrations data");
+          setLoading(false);
         } else {
-          console.warn("Fallback file not available, will try CMS only");
+          console.warn("Fallback file not available");
         }
       } catch (fallbackErr) {
         console.error(
           "Failed to load fallback integrations data:",
           fallbackErr,
         );
-        // Continue to try CMS even if fallback fails
       }
 
-      // Step 2: Try to fetch fresh data from CMS (if enabled)
       if (USE_CMS_ENDPOINT) {
         try {
           const { data } = await strapiClient.collection("integrations").find({
             populate: ["logo", "logo_dark"],
           });
 
-          const transformedData = transformCMSData(data as unknown as CMSIntegrationData[]);
+          const transformedData = transformCMSData(data as unknown as CMSIntegrationData[], strapiBaseUrl);
 
-          // Update with fresh CMS data
           setIntegrations(transformedData);
           setError(null);
-          console.log("Successfully updated with fresh CMS data");
         } catch (cmsErr) {
-          // CMS fetch failed, but that's okay - we already have fallback data
           if (cmsErr instanceof Error) {
             console.error(
               "Error loading integrations from CMS:",
@@ -300,7 +238,6 @@ function useCMSIntegrations() {
             );
           }
 
-          // Only set error if we don't have any integrations data at all
           if (integrations.length === 0) {
             setError(
               "Unable to load integrations. Please try refreshing the page.",

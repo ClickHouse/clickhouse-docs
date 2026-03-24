@@ -114,5 +114,6 @@
   "resolutions": {
     "form-data": "^4.0.4",
     "sharp": "^0.33.5"
-  }
+  },
+  "packageManager": "yarn@4.13.0"
 }
