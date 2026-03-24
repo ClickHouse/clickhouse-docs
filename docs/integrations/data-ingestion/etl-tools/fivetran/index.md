@@ -49,7 +49,7 @@ The destination connector is developed and maintained together by ClickHouse and
 - **Configurable batch sizes**: You can adapt Fivetran to your particular use case by tuning write, select, mutation, and hard delete batch sizes via a JSON configuration file.
 
 ## Limitations {#limitations}
-- Schema migrations is not supported yet, but we are working on it.
+- Schema migrations are not supported yet, but we are working on it.
 - Adding, removing, or modifying primary key columns is not supported.
 - Custom ClickHouse settings on `CREATE TABLE` statements are not supported.
 - Role-based grants are not fully supported. The connector's grants check only queries direct user grants. Use [direct grants](/integrations/fivetran/troubleshooting#role-based-grants) instead.
