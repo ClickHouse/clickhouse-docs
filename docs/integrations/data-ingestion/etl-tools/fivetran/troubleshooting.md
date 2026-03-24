@@ -81,7 +81,7 @@ Or `FAILURE_WITH_TASK` with no stack trace in Fivetran logs.
 cause: can't map type UInt64 to Fivetran types
 ```
 
-**Cause:** The connector maps `LONG` to `Int64`, never `UInt64`. This error occurs when a user manually altered a column type in a Fivetran-managed table.
+**Cause:** The connector maps `LONG` to `Int64`, never `UInt64`. This error occurs when a column type is manually altered in a Fivetran-managed table.
 
 **Solutions:**
 
