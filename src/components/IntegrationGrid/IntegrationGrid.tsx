@@ -223,7 +223,12 @@ function useCMSIntegrations() {
       if (USE_CMS_ENDPOINT) {
         try {
           const { data } = await strapiClient.collection("integrations").find({
-            populate: ["logo", "logo_dark"],
+            fields: ["name", "slug", "category", "supportLevel", "docsLink"],
+            populate: {
+              logo: { fields: ["url"] },
+              logo_dark: { fields: ["url"] },
+            },
+            pagination: { pageSize: 500 },
           });
 
           const transformedData = transformCMSData(data as unknown as CMSIntegrationData[], strapiBaseUrl);
