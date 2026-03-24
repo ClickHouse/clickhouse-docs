@@ -13,28 +13,27 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## AWS 区域 \{#aws-regions\}
 
-- ap-northeast-1（东京）
-- ap-northeast-2（韩国首尔）
-- ap-south-1（孟买）
-- ap-southeast-1（新加坡）
-- ap-southeast-2（悉尼）
-- eu-central-1（法兰克福）
-- eu-west-1（爱尔兰）
-- eu-west-2（伦敦）
-- me-central-1（阿联酋）
-- us-east-1（北弗吉尼亚）
-- us-east-2（俄亥俄）
-- us-west-2（俄勒冈）
-- il-central-1（以色列特拉维夫）
+* ap-northeast-1 (东京) 
+* ap-northeast-2 (韩国首尔) 
+* ap-south-1 (孟买) 
+* ap-southeast-1 (新加坡) 
+* ap-southeast-2 (悉尼) 
+* eu-central-1 (法兰克福) 
+* eu-west-1 (爱尔兰) 
+* eu-west-2 (伦敦) 
+* us-east-1 (北弗吉尼亚) 
+* us-east-2 (俄亥俄) 
+* us-west-2 (俄勒冈) 
+* il-central-1 (以色列特拉维夫) 
 
 **私有区域：**
 
-- ca-central-1（加拿大）
-- af-south-1（南非）
-- eu-north-1（斯德哥尔摩）
-- sa-east-1（南美洲）
-- ap-southeast-3（雅加达）
-- ap-east-1（香港）
+* ca-central-1 (加拿大) 
+* af-south-1 (南非) 
+* eu-north-1 (斯德哥尔摩) 
+* sa-east-1 (南美) 
+* ap-southeast-3 (雅加达) 
+* ap-east-1 (香港)
 
 ## Google Cloud 区域 \{#google-cloud-regions\}
 

@@ -13,7 +13,9 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse Cloud は、オープンテーブルフォーマットのデータカタログに直接接続でき、データを複製することなくデータレイクテーブルへアクセスできます。統合すると、カタログのテーブルは ClickHouse 内でクエリ可能なデータベースとして表示されます。設定は、SQL コマンド（[DataLakeCatalog](/engines/database-engines/datalakecatalog)）または ClickHouse Cloud の UI の Data Sources タブから行えます。
+ClickHouse Cloud は、オープンテーブルフォーマットのデータカタログに直接接続でき、データを複製することなくデータレイクテーブルへアクセスできます。
+この統合により、カタログのテーブルは ClickHouse 内でクエリ可能なデータベースとして表示されます。
+設定は、SQL コマンド ([DataLakeCatalog](/engines/database-engines/datalakecatalog)) と ClickHouse Cloud の UI の Data Sources タブの両方から行えます。
 
 UI を使用する場合:
 
@@ -23,14 +25,14 @@ UI を使用する場合:
 
 <Image img={data_catalogs_ui} size="md" alt="データカタログ統合を表示した ClickHouse Cloud UI" />
 
-| 名前                   | サポートされるオープンテーブルフォーマット                        | サポート                                                                | バージョン  |
-| -------------------- | -------------------------------------------- | ------------------------------------------------------------------- | ------ |
-| AWS Glue Catalog     | Iceberg                                      | Cloud &amp; [Core](/use-cases/data-lake/glue-catalog)               | 25.10+ |
-| Lakekeeper           | Iceberg                                      | [Core](/use-cases/data-lake/lakekeeper-catalog)                     | 25.10+ |
-| Microsoft OneLake    | Iceberg                                      | Cloud &amp; [Core](/use-cases/data-lake/onelake-catalog)            | 25.12+ |
-| Nessie               | Iceberg                                      | [Core](/use-cases/data-lake/nessie-catalog)                         | 25.10+ |
-| Polaris/Open Catalog | Iceberg                                      | Core                                                                | 26.1+  |
-| REST catalog         | Iceberg                                      | [Core](/use-cases/data-lake/rest-catalog)                           | 25.10+ |
-| Unity Catalog        | Iceberg (UniForm-enabled and managed), Delta | Cloud (Iceberg のみ) &amp; [Core](/use-cases/data-lake/unity-catalog) | 25.10+ |
+| 名前                   | サポートされるオープンテーブルフォーマット                        | 認証方式                          | サポート                                                                | バージョン  |
+| -------------------- | -------------------------------------------- | ----------------------------- | ------------------------------------------------------------------- | ------ |
+| AWS Glue Catalog     | Iceberg                                      | IAM/アクセスキー                    | Cloud &amp; [Core](/use-cases/data-lake/glue-catalog)               | 25.10+ |
+| Lakekeeper           | Iceberg                                      | OAuth クライアント認証情報              | [Core](/use-cases/data-lake/lakekeeper-catalog)                     | 25.10+ |
+| Microsoft OneLake    | Iceberg                                      | Azure Active Directory (AAD)  | Cloud &amp; [Core](/use-cases/data-lake/onelake-catalog)            | 25.12+ |
+| Nessie               | Iceberg                                      | OAuth クライアント認証情報              | [Core](/use-cases/data-lake/nessie-catalog)                         | 25.10+ |
+| Polaris/Open Catalog | Iceberg                                      | OAuth クライアント認証情報              | [Core](/use-cases/data-lake/polaris-catalog)                        | 26.1+  |
+| REST catalog         | Iceberg                                      | OAuth クライアント認証情報、Bearer token | Cloud &amp; [Core](/use-cases/data-lake/rest-catalog)               | 25.10+ |
+| Unity Catalog        | Iceberg (UniForm-enabled and managed), Delta | OAuth クライアント認証情報              | Cloud (Iceberg のみ) &amp; [Core](/use-cases/data-lake/unity-catalog) | 25.10+ |
 
-今後の対応として、Horizon や S3 テーブル向け REST エンドポイントなど、さらに多くのカタログを予定しています。
+今後の対応として、Horizon や S3 テーブル向け REST endpoint など、さらに多くのカタログを予定しています。
