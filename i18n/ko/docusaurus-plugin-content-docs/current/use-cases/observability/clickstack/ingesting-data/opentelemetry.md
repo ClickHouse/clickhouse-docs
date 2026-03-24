@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -162,7 +162,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:

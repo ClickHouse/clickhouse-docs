@@ -70,7 +70,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ./clickhouse client
   ```
 
-  您应该会看到一个笑脸,表示已成功连接到本地运行的服务:
+  您应该会看到一个笑脸，表示已成功连接到本地运行的服务:
 
   ```response
   my-host :)
@@ -94,9 +94,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## 插入数据 \{#insert-data\}
 
-  您可以使用熟悉的 `INSERT INTO TABLE` 命令操作 ClickHouse,但需要理解的是,每次向 `MergeTree` 表插入数据都会在存储中创建我们所称的 **分区片段**。这些 分区片段 随后会由 ClickHouse 在后台进行合并。
+  您可以使用熟悉的 `INSERT INTO TABLE` 命令操作 ClickHouse,但需要理解的是,每次向 `MergeTree` 表插入数据都会在存储中创建我们所称的 **分区片段**。这些 parts 随后会由 ClickHouse 在后台进行合并。
 
-  在 ClickHouse 中,我们建议一次性批量插入大量数据行(单次插入数万甚至数百万行),以最小化后台进程中需要合并的 [**分区片段**](/parts) 数量。
+  在 ClickHouse 中,我们建议一次性批量插入大量数据行(单次插入数万甚至数百万行),以最小化后台进程中需要合并的 [**parts**](/parts) 数量。
 
   在本指南中,我们暂时不必担心这个问题。运行以下命令向表中插入几行数据:
 
@@ -137,12 +137,14 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   <Tabs groupId="read_data">
     <TabItem value="S3" label="S3" default>
-      使用 [`s3` 表函数](/sql-reference/table-functions/s3.md)
+      使用 [`s3` 表函数](/sql-reference/table-functions/s3.md) 来
       从 S3 中读取文件。它是一个表函数，这意味着其返回结果是一个表，
       该表可以：
 
-      1. 作为 `SELECT` 查询的数据源 (允许你运行即席查询，同时将数据保留在 S3 中) ，或者……
-      2. 将该结果表插入到一个 `MergeTree` 表中 (当你准备好将数据迁移到 ClickHouse 中时) 
+      1. 作为 `SELECT` 查询的数据源 (允许你运行即席查询，同时
+         将数据保留在 S3 中) ，或者……
+      2. 将该结果表插入到一个 `MergeTree` 表中 (当你准备好将
+         数据迁移到 ClickHouse 中时)
 
       一个即席查询示例如下：
 
@@ -221,7 +223,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     <TabItem value="local_file" label="本地">
       使用 [`file` 表引擎](/sql-reference/table-functions/file) 来
       读取本地文件。为方便起见，将文件复制到 `user_files` 目录
-       (该目录位于您下载 ClickHouse 二进制文件的目录下) 。
+      (该目录位于您下载 ClickHouse 二进制文件的目录下) 。
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')

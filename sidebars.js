@@ -1149,6 +1149,7 @@ const sidebars = {
             id: 'integrations/tools/data-integration/index',
           },
           items: [
+            'integrations/tools/data-integration/middleware/index',
             'integrations/tools/data-integration/retool/index',
             'integrations/tools/data-integration/easypanel/index',
             'integrations/tools/data-integration/splunk/index',
@@ -1210,12 +1211,6 @@ const sidebars = {
       link: { type: 'doc', id: 'managing-data/updating-data/index' },
       items: [
         'managing-data/updating-data/overview',
-        'managing-data/updating-data/update_mutations',
-        {
-          type: 'doc',
-          label: 'Lightweight updates',
-          id: 'guides/developer/on-fly-mutations',
-        },
         {
           type: 'doc',
           label: 'ReplacingMergeTree',

@@ -1,9 +1,10 @@
 ---
 slug: /guides/replacing-merge-tree
-title: 'ReplacingMergeTree'
-description: 'Using the ReplacingMergeTree engine in ClickHouse'
+title: 'Working with the ReplacingMergeTree engine'
+description: 'Guide on how to use the ReplacingMergeTree engine in ClickHouse'
 keywords: ['replacingmergetree', 'inserts', 'deduplication']
 doc_type: 'guide'
+sidebar_label: 'Working with the ReplacingMergeTree engine'
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';

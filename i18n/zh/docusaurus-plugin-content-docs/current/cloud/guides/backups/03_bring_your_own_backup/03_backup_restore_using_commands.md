@@ -157,38 +157,36 @@ FROM AzureBlobStorage(
 可以结合上文描述的语法，将这些命令用于 GCS 和 Azure Blob 存储的备份。
 
 <Tabs>
-<TabItem value="Backup" label="BACKUP" default>
+  <TabItem value="Backup" label="BACKUP" default>
+    ```sql
+    BACKUP 
+        TABLE system.users,
+        TABLE system.roles,
+        TABLE system.settings_profiles,
+        TABLE system.row_policies,
+        TABLE system.quotas,
+        TABLE system.functions,
+        ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
+    TO S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
 
-```sql
-BACKUP 
-    TABLE system.users,
-    TABLE system.roles,
-    TABLE system.settings_profiles,
-    TABLE system.row_policies,
-    TABLE system.quotas,
-    TABLE system.functions,
-    ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
-TO S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
+    其中 `uuid` 是用于标识该备份的唯一标识符。
+  </TabItem>
 
-其中 `uuid` 是用于标识该备份的唯一标识符。
-
-</TabItem>
-<TabItem value="Restore" label="RESTORE" default>
-
-```sql
-RESTORE ALL
-FROM S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
-</TabItem>
+  <TabItem value="Restore" label="RESTORE" default>
+    ```sql
+    RESTORE ALL EXCEPT TABLES system.users, system.roles
+    FROM S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## 常见问题解答 \{#backups-faq\}

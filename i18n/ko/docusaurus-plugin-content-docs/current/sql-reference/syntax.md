@@ -66,7 +66,24 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 ClickHouse는 SQL 스타일과 C 스타일 주석을 모두 지원합니다.
 
 - SQL 스타일 주석은 `--`, `#!` 또는 `# `로 시작하여 줄 끝까지 이어집니다. `--`와 `#!` 뒤의 공백은 생략할 수 있습니다.
-- C 스타일 주석은 `/*`와 `*/` 사이에 작성되며, 여러 줄에 걸칠 수 있습니다. 공백 역시 필수는 아닙니다.
+- C 스타일 주석:
+  - `//`(또는 `/` 문자가 2개를 초과하는 경우) 뒤에 텍스트를 작성하며 줄 끝까지 이어집니다. `/` 뒤의 공백은 필수가 아닙니다.
+  - 여러 줄 주석은 `/*`부터 `*/`까지 작성할 수 있습니다. 공백 역시 필수가 아닙니다.
+  - C 스타일 주석은 중첩할 수 있습니다.
+
+예를 들어:
+
+```sql
+/*
+ * Compute the number of days between two dates.
+ * /* Returns NULL if either argument is NULL */
+ */
+SELECT
+    dateDiff('day', toDate('2024-01-01'), toDate('2024-12-31')) AS days_in_year, -- 365
+    dateDiff('day', toDate('2020-01-01'), today()) AS days_since  #! since 2020
+    ///////////////////////////////////////////////////////////////////
+    # TODO: add hour/minute variants
+```
 
 ## 키워드 \{#keywords\}
 
@@ -234,12 +251,12 @@ ClickHouse에서 리터럴은 쿼리에서 직접 지정하는 값입니다.
 
 ### 복합형 \{#compound\}
 
-배열은 대괄호를 사용해 `[1, 2, 3]`처럼 구성합니다. 튜플은 소괄호를 사용해 `(1, 'Hello, world!', 2)`처럼 구성합니다.
+배열은 `[]`를 사용해 `[1, 2, 3]`처럼 구성합니다. 튜플은 `()`를 사용해 `(1, 'Hello, world!', 2)`처럼 구성합니다.
 기술적으로 이들은 리터럴이 아니라, 각각 배열 생성 연산자와 튜플 생성 연산자를 사용하는 표현식입니다.
 배열은 최소 하나의 항목으로 구성되어야 하며, 튜플은 최소 두 개의 항목을 가져야 합니다.
 
 :::note
-`SELECT` 쿼리의 `IN` 절에 튜플이 나타나는 별도로 취급되는 경우가 있습니다. 
+`SELECT` 쿼리의 `IN` 절에 튜플이 나타나는 별도로 취급되는 경우가 있습니다.
 쿼리 결과에는 튜플이 포함될 수 있지만, 튜플은 데이터베이스에 저장할 수 없습니다( [Memory](../engines/table-engines/special/memory.md) 엔진을 사용하는 테이블은 예외입니다).
 :::
 
@@ -284,70 +301,84 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 
 ## 쿼리 매개변수 정의 및 사용 \{#defining-and-using-query-parameters\}
 
-쿼리 매개변수를 사용하면 구체적인 식별자 대신 추상적인 플레이스홀더를 포함하는 범용 쿼리를 작성할 수 있습니다. 
-쿼리 매개변수가 포함된 쿼리가 실행되면 
+쿼리 매개변수를 사용하면 구체적인 식별자 대신 추상적인 플레이스홀더를 포함하는 범용 쿼리를 작성할 수 있습니다.
+쿼리 매개변수가 포함된 쿼리가 실행되면
 모든 플레이스홀더가 해석되어 실제 쿼리 매개변수 값으로 치환됩니다.
 
-쿼리 매개변수를 정의하는 방법은 두 가지입니다:
+쿼리 매개변수는 여러 방법으로 정의할 수 있습니다:
 
-- `SET param_<name>=<value>`
-- `--param_<name>='<value>'`
-
-두 번째 방식을 사용할 때는, 명령줄에서 `clickhouse-client`에 인수로 전달하며, 여기서:
-
-- `<name>`는 쿼리 매개변수의 이름입니다.
-- `<value>`는 해당 값입니다.
+* `SET param_<name>=<value>` — 쿼리에서 `SET` 명령을 사용하는 방법입니다.
+* `--param_<name>='<value>'` — 명령줄에서 `clickhouse-client`에 인수로 전달하는 방법입니다.
+* `param_<name>=<value>` — HTTP 인터페이스의 URL 쿼리 문자열 매개변수로 전달하는 방법입니다.
 
 쿼리 안에서 쿼리 매개변수는 `{<name>: <datatype>}` 형식으로 참조할 수 있으며, 여기서 `<name>`는 쿼리 매개변수 이름이고 `<datatype>`는 변환할 데이터 타입(data type)입니다.
 
 <details>
-<summary>SET 명령어 예시</summary>
+  <summary>SET 명령어 예시</summary>
 
-예를 들어, 다음 SQL은 `a`, `b`, `c`, `d`라는 이름의 매개변수를 정의하며, 각각 서로 다른 데이터 타입을 가집니다:
+  예를 들어, 다음 SQL은 `a`, `b`, `c`, `d`라는 이름의 매개변수를 정의하며, 각각 서로 다른 데이터 타입을 가집니다:
 
-```sql
-SET param_a = 13;
-SET param_b = 'str';
-SET param_c = '2022-08-04 18:30:53';
-SET param_d = {'10': [11, 12], '13': [14, 15]};
+  ```sql
+  SET param_a = 13;
+  SET param_b = 'str';
+  SET param_c = '2022-08-04 18:30:53';
+  SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-SELECT
-   {a: UInt32},
-   {b: String},
-   {c: DateTime},
-   {d: Map(String, Array(UInt8))};
+  SELECT
+     {a: UInt32},
+     {b: String},
+     {c: DateTime},
+     {d: Map(String, Array(UInt8))};
 
-13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-```
+  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+  ```
 </details>
 
 <details>
-<summary>clickhouse-client 사용 예시</summary>
+  <summary>clickhouse-client 사용 예시</summary>
 
-`clickhouse-client`를 사용하는 경우 매개변수는 `--param_name=value` 형식으로 지정합니다. 예를 들어, 다음 매개변수의 이름은 `message`이며, `String`으로 활용됩니다:
+  `clickhouse-client`를 사용하는 경우 매개변수는 `--param_name=value` 형식으로 지정합니다. 예를 들어, 다음 매개변수의 이름은 `message`이며, `String`으로 조회됩니다:
 
-```bash
-clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+  ```bash
+  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-hello
-```
+  hello
+  ```
 
-쿼리 매개변수가 데이터베이스, 테이블, 함수 또는 기타 식별자의 이름을 나타내는 경우, 타입으로 `Identifier`를 사용합니다. 예를 들어, 다음 쿼리는 `uk_price_paid`라는 이름의 테이블에서 행을 반환합니다:
+  쿼리 매개변수가 데이터베이스, 테이블, 함수 또는 기타 식별자의 이름을 나타내는 경우, 타입으로 `Identifier`를 사용합니다. 예를 들어, 다음 쿼리는 `uk_price_paid`라는 이름의 테이블에서 행을 반환합니다:
 
-```sql
-SET param_mytablename = "uk_price_paid";
-SELECT * FROM {mytablename:Identifier};
-```
+  ```sql
+  SET param_mytablename = "uk_price_paid";
+  SELECT * FROM {mytablename:Identifier};
+  ```
+</details>
+
+<details>
+  <summary>HTTP 인터페이스 예시</summary>
+
+  쿼리 매개변수는 `param_` 접두사를 사용한 URL 쿼리 문자열 매개변수로 전달할 수 있습니다. 예를 들어:
+
+  ```bash
+  curl -s "http://localhost:8123/?param_message=hello" --data-binary "SELECT {message: String}"
+
+  hello
+  ```
+</details>
+
+<details>
+  <summary>Web UI 예시</summary>
+
+  내장 Web UI(`play.html`)는 쿼리에서 `{name:Type}` 매개변수 플레이스홀더를 자동으로 감지하고 각 매개변수에 대해 레이블이 지정된 입력 필드를 표시합니다. 매개변수 값은 HTTP 요청에 포함되며, 북마크 및 공유를 위해 페이지 URL에도 유지됩니다.
 </details>
 
 :::note
-쿼리 매개변수는 임의의 SQL 쿼리에서 임의의 위치에 사용할 수 있는 일반적인 텍스트 치환 기능이 아닙니다. 
+쿼리 매개변수는 임의의 SQL 쿼리에서 임의의 위치에 사용할 수 있는 일반적인 텍스트 치환 기능이 아닙니다.
 주로 식별자나 리터럴이 들어가는 위치에서 `SELECT` SQL 문과 함께 동작하도록 설계되었습니다.
 :::
 
 ## 함수 \{#functions\}
 
-함수 호출은 식별자 뒤에 소괄호로 묶인 인수 목록(비어 있을 수도 있음)을 붙여서 작성합니다.
+함수 호출은 식별자 뒤에 `()`로 표시된 인수 목록(비어 있을 수도 있음)을 붙여서 작성합니다.
 표준 SQL과 달리, 인수 목록이 비어 있는 경우에도 소괄호는 반드시 필요합니다.
 예를 들어:
 

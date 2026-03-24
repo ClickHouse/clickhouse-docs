@@ -221,11 +221,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions` расширяет `QueryOptions` настройками, предназначенными для пакетных операций вставки через `InsertBinaryAsync`.
 
-| Свойство               | Тип               | По умолчанию | Описание                                                 |
-| ---------------------- | ----------------- | ------------ | -------------------------------------------------------- |
-| BatchSize              | `int`             | 100,000      | Количество строк в пакете                                |
-| MaxDegreeOfParallelism | `int`             | 1            | Количество параллельных загрузок пакетов                 |
-| Format                 | `RowBinaryFormat` | `RowBinary`  | Бинарный формат: `RowBinary` или `RowBinaryWithDefaults` |
+| Свойство               | Тип                                   | По умолчанию | Описание                                                                                     |
+| ---------------------- | ------------------------------------- | ------------ | -------------------------------------------------------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000      | Количество строк в пакете                                                                    |
+| MaxDegreeOfParallelism | `int`                                 | 1            | Количество параллельных загрузок пакетов                                                     |
+| Format                 | `RowBinaryFormat`                     | `RowBinary`  | Бинарный формат: `RowBinary` или `RowBinaryWithDefaults`                                     |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`       | Имя столбца → строка типа ClickHouse. При указании пропускает запрос на определение схемы.   |
+| UseSchemaCache         | `bool`                                | `false`      | Кэширует полную схему таблицы для каждой пары (database, table) на время жизни client&#39;а. |
 
 Все свойства `QueryOptions` также доступны в `InsertOptions`.
 
@@ -246,6 +248,50 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+
+#### Пропуск запроса для проверки схемы \{#skip-schema-query\}
+
+По умолчанию `InsertBinaryAsync` отправляет запрос `SELECT ... WHERE 1=0` перед каждой вставкой, чтобы определить типы столбцов. В сценариях с высокой пропускной способностью эти накладные расходы можно устранить двумя способами:
+
+**Вариант 1: Явно задайте типы столбцов**
+
+Если схема таблицы известна на этапе компиляции, передайте её напрямую через `ColumnTypes`. В этом случае запрос к схеме вообще не отправляется:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**Вариант 2: Кэшируйте схему**
+
+Если вы многократно вставляете данные в одну и ту же таблицу, установите `UseSchemaCache = true`, чтобы запросить схему один раз и повторно использовать её для последующих вставок в том же экземпляре `ClickHouseClient`:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes` имеет приоритет над `UseSchemaCache`. Если заданы оба параметра, используются явно указанные типы.
+* Кэш схем не учитывает изменения, внесённые через `ALTER TABLE`. Если вы изменили схему таблицы, создайте новый `ClickHouseClient` или не используйте `UseSchemaCache` для этой таблицы.
+* Кэш привязан к экземпляру `ClickHouseClient`, а в качестве ключа использует пару (база данных, таблица). Разные подмножества столбцов одной и той же таблицы используют одну общую кэшированную схему.
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -364,7 +410,7 @@ await client.ExecuteNonQueryAsync(
 ***
 
 
-#### Массовые вставки \{#bulk-insert\}
+#### Пакетные вставки \{#bulk-insert\}
 
 Используйте `InsertBinaryAsync` для эффективной вставки большого количества строк. Он выполняет потоковую передачу данных в нативном двоичном формате строк ClickHouse, поддерживает параллельную пакетную загрузку и предотвращает ошибки «URL слишком длинный», которые могут возникать при использовании параметризованных запросов.
 
@@ -392,7 +438,7 @@ var options = new InsertOptions
 
 :::note
 
-* Клиент автоматически получает структуру таблицы с помощью `SELECT * FROM <table> WHERE 1=0` перед вставкой. Передаваемые значения должны соответствовать типам целевых столбцов.
+* Клиент автоматически получает структуру таблицы с помощью `SELECT * FROM <table> WHERE 1=0` перед вставкой. Передаваемые значения должны соответствовать типам целевых столбцов. Чтобы пропустить этот запрос, используйте [`InsertOptions.ColumnTypes` или `InsertOptions.UseSchemaCache`](#skip-schema-query).
 * При `MaxDegreeOfParallelism > 1` пакеты данных загружаются параллельно. Сеансы несовместимы с параллельной вставкой; либо отключите сеансы, либо установите `MaxDegreeOfParallelism = 1`.
 * Используйте `RowBinaryFormat.RowBinaryWithDefaults` в `InsertOptions.Format`, если вы хотите, чтобы сервер применял значения DEFAULT для столбцов, которые не были переданы.
   :::
@@ -1683,7 +1729,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` и `Get<T>(id)` работают. `Insert<T>()` не работает — он генерирует синтаксис SQL Server (`SCOPE_IDENTITY`, квадратные скобки). Вместо него рекомендуется использовать нативный метод `InsertBinaryAsync` клиента `ClickHouseClient`.
+`GetAll<T>()` и `Get<T>(id)` работают. `Insert<T>()` не работает — он генерирует синтаксис SQL Server (`SCOPE_IDENTITY`, `[]`). Вместо него рекомендуется использовать собственный метод `InsertBinaryAsync` клиента `ClickHouseClient`.
 
 ```csharp
 [Table("test.users")]
@@ -1694,7 +1740,6 @@ var one = await connection.GetAsync<UserRecord>(1);
 ```
 
 Имена свойств должны в точности совпадать с именами столбцов ClickHouse (с учетом регистра).
-
 
 #### Ограничения \{#dapper-limitations\}
 

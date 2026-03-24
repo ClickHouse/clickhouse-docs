@@ -1,8 +1,9 @@
 ---
 description: 'ClickHouse Cloud 中的高级仪表板'
-keywords: ['监控', '可观测性', '高级仪表板', '仪表板', '可观测性仪表板']
+keywords: ['监控', '可观测性', '高级仪表板', '仪表板', '可观测性
+    仪表板']
 sidebar_label: '高级仪表板'
-sidebar_position: 45
+sidebar_position: 7
 slug: /cloud/manage/monitor/advanced-dashboard
 title: 'ClickHouse Cloud 中的高级仪表板'
 doc_type: 'guide'
@@ -21,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 高级仪表盘是一款轻量级工具，可为 ClickHouse 系统及其运行环境提供深度洞察，帮助你提前发现性能瓶颈、系统故障和低效问题。
 
-高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
+高级仪表盘同时适用于 ClickHouse OSS (开源软件) 和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
 
 
 ## 访问高级仪表板 \{#accessing-the-advanced-dashboard\}

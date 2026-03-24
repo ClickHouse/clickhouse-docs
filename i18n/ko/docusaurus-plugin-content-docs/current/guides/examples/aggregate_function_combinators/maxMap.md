@@ -7,19 +7,13 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-
-
 # maxMap \{#maxmap\}
-
-
 
 ## 설명 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 조합자는 [`max`](/sql-reference/aggregate-functions/reference/max)
-함수에 적용하여, `maxMap` 
+함수에 적용하여, `maxMap`
 집계 조합자 함수를 사용해 각 키별로 맵에서 최대값을 계산합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -32,7 +26,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -70,5 +65,6 @@ GROUP BY timeslot;
 
 
 ## 함께 보기 \{#see-also\}
+
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
