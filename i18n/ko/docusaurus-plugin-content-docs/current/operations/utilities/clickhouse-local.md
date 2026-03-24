@@ -7,11 +7,7 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-local \{#clickhouse-local\}
-
-
 
 ## clickhouse-local과 ClickHouse를 언제 사용해야 하는지 \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 `clickhouse-local`은 개발 및 테스트 목적, 그리고 파일 처리에는 훌륭한 도구이지만, 최종 사용자나 애플리케이션에 직접 서비스를 제공하는 용도로는 적합하지 않습니다. 이러한 상황에서는 오픈 소스 [ClickHouse](/install)를 사용하는 것이 권장됩니다. ClickHouse는 대규모 분석 워크로드를 처리하도록 설계된 강력한 OLAP 데이터베이스입니다. 대용량 데이터셋에 대한 복잡한 쿼리를 빠르고 효율적으로 처리하므로, 고성능이 중요한 프로덕션 환경에서 사용하기에 적합합니다. 또한 ClickHouse는 대규모 데이터셋을 처리하고 애플리케이션에 서비스를 제공하기 위해 필수적인 복제(replication), 세그먼트(shard), 고가용성과 같은 다양한 기능을 제공합니다. 더 큰 데이터셋을 처리하거나 최종 사용자 및 애플리케이션에 서비스를 제공해야 하는 경우, `clickhouse-local` 대신 오픈 소스 ClickHouse 사용을 권장합니다.
 
 [로컬 파일 쿼리](#query_data_in_file)나 [S3의 Parquet 파일 읽기](#query-data-in-a-parquet-file-in-aws-s3)와 같이 `clickhouse-local`의 예시 사용 사례를 보여 주는 아래 문서를 참고하십시오.
-
-
 
 ## clickhouse-local 다운로드 \{#download-clickhouse-local\}
 
@@ -199,12 +193,11 @@ $ clickhouse-local --input-format JSONLines --output-format CSV --query "SELECT 
 $ clickhouse-local --query "SELECT * FROM table" < data.json > data.csv
 ```
 
-간단히 `--copy` 인자를 사용하여 작성할 수 있습니다:
+단축해서 `--copy` 인수를 사용해 작성할 수도 있습니다:
 
 ```bash
 $ clickhouse-local --copy < data.json > data.csv
 ```
-
 
 ## 사용 방법 \{#usage\}
 
@@ -232,7 +225,7 @@ Arguments:
 * `--input-format` — 입력 포맷이며, 기본값은 `TSV`입니다.
 * `-F`, `--file` — 데이터 경로이며, 기본값은 `stdin`입니다.
 * `-q`, `--query` — `;`를 구분자로 사용하는 실행할 쿼리입니다. `--query`는 여러 번 지정할 수 있으며, 예를 들면 `--query "SELECT 1" --query "SELECT 2"`와 같이 사용할 수 있습니다. `--queries-file`과 동시에 사용할 수 없습니다.
-* `--queries-file` - 실행할 쿼리가 들어 있는 파일 경로입니다. `--queries-file`은 여러 번 지정할 수 있으며, 예를 들면 `--query queries1.sql --query queries2.sql`과 같이 사용할 수 있습니다. `--query`와 동시에 사용할 수 없습니다.
+* `--queries-file` - 실행할 쿼리가 들어 있는 파일 경로입니다. `--queries-file`은 여러 번 지정할 수 있으며, 예를 들면 `--query queries1.sql --query queries2.sql`와 같이 사용할 수 있습니다. `--query`와 동시에 사용할 수 없습니다.
 * `--multiquery, -n` – 지정된 경우, 세미콜론으로 구분된 여러 개의 쿼리를 `--query` 옵션 뒤에 나열할 수 있습니다. 편의를 위해 `--query`를 생략하고 `--multiquery` 뒤에 쿼리를 바로 전달하는 것도 가능합니다.
 * `-N`, `--table` — 출력 데이터를 저장할 테이블 이름이며, 기본값은 `table`입니다.
 * `-f`, `--format`, `--output-format` — 출력 포맷이며, 기본값은 `TSV`입니다.
@@ -251,6 +244,44 @@ Arguments:
 
 또한 각 ClickHouse 설정 변수마다 `--config-file` 대신 더 일반적으로 사용되는 인자를 제공합니다.
 
+
+## 명령어 \{#commands\}
+
+### LS 명령어 \{#ls-command\}
+
+clickhouse-local에서 접근할 수 있는 현재 작업 디렉터리의 모든 파일을 나열합니다.
+
+다음과 같이 대화형 모드에서 실행할 수 있습니다:
+
+```sql 
+ClickHouse local version 26.3.1.1.
+
+:) ls
+
+SELECT _file AS file
+FROM file('*', 'One')
+ORDER BY file ASC
+```
+
+```text title="Response"
+┌─file────────┐
+│ file1.csv   │
+│ file2.json  │
+│ file3.xml   │
+└─────────────┘
+```
+
+-q 인수를 사용해 쿼리로 실행할 수도 있습니다:
+
+```sh
+./clickhouse-local -q ls
+```
+
+```text title="Response"
+file1.csv
+file2.json
+file3.xml
+```
 
 ## 예제 \{#examples\}
 
@@ -317,7 +348,7 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 
 ## 관련 콘텐츠 \{#related-content-1\}
 
-- [clickhouse-local을 사용하여 로컬 파일의 데이터 추출, 변환 및 쿼리하기](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
-- [ClickHouse로 데이터 가져오기 - 1부](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- [대규모 실세계 데이터 세트 탐색: ClickHouse로 살펴보는 100년 이상 기상 기록](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
-- 블로그: [clickhouse-local을 사용하여 로컬 파일의 데이터 추출, 변환 및 쿼리하기](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [clickhouse-local을 사용하여 로컬 파일의 데이터 추출, 변환 및 쿼리하기](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
+* [ClickHouse로 데이터 가져오기 - 1부](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
+* [대규모 실세계 데이터 세트 탐색: ClickHouse로 살펴보는 100년 이상 기상 기록](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+* 블로그: [clickhouse-local을 사용하여 로컬 파일의 데이터 추출, 변환 및 쿼리하기](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)

@@ -43,6 +43,12 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026年3月20日 \{#march-20-2026\}
+
+- **Usage Breakdown のカスタム日付範囲:** Usage Breakdown 画面で、カスタム日付範囲を使って、すべての課金ディメンションにまたがる利用コストを表示できるようになりました。
+  開始日と終了日（両端を含む）を選択すると、特定の期間でコストを絞り込み、結果を CSV としてダウンロードできます。
+  日付範囲は最大 31 日までです。
+
 ## 2026年2月20日 \{#february-20-2026\}
 
 - **ClickPipes:** 非アクティブ状態のリバースプライベートエンドポイントは、設定された猶予期間の後に自動的に削除されるようになりました。これにより、未使用または誤って構成されたエンドポイントがバックエンドに無期限に残り続けることを防ぎます。詳細については、自動クリーンアップに関する[ドキュメント](/integrations/clickpipes/aws-privatelink#automatic-cleanup)を参照してください。

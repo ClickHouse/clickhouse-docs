@@ -445,7 +445,8 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 Перед поиском функция выполняет токенизацию
 
 * аргумента `input` (всегда) и
-* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md)), используя токенизатор, указанный для текстового индекса.
+* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
+  используя токенизатор, указанный для текстового индекса.
   Если для столбца не определён текстовый индекс, вместо него используется токенизатор `splitByNonAlpha`.
   Если аргумент `needle` имеет тип [Array(String)](../../sql-reference/data-types/array.md), каждый элемент массива рассматривается как токен — дополнительная токенизация не выполняется.
 
@@ -464,7 +465,7 @@ hasAllTokens(input, needles)
 
 * `input` — входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — токены для поиска. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — токенизатор, который следует использовать. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр, если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — токенизатор, который следует использовать. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicodeWord`. Необязательный параметр, если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -576,7 +577,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**Пример использования mapValues**
+**Пример с функцией mapValues**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -622,7 +623,7 @@ hasAnyTokens(input, needles)
 
 * `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Nullable(String)`](/sql-reference/data-types/nullable) или [`Nullable(FixedString)`](/sql-reference/data-types/nullable) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array) или [`Array(Nullable(String))`](/sql-reference/data-types/array) или [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — Токены, которые нужно найти. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicodeWord`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 

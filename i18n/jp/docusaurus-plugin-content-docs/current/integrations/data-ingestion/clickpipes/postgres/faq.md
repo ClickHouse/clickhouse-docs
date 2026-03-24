@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 ### Postgres から ClickHouse へのデータフロー中に、どのようにデータを拡充できますか？ \{#data-enrichment\}
 
-CDC の宛先テーブルに対して [materialized views](/materialized-view) を使用します。ClickHouse の materialized view は insert トリガーとして動作するため、Postgres からレプリケーションされた各行は、最終的なターゲットテーブルに書き込まれる前に、ルックアップテーブルとの結合や追加カラムの付与、変換によって拡充できます。
+CDC の宛先テーブルに対して [materialized views](/materialized-views) を使用します。ClickHouse の materialized view は insert トリガーとして動作するため、Postgres からレプリケートされた各行は、最終的な target テーブルに書き込まれる前に、変換したり、ルックアップテーブルと結合したり、追加のカラムで拡充したりできます。
 
 ### 複数の Postgres インスタンスから 1 つ以上の ClickHouse サービスへレプリケーションできますか？ \{#multi-region-multi-source\}
 

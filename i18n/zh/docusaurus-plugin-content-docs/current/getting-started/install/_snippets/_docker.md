@@ -192,7 +192,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 要在基于此镜像构建的派生镜像中执行额外的初始化操作，请在 `/docker-entrypoint-initdb.d` 目录下添加一个或多个 `*.sql`、`*.sql.gz` 或 `*.sh` 脚本。入口点脚本调用 `initdb` 之后，会运行该目录中所有的 `*.sql` 文件、执行所有具有可执行权限的 `*.sh` 脚本，并通过 `source` 加载所有不可执行的 `*.sh` 脚本，以在启动服务之前执行进一步的初始化。
 
 :::note
-`/docker-entrypoint-initdb.d` 目录下的脚本会按照文件名的**字母顺序**执行。如果脚本之间存在依赖关系（例如，一个创建视图的脚本必须在创建被引用表的脚本之后运行），请确保文件名的排序顺序正确。
+`/docker-entrypoint-initdb.d` 目录下的脚本会按照文件名的**字母顺序**执行。如果脚本之间存在依赖关系 (例如，一个创建视图的脚本必须在创建被引用表的脚本之后运行) ，请确保文件名的排序顺序正确。
 :::
 
 此外，你还可以提供环境变量 `CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`，它们会在初始化期间被 clickhouse-client 使用。
@@ -205,6 +205,7 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32) ENGINE = Log;
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
+    ORDER BY ();
 EOSQL
 ```

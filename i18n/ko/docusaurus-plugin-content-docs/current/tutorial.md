@@ -144,7 +144,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
 
   2. `INSERT`가 완료될 때까지 기다리십시오. 150MB 분량의 데이터를 다운로드하는 데 잠시 시간이 걸릴 수 있습니다.
 
-  3. INSERT가 완료되면 정상적으로 완료되었는지 확인합니다:
+  3. `INSERT`가 완료되면 제대로 수행되었는지 확인합니다:
 
      ```sql
      SELECT count() FROM trips
@@ -154,7 +154,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
 
   ## 데이터 분석하기
 
-  데이터를 분석하기 위해 몇 가지 쿼리를 실행하세요. 다음 예제를 살펴보거나 직접 SQL 쿼리를 작성해 보세요.
+  데이터를 분석하기 위해 몇 가지 쿼리를 실행하세요. 다음 예시를 살펴보거나 직접 SQL 쿼리를 작성해 보세요.
 
   * 평균 팁 금액을 계산합니다:
 
@@ -403,7 +403,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
   ```
 
   :::note
-  `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어 S3 버킷으로의 불필요한 트래픽을 방지합니다. 다른 경우에는 다르게 구성할 수 있습니다. 자세한 내용은 [LIFETIME을 사용하여 딕셔너리 데이터 새로고침](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)을 참조하십시오.
+  `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어 S3 버킷으로의 불필요한 트래픽을 방지합니다. 다른 경우에는 다르게 구성할 수 있습니다. 자세한 내용은 [LIFETIME을 사용하여 딕셔너리 데이터 새로고침](/sql-reference/statements/create/dictionary/lifetime)을 참조하십시오.
   :::
 
   3. 정상적으로 동작하는지 확인합니다. 다음 쿼리는 265개의 행, 즉 각 지역마다 하나의 행을 반환해야 합니다:
@@ -413,7 +413,7 @@ New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이
 
   4. 딕셔너리에서 값을 조회하려면 `dictGet` 함수([또는 그 변형 함수](./sql-reference/functions/ext-dict-functions.md))를 사용합니다. 딕셔너리 이름, 조회하려는 값의 컬럼, 그리고 키 값(이 예제에서는 `taxi_zone_dictionary`의 `LocationID` 컬럼)을 인수로 전달합니다.
 
-     예를 들어, 다음 쿼리는 `LocationID`가 132인 `Borough`를 반환하는데, 이는 JFK 공항에 해당합니다.
+     예를 들어, 다음 쿼리는 `LocationID`가 132인 `Borough`를 반환하며, 이는 JFK 공항에 해당합니다):
 
      ```sql
      SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
