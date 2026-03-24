@@ -25,17 +25,8 @@ import TabItem from '@theme/TabItem';
 
 # ClickStack を使用した EC2 ホストログの監視 \{#ec2-host-logs-clickstack\}
 
-:::note[要約]
-EC2 インスタンスに OpenTelemetry Collector をインストールして、ClickStack で EC2 システムログを監視します。Collector はログに、インスタンス ID、リージョン、アベイラビリティーゾーン、インスタンスタイプといった EC2 メタデータを自動的に付与します。このガイドでは次の内容を学びます:
-
-- EC2 インスタンス上に OpenTelemetry Collector をインストールおよび設定する方法
-- EC2 メタデータでログを自動的に付与する方法
-- OTLP 経由で ClickStack にログを送信する方法
-- あらかじめ用意されたダッシュボードを使用して、クラウドコンテキスト付きで EC2 ホストログを可視化する方法
-
-テスト用として、サンプルログとシミュレートされた EC2 メタデータを含むデモデータセットを利用できます。
-
-所要時間: 10〜15 分
+:::note[TL;DR]
+インスタンス ID、リージョン、AZ、インスタンスタイプなどの EC2 メタデータを自動付加する OpenTelemetry コレクターを使用して、ClickStack で EC2 システムログを収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
 :::
 
 ## 既存の EC2 インスタンスとの統合 \{#existing-ec2\}
@@ -161,7 +152,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -215,7 +206,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -239,14 +230,14 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   **設定内の以下の項目を置き換えてください:**
 
   * `YOUR_CLICKSTACK_HOST`: ClickStack が稼働しているホスト名または IP アドレス
-  * ローカルでテストする場合は SSH トンネルを利用できます（[トラブルシューティングのセクション](#troubleshooting)を参照してください）
+  * ローカルでテストする場合は SSH トンネルを利用できます ([トラブルシューティングのセクション](#troubleshooting)を参照してください)
 
   この設定:
 
-  * 標準的な場所にあるシステムログファイルを読み取ります（Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`）
+  * 標準的な場所にあるシステムログファイルを読み取ります (Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`)
   * syslog 形式を解析し、タイムスタンプ、ホスト名、ユニット/サービス、PID、メッセージといった構造化フィールドを抽出します
   * `resourcedetection` プロセッサーを使用して **EC2 メタデータを自動検出して追加します**
-  * オプションで、存在する EC2 タグ（Name、Environment、Team）も含めます
+  * オプションで、EC2 タグ (Name、Environment、Team) が存在する場合はそれらも含めます
   * OTLP HTTP 経由で ClickStack にログを送信します
 
   :::note[EC2メタデータエンリッチメント]
@@ -254,11 +245,11 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
 
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
-  * `cloud.region`: AWS のリージョン（例：&quot;us-east-1&quot;）
-  * `cloud.availability_zone`: AZ（例：&quot;us-east-1a&quot;）
+  * `cloud.region`: AWS のリージョン (例：&quot;us-east-1&quot;)
+  * `cloud.availability_zone`: AZ (例：&quot;us-east-1a&quot;)
   * `cloud.account.id`: AWS アカウント ID
-  * `host.id`: EC2 インスタンスの ID（例: &quot;i-1234567890abcdef0&quot;）
-  * `host.type`: インスタンスタイプ（例：「t3.medium」）
+  * `host.id`: EC2 インスタンスの ID (例: &quot;i-1234567890abcdef0&quot;)
+  * `host.type`: インスタンスタイプ (例：「t3.medium」)
   * `host.name`: インスタンスのホスト名
     :::
 
@@ -300,13 +291,13 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   5. リソース属性に EC2 メタデータが含まれていることを確認します:
      * `cloud.provider`
      * `cloud.region`
-     * `host.id`（インスタンス ID）
-     * `host.type`（インスタンスタイプ）
+     * `host.id` (インスタンス ID)
+     * `host.type` (インスタンスタイプ)
      * `cloud.availability_zone`
 
   <Image img={search_view} alt="EC2 ログ検索ビュー" />
 
-  <Image img={log_view} alt="メタデータを表示している EC2 のログ詳細" />
+  <Image img={log_view} alt="メタデータが表示されたEC2ログの詳細" />
 </VerticalStepper>
 
 ## デモデータセット {#demo-dataset}
@@ -586,11 +577,13 @@ sudo journalctl -u otelcol-contrib -n 50
 * ログファイルを読み取る際の権限の問題
 
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-EC2 ホストログの監視を設定したら、次の作業を行います。
+* 重要なシステムイベント (サービス障害、認証失敗、ディスク警告) 向けの[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* EC2 メタデータ属性 (リージョン、インスタンスタイプ、インスタンス ID) でフィルタリングして特定のリソースを監視する
+* 包括的なトラブルシューティングのために EC2 ホストログをアプリケーションログと相関付ける
+* セキュリティ監視 (SSH アクセス試行、sudo 使用状況、ファイアウォールブロック) 向けのカスタムダッシュボードを作成する
 
-- 重要なシステムイベント（サービス障害、認証失敗、ディスク警告）向けの[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- EC2 メタデータ属性（リージョン、インスタンスタイプ、インスタンス ID）でフィルタリングして特定のリソースを監視する
-- 包括的なトラブルシューティングのために EC2 ホストログをアプリケーションログと相関付ける
-- セキュリティ監視（SSH アクセス試行、sudo 使用状況、ファイアウォールブロック）向けのカスタムダッシュボードを作成する
+## 本番環境への移行 {#going-to-production}
+
+このガイドでは、ホストレベルの監視における本番環境向けの推奨パターンとして、OpenTelemetry コレクターを EC2 インスタンスに直接インストールします。多数のインスタンスにまたがるコレクターの管理には、構成管理ツール (Ansible、Chef、Puppet) や、Kubernetes 環境では OpenTelemetry Operator の利用を検討してください。本番環境向けの設定については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。

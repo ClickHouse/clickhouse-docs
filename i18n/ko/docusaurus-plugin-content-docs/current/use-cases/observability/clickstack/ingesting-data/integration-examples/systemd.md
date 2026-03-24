@@ -20,18 +20,10 @@ import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.pn
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack으로 Systemd 로그 모니터링하기 \{#systemd-logs-clickstack\}
+# ClickStack를 사용한 Systemd 로그 모니터링 \{#systemd-logs-clickstack\}
 
-:::note[요약]
-이 가이드는 OpenTelemetry Collector를 `journald` receiver와 함께 실행하여 ClickStack으로 systemd 저널 로그를 모니터링하는 방법을 설명합니다. 다음 내용을 학습하게 됩니다:
-
-- OpenTelemetry Collector를 배포하여 systemd 저널 항목을 읽는 방법
-- OTLP를 통해 systemd 로그를 ClickStack으로 전송하는 방법
-- 미리 구성된 대시보드를 사용해 systemd 로그 통찰(서비스 상태, 오류, 인증 이벤트)을 시각화하는 방법
-
-프로덕션 시스템을 구성하기 전에 통합을 테스트하려는 경우 사용할 수 있는 샘플 로그가 포함된 데모 데이터 세트가 제공됩니다.
-
-소요 시간: 10–15분
+:::note[TL;DR]
+OpenTelemetry Collector의 `journald` receiver를 사용해 ClickStack에서 systemd 저널 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 시스템과의 통합 \{#existing-systems\}
@@ -42,171 +34,169 @@ OpenTelemetry Collector를 journald receiver와 함께 실행하여 기존 Linux
 
 ##### 사전 준비 사항 \{#prerequisites\}
 
-- ClickStack 인스턴스가 실행 중일 것
-- systemd를 사용하는 Linux 시스템 (Ubuntu 16.04+, CentOS 7+, Debian 8+)
-- 모니터링 대상 시스템에 Docker 또는 Docker Compose가 설치되어 있을 것
+* ClickStack 인스턴스가 실행 중일 것
+* systemd를 사용하는 Linux 시스템 (Ubuntu 16.04+, CentOS 7+, Debian 8+)
+* 모니터링 대상 시스템에 Docker 또는 Docker Compose가 설치되어 있을 것
 
 <VerticalStepper headerLevel="h4">
+  #### ClickStack API key 가져오기
 
-#### ClickStack API key 가져오기 \{#get-api-key\}
+  OpenTelemetry Collector는 인증이 필요한 ClickStack의 OTLP 엔드포인트로 데이터를 전송합니다.
 
-OpenTelemetry Collector는 인증이 필요한 ClickStack의 OTLP 엔드포인트로 데이터를 전송합니다.
+  1. ClickStack URL에서 HyperDX를 엽니다 (예: http://localhost:8080)
+  2. 필요하다면 계정을 생성하거나 로그인합니다.
+  3. **Team Settings → API Keys**로 이동합니다.
+  4. **Ingestion API Key**를 복사합니다.
 
-1. ClickStack URL에서 HyperDX를 엽니다 (예: http://localhost:8080)
-2. 필요하다면 계정을 생성하거나 로그인합니다.
-3. **Team Settings → API Keys**로 이동합니다.
-4. **Ingestion API Key**를 복사합니다.
+  <Image img={api_key} alt="ClickStack API Key" />
 
-<Image img={api_key} alt="ClickStack API Key"/>
+  5. 복사한 값을 환경 변수로 설정합니다:
 
-5. 복사한 값을 환경 변수로 설정합니다:
+  ```bash
+  export CLICKSTACK_API_KEY=your-api-key-here
+  ```
 
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-```
+  #### systemd journal 실행 여부 확인
 
-#### systemd journal 실행 여부 확인 \{#verify-systemd\}
+  시스템이 systemd를 사용하고 있으며 journal 로그가 존재하는지 확인합니다:
 
-시스템이 systemd를 사용하고 있으며 journal 로그가 존재하는지 확인합니다:
+  ```bash
+  # systemd 버전 확인
+  systemctl --version
 
-```bash
-# systemd 버전 확인
-systemctl --version
+  # 최근 journal 항목 보기
+  journalctl -n 20
 
-# 최근 journal 항목 보기
-journalctl -n 20
+  # journal 디스크 사용량 확인
+  journalctl --disk-usage
+  ```
 
-# journal 디스크 사용량 확인
-journalctl --disk-usage
-```
+  journal 저장소가 메모리 전용인 경우, 영구 저장을 활성화합니다:
 
-journal 저장소가 메모리 전용인 경우, 영구 저장을 활성화합니다:
+  ```bash
+  sudo mkdir -p /var/log/journal
+  sudo systemd-tmpfiles --create --prefix /var/log/journal
+  sudo systemctl restart systemd-journald
+  ```
 
-```bash
-sudo mkdir -p /var/log/journal
-sudo systemd-tmpfiles --create --prefix /var/log/journal
-sudo systemctl restart systemd-journald
-```
+  #### OpenTelemetry Collector 설정 생성
 
-#### OpenTelemetry Collector 설정 생성 \{#create-otel-config\}
+  OpenTelemetry Collector용 설정 파일을 생성합니다:
 
-OpenTelemetry Collector용 설정 파일을 생성합니다:
+  ```yaml
+  cat > otel-config.yaml << 'EOF'
+  receivers:
+    journald:
+      directory: /var/log/journal
+      priority: info
+      units:
+        - sshd
+        - nginx
+        - docker
+        - containerd
+        - systemd
 
-```yaml
-cat > otel-config.yaml << 'EOF'
-receivers:
-  journald:
-    directory: /var/log/journal
-    priority: info
-    units:
-      - sshd
-      - nginx
-      - docker
-      - containerd
-      - systemd
-
-processors:
-  batch:
-    timeout: 10s
-    send_batch_size: 1024
-  
-  resource:
+  processors:
+    batch:
+      timeout: 10s
+      send_batch_size: 10000
+    
+    resource:
+      attributes:
+        - key: service.name
+          value: systemd-logs
+          action: insert
+        - key: host.name
+          from_attribute: _HOSTNAME
+          action: upsert
+    
     attributes:
-      - key: service.name
-        value: systemd-logs
-        action: insert
-      - key: host.name
-        from_attribute: _HOSTNAME
-        action: upsert
-  
-  attributes:
-    actions:
-      - key: unit
-        from_attribute: _SYSTEMD_UNIT
-        action: upsert
-      - key: priority
-        from_attribute: PRIORITY
-        action: upsert
+      actions:
+        - key: unit
+          from_attribute: _SYSTEMD_UNIT
+          action: upsert
+        - key: priority
+          from_attribute: PRIORITY
+          action: upsert
 
-exporters:
-  otlphttp:
-    endpoint: ${CLICKSTACK_ENDPOINT}
-    headers:
-      authorization: ${CLICKSTACK_API_KEY}
+  exporters:
+    otlphttp:
+      endpoint: ${CLICKSTACK_ENDPOINT}
+      headers:
+        authorization: ${CLICKSTACK_API_KEY}
 
-service:
-  pipelines:
-    logs:
-      receivers: [journald]
-      processors: [resource, attributes, batch]
-      exporters: [otlphttp]
-EOF
-```
+  service:
+    pipelines:
+      logs:
+        receivers: [journald]
+        processors: [resource, attributes, batch]
+        exporters: [otlphttp]
+  EOF
+  ```
 
-#### Docker Compose로 배포 \{#deploy-docker-compose\}
+  #### Docker Compose로 배포
 
-:::note
-`journald` receiver는 journal 파일을 읽기 위해 `journalctl` 바이너리가 필요합니다. 공식 `otel/opentelemetry-collector-contrib` 이미지는 기본적으로 `journalctl`을 포함하지 않습니다.
+  :::note
+  `journald` receiver는 journal 파일을 읽기 위해 `journalctl` 바이너리가 필요합니다. 공식 `otel/opentelemetry-collector-contrib` 이미지는 기본적으로 `journalctl`을 포함하지 않습니다.
 
-컨테이너 기반 배포의 경우 collector를 호스트에 직접 설치하거나 systemd 유틸리티가 포함된 커스텀 이미지를 빌드할 수 있습니다. 자세한 내용은 [문제 해결 섹션](#journalctl-not-found)을 참고하십시오.
-:::
+  컨테이너 기반 배포의 경우 collector를 호스트에 직접 설치하거나 systemd 유틸리티가 포함된 커스텀 이미지를 빌드할 수 있습니다. 자세한 내용은 [문제 해결 섹션](#journalctl-not-found)을 참고하십시오.
+  :::
 
-다음 예시는 ClickStack과 함께 OTel Collector를 배포하는 방법을 보여줍니다:
+  다음 예시는 ClickStack과 함께 OTel Collector를 배포하는 방법을 보여줍니다:
 
-```yaml
-services:
-  clickstack:
-    image: clickhouse/clickstack-all-in-one:latest
-    ports:
-      - "8080:8080"
-      - "4317:4317"
-      - "4318:4318"
-    networks:
-      - monitoring
-  
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.115.1
-    depends_on:
-      - clickstack
-    environment:
-      - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
-      - CLICKSTACK_ENDPOINT=http://clickstack:4318
-    volumes:
-      - ./otel-config.yaml:/etc/otelcol/config.yaml:ro
-      - /var/log/journal:/var/log/journal:ro
-      - /run/log/journal:/run/log/journal:ro
-      - /etc/machine-id:/etc/machine-id:ro
-    command: ["--config=/etc/otelcol/config.yaml"]
-    networks:
-      - monitoring
+  ```yaml
+  services:
+    clickstack:
+      image: clickhouse/clickstack-all-in-one:latest
+      ports:
+        - "8080:8080"
+        - "4317:4317"
+        - "4318:4318"
+      networks:
+        - monitoring
+    
+    otel-collector:
+      image: otel/opentelemetry-collector-contrib:0.115.1
+      depends_on:
+        - clickstack
+      environment:
+        - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
+        - CLICKSTACK_ENDPOINT=http://clickstack:4318
+      volumes:
+        - ./otel-config.yaml:/etc/otelcol/config.yaml:ro
+        - /var/log/journal:/var/log/journal:ro
+        - /run/log/journal:/run/log/journal:ro
+        - /etc/machine-id:/etc/machine-id:ro
+      command: ["--config=/etc/otelcol/config.yaml"]
+      networks:
+        - monitoring
 
-networks:
-  monitoring:
-    driver: bridge
-```
+  networks:
+    monitoring:
+      driver: bridge
+  ```
 
-서비스를 시작합니다:
+  서비스를 시작합니다:
 
-```bash
-docker compose up -d
-```
+  ```bash
+  docker compose up -d
+  ```
 
-#### HyperDX에서 로그 확인 \{#verifying-logs\}
+  #### HyperDX에서 로그 확인
 
-구성이 완료되면 HyperDX에 로그인하여 로그가 정상적으로 수집되는지 확인합니다:
+  구성이 완료되면 HyperDX에 로그인하여 로그가 정상적으로 수집되는지 확인합니다:
 
-1. 「Search」 뷰로 이동합니다.
-2. 「Source」를 「Logs」로 설정합니다.
-3. `service.name:systemd-logs`로 필터링합니다.
-4. `unit`, `priority`, `MESSAGE`, `_HOSTNAME`와 같은 필드를 포함한 구조화된 로그 항목이 표시됩니다.
+  1. 「Search」 뷰로 이동합니다.
+  2. 「Source」를 「Logs」로 설정합니다.
+  3. `service.name:systemd-logs`로 필터링합니다.
+  4. `unit`, `priority`, `MESSAGE`, `_HOSTNAME`와 같은 필드를 포함한 구조화된 로그 항목이 표시됩니다.
 
-<Image img={search_view} alt="로그 검색 뷰"/>
+  <Image img={search_view} alt="로그 검색 뷰" />
 
-<Image img={log_view} alt="로그 뷰"/>
-
+  <Image img={log_view} alt="로그 뷰" />
 </VerticalStepper>
 
-## 데모 데이터 세트 \{#demo-dataset\}
+## 데모 데이터 세트 {#demo-dataset}
 
 프로덕션 시스템을 구성하기 전에 systemd 로그 연동을 테스트하려는 사용자를 위해, 현실적인 패턴을 반영한 미리 생성된 systemd 로그 샘플 데이터 세트를 제공합니다.
 
@@ -327,9 +317,9 @@ ClickStack으로 systemd 로그 모니터링을 시작할 수 있도록, systemd
 
 </VerticalStepper>
 
-## 문제 해결 \{#troubleshooting\}
+## 문제 해결 {#troubleshooting}
 
-### HyperDX에 로그가 표시되지 않습니다 \{#no-logs\}
+### HyperDX에 로그가 표시되지 않습니다
 
 로그가 ClickHouse로 전송되고 있는지 확인하십시오:
 
@@ -348,7 +338,7 @@ docker logs otel-collector | grep -i "error\|journald" | tail -20
 ```
 
 
-### journalctl not found 오류 \{#journalctl-not-found\}
+### journalctl not found 오류
 
 `exec: "journalctl": executable file not found in $PATH` 메시지가 표시되면:
 
@@ -366,7 +356,13 @@ otelcol-contrib --config=otel-config.yaml
 2. journald 내보내기 파일을 `filelog` 리시버로 읽는 **텍스트 내보내기 방식**(데모와 유사)을 사용합니다
 
 
-## 프로덕션 환경으로 전환하기 \{#going-to-production\}
+## 다음 단계
+
+* 중요한 시스템 이벤트(서비스 실패, 인증 실패, OOM 종료)에 대한 [알림](/use-cases/observability/clickstack/alerts)을 설정하십시오
+* 특정 사용 사례(SSH 보안 모니터링, 서비스 상태 확인)를 위한 추가 [대시보드](/use-cases/observability/clickstack/dashboards)를 생성하십시오
+* 불필요한 노이즈를 줄이고 중요한 서비스에 집중할 수 있도록 특정 systemd 유닛으로 필터링하십시오
+
+## 프로덕션 환경으로 전환하기 {#going-to-production}
 
 이 가이드는 별도의 OpenTelemetry Collector를 사용하여 systemd 로그를 읽고 ClickStack의 OTLP 엔드포인트로 전송하며, 이는 프로덕션 환경에서 권장되는 패턴입니다.
 

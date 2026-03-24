@@ -204,6 +204,7 @@ ClickHouse における権限の階層は次のとおりです。
         * `ALTER MODIFY STATISTICS`
       * `ALTER TTL`
       * `ALTER UPDATE`
+      * `ALTER TABLE EXECUTE`
     * `ALTER VIEW`
       * `ALTER VIEW MODIFY QUERY`
       * `ALTER VIEW REFRESH`
@@ -413,48 +414,49 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### ALTER \{#alter\}
 
-以下の権限階層に基づいて [ALTER](../../sql-reference/statements/alter/index.md) クエリを実行できます。
+次の権限階層に従って [ALTER](../../sql-reference/statements/alter/index.md) クエリを実行できます。
 
-- `ALTER`。レベル：`COLUMN`。
-  - `ALTER TABLE`。レベル：`GROUP`
-  - `ALTER UPDATE`。レベル：`COLUMN`。エイリアス：`UPDATE`
-  - `ALTER DELETE`。レベル：`COLUMN`。エイリアス：`DELETE`
-  - `ALTER COLUMN`。レベル：`GROUP`
-  - `ALTER ADD COLUMN`。レベル：`COLUMN`。エイリアス：`ADD COLUMN`
-  - `ALTER DROP COLUMN`。レベル：`COLUMN`。エイリアス：`DROP COLUMN`
-  - `ALTER MODIFY COLUMN`。レベル：`COLUMN`。エイリアス：`MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`。レベル：`COLUMN`。エイリアス：`COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`。レベル：`COLUMN`。エイリアス：`CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`。レベル：`COLUMN`。エイリアス：`RENAME COLUMN`
-  - `ALTER INDEX`。レベル：`GROUP`。エイリアス：`INDEX`
-  - `ALTER ORDER BY`。レベル：`TABLE`。エイリアス：`ALTER MODIFY ORDER BY`、`MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`。レベル：`TABLE`。エイリアス：`ALTER MODIFY SAMPLE BY`、`MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`。レベル：`TABLE`。エイリアス：`ADD INDEX`
-  - `ALTER DROP INDEX`。レベル：`TABLE`。エイリアス：`DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`。レベル：`TABLE`。エイリアス：`MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`。レベル：`TABLE`。エイリアス：`CLEAR INDEX`
-  - `ALTER CONSTRAINT`。レベル：`GROUP`。エイリアス：`CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`。レベル：`TABLE`。エイリアス：`ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`。レベル：`TABLE`。エイリアス：`DROP CONSTRAINT`
-  - `ALTER TTL`。レベル：`TABLE`。エイリアス：`ALTER MODIFY TTL`、`MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`。レベル：`TABLE`。エイリアス：`MATERIALIZE TTL`
-  - `ALTER SETTINGS`。レベル：`TABLE`。エイリアス：`ALTER SETTING`、`ALTER MODIFY SETTING`、`MODIFY SETTING`
-  - `ALTER MOVE PARTITION`。レベル：`TABLE`。エイリアス：`ALTER MOVE PART`、`MOVE PARTITION`、`MOVE PART`
-  - `ALTER FETCH PARTITION`。レベル：`TABLE`。エイリアス：`ALTER FETCH PART`、`FETCH PARTITION`、`FETCH PART`
-  - `ALTER FREEZE PARTITION`。レベル：`TABLE`。エイリアス：`FREEZE PARTITION`
-  - `ALTER VIEW`。レベル：`GROUP`
-  - `ALTER VIEW REFRESH`。レベル：`VIEW`。エイリアス：`REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`。レベル：`VIEW`。エイリアス：`ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`。レベル：`VIEW`。エイリアス：`ALTER TABLE MODIFY SQL SECURITY`
+- `ALTER`。レベル: `COLUMN`。
+  - `ALTER TABLE`。レベル: `GROUP`
+  - `ALTER UPDATE`。レベル: `COLUMN`。エイリアス: `UPDATE`
+  - `ALTER DELETE`。レベル: `COLUMN`。エイリアス: `DELETE`
+  - `ALTER COLUMN`。レベル: `GROUP`
+  - `ALTER ADD COLUMN`。レベル: `COLUMN`。エイリアス: `ADD COLUMN`
+  - `ALTER DROP COLUMN`。レベル: `COLUMN`。エイリアス: `DROP COLUMN`
+  - `ALTER MODIFY COLUMN`。レベル: `COLUMN`。エイリアス: `MODIFY COLUMN`
+  - `ALTER COMMENT COLUMN`。レベル: `COLUMN`。エイリアス: `COMMENT COLUMN`
+  - `ALTER CLEAR COLUMN`。レベル: `COLUMN`。エイリアス: `CLEAR COLUMN`
+  - `ALTER RENAME COLUMN`。レベル: `COLUMN`。エイリアス: `RENAME COLUMN`
+  - `ALTER INDEX`。レベル: `GROUP`。エイリアス: `INDEX`
+  - `ALTER ORDER BY`。レベル: `TABLE`。エイリアス: `ALTER MODIFY ORDER BY`、`MODIFY ORDER BY`
+  - `ALTER SAMPLE BY`。レベル: `TABLE`。エイリアス: `ALTER MODIFY SAMPLE BY`、`MODIFY SAMPLE BY`
+  - `ALTER ADD INDEX`。レベル: `TABLE`。エイリアス: `ADD INDEX`
+  - `ALTER DROP INDEX`。レベル: `TABLE`。エイリアス: `DROP INDEX`
+  - `ALTER MATERIALIZE INDEX`。レベル: `TABLE`。エイリアス: `MATERIALIZE INDEX`
+  - `ALTER CLEAR INDEX`。レベル: `TABLE`。エイリアス: `CLEAR INDEX`
+  - `ALTER CONSTRAINT`。レベル: `GROUP`。エイリアス: `CONSTRAINT`
+  - `ALTER ADD CONSTRAINT`。レベル: `TABLE`。エイリアス: `ADD CONSTRAINT`
+  - `ALTER DROP CONSTRAINT`。レベル: `TABLE`。エイリアス: `DROP CONSTRAINT`
+  - `ALTER TTL`。レベル: `TABLE`。エイリアス: `ALTER MODIFY TTL`、`MODIFY TTL`
+  - `ALTER MATERIALIZE TTL`。レベル: `TABLE`。エイリアス: `MATERIALIZE TTL`
+  - `ALTER SETTINGS`。レベル: `TABLE`。エイリアス: `ALTER SETTING`、`ALTER MODIFY SETTING`、`MODIFY SETTING`
+  - `ALTER MOVE PARTITION`。レベル: `TABLE`。エイリアス: `ALTER MOVE PART`、`MOVE PARTITION`、`MOVE PART`
+  - `ALTER FETCH PARTITION`。レベル: `TABLE`。エイリアス: `ALTER FETCH PART`、`FETCH PARTITION`、`FETCH PART`
+  - `ALTER FREEZE PARTITION`。レベル: `TABLE`。エイリアス: `FREEZE PARTITION`
+  - `ALTER EXECUTE`。レベル: `TABLE`。エイリアス: `ALTER TABLE EXECUTE`
+  - `ALTER VIEW`。レベル: `GROUP`
+  - `ALTER VIEW REFRESH`。レベル: `VIEW`。エイリアス: `REFRESH VIEW`
+  - `ALTER VIEW MODIFY QUERY`。レベル: `VIEW`。エイリアス: `ALTER TABLE MODIFY QUERY`
+  - `ALTER VIEW MODIFY SQL SECURITY`。レベル: `VIEW`。エイリアス: `ALTER TABLE MODIFY SQL SECURITY`
 
-この階層の扱い方の例：
+この階層がどのように扱われるかの例:
 
 - `ALTER` 権限には、他のすべての `ALTER*` 権限が含まれます。
-- `ALTER CONSTRAINT` には `ALTER ADD CONSTRAINT` および `ALTER DROP CONSTRAINT` 権限が含まれます。
+- `ALTER CONSTRAINT` には、`ALTER ADD CONSTRAINT` と `ALTER DROP CONSTRAINT` 権限が含まれます。
 
-**補足**
+**注意**
 
-- `MODIFY SETTING` 権限によって、テーブルエンジンの設定を変更できます。その他の設定やサーバー構成パラメーターには影響しません。
+- `MODIFY SETTING` 権限では、テーブルエンジン設定を変更できます。その他の設定やサーバー構成パラメーターには影響しません。
 - `ATTACH` 操作には [CREATE](#create) 権限が必要です。
 - `DETACH` 操作には [DROP](#drop) 権限が必要です。
 - [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) クエリでミューテーションを停止するには、そのミューテーションを開始する権限が必要です。たとえば、`ALTER UPDATE` クエリを停止したい場合は、`ALTER UPDATE`、`ALTER TABLE`、または `ALTER` 権限が必要です。

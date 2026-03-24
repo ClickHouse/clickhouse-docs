@@ -32,8 +32,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   :::note
   Рекомендуется запускать приведённую ниже команду из нового пустого подкаталога, поскольку при первом запуске сервера ClickHouse в каталоге, где находится исполняемый файл, будут созданы некоторые конфигурационные файлы.
 
-  Приведенный ниже скрипт не рекомендуется использовать для установки ClickHouse в production-среде.
-  Если вам необходимо установить production-экземпляр ClickHouse, обратитесь к [странице установки](/install).
+  Приведенный ниже скрипт не рекомендуется использовать для установки ClickHouse в промышленной эксплуатации.
+  Если вам необходимо установить экземпляр ClickHouse для промышленной эксплуатации, обратитесь к [странице установки](/install).
   :::
 
   ```bash
@@ -107,7 +107,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   Вы можете использовать знакомую команду `INSERT INTO TABLE` с ClickHouse, но важно
   понимать, что каждая вставка в таблицу `MergeTree` приводит к созданию в хранилище
-  того, что мы называем **партом** (part) в ClickHouse. Эти ^^парты^^ впоследствии
+  того, что мы называем **партом** (part) в ClickHouse. Эти части впоследствии
   объединяются ClickHouse в фоновом режиме.
 
   В ClickHouse рекомендуется выполнять массовую вставку большого количества строк за один раз
@@ -240,9 +240,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="local_file" label="Локальный">
-      Используйте [движок таблицы `file`](/sql-reference/table-functions/file),
-      чтобы прочитать локальный файл. Для упрощения скопируйте файл в директорию `user_files`
-      (она находится в каталоге, куда вы скачали бинарный файл ClickHouse).
+      Используйте [`file` табличный движок](/sql-reference/table-functions/file), чтобы
+      читать локальный файл. Для простоты скопируйте файл в каталог `user_files`
+      (он находится в каталоге, куда вы загрузили бинарный файл ClickHouse).
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
@@ -338,11 +338,11 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="очередь сообщений" label="Очереди сообщений">
-      Очереди сообщений могут передавать данные в ClickHouse с помощью соответствующего движка таблицы, в том числе:
+      Очереди сообщений могут передавать данные в ClickHouse с помощью соответствующего табличного движка, в том числе:
 
-      * **Kafka**: интегрируйте с Kafka с помощью [движка таблицы `Kafka`](/engines/table-engines/integrations/kafka)
+      * **Kafka**: интегрируйте с Kafka с помощью [табличного движка `Kafka`](/engines/table-engines/integrations/kafka)
       * **Amazon MSK**: интегрируйте с [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)
-      * **RabbitMQ**: интегрируйте с RabbitMQ с помощью [движка таблицы `RabbitMQ`](/engines/table-engines/integrations/rabbitmq)
+      * **RabbitMQ**: интегрируйте с RabbitMQ с помощью [табличного движка `RabbitMQ`](/engines/table-engines/integrations/rabbitmq)
 
       <br />
     </TabItem>

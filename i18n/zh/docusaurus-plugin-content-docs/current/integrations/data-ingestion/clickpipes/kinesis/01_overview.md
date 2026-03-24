@@ -4,7 +4,7 @@ description: '将 Amazon Kinesis 数据源无缝连接至 ClickHouse Cloud。'
 slug: /integrations/clickpipes/kinesis
 title: '将 Amazon Kinesis 与 ClickHouse Cloud 集成'
 doc_type: 'guide'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', '数据摄取']
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', '数据摄取', '压缩', 'gzip', 'zstd', 'lz4', 'snappy']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -98,6 +98,23 @@ import Image from '@theme/IdealImage';
 支持的格式如下：
 
 - [JSON](/interfaces/formats/JSON)
+
+## 压缩 \{#compression\}
+
+用于 Kinesis 的 ClickPipes 会自动检测并解压压缩记录。不同于 Kafka 由客户端库透明地处理解压，Kinesis 传递的是原始字节流——ClickPipes 会为你完成这一处理，无需任何配置。
+
+支持以下压缩编解码器：
+
+* **gzip**
+* **zstd**
+* **lz4**
+* **snappy** (分帧格式) 
+
+系统会根据每条记录中的魔数字节自动检测压缩方式。如果未发现已知的压缩签名，则该记录会被视为未压缩。检测到的压缩类型也会在 schema 推断期间显示，因此 UI 中的样本数据预览会正确展示解压后的数据。
+
+:::note
+对于 JSON 和 CSV 这类基于文本的格式，自动检测是安全的，因为可打印的 ASCII 字符绝不会与压缩魔数字节冲突。
+:::
 
 ## 受支持的数据类型 \{#supported-data-types\}
 

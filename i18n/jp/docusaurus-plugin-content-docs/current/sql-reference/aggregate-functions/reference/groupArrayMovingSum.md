@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingSum \{#groupArrayMovingSum\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 入力値の移動合計を計算します。
 

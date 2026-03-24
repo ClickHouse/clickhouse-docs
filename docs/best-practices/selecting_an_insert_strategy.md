@@ -37,7 +37,7 @@ If not, see [Asynchronous inserts](#asynchronous-inserts) below.
 
 For optimal performance, data must be ①[ batched](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance), making batch size the **first decision**.
 
-ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table's primary key column(s). The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key column(s), ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑩ sorting step, speeding up ingestion.
+ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table's primary key columns. The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key columns, ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑩ sorting step, speeding up ingestion.
 
 If the data to be ingested has no predefined format, the **key decision** is choosing a format. ClickHouse supports inserting data in [over 70 formats](/interfaces/formats). However, when using the ClickHouse command-line client or programming language clients, this choice is often handled automatically. If needed, this automatic selection can also be overridden explicitly.
 

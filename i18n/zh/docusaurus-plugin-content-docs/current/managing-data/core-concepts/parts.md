@@ -10,14 +10,13 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
-
 ## ClickHouse 中的表部件是什么？ \{#what-are-table-parts-in-clickhouse\}
 
 <br />
 
-在 ClickHouse 中，每个使用 [MergeTree engine family](/engines/table-engines/mergetree-family) 的表，其数据在磁盘上被组织成一组不可变的 `data parts`（数据片段）。
+在 ClickHouse 中，每个使用 [MergeTree engine family](/engines/table-engines/mergetree-family) 的表，其数据在磁盘上被组织成一组不可变的 `data parts` (数据片段) 。
 
-为说明这一点，我们使用[这张表](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGU\&run_query=true\&tab=results)（改编自 [UK property prices dataset](/getting-started/example-datasets/uk-price-paid)），用于追踪英国已售房产的成交日期、城镇、街道和价格：
+为说明这一点，我们使用[这张表](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGU\&run_query=true\&tab=results) (改编自 [UK property prices dataset](/getting-started/example-datasets/uk-price-paid)) ，用于追踪英国已售房产的成交日期、城镇、街道和价格：
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple
@@ -33,15 +32,15 @@ ORDER BY (town, street);
 
 你可以在我们的 ClickHouse SQL Playground 中[查询此表](https://sql.clickhouse.com/?query=U0VMRUNUICogRlJPTSB1ay51a19wcmljZV9wYWlkX3NpbXBsZTs\&run_query=true\&tab=results)。
 
-每当有一组行被插入到表中时，就会创建一个数据部分（data part）。如下图所示：
+每当有一组行被插入到表中时，就会创建一个数据部分 (data part) 。如下图所示：
 
 <Image img={part} size="lg" />
 
 <br />
 
-当 ClickHouse 服务器处理示意图中包含 4 行的示例插入操作（例如通过 [INSERT INTO 语句](/sql-reference/statements/insert-into)）时，将执行以下几个步骤：
+当 ClickHouse 服务器处理示意图中包含 4 行的示例插入操作 (例如通过 [INSERT INTO 语句](/sql-reference/statements/insert-into)) 时，将执行以下几个步骤：
 
-① **排序**：根据表的 ^^排序键^^ `(town, street)` 对行进行排序，并为排序后的行生成[稀疏主索引](/guides/best-practices/sparse-primary-indexes)。
+① **排序**：根据表的排序键 `(town, street)` 对行进行排序，并为排序后的行生成[稀疏主索引](/guides/best-practices/sparse-primary-indexes)。
 
 ② **拆分**：将排序后的数据按列拆分。
 
@@ -51,22 +50,21 @@ ORDER BY (town, street);
 
 根据表所使用的具体引擎，在排序的同时可能还会进行其他[转换](/operations/settings/settings)。
 
-^^数据部分^^ 是自包含的，包含了解释其内容所需的全部元数据，而不需要一个集中式目录。除了稀疏主索引之外，^^数据部分^^ 还包含其他元数据，例如二级[数据跳过索引](/optimize/skipping-indexes)、[列统计信息](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)、校验和、最小-最大索引（如果使用了[分区](/partitions)），以及[更多信息](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104)。
-
+数据部分是自包含的，包含了解释其内容所需的全部元数据，而不需要一个集中式目录。除了稀疏主索引之外，数据部分还包含其他元数据，例如二级[数据跳过索引](/optimize/skipping-indexes)、[列统计信息](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)、校验和、最小-最大索引 (如果使用了[分区](/partitions)) ，以及[更多信息](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104)。
 
 ## Part 合并 \{#part-merges\}
 
-为了管理每个表中的 ^^parts^^ 数量，[后台合并](/merges) 任务会定期将较小的 ^^parts^^ 合并成更大的部分，直到它们达到一个[可配置的](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)压缩大小（通常约为 150 GB）。合并后的 ^^parts^^ 会被标记为非活动，并在[可配置的](/operations/settings/merge-tree-settings#old_parts_lifetime)时间间隔后删除。随着时间推移，这一过程会形成一个由合并 ^^parts^^ 组成的分层结构，这也是该表引擎被称为 ^^MergeTree^^ 表的原因：
+为了管理每个表中的 parts 数量，[后台合并](/merges) 任务会定期将较小的 parts 合并成更大的部分，直到它们达到一个[可配置的](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)压缩大小 (通常约为 150 GB) 。合并后的 parts 会被标记为非活动，并在[可配置的](/operations/settings/merge-tree-settings#old_parts_lifetime)时间间隔后删除。随着时间推移，这一过程会形成一个由合并 parts 组成的分层结构，这也是该表引擎被称为 MergeTree 表的原因：
 
 <Image img={merges} size="lg" />
 
 <br />
 
-为尽量减少初始 ^^parts^^ 的数量以及合并带来的开销，[数据库客户端](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)建议要么批量插入元组，例如一次插入 20,000 行，要么使用[异步插入模式](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。在异步模式下，ClickHouse 会将来自多个针对同一张表的 INSERT 语句的行缓存在一起，仅当缓冲区大小超过可配置阈值或超时时，才创建一个新的 part。
+为尽量减少初始 parts 的数量以及合并带来的开销，[数据库客户端](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)建议要么批量插入元组，例如一次插入 20,000 行，要么使用[异步插入模式](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。在异步模式下，ClickHouse 会将来自多个针对同一张表的 INSERT 语句的行缓存在一起，仅当缓冲区大小超过可配置阈值或超时时，才创建一个新的 part。
 
 ## 监控表的分片 \{#monitoring-table-parts\}
 
-你可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_part`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)示例表当前所有处于活动状态的 ^^parts^^（分片）列表：
+你可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_part`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)示例表当前所有处于活动状态的 parts 列表：
 
 ```sql
 SELECT _part

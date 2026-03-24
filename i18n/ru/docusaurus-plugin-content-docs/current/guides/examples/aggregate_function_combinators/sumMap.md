@@ -16,14 +16,17 @@ doc_type: 'reference'
 
 ## Пример использования \{#example-usage\}
 
-В этом примере мы создадим таблицу, в которой хранятся коды статусов и их количества для различных временных интервалов, где каждая строка содержит `Map`, сопоставляющую коды статусов с соответствующими им количествами. Мы будем использовать функцию `sumMap` для вычисления общего количества для каждого кода статуса в каждом временном интервале.
+В этом примере мы создадим таблицу, в которой хранятся коды статусов и их количества для различных временных интервалов,
+где каждая строка содержит `Map`, сопоставляющую коды статусов с соответствующими им количествами. Мы будем использовать
+`sumMap` для вычисления общего количества для каждого кода статуса в каждом временном интервале.
 
 ```sql title="Query"
 CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -60,5 +63,6 @@ GROUP BY timeslot;
 ```
 
 ## См. также \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Комбинатор Map`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`Комбинатор Map`](/sql-reference/aggregate-functions/combinators#-map)

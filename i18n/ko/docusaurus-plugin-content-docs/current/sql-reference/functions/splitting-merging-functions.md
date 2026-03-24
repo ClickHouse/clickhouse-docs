@@ -24,7 +24,7 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## alphaTokens \{#alphaTokens\}
 
-도입된 버전: v1.1
+도입된 버전: v1.1.0
 
 `a-z` 및 `A-Z` 범위에 속하는 연속 바이트로 이루어진 부분 문자열을 선택하고, 선택된 부분 문자열로 구성된 배열을 반환합니다.
 
@@ -61,7 +61,7 @@ SELECT alphaTokens('abca1abc');
 
 ## arrayStringConcat \{#arrayStringConcat\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 배열에 나열된 값들의 문자열 표현을 구분자(separator)를 사이에 두고 연결합니다. 구분자는 선택적 매개변수이며, 지정하지 않을 경우 기본값은 빈 문자열입니다.
 
@@ -96,7 +96,7 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 
 ## extractAllGroupsVertical \{#extractAllGroupsVertical\}
 
-도입 버전: v20.5
+도입 버전: v20.5.0
 
 정규 표현식을 사용하여 문자열의 모든 그룹에 대한 일치 항목을 찾고, 배열들의 배열을 반환합니다. 각 내부 배열에는 입력 문자열에서 나타나는 순서대로 각 그룹에서 일치한 조각들이 포함됩니다.
 
@@ -136,7 +136,7 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## ngrams \{#ngrams\}
 
-도입 버전: v21.11
+도입 버전: v21.11.0
 
 UTF-8 문자열을 길이가 `N`인 n-그램으로 분할합니다.
 
@@ -169,7 +169,7 @@ SELECT ngrams('ClickHouse', 3);
 
 ## reverseBySeparator \{#reverseBySeparator\}
 
-도입 버전: v26.2
+도입 버전: v26.2.0
 
 지정한 구분자로 구분된 문자열에서 부분 문자열의 순서를 뒤집습니다.
 이 함수는 문자열을 구분자로 분리한 다음, 생성된 파트의 순서를 뒤집고,
@@ -229,7 +229,7 @@ SELECT reverseBySeparator('x::y::z', '::')
 'z::y::x'
 ```
 
-**마침표가 포함된 엣지 케이스**
+**마침표를 포함한 특수 케이스**
 
 ```sql title=Query
 SELECT reverseBySeparator('.a.b.', '.')
@@ -261,7 +261,7 @@ SELECT reverseBySeparator('abcde', '')
 
 ## splitByChar \{#splitByChar\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 정확히 한 글자인 상수 문자열 `separator`로 구분된 문자열을 부분 문자열 배열로 분할합니다.
 문자열의 시작이나 끝에 `separator`가 나타나거나, 여러 개의 `separator`가 연속해서 나타나는 경우에는 빈 부분 문자열도 선택될 수 있습니다.
@@ -308,7 +308,7 @@ SELECT splitByChar(',', '1,2,3,abcde');
 
 ## splitByNonAlpha \{#splitByNonAlpha\}
 
-도입 버전: v21.9
+도입 버전: v21.9.0
 
 공백 및 문장 부호 문자를 기준으로 문자열을 부분 문자열 배열로 분할합니다.
 
@@ -345,7 +345,7 @@ SELECT splitByNonAlpha('user@domain.com');
 
 ## splitByRegexp \{#splitByRegexp\}
 
-도입 버전: v21.6
+도입 버전: v21.6.0
 
 제공된 정규식을 구분자로 사용하여 문자열을 부분 문자열의 배열로 분할합니다.
 제공된 정규식이 비어 있으면 문자열을 한 글자씩의 문자 배열로 분할합니다.
@@ -405,7 +405,7 @@ SELECT splitByRegexp('', 'abcde');
 
 ## splitByString \{#splitByString\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 여러 문자로 구성된 상수 `separator`로 문자열을 분할하여 부분 문자열 배열을 생성합니다.
 문자열 `separator`가 비어 있으면 문자열 `s`를 한 글자씩의 문자 배열로 분할합니다.
@@ -464,7 +464,7 @@ SELECT splitByString('', 'abcde');
 
 ## splitByWhitespace \{#splitByWhitespace\}
 
-도입된 버전: v21.9
+도입된 버전: v21.9.0
 
 공백 문자로 구분된 문자열을 하위 문자열 배열로 분할합니다.
 
@@ -501,7 +501,7 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 ## tokens \{#tokens\}
 
-도입된 버전: v21.11
+도입된 버전: v21.11.0
 
 지정된 tokenizer를 사용하여 문자열을 토큰으로 분할합니다.
 
@@ -512,12 +512,13 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 * `ngrams(N)`는 문자열을 동일한 크기의 `N`-gram으로 분할합니다(함수 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)도 참조). n-gram 길이는 1에서 8 사이의 정수인 선택적 매개변수로 지정할 수 있으며, 예를 들어 `tokens(value, 'ngrams', 3)`와 같이 설정합니다. n-gram 크기를 명시적으로 지정하지 않으면 기본값은 3입니다.
 * `sparseGrams(min_length, max_length, min_cutoff_length)`는 최소 `min_length`, 최대 `max_length`(포함) 길이의 가변 길이 n-gram으로 문자열을 분할합니다(함수 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)도 참조). 별도 지정하지 않으면 `min_length`와 `max_length`의 기본값은 각각 3과 100입니다. 매개변수 `min_cutoff_length`를 지정하면 길이가 `min_cutoff_length` 이상인 n-gram만 반환합니다. `ngrams(N)`과 비교하면, `sparseGrams` tokenizer는 가변 길이 N-gram을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다. 예를 들어 `tokens(value, 'sparseGrams', 3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-gram을 생성하지만, 4-gram과 5-gram만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 토큰이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array)도 참조).
+* `unicodeWord`는 Unicode 단어 경계 규칙(UAX #29와 유사)을 사용하여 문자열을 토큰으로 분할합니다. ASCII 영숫자와 밑줄은 연결자와 함께 토큰을 형성합니다(`:`는 문자에, `.` 및 `'`는 동일한 타입의 문자에 사용됨). ASCII가 아닌 Unicode 문자는 단일 문자 토큰이 됩니다.
 
 `splitByString` tokenizer의 경우, 토큰이 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)를 형성하지 않는다면 더 긴 구분자를 우선적으로 매칭하도록 하는 것이 바람직합니다.
 이를 위해 구분자를 길이가 긴 순서대로 전달하면 됩니다.
 예를 들어 separators = `['%21', '%']`인 경우 문자열 `%21abc`는 `['abc']`로 토큰화되지만, separators = `['%', '%21']`인 경우 `['21ac']`로 토큰화됩니다(이는 원했던 결과가 아닐 가능성이 높습니다).
 
-**Syntax**
+**구문**
 
 ```sql
 tokens(value) -- 'splitByNonAlpha' tokenizer
@@ -526,12 +527,13 @@ tokens(value, 'splitByString'[, separators])
 tokens(value, 'ngrams'[, n])
 tokens(value, 'sparseGrams'[, min_length, max_length[, min_cutoff_length]])
 tokens(value, 'array')
+tokens(value, 'unicodeWord')
 ```
 
 **인수**
 
 * `value` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 사용할 tokenizer입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 tokenizer입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 * `n` — 인수 `tokenizer`가 `ngrams`인 경우에만 해당합니다. n-gram의 길이를 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `3`입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 인수 `tokenizer`가 `split`인 경우에만 해당합니다. 구분자 문자열을 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `[' ']`입니다. [`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최소 gram 길이를 정의하는 선택적 매개변수이며, 기본값은 3입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
@@ -562,6 +564,56 @@ SELECT tokens('abc def', 'ngrams', 3) AS tokens;
 
 ```response title=Response
 ['abc','bc ','c d',' de','def']
+```
+
+## tokensForLikePattern \{#tokensForLikePattern\}
+
+도입 버전: v26.3.0
+
+지정된 토크나이저를 사용하여 LIKE 패턴 문자열을 토큰으로 분할합니다.
+
+`tokens` 함수와 달리, 이 함수는 LIKE 패턴의 의미를
+(예: 앞뒤의 와일드카드 문자) 인식하며, 토크나이저별
+규칙을 적용해 패턴 일치에 사용할 수 있는 의미 있는 토큰을 추출합니다.
+
+이 함수는 `tokens` 함수와 동일한 인수 집합을 지원합니다. `tokenizer` 뒤에 오는 추가
+인수는 선택한 토크나이저에 따라 해석됩니다
+(예를 들어 `ngrams`의 `n`, `splitByString`의 `separators`,
+그리고 `sparseGrams`의 `min_length` / `max_length` [/ `min_cutoff_length`]).
+
+이 함수는 주로 디버깅 및 테스트 용도로 사용되며,
+내부적으로 LIKE 패턴의 토큰화 동작을 분석하는 데 사용됩니다.
+
+**구문**
+
+```sql
+tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
+```
+
+**인수**
+
+* `value` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `tokenizer` — 사용할 tokenizer입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `n` — 인수 `tokenizer`가 `ngrams`인 경우에만 해당합니다. n-gram의 길이를 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `3`입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
+* `separators` — 인수 `tokenizer`가 `split`인 경우에만 해당합니다. 구분자 문자열을 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `[' ']`입니다. [`const Array(String)`](/sql-reference/data-types/array)
+* `min_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최소 gram 길이를 정의하는 선택적 매개변수이며, 기본값은 3입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
+* `max_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최대 gram 길이를 정의하는 선택적 매개변수이며, 기본값은 100입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최소 cutoff 길이를 정의하는 선택적 매개변수입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
+
+**Returned value**
+
+입력 문자열에서 생성된 토큰 배열을 반환합니다. [`Array`](/sql-reference/data-types/array)
+
+**Examples**
+
+**기본 tokenizer**
+
+```sql title=Query
+SELECT tokensForLikePattern('%test1,test2,test3%') AS tokens;
+```
+
+```response title=Response
+['test2']
 ```
 
 {/*AUTOGENERATED_END*/ }

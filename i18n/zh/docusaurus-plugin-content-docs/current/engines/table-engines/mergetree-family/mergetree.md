@@ -403,8 +403,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) 索引
 - [`Set`](#set) 索引
 - [`bloom_filter`](#bloom-filter) 索引
-- [`ngrambf_v1`](#n-gram-bloom-filter) 索引
-- [`tokenbf_v1`](#token-bloom-filter) 索引
+- [`ngrambf_v1`](#n-gram-bloom-filter) 索引 *(已废弃)*
+- [`tokenbf_v1`](#token-bloom-filter) 索引 *(已废弃)*
 - [`text`](#text) 索引
 - [`vector_similarity`](#vector-similarity) 索引
 
@@ -457,7 +457,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram 布隆过滤器 \{#n-gram-bloom-filter\}
+#### N-gram 布隆过滤器 *(已弃用)* \{#n-gram-bloom-filter\}
+
+:::note
+自 ClickHouse 26.2 版本起，`text` 索引进入 GA 阶段，因此不再推荐使用 `ngrambf_v1` 索引进行全文检索。
+
+详情参见 [&quot;Full-text search with text indexes&quot;](./textindexes.md) 页面。
+:::
 
 每个索引粒度都会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
@@ -528,7 +534,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Token 布隆过滤器 \{#token-bloom-filter\}
 
-`token bloom filter` 与 `ngrambf_v1` 类似，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
+:::note
+从 ClickHouse 26.2 版本开始，`text` 索引进入 GA（一般可用）阶段后，不再推荐使用 `tokenbf_v1` 索引来进行全文搜索。
+
+有关详细信息，请参阅 [“使用 text 索引的全文搜索”](./textindexes.md) 页面。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -558,37 +568,38 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 类型为 `set` 的索引可被所有函数使用。其他类型的索引支持情况如下：
 
-| 函数（运算符）/ 索引                                                                                                              | 主键 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | text |
-| ------------------------------------------------------------------------------------------------------------------------ | -- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
-| [equals（=，==）](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                   | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [like](/sql-reference/functions/string-search-functions.md/#like)                                                        | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                  | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [match](/sql-reference/functions/string-search-functions.md/#match)                                                      | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                   | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                       | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                    | ✗  | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
-| [in](/sql-reference/functions/in-functions)                                                                              | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notIn](/sql-reference/functions/in-functions)                                                                           | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [小于（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                        | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [大于（`>`）](/sql-reference/functions/comparison-functions.md/#greater)                                                     | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [小于等于 (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                            | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [大于等于 (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                         | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [empty](/sql-reference/functions/array-functions/#empty)                                                                 | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                           | ✗  | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
-| [has](/sql-reference/functions/array-functions#has)                                                                      | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
-| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
-| [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)                                                | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
-| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull)                                    | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
-| [hasTokenCaseInsensitive（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitive)             | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
-| [hasTokenCaseInsensitiveOrNull（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
-| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                              | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                    | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike)                                | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| 函数 (运算符) / 索引                                                                                                              | 主键 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | text |
+| -------------------------------------------------------------------------------------------------------------------------- | -- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
+| [equals (=，==)](/sql-reference/functions/comparison-functions.md/#equals)                                                  | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                     | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [like](/sql-reference/functions/string-search-functions.md/#like)                                                          | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                    | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✗    |
+| [match](/sql-reference/functions/string-search-functions.md/#match)                                                        | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                     | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                         | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                      | ✗  | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
+| [in](/sql-reference/functions/in-functions)                                                                                | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notIn](/sql-reference/functions/in-functions)                                                                             | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [小于 (`<`) ](/sql-reference/functions/comparison-functions.md/#less)                                                        | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [大于 (`>`) ](/sql-reference/functions/comparison-functions.md/#greater)                                                     | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [小于等于 (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                              | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [大于等于 (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                           | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [empty](/sql-reference/functions/array-functions/#empty)                                                                   | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                             | ✗  | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
+| [has](/sql-reference/functions/array-functions#has)                                                                        | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                  | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                  | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)                                                  | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
+| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull)                                      | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
+| [hasTokenCaseInsensitive (`*`) ](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitive)             | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
+| [hasTokenCaseInsensitiveOrNull (`*`) ](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
+| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                          | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                          | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                               | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                                | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                      | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                          | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike)                                  | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 
 对于常量参数小于 ngram 大小的函数，`ngrambf_v1` 不能用于查询优化。
 
@@ -1154,13 +1165,11 @@ ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在
 - `_block_offset` — 行在插入时被分配的块内原始行号，在启用 `enable_block_offset_column` 设置时合并过程中会保留。
 - `_disk_name` — 用于存储的磁盘名称。
 
-## 列统计信息 \{#column-statistics\}
+## 列统计 \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-在启用 `set allow_experimental_statistics = 1` 时，对于 `*MergeTree*` 系列表，可以在 `CREATE` 查询的列（columns）部分中声明统计信息。
+对于 `*MergeTree*` 系列的表，列统计的声明位于 `CREATE` 查询的列部分：
 
 ```sql
 CREATE TABLE tab
@@ -1172,16 +1181,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-我们也可以使用 `ALTER` 语句来调整统计信息。
+我们也可以使用 `ALTER` 语句来操作列统计：
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-这些轻量级统计信息汇总了列中值的分布情况。统计信息存储在每个数据片段中，并在每次插入时都会更新。
-只有在启用 `set use_statistics = 1` 时，它们才会用于 `PREWHERE` 优化。
-
+这些轻量级列统计汇总了列中值分布的信息。列统计存储在每个分区片段中，并会在每次插入时更新。
+只有在启用 `set use_statistics = 1` 时，它们才能用于 `prewhere` 优化。
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 

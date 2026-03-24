@@ -635,6 +635,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/unordered-mode',
               ],
             },
             {
@@ -645,6 +646,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/unordered-mode',
               ],
             },
             {
@@ -1039,6 +1041,7 @@ const sidebars = {
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
+        'integrations/data-ingestion/apache-flink/flink-connector',
         'integrations/data-ingestion/aws-glue/index',
         {
           type: 'category',
@@ -1928,7 +1931,20 @@ const sidebars = {
         'use-cases/observability/clickstack/config',
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
-        'use-cases/observability/clickstack/dashboards',
+        {
+          type: 'category',
+          label: 'Dashboards',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/dashboards/index',
+          },
+          collapsed: false,
+          collapsible: true,
+          items: [
+            'use-cases/observability/clickstack/dashboards/sql-visualizations',
+          ],
+        },
+        'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
@@ -1944,6 +1960,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/managing/admin',
+            'use-cases/observability/clickstack/managing/estimating-resources',
             'use-cases/observability/clickstack/managing/production',
             'use-cases/observability/clickstack/managing/materialized_views',
             'use-cases/observability/clickstack/managing/performance_tuning',

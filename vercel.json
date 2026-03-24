@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/docs/jp/:path*", "destination": "/:path*" },
+    { "source": "/docs/ko/:path*", "destination": "/:path*" },
     { "source": "/docs/zh/:path*", "destination": "/:path*" },
     { "source": "/docs/ru/:path*", "destination": "/:path*" },
     { "source": "/docs/:path*", "destination": "/:path*" }
@@ -44,6 +45,16 @@
     {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/byoc/onboarding/customization",
+      "destination": "/docs/cloud/reference/byoc/onboarding/customization-aws",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/cloud/reference/byoc/onboarding/customization",
+      "destination": "/docs/cloud/reference/byoc/onboarding/customization-aws",
       "permanent": true
     },
     {

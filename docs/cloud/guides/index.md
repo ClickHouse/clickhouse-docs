@@ -11,13 +11,14 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | Page | Description |
 |-----|-----|
 | [Overview](/cloud/manage/backups/overview) | Provides an overview of backups in ClickHouse Cloud |
-| [Enabling the ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
-| [Use Ask AI chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
+| [Enable and connect ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
+| [Use ClickHouse Assistant chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
 | [Take a backup or restore a backup from the UI](/cloud/manage/backups/backup-restore-via-ui) | Page describing how to take a backup or restore a backup from the UI with your own bucket |
 | [Take a backup or restore a backup using commands](/cloud/manage/backups/backup-restore-via-commands) | Page describing how to take a backup or restore a backup with your own bucket using commands |
 | [Accessing GCS data securely](/cloud/data-sources/secure-gcs) | This article demonstrates how ClickHouse Cloud customers can access their GCS data securely |
 | [Accessing S3 data securely](/cloud/data-sources/secure-s3) | This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely. |
 | [Architecture](/cloud/reference/byoc/architecture) | Deploy ClickHouse on your own cloud infrastructure |
+| [AWS Customized Setup](/cloud/reference/byoc/onboarding/customization-aws) | Deploy ClickHouse BYOC into your existing AWS VPC |
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
 | [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
@@ -37,13 +38,13 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Connect to ClickHouse](/cloud/reference/byoc/connect) | Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints |
 | [Connecting ClickHouse Cloud to Azure Blob Storage](/cloud/data-sources/secure-azure) | This article demonstrates how ClickHouse Cloud customers can access their Azure data securely |
 | [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
-| [Customized Setup](/cloud/reference/byoc/onboarding/customization) | Deploy ClickHouse on your own cloud infrastructure |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |
 | [Data masking in ClickHouse](/cloud/guides/data-masking) | A guide to data masking in ClickHouse |
 | [Database audit log](/cloud/security/audit-logging/database-audit-log) | This page describes how you can review the database audit log |
 | [Deploying Additional Infrastructure](/cloud/reference/byoc/onboarding/new_region) | Deploy additional BYOC infrastructure in new regions or accounts |
 | [Export Backups to your Own Cloud Account](/cloud/manage/backups/export-backups-to-own-cloud-account) | Describes how to export backups to your own Cloud account |
 | [Gather your connection details](/cloud/guides/sql-console/gather-connection-details) | Gather your connection details |
+| [GCP Customized Setup](/cloud/reference/byoc/onboarding/customization-gcp) | Deploy ClickHouse BYOC into your existing GCP VPC |
 | [GCP private service connect](/manage/security/gcp-private-service-connect) | This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists. |
 | [HIPAA onboarding](/cloud/security/compliance/hipaa-onboarding) | Learn more about how to onboard to HIPAA compliant services |
 | [Infrastructure Configuration](/cloud/reference/byoc/configurations) | Configure load balancers, node groups, and other BYOC infrastructure components |
@@ -53,7 +54,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Guide showing how to manage SQL console role assignments |
 | [Migrating from CMEK v1 to v2](/cloud/security/cmek-migration) | Migration instructions to move from legacy CMEK to version 2 |
 | [Multi tenancy](/cloud/bestpractices/multi-tenancy) | Best practices to implement multi tenancy |
-| [Optimizing Ask AI Agent Conversations with a Semantic Layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the Ask AI chat agent |
+| [Optimizing ClickHouse Assistant Agent Conversations with a Semantic Layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
 | [Private Networking Setup](/cloud/reference/byoc/onboarding/network) | Deploy ClickHouse on your own cloud infrastructure |

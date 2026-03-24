@@ -132,9 +132,9 @@ SELECT doc.^shipping as shipping_info FROM t1;
 ```
 
 
-### Dynamic 타입 \{#dynamic-type\}
+### 동적 타입 \{#dynamic-type\}
 
-ClickHouse에서 각 JSON 필드는 `Dynamic` 타입을 가집니다. Dynamic 타입을 사용하면 ClickHouse가 타입을 미리 알지 못하더라도 어떤 타입의 값이든 저장할 수 있습니다. `toTypeName` 함수로 이를 확인할 수 있습니다:
+ClickHouse에서 JSON 각 필드는 `Dynamic` 타입을 가집니다. 동적 타입을 사용하면 ClickHouse가 타입을 미리 알지 못해도 어떤 타입의 값이든 저장할 수 있습니다. `toTypeName` 함수를 사용하여 이를 확인할 수 있습니다.
 
 ```sql title="Query"
 SELECT toTypeName(doc.customer_id) AS type FROM t1;
@@ -146,7 +146,7 @@ SELECT toTypeName(doc.customer_id) AS type FROM t1;
 └─────────┘
 ```
 
-필드의 실제 데이터 타입을 확인하려면 `dynamicType` FUNCTION을 사용할 수 있습니다. 동일한 필드 이름이라도 서로 다른 행에서 서로 다른 데이터 타입을 가질 수 있다는 점에 유의하십시오.
+필드에 대한 실제 데이터 타입을 확인하려면 `dynamicType` 함수를 사용하면 됩니다. 같은 필드 이름이라도 서로 다른 행에서 서로 다른 데이터 타입을 가질 수 있다는 점에 유의하십시오:
 
 ```sql title="Query"
 SELECT dynamicType(doc.customer_id) AS type FROM t1;
@@ -172,7 +172,7 @@ SELECT parseDateTimeBestEffortOrNull(doc.order_date) AS order_date FROM t1;
 └─────────────────────┘
 ```
 
-**예제 2: 조건부 로직**
+**예시 2: 조건부 로직**
 
 ```sql title="Query"
 SELECT multiIf(
@@ -188,7 +188,7 @@ FROM t1;
 └────────────────┘
 ```
 
-**예제 3: 배열 연산**
+**예제 3: 배열 작업**
 
 ```sql title="Query"
 SELECT length(doc.items) AS item_count FROM t1;

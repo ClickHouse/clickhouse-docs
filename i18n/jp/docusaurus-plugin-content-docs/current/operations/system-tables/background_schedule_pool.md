@@ -24,10 +24,10 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `database` ([String](../../sql-reference/data-types/string.md)) — データベース名。
 * `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルの UUID。
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリ ID（現在実行中の場合）。 （これは実際のクエリではなく、`system.text_log` 内のログを照合するためにランダムに生成される ID である点に注意してください。）
-* `elapsed_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — タスクの実行時間（現在実行中の場合）。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリ ID (現在実行中の場合) 。  (これは実際のクエリではなく、`system.text_log` 内のログを照合するためにランダムに生成される ID である点に注意してください。) 
+* `elapsed_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — タスクの実行時間 (現在実行中の場合) 。
 * `log_name` ([String](../../sql-reference/data-types/string.md)) — タスクのログ名。
-* `deactivated` ([UInt8](../../sql-reference/data-types/int-uint.md)) — タスクが無効化されているかどうか（常に false です。無効化されたタスクはプールから削除されるため）。
+* `deactivated` ([UInt8](../../sql-reference/data-types/int-uint.md)) — タスクが無効化されているかどうか (常に false です。無効化されたタスクはプールから削除されるため) 。
 * `scheduled` ([UInt8](../../sql-reference/data-types/int-uint.md)) — タスクが実行予定かどうか。
 * `delayed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — タスクが遅延付きでスケジュールされているかどうか。
 * `executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — タスクが現在実行中かどうか。

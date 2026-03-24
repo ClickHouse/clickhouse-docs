@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## flameGraph \{#flameGraph\}
 
-도입 버전: v23.8
+도입 버전: v23.8.0
 
 스택 트레이스 목록을 사용해 [flamegraph](https://www.brendangregg.com/flamegraphs.html)을(를) 생성합니다.
 flamegraph의 SVG를 렌더링하기 위해 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) 유틸리티에서 사용할 수 있는 문자열 배열을 출력합니다.
@@ -49,7 +49,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-**메모리 쿼리 프로파일러를 기반으로 모든 메모리 할당을 시각화하는 flamegraph 생성**
+**메모리 쿼리 프로파일러를 기반으로 모든 할당을 보여주는 flamegraph 생성하기**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

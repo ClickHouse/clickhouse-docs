@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-도입된 버전: v21.1
+도입된 버전: v21.1.0
 
 두 모집단에서 추출한 표본에 [Welch&#39;s t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)를 적용합니다.
 
@@ -57,7 +57,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └────────────────────────────────────────────┘
 ```
 
-**신뢰 수준 포함**
+**신뢰 수준 사용**
 
 ```sql title=Query
 SELECT welchTTest(0.95)(sample_data, sample_index) FROM welch_ttest;

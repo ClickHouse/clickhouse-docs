@@ -25,8 +25,8 @@ import TabItem from '@theme/TabItem';
 
 Прежде чем продолжить, убедитесь, что у вас есть:
 
-- Ключ API с соответствующими правами доступа
-- Роль Admin Console
+* Ключ API с соответствующими правами доступа
+* Роль Admin Console
 
 Вы можете воспользоваться этим руководством, чтобы [создать ключ API](/cloud/manage/openapi), если у вас его ещё нет.
 
@@ -35,94 +35,93 @@ import TabItem from '@theme/TabItem';
 :::
 
 <VerticalStepper headerLevel="h3">
+  ### Создание сохранённого запроса
 
-### Создание сохранённого запроса \{#creating-a-saved-query\}
+  Если у вас уже есть сохранённый запрос, вы можете пропустить этот шаг.
 
-Если у вас уже есть сохранённый запрос, вы можете пропустить этот шаг.
+  Откройте новую вкладку запроса. В качестве примера мы будем использовать [набор данных YouTube](/getting-started/example-datasets/youtube-dislikes), который содержит примерно 4,5 миллиарда записей.
+  Выполните шаги из раздела [&quot;Create table&quot;](/getting-started/example-datasets/youtube-dislikes#create-the-table), чтобы создать таблицу в вашем Cloud-сервисе и вставить в неё данные.
 
-Откройте новую вкладку запроса. В качестве примера мы будем использовать [набор данных YouTube](/getting-started/example-datasets/youtube-dislikes), который содержит примерно 4,5 миллиарда записей.
-Выполните шаги из раздела ["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table), чтобы создать таблицу в вашем Cloud-сервисе и вставить в неё данные.
+  :::tip Используйте `LIMIT` для ограничения количества строк
+  Учебный пример набора данных вставляет большой объём данных — 4,65 миллиарда строк, что может занять некоторое время.
+  Для целей этого руководства мы рекомендуем использовать предложение `LIMIT`, чтобы вставить меньший объём данных,
+  например 10 миллионов строк.
+  :::
 
-:::tip Используйте `LIMIT` для ограничения количества строк
-Учебный пример набора данных вставляет большой объём данных — 4,65 миллиарда строк, что может занять некоторое время.
-Для целей этого руководства мы рекомендуем использовать предложение `LIMIT`, чтобы вставить меньший объём данных,
-например 10 миллионов строк.
-:::
+  В качестве примера запроса мы вернём 10 лидеров по количеству загрузок по среднему числу просмотров на видео за год, переданный пользователем в параметре `year`.
 
-В качестве примера запроса мы вернём 10 лидеров по количеству загрузок по среднему числу просмотров на видео за год, переданный пользователем в параметре `year`.
+  ```sql
+  WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+  SELECT
+    uploader,
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+  FROM
+    youtube
+  WHERE
+  -- highlight-next-line
+    toYear(upload_date) = {year: UInt16}
+  GROUP BY uploader
+  ORDER BY per_upload desc
+    LIMIT 10
+  ```
 
-```sql
-WITH sum(view_count) AS view_sum,
-  round(view_sum / num_uploads, 2) AS per_upload
-SELECT
-  uploader,
-  count() AS num_uploads,
-  formatReadableQuantity(view_sum) AS total_views,
-  formatReadableQuantity(per_upload) AS views_per_video
-FROM
-  youtube
-WHERE
--- highlight-next-line
-  toYear(upload_date) = {year: UInt16}
-GROUP BY uploader
-ORDER BY per_upload desc
-  LIMIT 10
-```
+  Обратите внимание, что этот запрос содержит параметр (`year`), который выделен в приведённом выше фрагменте.
+  Вы можете указывать параметры запроса, используя `{ }` вместе с типом параметра.
+  Редактор запросов SQL Console автоматически обнаруживает выражения параметров запроса ClickHouse и предоставляет поле ввода для каждого параметра.
 
-Обратите внимание, что этот запрос содержит параметр (`year`), который выделен в приведённом выше фрагменте.
-Вы можете указывать параметры запроса, используя фигурные скобки `{ }` вместе с типом параметра.
-Редактор запросов SQL Console автоматически обнаруживает выражения параметров запроса ClickHouse и предоставляет поле ввода для каждого параметра.
+  Быстро запустим этот запрос, чтобы убедиться, что он работает: укажите год `2010` в поле ввода переменных запроса справа от редактора SQL:
 
-Быстро запустим этот запрос, чтобы убедиться, что он работает: укажите год `2010` в поле ввода переменных запроса справа от редактора SQL:
+  <Image img={endpoints_testquery} size="md" alt="Проверка примерного запроса" />
 
-<Image img={endpoints_testquery} size="md" alt="Проверка примерного запроса" />
+  Затем сохраните запрос:
 
-Затем сохраните запрос:
+  <Image img={endpoints_savequery} size="md" alt="Сохранить пример запроса" />
 
-<Image img={endpoints_savequery} size="md" alt="Сохранить пример запроса" />
+  Дополнительную документацию по сохранённым запросам можно найти в разделе [&quot;Сохранение запроса&quot;](/cloud/get-started/sql-console#saving-a-query).
 
-Дополнительную документацию по сохранённым запросам можно найти в разделе ["Сохранение запроса"](/cloud/get-started/sql-console#saving-a-query).
+  ### Настройка API-эндпоинта для запроса
 
-### Настройка API-эндпоинта для запроса \{#configuring-the-query-api-endpoint\}
+  Эндпоинты Query API можно настраивать непосредственно из окна запроса, нажав кнопку **Share** и выбрав `API Endpoint`.
+  Вам будет предложено указать, какие ключи API должны иметь доступ к этому эндпоинту:
 
-Эндпоинты Query API можно настраивать непосредственно из окна запроса, нажав кнопку **Share** и выбрав `API Endpoint`.
-Вам будет предложено указать, какие ключи API должны иметь доступ к этому эндпоинту:
+  <Image img={endpoints_configure} size="md" alt="Настройка эндпоинта запроса" />
 
-<Image img={endpoints_configure} size="md" alt="Настройка эндпоинта запроса" />
+  После выбора ключа API вам будет предложено:
 
-После выбора ключа API вам будет предложено:
-- Выбрать роль базы данных, которая будет использоваться для выполнения запроса (`Full access`, `Read only` или `Create a custom role`)
-- Указать домены, разрешённые для CORS (cross-origin resource sharing)
+  * Выбрать роль базы данных, которая будет использоваться для выполнения запроса (`Full access`, `Read only` или `Create a custom role`)
+  * Указать домены, разрешённые для CORS (cross-origin resource sharing)
 
-После выбора этих параметров эндпоинт Query API будет автоматически создан.
+  После выбора этих параметров эндпоинт Query API будет автоматически создан.
 
-Для отправки тестового запроса будет показана примерная команда `curl`:
+  Для отправки тестового запроса будет показана примерная команда `curl`:
 
-<Image img={endpoints_completed} size="md" alt="Команда curl для эндпоинта" />
+  <Image img={endpoints_completed} size="md" alt="Команда curl для эндпоинта" />
 
-Команда curl, отображаемая в интерфейсе, приведена ниже для удобства:
+  Команда curl, отображаемая в интерфейсе, приведена ниже для удобства:
 
-```bash
-curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
-```
+  ```bash
+  curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
+  ```
 
-### Параметры Query API \{#query-api-parameters\}
+  ### Параметры Query API
 
-Параметры в запросе можно задавать с помощью синтаксиса `{parameter_name: type}`. Эти параметры будут обнаружены автоматически, и пример тела запроса будет содержать объект `queryVariables`, через который вы можете передавать эти параметры.
+  Параметры в запросе можно задавать с помощью синтаксиса `{parameter_name: type}`. Эти параметры будут обнаружены автоматически, и пример тела запроса будет содержать объект `queryVariables`, через который вы можете передавать эти параметры.
 
-### Тестирование и мониторинг \{#testing-and-monitoring\}
+  ### Тестирование и мониторинг
 
-После создания эндпоинта Query API вы можете проверить его работу, используя `curl` или любой другой HTTP-клиент:
+  После создания эндпоинта Query API вы можете проверить его работу, используя `curl` или любой другой HTTP-клиент:
 
-<Image img={endpoints_curltest} size="md" alt="curl-тест эндпоинта" />
+  <Image img={endpoints_curltest} size="md" alt="curl-тест эндпоинта" />
 
-После отправки первого запроса сразу справа от кнопки **Share** должна появиться новая кнопка. Нажав на неё, вы откроете боковую панель, содержащую данные мониторинга по этому запросу:
+  После отправки первого запроса сразу справа от кнопки **Share** должна появиться новая кнопка. Нажав на неё, вы откроете боковую панель, содержащую данные мониторинга по этому запросу:
 
-<Image img={endpoints_monitoring} size="sm" alt="Мониторинг эндпоинта" />
-
+  <Image img={endpoints_monitoring} size="sm" alt="Мониторинг эндпоинта" />
 </VerticalStepper>
 
-## Детали реализации \{#implementation-details\}
+## Детали реализации {#implementation-details}
 
 Этот эндпоинт выполняет запросы к вашим сохранённым эндпоинтам Query API.
 Он поддерживает несколько версий, гибкие форматы ответа, параметризованные запросы и, при необходимости, потоковые ответы (только версия 2).
@@ -161,13 +160,13 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### Настройка запроса \{#request-configuration\}
 
-#### Параметры URL \{#url-params\}
+#### Параметры URL {#url-params}
 
 | Параметр | Обязателен | Описание |
 |-----------|----------|-------------|
 | `queryEndpointId` | **Да** | Уникальный идентификатор endpoint'а запроса, который нужно выполнить |
 
-#### Параметры запроса \{#query-params\}
+#### Параметры запроса {#query-params}
 
 | Параметр | Обязателен | Описание | Пример |
 |---------|------------|----------|--------|
@@ -176,7 +175,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | Нет | Таймаут выполнения запроса в миллисекундах (по умолчанию: 30000) | `?request_timeout=60000` |
 | `:clickhouse_setting` | Нет | Любая поддерживаемая [настройка ClickHouse](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### Заголовки \{#headers\}
+#### Заголовки {#headers}
 
 | Заголовок | Обязателен | Описание | Значения |
 |--------|----------|-------------|--------|
@@ -203,9 +202,9 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Ответы \{#responses\}
+### Ответы {#responses}
 
-#### Успешный ответ \{#success\}
+#### Успешный ответ {#success}
 
 **Статус:** `200 OK`  
 Запрос был успешно выполнен.
@@ -239,9 +238,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - Возможности потоковой передачи ответов
 - Повышенную производительность и функциональность
 
-## Примеры \{#examples\}
+## Примеры {#examples}
 
-### Базовый запрос \{#basic-request\}
+### Базовый запрос {#basic-request}
 
 **SQL конечной точки API запросов:**
 
@@ -306,7 +305,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### Версия 2 \{#version-2\}
+#### Версия 2 {#version-2}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -360,7 +359,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -493,7 +492,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 </TabItem>
 </Tabs>
 
-### Request with ClickHouse settings `max_threads` set to 8 \{#request-with-clickhouse-settings-max_threads-set-to-8\}
+### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **Query API Endpoint SQL:**
 
@@ -543,7 +542,7 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` \{#request-and-parse-the-response-as-a-stream\}
+### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
 
 **Query API Endpoint SQL:**
 

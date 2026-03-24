@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySample \{#groupArraySample\}
 
-導入されたバージョン: v20.3
+導入されたバージョン: v20.3.0
 
 引数値のサンプルを要素とする配列を作成します。
 生成される配列のサイズは `max_size` 要素に制限されます。
@@ -25,7 +25,7 @@ groupArraySample(max_size[, seed])(x)
 
 * `max_size` — 生成される配列の最大サイズ。[`UInt64`](/sql-reference/data-types/int-uint)
 * `seed` — 省略可能。乱数生成器のシード値。デフォルト値は 123456。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 引数（カラム名または式）。[`Any`](/sql-reference/data-types)
+* `x` — 引数 (カラム名または式) 。[`Any`](/sql-reference/data-types)
 
 **引数**
 
@@ -74,7 +74,7 @@ SELECT groupArraySample(3, 987654321)(color) as newcolors FROM default.colors;
 └────────────────────────────┘
 ```
 
-**引数に式を指定する**
+**引数として式を使用する**
 
 ```sql title=Query
 -- Query with expression as argument

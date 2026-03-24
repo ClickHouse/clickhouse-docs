@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResetsToGrid \{#timeSeriesResetsToGrid\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 타임스탬프와 값 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝으로 정의되는 균일한 시간 그리드 상에서 이 데이터로부터 [PromQL과 유사한 `resets`](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets)을 계산하는 집계 함수입니다. 그리드의 각 지점에 대해 `resets`를 계산할 때는 지정된 시간 윈도우 내의 샘플만 고려됩니다.
 
@@ -65,7 +65,7 @@ FROM
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**배열 인자를 사용하는 동일한 쿼리**
+**배열 인수를 사용하는 동일한 쿼리**
 
 ```sql title=Query
 WITH

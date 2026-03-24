@@ -20,15 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Kafka Metrics with ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Apache Kafka performance metrics with ClickStack by using the OpenTelemetry JMX Metric Gatherer. You'll learn how to:
-
-- Enable JMX on Kafka brokers and configure the JMX Metric Gatherer
-- Send Kafka metrics to ClickStack via OTLP
-- Use a pre-built dashboard to visualize Kafka performance (broker throughput, consumer lag, partition health, request latency)
-
-A demo dataset with sample metrics is available if you want to test the integration before configuring your production Kafka cluster.
-
-Time required: 10-15 minutes
+Monitor Apache Kafka performance metrics in ClickStack using the OTel JMX Metric Gatherer. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with an existing Kafka deployment {#existing-kafka}
@@ -295,7 +287,7 @@ For the demo dataset, set the time range to **2025-11-05 16:00:00 - 2025-11-06 1
 
 ## Troubleshooting {#troubleshooting}
 
-#### No metrics appearing in HyperDX {#no-metrics}
+### No metrics appearing in HyperDX {#no-metrics}
 
 **Verify API key is set and passed to the container:**
 
@@ -339,7 +331,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### Authentication errors {#auth-errors}
+### Authentication errors {#auth-errors}
 
 If you see `Authorization failed` or `401 Unauthorized`:
 
@@ -352,7 +344,7 @@ docker compose down
 docker compose up -d
 ```
 
-#### Port conflicts with Kafka client commands {#port-conflicts}
+### Port conflicts with Kafka client commands {#port-conflicts}
 
 When running Kafka commands from within the Kafka container, you may see:
 
@@ -365,7 +357,7 @@ Prefix commands with `unset JMX_PORT &&`:
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### Network connectivity issues {#network-issues}
+### Network connectivity issues {#network-issues}
 
 If the JMX exporter logs show `Connection refused`:
 
@@ -380,6 +372,12 @@ Test connectivity:
 # From JMX exporter to ClickStack
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
+
+## Next steps {#next-steps}
+
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (under-replicated partitions, consumer lag growth, request latency spikes)
+- Create additional dashboards for specific use cases (per-topic throughput, consumer group monitoring)
+- Monitor multiple Kafka brokers by adding additional JMX Metric Gatherer instances with unique `kafka.broker.id` resource attributes
 
 ## Going to production {#going-to-production}
 

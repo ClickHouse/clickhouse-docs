@@ -69,7 +69,7 @@ ORDER BY per_upload desc
 ```
 
 Note that this query contains a parameter (`year`) which is highlighted in the snippet above.
-You can specify query parameters using curly brackets `{ }` together with the type of the parameter. 
+You can specify query parameters using `{ }` together with the type of the parameter. 
 The SQL console query editor automatically detects ClickHouse query parameter expressions and provides an input for each parameter.
 
 Let's quickly run this query to make sure that it works by specifying the year `2010` in the query variables input box on the right side of the SQL editor:
@@ -85,7 +85,7 @@ More documentation around saved queries can be found in section ["Saving a query
 ### Configuring the query API endpoint {#configuring-the-query-api-endpoint}
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`.
-You'll be prompted to specify which API key(s) should be able to access the endpoint:
+You'll be prompted to specify which API keys should be able to access the endpoint:
 
 <Image img={endpoints_configure} size="md" alt="Configure query endpoint" />
 

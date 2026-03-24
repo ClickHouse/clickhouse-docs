@@ -16,6 +16,14 @@ import Version from '@theme/ClientVersionDropdown/Version';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
 
 <ClientVersionDropdown versions={[
 {
@@ -44,7 +52,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.6</version>
+    <version>0.9.8</version>
 </dependency>
 ```
 
@@ -53,14 +61,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.6")
+implementation("com.clickhouse:client-v2:0.9.8")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.6'
+implementation 'com.clickhouse:client-v2:0.9.8'
 ```
 
 </TabItem>
@@ -231,6 +239,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `httpHeader(String key, String value)` | `key` - HTTP header key<br/>`value` - string value | Sets value for a single HTTP header. Previous value is overridden. | `none` | `none` |
 | `httpHeader(String key, Collection values)` | `key` - HTTP header key<br/>`values` - list of string values | Sets values for a single HTTP header. Previous value is overridden. | `none` | `none` |
 | `httpHeaders(Map headers)` | `headers` - map with HTTP headers | Sets multiple HTTP header values at a time. | `none` | `none` |
+| `useHttpFormDataForQuery(boolean enable)` | `enable` - flag to enable/disable | Sets whether query parameters should be sent as HTTP form data in the request body instead of the URL. Works only with server-side compression. If client-level compression is enabled, it will be disabled for query requests with parameters, as each parameter is sent as multipart content. | `false` | `client.http.use_form_request_for_query` |
 
 </TabItem>
 
@@ -240,6 +249,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 |--------|-----------|-------------|---------|-----|
 | `serverSetting(String name, String value)` | `name` - setting name<br/>`value` - setting value | Sets what settings to pass to server along with each query. Individual operation settings may override it. [List of settings](/operations/settings/query-level) | `none` | `none` |
 | `serverSetting(String name, Collection values)` | `name` - setting name<br/>`values` - setting values | Sets what settings to pass to server with multiple values, for example [roles](/interfaces/http#setting-role-with-query-parameters) | `none` | `none` |
+| `setOption("custom_settings_prefix", value)` | `value` - prefix string | Sets the prefix for custom settings passed to the server. Should be aligned with the server configuration. See [ClickHouse Docs](/operations/settings/query-level#custom_settings). | `custom_` | `custom_settings_prefix` |
 
 </TabItem>
 
@@ -260,6 +270,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `setOption(String key, String value)` | `key` - configuration option key<br/>`value` - option value | Sets raw value of client options. Useful when reading configuration from properties files. | - | - |
 | `useAsyncRequests(boolean async)` | `async` - flag to enable/disable | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multi-threaded tasks. | `false` | `async` |
 | `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - executor service instance | Sets executor service for operation tasks. | `none` | `none` |
+| `setQueryIdGenerator(Supplier<String> supplier)` | `supplier` - a `Supplier<String>` that generates query IDs | Sets a custom query ID generator used when no query ID is specified in operation settings (`InsertSettings`, `QuerySettings`). | - | - |
 | `setClientNetworkBufferSize(int size)` | `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data between socket and application. | `300000` | `client_network_buffer_size` |
 | `allowBinaryReaderToReuseBuffers(boolean reuse)` | `reuse` - flag to enable/disable | If enabled, reader will use preallocated buffers to do numbers transcoding. Reduces GC pressure for numeric data. | - | - |
 | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - matching strategy implementation | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. | `none` | `none` |

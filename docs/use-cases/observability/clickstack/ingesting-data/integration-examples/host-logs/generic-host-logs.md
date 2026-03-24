@@ -23,15 +23,7 @@ import TabItem from '@theme/TabItem';
 # Monitoring Host Logs with ClickStack {#host-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to collect logs from systemd, kernel, SSH, cron, and other system services. You'll learn how to:
-
-- Configure the OTel collector to read system log files
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize host log insights (errors, warnings, service activity)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production hosts.
-
-Time Required: 5-10 minutes
+Collect and visualize host system logs (syslog, auth, kernel) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing hosts {#existing-hosts}
@@ -470,8 +462,6 @@ tail -5 /var/log/system.log
 If your format doesn't match, select the appropriate configuration tab in the [Create custom OTel collector configuration](#custom-otel) section.
 
 ## Next steps {#next-steps}
-
-After setting up host logs monitoring:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, disk warnings)
 - Filter by specific units to monitor particular services

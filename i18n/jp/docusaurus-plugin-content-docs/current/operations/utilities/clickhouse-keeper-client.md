@@ -12,17 +12,48 @@ doc_type: 'reference'
 
 ## オプション \{#clickhouse-keeper-client\}
 
--   `-q QUERY`, `--query=QUERY` — 実行するクエリ。 このパラメータが指定されない場合、`clickhouse-keeper-client` はインタラクティブモードで起動します。
--   `-h HOST`, `--host=HOST` — サーバーのホスト名。 デフォルト値: `localhost`。
--   `-p N`, `--port=N` — サーバーのポート番号。 デフォルト値: 9181。
--   `-c FILE_PATH`, `--config-file=FILE_PATH` — 接続文字列を取得するための設定ファイルのパスを指定します。 デフォルト値: `config.xml`。
--   `--connection-timeout=TIMEOUT` — 接続タイムアウトを秒単位で指定します。 デフォルト値: 10s。
--   `--session-timeout=TIMEOUT` — セッションタイムアウトを秒単位で指定します。 デフォルト値: 10s。
--   `--operation-timeout=TIMEOUT` — オペレーションタイムアウトを秒単位で指定します。 デフォルト値: 10s。
--   `--history-file=FILE_PATH` — 履歴ファイルのパスを指定します。 デフォルト値: `~/.keeper-client-history`。
--   `--log-level=LEVEL` — ログレベルを指定します。 デフォルト値: `information`。
--   `--no-confirmation` — 指定した場合、いくつかのコマンドで確認を求めません。 インタラクティブモードではデフォルト値は `false`、クエリでは `true` です。
--   `--help` — ヘルプメッセージを表示します。
+* `-q QUERY`, `--query=QUERY` — 実行するクエリ。 このパラメータが指定されない場合、`clickhouse-keeper-client` はインタラクティブモードで起動します。
+* `-h HOST`, `--host=HOST` — サーバーのホスト名。 デフォルト値: `localhost`。
+* `-p N`, `--port=N` — サーバーのポート番号。 デフォルト値: 9181。
+* `-c FILE_PATH`, `--config-file=FILE_PATH` — 接続文字列を取得するための設定ファイルのパスを指定します。 デフォルト値: `config.xml`。
+* `--password=PASSWORD` — 認証用のパスワード。 `CLICKHOUSE_KEEPER_PASSWORD` 環境変数、または XML 設定ファイルの `<zookeeper><password>` でも設定できます。
+* `--identity=IDENTITY` — `digest` 認証スキーム用の ID。 `CLICKHOUSE_KEEPER_IDENTITY` 環境変数、または XML 設定ファイルの `<zookeeper><identity>` でも設定できます。
+* `--connection-timeout=TIMEOUT` — 接続タイムアウトを秒単位で指定します。 デフォルト値: 10s。
+* `--session-timeout=TIMEOUT` — セッションタイムアウトを秒単位で指定します。 デフォルト値: 10s。
+* `--operation-timeout=TIMEOUT` — オペレーションタイムアウトを秒単位で指定します。 デフォルト値: 10s。
+* `--history-file=FILE_PATH` — 履歴ファイルのパスを指定します。 デフォルト値: `~/.keeper-client-history`。
+* `--log-level=LEVEL` — ログレベルを指定します。 デフォルト値: `information`。
+* `--no-confirmation` — 指定した場合、いくつかのコマンドで確認を求めません。 インタラクティブモードではデフォルト値は `false`、クエリでは `true` です。
+* `--help` — ヘルプメッセージを表示します。
+
+## 環境変数 \{#clickhouse-keeper-client-env\}
+
+* `CLICKHOUSE_KEEPER_PASSWORD` — コマンドラインで `--password` を指定しない場合に、デフォルトのパスワードとして使用されます。
+* `CLICKHOUSE_KEEPER_IDENTITY` — コマンドラインで `--identity` を指定しない場合に、デフォルトのIDとして使用されます。
+
+## 認証 \{#clickhouse-keeper-client-auth\}
+
+認証が必要な Keeper サーバーに接続する場合、パスワードは次の優先順位で決定されます (最初に一致したものが使用されます) 。
+
+1. `--password` コマンドライン引数
+2. `CLICKHOUSE_KEEPER_PASSWORD` 環境変数
+3. `--config-file` で指定された XML config ファイル内の `<zookeeper><password>`
+
+同じ優先順位が `--identity` / `CLICKHOUSE_KEEPER_IDENTITY` / `<zookeeper><identity>` にも適用されます。
+
+認証設定を含む XML config ファイルの例:
+
+```xml
+<clickhouse>
+    <zookeeper>
+        <password>secret</password>
+        <node index="1">
+            <host>localhost</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+</clickhouse>
+```
 
 ## 例 \{#clickhouse-keeper-client-example\}
 
@@ -48,26 +79,26 @@ keeper foo bar
 
 ## コマンド \{#clickhouse-keeper-client-commands\}
 
--   `ls '[path]'` -- 指定されたパスのノードを一覧表示します（デフォルト: カレントディレクトリ）
--   `cd '[path]'` -- 作業パスを変更します（デフォルト: `.`）
--   `cp '<src>' '<dest>'`  -- `src` ノードを `dest` パスにコピーします
--   `cpr '<src>' '<dest>'`  -- `src` ノードのサブツリーを `dest` パスにコピーします
--   `mv '<src>' '<dest>'`  -- `src` ノードを `dest` パスに移動します
--   `mvr '<src>' '<dest>'`  -- `src` ノードのサブツリーを `dest` パスに移動します
--   `exists '<path>'` -- ノードが存在する場合は `1`、それ以外は `0` を返します
--   `set '<path>' <value> [version]` -- ノードの値を更新します。バージョンが一致する場合にのみ更新します（デフォルト: -1）
--   `create '<path>' <value> [mode]` -- 指定した値で新しいノードを作成します
--   `touch '<path>'` -- 値が空文字列の新しいノードを作成します。ノードがすでに存在している場合でも例外はスローされません
--   `get '<path>'` -- ノードの値を返します
--   `rm '<path>' [version]` -- バージョンが一致する場合にのみノードを削除します（デフォルト: -1）
--   `rmr '<path>' [limit]` -- サブツリーのサイズが上限より小さい場合に、パスを再帰的に削除します。確認が必要です（デフォルトの上限 = 100）
--   `flwc <command>` -- four-letter-word コマンドを実行します
--   `help` -- このヘルプメッセージを表示します
--   `get_direct_children_number '[path]'` -- 特定のパス直下の子ノード数を取得します
--   `get_all_children_number '[path]'` -- 特定のパス配下のすべての子ノード数を取得します
--   `get_stat '[path]'` -- ノードの stat を返します（デフォルト: `.`）
--   `find_super_nodes <threshold> '[path]'` -- 指定されたパスに対して、子ノード数がしきい値より大きいノードを検索します（デフォルト: `.`）
--   `delete_stale_backups` -- 現在は非アクティブなバックアップ用の ClickHouse ノードを削除します
--   `find_big_family [path] [n]` -- サブツリー内で子ノードが最も多い上位 n 個のノードを返します（デフォルト: path = `.`、n = 10）
--   `sync '<path>'` -- プロセスとリーダー間でノードを同期します
--   `reconfig <add|remove|set> "<arg>" [version]` -- Keeper クラスターを再構成します。/docs/en/guides/sre/keeper/clickhouse-keeper#reconfiguration を参照してください
+* `ls '[path]'` -- 指定されたパスのノードを一覧表示します (デフォルト: カレントディレクトリ)
+* `cd '[path]'` -- 作業パスを変更します (デフォルト: `.`)
+* `cp '<src>' '<dest>'`  -- `src` ノードを `dest` パスにコピーします
+* `cpr '<src>' '<dest>'`  -- `src` ノードのサブツリーを `dest` パスにコピーします
+* `mv '<src>' '<dest>'`  -- `src` ノードを `dest` パスに移動します
+* `mvr '<src>' '<dest>'`  -- `src` ノードのサブツリーを `dest` パスに移動します
+* `exists '<path>'` -- ノードが存在する場合は `1`、それ以外は `0` を返します
+* `set '<path>' <value> [version]` -- ノードの値を更新します。バージョンが一致する場合にのみ更新します (デフォルト: -1)
+* `create '<path>' <value> [mode]` -- 指定した値で新しいノードを作成します
+* `touch '<path>'` -- 値が空文字列の新しいノードを作成します。ノードがすでに存在している場合でも例外はスローされません
+* `get '<path>'` -- ノードの値を返します
+* `rm '<path>' [version]` -- バージョンが一致する場合にのみノードを削除します (デフォルト: -1)
+* `rmr '<path>' [limit]` -- サブツリーのサイズが上限より小さい場合に、パスを再帰的に削除します。確認が必要です (デフォルトの上限 = 100)
+* `flwc <command>` -- four-letter-word コマンドを実行します
+* `help` -- このヘルプメッセージを表示します
+* `get_direct_children_number '[path]'` -- 特定のパス直下の子ノード数を取得します
+* `get_all_children_number '[path]'` -- 特定のパス配下のすべての子ノード数を取得します
+* `get_stat '[path]'` -- ノードの stat を返します (デフォルト: `.`)
+* `find_super_nodes <threshold> '[path]'` -- 指定されたパスに対して、子ノード数がしきい値より大きいノードを検索します (デフォルト: `.`)
+* `delete_stale_backups` -- 現在は非アクティブなバックアップ用の ClickHouse ノードを削除します
+* `find_big_family [path] [n]` -- サブツリー内で子ノードが最も多い上位 n 個のノードを返します (デフォルト: path = `.`、n = 10)
+* `sync '<path>'` -- プロセスとリーダー間でノードを同期します
+* `reconfig <add|remove|set> "<arg>" [version]` -- Keeper クラスターを再構成します。/docs/en/guides/sre/keeper/clickhouse-keeper#reconfiguration を参照してください

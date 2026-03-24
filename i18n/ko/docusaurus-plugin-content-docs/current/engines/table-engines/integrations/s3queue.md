@@ -20,7 +20,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 ```sql
 CREATE TABLE s3_queue_engine_table (name String, value UInt32)
-    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers])
+    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers], [extra_credentials])
     [SETTINGS]
     [mode = '',]
     [after_processing = 'keep',]
@@ -364,13 +364,16 @@ SETTINGS
 ```
 
 
-## S3Queue ordered 모드 \{#ordered-mode\}
+## S3Queue ordered mode \{#ordered-mode\}
 
-`S3Queue` 처리 모드는 ZooKeeper에 저장되는 메타데이터 양을 줄일 수 있지만, 시간상 나중에 추가되는 파일은 알파벳과 숫자 순으로 더 뒤에 오는 이름을 가져야 한다는 제한이 있습니다.
+`S3Queue` 처리 모드는 ZooKeeper에 더 적은 메타데이터를 저장할 수 있게 해주지만, 시간상 나중에 추가된 파일은 영숫자 기준으로 더 큰 이름을 가져야 한다는 제한이 있습니다.
 
-`S3Queue` `ordered` 모드는 `unordered` 모드와 마찬가지로 `(s3queue_)processing_threads_num` 설정(`s3queue_` 접두사는 선택사항)을 지원하며, 이 설정을 통해 서버에서 `S3` 파일을 로컬로 처리하는 스레드 개수를 제어할 수 있습니다.
-추가로, `ordered` 모드는 「논리 스레드」를 의미하는 `(s3queue_)buckets`라는 또 다른 설정을 도입합니다. 이는 분산 시나리오에서 `S3Queue` 테이블 레플리카가 여러 서버에 있을 때 이 설정이 처리 단위의 개수를 정의한다는 뜻입니다. 예를 들어, 각 `S3Queue` 레플리카의 각 처리 스레드는 처리를 위해 특정 `bucket`을 잠그려고 시도하며, 각 `bucket`은 파일 이름의 해시값에 따라 특정 파일들에 매핑됩니다. 따라서 분산 시나리오에서는 `(s3queue_)buckets` 설정 값을 레플리카 개수 이상으로 설정하는 것이 강력히 권장됩니다. `bucket` 개수가 레플리카 개수보다 많은 것은 문제가 되지 않습니다. 가장 최적의 시나리오는 `(s3queue_)buckets` 설정 값이 `number_of_replicas`와 `(s3queue_)processing_threads_num`의 곱과 같도록 하는 것입니다.
-`(s3queue_)processing_threads_num` 설정은 버전 `24.6` 이전에서는 사용을 권장하지 않습니다.
+`S3Queue` `ordered` 모드는 `unordered`와 마찬가지로 `(s3queue_)processing_threads_num` 설정(`s3queue_` 접두사는 선택 사항임)을 지원하며, 이 설정을 통해 서버에서 `S3` 파일을 로컬로 처리할 스레드 수를 제어할 수 있습니다.
+
+파티셔닝이 없는 `ordered` 모드의 경우, ClickHouse는 전체 접두사 이력을 다시 나열하지 않기 위해 마지막으로 처리된 키에서부터 S3 목록 조회를 재개할 수 있습니다. 버킷 기반 ordered 모드에서는 아직 처리되지 않은 파일이 건너뛰어지는 것을 방지하기 위해, 재개 지점을 모든 버킷에서 처리된 키 중 가장 작은 값으로 보수적으로 선택합니다.
+이 목록 조회 재개 최적화는 파티셔닝이 없는 ordered 모드의 S3 기반 큐에서만 사용됩니다(AzureQueue에는 적용되지 않으며 `partitioning_mode`가 설정된 경우에도 사용되지 않음).
+또한 `ordered` 모드는 "논리 스레드"를 의미하는 `(s3queue_)buckets`라는 또 다른 설정도 도입합니다. 이는 분산 시나리오에서 `S3Queue` 테이블 레플리카가 여러 서버에 있을 때, 이 설정이 처리 단위의 수를 정의한다는 뜻입니다. 예를 들어 각 `S3Queue` 레플리카의 각 처리 스레드는 처리를 위해 특정 `버킷`을 잠그려고 시도하며, 각 `버킷`은 파일 이름의 해시에 따라 특정 파일들에 할당됩니다. 따라서 분산 시나리오에서는 `(s3queue_)buckets` 설정을 레플리카 수와 같거나 그보다 크게 하는 것이 매우 권장됩니다. 버킷 수가 레플리카 수보다 많은 것은 문제되지 않습니다. 가장 최적의 시나리오는 `(s3queue_)buckets` 설정이 `number_of_replicas`와 `(s3queue_)processing_threads_num`의 곱과 같을 때입니다.
+`(s3queue_)processing_threads_num` 설정은 버전 `24.6` 이전에서는 사용하는 것이 권장되지 않습니다.
 `(s3queue_)buckets` 설정은 버전 `24.6`부터 사용할 수 있습니다.
 
 ## S3Queue 테이블 엔진에서의 SELECT \{#select\}

@@ -115,13 +115,13 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
 
-## 用于子串搜索的 N-gram Bloom 过滤器（ngrambf_v1） \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+## 用于子串搜索的 N-gram Bloom 过滤器 (ngrambf_v1)&#x20;*&#x20;(已弃用)&#x20;* \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
 
-> 注意：从 ClickHouse 26.2 版本开始，文本索引进入 GA 阶段后，不再推荐将基于 Bloom 过滤器的索引用于全文搜索。
-> 尽管它们更加紧凑，但由于其具有概率性，不可避免地会产生误报。
-> 此外，它们的可配置性也比较有限。
+:::note
+在 ClickHouse `>= 26.2` 版本中，使用 `ngrambf_v1` 索引用于全文搜索已被弃用，推荐改用 `text` 索引 (更多详细信息请参见[此处](/engines/table-engines/mergetree-family/textindexes)) 。
+:::
 
-`ngrambf_v1` 索引将字符串划分为 n-gram。它非常适用于 `LIKE '%...%'` 查询。它支持 String/FixedString/Map（通过 mapKeys/mapValues），并且可以调节大小、哈希次数和种子。有关更多详细信息，请参阅 [N-gram Bloom 过滤器](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 的文档。
+`ngrambf_v1` 索引将字符串划分为 n-gram。它非常适用于 `LIKE '%...%'` 查询。它支持 String/FixedString/Map (通过 mapKeys/mapValues) ，并且可以调节大小、哈希次数和种子。有关更多详细信息，请参阅 [N-gram Bloom 过滤器](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 的文档。
 
 ```sql
 -- Create index for substring search
@@ -135,11 +135,11 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[本指南](/use-cases/observability/schema-design#bloom-filters-for-text-search) 展示了实际用例，并说明在何种情况下应使用 token 还是 ngram。
+[本指南](/use-cases/observability/schema-design#text-index-for-full-text-search) 展示了实际用例，并说明在何种情况下应使用 token 还是 ngram。
 
 **参数优化辅助工具：**
 
-ngrambf&#95;v1 的四个参数（n-gram 大小、位图大小、哈希函数数量、种子值）会对性能和内存使用产生显著影响。根据预期的 n-gram 数量和目标误报率，使用这些函数计算出最优的位图大小和哈希函数数量：
+ngrambf&#95;v1 的四个参数 (n-gram 大小、位图大小、哈希函数数量、种子值) 会对性能和内存使用产生显著影响。根据预期的 n-gram 数量和目标误报率，使用这些函数计算出最优的位图大小和哈希函数数量：
 
 ```sql
 CREATE FUNCTION bfEstimateFunctions AS
@@ -156,11 +156,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 有关完整的调优指导，请参阅[参数文档](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)。
 
 
-## 用于基于单词搜索的 Token Bloom 过滤器（tokenbf_v1） \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+## 用于基于单词搜索的 Token Bloom 过滤器 (tokenbf_v1) *(已弃用)* \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
 
-> 注意：自 ClickHouse 26.2 版本起文本索引进入一般可用（GA）阶段后，不再推荐使用基于 Bloom 过滤器的索引来做全文搜索。
-> 虽然它们更加紧凑，但由于其具有概率性，不可避免地会产生误报。
-> 此外，它们在可配置性方面也比较有限。
+:::note
+在 ClickHouse `>= 26.2` 版本中，使用 `tokenbf_v1` 索引进行全文搜索已被弃用，改为使用 `text` 索引 (更多详情请参见[此处](/engines/table-engines/mergetree-family/textindexes)) 。
+:::
 
 `tokenbf_v1` 会为由非字母数字字符分隔的 token 建立索引。你应将其与 [`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` 单词模式或 `=` / `IN` 一起使用。它支持 `String` / `FixedString` / `Map` 类型。
 
@@ -177,7 +177,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-可在[此处](/use-cases/observability/schema-design#bloom-filters-for-text-search)查看可观测性示例，以及关于 token 与 ngram 的使用指导。
+可在[此处](/use-cases/observability/schema-design#text-index-for-full-text-search)查看可观测性示例，以及关于 token 与 ngram 的使用指导。
 
 
 ## 在 CREATE TABLE 时添加索引（多个示例） \{#add-indexes-during-create-table-multiple-examples\}

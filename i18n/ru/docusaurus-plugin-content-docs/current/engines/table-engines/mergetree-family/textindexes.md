@@ -173,6 +173,7 @@ ALTER TABLE table DROP INDEX text_idx;
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` генерирует n-граммы переменной длины, обеспечивая более гибкое представление исходного текста.
   Например, `tokenizer = sparseGrams(3, 5, 4)` внутренне генерирует 3-, 4-, 5-граммы из входной строки, но возвращает только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т.е. каждое значение строки является токеном (см. функцию [array](/sql-reference/functions/array-functions.md/#array)).
+* `unicodeWord` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 
 Все доступные токенизаторы перечислены в [system.tokenizers](../../../operations/system-tables/tokenizers.md).
 
@@ -185,7 +186,7 @@ ALTER TABLE table DROP INDEX text_idx;
 Если строки-разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
-Чтобы понять, как токенизатор разбивает входную строку, можно использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens):
+Чтобы понять, как токенизатор разбивает входную строку, можно использовать функции [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) и [tokensForLikePattern](/sql-reference/functions/splitting-merging-functions.md/#tokensForLikePattern):
 
 Пример:
 
@@ -200,9 +201,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 ```
 
 *Работа с не-ASCII входными данными.*
-Хотя текстовые индексы в принципе могут быть построены поверх текстовых данных на любом языке и с любым набором символов, в данный момент мы рекомендуем делать это только для входных данных в расширенном наборе символов ASCII, то есть для западноевропейских языков.
-В частности, для китайского, японского и корейского языков в настоящее время отсутствует полноценная поддержка индексации, что может приводить к потенциально огромным размерам индекса и длительному времени выполнения запросов.
-В будущем мы планируем добавить специализированные языко-специфичные токенизаторы, чтобы лучше обрабатывать такие случаи.
+Текстовые индексы можно строить на основе текстовых данных на любом языке и в любой кодировке.
+Для текста, содержащего символы вне ASCII, рекомендуется токенизатор `unicodeWord`, так как он корректно обрабатывает границы слов Unicode, включая символы CJK.
 :::
 
 **Аргумент препроцессора (необязательный)**. Под препроцессором здесь понимается выражение, которое применяется к входной строке перед токенизацией.
@@ -210,9 +210,9 @@ SELECT tokens('abc def', 'ngrams', 3);
 Типичные варианты использования аргумента препроцессора включают следующее:
 
 
-1. Приведение к нижнему или верхнему регистру для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8) (см. первый пример ниже).
-2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
-3. Удаление или преобразование нежелательных символов или подстрок, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate).
+1. Приведение к нижнему/верхнему регистру или свёртка регистра для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8).
+2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
+3. Удаление или преобразование нежелательных символов или подстрок, таких как диакритические знаки, например [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode), [translate](/sql-reference/functions/string-replace-functions.md/#translate), [removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8).
 
 Выражение препроцессора должно преобразовывать входное значение типа [String](/sql-reference/data-types/string.md) или [FixedString](/sql-reference/data-types/fixedstring.md) в значение того же типа.
 Если текстовый индекс был построен по столбцу типа `Nullable(T)` или `LowCardinality(T)`, то выражение препроцессора должно принимать значения типов Nullable(T) или LowCardinality(T) (то есть не приводить к выбросу исключения).
@@ -221,7 +221,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
 Кроме того, выражение препроцессора должно ссылаться только на столбец или выражение, на основе которых определён текстовый индекс.
 
@@ -287,6 +288,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 Пример:
 
+
 ```sql
 CREATE TABLE table
 (
@@ -299,8 +301,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 ```
 
-**Дополнительные аргументы (необязательные)**.
-
+**Другие аргументы (необязательно)**.
 
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>
@@ -380,9 +381,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` и `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) и `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) сопоставляют весь указанный поисковый термин целиком.
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) сопоставляет весь указанный поисковый термин целиком.
 
 Пример:
 
@@ -390,12 +391,10 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-Текстовый индекс поддерживает `=` и `!=`, однако поиск по равенству и неравенству имеет смысл только с токенизатором `array` (он приводит к тому, что индекс хранит значения всей строки целиком).
 
+#### `IN` \{#functions-example-in\}
 
-#### `IN` и `NOT IN` \{#functions-example-in-notin\}
-
-`IN` ([in](/sql-reference/functions/in-functions)) и `NOT IN` ([notIn](/sql-reference/functions/in-functions)) аналогичны функциям `equals` и `notEquals`, но они совпадают либо со всеми (`IN`), либо ни с одним (`NOT IN`) из указанных поисковых терминов.
+`IN` ([in](/sql-reference/functions/in-functions)) аналогична `equals`, но сопоставляет все поисковые термины.
 
 Пример:
 
@@ -403,16 +402,21 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-Действуют те же ограничения, что и для `=` и `!=`, то есть использовать `IN` и `NOT IN` имеет смысл только в сочетании с токенизатором `array`.
+:::note
+`NOT IN` (`notIn`) не поддерживается текстовым индексом.
+:::
 
-
-#### `LIKE`, `NOT LIKE` и `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` и `match` \{#functions-example-like-match\}
 
 :::note
 В настоящее время эти функции используют текстовый индекс для фильтрации только в том случае, если токенизатор индекса — `splitByNonAlpha`, `ngrams` или `sparseGrams`.
 :::
 
-Чтобы использовать `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)), `NOT LIKE` ([notLike](/sql-reference/functions/string-search-functions.md/#notLike)) и функцию [match](/sql-reference/functions/string-search-functions.md/#match) с текстовыми индексами, ClickHouse должен иметь возможность извлекать полные токены из поискового шаблона.
+:::note
+`NOT LIKE` (`notLike`) не поддерживается текстовым индексом.
+:::
+
+Чтобы использовать `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) и функцию [match](/sql-reference/functions/string-search-functions.md/#match) с текстовыми индексами, ClickHouse должен иметь возможность извлекать полные токены из поискового шаблона.
 Для индекса с токенизатором `ngrams` это возможно, если длина искомых подстрок между символами подстановки не меньше длины n-граммы.
 
 Пример для текстового индекса с токенизатором `splitByNonAlpha`:
@@ -799,21 +803,22 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ### Кэширование \{#caching\}
 
 Доступны различные кэши для буферизации частей текстового индекса в памяти (см. раздел [Implementation Details](#implementation)).
-В настоящее время доступны кэши для десериализованных блоков словаря, заголовков и списков вхождений текстового индекса для снижения объёма операций ввода-вывода.
-Их можно включить с помощью настроек [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
+В настоящее время доступны кэши для десериализованных заголовков, токенов и списков вхождений текстового индекса для снижения объёма операций ввода-вывода.
+Их можно включить с помощью настроек [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache), [use_text_index_tokens_cache](/operations/settings/settings#use_text_index_tokens_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
+
 По умолчанию все кэши отключены.
 Чтобы очистить кэши, используйте команду [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches).
 
 Для настройки кэшей используйте следующие параметры сервера.
 
-#### Настройки кэша блоков словаря \{#caching-dictionary\}
+#### Настройки кэша токенов \{#caching-tokens\}
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| [text_index_dictionary_block_cache_policy](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_policy)                | Имя политики кэширования блоков словаря текстового индекса.                                                   |
-| [text_index_dictionary_block_cache_size](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size)                    | Максимальный размер кэша в байтах.                                                                             |
-| [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | Максимальное количество десериализованных блоков словаря в кэше.                                               |
-| [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | Размер защищённой очереди в кэше блоков словаря текстового индекса относительно общего размера кэша.          |
+| [text_index_tokens_cache_policy](/operations/server-configuration-parameters/settings#text_index_tokens_cache_policy)                | Имя политики кэширования токенов текстового индекса.                                                           |
+| [text_index_tokens_cache_size](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size)                    | Максимальный размер кэша в байтах.                                                                             |
+| [text_index_tokens_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_tokens_cache_max_entries)      | Максимальное количество десериализованных токенов в кэше.                                                      |
+| [text_index_tokens_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_tokens_cache_size_ratio)        | Размер защищённой очереди в кэше токенов текстового индекса относительно общего размера кэша.                  |
 
 #### Настройки кэша заголовков \{#caching-header\}
 
@@ -908,6 +913,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 Номера строк в списках вхождений также пересчитываются, чтобы отразить их новые позиции в объединённой части данных, с использованием отображения старых номеров строк в новые, которое создаётся на начальной фазе слияния.
 Этот метод слияния текстовых индексов подобен тому, как объединяются [проекции](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) со столбцом `_part_offset`.
 Если индекс не материализован в исходной части, он строится, записывается во временный файл и затем объединяется с индексами из других частей и из других временных файлов индексов.
+
+**Отладка**
+
+Табличная функция [mergeTreeTextIndex](../../../sql-reference/table-functions/mergeTreeTextIndex.md) может быть использована для анализа текстовых индексов.
 
 ## Пример: набор данных Hacker News \{#hacker-news-dataset\}
 

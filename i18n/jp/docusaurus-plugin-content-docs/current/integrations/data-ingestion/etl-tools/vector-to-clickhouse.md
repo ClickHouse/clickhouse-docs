@@ -23,7 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 本番環境のアプリケーションでは、ログをリアルタイムに分析できることが極めて重要です。
-ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x)）と、大量データを高速に集計できる性能により、ログデータの保存と分析に特に優れています。
+ClickHouse は、優れた圧縮率 (ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x)) と、大量データを高速に集計できる性能により、ログデータの保存と分析に特に優れています。
 
 このガイドでは、広く利用されているデータパイプラインである [Vector](https://vector.dev/docs/about/what-is-vector/) を使用して Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
 以下の手順は、任意の種類のログファイルをテールする場合にもほぼ同様に適用できます。
@@ -55,7 +55,7 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
   ```
 
   :::note
-  **ORDER BY** は **tuple()**（空のタプル）に設定されています。これは、まだプライマリキーが不要なためです。
+  **ORDER BY** は **tuple()** (空のタプル) に設定されています。これは、まだプライマリキーが不要なためです。
   :::
 
   ## Nginx を設定する \{#2--configure-nginx\}
@@ -89,7 +89,7 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
 
   ## Vector を設定する \{#3-configure-vector\}
 
-  Vector は、ログ、メトリクス、トレース（**ソース** と呼ばれます)を収集、変換、ルーティングし、ClickHouse との標準互換性を含む、多数の異なるベンダー（**シンク** と呼ばれます)に送信します。
+  Vector は、ログ、メトリクス、トレース (**ソース** と呼ばれます)を収集、変換、ルーティングし、ClickHouse との標準互換性を含む、多数の異なるベンダー (**シンク** と呼ばれます)に送信します。
   ソースとシンクは、**vector.toml** という名前の設定ファイルで定義されます。
 
   1. 次の **vector.toml** ファイルでは、**my&#95;access.log** の末尾を読み取り続ける **file** タイプの **source** を定義し、さらに先ほど定義した **access&#95;logs** テーブルを **sink** として定義しています。
@@ -125,8 +125,8 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
   次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用してログイベントをどのようにパースするかを見ていきます。
 
   **materialized view** は、SQL における INSERT トリガーと同様に機能します。ソーステーブルにデータ行が挿入されると、materialized view はそれらの行を変換し、その結果をターゲットテーブルに挿入します。
-  The materialized view can be configured to configure a parsed representation of the log events in **access&#95;logs**.
-  An example of one such log event is shown below:
+  materialized view は、**access&#95;logs** 内のログイベントのパース済み表現を設定するよう設定できます。
+  そのようなログイベントの一例を以下に示します。
 
   ```bash
   192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -159,16 +159,16 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
   ["192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] \"GET / HTTP/1.1\" 30"," \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36\""]
   ```
 
-  Before looking at the final `CREATE MATERIALIZED VIEW` command, let&#39;s view a couple more functions used to clean up the data.
-  For example, the value of `RequestMethod` is `"GET` containing an unwanted double-quote.
-  この二重引用符を削除するには、[`trimBoth`（エイリアス `trim`）](/sql-reference/functions/string-functions#trimBoth) 関数を使用できます。
+  最終的な `CREATE MATERIALIZED VIEW` コマンドを確認する前に、データのクリーンアップに使用するいくつかの関数を見ていきましょう。
+  例えば、`RequestMethod` の値は `"GET` であり、不要な二重引用符が含まれています。
+  この二重引用符を削除するには、[`trimBoth` (エイリアス `trim`) ](/sql-reference/functions/string-functions#trimBoth) 関数を使用できます。
 
   ```sql
   SELECT trim(LEADING '"' FROM '"GET')
   ```
 
-  時刻文字列は先頭に角括弧が付いており、ClickHouse が日付として解析できる形式にもなっていません。
-  しかし、区切り文字をコロン（**:**）からカンマ（**,**）に変更すると、問題なく解析できるようになります:
+  時刻文字列は先頭に `[` が付いており、ClickHouse が日付として解析できる形式にもなっていません。
+  しかし、区切り文字をコロン (**:**) からカンマ (**,**) に変更すると、問題なくパースできるようになります:
 
   ```sql
   SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))

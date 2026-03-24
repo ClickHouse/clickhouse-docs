@@ -14,11 +14,11 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 ## 支払いしきい値 \{#threshholds\}
 
-従量課金制の顧客で、ClickHouse Cloud の 1 請求期間内の支払金額が 10,000 USD（または同等額）に達した場合、組織に設定されている支払い方法に対して自動的に決済が行われます。
+従量課金制の顧客で、ClickHouse Cloud の 1 請求期間内の支払金額が 10,000 USD (または同等額) に達した場合、組織に設定されている支払い方法に対して自動的に決済が行われます。
 
 :::tip
 このデフォルトの支払いしきい値は 10,000 USD 未満に調整できます。
-変更を希望する場合は、[サポートにお問い合わせ](support@clickhouse.com)ください。
+変更を希望する場合は、[サポートにお問い合わせ](mailto:support@clickhouse.com)ください。
 :::
 
 決済が失敗した場合、14 日間の猶予期間後にサービスは一時停止されます。
@@ -29,13 +29,17 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 以下の例では、Cloud コンソール内の Billing UI を示しています。
 
-<Image img={billing_1} size="sm" alt="UI で Billing を確認できる場所"/>
+<Image img={billing_1} size="sm" alt="UI で Billing を確認できる場所" />
 
-<Image img={billing_2} size="lg" alt="請求書"/>
+<Image img={billing_2} size="lg" alt="請求書" />
 
 上記の例から分かるように、2 月 28 日〜 3 月 31 日の請求期間中にしきい値に達したタイミングで請求書が送付され、その後、同じ請求期間内で 10,000 USD を超過した利用分に対して別の請求書が送付されています。
 
 ## 支払いしきい値の通知 \{#threshholds-notifications\}
 
-組織の利用額が支払いしきい値の 90% に達し、その請求期間の途中でしきい値を超える見込みがある場合、その組織に紐づく請求担当者のメールアドレス宛に通知メールが送信されます。
-しきい値を超えた時点でも、通知メールおよび請求書が送信されます。
+組織の利用額が支払いしきい値の 90% に達し、その期間の途中で支払いしきい値を超える見込みがある場合、その組織に紐づく請求担当者のメールアドレス宛に通知メールが送信されます。
+支払いしきい値を超えた場合にも、通知メールに加えて請求書が送信されます。
+
+:::note
+現在、PAYG org では支払いしきい値の通知はサポートされていません
+:::

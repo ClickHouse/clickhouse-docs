@@ -25,16 +25,7 @@ import TabItem from '@theme/TabItem';
 # Monitoring EC2 Host Logs with ClickStack {#ec2-host-logs-clickstack}
 
 :::note[TL;DR]
-Monitor EC2 system logs with ClickStack by installing OpenTelemetry Collector on your instances. The collector automatically enriches logs with EC2 metadata (instance ID, region, availability zone, instance type). You'll learn how to:
-
-- Install and configure OpenTelemetry Collector on EC2 instances
-- Automatically enrich logs with EC2 metadata
-- Send logs to ClickStack via OTLP
-- Use a pre-built dashboard to visualize EC2 host logs with cloud context
-
-A demo dataset with sample logs and simulated EC2 metadata is available for testing.
-
-Time Required: 10-15 minutes
+Collect and visualize EC2 system logs in ClickStack using the OpenTelemetry Collector with automatic EC2 metadata enrichment (instance ID, region, AZ, instance type). Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing EC2 instance {#existing-ec2}
@@ -156,7 +147,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
@@ -211,7 +202,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
@@ -559,9 +550,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## Next steps {#next-steps}
 
-After setting up EC2 host logs monitoring:
-
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, disk warnings)
 - Filter by EC2 metadata attributes (region, instance type, instance ID) to monitor specific resources
 - Correlate EC2 host logs with application logs for comprehensive troubleshooting
 - Create custom dashboards for security monitoring (SSH attempts, sudo usage, firewall blocks)
+
+## Going to production {#going-to-production}
+
+This guide installs the OpenTelemetry Collector directly on EC2 instances, which is the recommended production pattern for host-level monitoring. For managing collectors across many instances, consider using configuration management tools (Ansible, Chef, Puppet) or the OpenTelemetry Operator in Kubernetes environments. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

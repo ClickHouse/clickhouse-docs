@@ -214,16 +214,26 @@ EXTRACT(part FROM date);
 
 `part`パラメータは、どの部分を取得するかを指定します。指定可能な値は次のとおりです:
 
-* `DAY` — 月の日付。指定可能な値: 1–31。
-* `MONTH` — 月を表す番号。指定可能な値: 1–12。
-* `YEAR` — 年。
 * `SECOND` — 秒。指定可能な値: 0–59。
 * `MINUTE` — 分。指定可能な値: 0–59。
 * `HOUR` — 時。指定可能な値: 0–23。
+* `DAY` — 月の日付。指定可能な値: 1–31。
+* `WEEK` — ISO 8601 の週番号。指定可能な値: 1–53。
+* `MONTH` — 月を表す番号。指定可能な値: 1–12。
+* `QUARTER` — 四半期。指定可能な値: 1–4。
+* `YEAR` — 年。
+* `EPOCH` — Unix タイムスタンプ (1970-01-01 00:00:00 UTC からの秒数) 。注: `DateTime64` では、秒未満の部分は切り捨てられます。
+* `DOW` — 曜日 (PostgreSQL互換) 。0 = 日曜日、6 = 土曜日。
+* `DOY` — 年間通算日。指定可能な値: 1–366。
+* `ISODOW` — ISO の曜日。1 = 月曜日、7 = 日曜日。
+* `ISOYEAR` — ISO 8601 の週番号付け年。
+* `CENTURY` — 世紀。たとえば、2024年は21世紀です。
+* `DECADE` — 十年単位 (年を 10 で割った値) 。たとえば、2024年の decade は 202 です。
+* `MILLENNIUM` — 千年紀。たとえば、2024年は第3千年紀です。
 
 `part`パラメータは大文字小文字を区別しません。
 
-`date` パラメータは処理する日付または時刻を指定します。[Date](../../sql-reference/data-types/date.md) 型または [DateTime](../../sql-reference/data-types/datetime.md) 型を使用できます。
+`date` パラメータは処理する日付または時刻を指定します。[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [DateTime64](../../sql-reference/data-types/datetime64.md) 型を使用できます。
 
 例:
 
@@ -231,6 +241,9 @@ EXTRACT(part FROM date);
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
 SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
+SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
+SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
+SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
 ```
 
 以下の例では、テーブルを作成し、`DateTime` 型の値を挿入します。
@@ -241,8 +254,8 @@ CREATE TABLE test.Orders
     OrderId UInt64,
     OrderName String,
     OrderDate DateTime
-)
-ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 ```sql
@@ -267,6 +280,7 @@ FROM test.Orders;
 ```
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
+
 
 ### INTERVAL \{#interval\}
 

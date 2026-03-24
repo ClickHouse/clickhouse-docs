@@ -7,7 +7,7 @@ title: 'Терабайт логов кликов от Criteo'
 doc_type: 'guide'
 ---
 
-Скачайте данные с [http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/)
+Скачайте данные с http://labs.criteo.com/downloads/download-terabyte-click-logs/
 
 Создайте таблицу для импорта логов:
 
@@ -54,7 +54,8 @@ CREATE TABLE criteo_log (
     cat24 String,
     cat25 String,
     cat26 String
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 Вставьте данные:

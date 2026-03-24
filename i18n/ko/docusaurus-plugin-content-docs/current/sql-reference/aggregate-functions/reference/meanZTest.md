@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## meanZTest \{#meanZTest\}
 
-도입된 버전: v22.2
+도입된 버전: v22.2.0
 
 두 모집단에서 추출한 표본에 평균 z-검정(mean z-test)을 적용합니다.
 

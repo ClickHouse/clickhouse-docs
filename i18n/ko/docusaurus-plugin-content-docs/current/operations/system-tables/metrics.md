@@ -51,196 +51,1902 @@ SELECT * FROM system.metrics LIMIT 10
 
 ## 메트릭 설명 \{#metric-descriptions\}
 
-| 지표                                              | 설명                                                                                                           |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **AggregatorThreads**                           | Aggregator 스레드 풀의 스레드 수                                                                                      |
-| **AggregatorThreadsActive**                     | 작업을 실행 중인 Aggregator 스레드 풀 스레드 수                                                                             |
-| **TablesLoaderForegroundThreads**               | 비동기 로더 포그라운드 스레드 풀의 스레드 수                                                                                    |
-| **TablesLoaderForegroundThreadsActive**         | 작업을 실행 중인 비동기 로더 포그라운드 스레드 풀 스레드 수                                                                           |
-| **TablesLoaderBackgroundThreads**               | 비동기 로더 백그라운드 스레드 풀의 스레드 수                                                                                    |
-| **TablesLoaderBackgroundThreadsActive**         | 작업을 실행 중인 비동기 로더 백그라운드 스레드 풀 스레드 수                                                                           |
-| **AsyncInsertCacheSize**                        | 캐시에 있는 비동기 insert 해시 ID 수                                                                                    |
-| **AsynchronousInsertThreads**                   | AsynchronousInsert 스레드 풀의 스레드 수                                                                              |
-| **AsynchronousInsertThreadsActive**             | 작업을 실행 중인 AsynchronousInsert 스레드 풀 스레드 수                                                                     |
-| **AsynchronousReadWait**                        | 비동기 읽기를 대기 중인 스레드 수                                                                                          |
-| **BackgroundBufferFlushSchedulePoolSize**       | BackgroundBufferFlushSchedulePool에서의 작업 수 제한                                                                 |
-| **BackgroundBufferFlushSchedulePoolTask**       | BackgroundBufferFlushSchedulePool(주기적인 Buffer 플러시에 사용)에서 활성 상태인 작업 수                                         |
-| **BackgroundCommonPoolSize**                    | 관련 백그라운드 풀에서의 작업 수 제한                                                                                        |
-| **BackgroundCommonPoolTask**                    | 관련 백그라운드 풀에서 활성 상태인 작업 수                                                                                     |
-| **BackgroundDistributedSchedulePoolSize**       | BackgroundDistributedSchedulePool에서의 작업 수 제한                                                                 |
-| **BackgroundDistributedSchedulePoolTask**       | BackgroundDistributedSchedulePool(백그라운드 분산 전송에 사용)에서 활성 상태인 작업 수                                             |
-| **BackgroundFetchesPoolSize**                   | 관련 백그라운드 풀에서 동시에 수행되는 가져오기 작업 수 제한                                                                           |
-| **BackgroundFetchesPoolTask**                   | 관련 백그라운드 풀에서 활성 상태인 가져오기 작업 수                                                                                |
-| **BackgroundMergesAndMutationsPoolSize**        | 관련 백그라운드 풀에서 활성 상태인 머지와 뮤테이션 수 제한                                                                            |
-| **BackgroundMergesAndMutationsPoolTask**        | 관련 백그라운드 풀에서 활성 상태인 머지와 뮤테이션 수                                                                               |
-| **BackgroundMessageBrokerSchedulePoolSize**     | 메시지 스트리밍용 BackgroundProcessingPool에서의 작업 수 제한                                                                |
-| **BackgroundMessageBrokerSchedulePoolTask**     | 메시지 스트리밍용 BackgroundProcessingPool에서 활성 상태인 작업 수                                                             |
-| **BackgroundMovePoolSize**                      | MOVE 작업용 BackgroundProcessingPool에서의 작업 수 제한                                                                 |
-| **BackgroundMovePoolTask**                      | MOVE 작업용 BackgroundProcessingPool에서 활성 상태인 작업 수                                                              |
-| **BackgroundSchedulePoolSize**                  | BackgroundSchedulePool에서의 작업 수 제한(이전 데이터 파트 정리, 데이터 파트 변경, 레플리카 재초기화와 같은 주기적인 ReplicatedMergeTree 작업에 사용)    |
-| **BackgroundSchedulePoolTask**                  | BackgroundSchedulePool에서 활성 상태인 작업 수(이전 데이터 파트 정리, 데이터 파트 변경, 레플리카 재초기화와 같은 주기적인 ReplicatedMergeTree 작업에 사용) |
-| **BackupsIOThreads**                            | BackupsIO 스레드 풀의 스레드 수                                                                                       |
-| **BackupsIOThreadsActive**                      | 작업을 실행 중인 BackupsIO 스레드 풀 스레드 수                                                                              |
-| **BackupsThreads**                              | BACKUP용 스레드 풀의 스레드 수                                                                                         |
-| **BackupsThreadsActive**                        | 작업을 실행 중인 BACKUP용 스레드 풀 스레드 수                                                                                |
-| **BrokenDistributedFilesToInsert**              | 분산 테이블에 대한 비동기 삽입용 파일 중 손상된 것으로 표시된 파일 수(0부터 시작하며 세그먼트별 합계)                                                  |
-| **CacheDetachedFileSegments**                   | 분리(detach)된 캐시 파일 세그먼트의 총 개수                                                                                 |
-| **CacheDictionaryThreads**                      | CacheDictionary 스레드 풀의 스레드 수                                                                                 |
-| **CacheDictionaryThreadsActive**                | 작업을 실행 중인 CacheDictionary 스레드 풀의 스레드 수                                                                       |
-| **CacheDictionaryUpdateQueueBatches**           | CacheDictionary의 업데이트 큐에 있는 「배치」(키 집합)의 개수                                                                   |
-| **CacheDictionaryUpdateQueueKeys**              | CacheDictionary의 업데이트 큐에 있는 키의 정확한 개수                                                                        |
-| **CacheFileSegments**                           | 존재하는 캐시 파일 세그먼트의 총 개수                                                                                        |
-| **ContextLockWait**                             | Context(전역 락)에서 락을 대기 중인 스레드 수                                                                               |
-| **DDLWorkerThreads**                            | ON CLUSTER 쿼리를 위한 DDLWorker 스레드 풀의 스레드 수                                                                     |
-| **DDLWorkerThreadsActive**                      | 작업을 실행 중인 ON CLUSTER 쿼리용 DDLWorker 스레드 풀의 스레드 수                                                              |
-| **DatabaseCatalogThreads**                      | DatabaseCatalog 스레드 풀의 스레드 수                                                                                 |
-| **DatabaseCatalogThreadsActive**                | 작업을 실행 중인 DatabaseCatalog 스레드 풀의 스레드 수                                                                       |
-| **DatabaseOnDiskThreads**                       | DatabaseOnDisk 스레드 풀의 스레드 수                                                                                  |
-| **DatabaseOnDiskThreadsActive**                 | 작업을 실행 중인 DatabaseOnDisk 스레드 풀의 스레드 수                                                                        |
-| **DelayedInserts**                              | MergeTree 테이블에서 특정 파티션에 활성 데이터 파트가 너무 많아 제한(throttle)된 INSERT 쿼리 수                                           |
-| **DestroyAggregatesThreads**                    | 집계 상태를 소멸(destroy)하기 위한 스레드 풀의 스레드 수                                                                         |
-| **DestroyAggregatesThreadsActive**              | 집계 상태를 소멸(destroy)하기 위한 스레드 풀에서 작업을 실행 중인 스레드 수                                                              |
-| **DictCacheRequests**                           | 캐시 타입 딕셔너리의 데이터 소스로 전송 중(in flight)인 요청 수                                                                    |
-| **DiskObjectStorageAsyncThreads**               | DiskObjectStorage용 비동기 스레드 풀의 스레드 수                                                                          |
-| **DiskObjectStorageAsyncThreadsActive**         | 작업을 실행 중인 DiskObjectStorage용 비동기 스레드 풀의 스레드 수                                                                |
-| **DiskSpaceReservedForMerge**                   | 현재 실행 중인 백그라운드 머지 작업을 위해 예약된 디스크 공간(머지되는 전체 파트 크기보다 약간 큼)                                                    |
-| **DistributedFilesToInsert**                    | 분산 테이블에 대한 비동기 삽입을 위해 처리 대기 중인 파일 수(세그먼트별 합계)                                                                |
-| **DistributedSend**                             | 분산 테이블로 INSERT된 데이터를 전송하는 원격 서버와의 연결 수(동기 및 비동기 모드 포함)                                                       |
-| **EphemeralNode**                               | ZooKeeper에 유지되고 있는 임시(ephemeral) 노드 수                                                                        |
-| **FilesystemCacheElements**                     | 파일 시스템 캐시 요소(파일 세그먼트) 수                                                                                      |
-| **FilesystemCacheReadBuffers**                  | 활성 캐시 버퍼 수                                                                                                   |
-| **FilesystemCacheSize**                         | 파일 시스템 캐시 크기(바이트 단위)                                                                                         |
-| **QueryCacheBytes**                             | 쿼리 캐시의 전체 크기(바이트 단위)                                                                                         |
-| **QueryCacheEntries**                           | 쿼리 캐시에 있는 전체 엔트리 수                                                                                           |
-| **UncompressedCacheBytes**                      | 비압축 캐시의 전체 크기(바이트 단위, 일반적으로 성능 향상에 도움이 되지 않아 대부분 피하는 것이 좋음)                                                  |
-| **UncompressedCacheCells**                      | 비압축 캐시의 셀 수                                                                                                  |
-| **CompiledExpressionCacheBytes**                | JIT 컴파일 코드 캐시에서 사용 중인 총 바이트 수                                                                                |
-| **CompiledExpressionCacheCount**                | JIT 컴파일 코드 캐시에 포함된 항목의 총 개수                                                                                  |
-| **MMapCacheCells**                              | `mmap`으로 열린 파일 수(메모리에 매핑되며, `local_filesystem_read_method=mmap` 설정에서 사용되고, TLB 플러시를 방지하기 위해 캐시됨)             |
-| **MarkCacheBytes**                              | 마크 캐시의 총 크기(바이트)                                                                                             |
-| **MarkCacheFiles**                              | 마크 캐시에 캐시된 마크 파일의 총 개수                                                                                       |
-| **GlobalThread**                                | 글로벌 스레드 풀의 스레드 수                                                                                             |
-| **GlobalThreadActive**                          | 작업을 실행 중인 글로벌 스레드 풀의 스레드 수                                                                                   |
-| **HTTPConnection**                              | HTTP 서버에 대한 연결 수                                                                                             |
-| **HashedDictionaryThreads**                     | HashedDictionary 스레드 풀의 스레드 수                                                                                |
-| **HashedDictionaryThreadsActive**               | 작업을 실행 중인 HashedDictionary 스레드 풀의 스레드 수                                                                      |
-| **IOPrefetchThreads**                           | IO 프리페치 스레드 풀의 스레드 수                                                                                         |
-| **IOPrefetchThreadsActive**                     | 작업을 실행 중인 IO 프리페치 스레드 풀의 스레드 수                                                                               |
-| **IOThreads**                                   | IO 스레드 풀의 스레드 수                                                                                              |
-| **IOThreadsActive**                             | 작업을 실행 중인 IO 스레드 풀의 스레드 수                                                                                    |
-| **IOUringInFlightEvents**                       | 전송 중인 io&#95;uring SQE 수                                                                                     |
-| **IOUringPendingEvents**                        | 제출 대기 중인 io&#95;uring SQE 수                                                                                  |
-| **IOWriterThreads**                             | IO writer 스레드 풀의 스레드 수                                                                                       |
-| **IOWriterThreadsActive**                       | 작업을 실행 중인 IO writer 스레드 풀의 스레드 수                                                                             |
-| **InterserverConnection**                       | 다른 레플리카에서 파트를 가져오기 위한 연결 수                                                                                   |
-| **KafkaAssignedPartitions**                     | 현재 Kafka 테이블에 할당된 파티션 수                                                                                      |
-| **KafkaBackgroundReads**                        | 현재 동작 중인 백그라운드 읽기 작업 수(Kafka에서 materialized view를 채우는 작업)                                                    |
-| **KafkaConsumers**                              | 활성 Kafka 컨슈머 수                                                                                               |
-| **KafkaConsumersInUse**                         | 직접 읽기 또는 백그라운드 읽기에 현재 사용 중인 컨슈머 수                                                                            |
-| **KafkaConsumersWithAssignment**                | 파티션이 할당된 활성 Kafka 컨슈머 수                                                                                      |
-| **KafkaLibrdkafkaThreads**                      | 활성 librdkafka 스레드 수                                                                                          |
-| **KafkaProducers**                              | 생성된 활성 Kafka 프로듀서 수                                                                                          |
-| **KafkaWrites**                                 | 현재 실행 중인 Kafka로의 INSERT 작업 수                                                                                 |
-| **KeeperAliveConnections**                      | 활성(alive) 연결 수                                                                                               |
-| **KeeperOutstandingRequests**                   | 미처리(outstanding) 요청 수                                                                                        |
-| **LocalThread**                                 | 로컬 스레드 풀(글로벌 스레드 풀에서 가져온)의 스레드 수                                                                             |
-| **LocalThreadActive**                           | 작업을 실행 중인 로컬 스레드 풀의 스레드 수                                                                                    |
-| **MMappedAllocBytes**                           | mmapped 할당의 총 바이트 수                                                                                          |
-| **MMappedAllocs**                               | mmapped 할당의 총 개수                                                                                             |
-| **MMappedFileBytes**                            | mmapped 파일 영역의 총 크기                                                                                          |
-| **MMappedFiles**                                | mmapped 파일의 총 개수                                                                                             |
-| **MarksLoaderThreads**                          | 마크 로드용 스레드 풀의 스레드 수                                                                                          |
-| **MarksLoaderThreadsActive**                    | 작업을 실행 중인 마크 로드용 스레드 풀의 스레드 수                                                                                |
-| **MaxDDLEntryID**                               | DDLWorker가 처리한 DDL 엔트리의 최대 ID                                                                                |
-| **MaxPushedDDLEntryID**                         | DDLWorker가 ZooKeeper로 푸시한 DDL 엔트리의 최대 ID                                                                     |
-| **MemoryTracking**                              | 서버가 할당한 메모리의 총량(바이트)                                                                                         |
-| **Merge**                                       | 실행 중인 백그라운드 머지 작업 수                                                                                          |
-| **MergeTreeAllRangesAnnouncementsSent**         | 원격 서버에서 이니시에이터로 전송 중인 데이터 파트 집합에 대한 알림의 현재 수(원격 서버에서 측정되며 MergeTree 테이블에 적용됨)                                |
-| **MergeTreeBackgroundExecutorThreads**          | MergeTreeBackgroundExecutor 스레드 풀의 스레드 수                                                                     |
-| **MergeTreeBackgroundExecutorThreadsActive**    | 작업을 실행 중인 MergeTreeBackgroundExecutor 스레드 풀의 스레드 수                                                           |
-| **MergeTreeDataSelectExecutorThreads**          | MergeTreeDataSelectExecutor 스레드 풀의 스레드 수                                                                     |
-| **MergeTreeDataSelectExecutorThreadsActive**    | 작업을 실행 중인 MergeTreeDataSelectExecutor 스레드 풀의 스레드 수                                                           |
-| **MergeTreePartsCleanerThreads**                | MergeTree 파트 정리기(parts cleaner) 스레드 풀의 스레드 수                                                                 |
-| **MergeTreePartsCleanerThreadsActive**          | 작업을 실행 중인 MergeTree 파트 정리기(parts cleaner) 스레드 풀의 스레드 수                                                       |
-| **MergeTreePartsLoaderThreads**                 | MergeTree 파트 로더(parts loader) 스레드 풀의 스레드 수                                                                   |
-| **MergeTreePartsLoaderThreadsActive**           | 작업을 실행 중인 MergeTree 파트 로더(parts loader) 스레드 풀의 스레드 수                                                         |
-| **MergeTreeReadTaskRequestsSent**               | 읽기 작업을 선택하기 위해 원격 서버에서 이니시에이터로 전송 중인 콜백 요청의 현재 수(원격 서버에서 측정되며 MergeTree 테이블에 적용됨)                            |
-| **Move**                                        | 현재 실행 중인 이동(move) 작업 수                                                                                       |
-| **MySQLConnection**                             | MySQL 프로토콜을 사용하는 클라이언트 연결 수                                                                                  |
-| **NetworkReceive**                              | 네트워크에서 데이터를 수신하는 스레드 수(서드파티 라이브러리가 아닌 ClickHouse 관련 스레드만 집계)                                                 |
-| **NetworkSend**                                 | 네트워크로 데이터를 전송하는 스레드 수(서드파티 라이브러리가 아닌 ClickHouse 관련 스레드만 집계)                                                  |
-| **OpenFileForRead**                             | 읽기용으로 열려 있는 파일 수                                                                                             |
-| **OpenFileForWrite**                            | 쓰기용으로 열려 있는 파일 수                                                                                             |
-| **ParallelFormattingOutputFormatThreads**       | ParallelFormattingOutputFormatThreads 스레드 풀의 스레드 수                                                           |
-| **ParallelFormattingOutputFormatThreadsActive** | 작업을 실행 중인 ParallelFormattingOutputFormatThreads 스레드 풀의 스레드 수                                                 |
-| **PartMutation**                                | 뮤테이션(ALTER DELETE/UPDATE) 수                                                                                  |
-| **PartsActive**                                 | 현재 및 향후 SELECT에서 사용되는 활성 데이터 파트 수                                                                            |
-| **PartsCommitted**                              | 사용이 중단되었습니다. PartsActive를 참조하십시오.                                                                            |
-| **PartsCompact**                                | Compact 파트 수                                                                                                 |
-| **PartsDeleteOnDestroy**                        | 다른 디스크로 이동되었으며 자체 소멸자에서 삭제되어야 하는 파트 수                                                                        |
-| **PartsDeleting**                               | 식별용 refcounter를 가진 비활성 데이터 파트로, 정리기(cleaner)가 현재 삭제 중인 파트 수                                                  |
-| **PartsOutdated**                               | 비활성 데이터 파트이지만 현재 SELECT에서만 사용될 수 있으며, 해당 SELECT가 끝난 후 삭제될 수 있는 파트 수                                          |
-| **PartsPreActive**                              | data&#95;parts에는 존재하지만 SELECT에서는 사용되지 않는 파트 수                                                                |
-| **PartsPreCommitted**                           | 사용이 중단되었습니다. PartsPreActive를 참조하십시오.                                                                         |
-| **PartsTemporary**                              | 현재 생성 중이며 data&#95;parts 목록에는 포함되지 않은 파트 수                                                                   |
-| **PartsWide**                                   | Wide 파트 수                                                                                                    |
-| **PendingAsyncInsert**                          | 플러시를 대기 중인 비동기 insert 작업 수                                                                                   |
-| **PostgreSQLConnection**                        | PostgreSQL 프로토콜을 사용하는 클라이언트 연결 수                                                                             |
-| **쿼리**                                          | 실행 중인 쿼리 수                                                                                                   |
-| **QueryPreempted**                              | 「priority」 설정으로 인해 일시 중지되어 대기 중인 쿼리 수                                                                        |
-| **QueryThread**                                 | 쿼리 처리 스레드 수                                                                                                  |
-| **RWLockActiveReaders**                         | 테이블 RWLock에서 읽기 잠금을 보유 중인 스레드 수                                                                              |
-| **RWLockActiveWriters**                         | 테이블 RWLock에서 쓰기 잠금을 보유 중인 스레드 수                                                                              |
-| **RWLockWaitingReaders**                        | 테이블 RWLock에서 읽기를 대기 중인 스레드 수                                                                                 |
-| **RWLockWaitingWriters**                        | 테이블 RWLock에서 쓰기를 대기 중인 스레드 수                                                                                 |
-| **Read**                                        | 진행 중인 read, pread, io&#95;getevents 등의 시스템 호출(syscall) 수                                                     |
-| **ReadTaskRequestsSent**                        | 원격 서버에서 이니시에이터로 읽기 작업을 선택하도록 전송되는 콜백 요청(예: s3Cluster 등; 원격 서버 기준으로 측정)의 현재 진행 중인 수                           |
-| **ReadonlyReplica**                             | ZooKeeper 세션 손실 후 재초기화되었거나 ZooKeeper 미구성 상태에서 시작되어 읽기 전용 상태가 된 복제된 테이블(Replicated Table) 개수                  |
-| **RemoteRead**                                  | 원격 리더(remote reader)를 사용한 진행 중인 읽기 수                                                                         |
-| **ReplicatedChecks**                            | 일관성 검사를 수행 중인 데이터 파트 수                                                                                       |
-| **ReplicatedFetch**                             | 레플리카에서 가져오고 있는 데이터 파트 수                                                                                      |
-| **ReplicatedSend**                              | 레플리카로 전송 중인 데이터 파트 수                                                                                         |
-| **RestartReplicaThreads**                       | RESTART REPLICA 스레드 풀의 스레드 수                                                                                 |
-| **RestartReplicaThreadsActive**                 | RESTART REPLICA 스레드 풀에서 작업을 실행 중인 스레드 수                                                                      |
-| **RestoreThreads**                              | RESTORE용 스레드 풀의 스레드 수                                                                                        |
-| **RestoreThreadsActive**                        | RESTORE용 스레드 풀에서 작업을 실행 중인 스레드 수                                                                             |
-| **Revision**                                    | 서버 리비전 번호(패치 릴리스를 제외한 모든 릴리스 및 릴리스 후보에서 증가하는 번호)                                                             |
-| **S3Requests**                                  | S3 요청 수                                                                                                      |
-| **SendExternalTables**                          | 원격 서버로 외부 테이블 데이터를 전송하는 연결 수(GLOBAL IN 및 분산 서브쿼리를 사용하는 GLOBAL JOIN에 사용됨)                                     |
-| **SendScalars**                                 | 원격 서버로 스칼라 값을 전송하는 연결 수                                                                                      |
-| **StorageBufferBytes**                          | Buffer 테이블 버퍼에 있는 바이트 수                                                                                      |
-| **StorageBufferRows**                           | Buffer 테이블 버퍼에 있는 행(row) 수                                                                                   |
-| **StorageDistributedThreads**                   | StorageDistributed 스레드 풀의 스레드 수                                                                              |
-| **StorageDistributedThreadsActive**             | StorageDistributed 스레드 풀에서 작업을 실행 중인 스레드 수                                                                   |
-| **StorageHiveThreads**                          | StorageHive 스레드 풀의 스레드 수                                                                                     |
-| **StorageHiveThreadsActive**                    | StorageHive 스레드 풀에서 작업을 실행 중인 스레드 수                                                                          |
-| **StorageS3Threads**                            | StorageS3 스레드 풀의 스레드 수                                                                                       |
-| **StorageS3ThreadsActive**                      | StorageS3 스레드 풀에서 작업을 실행 중인 스레드 수                                                                            |
-| **SystemReplicasThreads**                       | system.replicas 스레드 풀의 스레드 수                                                                                 |
-| **SystemReplicasThreadsActive**                 | system.replicas 스레드 풀에서 작업을 실행 중인 스레드 수                                                                      |
-| **TCPConnection**                               | TCP 서버(네이티브 인터페이스 클라이언트 포함)에 대한 연결 수(서버 간 분산 쿼리 연결 포함)                                                       |
-| **TablesToDropQueueSize**                       | 백그라운드에서 데이터 삭제를 대기 중인 삭제된 테이블 수                                                                              |
-| **TemporaryFilesForAggregation**                | 외부 집계를 위해 생성된 임시 파일 수                                                                                        |
-| **TemporaryFilesForJoin**                       | JOIN을 위해 생성된 임시 파일 수                                                                                         |
-| **TemporaryFilesForSort**                       | 외부 정렬을 위해 생성된 임시 파일 수                                                                                        |
-| **TemporaryFilesUnknown**                       | 용도가 지정되지 않은 채 생성된 임시 파일 수                                                                                    |
-| **ThreadPoolFSReaderThreads**                   | local&#95;filesystem&#95;read&#95;method=threadpool인 경우 사용하는 스레드 풀의 스레드 수                                    |
-| **ThreadPoolFSReaderThreadsActive**             | local&#95;filesystem&#95;read&#95;method=threadpool인 경우 사용하는 스레드 풀에서 작업을 실행 중인 스레드 수                         |
-| **ThreadPoolRemoteFSReaderThreads**             | remote&#95;filesystem&#95;read&#95;method=threadpool인 경우 사용하는 스레드 풀의 스레드 수                                   |
-| **ThreadPoolRemoteFSReaderThreadsActive**       | remote&#95;filesystem&#95;read&#95;method=threadpool인 경우 사용하는 스레드 풀에서 작업을 실행 중인 스레드 수                        |
-| **ThreadsInOvercommitTracker**                  | OvercommitTracker 내부에서 대기 중인 스레드 수                                                                           |
-| **TotalTemporaryFiles**                         | 생성된 임시 파일의 총 수                                                                                               |
-| **VersionInteger**                              | 서버 버전을 base-1000 단일 정수값으로 표시한 값 (예: 버전 11.22.33 = 11022033)                                                  |
-| **Write**                                       | 진행 중인 쓰기(write, pwrite, io&#95;getevents 등) 시스템 호출(syscall) 수                                                |
-| **ZooKeeperRequest**                            | 진행 중인 ZooKeeper 요청 수                                                                                         |
-| **ZooKeeperSession**                            | ZooKeeper에 대한 세션(연결) 수 (선형화 가능성이 없으므로 1을 넘지 않아야 함)                                                           |
-| **ZooKeeperWatch**                              | ZooKeeper의 watch(이벤트 구독) 수                                                                                   |
-| **ConcurrencyControlAcquired**                  | 획득된 CPU 슬롯의 총 수                                                                                              |
-| **ConcurrencyControlSoftLimit**                 | CPU 슬롯 수에 대한 소프트 제한값                                                                                         |
+{/*AUTOGENERATED_DESCRIPTIONS_START*/ }
 
-**관련 항목**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 주기적으로 계산되는 메트릭을 포함합니다.
-- [system.events](/operations/system-tables/events) — 발생한 여러 이벤트를 포함합니다.
-- [system.metric_log](/operations/system-tables/metric_log) — `system.metrics` 및 `system.events` 테이블의 메트릭 값 이력을 포함합니다.
-- [Monitoring](../../operations/monitoring.md) — ClickHouse 모니터링의 기본 개념을 설명합니다.
+### ASTFuzzerAccumulatedFragments \{#astfuzzeraccumulatedfragments\}
+
+서버 측 AST 퍼저가 향후 뮤테이션에 사용하기 위해 누적한 AST 조각 수입니다.
+
+### ActiveTimersInQueryProfiler \{#activetimersinqueryprofiler\}
+
+QueryProfiler에서 활성 상태인 스레드 로컬 타이머 수
+
+### 활성 주소 수 \{#addressesactive\}
+
+커넥션 풀을 통해 연결을 생성하는 데 사용되는 주소의 총 개수
+
+### AddressesBanned \{#addressesbanned\}
+
+connection pool을 통한 연결 생성 시 오류가 있는 것으로 판단되어 차단된 주소의 총개수
+
+### AggregatorThreads \{#aggregatorthreads\}
+
+Aggregator 스레드 풀의 스레드 수입니다.
+
+### AggregatorThreadsActive \{#aggregatorthreadsactive\}
+
+Aggregator 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### AggregatorThreadsScheduled \{#aggregatorthreadsscheduled\}
+
+Aggregator 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### AsyncInsertCacheSize \{#asyncinsertcachesize\}
+
+캐시에 있는 async insert hash ID 수
+
+### AsynchronousInsertQueueBytes \{#asynchronousinsertqueuebytes\}
+
+AsynchronousInsert 대기열에서 처리 대기 중인 바이트 수입니다.
+
+### AsynchronousInsertQueueSize \{#asynchronousinsertqueuesize\}
+
+AsynchronousInsert 대기열에서 대기 중인 작업 수입니다.
+
+### AsynchronousInsertThreads \{#asynchronousinsertthreads\}
+
+AsynchronousInsert 스레드 풀에 있는 스레드 수입니다.
+
+### AsynchronousInsertThreadsActive \{#asynchronousinsertthreadsactive\}
+
+작업을 실행 중인 AsynchronousInsert 스레드 풀 내 스레드 수입니다.
+
+### AsynchronousInsertThreadsScheduled \{#asynchronousinsertthreadsscheduled\}
+
+AsynchronousInsert 스레드 풀에서 큐에 대기 중이거나 실행 중인 작업 수.
+
+### AsynchronousReadWait \{#asynchronousreadwait\}
+
+비동기 읽기를 대기 중인 스레드 수입니다.
+
+### AttachedDatabase \{#attacheddatabase\}
+
+활성 데이터베이스입니다.
+
+### AttachedDictionary \{#attacheddictionary\}
+
+활성 딕셔너리 수입니다.
+
+### AttachedReplicatedTable \{#attachedreplicatedtable\}
+
+활성 복제 테이블.
+
+### AttachedTable \{#attachedtable\}
+
+활성 테이블.
+
+### AttachedView \{#attachedview\}
+
+활성 뷰.
+
+### AvroSchemaCacheBytes \{#avroschemacachebytes\}
+
+바이트 단위 Avro 스키마 캐시 크기
+
+### AvroSchemaCacheCells \{#avroschemacachecells\}
+
+캐시된 Avro 스키마의 수
+
+### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
+
+Avro 스키마 레지스트리 캐시의 크기(바이트)
+
+### AvroSchemaRegistryCacheCells \{#avroschemaregistrycachecells\}
+
+Avro 스키마 레지스트리 캐시의 엔트리 수
+
+### AzureRequests \{#azurerequests\}
+
+현재 실행 중인 Azure 요청 수
+
+### BackgroundBufferFlushSchedulePoolSize \{#backgroundbufferflushschedulepoolsize\}
+
+BackgroundBufferFlushSchedulePool 내 작업 수 제한
+
+### BackgroundBufferFlushSchedulePoolTask \{#backgroundbufferflushschedulepooltask\}
+
+BackgroundBufferFlushSchedulePool의 활성 작업 수입니다. 이 풀은 Buffer를 주기적으로 플러시하는 데 사용됩니다.
+
+### BackgroundCommonPoolSize \{#backgroundcommonpoolsize\}
+
+관련 백그라운드 풀의 작업 수 제한
+
+### BackgroundCommonPoolTask \{#backgroundcommonpooltask\}
+
+해당 백그라운드 풀의 활성 작업 수
+
+### BackgroundDistributedSchedulePoolSize \{#backgrounddistributedschedulepoolsize\}
+
+BackgroundDistributedSchedulePool의 작업 수 제한
+
+### BackgroundDistributedSchedulePoolTask \{#backgrounddistributedschedulepooltask\}
+
+BackgroundDistributedSchedulePool의 활성 작업 수입니다. 이 풀은 백그라운드에서 수행되는 분산 전송 작업에 사용됩니다.
+
+### BackgroundFetchesPoolSize \{#backgroundfetchespoolsize\}
+
+연관된 백그라운드 풀에서 동시에 수행할 수 있는 fetch 작업 수의 제한
+
+### BackgroundFetchesPoolTask \{#backgroundfetchespooltask\}
+
+해당 백그라운드 풀에서 활성 상태인 fetch 작업 수
+
+### BackgroundMergesAndMutationsPoolSize \{#backgroundmergesandmutationspoolsize\}
+
+관련 백그라운드 풀의 활성 머지 및 뮤테이션 수 제한
+
+### BackgroundMergesAndMutationsPoolTask \{#backgroundmergesandmutationspooltask\}
+
+관련 백그라운드 풀에서 진행 중인 머지 및 뮤테이션 수
+
+### BackgroundMessageBrokerSchedulePoolSize \{#backgroundmessagebrokerschedulepoolsize\}
+
+메시지 스트리밍용 BackgroundMessageBrokerSchedulePool의 작업 수 제한
+
+### BackgroundMessageBrokerSchedulePoolTask \{#backgroundmessagebrokerschedulepooltask\}
+
+메시지 스트리밍용 BackgroundMessageBrokerSchedulePool의 활성 작업 수
+
+### BackgroundMovePoolSize \{#backgroundmovepoolsize\}
+
+이동 작업용 BackgroundProcessingPool의 작업 수 제한
+
+### BackgroundMovePoolTask \{#backgroundmovepooltask\}
+
+move 작업용 BackgroundProcessingPool의 활성 작업 수
+
+### BackgroundSchedulePoolSize \{#backgroundschedulepoolsize\}
+
+BackgroundSchedulePool의 작업 수 제한입니다. 이 풀은 오래된 데이터 파트 정리, 데이터 파트 변경, 레플리카 재초기화 등 ReplicatedMergeTree의 주기적 작업에 사용됩니다.
+
+### BackgroundSchedulePoolTask \{#backgroundschedulepooltask\}
+
+BackgroundSchedulePool에서 활성 상태인 작업 수입니다. 이 풀은 오래된 데이터 파트 정리, 데이터 파트 변경, 레플리카 재초기화 등 ReplicatedMergeTree의 주기적 작업에 사용됩니다.
+
+### BackupsIOThreads \{#backupsiothreads\}
+
+BackupsIO 스레드 풀 내 스레드 수입니다.
+
+### BackupsIOThreadsActive \{#backupsiothreadsactive\}
+
+작업을 실행 중인 BackupsIO 스레드 풀의 스레드 수입니다.
+
+### BackupsIOThreadsScheduled \{#backupsiothreadsscheduled\}
+
+BackupsIO 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### BackupsThreads \{#backupsthreads\}
+
+BACKUP에 사용되는 스레드 풀의 스레드 수입니다.
+
+### BackupsThreadsActive \{#backupsthreadsactive\}
+
+작업을 실행 중인 BACKUP 스레드 풀의 스레드 수입니다.
+
+### BackupsThreadsScheduled \{#backupsthreadsscheduled\}
+
+BACKUP의 대기열에 있거나 실행 중인 작업 수입니다.
+
+### BcryptCacheBytes \{#bcryptcachebytes\}
+
+bcrypt 인증 캐시의 전체 크기(바이트 단위)
+
+### BcryptCacheSize \{#bcryptcachesize\}
+
+bcrypt 인증 캐시의 총 엔트리 수
+
+### BlobCopierThreads \{#blobcopierthreads\}
+
+객체 스토리지 디스크의 백그라운드 복제 프로세스에서 사용하는 스레드 풀의 스레드 수
+
+### BlobCopierThreadsActive \{#blobcopierthreadsactive\}
+
+객체 스토리지 디스크의 백그라운드 복제 프로세스의 스레드 풀에서 작업을 실행 중인 스레드 수
+
+### BlobCopierThreadsScheduled \{#blobcopierthreadsscheduled\}
+
+객체 스토리지 디스크 백그라운드 복제 프로세스의 스레드 풀에서 큐에 있거나 실행 중인 작업 수
+
+### BlobKillerThreads \{#blobkillerthreads\}
+
+객체 스토리지 디스크의 백그라운드 삭제 프로세스에 사용되는 스레드 풀의 스레드 수
+
+### BlobKillerThreadsActive \{#blobkillerthreadsactive\}
+
+객체 스토리지 디스크의 백그라운드 제거 프로세스에서 작업을 실행 중인 스레드 풀의 스레드 수
+
+### BlobKillerThreadsScheduled \{#blobkillerthreadsscheduled\}
+
+객체 스토리지 디스크의 백그라운드 삭제 프로세스 스레드 풀에서 대기 중이거나 실행 중인 작업 수
+
+### BrokenDisks \{#brokendisks\}
+
+디스크 검사 중 손상된 것으로 마크된 디스크 수입니다.
+
+### BrokenDistributedBytesToInsert \{#brokendistributedbytestoinsert\}
+
+손상된 것으로 마크된 분산 테이블에 비동기로 삽입할 데이터의 바이트 수입니다. 각 세그먼트의 바이트 수를 합산한 값입니다.
+
+### BrokenDistributedFilesToInsert \{#brokendistributedfilestoinsert\}
+
+손상된 것으로 마크된 분산 테이블의 비동기 삽입용 파일 수입니다. 각 세그먼트의 파일 수를 합산한 값입니다.
+
+### BuildVectorSimilarityIndexThreads \{#buildvectorsimilarityindexthreads\}
+
+벡터 유사성 인덱스를 빌드하는 스레드 풀의 스레드 수입니다.
+
+### BuildVectorSimilarityIndexThreadsActive \{#buildvectorsimilarityindexthreadsactive\}
+
+벡터 유사성 인덱스 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### BuildVectorSimilarityIndexThreadsScheduled \{#buildvectorsimilarityindexthreadsscheduled\}
+
+벡터 유사성 인덱스 빌드 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### CacheDetachedFileSegments \{#cachedetachedfilesegments\}
+
+현재 존재하는 분리된 캐시 파일 세그먼트 수
+
+### CacheDictionaryThreads \{#cachedictionarythreads\}
+
+CacheDictionary 스레드 풀의 스레드 수입니다.
+
+### CacheDictionaryThreadsActive \{#cachedictionarythreadsactive\}
+
+작업을 실행 중인 CacheDictionary 스레드 풀 내 스레드 수.
+
+### CacheDictionaryThreadsScheduled \{#cachedictionarythreadsscheduled\}
+
+CacheDictionary 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### CacheDictionaryUpdateQueueBatches \{#cachedictionaryupdatequeuebatches\}
+
+CacheDictionaries의 업데이트 대기열에 있는 &#39;배치&#39;(키 집합)의 수입니다.
+
+### CacheDictionaryUpdateQueueKeys \{#cachedictionaryupdatequeuekeys\}
+
+CacheDictionaries의 업데이트 대기열에 있는 정확한 키 수입니다.
+
+### CacheFileSegments \{#cachefilesegments\}
+
+현재 존재하는 캐시 파일 세그먼트 수
+
+### CacheWarmerBytesInProgress \{#cachewarmerbytesinprogress\}
+
+비동기적으로 파일 시스템 캐시에 로드되기를 대기 중인 원격 파일 세그먼트의 총 크기입니다.
+
+### ColumnsDescriptionsCacheSize \{#columnsdescriptionscachesize\}
+
+ColumnsDescriptions 캐시의 크기(테이블별 캐시)
+
+### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
+
+JIT 컴파일된 코드 캐시에 사용된 총 바이트 수
+
+### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
+
+JIT 컴파일된 코드 캐시에 있는 총 엔트리 수
+
+### 압축 \{#compressing\}
+
+내부 압축 코덱을 사용한 압축 작업 횟수
+
+### CompressionThread \{#compressionthread\}
+
+압축 스레드 풀에 있는 스레드 수입니다.
+
+### CompressionThreadActive \{#compressionthreadactive\}
+
+작업을 실행 중인 압축 스레드 풀의 스레드 수입니다.
+
+### CompressionThreadScheduled \{#compressionthreadscheduled\}
+
+압축 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ConcurrencyControlAcquired \{#concurrencycontrolacquired\}
+
+획득한 CPU slot의 총개수
+
+### ConcurrencyControlAcquiredNonCompeting \{#concurrencycontrolacquirednoncompeting\}
+
+경합 대상으로 간주되지 않는 획득된 CPU slot의 총개수(`fair_round_robin` 스케줄러를 사용하는 경우 첫 번째 스레드)
+
+### ConcurrencyControlPreempted \{#concurrencycontrolpreempted\}
+
+CPU slot을 기다리는 선점된 스레드의 총수
+
+### ConcurrencyControlScheduled \{#concurrencycontrolscheduled\}
+
+현재 스케줄링 중인 CPU slot 요청의 총개수
+
+### ConcurrencyControlSoftLimit \{#concurrencycontrolsoftlimit\}
+
+CPU slot 수의 소프트 제한 값
+
+### ConcurrentHashJoinPoolThreads \{#concurrenthashjoinpoolthreads\}
+
+동시 해시 조인용 스레드 풀의 스레드 수입니다.
+
+### ConcurrentHashJoinPoolThreadsActive \{#concurrenthashjoinpoolthreadsactive\}
+
+작업을 실행 중인 동시 해시 조인용 스레드 풀의 스레드 수입니다.
+
+### ConcurrentHashJoinPoolThreadsScheduled \{#concurrenthashjoinpoolthreadsscheduled\}
+
+동시 해시 조인을 위한 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ConcurrentQueryAcquired \{#concurrentqueryacquired\}
+
+획득된 쿼리 슬롯의 총수
+
+### ConcurrentQueryScheduled \{#concurrentqueryscheduled\}
+
+현재 스케줄링 중인 쿼리 슬롯 요청의 총 개수
+
+### ContextLockWait \{#contextlockwait\}
+
+Context 내에서 잠금을 대기 중인 스레드 수입니다. 이는 전역 잠금입니다.
+
+### CoordinatedMergesCoordinatorAssignedMerges \{#coordinatedmergescoordinatorassignedmerges\}
+
+머지 코디네이터 상태에서 할당된 머지 수입니다.
+
+### CoordinatedMergesCoordinatorRunningMerges \{#coordinatedmergescoordinatorrunningmerges\}
+
+코디네이터에 표시되는 실행 중인 머지의 수입니다.
+
+### CoordinatedMergesWorkerAssignedMerges \{#coordinatedmergesworkerassignedmerges\}
+
+머지 작업자 상태의 할당된 머지 수입니다.
+
+### CreatedTimersInQueryProfiler \{#createdtimersinqueryprofiler\}
+
+QueryProfiler에서 생성된 스레드 로컬 타이머의 수
+
+### DDLWorkerThreads \{#ddlworkerthreads\}
+
+ON CLUSTER 쿼리에 사용되는 DDLWorker 스레드 풀의 스레드 수입니다.
+
+### DDLWorkerThreadsActive \{#ddlworkerthreadsactive\}
+
+작업을 실행 중인 ON CLUSTER 쿼리에 사용되는 DDLWORKER 스레드 풀의 스레드 수입니다.
+
+### DDLWorkerThreadsScheduled \{#ddlworkerthreadsscheduled\}
+
+ON CLUSTER 쿼리를 위한 DDLWORKER 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DNSAddressesCacheBytes \{#dnsaddressescachebytes\}
+
+DNS 주소 캐시의 크기(바이트)
+
+### DNSAddressesCacheSize \{#dnsaddressescachesize\}
+
+캐시된 DNS 주소 수
+
+### DNSHostsCacheBytes \{#dnshostscachebytes\}
+
+바이트 단위의 DNS 호스트 캐시 크기
+
+### DNSHostsCacheSize \{#dnshostscachesize\}
+
+캐시된 DNS 호스트의 수
+
+### DatabaseBackupThreads \{#databasebackupthreads\}
+
+DatabaseBackup 스레드 풀에 있는 스레드 수입니다.
+
+### DatabaseBackupThreadsActive \{#databasebackupthreadsactive\}
+
+작업을 실행 중인 DatabaseBackup 스레드 풀 내 스레드 수입니다.
+
+### DatabaseBackupThreadsScheduled \{#databasebackupthreadsscheduled\}
+
+DatabaseBackup 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DatabaseCatalogThreads \{#databasecatalogthreads\}
+
+DatabaseCatalog의 스레드 풀에서 사용하는 스레드 수입니다.
+
+### DatabaseCatalogThreadsActive \{#databasecatalogthreadsactive\}
+
+작업을 실행 중인 DatabaseCatalog 스레드 풀의 스레드 수입니다.
+
+### DatabaseCatalogThreadsScheduled \{#databasecatalogthreadsscheduled\}
+
+DatabaseCatalog 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DatabaseOnDiskThreads \{#databaseondiskthreads\}
+
+DatabaseOnDisk 스레드 풀의 스레드 수입니다.
+
+### DatabaseOnDiskThreadsActive \{#databaseondiskthreadsactive\}
+
+작업을 실행 중인 DatabaseOnDisk 스레드 풀의 스레드 수입니다.
+
+### DatabaseOnDiskThreadsScheduled \{#databaseondiskthreadsscheduled\}
+
+DatabaseOnDisk 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DatabaseReplicatedCreateTablesThreads \{#databasereplicatedcreatetablesthreads\}
+
+DatabaseReplicated에서 테이블을 생성할 때 사용하는 스레드 풀의 스레드 수입니다.
+
+### DatabaseReplicatedCreateTablesThreadsActive \{#databasereplicatedcreatetablesthreadsactive\}
+
+DatabaseReplicated에서 테이블 생성에 사용하는 스레드 풀의 활성 스레드 수입니다.
+
+### DatabaseReplicatedCreateTablesThreadsScheduled \{#databasereplicatedcreatetablesthreadsscheduled\}
+
+DatabaseReplicated에서 테이블 생성을 위한 스레드 풀의 대기 중이거나 실행 중인 작업 수입니다.
+
+### 압축 해제 \{#decompressing\}
+
+내부 압축 코덱을 사용한 압축 해제 작업 수
+
+### DelayedInserts \{#delayedinserts\}
+
+MergeTree 테이블의 파티션에서 활성 데이터 파트 수가 많아 속도 제한이 적용된 INSERT 쿼리 수입니다.
+
+### DeltaLakeSnapshotCacheSizeElements \{#deltalakesnapshotcachesizeelements\}
+
+DeltaLake 스냅샷 캐시의 크기(요소 수)입니다.
+
+### DestroyAggregatesThreads \{#destroyaggregatesthreads\}
+
+집계 상태를 삭제하는 데 사용하는 스레드 풀의 스레드 수입니다.
+
+### DestroyAggregatesThreadsActive \{#destroyaggregatesthreadsactive\}
+
+집계 상태를 삭제하는 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### DestroyAggregatesThreadsScheduled \{#destroyaggregatesthreadsscheduled\}
+
+집계 상태를 삭제하는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DictCacheRequests \{#dictcacherequests\}
+
+캐시 타입 딕셔너리의 데이터 소스에 대한 진행 중인 요청 수입니다.
+
+### DiskConnectionsStored \{#diskconnectionsstored\}
+
+디스크의 세션 풀에 저장된 세션의 총수
+
+### DiskConnectionsTotal \{#diskconnectionstotal\}
+
+디스크의 풀에 저장된 세션과 현재 활발히 사용 중인 세션을 포함한 전체 세션 수
+
+### DiskObjectStorageAsyncThreads \{#diskobjectstorageasyncthreads\}
+
+사용 중단된 메트릭이며, 아무것도 표시하지 않습니다.
+
+### DiskObjectStorageAsyncThreadsActive \{#diskobjectstorageasyncthreadsactive\}
+
+사용 중단된 메트릭으로, 아무것도 표시하지 않습니다.
+
+### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
+
+AzureObjectStorage용 `plain_rewritable` 인메모리 맵의 로컬-원격 경로 엔트리 수입니다.
+
+### DiskPlainRewritableAzureFileCount \{#diskplainrewritableazurefilecount\}
+
+AzureObjectStorage용 &#39;plain&#95;rewritable&#39; 인메모리 맵의 파일 엔트리 수입니다.
+
+### DiskPlainRewritableLocalDirectoryMapSize \{#diskplainrewritablelocaldirectorymapsize\}
+
+LocalObjectStorage의 &#39;plain&#95;rewritable&#39; 인메모리 맵에 있는 로컬-원격 경로 엔트리의 개수입니다.
+
+### DiskPlainRewritableLocalFileCount \{#diskplainrewritablelocalfilecount\}
+
+LocalObjectStorage의 &#39;plain&#95;rewritable&#39; 인메모리 맵에 있는 파일 엔트리 수입니다.
+
+### DiskPlainRewritableS3DirectoryMapSize \{#diskplainrewritables3directorymapsize\}
+
+S3ObjectStorage용 &#39;plain&#95;rewritable&#39; 인메모리 맵에 있는 로컬-원격 경로 엔트리 수입니다.
+
+### DiskPlainRewritableS3FileCount \{#diskplainrewritables3filecount\}
+
+S3ObjectStorage의 &#39;plain&#95;rewritable&#39; 인메모리 맵에 있는 파일 엔트리의 수입니다.
+
+### DiskS3NoSuchKeyErrors \{#disks3nosuchkeyerrors\}
+
+ClickHouse 디스크를 통해 S3 Cloud 스토리지에서 데이터를 읽을 때 발생하는 `NoSuchKey` 오류 수입니다.
+
+### DiskSpaceReservedForMerge \{#diskspacereservedformerge\}
+
+현재 실행 중인 백그라운드 머지에 예약된 디스크 공간입니다. 현재 머지 중인 파트의 총 크기보다 약간 더 큽니다.
+
+### DistrCacheAllocatedConnections \{#distrcacheallocatedconnections\}
+
+현재 Distributed Cache 연결 풀에 할당된 연결 수
+
+### DistrCacheBorrowedConnections \{#distrcacheborrowedconnections\}
+
+Distributed Cache 연결 풀에서 현재 대여 중인 연결 수
+
+### DistrCacheOpenedConnections \{#distrcacheopenedconnections\}
+
+Distributed Cache에 열려 있는 연결 수
+
+### DistrCacheReadBuffers \{#distrcachereadbuffers\}
+
+Distributed Cache 읽기 버퍼 수
+
+### DistrCacheReadRequests \{#distrcachereadrequests\}
+
+Distributed Cache에 수행된 Read 요청 수
+
+### DistrCacheRegisteredServers \{#distrcacheregisteredservers\}
+
+Distributed Cache에 등록된 서버 수
+
+### DistrCacheRegisteredServersCurrentAZ \{#distrcacheregisteredserverscurrentaz\}
+
+현재 az에 등록된 distributed 캐시 서버 수
+
+### DistrCacheServerConnections \{#distrcacheserverconnections\}
+
+Distributed Cache에서 ClickHouse 서버로 열린 연결 수
+
+### DistrCacheServerRegistryConnections \{#distrcacheserverregistryconnections\}
+
+Distributed Cache에서 ClickHouse 서버로의 활성 연결 수(제한으로 인해 취소된 것으로 마크되지 않음)
+
+### DistrCacheServerS3CachedClients \{#distrcacheservers3cachedclients\}
+
+Distributed Cache의 S3 캐시된 클라이언트 수
+
+### DistrCacheSharedLimitCount \{#distrcachesharedlimitcount\}
+
+DistributedCache::ConnectionPool::SharedLimit에 따른 열려 있는 연결 수
+
+### DistrCacheUsedConnections \{#distrcacheusedconnections\}
+
+현재 사용 중인 Distributed Cache 연결 수
+
+### DistrCacheWriteBuffers \{#distrcachewritebuffers\}
+
+Distributed Cache 쓰기 버퍼 수
+
+### DistrCacheWriteRequests \{#distrcachewriterequests\}
+
+Distributed Cache에 대해 수행된 Write 요청 수
+
+### DistributedBytesToInsert \{#distributedbytestoinsert\}
+
+분산 테이블에 비동기 삽입하기 위해 처리 대기 중인 바이트 수입니다. 모든 세그먼트의 바이트 수를 합산한 값입니다.
+
+### DistributedFilesToInsert \{#distributedfilestoinsert\}
+
+분산 테이블에 비동기 삽입하기 위해 처리 대기 중인 파일 수입니다. 각 세그먼트의 파일 수를 합산한 값입니다.
+
+### DistributedIndexAnalysisThreads \{#distributedindexanalysisthreads\}
+
+분산 인덱스 분석을 위한 스레드 풀의 스레드 수입니다.
+
+### DistributedIndexAnalysisThreadsActive \{#distributedindexanalysisthreadsactive\}
+
+작업을 실행 중인 분산 인덱스 분석 스레드 풀의 스레드 수입니다.
+
+### DistributedIndexAnalysisThreadsScheduled \{#distributedindexanalysisthreadsscheduled\}
+
+분산 인덱스 분석 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### DistributedInsertThreads \{#distributedinsertthreads\}
+
+Distributed 테이블에 INSERT할 때 사용되는 스레드 수입니다.
+
+### DistributedInsertThreadsActive \{#distributedinsertthreadsactive\}
+
+작업을 실행 중인 Distributed 테이블에 INSERT하는 데 사용되는 스레드 수입니다.
+
+### DistributedInsertThreadsScheduled \{#distributedinsertthreadsscheduled\}
+
+Distributed에 INSERT할 때 사용되는, 대기 중이거나 실행 중인 작업 수입니다.
+
+### DistributedSend \{#distributedsend\}
+
+분산 테이블에 INSERT된 데이터를 전송하는 원격 서버와의 연결 수입니다. 동기 및 비동기 모드 모두에 해당합니다.
+
+### DropDistributedCacheThreads \{#dropdistributedcachethreads\}
+
+drop distributed 캐시 쿼리에 사용되는 스레드 풀의 스레드 수입니다.
+
+### DropDistributedCacheThreadsActive \{#dropdistributedcachethreadsactive\}
+
+Distributed Cache 삭제 쿼리용 스레드 풀에서 활성 상태인 스레드 수입니다.
+
+### DropDistributedCacheThreadsScheduled \{#dropdistributedcachethreadsscheduled\}
+
+drop distributed cache용 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### EphemeralNode \{#ephemeralnode\}
+
+ZooKeeper에서 유지되는 임시 노드의 수입니다.
+
+### FilesystemCacheDelayedCleanupElements \{#filesystemcachedelayedcleanupelements\}
+
+백그라운드 정리 큐에 있는 파일 시스템 캐시 요소
+
+### FilesystemCacheDownloadQueueElements \{#filesystemcachedownloadqueueelements\}
+
+다운로드 대기열의 파일 시스템 캐시 요소 수
+
+### FilesystemCacheElements \{#filesystemcacheelements\}
+
+파일 시스템 캐시 요소(파일 세그먼트)
+
+### FilesystemCacheHoldFileSegments \{#filesystemcacheholdfilesegments\}
+
+현재 해제 불가능한 상태로 유지되는 파일 시스템 캐시 파일 세그먼트
+
+### FilesystemCacheKeys \{#filesystemcachekeys\}
+
+파일 시스템 캐시의 키 수
+
+### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
+
+활성 캐시 버퍼 수
+
+### FilesystemCacheReserveThreads \{#filesystemcachereservethreads\}
+
+캐시 공간 예약을 시도하는 스레드 수
+
+### FilesystemCacheSize \{#filesystemcachesize\}
+
+바이트 단위 파일 시스템 캐시 크기
+
+### FilesystemCacheSizeLimit \{#filesystemcachesizelimit\}
+
+바이트 단위 파일 시스템 캐시 크기 제한
+
+### 기본 키로 마크 필터링 \{#filteringmarkswithprimarykey\}
+
+현재 기본 키로 마크 범위를 필터링하고 있는 스레드 수
+
+### FilteringMarksWithSecondaryKeys \{#filteringmarkswithsecondarykeys\}
+
+현재 보조 키를 사용해 마크 범위를 필터링하고 있는 스레드 수
+
+### FormatParsingThreads \{#formatparsingthreads\}
+
+입력 데이터를 파싱하는 데 사용되는 스레드 풀의 스레드 수입니다.
+
+### FormatParsingThreadsActive \{#formatparsingthreadsactive\}
+
+입력을 파싱하는 데 사용되는 스레드 풀에서 현재 작업을 실행 중인 스레드 수입니다.
+
+### FormatParsingThreadsScheduled \{#formatparsingthreadsscheduled\}
+
+입력 파싱에 사용되는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### FreezePartThreads \{#freezepartthreads\}
+
+데이터 파트 동결에 사용하는 스레드 풀의 스레드 수입니다.
+
+### FreezePartThreadsActive \{#freezepartthreadsactive\}
+
+데이터 파트 동결을 위한 스레드 풀에서 활성 상태인 스레드 수입니다.
+
+### FreezePartThreadsScheduled \{#freezepartthreadsscheduled\}
+
+데이터 파트 동결을 위한 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### GlobalThread \{#globalthread\}
+
+전역 스레드 풀의 스레드 개수입니다.
+
+### GlobalThreadActive \{#globalthreadactive\}
+
+작업을 실행 중인 전역 스레드 풀의 스레드 수입니다.
+
+### GlobalThreadScheduled \{#globalthreadscheduled\}
+
+전역 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### HTTPConnection \{#httpconnection\}
+
+HTTP 서버 연결 수
+
+### HTTPConnectionsStored \{#httpconnectionsstored\}
+
+HTTP 호스트용 세션 풀에 저장된 세션의 총 개수
+
+### HTTPConnectionsTotal \{#httpconnectionstotal\}
+
+HTTP 호스트에 대해 풀에 저장되어 있거나 현재 활성 상태로 사용 중인 모든 세션의 총 개수
+
+### HashedDictionaryThreads \{#hasheddictionarythreads\}
+
+HashedDictionary 스레드 풀에서 사용하는 스레드 수입니다.
+
+### HashedDictionaryThreadsActive \{#hasheddictionarythreadsactive\}
+
+작업을 실행 중인 HashedDictionary 스레드 풀의 스레드 수입니다.
+
+### HashedDictionaryThreadsScheduled \{#hasheddictionarythreadsscheduled\}
+
+HashedDictionary 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### HiveFilesCacheBytes \{#hivefilescachebytes\}
+
+hive 캐시의 크기(바이트)
+
+### HiveFilesCacheFiles \{#hivefilescachefiles\}
+
+hive 캐시에 저장된 파일 수
+
+### HiveMetadataFilesCacheBytes \{#hivemetadatafilescachebytes\}
+
+Hive 메타데이터 캐시의 크기(바이트)
+
+### HiveMetadataFilesCacheFiles \{#hivemetadatafilescachefiles\}
+
+Hive 메타데이터 캐시에 저장된 파일 수
+
+### IDiskCopierThreads \{#idiskcopierthreads\}
+
+서로 다른 타입의 디스크 사이에서 데이터를 복사하는 데 사용되는 스레드 수입니다.
+
+### IDiskCopierThreadsActive \{#idiskcopierthreadsactive\}
+
+서로 다른 유형의 디스크 간에 데이터를 복사하는 작업을 실행 중인 스레드 수입니다.
+
+### IDiskCopierThreadsScheduled \{#idiskcopierthreadsscheduled\}
+
+서로 다른 타입의 디스크 간 데이터 복사를 위한 대기 중이거나 실행 중인 작업 수입니다.
+
+### IOPrefetchThreads \{#ioprefetchthreads\}
+
+IO 프리페치 스레드 풀에 있는 스레드 수입니다.
+
+### IOPrefetchThreadsActive \{#ioprefetchthreadsactive\}
+
+IO 프리페치 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### IOPrefetchThreadsScheduled \{#ioprefetchthreadsscheduled\}
+
+IO 프리페치 스레드 풀에서 큐에 대기 중이거나 실행 중인 작업 수입니다.
+
+### IOThreads \{#iothreads\}
+
+IO 스레드 풀에 있는 스레드 수입니다.
+
+### IOThreadsActive \{#iothreadsactive\}
+
+작업을 실행 중인 IO 스레드 풀의 스레드 수입니다.
+
+### IOThreadsScheduled \{#iothreadsscheduled\}
+
+IO 스레드 풀의 대기 중이거나 실행 중인 작업 수입니다.
+
+### IOUringInFlightEvents \{#iouringinflightevents\}
+
+현재 처리 중인 io&#95;uring SQE 수
+
+### IOUringPendingEvents \{#iouringpendingevents\}
+
+제출 대기 중인 io&#95;uring SQE 수
+
+### IOWriterThreads \{#iowriterthreads\}
+
+IO writer 스레드 풀의 스레드 수입니다.
+
+### IOWriterThreadsActive \{#iowriterthreadsactive\}
+
+IO writer 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### IOWriterThreadsScheduled \{#iowriterthreadsscheduled\}
+
+IO writer 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### IcebergCatalogThreads \{#icebergcatalogthreads\}
+
+IcebergCatalog 스레드 풀에 있는 스레드 수입니다.
+
+### IcebergCatalogThreadsActive \{#icebergcatalogthreadsactive\}
+
+IcebergCatalog 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### IcebergCatalogThreadsScheduled \{#icebergcatalogthreadsscheduled\}
+
+IcebergCatalog 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
+
+Iceberg 메타데이터 캐시의 크기(바이트)
+
+### IcebergMetadataFilesCacheFiles \{#icebergmetadatafilescachefiles\}
+
+Iceberg 메타데이터 캐시에 저장된 파일 수
+
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Iceberg 테이블의 백그라운드 스케줄 풀에서 실행할 수 있는 작업 수 제한입니다.
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Iceberg 테이블의 백그라운드 스케줄 풀에 있는 작업 수입니다.
+
+### IndexMarkCacheBytes \{#indexmarkcachebytes\}
+
+보조 인덱스의 마크 캐시 총 크기(바이트)
+
+### IndexMarkCacheFiles \{#indexmarkcachefiles\}
+
+보조 인덱스의 마크 캐시에 캐시된 마크 파일의 총 개수
+
+### IndexUncompressedCacheBytes \{#indexuncompressedcachebytes\}
+
+보조 인덱스의 비압축 캐시 총 크기(바이트)입니다. 비압축 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로, 대부분 사용을 피해야 합니다.
+
+### IndexUncompressedCacheCells \{#indexuncompressedcachecells\}
+
+보조 인덱스를 위한 uncompressed 캐시의 총 엔트리 수입니다. 각 엔트리는 압축 해제된 데이터 블록을 나타냅니다. Uncompressed 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로 가급적 사용하지 않아야 합니다
+
+### InterserverConnection \{#interserverconnection\}
+
+다른 레플리카가 파트를 가져오기 위해 사용하는 연결 수
+
+### 서버가 종료 중인지 여부 \{#isservershuttingdown\}
+
+서버가 종료 중인지 나타냅니다: 0 = 아니요, 1 = 예
+
+### KafkaAssignedPartitions \{#kafkaassignedpartitions\}
+
+현재 Kafka 테이블에 할당된 파티션 수
+
+### KafkaBackgroundReads \{#kafkabackgroundreads\}
+
+현재 실행 중인 백그라운드 읽기 수(Kafka에서 materialized view를 채우는 작업)
+
+### KafkaConsumers \{#kafkaconsumers\}
+
+활성 상태인 Kafka 컨슈머 수
+
+### 사용 중인 Kafka 컨슈머 수 \{#kafkaconsumersinuse\}
+
+현재 직접 읽기 또는 백그라운드 읽기에 사용되는 컨슈머 수
+
+### KafkaConsumersWithAssignment \{#kafkaconsumerswithassignment\}
+
+하나 이상의 파티션이 할당된 활성 Kafka 컨슈머 수입니다.
+
+### KafkaLibrdkafkaThreads \{#kafkalibrdkafkathreads\}
+
+활성 상태인 librdkafka 스레드 수
+
+### KafkaProducers \{#kafkaproducers\}
+
+생성된 활성 Kafka 프로듀서 수
+
+### KafkaWrites \{#kafkawrites\}
+
+현재 Kafka로 실행 중인 삽입 작업 수
+
+### KeeperAliveConnections \{#keeperaliveconnections\}
+
+활성 연결 수
+
+### KeeperOutstandingRequests \{#keeperoutstandingrequests\}
+
+대기 중인 요청 수
+
+### LicenseRemainingSeconds \{#licenseremainingseconds\}
+
+라이선스 유효 기간에 남은 초 수입니다.
+
+### LocalThread \{#localthread\}
+
+사용 중단되었습니다. 로컬 스레드 풀의 스레드 수입니다. 로컬 스레드 풀의 스레드는 전역 스레드 풀에서 가져옵니다.
+
+### LocalThreadActive \{#localthreadactive\}
+
+사용 중단되었습니다. 작업을 실행 중인 로컬 스레드 풀의 스레드 수입니다.
+
+### LocalThreadScheduled \{#localthreadscheduled\}
+
+사용 중단되었습니다. 로컬 스레드 풀의 대기 중이거나 실행 중인 작업 수입니다.
+
+### MMapCacheCells \{#mmapcachecells\}
+
+`mmap`으로 열린 파일 수(메모리에 매핑된 파일 수)입니다. 이는 `local_filesystem_read_method` 설정이 `mmap`으로 지정된 쿼리에서 사용됩니다. `mmap`으로 열린 파일은 비용이 큰 TLB flush를 피하기 위해 캐시에 유지됩니다.
+
+### MMappedFileBytes \{#mmappedfilebytes\}
+
+메모리 매핑된 파일 영역의 전체 크기입니다.
+
+### MMappedFiles \{#mmappedfiles\}
+
+메모리 매핑된 파일 수입니다.
+
+### MarkCacheBytes \{#markcachebytes\}
+
+마크 캐시의 총 크기(바이트)
+
+### MarkCacheFiles \{#markcachefiles\}
+
+마크 캐시에 저장된 마크 파일의 총개수
+
+### MarksLoaderThreads \{#marksloaderthreads\}
+
+마크를 로드하는 스레드 풀의 스레드 수입니다.
+
+### MarksLoaderThreadsActive \{#marksloaderthreadsactive\}
+
+마크를 로드하는 스레드 풀에서 작업을 실행 중인 스레드 수.
+
+### MarksLoaderThreadsScheduled \{#marksloaderthreadsscheduled\}
+
+마크를 로드하는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MaxAllocatedEphemeralLockSequentialNumber \{#maxallocatedephemerallocksequentialnumber\}
+
+ZooKeeper의 임시 잠금 znode에 할당된 최대 순차 번호입니다. 주로 block 번호의 영향을 받습니다.
+
+### MaxDDLEntryID \{#maxddlentryid\}
+
+DDLWorker가 처리한 DDL 엔트리의 최대 ID입니다.
+
+### MaxPushedDDLEntryID \{#maxpushedddlentryid\}
+
+ZooKeeper로 푸시된 DDLWorker의 최대 DDL 엔트리입니다.
+
+### MemoryTracking \{#memorytracking\}
+
+서버가 할당한 총 메모리 양(바이트)입니다.
+
+### MemoryTrackingUncorrected \{#memorytrackinguncorrected\}
+
+RSS로 보정되지 않은 서버의 총 할당 메모리 양(바이트)입니다.
+
+### 머지 \{#merge\}
+
+실행 중인 백그라운드 머지 수
+
+### MergeJoinBlocksCacheBytes \{#mergejoinblockscachebytes\}
+
+MergeJoin에서 캐시된 블록에 사용되는 총 바이트 수
+
+### MergeJoinBlocksCacheCount \{#mergejoinblockscachecount\}
+
+MergeJoin에 캐시된 총 블록 수
+
+### MergeParts \{#mergeparts\}
+
+현재 진행 중인 백그라운드 머지에 참여하는 소스 파트 수
+
+### MergeTreeAllRangesAnnouncementsSent \{#mergetreeallrangesannouncementssent\}
+
+데이터 파트 집합(MergeTree 테이블용)에 관한 알림이 원격 서버에서 initiator 서버로 현재 전송 중인 개수입니다. 원격 서버 측에서 측정됩니다.
+
+### MergeTreeBackgroundExecutorThreads \{#mergetreebackgroundexecutorthreads\}
+
+MergeTreeBackgroundExecutor 스레드 풀에 있는 스레드 수입니다.
+
+### MergeTreeBackgroundExecutorThreadsActive \{#mergetreebackgroundexecutorthreadsactive\}
+
+작업을 실행하고 있는 MergeTreeBackgroundExecutor 스레드 풀의 스레드 수입니다.
+
+### MergeTreeBackgroundExecutorThreadsScheduled \{#mergetreebackgroundexecutorthreadsscheduled\}
+
+MergeTreeBackgroundExecutor 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreeDataSelectExecutorThreads \{#mergetreedataselectexecutorthreads\}
+
+MergeTreeDataSelectExecutor 스레드 풀의 스레드 개수입니다.
+
+### MergeTreeDataSelectExecutorThreadsActive \{#mergetreedataselectexecutorthreadsactive\}
+
+작업을 실행 중인 MergeTreeDataSelectExecutor 스레드 풀 내 스레드 수입니다.
+
+### MergeTreeDataSelectExecutorThreadsScheduled \{#mergetreedataselectexecutorthreadsscheduled\}
+
+MergeTreeDataSelectExecutor 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreeFetchPartitionThreads \{#mergetreefetchpartitionthreads\}
+
+ALTER TABLE FETCH PARTITION에 사용되는 스레드 수
+
+### MergeTreeFetchPartitionThreadsActive \{#mergetreefetchpartitionthreadsactive\}
+
+ALTER TABLE FETCH PARTITION으로 파트를 가져오는 데 사용되는 스레드 수
+
+### MergeTreeFetchPartitionThreadsScheduled \{#mergetreefetchpartitionthreadsscheduled\}
+
+ALTER TABLE FETCH PARTITION에서 대기 중이거나 실행 중인 파트 가져오기 작업 수
+
+### MergeTreeOutdatedPartsLoaderThreads \{#mergetreeoutdatedpartsloaderthreads\}
+
+오래된 데이터 파트를 로드하는 스레드 풀의 스레드 수입니다.
+
+### MergeTreeOutdatedPartsLoaderThreadsActive \{#mergetreeoutdatedpartsloaderthreadsactive\}
+
+오래된 데이터 파트를 로드하기 위한 스레드 풀의 활성 스레드 수입니다.
+
+### MergeTreeOutdatedPartsLoaderThreadsScheduled \{#mergetreeoutdatedpartsloaderthreadsscheduled\}
+
+오래된 데이터 파트를 로드하는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreePartsCleanerThreads \{#mergetreepartscleanerthreads\}
+
+MergeTree 파트 정리 스레드 풀의 스레드 수입니다.
+
+### MergeTreePartsCleanerThreadsActive \{#mergetreepartscleanerthreadsactive\}
+
+MergeTree 파트 정리 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### MergeTreePartsCleanerThreadsScheduled \{#mergetreepartscleanerthreadsscheduled\}
+
+MergeTree 파트 정리 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreePartsLoaderThreads \{#mergetreepartsloaderthreads\}
+
+MergeTree 파트 로더 스레드 풀의 스레드 개수입니다.
+
+### MergeTreePartsLoaderThreadsActive \{#mergetreepartsloaderthreadsactive\}
+
+MergeTree 파트 로더 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### MergeTreePartsLoaderThreadsScheduled \{#mergetreepartsloaderthreadsscheduled\}
+
+MergeTree 파트 로더 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreeReadTaskRequestsSent \{#mergetreereadtaskrequestssent\}
+
+읽기 작업을 선택하기 위해 원격 서버에서 initiator 서버로 다시 전달되는, 현재 처리 중인 콜백 요청 수입니다(MergeTree 테이블 기준). 이 값은 원격 서버 측에서 측정됩니다.
+
+### MergeTreeSnapshotCommitThreads \{#mergetreesnapshotcommitthreads\}
+
+스냅샷을 커밋하는 데 사용되는 스레드 수
+
+### MergeTreeSnapshotCommitThreadsActive \{#mergetreesnapshotcommitthreadsactive\}
+
+스냅샷 커밋에 사용되는 활성 스레드 수
+
+### MergeTreeSnapshotCommitThreadsScheduled \{#mergetreesnapshotcommitthreadsscheduled\}
+
+스냅샷 커밋에 사용되는 예약 스레드 수
+
+### MergeTreeSubcolumnsReaderThreads \{#mergetreesubcolumnsreaderthreads\}
+
+MergeTree에서 서브컬럼 읽기에 사용되는 스레드 풀의 스레드 수입니다.
+
+### MergeTreeSubcolumnsReaderThreadsActive \{#mergetreesubcolumnsreaderthreadsactive\}
+
+MergeTree에서 서브컬럼 읽기에 사용되는 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### MergeTreeSubcolumnsReaderThreadsScheduled \{#mergetreesubcolumnsreaderthreadsscheduled\}
+
+MergeTree에서 서브컬럼 읽기에 사용되는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergeTreeUnexpectedPartsLoaderThreads \{#mergetreeunexpectedpartsloaderthreads\}
+
+예상치 못한 데이터 파트를 불러오기 위한 스레드 풀의 스레드 수입니다.
+
+### MergeTreeUnexpectedPartsLoaderThreadsActive \{#mergetreeunexpectedpartsloaderthreadsactive\}
+
+예상치 못한 데이터 파트를 로드하는 스레드 풀에서 현재 활성 상태인 스레드 수입니다.
+
+### MergeTreeUnexpectedPartsLoaderThreadsScheduled \{#mergetreeunexpectedpartsloaderthreadsscheduled\}
+
+예상치 못한 데이터 파트를 로드하는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### MergesMutationsMemoryTracking \{#mergesmutationsmemorytracking\}
+
+백그라운드 작업(머지 및 뮤테이션)에서 할당한 총 메모리 양(바이트)입니다.
+
+### MetadataFromKeeperCacheObjects \{#metadatafromkeepercacheobjects\}
+
+디스크 메타데이터 캐시에 있는 객체 수입니다.
+
+### 이동 \{#move\}
+
+현재 실행 중인 이동 작업 수
+
+### MySQLConnection \{#mysqlconnection\}
+
+MySQL 프로토콜을 사용하는 클라이언트 연결 수
+
+### NamedCollection \{#namedcollection\}
+
+명명된 컬렉션 수
+
+### NetworkReceive \{#networkreceive\}
+
+네트워크에서 데이터를 수신하는 스레드 수입니다. 서드파티 라이브러리가 아닌, ClickHouse 관련 네트워크 상호작용만 포함됩니다.
+
+### NetworkSend \{#networksend\}
+
+네트워크로 데이터를 전송하는 스레드 수입니다. 서드파티 라이브러리에 의한 네트워크 상호작용은 제외되며, ClickHouse 관련 네트워크 상호작용만 포함됩니다.
+
+### ObjectStorageAzureThreads \{#objectstorageazurethreads\}
+
+AzureObjectStorage 스레드 풀에 있는 스레드 수입니다.
+
+### ObjectStorageAzureThreadsActive \{#objectstorageazurethreadsactive\}
+
+AzureObjectStorage 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### ObjectStorageAzureThreadsScheduled \{#objectstorageazurethreadsscheduled\}
+
+AzureObjectStorage 스레드 풀에 대기 중이거나 실행 중인 작업 수입니다.
+
+### ObjectStorageQueueMetadataCacheSizeBytes \{#objectstoragequeuemetadatacachesizebytes\}
+
+ObjectStorageQueue 메타데이터 캐시의 크기(바이트)입니다.
+
+### ObjectStorageQueueMetadataCacheSizeElements \{#objectstoragequeuemetadatacachesizeelements\}
+
+ObjectStorageQueue 메타데이터 캐시의 요소 수입니다.
+
+### ObjectStorageQueueRegisteredServers \{#objectstoragequeueregisteredservers\}
+
+StorageS3(Azure)Queue에 등록된 서버 수
+
+### ObjectStorageQueueShutdownThreads \{#objectstoragequeueshutdownthreads\}
+
+객체 스토리지 대기열 종료 풀에 있는 스레드 수입니다.
+
+### ObjectStorageQueueShutdownThreadsActive \{#objectstoragequeueshutdownthreadsactive\}
+
+객체 스토리지 대기열 종료 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### ObjectStorageQueueShutdownThreadsScheduled \{#objectstoragequeueshutdownthreadsscheduled\}
+
+객체 스토리지 대기열 종료 풀에서 대기 중이거나 활성 상태인 작업 수입니다.
+
+### ObjectStorageS3Threads \{#objectstorages3threads\}
+
+S3ObjectStorage 스레드 풀에 있는 스레드 수입니다.
+
+### ObjectStorageS3ThreadsActive \{#objectstorages3threadsactive\}
+
+S3ObjectStorage 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### ObjectStorageS3ThreadsScheduled \{#objectstorages3threadsscheduled\}
+
+S3ObjectStorage 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### OpenFileForRead \{#openfileforread\}
+
+읽기 위해 열려 있는 파일 수
+
+### OpenFileForWrite \{#openfileforwrite\}
+
+쓰기를 위해 열려 있는 파일 수
+
+### OutdatedPartsLoadingThreads \{#outdatedpartsloadingthreads\}
+
+오래된 데이터 파트를 로드하는 threadpool의 스레드 수입니다.
+
+### OutdatedPartsLoadingThreadsActive \{#outdatedpartsloadingthreadsactive\}
+
+오래된 데이터 파트를 로드하는 스레드 풀에서 활성 상태인 스레드 수입니다.
+
+### OutdatedPartsLoadingThreadsScheduled \{#outdatedpartsloadingthreadsscheduled\}
+
+오래된 데이터 파트를 로드하기 위한 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### PageCacheBytes \{#pagecachebytes\}
+
+사용자 공간 페이지 캐시의 총 크기(바이트)
+
+### PageCacheCells \{#pagecachecells\}
+
+사용자 공간 페이지 캐시의 총 엔트리 수
+
+### ParallelCompressedWriteBufferThreads \{#parallelcompressedwritebufferthreads\}
+
+ParallelCompressedWriteBuffer의 모든 인스턴스에서 사용되는 스레드 수 - 이 스레드는 병렬 압축 및 쓰기 작업을 수행합니다
+
+### ParallelCompressedWriteBufferWait \{#parallelcompressedwritebufferwait\}
+
+현재 쓰기 가능한 버퍼가 생기기를 기다리고 있는 모든 ParallelCompressedWriteBuffer 인스턴스의 스레드 수
+
+### ParallelFormattingOutputFormatThreads \{#parallelformattingoutputformatthreads\}
+
+ParallelFormattingOutputFormatThreads 스레드 풀에 있는 스레드 수입니다.
+
+### ParallelFormattingOutputFormatThreadsActive \{#parallelformattingoutputformatthreadsactive\}
+
+작업을 실행 중인 ParallelFormattingOutputFormatThreads 스레드 풀의 스레드 수입니다.
+
+### ParallelFormattingOutputFormatThreadsScheduled \{#parallelformattingoutputformatthreadsscheduled\}
+
+ParallelFormattingOutputFormatThreads 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ParallelWithQueryActiveThreads \{#parallelwithqueryactivethreads\}
+
+PARALLEL WITH 쿼리 처리를 위한 스레드 풀의 활성 스레드 수입니다.
+
+### ParallelWithQueryScheduledThreads \{#parallelwithqueryscheduledthreads\}
+
+PARALLEL WITH 쿼리 처리를 위한 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ParallelWithQueryThreads \{#parallelwithquerythreads\}
+
+PARALLEL WITH 쿼리 처리를 위한 스레드 풀의 스레드 수입니다.
+
+### ParquetEncoderThreads \{#parquetencoderthreads\}
+
+ParquetBlockOutputFormat 스레드 풀에 있는 스레드 수입니다.
+
+### ParquetEncoderThreadsActive \{#parquetencoderthreadsactive\}
+
+작업을 실행 중인 ParquetBlockOutputFormat 스레드 풀의 스레드 수입니다.
+
+### ParquetEncoderThreadsScheduled \{#parquetencoderthreadsscheduled\}
+
+ParquetBlockOutputFormat 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ParquetMetadataCacheBytes \{#parquetmetadatacachebytes\}
+
+Parquet 메타데이터 캐시의 크기(바이트)
+
+### ParquetMetadataCacheFiles \{#parquetmetadatacachefiles\}
+
+Parquet 메타데이터 캐시에 저장된 파일 수
+
+### PartMutation \{#partmutation\}
+
+뮤테이션 수 (ALTER DELETE/UPDATE)
+
+### PartsActive \{#partsactive\}
+
+현재와 향후 SELECT에 사용되는 활성 데이터 파트입니다.
+
+### PartsCommitted \{#partscommitted\}
+
+사용 중단되었습니다. PartsActive를 참조하십시오.
+
+### PartsCompact \{#partscompact\}
+
+컴팩트 형식의 파트입니다.
+
+### PartsDeleteOnDestroy \{#partsdeleteondestroy\}
+
+파트가 다른 디스크로 이동되었으며, 소멸자에서 삭제되어야 합니다.
+
+### PartsDeleting \{#partsdeleting\}
+
+identity refcounter가 있는 비활성 데이터 파트로, 현재 cleaner가 삭제 중입니다.
+
+### PartsOutdated \{#partsoutdated\}
+
+활성 데이터 파트는 아니지만 현재 실행 중인 SELECT에서만 사용될 수 있으며, SELECT가 완료되면 삭제될 수 있습니다.
+
+### PartsPreActive \{#partspreactive\}
+
+이 파트는 data&#95;parts에 있지만 SELECT 쿼리에는 사용되지 않습니다.
+
+### PartsPreCommitted \{#partsprecommitted\}
+
+사용 중단되었습니다. PartsPreActive를 참조하십시오.
+
+### PartsTemporary \{#partstemporary\}
+
+파트가 현재 생성 중이므로 data&#95;parts 목록에 없습니다.
+
+### PartsWide \{#partswide\}
+
+와이드 파트입니다.
+
+### PendingAsyncInsert \{#pendingasyncinsert\}
+
+플러시되기를 기다리는 비동기 삽입 수입니다.
+
+### PolygonDictionaryThreads \{#polygondictionarythreads\}
+
+폴리곤 딕셔너리용 스레드 풀의 스레드 수입니다.
+
+### PolygonDictionaryThreadsActive \{#polygondictionarythreadsactive\}
+
+폴리곤 딕셔너리의 스레드 풀에서 활성 상태인 스레드 수입니다.
+
+### PolygonDictionaryThreadsScheduled \{#polygondictionarythreadsscheduled\}
+
+Polygon 딕셔너리용 threadpool에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### PostgreSQLConnection \{#postgresqlconnection\}
+
+PostgreSQL 프로토콜을 사용하는 클라이언트 연결 수
+
+### PrimaryIndexCacheBytes \{#primaryindexcachebytes\}
+
+바이트 단위의 프라이머리 인덱스 캐시 총 크기
+
+### PrimaryIndexCacheFiles \{#primaryindexcachefiles\}
+
+프라이머리 인덱스 캐시에 저장된 인덱스 파일의 총 개수
+
+### 쿼리 \{#query\}
+
+실행 중인 쿼리 수
+
+### QueryCacheBytes \{#querycachebytes\}
+
+쿼리 캐시의 총 크기(바이트)
+
+### QueryCacheEntries \{#querycacheentries\}
+
+쿼리 캐시의 총 엔트리 수
+
+### QueryConditionCacheBytes \{#queryconditioncachebytes\}
+
+쿼리 조건 캐시의 총 크기(바이트)
+
+### QueryConditionCacheEntries \{#queryconditioncacheentries\}
+
+쿼리 조건 캐시에 있는 총 엔트리 수
+
+### QueryNonInternal \{#querynoninternal\}
+
+실행 중인 사용자 시작 비내부 쿼리 수(ClickHouse의 내부 쿼리 제외)
+
+### QueryPipelineExecutorThreads \{#querypipelineexecutorthreads\}
+
+PipelineExecutor 스레드 풀에 있는 스레드 수입니다.
+
+### QueryPipelineExecutorThreadsActive \{#querypipelineexecutorthreadsactive\}
+
+작업을 실행 중인 PipelineExecutor 스레드 풀의 스레드 수입니다.
+
+### QueryPipelineExecutorThreadsScheduled \{#querypipelineexecutorthreadsscheduled\}
+
+PipelineExecutor 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### QueryPreempted \{#querypreempted\}
+
+`priority` 설정으로 인해 일시 중지되어 대기 중인 실행 중 작업 수입니다.
+
+### QueryThread \{#querythread\}
+
+쿼리 처리용 스레드 수
+
+### RWLockActiveReaders \{#rwlockactivereaders\}
+
+테이블 RWLock에서 읽기 잠금을 보유한 스레드 수입니다.
+
+### RWLockActiveWriters \{#rwlockactivewriters\}
+
+테이블 RWLock에서 쓰기 잠금을 보유하고 있는 스레드 수입니다.
+
+### RWLockWaitingReaders \{#rwlockwaitingreaders\}
+
+테이블 RWLock의 읽기 잠금을 기다리는 스레드 수입니다.
+
+### RWLockWaitingWriters \{#rwlockwaitingwriters\}
+
+테이블의 RWLock에서 쓰기 잠금을 기다리는 스레드 수입니다.
+
+### 읽기 \{#read\}
+
+진행 중인 읽기(`read`, `pread`, `io_getevents` 등) 시스템 호출의 수
+
+### ReadTaskRequestsSent \{#readtaskrequestssent\}
+
+읽기 작업을 선택하기 위해 원격 서버에서 initiator 서버로 다시 보내는 진행 중인 콜백 요청의 현재 수입니다(`s3Cluster` 테이블 함수 및 이와 유사한 경우). 이 값은 원격 서버 측에서 측정됩니다.
+
+### ReadonlyDisks \{#readonlydisks\}
+
+디스크 검사 중 읽기 전용으로 마크된 디스크 수입니다.
+
+### ReadonlyReplica \{#readonlyreplica\}
+
+ZooKeeper 세션 손실 후 재초기화되었거나 ZooKeeper가 구성되지 않은 상태로 시작되어 현재 읽기 전용 상태인 Replicated 테이블의 수입니다.
+
+### RefreshableViews \{#refreshableviews\}
+
+주기적으로 새로 고침(REFRESH)되는 materialized view의 수
+
+### RefreshingViews \{#refreshingviews\}
+
+현재 새로 고침이 실행 중인 materialized view 수
+
+### RemoteRead \{#remoteread\}
+
+현재 진행 중인 remote reader 읽기 작업 수
+
+### ReplicaReady \{#replicaready\}
+
+레플리카가 쿼리를 처리할 준비가 되었는지를 나타냅니다: 0 = 아니오, 1 = 예
+
+### ReplicatedChecks \{#replicatedchecks\}
+
+일관성 검사를 수행 중인 데이터 파트 수
+
+### ReplicatedFetch \{#replicatedfetch\}
+
+레플리카에서 가져오는 데이터 파트 수
+
+### ReplicatedSend \{#replicatedsend\}
+
+레플리카에 전송 중인 데이터 파트 수
+
+### RestartReplicaThreads \{#restartreplicathreads\}
+
+RESTART REPLICA용 스레드 풀의 스레드 수입니다.
+
+### RestartReplicaThreadsActive \{#restartreplicathreadsactive\}
+
+RESTART REPLICA 스레드 풀에서 작업을 실행 중인 스레드 수.
+
+### RestartReplicaThreadsScheduled \{#restartreplicathreadsscheduled\}
+
+RESTART REPLICA 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### RestoreThreads \{#restorethreads\}
+
+RESTORE를 위한 스레드 풀의 스레드 수입니다.
+
+### RestoreThreadsActive \{#restorethreadsactive\}
+
+RESTORE 작업을 실행 중인 스레드 풀의 스레드 수입니다.
+
+### RestoreThreadsScheduled \{#restorethreadsscheduled\}
+
+RESTORE의 대기 중이거나 실행 중인 작업 수입니다.
+
+### Revision \{#revision\}
+
+서버의 리비전입니다. 패치 릴리스를 제외하면 각 릴리스 또는 릴리스 후보마다 1씩 증가하는 숫자입니다.
+
+### S3CachedCredentialsProviders \{#s3cachedcredentialsproviders\}
+
+캐시된 자격 증명 제공자의 총 수
+
+### S3Requests \{#s3requests\}
+
+S3 요청 수
+
+### SchedulerIOReadScheduled \{#schedulerioreadscheduled\}
+
+현재 예약된 IO 읽기 작업 수
+
+### SchedulerIOWriteScheduled \{#scheduleriowritescheduled\}
+
+현재 스케줄링 중인 IO 쓰기 수
+
+### SendExternalTables \{#sendexternaltables\}
+
+외부 테이블용 데이터를 원격 서버로 전송하고 있는 연결 수입니다. 외부 테이블은 분산 서브쿼리에서 `GLOBAL IN` 및 `GLOBAL JOIN` 오퍼레이터를 구현하는 데 사용됩니다.
+
+### SendScalars \{#sendscalars\}
+
+원격 서버로 스칼라 값을 보내는 연결 수입니다.
+
+### SerializationCacheBytesInMemory \{#serializationcachebytesinmemory\}
+
+값만 포함한 직렬화 캐시의 총 크기(바이트)
+
+### SerializationCacheBytesInMemoryAllocated \{#serializationcachebytesinmemoryallocated\}
+
+키와 빈 슬롯에서 발생하는 오버헤드를 포함한 직렬화 캐시의 총 크기(바이트)
+
+### SerializationCacheCount \{#serializationcachecount\}
+
+직렬화 캐시의 총 엔트리 수
+
+### SharedCatalogDropDetachLocalTablesErrors \{#sharedcatalogdropdetachlocaltableserrors\}
+
+Shared Catalog에서 로컬 테이블을 drop하거나 detach하려고 할 때 발생한 오류 수입니다.
+
+### SharedCatalogDropLocalThreads \{#sharedcatalogdroplocalthreads\}
+
+Shared Catalog에서 로컬 테이블을 삭제할 때 사용하는 스레드 풀의 스레드 수입니다.
+
+### SharedCatalogDropLocalThreadsActive \{#sharedcatalogdroplocalthreadsactive\}
+
+Shared Catalog에서 로컬 테이블 삭제 작업을 위한 스레드 풀의 활성 스레드 수입니다.
+
+### SharedCatalogDropLocalThreadsScheduled \{#sharedcatalogdroplocalthreadsscheduled\}
+
+Shared Catalog에서 로컬 테이블을 삭제하기 위한 스레드 풀(thread pool)에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### SharedCatalogDropZooKeeperThreads \{#sharedcatalogdropzookeeperthreads\}
+
+Shared Catalog에서 ZooKeeper의 객체를 삭제하는 데 사용되는 스레드 풀의 스레드 수입니다.
+
+### SharedCatalogDropZooKeeperThreadsActive \{#sharedcatalogdropzookeeperthreadsactive\}
+
+Shared Catalog에서 ZooKeeper의 객체 삭제 작업에 사용되는 스레드 풀의 활성 스레드 수입니다.
+
+### SharedCatalogDropZooKeeperThreadsScheduled \{#sharedcatalogdropzookeeperthreadsscheduled\}
+
+Shared Catalog에서 ZooKeeper 내 객체 삭제를 위한 스레드 풀의 대기 중이거나 실행 중인 작업 수입니다.
+
+### SharedCatalogNumberOfObjectsInState \{#sharedcatalognumberofobjectsinstate\}
+
+Shared Catalog의 현재 상태에 포함된 객체 수입니다.
+
+### SharedCatalogStateApplicationThreads \{#sharedcatalogstateapplicationthreads\}
+
+Shared Catalog의 상태 적용을 위한 스레드 풀 내 스레드 수입니다.
+
+### SharedCatalogStateApplicationThreadsActive \{#sharedcatalogstateapplicationthreadsactive\}
+
+Shared Catalog의 상태 적용을 위한 스레드 풀에서 활성 상태인 스레드 수입니다.
+
+### SharedCatalogStateApplicationThreadsScheduled \{#sharedcatalogstateapplicationthreadsscheduled\}
+
+Shared Catalog에서 상태 적용을 위한 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### SharedDatabaseCatalogTablesInLocalDropDetachQueue \{#shareddatabasecatalogtablesinlocaldropdetachqueue\}
+
+Shared Catalog에서 로컬 drop 또는 detach 작업 대기열에 있는 테이블 수입니다.
+
+### SharedMergeTreeAssignedCurrentParts \{#sharedmergetreeassignedcurrentparts\}
+
+머지 또는 뮤테이션에 의해 잠긴 파트 수
+
+### SharedMergeTreeBrokenCondemnedPartsInKeeper \{#sharedmergetreebrokencondemnedpartsinkeeper\}
+
+Keeper에 저장된 손상되어 폐기 대상으로 지정된 파트 레코드 수
+
+### SharedMergeTreeCondemnedPartsInKeeper \{#sharedmergetreecondemnedpartsinkeeper\}
+
+Keeper에 저장된 폐기 대상 파트 레코드 수
+
+### SharedMergeTreeFetch \{#sharedmergetreefetch\}
+
+진행 중인 가져오기 작업 수
+
+### SharedMergeTreeMaxActiveReplicas \{#sharedmergetreemaxactivereplicas\}
+
+Keeper에 등록된 활성 레플리카의 최대 수
+
+### SharedMergeTreeMaxInactiveReplicas \{#sharedmergetreemaxinactivereplicas\}
+
+Keeper에 등록된 비활성 레플리카의 최대 수
+
+### SharedMergeTreeMaxPartitions \{#sharedmergetreemaxpartitions\}
+
+전체 SharedMergeTree 테이블에 걸쳐 Keeper에 등록된 파티션의 최대 개수
+
+### SharedMergeTreeMaxReplicas \{#sharedmergetreemaxreplicas\}
+
+모든 테이블에서 Keeper에 등록된 레플리카의 최대 수입니다. 이는 SharedMergeTreeMaxActiveReplicas와 SharedMergeTreeMaxInactiveReplicas의 합계가 아닐 수도 있습니다.
+
+### SharedMergeTreeMinActiveReplicas \{#sharedmergetreeminactivereplicas\}
+
+Keeper에 등록된 활성 레플리카의 최소 수
+
+### SharedMergeTreeMinInactiveReplicas \{#sharedmergetreemininactivereplicas\}
+
+Keeper에 등록된 비활성 레플리카의 최소 수
+
+### SharedMergeTreeMinPartitions \{#sharedmergetreeminpartitions\}
+
+모든 SharedMergeTree 테이블에서 Keeper에 등록된 파티션 수의 최솟값
+
+### SharedMergeTreeMinReplicas \{#sharedmergetreeminreplicas\}
+
+모든 테이블에서 Keeper에 등록된 레플리카 수의 최솟값입니다. 이 값은 SharedMergeTreeMinActiveReplicas와 SharedMergeTreeMinInactiveReplicas의 합계가 아닐 수 있습니다.
+
+### SharedMergeTreeOutdatedPartsInKeeper \{#sharedmergetreeoutdatedpartsinkeeper\}
+
+Keeper에 저장된 오래된 파트 레코드의 수
+
+### SharedMergeTreeThreads \{#sharedmergetreethreads\}
+
+SharedMergeTree 내부 스레드 풀의 스레드 수
+
+### SharedMergeTreeThreadsActive \{#sharedmergetreethreadsactive\}
+
+SharedMergeTree 내부의 스레드 풀에서 작업을 실행 중인 스레드 수
+
+### SharedMergeTreeThreadsScheduled \{#sharedmergetreethreadsscheduled\}
+
+SharedMergeTree 내부 스레드 풀에서 대기 중이거나 활성 상태인 스레드 수
+
+### StartupScriptsExecutionState \{#startupscriptsexecutionstate\}
+
+시작 스크립트 실행 상태: 0 = 완료되지 않음, 1 = 성공, 2 = 실패입니다.
+
+### StartupSystemTablesThreads \{#startupsystemtablesthreads\}
+
+StartupSystemTables 스레드 풀에 있는 스레드 수입니다.
+
+### StartupSystemTablesThreadsActive \{#startupsystemtablesthreadsactive\}
+
+StartupSystemTables 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### StartupSystemTablesThreadsScheduled \{#startupsystemtablesthreadsscheduled\}
+
+StartupSystemTables 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### StatelessWorkerThreads \{#statelessworkerthreads\}
+
+stateless 작업자 스레드 풀의 스레드 수입니다.
+
+### StatelessWorkerThreadsActive \{#statelessworkerthreadsactive\}
+
+작업을 실행 중인 stateless 작업자 스레드 풀의 스레드 수입니다.
+
+### StatelessWorkerThreadsScheduled \{#statelessworkerthreadsscheduled\}
+
+stateless 워커 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### StorageBufferBytes \{#storagebufferbytes\}
+
+Buffer 테이블 버퍼의 바이트 수
+
+### StorageBufferFlushThreads \{#storagebufferflushthreads\}
+
+StorageBuffer에서 백그라운드 플러시에 사용되는 스레드 수
+
+### StorageBufferFlushThreadsActive \{#storagebufferflushthreadsactive\}
+
+StorageBuffer의 백그라운드 플러시에서 작업을 실행 중인 스레드 수
+
+### StorageBufferFlushThreadsScheduled \{#storagebufferflushthreadsscheduled\}
+
+StorageBuffer에서 백그라운드 플러시를 위해 대기 중이거나 실행 중인 스레드 수
+
+### StorageBufferRows \{#storagebufferrows\}
+
+Buffer 테이블 버퍼의 행 수
+
+### StorageConnectionsStored \{#storageconnectionsstored\}
+
+스토리지의 세션 풀에 저장된 세션의 총 개수
+
+### StorageConnectionsTotal \{#storageconnectionstotal\}
+
+스토리지용으로 풀에 저장되어 있거나 현재 활성 사용 중인 모든 세션의 총 개수
+
+### StorageDistributedThreads \{#storagedistributedthreads\}
+
+StorageDistributed 스레드 풀에 있는 스레드 수입니다.
+
+### StorageDistributedThreadsActive \{#storagedistributedthreadsactive\}
+
+작업을 실행하고 있는 StorageDistributed 스레드 풀 내 스레드 수입니다.
+
+### StorageDistributedThreadsScheduled \{#storagedistributedthreadsscheduled\}
+
+StorageDistributed 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### StorageHiveThreads \{#storagehivethreads\}
+
+StorageHive 스레드 풀의 스레드 개수입니다.
+
+### StorageHiveThreadsActive \{#storagehivethreadsactive\}
+
+StorageHive 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### StorageHiveThreadsScheduled \{#storagehivethreadsscheduled\}
+
+StorageHive 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### StorageObjectStorageThreads \{#storageobjectstoragethreads\}
+
+원격 테이블 엔진의 스레드 풀에 있는 스레드 수입니다.
+
+### StorageObjectStorageThreadsActive \{#storageobjectstoragethreadsactive\}
+
+원격 테이블 엔진의 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### StorageObjectStorageThreadsScheduled \{#storageobjectstoragethreadsscheduled\}
+
+원격 테이블 엔진의 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### StorageS3Threads \{#storages3threads\}
+
+StorageS3 스레드 풀의 스레드 개수입니다.
+
+### StorageS3ThreadsActive \{#storages3threadsactive\}
+
+작업을 실행 중인 StorageS3 스레드 풀의 스레드 수입니다.
+
+### StorageS3ThreadsScheduled \{#storages3threadsscheduled\}
+
+StorageS3 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### SystemDatabaseReplicasThreads \{#systemdatabasereplicasthreads\}
+
+system.database&#95;replicas 스레드 풀에 있는 스레드 수입니다.
+
+### SystemDatabaseReplicasThreadsActive \{#systemdatabasereplicasthreadsactive\}
+
+작업을 실행 중인 `system.database_replicas` 스레드 풀의 스레드 수입니다.
+
+### SystemDatabaseReplicasThreadsScheduled \{#systemdatabasereplicasthreadsscheduled\}
+
+system.database&#95;replicas 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### SystemReplicasThreads \{#systemreplicasthreads\}
+
+system.replicas 스레드 풀에 있는 스레드 수입니다.
+
+### SystemReplicasThreadsActive \{#systemreplicasthreadsactive\}
+
+작업을 실행 중인 system.replicas 스레드 풀의 스레드 수입니다.
+
+### SystemReplicasThreadsScheduled \{#systemreplicasthreadsscheduled\}
+
+system.replicas 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### TCPConnection \{#tcpconnection\}
+
+TCP 서버에 대한 연결 수입니다(네이티브 인터페이스를 사용하는 클라이언트). 서버 간 분산 쿼리 연결도 포함됩니다.
+
+### TablesLoaderBackgroundThreads \{#tablesloaderbackgroundthreads\}
+
+테이블 로더의 백그라운드 스레드 풀에 있는 스레드 수입니다.
+
+### TablesLoaderBackgroundThreadsActive \{#tablesloaderbackgroundthreadsactive\}
+
+테이블 로더 백그라운드 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### TablesLoaderBackgroundThreadsScheduled \{#tablesloaderbackgroundthreadsscheduled\}
+
+테이블 로더 백그라운드 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### TablesLoaderForegroundThreads \{#tablesloaderforegroundthreads\}
+
+테이블 로더 포그라운드 스레드 풀에 있는 스레드 수입니다.
+
+### TablesLoaderForegroundThreadsActive \{#tablesloaderforegroundthreadsactive\}
+
+테이블 로더 포그라운드 스레드 풀에서 작업을 실행 중인 스레드 수입니다.
+
+### TablesLoaderForegroundThreadsScheduled \{#tablesloaderforegroundthreadsscheduled\}
+
+테이블 로더의 포그라운드 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### TablesToDropQueueSize \{#tablestodropqueuesize\}
+
+삭제된 테이블 중 백그라운드 데이터 삭제를 기다리는 테이블 수입니다.
+
+### TaskTrackerThreads \{#tasktrackerthreads\}
+
+분산 쿼리 원격 작업 추적기에서 사용하는 스레드 수입니다.
+
+### TaskTrackerThreadsActive \{#tasktrackerthreadsactive\}
+
+작업을 실행 중인 분산 쿼리 원격 작업 추적기 스레드 풀의 스레드 수입니다.
+
+### TaskTrackerThreadsScheduled \{#tasktrackerthreadsscheduled\}
+
+분산 쿼리 원격 작업 추적기 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### TemporaryFilesForAggregation \{#temporaryfilesforaggregation\}
+
+외부 집계용으로 생성된 임시 파일 수
+
+### TemporaryFilesForJoin \{#temporaryfilesforjoin\}
+
+JOIN에 대해 생성된 임시 파일 수
+
+### TemporaryFilesForMerge \{#temporaryfilesformerge\}
+
+수직 병합의 임시 파일 수
+
+### TemporaryFilesForSort \{#temporaryfilesforsort\}
+
+외부 정렬을 위해 생성된 임시 파일 수
+
+### TemporaryFilesUnknown \{#temporaryfilesunknown\}
+
+알 수 없는 용도로 생성된 임시 파일 수
+
+### TextIndexHeaderCacheBytes \{#textindexheadercachebytes\}
+
+텍스트 인덱스 헤더 캐시의 크기(바이트)
+
+### TextIndexHeaderCacheCells \{#textindexheadercachecells\}
+
+텍스트 인덱스 헤더 캐시에 있는 엔트리 수
+
+### TextIndexPostingsCacheBytes \{#textindexpostingscachebytes\}
+
+텍스트 인덱스 posting list 캐시의 크기(바이트)
+
+### TextIndexPostingsCacheCells \{#textindexpostingscachecells\}
+
+텍스트 인덱스 포스팅 리스트 캐시에 있는 엔트리 수
+
+### TextIndexTokensCacheBytes \{#textindextokenscachebytes\}
+
+텍스트 인덱스 토큰 캐시의 크기(바이트)
+
+### TextIndexTokensCacheCells \{#textindextokenscachecells\}
+
+텍스트 인덱스 토큰 캐시의 엔트리 수
+
+### ThreadPoolFSReaderThreads \{#threadpoolfsreaderthreads\}
+
+local&#95;filesystem&#95;read&#95;method=threadpool에 사용되는 스레드 풀의 스레드 수입니다.
+
+### ThreadPoolFSReaderThreadsActive \{#threadpoolfsreaderthreadsactive\}
+
+현재 작업을 실행 중인 `local_filesystem_read_method=threadpool`용 스레드 풀의 스레드 수입니다.
+
+### ThreadPoolFSReaderThreadsScheduled \{#threadpoolfsreaderthreadsscheduled\}
+
+local&#95;filesystem&#95;read&#95;method=threadpool에서 스레드 풀에 대기 중이거나 실행 중인 작업 수입니다.
+
+### ThreadPoolRemoteFSReaderThreads \{#threadpoolremotefsreaderthreads\}
+
+remote&#95;filesystem&#95;read&#95;method=threadpool에서 사용하는 스레드 풀의 스레드 수입니다.
+
+### ThreadPoolRemoteFSReaderThreadsActive \{#threadpoolremotefsreaderthreadsactive\}
+
+remote&#95;filesystem&#95;read&#95;method=threadpool에서 작업을 실행 중인 스레드 풀의 스레드 수입니다.
+
+### ThreadPoolRemoteFSReaderThreadsScheduled \{#threadpoolremotefsreaderthreadsscheduled\}
+
+remote&#95;filesystem&#95;read&#95;method=threadpool에 사용하는 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### ThreadsInOvercommitTracker \{#threadsinovercommittracker\}
+
+OvercommitTracker 내에서 대기 중인 스레드 수
+
+### TotalTemporaryFiles \{#totaltemporaryfiles\}
+
+생성된 임시 파일 수
+
+### UncompressedCacheBytes \{#uncompressedcachebytes\}
+
+비압축 캐시의 총 크기(바이트)입니다. 비압축 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로, 가능한 한 사용하지 않는 것이 좋습니다.
+
+### UncompressedCacheCells \{#uncompressedcachecells\}
+
+비압축 캐시에 있는 전체 엔트리 수입니다. 각 엔트리는 압축 해제된 데이터 블록 1개를 나타냅니다. 비압축 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로 가능한 한 사용을 피해야 합니다
+
+### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
+
+벡터 유사성 인덱스 캐시 크기(바이트)
+
+### VectorSimilarityIndexCacheCells \{#vectorsimilarityindexcachecells\}
+
+벡터 유사성 인덱스 캐시의 엔트리 수
+
+### VersionInteger \{#versioninteger\}
+
+서버 버전을 base-1000 기준의 단일 정수로 나타낸 값입니다. 예를 들어 버전 11.22.33은 11022033으로 변환됩니다.
+
+### Write \{#write\}
+
+진행 중인 write(write, pwrite, io_getevents 등) 시스템 호출 수
+
+### ZooKeeperConnectionLossStartedTimestampSeconds \{#zookeeperconnectionlossstartedtimestampseconds\}
+
+ZooKeeper connection이 끊어진 시점의 Unix 타임스탬프(초)입니다. 정상적으로 연결된 경우에는 0입니다.
+
+### ZooKeeperRequest \{#zookeeperrequest\}
+
+현재 처리 중인 ZooKeeper 요청 수입니다.
+
+### ZooKeeperSession \{#zookeepersession\}
+
+ZooKeeper에 대한 세션(연결) 수입니다. ZooKeeper에 대한 연결은 1개를 초과해서는 안 됩니다. 2개 이상의 연결을 사용하면 ZooKeeper의 일관성 모델이 허용하는 선형화 가능성 부족(오래된 읽기)으로 인해 버그가 발생할 수 있기 때문입니다.
+
+### ZooKeeperSessionExpired \{#zookeepersessionexpired\}
+
+만료된 전역 ZooKeeper 세션의 수입니다.
+
+### ZooKeeperWatch \{#zookeeperwatch\}
+
+ZooKeeper의 watch(이벤트 구독) 개수입니다.
+
+{/*AUTOGENERATED_DESCRIPTIONS_END*/ }
+
+**함께 보기**
+
+* [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) — 주기적으로 계산되는 metrics를 포함합니다.
+* [system.events](/operations/system-tables/events) — 발생한 여러 이벤트를 포함합니다.
+* [system.metric&#95;log](/operations/system-tables/metric_log) — `system.metrics` 및 `system.events` 테이블의 metrics 값 이력을 포함합니다.
+* [Monitoring](../../operations/monitoring.md) — ClickHouse 모니터링의 기본 개념을 설명합니다.

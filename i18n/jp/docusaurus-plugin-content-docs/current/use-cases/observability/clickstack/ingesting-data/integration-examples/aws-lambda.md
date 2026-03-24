@@ -38,10 +38,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### 前提条件 \{#prerequisites\}
 
-- ClickStack インスタンスが稼働していること
-- 監視対象となる AWS Lambda 関数が存在すること
-- 適切な権限で設定された AWS CLI があること
-- レイヤーを追加する権限を持つ Lambda 実行ロールがあること
+* ClickStack インスタンスが稼働していること
+* 監視対象となる AWS Lambda 関数が存在すること
+* 適切な権限で設定された AWS CLI があること
+* レイヤーを追加する権限を持つ Lambda 実行ロールがあること
 
 <VerticalStepper headerLevel="h4">
   #### 適切なRotel Lambda Extensionレイヤーを選択する

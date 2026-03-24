@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantRateToGrid \{#timeSeriesInstantRateToGrid\}
 
-도입 버전: v25.6
+도입 버전: v25.6.0
 
 타임스탬프와 값의 쌍으로 구성된 시계열 데이터를 입력으로 받아, 시작 타임스탬프, 종료 타임스탬프, 스텝(step)으로 정의되는 일정한 시간 그리드 상에서 이 데이터로부터 [PromQL과 유사한 irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate)를 계산하는 집계 함수입니다. 그리드상의 각 지점마다 지정된 시간 구간 내의 샘플들을 사용하여 `irate`를 계산합니다.
 

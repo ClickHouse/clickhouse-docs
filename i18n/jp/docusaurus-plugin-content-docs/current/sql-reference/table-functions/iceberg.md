@@ -14,7 +14,7 @@ Amazon S3、Azure、HDFS 上またはローカルに保存された Apache [Iceb
 ## 構文 \{#syntax\}
 
 ```sql
-icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3(named_collection[, option=value [,..]])
 
 icebergAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -27,10 +27,13 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
+
 ## 引数 \{#arguments\}
 
-引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` の引数の説明とそれぞれ同様です。  
-`format` は、Iceberg テーブル内のデータファイルの形式を表します。
+引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` の引数の説明とそれぞれ一致します。
+`format` は、Iceberg テーブル内のデータファイルのフォーマットを表します。
+
+`icebergS3` では、オプションの `extra_credentials` パラメータを使用して、ClickHouse Cloud におけるロールベースアクセス用の `role_arn` を渡すことができます。設定手順については、[Secure S3](/cloud/data-sources/secure-s3) を参照してください。
 
 ### 返される値 \{#returned-value\}
 
@@ -534,6 +537,135 @@ Row 1:
 x: Ivanov
 y: 993
 ```
+
+
+### スナップショットの期限切れ処理 \{#iceberg-expire-snapshots\}
+
+Iceberg テーブルでは、`INSERT`、`DELETE`、`UPDATE` の各操作のたびにスナップショットが蓄積されます。時間の経過とともに、その結果として多数のスナップショットと、それに関連するデータファイルが生じることがあります。`expire_snapshots` コマンドは、古いスナップショットを削除し、保持されているどのスナップショットからも参照されなくなったデータファイルをクリーンアップします。
+
+**構文:**
+
+```sql
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(
+    ['timestamp']
+    [, expire_before = 'timestamp']
+    [, retention_period = '3d']
+    [, retain_last = 100]
+    [, snapshot_ids = [1, 2, 3, 4]]
+    [, dry_run = 1]
+);
+```
+
+デフォルトでは、どのスナップショットを保持するかは [retention policy](#iceberg-snapshot-retention-policy) (テーブルプロパティ `min-snapshots-to-keep`、`max-snapshot-age-ms`、および ref ごとのオーバーライド) によって決まります。`snapshot_ids` を指定すると、retention policy はバイパスされ、列挙したスナップショットだけが期限切れの対象として考慮されます。
+
+**Arguments:**
+
+* `'timestamp'` (位置指定) または `expire_before = 'timestamp'` — **サーバーのタイムゾーン** で解釈される日時文字列 (例: `'2024-06-01 00:00:00'`) 。安全装置として機能します。`timestamp-ms` がこの値と同じかそれ以降のスナップショットは、retention policy では本来期限切れになる場合でも、期限切れ処理から保護されます。`snapshot_ids` と組み合わせることもでき、その場合は、列挙したスナップショットのうちこのタイムスタンプと同じかそれ以降のものは期限切れになりません。
+* `retention_period = '<duration>'` — この呼び出しに限り、テーブルレベルの `history.expire.max-snapshot-age-ms` をオーバーライドします。この期間より古いスナップショット (現在時刻を基準に計測) が、期限切れ候補になります。値は、1 つ以上の `{number}{unit}` の組を連結した期間文字列です。サポートされる単位: `y` (365 日) 、`w` (7 日) 、`d` (24 時間) 、`h` (60 分) 、`m` (60 秒) 、`s` (1 秒) 、`ms` (1 ミリ秒) 。単位は組み合わせ可能です。例: `'3d'`、`'12h'`、`'1d12h30m'`、`'500ms'`。
+* `retain_last = N` — この呼び出しに限り、テーブルレベルの `history.expire.min-snapshots-to-keep` をオーバーライドします。古さに関係なく、常に少なくとも `N` 個のスナップショットが保持されます。
+* `snapshot_ids = [id1, id2, ...]` — 列挙したスナップショット ID のみを期限切れ対象にします (ただし、現在のスナップショット、ブランチ、またはタグから参照されるスナップショットは除きます) 。このモードは retention policy を完全にバイパスし、`retention_period` や `retain_last` とは組み合わせできません。
+* `dry_run = 1` — 期限切れになる内容を計算し、新しいメタデータの書き込みやファイルの削除を行わずにメトリクスを返します。
+
+:::note
+`retention_period` と `retain_last` は、**テーブルレベル** のデフォルトの保持設定だけをオーバーライドします。Iceberg テーブルプロパティで設定された ref ごと (ブランチ/タグ) の保持オーバーライド (例: `refs.<branch>.min-snapshots-to-keep`) は上書きされることはなく、常にテーブルメタデータで指定されたとおりに適用されます。
+:::
+
+**例:**
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+-- Create some snapshots by inserting data
+INSERT INTO iceberg_table VALUES (1);
+INSERT INTO iceberg_table VALUES (2);
+INSERT INTO iceberg_table VALUES (3);
+
+-- Expire using retention policy only
+ALTER TABLE iceberg_table EXECUTE expire_snapshots();
+
+-- Expire with a safety fuse: protect snapshots newer than the timestamp (positional syntax)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots('2025-01-01 00:00:00');
+
+-- Same using the named argument form
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(expire_before = '2025-01-01 00:00:00');
+
+-- Override retention parameters for one execution
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '3d', retain_last = 10);
+
+-- Expire explicit snapshots
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(snapshot_ids = [101, 102, 103]);
+
+-- Dry-run preview (no metadata updates, no file deletes)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '1d', dry_run = 1);
+```
+
+**出力:**
+
+このコマンドは、2つのカラム (`metric_name String`、`metric_value Int64`) を持つテーブルを返します。このテーブルには、各メトリクスごとに1行が含まれます。メトリクス名は [Iceberg spec](https://iceberg.apache.org/docs/latest/spark-procedures/#output) に従います。
+
+
+| metric&#95;name                       | 説明                                 |
+| ------------------------------------- | ---------------------------------- |
+| `deleted_data_files_count`            | 削除されたデータファイル数                      |
+| `deleted_position_delete_files_count` | 削除された position delete ファイル数        |
+| `deleted_equality_delete_files_count` | 削除された equality delete ファイル数        |
+| `deleted_manifest_files_count`        | 削除されたマニフェストファイル数                   |
+| `deleted_manifest_lists_count`        | 削除されたマニフェストリストファイル数                |
+| `deleted_statistics_files_count`      | 削除された statistics ファイル数 (現時点では常に 0) |
+| `dry_run`                             | ドライランモードでは `1`、通常実行では `0`          |
+
+このコマンドは次の手順を実行します。
+
+1. 保持ポリシー (以下を参照) を評価し、保持する必要があるスナップショットを判定します
+2. タイムスタンプ引数が指定されている場合は、そのタイムスタンプ以降のすべてのスナップショットも追加で保護します
+3. ポリシーで保持されず、かつタイムスタンプによる保護対象でもないスナップショットを期限切れにします
+4. 期限切れになったスナップショットにのみ関連付けられているファイルを特定します
+5. 通常モードでは: 期限切れになったスナップショットを含まない新しいメタデータを生成します
+6. 通常モードでは: 到達不能になったマニフェストリスト、マニフェストファイル、およびデータファイルを物理的に削除します
+7. `dry_run = 1` モードでは: 手順 5 と 6 をスキップし、計算されたメトリクスのみを返します
+
+#### スナップショット保持ポリシー \{#iceberg-snapshot-retention-policy\}
+
+`expire_snapshots` コマンドは、[Iceberg snapshot retention policy](https://iceberg.apache.org/spec/#snapshot-retention-policy) に従います。保持設定は、Iceberg のテーブルプロパティと参照ごとのオーバーライドで構成されます。
+
+| Property                               | Scope | Default                                                                    | 説明                                              |
+| -------------------------------------- | ----- | -------------------------------------------------------------------------- | ----------------------------------------------- |
+| `history.expire.min-snapshots-to-keep` | Table | `iceberg_expire_default_min_snapshots_to_keep` (default `1`)               | 各ブランチの祖先チェーンで保持するスナップショットの最小数                   |
+| `history.expire.max-snapshot-age-ms`   | Table | `iceberg_expire_default_max_snapshot_age_ms` (default `432000000`, 5 days) | ブランチで保持するスナップショットの最大経過時間 (ミリ秒)                  |
+| `history.expire.max-ref-age-ms`        | Table | `iceberg_expire_default_max_ref_age_ms` (default `∞`)                      | スナップショット参照 (ブランチまたはタグ) 自体が削除されるまでの最大経過時間 (ミリ秒)  |
+
+各スナップショット参照 (Iceberg メタデータ内の `refs`) では、参照ごとのフィールド `min-snapshots-to-keep`、`max-snapshot-age-ms`、`max-ref-age-ms` を使って、これらの値をオーバーライドできます。
+
+**保持の評価:**
+
+* **各ブランチ** (`main` を含む) について: ブランチヘッドから開始して祖先チェーンをたどります。スナップショットは、次のいずれかの条件が真である間、保持されます:
+  * そのスナップショットが、チェーン内の先頭から `min-snapshots-to-keep` 個に含まれている
+  * そのスナップショットの経過時間が `max-snapshot-age-ms` 以内である (つまり、`now - timestamp-ms <= max-snapshot-age-ms`) 
+* **タグ**について: タグ付けされたスナップショットは保持されます。ただし、タグが `max-ref-age-ms` を超過している場合、そのタグ参照は削除されます
+* **`main` 以外の参照**で、経過時間が `max-ref-age-ms` を超えているものは完全に削除されます (`main` ブランチが削除されることはありません) 
+* 存在しないスナップショットを指す**ダングリング参照**は、警告とともに削除されます
+* **現在のスナップショットは常に保持されます**。保持設定に関係なく保持されます
+
+**必要な権限:**
+
+`ALTER TABLE EXECUTE` 権限が必要です。これは ClickHouse のアクセス制御階層において `ALTER TABLE` の子権限です。この権限を個別に付与することも、親権限を通じて付与することもできます。
+
+```sql
+-- Grant only EXECUTE permission
+GRANT ALTER TABLE EXECUTE ON my_iceberg_table TO my_user;
+
+-- Or grant all ALTER TABLE permissions (includes ALTER TABLE EXECUTE)
+GRANT ALTER TABLE ON my_iceberg_table TO my_user;
+```
+
+:::note
+
+* サポートされるのは Iceberg フォーマットバージョン 2 のテーブルのみです (v1 スナップショットでは、クリーンアップ対象のファイルを安全に特定するために必要な `manifest-list` が保証されません) 
+* 現在のスナップショットは、指定されたタイムスタンプより古い場合でも、常に保持されます
+* `allow_insert_into_iceberg` 設定を有効にする必要があります
+* `allow_experimental_expire_snapshots` 設定を有効にする必要があります
+* ClickHouse がメタデータを更新する際には、カタログ自体の認可 (REST catalog の認証、AWS Glue IAM など) が別途適用されます
+  :::
 
 
 ## 関連項目 \{#see-also\}

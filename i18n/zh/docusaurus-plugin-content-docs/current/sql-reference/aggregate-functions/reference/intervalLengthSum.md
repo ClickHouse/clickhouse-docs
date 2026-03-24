@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## intervalLengthSum \{#intervalLengthSum\}
 
-引入版本：v21.7
+引入版本：v21.7.0
 
 接收多个数值区间，将所有重叠部分合并为单个统一区间后，计算其总长度。
 
@@ -32,7 +32,7 @@ intervalLengthSum(start, end)
 
 **返回值**
 
-返回所有区间（数轴上的线段）并集的总长度。根据参数类型不同，返回值可能为 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`Float64`](/sql-reference/data-types/float)。
+返回所有区间 (数轴上的线段) 并集的总长度。根据参数类型不同，返回值可能为 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`Float64`](/sql-reference/data-types/float)。
 
 **示例**
 

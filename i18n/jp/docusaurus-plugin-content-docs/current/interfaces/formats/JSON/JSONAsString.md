@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 ## 説明 \{#description\}
 
-この形式では、1つの JSON オブジェクトは1つの値として解釈されます。  
-入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それぞれが個別の行として解釈されます。  
-入力データが角かっこで囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
+このフォーマットでは、1つの JSON オブジェクトは1つの値として解釈されます。
+入力に複数の JSON オブジェクト (カンマ区切り) が含まれている場合、それぞれが個別の行として解釈されます。
+入力データが `[]` で囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
 
 :::note
-この形式は、型が [String](/sql-reference/data-types/string.md) の1つのフィールドを持つテーブルに対してのみ解析できます。  
-残りの列は [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) のいずれかに設定するか、  
-省略する必要があります。 
+このフォーマットは、型が [String](/sql-reference/data-types/string.md) の1つのフィールドを持つテーブルに対してのみ解析できます。
+残りの列は [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) のいずれかに設定するか、
+省略する必要があります。
 :::
 
 JSON オブジェクト全体を String にシリアライズしたら、[JSON 関数](/sql-reference/functions/json-functions.md) を使用して処理できます。

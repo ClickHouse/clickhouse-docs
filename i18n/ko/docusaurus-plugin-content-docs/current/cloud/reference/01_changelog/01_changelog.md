@@ -43,6 +43,12 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026년 3월 20일 \{#march-20-2026\}
+
+* **Usage Breakdown 화면의 사용자 지정 날짜 범위:** 이제 사용자 지정 날짜 범위를 사용해 Usage Breakdown 화면에서 모든 청구 차원에 걸친 사용 비용을 확인할 수 있습니다.
+  시작일과 종료일(포함)을 선택해 특정 기간의 비용을 필터링하고 결과를 CSV로 다운로드할 수 있습니다.
+  날짜 범위는 최대 31일로 제한됩니다.
+
 ## 2026년 2월 20일 \{#february-20-2026\}
 
 - **ClickPipes:** 비활성 상태인 Reverse private endpoint는 설정된 유예 기간이 지나면 이제 자동으로 제거됩니다. 이를 통해 사용되지 않거나 잘못 구성된 엔드포인트가 백엔드에 무기한 남지 않도록 합니다. 자세한 내용은 자동 정리 [문서](/integrations/clickpipes/aws-privatelink#automatic-cleanup)를 참조하십시오.
@@ -430,7 +436,7 @@ ClickHouse Cloud에서 Query API Endpoints의 GA(General Availability) 버전을
 * 결과 스트리밍
 * 모든 ClickHouse 호환 출력 포맷 지원
 
-이러한 개선 사항에 더해, 기존 프레임워크를 활용하여 ClickHouse Cloud 서비스에 대해 임의의 SQL 쿼리를 실행할 수 있는 범용 쿼리 API 엔드포인트도 제공하게 되었습니다. 범용 엔드포인트는 서비스 설정 페이지에서 활성화하고 구성할 수 있습니다.
+이러한 개선 사항에 더해, 기존 프레임워크를 활용하여 여러 ClickHouse Cloud 서비스에 대해 임의의 SQL 쿼리를 실행할 수 있는 범용 쿼리 API 엔드포인트도 제공하게 되었습니다. 범용 엔드포인트는 서비스 설정 페이지에서 활성화하고 구성할 수 있습니다.
 
 시작하려면 [Query API Endpoints 문서](/cloud/get-started/query-endpoints)를 참조하십시오.
 

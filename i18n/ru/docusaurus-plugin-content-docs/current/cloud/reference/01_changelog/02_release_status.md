@@ -39,52 +39,67 @@ ClickHouse Cloud предлагает различные каналы релиз
 :::important Как понимать даты релизов
 Даты, показанные ниже, указывают, когда ClickHouse **начинает развёртывание** по каждому каналу релизов, а не когда будет обновлён ваш отдельный сервис.
 
-- Развёртывания автоматизированы и выполняются постепенно в течение нескольких недель
-- Сервисы с настроенными запланированными окнами обновления обновляются в своё запланированное окно в течение недели после завершения развёртывания по соответствующему каналу
-- Завершение развёртывания может быть отложено из‑за пауз (например, праздничных мораториев на изменения) или в связи с мониторингом состояния
+* Развёртывания автоматизированы и выполняются постепенно в течение нескольких недель
+* Сервисы с настроенными запланированными окнами обновления обновляются в своё запланированное окно в течение недели после завершения развёртывания по соответствующему каналу (начиная с понедельника 00:00 UTC)
+* Завершение развёртывания может быть отложено из‑за пауз (например, праздничных мораториев на изменения) или в связи с мониторингом состояния
 
 Для предварительного тестирования перед обновлениями production-среды используйте канал Fast или Regular для непроизводственных сервисов и канал Slow для производственных сервисов.
 :::
 
-<ReleaseSchedule releases={[
-    {
-     changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
-     version: '25.12',
-     fast_start_date: '2026-02-10',
-     fast_end_date: '2026-02-11',
-     regular_start_date: '2026-03-09',
-     regular_end_date: 'TBD',
-     slow_start_date: 'TBD',
-     slow_end_date: 'TBD',
-     fast_progress: 'green',
-     regular_progress: 'green',
-     slow_progress: 'green'
-   },
-   {
-     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-     version: '25.10',
-     fast_start_date: '2025-12-11',
-     fast_end_date: '2025-12-15',
-     regular_start_date: '2026-01-23',
-     regular_end_date: 'TBD',
-     slow_start_date: '2026-03-16',
-     slow_end_date: 'TBD',
-     fast_progress: 'green',
-     regular_progress: 'green',
-     slow_progress: 'green',
-     regular_delay_note: 'Сервисы с запланированными окнами обновления получат версию 25.10 в своё запланированное окно в течение недели после завершения развёртывания',
-   },
-   {
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
-    version: '25.8',
-    fast_start_date: 'Completed',
-    fast_end_date: 'Completed',
-    regular_start_date: '2025-10-29',
-    regular_end_date: '2025-12-19',
-    slow_start_date: '2026-01-27',
-    slow_end_date: '2026-02-04',
-    fast_progress: 'green',
-    regular_progress: 'green',
-    slow_progress: 'green',
-  }
-]} />
+<ReleaseSchedule
+  releases={[
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+ version: '26.2',
+ fast_start_date: '2026-03-30',
+ fast_end_date: 'TBD',
+ regular_start_date: 'TBD',
+ regular_end_date: 'TBD',
+ slow_start_date: 'TBD',
+ slow_end_date: 'TBD',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green'
+},
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
+ version: '25.12',
+ fast_start_date: '2026-02-10',
+ fast_end_date: '2026-02-11',
+ regular_start_date: '2026-03-09',
+ regular_end_date: '2026-03-18',
+ slow_start_date: '2026-04-06',
+ slow_end_date: 'TBD',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green',
+ regular_delay_note: 'Сервисы с запланированными окнами обновления получат версию 25.12 в своё запланированное окно в течение недели после 23 марта',
+},
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+ version: '25.10',
+ fast_start_date: '2025-12-11',
+ fast_end_date: '2025-12-15',
+ regular_start_date: '2026-01-23',
+ regular_end_date: '2026-03-10',
+ slow_start_date: '2026-03-23',
+ slow_end_date: 'TBD',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green',
+},
+{
+changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+version: '25.8',
+fast_start_date: 'Completed',
+fast_end_date: 'Completed',
+regular_start_date: '2025-10-29',
+regular_end_date: '2025-12-19',
+slow_start_date: '2026-01-27',
+slow_end_date: '2026-02-04',
+fast_progress: 'green',
+regular_progress: 'green',
+slow_progress: 'green',
+}
+]}
+/>

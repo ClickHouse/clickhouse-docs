@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## count \{#count\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 统计行数或非 NULL 值的个数。
 

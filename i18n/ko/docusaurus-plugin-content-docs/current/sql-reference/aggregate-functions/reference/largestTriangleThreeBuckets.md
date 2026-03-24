@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## largestTriangleThreeBuckets \{#largestTriangleThreeBuckets\}
 
-도입 버전: v23.10
+도입 버전: v23.10.0
 
 입력 데이터에 [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) 알고리즘을 적용합니다.
 이 알고리즘은 시각화를 위해 시계열 데이터를 다운샘플링하는 데 사용됩니다.

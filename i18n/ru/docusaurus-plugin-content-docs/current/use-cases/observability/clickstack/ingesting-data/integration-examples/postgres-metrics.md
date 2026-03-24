@@ -19,15 +19,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Мониторинг метрик PostgreSQL с помощью ClickStack \{#postgres-metrics-clickstack\}
 
 :::note[Кратко]
-В этом руководстве показано, как отслеживать метрики производительности PostgreSQL с помощью ClickStack, настроив ресивер PostgreSQL в OTel collector. Вы узнаете, как:
-
-- Настроить OTel collector для сбора метрик PostgreSQL
-- Развернуть ClickStack с вашей пользовательской конфигурацией
-- Использовать готовый дашборд для визуализации производительности PostgreSQL (транзакции, подключения, размер базы данных, коэффициенты попаданий в кэш)
-
-Демонстрационный набор данных с примерами метрик доступен, если вы хотите протестировать интеграцию до настройки вашей продакшн-базы данных PostgreSQL.
-
-Необходимое время: 10–15 минут
+Отслеживайте метрики производительности PostgreSQL в ClickStack с помощью приёмника PostgreSQL в OTel. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим PostgreSQL \{#existing-postgres\}
@@ -38,96 +30,94 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ##### Предварительные требования \{#prerequisites\}
 
-- Запущенный экземпляр ClickStack
-- Установленный PostgreSQL (версии 9.6 или новее)
-- Сетевой доступ от ClickStack к PostgreSQL (порт по умолчанию 5432)
-- Пользователь PostgreSQL для мониторинга с соответствующими правами
+* Запущенный экземпляр ClickStack
+* Установленный PostgreSQL (версии 9.6 или новее)
+* Сетевой доступ от ClickStack к PostgreSQL (порт по умолчанию 5432)
+* Пользователь PostgreSQL для мониторинга с соответствующими правами
 
 <VerticalStepper headerLevel="h4">
+  #### Убедитесь, что пользователь мониторинга имеет необходимые права
 
-#### Убедитесь, что пользователь мониторинга имеет необходимые права \{#monitoring-permissions\}
+  Приёмнику PostgreSQL требуется пользователь с правами чтения статистических представлений. Назначьте роль `pg_monitor` пользователю мониторинга:
 
-Приёмнику PostgreSQL требуется пользователь с правами чтения статистических представлений. Назначьте роль `pg_monitor` пользователю мониторинга:
+  ```sql
+  GRANT pg_monitor TO your_monitoring_user;
+  ```
 
-```sql
-GRANT pg_monitor TO your_monitoring_user;
-```
+  #### Создайте пользовательскую конфигурацию OTel collector
 
-#### Создайте пользовательскую конфигурацию OTel collector \{#create-custom-config\}
+  ClickStack позволяет расширять базовую конфигурацию OpenTelemetry collector, монтируя пользовательский конфигурационный файл и устанавливая переменную окружения.
 
-ClickStack позволяет расширять базовую конфигурацию OpenTelemetry collector, монтируя пользовательский конфигурационный файл и устанавливая переменную окружения.
+  Создайте `postgres-metrics.yaml`:
 
-Создайте `postgres-metrics.yaml`:
+  ```yaml
+  receivers:
+    postgresql:
+      endpoint: postgres-host:5432
+      transport: tcp
+      username: otel_monitor
+      password: ${env:POSTGRES_PASSWORD}
+      databases:
+        - postgres
+        - your_application_db # Замените на фактические имена ваших баз данных
+      collection_interval: 30s
+      tls:
+        insecure: true
 
-```yaml
-receivers:
-  postgresql:
-    endpoint: postgres-host:5432
-    transport: tcp
-    username: otel_monitor
-    password: ${env:POSTGRES_PASSWORD}
-    databases:
-      - postgres
-      - your_application_db # Замените на фактические имена ваших баз данных
-    collection_interval: 30s
-    tls:
-      insecure: true
+  processors:
+    resourcedetection:
+      detectors: [env, system, docker]
+      timeout: 5s
+    batch:
+      timeout: 10s
+      send_batch_size: 10000
 
-processors:
-  resourcedetection:
-    detectors: [env, system, docker]
-    timeout: 5s
-  batch:
-    timeout: 10s
-    send_batch_size: 1024
+  exporters:
+    clickhouse:
+      endpoint: tcp://localhost:9000
+      database: default
+      ttl: 96h
 
-exporters:
-  clickhouse:
-    endpoint: tcp://localhost:9000
-    database: default
-    ttl: 96h
+  service:
+    pipelines:
+      metrics/postgres:
+        receivers: [postgresql]
+        processors: [resourcedetection, batch]
+        exporters: [clickhouse]
+  ```
 
-service:
-  pipelines:
-    metrics/postgres:
-      receivers: [postgresql]
-      processors: [resourcedetection, batch]
-      exporters: [clickhouse]
-```
+  :::note
+  Параметр `tls: insecure: true` отключает проверку SSL при разработке и тестировании. Для продуктивной среды PostgreSQL с включённым SSL удалите эту строку или настройте корректные сертификаты.
+  :::
 
-:::note
-Параметр `tls: insecure: true` отключает проверку SSL при разработке и тестировании. Для продуктивной среды PostgreSQL с включённым SSL удалите эту строку или настройте корректные сертификаты.
-:::
+  #### Разверните ClickStack с пользовательской конфигурацией
 
-#### Разверните ClickStack с пользовательской конфигурацией \{#deploy-clickstack\}
+  Смонтируйте пользовательскую конфигурацию:
 
-Смонтируйте пользовательскую конфигурацию:
+  ```bash
+  docker run -d \
+    --name clickstack-postgres \
+    -p 8123:8123 -p 9000:9000 -p 4317:4317 -p 4318:4318 \
+    -e HYPERDX_API_KEY=your-api-key \
+    -e CLICKHOUSE_PASSWORD=your-clickhouse-password \
+    -e POSTGRES_PASSWORD=secure_password_here \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/postgres-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    clickhouse/clickstack:latest
+  ```
 
-```bash
-docker run -d \
-  --name clickstack-postgres \
-  -p 8123:8123 -p 9000:9000 -p 4317:4317 -p 4318:4318 \
-  -e HYPERDX_API_KEY=your-api-key \
-  -e CLICKHOUSE_PASSWORD=your-clickhouse-password \
-  -e POSTGRES_PASSWORD=secure_password_here \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/postgres-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack:latest
-```
+  #### Проверьте сбор метрик
 
-#### Проверьте сбор метрик \{#verify-metrics\}
+  После настройки войдите в HyperDX и убедитесь, что метрики поступают:
 
-После настройки войдите в HyperDX и убедитесь, что метрики поступают:
+  1. Перейдите в раздел Metrics explorer
+  2. Найдите метрики, начинающиеся с postgresql. (например, postgresql.backends, postgresql.commits)
+  3. Вы должны увидеть точки данных метрик, появляющиеся с заданным вами интервалом сбора
 
-1. Перейдите в раздел Metrics explorer
-2. Найдите метрики, начинающиеся с postgresql. (например, postgresql.backends, postgresql.commits)
-3. Вы должны увидеть точки данных метрик, появляющиеся с заданным вами интервалом сбора
-
-После того как метрики начнут поступать, перейдите к разделу [Dashboards and visualization](#dashboards), чтобы импортировать преднастроенный дашборд.
-
+  После того как метрики начнут поступать, перейдите к разделу [Dashboards and visualization](#dashboards), чтобы импортировать преднастроенный дашборд.
 </VerticalStepper>
 
-## Демонстрационный набор данных \{#demo-dataset\}
+## Демонстрационный набор данных {#demo-dataset}
 
 Для пользователей, которые хотят протестировать интеграцию метрик PostgreSQL перед настройкой своих производственных систем, мы предоставляем заранее сгенерированный набор данных с реалистичными паттернами метрик PostgreSQL.
 
@@ -181,7 +171,7 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Проверка метрик в HyperDX \{#verify-metrics-demo\}
+#### Проверка метрик в HyperDX {#verify-metrics-demo}
 
 После загрузки самый быстрый способ просмотреть метрики — использовать преднастроенный дашборд.
 
@@ -193,7 +183,7 @@ HyperDX отображает временные метки в локальном
 
 </VerticalStepper>
 
-## Дашборды и визуализация \{#dashboards\}
+## Дашборды и визуализация {#dashboards}
 
 Чтобы начать мониторинг PostgreSQL с помощью ClickStack, мы предоставляем базовые визуализации для метрик PostgreSQL.
 
@@ -226,7 +216,7 @@ HyperDX отображает временные метки в локальном
 
 ## Устранение неполадок \{#troubleshooting\}
 
-### Пользовательская конфигурация не загружается \{#troubleshooting-not-loading\}
+### Пользовательская конфигурация не загружается {#troubleshooting-not-loading}
 
 Убедитесь, что задана переменная окружения:
 
@@ -240,7 +230,7 @@ docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### Метрики не отображаются в HyperDX \{#no-metrics\}
+### Метрики не отображаются в HyperDX {#no-metrics}
 
 Убедитесь, что есть доступ к PostgreSQL:
 
@@ -254,7 +244,7 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-### Ошибки аутентификации \{#auth-errors\}
+### Ошибки аутентификации {#auth-errors}
 
 Убедитесь, что пароль указан верно:
 
@@ -270,12 +260,10 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 
 ## Дальнейшие шаги \{#next-steps\}
 
-После настройки мониторинга метрик PostgreSQL:
-
 - Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критических порогов (ограничения на количество подключений, высокая доля откатов транзакций, низкий коэффициент попаданий в кеш)
 - Включите мониторинг на уровне запросов с помощью расширения `pg_stat_statements`
-- Отслеживайте несколько экземпляров PostgreSQL, дублируя конфигурацию `receiver` с разными конечными точками и именами сервисов
+- Отслеживайте несколько экземпляров PostgreSQL, дублируя конфигурацию приёмника с разными эндпоинтами и именами сервисов
 
-## Переход в production \{#going-to-production\}
+## Переход в production {#going-to-production}
 
 В этом руководстве для быстрой первоначальной настройки используется встроенный в ClickStack OTel collector. Для production-развертываний мы рекомендуем запускать собственный OTel collector и отправлять данные на OTLP-эндпоинт ClickStack. См. раздел [Отправка данных OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) для конфигурации production-среды.

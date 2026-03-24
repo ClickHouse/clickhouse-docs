@@ -220,6 +220,8 @@ var reader = await client.ExecuteReaderAsync(
 | BatchSize | `int` | 100,000 | Number of rows per batch |
 | MaxDegreeOfParallelism | `int` | 1 | Number of parallel batch uploads |
 | Format | `RowBinaryFormat` | `RowBinary` | Binary format: `RowBinary` or `RowBinaryWithDefaults` |
+| ColumnTypes | `IReadOnlyDictionary<string, string>` | `null` | Column name → ClickHouse type string. Skips the schema probe query when set. |
+| UseSchemaCache | `bool` | `false` | Cache full table schema per (database, table) for the client's lifetime. |
 
 All `QueryOptions` properties are also available on `InsertOptions`.
 
@@ -240,6 +242,48 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+#### Skipping the schema probe query {#skip-schema-query}
+
+By default, `InsertBinaryAsync` sends a `SELECT ... WHERE 1=0` query before each insert to discover column types. For high-throughput scenarios, you can eliminate this overhead with two options:
+
+**Option 1: Provide column types explicitly**
+
+When you know the table schema at compile time, pass it directly via `ColumnTypes`. No schema query is sent at all:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**Option 2: Cache the schema**
+
+When you insert into the same table repeatedly, set `UseSchemaCache = true` to query the schema once and reuse it for subsequent inserts on the same `ClickHouseClient` instance:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+* `ColumnTypes` takes priority over `UseSchemaCache`. If both are set, the explicit types are used.
+* The schema cache does not detect `ALTER TABLE` changes. If you modify the table schema, create a new `ClickHouseClient` or avoid `UseSchemaCache` for that table.
+* The cache is scoped to the `ClickHouseClient` instance and keyed by (database, table). Different column subsets on the same table share a single cached schema.
+:::
 
 ## ClickHouseClient {#clickhouse-client}
 
@@ -381,7 +425,7 @@ var options = new InsertOptions
 ```
 
 :::note
-* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types.
+* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types. To skip this query, use [`InsertOptions.ColumnTypes` or `InsertOptions.UseSchemaCache`](#skip-schema-query).
 * When `MaxDegreeOfParallelism > 1`, batches are uploaded in parallel. Sessions are not compatible with parallel insertion; either disable sessions or set `MaxDegreeOfParallelism = 1`.
 * Use `RowBinaryFormat.RowBinaryWithDefaults` in `InsertOptions.Format` if you want the server to apply DEFAULT values for columns not provided.
 :::
@@ -1510,25 +1554,152 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper {#orm-support-dapper}
 
-`ClickHouse.Driver` can be used with Dapper, but anonymous objects aren't supported.
+`ClickHouse.Driver` works with Dapper. The driver automatically converts Dapper's `@parameter` syntax to ClickHouse's native `{parameter:Type}` syntax, with types inferred from .NET values.
 
-**Working example:**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**Not supported:**
+Use `ClickHouseDataSource` for proper connection lifetime management:
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
+
+#### Parameter passing styles {#dapper-parameter-passing}
+
+All standard Dapper parameter styles are supported:
+
+**Anonymous objects:**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**POCO classes:**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**Dictionary:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (from dictionary or anonymous object):**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+#### Querying into POCOs {#dapper-pocos}
+
+Dapper maps columns to properties by name (case-insensitive):
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+#### ClickHouse-native parameter syntax {#dapper-clickhouse-param-syntax}
+
+When you need explicit type control, use ClickHouse's `{param:Type}` syntax directly in the SQL with a `Dictionary<string, object>` for the parameter values. Don't combine `@param` syntax and `{param:Type}` syntax for the same parameter.
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+#### WHERE IN {#dapper-where-in}
+
+**Dapper's native IN expansion works:**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper rewrites this to `WHERE id IN (@Ids1, @Ids2, @Ids3)`, and the driver converts each expanded parameter.
+
+**ClickHouse's `has()` with Array parameter also works:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+#### Custom type handlers {#dapper-type-handlers}
+
+Some ClickHouse types, eg `ITuple`, `BigInteger`, and `ClickHouseDecimal` need handlers registered at startup:
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+See the [Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs) for an example type handler implementation.
+
+#### Dapper.Contrib {#dapper-contrib}
+
+`GetAll<T>()` and `Get<T>(id)` work. `Insert<T>()` does not — it generates SQL Server syntax (`SCOPE_IDENTITY`, `[]`). It is recommended to use the `ClickHouseClient` native `InsertBinaryAsync` method instead.
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+Property names must match ClickHouse column names exactly (case-sensitive).
+
+#### Limitations {#dapper-limitations}
+
+| What | Status | Details |
+|---|---|---|
+| Tuple as **result** | Works | Requires `SqlMapper.TypeHandler<ITuple>` registration |
+| Tuple as **parameter** | Not supported | Dapper cannot serialize `ITuple`/`Tuple<>` as a `DbParameter` value |
+| Nested types as parameter | Not supported | Same reason — Dapper rejects complex types as parameter values |
+| Geo types as parameter | Not supported | Point, Ring, Polygon, LineString, MultiLineString, MultiPolygon |
+| `Dapper.Contrib.Insert<T>()` | Not supported | Generates SQL Server-specific syntax |
+| `Nothing` type | Not supported | No meaningful .NET representation |
 
 ### Linq2db {#orm-support-linq2db}
 

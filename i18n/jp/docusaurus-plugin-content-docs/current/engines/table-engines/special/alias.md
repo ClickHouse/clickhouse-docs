@@ -42,8 +42,12 @@ ENGINE = Alias(target_db, target_table)
 
 ## エンジンパラメータ \{#engine-parameters\}
 
-- **`target_db (optional)`** — 対象テーブルを含むデータベースの名前（省略可能）。
-- **`target_table`** — 対象テーブルの名前。
+* **`target_db (optional)`** — 対象テーブルを含むデータベースの名前 (省略可能) 。
+* **`target_table`** — 対象テーブルの名前。
+
+:::note
+`target_db` が省略され、かつ `target_table` が完全修飾されていない場合 (例: `Alias('my_table')`) 、対象はセッションのカレントデータベースではなく、エイリアス自体と同じデータベースとして解決されます。
+:::
 
 ## サポートされている操作 \{#supported-operations\}
 

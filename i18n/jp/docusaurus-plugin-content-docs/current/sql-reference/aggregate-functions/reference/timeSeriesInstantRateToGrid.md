@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesInstantRateToGrid \{#timeSeriesInstantRateToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、このデータから [PromQL ライクな irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate) を計算する集約関数です。グリッド上の各点について、`irate` を計算するために使用するサンプルは、指定された時間ウィンドウ内のものが考慮されます。
 
@@ -28,7 +28,7 @@ timeSeriesInstantRateToGrid(start_timestamp, end_timestamp, grid_step, staleness
 * `start_timestamp` — グリッドの開始を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — グリッドの終了を指定します。[`UInt32`](/sql-reference/data-types/int-uint) または [`DateTime`](/sql-reference/data-types/datetime)
 * `grid_step` — グリッドのステップを秒単位で指定します。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness` — 対象とするサンプルの最大の「古さ（staleness）」を秒で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness` — 対象とするサンプルの最大の「古さ (staleness) 」を秒で指定します。staleness ウィンドウは左開・右閉区間です。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **Arguments**
 

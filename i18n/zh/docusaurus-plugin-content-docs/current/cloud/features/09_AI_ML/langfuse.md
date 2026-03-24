@@ -76,174 +76,152 @@ flowchart TB
 
 ### 可观测性 \{#observability\}
 
-[可观测性](/docs/observability/overview) 对于理解和调试 LLM 应用至关重要。与传统软件不同，LLM 应用涉及复杂的、非确定性的交互，因而更难监控和调试。Langfuse 提供了全面的追踪能力，帮助你准确理解应用中正在发生的一切。
+[可观测性](https://langfuse.com/docs/observability/overview) 对于理解和调试 LLM 应用至关重要。与传统软件不同，LLM 应用涉及复杂且非确定性的交互，因此很难监控和调试。Langfuse 提供全面的跟踪能力，帮助你准确理解应用中正在发生的一切。
 
-_📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=observability)，了解 Langfuse 可观测性以及如何将其集成到你的应用中。_
+*📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=observability)，了解 Langfuse Observability 以及如何将其集成到你的应用中。*
 
 <Tabs groupId="observability">
-<TabItem value="trace-details" label="Trace 详情">
+  <TabItem value="trace-details" label="Trace Details">
+    跟踪记录让你能够追踪应用中每一次 LLM 调用和其他相关逻辑。
 
-Trace 允许你追踪应用中每一次 LLM 调用和其他相关逻辑。
+    <video src="https://static.langfuse.com/docs-videos/trace-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/trace-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="sessions" label="Sessions">
+    会话让你能够追踪多轮对话或智能体工作流。
 
-</TabItem>
-<TabItem value="sessions" label="会话">
+    <video src="https://static.langfuse.com/docs-videos/sessions-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-Session 允许你追踪多轮对话或基于 Agent 的多步工作流。
+  <TabItem value="timeline" label="Timeline">
+    通过检查时间线视图来调试延迟问题。
 
-<video src="https://static.langfuse.com/docs-videos/sessions-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/timeline-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="timeline" label="时间线">
+  <TabItem value="users" label="Users">
+    添加你自己的 `userId` 以监控每个用户的成本和使用情况。你也可以选择在自己的系统中创建指向此视图的深度链接。
 
-通过检查时间线视图来调试延迟问题。
+    <video src="https://static.langfuse.com/docs-videos/users-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/timeline-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="agent-graphs" label="Agent Graphs">
+    LLM 智能体可以可视化为图，以展示复杂智能体工作流的流程。
 
-</TabItem>
-<TabItem value="users" label="用户">
+    <video src="https://static.langfuse.com/docs-videos/langgraph-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-添加你自己的 `userId` 以监控每个用户的成本和使用情况。你也可以选择在自己的系统中创建指向此视图的深度链接。
+  <TabItem value="dashboard" label="Dashboard">
+    在仪表板中查看质量、成本和延迟指标，以监控你的 LLM 应用。
 
-<video src="https://static.langfuse.com/docs-videos/users-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="agent-graphs" label="Agent 图">
-
-可以使用图形来可视化 LLM Agent，以展示复杂 Agent 工作流的执行路径。
-
-<video src="https://static.langfuse.com/docs-videos/langgraph-new-ui.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="dashboard" label="仪表盘">
-
-在仪表盘中查看质量、成本和延迟指标，以监控你的 LLM 应用。
-
-<video src="https://static.langfuse.com/docs-videos/dashboard.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
+    <video src="https://static.langfuse.com/docs-videos/dashboard.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 </Tabs>
 
 ### 提示管理 \{#prompt-management\}
 
-[提示管理](/docs/prompt-management/overview) 对于构建高效的 LLM 应用至关重要。Langfuse 提供工具，帮助你在整个开发生命周期中对提示进行管理、版本控制和优化。
+[提示管理](https://langfuse.com/docs/prompt-management/overview) 对于构建高效的 LLM 应用至关重要。Langfuse 提供工具，帮助你在整个开发生命周期中对提示进行管理、版本控制和优化。
 
-_📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=prompt)，了解 Langfuse 提示管理以及如何将其集成到你的应用中。_
+*📹 想进一步了解？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=prompt)，了解 Langfuse 提示管理以及如何将其集成到你的应用中。*
 
 <Tabs groupId="prompt-management">
-<TabItem value="create" label="创建">
+  <TabItem value="create" label="创建">
+    通过 UI、SDKs 或 API 创建新的提示。
 
-通过 UI、SDKs 或 API 创建新的提示。
+    <video src="https://static.langfuse.com/docs-videos/create-update-prompts.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/create-update-prompts.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="version-control" label="版本控制">
+    通过 UI、API 或 SDKs 协作进行提示的版本管理和编辑。
 
-</TabItem>
-<TabItem value="version-control" label="版本控制">
+    <video src="https://static.langfuse.com/docs-videos/create-prompt-version.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-通过 UI、API 或 SDKs 协作进行提示的版本管理和编辑。
+  <TabItem value="deploy" label="部署">
+    通过标签将提示部署到生产环境或任意其他环境——无需修改任何代码。
 
-<video src="https://static.langfuse.com/docs-videos/create-prompt-version.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/deploy-prompt.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="deploy" label="部署">
+  <TabItem value="metrics" label="指标">
+    对比不同提示版本的延迟、成本和评估指标。
 
-通过标签将提示部署到生产环境或任意其他环境——无需修改任何代码。
+    <video src="https://static.langfuse.com/docs-videos/prompt-metrics.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/deploy-prompt.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="test-in-playground" label="在 Playground 中测试">
+    在 Playground 中即时测试你的提示。
 
-</TabItem>
-<TabItem value="metrics" label="指标">
+    <video src="https://static.langfuse.com/docs-videos/prompt-to-playground.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-对比不同提示版本的延迟、成本和评估指标。
+  <TabItem value="link-with-traces" label="与 Traces 关联">
+    将提示与 traces 关联，以了解它们在你的 LLM 应用上下文中的实际表现。
 
-<video src="https://static.langfuse.com/docs-videos/prompt-metrics.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/linked-generations.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="test-in-playground" label="在 Playground 中测试">
+  <TabItem value="track-changes" label="跟踪变更">
+    跟踪提示的变更情况，以了解其随时间的演变。
 
-在 Playground 中即时测试你的提示。
-
-<video src="https://static.langfuse.com/docs-videos/prompt-to-playground.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="link-with-traces" label="与 Traces 关联">
-
-将提示与 traces 关联，以了解它们在你的 LLM 应用上下文中的实际表现。
-
-<video src="https://static.langfuse.com/docs-videos/linked-generations.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="track-changes" label="跟踪变更">
-
-跟踪提示的变更情况，以了解其随时间的演变。
-
-<video src="https://static.langfuse.com/docs-videos/track-changes.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
+    <video src="https://static.langfuse.com/docs-videos/track-changes.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 </Tabs>
 
 ### 评估与数据集 \{#evaluation\}
 
-[评估](/docs/evaluation/overview) 对于确保你的 LLM 应用的质量和可靠性至关重要。Langfuse 提供灵活的评估工具，可适配你的特定需求，无论你是在开发环境中进行测试，还是在生产环境中监控性能。
+[评估](https://langfuse.com/docs/evaluation/overview) 对于确保你的 LLM 应用的质量和可靠性至关重要。Langfuse 提供灵活的评估工具，可适应你的特定需求，无论你是在开发环境中测试，还是在生产环境中监控性能。
 
-_📹 想了解更多？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=evaluation)，了解 Langfuse Evaluation 以及如何利用它改进你的 LLM 应用。_
+*📹 想了解更多？[**观看端到端演示**](https://langfuse.com/watch-demo?tab=evaluation)，了解 Langfuse Evaluation 以及如何使用它来改进你的 LLM 应用。*
 
 <Tabs groupId="evaluation">
-<TabItem value="analytics" label="分析">
+  <TabItem value="analytics" label="分析">
+    在 Langfuse 仪表板中绘制评估结果。
 
-在 Langfuse 控制台中可视化评估结果。
+    <video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/scores-dashboard.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="user-feedback" label="User Feedback">
+    收集用户反馈。可通过我们的 Browser SDK 在前端采集，也可以通过服务端 SDK 或 API 采集。视频中包含示例应用。
 
-</TabItem>
-<TabItem value="user-feedback" label="用户反馈">
+    <video src="https://static.langfuse.com/docs-videos/scores-user-feedback.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-收集用户反馈。可通过我们的 Browser SDK 在前端采集，也可以通过服务端 SDK 或 API 采集。视频中包含示例应用。
+  <TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
+    在生产或开发环境中的跟踪记录上运行完全托管的 LLM-as-a-judge 评估。可应用于应用中的任意步骤，以执行分步评估。
 
-<video src="https://static.langfuse.com/docs-videos/scores-user-feedback.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    <video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-</TabItem>
-<TabItem value="llm-as-a-judge" label="LLM-as-a-Judge">
+  <TabItem value="experiments" label="Experiments">
+    直接在用户界面中基于数据集评估提示和模型。无需编写自定义代码。
 
-在生产或开发环境中的 trace 上运行完全托管的 LLM-as-a-judge 评估。可应用于应用中的任意步骤，以执行分步评估。
+    <video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-<video src="https://static.langfuse.com/docs-videos/scores-llm-as-a-judge.mp4%20MOVED%20TO%20R2.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  <TabItem value="annotation-queue" label="Annotation Queue">
+    通过标注队列中的人工标注，为你的评估工作流建立基线。
 
-</TabItem>
-<TabItem value="experiments" label="实验">
+    <video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+  </TabItem>
 
-在用户界面中直接基于数据集评估提示词和模型。无需编写自定义代码。
+  <TabItem value="custom-evals" label="Custom Evals">
+    添加自定义评估结果；支持数值、布尔值和分类值。
 
-<video src="https://static.langfuse.com/docs-videos/prompt-experiments.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
+    ```bash
+    POST /api/public/scores
+    ```
 
-</TabItem>
-<TabItem value="annotation-queue" label="标注队列">
+    通过 Python 或 JS SDK 添加分数。
 
-通过 Annotation Queues 中的人类标注，为你的评估工作流建立基线。
-
-<video src="https://static.langfuse.com/docs-videos/scores-annotation-queue.mp4" autoPlay loop muted playsInline width="100%" style={{boxShadow: "0px 1px 8px -1px rgba(21, 21, 21, 0.20)", borderRadius: "4px"}} />
-
-</TabItem>
-<TabItem value="custom-evals" label="自定义评估">
-
-添加自定义评估结果，支持数值、布尔值和分类值。
-
-```bash
-POST /api/public/scores
-```
-
-通过 Python 或 JS SDK 添加分数。
-
-```python title="Example (Python)"
-langfuse.score(
-  trace_id="123",
-  name="my_custom_evaluator",
-  value=0.5,
-)
-```
-
-</TabItem>
+    ```python title="Example (Python)"
+    langfuse.score(
+      trace_id="123",
+      name="my_custom_evaluator",
+      value=0.5,
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## 快速入门 \{#quickstarts\}

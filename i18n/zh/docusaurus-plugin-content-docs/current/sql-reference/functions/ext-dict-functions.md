@@ -302,7 +302,7 @@ LAYOUT(REGEXP_TREE);
 
 ## dictGet \{#dictGet\}
 
-自 v18.16 版本引入
+自 v18.16.0 版本引入
 
 从字典中检索值。
 
@@ -362,7 +362,7 @@ LIMIT 3;
 
 ## dictGetAll \{#dictGetAll\}
 
-引入于：v23.5
+引入于：v23.5.0
 
 将字典属性值转换为 `All` 数据类型，与字典配置无关。
 
@@ -411,7 +411,7 @@ SELECT
 
 ## dictGetChildren \{#dictGetChildren\}
 
-自 v21.4 引入
+自 v21.4.0 引入
 
 返回第一层子节点的索引数组。它是 [dictGetHierarchy](#dictGetHierarchy) 的逆运算。
 
@@ -447,7 +447,7 @@ SELECT dictGetChildren('hierarchical_dictionary', 2);
 
 ## dictGetDate \{#dictGetDate\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将字典属性值转换为 `Date` 数据类型，而不受字典配置的影响。
 
@@ -489,11 +489,46 @@ SELECT dictGetDate('all_types_dict', 'Date_value', 1)
 
 ## dictGetDateOrDefault \{#dictGetDateOrDefault\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将字典属性值转换为 `Date` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
 **语法**
+
+dictGetDateOrDefault(dict&#95;name, attr&#95;name, id&#95;expr, default&#95;value&#95;expr)
+
+**参数**
+
+`dict_name` — 字典名称。String
+`attr_name` — 字典中列的名称。String 或 Tuple(String)
+`id_expr` — 键的值。返回字典键类型值或元组值的表达式（取决于字典配置）。Expression 或 Tuple(T)
+`default_value_expr` — 当字典中不包含键为 `id_expr` 的行时返回的默认值。Expression 或 Tuple(T)
+
+**返回值**
+
+返回与 `id_expr` 对应的字典属性值，
+否则返回作为 `default_value_expr` 参数传入的值。
+
+:::note
+如果 ClickHouse 无法解析属性的值，或该值与属性的数据类型不匹配，则会抛出异常。
+:::
+
+**示例**
+
+用法示例
+
+-- for key which exists
+SELECT dictGetDate(&#39;all&#95;types&#95;dict&#39;, &#39;Date&#95;value&#39;, 1);
+
+-- for key which does not exist, returns the provided default value
+SELECT dictGetDateOrDefault(&#39;all&#95;types&#95;dict&#39;, &#39;Date&#95;value&#39;, 999, toDate(&#39;1970-01-01&#39;));
+
+┌─dictGetDate(⋯&#95;value&#39;, 1)─┐
+│               2024-01-15 │
+└──────────────────────────┘
+┌─dictGetDateO⋯70-01-01&#39;))─┐
+│               1970-01-01 │
+└──────────────────────────┘
 
 ```sql
 dictGetDateOrDefault(dict_name, attr_name, id_expr, default_value_expr)
@@ -539,7 +574,7 @@ SELECT dictGetDateOrDefault('all_types_dict', 'Date_value', 999, toDate('1970-01
 
 ## dictGetDateTime \{#dictGetDateTime\}
 
-自 v1.1 版本引入。
+自 v1.1.0 版本引入。
 
 将字典属性值转换为 `DateTime` 数据类型，而不受字典配置方式的影响。
 
@@ -581,7 +616,7 @@ SELECT dictGetDateTime('all_types_dict', 'DateTime_value', 1)
 
 ## dictGetDateTimeOrDefault \{#dictGetDateTimeOrDefault\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性值转换为 `DateTime` 数据类型（无论字典如何配置），如果未找到键，则返回提供的默认值。
 
@@ -631,7 +666,7 @@ SELECT dictGetDateTimeOrDefault('all_types_dict', 'DateTime_value', 999, toDateT
 
 ## dictGetDescendants \{#dictGetDescendants\}
 
-引入自：v21.4
+引入自：v21.4.0
 
 返回所有后代，相当于递归调用 [`dictGetChildren`](#dictGetChildren) 函数 `level` 次。
 
@@ -677,7 +712,7 @@ SELECT dictGetDescendants('hierarchical_dictionary', 0, 2)
 
 ## dictGetFloat32 \{#dictGetFloat32\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 无论字典配置如何，都将字典属性值转换为 `Float32` 数据类型。
 
@@ -719,7 +754,7 @@ SELECT dictGetFloat32('all_types_dict', 'Float32_value', 1)
 
 ## dictGetFloat32OrDefault \{#dictGetFloat32OrDefault\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性值转换为 `Float32` 数据类型（无论字典如何配置），如果未找到该键，则返回提供的默认值。
 
@@ -769,7 +804,7 @@ SELECT dictGetFloat32OrDefault('all_types_dict', 'Float32_value', 999, -1.0);
 
 ## dictGetFloat64 \{#dictGetFloat64\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将字典属性的值转换为 `Float64` 数据类型，而不受字典配置的影响。
 
@@ -811,7 +846,7 @@ SELECT dictGetFloat64('all_types_dict', 'Float64_value', 1)
 
 ## dictGetFloat64OrDefault \{#dictGetFloat64OrDefault\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将字典属性值转换为 `Float64` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
@@ -861,9 +896,9 @@ SELECT dictGetFloat64OrDefault('all_types_dict', 'Float64_value', 999, nan);
 
 ## dictGetHierarchy \{#dictGetHierarchy\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
-创建一个数组，包含层次结构[字典](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)中某个 key 的所有父节点。
+创建一个数组，包含层次结构[字典](/docs/sql-reference/statements/create/dictionary/layouts/hierarchical#hierarchical-dictionaries)中某个 key 的所有父节点。
 
 **语法**
 
@@ -897,7 +932,7 @@ SELECT dictGetHierarchy('hierarchical_dictionary', 5)
 
 ## dictGetIPv4 \{#dictGetIPv4\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性的值转换为 `IPv4` 数据类型，无论字典如何配置。
 
@@ -939,7 +974,7 @@ SELECT dictGetIPv4('all_types_dict', 'IPv4_value', 1)
 
 ## dictGetIPv4OrDefault \{#dictGetIPv4OrDefault\}
 
-引入自：v23.1
+引入自：v23.1.0
 
 将字典属性值转换为 `IPv4` 数据类型，而不受字典配置影响；若未找到该键，则返回指定的默认值。
 
@@ -989,7 +1024,7 @@ SELECT dictGetIPv4OrDefault('all_types_dict', 'IPv4_value', 999, toIPv4('0.0.0.0
 
 ## dictGetIPv6 \{#dictGetIPv6\}
 
-自 v23.1 起引入
+自 v23.1.0 起引入
 
 将字典属性的值转换为 `IPv6` 数据类型，而不受字典配置的影响。
 
@@ -1031,7 +1066,7 @@ SELECT dictGetIPv6('all_types_dict', 'IPv6_value', 1)
 
 ## dictGetIPv6OrDefault \{#dictGetIPv6OrDefault\}
 
-自 v23.1 引入
+自 v23.1.0 引入
 
 将字典属性值转换为 `IPv6` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
@@ -1081,7 +1116,7 @@ SELECT dictGetIPv6OrDefault('all_types_dict', 'IPv6_value', 999, '::1'::IPv6);
 
 ## dictGetInt16 \{#dictGetInt16\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将字典属性值转换为 `Int16` 数据类型，不受字典配置影响。
 
@@ -1123,7 +1158,7 @@ SELECT dictGetInt16('all_types_dict', 'Int16_value', 1)
 
 ## dictGetInt16OrDefault \{#dictGetInt16OrDefault\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 将字典属性值转换为 `Int16` 数据类型，不受字典配置影响；如果未找到指定键，则返回提供的默认值。
 
@@ -1173,7 +1208,7 @@ SELECT dictGetInt16OrDefault('all_types_dict', 'Int16_value', 999, -1);
 
 ## dictGetInt32 \{#dictGetInt32\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将字典属性值转换为 `Int32` 数据类型，而不受字典配置的影响。
 
@@ -1215,7 +1250,7 @@ SELECT dictGetInt32('all_types_dict', 'Int32_value', 1)
 
 ## dictGetInt32OrDefault \{#dictGetInt32OrDefault\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性值转换为 `Int32` 数据类型，而不受字典配置影响；如果未找到该键，则返回提供的默认值。
 
@@ -1265,7 +1300,7 @@ SELECT dictGetInt32OrDefault('all_types_dict', 'Int32_value', 999, -1);
 
 ## dictGetInt64 \{#dictGetInt64\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将字典的属性值转换为 `Int64` 数据类型，而不受字典配置方式的影响。
 
@@ -1307,7 +1342,7 @@ SELECT dictGetInt64('all_types_dict', 'Int64_value', 1)
 
 ## dictGetInt64OrDefault \{#dictGetInt64OrDefault\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将字典属性值转换为 `Int64` 数据类型（无论字典如何配置），如果未找到该键，则返回提供的默认值。
 
@@ -1357,7 +1392,7 @@ SELECT dictGetInt64OrDefault('all_types_dict', 'Int64_value', 999, -1);
 
 ## dictGetInt8 \{#dictGetInt8\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性值转换为 `Int8` 数据类型，无论字典如何配置。
 
@@ -1399,7 +1434,7 @@ SELECT dictGetInt8('all_types_dict', 'Int8_value', 1)
 
 ## dictGetInt8OrDefault \{#dictGetInt8OrDefault\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将字典属性值转换为 `Int8` 数据类型，不受字典配置影响；如果找不到键，则返回提供的默认值。
 
@@ -1449,7 +1484,7 @@ SELECT dictGetInt8OrDefault('all_types_dict', 'Int8_value', 999, -1);
 
 ## dictGetKeys \{#dictGetKeys\}
 
-引入版本：v25.12
+引入版本：v25.12.0
 
 返回字典中属性值等于指定值的键（或键集合）。这是在单个属性上的函数 `dictGet` 的反向操作。
 
@@ -1491,7 +1526,7 @@ SELECT dictGetKeys('task_id_to_priority_dictionary', 'priority_level', 'high') A
 
 ## dictGetOrDefault \{#dictGetOrDefault\}
 
-自 v18.16 起引入
+自 v18.16.0 起引入
 
 用于从字典中获取值；如果未找到指定键，则返回默认值。
 
@@ -1528,7 +1563,7 @@ SELECT dictGetOrDefault('ext_dict_mult', 'c1', toUInt64(999), 0) AS val
 
 ## dictGetOrNull \{#dictGetOrNull\}
 
-引入版本：v21.4
+引入版本：v21.4.0
 
 从字典中获取值，如果未找到该键则返回 NULL。
 
@@ -1569,7 +1604,7 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 
 ## dictGetString \{#dictGetString\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 将字典属性值转换为 `String` 数据类型，而不受字典配置的影响。
 
@@ -1611,7 +1646,7 @@ SELECT dictGetString('all_types_dict', 'String_value', 1)
 
 ## dictGetStringOrDefault \{#dictGetStringOrDefault\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将字典属性值转换为 `String` 数据类型，而不受字典配置影响；如果未找到指定键，则返回提供的默认值。
 
@@ -1661,7 +1696,7 @@ SELECT dictGetStringOrDefault('all_types_dict', 'String_value', 999, 'default');
 
 ## dictGetUInt16 \{#dictGetUInt16\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将字典属性值转换为 `UInt16` 数据类型，不受字典配置影响。
 
@@ -1703,7 +1738,7 @@ SELECT dictGetUInt16('all_types_dict', 'UInt16_value', 1)
 
 ## dictGetUInt16OrDefault \{#dictGetUInt16OrDefault\}
 
-自 v1.1 起提供
+自 v1.1.0 起提供
 
 将字典属性值转换为 `UInt16` 数据类型，而不受字典配置的影响；如果未找到该键，则返回指定的默认值。
 
@@ -1753,7 +1788,7 @@ SELECT dictGetUInt16OrDefault('all_types_dict', 'UInt16_value', 999, 0);
 
 ## dictGetUInt32 \{#dictGetUInt32\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典的属性值转换为 `UInt32` 数据类型，而不受字典配置的影响。
 
@@ -1795,7 +1830,7 @@ SELECT dictGetUInt32('all_types_dict', 'UInt32_value', 1)
 
 ## dictGetUInt32OrDefault \{#dictGetUInt32OrDefault\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 将字典属性值转换为 `UInt32` 数据类型，而不受字典配置影响；如果未找到该 key，则返回提供的默认值。
 
@@ -1845,7 +1880,7 @@ SELECT dictGetUInt32OrDefault('all_types_dict', 'UInt32_value', 999, 0);
 
 ## dictGetUInt64 \{#dictGetUInt64\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将字典属性值转换为 `UInt64` 数据类型，而不受字典配置的影响。
 
@@ -1887,7 +1922,7 @@ SELECT dictGetUInt64('all_types_dict', 'UInt64_value', 1)
 
 ## dictGetUInt64OrDefault \{#dictGetUInt64OrDefault\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 将字典属性值转换为 `UInt64` 数据类型，而不受字典配置影响；如果未找到该键，则返回提供的默认值。
 
@@ -1937,7 +1972,7 @@ SELECT dictGetUInt64OrDefault('all_types_dict', 'UInt64_value', 999, 0);
 
 ## dictGetUInt8 \{#dictGetUInt8\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将字典属性的值转换为 `UInt8` 数据类型，与字典配置无关。
 
@@ -1978,7 +2013,7 @@ SELECT dictGetUInt8('all_types_dict', 'UInt8_value', 1)
 
 ## dictGetUInt8OrDefault \{#dictGetUInt8OrDefault\}
 
-自 v1.1 版本引入
+自 v1.1.0 版本引入
 
 将字典属性值转换为 `UInt8` 数据类型，而不受字典配置影响；如果未找到键，则返回提供的默认值。
 
@@ -2028,7 +2063,7 @@ SELECT dictGetUInt8OrDefault('all_types_dict', 'UInt8_value', 999, 0);
 
 ## dictGetUUID \{#dictGetUUID\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 将字典属性值转换为 `UUID` 数据类型，无论字典如何配置。
 
@@ -2070,7 +2105,7 @@ SELECT dictGetUUID('all_types_dict', 'UUID_value', 1)
 
 ## dictGetUUIDOrDefault \{#dictGetUUIDOrDefault\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 将字典属性值转换为 `UUID` 数据类型，且与字典的具体配置无关；如果未找到该键，则返回提供的默认值。
 
@@ -2120,7 +2155,7 @@ SELECT dictGetUUIDOrDefault('all_types_dict', 'UUID_value', 999, '00000000-0000-
 
 ## dictHas \{#dictHas\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 检查给定键是否存在于字典中。
 
@@ -2169,7 +2204,7 @@ SELECT dictHas('hierarchical_dictionary', 7);
 
 ## dictIsIn \{#dictIsIn\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 在字典的整个层级链中检查某个键的祖先关系。
 

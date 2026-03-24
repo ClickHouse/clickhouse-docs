@@ -1,38 +1,44 @@
 ---
 slug: /use-cases/data-lake/glue-catalog
-sidebar_label: 'AWS Glue 카탈로그'
-title: 'AWS Glue 카탈로그'
+sidebar_label: 'AWS Glue catalog'
+title: 'AWS Glue catalog'
 pagination_prev: null
 pagination_next: null
-description: '이 가이드에서는 ClickHouse와 AWS Glue Data Catalog를 사용하여
+description: '이 가이드에서는 ClickHouse와 AWS Glue 데이터 카탈로그를 사용하여
  S3 버킷에 있는 데이터를 쿼리하는 방법을 단계별로 설명합니다.'
-keywords: ['Glue', '데이터 레이크']
+keywords: ['Glue', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge />
+<BetaBadge/>
 
-ClickHouse는 여러 카탈로그(Unity, Glue, Polaris 등)와 통합해 사용할 수 있습니다. 이 가이드에서는 ClickHouse와 Glue Data Catalog를 사용하여 S3 버킷에 저장된 데이터를 쿼리하는 방법을 단계별로 설명합니다.
+ClickHouse는 여러 카탈로그(Unity, Glue, Polaris 등)와 통합을 지원합니다. 이 가이드에서는 ClickHouse와 Glue 데이터 카탈로그를 사용하여 S3 버킷에 있는 데이터를 쿼리하는 방법을 단계별로 설명합니다.
 
 :::note
-Glue는 다양한 테이블 포맷을 지원하지만, 이 통합에서는 Iceberg 테이블만 지원합니다.
+Glue는 다양한 테이블 형식을 지원하지만, 이 통합에서는 Iceberg 테이블만 지원합니다.
 :::
-
 
 ## AWS에서 Glue 구성하기 \{#configuring\}
 
-Glue 카탈로그에 연결하려면 카탈로그가 위치한 리전을 파악하고 액세스 키와 시크릿 키를 제공해야 합니다. 
+Glue 카탈로그에 연결하려면 다음이 필요합니다:
+
+* 카탈로그의 AWS 리전
+* 액세스 키 ID/액세스 시크릿 키(v25.12+) 또는 AWS Role ARN(v26.2+)
+
+AWS Role 인증의 경우 AWS Role Session Name을 추가 선택 사항 필드로 사용할 수 있습니다.
 
 :::note
-현재 Glue 카탈로그는 액세스 키와 시크릿 키 기반 인증만 지원하지만, 향후 추가 인증 방법도 지원할 예정입니다.
+`SET allow_database_glue_catalog = 1;`을 사용하여 이 기능을 활성화해야 합니다.
 :::
 
-## Glue 데이터 카탈로그와 ClickHouse 간 연결 생성 \{#connecting\}
+## AWS Glue 카탈로그와 ClickHouse 간 연결 생성 \{#connecting\}
 
-Unity Catalog 구성을 완료하고 인증을 설정한 후 ClickHouse와 Unity Catalog 간 연결을 생성합니다.
+AWS Glue 카탈로그 구성을 완료하면 인증을 수행하고 ClickHouse와 AWS Glue 카탈로그 간 연결을 설정할 수 있습니다.
+
+### AWS 액세스 키/시크릿 키 \{#aws-access-key-secret\}
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -42,6 +48,19 @@ SETTINGS
     region = 'us-west-2', 
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
+```
+
+
+### AWS 역할 \{#aws-role\}
+
+```sql title="Query"
+CREATE DATABASE glue
+ENGINE = DataLakeCatalog
+SETTINGS
+    catalog_type = 'glue',
+    region = 'us-west-2',
+    aws_role_arn = 'arn:aws:iam::1111111111:role/glue_role',
+    aws_role_session_name = 'clickhouse-glue-session' 
 ```
 
 
@@ -198,7 +217,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 ## 데이터 레이크의 데이터를 ClickHouse로 로드하기 \{#loading-data-into-clickhouse\}
 
-Databricks에서 ClickHouse로 데이터를 로드해야 하는 경우, 먼저 로컬 ClickHouse 테이블을 생성합니다:
+Glue에서 ClickHouse로 데이터를 로드해야 하는 경우, 먼저 로컬 ClickHouse 테이블을 생성합니다:
 
 ```sql title="Query"
 CREATE TABLE hits

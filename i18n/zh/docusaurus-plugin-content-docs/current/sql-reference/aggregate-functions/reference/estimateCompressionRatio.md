@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-引入于：v25.4
+引入于：v25.4.0
 
 在不压缩给定列的情况下估算其压缩比。
 
@@ -27,7 +27,7 @@ estimateCompressionRatio([codec, block_size_bytes])(column)
 **参数**
 
 * `codec` — 包含一个压缩编解码器名称，或由逗号分隔的多个编解码器名称的字符串。[`String`](/sql-reference/data-types/string)
-* `block_size_bytes` — 压缩数据的块大小。类似于同时设置 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 和 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)。默认值为 1 MiB（1048576 字节）。[`UInt64`](/sql-reference/data-types/int-uint)
+* `block_size_bytes` — 压缩数据的块大小。类似于同时设置 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 和 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)。默认值为 1 MiB (1048576 字节) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **参数说明**
 

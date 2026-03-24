@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTestOneSample \{#studentTTestOneSample\}
 
-引入版本：v25.10
+引入版本：v25.10.0
 
 对单个样本应用单样本 Student t 检验，以确定样本均值是否不同于已知总体均值。
 
@@ -20,8 +20,8 @@ doc_type: 'reference'
 
 **注意：**
 
-* 至少需要 2 个观测值；否则结果为 `(nan, nan)`（如果请求区间，则区间值为 `nan`）。
-* 常量或近似常量的输入也会因为标准误为零（或近似为零）而返回 `nan`。
+* 至少需要 2 个观测值；否则结果为 `(nan, nan)` (如果请求区间，则区间值为 `nan`) 。
+* 常量或近似常量的输入也会因为标准误为零 (或近似为零) 而返回 `nan`。
 
 **另请参阅**
 
@@ -41,11 +41,11 @@ studentTTestOneSample([confidence_level])(sample_data, population_mean)
 **参数说明**
 
 * `sample_data` — 样本数据。[`Integer`](/sql-reference/data-types/int-uint) 或 [`Float`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `population_mean` — 用于检验的已知总体均值（通常为常数）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `population_mean` — 用于检验的已知总体均值 (通常为常数) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
 **返回值**
 
-返回一个包含两个或四个元素的元组（如指定了 `confidence_level` 则为四个）：计算得到的 t 统计量、计算得到的双尾 p 值、[计算得到的置信区间下界]、[计算得到的置信区间上界]。这些置信区间是针对给定置信水平下的样本均值计算的。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含两个或四个元素的元组 (如指定了 `confidence_level` 则为四个) ：计算得到的 t 统计量、计算得到的双尾 p 值、[计算得到的置信区间下界]、[计算得到的置信区间上界]。这些置信区间是针对给定置信水平下的样本均值计算的。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -58,7 +58,7 @@ SELECT studentTTestOneSample()(value, 20.0) FROM t;
 ```response title=Response
 ```
 
-**带 95% 置信区间**
+**包含 95% 置信区间**
 
 ```sql title=Query
 SELECT studentTTestOneSample(0.95)(value, 20.0) FROM t;

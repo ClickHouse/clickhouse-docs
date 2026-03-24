@@ -17,46 +17,38 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 # 쿼리 인사이트 \{#query-insights\}
 
-**쿼리 인사이트(Query Insights)** 기능은 다양한 시각화와 테이블을 통해 ClickHouse의 내장 쿼리 로그를 보다 쉽게 활용할 수 있도록 해줍니다. ClickHouse의 `system.query_log` 테이블은 쿼리 최적화, 디버깅, 전체 클러스터 상태와 성능 모니터링을 위한 주요 정보 원천입니다.
-
-
+**쿼리 인사이트(Query Insights)** 기능은 시각화와 테이블을 통해 ClickHouse의 내장 쿼리 로그를 보다 쉽게 활용할 수 있도록 해줍니다. ClickHouse의 `system.query_log` 테이블은 쿼리 최적화, 디버깅, 전체 클러스터 상태와 성능 모니터링을 위한 주요 정보 원천입니다.
 
 ## 쿼리 개요 \{#query-overview\}
 
-서비스를 선택하면 왼쪽 사이드바의 **Monitoring** 탐색 항목이 확장되어 새로운 **Query insights** 하위 항목이 표시됩니다. 이 옵션을 클릭하면 새로운 **Query insights** 페이지가 열립니다:
+서비스를 선택하면 왼쪽 사이드바의 **Monitoring** 탐색 항목이 확장되어 새로운 **쿼리 인사이트** 하위 항목이 표시됩니다. 이 옵션을 클릭하면 새로운 쿼리 인사이트 페이지가 열립니다:
 
 <Image img={insights_overview} size="md" alt="Query Insights UI 개요" border/>
 
-
-
 ## 최상위 메트릭 \{#top-level-metrics\}
 
-상단의 통계 박스에는 선택한 기간 동안의 기본적인 상위 수준 쿼리 메트릭이 표시됩니다. 그 아래에는 선택한 시간 범위에 대해 쿼리 종류(select, insert, other)별로 구분된 쿼리 볼륨, 지연 시간(latency), 오류율을 보여주는 3개의 시계열 차트가 제공됩니다. 지연 시간 차트는 p50, p90, p99 지연 시간으로 표시되도록 추가로 조정할 수 있습니다:
+상단의 통계 박스는 선택한 기간 동안의 기본적인 최상위 쿼리 메트릭 일부를 나타냅니다. 그 아래에는 선택한 시간 범위에 대해 쿼리 종류(select, insert, other)별로 구분된 쿼리 볼륨, 지연 시간, 오류율을 보여주는 3개의 시계열 차트가 제공됩니다. 지연 시간 차트는 p50, p90, p99 지연 시간으로 표시되도록 추가로 조정할 수 있습니다:
 
 <Image img={insights_latency} size="md" alt="Query Insights UI Latency Chart" border/>
 
-
-
 ## 최근 쿼리 \{#recent-queries\}
 
-상위 메트릭 아래에는 선택한 시간 범위 동안의 쿼리 로그 항목을 (정규화된 쿼리 해시와 USER 기준으로 그룹화하여) 표시하는 테이블이 있습니다.
+최상위 메트릭 아래에는 선택한 시간 범위 동안의 쿼리 로그 항목(정규화된 쿼리 해시와 사용자별로 그룹화됨)을 표시하는 테이블이 있습니다:
 
 <Image img={insights_recent} size="md" alt="Query Insights UI Recent Queries Table" border/>
 
-최근 쿼리는 사용 가능한 모든 필드를 기준으로 필터링하거나 정렬할 수 있습니다. 또한 테이블 정보, p90 및 p99 지연 시간과 같은 추가 필드를 표시하거나 숨기도록 테이블을 구성할 수 있습니다.
+최근 쿼리는 사용 가능한 모든 필드를 기준으로 필터링하고 정렬할 수 있습니다. 또한 테이블은 테이블, p90, p99 지연 시간과 같은 추가 필드를 표시하거나 숨기도록 구성할 수도 있습니다.
 
+## 쿼리 드릴다운 \{#query-drill-down\}
 
+최근 쿼리 테이블에서 쿼리를 선택하면 선택한 쿼리에 특화된 메트릭과 정보가 포함된 플라이아웃이 열립니다:
 
-## Query drill-down \{#query-drill-down\}
+<Image img={insights_drilldown} size="md" alt="Query Insights UI Query Drill down" border/>
 
-최근 쿼리 테이블에서 쿼리를 선택하면 선택된 쿼리에 대한 메트릭과 정보가 포함된 플라이아웃 패널이 열립니다:
+플라이아웃에서 볼 수 있듯이, 이 특정 쿼리는 지난 24시간 동안 3000회 이상 실행되었습니다. **Query info** 탭의 모든 메트릭은 집계된 메트릭이지만, **Query history** 탭을 선택하면 개별 실행의 메트릭도 볼 수 있습니다:
 
-<Image img={insights_drilldown} size="md" alt="Query Insights UI 쿼리 드릴다운" border/>
-
-플라이아웃에서 볼 수 있듯이, 이 특정 쿼리는 지난 24시간 동안 3000회 이상 실행되었습니다. **Query info** 탭의 모든 메트릭은 집계된 메트릭이지만, **Query history** 탭을 선택하여 개별 실행에 대한 메트릭도 확인할 수 있습니다:
-
-<Image img={insights_query_info} size="sm" alt="Query Insights UI 쿼리 정보" border/>
+<Image img={insights_query_info} size="sm" alt="Query Insights UI Query Information" border/>
 
 <br />
 
-이 패널에서 각 쿼리 실행에 대한 `Settings` 및 `Profile Events` 항목을 확장하여 추가 정보를 확인할 수 있습니다.
+이 창에서 각 쿼리 실행의 `Settings` 및 `Profile Events` 항목을 확장하여 추가 정보를 확인할 수 있습니다.

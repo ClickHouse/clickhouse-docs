@@ -76,7 +76,7 @@ For a new setup, download the binary from https://nifi.apache.org/download.html 
   | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
   | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Replace HOSTNAME in the connection URL accordingly                            |
   | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               ||
-  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
+  | Database Driver Locations | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
   | Database User               | default                                                            | ClickHouse username                                                           |
   | Password                    | password                                                 | ClickHouse password                                                           |
 

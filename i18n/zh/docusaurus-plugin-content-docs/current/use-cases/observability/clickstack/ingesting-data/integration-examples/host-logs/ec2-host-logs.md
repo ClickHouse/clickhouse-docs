@@ -25,16 +25,7 @@ import TabItem from '@theme/TabItem';
 # 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
 
 :::note[摘要]
-通过在实例上安装 OpenTelemetry Collector，使用 ClickStack 监控 EC2 系统日志。Collector 会自动为日志补充 EC2 元数据（实例 ID、区域、可用区、实例类型）。你将学习如何：
-
-- 在 EC2 实例上安装并配置 OpenTelemetry Collector
-- 自动使用 EC2 元数据丰富日志
-- 通过 OTLP 将日志发送到 ClickStack
-- 使用预构建的仪表板，在云环境上下文中可视化 EC2 主机日志
-
-提供了一个包含示例日志和模拟 EC2 元数据的演示数据集，可用于测试。
-
-预计耗时：10–15 分钟
+使用 OpenTelemetry Collector 并自动补充 EC2 元数据 (实例 ID、区域、可用区、实例类型) ，在 ClickStack 中收集并可视化 EC2 系统日志。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 EC2 实例集成 \{#existing-ec2\}
@@ -76,7 +67,7 @@ import TabItem from '@theme/TabItem';
   * 这些命令需要在 EC2 实例上直接运行
 
   :::note
-  EC2 元数据可在实例内通过 `http://169.254.169.254` 访问。OpenTelemetry `resourcedetection` 处理器使用此端点自动为日志增强云上下文信息。
+  EC2 元数据可在实例内通过 `http://169.254.169.254` 访问。OpenTelemetry `resourcedetection` 处理器使用此端点自动为日志添加云上下文。
   :::
 
   #### 验证 syslog 文件是否存在
@@ -160,7 +151,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -214,7 +205,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -238,14 +229,14 @@ import TabItem from '@theme/TabItem';
   **在配置中将以下项替换为实际值：**
 
   * `YOUR_CLICKSTACK_HOST`: 运行 ClickStack 的主机名或 IP 地址
-  * 在本地进行测试时，您可以使用 SSH 隧道（参见[故障排除部分](#troubleshooting)）。
+  * 在本地进行测试时，您可以使用 SSH 隧道 (参阅[故障排查部分](#troubleshooting)) 。
 
   该配置：
 
-  * 从标准位置读取系统日志文件（Ubuntu 为 `/var/log/syslog`，Amazon Linux/RHEL 为 `/var/log/messages`）
-  * 解析 syslog 格式并提取结构化字段（时间戳、主机名、单元/服务、PID、消息）
+  * 从标准位置读取系统日志文件 (Ubuntu 为 `/var/log/syslog`，Amazon Linux/RHEL 为 `/var/log/messages`)
+  * 解析 syslog 格式并提取结构化字段 (时间戳、主机名、单元/服务、PID、消息)
   * **通过 `resourcedetection` 处理器自动检测并添加 EC2 元数据**
-  * （如果存在）可选地包含 EC2 标签（Name、Environment、Team）
+  * 如果存在，则可选择包含 EC2 标签 (Name、Environment、Team)
   * 使用 OTLP over HTTP 将日志发送到 ClickStack
 
   :::note[EC2 元数据增强]
@@ -253,11 +244,11 @@ import TabItem from '@theme/TabItem';
 
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
-  * `cloud.region`: AWS 区域（例如 “us-east-1”）
-  * `cloud.availability_zone`: 可用区（AZ，例如 &quot;us-east-1a&quot;）
+  * `cloud.region`: AWS 区域 (例如 “us-east-1”)
+  * `cloud.availability_zone`: 可用区 (AZ，例如 &quot;us-east-1a&quot;)
   * `cloud.account.id`: AWS 账户 ID
-  * `host.id`: EC2 实例 ID（例如 &quot;i-1234567890abcdef0&quot;）
-  * `host.type`: 实例类型（例如：&quot;t3.medium&quot;）
+  * `host.id`: EC2 实例 ID (例如 &quot;i-1234567890abcdef0&quot;)
+  * `host.type`: 实例类型 (例如：&quot;t3.medium&quot;)
   * `host.name`: 实例的主机名
     :::
 
@@ -299,8 +290,8 @@ import TabItem from '@theme/TabItem';
   5. 验证是否能在资源属性中看到 EC2 元数据：
      * `cloud.provider`
      * `cloud.region`
-     * `host.id`（实例 ID）
-     * `host.type`（实例类型）
+     * `host.id` (实例 ID)
+     * `host.type` (实例类型)
      * `cloud.availability_zone`
 
   <Image img={search_view} alt="EC2 日志搜索视图" />
@@ -587,9 +578,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## 后续步骤 {#next-steps}
 
-在完成 EC2 主机日志监控配置之后：
-
 - 为关键系统事件（服务故障、身份验证失败、磁盘告警）设置[告警](/use-cases/observability/clickstack/alerts)
 - 按 EC2 元数据属性（区域、实例类型、实例 ID）进行过滤，以监控特定资源
-- 将 EC2 主机日志与应用日志进行关联分析，以便更全面地进行故障排查
-- 创建用于安全监控的自定义仪表盘（SSH 登录尝试、sudo 使用情况、防火墙拦截）
+- 将 EC2 主机日志与应用日志进行关联分析，以便更全面地进行故障排除
+- 创建用于安全监控的自定义仪表板（SSH 登录尝试、sudo 使用情况、防火墙拦截）
+
+## 用于生产环境
+
+本指南将 OpenTelemetry Collector 直接安装在 EC2 实例上，这是主机级监控推荐采用的生产部署模式。若需在大量实例间统一管理 collector，可考虑使用配置管理工具 (Ansible、Chef、Puppet) ，或在 Kubernetes 环境中使用 OpenTelemetry Operator。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

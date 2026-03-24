@@ -22,9 +22,9 @@ import migrating_agents from '@site/static/images/use-cases/observability/clicks
 
 Elastic Stack は、複数の Observability データ収集エージェントを提供しています。具体的には次のとおりです。
 
-- [Beats ファミリー](https://www.elastic.co/beats) — [Filebeat](https://www.elastic.co/beats/filebeat)、[Metricbeat](https://www.elastic.co/beats/metricbeat)、[Packetbeat](https://www.elastic.co/beats/packetbeat) など — は、いずれも `libbeat` ライブラリをベースとしています。これらの Beats は、Lumberjack プロトコル経由で [Elasticsearch、Kafka、Redis、もしくは Logstash へのデータ送信](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) をサポートします。
-- [`Elastic Agent`](https://www.elastic.co/elastic-agent) は、ログ、メトリクス、トレースを収集可能な統合エージェントです。このエージェントは [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) 経由で集中管理でき、出力先として Elasticsearch、Logstash、Kafka、または Redis をサポートします。
-- Elastic はまた、[OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) のディストリビューションも提供しています。現在のところ Fleet Server によるオーケストレーションはできませんが、ClickStack へ移行する場合に、より柔軟でオープンな移行パスを提供します。
+* [Beats ファミリー](https://www.elastic.co/beats) — [Filebeat](https://www.elastic.co/beats/filebeat)、[Metricbeat](https://www.elastic.co/beats/metricbeat)、[Packetbeat](https://www.elastic.co/beats/packetbeat) など — は、いずれも `libbeat` ライブラリをベースとしています。これらの Beats は、Lumberjack プロトコル経由で [Elasticsearch、Kafka、Redis、もしくは Logstash へのデータ送信](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) をサポートします。
+* [`Elastic Agent`](https://www.elastic.co/elastic-agent) は、ログ、メトリクス、トレースを収集可能な統合エージェントです。このエージェントは [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) 経由で集中管理でき、出力先として Elasticsearch、Logstash、Kafka、または Redis をサポートします。
+* Elastic はまた、[OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) のディストリビューションも提供しています。現在のところ Fleet Server によるオーケストレーションはできませんが、ClickStack へ移行する場合に、より柔軟でオープンな移行パスを提供します。
 
 最適な移行パスは、現在使用しているエージェントに依存します。以降のセクションでは、代表的な各エージェントタイプごとに移行オプションを説明します。本ガイドの目的は、移行時の負担を最小限に抑え、可能な限り移行期間中も既存エージェントを継続利用していただけるようにすることです。
 

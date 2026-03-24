@@ -26,8 +26,8 @@ import TabItem from '@theme/TabItem';
 
 진행하기 전에 다음 항목을 준비했는지 확인합니다:
 
-- 적절한 권한이 부여된 API 키
-- Admin Console 역할
+* 적절한 권한이 부여된 API 키
+* Admin Console 역할
 
 아직 API 키가 없다면 이 가이드를 따라 [API 키를 생성](/cloud/manage/openapi)할 수 있습니다.
 
@@ -36,93 +36,92 @@ API 엔드포인트에 쿼리하려면 API 키에 `Member` 조직 역할과 `Que
 :::
 
 <VerticalStepper headerLevel="h3">
+  ### 저장된 쿼리 생성
 
-### 저장된 쿼리 생성 \{#creating-a-saved-query\}
+  이미 저장된 쿼리가 있다면 이 단계를 건너뛸 수 있습니다.
 
-이미 저장된 쿼리가 있다면 이 단계를 건너뛸 수 있습니다.
+  새 쿼리 탭을 엽니다. 데모용으로 약 45억 개의 레코드를 포함하는 [youtube dataset](/getting-started/example-datasets/youtube-dislikes)을 사용합니다.
+  [&quot;Create table&quot;](/getting-started/example-datasets/youtube-dislikes#create-the-table) 섹션의 단계를 따라 Cloud 서비스에 테이블을 생성하고 데이터를 삽입합니다.
 
-새 쿼리 탭을 엽니다. 데모용으로 약 45억 개의 레코드를 포함하는 [youtube dataset](/getting-started/example-datasets/youtube-dislikes)을 사용합니다.
-["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table) 섹션의 단계를 따라 Cloud 서비스에 테이블을 생성하고 데이터를 삽입합니다.
+  :::tip `LIMIT`으로 행 수 제한
+  예제 데이터셋 튜토리얼은 많은 데이터를 삽입합니다. 46억 5천만 개의 행을 삽입하므로 시간이 걸릴 수 있습니다.
+  이 가이드에서는 `LIMIT` 절을 사용하여 예를 들어 1천만 개 행처럼 더 적은 양의 데이터를 삽입할 것을 권장합니다.
+  :::
 
-:::tip `LIMIT`으로 행 수 제한
-예제 데이터셋 튜토리얼은 많은 데이터를 삽입합니다. 46억 5천만 개의 행을 삽입하므로 시간이 걸릴 수 있습니다.
-이 가이드에서는 `LIMIT` 절을 사용하여 예를 들어 1천만 개 행처럼 더 적은 양의 데이터를 삽입할 것을 권장합니다.
-:::
+  예시 쿼리로, 사용자 입력 `year` 매개변수에 대해 동영상당 평균 조회수가 가장 높은 상위 10명의 업로더를 반환합니다.
 
-예시 쿼리로, 사용자 입력 `year` 파라미터에 대해 동영상당 평균 조회수가 가장 높은 상위 10명의 업로더를 반환합니다.
+  ```sql
+  WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+  SELECT
+    uploader,
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+  FROM
+    youtube
+  WHERE
+  -- 다음 줄 강조
+    toYear(upload_date) = {year: UInt16}
+  GROUP BY uploader
+  ORDER BY per_upload desc
+    LIMIT 10
+  ```
 
-```sql
-WITH sum(view_count) AS view_sum,
-  round(view_sum / num_uploads, 2) AS per_upload
-SELECT
-  uploader,
-  count() AS num_uploads,
-  formatReadableQuantity(view_sum) AS total_views,
-  formatReadableQuantity(per_upload) AS views_per_video
-FROM
-  youtube
-WHERE
--- 다음 줄 강조
-  toYear(upload_date) = {year: UInt16}
-GROUP BY uploader
-ORDER BY per_upload desc
-  LIMIT 10
-```
+  이 쿼리에는 위 코드 조각에서 강조된 매개변수(`year`)가 포함되어 있다는 점에 유의하십시오.
+  중괄호 `{ }`와 매개변수 타입을 함께 사용하여 쿼리 매개변수를 지정할 수 있습니다.
+  SQL 콘솔 쿼리 편집기는 ClickHouse 쿼리 매개변수 표현식을 자동으로 감지하고 각 매개변수에 대한 입력 필드를 제공합니다.
 
-이 쿼리에는 위 코드 조각에서 강조된 파라미터(`year`)가 포함되어 있다는 점에 유의하십시오.
-중괄호 `{ }`와 파라미터 타입을 함께 사용하여 쿼리 파라미터를 지정할 수 있습니다. 
-SQL 콘솔 쿼리 편집기는 ClickHouse 쿼리 파라미터 표현식을 자동으로 감지하고 각 파라미터에 대한 입력 필드를 제공합니다.
+  SQL 편집기 오른쪽에 있는 쿼리 변수 입력 상자에 연도 `2010`을 지정하여 이 쿼리가 정상적으로 동작하는지 빠르게 실행해 봅니다:
 
-SQL 편집기 오른쪽에 있는 쿼리 변수 입력 상자에 연도 `2010`을 지정하여 이 쿼리가 정상적으로 동작하는지 빠르게 실행해 봅니다:
+  <Image img={endpoints_testquery} size="md" alt="예제 쿼리 테스트" />
 
-<Image img={endpoints_testquery} size="md" alt="예제 쿼리 테스트" />
+  다음으로 쿼리를 저장합니다:
 
-다음으로 쿼리를 저장합니다:
+  <Image img={endpoints_savequery} size="md" alt="예제 쿼리 저장" />
 
-<Image img={endpoints_savequery} size="md" alt="예제 쿼리 저장" />
+  저장된 쿼리에 대한 자세한 문서는 [&quot;Saving a query&quot;](/cloud/get-started/sql-console#saving-a-query) 섹션에서 확인할 수 있습니다.
 
-저장된 쿼리에 대한 자세한 문서는 ["쿼리 저장"](/cloud/get-started/sql-console#saving-a-query) 섹션에서 확인할 수 있습니다.
+  ### Query API 엔드포인트 구성
 
-### Query API 엔드포인트 구성 \{#configuring-the-query-api-endpoint\}
+  Query API 엔드포인트는 쿼리 뷰에서 **Share** 버튼을 클릭하고 `API Endpoint`를 선택하여 직접 구성할 수 있습니다.
+  어떤 API 키가 엔드포인트에 액세스할 수 있는지 지정하라는 메시지가 표시됩니다:
 
-Query API 엔드포인트는 쿼리 뷰에서 **Share** 버튼을 클릭하고 `API Endpoint`를 선택하여 직접 구성할 수 있습니다.
-어떤 API 키가 엔드포인트에 액세스할 수 있는지 지정하라는 메시지가 표시됩니다:
+  <Image img={endpoints_configure} size="md" alt="쿼리 엔드포인트 구성" />
 
-<Image img={endpoints_configure} size="md" alt="쿼리 엔드포인트 구성" />
+  API 키를 선택한 후 다음 항목을 지정해야 합니다:
 
-API 키를 선택한 후 다음 항목을 지정해야 합니다:
-- 쿼리를 실행하는 데 사용할 Database 역할 선택 (`Full access`, `Read only` 또는 `Create a custom role`)
-- CORS(Cross-Origin Resource Sharing)에 허용할 도메인 지정
+  * 쿼리를 실행하는 데 사용할 데이터베이스 역할 선택 (`Full access`, `Read only` 또는 `Create a custom role`)
+  * CORS(Cross-Origin Resource Sharing)에 허용할 도메인 지정
 
-이 옵션들을 선택하면 Query API 엔드포인트가 자동으로 프로비저닝됩니다.
+  이 옵션들을 선택하면 Query API 엔드포인트가 자동으로 프로비저닝됩니다.
 
-테스트 요청을 보낼 수 있도록 예제 `curl` 명령이 표시됩니다:
+  테스트 요청을 보낼 수 있도록 예제 `curl` 명령이 표시됩니다:
 
-<Image img={endpoints_completed} size="md" alt="엔드포인트 curl 명령" />
+  <Image img={endpoints_completed} size="md" alt="엔드포인트 curl 명령" />
 
-편의를 위해 인터페이스에 표시되는 curl 명령은 아래와 같습니다:
+  편의를 위해 인터페이스에 표시되는 curl 명령은 아래와 같습니다:
 
-```bash
-curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
-```
+  ```bash
+  curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
+  ```
 
-### Query API 파라미터 \{#query-api-parameters\}
+  ### Query API 매개변수
 
-쿼리 내 쿼리 파라미터는 `{parameter_name: type}` 문법으로 지정할 수 있습니다. 이러한 파라미터는 자동으로 감지되며, 예제 요청 페이로드에는 이 파라미터들을 전달할 수 있는 `queryVariables` 객체가 포함됩니다.
+  쿼리의 매개변수는 `{parameter_name: type}` 구문으로 지정할 수 있습니다. 이러한 매개변수는 자동으로 감지되며, 예제 요청 페이로드에는 이 매개변수들을 전달할 수 있는 `queryVariables` 객체가 포함됩니다.
 
-### 테스트 및 모니터링 \{#testing-and-monitoring\}
+  ### 테스트 및 모니터링
 
-Query API 엔드포인트가 생성되면 `curl` 또는 다른 HTTP 클라이언트를 사용하여 정상 동작 여부를 테스트할 수 있습니다:
+  Query API 엔드포인트가 생성되면 `curl` 또는 다른 HTTP 클라이언트를 사용하여 정상 동작 여부를 테스트할 수 있습니다:
 
-<Image img={endpoints_curltest} size="md" alt="엔드포인트 curl 테스트" />
+  <Image img={endpoints_curltest} size="md" alt="엔드포인트 curl 테스트" />
 
-첫 번째 요청을 보내고 나면 **Share** 버튼 오른쪽에 새 버튼이 즉시 나타납니다. 이 버튼을 클릭하면 쿼리에 대한 모니터링 데이터를 포함하는 플라이아웃이 열립니다:
+  첫 번째 요청을 보내고 나면 **Share** 버튼 오른쪽에 새 버튼이 즉시 나타납니다. 이 버튼을 클릭하면 쿼리에 대한 모니터링 데이터를 포함하는 플라이아웃이 열립니다:
 
-<Image img={endpoints_monitoring} size="sm" alt="엔드포인트 모니터링" />
-
+  <Image img={endpoints_monitoring} size="sm" alt="엔드포인트 모니터링" />
 </VerticalStepper>
 
-## 구현 세부 사항 \{#implementation-details\}
+## 구현 세부 사항
 
 이 엔드포인트는 저장해 둔 Query API 엔드포인트에 대해 쿼리를 실행합니다.
 여러 버전, 유연한 응답 형식, 매개변수화된 쿼리, 그리고 버전 2에서만 제공되는 선택적 스트리밍 응답을 지원합니다.
@@ -162,13 +161,13 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### 요청 설정 \{#request-configuration\}
 
-#### URL 매개변수 \{#url-params\}
+#### URL 매개변수 {#url-params}
 
 | 매개변수 | 필수 여부 | 설명 |
 |-----------|----------|-------------|
 | `queryEndpointId` | **예** | 실행할 쿼리 엔드포인트의 고유 식별자 |
 
-#### 쿼리 매개변수 \{#query-params\}
+#### 쿼리 매개변수 {#query-params}
 
 | Parameter(매개변수) | Required(필수 여부) | Description(설명) | Example(예시) |
 |-----------|----------|-------------|---------|
@@ -177,7 +176,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | No | 밀리초 단위 쿼리 타임아웃(기본값: 30000) | `?request_timeout=60000` |
 | `:clickhouse_setting` | No | 지원되는 [ClickHouse 설정](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### 헤더 \{#headers\}
+#### 헤더 {#headers}
 
 | 헤더 | 필수 여부 | 설명 | 값 |
 |--------|----------|-------------|--------|
@@ -203,9 +202,9 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### 응답 \{#responses\}
+### 응답 {#responses}
 
-#### 성공 \{#success\}
+#### 성공 {#success}
 
 **상태:** `200 OK`  
 쿼리가 성공적으로 실행되었습니다.
@@ -239,9 +238,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - 응답 스트리밍 기능
 - 향상된 성능 및 기능
 
-## 예제 \{#examples\}
+## 예제 {#examples}
 
-### 기본 요청 \{#basic-request\}
+### 기본 요청
 
 **쿼리 API 엔드포인트 SQL:**
 
@@ -307,7 +306,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### 버전 2 \{#version-2\}
+#### 버전 2 {#version-2}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -361,7 +360,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### 쿼리 변수와 JSONCompactEachRow 포맷 버전 2를 사용하는 요청 \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
+### 쿼리 변수와 JSONCompactEachRow 포맷 버전 2를 사용하는 요청
 
 **쿼리 API 엔드포인트 SQL:**
 
@@ -427,7 +426,7 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 </Tabs>
 
 
-### 쿼리 변수에 배열이 포함된, 테이블에 데이터를 삽입하는 요청 \{#request-with-array-in-the-query-variables-that-inserts-data-into-a-table\}
+### 쿼리 변수에 배열이 포함된, 테이블에 데이터를 삽입하는 요청 \{#basic-request\}
 
 **테이블 SQL:**
 
@@ -491,7 +490,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 </Tabs>
 
 
-### ClickHouse 설정 `max_threads`를 8로 지정한 요청 \{#request-with-clickhouse-settings-max_threads-set-to-8\}
+### ClickHouse 설정 `max_threads`를 8로 지정한 요청
 
 **쿼리 API 엔드포인트 SQL:**
 
@@ -538,7 +537,7 @@ SELECT * FROM system.tables;
 </Tabs>
 
 
-### 요청을 보내고 응답을 스트림으로 파싱하기` \{#request-and-parse-the-response-as-a-stream\}
+### 요청을 보내고 응답을 스트림으로 파싱하기`
 
 **Query API 엔드포인트용 SQL:**
 
@@ -609,7 +608,7 @@ SELECT name, database FROM system.tables;
 </Tabs>
 
 
-### 파일의 스트림을 테이블에 삽입 \{#insert-a-stream-from-a-file-into-a-table\}
+### 파일의 스트림을 테이블에 삽입 \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
 
 다음 내용을 포함하는 `./samples/my_first_table_2024-07-11.csv` 파일을 생성합니다:
 

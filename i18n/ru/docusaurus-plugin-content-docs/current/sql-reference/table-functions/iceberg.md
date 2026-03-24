@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## Синтаксис \{#syntax\}
 
 ```sql
-icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3(named_collection[, option=value [,..]])
 
 icebergAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -27,10 +27,13 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
+
 ## Аргументы \{#arguments\}
 
 Описание аргументов аналогично описанию аргументов в табличных функциях `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
 `format` обозначает формат файлов с данными в таблице Iceberg.
+
+Для `icebergS3` можно использовать необязательный параметр `extra_credentials` для передачи `role_arn` и ролевого доступа в ClickHouse Cloud. См. [Secure S3](/cloud/data-sources/secure-s3) для получения инструкций по настройке.
 
 ### Возвращаемое значение \{#returned-value\}
 
@@ -534,6 +537,135 @@ Row 1:
 x: Ivanov
 y: 993
 ```
+
+
+### Удаление устаревших снимков \{#iceberg-expire-snapshots\}
+
+Таблицы Iceberg накапливают снимки с каждой операцией INSERT, DELETE или UPDATE. Со временем это может привести к большому количеству снимков и связанных с ними файлов данных. Команда `expire_snapshots` удаляет старые снимки и очищает файлы данных, на которые больше не ссылается ни один сохранённый снимок.
+
+**Синтаксис:**
+
+```sql
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(
+    ['timestamp']
+    [, expire_before = 'timestamp']
+    [, retention_period = '3d']
+    [, retain_last = 100]
+    [, snapshot_ids = [1, 2, 3, 4]]
+    [, dry_run = 1]
+);
+```
+
+По умолчанию набор сохраняемых снимков определяется [политикой хранения](#iceberg-snapshot-retention-policy) (свойствами таблицы `min-snapshots-to-keep`, `max-snapshot-age-ms` и переопределениями для отдельных ссылок). Если указан `snapshot_ids`, политика хранения не применяется, и на удаление рассматриваются только перечисленные снимки.
+
+**Аргументы:**
+
+* `'timestamp'` (позиционный) или `expire_before = 'timestamp'` — строка даты и времени (например, `'2024-06-01 00:00:00'`), интерпретируемая в **часовом поясе сервера**. Работает как предохранитель: снимки, у которых `timestamp-ms` равен этому значению или больше него, защищены от удаления, даже если по политике хранения они иначе подлежали бы удалению. Можно использовать вместе с `snapshot_ids`; в этом случае перечисленные снимки с меткой времени, равной указанной или более поздней, не удаляются.
+* `retention_period = '<duration>'` — переопределяет `history.expire.max-snapshot-age-ms` на уровне таблицы только для этого вызова. Снимки старше этого периода (отсчитываемого от текущего момента) становятся кандидатами на удаление. Значение представляет собой строку длительности, состоящую из одной или нескольких подряд записанных пар `{number}{unit}`. Поддерживаемые единицы: `y` (365 дней), `w` (7 дней), `d` (24 часа), `h` (60 минут), `m` (60 секунд), `s` (1 секунда), `ms` (1 миллисекунда). Единицы можно комбинировать, например: `'3d'`, `'12h'`, `'1d12h30m'`, `'500ms'`.
+* `retain_last = N` — переопределяет `history.expire.min-snapshots-to-keep` на уровне таблицы только для этого вызова. Независимо от возраста всегда сохраняется как минимум `N` снимков.
+* `snapshot_ids = [id1, id2, ...]` — удаляет только указанные идентификаторы снимков (кроме снимков, на которые ссылаются текущий снимок, ветки или теги). Этот режим полностью обходит политику хранения и не может использоваться вместе с `retention_period` или `retain_last`.
+* `dry_run = 1` — вычисляет, что было бы удалено, и возвращает метрики без записи новых метаданных и удаления файлов.
+
+:::note
+`retention_period` и `retain_last` переопределяют только **значения хранения по умолчанию на уровне таблицы**. Переопределения хранения для отдельных ссылок (веток/тегов), настроенные в свойствах таблицы Iceberg (например, `refs.<branch>.min-snapshots-to-keep`), никогда не переопределяются — они всегда применяются так, как указано в метаданных таблицы.
+:::
+
+**Пример:**
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+-- Create some snapshots by inserting data
+INSERT INTO iceberg_table VALUES (1);
+INSERT INTO iceberg_table VALUES (2);
+INSERT INTO iceberg_table VALUES (3);
+
+-- Expire using retention policy only
+ALTER TABLE iceberg_table EXECUTE expire_snapshots();
+
+-- Expire with a safety fuse: protect snapshots newer than the timestamp (positional syntax)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots('2025-01-01 00:00:00');
+
+-- Same using the named argument form
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(expire_before = '2025-01-01 00:00:00');
+
+-- Override retention parameters for one execution
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '3d', retain_last = 10);
+
+-- Expire explicit snapshots
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(snapshot_ids = [101, 102, 103]);
+
+-- Dry-run preview (no metadata updates, no file deletes)
+ALTER TABLE iceberg_table EXECUTE expire_snapshots(retention_period = '1d', dry_run = 1);
+```
+
+**Вывод:**
+
+Команда возвращает таблицу с двумя столбцами (`metric_name String`, `metric_value Int64`), содержащую по одной строке на каждую метрику. Имена метрик соответствуют [спецификации Iceberg](https://iceberg.apache.org/docs/latest/spark-procedures/#output):
+
+
+| metric&#95;name                       | Описание                                                           |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| `deleted_data_files_count`            | Количество удалённых файлов данных                                 |
+| `deleted_position_delete_files_count` | Количество удалённых файлов позиционного удаления                  |
+| `deleted_equality_delete_files_count` | Количество удалённых файлов удаления по равенству                  |
+| `deleted_manifest_files_count`        | Количество удалённых файлов манифестов                             |
+| `deleted_manifest_lists_count`        | Количество удалённых файлов списков манифестов                     |
+| `deleted_statistics_files_count`      | Количество удалённых файлов статистики (на данный момент всегда 0) |
+| `dry_run`                             | `1` для режима пробного запуска, `0` для обычного выполнения       |
+
+Команда выполняет следующие шаги:
+
+1. Оценивает политику хранения (см. ниже), чтобы определить, какие снимки должны быть сохранены
+2. Если был передан аргумент временной метки, дополнительно защищает все снимки с этой временной меткой или более новые
+3. Удаляет снимки, которые не сохраняются политикой и не защищены предохранителем временной метки
+4. Определяет, какие файлы связаны исключительно с удалёнными снимками
+5. В обычном режиме: создаёт новые метаданные без удалённых снимков
+6. В обычном режиме: физически удаляет недостижимые списки манифестов, файлы манифестов и файлы данных
+7. В режиме `dry_run = 1`: пропускает шаги 5 и 6 и возвращает только вычисленные метрики
+
+#### Политика хранения снимков \{#iceberg-snapshot-retention-policy\}
+
+Команда `expire_snapshots` учитывает [политику хранения снимков Iceberg](https://iceberg.apache.org/spec/#snapshot-retention-policy). Параметры хранения задаются через свойства таблицы Iceberg и переопределения для отдельных ссылок:
+
+| Property                               | Scope | Default                                                                    | Description                                                                                         |
+| -------------------------------------- | ----- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `history.expire.min-snapshots-to-keep` | Table | `iceberg_expire_default_min_snapshots_to_keep` (default `1`)               | Минимальное количество снимков, которое нужно сохранять в цепочке предков каждой ветки              |
+| `history.expire.max-snapshot-age-ms`   | Table | `iceberg_expire_default_max_snapshot_age_ms` (default `432000000`, 5 days) | Максимальный возраст (в мс) снимков, сохраняемых в ветке                                            |
+| `history.expire.max-ref-age-ms`        | Table | `iceberg_expire_default_max_ref_age_ms` (default `∞`)                      | Максимальный возраст (в мс) ссылки на снимок (ветки или тега), после которого сама ссылка удаляется |
+
+Каждая ссылка на снимок (`refs` в метаданных Iceberg) может переопределять эти значения через поля для конкретной ссылки: `min-snapshots-to-keep`, `max-snapshot-age-ms` и `max-ref-age-ms`.
+
+**Проверка условий хранения:**
+
+* **Для каждой ветки** (включая `main`): выполняется обход цепочки предков, начиная с вершины ветки. Снимки сохраняются, пока выполняется хотя бы одно из следующих условий:
+  * Снимок входит в число первых `min-snapshots-to-keep` в цепочке
+  * Возраст снимка не превышает `max-snapshot-age-ms` (то есть `now - timestamp-ms <= max-snapshot-age-ms`)
+* **Для тегов**: помеченный снимок сохраняется, если только тег не превысил свой `max-ref-age-ms`; в этом случае ссылка на тег удаляется
+* **Ссылки, отличные от `main`**, возраст которых превышает `max-ref-age-ms`, удаляются полностью (ветка `main` никогда не удаляется)
+* **Висячие ссылки**, указывающие на несуществующие снимки, удаляются с предупреждением
+* **Текущий снимок сохраняется всегда**, независимо от настроек хранения
+
+**Требуемые привилегии:**
+
+Требуется привилегия `ALTER TABLE EXECUTE`, которая является дочерней по отношению к `ALTER TABLE` в иерархии управления доступом ClickHouse. Её можно выдать отдельно или через родительскую привилегию:
+
+```sql
+-- Grant only EXECUTE permission
+GRANT ALTER TABLE EXECUTE ON my_iceberg_table TO my_user;
+
+-- Or grant all ALTER TABLE permissions (includes ALTER TABLE EXECUTE)
+GRANT ALTER TABLE ON my_iceberg_table TO my_user;
+```
+
+:::note
+
+* Поддерживаются только таблицы Iceberg формата версии 2 (снимки v1 не гарантируют наличие `manifest-list`, который требуется для безопасного определения файлов для очистки)
+* Текущий снимок всегда сохраняется, даже если он старше указанной временной метки
+* Требуется включить настройку `allow_insert_into_iceberg`
+* Требуется включить настройку `allow_experimental_expire_snapshots`
+* Собственный механизм авторизации каталога (авторизация REST catalog, AWS Glue IAM и т. д.) применяется независимо, когда ClickHouse обновляет метаданные
+  :::
 
 
 ## См. также \{#see-also\}

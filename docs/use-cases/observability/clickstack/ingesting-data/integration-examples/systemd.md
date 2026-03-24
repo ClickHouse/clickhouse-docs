@@ -22,14 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Systemd Logs with ClickStack {#systemd-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor systemd journal logs with ClickStack by running the OpenTelemetry Collector with the journald receiver. You'll learn how to:
-- Deploy the OpenTelemetry Collector to read systemd journal entries
-- Send systemd logs to ClickStack via OTLP
-- Use a pre-built dashboard to visualize systemd log insights (service status, errors, authentication events)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production systems.
-
-Time Required: 10-15 minutes
+Collect and visualize systemd journal logs in ClickStack using the OpenTelemetry Collector's journald receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing systems {#existing-systems}
@@ -105,7 +98,7 @@ receivers:
 processors:
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
   
   resource:
     attributes:
@@ -359,6 +352,12 @@ otelcol-contrib --config=otel-config.yaml
 ```
 
 2. **Use the text export approach** (like the demo) with the `filelog` receiver reading journald exports
+
+## Next steps {#next-steps}
+
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, OOM kills)
+- Create additional [dashboards](/use-cases/observability/clickstack/dashboards) for specific use cases (SSH security monitoring, service health)
+- Filter by specific systemd units to reduce noise and focus on services that matter
 
 ## Going to production {#going-to-production}
 

@@ -25,8 +25,8 @@ import TabItem from '@theme/TabItem';
 
 在继续之前，请确保你已经具备：
 
-- 一个具有相应权限的 API key
-- 一个 Admin Console 角色
+* 一个具有相应权限的 API key
+* 一个 Admin Console 角色
 
 如果你还没有 API key，可以按照本指南[创建一个 API key](/cloud/manage/openapi)。
 
@@ -35,95 +35,93 @@ import TabItem from '@theme/TabItem';
 :::
 
 <VerticalStepper headerLevel="h3">
+  ### 创建一个已保存查询
 
-### 创建一个已保存查询 \{#creating-a-saved-query\}
+  如果你已经有一个已保存查询，可以跳过此步骤。
 
-如果你已经有一个已保存查询，可以跳过此步骤。
+  打开一个新的查询选项卡。作为示例，我们将使用 [youtube dataset](/getting-started/example-datasets/youtube-dislikes)，该数据集包含大约 45 亿条记录。
+  按照 [&quot;Create table&quot;](/getting-started/example-datasets/youtube-dislikes#create-the-table) 一节中的步骤，在你的 Cloud 服务上创建表并向其中插入数据。
 
-打开一个新的查询选项卡。作为示例，我们将使用 [youtube dataset](/getting-started/example-datasets/youtube-dislikes)，该数据集包含大约 45 亿条记录。
-按照 ["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table) 一节中的步骤，在你的 Cloud 服务上创建表并向其中插入数据。
+  :::tip 使用 `LIMIT` 限制行数
+  示例数据集教程会插入大量数据——46.5 亿行，这可能需要一些时间来插入。
+  出于本指南的目的，我们建议使用 `LIMIT` 子句插入较少量的数据，
+  例如 1000 万行。
+  :::
 
-:::tip 使用 `LIMIT` 限制行数
-示例数据集教程会插入大量数据——46.5 亿行，这可能需要一些时间来插入。
-出于本指南的目的，我们建议使用 `LIMIT` 子句插入较少量的数据，
-例如 1000 万行。
-:::
+  作为示例查询，我们将返回在用户输入的 `year` 参数对应年份中，每个视频平均观看次数最高的前 10 名上传者。
 
-作为示例查询，我们将返回在用户输入的 `year` 参数对应年份中，每个视频平均观看次数最高的前 10 名上传者。
+  ```sql
+  WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+  SELECT
+    uploader,
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+  FROM
+    youtube
+  WHERE
+  -- highlight-next-line
+    toYear(upload_date) = {year: UInt16}
+  GROUP BY uploader
+  ORDER BY per_upload desc
+    LIMIT 10
+  ```
 
-```sql
-WITH sum(view_count) AS view_sum,
-  round(view_sum / num_uploads, 2) AS per_upload
-SELECT
-  uploader,
-  count() AS num_uploads,
-  formatReadableQuantity(view_sum) AS total_views,
-  formatReadableQuantity(per_upload) AS views_per_video
-FROM
-  youtube
-WHERE
--- highlight-next-line
-  toYear(upload_date) = {year: UInt16}
-GROUP BY uploader
-ORDER BY per_upload desc
-  LIMIT 10
-```
+  请注意，此查询包含一个参数 (`year`) ，在上面的代码片段中已高亮显示。
+  你可以使用花括号 `{ }` 加上参数类型来指定查询参数。
+  SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，并为每个参数提供一个输入框。
 
-请注意，此查询包含一个参数（`year`），在上面的代码片段中已高亮显示。
-你可以使用花括号 `{ }` 加上参数类型来指定查询参数。
-SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，并为每个参数提供一个输入框。
+  让我们快速运行一次此查询，通过在 SQL 编辑器右侧的查询变量输入框中指定年份 `2010` 来确保它可以正常工作：
 
-让我们快速运行一次此查询，通过在 SQL 编辑器右侧的查询变量输入框中指定年份 `2010` 来确保它可以正常工作：
+  <Image img={endpoints_testquery} size="md" alt="测试示例查询" />
 
-<Image img={endpoints_testquery} size="md" alt="测试示例查询" />
+  接下来，将该查询保存下来：
 
-接下来，将该查询保存下来：
+  <Image img={endpoints_savequery} size="md" alt="保存示例查询" />
 
-<Image img={endpoints_savequery} size="md" alt="保存示例查询" />
+  有关已保存查询的更多文档，请参见 [&quot;Saving a query&quot;](/cloud/get-started/sql-console#saving-a-query) 一节。
 
-有关已保存查询的更多文档，请参见 ["Saving a query"](/cloud/get-started/sql-console#saving-a-query) 一节。
+  ### 配置查询 API endpoint
 
-### 配置查询 API endpoint \{#configuring-the-query-api-endpoint\}
+  可以在查询视图中直接配置 Query API endpoints，只需点击 **Share** 按钮并选择 `API Endpoint`。
+  系统会提示你指定哪些 API key 可以访问该 endpoint：
 
-可以在查询视图中直接配置 Query API endpoints，只需点击 **Share** 按钮并选择 `API Endpoint`。
-系统会提示你指定哪些 API key 可以访问该 endpoint：
+  <Image img={endpoints_configure} size="md" alt="配置查询 endpoint" />
 
-<Image img={endpoints_configure} size="md" alt="配置查询 endpoint" />
+  选择 API key 后，你将被要求：
 
-选择 API key 后，你将被要求：
+  * 选择用于运行查询的 Database 角色 (`Full access`、`Read only` 或 `Create a custom role`)
+  * 指定允许跨域资源共享 (CORS) 的域名
 
-- 选择用于运行查询的 Database 角色（`Full access`、`Read only` 或 `Create a custom role`）
-- 指定允许跨域资源共享（CORS）的域名
+  选择这些选项后，查询 API endpoint 会被自动创建。
 
-选择这些选项后，查询 API endpoint 会被自动创建。
+  界面中会显示一个示例 `curl` 命令，以便你发送测试请求：
 
-界面中会显示一个示例 `curl` 命令，以便你发送测试请求：
+  <Image img={endpoints_completed} size="md" alt="Endpoint 的 curl 命令" />
 
-<Image img={endpoints_completed} size="md" alt="Endpoint 的 curl 命令" />
+  为了方便起见，界面中显示的 curl 命令如下所示：
 
-为了方便起见，界面中显示的 curl 命令如下所示：
+  ```bash
+  curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
+  ```
 
-```bash
-curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
-```
+  ### Query API 参数
 
-### Query API 参数 \{#query-api-parameters\}
+  查询中的查询参数可以使用 `{parameter_name: type}` 这种语法来指定。这些参数会被自动检测到，示例请求载荷中会包含一个 `queryVariables` 对象，你可以通过该对象传递这些参数。
 
-查询中的查询参数可以使用 `{parameter_name: type}` 这种语法来指定。这些参数会被自动检测到，示例请求载荷中会包含一个 `queryVariables` 对象，你可以通过该对象传递这些参数。
+  ### 测试与监控
 
-### 测试与监控 \{#testing-and-monitoring\}
+  创建 Query API endpoint 之后，你可以使用 `curl` 或任何其他 HTTP 客户端测试它是否正常工作：
 
-创建 Query API endpoint 之后，你可以使用 `curl` 或任何其他 HTTP 客户端测试它是否正常工作：
+  <Image img={endpoints_curltest} size="md" alt="endpoint 的 curl 测试" />
 
-<Image img={endpoints_curltest} size="md" alt="endpoint 的 curl 测试" />
+  在你发送第一条请求之后，**Share** 按钮右侧应会立即出现一个新按钮。点击它将打开一个包含该查询监控数据的侧边浮层：
 
-在你发送第一条请求之后，**Share** 按钮右侧应会立即出现一个新按钮。点击它将打开一个包含该查询监控数据的侧边浮层：
-
-<Image img={endpoints_monitoring} size="sm" alt="Endpoint 监控" />
-
+  <Image img={endpoints_monitoring} size="sm" alt="Endpoint 监控" />
 </VerticalStepper>
 
-## 实现细节 \{#implementation-details\}
+## 实现细节 {#implementation-details}
 
 该端点会在已保存的 Query API 端点上执行查询。
 它支持多版本、灵活的响应格式、参数化查询，以及可选的流式响应（仅限版本 2）。
@@ -162,13 +160,13 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### 请求配置 \{#request-configuration\}
 
-#### URL 参数 \{#url-params\}
+#### URL 参数 {#url-params}
 
 | 参数 | 是否必需 | 描述 |
 |-----------|----------|-------------|
 | `queryEndpointId` | **是** | 要执行的查询端点的唯一标识符 |
 
-#### 查询参数 \{#query-params\}
+#### 查询参数 {#query-params}
 
 | 参数 | 是否必需 | 描述 | 示例 |
 |-----------|----------|-------------|---------|
@@ -177,7 +175,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | 否 | 查询超时时间（毫秒）（默认值：30000） | `?request_timeout=60000` |
 | `:clickhouse_setting` | 否 | 任意受支持的 [ClickHouse 设置项](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### 请求头 \{#headers\}
+#### 请求头 {#headers}
 
 | Header | Required | Description | Values |
 |--------|----------|-------------|--------|
@@ -204,9 +202,9 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### 响应 \{#responses\}
+### 响应 {#responses}
 
-#### 成功 \{#success\}
+#### 成功 {#success}
 
 **状态：** `200 OK`  
 查询已成功执行。
@@ -240,9 +238,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - 响应流式传输
 - 更高的性能和更丰富的功能
 
-## 示例 \{#examples\}
+## 示例 {#examples}
 
-### 基本请求 \{#basic-request\}
+### 基本请求 {#basic-request}
 
 **API 端点的 SQL 查询：**
 
@@ -307,7 +305,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### 版本 2 \{#version-2\}
+#### 版本 2 {#version-2}
 
 <Tabs>
 <TabItem value="GET" label="GET（cURL）" default>
@@ -361,7 +359,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -495,7 +493,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 </TabItem>
 </Tabs>
 
-### Request with ClickHouse settings `max_threads` set to 8 \{#request-with-clickhouse-settings-max_threads-set-to-8\}
+### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
 **Query API Endpoint SQL:**
 
@@ -545,7 +543,7 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` \{#request-and-parse-the-response-as-a-stream\}
+### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
 
 **Query API Endpoint SQL:**
 

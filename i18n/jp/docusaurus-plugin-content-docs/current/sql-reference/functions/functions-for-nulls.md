@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## assumeNotNull \{#assumeNotNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 型 [`Nullable`](../data-types/nullable.md) の値に対応する非 `Nullable` 値を返します。
 元の値が `NULL` の場合、任意の値が返される可能性があります。
@@ -68,7 +68,7 @@ SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 
 ## coalesce \{#coalesce\}
 
-導入: v1.1
+導入: v1.1.0
 
 最も左側にある `NULL` ではない引数を返します。
 
@@ -121,7 +121,7 @@ SELECT name, coalesce(mail, phone, CAST(telegram,'Nullable(String)')) FROM aBook
 
 ## firstNonDefault \{#firstNonDefault\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 一連の引数の中から、最初にデフォルト値ではない値を返します。
 
@@ -171,7 +171,7 @@ SELECT firstNonDefault(NULL, 0 :: UInt8, 1 :: UInt8)
 1
 ```
 
-**Nullable のゼロ**
+**Nullable な 0**
 
 ```sql title=Query
 SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
@@ -183,7 +183,7 @@ SELECT firstNonDefault(NULL, 0 :: Nullable(UInt8), 1 :: Nullable(UInt8))
 
 ## ifNull \{#ifNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 最初の引数が `NULL` の場合に、代わりの値を返します。
 
@@ -218,7 +218,7 @@ SELECT ifNull('a', 'b'), ifNull(NULL, 'b');
 
 ## isNotNull \{#isNotNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数が `NULL` でないことを確認します。
 
@@ -264,7 +264,7 @@ SELECT x FROM t_null WHERE isNotNull(y);
 
 ## isNull \{#isNull\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 引数が `NULL` かどうかを判定します。
 
@@ -310,9 +310,9 @@ SELECT x FROM t_null WHERE isNull(y);
 
 ## isNullable \{#isNullable\}
 
-導入バージョン: v22.7
+導入バージョン: v22.7.0
 
-引数のデータ型が `Nullable` かどうか（つまり `NULL` 値を許容するかどうか）をチェックします。
+引数のデータ型が `Nullable` かどうか (つまり `NULL` 値を許容するかどうか) をチェックします。
 
 **構文**
 
@@ -353,9 +353,9 @@ SELECT isNullable(ordinary_col), isNullable(nullable_col) FROM tab;
 
 ## isZeroOrNull \{#isZeroOrNull\}
 
-導入バージョン: v20.3
+導入バージョン: v20.3.0
 
-引数がゼロ（`0`）または `NULL` かどうかを判定します。
+引数がゼロ (`0`) または `NULL` かどうかを判定します。
 
 **構文**
 
@@ -398,7 +398,7 @@ SELECT x FROM t_null WHERE isZeroOrNull(y);
 
 ## nullIf \{#nullIf\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 両方の引数が等しい場合に `NULL` を返します。
 
@@ -433,7 +433,7 @@ SELECT nullIf(1, 1), nullIf(1, 2);
 
 ## toNullable \{#toNullable\}
 
-導入: v1.1
+導入: v1.1.0
 
 指定された引数の型を `Nullable` に変換します。
 

@@ -305,7 +305,7 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
@@ -355,7 +355,7 @@ By default, inserts into ClickHouse are synchronous and idempotent if identical.
 
 From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be retried immediately. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the original (unacknowledged) insert succeeded.
 
-For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
+For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 10,000 events can be sent in each insert, this is usually the only batching required in the pipeline. Values up to 100,000 can be used if memory allows. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
 ### Use asynchronous inserts {#use-asynchronous-inserts}
 

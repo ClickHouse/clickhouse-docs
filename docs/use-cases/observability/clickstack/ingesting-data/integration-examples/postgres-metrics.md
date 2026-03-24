@@ -19,15 +19,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring PostgreSQL Metrics with ClickStack {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor PostgreSQL performance metrics with ClickStack by configuring the OpenTelemetry collector's PostgreSQL receiver. You'll learn how to:
-
-- Configure the OTel collector to collect PostgreSQL metrics
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize PostgreSQL performance (transactions, connections, database size, cache hit ratios)
-
-A demo dataset with sample metrics is available if you want to test the integration before configuring your production PostgreSQL database.
-
-Time required: 10-15 minutes
+Monitor PostgreSQL performance metrics in ClickStack using the OTel PostgreSQL receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing PostgreSQL {#existing-postgres}
@@ -78,7 +70,7 @@ processors:
     timeout: 5s
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   clickhouse:
@@ -268,8 +260,6 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
 
 ## Next steps {#next-steps}
-
-After setting up PostgreSQL metrics monitoring:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical thresholds (connection limits, high rollback rates, low cache hit ratios)
 - Enable query-level monitoring with `pg_stat_statements` extension

@@ -410,8 +410,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) 인덱스
 - [`Set`](#set) 인덱스
 - [`bloom_filter`](#bloom-filter) 인덱스
-- [`ngrambf_v1`](#n-gram-bloom-filter) 인덱스
-- [`tokenbf_v1`](#token-bloom-filter) 인덱스
+- [`ngrambf_v1`](#n-gram-bloom-filter) 인덱스 *(사용 중단됨)*
+- [`tokenbf_v1`](#token-bloom-filter) 인덱스 *(사용 중단됨)*
 - [`text`](#text) 인덱스
 - [`vector_similarity`](#vector-similarity) 인덱스
 
@@ -465,7 +465,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-그램 블룸 필터 \{#n-gram-bloom-filter\}
+#### N-그램 블룸 필터 *(사용 중단됨)* \{#n-gram-bloom-filter\}
+
+:::note
+ClickHouse 26.2 버전부터 `text` 인덱스가 GA(General Availability)로 제공되기 시작하면서, 전체 텍스트 검색에는 더 이상 `ngrambf_v1` 인덱스를 권장하지 않습니다.
+
+자세한 내용은 [「텍스트 인덱스를 사용한 전체 텍스트 검색」](./textindexes.md) 페이지를 참조하십시오.
+:::
 
 각 인덱스 그래뉼은 지정된 컬럼의 [n-그램](https://en.wikipedia.org/wiki/N-gram)에 대한 [블룸 필터](https://en.wikipedia.org/wiki/Bloom_filter)를 저장합니다.
 
@@ -536,7 +542,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Token bloom filter \{#token-bloom-filter\}
 
-`token` 블룸 필터는 `ngrambf_v1`와 동일하지만, n그램 대신 토큰(영숫자가 아닌 문자로 구분되는 문자열 시퀀스)을 저장합니다.
+:::note
+ClickHouse 26.2 버전부터 `text` 인덱스가 정식 출시(GA)되면서, 전체 텍스트 검색을 위해서는 `tokenbf_v1` 인덱스를 더 이상 권장하지 않습니다.
+
+자세한 내용은 [「텍스트 인덱스를 사용한 전체 텍스트 검색」](./textindexes.md) 페이지를 참고하십시오.
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -568,16 +578,16 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 | 함수/연산자/인덱스                                                                                                                | 기본 키 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | 텍스트 |
 | ------------------------------------------------------------------------------------------------------------------------- | ---- | ------ | -------------- | -------------- | ---------------- | ---------------- | --- |
-| [equals(=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [equals (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✗   |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✗   |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗    | ✗      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔    | ✔      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗    | ✗      | ✔              | ✔              | ✗                | ✔                | ✔   |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗    | ✗      | ✔              | ✗              | ✗                | ✗                | ✗   |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✔   |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔    | ✔      | ✔              | ✔              | ✔                | ✔                | ✗   |
 | [less (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                      | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [보다 큼 (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                   | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [lessOrEquals (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                     | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
@@ -593,6 +603,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗    | ✗      | ✗              | ✔              | ✗                | ✗                | ✗   |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔    | ✔      | ✗              | ✗              | ✗                | ✗                | ✗   |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗    | ✗      | ✗              | ✗              | ✗                | ✗                | ✔   |
@@ -1169,11 +1180,9 @@ ClickHouse 22.3에서 22.7까지의 버전은 다른 캐시 구성을 사용하�
 
 ## 컬럼 통계 \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-통계 선언은 `set allow_experimental_statistics = 1`을 활성화했을 때 `*MergeTree*` 패밀리 테이블에 대한 `CREATE` 쿼리의 컬럼 섹션에서 정의됩니다.
+통계 선언은 `*MergeTree*` 계열 테이블에 대한 `CREATE` 쿼리의 컬럼 섹션에 있습니다:
 
 ```sql
 CREATE TABLE tab
@@ -1185,16 +1194,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-또한 `ALTER` SQL 문을 사용하여 통계를 관리할 수도 있습니다.
+또한 `ALTER` 문으로 통계를 조작할 수도 있습니다:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-이 경량 통계는 컬럼 값들의 분포에 대한 정보를 집계합니다. 통계는 각 파트(part)에 저장되며, 각 INSERT가 수행될 때마다 업데이트됩니다.
-`set use_statistics = 1`을 활성화한 경우에만 PREWHERE 최적화를 위해 사용할 수 있습니다.
-
+이 경량 통계는 컬럼 값 분포에 대한 정보를 집계합니다. 통계는 각 파트에 저장되며, 각 삽입이 들어올 때마다 갱신됩니다.
+`set use_statistics = 1`을 활성화한 경우에만 prewhere 최적화에 사용할 수 있습니다.
 
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 

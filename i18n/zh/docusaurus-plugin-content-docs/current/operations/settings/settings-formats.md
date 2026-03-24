@@ -987,13 +987,33 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]} />
 
 限制在基于行的输入格式解析过程中，在输出一个数据块之前所等待的最大时间（毫秒）。0 表示不限制。
 
 :::note
 此选项仅在启用 `input_format_connection_handling` 时有效。设置该值还会禁用并行解析，并使无法进行去重。
 :::
+
+:::note
+对于流式插入，还必须设置 `min_insert_block_size_rows=0` 和 `min_insert_block_size_bytes=0`。否则，在达到这些阈值之前，已解析的数据块仍可能在数据块压缩阶段累积在内存中，从而无法实现及时插入。
+:::
+
+**示例：以流式方式将 Wikipedia 最近更改数据插入 ClickHouse**
+
+```bash
+clickhouse-client --query 'CREATE TABLE wikipedia_edits (data JSON)'
+
+curl -sS --globoff -H 'Accept: application/json' --no-buffer \
+  'https://stream.wikimedia.org/v2/stream/recentchange' \
+  | clickhouse-client \
+      --query 'INSERT INTO wikipedia_edits FORMAT JSONAsObject' \
+      --input_format_max_block_wait_ms 1000 \
+      --input_format_connection_handling 1 \
+      --min_insert_block_size_rows 0 \
+      --min_insert_block_size_bytes 0
+```
+
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -2474,6 +2494,14 @@ Pretty 格式的行数上限。
 
 使用 REPLACE 语句替代 INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于去除文本输出格式中 FixedString 值末尾空字节的新设置"}]}]}/>
+
+去除文本输出格式中 FixedString 值末尾的空字节。例如，`toFixedString('John', 8)` 会打印为 `John`，而不是 `John\0\0\0\0`。
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2566,7 +2594,7 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 启用后，将允许解析类似 `{"a" : 42, "a" : {"b" : 42}}` 的 JSON，即某个键被重复使用，但其中一个对应的值是嵌套对象的情况。
 

@@ -97,7 +97,7 @@ Example:
 #### 指定连接端点 \{#specify-the-connection-endpoints\}
 
 你需要配置一个允许连接器访问的端点列表。
-在添加网络出站（egress）端点时，必须使用完全限定域名（FQDN）。
+在添加网络出站 (egress) 端点时，必须使用完全限定域名 (FQDN) 。
 示例：`u57swl97we.eu-west-1.aws.clickhouse.com:8443`
 
 :::note

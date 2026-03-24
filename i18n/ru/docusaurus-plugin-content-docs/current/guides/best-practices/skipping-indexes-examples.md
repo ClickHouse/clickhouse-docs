@@ -115,11 +115,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
 
-## N-граммный фильтр Блума (ngrambf_v1) для поиска подстрок \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+## N-граммный фильтр Блума (ngrambf_v1) для поиска подстрок *(Устарело)* \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
 
-> Примечание. Начиная с версии ClickHouse 26.2, с момента общей доступности (GA) текстовых индексов, использование индексов на основе фильтра Блума для полнотекстового поиска больше не рекомендуется.
-> Хотя они более компактны, они, к сожалению, склонны давать ложноположительные срабатывания, так как являются вероятностными.
-> Кроме того, их возможности по настройке ограничены.
+:::note
+Использование индексов `ngrambf_v1` для полнотекстового поиска устарело в версиях ClickHouse `>= 26.2` в пользу индексов `text` (подробности см. [здесь](/engines/table-engines/mergetree-family/textindexes)).
+:::
 
 Индекс `ngrambf_v1` разбивает строки на n-граммы. Он хорошо подходит для запросов вида `LIKE '%...%'`. Поддерживаются типы String/FixedString/Map (через mapKeys/mapValues), а также настраиваемые размер, количество хэшей и значение seed. Дополнительные сведения см. в документации по [N-граммному фильтру Блума](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter).
 
@@ -135,7 +135,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[В этом руководстве](/use-cases/observability/schema-design#bloom-filters-for-text-search) приведены практические примеры и указано, в каких случаях использовать token, а в каких — ngram.
+[В этом руководстве](/use-cases/observability/schema-design#text-index-for-full-text-search) приведены практические примеры и указано, в каких случаях использовать token, а в каких — ngram.
 
 **Вспомогательные инструменты для оптимизации параметров:**
 
@@ -156,11 +156,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 См. [документацию по параметрам](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) для получения подробных рекомендаций по настройке.
 
 
-## Токен-блум-фильтр (tokenbf_v1) для поиска по словам \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+## Токен-блум-фильтр (tokenbf_v1) для поиска по словам *(Устарело)* \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
 
-> Примечание: начиная с версии ClickHouse 26.2, когда текстовые индексы стали общедоступными (GA), индексы на основе Bloom-фильтров больше не рекомендуются для полнотекстового поиска.
-> Хотя они более компактны, к сожалению, они приводят к ложным срабатываниям, так как являются вероятностными.
-> Кроме того, они обладают ограниченными возможностями настройки.
+:::note
+Использование индексов `tokenbf_v1` для полнотекстового поиска устарело в версиях ClickHouse `>= 26.2` в пользу индексов `text` (подробности см. [здесь](/engines/table-engines/mergetree-family/textindexes)).
+:::
 
 `tokenbf_v1` индексирует токены, разделённые небуквенно-цифровыми символами. Используйте его с [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), с шаблонами слов `LIKE` или с операторами равенства (`=`) и `IN`. Поддерживает типы `String`/`FixedString`/`Map`.
 
@@ -177,7 +177,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-См. примеры по обсервабилити и рекомендации по выбору token vs ngram [здесь](/use-cases/observability/schema-design#bloom-filters-for-text-search).
+См. примеры по обсервабилити и рекомендации по выбору token vs ngram [здесь](/use-cases/observability/schema-design#text-index-for-full-text-search).
 
 
 ## Добавление индексов при выполнении CREATE TABLE (несколько примеров) \{#add-indexes-during-create-table-multiple-examples\}

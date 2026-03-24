@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## corrMatrix \{#corrMatrix\}
 
-도입된 버전: v23.2
+도입된 버전: v23.2.0
 
 N개의 변수에 대한 상관 행렬을 계산합니다.
 

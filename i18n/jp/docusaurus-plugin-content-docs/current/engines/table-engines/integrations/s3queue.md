@@ -19,7 +19,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 ```sql
 CREATE TABLE s3_queue_engine_table (name String, value UInt32)
-    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers])
+    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers], [extra_credentials])
     [SETTINGS]
     [mode = '',]
     [after_processing = 'keep',]
@@ -82,6 +82,7 @@ ENGINE=S3Queue(s3queue_conf, format = 'CSV', compression_method = 'gzip')
 SETTINGS
     mode = 'ordered';
 ```
+
 
 ## 設定 \{#settings\}
 
@@ -360,14 +361,17 @@ SETTINGS
     ...
 ```
 
-## S3Queue ordered モード \{#ordered-mode\}
+## S3Queue `ordered` モード \{#ordered-mode\}
 
-`S3Queue` の処理モードは ZooKeeper に保存するメタデータ量を減らせますが、その代わりに、後から追加されるファイルほど名前が英数字の辞書順で大きくなっている必要があるという制限があります。
+`S3Queue` の処理モードでは ZooKeeper に保存するメタデータを少なくできますが、時間的に後から追加されるファイルは、英数字順でより大きい名前を持っている必要があるという制限があります。
 
-`S3Queue` の `ordered` モードは、`unordered` と同様に `(s3queue_)processing_threads_num` という設定（`s3queue_` プレフィックスは省略可能）をサポートしており、サーバー上でローカルに `S3` ファイルを処理するスレッド数を制御できます。
-加えて、`ordered` モードでは `(s3queue_)buckets` という別の設定も導入されており、これは「論理スレッド」を意味します。これは、`S3Queue` テーブルのレプリカを持つサーバーが複数存在するような分散シナリオにおいて、この設定が処理ユニット数を定義することを意味します。例えば、各 `S3Queue` レプリカ上の各処理スレッドは、処理対象として特定の `bucket` をロックしようとし、各 `bucket` はファイル名のハッシュによって特定のファイルに割り当てられます。そのため、分散シナリオでは `(s3queue_)buckets` 設定をレプリカ数以上にすることが強く推奨されます。`buckets` の数がレプリカ数より多くても問題ありません。最も望ましい構成は、`(s3queue_)buckets` 設定を `number_of_replicas` と `(s3queue_)processing_threads_num` の積に等しくすることです。
-`(s3queue_)processing_threads_num` 設定はバージョン `24.6` より前では使用を推奨しません。
-`(s3queue_)buckets` 設定はバージョン `24.6` 以降で利用可能です。
+`S3Queue` の `ordered` モードは、`unordered` と同様に `(s3queue_)processing_threads_num` 設定（`s3queue_` プレフィックスは省略可能）をサポートしており、サーバー上でローカルに `S3` ファイルの処理を行うスレッド数を制御できます。
+
+パーティショニングなしの `ordered` モードでは、プレフィックス履歴全体の再リストを避けるために、ClickHouse は最後に処理したキーから S3 のリスト取得を再開することがあります。バケット化された `ordered` モードでは、未処理のファイルをスキップしないよう、再開地点はすべてのバケットにおける処理済みキーの最小値として保守的に選ばれます。
+このリスト再開の最適化は、パーティショニングのない `ordered` モードの S3 バックエンドのキューでのみ使用されます（AzureQueue や `partitioning_mode` が設定されている場合は対象外です）。
+さらに、`ordered` モードでは「論理スレッド」を意味する `(s3queue_)buckets` という別の設定も導入されています。これは、`S3Queue` テーブルのレプリカを持つサーバーが複数ある分散シナリオにおいて、この設定が処理ユニット数を定義することを意味します。たとえば、各 `S3Queue` レプリカ上の各処理スレッドは、処理のために特定の `バケット` をロックしようとし、各 `バケット` はファイル名のハッシュによって特定のファイルに割り当てられます。そのため、分散シナリオでは `(s3queue_)buckets` 設定を少なくともレプリカ数以上、できればそれより大きくすることを強く推奨します。バケット数がレプリカ数より多くても問題ありません。最も最適な構成は、`(s3queue_)buckets` 設定を `number_of_replicas` と `(s3queue_)processing_threads_num` の積に等しくすることです。
+`(s3queue_)processing_threads_num` 設定は、バージョン `24.6` より前では使用を推奨しません。
+`(s3queue_)buckets` 設定はバージョン `24.6` から利用可能です。
 
 ## S3Queue テーブルエンジンからの SELECT \{#select\}
 

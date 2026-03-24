@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewPop \{#skewPop\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 シーケンスの[歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 

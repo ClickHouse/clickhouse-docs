@@ -1,120 +1,85 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/data_lake_and_warehouse
-title: 'Data Lakehouse'
-description: 'Build modern data warehousing architectures with ClickHouse Cloud combining the flexibility of data lakes with database performance'
-keywords: ['use cases', 'data lake and warehouse']
+title: 'Data warehousing'
+description: 'Build modern data warehouse architectures by combining the flexibility of data lakes with ClickHouse Cloud''s performance'
+keywords: ['data warehouse', 'data lake', 'lakehouse', 'Iceberg', 'Delta Lake', 'Hudi', 'Parquet', 'open table formats', 'hybrid architecture', 'use cases']
 sidebar_label: 'Data warehousing'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cases/datalakehouse_01.png';
+import data_warehousing from '@site/static/images/cloud/onboard/discover/use_cases/data-warehousing.png';
 
-<iframe width="758" height="426" src="https://www.youtube.com/embed/mueG6z1mo8Y" title="Data lakehouses (in under 3 minutes)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+The modern data warehouse no longer tightly couples storage and compute. Instead, distinct but interconnected layers for storage, governance, and query processing give you the flexibility to choose the right tools for your workflows.
 
-The data lakehouse is a convergent architecture that applies database principles
-to data lake infrastructure while maintaining the flexibility and scale of cloud storage systems.
+By adding open table formats and a high-performance query engine like ClickHouse to cloud object storage, you get database-grade capabilities — ACID transactions, schema enforcement, and fast analytical queries — without sacrificing the openness of your data lake. This combination brings performance together with interoperable, cost-effective storage to support your traditional analytics and modern AI/ML workloads.
 
-The lakehouse isn't just taking a database apart but building database-like 
-capabilities onto a fundamentally different foundation (cloud object storage) 
-that focuses on supporting traditional analytics and modern AI/ML workloads in 
-a unified platform.
+## What this architecture provides {#benefits}
 
-## What are the components of the data lakehouse? {#components-of-the-data-lakehouse}
+By combining open object storage and table formats with ClickHouse as your query engine, you get:
 
-The modern data lakehouse architecture represents a convergence of data warehouse
-and data lake technologies, combining the best aspects of both approaches. This 
-architecture comprises several distinct but interconnected layers providing a 
-flexible, robust data storage, management, and analysis platform.
+| Benefit | Description |
+|---------|-------------|
+| **Consistent table updates** | Atomic commits to table state mean concurrent writes don't produce corrupt or partial data. This solves one of the biggest problems with raw data lakes. |
+| **Schema management** | Enforced validation and tracked schema evolution prevent the "data swamp" problem where data becomes unusable due to schema inconsistencies. |
+| **Query performance** | Indexing, statistics, and data layout optimizations like data skipping and clustering let SQL queries run at speeds comparable to a dedicated data warehouse. Combined with ClickHouse's columnar engine, this holds true even on data stored in object storage. |
+| **Governance** | Catalogs and table formats provide fine-grained access control and auditing at row and column levels, addressing the limited security controls in basic data lakes. |
+| **Separation of storage and compute** | Storage and compute scale independently on commodity object storage, which is significantly cheaper than proprietary warehouse storage. While separation is standard in modern cloud warehouses, open formats let you choose *which* compute engine scales with your data. |
 
-Understanding these components is essential for organizations looking to 
-implement or optimize their data lakehouse strategy. The layered approach allows
-for component substitution and independent evolution of each layer, providing 
-architectural flexibility and future-proofing.
+## How ClickHouse powers your data warehouse {#architecture}
 
-Let's explore the core building blocks of a typical data lakehouse architecture 
-and how they interact to create a cohesive data management platform.
+Data flows from streaming platforms and existing warehouses through object storage into ClickHouse, where it's transformed, optimized, and served to your BI/AI tools.
 
-<Image img={datalakehouse_01} alt="Components of the data lakehouse" size="md"/>
+<Image img={data_warehousing} alt="ClickHouse data warehousing architecture" size="md"/>
 
-| Component               | Description                                                                                                                                                                                                                                                                                                                                    |
-|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Data sources**        | Lakehouse data sources include operational databases, streaming platforms, IoT devices, application logs, and external providers.                                                                                                                                                                                                              |
-| **Query engine**        | Processes analytical queries against the data stored in the object storage, leveraging the metadata and optimizations provided by the table format layer. Supports SQL and potentially other query languages to analyze large volumes of data efficiently.                                                                                     |
-| **Metadata catalog**    | The [data catalog](https://clickhouse.com/engineering-resources/data-catalog) acts as a central repository for metadata, storing and managing table definitions and schemas, partitioning information, and access control policies. Enables data discovery, lineage tracking, and governance across the lakehouse.                             |
-| **Table format layer**  | The [table format layer](https://clickhouse.com/engineering-resources/open-table-formats) manages the logical organization of data files into tables, providing database-like features such as ACID transactions, schema enforcement and evolution, time travel capabilities, and performance optimizations like data skipping and clustering. |
-| **Object storage**      | This layer provides scalable, durable, cost-effective storage for all data files and metadata. It handles the physical persistence of data in an open format, enabling direct access from multiple tools and systems.                                                                                                                          |
-| **Client applications** | Various tools and applications that connect to the lakehouse to query data, visualize insights, or build data products. These can include BI tools, data science notebooks, custom applications, and ETL/ELT tools.                                                                                                                            |
+ClickHouse handles four key parts of the data warehousing workflow: getting data in, querying it, transforming it, and connecting it to the tools your team already uses.
 
-## What are the benefits of the data lakehouse? {#benefits-of-the-data-lakehouse}
+<details open>
+<summary>**Data ingestion**</summary>
 
-The data lakehouse architecture offers several significant advantages when compared
-directly to both traditional data warehouses and data lakes:
+For bulk data loads, you typically use an object store like S3 or GCS as an intermediary. ClickHouse's [Parquet](/integrations/data-formats/parquet) reading performance lets you load data at hundreds of millions of rows per second using the [S3 table engine](/engines/table-engines/integrations/s3). For real-time streaming, [ClickPipes](/integrations/clickpipes) connects directly to platforms like Kafka and Confluent.
 
-### Compared to traditional data warehouses {#compared-to-traditional-data-warehouses}
+You can also migrate from existing data warehouses like Snowflake, BigQuery, and Databricks by exporting to object storage and loading into ClickHouse via [table engines](/engines/table-engines).
 
-| # | Benefit                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|---|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | **Cost efficiency**                              | Lakehouses leverage inexpensive object storage rather than proprietary storage formats, significantly reducing storage costs compared to data warehouses that charge premium prices for their integrated storage.                                                                                                                                                                                                                          |
-| 2 | **Component flexibility and interchangeability** | The lakehouse architecture allows organizations to substitute different components. Traditional systems require wholesale replacement when requirements change or technology advances, while lakehouses enable incremental evolution by swapping out individual components like query engines or table formats. This flexibility reduces vendor lock-in and allows organizations to adapt to changing needs without disruptive migrations. |
-| 3 | **Open format support**                          | Lakehouses store data in open file formats like Parquet, allowing direct access from various tools without vendor lock-in, unlike proprietary data warehouse formats that restrict access to their ecosystem.                                                                                                                                                                                                                              |
-| 4 | **AI/ML integration**                            | Lakehouses provide direct access to data for machine learning frameworks and Python/R libraries, whereas data warehouses typically require extracting data before using it for advanced analytics.                                                                                                                                                                                                                                         |
-| 5 | **Independent scaling**                          | Lakehouses separate storage from compute, allowing each to scale independently based on actual needs, unlike many data warehouses, where they scale together.                                                                                                                                                                                                                                                                              |
+</details>
 
-### Compared to data lakes {#compared-to-data-lakes}
+<details>
+<summary>**Querying**</summary>
 
-| # | Benefit                     | Description                                                                                                                                                                                         |
-|---|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | **Query performance**       | Lakehouses implement indexing, statistics, and data layout optimizations that enable SQL queries to run at speeds comparable to data warehouses, overcoming the poor performance of raw data lakes. |
-| 2 | **Data consistency**        | Through ACID transaction support, lakehouses ensure consistency during concurrent operations, solving a major limitation of traditional data lakes, where file conflicts can corrupt data.          |
-| 3 | **Schema management**       | Lakehouses enforce schema validation and track schema evolution, preventing the "data swamp" problem common in data lakes where data becomes unusable due to schema inconsistencies.                |
-| 4 | **Governance capabilities** | Lakehouses provide fine-grained access control and auditing features at row/column levels, addressing the limited security controls in basic data lakes.                                            |
-| 5 | **BI Tool support**         | Lakehouses offer SQL interfaces and optimizations that make them compatible with standard BI tools, unlike raw data lakes that require additional processing layers before visualization.           |
+You can query data directly from object stores like S3 and GCS, or from data lakes with open table formats like [Iceberg](/engines/table-engines/integrations/iceberg), [Delta Lake](/engines/table-engines/integrations/deltalake), and [Hudi](/engines/table-engines/integrations/hudi). You can connect to these formats directly or through data catalogs like [AWS Glue Catalog](/use-cases/data-lake/glue-catalog), [Unity Catalog](/use-cases/data-lake/unity-catalog), and [Iceberg REST](/use-cases/data-lake/rest-catalog).
 
-## Where does ClickHouse fit in the data lakehouse architecture? {#where-does-clickhouse-fit-in-the-data-lakehouse-architecture}
+Queries on [materialized views](/materialized-views) are fast because their summarized results are automatically stored in dedicated tables, making downstream querying more responsive no matter how much data you're analyzing. While other database providers hide accelerating features behind higher pricing tiers or additional charges, ClickHouse Cloud offers the [query cache](/operations/query-cache), [sparse indexes](/optimize/skipping-indexes), and [projections](/data-modeling/projections) out of the box for repeated and latency-sensitive queries.
 
-ClickHouse is a powerful analytical query engine within the modern data lakehouse
-ecosystem. It offers organizations a high-performance option for analyzing data 
-at scale. ClickHouse is a compelling choice due to its exceptional query speed and
-efficiency.
+ClickHouse supports 70+ file formats and SQL functions for working with dates, arrays, JSON, geo, and approximate aggregations at scale.
 
-Within the lakehouse architecture, ClickHouse functions as a specialized 
-processing layer that can flexibly interact with the underlying data. It can 
-directly query Parquet files stored in cloud object storage systems like S3, 
-Azure Blob Storage, or Google Cloud Storage, leveraging its optimized columnar 
-processing capabilities to deliver rapid results even on massive datasets. 
-This direct query capability allows organizations to analyze their lake data 
-without complex data movement or transformation processes.
+</details>
 
-ClickHouse integrates with open table formats such as Apache Iceberg, Delta Lake,
-or Apache Hudi for more sophisticated data management needs. This integration 
-enables ClickHouse to take advantage of these formats' advanced features, while
-still delivering the exceptional query performance it's known for. Organizations 
-can integrate these table formats directly or connect through metadata catalogs 
-like AWS Glue, Unity, or other catalog services.
+<details>
+<summary>**Data transformations**</summary>
 
-By incorporating ClickHouse as a query engine in their lakehouse architecture, 
-organizations can run lightning-fast analytical queries against their data lake
-while maintaining the flexibility and openness that define the lakehouse approach.
-This combination delivers the performance characteristics of a specialized 
-analytical database without sacrificing the core benefits of the lakehouse model,
-including component interchangeability, open formats, and unified data management.
+Data transformations are common pillars in business intelligence and analytics workflows. Materialized views in ClickHouse automate them — these SQL-based views are triggered when new data is inserted into source tables, so you can extract, aggregate, and modify data as it arrives without building and managing bespoke transformation pipelines.
+
+For more complex modeling workflows, ClickHouse's [dbt integration](/integrations/dbt) lets you define transformations as version-controlled SQL models and migrate existing dbt jobs to run directly on ClickHouse.
+
+</details>
+
+<details>
+<summary>**Integrations**</summary>
+
+ClickHouse has native connectors for BI tools like [Tableau](/integrations/tableau) and [Looker](/integrations/looker). Tools without a native connector can connect through the [MySQL wire protocol](/interfaces/mysql) without additional setup. For semantic layer workflows, ClickHouse integrates with Cube to let your team define metrics once and query them from any downstream tool. Companies across financial services, gaming, e-commerce, and more rely on these integrations to unlock value from data as soon as it arrives, powering live dashboards and business intelligence workflows.
+
+ClickHouse also supports a REST interface, so you can build lightweight applications without complex binary protocols. The [MCP server](/use-cases/AI/MCP) connects ClickHouse to LLMs for conversational analytics through tools like LibreChat or Claude. Flexible [RBAC](/operations/access-rights) and quota controls let you expose read-only tables publicly for client-side data fetching.
+
+</details>
 
 ## Hybrid architecture: The best of both worlds {#hybrid-architecture-the-best-of-both-worlds}
 
-While ClickHouse excels at querying lakehouse components, its highly optimized 
-storage engine offers an additional advantage. For use cases demanding ultra-low
-latency queries - such as real-time dashboards, operational analytics, or 
-interactive user experiences - organizations can selectively store 
-performance-critical data directly in ClickHouse's native format. This hybrid 
-approach delivers the best of both worlds: the unmatched query speed of 
-ClickHouse's specialized storage for time-sensitive analytics and the flexibility
-to query the broader data lakehouse when needed.
+Beyond querying your data lake, you can ingest performance-critical data into ClickHouse's native [MergeTree](/engines/table-engines/mergetree-family/mergetree) storage for use cases that demand ultra-low latency — real-time dashboards, operational analytics, or interactive applications.
 
-This dual capability allows organizations to implement tiered data strategies 
-where hot, frequently accessed data resides in ClickHouse's optimized storage 
-for sub-second query responses, while maintaining seamless access to the complete
-data history in the lakehouse. Teams can make architectural decisions based on 
-performance requirements rather than technical limitations, using ClickHouse as
-a lightning-fast analytical database for critical workloads and a flexible query
-engine for the broader data ecosystem.
+This gives you a tiered data strategy. Hot, frequently accessed data lives in ClickHouse's optimized storage for sub-second query responses, while the complete data history stays in the lake and remains queryable. You can also use ClickHouse materialized views to continuously transform and aggregate lake data into optimized tables, bridging the two tiers automatically.
+
+You choose where data lives based on performance requirements, not technical limitations.
+
+:::tip ClickHouse Academy
+Take the free [Data Warehousing with ClickHouse](https://clickhouse.com/learn/data-warehousing) course to learn more.
+:::

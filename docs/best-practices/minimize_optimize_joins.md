@@ -19,7 +19,7 @@ In general, denormalize when:
 - Tables change infrequently or when batch refreshes are acceptable.
 - Relationships aren't many-to-many or not excessively high in cardinality.
 - Only a limited subset of the columns will be queried, i.e. certain columns can be excluded from denormalization.
-- You have the capability to shift processing out of ClickHouse into upstream systems like Flink, where real-time enrichment or flattening can be managed.
+- You have the capability to shift processing out of ClickHouse into upstream systems like [Flink](/integrations/data-ingestion/apache-flink/flink-connector.md), where real-time enrichment or flattening can be managed.
 
 Not all data needs to be denormalized — focus on the attributes that are frequently queried. Also consider [materialized views](/best-practices/use-materialized-views) to incrementally compute aggregates instead of duplicating entire sub-tables. When schema updates are rare and latency is critical, denormalization offers the best performance trade-off.
 

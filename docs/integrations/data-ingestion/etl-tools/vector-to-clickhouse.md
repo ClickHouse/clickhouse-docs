@@ -168,7 +168,7 @@ You can use the [`trimBoth` (alias `trim`)](/sql-reference/functions/string-func
 SELECT trim(LEADING '"' FROM '"GET')
 ```
 
-The time string has a leading square bracket, and is also not in a format that ClickHouse can parse into a date.
+The time string has a leading `[`, and is also not in a format that ClickHouse can parse into a date.
 However, if we change the separator from a colon (**:**) to a comma (**,**) then the parsing works great:
 
 ```sql

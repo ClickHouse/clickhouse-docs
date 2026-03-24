@@ -320,14 +320,14 @@ Peak memory usage: 666.82 MiB.
 
 ### 选择字典 `LAYOUT` \{#choosing-the-dictionary-layout\}
 
-`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
+`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
 
 ### 刷新字典 \{#refreshing-dictionaries\}
 
 我们为字典指定了 `LIFETIME MIN 600 MAX 900`。`LIFETIME` 用于控制字典的更新间隔，上述取值会使字典在 600 到 900 秒之间的随机时间间隔内周期性地重新加载。这个随机间隔是必要的，以便在大量服务器进行更新时分散对字典数据源的负载。在更新过程中，旧版本的字典仍然可以被查询，只有初始加载时才会阻塞查询。注意，将 `LIFETIME(0)` 进行设置会禁止字典更新。
 可以使用 `SYSTEM RELOAD DICTIONARY` 命令强制重新加载字典。
 
-对于 ClickHouse 和 Postgres 等数据库数据源，你可以设置一个查询，仅在字典数据确实发生变化时才更新字典（由该查询的响应来决定），而不是按固定周期更新。更多详细信息请参见[此处](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
+对于 ClickHouse 和 Postgres 等数据库数据源，你可以设置一个查询，仅在字典数据确实发生变化时才更新字典 (由该查询的响应来决定) ，而不是按固定周期更新。更多详细信息请参见[此处](/sql-reference/statements/create/dictionary/lifetime)。
 
 ### 其他字典类型 \{#other-dictionary-types\}
 

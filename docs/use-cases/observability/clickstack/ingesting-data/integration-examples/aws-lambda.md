@@ -37,7 +37,7 @@ This section covers configuring your existing AWS Lambda functions to send logs 
 
 ### Prerequisites {#prerequisites}
 - ClickStack instance running
-- AWS Lambda function(s) to monitor
+- AWS Lambda functions to monitor
 - AWS CLI configured with appropriate permissions
 - Lambda execution role with permissions to add layers
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## kolmogorovSmirnovTest \{#kolmogorovSmirnovTest\}
 
-도입된 버전: v23.4
+도입된 버전: v23.4.0
 
 두 모집단에서 추출한 표본에 Kolmogorov-Smirnov 검정을 적용합니다.
 

@@ -7,7 +7,7 @@ title: 'OPTIMIZE 文'
 doc_type: 'reference'
 ---
 
-このクエリは、テーブルのデータパーツに対して、スケジュールされていないマージ処理を開始しようとします。一般的に、`OPTIMIZE TABLE ... FINAL` は日常的なオペレーションではなく管理用途を想定した機能であるため、その使用は推奨していない点に注意してください（詳しくは[こちらのドキュメント](/optimize/avoidoptimizefinal)を参照してください）。
+このクエリは、テーブルのデータパーツに対して、スケジュールされていないマージ処理を開始しようとします。一般的に、`OPTIMIZE TABLE ... FINAL` は日常的なオペレーションではなく管理用途を想定した機能であるため、その使用は推奨していない点に注意してください (詳しくは[こちらのドキュメント](/optimize/avoidoptimizefinal)を参照してください) 。
 
 :::note
 `OPTIMIZE` では `Too many parts` エラーを解消できません。
@@ -23,16 +23,16 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
 ```
 
-`OPTIMIZE` クエリは [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリー（[materialized views](/sql-reference/statements/create/view#materialized-view) を含む）および [Buffer](../../engines/table-engines/special/buffer.md) エンジンでサポートされています。他のテーブルエンジンはサポートされていません。
+`OPTIMIZE` クエリは [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリー ([materialized views](/sql-reference/statements/create/view#materialized-view) を含む) および [Buffer](../../engines/table-engines/special/buffer.md) エンジンでサポートされています。他のテーブルエンジンはサポートされていません。
 
-`OPTIMIZE` を [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) ファミリーのテーブルエンジンで使用する場合、ClickHouse はマージ用のタスクを作成し、すべてのレプリカでの実行が完了するまで（[alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `2` に設定されている場合）、または現在のレプリカでの実行が完了するまで（[alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `1` に設定されている場合）待機します。
+`OPTIMIZE` を [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) ファミリーのテーブルエンジンで使用する場合、ClickHouse はマージ用のタスクを作成し、すべてのレプリカでの実行が完了するまで ([alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `2` に設定されている場合) 、または現在のレプリカでの実行が完了するまで ([alter&#95;sync](/operations/settings/settings#alter_sync) 設定が `1` に設定されている場合) 待機します。
 
 * 何らかの理由で `OPTIMIZE` がマージを実行しない場合、クライアントには通知されません。通知を有効にするには、[optimize&#95;throw&#95;if&#95;noop](/operations/settings/settings#optimize_throw_if_noop) 設定を使用します。
 * `PARTITION` を指定した場合、指定したパーティションのみが最適化されます。[パーティション式の設定方法](alter/partition.md#how-to-set-partition-expression)。
 * `FINAL` または `FORCE` を指定した場合、すべてのデータがすでに 1 つのパートにある場合でも最適化が実行されます。この動作は [optimize&#95;skip&#95;merged&#95;partitions](/operations/settings/settings#optimize_skip_merged_partitions) で制御できます。また、同時に他のマージが行われている場合でもマージが強制されます。
-* `DEDUPLICATE` を指定した場合、完全に同一の行（by 句が指定されていない場合）は重複排除されます（すべてのカラムが比較されます）。これは MergeTree エンジンでのみ有効です。
+* `DEDUPLICATE` を指定した場合、完全に同一の行 (by 句が指定されていない場合) は重複排除されます (すべてのカラムが比較されます) 。これは MergeTree エンジンでのみ有効です。
 
-[replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定で、非アクティブなレプリカが `OPTIMIZE` クエリを実行するのを待機する時間（秒）を指定できます。
+[replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定で、非アクティブなレプリカが `OPTIMIZE` クエリを実行するのを待機する時間 (秒) を指定できます。
 
 :::note
 `alter_sync` が `2` に設定されていて、`replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えても一部のレプリカがアクティブにならない場合、`UNFINISHED` という例外がスローされます。
@@ -50,7 +50,7 @@ OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUP
 
 `DRY RUN` は [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルでのみサポートされます。パーツ名のリストを伴う `PARTS` キーワードが必須です。指定されたすべてのパーツは存在し、アクティブであり、同じパーティションに属している必要があります。
 
-`DRY RUN` は `FINAL` および `PARTITION` とは併用できません。`DEDUPLICATE`（任意のカラム指定付き）および `CLEANUP`（`ReplacingMergeTree` テーブル向け）とは組み合わせることができます。
+`DRY RUN` は `FINAL` および `PARTITION` とは併用できません。`DEDUPLICATE` (任意のカラム指定付き) および `CLEANUP` (`ReplacingMergeTree` テーブル向け) とは組み合わせることができます。
 
 **構文**
 
@@ -58,7 +58,7 @@ OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUP
 OPTIMIZE TABLE [db.]name DRY RUN PARTS 'part_name1', 'part_name2' [, ...] [DEDUPLICATE [BY expression]] [CLEANUP]
 ```
 
-デフォルトでは、マージ後に生成されるパーツは [`CHECK TABLE`](/sql-reference/statements/check-table) クエリと同様の方法で検証されます。この動作は [optimize&#95;dry&#95;run&#95;check&#95;part](/operations/settings/settings#optimize_dry_run_check_part) SETTING（デフォルトで有効）によって制御されます。これを無効にすると検証がスキップされ、マージ処理自体のベンチマークを行う際に有用です。
+デフォルトでは、マージ後に生成されるパーツは [`CHECK TABLE`](/sql-reference/statements/check-table) クエリと同様の方法で検証されます。この動作は [optimize&#95;dry&#95;run&#95;check&#95;part](/operations/settings/settings#optimize_dry_run_check_part) SETTING (デフォルトで有効) によって制御されます。これを無効にすると検証がスキップされ、マージ処理自体のベンチマークを行う際に有用です。
 
 **例**
 
@@ -89,7 +89,7 @@ ORDER BY name;
 
 ## BY 式 \{#by-expression\}
 
-すべてのカラムではなく任意のカラム集合に対して重複排除を行いたい場合、カラムの一覧を明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause)、[`EXCEPT`](/sql-reference/statements/select/except-modifier) 式を任意に組み合わせて使用できます。明示的に記述した、または暗黙的に展開されたカラム一覧には、行の並び順を決める式（主キーとソートキーの両方）およびパーティション指定の式（パーティションキー）で指定されているすべてのカラムが含まれている必要があります。
+すべてのカラムではなく任意のカラム集合に対して重複排除を行いたい場合、カラムの一覧を明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause)、[`EXCEPT`](/sql-reference/statements/select/except-modifier) 式を任意に組み合わせて使用できます。明示的に記述した、または暗黙的に展開されたカラム一覧には、行の並び順を決める式 (主キーとソートキーの両方) およびパーティション指定の式 (パーティションキー) で指定されているすべてのカラムが含まれている必要があります。
 
 :::note
 `*` は `SELECT` とまったく同じように動作することに注意してください。[MATERIALIZED](/sql-reference/statements/create/view#materialized-view) および [ALIAS](../../sql-reference/statements/create/table.md#alias) カラムは展開には使用されません。

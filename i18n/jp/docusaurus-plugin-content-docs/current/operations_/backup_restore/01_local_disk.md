@@ -203,8 +203,15 @@ FROM Disk('backups', 'incremental-a.zip');
 
 ### バックアップの保護 \{#assign-a-password-to-the-backup\}
 
-ディスクに出力されるバックアップファイルには、パスワードを設定できます。
-パスワードは `password` 設定を使用して指定します。
+ディスクに書き込まれるバックアップファイルには、パスワードを設定できます。
+パスワードは `password` 設定を使用して指定できます。
+
+:::note
+パスワード保護がサポートされているのは ZIP アーカイブ (`.zip`、`.zipx`) のみです。
+パスワードが受け付けられるには、バックアップパスの末尾が `.zip` または `.zipx` である必要があります。
+tar アーカイブや非アーカイブパスを含むその他の形式でパスワードを使用すると、
+`BAD_ARGUMENTS` エラー: `Password is not applicable, backup cannot be encrypted` が発生します。
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -212,14 +219,14 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-パスワードで保護されたバックアップを復元するには、`password` 設定でパスワードを再度指定する必要があります。
+パスワードで保護されたバックアップをリストアするには、`password` 設定を使用して
+再度パスワードを指定する必要があります。
 
 ```sql
 RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### tar アーカイブとしてのバックアップ \{#backups-as-tar-archives\}
 

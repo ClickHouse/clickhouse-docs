@@ -43,6 +43,12 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026年3月20日 \{#march-20-2026\}
+
+- **Usage Breakdown のカスタム日付範囲:** Usage Breakdown 画面で、カスタム日付範囲を使って、すべての課金ディメンションにまたがる利用コストを表示できるようになりました。
+  開始日と終了日（両端を含む）を選択すると、特定の期間でコストを絞り込み、結果を CSV としてダウンロードできます。
+  日付範囲は最大 31 日までです。
+
 ## 2026年2月20日 \{#february-20-2026\}
 
 - **ClickPipes:** 非アクティブ状態のリバースプライベートエンドポイントは、設定された猶予期間の後に自動的に削除されるようになりました。これにより、未使用または誤って構成されたエンドポイントがバックエンドに無期限に残り続けることを防ぎます。詳細については、自動クリーンアップに関する[ドキュメント](/integrations/clickpipes/aws-privatelink#automatic-cleanup)を参照してください。
@@ -429,17 +435,17 @@ AWS 向けの BYOC（Bring Your Own Cloud）がベータ版として利用可能
 
 <Image img={beta_dashboards} size="lg" alt="ClickHouse Cloud インターフェースに、新しいダッシュボードのベータ版機能と可視化が表示されている画面" border />
 
-### Query API エンドポイント（GA） \{#query-api-endpoints-ga\}
+### Query API エンドポイント (GA)  \{#query-api-endpoints-ga\}
 
 ClickHouse Cloud における Query API エンドポイントの GA リリースをお知らせします。Query API エンドポイントを使用すると、保存済みクエリ向けの RESTful API エンドポイントを数クリックで立ち上げ、言語クライアントや認証の複雑さに煩わされることなく、アプリケーションでデータを利用し始めることができます。初回リリース以降、次のような多くの改善を行いました。
 
-* エンドポイントのレイテンシ削減（特にコールドスタート時）
+* エンドポイントのレイテンシ削減 (特にコールドスタート時) 
 * エンドポイントの RBAC 制御の強化
 * 設定可能な CORS 許可ドメイン
 * 結果のストリーミング
 * ClickHouse 互換のすべての出力フォーマットのサポート
 
-これらの改善に加えて、既存のフレームワークを活用し、ClickHouse Cloud サービスに対して任意の SQL クエリを実行できる汎用 Query API エンドポイントを提供開始します。汎用エンドポイントは、サービスの設定ページから有効化および構成できます。
+これらの改善に加えて、既存のフレームワークを活用し、複数の ClickHouse Cloud サービスに対して任意の SQL クエリを実行できる汎用 Query API エンドポイントを提供開始します。汎用エンドポイントは、サービスの設定ページから有効化および構成できます。
 
 開始手順については、[Query API エンドポイントのドキュメント](/cloud/get-started/query-endpoints)を参照してください。
 

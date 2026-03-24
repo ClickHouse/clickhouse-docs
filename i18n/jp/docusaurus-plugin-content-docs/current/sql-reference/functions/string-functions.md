@@ -26,9 +26,9 @@ import VersionBadge from '@theme/badges/VersionBadge';
 
 ## CRC32 \{#CRC32\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
-CRC-32-IEEE 802.3 多項式と初期値 `0xffffffff`（zlib による実装）を用いて、文字列の CRC32 チェックサムを計算します。
+CRC-32-IEEE 802.3 多項式と初期値 `0xffffffff` (zlib による実装) を用いて、文字列の CRC32 チェックサムを計算します。
 
 **構文**
 
@@ -60,7 +60,7 @@ SELECT CRC32('ClickHouse')
 
 ## CRC32IEEE \{#CRC32IEEE\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 CRC-32-IEEE 802.3 多項式を用いて、文字列の CRC32 チェックサムを計算します。
 
@@ -94,7 +94,7 @@ SELECT CRC32IEEE('ClickHouse');
 
 ## CRC64 \{#CRC64\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 CRC-64-ECMA多項式を使用して、文字列の CRC64 チェックサムを計算します。
 
@@ -128,7 +128,7 @@ SELECT CRC64('ClickHouse');
 
 ## appendTrailingCharIfAbsent \{#appendTrailingCharIfAbsent\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列 `s` が空でなく、末尾が文字 `c` でない場合、`s` の末尾に文字 `c` を追加します。
 
@@ -163,7 +163,7 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 
 ## ascii \{#ascii\}
 
-導入: v22.11
+導入: v22.11.0
 
 文字列 `s` の先頭文字の ASCII コードポイントを `Int32` として返します。
 
@@ -197,9 +197,9 @@ SELECT ascii('234')
 
 ## base32Decode \{#base32Decode\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
-[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）でエンコードされた文字列をデコードします。
+[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) でエンコードされた文字列をデコードします。
 文字列が有効な Base32 エンコード形式でない場合は、例外がスローされます。
 
 **構文**
@@ -232,7 +232,7 @@ SELECT base32Decode('IVXGG33EMVSA====');
 
 ## base32Encode \{#base32Encode\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 文字列を [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) でエンコードします。
 
@@ -266,7 +266,7 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-導入バージョン: v22.7
+導入バージョン: v22.7.0
 
 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 文字列をデコードします。
 文字列が有効な Base58 エンコード文字列でない場合は、例外がスローされます。
@@ -301,7 +301,7 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 
 ## base58Encode \{#base58Encode\}
 
-導入バージョン: v22.7
+導入バージョン: v22.7.0
 
 文字列を [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) 形式でエンコードします。
 
@@ -335,7 +335,7 @@ SELECT base58Encode('ClickHouse');
 
 ## base64Decode \{#base64Decode\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
 [RFC 4648](https://en.wikipedia.org/wiki/Base64) に準拠した [Base64](https://en.wikipedia.org/wiki/Base64) 表現の文字列をデコードします。
 エラーが発生した場合は例外をスローします。
@@ -372,9 +372,9 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 
 ## base64Encode \{#base64Encode\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
-文字列を [Base64](https://en.wikipedia.org/wiki/Base64) 形式でエンコードします（RFC 4648 に準拠）。
+文字列を [Base64](https://en.wikipedia.org/wiki/Base64) 形式でエンコードします (RFC 4648 に準拠) 。
 
 **構文**
 
@@ -408,7 +408,7 @@ SELECT base64Encode('clickhouse')
 
 ## base64URLDecode \{#base64URLDecode\}
 
-v24.6 で導入
+v24.6.0 で導入
 
 URL セーフなアルファベットを使用し、RFC 4648 に従って [Base64](https://en.wikipedia.org/wiki/Base64) 表現から文字列をデコードします。
 エラーが発生した場合は例外をスローします。
@@ -443,9 +443,9 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## base64URLEncode \{#base64URLEncode\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
-文字列を [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）表現に、URL セーフなアルファベットを使用してエンコードします。
+文字列を [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) 表現に、URL セーフなアルファベットを使用してエンコードします。
 
 **構文**
 
@@ -477,7 +477,7 @@ SELECT base64URLEncode('https://clickhouse.com')
 
 ## basename \{#basename\}
 
-導入: v20.1
+導入: v20.1.0
 
 文字列中で最後に現れるスラッシュまたはバックスラッシュの直後から末尾までの部分文字列を抽出します。
 この関数は、パスからファイル名を抽出する用途でよく使用されます。
@@ -536,7 +536,7 @@ SELECT 'some-file-name' AS a, basename(a)
 
 ## byteHammingDistance \{#byteHammingDistance\}
 
-導入: v23.9
+導入: v23.9.0
 
 2つのバイト列間の[ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance)を計算します。
 
@@ -571,9 +571,46 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
+## caseFoldUTF8 \{#caseFoldUTF8\}
+
+導入バージョン: v26.3.0
+
+UTF-8文字列にUnicodeのケースフォールディングを適用し、大文字と小文字を区別しない比較に適した、小文字化に近い正規化形式に変換します。
+
+標準のUnicodeケースフォールディングを適用します。ケースフォールディングの影響を受けない互換文字
+(例: ローマ数字、丸囲み数字) は保持されますが、`ﬃ` のような一部の合字は、Unicodeケースフォールディング自体によって展開されるため、引き続き分解される点に注意してください。
+
+**構文**
+
+```sql
+caseFoldUTF8(str)
+```
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+ケースフォールディングされた UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なケースフォールディング**
+
+```sql title=Query
+SELECT caseFoldUTF8('Straße')
+```
+
+```response title=Response
+┌─caseFoldUTF8('Straße')─┐
+│ strasse                 │
+└─────────────────────────┘
+```
+
 ## compareSubstrings \{#compareSubstrings\}
 
-バージョン v25.2 で導入。
+バージョン v25.2.0 で導入。
 
 2 つの文字列を辞書順で比較します。
 
@@ -587,9 +624,9 @@ compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 
 * `s1` — 比較する最初の文字列。[`String`](/sql-reference/data-types/string)
 * `s2` — 比較する2番目の文字列。[`String`](/sql-reference/data-types/string)
-* `s1_offset` — 比較を開始する `s1` 内の位置（0始まりのインデックス）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `s2_offset` — 比較を開始する `s2` 内の位置（0始まりのインデックス）。[`UInt*`](/sql-reference/data-types/int-uint)
-* `num_bytes` — 両方の文字列で比較するバイト数の上限。`s1_offset`（または `s2_offset`） + `num_bytes` が入力文字列の末尾を超える場合、`num_bytes` はそれに応じて調整されます。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s1_offset` — 比較を開始する `s1` 内の位置 (0始まりのインデックス) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — 比較を開始する `s2` 内の位置 (0始まりのインデックス) 。[`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — 両方の文字列で比較するバイト数の上限。`s1_offset` (または `s2_offset`)  + `num_bytes` が入力文字列の末尾を超える場合、`num_bytes` はそれに応じて調整されます。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -616,7 +653,7 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 
 ## concat \{#concat\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された引数を連結します。
 
@@ -665,7 +702,7 @@ SELECT concat(42, 144)
 
 ## concatAssumeInjective \{#concatAssumeInjective\}
 
-v1.1 で導入
+v1.1.0 で導入
 
 [`concat`](#concat) と同様ですが、`concat(s1, s2, ...) → sn` が単射であると仮定します。
 つまり、異なる引数に対しては必ず異なる結果を返します。
@@ -704,7 +741,7 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 
 ## concatWithSeparator \{#concatWithSeparator\}
 
-導入バージョン: v22.12
+導入バージョン: v22.12.0
 
 指定した区切り文字で区切って、渡された文字列を連結します。
 
@@ -741,7 +778,7 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 
 ## concatWithSeparatorAssumeInjective \{#concatWithSeparatorAssumeInjective\}
 
-導入バージョン: v22.12
+導入バージョン: v22.12.0
 
 [`concatWithSeparator`](#concatWithSeparator) と同様ですが、`concatWithSeparator(sep[,exp1, exp2, ... ]) → result` が単射であると仮定します。
 関数が異なる引数に対して常に異なる結果を返す場合、その関数は単射と呼ばれます。
@@ -800,12 +837,12 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 
 ## conv \{#conv\}
 
-導入: v1.1
+導入: v25.10.0
 
 異なる基数間で数値を変換します。
 
 この関数は、ある基数で表された数値を別の基数に変換します。サポートされる基数は 2 から 36 です。
-10 を超える基数では、数字 10〜35 を表すために文字 A～Z（大文字小文字は区別されません）が使用されます。
+10 を超える基数では、数字 10〜35 を表すために文字 A～Z (大文字小文字は区別されません) が使用されます。
 
 この関数は MySQL の `CONV()` 関数と互換性があります。
 
@@ -845,7 +882,7 @@ SELECT conv('FF', 16, 10)
 255
 ```
 
-**負の数での変換**
+**負の数の変換**
 
 ```sql title=Query
 SELECT conv('-1', 10, 16)
@@ -867,7 +904,7 @@ SELECT conv('1010', 2, 8)
 
 ## convertCharset \{#convertCharset\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 エンコーディング `from` でエンコードされた文字列 `s` を、エンコーディング `to` に変換して返します。
 
@@ -903,7 +940,7 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 
 ## damerauLevenshteinDistance \{#damerauLevenshteinDistance\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 2 つのバイト列間の [Damerau-Levenshtein 距離](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) を計算します。
 
@@ -938,7 +975,7 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 
 ## decodeHTMLComponent \{#decodeHTMLComponent\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 文字列中の HTML エンティティを対応する文字にデコードします。
 
@@ -972,7 +1009,7 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 
 ## decodeXMLComponent \{#decodeXMLComponent\}
 
-導入バージョン: v21.2
+導入バージョン: v21.2.0
 
 文字列内の XML エンティティを対応する文字にデコードします。
 
@@ -1006,7 +1043,7 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 
 ## editDistance \{#editDistance\}
 
-導入バージョン: v23.9
+導入バージョン: v23.9.0
 
 2つのバイト列間の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)を計算します。
 
@@ -1043,7 +1080,7 @@ SELECT editDistance('clickhouse', 'mouse')
 
 ## editDistanceUTF8 \{#editDistanceUTF8\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 2つの UTF8 文字列間の[編集距離](https://en.wikipedia.org/wiki/Edit_distance)を計算します。
 
@@ -1080,7 +1117,7 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 
 ## encodeXMLComponent \{#encodeXMLComponent\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 文字をエスケープして、文字列を XML のテキストノードまたは属性値として安全に使用できるようにします。
 
@@ -1116,7 +1153,7 @@ SELECT
 
 ## endsWith \{#endsWith\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列が指定された接尾辞で終わるかどうかを判定します。
 
@@ -1151,7 +1188,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 文字列が、指定されたサフィックスで大小文字を区別せずに終わっているかどうかを判定します。
 
@@ -1186,7 +1223,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 文字列 `s` が大文字・小文字を区別せずに `suffix` で終わるかどうかを返します。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -1201,7 +1238,7 @@ endsWithCaseInsensitiveUTF8(s, suffix)
 **引数**
 
 * `s` — チェックする文字列。[`String`](/sql-reference/data-types/string)
-* `suffix` — 大文字小文字を区別せずに照合する末尾文字列（サフィックス）。[`String`](/sql-reference/data-types/string)
+* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (サフィックス) 。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -1223,7 +1260,7 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
-導入バージョン: v23.8
+導入バージョン: v23.8.0
 
 文字列 `s` が `suffix` で終わるかどうかを返します。
 文字列が有効な UTF-8 でエンコードされたテキストであると仮定します。
@@ -1260,16 +1297,16 @@ SELECT endsWithUTF8('данных', 'ых');
 
 ## extractTextFromHTML \{#extractTextFromHTML\}
 
-導入バージョン: v21.3
+導入バージョン: v21.3.0
 
 HTML または XHTML からテキストコンテンツを抽出します。
 
 この関数は HTML タグ、コメント、script/style 要素を削除し、テキストコンテンツのみを残します。次の処理を行います:
 
 * すべての HTML/XML タグの削除
-* コメント（`<!-- -->`）の削除
+* コメント (`<!-- -->`) の削除
 * script および style 要素とその内容の削除
-* CDATA セクションの処理（内容をそのままコピー）
+* CDATA セクションの処理 (内容をそのままコピー) 
 * 空白文字の適切な処理と正規化
 
 注意: HTML エンティティはデコードされません。必要に応じて別の関数で処理してください。
@@ -1313,7 +1350,7 @@ SELECT extractTextFromHTML('
 
 ## firstLine \{#firstLine\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 複数行の文字列の先頭行を返します。
 
@@ -1347,10 +1384,10 @@ SELECT firstLine('foo\\nbar\\nbaz')
 
 ## idnaDecode \{#idnaDecode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode (UTF-8) 表現（ToUnicode アルゴリズム）を返します。
-エラーが発生した場合（例えば入力が不正な場合）、入力された文字列がそのまま返されます。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従い、ドメイン名の Unicode (UTF-8) 表現 (ToUnicode アルゴリズム) を返します。
+エラーが発生した場合 (例えば入力が不正な場合) 、入力された文字列がそのまま返されます。
 大文字・小文字の正規化が行われるため、[`idnaEncode()`](#idnaEncode) と [`idnaDecode()`](#idnaDecode) を繰り返し適用しても、元の文字列が必ずしも返されるとは限らない点に注意してください。
 
 **構文**
@@ -1383,9 +1420,9 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 
 ## idnaEncode \{#idnaEncode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）メカニズムに従って、ドメイン名の ASCII 表現（ToASCII アルゴリズム）を返します。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の ASCII 表現 (ToASCII アルゴリズム) を返します。
 入力文字列は UTF でエンコードされており、ASCII 文字列として表現可能である必要があります。そうでない場合は例外がスローされます。
 
 :::note
@@ -1422,7 +1459,7 @@ SELECT idnaEncode('straße.münchen.de')
 
 ## initcap \{#initcap\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 各単語の最初の文字を大文字にし、それ以外を小文字に変換します。
 ここでの「単語」とは、英数字が連続した並びであり、英数字以外の文字によって区切られたものを指します。
@@ -1474,7 +1511,7 @@ SELECT initcap('John''s cat won''t eat.');
 
 ## initcapUTF8 \{#initcapUTF8\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 [`initcap`](#initcap) と同様に、`initcapUTF8` は各単語の最初の文字を大文字にし、それ以外を小文字に変換します。
 文字列が有効な UTF-8 エンコードされたテキストであることを前提とします。
@@ -1515,7 +1552,7 @@ SELECT initcapUTF8('не тормозит')
 
 ## isValidASCII \{#isValidASCII\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 入力の String または FixedString が ASCII バイト (0x00–0x7F) のみで構成されている場合は 1 を返し、それ以外の場合は 0 を返します。入力が有効な ASCII であるケースで高速に動作するよう最適化されています。
 
@@ -1546,7 +1583,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ## isValidUTF8 \{#isValidUTF8\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 バイト列が有効な UTF-8 でエンコードされたテキストかどうかをチェックします。
 
@@ -1580,7 +1617,7 @@ SELECT isValidUTF8('\\xc3\\xb1') AS valid, isValidUTF8('\\xc3\\x28') AS invalid
 
 ## jaroSimilarity \{#jaroSimilarity\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 2 つのバイト列間の [Jaro 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) を計算します。
 
@@ -1615,7 +1652,7 @@ SELECT jaroSimilarity('clickhouse', 'click')
 
 ## jaroWinklerSimilarity \{#jaroWinklerSimilarity\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 2つのバイト列間の [Jaro-Winkler 類似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) を計算します。
 
@@ -1650,9 +1687,9 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 
 ## left \{#left\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
-文字列 `s` の先頭（左側）からの `offset` で指定された位置から始まる部分文字列を返します。
+文字列 `s` の先頭 (左側) からの `offset` で指定された位置から始まる部分文字列を返します。
 
 **構文**
 
@@ -1698,9 +1735,9 @@ Hello
 
 ## leftPad \{#leftPad\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
-文字列の左側を、スペースまたは指定した文字列（必要に応じて複数回繰り返し）で埋め、結果の文字列が指定された `length` に達するまでパディングします。
+文字列の左側を、スペースまたは指定した文字列 (必要に応じて複数回繰り返し) で埋め、結果の文字列が指定された `length` に達するまでパディングします。
 
 **構文**
 
@@ -1736,9 +1773,9 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 
 ## leftPadUTF8 \{#leftPadUTF8\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
-UTF-8 文字列の左側を空白または指定した文字列（必要に応じて複数回繰り返し）で埋め、結果の文字列が指定された長さに達するまでパディングします。
+UTF-8 文字列の左側を空白または指定した文字列 (必要に応じて複数回繰り返し) で埋め、結果の文字列が指定された長さに達するまでパディングします。
 文字列長をバイト数で測定する [`leftPad`](#leftPad) とは異なり、ここでは文字列長はコードポイント数で測定されます。
 
 **構文**
@@ -1773,7 +1810,7 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 
 ## leftUTF8 \{#leftUTF8\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
 UTF-8 でエンコードされた文字列 `s` について、左側からの `offset` に基づいて始まる部分文字列を返します。
 
@@ -1821,7 +1858,7 @@ SELECT leftUTF8('Привет', -4)
 
 ## lengthUTF8 \{#lengthUTF8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列の長さを、バイト数や文字数ではなく Unicode コードポイント数で返します。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -1841,7 +1878,7 @@ lengthUTF8(s)
 
 **戻り値**
 
-文字列 `s` の長さ（Unicode コードポイント数）。[`UInt64`](/sql-reference/data-types/int-uint)
+文字列 `s` の長さ (Unicode コードポイント数) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **例**
 
@@ -1859,7 +1896,7 @@ SELECT lengthUTF8('Здравствуй, мир!')
 
 ## lower \{#lower\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 ASCII 文字列を小文字に変換します。
 
@@ -1895,7 +1932,7 @@ SELECT lower('CLICKHOUSE')
 
 ## lowerUTF8 \{#lowerUTF8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列が有効な UTF-8 でエンコードされたテキストであると仮定して、小文字に変換します。この前提が満たされない場合でも例外はスローされず、結果は未定義です。
 
@@ -1925,9 +1962,46 @@ SELECT lowerUTF8('München') as Lowerutf8;
 münchen
 ```
 
+## naturalSortKey \{#naturalSortKey\}
+
+導入バージョン: v25.11.0
+
+この関数は自然順でソートするために使用されます。
+
+**構文**
+
+```sql
+naturalSortKey(s)
+```
+
+**別名**: `NATURAL_SORT_KEY`
+
+**引数**
+
+* `s` — ナチュラルソートキーに変換する文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+`s` から生成されたナチュラルソートキー。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT s FROM t ORDER BY naturalSortKey(s)
+```
+
+```response title=Response
+┌─s───┐
+│ a1  │
+| a02 │
+└─────┘
+```
+
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 [正規化形式 NFC](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って UTF-8 文字列を正規化します。
 
@@ -1965,7 +2039,7 @@ length(nfc_normalized);
 
 ## normalizeUTF8NFD \{#normalizeUTF8NFD\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 UTF-8 文字列を [NFD 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って正規化します。
 
@@ -2003,7 +2077,7 @@ SELECT
 
 ## normalizeUTF8NFKC \{#normalizeUTF8NFKC\}
 
-導入: v21.11
+導入: v21.11.0
 
 [ NFKC 正規化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)に従って UTF-8 文字列を正規化します。
 
@@ -2037,9 +2111,46 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
+## normalizeUTF8NFKCCasefold \{#normalizeUTF8NFKCCasefold\}
+
+導入バージョン: v26.3.0
+
+UTF-8 文字列を [NFKC&#95;Casefold 正規化形式](https://unicode.org/reports/tr44/#NFKC_Casefold)に従って正規化します。これは、NFKC 正規化を適用した後にケースフォールディングを行うものです。
+識別子の大文字と小文字を区別しないマッチングに有用です。
+
+**構文**
+
+```sql
+normalizeUTF8NFKCCasefold(str)
+```
+
+**引数**
+
+* `str` — UTF-8 エンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+UTF-8 文字列の NFKC&#95;Casefold 正規化形式を返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT
+    'Ä ① Hello' AS original,
+    normalizeUTF8NFKCCasefold('Ä ① Hello') AS nfkc_cf_normalized;
+```
+
+```response title=Response
+┌─original───┬─nfkc_cf_normalized─┐
+│ Ä ① Hello │ ä 1 hello           │
+└────────────┴────────────────────┘
+```
+
 ## normalizeUTF8NFKD \{#normalizeUTF8NFKD\}
 
-導入バージョン: v21.11
+導入バージョン: v21.11.0
 
 [Unicode 正規化形式 NFKD](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms) に従って UTF-8 文字列を正規化します。
 
@@ -2075,7 +2186,7 @@ SELECT
 
 ## punycodeDecode \{#punycodeDecode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 [Punycode](https://en.wikipedia.org/wiki/Punycode) でエンコードされた文字列を UTF-8 でエンコードされたプレーンテキストにデコードして返します。
 有効な Punycode エンコード文字列が指定されない場合、例外がスローされます。
@@ -2092,7 +2203,7 @@ punycodeDecode(s)
 
 **返り値**
 
-入力値のプレーンテキスト（Punycode エンコード前の文字列）を返します。[`String`](/sql-reference/data-types/string)
+入力値のプレーンテキスト (Punycode エンコード前の文字列) を返します。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -2110,7 +2221,7 @@ SELECT punycodeDecode('Mnchen-3ya')
 
 ## punycodeEncode \{#punycodeEncode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 文字列の [Punycode](https://en.wikipedia.org/wiki/Punycode) 表現を返します。
 文字列は UTF-8 でエンコードされている必要があり、そうでない場合の動作は未定義です。
@@ -2145,7 +2256,7 @@ SELECT punycodeEncode('München')
 
 ## regexpExtract \{#regexpExtract\}
 
-導入されたバージョン: v23.2
+導入されたバージョン: v23.2.0
 
 `haystack` 内で正規表現パターンにマッチし、指定した正規表現グループ番号に対応する最初の文字列を抽出します。
 
@@ -2185,9 +2296,45 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
+
+導入バージョン: v26.3.0
+
+NFD による文字の分解、結合文字 (Unicode カテゴリ Mn) の除去、その後の NFC による再構成によって、UTF-8 文字列からダイアクリティカルマーク (アクセント記号) を削除します。
+
+**構文**
+
+```sql
+removeDiacriticsUTF8(str)
+```
+
+**別名**: `removeAccentsUTF8`
+
+**引数**
+
+* `str` — UTF-8 でエンコードされた入力文字列。[`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+発音区別符号が削除された UTF-8 文字列。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なアクセント除去**
+
+```sql title=Query
+SELECT removeDiacriticsUTF8('café résumé naïve')
+```
+
+```response title=Response
+┌─removeDiacriticsUTF8('café résumé naïve')─┐
+│ cafe resume naive                          │
+└────────────────────────────────────────────┘
+```
+
 ## repeat \{#repeat\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 指定された回数だけ同じ文字列を連結します。
 
@@ -2222,7 +2369,7 @@ SELECT repeat('abc', 10)
 
 ## reverseUTF8 \{#reverseUTF8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列中の Unicode コードポイントの並びを反転します。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -2256,9 +2403,9 @@ esuoHkcilC
 
 ## right \{#right\}
 
-導入バージョン: v22.1
+導入バージョン: v22.1.0
 
-文字列 `s` の末尾（右端）からのオフセット `offset` を開始位置として、部分文字列を返します。
+文字列 `s` の末尾 (右端) からのオフセット `offset` を開始位置として、部分文字列を返します。
 
 **構文**
 
@@ -2304,9 +2451,9 @@ lo
 
 ## rightPad \{#rightPad\}
 
-導入されたバージョン: v21.8
+導入されたバージョン: v21.8.0
 
-文字列の右端を、スペースまたは指定した文字列（必要に応じて複数回繰り返し）でパディングし、結果の文字列の長さが指定された `length` に達するまで続けます。
+文字列の右端を、スペースまたは指定した文字列 (必要に応じて複数回繰り返し) でパディングし、結果の文字列の長さが指定された `length` に達するまで続けます。
 
 **構文**
 
@@ -2342,9 +2489,9 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 
 ## rightPadUTF8 \{#rightPadUTF8\}
 
-導入バージョン: v21.8
+導入バージョン: v21.8.0
 
-文字列の右側を、スペースまたは指定した文字列で（必要に応じて繰り返し）埋めて、結果の文字列が指定された長さに達するまでパディングします。
+文字列の右側を、スペースまたは指定した文字列で (必要に応じて繰り返し) 埋めて、結果の文字列が指定された長さに達するまでパディングします。
 文字列の長さをバイト数で測定する [`rightPad`](#rightPad) と異なり、ここでは文字列の長さはコードポイント数で測定されます。
 
 **構文**
@@ -2379,7 +2526,7 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 
 ## rightUTF8 \{#rightUTF8\}
 
-導入: v22.1
+導入: v22.1.0
 
 UTF-8 エンコードされた文字列 `s` の右端からのオフセット `offset` に基づいて取得した部分文字列を返します。
 
@@ -2427,7 +2574,7 @@ SELECT rightUTF8('Привет', -4)
 
 ## soundex \{#soundex\}
 
-導入: v23.4
+導入: v23.4.0
 
 文字列の [Soundex コード](https://en.wikipedia.org/wiki/Soundex) を返します。
 
@@ -2461,9 +2608,9 @@ SELECT soundex('aksel')
 
 ## space \{#space\}
 
-導入バージョン: v23.5
+導入バージョン: v23.5.0
 
-指定された回数分のスペース（` `）を連結した文字列を返します。
+指定された回数分のスペース (` `) を連結した文字列を返します。
 
 **構文**
 
@@ -2495,7 +2642,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 与えられた文字列に対して、長さが少なくとも `n` であり、かつその部分文字列の両端にある (n-1)-グラムのハッシュ値が、その部分文字列内部に含まれるどの (n-1)-グラムのハッシュ値よりも厳密に大きくなるような、すべての部分文字列を検出します。
 ハッシュ関数として `CRC32` を使用します。
@@ -2533,7 +2680,7 @@ SELECT sparseGrams('alice', 3)
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 指定された文字列のうち、長さが少なくとも `n` であり、
 その部分文字列の両端にある (n-1)-グラムのハッシュが、
@@ -2574,7 +2721,7 @@ SELECT sparseGramsHashes('alice', 3)
 
 ## sparseGramsHashesUTF8 \{#sparseGramsHashesUTF8\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 指定された UTF-8 文字列について、長さが少なくとも `n` のすべての部分文字列のハッシュを求めます。このとき、その部分文字列の両端にある (n-1)-gram のハッシュが、その部分文字列内部に存在する任意の (n-1)-gram のハッシュよりも厳密に大きいもののみを対象とします。
 UTF-8 文字列を想定しており、UTF-8 シーケンスが不正な場合は例外を送出します。
@@ -2613,7 +2760,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 ## sparseGramsUTF8 \{#sparseGramsUTF8\}
 
-導入バージョン: v25.5
+導入バージョン: v25.5.0
 
 指定された UTF-8 文字列から、長さが少なくとも `n` であり、その部分文字列の両端にある (n-1)-gram のハッシュ値が、その部分文字列内部に含まれるいずれの (n-1)-gram のハッシュ値よりも厳密に大きくなるような、すべての部分文字列を抽出します。
 UTF-8 文字列を入力として受け取り、不正な UTF-8 シーケンスがある場合は例外をスローします。
@@ -2652,7 +2799,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 
 ## startsWith \{#startsWith\}
 
-導入されたバージョン: v1.1
+導入されたバージョン: v1.1.0
 
 文字列が指定された文字列で始まるかどうかを判定します。
 
@@ -2687,7 +2834,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 文字列が、指定した文字列で大文字小文字を区別せずに始まるかどうかをチェックします。
 
@@ -2722,7 +2869,7 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 文字列が、指定された大文字・小文字を区別しないプレフィックスで始まっているかを判定します。
 文字列が有効な UTF-8 エンコードされたテキストであることを前提とします。
@@ -2759,7 +2906,7 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
-導入: v23.8
+導入: v23.8.0
 
 文字列が指定されたプレフィックスで始まるかどうかをチェックします。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -2796,7 +2943,7 @@ SELECT startsWithUTF8('приставка', 'при')
 
 ## stringBytesEntropy \{#stringBytesEntropy\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 文字列内のバイト分布に対する Shannon エントロピーを計算します。
 
@@ -2830,7 +2977,7 @@ SELECT stringBytesEntropy('Hello, world!')
 
 ## stringBytesUniq \{#stringBytesUniq\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 文字列内に含まれる異なるバイト値の個数を数えます。
 
@@ -2864,7 +3011,7 @@ SELECT stringBytesUniq('Hello')
 
 ## stringJaccardIndex \{#stringJaccardIndex\}
 
-導入バージョン: v23.11
+導入バージョン: v23.11.0
 
 2 つのバイト文字列間の [Jaccard 類似度](https://en.wikipedia.org/wiki/Jaccard_index) を計算します。
 
@@ -2899,7 +3046,7 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 
 ## stringJaccardIndexUTF8 \{#stringJaccardIndexUTF8\}
 
-導入バージョン: v23.11
+導入バージョン: v23.11.0
 
 [`stringJaccardIndex`](#stringJaccardIndex) と同様ですが、UTF-8 でエンコードされた文字列を対象とします。
 
@@ -2934,7 +3081,7 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 
 ## substring \{#substring\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列 `s` のうち、指定したバイトインデックス `offset` から始まる部分文字列を返します。
 バイトのカウントは、次のルールで 1 から始まります:
@@ -2978,7 +3125,7 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 
 ## substringIndex \{#substringIndex\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 Spark や MySQL と同様に、区切り文字 `delim` が `count` 回出現する位置より前側の `s` の部分文字列を返します。
 
@@ -2994,7 +3141,7 @@ substringIndex(s, delim, count)
 
 * `s` — 部分文字列を抽出する対象の文字列。[`String`](/sql-reference/data-types/string)
 * `delim` — 分割に使用する区切り文字。[`String`](/sql-reference/data-types/string)
-* `count` — 部分文字列を抽出する前に数える区切り文字の出現回数。`count` が正の場合、（左から数えて）最後の区切り文字より左側のすべてが返されます。`count` が負の場合、（右から数えて）最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
+* `count` — 部分文字列を抽出する前に数える区切り文字の出現回数。`count` が正の場合、 (左から数えて) 最後の区切り文字より左側のすべてが返されます。`count` が負の場合、 (右から数えて) 最後の区切り文字より右側のすべてが返されます。[`UInt`](/sql-reference/data-types/int-uint) または [`Int`](/sql-reference/data-types/int-uint)
 
 **返される値**
 
@@ -3016,7 +3163,7 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 
 ## substringIndexUTF8 \{#substringIndexUTF8\}
 
-導入バージョン: v23.7
+導入バージョン: v23.7.0
 
 Unicode コードポイント用に、区切り文字 `delim` が `count` 回出現する前の `s` の部分文字列を返します。
 文字列には有効な UTF-8 でエンコードされたテキストが含まれているものと仮定します。
@@ -3052,7 +3199,7 @@ www.straßen-in-europa
 
 ## substringUTF8 \{#substringUTF8\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列 `s` の指定されたコードポイントインデックス `offset` から始まる部分文字列を返します。
 コードポイントのカウントは、次のロジックで `1` から始まります。
@@ -3097,7 +3244,7 @@ Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 
 ## toValidUTF8 \{#toValidUTF8\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 不正な UTF-8 文字をすべて置換文字 `�` (U+FFFD) に置き換えることで、文字列を有効な UTF-8 エンコーディングに変換します。
 連続する複数の不正な文字が見つかった場合、それらは 1 つの置換文字にまとめられます。
@@ -3133,10 +3280,10 @@ c
 
 ## trimBoth \{#trimBoth\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 文字列の先頭および末尾から、指定された文字を削除します。
-デフォルトでは、一般的な空白（ASCII）文字を削除します。
+デフォルトでは、一般的な空白 (ASCII) 文字を削除します。
 
 **構文**
 
@@ -3171,10 +3318,10 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 
 ## trimLeft \{#trimLeft\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 文字列の先頭から指定された文字を削除します。
-デフォルトでは、一般的な空白文字（ASCII）を削除します。
+デフォルトでは、一般的な空白文字 (ASCII) を削除します。
 
 **構文**
 
@@ -3209,10 +3356,10 @@ SELECT trimLeft('ClickHouse', 'Click');
 
 ## trimRight \{#trimRight\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 文字列の末尾から指定された文字を削除します。
-デフォルトでは、一般的な空白（ASCII）文字を削除します。
+デフォルトでは、一般的な空白 (ASCII) 文字を削除します。
 
 **構文**
 
@@ -3247,7 +3394,7 @@ SELECT trimRight('ClickHouse','House');
 
 ## tryBase32Decode \{#tryBase32Decode\}
 
-導入されたバージョン: v25.6
+導入されたバージョン: v25.6.0
 
 文字列を受け取り、[Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) エンコーディング方式でデコードします。
 
@@ -3281,7 +3428,7 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-導入: v22.10
+導入: v22.10.0
 
 [`base58Decode`](#base58Decode) と同様ですが、エラーが発生した場合は空文字列を返します。
 
@@ -3315,7 +3462,7 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 
 ## tryBase64Decode \{#tryBase64Decode\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
 [`base64Decode`](#base64Decode) と同様ですが、エラーが発生した場合には空文字列を返します。
 
@@ -3349,7 +3496,7 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 
 ## tryBase64URLDecode \{#tryBase64URLDecode\}
 
-導入バージョン: v18.16
+導入バージョン: v18.16.0
 
 [`base64URLDecode`](#base64URLDecode) と同様ですが、エラーが発生した場合には空文字列を返します。
 
@@ -3383,9 +3530,9 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 
 ## tryIdnaEncode \{#tryIdnaEncode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
-[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の Unicode (UTF-8) による表現（ToUnicode アルゴリズム）を返します。
+[Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) メカニズムに従って、ドメイン名の Unicode (UTF-8) による表現 (ToUnicode アルゴリズム) を返します。
 エラーが発生した場合は、例外をスローせず空の文字列を返します。
 
 **構文**
@@ -3418,7 +3565,7 @@ SELECT tryIdnaEncode('straße.münchen.de')
 
 ## tryPunycodeDecode \{#tryPunycodeDecode\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 `punycodeDecode` に似ていますが、有効な Punycode でエンコードされた文字列が渡されなかった場合は空文字列を返します。
 
@@ -3452,7 +3599,7 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 
 ## upper \{#upper\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 文字列内の ASCII ラテン文字を大文字に変換します。
 
@@ -3488,14 +3635,14 @@ SELECT upper('clickhouse')
 
 ## upperUTF8 \{#upperUTF8\}
 
-導入: v1.1
+導入: v1.1.0
 
 文字列が有効な UTF-8 でエンコードされたテキストであると仮定して、大文字に変換します。
 この仮定に反する場合でも、例外はスローされず、結果は未定義です。
 
 :::note
-この関数は言語を判別しません。そのため、トルコ語などでは結果が完全には正しくない場合があります（i/İ と i/I など）。
-あるコードポイントについて、大文字と小文字で UTF-8 のバイト列の長さが異なる場合（`ẞ` と `ß` など）、そのコードポイントについては正しくない結果になる可能性があります。
+この関数は言語を判別しません。そのため、トルコ語などでは結果が完全には正しくない場合があります (i/İ と i/I など) 。
+あるコードポイントについて、大文字と小文字で UTF-8 のバイト列の長さが異なる場合 (`ẞ` と `ß` など) 、そのコードポイントについては正しくない結果になる可能性があります。
 :::
 
 **構文**

@@ -9,12 +9,13 @@ doc_type: 'guide'
 
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
+import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
 GCS ClickPipe 提供了一种完全托管且具备高可靠性的方式，用于从 Google Cloud Storage (GCS) 摄取数据。它同时支持具有 exactly-once 语义的 **一次性摄取** 和 **持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 GCS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 进行管理。
+可以通过 ClickPipes UI 手动部署和管理 GCS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 进行管理。
 
 
 ## 支持的格式 \{#supported-formats\}
@@ -33,13 +34,27 @@ GCS ClickPipe 提供了一种完全托管且具备高可靠性的方式，用于
 
 ### 持续摄取 \{#continuous-ingestion\}
 
-启用持续摄取后，ClickPipes 会从指定路径持续摄取数据。为确定摄取顺序，GCS ClickPipe 依赖文件的隐式[字典序](#continuous-ingestion-lexicographical-order)。
+启用持续摄取后，ClickPipes 会从指定路径持续摄取数据。为确定摄取顺序，GCS ClickPipe 默认依赖文件的隐式[字典序](#continuous-ingestion-lexicographical-order)。它也可以通过使用[Google Cloud Pub/Sub](https://cloud.google.com/pubsub) 订阅，并[配置为向存储桶提供通知](https://docs.cloud.google.com/storage/docs/reporting-changes#command-line)，从而以[任意顺序](#continuous-ingestion-any-order)摄取文件。
 
 #### Lexicographical order \{#continuous-ingestion-lexicographical-order\}
 
 GCS ClickPipe 假定文件是按词典序添加到存储桶中的，并依赖这种隐式顺序按顺序摄取文件。也就是说，任何新文件**必须**在词典序上大于上一次已摄取的文件。例如，名为 `file1`、`file2` 和 `file3` 的文件会被依次摄取，但如果在存储桶中新增一个 `file 0` 文件，它将会被**忽略**，因为该文件名在词典序上并不大于最后一个已摄取的文件。
 
 在此模式下，GCS ClickPipe 会对指定路径中的**所有文件**进行一次初始加载，然后按可配置的时间间隔轮询以发现新文件（默认 30 秒）。**无法**从某个特定文件或时间点开始摄取——ClickPipes 将始终加载指定路径中的所有文件。
+
+#### 任意顺序 \{#continuous-ingestion-any-order\}
+
+:::tip
+有关分步说明，请参阅[为连续摄取配置无序模式](/integrations/clickpipes/object-storage/gcs/unordered-mode)。
+:::
+
+可以通过设置一个从 bucket 接收通知的 [Google Cloud Pub/Sub](https://docs.cloud.google.com/storage/docs/pubsub-notifications) 订阅，将 GCS ClickPipe 配置为摄取没有隐式顺序的文件。这样 ClickPipes 就可以监听对象创建事件，并摄取任何新的文件，而不受文件命名约定的影响。
+
+:::note
+对于公共 bucket，**不**支持无序模式。该模式要求使用 **Service Account** 身份验证，以及一个连接到该 bucket 的 [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) 订阅。
+:::
+
+在此模式下，GCS ClickPipe 会对选定路径中的 **所有文件** 执行初始加载，然后通过 Pub/Sub 订阅监听与指定路径匹配的 `OBJECT_FINALIZE` 通知。对于此前已处理过的文件、不匹配路径的文件，或类型不同的事件，其对应的消息都会被**忽略**。**无法**从特定文件或某个时间点开始摄取 —— ClickPipes 始终会加载选定路径中的所有文件。
 
 ### 文件模式匹配 \{#file-pattern-matching\}
 
@@ -87,13 +102,26 @@ GCS ClickPipe 假定文件是按词典序添加到存储桶中的，并依赖这
 
 GCS ClickPipe 支持公共和私有存储桶。**不**支持 [Requester Pays](https://docs.cloud.google.com/storage/docs/requester-pays) 存储桶。
 
-必须在存储桶级别授予 [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer) 角色。该角色包含 [`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) 和 [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) 这两个 IAM 权限，使 ClickPipes 可以在指定的存储桶中列出并获取对象。
+#### GCS 存储桶 \{#gcs-bucket\}
+
+ClickPipes 使用的服务账号必须在存储桶级别允许以下操作：
+
+* [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer)
+
+该角色包含 [`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) 和 [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) 这两个 IAM 权限，使 ClickPipes 可以在指定的存储桶中列出并获取对象。
+
+#### Pub/Sub 订阅 \{#pubsub-subscription\}
+
+在使用[无序模式](#continuous-ingestion-any-order)时，服务账户必须在该 Pub/Sub 订阅上具备以下角色：
+
+* [`roles/pubsub.subscriber`](https://cloud.google.com/pubsub/docs/access-control#roles) — 用于接收并确认消息。
+* [`roles/pubsub.viewer`](https://cloud.google.com/pubsub/docs/access-control#roles) — 用于获取订阅的元数据。
 
 ### 身份验证 \{#authentication\}
 
-:::note
-当前不支持使用服务账户进行身份验证。
-:::
+#### 服务帐号 \{#service-account\}
+
+在结合 Pub/Sub 通知使用[无序模式](#continuous-ingestion-any-order)时，必须使用服务帐号进行身份验证。请选择 **Service Account** 作为身份验证方式，并上传服务帐号密钥 JSON 文件。
 
 #### HMAC 凭证 \{#hmac-credentials\}
 

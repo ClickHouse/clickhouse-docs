@@ -115,13 +115,13 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
 
-## 部分文字列検索用の N-gram Bloom フィルター (ngrambf_v1) \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
+## 部分文字列検索用の N-gram Bloom フィルター (ngrambf_v1) *(非推奨)* \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
 
-> 注意: ClickHouse バージョン 26.2 からテキストインデックスが一般提供 (GA) されたため、全文検索には Bloom filter ベースのインデックスは推奨されません。
-> これらはよりコンパクトですが、確率的な仕組みであるため、残念ながら偽陽性を発生させがちです。
-> さらに、設定可能な項目が限られています。
+:::note
+ClickHouse バージョン `>= 26.2` では、全文検索における `ngrambf_v1` インデックスの使用は非推奨となっており、代わりに `text` インデックスが推奨されます (詳細は [こちら](/engines/table-engines/mergetree-family/textindexes) を参照してください) 。
+:::
 
-`ngrambf_v1` インデックスは、文字列を N-gram に分割します。`LIKE '%...%'` クエリに対して有効です。String/FixedString/Map（mapKeys/mapValues 経由）をサポートし、サイズ、ハッシュ数、シードを調整できます。詳細については、[N-gram Bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) のドキュメントを参照してください。
+`ngrambf_v1` インデックスは、文字列を N-gram に分割します。`LIKE '%...%'` クエリに対して有効です。String/FixedString/Map (mapKeys/mapValues 経由) をサポートし、サイズ、ハッシュ数、シードを調整できます。詳細については、[N-gram Bloom filter](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) のドキュメントを参照してください。
 
 ```sql
 -- Create index for substring search
@@ -135,11 +135,11 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[このガイド](/use-cases/observability/schema-design#bloom-filters-for-text-search)では、実践的な例と、token と ngram のどちらをいつ使用するかについて解説しています。
+[このガイド](/use-cases/observability/schema-design#text-index-for-full-text-search)では、実践的な例と、token と ngram のどちらをいつ使用するかについて解説しています。
 
 **パラメータ最適化ヘルパー:**
 
-4つの ngrambf&#95;v1 パラメータ（n-gram サイズ、ビットマップサイズ、ハッシュ関数の数、シード）は、パフォーマンスとメモリ使用量に大きな影響を与えます。想定される n-gram の件数と許容する偽陽性率に基づいて、最適なビットマップサイズとハッシュ関数数を計算するために、これらの関数を使用してください。
+4つの ngrambf&#95;v1 パラメータ (n-gram サイズ、ビットマップサイズ、ハッシュ関数の数、シード) は、パフォーマンスとメモリ使用量に大きな影響を与えます。想定される n-gram の件数と許容する偽陽性率に基づいて、最適なビットマップサイズとハッシュ関数数を計算するために、これらの関数を使用してください。
 
 ```sql
 CREATE FUNCTION bfEstimateFunctions AS
@@ -156,11 +156,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 チューニングに関する完全なガイダンスについては、[パラメータのドキュメント](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)を参照してください。
 
 
-## 単語ベース検索用の Token Bloom フィルタ (tokenbf_v1) \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
+## 単語ベース検索用の Token Bloom フィルタ (tokenbf_v1) *(非推奨)* \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
 
-> 注記: ClickHouse バージョン 26.2 からテキスト索引が一般提供 (GA) されたことに伴い、全文検索用途での Bloom フィルタベースの索引は推奨されません。
-> コンパクトではあるものの、確率的な手法であるため誤検出 (false positive) を引き起こしやすいという問題があります。
-> さらに、設定可能な範囲も限定的です。
+:::note
+全文検索における `tokenbf_v1` 索引の使用は、ClickHouse バージョン `>= 26.2` では `text` 索引の導入に伴い非推奨となっています (詳細は[こちら](/engines/table-engines/mergetree-family/textindexes)を参照してください) 。
+:::
 
 `tokenbf_v1` は、英数字以外の文字で区切られたトークンをインデックス化します。[`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` による単語パターン、または `=` / `IN` 演算子と併用して使用することを推奨します。`String`/`FixedString`/`Map` 型をサポートします。
 
@@ -177,7 +177,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#bloom-filters-for-text-search)を参照してください。
+トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#text-index-for-full-text-search)を参照してください。
 
 
 ## CREATE TABLE 時にインデックスを追加する（複数の例） \{#add-indexes-during-create-table-multiple-examples\}

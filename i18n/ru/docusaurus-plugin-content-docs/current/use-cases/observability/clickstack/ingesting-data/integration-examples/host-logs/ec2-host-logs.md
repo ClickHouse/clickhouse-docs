@@ -22,19 +22,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Мониторинг журналов хостов EC2 с помощью ClickStack \{#ec2-host-logs-clickstack\}
+# Мониторинг логов хостов EC2 с помощью ClickStack \{#ec2-host-logs-clickstack\}
 
 :::note[TL;DR]
-Отслеживайте системные журналы EC2 с помощью ClickStack, установив OpenTelemetry Collector на ваши экземпляры. Коллектор автоматически обогащает логи метаданными EC2 (ID экземпляра, регион, зона доступности, тип экземпляра). Вы узнаете, как:
-
-- Установить и настроить OpenTelemetry Collector на экземплярах EC2
-- Автоматически обогащать логи метаданными EC2
-- Отправлять логи в ClickStack по OTLP
-- Использовать готовую панель мониторинга для визуализации журналов хостов EC2 с облачным контекстом
-
-Для тестирования доступен демонстрационный набор данных с примерами логов и смоделированными метаданными EC2.
-
-Требуемое время: 10–15 минут
+Собирайте и визуализируйте системные логи EC2 в ClickStack с помощью OpenTelemetry Collector с автоматическим обогащением метаданными EC2 (ID экземпляра, регион, AZ, тип экземпляра). Включает Демонстрационный датасет и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим экземпляром EC2 \{#existing-ec2\}
@@ -160,7 +151,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -214,7 +205,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -254,7 +245,7 @@ import TabItem from '@theme/TabItem';
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
   * `cloud.region`: регион AWS (например, &quot;us-east-1&quot;)
-  * `cloud.availability_zone`: зона доступности (AZ), например «us-east-1a»
+  * `cloud.availability_zone`: зона доступности (AZ, например, &quot;us-east-1a&quot;)
   * `cloud.account.id`: идентификатор учетной записи AWS
   * `host.id`: идентификатор экземпляра EC2 (например, &quot;i-1234567890abcdef0&quot;)
   * `host.type`: Тип инстанса (например, &quot;t3.medium&quot;)
@@ -587,9 +578,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## Дальнейшие шаги {#next-steps}
 
-После настройки мониторинга логов хоста EC2:
-
 - Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критически важных системных событий (отказы сервисов, неуспешные попытки аутентификации, предупреждения о состоянии диска)
 - Фильтруйте данные по атрибутам метаданных EC2 (регион, тип экземпляра, ID экземпляра), чтобы отслеживать конкретные ресурсы
 - Коррелируйте логи хоста EC2 с логами приложений для комплексного устранения неполадок
-- Создавайте пользовательские дашборды для мониторинга безопасности (попытки SSH-доступа, использование sudo, блокировки брандмауэра)
+- Создавайте пользовательские панели мониторинга для мониторинга безопасности (попытки SSH-доступа, использование sudo, блокировки брандмауэра)
+
+## Переход к промышленной эксплуатации {#going-to-production}
+
+В этом руководстве OpenTelemetry Collector устанавливается непосредственно на экземпляры EC2, что является рекомендуемым вариантом для мониторинга на уровне хоста в промышленной эксплуатации. Для управления коллекторами на большом количестве экземпляров рассмотрите возможность использования инструментов управления конфигурацией (Ansible, Chef, Puppet) или OpenTelemetry Operator в средах Kubernetes. Сведения о конфигурации для промышленной эксплуатации см. в разделе [Отправка данных OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry).

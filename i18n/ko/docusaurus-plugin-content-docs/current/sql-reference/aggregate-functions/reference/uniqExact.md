@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqExact \{#uniqExact\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 서로 다른 인수 값의 정확한 개수를 계산합니다.
 

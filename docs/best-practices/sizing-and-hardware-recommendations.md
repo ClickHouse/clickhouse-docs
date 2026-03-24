@@ -23,7 +23,7 @@ The configuration of your ClickHouse cluster is highly dependent on your applica
 
 ## Disk {#disk}
 
-The type(s) of disks you should use with ClickHouse depends on data volume, latency, or throughput requirements.
+The types of disks you should use with ClickHouse depend on data volume, latency, or throughput requirements.
 
 ### Optimizing for performance {#optimizing-for-performance}
 

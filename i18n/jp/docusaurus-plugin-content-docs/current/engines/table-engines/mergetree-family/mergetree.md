@@ -404,8 +404,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) インデックス
 - [`Set`](#set) インデックス
 - [`bloom_filter`](#bloom-filter) インデックス
-- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
-- [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス *(非推奨)*
+- [`tokenbf_v1`](#token-bloom-filter) インデックス *(非推奨)*
 - [`text`](#text) インデックス
 - [`vector_similarity`](#vector-similarity) インデックス
 
@@ -458,7 +458,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram ブルームフィルタ \{#n-gram-bloom-filter\}
+#### N-gram ブルームフィルタ *(非推奨)* \{#n-gram-bloom-filter\}
+
+:::note
+ClickHouse バージョン 26.2 以降で `text` 索引が一般提供 (GA) されたことに伴い、全文検索での `ngrambf_v1` 索引の利用は推奨されません。
+
+詳細については [&quot;text 索引による全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 各インデックスグラニュールは、指定されたカラムの [N-gram](https://en.wikipedia.org/wiki/N-gram) に対する [ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
@@ -504,8 +510,8 @@ AS
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-たとえば、1 つのグラニュールに `4300` 個の n グラムが含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
-この場合、他のパラメータは次のクエリを実行することで推定できます。
+たとえば、1 つのグラニュールに `4300` 個の n-gram が含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
+このとき、他のパラメータは次のクエリを実行することで推定できます。
 
 ```sql
 --- estimate number of bits in the filter
@@ -529,7 +535,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### トークン Bloom フィルター \{#token-bloom-filter\}
 
-トークン Bloom フィルターは `ngrambf_v1` と同様ですが、n-gram の代わりに、英数字以外の文字で区切られたトークン（文字列）を格納します。
+:::note
+ClickHouse バージョン 26.2 以降、`text` 索引が一般提供 (GA) となったため、全文検索用途での `tokenbf_v1` 索引の利用は推奨されません。
+
+詳細は [&quot;text 索引を用いた全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -559,22 +569,22 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 `set` 型のインデックスは、あらゆる関数で利用できます。その他のインデックスタイプは次のようにサポートされます。
 
-| 関数（演算子）/ 索引                                                                                                               | 主キー | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | テキスト |
+| 関数 (演算子) / 索引                                                                                                             | 主キー | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | テキスト |
 | ------------------------------------------------------------------------------------------------------------------------- | --- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
 | [equals (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✗    |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗   | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗   | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗   | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [less（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                       | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [greater（`>`）](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [lessOrEquals（`<=`）](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                      | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [greaterOrEquals（`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [less (`<`) ](/sql-reference/functions/comparison-functions.md/#less)                                                     | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [greater (`>`) ](/sql-reference/functions/comparison-functions.md/#greater)                                               | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [lessOrEquals (`<=`) ](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                    | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [greaterOrEquals (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                               | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗   | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
 | [has](/sql-reference/functions/array-functions#has)                                                                       | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
@@ -586,6 +596,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗   | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
@@ -1155,13 +1166,11 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 - `_block_offset` — ブロック内の行に対して挿入時に割り当てられた元の行番号で、SETTING `enable_block_offset_column` が有効な場合はマージ時も保持される。
 - `_disk_name` — ストレージに使用されているディスク名。
 
-## カラム統計 \{#column-statistics\}
+## カラム STATISTICS \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-`set allow_experimental_statistics = 1` を有効にすると、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリの `COLUMNS` セクション内で統計を宣言します。
+STATISTICS の宣言は、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラムセクションにあります。
 
 ```sql
 CREATE TABLE tab
@@ -1173,16 +1182,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` 文を使用して統計情報を操作することもできます。
+`ALTER` 文を使って STATISTICS を操作することもできます:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
-`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
-
+これらの軽量な STATISTICS は、カラム内の値の分布に関する情報を集約します。STATISTICS は各パートに保存され、挿入のたびに更新されます。
+`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に使用できます。
 
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
 

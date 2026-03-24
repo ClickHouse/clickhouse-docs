@@ -15,11 +15,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-`materialized_view` materialization은 기존(소스) 테이블에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 「정적(static)」이 아니며, 이에 대응하는 REFRESH 작업도 없습니다. 대신 **삽입 트리거(insert trigger)**처럼 동작하여, 소스 테이블에 행이 삽입될 때 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view 설명서](/materialized-view)를 참고하십시오.
+`materialized_view` materialization은 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 "정적"이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
 
 :::note
-일반적인 materialization 개념과 공통 설정(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하십시오.
-:::
+일반적인 materialization 개념과 공통 구성(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
+:::”
 
 ## 대상 테이블 관리 방식 \{#target-table-management\}
 
@@ -134,12 +134,12 @@ select a,b,c from {{ source('raw', 'table_2') }}
 이 기능은 베타 단계이며 **dbt-clickhouse 버전 1.10**부터 사용할 수 있습니다. API는 커뮤니티 피드백에 따라 변경될 수 있습니다.
 :::
 
-기본적으로 dbt-clickhouse는 하나의 모델 내에서 대상 테이블과 materialized view(s)를 모두 생성하고 관리합니다(위에서 설명한 [암시적 대상](#implicit-target) 접근 방식). 이 접근 방식에는 다음과 같은 제한 사항이 있습니다.
+기본적으로 dbt-clickhouse는 하나의 모델 내에서 대상 테이블과 materialized views를 모두 생성하고 관리합니다(위에서 설명한 [암시적 대상](#implicit-target) 접근 방식). 이 접근 방식에는 다음과 같은 제한 사항이 있습니다.
 
-- 모든 리소스(대상 테이블 + MVs)가 동일한 설정을 공유합니다. 여러 MV가 동일한 대상 테이블을 가리키는 경우, `UNION ALL` 문법을 사용하여 함께 정의해야 합니다.
-- 이러한 모든 리소스를 개별적으로 실행(iterate)할 수 없고, 하나의 동일한 모델 파일을 사용하여 관리해야 합니다.
-- 각 MV의 이름을 쉽게 제어할 수 없습니다.
-- 모든 설정이 대상 테이블과 MVs 사이에서 공유되므로, 각 리소스를 개별적으로 구성하기 어렵고 어떤 설정이 어떤 리소스에 속하는지 구분하기 어렵습니다.
+* 모든 리소스(대상 테이블 + MVs)가 동일한 설정을 공유합니다. 여러 MV가 동일한 대상 테이블을 가리키는 경우, `UNION ALL` 문법을 사용하여 함께 정의해야 합니다.
+* 이러한 모든 리소스를 개별적으로 실행(iterate)할 수 없고, 하나의 동일한 모델 파일을 사용하여 관리해야 합니다.
+* 각 MV의 이름을 쉽게 제어할 수 없습니다.
+* 모든 설정이 대상 테이블과 MVs 사이에서 공유되므로, 각 리소스를 개별적으로 구성하기 어렵고 어떤 설정이 어떤 리소스에 속하는지 구분하기 어렵습니다.
 
 **explicit target** 기능을 사용하면 대상 테이블을 일반 `table` materialization으로 별도로 정의한 다음, materialized view 모델에서 이를 참조할 수 있습니다.
 
@@ -309,8 +309,8 @@ GROUP BY event_date, event_type
 
 가능한 원인:
 
-- materialized view(들)에 `catchup=True`가 설정되어 있고 대상 테이블에 `repopulate_from_mvs_on_full_refresh=True`도 설정되어 있는 경우: 수행하려는 작업에 따라 둘 중 하나만 유지하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 확인하십시오.
-- 대상 테이블이 `WHERE 0`으로 정의되지 않은 경우: 대상 테이블은 비어 있는 상태로 생성되어야 하지만, `WHERE 0`이 포함되지 않으면 내부 쿼리에서 데이터를 삽입할 수 있습니다. 해당 절이 포함되어 있는지 확인하십시오.
+* materialized view(들)에 `catchup=True`가 설정되어 있고 대상 테이블에 `repopulate_from_mvs_on_full_refresh=True`도 설정되어 있는 경우: 수행하려는 작업에 따라 둘 중 하나만 유지하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 확인하십시오.
+* 대상 테이블이 `WHERE 0`으로 정의되지 않은 경우: 대상 테이블은 비어 있는 상태로 생성되어야 하지만, `WHERE 0`이 포함되지 않으면 내부 쿼리에서 데이터를 삽입할 수 있습니다. 해당 절이 포함되어 있는지 확인하십시오.
 
 #### `dbt run --full-refresh` 실행 후 활성 수집 중 데이터 손실 발생 \{#data-loss-active-ingestion\}
 
@@ -437,11 +437,11 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 #### 암시적 대상 작업 \{#ingestion-implicit-target\}
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| First `dbt run` | 1. 대상 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. materialized view 생성 | ⚠️ **1단계와 3단계 사이에는 materialized view가 소스 변경을 감지하지 못합니다.** 이 구간 동안 소스에 삽입되는 행은 캡처되지 않습니다. |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 안전합니다. materialized view는 원자적으로 업데이트됩니다. |
-| `dbt run --full-refresh` | 1. 백업 테이블 생성<br/>2. 데이터 삽입 (`catchup=True`인 경우)<br/>3. materialized view 삭제<br/>4. 테이블 교환<br/>5. materialized view 재생성 | ⚠️ **재생성 중에는 materialized view가 소스 변경을 감지하지 못합니다.** 3단계와 5단계 사이에 소스에 삽입된 데이터는 새 대상 테이블에 나타나지 않습니다. |
+| Operation                | Internal process                                                                                                           | Safety while inserts are happening                                                                 |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| First `dbt run`          | 1. 대상 테이블 생성<br />2. 데이터 삽입 (`catchup=True`인 경우)<br />3. materialized view 생성                                              | ⚠️ **1단계와 3단계 사이에는 materialized view가 소스 변경을 감지하지 못합니다.** 이 구간 동안 소스에 삽입되는 행은 캡처되지 않습니다.           |
+| Subsequent `dbt run`     | `ALTER TABLE ... MODIFY QUERY`                                                                                             | ✅ 안전합니다. materialized view는 원자적으로 업데이트됩니다.                                                         |
+| `dbt run --full-refresh` | 1. 백업 테이블 생성<br />2. 데이터 삽입 (`catchup=True`인 경우)<br />3. materialized view 삭제<br />4. 테이블 교환<br />5. materialized view 재생성 | ⚠️ **재생성 중에는 materialized view가 소스 변경을 감지하지 못합니다.** 3단계와 5단계 사이에 소스에 삽입된 데이터는 새 대상 테이블에 나타나지 않습니다. |
 
 #### 명시적 대상 작업 \{#ingestion-explicit-target\}
 

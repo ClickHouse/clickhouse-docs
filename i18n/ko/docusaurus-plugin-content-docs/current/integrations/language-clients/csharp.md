@@ -221,11 +221,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions`는 `InsertBinaryAsync`를 사용한 대량 삽입 작업에 특화된 설정을 추가하여 `QueryOptions`를 확장합니다.
 
-| Property               | Type              | Default     | Description                                   |
-| ---------------------- | ----------------- | ----------- | --------------------------------------------- |
-| BatchSize              | `int`             | 100,000     | 배치당 행 개수                                      |
-| MaxDegreeOfParallelism | `int`             | 1           | 병렬로 업로드되는 배치 수                                |
-| Format                 | `RowBinaryFormat` | `RowBinary` | 이진 포맷: `RowBinary` 또는 `RowBinaryWithDefaults` |
+| 속성                     | Type                                  | Default     | Description                                           |
+| ---------------------- | ------------------------------------- | ----------- | ----------------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000     | 배치당 행 개수                                              |
+| MaxDegreeOfParallelism | `int`                                 | 1           | 병렬로 업로드되는 배치 수                                        |
+| Format                 | `RowBinaryFormat`                     | `RowBinary` | 이진 포맷: `RowBinary` 또는 `RowBinaryWithDefaults`         |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`      | 컬럼 이름 → ClickHouse 타입 문자열입니다. 설정하면 스키마 프로브 쿼리를 건너뜁니다. |
+| UseSchemaCache         | `bool`                                | `false`     | 클라이언트 수명 동안 (데이터베이스, 테이블)별 전체 테이블 스키마를 캐시합니다.         |
 
 모든 `QueryOptions` 속성은 `InsertOptions`에서도 동일하게 사용할 수 있습니다.
 
@@ -246,6 +248,49 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+#### 스키마 확인용 쿼리 스키핑 \{#skip-schema-query\}
+
+기본적으로 `InsertBinaryAsync`는 각 삽입 전에 컬럼 타입을 확인하기 위해 `SELECT ... WHERE 1=0` 쿼리를 전송합니다. 높은 처리량이 필요한 환경에서는 두 가지 방법으로 이 오버헤드를 없앨 수 있습니다:
+
+**옵션 1: 컬럼 타입을 명시적으로 지정**
+
+컴파일 시점에 테이블 스키마를 알고 있다면 `ColumnTypes`를 통해 직접 전달하십시오. 그러면 스키마 쿼리가 전혀 전송되지 않습니다:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**옵션 2: 스키마 캐시 사용**
+
+동일한 테이블에 반복해서 삽입하는 경우, 스키마를 한 번만 쿼리한 뒤 동일한 `ClickHouseClient` 인스턴스에서 이후 삽입에 재사용할 수 있도록 `UseSchemaCache = true`로 설정하십시오:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes`는 `UseSchemaCache`보다 우선합니다. 둘 다 설정된 경우에는 명시적으로 지정한 타입이 사용됩니다.
+* 스키마 캐시는 `ALTER TABLE` 변경 사항을 감지하지 않습니다. 테이블 스키마를 수정한 경우 새 `ClickHouseClient`를 생성하거나 해당 테이블에서는 `UseSchemaCache`를 사용하지 마십시오.
+* 캐시는 `ClickHouseClient` 인스턴스 범위로 한정되며, (데이터베이스, 테이블)를 키로 사용합니다. 동일한 테이블의 서로 다른 컬럼 하위 집합은 하나의 캐시된 스키마를 공유합니다.
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -392,7 +437,7 @@ var options = new InsertOptions
 
 :::note
 
-* 클라이언트는 INSERT 전에 `SELECT * FROM <table> WHERE 1=0`을 통해 테이블 구조를 자동으로 가져옵니다. 제공하는 값은 대상 컬럼 타입과 일치해야 합니다.
+* 클라이언트는 INSERT 전에 `SELECT * FROM <table> WHERE 1=0`을 통해 테이블 구조를 자동으로 가져옵니다. 제공하는 값은 대상 컬럼 타입과 일치해야 합니다. 이 쿼리를 건너뛰려면 [`InsertOptions.ColumnTypes` 또는 `InsertOptions.UseSchemaCache`](#skip-schema-query)를 사용하십시오.
 * `MaxDegreeOfParallelism > 1`인 경우 배치가 병렬로 업로드됩니다. 세션은 병렬 삽입과 호환되지 않으므로, 세션을 비활성화하거나 `MaxDegreeOfParallelism = 1`로 설정해야 합니다.
 * 값이 제공되지 않은 컬럼에 대해 서버가 DEFAULT 값을 적용하도록 하려면, `InsertOptions.Format`에서 `RowBinaryFormat.RowBinaryWithDefaults`를 사용하십시오.
   :::
@@ -1554,26 +1599,155 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper \{#orm-support-dapper\}
 
-`ClickHouse.Driver`는 Dapper와 함께 사용할 수 있지만, 익명 객체는 지원되지 않습니다.
+`ClickHouse.Driver`는 Dapper와 함께 작동합니다. 드라이버는 Dapper의 `@parameter` 구문을 ClickHouse의 기본 `{parameter:형식}` 구문으로 자동 변환하며, 형식은 .NET 값에서 추론됩니다.
 
-**실행 예제:**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**지원하지 않습니다:**
+연결 수명을 적절하게 관리하려면 `ClickHouseDataSource`를 사용하십시오:
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
 
+#### 매개변수 전달 방식 \{#dapper-parameter-passing\}
+
+표준 Dapper 매개변수 전달 방식은 모두 지원됩니다.
+
+**익명 객체:**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**POCO 클래스:**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**딕셔너리:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (딕셔너리나 익명 객체에서):**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+
+#### POCO에 쿼리하기 \{#dapper-pocos\}
+
+Dapper는 컬럼 이름을 기준으로 속성에 매핑합니다(대소문자를 구분하지 않음):
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+
+#### ClickHouse 네이티브 매개변수 구문 \{#dapper-clickhouse-param-syntax\}
+
+명시적으로 형식을 제어해야 하는 경우, 매개변수 값에는 `Dictionary<string, object>`를 사용하고 SQL에서 ClickHouse의 `{param:형식}` 구문을 직접 사용하십시오. 동일한 매개변수에 `@param` 구문과 `{param:형식}` 구문을 함께 사용하지 마십시오.
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+#### WHERE IN \{#dapper-where-in\}
+
+**Dapper의 기본 제공 IN 확장이 작동합니다:**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper는 이를 `WHERE id IN (@Ids1, @Ids2, @Ids3)`로 다시 작성하고, 드라이버는 확장된 각 매개변수를 변환합니다.
+
+**배열 매개변수와 함께 ClickHouse의 `has()`를 사용하는 방식도 지원됩니다:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+
+#### 사용자 정의 형식 핸들러 \{#dapper-type-handlers\}
+
+일부 ClickHouse 형식(예: `ITuple`, `BigInteger`, `ClickHouseDecimal`)은 시작 시 핸들러를 등록해야 합니다:
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+형식 핸들러 구현 예시는 [Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs)에서 확인하십시오.
+
+#### Dapper.Contrib \{#dapper-contrib\}
+
+`GetAll<T>()` 및 `Get<T>(id)`는 작동합니다. `Insert<T>()`는 작동하지 않습니다. SQL Server 구문(`SCOPE_IDENTITY`, `[]`)을 생성하기 때문입니다. 대신 `ClickHouseClient` 네이티브 `InsertBinaryAsync` 메서드를 사용하는 것이 좋습니다.
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+속성 이름은 ClickHouse 컬럼 이름과 정확히 일치해야 합니다(대소문자를 구분함).
+
+#### 제한 사항 \{#dapper-limitations\}
+
+| 항목 | 상태 | 세부 정보 |
+|---|---|---|
+| **결과**로 사용하는 Tuple | 작동 | `SqlMapper.TypeHandler<ITuple>` 등록이 필요합니다 |
+| **매개변수**로 사용하는 Tuple | 지원되지 않음 | Dapper는 `ITuple`/`Tuple<>`를 `DbParameter` 값으로 직렬화할 수 없습니다 |
+| 매개변수로 사용하는 중첩 형식 | 지원되지 않음 | 같은 이유로 Dapper는 복합 형식을 매개변수 값으로 허용하지 않습니다 |
+| 매개변수로 사용하는 Geo 형식 | 지원되지 않음 | Point, Ring, Polygon, LineString, MultiLineString, MultiPolygon |
+| `Dapper.Contrib.Insert<T>()` | 지원되지 않음 | SQL Server 전용 구문을 생성합니다 |
+| `Nothing` 형식 | 지원되지 않음 | 의미 있는 .NET 표현이 없습니다 |
 
 ### Linq2db \{#orm-support-linq2db\}
 

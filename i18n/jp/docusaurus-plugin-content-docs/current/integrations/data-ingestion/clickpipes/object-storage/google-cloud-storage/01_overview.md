@@ -9,12 +9,13 @@ doc_type: 'guide'
 
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
 import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
+import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
 GCS ClickPipe は、Google Cloud Storage (GCS) からデータをインジェストするための、フルマネージドで高い耐障害性を備えた手段を提供します。**一度限り**のインジェストと**継続的なインジェスト**の両方を、exactly-once セマンティクスでサポートします。
 
-GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
+GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
 
 
 ## サポートされる形式 \{#supported-formats\}
@@ -33,13 +34,27 @@ GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび
 
 ### 継続的なインジェスト \{#continuous-ingestion\}
 
-継続的なインジェストが有効な場合、ClickPipes は指定されたパスからデータを継続的にインジェストし続けます。インジェストの順序を決定するために、GCS ClickPipe はファイルの暗黙的な[辞書式順序](#continuous-ingestion-lexicographical-order)に依存します。
+継続的なインジェストが有効な場合、ClickPipes は指定されたパスからデータを継続的にインジェストし続けます。インジェストの順序を決定するために、GCS ClickPipe はファイルの暗黙的な[辞書式順序](#continuous-ingestion-lexicographical-order)にデフォルトで依存します。また、[バケットに対する通知を送信するように構成された](https://docs.cloud.google.com/storage/docs/reporting-changes#command-line) [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) サブスクリプションを使用して、ファイルを[任意の順序](#continuous-ingestion-any-order)でインジェストするように構成することもできます。
 
 #### Lexicographical order \{#continuous-ingestion-lexicographical-order\}
 
 GCS ClickPipe は、ファイルがバケットに辞書順で追加されることを前提としており、この暗黙的な順序に依存してファイルを順次インジェストします。つまり、新しいファイルは必ず、最後にインジェストされたファイルよりも辞書順で後ろに来る必要があります。例えば、`file1`、`file2`、`file3` という名前のファイルは順番にインジェストされますが、新たに `file 0` がバケットに追加された場合、そのファイル名は最後にインジェストされたファイルより辞書順で後ろに来ないため、そのファイルは**無視**されます。
 
 このモードでは、GCS ClickPipe は最初に指定されたパス内の**すべてのファイル**を読み込み、その後、新しいファイルがないかを設定可能な間隔（デフォルトでは 30 秒）でポーリングします。特定のファイルや時点からインジェストを開始することは**できません** — ClickPipes は常に、指定されたパス内のすべてのファイルを読み込みます。
+
+#### 任意の順序 \{#continuous-ingestion-any-order\}
+
+:::tip
+手順ごとの説明については、[継続的インジェストの順序なしモードの設定](/integrations/clickpipes/object-storage/gcs/unordered-mode)を参照してください。
+:::
+
+[Google Cloud Pub/Sub](https://docs.cloud.google.com/storage/docs/pubsub-notifications) サブスクリプションを設定してバケットからの通知を受信することで、GCS ClickPipe を、暗黙的な順序を持たないファイルを取り込むように構成できます。これにより、ClickPipes はオブジェクト作成イベントをリッスンし、ファイル名の命名規則に関係なく新しいファイルを取り込むことができます。
+
+:::note
+順序なしモードはパブリックバケットでは**サポートされていません**。このモードには、**Service Account** 認証と、バケットに関連付けられた [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) サブスクリプションが必要です。
+:::
+
+このモードでは、GCS ClickPipe は最初に選択したパス内の**すべてのファイル**を読み込み、その後は指定したパスに一致する Pub/Sub サブスクリプション経由の `OBJECT_FINALIZE` 通知をリッスンします。すでに処理済みのファイルに対するメッセージ、パスに一致しないファイル、または別の種類のイベントはすべて**無視**されます。特定のファイルや任意の時点からインジェストを開始することは**できません**。ClickPipes は常に選択したパス内のすべてのファイルをロードします。
 
 ### ファイルパターンマッチング \{#file-pattern-matching\}
 
@@ -87,13 +102,26 @@ Object Storage ClickPipes は、ファイルパターンマッチングに POSIX
 
 GCS ClickPipe は、パブリックバケットおよびプライベートバケットをサポートします。[Requester Pays](https://docs.cloud.google.com/storage/docs/requester-pays) バケットはサポートされて**いません**。
 
-[`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer) ロールをバケットレベルで付与する必要があります。このロールには、[`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) および [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM 権限が含まれており、指定したバケット内のオブジェクトを ClickPipes が一覧表示および取得できるようにします。
+#### GCS バケット \{#gcs-bucket\}
+
+ClickPipes が使用するサービスアカウントでは、バケットレベルで次のアクションを許可する必要があります。
+
+* [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer)
+
+このロールには、[`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) および [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM 権限が含まれており、指定したバケット内のオブジェクトを ClickPipes が一覧表示および取得できるようにします。
+
+#### Pub/Sub サブスクリプション \{#pubsub-subscription\}
+
+[unordered mode](#continuous-ingestion-any-order) を使用する場合、サービス アカウントには Pub/Sub サブスクリプションに対して次のロールが必要です。
+
+* [`roles/pubsub.subscriber`](https://cloud.google.com/pubsub/docs/access-control#roles) — メッセージを受信および確認応答するため。
+* [`roles/pubsub.viewer`](https://cloud.google.com/pubsub/docs/access-control#roles) — サブスクリプションのメタデータを取得するため。
 
 ### 認証 \{#authentication\}
 
-:::note
-サービス アカウントによる認証は現在サポートされていません。
-:::
+#### Service account \{#service-account\}
+
+Pub/Sub 通知で [unordered mode](#continuous-ingestion-any-order) を使用する場合は、Service Account 認証が必須です。認証方法として **Service Account** を選択し、Service Account キーの JSON ファイルをアップロードします。
 
 #### HMAC 資格情報 \{#hmac-credentials\}
 

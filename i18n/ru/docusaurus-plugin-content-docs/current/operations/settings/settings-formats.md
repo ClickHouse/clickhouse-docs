@@ -988,13 +988,33 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для ограничения максимального времени ожидания в миллисекундах до того, как блок будет сформирован входным форматом"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для ограничения максимального времени ожидания в миллисекундах до того, как блок будет сформирован входным форматом"}]}]} />
 
 Ограничивает максимальное время ожидания в миллисекундах перед формированием блока при разборе во входных форматах, ориентированных на строки. Значение 0 означает отсутствие ограничения.
 
 :::note
 Этот параметр работает только в том случае, если включен `input_format_connection_handling`. Установка значения также отключает параллельный разбор и делает дедупликацию невозможной.
 :::
+
+:::note
+Для потоковых вставок также необходимо установить `min_insert_block_size_rows=0` и `min_insert_block_size_bytes=0`. В противном случае разобранные блоки по-прежнему могут накапливаться в памяти на этапе укрупнения блоков до достижения этих порогов, что препятствует своевременным вставкам.
+:::
+
+**Пример: потоковая загрузка последних изменений Википедии в ClickHouse**
+
+```bash
+clickhouse-client --query 'CREATE TABLE wikipedia_edits (data JSON)'
+
+curl -sS --globoff -H 'Accept: application/json' --no-buffer \
+  'https://stream.wikimedia.org/v2/stream/recentchange' \
+  | clickhouse-client \
+      --query 'INSERT INTO wikipedia_edits FORMAT JSONAsObject' \
+      --input_format_max_block_wait_ms 1000 \
+      --input_format_connection_handling 1 \
+      --min_insert_block_size_rows 0 \
+      --min_insert_block_size_bytes 0
+```
+
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -2475,6 +2495,14 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 Использовать оператор REPLACE вместо INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка для удаления конечных нулевых байтов из значений FixedString в текстовых форматах вывода"}]}]} />
+
+Удаляет конечные нулевые байты из значений FixedString в текстовых форматах вывода. Например, `toFixedString('John', 8)` выводится как `John` вместо `John\0\0\0\0`.
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2567,9 +2595,9 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Когда настройка включена, допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
+При включении допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
 
 ## type_json_skip_duplicated_paths \{#type_json_skip_duplicated_paths\}
 

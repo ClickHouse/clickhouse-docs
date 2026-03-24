@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigest \{#quantileTDigest\}
 
-도입 버전: v1.1
+도입 버전: v1.1.0
 
 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 알고리즘을 사용하여 숫자 데이터 시퀀스의 [분위수(quantile)](https://en.wikipedia.org/wiki/Quantile)를 근사적으로 계산합니다.
 

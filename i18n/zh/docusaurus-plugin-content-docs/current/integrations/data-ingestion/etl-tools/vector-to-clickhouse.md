@@ -23,7 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 实时分析日志对于生产应用程序至关重要。
-ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出色的压缩能力（日志压缩率可达 [170 倍](https://clickhouse.com/blog/log-compression-170x)）以及快速聚合海量数据的能力。
+ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出色的压缩能力 (日志压缩率可达 [170 倍](https://clickhouse.com/blog/log-compression-170x)) 以及快速聚合海量数据的能力。
 
 本指南将介绍如何使用流行的数据管道工具 [Vector](https://vector.dev/docs/about/what-is-vector/) 来跟踪 Nginx 日志文件并将其发送到 ClickHouse。
 以下步骤同样适用于跟踪任何类型的日志文件。
@@ -55,7 +55,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
   ```
 
   :::note
-  由于目前尚不需要主键，因此将 **ORDER BY** 设置为 **tuple()**（空元组）。
+  由于目前尚不需要主键，因此将 **ORDER BY** 设置为 **tuple()** (空元组) 。
   :::
 
   ## 配置 Nginx \{#2--configure-nginx\}
@@ -89,10 +89,10 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
 
   ## 配置 Vector \{#3-configure-vector\}
 
-  Vector 可以收集、转换和路由日志、指标和追踪数据(称为 **sources**)到多个不同的供应商(称为 **sinks**)中,包括开箱即用地兼容 ClickHouse。
+  Vector 可以收集、转换和路由日志、指标和链路追踪数据(称为 **sources**)到多个不同的供应商(称为 **sinks**)中,包括开箱即用地兼容 ClickHouse。
   Sources 和 sinks 在名为 **vector.toml** 的配置文件中定义。
 
-  1. 下面的 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，它会以尾部跟踪（tail）的方式读取 **my&#95;access.log** 文件末尾的新内容，同时还定义了一个 **sink**，将数据写入上面定义的 **access&#95;logs** 表：
+  1. 下面的 **vector.toml** 文件定义了一个类型为 **file** 的 **source**，它会以尾部跟踪 (tail) 的方式读取 **my&#95;access.log** 文件末尾的新内容，同时还定义了一个 **sink**，将数据写入上面定义的 **access&#95;logs** 表：
 
   ```bash
   [sources.nginx_logs]
@@ -125,8 +125,8 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
   接下来我们将介绍如何使用 [materialized view](/materialized-view/incremental-materialized-view) 来解析日志事件。
 
   **物化视图**的作用类似于 SQL 中的插入触发器。当数据行被插入到源表时，物化视图会对这些行进行转换，并将结果插入到目标表中。
-  The materialized view can be configured to configure a parsed representation of the log events in **access&#95;logs**.
-  An example of one such log event is shown below:
+  可以配置 materialized view，以对 **access&#95;logs** 中的日志事件生成解析后的结构化表示。
+  以下是其中一条日志事件的示例：
 
   ```bash
   192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -167,8 +167,8 @@ ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出
   SELECT trim(LEADING '"' FROM '"GET')
   ```
 
-  时间字符串开头有一个左方括号,而且其格式也不是 ClickHouse 能够解析为日期的格式。
-  但是,如果我们把分隔符从冒号(**:**)改成逗号(**,**),那么就可以顺利完成解析:
+  时间字符串开头有一个 `[`，而且其格式也不是 ClickHouse 能够解析为日期的格式。
+  但是，如果我们把分隔符从冒号(**:**)改成逗号(**,**)，那么就可以顺利完成解析：
 
   ```sql
   SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))

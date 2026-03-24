@@ -404,8 +404,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) индекс
 - [`Set`](#set) индекс
 - [`bloom_filter`](#bloom-filter) индекс
-- [`ngrambf_v1`](#n-gram-bloom-filter) индекс
-- [`tokenbf_v1`](#token-bloom-filter) индекс
+- [`ngrambf_v1`](#n-gram-bloom-filter) индекс *(Устарело)*
+- [`tokenbf_v1`](#token-bloom-filter) индекс *(Устарело)*
 - [`text`](#text) индекс
 - [`vector_similarity`](#vector-similarity) индекс
 
@@ -458,7 +458,13 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-граммный фильтр Блума \{#n-gram-bloom-filter\}
+#### N-граммный фильтр Блума *(Устаревший)* \{#n-gram-bloom-filter\}
+
+:::note
+С момента, когда индекс `text` стал общедоступным (GA), начиная с версии ClickHouse 26.2, индекс `ngrambf_v1` больше не рекомендуется для полнотекстового поиска.
+
+Подробности см. на странице [&quot;Полнотекстовый поиск с текстовыми индексами&quot;](./textindexes.md).
+:::
 
 Каждая гранула индекса хранит [фильтр Блума](https://en.wikipedia.org/wiki/Bloom_filter) для [n-грамм](https://en.wikipedia.org/wiki/N-gram) указанных столбцов.
 
@@ -529,7 +535,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Блум-фильтр по токенам \{#token-bloom-filter\}
 
-Блум-фильтр по токенам аналогичен `ngrambf_v1`, но хранит токены (последовательности, разделённые символами, не являющимися буквенно-цифровыми), а не n-граммы.
+:::note
+С момента общей доступности (GA) индекса `text`, начиная с версии ClickHouse 26.2, индекс `tokenbf_v1` больше не рекомендуется для полнотекстового поиска.
+
+См. страницу [&quot;Full-text search with text indexes&quot;](./textindexes.md) для подробностей.
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -562,15 +572,15 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | Функция (оператор) / Индекс                                                                                               | первичный ключ | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | текст |
 | ------------------------------------------------------------------------------------------------------------------------- | -------------- | ------ | -------------- | -------------- | ---------------- | ---------------- | ----- |
 | [равно (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✗     |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✗     |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗              | ✗      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗              | ✗      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗              | ✗      | ✔              | ✗              | ✗                | ✗                | ✗     |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✗     |
 | [меньше (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                    | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [больше (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [меньше или равно (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
@@ -586,6 +596,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗              | ✗      | ✗              | ✔              | ✗                | ✗                | ✗     |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
@@ -1156,13 +1167,11 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 - `_block_offset` — Исходный номер строки в блоке, который был назначен при вставке и сохраняется при слияниях, когда включена настройка `enable_block_offset_column`.
 - `_disk_name` — Имя диска, на котором хранятся данные.
 
-## Статистика по столбцам \{#column-statistics\}
+## Статистика столбцов \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-Объявление статистики задаётся в секции `COLUMNS` запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
+Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*`:
 
 ```sql
 CREATE TABLE tab
@@ -1174,16 +1183,15 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-Мы также можем изменять статистику с помощью команд `ALTER`.
+Мы также можем управлять статистикой с помощью операторов `ALTER`:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-Эта лёгкая статистика агрегирует информацию о распределении значений по столбцам. Статистика хранится в каждой части и обновляется при каждой вставке.
-Её можно использовать для оптимизации `PREWHERE` только при включённой настройке `set use_statistics = 1`.
-
+Эта лёгкая статистика агрегирует информацию о распределении значений в столбцах. Статистика хранится в каждой части и обновляется при каждой вставке.
+Её можно использовать для оптимизации `prewhere` только если включить `set use_statistics = 1`.
 
 ### Доступные типы статистики столбцов \{#available-types-of-column-statistics\}
 

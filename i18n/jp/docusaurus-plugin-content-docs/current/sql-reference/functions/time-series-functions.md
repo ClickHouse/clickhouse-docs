@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## seriesDecomposeSTL \{#seriesDecomposeSTL\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 STL [(Seasonal-Trend Decomposition Procedure Based on Loess)](https://www.wessa.net/download/stl.pdf) を用いて時系列データを分解し、季節成分・トレンド成分・残差成分に分けます。
 
@@ -40,7 +40,7 @@ seriesDecomposeSTL(series, period)
 
 **返される値**
 
-4 つの配列から構成される配列を返します。1 つ目の配列は季節性成分、2 つ目の配列はトレンド成分、3 つ目の配列は残差成分、4 つ目の配列はベースライン（季節性 + トレンド）成分です。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
+4 つの配列から構成される配列を返します。1 つ目の配列は季節成分、2 つ目の配列はトレンド成分、3 つ目の配列は残差成分、4 つ目の配列はベースライン (季節性 + トレンド) 成分です。[`Array(Array(Float32), Array(Float32), Array(Float32), Array(Float32))`](/sql-reference/data-types/array)
 
 **例**
 
@@ -75,7 +75,7 @@ SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 
 
 ## seriesOutliersDetectTukey \{#seriesOutliersDetectTukey\}
 
-導入バージョン: v24.2
+導入バージョン: v24.2.0
 
 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) を使用して時系列データにおける外れ値を検出します。
 
@@ -110,7 +110,7 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4,
 └───────────────────────────────────┘
 ```
 
-**カスタムパラメータを用いた外れ値検出**
+**カスタムパラメータによる外れ値検出**
 
 ```sql title=Query
 SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0
@@ -124,9 +124,9 @@ SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40,
 
 ## seriesPeriodDetectFFT \{#seriesPeriodDetectFFT\}
 
-導入: v23.12
+導入: v23.12.0
 
-FFT（[高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)）を使用して、指定された時系列データの周期を検出します。
+FFT ([高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)) を使用して、指定された時系列データの周期を検出します。
 
 **構文**
 
@@ -170,9 +170,9 @@ SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS pr
 
 ## timeSeriesCopyTag \{#timeSeriesCopyTag\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
-指定したタグを、あるタググループ（`src_group`）から別のタググループ（`dest_group`）へコピーします。
+指定したタグを、あるタググループ (`src_group`) から別のタググループ (`dest_group`) へコピーします。
 この関数は、`dest_group` 内にすでに存在するコピー対象タグの値を置き換えます。
 コピー対象のタグが `src_group` に存在しない場合、この関数は `dest_group` からもそのタグを削除します。
 この関数は Prometheus の
@@ -213,9 +213,9 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesCopyTags \{#timeSeriesCopyTags\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
-指定したタグを、あるタググループ（`src_group`）から別のタググループ（`dest_group`）へコピーします。
+指定したタグを、あるタググループ (`src_group`) から別のタググループ (`dest_group`) へコピーします。
 この関数は、`dest_group` 内にあるコピー対象タグの既存の値をすべて置き換えます。
 コピー対象タグの一部が `src_group` に存在しない場合、そのタグは `dest_group` からも削除されます。
 この関数は、Prometheus の
@@ -256,7 +256,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesExtractTag \{#timeSeriesExtractTag\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 グループから指定したタグの値を抽出します。存在しない場合は NULL を返します。
 [timeSeriesGroupToTags()](/sql-reference/functions/time-series-functions#timeSeriesGroupToTags) 関数も参照してください。
@@ -295,7 +295,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesFromGrid \{#timeSeriesFromGrid\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
 値の配列 `[x1, x2, x3, ...]` をタプルの配列
 `[(start_timestamp, x1), (start_timestamp + step, x2), (start_timestamp + 2 * step, x3), ...]` に変換します。
@@ -316,7 +316,7 @@ timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)
 
 * `start_timestamp` — グリッドの開始。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — グリッドの終了。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — グリッドの間隔（秒単位）。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
+* `step` — グリッドの間隔 (秒単位) 。[`Decimal64`](/sql-reference/data-types/decimal) または [`Decimal32`](/sql-reference/data-types/decimal) または [`UInt32/64`](/sql-reference/data-types/int-uint)
 * `values` — 値の配列。[`Array(Float*)`](/sql-reference/data-types/array) または [`Array(Nullable(Float*))`](/sql-reference/data-types/array)
 
 **戻り値**
@@ -339,7 +339,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 指定したグループに関連付けられているタグの名前および値を返します。
 関数 [timeSeriesTagsToGroup()](/sql-reference/functions/time-series-functions#timeSeriesTagsToGroup) も参照してください。
@@ -381,7 +381,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesIdToGroup \{#timeSeriesIdToGroup\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 指定した時系列 ID に関連付けられたタグの名前と値を返します。
 関数 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags) も参照してください。
@@ -422,7 +422,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesIdToTags \{#timeSeriesIdToTags\}
 
-導入: v25.8
+導入: v25.8.0
 
 指定した時系列識別子に対応するタグを返します。
 [timeSeriesStoreTags()](/sql-reference/functions/time-series-functions#timeSeriesStoreTags) 関数も参照してください。
@@ -462,7 +462,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesJoinTags \{#timeSeriesJoinTags\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 タググループから抽出した、指定したタグの値を結合します。
 この関数は、結合した値の間にセパレータを挿入し、タグ `dest_tag` に結合後の値が設定された新しいタググループを返します。
@@ -505,9 +505,9 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('src1'
 
 ## timeSeriesRange \{#timeSeriesRange\}
 
-導入バージョン: v25.8
+導入バージョン: v25.8.0
 
-タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を生成します。
+タイムスタンプの範囲 [start&#95;timestamp, start&#95;timestamp + step, start&#95;timestamp + 2 * step, ..., end&#95;timestamp] を生成します。
 
 `start_timestamp` が `end_timestamp` と等しい場合、この関数は `[start_timestamp]` を含む 1 要素の配列を返します。
 
@@ -523,7 +523,7 @@ timeSeriesRange(start_timestamp, end_timestamp, step)
 
 * `start_timestamp` — 範囲の開始。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
 * `end_timestamp` — 範囲の終了。[`DateTime64`](/sql-reference/data-types/datetime64) または [`DateTime`](/sql-reference/data-types/datetime) または [`UInt32`](/sql-reference/data-types/int-uint)
-* `step` — 範囲のステップ（秒単位）。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
+* `step` — 範囲のステップ (秒単位) 。[`UInt32/64`](/sql-reference/data-types/int-uint) または [`Decimal32/64`](/sql-reference/data-types/decimal)
 
 **戻り値**
 
@@ -545,7 +545,7 @@ SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:0
 
 ## timeSeriesRemoveAllTagsExcept \{#timeSeriesRemoveAllTagsExcept\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 タググループから、指定したタグ以外のすべてのタグを削除します。
 関数 [timeSeriesRemoveTag()](/sql-reference/functions/time-series-functions#timeSeriesRemoveTag)、
@@ -584,7 +584,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTag \{#timeSeriesRemoveTag\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 指定したタグをタググループから削除します。
 グループ内にそのタグが存在しない場合、グループは変更されずに返されます。
@@ -628,7 +628,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesRemoveTags \{#timeSeriesRemoveTags\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 タグの集合から、指定されたタグを削除します。
 指定されたタグの一部がタグの集合に存在しない場合、それらのタグは無視されます。
@@ -670,7 +670,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesReplaceTag \{#timeSeriesReplaceTag\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 タグ `src_tag` の値に対して正規表現 `regex` を適用して照合します。
 マッチした場合、返されるグループ内のタグ `dest_tag` の値は、
@@ -715,7 +715,7 @@ SELECT timeSeriesTagsToGroup([('__name__', 'up'), ('job', 'api-server'), ('servi
 
 ## timeSeriesStoreTags \{#timeSeriesStoreTags\}
 
-導入: v25.8
+導入: v25.8.0
 
 クエリコンテキスト内に、タイムシリーズの指定された識別子とタグのセットとの対応付けを保存します。
 [timeSeriesIdToTags()](/sql-reference/functions/time-series-functions#timeSeriesIdToTags)
@@ -737,7 +737,7 @@ timeSeriesStoreTags(id, tags_array, separate_tag_name_1, separate_tag_value_1, .
 
 **返される値**
 
-時系列の識別子を返します（つまり、最初の引数をそのまま返します）。
+時系列の識別子を返します (つまり、最初の引数をそのまま返します) 。
 
 **使用例**
 
@@ -759,7 +759,7 @@ SELECT 8374283493092 AS id,
 
 ## timeSeriesTagsToGroup \{#timeSeriesTagsToGroup\}
 
-導入バージョン: v26.1
+導入バージョン: v26.1.0
 
 指定したタグに対応するタググループを返します。
 同じタググループがクエリ実行中に複数回見つかった場合、この関数は同じグループを返します。
@@ -803,7 +803,7 @@ SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'ht
 
 ## timeSeriesThrowDuplicateSeriesIf \{#timeSeriesThrowDuplicateSeriesIf\}
 
-導入バージョン: v26.2
+導入バージョン: v26.2.0
 
 `condition` を評価し、true の場合は次のメッセージで例外をスローします：
 `Multiple series have the same tags <tags>, duplicate series in the same result set are not allowed`。
