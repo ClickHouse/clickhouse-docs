@@ -309,13 +309,13 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 
 Both the mutation and subsequent `SELECT` queries need the `apply_mutations_on_fly = 1` setting enabled. The mutation conditions are stored in ClickHouse Keeper, which keeps everything in memory, and applied on-the-fly during queries.
 
-Note that a mutation is still used to update the data—it is just not materialized immediately. The mutation will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a regular mutation. The expressions that can be used with this operation are also limited (see [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
+Note that a mutation is still used to update the data—it is just not materialized immediately. The mutation will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a regular mutation. The expressions that can be used with this operation are also limited (see [details](#support-for-subqueries-and-non-deterministic-functions)).
 
 :::warning
 On-the-fly mutations should only be used for a small number of operations—perhaps a few dozen at most. Keeper stores conditions in memory, so excessive use impacts cluster stability. Heavy Keeper load can cause session timeouts that affect unrelated tables.
 :::
 
-Read more: [On-the-fly mutations](/guides/developer/on-the-fly-mutations)
+Read more: [On-the-fly mutations](#on-the-fly-mutations)
 
 ## Comparison summary {#comparison-summary}
 
@@ -324,7 +324,7 @@ The following table summarizes query performance overhead based on [benchmarks](
 | Method | Query slowdown | Memory overhead | Notes |
 |--------|----------------|-----------------|-------|
 | [Mutations](/sql-reference/statements/alter/update) | Baseline | Baseline | Full speed after completion; data physically rewritten |
-| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | Variable | Variable | Instant visibility; performance degrades if many updates accumulate |
+| [On-the-fly mutations](#on-the-fly-mutations) | Variable | Variable | Instant visibility; performance degrades if many updates accumulate |
 | [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18% (avg ~12%) | +20–210% | Most efficient for queries; best for updating ≤10% of table |
 | [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550% (avg ~280%) | 20–200× baseline | Must read all row versions; heaviest query overhead |
 | [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | Similar to ReplacingMergeTree | Similar to ReplacingMergeTree | Column-level coalescing adds comparable overhead |
