@@ -1058,7 +1058,7 @@ Go contexts provide a means of passing deadlines, cancellation signals, and othe
 
 Passing a context created `withDeadline` allows execution time limits to be placed on queries. Note this is an absolute time and expiry will only release the connection and send a cancel signal to ClickHouse. `WithCancel` can alternatively be used to cancel a query explicitly.
 
-The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management ](/operations/access-rights#quotas-management)for further details.
+The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management](/operations/access-rights#quotas-management) for further details.
 
 You can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](#connection-settings).
 
