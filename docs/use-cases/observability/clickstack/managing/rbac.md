@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/rbac
-title: 'Role-Based Access Control (RBAC)'
-sidebar_label: 'Role-Based Access Control'
+title: 'Role-based access control (RBAC)'
+sidebar_label: 'Role-based access control'
 toc_max_heading_level: 2
 pagination_prev: null
 pagination_next: null
