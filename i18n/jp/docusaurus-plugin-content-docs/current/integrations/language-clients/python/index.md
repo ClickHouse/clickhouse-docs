@@ -16,6 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
+
 # Introduction \{#introduction\}
 
 ClickHouse Connect は、幅広い Python アプリケーションとの相互運用性を提供する中核となるデータベースドライバーです。

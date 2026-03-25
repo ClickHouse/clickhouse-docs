@@ -4,7 +4,7 @@ title: '원격 데모 데이터셋'
 sidebar_position: 2
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack과 원격 데모 데이터셋으로 시작하기'
+description: 'ClickStack과 원격 데모 데이터셋 시작 가이드'
 doc_type: 'guide'
 keywords: ['clickstack', '예제 데이터', '샘플 데이터셋', '로그', '관측성']
 ---

@@ -1,5 +1,5 @@
 ---
-title: 'Конфигурация DataStore'
+title: 'Настройка DataStore'
 sidebar_label: 'Обзор'
 slug: /chdb/configuration
 description: 'Настройка движка выполнения DataStore, логирования, кэширования и профилирования'

@@ -1,9 +1,9 @@
 ---
 title: 'SQL для пользователей pandas'
-sidebar_label: 'Сопоставление с SQL'
+sidebar_label: 'Соответствие SQL'
 slug: /chdb/guides/pandas-to-sql
 description: 'Понимание того, как операции pandas сопоставляются с SQL в DataStore'
-keywords: ['chdb', 'datastore', 'pandas', 'sql', 'сопоставление', 'запрос']
+keywords: ['chdb', 'datastore', 'pandas', 'sql', 'соответствие', 'запрос']
 doc_type: 'guide'
 ---
 

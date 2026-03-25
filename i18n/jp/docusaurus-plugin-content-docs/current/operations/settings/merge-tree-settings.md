@@ -98,6 +98,17 @@ true に設定されている場合、CollapsingMergeTree または VersionedCol
 有効化すると、CoalescingMergeTree テーブルの coalescing カラムを
 パーティションキーまたはソートキーとして使用できるようになります。
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "New setting"}]}]} />
+
+`_block_number` および `_block_offset` 仮想カラムを格納し、マージ後も元の挿入順を保持するコミット順プロジェクションを有効にします。
+使用するには、`enable_block_number_column` と `enable_block_offset_column` を有効にする必要があります。
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>

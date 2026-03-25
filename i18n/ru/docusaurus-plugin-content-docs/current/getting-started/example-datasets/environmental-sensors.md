@@ -31,6 +31,7 @@ SETTINGS format_csv_delimiter = ';';
 
 Данные хранятся в CSV-файлах, но в качестве разделителя используется точка с запятой. Строки имеют следующий вид:
 
+
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │

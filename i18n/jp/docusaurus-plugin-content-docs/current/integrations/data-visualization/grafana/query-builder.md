@@ -5,7 +5,7 @@ slug: /integrations/grafana/query-builder
 description: 'ClickHouse Grafana プラグインでクエリビルダーを使用する方法'
 title: 'クエリビルダー'
 doc_type: 'guide'
-keywords: ['grafana', 'クエリビルダー', '可視化', 'ダッシュボード', 'プラグイン']
+keywords: ['grafana', 'クエリビルダー', 'ビジュアライゼーション', 'ダッシュボード', 'プラグイン']
 integration:
   - support_level: 'core'
   - category: 'data_visualization'
@@ -26,20 +26,20 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # クエリビルダー \{#query-builder\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 任意のクエリは ClickHouse プラグインで実行できます。
-クエリビルダーはシンプルなクエリに便利なオプションですが、複雑なクエリについては [SQL Editor](#sql-editor) を使用する必要があります。
+クエリビルダーはシンプルなクエリに便利なオプションですが、複雑なクエリについては [SQL エディタ](#sql-editor) を使用する必要があります。
 
 クエリビルダー内のすべてのクエリには [クエリタイプ](#query-types) があり、少なくとも 1 つのカラムを選択する必要があります。
 
 利用可能なクエリタイプは次のとおりです:
 
-- [Table](#table): データをテーブル形式で表示するための最も単純なクエリタイプです。集約関数を含むシンプルおよび複雑なクエリの両方に対する汎用的な選択肢として適しています。
-- [Logs](#logs): ログ用のクエリを構築するために最適化されています。[デフォルトが設定された](./config.md#logs) Explore ビューで最も効果的に機能します。
-- [Time Series](#time-series): 時系列クエリを構築する際に最適です。専用の時間カラムの選択と集約関数の追加が可能です。
-- [Traces](#traces): トレースの検索・閲覧向けに最適化されています。[デフォルトが設定された](./config.md#traces) Explore ビューで最も効果的に機能します。
-- [SQL Editor](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
+* [Table](#table): データをテーブル形式で表示するための最も単純なクエリタイプです。集約関数を含むシンプルおよび複雑なクエリの両方に対する汎用的な選択肢として適しています。
+* [ログ](#logs): ログ用のクエリを構築するために最適化されています。[デフォルトが設定された](./config.md#logs) Explore ビューで最も効果的に機能します。
+* [Time Series](#time-series): 時系列クエリを構築する際に最適です。専用の時間カラムの選択と集約関数の追加が可能です。
+* [トレース](#traces): トレースの検索・閲覧向けに最適化されています。[デフォルトが設定された](./config.md#traces) Explore ビューで最も効果的に機能します。
+* [SQL エディタ](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
 
 ## クエリタイプ \{#query-types\}
 

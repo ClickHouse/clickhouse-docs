@@ -2,7 +2,7 @@
 title: 'DataStore 调试'
 sidebar_label: '概览'
 slug: /chdb/debugging
-description: '借助 explain()、性能分析和日志对 DataStore 操作进行调试'
+description: '借助 explain()、性能分析和日志配置对 DataStore 操作进行调试'
 keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---

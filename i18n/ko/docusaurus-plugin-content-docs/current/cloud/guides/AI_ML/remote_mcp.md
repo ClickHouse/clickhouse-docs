@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
 sidebar_label: '원격 MCP 서버 활성화'
-title: 'ClickHouse Cloud Remote MCP Server 활성화 및 연결'
+title: 'ClickHouse Cloud 원격 MCP 서버 활성화 및 연결'
 pagination_prev: null
 pagination_next: null
 description: '이 가이드에서는 ClickHouse Cloud Remote MCP를 활성화하고 사용하는 방법을 설명합니다'
@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-이 가이드에서는 ClickHouse Cloud Remote MCP Server를 활성화하고, 일반적인 개발자 도구에서 사용할 수 있도록 설정하는 방법을 설명합니다.
+이 가이드에서는 ClickHouse Cloud 원격 MCP 서버를 활성화하고, 일반적인 개발자 도구에서 사용할 수 있도록 설정하는 방법을 설명합니다.
 
 **사전 요구 사항**
 
@@ -153,6 +153,54 @@ CLI를 사용해 ClickHouse Cloud MCP 서버를 추가하려면 다음 명령을
 codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
 ```
 
+
+## 예시 사용 \{#example-usage\}
+
+연결되면 자연어 프롬프트로 ClickHouse Cloud와 상호작용할 수 있습니다.
+다음은 일반적인 워크플로와 그 과정에서 MCP 클라이언트가 백그라운드에서 호출하는 도구입니다.
+사용 가능한 도구의 전체 목록은 [도구 참조](/cloud/features/ai-ml/remote-mcp#available-tools)를 참조하십시오.
+
+### 데이터 살펴보기 \{#exploring-data\}
+
+먼저 무엇을 사용할 수 있는지 확인합니다:
+
+| 프롬프트                                          | 호출되는 도구                      |
+| --------------------------------------------- | ---------------------------- |
+| &quot;액세스할 수 있는 조직은 무엇인가요?&quot;              | `get_organizations`          |
+| &quot;내 서비스에서 사용할 수 있는 데이터베이스는 무엇인가요?&quot;   | `list_databases`             |
+| &quot;`default` 데이터베이스의 테이블을 보여주세요&quot;      | `list_tables`                |
+| &quot;이름이 `events_`로 시작하는 모든 테이블을 나열하세요&quot; | `list_tables` (`like` 필터 사용) |
+
+### 분석 쿼리 실행 \{#running-queries\}
+
+자연어로 질문하면 에이전트가 이를 SQL로 변환합니다:
+
+| 프롬프트                                                 | 호출된 도구             |
+| ---------------------------------------------------- | ------------------ |
+| &quot;`hits` 테이블의 상위 10개 행을 보여주세요&quot;              | `run_select_query` |
+| &quot;지난 7일간 국가별 평균 세션 지속 시간은 얼마입니까?&quot;           | `run_select_query` |
+| &quot;`analytics` 데이터베이스의 각 테이블에는 행이 몇 개 있습니까?&quot; | `run_select_query` |
+
+`run_select_query` 도구는 `SELECT` SQL 문만 허용합니다. 모든 쿼리는 읽기 전용입니다.
+
+### 서비스 및 인프라 관리 \{#managing-services\}
+
+ClickHouse Cloud 리소스를 한눈에 파악합니다:
+
+| 프롬프트                                    | 호출되는 도구                       |
+| ----------------------------------------- | ---------------------------------- |
+| &quot;내 서비스 목록을 보여 주세요&quot;              | `get_services_list`                |
+| &quot;운영 중인 서비스의 상태는 무엇인가요?&quot;         | `get_service_details`              |
+| &quot;이 서비스의 백업 일정을 보여 주세요&quot;          | `get_service_backup_configuration` |
+| &quot;최근 백업 목록을 보여 주세요&quot;              | `list_service_backups`             |
+| &quot;이 서비스에 구성된 ClickPipes는 무엇인가요?&quot; | `list_clickpipes`                  |
+
+### 모니터링 비용 \{#monitoring-costs\}
+
+| 프롬프트                                       | 호출되는 도구                                              |
+| ------------------------------------------ | ---------------------------------------------------- |
+| &quot;지난주 우리 조직의 비용은 얼마였나요?&quot;          | `get_organization_cost`                              |
+| &quot;3월 1일부터 3월 15일까지의 일별 비용을 보여주세요&quot; | `get_organization_cost` (`from_date` 및 `to_date` 포함) |
 
 ## 관련 콘텐츠 \{#related-content\}
 

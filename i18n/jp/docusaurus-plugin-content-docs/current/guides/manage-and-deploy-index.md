@@ -1,6 +1,6 @@
 ---
-title: '管理とデプロイメントの概要'
-description: 'Manage and Deploy の概要ページ'
+title: '管理とデプロイの概要'
+description: '管理とデプロイ の概要ページ'
 slug: /guides/manage-and-deploy-index
 doc_type: 'landing-page'
 keywords: ['デプロイメント', '管理', '運用管理', '運用', 'ガイド']

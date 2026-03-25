@@ -1,6 +1,6 @@
 ---
-title: 'Повторная синхронизация конкретных таблиц'
-description: 'Повторная синхронизация отдельных таблиц в ClickPipe для MySQL'
+title: 'Повторная синхронизация отдельных таблиц'
+description: 'Повторная синхронизация отдельных таблиц в MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'Повторная синхронизация таблицы'
 doc_type: 'guide'

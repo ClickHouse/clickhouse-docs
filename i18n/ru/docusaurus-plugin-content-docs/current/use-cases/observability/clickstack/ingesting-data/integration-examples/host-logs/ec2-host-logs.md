@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs/ec2
-title: 'Мониторинг журналов хоста EC2 с помощью ClickStack'
-sidebar_label: 'Журналы хоста EC2'
+title: 'Мониторинг логов хоста EC2 с помощью ClickStack'
+sidebar_label: 'Логи хоста EC2'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов хоста EC2 с помощью ClickStack'
+description: 'Мониторинг логов хоста EC2 с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['EC2', 'AWS', 'журналы хоста', 'systemd', 'syslog', 'OTel', 'ClickStack', 'мониторинг системы', 'облачные метаданные']
+keywords: ['EC2', 'AWS', 'логи хоста', 'systemd', 'syslog', 'OTel', 'ClickStack', 'мониторинг системы', 'облачные метаданные']
 ---
 
 import Image from '@theme/IdealImage';

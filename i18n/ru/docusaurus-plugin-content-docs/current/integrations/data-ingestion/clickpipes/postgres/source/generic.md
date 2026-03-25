@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Универсальный Postgres'
+sidebar_label: 'Общий Postgres'
 description: 'Настройка любого экземпляра Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/generic
-title: 'Руководство по настройке универсального источника Postgres'
+title: 'Общее руководство по настройке источника Postgres'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 integration:

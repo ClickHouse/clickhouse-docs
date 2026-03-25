@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon RDS Postgres'
 description: 'Настройка Amazon RDS Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'Руководство по настройке источника RDS Postgres'
+title: 'руководство по настройке источника данных RDS Postgres'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 integration:
@@ -18,7 +18,6 @@ import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpip
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
-
 
 # Руководство по настройке источника данных RDS Postgres \{#rds-postgres-source-setup-guide\}
 

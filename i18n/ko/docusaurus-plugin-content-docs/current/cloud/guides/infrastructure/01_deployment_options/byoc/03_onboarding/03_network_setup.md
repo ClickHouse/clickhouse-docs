@@ -15,7 +15,7 @@ import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_privatelink_1 from '@site/static/images/cloud/reference/byoc-privatelink-1.png';
 import byoc_privatelink_2 from '@site/static/images/cloud/reference/byoc-privatelink-2.png';
 
-ClickHouse BYOC는 다양한 프라이빗 네트워크 옵션을 지원하여 보안을 강화하고 서비스 간 직접 연결을 가능하게 합니다. 이 가이드는 자체 AWS 또는 GCP 계정에 있는 ClickHouse Cloud 배포를 내부 애플리케이션이나 분석 도구와 같은 다른 네트워크나 서비스에 안전하게 연결하는 데 권장되는 방법을 안내합니다. VPC Peering, AWS PrivateLink, GCP Private Service Connect와 같은 옵션을 다루며, 각 옵션에 대한 주요 단계와 고려 사항을 개략적으로 설명합니다.
+ClickHouse BYOC는 다양한 프라이빗 네트워크 옵션을 지원하여 보안을 강화하고 서비스 간 직접 연결을 가능하게 합니다. 이 가이드는 자체 AWS 또는 GCP 계정에 있는 ClickHouse Cloud 배포를 내부 애플리케이션이나 분석 도구와 같은 다른 네트워크나 서비스에 안전하게 연결하는 데 권장되는 방법을 안내합니다. VPC 피어링, AWS PrivateLink, GCP Private Service Connect와 같은 옵션을 다루며, 각 옵션에 대한 주요 단계와 고려 사항을 개략적으로 설명합니다.
 
 ClickHouse BYOC 배포에 프라이빗 네트워크 연결이 필요한 경우, 이 가이드에 제시된 단계를 따르거나, 더 복잡한 시나리오에 대해서는 ClickHouse Support에 문의하십시오.
 

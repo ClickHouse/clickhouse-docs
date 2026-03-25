@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-本指南介绍如何启用 ClickHouse Cloud Remote MCP Server，并将其配置为可与常见的开发者工具配合使用。
+本指南介绍如何启用 ClickHouse Cloud 远程 MCP 服务器，并将其配置为可与常见的开发者工具配合使用。
 
 **前提条件**
 
@@ -153,6 +153,54 @@ claude
 codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
 ```
 
+
+## 示例用法 \{#example-usage\}
+
+连接完成后，您可以通过自然语言提示与 ClickHouse Cloud 交互。
+以下是一些常见工作流程，以及您的 MCP 客户端会在后台调用的工具。
+如需查看所有可用工具，请参阅[工具参考](/cloud/features/ai-ml/remote-mcp#available-tools)。
+
+### 探索您的数据 \{#exploring-data\}
+
+先查看有哪些可用内容：
+
+| 提示                                 | 调用的工具                          |
+| ---------------------------------- | ------------------------------ |
+| &quot;我可以访问哪些组织？&quot;             | `get_organizations`            |
+| &quot;我的服务上有哪些可用的数据库？&quot;        | `list_databases`               |
+| &quot;显示 `default` 数据库中的表&quot;    | `list_tables`                  |
+| &quot;列出所有名称以 `events_` 开头的表&quot; | `list_tables` (使用 `like` 过滤器)  |
+
+### 运行分析查询 \{#running-queries\}
+
+用自然语言提问，agent 会将其转换为 SQL：
+
+| 提示                                     | 调用的工具              |
+| -------------------------------------- | ------------------ |
+| &quot;显示 `hits` 表中的前 10 行&quot;        | `run_select_query` |
+| &quot;过去 7 天里，按国家统计的平均会话时长是多少？&quot;   | `run_select_query` |
+| &quot;`analytics` 数据库中的每个表各有多少行？&quot; | `run_select_query` |
+
+`run_select_query` 工具仅允许 `SELECT` 语句。所有查询均为只读。
+
+### 管理服务和基础设施 \{#managing-services\}
+
+查看您的 ClickHouse Cloud 资源情况：
+
+| 提示                                  | 调用的工具                              |
+| --------------------------------- | ---------------------------------- |
+| &quot;列出我的所有服务&quot;              | `get_services_list`                |
+| &quot;我的生产服务当前状态如何？&quot;         | `get_service_details`              |
+| &quot;显示此服务的备份计划&quot;            | `get_service_backup_configuration` |
+| &quot;列出最近的备份&quot;               | `list_service_backups`             |
+| &quot;此服务上配置了哪些 ClickPipes？&quot; | `list_clickpipes`                  |
+
+### 监控成本 \{#monitoring-costs\}
+
+| 提示                                    | 调用的工具                                                 |
+| ------------------------------------- | ----------------------------------------------------- |
+| &quot;我的组织上周的成本是多少？&quot;             | `get_organization_cost`                               |
+| &quot;显示 3 月 1 日到 3 月 15 日的每日成本&quot; | `get_organization_cost` (使用 `from_date` 和 `to_date`)  |
 
 ## 相关内容 \{#related-content\}
 

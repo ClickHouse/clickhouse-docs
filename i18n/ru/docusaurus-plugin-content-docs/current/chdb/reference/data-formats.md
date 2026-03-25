@@ -13,9 +13,9 @@ doc_type: 'reference'
 Форматы вывода используются для представления результатов `SELECT` и для выполнения `INSERT` в таблицы, использующие файловое хранилище.
 Помимо форматов данных, которые поддерживает ClickHouse, chDB также поддерживает:
 
-- `ArrowTable` как формат вывода, тип — Python `pyarrow.Table`
-- `DataFrame` как формат ввода и вывода, тип — Python `pandas.DataFrame`. Примеры см. в [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- `Debug` как формат вывода (как алиас формата `CSV`), но с включенным подробным отладочным выводом из ClickHouse.
+* `ArrowTable` как формат вывода, тип — Python `pyarrow.Table`
+* `DataFrame` как формат ввода и вывода, тип — Python `pandas.DataFrame`. Примеры см. в [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+* `Debug` как формат вывода (как алиас формата `CSV`), но с включенным подробным отладочным выводом из ClickHouse.
 
 Поддерживаемые ClickHouse форматы данных:
 

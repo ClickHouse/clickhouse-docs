@@ -1,10 +1,10 @@
 ---
 title: '重新同步数据库 ClickPipe'
-description: '本文档介绍如何重新同步数据库 ClickPipe'
+description: '重新同步数据库 ClickPipe 的文档'
 slug: /integrations/clickpipes/mysql/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+keywords: ['clickpipes', 'mysql', 'CDC（变更数据捕获）', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -13,39 +13,39 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？ \{#what-mysql-resync-do\}
+### 重新同步 的作用是什么？ \{#what-mysql-resync-do\}
 
-Resync 按以下顺序执行如下操作：
+重新同步 按顺序执行以下操作：
 
-1. 删除现有的 ClickPipe，并启动一个新的 “resync” ClickPipe。这样，在你执行 resync 时，对源表结构所做的更改会被自动识别并应用。
-2. resync ClickPipe 会创建（或替换）一组新的目标表，这些表与原始表同名，但会追加 `_resync` 后缀。
-3. 对这些 `_resync` 表执行初始装载。
-4. 然后将 `_resync` 表与原始表进行交换。在交换之前，会将原始表中的软删除行转移到 `_resync` 表中。
+1. 现有的 ClickPipe 会被删除，并启动一个新的 “重新同步” ClickPipe。因此，执行重新同步时会捕获源表结构的变更。
+2. 重新同步 ClickPipe 会创建 (或替换) 一组新的目标表，这些表的名称与原始表相同，只是添加了 `_resync` 后缀。
+3. 对 `_resync` 表执行初始导入。
+4. 随后，`_resync` 表会与原始表交换。在交换之前，会先将原始表中被软删除的行转移到 `_resync` 表中。
 
-原始 ClickPipe 的所有设置都会在 resync ClickPipe 中保留。原始 ClickPipe 的统计信息会在 UI 中被清除。
+原始 ClickPipe 的所有设置都会保留在重新同步 ClickPipe 中。原始 ClickPipe 的统计信息会在 UI 中清空。
 
-### 何时需要对 ClickPipe 执行 resync \{#use-cases-mysql-resync\}
+### 重新同步 ClickPipe 的使用场景 \{#use-cases-mysql-resync\}
 
-以下是几个典型场景：
+以下是几个场景：
 
-1. 你可能需要对源表执行较大的 schema 变更，这会导致现有的 ClickPipe 出错并需要重新启动。这种情况下，可以在完成更改后直接点击 Resync。
-2. 尤其是针对 ClickHouse，你可能需要更改目标表上的 ORDER BY 键。你可以通过 Resync 将数据重新写入到具有正确排序键的新表中。
+1. 您可能需要对源表进行较大的 schema 变更，这可能会导致现有 ClickPipe 无法继续使用，从而需要重新启动。完成这些更改后，只需点击重新同步即可。
+2. 对于 ClickHouse，您可能需要更改目标表的 ORDER BY 键。您可以通过重新同步将数据重新导入到具有正确排序键的新表中。
 
 :::note
-你可以多次执行 resync，但在执行 resync 时请务必考虑对源数据库的负载影响。
+您可以多次重新同步，但请注意重新同步时对源数据库造成的负载。
 :::
 
-### Resync ClickPipe 指南 \{#guide-mysql-resync\}
+### 重新同步 ClickPipe 指南 \{#guide-mysql-resync\}
 
-1. 在 **Data Sources** 选项卡中，点击你希望进行 resync 的 MySQL ClickPipe。
+1. 在 Data Sources 选项卡中，点击要重新同步的 MySQL ClickPipe。
 2. 进入 **Settings** 选项卡。
-3. 点击 **Resync** 按钮。
+3. 点击 **重新同步** 按钮。
 
 <Image img={resync_button} border size="md" />
 
-4. 将会弹出一个确认对话框，再次点击 Resync。
-5. 前往 **Metrics** 选项卡。
-6. 大约 5 秒后（以及在页面刷新时），该 ClickPipe 的状态应为 **Setup** 或 **Snapshot**。
-7. 可以在 **Tables** 选项卡的 **Initial Load Stats** 部分监控此次 resync 的初始装载进度。
-8. 一旦初始装载完成，该 ClickPipe 会以原子方式将 `_resync` 表与原始表进行交换。在交换期间，状态会变为 **Resync**。
-9. 交换完成后，该 ClickPipe 会进入 **Running** 状态，并在启用的情况下执行 CDC（变更数据捕获）。
+4. 此时应会出现确认对话框。再次点击重新同步。
+5. 进入 **Metrics** 选项卡。
+6. 大约 5 秒后 (以及刷新页面后) ，管道状态应为 **Setup** 或 **Snapshot**。
+7. 可在 **Tables** 选项卡的 **Initial Load Stats** 部分监控重新同步的初始导入进度。
+8. 初始导入完成后，管道会以原子方式将 `_resync` 表与原始表进行交换。在交换期间，状态将显示为 **重新同步**。
+9. 交换完成后，管道将进入 **Running** 状态，并在启用时执行 CDC。

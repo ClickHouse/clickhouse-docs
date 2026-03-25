@@ -20,6 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # Мониторинг логов хоста с помощью ClickStack \{#host-logs-clickstack\}
 
 :::note[Кратко]

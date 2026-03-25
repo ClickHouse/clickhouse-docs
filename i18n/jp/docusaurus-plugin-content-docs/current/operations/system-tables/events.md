@@ -2769,6 +2769,10 @@ Compact形式にマージされたパーツの数。
 
 Wide形式にマージされたパーツの数。
 
+### MergedProjections \{#mergedprojections\}
+
+MergeTree のマージ時に、再構築ではなくマージされたプロジェクション数。
+
 ### MergedRows \{#mergedrows\}
 
 バックグラウンドマージのために読み込まれた行数です。マージ前の行数を表します。
@@ -3712,6 +3716,10 @@ ReadWriteBufferFromHTTP によって送信された HTTP リクエストの数
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 処理 (クエリやその他のタスク) スレッドで費やされた合計の実時間 (ウォールクロック時間)  (これは合計値であることに注意してください) 。
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+MergeTree のマージ中に一から再構築されたプロジェクションの数。
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

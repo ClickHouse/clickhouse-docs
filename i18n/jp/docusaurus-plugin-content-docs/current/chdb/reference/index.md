@@ -6,7 +6,7 @@ keywords: ['chdb', 'データフォーマット']
 doc_type: 'reference'
 ---
 
-| リファレンスページ       |
-|----------------------|
-| [データフォーマット](/chdb/reference/data-formats)  |
+| リファレンスページ                                   |
+| ------------------------------------------- |
+| [データフォーマット](/chdb/reference/data-formats)   |
 | [SQL リファレンス](/chdb/reference/sql-reference) |

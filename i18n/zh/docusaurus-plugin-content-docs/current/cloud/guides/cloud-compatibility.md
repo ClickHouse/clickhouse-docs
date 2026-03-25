@@ -2,7 +2,7 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud 兼容性'
 title: 'Cloud 兼容性'
-description: '本指南概述在 ClickHouse Cloud 中可预期的功能和运维特性。'
+description: '本指南从功能和运维两个层面概述在 ClickHouse Cloud 中应当预期的特性和行为。'
 keywords: ['ClickHouse Cloud', '兼容性']
 doc_type: 'guide'
 ---

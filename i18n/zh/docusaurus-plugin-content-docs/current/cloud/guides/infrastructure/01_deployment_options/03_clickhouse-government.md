@@ -1,8 +1,8 @@
 ---
-title: 'ClickHouse 政府版'
+title: 'ClickHouse Government'
 slug: /cloud/infrastructure/clickhouse-government
 keywords: ['政府', 'fips', 'fedramp', '政府云']
-description: 'ClickHouse 政府版方案概览'
+description: 'ClickHouse Government 方案概览'
 doc_type: 'reference'
 ---
 

@@ -4,7 +4,7 @@ title: '리소스 추정'
 sidebar_label: '리소스 추정'
 pagination_prev: null
 pagination_next: null
-description: '관리형 ClickStack 배포를 위한 리소스 추정 가이드'
+description: '관리형 ClickStack 배포를 위한 리소스 추정 지침'
 doc_type: 'guide'
 keywords: ['ClickStack', '리소스', '사이징', '컴퓨트', 'production', '용량 계획']
 ---

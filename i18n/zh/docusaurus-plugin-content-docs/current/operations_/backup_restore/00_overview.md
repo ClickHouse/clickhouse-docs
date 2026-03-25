@@ -1,8 +1,8 @@
 ---
-description: 'ClickHouse 备份和恢复概览'
+description: 'ClickHouse 备份与恢复概览'
 sidebar_label: '概览'
 slug: /operations/backup/overview
-title: 'ClickHouse 中的备份和恢复'
+title: 'ClickHouse 中的备份与恢复'
 doc_type: 'reference'
 ---
 
@@ -11,7 +11,7 @@ import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operati
 import AzureSettings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
 import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
-> 本节将对 ClickHouse 中的备份和恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
+> 本节将对 ClickHouse 中的备份与恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
 
 ## 介绍 \{#introduction\}

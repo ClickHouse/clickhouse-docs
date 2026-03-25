@@ -14,13 +14,13 @@ import byoc_onboarding_3 from '@site/static/images/cloud/reference/byoc-onboardi
 import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-service-1.png'
 
 
-## 什么是标准 Onboarding？ \{#what-is-standard-onboarding\}
+## 什么是标准 接入流程？ \{#what-is-standard-onboarding\}
 
-**标准 Onboarding** 是在您自己的云账号中使用 BYOC 部署 ClickHouse 的默认引导式工作流。在这种方式下，ClickHouse Cloud 会在您的 AWS 账号/GCP 项目中预配部署所需的所有核心云资源——例如 VPC、子网、安全组、Kubernetes (EKS/GKE) 集群，以及相关的 IAM 角色/服务账号。这样可以确保配置的一致性和安全性，并最大限度减少您团队所需的手动操作。
+**标准 接入流程** 是在您自己的云账户中使用 BYOC 部署 ClickHouse 的默认引导式工作流。在这种方式下，ClickHouse Cloud 会在您的 AWS 账户/GCP 项目中预配部署所需的所有核心云资源——例如 VPC、子网、安全组、Kubernetes (EKS/GKE) 集群，以及相关的 IAM 角色/服务账号。这样可以确保配置的一致性和安全性，并最大限度减少您团队所需的手动操作。
 
-使用标准 Onboarding 时，您只需提供一个专用的 AWS 账号/GCP 项目，并运行一个初始栈 (通过 CloudFormation 或 Terraform) 来创建 ClickHouse Cloud 对后续设置进行编排所需的最小 IAM 权限和信任关系。后续的所有步骤——包括基础设施预配和服务启动——都通过 ClickHouse Cloud Web 控制台进行管理。
+使用标准 接入流程 时，您只需提供一个专用的 AWS 账户/GCP 项目，并运行一个初始栈 (通过 CloudFormation 或 Terraform) 来创建 ClickHouse Cloud 对后续设置进行编排所需的最小 IAM 权限和信任关系。后续的所有步骤——包括基础设施预配和服务启动——都通过 ClickHouse Cloud Web 控制台进行管理。
 
-强烈建议客户准备一个**专用**的 AWS 账号或 GCP 项目来承载 ClickHouse BYOC 部署，以在权限和资源层面实现更好的隔离。ClickHouse 会在您的账号中部署一整套专用的云资源 (VPC、Kubernetes 集群、IAM 角色、S3 存储桶等) 。
+强烈建议客户准备一个**专用**的 AWS 账户或 GCP 项目来承载 ClickHouse BYOC 部署，以在权限和资源层面实现更好的隔离。ClickHouse 会在您的账户中部署一整套专用的云资源 (VPC、Kubernetes 集群、IAM 角色、S3 存储桶等) 。
 
 如果您需要更加定制化的设置 (例如部署到一个已有的 VPC 中) ，请参考 [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) 文档。
 

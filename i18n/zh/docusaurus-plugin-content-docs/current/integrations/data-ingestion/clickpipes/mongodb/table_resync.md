@@ -1,6 +1,6 @@
 ---
-title: '重新同步指定表'
-description: '在 MongoDB ClickPipe 中重新同步指定的表'
+title: '重新同步特定表'
+description: '在 MongoDB ClickPipe 中重新同步特定表'
 slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: '重新同步表'
 doc_type: 'guide'

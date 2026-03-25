@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/local-mode-only
-title: '로컬 모드만 사용'
+title: '로컬 모드 전용'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5

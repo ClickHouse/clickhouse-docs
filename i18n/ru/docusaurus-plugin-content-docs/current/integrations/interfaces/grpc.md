@@ -1,9 +1,9 @@
 ---
 description: 'Документация по интерфейсу gRPC в ClickHouse'
-sidebar_label: 'Интерфейс gRPC'
+sidebar_label: 'интерфейс gRPC'
 sidebar_position: 25
 slug: /interfaces/grpc
-title: 'Интерфейс gRPC'
+title: 'интерфейс gRPC'
 doc_type: 'reference'
 ---
 

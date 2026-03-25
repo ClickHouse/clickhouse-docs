@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 **ClickStack Open Source**를 배포하여 ClickHouse와 ClickStack UI를 직접 실행하고 관리하려는 경우, UI, OpenTelemetry collector, ClickHouse를 하나의 컨테이너로 번들링한 미리 빌드된 Docker 이미지를 제공합니다. 이를 통해 로컬 개발, 테스트, 자가 관리형 배포를 손쉽게 시작할 수 있습니다.
 
-이 이미지는 공식 ClickHouse Debian 패키지를 기반으로 하며, 다양한 사용 사례에 맞게 여러 가지 배포 형태로 제공됩니다.
+이 이미지는 공식 ClickHouse Debian 패키지를 기반으로 하며, 다양한 사용 사례에 맞게 여러 가지 배포본으로 제공됩니다.
 
 가장 간단한 옵션은 스택의 모든 핵심 구성 요소가 함께 번들된 **단일 이미지 배포본**입니다.
 
@@ -34,7 +34,7 @@ import TabItem from '@theme/TabItem';
 * **OpenTelemetry (OTel) collector**
 * **ClickHouse**
 
-이 올인원 이미지를 사용하면 단일 명령으로 전체 스택을 실행할 수 있으므로, 테스트, 실험 또는 빠른 로컬 배포에 이상적입니다.
+이 All in one 이미지를 사용하면 단일 명령으로 전체 스택을 실행할 수 있으므로, 테스트, 실험 또는 빠른 로컬 배포에 이상적입니다.
 
 
 <VerticalStepper headerLevel="h2">
