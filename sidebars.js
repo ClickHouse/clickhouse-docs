@@ -526,7 +526,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Data Lakes',
+      label: 'Data lakes',
       collapsed: false,
       collapsible: false,
       link: { type: 'doc', id: 'sql-reference/datalakes' },
@@ -537,7 +537,7 @@ const sidebars = {
   integrations: [
     {
       type: 'category',
-      label: 'All Integrations',
+      label: 'All integrations',
       link: {
         type: 'doc',
         id: 'integrations/index',
@@ -552,7 +552,22 @@ const sidebars = {
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
         'integrations/language-clients/cpp',
-        'integrations/language-clients/go/index',
+        {
+          type: 'category',
+          label: 'Go',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/language-clients/go/index',
+          },
+          items: [
+            'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/clickhouse-api',
+            'integrations/language-clients/go/database-sql-api',
+            'integrations/language-clients/go/data-types',
+          ],
+        },
         'integrations/language-clients/js',
         {
           type: 'category',
@@ -603,7 +618,7 @@ const sidebars = {
         'integrations/language-clients/csharp',
         {
           type: 'category',
-          label: 'Third-party Clients',
+          label: 'Third-party clients',
           collapsed: true,
           collapsible: true,
           items: [
@@ -622,7 +637,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'ClickPipes for Object Storage',
+          label: 'ClickPipes for object storage',
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
@@ -839,7 +854,7 @@ const sidebars = {
         'interfaces/cli',
         {
           type: 'category',
-          label: 'Drivers and Interfaces',
+          label: 'Drivers and interfaces',
           collapsed: true,
           collapsible: true,
           link: { type: 'doc', id: 'integrations/interfaces/overview' },
@@ -1149,6 +1164,7 @@ const sidebars = {
             id: 'integrations/tools/data-integration/index',
           },
           items: [
+            'integrations/tools/data-integration/middleware/index',
             'integrations/tools/data-integration/retool/index',
             'integrations/tools/data-integration/easypanel/index',
             'integrations/tools/data-integration/splunk/index',
@@ -1178,7 +1194,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'interfaces/third-party/integrations',
-              label: 'Third-party Libraries',
+              label: 'Third-party libraries',
             },
           ],
         },
@@ -1210,12 +1226,6 @@ const sidebars = {
       link: { type: 'doc', id: 'managing-data/updating-data/index' },
       items: [
         'managing-data/updating-data/overview',
-        'managing-data/updating-data/update_mutations',
-        {
-          type: 'doc',
-          label: 'Lightweight updates',
-          id: 'guides/developer/on-fly-mutations',
-        },
         {
           type: 'doc',
           label: 'ReplacingMergeTree',
@@ -1678,7 +1688,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'For pandas Users',
+          label: 'For pandas users',
           collapsed: true,
           collapsible: true,
           items: [
@@ -1794,7 +1804,7 @@ const sidebars = {
         },
         {
           type: 'link',
-          label: 'chDB Intro Video',
+          label: 'chDB intro video',
           href: 'https://www.youtube.com/watch?v=e_yL0dlX6k4',
         },
         {
@@ -1860,7 +1870,7 @@ const sidebars = {
           items: [
             {
               type: 'category',
-              label: 'Open Source',
+              label: 'Open source',
               collapsed: true,
               collapsible: true,
               link: {

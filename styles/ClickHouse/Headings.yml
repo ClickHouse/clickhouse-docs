@@ -1,7 +1,7 @@
 extends: capitalization
 message: "'%s' should use sentence-style capitalization."
 link: "https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings"
-level: warning
+level: error
 scope: heading
 match: $sentence
 indicators:
@@ -15,6 +15,7 @@ exceptions:
   - API
   - ANN
   - APPEND
+  - "Date/Time"
   - DELETE FROM
   - ALTER DELETE
   - DROP PARTITION
@@ -26,8 +27,11 @@ exceptions:
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
+  - "ClickHouse Assistant"
   - Azure
   - Azure Blob Storage
+  - Azure Data Factory
+  - "Apache Beam"
   - Azure Event Hubs
   - B2B
   - BigQuery
@@ -96,9 +100,13 @@ exceptions:
   - LZ4
   - Linux
   - MERGETREE
+  - "AWS Marketplace"
+  - "Azure Marketplace"
+  - "GCP Marketplace"
   - Microsoft
   - Middle East
   - MongoDB
+  - "React Native"
   - NPM
   - NodeJS
   - NodeJs
@@ -109,7 +117,10 @@ exceptions:
   - OTel
   - Okta
   - OpenTelemetry
+  - "ClickHouse Operator"
+  - "Operator Lifecycle Manager"
   - Pandas
+  - Pandas-compatible
   - Parquet
   - PlanetScale
   - Postgres
@@ -889,3 +900,131 @@ exceptions:
   - h3PointDistM
   - h3PointDistKm
   - h3PointDistRads
+  # Product and tool names
+  - ACME
+  - Agno
+  - AnythingLLM
+  - Artie
+  - "MongoDB Atlas"
+  - Aurora
+  - Bindplane
+  - BladePipe
+  - Chainlit
+  - Claude
+  - "Claude Desktop"
+  - Cloudflare
+  - CloudWatch
+  - Confluent
+  - CopilotKit
+  - CrewAI
+  - Criteo
+  - Databrain
+  - DBeaver
+  - DbVisualizer
+  - DocumentDB
+  - DSPy
+  - DynamoDB
+  - Elasticsearch
+  - EMQX
+  - Estuary
+  - "Fabi.ai"
+  - Flink
+  - Glue
+  - "Jan.ai"
+  - Jupyter
+  - JupySQL
+  - Kinesis
+  - Langchain
+  - LangChain/LangGraph
+  - LibreChat
+  - Lightdash
+  - LlamaIndex
+  - MariaDB
+  - Marimo
+  - MCP
+  - Metastore
+  - Middleware
+  - MinIO
+  - Moose
+  - MSK
+  - Neon
+  - NiFi
+  - NixOS
+  - Ollama
+  - OneLake
+  - OpenAI
+  - Oracle
+  - PeerDB
+  - Postman
+  - PydanticAI
+  - QBit
+  - QStudio
+  - Querio
+  - Redis
+  - Redshift
+  - Rotel
+  - SlackBot
+  - Snowflake
+  - Spark
+  - Streamkap
+  - Streamlit
+  - Synapse
+  - Systemd
+  - "TABLUM.IO"
+  - TimescaleDB
+  - Upsonic
+  - WebUI
+  # Acronyms
+  - AI
+  - BI
+  - "C\\#"
+  - "C\\+\\+"
+  - EC2
+  - ETL
+  - FINAL
+  - IAM
+  - IP
+  - JDBC
+  - JOINs
+  - JS
+  - JVM
+  - LDAP
+  - ODBC
+  - OPTIMIZE
+  - PAYG
+  - RDS
+  - SDKs
+  - SSL
+  - TLS
+  - UK
+  # Additional product/proper names
+  - Debian/Ubuntu
+  - GenAI
+  - MapReduce
+  - "New York"
+  # Additional product/technical terms
+  - DataFrames
+  - "Arrow Flight"
+  - "AWS Lambda"
+  - "Open WebUI"
+  - OpenAPI
+  - Rails
+  - "AMPLab Big Data Benchmark"
+  - AlloyDB
+  - AMPLab
+  - "Azure Flexible Server"
+  - "Crunchy Bridge"
+  - "Brown University"
+  - "Hacker News"
+  - "NOAA Global Historical Climatology Network"
+  - "New York Public Library"
+  - Temporal
+  - TOAST
+  # SQL keywords and compound terms
+  - BACKUP
+  - BACKUP/RESTORE
+  - BUILD
+  - DASHBOARD
+  - I/O
+  - JOIN
+  - RESTORE

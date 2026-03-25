@@ -1,5 +1,5 @@
 ---
-title: 'Data Formats'
+title: 'Data formats'
 sidebar_label: 'Data formats'
 slug: /chdb/reference/data-formats
 description: 'Data Formats for chDB'

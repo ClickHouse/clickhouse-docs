@@ -1,7 +1,7 @@
 ---
 slug: /data-compression/compression-modes
 sidebar_position: 6
-title: 'Compression Modes'
+title: 'Compression modes'
 description: 'ClickHouse column compression modes'
 keywords: ['compression', 'codec', 'encoding', 'modes']
 doc_type: 'reference'

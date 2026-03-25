@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/managed
-title: 'Getting Started with Managed ClickStack'
+title: 'Getting started with managed ClickStack'
 sidebar_label: 'Managed'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index

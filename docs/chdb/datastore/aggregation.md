@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Aggregation Functions'
+title: 'DataStore aggregation functions'
 sidebar_label: 'Aggregation'
 slug: /chdb/datastore/aggregation
 description: 'Aggregate functions, window functions, and the F namespace in DataStore'

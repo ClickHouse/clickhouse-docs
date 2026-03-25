@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Connection Tips'
+sidebar_label: 'Connection tips'
 sidebar_position: 3
 slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']

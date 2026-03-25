@@ -1,6 +1,6 @@
 ---
-title: 'DataStore Pandas Compatibility'
-sidebar_label: 'Pandas Compatibility'
+title: 'DataStore Pandas compatibility'
+sidebar_label: 'Pandas compatibility'
 slug: /chdb/datastore/pandas-compat
 description: 'Complete list of pandas-compatible methods in DataStore (209 DataFrame methods)'
 keywords: ['chdb', 'datastore', 'pandas', 'compatibility', 'dataframe', 'methods']

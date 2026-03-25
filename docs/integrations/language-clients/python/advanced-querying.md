@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Advanced Querying'
+sidebar_label: 'Advanced querying'
 sidebar_position: 4
 keywords: ['clickhouse', 'python', 'query', 'advanced']
-description: 'Advanced Querying with ClickHouse Connect'
+description: 'Advanced querying with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-querying
-title: 'Advanced Querying'
+title: 'Advanced querying'
 doc_type: 'reference'
 ---
 

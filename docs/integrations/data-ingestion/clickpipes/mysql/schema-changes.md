@@ -1,5 +1,5 @@
 ---
-title: 'Schema Changes Propagation Support'
+title: 'Schema changes propagation support'
 slug: /integrations/clickpipes/mysql/schema-changes
 description: 'Page describing schema change types detectable by ClickPipes in the source tables'
 doc_type: 'reference'

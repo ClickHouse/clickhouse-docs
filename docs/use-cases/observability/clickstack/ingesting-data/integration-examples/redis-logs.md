@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis
-title: 'Monitoring Redis Logs with ClickStack'
-sidebar_label: 'Redis Logs'
+title: 'Monitoring Redis logs with ClickStack'
+sidebar_label: 'Redis logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Redis Logs with ClickStack'
