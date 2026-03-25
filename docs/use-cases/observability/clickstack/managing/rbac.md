@@ -45,13 +45,20 @@ Once a user has Cloud access, they appear in the ClickStack **Team Settings** pa
 
 ## Built-in roles {#built-in-roles}
 
-ClickStack includes three system roles. You can't edit or delete these.
+ClickStack includes three system roles. You can't edit or delete these. The Admin role is assigned to the team creator by default.
 
-| Role | Description |
-|------|-------------|
-| **Admin** | Full access to all resources. Assigned to the team creator by default. |
-| **Member** | Can view and manage most resources (dashboards, saved searches, sources, alerts, webhooks, notebooks) but can't manage users or team settings. |
-| **ReadOnly** | Read-only access to all resources. |
+| Permission | Admin | Member | ReadOnly |
+|---|:---:|:---:|:---:|
+| Read all resources | ✓ | ✓ | ✓ |
+| Manage dashboards | ✓ | ✓ | |
+| Manage saved searches | ✓ | ✓ | |
+| Manage sources | ✓ | ✓ | |
+| Manage alerts | ✓ | ✓ | |
+| Manage webhooks | ✓ | ✓ | |
+| Manage notebooks | ✓ | ✓ | |
+| Update team settings | ✓ | ✓ | |
+| Create/delete teams | ✓ | | |
+| Manage users and invitations | ✓ | | |
 
 ## Assigning roles to team members {#assigning-roles}
 
@@ -113,7 +120,7 @@ The resource types you can control are:
 In addition to resource permissions, each role includes two administrative settings:
 
 - **Users** (No Access · Limited Access) — controls whether the role can view team members and their roles. Only Admins can invite, remove, or update users.
-- **Team** (Read · Manage) — controls whether the role can view or manage team-level settings such as security policies and RBAC configuration. A role must have at minimum read access to a team to access it.
+- **Team** (Read · Manage) — controls whether the role can view or modify team-level settings such as security policies and RBAC configuration.
 
 ## Fine-grained access rules {#fine-grained-access-rules}
 
