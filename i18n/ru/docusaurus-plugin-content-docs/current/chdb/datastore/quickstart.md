@@ -1,8 +1,8 @@
 ---
-title: 'Быстрый старт DataStore'
+title: 'Быстрый старт по DataStore'
 sidebar_label: 'Быстрый старт'
 slug: /chdb/datastore/quickstart
-description: 'Начните работу с DataStore — установка, однострочная миграция из pandas и базовое использование'
+description: 'Начните работу с DataStore — установка, однострочная миграция с pandas и основа использования'
 keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migration']
 doc_type: 'guide'
 ---

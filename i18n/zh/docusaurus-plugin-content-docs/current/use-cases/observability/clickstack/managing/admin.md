@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['clickstack', 'admin']
 ---
 
-在 ClickStack 中，大多数管理任务都是直接在底层的 ClickHouse 数据库上执行的。部署 ClickStack 的用户应当熟悉 ClickHouse 的相关概念和基础管理知识。
+在 ClickStack 中，大多数运维和管理任务都是直接在底层的 ClickHouse 数据库上执行的。部署 ClickStack 的用户应当熟悉 ClickHouse 的相关概念和基础管理知识。
 
 管理操作通常涉及执行 DDL 语句。可用的选项取决于您使用的是托管版 ClickStack 还是 ClickStack 开源版。
 

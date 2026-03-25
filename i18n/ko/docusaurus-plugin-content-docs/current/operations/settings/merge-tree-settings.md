@@ -98,6 +98,17 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 활성화되면 CoalescingMergeTree 테이블에서 coalescing 컬럼을 파티션 키 또는 정렬 키로 사용할 수 있습니다.
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "새 설정"}]}]} />
+
+`_block_number` 및 `_block_offset` 가상 컬럼을 저장하는 커밋 순서 프로젝션을 활성화하며, 머지 중에도 원래 삽입 순서를 보존합니다.
+`enable_block_number_column` 및 `enable_block_offset_column`이 활성화되어 있어야 합니다.
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>

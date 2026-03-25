@@ -2,7 +2,7 @@
 sidebar_label: '프라이머리 인덱스'
 sidebar_position: 1
 description: '이 가이드에서는 ClickHouse 인덱싱을 심층적으로 살펴봅니다.'
-title: 'ClickHouse 프라이머리 인덱스 실용적인 소개'
+title: 'ClickHouse 프라이머리 인덱스에 대한 실용적인 소개'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
 doc_type: 'guide'
@@ -33,7 +33,6 @@ import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
-
 
 # ClickHouse 프라이머리 인덱스에 대한 실용적인 소개 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
 

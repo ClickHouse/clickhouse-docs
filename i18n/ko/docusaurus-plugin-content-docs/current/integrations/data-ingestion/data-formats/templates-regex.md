@@ -1,11 +1,11 @@
 ---
-sidebar_label: '정규식과 Template'
+sidebar_label: 'Regex와 Template'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
-title: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 정의 텍스트 데이터 가져오기 및 내보내기'
-description: 'ClickHouse에서 Template과 정규식(Regex)을 사용하여 사용자 정의 텍스트 데이터를 가져오고 내보내는 방법을 설명하는 페이지'
+title: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터 가져오기 및 내보내기'
+description: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터를 가져오고 내보내는 방법을 설명하는 페이지'
 doc_type: 'guide'
-keywords: ['데이터 포맷', 'Template', '정규식(Regex)', '사용자 정의 포맷', '파싱']
+keywords: ['데이터 형식', 'Template', 'Regex', '사용자 지정 형식', '파싱']
 ---
 
 # ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터 가져오기 및 내보내기 \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}

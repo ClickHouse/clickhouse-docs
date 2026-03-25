@@ -36,7 +36,7 @@ import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snipp
 
 ClickStack 支持对事件进行可视化，并在 ClickStack UI (HyperDX) 中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
 
-可视化可以基于 traces、metrics、logs，或任意用户自定义的宽表事件 schema 创建。
+可视化可以基于链路追踪、指标、日志，或任意用户自定义的宽表事件 schema 创建。
 
 
 ## 创建可视化图表 \{#creating-visualizations\}

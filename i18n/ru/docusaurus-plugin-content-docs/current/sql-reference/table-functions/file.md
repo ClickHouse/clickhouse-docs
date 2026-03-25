@@ -26,11 +26,30 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 
 | Параметр          | Описание                                                                                                                                                                                                                                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `path`            | Относительный путь к файлу от [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path). В режиме только чтения поддерживает следующие [шаблоны (globs)](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` — строки) и `{N..M}` (где `N` и `M` — числа). |
-| `path_to_archive` | Относительный путь к архиву в формате zip/tar/7z. Поддерживает те же шаблоны, что и `path`.                                                                                                                                                                                                                  |
+| `path`            | Относительный путь к файлу от [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path). В режиме только чтения поддерживает следующие [глоб-шаблоны](#globs-in-path): `*`, `?`, `{abc,def}` (где `'abc'` и `'def'` — строки) и `{N..M}` (где `N` и `M` — числа). |
+| `path_to_archive` | Относительный путь к архиву в формате zip/tar/7z. Поддерживает те же глоб-шаблоны, что и `path`.                                                                                                                                                                                                            |
 | `format`          | [Формат](/interfaces/formats) файла.                                                                                                                                                                                                                                                                         |
 | `structure`       | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                    |
 | `compression`     | Тип существующего сжатия при использовании в запросе `SELECT` или требуемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.                                                                                                             |
+
+:::tip
+Если аргумент `structure` опущен, ClickHouse определяет схему по самому формату.
+Для разных форматов используются разные имена и типы столбцов по умолчанию.
+Чтобы увидеть схему для конкретного формата, используйте [`DESC`](/sql-reference/statements/describe-table) с табличной функцией [`format`](/sql-reference/table-functions/format).
+
+Например:
+
+```sql
+DESC format(LineAsString, 'Hello\nWorld')
+```
+
+```response
+┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ line │ String │              │                    │         │                  │                │
+└──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+:::
 
 ## Возвращаемое значение \{#returned_value\}
 

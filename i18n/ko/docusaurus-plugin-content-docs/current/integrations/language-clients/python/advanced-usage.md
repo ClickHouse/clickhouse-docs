@@ -8,7 +8,7 @@ title: '고급 사용법'
 doc_type: 'reference'
 ---
 
-# 고급 활용 \{#advanced-usage\}
+# 고급 사용법 \{#advanced-usage\}
 
 ## Raw API \{#raw-api\}
 

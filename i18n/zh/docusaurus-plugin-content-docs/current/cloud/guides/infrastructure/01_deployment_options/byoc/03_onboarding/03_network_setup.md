@@ -3,7 +3,7 @@ title: '私有网络配置'
 slug: /cloud/reference/byoc/onboarding/network
 sidebar_label: '私有网络配置'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'vpc peering', 'privatelink']
-description: '在您自己的云基础设施上部署 ClickHouse'
+description: '在您的云基础设施上部署 ClickHouse'
 doc_type: 'reference'
 ---
 
@@ -15,9 +15,9 @@ import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_privatelink_1 from '@site/static/images/cloud/reference/byoc-privatelink-1.png';
 import byoc_privatelink_2 from '@site/static/images/cloud/reference/byoc-privatelink-2.png';
 
-ClickHouse BYOC 支持多种私有网络选项，以增强安全性并为您的服务提供直接连接能力。本指南将介绍推荐的方法，帮助您在自己的 AWS 或 GCP 账户中，将 ClickHouse Cloud 部署安全地连接到其他网络或服务，例如内部应用程序或分析工具。我们将介绍 VPC Peering、AWS PrivateLink 和 GCP Private Service Connect 等选项，并概述每种方式的主要步骤和注意事项。
+ClickHouse BYOC 支持多种私有网络选项，以增强安全性并为您的服务提供直接连接能力。本指南将介绍推荐的方法，帮助您在您的 AWS 或 GCP 账户中，将 ClickHouse Cloud 部署安全地连接到其他网络或服务，例如内部应用程序或分析工具。我们将介绍 VPC 对等连接、AWS PrivateLink 和 GCP Private Service Connect 等选项，并概述每种方式的主要步骤和注意事项。
 
-如果您需要为 ClickHouse BYOC 部署配置私有网络连接，请按照本指南中的步骤操作，或联系 ClickHouse Support 获取更高级场景的协助。
+如果您需要为 ClickHouse BYOC 部署配置私有网络连接，请按照本指南中的步骤操作，或联系 ClickHouse 支持团队 获取更高级场景的协助。
 
 
 ## 配置 VPC 对等连接（AWS） \{#aws-vpc-peering\}

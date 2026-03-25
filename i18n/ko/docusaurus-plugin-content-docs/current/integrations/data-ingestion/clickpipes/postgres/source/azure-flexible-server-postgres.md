@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Postgres용 Azure Flexible Server'
+sidebar_label: 'Azure Flexible Server for Postgres'
 description: 'ClickPipes 소스로 Azure Flexible Server for Postgres를 설정합니다'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Postgres용 Azure Flexible Server 소스 설정 가이드'
+title: 'Azure Flexible Server for Postgres 소스 설정 가이드'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:

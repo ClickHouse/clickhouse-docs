@@ -12,14 +12,15 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge />
 
-ClickHouse는 여러 카탈로그(Unity, Glue, Polaris 등)와의 통합을 지원합니다. 이 가이드에서는 ClickHouse를 통해 [BigLake 메타스토어](https://cloud.google.com/biglake/docs)에 있는 Iceberg 테이블을 쿼리하는 단계를 안내합니다.
+ClickHouse는 여러 카탈로그(Unity, Glue, Polaris 등)와의 통합을 지원합니다. 이 가이드에서는 ClickHouse를 통해 [BigLake 메타스토어](https://docs.cloud.google.com/biglake/docs/)에 있는 Iceberg 테이블을 쿼리하는 단계를 안내합니다.
 
 :::note
 이 기능은 베타이므로 다음을 사용하여 활성화해야 합니다:
 `SET allow_database_iceberg = 1;`
 :::
+
 
 ## Prerequisites \{#prerequisites\}
 

@@ -22,7 +22,7 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-コミット型契約を通じて、[GCP Marketplace](https://console.cloud.google.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。コミット型契約（Private Offer とも呼ばれます）は、一定期間にわたって ClickHouse Cloud の利用に一定額をコミットする仕組みです。
+コミットメント契約を通じて、[GCP Marketplace](https://console.cloud.google.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。コミットメント契約 (プライベートオファー とも呼ばれます) は、一定期間にわたって ClickHouse Cloud の利用に一定額をコミットする仕組みです.
 
 
 ## 前提条件 \{#prerequisites\}

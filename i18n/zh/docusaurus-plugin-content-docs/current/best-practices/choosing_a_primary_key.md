@@ -13,21 +13,21 @@ import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> 在本页中，我们会交替使用术语 &quot;ordering key&quot; 来指代 &quot;primary key&quot;。严格来说，[在 ClickHouse 中二者是有区别的](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)，但在本文档中，读者可以将这两个术语视为等同使用，其中 ordering key 指的是表中 `ORDER BY` 子句所指定的列。
+> 在本页中，我们会交替使用术语 &quot;排序键&quot; 来指代 &quot;主键&quot;。严格来说，[在 ClickHouse 中二者是有区别的](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)，但在本文档中，读者可以将这两个术语视为等同使用，其中 排序键 指的是表中 `ORDER BY` 子句所指定的列。
 
-请注意，对于熟悉 OLTP 数据库 (例如 Postgres) 中类似术语的读者而言，ClickHouse 中 primary key 的工作方式[有很大不同](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
+请注意，对于熟悉 OLTP 数据库 (例如 Postgres) 中类似术语的读者而言，ClickHouse 中主键 的工作方式[有很大不同](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
 
-在 ClickHouse 中选择一个有效的 primary key 对查询性能和存储效率至关重要。ClickHouse 将数据组织为多个 part，每个 part 都包含自己的稀疏 primary index。该索引通过减少扫描的数据量显著加快查询速度。此外，由于 primary key 决定了磁盘上数据的物理排序，它会直接影响压缩效率。数据排序越合理，压缩效果越好，从而通过减少 I/O 进一步提升性能。
+在 ClickHouse 中选择一个有效的 主键 对查询性能和存储效率至关重要。ClickHouse 将数据组织为多个 part，每个 part 都包含自己的稀疏 primary index。该索引通过减少扫描的数据量显著加快查询速度。此外，由于 主键 决定了磁盘上数据的物理排序，它会直接影响压缩效率。数据排序越合理，压缩效果越好，从而通过减少 I/O 进一步提升性能。
 
-1. 在选择 ordering key 时，应优先考虑在查询过滤条件 (即 `WHERE` 子句) 中经常使用的列，尤其是那些能排除大量行的列。
+1. 在选择 排序键 时，应优先考虑在查询过滤条件 (即 `WHERE` 子句) 中经常使用的列，尤其是那些能排除大量行的列。
 2. 与表中其他数据高度相关的列也很有价值，因为连续存储可在执行 `GROUP BY` 和 `ORDER BY` 操作时改善压缩比和内存效率。
 
 <br />
 
-可以应用一些简单规则来帮助选择 ordering key。以下规则有时可能会互相冲突，因此请按顺序考虑它们。**用户可以通过该过程确定若干个 key，通常 4-5 个就已足够**：
+可以应用一些简单规则来帮助选择 排序键。以下规则有时可能会互相冲突，因此请按顺序考虑它们。**用户可以通过该过程确定若干个 键，通常 4-5 个就已足够**：
 
 :::note Important
-Ordering key 必须在建表时定义，之后无法添加。可以通过名为 projections 的特性在数据插入之后 (或之前) 为表添加额外的排序。注意，这会导致数据重复。更多细节参见[此处](/sql-reference/statements/alter/projection)。
+排序键 必须在建表时定义，之后无法添加。可以通过名为 projections 的特性在数据插入之后 (或之前) 为表添加额外的排序。注意，这会导致数据重复。更多细节参见[此处](/sql-reference/statements/alter/projection)。
 :::
 
 ## 示例 \{#example\}

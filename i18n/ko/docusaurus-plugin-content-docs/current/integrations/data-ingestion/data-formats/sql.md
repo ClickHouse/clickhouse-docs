@@ -7,13 +7,9 @@ doc_type: 'guide'
 keywords: ['SQL 형식', '데이터 내보내기', '데이터 가져오기', '백업', 'SQL 덤프']
 ---
 
-
-
 # ClickHouse에서 SQL 데이터 삽입 및 덤프 \{#inserting-and-dumping-sql-data-in-clickhouse\}
 
 ClickHouse는 다양한 방식으로 OLTP 데이터베이스 인프라에 쉽게 통합할 수 있습니다. 한 가지 방법은 SQL 덤프를 사용해 다른 데이터베이스와 ClickHouse 간에 데이터를 전송하는 것입니다.
-
-
 
 ## SQL 덤프 생성 \{#creating-sql-dumps\}
 
@@ -57,7 +53,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```response
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
-
 
 ## SQL 덤프에서 데이터 삽입하기 \{#inserting-data-from-sql-dumps\}
 
@@ -110,16 +105,15 @@ DESCRIBE TABLE table_from_mysql;
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+## 기타 형식 \{#other-formats\}
 
-## 기타 포맷 \{#other-formats\}
+ClickHouse는 다양한 시나리오와 플랫폼을 지원하기 위해 텍스트 및 바이너리 형식을 포함한 여러 형식을 지원합니다. 다음 문서에서 더 많은 형식과 이를 사용하는 방법을 살펴보십시오:
 
-ClickHouse는 다양한 시나리오와 플랫폼을 지원하기 위해 텍스트 및 바이너리 형식을 포함한 여러 포맷을 지원합니다. 다음 문서에서 더 많은 포맷과 이를 사용하는 방법을 살펴보십시오:
-
-- [CSV 및 TSV 포맷](csv-tsv.md)
-- [Parquet](parquet.md)
-- [JSON 포맷](/integrations/data-ingestion/data-formats/json/intro.md)
-- [Regex 및 템플릿](templates-regex.md)
-- [네이티브 및 바이너리 포맷](binary.md)
-- **SQL 포맷**
+* [CSV 및 TSV 형식](csv-tsv.md)
+* [Parquet](parquet.md)
+* [JSON 형식](/integrations/data-ingestion/data-formats/json/intro.md)
+* [Regex 및 템플릿](templates-regex.md)
+* [네이티브 및 바이너리 형식](binary.md)
+* **SQL 형식**
 
 또한 ClickHouse 서버 없이 로컬/원격 파일로 작업할 수 있는 휴대용 완전 기능 도구인 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)도 확인하십시오.

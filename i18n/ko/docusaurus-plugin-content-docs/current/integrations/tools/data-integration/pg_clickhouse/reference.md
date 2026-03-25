@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse 레퍼런스 문서 \{#pg_clickhouse-reference-documentation\}
+# pg_clickhouse 참조 문서 \{#pg_clickhouse-reference-documentation\}
 
 ## 설명 \{#description\}
 

@@ -2,13 +2,13 @@
 sidebar_label: 'R2DBC 驱动'
 sidebar_position: 5
 keywords: ['clickhouse', 'java', '驱动', '集成', 'r2dbc']
-description: 'ClickHouse R2DBC 驱动程序'
+description: 'ClickHouse R2DBC 驱动'
 slug: /integrations/java/r2dbc
 title: 'R2DBC 驱动'
 doc_type: 'reference'
 integration:
-  - support_level: '核心'
-  - category: '语言客户端'
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -17,15 +17,15 @@ import CodeBlock from '@theme/CodeBlock';
 
 # R2DBC 驱动 \{#r2dbc-driver\}
 
-## R2DBC 驱动程序 \{#r2dbc-driver\}
+## R2DBC 驱动 \{#r2dbc-driver\}
 
-基于 ClickHouse 异步 Java 客户端的 [R2DBC](https://r2dbc.io/) 封装。
+ClickHouse 异步 Java 客户端的 [R2DBC](https://r2dbc.io/) 封装。
 
 ### 环境要求 \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) 8 或更高版本
+* [OpenJDK](https://openjdk.java.net) 版本 &gt;= 8
 
-### 设置 \{#setup\}
+### 配置 \{#setup\}
 
 ```xml
 <dependency>
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### 连接 ClickHouse \{#connect-to-clickhouse\}
+### 连接到 ClickHouse \{#connect-to-clickhouse\}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Query \{#query\}
+### 查询 \{#query\}
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### Insert \{#insert\}
+### 插入 \{#insert\}
 
 ```java showLineNumbers
 connection
