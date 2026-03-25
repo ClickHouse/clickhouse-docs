@@ -27,7 +27,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## 管道式关系查询语言（PRQL） \{#pipelined-relational-query-language-prql\}
+## 管道式关系查询语言 (PRQL) \{#pipelined-relational-query-language-prql\}
 
 <ExperimentalBadge />
 
@@ -54,7 +54,7 @@ aggregate {
 
 <ExperimentalBadge />
 
-若要启用 KQL：
+要启用 KQL：
 
 ```sql
 SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only for ClickHouse versions >= 25.1

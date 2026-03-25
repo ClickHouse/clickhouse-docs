@@ -1,10 +1,10 @@
 ---
 sidebar_position: 1
-sidebar_label: '자동 확장'
+sidebar_label: '자동 스케일링'
 slug: /manage/scaling
-description: 'ClickHouse Cloud에서 자동 확장 구성'
+description: 'ClickHouse Cloud에서 자동 스케일링 구성'
 keywords: ['자동 확장', '자동 스케일링', '확장', '수평', '수직', '버스트']
-title: '자동 확장'
+title: '자동 스케일링'
 doc_type: 'guide'
 ---
 
@@ -15,7 +15,6 @@ import scaling_patch_response from '@site/static/images/cloud/manage/scaling-pat
 import scaling_configure from '@site/static/images/cloud/manage/scaling-configure.png';
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
-
 
 # 자동 스케일링 \{#automatic-scaling\}
 

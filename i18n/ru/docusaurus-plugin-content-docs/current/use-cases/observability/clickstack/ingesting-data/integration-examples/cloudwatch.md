@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-cloudwatch-logs
 title: 'Мониторинг логов AWS CloudWatch с помощью ClickStack'
-sidebar_label: 'AWS CloudWatch Logs'
+sidebar_label: 'AWS CloudWatch logs'
 pagination_prev: null
 pagination_next: null
 description: 'Мониторинг логов AWS CloudWatch с помощью ClickStack'

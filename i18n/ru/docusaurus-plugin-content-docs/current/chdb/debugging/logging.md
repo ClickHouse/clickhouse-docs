@@ -1,5 +1,5 @@
 ---
-title: 'Логирование DataStore'
+title: 'Логирование в DataStore'
 sidebar_label: 'Логирование'
 slug: /chdb/debugging/logging
 description: 'Настройка логирования в DataStore для отладки и мониторинга'

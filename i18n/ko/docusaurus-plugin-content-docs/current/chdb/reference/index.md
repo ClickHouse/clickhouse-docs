@@ -6,7 +6,7 @@ keywords: ['chdb', 'data formats']
 doc_type: 'reference'
 ---
 
-| 참조 페이지       |
-|----------------------|
+| 참조 페이지                                  |
+| --------------------------------------- |
 | [데이터 형식](/chdb/reference/data-formats)  |
 | [SQL 참조](/chdb/reference/sql-reference) |

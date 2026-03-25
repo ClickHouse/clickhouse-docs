@@ -21,7 +21,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-Начните работу с ClickHouse Cloud в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps), оформив контракт с обязательствами. Такой контракт, также известный как Private Offer (частное предложение), позволяет клиентам заранее обязаться потратить определённую сумму на ClickHouse Cloud в течение заданного периода времени.
+Начните работу с ClickHouse Cloud в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps), оформив контракт с обязательствами. Такой контракт, также известный как Private Offer (приватное предложение), позволяет клиентам заранее обязаться потратить определённую сумму на ClickHouse Cloud в течение заданного периода времени.
 
 
 ## Предварительные требования \{#prerequisites\}

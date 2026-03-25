@@ -5,7 +5,7 @@ slug: /integrations/grafana/query-builder
 description: '在 Grafana ClickHouse 插件中使用查询构建器'
 title: '查询构建器'
 doc_type: '指南'
-keywords: ['grafana', '查询构建器', '可视化', '仪表盘', '插件']
+keywords: ['grafana', '查询构建器', '可视化', '仪表板', '插件']
 integration:
   - support_level: 'core'
   - category: 'data_visualization'
@@ -26,7 +26,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # 查询构建器 \{#query-builder\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 可以使用 ClickHouse 插件运行任意查询。
 查询构建器是处理较简单查询的便捷选项，但对于复杂查询，则需要使用 [SQL 编辑器](#sql-editor)。
@@ -35,11 +35,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 可用的查询类型包括：
 
-- [表格](#table)：用于以表格形式展示数据的最简单查询类型。适合作为包含聚合函数的简单和复杂查询的通用选项。
-- [日志](#logs)：针对构建日志查询进行了优化。在已[配置默认值](./config.md#logs)的 Explore 视图中效果最佳。
-- [时间序列](#time-series)：最适合用于构建时间序列查询。允许选择专用时间列并添加聚合函数。
-- [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
-- [SQL 编辑器](#sql-editor)：当需要对查询进行完全控制时可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
+* [表](#table)：用于以表格形式展示数据的最简单查询类型。适合作为包含聚合函数的简单和复杂查询的通用选项。
+* [日志](#logs)：针对构建日志查询进行了优化。在已[配置默认值](./config.md#logs)的 Explore 视图中效果最佳。
+* [时间序列](#time-series)：最适合用于构建时间序列查询。允许选择专用时间列并添加聚合函数。
+* [链路追踪](#traces)：针对搜索和查看链路追踪数据进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
+* [SQL 编辑器](#sql-editor)：当需要对查询进行完全控制时可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
 
 ## 查询类型 \{#query-types\}
 

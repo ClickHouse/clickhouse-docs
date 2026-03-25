@@ -11,6 +11,7 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # Хранимые процедуры и параметры запросов в ClickHouse \{#stored-procedures-and-query-parameters-in-clickhouse\}
 
 Если вы привыкли к традиционной реляционной базе данных, вы можете ожидать наличия в ClickHouse хранимых процедур и подготовленных запросов.

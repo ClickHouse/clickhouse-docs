@@ -19,7 +19,7 @@ import DedicatedKeeperServers from '@site/i18n/ko/docusaurus-plugin-content-docs
 import ExampleFiles from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> 이 예제에서는 복제와 스케일링이 모두 가능한 간단한 ClickHouse 클러스터를 설정하는 방법을 살펴봅니다.
+> 이 예제에서는 복제와 확장이 모두 가능한 간단한 ClickHouse 클러스터를 설정하는 방법을 살펴봅니다.
 > 이 클러스터는 2개의 세그먼트와 2개의 레플리카로 구성되며, 클러스터의 조정 및 쿼럼 유지를 위해 3개 노드의 ClickHouse Keeper 클러스터를 사용합니다.
 
 설정하게 될 클러스터의 아키텍처는 아래와 같습니다:

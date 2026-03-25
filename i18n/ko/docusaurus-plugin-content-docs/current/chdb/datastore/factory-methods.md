@@ -1,8 +1,8 @@
 ---
-title: 'DataStore 팩터리 메서드'
-sidebar_label: '팩터리 메서드'
+title: 'DataStore 팩토리 메서드'
+sidebar_label: '팩토리 메서드'
 slug: /chdb/datastore/factory-methods
-description: '파일, 데이터베이스, 클라우드 스토리지, 데이터 레이크에서 DataStore 인스턴스를 생성합니다'
+description: '파일, 데이터베이스, Cloud 스토리지, 데이터 레이크에서 DataStore 인스턴스를 생성합니다'
 keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql', 'postgresql']
 doc_type: 'reference'
 ---

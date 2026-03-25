@@ -1,6 +1,6 @@
 ---
-title: 'サポートされている Cloud リージョン'
-sidebar_label: 'サポートされている Cloud リージョン'
+title: 'サポート対象の Cloud リージョン'
+sidebar_label: 'サポート対象の Cloud リージョン'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'ClickHouse Cloud がサポートするリージョン'
 slug: /cloud/reference/supported-regions

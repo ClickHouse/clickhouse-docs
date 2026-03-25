@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Supabase Postgres'
-description: '将 Supabase 实例设置为 ClickPipes 的数据源'
+description: '将 Supabase 实例配置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/supabase
-title: 'Supabase 源设置指南'
+title: 'Supabase 源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 integration:

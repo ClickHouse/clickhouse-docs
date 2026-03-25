@@ -7,12 +7,12 @@ doc_type: 'guide'
 keywords: ['ClickHouse Cloud', '暗号化', 'CMEK']
 ---
 
-ClickHouse では、Customer Managed Encryption Keys (CMEK) サービスのセキュリティを強化しています。すべてのサービスは、サービスごとに固有の AWS ロールを使用するように構成されており、これによりお客様のキーを使用してサービスの暗号化および復号を行うことが許可されます。この新しいロールは、サービス設定画面にのみ表示されます。
+ClickHouse では、顧客管理暗号化キー (CMEK) サービスのセキュリティを強化しています。すべてのサービスは、サービスごとに固有の AWS ロールを使用するように構成されており、これによりお客様のキーを使用してサービスの暗号化および復号を行うことが許可されます。この新しいロールは、サービス設定画面にのみ表示されます。
 
 この新しいプロセスは、OpenAPI と Terraform の両方でサポートされています。詳細については、ドキュメント ([強化された暗号化](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[公式 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)) を参照してください。
 
 :::warning
-CMEK v1 を利用しているお客様は、2026 年 6 月 1 日までにサービスの移行を完了する必要があります。この日以降は、カスタマー管理キーはデフォルトで ClickHouse 管理キーにローテーションされます。デフォルトの移行完了後に、再度カスタマー管理キーへローテーションすることもできます。
+CMEK v1 を利用しているお客様は、2026 年 6 月 1 日までにサービスの移行を完了する必要があります。この日以降は、顧客管理キーはデフォルトで ClickHouse 管理キーにローテーションされます。デフォルトの移行完了後に、再度顧客管理キーへローテーションすることもできます。
 :::
 
 ## 手動での移行 \{#manual-migration\}

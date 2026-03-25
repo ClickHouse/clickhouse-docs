@@ -4880,6 +4880,13 @@ ClickHouse는 서버의 모든 테이블에 대해 이 설정을 사용합니다
 이 설정으로 이미 저장된 데이터 파트 헤더는 이전의 (비축약) 표현 방식으로 복원할 수 없습니다.
 :::
 
+## use_separate_cache_arena \{#use_separate_cache_arena\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+캐시 할당(마크 캐시, 비압축 캐시, 페이지 캐시)을 위해 전용 jemalloc arena를 활성화합니다.
+캐시 데이터를 쿼리 처리용 할당과 분리해 메모리 단편화를 줄입니다.
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 실행 가능한 UDF(User Defined Function)에 대한 설정 파일 경로입니다.

@@ -152,11 +152,11 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 ### Limitations \{#explicit-target-limitations\}
 
-- 대상 테이블 정의는 dbt 관점에서 자연스럽지 않습니다. 소스 테이블에서 읽어 오는 SQL이 아니므로 이 부분에서는 dbt의 검증을 사용할 수 없습니다. MV의 SQL은 계속해서 dbt 유틸리티를 사용해 검증되며, 대상 테이블 컬럼과의 호환성은 ClickHouse 수준에서 검증됩니다.
-- **`ref()` 함수의 제약과 관련해 몇 가지 문제를 발견했습니다**: 모델 간 참조를 위해 `ref()`를 사용해야 하지만, 상류(upstream) 모델만 참조할 수 있고 하류(downstream) 모델은 참조할 수 없습니다. 이로 인해 이번 구현에서 몇 가지 문제가 발생합니다. dbt-core 리포지토리에 이슈를 생성했으며, 현재 이에 대해 [가능한 해결책을 논의 중입니다 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319):
-  - `ref()`가 config 블록 내부에서 호출되면, 공유된 모델이 아니라 현재 모델을 반환합니다. 이 때문에 config() 섹션에서 이를 정의할 수 없으며, 이 의존성을 추가하기 위해 주석을 사용해야 합니다. dbt 문서에 정의된 [\"--depends_on:\" 접근 방식](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)과 동일한 패턴을 따르고 있습니다.
-  - `ref()`는 대상 테이블이 먼저 생성되도록 강제해 준다는 점에서는 원하는 대로 동작하지만, 생성된 문서의 의존성 차트에서는 대상 테이블이 하류가 아닌 또 다른 상류 의존성으로 표시되어, 이해하기가 다소 어렵습니다.
-  - `unit-test`는 대상 테이블에서 데이터를 읽지 않는 것이 목표일 때에도 대상 테이블에 대해 일부 데이터를 정의하도록 강제합니다. 해결 방법은 이 테이블에 대한 데이터를 비워 두는 것입니다.
+* 대상 테이블 정의는 dbt 관점에서 자연스럽지 않습니다. 소스 테이블에서 읽어 오는 SQL이 아니므로 이 부분에서는 dbt의 검증을 사용할 수 없습니다. MV의 SQL은 계속해서 dbt 유틸리티를 사용해 검증되며, 대상 테이블 컬럼과의 호환성은 ClickHouse 수준에서 검증됩니다.
+* **`ref()` 함수의 제약과 관련해 몇 가지 문제를 발견했습니다**: 모델 간 참조를 위해 `ref()`를 사용해야 하지만, 상류(upstream) 모델만 참조할 수 있고 하류(downstream) 모델은 참조할 수 없습니다. 이로 인해 이번 구현에서 몇 가지 문제가 발생합니다. dbt-core 리포지토리에 이슈를 생성했으며, 현재 이에 대해 [가능한 해결책을 논의 중입니다 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319):
+  * `ref()`가 config 블록 내부에서 호출되면, 공유된 모델이 아니라 현재 모델을 반환합니다. 이 때문에 config() 섹션에서 이를 정의할 수 없으며, 이 의존성을 추가하기 위해 주석을 사용해야 합니다. dbt 문서에 정의된 [&quot;--depends&#95;on:&quot; 접근 방식](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)과 동일한 패턴을 따르고 있습니다.
+  * `ref()`는 대상 테이블이 먼저 생성되도록 강제해 준다는 점에서는 원하는 대로 동작하지만, 생성된 문서의 의존성 차트에서는 대상 테이블이 하류가 아닌 또 다른 상류 의존성으로 표시되어, 이해하기가 다소 어렵습니다.
+  * `unit-test`는 대상 테이블에서 데이터를 읽지 않는 것이 목표일 때에도 대상 테이블에 대해 일부 데이터를 정의하도록 강제합니다. 해결 방법은 이 테이블에 대한 데이터를 비워 두는 것입니다.
 
 ### 사용 방법 \{#explicit-target-usage\}
 
@@ -239,11 +239,11 @@ GROUP BY event_date, event_type
 
 ### 일반적인 작업 \{#explicit-target-common-operations\}
 
-#### 명시적 타겟을 사용하는 전체 새로 고침 \{#explicit-target-full-refresh\}
+#### 명시적 대상을 사용하는 전체 새로 고침 \{#explicit-target-full-refresh\}
 
-`--full-refresh`를 사용할 때 명시적 타겟 테이블은 다시 생성됩니다(이 과정에서 수집이 진행 중이면 데이터가 손실될 수 있습니다). 이는 설정에 따라 서로 다르게 동작합니다:
+`--full-refresh`를 사용할 때 명시적 대상 테이블은 다시 생성됩니다(이 과정에서 수집이 진행 중이면 데이터가 손실될 수 있습니다). 이는 설정에 따라 서로 다르게 동작합니다:
 
-**옵션 1: 기본 `--full-refresh` 동작. 모든 것이 다시 생성되지만, MV를 재생성하는 동안에는 타겟 테이블이 비어 있거나 일부만 로드된 상태가 됩니다.**
+**옵션 1: 기본 `--full-refresh` 동작. 모든 것이 다시 생성되지만, MV를 재생성하는 동안에는 대상 테이블이 비어 있거나 일부만 로드된 상태가 됩니다.**
 
 모든 것이 DROP된 후 다시 생성됩니다. MV의 SQL을 사용하여 데이터를 다시 삽입하려면 `catchup=True` 설정을 유지하십시오:
 
@@ -251,23 +251,23 @@ GROUP BY event_date, event_type
 -- models/page_events_aggregator.sql
 {{ config(
     materialized='materialized_view',
-    catchup=True  -- this is the default value so you don't need to actully set it.
+    catchup=True  -- this is the default value so you don't need to actually set it.
 ) }}
 {{ materialization_target_table(ref('events_daily')) }}
 ...
 ```
 
-**옵션 2: 타깃 테이블을 다시 생성하되, MV가 재생성되는 동안 빈 데이터가 조회되지 않도록 합니다.**
+**옵션 2: 대상 테이블을 다시 생성하되, MV가 재생성되는 동안 빈 데이터가 조회되지 않도록 합니다.**
 
-먼저 MV의 SQL을 수정해야 하는 경우, 해당 MV들에 `catchup=False`를 설정한 다음 MV들에 대해 `dbt run` 또는 `dbt run --full-refresh`를 실행합니다. 타깃 테이블에서 `--full-refresh`를 실행하기 전에 MV가 생성되어 있어야 합니다. 타깃 테이블은 ClickHouse에 있는 MV 정의를 사용하기 때문입니다.
+먼저 MV의 SQL을 수정해야 하는 경우, 해당 MV들에 `catchup=False`를 설정한 다음 MV들에 대해 `dbt run` 또는 `dbt run --full-refresh`를 실행합니다. 대상 테이블에서 `--full-refresh`를 실행하기 전에 MV가 생성되어 있어야 합니다. 대상 테이블은 ClickHouse에 있는 MV 정의를 사용하기 때문입니다.
 
-타깃 테이블 모델에 `repopulate_from_mvs_on_full_refresh=True`를 설정합니다. `dbt run --full-refresh` 실행 시, 다음 작업이 수행됩니다:
+대상 테이블 모델에 `repopulate_from_mvs_on_full_refresh=True`를 설정합니다. `dbt run --full-refresh` 실행 시, 다음 작업이 수행됩니다:
 
 1. 새로운 임시 테이블을 생성합니다.
 2. 각 MV의 SQL을 사용하여 INSERT-SELECT를 실행합니다.
 3. 테이블을 원자적으로 교체합니다.
 
-이렇게 하면 MV가 재생성되는 동안에도 테이블을 조회하는 사용자는 빈 데이터를 보지 않게 됩니다.
+이렇게 하면 MV가 재생성되는 동안에도 테이블에서 빈 데이터가 보이지 않게 됩니다.
 
 ```sql
 -- models/events_daily.sql
@@ -281,7 +281,6 @@ GROUP BY event_date, event_type
 }}
 ...
 ```
-
 
 #### 대상 테이블 변경하기 \{#explicit-target-changing\}
 
@@ -541,6 +540,6 @@ GROUP BY event_date, event_type
 * 종속성이 있는 refreshable materialized view(MV)를 ClickHouse에서 생성할 때, 지정한 종속성이 생성 시점에 존재하지 않더라도 ClickHouse는
   오류를 발생시키지 않습니다. 대신 refreshable MV는 비활성 상태로 남아 있으며, 종속성이 충족될 때까지 업데이트 처리나 리프레시를 시작하지 않습니다.
   이는 설계된 동작이지만, 필요한 종속성이 제때 준비되지 않으면 데이터 사용 가능 시점이 지연될 수 있습니다.
-  따라서 refreshable materialized view를 생성하기 전에 모든 종속성이 올바르게 정의되어 있고 실제로 존재하는지 반드시 확인해야 합니다.
+  refreshable materialized view를 생성하기 전에 모든 종속성이 올바르게 정의되어 있고 실제로 존재하는지 확인해야 합니다.
 * 현재로서는 MV와 그 종속성 간에 실제 「dbt linkage」가 없으므로, 생성 순서는 보장되지 않습니다.
 * refreshable 기능은 동일한 target model을 가리키는 여러 MV가 있는 경우에는 테스트되지 않았습니다.

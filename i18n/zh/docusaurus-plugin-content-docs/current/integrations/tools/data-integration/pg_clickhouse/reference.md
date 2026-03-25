@@ -4,7 +4,7 @@ description: 'pg_clickhouse 的完整参考文档'
 slug: '/integrations/pg_clickhouse/reference'
 title: 'pg_clickhouse 参考文档'
 doc_type: 'reference'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部数据封装器', 'pg_clickhouse', '扩展']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '扩展']
 ---
 
 # pg_clickhouse 参考文档 \{#pg_clickhouse-reference-documentation\}

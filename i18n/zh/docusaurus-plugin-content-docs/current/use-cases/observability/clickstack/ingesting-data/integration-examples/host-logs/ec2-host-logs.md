@@ -22,6 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
 
 :::note[摘要]

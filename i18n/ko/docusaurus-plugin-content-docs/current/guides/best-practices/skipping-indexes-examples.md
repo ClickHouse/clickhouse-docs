@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes/examples
-sidebar_label: '데이터 스키핑 인덱스 - 예제'
+sidebar_label: '데이터 스키핑 인덱스 - 예시'
 sidebar_position: 2
-description: '데이터 스키핑 인덱스 예제 모음'
-title: '데이터 스키핑 인덱스 예제'
+description: '데이터 스키핑 인덱스 예시 모음'
+title: '데이터 스키핑 인덱스 예시'
 doc_type: 'guide'
 keywords: ['데이터 스키핑 인덱스', '데이터 스키핑', '성능', '인덱싱', '모범 사례']
 ---

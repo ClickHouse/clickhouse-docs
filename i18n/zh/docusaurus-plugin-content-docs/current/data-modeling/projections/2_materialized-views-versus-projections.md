@@ -1,14 +1,14 @@
 ---
 slug: /managing-data/materialized-views-versus-projections
-sidebar_label: '物化视图 vs 投影'
-title: '物化视图与投影'
+sidebar_label: 'materialized view vs 投影'
+title: 'materialized view与投影'
 hide_title: false
-description: '本文比较 ClickHouse 中的物化视图和投影，包括它们的使用场景、性能以及局限性。'
+description: '本文比较 ClickHouse 中的materialized view和投影，包括它们的用例、性能以及局限性。'
 doc_type: 'reference'
-keywords: ['物化视图', '投影', '差异']
+keywords: ['materialized view', '投影', '差异']
 ---
 
-> 用户经常会问：在什么情况下应该使用物化视图，而什么时候应该使用投影？在本文中，我们将探讨二者之间的关键差异，以及在某些场景下为何可能更适合选择其中之一。
+> 用户经常会问：在什么情况下应该使用materialized view，而什么时候应该使用投影？在本文中，我们将探讨二者之间的关键差异，以及在某些场景下为何可能更适合选择其中之一。
 
 ## 关键差异概览 \{#key-differences\}
 

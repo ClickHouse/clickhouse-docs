@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/materialized_views
-title: 'ClickStack - Materialized Views'
-sidebar_label: 'Materialized Views'
+title: 'ClickStack - materialized views'
+sidebar_label: 'Materialized views'
 description: '使用 materialized view 优化 ClickStack 性能'
 doc_type: 'guide'
 keywords: ['clickstack', '可观测性', 'materialized views', '性能', '优化', '可视化', '聚合']

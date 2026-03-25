@@ -18,9 +18,9 @@ import replay_search from '@site/static/images/clickstack/session-replay/replay-
 import trace_to_replay from '@site/static/images/clickstack/session-replay/trace-to-replay.png';
 import clickpy_trace from '@site/static/images/clickstack/session-replay/clickpy-trace.gif';
 
-ClickStack 中的会话回放功能会捕获并重建用户在 Web 应用中的交互，使你能够在界面中精确重放用户在整个会话期间所看到的内容和执行的操作。SDK 并非录制视频，而是记录 DOM 变更、鼠标移动、点击、滚动、键盘输入、控制台日志输出、网络请求（XHR、Fetch、WebSocket）以及 JavaScript 异常，然后在浏览器中还原整个使用体验。
+ClickStack 中的会话回放功能会捕获并重建用户在 Web 应用中的交互，使你能够在界面中精确重放用户在整个会话期间所看到的内容和执行的操作。SDK 并非录制视频，而是记录 DOM 变更、鼠标移动、点击、滚动、键盘输入、控制台日志输出、网络请求 (XHR、Fetch、WebSocket) 以及 JavaScript 异常，然后在浏览器中还原整个使用体验。
 
-由于会话回放与日志、追踪数据（traces）和指标一同存储在 ClickHouse 中，你可以从观看用户体验无缝切换到检查支撑该体验的后端追踪和数据库查询——只需点击几下即可完成。这使得会话回放非常适合用于调试生产问题、理解用户行为、识别用户体验中的阻碍点，以及以可视化方式确认用户反馈给支持团队的问题。
+由于会话回放与日志、链路追踪数据 (traces) 和指标一同存储在 ClickHouse 中，你可以从观看用户体验无缝切换到检查支撑该体验的后端链路追踪和数据库查询——只需点击几下即可完成。这使得会话回放非常适合用于调试生产问题、理解用户行为、识别用户体验中的阻碍点，以及以可视化方式确认用户反馈给支持团队的问题。
 
 
 ## 为应用添加埋点 \{#instrumentation\}
@@ -121,11 +121,11 @@ Browser SDK 还支持为对隐私敏感的应用进行[输入和文本遮罩](/u
 
 <img src={clickpy_trace} alt="从会话回放深入到 ClickStack 中的后端 trace" />
 
-### 从 trace 到会话 \{#trace-to-session\}
+### 从 链路追踪 到会话 \{#trace-to-session\}
 
-关联也可以从反方向进行。在 **Search** 视图中查看某个 trace 时，点击它以打开 trace 详情页，然后选择 **Session Replay** 选项卡，即可准确看到该 trace 发生时用户实际经历的情况。这在排查错误或慢请求时尤其有用——你可以从后端问题入手，立即看到用户视角。
+关联也可以从反方向进行。在 **Search** 视图中查看某个 链路追踪 时，点击它以打开 链路追踪 详情页，然后选择 **Session replay** 选项卡，即可准确看到该 链路追踪 发生时用户实际经历的情况。这在排查错误或慢请求时尤其有用——你可以从后端问题入手，立即看到用户视角。
 
-<Image img={trace_to_replay} alt="Session replay trace view" size="lg"/>
+<Image img={trace_to_replay} alt="Session replay trace view" size="lg" />
 
 ## 会话数据如何存储 \{#data-storage\}
 
@@ -137,14 +137,14 @@ Browser SDK 还支持为对隐私敏感的应用进行[输入和文本遮罩](/u
 
 有两种方式可以查看会话回放的实际效果：
 
-- **在线示例** — 访问 [clickpy.clickhouse.com](https://clickpy.clickhouse.com)，与应用交互，然后在 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 的 **ClickPy Sessions** 数据源中查看你的会话回放。要了解 ClickPy 是如何完成埋点的，请参阅博客文章 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack)。
-- **本地演示** — [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) 将一步步演示如何为一个示例应用进行埋点，包括在本地运行 ClickStack 并查看回放。
+* **在线示例** — 访问 [clickpy.clickhouse.com](https://clickpy.clickhouse.com)，与应用交互，然后在 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 的 **ClickPy Sessions** 数据源中查看你的会话回放。要了解 ClickPy 是如何完成埋点的，请参阅博客文章 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack)。
+* **本地演示** — [Session replay demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) 将一步步演示如何为一个示例应用进行埋点，包括在本地运行 ClickStack 并查看回放。
 
 ## 了解更多 \{#learn-more\}
 
-- [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — 提供分步说明的交互式本地演示应用程序
-- [Browser SDK Reference](/use-cases/observability/clickstack/sdks/browser) — 完整的 SDK 配置选项、source maps、自定义操作和高级配置
-- [Search](/use-cases/observability/clickstack/search) — 用于筛选会话和事件的搜索语法
-- [Dashboards](/use-cases/observability/clickstack/dashboards) — 基于会话和跟踪（trace）数据构建可视化和仪表板
-- [Alerts](/use-cases/observability/clickstack/alerts) — 为错误、延迟和其他信号配置告警
-- [ClickStack Architecture](/use-cases/observability/clickstack/architecture) — 了解 ClickHouse、HyperDX 和 OTel collector 如何协同工作
+* [Session replay demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — 提供分步说明的交互式本地演示应用程序
+* [Browser SDK Reference](/use-cases/observability/clickstack/sdks/browser) — 完整的 SDK 配置选项、source maps、自定义操作和高级配置
+* [Search](/use-cases/observability/clickstack/search) — 用于筛选会话和事件的搜索语法
+* [Dashboards](/use-cases/observability/clickstack/dashboards) — 基于会话和链路追踪数据构建可视化和仪表板
+* [Alerts](/use-cases/observability/clickstack/alerts) — 为错误、延迟和其他信号配置告警
+* [ClickStack Architecture](/use-cases/observability/clickstack/architecture) — 了解 ClickHouse、HyperDX 和 OTel collector 如何协同工作

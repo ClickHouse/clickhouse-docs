@@ -14,7 +14,7 @@ import snapshot_params from '@site/static/images/integrations/data-ingestion/cli
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';
 
-이 문서는 MySQL ClickPipe에서 병렬 처리된 스냅샷/초기 로드가 동작하는 방식과 이를 제어하는 데 사용할 수 있는 스냅샷 매개변수에 대해 설명합니다.
+이 문서는 MySQL ClickPipe에서 병렬 스냅샷/초기 로드가 동작하는 방식과 이를 제어하는 데 사용할 수 있는 스냅샷 매개변수에 대해 설명합니다.
 
 
 ## 개요 \{#overview-mysql-snapshot\}

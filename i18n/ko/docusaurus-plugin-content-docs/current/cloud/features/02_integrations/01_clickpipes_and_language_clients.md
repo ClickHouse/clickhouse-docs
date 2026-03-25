@@ -2,7 +2,7 @@
 sidebar_label: 'ClickPipes 및 언어 클라이언트'
 slug: /manage/integrations
 title: 'ClickPipes 및 언어 클라이언트'
-description: 'ClickHouse Cloud를 위한 ClickPipes 및 언어 클라이언트 통합'
+description: 'ClickHouse Cloud용 ClickPipes 및 언어 클라이언트 통합'
 doc_type: 'landing-page'
 keywords: ['통합', 'Cloud 기능', 'clickpipes', 'language clients', 'connectors']
 ---

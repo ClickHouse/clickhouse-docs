@@ -2,7 +2,7 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud 호환성'
 title: 'Cloud 호환성'
-description: '이 가이드는 ClickHouse Cloud에서 기능 및 운영 측면에서 무엇을 기대할 수 있는지에 대한 개요를 제공합니다.'
+description: '이 가이드는 ClickHouse Cloud에서 기능 및 운영 측면에서 어떤 점을 기대할 수 있는지에 대한 개요를 제공합니다.'
 keywords: ['ClickHouse Cloud', '호환성']
 doc_type: 'guide'
 ---

@@ -3,7 +3,7 @@ slug: /optimize/skipping-indexes
 sidebar_label: '数据跳过索引'
 sidebar_position: 2
 description: '跳过索引使 ClickHouse 能够在确定没有匹配值时跳过读取大块数据。'
-title: '了解 ClickHouse 数据跳过索引'
+title: '深入了解 ClickHouse 数据跳过索引'
 doc_type: 'guide'
 keywords: ['跳过索引', '数据跳过', '性能', '索引', '最佳实践']
 ---
@@ -11,7 +11,6 @@ keywords: ['跳过索引', '数据跳过', '性能', '索引', '最佳实践']
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
-
 
 # 深入了解 ClickHouse 数据跳过索引 \{#understanding-clickhouse-data-skipping-indexes\}
 

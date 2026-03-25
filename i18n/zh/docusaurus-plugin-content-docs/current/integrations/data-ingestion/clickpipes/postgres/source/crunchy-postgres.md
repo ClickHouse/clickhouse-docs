@@ -2,7 +2,7 @@
 sidebar_label: 'Crunchy Bridge Postgres'
 description: '将 Crunchy Bridge Postgres 设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres 源配置指南'
+title: 'Crunchy Bridge Postgres 源端设置指南'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
 doc_type: 'guide'
 integration:
@@ -13,7 +13,6 @@ integration:
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
-
 
 # Crunchy Bridge Postgres 源端设置指南 \{#crunchy-bridge-postgres-source-setup-guide\}
 

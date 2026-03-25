@@ -17,6 +17,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # ClickStack를 사용한 Kafka 메트릭 모니터링 \{#kafka-metrics-clickstack\}
 
 :::note[TL;DR]

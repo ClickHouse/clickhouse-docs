@@ -4886,6 +4886,13 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 すでにこの設定で保存されたデータパーツヘッダーを、以前の（非コンパクトな）表現に戻すことはできません。
 :::
 
+## use_separate_cache_arena \{#use_separate_cache_arena\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+キャッシュのアロケーション (マークキャッシュ、非圧縮キャッシュ、ページキャッシュ) 用に、専用の jemalloc arena を有効にします。
+キャッシュデータをクエリ処理時のアロケーションから分離することで、メモリの断片化を軽減します。
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 実行可能ユーザー定義関数用の設定ファイルへのパスです。

@@ -12,6 +12,7 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
+
 ## 适用于 AWS 的客户管理的 VPC (BYO-VPC) \{#customer-managed-vpc-aws\}
 
 如果您希望使用现有 VPC 部署 ClickHouse BYOC，而不是由 ClickHouse Cloud 预配新的 VPC，请按照以下步骤操作。此方式可让您更好地控制网络配置，并将 ClickHouse BYOC 集成到现有的网络基础设施中。

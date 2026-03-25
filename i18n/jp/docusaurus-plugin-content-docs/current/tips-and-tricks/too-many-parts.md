@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
-sidebar_label: 'パーツ数が多すぎる'
+sidebar_label: 'パーツが多すぎる'
 doc_type: 'guide'
 keywords: [
   'ClickHouse パーツ数が多すぎる',
@@ -10,14 +10,14 @@ keywords: [
   'パーツの爆発的増加問題',
   'ClickHouse マージ性能',
   'バッチ挿入の最適化',
-  'ClickHouse 非同期挿入',
+  'ClickHouse 非同期インサート',
   '小さな挿入の問題',
   'ClickHouse パーツ管理',
   '挿入パフォーマンスの最適化',
   'ClickHouse バッチ挿入戦略',
   'データベース挿入パターン'
 ]
-title: 'レッスン - パーツ数が多すぎる問題'
+title: 'レッスン - パーツが多すぎる問題'
 description: 'Too Many Parts の解決策と防止策'
 ---
 

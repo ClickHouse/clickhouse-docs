@@ -1,14 +1,14 @@
 ---
-sidebar_label: '高度な利用'
+sidebar_label: '高度な利用方法'
 sidebar_position: 6
 keywords: ['clickhouse', 'python', 'advanced', 'raw', 'async', 'threading']
-description: 'ClickHouse Connect を使った高度な利用'
+description: 'ClickHouse Connect を使った高度な利用方法'
 slug: /integrations/language-clients/python/advanced-usage
-title: '高度な利用'
+title: '高度な利用方法'
 doc_type: 'reference'
 ---
 
-# 高度な使い方 \{#advanced-usage\}
+# 高度な利用方法 \{#advanced-usage\}
 
 ## Raw API \{#raw-api\}
 

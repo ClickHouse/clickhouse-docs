@@ -2770,6 +2770,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество частей, объединённых в формат Wide.
 
+### MergedProjections \{#mergedprojections\}
+
+Количество проекций, слитых (а не перестроенных) в ходе слияний в MergeTree.
+
 ### MergedRows \{#mergedrows\}
 
 Число строк, прочитанных для фоновых слияний. Это количество строк до слияния.
@@ -3713,6 +3717,10 @@ Number of queries to be interpreted and potentially executed. Does not include q
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 Общее реальное (астрономическое) время, затраченное потоками на обработку (запросов и других задач) (обратите внимание, что это сумма).
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+Количество проекций, заново перестроенных в ходе слияний MergeTree.
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

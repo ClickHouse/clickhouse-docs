@@ -24,11 +24,11 @@ ClickStack のイベントパターン機能を使うと、類似したメッセ
 
 ## イベントパターンへのアクセス \{#accessing-event-patterns\}
 
-イベントパターンは、ClickStack の **Search** パネルから直接利用できます。  
+イベントパターンは、ClickStack の **Search** パネルから直接利用できます。
 
-左上にある **Analysis Mode** セレクターで **Event Patterns** を選択すると、標準の結果テーブルビューから、類似したイベントをクラスタリングしたビューに切り替わります。  
+左上にある **Analysis Mode** セレクターで **Event patterns** を選択すると、標準の結果テーブルビューから、類似したイベントをクラスタリングしたビューに切り替わります。
 
-<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg" />
 
 これにより、すべてのログやトレースを 1 件ずつスクロールして確認するデフォルトの **Results Table** に代わる表示方法が提供されます。
 

@@ -1,6 +1,6 @@
 ---
 title: 'Справочник по классу DataStore'
-sidebar_label: 'Справочник по классам'
+sidebar_label: 'Справочник по классу'
 slug: /chdb/datastore/class-reference
 description: 'Полная справочная информация по API для классов DataStore, ColumnExpr, LazyGroupBy и LazySeries'
 keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazygroupby']

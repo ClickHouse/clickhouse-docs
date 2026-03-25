@@ -1,8 +1,8 @@
 ---
-title: 'DataStore のログ記録'
-sidebar_label: 'ログ記録'
+title: 'DataStore のロギング'
+sidebar_label: 'ロギング'
 slug: /chdb/debugging/logging
-description: 'デバッグと監視のために DataStore のログ記録を設定する'
+description: 'デバッグと監視のために DataStore のロギングを設定する'
 keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
