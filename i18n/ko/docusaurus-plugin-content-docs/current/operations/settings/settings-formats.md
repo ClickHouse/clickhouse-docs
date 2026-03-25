@@ -2495,6 +2495,14 @@ INSERT 문 하나에 포함될 수 있는 최대 행 수입니다.
 
 INSERT 대신 REPLACE 문을 사용합니다
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "텍스트 출력 형식에서 FixedString 값의 후행 0 바이트를 잘라내는 새 설정"}]}]} />
+
+텍스트 출력 형식에서 FixedString 값의 후행 null 바이트를 잘라냅니다. 예를 들어 `toFixedString('John', 8)`은 `John\0\0\0\0` 대신 `John`으로 출력됩니다.
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

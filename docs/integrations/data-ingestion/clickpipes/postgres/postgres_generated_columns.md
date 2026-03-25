@@ -1,5 +1,5 @@
 ---
-title: 'Postgres Generated Columns: Gotchas and Best Practices'
+title: 'Postgres generated columns: gotchas and best practices'
 slug: /integrations/clickpipes/postgres/generated_columns
 description: 'Page describing important considerations to keep in mind when using PostgreSQL generated columns in tables that are being replicated'
 doc_type: 'guide'

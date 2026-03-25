@@ -19,7 +19,6 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack를 사용한 Node.js 트레이스 모니터링 \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
@@ -120,7 +119,7 @@ docker run -d --name clickstack-demo \
 
 ClickStack의 OTLP 엔드포인트로 트레이스를 전송하려면 API key가 필요합니다.
 
-1. ClickStack URL(예: http://localhost:8080)에서 HyperDX를 엽니다.
+1. ClickStack URL(예: http://localhost:8080) 에서 HyperDX를 엽니다.
 2. 필요하다면 계정을 생성하거나 로그인합니다.
 3. **Team Settings → API Keys**로 이동합니다.
 4. **Ingestion API Key(수집 API key)**를 복사합니다.
@@ -204,7 +203,6 @@ curl -X POST http://localhost:4318/v1/traces \
 
 이는 데모용 curl 방식을 사용할 때 발생하는 것으로 알려진 문제이며, 계측이 적용된 프로덕션 애플리케이션에는 영향을 주지 않습니다.
 
-
 ### HyperDX에 트레이스가 표시되지 않는 경우 \{#no-traces\}
 
 **환경 변수가 올바르게 설정되어 있는지 확인하십시오.**
@@ -227,7 +225,6 @@ OTLP 엔드포인트에 성공적으로 연결되어야 합니다.
 
 **애플리케이션 로그 확인:**
 애플리케이션이 시작될 때 OpenTelemetry 초기화 메시지가 출력되는지 확인하십시오. HyperDX SDK가 초기화되었음을 나타내는 확인 메시지를 출력해야 합니다.
-
 
 ## 다음 단계 \{#next-steps\}
 

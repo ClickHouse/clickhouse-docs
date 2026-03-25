@@ -1,12 +1,12 @@
 ---
 slug: /data-modeling/overview
-title: 'Data Modelling Overview'
+title: 'Data modelling overview'
 description: 'Overview of Data Modelling'
 keywords: ['data modelling', 'schema design', 'dictionary', 'materialized view', 'data compression', 'denormalizing data']
 doc_type: 'landing-page'
 ---
 
-# Data Modeling 
+# Data modeling 
 
 This section is about data modeling in ClickHouse and contains the following topics:
 

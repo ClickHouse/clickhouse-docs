@@ -1,10 +1,10 @@
 ---
-sidebar_position: 4
-sidebar_label: 'Make Before Break (MBB)'
+sidebar_position: 1
+sidebar_label: 'Make before break (MBB)'
 slug: /cloud/features/mbb
-description: 'Page describing Make Before Break (MBB) operations in ClickHouse Cloud'
-keywords: ['Make Before Break', 'MBB', 'Scaling', 'ClickHouse Cloud']
-title: 'Make Before Break (MBB) operations in ClickHouse Cloud'
+description: 'Page describing Make before break (MBB) operations in ClickHouse Cloud'
+keywords: ['Make before break', 'MBB', 'Scaling', 'ClickHouse Cloud']
+title: 'Make before break (MBB) operations in ClickHouse Cloud'
 doc_type: 'guide'
 ---
 

@@ -216,16 +216,26 @@ EXTRACT(part FROM date);
 
 `part` 파라미터는 날짜의 어느 파트를 가져올지 지정합니다. 사용할 수 있는 값은 다음과 같습니다:
 
-* `DAY` — 한 달 중 일(day)입니다. 가능한 값: 1–31.
-* `MONTH` — 월을 나타내는 숫자입니다. 가능한 값: 1–12.
-* `YEAR` — 연도입니다.
 * `SECOND` — 초입니다. 가능한 값: 0–59.
 * `MINUTE` — 분입니다. 가능한 값: 0–59.
 * `HOUR` — 시입니다. 가능한 값: 0–23.
+* `DAY` — 한 달 중 일(day)입니다. 가능한 값: 1–31.
+* `WEEK` — ISO 8601 주 번호입니다. 가능한 값: 1–53.
+* `MONTH` — 월을 나타내는 숫자입니다. 가능한 값: 1–12.
+* `QUARTER` — 분기입니다. 가능한 값: 1–4.
+* `YEAR` — 연도입니다.
+* `EPOCH` — Unix 타임스탬프입니다(1970-01-01 00:00:00 UTC 이후의 초). 참고: `DateTime64`의 경우, 1초 미만 부분은 잘립니다.
+* `DOW` — 요일입니다(PostgreSQL 호환). 0 = 일요일, 6 = 토요일입니다.
+* `DOY` — 연중 일수입니다. 가능한 값: 1–366.
+* `ISODOW` — ISO 요일입니다. 1 = 월요일, 7 = 일요일입니다.
+* `ISOYEAR` — ISO 8601 주 번호 기준 연도입니다.
+* `CENTURY` — 세기입니다. 예를 들어, 2024년은 21세기에 속합니다.
+* `DECADE` — 10년 단위입니다(연도를 10으로 나눈 값). 예를 들어, 2024년의 decade는 202입니다.
+* `MILLENNIUM` — 천년 단위입니다. 예를 들어, 2024년은 제3천년기에 속합니다.
 
 `part` 파라미터는 대소문자를 구분하지 않습니다.
 
-`date` 파라미터는 처리할 날짜 또는 시간을 지정합니다. [Date](../../sql-reference/data-types/date.md) 형식과 [DateTime](../../sql-reference/data-types/datetime.md) 형식을 모두 지원합니다.
+`date` 파라미터는 처리할 날짜 또는 시간을 지정합니다. [Date](../../sql-reference/data-types/date.md), [Date32](../../sql-reference/data-types/date32.md), [DateTime](../../sql-reference/data-types/datetime.md), [DateTime64](../../sql-reference/data-types/datetime64.md) 타입을 지원합니다.
 
 예시:
 
@@ -233,9 +243,12 @@ EXTRACT(part FROM date);
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
 SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
+SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
+SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
+SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
 ```
 
-다음 예제에서는 테이블을 생성하고, 해당 테이블에 `DateTime` 타입 값을 하나 INSERT합니다.
+다음 예시에서는 테이블을 생성하고, 해당 테이블에 `DateTime` 타입 값을 하나 INSERT합니다.
 
 ```sql
 CREATE TABLE test.Orders
@@ -243,8 +256,8 @@ CREATE TABLE test.Orders
     OrderId UInt64,
     OrderName String,
     OrderDate DateTime
-)
-ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 ```sql
@@ -268,8 +281,7 @@ FROM test.Orders;
 └───────────┴────────────┴──────────┴───────────┴─────────────┴─────────────┘
 ```
 
-[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)에서 더 많은 예제를 확인할 수 있습니다.
-
+[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)에서 더 많은 예시를 확인할 수 있습니다.
 
 ### INTERVAL \{#interval\}
 

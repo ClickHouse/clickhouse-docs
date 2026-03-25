@@ -309,6 +309,48 @@ v24.8 以降では、新しいテーブルレベルの設定 [`deduplicate_merge
 - `drop`: 影響を受けるプロジェクションテーブルのパーツを削除します。クエリは、影響を受けるプロジェクションパーツについて元のテーブルパーツの読み取りにフォールバックします。
 - `rebuild`: 影響を受けるプロジェクションパーツを再構築し、元のテーブルパーツ内のデータと整合した状態を保ちます。
 
+## 制限事項 \{#limitations\}
+
+PROJECTION の `ORDER BY` 句では、`ALIAS` カラムを使用できません。例:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` カラムは物理的に保存されず、クエリ時にその場で計算されるため、ソート式が評価される PROJECTION パートの書き込みパスでは使用できません。
+
+代わりに、`MATERIALIZED` カラムを使用するか、式を直接埋め込んでください。
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
+
 ## 関連項目 \{#see-also\}
 
 - ["Control Of Projections During Merges"（ブログ記事）](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)

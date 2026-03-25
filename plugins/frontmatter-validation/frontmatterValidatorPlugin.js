@@ -22,11 +22,11 @@ function frontmatterValidatorPlugin(context, options) {
             
             if (filesWithIssues.length > 0) {
                 if (options && options.failBuild) {
-                    console.error('\n🚨 Build failed: Frontmatter validation issues found');
+                    console.error('\nBuild failed: Frontmatter validation issues found');
                     console.error('The following files have frontmatter issues:');
 
                     filesWithIssues.forEach(({ filePath, issues }) => {
-                        console.error(`\n📄 ${filePath}:`);
+                        console.error(`\n${filePath}:`);
                         issues.forEach(issue => {
                             console.error(`  • ${issue}`);
                         });
@@ -45,7 +45,7 @@ function frontmatterValidatorPlugin(context, options) {
                     console.log('See frontmatter-validation-errors.log (when running locally)')
 
                     // Fail the build by throwing an error
-                    console.error('🚨Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
+                    console.error('Frontmatter validation failed. For more details see https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/style-guide.md');
                     // Create a signal file
                     fs.writeFileSync(
                         path.join(process.cwd(), '.frontmatter-validation-failed'),
@@ -53,11 +53,11 @@ function frontmatterValidatorPlugin(context, options) {
                     );
                     process.exit(1);
                 } else {
-                    console.log(`⚠️ Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
+                    console.log(`Warning: Found ${filesWithIssues.length} files containing problems with frontmatter`)
                 }
 
             } else {
-                console.log('✅ All markdown files passed frontmatter validation.');
+                console.log('All markdown files passed frontmatter validation.');
             }
         }
     };

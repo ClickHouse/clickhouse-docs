@@ -15,9 +15,9 @@ doc_type: 'guide'
 
 MergeTree имеет несколько преимуществ по сравнению с прямым чтением открытых табличных форматов:
 
-* **[Разреженный первичный индекс](/optimize/sparse-primary-indexes)** — упорядочивает данные на диске по выбранному ключу, позволяя ClickHouse пропускать большие диапазоны нерелевантных строк при выполнении запросов.
-* **Расширенные типы данных** — нативная поддержка таких типов, как [JSON](/sql-reference/data-types/json), [LowCardinality](/sql-reference/data-types/lowcardinality) и [Enum](/sql-reference/data-types/enum), обеспечивает более компактное хранение и более быструю обработку.
-* **[Индексы пропуска](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** и **[полнотекстовые индексы](/engines/table-engines/mergetree-family/invertedindexes)** — структуры вторичных индексов, которые позволяют ClickHouse пропускать гранулы, не соответствующие предикатам фильтрации в запросе; особенно эффективны для нагрузок, связанных с текстовым поиском.
+* **[Разреженный первичный индекс](/guides/best-practices/sparse-primary-indexes)** — упорядочивает данные на диске по выбранному ключу, позволяя ClickHouse пропускать большие диапазоны нерелевантных строк при выполнении запросов.
+* **Расширенные типы данных** — нативная поддержка таких типов, как [JSON](/best-practices/use-json-where-appropriate), [LowCardinality](/sql-reference/data-types/lowcardinality) и [Enum](/sql-reference/data-types/enum), обеспечивает более компактное хранение и более быструю обработку.
+* **[Индексы пропуска](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** и **[полнотекстовые индексы](/engines/table-engines/mergetree-family/textindexes)** — структуры вторичных индексов, которые позволяют ClickHouse пропускать гранулы, не соответствующие предикатам фильтрации в запросе; особенно эффективны для нагрузок, связанных с текстовым поиском.
 * **Быстрые вставки с автоматической компакцией** — ClickHouse рассчитан на вставки с высокой пропускной способностью и автоматически объединяет части данных в фоновом режиме, аналогично компакции в открытых табличных форматах.
 * **Оптимизировано для параллельного чтения** — столбцовая структура хранения MergeTree в сочетании с [несколькими уровнями кэширования](/operations/caches) поддерживает аналитические нагрузки в реальном времени с высокой степенью параллелизма — то, для чего открытые табличные форматы не предназначены.
 
@@ -128,7 +128,7 @@ Peak memory usage: 4.35 GiB.
 
 * **Без обёрток `Nullable`** — удаление `Nullable` повышает эффективность хранения и производительность запросов.
 * **`LowCardinality(String)`** для столбцов `level`, `instance_type`, `thread_name` и `check_name` — столбец кодируется как словарь, если в нём мало различных значений, что улучшает сжатие и ускоряет фильтрацию.
-* **[Полнотекстовый индекс](/engines/table-engines/mergetree-family/invertedindexes)** для столбца `message` — ускоряет полнотекстовый поиск по токенам, например `hasToken(message, 'error')`.
+* **[Полнотекстовый индекс](/engines/table-engines/mergetree-family/textindexes)** для столбца `message` — ускоряет полнотекстовый поиск по токенам, например `hasToken(message, 'error')`.
 * **Ключ `ORDER BY`** `(instance_type, thread_name, toStartOfMinute(event_time))` — размещает данные на диске в соответствии с типичными шаблонами фильтрации, чтобы [разреженный первичный индекс](/guides/best-practices/sparse-primary-indexes) мог пропускать нерелевантные гранулы.
 
 ```sql

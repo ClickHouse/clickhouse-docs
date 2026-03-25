@@ -1,6 +1,6 @@
 ---
 slug: /guides/developer/lightweight-delete
-title: 'Lightweight Delete'
+title: 'Lightweight delete'
 keywords: ['lightweight delete']
 description: 'Provides an overview of lightweight deletes in ClickHouse'
 doc_type: 'reference'

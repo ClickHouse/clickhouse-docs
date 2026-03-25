@@ -17,7 +17,7 @@ keywords: [
   'breaking database conventions',
   'production success stories'
 ]
-title: 'Lessons - Creative Use Cases'
+title: 'Lessons - creative use cases'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 

@@ -25,7 +25,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_time_ms UInt32,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', 82, 1),
@@ -80,5 +81,6 @@ GROUP BY endpoint;
 ```
 
 ## См. также \{#see-also\}
-- [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+* [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/hyperdx-only
-title: 'HyperDX Only'
+title: 'HyperDX only'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4

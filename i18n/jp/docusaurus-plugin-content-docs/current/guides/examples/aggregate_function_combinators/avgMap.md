@@ -24,7 +24,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -60,6 +61,8 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map コンビネータ`](/sql-reference/aggregate-functions/combinators#-map)

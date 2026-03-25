@@ -34,11 +34,11 @@ To restrict which clients can call your Query API endpoints:
 
 1. Go to ClickHouse Cloud Console → **Organization** → **API Keys**
 
-<Image img={console_api_keys} alt="API Keys"/>
+<Image img={console_api_keys} size="md" alt="API Keys"/>
 
 2. Click **Edit** next to the API key used for Query API endpoints
 
-<Image img={edit_api_key} alt="Edit"/>
+<Image img={edit_api_key} size="md" alt="Edit"/>
 
 #### Add allowed IP addresses {#add-ips}
 
@@ -46,7 +46,7 @@ To restrict which clients can call your Query API endpoints:
 2. Enter IP addresses or CIDR ranges (e.g., `203.0.113.1` or `203.0.113.0/24`)
 3. Add multiple entries as needed
 
-<Image img={specific_locations} alt="Specific locations"/>
+<Image img={specific_locations} size="md" alt="Specific locations"/>
 
 Creating Query API endpoints requires an Admin Console Role and an API key with appropriate permissions.
 

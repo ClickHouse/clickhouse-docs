@@ -1,61 +1,58 @@
 ---
 slug: /updating-data/overview
-title: '개요'
-description: 'ClickHouse에서 데이터를 업데이트하는 방법'
+title: 'ClickHouse의 업데이트'
+description: '사용 가능한 업데이트 방법과 워크로드에 맞는 올바른 방법을 선택하는 방법을 안내합니다.'
 keywords: ['업데이트', '데이터 업데이트', '뮤테이션', '경량 업데이트']
 doc_type: 'guide'
+sidebar_label: '업데이트 작업'
 ---
 
-업데이트를 처리하는 방식에서 분석용 데이터베이스와 트랜잭션 데이터베이스는 기본 설계 철학과 목표 사용 사례가 다르기 때문에 상당히 다른 동작 방식을 보입니다.
-예를 들어 PostgreSQL은 행 지향이며 ACID를 준수하는 관계형 데이터베이스로, Multi-Version Concurrency Control([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control))과 같은 메커니즘을 통해 트랜잭션 특성을 갖는 견고한 업데이트 및 삭제 작업을 지원하여 데이터 일관성과 무결성을 보장합니다.
-이를 통해 높은 동시성 환경에서도 안전하고 신뢰할 수 있는 데이터 변경이 가능합니다.
+업데이트 처리 방식은 기반 설계 철학과 목표 사용 사례가 다르기 때문에, 분석용 데이터베이스와 트랜잭션 데이터베이스가 서로 다르게 접근합니다.
+ClickHouse는 읽기 중심 분석과 높은 처리량의 append-only 작업에 최적화된 [컬럼 지향 데이터베이스](/intro#row-oriented-vs-column-oriented-storage)입니다.
+실제 환경에서는 삭제 및 업데이트를 append 작업으로 전환할 수 있도록 테이블을 재구성하는 경우가 많습니다. 이러한 작업은 비동기적으로 처리되거나 읽기 시점에 처리되며, 이를 통해 ClickHouse의 강점인 높은 처리량의 데이터 수집 성능을 활용할 수 있습니다.
+ClickHouse는 강력한 업데이트 및 삭제 작업도 지원합니다.
 
-반면 ClickHouse는 읽기 위주의 분석과 높은 처리량의 append-only 작업에 최적화된 컬럼 지향 데이터베이스입니다.
-ClickHouse는 제자리(in-place) 업데이트와 삭제를 네이티브로 지원하지만, 높은 I/O를 피하려면 신중하게 사용해야 합니다.
-또 다른 방법으로는 테이블 구조를 변경하여 삭제와 업데이트를 추가 작업으로 전환한 뒤, 이를 비동기적으로 및/또는 읽기 시점에 처리하도록 구성할 수 있으며, 이를 통해 실시간 데이터 조작보다는 높은 처리량의 데이터 수집과 효율적인 쿼리 성능에 초점을 맞출 수 있습니다.
-
-이 가이드는 ClickHouse에서 사용 가능한 업데이트 방법을 개괄하고, 사용 사례에 적합한 업데이트 전략을 선택하는 데 도움을 줍니다.
+이 가이드에서는 ClickHouse에서 사용할 수 있는 업데이트 방법을 개괄적으로 설명하고, 워크로드에 적합한 업데이트 전략을 선택할 수 있도록 안내합니다.
 
 ## 업데이트 전략 선택 \{#choosing-an-update-strategy\}
 
 ClickHouse에서 데이터를 업데이트하는 기본적인 접근 방식은 두 가지입니다:
 
-1. **특수 테이블 엔진(specialized table engines)** 을 사용하여 insert를 통해 업데이트를 처리하는 방법
-2. [`UPDATE ... SET`](/sql-reference/statements/update) 또는 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) SQL 문과 같은 **선언적 업데이트(declarative updates)** 를 사용하는 방법
+1. **특화된 테이블 엔진**을 사용하여 **삽입**을 통해 업데이트를 처리하는 방법
+2. [`UPDATE ... SET`](/sql-reference/statements/update) 또는 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) 문과 같은 **선언적 업데이트**를 사용하는 방법
 
-위의 두 범주 각각에도 데이터를 업데이트하는 여러 가지 방법이 있습니다.
-각 방법은 고유한 장점과 성능 특성을 가지므로, 데이터 모델과 업데이트하려는 데이터 양에 따라 적절한 방식을 선택해야 합니다.
+위의 두 범주 각각에는 데이터를 업데이트하는 여러 가지 방법이 있습니다.
+각 방법은 장점과 성능 특성이 다르므로, 데이터 모델과 업데이트하려는 데이터 양에 따라 적절한 방법을 선택해야 합니다.
 
-### 전용 테이블 엔진을 사용할 때 \{#when-to-use-specialized-table-engines\}
+### 특화된 테이블 엔진을 사용할 때 \{#when-to-choose-specialised-table-engines\}
 
-대량의 업데이트가 있거나 행 단위 변경이 자주 발생하거나, 업데이트 및 삭제 이벤트의 연속 스트림을 처리해야 하는 경우에는 전용 테이블 엔진을 사용하는 것이 더 적합합니다.
+대량의 업데이트가 있거나 행 단위 변경이 자주 발생하거나, 업데이트 및 삭제 이벤트의 연속 스트림을 처리해야 하는 경우에는 특화된 테이블 엔진을 사용하는 것이 더 적합합니다.
 
 일반적으로 가장 많이 사용하는 엔진은 다음과 같습니다:
 
-| Engine                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
-|---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 대량의 데이터를 업데이트해야 할 때 사용합니다. 이 테이블 엔진은 머지 과정에서 데이터 중복 제거에 최적화되어 있습니다.                                                                                                                                |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | 데이터가 조각(fragment) 형태로 도착하고, 전체 행 교체가 아니라 컬럼 단위 병합(coalescing)이 필요할 때 사용합니다.                                                                                                                                |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 개별 행을 자주 업데이트해야 하거나, 시간이 지나면서 변경되는 객체의 최신 상태를 유지해야 하는 시나리오에서 사용합니다. 예를 들어, 사용자 활동이나 게시글 통계를 추적하는 경우에 적합합니다.                                       |
+| Engine                                                                             | Syntax                               | When to use                                                                                                 |
+| ---------------------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 대량의 데이터를 업데이트해야 할 때 사용합니다. 이 테이블 엔진은 머지 과정에서 데이터 중복 제거에 최적화되어 있습니다.                                         |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | 데이터가 조각(fragment) 형태로 도착하고, 전체 행 교체가 아니라 컬럼 단위 병합(coalescing)이 필요할 때 사용합니다.                                 |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 개별 행을 자주 업데이트해야 하거나, 시간이 지나면서 변경되는 객체의 최신 상태를 유지해야 하는 시나리오에서 사용합니다. 예를 들어, 사용자 활동이나 게시글 통계를 추적하는 경우에 적합합니다. |
 
-MergeTree 계열 테이블 엔진은 백그라운드에서 데이터 파트(parts)를 머지하므로 _결과적 일관성(eventual consistency)_ 을 제공합니다. 따라서 테이블을 쿼리하는 중간 단계에서 올바른 중복 제거를 보장하려면 [`FINAL`](/sql-reference/statements/select/from#final-modifier) 키워드를 사용해야 합니다.
+MergeTree 계열 테이블 엔진은 백그라운드에서 데이터 파트(parts)를 머지하므로 *결과적 일관성(eventual consistency)* 을 제공합니다. 따라서 테이블을 쿼리하는 중간 단계에서 올바른 중복 제거를 보장하려면 [`FINAL`](/sql-reference/statements/select/from#final-modifier) 키워드를 사용해야 합니다.
 다른 [엔진 유형](/engines/table-engines/mergetree-family)도 있지만, 여기서 소개한 엔진들이 가장 일반적으로 사용됩니다.
 
-### 선언적 업데이트를 사용해야 하는 경우 \{#when-to-use-declarative-updates\}
+### 선언적 업데이트를 사용해야 하는 경우 \{#when-to-use-declaritive-updates\}
 
-선언적 `UPDATE` SQL 문은 중복 제거(deduplication) 로직을 직접 관리하는 복잡성 없이 단순한 업데이트 작업을 수행할 때 더 직관적일 수 있습니다. 그러나 일반적으로 전문화된 테이블 엔진을 사용하는 경우보다 적은 수의 행을 상대적으로 드물게 업데이트하는 데 더 적합합니다.
+선언적 `UPDATE` 문은 중복 제거 로직을 관리하는 복잡성 없이 단순한 업데이트 작업을 수행할 때 더 직관적일 수 있지만, 일반적으로 특화된 테이블 엔진보다 더 적은 수의 행을, 더 낮은 빈도로 업데이트하는 경우에 더 적합합니다.
 
-| Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
-|--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | 데이터를 디스크에 즉시 업데이트해야 할 때(예: 컴플라이언스 목적) 사용합니다. `SELECT` 성능에 부정적인 영향을 줍니다.                                                                                                                        |
-| [On-the-fly updates](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | 적은 양의 데이터를 업데이트할 때 사용합니다. 이후의 모든 `SELECT` 쿼리에서 행은 즉시 갱신된 데이터로 반환되지만, 처음에는 디스크 상에서 내부적으로만 업데이트된 것으로 표시됩니다. `SET apply_mutations_on_fly = 1;` 설정으로 활성화합니다.  |
-| [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | 적은 양의 데이터(테이블의 약 10%까지)를 업데이트할 때 사용합니다. 전체 컬럼을 다시 쓰지 않고도 즉시 조회 가능하도록 패치 파트(patch parts)를 생성합니다. `SELECT` 쿼리에 오버헤드를 추가하지만 지연 시간은 예측 가능합니다.                              |
+| Method                                                    | Syntax                         | When to use                                                                                                                                                                                                                                                  |
+| --------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Lightweight updates](/sql-reference/statements/update)   | `UPDATE [table] SET ... WHERE` | 대부분의 시나리오에서, 특히 애플리케이션이나 워크플로의 일부로 빈번하고 소규모의 `UPDATE`(테이블의 약 10%까지)를 실행할 때 사용합니다. 예를 들어, 사용자가 자신의 이벤트 기록을 삭제하려고 하는데 이벤트가 많은 사용자가 포함된 멀티테넌트 테이블 전반에 분산되어 있는 경우입니다. 이 접근 방식은 전체 컬럼을 다시 쓰지 않고도 즉시 표시되도록 패치 파트를 생성합니다. `SELECT` 쿼리에 오버헤드를 추가하지만 지연 시간은 예측 가능합니다. |
+| [Update mutation](/sql-reference/statements/alter/update) | `ALTER TABLE [table] UPDATE`   | 더 큰 규모의 데이터를 관리할 때, 특히 업데이트가 테이블 파티셔닝과 일치하는 경우 사용합니다. 예를 들어, 월 단위로 파티셔닝된 테이블에서 특정 월에 속한 모든 행의 컬럼을 업데이트해야 하는 경우입니다.                                                                                                                                           |
 
 ## 특화된 테이블 엔진을 사용한 업데이트 \{#insert-based-updates\}
 
 ### ReplacingMergeTree \{#replacingmergetree\}
 
-`ReplacingMergeTree`는 백그라운드 병합 과정에서 동일한 정렬 키를 가진 행을 중복 제거하여 최신 버전만 유지합니다.
+`ReplacingMergeTree`는 백그라운드 머지 중에 동일한 정렬 키를 가진 행을 중복 제거하여 최신 버전만 유지합니다.
 
 ```sql
 CREATE TABLE posts
@@ -69,15 +66,14 @@ ENGINE = ReplacingMergeTree(Version)
 ORDER BY Id
 ```
 
-이 엔진은 안정적인 키로 업데이트를 식별할 수 있는 개별 행에 대한 빈번한 업데이트에 이상적입니다.
-벤치마크에 따르면 단일 행 업데이트의 경우 뮤테이션보다 최대 4,700배까지 빠를 수 있습니다.
+이 엔진은 안정적인 키로 업데이트를 식별할 수 있는 개별 행에 대한 고빈도 업데이트에 이상적입니다.
+벤치마크에 따르면 단일 행 업데이트의 경우 mutation보다 최대 4,700배까지 빠를 수 있습니다.
 
-행을 업데이트하려면 동일한 정렬 키 값과 더 높은 버전 번호를 가진 새 버전을 삽입하면 됩니다. 오래된 버전은 백그라운드 머지 중에 제거됩니다. 중복 제거는 머지 시점에만 수행되는 최종적(eventual) 처리이므로, 올바르게 중복 제거된 결과를 얻으려면 `FINAL` 수정자 또는 동등한 쿼리 로직을 사용해야 합니다. `FINAL` 수정자는 데이터에 따라 21~550% 범위의 쿼리 오버헤드를 추가합니다.
+행을 업데이트하려면 동일한 정렬 키 값과 더 높은 버전 번호를 가진 새 버전을 삽입하면 됩니다. 이전 버전은 백그라운드 머지 중에 제거됩니다. 중복 제거는 결국 일어나는 방식으로 처리되므로(즉, 머지 중에만 발생하므로), 올바르게 중복 제거된 결과를 얻으려면 `FINAL` 수정자 또는 이에 상응하는 쿼리 로직을 사용해야 합니다. `FINAL` 수정자는 데이터에 따라 21~550% 범위의 쿼리 오버헤드를 추가합니다.
 
-ReplacingMergeTree는 정렬 키 값을 업데이트할 수 없습니다. 또한 논리적 삭제를 위한 `Deleted` 컬럼을 지원합니다.
+`ReplacingMergeTree`는 정렬 키 값을 업데이트할 수 없습니다. 또한 논리적 삭제를 위한 `Deleted` 컬럼도 지원합니다.
 
-자세히 알아보기: [ReplacingMergeTree 가이드](/guides/replacing-merge-tree) | [ReplacingMergeTree 레퍼런스 문서](/engines/table-engines/mergetree-family/replacingmergetree)
-
+참조하다: [ReplacingMergeTree guide](/guides/replacing-merge-tree) | [ReplacingMergeTree reference](/engines/table-engines/mergetree-family/replacingmergetree)
 
 ### CoalescingMergeTree \{#coalescingmergetree\}
 
@@ -155,32 +151,126 @@ HAVING sum(Sign) > 0
 
 ## 선언적 업데이트 \{#sql-style-updates\}
 
-다음 방법은 [MergeTree family](/engines/table-engines/mergetree-family) 엔진을 사용하는 테이블에서 동작합니다.
+다음 방법은 [MergeTree 계열](/engines/table-engines/mergetree-family) 엔진을 사용하는 테이블에서 동작합니다.
 
-| Method | Syntax | Best for | Trade-offs |
-|--------|--------|----------|------------|
-| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | 데이터의 물리적 삭제를 요구하는 규제 준수; 드문 대량 업데이트 | I/O 부하가 큼; 컬럼을 다시 기록해야 함 |
+| Method                                      | Syntax                     | Best for                                    | Trade-offs                        |
+| ------------------------------------------- | -------------------------- | ------------------------------------------- | --------------------------------- |
+| [Mutations](#mutations)                     | `ALTER TABLE ... UPDATE`   | 드문 대량 업데이트, 특히 업데이트가 테이블 파티셔닝과 일치할 때 적합함    | I/O 부하가 큼; 컬럼을 다시 기록해야 함          |
 | [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 작은 규모의 업데이트(행의 약 0.1-10%); 성능이 중요한 빈번한 업데이트 | SELECT 오버헤드 증가; 패치 파트 개수가 제한에 포함됨 |
-| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` with `apply_mutations_on_fly=1` | 즉각적인 반영; 제한된 횟수의 작업 | Keeper 종속성; 수십 개 작업 수준까지로 확장에 한계가 있음 |
 
 ### 뮤테이션 \{#mutations\}
 
-뮤테이션(`ALTER TABLE ... UPDATE`)은 `WHERE` 표현식과 일치하는 행을 포함하는 모든 파트를 다시 씁니다. 이를 통해 디스크 상에서 데이터가 실제로 수정되었음을 보장합니다.
+뮤테이션(`ALTER TABLE ... UPDATE`)은 `WHERE` 표현식과 일치하는 행을 포함하는 모든 파트를 다시 씁니다.
 
 ```sql
 ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
 ```
 
-규제 준수를 위해 물리적인 데이터 삭제가 보장되어야 하거나, I/O 오버헤드를 감내할 수 있는 드문 대량 업데이트 작업에는 뮤테이션을 사용합니다.
-
-뮤테이션은 상당한 I/O 부하를 유발하며, `WHERE` 조건과 일치하는 모든 파트를 다시 작성합니다. 이 과정에는 원자성이 없습니다. 파트는 뮤테이션된 파트가 준비되는 즉시 교체되며, 뮤테이션이 진행되는 동안 실행을 시작한 `SELECT` 쿼리는 이미 뮤테이션이 완료된 파트의 데이터와 아직 뮤테이션되지 않은 파트의 데이터를 함께 보게 됩니다. 진행 상태는 [`system.mutations`](/operations/system-tables/mutations) 테이블을 통해 추적할 수 있습니다.
+뮤테이션은 상당한 I/O 부하를 유발하며, `WHERE` 조건과 일치하는 모든 파트를 다시 작성합니다.
+이 과정에는 원자성이 없습니다.
+파트는 뮤테이션된 파트가 준비되는 즉시 교체되며, 뮤테이션이 진행되는 동안 실행을 시작한 `SELECT` 쿼리는 이미 뮤테이션이 완료된 파트의 데이터와 아직 뮤테이션되지 않은 파트의 데이터를 함께 보게 됩니다.
+진행 상태는 [`system.mutations`](/operations/system-tables/mutations) 테이블을 통해 추적할 수 있습니다.
 
 :::warning
 뮤테이션은 I/O 사용량이 많아 클러스터의 `SELECT` 성능에 영향을 줄 수 있으므로, 가능한 한 적게 사용하는 것이 좋습니다. 뮤테이션이 처리 속도보다 빠르게 큐에 쌓이면 쿼리 성능이 저하됩니다. `system.mutations`를 통해 큐를 모니터링하십시오.
 :::
 
-자세한 내용: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
+참조하다: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
 
+
+#### 실시간 뮤테이션 \{#on-the-fly-mutations\}
+
+`ALTER TABLE ... UPDATE`를 통한 뮤테이션은 백그라운드 프로세스를 통해 적용되므로, 변경된 값이 쿼리에 반영되기까지 대기해야 할 수 있습니다.
+ClickHouse는 &quot;실시간 뮤테이션&quot;을 통해 이러한 동작을 변경할 수 있는 방법을 제공합니다.
+실시간 뮤테이션이 활성화되면 업데이트된 행은 즉시 업데이트된 것으로 마크되며, 이후 실행되는 `SELECT` 쿼리에서는 변경된 값이 자동으로 반환됩니다.
+
+실시간 뮤테이션은 쿼리 수준 설정인 `apply_mutations_on_fly`를 활성화하여 `MergeTree` 계열 테이블에서 사용할 수 있습니다.
+
+```sql
+SET apply_mutations_on_fly = 1;
+```
+
+<details>
+  <summary>예시</summary>
+
+  테이블을 생성한 다음 몇 가지 뮤테이션을 실행해 보겠습니다:
+
+  ```sql
+  CREATE TABLE test_on_fly_mutations (id UInt64, v String)
+  ENGINE = MergeTree ORDER BY id;
+
+  -- 예시를 위해 뮤테이션의 백그라운드 구체화를 비활성화합니다
+  -- 실시간 뮤테이션이 활성화되지 않았을 때의 기본 동작을 보여줍니다
+  SYSTEM STOP MERGES test_on_fly_mutations;
+  SET mutations_sync = 0;
+
+  -- 새 테이블에 몇 개의 행을 삽입합니다
+  INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
+
+  -- 행 값을 업데이트합니다
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
+  ```
+
+  `SELECT` 쿼리로 업데이트 결과를 확인해 보겠습니다:
+
+  ```sql
+  -- 실시간 뮤테이션을 명시적으로 비활성화합니다
+  SET apply_mutations_on_fly = 0;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  새 테이블에 쿼리해도 아직 행 값은 업데이트되지 않았습니다:
+
+  ```response
+  ┌─id─┬─v─┐
+  │  1 │ a │
+  │  2 │ b │
+  │  3 │ c │
+  └────┴───┘
+  ```
+
+  이제 실시간 뮤테이션을 활성화했을 때 어떤 일이 발생하는지 살펴보겠습니다:
+
+  ```sql
+  -- 실시간 뮤테이션을 활성화합니다
+  SET apply_mutations_on_fly = 1;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  이제 `SELECT` 쿼리는 뮤테이션이 적용될 때까지 대기하지 않아도 즉시 올바른 결과를 반환합니다:
+
+  ```response
+  ┌─id─┬─v─┐
+  │  3 │ c │
+  └────┴───┘
+  ```
+</details>
+
+
+##### 성능 영향 \{#performance-impact\}
+
+실시간 뮤테이션이 활성화되면 뮤테이션은 즉시 구체화되지 않고 `SELECT` 쿼리 시에만 적용됩니다. 다만 뮤테이션은 여전히 백그라운드에서 비동기적으로 구체화되며, 이는 리소스 소모가 큰 작업이라는 점에 유의하십시오.
+
+일정 시간 동안 등록되는 뮤테이션 수가 백그라운드에서 처리되는 뮤테이션 수를 계속 초과하면, 적용해야 하는 미구체화 뮤테이션의 대기열은 계속 늘어납니다. 그 결과 결국 `SELECT` 쿼리 성능이 저하됩니다.
+
+미구체화 뮤테이션이 무한정 증가하는 것을 제한하려면 `apply_mutations_on_fly` 설정을 `number_of_mutations_to_throw`, `number_of_mutations_to_delay`와 같은 다른 `MergeTree` 수준 설정과 함께 활성화하는 것이 좋습니다.
+
+##### 서브쿼리 및 비결정적 함수 지원 \{#support-for-subqueries-and-non-deterministic-functions\}
+
+실시간 뮤테이션은 서브쿼리 및 비결정적 함수에 대해 제한적으로 지원됩니다. 합리적인 크기의 결과를 반환하는 스칼라 서브쿼리만 지원되며(크기는 설정 `mutations_max_literal_size_to_replace`로 제어됨), 상수 비결정적 함수만 지원됩니다(예: `now()` 함수).
+
+이 동작은 다음 설정으로 제어됩니다:
+
+| 설정                                                | 설명                                                                           | 기본값              |
+| ------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------- |
+| `mutations_execute_nondeterministic_on_initiator` | true이면 비결정적 함수가 initiator 레플리카에서 실행되고, `UPDATE` 및 `DELETE` 쿼리에서 리터럴로 대체됩니다.  | `false`          |
+| `mutations_execute_subqueries_on_initiator`       | true이면 스칼라 서브쿼리가 initiator 레플리카에서 실행되고, `UPDATE` 및 `DELETE` 쿼리에서 리터럴로 대체됩니다. | `false`          |
+| `mutations_max_literal_size_to_replace`           | `UPDATE` 및 `DELETE` 쿼리에서 대체할 직렬화된 리터럴의 최대 크기(바이트 단위)입니다.                     | `16384` (16 KiB) |
 
 ### 경량 업데이트 \{#lightweight-updates\}
 
@@ -223,27 +313,27 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 
 뮤테이션과 이후의 `SELECT` 쿼리 모두에서 `apply_mutations_on_fly = 1` 설정을 활성화해야 합니다. 뮤테이션 조건은 ClickHouse Keeper에 저장되며, Keeper는 이를 메모리에 유지한 채 쿼리 시점에 실시간(on-the-fly)으로 적용합니다.
 
-데이터 업데이트에는 여전히 뮤테이션이 사용되며, 단지 즉시 구체화(materialize)되지 않을 뿐입니다. 뮤테이션은 여전히 비동기 백그라운드 프로세스로 적용되며, 일반적인 뮤테이션과 동일한 큰 오버헤드를 발생시킵니다. 이 연산에서 사용할 수 있는 표현식도 제한됩니다([자세한 내용](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions) 참조).
+데이터 업데이트에는 여전히 뮤테이션이 사용되며, 단지 즉시 구체화(materialize)되지 않을 뿐입니다. 뮤테이션은 여전히 비동기 백그라운드 프로세스로 적용되며, 일반적인 뮤테이션과 동일한 큰 오버헤드를 발생시킵니다. 이 연산에서 사용할 수 있는 표현식도 제한됩니다([자세한 내용](#support-for-subqueries-and-non-deterministic-functions) 참조).
 
 :::warning
-On-the-fly 뮤테이션은 소수의 작업(많아도 수십 개 정도)에만 사용해야 합니다. Keeper는 조건을 메모리에 저장하므로, 과도하게 사용하면 클러스터 안정성에 영향을 줍니다. Keeper 부하가 심해지면 관련 없는 테이블에도 영향을 미치는 세션 타임아웃이 발생할 수 있습니다.
+실시간 뮤테이션은 소수의 작업(많아도 수십 개 정도)에만 사용해야 합니다. Keeper는 조건을 메모리에 저장하므로, 과도하게 사용하면 클러스터 안정성에 영향을 줍니다. Keeper 부하가 심해지면 관련 없는 테이블에도 영향을 미치는 세션 타임아웃이 발생할 수 있습니다.
 :::
 
-자세히 보기: [On-the-fly 뮤테이션](/guides/developer/on-the-fly-mutations)
+참조하다: [실시간 뮤테이션](#on-the-fly-mutations)
 
 
 ## 비교 요약 \{#comparison-summary\}
 
-다음 표는 [벤치마크](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)를 기반으로 한 쿼리 성능 오버헤드를 요약합니다. 뮤테이션은 기준선으로 사용되며, 뮤테이션이 완료되어 데이터가 물리적으로 다시 기록되면 쿼리는 최대 속도로 실행됩니다.
+다음 표는 [벤치마크](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)를 기반으로 쿼리 성능 오버헤드를 요약한 것입니다. 뮤테이션은 뮤테이션이 완료되고 데이터가 물리적으로 다시 기록된 뒤에는 쿼리가 최대 속도로 실행되므로 기준선 역할을 합니다.
 
-| Method | Query slowdown | Memory overhead | Notes |
-|--------|----------------|-----------------|-------|
-| [Mutations](/sql-reference/statements/alter/update) | 기준선 | 기준선 | 완료 후 최대 속도; 데이터가 물리적으로 다시 기록됨 |
-| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | 가변적 | 가변적 | 즉시 반영; 많은 업데이트가 누적되면 성능 저하 |
-| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18% (평균 약 12%) | +20–210% | 쿼리에 가장 효율적; 테이블의 최대 10% 이하 업데이트에 가장 적합 |
-| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550% (평균 약 280%) | 기준선의 20–200배 | 모든 행 버전을 읽어야 함; 쿼리 오버헤드가 가장 큼 |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | ReplacingMergeTree와 유사 | ReplacingMergeTree와 유사 | 컬럼 단위 병합으로 유사한 수준의 오버헤드 발생 |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | 집계에 따라 다름 | 집계에 따라 다름 | 오버헤드는 쿼리 복잡도에 따라 달라짐 |
+| Method                                                                                       | Query slowdown         | Memory overhead        | Notes                                   |
+| -------------------------------------------------------------------------------------------- | ---------------------- | ---------------------- | --------------------------------------- |
+| [Mutations](/sql-reference/statements/alter/update)                                          | 기준선                    | 기준선                    | 완료 후 최대 속도; 데이터가 물리적으로 다시 기록됨           |
+| [On-the-fly mutations](#on-the-fly-mutations)                                                | 가변적                    | 가변적                    | 즉시 반영됨; 많은 업데이트가 누적되면 성능 저하             |
+| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements)      | 7–18% (평균 약 12%)       | +20–210%               | 쿼리에 가장 효율적임; 테이블의 10% 이하를 업데이트할 때 가장 적합 |
+| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL`                                 | 21–550% (평균 약 280%)    | 기준선의 20–200배           | 모든 행 버전을 읽어야 함; 쿼리 오버헤드가 가장 큼           |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | ReplacingMergeTree와 유사 | ReplacingMergeTree와 유사 | 컬럼 수준 코얼레싱으로 인해 비슷한 수준의 오버헤드가 추가됨       |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)           | 집계에 따라 다름              | 집계에 따라 다름              | 오버헤드는 쿼리 복잡도에 따라 달라짐                    |
 
 ## 추가 자료 \{#more-resources\}
 

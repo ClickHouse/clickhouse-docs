@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/docs/jp/:path*", "destination": "/:path*" },
+    { "source": "/docs/ko/:path*", "destination": "/:path*" },
     { "source": "/docs/zh/:path*", "destination": "/:path*" },
     { "source": "/docs/ru/:path*", "destination": "/:path*" },
     { "source": "/docs/:path*", "destination": "/:path*" }
@@ -3810,6 +3811,16 @@
     {
       "source": "/docs/integrations/dbt/materialized-views",
       "destination": "/docs/integrations/dbt/materialization-materialized-view",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/developer/on-fly-mutations",
+      "destination": "/docs/managing-data/updating-data/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/managing-data/update_mutations",
+      "destination": "/docs/sql-reference/statements/alter/update",
       "permanent": true
     }
   ]

@@ -15,7 +15,7 @@ import Image from '@theme/IdealImage';
 
 GCS ClickPipe は、Google Cloud Storage (GCS) からデータをインジェストするための、フルマネージドで高い耐障害性を備えた手段を提供します。**一度限り**のインジェストと**継続的なインジェスト**の両方を、exactly-once セマンティクスでサポートします。
 
-GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
+GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
 
 
 ## サポートされる形式 \{#supported-formats\}
@@ -44,71 +44,17 @@ GCS ClickPipe は、ファイルがバケットに辞書順で追加されるこ
 
 #### 任意の順序 \{#continuous-ingestion-any-order\}
 
-:::note
-順序なしモードはパブリックバケットでは**サポートされていません**。このモードには、**Service Account** 認証と、バケットに関連付けられた [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) サブスクリプションが必要です。
+:::tip
+手順ごとの説明については、[継続的インジェストの順序なしモードの設定](/integrations/clickpipes/object-storage/gcs/unordered-mode)を参照してください。
 :::
 
 [Google Cloud Pub/Sub](https://docs.cloud.google.com/storage/docs/pubsub-notifications) サブスクリプションを設定してバケットからの通知を受信することで、GCS ClickPipe を、暗黙的な順序を持たないファイルを取り込むように構成できます。これにより、ClickPipes はオブジェクト作成イベントをリッスンし、ファイル名の命名規則に関係なく新しいファイルを取り込むことができます。
 
-このモードでは、GCS ClickPipe は最初に選択したパス内の**すべてのファイル**を読み込み、その後はそのパスに一致する Pub/Sub サブスクリプション経由のオブジェクト通知をリッスンします。すでに処理済みのファイルに対するメッセージ、パスに一致しないファイル、または別の種類のイベントはすべて**無視**されます。特定のファイルや任意の時点からインジェストを開始することは**できません**。ClickPipes は常に選択したパス内のすべてのファイルをロードします。
+:::note
+順序なしモードはパブリックバケットでは**サポートされていません**。このモードには、**Service Account** 認証と、バケットに関連付けられた [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) サブスクリプションが必要です。
+:::
 
-##### Pub/Sub 通知の設定 \{#pubsub-setup\}
-
-unordered モードを使用するには、GCS バケットから Pub/Sub トピックへの自動通知を構成する必要があります。Pub/Sub 通知に関する[公式ドキュメント](https://docs.cloud.google.com/storage/docs/pubsub-notifications)に従って Pub/Sub トピックとサブスクリプションを作成し、続いてバケットに対する通知を設定してください。
-
-通知を作成するには:
-
-```bash
-# Create a Pub/Sub notification for new objects in the bucket
-gcloud storage buckets notifications create "gs://${YOUR_BUCKET_NAME}" \
-    --topic="projects/${YOUR_PROJECT_ID}/topics/${YOUR_TOPIC_NAME}" \
-    --event-types="OBJECT_FINALIZE" \
-    --payload-format="json"
-```
-
-
-##### サービスアカウントへの権限付与 \{#pubsub-permissions\}
-
-Unordered モードでは、**Service Account** 認証が必要です。ClickPipes で使用するサービスアカウントには、次の権限が必要です。
-
-1. **GCS バケット内のオブジェクトを読み取る権限** — データファイルを取得するため。
-2. **Pub/Sub サブスクリプションからメッセージを読み取る権限** — オブジェクト通知を受信するため。
-3. **Pub/Sub サブスクリプションを取得する権限** — サブスクリプションの存在を検証し、そのメタデータを取得するため。
-
-以下の `gcloud` コマンドを使用して、これらの権限を付与します。
-
-```bash
-# 1. Grant read access to the GCS bucket
-gcloud storage buckets add-iam-policy-binding "gs://${YOUR_BUCKET_NAME}" \
-  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/storage.objectViewer"
-
-# 2. Grant read access to the Pub/Sub subscription
-gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
-  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/pubsub.subscriber"
-
-# 3. Grant permission to get the Pub/Sub subscription metadata
-gcloud pubsub subscriptions add-iam-policy-binding "${YOUR_SUBSCRIPTION_NAME}" \
-  --member="serviceAccount:${YOUR_SERVICE_ACCOUNT}@${YOUR_PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/pubsub.viewer"
-```
-
-
-##### ClickPipe の設定 \{#pubsub-clickpipe-config\}
-
-ClickHouse Cloud コンソールで **Data Sources &gt; Create ClickPipe** に進み、Google Cloud Storage を選択します。認証方法として **Service Account** を選択し、GCS バケットへの接続情報を入力して、サービスアカウントキーの JSON ファイルをアップロードします。次に、**Incoming data** をクリックします。
-
-**Continuous ingestion** をオンにすると、新しい **Any order** のインジェストオプションが表示されます。続いて、Pub/Sub サブスクリプション パスを次の形式で入力します。
-
-```text
-projects/${YOUR_PROJECT_ID}/subscriptions/${YOUR_SUBSCRIPTION_NAME}
-```
-
-<Image img={gcs_subscription_input} alt="GCS の順不同モード" size="lg" border />
-
-<br />
-
+このモードでは、GCS ClickPipe は最初に選択したパス内の**すべてのファイル**を読み込み、その後は指定したパスに一致する Pub/Sub サブスクリプション経由の `OBJECT_FINALIZE` 通知をリッスンします。すでに処理済みのファイルに対するメッセージ、パスに一致しないファイル、または別の種類のイベントはすべて**無視**されます。特定のファイルや任意の時点からインジェストを開始することは**できません**。ClickPipes は常に選択したパス内のすべてのファイルをロードします。
 
 ### ファイルパターンマッチング \{#file-pattern-matching\}
 
@@ -156,7 +102,13 @@ Object Storage ClickPipes は、ファイルパターンマッチングに POSIX
 
 GCS ClickPipe は、パブリックバケットおよびプライベートバケットをサポートします。[Requester Pays](https://docs.cloud.google.com/storage/docs/requester-pays) バケットはサポートされて**いません**。
 
-[`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer) ロールをバケットレベルで付与する必要があります。このロールには、[`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) および [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM 権限が含まれており、指定したバケット内のオブジェクトを ClickPipes が一覧表示および取得できるようにします。
+#### GCS バケット \{#gcs-bucket\}
+
+ClickPipes が使用するサービスアカウントでは、バケットレベルで次のアクションを許可する必要があります。
+
+* [`roles/storage.objectViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectViewer)
+
+このロールには、[`storage.objects.list`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/list) および [`storage.objects.get`](https://docs.cloud.google.com/storage/docs/json_api/v1/objects/get#required-permissions) IAM 権限が含まれており、指定したバケット内のオブジェクトを ClickPipes が一覧表示および取得できるようにします。
 
 #### Pub/Sub サブスクリプション \{#pubsub-subscription\}
 

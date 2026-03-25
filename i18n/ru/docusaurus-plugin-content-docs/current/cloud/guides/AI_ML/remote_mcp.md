@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'Включение удалённого сервера MCP'
-title: 'Включение удалённого сервера MCP ClickHouse Cloud'
+sidebar_label: 'Включить удалённый MCP-сервер'
+title: 'Включение и подключение удалённого MCP-сервера ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как включить и использовать удалённый MCP-сервер ClickHouse Cloud'
@@ -22,74 +22,136 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-# Включение удалённого MCP-сервера ClickHouse Cloud \{#enabling-the-clickhouse-cloud-remote-mcp-server\}
+В этом руководстве описано, как включить ClickHouse Cloud Remote MCP Server и настроить его для использования с распространёнными инструментами разработки.
 
-> В этом руководстве описывается, как включить и использовать удалённый MCP-сервер ClickHouse Cloud. В качестве MCP-клиента в этом примере мы будем использовать Claude Code, но можно использовать любой LLM‑клиент, поддерживающий MCP.
+**Предварительные требования**
 
-<VerticalStepper headerLevel="h2">
+* Работающий [сервис ClickHouse Cloud](/getting-started/quick-start/cloud)
+* IDE или выбранный вами инструмент для agentic-разработки
 
-## Включите удалённый MCP-сервер для вашего сервиса ClickHouse Cloud \{#enable-remote-mcp-server\}
 
-1. Подключитесь к вашему сервису ClickHouse Cloud, нажмите кнопку `Connect` и включите `Remote MCP Server` для вашего сервиса.
+## Включение удалённого MCP-сервера для Cloud \{#enable-remote-mcp-server\}
 
-<Image img={img1} alt="Выберите MCP в окне Connect" size="md"/>
+Подключитесь к сервису ClickHouse Cloud, для которого нужно включить удалённый MCP-сервер, и нажмите кнопку `Connect` в левом меню.
+Откроется окно с параметрами подключения.
 
-<Image img={img2} alt="Включите MCP Server" size="md"/>
+Выберите &quot;Connect with MCP&quot;:
 
-2. Скопируйте URL сервера ClickHouse Cloud MCP из окна `Connect` или ниже на странице.
+<Image img={img1} alt="Выбор MCP в окне Connect" size="md" />
+
+Включите переключатель, чтобы включить MCP для сервиса:
+
+<Image img={img2} alt="Включение сервера MCP" size="md" />
+
+Скопируйте отображаемый URL — он совпадает с приведённым ниже:
 
 ```bash
 https://mcp.clickhouse.cloud/mcp
 ```
 
-## Добавление MCP-сервера ClickHouse в Claude Code \{#add-clickhouse-mcp-server-claude-code\}
 
-1. В рабочем каталоге выполните следующую команду, чтобы добавить конфигурацию MCP-сервера ClickHouse Cloud в Claude Code. В этом примере мы назвали MCP-сервер в конфигурации Claude Code `clickhouse_cloud`.
+## Настройка удалённого MCP для разработки \{#setup-clickhouse-cloud-remote-mcp-server\}
+
+Выберите ниже свою IDE или инструмент и следуйте соответствующим инструкциям по настройке.
+
+### Claude Code \{#claude-code\}
+
+В рабочем каталоге выполните следующую команду, чтобы добавить конфигурацию MCP-сервера ClickHouse Cloud в Claude Code:
 
 ```bash
-claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
+claude mcp add --transport http clickhouse-cloud https://mcp.clickhouse.cloud/mcp
 ```
 
-1b. В зависимости от используемого клиента MCP вы также можете напрямую редактировать JSON-конфигурацию
+Затем запустите Claude Code:
+
+```bash
+claude
+```
+
+Выполните следующую команду, чтобы получить список MCP-серверов:
+
+```bash
+/mcp
+```
+
+Выберите `clickhouse-cloud` и пройдите аутентификацию через OAuth, используя свои учетные данные ClickHouse Cloud.
+
+### Веб-интерфейс Claude \{#claude-web\}
+
+1. Перейдите в **Customize** &gt; **Connectors**
+2. Нажмите значок &quot;+&quot; и выберите **Add custom connector**
+3. Укажите имя для пользовательского connector, например `clickhouse-cloud`, и добавьте его
+4. Нажмите на только что добавленный connector `clickhouse-cloud`, затем нажмите **Connect**
+5. Пройдите аутентификацию через OAuth, используя свои учетные данные ClickHouse Cloud
+
+### Cursor \{#cursor\}
+
+1. Откройте [Cursor Marketplace](https://cursor.com/marketplace), чтобы найти и установить MCP-серверы.
+2. Найдите ClickHouse и нажмите «Add to Cursor» на любом сервере, чтобы установить его.
+3. Пройдите аутентификацию через OAuth.
+
+### Visual Studio Code \{#visual-studio-code\}
+
+Добавьте следующую конфигурацию в `.vscode/mcp.json`:
 
 ```json
 {
-  "mcpServers": {
-    "clickhouse-remote": {
+  "servers": {
+    "clickhouse-cloud": {
+      "type": "http",
       "url": "https://mcp.clickhouse.cloud/mcp"
     }
   }
 }
 ```
 
-2. Запустите Claude Code в рабочем каталоге
+Подробнее см. в [документации Visual Studio Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 
-```bash
-[user@host ~/Documents/repos/mcp_test] $ claude
+### Windsurf \{#windsurf\}
+
+Отредактируйте файл `mcp_config.json`, добавив в него следующую конфигурацию:
+
+```json
+{
+  "mcpServers": {
+    "clickhouse-cloud": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.clickhouse.cloud/mcp"]
+    }
+  }
+}
 ```
 
-## Аутентификация в ClickHouse Cloud через OAuth \{#authenticate-via-oauth\}
+Подробнее см. в [документации Windsurf](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp)
 
-1. При первом запуске Claude Code откроет окно браузера. В дальнейшем вы можете инициировать подключение, выполнив команду `/mcp` в Claude Code и выбрав MCP‑сервер `clickhouse_cloud`
 
-2. Выполните аутентификацию, используя свои учетные данные ClickHouse Cloud
+### Zed \{#zed\}
 
-<Image img={img3} alt="Процесс подключения через OAuth" size="sm"/>
+Добавьте ClickHouse в качестве пользовательского сервера.
+Добавьте в настройки Zed следующее в разделе **context_servers**:
 
-<Image img={img4} alt="Успешное подключение через OAuth" size="sm"/>
+```json
+{
+  "context_servers": {
+    "clickhouse-cloud": {
+      "url": "https://mcp.clickhouse.cloud/mcp"
+    }
+  }
+}
+```
 
-## Использование удаленного MCP‑сервера ClickHouse Cloud из Claude Code \{#use-rempte-mcp-from-claude-code\}
+При первом подключении к серверу Zed должен предложить вам пройти аутентификацию через OAuth.
+Подробнее см. в [документации Zed](https://zed.dev/docs/ai/mcp#as-custom-servers)
 
-1. Убедитесь в Claude Code, что удаленный MCP‑сервер подключен
+### Codex \{#codex\}
 
-<Image img={img5} alt="Успешная работа Claude Code MCP" size="md"/>
+Выполните следующую команду, чтобы добавить MCP-сервер ClickHouse Cloud с помощью CLI:
 
-<Image img={img6} alt="Подробности Claude Code MCP" size="md"/>
+```bash
+codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
+```
 
-2. Поздравляем! Теперь вы можете использовать удаленный MCP‑сервер ClickHouse Cloud из Claude Code
 
-<Image img={img7} alt="Использование Claude Code MCP" size="md"/>
+## Связанные материалы \{#related-content\}
 
-Хотя в этом примере использовался Claude Code, вы можете использовать любой LLM‑клиент с поддержкой MCP, выполнив аналогичные шаги.
-
-</VerticalStepper>
+* [Навыки agent для ClickHouse](https://github.com/ClickHouse/agent-skills)

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs/ec2
-title: 'Monitoring EC2 Host Logs with ClickStack'
-sidebar_label: 'EC2 Host Logs'
+title: 'Monitoring EC2 host logs with ClickStack'
+sidebar_label: 'EC2 host logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring EC2 Host Logs with ClickStack'
@@ -147,7 +147,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
@@ -202,7 +202,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
