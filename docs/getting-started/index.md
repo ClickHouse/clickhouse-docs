@@ -11,8 +11,8 @@ doc_type: 'landing-page'
 
 # Tutorials and example datasets
 
-:::note
-These tutorials work with any ClickHouse deployment, including [ClickHouse Cloud](/cloud/overview).
+:::tip
+These tutorials work with any ClickHouse deployment, including [ClickHouse Cloud](/install/quick-install-curl).
 :::
 
 We have a lot of resources for helping you get started and learn how ClickHouse works:
