@@ -69,7 +69,7 @@ ORDER BY per_upload desc
 ```
 
 Note that this query contains a parameter (`year`) which is highlighted in the snippet above.
-You can specify query parameters using curly brackets `{ }` together with the type of the parameter. 
+You can specify query parameters using `{ }` together with the type of the parameter. 
 The SQL console query editor automatically detects ClickHouse query parameter expressions and provides an input for each parameter.
 
 Let's quickly run this query to make sure that it works by specifying the year `2010` in the query variables input box on the right side of the SQL editor:

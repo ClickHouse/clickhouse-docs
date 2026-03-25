@@ -30,7 +30,8 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO product_prices VALUES
     (1, 10.99, '2024-01-01 10:00:00', 1),

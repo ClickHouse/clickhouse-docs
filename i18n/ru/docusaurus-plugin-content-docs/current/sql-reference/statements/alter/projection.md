@@ -309,6 +309,49 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [I
 - `drop`: Затронутые части таблицы проекций удаляются. Для этих частей запросы будут выполняться по исходной части таблицы.
 - `rebuild`: Затронутая часть проекции перестраивается, чтобы оставаться согласованной с данными в исходной части таблицы.
 
+## Ограничения \{#limitations\}
+
+Невозможно использовать столбец `ALIAS` в предложении `ORDER BY` для проекции. Например:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+Столбцы `ALIAS` физически не хранятся и вычисляются на лету во время выполнения запроса, поэтому они недоступны при записи части проекции, когда вычисляется выражение сортировки.
+
+Вместо этого используйте столбцы `MATERIALIZED` или укажите выражение напрямую:
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
+
+
 ## См. также \{#see-also\}
 
 - ["Control Of Projections During Merges" (запись в блоге)](https://clickhouse.com/blog/clickhouse-release-24-08#control-of-projections-during-merges)

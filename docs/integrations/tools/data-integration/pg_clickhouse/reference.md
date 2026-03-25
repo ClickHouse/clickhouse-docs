@@ -2,12 +2,12 @@
 sidebar_label: 'Reference'
 description: 'Complete reference documentation for pg_clickhouse'
 slug: '/integrations/pg_clickhouse/reference'
-title: 'pg_clickhouse Reference Documentation'
+title: 'pg_clickhouse reference documentation'
 doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse Reference Documentation
+# pg_clickhouse Reference documentation
 
 ## Description {#description}
 

@@ -1,6 +1,6 @@
 ---
-title: 'DataStore Class Reference'
-sidebar_label: 'Class Reference'
+title: 'DataStore class reference'
+sidebar_label: 'Class reference'
 slug: /chdb/datastore/class-reference
 description: 'Complete API reference for DataStore, ColumnExpr, LazyGroupBy, and LazySeries classes'
 keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazygroupby']
@@ -107,7 +107,7 @@ See [Factory Methods](factory-methods.md) for details.
 
 See [Query Building](query-building.md) for details.
 
-### Pandas-Compatible Methods {#datastore-pandas}
+### Pandas-compatible methods {#datastore-pandas}
 
 See [Pandas Compatibility](pandas-compat.md) for the complete list of 209 methods.
 

@@ -1,7 +1,7 @@
 ---
-title: 'AWS Customized Setup'
+title: 'AWS customized setup'
 slug: /cloud/reference/byoc/onboarding/customization-aws
-sidebar_label: 'AWS Customized Setup'
+sidebar_label: 'AWS customized setup'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'AWS', 'VPC']
 description: 'Deploy ClickHouse BYOC into your existing AWS VPC'
 doc_type: 'reference'

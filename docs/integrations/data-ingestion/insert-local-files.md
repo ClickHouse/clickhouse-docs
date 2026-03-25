@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Insert Local Files'
+sidebar_label: 'Insert local files'
 sidebar_position: 2
-title: 'Insert Local Files'
+title: 'Insert local files'
 slug: /integrations/data-ingestion/insert-local-files
-description: 'Learn about Insert Local Files'
+description: 'Learn about Insert local files'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']

@@ -379,9 +379,9 @@ csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
 
 ## 高度な使用方法と推奨事項 \{#advanced-and-recommended-usage\}
 
-* 最適なパフォーマンスを得るには、DataStream の要素型が**汎用型**でないことを確認してください。詳しくは、[Flink の型の区別に関するこちらの説明](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class)を参照してください。汎用型でない要素を使用すると、Kryo によるシリアライズのオーバーヘッドを回避でき、ClickHouse へのスループットが向上します。
-* `maxBatchSize` は少なくとも 1000、理想的には 10,000 ～ 100,000 に設定することを推奨します。詳しくは、[バルク挿入に関するこのガイド](https://clickhouse.com/docs/optimize/bulk-inserts)を参照してください。
-* OLTP スタイルの重複排除や ClickHouse への upsert を行う場合は、[このドキュメントページ](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication)を参照してください。*注: これは、[以下](#duplicate_batches)で詳しく説明する、再試行時に発生するバッチ重複排除とは異なります。*
+- 最適なパフォーマンスを得るには、DataStream の要素型が**汎用型**ではないことを確認してください。詳しくは、[Flink の型の区別に関するこちらの説明](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class)を参照してください。汎用型でない要素を使用すると、Kryo によって発生するシリアライズのオーバーヘッドを回避でき、ClickHouse へのスループットが向上します。
+- `maxBatchSize` は少なくとも 1000、理想的には 10,000 ～ 100,000 に設定することを推奨します。詳しくは、[バルク挿入に関するこのガイド](/optimize/bulk-inserts)を参照してください。
+- OLTP スタイルの重複排除や ClickHouse への upsert を行うには、[このドキュメントページ](/guides/developer/deduplication#options-for-deduplication)を参照してください。_注: これは、再試行時に発生するバッチ重複排除と混同しないでください。_
 
 ## トラブルシューティング \{#troubleshooting\}
 

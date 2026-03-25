@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ollama
 sidebar_label: 'Integrate Ollama'
-title: 'Set Up ClickHouse MCP Server with Ollama'
+title: 'Set up ClickHouse MCP server with Ollama'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Ollama with a ClickHouse MCP server.'
@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 # Using ClickHouse MCP server with Ollama
 
-> This guide explains how to use the ClickHouse MCP Server with Ollama.
+> This guide explains how to use the ClickHouse MCP server with Ollama.
 
 <VerticalStepper headerLevel="h2">
 
@@ -44,7 +44,7 @@ ollama run qwen3:8b
 ```
 
 :::note
-Only [models that have tool support](https://ollama.com/search?c=tools) will work with MCP Servers.
+Only [models that have tool support](https://ollama.com/search?c=tools) will work with MCP servers.
 :::
 
 We can list the models that we have downloaded like this:
@@ -93,8 +93,8 @@ We can see from this output that the default qwen3 model has just over 8 billion
 
 ## Install MCPHost {#install-mcphost}
 
-At the time of writing (July 2025) there is no native functionality for using Ollama with MCP Servers.
-However, we can use [MCPHost](https://github.com/mark3labs/mcphost) to run Ollama models with MCP Servers.
+At the time of writing (July 2025) there is no native functionality for using Ollama with MCP servers.
+However, we can use [MCPHost](https://github.com/mark3labs/mcphost) to run Ollama models with MCP servers.
 
 MCPHost is a Go application, so you'll need to make sure that you have [Go installed](https://go.dev/doc/install) on your machine.
 You can then install MCPHost by running the following command:
@@ -105,9 +105,9 @@ go install github.com/mark3labs/mcphost@latest
 
 The binary will be installed under `~/go/bin` so we need to make sure that directory is on our path.
 
-## Configuring ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configuring ClickHouse MCP server {#configure-clickhouse-mcp-server}
 
-We can configure MCP Servers with MCPHost in YAML or JSON files. 
+We can configure MCP servers with MCPHost in YAML or JSON files. 
 MCPHost will look for config files in your home directory the following order:
 
 1. `.mcphost.yml` or `.mcphost.json`  (preferred)
@@ -135,7 +135,7 @@ Here's an example of a ClickHouse MCP server configuration, which we'll save to 
 ```
 
 The main difference from the standard MCP configuration file is that we need to specify a `type`.
-The type is used to indicate the transport type used by the MCP Server.
+The type is used to indicate the transport type used by the MCP server.
 
 * `local` → stdio transport
 * `remote` → streamable transport
@@ -192,11 +192,11 @@ We should see the following output:
   Enter your prompt (Type /help for commands, Ctrl+C to quit, ESC to cancel generation)
 ```
 
-We can use the `/servers` command to list the MCP Servers:
+We can use the `/servers` command to list the MCP servers:
 
 ```text
   ┃                                                                                      ┃
-  ┃  ## Configured MCP Servers                                                           ┃
+  ┃  ## Configured MCP servers                                                           ┃
   ┃                                                                                      ┃
   ┃  1. mcp-ch                                                                           ┃
   ┃   MCPHost System (10:00)                                                             ┃

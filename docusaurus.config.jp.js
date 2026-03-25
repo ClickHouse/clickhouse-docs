@@ -5,7 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
-import glossaryTransformer from "./plugins/glossary-transformer.js";
+// import glossaryTransformer from "./plugins/glossary-transformer.js";
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
@@ -46,7 +46,6 @@ const config = {
   tagline:
     "ドキュメント、クイックスタートガイド、ユーザーガイド、技術リファレンス、FAQ など、多様な情報をご提供します。",
   url: "https://clickhouse.com",
-  // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/jp/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
@@ -58,7 +57,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "jp",
-    locales: ["en", "jp", "zh", "ru"],
+    locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -80,6 +79,11 @@ const config = {
         label: "Русский",
         htmlLang: "ru",
         path: "ru",
+      },
+      ko: {
+        label: "한국어",
+        htmlLang: "ko",
+        path: "ko",
       }
     },
   },
@@ -158,7 +162,7 @@ const config = {
               blogPath
             );
           },
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },

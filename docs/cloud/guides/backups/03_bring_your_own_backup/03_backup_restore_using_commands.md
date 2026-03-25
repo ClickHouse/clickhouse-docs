@@ -180,7 +180,7 @@ where `uuid` is a unique identifier, used to identify the backup.
 <TabItem value="Restore" label="RESTORE" default>
 
 ```sql
-RESTORE ALL
+RESTORE ALL EXCEPT TABLES system.users, system.roles
 FROM S3(
     'https://testchbackups.s3.amazonaws.com/<uuid>',
     '<key id>',

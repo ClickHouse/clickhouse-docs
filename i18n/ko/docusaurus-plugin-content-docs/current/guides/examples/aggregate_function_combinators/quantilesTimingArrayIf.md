@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
 title: 'quantilesTimingArrayIf'
-description: 'quantilesTimingArrayIf 결합자(combinator) 사용 예제'
+description: 'quantilesTimingArrayIf 결합자 사용 예제'
 keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantilesTimingArrayIf']
 sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingArrayIf \{#quantilestimingarrayif\}
-
-
 
 ## 설명 \{#description\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 및 [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-combinator는 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-함수에 적용할 수 있으며, `quantilesTimingArrayIf` 집계 combinator 함수를 사용하면 조건이 참인 행에서 배열에 포함된 타이밍 값의 분위수를 계산할 수 있습니다.
-
-
+결합자는 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+함수에 적용할 수 있으며, `quantilesTimingArrayIf` 집계 결합자 함수를 사용하면 조건이 참인 행에서 배열의 타이밍 값에 대한 분위수를 계산할 수 있습니다.
 
 ## 사용 예시 \{#example-usage\}
 
@@ -31,7 +25,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
@@ -66,5 +61,6 @@ GROUP BY endpoint;
 
 
 ## 함께 보기 \{#see-also\}
+
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 결합자`](/sql-reference/aggregate-functions/combinators#-if)

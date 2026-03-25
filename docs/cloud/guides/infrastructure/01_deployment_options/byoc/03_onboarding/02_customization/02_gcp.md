@@ -1,7 +1,7 @@
 ---
-title: 'GCP Customized Setup'
+title: 'GCP customized setup'
 slug: /cloud/reference/byoc/onboarding/customization-gcp
-sidebar_label: 'GCP Customized Setup'
+sidebar_label: 'GCP customized setup'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'GCP', 'VPC']
 description: 'Deploy ClickHouse BYOC into your existing GCP VPC'
 doc_type: 'reference'

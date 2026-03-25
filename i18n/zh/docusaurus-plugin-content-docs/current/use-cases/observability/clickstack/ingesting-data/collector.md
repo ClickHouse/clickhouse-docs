@@ -281,11 +281,11 @@ OpenTelemetry 支持以下可供使用的处理和过滤功能：
 
 我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过 materialized view 和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
 
-### 示例 {#example-processing}
+### 示例
 
 以下配置演示了如何采集这个[非结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)。该配置可用于以 agent 身份运行的 collector，将数据发送到 ClickStack 网关。
 
-请注意，这里使用算子从日志行中提取结构（`regex_parser`）并过滤事件，同时使用处理器对事件进行批处理，以限制内存占用。
+请注意，这里使用算子从日志行中提取结构 (`regex_parser`) 并过滤事件，同时使用处理器对事件进行批处理，以限制内存占用。
 
 ```yaml file=code_snippets/ClickStack/config-unstructured-logs-with-processor.yaml
 receivers:
@@ -303,20 +303,20 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
     spike_limit_mib: 256
 exporters:
-  # HTTP 配置
+  # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
 
-  # gRPC 配置（备选）
+  # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -325,7 +325,7 @@ exporters:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 已修改，因同一主机上运行 2 个采集器
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]
@@ -338,22 +338,23 @@ service:
 
 如需更高级的配置，我们建议参考 [OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/)。
 
+
 ## 优化插入 {#optimizing-inserts}
 
 为了在获得强一致性保证的同时实现高效的插入性能，你在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
 
-### 批处理 {#batching}
+### 批处理
 
-默认情况下，发送到 ClickHouse 的每个 insert 都会让 ClickHouse 立即创建一个存储部分（part），其中包含此次插入的数据以及需要存储的其他元数据。因此，相比发送大量每次只包含少量数据的 insert，发送较少次数但每次包含更多数据的 insert，可以减少所需的写入次数。我们建议一次插入至少 1,000 行的较大批次数据。更多详情见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
+默认情况下，发送到 ClickHouse 的每个 insert 都会让 ClickHouse 立即创建一个存储部分 (part) ，其中包含此次插入的数据以及需要存储的其他元数据。因此，相比发送大量每次只包含少量数据的 insert，发送较少次数但每次包含更多数据的 insert，可以减少所需的写入次数。我们建议一次插入至少 1,000 行的较大批次数据。更多详情见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
 
 默认情况下，对 ClickHouse 的 insert 是同步的，并且对于相同内容是幂等的。对于 merge tree 引擎族的表，ClickHouse 默认会自动[对 insert 进行去重](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着 insert 在如下情况中是可容错的：
 
-- (1) 如果接收数据的节点出现问题，insert 查询会超时（或返回更具体的错误），并且不会收到确认。
-- (2) 如果数据已经被该节点写入，但由于网络中断，确认无法返回给查询的发送方，则发送方会收到超时或网络错误。
+* (1) 如果接收数据的节点出现问题，insert 查询会超时 (或返回更具体的错误) ，并且不会收到确认。
+* (2) 如果数据已经被该节点写入，但由于网络中断，确认无法返回给查询的发送方，则发送方会收到超时或网络错误。
 
-从 collector 的角度来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含的数据及其顺序与原始 insert 相同，如果原始（未被确认的）insert 实际上已成功，ClickHouse 就会自动忽略这次重试的 insert。
+从 collector 的角度来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含的数据及其顺序与原始 insert 相同，如果原始 (未被确认的) insert 实际上已成功，ClickHouse 就会自动忽略这次重试的 insert。
 
-基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量（每秒事件数，events per second），并且每次 insert 至少可以发送 5000 个事件，那么通常这就是处理管道（pipeline）中唯一需要的批处理机制。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
+基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量 (每秒事件数，events per second) ，并且每次 insert 至少可以发送 10,000 个事件，那么通常这就是处理管道 (pipeline) 中唯一需要的批处理机制。如果内存允许，也可以使用最高 100,000 的值。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
 ### 使用异步插入 \{#use-asynchronous-inserts\}
 

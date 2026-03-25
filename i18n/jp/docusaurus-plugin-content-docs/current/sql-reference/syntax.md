@@ -65,8 +65,26 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 
 ClickHouse は、SQL スタイルおよび C スタイルの両方のコメントをサポートしています。
 
-- SQL スタイルのコメントは `--`、`#!` または `# ` で始まり、その行末までがコメントになります。`--` および `#!` の後のスペースは省略可能です。
-- C スタイルのコメントは `/*` から `*/` までの範囲がコメントとなり、複数行にわたることもあります。スペースも不要です。
+* SQL スタイルのコメントは `--`、`#!` または `# ` で始まり、その行末までがコメントになります。`--` および `#!` の後のスペースは省略可能です。
+* C スタイルのコメント:
+  * `//` (または `/` が 3 文字以上連続する場合) の後にテキストが続き、その行末までがコメントになります。`/` の後にスペースは不要です。
+  * 複数行コメントでは、`/*` から `*/` までの範囲をコメントにできます。スペースも不要です。
+  * C スタイルのコメントはネストできます。
+
+たとえば、
+
+```sql
+/*
+ * Compute the number of days between two dates.
+ * /* Returns NULL if either argument is NULL */
+ */
+SELECT
+    dateDiff('day', toDate('2024-01-01'), toDate('2024-12-31')) AS days_in_year, -- 365
+    dateDiff('day', toDate('2020-01-01'), today()) AS days_since  #! since 2020
+    ///////////////////////////////////////////////////////////////////
+    # TODO: add hour/minute variants
+```
+
 
 ## キーワード \{#keywords\}
 
@@ -234,13 +252,13 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 
 ### 複合リテラル \{#compound\}
 
-配列は `[1, 2, 3]` のように角かっこで表記します。タプルは `(1, 'Hello, world!', 2)` のように丸かっこで表記します。
+配列は `[]` を使って `[1, 2, 3]` のように構築します。タプルは `()` を使って `(1, 'Hello, world!', 2)` のように構築します。
 厳密には、これらはリテラルではなく、それぞれ配列生成演算子およびタプル生成演算子を用いた式です。
 配列は少なくとも 1 つの要素を含む必要があり、タプルは少なくとも 2 つの要素を持つ必要があります。
 
 :::note
 `SELECT` クエリの `IN` 句にタプルが現れる場合は、別のケースとして扱われます。
-クエリ結果にはタプルを含めることができますが、タプルは（[Memory](../engines/table-engines/special/memory.md) エンジンを使用するテーブルを除き）データベースに保存できません。
+クエリ結果にはタプルを含めることができますが、タプルは ([Memory](../engines/table-engines/special/memory.md) エンジンを使用するテーブルを除き) データベースに保存できません。
 :::
 
 ### NULL \{#null\}
@@ -284,69 +302,83 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 
 ## クエリパラメータの定義と使用 \{#defining-and-using-query-parameters\}
 
-クエリパラメータを使用すると、具体的な識別子の代わりに抽象的なプレースホルダーを含む汎用的なクエリを記述できます。\
+クエリパラメータを使用すると、具体的な識別子の代わりに抽象的なプレースホルダーを含む汎用的なクエリを記述できます。
 クエリパラメータを含むクエリが実行されると、すべてのプレースホルダーが解釈され、実際のクエリパラメータ値に置き換えられます。
 
-クエリパラメータを定義する方法は 2 通りあります:
+クエリパラメータは複数の方法で定義できます:
 
-- `SET param_<name>=<value>`
-- `--param_<name>='<value>'`
-
-2 つ目の形式を使用する場合は、コマンドラインで `clickhouse-client` に渡す引数として指定します。このとき:
-
-- `<name>` はクエリパラメータの名前です。
-- `<value>` はその値です。
+* `SET param_<name>=<value>` — クエリ内で `SET` コマンドを使用する方法。
+* `--param_<name>='<value>'` — コマンドラインで `clickhouse-client` に渡す引数として指定する方法。
+* `param_<name>=<value>` — HTTP interface の URL クエリ文字列パラメータとして指定する方法。
 
 クエリパラメータは、クエリ内で `{<name>: <datatype>}` という形式で参照できます。ここで `<name>` はクエリパラメータ名、`<datatype>` はその値が変換されるデータ型です。
 
 <details>
-<summary>SET コマンドの例</summary>
+  <summary>SET コマンドの例</summary>
 
-たとえば、次の SQL は `a`、`b`、`c`、`d` という名前のパラメータを定義しており、それぞれ異なるデータ型を持ちます:
+  たとえば、次の SQL は `a`、`b`、`c`、`d` という名前のパラメータを定義しており、それぞれ異なるデータ型を持ちます:
 
-```sql
-SET param_a = 13;
-SET param_b = 'str';
-SET param_c = '2022-08-04 18:30:53';
-SET param_d = {'10': [11, 12], '13': [14, 15]};
+  ```sql
+  SET param_a = 13;
+  SET param_b = 'str';
+  SET param_c = '2022-08-04 18:30:53';
+  SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-SELECT
-   {a: UInt32},
-   {b: String},
-   {c: DateTime},
-   {d: Map(String, Array(UInt8))};
+  SELECT
+     {a: UInt32},
+     {b: String},
+     {c: DateTime},
+     {d: Map(String, Array(UInt8))};
 
-13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-```
+  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+  ```
 </details>
 
 <details>
-<summary>clickhouse-client を用いた例</summary>
+  <summary>clickhouse-client を用いた例</summary>
 
-`clickhouse-client` を使用する場合、パラメータは `--param_name=value` という形式で指定します。たとえば、次のパラメータは名前が `message` であり、`String` として取得されます:
+  `clickhouse-client` を使用する場合、パラメータは `--param_name=value` という形式で指定します。たとえば、次のパラメータは名前が `message` であり、`String` として取得されます:
 
-```bash
-clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+  ```bash
+  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-hello
-```
+  hello
+  ```
 
-クエリパラメータがデータベース、テーブル、関数などの識別子名を表す場合は、その型として `Identifier` を使用します。たとえば、次のクエリは `uk_price_paid` という名前のテーブルから行を返します:
+  クエリパラメータがデータベース、テーブル、関数などの識別子名を表す場合は、その型として `Identifier` を使用します。たとえば、次のクエリは `uk_price_paid` という名前のテーブルから行を返します:
 
-```sql
-SET param_mytablename = "uk_price_paid";
-SELECT * FROM {mytablename:Identifier};
-```
+  ```sql
+  SET param_mytablename = "uk_price_paid";
+  SELECT * FROM {mytablename:Identifier};
+  ```
+</details>
+
+<details>
+  <summary>HTTP interface の例</summary>
+
+  クエリパラメータは、`param_` プレフィックスを付けた URL クエリ文字列パラメータとして渡すことができます。たとえば:
+
+  ```bash
+  curl -s "http://localhost:8123/?param_message=hello" --data-binary "SELECT {message: String}"
+
+  hello
+  ```
+</details>
+
+<details>
+  <summary>Web UI の例</summary>
+
+  組み込みの Web UI (`play.html`) は、クエリ内の `{name:Type}` パラメータプレースホルダーを自動的に検出し、各パラメータに対応するラベル付きの入力フィールドを表示します。パラメータ値は HTTP リクエストに含まれ、ブックマークや共有のためにページ URL にも保持されます。
 </details>
 
 :::note
-クエリパラメータは、任意の SQL クエリの任意の場所で使用できる汎用的なテキスト置換ではありません。\
+クエリパラメータは、任意の SQL クエリの任意の場所で使用できる汎用的なテキスト置換ではありません。
 主に、識別子やリテラルの代わりとして `SELECT` 文内で使用されることを想定して設計されています。
 :::
 
 ## 関数 \{#functions\}
 
-関数呼び出しは、識別子に続けて、丸括弧で囲まれた引数リスト（空でも可）を記述します。
+関数呼び出しは、識別子に続けて、引数リスト (空でも可) を `()` で記述します。
 標準 SQL とは異なり、引数リストが空の場合でも括弧は必須です。
 たとえば、次のように記述します。
 
@@ -365,11 +397,11 @@ now()
 quantile (0.9)(x) 
 ```
 
-これらの集約関数は「パラメトリック関数」と呼ばれ、
+これらの集計関数は「パラメトリック関数」と呼ばれ、
 最初のリスト内の引数は「パラメータ」と呼ばれます。
 
 :::note
-パラメータを持たない集約関数の構文は、通常の関数と同じです。
+パラメータを持たない集計関数の構文は、通常の関数と同じです。
 :::
 
 

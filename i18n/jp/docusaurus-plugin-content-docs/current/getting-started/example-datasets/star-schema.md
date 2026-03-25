@@ -9,12 +9,14 @@ keywords: ['サンプルデータセット', 'スター・スキーマ', 'サン
 
 Star Schema Benchmark は、概ね [TPC-H](tpch.md) のテーブルとクエリに基づいていますが、TPC-H と異なり、スター・スキーマのレイアウトを使用します。
 データの大部分は巨大なファクトテーブルに格納されており、その周囲に複数の小さなディメンションテーブルが配置されています。
-クエリでは、フィルタ条件（例: `MONTH = 'JANUARY'`）を適用するために、ファクトテーブルを 1 つ以上のディメンションテーブルと結合します。
+クエリでは、フィルタ条件 (例: `MONTH = 'JANUARY'`) を適用するために、ファクトテーブルを 1 つ以上のディメンションテーブルと結合します。
 
 参考文献:
 
 * [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil ほか), 2009
 * [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl ほか), 2013
+
+## データ生成 \{#data-generation\}
 
 まず、Star Schema Benchmark のリポジトリをチェックアウトし、データ生成ツールをコンパイルします。
 
@@ -34,8 +36,10 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-次に、ClickHouse でテーブルを作成します：
 
+## テーブルを作成 \{#create-tables\}
+
+次に、ClickHouse でテーブルを作成します。
 
 ```sql
 CREATE TABLE customer
@@ -122,6 +126,9 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
+
+## データのインポート \{#import-data\}
+
 データは次のようにインポートできます。
 
 ```bash
@@ -132,9 +139,11 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-ClickHouse の多くのユースケースでは、複数のテーブルが 1 つの非正規化されたフラットテーブルに変換されます。
-このステップは任意です。以下では、クエリを元の形式と、非正規化テーブル向けに書き換えた形式の両方で示します。
 
+## 非正規化テーブル \{#denormalized-table\}
+
+ClickHouse の多くのユースケースでは、複数のテーブルを 1 つの非正規化フラットテーブルに変換します。
+この手順は任意です。以下では、クエリを元の形式と、非正規化テーブル向けに書き換えた形式の両方で示します。
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -179,16 +188,24 @@ AS SELECT
     p.P_COLOR AS P_COLOR,
     p.P_TYPE AS P_TYPE,
     p.P_SIZE AS P_SIZE,
-    p.P_CONTAINER AS P_CONTAINER
+    p.P_CONTAINER AS P_CONTAINER,
+    d.D_YEAR AS D_YEAR,
+    d.D_YEARMONTHNUM AS D_YEARMONTHNUM,
+    d.D_YEARMONTH AS D_YEARMONTH,
+    d.D_WEEKNUMINYEAR AS D_WEEKNUMINYEAR
 FROM lineorder AS l
 INNER JOIN customer AS c ON c.C_CUSTKEY = l.LO_CUSTKEY
 INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
-INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
+INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY
+INNER JOIN date AS d ON d.D_DATEKEY = l.LO_ORDERDATE;
 ```
+
+
+## クエリ \{#queries\}
 
 クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のクエリ例:
 
-Q1.1
+### Q1.1 \{#q1-1\}
 
 ```sql
 SELECT
@@ -203,7 +220,7 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -216,7 +233,8 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-Q1.2
+
+### Q1.2 \{#q1-2\}
 
 ```sql
 SELECT
@@ -244,7 +262,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q1.3
+### Q1.3 \{#q1-3\}
 
 ```sql
 SELECT
@@ -260,7 +278,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非正規化されたテーブル:
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -268,14 +286,13 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    toISOWeek(LO_ORDERDATE) = 6
-    AND toYear(LO_ORDERDATE) = 1994
+    D_WEEKNUMINYEAR = 6
+    AND D_YEAR = 1994
     AND LO_DISCOUNT BETWEEN 5 AND 7
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q2.1
-
+### Q2.1 \{#q2-1\}
 
 ```sql
 SELECT
@@ -320,7 +337,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.2
+
+### Q2.2 \{#q2-2\}
 
 ```sql
 SELECT
@@ -364,7 +382,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.3
+
+### Q2.3 \{#q2-3\}
 
 ```sql
 SELECT
@@ -398,7 +417,7 @@ SELECT
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
 FROM lineorder_flat
-WHERE P_BRAND = 'MFGR#2239' AND S_REGION = 'EUROPE'
+WHERE P_BRAND = 'MFGR#2221' AND S_REGION = 'EUROPE'
 GROUP BY
     year,
     P_BRAND
@@ -407,7 +426,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q3.1
+
+### Q3.1 \{#q3-1\}
 
 ```sql
 SELECT
@@ -458,8 +478,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.2
 
+### Q3.2 \{#q3-2\}
 
 ```sql
 SELECT
@@ -511,7 +531,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.3
+
+### Q3.3 \{#q3-3\}
 
 ```sql
 SELECT
@@ -541,7 +562,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -564,7 +585,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.4
+
+### Q3.4 \{#q3-4\}
 
 ```sql
 SELECT
@@ -593,7 +615,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規化テーブル:
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -615,8 +637,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q4.1
 
+### Q4.1 \{#q4-1\}
 
 ```sql
 SELECT
@@ -662,7 +684,8 @@ ORDER BY
     C_NATION ASC;
 ```
 
-Q4.2
+
+### Q4.2 \{#q4-2\}
 
 ```sql
 SELECT
@@ -719,7 +742,8 @@ ORDER BY
     P_CATEGORY ASC;
 ```
 
-Q4.3
+
+### Q4.3 \{#q4-3\}
 
 ```sql
 SELECT
@@ -763,7 +787,8 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    S_NATION = 'UNITED STATES'
+    C_REGION = 'AMERICA'
+    AND S_NATION = 'UNITED STATES'
     AND (year = 1997 OR year = 1998)
     AND P_CATEGORY = 'MFGR#14'
 GROUP BY

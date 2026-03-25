@@ -40,13 +40,13 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  登录后，ClickHouse Cloud 会启动入门向导，带您完成新 ClickHouse 服务的创建。请选择要部署服务的区域，并为新服务命名：
+  登录后，ClickHouse Cloud 会启动接入流程向导，带您完成新 ClickHouse 服务的创建。请选择要部署服务的区域，并为新服务命名：
 
   <Image img={createservice1} size="md" alt="新建 ClickHouse 服务" border />
 
   <br />
 
-  默认情况下,新组织将采用 Scale 层级,并创建 3 个^^副本^^,每个副本配置 4 个 vCPU 和 16 GiB 内存。Scale 层级默认启用[垂直自动扩展](/manage/scaling#vertical-auto-scaling)。您可以稍后在&quot;Plans&quot;页面更改组织层级。
+  默认情况下,新组织将采用 Scale 层级,并创建 3 个副本,每个副本配置 4 个 vCPUs 和 16 GiB 内存。Scale 层级默认启用[垂直自动扩展](/manage/scaling#vertical-auto-scaling)。您可以稍后在&#39;Plans&#39;页面更改组织层级。
 
   如有需要，可通过指定副本的最小和最大数量来自定义服务资源以进行扩缩容。准备就绪后，选择 `Create service`。
 
@@ -54,14 +54,14 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  恭喜！您的 ClickHouse Cloud 服务已启动并运行，初始配置已完成。请继续阅读，了解如何开始摄取并查询您的数据。
+  恭喜！您的 ClickHouse Cloud 服务已启动并运行，接入流程已完成。请继续阅读，了解如何开始摄取并查询您的数据。
 
   ## 连接到 ClickHouse \{#2-connect-to-clickhouse\}
 
   连接 ClickHouse 有两种方式：
 
   * 通过我们的基于 Web 的 SQL 控制台进行连接
-  * 使用您的应用程序连接
+  * 连接您的应用
 
   <br />
 
@@ -89,7 +89,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   从导航菜单中点击连接按钮。将弹出一个对话框，显示您的服务凭据，并提供使用界面或语言客户端进行连接的操作说明。
 
-  <Image img={service_connect} size="md" alt="服务连接" border />
+  <Image img={service_connect} size="md" alt="连接服务" border />
 
   <br />
 
@@ -97,7 +97,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   ## 添加数据 \{#3-add-data\}
 
-  ClickHouse 需要数据才能发挥最佳性能！添加数据有多种方式，大部分可通过导航菜单中的“数据源”页面访问。
+  ClickHouse 需要数据才能发挥最佳性能！添加数据有多种方式，大部分可通过导航菜单中的&quot;数据源&quot;页面访问。
 
   <Image img={data_sources} size="md" alt="数据源" border />
 
@@ -108,7 +108,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   * 设置 ClickPipe，以从 S3、Postgres、Kafka、GCS 等数据源开始摄取数据
   * 使用 SQL 控制台
   * 使用 ClickHouse 客户端
-  * 上传文件 - 支持的格式包括 JSON、CSV 和 TSV
+  * 上传文件  - 支持的格式包括 JSON、CSV 和 TSV
   * 通过文件 URL 上传数据
 
   ### ClickPipes \{#clickpipes\}
@@ -143,17 +143,17 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   在上述示例中，`my_first_table` 是一个 [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) 表，包含四列：
 
-  * `user_id`:  32 位无符号整数 ([UInt32](../../sql-reference/data-types/int-uint.md)) 
+  * `user_id`:  32 位无符号整数 ([UInt32](../../sql-reference/data-types/int-uint.md))
   * `message`：一种 [String](../../sql-reference/data-types/string.md) 数据类型，用于替代其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等数据类型
   * `timestamp`：一个 [DateTime](../../sql-reference/data-types/datetime.md) 值，表示某个具体时间点
-  * `metric`：32 位浮点数 ([Float32](../../sql-reference/data-types/float.md)) 
+  * `metric`：32 位浮点数 ([Float32](../../sql-reference/data-types/float.md))
 
   :::note 表引擎
   表引擎决定：
 
   * 数据的存储方式和位置
   * 支持的查询
-  * 数据是否具有副本
+  * 数据是否被复制
 
   <br />
 
@@ -166,18 +166,18 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   * 在 ClickHouse 中，表中每一行的主&#x952E;***不是唯一的***
 
-  ClickHouse 表的^^主键^^决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据 (称为 **索引粒度**) 都会在^^主键^^索引文件中创建一个条目。这种粒度设计形成了一个可以轻松放入内存的 **^^稀疏索引^^**，而 granule 则表示在 `SELECT` 查询期间会被处理的最小列数据条带。
+  ClickHouse 表的主键决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据 (称为 **索引粒度**) 都会在主键索引文件中创建一个条目。这种粒度设计形成了一个可以轻松放入内存的 **稀疏索引**，而粒度块 (granule) 则表示在 `SELECT` 查询期间会被处理的最小列数据条带。
 
-  ^^主键^^可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`，
-  则该键为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则 ^^主键^^ 必须是排序键的子集。
+  主键可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`，
+  则该键为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则主键必须是排序键的子集。
 
-  ^^主键^^同时也是^^排序键^^，为 `(user_id, timestamp)` 这一元组。因此，每个列文件中存储的数据会先按 `user_id`，再按 `timestamp` 排序。
+  主键同时也是排序键，为 `(user_id, timestamp)` 这一元组。因此，每个列文件中存储的数据会先按 `user_id`，再按 `timestamp` 排序。
 
-  如需深入了解 ClickHouse 的核心概念，请参阅[“核心概念”](../../managing-data/core-concepts/index.md)。
+  如需深入了解 ClickHouse 的核心概念，请参阅[&quot;核心概念&quot;](../../managing-data/core-concepts/index.md)。
 
   #### 向表中插入数据 \{#insert-data-into-your-table\}
 
-  您可以使用熟悉的 [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) 命令向 ClickHouse 插入数据,但需要注意的是,每次向 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 表执行插入操作都会在存储中创建一个**数据部分**(part)。
+  您可以使用熟悉的 [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) 命令向 ClickHouse 插入数据,但需要注意的是,每次向 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 表执行插入操作都会在存储中创建一个**分区片段**(part)。
 
   :::tip ClickHouse 最佳实践
   每批次插入大量数据行——一次性插入数万甚至数百万行。无需担心——ClickHouse 能够轻松处理这种数据量级，并且通过减少向服务发送的写入请求次数来[节省成本](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)。

@@ -16,13 +16,13 @@ import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-ser
 
 ## Standard Onboarding とは何ですか？ \{#what-is-standard-onboarding\}
 
-**Standard onboarding** は、BYOC を使用してお客様自身のクラウドアカウントに ClickHouse をデプロイするための、デフォルトのガイド付きワークフローです。このアプローチでは、ClickHouse Cloud が、お客様の AWS アカウント／GCP プロジェクト内に、デプロイメントに必要な主要なクラウドリソース（VPC、サブネット、セキュリティグループ、Kubernetes（EKS/GKE）クラスター、およびそれを支える IAM ロール／サービスアカウントなど）をプロビジョニングします。これにより、一貫性があり安全な構成が保証され、チーム側で必要となる手作業を最小限に抑えることができます。
+**Standard onboarding** は、BYOC を使用してお客様自身のクラウドアカウントに ClickHouse をデプロイするための、デフォルトのガイド付きワークフローです。このアプローチでは、ClickHouse Cloud が、お客様の AWS アカウント／GCP プロジェクト内に、デプロイメントに必要な主要なクラウドリソース (VPC、サブネット、セキュリティグループ、Kubernetes (EKS/GKE) クラスター、およびそれを支える IAM ロール／サービスアカウントなど) をプロビジョニングします。これにより、一貫性があり安全な構成が保証され、チーム側で必要となる手作業を最小限に抑えることができます。
 
-Standard onboarding では、お客様は専用の AWS アカウント／GCP プロジェクトを用意し、CloudFormation または Terraform で初期スタックを実行して、ClickHouse Cloud が以降のセットアップをオーケストレーションするために必要な最小限の IAM 権限と信頼ポリシーを作成するだけです。その後のすべての手順（インフラストラクチャのプロビジョニングやサービスの起動を含む）は、ClickHouse Cloud の Web コンソールを通じて管理されます。
+Standard onboarding では、お客様は専用の AWS アカウント／GCP プロジェクトを用意し、CloudFormation または Terraform で初期スタックを実行して、ClickHouse Cloud が以降のセットアップをオーケストレーションするために必要な最小限の IAM 権限と信頼ポリシーを作成するだけです。その後のすべての手順 (インフラストラクチャのプロビジョニングやサービスの起動を含む) は、ClickHouse Cloud の Web コンソールを通じて管理されます。
 
-お客様には、権限およびリソースのアイソレーションを高めるために、ClickHouse BYOC デプロイメントをホストするための **専用の** AWS アカウントまたは GCP プロジェクトを準備することを強く推奨します。ClickHouse は、お客様のアカウント内に、専用のクラウドリソースセット（VPC、Kubernetes クラスター、IAM ロール、S3 バケットなど）をデプロイします。
+お客様には、権限およびリソースのアイソレーションを高めるために、ClickHouse BYOC デプロイメントをホストするための **専用の** AWS アカウントまたは GCP プロジェクトを準備することを強く推奨します。ClickHouse は、お客様のアカウント内に、専用のクラウドリソースセット (VPC、Kubernetes クラスター、IAM ロール、S3 バケットなど) をデプロイします。
 
-よりカスタマイズされたセットアップ（たとえば既存の VPC へのデプロイ）が必要な場合は、[Customized Onboarding](/cloud/reference/byoc/onboarding/customization) のドキュメントを参照してください。
+よりカスタマイズされたセットアップ (たとえば既存の VPC へのデプロイ) が必要な場合は、[Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) のドキュメントを参照してください。
 
 ## アクセスを申請する \{#request-access\}
 

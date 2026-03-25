@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 설명 \{#description\}
 
 [Prometheus text-based exposition format](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format) 형식으로 메트릭을 노출합니다.
@@ -29,8 +27,6 @@ doc_type: 'reference'
 
 `histogram` 및 `summary` 레이블에는 특별한 요구 사항이 있습니다. 자세한 내용은 [Prometheus 문서](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)를 참고하십시오.  
 `{'count':''}` 및 `{'sum':''}` 레이블이 있는 행에는 특별한 규칙이 적용되며, 각각 `<metric_name>_count` 및 `<metric_name>_sum`으로 변환됩니다.
-
-
 
 ## 사용 예제 \{#example-usage\}
 
@@ -59,7 +55,6 @@ doc_type: 'reference'
 
 형식은 다음과 같습니다:
 
-
 ```text
 # HELP http_request_duration_seconds A histogram of the request duration.
 # TYPE http_request_duration_seconds histogram
@@ -70,8 +65,6 @@ http_request_duration_seconds_bucket{le="1"} 133988
 http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
-```
-
 
 # HELP http_requests_total HTTP 요청 총 횟수
 # TYPE http_requests_total counter
@@ -79,8 +72,6 @@ http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
-
-
 
 # HELP rpc_duration_seconds RPC 지속 시간(초)에 대한 요약입니다.
 
@@ -95,9 +86,6 @@ rpc&#95;duration&#95;seconds&#95;sum 17560473
 rpc&#95;duration&#95;seconds&#95;count 2693
 
 something&#95;weird{problem="0으로 나누기 오류"} +Inf -3982045
-
-```
 ```
 
-
-## 형식 설정 {#format-settings}
+## 형식 설정 \{#format-settings\}

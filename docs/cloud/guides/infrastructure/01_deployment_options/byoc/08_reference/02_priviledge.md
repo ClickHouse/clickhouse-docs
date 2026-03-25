@@ -1,5 +1,5 @@
 ---
-title: 'BYOC Privilege'
+title: 'BYOC privilege'
 slug: /cloud/reference/byoc/reference/privilege
 sidebar_label: 'Privilege'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'privilege']

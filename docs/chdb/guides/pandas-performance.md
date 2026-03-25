@@ -1,6 +1,6 @@
 ---
-title: 'Performance Guide'
-sidebar_label: 'Performance Guide'
+title: 'Performance guide'
+sidebar_label: 'Performance guide'
 slug: /chdb/guides/pandas-performance
 description: 'Performance optimization tips for DataStore vs pandas'
 keywords: ['chdb', 'datastore', 'pandas', 'performance', 'benchmark', 'optimization']

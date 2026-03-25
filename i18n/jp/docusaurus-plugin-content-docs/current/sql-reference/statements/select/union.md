@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 `UNION` は、`UNION ALL` または `UNION DISTINCT` を明示的に指定して使用できます。
 
-`ALL` または `DISTINCT` を指定しない場合は、`union_default_mode` 設定の値が使用されます。`UNION ALL` と `UNION DISTINCT` の違いは、`UNION DISTINCT` が UNION の結果に対して重複排除（distinct 変換）を行う点であり、`UNION ALL` を含むサブクエリに対して `SELECT DISTINCT` を実行することと等価です。
+`ALL` または `DISTINCT` を指定しない場合は、`union_default_mode` 設定の値が使用されます。`UNION ALL` と `UNION DISTINCT` の違いは、`UNION DISTINCT` が UNION の結果に対して重複排除 (distinct 変換) を行う点であり、`UNION ALL` を含むサブクエリに対して `SELECT DISTINCT` を実行することと等価です。
 
 `UNION` を使用して、結果を結合することで任意の数の `SELECT` クエリをまとめることができます。例:
 
@@ -27,7 +27,7 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
     HAVING c > 0
 ```
 
-結果列はインデックス（`SELECT` 内での順序）によって対応付けられます。列名が一致しない場合、最終結果の列名は最初のクエリから取得されます。
+結果列はインデックス (`SELECT` 内での順序) によって対応付けられます。列名が一致しない場合、最終結果の列名は最初のクエリから取得されます。
 
 `UNION` では型キャストが行われます。たとえば、結合される 2 つのクエリで、互換性のある型に対して一方が非 `Nullable` 型、もう一方が `Nullable` 型の同じフィールドを持つ場合、結果の `UNION` ではそのフィールドは `Nullable` 型になります。
 
@@ -63,7 +63,7 @@ SET union_default_mode = 'ALL';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─1─┐
