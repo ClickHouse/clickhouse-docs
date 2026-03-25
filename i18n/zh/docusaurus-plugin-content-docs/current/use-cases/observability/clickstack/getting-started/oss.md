@@ -26,6 +26,10 @@ import TabItem from '@theme/TabItem';
 
 要部署 **ClickStack 开源版** (由你自行运行和管理 ClickHouse 和 ClickStack UI) ，我们提供预构建的 Docker 镜像，将 UI、一个 OpenTelemetry collector 和 ClickHouse 打包到单个容器中——让本地开发、测试以及自管理部署的起步变得简单直接。
 
+:::tip
+还提供 ClickStack 的托管版本——参阅 [托管 ClickStack](/use-cases/observability/clickstack/getting-started/managed)。
+:::
+
 这些镜像基于官方的 ClickHouse Debian 包构建，并提供多种发行版本，以适配不同的使用场景。
 
 最简单的选项是一个 **单镜像发行版**，其中包含整个堆栈的所有核心组件，打包在一起：

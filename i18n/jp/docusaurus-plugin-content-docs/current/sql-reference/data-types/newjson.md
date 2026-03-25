@@ -823,17 +823,16 @@ JSON カラムの内容を調査するために使用される関数の詳細に
 
 #### Map with buckets \{#shared-data-map-with-buckets\}
 
-`map_with_buckets` シリアライゼーションバージョンでは、共有データは `Map(String, String)` 型の `N` 個のカラム（「バケット」）としてシリアライズされます。
+`map_with_buckets` シリアライゼーションバージョンでは、共有データは `Map(String, String)` 型の `N` 個のカラム (「バケット」) としてシリアライズされます。
 各バケットにはパスのサブセットのみが含まれます。この形式のシリアライゼーションからパスのサブカラムを読み取るために、ClickHouse は
 単一のバケットから `Map` カラム全体を読み込み、メモリ上で要求されたパスを抽出します。
 
 このシリアライゼーションはデータの書き込みや `JSON` カラム全体の読み取りについては効率が低くなりますが、必要なバケットからのみデータを読み取るため、
 パスのサブカラムの読み取りにはより効率的です。
 
-バケット数 `N` は、MergeTree 設定 [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part)（デフォルト 8）
-および [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part)（デフォルト 32）によって制御されます。
+バケット数 `N` は、MergeTree 設定 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (デフォルト 8) 
+および [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (デフォルト 32) によって制御されます。
+両方の設定で許可される最大値は 256 です。
 
 #### Advanced \{#shared-data-advanced\}
 
