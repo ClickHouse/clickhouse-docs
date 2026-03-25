@@ -22,20 +22,11 @@ import condition_tip from '@site/static/images/clickstack/rbac/condition-tip.png
 import access_rules_tip from '@site/static/images/clickstack/rbac/access-rules-tip.png';
 import dashboard_id_and_tag_example from '@site/static/images/clickstack/rbac/dashboard-id-and-tag-example.png';
 
-ClickStack includes role-based access control (RBAC) so you can define custom roles with fine-grained permissions over [dashboards](/use-cases/observability/clickstack/dashboards), [saved searches](/use-cases/observability/clickstack/search), sources, [alerts](/use-cases/observability/clickstack/alerts), webhooks, and notebooks. You assign each team member a role that determines what they can view and manage in the ClickStack UI.
+ClickStack includes role-based access control (RBAC) so you can define custom roles with fine-grained permissions over [dashboards](/use-cases/observability/clickstack/dashboards), [saved searches](/use-cases/observability/clickstack/search), sources, [alerts](/use-cases/observability/clickstack/alerts), webhooks, and notebooks. Permissions work at two levels: resource-level access (no access, read, or manage per resource type) and optional fine-grained rules that restrict access to individual resources by name, tag, or ID. ClickStack ships with three built-in roles, and you can create custom roles to match your team's needs.
 
 :::note Managed ClickStack only
 RBAC is available in Managed ClickStack deployments. For ClickStack Open Source, access control is managed at the infrastructure level.
 :::
-
-## Overview {#overview}
-
-ClickStack RBAC operates at two levels:
-
-- **Resource-level permissions** — control whether a role can access specific resource types, and at what level (no access, read, or manage).
-- **Fine-grained access rules** — optionally restrict access to individual resources within a category based on conditions like name or tag.
-
-ClickStack ships with three built-in system roles, and you can create custom roles to match your team's access requirements.
 
 ## User access prerequisites {#user-access-prerequisites}
 
