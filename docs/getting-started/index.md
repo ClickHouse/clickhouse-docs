@@ -11,8 +11,8 @@ doc_type: 'landing-page'
 
 # Tutorials and example datasets
 
-:::tip[Optional: run these tutorials in ClickHouse Cloud]
-If you prefer a managed environment, you can [create a ClickHouse Cloud service](https://console.clickhouse.cloud/signUp?loc=docs-getting-started-example-datasets) and run the same tutorials there.
+:::note
+These tutorials work with any ClickHouse deployment, including [ClickHouse Cloud](/cloud/overview).
 :::
 
 We have a lot of resources for helping you get started and learn how ClickHouse works:
