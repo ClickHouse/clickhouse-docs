@@ -1,6 +1,6 @@
 import { strapi } from '@strapi/client';
 import { useMemo } from 'react';
-import { useDocusaurusContext } from '@docusaurus/core';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const STRAPI_DEFAULT_URL = 'https://staging-cms.clickhouse.com';
 
