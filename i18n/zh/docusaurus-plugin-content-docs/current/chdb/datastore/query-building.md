@@ -2,7 +2,7 @@
 title: 'DataStore 查询构建'
 sidebar_label: '查询构建'
 slug: /chdb/datastore/query-building
-description: '通过流式接口的链式调用在 DataStore 中构建类 SQL 查询'
+description: '通过链式接口的链式调用在 DataStore 中构建 SQL 风格查询'
 keywords: ['chdb', 'datastore', '查询', 'select', 'filter', 'where', 'join', 'groupby']
 doc_type: 'reference'
 ---

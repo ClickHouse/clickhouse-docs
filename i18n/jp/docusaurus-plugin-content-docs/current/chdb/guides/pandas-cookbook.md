@@ -2,7 +2,7 @@
 title: 'Pandas クックブック'
 sidebar_label: 'Pandas クックブック'
 slug: /chdb/guides/pandas-cookbook
-description: '一般的な pandas のパターンと、それに対応する DataStore での同等表現'
+description: '一般的な pandas のパターンと、それに対応する DataStore での書き方'
 keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']
 doc_type: 'guide'
 ---

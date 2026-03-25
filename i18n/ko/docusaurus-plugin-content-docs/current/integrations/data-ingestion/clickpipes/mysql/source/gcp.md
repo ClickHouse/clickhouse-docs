@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud SQL for MySQL 소스 설정 가이드'
+sidebar_label: 'Cloud SQL for MySQL'
 description: 'Cloud SQL for MySQL을 ClickPipes 소스로 설정하는 단계별 가이드'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL 소스 설정 가이드'

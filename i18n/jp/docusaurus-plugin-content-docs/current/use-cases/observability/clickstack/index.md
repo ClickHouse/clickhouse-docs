@@ -12,15 +12,15 @@ doc_type: 'landing-page'
 
 ClickStack には 2 つのデプロイ方法があります。**ClickStack Open Source** では、ClickHouse、ClickStack UI (HyperDX)、OpenTelemetry Collector を含むすべてのコンポーネントを自分で実行および管理します。**Managed ClickStack** では、認証や運用上の考慮事項を含め、ClickHouse と ClickStack UI (HyperDX) が ClickHouse Cloud 上でフルマネージドとなり、ユーザーはワークロードからテレメトリを受信し、それを OTLP 経由で ClickHouse Cloud に転送する OpenTelemetry Collector のみを実行するだけで済みます。
 
-| セクション | 説明 |
-|---------|-------------|
-| [Overview](/use-cases/observability/clickstack/overview) | ClickStack とその主な機能の概要 |
-| [Getting Started](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順 |
-| [Sample Datasets](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース |
-| [Architecture](/use-cases/observability/clickstack/architecture) | システムアーキテクチャとコンポーネントの概要 |
-| [Deployment](/use-cases/observability/clickstack/deployment) | デプロイメントガイドとオプション |
-| [Configuration](/use-cases/observability/clickstack/config) | 詳細な設定オプションとパラメータ |
-| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | ClickStack にデータを取り込むためのガイドライン |
-| [Search](/use-cases/observability/clickstack/search) | オブザーバビリティデータの検索およびクエリ方法 |
-| [Production](/use-cases/observability/clickstack/production) | 本番環境へのデプロイメントに関するベストプラクティス |
-| [FAQ](/use-cases/observability/clickstack/faq) | よくある質問 |
+| セクション                                                                  | 説明                            |
+| ---------------------------------------------------------------------- | ----------------------------- |
+| [Overview](/use-cases/observability/clickstack/overview)               | ClickStack とその主な機能の概要         |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順      |
+| [Sample Datasets](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース             |
+| [Architecture](/use-cases/observability/clickstack/architecture)       | システムアーキテクチャとコンポーネントの概要        |
+| [Deployment](/use-cases/observability/clickstack/deployment)           | デプロイメントガイドとオプション              |
+| [Configuration](/use-cases/observability/clickstack/config)            | 詳細な設定オプションとパラメータ              |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data)   | ClickStack にデータを取り込むためのガイドライン |
+| [Search](/use-cases/observability/clickstack/search)                   | オブザーバビリティデータの検索およびクエリ方法       |
+| [Production](/use-cases/observability/clickstack/production)           | 本番環境へのデプロイメントに関するベストプラクティス    |
+| [FAQ](/use-cases/observability/clickstack/faq)                         | よくある質問                        |

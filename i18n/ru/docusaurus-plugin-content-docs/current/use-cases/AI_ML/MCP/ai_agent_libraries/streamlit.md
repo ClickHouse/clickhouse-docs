@@ -1,18 +1,18 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/streamlit-agent
 sidebar_label: 'Интеграция Streamlit'
-title: 'Как создать AI-агента на базе ClickHouse с помощью Streamlit'
+title: 'Как создать ИИ-агент на базе ClickHouse с помощью Streamlit'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать веб-AI-агента с помощью Streamlit и сервера ClickHouse MCP'
-keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI-агент']
+description: 'Узнайте, как создать веб-ИИ-агента с помощью Streamlit и MCP-сервера ClickHouse'
+keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'ИИ-агент']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать агента ИИ на базе ClickHouse с помощью Streamlit \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
+# Как создать ИИ-агент на базе ClickHouse с помощью Streamlit \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
-В этом руководстве вы узнаете, как создать веб-агента ИИ с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
+В этом руководстве вы узнаете, как создать веб-ИИ-агента с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
 
 :::note Пример приложения
 В этом примере создаётся полнофункциональное веб-приложение, предоставляющее чат-интерфейс для выполнения запросов к данным ClickHouse.

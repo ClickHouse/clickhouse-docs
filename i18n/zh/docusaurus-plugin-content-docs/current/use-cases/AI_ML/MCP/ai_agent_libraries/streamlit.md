@@ -4,15 +4,15 @@ sidebar_label: '集成 Streamlit'
 title: '如何使用 Streamlit 构建基于 ClickHouse 的 AI Agent'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 Streamlit 和 ClickHouse MCP Server 构建基于 Web 的 AI Agent'
+description: '了解如何使用 Streamlit 和 ClickHouse MCP server 构建基于 Web 的 AI Agent'
 keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Streamlit 构建基于 ClickHouse 的 AI 代理 \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
+# 如何使用 Streamlit 构建基于 ClickHouse 的 AI Agent \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
-在本指南中，您将学习如何使用 [Streamlit](https://streamlit.io/) 构建一个基于 Web 的 AI 代理，它可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 和 [Agno](https://github.com/agno-agi/agno) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+在本指南中，您将学习如何使用 [Streamlit](https://streamlit.io/) 构建一个基于 Web 的 AI 代理，它可以通过 [ClickHouse 的 MCP server](https://github.com/ClickHouse/mcp-clickhouse) 和 [Agno](https://github.com/agno-agi/agno) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
 :::note 示例应用
 此示例会创建一个完整的 Web 应用程序，提供用于查询 ClickHouse 数据的聊天界面。

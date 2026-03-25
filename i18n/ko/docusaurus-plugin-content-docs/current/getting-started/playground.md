@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse Playground는 사용자가 서버나 클러스터를 별도로 설정하지 않고도 즉시 쿼리를 실행하여 ClickHouse를 체험해 볼 수 있게 해 줍니다.'
+description: 'ClickHouse Playground는 사용자가 서버나 클러스터를 직접 설정하지 않고도 즉시 쿼리를 실행하여 ClickHouse를 손쉽게 체험할 수 있게 해줍니다.'
 keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
 sidebar_label: 'ClickHouse Playground'
 slug: /getting-started/playground

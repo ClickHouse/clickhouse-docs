@@ -2,14 +2,13 @@
 sidebar_label: 'LDAP 구성'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '인증 및 역할 매핑에 LDAP를 사용하도록 ClickHouse 구성하기'
+title: '인증 및 역할 매핑을 위해 ClickHouse에서 LDAP 구성하기'
 description: '인증 및 역할 매핑에 LDAP를 사용하도록 ClickHouse를 구성하는 방법을 설명합니다'
 keywords: ['LDAP 구성', 'LDAP 인증', '역할 매핑', '사용자 관리', 'SRE 가이드']
 doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
-
 
 # 인증 및 역할 매핑을 위해 ClickHouse에서 LDAP 구성하기 \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
 

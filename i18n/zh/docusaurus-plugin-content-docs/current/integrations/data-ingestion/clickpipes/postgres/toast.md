@@ -9,7 +9,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-在将数据从 PostgreSQL 复制到 ClickHouse 时，理解 TOAST（The Oversized-Attribute Storage Technique，大型属性存储技术）列的限制和特殊注意事项非常重要。本指南将帮助您在复制过程中识别并正确处理 TOAST 列。
+在将数据从 PostgreSQL 复制到 ClickHouse 时，理解 TOAST（The Oversized-Attribute Storage Technique）列的限制和特殊注意事项非常重要。本指南将帮助您在复制过程中识别并正确处理 TOAST 列。
 
 ## 什么是 PostgreSQL 中的 TOAST 列？ \{#what-are-toast-columns-in-postgresql\}
 

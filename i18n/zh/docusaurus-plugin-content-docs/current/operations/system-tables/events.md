@@ -2769,6 +2769,10 @@ INSERT 到 MergeTree 表的行数。
 
 合并为 Wide 格式的分区片段数量。
 
+### MergedProjections \{#mergedprojections\}
+
+MergeTree 执行合并时被合并 (而非重建) 的投影数量。
+
 ### MergedRows \{#mergedrows\}
 
 后台合并读取的行数。即合并前的行数。
@@ -3712,6 +3716,10 @@ ReadWriteBufferFromHTTP 发送的 HTTP 请求数
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 处理线程 (查询和其他任务) 消耗的总 (挂钟) 时间 (请注意，这是各线程时间的总和) 。
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+在 MergeTree 合并过程中从头重新构建的投影数量。
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

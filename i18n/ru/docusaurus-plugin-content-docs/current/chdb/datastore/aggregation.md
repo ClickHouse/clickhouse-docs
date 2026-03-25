@@ -1,8 +1,8 @@
 ---
-title: 'Функции агрегации DataStore'
+title: 'Агрегатные функции DataStore'
 sidebar_label: 'Агрегация'
 slug: /chdb/datastore/aggregation
-description: 'Функции агрегации, оконные функции и пространство имен F в DataStore'
+description: 'Функции агрегации, оконные функции и пространство имён F в DataStore'
 keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean', 'avg']
 doc_type: 'reference'
 ---

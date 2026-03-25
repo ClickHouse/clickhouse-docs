@@ -152,11 +152,11 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 ### 制限事項 \{#explicit-target-limitations\}
 
-- ターゲットテーブルの定義は dbt にとって自然な形ではありません。これはソーステーブルから読み取るための SQL ではないため、この部分では dbt による検証が効かなくなります。MV の SQL 自体は引き続き dbt ユーティリティを使って検証され、ターゲットテーブルのカラムとの互換性は ClickHouse レベルで検証されます。
-- **`ref()` 関数の制限に起因するいくつかの問題が見つかっています**。モデル同士を参照するために `ref()` を使う必要がありますが、これは下流ではなく上流のモデルのみを参照するためにしか使えません。このことが本実装でいくつかの問題を引き起こします。dbt-core リポジトリに issue を作成しており、現在 dbt チームと [可能な解決策を検討しています (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319)。
-  - `ref()` が config ブロック内から呼ばれた場合、共有されているモデルではなく、現在のモデルを返します。このため、config() セクション内で定義することができず、この依存関係を追加するためにコメントを使わざるを得ません。これは dbt ドキュメントで定義されている [“--depends_on:” アプローチ](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies) と同じパターンに従っています。
-  - `ref()` はターゲットテーブルを先に作成することを強制してくれるという意味では問題なく動作しますが、生成されたドキュメント内の依存関係チャートでは、ターゲットテーブルが下流ではなく別の上流の依存関係として描画されるため、やや理解しづらくなります。
-  - `unit-test` では、そのテーブルから読み取らない想定であっても、ターゲットテーブル用のデータを定義する必要があります。回避策としては、このテーブルのデータを空にしておくことです。
+* ターゲットテーブルの定義は dbt にとって自然な形ではありません。これはソーステーブルから読み取るための SQL ではないため、この部分では dbt による検証が効かなくなります。MV の SQL 自体は引き続き dbt ユーティリティを使って検証され、ターゲットテーブルのカラムとの互換性は ClickHouse レベルで検証されます。
+* **`ref()` 関数の制限に起因するいくつかの問題が見つかっています**。モデル同士を参照するために `ref()` を使う必要がありますが、これは下流ではなく上流のモデルのみを参照するためにしか使えません。このことが本実装でいくつかの問題を引き起こします。dbt-core リポジトリに issue を作成しており、現在 dbt チームと [可能な解決策を検討しています (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319)。
+  * `ref()` が config ブロック内から呼ばれた場合、共有されているモデルではなく、現在のモデルを返します。このため、config() セクション内で定義することができず、この依存関係を追加するためにコメントを使わざるを得ません。これは dbt ドキュメントで定義されている [“--depends&#95;on:” アプローチ](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies) と同じパターンに従っています。
+  * `ref()` はターゲットテーブルを先に作成することを強制してくれるという意味では問題なく動作しますが、生成されたドキュメント内の依存関係チャートでは、ターゲットテーブルが下流ではなく別の上流の依存関係として描画されるため、やや理解しづらくなります。
+  * `unit-test` では、そのテーブルから読み取らない想定であっても、ターゲットテーブル用のデータを定義する必要があります。回避策としては、このテーブルのデータを空にしておくことです。
 
 ### 使用方法 \{#explicit-target-usage\}
 
@@ -241,9 +241,9 @@ GROUP BY event_date, event_type
 
 #### 明示的なターゲットを使ったフルリフレッシュ \{#explicit-target-full-refresh\}
 
-`--full-refresh` を使用する場合、明示的に指定したターゲットテーブルは再作成されます（この処理中にインジェストが行われていると、データを失う可能性があります）。これは設定内容に応じて動作が変わります。
+`--full-refresh` を使用する場合、明示的に指定した target テーブルは再作成されます (この処理中にインジェストが行われていると、データを失う可能性があります) 。これは設定内容に応じて動作が変わります。
 
-**オプション 1: デフォルトの `--full-refresh` の動作。すべてが再作成されますが、MV を再作成している間は、ターゲットテーブルは空、または一部のみ読み込まれた状態になります。**
+**オプション 1: デフォルトの `--full-refresh` の動作。すべてが再作成されますが、MV を再作成している間は、target テーブルは空、または一部のみ読み込まれた状態になります。**
 
 すべてが DROP されて再作成されます。MV の SQL を使ってデータを再挿入したい場合は、`catchup=True` の設定を維持してください。
 
@@ -251,23 +251,23 @@ GROUP BY event_date, event_type
 -- models/page_events_aggregator.sql
 {{ config(
     materialized='materialized_view',
-    catchup=True  -- this is the default value so you don't need to actully set it.
+    catchup=True  -- this is the default value so you don't need to actually set it.
 ) }}
 {{ materialization_target_table(ref('events_daily')) }}
 ...
 ```
 
-**オプション 2: 対象テーブルを再作成したいが、MV の再作成中にデータが空の状態のテーブルを読み込みたくない場合**
+**オプション 2: target テーブルを再作成したいが、MV の再作成中にデータが空の状態のテーブルを読み込みたくない場合**
 
-まず MV の SQL を更新する必要がある場合は、それぞれに `catchup=False` を設定し、そのうえで MV に対して `dbt run` または `dbt run --full-refresh` を実行します。対象テーブルに対して `--full-refresh` を実行する前に MV が作成済みであることを必ず確認してください。対象テーブルの `--full-refresh` では ClickHouse の MV 定義が使用されるためです。
+まず MV の SQL を更新する必要がある場合は、それぞれに `catchup=False` を設定し、そのうえで MV に対して `dbt run` または `dbt run --full-refresh` を実行します。target テーブルに対して `--full-refresh` を実行する前に MV が作成済みであることを必ず確認してください。target テーブルの `--full-refresh` では ClickHouse の MV 定義が使用されるためです。
 
-対象テーブルのモデルで `repopulate_from_mvs_on_full_refresh=True` を設定します。`dbt run --full-refresh` を実行すると、これは次の処理を行います:
+target テーブルのモデルで `repopulate_from_mvs_on_full_refresh=True` を設定します。`dbt run --full-refresh` を実行すると、これは次の処理を行います:
 
 1. 新しい一時テーブルを作成する
 2. 各 MV の SQL を使用して INSERT-SELECT を実行する
 3. テーブルをアトミックに入れ替える
 
-これにより、MV が再作成されている間も、そのテーブルの利用者がデータの入っていない状態を見ることはありません。
+これにより、MV が再作成されている間も、target テーブルでデータが空の状態になることはありません。
 
 ```sql
 -- models/events_daily.sql
@@ -281,7 +281,6 @@ GROUP BY event_date, event_type
 }}
 ...
 ```
-
 
 #### ターゲットテーブルの変更 \{#explicit-target-changing\}
 
@@ -539,6 +538,6 @@ GROUP BY event_date, event_type
 
 ### 制約事項 \{#refreshable-limitations\}
 
-* 依存関係を持つ refreshable materialized view (MV) を ClickHouse で作成する際、指定した依存関係が作成時点で存在していなくても、ClickHouse はエラーにはなりません。その代わり、その refreshable MV は非アクティブな状態のままとなり、依存関係が満たされるまで更新処理やリフレッシュを開始しません。この挙動は設計どおりですが、必要な依存関係が速やかに解決されない場合、データの利用可能性に遅延を招くおそれがあります。ユーザーは、refreshable materialized view を作成する前に、すべての依存関係が正しく定義され、存在していることを確認することが推奨されます。
+* 依存関係を持つ リフレッシャブルmaterialized view (MV) を ClickHouse で作成する際、指定した依存関係が作成時点で存在していなくても、ClickHouse はエラーにはなりません。その代わり、その refreshable MV は非アクティブな状態のままとなり、依存関係が満たされるまで更新処理やリフレッシュを開始しません。この挙動は設計どおりですが、必要な依存関係が速やかに解決されない場合、データの利用可能性に遅延を招くおそれがあります。リフレッシャブルmaterialized view を作成する前に、すべての依存関係が正しく定義され、存在していることを確認してください。
 * 現時点では、MV とその依存関係の間に実際の「dbt linkage」は存在しないため、作成順序は保証されません。
 * refreshable 機能は、複数の MV が同じターゲットモデルを参照する構成ではテストされていません。

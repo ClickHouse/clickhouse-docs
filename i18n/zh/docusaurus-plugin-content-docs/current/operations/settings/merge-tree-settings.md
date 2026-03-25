@@ -97,6 +97,17 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 启用后，允许在 CoalescingMergeTree 表中将可合并列用作分区键或排序键。
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}]} />
+
+启用按提交顺序存储 `_block_number` 和 `_block_offset` 虚拟列的投影，并在合并过程中保留原始插入顺序。
+需要同时启用 `enable_block_number_column` 和 `enable_block_offset_column`。
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>

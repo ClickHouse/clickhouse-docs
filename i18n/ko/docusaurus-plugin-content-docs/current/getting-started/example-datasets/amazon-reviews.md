@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['Amazon 리뷰', '고객 리뷰 데이터셋', '전자상거래 데이터', '예제 데이터셋', '시작하기']
 ---
 
-이 데이터셋에는 Amazon 상품에 대한 1억 5천만 개가 넘는 고객 리뷰가 포함됩니다. 데이터는 총 49GB(압축 기준) 크기의 Snappy로 압축된 Parquet 파일 형태로 AWS S3에 저장되어 있습니다. 이제 이 데이터를 ClickHouse에 적재하는 절차를 단계별로 살펴봅니다.
+이 데이터셋에는 Amazon 상품에 대한 1억 5천만 개가 넘는 고객 리뷰가 포함됩니다. 데이터는 총 49GB(압축 기준) 크기의 Snappy로 압축된 Parquet 파일 형태로 AWS S3에 저장되어 있습니다. 이제 이 데이터를 ClickHouse에 삽입하는 절차를 단계별로 살펴봅니다.
 
 :::note
 아래 쿼리들은 **Production** 환경의 ClickHouse Cloud 인스턴스에서 실행되었습니다. 자세한 내용은

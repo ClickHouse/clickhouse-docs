@@ -1,9 +1,9 @@
 ---
 slug: /best-practices/use-materialized-views
 sidebar_position: 10
-sidebar_label: '使用物化视图'
-title: '使用物化视图'
-description: '介绍物化视图的页面'
+sidebar_label: '使用materialized view'
+title: '使用materialized view'
+description: '介绍materialized view的页面'
 keywords: ['materialized views', 'medallion architecture']
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,19 +13,19 @@ import Image from '@theme/IdealImage';
 import incremental_materialized_view from '@site/static/images/bestpractices/incremental_materialized_view.gif';
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
-ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-view/incremental-materialized-view) 和 [**可刷新型**](/materialized-view/refreshable-materialized-view)。二者都通过预先计算并存储结果来加速查询，但在底层查询的执行方式与时机、适用的工作负载以及数据新鲜度的处理方式等方面存在显著差异。
+ClickHouse 支持两种类型的materialized view：[**增量型**](/materialized-view/incremental-materialized-view) 和 [**可刷新型**](/materialized-view/refreshable-materialized-view)。二者都通过预先计算并存储结果来加速查询，但在底层查询的执行方式与时机、适用的工作负载以及数据新鲜度的处理方式等方面存在显著差异。
 
-**在已经遵循关于[数据类型选择](/best-practices/select-data-types)和[主键优化](/best-practices/choosing-a-primary-key)等既有最佳实践的前提下，用户应针对需要加速的特定查询模式来考虑使用物化视图。**
+**在已经遵循关于[数据类型选择](/best-practices/select-data-types)和[主键优化](/best-practices/choosing-a-primary-key)等既有最佳实践的前提下，用户应针对需要加速的特定查询模式来考虑使用materialized view。**
 
-**增量物化视图**会实时更新。随着新数据插入源表，ClickHouse 会自动将该物化视图的查询应用到新数据块，并将结果写入单独的目标表。随着时间推移，ClickHouse 会合并这些部分结果，从而生成完整且最新的视图。这种方式非常高效，因为它将计算成本转移到了写入时，只处理新增数据。因此，对目标表执行的 `SELECT` 查询非常快速且开销较小。增量视图支持所有聚合函数，并且具有良好的扩展性——即使扩展到 PB 级数据也同样适用——因为每次查询只需处理正在被插入的数据集中最新的一小部分子集。
+**增量materialized view**会实时更新。随着新数据插入源表，ClickHouse 会自动将该materialized view的查询应用到新数据块，并将结果写入单独的目标表。随着时间推移，ClickHouse 会合并这些部分结果，从而生成完整且最新的视图。这种方式非常高效，因为它将计算成本转移到了写入时，只处理新增数据。因此，对目标表执行的 `SELECT` 查询非常快速且开销较小。增量视图支持所有聚合函数，并且具有良好的扩展性——即使扩展到 PB 级数据也同样适用——因为每次查询只需处理正在被插入的数据集中最新的一小部分子集。
 
 <Image img={incremental_materialized_view} size="lg" alt="Materialized Views" />
 
-**可刷新物化视图**则是按计划更新的。这类视图会定期重新执行其完整查询，并用新结果覆盖目标表中的数据。这类似于传统 OLTP 数据库（如 Postgres）中的物化视图。
+**可刷新materialized view**则是按计划更新的。这类视图会定期重新执行其完整查询，并用新结果覆盖目标表中的数据。这类似于传统 OLTP 数据库 (如 Postgres) 中的materialized view。
 
 <Image img={refreshable_materialized_view} size="lg" alt="Refreshable materialized view diagram" />
 
-在增量物化视图和可刷新物化视图之间进行选择，在很大程度上取决于查询的性质、数据变更的频率，以及视图更新是否必须在每行插入时立即反映出来，还是可以接受定期刷新的方式。理解这些权衡对在 ClickHouse 中设计高性能、可扩展的物化视图至关重要。
+在增量materialized view和可刷新materialized view之间进行选择，在很大程度上取决于查询的性质、数据变更的频率，以及视图更新是否必须在每行插入时立即反映出来，还是可以接受定期刷新的方式。理解这些权衡对在 ClickHouse 中设计高性能、可扩展的materialized view至关重要。
 
 
 ## 何时使用增量物化视图 \{#when-to-use-incremental-materialized-views\}

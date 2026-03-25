@@ -22,7 +22,6 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Grafana での ClickHouse データソースの設定 \{#configuring-clickhouse-data-source-in-grafana\}
 
 <ClickHouseSupportedBadge/>

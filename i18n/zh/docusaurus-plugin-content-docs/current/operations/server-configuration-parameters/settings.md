@@ -4885,6 +4885,13 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 已经按该设置存储的数据分区片段头信息无法恢复到之前（非紧凑）的表示形式。
 :::
 
+## use_separate_cache_arena \{#use_separate_cache_arena\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+为缓存分配启用独立的 jemalloc arena (标记缓存、未压缩缓存、页缓存) 。
+将缓存数据与查询处理过程中的内存分配隔离，减少内存碎片。
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 可执行用户自定义函数的配置文件路径。

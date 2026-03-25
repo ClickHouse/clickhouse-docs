@@ -17,7 +17,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-Postgres ClickPipe를 일시 중지하는 것이 유용한 상황이 있을 수 있습니다. 예를 들어, 정적인 상태의 기존 데이터에 대해 분석 작업을 수행해야 할 수도 있습니다. 또는 Postgres를 업그레이드하는 작업을 진행 중일 수도 있습니다. 다음은 Postgres ClickPipe를 일시 중지하고 다시 시작하는 방법입니다.
+Postgres ClickPipe를 일시 중지하는 것이 유용한 상황이 있을 수 있습니다. 예를 들어, 정적인 상태의 기존 데이터에 대해 분석 작업을 수행해야 할 수도 있습니다. 또는 Postgres를 업그레이드하는 작업을 진행 중일 수도 있습니다. 다음은 Postgres ClickPipe를 일시 중지하고 재개하는 방법입니다.
 
 
 ## Postgres ClickPipe를 일시 중지하는 단계 \{#pause-clickpipe-steps\}

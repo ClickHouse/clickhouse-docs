@@ -16,7 +16,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、ClickPipe が **CDC（Running）モード** で動作している場合に、MongoDB ClickPipe の同期を制御する方法について説明します。
+このドキュメントでは、ClickPipe が **CDC (Running) モード** で動作している場合に、MongoDB ClickPipe の同期を制御する方法について説明します。
 
 
 ## 概要 \{#overview\}

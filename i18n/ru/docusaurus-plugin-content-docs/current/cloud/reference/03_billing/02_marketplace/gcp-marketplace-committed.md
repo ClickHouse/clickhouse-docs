@@ -22,7 +22,7 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-Начните работу с ClickHouse Cloud в [GCP Marketplace](https://console.cloud.google.com/marketplace) по фиксированному контракту. Фиксированный контракт, также известный как Private Offer (частное предложение), позволяет клиентам зафиксировать обязательство по расходам на ClickHouse Cloud в определённом размере на протяжении оговоренного периода времени.
+Начните работу с ClickHouse Cloud в [GCP Marketplace](https://console.cloud.google.com/marketplace) по фиксированному контракту. Фиксированный контракт, также известный как Private Offer (приватное предложение), позволяет клиентам зафиксировать обязательство по расходам на ClickHouse Cloud в определённом размере на протяжении оговоренного периода времени.
 
 
 ## Предварительные требования \{#prerequisites\}

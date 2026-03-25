@@ -14,8 +14,7 @@ import snapshot_params from '@site/static/images/integrations/data-ingestion/cli
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、MySQL ClickPipe におけるスナップショットおよび初期ロードの並列実行の仕組みと、それを制御するために使用できるスナップショットパラメータについて説明します。
-
+このドキュメントでは、MySQL ClickPipe におけるスナップショットおよび初期ロードの並列実行の仕組みと、それを制御するために使用できるスナップショットのパラメータについて説明します。
 
 ## 概要 \{#overview-mysql-snapshot\}
 

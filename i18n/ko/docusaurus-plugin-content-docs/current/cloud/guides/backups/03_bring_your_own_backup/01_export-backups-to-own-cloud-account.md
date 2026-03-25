@@ -2,7 +2,7 @@
 sidebar_label: '백업 내보내기'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
 title: '자체 Cloud 계정으로 백업 내보내기'
-description: '소유한 Cloud 계정으로 백업을 내보내는 방법을 설명합니다'
+description: '자체 Cloud 계정으로 백업을 내보내는 방법을 설명합니다'
 doc_type: 'guide'
 ---
 

@@ -2,7 +2,7 @@
 title: 'DataStore クエリ構築'
 sidebar_label: 'クエリ構築'
 slug: /chdb/datastore/query-building
-description: 'fluent なメソッドチェーンを使用して DataStore で SQL スタイルのクエリを構築します'
+description: 'fluent なメソッドチェーンを使用して DataStore で SQL ライクのクエリを構築します'
 keywords: ['chdb', 'datastore', 'query', 'select', 'filter', 'where', 'join', 'groupby']
 doc_type: 'reference'
 ---

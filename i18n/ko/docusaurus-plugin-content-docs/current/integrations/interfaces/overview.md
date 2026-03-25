@@ -4,7 +4,7 @@ keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'comman
   'client', 'jdbc', 'odbc', 'driver']
 sidebar_label: '개요'
 slug: /interfaces/overview
-title: '드라이버 및 인터페이스'
+title: '드라이버와 인터페이스'
 doc_type: 'reference'
 ---
 

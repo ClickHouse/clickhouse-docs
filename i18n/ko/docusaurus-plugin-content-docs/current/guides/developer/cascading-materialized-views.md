@@ -1,6 +1,6 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: '연쇄 materialized view'
+title: '계단식 materialized view'
 description: '소스 테이블에서 여러 개의 materialized view를 사용하는 방법.'
 keywords: ['materialized view', '집계']
 doc_type: 'guide'

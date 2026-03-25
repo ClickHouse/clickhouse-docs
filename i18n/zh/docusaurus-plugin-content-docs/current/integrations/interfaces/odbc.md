@@ -1,9 +1,9 @@
 ---
-description: 'ClickHouse ODBC 驱动程序文档'
-sidebar_label: 'ODBC 驱动程序'
+description: 'ClickHouse ODBC 驱动文档'
+sidebar_label: 'ODBC 驱动'
 sidebar_position: 35
 slug: /interfaces/odbc
-title: 'ODBC 驱动程序'
+title: 'ODBC 驱动'
 doc_type: 'reference'
 ---
 

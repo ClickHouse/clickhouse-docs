@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'BigQuery에서 ClickHouse로'
+sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Google Dataflow Template을 사용하여 BigQuery 데이터를 ClickHouse로 수집할 수 있습니다'
-title: 'Dataflow BigQuery에서 ClickHouse로 Template'
+title: 'Dataflow BigQuery to ClickHouse 템플릿'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
 ---
