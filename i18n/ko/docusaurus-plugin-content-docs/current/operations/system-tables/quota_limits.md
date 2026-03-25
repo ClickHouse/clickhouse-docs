@@ -26,3 +26,4 @@ Columns:
 * `max_read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 쿼리에 참여한 모든 테이블 및 테이블 함수에서 읽은 행의 최대 개수.
 * `max_read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 쿼리에 참여한 모든 테이블 및 테이블 함수에서 읽은 최대 바이트 수.
 * `max_execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — 쿼리 실행 시간의 최대값(초 단위).
+* `max_queries_per_normalized_hash` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 개별 정규화 쿼리 하나의 최대 실행 횟수.
