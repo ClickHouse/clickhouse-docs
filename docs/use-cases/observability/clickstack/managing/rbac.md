@@ -102,10 +102,10 @@ Each role grants an access level per resource type. The three levels are:
 The resource types you can control are:
 
 - **[Dashboards](/use-cases/observability/clickstack/dashboards)** — saved dashboard layouts and charts.
-- **[Saved Searches](/use-cases/observability/clickstack/search)** — persisted log/trace/event queries.
+- **[Saved searches](/use-cases/observability/clickstack/search)** — persisted log/trace/event queries.
 - **Sources** — ingestion source configurations.
 - **[Alerts](/use-cases/observability/clickstack/alerts)** — alert rules and their notification settings.
-- **Webhooks** — outbound notification destinations (such as Slack, PagerDuty, and generic HTTP endpoints) that [alerts](/use-cases/observability/clickstack/alerts) deliver to. This isn't the ClickStack API.
+- **Webhooks** — outbound notification destinations (such as Slack, PagerDuty, and generic HTTP endpoints) that [alerts](/use-cases/observability/clickstack/alerts) deliver to. This doesn't refer to the ClickStack API.
 - **Notebooks** — collaborative investigation notebooks.
 
 ## Administrative permissions {#administrative-permissions}
@@ -119,7 +119,7 @@ In addition to resource permissions, each role includes two administrative setti
 
 Dashboards, Saved Searches, Sources, and Notebooks support fine-grained controls that restrict access to individual resources within a category. Use these when you need to limit a role to specific resources rather than granting blanket access to the entire resource type.
 
-### Default Access vs. Fine-Grained Controls {#access-control-modes}
+### Default access vs. fine-grained controls {#access-control-modes}
 
 Each resource type has an **Access Control Mode**:
 
@@ -150,7 +150,11 @@ You can add multiple rules per resource type. Each rule is checked independently
 
 <Image img={access_rules_tip} alt="Access rules with OR logic tooltip" size="md"/>
 
-**Example:** To give a role read-only access to testing dashboards, expand **Dashboards**, switch to **Fine-Grained Controls**, and add two rules: **Name** `contains` `testing` with access level **Read**, OR **Tag** `is` `testing` with access level **Read**. A dashboard that matches either condition is accessible.
+**Example**: To give a role read-only access to testing dashboards, expand Dashboards, switch to Fine-Grained Controls, and add two rules:
+- **Name** `contains` `testing` with access level **Read**                                                                                                                                   
+- **Tag** `is` `testing` with access level **Read**
+
+ A dashboard that matches either rule is accessible.
 
 <Image img={dashboard_fine_grained_example} alt="Two fine-grained access rules joined by OR: Name contains testing with Read access, and Tag is testing with Read access" size="md"/>
 
@@ -160,6 +164,6 @@ The **Security Policies** section in **Team Settings** provides additional contr
 
 **Default New User Role** sets the role automatically assigned to new users who join the team.
 
-**Generative AI** lets you enable or disable LLM-powered features like natural language query generation using Anthropic or Amazon Bedrock. When disabled, no data is sent to AI providers.
+**Generative AI** lets you enable or disable LLM-powered features (such as natural language query generation) powered by Anthropic or Amazon Bedrock. When disabled, no data is sent to AI providers.
 
 <Image img={security_policies} alt="Security policies" size="lg"/>
