@@ -2,7 +2,7 @@
 title: 'DataStore 工厂方法'
 sidebar_label: '工厂方法'
 slug: /chdb/datastore/factory-methods
-description: '从文件、数据库、云存储和数据湖创建 DataStore 实例'
+description: '从文件、数据库、Cloud 存储和数据湖创建 DataStore 实例'
 keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql', 'postgresql']
 doc_type: 'reference'
 ---

@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - 兼容 Pandas 的 API'
+title: 'DataStore - Pandas 兼容 API'
 sidebar_label: '概览'
 slug: /chdb/datastore
 description: 'DataStore 提供兼容 Pandas 的 API，并利用 SQL 优化实现高性能数据分析'
@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
-
 
 # DataStore：Pandas 兼容 API 与 SQL 优化 \{#datastore-pandas-compatible-api-with-sql-optimization\}
 

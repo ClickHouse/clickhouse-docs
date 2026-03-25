@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/materialized_views
-title: 'ClickStack - Materialized Views'
-sidebar_label: 'Materialized Views'
-description: 'Materialized Views를 활용한 ClickStack 성능 튜닝'
+title: 'ClickStack - materialized view'
+sidebar_label: 'materialized view'
+description: 'materialized view를 활용한 ClickStack 성능 튜닝'
 doc_type: 'guide'
-keywords: ['clickstack', '관측성', 'materialized views', '성능', '최적화', '시각화', '집계']
+keywords: ['clickstack', '관측성', 'materialized view', '성능', '최적화', '시각화', '집계']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

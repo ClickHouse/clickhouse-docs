@@ -99,6 +99,17 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении разрешает использовать в таблице CoalescingMergeTree объединяемые столбцы в партиции или ключе сортировки.
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая SETTING"}]}]} />
+
+Включает проекции порядка коммита, которые хранят виртуальные столбцы `_block_number` и `_block_offset`, сохраняя исходный порядок вставки при слияниях.
+Необходимо, чтобы были включены `enable_block_number_column` и `enable_block_offset_column`.
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>

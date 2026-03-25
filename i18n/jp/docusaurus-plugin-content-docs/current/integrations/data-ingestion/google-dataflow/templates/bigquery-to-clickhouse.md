@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'BigQuery から ClickHouse'
+sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Google Dataflow テンプレートを使用して BigQuery のデータを ClickHouse に取り込めます'
@@ -17,7 +17,6 @@ import dataflow_template_initial_form from '@site/static/images/integrations/dat
 import dataflow_extended_template_form from '@site/static/images/integrations/data-ingestion/google-dataflow/extended_template_form.png'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # Dataflow BigQuery から ClickHouse へのテンプレート \{#dataflow-bigquery-to-clickhouse-template\}
 

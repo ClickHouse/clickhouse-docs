@@ -1,10 +1,10 @@
 ---
-sidebar_label: '存储过程与查询参数'
+sidebar_label: '存储过程和查询参数'
 sidebar_position: 19
-keywords: ['clickhouse', '存储过程', '预编译语句', '查询参数', 'UDF', '参数化视图']
-description: '关于 ClickHouse 中存储过程、预编译语句和查询参数的指南'
+keywords: ['clickhouse', '存储过程', '预处理语句', '查询参数', 'UDF', '参数化视图']
+description: '关于 ClickHouse 中存储过程、预处理语句和查询参数的指南'
 slug: /guides/developer/stored-procedures-and-prepared-statements
-title: '存储过程与查询参数'
+title: '存储过程和查询参数'
 doc_type: 'guide'
 ---
 

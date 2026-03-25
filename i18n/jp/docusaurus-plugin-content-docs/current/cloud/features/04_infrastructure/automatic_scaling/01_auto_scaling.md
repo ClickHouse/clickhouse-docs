@@ -2,7 +2,7 @@
 sidebar_position: 1
 sidebar_label: '自動スケーリング'
 slug: /manage/scaling
-description: 'ClickHouse Cloud における自動スケーリングの構成'
+description: 'ClickHouse Cloud における自動スケーリングの設定'
 keywords: ['自動スケーリング', 'オートスケーリング', 'スケーリング', '水平スケーリング', '垂直スケーリング', 'バースト']
 title: '自動スケーリング'
 doc_type: 'guide'
@@ -15,7 +15,6 @@ import scaling_patch_response from '@site/static/images/cloud/manage/scaling-pat
 import scaling_configure from '@site/static/images/cloud/manage/scaling-configure.png';
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
-
 
 # 自動スケーリング \{#automatic-scaling\}
 

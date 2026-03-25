@@ -1,10 +1,10 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Make Before Break (MBB)'
+sidebar_label: 'Make before break (MBB)'
 slug: /cloud/features/mbb
-description: 'ClickHouse Cloud における Make Before Break (MBB) 操作について説明するページ'
-keywords: ['Make Before Break', 'MBB', 'スケーリング', 'ClickHouse Cloud']
-title: 'ClickHouse Cloud における Make Before Break (MBB) 操作'
+description: 'ClickHouse Cloud における Make before break (MBB) 操作について説明するページ'
+keywords: ['Make before break', 'MBB', 'スケーリング', 'ClickHouse Cloud']
+title: 'ClickHouse Cloud における Make before break (MBB) 操作'
 doc_type: 'guide'
 ---
 

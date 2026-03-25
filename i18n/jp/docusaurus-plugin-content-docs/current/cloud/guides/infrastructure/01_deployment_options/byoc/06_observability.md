@@ -14,7 +14,7 @@ import byoc_mixin_3 from '@site/static/images/cloud/reference/byoc-mixin-3.png';
 import byoc_mixin_4 from '@site/static/images/cloud/reference/byoc-mixin-4.png';
 import byoc_mixin_5 from '@site/static/images/cloud/reference/byoc-mixin-5.png';
 
-BYOC デプロイメントには包括的なオブザーバビリティ機能が含まれており、専用の Prometheus モニタリングスタックおよび ClickHouse サーバーからのメトリックエンドポイントを通じて ClickHouse サービスを監視できます。すべてのオブザーバビリティデータはクラウドアカウント内に保持されるため、モニタリング基盤を完全に制御できます。
+BYOC デプロイメントには包括的なオブザーバビリティ機能が含まれており、専用の Prometheus モニタリングスタックおよび ClickHouse サーバーからのメトリクスエンドポイントを通じて ClickHouse サービスを監視できます。すべてのオブザーバビリティデータはクラウドアカウント内に保持されるため、モニタリング基盤を完全に制御できます.
 
 
 ## Prometheus モニタリングのアプローチ \{#prometheus-monitoring\}

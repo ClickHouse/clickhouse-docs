@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+
 # 受支持的 Cloud 区域 \{#supported-cloud-regions\}
 
 ## AWS 区域 \{#aws-regions\}

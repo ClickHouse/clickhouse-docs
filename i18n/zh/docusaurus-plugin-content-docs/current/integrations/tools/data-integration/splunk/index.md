@@ -23,9 +23,9 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 ClickHouse Cloud 审计日志存储到 Splunk 中 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
+# 在 Splunk 中存储 ClickHouse Cloud 审计日志 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 [Splunk](https://www.splunk.com/) 是一个数据分析和监控平台。
 

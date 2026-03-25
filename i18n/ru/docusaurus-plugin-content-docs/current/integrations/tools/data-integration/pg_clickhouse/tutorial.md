@@ -1,13 +1,13 @@
 ---
 sidebar_label: 'Руководство'
-description: 'Узнайте, как подключить pg_clickhouse к ClickHouse и выполнять запросы к примерному набору данных о такси Нью‑Йорка.'
+description: 'Узнайте, как подключить pg_clickhouse к ClickHouse и выполнять запросы к набору данных о такси Нью-Йорка.'
 slug: '/integrations/pg_clickhouse/tutorial'
 title: 'Руководство по pg_clickhouse'
 doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'руководство', 'такси']
 ---
 
-# Учебное руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
+# Руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
 
 ## Обзор \{#overview\}
 

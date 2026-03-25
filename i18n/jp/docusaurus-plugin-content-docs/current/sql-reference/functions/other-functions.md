@@ -3824,6 +3824,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
+## obfuscateQuery \{#obfuscateQuery\}
+
+導入バージョン: v26.3.0
+
+SQLクエリの構造を保ったまま、識別子をランダムな単語に、リテラルをランダムな値に置き換えて、SQLクエリを難読化します。
+
+この関数は、ログに記録したりデバッグのために共有したりする前に、クエリを匿名化する用途に役立ちます。
+同じ入力クエリであっても、行が異なれば異なる難読化結果が生成されるため、
+複数のクエリを扱う場合のプライバシー保護に役立ちます。
+
+省略可能な `tag` パラメータは、同じ関数呼び出しを
+1つのクエリ内で複数回使う場合に、共通部分式の削除を防ぎます。これにより、呼び出しごとに異なる難読化結果が生成されます。
+
+機能:
+
+* テーブル名、カラム名、および別名をランダムな単語に置き換えます
+* 数値リテラルと文字列リテラルをランダムな値に置き換えます
+* クエリ全体の構造とSQL構文を保持します
+* 異なる行に対して異なる結果を生成します
+
+**構文**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**引数**
+
+* `query` — 難読化する SQL クエリです。[`文字列`](/sql-reference/data-types/string)
+* `tag` — 任意です。同じ関数呼び出しを複数回使用する場合に、共通部分式削除を防ぐための値です。
+
+**戻り値**
+
+元のクエリ構造を保ったまま、識別子とリテラルが置き換えられた難読化済みクエリです。[`文字列`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的な使用法**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**共通部分式の削除を防ぐタグ付き**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**行が異なると結果も異なります**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+導入バージョン: v26.3.0
+
+指定したシードを使って SQL クエリを難読化し、決定論的な結果が得られるようにします。
+
+`obfuscateQuery()` とは異なり、この関数は同じシードを与えると常に同じ結果を生成します。
+このため、複数回の実行にわたって一貫した難読化が必要な場合や、
+テストやデバッグのために同じ難読化済みクエリを再現したい場合に役立ちます。
+
+特徴:
+
+* 指定したシードに基づく決定論的な難読化
+* 同じシードからは常に同じ難読化結果が生成される
+* 異なるシードからは異なる結果が生成される
+* `obfuscateQuery()` と同様にクエリ構造を保持する
+
+ユースケース:
+
+* 再現可能なテストケース
+* 複数回の実行にわたって一貫した匿名化
+* 一貫した難読化済みクエリを使ったデバッグ
+
+**構文**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**引数**
+
+* `query` — 難読化する SQL クエリ。 [`文字列`](/sql-reference/data-types/string)
+* `seed` — 難読化に使用するシード。同じシードを使うと、決定論的な結果が生成されます。 [`Integer`](/sql-reference/data-types/int-uint) または [`文字列`](/sql-reference/data-types/string)
+
+**戻り値**
+
+指定されたシードに基づいて決定論的に生成された難読化済みクエリ。 [`文字列`](/sql-reference/data-types/string)
+
+**例**
+
+**整数シードを使用した決定論的な難読化**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**文字列シードを用いた決定論的難読化**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**同じシードなら同じ結果になる**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
+```
+
 ## parseReadableSize \{#parseReadableSize\}
 
 導入バージョン: v24.6.0

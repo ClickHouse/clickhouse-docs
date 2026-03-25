@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
-title: '使用 ClickStack 监控 Node.js 跟踪'
-sidebar_label: 'Node.js 跟踪'
+title: '使用 ClickStack 监控 Node.js 链路追踪'
+sidebar_label: 'Node.js 链路追踪'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Node.js 应用跟踪'
+description: '使用 ClickStack 监控 Node.js 应用链路追踪'
 doc_type: 'guide'
-keywords: ['Node.js', '跟踪', 'OTel', 'ClickStack', '分布式追踪']
+keywords: ['Node.js', '链路追踪', 'OTel', 'ClickStack', '分布式链路追踪']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,6 +18,7 @@ import trace_view from '@site/static/images/clickstack/nodejs/trace-view.png';
 import finish_import from '@site/static/images/clickstack/nodejs/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+
 
 # 使用 ClickStack 监控 Node.js Trace \{#nodejs-traces-clickstack\}
 

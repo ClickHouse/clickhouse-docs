@@ -3,7 +3,7 @@ sidebar_label: 'C#'
 sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
-description: 'ClickHouse への接続のための公式 C# クライアント。'
+description: 'ClickHouse に接続するための公式の C# クライアント。'
 title: 'ClickHouse C# ドライバ'
 doc_type: 'guide'
 integration:
@@ -15,7 +15,6 @@ integration:
 import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
-
 
 # ClickHouse C# クライアント \{#clickhouse-c-client\}
 

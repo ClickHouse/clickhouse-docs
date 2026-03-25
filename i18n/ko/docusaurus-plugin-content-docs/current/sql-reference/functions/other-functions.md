@@ -3824,6 +3824,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
+## obfuscateQuery \{#obfuscateQuery\}
+
+도입 버전: v26.3.0
+
+식별자는 무작위 단어로, 리터럴은 무작위 값으로 바꿔 SQL 쿼리 구조를 유지하면서 난독화합니다.
+
+이 함수는 쿼리를 로깅하거나 디버깅 목적으로 공유하기 전에 익명화할 때 유용합니다.
+동일한 입력 쿼리라도 서로 다른 행에서는 서로 다른 난독화 결과가 생성되므로,
+여러 쿼리를 다룰 때 프라이버시를 유지하는 데 도움이 됩니다.
+
+선택 사항인 `tag` 매개변수는 동일한 함수 호출이
+하나의 쿼리에서 여러 번 사용될 때 공통 부분식 제거가 적용되지 않도록 합니다. 이를 통해 각 호출이 서로 다른 난독화 결과를 생성하도록 보장합니다.
+
+기능:
+
+* 테이블 이름, 컬럼 이름, 별칭을 무작위 단어로 대체합니다
+* 숫자 및 문자열 리터럴을 무작위 값으로 대체합니다
+* 전체 쿼리 구조와 SQL 구문을 유지합니다
+* 서로 다른 행에 대해 서로 다른 결과를 생성합니다
+
+**구문**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `tag` — 선택 사항입니다. 동일한 함수 호출을 여러 번 사용하는 경우 공통 부분식 제거를 방지하기 위한 값입니다.
+
+**반환 값**
+
+원래 쿼리 구조를 유지하면서 식별자와 리터럴을 대체한 난독화된 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**사용법**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**공통 부분식 제거를 방지하는 태그 포함**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**행이 다르면 결과도 달라집니다**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+도입 버전: v26.3.0
+
+지정된 시드를 사용해 SQL 쿼리를 결정론적으로 난독화합니다.
+
+`obfuscateQuery()`와 달리, 이 함수는 동일한 시드가 주어지면 항상 동일한 결과를 생성합니다.
+여러 번 실행할 때도 일관된 난독화가 필요하거나, 테스트 또는 디버깅 목적으로
+동일하게 난독화된 쿼리를 다시 생성해야 하는 경우에 유용합니다.
+
+기능:
+
+* 제공된 시드를 기반으로 한 결정론적 난독화
+* 동일한 시드는 항상 동일한 난독화 결과를 생성합니다
+* 서로 다른 시드는 서로 다른 결과를 생성합니다
+* `obfuscateQuery()`처럼 쿼리 구조를 유지합니다
+
+사용 사례:
+
+* 재현 가능한 테스트 케이스
+* 여러 번 실행해도 일관된 익명화
+* 일관되게 난독화된 쿼리를 사용한 디버깅
+
+**구문**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `seed` — 난독화에 사용할 시드입니다. 동일한 시드를 사용하면 결정론적 결과가 생성됩니다. [`Integer`](/sql-reference/data-types/int-uint) 또는 [`String`](/sql-reference/data-types/string)
+
+**반환 값**
+
+제공된 시드를 기반으로 결정론적으로 생성된 난독화된 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**정수 시드를 사용한 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**문자열 시드를 사용한 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**같은 시드를 사용하면 같은 결과가 나옵니다**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
+```
+
 ## parseReadableSize \{#parseReadableSize\}
 
 도입 버전: v24.6.0

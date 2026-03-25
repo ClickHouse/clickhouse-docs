@@ -21,7 +21,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-약정 계약을 통해 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에서 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(일명 Private Offer)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정하는 계약입니다.
+약정 계약을 통해 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에서 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(일명 프라이빗 오퍼)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정하는 계약입니다.
 
 
 ## 사전 요구 사항 \{#prerequisites\}

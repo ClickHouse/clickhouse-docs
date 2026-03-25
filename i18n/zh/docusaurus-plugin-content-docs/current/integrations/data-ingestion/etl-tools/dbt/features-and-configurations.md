@@ -1,24 +1,23 @@
 ---
-sidebar_label: '功能和配置'
+sidebar_label: '功能与配置'
 slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
 description: '可用功能和通用配置的说明'
 keywords: ['clickhouse', 'dbt', 'features']
-title: '功能和配置'
+title: '功能与配置'
 doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 功能与配置 \{#features-and-configurations\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 本节介绍 dbt 在 ClickHouse 中可用的一些功能。
 
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## Profile.yml 配置 \{#profile-yml-configurations\}
 

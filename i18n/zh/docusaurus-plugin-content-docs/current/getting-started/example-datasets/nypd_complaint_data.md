@@ -1,21 +1,21 @@
 ---
 description: '通过 5 个步骤摄取并查询制表符分隔值数据'
-sidebar_label: 'NYPD 报案数据'
+sidebar_label: 'NYPD 投诉数据'
 slug: /getting-started/example-datasets/nypd_complaint_data
-title: 'NYPD Complaint Data'
+title: 'NYPD complaint data'
 doc_type: 'guide'
 keywords: ['example dataset', 'nypd', 'crime data', 'sample data', 'public data']
 ---
 
-制表符分隔值（Tab Separated Values，TSV）文件很常见，且文件的第一行通常包含字段标题。ClickHouse 不仅可以摄取 TSV 文件，还可以在不摄取文件的情况下直接查询 TSV。本指南同时涵盖这两种场景。如果你需要查询或摄取 CSV 文件，可以使用相同的方法，只需在格式参数中将 `TSV` 替换为 `CSV` 即可。
+制表符分隔值 (Tab Separated Values，TSV) 文件很常见，且文件的第一行通常包含字段标题。ClickHouse 不仅可以摄取 TSV 文件，还可以在不摄取文件的情况下直接查询 TSV。本指南同时涵盖这两种场景。如果你需要查询或摄取 CSV 文件，可以使用相同的方法，只需在格式参数中将 `TSV` 替换为 `CSV` 即可。
 
 在完成本指南的过程中，你将：
 
-- **分析**：查询 TSV 文件的结构和内容。
-- **确定目标 ClickHouse schema**：选择合适的数据类型，并将现有数据映射到这些类型。
-- **创建一个 ClickHouse 表**。
-- **预处理数据并将其流式写入** ClickHouse。
-- **在 ClickHouse 上运行一些查询**。
+* **分析**：查询 TSV 文件的结构和内容。
+* **确定目标 ClickHouse schema**：选择合适的数据类型，并将现有数据映射到这些类型。
+* **创建一个 ClickHouse 表**。
+* **预处理数据并将其流式写入** ClickHouse。
+* **在 ClickHouse 上执行一些查询**。
 
 本指南使用的数据集来自 NYC Open Data 团队，包含关于“所有向纽约市警察局 (NYPD) 报告的有效重罪、轻罪和违规犯罪”的数据。在撰写本文时，数据文件大小为 166MB，但会定期更新。
 

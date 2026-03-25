@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: "ClickStack과 Rotel을 사용하여 AWS Lambda 로그 모니터링하기"
+title: "Rotel을 사용하여 ClickStack으로 AWS Lambda 로그 모니터링"
 sidebar_label: "AWS Lambda 로그"
 pagination_prev: null
 pagination_next: null
-description: "ClickStack과 Rotel을 사용하여 AWS Lambda 로그 모니터링하기"
+description: "Rotel을 사용하여 ClickStack으로 AWS Lambda 로그 모니터링"
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'logs', 'CloudWatch']
 ---

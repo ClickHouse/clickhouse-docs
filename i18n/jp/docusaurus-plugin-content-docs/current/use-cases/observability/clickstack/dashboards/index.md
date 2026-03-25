@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/dashboards
-title: 'ClickStack を用いた可視化とダッシュボード'
+title: 'ClickStack を用いたビジュアライゼーションとダッシュボード'
 sidebar_label: 'ダッシュボード'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いた可視化とダッシュボード'
+description: 'ClickStack を用いたビジュアライゼーションとダッシュボード'
 doc_type: 'guide'
 keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observability']
 ---
@@ -34,9 +34,9 @@ import save_filter_values from '@site/static/images/clickstack/dashboards/save-f
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack はイベントの可視化をサポートしており、ClickStack UI (HyperDX) にはチャート機能が組み込まれています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
+ClickStack はイベントのビジュアライゼーションをサポートしており、ClickStack UI (HyperDX) にはチャート機能が組み込まれています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
 
-可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます。
+ビジュアライゼーションは、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます.
 
 
 ## 可視化の作成 \{#creating-visualizations\}

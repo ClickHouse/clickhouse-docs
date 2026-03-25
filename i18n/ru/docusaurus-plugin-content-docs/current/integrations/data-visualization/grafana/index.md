@@ -3,7 +3,7 @@ sidebar_label: 'Быстрый старт'
 sidebar_position: 1
 slug: /integrations/grafana
 description: 'Введение в использование ClickHouse с Grafana'
-title: 'Плагин источника данных ClickHouse в Grafana'
+title: 'Плагин источника данных ClickHouse для Grafana'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
@@ -21,7 +21,6 @@ import quick_config from '@site/static/images/integrations/data-visualization/gr
 import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # Плагин источника данных ClickHouse для Grafana \{#clickhouse-data-source-plugin-for-grafana\}
 

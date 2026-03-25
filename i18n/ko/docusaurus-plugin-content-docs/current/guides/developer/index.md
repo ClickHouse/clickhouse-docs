@@ -3,7 +3,7 @@ slug: /guides/developer/overview
 sidebar_label: '고급 가이드 개요'
 description: '고급 가이드 개요'
 title: '고급 가이드'
-keywords: ['ClickHouse 고급 가이드', '개발자 가이드', '쿼리 최적화', 'materialized views', '중복 제거', '시계열', '쿼리 실행']
+keywords: ['ClickHouse 고급 가이드', '개발자 가이드', '쿼리 최적화', 'materialized view', '중복 제거', '시계열', '쿼리 실행']
 doc_type: 'guide'
 ---
 

@@ -2,7 +2,7 @@
 title: 'Пользовательская настройка AWS'
 slug: /cloud/reference/byoc/onboarding/customization-aws
 sidebar_label: 'Пользовательская настройка AWS'
-keywords: ['BYOC', 'облако', 'ваше собственное облако', 'первичная настройка', 'AWS', 'VPC']
+keywords: ['BYOC', 'облако', 'ваше собственное облако', 'онбординг', 'AWS', 'VPC']
 description: 'Развертывание ClickHouse BYOC в существующем AWS VPC'
 doc_type: 'reference'
 ---
@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png';
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
-
 
 ## VPC, управляемая клиентом (BYO-VPC), для AWS \{#customer-managed-vpc-aws\}
 
