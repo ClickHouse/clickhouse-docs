@@ -211,7 +211,7 @@ GROUP BY event_date, event_type
 
 ### Configuration options {#explicit-target-configuration}
 
-When using explicit target tables, the following configurations apply:
+When using explicit target tables, apart from the [general materialization configurations](/integrations/dbt/materializations#general-materialization-configurations) and the [table-specific configurations](/integrations/dbt/materializations#materialization-table), the following configurations apply:
 
 **On the target table (`materialized='table'`):**
 
