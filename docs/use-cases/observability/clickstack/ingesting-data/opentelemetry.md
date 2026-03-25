@@ -14,7 +14,12 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](#installing-otel-collector) of the collector for this instance.
+
+:::tip[Optional: ingest into Managed ClickStack]
+For a managed destination, see [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed). If needed, you can [create a ClickHouse Cloud service](https://console.clickhouse.cloud/signUp?loc=docs-clickstack-managed-opentelemetry).
+:::
 
 Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)). For teams that want a managed OpenTelemetry pipeline, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)offers an OpenTelemetry-native solution with a native ClickStack destination, simplifying telemetry collection, processing, and routing.
 

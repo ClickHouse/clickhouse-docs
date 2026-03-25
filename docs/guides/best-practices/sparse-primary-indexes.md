@@ -36,6 +36,10 @@ import Image from '@theme/IdealImage';
 
 # A practical introduction to primary indexes in ClickHouse
 
+:::tip[Optional: run the examples in ClickHouse Cloud]
+If you prefer a managed environment while following along, you can [create a ClickHouse Cloud service](https://console.clickhouse.cloud/signUp?loc=docs-sparse-primary-indexes).
+:::
+
 ## Introduction {#introduction}
 
 In this guide we're going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
