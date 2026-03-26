@@ -331,7 +331,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "hyperdx.config.OTEL_AGENT_FEATURE_GATE_ARG=--feature-gates=clickhouse.json"
 ```
 
-## Related Documentation {#related-documentation}
+## Related documentation {#related-documentation}
 
 ### Deployment guides {#deployment-guides}
 - [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External ClickHouse, OTEL collector, and minimal deployments
