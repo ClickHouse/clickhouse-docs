@@ -1,10 +1,10 @@
 ---
-slug: /use-cases/observability/clickstack/deployment/helm
-title: 'Helm'
+slug: /use-cases/observability/clickstack/deployment/helm-v1
+title: 'Helm (v1.x)'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 2
-description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
+sidebar_position: 10
+description: 'Deploying ClickStack with the v1.x inline-template Helm chart'
 doc_type: 'guide'
 keywords: ['ClickStack Helm chart', 'Helm ClickHouse deployment', 'HyperDX Helm installation', 'Kubernetes observability stack', 'ClickStack Kubernetes deployment']
 ---
@@ -14,8 +14,8 @@ import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.p
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-:::warning Chart Migration
-If you're currently using the `hdx-oss-v2` chart, please migrate to the `clickstack` chart. The `hdx-oss-v2` chart is in maintenance mode and will no longer receive new features. All new development is focused on the `clickstack` chart, which provides the same functionality with improved naming and better organization.
+:::warning Deprecated — v1.x chart
+This page documents the **v1.x** inline-template Helm chart, which is in maintenance mode and will no longer receive new features. For new deployments, use the [v2.x chart](/docs/use-cases/observability/clickstack/deployment/helm). To migrate an existing v1.x deployment, see the [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade).
 :::
 
 The helm chart for ClickStack can be found [here](https://github.com/ClickHouse/ClickStack-helm-charts) and is the **recommended** method for production deployments.
@@ -86,14 +86,14 @@ kubectl port-forward \
 ```
 
 :::tip Production Ingress Setup
-For production deployments, configure ingress with TLS instead of port forwarding. See the [Ingress Configuration guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) for detailed setup instructions.
+For production deployments, configure ingress with TLS instead of port forwarding. See the [Ingress Configuration guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1#ingress-setup) for detailed setup instructions.
 :::
 
 ### Navigate to the UI {#navigate-to-the-ui}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-Create a user, providing a username and password which meets the requirements. 
+Create a user, providing a username and password which meets the requirements.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
@@ -186,7 +186,7 @@ hyperdx:
 ```
 
 :::tip API Key Management
-For detailed API key setup instructions including multiple configuration methods and pod restart procedures, see the [API Key Setup guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup).
+For detailed API key setup instructions including multiple configuration methods and pod restart procedures, see the [API Key Setup guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1#api-key-setup).
 :::
 
 </VerticalStepper>
@@ -242,7 +242,7 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 ```
 
 :::tip Advanced External Configurations
-For production deployments with secret-based configuration, external OTEL collectors, or minimal setups, see the [Deployment Options guide](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options).
+For production deployments with secret-based configuration, external OTEL collectors, or minimal setups, see the [Deployment Options guide](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options-v1).
 :::
 
 ## Production notes {#production-notes}
@@ -259,8 +259,8 @@ helm install my-clickstack clickstack/clickstack \
 
 :::tip Production Best Practices
 For production deployments including high availability configuration, resource management, ingress/TLS setup, and cloud-specific configurations (GKE, EKS, AKS), see:
-- [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - Ingress, TLS, and secrets management
-- [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - Cloud-specific settings and production checklist
+- [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1) - Ingress, TLS, and secrets management
+- [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud-v1) - Cloud-specific settings and production checklist
 :::
 
 ## Task configuration {#task-configuration}
@@ -284,6 +284,10 @@ To check available chart versions:
 ```shell
 helm search repo clickstack
 ```
+
+:::note Upgrading to v2.x
+If you want to migrate to the v2.x subchart-based chart, see the [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade) for migration instructions. This is a breaking change — an in-place `helm upgrade` is not supported.
+:::
 
 ## Uninstalling ClickStack {#uninstalling-clickstack}
 
@@ -313,8 +317,8 @@ kubectl get pods -l app.kubernetes.io/name=clickstack
 
 :::tip Additional Troubleshooting Resources
 For ingress-specific issues, TLS problems, or cloud deployment troubleshooting, see:
-- [Ingress Troubleshooting](/docs/use-cases/observability/clickstack/deployment/helm-configuration#troubleshooting-ingress) - Asset serving, path rewrites, browser issues
-- [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud#loadbalancer-dns-resolution-issue) - GKE OpAMP issues and cloud-specific problems
+- [Ingress Troubleshooting](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1#troubleshooting-ingress) - Asset serving, path rewrites, browser issues
+- [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud-v1#loadbalancer-dns-resolution-issue) - GKE OpAMP issues and cloud-specific problems
 :::
 
 <JSONSupport/>
@@ -347,10 +351,14 @@ helm install my-clickstack clickstack/clickstack \
 
 ## Related Documentation {#related-documentation}
 
-### Deployment guides {#deployment-guides}
-- [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External ClickHouse, OTEL collector, and minimal deployments
-- [Configuration guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API keys, secrets, and ingress setup
-- [Cloud deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, AKS configurations and production best practices
+### v1.x deployment guides {#deployment-guides}
+- [Deployment options (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options-v1) - External ClickHouse, OTEL collector, and minimal deployments
+- [Configuration guide (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1) - API keys, secrets, and ingress setup
+- [Cloud deployments (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-cloud-v1) - GKE, EKS, AKS configurations and production best practices
+
+### v2.x documentation {#v2x-documentation}
+- [Helm (v2.x)](/docs/use-cases/observability/clickstack/deployment/helm) - v2.x deployment guide
+- [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade) - Migrating from v1.x to v2.x
 
 ### Additional resources {#additional-resources}
 - [ClickStack getting started guide](/use-cases/observability/clickstack/getting-started) - Introduction to ClickStack

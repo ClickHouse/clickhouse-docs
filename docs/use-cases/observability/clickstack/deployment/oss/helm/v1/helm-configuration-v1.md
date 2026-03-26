@@ -1,15 +1,19 @@
 ---
-slug: /use-cases/observability/clickstack/deployment/helm-configuration
-title: 'Helm configuration'
+slug: /use-cases/observability/clickstack/deployment/helm-configuration-v1
+title: 'Helm configuration (v1.x)'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 4
-description: 'Configuring API keys, secrets, and ingress for ClickStack Helm deployments'
+sidebar_position: 11
+description: 'Configuring API keys, secrets, and ingress for v1.x ClickStack Helm deployments'
 doc_type: 'guide'
 keywords: ['ClickStack configuration', 'Helm secrets', 'API key setup', 'ingress configuration', 'TLS setup']
 ---
 
-This guide covers configuration options for ClickStack Helm deployments. For basic installation, see the [main Helm deployment guide](/docs/use-cases/observability/clickstack/deployment/helm).
+:::warning Deprecated — v1.x chart
+This page documents configuration for the **v1.x** inline-template Helm chart, which is in maintenance mode. For the v2.x chart, see [Helm configuration](/docs/use-cases/observability/clickstack/deployment/helm-configuration). To migrate, see the [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade).
+:::
+
+This guide covers configuration options for ClickStack Helm deployments. For basic installation, see the [main Helm deployment guide](/docs/use-cases/observability/clickstack/deployment/helm-v1).
 
 ## API key setup {#api-key-setup}
 
@@ -285,6 +289,8 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 
 ## Next steps {#next-steps}
 
-- [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External systems and minimal deployments
-- [Cloud deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, and AKS configurations
-- [Main Helm guide](/docs/use-cases/observability/clickstack/deployment/helm) - Basic installation
+- [Deployment options (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options-v1) - External systems and minimal deployments
+- [Cloud deployments (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-cloud-v1) - GKE, EKS, and AKS configurations
+- [Main Helm guide (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-v1) - Basic installation
+- [Helm configuration (v2.x)](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - v2.x configuration guide
+- [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade) - Migrating from v1.x to v2.x
