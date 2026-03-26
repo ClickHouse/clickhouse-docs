@@ -953,6 +953,10 @@ Azure 磁盘写入请求被限流的次数。
 
 磁盘复用连接数
 
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+提交元数据事务后，等待待删除 blob 被移除的耗时
+
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
 由 AzureObjectStorage 的 'plain_rewritable' 元数据存储创建的目录数量。

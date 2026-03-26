@@ -6,7 +6,7 @@ title: 'system.quota_limits'
 doc_type: 'reference'
 ---
 
-# system.quota&#95;limits \{#systemquota&#95;limits\}
+# system.quota_limits \{#systemquota_limits\}
 
 Содержит информацию о максимальных значениях для всех интервалов всех квот. Одной квоте может соответствовать любое количество строк или ни одной.
 
@@ -26,3 +26,4 @@ doc_type: 'reference'
 * `max_read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество строк, прочитанных из всех таблиц и табличных функций, участвующих в запросах.
 * `max_read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество байт, прочитанных из всех таблиц и табличных функций, участвующих в запросах.
 * `max_execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — Максимальное время выполнения запроса, в секундах.
+* `max_queries_per_normalized_hash` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество выполнений любого отдельного нормализованного запроса.

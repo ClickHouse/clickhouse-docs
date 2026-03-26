@@ -1034,6 +1034,13 @@ GitLab의 경우에도 도메인 앞에 점이 붙어 있지만 동일하게 적
 
 <SettingsInfoBlock type="UInt64" default_value="8000" />사용 중인 연결 수가 이 한도를 초과하면 경고 메시지가 로그에 기록됩니다. 이 한도는 디스크 연결에 적용됩니다.
 
+## disk_transaction_wait_for_blob_removal \{#disk_transaction_wait_for_blob_removal\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+디스크별 `wait_for_blob_removal` 설정의 기본값입니다.
+활성화하면 서버는 작업을 확인하기 전에 백그라운드 blob 제거가 완료될 때까지 기다립니다.
+
 ## display_secrets_in_show_and_select \{#display_secrets_in_show_and_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
