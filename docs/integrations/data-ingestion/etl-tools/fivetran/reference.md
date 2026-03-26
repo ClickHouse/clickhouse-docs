@@ -61,7 +61,7 @@ These configurations affect how the connector processes data before sending it t
 | `write_batch_size` | integer | `100000` | 5,000 – 100,000 | Number of rows per batch for insert, update, and replace operations. |
 | `select_batch_size` | integer | `1500` | 200 – 1,500 | Number of rows per batch for SELECT queries used during updates. |
 | `mutation_batch_size` | integer | `1500` | 200 – 1,500 | Number of rows per batch for ALTER TABLE UPDATE mutations in history mode. Lower it if you are experiencing large SQL statements. |
-| `hard_delete_batch_size` | integer | `1500` | 200 – 1,500 | Number of rows per batch for hard delete operations in history mode. Lower it if you are experiencing large SQL statements. |
+| `hard_delete_batch_size` | integer | `1500` | 200 – 1,500 | Number of rows per batch for hard delete operations in normal syncs and in history mode. Lower it if you are experiencing large SQL statements. |
 
 All fields are optional. If a field is not specified, the default value is used.
 If a value is outside the allowed range, the destination will report an error during sync.
@@ -117,7 +117,7 @@ ClickHouse Cloud date types have narrower ranges, so values outside the supporte
 | INSTANT       | DateTime64(9, 'UTC')   | 1900-01-01 00:00:00       | 2262-04-11 23:47:16       |
 
 - The INSTANT upper bound is 2262-04-11 23:47:16 because DateTime64(9) stores nanoseconds since epoch as int64, and 2^63 - 1 nanoseconds corresponds to this date.
-ClickHouse itself supports DateTime64 with precision <= 8 up to 2299-12-31 23:59:59.
+ClickHouse itself supports DateTime64 with precision \<= 9 up to 2299-12-31 23:59:59.
 - The LOCALDATETIME upper bound is also limited to 2262-04-11 23:47:16 due to a [known bug](https://github.com/ClickHouse/clickhouse-go/issues/1311) in the Go ClickHouse driver, where `time.Time.UnixNano()` is called for all DateTime64 precisions before scaling, causing int64 overflow for dates beyond 2262 even at precision 0.
 
 ## Destination tables {#table-structure}
