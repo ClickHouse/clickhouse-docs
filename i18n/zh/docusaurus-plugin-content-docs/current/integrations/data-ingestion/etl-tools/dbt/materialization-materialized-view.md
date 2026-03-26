@@ -78,12 +78,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 --mv2:end
 ```
 
-> 重要！
->
-> 当更新包含多个 materialized view（MV）的模型时，尤其是在重命名某个 MV 时，
-> dbt-clickhouse 不会自动删除旧的 MV。相反，
-> 您会看到如下警告：
-> `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::warning
+当更新包含多个 materialized view (MV) 的模型时，尤其是在重命名某个 MV 时，
+dbt-clickhouse 不会自动删除旧的 MV。相反，
+您会看到如下警告：
+
+`Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::
 
 
 ### 如何迭代目标表的 schema \{#how-to-iterate-the-target-table-schema\}
@@ -145,10 +146,10 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 ### 优点 \{#explicit-target-benefits\}
 
-- **资源完全隔离**：现在可以单独定义每个资源，从而提升可读性。
-- **dbt 与 CH 之间 1:1 的资源对应关系**：现在可以使用 dbt 工具分别管理和迭代这些资源。
-- **可为不同资源使用不同配置**：现在可以为每个资源应用不同的配置。
-- **不再需要遵守命名约定**：现在所有资源都使用用户指定的名称创建，而不是使用为物化视图添加 `_mv` 后缀的自定义名称。
+* **资源完全隔离**：现在可以单独定义每个资源，从而提升可读性。
+* **dbt 与 CH 之间 1:1 的资源对应关系**：现在可以使用 dbt 工具分别管理和迭代这些资源。
+* **可为不同资源使用不同配置**：现在可以为每个资源应用不同的配置。
+* **不再需要遵守命名约定**：现在所有资源都使用您指定的名称创建，而不是使用为物化视图添加 `_mv` 后缀的自定义名称。
 
 ### 限制 \{#explicit-target-limitations\}
 
@@ -297,8 +298,8 @@ GROUP BY event_date, event_type
 
 出现这种情况可能有以下几种原因：
 
-- materialized view 可能被配置为 `catchup=False`，或者目标表被配置为 `repopulate_from_mvs_on_full_refresh=False`，因此在创建 materialized view 或重建目标表时不会执行回填。这是预期行为，因此如果希望使用 materialized view 的 SQL 重新插入数据，请确保在 materialized view 中设置 `catchup=True`（默认值），或者在目标表中设置 `repopulate_from_mvs_on_full_refresh=True`。注意不要同时启用这两个设置，以避免产生重复数据。更多详情请查看[配置部分](#explicit-target-configuration)。
-- 当执行 `dbt run --full-refresh` 时，如果 materialized view 使用默认的 `catchup=True`，目标表会被重建，这些 materialized view 会依次重新插入数据。为避免这种情况，请查看[对显式目标执行 Full refresh](#explicit-target-full-refresh)。
+* materialized view 可能被配置为 `catchup=False`，或者目标表被配置为 `repopulate_from_mvs_on_full_refresh=False`，因此在创建 materialized view 或重建目标表时不会执行回填。这是预期行为，因此如果希望使用 materialized view 的 SQL 重新插入数据，请确保在 materialized view 中设置 `catchup=True` (默认值) ，或者在目标表中设置 `repopulate_from_mvs_on_full_refresh=True`。注意不要同时启用这两个设置，以避免产生重复数据。更多详情请查看[配置部分](#explicit-target-configuration)。
+* 当执行 `dbt run --full-refresh` 时，如果 materialized view 使用默认的 `catchup=True`，目标表会被重建，这些 materialized view 会依次重新插入数据。为避免这种情况，请查看[对显式目标执行全量刷新](#explicit-target-full-refresh)。
 
 #### 在目标表中执行 `dbt run --full-refresh` 且设置 `repopulate_from_mvs_on_full_refresh=True` 时，会使用旧版本 materialized view 的逻辑，而不是项目中当前的 SQL 定义 \{#full-refresh-with-repopulate-from-mvs-on-full-refresh\}
 
@@ -415,7 +416,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 **3. 按需根据[显式目标](#explicit-target)部分中的说明进行迭代。**
 
 
-## 隐式目标与显式目标方法的行为对比\{#behavior-comparison\}
+## 隐式目标与显式目标方法的行为对比 \{#behavior-comparison\}
 
 ### 它们的一般行为方式 \{#general-behavior\}
 
@@ -446,27 +447,27 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 **materialized view 模型：**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| 第一次执行 `dbt run` | 1. 创建 MV（带有 `TO` 子句）<br/>2. 运行追赶补齐（如果 `catchup=True`） | ✅ 会先创建 MV，因此新的插入会被立即捕获。<br/>⚠️ **追赶补齐可能导致数据重复** —— 回填查询可能与 MV 已在处理的行产生重叠。如果使用去重引擎（例如 `ReplacingMergeTree`）则是安全的。 |
-| 后续执行的 `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 安全。MV 会以原子方式更新。 |
-| 针对 MVs 运行 `dbt run --full-refresh` | 1. 删除并重新创建 MV<br/>2. 运行追赶补齐（如果 `catchup=True`） | ⚠️ **MV 在重建期间处于“盲区”**（在 drop 和 create 之间）。<br/>⚠️ 如果插入操作同时在进行，**追赶补齐可能导致数据重复**。 |
+| Operation                          | Internal process                                           | Safety while inserts are happening                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 第一次执行 `dbt run`                    | 1. 创建 MV (带有 `TO` 子句) <br />2. 运行数据补齐 (如果 `catchup=True`)  | ✅ 会先创建 MV，因此新的插入会被立即捕获。<br />⚠️ **数据补齐可能导致数据重复** —— 回填查询可能与 MV 已在处理的行产生重叠。如果使用去重引擎 (例如 `ReplacingMergeTree`) 则是安全的。 |
+| 后续执行的 `dbt run`                    | `ALTER TABLE ... MODIFY QUERY`                             | ✅ 安全。MV 会以原子方式更新。                                                                                                   |
+| 针对 MVs 运行 `dbt run --full-refresh` | 1. 删除并重新创建 MV<br />2. 运行数据补齐 (如果 `catchup=True`)           | ⚠️ **MV 在重建期间处于“盲区”** (在 drop 和 create 之间) 。<br />⚠️ 如果插入操作同时在进行，**数据补齐可能导致数据重复**。                                  |
 
 **目标表模型：**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| `dbt run` | 按照 `mv_on_schema_change` 设置应用 schema 变更 | ✅ 安全。没有数据移动。 |
-| `dbt run --full-refresh`（默认） | 重新创建表（使其为空） | ⚠️ **目标表会一直为空**，直到 MVs 将其回填。一旦新表存在，MVs 会继续向其插入数据。 |
-| 使用 `repopulate_from_mvs_on_full_refresh=True` 运行 `dbt run --full-refresh` | 1. 创建备份表<br/>2. 使用每个 MV 的 SQL 插入数据<br/>3. 原子性交换表 | ⚠️ **MV 在重建期间处于“盲区”。** 在步骤 1 和 3 之间插入的数据不会出现在新表中。**这一行为在后续版本中可能会改变** |
+| Operation                                                                 | Internal process                                   | Safety while inserts are happening                                    |
+| ------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| `dbt run`                                                                 | 按照 `mv_on_schema_change` 设置应用 schema 变更            | ✅ 安全。没有数据移动。                                                          |
+| `dbt run --full-refresh` (默认)                                             | 重新创建表 (使其为空)                                       | ⚠️ **目标表会一直为空**，直到 MVs 将其回填。一旦新表存在，MVs 会继续向其插入数据。                     |
+| 使用 `repopulate_from_mvs_on_full_refresh=True` 运行 `dbt run --full-refresh` | 1. 创建备份表<br />2. 使用每个 MV 的 SQL 插入数据<br />3. 原子性交换表 | ⚠️ **MV 在重建期间处于“盲区”。** 在步骤 1 和 3 之间插入的数据不会出现在新表中。**这一行为在后续版本中可能会改变**。 |
 
 :::tip 适用于存在活跃摄取的生产环境的建议
 
-- **如有可能，在 dbt 操作期间暂停摄取**：这将使所有操作都是安全的，并且不会丢失数据。
-- **如有可能，在目标表上使用去重引擎**（例如 `ReplacingMergeTree`），以处理追赶补齐重叠可能带来的重复数据。
-- **在可能的情况下优先选择 `ALTER TABLE ... MODIFY QUERY`**（不带 `--full-refresh` 的常规 `dbt run`）—— 这始终是安全的。
-- **在 dbt 操作期间留意存在风险的时间窗口**。
-:::
+* **如有可能，在 dbt 操作期间暂停摄取**：这将使所有操作都是安全的，并且不会丢失数据。
+* **如有可能，在目标表上使用去重引擎** (例如 `ReplacingMergeTree`) ，以处理数据补齐重叠可能带来的重复数据。
+* **在可能的情况下优先选择 `ALTER TABLE ... MODIFY QUERY`** (不带 `--full-refresh` 的常规 `dbt run`) —— 这始终是安全的。
+* **在 dbt 操作期间留意存在风险的时间窗口**。
+  :::
 
 ## 可刷新materialized view \{#refreshable-materialized-views\}
 

@@ -824,17 +824,16 @@ ORDER BY _part ASC
 
 #### Map with buckets \{#shared-data-map-with-buckets\}
 
-В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («buckets») с типом `Map(String, String)`.
+В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («бакеты») с типом `Map(String, String)`.
 Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse
 читает целиком столбец `Map` из одного бакета и извлекает требуемый путь в памяти.
 
 Эта сериализация менее эффективна для записи данных и чтения всего столбца `JSON`, но более эффективна для чтения подстолбцов путей,
 поскольку считываются данные только из нужных бакетов.
 
-Количество бакетов `N` управляется настройками MergeTree [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
-и [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
+Количество бакетов `N` управляется настройками MergeTree [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
+и [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
+Максимально допустимое значение для обеих настроек — 256.
 
 #### Advanced \{#shared-data-advanced\}
 
