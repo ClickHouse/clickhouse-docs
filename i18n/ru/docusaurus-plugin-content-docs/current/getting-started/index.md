@@ -11,6 +11,10 @@ doc_type: 'landing-page'
 
 # Учебное руководство и примеры наборов данных \{#tutorials-and-example-datasets\}
 
+:::tip
+Эти руководства подходят для любого развертывания ClickHouse, включая [ClickHouse Cloud](/install/quick-install-curl).
+:::
+
 У нас есть множество ресурсов, которые помогут вам начать работу и понять, как работает ClickHouse:
 
 * Если вам нужно быстро развернуть ClickHouse, ознакомьтесь с разделом [Quick Start](/get-started/quick-start)
