@@ -9,7 +9,48 @@ doc_type: 'guide'
 keywords: ['ClickStack configuration', 'Helm secrets', 'API key setup', 'ingress configuration', 'TLS setup']
 ---
 
+:::warning Chart version 2.x
+This page documents the **v2.x** subchart-based Helm chart. If you are still using the v1.x inline-template chart, see [Helm configuration (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1). For migration steps, see the [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade).
+:::
+
 This guide covers configuration options for ClickStack Helm deployments. For basic installation, see the [main Helm deployment guide](/docs/use-cases/observability/clickstack/deployment/helm).
+
+## Values organization {#values-organization}
+
+The v2.x chart organizes values by Kubernetes resource type under the `hyperdx:` block:
+
+```yaml
+hyperdx:
+  ports:          # Shared port numbers (Deployment, Service, ConfigMap, Ingress)
+    api: 8000
+    app: 3000
+    opamp: 4320
+
+  frontendUrl: "http://localhost:3000"
+
+  config:         # → clickstack-config ConfigMap (non-sensitive env vars)
+    APP_PORT: "3000"
+    HYPERDX_LOG_LEVEL: "info"
+
+  secrets:        # → clickstack-secret Secret (sensitive env vars)
+    HYPERDX_API_KEY: "..."
+    CLICKHOUSE_PASSWORD: "otelcollectorpass"
+    CLICKHOUSE_APP_PASSWORD: "hyperdx"
+    MONGODB_PASSWORD: "hyperdx"
+
+  deployment:     # K8s Deployment spec (image, replicas, probes, etc.)
+  service:        # K8s Service spec (type, annotations)
+  ingress:        # K8s Ingress spec (host, tls, annotations)
+  podDisruptionBudget:  # K8s PDB spec
+  tasks:          # K8s CronJob specs
+```
+
+All environment variables flow through two static-named resources shared by the HyperDX Deployment **and** the OTEL Collector via `envFrom`:
+
+- **`clickstack-config`** ConfigMap — populated from `hyperdx.config`
+- **`clickstack-secret`** Secret — populated from `hyperdx.secrets`
+
+There is no longer a separate OTEL-specific ConfigMap. Both workloads read from the same sources.
 
 ## API key setup {#api-key-setup}
 
@@ -24,7 +65,8 @@ After successfully deploying ClickStack, configure the API key to enable telemet
 Add the API key to your `values.yaml`:
 ```yaml
 hyperdx:
-  apiKey: "your-api-key-here"
+  secrets:
+    HYPERDX_API_KEY: "your-api-key-here"
 ```
 
 Then upgrade your deployment:
@@ -34,62 +76,55 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 
 ### Method 2: Update via Helm upgrade with --set flag {#api-key-set-flag}
 ```shell
-helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
+helm upgrade my-clickstack clickstack/clickstack \
+  --set hyperdx.secrets.HYPERDX_API_KEY="your-api-key-here"
 ```
 
 ### Restart pods to apply changes {#restart-pods}
 
 After updating the API key, restart the pods to pick up the new configuration:
 ```shell
-kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-clickstack-otel-collector
+kubectl rollout restart deployment my-clickstack-clickstack-app
 ```
 
 :::note
-The chart automatically creates a Kubernetes secret (`<release-name>-app-secrets`) with your API key. No additional secret configuration is needed unless you want to use an external secret.
+The chart automatically creates a Kubernetes secret (`clickstack-secret`) with your configuration values. No additional secret configuration is needed unless you want to use an external secret.
 :::
 
 ## Secret management {#secret-management}
 
-For handling sensitive data such as API keys or database credentials, use Kubernetes secrets.
+For handling sensitive data such as API keys or database credentials, the v2.x chart provides a unified `clickstack-secret` resource populated from `hyperdx.secrets`.
 
-### Using pre-configured secrets {#using-pre-configured-secrets}
+### Default secret values {#default-secret-values}
 
-The Helm chart includes a default secret template located at [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). This file provides a base structure for managing secrets.
-
-If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: hyperdx-secret
-  annotations:
-    "helm.sh/resource-policy": keep
-type: Opaque
-data:
-  API_KEY: <base64-encoded-api-key>
-```
-
-Apply the secret to your cluster:
-```shell
-kubectl apply -f secrets.yaml
-```
-
-### Creating a custom secret {#creating-a-custom-secret}
-
-Create a custom Kubernetes secret manually:
-```shell
-kubectl create secret generic hyperdx-secret \
-  --from-literal=API_KEY=my-secret-api-key
-```
-
-### Referencing a secret in values.yaml {#referencing-a-secret}
+The chart ships with default values for all secrets. Override them in your `values.yaml`:
 ```yaml
 hyperdx:
-  apiKey:
-    valueFrom:
-      secretKeyRef:
-        name: hyperdx-secret
-        key: API_KEY
+  secrets:
+    HYPERDX_API_KEY: "your-api-key"
+    CLICKHOUSE_PASSWORD: "your-clickhouse-otel-password"
+    CLICKHOUSE_APP_PASSWORD: "your-clickhouse-app-password"
+    MONGODB_PASSWORD: "your-mongodb-password"
+```
+
+### Using an external secret {#using-external-secret}
+
+For production deployments where you want to keep credentials separate from Helm values, use an external Kubernetes secret:
+
+```bash
+# Create your secret
+kubectl create secret generic my-clickstack-secrets \
+  --from-literal=HYPERDX_API_KEY=my-secret-api-key \
+  --from-literal=CLICKHOUSE_PASSWORD=my-ch-password \
+  --from-literal=CLICKHOUSE_APP_PASSWORD=my-ch-app-password \
+  --from-literal=MONGODB_PASSWORD=my-mongo-password
+```
+
+Then reference it in your values:
+```yaml
+hyperdx:
+  useExistingConfigSecret: true
+  existingConfigSecret: "my-clickstack-secrets"
 ```
 
 ## Ingress setup {#ingress-setup}
@@ -100,6 +135,7 @@ To expose the HyperDX UI and API via a domain name, enable ingress in your `valu
 ```yaml
 hyperdx:
   frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
+
   ingress:
     enabled: true
     host: "hyperdx.yourdomain.com"
@@ -217,6 +253,99 @@ hyperdx:
 If you don't need to expose the OTEL collector externally, you can skip this configuration. For most users, the general ingress setup is sufficient.
 :::
 
+Alternatively, you can use [`additionalManifests`](/docs/use-cases/observability/clickstack/deployment/helm-additional-manifests) to define fully custom ingress resources, such as an AWS ALB Ingress.
+
+## OTEL collector configuration {#otel-collector-configuration}
+
+The OTEL Collector is deployed via the official OpenTelemetry Collector Helm chart as the `otel-collector:` subchart. Configure it directly under `otel-collector:` in your values:
+
+```yaml
+otel-collector:
+  enabled: true
+  mode: deployment
+  replicaCount: 3
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  nodeSelector:
+    node-role: monitoring
+  tolerations:
+    - key: monitoring
+      operator: Equal
+      value: otel
+      effect: NoSchedule
+```
+
+Environment variables (ClickHouse endpoint, OpAMP URL, etc.) are shared via the unified `clickstack-config` ConfigMap and `clickstack-secret` Secret. The subchart's `extraEnvsFrom` is pre-wired to read from both.
+
+See the [OpenTelemetry Collector Helm chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector) for all available subchart values.
+
+## MongoDB configuration {#mongodb-configuration}
+
+MongoDB is managed by the MCK operator via a `MongoDBCommunity` custom resource. The CR spec is rendered verbatim from `mongodb.spec`:
+
+```yaml
+mongodb:
+  enabled: true
+  spec:
+    members: 1
+    type: ReplicaSet
+    version: "5.0.32"
+    security:
+      authentication:
+        modes: ["SCRAM"]
+    statefulSet:
+      spec:
+        volumeClaimTemplates:
+          - metadata:
+              name: data-volume
+            spec:
+              accessModes: ["ReadWriteOnce"]
+              storageClassName: "your-storage-class"
+              resources:
+                requests:
+                  storage: 10Gi
+```
+
+The MongoDB password is set in `hyperdx.secrets.MONGODB_PASSWORD`. See the [MCK documentation](https://github.com/mongodb/mongodb-kubernetes/tree/master/docs/mongodbcommunity) for all available CRD fields.
+
+## ClickHouse configuration {#clickhouse-configuration}
+
+ClickHouse is managed by the ClickHouse Operator via `ClickHouseCluster` and `KeeperCluster` custom resources. Both CR specs are rendered verbatim from values:
+
+```yaml
+clickhouse:
+  enabled: true
+  port: 8123
+  nativePort: 9000
+  prometheus:
+    enabled: true
+    port: 9363
+  keeper:
+    spec:
+      replicas: 1
+      dataVolumeClaimSpec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
+  cluster:
+    spec:
+      replicas: 1
+      shards: 1
+      dataVolumeClaimSpec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
+```
+
+ClickHouse user credentials are sourced from `hyperdx.secrets` (not `clickhouse.config.users` as in v1.x). See the [ClickHouse Operator configuration guide](https://clickhouse.com/docs/clickhouse-operator/guides/configuration) for all available CRD fields.
+
 ## Troubleshooting ingress {#troubleshooting-ingress}
 
 **Check ingress resource:**
@@ -260,24 +389,6 @@ Alternatively, create a custom `values.yaml`. To retrieve the default values:
 helm show values clickstack/clickstack > values.yaml
 ```
 
-Example configuration:
-```yaml
-replicaCount: 2
-
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-
-hyperdx:
-  ingress:
-    enabled: true
-    host: hyperdx.example.com
-```
-
 Apply your custom values:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
@@ -287,4 +398,7 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 
 - [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External systems and minimal deployments
 - [Cloud deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, and AKS configurations
+- [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade) - Migrating from v1.x to v2.x
+- [Additional manifests](/docs/use-cases/observability/clickstack/deployment/helm-additional-manifests) - Custom Kubernetes objects
 - [Main Helm guide](/docs/use-cases/observability/clickstack/deployment/helm) - Basic installation
+- [Configuration (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1) - v1.x configuration guide

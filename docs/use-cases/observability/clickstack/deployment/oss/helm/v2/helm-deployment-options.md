@@ -9,15 +9,19 @@ doc_type: 'guide'
 keywords: ['ClickStack deployment options', 'external ClickHouse', 'external OTEL', 'minimal deployment', 'Helm configuration']
 ---
 
+:::warning Chart version 2.x
+This page documents the **v2.x** subchart-based Helm chart. If you are still using the v1.x inline-template chart, see [Helm deployment options (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options-v1). For migration steps, see the [Upgrade guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade).
+:::
+
 This guide covers advanced deployment options for ClickStack using Helm. For basic installation, see the [main Helm deployment guide](/docs/use-cases/observability/clickstack/deployment/helm).
 
 ## Overview {#overview}
 
 ClickStack's Helm chart supports multiple deployment configurations:
-- **Full stack** (default) - All components included
-- **External ClickHouse** - Use existing ClickHouse cluster
-- **External OTEL Collector** - Use existing OTEL infrastructure
-- **Minimal deployment** - Only HyperDX, external dependencies
+- **Full stack** (default) — All components included, managed by operators
+- **External ClickHouse** — Use existing ClickHouse cluster
+- **External OTEL Collector** — Use existing OTEL infrastructure
+- **Minimal deployment** — Only HyperDX, external dependencies
 
 ## External ClickHouse {#external-clickhouse}
 
@@ -25,17 +29,17 @@ If you have an existing ClickHouse cluster (including ClickHouse Cloud), you can
 
 ### Option 1: Inline configuration (development/testing) {#external-clickhouse-inline}
 
-Use this approach for quick testing or non-production environments:
+Use this approach for quick testing or non-production environments. Provide connection details via `hyperdx.config` and `hyperdx.secrets`:
 ```yaml
 # values-external-clickhouse.yaml
 clickhouse:
-  enabled: false  # Disable the built-in ClickHouse
-
-otel:
-  clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # Optional
+  enabled: false  # Disable the operator-managed ClickHouse
 
 hyperdx:
+  secrets:
+    CLICKHOUSE_PASSWORD: "your-password"
+    CLICKHOUSE_APP_PASSWORD: "your-password"
+
   defaultConnections: |
     [
       {
@@ -132,10 +136,6 @@ rm connections.json sources.json
 clickhouse:
   enabled: false
 
-otel:
-  clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"
-
 hyperdx:
   useExistingConfigSecret: true
   existingConfigSecret: "hyperdx-external-config"
@@ -154,13 +154,12 @@ For ClickHouse Cloud specifically:
 # values-clickhouse-cloud.yaml
 clickhouse:
   enabled: false
-  persistence:
-    enabled: false
-
-otel:
-  clickhouseEndpoint: "tcp://your-cloud-instance.clickhouse.cloud:9440?secure=true"
 
 hyperdx:
+  secrets:
+    CLICKHOUSE_PASSWORD: "your-cloud-password"
+    CLICKHOUSE_APP_PASSWORD: "your-cloud-password"
+
   useExistingConfigSecret: true
   existingConfigSecret: "clickhouse-cloud-config"
   existingConfigConnectionsKey: "connections.json"
@@ -169,11 +168,11 @@ hyperdx:
 
 ## External OTEL Collector {#external-otel-collector}
 
-If you have an existing OTEL collector infrastructure:
+If you have an existing OTEL collector infrastructure, disable the subchart:
 ```yaml
 # values-external-otel.yaml
-otel:
-  enabled: false  # Disable the built-in OTEL collector
+otel-collector:
+  enabled: false  # Disable the subchart OTEL collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -192,12 +191,12 @@ For organizations with existing infrastructure, deploy only HyperDX:
 clickhouse:
   enabled: false
 
-otel:
+otel-collector:
   enabled: false
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
-  
+
   # Option 1: Inline (for testing)
   defaultConnections: |
     [
@@ -209,7 +208,7 @@ hyperdx:
         "password": "your-password"
       }
     ]
-  
+
   # Option 2: External secret (production)
   # useExistingConfigSecret: true
   # existingConfigSecret: "my-external-config"
@@ -224,4 +223,7 @@ helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 
 - [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API keys, secrets, and ingress setup
 - [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, and AKS specific configurations
+- [Upgrade Guide](/docs/use-cases/observability/clickstack/deployment/helm-upgrade) - Migrating from v1.x to v2.x
+- [Additional Manifests](/docs/use-cases/observability/clickstack/deployment/helm-additional-manifests) - Custom Kubernetes objects
 - [Main Helm Guide](/docs/use-cases/observability/clickstack/deployment/helm) - Basic installation
+- [Deployment options (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options-v1) - v1.x deployment options
