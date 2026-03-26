@@ -188,7 +188,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 
 For instructions on exposing OTEL collector endpoints via ingress, see [Ingress Configuration](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1#otel-collector-ingress).
 
-## Minimal Deployment {#minimal-deployment}
+## Minimal deployment {#minimal-deployment}
 
 For organizations with existing infrastructure, deploy only HyperDX:
 ```yaml
