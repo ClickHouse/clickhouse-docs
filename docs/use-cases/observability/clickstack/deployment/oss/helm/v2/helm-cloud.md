@@ -165,24 +165,17 @@ otel-collector:
 hyperdx:
   deployment:
     replicas: 3
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: clickstack
 
   podDisruptionBudget:
     enabled: true
     minAvailable: 1
-
-  deployment:
-    affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - clickstack
-              topologyKey: kubernetes.io/hostname
 ```
 
 ### Persistent storage {#persistent-storage}
