@@ -820,17 +820,16 @@ ORDER BY _part ASC
 
 #### 带桶的 Map \{#shared-data-map-with-buckets\}
 
-在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列（“桶”），每列的类型为 `Map(String, String)`。
+在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列 (“桶”) ，每列的类型为 `Map(String, String)`。
 每个桶仅包含路径的一个子集。要从这种序列化方式中读取路径子列，ClickHouse
 会从单个桶中读取整个 `Map` 列，并在内存中提取请求的路径。
 
 这种序列化方式在写入数据和读取整个 `JSON` 列时效率较低，但在读取路径子列时效率更高，
 因为它只会从所需的桶中读取数据。
 
-桶的数量 `N` 由 MergeTree 设置 [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part)（默认值为 8）
-和 [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part)（默认值为 32）控制。
+桶的数量 `N` 由 MergeTree 设置 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (默认值为 8) 
+和 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (默认值为 32) 控制。
+这两个设置的最大允许值均为 256。
 
 #### Advanced \{#shared-data-advanced\}
 
