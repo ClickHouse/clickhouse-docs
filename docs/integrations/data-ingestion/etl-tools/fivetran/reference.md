@@ -82,26 +82,44 @@ Example:
 
 The Fivetran ClickHouse destination maps [Fivetran data types](https://fivetran.com/docs/destinations#datatypes) to ClickHouse types as follows:
 
-| Fivetran type | ClickHouse type |
-|---------------|-----------------|
-| BOOLEAN | [Bool](/sql-reference/data-types/boolean) |
-| SHORT | [Int16](/sql-reference/data-types/int-uint) |
-| INT | [Int32](/sql-reference/data-types/int-uint) |
-| LONG | [Int64](/sql-reference/data-types/int-uint) |
-| BIGDECIMAL | [Decimal(P, S)](/sql-reference/data-types/decimal) |
-| FLOAT | [Float32](/sql-reference/data-types/float) |
-| DOUBLE | [Float64](/sql-reference/data-types/float) |
-| LOCALDATE | [Date](/sql-reference/data-types/date) |
-| LOCALDATETIME | [DateTime](/sql-reference/data-types/datetime) |
-| INSTANT | [DateTime64(9, 'UTC')](/sql-reference/data-types/datetime64) |
-| STRING | [String](/sql-reference/data-types/string) |
-| BINARY | [String](/sql-reference/data-types/string) \* |
-| XML | [String](/sql-reference/data-types/string) \* |
-| JSON | [String](/sql-reference/data-types/string) \* |
+| Fivetran type | ClickHouse type                                              |
+|---------------|--------------------------------------------------------------|
+| BOOLEAN       | [Bool](/sql-reference/data-types/boolean)                    |
+| SHORT         | [Int16](/sql-reference/data-types/int-uint)                  |
+| INT           | [Int32](/sql-reference/data-types/int-uint)                  |
+| LONG          | [Int64](/sql-reference/data-types/int-uint)                  |
+| BIGDECIMAL    | [Decimal(P, S)](/sql-reference/data-types/decimal)           |
+| FLOAT         | [Float32](/sql-reference/data-types/float)                   |
+| DOUBLE        | [Float64](/sql-reference/data-types/float)                   |
+| LOCALDATE     | [Date32](/sql-reference/data-types/date32)                   |
+| LOCALDATETIME | [DateTime64(0, 'UTC')](/sql-reference/data-types/datetime64) |
+| INSTANT       | [DateTime64(9, 'UTC')](/sql-reference/data-types/datetime64) |
+| STRING        | [String](/sql-reference/data-types/string)                   |
+| LOCALTIME     | [String](/sql-reference/data-types/string) \* \*\*           |
+| BINARY        | [String](/sql-reference/data-types/string) \*                |
+| XML           | [String](/sql-reference/data-types/string) \*                |
+| JSON          | [String](/sql-reference/data-types/string) \*                |
 
 :::note
-\* BINARY, XML, and JSON are stored as [String](/sql-reference/data-types/string) because ClickHouse's `String` type can represent an arbitrary set of bytes. The destination adds a column comment to indicate the original data type. The ClickHouse [JSON](/sql-reference/data-types/newjson) data type is not used as it was marked as obsolete and never recommended for production usage.
+\* BINARY, XML, LOCALTIME, and JSON are stored as [String](/sql-reference/data-types/string) because ClickHouse's `String` type can represent an arbitrary set of bytes. The destination adds a column comment to indicate the original data type. The ClickHouse [JSON](/sql-reference/data-types/newjson) data type is not used as it was marked as obsolete and never recommended for production usage.
+\*\* NOTE: Issue to track the support for LOCALTIME type: [clickhouse-fivetran-destination #15](https://github.com/ClickHouse/clickhouse-fivetran-destination/issues/15).
 :::
+
+### Date and time value ranges
+
+Fivetran sources can send date and time values in the range [0001-01-01, 9999-12-31](https://fivetran.com/docs/destinations#dateandtimevaluerange).
+ClickHouse Cloud date types have narrower ranges, so values outside the supported range are silently clamped to the nearest boundary:
+
+| Fivetran type | ClickHouse Cloud type  | Min value                 | Max value                 |
+|---------------|------------------------|---------------------------|---------------------------|
+| LOCALDATE     | Date32                 | 1900-01-01                | 2299-12-31                |
+| LOCALDATETIME | DateTime64(0, 'UTC')   | 1900-01-01 00:00:00       | 2262-04-11 23:47:16       |
+| INSTANT       | DateTime64(9, 'UTC')   | 1900-01-01 00:00:00       | 2262-04-11 23:47:16       |
+
+- The INSTANT upper bound is 2262-04-11 23:47:16 because DateTime64(9) stores nanoseconds since epoch as int64, and 2^63 - 1 nanoseconds corresponds to this date.
+ClickHouse itself supports DateTime64 with precision <= 8 up to 2299-12-31 23:59:59.
+- The LOCALDATETIME upper bound is also limited to 2262-04-11 23:47:16 due to a [known bug](https://github.com/ClickHouse/clickhouse-go/issues/1311) in the Go ClickHouse driver, where `time.Time.UnixNano()` is called for all DateTime64 precisions before scaling, causing int64 overflow for dates beyond 2262 even at precision 0.
+
 
 ## Destination tables {#table-structure}
 
