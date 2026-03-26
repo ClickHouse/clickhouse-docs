@@ -255,7 +255,7 @@ If you don't need to expose the OTEL collector externally, you can skip this con
 
 Alternatively, you can use [`additionalManifests`](/docs/use-cases/observability/clickstack/deployment/helm-additional-manifests) to define fully custom ingress resources, such as an AWS ALB Ingress.
 
-## OTEL Collector configuration {#otel-collector-configuration}
+## OTEL collector configuration {#otel-collector-configuration}
 
 The OTEL Collector is deployed via the official OpenTelemetry Collector Helm chart as the `otel-collector:` subchart. Configure it directly under `otel-collector:` in your values:
 
