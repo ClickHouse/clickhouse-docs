@@ -105,7 +105,7 @@ The Fivetran ClickHouse destination maps [Fivetran data types](https://fivetran.
 \*\* NOTE: Issue to track the support for LOCALTIME type: [clickhouse-fivetran-destination #15](https://github.com/ClickHouse/clickhouse-fivetran-destination/issues/15).
 :::
 
-### Date and time value ranges
+### Date and time value ranges {#date-and-time-value-ranges}
 
 Fivetran sources can send date and time values in the range [0001-01-01, 9999-12-31](https://fivetran.com/docs/destinations#dateandtimevaluerange).
 ClickHouse Cloud date types have narrower ranges, so values outside the supported range are silently clamped to the nearest boundary:
@@ -119,7 +119,6 @@ ClickHouse Cloud date types have narrower ranges, so values outside the supporte
 - The INSTANT upper bound is 2262-04-11 23:47:16 because DateTime64(9) stores nanoseconds since epoch as int64, and 2^63 - 1 nanoseconds corresponds to this date.
 ClickHouse itself supports DateTime64 with precision <= 8 up to 2299-12-31 23:59:59.
 - The LOCALDATETIME upper bound is also limited to 2262-04-11 23:47:16 due to a [known bug](https://github.com/ClickHouse/clickhouse-go/issues/1311) in the Go ClickHouse driver, where `time.Time.UnixNano()` is called for all DateTime64 precisions before scaling, causing int64 overflow for dates beyond 2262 even at precision 0.
-
 
 ## Destination tables {#table-structure}
 
