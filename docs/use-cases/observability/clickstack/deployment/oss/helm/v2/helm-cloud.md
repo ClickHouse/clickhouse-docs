@@ -121,7 +121,7 @@ clickhouse:
             storage: 10Gi
 ```
 
-## Production Cloud deployment checklist {#production-cloud-deployment-checklist}
+## Production cloud deployment checklist {#production-cloud-deployment-checklist}
 
 Before deploying ClickStack to production on any cloud provider:
 
