@@ -39,7 +39,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 <Image img={byoc_vpcpeering} size="lg" alt="BYOC Create Peering Connection" border />
 
 ### Accept the peering connection request {#step-3-accept-the-peering-connection-request}
-Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
+Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page you can approve this VPC peering request.
 
 <Image img={byoc_vpcpeering2} size="lg" alt="BYOC Accept Peering Connection" border />
 
@@ -67,13 +67,13 @@ In the peering AWS account,
 
 ### Edit security group to allow peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
 
-In the ClickHouse BYOC account, you need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
+In the ClickHouse BYOC account, you need to update the Security Group settings to allow traffic from your peered VPC. Contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
 
 ---
-The ClickHouse service should now be accessible from the peered VPC.
+The ClickHouse service should now be accessible from your peered VPC.
 </VerticalStepper>
 
-To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from the user's peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:
+To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from your peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 - **Private endpoint**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
@@ -91,7 +91,7 @@ Contact [ClickHouse Support](https://clickhouse.com/cloud/bring-your-own-cloud) 
 
 ClickHouse Support will enable the necessary infrastructure components, including **the private load balancer** and **PrivateLink service endpoint**.
 
-### Create an Endpoint in Your VPC {#step-2-create-endpoint}
+### Create an endpoint in your VPC {#step-2-create-endpoint}
 
 After ClickHouse Support has enabled PrivateLink on their side, you need to create a VPC endpoint in your client application VPC to connect to the ClickHouse PrivateLink service.
 
@@ -124,7 +124,7 @@ These settings are required for the PrivateLink DNS to function correctly.
 
 <Image img={byoc_privatelink_2} size="lg" alt="BYOC PrivateLink Approve" border />
 
-### Add Endpoint ID to Service Allowlist {#step-3-add-endpoint-id-allowlist}
+### Add endpoint ID to service allowlist {#step-3-add-endpoint-id-allowlist}
 
 Once your VPC endpoint is created and the connection is approved, you need to add the Endpoint ID to the allowlist for each ClickHouse service you want to access via PrivateLink.
 
@@ -151,7 +151,7 @@ DNS resolution in your VPC will automatically route traffic through the PrivateL
 
 </VerticalStepper>
 
-### PrivateLink Access Control {#privatelink-access-control}
+### PrivateLink access control {#privatelink-access-control}
 
 Access to ClickHouse services via PrivateLink is controlled at two levels:
 
