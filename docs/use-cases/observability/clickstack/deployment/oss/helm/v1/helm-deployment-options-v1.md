@@ -224,7 +224,7 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 - [Configuration Guide (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-configuration-v1) - API keys, secrets, and ingress setup
 - [Cloud Deployments (v1.x)](/docs/use-cases/observability/clickstack/deployment/helm-cloud-v1) - GKE, EKS, and AKS specific configurations
