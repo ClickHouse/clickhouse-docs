@@ -1,10 +1,10 @@
 ---
 sidebar_position: 7
-sidebar_label: 'Scheduled Scaling'
+sidebar_label: 'Scheduled scaling'
 slug: /cloud/features/autoscaling/scheduled-scaling
 description: 'Article discussing the Scheduled Scaling feature in ClickHouse Cloud'
 keywords: ['scheduled scaling']
-title: 'Scheduled Scaling'
+title: 'Scheduled scaling'
 doc_type: 'guide'
 ---
 

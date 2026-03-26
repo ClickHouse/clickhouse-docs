@@ -1,10 +1,10 @@
 ---
 sidebar_position: 3
-sidebar_label: 'Horizontal Scaling'
+sidebar_label: 'Horizontal scaling'
 slug: /cloud/features/autoscaling/horizontal
 description: 'Manual horizontal scaling in ClickHouse Cloud'
 keywords: ['horizontal scaling', 'scaling', 'replicas', 'manual scaling', 'spikes', 'bursts']
-title: 'Horizontal Scaling'
+title: 'Horizontal scaling'
 doc_type: 'guide'
 ---
 

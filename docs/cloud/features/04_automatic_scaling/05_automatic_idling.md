@@ -1,10 +1,10 @@
 ---
 sidebar_position: 5
-sidebar_label: 'Automatic Idling'
+sidebar_label: 'Automatic idling'
 slug: /cloud/features/autoscaling/idling
 description: 'Automatic idling and adaptive idling in ClickHouse Cloud'
 keywords: ['idling', 'automatic idling', 'adaptive idling', 'cost savings', 'pause']
-title: 'Automatic Idling'
+title: 'Automatic idling'
 doc_type: 'guide'
 ---
 

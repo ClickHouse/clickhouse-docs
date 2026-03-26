@@ -1,10 +1,10 @@
 ---
 sidebar_position: 2
-sidebar_label: 'Vertical Autoscaling'
+sidebar_label: 'Vertical autoscaling'
 slug: /cloud/features/autoscaling/vertical
 description: 'Configuring vertical autoscaling in ClickHouse Cloud'
 keywords: ['autoscaling', 'auto scaling', 'vertical', 'scaling', 'CPU', 'memory']
-title: 'Vertical Autoscaling'
+title: 'Vertical autoscaling'
 doc_type: 'guide'
 ---
 

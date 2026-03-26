@@ -4,7 +4,7 @@ sidebar_label: 'Scaling recommendations'
 slug: /cloud/features/autoscaling/scaling-recommendations
 description: 'Understanding scaling recommendations in ClickHouse Cloud'
 keywords: ['scaling recommendations', 'recommender', '2-window', 'autoscaling', 'optimization']
-title: 'Scaling Recommendations'
+title: 'Scaling recommendations'
 doc_type: 'guide'
 ---
 

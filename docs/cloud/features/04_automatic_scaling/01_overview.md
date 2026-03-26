@@ -4,7 +4,7 @@ sidebar_label: 'Overview'
 slug: /manage/scaling
 description: 'Overview of automatic scaling in ClickHouse Cloud'
 keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', 'bursts']
-title: 'Automatic Scaling'
+title: 'Automatic scaling'
 doc_type: 'guide'
 ---
 
