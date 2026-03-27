@@ -47,7 +47,6 @@ error while waiting for all mutations to be completed: ... initial cause: ...
 This can happen when:
 - The ClickHouse Cloud cluster is under heavy load.
 - One or more nodes went down during the mutation execution.
-- The mutation involves a very large number of rows.
 
 **Solutions:**
 
@@ -58,9 +57,8 @@ This can happen when:
    WHERE NOT is_done
    ORDER BY create_time DESC;
    ```
-2. **Check cluster health**: Ensure all nodes are healthy (see [nodes not available](#nodes-not-available)).
-3. **Reduce batch sizes**: Lower `mutation_batch_size` and `hard_delete_batch_size` in the [advanced configuration](/integrations/fivetran/reference#advanced-configuration) to decrease the size of each mutation.
-4. **Wait and retry**: Mutations eventually complete once the cluster is healthy. Fivetran will retry the sync automatically.
+2. **Check cluster health**: Ensure all nodes are healthy.
+3. **Wait and retry**: Mutations eventually complete once the cluster is healthy. Fivetran will retry the sync automatically.
 
 ### Column mismatch error {#column-mismatch-error}
 
