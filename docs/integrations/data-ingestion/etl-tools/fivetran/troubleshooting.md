@@ -3,14 +3,12 @@ sidebar_label: 'Troubleshooting & best practices'
 slug: /integrations/fivetran/troubleshooting
 sidebar_position: 4
 description: 'Common errors, debugging tips, and best practices for the Fivetran ClickHouse destination.'
-title: 'Troubleshooting & Best Practices'
+title: 'Troubleshooting & best practices'
 doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', 'troubleshooting', 'best practices', 'debugging']
 ---
 
 # Troubleshooting & best practices
-
-For a complete catalog of all errors the connector can produce, see the [Error Reference](/integrations/fivetran/error-reference).
 
 ## Common errors {#common-errors}
 

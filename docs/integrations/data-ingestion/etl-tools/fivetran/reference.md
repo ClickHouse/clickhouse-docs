@@ -3,7 +3,7 @@ sidebar_label: 'Technical reference'
 slug: /integrations/fivetran/reference
 sidebar_position: 3
 description: 'Type mappings, table engine details, metadata columns, and debugging queries for the Fivetran ClickHouse destination.'
-title: 'Technical Reference'
+title: 'Technical reference'
 doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', 'technical reference']
 ---
