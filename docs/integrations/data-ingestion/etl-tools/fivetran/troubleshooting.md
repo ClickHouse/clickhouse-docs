@@ -12,6 +12,83 @@ keywords: ['fivetran', 'clickhouse destination', 'troubleshooting', 'best practi
 
 ## Common errors {#common-errors}
 
+### Grants test failed or operations are failed related to permissions {#grants-test-failed}
+
+**Error message:**
+
+```sh
+Test grants failed, cause: user is missing the required grants on *.*: ALTER, CREATE DATABASE, CREATE TABLE, INSERT, SELECT
+```
+
+**Cause:** The Fivetran user does not have the required privileges. The connector requires `ALTER`, `CREATE DATABASE`, `CREATE TABLE`, `INSERT`, and `SELECT` grants on `*.*` (all databases and tables).
+
+:::note
+The grants check queries `system.grants` and only matches direct user grants. Privileges assigned through a ClickHouse role are not detected. See the [role-based grants](/integrations/fivetran/troubleshooting#role-based-grants) section for more details.
+:::
+
+**Solution:**
+
+Grant the required privileges directly to the Fivetran user:
+
+```sql
+GRANT CURRENT GRANTS ON *.* TO fivetran_user;
+```
+
+### Error while waiting for all mutations to be completed {#mutations-not-completed}
+
+**Error message:**
+
+```sh
+error while waiting for all mutations to be completed: ... initial cause: ...
+```
+
+**Cause:** An `ALTER TABLE ... UPDATE` or `ALTER TABLE ... DELETE` mutation was submitted, but the connector timed out waiting for it to complete across all replicas. The "initial cause" part of the error often contains the original ClickHouse error (commonly code 341, "Unfinished").
+
+This can happen when:
+- The ClickHouse Cloud cluster is under heavy load.
+- One or more nodes went down during the mutation execution.
+- The mutation involves a very large number of rows.
+
+**Solutions:**
+
+1. **Check mutation progress**: Run the following query to check for pending mutations:
+   ```sql
+   SELECT database, table, mutation_id, command, create_time, is_done
+   FROM system.mutations
+   WHERE NOT is_done
+   ORDER BY create_time DESC;
+   ```
+2. **Check cluster health**: Ensure all nodes are healthy (see [nodes not available](#nodes-not-available)).
+3. **Reduce batch sizes**: Lower `mutation_batch_size` and `hard_delete_batch_size` in the [advanced configuration](/integrations/fivetran/reference#advanced-configuration) to decrease the size of each mutation.
+4. **Wait and retry**: Mutations eventually complete once the cluster is healthy. Fivetran will retry the sync automatically.
+
+### Column mismatch error {#column-mismatch-error}
+
+**Error message:**
+
+Different error may happen if the columns mismatch is due to a schema change in the source. For example:
+
+```sh
+columns count in ClickHouse table (8) does not match the input file (6). Expected columns: id, name, ..., got: id, name, ...
+```
+
+Or:
+
+```sh
+column user_email was not found in the table definition. Table columns: ...; input file columns: ...
+```
+
+**Cause:** The columns in the ClickHouse destination table does not match the columns in the data being synced. This can happen when:
+- Columns were manually added or removed from the ClickHouse table.
+- A schema change in the source was not properly propagated.
+
+**Solutions:**
+
+1. **Remember to not manually modify Fivetran-managed tables.** See [best practices](/integrations/fivetran/troubleshooting#dont-modify-tables).
+2. **Alter the column back**: If you are aware of which type the column should be, alter the column back to the expected type using the [type transformation mapping](/integrations/fivetran/reference#type-mapping) as a reference.
+3. **Re-sync the table**: In the Fivetran dashboard, trigger a historical re-sync for the affected table.
+4. **Drop and re-create**: As a last resort, drop the destination table and let Fivetran re-create it during the next sync.
+
 ### AST is too big (code 168) {#ast-too-big}
 
 **Error message:**
