@@ -84,7 +84,7 @@ You can also find the PSC service name in the GCP Private Service Connect consol
 <Image img={byoc_privatelink_3} size="lg" alt="BYOC PSC Endpoint" border />
 <Image img={byoc_privatelink_4} size="lg" alt="BYOC PSC Endpoint" border />
 
-### Create an PSC endpoint in your Network {#step-3-create-endpoint}
+### Create a PSC endpoint in your network {#step-3-create-endpoint}
 
 After ClickHouse Support has enabled PSC service on their side, you need to create a PSC endpoint in your client application network to connect to the ClickHouse PSC service.
 
