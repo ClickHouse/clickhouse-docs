@@ -11,6 +11,8 @@ keywords: ['clickstack', 'rbac', 'roles', 'permissions', 'access control', 'secu
 ---
 
 import Image from '@theme/IdealImage';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import rbac_section from '@site/static/images/clickstack/rbac/rbac-section.png';
 import add_role_modal from '@site/static/images/clickstack/rbac/add-role-modal.png';
 import dashboard_fine_grained_example from '@site/static/images/clickstack/rbac/dashboard-fine-grained-example.png';
@@ -21,11 +23,13 @@ import default_vs_fine_grained from '@site/static/images/clickstack/rbac/default
 import condition_tip from '@site/static/images/clickstack/rbac/condition-tip.png';
 import access_rules_tip from '@site/static/images/clickstack/rbac/access-rules-tip.png';
 import dashboard_id_and_tag_example from '@site/static/images/clickstack/rbac/dashboard-id-and-tag-example.png';
+import team_page_cloud from '@site/static/images/clickstack/rbac/team-page-cloud.png';
+import team_page_hyperdx from '@site/static/images/clickstack/rbac/team-page-hyperdx.png';
 
 ClickStack includes role-based access control (RBAC) so you can define custom roles with fine-grained permissions over [dashboards](/use-cases/observability/clickstack/dashboards), [saved searches](/use-cases/observability/clickstack/search), sources, [alerts](/use-cases/observability/clickstack/alerts), webhooks, and notebooks. Permissions work at two levels: resource-level access (no access, read, or manage per resource type) and optional fine-grained rules that restrict access to individual resources by name, tag, or ID. ClickStack ships with three built-in roles, and you can create custom roles to match your team's needs.
 
 :::note Managed ClickStack only
-RBAC is available in Managed ClickStack deployments. For ClickStack Open Source, access control is managed at the infrastructure level.
+RBAC is only available in Managed ClickStack deployments.
 :::
 
 ## User access prerequisites {#user-access-prerequisites}
@@ -42,6 +46,15 @@ ClickStack authenticates through ClickHouse Cloud. Before you can assign ClickSt
 | **No access** | Can't access ClickStack. |
 
 Once a user has Cloud access, they appear in the ClickStack **Team Settings** page where you can assign a ClickStack role.
+
+<Tabs>
+<TabItem value="clickstack" label="ClickStack team settings" default>
+<Image img={team_page_hyperdx} alt="ClickStack Team Settings page showing team members and their roles" size="lg"/>
+</TabItem>
+<TabItem value="cloud" label="Cloud users and roles">
+<Image img={team_page_cloud} alt="ClickHouse Cloud Users and roles page" size="lg"/>
+</TabItem>
+</Tabs>
 
 ## Built-in roles {#built-in-roles}
 
@@ -96,7 +109,9 @@ Set permissions for the role, then click **Create Role**.
 
 Custom roles appear alongside system roles in the RBAC Roles section, with **Edit** and **Delete** controls.
 
-## Resource permissions {#resource-permissions}
+## Role permissions {#role-permissions}
+
+### Resource permissions {#resource-permissions}
 
 Each role grants an access level per resource type. The three levels are:
 
@@ -115,18 +130,18 @@ The resource types you can control are:
 - **Webhooks** — outbound notification destinations (such as Slack, PagerDuty, and generic HTTP endpoints) that [alerts](/use-cases/observability/clickstack/alerts) deliver to. This doesn't refer to the ClickStack API.
 - **Notebooks** — collaborative investigation notebooks.
 
-## Administrative permissions {#administrative-permissions}
+### Administrative permissions {#administrative-permissions}
 
 In addition to resource permissions, each role includes two administrative settings:
 
 - **Users** (No Access · Limited Access) — controls whether the role can view team members and their roles. Only Admins can invite, remove, or update users.
 - **Team** (Read · Manage) — controls whether the role can view or modify team-level settings such as security policies and RBAC configuration.
 
-## Fine-grained access rules {#fine-grained-access-rules}
+### Fine-grained access rules {#fine-grained-access-rules}
 
 Dashboards, Saved Searches, Sources, and Notebooks support fine-grained controls that restrict access to individual resources within a category. Use these when you need to limit a role to specific resources rather than granting blanket access to the entire resource type.
 
-### Default access vs. fine-grained controls {#access-control-modes}
+#### Default access vs. fine-grained controls {#access-control-modes}
 
 Each resource type has an **Access Control Mode**:
 
@@ -137,7 +152,7 @@ To switch modes, click the chevron to expand a resource type in the role editor,
 
 <Image img={default_vs_fine_grained} alt="Default Access vs Fine-Grained Controls modes in the role editor" size="md"/>
 
-### Configuring access rules {#configuring-access-rules}
+#### Configuring access rules {#configuring-access-rules}
 
 Each access rule consists of a **condition** and an **access level**. Conditions match resources by their properties:
 
