@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/notebooks
-title: "AI Notebooks with ClickStack"
-sidebar_label: "AI Notebooks"
+title: 'AI notebooks with ClickStack'
+sidebar_label: 'AI notebooks'
 pagination_prev: null
 pagination_next: null
-description: "AI-powered investigation notebooks for ClickStack"
-doc_type: "guide"
+description: 'AI-powered investigation notebooks for ClickStack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
