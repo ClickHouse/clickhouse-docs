@@ -12,4 +12,4 @@ To estimate the disk space needed for your data:
 2. **Apply the compression coefficient:** Load a sample into ClickHouse and compare the original data size with the stored table size. Clickstream data, for example, is typically compressed 6-10x.
 3. **Account for replicas:** If you plan to store data in multiple replicas, multiply the estimated volume by the number of replicas.
 
-For more detailed hardware requirements see ["Sizing and hardware recommendations"](/guides/sizing-and-hardware-recommendations)
+For more detailed hardware requirements, see ["Sizing and hardware recommendations"](/guides/sizing-and-hardware-recommendations)
