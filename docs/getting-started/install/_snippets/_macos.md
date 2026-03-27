@@ -57,7 +57,7 @@ You should now be able to run `clickhouse` commands in your terminal.
 
 ### Terminal process {#terminal-process}
 
-Sometimes pressing the `Allow Anyway` button doesn't doesn't fix this issue, in which case you can also perform this process using the command-line.
+Sometimes pressing the `Allow Anyway` button doesn't fix this issue, in which case you can also perform this process using the command-line.
 Or you might just prefer using the command line!
 
 First find out where Homebrew installed the `clickhouse` executable:
