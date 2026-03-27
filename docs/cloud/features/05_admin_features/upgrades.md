@@ -66,12 +66,7 @@ Specifically, services will:
 You can modify the release schedule of the service in the Cloud console as shown below:
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="Select Plan" border/>
-</div>
-<br/>
-
-<div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
+    <Image img={fast_release} size="lg" alt="Select release channel type" border/>
 </div>
 <br/>
 
@@ -124,6 +119,7 @@ Selecting this option will allow you to select the day of the week/time window f
     <Image img={scheduled_upgrade_window} size="lg" alt="Scheduled upgrade window" border/>
 </div>
 <br/>
+
 :::note
 While scheduled upgrades follow the defined schedule, exceptions apply to critical security patches and vulnerability fixes, as well as to scenarios where potential issues could lead to data corruption or data loss. In cases where an urgent security issue is identified, upgrades may be performed outside the scheduled window. Customers will be notified of such exceptions as necessary.
 :::
