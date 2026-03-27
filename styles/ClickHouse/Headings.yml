@@ -539,6 +539,7 @@ exceptions:
   - LibreChat
   - Lightdash
   - LlamaIndex
+  - "Looker Studio"
   - MariaDB
   - Marimo
   - MCP
@@ -565,6 +566,7 @@ exceptions:
   - Rotel
   - SlackBot
   - Snowflake
+  - "SQL Console"
   - Spark
   - Streamkap
   - Streamlit
