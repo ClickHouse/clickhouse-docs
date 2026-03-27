@@ -22,7 +22,7 @@ This will make the `clickhouse` binary available in your current shell session.
 - The `nixpkgs#clickhouse-lts` package provides the Long Term Support version.
 - Both packages work on Linux and macOS.
 
-## Permanent Installation {#permanent-installation}
+## Permanent installation {#permanent-installation}
 
 To install ClickHouse permanently on your system:
 
@@ -50,7 +50,7 @@ nix profile install nixpkgs#clickhouse
 nix profile install nixpkgs#clickhouse-lts
 ```
 
-## Start ClickHouse Server {#start-clickhouse-server}
+## Start ClickHouse server {#start-clickhouse-server}
 
 After installation, you can start the ClickHouse server:
 
@@ -62,7 +62,7 @@ By default, the server will start with a basic configuration and listen on `loca
 
 For production use on NixOS, you may want to configure ClickHouse as a system service. Refer to the [NixOS manual](https://search.nixos.org/options?query=clickhouse) for available configuration options.
 
-## Start ClickHouse Client {#start-clickhouse-client}
+## Start ClickHouse client {#start-clickhouse-client}
 
 To connect to the ClickHouse server, open a new terminal and run:
 

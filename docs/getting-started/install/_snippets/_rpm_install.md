@@ -53,7 +53,7 @@ sudo systemctl status clickhouse-server
 
 To start ClickHouse client, run:
 
-```sql
+```bash
 clickhouse-client
 ```
 
