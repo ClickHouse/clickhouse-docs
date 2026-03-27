@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'ClickHouse Cloud 层级'
+sidebar_label: 'ClickHouse Cloud 服务层级'
 slug: /cloud/manage/cloud-tiers
-title: 'ClickHouse Cloud 层级'
+title: 'ClickHouse Cloud 服务层级'
 description: 'ClickHouse Cloud 中可用的云服务层级'
 keywords: ['云服务层级', '服务方案', '云定价层级', '云服务级别']
 doc_type: 'reference'

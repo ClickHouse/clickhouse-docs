@@ -954,6 +954,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество повторно используемых подключений к диску
 
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+Время, затраченное на ожидание удаления blob, ожидающего удаления, после фиксирования транзакции метаданных
+
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
 Количество каталогов, созданных в хранилище метаданных &#39;plain&#95;rewritable&#39; для AzureObjectStorage.

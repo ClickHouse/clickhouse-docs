@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'ClickHouse Cloud のサービスティア'
+sidebar_label: 'ClickHouse Cloud のティア'
 slug: /cloud/manage/cloud-tiers
-title: 'ClickHouse Cloud のサービスティア'
-description: 'ClickHouse Cloud で利用可能なクラウドサービスティア'
-keywords: ['クラウドサービスティア', 'サービスプラン', 'クラウド料金プラン', 'クラウドサービスレベル']
+title: 'ClickHouse Cloud のティア'
+description: 'ClickHouse Cloud で利用可能なクラウドティア'
+keywords: ['クラウドティア', 'サービスプラン', 'クラウド料金プラン', 'クラウドサービスレベル']
 doc_type: 'reference'
 ---
 
