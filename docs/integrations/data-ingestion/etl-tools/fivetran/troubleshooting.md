@@ -186,14 +186,6 @@ Avoid manual DDL changes (e.g., `ALTER TABLE ... MODIFY COLUMN`) to tables manag
 
 Use materialized views for custom transformations.
 
-### Ensure cluster health during syncs {#cluster-health}
-
-The Fivetran destination checks that all replicas are active before performing operations. If any replica is offline, operations fail after retrying for up to 600 seconds.
-
-- Keep all replicas running during sync windows.
-- Schedule syncs when all nodes are available if you scale down during off-hours.
-- Monitor the ClickHouse Cloud console for service issues.
-
 ## Debugging operations {#debugging}
 
 When diagnosing failures:
