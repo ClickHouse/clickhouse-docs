@@ -1,8 +1,14 @@
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
+
 # Install ClickHouse on NixOS {#install-from-nix}
 
 > ClickHouse is available in the Nixpkgs repository and can be installed using Nix on **Linux** and **macOS**.
 
 <VerticalStepper>
+
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
 
 ## Install ClickHouse using Nix {#install-clickhouse-using-nix}
 

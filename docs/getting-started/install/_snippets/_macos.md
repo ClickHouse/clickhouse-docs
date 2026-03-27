@@ -2,6 +2,7 @@ import Image from "@theme/IdealImage";
 import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/dev-verification-error.png";
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
 
 # Install ClickHouse using Homebrew
 
@@ -11,6 +12,10 @@ We recommend using the [quick install](/install/quick-install-curl) method which
 :::
 
 <VerticalStepper>
+
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
 
 ## Install using the community Homebrew formula {#install-using-community-homebrew-formula}
 

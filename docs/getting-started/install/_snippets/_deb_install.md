@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
 
 # Install ClickHouse on Debian/Ubuntu {#install-from-deb-packages}
 
@@ -7,7 +8,11 @@ import TabItem from '@theme/TabItem';
 
 <VerticalStepper>
 
-## Setup the Debian repository {#setup-the-debian-repository}
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
+
+## Set up the Debian repository {#setup-the-debian-repository}
 
 To install ClickHouse run the following commands:
 
