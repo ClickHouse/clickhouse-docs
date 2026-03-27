@@ -1,9 +1,9 @@
 ---
-title: 'Cloud Console monitoring'
+title: 'Cloud console monitoring'
 slug: /cloud/monitoring/cloud-console
 description: 'Built-in monitoring dashboards in the ClickHouse Cloud Console'
 keywords: ['cloud', 'monitoring', 'dashboards', 'service health', 'resource utilization', 'advanced dashboard']
-sidebar_label: 'Cloud Console'
+sidebar_label: 'Cloud console'
 sidebar_position: 2
 doc_type: 'guide'
 ---

@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Query API Endpoints'
+sidebar_title: 'Query API endpoints'
 slug: /cloud/get-started/query-endpoints
 description: 'Easily spin up REST API endpoints from your saved queries'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'Query API Endpoints'
+title: 'Query API endpoints'
 doc_type: 'guide'
 ---
 
