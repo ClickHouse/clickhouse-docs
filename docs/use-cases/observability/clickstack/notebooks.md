@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/notebooks
-title: 'AI notebooks with ClickStack'
-sidebar_label: 'AI notebooks'
+title: 'AI Notebooks with ClickStack'
+sidebar_label: 'AI Notebooks'
 pagination_prev: null
 pagination_next: null
 description: 'AI-powered investigation notebooks for ClickStack'
@@ -12,9 +12,9 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
+import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
-import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
+import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
 import notebook_branching from '@site/static/images/use-cases/observability/hyperdx-notebook-branching.png';
 import notebook_branch_modal from '@site/static/images/use-cases/observability/hyperdx-notebook-branch-modal.png';
 import notebook_manual_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-manual-tiles.png';
