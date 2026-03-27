@@ -1033,6 +1033,13 @@ ZooKeeper 中的副本名称。
 
 <SettingsInfoBlock type="UInt64" default_value="8000" />如果正在使用的连接数超过此限制，将在日志中记录警告信息。该限制适用于磁盘连接。
 
+## disk_transaction_wait_for_blob_removal \{#disk_transaction_wait_for_blob_removal\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+每个磁盘的 `wait_for_blob_removal` 设置的默认值。
+启用后，服务器会在确认该操作前，等待后台 blob 删除完成。
+
 ## display_secrets_in_show_and_select \{#display_secrets_in_show_and_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
