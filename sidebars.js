@@ -1955,6 +1955,7 @@ const sidebars = {
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
           ],
         },
+        "use-cases/observability/clickstack/notebooks",
         'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
