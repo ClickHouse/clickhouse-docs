@@ -1,9 +1,9 @@
 ---
-title: 'Cloud Console 모니터링'
+title: 'Cloud console 모니터링'
 slug: /cloud/monitoring/cloud-console
 description: 'ClickHouse Cloud Console에 내장된 모니터링 대시보드'
 keywords: ['클라우드', '모니터링', '대시보드', '서비스 상태', '리소스 사용률', '고급 대시보드']
-sidebar_label: 'Cloud Console'
+sidebar_label: 'Cloud console'
 sidebar_position: 2
 doc_type: 'guide'
 ---

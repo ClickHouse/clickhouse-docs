@@ -58,7 +58,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
 | [Private networking setup](/cloud/reference/byoc/onboarding/network) | Deploy ClickHouse on your own cloud infrastructure |
-| [Query API Endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
+| [Query API endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |

@@ -529,8 +529,32 @@ Expression ((Project names + Projection))
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
 
-`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示されます:
+`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示され、主要なステップに関する追加情報も表示されます:
 
+* **クエリの出力カラム**は、計画の先頭に表示されます。
+* **ソースステップ** (`ReadFromMergeTree` など) には、その出力カラムが表示されます。
+* **Join ステップ**には、数学的な表記による結合関係、推定結果行数、
+  および各出力カラムが左側と右側のどちらに由来するかが表示されます。異なる join 種別を
+  表すために、次の記号を使用します。
+
+| Symbol                 | Join Type |
+| ---------------------- | --------- |
+| `⋈`                    | 内部結合      |
+| `⟕`                    | 左結合       |
+| `⟖`                    | 右結合       |
+| `⟗`                    | 完全結合      |
+| `⋉`                    | 左セミ結合     |
+| `⋊`                    | 右セミ結合     |
+| `⋉` with strikethrough | 左アンチ結合    |
+| `⋊` with strikethrough | 右アンチ結合    |
+| `×`                    | クロス結合     |
+
+たとえば、`t1 ⟕ t2` はテーブル `t1` と `t2` の左結合を意味します。
+テーブル名の後の角括弧内の数値 (例: `t1[100]`) は、テーブル統計を利用できる場合の
+推定行数を示します。
+
+`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや
+詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -541,6 +565,39 @@ Expression ((Project names + Projection))
 └──Aggregating
    └──Expression ((Before GROUP BY + Change column names to column identifiers))
       └──ReadFromSystemNumbers
+```
+
+JOINを使った、より詳しい例:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Join conditions: [(__table1.id) = (__table2.id)]
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
 ```
 
 
