@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'AI-powered investigation notebooks for ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'AI notebooks', 'investigation', 'observability', 'HyperDX']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,7 +24,7 @@ import notebook_ai_consent from '@site/static/images/use-cases/observability/hyp
 
 <PrivatePreviewBadge/>
 
-AI Notebooks are an interactive investigation tool in HyperDX that combines an AI agent with manual analysis. Engineers can describe an issue in plain language, and the AI agent will query logs, traces, and metrics on their behalf — surfacing relevant data, charts, and summaries as a series of tiles. Users can also add their own tiles (charts, tables, searches, and markdown notes) alongside the AI-generated output, building a complete record of an investigation.
+AI Notebooks are an interactive investigation tool in HyperDX that combines an AI agent with manual analysis. You can describe an issue in plain language, and the AI agent will query logs, traces, and metrics on your behalf — surfacing relevant data, charts, and summaries as a series of tiles. You can also add your own tiles (charts, tables, searches, and markdown notes) alongside the AI-generated output, building a complete record of an investigation.
 
 <Image img={notebook_hero} alt="AI Notebook investigating a Visa cache full outage" size="lg"/>
 
@@ -31,7 +32,7 @@ AI Notebooks are an interactive investigation tool in HyperDX that combines an A
 
 | Deployment                        | Supported | Notes                                                                                     |
 | --------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| **ClickHouse Cloud (ClickStack)** | Yes       | AI API keys are managed by the platform. Users only need to enable the AI consent toggle. |
+| **ClickHouse Cloud (ClickStack)** | Yes       | AI API keys are managed by the platform. You only need to enable the AI consent toggle. |
 | **Enterprise Edition (EE)**       | Yes       | Requires manually configuring AI API keys via environment variables.                      |
 | **Open Source (OSS)**             | No        | AI Notebooks are not available in the open source edition.                                |
 
@@ -41,7 +42,7 @@ Before using AI Notebooks, the following must be in place:
 
 1. **AI API keys configured** — The HyperDX server must have access to a supported LLM provider (handled automatically in ClickHouse Cloud, manual in EE).
 2. **Generative AI enabled** — A team admin must enable the Generative AI consent toggle. See [Enabling Generative AI](#enabling-generative-ai).
-3. **Notebook access** — The user's role must have read/write permissions for Notebooks.
+3. **Notebook access** — Your role must have read/write permissions for Notebooks.
 
 ## Setup {#setup}
 
@@ -52,7 +53,7 @@ Before using AI Notebooks, the following must be in place:
 
 AI Notebooks are currently in private preview in ClickHouse Cloud. AI API keys are automatically configured by the platform.
 
-To enable AI Notebooks, follow the steps in [Enabling Generative AI](#enabling-generative-ai). Once enabled, the **Notebooks** entry appears in the left sidebar for all users with the appropriate role.
+To enable AI Notebooks, follow the steps in [Enabling Generative AI](#enabling-generative-ai). Once enabled, the **Notebooks** entry appears in the left sidebar for everyone with the appropriate role.
 
 </TabItem>
 <TabItem value="ee" label="Enterprise Edition">
