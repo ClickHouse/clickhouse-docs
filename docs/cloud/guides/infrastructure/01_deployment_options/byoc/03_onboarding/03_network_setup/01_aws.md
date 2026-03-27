@@ -19,12 +19,12 @@ ClickHouse BYOC on AWS supports two private connection options including VPC Pee
 
 ## Prerequisites {#common-prerequisites}
 
-Common steps required by both vpc peering and privatelink.
+Common steps required by both VPC peering and Privatelink.
 
 ### Enable private load balancer for ClickHouse BYOC {#step-enable-private-load-balancer-for-clickhouse-byoc}
 Contact ClickHouse Support to enable Private Load Balancer.
 
-## Setup VPC Peering {#aws-vpc-peering}
+## Set up VPC peering {#aws-vpc-peering}
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
@@ -81,7 +81,7 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 
 Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
-## Setup PrivateLink {#setup-privatelink}
+## Set up PrivateLink {#setup-privatelink}
 
 AWS PrivateLink provides secure, private connectivity to your ClickHouse BYOC services without requiring VPC peering or internet gateways. Traffic flows entirely within the AWS network, never traversing the public internet.
 

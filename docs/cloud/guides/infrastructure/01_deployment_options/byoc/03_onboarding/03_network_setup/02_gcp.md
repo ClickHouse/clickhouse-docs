@@ -22,19 +22,19 @@ ClickHouse BYOC on GCP supports two private connection options including VPC Pee
 
 ## Prerequisites {#common-prerequisites}
 
-Common steps required by both vpc peering and Private Service Connect.
+Common steps required by both VPC peering and Private Service Connect.
 
 ### Enable private load balancer for ClickHouse BYOC {#step-enable-private-load-balancer-for-clickhouse-byoc}
 Contact ClickHouse Support to enable Private Load Balancer.
 
-## Setup VPC peering {#gcp-vpc-peering}
+## Set up VPC peering {#gcp-vpc-peering}
 
-Please familiarize yourself with [GCP VPC peering feature](https://docs.cloud.google.com/vpc/docs/vpc-peering) and note the limitation of VPC peering (for example subnet IP ranges can't overlap across peered VPC networks). ClickHouse BYOC utilizes private load balancer to allow network connectivity through the peering to clickhouse services.
+Please familiarize yourself with [GCP VPC peering feature](https://docs.cloud.google.com/vpc/docs/vpc-peering) and note the limitations of VPC peering (for example subnet IP ranges can't overlap across peered VPC networks). ClickHouse BYOC utilizes a private load balancer to allow network connectivity through the peering to ClickHouse services.
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
 :::note
-The example steps are for a simple scenario, for advanced scenarios such as peering with on-premises connectivity, some adjustments may required.
+The example steps are for a simple scenario, for advanced scenarios such as peering with on-premises connectivity, some adjustments may be required.
 :::
 
 <VerticalStepper headerLevel="h3">
@@ -50,17 +50,17 @@ In this example, we are setting up peering between the BYOC VPC network and anot
 
 <Image img={byoc_vpcpeering} size="md" alt="BYOC Create Peering Connection" border />
 
-GCP VPC peering requires 2 connections between the 2 network created to work (i.e. a connection from BYOC network to the existing VPC network and a connection from the existing VPC network to the BYOC network). So we need to similarly create 1 more connection in reverse direction, below is a screenshot for the second peering connection creation:
+GCP VPC peering requires 2 connections between the 2 networks to work (i.e. a connection from BYOC network to the existing VPC network and a connection from the existing VPC network to the BYOC network). So you need to similarly create 1 more connection in reverse direction, below is a screenshot for the second peering connection creation:
 
 <Image img={byoc_vpcpeering2} size="md" alt="BYOC Accept Peering Connection" border />
 
-After both connections are created, the status of the 2 connections should become "Active" after refresh the google cloud console webpage:
+After both connections are created, the status of the 2 connections should become "Active" after refreshing the Google Cloud Console webpage:
 
 <Image img={byoc_vpcpeering3} size="lg" alt="BYOC Accept Peering Connection" border />
 
 The ClickHouse service should now be accessible from the peered VPC.
 
-### Access clickhouse service via peering connection {#step-2-access-ch-service-via-peering}
+### Access ClickHouse service via peering connection {#step-2-access-ch-service-via-peering}
 
 To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from the user's peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-east1.gcp.byoc.clickhouse.cloud`
@@ -68,7 +68,7 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 
 </VerticalStepper>
 
-## Setup PSC (Private Service Connect) {#gcp-psc}
+## Set up PSC (Private Service Connect) {#gcp-psc}
 
 GCP PSC (Private Service Connect) provides secure, private connectivity to your ClickHouse BYOC services without requiring VPC peering or internet gateways.
 
