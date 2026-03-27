@@ -488,7 +488,7 @@ Skip merging: 0
   ReadFromSystemNumbers
 ```
 
-`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿌리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
+`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿼리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
 
 분산 테이블을 사용한 예:
 
@@ -532,8 +532,33 @@ Expression ((Project names + Projection))
 
 두 예제 모두에서 쿼리 플랜은 로컬 및 원격 단계를 포함한 전체 실행 흐름을 보여줍니다.
 
-`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시됩니다:
+`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시되며,
+주요 단계에 대한 추가 정보도 함께 표시됩니다:
 
+* **쿼리 출력 컬럼**은 계획 맨 위에 표시됩니다.
+* **소스 단계**(`ReadFromMergeTree` 등)는 해당 단계의 출력 컬럼을 표시합니다.
+* **조인 단계**는 수학 표기법을 사용한 조인 관계, 예상 결과 행 수,
+  그리고 어떤 출력 컬럼이 왼쪽과 오른쪽 중 어느 쪽에서 오는지를 표시합니다. 다음 기호는
+  서로 다른 조인 유형을 나타냅니다:
+
+| 기호                     | 조인 유형     |
+| ---------------------- | --------- |
+| `⋈`                    | 내부 조인     |
+| `⟕`                    | 왼쪽 조인     |
+| `⟖`                    | 오른쪽 조인    |
+| `⟗`                    | 전체 조인     |
+| `⋉`                    | 왼쪽 세미 조인  |
+| `⋊`                    | 오른쪽 세미 조인 |
+| `⋉` with strikethrough | 왼쪽 안티 조인  |
+| `⋊` with strikethrough | 오른쪽 안티 조인 |
+| `×`                    | 크로스 조인    |
+
+예를 들어, `t1 ⟕ t2`는 테이블 `t1`과 `t2` 간의 왼쪽 조인을 의미합니다.
+테이블 이름 뒤 대괄호 안의 숫자(예: `t1[100]`)는 테이블 통계를 사용할 수 있는 경우
+예상 행 수를 나타냅니다.
+
+`pretty` 옵션은 `compact = 1`과 함께 사용하면 효과적이며, `Expression` 단계와
+상세 작업 정보가 숨겨져 계획을 더 쉽게 읽을 수 있습니다.
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -544,6 +569,39 @@ Expression ((Project names + Projection))
 └──Aggregating
    └──Expression ((Before GROUP BY + Change column names to column identifiers))
       └──ReadFromSystemNumbers
+```
+
+조인이 포함된 더 자세한 예시:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Join conditions: [(__table1.id) = (__table2.id)]
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
 ```
 
 

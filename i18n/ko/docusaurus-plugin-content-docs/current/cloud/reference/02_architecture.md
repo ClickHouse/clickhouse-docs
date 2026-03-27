@@ -15,11 +15,11 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 <Image img={Architecture} size='lg' alt='Cloud 아키텍처'/>
 
-## 오브젝트 스토어 기반 스토리지 \{#storage-backed-by-object-store\}
+## 객체 스토리지 기반 스토리지 \{#storage-backed-by-object-store\}
 
-- 사실상 무제한에 가까운 스토리지 용량
-- 데이터를 수동으로 복제하거나 공유할 필요가 없음
-- 특히 접근 빈도가 낮은 데이터를 저장할 때 데이터 보관 비용이 크게 절감됨
+* 사실상 무제한에 가까운 스토리지 용량
+* 데이터를 수동으로 세그먼트로 분할할 필요가 없음
+* 특히 접근 빈도가 낮은 데이터를 저장할 때 데이터 보관 비용이 크게 절감됨
 
 ## 컴퓨트 \{#compute\}
 

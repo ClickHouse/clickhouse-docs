@@ -79,17 +79,18 @@ keeper foo bar
 
 ## 명령어 \{#clickhouse-keeper-client-commands\}
 
-* `ls '[path]'` -- 지정된 경로의 노드를 나열합니다 (기본값: 현재 작업 디렉터리)
+* `ls '[path]' [watch_id]` -- 지정된 경로의 노드를 나열합니다 (기본값: 현재 작업 디렉터리). 필요에 따라 `watch_id`로 식별되는 자식 watch를 설정합니다
 * `cd '[path]'` -- 작업 경로를 변경합니다 (기본값: `.`)
 * `cp '<src>' '<dest>'`  -- &#39;src&#39; 노드를 &#39;dest&#39; 경로로 복사합니다
 * `cpr '<src>' '<dest>'`  -- &#39;src&#39; 노드 서브트리를 &#39;dest&#39; 경로로 복사합니다
 * `mv '<src>' '<dest>'`  -- &#39;src&#39; 노드를 &#39;dest&#39; 경로로 이동합니다
 * `mvr '<src>' '<dest>'`  -- &#39;src&#39; 노드 서브트리를 &#39;dest&#39; 경로로 이동합니다
-* `exists '<path>'` -- 노드가 존재하면 `1`, 그렇지 않으면 `0`을 반환합니다
+* `exists '<path>' [watch_id]` -- 노드가 존재하면 `1`, 그렇지 않으면 `0`을 반환합니다. 필요에 따라 `watch_id`로 식별되는 watch를 설정합니다
 * `set '<path>' <value> [version]` -- 노드의 값을 업데이트합니다. 버전이 일치할 때만 업데이트합니다 (기본값: -1)
 * `create '<path>' <value> [mode]` -- 지정된 값으로 새 노드를 생성합니다
 * `touch '<path>'` -- 값이 빈 문자열인 새 노드를 생성합니다. 노드가 이미 존재하더라도 예외를 발생시키지 않습니다
-* `get '<path>'` -- 노드의 값을 반환합니다
+* `get '<path>' [watch_id]` -- 노드의 값을 반환합니다. 필요에 따라 `watch_id`로 식별되는 데이터 watch를 설정합니다
+* `watch <watch_id> [timeout_seconds]` -- `watch_id`로 식별되는 watch 이벤트를 기다린 후 이벤트 유형과 경로를 출력합니다. `timeout_seconds`가 지정되면 해당 시간 초과 후 오류를 반환합니다
 * `rm '<path>' [version]` -- 버전이 일치하는 경우에만 노드를 제거합니다 (기본값: -1)
 * `rmr '<path>' [limit]` -- 서브트리 크기가 limit보다 작은 경우 해당 경로를 재귀적으로 삭제합니다. 삭제 전에 확인이 필요합니다 (기본 limit = 100)
 * `flwc <command>` -- four-letter-word 명령을 실행합니다

@@ -1,9 +1,9 @@
 ---
-title: 'Мониторинг в Cloud Console'
+title: 'Мониторинг в Cloud console'
 slug: /cloud/monitoring/cloud-console
 description: 'Встроенные панели мониторинга в консоли ClickHouse Cloud'
 keywords: ['облако', 'мониторинг', 'панель мониторинга', 'состояние сервиса', 'использование ресурсов', 'расширенная панель мониторинга']
-sidebar_label: 'Cloud Console'
+sidebar_label: 'Cloud console'
 sidebar_position: 2
 doc_type: 'guide'
 ---

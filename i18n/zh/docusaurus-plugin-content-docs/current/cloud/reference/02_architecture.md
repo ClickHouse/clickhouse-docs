@@ -17,9 +17,9 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## 基于对象存储的存储 \{#storage-backed-by-object-store\}
 
-- 几乎无限的存储容量
-- 无需手动共享数据
-- 存储数据的成本显著更低，尤其适用于访问频率较低的数据
+* 几乎无限的存储容量
+* 无需手动对数据进行分片
+* 存储数据的成本显著更低，尤其适用于访问频率较低的数据
 
 ## 计算 \{#compute\}
 
