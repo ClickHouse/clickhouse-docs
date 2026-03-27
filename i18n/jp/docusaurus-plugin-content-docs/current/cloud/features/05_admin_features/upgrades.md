@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
-import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
@@ -53,30 +52,24 @@ ClickHouse Cloud を利用すると、パッチ適用やアップグレードに
 Basic ティアのサービスは自動的に高速リリースチャネルに登録されます。
 :::
 
-### 高速リリースチャネル（早期アップグレード） \{#fast-release-channel-early-upgrades\}
+### 高速リリースチャネル (早期アップグレード)  \{#fast-release-channel-early-upgrades\}
 
-<ScalePlanFeatureBadge feature="高速リリースチャネル"/>
+<ScalePlanFeatureBadge feature="高速リリースチャネル" />
 
 通常のアップグレードスケジュールに加えて、サービスを通常リリーススケジュールよりも早くアップデートしたい場合に利用できる **高速リリース**チャネルを提供しています。
 
 具体的には、サービスは次のようになります:
 
-- 最新の ClickHouse リリースを受け取ります
-- 新しいリリースがテストされるたびに、より頻繁にアップグレードされます
+* 最新の ClickHouse リリースを受け取ります
+* 新しいリリースがテストされるたびに、より頻繁にアップグレードされます
 
 Cloud コンソールから、以下のようにサービスのリリーススケジュールを変更できます:
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="Select Plan" border/>
+  <Image img={fast_release} size="lg" alt="リリースチャネルの種類を選択" border />
 </div>
 
-<br/>
-
-<div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
-</div>
-
-<br/>
+<br />
 
 この **高速リリース**チャネルは、クリティカルではない環境で新機能をテストする用途に適しています。**厳格な稼働時間および信頼性要件を持つ本番ワークロードには推奨されません。**
 

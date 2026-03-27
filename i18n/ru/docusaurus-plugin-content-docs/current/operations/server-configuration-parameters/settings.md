@@ -1039,6 +1039,13 @@ ClickHouse перезагружает встроенные словари каж
 
 <SettingsInfoBlock type="UInt64" default_value="8000" />Предупреждающие сообщения записываются в журналы, если количество активных соединений превышает этот предел. Предел применяется к соединениям с дисками.
 
+## disk_transaction_wait_for_blob_removal \{#disk_transaction_wait_for_blob_removal\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Значение по умолчанию для настройки `wait_for_blob_removal` на уровне диска.
+Если включено, сервер дожидается завершения фонового удаления blob, прежде чем подтвердить операцию.
+
 ## display_secrets_in_show_and_select \{#display_secrets_in_show_and_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

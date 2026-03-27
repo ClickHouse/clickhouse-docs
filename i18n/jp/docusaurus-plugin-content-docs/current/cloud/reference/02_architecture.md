@@ -17,9 +17,9 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## オブジェクトストレージをバックエンドにしたストレージ \{#storage-backed-by-object-store\}
 
-- 事実上無制限のストレージ容量
-- データを手動で共有する必要がない
-- 特にアクセス頻度の低いデータの保存において、コストを大幅に削減できる
+* 事実上無制限のストレージ容量
+* データを手動で分片する必要がない
+* 特にアクセス頻度の低いデータの保存において、コストを大幅に削減できる
 
 ## コンピュート \{#compute\}
 
