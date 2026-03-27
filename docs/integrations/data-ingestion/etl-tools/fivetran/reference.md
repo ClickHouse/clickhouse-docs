@@ -5,7 +5,7 @@ sidebar_position: 3
 description: 'Type mappings, table engine details, metadata columns, and debugging queries for the Fivetran ClickHouse destination.'
 title: 'Technical Reference'
 doc_type: 'guide'
-keywords: ['fivetran', 'clickhouse destination', 'type mapping', 'SharedReplacingMergeTree', 'deduplication', 'FINAL', 'reference']
+keywords: ['fivetran', 'clickhouse destination', 'technical reference']
 ---
 
 # Technical Reference
@@ -206,22 +206,18 @@ Since `_fivetran_id` is unique and there are no other primary key options, it is
 
 `SharedReplacingMergeTree` performs background data deduplication
 [only during merges at an unknown time](/engines/table-engines/mergetree-family/replacingmergetree).
-However, selecting the latest version of the data without duplicates ad-hoc is possible with the `FINAL` keyword and
-[select_sequential_consistency](/operations/settings/settings#select_sequential_consistency)
-setting:
+However, selecting the latest version of the data without duplicates ad-hoc is possible with the `FINAL` keyword:
 
 ```sql
 SELECT *
 FROM example FINAL
 LIMIT 1000 
-SETTINGS select_sequential_consistency = 1;
 ```
 
-See also [Duplicate records with ReplacingMergeTree](/integrations/fivetran/troubleshooting#duplicate-records) in the troubleshooting guide.
+Check out the "optimizing reading queries](/integrations/fivetran/troubleshooting#optimizing-reading-queries)" section in the troubleshooting guide for query optimization tips.
 
 ## Retries on network failures {#retries-on-network-failures}
 
 The ClickHouse Cloud destination retries transient network errors using the exponential backoff algorithm.
 This is safe even when the destination inserts the data, as any potential duplicates are handled by
-the `SharedReplacingMergeTree` table engine, either during background merges,
-or when querying the data with `SELECT FINAL`.
+the `SharedReplacingMergeTree` table engine.
