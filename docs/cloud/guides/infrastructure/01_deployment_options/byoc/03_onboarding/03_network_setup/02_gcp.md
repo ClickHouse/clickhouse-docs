@@ -1,9 +1,9 @@
 ---
-title: 'GCP private networking setup'
+title: 'BYOC GCP private networking setup'
 slug: /cloud/reference/byoc/onboarding/network-gcp
 sidebar_label: 'GCP private networking setup'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'vpc peering', 'gcp', 'private service connect']
-description: 'Deploy ClickHouse on your own cloud infrastructure'
+description: 'Set up VPC Peering or Private Service Connect for BYOC on GCP'
 doc_type: 'reference'
 ---
 
@@ -29,11 +29,15 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 ## Setup VPC peering {#gcp-vpc-peering}
 
-Please familiar yourself with [GCP VPC peering feature](https://docs.cloud.google.com/vpc/docs/vpc-peering) and note the limitation of VPC peering (for example subnet IP ranges can't overlap across peered VPC networks). ClickHouse BYOC utilizes private load balancer to allow network connectivity through the peering to clickhouse services.
+Please familiarize yourself with [GCP VPC peering feature](https://docs.cloud.google.com/vpc/docs/vpc-peering) and note the limitation of VPC peering (for example subnet IP ranges can't overlap across peered VPC networks). ClickHouse BYOC utilizes private load balancer to allow network connectivity through the peering to clickhouse services.
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-> The example steps are for a simple scenario, for advanced scenarios such as peering with on-premises connectivity, some adjustments may required.
+:::note
+The example steps are for a simple scenario, for advanced scenarios such as peering with on-premises connectivity, some adjustments may required.
+:::
+
+<VerticalStepper headerLevel="h3">
 
 ### Create a peering connection {#step-1-create-a-peering-connection}
 
@@ -56,9 +60,13 @@ After both connections are created, the status of the 2 connections should becom
 
 The ClickHouse service should now be accessible from the peered VPC.
 
+### Access clickhouse service via peering connection {#step-2-access-ch-service-via-peering}
+
 To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from the user's peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-east1.gcp.byoc.clickhouse.cloud`
 - **Private endpoint**: `h5ju65kv87-private.mhp0y4dmph.us-east1.gcp.byoc.clickhouse.cloud`
+
+</VerticalStepper>
 
 ## Setup PSC (Private Service Connect) {#gcp-psc}
 
@@ -94,8 +102,8 @@ After ClickHouse Support has enabled PSC service on their side, you need to crea
 - Input a valid endpoint name
 - Choose your network and select subnets (This is the network where your client application will be connecting from)
 - Choose or create a new IP address for the endpoint, the IP address needs to be used by step [Set private DNS name for endpoint](#step-4-set-private-dns-name-for-endpoint)
-- Click "Add Endpoint", wait a momemt for the endpoint to be created.
-- The endpoint status should become "Accpeted", contact ClickHouse support if it's not auto-accepted.
+- Click "Add Endpoint", wait a moment for the endpoint to be created.
+- The endpoint status should become "Accepted", contact ClickHouse support if it's not auto-accepted.
 
 <Image img={byoc_privatelink_5} size="lg" alt="BYOC PSC endpoint creation" border />
 
@@ -121,13 +129,13 @@ Once your PSC endpoint is created and the status is "Accepted", you need to add 
 - Specify which ClickHouse services should allow access from this endpoint
 - ClickHouse Support will add the Endpoint Connection IDs to the service allowlist
 
-### Connect to ClickHouse via PSC {#step-6-connect-via-privatelink}
+### Connect to ClickHouse via PSC {#step-6-connect-via-psc-endpoint}
 
 After the Endpoint Connection IDs is added to the allowlist, you can connect to your ClickHouse service using the PSC endpoint.
 
 The PSC endpoint format is similar to the public endpoint, but includes a `p` subdomain. For example:
 
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-east1.gcp.clickhouse-byoc.com`
-- **PrivateLink endpoint**: `h5ju65kv87.p.mhp0y4dmph.us-east1.gcp.clickhouse-byoc.com`
+- **PSC endpoint**: `h5ju65kv87.p.mhp0y4dmph.us-east1.gcp.clickhouse-byoc.com`
 
 </VerticalStepper>

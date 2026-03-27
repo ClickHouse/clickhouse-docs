@@ -1,6 +1,7 @@
 ---
 title: 'Private networking setup'
 slug: /cloud/reference/byoc/onboarding/network
+sidebar_label: 'Private networking setup'
 hide_title: true
 description: 'Table of contents page for the ClickHouse Cloud BYOC Private Networking Setup section'
 doc_type: 'landing-page'

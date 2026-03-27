@@ -1,9 +1,9 @@
 ---
-title: 'AWS private networking setup'
+title: 'BYOC AWS private networking setup'
 slug: /cloud/reference/byoc/onboarding/network-aws
 sidebar_label: 'AWS private networking setup'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'vpc peering', 'aws', 'privatelink']
-description: 'Deploy ClickHouse on your own cloud infrastructure'
+description: 'Set up VPC Peering or PrivateLink for BYOC on AWS'
 doc_type: 'reference'
 ---
 

@@ -22,9 +22,9 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
 | [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
-| [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Set up VPC Peering or PrivateLink for BYOC on AWS |
 | [BYOC FAQ](/cloud/reference/byoc/reference/faq) | Deploy ClickHouse on your own cloud infrastructure |
-| [BYOC GCP private networking setup](/cloud/reference/byoc/onboarding/network-gcp) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC GCP private networking setup](/cloud/reference/byoc/onboarding/network-gcp) | Set up VPC Peering or Private Service Connect for BYOC on GCP |
 | [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC observability](/cloud/reference/byoc/observability) | Monitor and observe your BYOC ClickHouse deployment using built-in dashboards and Prometheus metrics |
 | [BYOC operations and maintenance](/cloud/reference/byoc/operations) | Deploy ClickHouse on your own cloud infrastructure |
