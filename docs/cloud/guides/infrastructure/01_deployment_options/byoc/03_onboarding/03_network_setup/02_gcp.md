@@ -74,7 +74,7 @@ ClickHouse Support will enable the necessary infrastructure components, includin
 
 ### Obtain GCP PSC service name and DNS name {#step-2-obtain-gcp-service-attachment-and-dns-name-for-private-service-connect}
 
-ClickHouse Support will provide you with the PSC Service name. You can also obtain it in the ClickHouse Cloud console, under "Orgainzation" -> "Infrastructure", click into the infra name to see the details.
+ClickHouse Support will provide you with the PSC Service name. You can also obtain it in the ClickHouse Cloud console, under "Organization" -> "Infrastructure", click into the infra name to see the details.
 
 <Image img={byoc_privatelink_1} size="lg" alt="BYOC PSC Endpoint" border />
 <Image img={byoc_privatelink_2} size="lg" alt="BYOC PSC Endpoint" border />
