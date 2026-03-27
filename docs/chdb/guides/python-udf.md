@@ -10,7 +10,7 @@ keywords: [chdb, udf, python, user-defined function]
 
 chDB allows you to register Python functions as SQL-callable UDFs. These run natively in-process — no subprocess spawning, no serialization overhead. Functions are type-safe, support automatic type inference from Python annotations, and offer configurable NULL and exception handling.
 
-## Quick Start
+## Quick Start {#quick-start}
 
 ```python
 from chdb import query, func
@@ -24,9 +24,9 @@ result = query("SELECT add(2, 3)")
 print(result)  # 5
 ```
 
-## Registration Methods
+## Registration Methods {#registration-methods}
 
-### `@func` Decorator
+### `@func` Decorator {#func-decorator}
 
 The simplest way to register a UDF. The function's `__name__` becomes the SQL function name.
 
@@ -57,7 +57,7 @@ add(2, 3)       # 5 (Python call)
 query("SELECT add(2, 3)")  # 5 (SQL call)
 ```
 
-### `create_function`
+### `create_function` {#create-function}
 
 Register any callable (lambda, function, method) with an explicit name:
 
@@ -72,7 +72,7 @@ create_function("double", lambda x: x * 2, arg_types=[INT64], return_type=INT64)
 query("SELECT double(21)")  # 42
 ```
 
-### `drop_function`
+### `drop_function` {#drop-function}
 
 Remove a registered UDF:
 
@@ -83,9 +83,9 @@ drop_function("strlen")
 # query("SELECT strlen('hello')")  # Error: function not found
 ```
 
-## Type System
+## Type System {#type-system}
 
-### Available Types
+### Available Types {#available-types}
 
 All types are importable from `chdb.sqltypes`:
 
@@ -106,7 +106,7 @@ from chdb.sqltypes import (
 )
 ```
 
-### Specifying Types
+### Specifying Types {#specifying-types}
 
 Types can be provided in four ways:
 
@@ -130,7 +130,7 @@ def f3(x: int) -> int:
     return x * 2
 ```
 
-### Automatic Type Inference
+### Automatic Type Inference {#automatic-type-inference}
 
 When `arg_types` or `return_type` is omitted, chDB infers types from Python type annotations:
 
@@ -158,7 +158,7 @@ def process(name: str, age: int) -> str:
 If `arg_types` is provided explicitly, it must cover **all** parameters — partial explicit + partial inferred is not supported. This applies to both `create_function` and the `@func` decorator: either specify types for all parameters, or omit them entirely and let chDB infer from annotations.
 :::
 
-## NULL Handling
+## NULL Handling {#null-handling}
 
 The `on_null` parameter controls behavior when any input argument is NULL.
 
@@ -169,7 +169,7 @@ The `on_null` parameter controls behavior when any input argument is NULL.
 
 You can also use the enum: `chdb.NullHandling.SKIP` / `chdb.NullHandling.PASS`.
 
-### Example: Default (skip)
+### Example: Default (skip) {#null-skip}
 
 ```python
 @func(return_type="Int64")
@@ -180,7 +180,7 @@ query("SELECT increment(NULL)")  # NULL
 query("SELECT increment(5)")     # 6
 ```
 
-### Example: Pass NULL as None
+### Example: Pass NULL as None {#null-pass}
 
 ```python
 @func(return_type="Int64", on_null="pass")
@@ -191,7 +191,7 @@ query("SELECT null_to_zero(NULL)")  # 0
 query("SELECT null_to_zero(5)")     # 6
 ```
 
-### With Multiple Arguments
+### With Multiple Arguments {#null-multiple-args}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_null="pass")
@@ -203,7 +203,7 @@ query("SELECT add_or_zero(NULL, NULL)") # 0
 query("SELECT add_or_zero(3, 7)")       # 10
 ```
 
-## Exception Handling
+## Exception Handling {#exception-handling}
 
 The `on_error` parameter controls behavior when the Python function raises an exception.
 
@@ -214,7 +214,7 @@ The `on_error` parameter controls behavior when the Python function raises an ex
 
 You can also use the enum: `chdb.ExceptionHandling.PROPAGATE` / `chdb.ExceptionHandling.IGNORE`.
 
-### Example: Default (propagate)
+### Example: Default (propagate) {#exception-propagate}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64")
@@ -225,7 +225,7 @@ query("SELECT divide(10, 2)")  # 5
 query("SELECT divide(1, 0)")   # Error: ZeroDivisionError
 ```
 
-### Example: Ignore errors
+### Example: Ignore errors {#exception-ignore}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_error="ignore")
@@ -236,7 +236,7 @@ query("SELECT safe_divide(10, 2)")  # 5
 query("SELECT safe_divide(1, 0)")   # NULL
 ```
 
-## Combining NULL and Exception Handling
+## Combining NULL and Exception Handling {#combining-null-and-exception}
 
 The `on_null` and `on_error` options can be combined:
 
@@ -264,11 +264,11 @@ query("SELECT robust_divide(NULL, 2)")   # -1
 query("SELECT robust_divide(1, 0)")      # NULL (exception caught)
 ```
 
-## DateTime and Timezone Support
+## DateTime and Timezone Support {#datetime-and-timezone}
 
 UDFs fully support date and time types with timezone awareness.
 
-### Date Types
+### Date Types {#date-types}
 
 ```python
 from datetime import date, timedelta
@@ -285,7 +285,7 @@ query("SELECT next_day(toDate('2024-06-15'))")  # 2024-06-16
 query("SELECT get_year(toDate('2024-06-15'))")  # 2024
 ```
 
-### DateTime with Timezones
+### DateTime with Timezones {#datetime-with-timezones}
 
 ```python
 from datetime import timedelta
@@ -297,7 +297,7 @@ def add_one_hour(dt):
 query("SELECT add_one_hour(toDateTime('2024-01-01 12:00:00', 'UTC'))")  # 2024-01-01 13:00:00
 ```
 
-### DateTime64 (High Precision)
+### DateTime64 (High Precision) {#datetime64}
 
 `DATETIME64` defaults to scale 6 (microseconds):
 
@@ -317,7 +317,7 @@ query("SELECT add_microsecond(toDateTime64('2024-01-01 12:00:00.000000', 6, 'UTC
 - Timezone conversion is handled automatically
 :::
 
-## Using UDFs with Sessions
+## Using UDFs with Sessions {#using-udfs-with-sessions}
 
 UDFs are registered globally and available across all sessions in the same process:
 
@@ -335,4 +335,3 @@ sess.query("INSERT INTO t VALUES (1), (2), (3)")
 result = sess.query("SELECT double(x) FROM t ORDER BY x", "CSV")
 print(result)  # 2, 4, 6
 ```
-

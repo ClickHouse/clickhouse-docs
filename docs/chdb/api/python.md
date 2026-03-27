@@ -3362,7 +3362,7 @@ print(query("SELECT greet(‘world’)"))    # Hello, world!
 
 ### Type System {#udf-type-system}
 
-#### Available Types
+#### Available Types {#udf-available-types}
 
 Import types from `chdb.sqltypes`:
 
@@ -3377,7 +3377,7 @@ from chdb.sqltypes import (
 )
 ```
 
-#### Automatic Type Mapping
+#### Automatic Type Mapping {#udf-automatic-type-mapping}
 
 When types are inferred from Python annotations, the following mapping is used:
 
@@ -3392,7 +3392,7 @@ When types are inferred from Python annotations, the following mapping is used:
 | `datetime.date`      | `Date`           |
 | `datetime.datetime`  | `DateTime64(6)`  |
 
-#### Type Specification Methods
+#### Type Specification Methods {#udf-type-specification-methods}
 
 Types can be specified in multiple ways:
 
