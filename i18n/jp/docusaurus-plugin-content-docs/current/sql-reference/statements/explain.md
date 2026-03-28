@@ -313,7 +313,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
 
 * `Name` — 索引名 (現在は `Skip` 索引用でのみ使用されます) 。
 * `Keys` — 索引で使用されるカラムの配列。
@@ -329,7 +329,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -370,7 +370,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 `projections` = 1 の場合、`Projections` キーが追加されます。これは解析済みプロジェクションの配列を含みます。各プロジェクションは、以下のキーを持つ JSON として記述されます。
 
 * `Name` — プロジェクション名。
-* `Condition` — そのプロジェクションで使用されるプライマリキー条件。
+* `Condition` — そのプロジェクションで使用される主キー条件。
 * `Description` — プロジェクションの使用方法の説明 (例：パーツレベルのフィルタリング) 。
 * `Selected Parts` — プロジェクションによって選択されたパーツ数。
 * `Selected Marks` — 選択されたマーク数。

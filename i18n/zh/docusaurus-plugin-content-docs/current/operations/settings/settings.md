@@ -11955,6 +11955,21 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 在查询中使用统计信息缓存，以避免加载每个分片统计信息所带来的开销
 
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "用于在查询执行期间借助统计信息进行 part 剪枝的新设置。"}]}]} />
+
+在查询执行期间，使用统计信息过滤掉 parts。
+
+启用后，SELECT 查询中的剪枝会使用列统计信息 (例如 MinMax 统计信息) ，在读取任何数据之前排除不可能包含匹配数据的 parts。
+
+可选值：
+
+* 0 — 禁用。
+* 1 — 启用。
+
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />

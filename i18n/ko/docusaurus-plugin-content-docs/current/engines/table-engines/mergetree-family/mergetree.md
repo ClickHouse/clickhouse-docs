@@ -1278,6 +1278,41 @@ ALTER TABLE tab DROP STATISTICS a;
 이 경량 통계는 컬럼 값 분포에 대한 정보를 집계합니다. 통계는 각 파트에 저장되며, 각 삽입이 들어올 때마다 갱신됩니다.
 `set use_statistics = 1`을 활성화한 경우에만 prewhere 최적화에 사용할 수 있습니다.
 
+#### 통계를 활용한 파트 프루닝 \{#part-pruning-with-statistics\}
+
+`use_statistics_for_part_pruning`이 활성화되면 통계를 파트 프루닝에 사용할 수 있습니다.
+현재는 `MinMax` 통계만 파트 프루닝을 지원합니다. 컬럼에 MinMax 통계가 정의되면 ClickHouse는 각 파트에서 해당 컬럼의 최솟값과 최댓값을 추적합니다.
+파트 프루닝을 사용하면 쿼리 필터 조건과 일치할 수 있는 행이 해당 파트에 전혀 없는 경우 전체 데이터 파트를 읽지 않고 건너뛸 수 있습니다.
+
+**예시:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
+
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 
 - `MinMax`

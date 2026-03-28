@@ -11970,6 +11970,21 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 すべてのパーツのSTATISTICSを読み込むオーバーヘッドを回避するために、クエリでSTATISTICSキャッシュを使用します
 
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "クエリ実行中のパーツ剪枝でSTATISTICSを使用するための新しい設定。"}]}]} />
+
+クエリ実行中にパーツを絞り込むためにSTATISTICSを使用します。
+
+有効にすると、SELECT クエリの剪枝でカラムSTATISTICS (例: MinMax STATISTICS) を使用し、一致するデータを含み得ないパーツをデータの読み込み前に除外します。
+
+可能な値:
+
+* 0 — 無効。
+* 1 — 有効。
+
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
