@@ -549,8 +549,32 @@ Expression ((Project names + Projection))
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
 
-当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示：
+当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示，并为关键步骤显示附加信息：
 
+* **查询输出列** 显示在计划顶部。
+* **源步骤** (例如 `ReadFromMergeTree`) 会显示其输出列。
+* **Join 步骤**会以数学符号表示连接关系、预估结果行数，
+  以及哪些输出列来自左侧、哪些来自右侧。以下符号用于
+  表示不同的连接类型：
+
+| 符号                     | 连接类型 |
+| ---------------------- | ---- |
+| `⋈`                    | 内连接  |
+| `⟕`                    | 左连接  |
+| `⟖`                    | 右连接  |
+| `⟗`                    | 全连接  |
+| `⋉`                    | 左半连接 |
+| `⋊`                    | 右半连接 |
+| `⋉` with strikethrough | 左反连接 |
+| `⋊` with strikethrough | 右反连接 |
+| `×`                    | 交叉连接 |
+
+例如，`t1 ⟕ t2` 表示表 `t1` 与 `t2` 之间的左连接。
+表名后方括号中的数字 (例如 `t1[100]`) 表示预估行数，
+前提是表统计信息可用。
+
+`pretty` 选项与 `compact = 1` 搭配使用效果很好，它会隐藏 `Expression` 步骤和
+详细的操作信息，使计划更易于阅读。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -561,6 +585,39 @@ Expression ((Project names + Projection))
 └──Aggregating
    └──Expression ((Before GROUP BY + Change column names to column identifiers))
       └──ReadFromSystemNumbers
+```
+
+一个包含 JOIN 的更详细示例：
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Join conditions: [(__table1.id) = (__table2.id)]
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
 ```
 
 

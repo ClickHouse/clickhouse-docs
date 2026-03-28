@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # Табличная функция Values \{#values-table-function\}
 
-Табличная функция `Values` позволяет создать временное хранилище и заполнить 
+Табличная функция `Values` позволяет создать временное хранилище и заполнить
 столбцы значениями. Она полезна для быстрого тестирования или генерации образцов данных.
 
 :::note
@@ -38,11 +38,11 @@ VALUES(
 
 ## Аргументы \{#arguments\}
 
-- `column1_name Type1, ...` (необязательный аргумент). [String](/sql-reference/data-types/string),
+* `column1_name Type1, ...` (необязательный аргумент). [String](/sql-reference/data-types/string),
   задающая имена и типы столбцов. Если этот аргумент опущен, столбцы будут
   названы `c1`, `c2` и т. д.
-- `(value1_row1, value2_row1)`. [Tuples](/sql-reference/data-types/tuple),
-   содержащие значения любого типа.
+* `(value1_row1, value2_row1)`. [Tuples](/sql-reference/data-types/tuple),
+  содержащие значения любого типа.
 
 :::note
 Кортежи, разделённые запятыми, можно также заменить одиночными значениями. В этом случае
@@ -52,7 +52,7 @@ VALUES(
 
 ## Возвращаемое значение \{#returned-value\}
 
-- Возвращает временную таблицу, содержащую указанные значения.
+* Возвращает временную таблицу, содержащую указанные значения.
 
 ## Примеры \{#examples\}
 
@@ -191,6 +191,44 @@ FROM VALUES(
     └──────────┘
 ```
 
+## Стандартная конструкция SQL VALUES \{#sql-standard-values-clause\}
+
+Начиная с версии 26.3, ClickHouse также поддерживает стандартную конструкцию SQL `VALUES` как табличное выражение
+в `FROM`, как в PostgreSQL, MySQL, DuckDB и SQL Server. Этот синтаксис
+внутри системы преобразуется в табличную функцию `values`, описанную выше.
+
+```sql title="Query"
+SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
+```
+
+```response title="Response"
+┌─id─┬─val─┐
+│  1 │ a   │
+│  2 │ b   │
+│  3 │ c   │
+└────┴─────┘
+```
+
+Её можно использовать в CTE:
+
+```sql title="Query"
+WITH cte AS (SELECT * FROM (VALUES (1, 'one'), (2, 'two')) AS t(id, name))
+SELECT * FROM cte;
+```
+
+И в JOIN:
+
+```sql title="Query"
+SELECT t1.id, t1.val, t2.val2
+FROM (VALUES (1, 'a'), (2, 'b')) AS t1(id, val)
+JOIN (VALUES (1, 'x'), (2, 'y')) AS t2(id, val2) ON t1.id = t2.id;
+```
+
+:::note
+Псевдонимы столбцов после `AS t(col1, col2, ...)` задаются в соответствии со стандартным синтаксисом SQL для
+именования столбцов производных таблиц. Если они не указаны, столбцы получают имена `c1`, `c2` и т. д.
+:::
+
 ## См. также \{#see-also\}
 
-- [Формат Values](/interfaces/formats/Values)
+* [Формат Values](/interfaces/formats/Values)

@@ -953,6 +953,10 @@ Azure 디스크 쓰기 요청의 리디렉션 횟수입니다.
 
 디스크에서 재사용된 연결 수
 
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+메타데이터 트랜잭션 커밋 후 보류 중인 blob 제거를 기다리는 데 소요된 시간
+
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
 AzureObjectStorage용 'plain_rewritable' 메타데이터 저장소에서 생성된 디렉터리 수입니다.

@@ -1,9 +1,9 @@
 ---
-sidebar_title: '쿼리 API 엔드포인트'
+sidebar_title: 'Query API 엔드포인트'
 slug: /cloud/get-started/query-endpoints
 description: '저장된 쿼리에서 쉽게 REST API 엔드포인트를 생성합니다'
 keywords: ['api', '쿼리 API 엔드포인트', '쿼리 엔드포인트', '쿼리 REST API']
-title: '쿼리 API 엔드포인트'
+title: 'Query API 엔드포인트'
 doc_type: 'guide'
 ---
 

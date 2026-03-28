@@ -2,7 +2,7 @@
 title: 'Cloud 控制台监控'
 slug: /cloud/monitoring/cloud-console
 description: 'ClickHouse Cloud 控制台内置的监控仪表板'
-keywords: ['cloud', '监控', '仪表板', '服务运行状况', '资源利用率', '高级仪表板']
+keywords: ['cloud', '监控', '仪表板', '服务健康', '资源利用率', '高级仪表板']
 sidebar_label: 'Cloud 控制台'
 sidebar_position: 2
 doc_type: 'guide'
@@ -15,7 +15,6 @@ import insights_latency from '@site/static/images/cloud/sqlconsole/insights_late
 import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recent.png';
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
-
 
 # ClickHouse Cloud 控制台中的监控 \{#monitoring-in-the-clickhouse-cloud-console\}
 

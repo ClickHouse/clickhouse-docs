@@ -17,6 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # クエリ API エンドポイントのセットアップ \{#setting-up-query-api-endpoints\}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。

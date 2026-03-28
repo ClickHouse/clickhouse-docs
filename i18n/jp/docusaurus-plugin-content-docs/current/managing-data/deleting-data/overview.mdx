@@ -8,12 +8,12 @@ doc_type: 'guide'
 
 ClickHouse でデータを削除する方法はいくつかあり、それぞれ長所とパフォーマンス特性が異なります。データモデルと削除するデータ量に応じて、適切な方法を選択してください。
 
-| Method | Syntax | When to use |
-| --- | --- | --- |
-| [Lightweight delete](/guides/developer/lightweight-delete) | `DELETE FROM [table]` | 少量のデータを削除する場合に使用します。行は以降のすべての SELECT クエリから即座に除外されますが、当初は内部的に削除済みとしてマークされるだけであり、ディスク上からは削除されません。 |
-| [Delete mutation](/sql-reference/statements/alter/delete) | `ALTER TABLE [table] DELETE` | データをすぐにディスクから削除する必要がある場合 (コンプライアンス要件など) に使用します。SELECT のパフォーマンスに悪影響を与えます。 |
-| [Truncate table](/sql-reference/statements/truncate) | `TRUNCATE TABLE [db.table]` | テーブルからすべてのデータを効率的に削除します。 |
-| [Drop partition](/sql-reference/statements/alter/partition#drop-partitionpart) | `DROP PARTITION` | パーティション内のすべてのデータを効率的に削除します。 |
+| Method                                                                         | Syntax                       | When to use                                                                                     |
+| ------------------------------------------------------------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------- |
+| [論理削除](/guides/developer/lightweight-delete)                     | `DELETE FROM [table]`        | 少量のデータを削除する場合に使用します。行は以降のすべての SELECT クエリから即座に除外されますが、当初は内部的に削除済みとしてマークされるだけであり、ディスク上からは削除されません。 |
+| [Delete mutation](/sql-reference/statements/alter/delete)                      | `ALTER TABLE [table] DELETE` | データをすぐにディスクから削除する必要がある場合 (コンプライアンス要件など) に使用します。SELECT のパフォーマンスに悪影響を与えます。                        |
+| [テーブルを空にする](/sql-reference/statements/truncate)                           | `TRUNCATE TABLE [db.table]`  | テーブルからすべてのデータを効率的に削除します。                                                                        |
+| [パーティションの削除](/sql-reference/statements/alter/partition#drop-partitionpart) | `DROP PARTITION`             | パーティション内のすべてのデータを効率的に削除します。                                                                     |
 
 以下は、ClickHouse でデータを削除するさまざまな方法の概要です。
 
