@@ -2,7 +2,7 @@
 sidebar_label: 'AlloyDB Postgres'
 description: '将 AlloyDB Postgres 实例设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/alloydb
-title: 'AlloyDB Postgres 源配置指南'
+title: 'AlloyDB Postgres 数据源配置指南'
 doc_type: 'guide'
 ---
 
@@ -14,7 +14,6 @@ import configure_network_security2 from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # AlloyDB Postgres 数据源配置指南 \{#alloydb-postgres-source-setup-guide\}
 

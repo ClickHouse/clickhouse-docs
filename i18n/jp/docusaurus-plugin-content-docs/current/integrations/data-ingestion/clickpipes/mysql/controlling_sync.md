@@ -16,7 +16,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、ClickPipe が **CDC（Running）モード** のときに MySQL ClickPipe の同期を制御する方法を説明します。
+このドキュメントでは、ClickPipe が **CDC (Running) モード** のときに MySQL ClickPipe の同期を制御する方法を説明します。
 
 
 ## 概要 \{#overview\}

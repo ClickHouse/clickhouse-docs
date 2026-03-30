@@ -1,16 +1,15 @@
 ---
 slug: /guides/developer/deduplication
-sidebar_label: '重複排除戦略'
+sidebar_label: '重複排除の戦略'
 sidebar_position: 3
 description: '頻繁にアップサート、更新、削除を行う必要がある場合は、重複排除を利用します。'
-title: '重複排除戦略'
+title: '重複排除の戦略'
 keywords: ['重複排除戦略', 'データ重複排除', 'アップサート', '更新と削除', '開発者ガイド']
 doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
-
 
 # 重複排除の戦略 \{#deduplication-strategies\}
 

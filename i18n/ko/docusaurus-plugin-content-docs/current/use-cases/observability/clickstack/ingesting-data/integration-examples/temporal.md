@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'ClickStack으로 Temporal Cloud 모니터링'
+title: 'ClickStack를 이용한 Temporal Cloud 모니터링'
 sidebar_label: 'Temporal Cloud 메트릭'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack으로 Temporal Cloud 메트릭 모니터링'
+description: 'ClickStack를 이용한 Temporal Cloud 메트릭 모니터링'
 doc_type: 'guide'
 keywords: ['Temporal', 'metrics', 'OTEL', 'ClickStack']
 ---
@@ -18,10 +18,11 @@ import example_dashboard from '@site/static/images/clickstack/temporal/temporal-
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 :::note Warning
-Temporal 플랫폼의 OpenMetrics 지원은 [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages#public-preview) 단계에서 제공됩니다. 자세한 내용은 [해당 문서](https://docs.temporal.io/cloud/metrics/openmetrics)를 참고하십시오.
+Temporal 플랫폼의 OpenMetrics 지원은 [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages#public-preview) 단계에서 제공됩니다. 자세한 내용은 [해당 문서](https://docs.temporal.io/cloud/metrics/openmetrics)를 참조하십시오.
 :::
 
 Temporal은 단순하면서도 정교하고 복원력이 높은 애플리케이션을 구축하기 위한 추상화 계층을 제공합니다.
+
 
 # ClickStack로 Temporal Cloud 메트릭 모니터링하기 \{#temporal-metrics-clickstack\}
 

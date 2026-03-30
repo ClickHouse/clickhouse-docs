@@ -72,6 +72,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
+| [allow_commit_order_projection](/operations/settings/merge-tree-settings#allow_commit_order_projection) | `0` |
 | [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
 | [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
 | [allow_remote_fs_zero_copy_replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication) | `0` |

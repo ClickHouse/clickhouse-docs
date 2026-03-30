@@ -269,17 +269,22 @@ SELECT base32Encode('Encoded')
 導入バージョン: v22.7.0
 
 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 文字列をデコードします。
-文字列が有効な Base58 エンコード文字列でない場合は、例外がスローされます。
+文字列が有効な Base58 エンコード文字列でない場合は、例外が送出されます。
+最適化された固定サイズのデコーダーを選択するために、省略可能な第 2 引数 `expected_size` を指定できます。
+現在サポートされている値は 32 と 64 です。それ以外の値では、汎用デコーダーが使われます。
+最適化されたデコーダーが選択されていても、入力をちょうどそのバイト数にデコードできない場合、
+関数は例外を送出します (`tryBase58Decode` の場合は空の文字列を返します) 。
 
 **構文**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **引数**
 
 * `encoded` — デコードする文字列カラムまたは定数。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 省略可能。デコード後の想定サイズ (バイト単位) 。32 または 64 の場合は最適化されたデコーダーが使われ、それ以外の値では汎用デコーダーが使われます。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -3428,19 +3433,20 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-導入: v22.10.0
+導入バージョン: v22.10.0
 
 [`base58Decode`](#base58Decode) と同様ですが、エラーが発生した場合は空文字列を返します。
 
 **構文**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
 **引数**
 
 * `encoded` — 文字列カラムまたは定数。有効な Base58 でエンコードされた文字列でない場合、エラー時には空文字列を返します。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 任意。想定されるデコード後のサイズ (バイト単位) 。32 または 64 の場合は最適化されたデコーダーが使用され、それ以外の値では汎用デコーダーが使用されます。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 

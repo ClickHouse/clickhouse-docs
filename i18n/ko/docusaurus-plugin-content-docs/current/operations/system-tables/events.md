@@ -953,6 +953,10 @@ Azure 디스크 쓰기 요청의 리디렉션 횟수입니다.
 
 디스크에서 재사용된 연결 수
 
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+메타데이터 트랜잭션 커밋 후 보류 중인 blob 제거를 기다리는 데 소요된 시간
+
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
 AzureObjectStorage용 'plain_rewritable' 메타데이터 저장소에서 생성된 디렉터리 수입니다.
@@ -2769,6 +2773,10 @@ Compact 형식으로 머지된 파트 수입니다.
 
 Wide 형식으로 머지된 파트 수입니다.
 
+### MergedProjections \{#mergedprojections\}
+
+MergeTree 병합 중에 재구축되지 않고 머지된 프로젝션 수입니다.
+
 ### MergedRows \{#mergedrows\}
 
 백그라운드 머지를 위해 읽은 행 수입니다. 머지 전 기준의 행 수를 의미합니다.
@@ -3712,6 +3720,10 @@ ReadWriteBufferFromHTTP에서 전송한 HTTP 요청 수
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 처리 스레드(쿼리 및 기타 작업)에 소요된 총 벽시계 시간입니다(값은 합계임에 유의하십시오).
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+MergeTree 머지 중 처음부터 다시 생성된 프로젝션 수입니다.
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

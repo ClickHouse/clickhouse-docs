@@ -10,9 +10,9 @@ keywords: ['ClickStack 샘플 데이터셋', 'ClickStack 데모 데이터', '관
 
 이 섹션에서는 ClickStack을 시작하는 데 도움이 되는 다양한 샘플 데이터셋과 예제를 제공합니다. 이러한 예제는 로컬 개발 환경부터 프로덕션 시나리오까지 ClickStack에서 관측성 데이터를 활용하는 여러 가지 방법을 보여 줍니다.
 
-| Dataset | Description |
-|---------|-------------|
-| [Sample Data](sample-data.md) | 데모 환경의 로그, 트레이스, 메트릭이 포함된 샘플 데이터셋을 로드합니다 |
-| [Local Data](local-data.md) | 로컬 시스템의 메트릭과 로그를 수집해 분석을 위해 ClickStack으로 전송합니다 |
-| [Remote Demo Data](remote-demo-data.md) | 원격 데모 클러스터에 연결해 문제를 살펴봅니다 |
+| Dataset                                  | Description                                             |
+| ---------------------------------------- | ------------------------------------------------------- |
+| [Sample Data](sample-data.md)            | 데모 환경의 로그, 트레이스, 메트릭이 포함된 샘플 데이터셋을 로드합니다                |
+| [Local Data](local-data.md)              | 로컬 시스템의 메트릭과 로그를 수집해 분석을 위해 ClickStack으로 전송합니다          |
+| [Remote Demo Data](remote-demo-data.md)  | 원격 데모 클러스터에 연결해 문제를 살펴봅니다                               |
 | [Session Replay Demo](session-replay.md) | 세션 리플레이를 위해 데모 웹 애플리케이션을 계측하고 ClickStack에서 상호 작용을 확인합니다 |

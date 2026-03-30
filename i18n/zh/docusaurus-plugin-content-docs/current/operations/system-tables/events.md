@@ -953,6 +953,10 @@ Azure 磁盘写入请求被限流的次数。
 
 磁盘复用连接数
 
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+提交元数据事务后，等待待删除 blob 被移除的耗时
+
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
 由 AzureObjectStorage 的 'plain_rewritable' 元数据存储创建的目录数量。
@@ -2769,6 +2773,10 @@ INSERT 到 MergeTree 表的行数。
 
 合并为 Wide 格式的分区片段数量。
 
+### MergedProjections \{#mergedprojections\}
+
+MergeTree 执行合并时被合并 (而非重建) 的投影数量。
+
 ### MergedRows \{#mergedrows\}
 
 后台合并读取的行数。即合并前的行数。
@@ -3712,6 +3720,10 @@ ReadWriteBufferFromHTTP 发送的 HTTP 请求数
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 处理线程 (查询和其他任务) 消耗的总 (挂钟) 时间 (请注意，这是各线程时间的总和) 。
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+在 MergeTree 合并过程中从头重新构建的投影数量。
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

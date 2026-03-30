@@ -13,9 +13,9 @@ doc_type: 'reference'
 输出格式用于组织 `SELECT` 的结果，并用于向基于文件的表执行 `INSERT` 操作。
 除了 ClickHouse 支持的数据格式之外，chDB 还支持：
 
-- 将 `ArrowTable` 作为输出格式，其类型为 Python `pyarrow.Table`
-- 将 `DataFrame` 作为输入和输出格式，其类型为 Python `pandas.DataFrame`。示例参见 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- 将 `Debug` 作为输出格式（是 `CSV` 的别名），但启用了来自 ClickHouse 的详细调试输出。
+* 将 `ArrowTable` 作为输出格式，其类型为 Python `pyarrow.Table`
+* 将 `DataFrame` 作为输入和输出格式，其类型为 Python `pandas.DataFrame`。示例参见 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+* 将 `Debug` 作为输出格式 (是 `CSV` 的别名) ，但启用了来自 ClickHouse 的详细调试输出。
 
 ClickHouse 所支持的数据格式包括：
 

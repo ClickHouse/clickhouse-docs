@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Конечные точки API запросов'
+sidebar_title: 'Конечная точка Query API'
 slug: /cloud/get-started/query-endpoints
 description: 'Легко разворачивайте REST-конечные точки API из сохранённых запросов'
-keywords: ['api', 'конечные точки api запросов', 'конечные точки запросов', 'rest api запросов']
-title: 'Конечные точки API запросов'
+keywords: ['api', 'конечная точка query api', 'конечные точки запросов', 'rest api запросов']
+title: 'Конечная точка Query API'
 doc_type: 'guide'
 ---
 
@@ -16,6 +16,7 @@ import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-c
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 
 # Настройка конечных точек API для запросов \{#setting-up-query-api-endpoints\}
 

@@ -15,6 +15,7 @@ import select_merge_table from '@site/static/images/clickstack/performance_guide
 
 import Image from '@theme/IdealImage';
 
+
 ## はじめに \{#introduction\}
 
 このガイドでは、ClickStack 向けの、最も一般的かつ効果的なパフォーマンス最適化手法に焦点を当てます。これらは、実運用環境における大半のオブザーバビリティワークロードに対して十分な最適化を提供し、通常は 1 日あたり数十テラバイト規模のデータまでを対象とします。

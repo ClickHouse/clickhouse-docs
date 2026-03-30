@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+
 # Поддерживаемые регионы Cloud \{#supported-cloud-regions\}
 
 ## Регионы AWS \{#aws-regions\}

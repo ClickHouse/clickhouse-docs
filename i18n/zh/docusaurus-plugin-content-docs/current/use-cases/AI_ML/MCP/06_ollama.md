@@ -14,13 +14,12 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
+# 使用 ClickHouse MCP 服务器使用 Ollama \{#using-clickhouse-mcp-server-with-ollama\}
 
-# 使用 ClickHouse MCP 服务器与 Ollama \{#using-clickhouse-mcp-server-with-ollama\}
-
-> 本指南介绍如何使用 ClickHouse MCP 服务器与 Ollama。
+> 本指南介绍如何使用 ClickHouse MCP 服务器使用 Ollama。
 
 <VerticalStepper headerLevel="h2">
-  ## 安装 Ollama
+  ## 安装 Ollama \{#install-ollama\}
 
   Ollama is a library for running Large Language Models (LLMs) on your own machine.
   它提供[多种可用模型](https://ollama.com/library)且易于使用。
@@ -36,8 +35,8 @@ import Image from '@theme/IdealImage';
   ollama pull qwen3:8b
   ```
 
-  如果模型不存在,此命令将把模型拉取到本地机器。
-  下载完成后,可以像这样运行模型:
+  如果模型不存在，此操作会将模型拉到本地机器。
+  下载完成后，你可以这样运行模型：
 
   ```bash
   ollama run qwen3:8b
@@ -91,7 +90,7 @@ import Image from '@theme/IdealImage';
 
   从此输出可以看出,默认的 qwen3 模型有略超过 80 亿个参数。
 
-  ## 安装 MCPHost
+  ## 安装 MCPHost \{#install-mcphost\}
 
   在撰写本文时(2025 年 7 月),尚无将 Ollama 与 MCP 服务器配合使用的原生功能。
   但是,可以使用 [MCPHost](https://github.com/mark3labs/mcphost) 来运行 Ollama 模型与 MCP 服务器。
@@ -105,12 +104,12 @@ import Image from '@theme/IdealImage';
 
   二进制文件将安装在 `~/go/bin` 目录下,因此需要确保该目录已添加到 PATH 环境变量中。
 
-  ## 配置 ClickHouse MCP 服务器
+  ## 配置 ClickHouse MCP 服务器 \{#configure-clickhouse-mcp-server\}
 
   可以使用 YAML 或 JSON 文件在 MCPHost 中配置 MCP 服务器。
   MCPHost 将按以下顺序在主目录中查找配置文件:
 
-  1. `.mcphost.yml` 或 `.mcphost.json`（首选）
+  1. `.mcphost.yml` 或 `.mcphost.json` (首选)
   2. `.mcp.yml` 或 `.mcp.json` (用于向后兼容)
 
   它使用的语法与标准 MCP 配置文件中使用的语法类似。
@@ -137,8 +136,8 @@ import Image from '@theme/IdealImage';
   与标准 MCP 配置文件的主要区别在于需要指定 `type` 参数。
   该类型用于指示 MCP 服务器使用的传输类型。
 
-  * `local` → 标准输入输出（stdio）传输
-  * `remote` → 支持流式传输的远程通道
+  * `local` → 标准输入输出 (stdio) 传输
+  * `remote` → 可流式传输的通道
   * `builtin` → 进程内传输
 
   我们还需要配置以下环境变量:
@@ -153,7 +152,7 @@ import Image from '@theme/IdealImage';
   理论上,您应该能够在 MCP 配置文件的 `environment` 键下提供这些变量,但我们发现这种方式无法正常工作。
   :::
 
-  ## 运行 MCPHost
+  ## 运行 MCPHost \{#running-mcphost\}
 
   配置好 ClickHouse MCP 服务器后,可以通过运行以下命令来运行 MCPHost:
 
@@ -196,7 +195,7 @@ import Image from '@theme/IdealImage';
 
   ```text
     ┃                                                                                      ┃
-    ┃  ## Configured MCP Servers                                                           ┃
+    ┃  ## Configured MCP servers                                                           ┃
     ┃                                                                                      ┃
     ┃  1. mcp-ch                                                                           ┃
     ┃   MCPHost System (10:00)                                                             ┃

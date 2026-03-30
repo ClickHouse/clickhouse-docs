@@ -1,10 +1,10 @@
 ---
 description: 'OpenCelliD 데이터를 ClickHouse에 적재하고, Apache Superset을 ClickHouse에
-  연결한 뒤 해당 데이터를 기반으로 대시보드를 구축하는 방법을 설명합니다'
+  연결한 뒤 해당 데이터를 기반으로 대시보드를 만드는 방법을 설명합니다'
 sidebar_label: '기지국'
 slug: /getting-started/example-datasets/cell-towers
-title: '셀 타워 데이터셋을 활용한 지리 데이터(Geo Data)'
-keywords: ['셀 타워 데이터', '지리 데이터(Geo Data)', 'OpenCelliD', '지리공간 데이터셋', '시작하기']
+title: '기지국 데이터셋을 활용한 지리 데이터'
+keywords: ['기지국 데이터', '지리 데이터', 'OpenCelliD', '지리공간 데이터셋', '시작하기']
 doc_type: 'guide'
 ---
 
@@ -29,7 +29,6 @@ import superset_mcc_2024 from '@site/static/images/getting-started/example-datas
 import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
-
 
 ## 목표 \{#goal\}
 

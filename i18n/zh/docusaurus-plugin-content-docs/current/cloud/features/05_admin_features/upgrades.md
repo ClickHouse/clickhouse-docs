@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
-import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
@@ -53,32 +52,26 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 Basic 等级服务会自动加入快速发布通道。
 :::
 
-### 快速发布通道（提前升级） \{#fast-release-channel-early-upgrades\}
+### 快速发布通道 (提前升级)  \{#fast-release-channel-early-upgrades\}
 
-<ScalePlanFeatureBadge feature="快速发布通道"/>
+<ScalePlanFeatureBadge feature="快速发布通道" />
 
-除了常规升级计划外，如果你希望服务在常规发布计划之前接收更新，我们提供 **快速发布（Fast release）** 通道。
+除了常规升级计划外，如果你希望服务在常规发布计划之前接收更新，我们提供 **快速发布 (Fast release)&#x20;**&#x20;通道。
 
 具体而言，服务将：
 
-- 接收最新的 ClickHouse 发布版本
-- 随着新版本通过测试而更频繁地升级
+* 接收最新的 ClickHouse 发布版本
+* 随着新版本通过测试而更频繁地升级
 
 你可以在 Cloud 控制台中按如下所示修改服务的升级计划：
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="Select Plan" border/>
+  <Image img={fast_release} size="lg" alt="选择发布通道类型" border />
 </div>
 
-<br/>
+<br />
 
-<div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
-</div>
-
-<br/>
-
-此 **快速发布（Fast release）** 通道适用于在非关键环境中测试新功能。**不建议用于具有严格可用性和可靠性要求的生产工作负载。**
+此 **快速发布 (Fast release)&#x20;**&#x20;通道适用于在非关键环境中测试新功能。**不建议用于具有严格可用性和可靠性要求的生产工作负载。**
 
 ### 常规发布通道 \{#regular-release-channel\}
 

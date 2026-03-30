@@ -8908,6 +8908,14 @@ FROM default.fuse_tbl AS __table1
 
 优化简单的 'INSERT INTO table SELECT ... FROM TABLES' 查询
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。"}]}]} />
+
+当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11954,6 +11962,21 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 在查询中使用统计信息缓存，以避免加载每个分片统计信息所带来的开销
+
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "用于在查询执行期间借助统计信息进行 part 剪枝的新设置。"}]}]} />
+
+在查询执行期间，使用统计信息过滤掉 parts。
+
+启用后，SELECT 查询中的剪枝会使用列统计信息 (例如 MinMax 统计信息) ，在读取任何数据之前排除不可能包含匹配数据的 parts。
+
+可选值：
+
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

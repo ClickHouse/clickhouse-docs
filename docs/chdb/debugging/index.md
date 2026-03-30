@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Debugging'
+title: 'DataStore debugging'
 sidebar_label: 'Overview'
 slug: /chdb/debugging
 description: 'Debug DataStore operations with explain(), profiling, and logging'

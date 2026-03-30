@@ -2,7 +2,7 @@
 title: 'Pandas 实用手册'
 sidebar_label: 'Pandas 实用手册'
 slug: /chdb/guides/pandas-cookbook
-description: '常见 pandas 模式及其在 DataStore 中的等价实现'
+description: '常见的 pandas 用法模式及其在 DataStore 中的对应实现'
 keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']
 doc_type: 'guide'
 ---

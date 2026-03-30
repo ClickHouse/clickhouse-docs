@@ -313,7 +313,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
 
 * `Name` — 索引名 (現在は `Skip` 索引用でのみ使用されます) 。
 * `Keys` — 索引で使用されるカラムの配列。
@@ -329,7 +329,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -370,7 +370,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 `projections` = 1 の場合、`Projections` キーが追加されます。これは解析済みプロジェクションの配列を含みます。各プロジェクションは、以下のキーを持つ JSON として記述されます。
 
 * `Name` — プロジェクション名。
-* `Condition` — そのプロジェクションで使用されるプライマリキー条件。
+* `Condition` — そのプロジェクションで使用される主キー条件。
 * `Description` — プロジェクションの使用方法の説明 (例：パーツレベルのフィルタリング) 。
 * `Selected Parts` — プロジェクションによって選択されたパーツ数。
 * `Selected Marks` — 選択されたマーク数。
@@ -529,8 +529,32 @@ Expression ((Project names + Projection))
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
 
-`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示されます:
+`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示され、主要なステップに関する追加情報も表示されます:
 
+* **クエリの出力カラム**は、計画の先頭に表示されます。
+* **ソースステップ** (`ReadFromMergeTree` など) には、その出力カラムが表示されます。
+* **Join ステップ**には、数学的な表記による結合関係、推定結果行数、
+  および各出力カラムが左側と右側のどちらに由来するかが表示されます。異なる join 種別を
+  表すために、次の記号を使用します。
+
+| Symbol                 | Join Type |
+| ---------------------- | --------- |
+| `⋈`                    | 内部結合      |
+| `⟕`                    | 左結合       |
+| `⟖`                    | 右結合       |
+| `⟗`                    | 完全結合      |
+| `⋉`                    | 左セミ結合     |
+| `⋊`                    | 右セミ結合     |
+| `⋉` with strikethrough | 左アンチ結合    |
+| `⋊` with strikethrough | 右アンチ結合    |
+| `×`                    | クロス結合     |
+
+たとえば、`t1 ⟕ t2` はテーブル `t1` と `t2` の左結合を意味します。
+テーブル名の後の角括弧内の数値 (例: `t1[100]`) は、テーブル統計を利用できる場合の
+推定行数を示します。
+
+`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや
+詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -541,6 +565,39 @@ Expression ((Project names + Projection))
 └──Aggregating
    └──Expression ((Before GROUP BY + Change column names to column identifiers))
       └──ReadFromSystemNumbers
+```
+
+JOINを使った、より詳しい例:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Join conditions: [(__table1.id) = (__table2.id)]
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
 ```
 
 

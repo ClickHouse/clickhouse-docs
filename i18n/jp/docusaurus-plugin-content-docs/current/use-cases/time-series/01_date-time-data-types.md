@@ -1,30 +1,30 @@
 ---
 title: '日付と時刻のデータ型 - 時系列'
 sidebar_label: '日付と時刻のデータ型'
-description: 'ClickHouse における時系列データ向けの日付・時刻データ型。'
+description: 'ClickHouseの時系列データ型。'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'データ型', '時間データ', 'タイムスタンプ']
+keywords: ['時系列', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'データ型', '日時データ', 'タイムスタンプ']
 show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 日付および時刻データ型 \{#date-and-time-data-types\}
+# 日付と時刻のデータ型 \{#date-and-time-data-types\}
 
-効果的な時系列データ管理のためには、充実した日付および時刻型の体系が不可欠であり、ClickHouse はまさにそれを提供します。
-コンパクトな日付表現からナノ秒精度を持つ高精度タイムスタンプまで、これらの型は、さまざまな時系列アプリケーションにおける実用上の要件とストレージ効率のバランスを取るように設計されています。
+日付と時刻の型を包括的に備えることは、時系列データを効果的に管理するうえで不可欠であり、ClickHouse はまさにそれを実現します。
+コンパクトな日付表現から、ナノ秒精度の高精度タイムスタンプまで、これらの型は、ストレージ効率とさまざまな時系列アプリケーションの実用的な要件とのバランスを取るように設計されています。
 
-過去の金融データ、IoT センサーの計測値、将来日付のイベントのいずれを扱う場合でも、ClickHouse の日付および時刻型は、さまざまな時間データのシナリオに対応するために必要な柔軟性を提供します。
-サポートされる型の幅広いラインナップにより、ユースケースが要求する精度を維持しつつ、ストレージ使用量とクエリ性能の両方を最適化できます。
+過去の金融データ、IoT センサーの測定値、将来日時のイベントのいずれを扱う場合でも、ClickHouse の日付・時刻型は、多様な時刻データのユースケースに対応するために必要な柔軟性を提供します。
+サポートされている型の幅広さにより、ユースケースで求められる精度を維持しながら、ストレージ容量とクエリパフォーマンスの両方を最適化できます。
 
-* [`Date`](/sql-reference/data-types/date) 型は、ほとんどのケースで十分です。この型は日付を保存するのに 2 バイトを必要とし、範囲は `[1970-01-01, 2149-06-06]` に制限されます。
+* ほとんどの場合、[`Date`](/sql-reference/data-types/date) 型で十分です。この型は日付の保存に 2 バイトを必要とし、範囲は `[1970-01-01, 2149-06-06]` に制限されます。
 
-* [`Date32`](/sql-reference/data-types/date32) は、より広い日付範囲をカバーします。日付の保存に 4 バイトを必要とし、範囲は `[1900-01-01, 2299-12-31]` に制限されます。
+* [`Date32`](/sql-reference/data-types/date32) は、より広い日付範囲をカバーします。日付の保存に 4 バイトを必要とし、範囲は `[1900-01-01, 2299-12-31]` に制限されます
 
-* [`DateTime`](/sql-reference/data-types/datetime) は秒精度で日時値を保存し、範囲は `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` です。各値あたり 4 バイトを必要とします。
+* [`DateTime`](/sql-reference/data-types/datetime) は、秒精度の日時値を保存し、範囲は `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` です。値ごとに 4 バイトを必要とします。
 
-* より高い精度が必要な場合は、[`DateTime64`](/sql-reference/data-types/datetime64) を使用できます。これはナノ秒精度までの時刻を保存でき、範囲は `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]` です。各値あたり 8 バイトを必要とします。
+* より高い精度が必要な場合は、[`DateTime64`](/sql-reference/data-types/datetime64) を使うことができます。これにより、最大ナノ秒精度で時刻を保存でき、範囲は `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]` です。値ごとに 8 バイトを必要とします。
 
-さまざまな日付型を格納するテーブルを作成してみましょう。
+さまざまな日付型を保存するテーブルを作成してみましょう。
 
 ```sql
 CREATE TABLE dates
@@ -39,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-[`now()`](/sql-reference/functions/date-time-functions#now) 関数を使用して現在の時刻を返し、[`now64()`](/sql-reference/functions/date-time-functions#now64) 関数を使用すると、第 1 引数で指定した精度で取得できます。
+現在時刻を返すには [`now()`](/sql-reference/functions/date-time-functions#now) 関数を使います。[`now64()`](/sql-reference/functions/date-time-functions#now64) を使うと、第1引数で指定した精度で取得できます。
 
 ```sql
 INSERT INTO dates 
@@ -50,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-これにより、各カラムの型に応じた時刻データが自動的に格納されます。
+これにより、各カラムにはカラム型に応じた時刻が格納されます：
 
 ```sql
 SELECT * FROM dates
@@ -67,24 +67,23 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
+## Time 型と Time64 型 \{#time-series-time-types\}
 
-## Time と Time64 型 \{#time-series-time-types\}
-
-日付部分を含まない時刻のみを保存する必要がある場合に、ClickHouse では [`Time`](/sql-reference/data-types/time) と [`Time64`](/sql-reference/data-types/time64) 型が提供されています。これらはバージョン 25.6 で導入されたもので、繰り返しスケジュールや日次パターンの表現、あるいは日付と時刻のコンポーネントを分離するのが適切な状況で有用です。
+日付要素を含まない時刻値を格納する必要がある場合、ClickHouse では [`Time`](/sql-reference/data-types/time) 型と [`Time64`](/sql-reference/data-types/time64) 型を利用できます。これらはバージョン 25.6 で導入されました。繰り返しのスケジュールや日次パターン、あるいは日付と時刻を分けて扱うのが適切なケースを表現する際に便利です。
 
 :::note
-`Time` と `Time64` を使用するには、次の設定を有効化する必要があります: `SET enable_time_time64_type = 1;`
+`Time` と `Time64` を使うには、次の設定を有効にする必要があります: `SET enable_time_time64_type = 1;`
 
 これらの型はバージョン 25.6 で導入されました
 :::
 
-`Time` 型は、秒精度で時・分・秒を保存します。内部的には符号付き 32 ビット整数として保存され、`[-999:59:59, 999:59:59]` の範囲をサポートしており、24 時間を超える値も扱えます。これは、経過時間の追跡や、1 日の範囲外の値を生じる算術演算を行う場合に役立ちます。
+`Time` 型は、時・分・秒を秒精度で格納します。内部的には符号付き 32 ビット整数として保存され、`[-999:59:59, 999:59:59]` の範囲をサポートしているため、24 時間を超える値も扱えます。これは、経過時間を追跡する場合や、1 日の範囲を超える値となる算術演算を行う場合に便利です。
 
-サブ秒精度が必要な場合、`Time64` は符号付き Decimal64 値として、小数秒を設定可能な形で時刻を保存します。小数桁数を定義するために、精度パラメータ (0–9) を受け取ります。一般的な精度値は 3（ミリ秒）、6（マイクロ秒）、9（ナノ秒）です。
+秒未満の精度が必要な場合、`Time64` は設定可能な小数秒精度を持つ時刻を、符号付き Decimal64 値として格納します。小数部の桁数を指定するための精度パラメータ (0-9) を受け付けます。一般的な精度の値は、3 (ミリ秒) 、6 (マイクロ秒) 、9 (ナノ秒) です。
 
-`Time` も `Time64` もタイムゾーンをサポートしません。どちらも地域的な文脈を持たない純粋な時刻のみを表現します。
+`Time` と `Time64` はどちらもタイムゾーンをサポートしません。これらは、地域的な文脈を持たない純粋な時刻値を表します。
 
-それでは、Time 型のカラムを持つテーブルを作成してみましょう:
+時刻カラムを含むテーブルを作成してみましょう:
 
 ```sql
 SET enable_time_time64_type = 1;
@@ -99,7 +98,7 @@ ENGINE = MergeTree
 ORDER BY event_id;
 ```
 
-文字列リテラルまたは数値リテラルを使用して時刻値を挿入できます。`Time` の場合、数値は 00:00:00 からの経過秒として解釈されます。`Time64` の場合、数値は 00:00:00 からの経過秒として解釈され、小数部分はカラムの精度に従って解釈されます。
+文字列リテラルまたは数値を使用して、時刻値をinsertできます。`Time` では、数値は 00:00:00 からの経過秒数として解釈されます。`Time64` では、数値は 00:00:00 からの経過秒数として解釈され、小数部はカラムの精度に応じて解釈されます。
 
 ```sql
 INSERT INTO time_examples VALUES 
@@ -118,16 +117,15 @@ SELECT * FROM time_examples ORDER BY event_id;
 └──────────┴────────────┴──────────────┘
 ```
 
-時刻の値は自然にフィルタできます。
+時刻の値は直感的にフィルタリングできます:
 
 ```sql
 SELECT * FROM time_examples WHERE basic_time = '14:30:25';
 ```
 
-
 ## タイムゾーン \{#time-series-timezones\}
 
-多くのユースケースでは、タイムゾーンもあわせて保存しておく必要があります。`DateTime` または `DateTime64` 型の最後の引数として、タイムゾーンを指定できます。
+多くのユースケースでは、タイムゾーンも保存する必要があります。`DateTime` または `DateTime64` 型の最後の引数としてタイムゾーンを指定できます:
 
 ```sql
 CREATE TABLE dtz
@@ -142,7 +140,7 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-DDL でタイムゾーンを定義したので、異なるタイムゾーンの日時を挿入できるようになりました。
+DDLでタイムゾーンを定義したので、異なるタイムゾーンを指定して時刻を挿入できるようになりました。
 
 ```sql
 INSERT INTO dtz 
@@ -159,7 +157,7 @@ SELECT 2,
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-それでは、テーブルの内容を確認してみましょう。
+それでは、テーブルの中身を見てみましょう。
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -183,20 +181,19 @@ dt_2:   2022-12-12 12:13:15
 dt64_2: 2022-12-12 12:13:15.123456789
 ```
 
-最初の行では、すべての値を `America/New_York` タイムゾーンを使用して挿入しました。
+最初の行では、`America/New_York` タイムゾーンを使ってすべての値を insert しました。
 
 * `dt_1` と `dt64_1` は、クエリ時に自動的に `Europe/Berlin` に変換されます。
-* `dt_2` と `dt64_2` にはタイムゾーンが指定されていないため、この場合はサーバーのローカルタイムゾーンである `Europe/London` が使用されます。
+* `dt_2` と `dt64_2` にはタイムゾーンが指定されていなかったため、サーバーのローカルタイムゾーンが使われます。この場合は `Europe/London` です。
 
-2 行目では、すべての値をタイムゾーンを指定せずに挿入したため、サーバーのローカルタイムゾーンが使用されました。
-1 行目と同様に、`dt_1` と `dt64_1` は `Europe/Berlin` に変換され、`dt_2` と `dt64_2` はサーバーのローカルタイムゾーンを使用します。
-
+2 行目では、タイムゾーンを指定せずにすべての値を insert したため、サーバーのローカルタイムゾーンが使われました。
+最初の行と同様に、`dt_1` と `dt64_1` は `Europe/Berlin` に変換され、`dt_2` と `dt64_2` はサーバーのローカルタイムゾーンを使います。
 
 ## 日付と時刻の関数 \{#time-series-date-time-functions\}
 
-ClickHouse には、異なるデータ型同士を変換するための一連の関数も用意されています。
+ClickHouse には、異なるデータ型の間で変換するための関数群も用意されています。
 
-たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#toDate) を使って、`DateTime` の値を `Date` 型に変換できます。
+たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#toDate) を使って、`DateTime` 値を `Date` 型に変換できます。
 
 ```sql
 SELECT
@@ -216,7 +213,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-[`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) を使用して、`DateTime` を `DateTime64` に変換できます。
+`DateTime` を `DateTime64` に変換するには、[`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) を使います。
 
 ```sql
 SELECT
@@ -236,7 +233,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-[`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) を使用すると、`Date` または `DateTime64` を `DateTime` に戻すことができます。
+また、[`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) を使うと、`Date` または `DateTime64` を `DateTime` に戻せます。
 
 ```sql
 SELECT

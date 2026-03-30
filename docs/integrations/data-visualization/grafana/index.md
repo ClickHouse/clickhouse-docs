@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Quick Start'
+sidebar_label: 'Quick start'
 sidebar_position: 1
 slug: /integrations/grafana
 description: 'Introduction to using ClickHouse with Grafana'

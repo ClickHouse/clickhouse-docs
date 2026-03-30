@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud SQL For MySQL '
+sidebar_label: 'Cloud SQL for MySQL'
 description: 'Step-by-step guide on how to set up Cloud SQL for MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL source setup guide'

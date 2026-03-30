@@ -2,7 +2,7 @@
 keywords: ['clickhouse', 'python', 'client', 'connect', 'integrate']
 slug: /integrations/python
 description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
-title: 'Python Integration with ClickHouse Connect'
+title: 'Python integration with ClickHouse Connect'
 doc_type: 'guide'
 integration:
   - support_level: 'core'

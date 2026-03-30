@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: '使用 ClickStack 监控 Nginx 追踪'
-sidebar_label: 'Nginx 追踪'
+title: '使用 ClickStack 监控 Nginx 链路追踪'
+sidebar_label: 'Nginx 链路追踪'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Nginx 追踪'
+description: '使用 ClickStack 监控 Nginx 链路追踪'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---

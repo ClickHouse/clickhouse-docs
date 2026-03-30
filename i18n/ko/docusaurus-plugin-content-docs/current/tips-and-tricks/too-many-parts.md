@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
-sidebar_label: '파트가 너무 많음'
+sidebar_label: '너무 많은 파트'
 doc_type: 'guide'
 keywords: [
   'clickhouse 파트가 너무 많음',
@@ -17,7 +17,7 @@ keywords: [
   'clickhouse 배치 전략',
   '데이터베이스 insert 패턴'
 ]
-title: '레슨 - 파트가 너무 많은 문제'
+title: '레슨 - 너무 많은 파트 문제'
 description: '파트가 너무 많은 문제 해결 및 예방'
 ---
 

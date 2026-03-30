@@ -1,10 +1,10 @@
 ---
 sidebar_position: 1
-sidebar_label: '先建后拆（Make Before Break，MBB）'
+sidebar_label: '先建后拆（Make before break，MBB）'
 slug: /cloud/features/mbb
-description: '介绍 ClickHouse Cloud 中先建后拆（Make Before Break，MBB）操作的页面'
-keywords: ['先建后拆（Make Before Break）', 'MBB', '扩缩容', 'ClickHouse Cloud']
-title: 'ClickHouse Cloud 中的先建后拆（Make Before Break，MBB）操作'
+description: '介绍 ClickHouse Cloud 中先建后拆（Make before break，MBB）操作的页面'
+keywords: ['先建后拆（Make before break）', 'MBB', '扩缩容', 'ClickHouse Cloud']
+title: 'ClickHouse Cloud 中的先建后拆（Make before break，MBB）操作'
 doc_type: 'guide'
 ---
 

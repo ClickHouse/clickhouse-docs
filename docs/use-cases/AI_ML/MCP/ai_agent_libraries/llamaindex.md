@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
 sidebar_label: 'Integrate LlamaIndex'
-title: 'How to build a LlamaIndex AI agent using ClickHouse MCP Server.'
+title: 'How to build a LlamaIndex AI agent using ClickHouse MCP server.'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how to build a LlamaIndex AI agent that can interact with ClickHouse MCP Server.'
+description: 'Learn how to build a LlamaIndex AI agent that can interact with ClickHouse MCP server.'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a LlamaIndex AI agent using ClickHouse MCP Server
+# How to build a LlamaIndex AI agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [LlamaIndex](https://docs.llamaindex.ai) AI agent that
-can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Example notebook
 This example can be found as a notebook in the [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
@@ -55,9 +55,9 @@ If you don't have an Anthropic API key, and want to use another LLM provider,
 you can find the instructions for setting up your credentials in the [LlamaIndex "LLMs" docs](https://docs.llamaindex.ai/en/stable/examples/)
 :::
 
-## Initialize MCP Server {#initialize-mcp-and-agent}
+## Initialize MCP server {#initialize-mcp-and-agent}
 
-Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground.
+Now configure the ClickHouse MCP server to point at the ClickHouse SQL playground.
 You'll need to convert those from Python functions into Llama Index tools:
 
 ```python

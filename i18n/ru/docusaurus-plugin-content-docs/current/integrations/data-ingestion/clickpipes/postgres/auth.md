@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 В этой статье показано, как клиенты ClickPipes могут использовать ролевой доступ для аутентификации в Amazon Aurora и RDS и безопасного доступа к своим базам данных.
 
 :::warning
-Для AWS RDS Postgres и Aurora Postgres вы можете запускать только ClickPipes с типом `Initial Load Only` из‑за ограничений механизма AWS IAM DB Authentication.
+Для AWS RDS Postgres и Aurora Postgres вы можете запускать только ClickPipes с типом `Initial Load Only` из‑за ограничений механизма аутентификации БД через AWS IAM.
 
 Для MySQL и MariaDB это ограничение не действует, и вы можете запускать как ClickPipes с типом `Initial Load Only`, так и `CDC`.
 :::

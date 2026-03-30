@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
 sidebar_label: 'Enable remote MCP server'
-title: 'Enable and connect ClickHouse Cloud Remote MCP Server'
+title: 'Enable and connect ClickHouse Cloud remote MCP server'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to enable and use the ClickHouse Cloud Remote MCP'
@@ -30,10 +30,10 @@ This guide shows you how to enable the ClickHouse Cloud Remote MCP Server and se
 
 ## Enable remote MCP server for Cloud {#enable-remote-mcp-server}
 
-Connect to the ClickHouse Cloud service for which you want to enable remote MCP server, click on the `Connect` button in the left hand menu.
-A box with connection details will open.
+Connect to the ClickHouse Cloud service for which you want to enable the remote MCP server.
+In the left-hand menu, click **Connect**. A box with connection details will open.
 
-Select "Connect with MCP":
+Select **Connect with MCP**:
 
 <Image img={img1} alt="Select MCP in the Connect Modal" size="md"/>
 
@@ -43,7 +43,7 @@ Toggle the button on to enable MCP for the service:
 
 Copy the displayed URL, which is the same as the one below:
 
-```bash 
+```bash
 https://mcp.clickhouse.cloud/mcp
 ```
 
@@ -102,7 +102,7 @@ Add the following configuration to your `.vscode/mcp.json`:
 }
 ```
 
-For more details refer to the [Visual Studio Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+For more details refer to the [Visual Studio Code docs](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
 
 ### Windsurf {#windsurf}
 
@@ -119,7 +119,7 @@ Edit your `mcp_config.json` file with the following config:
 }
 ```
 
-For more details refer to the [Windsurf docs](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp)
+For more details refer to the [Windsurf docs](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp).
 
 ### Zed {#zed}
 
@@ -137,7 +137,7 @@ Add the following to your Zed settings under **context_servers**:
 ```
 
 Zed should then prompt you to authenticate via OAuth when it first connects to the server.
-For more details refer to the [Zed docs](https://zed.dev/docs/ai/mcp#as-custom-servers)
+For more details refer to the [Zed docs](https://zed.dev/docs/ai/mcp#as-custom-servers).
 
 ### Codex {#codex}
 
@@ -146,6 +146,54 @@ Run the following command to add the ClickHouse Cloud MCP server via the CLI:
 ```bash
 codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
 ```
+
+## Example usage {#example-usage}
+
+Once connected, you can interact with ClickHouse Cloud through natural-language prompts.
+Below are some common workflows and the tools your MCP client will invoke behind the scenes.
+For a full list of available tools, see the [tool reference](/cloud/features/ai-ml/remote-mcp#available-tools).
+
+### Exploring your data {#exploring-data}
+
+Start by discovering what's available:
+
+| Prompt | Tool invoked |
+|--------|-------------|
+| "What organizations do I have access to?" | `get_organizations` |
+| "What databases are available on my service?" | `list_databases` |
+| "Show me the tables in the `default` database" | `list_tables` |
+| "List all tables whose names start with `events_`" | `list_tables` (with the `like` filter) |
+
+### Running analytical queries {#running-queries}
+
+Ask questions in plain language and the agent will translate them into SQL:
+
+| Prompt | Tool invoked |
+|--------|-------------|
+| "Show me the top 10 rows from the `hits` table" | `run_select_query` |
+| "What's the average session duration by country for the last 7 days?" | `run_select_query` |
+| "How many rows are in each table in the `analytics` database?" | `run_select_query` |
+
+The `run_select_query` tool only permits `SELECT` statements. All queries are read-only.
+
+### Managing services and infrastructure {#managing-services}
+
+Get visibility into your ClickHouse Cloud resources:
+
+| Prompt | Tool invoked |
+|--------|-------------|
+| "List all my services" | `get_services_list` |
+| "What's the status of my production service?" | `get_service_details` |
+| "Show me the backup schedule for this service" | `get_service_backup_configuration` |
+| "List recent backups" | `list_service_backups` |
+| "What ClickPipes are configured on this service?" | `list_clickpipes` |
+
+### Monitoring costs {#monitoring-costs}
+
+| Prompt | Tool invoked |
+|--------|-------------|
+| "What was my organization's cost last week?" | `get_organization_cost` |
+| "Show me daily costs from March 1 to March 15" | `get_organization_cost` (with `from_date` and `to_date`) |
 
 ## Related content {#related-content}
 - [ClickHouse agent skills](https://github.com/ClickHouse/agent-skills)

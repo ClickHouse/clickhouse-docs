@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
 sidebar_label: 'Integrate DSPy'
-title: 'How to build an AI Agent with DSPy and the ClickHouse MCP Server'
+title: 'How to build an AI Agent with DSPy and the ClickHouse MCP server'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how to build an AI agent with DSPy and the ClickHouse MCP Server'
+description: 'Learn how to build an AI agent with DSPy and the ClickHouse MCP server'
 keywords: ['ClickHouse', 'MCP', 'DSPy']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI Agent with DSPy and the ClickHouse MCP Server
+# How to build an AI Agent with DSPy and the ClickHouse MCP server
 
 In this guide, you'll learn how to build an AI agent with [DSPy](https://github.com/langchain-ai/langgraph) that
-can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 
 ## Prerequisites {#prerequisites}
 
@@ -65,9 +65,9 @@ env = {
 }
 ```
 
-## Initialize MCP Server {#initialize-mcp}
+## Initialize MCP server {#initialize-mcp}
 
-Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground.
+Now configure the ClickHouse MCP server to point at the ClickHouse SQL playground.
 
 ```python
 from mcp import ClientSession, StdioServerParameters

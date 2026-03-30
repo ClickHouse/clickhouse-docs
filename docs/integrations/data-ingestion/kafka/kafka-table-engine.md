@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Kafka Table Engine'
+sidebar_label: 'Kafka table engine'
 sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
-description: 'Using the Kafka Table Engine'
+description: 'Using the Kafka table engine'
 title: 'Using the Kafka table engine'
 doc_type: 'guide'
 keywords: ['kafka', 'table engine', 'streaming', 'real-time', 'message queue']

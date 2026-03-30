@@ -2,12 +2,12 @@
 slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
-description: '适用于 ClickStack 的 OpenTelemetry collector - ClickHouse 可观测性栈'
-sidebar_label: 'OpenTelemetry collector'
+description: '适用于 ClickStack 的 OpenTelemetry Collector - ClickHouse 可观测性栈'
+sidebar_label: 'OpenTelemetry Collector'
 title: 'ClickStack OpenTelemetry Collector'
 doc_type: 'guide'
 toc_max_heading_level: 2
-keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse 可观测性', 'OTel collector 配置', 'OpenTelemetry ClickHouse']
+keywords: ['ClickStack', 'OpenTelemetry Collector', 'ClickHouse 可观测性', 'OTel Collector 配置', 'OpenTelemetry ClickHouse']
 ---
 
 import Image from '@theme/IdealImage';
@@ -21,7 +21,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-本页详细介绍如何配置官方 ClickStack OpenTelemetry（OTel）收集器。
+本页详细介绍如何配置官方 ClickStack OpenTelemetry (OTel) Collector。
 
 
 ## Collector 角色 \{#collector-roles\}
@@ -183,79 +183,74 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
   </TabItem>
 </Tabs>
 
-## 保护 collector {#securing-the-collector}
+## 保护 collector
 
 <Tabs groupId="securing-collector">
+  <TabItem value="managed-clickstack" label="托管 ClickStack" default>
+    默认情况下，当 ClickStack OpenTelemetry collector 在开源发行版之外部署时是未加固的，并且其 OTLP 端口不需要身份验证。
 
-<TabItem value="managed-clickstack" label="托管 ClickStack" default>
+    要保护摄取过程，请在部署 collector 时通过 `OTLP_AUTH_TOKEN` 环境变量指定一个认证 token。例如：
 
-默认情况下，当 ClickStack OpenTelemetry Collector 在开源发行版之外部署时是未加固的，并且其 OTLP 端口不需要身份验证。
+    ```sh
+    export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+    export OTLP_AUTH_TOKEN="a_very_secure_string"
 
-要保护摄取过程，请在部署 collector 时通过 `OTLP_AUTH_TOKEN` 环境变量指定一个认证 token。例如：
+    docker run \
+      -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+      -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+      -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+      -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+      -p 4317:4317 \
+      -p 4318:4318 \
+      clickhouse/clickstack-otel-collector:latest
+    ```
 
-```sh
-export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
-export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-export OTLP_AUTH_TOKEN="a_very_secure_string"
+    此外，我们还建议：
 
-docker run \
-  -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
-  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-  -p 4317:4317 \
-  -p 4318:4318 \
-  clickhouse/clickstack-otel-collector:latest
-```
+    * 将 collector 配置为通过 HTTPS 与 ClickHouse 通信。
+    * 为摄取创建一个权限受限的专用用户——参见下文。
+    * 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
 
-此外，我们还建议：
+    ### 创建摄取用户
 
-- 将 collector 配置为通过 HTTPS 与 ClickHouse 通信。
-- 为摄取创建一个权限受限的专用用户——参见下文。
-- 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
+    我们建议为 OTel collector 创建专用数据库和用户，用于向托管 ClickStack 摄取数据。该用户应具备在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表以及插入数据的权限。
 
-### 创建摄取用户 {#creating-an-ingestion-user}
+    ```sql
+    CREATE DATABASE otel;
+    CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
+    GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+    ```
 
-我们建议为 OTel collector 创建专用数据库和用户，用于向托管 ClickStack 摄取数据。该用户应具备在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表以及插入数据的权限。
+    这里假设 collector 已配置为使用 `otel` 数据库。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该变量[与其他环境变量类似](#modifying-otel-collector-configuration)传递给 collector。
+  </TabItem>
 
-```sql
-CREATE DATABASE otel;
-CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
-```
+  <TabItem value="oss-clickstack" label="开源 ClickStack" default>
+    ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP (Open Agent Management Protocol) 的支持，用于安全地配置和管理 OTLP 端点。启动时，您必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
 
-这里假设 collector 已配置为使用 `otel` 数据库。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该变量[与其他环境变量类似](#modifying-otel-collector-configuration)传递给 collector。
+    此集成确保 OTLP 端点通过在部署 HyperDX 应用时自动生成的摄取 API key 得到保护。所有发送到 collector 的遥测数据都必须包含此 API key 以完成身份验证。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该 key。
 
-</TabItem>
+    <Image img={ingestion_key} alt="Ingestion keys" size="lg" />
 
-<TabItem value="oss-clickstack" label="开源 ClickStack" default>
+    为了进一步保护您的部署，我们建议：
 
-ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，您必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
+    * 将 collector 配置为通过 HTTPS 与 ClickHouse 通信。
+    * 为摄取创建一个权限受限的专用用户——参见下文。
+    * 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
 
-此集成确保 OTLP 端点通过在部署 HyperDX 应用时自动生成的摄取 API key 得到保护。所有发送到 collector 的遥测数据都必须包含此 API key 以完成身份验证。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该 key。
+    ### 创建摄取用户
 
-<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+    我们建议为 OTel collector 创建专用数据库和用户，用于向 ClickHouse 摄取数据。该用户应具备在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表以及插入数据的权限。
 
-为了进一步保护您的部署，我们建议：
+    ```sql
+    CREATE DATABASE otel;
+    CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
+    GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+    ```
 
-- 将 collector 配置为通过 HTTPS 与 ClickHouse 通信。
-- 为摄取创建一个权限受限的专用用户——参见下文。
-- 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
-
-### 创建摄取用户 {#creating-an-ingestion-user-oss}
-
-我们建议为 OTel collector 创建专用数据库和用户，用于向 ClickHouse 摄取数据。该用户应具备在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表以及插入数据的权限。
-
-```sql
-CREATE DATABASE otel;
-CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
-```
-
-这里假设 collector 已配置为使用 `otel` 数据库。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该变量[与其他环境变量类似](#modifying-otel-collector-configuration)传递给托管 collector 的镜像。
-
-</TabItem>
+    这里假设 collector 已配置为使用 `otel` 数据库。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该变量[与其他环境变量类似](#modifying-otel-collector-configuration)传递给托管 collector 的镜像。
+  </TabItem>
 </Tabs>
 
 ## 处理 —— 过滤、转换和富化 {#processing-filtering-transforming-enriching}
@@ -356,7 +351,7 @@ service:
 
 基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量 (每秒事件数，events per second) ，并且每次 insert 至少可以发送 10,000 个事件，那么通常这就是处理管道 (pipeline) 中唯一需要的批处理机制。如果内存允许，也可以使用最高 100,000 的值。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
-### 使用异步插入 \{#use-asynchronous-inserts\}
+### 使用异步插入 {#use-asynchronous-inserts}
 
 通常，当采集器的吞吐量较低时，用户不得不发送更小的批次，但他们仍然希望数据在端到端延迟尽可能低的情况下到达 ClickHouse。在这种情况下，当批处理器的 `timeout` 过期时会发送小批次。这可能导致问题，此时就需要异步插入。如果用户将数据发送到充当 Gateway 的 ClickStack 采集器，这个问题比较少见——采集器作为聚合器，可以缓解这一问题——参见 [Collector roles](#collector-roles)。
 
@@ -378,7 +373,7 @@ service:
 
 关于配置此功能的完整细节，请参阅此[文档页面](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，或参考这篇更深入的[博客文章](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
-## 扩展 {#scaling}
+## 扩展 \{#scaling\}
 
 ClickStack OTel collector 充当网关（Gateway）实例——参见 [Collector roles](#collector-roles)。这些实例作为独立服务提供能力，通常按数据中心或区域进行部署。它们通过单一 OTLP 端点从应用程序（或以 agent 角色运行的其他 collector）接收事件。通常会部署一组 collector 实例，并使用开箱即用的负载均衡器在它们之间分发负载。
 
@@ -386,7 +381,7 @@ ClickStack OTel collector 充当网关（Gateway）实例——参见 [Collector
 
 此架构的目标是将计算密集型处理从 agent 侧卸载，从而尽量减少其资源占用。这些 ClickStack 网关可以执行原本需要由 agent 完成的转换任务。此外，通过汇聚来自多个 agent 的事件，网关可以确保以大批量方式将数据发送到 ClickHouse，从而实现高效写入。随着更多 agent 和 SDK 数据源的接入以及事件吞吐量的增加，这些网关 collector 可以轻松扩展。 
 
-### 添加 Kafka {#adding-kafka}
+### 添加 Kafka \{#adding-kafka\}
 
 读者可能已经注意到，上面的架构并未使用 Kafka 作为消息队列。
 
@@ -439,7 +434,7 @@ JSON 类型为 ClickStack 用户提供了以下优势：
 - **更快的查询、更低的内存占用** - 对 `LogAttributes` 等属性进行典型聚合时，读取的数据量减少 5–10 倍，查询速度显著提升，同时降低查询时间和峰值内存使用量。
 - **简单管理** - 无需为性能预先物化列。每个字段都会成为独立的子列，提供与原生 ClickHouse 列相同的速度。
 
-### 启用 JSON 支持 \{#enabling-json-support\}
+### 启用 JSON 支持 {#enabling-json-support}
 
 <Tabs groupId="json-support">
 
@@ -475,7 +470,7 @@ docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e O
 
 </Tabs>
 
-### 从基于 Map 的模式迁移到 JSON 类型 {#migrating-from-map-based-schemas-to-json}
+### 从基于 Map 的模式迁移到 JSON 类型 \{#migrating-from-map-based-schemas-to-json\}
 
 :::important 向后兼容性
 [JSON 类型](/interfaces/formats/JSON) 与现有的基于 Map 的模式**不向后兼容**。启用此功能后，新建表将使用 `JSON` 类型，并且需要手动迁移数据。

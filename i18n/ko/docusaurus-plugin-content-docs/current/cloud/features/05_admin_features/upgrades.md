@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
-import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
@@ -56,28 +55,22 @@ Basic 티어 서비스는 fast release channel에 자동으로 등록됩니다.
 
 ### 빠른 릴리스 채널(조기 업그레이드) \{#fast-release-channel-early-upgrades\}
 
-<ScalePlanFeatureBadge feature="The fast release channel"/>
+<ScalePlanFeatureBadge feature="The fast release channel" />
 
 일반 업그레이드 일정 외에도 서비스가 정기 릴리스 일정보다 더 빠르게 업데이트를 받을 수 있도록 하는 **빠른 릴리스(Fast release)** 채널을 제공합니다.
 
 구체적으로, 서비스는 다음과 같이 동작합니다.
 
-- 최신 ClickHouse 릴리스를 가장 먼저 수신합니다.
-- 새 릴리스가 테스트되는 대로 더 자주 업그레이드됩니다.
+* 최신 ClickHouse 릴리스를 가장 먼저 수신합니다.
+* 새 릴리스가 테스트되는 대로 더 자주 업그레이드됩니다.
 
 아래와 같이 Cloud 콘솔에서 서비스의 릴리스 일정을 변경할 수 있습니다.
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="플랜 선택" border/>
+  <Image img={fast_release} size="lg" alt="릴리스 채널 유형 선택" border />
 </div>
 
-<br/>
-
-<div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="플랜 선택" border/>
-</div>
-
-<br/>
+<br />
 
 이 **빠른 릴리스(Fast release)** 채널은 중요도가 낮은 환경에서 신규 기능을 테스트하는 데 적합합니다. **엄격한 가용성과 안정성이 요구되는 프로덕션 워크로드에는 권장되지 않습니다.**
 

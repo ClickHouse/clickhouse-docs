@@ -99,6 +99,17 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении разрешает использовать в таблице CoalescingMergeTree объединяемые столбцы в партиции или ключе сортировки.
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая SETTING"}]}]} />
+
+Включает проекции порядка коммита, которые хранят виртуальные столбцы `_block_number` и `_block_offset`, сохраняя исходный порядок вставки при слияниях.
+Необходимо, чтобы были включены `enable_block_number_column` и `enable_block_offset_column`.
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>
@@ -584,7 +595,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "По умолчанию ограничивает размер частей даже при использовании min_age_to_force_merge_seconds"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "По умолчанию ограничивает размер частей даже при использовании min_age_to_force_merge_seconds"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}]} />
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -592,8 +603,8 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Возможные значения:
 
-- `true`
-- `false`
+* `true`
+* `false`
 
 ## enable_mixed_granularity_parts \{#enable_mixed_granularity_parts\}
 
@@ -896,6 +907,68 @@ slower than inserts" exception."
 
 Для фоновых операций, таких как объединения (merges), мутации и т. п. Время ожидания в секундах до признания попытки захвата блокировок таблицы неуспешной.
 
+## map_buckets_coefficient \{#map_buckets_coefficient\}
+
+<SettingsInfoBlock type="Float" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "Добавлена настройка для управления коэффициентом, используемым в стратегиях `sqrt` и `linear` для вычисления количества бакетов при сериализации Map `with_buckets`"}]}]} />
+
+Коэффициент, используемый в стратегиях `sqrt` и `linear` параметра [map&#95;buckets&#95;strategy](#map_buckets_strategy) для вычисления количества бакетов на основе среднего размера map.
+Для стратегии `sqrt`: `round(map_buckets_coefficient * sqrt(avg_map_size))`.
+Для стратегии `linear`: `round(map_buckets_coefficient * avg_map_size)`.
+Игнорируется, если `map_buckets_strategy` имеет значение `constant`.
+
+## map_buckets_min_avg_size \{#map_buckets_min_avg_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "Добавлена настройка, управляющая минимальным средним размером map (числом ключей на строку), необходимым для применения сериализации `with_buckets`"}]}]} />
+
+Минимальный средний размер map (число ключей на строку), необходимый для применения сериализации `with_buckets`.
+Если средний размер map меньше этого значения, используется один бакет независимо от других настроек бакетов.
+Значение `0` отключает этот порог и всегда применяет стратегию разбиения по бакетам.
+Эта настройка позволяет избежать накладных расходов сериализации по бакетам для небольших map, где выигрыш от неё пренебрежимо мал.
+
+## map_buckets_strategy \{#map_buckets_strategy\}
+
+<SettingsInfoBlock type="MergeTreeMapBucketsStrategy" default_value="sqrt" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "sqrt"},{"label": "Добавлена настройка, управляющая стратегией выбора количества бакетов для `with_buckets`-сериализации `Map`"}]}]} />
+
+Управляет стратегией выбора количества бакетов в `with_buckets`-сериализации `Map` на основе среднего размера `Map`.
+
+Возможные значения:
+
+* constant — Всегда использовать [max&#95;buckets&#95;in&#95;map](#max_buckets_in_map) в качестве количества бакетов независимо от среднего размера `Map`.
+* sqrt — Использовать `round(map_buckets_coefficient * sqrt(avg_map_size))` в качестве количества бакетов с ограничением диапазоном `[1, max_buckets_in_map]`.
+* linear — Использовать `round(map_buckets_coefficient * avg_map_size)` в качестве количества бакетов с ограничением диапазоном `[1, max_buckets_in_map]`.
+
+## map_serialization_version \{#map_serialization_version\}
+
+<SettingsInfoBlock type="MergeTreeMapSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "basic"},{"label": "Добавлена настройка для управления версией сериализации Map"}]}]} />
+
+Управляет методом сериализации, используемым для столбцов `Map`.
+
+Возможные значения:
+
+* basic — стандартная сериализация для `Map`.
+* with&#95;buckets — ключи разбиваются по бакетам при сериализации. Использование бакетов улучшает чтение отдельных ключей из `Map`.
+
+Количество бакетов при сериализации `with_buckets` определяется настройками [max&#95;buckets&#95;in&#95;map](#max_buckets_in_map) и [map&#95;buckets&#95;strategy](#map_buckets_strategy).
+
+## map_serialization_version_for_zero_level_parts \{#map_serialization_version_for_zero_level_parts\}
+
+<SettingsInfoBlock type="MergeTreeMapSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "basic"},{"label": "Добавлена настройка для управления версией сериализации Map для частей нулевого уровня"}]}]} />
+
+Эта настройка позволяет указать другую версию сериализации
+столбцов `Map` для частей нулевого уровня, создаваемых при вставке.
+Это может быть полезно, чтобы сохранить сериализацию `basic` для частей нулевого уровня и избежать
+снижения производительности при вставке, одновременно используя `with_buckets` для частей после слияния.
+
 ## marks_compress_block_size \{#marks_compress_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65536" />
@@ -947,6 +1020,16 @@ slower than inserts" exception."
 отклоняться. Это позволяет иметь сотни терабайт в одной таблице на
 одном сервере, если части успешно объединяются в более крупные части. Это
 не влияет на пороговые значения для неактивных частей или для общего числа частей.
+
+## max_buckets_in_map \{#max_buckets_in_map\}
+
+<SettingsInfoBlock type="NonZeroUInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "Добавлена настройка для управления максимальным количеством бакетов при сериализации `Map` `with_buckets`"}]}]} />
+
+Максимальное количество бакетов для сериализации `Map`. Применяется при сериализации `Map` `with_buckets`.
+Фактическое количество бакетов определяется параметром [map&#95;buckets&#95;strategy](#map_buckets_strategy).
+Максимально допустимое значение — 256.
 
 ## max_bytes_to_merge_at_max_space_in_pool \{#max_bytes_to_merge_at_max_space_in_pool\}
 
@@ -1974,35 +2057,37 @@ ClickHouse будет использовать то значение, котор
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "8"},{"label": "Добавлена настройка для управления количеством бакетов общих данных при JSON-сериализации в компактных частях"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "8"},{"label": "Добавлена настройка для управления количеством бакетов общих данных при JSON-сериализации в компактных частях"}]}]} />
 
 Количество бакетов для JSON-сериализации общих данных в компактных частях. Применяется с сериализациями общих данных `map_with_buckets` и `advanced`.
+Максимально допустимое значение — 256.
 
 ## object_shared_data_buckets_for_wide_part \{#object_shared_data_buckets_for_wide_part\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="32" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "32"},{"label": "Добавлена настройка для управления количеством бакетов общих данных при JSON-сериализации в широких частях"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "32"},{"label": "Добавлена настройка для управления количеством бакетов общих данных при JSON-сериализации в широких частях"}]}]} />
 
 Количество бакетов, используемых для сериализации общих данных в формате JSON в Wide-частях. Применяется для сериализаций общих данных `map_with_buckets` и `advanced`.
+Максимально допустимое значение — 256.
 
 ## object_shared_data_serialization_version \{#object_shared_data_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Enable advanced shared data serialization version by default"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Enable advanced shared data serialization version by default"}]}]} />
 
 Версия сериализации для общих данных внутри типа данных JSON.
 
 Возможные значения:
 
-- `map` — хранить общие данные как `Map(String, String)`
-- `map_with_buckets` — хранить общие данные как несколько отдельных столбцов `Map(String, String)`. Использование бакетов (buckets) улучшает чтение отдельных путей из общих данных.
-- `advanced` — специальная сериализация общих данных, разработанная для значительного улучшения чтения отдельных путей из общих данных.  
-Обратите внимание, что такая сериализация увеличивает размер общих данных на диске, поскольку хранится много дополнительной информации.
+* `map` — хранить общие данные как `Map(String, String)`
+* `map_with_buckets` — хранить общие данные как несколько отдельных столбцов `Map(String, String)`. Использование бакетов (buckets) улучшает чтение отдельных путей из общих данных.
+* `advanced` — специальная сериализация общих данных, разработанная для значительного улучшения чтения отдельных путей из общих данных.
+  Обратите внимание, что такая сериализация увеличивает размер общих данных на диске, поскольку хранится много дополнительной информации.
 
 Количество бакетов для сериализаций `map_with_buckets` и `advanced` определяется настройками
-[object_shared_data_buckets_for_compact_part](#object_shared_data_buckets_for_compact_part)/[object_shared_data_buckets_for_wide_part](#object_shared_data_buckets_for_wide_part).
+[object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](#object_shared_data_buckets_for_compact_part)/[object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](#object_shared_data_buckets_for_wide_part).
 
 ## object_shared_data_serialization_version_for_zero_level_parts \{#object_shared_data_serialization_version_for_zero_level_parts\}
 
@@ -2242,9 +2327,9 @@ parts (N). Merges are processing significantly slower than inserts`.
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "По умолчанию распространять версию сериализации типов данных на вложенные типы"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "По умолчанию распространять версию сериализации типов данных на вложенные типы"}]}]} />
 
-Если установлено значение true, версии сериализации, такие как `string_serialization_version`, будут распространяться на вложенные типы, такие как Array/Map/Nullable/JSON/etc. Если отключено, версия сериализации будет применяться только к столбцам верхнего уровня этого типа и элементам Tuple.
+Если установлено значение true, версии сериализации, такие как `string_serialization_version`, будут распространяться на вложенные типы, такие как Array/Map/Nullable/JSON/etc. Если отключено, версия сериализации будет применяться только к столбцам верхнего уровня этого типа и Tuple el
 
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 

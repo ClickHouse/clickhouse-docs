@@ -1,10 +1,10 @@
 ---
 slug: /about-us/history
-sidebar_label: 'ClickHouse 역사'
+sidebar_label: '연혁'
 sidebar_position: 40
 description: 'ClickHouse 개발 역사'
 keywords: ['역사','개발','Metrica']
-title: 'ClickHouse 역사'
+title: '연혁'
 doc_type: 'reference'
 ---
 

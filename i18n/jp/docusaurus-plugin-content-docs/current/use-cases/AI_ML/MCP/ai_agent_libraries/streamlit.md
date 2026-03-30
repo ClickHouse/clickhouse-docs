@@ -1,18 +1,18 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/streamlit-agent
 sidebar_label: 'Streamlit と連携する'
-title: 'Streamlit を使って ClickHouse バックエンドの AI Agent を構築する方法'
+title: 'Streamlit を使って ClickHouse をバックエンドにした AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Streamlit と ClickHouse MCP Server を使用して、Web ベースの AI Agent を構築する方法を学びます'
-keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
+description: 'Streamlit と ClickHouse MCPサーバーを使用して、Web ベースの AI エージェントを構築する方法を学びます'
+keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI エージェント']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 # Streamlit を使って ClickHouse をバックエンドにした AI エージェントを構築する方法 \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
-このガイドでは、[Streamlit](https://streamlit.io/) を使用して、[ClickHouse の SQL playground](https://sql.clickhouse.com/) に対して [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を通じて対話できる、Web ベースの AI エージェントを構築する方法を説明します。
+このガイドでは、[Streamlit](https://streamlit.io/) を使用して、[ClickHouse の SQL playground](https://sql.clickhouse.com/) に対して [ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を通じて対話できる、Web ベースの AI エージェントを構築する方法を説明します。
 
 :::note サンプルアプリケーション
 この例では、ClickHouse のデータにクエリを実行するためのチャットインターフェースを提供する、完成した Web アプリケーションを作成します。

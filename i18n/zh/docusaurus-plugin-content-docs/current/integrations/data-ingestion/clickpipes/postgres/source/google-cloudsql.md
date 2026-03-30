@@ -2,7 +2,7 @@
 sidebar_label: 'Google Cloud SQL'
 description: '将 Google Cloud SQL Postgres 实例设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
-title: 'Google Cloud SQL Postgres 来源设置指南'
+title: 'Google Cloud SQL Postgres 源端设置指南'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'logical decoding', 'firewall']
 integration:
@@ -19,7 +19,6 @@ import connections_networking from '@site/static/images/integrations/data-ingest
 import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
-
 
 # Google Cloud SQL Postgres 源端设置指南 \{#google-cloud-sql-postgres-source-setup-guide\}
 
