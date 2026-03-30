@@ -27,7 +27,7 @@ If you prefer to use an existing VPC to deploy ClickHouse BYOC instead of having
 <Image img={byoc_subnet_2} size="lg" alt="BYOC VPC Subnet Tags" />
 
 ### Configure S3 Gateway Endpoint {#configure-s3-endpoint}
-If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need to create one to enable secure, private communication between your VPC and Amazon S3. This endpoint allows your ClickHouse services to access S3 without going through the public internet. Please refer to the screenshot below for an example configuration.
+If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need to create one to enable secure, private communication between your VPC and Amazon S3. This endpoint allows your ClickHouse services to access S3 without going through the public internet. Refer to the screenshot below for an example configuration.
 
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpoint" />
 
@@ -37,7 +37,7 @@ If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need 
 Your VPC must permit at least outbound internet access so that ClickHouse BYOC components can communicate with the Tailscale control plane. Tailscale is used to provide secure, zero-trust networking for private management operations. Initial registration and setup with Tailscale require public internet connectivity, which can be achieved either directly or via a NAT gateway. This connectivity is required to maintain both the privacy and security of your BYOC deployment.
 
 **DNS Resolution**
-Ensure your VPC has working DNS resolution and doesn't block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers as well as ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
+Ensure your VPC has working DNS resolution and doesn't block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers and ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
 
 ### Configure your AWS account {#configure-aws-account}
 
@@ -68,7 +68,7 @@ Our team will review your configuration and complete the provisioning from our s
 For organizations with advanced security requirements or strict compliance policies, you can provide your own IAM roles instead of having ClickHouse Cloud create them. This approach gives you complete control over IAM permissions and allows you to enforce your organization's security policies.
 
 :::info
-Customer-managed IAM roles are currently in private preview. If you require this capability, please contact ClickHouse Support to discuss your specific requirements and timeline.
+Customer-managed IAM roles are in private preview. If you require this capability, contact ClickHouse Support to discuss your specific requirements and timeline.
 
 When available, this feature will allow you to:
 * Provide pre-configured IAM roles for ClickHouse Cloud to use
