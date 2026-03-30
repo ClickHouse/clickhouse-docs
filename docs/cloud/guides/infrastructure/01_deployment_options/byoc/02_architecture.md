@@ -9,14 +9,27 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
+import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organization-hierarchy.svg';
+
+## Key concepts {#key-concepts}
+
+The diagram below illustrates how ClickHouse Cloud organizations, cloud accounts, and BYOC infrastructure relate to each other.
+
+<BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="BYOC organization hierarchy showing the relationship between organizations, cloud accounts, regions, and BYOC infrastructure" />
+
+- **ClickHouse Cloud Organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
+- **ClickHouse BYOC Organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
+- **Cloud Account / Project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. We recommend using a dedicated account or project per BYOC deployment for isolation.
+- **BYOC Infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
+- **ClickHouse Service:** An individual ClickHouse cluster running within a BYOC infrastructure. Multiple services can run within the same BYOC infrastructure.
 
 ## Glossary {#glossary}
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud.
 - **Customer BYOC VPC:** The VPC, owned by the customer's cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
-- **Customer VPC** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
+- **Customer VPC:** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
 
-## Architecture {#architecture}
+## Technical Architecture {#architecture}
 
 BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication and user management, APIs, billing, and infrastructure management components such as the BYOC controller, and alerting/incident tooling. These services orchestrate and monitor your deployment, but they don't store your data.
 
