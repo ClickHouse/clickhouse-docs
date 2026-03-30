@@ -54,7 +54,7 @@ When deploying for a `BYO-VPC` setup, set the `IncludeVPCWritePermissions` param
 Storage buckets, Kubernetes cluster, and compute resources required for running ClickHouse aren't included in this initial setup. They will be provisioned in a later step. While you control your VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other essential resources in your AWS account.
 :::
 
-#### Alternative terraform module {#terraform-module-aws}
+#### Alternative Terraform module {#terraform-module-aws}
 
 If you prefer to use Terraform instead of CloudFormation, use the following module:
 
