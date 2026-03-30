@@ -10,8 +10,6 @@ keywords: ['clickstack', 'AI notebooks', 'investigation', 'observability', 'Hype
 ---
 
 import Image from '@theme/IdealImage';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
@@ -28,63 +26,22 @@ AI Notebooks are an interactive investigation tool in HyperDX that combines an A
 
 <Image img={notebook_hero} alt="AI Notebook investigating a Visa cache full outage" size="lg"/>
 
-## Availability {#availability}
-
-| Deployment                        | Supported | Notes                                                                                     |
-| --------------------------------- | --------- | ----------------------------------------------------------------------------------------- |
-| **ClickHouse Cloud (ClickStack)** | Yes       | AI API keys are managed by the platform. You only need to enable the AI consent toggle. |
-| **Enterprise Edition (EE)**       | Yes       | Requires manually configuring AI API keys via environment variables.                      |
-| **Open Source (OSS)**             | No        | AI Notebooks are not available in the open source edition.                                |
-
-## Prerequisites {#prerequisites}
-
-Before using AI Notebooks, the following must be in place:
-
-1. **AI API keys configured** — The HyperDX server must have access to a supported LLM provider (handled automatically in ClickHouse Cloud, manual in EE).
-2. **Generative AI enabled** — A team admin must enable the Generative AI consent toggle. See [Enabling Generative AI](#enabling-generative-ai).
-3. **Notebook access** — Your role must have read/write permissions for Notebooks.
+:::note Managed ClickStack only
+AI Notebooks are only available in Managed ClickStack deployments.
+:::
 
 ## Setup {#setup}
 
-<Tabs groupId="deployment">
-<TabItem value="chc" label="ClickHouse Cloud" default>
-
 <PrivatePreviewBadge/>
 
-AI Notebooks are currently in private preview in ClickHouse Cloud. AI API keys are automatically configured by the platform.
+AI Notebooks are currently in private preview in ClickHouse Cloud. AI models and providers are managed automatically by the platform.
 
-To enable AI Notebooks, follow the steps in [Enabling Generative AI](#enabling-generative-ai). Once enabled, the **Notebooks** entry appears in the left sidebar for everyone with the appropriate role.
+Before using AI Notebooks:
 
-</TabItem>
-<TabItem value="ee" label="Enterprise Edition">
+1. **Generative AI enabled** — A team admin must enable the Generative AI consent toggle. See [Enabling Generative AI](#enabling-generative-ai).
+2. **Notebook access** — Your role must have read/write permissions for Notebooks.
 
-Enterprise Edition deployments require configuring an AI provider via environment variables on the HyperDX server.
-
-**Variables**
-
-| Variable                       | Required | Description                                                                                                                |
-| ------------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `AI_API_KEY`                   | Yes      | API key for the configured provider.                                                                                       |
-| `AI_PROVIDER`                  | Yes      | LLM provider to use. Example values: `anthropic`, `openai`.                                                                |
-| `AI_MODEL_NAME`                | Yes      | Model identifier (e.g. `claude-sonnet-4-20250514` for Anthropic).                                                          |
-| `AI_NOTEBOOK_ROLLOUT_STRATEGY` | No       | Controls notebook availability: `all` (enabled for every team), `off` (disabled globally), or omit to manage per-team.     |
-| `USE_AWS_BEDROCK`              | No       | Set to `true` to use Amazon Bedrock instead of direct Anthropic API access, makes `AI_API_KEY` and `AI_PROVIDER` optional. |
-
-**Minimal example** using Anthropic:
-
-```shell
-docker run \
-  -e AI_PROVIDER='anthropic' \
-  -e AI_API_KEY='sk-ant-...' \
-  -e AI_MODEL_NAME='claude-sonnet-4-20250514' \
-  -e AI_NOTEBOOK_ROLLOUT_STRATEGY='all' \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one
-```
-
-After setting these variables and restarting the server, follow the steps in [Enabling Generative AI](#enabling-generative-ai). The **Notebooks** entry will then appear in the left sidebar.
-
-</TabItem>
-</Tabs>
+Once enabled, the **Notebooks** entry appears in the left sidebar for everyone with the appropriate role.
 
 ## Enabling Generative AI {#enabling-generative-ai}
 
