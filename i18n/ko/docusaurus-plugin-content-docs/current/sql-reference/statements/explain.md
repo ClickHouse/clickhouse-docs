@@ -316,7 +316,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1이면 `Indexes` 키가 추가됩니다. 이 키에는 사용된 인덱스 배열이 포함됩니다. 각 인덱스는 `Type` 키(문자열 `MinMax`, `Partition`, `PrimaryKey`, `Skip` 중 하나)와 다음과 같은 선택적 키를 갖는 JSON 객체로 표현됩니다:
+`indexes` = 1이면 `Indexes` 키가 추가됩니다. 이 키에는 사용된 인덱스 배열이 포함됩니다. 각 인덱스는 `Type` 키(문자열 `Partition Min-Max`, `Partition`, `Statistics`, `PrimaryKey`, `Skip` 중 하나)와 다음과 같은 선택적 키를 갖는 JSON 객체로 표현됩니다:
 
 * `Name` — 인덱스 이름(현재는 `Skip` 인덱스에만 사용됨).
 * `Keys` — 인덱스에 사용되는 컬럼 배열.
@@ -332,7 +332,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,

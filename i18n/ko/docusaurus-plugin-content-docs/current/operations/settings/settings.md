@@ -11966,6 +11966,21 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 각 파트의 STATISTICS를 로드하는 오버헤드를 피하기 위해 쿼리에서 STATISTICS 캐시를 사용합니다.
 
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "쿼리 실행 중 파트 프루닝에 STATISTICS를 사용하는 새로운 설정입니다."}]}]} />
+
+쿼리 실행 중 STATISTICS를 사용해 파트를 필터링합니다.
+
+활성화하면 SELECT 쿼리의 프루닝에 컬럼 STATISTICS(예: MinMax STATISTICS)를 사용하여, 데이터를 읽기 전에 일치하는 데이터를 포함할 수 없는 파트를 제외합니다.
+
+가능한 값:
+
+* 0 — 비활성화.
+* 1 — 활성화.
+
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />

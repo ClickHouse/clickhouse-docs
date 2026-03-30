@@ -1265,6 +1265,40 @@ ALTER TABLE tab DROP STATISTICS a;
 这些轻量级列统计汇总了列中值分布的信息。列统计存储在每个分区片段中，并会在每次插入时更新。
 只有在启用 `set use_statistics = 1` 时，它们才能用于 `prewhere` 优化。
 
+#### 基于统计信息的 parts 剪枝 \{#part-pruning-with-statistics\}
+
+启用 `use_statistics_for_part_pruning` 后，统计信息可用于 parts 剪枝。
+目前，只有 `MinMax` 统计信息支持 parts 剪枝。当对某一列定义了 MinMax 统计信息时，ClickHouse 会跟踪每个 parts 中该列的最小值和最大值。
+借助 parts 剪枝，如果查询过滤条件不可能匹配某个 parts 中的任何行，就可以跳过读取整个 parts。
+
+**示例：**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 
 - `MinMax`

@@ -12000,6 +12000,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части
 
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка, позволяющая использовать статистику для отсечения частей при выполнении запроса."}]}]} />
+
+Использовать статистику для фильтрации частей при выполнении запроса.
+
+Если настройка включена, при отсечении в запросах SELECT будет использоваться статистика столбцов (например, статистика MinMax), чтобы исключать части, которые не могут содержать подходящие данные, ещё до чтения каких-либо данных.
+
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
+
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />

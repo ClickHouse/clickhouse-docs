@@ -333,15 +333,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
+当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
 
 * `Name` — 索引名称 (目前仅对 `Skip` 索引使用) 。
 * `Keys` — 索引所使用列的数组。
 * `Condition` — 实际使用的条件。
 * `Description` — 索引描述 (目前仅对 `Skip` 索引使用) 。
 * `Parts` — 应用索引前后分区片段的数量。
-* `Granules` — 应用索引前后粒度单元的数量。
-* `Ranges` — 应用索引后粒度单元区间的数量。
+* `Granules` — 应用索引前后粒度的数量。
+* `Ranges` — 应用索引后粒度区间的数量。
 
 示例：
 
@@ -349,7 +349,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -387,12 +387,12 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的 PROJECTION 数组。每个 PROJECTION 以包含以下键的 JSON 进行描述：
+当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的投影数组。每个投影以包含以下键的 JSON 进行描述：
 
-* `Name` — PROJECTION 名称。
-* `Condition` — 使用的 PROJECTION 主键条件。
-* `Description` — 关于该 PROJECTION 使用方式的描述 (例如分区片段级过滤) 。
-* `Selected Parts` — 该 PROJECTION 选中的分区片段数量。
+* `Name` — 投影 名称。
+* `Condition` — 使用的投影 主键条件。
+* `Description` — 关于该 投影 使用方式的描述 (例如分区片段级过滤) 。
+* `Selected Parts` — 该 投影 选中的分区片段数量。
 * `Selected Marks` — 选中的标记数量。
 * `Selected Ranges` — 选中的范围数量。
 * `Selected Rows` — 选中的行数量。

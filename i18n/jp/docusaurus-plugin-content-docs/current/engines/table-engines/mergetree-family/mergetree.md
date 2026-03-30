@@ -1266,6 +1266,41 @@ ALTER TABLE tab DROP STATISTICS a;
 これらの軽量な STATISTICS は、カラム内の値の分布に関する情報を集約します。STATISTICS は各パートに保存され、挿入のたびに更新されます。
 `set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に使用できます。
 
+#### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
+
+`use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
+現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
+
+**例:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
+
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
 
 - `MinMax`
