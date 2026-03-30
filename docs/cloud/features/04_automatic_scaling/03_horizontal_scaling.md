@@ -52,26 +52,3 @@ To scale a service horizontally from the UI, you can adjust the number of replic
 Once the service has scaled, the metrics dashboard in the cloud console should show the correct allocation to the service. The screenshot below shows the cluster having scaled to total memory of `96 GiB`, which is `6` replicas, each with `16 GiB` memory allocation.
 
 <Image img={scaling_memory_allocation} size="md" alt="Scaling memory allocation" border />
-
-## Handling spikes in workload {#handling-bursty-workloads}
-
-If you have an upcoming expected spike in your workload, you can use the
-[ClickHouse Cloud API](/cloud/manage/api/api-overview) to
-preemptively scale up your service to handle the spike and scale it down once
-the demand subsides.
-
-To understand the current CPU cores and memory in use for
-each of your replicas, you can run the query below:
-
-```sql
-SELECT *
-FROM clusterAllReplicas('default', view(
-    SELECT
-        hostname() AS server,
-        anyIf(value, metric = 'CGroupMaxCPU') AS cpu_cores,
-        formatReadableSize(anyIf(value, metric = 'CGroupMemoryTotal')) AS memory
-    FROM system.asynchronous_metrics
-))
-ORDER BY server ASC
-SETTINGS skip_unavailable_shards = 1
-```

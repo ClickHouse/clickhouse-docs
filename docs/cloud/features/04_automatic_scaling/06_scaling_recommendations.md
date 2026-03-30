@@ -8,14 +8,81 @@ title: 'Scaling recommendations'
 doc_type: 'guide'
 ---
 
-ClickHouse Cloud automatically adjusts CPU and memory resources for each service based on real-time usage — ensuring stable performance while minimizing resource wastage. To balance responsiveness with stability, we utilize a two-window recommender system that monitors utilization over both a short 3-hour window and a longer 30-hour window. This allows us to react quickly to changes and also make decisions based on longer-term trends.
+import Image from '@theme/IdealImage';
+import two_window_recommender from '@site/static/images/cloud/features/autoscaling/two-window-recommender.png';
 
-When usage increases, the system references the long window so it can scale up in a single, decisive step to the highest observed load within the past 30 hours. This approach minimizes repeated scale events. Conversely, when traffic declines, the short window guides a quick scale-down within about three hours, conserving resources.
+## Introduction {#introduction}
 
-By integrating these two perspectives, the recommender intelligently balances responsiveness with stability.
+Auto-scaling database resources requires careful balance: scaling up too slowly can risk performance degradation while scaling down too aggressively can trigger constant oscillations.
 
-## Benefits {#benefits}
+ClickHouse Cloud enables faster scale-downs, minimized scaling oscillations, and substantial infrastructure cost reduction for variable workloads, while maintaining the stability needed for production databases
+by pairing a two-window recommendation framework with a target-tracking CPU recommendation system.
 
-- **Cost optimization:** Right-size your services to avoid paying for unused resources while maintaining performance.
-- **Proactive scaling:** Get ahead of potential performance issues before they impact your workloads.
-- **Balanced approach:** The 2-window design prevents over-provisioning from transient spikes while still ensuring adequate headroom for real demand.
+## CPU-based Scaling {#cpu-based-scaling}
+
+CPU Scaling is based on target tracking which calculates the exact CPU allocation needed to keep utilization at a target level. A scaling action is only triggered if current CPU utilization falls outside a defined band:
+
+| Parameter | Value | Meaning |
+|---|---|---|
+| Target utilization | 53% | The utilization level ClickHouse aims to maintain |
+| High watermark | 75% | Triggers scale-up when CPU exceeds this threshold |
+| Low watermark | 37.5% | Triggers scale-down when CPU falls below this threshold |
+
+The recommender evaluates CPU utilization based on historical usage, and determines a recommended CPU size using this formula:
+
+```text
+recommended_cpu = max_cpu_usage / target_utilization
+```
+
+If the CPU utilization is between 37.5%–75% of allocated capacity, no scaling action is taken. Outside that band, the recommender computes the exact size needed to land back at 53% utilization, and the service is scaled accordingly.
+
+### Example {#cpu-scaling-example}
+
+A service allocated 4 vCPU experiences a spike to 3.8 vCPU usage (~95% utilization), crossing the 75% high watermark.
+The recommender calculates: `3.8 / 0.53 ≈ 7.2 vCPU`, and rounds up to the next available size (8 vCPU). Once load subsides and usage drops below 37.5% (1.5 vCPU), the recommender scales back down proportionally.
+
+## Memory-based recommendations {#memory-based-recommendations}
+
+ClickHouse Cloud automatically recommends memory sizes based on your service's actual usage patterns.
+The recommender analyzes usage over a lookback window and adds headroom to handle spikes and prevent out-of-memory (OOM) errors.
+
+The recommender looks at three signals:
+- **Query memory**: The peak memory used during query execution
+- **Resident memory**: The peak memory held by the process overall
+- **OOM events**: Whether queries or replicas have recently run out of memory
+
+### How headroom is calculated {#how-headroom-is-calculated}
+
+For query and resident memory, the amount of headroom added depends on how predictable your usage is:
+
+- **Stable usage (low variation)**: 1.25x multiplier — more headroom, since usage is consistent and unlikely to spike unexpectedly
+- **Spiky usage (high variation)**: 1.1x multiplier — less headroom, to avoid over-provisioning for workloads that already vary widely
+
+If OOM events are detected, the recommender applies a more aggressive **1.5x multiplier** to ensure the service has enough memory to recover.
+
+### Final recommendation {#final-recommendation}
+
+The system takes the highest value across all signals:
+
+```text
+desired_memory = max(
+  query_memory × skew_multiplier,
+  resident_memory × skew_multiplier,
+  resident_memory × 1.5,   // if query OOMs detected
+  rss_at_crash × 1.5       // if pod OOMs detected
+)
+```
+
+## Two-window recommender {#two-window-recommender}
+
+Instead of using a single window, ClickHouse Cloud uses two lookback windows with different time ranges:
+- **Small Window (3 hours)**: Captures recent usage patterns, enables faster scale-down
+- **Large Window (30 hours)**: Ensures we scale up in a single step to the maximum usage seen in the longer lookback window, rather than multiple gradual scale-ups. This is critical because scaling takes time and invalidates local caches; so it is safer to scale up in a single step.
+
+Each window independently generates a recommendation using both memory and CPU analysis.
+The system then merges these recommendations based on the scaling direction each window suggests, as shown in the figure below:
+
+<Image img={two_window_recommender} size="lg" alt="Two-window recommender merging logic" />
+
+For a deep dive into the design decisions of the recommender, see ["Smarter Auto-Scaling for ClickHouse: The Two-Window Approach
+"](https://clickhouse.com/blog/smarter-auto-scaling#the-two-window-solution)

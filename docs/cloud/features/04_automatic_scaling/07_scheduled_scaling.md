@@ -52,3 +52,26 @@ Multiple rules can be combined to form a full weekly schedule. For example, you 
 :::note
 A scheduled scaling action and a concurrent autoscaling recommendation may interact — the schedule takes precedence at its trigger time.
 :::
+
+## Handling spikes in workload {#handling-bursty-workloads}
+
+If you have an upcoming expected spike in your workload, you can use the
+[ClickHouse Cloud API](/cloud/manage/api/api-overview) to
+preemptively scale up your service to handle the spike and scale it down once
+the demand subsides.
+
+To understand the current CPU cores and memory in use for
+each of your replicas, you can run the query below:
+
+```sql
+SELECT *
+FROM clusterAllReplicas('default', view(
+    SELECT
+        hostname() AS server,
+        anyIf(value, metric = 'CGroupMaxCPU') AS cpu_cores,
+        formatReadableSize(anyIf(value, metric = 'CGroupMemoryTotal')) AS memory
+    FROM system.asynchronous_metrics
+))
+ORDER BY server ASC
+SETTINGS skip_unavailable_shards = 1
+```
