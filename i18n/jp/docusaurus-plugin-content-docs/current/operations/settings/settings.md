@@ -8923,6 +8923,14 @@ See also:
 
 単純な `INSERT INTO table SELECT ... FROM TABLES` クエリの最適化
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "ORDER BY の先頭部分に GROUP BY キーがすべて含まれている場合、末尾の ORDER BY 要素を削除します。"}]}]} />
+
+ORDER BY の先頭部分に GROUP BY キーがすべて含まれている場合、末尾の ORDER BY 要素を削除します。
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

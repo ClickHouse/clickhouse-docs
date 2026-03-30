@@ -8918,6 +8918,14 @@ MergeTree 메타데이터를 사용하여 `SELECT count() FROM table`과 같은 
 
 단순한 'INSERT INTO table SELECT ... FROM TABLES' 쿼리를 최적화합니다.
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "ORDER BY 접두사에 모든 GROUP BY 키가 포함되면 뒤쪽 ORDER BY 요소를 제거합니다."}]}]} />
+
+ORDER BY 접두사에 모든 GROUP BY 키가 포함되면 뒤쪽 ORDER BY 요소를 제거합니다.
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

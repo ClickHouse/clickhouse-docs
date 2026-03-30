@@ -8908,6 +8908,14 @@ FROM default.fuse_tbl AS __table1
 
 优化简单的 'INSERT INTO table SELECT ... FROM TABLES' 查询
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。"}]}]} />
+
+当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
