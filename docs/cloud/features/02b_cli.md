@@ -7,11 +7,11 @@ keywords: ['clickhousectl', 'CLI', 'cloud management', 'local development']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI
+# ClickHouse CLI {#clickhouse-cli}
 
 The ClickHouse CLI (`clickhousectl`) is a unified command-line tool for managing ClickHouse Cloud resources, and local development with ClickHouse.
 
-## Installation
+## Installation {#installation}
 
 ```bash
 curl https://clickhouse.com/cli | sh
@@ -19,11 +19,11 @@ curl https://clickhouse.com/cli | sh
 
 A `chctl` alias is also created automatically for convenience.
 
-## Cloud management
+## Cloud management {#cloud-management}
 
 Authenticate with ClickHouse Cloud and manage your services directly from the command line.
 
-### Authentication
+### Authentication {#authentication}
 
 ```bash
 clickhousectl cloud auth
@@ -38,7 +38,7 @@ export CLICKHOUSE_CLOUD_API_KEY=your-key
 export CLICKHOUSE_CLOUD_API_SECRET=your-secret
 ```
 
-### Services
+### Services {#services}
 
 ```bash
 # List services
@@ -66,14 +66,14 @@ clickhousectl cloud service stop <service-id>
 clickhousectl cloud service delete <service-id>
 ```
 
-### Organizations
+### Organizations {#organizations}
 
 ```bash
 clickhousectl cloud org list
 clickhousectl cloud org get <org-id>
 ```
 
-### API keys
+### API keys {#api-keys}
 
 ```bash
 clickhousectl cloud key list
@@ -81,21 +81,21 @@ clickhousectl cloud key create --name ci-key --role-id <role-id>
 clickhousectl cloud key delete <key-id>
 ```
 
-### Members and invitations
+### Members and invitations {#members-and-invitations}
 
 ```bash
 clickhousectl cloud member list
 clickhousectl cloud invitation create --email dev@example.com --role-id <role-id>
 ```
 
-### Backups
+### Backups {#backups}
 
 ```bash
 clickhousectl cloud backup list <service-id>
 clickhousectl cloud backup get <service-id> <backup-id>
 ```
 
-### JSON output
+### JSON output {#json-output}
 
 Use the `--json` flag to get JSON-formatted responses from any cloud command:
 
@@ -103,11 +103,11 @@ Use the `--json` flag to get JSON-formatted responses from any cloud command:
 clickhousectl cloud --json service list
 ```
 
-## Local development
+## Local development {#local-development}
 
 The CLI also manages local ClickHouse installations and servers. See the [quick install](/install/quick-install) page for getting started with local development.
 
-## Requirements
+## Requirements {#requirements}
 
 - macOS (aarch64, x86_64) or Linux (aarch64, x86_64)
 - Cloud commands require a [ClickHouse Cloud API key](/cloud/manage/openapi)
