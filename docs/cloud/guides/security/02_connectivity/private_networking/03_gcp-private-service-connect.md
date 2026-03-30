@@ -43,7 +43,7 @@ By default, a ClickHouse service isn't available over a Private Service connecti
 
 Cross-region connectivity isn't supported. The producer and consumer regions must be the same. However, you can connect from other regions within your VPC by enabling [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) at the Private Service Connect (PSC) level.
 
-**Please complete the following to enable GCP PSC**:
+**Complete the following steps to enable GCP PSC**:
 1. Obtain GCP service attachment for Private Service Connect.
 1. Create a service endpoint.
 1. Add "Endpoint ID" to ClickHouse Cloud service.
@@ -127,11 +127,11 @@ Please note that ClickHouse isn't responsible for configuring the required GCP P
 For any issues related to GCP configuration tasks, contact GCP Support directly.
 :::
 
-In this section, we're going to create a service endpoint.
+In this section, you'll create a service endpoint.
 
 ### Adding a private service connection {#adding-a-private-service-connection}
 
-First up, we're going to create a Private Service Connection.
+First, you'll create a Private Service Connection.
 
 #### Option 1: Using Google Cloud console {#option-1-using-google-cloud-console}
 
@@ -155,7 +155,7 @@ The **Status** column will change from **Pending** to **Accepted** once the conn
 
 <Image img={gcp_psc_copy_connection_id} size="lg" alt="Copy PSC Connection ID" border />
 
-Copy the ***PSC Connection ID*** — we're going to use it as the ***Endpoint ID*** in the next steps.
+Copy ***PSC Connection ID***; you'll use it as ***Endpoint ID*** in the next steps.
 
 #### Option 2: Using Terraform {#option-2-using-terraform}
 
