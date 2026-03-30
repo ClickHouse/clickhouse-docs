@@ -32,7 +32,6 @@ AI Notebooks are only available in Managed ClickStack deployments.
 
 ## Setup {#setup}
 
-
 AI Notebooks are currently in private preview in ClickHouse Cloud. AI models and providers are managed automatically by the platform.
 
 Before using AI Notebooks:
