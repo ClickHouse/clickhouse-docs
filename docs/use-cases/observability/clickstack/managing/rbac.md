@@ -24,7 +24,7 @@ import condition_tip from '@site/static/images/clickstack/rbac/condition-tip.png
 import access_rules_tip from '@site/static/images/clickstack/rbac/access-rules-tip.png';
 import dashboard_id_and_tag_example from '@site/static/images/clickstack/rbac/dashboard-id-and-tag-example.png';
 import team_page_cloud from '@site/static/images/clickstack/rbac/team-page-cloud.png';
-import team_page_hyperdx from '@site/static/images/clickstack/rbac/team-page-hyperdx.png';
+import team_page_clickstack from '@site/static/images/clickstack/rbac/team-page-clickstack.png';
 
 ClickStack includes role-based access control (RBAC) so you can define custom roles with fine-grained permissions over [dashboards](/use-cases/observability/clickstack/dashboards), [saved searches](/use-cases/observability/clickstack/search), sources, [alerts](/use-cases/observability/clickstack/alerts), webhooks, and notebooks. Permissions work at two levels: resource-level access (no access, read, or manage per resource type) and optional fine-grained rules that restrict access to individual resources by name, tag, or ID. ClickStack ships with three built-in roles, and you can create custom roles to match your team's needs.
 
@@ -48,11 +48,11 @@ ClickStack authenticates through ClickHouse Cloud. Before you can assign ClickSt
 Once a user has Cloud access, they appear in the ClickStack **Team Settings** page where you can assign a ClickStack role.
 
 <Tabs>
-<TabItem value="cloud" label="Cloud Users and roles">
+<TabItem value="cloud" label="Cloud Users and roles" default>
 <Image img={team_page_cloud} alt="ClickHouse Cloud Users and roles page" size="lg"/>
 </TabItem>
-<TabItem value="clickstack" label="ClickStack Team Settings" default>
-<Image img={team_page_hyperdx} alt="ClickStack Team Settings page showing team members and their roles" size="lg"/>
+<TabItem value="clickstack" label="ClickStack Team Settings">
+<Image img={team_page_clickstack} alt="ClickStack Team Settings page showing team members and their roles" size="lg"/>
 </TabItem>
 </Tabs>
 
@@ -74,15 +74,9 @@ ClickStack includes three system roles. You can't edit or delete these. The Admi
 | Manage users and invitations | ✓ | | |
 
 ## Assigning roles to team members {#assigning-roles}
-
-<Image img={team_members} alt="Team members with role assignments" size="lg"/>
-
 The **Team Settings** page lists all team members with their current role. To change a role, click **Edit** next to the user's name and select a new role. Each user has exactly one role.
 
-<Image img={edit_team_member} alt="Edit team member" size="md"/>
-
 ### Default new user role {#default-new-user-role}
-
 You can set a default role for new users under [Security policies](#security-policies). New users who auto-join the team are automatically assigned this role.
 
 ## Creating a custom role {#creating-a-role}
