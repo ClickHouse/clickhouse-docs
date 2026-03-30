@@ -48,13 +48,13 @@ Ensure your VPC has working DNS resolution and doesn't block, interfere with, or
 
 The initial BYOC setup creates a privileged IAM role (`ClickHouseManagementRole`) that enables BYOC controllers from ClickHouse Cloud to manage your infrastructure. This can be performed using either a [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz).
 
-When deploying for a BYO-VPC setup, set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud does not receive permissions to modify your customer-managed VPC.
+When deploying for a `BYO-VPC` setup, set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud doesn't receive permissions to modify your customer-managed VPC.
 
 :::note
-Storage buckets, Kubernetes cluster, and compute resources required for running ClickHouse are not included in this initial setup. They will be provisioned in a later step. While you control your VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other essential resources in your AWS account.
+Storage buckets, Kubernetes cluster, and compute resources required for running ClickHouse aren't included in this initial setup. They will be provisioned in a later step. While you control your VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other essential resources in your AWS account.
 :::
 
-#### Alternative Terraform module {#terraform-module-aws}
+#### Alternative terraform module {#terraform-module-aws}
 
 If you prefer to use Terraform instead of CloudFormation, use the following module:
 
