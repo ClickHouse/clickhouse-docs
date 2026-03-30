@@ -292,9 +292,9 @@ Compact MergeTree 파트에서 서브컬럼을 효율적으로 읽으려면 Merg
 :::
 
 
-## JSON 하위 객체를 하위 컬럼으로 읽기 \{#reading-json-sub-objects-as-sub-columns\}
+## JSON 하위 객체를 서브컬럼으로 읽기 \{#reading-json-sub-objects-as-sub-columns\}
 
-`JSON` 타입에서는 특수한 문법 `json.^some.path`를 사용하여 중첩 객체를 `JSON` 타입의 하위 컬럼으로 읽을 수 있습니다.
+`JSON` 타입에서는 특수한 문법 `json.^some.path`를 사용하여 중첩 객체를 `JSON` 타입의 서브컬럼으로 읽을 수 있습니다.
 
 ```sql title="Query"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -323,7 +323,61 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-하위 객체를 하위 컬럼으로 읽으면 JSON 데이터를 거의 전체 스캔해야 할 수 있어 비효율적일 수 있습니다.
+경로가 기본 (`map`) [공유 데이터](#shared-data-structure)에 저장된 경우, 서브 객체 서브컬럼을 읽으려면 전체 공유 데이터 구조를 스캔해야 하므로 비효율적일 수 있습니다. `map_with_buckets` 또는 `advanced` 공유 데이터의 시리얼화를 사용하면 공유 데이터에서 서브컬럼을 읽는 작업이 크게 최적화됩니다.
+:::
+
+## JSON 결합 서브컬럼 읽기 \{#reading-json-combined-sub-columns\}
+
+`JSON` 타입은 특수 구문 `json.@some.path`를 사용해 경로를 **결합 서브컬럼**으로 읽을 수 있습니다.
+지정한 경로의 결합 서브컬럼은 다음을 반환합니다.
+
+* 해당 경로에 리터럴 값이 있으면, 그 경로에 저장된 리터럴 값을 `Dynamic`으로 반환합니다.
+* 해당 경로에 리터럴 값은 없지만 중첩된 하위 경로가 있으면, 해당 경로의 JSON 하위 객체를 `Dynamic`으로 반환합니다.
+* 해당 경로에 리터럴 값도 없고 하위 경로도 없으면, `NULL`을 반환합니다.
+
+이 기능은 서로 다른 행에서 동일한 경로가 스칼라 값일 수도 있고 중첩 객체일 수도 있는 경우에 유용하며, 리터럴 서브컬럼(`json.a`)과 하위 객체 서브컬럼(`json.^a`)을 각각 따로 쿼리하는 것보다 더 편리합니다.
+
+다음 예시에서는 경로 `a`에 대한 세 가지 서브컬럼 유형을 모두 비교합니다.
+
+```sql title="Query"
+CREATE TABLE test (json JSON) ENGINE = Memory;
+INSERT INTO test VALUES ('{"a" : 42, "b" : {"c" : 1, "d" : "Hello"}}'), ('{"a" : {"x": 1, "y": 2}, "b" : {"c" : 1}}'), ('{"c" : "World"}');
+SELECT json FROM test;
+```
+
+```text title="Response"
+┌─json────────────────────────────┐
+│ {"a":42,"b":{"c":1,"d":"Hello"}}│
+│ {"a":{"x":1,"y":2},"b":{"c":1}}│
+│ {"c":"World"}                   │
+└─────────────────────────────────┘
+```
+
+```sql title="Query"
+SELECT
+    json.a,
+    dynamicType(json.a),
+    json.^a,
+    toTypeName(json.^a),
+    json.@a,
+    dynamicType(json.@a)
+FROM test;
+```
+
+```text title="Response"
+┌─json.a─┬─dynamicType(json.a)─┬─json.^a───────┬─toTypeName(json.^a)─┬─json.@a───────┬─dynamicType(json.@a)─┐
+│ 42     │ Int64               │ {}            │ JSON                │ 42            │ Int64                │
+│ NULL   │ None                │ {"x":1,"y":2} │ JSON                │ {"x":1,"y":2} │ JSON                 │
+│ NULL   │ None                │ {}            │ JSON                │ NULL          │ None                 │
+└────────┴─────────────────────┴───────────────┴─────────────────────┴───────────────┴──────────────────────┘
+```
+
+* 행 1: `a`에는 리터럴 `42`가 들어 있습니다. `json.a`는 이를 `Dynamic(Int64)`로 반환하고, `json.^a`는 빈 하위 객체 `{}`를 반환합니다(`a` 아래에 중첩된 키가 없음). `json.@a`는 리터럴 `42`를 반환합니다.
+* 행 2: `a`에는 중첩 객체가 들어 있습니다. `json.a`는 `NULL`을 반환합니다(해당 경로에 리터럴이 없음). `json.^a`는 하위 객체를 `JSON`으로 반환하고, `json.@a`도 하위 객체를 `Dynamic(JSON)`로 반환합니다.
+* 행 3: `a`가 아예 존재하지 않습니다. `json.a`와 `json.@a`는 모두 `NULL`을 반환하는 반면, `json.^a`는 빈 `{}`를 반환합니다.
+
+:::note
+경로가 기본(`map`) [공유 데이터](#shared-data-structure)에 저장된 경우, 결합된 서브컬럼을 읽으려면 전체 공유 데이터 구조를 스캔해야 하므로 비효율적일 수 있습니다. `map_with_buckets` 또는 `advanced` 공유 데이터의 시리얼화에서는 공유 데이터에서 서브컬럼을 읽는 작업이 크게 최적화됩니다.
 :::
 
 

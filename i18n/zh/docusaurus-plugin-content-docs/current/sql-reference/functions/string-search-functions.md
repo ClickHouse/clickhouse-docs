@@ -1008,6 +1008,57 @@ SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 └──────────────────────────┘
 ```
 
+## highlight \{#highlight\}
+
+引入于：v26.4.0
+
+通过用 HTML 标签包裹文本字符串中搜索词的匹配项来高亮显示它们。
+
+该函数执行 ASCII 不区分大小写的匹配。如果多个搜索词在文本中重叠或相邻，匹配区域会合并为一个高亮范围。
+
+**语法**
+
+```sql
+highlight(haystack, needles[, open_tag, close_tag])
+```
+
+**参数**
+
+* `haystack` — 要搜索的文本。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `needles` — 要高亮的搜索词数组。[`const Array(String)`](/sql-reference/data-types/array)
+* `open_tag` — 在每个匹配项前插入的起始标签。默认值：`<em>`。[`const String`](/sql-reference/data-types/string)
+* `close_tag` — 在每个匹配项后插入的结束标签。默认值：`</em>`。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回将匹配词用指定标签包裹后的输入文本。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**基本高亮**
+
+```sql title=Query
+SELECT highlight('The quick brown fox', ['quick', 'fox'])
+```
+
+```response title=Response
+┌─highlight('The quick brown fox', ['quick', 'fox'])─┐
+│ The <em>quick</em> brown <em>fox</em>              │
+└────────────────────────────────────────────────────┘
+```
+
+**自定义标签**
+
+```sql title=Query
+SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
+```
+
+```response title=Response
+┌─highlight('Hello World', ['hello'], '<b>', '</b>')─┐
+│ <b>Hello</b> World                                 │
+└────────────────────────────────────────────────────┘
+```
+
 ## ilike \{#ilike\}
 
 自 v20.6.0 引入

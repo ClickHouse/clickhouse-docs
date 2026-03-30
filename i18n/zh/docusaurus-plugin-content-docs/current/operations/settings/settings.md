@@ -4746,6 +4746,18 @@ grace hash join 的 bucket 数量上限
 
 Hedged 请求与副本建立连接的超时时间
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "用于限制每行高亮匹配数量的新设置，以防止内存使用过高。"}]}]} />
+
+设置 [highlight](/sql-reference/functions/string-search-functions#highlight) 函数中每行高亮匹配的最大数量。在大段文本中高亮高度重复的模式时，可使用此设置防止内存使用过高。
+
+可能的值：
+
+* 正整数。
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />

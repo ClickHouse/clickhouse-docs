@@ -71,7 +71,7 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 对于有高级安全要求或严格合规策略的组织，您可以提供自己的 IAM 角色，而无需由 ClickHouse Cloud 为您创建。这样，您可以完全控制 IAM 权限，并执行组织内部的安全策略。
 
 :::info
-客户管理的 IAM 角色目前处于私有预览阶段。如果您需要此功能，请联系 ClickHouse 支持团队，讨论您的具体需求和时间安排。
+客户管理的 IAM 角色目前处于私有预览阶段。如果您需要此功能，请联系 ClickHouse Support，讨论您的具体需求和时间安排。
 
 该功能可用后，您将能够：
 
@@ -80,4 +80,4 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 * 完全控制角色权限和信任关系
   :::
 
-有关 ClickHouse Cloud 默认创建的 IAM 角色的信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/privilege)。
+有关 ClickHouse Cloud 默认创建的 IAM 角色的信息，请参阅 [BYOC 特权参考](/cloud/reference/byoc/reference/privilege)。
