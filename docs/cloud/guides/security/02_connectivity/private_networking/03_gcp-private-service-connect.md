@@ -215,7 +215,11 @@ use `endpointServiceId`<sup>API</sup> or `Service name`<sup>console</sup> from [
 There are various ways to configure DNS. Please set up DNS according to your specific use case.
 :::
 
-You need to point "DNS name", taken from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step, to GCP Private Service Connect endpoint IP address. This ensures that services/components within your VPC/Network can resolve it properly.
+You need to point the "DNS name", taken from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step, to the GCP Private Service Connect endpoint IP address. This ensures that services/components within your VPC/Network can resolve it properly.
+
+:::important
+Connecting to the PSC endpoint IP address directly is not sufficient. ClickHouse Cloud routes connections based on the DNS name (via SNI in the TLS handshake), so you must configure DNS to resolve the private DNS hostname (`privateDnsHostname`) to the endpoint IP address. Without this, ClickHouse Cloud cannot identify which service the connection is intended for and the connection will fail.
+:::
 
 ## Add Endpoint ID to ClickHouse Cloud organization {#add-endpoint-id-to-clickhouse-cloud-organization}
 
