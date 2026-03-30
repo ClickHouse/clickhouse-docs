@@ -71,13 +71,13 @@ VPC는 직접 제어하더라도, ClickHouse Cloud가 AWS 계정 내에서 Kuber
 고급 보안 요구 사항이나 엄격한 규정 준수 정책이 있는 조직에서는 ClickHouse Cloud가 IAM 역할을 생성하도록 하는 대신 자체 IAM 역할을 제공할 수 있습니다. 이 접근 방식은 IAM 권한을 완전히 제어할 수 있게 하며, 조직의 보안 정책을 시행할 수 있도록 합니다.
 
 :::info
-고객 관리형 IAM 역할은 현재 비공개 프리뷰 상태입니다. 이 기능이 필요하면 구체적인 요구 사항과 일정에 대해 논의할 수 있도록 ClickHouse Support에 문의하십시오.
+고객 관리형 IAM 역할은 비공개 프리뷰 상태입니다. 이 기능이 필요하면 구체적인 요구 사항과 일정에 대해 논의할 수 있도록 ClickHouse Support에 문의하십시오.
 
 이 기능이 제공되면 다음 작업을 수행할 수 있습니다:
 
 * ClickHouse Cloud에서 사용할 사전 구성된 IAM 역할 제공
 * 교차 계정 액세스에 사용되는 `ClickHouseManagementRole`의 IAM 관련 권한에 대한 쓰기 권한 제거
 * 역할 권한 및 신뢰 관계를 완전히 제어
-:::
+  :::
 
 ClickHouse Cloud가 기본적으로 생성하는 IAM 역할에 대한 자세한 내용은 [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege)를 참조하십시오.

@@ -19,21 +19,21 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 ## 架构 \{#architecture\}
 
-BYOC 将运行在 ClickHouse VPC 中的 **ClickHouse 控制平面（control plane）** 与完全在你自己的云账号中运行的 **数据平面（data plane）** 分离开来。ClickHouse VPC 承载 ClickHouse Cloud Console、认证与用户管理、API、计费，以及诸如 BYOC controller 和告警/事件处理工具等基础设施管理组件。这些服务用于编排和监控你的部署，但不会存储你的数据。
+BYOC 将运行在 ClickHouse VPC 中的 **ClickHouse 控制平面 (control plane)&#x20;**&#x20;与完全在你自己的云账户中运行的 **数据平面 (data plane)&#x20;**&#x20;分离开来。ClickHouse VPC 承载 ClickHouse Cloud Console、认证、用户管理、API、计费，以及诸如 BYOC controller 和告警/事件处理工具等基础设施管理组件。这些服务用于编排和监控你的部署，但不会存储你的数据。
 
-在你的 **Customer BYOC VPC** 中，ClickHouse 会预配一个 Kubernetes 集群（例如 Amazon EKS）来运行 ClickHouse 数据平面。如图所示，其中包括 ClickHouse 集群本身、ClickHouse operator，以及入口、DNS、证书管理、状态导出器和抓取器等支撑服务。一个专用监控栈（Prometheus、Grafana、Alertmanager 和 Thanos）也会在你的 VPC 内运行，确保指标与告警产生于并始终保留在你的环境中。
+在你的 **Customer BYOC VPC** 中，ClickHouse 会预配一个 Kubernetes 集群 (例如 Amazon EKS) 来运行 ClickHouse 数据平面。如图所示，其中包括 ClickHouse 集群本身、ClickHouse operator，以及入口、DNS、证书管理、状态导出器和抓取器等支撑服务。一个专用监控栈 (Prometheus、Grafana、Alertmanager 和 Thanos) 也会在你的 VPC 内运行，确保指标与告警产生于并始终保留在你的环境中。
 
 <br />
 
-<Image img={byoc1} size="lg" alt="BYOC 架构" background='black'/>
+<Image img={byoc1} size="lg" alt="BYOC 架构" background="black" />
 
 <br />
 
 ClickHouse Cloud 会在你的账号中部署的主要云资源包括：
 
-* **VPC：** 一个专用于你 ClickHouse 部署的 Virtual Private Cloud。它可以由 ClickHouse 管理，也可以由你（客户）自行管理，并通常与你的应用 VPC 进行 VPC 对等连接（VPC Peering）。
+* **VPC：** 一个专用于你 ClickHouse 部署的 Virtual Private Cloud。它可以由 ClickHouse 管理，也可以由你 (客户) 自行管理，并通常与你的应用 VPC 进行 VPC 对等连接 (VPC Peering) 。
 * **IAM 角色和策略：** Kubernetes、ClickHouse 服务以及监控栈所需的角色与权限。这些既可以由 ClickHouse 预配，也可以由客户提供。
-* **存储桶：** 用于存储数据分区片段、备份，以及（可选的）长期指标和日志归档。
+* **存储桶：** 用于存储、备份，以及 (可选的) 长期指标和日志归档。
 * **Kubernetes 集群：** 可以是 Amazon EKS、Google GKE 或 Azure AKS，具体取决于你的云服务商，用于承载架构图中所示的 ClickHouse 服务器及支撑服务。
 
 默认情况下，ClickHouse Cloud 会预配一个新的专用 VPC，并设置所需的 IAM 角色，以确保 Kubernetes 服务的安全运行。对于具有高级网络或安全需求的组织，还可以选择自行管理 VPC 和 IAM 角色。这种方式允许对网络配置进行更大程度的自定义，并对权限进行更精细的控制。但如果选择自管这些资源，你需要承担更多的运维责任。
@@ -44,7 +44,7 @@ ClickHouse Cloud 会在你的账号中部署的主要云资源包括：
 
 ### 控制平面通信 \{#control-plane-communication\}
 
-ClickHouse VPC 通过 HTTPS（443 端口）与您的 BYOC VPC 通信，用于执行服务管理操作，如配置变更、健康检查和部署命令。这些流量仅承载用于编排的控制平面数据。关键遥测数据和告警则从您的 BYOC VPC 流向 ClickHouse VPC，用于资源使用情况和健康状况监控。
+ClickHouse VPC 通过 HTTPS (443 端口) 与您的 BYOC VPC 通信，用于执行服务管理操作，如配置变更、健康检查和部署命令。这些流量仅承载用于编排的控制平面数据。关键遥测数据和告警则从您的 BYOC VPC 流向 ClickHouse VPC，用于资源使用情况和健康状况监控。
 
 ## BYOC 的关键要求 \{#key-requirements\}
 
@@ -54,13 +54,13 @@ BYOC 部署模型需要两个核心组件，以确保运行可靠、维护简便
 
 ClickHouse Cloud 需要跨账户 IAM 权限，才能在你的云账户中创建和管理资源，以便 ClickHouse 能够：
 
-- **供应基础设施**：创建和配置 VPC、子网、安全组以及其他网络组件
-- **管理 Kubernetes 集群**：部署和维护 EKS/GKE 集群、节点组和集群组件
-- **创建存储资源**：为数据和备份供应 S3 存储桶或等价的对象存储
-- **管理 IAM 角色**：为 Kubernetes 服务账号和支持性服务创建和配置 IAM 角色
-- **运行支持性服务**：部署和管理监控栈、入口控制器以及其他基础设施组件
+* **供应基础设施**：创建和配置 VPC、子网、安全组以及其他网络组件
+* **管理 Kubernetes 集群**：部署和维护 EKS/GKE 集群、节点组和集群组件
+* **创建存储资源**：为数据和备份供应 S3 存储桶或等价的对象存储
+* **管理 IAM 角色**：为 Kubernetes 服务账号和支持性服务创建和配置 IAM 角色
+* **运行支持性服务**：部署和管理监控栈、入口控制器以及其他基础设施组件
 
-这些权限通过你在初始接入流程中创建的跨账户 IAM 角色（AWS）或 service account（GCP）授予。该角色遵循最小权限原则，权限范围仅限于 BYOC 运行所必需的内容。
+这些权限通过你在初始接入流程中创建的跨账户 IAM 角色 (AWS) 或 service account (GCP) 授予。该角色遵循最小权限原则，权限范围仅限于 BYOC 运行所必需的内容。
 
 有关所需具体权限的详细信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/privilege)。
 
