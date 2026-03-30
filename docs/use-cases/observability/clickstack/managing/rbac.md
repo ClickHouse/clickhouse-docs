@@ -48,11 +48,11 @@ ClickStack authenticates through ClickHouse Cloud. Before you can assign ClickSt
 Once a user has Cloud access, they appear in the ClickStack **Team Settings** page where you can assign a ClickStack role.
 
 <Tabs>
-<TabItem value="clickstack" label="ClickStack team settings" default>
-<Image img={team_page_hyperdx} alt="ClickStack Team Settings page showing team members and their roles" size="lg"/>
-</TabItem>
-<TabItem value="cloud" label="Cloud users and roles">
+<TabItem value="cloud" label="Cloud Users and roles">
 <Image img={team_page_cloud} alt="ClickHouse Cloud Users and roles page" size="lg"/>
+</TabItem>
+<TabItem value="clickstack" label="ClickStack Team Settings" default>
+<Image img={team_page_hyperdx} alt="ClickStack Team Settings page showing team members and their roles" size="lg"/>
 </TabItem>
 </Tabs>
 
