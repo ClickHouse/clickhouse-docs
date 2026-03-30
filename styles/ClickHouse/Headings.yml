@@ -27,6 +27,7 @@ exceptions:
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
+  - "AI Notebooks"
   - "ClickHouse Assistant"
   - Azure
   - Azure Blob Storage
