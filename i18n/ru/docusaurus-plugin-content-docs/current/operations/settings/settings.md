@@ -8946,6 +8946,14 @@ FROM default.fuse_tbl AS __table1
 
 Оптимизировать тривиальные запросы вида `INSERT INTO table SELECT ... FROM TABLES`
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY."}]}]} />
+
+Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY.
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
