@@ -22,7 +22,7 @@ import notebook_ai_consent from '@site/static/images/use-cases/observability/hyp
 
 <PrivatePreviewBadge/>
 
-AI Notebooks are an interactive investigation tool in HyperDX that combines an AI agent with manual analysis. You can describe an issue in plain language, and the AI agent will query logs, traces, and metrics on your behalf — surfacing relevant data, charts, and summaries as a series of tiles. You can also add your own tiles (charts, tables, searches, and markdown notes) alongside the AI-generated output, building a complete record of an investigation.
+AI Notebooks are an interactive investigation tool in ClickStack that combines an AI agent with manual analysis. You can describe an issue in plain language, and the AI agent will query logs, traces, and metrics on your behalf — surfacing relevant data, charts, and summaries as a series of tiles. You can also add your own tiles (charts, tables, searches, and markdown notes) alongside the AI-generated output, building a complete record of an investigation.
 
 <Image img={notebook_hero} alt="AI Notebook investigating a Visa cache full outage" size="lg"/>
 
@@ -32,7 +32,6 @@ AI Notebooks are only available in Managed ClickStack deployments.
 
 ## Setup {#setup}
 
-<PrivatePreviewBadge/>
 
 AI Notebooks are currently in private preview in ClickHouse Cloud. AI models and providers are managed automatically by the platform.
 
