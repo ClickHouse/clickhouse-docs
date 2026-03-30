@@ -24,7 +24,7 @@ import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-priva
 
 # Private Service Connect \{#private-service-connect\}
 
-<ScalePlanFeatureBadge feature="GCP PSC"/>
+<ScalePlanFeatureBadge feature="GCP PSC" />
 
 Private Service Connect (PSC) — это сетевая возможность Google Cloud, которая позволяет потребителям приватно получать доступ к управляемым сервисам внутри их виртуальной частной облачной сети (VPC). Аналогично, она позволяет поставщикам управляемых сервисов размещать эти сервисы в отдельных VPC-сетях и предоставлять своим потребителям приватное подключение.
 
@@ -37,18 +37,20 @@ Private Service Connect (PSC) — это сетевая возможность G
 :::
 
 **Важные замечания по использованию Private Service Connect Global Access**:
+
 1. Регионы, использующие Global Access, должны принадлежать одной и той же VPC.
-1. Global Access необходимо явно включить на уровне PSC (см. скриншот ниже).
-1. Убедитесь, что настройки межсетевого экрана не блокируют доступ к PSC из других регионов.
-1. Имейте в виду, что у вас могут возникнуть расходы на межрегиональную передачу данных GCP.
+2. Global Access необходимо явно включить на уровне PSC (см. скриншот ниже).
+3. Убедитесь, что настройки межсетевого экрана не блокируют доступ к PSC из других регионов.
+4. Имейте в виду, что у вас могут возникнуть расходы на межрегиональную передачу данных GCP.
 
 Межрегиональные подключения не поддерживаются. Регионы поставщика и потребителя должны совпадать. Однако вы можете подключаться из других регионов внутри вашей VPC, включив [Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access) на уровне Private Service Connect (PSC).
 
 **Выполните следующие действия, чтобы включить GCP PSC**:
+
 1. Получите ресурс service attachment в GCP для Private Service Connect.
-1. Создайте endpoint сервиса (service endpoint).
-1. Добавьте идентификатор конечной точки (Endpoint ID) в сервис ClickHouse Cloud.
-1. Добавьте идентификатор конечной точки (Endpoint ID) в список разрешённых подключений (allow list) сервиса ClickHouse.
+2. Создайте конечную точку сервиса (service endpoint).
+3. Добавьте идентификатор конечной точки (Endpoint ID) в сервис ClickHouse Cloud.
+4. Добавьте идентификатор конечной точки (Endpoint ID) в список разрешённых подключений (allow list) сервиса ClickHouse.
 
 ## Внимание \{#attention\}
 
@@ -102,7 +104,7 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 
 В консоли ClickHouse Cloud откройте сервис, к которому вы хотите подключиться через Private Service Connect, затем откройте меню **Settings**. Нажмите кнопку **Set up private endpoint**. Запишите значения **Service name** (`endpointServiceId`) и **DNS name** (`privateDnsHostname`). Вы будете использовать их в последующих шагах.
 
-<Image img={gcp_privatelink_pe_create} size="lg" alt="Приватные конечные точки" border />
+<Image img={gcp_privatelink_pe_create} size="lg" alt="Частные конечные точки" border />
 
 ### Вариант 2: API \{#option-2-api\}
 
@@ -126,9 +128,9 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ## Создание конечной точки сервиса \{#create-service-endpoint\}
 
 :::important
-В этом разделе рассматриваются специфичные для ClickHouse детали настройки ClickHouse через GCP PSC (Private Service Connect). Шаги, связанные с GCP, приведены в качестве справочной информации, чтобы указать, где искать нужные настройки, но со временем они могут меняться без уведомления со стороны облачного провайдера GCP. Пожалуйста, настраивайте GCP в соответствии с вашим конкретным сценарием использования.  
+В этом разделе рассматриваются специфичные для ClickHouse детали настройки ClickHouse через GCP PSC (Private Service Connect). Шаги, связанные с GCP, приведены в качестве справочной информации, чтобы указать, где искать нужные настройки, но со временем они могут меняться без уведомления со стороны облачного провайдера GCP. Пожалуйста, настраивайте GCP в соответствии с вашим конкретным сценарием использования.
 
-Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых конечных точек GCP PSC и DNS-записей.  
+Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых конечных точек GCP PSC или DNS-записей.
 
 По любым вопросам, связанным с задачами по настройке GCP, обращайтесь непосредственно в службу поддержки GCP.
 :::
@@ -224,13 +226,17 @@ output "psc_connection_id" {
 
 Необходимо указать DNS-имя, полученное на шаге [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect), на IP-адрес конечной точки GCP Private Service Connect. Это гарантирует, что сервисы и компоненты внутри вашей VPC/сети смогут корректно разрешать это имя.
 
+:::important
+Недостаточно подключаться напрямую к IP-адресу конечной точки PSC. ClickHouse Cloud маршрутизирует соединения на основе DNS-имени (через SNI в ходе TLS-рукопожатия), поэтому необходимо настроить DNS так, чтобы частное DNS-имя хоста (`privateDnsHostname`) разрешалось в IP-адрес конечной точки. В противном случае ClickHouse Cloud не сможет определить, для какого сервиса предназначено это соединение, и подключение завершится ошибкой.
+:::
+
 ## Добавление Endpoint ID в организацию ClickHouse Cloud \{#add-endpoint-id-to-clickhouse-cloud-organization\}
 
 ### Вариант 1: консоль ClickHouse Cloud \{#option-1-clickhouse-cloud-console-1\}
 
-Чтобы добавить endpoint в вашу организацию, перейдите к шагу [Добавление «Endpoint ID» в список разрешённых сервисов ClickHouse](#add-endpoint-id-to-services-allow-list). Добавление `PSC Connection ID` в список разрешённых сервисов через консоль ClickHouse Cloud автоматически добавляет его в организацию.
+Чтобы добавить конечную точку в вашу организацию, перейдите к шагу [Добавление «Endpoint ID» в список разрешённых сервисов ClickHouse](#add-endpoint-id-to-services-allow-list). Добавление `PSC Connection ID` в список разрешений сервиса через консоль ClickHouse Cloud автоматически добавляет его в организацию.
 
-Чтобы удалить endpoint, откройте **Organization details → Private Endpoints** и нажмите кнопку удаления, чтобы удалить endpoint.
+Чтобы удалить конечную точку, откройте **Organization details → Private Endpoints** и нажмите кнопку удаления, чтобы удалить конечную точку.
 
 <Image img={gcp_pe_remove_private_endpoint} size="lg" alt="Удаление Private Endpoint из ClickHouse Cloud" border />
 
@@ -240,7 +246,7 @@ output "psc_connection_id" {
 
 Замените `ENDPOINT_ID` ниже значением из **Endpoint ID** на шаге [Добавление Private Service Connection](#adding-a-private-service-connection).
 
-Чтобы добавить endpoint, выполните:
+Чтобы добавить конечную точку, выполните:
 
 ```bash
 cat <<EOF | tee pl_config_org.json
@@ -339,9 +345,9 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 ```
 
 
-## Доступ к экземпляру с использованием Private Service Connect \{#accessing-instance-using-private-service-connect\}
+## Доступ к экземпляру через Private Service Connect \{#accessing-instance-using-private-service-connect\}
 
-Каждый сервис с включённым Private Link имеет две конечные точки: публичную и приватную. Для подключения по Private Link необходимо использовать приватную конечную точку `privateDnsHostname`, значение которой берётся из раздела [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
+У каждой службы с включённым Private Service Connect есть публичная и частная конечная точка. Чтобы подключиться через Private Service Connect, необходимо использовать частную конечную точку — `privateDnsHostname` из шага [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
 
 ### Получение приватного DNS-имени хоста \{#getting-private-dns-hostname\}
 
