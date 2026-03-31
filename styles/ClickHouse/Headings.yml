@@ -622,6 +622,7 @@ exceptions:
   - "NOAA Global Historical Climatology Network"
   - "New York Public Library"
   - Temporal
+  - Terraform
   - TOAST
   # SQL keywords and compound terms
   - BACKUP
