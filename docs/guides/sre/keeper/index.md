@@ -104,7 +104,7 @@ The main parameters for each `<server>` are:
 :::note
 In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
 
-If the host of a Keeper instance can change, we recommend to define and use a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
+If the host of a Keeper instance can change, we recommend defining and using a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
 :::
 
 :::note
@@ -164,7 +164,7 @@ clickhouse keeper --config /etc/your_path_to_config/config.xml
 
 ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives general information about the server and connected clients, `srvr` gives extended details on the server, and `cons` gives extended details on connections.
 
-The 4lw commands has a white list configuration `four_letter_word_white_list` which has default value `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`.
+The 4lw commands have a white list configuration `four_letter_word_white_list` which has default value `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`.
 
 You can issue the commands to ClickHouse Keeper via telnet or nc, at the client port.
 
@@ -547,7 +547,7 @@ These settings are configured under `coordination_settings` in your [Keeper conf
 
 ### Recovering after losing quorum {#recovering-after-losing-quorum}
 
-Because ClickHouse Keeper uses Raft it can tolerate certain amount of node crashes depending on the cluster size. \
+Because ClickHouse Keeper uses Raft it can tolerate a certain amount of node crashes depending on the cluster size. \
 E.g. for a 3-node cluster, it will continue working correctly if only 1 node crashes.
 
 Cluster configuration can be dynamically configured, but there are some limitations. Reconfiguration relies on Raft also
@@ -561,7 +561,7 @@ Important things to note before continuing:
 - Make sure that the failed nodes can't connect to the cluster again.
 - Don't start any of the new nodes until it's specified in the steps.
 
-After making sure that the above things are true, you need to do following:
+After making sure that the above things are true, you need to do the following:
 1. Pick a single Keeper node to be your new leader. Be aware that the data of that node will be used for the entire cluster, so we recommend using a node with the most up-to-date state.
 2. Before doing anything else, make a backup of the `log_storage_path` and `snapshot_storage_path` folders of the picked node.
 3. Reconfigure the cluster on all of the nodes you want to use.
