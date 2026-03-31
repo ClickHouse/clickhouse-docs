@@ -131,7 +131,13 @@ Every column except primary (ordering) keys and Fivetran metadata columns is cre
 as [Nullable(T)](/sql-reference/data-types/nullable), where `T` is a
 ClickHouse Cloud type based on the [data types mapping](#type-mapping).
 
-Every destination table includes the following metadata columns:
+The table structure varies depending on the Fivetran
+[sync mode](https://fivetran.com/docs/using-fivetran/features#deletedrowhandling)
+configured for the connector: **soft delete** (default) or **history mode** (SCD Type 2).
+
+### Soft delete mode {#soft-delete-mode}
+
+In soft delete mode, every destination table includes the following metadata columns:
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -139,7 +145,7 @@ Every destination table includes the following metadata columns:
 | `_fivetran_deleted` | `Bool` | Soft delete marker. Set to `true` when the source record is deleted. |
 | `_fivetran_id` | `String` | Auto-generated unique identifier. Only present when the source table has no primary keys. |
 
-### Single primary key in the source table {#single-pk}
+#### Single primary key in the source table {#single-pk}
 
 For example, source table `users` has a primary key column `id` (`INT`) and a regular column `name` (`STRING`).
 The destination table will be defined as follows:
@@ -158,7 +164,7 @@ SETTINGS index_granularity = 8192
 
 In this case, the `id` column is chosen as a table sorting key.
 
-### Multiple primary keys in the source table {#multiple-pks}
+#### Multiple primary keys in the source table {#multiple-pks}
 
 If the source table has multiple primary keys, they are used in order of their appearance in the Fivetran source table
 definition.
@@ -181,7 +187,7 @@ SETTINGS index_granularity = 8192
 
 In this case, `id` and `name` columns are chosen as table sorting keys.
 
-### No primary keys in the source table {#no-pks}
+#### No primary keys in the source table {#no-pks}
 
 If the source table has no primary keys, a unique identifier will be added by Fivetran as a `_fivetran_id` column.
 Consider an `events` table that only has the `event` (`STRING`) and `timestamp` (`LOCALDATETIME`) columns in the source.
@@ -201,6 +207,111 @@ SETTINGS index_granularity = 8192
 ```
 
 Since `_fivetran_id` is unique and there are no other primary key options, it is used as a table sorting key.
+
+### History mode (SCD Type 2) {#history-mode}
+
+When [history mode](https://fivetran.com/docs/using-fivetran/features#historymode) is enabled,
+the destination preserves every version of each record rather than overwriting previous values.
+This implements [Slowly Changing Dimension Type 2](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) (SCD Type 2),
+maintaining a complete audit trail of all changes.
+
+In history mode, every destination table includes the following metadata columns:
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `_fivetran_synced` | `DateTime64(9, 'UTC')` | Timestamp when the record was synced by Fivetran. Used as the version column for `SharedReplacingMergeTree`. |
+| `_fivetran_start` | `DateTime64(9, 'UTC')` | Timestamp when this version of the record became active. Part of the table's sorting key. |
+| `_fivetran_end` | `Nullable(DateTime64(9, 'UTC'))` | Timestamp when this version was superseded. Set to `2262-04-11 23:47:16` for currently active records. |
+| `_fivetran_active` | `Nullable(Bool)` | Whether this is the currently active version of the record. |
+| `_fivetran_id` | `String` | Auto-generated unique identifier. Only present when the source table has no primary keys. |
+
+The `_fivetran_start` column is always included in the `ORDER BY` clause as the last element of the compound sorting key.
+This allows multiple versions of the same record (with different start times) to coexist in the table.
+
+When a record is updated:
+- The previous version's `_fivetran_end` is set to the new version's `_fivetran_start` minus one nanosecond, and `_fivetran_active` is set to `false`.
+- The new version is inserted with `_fivetran_active` set to `true` and `_fivetran_end` set to `2262-04-11 23:47:16.000000000` (the maximum `DateTime64(9)` value).
+
+#### Single primary key in the source table {#history-single-pk}
+
+For example, source table `users` has a primary key column `id` (`INT`) and regular columns `name` (`STRING`) and `status` (`STRING`).
+The destination table in history mode will be defined as follows:
+
+```sql
+CREATE TABLE `users`
+(
+    `id`               Int32,
+    `name`             Nullable(String),
+    `status`           Nullable(String),
+    `_fivetran_synced` DateTime64(9, 'UTC'),
+    `_fivetran_start`  DateTime64(9, 'UTC'),
+    `_fivetran_end`    Nullable(DateTime64(9, 'UTC')),
+    `_fivetran_active` Nullable(Bool)
+) ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}', _fivetran_synced)
+ORDER BY (id, _fivetran_start)
+SETTINGS index_granularity = 8192
+```
+
+In this case, `id` and `_fivetran_start` form the compound sorting key.
+
+After a few syncs, the table might contain the following data:
+
+| id | name    | status | \_fivetran\_start                | \_fivetran\_end                  | \_fivetran\_active |
+|----|---------|--------|----------------------------------|----------------------------------|--------------------|
+| 1  | name 1  | TODO   | 2025-11-10 20:57:00.000000000    | 2025-11-11 20:56:59.999000000    | false              |
+| 1  | name 11 | TODO   | 2025-11-11 20:57:00.000000000    | 2262-04-11 23:47:16.000000000    | true               |
+| 2  | name 2  | TODO   | 2025-11-10 20:57:00.000000000    | 2262-04-11 23:47:16.000000000    | true               |
+
+Record `id=1` has two versions: the original (`name 1`, inactive) and the updated one (`name 11`, active).
+Record `id=2` has only one version, which is currently active.
+
+#### Multiple primary keys in the source table {#history-multiple-pks}
+
+If the source table has multiple primary keys, they are all included in the `ORDER BY` together with `_fivetran_start` as the last element.
+
+For example, there is a source table `items` with primary key columns `id` (`INT`) and `name` (`STRING`), plus an
+additional regular column `description` (`STRING`). The destination table in history mode will be defined as follows:
+
+```sql
+CREATE TABLE `items`
+(
+    `id`               Int32,
+    `name`             String,
+    `description`      Nullable(String),
+    `_fivetran_synced` DateTime64(9, 'UTC'),
+    `_fivetran_start`  DateTime64(9, 'UTC'),
+    `_fivetran_end`    Nullable(DateTime64(9, 'UTC')),
+    `_fivetran_active` Nullable(Bool)
+) ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}', _fivetran_synced)
+ORDER BY (id, name, _fivetran_start)
+SETTINGS index_granularity = 8192
+```
+
+In this case, `id`, `name`, and `_fivetran_start` form the compound sorting key.
+
+#### No primary keys in the source table {#history-no-pks}
+
+If the source table has no primary keys, a unique identifier will be added by Fivetran as a `_fivetran_id` column,
+and `_fivetran_start` is appended to the sorting key.
+Consider an `events` table that only has the `event` (`STRING`) and `timestamp` (`LOCALDATETIME`) columns in the source.
+The destination table in history mode is as follows:
+
+```sql
+CREATE TABLE events
+(
+    `event`            Nullable(String),
+    `timestamp`        Nullable(DateTime),
+    `_fivetran_id`     String,
+    `_fivetran_synced` DateTime64(9, 'UTC'),
+    `_fivetran_start`  DateTime64(9, 'UTC'),
+    `_fivetran_end`    Nullable(DateTime64(9, 'UTC')),
+    `_fivetran_active` Nullable(Bool)
+) ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}', _fivetran_synced)
+ORDER BY (_fivetran_id, _fivetran_start)
+SETTINGS index_granularity = 8192
+```
+
+Since `_fivetran_id` and `_fivetran_start` form the compound sorting key.
 
 ### Selecting the latest version of the data without duplicates {#selecting-latest-version}
 
