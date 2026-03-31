@@ -20,27 +20,32 @@ LOCALE_CONFIG = {
     'en': {
         'base_path': '',  # docs/ and knowledgebase/ at root
         'url_prefix': '',
-        'index_suffix': ''
+        'index_suffix': '',
+        'algolia_language': 'en'
     },
     'jp': {
         'base_path': 'i18n/jp/docusaurus-plugin-content-docs/current',
         'url_prefix': '/jp',
-        'index_suffix': '-jp'
+        'index_suffix': '-jp',
+        'algolia_language': 'ja'
     },
     'zh': {
         'base_path': 'i18n/zh/docusaurus-plugin-content-docs/current',
         'url_prefix': '/zh',
-        'index_suffix': '-zh'
+        'index_suffix': '-zh',
+        'algolia_language': 'zh'
     },
     'ru': {
         'base_path': 'i18n/ru/docusaurus-plugin-content-docs/current',
         'url_prefix': '/ru',
-        'index_suffix': '-ru'
+        'index_suffix': '-ru',
+        'algolia_language': 'ru'
     },
     'ko': {
         'base_path': 'i18n/ko/docusaurus-plugin-content-docs/current',
         'url_prefix': '/ko',
-        'index_suffix': '-ko'
+        'index_suffix': '-ko',
+        'algolia_language': 'ko'
     }
 }
 
@@ -456,15 +461,22 @@ def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
     return page_rank
 
 
-def create_new_index(client, index_name):
+def create_new_index(client, index_name, locale='en'):
     try:
         client.delete_index(index_name)
         print(f"Temporary index '{index_name}' deleted successfully.")
     except:
         print(f"Temporary index '{index_name}' does not exist or could not be deleted")
-    client.set_settings(index_name, settings['settings'])
+    locale_config = LOCALE_CONFIG.get(locale, LOCALE_CONFIG['en'])
+    algolia_language = locale_config['algolia_language']
+    index_settings = settings['settings'].copy()
+    index_settings['indexLanguages'] = [algolia_language]
+    index_settings['queryLanguages'] = [algolia_language]
+    if algolia_language != 'en':
+        index_settings.pop('optionalWords', None)
+    client.set_settings(index_name, index_settings)
     client.save_rules(index_name, settings['rules'])
-    print(f"Settings applied to temporary index '{index_name}'.")
+    print(f"Settings applied to temporary index '{index_name}' (language: {algolia_language}).")
 
 
 def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
@@ -480,7 +492,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
     temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
     if not dry_run:
-        create_new_index(client, temp_index_name)
+        create_new_index(client, temp_index_name, locale=locale)
     docs = []
     
     # For non-English locales, use the locale-specific path
@@ -549,7 +561,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--locale',
         default='en',
-        choices=['en', 'jp', 'zh', 'ru'],
+        choices=['en', 'jp', 'zh', 'ru', 'ko'],
         help='Locale to index (default: en)'
     )
     args = parser.parse_args()
