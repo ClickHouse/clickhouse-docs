@@ -1013,6 +1013,57 @@ SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 └──────────────────────────┘
 ```
 
+## highlight \{#highlight\}
+
+도입 버전: v26.4.0
+
+텍스트 문자열에서 검색어가 나타나는 부분을 HTML 태그로 감싸 강조 표시합니다.
+
+이 함수는 ASCII 기준으로 대소문자를 구분하지 않고 일치시킵니다. 여러 검색어가 텍스트에서 서로 겹치거나 인접한 경우, 일치한 영역은 하나의 강조 구간으로 병합됩니다.
+
+**구문**
+
+```sql
+highlight(haystack, needles[, open_tag, close_tag])
+```
+
+**인수**
+
+* `haystack` — 검색할 텍스트입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `needles` — 강조 표시할 검색어 배열입니다. [`const Array(String)`](/sql-reference/data-types/array)
+* `open_tag` — 각 일치 항목 앞에 삽입할 여는 태그입니다. 기본값: `<em>`. [`const String`](/sql-reference/data-types/string)
+* `close_tag` — 각 일치 항목 뒤에 삽입할 닫는 태그입니다. 기본값: `</em>`. [`const String`](/sql-reference/data-types/string)
+
+**반환 값**
+
+일치하는 용어를 지정된 태그로 감싼 입력 텍스트를 반환합니다. [`String`](/sql-reference/data-types/string)
+
+**예제**
+
+**기본 강조**
+
+```sql title=Query
+SELECT highlight('The quick brown fox', ['quick', 'fox'])
+```
+
+```response title=Response
+┌─highlight('The quick brown fox', ['quick', 'fox'])─┐
+│ The <em>quick</em> brown <em>fox</em>              │
+└────────────────────────────────────────────────────┘
+```
+
+**사용자 정의 태그**
+
+```sql title=Query
+SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
+```
+
+```response title=Response
+┌─highlight('Hello World', ['hello'], '<b>', '</b>')─┐
+│ <b>Hello</b> World                                 │
+└────────────────────────────────────────────────────┘
+```
+
 ## ilike \{#ilike\}
 
 도입 버전: v20.6.0

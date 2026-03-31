@@ -4746,6 +4746,18 @@ Possible values:
 
 ヘッジ付きリクエストでレプリカへの接続を確立する際の接続タイムアウト
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "過剰なメモリ使用を防ぐために、行ごとのハイライト一致数を制限する新しい設定。"}]}]} />
+
+[highlight](/sql-reference/functions/string-search-functions#highlight) 関数で、行ごとのハイライト一致数の最大値を設定します。大きなテキスト内で繰り返しの多いパターンをハイライトする際に、過剰なメモリ使用を防ぐために使用できます。
+
+設定可能な値:
+
+* 正の整数。
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />

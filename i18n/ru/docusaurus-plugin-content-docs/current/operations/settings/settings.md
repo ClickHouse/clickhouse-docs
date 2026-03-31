@@ -4753,6 +4753,18 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Таймаут при установлении соединения с репликой для hedged-запросов
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "Новая настройка, ограничивающая число совпадений подсветки в строке для защиты от чрезмерного потребления памяти."}]}]} />
+
+Задаёт максимальное число совпадений подсветки в одной строке в функции [highlight](/sql-reference/functions/string-search-functions#highlight). Используйте её, чтобы избежать чрезмерного потребления памяти при подсветке часто повторяющихся шаблонов в больших текстах.
+
+Возможные значения:
+
+* Положительное целое число.
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />
