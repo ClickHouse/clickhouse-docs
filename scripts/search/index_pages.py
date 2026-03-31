@@ -36,6 +36,11 @@ LOCALE_CONFIG = {
         'base_path': 'i18n/ru/docusaurus-plugin-content-docs/current',
         'url_prefix': '/ru',
         'index_suffix': '-ru'
+    },
+    'ko': {
+        'base_path': 'i18n/ko/docusaurus-plugin-content-docs/current',
+        'url_prefix': '/ko',
+        'index_suffix': '-ko'
     }
 }
 
