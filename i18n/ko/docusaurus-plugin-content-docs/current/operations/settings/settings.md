@@ -4750,6 +4750,18 @@ HDFS 엔진 테이블에 데이터를 삽입하기 전에 잘라내기(truncate)
 
 Hedged 요청에서 레플리카에 대한 연결을 설정할 때 적용되는 연결 타임아웃입니다.
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "과도한 메모리 사용을 방지하기 위해 행당 highlight 일치 수를 제한하는 새 설정입니다."}]}]} />
+
+[highlight](/sql-reference/functions/string-search-functions#highlight) 함수에서 행당 highlight 일치의 최대 개수를 설정합니다. 큰 텍스트에서 반복이 매우 많은 패턴을 강조 표시할 때 과도한 메모리 사용을 방지하는 데 사용합니다.
+
+가능한 값:
+
+* 양의 정수.
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />

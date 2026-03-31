@@ -34,72 +34,72 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 
 对于 Enterprise 等级中的服务，所有发布通道均支持配置计划升级时间窗口。该功能允许您在一周内选定某一天并配置一个时间窗口用于执行升级。
 
-## 发行计划 \{#release-schedule\}
+## 发布计划 \{#release-schedule\}
 
 :::important 了解发布日程
-下方显示的日期表示 ClickHouse **开始向各发布通道分阶段推送** 的时间，而不是您的各个服务实际完成升级的时间。
+下方显示的日期表示 ClickHouse **开始向各发布通道分阶段发布** 的时间，而不是您的各个服务实际完成升级的时间。
 
-* 推送过程是自动执行的，并会在数周内逐步完成
-* 已配置预定升级时间窗的服务，会在通道推送结束后的下一周内，于其预定时间窗内完成升级 (从周一 00:00 UTC 开始)
-* 由于推送暂停 (例如节假日冻结) 或健康监控，推送完成时间可能会被延迟
+* 发布过程是自动执行的，并会在数周内逐步完成
+* 已配置计划升级时间窗口的服务，会在通道发布结束后的下一周内，于其计划升级时间窗口内完成升级 (从周一 00:00 UTC 开始)
+* 由于发布暂停 (例如节假日冻结) 或健康监控，发布完成时间可能会被延迟
 
 若要在生产环境升级前进行预先测试，建议对非生产服务使用 Fast 或 Regular 通道，对生产服务使用 Slow 通道。
 :::
 
 <ReleaseSchedule
   releases={[
-  {
-   changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
-   version: '26.2',
-   fast_start_date: '2026-03-30',
-   fast_end_date: '待定',
-   regular_start_date: '待定',
-   regular_end_date: '待定',
-   slow_start_date: '待定',
-   slow_end_date: '待定',
-   fast_progress: 'green',
-   regular_progress: 'green',
-   slow_progress: 'green'
-  },
-  {
-   changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
-   version: '25.12',
-   fast_start_date: '2026-02-10',
-   fast_end_date: '2026-02-11',
-   regular_start_date: '2026-03-09',
-   regular_end_date: '2026-03-18',
-   slow_start_date: '2026-04-06',
-   slow_end_date: '待定',
-   fast_progress: 'green',
-   regular_progress: 'green',
-   slow_progress: 'green',
-   regular_delay_note: '配置了预定升级时间窗的服务，将在 3 月 23 日之后的下一周内，于其预定时间窗内接收 25.12 版本',
- },
- {
-   changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-   version: '25.10',
-   fast_start_date: '2025-12-11',
-   fast_end_date: '2025-12-15',
-   regular_start_date: '2026-01-23',
-   regular_end_date: '2026-03-10',
-   slow_start_date: '2026-03-23',
-   slow_end_date: '待定',
-   fast_progress: 'green',
-   regular_progress: 'green',
-   slow_progress: 'green',
- },
- {
-  changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
-  version: '25.8',
-  fast_start_date: '已完成',
-  fast_end_date: '已完成',
-  regular_start_date: '2025-10-29',
-  regular_end_date: '2025-12-19',
-  slow_start_date: '2026-01-27',
-  slow_end_date: '2026-02-04',
-  fast_progress: 'green',
-  regular_progress: 'green',
-  slow_progress: 'green',
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+ version: '26.2',
+ fast_start_date: '2026-03-31',
+ fast_end_date: '待定',
+ regular_start_date: '待定',
+ regular_end_date: '待定',
+ slow_start_date: '待定',
+ slow_end_date: '待定',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green'
+},
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
+ version: '25.12',
+ fast_start_date: '2026-02-10',
+ fast_end_date: '2026-02-11',
+ regular_start_date: '2026-03-09',
+ regular_end_date: '2026-03-18',
+ slow_start_date: '2026-04-06',
+ slow_end_date: '待定',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green',
+ regular_delay_note: '配置了计划升级时间窗口的服务，将在 3 月 23 日之后的下一周内，于其计划升级时间窗口内接收 25.12 版本',
+},
+{
+ changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+ version: '25.10',
+ fast_start_date: '2025-12-11',
+ fast_end_date: '2025-12-15',
+ regular_start_date: '2026-01-23',
+ regular_end_date: '2026-03-10',
+ slow_start_date: '2026-03-23',
+ slow_end_date: '待定',
+ fast_progress: 'green',
+ regular_progress: 'green',
+ slow_progress: 'green',
+},
+{
+changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+version: '25.8',
+fast_start_date: '已完成',
+fast_end_date: '已完成',
+regular_start_date: '2025-10-29',
+regular_end_date: '2025-12-19',
+slow_start_date: '2026-01-27',
+slow_end_date: '2026-02-04',
+fast_progress: 'green',
+regular_progress: 'green',
+slow_progress: 'green',
 }
 ]}
 />
