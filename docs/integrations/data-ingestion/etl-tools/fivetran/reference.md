@@ -325,7 +325,7 @@ FROM example FINAL
 LIMIT 1000 
 ```
 
-Check out the "optimizing reading queries](/integrations/fivetran/troubleshooting#optimizing-reading-queries)" section in the troubleshooting guide for query optimization tips.
+Check out the [optimizing reading queries](/integrations/fivetran/troubleshooting#optimizing-reading-queries)" section in the troubleshooting guide for query optimization tips.
 
 ## Retries on network failures {#retries-on-network-failures}
 
