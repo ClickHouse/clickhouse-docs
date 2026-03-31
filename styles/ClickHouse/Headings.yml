@@ -27,6 +27,7 @@ exceptions:
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
+  - "AI Notebooks"
   - "ClickHouse Assistant"
   - Azure
   - Azure Blob Storage
@@ -45,6 +46,7 @@ exceptions:
   - CLI
   - ClickHouse
   - ClickHouse Cloud
+  - Control Plane
   - ClickHouse Keeper
   - ClickPipe
   - ClickPipes

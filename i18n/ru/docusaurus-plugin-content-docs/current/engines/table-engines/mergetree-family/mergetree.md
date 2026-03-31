@@ -1265,6 +1265,41 @@ ALTER TABLE tab DROP STATISTICS a;
 Эта лёгкая статистика агрегирует информацию о распределении значений в столбцах. Статистика хранится в каждой части и обновляется при каждой вставке.
 Её можно использовать для оптимизации `prewhere` только если включить `set use_statistics = 1`.
 
+#### Отсечение частей по статистике \{#part-pruning-with-statistics\}
+
+Когда включён параметр `use_statistics_for_part_pruning`, статистику можно использовать для отсечения частей.
+В настоящее время отсечение частей поддерживается только статистикой `MinMax`. Если для столбца определена статистика MinMax, ClickHouse отслеживает минимальные и максимальные значения этого столбца в каждой части.
+Отсечение частей позволяет пропускать чтение целых частей данных, если условие фильтра в запросе не может соответствовать ни одной строке в этой части.
+
+**Пример:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
+
 ### Доступные типы статистики столбцов \{#available-types-of-column-statistics\}
 
 - `MinMax`

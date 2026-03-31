@@ -313,7 +313,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-Если `indexes` = 1, добавляется ключ `Indexes`. Он содержит массив использованных индексов. Каждый индекс описывается как JSON с ключом `Type` (строка `MinMax`, `Partition`, `PrimaryKey` или `Skip`) и дополнительными (необязательными) ключами:
+Если `indexes` = 1, добавляется ключ `Indexes`. Он содержит массив использованных индексов. Каждый индекс описывается как JSON с ключом `Type` (строка `Partition Min-Max`, `Partition`, `Statistics`, `PrimaryKey` или `Skip`) и дополнительными (необязательными) ключами:
 
 * `Name` — имя индекса (в настоящее время используется только для индексов `Skip`).
 * `Keys` — массив столбцов, используемых индексом.
@@ -329,7 +329,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,

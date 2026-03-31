@@ -71,10 +71,11 @@ Rust является необязательной зависимостью дл
 Хотя в режиме release любая современная версия toolchain `rustup` должна работать с этими зависимостями, если вы планируете включить санитайзеры, необходимо использовать версию, у которой `std` в точности совпадает с той, что используется в CI (для которой мы вендорим соответствующие crates):
 
 ```bash
-rustup toolchain install nightly-2025-07-07
-rustup default nightly-2025-07-07
+rustup toolchain install nightly-2026-03-22
+rustup default nightly-2026-03-22
 rustup component add rust-src
 ```
+
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 

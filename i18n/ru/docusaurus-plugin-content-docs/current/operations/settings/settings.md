@@ -8946,6 +8946,14 @@ FROM default.fuse_tbl AS __table1
 
 Оптимизировать тривиальные запросы вида `INSERT INTO table SELECT ... FROM TABLES`
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY."}]}]} />
+
+Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY.
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11999,6 +12007,21 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части
+
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка, позволяющая использовать статистику для отсечения частей при выполнении запроса."}]}]} />
+
+Использовать статистику для фильтрации частей при выполнении запроса.
+
+Если настройка включена, при отсечении в запросах SELECT будет использоваться статистика столбцов (например, статистика MinMax), чтобы исключать части, которые не могут содержать подходящие данные, ещё до чтения каких-либо данных.
+
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
