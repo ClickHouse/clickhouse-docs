@@ -511,6 +511,7 @@ exceptions:
   - Aurora
   - Bindplane
   - BladePipe
+  - Catalog
   - Chainlit
   - Claude
   - "Claude Desktop"
