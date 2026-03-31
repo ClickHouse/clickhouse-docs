@@ -163,13 +163,14 @@ ClickHouse는 [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) 데
 
 현재 다음 카탈로그가 지원됩니다. 전체 설정 방법은 각 카탈로그의 참조 가이드를 참고하십시오.
 
-| Catalog | Formats | Read | Create table | INSERT | Reference guide |
-|---------|---------|:-:|:-:|:-:|---------|
-| [AWS Glue](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ 베타 | ❌ | ❌ | [Glue catalog guide](/use-cases/data-lake/glue-catalog) |
-| [Databricks Unity](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ 실험적 | ❌ | ❌ | [Unity catalog guide](/use-cases/data-lake/unity-catalog) |
-| [Iceberg REST](/use-cases/data-lake/rest-catalog) | Iceberg | ✅ 베타 | ❌ | ❌ | [REST catalog guide](/use-cases/data-lake/rest-catalog) |
-| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ 실험적 | ❌ | ❌ | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
-| [Project Nessie](/use-cases/data-lake/nessie-catalog) | Iceberg | ✅ 실험적 | ❌ | ❌ | [Nessie catalog guide](/use-cases/data-lake/nessie-catalog) |
-| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ 베타 | ❌ | ❌ | [OneLake catalog guide](/use-cases/data-lake/onelake-catalog) |
+| Catalog                                                        | Formats        |  Read | Create table | INSERT | Reference guide                                                     |
+| -------------------------------------------------------------- | -------------- | :---: | :----------: | :----: | ------------------------------------------------------------------- |
+| [AWS Glue Catalog](/use-cases/data-lake/glue-catalog)          | Iceberg        |  ✅ 베타 |       ❌      |    ❌   | [Glue catalog guide](/use-cases/data-lake/glue-catalog)             |
+| [BigLake Metastore](/use-cases/data-lake/biglake-catalog)      | Iceberg        |  ✅ 베타 |       ❌      |    ❌   | [BigLake Metastore guide](/use-cases/data-lake/biglake-catalog)     |
+| [Databricks Unity Catalog](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ 실험적 |       ❌      |    ❌   | [Unity Catalog guide](/use-cases/data-lake/unity-catalog)           |
+| [Iceberg REST](/use-cases/data-lake/rest-catalog)              | Iceberg        |  ✅ 베타 |       ❌      |    ❌   | [REST catalog guide](/use-cases/data-lake/rest-catalog)             |
+| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog)          | Iceberg        | ✅ 실험적 |       ❌      |    ❌   | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
+| [Project Nessie](/use-cases/data-lake/nessie-catalog)          | Iceberg        | ✅ 실험적 |       ❌      |    ❌   | [Nessie catalog guide](/use-cases/data-lake/nessie-catalog)         |
+| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog)      | Iceberg        |  ✅ 베타 |       ❌      |    ❌   | [OneLake catalog guide](/use-cases/data-lake/onelake-catalog)       |
 
 현재 모든 카탈로그 연동은 실험적 또는 베타 설정을 활성화해야 하며, **읽기 전용** 액세스만 제공합니다. 즉, 테이블을 조회할 수는 있지만 카탈로그 연결을 통해 테이블을 생성하거나 데이터를 쓰는 것은 불가능합니다. 카탈로그에서 ClickHouse로 데이터를 불러와 더 빠른 분석을 수행하려면 [분석 가속화 가이드](/use-cases/data-lake/getting-started/accelerating-analytics)에 설명된 대로 `INSERT INTO SELECT`를 사용하십시오. 오픈 테이블 포맷으로 다시 데이터를 기록하려면 [데이터 쓰기 가이드](/use-cases/data-lake/getting-started/writing-data)에 설명된 대로 독립형 Iceberg 테이블을 생성하십시오.
