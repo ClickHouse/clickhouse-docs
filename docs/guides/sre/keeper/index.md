@@ -19,7 +19,7 @@ ClickHouse Keeper provides the coordination system for data [replication](/engin
 
 ### Implementation details {#implementation-details}
 
-ZooKeeper is one of the first well-known open-source coordination systems. It's implemented in Java, and has quite a simple and powerful data model. ZooKeeper's coordination algorithm, ZooKeeper Atomic Broadcast (ZAB), doesn't provide linearizability guarantees for reads, because each ZooKeeper node serves reads locally. Unlike ZooKeeper, ClickHouse Keeper is written in C++ and uses the [RAFT algorithm](https://raft.github.io/) [implementation](https://github.com/eBay/NuRaft). This algorithm allows linearizability for reads and writes, and has several open-source implementations in different languages.
+ZooKeeper is one of the first well-known open-source coordination systems. It's implemented in Java, and has a simple and powerful data model. ZooKeeper's coordination algorithm, ZooKeeper Atomic Broadcast (ZAB), doesn't provide linearizability guarantees for reads, because each ZooKeeper node serves reads locally. Unlike ZooKeeper, ClickHouse Keeper is written in C++ and uses the [RAFT algorithm](https://raft.github.io/) [implementation](https://github.com/eBay/NuRaft). This algorithm allows linearizability for reads and writes, and has several open-source implementations in different languages.
 
 By default, ClickHouse Keeper provides the same guarantees as ZooKeeper: linearizable writes and non-linearizable reads. It has a compatible client-server protocol, so any standard ZooKeeper client can be used to interact with ClickHouse Keeper. Snapshots and logs have an incompatible format with ZooKeeper, but the `clickhouse-keeper-converter` tool enables the conversion of ZooKeeper data to ClickHouse Keeper snapshots. The interserver protocol in ClickHouse Keeper is also incompatible with ZooKeeper so a mixed ZooKeeper / ClickHouse Keeper cluster is impossible.
 
@@ -41,8 +41,8 @@ The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the fo
 |--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | `tcp_port`                           | Port for a client to connect.                                                                                                                                                                                                                       | `2181`                                                                                                       |
 | `tcp_port_secure`                    | Secure port for an SSL connection between client and keeper-server.                                                                                                                                                                                 | -                                                                                                            |
-| `server_id`                          | Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3, and so on).                                                                                                                                 | -                                                                                                            |
-| `log_storage_path`                   | Path to coordination logs, just like ZooKeeper it is best to store logs on non-busy nodes.                                                                                                                                                          | -                                                                                                            |
+| `server_id`                          | Unique server id, each participant of the ClickHouse Keeper cluster must have a unique number (1, 2, 3...).                                                                                                                                 | -                                                                                                            |
+| `log_storage_path`                   | Path to coordination logs, just like ZooKeeper it's best to store logs on non-busy nodes.                                                                                                                                                          | -                                                                                                            |
 | `snapshot_storage_path`              | Path to coordination snapshots.                                                                                                                                                                                                                     | -                                                                                                            |
 | `enable_reconfiguration`             | Enable dynamic cluster reconfiguration via [`reconfig`](#reconfiguration).                                                                                                                                                                          | `False`                                                                                                      |
 | `max_memory_usage_soft_limit`        | Soft limit in bytes of keeper max memory usage.                                                                                                                                                                                                     | `max_memory_usage_soft_limit_ratio` * `physical_memory_amount`                                               |
@@ -102,7 +102,7 @@ The main parameters for each `<server>` are:
 - `can_become_leader` — Set to `false` to set up the server as a `learner`. If omitted, the value is `true`.
 
 :::note
-In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
+In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
 
 If the host of a Keeper instance can change, we recommend to define and use a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
 :::
@@ -162,7 +162,7 @@ clickhouse keeper --config /etc/your_path_to_config/config.xml
 
 ### Four letter word commands {#four-letter-word-commands}
 
-ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives some general information about the server and connected clients, while `srvr` and `cons` give extended details on server and connections respectively.
+ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives general information about the server and connected clients, `srvr` gives extended details on the server, and `cons` gives extended details on connections.
 
 The 4lw commands has a white list configuration `four_letter_word_white_list` which has default value `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`.
 
@@ -172,9 +172,9 @@ You can issue the commands to ClickHouse Keeper via telnet or nc, at the client 
 echo mntr | nc localhost 9181
 ```
 
-Bellow is the detailed 4lw commands:
+Below are the detailed 4lw commands:
 
-- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it won't respond at all. A response of `imok` doesn't necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
+- `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it's running. Otherwise, it won't respond at all. A response of `imok` doesn't necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
 
 ```response
 imok
@@ -346,7 +346,7 @@ Sessions with Ephemerals (1):
  /clickhouse/task_queue/ddl
 ```
 
-- `csnp`: Schedule a snapshot creation task. Return the last committed log index of the scheduled snapshot if success or `Failed to schedule snapshot creation task.` if failed. Note that `lgif` command can help you determine whether the snapshot is done.
+- `csnp`: Schedule a snapshot creation task. Return the last committed log index of the scheduled snapshot if success or `Failed to schedule snapshot creation task.` if failed. The `lgif` command can help you determine whether the snapshot is done.
 
 ```response
 100
@@ -365,7 +365,7 @@ target_committed_log_idx    101
 last_snapshot_idx   50
 ```
 
-- `rqld`: Request to become new leader. Return `Sent leadership request to leader.` if request sent or `Failed to send leadership request to leader.` if request not sent. Note that if node is already leader the outcome is same as the request is sent.
+- `rqld`: Request to become new leader. Return `Sent leadership request to leader.` if request sent or `Failed to send leadership request to leader.` if request not sent. If the node is already leader the outcome is the same as when the request is sent.
 
 ```response
 Sent leadership request to leader.
@@ -379,7 +379,7 @@ multi_read  1
 check_not_exists    0
 ```
 
-- `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. Note that if node is already follower the outcome is same as the request is sent.
+- `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. If the node is already a follower the outcome is the same as when the request is sent.
 
 ```response
 Sent yield leadership request to leader.
@@ -458,36 +458,92 @@ The following features are available:
 | `remove_recursive`     | Support for `RemoveRecursive` request, which removes the node along with its subtree                                                                     | `1`     |
 
 :::note
-Some of the feature flags are enabled by default from version 25.7.   
+Some of the feature flags are enabled by default from version 25.7.
 The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
 :::
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
-Seamless migration from ZooKeeper to ClickHouse Keeper isn't possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
+Seamless migration from ZooKeeper to ClickHouse Keeper isn't possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. The `clickhouse-keeper-converter` tool converts ZooKeeper logs and snapshots to a ClickHouse Keeper snapshot. It requires ZooKeeper 3.4 or later.
 
-1. Stop all ZooKeeper nodes.
+#### Pre-migration preparation {#pre-migration-preparation}
 
-2. Optional, but recommended: find ZooKeeper leader node, start and stop it again. It will force ZooKeeper to create a consistent snapshot.
+Migration requires stopping data ingestion. Plan a maintenance window before you begin.
 
-3. Run `clickhouse-keeper-converter` on a leader, for example:
+Before stopping ZooKeeper, halt ClickHouse background tasks that modify coordination metadata. For example:
 
-```bash
-clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
+```sql
+SYSTEM STOP MERGES;
 ```
 
-4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.
+Record comparison metrics before migration so you can verify consistency afterward.
 
-:::note
-`keeper-converter` tool isn't available from the Keeper standalone binary.
-If you have ClickHouse installed, you can use the binary directly:
+#### Migration steps {#migration-steps}
+
+1. Stop data ingestion into all ClickHouse nodes.
+
+2. Stop all background tasks on all ClickHouse nodes (see [above](#pre-migration-preparation)).
+
+3. Stop all ZooKeeper nodes.
+
+4. Optional, but recommended: find the ZooKeeper leader node, start and stop it again. This forces ZooKeeper to write a consistent snapshot to disk before conversion.
+
+5. Run `clickhouse-keeper-converter` on the leader node. If you have the full ClickHouse binary installed, use the `keeper-converter` subcommand instead (`clickhouse keeper-converter`). If neither is available, [download the binary](/getting-started/quick-start/oss#download-the-binary).
 
 ```bash
-clickhouse keeper-converter ...
+clickhouse-keeper-converter \
+  --zookeeper-logs-dir /var/lib/zookeeper/version-2 \
+  --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 \
+  --output-dir /path/to/clickhouse/keeper/snapshots
 ```
 
-Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
-:::
+6. Copy the snapshot to all ClickHouse Keeper nodes. The snapshot must be present on every node before any node starts — if a node starts without a snapshot, it may elect itself leader with empty state.
+
+7. Update your ClickHouse configuration to point at the new Keeper cluster.
+
+8. Start ClickHouse Keeper on all nodes, then restart ClickHouse.
+
+9. Compare metrics against your pre-migration baseline to verify consistency.
+
+10. Resume background tasks and restart data ingestion.
+
+#### Consolidating multiple ZooKeeper clusters {#consolidating-multiple-zookeeper-clusters}
+
+If you run multiple ZooKeeper clusters — for example, one per shard group — you can consolidate them into a single ClickHouse Keeper cluster. The official `clickhouse-keeper-converter` tool only supports one-to-one conversions (one ZooKeeper cluster to one Keeper snapshot), so consolidation requires modifying the converter source code to merge multiple snapshots:
+
+1. Run `clickhouse-keeper-converter` separately on each ZooKeeper cluster, writing each output to a distinct directory.
+2. Deserialize the snapshot files sequentially. When merging, recalculate `numChildren` values to avoid node ID conflicts between namespaces from different source clusters.
+3. Write the merged output to the target ClickHouse Keeper snapshot directory.
+
+#### Handling encryption and ACLs {#handling-encryption-and-acls}
+
+ClickHouse Keeper supports the same ACL schemes as ZooKeeper (`world`, `auth`, `digest`). How you handle ACLs during conversion depends on your ZooKeeper setup:
+
+- **Fully encrypted or fully unencrypted**: Convert directly. The converter preserves existing ACL information.
+- **Partially encrypted**: Before converting, grant a super administrator account and clear ACLs with `setAcl -R` on the affected paths. Convert, then re-enable encryption in ClickHouse Keeper if needed.
+
+#### Verifying the migration {#verifying-the-migration}
+
+After starting ClickHouse Keeper and restarting ClickHouse, compare your key metrics against the pre-migration baseline to confirm the migration succeeded.
+
+When consolidating multiple ZooKeeper clusters, distinguish between:
+- **Common paths**: Paths present across multiple source clusters with identical data — these should be deduplicated in the merged output.
+- **Differentiated paths**: Paths that exist only under specific clusters (e.g., under `/clickhouse/tables` for each shard group) — these must be preserved from the correct source.
+
+Avoid traversing large ZooKeeper trees directly for comparison. Print all converted paths to a file during conversion instead.
+
+#### Post-migration tuning {#post-migration-tuning}
+
+After migration, consider tuning these settings for larger clusters or higher throughput:
+
+| Setting | Default | Recommended | Notes |
+|---------|---------|-------------|-------|
+| `max_requests_batch_size` | `100` | `10000` | Increase for clusters with high part counts or many shards |
+| `force_sync` | `true` | `false` | Asynchronous log writes improve throughput |
+| `compress_logs` | `false` | `true` | Compresses Raft log files to reduce disk I/O |
+| `compress_snapshots_with_zstd_format` | `true` | — | Already enabled by default; compresses snapshots with zstd |
+
+These settings are configured under `coordination_settings` in your [Keeper configuration](#internal-coordination-settings).
 
 ### Recovering after losing quorum {#recovering-after-losing-quorum}
 
@@ -562,7 +618,7 @@ Following is an example of disk definitions contained inside a config.
 
 To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.
 To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.
-Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.
+Additionally, `keeper_server.latest_log_storage_disk` can be used for the latest logs and `keeper_server.latest_snapshot_storage_disk` for the latest snapshots.
 In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
 To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.
 
@@ -674,7 +730,7 @@ Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse serve
 curl 127.0.0.1:9363/metrics
 ```
 
-Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
+See also the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
 
 ## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
 
@@ -820,7 +876,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
 
 2. Restart ClickHouse and verify the cluster was created:
-    ```bash
+    ```sql
     SHOW clusters;
     ```
 
@@ -994,7 +1050,7 @@ example for server 1:
     </macros>
 ```
 :::note
-Notice that we define macros for `shard` and `replica`, but that `{uuid}` isn't defined here, it is built-in and there is no need to define.
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` isn't defined here — it's built-in and there is no need to define it.
 :::
 
 2. Create a Database
@@ -1342,7 +1398,7 @@ To get confident with the process, here's a [sandbox repository](https://github.
 
 ## Unsupported features {#unsupported-features}
 
-While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that are currently not implemented (although development is ongoing):
+While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that aren't yet implemented (although development is ongoing):
 
 - [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat)) doesn't support returning `Stat` object
 - [`create`](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/ZooKeeper.html#create(java.lang.String,byte%5B%5D,java.util.List,org.apache.zookeeper.CreateMode,org.apache.zookeeper.data.Stat))  doesn't support [TTL](https://zookeeper.apache.org/doc/r3.9.1/apidocs/zookeeper-server/org/apache/zookeeper/CreateMode.html#PERSISTENT_WITH_TTL)
