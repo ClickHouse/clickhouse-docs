@@ -19,7 +19,7 @@ The diagram below illustrates how ClickHouse Cloud organizations, cloud accounts
 
 - **ClickHouse Cloud Organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
 - **ClickHouse BYOC Organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
-- **Cloud Account / Project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. We recommend using a dedicated account or project per BYOC deployment for isolation.
+- **Cloud Account / Project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. A dedicated account or project per BYOC deployment is recommended for isolation.
 - **BYOC Infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
 - **ClickHouse Service:** An individual ClickHouse cluster running within a BYOC infrastructure. Multiple services can run within the same BYOC infrastructure.
 
