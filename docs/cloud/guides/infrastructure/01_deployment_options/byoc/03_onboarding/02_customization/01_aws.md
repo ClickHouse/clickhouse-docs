@@ -68,7 +68,7 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#set-up-byoc-infrastructure}
 
-In the ClickHouse Cloud console, navigate to the BYOC setup page and configure the following:
+In the ClickHouse Cloud console, navigate to the [BYOC setup page](https://console.clickhouse.cloud/byocOnboarding) and configure the following:
 
 1. Under **VPC Configuration**, select **Use existing VPC**.
 2. Enter your **VPC ID** (e.g., `vpc-0bb751a5b888ad123`).
