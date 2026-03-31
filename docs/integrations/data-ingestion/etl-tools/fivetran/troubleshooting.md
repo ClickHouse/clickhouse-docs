@@ -12,7 +12,7 @@ keywords: ['fivetran', 'clickhouse destination', 'troubleshooting', 'best practi
 
 ## Common errors {#common-errors}
 
-### Grants test failed or operations are failed related to permissions {#grants-test-failed}
+### Grants test failed or operations are failing related to permissions {#grants-test-failed}
 
 **Error message:**
 
