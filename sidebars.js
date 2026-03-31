@@ -1977,6 +1977,7 @@ const sidebars = {
             'use-cases/observability/clickstack/managing/production',
             'use-cases/observability/clickstack/managing/materialized_views',
             'use-cases/observability/clickstack/managing/performance_tuning',
+            'use-cases/observability/clickstack/managing/rbac',
           ],
         },
         {
