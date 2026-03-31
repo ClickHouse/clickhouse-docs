@@ -64,7 +64,7 @@ This can happen when:
 
 **Error message:**
 
-Different error may happen if the columns mismatch is due to a schema change in the source. For example:
+Different errors may happen if the columns mismatch is due to a schema change in the source. For example:
 
 ```sh
 columns count in ClickHouse table (8) does not match the input file (6). Expected columns: id, name, ..., got: id, name, ...
