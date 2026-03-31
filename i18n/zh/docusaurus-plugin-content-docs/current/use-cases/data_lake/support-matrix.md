@@ -163,13 +163,14 @@ ClickHouse 可以使用 [`DataLakeCatalog`](/engines/database-engines/datalakeca
 
 当前支持以下目录。完整的配置说明请参阅各目录的参考指南。
 
-| Catalog | Formats | Read | Create table | INSERT | Reference guide |
-|---------|---------|:-:|:-:|:-:|---------|
-| [AWS Glue](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Glue 目录指南](/use-cases/data-lake/glue-catalog) |
-| [Databricks Unity](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental | ❌ | ❌ | [Unity 目录指南](/use-cases/data-lake/unity-catalog) |
-| [Iceberg REST](/use-cases/data-lake/rest-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [REST 目录指南](/use-cases/data-lake/rest-catalog) |
-| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Lakekeeper 目录指南](/use-cases/data-lake/lakekeeper-catalog) |
-| [Project Nessie](/use-cases/data-lake/nessie-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Nessie 目录指南](/use-cases/data-lake/nessie-catalog) |
-| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [OneLake 目录指南](/use-cases/data-lake/onelake-catalog) |
+| 目录                                                        | Formats        |      Read      | Create table | INSERT | Reference guide                                              |
+| -------------------------------------------------------------- | -------------- | :------------: | :----------: | :----: | ------------------------------------------------------------ |
+| [AWS Glue 目录](/use-cases/data-lake/glue-catalog)          | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [Glue 目录指南](/use-cases/data-lake/glue-catalog)               |
+| [BigLake Metastore](/use-cases/data-lake/biglake-catalog)      | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [BigLake Metastore 指南](/use-cases/data-lake/biglake-catalog) |
+| [Databricks Unity 目录](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental |       ❌      |    ❌   | [Unity 目录指南](/use-cases/data-lake/unity-catalog)       |
+| [Iceberg REST](/use-cases/data-lake/rest-catalog)              | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [REST 目录指南](/use-cases/data-lake/rest-catalog)               |
+| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog)          | Iceberg        | ✅ Experimental |       ❌      |    ❌   | [Lakekeeper 目录指南](/use-cases/data-lake/lakekeeper-catalog)   |
+| [Project Nessie](/use-cases/data-lake/nessie-catalog)          | Iceberg        | ✅ Experimental |       ❌      |    ❌   | [Nessie 目录指南](/use-cases/data-lake/nessie-catalog)           |
+| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog)      | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [OneLake 目录指南](/use-cases/data-lake/onelake-catalog)         |
 
 目前所有目录集成都需要启用实验性或 Beta 设置，并且仅提供**只读**访问——可以通过目录连接查询表，但不能创建或写入。要从目录中将数据加载到 ClickHouse 中以加速分析，请使用 `INSERT INTO SELECT`，具体说明参见[加速分析指南](/use-cases/data-lake/getting-started/accelerating-analytics)。要将数据写回开放表格式，请按照[写入数据指南](/use-cases/data-lake/getting-started/writing-data)中的说明创建独立的 Iceberg 表。
