@@ -1,18 +1,18 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework
-sidebar_label: 'Microsoft Agent Framework 통합하기'
-title: 'Microsoft Agent Framework와 ClickHouse MCP Server로 AI 에이전트를 구축하는 방법'
+sidebar_label: 'Microsoft Agent framework 통합하기'
+title: 'Microsoft Agent framework와 ClickHouse MCP server로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'Microsoft Agent Framework와 ClickHouse MCP Server를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'Microsoft Agent framework와 ClickHouse MCP server를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다'
 keywords: ['ClickHouse', 'MCP', 'Microsoft']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Microsoft Agent Framework와 ClickHouse MCP Server로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\}
+# Microsoft Agent framework와 ClickHouse MCP server로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\}
 
-이 가이드에서는 [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)를 사용하여 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 [ClickHouse의 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)를 통해 상호작용하는 AI 에이전트를 구축하는 방법을 다룹니다.
+이 가이드에서는 [Microsoft Agent framework](https://github.com/microsoft/agent-framework)를 사용하여 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 [ClickHouse의 MCP server](https://github.com/ClickHouse/mcp-clickhouse)를 통해 상호작용하는 AI 에이전트를 구축하는 방법을 다룹니다.
 
 :::note 예제 노트북
 이 예제는 [examples 리포지토리](https://github.com/ClickHouse/examples/blob/main/ai/mcp/microsoft-agent-framework/microsoft-agent-framework.ipynb)에 노트북으로 제공됩니다.

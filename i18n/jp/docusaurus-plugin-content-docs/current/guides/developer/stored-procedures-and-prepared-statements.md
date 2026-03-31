@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'ストアドプロシージャとクエリパラメータ'
 sidebar_position: 19
-keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメータ化されたビュー']
+keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメーター化ビュー']
 description: 'ClickHouse におけるストアドプロシージャ、プリペアドステートメント、およびクエリパラメータに関するガイド'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: 'ストアドプロシージャとクエリパラメータ'
@@ -10,6 +10,7 @@ doc_type: 'guide'
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 
 # ClickHouse におけるストアドプロシージャとクエリパラメータ \{#stored-procedures-and-query-parameters-in-clickhouse\}
 

@@ -1,10 +1,10 @@
 ---
-sidebar_label: '分析技巧'
+sidebar_label: '分析提示'
 sidebar_position: 4
 slug: /integrations/tableau/analysis-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: '在使用 ClickHouse 官方连接器时的 Tableau 分析技巧。'
-title: '分析技巧'
+title: '分析提示'
 doc_type: 'guide'
 integration:
   - support_level: 'core'

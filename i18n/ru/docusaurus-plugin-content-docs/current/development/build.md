@@ -7,10 +7,10 @@ title: 'Как собрать ClickHouse на Linux'
 doc_type: 'guide'
 ---
 
-# Как собрать ClickHouse под Linux \{#how-to-build-clickhouse-on-linux\}
+# Как собрать ClickHouse на Linux \{#how-to-build-clickhouse-on-linux\}
 
-:::info Вам не обязательно собирать ClickHouse самостоятельно!
-Вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/docs/get-started/quick-start).
+:::info Это руководство по сборке предназначено для участников, изменяющих сам ClickHouse.
+Если вы не изменяете исходный код ClickHouse, вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/docs/get-started/quick-start).
 :::
 
 ClickHouse может быть собран на следующих платформах:
@@ -71,10 +71,11 @@ Rust является необязательной зависимостью дл
 Хотя в режиме release любая современная версия toolchain `rustup` должна работать с этими зависимостями, если вы планируете включить санитайзеры, необходимо использовать версию, у которой `std` в точности совпадает с той, что используется в CI (для которой мы вендорим соответствующие crates):
 
 ```bash
-rustup toolchain install nightly-2025-07-07
-rustup default nightly-2025-07-07
+rustup toolchain install nightly-2026-03-22
+rustup default nightly-2026-03-22
 rustup component add rust-src
 ```
+
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 

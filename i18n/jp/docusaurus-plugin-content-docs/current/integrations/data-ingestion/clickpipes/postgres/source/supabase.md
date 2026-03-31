@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Supabase Postgres'
-description: 'Supabase インスタンスを ClickPipes のデータソースとして設定する'
+description: 'Supabase インスタンスを ClickPipes のデータソースとしてセットアップする'
 slug: /integrations/clickpipes/postgres/source/supabase
-title: 'Supabase ソース設定ガイド'
+title: 'Supabase ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 integration:
@@ -13,7 +13,6 @@ integration:
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
-
 
 # Supabase ソースセットアップガイド \{#supabase-source-setup-guide\}
 

@@ -653,17 +653,17 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 
 ### 注意事项 \{#connection-string-notes\}
 
-如果在连接字符串中已经指定了用户名、密码或数据库，则不能再通过 `--user`、`--password` 或 `--database` 指定（反之亦然）。
+如果在连接字符串中已经指定了用户名、密码或数据库，则不能再通过 `--user`、`--password` 或 `--database` 指定 (反之亦然) 。
 
-host 部分可以是主机名，也可以是 IPv4 或 IPv6 地址。
-IPv6 地址应使用方括号括起来：
+主机部分可以是主机名，也可以是 IPv4 或 IPv6 地址。
+IPv6 地址应使用 `[]` 括起来：
 
 ```text
 clickhouse://[2001:db8::1234]
 ```
 
 连接字符串可以包含多个主机。
-ClickHouse 客户端会按顺序（从左到右）尝试连接这些主机。
+ClickHouse Client 会按顺序 (从左到右) 尝试连接这些主机。
 一旦建立连接，将不会再尝试连接其余主机。
 
 连接字符串必须作为 `clickHouse-client` 的第一个参数指定。
@@ -671,9 +671,9 @@ ClickHouse 客户端会按顺序（从左到右）尝试连接这些主机。
 
 `query_parameters` 可以使用以下键：
 
-| Key              | Description                                                                 |
-| ---------------- | --------------------------------------------------------------------------- |
-| `secure` (或 `s`) | 如果指定此键，客户端将通过安全连接（TLS）连接到服务器。参见[命令行选项](#command-line-options)中的 `--secure`。 |
+| Key              | Description                                                                   |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `secure` (或 `s`) | 如果指定此键，客户端将通过安全连接 (TLS) 连接到服务器。参见[命令行选项](#command-line-options)中的 `--secure`。 |
 
 **百分号编码**
 

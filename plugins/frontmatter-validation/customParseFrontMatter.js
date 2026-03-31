@@ -1,6 +1,7 @@
 // customParseFrontMatter.js
 const path = require('path');
 const fs = require('fs');
+const { loadExceptions: loadCasingExceptions, checkSentenceCasing, isInIgnoredDir } = require('./sentenceCasing');
 
 // List to track files with issues
 let filesWithIssues = [];
@@ -60,6 +61,9 @@ function loadExceptions() {
 // Initialize exception list when module is loaded
 exceptionList = loadExceptions();
 
+// Initialize sentence casing exceptions from Headings.yml
+let { regexPatterns: casingRegex, literalWords: casingLiterals } = loadCasingExceptions();
+
 /**
  * Checks if a file path should be excluded from validation
  * @param {string} filePath - Path to the file
@@ -78,6 +82,10 @@ function isExcluded(filePath) {
 
 function reloadExceptions() {
     exceptionList = loadExceptions();
+    // Also reload casing exceptions
+    const casing = loadCasingExceptions();
+    casingRegex = casing.regexPatterns;
+    casingLiterals = casing.literalWords;
     return exceptionList.length;
 }
 
@@ -161,6 +169,20 @@ async function customParseFrontMatter(params) {
         if (parsedData.frontMatter.doc_type) {
             if (!VALID_DOC_TYPES.includes(parsedData.frontMatter.doc_type)) {
                 issues.push(`invalid doc_type '${parsedData.frontMatter.doc_type}'. Must be one of: ${VALID_DOC_TYPES.join(', ')}`);
+            }
+        }
+
+        // Check sentence casing on title and sidebar_label
+        // Skip files in ignored directories (synced from core repo, etc.)
+        if (!isInIgnoredDir(relativePath)) {
+            for (const casingField of ['title', 'sidebar_label']) {
+                const value = parsedData.frontMatter[casingField];
+                if (value && typeof value === 'string') {
+                    const violations = checkSentenceCasing(value, casingRegex, casingLiterals);
+                    if (violations.length > 0) {
+                        issues.push(`sentence casing violation in ${casingField}: "${value}" — capitalized words: ${violations.join(', ')}`);
+                    }
+                }
             }
         }
 

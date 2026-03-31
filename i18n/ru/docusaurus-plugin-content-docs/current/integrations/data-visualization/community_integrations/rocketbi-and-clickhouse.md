@@ -3,8 +3,8 @@ sidebar_label: 'Rocket BI'
 sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
-description: 'RocketBI — это self-service платформа бизнес-аналитики, которая помогает быстро анализировать данные, создавать визуализации с помощью drag-and-drop и совместно работать с коллегами прямо в веб-браузере.'
-title: 'ЦЕЛЬ: СОЗДАТЬ СВОЙ ПЕРВЫЙ ДАШБОРД'
+description: 'RocketBI — это платформа самообслуживания для бизнес-аналитики, которая помогает быстро анализировать данные, создавать drag-n-drop-визуализации и совместно работать с коллегами прямо в браузере.'
+title: 'ЦЕЛЬ: создайте свою первую панель мониторинга'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -33,153 +33,152 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Цель: создать свой первый дашборд в Rocket.BI \{#goal-build-your-first-dashboard-with-rocketbi\}
+# Цель: создать свою первую панель мониторинга с Rocket.BI \{#goal-build-your-first-dashboard-with-rocketbi\}
 
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
-В этом руководстве вы установите и создадите простой дашборд с помощью Rocket.BI.
-Вот как он выглядит:
+В этом руководстве вы установите Rocket.BI и создадите простую панель мониторинга.
+Ниже показана эта панель мониторинга:
 
-<Image size="md" img={rocketbi_01} alt="Дашборд Rocket BI с метриками продаж, графиками и ключевыми показателями" border />
+<Image size="md" img={rocketbi_01} alt="Панель мониторинга Rocket BI, показывающая метрики продаж с графиками и KPI" border />
 
-<br/>
+<br />
 
-Вы можете открыть [этот дашборд по ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+Вы можете [открыть панель мониторинга по этой ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## Установка \{#install\}
 
-Запустите RocketBI с помощью наших предварительно собранных образов Docker.
+Запустите RocketBI с помощью наших готовых Docker-образов.
 
-Скачайте файл docker-compose.yml и конфигурационный файл:
+Скачайте `docker-compose.yml` и файл конфигурации:
 
 ```bash
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
 ```
 
-Отредактируйте файл `.clickhouse.env` и добавьте данные сервера ClickHouse.
+Отредактируйте файл `.clickhouse.env` и добавьте информацию о сервере ClickHouse.
 
 Запустите RocketBI командой: `docker-compose up -d .`
 
-Откройте браузер, перейдите по адресу `localhost:5050`, войдите с этой учетной записью: `hello@gmail.com/123456`.
+Откройте браузер, перейдите по адресу `localhost:5050` и войдите, используя следующие учетные данные: `hello@gmail.com/123456`
 
-Чтобы собрать из исходников или выполнить расширенную настройку, ознакомьтесь с файлом [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md).
+Инструкции по сборке из исходного кода и расширенной настройке см. здесь: [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
+## Давайте создадим панель мониторинга \{#lets-build-the-dashboard\}
 
-## Давайте соберём дашборд \{#lets-build-the-dashboard\}
+На вкладке Dashboard вы найдете свои отчеты и сможете начать визуализацию, нажав **+New**
 
-Во вкладке Dashboard вы найдёте свои отчёты, начните создавать визуализации, нажав **+New**.
-
-Вы можете создавать **неограниченное количество дашбордов** и строить **неограниченное количество диаграмм** в одном дашборде.
+Вы можете создавать **неограниченное количество панелей мониторинга** и добавлять **неограниченное количество диаграмм** на панель мониторинга.
 
 <Image size="md" img={rocketbi_02} alt="Анимация, показывающая процесс создания новой диаграммы в Rocket BI" border />
 
-<br/>
+<br />
 
-Подробный обучающий ролик в высоком разрешении смотрите на YouTube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
+Смотрите подробное руководство на YouTube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### Создаём элементы управления для диаграмм \{#build-the-chart-controls\}
+### Создайте элементы управления для диаграммы \{#build-the-chart-controls\}
 
-#### Создайте контрол метрик \{#create-a-metrics-control\}
+#### Создайте элемент управления метриками \{#create-a-metrics-control\}
 
-Во вкладке Tab filter выберите поля метрик, которые вы хотите использовать. Убедитесь, что корректно настроена агрегация.
+На вкладке Tab выберите поля метрик, которые хотите использовать. Убедитесь, что параметр агрегации задан правильно.
 
-<Image size="md" img={rocketbi_03} alt="Панель конфигурации контрола метрик в Rocket BI с выбранными полями и настройками агрегации" border />
+<Image size="md" img={rocketbi_03} alt="Панель настройки элемента управления метриками Rocket BI с выбранными полями и параметрами агрегации" border />
 
-<br/>
+<br />
 
-Переименуйте фильтры и сохраните Control в Dashboard.
+Переименуйте фильтры и сохраните элемент управления на панели мониторинга
 
-<Image size="md" img={rocketbi_04} alt="Контрол метрик с переименованными фильтрами, готовый к сохранению в дашборд" border />
+<Image size="md" img={rocketbi_04} alt="Элемент управления метриками с переименованными фильтрами, готовое к сохранению на панели мониторинга" border />
 
-#### Создайте контрол типа дата \{#create-a-date-type-control\}
+#### Создайте элемент управления типа «Дата» \{#create-a-date-type-control\}
 
-Выберите поле Date как основную колонку Main Date:
+Выберите поле даты в качестве основного столбца даты:
 
-<Image size="md" img={rocketbi_05} alt="Интерфейс выбора поля даты в Rocket BI с доступными колонками дат" border />
+<Image size="md" img={rocketbi_05} alt="Интерфейс выбора поля даты в Rocket BI с доступными столбцами даты" border />
 
-<br/>
+<br />
 
-Добавьте дублирующие варианты с разными диапазонами выборки. Например, Year, Monthly, Daily date или Day of Week.
+Добавьте дублирующиеся варианты с разными диапазонами. Например: Year, Monthly, Daily date или Day of Week.
 
-<Image size="md" img={rocketbi_06} alt="Конфигурация диапазона дат с различными вариантами периодов, такими как год, месяц и день" border />
+<Image size="md" img={rocketbi_06} alt="Настройка диапазона дат с различными вариантами периодов времени, такими как год, месяц и день" border />
 
-<br/>
+<br />
 
-Переименуйте фильтры и сохраните Control в Dashboard.
+Переименуйте фильтры и сохраните элемент управления на панели мониторинга
 
-<Image size="md" img={rocketbi_07} alt="Контрол диапазона дат с переименованными фильтрами, готовый к сохранению в дашборд" border />
+<Image size="md" img={rocketbi_07} alt="Элемент управления диапазоном дат с переименованными фильтрами, готовый к сохранению на панели мониторинга" border />
 
-### Теперь давайте построим диаграммы \{#now-let-build-the-charts\}
+### Теперь давайте создадим диаграммы \{#now-let-build-the-charts\}
 
 #### Круговая диаграмма: метрики продаж по регионам \{#pie-chart-sales-metrics-by-regions\}
 
-Выберите добавление новой диаграммы, затем выберите Pie Chart.
+Выберите Adding new chart, затем — Select Pie Chart
 
-<Image size="md" img={rocketbi_08} alt="Панель выбора типа диаграммы с выделенным вариантом круговой диаграммы" border />
+<Image size="md" img={rocketbi_08} alt="Панель выбора типа диаграммы с выделенной опцией круговой диаграммы" border />
 
-<br/>
+<br />
 
-Сначала перетащите колонку «Region» из Dataset в поле Legend.
+Сначала перетащите столбец &quot;Region&quot; из Dataset в поле Legend
 
-<Image size="md" img={rocketbi_09} alt="Интерфейс drag-and-drop, показывающий добавление колонки Region в поле Legend" border />
+<Image size="md" img={rocketbi_09} alt="Интерфейс перетаскивания, показывающий, как столбец Region добавляется в поле легенды" border />
 
-<br/>
+<br />
 
-Затем перейдите на вкладку Chart Control.
+Затем переключитесь на вкладку Chart Control
 
-<Image size="md" img={rocketbi_10} alt="Интерфейс вкладки Chart Control с опциями конфигурации визуализации" border />
+<Image size="md" img={rocketbi_10} alt="Интерфейс вкладки управления диаграммой, показывающий параметры настройки визуализации" border />
 
-<br/>
+<br />
 
-Перетащите Metrics Control в поле Value.
+Перетащите элемент Metrics Control в поле Value
 
-<Image size="md" img={rocketbi_11} alt="Контрол метрик, добавляемый в поле Value круговой диаграммы" border />
+<Image size="md" img={rocketbi_11} alt="Элемент Metrics Control добавляется в поле значений круговой диаграммы" border />
 
-<br/>
+<br />
 
 (вы также можете использовать Metrics Control для сортировки)
 
-Перейдите в Chart Setting для дополнительной настройки.
+Перейдите в Chart Setting для дальнейшей настройки
 
-<Image size="md" img={rocketbi_12} alt="Панель настроек диаграммы с опциями кастомизации круговой диаграммы" border />
+<Image size="md" img={rocketbi_12} alt="Панель настроек диаграммы, показывающая параметры дополнительной настройки круговой диаграммы" border />
 
-<br/>
+<br />
 
-Например, измените Data label на Percentage.
+Например, измените Data label на Percentage
 
-<Image size="md" img={rocketbi_13} alt="Настройки подписей данных, изменяемые на отображение процентов в круговой диаграмме" border />
+<Image size="md" img={rocketbi_13} alt="Настройки подписи данных изменяются для отображения процентов на круговой диаграмме" border />
 
-<br/>
+<br />
 
-Сохраните и добавьте диаграмму в Dashboard.
+Сохраните диаграмму и добавьте её на панель мониторинга
 
-<Image size="md" img={rocketbi_14} alt="Вид дашборда с только что добавленной круговой диаграммой и другими контролами" border />
+<Image size="md" img={rocketbi_14} alt="Вид панели мониторинга с недавно добавленной круговой диаграммой и другими элементами управления" border />
 
-#### Использование дата-контрола во временной диаграмме \{#use-date-control-in-a-time-series-chart\}
+#### Используйте элемент управления датой на диаграмме временных рядов \{#use-date-control-in-a-time-series-chart\}
 
-Используем Stacked Column Chart.
+Используйте столбчатую диаграмму с накоплением
 
-<Image size="md" img={rocketbi_15} alt="Интерфейс создания составной столбчатой диаграммы с временными рядами" border />
+<Image size="md" img={rocketbi_15} alt="Интерфейс создания столбчатой диаграммы с накоплением с данными временных рядов" border />
 
-<br/>
+<br />
 
-В Chart Control используйте Metrics Control как ось Y и Date Range как ось X.
+В Chart Control задайте Metrics Control для оси Y, а Date Range — для оси X
 
-<Image size="md" img={rocketbi_16} alt="Конфигурация Chart Control с метриками по оси Y и диапазоном дат по оси X" border />
+<Image size="md" img={rocketbi_16} alt="Настройка Chart Control с metrics на оси Y и диапазоном дат на оси X" border />
 
-<br/>
+<br />
 
-Добавьте колонку Region в Breakdown.
+Добавьте столбец Region в Breakdown
 
-<Image size="md" img={rocketbi_17} alt="Колонка Region, добавляемая как измерение Breakdown в составной столбчатой диаграмме" border />
+<Image size="md" img={rocketbi_17} alt="Столбец Region добавляется как измерение разбивки в столбчатую диаграмму с накоплением" border />
 
-<br/>
+<br />
 
-Добавьте Number Chart как KPI и сделайте Dashboard более наглядным.
+Добавьте Number Chart в качестве KPI и завершите оформление панели мониторинга
 
-<Image size="md" img={rocketbi_18} alt="Готовый дашборд с KPI Number-диаграммами, круговой диаграммой и визуализацией временного ряда" border />
+<Image size="md" img={rocketbi_18} alt="Готовая панель мониторинга с числовыми KPI-диаграммами, круговой диаграммой и визуализацией временных рядов" border />
 
-<br/>
+<br />
 
-Теперь вы успешно собрали свой первый дашборд в rocket.BI.
+Теперь вы успешно создали свою первую панель мониторинга в Rocket.BI

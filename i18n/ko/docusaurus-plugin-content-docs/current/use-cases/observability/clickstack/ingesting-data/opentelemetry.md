@@ -16,6 +16,10 @@ import TabItem from '@theme/TabItem';
 
 모든 데이터는 로그, 메트릭, 트레이스, 세션 데이터의 기본 진입 지점 역할을 하는 **OpenTelemetry (OTel) collector** 인스턴스를 통해 ClickStack으로 수집됩니다. 이 인스턴스에는 collector의 공식 [ClickStack 배포판](#installing-otel-collector) 사용을 권장합니다.
 
+:::tip
+ClickStack의 관리형 버전도 제공됩니다 — [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed)을 참조하십시오.
+:::
+
 데이터는 [language SDKs](/use-cases/observability/clickstack/sdks)나 인프라 메트릭과 로그를 수집하는 데이터 수집 에이전트(예: [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 역할의 OTel collector 또는 [Fluentd](https://www.fluentd.org/), [Vector](https://vector.dev/) 등의 기타 기술)를 통해 이 collector로 전송됩니다. 관리형 OpenTelemetry 파이프라인을 원하는 팀의 경우, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)은 ClickStack을 네이티브 대상으로 지원하는 OpenTelemetry 네이티브 솔루션을 제공하여 텔레메트리 수집, 처리 및 라우팅을 단순화합니다.
 
 
@@ -73,7 +77,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -162,7 +166,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:

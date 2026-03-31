@@ -2,7 +2,7 @@
 title: 'デプロイメントオプション'
 slug: /infrastructure/deployment-options
 description: 'ClickHouse のお客様が利用できるデプロイメントオプション'
-keywords: ['自前クラウド', 'byoc', 'プライベート', '政府機関向け', 'セルフデプロイ']
+keywords: ['自前クラウド', 'byoc', 'プライベート', '政府機関向け', 'セルフホスト型']
 doc_type: 'reference'
 ---
 

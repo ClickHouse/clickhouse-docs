@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMap'
 title: 'avgMap'
-description: 'avgMap 콤비네이터 사용 예제'
-keywords: ['avg', '맵', '콤비네이터', '예제', 'avgMap']
+description: 'avgMap 결합자 사용 예제'
+keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
 sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-
-
 # avgMap \{#avgmap\}
-
-
 
 ## 설명 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 결합자는 [`avg`](/sql-reference/aggregate-functions/reference/avg)
-함수에 적용하여, `avgMap` 
-집계 결합자 함수를 사용해 각 키별로 맵(Map) 내부 값들의 산술 평균을 계산합니다.
-
-
+함수에 적용할 수 있으며, `avgMap` 
+집계 결합자 함수를 사용해 각 키에 따라 맵의 값에 대한 산술 평균을 계산합니다.
 
 ## 사용 예시 \{#example-usage\}
 
@@ -32,7 +26,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -70,5 +65,6 @@ GROUP BY timeslot;
 
 
 ## 참고 \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`맵 결합자`](/sql-reference/aggregate-functions/combinators#-map)

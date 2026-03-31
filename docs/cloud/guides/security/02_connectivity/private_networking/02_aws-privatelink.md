@@ -30,7 +30,6 @@ To restrict access to your ClickHouse Cloud services exclusively through AWS Pri
 ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) from the following regions:
 - sa-east-1
 - il-central-1
-- me-central-1
 - me-south-1
 - eu-central-2
 - eu-north-1

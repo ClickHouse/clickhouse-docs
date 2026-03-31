@@ -1,5 +1,5 @@
 ---
-title: 'Storage efficiency - Time-series'
+title: 'Storage efficiency - time-series'
 sidebar_label: 'Storage efficiency'
 description: 'Improving time-series storage efficiency'
 slug: /use-cases/time-series/storage-efficiency

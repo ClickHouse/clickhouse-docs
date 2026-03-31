@@ -202,7 +202,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 该端点将退回使用默认的 `<http_handlers>`。
 
 自定义 handlers 部分的格式与
-[`<http_handlers>`](/operations/server-configuration-parameters/settings#http_handlers) 相同。
+[`<http_handlers>`](/docs/operations/server-configuration-parameters/settings#http_handlers) 相同。
 在重新加载配置时，会检测对自定义 handlers 部分所做的更改，并自动重启相应的端点。
 
 

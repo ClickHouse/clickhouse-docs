@@ -794,9 +794,17 @@ SELECT * FROM system.events LIMIT 5
 
 Количество ключей, запрошенных из источника данных для словарей типа «кэш», но не найденных в этом источнике данных.
 
+### DictCacheLockReadHoldNs \{#dictcachelockreadholdns\}
+
+Количество наносекунд, в течение которых удерживалась блокировка чтения для словарей типа «кэш».
+
 ### DictCacheLockReadNs \{#dictcachelockreadns\}
 
 Количество наносекунд, затраченных на ожидание блокировки чтения при поиске данных в словарях типа «кэш».
+
+### DictCacheLockWriteHoldNs \{#dictcachelockwriteholdns\}
+
+Количество наносекунд, в течение которых удерживалась блокировка на запись для словарей типа «cache».
 
 ### DictCacheLockWriteNs \{#dictcachelockwritens\}
 
@@ -945,6 +953,10 @@ SELECT * FROM system.events LIMIT 5
 ### DiskConnectionsReused \{#diskconnectionsreused\}
 
 Количество повторно используемых подключений к диску
+
+### DiskObjectStorageWaitBlobRemovalMicroseconds \{#diskobjectstoragewaitblobremovalmicroseconds\}
+
+Время, затраченное на ожидание удаления blob, ожидающего удаления, после фиксирования транзакции метаданных
 
 ### DiskPlainRewritableAzureDirectoryCreated \{#diskplainrewritableazuredirectorycreated\}
 
@@ -1914,6 +1926,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество случаев, когда файлы метаданных Iceberg не находились в кэше метаданных Iceberg, и их приходилось считывать с (удалённого) диска.
 
+### IcebergMetadataFilesCacheStaleMisses \{#icebergmetadatafilescachestalemisses\}
+
+Количество случаев, когда файлы метаданных Iceberg находились в кэше, но считались устаревшими, поэтому их пришлось считывать с (удалённого) диска.
+
 ### IcebergMetadataFilesCacheWeightLost \{#icebergmetadatafilescacheweightlost\}
 
 Приблизительное количество байтов, вытесненных из кэша метаданных Iceberg.
@@ -2174,6 +2190,14 @@ SELECT * FROM system.events LIMIT 5
 
 Время, затраченное на выполнение fsync для журнала изменений Keeper (только для несжатых логов)
 
+### KeeperChangelogLockHoldMicroseconds \{#keeperchangeloglockholdmicroseconds\}
+
+Время удержания блокировки журнала изменений Keeper
+
+### KeeperChangelogLockWaitMicroseconds \{#keeperchangeloglockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки журнала изменений Keeper
+
 ### KeeperChangelogWrittenBytes \{#keeperchangelogwrittenbytes\}
 
 Количество байт, записанных в журнал изменений Keeper
@@ -2206,10 +2230,6 @@ SELECT * FROM system.events LIMIT 5
 
 Количество запросов проверки существования
 
-### KeeperFinishedSessionsCacheFull \{#keeperfinishedsessionscachefull\}
-
-Количество случаев, когда завершённую сессию не удалось отследить, поскольку размер кэша достиг лимита
-
 ### KeeperGetRequest \{#keepergetrequest\}
 
 Количество get-запросов
@@ -2221,6 +2241,14 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperListRequest \{#keeperlistrequest\}
 
 Количество запросов на получение списка
+
+### KeeperLiveSessionsLockHoldMicroseconds \{#keeperlivesessionslockholdmicroseconds\}
+
+Время, затраченное на удержание блокировки активных сессий Keeper
+
+### KeeperLiveSessionsLockWaitMicroseconds \{#keeperlivesessionslockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки активных сессий Keeper
 
 ### KeeperLogsEntryReadFromCommitCache \{#keeperlogsentryreadfromcommitcache\}
 
@@ -2258,9 +2286,25 @@ SELECT * FROM system.events LIMIT 5
 
 Задержка предобработки Keeper для одного запроса
 
+### KeeperProcessAndResponsesLockHoldMicroseconds \{#keeperprocessandresponseslockholdmicroseconds\}
+
+Время удержания блокировки обработки и ответов Keeper
+
+### KeeperProcessAndResponsesLockWaitMicroseconds \{#keeperprocessandresponseslockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки обработки и ответов Keeper
+
 ### KeeperProcessElapsedMicroseconds \{#keeperprocesselapsedmicroseconds\}
 
 Задержка при фиксации в Keeper для одного запроса
+
+### KeeperReadRequestQueueLockHoldMicroseconds \{#keeperreadrequestqueuelockholdmicroseconds\}
+
+Время удержания блокировки очереди запросов на чтение в Keeper
+
+### KeeperReadRequestQueueLockWaitMicroseconds \{#keeperreadrequestqueuelockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки очереди запросов на чтение в Keeper
 
 ### KeeperReadSnapshot \{#keeperreadsnapshot\}
 
@@ -2293,6 +2337,22 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperSaveSnapshot \{#keepersavesnapshot\}
 
 Количество сохранений снимков
+
+### KeeperServerWriteLockHoldMicroseconds \{#keeperserverwritelockholdmicroseconds\}
+
+Время удержания блокировки записи на сервере Keeper
+
+### KeeperServerWriteLockWaitMicroseconds \{#keeperserverwritelockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки записи на сервере Keeper
+
+### KeeperSessionCallbackLockHoldMicroseconds \{#keepersessioncallbacklockholdmicroseconds\}
+
+Время удержания блокировки обратного вызова сессии Keeper
+
+### KeeperSessionCallbackLockWaitMicroseconds \{#keepersessioncallbacklockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения блокировки обратного вызова сессии Keeper
 
 ### KeeperSetRequest \{#keepersetrequest\}
 
@@ -2328,11 +2388,23 @@ SELECT * FROM system.events LIMIT 5
 
 ### KeeperStaleRequestsSkipped \{#keeperstalerequestsskipped\}
 
-Количество запросов Keeper, пропущенных из-за того, что сессия уже завершилась
+Количество запросов Keeper, пропущенных из-за того, что сессия больше не активна
+
+### KeeperStorageLockHoldMicroseconds \{#keeperstoragelockholdmicroseconds\}
+
+Время удержания блокировки хранилища Keeper
 
 ### KeeperStorageLockWaitMicroseconds \{#keeperstoragelockwaitmicroseconds\}
 
 Время ожидания получения блокировки хранилища Keeper
+
+### KeeperStorageSharedLockHoldMicroseconds \{#keeperstoragesharedlockholdmicroseconds\}
+
+Время удержания разделяемой блокировки хранилища Keeper
+
+### KeeperStorageSharedLockWaitMicroseconds \{#keeperstoragesharedlockwaitmicroseconds\}
+
+Время, затраченное на ожидание получения разделяемой блокировки хранилища Keeper
 
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
@@ -2522,6 +2594,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество запущенных фоновых слияний.
 
+### MergeCommitMilliseconds \{#mergecommitmilliseconds\}
+
+Общее время, затраченное на фиксацию результатов слияния (переименование части, проверка контрольных сумм, обновления ZooKeeper)
+
 ### MergeExecuteMilliseconds \{#mergeexecutemilliseconds\}
 
 Общее время занятости, затраченное на выполнение фоновых слияний
@@ -2698,6 +2774,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество частей, объединённых в формат Wide.
 
+### MergedProjections \{#mergedprojections\}
+
+Количество проекций, слитых (а не перестроенных) в ходе слияний в MergeTree.
+
 ### MergedRows \{#mergedrows\}
 
 Число строк, прочитанных для фоновых слияний. Это количество строк до слияния.
@@ -2850,6 +2930,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество случаев создания задачи на мутацию всех столбцов в части
 
+### MutationCommitMilliseconds \{#mutationcommitmilliseconds\}
+
+Общее время, затраченное на фиксацию результатов мутации (переименование частей, проверка контрольных сумм, обновления ZooKeeper)
+
 ### MutationCreatedEmptyParts \{#mutationcreatedemptyparts\}
 
 Общее количество частей, которые были заменены пустыми частями вместо выполнения мутации
@@ -2946,6 +3030,18 @@ SELECT * FROM system.events LIMIT 5
 
 Количество байт, записанных в файловую систему (включая кэш страниц), а также в сеть и другие файлы.
 
+### ObjectStorageGlobFilteredObjects \{#objectstorageglobfilteredobjects\}
+
+Объекты, которые не соответствовали шаблону glob или regex и были пропущены при перечислении.
+
+### ObjectStorageListedObjects \{#objectstoragelistedobjects\}
+
+Общее количество объектов, возвращённых API перечисления объектов в объектном хранилище до применения какой-либо фильтрации.
+
+### ObjectStoragePredicateFilteredObjects \{#objectstoragepredicatefilteredobjects\}
+
+Объекты, исключённые при фильтрации по предикату виртуальных столбцов &#95;path/&#95;file.
+
 ### ObjectStorageQueueCancelledFiles \{#objectstoragequeuecancelledfiles\}
 
 Количество файлов с отменённой обработкой в StorageS3(Azure)Queue
@@ -3041,6 +3137,10 @@ SELECT * FROM system.events LIMIT 5
 ### ObjectStorageQueueUnsuccessfulCommits \{#objectstoragequeueunsuccessfulcommits\}
 
 Количество неуспешных коммитов в Keeper
+
+### ObjectStorageReadObjects \{#objectstoragereadobjects\}
+
+Объекты, фактически открытые для чтения из объектного хранилища.
 
 ### Устаревшие реплицированные части \{#obsoletereplicatedparts\}
 
@@ -3621,6 +3721,10 @@ Number of queries to be interpreted and potentially executed. Does not include q
 ### RealTimeMicroseconds \{#realtimemicroseconds\}
 
 Общее реальное (астрономическое) время, затраченное потоками на обработку (запросов и других задач) (обратите внимание, что это сумма).
+
+### RebuiltProjections \{#rebuiltprojections\}
+
+Количество проекций, заново перестроенных в ходе слияний MergeTree.
 
 ### RefreshableViewLockTableRetry \{#refreshableviewlocktableretry\}
 

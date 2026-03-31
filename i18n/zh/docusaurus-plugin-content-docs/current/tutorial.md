@@ -87,7 +87,7 @@ doc_type: 'guide'
 
   现在你已经创建了一个表,请从 S3 中的 CSV 文件添加纽约市出租车数据。
 
-  1. 以下命令会将来自 S3 中两个不同文件（`trips_1.tsv.gz` 和 `trips_2.tsv.gz`）的大约 2,000,000 行数据插入到你的 `trips` 表中：
+  1. 以下命令会将来自 S3 中两个不同文件 (`trips_1.tsv.gz` 和 `trips_2.tsv.gz`) 的大约 2,000,000 行数据插入到你的 `trips` 表中：
 
      ```sql
      INSERT INTO trips
@@ -238,7 +238,7 @@ doc_type: 'guide'
       </p>
     </details>
 
-  * 计算每次行程的时长（单位：分钟），然后按行程时长对结果分组：
+  * 计算每次行程的时长 (单位：分钟) ，然后按行程时长对结果分组：
 
     ```sql
     SELECT
@@ -374,7 +374,7 @@ doc_type: 'guide'
   在你的 ClickHouse 服务中创建一个与表关联的字典。
   该表和字典基于一个 CSV 文件,该文件为纽约市的每个社区包含一行数据。
 
-  这些社区会被映射为纽约市五个行政区（Bronx、Brooklyn、Manhattan、Queens 和 Staten Island）以及纽瓦克机场（EWR）的名称。
+  这些社区会被映射为纽约市五个行政区 (Bronx、Brooklyn、Manhattan、Queens 和 Staten Island) 以及纽瓦克机场 (EWR) 的名称。
 
   以下是你正在使用的 CSV 文件的摘录,以表格格式显示。文件中的 `LocationID` 列映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列:
 
@@ -403,7 +403,7 @@ doc_type: 'guide'
   ```
 
   :::note
-  将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可能会以不同方式进行配置。有关详细信息，请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
+  将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，您可能会以不同方式进行配置。有关详细信息，请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/statements/create/dictionary/lifetime)。
   :::
 
   3. 验证其是否生效。下面的查询应该返回 265 行结果，每个社区对应一行：
@@ -411,9 +411,9 @@ doc_type: 'guide'
      SELECT * FROM taxi_zone_dictionary
      ```
 
-  4. 使用 `dictGet` 函数（[或其变体](./sql-reference/functions/ext-dict-functions.md)）从字典中获取值。你需要传入字典的名称、要获取的值对应的列名以及键（在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列）。
+  4. 使用 `dictGet` 函数 ([或其变体](./sql-reference/functions/ext-dict-functions.md)) 从字典中获取值。你需要传入字典的名称、要获取的值对应的列名以及键 (在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列) 。
 
-     例如，下面的查询将返回 `LocationID` 为 132 的 `Borough`（对应于 JFK 机场）：
+     例如，下面的查询将返回 `LocationID` 为 132 的 `Borough` (对应于 JFK 机场) ：
 
      ```sql
      SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
@@ -429,12 +429,12 @@ doc_type: 'guide'
      1 rows in set. Elapsed: 0.004 sec.
      ```
 
-  5. 使用 `dictHas` 函数检查某个键是否存在于字典中。例如，下面的查询返回 `1`（在 ClickHouse 中表示“true”）：
+  5. 使用 `dictHas` 函数检查某个键是否存在于字典中。例如，下面的查询返回 `1` (在 ClickHouse 中表示“true”) ：
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 132)
      ```
 
-  6. The following query returns 0 because 4567 不是字典中 `LocationID` 的任何值:
+  6. 以下查询返回 0，因为 4567 不是字典中 `LocationID` 的值：
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 4567)
      ```
@@ -500,7 +500,7 @@ doc_type: 'guide'
      ```
 
      :::note
-     请注意，上述 `JOIN` 查询的结果与之前使用 `dictGetOrDefault` 的查询相同（只是未包含 `Unknown` 值）。在底层实现上，ClickHouse 实际上为 `taxi_zone_dictionary` 字典调用了 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发者来说更为熟悉。
+     请注意，上述 `JOIN` 查询的结果与之前使用 `dictGetOrDefault` 的查询相同 (只是未包含 `Unknown` 值) 。在底层实现上，ClickHouse 实际上为 `taxi_zone_dictionary` 字典调用了 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发者来说更为熟悉。
      :::
 
   2. 此查询返回小费金额最高的 1000 次行程对应的行，然后对每一行与字典执行 inner join：

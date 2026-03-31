@@ -178,16 +178,16 @@ SAMPLE BY intHash32(UserID);
   <summary>Пример с устаревшим синтаксисом</summary>
 
   ```sql
-CREATE TABLE table_name
-(
-    EventDate DateTime,
-    CounterID UInt32,
-    UserID UInt32
-) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-```
+  CREATE TABLE table_name
+  (
+      EventDate DateTime,
+      CounterID UInt32,
+      UserID UInt32
+  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+  ```
 </details>
 
-Как видно из примера, эти параметры могут содержать подстановки в фигурных скобках. Значения для подстановки берутся из раздела [macros](/operations/server-configuration-parameters/settings.md/#macros) файла конфигурации.
+Как видно из примера, эти параметры могут содержать подстановки в `{}`. Значения для подстановки берутся из раздела [macros](/operations/server-configuration-parameters/settings.md/#macros) файла конфигурации.
 
 Пример:
 
@@ -247,6 +247,7 @@ ORDER BY x;
 Если вы добавляете новую реплику после того, как таблица уже содержит какие‑то данные на других репликах, данные будут скопированы с других реплик на новую реплику после выполнения этого запроса. Другими словами, новая реплика синхронизируется с остальными.
 
 Чтобы удалить реплику, выполните `DROP TABLE`. Однако удаляется только одна реплика — та, которая находится на сервере, где вы выполняете запрос.
+
 
 ## Восстановление после сбоев \{#recovery-after-failures\}
 

@@ -1,20 +1,18 @@
 ---
 slug: /updating-data/overview
-title: '概览'
-description: '如何在 ClickHouse 中更新数据'
-keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
+title: 'ClickHouse 中的更新'
+description: '介绍 ClickHouse 中可用的更新方法，以及如何根据您的工作负载选择正确的方法。'
+keywords: ['更新', '更新数据', '变更', '轻量级更新']
 doc_type: 'guide'
+sidebar_label: '处理更新'
 ---
 
-在处理更新操作时，分析型数据库与事务型数据库由于其底层设计理念和目标使用场景的不同而存在显著差异。
-比如，PostgreSQL 作为一种行式、符合 ACID 的关系型数据库，支持健壮且具事务性的更新和删除操作，并通过多版本并发控制（Multi-Version Concurrency Control，[MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)）等机制来确保数据的一致性和完整性。
-这使得即便在高并发环境下，也能够安全可靠地进行数据修改。
+在处理更新时，分析型数据库和事务型数据库由于底层设计理念和目标用例不同，采用了不同的更新处理方式。
+ClickHouse 是一种[列式数据库](/intro#row-oriented-vs-column-oriented-storage)，针对以读为主的分析场景和高吞吐的仅追加操作进行了优化。
+在实际使用中，通常会通过重构表结构，将删除和更新转换为追加操作，并以异步方式和/或在读取时处理，从而充分发挥 ClickHouse 在高吞吐数据摄取方面的优势。
+ClickHouse 也支持功能完备的更新和删除操作。
 
-相反，ClickHouse 是一种列式数据库，针对读取为主的分析场景以及高吞吐的仅追加写入操作进行了优化。
-虽然它原生支持就地更新和删除操作，但必须谨慎使用以避免过高的 I/O。
-作为替代方案，可以通过重构表结构，将删除和更新转换为追加型操作，使其在异步和/或读时进行处理，从而体现出其对高吞吐数据摄取和高效查询性能的侧重，而非实时数据变更。
-
-本指南概述了 ClickHouse 中可用的更新方法，并帮助你根据具体用例选择合适的更新策略。
+本指南概述了 ClickHouse 中可用的更新方法，并帮助您根据工作负载选择合适的更新策略。
 
 ## 选择更新策略 \{#choosing-an-update-strategy\}
 
@@ -26,36 +24,35 @@ doc_type: 'guide'
 在上述两大类别中，各自都有多种更新数据的方式。
 每种方式都有其各自的优点和性能特征，你应根据数据模型以及计划更新的数据量来选择合适的方法。
 
-### 何时使用专用表引擎 \{#when-to-use-specialized-table-engines\}
+### 何时使用专用表引擎 \{#when-to-choose-specialised-table-engines\}
 
 当存在大量更新、频繁的行级变更，或需要处理持续不断的更新与删除事件流时，专用表引擎是更好的选择。
 
 通常会遇到的引擎包括：
 
-| Engine                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
-|---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 在更新大量数据时使用。此表引擎针对合并过程中的数据去重进行了优化。                                                                                                                                |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | 当数据以碎片形式到达，并且你需要在列级进行合并而不是整行替换时使用。                                                                                                                                |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 在需要频繁更新单行记录，或需要维护随时间变化对象的最新状态的场景中使用。例如，用于跟踪用户活动或文章统计数据。                                       |
+| Engine                                                                             | Syntax                               | When to use                                             |
+| ---------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------- |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 在更新大量数据时使用。此表引擎针对合并过程中的数据去重进行了优化。                       |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | 当数据以碎片形式到达，并且你需要在列级进行合并而不是整行替换时使用。                      |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 在需要频繁更新单行记录，或需要维护随时间变化对象的最新状态的场景中使用。例如，用于跟踪用户活动或文章统计数据。 |
 
-由于 MergeTree 系列表引擎会在后台合并数据分区片段，它们提供的是_最终一致性_，因此在查询表时，需要使用 [`FINAL`](/sql-reference/statements/select/from#final-modifier) 关键字，以确保在此期间能够正确完成去重。
+由于 MergeTree 系列表引擎会在后台合并分区片段，它们提供的是&#95;最终一致性&#95;，因此在查询表时，需要使用 [`FINAL`](/sql-reference/statements/select/from#final-modifier) 关键字，以确保在此期间能够正确完成去重。
 还有其他[引擎类型](/engines/table-engines/mergetree-family)，但以上这些是最常用的几种。
 
-### 何时使用声明式更新 \{#when-to-use-declarative-updates\}
+### 何时使用声明式更新 \{#when-to-use-declaritive-updates\}
 
-对于不需要自行管理去重逻辑的简单更新操作，声明式 `UPDATE` 语句会更直接，但相较于使用专用引擎，它通常更适合不太频繁地更新较少数量的行。
+对于无需管理去重逻辑的简单更新操作，声明式 `UPDATE` 语句会更直接，但与专用引擎相比，它通常更适合以较低频率更新较少数量的行。
 
-| 方法                                                       | 语法                         | 使用场景                                                                                                                                                                                                                                  |
-|--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update 变更](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | 当数据必须立即落盘更新时使用（例如，为了满足合规要求）。会对 `SELECT` 性能产生负面影响。                                                                                                                        |
-| [即时更新](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | 用于更新少量数据。后续所有 `SELECT` 查询会立即返回已更新的数据，但这些行在磁盘上最初仅在内部被标记为已更新。通过 `SET apply_mutations_on_fly = 1;` 启用。  |
-| [轻量级更新](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | 用于更新少量数据（最多约占整张表的 10%）。创建补丁部件以实现立即可见，而无需重写整个列。会为 `SELECT` 查询增加开销，但延迟可预测。                              |
+| 方法                                                      | 语法                             | 使用场景                                                                                                                                                                |
+| ------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Lightweight updates](/sql-reference/statements/update) | `UPDATE [table] SET ... WHERE` | 在大多数场景中都使用此方法，尤其是在将频繁的小规模 UPDATE (最多约占整张表的 10%) 作为应用或工作流的一部分运行时。例如，某个用户想要删除自己的事件历史记录，而这些事件分散在一个包含许多用户的多租户表中。此方法会创建补丁分区片段以实现立即可见，而无需重写整个列。会为 `SELECT` 查询增加开销，但延迟可预测。 |
+| [Update 变更](/sql-reference/statements/alter/update)     | `ALTER TABLE [table] UPDATE`   | 在执行更大规模的数据管理时使用此方法，尤其是在更新与表的分区方式一致时。例如，你需要更新按月分区的表中某一个月内所有行的某一列。                                                                                                    |
 
 ## 使用专用表引擎进行数据更新 \{#insert-based-updates\}
 
 ### ReplacingMergeTree \{#replacingmergetree\}
 
-`ReplacingMergeTree` 在后台合并过程中，会对具有相同排序键的行进行去重，只保留其中最新版本的数据。
+`ReplacingMergeTree` 在后台合并过程中，会对具有相同排序键的行进行去重，只保留最新版本。
 
 ```sql
 CREATE TABLE posts
@@ -70,14 +67,13 @@ ORDER BY Id
 ```
 
 此引擎非常适合对由稳定键标识的单行数据进行高频更新。
-基准测试表明，在单行更新场景下，它的速度最高可比使用 mutation 的方式快 4,700 倍。
+基准测试表明，在单行更新场景下，它的速度最高可比使用变更的方式快 4,700 倍。
 
-要更新一行，只需插入一个具有相同排序键值且版本号更高的新版本。旧版本会在后台合并过程中被移除。由于去重是最终完成的（仅在合并期间发生），应使用 `FINAL` 修饰符或等效的查询逻辑来获得正确且已去重的结果。`FINAL` 修饰符会带来约 21–550% 的查询开销，具体取决于数据情况。
+要更新一行，只需插入一个具有相同排序键值且版本号更高的新版本。旧版本会在后台合并过程中被移除。由于去重是最终完成的（仅在合并期间发生），应使用 `FINAL` 修饰符或等效的查询逻辑来获得正确且已去重的结果。`FINAL` 修饰符会带来 21–550% 的查询开销，具体取决于数据情况。
 
-ReplacingMergeTree 无法更新排序键的值。它还支持用于逻辑删除的 `Deleted` 列。
+`ReplacingMergeTree` 无法更新排序键的值。它还支持用于逻辑删除的 `Deleted` 列。
 
-了解更多： [ReplacingMergeTree 指南](/guides/replacing-merge-tree) | [ReplacingMergeTree 参考](/engines/table-engines/mergetree-family/replacingmergetree)
-
+延伸阅读： [ReplacingMergeTree 指南](/guides/replacing-merge-tree) | [ReplacingMergeTree 参考](/engines/table-engines/mergetree-family/replacingmergetree)
 
 ### CoalescingMergeTree \{#coalescingmergetree\}
 
@@ -157,30 +153,124 @@ HAVING sum(Sign) > 0
 
 这些方法适用于使用 [MergeTree family](/engines/table-engines/mergetree-family) 引擎的表。
 
-| 方法 | 语法 | 最佳适用场景 | 权衡 |
-|--------|--------|----------|------------|
-| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | 需要满足合规要求且必须物理删除数据的场景；不频繁的大批量更新 | I/O 开销大；重写列数据 |
-| [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 小规模更新（约 0.1–10% 的行）；对性能要求较高的高频更新 | 增加 SELECT 开销；补丁分区片段数量计入分区片段数量限制 |
-| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` 并设置 `apply_mutations_on_fly=1` | 变更可立即可见；适用于数量有限的操作 | 依赖 Keeper；扩展能力大致限制在数十个操作 |
+| 方法                                          | 语法                         | 最佳适用场景                             | 权衡                              |
+| ------------------------------------------- | -------------------------- | ---------------------------------- | ------------------------------- |
+| [变更](#mutations)                     | `ALTER TABLE ... UPDATE`   | 不频繁的大批量更新；特别适合更新与表分区方式对齐的场景        | I/O 开销大；重写列数据                   |
+| [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 小规模更新 (约 0.1–10% 的行) ；对性能要求较高的高频更新 | 增加 SELECT 开销；补丁分区片段数量计入分区片段数量限制 |
 
-### 变更操作（Mutations） \{#mutations\}
+### 变更操作 (变更)  \{#mutations\}
 
-变更操作（`ALTER TABLE ... UPDATE`）会重写所有包含匹配 `WHERE` 表达式的行的分区片段，从而保证对磁盘上的物理数据进行实际修改。
+变更操作 (`ALTER TABLE ... UPDATE`) 会重写所有包含匹配 `WHERE` 表达式的行的分区片段。
 
 ```sql
 ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
 ```
 
-当出于合规要求需要保证物理删除数据时，或在你可以接受 I/O 开销的低频批量更新场景中，使用 mutations。
-
-Mutations 的 I/O 开销较大，会重写所有匹配 `WHERE` 表达式的分区片段。该过程不具备原子性——一旦变更完成，相应分区片段就会被替换，且在 mutation 执行期间启动的 `SELECT` 查询会同时看到已经被变更的分区片段数据和尚未被变更的分区片段数据。你可以通过 [`system.mutations`](/operations/system-tables/mutations) 表跟踪其进度状态。
+变更 的 I/O 开销较大，会重写所有匹配 `WHERE` 表达式的分区片段。
+该过程不具备原子性。
+一旦变更完成，相应分区片段就会被替换，且在 变更 执行期间启动的 `SELECT` 查询会同时看到已经被变更的分区片段数据和尚未被变更的分区片段数据。
+你可以通过 [`system.mutations`](/operations/system-tables/mutations) 表跟踪其进度状态。
 
 :::warning
-Mutations 是 I/O 密集型操作，应谨慎使用，因为它们会影响集群的 `SELECT` 性能。如果 mutations 入队速度快于处理速度，查询性能将会下降。请通过 `system.mutations` 监控队列。
+变更 是 I/O 密集型操作，应谨慎使用，因为它们会影响集群的 `SELECT` 性能。如果 变更 入队速度快于处理速度，查询性能将会下降。请通过 `system.mutations` 监控队列。
 :::
 
 延伸阅读：[ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
 
+
+#### 实时变更 \{#on-the-fly-mutations\}
+
+通过 `ALTER TABLE ... UPDATE` 执行变更时，你可能需要等待后台进程完成变更应用，才能在查询结果中看到变更后的值。
+ClickHouse 提供了通过 &quot;实时变更&quot; 改变这一行为的方式。
+启用实时变更后，已更新的行会立即被标记为已更新，后续的 `SELECT` 查询会自动返回变更后的值。
+
+对于 `MergeTree` 系列表，可通过启用查询级设置 `apply_mutations_on_fly` 来启用实时变更。
+
+```sql
+SET apply_mutations_on_fly = 1;
+```
+
+<details>
+  <summary>示例</summary>
+
+  让我们创建一个表，并执行一些变更操作：
+
+  ```sql
+  CREATE TABLE test_on_fly_mutations (id UInt64, v String)
+  ENGINE = MergeTree ORDER BY id;
+
+  -- 禁用变更的后台物化处理，以展示
+  -- 未启用实时变更时的默认行为
+  SYSTEM STOP MERGES test_on_fly_mutations;
+  SET mutations_sync = 0;
+
+  -- 向新表中插入一些行
+  INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
+
+  -- 更新这些行的值
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
+  ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
+  ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
+  ```
+
+  让我们通过 `SELECT` 查询来检查更新结果：
+
+  ```sql
+  -- 显式禁用实时变更
+  SET apply_mutations_on_fly = 0;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  请注意，在查询这个新表时，这些行的值尚未更新：
+
+  ```response
+  ┌─id─┬─v─┐
+  │  1 │ a │
+  │  2 │ b │
+  │  3 │ c │
+  └────┴───┘
+  ```
+
+  现在，让我们看看启用实时变更后会发生什么：
+
+  ```sql
+  -- 启用实时变更
+  SET apply_mutations_on_fly = 1;
+
+  SELECT id, v FROM test_on_fly_mutations ORDER BY id;
+  ```
+
+  现在，`SELECT` 查询会立即返回正确结果，无需等待变更实际应用完成：
+
+  ```response
+  ┌─id─┬─v─┐
+  │  3 │ c │
+  └────┴───┘
+  ```
+</details>
+
+
+##### 性能影响 \{#performance-impact\}
+
+启用实时变更后，变更不会立即物化，而是只会在执行 `SELECT` 查询时应用。不过请注意，变更仍会在后台异步物化，而这一过程开销较大。
+
+如果在一段时间内，已提交的变更数量持续超过后台处理的变更数量，那么待应用的未物化变更队列就会不断增长。这最终会导致 `SELECT` 查询性能下降。
+
+我们建议将设置 `apply_mutations_on_fly` 与其他 `MergeTree` 级别设置 (如 `number_of_mutations_to_throw` 和 `number_of_mutations_to_delay`) 一并启用，以限制未物化变更无限增长。
+
+##### 对子查询和非确定性函数的支持 \{#support-for-subqueries-and-non-deterministic-functions\}
+
+实时变更对使用子查询和非确定性函数的情况支持有限。仅支持结果大小合理的标量子查询 (由设置 `mutations_max_literal_size_to_replace` 控制) 。仅支持常量型非确定性函数 (例如 `now()` 函数) 。
+
+这些行为由以下设置控制：
+
+| 设置                                                | 描述                                                            | 默认值              |
+| ------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
+| `mutations_execute_nondeterministic_on_initiator` | 如果为 true，则会在发起副本上执行非确定性函数，并在 `UPDATE` 和 `DELETE` 查询中将其替换为字面量。 | `false`          |
+| `mutations_execute_subqueries_on_initiator`       | 如果为 true，则会在发起副本上执行标量子查询，并在 `UPDATE` 和 `DELETE` 查询中将其替换为字面量。  | `false`          |
+| `mutations_max_literal_size_to_replace`           | 在 `UPDATE` 和 `DELETE` 查询中可替换的序列化字面量的最大大小 (以字节为单位) 。           | `16384` (16 KiB) |
 
 ### 轻量级更新 \{#lightweight-updates\}
 
@@ -221,29 +311,29 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 └───────────┘
 ```
 
-变更操作和后续的 `SELECT` 查询都需要启用 `apply_mutations_on_fly = 1` SETTING。变更条件存储在 ClickHouse Keeper 中（Keeper 将所有内容保存在内存中），并在查询时按需实时应用。
+变更操作和后续的 `SELECT` 查询都需要启用 `apply_mutations_on_fly = 1` SETTING。变更条件存储在 ClickHouse Keeper 中 (Keeper 将所有内容保存在内存中) ，并在查询时按需实时应用。
 
-请注意，更新数据依然是通过变更来完成——只是不会立即物化。该变更仍会在后台以异步方式执行，并带来与常规变更相同的较大开销。可与此操作一起使用的表达式也受到限制（参见[详细说明](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)）。
+请注意，更新数据依然是通过变更来完成——只是不会立即物化。该变更仍会在后台以异步方式执行，并带来与常规变更相同的较大开销。可与此操作一起使用的表达式也受到限制 (参见[详细说明](#support-for-subqueries-and-non-deterministic-functions)) 。
 
 :::warning
-On-the-fly 变更应仅用于少量操作——最多可能几十个。Keeper 将条件存储在内存中，因此过度使用会影响集群稳定性。Keeper 负载过高可能导致会话超时，并影响到无关的表。
+实时变更应仅用于少量操作——最多可能几十个。Keeper 将条件存储在内存中，因此过度使用会影响集群稳定性。Keeper 负载过高可能导致会话超时，并影响到无关的表。
 :::
 
-延伸阅读：[On-the-fly 变更](/guides/developer/on-the-fly-mutations)
+延伸阅读：[实时变更](#on-the-fly-mutations)
 
 
 ## 对比总结 \{#comparison-summary\}
 
-下表基于[基准测试](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)总结了对查询性能的开销。以变更（mutations）为基线，因为一旦变更完成且数据在物理层面被重写，查询就能以全速运行。
+下表基于[基准测试](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)总结了查询性能开销。以[变更](/sql-reference/statements/alter/update)为基线，因为一旦变更完成且数据在物理层面被重写，查询就能以全速运行。
 
-| Method | 查询减速 | 内存开销 | 说明 |
-|--------|----------------|-----------------|-------|
-| [Mutations](/sql-reference/statements/alter/update) | 基线 | 基线 | 完成后可全速运行；数据在物理层面被重写 |
-| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | 可变 | 可变 | 结果即时可见；若累计大量更新则性能下降 |
-| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18%（平均约 12%） | +20–210% | 对查询最为高效；最适合更新不超过表的 10% |
-| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550%（平均约 280%） | 为基线的 20–200 倍 | 必须读取所有行版本；查询开销最大 |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | 与 ReplacingMergeTree 类似 | 与 ReplacingMergeTree 类似 | 列级合并带来相近的开销 |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | 取决于聚合 | 取决于聚合 | 开销取决于查询复杂度 |
+| Method                                                                                       | Query slowdown          | Memory overhead         | Notes                  |
+| -------------------------------------------------------------------------------------------- | ----------------------- | ----------------------- | ---------------------- |
+| [变更](/sql-reference/statements/alter/update)                                                 | 基线                      | 基线                      | 完成后可全速运行；数据在物理层面被重写    |
+| [实时变更](#on-the-fly-mutations)                                                                | 可变                      | 可变                      | 结果即时可见；若累计大量更新则性能下降    |
+| [轻量级更新](/sql-reference/statements/update#lightweight-update-requirements)                    | 7–18% (平均约 12%)         | +20–210%                | 对查询最为高效；最适合更新不超过表的 10% |
+| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL`                                 | 21–550% (平均约 280%)      | 为基线的 20–200 倍           | 必须读取所有行版本；查询开销最大       |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | 与 ReplacingMergeTree 类似 | 与 ReplacingMergeTree 类似 | 列级合并带来相近的开销            |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)           | 取决于聚合                   | 取决于聚合                   | 开销取决于查询复杂度             |
 
 ## 更多资源 \{#more-resources\}
 

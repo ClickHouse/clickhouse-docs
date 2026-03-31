@@ -13,7 +13,12 @@ WITH
             name,
             replaceRegexpAll(description, '(?m)^[ \t]+', '') AS description,
             type,
-            default
+            default,
+            multiIf(
+                changeable_without_restart = 'IncreaseOnly', 'Increase only',
+                changeable_without_restart = 'DecreaseOnly', 'Decrease only',
+                CAST(changeable_without_restart, 'String')
+            ) AS changeable_without_restart
         FROM system.server_settings
     ),
     combined_server_settings AS
@@ -22,14 +27,16 @@ WITH
             name,
             description,
             type,
-            default
+            default,
+            changeable_without_restart
         FROM server_settings_in_source
         UNION ALL
         SELECT
             name,
             doc AS description,
             ''  AS type,
-            '' AS default
+            '' AS default,
+            '' AS changeable_without_restart
         FROM server_settings_outside_source
     ),
     formatted_settings AS
@@ -39,7 +46,14 @@ WITH
             '## {}{}{}{}\n\n',
             name,
             lcase(' {#'|| name ||'} \n\n'),
-            if(type != '' AND default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', type, default), ''),
+            if(type != '' AND default != '',
+                format('<SettingsInfoBlock type="{}" default_value="{}"{} />',
+                    type,
+                    default,
+                    if(changeable_without_restart != '', format(' changeable_without_restart="{}"', changeable_without_restart), '')
+                ),
+                ''
+            ),
             description
         ) AS formatted_text
         FROM combined_server_settings

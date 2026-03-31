@@ -1,6 +1,6 @@
 ---
-title: 'DataStore Factory Methods'
-sidebar_label: 'Factory Methods'
+title: 'DataStore factory methods'
+sidebar_label: 'Factory methods'
 slug: /chdb/datastore/factory-methods
 description: 'Create DataStore instances from files, databases, cloud storage, and data lakes'
 keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql', 'postgresql']
@@ -84,7 +84,7 @@ ds = DataStore.from_file("data.txt", format="CSV")
 ds = DataStore.from_file("data.csv.gz", compression="gzip")
 ```
 
-### Pandas-Compatible Read Functions {#pandas-read}
+### Pandas-compatible read functions {#pandas-read}
 
 ```python
 from chdb import datastore as pd

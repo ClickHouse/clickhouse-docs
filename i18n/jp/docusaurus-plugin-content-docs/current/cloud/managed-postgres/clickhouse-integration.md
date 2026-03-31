@@ -37,7 +37,7 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
   * **ClickHouse service**: 既存の ClickHouse Cloud サービスを選択するか、新規に作成します
   * **Postgres database**: レプリケーション元となるソースデータベース
   * **Replication method**: 次のいずれかを選択します:
-    * **Initial load + CDC**: 既存データをインポートし、新しい変更でテーブルを更新し続けます (推奨) 
+    * **Initial load + CDC**: 既存データをインポートし、新しい変更でテーブルを更新し続けます (推奨)
     * **Initial load only**: 既存データのスナップショットを 1 回だけ取得し、その後の更新は行いません
     * **CDC only**: 初期スナップショットをスキップし、以降の新しい変更のみを取り込みます
 

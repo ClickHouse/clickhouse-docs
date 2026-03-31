@@ -1,9 +1,9 @@
 ---
-sidebar_title: '쿼리 API 엔드포인트'
+sidebar_title: 'Query API 엔드포인트'
 slug: /cloud/get-started/query-endpoints
 description: '저장된 쿼리에서 쉽게 REST API 엔드포인트를 생성합니다'
 keywords: ['api', '쿼리 API 엔드포인트', '쿼리 엔드포인트', '쿼리 REST API']
-title: '쿼리 API 엔드포인트'
+title: 'Query API 엔드포인트'
 doc_type: 'guide'
 ---
 
@@ -48,7 +48,7 @@ API 엔드포인트에 쿼리하려면 API 키에 `Member` 조직 역할과 `Que
   이 가이드에서는 `LIMIT` 절을 사용하여 예를 들어 1천만 개 행처럼 더 적은 양의 데이터를 삽입할 것을 권장합니다.
   :::
 
-  예시 쿼리로, 사용자 입력 `year` 파라미터에 대해 동영상당 평균 조회수가 가장 높은 상위 10명의 업로더를 반환합니다.
+  예시 쿼리로, 사용자 입력 `year` 매개변수에 대해 동영상당 평균 조회수가 가장 높은 상위 10명의 업로더를 반환합니다.
 
   ```sql
   WITH sum(view_count) AS view_sum,
@@ -68,9 +68,9 @@ API 엔드포인트에 쿼리하려면 API 키에 `Member` 조직 역할과 `Que
     LIMIT 10
   ```
 
-  이 쿼리에는 위 코드 조각에서 강조된 파라미터(`year`)가 포함되어 있다는 점에 유의하십시오.
-  중괄호 `{ }`와 파라미터 타입을 함께 사용하여 쿼리 파라미터를 지정할 수 있습니다.
-  SQL 콘솔 쿼리 편집기는 ClickHouse 쿼리 파라미터 표현식을 자동으로 감지하고 각 파라미터에 대한 입력 필드를 제공합니다.
+  이 쿼리에는 위 코드 조각에서 강조된 매개변수(`year`)가 포함되어 있다는 점에 유의하십시오.
+  중괄호 `{ }`와 매개변수 타입을 함께 사용하여 쿼리 매개변수를 지정할 수 있습니다.
+  SQL 콘솔 쿼리 편집기는 ClickHouse 쿼리 매개변수 표현식을 자동으로 감지하고 각 매개변수에 대한 입력 필드를 제공합니다.
 
   SQL 편집기 오른쪽에 있는 쿼리 변수 입력 상자에 연도 `2010`을 지정하여 이 쿼리가 정상적으로 동작하는지 빠르게 실행해 봅니다:
 
@@ -80,18 +80,18 @@ API 엔드포인트에 쿼리하려면 API 키에 `Member` 조직 역할과 `Que
 
   <Image img={endpoints_savequery} size="md" alt="예제 쿼리 저장" />
 
-  저장된 쿼리에 대한 자세한 문서는 [&quot;쿼리 저장&quot;](/cloud/get-started/sql-console#saving-a-query) 섹션에서 확인할 수 있습니다.
+  저장된 쿼리에 대한 자세한 문서는 [&quot;Saving a query&quot;](/cloud/get-started/sql-console#saving-a-query) 섹션에서 확인할 수 있습니다.
 
   ### Query API 엔드포인트 구성
 
   Query API 엔드포인트는 쿼리 뷰에서 **Share** 버튼을 클릭하고 `API Endpoint`를 선택하여 직접 구성할 수 있습니다.
-  어떤 API 키들이 엔드포인트에 액세스할 수 있는지 지정하라는 메시지가 표시됩니다:
+  어떤 API 키가 엔드포인트에 액세스할 수 있는지 지정하라는 메시지가 표시됩니다:
 
   <Image img={endpoints_configure} size="md" alt="쿼리 엔드포인트 구성" />
 
   API 키를 선택한 후 다음 항목을 지정해야 합니다:
 
-  * 쿼리를 실행하는 데 사용할 Database 역할 선택 (`Full access`, `Read only` 또는 `Create a custom role`)
+  * 쿼리를 실행하는 데 사용할 데이터베이스 역할 선택 (`Full access`, `Read only` 또는 `Create a custom role`)
   * CORS(Cross-Origin Resource Sharing)에 허용할 도메인 지정
 
   이 옵션들을 선택하면 Query API 엔드포인트가 자동으로 프로비저닝됩니다.
@@ -106,9 +106,9 @@ API 엔드포인트에 쿼리하려면 API 키에 `Member` 조직 역할과 `Que
   curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
   ```
 
-  ### Query API 파라미터
+  ### Query API 매개변수
 
-  쿼리 내 쿼리 파라미터는 `{parameter_name: type}` 문법으로 지정할 수 있습니다. 이러한 파라미터는 자동으로 감지되며, 예제 요청 페이로드에는 이 파라미터들을 전달할 수 있는 `queryVariables` 객체가 포함됩니다.
+  쿼리의 매개변수는 `{parameter_name: type}` 구문으로 지정할 수 있습니다. 이러한 매개변수는 자동으로 감지되며, 예제 요청 페이로드에는 이 매개변수들을 전달할 수 있는 `queryVariables` 객체가 포함됩니다.
 
   ### 테스트 및 모니터링
 

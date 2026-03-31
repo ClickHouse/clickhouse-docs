@@ -1,25 +1,19 @@
 ---
 slug: '/examples/aggregate-function-combinators/minMap'
 title: 'minMap'
-description: 'minMap 조합자 사용 예제'
-keywords: ['min', '맵', 'combinator', '예제', 'minMap']
+description: 'minMap 결합자 사용 예제'
+keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-
-
 # minMap \{#minmap\}
-
-
 
 ## 설명 \{#description\}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 결합자(combinator)는 `minMap` 
-집계 결합자 함수(aggregate combinator function)를 사용하여 [`min`](/sql-reference/aggregate-functions/reference/min)
-함수를 Map(맵)에 적용함으로써, 각 키별로 Map 안의 최소값을 계산하는 데 사용할 수 있습니다.
-
-
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 결합자는 `minMap`
+집계 결합자 함수를 사용하여 [`min`](/sql-reference/aggregate-functions/reference/min)
+함수에 적용할 수 있으며, 이를 통해 각 키에 따라 맵의 최소값을 계산합니다.
 
 ## 사용 예시 \{#example-usage\}
 
@@ -32,7 +26,8 @@ CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -70,5 +65,6 @@ GROUP BY timeslot;
 
 
 ## 같이 보기 \{#see-also\}
+
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`맵 결합자`](/sql-reference/aggregate-functions/combinators#-map)

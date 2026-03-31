@@ -6,27 +6,29 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# 通过命名集合集成 ClickHouse 与 Kafka \{#integrating-clickhouse-with-kafka-using-named-collections\}
+# 使用命名集合将 ClickHouse 与 Kafka 集成 \{#integrating-clickhouse-with-kafka-using-named-collections\}
 
 ## 介绍 \{#introduction\}
 
 在本指南中，我们将介绍如何使用命名集合将 ClickHouse 连接到 Kafka。使用命名集合的配置文件具有以下优势：
-- 集中化、简化的配置管理。
-- 可以在不更改 SQL 表定义的情况下修改配置。
-- 只需检查单个配置文件即可更方便地审查和排查配置问题。
+
+* 集中化、简化的配置管理。
+* 可以在不更改 SQL 表定义的情况下修改配置。
+* 只需检查单个配置文件即可更方便地审查和排查配置问题。
 
 本指南已在 Apache Kafka 3.4.1 和 ClickHouse 24.5.1 上完成测试。
 
 ## 前提假设 \{#assumptions\}
 
 本文档假定已具备：
+
 1. 一个可正常运行的 Kafka 集群。
 2. 一个已部署并正在运行的 ClickHouse 集群。
 3. 具备 SQL 基础，并熟悉 ClickHouse 和 Kafka 的基本配置。
 
 ## 先决条件 \{#prerequisites\}
 
-确保负责创建该具名集合的用户具备必要的访问权限：
+确保负责创建该命名集合的用户具备必要的访问权限：
 
 ```xml
 <access_management>1</access_management>
@@ -99,7 +101,7 @@ doc_type: 'guide'
 
 ## 创建表和数据库 \{#creating-tables-and-databases\}
 
-在你的 ClickHouse 集群上创建所需的数据库和表。如果你以单节点方式运行 ClickHouse，请省略 SQL 命令中的集群（cluster）部分，并使用除 `ReplicatedMergeTree` 之外的其他任意引擎。
+在您的 ClickHouse 集群上创建所需的数据库和表。如果您以单节点方式运行 ClickHouse，请省略 SQL 命令中的集群 (cluster) 部分，并使用除 `ReplicatedMergeTree` 之外的其他任意引擎。
 
 ### 创建数据库 \{#create-the-database\}
 
@@ -172,7 +174,7 @@ SELECT
 FROM first_kafka_table;
 ```
 
-创建物化视图，将第二张 Kafka 表中的数据插入到第二张副本表中：
+创建物化视图，将第二张 Kafka 表中的数据插入到第二张复制表中：
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
@@ -185,7 +187,7 @@ FROM second_kafka_table;
 
 ## 验证设置 \{#verifying-the-setup\}
 
-现在你应该可以在 Kafka 集群上看到相应的 consumer group（消费者组）：
+现在你应该可以在 Kafka 集群上看到相应的 consumer group (消费者组) ：
 
 * `cluster_1_clickhouse_consumer` 位于 `cluster_1`
 * `cluster_2_clickhouse_consumer` 位于 `cluster_2`
@@ -214,4 +216,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-至此，使用命名集合完成 ClickHouse 与 Kafka 集成的配置。通过在 ClickHouse 的 `config.xml` 文件中集中管理 Kafka 配置，您可以更轻松地管理和调整相关设置，从而确保集成更加简洁高效。
+至此，完成使用命名集合将 ClickHouse 与 Kafka 集成的配置。通过在 ClickHouse 的 `config.xml` 文件中集中管理 Kafka 配置，您可以更轻松地管理和调整相关设置，从而确保集成更加简洁高效。

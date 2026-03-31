@@ -12,6 +12,7 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
+
 ## 适用于 AWS 的客户管理的 VPC (BYO-VPC) \{#customer-managed-vpc-aws\}
 
 如果您希望使用现有 VPC 部署 ClickHouse BYOC，而不是由 ClickHouse Cloud 预配新的 VPC，请按照以下步骤操作。此方式可让您更好地控制网络配置，并将 ClickHouse BYOC 集成到现有的网络基础设施中。
@@ -77,6 +78,6 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 * 提供预先配置的 IAM 角色供 ClickHouse Cloud 使用
 * 移除用于跨账户访问的 `ClickHouseManagementRole` 所需的 IAM 相关写权限
 * 完全控制角色权限和信任关系
-:::
+  :::
 
-有关 ClickHouse Cloud 默认创建的 IAM 角色的信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/priviledge)。
+有关 ClickHouse Cloud 默认创建的 IAM 角色的信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/privilege)。

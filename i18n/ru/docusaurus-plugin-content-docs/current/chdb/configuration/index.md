@@ -1,5 +1,5 @@
 ---
-title: 'Конфигурация DataStore'
+title: 'Настройка DataStore'
 sidebar_label: 'Обзор'
 slug: /chdb/configuration
 description: 'Настройка движка выполнения DataStore, логирования, кэширования и профилирования'
@@ -65,8 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-Дополнительные сведения см. в разделе [Logging](logging.md).
-
+Подробности см. в разделе [Logging](../debugging/logging.md).
 
 ### Настройка кэша \{#cache\}
 

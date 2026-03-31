@@ -1,6 +1,6 @@
 ---
 sidebar_label: '튜토리얼'
-description: 'pg_clickhouse를 ClickHouse에 연결하고 뉴욕시 택시 예제 데이터셋을 쿼리하는 방법을 알아봅니다.'
+description: 'pg_clickhouse를 ClickHouse에 연결하고 뉴욕시 택시 예시 데이터셋을 쿼리하는 방법을 알아봅니다.'
 slug: '/integrations/pg_clickhouse/tutorial'
 title: 'pg_clickhouse 튜토리얼'
 doc_type: 'guide'
@@ -461,166 +461,166 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 ## 딕셔너리(Dictionary) 생성 \{#create-a-dictionary\}
 
-ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.  
+ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 이 테이블과 딕셔너리는 뉴욕시 각 동네별로 한 행씩을 포함하는 CSV 파일을 기반으로 합니다.
 
 각 동네는 뉴욕시 5개 자치구(Bronx, Brooklyn, Manhattan, Queens, Staten Island)와 Newark Airport(EWR)에 매핑됩니다.
 
-아래는 사용하는 CSV 파일의 일부를 테이블 형식으로 나타낸 것입니다.  
+아래는 사용하는 CSV 파일의 일부를 테이블 형식으로 나타낸 것입니다.
 파일의 `LocationID` 컬럼은 trips 테이블의 `pickup_nyct2010_gid` 및
 `dropoff_nyct2010_gid` 컬럼에 매핑됩니다:
 
-| LocationID | Borough       |  Zone                   | service_zone |
-  | ---------: | ------------- | ----------------------- | ------------ |
-  |          1 | EWR           | Newark Airport          | EWR          |
-  |          2 | Queens        | Jamaica Bay             | Boro Zone    |
-  |          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone    |
-  |          4 | Manhattan     | Alphabet City           | Yellow Zone  |
-  |          5 | Staten Island | Arden Heights           | Boro Zone    |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------: | ------------- | ----------------------- | ---------------- |
+|          1 | EWR           | Newark Airport          | EWR              |
+|          2 | Queens        | Jamaica Bay             | Boro Zone        |
+|          3 | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+|          4 | Manhattan     | Alphabet City           | Yellow Zone      |
+|          5 | Staten Island | Arden Heights           | Boro Zone        |
 
-1.  Postgres에서 계속해서 `clickhouse_raw_query` 함수를 사용하여
-    ClickHouse [dictionary] `taxi_zone_dictionary`를 생성하고,
-    S3에 있는 CSV 파일에서 딕셔너리를 채웁니다:
+1. Postgres에서 계속해서 `clickhouse_raw_query` 함수를 사용하여
+   ClickHouse [dictionary] `taxi_zone_dictionary`를 생성하고,
+   S3에 있는 CSV 파일에서 딕셔너리를 채웁니다:
 
-    ```sql
-    SELECT clickhouse_raw_query($$
-        CREATE DICTIONARY taxi.taxi_zone_dictionary (
-            LocationID Int64 DEFAULT 0,
-            Borough String,
-            zone String,
-            service_zone String
-        )
-        PRIMARY KEY LocationID
-        SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-        LIFETIME(MIN 0 MAX 0)
-        LAYOUT(HASHED_ARRAY())
-    $$, 'host=localhost dbname=taxi');
-    ```
+   ```sql
+   SELECT clickhouse_raw_query($$
+       CREATE DICTIONARY taxi.taxi_zone_dictionary (
+           LocationID Int64 DEFAULT 0,
+           Borough String,
+           zone String,
+           service_zone String
+       )
+       PRIMARY KEY LocationID
+       SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+       LIFETIME(MIN 0 MAX 0)
+       LAYOUT(HASHED_ARRAY())
+   $$, 'host=localhost dbname=taxi');
+   ```
 
-    :::note
-    `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어
-    S3 버킷으로의 불필요한 트래픽을 방지합니다.  
-    다른 상황에서는 이 값을 다르게 구성할 수 있습니다. 자세한 내용은
-    [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)을
-    참고하십시오.
-    :::
+   :::note
+   `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어
+   S3 버킷으로의 불필요한 트래픽을 방지합니다.
+   다른 상황에서는 이 값을 다르게 구성할 수 있습니다. 자세한 내용은
+   [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](/sql-reference/statements/create/dictionary/lifetime)을
+   참고하십시오.
+   :::
 
-    2.  이제 이를 가져옵니다:
+   2. 이제 이를 가져옵니다:
 
-    ```sql
-    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
-    FROM SERVER taxi_srv INTO taxi;
-    ```
+   ```sql
+   IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
+   FROM SERVER taxi_srv INTO taxi;
+   ```
 
-    3.  쿼리할 수 있는지 확인합니다:
+   3. 쿼리할 수 있는지 확인합니다:
 
-    ```pgsql
-    taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone
-    ------------+-----------+-----------------------------------------------+--------------
-             77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
-            106 | Brooklyn  | Gowanus                                       | Boro Zone
-            103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
-    (3 rows)
-    ```
+   ```pgsql
+   taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
+    LocationID |  Borough  |                     Zone                      | service_zone
+   ------------+-----------+-----------------------------------------------+--------------
+            77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
+           106 | Brooklyn  | Gowanus                                       | Boro Zone
+           103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
+   (3 rows)
+   ```
 
-    4.  이제 `dictGet` 함수를 사용하여 쿼리에서 자치구 이름을
-        가져옵니다. 이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는
-        택시 탑승 건수를 자치구별로 합산합니다:
+   4. 이제 `dictGet` 함수를 사용하여 쿼리에서 자치구 이름을
+      가져옵니다. 이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는
+      택시 탑승 건수를 자치구별로 합산합니다:
 
-    ```pgsql
-    taxi=# SELECT
-            count(1) AS total,
-            COALESCE(NULLIF(dictGet(
-                'taxi.taxi_zone_dictionary', 'Borough',
-                toUInt64(pickup_nyct2010_gid)
-            ), ''), 'Unknown') AS borough_name
-        FROM taxi.trips
-        WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-        GROUP BY borough_name
-        ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-     23683 | Unknown
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (7 rows)
+   ```pgsql
+   taxi=# SELECT
+           count(1) AS total,
+           COALESCE(NULLIF(dictGet(
+               'taxi.taxi_zone_dictionary', 'Borough',
+               toUInt64(pickup_nyct2010_gid)
+           ), ''), 'Unknown') AS borough_name
+       FROM taxi.trips
+       WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+       GROUP BY borough_name
+       ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+    23683 | Unknown
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (7 rows)
 
-    Time: 66.245 ms
-    ```
+   Time: 66.245 ms
+   ```
 
-    이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는 택시 탑승 건수를
-    자치구별로 합산합니다. 픽업 지역이 알 수 없는 경우가 상당히
-    많다는 점에 주목하십시오.
+   이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는 택시 탑승 건수를
+   자치구별로 합산합니다. 픽업 지역이 알 수 없는 경우가 상당히
+   많다는 점에 주목하십시오.
 
 ## 조인 수행하기 \{#perform-a-join\}
 
 `taxi_zone_dictionary`를 `trips` 테이블과 조인하는 몇 가지 쿼리를 작성합니다.
 
-1.  앞에서 본 공항 관련 쿼리와 유사하게 동작하는 간단한 `JOIN`부터 시작합니다:
+1. 앞에서 본 공항 관련 쿼리와 유사하게 동작하는 간단한 `JOIN`부터 시작합니다:
 
-    ```pgsql
-    taxi=# SELECT
-        count(1) AS total,
-        "Borough"
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-      ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-    WHERE pickup_nyct2010_gid > 0
-      AND dropoff_nyct2010_gid IN (132, 138)
-    GROUP BY "Borough"
-    ORDER BY total DESC;
-     total | borough_name
-    -------+---------------
-      7053 | Manhattan
-      6828 | Brooklyn
-      4458 | Queens
-      2670 | Bronx
-       554 | Staten Island
-        53 | EWR
-    (6 rows)
+   ```pgsql
+   taxi=# SELECT
+       count(1) AS total,
+       "Borough"
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+     ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+   WHERE pickup_nyct2010_gid > 0
+     AND dropoff_nyct2010_gid IN (132, 138)
+   GROUP BY "Borough"
+   ORDER BY total DESC;
+    total | borough_name
+   -------+---------------
+     7053 | Manhattan
+     6828 | Brooklyn
+     4458 | Queens
+     2670 | Bronx
+      554 | Staten Island
+       53 | EWR
+   (6 rows)
 
-    Time: 48.449 ms
-    ```
+   Time: 48.449 ms
+   ```
 
-    :::note
-    위 `JOIN` 쿼리의 출력은 `Unknown` 값이 포함되지 않은 점을 제외하면 앞의 `dictGet` 쿼리와 동일합니다. 내부적으로 ClickHouse는 `taxi_zone_dictionary` 딕셔너리에 대해 `dictGet` 함수를 호출하지만, `JOIN` 구문이 SQL 개발자에게 더 익숙합니다.
-    :::
+   :::note
+   위 `JOIN` 쿼리의 출력은 `Unknown` 값이 포함되지 않은 점을 제외하면 앞의 `dictGet` 쿼리와 동일합니다. 내부적으로 ClickHouse는 `taxi_zone_dictionary` 딕셔너리에 대해 `dictGet` 함수를 호출하지만, `JOIN` 구문이 SQL 개발자에게 더 익숙합니다.
+   :::
 
-    ```pgsql
-    taxi=# explain SELECT
-            count(1) AS total,
-            "Borough"
-        FROM taxi.trips
-        JOIN taxi.taxi_zone_dictionary
-          ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
-        WHERE pickup_nyct2010_gid > 0
-          AND dropoff_nyct2010_gid IN (132, 138)
-        GROUP BY "Borough"
-        ORDER BY total DESC;
-                                  QUERY PLAN
-    -----------------------------------------------------------------------
-     Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
-       Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
-    (2 rows)
-    Time: 2.012 ms
-    ```
+   ```pgsql
+   taxi=# explain SELECT
+           count(1) AS total,
+           "Borough"
+       FROM taxi.trips
+       JOIN taxi.taxi_zone_dictionary
+         ON trips.pickup_nyct2010_gid = toUInt64(taxi.taxi_zone_dictionary."LocationID")
+       WHERE pickup_nyct2010_gid > 0
+         AND dropoff_nyct2010_gid IN (132, 138)
+       GROUP BY "Borough"
+       ORDER BY total DESC;
+                                 QUERY PLAN
+   -----------------------------------------------------------------------
+    Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
+      Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
+   (2 rows)
+   Time: 2.012 ms
+   ```
 
-2.  이 쿼리는 팁 금액이 가장 높은 1,000개의 운행에 대한 행을 반환한 다음, 각 행을 딕셔너리와 내부 조인을 수행합니다:
+2. 이 쿼리는 팁 금액이 가장 높은 1,000개의 운행에 대한 행을 반환한 다음, 각 행을 딕셔너리와 내부 조인을 수행합니다:
 
-    ```sql
-    taxi=# SELECT *
-    FROM taxi.trips
-    JOIN taxi.taxi_zone_dictionary
-        ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
-    WHERE tip_amount > 0
-    ORDER BY tip_amount DESC
-    LIMIT 1000;
-    ```
+   ```sql
+   taxi=# SELECT *
+   FROM taxi.trips
+   JOIN taxi.taxi_zone_dictionary
+       ON trips.dropoff_nyct2010_gid = taxi.taxi_zone_dictionary."LocationID"
+   WHERE tip_amount > 0
+   ORDER BY tip_amount DESC
+   LIMIT 1000;
+   ```
 
 :::note
 일반적으로 PostgreSQL과 ClickHouse에서는 `SELECT *` 사용을 피합니다. 실제로 필요한 컬럼만 조회해야 합니다.
@@ -628,24 +628,18 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 
 [tutorial]: /tutorial "ClickHouse 고급 튜토리얼"
 
-[psql]: https://www.postgresql.org/docs/current/app-psql.html
-    "PostgreSQL 클라이언트 애플리케이션: psql"
+[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 클라이언트 애플리케이션: psql"
 
-[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
-    "SQL 명령어: EXPLAIN"
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL 명령어: EXPLAIN"
 
 [dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN의 pg_clickhouse"
 
-[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases
-    "GitHub의 pg_clickhouse 릴리스"
+[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub의 pg_clickhouse 릴리스"
 
-[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "GitHub의 pg_clickhouse OCI 이미지"
+[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "GitHub의 pg_clickhouse OCI 이미지"
 
-[Postgres image]: https://hub.docker.com/_/postgres
-    "Docker Hub의 Postgres OCI 이미지"
+[Postgres image]: https://hub.docker.com/_/postgres "Docker Hub의 Postgres OCI 이미지"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
-    "ClickHouse 문서: LIFETIME을 사용한 딕셔너리 데이터 새로 고침"
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "ClickHouse 문서: LIFETIME을 사용한 딕셔너리 데이터 새로 고침"

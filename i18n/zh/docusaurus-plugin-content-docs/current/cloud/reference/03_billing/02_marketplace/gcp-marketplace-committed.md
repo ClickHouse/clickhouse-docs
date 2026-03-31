@@ -22,7 +22,7 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-通过在 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上签订承诺合约来开始使用 ClickHouse Cloud。承诺合约（也称为 Private Offer）允许客户在一定期限内预先承诺在 ClickHouse Cloud 上消费指定金额。
+通过在 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上签订承诺合同来开始使用 ClickHouse Cloud。承诺合同 (也称为私有优惠) 允许客户在一定期限内预先承诺在 ClickHouse Cloud 上消费指定金额。
 
 
 ## 先决条件 \{#prerequisites\}

@@ -1,5 +1,5 @@
 ---
-description: '包含 ClickHouse 仓库所有提交和更改的数据集'
+description: '包含 ClickHouse 仓库所有提交和变更的数据集'
 sidebar_label: 'GitHub 仓库'
 slug: /getting-started/example-datasets/github
 title: '在 ClickHouse 中使用 GitHub 数据编写查询'

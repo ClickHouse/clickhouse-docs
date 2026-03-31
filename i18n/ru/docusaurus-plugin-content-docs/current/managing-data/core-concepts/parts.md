@@ -10,7 +10,6 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
-
 ## Что такое части таблицы в ClickHouse? \{#what-are-table-parts-in-clickhouse\}
 
 <br />
@@ -41,7 +40,7 @@ ORDER BY (town, street);
 
 Когда сервер ClickHouse обрабатывает пример вставки с 4 строками (например, через [оператор INSERT INTO](/sql-reference/statements/insert-into)), показанный на диаграмме выше, он выполняет несколько шагов:
 
-① **Сортировка**: Строки сортируются по ^^ключу сортировки^^ таблицы `(town, street)`, а для отсортированных строк генерируется [разреженный первичный индекс](/guides/best-practices/sparse-primary-indexes).
+① **Сортировка**: Строки сортируются по ключу сортировки таблицы `(town, street)`, а для отсортированных строк генерируется [разреженный первичный индекс](/guides/best-practices/sparse-primary-indexes).
 
 ② **Разделение**: Отсортированные данные разделяются на столбцы.
 
@@ -51,22 +50,21 @@ ORDER BY (town, street);
 
 В зависимости от конкретного движка таблицы дополнительные преобразования [могут](/operations/settings/settings) выполняться вместе с сортировкой.
 
-Части ^^данных^^ являются самодостаточными и включают все метаданные, необходимые для интерпретации их содержимого без обращения к центральному каталогу. Помимо разреженного первичного индекса, ^^части^^ содержат дополнительные метаданные, такие как вторичные [индексы пропуска данных](/optimize/skipping-indexes), [статистика столбцов](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), контрольные суммы, min-max индексы (если используется [partitioning](/partitions)) и [другое](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104).
-
+Части данных являются самодостаточными и включают все метаданные, необходимые для интерпретации их содержимого без обращения к центральному каталогу. Помимо разреженного первичного индекса, части содержат дополнительные метаданные, такие как вторичные [индексы пропуска данных](/optimize/skipping-indexes), [статистика столбцов](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), контрольные суммы, min-max индексы (если используется [partitioning](/partitions)) и [другое](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104).
 
 ## Слияния частей \{#part-merges\}
 
-Чтобы управлять числом ^^parts^^ в таблице, фоновый процесс [background merge](/merges) периодически объединяет меньшие ^^parts^^ в более крупные до тех пор, пока они не достигнут [настраиваемого](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) сжатого размера (обычно около 150 ГБ). Слитые ^^parts^^ помечаются как неактивные и удаляются по истечении [настраиваемого](/operations/settings/merge-tree-settings#old_parts_lifetime) временного интервала. Со временем этот процесс создаёт иерархическую структуру слитых ^^parts^^, поэтому таблица и называется ^^MergeTree^^:
+Чтобы управлять числом частей в таблице, фоновый процесс [background merge](/merges) периодически объединяет меньшие части в более крупные до тех пор, пока они не достигнут [настраиваемого](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) сжатого размера (обычно около 150 ГБ). Слитые части помечаются как неактивные и удаляются по истечении [настраиваемого](/operations/settings/merge-tree-settings#old_parts_lifetime) временного интервала. Со временем этот процесс создаёт иерархическую структуру слитых частей, поэтому таблица и называется MergeTree:
 
 <Image img={merges} size="lg" />
 
 <br />
 
-Чтобы минимизировать количество исходных ^^parts^^ и накладные расходы на слияния, клиентским приложениям базы данных [рекомендуется](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) либо выполнять пакетные вставки данных, например по 20 000 строк за раз, либо использовать [режим асинхронной вставки](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), при котором ClickHouse буферизует строки из нескольких входящих операторов INSERT в одну и ту же таблицу и создаёт новую ^^part^^ только после того, как размер буфера превысит настраиваемый порог или истечёт таймаут.
+Чтобы минимизировать количество исходных частей и накладные расходы на слияния, клиентским приложениям базы данных [рекомендуется](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) либо выполнять пакетные вставки данных, например по 20 000 строк за раз, либо использовать [режим асинхронной вставки](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), при котором ClickHouse буферизует строки из нескольких входящих операторов INSERT в одну и ту же таблицу и создаёт новую часть только после того, как размер буфера превысит настраиваемый порог или истечёт таймаут.
 
 ## Мониторинг частей таблицы \{#monitoring-table-parts\}
 
-Вы можете [выполнить запрос](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results), чтобы получить список всех существующих в данный момент активных ^^частей^^ нашей таблицы-примера, используя [виртуальный столбец](/engines/table-engines#table_engines-virtual_columns) `_part`:
+Вы можете [выполнить запрос](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results), чтобы получить список всех существующих в данный момент активных частей нашей таблицы-примера, используя [виртуальный столбец](/engines/table-engines#table_engines-virtual_columns) `_part`:
 
 ```sql
 SELECT _part
@@ -84,7 +82,7 @@ ORDER BY _part ASC;
 
 Приведённый выше запрос извлекает имена каталогов на диске; каждый каталог соответствует активной части данных таблицы. Компоненты этих имён каталогов имеют определённые значения, которые описаны [здесь](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) для тех, кто заинтересован в более подробном изучении.
 
-Кроме того, ClickHouse ведёт учёт информации обо всех ^^частях^^ всех таблиц в системной таблице [system.parts](/operations/system-tables/parts), и следующий запрос для нашей таблицы из примера выше [возвращает](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) список всех текущих активных ^^частей^^, их уровень слияния и количество строк, хранящихся в этих ^^частях^^:
+Кроме того, ClickHouse ведёт учёт информации обо всех частях всех таблиц в системной таблице [system.parts](/operations/system-tables/parts), и следующий запрос для нашей таблицы из примера выше [возвращает](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) список всех текущих активных частей, их уровень слияния и количество строк, хранящихся в этих частях:
 
 ```sql
 SELECT

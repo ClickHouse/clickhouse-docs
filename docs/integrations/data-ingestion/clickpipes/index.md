@@ -68,6 +68,7 @@ For all services, ClickPipes traffic will originate from a default region based 
 - **us-east-1**: For all services in AWS `us-east-1`.
 - **ap-south-1**: For services in AWS `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **ap-northeast-2**: For services in AWS `ap-northeast-2` created on or after 14 Nov 2025 (services created before this date use `us-east-2` IPs).
+- **ap-southeast-1**: For services in AWS `ap-southeast-1` created on or after 18 Mar 2026 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-2**: For services in AWS `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-3**: For services in AWS `ap-southeast-3` created on or after 6 Mar 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).

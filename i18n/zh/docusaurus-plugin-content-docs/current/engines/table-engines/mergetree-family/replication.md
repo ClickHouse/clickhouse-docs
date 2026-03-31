@@ -177,13 +177,13 @@ SAMPLE BY intHash32(UserID);
   <summary>已弃用语法示例</summary>
 
   ```sql
-CREATE TABLE table_name
-(
+  CREATE TABLE table_name
+  (
     EventDate DateTime,
     CounterID UInt32,
     UserID UInt32
-) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-```
+  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+  ```
 </details>
 
 如该示例所示，这些参数可以在花括号中包含可替换的占位符。替换后的值取自配置文件的 [macros](/operations/server-configuration-parameters/settings.md/#macros) 部分。
@@ -207,12 +207,12 @@ CREATE TABLE table_name
 `table_name` 是该表在 ClickHouse Keeper 中对应节点的名称。通常将其设置为与表名相同是个好主意。之所以要显式定义，是因为与表名不同的是，它在执行 RENAME 查询后不会改变。
 *提示*：也可以在 `table_name` 前加上数据库名，例如 `db_name.table_name`。
 
-可以使用两个内置替换 `{database}` 和 `{table}`，它们分别展开为表名和数据库名（除非在 `macros` 部分中定义了这些宏）。因此，ZooKeeper 路径可以指定为 `'/clickhouse/tables/{shard}/{database}/{table}'`。
+可以使用两个内置替换 `{database}` 和 `{table}`，它们分别展开为表名和数据库名 (除非在 `macros` 部分中定义了这些宏) 。因此，ZooKeeper 路径可以指定为 `'/clickhouse/tables/{shard}/{database}/{table}'`。
 在使用这些内置替换时，请谨慎处理表重命名。ClickHouse Keeper 中的路径无法更改，当表被重命名后，宏会展开为不同的路径，表将指向 ClickHouse Keeper 中不存在的路径，并进入只读模式。
 
 副本名称用于标识同一张表的不同副本。可以像示例中那样使用服务器名。该名称只需要在每个分片内保持唯一即可。
 
-可以显式定义这些参数，而不是使用替换。这在测试以及配置小型集群时可能更为方便。但是，在这种情况下将无法使用分布式 DDL 查询（`ON CLUSTER`）。
+可以显式定义这些参数，而不是使用替换。这在测试以及配置小型集群时可能更为方便。但是，这种情况下将无法使用分布式 DDL 查询 (`ON CLUSTER`) 。
 
 在处理大型集群时，建议使用替换，因为它们可以降低出错概率。
 
@@ -223,7 +223,7 @@ CREATE TABLE table_name
 <default_replica_name>{replica}</default_replica_name>
 ```
 
-在这种情况下，创建表时可以省略参数：
+这种情况下，创建表时可以省略参数：
 
 ```sql
 CREATE TABLE table_name (
@@ -241,11 +241,12 @@ CREATE TABLE table_name (
 ORDER BY x;
 ```
 
-在每个副本上运行 `CREATE TABLE` 查询。此查询会创建一个新的复制表，或者将一个新的副本添加到现有表中。
+在每个副本上执行 `CREATE TABLE` 查询。此查询会创建一个新的复制表，或者将一个新的副本添加到现有表中。
 
-如果是在其他副本上已经存在部分数据之后才添加新的副本，那么在运行该查询后，数据会从其他副本复制到新的副本。换句话说，新副本会与其他副本进行同步。
+如果是在其他副本上已经存在部分数据之后才添加新的副本，那么在执行该查询后，数据会从其他副本复制到新的副本。换句话说，新副本会与其他副本进行同步。
 
-要删除一个副本，请运行 `DROP TABLE`。但这只会删除一个副本——也就是你运行该查询所在服务器上的那个副本。
+要删除一个副本，请运行 `DROP TABLE`。但这只会删除一个副本——也就是你执行该查询所在服务器上的那个副本。
+
 
 ## 故障后的恢复 \{#recovery-after-failures\}
 

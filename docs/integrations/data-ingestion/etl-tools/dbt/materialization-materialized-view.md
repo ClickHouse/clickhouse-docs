@@ -76,12 +76,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 --mv2:end
 ```
 
-> IMPORTANT!
->
-> When updating a model with multiple materialized views (MVs), especially when renaming one of the MV names,
-> dbt-clickhouse does not automatically drop the old MV. Instead,
-> you will encounter the following warning:
+:::warning
+When updating a model with multiple materialized views (MVs), especially when renaming one of the MV names,
+dbt-clickhouse does not automatically drop the old MV. Instead,
+you will encounter the following warning:
+
 `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::
 
 ### How to iterate the target table schema {#how-to-iterate-the-target-table-schema}
 
@@ -132,7 +133,7 @@ This feature is in beta and available starting from **dbt-clickhouse version 1.1
 By default, dbt-clickhouse creates and manages both the target table and the materialized views within a single model (the [implicit target](#implicit-target) approach described above). This approach has some limitations:
 
 - All resources (target table + MVs) share the same configuration. If multiple MVs are pointing to the same target table, they must be defined together using `UNION ALL` syntax.
-- All these resources cannot be iterated separately, all need to be managed using the same model file.
+- None of these resources can be iterated separately, all need to be managed using the same model file.
 - You cannot easily control the name of each MV.
 - All settings are shared between the target table and the MVs, making it difficult to configure each resource individually and to reason about which configuration belongs to each resource.
 
@@ -143,10 +144,10 @@ The **explicit target** feature allows you to define the target table separately
 - **Fully separated resources**: Now each resource can be defined separately, improving readability
 - **1:1 resources between dbt and CH**: Now you can use dbt tooling to manage and iterate them separately.
 - **Different configurations now available**: Now a different configuration can be applied to each one.
-- **No more need to keep naming conventions**: Now all resources are created using the name that the user gives, not the custom one added with the _mv for MVs.
+- **No more need to keep naming conventions**: Now all resources are created using the name you give, not the custom one added with the _mv for MVs.
 
 ### Limitations {#explicit-target-limitations}
-- Target table definition is not natural to dbt: it’s not a SQL that will read from a source table, so we loss here dbt validations. MV’s SQL will still get validated using dbt utilities and its compatibility with the target table’s columns will be validated at CH level.
+- Target table definition is not natural to dbt: it’s not a SQL that will read from a source table, so you lose dbt validations here. MV’s SQL will still get validated using dbt utilities and its compatibility with the target table’s columns will be validated at CH level.
 - **We found some problems related to limitations to the `ref()` function**: We need to use it to reference models between them but it can only be used to reference upstream models, not downstream. This causes some problems for this implementation. We have created an issue in the dbt-core repo and we are currently talking with them [to look for possible solutions (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319):
   - When `ref()` is called from inside the config block, it returns the current model, not the one shared. This blocks us from defining it in the config() section, forcing us to use a comment to add this dependency. We are following the same pattern as defined in the dbt docs with [the "--depends_on:" approach](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies).
   - `ref()` works for us as it forces the target table to be created first, but in the dependency chart in the generated documentation, the target table will be drawn as another upstream dependency, not downstream, making it a bit difficult to understand.
@@ -173,7 +174,7 @@ SELECT
     toUInt64(0) AS total
 WHERE 0  -- Creates empty table with correct schema
 ```
-This is the workaround we mention in the limitations section. You may loss some dbt validations here, but the schema will still be checked at ClickHouse level.
+This is the workaround we mention in the limitations section. You may lose some dbt validations here, but the schema will still be checked at ClickHouse level.
 
 **Step 2: Define materialized views pointing to the target table**
 
@@ -230,7 +231,7 @@ You'll usually only want to set `catchup` to `True` in MVs or `repopulate_from_m
 
 #### Full refresh with explicit targets {#explicit-target-full-refresh}
 
-When using `--full-refresh`, explicit target tables will be recreated (so you may loss data if ingestion is happening during this process). This will behave in different ways depending on your configurations:
+When using `--full-refresh`, explicit target tables will be recreated (so you may lose data if ingestion is happening during this process). This will behave in different ways depending on your configurations:
 
 **Option 1: default `--full-refresh` behavior. All gets recreated, but during the recreation of the MVs, the target table will be empty or partially loaded.**
 
@@ -240,7 +241,7 @@ All gets dropped and recreated. If you want to reinsert the data using the MVs S
 -- models/page_events_aggregator.sql
 {{ config(
     materialized='materialized_view',
-    catchup=True  -- this is the default value so you don't need to actully set it.
+    catchup=True  -- this is the default value so you don't need to actually set it.
 ) }}
 {{ materialization_target_table(ref('events_daily')) }}
 ...
@@ -255,7 +256,7 @@ Set `repopulate_from_mvs_on_full_refresh=True` on the target table model. On a `
 2. Execute INSERT-SELECT using each MV's SQL
 3. Atomically swap the tables
 
-So the users of your table will not see empty data while the MVs are being recreated.
+So you will not see empty data in your table while the MVs are being recreated.
 
 ```sql
 -- models/events_daily.sql
@@ -283,7 +284,7 @@ To change the target:
 #### Target table is empty while/after `run` is executed {#target-table-empty}
 There are a few reasons why this can happen:
 - Materialized views may be configured with `catchup=False` or the target table may be configured with `repopulate_from_mvs_on_full_refresh=False`, so no backfill is executed when the materialized views are created or when the target table is recreated. This is the expected behavior, so if you want to reinsert the data using the materialized views SQL, make sure to set `catchup=True` in the materialized view (this is the default value) or `repopulate_from_mvs_on_full_refresh=True` in the target table. Make sure you are not activating both at the same time to avoid duplicates. Check the [configuration section](#explicit-target-configuration) for more details.
-- While a `dbt run --full-refresh` is executed, if the materialized views use the `catchup=True` default, the target will get recreated and the MVs will reinsert the data sequentially. To avoid this situation, check the [Full refresh with explicit targets](#explicit-target-full-refresh)
+- While a `dbt run --full-refresh` is executed, if the materialized views use the `catchup=True` default, the target will get recreated and the MVs will reinsert the data sequentially. To avoid this situation, check the [Full refresh with explicit targets](#explicit-target-full-refresh).
 
 #### `dbt run --full-refresh` in a target table with `repopulate_from_mvs_on_full_refresh=True` uses the logic from old materialized view versions, not from the SQL that is currently in the project {#full-refresh-with-repopulate-from-mvs-on-full-refresh}
 `repopulate_from_mvs_on_full_refresh=True` uses the existing MV SQL that's already defined in ClickHouse. To make sure the new materialized view definition is used, do a `dbt run` for each materialized view before doing a `dbt run --full-refresh` in the target table.
@@ -388,7 +389,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 **3. Iterate them as needed following the instructions in the [explicit target](#explicit-target) section.**
 
-## Behavior comparison between implicit and explicit target approaches{#behavior-comparison}
+## Behavior comparison between implicit and explicit target approaches {#behavior-comparison}
 
 ### How they behave in general {#general-behavior}
 
@@ -430,7 +431,7 @@ The following table summarizes the safety of each operation when inserts are act
 |-----------|------------------|------------------------------------|
 | `dbt run` | Schema changes applied following the `mv_on_schema_change` setting | ✅ Safe. No data movement. |
 | `dbt run --full-refresh` (default) | Recreate the table (leaves it empty) | ⚠️ **Target table is empty** until MVs backfill it. MVs continue inserting into the new table once it exists. |
-| `dbt run --full-refresh` with `repopulate_from_mvs_on_full_refresh=True` | 1. Create backup table<br/>2. Insert data using each MV's SQL<br/>3. Exchange tables atomically | ⚠️ **MV is blind during recreation.** Data inserted between steps 1 and 3 will not appear in the new table. **This may change in next versions**|
+| `dbt run --full-refresh` with `repopulate_from_mvs_on_full_refresh=True` | 1. Create backup table<br/>2. Insert data using each MV's SQL<br/>3. Exchange tables atomically | ⚠️ **MV is blind during recreation.** Data inserted between steps 1 and 3 will not appear in the new table. **This may change in next versions**.|
 
 :::tip Recommendations for production environments with active ingestion
 - **Pause the ingestion during dbt operations if possible**: This will make all operations safe and no data will be lost.
@@ -510,7 +511,7 @@ GROUP BY event_date, event_type
   error if the specified dependency does not exist at the time of creation. Instead, the refreshable MV remains in an
   inactive state, waiting for the dependency to be satisfied before it starts processing updates or refreshing.
   This behavior is by design, but it may lead to delays in data availability if the required dependency is not addressed
-  promptly. Users are advised to ensure all dependencies are correctly defined and exist before creating a refreshable
+  promptly. You should ensure all dependencies are correctly defined and exist before creating a refreshable
   materialized view.
 * As of today, there is no actual "dbt linkage" between the mv and its dependencies, therefore the creation order is not
   guaranteed.

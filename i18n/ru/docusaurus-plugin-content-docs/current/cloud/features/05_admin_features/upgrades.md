@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
-import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
@@ -55,28 +54,22 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 ### Быстрый канал релизов (ранние обновления) \{#fast-release-channel-early-upgrades\}
 
-<ScalePlanFeatureBadge feature="Быстрый канал релизов"/>
+<ScalePlanFeatureBadge feature="Быстрый канал релизов" />
 
 Помимо обычного графика обновлений, мы предлагаем канал **Fast release**, если вы хотите, чтобы ваши сервисы получали обновления раньше обычного графика релизов.
 
 В частности, сервисы будут:
 
-- Получать последние релизы ClickHouse
-- Обновляться чаще по мере выхода и тестирования новых релизов
+* Получать последние релизы ClickHouse
+* Обновляться чаще по мере выхода и тестирования новых релизов
 
 Вы можете изменить график релизов сервиса в консоли ClickHouse Cloud, как показано ниже:
 
 <div class="eighty-percent">
-    <Image img={fast_release} size="lg" alt="Выбор плана" border/>
+  <Image img={fast_release} size="lg" alt="Выберите тип канала релизов" border />
 </div>
 
-<br/>
-
-<div class="eighty-percent">
-    <Image img={enroll_fast_release} size="lg" alt="Выбор плана" border/>
-</div>
-
-<br/>
+<br />
 
 Этот канал **Fast release** подходит для тестирования новых функций в некритичных средах. **Он не рекомендуется для production-нагрузок с жёсткими требованиями к доступности и надёжности.**
 

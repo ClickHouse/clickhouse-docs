@@ -9,10 +9,10 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 该数据集由纽约公共图书馆创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
 
-来源: http://menus.nypl.org/data  
+来源: http://menus.nypl.org/data
 该数据属于公有领域。
 
-这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。  
+这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。
 数据规模仅为关于菜单菜品的 130 万条记录——对 ClickHouse 来说，这个数据量非常小，但仍然是一个很好的示例。
 
 ## 下载数据集 \{#download-dataset\}

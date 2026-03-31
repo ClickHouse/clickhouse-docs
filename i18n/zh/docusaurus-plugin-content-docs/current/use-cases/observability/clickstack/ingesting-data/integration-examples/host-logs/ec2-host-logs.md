@@ -22,6 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
 
 :::note[摘要]
@@ -67,7 +68,7 @@ import TabItem from '@theme/TabItem';
   * 这些命令需要在 EC2 实例上直接运行
 
   :::note
-  EC2 元数据可在实例内通过 `http://169.254.169.254` 访问。OpenTelemetry `resourcedetection` 处理器使用此端点自动为日志增强云上下文信息。
+  EC2 元数据可在实例内通过 `http://169.254.169.254` 访问。OpenTelemetry `resourcedetection` 处理器使用此端点自动为日志添加云上下文。
   :::
 
   #### 验证 syslog 文件是否存在
@@ -151,7 +152,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -205,7 +206,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -229,14 +230,14 @@ import TabItem from '@theme/TabItem';
   **在配置中将以下项替换为实际值：**
 
   * `YOUR_CLICKSTACK_HOST`: 运行 ClickStack 的主机名或 IP 地址
-  * 在本地进行测试时，您可以使用 SSH 隧道（参见[故障排除部分](#troubleshooting)）。
+  * 在本地进行测试时，您可以使用 SSH 隧道 (参阅[故障排查部分](#troubleshooting)) 。
 
   该配置：
 
-  * 从标准位置读取系统日志文件（Ubuntu 为 `/var/log/syslog`，Amazon Linux/RHEL 为 `/var/log/messages`）
-  * 解析 syslog 格式并提取结构化字段（时间戳、主机名、单元/服务、PID、消息）
+  * 从标准位置读取系统日志文件 (Ubuntu 为 `/var/log/syslog`，Amazon Linux/RHEL 为 `/var/log/messages`)
+  * 解析 syslog 格式并提取结构化字段 (时间戳、主机名、单元/服务、PID、消息)
   * **通过 `resourcedetection` 处理器自动检测并添加 EC2 元数据**
-  * （如果存在）可选地包含 EC2 标签（Name、Environment、Team）
+  * 如果存在，则可选择包含 EC2 标签 (Name、Environment、Team)
   * 使用 OTLP over HTTP 将日志发送到 ClickStack
 
   :::note[EC2 元数据增强]
@@ -244,11 +245,11 @@ import TabItem from '@theme/TabItem';
 
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
-  * `cloud.region`: AWS 区域（例如 “us-east-1”）
-  * `cloud.availability_zone`: 可用区（AZ，例如 &quot;us-east-1a&quot;）
+  * `cloud.region`: AWS 区域 (例如 “us-east-1”)
+  * `cloud.availability_zone`: 可用区 (AZ，例如 &quot;us-east-1a&quot;)
   * `cloud.account.id`: AWS 账户 ID
-  * `host.id`: EC2 实例 ID（例如 &quot;i-1234567890abcdef0&quot;）
-  * `host.type`: 实例类型（例如：&quot;t3.medium&quot;）
+  * `host.id`: EC2 实例 ID (例如 &quot;i-1234567890abcdef0&quot;)
+  * `host.type`: 实例类型 (例如：&quot;t3.medium&quot;)
   * `host.name`: 实例的主机名
     :::
 
@@ -290,8 +291,8 @@ import TabItem from '@theme/TabItem';
   5. 验证是否能在资源属性中看到 EC2 元数据：
      * `cloud.provider`
      * `cloud.region`
-     * `host.id`（实例 ID）
-     * `host.type`（实例类型）
+     * `host.id` (实例 ID)
+     * `host.type` (实例类型)
      * `cloud.availability_zone`
 
   <Image img={search_view} alt="EC2 日志搜索视图" />

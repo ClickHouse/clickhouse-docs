@@ -12,6 +12,7 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
+
 ## AWS용 고객 관리형 VPC(BYO-VPC) \{#customer-managed-vpc-aws\}
 
 ClickHouse Cloud가 새 VPC를 프로비저닝하는 대신 기존 VPC를 사용하여 ClickHouse BYOC를 배포하려는 경우, 아래 단계를 따르세요. 이 접근 방식은 네트워크 구성에 대해 더 큰 제어 권한을 제공하며, ClickHouse BYOC를 기존 네트워크 인프라에 통합할 수 있도록 해줍니다.
@@ -67,7 +68,7 @@ VPC는 직접 제어하더라도, ClickHouse Cloud가 AWS 계정 내에서 Kuber
 
 ## 고객 관리형 IAM 역할 \{#customer-managed-iam-roles\}
 
-고급 보안 요구 사항이나 엄격한 규정 준수 정책이 있는 조직에서는 ClickHouse Cloud가 IAM 역할을 생성하도록 하는 대신 자체 IAM 역할을 제공할 수 있습니다. 이 방식은 IAM 권한을 완전히 제어할 수 있게 하며, 조직의 보안 정책을 강제할 수 있도록 합니다.
+고급 보안 요구 사항이나 엄격한 규정 준수 정책이 있는 조직에서는 ClickHouse Cloud가 IAM 역할을 생성하도록 하는 대신 자체 IAM 역할을 제공할 수 있습니다. 이 접근 방식은 IAM 권한을 완전히 제어할 수 있게 하며, 조직의 보안 정책을 시행할 수 있도록 합니다.
 
 :::info
 고객 관리형 IAM 역할은 현재 비공개 프리뷰 상태입니다. 이 기능이 필요하면 구체적인 요구 사항과 일정에 대해 논의할 수 있도록 ClickHouse Support에 문의하십시오.
@@ -77,6 +78,6 @@ VPC는 직접 제어하더라도, ClickHouse Cloud가 AWS 계정 내에서 Kuber
 * ClickHouse Cloud에서 사용할 사전 구성된 IAM 역할 제공
 * 교차 계정 액세스에 사용되는 `ClickHouseManagementRole`의 IAM 관련 권한에 대한 쓰기 권한 제거
 * 역할 권한 및 신뢰 관계를 완전히 제어
-  :::
+:::
 
-ClickHouse Cloud가 기본적으로 생성하는 IAM 역할에 대한 자세한 내용은 [BYOC 권한 참조](/cloud/reference/byoc/reference/priviledge)를 참조하십시오.
+ClickHouse Cloud가 기본적으로 생성하는 IAM 역할에 대한 자세한 내용은 [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege)를 참조하십시오.

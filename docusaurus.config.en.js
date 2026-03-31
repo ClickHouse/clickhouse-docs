@@ -14,7 +14,7 @@ const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatt
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
-import glossaryTransformer from "./plugins/glossary-transformer.js";
+// import glossaryTransformer from "./plugins/glossary-transformer.js";
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -54,7 +54,6 @@ const config = {
   tagline:
     "Documentation, quick starts, user guides, technical references, FAQs and more...",
   url: "https://clickhouse.com",
-  // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/",
   baseUrlIssueBanner: true,
   onBrokenLinks: process.env.ON_BROKEN_LINKS ?? "throw",
@@ -66,7 +65,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh", "ru"],
+    locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -88,6 +87,11 @@ const config = {
         label: "Русский",
         htmlLang: "ru",
         path: "ru",
+      },
+      ko: {
+        label: "한국어",
+        htmlLang: "ko",
+        path: "ko",
       }
     },
   },
@@ -156,7 +160,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -190,7 +194,7 @@ const config = {
               blogPath
             );
           },
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -367,6 +371,10 @@ const config = {
     blogSidebarLink: "/docs/knowledgebase",
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
+    strapiUrl:
+      process.env.CLIENT_STRAPI_URL || "https://staging-cms.clickhouse.com",
+    strapiToken:
+      process.env.CLIENT_STRAPI_TOKEN || "",
   },
 
 };

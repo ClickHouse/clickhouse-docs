@@ -1,6 +1,6 @@
 ---
-title: 'サポートされている Cloud リージョン'
-sidebar_label: 'サポートされている Cloud リージョン'
+title: 'サポート対象の Cloud リージョン'
+sidebar_label: 'サポート対象の Cloud リージョン'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'ClickHouse Cloud がサポートするリージョン'
 slug: /cloud/reference/supported-regions
@@ -13,28 +13,27 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## AWS リージョン \{#aws-regions\}
 
-- ap-northeast-1 (東京)
-- ap-northeast-2 (韓国（ソウル）)
-- ap-south-1 (ムンバイ)
-- ap-southeast-1 (シンガポール)
-- ap-southeast-2 (シドニー)
-- eu-central-1 (フランクフルト)
-- eu-west-1 (アイルランド)
-- eu-west-2 (ロンドン)
-- me-central-1 (アラブ首長国連邦)
-- us-east-1 (北バージニア)
-- us-east-2 (オハイオ)
-- us-west-2 (オレゴン)
-- il-central-1 (イスラエル（テルアビブ）)
+* ap-northeast-1 (Tokyo)
+* ap-northeast-2 (韓国 (ソウル) )
+* ap-south-1 (ムンバイ)
+* ap-southeast-1 (Singapore)
+* ap-southeast-2 (Sydney)
+* eu-central-1 (Frankfurt)
+* eu-west-1 (Ireland)
+* eu-west-2 (London)
+* us-east-1 (N. Virginia)
+* us-east-2 (Ohio)
+* us-west-2 (Oregon)
+* il-central-1 (イスラエル (テルアビブ) )
 
-**プライベートリージョン：**
+**プライベート リージョン：**
 
-- ca-central-1 (カナダ)
-- af-south-1 (南アフリカ)
-- eu-north-1 (ストックホルム)
-- sa-east-1 (南米)
-- ap-southeast-3 (ジャカルタ)
-- ap-east-1 (香港)
+* ca-central-1 (Canada)
+* af-south-1 (South Africa)
+* eu-north-1 (Stockholm)
+* sa-east-1 (South America)
+* ap-southeast-3 (ジャカルタ)
+* ap-east-1 (香港)
 
 ## Google Cloud リージョン \{#google-cloud-regions\}
 

@@ -13,14 +13,15 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge />
 
-ClickHouse 支持与多个目录（Unity、Glue、Polaris 等）集成。本指南将逐步介绍如何通过 ClickHouse 查询 [BigLake Metastore](https://cloud.google.com/biglake/docs) 中的 Iceberg 表。
+ClickHouse 支持与多个目录 (Unity、Glue、Polaris 等) 集成。本指南将逐步介绍如何通过 ClickHouse 查询 [BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) 中的 Iceberg 表。
 
 :::note
 由于该功能目前处于 beta 阶段，因此你需要使用以下命令启用它：
 `SET allow_database_iceberg = 1;`
 :::
+
 
 ## 先决条件 \{#prerequisites\}
 

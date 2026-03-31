@@ -350,6 +350,7 @@ const sidebars = {
         'cloud/managed-postgres/settings',
         'cloud/managed-postgres/upgrades',
         'cloud/managed-postgres/benchmarks',
+        'cloud/managed-postgres/openapi',
         'cloud/managed-postgres/faq',
         {
           type: 'category',
@@ -526,7 +527,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Data Lakes',
+      label: 'Data lakes',
       collapsed: false,
       collapsible: false,
       link: { type: 'doc', id: 'sql-reference/datalakes' },
@@ -537,7 +538,7 @@ const sidebars = {
   integrations: [
     {
       type: 'category',
-      label: 'All Integrations',
+      label: 'All integrations',
       link: {
         type: 'doc',
         id: 'integrations/index',
@@ -552,7 +553,22 @@ const sidebars = {
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
         'integrations/language-clients/cpp',
-        'integrations/language-clients/go/index',
+        {
+          type: 'category',
+          label: 'Go',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/language-clients/go/index',
+          },
+          items: [
+            'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/clickhouse-api',
+            'integrations/language-clients/go/database-sql-api',
+            'integrations/language-clients/go/data-types',
+          ],
+        },
         'integrations/language-clients/js',
         {
           type: 'category',
@@ -603,7 +619,7 @@ const sidebars = {
         'integrations/language-clients/csharp',
         {
           type: 'category',
-          label: 'Third-party Clients',
+          label: 'Third-party clients',
           collapsed: true,
           collapsible: true,
           items: [
@@ -622,7 +638,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'ClickPipes for Object Storage',
+          label: 'ClickPipes for object storage',
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
@@ -635,6 +651,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/unordered-mode',
               ],
             },
             {
@@ -645,6 +662,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/unordered-mode',
               ],
             },
             {
@@ -837,7 +855,7 @@ const sidebars = {
         'interfaces/cli',
         {
           type: 'category',
-          label: 'Drivers and Interfaces',
+          label: 'Drivers and interfaces',
           collapsed: true,
           collapsible: true,
           link: { type: 'doc', id: 'integrations/interfaces/overview' },
@@ -1147,6 +1165,7 @@ const sidebars = {
             id: 'integrations/tools/data-integration/index',
           },
           items: [
+            'integrations/tools/data-integration/middleware/index',
             'integrations/tools/data-integration/retool/index',
             'integrations/tools/data-integration/easypanel/index',
             'integrations/tools/data-integration/splunk/index',
@@ -1176,7 +1195,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'interfaces/third-party/integrations',
-              label: 'Third-party Libraries',
+              label: 'Third-party libraries',
             },
           ],
         },
@@ -1208,12 +1227,6 @@ const sidebars = {
       link: { type: 'doc', id: 'managing-data/updating-data/index' },
       items: [
         'managing-data/updating-data/overview',
-        'managing-data/updating-data/update_mutations',
-        {
-          type: 'doc',
-          label: 'Lightweight updates',
-          id: 'guides/developer/on-fly-mutations',
-        },
         {
           type: 'doc',
           label: 'ReplacingMergeTree',
@@ -1676,7 +1689,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'For pandas Users',
+          label: 'For pandas users',
           collapsed: true,
           collapsible: true,
           items: [
@@ -1792,7 +1805,7 @@ const sidebars = {
         },
         {
           type: 'link',
-          label: 'chDB Intro Video',
+          label: 'chDB intro video',
           href: 'https://www.youtube.com/watch?v=e_yL0dlX6k4',
         },
         {
@@ -1858,7 +1871,7 @@ const sidebars = {
           items: [
             {
               type: 'category',
-              label: 'Open Source',
+              label: 'Open source',
               collapsed: true,
               collapsible: true,
               link: {
@@ -1929,7 +1942,20 @@ const sidebars = {
         'use-cases/observability/clickstack/config',
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
-        'use-cases/observability/clickstack/dashboards',
+        {
+          type: 'category',
+          label: 'Dashboards',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/dashboards/index',
+          },
+          collapsed: false,
+          collapsible: true,
+          items: [
+            'use-cases/observability/clickstack/dashboards/sql-visualizations',
+          ],
+        },
+        "use-cases/observability/clickstack/notebooks",
         'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',

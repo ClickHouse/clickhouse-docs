@@ -3730,7 +3730,7 @@ toLastDayOfWeek(datetime[, mode[, timezone]])
 
 **戻り値**
 
-指定されたモードに応じて、指定された日付以降で最も近い土曜日または日曜日の日付を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) のいずれかです。
+指定されたモードに応じて、指定された日付以降で最も近い土曜日または日曜日の日付を返します。型は [`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) のいずれかです。
 
 **例**
 
@@ -4388,7 +4388,7 @@ toStartOfDay(datetime)
 
 **戻り値**
 
-日付と時刻をその日の開始時刻に切り捨てた値を返します。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
+日付と時刻をその日の開始時刻に切り捨てた値を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **例**
 
@@ -4424,9 +4424,9 @@ toStartOfFifteenMinutes(datetime)
 
 * `datetime` — 丸め対象の日付または日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
-**返り値**
+**戻り値**
 
-最も近い15分単位の開始時刻に丸められた日時を返します。値の型は [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)。
+最も近い15分単位の開始時刻に丸められた日時を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **使用例**
 
@@ -4452,7 +4452,7 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 
 導入バージョン: v22.6.0
 
-日時を直前の 5 分単位区間の開始時刻に切り下げます。
+日時を直前の 5 分単位区間の開始時刻に切り捨てます。
 
 :::note
 戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
@@ -4968,7 +4968,7 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 
 導入バージョン: v20.1.0
 
-日時を、その時刻を含む10分単位の区切りの開始時刻に切り下げます。
+日時を、その時刻を含む10分単位の区切りの開始時刻に切り捨てます。
 
 :::note
 戻り値の型は、[`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) を設定することで変更できます。
@@ -4982,11 +4982,11 @@ toStartOfTenMinutes(datetime)
 
 **引数**
 
-* `datetime` — 時刻付きの日付。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **戻り値**
 
-最も近い 10 分単位の区切りの開始時刻に丸めた時刻付き日付を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+最も近い 10 分単位の区切りの開始時刻に丸めた日時を返します。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **例**
 
@@ -5032,7 +5032,7 @@ toStartOfWeek(datetime[, mode[, timezone]])
 
 **戻り値**
 
-指定されたモードに応じて、指定した日付と同日またはそれ以前で最も近い日曜日または月曜日の日付を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+指定されたモードに応じて、指定した日付と同日またはそれ以前で最も近い日曜日または月曜日の日付を返します。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32)
 
 **例**
 

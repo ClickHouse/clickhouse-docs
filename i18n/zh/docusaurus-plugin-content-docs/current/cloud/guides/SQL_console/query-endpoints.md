@@ -17,6 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 设置查询 API 端点 \{#setting-up-query-api-endpoints\}
 
 **Query API Endpoints** 功能允许您在 ClickHouse Cloud 控制台中直接基于任意已保存的 SQL 查询创建一个 API 端点。之后，您可以通过 HTTP 调用这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
@@ -91,7 +92,7 @@ import TabItem from '@theme/TabItem';
 
   选择 API key 后，你将被要求：
 
-  * 选择用于运行查询的 Database 角色 (`Full access`、`Read only` 或 `Create a custom role`) 
+  * 选择用于运行查询的 Database 角色 (`Full access`、`Read only` 或 `Create a custom role`)
   * 指定允许跨域资源共享 (CORS) 的域名
 
   选择这些选项后，查询 API endpoint 会被自动创建。

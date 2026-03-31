@@ -1,8 +1,9 @@
 ---
 description: 'ClickHouse Cloud의 고급 대시보드'
-keywords: ['모니터링', '관측성', '고급 대시보드', '대시보드', '관측성 대시보드']
+keywords: ['모니터링', '관측성', '고급 대시보드', '대시보드', '관측성
+    대시보드']
 sidebar_label: '고급 대시보드'
-sidebar_position: 45
+sidebar_position: 7
 slug: /cloud/manage/monitor/advanced-dashboard
 title: 'ClickHouse Cloud의 고급 대시보드'
 doc_type: '가이드'

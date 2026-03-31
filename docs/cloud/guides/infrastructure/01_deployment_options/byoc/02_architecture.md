@@ -9,18 +9,31 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
+import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organization-hierarchy.svg';
+
+## Key concepts {#key-concepts}
+
+The diagram below illustrates how ClickHouse Cloud organizations, cloud accounts, and BYOC infrastructure relate to each other.
+
+<BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="BYOC organization hierarchy showing the relationship between organizations, cloud accounts, regions, and BYOC infrastructure" />
+
+- **ClickHouse Cloud Organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
+- **ClickHouse BYOC Organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
+- **Cloud Account / Project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. A dedicated account or project per BYOC deployment is recommended for isolation.
+- **BYOC Infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
+- **ClickHouse Service:** An individual ClickHouse cluster running within a BYOC infrastructure. Multiple services can run within the same BYOC infrastructure.
 
 ## Glossary {#glossary}
 
 - **ClickHouse VPC:**  The VPC owned by ClickHouse Cloud.
 - **Customer BYOC VPC:** The VPC, owned by the customer's cloud account, is provisioned and managed by ClickHouse Cloud and dedicated to a ClickHouse Cloud BYOC deployment.
-- **Customer VPC** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
+- **Customer VPC:** Other VPCs owned by the customer cloud account used for applications that need to connect to the Customer BYOC VPC.
 
-## Architecture {#architecture}
+## Technical architecture {#architecture}
 
-BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication and user management, APIs, billing, and infrastructure management components such as the BYOC controller, and alerting/incident tooling. These services orchestrate and monitor your deployment, but they don't store your data.
+BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication, user management, APIs, billing, infrastructure management components such as the BYOC controller, and alerting/incident tooling. These services orchestrate and monitor your deployment, but they don't store your data.
 
-In your **Customer BYOC VPC**, ClickHouse provisions a Kubernetes cluster (for example, Amazon EKS) that runs the ClickHouse data plane. As shown in the diagram, this includes the ClickHouse cluster itself, the ClickHouse operator, and supporting services such as ingress, DNS, certificate management, and state exporters and scrapers. A dedicated monitoring stack (Prometheus, Grafana, AlertManager, and Thanos) also runs within your VPC, ensuring that metrics and alerts originate from and remain in your environment.
+In your **Customer BYOC VPC**, ClickHouse provisions a Kubernetes cluster (for example, Amazon EKS) that runs the ClickHouse data plane. As shown in the diagram, this includes the ClickHouse cluster itself, the ClickHouse operator, and supporting services such as ingress, DNS, certificate management, state exporters, and scrapers. A dedicated monitoring stack (Prometheus, Grafana, AlertManager, and Thanos) also runs within your VPC, ensuring that metrics and alerts originate from and remain in your environment.
 
 <br />
 
@@ -41,7 +54,7 @@ By default, ClickHouse Cloud provisions a new, dedicated VPC and sets up the nec
 
 All ClickHouse data, backups, and observability data stay in your cloud account. Data parts and backups are stored in your object storage (for example, Amazon S3), while logs are stored on the storage volumes attached to your ClickHouse nodes. In a future update, logs will be written to LogHouse, a ClickHouse-based logging service that also runs inside your BYOC VPC. Metrics can be stored locally or in an independent bucket in your BYOC VPC for long-term retention. Control-plane connectivity between the ClickHouse VPC and your BYOC VPC is provided over a secure, tightly scoped channel (for example, via Tailscale as shown in the diagram); this is used only for management operations, not for query traffic.
 
-### Control Plane Communication {#control-plane-communication}
+### Control Plane communication {#control-plane-communication}
 
 The ClickHouse VPC communicates with your BYOC VPC over HTTPS (port 443) for service management operations including configuration changes, health checks, and deployment commands. This traffic carries only control plane data for orchestration. Critical telemetry and alerts flow from your BYOC VPC to the ClickHouse VPC to enable resource utilization and health monitoring.
 
@@ -49,7 +62,7 @@ The ClickHouse VPC communicates with your BYOC VPC over HTTPS (port 443) for ser
 
 The BYOC deployment model requires two essential components to ensure reliable operations, ease of maintenance, and security:
 
-### Cross-Account IAM Permissions {#cross-account-iam-permissions}
+### Cross-account IAM permissions {#cross-account-iam-permissions}
 
 ClickHouse Cloud needs cross-account IAM permissions to provision and manage resources within your cloud account. This enables ClickHouse to:
 

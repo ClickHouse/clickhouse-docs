@@ -2,7 +2,7 @@
 title: 'DataStore 빠른 시작'
 sidebar_label: '빠른 시작'
 slug: /chdb/datastore/quickstart
-description: 'DataStore 시작하기 - 설치, pandas에서 한 줄로 마이그레이션, 기본 사용 방법'
+description: 'DataStore 시작하기 - 설치, pandas에서 한 줄로 마이그레이션, 사용법'
 keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migration']
 doc_type: 'guide'
 ---

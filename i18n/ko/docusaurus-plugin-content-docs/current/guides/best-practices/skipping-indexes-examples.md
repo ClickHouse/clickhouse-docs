@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes/examples
-sidebar_label: '데이터 스키핑 인덱스 - 예제'
+sidebar_label: '데이터 스키핑 인덱스 - 예시'
 sidebar_position: 2
-description: '데이터 스키핑 인덱스 예제 모음'
-title: '데이터 스키핑 인덱스 예제'
+description: '데이터 스키핑 인덱스 예시 모음'
+title: '데이터 스키핑 인덱스 예시'
 doc_type: 'guide'
 keywords: ['데이터 스키핑 인덱스', '데이터 스키핑', '성능', '인덱싱', '모범 사례']
 ---
@@ -135,7 +135,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[이 가이드](/use-cases/observability/schema-design#bloom-filters-for-text-search)는 실제 예제와 함께 token과 ngram을 각각 언제 사용해야 하는지 설명합니다.
+[이 가이드](/use-cases/observability/schema-design#text-index-for-full-text-search)는 실제 예제와 함께 token과 ngram을 각각 언제 사용해야 하는지 설명합니다.
 
 **파라미터 최적화 도구:**
 
@@ -177,7 +177,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-토큰과 ngram 비교에 대한 관측성 예제와 가이드는 [여기](/use-cases/observability/schema-design#bloom-filters-for-text-search)를 참고하십시오.
+토큰과 ngram 비교에 대한 관측성 예제와 가이드는 [여기](/use-cases/observability/schema-design#text-index-for-full-text-search)를 참고하십시오.
 
 
 ## CREATE TABLE 시 인덱스 추가 (여러 예시) \{#add-indexes-during-create-table-multiple-examples\}
