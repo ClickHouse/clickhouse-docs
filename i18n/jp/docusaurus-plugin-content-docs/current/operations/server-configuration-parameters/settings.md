@@ -4902,6 +4902,28 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 キャッシュのアロケーション (マークキャッシュ、非圧縮キャッシュ、ページキャッシュ) 用に、専用の jemalloc arena を有効にします。
 キャッシュデータをクエリ処理時のアロケーションから分離することで、メモリの断片化を軽減します。
 
+## use_shared_merge_tree_log_pipeline \{#use_shared_merge_tree_log_pipeline\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />
+
+ClickHouse Cloud でのみ利用できます。有効にすると、`system.*_log` テーブルは S3 ベースのパイプラインを介して `SharedMergeTree` に保存されます。
+各ログ `<log>` について、起動時に次のオブジェクトが自動的に作成されます。
+
+* `system.<log>_s3` — 直接のフラッシュ先となる `S3` バックエンドのテーブルです。各
+  `SYSTEM FLUSH LOGS` 呼び出しでは、ここに新しいパーティション化されたファイルが書き込まれます。
+* `system.<log>_s3queue` — `<log>_s3` からファイルを取り込み、
+  行を下流へストリームする `S3Queue` テーブル (ordered モード) です。各ノードは
+  `partition_regex` ベースのパーティション分割により、自身のファイルだけを処理します。
+* `system.<log>_mv` — `<log>_s3queue` から行を
+  最終的な `SharedMergeTree` テーブルへルーティングする `MATERIALIZED VIEW` です。
+* `system.<log>` — 行が蓄積され、クエリ対象となる最終的な `SharedMergeTree` テーブルです。
+
+schema または設定の変更時には、影響を受けるテーブルは `<log>_0`、`<log>_1` などにリネームされ、
+既存の `SystemLog` のローテーション動作と同様に再作成されます。
+
+サーバー設定で `<shared_log_pipeline><endpoint>` を設定しておく必要があります。
+あわせて参照: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 実行可能ユーザー定義関数用の設定ファイルへのパスです。

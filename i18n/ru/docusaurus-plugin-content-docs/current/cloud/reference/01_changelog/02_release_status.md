@@ -51,7 +51,7 @@ ClickHouse Cloud предлагает различные каналы релиз
   {
    changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
    version: '26.2',
-   fast_start_date: '2026-03-31',
+   fast_start_date: '2026-04-03',
    fast_end_date: 'TBD',
    regular_start_date: 'TBD',
    regular_end_date: 'TBD',
