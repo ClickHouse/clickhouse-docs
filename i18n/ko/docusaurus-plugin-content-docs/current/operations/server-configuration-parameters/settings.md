@@ -4896,6 +4896,28 @@ ClickHouse는 서버의 모든 테이블에 대해 이 설정을 사용합니다
 캐시 할당(마크 캐시, 비압축 캐시, 페이지 캐시)을 위해 전용 jemalloc arena를 활성화합니다.
 캐시 데이터를 쿼리 처리용 할당과 분리해 메모리 단편화를 줄입니다.
 
+## use_shared_merge_tree_log_pipeline \{#use_shared_merge_tree_log_pipeline\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />
+
+ClickHouse Cloud에서만 사용할 수 있습니다. 활성화하면 `system.*_log` 테이블은 S3 기반 파이프라인을 통해 `SharedMergeTree`를 기반으로 구성됩니다.
+각 로그 `<log>`에 대해 시작 시 다음 객체가 자동으로 생성됩니다.
+
+* `system.<log>_s3` — 직접 플러시되는 대상인 `S3` 기반 테이블입니다. 각
+  `SYSTEM FLUSH LOGS` 호출은 여기에 새 파티션 파일을 기록합니다.
+* `system.<log>_s3queue` — `<log>_s3`에서 파일을 가져와
+  행을 downstream으로 스트리밍하는 `S3Queue` 테이블(ordered mode)입니다. 각 노드는
+  `partition_regex` 기반 파티셔닝을 통해 자신에게 해당하는 파일만 처리합니다.
+* `system.<log>_mv` — `<log>_s3queue`에서 최종 `SharedMergeTree` 테이블로
+  행을 전달하는 `MATERIALIZED VIEW`입니다.
+* `system.<log>` — 행이 누적되고 조회되는 최종 `SharedMergeTree` 테이블입니다.
+
+schema 또는 설정이 변경되면 영향을 받는 테이블의 이름이 `<log>_0`, `<log>_1` 등으로 변경된 뒤,
+기존 `SystemLog` 로테이션 동작과 일관되게 다시 생성됩니다.
+
+서버 설정에서 `<shared_log_pipeline><endpoint>`를 설정해야 합니다.
+참고: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 실행 가능한 UDF(User Defined Function)에 대한 설정 파일 경로입니다.

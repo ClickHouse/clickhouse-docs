@@ -204,8 +204,7 @@ SELECT
 引入版本：v21.9.0
 
 对给定单词执行词形还原。
-此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/docs/sql-reference/
-+statements/create/dictionary/sources/local-file).
+此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/sql-reference/statements/create/dictionary/sources/local-file).
 
 **语法**
 

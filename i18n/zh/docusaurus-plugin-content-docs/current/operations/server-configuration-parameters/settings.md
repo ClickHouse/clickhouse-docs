@@ -4903,6 +4903,28 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 为缓存分配启用独立的 jemalloc arena (标记缓存、未压缩缓存、页缓存) 。
 将缓存数据与查询处理过程中的内存分配隔离，减少内存碎片。
 
+## use_shared_merge_tree_log_pipeline \{#use_shared_merge_tree_log_pipeline\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />
+
+仅在 ClickHouse Cloud 上可用。启用后，`system.*_log` 表将通过基于 S3 的管道以 `SharedMergeTree` 为后端。
+对于每个日志 `<log>`，启动时会自动创建以下对象：
+
+* `system.<log>_s3` — 一个以 `S3` 为后端的表，是直接刷新的目标；每次
+  `SYSTEM FLUSH LOGS` 调用都会在此写入一个新的分区文件。
+* `system.<log>_s3queue` — 一个 `S3Queue` 表 (有序模式) ，用于从
+  `<log>_s3` 获取文件并将行流式传递到下游。每个节点仅通过基于
+  `partition_regex` 的分区处理自己的文件。
+* `system.<log>_mv` — 一个 `MATERIALIZED VIEW`，用于将行从 `<log>_s3queue` 路由到
+  最终的 `SharedMergeTree` 表。
+* `system.<log>` — 最终的 `SharedMergeTree` 表，行会在此累积并供查询。
+
+当 schema 或设置发生修改时，受影响的表会被重命名为 `<log>_0`、`<log>_1` 等，
+然后重新创建，这与现有的 `SystemLog` 轮换行为一致。
+
+需要在服务器配置中设置 `<shared_log_pipeline><endpoint>`。
+另请参见：`shared_log_pipeline.enable_polling`、`shared_log_pipeline.flush_timeout_seconds`。
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 可执行用户自定义函数的配置文件路径。
