@@ -1265,7 +1265,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index'],
+          items: ['dictionary/index', 'dictionary/best-practices'],
         },
         {
           type: 'category',
