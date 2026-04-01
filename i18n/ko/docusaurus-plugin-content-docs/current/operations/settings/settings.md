@@ -6830,25 +6830,32 @@ Exception: Total regexp lengths too large.
 
 ## max_insert_block_size \{#max_insert_block_size\}
 
-**별칭**: `max_insert_block_size_rows`
+**別名**: `max_insert_block_size_rows`
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-테이블에 데이터를 삽입할 때 형성되는 블록의 최대 크기(행 개수 기준)입니다.
+테이블로 데이터를 삽입할 때 생성되는 블록의 최대 크기(행 기준)입니다.
 
-이 설정은 포맷 파싱 시 블록 형성을 제어합니다. 서버가 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)이나 어떤 인터페이스(HTTP, 인라인 데이터를 사용하는 clickhouse-client, gRPC, PostgreSQL wire protocol)로부터 Values 포맷을 파싱할 때, 이 설정을 사용하여 언제 블록을 생성할지 결정합니다.  
-참고: 파일을 읽기 위해 clickhouse-client 또는 clickhouse-local을 사용할 때는 클라이언트가 직접 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
+이 설정은 다음 두 가지 상황에서 블록 형성을 제어합니다:
 
-다음 조건 중 하나를 만족하면 블록이 생성됩니다.
+1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)을 파싱할 때, 블록은 다음 경우에 내보내집니다:
 
-- 최소 임계값(AND): `min_insert_block_size_rows`와 `min_insert_block_size_bytes`가 모두 도달했을 때
-- 최대 임계값(OR): `max_insert_block_size` 또는 `max_insert_block_size_bytes` 중 하나에 도달했을 때
+   * min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때, 또는
+   * max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
 
-기본값은 `max_block_size`보다 약간 큽니다. 그 이유는 특정 테이블 엔진(`*MergeTree`)이 각 삽입 블록마다 디스크에 데이터 파트를 형성하는데, 이 데이터 파트가 상당히 큰 단위이기 때문입니다. 마찬가지로 `*MergeTree` 테이블은 삽입 시 데이터를 정렬하며, 블록 크기가 충분히 크면 RAM에서 더 많은 데이터를 정렬할 수 있습니다.
+   참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
+
+2. INSERT 연산: INSERT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 이 설정의 동작은 `use_strict_insert_block_limits`에 따라 달라집니다:
+
+   * 활성화된 경우: 블록은 다음 경우에 내보내집니다:
+     * 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때
+     * 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
+
+   * 비활성화된 경우: min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달하면 블록이 내보내집니다. max&#95;insert&#95;block&#95;size 설정은 적용되지 않습니다.
 
 가능한 값:
 
-- 양의 정수.
+* 양의 정수.
 
 ## max_insert_block_size_bytes \{#max_insert_block_size_bytes\}
 
@@ -8011,21 +8018,25 @@ INSERT를 수행하기 위한 최소 여유 디스크 공간 비율입니다.
 
 이 설정은 다음 두 가지 상황에서 블록 형성을 제어합니다:
 
-1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)을 파싱할 때, 이 설정을 사용하여 언제 블록을 내보낼지 결정합니다.  
-참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
-2. INSERT 연산: INSERT...SELECT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 스토리지에 기록하기 전에 이 설정을 기준으로 블록이 병합됩니다.
+1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 형식(CSV, TSV, JSONEachRow 등)을 파싱할 때, 블록은 다음 경우에 내보내집니다:
 
-포맷 파싱에서 블록은 다음 조건 중 하나를 만족하면 내보내집니다:
+   * min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했거나, 또는
+   * max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
 
-- 최소 임계값(AND): min_insert_block_size_rows와 min_insert_block_size_bytes가 모두 도달했을 때
-- 최대 임계값(OR): max_insert_block_size 또는 max_insert_block_size_bytes 중 하나에 도달했을 때
+   참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
 
-INSERT 연산에서 더 작은 크기의 블록은 더 큰 블록으로 병합되며, min_insert_block_size_rows 또는 min_insert_block_size_bytes 중 하나에 도달하면 내보내집니다.
+2. INSERT 연산: INSERT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 이 설정의 동작은 `use_strict_insert_block_limits`에 따라 달라집니다:
+
+   * 활성화된 경우: 블록은 다음 경우에 내보내집니다:
+     * 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때
+     * 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
+
+   * 비활성화된 경우(기본값): min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달하면 블록이 내보내집니다. max&#95;insert&#95;block&#95;size 설정은 적용되지 않습니다.
 
 가능한 값:
 
-- 양의 정수.
-- 0 — 이 설정은 블록 형성에 사용되지 않습니다.
+* 양의 정수.
+* 0 — 이 설정은 블록 형성에 사용되지 않습니다.
 
 ## min_insert_block_size_rows_for_materialized_views \{#min_insert_block_size_rows_for_materialized_views\}
 
@@ -12000,6 +12011,29 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 * 0 — 비활성화.
 * 1 — 활성화.
+
+## use_strict_insert_block_limits \{#use_strict_insert_block_limits\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "insert 시 엄격한 최소 및 최대 삽입 한도를 적용하기 위한 새 설정입니다. min < max인 경우 max 한도가 우선 적용됩니다."}]}]} />
+
+활성화하면 삽입 블록 크기의 최소 및 최대 제한을 모두 엄격하게 적용합니다.
+
+다음 경우 블록이 생성됩니다:
+
+* 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes에 모두 도달한 경우
+* 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달한 경우
+
+비활성화하면 다음 경우 블록이 생성됩니다:
+
+* 최소 임계값(OR): min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달한 경우
+
+**참고**: max 설정이 min 설정보다 작으면 max 한도가 우선 적용되며, min 임계값에 도달하기 전에 블록이 생성됩니다.
+
+**참고**: 이 설정은 async insert에 대해서는 자동으로 비활성화됩니다. async insert는 항목별 중복 제거 토큰을 연결하는데, 이는 엄격한 한도 적용에 필요한 블록 분할과 호환되지 않기 때문입니다.
+
+기본값은 비활성화입니다.
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
