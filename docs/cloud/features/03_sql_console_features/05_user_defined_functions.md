@@ -94,6 +94,11 @@ Now compress the file into a ZIP archive:
 zip is_business_hours.zip main.py
 ```
 
+:::note
+ClickHouse Cloud expects to find `main.py` in the zip file you will upload via the UI in the next step.
+If you name the file something else you will encounter an error.
+:::
+
 ### Create a UDF via the UI {#create-udf-via-ui}
 
 1. From the Cloud console homepage, click on the name of your organization in the bottom-left menu.
