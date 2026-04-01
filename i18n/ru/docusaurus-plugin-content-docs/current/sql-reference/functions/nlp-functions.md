@@ -201,11 +201,10 @@ SELECT
 
 ## lemmatize \{#lemmatize\}
 
-Введена в версии: v21.9.0
+Добавлена в версии: v21.9.0
 
 Выполняет лемматизацию заданного слова.
-Для работы этой функции необходимы словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. раздел [«Определение словарей»](/docs/sql-reference/
-+statements/create/dictionary/sources/local-file).
+Для работы этой функции необходимы словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. раздел [«Определение словарей»](/sql-reference/statements/create/dictionary/sources/local-file).
 
 **Синтаксис**
 
