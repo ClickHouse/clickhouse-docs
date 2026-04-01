@@ -250,7 +250,7 @@ Only the `Arrow` format is accepted for data transfer. Specifying other formats 
 
 Executes named actions. The following actions are supported:
 
-#### CancelFlightInfo
+#### CancelFlightInfo {#cancelflightinfo}
 
 Cancels a running query associated with a `FlightInfo`. The query ID is extracted from the `FlightInfo`'s `app_metadata` field. Also cancels any poll descriptors associated with the query.
 
@@ -261,7 +261,7 @@ result = client.cancel_flight_info(cancel_request, options)
 # result.status is CancelStatus.CANCELLED if successful
 ```
 
-#### SetSessionOptions
+#### SetSessionOptions {#setsessionoptions}
 
 Sets ClickHouse server settings for the current session. Requires a session ID to be set via the `x-clickhouse-session-id` header.
 
@@ -269,7 +269,7 @@ Supported value types: string, boolean, integer, double, and string lists.
 
 If a setting name is unknown, the error `INVALID_NAME` is returned. If a value cannot be parsed, the error `INVALID_VALUE` is returned.
 
-#### GetSessionOptions
+#### GetSessionOptions {#getsessionoptions}
 
 Returns all current ClickHouse settings and their values for the session. Returns a map of setting names to string values (queries `system.settings` internally).
 
