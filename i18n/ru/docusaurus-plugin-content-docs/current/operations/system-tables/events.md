@@ -2308,7 +2308,15 @@ SELECT * FROM system.events LIMIT 5
 
 ### KeeperReadSnapshot \{#keeperreadsnapshot\}
 
-Количество операций чтения снимка (сериализация)
+Количество завершённых операций чтения снимка
+
+### KeeperReadSnapshotFailed \{#keeperreadsnapshotfailed\}
+
+Количество неудачных операций чтения снимка
+
+### KeeperReadSnapshotObject \{#keeperreadsnapshotobject\}
+
+Количество объектов снимка, отправленных узлам-последователям
 
 ### KeeperReconfigRequest \{#keeperreconfigrequest\}
 
@@ -2337,6 +2345,14 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperSaveSnapshot \{#keepersavesnapshot\}
 
 Количество сохранений снимков
+
+### KeeperSaveSnapshotFailed \{#keepersavesnapshotfailed\}
+
+Количество неудачных попыток сохранения снимка
+
+### KeeperSaveSnapshotObject \{#keepersavesnapshotobject\}
+
+Количество объектов снимка, полученных от лидера
 
 ### KeeperServerWriteLockHoldMicroseconds \{#keeperserverwritelockholdmicroseconds\}
 
@@ -2381,6 +2397,10 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperSnapshotFileSyncMicroseconds \{#keepersnapshotfilesyncmicroseconds\}
 
 Время, затраченное на выполнение fsync для файлов снимков Keeper
+
+### KeeperSnapshotRemoteLoaderErrors \{#keepersnapshotremoteloadererrors\}
+
+Количество ошибок удалённого чтения в RemoteSnapshotLoader при передаче снимка узлу follower
 
 ### KeeperSnapshotWrittenBytes \{#keepersnapshotwrittenbytes\}
 
