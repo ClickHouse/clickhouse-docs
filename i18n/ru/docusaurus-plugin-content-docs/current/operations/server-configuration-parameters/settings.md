@@ -4911,6 +4911,28 @@ ClickHouse использует этот параметр для всех таб
 Включает отдельную арену jemalloc для выделения памяти под кэш (кэш меток, несжатый кэш, кэш страниц).
 Изолирует данные кэша от выделения памяти при обработке запросов, уменьшая фрагментацию памяти.
 
+## use_shared_merge_tree_log_pipeline \{#use_shared_merge_tree_log_pipeline\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />
+
+Доступно только в ClickHouse Cloud. Когда этот параметр включен, таблицы `system.*_log` работают на базе `SharedMergeTree` через S3-конвейер.
+Для каждого лога `<log>` при запуске автоматически создаются следующие объекты:
+
+* `system.<log>_s3` — таблица на базе `S3`, в которую данные сбрасываются напрямую; каждый
+  вызов `SYSTEM FLUSH LOGS` записывает сюда новый файл с партиционированием.
+* `system.<log>_s3queue` — таблица `S3Queue` (упорядоченный режим), которая подхватывает файлы из
+  `<log>_s3` и передает строки дальше по конвейеру. Каждый узел обрабатывает только собственные файлы через
+  партиционирование на основе `partition_regex`.
+* `system.<log>_mv` — `MATERIALIZED VIEW`, которое направляет строки из `<log>_s3queue` в
+  итоговую таблицу `SharedMergeTree`.
+* `system.<log>` — итоговая таблица `SharedMergeTree`, где строки накапливаются и откуда затем выполняются запросы.
+
+При изменении schema или настроек соответствующая таблица переименовывается в `<log>_0`, `<log>_1` и т. д.
+и создается заново — в соответствии с существующим поведением ротации `SystemLog`.
+
+Требует, чтобы в конфигурации сервера была задана `<shared_log_pipeline><endpoint>`.
+См. также: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
 Путь к файлу конфигурации для исполняемых пользовательских функций.

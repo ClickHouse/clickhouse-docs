@@ -1266,7 +1266,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index'],
+          items: ['dictionary/index', 'dictionary/best-practices'],
         },
         {
           type: 'category',
@@ -1956,10 +1956,12 @@ const sidebars = {
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
           ],
         },
+        "use-cases/observability/clickstack/notebooks",
         'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
+        'use-cases/observability/clickstack/service-maps',
         'use-cases/observability/clickstack/session-replay',
         {
           type: 'category',
@@ -1976,6 +1978,7 @@ const sidebars = {
             'use-cases/observability/clickstack/managing/production',
             'use-cases/observability/clickstack/managing/materialized_views',
             'use-cases/observability/clickstack/managing/performance_tuning',
+            'use-cases/observability/clickstack/managing/rbac',
           ],
         },
         {

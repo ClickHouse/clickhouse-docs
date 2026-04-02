@@ -33,8 +33,32 @@ jobs:
       - name: Run Auto Generate Settings
         run: yarn autogenerate-settings
 
-      - name: Run Indexer
-        run: yarn run-indexer
+      - name: Run Indexer (en)
+        run: yarn run-indexer --locale en
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APP_ID: 5H9UG7CX5W
+
+      - name: Run Indexer (jp)
+        run: yarn run-indexer --locale jp
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APP_ID: 5H9UG7CX5W
+
+      - name: Run Indexer (zh)
+        run: yarn run-indexer --locale zh
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APP_ID: 5H9UG7CX5W
+
+      - name: Run Indexer (ru)
+        run: yarn run-indexer --locale ru
+        env:
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_APP_ID: 5H9UG7CX5W
+
+      - name: Run Indexer (ko)
+        run: yarn run-indexer --locale ko
         env:
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_APP_ID: 5H9UG7CX5W

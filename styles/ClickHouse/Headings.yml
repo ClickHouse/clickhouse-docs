@@ -27,6 +27,7 @@ exceptions:
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
+  - "AI Notebooks"
   - "ClickHouse Assistant"
   - Azure
   - Azure Blob Storage
@@ -45,6 +46,7 @@ exceptions:
   - CLI
   - ClickHouse
   - ClickHouse Cloud
+  - Control Plane
   - ClickHouse Keeper
   - ClickPipe
   - ClickPipes
@@ -509,6 +511,7 @@ exceptions:
   - Aurora
   - Bindplane
   - BladePipe
+  - Catalog
   - Chainlit
   - Claude
   - "Claude Desktop"
@@ -620,6 +623,7 @@ exceptions:
   - "NOAA Global Historical Climatology Network"
   - "New York Public Library"
   - Temporal
+  - Terraform
   - TOAST
   # SQL keywords and compound terms
   - BACKUP

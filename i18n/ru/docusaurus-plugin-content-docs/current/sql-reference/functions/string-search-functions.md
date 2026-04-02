@@ -1012,6 +1012,57 @@ SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 └──────────────────────────┘
 ```
 
+## highlight \{#highlight\}
+
+Добавлено в: v26.4.0
+
+Выделяет вхождения поисковых запросов в текстовой строке, оборачивая их в HTML-теги.
+
+Функция выполняет сопоставление без учета регистра для ASCII. Если несколько поисковых запросов перекрываются или находятся рядом в тексте, совпадающие области объединяются в один выделенный фрагмент.
+
+**Синтаксис**
+
+```sql
+highlight(haystack, needles[, open_tag, close_tag])
+```
+
+**Аргументы**
+
+* `haystack` — Текст, в котором выполняется поиск. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `needles` — Массив поисковых строк, которые нужно выделить. [`const Array(String)`](/sql-reference/data-types/array)
+* `open_tag` — Открывающий тег, вставляемый перед каждым совпадением. По умолчанию: `<em>`. [`const String`](/sql-reference/data-types/string)
+* `close_tag` — Закрывающий тег, вставляемый после каждого совпадения. По умолчанию: `</em>`. [`const String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает исходный текст, в котором совпавшие строки заключены в указанные теги. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Базовое выделение**
+
+```sql title=Query
+SELECT highlight('The quick brown fox', ['quick', 'fox'])
+```
+
+```response title=Response
+┌─highlight('The quick brown fox', ['quick', 'fox'])─┐
+│ The <em>quick</em> brown <em>fox</em>              │
+└────────────────────────────────────────────────────┘
+```
+
+**Пользовательские теги**
+
+```sql title=Query
+SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
+```
+
+```response title=Response
+┌─highlight('Hello World', ['hello'], '<b>', '</b>')─┐
+│ <b>Hello</b> World                                 │
+└────────────────────────────────────────────────────┘
+```
+
 ## ilike \{#ilike\}
 
 Добавлено в: v20.6.0

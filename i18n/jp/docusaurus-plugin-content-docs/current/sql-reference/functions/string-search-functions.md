@@ -1011,6 +1011,57 @@ SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 └──────────────────────────┘
 ```
 
+## highlight \{#highlight\}
+
+導入バージョン: v26.4.0
+
+テキスト文字列内で検索語が出現する箇所を、HTMLタグで囲んで強調表示します。
+
+この関数は、ASCII の大文字・小文字を区別せずに照合します。複数の検索語がテキスト内で重なっている、または隣接している場合、一致した領域は 1 つの強調表示スパンにマージされます。
+
+**構文**
+
+```sql
+highlight(haystack, needles[, open_tag, close_tag])
+```
+
+**引数**
+
+* `haystack` — 検索対象のテキスト。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `needles` — ハイライトする検索語の配列。[`const Array(String)`](/sql-reference/data-types/array)
+* `open_tag` — 各一致箇所の前に挿入する開始タグ。既定値: `<em>`. [`const String`](/sql-reference/data-types/string)
+* `close_tag` — 各一致箇所の後に挿入する終了タグ。既定値: `</em>`. [`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+一致した語を指定したタグで囲んだ入力テキストを返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なハイライト**
+
+```sql title=Query
+SELECT highlight('The quick brown fox', ['quick', 'fox'])
+```
+
+```response title=Response
+┌─highlight('The quick brown fox', ['quick', 'fox'])─┐
+│ The <em>quick</em> brown <em>fox</em>              │
+└────────────────────────────────────────────────────┘
+```
+
+**カスタムタグ**
+
+```sql title=Query
+SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
+```
+
+```response title=Response
+┌─highlight('Hello World', ['hello'], '<b>', '</b>')─┐
+│ <b>Hello</b> World                                 │
+└────────────────────────────────────────────────────┘
+```
+
 ## ilike \{#ilike\}
 
 導入されたバージョン: v20.6.0

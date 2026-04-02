@@ -1,6 +1,6 @@
 ---
 slug: /dictionary
-title: '딕셔너리'
+title: '개요'
 keywords: ['dictionary', 'dictionaries']
 description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 제공합니다.'
 doc_type: 'guide'
@@ -321,9 +321,7 @@ Peak memory usage: 666.82 MiB.
 
 ## 딕셔너리 고급 주제 \{#advanced-dictionary-topics\}
 
-### 딕셔리 `LAYOUT` 선택 \{#choosing-the-dictionary-layout\}
-
-`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
+딕셔너리 레이아웃 선택 지침, 딕셔너리와 JOIN 중 어느 것을 사용해야 하는지, 그리고 딕셔너리 사용량을 모니터링하는 방법은 [딕셔너리 모범 사례](/dictionary/best-practices)를 참조하십시오.
 
 ### 딕셔너리 갱신 \{#refreshing-dictionaries\}
 
@@ -338,5 +336,6 @@ ClickHouse는 [계층형(Hierarchical)](/sql-reference/statements/create/diction
 
 ### 추가 참고 자료 \{#more-reading\}
 
-- [딕셔너리를 사용하여 쿼리 가속화하기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [딕셔너리를 위한 고급 구성](/sql-reference/statements/create/dictionary)
+* [딕셔너리 모범 사례](/dictionary/best-practices) — 레이아웃 선택, 딕셔너리와 JOIN 비교, 모니터링
+* [딕셔너리를 사용하여 쿼리 가속화하기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [딕셔너리를 위한 고급 구성](/sql-reference/statements/create/dictionary)

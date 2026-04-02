@@ -67,7 +67,7 @@ Contact support to schedule maintenance windows. Please expect a minimum of a we
 </details>
 
 <details>
-<summary>How does storage communication work between BYOC VPC and S3?</summary>
+<summary>How does network communication work between BYOC VPC and S3?</summary>
 
 Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and doesn't traverse the public internet.
 
