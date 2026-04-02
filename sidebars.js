@@ -853,6 +853,7 @@ const sidebars = {
       link: { type: 'doc', id: 'interfaces/native-clients-interfaces-index' },
       items: [
         'interfaces/cli',
+        'interfaces/client',
         {
           type: 'category',
           label: 'Drivers and interfaces',
