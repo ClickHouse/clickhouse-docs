@@ -16,12 +16,17 @@ import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organizat
 The diagram below illustrates how ClickHouse Cloud organizations, cloud accounts, and BYOC infrastructure relate to each other.
 
 <BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="BYOC organization hierarchy showing the relationship between organizations, cloud accounts, regions, and BYOC infrastructure" />
+<br/>
 
-- **ClickHouse Cloud Organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
-- **ClickHouse BYOC Organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
-- **Cloud Account / Project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. A dedicated account or project per BYOC deployment is recommended for isolation.
-- **BYOC Infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
+- **ClickHouse Cloud organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
+- **ClickHouse BYOC organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
+- **Cloud account / project:** The customer-owned AWS account or GCP project where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. A dedicated account or project per BYOC deployment is recommended for isolation.
+- **BYOC infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
 - **ClickHouse Service:** An individual ClickHouse cluster running within a BYOC infrastructure. Multiple services can run within the same BYOC infrastructure.
+
+:::note
+Mixing of AWS accounts and GCP projects under the same organization is only possible for customers who are not set up through a [cloud service provider marketplace](/cloud/marketplace/marketplace-billing).
+:::
 
 ## Glossary {#glossary}
 
