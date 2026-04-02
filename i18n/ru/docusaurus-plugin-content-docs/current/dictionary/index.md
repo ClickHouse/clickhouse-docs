@@ -1,6 +1,6 @@
 ---
 slug: /dictionary
-title: 'Словарь'
+title: 'Обзор'
 keywords: ['словарь', 'словари']
 description: 'Словарь представляет данные в формате ключ-значение для быстрого поиска.'
 doc_type: 'guide'
@@ -318,9 +318,7 @@ Peak memory usage: 666.82 MiB.
 
 ## Расширенные темы о словарях \{#advanced-dictionary-topics\}
 
-### Выбор `LAYOUT` словаря \{#choosing-the-dictionary-layout\}
-
-Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+Рекомендации по выбору структуры словарей, по тому, когда использовать словари вместо JOIN, и по мониторингу их использования см. в разделе [Лучшие практики работы со словарями](/dictionary/best-practices).
 
 ### Обновление словарей \{#refreshing-dictionaries\}
 
@@ -335,5 +333,6 @@ ClickHouse также поддерживает [иерархические](/sql
 
 ### Дополнительные материалы для чтения \{#more-reading\}
 
-- [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)
+* [Лучшие практики работы со словарями](/dictionary/best-practices) — выбор layout, словари и JOIN, мониторинг
+* [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)

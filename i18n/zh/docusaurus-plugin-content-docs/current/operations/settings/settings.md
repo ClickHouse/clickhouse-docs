@@ -6828,25 +6828,32 @@ Exception: Total regexp lengths too large.
 
 ## max_insert_block_size \{#max_insert_block_size\}
 
-**别名**: `max_insert_block_size_rows`
+**別名**: `max_insert_block_size_rows`
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-插入到表中的数据块的最大大小（按行数计）。
+向表插入数据时要生成的数据块的最大大小 (以行数计) 。
 
-该设置控制在解析输入格式时的数据块构建。当服务器解析基于行的输入格式（CSV、TSV、JSONEachRow 等）或从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol）接收的 Values 格式时，会使用此设置来决定何时发出一个数据块。  
-注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身解析数据，该设置应用在客户端侧。
+该设置在两个场景下控制数据块的生成：
 
-在满足以下任一条件时会发出一个数据块：
+1. 格式解析：当服务器从任意接口 (HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等) 解析基于行的输入格式 (CSV、TSV、JSONEachRow 等) 时，会在以下情况下输出一个数据块：
 
-- 最小阈值（与关系 AND）：同时达到 min_insert_block_size_rows 和 min_insert_block_size_bytes
-- 最大阈值（或关系 OR）：达到 max_insert_block_size 或 max_insert_block_size_bytes 之一即可
+   * 同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes，或者
+   * 达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
 
-默认值略大于 max_block_size。原因是某些表引擎（`*MergeTree`）会为每个插入的数据块在磁盘上形成一个 data part，这是一个相当大的实体。同样地，`*MergeTree` 表在插入期间会对数据进行排序，足够大的块大小可以在内存中对更多数据进行排序。
+   注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
 
-可能的取值：
+2. INSERT 操作：在执行 INSERT 查询以及数据通过 materialized view 流转时，此设置的行为取决于 `use_strict_insert_block_limits`：
 
-- 正整数。
+   * 启用时：会在以下情况下输出数据块：
+     * 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes
+     * 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
+
+   * 禁用时：当达到 min&#95;insert&#95;block&#95;size&#95;rows OR min&#95;insert&#95;block&#95;size&#95;bytes 时会输出数据块。不强制执行 max&#95;insert&#95;block&#95;size 设置。
+
+可选值：
+
+* 正整数。
 
 ## max_insert_block_size_bytes \{#max_insert_block_size_bytes\}
 
@@ -7997,25 +8004,29 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-向表插入数据时要生成的数据块的最小大小（以行数计）。
+向表插入数据时要生成的数据块的最小大小 (以行数计) 。
 
 该设置在两个场景下控制数据块的生成：
 
-1. 格式解析：当服务器从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等）解析基于行的输入格式（CSV、TSV、JSONEachRow 等）时，会使用此设置来决定何时输出一个数据块。  
-注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
-2. INSERT 操作：在执行 INSERT...SELECT 查询以及数据通过 materialized view 流转时，在写入存储之前，会根据此设置将较小的数据块合并成较大的数据块。
+1. 格式解析：当服务器从任意接口 (HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等) 解析基于行的输入格式 (CSV、TSV、JSONEachRow 等) 时，会在以下情况下输出数据块：
 
-在格式解析过程中，当满足以下任一条件时会输出一个数据块：
+   * 同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes，或者
+   * 达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
 
-- 最小阈值（AND）：同时达到 min_insert_block_size_rows AND min_insert_block_size_bytes
-- 最大阈值（OR）：达到 max_insert_block_size OR max_insert_block_size_bytes 中的任意一个
+   注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
 
-对于插入操作，较小的数据块会被合并为更大的数据块，并在满足 min_insert_block_size_rows 或 min_insert_block_size_bytes 之一时输出。
+2. INSERT 操作：在执行 INSERT 查询以及数据通过 materialized view 流转时，此设置的行为取决于 `use_strict_insert_block_limits`：
+
+   * 启用时：会在以下情况下输出数据块：
+     * 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes
+     * 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
+
+   * 禁用时 (默认) ：当达到 min&#95;insert&#95;block&#95;size&#95;rows OR min&#95;insert&#95;block&#95;size&#95;bytes 之一时会输出数据块。不强制执行 max&#95;insert&#95;block&#95;size 设置。
 
 可选值：
 
-- 正整数。
-- 0 — 此设置不参与数据块形成。
+* 正整数。
+* 0 — 此设置不参与数据块形成。
 
 ## min_insert_block_size_rows_for_materialized_views \{#min_insert_block_size_rows_for_materialized_views\}
 
@@ -11989,6 +12000,29 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 * 0 — 禁用。
 * 1 — 启用。
+
+## use_strict_insert_block_limits \{#use_strict_insert_block_limits\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新增设置，用于在插入时严格应用最小和最大插入边界。当 min < max 时，max 限制优先生效。"}]}]} />
+
+启用后，会严格同时强制执行最小和最大插入块大小限制。
+
+在以下情况下会生成一个块：
+
+* 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows 和 min&#95;insert&#95;block&#95;size&#95;bytes。
+* 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows 或 max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个。
+
+禁用时，在以下情况下会生成一个块：
+
+* 最小阈值 (OR) ：达到 min&#95;insert&#95;block&#95;size&#95;rows 或 min&#95;insert&#95;block&#95;size&#95;bytes。
+
+**注意**：如果 max 设置小于 min 设置，则 max 限制优先生效，并会在达到最小阈值之前生成块。
+
+**注意**：对于异步插入，此设置会自动禁用，因为异步插入会附加按条目的去重标记，而这与严格限制生效所需的块拆分不兼容。
+
+默认禁用。
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 
