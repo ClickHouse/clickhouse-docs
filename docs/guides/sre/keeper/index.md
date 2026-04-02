@@ -488,7 +488,7 @@ Record comparison metrics before migration so you can verify consistency afterwa
 
 4. Optional, but recommended: find the ZooKeeper leader node, start and stop it again. This forces ZooKeeper to write a consistent snapshot to disk before conversion.
 
-5. Run `clickhouse-keeper-converter` on the leader node. If you have the full ClickHouse binary installed, use the `keeper-converter` subcommand instead (`clickhouse keeper-converter`). If neither is available, [download the binary](/getting-started/quick-start/oss#download-the-binary).
+5. Run `clickhouse-keeper-converter` on the leader node. If you have the full ClickHouse binary installed, use the `keeper-converter` subcommand instead (`clickhouse keeper-converter`). If neither is available, [download the binary](/getting-started/quick-start/oss#install-clickhouse).
 
 ```bash
 clickhouse-keeper-converter \
