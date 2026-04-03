@@ -16,7 +16,11 @@ import TabItem from '@theme/TabItem';
 
 すべてのデータは **OpenTelemetry (OTel) collector** インスタンス経由で ClickStack に取り込まれます。このインスタンスは、ログ、メトリクス、トレース、およびセッションデータの主な入口として機能します。この用途には、collector の公式ディストリビューションである [ClickStack distribution](#installing-otel-collector) を使用することを推奨します。
 
-ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。管理された OpenTelemetry パイプラインを利用したいチーム向けに、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)は ClickStack をネイティブな宛先としてサポートする OpenTelemetry ネイティブなソリューションを提供し、テレメトリの収集・処理・ルーティングを簡素化します。
+:::tip
+ClickStack のマネージド版も利用できます。[Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) を参照してください。
+:::
+
+ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します ([agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど) 。管理された OpenTelemetry パイプラインを利用したいチーム向けに、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)は ClickStack をネイティブな宛先としてサポートする OpenTelemetry ネイティブなソリューションを提供し、テレメトリの収集・処理・ルーティングを簡素化します。
 
 
 ## OpenTelemetry データの送信 \{#sending-otel-data\}
@@ -73,7 +77,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -131,7 +135,7 @@ import TabItem from '@theme/TabItem';
     OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
     ```
 
-    エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェント構成の例を以下に示します。API インジェストキーを指定する必要がある点に注意してください（`<YOUR_API_INGESTION_KEY>` を参照）。
+    エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェント構成の例を以下に示します。API インジェストキーを指定する必要がある点に注意してください (`<YOUR_API_INGESTION_KEY>` を参照) 。
 
     ```yaml
     # clickhouse-agent-config.yaml
@@ -162,7 +166,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:

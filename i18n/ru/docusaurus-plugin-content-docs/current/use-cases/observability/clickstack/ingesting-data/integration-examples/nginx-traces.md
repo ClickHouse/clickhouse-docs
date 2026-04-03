@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Мониторинг трассировок Nginx с помощью ClickStack'
-sidebar_label: 'Трассировки Nginx'
+title: 'Мониторинг трейсов Nginx с помощью ClickStack'
+sidebar_label: 'Трейсы Nginx'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг трассировок Nginx с помощью ClickStack'
+description: 'Мониторинг трейсов Nginx с помощью ClickStack'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'OTel']
 ---

@@ -1,7 +1,7 @@
 ---
-title: 'クエリパフォーマンス - 時系列データ'
+title: 'クエリパフォーマンス - 時系列'
 sidebar_label: 'クエリパフォーマンス'
-description: '時系列クエリのパフォーマンス向上'
+description: '時系列クエリパフォーマンスの向上'
 slug: /use-cases/time-series/query-performance
 keywords: ['time-series', 'query performance', 'optimization', 'indexing', 'partitioning', 'query tuning', 'performance']
 show_related_blogs: true

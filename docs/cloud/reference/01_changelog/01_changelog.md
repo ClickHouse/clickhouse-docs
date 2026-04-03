@@ -40,6 +40,11 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## March 20, 2026 {#march-20-2026}
+- **Custom date range for Usage Breakdown:** You can now view your usage costs across all billing dimensions on the usage breakdown screen using a custom date range.
+  Select a start and end date (inclusive) to filter costs by a specific period and download the results as a CSV.
+  The date range is limited to a maximum of 31 days.
+
 ## February 20, 2026 {#february-20-2026}
 - **ClickPipes:** Reverse private endpoints in an inactive state will now be automatically removed after a defined grace period. This ensures unused or misconfigured endpoints are not persisted indefinitely in the backend. See the automatic clean up [documentation](/integrations/clickpipes/aws-privatelink#automatic-cleanup) for more details.
 

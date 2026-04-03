@@ -275,24 +275,29 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-自 v22.7.0 引入
+引入版本：v22.7.0
 
 对 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 字符串进行解码。
 如果字符串不是有效的 Base58 编码字符串，则会抛出异常。
+可以提供可选的第二个参数 `expected_size`，以选择优化的固定大小解码器。
+当前支持的值为 32 和 64。对于其他值，将使用通用解码器。
+当选择了优化解码器，但输入无法被解码为恰好对应字节数时，
+该函数会抛出异常 (对于 `tryBase58Decode`，则返回空字符串) 。
 
 **语法**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **参数**
 
-* `encoded` — 要解码的字符串类型列或常量值。[`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串列或常量。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 可选。预期解码后的大小 (以字节为单位) 。当值为 32 或 64 时，使用优化解码器；对于其他值，使用通用解码器。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回一个包含参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -307,7 +312,6 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 │ Hello World              │
 └──────────────────────────┘
 ```
-
 
 ## base58Encode \{#base58Encode\}
 
@@ -3539,23 +3543,24 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-自 v22.10.0 引入
+引入版本：v22.10.0
 
 类似于 [`base58Decode`](#base58Decode)，但在出错时返回空字符串。
 
 **语法**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
 **参数**
 
 * `encoded` — 字符串列或常量。如果字符串不是有效的 Base58 编码，出错时返回空字符串。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 可选。预期的解码后大小 (以字节为单位) 。当值为 32 或 64 时，使用优化的解码器；对于其他值，使用通用解码器。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回一个包含参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -3570,7 +3575,6 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 │ Encoded │             │
 └─────────┴─────────────┘
 ```
-
 
 ## tryBase64Decode \{#tryBase64Decode\}
 

@@ -28,7 +28,8 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO product_prices VALUES
     (1, 10.99, '2024-01-01 10:00:00', 1),
@@ -48,8 +49,8 @@ GROUP BY product_id;
 `argMinIf` 函数会为每个产品找出具有最早时间戳的价格，
 但只会考虑 `in_stock = 1` 的行。比如：
 
-* 产品 1：在有库存的行中，10.99 的时间戳最早（10:00:00）
-* 产品 2：在有库存的行中，20.99 的时间戳最早（11:00:00）
+* 产品 1：在有库存的行中，10.99 的时间戳最早 (10:00:00)
+* 产品 2：在有库存的行中，20.99 的时间戳最早 (11:00:00)
 
 ```response title="Response"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
@@ -59,7 +60,8 @@ GROUP BY product_id;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

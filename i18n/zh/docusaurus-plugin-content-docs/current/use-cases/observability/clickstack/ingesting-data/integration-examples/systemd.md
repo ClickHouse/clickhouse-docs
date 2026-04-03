@@ -19,6 +19,7 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
 
 :::note[TL;DR]
@@ -33,171 +34,169 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ##### 先决条件 \{#prerequisites\}
 
-- 正在运行的 ClickStack 实例
-- 带有 systemd 的 Linux 系统（Ubuntu 16.04+、CentOS 7+、Debian 8+）
-- 在被监控系统上已安装 Docker 或 Docker Compose
+* 正在运行的 ClickStack 实例
+* 带有 systemd 的 Linux 系统 (Ubuntu 16.04+、CentOS 7+、Debian 8+) 
+* 在被监控系统上已安装 Docker 或 Docker Compose
 
 <VerticalStepper headerLevel="h4">
+  #### 获取 ClickStack API key
 
-#### 获取 ClickStack API key \{#get-api-key\}
+  OpenTelemetry Collector 会向 ClickStack 的 OTLP 端点发送数据，该端点需要进行身份验证。
 
-OpenTelemetry Collector 会向 ClickStack 的 OTLP 端点发送数据，该端点需要进行身份验证。
+  1. 在你的 ClickStack 地址上打开 HyperDX (例如：http://localhost:8080)
+  2. 如有需要，创建账号或登录
+  3. 导航到 **Team Settings → API Keys**
+  4. 复制你的 **摄取 API key**
 
-1. 在你的 ClickStack 地址上打开 HyperDX (例如：http://localhost:8080)
-2. 如有需要，创建账号或登录
-3. 导航到 **Team Settings → API Keys**
-4. 复制你的 **摄取 API key**
+  <Image img={api_key} alt="ClickStack API Key" />
 
-<Image img={api_key} alt="ClickStack API Key"/>
+  5. 将其设置为环境变量：
 
-5. 将其设置为环境变量：
+  ```bash
+  export CLICKSTACK_API_KEY=your-api-key-here
+  ```
 
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-```
+  #### 验证 systemd journal 是否在运行
 
-#### 验证 systemd journal 是否在运行 \{#verify-systemd\}
+  确保系统正在使用 systemd 并且具有 journal 日志：
 
-确保系统正在使用 systemd 并且具有 journal 日志：
+  ```bash
+  # 检查 systemd 版本
+  systemctl --version
 
-```bash
-# 检查 systemd 版本
-systemctl --version
+  # 查看最近的 journal 条目
+  journalctl -n 20
 
-# 查看最近的 journal 条目
-journalctl -n 20
+  # 检查 journal 磁盘使用情况
+  journalctl --disk-usage
+  ```
 
-# 检查 journal 磁盘使用情况
-journalctl --disk-usage
-```
+  如果 journal 存储仅在内存中，请启用持久化存储：
 
-如果 journal 存储仅在内存中，请启用持久化存储：
+  ```bash
+  sudo mkdir -p /var/log/journal
+  sudo systemd-tmpfiles --create --prefix /var/log/journal
+  sudo systemctl restart systemd-journald
+  ```
 
-```bash
-sudo mkdir -p /var/log/journal
-sudo systemd-tmpfiles --create --prefix /var/log/journal
-sudo systemctl restart systemd-journald
-```
+  #### 创建 OpenTelemetry Collector 配置
 
-#### 创建 OpenTelemetry Collector 配置 \{#create-otel-config\}
+  为 OpenTelemetry Collector 创建一个配置文件：
 
-为 OpenTelemetry Collector 创建一个配置文件：
+  ```yaml
+  cat > otel-config.yaml << 'EOF'
+  receivers:
+    journald:
+      directory: /var/log/journal
+      priority: info
+      units:
+        - sshd
+        - nginx
+        - docker
+        - containerd
+        - systemd
 
-```yaml
-cat > otel-config.yaml << 'EOF'
-receivers:
-  journald:
-    directory: /var/log/journal
-    priority: info
-    units:
-      - sshd
-      - nginx
-      - docker
-      - containerd
-      - systemd
-
-processors:
-  batch:
-    timeout: 10s
-    send_batch_size: 1024
-  
-  resource:
+  processors:
+    batch:
+      timeout: 10s
+      send_batch_size: 10000
+    
+    resource:
+      attributes:
+        - key: service.name
+          value: systemd-logs
+          action: insert
+        - key: host.name
+          from_attribute: _HOSTNAME
+          action: upsert
+    
     attributes:
-      - key: service.name
-        value: systemd-logs
-        action: insert
-      - key: host.name
-        from_attribute: _HOSTNAME
-        action: upsert
-  
-  attributes:
-    actions:
-      - key: unit
-        from_attribute: _SYSTEMD_UNIT
-        action: upsert
-      - key: priority
-        from_attribute: PRIORITY
-        action: upsert
+      actions:
+        - key: unit
+          from_attribute: _SYSTEMD_UNIT
+          action: upsert
+        - key: priority
+          from_attribute: PRIORITY
+          action: upsert
 
-exporters:
-  otlphttp:
-    endpoint: ${CLICKSTACK_ENDPOINT}
-    headers:
-      authorization: ${CLICKSTACK_API_KEY}
+  exporters:
+    otlphttp:
+      endpoint: ${CLICKSTACK_ENDPOINT}
+      headers:
+        authorization: ${CLICKSTACK_API_KEY}
 
-service:
-  pipelines:
-    logs:
-      receivers: [journald]
-      processors: [resource, attributes, batch]
-      exporters: [otlphttp]
-EOF
-```
+  service:
+    pipelines:
+      logs:
+        receivers: [journald]
+        processors: [resource, attributes, batch]
+        exporters: [otlphttp]
+  EOF
+  ```
 
-#### 使用 Docker Compose 部署 \{#deploy-docker-compose\}
+  #### 使用 Docker Compose 部署
 
-:::note
-`journald` receiver 需要 `journalctl` 可执行文件来读取 journal 文件。官方的 `otel/opentelemetry-collector-contrib` 镜像默认不包含 `journalctl`。
+  :::note
+  `journald` receiver 需要 `journalctl` 可执行文件来读取 journal 文件。官方的 `otel/opentelemetry-collector-contrib` 镜像默认不包含 `journalctl`。
 
-对于容器化部署，可以直接在主机上安装 collector，或者构建一个包含 systemd 工具的自定义镜像。详情参见[故障排除部分](#journalctl-not-found)。
-:::
+  对于容器化部署，可以直接在主机上安装 collector，或者构建一个包含 systemd 工具的自定义镜像。详情参见[故障排除部分](#journalctl-not-found)。
+  :::
 
-下面的示例展示了如何将 OTel collector 与 ClickStack 一同部署：
+  下面的示例展示了如何将 OTel collector 与 ClickStack 一同部署：
 
-```yaml
-services:
-  clickstack:
-    image: clickhouse/clickstack-all-in-one:latest
-    ports:
-      - "8080:8080"
-      - "4317:4317"
-      - "4318:4318"
-    networks:
-      - monitoring
-  
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.115.1
-    depends_on:
-      - clickstack
-    environment:
-      - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
-      - CLICKSTACK_ENDPOINT=http://clickstack:4318
-    volumes:
-      - ./otel-config.yaml:/etc/otelcol/config.yaml:ro
-      - /var/log/journal:/var/log/journal:ro
-      - /run/log/journal:/run/log/journal:ro
-      - /etc/machine-id:/etc/machine-id:ro
-    command: ["--config=/etc/otelcol/config.yaml"]
-    networks:
-      - monitoring
+  ```yaml
+  services:
+    clickstack:
+      image: clickhouse/clickstack-all-in-one:latest
+      ports:
+        - "8080:8080"
+        - "4317:4317"
+        - "4318:4318"
+      networks:
+        - monitoring
+    
+    otel-collector:
+      image: otel/opentelemetry-collector-contrib:0.115.1
+      depends_on:
+        - clickstack
+      environment:
+        - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
+        - CLICKSTACK_ENDPOINT=http://clickstack:4318
+      volumes:
+        - ./otel-config.yaml:/etc/otelcol/config.yaml:ro
+        - /var/log/journal:/var/log/journal:ro
+        - /run/log/journal:/run/log/journal:ro
+        - /etc/machine-id:/etc/machine-id:ro
+      command: ["--config=/etc/otelcol/config.yaml"]
+      networks:
+        - monitoring
 
-networks:
-  monitoring:
-    driver: bridge
-```
+  networks:
+    monitoring:
+      driver: bridge
+  ```
 
-启动这些服务：
+  启动这些服务：
 
-```bash
-docker compose up -d
-```
+  ```bash
+  docker compose up -d
+  ```
 
-#### 在 HyperDX 中验证日志 \{#verifying-logs\}
+  #### 在 HyperDX 中验证日志
 
-配置完成后，登录 HyperDX 并验证日志是否已开始流入：
+  配置完成后，登录 HyperDX 并验证日志是否已开始流入：
 
-1. 导航到 Search 视图
-2. 将 source 设置为 Logs
-3. 按 `service.name:systemd-logs` 进行过滤
-4. 应该能看到带有 `unit`、`priority`、`MESSAGE`、`_HOSTNAME` 等字段的结构化日志条目
+  1. 导航到 Search 视图
+  2. 将 source 设置为 Logs
+  3. 按 `service.name:systemd-logs` 进行过滤
+  4. 应该能看到带有 `unit`、`priority`、`MESSAGE`、`_HOSTNAME` 等字段的结构化日志条目
 
-<Image img={search_view} alt="日志搜索视图"/>
+  <Image img={search_view} alt="日志搜索视图" />
 
-<Image img={log_view} alt="日志视图"/>
-
+  <Image img={log_view} alt="日志视图" />
 </VerticalStepper>
 
-## 演示数据集 \{#demo-dataset\}
+## 演示数据集 {#demo-dataset}
 
 对于希望在配置生产系统之前先测试 systemd 日志集成的用户，我们提供了一份预生成的、带有接近真实日志模式的 systemd 日志演示数据集。
 
@@ -320,9 +319,9 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 </VerticalStepper>
 
-## 故障排查 \{#troubleshooting\}
+## 故障排查 {#troubleshooting}
 
-### HyperDX 中没有日志显示 \{#no-logs\}
+### HyperDX 中没有日志显示
 
 检查日志是否已经到达 ClickHouse：
 
@@ -334,7 +333,7 @@ WHERE ServiceName = 'systemd-logs'
 "
 ```
 
-### journalctl 未找到错误 \{#journalctl-not-found\}
+### journalctl 未找到错误
 
 如果你看到 `exec: "journalctl": executable file not found in $PATH`：
 
@@ -351,7 +350,7 @@ otelcol-contrib --config=otel-config.yaml
 
 2. **使用文本导出方案**（类似 demo），让 `filelog` receiver 读取 journald 导出文件
 
-## 后续步骤 \{#next-steps\}
+## 后续步骤
 
 * 为关键系统事件设置[告警](/use-cases/observability/clickstack/alerts) (如服务故障、身份验证失败、OOM 终止) 
 * 为特定用例创建更多[仪表板](/use-cases/observability/clickstack/dashboards) (如 SSH 安全监控、服务健康状态) 

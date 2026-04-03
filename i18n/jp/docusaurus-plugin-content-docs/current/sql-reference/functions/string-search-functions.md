@@ -444,7 +444,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 検索の前に、この関数は次をトークン化します
 
 * `input` 引数 (常に) および
-* `needle` 引数 ([String](../../sql-reference/data-types/string.md) として与えられた場合) 
+* `needle` 引数 ([String](../../sql-reference/data-types/string.md) として与えられた場合)
   に対して、テキスト索引に指定されたトークナイザを使用します。
   カラムにテキスト索引が定義されていない場合は、代わりに `splitByNonAlpha` トークナイザが使用されます。
   `needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型の場合、各配列要素は 1 つのトークンとして扱われ、追加のトークン化は行われません。
@@ -458,13 +458,13 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 hasAllTokens(input, needles)
 ```
 
-**エイリアス**: `hasAllToken`
+**別名**: `hasAllToken`
 
 **引数**
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`unicodeWord` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -602,7 +602,7 @@ text index が定義されていない場合、この関数はブルートフォ
 検索を行う前に、この関数は次をトークン化します。
 
 * `input` 引数 (常に) と
-* `needle` 引数 ([String](../../sql-reference/data-types/string.md) として指定された場合) 
+* `needle` 引数 ([String](../../sql-reference/data-types/string.md) として指定された場合)
   これらには、text index に対して指定された tokenizer が使用されます。
   カラムに text index が定義されていない場合は、代わりに `splitByNonAlpha` tokenizer が使用されます。
   `needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型の場合、各配列要素はそれ自体がトークンとして扱われ、追加のトークン化は行われません。
@@ -622,7 +622,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable) または [`Nullable(FixedString)`](/sql-reference/data-types/nullable) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array) または [`Array(Nullable(String))`](/sql-reference/data-types/array) または [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`unicodeWord` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -1009,6 +1009,57 @@ SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 ┌─hasTokenOrNu⋯ 'ban ana')─┐
 │                     ᴺᵁᴸᴸ │
 └──────────────────────────┘
+```
+
+## highlight \{#highlight\}
+
+導入バージョン: v26.4.0
+
+テキスト文字列内で検索語が出現する箇所を、HTMLタグで囲んで強調表示します。
+
+この関数は、ASCII の大文字・小文字を区別せずに照合します。複数の検索語がテキスト内で重なっている、または隣接している場合、一致した領域は 1 つの強調表示スパンにマージされます。
+
+**構文**
+
+```sql
+highlight(haystack, needles[, open_tag, close_tag])
+```
+
+**引数**
+
+* `haystack` — 検索対象のテキスト。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `needles` — ハイライトする検索語の配列。[`const Array(String)`](/sql-reference/data-types/array)
+* `open_tag` — 各一致箇所の前に挿入する開始タグ。既定値: `<em>`. [`const String`](/sql-reference/data-types/string)
+* `close_tag` — 各一致箇所の後に挿入する終了タグ。既定値: `</em>`. [`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+一致した語を指定したタグで囲んだ入力テキストを返します。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**基本的なハイライト**
+
+```sql title=Query
+SELECT highlight('The quick brown fox', ['quick', 'fox'])
+```
+
+```response title=Response
+┌─highlight('The quick brown fox', ['quick', 'fox'])─┐
+│ The <em>quick</em> brown <em>fox</em>              │
+└────────────────────────────────────────────────────┘
+```
+
+**カスタムタグ**
+
+```sql title=Query
+SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
+```
+
+```response title=Response
+┌─highlight('Hello World', ['hello'], '<b>', '</b>')─┐
+│ <b>Hello</b> World                                 │
+└────────────────────────────────────────────────────┘
 ```
 
 ## ilike \{#ilike\}

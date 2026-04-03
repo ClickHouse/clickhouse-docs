@@ -197,7 +197,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 Скрипты в каталоге `/docker-entrypoint-initdb.d` выполняются в **алфавитном порядке** по имени файла. Если ваши скрипты зависят друг от друга (например, скрипт, создающий представления, должен выполняться после скрипта, создающего соответствующие таблицы), убедитесь, что их имена сортируются в правильном порядке.
 :::
 
-Также вы можете задать переменные окружения `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD`, которые будут использоваться клиентом clickhouse-client во время инициализации.
+Также вы можете задать переменные окружения `CLICKHOUSE_USER` &amp; `CLICKHOUSE_PASSWORD`, которые будут использоваться клиентом clickhouse-client во время инициализации.
 
 Например, чтобы добавить ещё одного пользователя и базу данных, добавьте следующее в `/docker-entrypoint-initdb.d/init-db.sh`:
 
@@ -207,6 +207,7 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32) ENGINE = Log;
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
+    ORDER BY ();
 EOSQL
 ```

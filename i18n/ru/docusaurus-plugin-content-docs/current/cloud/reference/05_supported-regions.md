@@ -9,32 +9,32 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+
 # Поддерживаемые регионы Cloud \{#supported-cloud-regions\}
 
 ## Регионы AWS \{#aws-regions\}
 
-- ap-northeast-1 (Токио)
-- ap-northeast-2 (Южная Корея, Сеул)
-- ap-south-1 (Мумбаи)
-- ap-southeast-1 (Сингапур)
-- ap-southeast-2 (Сидней)
-- eu-central-1 (Франкфурт)
-- eu-west-1 (Ирландия)
-- eu-west-2 (Лондон)
-- me-central-1 (ОАЭ)
-- us-east-1 (Северная Вирджиния)
-- us-east-2 (Огайо)
-- us-west-2 (Орегон)
-- il-central-1 (Израиль, Тель-Авив)
+* ap-northeast-1 (Токио)
+* ap-northeast-2 (Южная Корея, Сеул)
+* ap-south-1 (Мумбаи)
+* ap-southeast-1 (Сингапур)
+* ap-southeast-2 (Сидней)
+* eu-central-1 (Франкфурт)
+* eu-west-1 (Ирландия)
+* eu-west-2 (Лондон)
+* us-east-1 (Северная Вирджиния)
+* us-east-2 (Огайо)
+* us-west-2 (Орегон)
+* il-central-1 (Израиль, Тель-Авив)
 
-**Закрытые регионы:**
+**Частные регионы:**
 
-- ca-central-1 (Канада)
-- af-south-1 (Южная Африка)
-- eu-north-1 (Стокгольм)
-- sa-east-1 (Южная Америка)
-- ap-southeast-3 (Джакарта)
-- ap-east-1 (Гонконг)
+* ca-central-1 (Канада)
+* af-south-1 (Южная Африка)
+* eu-north-1 (Стокгольм)
+* sa-east-1 (Южная Америка)
+* ap-southeast-3 (Джакарта)
+* ap-east-1 (Гонконг)
 
 ## Регионы Google Cloud \{#google-cloud-regions\}
 

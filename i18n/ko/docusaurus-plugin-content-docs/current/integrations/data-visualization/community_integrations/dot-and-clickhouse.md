@@ -23,30 +23,29 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 [Dot](https://www.getdot.ai/)은 **AI 데이터 분석가**입니다.
 ClickHouse에 직접 연결되므로 자연어로 데이터를 질의하고, 데이터를 탐색하며, 가설을 검증하고, 원인(왜 그랬는지)에 대한 질문에 답변할 수 있습니다. 이 모든 작업을 Slack, Microsoft Teams, ChatGPT 또는 네이티브 Web UI에서 직접 수행할 수 있습니다.
 
-## 사전 준비 사항 \{#pre-requisites\}
+## 사전 요구 사항 \{#pre-requisites\}
 
-- 자체 호스팅 또는 [ClickHouse Cloud](https://clickhouse.com/cloud) 환경의 ClickHouse 데이터베이스  
-- [Dot](https://www.getdot.ai/) 계정  
-- [Hashboard](https://www.hashboard.com/) 계정과 프로젝트
+* 셀프 호스팅하거나 [ClickHouse Cloud](https://clickhouse.com/cloud)에서 사용하는 ClickHouse 데이터베이스
+* [Dot](https://www.getdot.ai/) 계정  
 
-## Dot를 ClickHouse에 연결하기 \{#connecting-dot-to-clickhouse\}
+## Dot을 ClickHouse에 연결하기 \{#connecting-dot-to-clickhouse\}
 
-<Image size="md" img={dot_01} alt="Dot에서 ClickHouse 연결 구성하기(라이트 모드)" border />
+<Image size="md" img={dot_01} alt="Dot에서 ClickHouse 연결 구성(라이트 모드)" border />
 
-<br/>
+<br />
 
-1. Dot UI에서 **Settings → Connections**로 이동합니다.  
-2. **Add new connection**을 클릭하고 **ClickHouse**를 선택합니다.  
-3. 연결 정보를 입력합니다.  
-   - **Host**: ClickHouse 서버 호스트 이름 또는 ClickHouse Cloud 엔드포인트  
-   - **Port**: `9440`(보안 네이티브 인터페이스) 또는 `9000`(기본 TCP)  
-   - **Username / Password**: 읽기 권한이 있는 사용자  
-   - **Database**: 필요하다면 기본 스키마를 설정합니다.  
+1. Dot UI에서 **Settings → Connections**로 이동합니다.
+2. **Add new connection**을 클릭하고 **ClickHouse**를 선택합니다.
+3. 연결 정보를 입력합니다.
+   * **Host**: ClickHouse 서버 호스트 이름 또는 ClickHouse Cloud 엔드포인트
+   * **Port**: `8443` (ClickHouse Cloud HTTPS) 또는 `8123` (셀프 호스팅 HTTP)
+   * **Username / Password**: 읽기 권한이 있는 사용자
+   * **Database**: 필요에 따라 기본 스키마를 설정합니다
 4. **Connect**를 클릭합니다.
 
-<Image img={dot_02} alt="ClickHouse에 연결하기" size="sm"/>
+<Image img={dot_02} alt="ClickHouse 연결" size="sm" />
 
-Dot은 **query-pushdown**을 사용합니다. 대규모 연산은 ClickHouse가 처리하며, Dot은 정확하고 신뢰할 수 있는 결과를 제공합니다.
+Dot은 **query-pushdown**을 사용합니다. 대규모 수치 연산은 ClickHouse가 처리하고, Dot은 정확하고 신뢰할 수 있는 답변을 제공합니다.
 
 ## 주요 기능 \{#highlights\}
 

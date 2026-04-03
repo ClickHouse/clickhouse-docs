@@ -548,6 +548,16 @@ Cloud 默认值：`1`。
 
 在执行 SELECT 查询时，每个分片最多使用 `max_parallel_replicas` 个副本。读取将被并行化并动态协调。0 - 禁用，1 - 启用，在发生故障时静默禁用，2 - 启用，在发生故障时抛出异常。
 
+## allow_experimental_polyglot_dialect \{#allow_experimental_polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于启用 polyglot SQL 转译器方言的新设置。"}]}]} />
+
+启用 polyglot SQL 转译器——可将来自 30 多种方言 (MySQL、PostgreSQL、SQLite、Snowflake、DuckDB 等) 的 SQL 转译为 ClickHouse SQL。
+
 ## allow_experimental_prql_dialect \{#allow_experimental_prql_dialect\}
 
 <ExperimentalBadge/>
@@ -565,18 +575,6 @@ Cloud 默认值：`1`。
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 基于 part UUID 的 SELECT 查询实验性去重功能
-
-## allow_experimental_statistics \{#allow_experimental_statistics\}
-
-<ExperimentalBadge/>
-
-**别名**: `allow_experimental_statistic`
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。之前的名称为 `allow_experimental_statistic`。"}]}]}/>
-
-允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
 
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
@@ -866,15 +864,23 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 允许输出具有 Sparse 和 Replicated 等特殊序列化类型的列，而无需将其转换为完整列表示形式。
 这有助于在格式化期间避免不必要的数据复制。
 
-## allow_statistics_optimize \{#allow_statistics_optimize\}
+## allow_statistics \{#allow_statistics\}
 
-<BetaBadge/>
+**别名**: `allow_experimental_statistics`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "列统计信息现已正式可用"}]}]} />
+
+允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
+
+## allow_statistics_optimize \{#allow_statistics_optimize\}
 
 **别名**: `allow_statistic_optimize`
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "默认启用此优化。"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "0"},{"label": "该设置已被重命名。先前的名称为 `allow_statistic_optimize`。"}]}]} />
 
 允许使用统计信息来优化查询。
 
@@ -1349,14 +1355,14 @@ Cloud 默认值：`104857600` (100 MiB).
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]} />
 
-基于收集到的统计信息，自动切换为使用并行副本执行。需要启用 `parallel_replicas_local_plan` 并提供 `cluster_for_parallel_replicas`。
-0 - 关闭，1 - 开启，2 - 仅收集统计信息（不切换为使用并行副本执行）。
+基于收集到的统计信息，自动切换为使用并行副本执行。需要 `enable_analyzer = 1`、`enable_parallel_replicas != 0`、`parallel_replicas_local_plan = 1` 并提供 `cluster_for_parallel_replicas`。
+0 - 关闭，1 - 开启，2 - 仅收集统计信息 (不切换为使用并行副本执行) 。
 
 ## azure_allow_parallel_part_upload \{#azure_allow_parallel_part_upload\}
 
@@ -3162,6 +3168,17 @@ FORMAT PrettyCompactMonoBlock
 
 即使针对非 SharedMergeTree（SharedMergeTree 为仅在 Cloud 中提供的引擎），也启用分布式索引分析。
 
+## distributed_index_analysis_only_on_coordinator \{#distributed_index_analysis_only_on_coordinator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}]} />
+
+如果启用，分布式索引分析将仅在协调节点上运行。
+这样可以避免在谓词包含子查询时 (例如 `IN (SELECT ...)`) 产生 O(N^2) 的衍生查询，
+因为否则每个从副本都会各自独立触发分布式索引分析；
+但如果子查询中使用了大表，也会降低分布式索引分析的效率。
+
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3554,6 +3571,16 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "轻量级更新被移至 Beta 阶段。为设置 'allow_experimental_lightweight_update' 添加了一个别名。"}]}]}/>
 
 允许使用轻量级更新。
+
+## enable_materialized_cte \{#enable_materialized_cte\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+
+启用物化公共表表达式，该设置将优先于 enable&#95;global&#95;with&#95;statement
 
 ## enable_memory_bound_merging_of_aggregation_results \{#enable_memory_bound_merging_of_aggregation_results\}
 
@@ -4199,6 +4226,14 @@ SELECT * FROM test;
 ```
 
 
+## finalize_projection_parts_synchronously \{#finalize_projection_parts_synchronously\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于在 INSERT 期间同步完成投影分区片段的新设置，以降低峰值内存使用量。"}]}]} />
+
+启用后，投影分区片段会在 INSERT 期间同步完成，从而降低峰值内存使用量，但代价是 S3 上传并行度会降低。默认情况下，每个投影的输出流都会保持打开状态，直到整个分区片段 (包括所有投影) 完成；这样可以让 S3 上传重叠进行，但峰值内存占用会随着投影数量增加而上升。此设置仅影响 INSERT 路径；合并和变更已经是同步完成投影的。
+
 ## flatten_nested \{#flatten_nested\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4711,6 +4746,18 @@ grace hash join 的 bucket 数量上限
 
 Hedged 请求与副本建立连接的超时时间
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "用于限制每行高亮匹配数量的新设置，以防止内存使用过高。"}]}]} />
+
+设置 [highlight](/sql-reference/functions/string-search-functions#highlight) 函数中每行高亮匹配的最大数量。在大段文本中高亮高度重复的模式时，可使用此设置防止内存使用过高。
+
+可能的值：
+
+* 正整数。
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />
@@ -4985,6 +5032,14 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 - manifest_list_entry - 上述所有内容 + avro manifest list 中的条目。
 - manifest_file_metadata - 上述所有内容 + 遍历到的 avro manifest 文件中的元数据。
 - manifest_file_entry - 上述所有内容 + 遍历到的 avro manifest 文件中的条目。
+
+## iceberg_metadata_staleness_ms \{#iceberg_metadata_staleness_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置，允许在 READ 操作期间使用缓存的元数据版本，以避免从远程目录获取"}]}]} />
+
+如果该值非零，且存在比给定过期窗口更新的缓存元数据快照，则跳过从远程目录获取 Iceberg 元数据。值为 0 表示始终从远程目录获取最新的元数据版本。将此项设为非零，可以用一定的元数据陈旧性换取更低的读操作延迟。
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -6773,25 +6828,32 @@ Exception: Total regexp lengths too large.
 
 ## max_insert_block_size \{#max_insert_block_size\}
 
-**别名**: `max_insert_block_size_rows`
+**別名**: `max_insert_block_size_rows`
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-插入到表中的数据块的最大大小（按行数计）。
+向表插入数据时要生成的数据块的最大大小 (以行数计) 。
 
-该设置控制在解析输入格式时的数据块构建。当服务器解析基于行的输入格式（CSV、TSV、JSONEachRow 等）或从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol）接收的 Values 格式时，会使用此设置来决定何时发出一个数据块。  
-注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身解析数据，该设置应用在客户端侧。
+该设置在两个场景下控制数据块的生成：
 
-在满足以下任一条件时会发出一个数据块：
+1. 格式解析：当服务器从任意接口 (HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等) 解析基于行的输入格式 (CSV、TSV、JSONEachRow 等) 时，会在以下情况下输出一个数据块：
 
-- 最小阈值（与关系 AND）：同时达到 min_insert_block_size_rows 和 min_insert_block_size_bytes
-- 最大阈值（或关系 OR）：达到 max_insert_block_size 或 max_insert_block_size_bytes 之一即可
+   * 同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes，或者
+   * 达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
 
-默认值略大于 max_block_size。原因是某些表引擎（`*MergeTree`）会为每个插入的数据块在磁盘上形成一个 data part，这是一个相当大的实体。同样地，`*MergeTree` 表在插入期间会对数据进行排序，足够大的块大小可以在内存中对更多数据进行排序。
+   注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
 
-可能的取值：
+2. INSERT 操作：在执行 INSERT 查询以及数据通过 materialized view 流转时，此设置的行为取决于 `use_strict_insert_block_limits`：
 
-- 正整数。
+   * 启用时：会在以下情况下输出数据块：
+     * 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes
+     * 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
+
+   * 禁用时：当达到 min&#95;insert&#95;block&#95;size&#95;rows OR min&#95;insert&#95;block&#95;size&#95;bytes 时会输出数据块。不强制执行 max&#95;insert&#95;block&#95;size 设置。
+
+可选值：
+
+* 正整数。
 
 ## max_insert_block_size_bytes \{#max_insert_block_size_bytes\}
 
@@ -7942,25 +8004,29 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-向表插入数据时要生成的数据块的最小大小（以行数计）。
+向表插入数据时要生成的数据块的最小大小 (以行数计) 。
 
 该设置在两个场景下控制数据块的生成：
 
-1. 格式解析：当服务器从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等）解析基于行的输入格式（CSV、TSV、JSONEachRow 等）时，会使用此设置来决定何时输出一个数据块。  
-注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
-2. INSERT 操作：在执行 INSERT...SELECT 查询以及数据通过 materialized view 流转时，在写入存储之前，会根据此设置将较小的数据块合并成较大的数据块。
+1. 格式解析：当服务器从任意接口 (HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等) 解析基于行的输入格式 (CSV、TSV、JSONEachRow 等) 时，会在以下情况下输出数据块：
 
-在格式解析过程中，当满足以下任一条件时会输出一个数据块：
+   * 同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes，或者
+   * 达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
 
-- 最小阈值（AND）：同时达到 min_insert_block_size_rows AND min_insert_block_size_bytes
-- 最大阈值（OR）：达到 max_insert_block_size OR max_insert_block_size_bytes 中的任意一个
+   注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，该设置作用在客户端侧。
 
-对于插入操作，较小的数据块会被合并为更大的数据块，并在满足 min_insert_block_size_rows 或 min_insert_block_size_bytes 之一时输出。
+2. INSERT 操作：在执行 INSERT 查询以及数据通过 materialized view 流转时，此设置的行为取决于 `use_strict_insert_block_limits`：
+
+   * 启用时：会在以下情况下输出数据块：
+     * 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows AND min&#95;insert&#95;block&#95;size&#95;bytes
+     * 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows OR max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个
+
+   * 禁用时 (默认) ：当达到 min&#95;insert&#95;block&#95;size&#95;rows OR min&#95;insert&#95;block&#95;size&#95;bytes 之一时会输出数据块。不强制执行 max&#95;insert&#95;block&#95;size 设置。
 
 可选值：
 
-- 正整数。
-- 0 — 此设置不参与数据块形成。
+* 正整数。
+* 0 — 此设置不参与数据块形成。
 
 ## min_insert_block_size_rows_for_materialized_views \{#min_insert_block_size_rows_for_materialized_views\}
 
@@ -8865,6 +8931,14 @@ FROM default.fuse_tbl AS __table1
 
 优化简单的 'INSERT INTO table SELECT ... FROM TABLES' 查询
 
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。"}]}]} />
+
+当 ORDER BY 前缀已包含所有 GROUP BY 键时，移除后续的 ORDER BY 元素。
+
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9258,6 +9332,14 @@ ClickHouse 服务器：
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 在服务器的查询等待循环中阻塞指定的秒数。
+
+## polyglot_dialect \{#polyglot_dialect\}
+
+<ExperimentalBadge />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": ""},{"label": "用于指定 polyglot 转译器源 SQL 方言的新设置。"}]}]} />
+
+polyglot 转译器的源 SQL 方言 (例如：&#39;sqlite&#39;、&#39;mysql&#39;、&#39;postgresql&#39;、&#39;snowflake&#39;、&#39;duckdb&#39;) 。
 
 ## postgresql_connection_attempt_timeout \{#postgresql_connection_attempt_timeout\}
 
@@ -11889,24 +11971,58 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics \{#use_statistics\}
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]} />
 
-/// 建议优先使用 'use_statistics' 而不是 'allow_statistics_optimize'，以与 'use_primary_key' 和 'use_skip_indexes' 的命名保持一致
+/// 建议优先使用 &#39;use&#95;statistics&#39; 而不是 &#39;allow&#95;statistics&#95;optimize&#39;，以与 &#39;use&#95;primary&#95;key&#39; 和 &#39;use&#95;skip&#95;indexes&#39; 的命名保持一致
 允许使用统计信息来优化查询
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<BetaBadge/>
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+在查询中使用统计信息缓存，以避免加载每个分片统计信息所带来的开销
+
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "用于在查询执行期间借助统计信息进行 part 剪枝的新设置。"}]}]} />
 
-在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
+在查询执行期间，使用统计信息过滤掉 parts。
+
+启用后，SELECT 查询中的剪枝会使用列统计信息 (例如 MinMax 统计信息) ，在读取任何数据之前排除不可能包含匹配数据的 parts。
+
+可选值：
+
+* 0 — 禁用。
+* 1 — 启用。
+
+## use_strict_insert_block_limits \{#use_strict_insert_block_limits\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新增设置，用于在插入时严格应用最小和最大插入边界。当 min < max 时，max 限制优先生效。"}]}]} />
+
+启用后，会严格同时强制执行最小和最大插入块大小限制。
+
+在以下情况下会生成一个块：
+
+* 最小阈值 (AND) ：同时达到 min&#95;insert&#95;block&#95;size&#95;rows 和 min&#95;insert&#95;block&#95;size&#95;bytes。
+* 最大阈值 (OR) ：达到 max&#95;insert&#95;block&#95;size&#95;rows 或 max&#95;insert&#95;block&#95;size&#95;bytes 中的任意一个。
+
+禁用时，在以下情况下会生成一个块：
+
+* 最小阈值 (OR) ：达到 min&#95;insert&#95;block&#95;size&#95;rows 或 min&#95;insert&#95;block&#95;size&#95;bytes。
+
+**注意**：如果 max 设置小于 min 设置，则 max 限制优先生效，并会在达到最小阈值之前生成块。
+
+**注意**：对于异步插入，此设置会自动禁用，因为异步插入会附加按条目的去重标记，而这与严格限制生效所需的块拆分不兼容。
+
+默认禁用。
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

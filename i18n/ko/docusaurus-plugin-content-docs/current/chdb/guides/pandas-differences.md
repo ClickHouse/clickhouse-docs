@@ -2,7 +2,7 @@
 title: 'pandas와의 주요 차이점'
 sidebar_label: '주요 차이점'
 slug: /chdb/guides/pandas-differences
-description: 'DataStore와 pandas의 주요 차이점'
+description: 'DataStore와 pandas의 중요한 차이점'
 keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---

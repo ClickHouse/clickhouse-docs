@@ -16,6 +16,10 @@ import TabItem from '@theme/TabItem';
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](#installing-otel-collector) of the collector for this instance.
 
+:::tip
+A managed version of ClickStack is also available — see [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+:::
+
 Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)). For teams that want a managed OpenTelemetry pipeline, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)offers an OpenTelemetry-native solution with a native ClickStack destination, simplifying telemetry collection, processing, and routing.
 
 ## Sending OpenTelemetry data {#sending-otel-data}
@@ -73,7 +77,7 @@ exporters:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 1000
+    send_batch_size: 10000
 service:
   telemetry:
     metrics:
@@ -164,7 +168,7 @@ exporters:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 1000
+    send_batch_size: 10000
 service:
   telemetry:
     metrics:

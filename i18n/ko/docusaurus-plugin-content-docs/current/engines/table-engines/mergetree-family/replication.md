@@ -187,7 +187,7 @@ SAMPLE BY intHash32(UserID);
   ```
 </details>
 
-위 예시에서 볼 수 있듯이, 이러한 매개변수에는 중괄호로 둘러싸인 치환용 값을 포함할 수 있습니다. 치환에 사용되는 값은 설정 파일의 [macros](/operations/server-configuration-parameters/settings.md/#macros) 섹션에서 가져옵니다.
+위 예시에서 볼 수 있듯이, 이러한 매개변수에는 `{}` 안에 치환용 값을 포함할 수 있습니다. 치환에 사용되는 값은 설정 파일의 [macros](/operations/server-configuration-parameters/settings.md/#macros) 섹션에서 가져옵니다.
 
 예시:
 
@@ -217,7 +217,7 @@ ClickHouse Keeper에서의 테이블 경로는 각 복제된 테이블마다 고
 
 대규모 클러스터를 다룰 때는 오류 가능성을 줄이기 위해 치환 사용을 권장합니다.
 
-서버 구성 파일에서 `Replicated` 테이블 엔진에 대한 기본 인자를 지정할 수 있습니다. 예를 들면 다음과 같습니다:
+설정 파일에서 `Replicated` 테이블 엔진에 대한 기본 인수를 지정할 수 있습니다. 예를 들면 다음과 같습니다:
 
 ```xml
 <default_replica_path>/clickhouse/tables/{shard}/{database}/{table}</default_replica_path>

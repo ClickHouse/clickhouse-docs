@@ -2,7 +2,7 @@
 title: 'DataStore 配置'
 sidebar_label: '概览'
 slug: /chdb/configuration
-description: '配置 DataStore 的执行引擎、日志、缓存和性能分析'
+description: '配置 DataStore 的执行引擎、日志配置、缓存和性能分析'
 keywords: ['chdb', 'DataStore', '配置', '配置项', '设置']
 doc_type: 'reference'
 ---
@@ -65,8 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-有关详细信息，请参阅[日志记录](logging.md)。
-
+详见[日志配置](../debugging/logging.md)。
 
 ### 缓存配置 \{#cache\}
 

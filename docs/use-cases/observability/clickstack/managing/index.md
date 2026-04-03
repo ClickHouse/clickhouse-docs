@@ -20,6 +20,7 @@ This section describes how to manage ClickStack.
 | [Going to production](/use-cases/observability/clickstack/production) | Recommended steps and best practices before running ClickStack in production. |
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | A detailed guide to using materialized views in ClickStack to accelerate query performance. |
 | [Performance tuning](/use-cases/observability/clickstack/performance_tuning) | A comprehensive guide to tuning ClickStack for large-scale workloads. |
+| [RBAC](/use-cases/observability/clickstack/rbac) | Configure role-based access control to manage team permissions for dashboards, saved searches, and sources. |
 
 ## Core ClickHouse concepts {#core-concepts}
 

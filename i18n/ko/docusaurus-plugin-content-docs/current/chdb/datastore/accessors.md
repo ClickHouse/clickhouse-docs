@@ -1,8 +1,8 @@
 ---
-title: 'DataStore 접근자'
-sidebar_label: '접근자'
+title: 'DataStore Accessor'
+sidebar_label: 'Accessor'
 slug: /chdb/datastore/accessors
-description: '문자열(String), DateTime, 배열(Array), JSON, URL, IP, Geo에 대한 접근자와 185개 이상의 메서드'
+description: '문자열(String), DateTime, 배열(Array), JSON, URL, IP, Geo에 대한 Accessor와 185개 이상의 메서드'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
 doc_type: 'reference'
 ---

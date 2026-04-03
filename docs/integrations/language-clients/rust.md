@@ -4,7 +4,7 @@ sidebar_position: 5
 keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
 slug: /integrations/rust
 description: 'The official Rust client for connecting to ClickHouse.'
-title: 'ClickHouse Rust Client'
+title: 'ClickHouse Rust client'
 doc_type: 'reference'
 integration:
   - support_level: 'core'

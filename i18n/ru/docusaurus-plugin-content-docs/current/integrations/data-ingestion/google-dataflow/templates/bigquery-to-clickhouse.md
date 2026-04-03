@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'BigQuery в ClickHouse'
+sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Вы можете осуществлять приём данных из BigQuery в ClickHouse с помощью шаблона Google Dataflow'
-title: 'Шаблон Dataflow: BigQuery в ClickHouse'
+title: 'Шаблон Dataflow BigQuery to ClickHouse'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
 ---
@@ -17,7 +17,6 @@ import dataflow_template_initial_form from '@site/static/images/integrations/dat
 import dataflow_extended_template_form from '@site/static/images/integrations/data-ingestion/google-dataflow/extended_template_form.png'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # Шаблон Dataflow BigQuery to ClickHouse \{#dataflow-bigquery-to-clickhouse-template\}
 

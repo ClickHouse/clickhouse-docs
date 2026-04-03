@@ -1,12 +1,12 @@
 ---
 sidebar_label: 'プライマリインデックス'
 sidebar_position: 1
-description: 'このガイドでは、ClickHouse におけるインデックスの仕組みについて詳しく解説します。'
-title: 'ClickHouse におけるプライマリインデックスの実践的入門'
+description: 'このガイドでは、ClickHouse におけるインデックスについて詳しく解説します。'
+title: 'ClickHouse におけるプライマリインデックス実践入門'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['プライマリインデックス', 'インデックス作成', 'パフォーマンス', 'クエリ最適化', 'ベストプラクティス']
+keywords: ['プライマリインデックス', 'インデックス', 'パフォーマンス', 'クエリ最適化', 'ベストプラクティス']
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
@@ -33,7 +33,6 @@ import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
-
 
 # ClickHouse におけるプライマリインデックス実践入門 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
 

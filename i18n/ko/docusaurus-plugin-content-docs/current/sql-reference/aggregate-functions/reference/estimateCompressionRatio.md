@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 도입된 버전: v25.4.0
 
-지정된 컬럼을 실제로 압축하지 않고 압축 비율을 추정합니다.
+지정된 컬럼을 실제로 압축하지 않고 압축률을 추정합니다.
 
 :::note
 아래 예제에서 결과는 서버의 기본 압축 코덱에 따라 달라집니다.
@@ -27,7 +27,7 @@ estimateCompressionRatio([codec, block_size_bytes])(column)
 **파라미터**
 
 * `codec` — 하나의 압축 코덱 또는 여러 개의 압축 코덱을 쉼표로 구분해 포함하는 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `block_size_bytes` — 압축된 데이터의 블록 크기입니다. 이는 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 및 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)를 모두 설정하는 것과 유사합니다. 기본값은 1 MiB(1048576바이트)입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+* `block_size_bytes` — 압축된 데이터의 블록 크기입니다. 이는 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 및 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)를 모두 설정하는 것과 유사합니다. 기본값은 1 MiB(1048576바이트)입니다. 허용되는 최댓값은 256 MiB(268435456바이트)입니다. [`UInt64`](/sql-reference/data-types/int-uint)
 
 **인자**
 

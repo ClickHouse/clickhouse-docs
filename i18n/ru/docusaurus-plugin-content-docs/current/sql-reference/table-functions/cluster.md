@@ -1,6 +1,6 @@
 ---
 description: 'Позволяет обращаться ко всем шардам (настроенным в разделе `remote_servers`)
-  кластера без создания таблицы типа Distributed.'
+  кластера без создания distributed таблицы.'
 sidebar_label: 'кластер'
 sidebar_position: 30
 slug: /sql-reference/table-functions/cluster
@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 # Табличная функция clusterAllReplicas \{#clusterallreplicas-table-function\}
 
-Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
+Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания [distributed таблицы](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
 
 Функция `clusterAllReplicas` — то же, что и `cluster`, но запрашиваются все реплики. Каждая реплика кластера используется как отдельный шард и отдельное соединение.
 
@@ -41,7 +41,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 
 ## Использование макросов \{#using_macros\}
 
-`cluster_name` может содержать макросы — подстановки в фигурных скобках. Значение подстановки берётся из раздела [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
+`cluster_name` может содержать макросы — подстановки в `{}`. Значение подстановки берётся из раздела [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
 
 Пример:
 
@@ -51,17 +51,17 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 
 ## Использование и рекомендации \{#usage_recommendations\}
 
-Использование табличных функций `cluster` и `clusterAllReplicas` менее эффективно, чем создание таблицы `Distributed`, потому что в этом случае соединение с сервером заново устанавливается для каждого запроса. При обработке большого количества запросов всегда заранее создавайте таблицу `Distributed` и не используйте табличные функции `cluster` и `clusterAllReplicas`.
+Использование табличных функций `cluster` и `clusterAllReplicas` менее эффективно, чем создание `distributed` таблицы, потому что в этом случае соединение с сервером заново устанавливается для каждого запроса. При обработке большого количества запросов всегда заранее создавайте `distributed` таблицу и не используйте табличные функции `cluster` и `clusterAllReplicas`.
 
 Табличные функции `cluster` и `clusterAllReplicas` могут быть полезны в следующих случаях:
 
-- Доступ к конкретному кластеру для сравнения данных, отладки и тестирования.
-- Запросы к различным кластерам и репликам ClickHouse в исследовательских целях.
-- Редкие распределённые запросы, выполняемые вручную.
+* Доступ к конкретному кластеру для сравнения данных, отладки и тестирования.
+* Запросы к различным кластерам и репликам ClickHouse в исследовательских целях.
+* Редкие распределённые запросы, выполняемые вручную.
 
-Параметры подключения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из секции конфигурации `<remote_servers>`. Подробности см. в описании [движка Distributed](../../engines/table-engines/special/distributed.md).
+Параметры подключения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из раздела конфигурации `<remote_servers>`. Подробности см. в описании [движка Distributed](../../engines/table-engines/special/distributed.md).
 
 ## См. также \{#related\}
 
-- [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
-- [load_balancing](../../operations/settings/settings.md#load_balancing)
+* [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
+* [load&#95;balancing](../../operations/settings/settings.md#load_balancing)

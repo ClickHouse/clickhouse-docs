@@ -13,9 +13,9 @@ doc_type: 'reference'
 출력 형식은 `SELECT` 결과를 구성하고 파일 기반 테이블에 `INSERT`를 수행하는 데 사용됩니다.
 ClickHouse가 지원하는 데이터 형식 외에도 chDB는 다음을 추가로 지원합니다.
 
-- 출력 형식으로 `ArrowTable`을 지원하며, 타입은 Python `pyarrow.Table`입니다.
-- 입출력 형식으로 `DataFrame`을 지원하며, 타입은 Python `pandas.DataFrame`입니다. 예시는 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)를 참고하십시오.
-- 출력 형식으로 `Debug`를 지원하며(`CSV`의 별칭), ClickHouse에서 디버그 상세 출력이 활성화됩니다.
+* 출력 형식으로 `ArrowTable`을 지원하며, 타입은 Python `pyarrow.Table`입니다.
+* 입출력 형식으로 `DataFrame`을 지원하며, 타입은 Python `pandas.DataFrame`입니다. 예시는 [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)를 참조하십시오.
+* 출력 형식으로 `Debug`를 지원하며(`CSV`의 별칭), ClickHouse에서 디버그 상세 출력이 활성화됩니다.
 
 ClickHouse에서 지원되는 데이터 형식은 다음과 같습니다.
 

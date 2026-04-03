@@ -1,5 +1,5 @@
 ---
-title: 'Parallel Snapshot In The MySQL ClickPipe'
+title: 'Parallel snapshot in the MySQL ClickPipe'
 description: 'Doc for explaining parallel snapshot in the MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'

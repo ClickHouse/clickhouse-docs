@@ -2,8 +2,8 @@
 slug: /optimize/skipping-indexes
 sidebar_label: 'Индексы пропуска данных'
 sidebar_position: 2
-description: 'Индексы пропуска позволяют ClickHouse пропускать чтение крупных блоков данных, заведомо не содержащих подходящих значений.'
-title: 'Основы индексов пропуска данных в ClickHouse'
+description: 'Индексы пропуска позволяют ClickHouse пропускать чтение значительных фрагментов данных, заведомо не содержащих подходящих значений.'
+title: 'Что такое индексы пропуска данных в ClickHouse'
 doc_type: 'guide'
 keywords: ['индексы пропуска', 'пропуск данных', 'производительность', 'индексация', 'лучшие практики']
 ---
@@ -11,7 +11,6 @@ keywords: ['индексы пропуска', 'пропуск данных', 'п
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
-
 
 # Что такое индексы пропуска данных в ClickHouse \{#understanding-clickhouse-data-skipping-indexes\}
 

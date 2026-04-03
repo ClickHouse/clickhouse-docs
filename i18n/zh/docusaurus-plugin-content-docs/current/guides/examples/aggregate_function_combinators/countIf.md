@@ -12,8 +12,7 @@ doc_type: 'reference'
 ## 描述 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)
-函数，从而通过 `countIf` 聚合函数组合器统计条件为 `true`
-的行数。
+函数，使用 `countIf` 聚合组合器函数来统计条件为 true 的行数。
 
 ## 用法示例 \{#example-usage\}
 
@@ -25,7 +24,8 @@ CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO login_attempts VALUES
     (1, '2024-01-01 10:00:00', 1),
@@ -51,6 +51,8 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
+
 ## 另请参阅 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

@@ -15,7 +15,21 @@ function SettingsInfoBlockPlaceholder() {
     );
 }
 
-const SettingsInfoBlock = ({type, default_value}) => {
+const SettingsInfoBlock = ({type, default_value, changeable_without_restart}) => {
+    const headers = [
+        { label: 'Type' },
+        { label: 'Default value' },
+    ];
+    const items = [
+        { label: `${type}` },
+        { label: `${default_value}` },
+    ];
+
+    if (changeable_without_restart) {
+        headers.push({ label: 'Changeable without restart' });
+        items.push({ label: `${changeable_without_restart}` });
+    }
+
     return(
         <BrowserOnly fallback={<SettingsInfoBlockPlaceholder />}>
             {() => {
@@ -24,22 +38,12 @@ const SettingsInfoBlock = ({type, default_value}) => {
                 >
                     <Suspense fallback={<SettingsInfoBlockPlaceholder />}>
                         <Table
-                            headers={[
-                                {
-                                    label: 'Type'
-                                },
-                                {
-                                    label: 'Default value'
-                                },
-                            ]}
+                            headers={headers}
                             rows={
                                 [
                                     {
                                         id: "row-1",
-                                        items: [
-                                            {label: `${type}`},
-                                            {label: `${default_value}`}
-                                        ]
+                                        items: items
                                     }
                                 ]
                             }

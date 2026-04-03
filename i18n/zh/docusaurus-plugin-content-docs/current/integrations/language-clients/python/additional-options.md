@@ -1,10 +1,10 @@
 ---
-sidebar_label: '附加选项'
+sidebar_label: '其他选项'
 sidebar_position: 3
 keywords: ['clickhouse', 'python', 'options', 'settings']
 description: 'ClickHouse Connect 的附加选项'
 slug: /integrations/language-clients/python/additional-options
-title: '附加选项'
+title: '其他选项'
 doc_type: 'reference'
 ---
 

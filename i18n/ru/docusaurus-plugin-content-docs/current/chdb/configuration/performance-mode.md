@@ -2,7 +2,7 @@
 title: 'Режим производительности (compat_mode)'
 sidebar_label: 'Режим производительности'
 slug: /chdb/configuration/performance-mode
-description: 'Режим производительности с приоритетом SQL, который отключает накладные расходы совместимости с pandas для максимальной пропускной способности'
+description: 'Режим производительности SQL-first, который отключает накладные расходы совместимости с pandas для максимальной пропускной способности'
 keywords: ['chdb', 'datastore', 'performance', 'mode', 'compat', 'sql-first', 'optimization']
 doc_type: 'guide'
 ---

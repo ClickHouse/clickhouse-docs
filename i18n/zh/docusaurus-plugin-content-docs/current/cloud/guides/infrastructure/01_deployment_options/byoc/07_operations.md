@@ -2,8 +2,8 @@
 title: 'BYOC 运维与维护'
 slug: /cloud/reference/byoc/operations
 sidebar_label: '运维与维护'
-keywords: ['BYOC', '云', '自带 Cloud', '运维', '维护']
-description: '在您自己的云基础设施上部署 ClickHouse'
+keywords: ['BYOC', 'Cloud', '自带 Cloud', '运维', '维护']
+description: '在您自己的Cloud基础设施上部署 ClickHouse'
 doc_type: 'reference'
 ---
 

@@ -1,8 +1,8 @@
 ---
-title: 'BYOC 運用と保守'
+title: 'BYOC 運用とメンテナンス'
 slug: /cloud/reference/byoc/operations
-sidebar_label: '運用と保守'
-keywords: ['BYOC', 'クラウド', 'bring your own cloud', '運用', '保守']
+sidebar_label: '運用とメンテナンス'
+keywords: ['BYOC', 'クラウド', 'bring your own cloud', '運用', 'メンテナンス']
 description: 'お客様のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
 doc_type: 'reference'
 ---

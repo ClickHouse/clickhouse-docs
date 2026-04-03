@@ -2,7 +2,7 @@
 title: 'DataStore Pandas 호환성'
 sidebar_label: 'Pandas 호환성'
 slug: /chdb/datastore/pandas-compat
-description: 'DataStore의 pandas 호환 메서드 전체 목록(총 209개 DataFrame 메서드)'
+설명: 'DataStore의 pandas 호환 메서드 전체 목록(총 209개 DataFrame 메서드)'
 keywords: ['chdb', 'datastore', 'pandas', 'compatibility', 'dataframe', 'methods']
 doc_type: 'reference'
 ---

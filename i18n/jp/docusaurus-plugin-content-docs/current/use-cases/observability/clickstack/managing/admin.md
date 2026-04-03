@@ -9,7 +9,7 @@ keywords: ['clickstack', 'admin']
 
 ClickStack における管理タスクの多くは、基盤となる ClickHouse データベース上で直接実行されます。ClickStack をデプロイするユーザーは、ClickHouse の基本的な概念および管理の基礎に精通している必要があります。
 
-管理操作は一般的に DDL 文の実行を伴います。利用可能なオプションは、Managed ClickStack を使用しているか、ClickStack Open Source を使用しているかによって異なります。
+管理操作は一般的に DDL 文の実行を伴います。利用可能なオプションは、マネージド ClickStack を使用しているか、ClickStack オープンソース を使用しているかによって異なります。
 
 ## ClickStack オープンソース \{#clickstack-oss\}
 

@@ -323,7 +323,62 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-将子对象作为子列读取可能效率较低，因为这可能需要对 JSON 数据进行接近全量的扫描。
+当路径存储在基础 (`map`) [共享数据](#shared-data-structure)中时，读取子对象子列的效率可能较低，因为这需要扫描整个共享数据结构。使用 `map_with_buckets` 或 `advanced` 共享数据序列化时，从共享数据中读取子列的效率会大幅提升。
+:::
+
+
+## 读取 JSON 组合子列 \{#reading-json-combined-sub-columns\}
+
+`JSON` 类型支持使用特殊语法 `json.@some.path`，将某一路径作为**组合子列**读取。
+给定路径的组合子列会返回：
+
+* 如果该路径具有字面值，则返回存储在该路径上的字面值，类型为 `Dynamic`。
+* 如果该路径没有字面值，但存在嵌套子路径，则返回该路径上的 JSON 子对象，类型为 `Dynamic`。
+* 如果该路径既不存在字面值，也不存在任何子路径，则返回 `NULL`。
+
+当某一路径在不同的行中既可能保存标量值，也可能保存嵌套对象时，这种方式非常有用；相比于分别查询字面子列 (`json.a`) 和子对象子列 (`json.^a`) ，也更方便。
+
+以下示例比较了路径 `a` 的这三种子列类型：
+
+```sql title="Query"
+CREATE TABLE test (json JSON) ENGINE = Memory;
+INSERT INTO test VALUES ('{"a" : 42, "b" : {"c" : 1, "d" : "Hello"}}'), ('{"a" : {"x": 1, "y": 2}, "b" : {"c" : 1}}'), ('{"c" : "World"}');
+SELECT json FROM test;
+```
+
+```text title="Response"
+┌─json────────────────────────────┐
+│ {"a":42,"b":{"c":1,"d":"Hello"}}│
+│ {"a":{"x":1,"y":2},"b":{"c":1}}│
+│ {"c":"World"}                   │
+└─────────────────────────────────┘
+```
+
+```sql title="Query"
+SELECT
+    json.a,
+    dynamicType(json.a),
+    json.^a,
+    toTypeName(json.^a),
+    json.@a,
+    dynamicType(json.@a)
+FROM test;
+```
+
+```text title="Response"
+┌─json.a─┬─dynamicType(json.a)─┬─json.^a───────┬─toTypeName(json.^a)─┬─json.@a───────┬─dynamicType(json.@a)─┐
+│ 42     │ Int64               │ {}            │ JSON                │ 42            │ Int64                │
+│ NULL   │ None                │ {"x":1,"y":2} │ JSON                │ {"x":1,"y":2} │ JSON                 │
+│ NULL   │ None                │ {}            │ JSON                │ NULL          │ None                 │
+└────────┴─────────────────────┴───────────────┴─────────────────────┴───────────────┴──────────────────────┘
+```
+
+* 第 1 行：`a` 保存的是字面量 `42`。`json.a` 返回 `Dynamic(Int64)`，`json.^a` 返回空子对象 `{}` (`a` 下没有嵌套键) ，而 `json.@a` 返回字面量 `42`。
+* 第 2 行：`a` 保存的是一个嵌套对象。`json.a` 返回 `NULL` (该路径上没有字面量) ，`json.^a` 以 `JSON` 形式返回该子对象，`json.@a` 也会以 `Dynamic(JSON)` 形式返回该子对象。
+* 第 3 行：`a` 完全不存在。`json.a` 和 `json.@a` 都返回 `NULL`，而 `json.^a` 返回空的 `{}`。
+
+:::note
+当路径存储在基础 (`map`) [共享数据](#shared-data-structure)中时，读取组合子列的效率可能较低，因为这需要扫描整个共享数据结构。使用 `map_with_buckets` 或 `advanced` 共享数据序列化时，从共享数据中读取子列会得到高度优化。
 :::
 
 
@@ -820,17 +875,16 @@ ORDER BY _part ASC
 
 #### 带桶的 Map \{#shared-data-map-with-buckets\}
 
-在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列（“桶”），每列的类型为 `Map(String, String)`。
+在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列 (“桶”) ，每列的类型为 `Map(String, String)`。
 每个桶仅包含路径的一个子集。要从这种序列化方式中读取路径子列，ClickHouse
 会从单个桶中读取整个 `Map` 列，并在内存中提取请求的路径。
 
 这种序列化方式在写入数据和读取整个 `JSON` 列时效率较低，但在读取路径子列时效率更高，
 因为它只会从所需的桶中读取数据。
 
-桶的数量 `N` 由 MergeTree 设置 [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part)（默认值为 8）
-和 [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part)（默认值为 32）控制。
+桶的数量 `N` 由 MergeTree 设置 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (默认值为 8) 
+和 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (默认值为 32) 控制。
+这两个设置的最大允许值均为 256。
 
 #### Advanced \{#shared-data-advanced\}
 

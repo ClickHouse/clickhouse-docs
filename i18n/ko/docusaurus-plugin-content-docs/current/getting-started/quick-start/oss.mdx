@@ -14,9 +14,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# ClickHouse OSS 빠른 시작 \{#clickhouse-oss-quick-start\}
+# ClickHouse OSS 퀵 스타트 \{#clickhouse-oss-quick-start\}
 
-> 이 빠른 시작 튜토리얼에서는 8단계로 OSS ClickHouse 환경을 준비하는 방법을 안내합니다. 사용 중인 OS에 맞는 바이너리를 다운로드하고, ClickHouse 서버를 실행하는 방법을 익힌 뒤, ClickHouse 클라이언트를 사용해 테이블을 생성하고 데이터 삽입 후 해당 데이터를 조회하는 쿼리를 실행합니다.
+> 이 퀵 스타트 튜토리얼에서는 8단계로 오픈소스 ClickHouse 환경을 준비하는 방법을 안내합니다. 사용 중인 OS에 맞는 바이너리를 다운로드하고, ClickHouse 서버를 실행하는 방법을 익힌 뒤, ClickHouse 클라이언트를 사용해 테이블을 생성하고 데이터 삽입 후 해당 데이터를 조회하는 쿼리를 실행합니다.
+>
+> Cloud 퀵 스타트를 찾고 계십니까? [여기에서 확인하세요](/get-started/quick-start).
 
 <VerticalStepper>
   ## ClickHouse 다운로드하기 \{#download-the-binary\}
@@ -104,9 +106,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ClickHouse에서 익숙한 `INSERT INTO TABLE` 명령을 사용할 수 있지만,
   `MergeTree` 테이블에 삽입할 때마다 스토리지에 **파트**가 생성된다는 점을
   이해하는 것이 중요합니다. 이러한 파트는 이후 ClickHouse에 의해 백그라운드에서
-  병합됩니다.
+  머지됩니다.
 
-  ClickHouse에서는 백그라운드 프로세스에서 병합해야 하는 [**파트**](/parts)의 수를 최소화하기 위해
+  ClickHouse에서는 백그라운드 프로세스에서 머지해야 하는 [**파트**](/parts)의 수를 최소화하기 위해
   한 번에 많은 행(수만 개 또는 수백만 개)을 대량으로 삽입합니다.
 
   이 가이드에서는 아직 해당 부분을 다루지 않습니다. 다음 명령을 실행하여 테이블에 몇 개의 데이터 행을 삽입하세요:
@@ -142,9 +144,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   4 rows in set. Elapsed: 0.008 sec.
   ```
 
-  ## 데이터 삽입하기 \{#insert-your-own-data\}
+  ## 나만의 데이터 삽입하기 \{#insert-your-own-data\}
 
-  다음 단계는 ClickHouse에 자체 데이터를 가져오는 것입니다. 데이터 수집을 위한 다양한 [테이블 함수](/sql-reference/table-functions/index.md)와 [통합](/integrations)을 제공합니다. 아래 탭에서 몇 가지 예제를 확인하시거나, ClickHouse와 통합되는 기술의 전체 목록을 보려면 [통합](/integrations) 페이지를 참조하십시오.
+  다음 단계는 ClickHouse에 자체 데이터를 가져오는 것입니다. 데이터 수집을 위한 다양한 [테이블 함수](/sql-reference/table-functions/index.md)와 [통합](/integrations)을 제공합니다. 아래 탭에서 몇 가지 예시를 확인하시거나, ClickHouse와 통합되는 기술의 전체 목록을 보려면 [통합](/integrations) 페이지를 참조하십시오.
 
   <Tabs groupId="read_data">
     <TabItem value="S3" label="S3" default>
@@ -268,7 +270,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="PostgreSQL" label="PostgreSQL">
-      [`postgresql` table function](/sql-reference/table-functions/postgresql)을 사용하여 PostgreSQL 테이블의 데이터를 읽습니다.
+      [`postgresql` table function](/sql-reference/table-functions/postgresql)을 사용하여 PostgreSQL의 테이블에서 데이터를 읽습니다:
 
       ```sql
       SELECT *
@@ -289,8 +291,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="MySQL" label="MySQL">
-      MySQL 테이블에서 데이터를 읽으려면
-      [`mysql` table function](/sql-reference/table-functions/mysql)을 사용합니다.
+      MySQL 테이블의 데이터를 읽으려면 [`mysql` table function](/sql-reference/table-functions/mysql)
+      을 사용합니다:
 
       ```sql
       SELECT *
@@ -311,7 +313,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="다른 DBMS" label="ODBC/JDBC">
-      ClickHouse는 어떤 ODBC 또는 JDBC 데이터 소스에서도 데이터를 읽을 수 있습니다.
+      ClickHouse는 모든 ODBC 또는 JDBC 데이터 소스에서 데이터를 읽을 수 있습니다:
 
       ```sql
       SELECT *
@@ -331,7 +333,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="메시지 큐" label="메시지 큐">
-      메시지 큐는 해당 테이블 엔진을 사용하여 ClickHouse로 데이터를 스트리밍할 수 있습니다. 예를 들면 다음과 같습니다.
+      메시지 큐는 해당 테이블 엔진을 사용하여 ClickHouse로 데이터를 스트리밍할 수 있습니다.
+      예를 들면 다음과 같습니다.
 
       * **Kafka**: [`Kafka` table engine](/engines/table-engines/integrations/kafka)을 사용해 Kafka와 연동합니다.
       * **Amazon MSK**: [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)와 연동합니다.

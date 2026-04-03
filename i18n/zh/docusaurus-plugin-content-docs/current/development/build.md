@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 # 如何在 Linux 上构建 ClickHouse \{#how-to-build-clickhouse-on-linux\}
 
-:::info 无需自行构建 ClickHouse！
+:::info 本构建指南适用于修改 ClickHouse 自身的贡献者。
 你可以按照[快速开始](https://clickhouse.com/docs/get-started/quick-start)中的说明安装预编译的 ClickHouse。
 :::
 
@@ -17,8 +17,8 @@ ClickHouse 可以在以下平台上构建：
 
 * x86&#95;64
 * AArch64
-* PowerPC 64 LE (实验性) 
-* s390/x (实验性) 
+* PowerPC 64 LE (实验性)
+* s390/x (实验性)
 * RISC-V 64 (实验性)
 
 ## 前提条件 \{#assumptions\}
@@ -57,7 +57,7 @@ sudo ./llvm.sh 21
 不支持 GCC 或其他编译器。
 
 
-## 安装 Rust 编译器（可选） \{#install-the-rust-compiler-optional\}
+## 安装 Rust 编译器 (可选)  \{#install-the-rust-compiler-optional\}
 
 :::note
 Rust 是 ClickHouse 的可选依赖。
@@ -66,15 +66,16 @@ Rust 是 ClickHouse 的可选依赖。
 
 首先，按照官方 [Rust 文档](https://www.rust-lang.org/tools/install)中的步骤安装 `rustup`。
 
-与 C++ 依赖类似，ClickHouse 使用 vendoring 来精确控制安装内容，并避免依赖第三方服务（例如 `crates.io` registry）。
+与 C++ 依赖类似，ClickHouse 使用 vendoring 来精确控制安装内容，并避免依赖第三方服务 (例如 `crates.io` registry) 。
 
-虽然在 release 模式下，任意较新的 Rust toolchain 版本通常都可以与这些依赖一起工作，但如果你计划启用 sanitizers，则必须使用与 CI 中所用版本拥有完全相同 `std` 的 toolchain（我们为此对相关 crates 做了 vendoring）：
+虽然在 release 模式下，任意较新的 Rust toolchain 版本通常都可以与这些依赖一起工作，但如果你计划启用 sanitizers，则必须使用与 CI 中所用版本拥有完全相同 `std` 的 toolchain (我们为此对相关 crates 做了 vendoring) ：
 
 ```bash
-rustup toolchain install nightly-2025-07-07
-rustup default nightly-2025-07-07
+rustup toolchain install nightly-2026-03-22
+rustup default nightly-2026-03-22
 rustup component add rust-src
 ```
+
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 

@@ -32,6 +32,25 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                           |
 | `compression`     | 在 `SELECT` 查询中使用时表示现有压缩类型，在 `INSERT` 查询中使用时表示期望的压缩类型。支持的压缩类型有 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                                               |
 
+:::tip
+省略 `structure` 参数时，ClickHouse 会根据格式本身推断 schema。
+不同格式会生成不同的默认列名和类型。
+要查看特定格式的 schema，请对 [`format`](/sql-reference/table-functions/format) 表函数使用 [`DESC`](/sql-reference/statements/describe-table)。
+
+例如：
+
+```sql
+DESC format(LineAsString, 'Hello\nWorld')
+```
+
+```response
+┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ line │ String │              │                    │         │                  │                │
+└──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+:::
+
 ## 返回值 \{#returned_value\}
 
 用于从文件读取或向文件写入数据的表。

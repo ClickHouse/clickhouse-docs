@@ -1,9 +1,9 @@
 ---
-description: 'ClickHouse Playground 允许用户无需搭建自己的服务器或集群，即可立即运行查询来体验和试用 ClickHouse。'
+description: 'ClickHouse Playground 允许用户无需自行搭建服务器或集群，通过即时运行查询来试用和探索 ClickHouse。'
 keywords: ['clickhouse', 'playground', '快速入门', '文档']
 sidebar_label: 'ClickHouse Playground'
 slug: /getting-started/playground
-title: 'ClickHouse Playground'
+title: 'ClickHouse playground'
 doc_type: '指南'
 ---
 

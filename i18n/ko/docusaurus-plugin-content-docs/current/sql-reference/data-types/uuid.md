@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 범용 고유 식별자(UUID, Universally Unique Identifier)는 레코드를 식별하는 데 사용되는 16바이트 값입니다. UUID에 대한 자세한 정보는 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)를 참조하십시오.
 
-UUIDv4 및 UUIDv7과 같이 여러 UUID 변형이 존재하지만(참고: [여기](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse는 삽입된 UUID가 특정 변형을 준수하는지 검증하지 않습니다.
+UUIDv4 및 UUIDv7과 같이 여러 UUID 변형이 존재하지만(참조: [여기](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse는 삽입된 UUID가 특정 변형을 준수하는지 검증하지 않습니다.
 UUID는 내부적으로 16개의 임의 바이트 시퀀스로 취급되며, SQL 수준에서는 [8-4-4-4-12 표현](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)으로 표시됩니다.
 
 UUID 값 예시:
@@ -20,7 +20,7 @@ UUID 값 예시:
 61f0c404-5cb3-11e7-907b-a6006ad3dba0
 ```
 
-기본 UUID는 모두 0으로 구성된 값입니다. 예를 들어 새 레코드를 삽입할 때 UUID 컬럼 값이 지정되지 않으면 사용됩니다.
+기본 UUID는 모두 0으로 구성된 값입니다. 예를 들어 새 레코드를 삽입할 때 UUID 컬럼 값이 지정되지 않으면 사용됩니다:
 
 ```text
 00000000-0000-0000-0000-000000000000
@@ -41,7 +41,11 @@ UUID 값 예시:
 ```sql
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (uuid);
 
-INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
 ```
 
@@ -49,18 +53,18 @@ SELECT * FROM tab;
 
 ```text
 ┌─uuid─────────────────────────────────┐
-│ 36a0b67c-b74a-4640-803b-e44bb4547e3c │
-│ 3a00aeb8-2605-4eec-8215-08c0ecb51112 │
-│ 3fda7c49-282e-421a-85ab-c5684ef1d350 │
-│ 16ab55a7-45f6-44a8-873c-7a0b44346b3e │
-│ e3776711-6359-4f22-878d-bf290d052c85 │
-│                [...]                 │
-│ 9eceda2f-6946-40e3-b725-16f2709ca41a │
-│ 03644f74-47ba-4020-b865-be5fd4c8c7ff │
-│ ce3bc93d-ab19-4c74-b8cc-737cb9212099 │
-│ b7ad6c91-23d6-4b5e-b8e4-a52297490b56 │
-│ 06892f64-cc2d-45f3-bf86-f5c5af5768a9 │
+│ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
+│ 019d2555-7874-7e9d-a284-9b46c3353be7 │
+│ 019d2555-7878-77fc-a36f-4081aa58ec2b │
+│ 019d2555-7878-77fc-a36f-40826555fb9b │
+│ 019d2555-7870-7432-ba62-5250ac595328 │
+│ 019d2555-7870-7432-ba62-5251da22bd19 │
+│ 019d2555-786c-73e9-a031-4a7936df7d56 │
+│ 019d2555-786c-73e9-a031-4a7a35a9544f │
+│ 019d2555-7868-7333-89d1-2bd1639899c3 │
+│ 019d2555-7868-7333-89d1-2bd297eb7d42 │
 └──────────────────────────────────────┘
+
 ```
 
 우회 방법으로, UUID를 뒤쪽 절반에서 추출한 타임스탬프로 변환할 수 있습니다:
@@ -69,8 +73,31 @@ SELECT * FROM tab;
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (UUIDv7ToDateTime(uuid));
 -- Or alternatively:                      [...] PRIMARY KEY (toStartOfHour(UUIDv7ToDateTime(uuid)));
 
-INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
+```
+
+결과(동일한 데이터가 삽입되었다고 가정한 경우):
+
+
+```text
+┌─uuid─────────────────────────────────┐
+│ 019d2555-7868-7333-89d1-2bd1639899c3 │
+│ 019d2555-7868-7333-89d1-2bd297eb7d42 │
+│ 019d2555-786c-73e9-a031-4a7936df7d56 │
+│ 019d2555-786c-73e9-a031-4a7a35a9544f │
+│ 019d2555-7870-7432-ba62-5250ac595328 │
+│ 019d2555-7870-7432-ba62-5251da22bd19 │
+│ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
+│ 019d2555-7874-7e9d-a284-9b46c3353be7 │
+│ 019d2555-7878-77fc-a36f-4081aa58ec2b │
+│ 019d2555-7878-77fc-a36f-40826555fb9b │
+└──────────────────────────────────────┘
+
 ```
 
 ORDER BY (UUIDv7ToDateTime(uuid), uuid)

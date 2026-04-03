@@ -1,75 +1,79 @@
+import Recommendations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
+
 # 在 NixOS 上安装 ClickHouse \{#install-from-nix\}
 
 > ClickHouse 可在 Nixpkgs 仓库中获取，并可在 **Linux** 和 **macOS** 上通过 Nix 安装。
 
 <VerticalStepper>
+  ## 查看建议
 
-## 使用 Nix 安装 ClickHouse \{#install-clickhouse-using-nix\}
+  <Recommendations />
 
-可以使用 Nix 安装 ClickHouse，而无需将其永久添加到系统中：
+  ## 使用 Nix 安装 ClickHouse
 
-```bash
-# 安装最新稳定版本
-nix shell nixpkgs#clickhouse
+  可以使用 Nix 安装 ClickHouse，而无需将其永久添加到系统中：
 
-# 或安装 LTS 版本
-nix shell nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 安装最新稳定版本
+  nix shell nixpkgs#clickhouse
 
-这会在当前 shell 会话中提供 `clickhouse` 可执行文件。
+  # 或安装 LTS 版本
+  nix shell nixpkgs#clickhouse-lts
+  ```
 
-- `nixpkgs#clickhouse` 软件包提供最新稳定版本。
-- `nixpkgs#clickhouse-lts` 软件包提供长期支持（LTS）版本。
-- 这两个软件包均可在 Linux 和 macOS 上使用。
+  这会在当前 shell 会话中提供 `clickhouse` 可执行文件。
 
-## 永久安装 \{#permanent-installation\}
+  * `nixpkgs#clickhouse` 软件包提供最新稳定版本。
+  * `nixpkgs#clickhouse-lts` 软件包提供长期支持 (LTS) 版本。
+  * 这两个软件包均可在 Linux 和 macOS 上使用。
 
-要在系统上永久安装 ClickHouse：
+  ## 永久安装
 
-**对于 NixOS 用户**，在 `configuration.nix` 中添加：
+  要在系统上永久安装 ClickHouse：
 
-```nix
-environment.systemPackages = with pkgs; [
-  clickhouse
-];
-```
+  **对于 NixOS 用户**，在 `configuration.nix` 中添加：
 
-然后重建系统：
+  ```nix
+  environment.systemPackages = with pkgs; [
+    clickhouse
+  ];
+  ```
 
-```bash
-sudo nixos-rebuild switch
-```
+  然后重建系统：
 
-**对于非 NixOS 用户**，使用 Nix profile 安装：
+  ```bash
+  sudo nixos-rebuild switch
+  ```
 
-```bash
-# 安装最新稳定版本
-nix profile install nixpkgs#clickhouse
+  **对于非 NixOS 用户**，使用 Nix profile 安装：
 
-# 或安装 LTS 版本
-nix profile install nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 安装最新稳定版本
+  nix profile install nixpkgs#clickhouse
 
-## 启动 ClickHouse Server \{#start-clickhouse-server\}
+  # 或安装 LTS 版本
+  nix profile install nixpkgs#clickhouse-lts
+  ```
 
-安装完成后，可以启动 ClickHouse 服务器：
+  ## 启动 ClickHouse 服务器
 
-```bash
-clickhouse-server
-```
+  安装完成后，可以启动 ClickHouse 服务器：
 
-默认情况下，服务器将使用基础配置启动，并监听 `localhost:9000`。
+  ```bash
+  clickhouse-server
+  ```
 
-在 NixOS 上用于生产环境时，建议将 ClickHouse 配置为系统服务。可参考 [NixOS 手册](https://search.nixos.org/options?query=clickhouse) 了解可用的配置选项。
+  默认情况下，服务器将使用基础配置启动，并监听 `localhost:9000`。
 
-## 启动 ClickHouse Client \{#start-clickhouse-client\}
+  在 NixOS 上用于生产环境时，建议将 ClickHouse 配置为系统服务。可参考 [NixOS 手册](https://search.nixos.org/options?query=clickhouse) 了解可用的配置选项。
 
-要连接到 ClickHouse 服务器，在新终端中运行：
+  ## 启动 ClickHouse 客户端
 
-```bash
-clickhouse-client
-```
+  要连接到 ClickHouse 服务器，在新终端中运行：
 
+  ```bash
+  clickhouse-client
+  ```
 </VerticalStepper>
 
 ## 关于 Nix 软件包 \{#about-nix-package\}

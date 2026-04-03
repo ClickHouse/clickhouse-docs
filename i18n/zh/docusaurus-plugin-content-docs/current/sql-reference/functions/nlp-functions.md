@@ -160,38 +160,6 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
-## detectProgrammingLanguage \{#detectProgrammingLanguage\}
-
-引入版本：v22.2.0
-
-根据给定的源代码片段判断其所使用的编程语言。
-
-**语法**
-
-```sql
-detectProgrammingLanguage('source_code')
-```
-
-**参数**
-
-* `source_code` — 要分析的源代码的字符串表示形式。[`String`](/sql-reference/data-types/string)
-
-**返回值**
-
-返回表示编程语言的 [`String`](/sql-reference/data-types/string)
-
-**示例**
-
-**C++ 代码检测**
-
-```sql title=Query
-SELECT detectProgrammingLanguage('#include <iostream>')
-```
-
-```response title=Response
-C++
-```
-
 ## detectTonality \{#detectTonality\}
 
 引入版本：v22.2.0
@@ -235,9 +203,8 @@ SELECT
 
 引入版本：v21.9.0
 
-对给定单词执行词形还原（lemmatization）。
-此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/statements/create/dictionary/sources/local-file)。
-此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/sql-reference/dictionaries#local-file)。
+对给定单词执行词形还原。
+此函数需要字典才能工作，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于从本地文件加载字典的更多信息，请参阅页面 [&quot;Defining Dictionaries&quot;](/sql-reference/statements/create/dictionary/sources/local-file).
 
 **语法**
 

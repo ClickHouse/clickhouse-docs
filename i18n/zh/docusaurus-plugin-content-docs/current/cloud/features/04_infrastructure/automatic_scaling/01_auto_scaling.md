@@ -16,7 +16,6 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
-
 # 自动扩缩容 \{#automatic-scaling\}
 
 扩缩容是指根据需求调整可用资源以满足客户端请求的能力。Scale 和 Enterprise（使用标准 1:4 配置）层级的服务可以通过以编程方式调用 API，或在 UI 中更改设置来水平扩缩系统资源。这些服务也可以进行**自动垂直扩缩容**，以满足应用负载需求。

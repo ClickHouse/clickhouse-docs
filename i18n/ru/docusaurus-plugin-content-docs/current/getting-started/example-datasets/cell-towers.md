@@ -1,10 +1,10 @@
 ---
 description: 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset
-  к ClickHouse и создать дашборд на их основе'
-sidebar_label: 'Сотовые вышки'
+  к ClickHouse и создать панель мониторинга на их основе'
+sidebar_label: 'Базовые станции сотовой связи'
 slug: /getting-started/example-datasets/cell-towers
-title: 'Геоданные на основе набора данных о сотовых вышках'
-keywords: ['данные о сотовых вышках', 'геоданные', 'OpenCelliD', 'геопространственный набор данных', 'начало работы']
+title: 'Геоданные на основе датасета о базовых станциях сотовой связи'
+keywords: ['данные о базовых станциях сотовой связи', 'геоданные', 'OpenCelliD', 'геопространственный датасет', 'начало работы']
 doc_type: 'guide'
 ---
 
@@ -29,6 +29,7 @@ import superset_mcc_2024 from '@site/static/images/getting-started/example-datas
 import superset_radio_umts from '@site/static/images/getting-started/example-datasets/superset-radio-umts.png'
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
+
 
 ## Цель \{#goal\}
 
@@ -169,7 +170,7 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) странами с наибольшим количеством сотовых вышек являются США, Германия и Россия.
 
-Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/statements/create/dictionary/index.md) для расшифровки этих значений.
+Вы можете создать в ClickHouse [словарь (Dictionary)](/sql-reference/statements/create/dictionary) для расшифровки этих значений.
 
 
 ## Сценарий использования: использование геоданных \{#use-case\}

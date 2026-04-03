@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started
-title: 'Getting Started with ClickStack'
+title: 'Getting started with ClickStack'
 sidebar_label: 'Getting started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/getting-started/managed

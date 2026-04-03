@@ -2,7 +2,7 @@
 title: '표준 온보딩'
 slug: /cloud/reference/byoc/onboarding/standard
 sidebar_label: '표준 프로세스'
-keywords: ['BYOC', '클라우드', '자체 클라우드(bring your own cloud)', '온보딩']
+keywords: ['BYOC', '클라우드', '자체 클라우드(bring your own Cloud)', '온보딩']
 description: '직접 운영하는 클라우드 인프라에 ClickHouse를 배포합니다'
 doc_type: 'reference'
 ---
@@ -14,15 +14,15 @@ import byoc_onboarding_3 from '@site/static/images/cloud/reference/byoc-onboardi
 import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-service-1.png'
 
 
-## Standard Onboarding이란 무엇입니까? \{#what-is-standard-onboarding\}
+## 표준 온보딩이란 무엇입니까? \{#what-is-standard-onboarding\}
 
-**Standard Onboarding**은 BYOC를 사용하여 사용자의 자체 Cloud 계정에 ClickHouse를 배포하기 위한 기본 안내형 워크플로우입니다. 이 방식에서 ClickHouse Cloud는 사용자의 AWS 계정/GCP 프로젝트 내에 VPC, 서브넷, 보안 그룹, Kubernetes(EKS/GKE) 클러스터, 관련 IAM 역할/서비스 계정 등 배포에 필요한 핵심 Cloud 리소스를 모두 프로비저닝합니다. 이를 통해 일관되고 안전한 구성을 보장하고, 팀에서 수행해야 하는 수동 작업을 최소화할 수 있습니다.
+**표준 온보딩**은 BYOC를 사용하여 사용자의 자체 Cloud 계정에 ClickHouse를 배포하기 위한 기본 안내형 워크플로우입니다. 이 방식에서 ClickHouse Cloud는 사용자의 AWS 계정/GCP 프로젝트 내에 VPC, 서브넷, 보안 그룹, Kubernetes(EKS/GKE) 클러스터, 관련 IAM 역할/서비스 계정 등 배포에 필요한 핵심 Cloud 리소스를 모두 프로비저닝합니다. 이를 통해 일관되고 안전한 구성을 보장하고, 팀에서 수행해야 하는 수동 작업을 최소화할 수 있습니다.
 
-Standard Onboarding을 사용하는 경우 전용 AWS 계정/GCP 프로젝트만 준비한 뒤, 초기 스택을(CloudFormation 또는 Terraform을 통해) 실행하여 ClickHouse Cloud가 이후 설정을 오케스트레이션하는 데 필요한 최소한의 IAM 권한과 트러스트를 생성하면 됩니다. 이후 단계(인프라 프로비저닝 및 서비스 시작 포함)는 모두 ClickHouse Cloud 웹 콘솔을 통해 관리됩니다.
+표준 온보딩을 사용하는 경우 전용 AWS 계정/GCP 프로젝트만 준비한 뒤, 초기 스택을(CloudFormation 또는 Terraform을 통해) 실행하여 ClickHouse Cloud가 이후 설정을 오케스트레이션하는 데 필요한 최소한의 IAM 권한과 트러스트를 생성하면 됩니다. 이후 단계(인프라 프로비저닝 및 서비스 시작 포함)는 모두 ClickHouse Cloud 웹 콘솔을 통해 관리됩니다.
 
 권한 및 리소스 측면에서 더 나은 격리를 보장하기 위해 ClickHouse BYOC 배포를 호스팅할 **전용** AWS 계정 또는 GCP 프로젝트를 미리 준비할 것을 강력히 권장합니다. ClickHouse는 해당 계정 내에 전용 Cloud 리소스 집합(VPC, Kubernetes 클러스터, IAM 역할, S3 버킷 등)을 배포합니다.
 
-보다 맞춤화된 구성이 필요한 경우(예: 기존 VPC에 배포하는 경우), [Customized Onboarding](/cloud/reference/byoc/onboarding/customization) 문서를 참고하십시오.
+보다 맞춤화된 구성이 필요한 경우(예: 기존 VPC에 배포하는 경우), [Customized 온보딩](/cloud/reference/byoc/onboarding/customization-aws) 문서를 참고하십시오.
 
 ## 액세스 요청 \{#request-access\}
 

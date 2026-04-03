@@ -13,12 +13,14 @@ keywords: ['管理 ClickStack', '性能', 'materialized views', '管理命令']
 
 ## 管理指南 \{#admin-guides\}
 
-| 章节 | 描述 |
-|--------|-------------|
-| [基础管理](/use-cases/observability/clickstack/admin) | 介绍如何在 ClickStack 中执行常见管理任务。 |
-| [部署到生产环境](/use-cases/observability/clickstack/production) | 在将 ClickStack 投入生产环境之前推荐的步骤和最佳实践。 |
+| 章节                                                                           | 描述                                                   |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [基础管理](/use-cases/observability/clickstack/admin)                            | 介绍如何在 ClickStack 中执行常见管理任务。                          |
+| [资源估算](/use-cases/observability/clickstack/estimating-resources)             | 关于根据摄取量为托管 ClickStack 估算计算资源规模的指导。                   |
+| [部署到生产环境](/use-cases/observability/clickstack/production)                    | 在将 ClickStack 投入生产环境之前推荐的步骤和最佳实践。                    |
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | 详细指南，介绍如何在 ClickStack 中使用 materialized view 以提升查询性能。 |
-| [性能调优](/use-cases/observability/clickstack/performance_tuning) | 面向大规模工作负载调优 ClickStack 的完整指南。 |
+| [性能调优](/use-cases/observability/clickstack/performance_tuning)               | 面向大规模工作负载调优 ClickStack 的完整指南。                        |
+| [RBAC](/use-cases/observability/clickstack/rbac)                             | 配置基于角色的访问控制，以管理团队对仪表板、已保存的搜索和数据源的权限。                 |
 
 ## 核心 ClickHouse 概念 \{#core-concepts\}
 

@@ -16,7 +16,7 @@ import session_replay from '@site/static/images/clickstack/session-replay/sessio
 import replay_search from '@site/static/images/clickstack/session-replay/replay-search-view.png';
 
 :::note[TL;DR]
-このガイドでは、ClickStack Browser SDK を使用してセッションリプレイ用に Web アプリケーションに計測（インストルメンテーション）を行う手順を説明します。他の事前生成データを読み込むサンプルデータセットとは異なり、このデモでは、実際の操作を通じてセッションデータを生成できるインタラクティブなアプリケーションを提供します。
+このガイドでは、ClickStack Browser SDK を使用してセッションリプレイ用に Web アプリケーションに計装を行う手順を説明します。他の事前生成データを読み込むサンプルデータセットとは異なり、このデモでは、実際の操作を通じてセッションデータを生成できるインタラクティブなアプリケーションを提供します。
 
 所要時間：10〜15分
 :::
