@@ -1183,6 +1183,166 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 **참고:** 두 경로에 있는 값의 데이터 타입이 서로 다른 경우, `Variant` 데이터 타입의 [비교 규칙](/sql-reference/data-types/variant#comparing-values-of-variant-data)에 따라 비교합니다.
 
 
+## JSON용 데이터 스키핑 인덱스 \{#data-skipping-indexes-for-json\}
+
+[데이터 스키핑 인덱스](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)는 `JSON` 컬럼에 두 가지 방식으로 사용할 수 있습니다:
+
+1. **특정 서브컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 표준 스킵 인덱스를 생성합니다. 그러면 해당 경로의 *값*에 인덱스가 생성됩니다.
+2. **`JSONAllPaths`를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *경로 집합*에 인덱스를 생성하여, 질의한 경로를 포함할 수 없는 그래뉼을 건너뜁니다.
+
+### 특정 서브컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
+
+일반 컬럼과 동일한 구문으로 모든 JSON 서브컬럼에 스킵 인덱스를 생성할 수 있습니다.
+[지원되는 인덱스 유형](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)은 모두 사용할 수 있습니다(`minmax`, `set`, `bloom_filter`, `tokenbf_v1`, `ngrambf_v1` 등).
+
+인덱스 표현식에서 JSON 서브컬럼을 참조하는 방법은 두 가지입니다:
+
+* **JSON 타입 힌트에 선언된 타입 경로** — 이름으로 직접 접근합니다: `json.a`.
+* **명시적으로 캐스트한 동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
+
+예를 들어 `json.a || json.b::String`처럼 여러 서브컬럼을 조합한 표현식도 사용할 수 있습니다.
+
+#### 예시 \{#json-indexes-on-subcolumns-example\}
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id UInt32),
+    INDEX idx_sensor data.sensor_id TYPE minmax GRANULARITY 1,
+    INDEX idx_location data.location::String TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+타입이 지정된 하위 컬럼 `data.sensor_id`의 `minmax` 인덱스는 스캔 범위를 일치하는 그래뉼로 좁힙니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id < 2;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: minmax GRANULARITY 1
+        Parts: 1/2
+        Granules: 2/8
+```
+
+형 변환된 서브컬럼 `data.location::String`에 대한 `bloom_filter` 인덱스도 작동합니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
+
+[`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 함수를 사용해 `JSON` 컬럼에도 [데이터 스키핑 인덱스](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)를 생성할 수 있습니다.
+이는 `mapKeys`를 사용해 [`Map`](/sql-reference/data-types/map) 컬럼에 스킵 인덱스를 생성하는 방식과 유사합니다. 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하고, 이를 사용해 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다.
+
+#### 지원되는 인덱스 유형 \{#json-indexes-jsonallpaths-supported-types\}
+
+`JSONAllPaths`는 다음과 같은 스킵 인덱스 유형과 함께 사용할 수 있습니다.
+
+* [`bloom_filter`](/engines/table-engines/mergetree-family/mergetree#bloom-filter) — `equals`, `in`, `IS NOT NULL`을 지원합니다.
+* [`tokenbf_v1`](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) — `equals`와 `IS NOT NULL`을 지원합니다.
+* [`ngrambf_v1`](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) — `equals`와 `IS NOT NULL`을 지원합니다.
+* [`text`](/engines/table-engines/mergetree-family/textindexes) (전치 인덱스) — `equals`, `in`, `IS NOT NULL`을 지원합니다.
+
+#### 예시 \{#json-indexes-jsonallpaths-example\}
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1`를 사용하면 스킵 인덱스가 사용되는지 확인할 수 있습니다. 경로가 하나의 part에만 있으면 인덱스는 다른 part를 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+해당 경로가 어느 파트에도 없으면 모든 파트와 그래뉼을 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL`도 인덱스를 사용합니다 — 경로가 없는 그래뉼은 건너뜁니다(값이 `NULL`이 되기 때문입니다):
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+
+#### 작동 방식 \{#json-indexes-jsonallpaths-how-it-works\}
+
+`JSONAllPaths(json_column)` 표현식은 JSON 값에 존재하는 모든 경로를 담은 `Array(String)`를 생성합니다.
+스킵 인덱스는 이러한 경로 문자열을 자체 데이터 구조(블룸 필터 또는 전치 인덱스)에 저장합니다.
+쿼리에서 `json.some.path`로 필터링하면, 인덱스는 각 그래뉼에 대해 `"some.path"` 문자열이 인덱스에 있는지 확인하고, 없으면 해당 그래뉼을 건너뜁니다.
+
+#### 누락된 경로에 대한 안전성 \{#json-indexes-jsonallpaths-safety-with-missing-paths\}
+
+JSON 경로가 그래뉼에 없으면 하위 컬럼은 다음과 같이 평가됩니다.
+
+* `Dynamic` 타입(예: `json.path`) 및 `Nullable` 형식의 하위 컬럼(예: `json.path.:Int64`)에서는 `NULL` — `NULL`과 비교하면 항상 false를 반환하므로 건너뛰어도 안전합니다.
+* `Nullable`이 아닌 CAST 표현식에서는 해당 타입의 기본값(예: `json.path::Int64`는 경로가 누락되면 `0`을 반환함) — 비교 대상 값이 기본값과 다를 때만 건너뛰어도 안전합니다. 인덱스가 이 차이를 자동으로 처리합니다.
+
 ## JSON 타입을 더 잘 사용하는 팁 \{#tips-for-better-usage-of-the-json-type\}
 
 `JSON` 컬럼을 생성하고 그 안에 데이터를 로드하기 전에 다음 사항을 고려하십시오:

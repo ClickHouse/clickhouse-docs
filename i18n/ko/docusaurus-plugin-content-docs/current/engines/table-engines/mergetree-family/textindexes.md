@@ -117,8 +117,9 @@ ORDER BY key
 텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
 
 * [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
-* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
-* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md),
+* [Map](/sql-reference/data-types/map.md) 타입([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원), 그리고
+* [JSON](/sql-reference/data-types/newjson.md) 타입([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 함수를 통해 지원).
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
 
@@ -156,7 +157,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Tokenizer 인수(필수)**. `tokenizer` 인수는 사용할 tokenizer를 지정합니다:
+**토크나이저 인수(필수)**. `tokenizer` 인수는 사용할 토크나이저를 지정합니다:
 
 
 * `splitByNonAlpha`는 영문자와 숫자가 아닌 ASCII 문자를 기준으로 문자열을 분리합니다(함수 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) 참조).
@@ -173,7 +174,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 token이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
-* `unicodeWord`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
+* `asciiCJK`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 
@@ -202,12 +203,12 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 *비-ASCII 입력 처리.*
 텍스트 인덱스는 어떤 언어와 문자 집합의 텍스트 데이터에도 구축할 수 있습니다.
-비-ASCII 텍스트의 경우 CJK 문자를 포함한 Unicode 단어 경계를 올바르게 처리하므로 `unicodeWord` 토크나이저를 권장합니다.
+비-ASCII 텍스트의 경우 CJK 문자를 포함한 Unicode 단어 경계를 올바르게 처리하므로 `asciiCJK` 토크나이저를 권장합니다.
 :::
 
-**Preprocessor 인자(선택 사항)**. preprocessor는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
+**전처리기 인수(선택 사항)**. 전처리기는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
 
-Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
+전처리기 인수의 대표적인 사용 사례는 다음과 같습니다.
 
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
@@ -659,6 +660,142 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 
 -- Finds all logs where any attribute includes an error:
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
+```
+
+
+#### JSON 컬럼 인덱싱 \{#text-index-example-json\}
+
+데이터 스키핑 인덱스는 `JSON` 컬럼에 두 가지 방식으로 적용할 수 있습니다:
+
+1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 표준 스킵 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
+2. **`JSONAllPaths`를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *경로 집합*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
+
+##### 특정 하위 컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
+
+일반 컬럼과 동일한 구문을 사용하여 모든 JSON 하위 컬럼에 스킵 인덱스를 생성할 수 있습니다.
+
+인덱스 표현식에서 JSON 하위 컬럼을 참조하는 방법은 두 가지입니다.
+
+* JSON 타입 힌트에 선언된 **타입이 지정된 경로** — 이름으로 직접 접근합니다: `json.a`.
+* 명시적 캐스트를 사용하는 **동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
+
+예시 쿼리:
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id String),
+    INDEX idx_sensor data.sensor_id TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_location data.location::String TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: text
+        Condition: (mode: All; tokens: ["5", "id"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: text
+        Condition: (mode: All; tokens: ["5", "room"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+##### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
+
+`Map` 컬럼과 마찬가지로, [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하면 [JSON](/sql-reference/data-types/newjson.md) 컬럼에도 텍스트 인덱스를 생성할 수 있습니다.
+이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿼리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
+
+예시 쿼리:
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1`을 사용하면 스킵 인덱스가 실제로 사용되는지 확인할 수 있습니다. 경로가 하나의 파트에만 존재하면 인덱스가 다른 파트는 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+경로가 어떤 파트에도 존재하지 않으면, 모든 파트와 그래뉼을 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["nonexistent"])
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL`도 인덱스를 사용합니다 — 경로가 없는 그래뉼은 건너뜁니다(이 경우 값이 `NULL`이기 때문입니다):
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
 ```
 
 

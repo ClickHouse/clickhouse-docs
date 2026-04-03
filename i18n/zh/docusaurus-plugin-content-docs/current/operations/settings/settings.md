@@ -3544,6 +3544,18 @@ Cloud 默认值：`1`。
 
 在运行时根据从右侧收集到的一组 JOIN 键来过滤左侧。
 
+## enable_join_transitive_predicates \{#enable_join_transitive_predicates\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于推导传递性等值连接谓词以优化连接顺序的新增设置。"}]}]} />
+
+根据现有连接条件推导传递性等值连接谓词。
+例如，给定 `A.x = B.x` 和 `B.x = C.x`，会额外添加一个 `A.x = C.x` 谓词，
+以便连接顺序优化器能够考虑直接的 (A JOIN C) 计划。
+
 ## enable_lazy_columns_replication \{#enable_lazy_columns_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9980,6 +9992,18 @@ a   Tuple(
 
 在同一子查询内优化 JOIN 的顺序。目前仅在极少数场景中受支持。
 该值表示要优化的最大表数量。
+
+## query_plan_optimize_join_order_randomize \{#query_plan_optimize_join_order_randomize\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于测试时随机化 JOIN 顺序统计信息的新设置。"}]}]} />
+
+当该值非 0 时，JOIN 顺序优化器将使用随机生成的基数和 NDV，而不是真实统计信息。
+当设置为 1 时，会生成一个随机种子；当设置为大于 1 的值时，将直接使用该值作为种子。
+此设置用于测试，以发现由不同 JOIN 顺序引起的错误。
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 

@@ -1843,6 +1843,10 @@ ClickHouse 支持在无需同时停止所有副本以更新配置的情况下，
 
 <SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />当出现总内存超限错误时，会刷新 jemalloc profile
 
+## jemalloc_flush_profile_on_memory_exceeded_interval \{#jemalloc_flush_profile_on_memory_exceeded_interval\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />如果该值非 0，则设置在发生总内存超限错误时刷新 jemalloc profile 的最小时间间隔 (以秒为单位) 。例如，5 表示最多每 5 秒刷新一次 profile。其优先级高于 `jemalloc_flush_profile_on_memory_exceeded`。
+
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />要创建的 jemalloc 后台线程最大数量，将其设为 0 时使用 jemalloc 的默认值

@@ -61,14 +61,14 @@ two    : [3]
 検索トークンが与えられると、この索引構造によって一致するすべての行を高速に検索できます。
 
 
-## テキストインデックスの作成 \{#creating-a-text-index\}
+## テキスト索引の作成 \{#creating-a-text-index\}
 
-テキストインデックスは ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
-これらのバージョンでは、テキストインデックスを使用するために特別な設定は不要です。
+テキスト索引は ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
+これらのバージョンでは、テキスト索引を使用するために特別な設定は不要です。
 本番環境では ClickHouse バージョン 26.2 以上の使用を強く推奨します。
 
 :::note
-ClickHouse バージョン 26.2 より古いバージョンからアップグレードした場合 (または、たとえば ClickHouse Cloud で自動的にアップグレードされた場合)、[compatibility](../../../operations/settings/settings#compatibility) 設定が存在すると、インデックスが無効化されたままになったり、テキストインデックス関連のパフォーマンス最適化が無効化されたりする可能性があります。
+ClickHouse バージョン 26.2 より古いバージョンからアップグレードした場合 (または、たとえば ClickHouse Cloud で自動的にアップグレードされた場合)、[compatibility](../../../operations/settings/settings#compatibility) 設定が存在すると、インデックスが無効化されたままになったり、テキスト索引関連のパフォーマンス最適化が無効化されたりする可能性があります。
 
 If query
 
@@ -76,7 +76,7 @@ If query
 SELECT value FROM system.settings WHERE name = 'compatibility';
 ```
 
-`26.2` 未満の値（例: `25.4`）が返された場合は、テキスト索引を使用するために、追加で 3 つの設定を行う必要があります。
+`26.2` 未満の値 (例: `25.4`) が返された場合は、テキスト索引を使用するために、追加で 3 つの設定を行う必要があります。
 
 ```sql
 SET enable_full_text_index = true;
@@ -118,7 +118,8 @@ ORDER BY key
 
 * [String](/sql-reference/data-types/string.md) および [FixedString](/sql-reference/data-types/fixedstring.md)、
 * [Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md)、
-* [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を通じて）。
+* [Map](/sql-reference/data-types/map.md) ([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を通じて) 、
+* [JSON](/sql-reference/data-types/newjson.md) ([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 関数を通じて) 。
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 型および [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 型のカラムもサポートされており、`Array(Nullable(String または FixedString))` も含まれます。
 
@@ -144,7 +145,7 @@ ALTER TABLE table
 
 ```
 
-既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します（そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックしてしまいます）。
+既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します (そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックしてしまいます) 。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
@@ -156,7 +157,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Tokenizer 引数（必須）**。`tokenizer` 引数でトークナイザーを指定します。
+**トークナイザー 引数 (必須)&#x20;**。`tokenizer` 引数でトークナイザーを指定します。
 
 
 * `splitByNonAlpha` は、英数字ではない ASCII 文字で文字列を分割します (関数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) を参照) 。
@@ -173,7 +174,7 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
   たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
 * `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります (関数 [array](/sql-reference/functions/array-functions.md/#array) を参照) 。
-* `unicodeWord` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
+* `asciiCJK` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
 
 利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 
@@ -202,12 +203,12 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 *非 ASCII 入力の扱い。*
 テキスト索引は、任意の言語や文字セットのテキストデータに対して構築できます。
-非 ASCII テキストについては、CJK 文字を含む Unicode の単語境界を正しく処理できる `unicodeWord` トークナイザーの使用を推奨します。
+非 ASCII テキストについては、CJK 文字を含む Unicode の単語境界を正しく処理できる `asciiCJK` トークナイザーの使用を推奨します。
 :::
 
-**Preprocessor 引数 (オプション)**。Preprocessor とは、トークナイズの前に入力文字列に適用される式を指します。
+**プリプロセッサ 引数 (オプション)**。プリプロセッサとは、トークナイズの前に入力文字列に適用される式を指します。
 
-Preprocessor 引数の典型的なユースケースには次のようなものがあります。
+プリプロセッサ 引数の典型的なユースケースには次のようなものがあります。
 
 
 1. 小文字化/大文字化、またはケースフォールディングを行い、大文字小文字を区別しないマッチングを有効にします。例: [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
@@ -660,6 +661,142 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 
 -- Finds all logs where any attribute includes an error:
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
+```
+
+
+#### JSONカラムのインデックス化 \{#text-index-example-json\}
+
+`JSON` カラムでは、データスキッピングインデックスを 2 つの方法で利用できます。
+
+1. **特定のサブカラムに対するインデックス** — 通常のカラムと同様に、既知の JSON パスに標準的なスキップインデックスを作成します。これにより、そのパスの *値* がインデックス化されます。
+2. **`JSONAllPaths` を使用したパスベースのインデックス** — 各グラニュールに存在する *パスの集合* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。`Map` カラムと同様です。
+
+##### 特定のサブカラムに対する索引 \{#json-indexes-on-subcolumns\}
+
+通常のカラムと同じ構文で、任意の JSON サブカラムにスキップ索引を作成できます。
+
+索引式で JSON サブカラムを参照する方法は 2 つあります。
+
+* **型付きパス** — JSON 型ヒントで宣言し、名前で直接アクセスします: `json.a`.
+* **動的パス** (明示的なキャストあり) — `::` キャスト構文を使用します: `json.b::String`.
+
+クエリ例:
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id String),
+    INDEX idx_sensor data.sensor_id TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_location data.location::String TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: text
+        Condition: (mode: All; tokens: ["5", "id"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: text
+        Condition: (mode: All; tokens: ["5", "room"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+##### JSONAllPaths によるパスベース索引 \{#json-indexes-jsonallpaths\}
+
+`Map` カラムと同様に、[JSON](/sql-reference/data-types/newjson.md) カラムにも [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths) を使用してテキスト索引を作成できます。
+この索引は各グラニュールに含まれる JSON パスの集合を保持し、クエリ対象のパスが存在しないグラニュールをスキップするために利用します。
+
+クエリ例:
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1` を使用すると、スキップ索引が使われていることを確認できます。パスが1つのパートにしか存在しない場合、索引はもう一方のパートをスキップします:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+どのパーツにもパスが存在しない場合、すべてのパーツとグラニュールがスキップされます:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["nonexistent"])
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL` でも索引が使用され、パスが存在しないグラニュールは (その場合、値は `NULL` になるため) スキップされます。
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
 ```
 
 

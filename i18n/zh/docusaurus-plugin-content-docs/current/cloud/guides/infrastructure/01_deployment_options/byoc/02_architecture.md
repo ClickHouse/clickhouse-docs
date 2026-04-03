@@ -18,11 +18,17 @@ import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organizat
 
 <BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="展示组织、云账户、区域与 BYOC 基础设施之间关系的 BYOC 组织层级" />
 
-* **ClickHouse Cloud Organization:** ClickHouse Cloud 中的顶层实体，用于管理用户、计费以及非 BYOC 的 ClickHouse 服务。组织内的用户既可访问标准 Cloud 服务，也可访问 BYOC 服务。
-* **ClickHouse BYOC Organization:** 专门用于管理 BYOC 部署的独立组织。它与 Cloud 组织共享用户，但会关联一个或多个部署了 BYOC 基础设施的云账户。
-* **Cloud Account / Project:** 客户拥有的 AWS 账户或 GCP 项目，BYOC 基础设施会在其中预配。每个账户或项目都可在一个或多个区域中承载 BYOC 部署。为实现隔离，建议每个 BYOC 部署使用专用账户或项目。
-* **BYOC Infrastructure:** 部署在云账户特定区域内的一组云资源，包括 VPC、Kubernetes 集群 (EKS/GKE)、存储桶、IAM 角色及配套服务。单个云账户可在不同区域中包含多个 BYOC 基础设施。
+<br />
+
+* **ClickHouse Cloud organization:** ClickHouse Cloud 中的顶层实体，用于管理用户、计费以及非 BYOC 的 ClickHouse 服务。组织内的用户既可访问标准 Cloud 服务，也可访问 BYOC 服务。
+* **ClickHouse BYOC organization:** 专门用于管理 BYOC 部署的独立组织。它与 Cloud 组织共享用户，但会关联一个或多个部署了 BYOC 基础设施的云账户。
+* **Cloud account / project:** 客户拥有的 AWS 账户或 GCP 项目，BYOC 基础设施会在其中预配。每个账户或项目都可在一个或多个区域中承载 BYOC 部署。为实现隔离，建议每个 BYOC 部署使用专用账户或项目。
+* **BYOC infrastructure:** 部署在云账户特定区域内的一组云资源，包括 VPC、Kubernetes 集群 (EKS/GKE)、存储桶、IAM 角色及配套服务。单个云账户可在不同区域中包含多个 BYOC 基础设施。
 * **ClickHouse Service:** 在某个 BYOC 基础设施中运行的单个 ClickHouse 集群。多个服务可在同一 BYOC 基础设施中运行。
+
+:::note
+只有未通过[云服务提供商市场](/cloud/marketplace/marketplace-billing)搭建的客户，才能在同一组织下混合使用 AWS 账户和 GCP 项目。
+:::
 
 ## 术语表 \{#glossary\}
 

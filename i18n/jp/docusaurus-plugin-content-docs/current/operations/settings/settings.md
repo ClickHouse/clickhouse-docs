@@ -3542,6 +3542,18 @@ HTTP リクエストに対するレスポンスで、データ圧縮を有効ま
 
 実行時に右側から収集した JOIN キーの Set を用いて、左側の行をフィルタリングします。
 
+## enable_join_transitive_predicates \{#enable_join_transitive_predicates\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "結合順序の最適化のために、推移的な等値結合述語を推論する新しい設定。"}]}]} />
+
+既存の結合条件から、推移的な等値結合述語を推論します。
+たとえば、`A.x = B.x` と `B.x = C.x` がある場合、合成された `A.x = C.x` 述語が
+追加され、結合順序オプティマイザが `A JOIN C` を直接行う計画を検討できるようになります。
+
 ## enable_lazy_columns_replication \{#enable_lazy_columns_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9996,6 +10008,18 @@ EXPLAIN PLAN におけるステップの説明の最大の長さ。
 
 同一サブクエリ内の JOIN の順序を最適化します。現在はごく限られたケースでのみサポートされています。
 この値は、最適化対象とするテーブル数の上限です。
+
+## query_plan_optimize_join_order_randomize \{#query_plan_optimize_join_order_randomize\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "テスト用に JOIN 順序の統計をランダム化するための新しい設定。"}]}]} />
+
+0 以外の値を指定すると、JOIN 順序オプティマイザは実際の統計の代わりに、ランダムに生成されたカーディナリティと NDV を使用します。
+1 に設定するとランダムシードが生成され、1 より大きい値に設定すると、その値がシードとして直接使用されます。
+これは、異なる JOIN 順序によって発生するエラーを見つけるためのテスト用途を想定しています。
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 

@@ -441,7 +441,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 在搜索之前,函数会对以下内容进行分词(tokenize):
 
-* `input` 参数 (始终) ，以及
+* the `input` argument (always), and
 * `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出) ，使用为该 text index 指定的 tokenizer。
   如果该列未定义 text index，则改用 `splitByNonAlpha` tokenizer。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
@@ -461,7 +461,7 @@ hasAllTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `unicodeWord`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -589,7 +589,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 
 引入版本:v25.10.0
 
-如果 `needle` 字符串或数组中至少有一个 token 与 `input` 字符串匹配,则返回 1,否则返回 0。若 `input` 是一列,则返回所有满足此条件的行。
+如果 `needle` 字符串或数组中至少有一个标记 与 `input` 字符串匹配,则返回 1,否则返回 0。若 `input` 是一列,则返回所有满足此条件的行。
 
 :::note
 为获得最佳性能,应为列 `input` 定义 [text 索引](../../engines/table-engines/mergetree-family/textindexes)。
@@ -602,9 +602,9 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 * `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出)
   使用为 text 索引指定的分词器。
   如果该列未定义 text 索引，则会使用 `splitByNonAlpha` 分词器。
-  如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个 token——不会进行额外的分词。
+  如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
 
-重复的 token 会被忽略。
+重复的标记 会被忽略。
 例如,[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
 
 **语法**
@@ -618,8 +618,8 @@ hasAnyTokens(input, needles)
 **参数**
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable) 或 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array) 或 [`Array(Nullable(String))`](/sql-reference/data-types/array) 或 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
-* `needles` — 要搜索的标记 (token) 。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `unicodeWord`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `needles` — 要搜索的标记 (标记) 。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 

@@ -351,7 +351,7 @@ INDEX index_name expr TYPE type(...) [GRANULARITY granularity_value]
 
 对于 `*MergeTree` 家族的表，可以指定数据跳过索引。
 
-这些索引会在由 `granularity_value` 个粒度组成的数据块上聚合指定表达式的一些信息（粒度的大小通过表引擎中的 `index_granularity` 设置指定）。随后，这些聚合结果会在 `SELECT` 查询中用于减少从磁盘读取的数据量，通过跳过那些不可能满足 `where` 查询条件的大数据块来实现。
+这些索引会在由 `granularity_value` 个粒度组成的数据块上聚合指定表达式的一些信息 (粒度的大小通过表引擎中的 `index_granularity` 设置指定) 。随后，这些聚合结果会在 `SELECT` 查询中用于减少从磁盘读取的数据量，通过跳过那些不可能满足 `where` 查询条件的大数据块来实现。
 
 可以省略 `GRANULARITY` 子句，此时 `granularity_value` 的默认值为 1。
 
@@ -386,6 +386,9 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
+-- on columns of type JSON:
+INDEX json_paths_index JSONAllPaths(json_column) TYPE bloom_filter
+
 -- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
@@ -394,6 +397,7 @@ INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### 跳过索引类型 \{#skip-index-types\}
 
@@ -429,13 +433,13 @@ set(max_rows)
 
 #### 布隆过滤器 \{#bloom-filter\}
 
-每个索引粒度都会为指定的列存储一个 [Bloom 过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
+每个索引粒度都会为指定的列存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
 ```text title="Syntax"
 bloom_filter([false_positive_rate])
 ```
 
-`false_positive_rate` 参数可以取 0 到 1 之间的数值（默认值：`0.025`），用于指定产生正匹配结果的概率（这会增加需要读取的数据量）。
+`false_positive_rate` 参数可以取 0 到 1 之间的数值 (默认值：`0.025`) ，用于指定产生正匹配结果的概率 (这会增加需要读取的数据量) 。
 
 支持以下数据类型：
 
@@ -454,6 +458,10 @@ bloom_filter([false_positive_rate])
 
 :::note Map 数据类型：指定针对键或值创建索引
 对于 `Map` 数据类型，客户端可以通过使用 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数指定索引应针对键还是针对值创建。
+:::
+
+:::note JSON 数据类型：为 JSON 路径创建索引
+对于 [`JSON`](/sql-reference/data-types/newjson) 数据类型，可以使用 [`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 函数对路径集合创建布隆过滤器索引。这样可以跳过所查询 JSON 路径不存在的粒度。详情请参见 [JSON 的数据跳过索引](/sql-reference/data-types/newjson#data-skipping-indexes-for-json)。
 :::
 
 
@@ -696,17 +704,23 @@ ORDER BY id;
 
 从表中读取会自动并行执行。
 
-## 列和表的 TTL \{#table_engine-mergetree-ttl\}
+## 列和表的 生存时间 (TTL) \{#table_engine-mergetree-ttl\}
 
 用于指定数据值的生命周期。
 
-可以为整张表以及每个单独的列设置 `TTL` 子句。表级 `TTL` 还可以指定在不同磁盘和卷之间自动迁移数据的逻辑，或者对数据已全部过期的部件进行重新压缩。
+可以为整张表以及每个单独的列设置 `TTL` 子句。表级 生存时间 (TTL) 还可以指定在不同磁盘和卷之间自动迁移数据的逻辑，或者对数据已全部过期的部件进行重新压缩。
 
 表达式的计算结果必须是 [Date](/sql-reference/data-types/date.md)、[Date32](/sql-reference/data-types/date32.md)、[DateTime](/sql-reference/data-types/datetime.md) 或 [DateTime64](/sql-reference/data-types/datetime64.md) 数据类型。
 
+:::tip[避免在 生存时间 (TTL) 表达式中使用非确定性函数]
+生存时间 (TTL) 在后台合并期间计算，而不是在插入时计算。
+像 `rand()`、`now()` 或 `now64()` 这样的函数会在每次合并时重新求值，从而导致不可预测的删除行为。
+ClickHouse 会阻止完全不依赖任何列的表达式，但目前不会拒绝与列引用混合使用的非确定性函数 (例如 `ts + rand()`) 。为获得可预测的结果，生存时间 (TTL) 表达式应仅基于由列派生的确定性值。
+:::
+
 **语法**
 
-为列设置 TTL（生存时间）：
+为列设置 生存时间 (TTL) ：
 
 ```sql
 TTL time_column
@@ -719,6 +733,7 @@ TTL time_column + interval
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
+
 
 ### 列生存时间 (TTL) \{#mergetree-column-ttl\}
 
