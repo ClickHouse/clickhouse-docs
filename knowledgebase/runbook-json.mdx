@@ -29,6 +29,8 @@ Your data arrives as JSON. ClickHouse gives you several ways to store it, from f
   **→** [Hybrid (typed + JSON)](#hybrid)
 - **If** the entire structure is dynamic, with keys that appear and disappear across records
   **→** [Native JSON column](#native-json)
+- **If** the dynamic fields are key-value pairs with a consistent value type (e.g., string tags, numeric metrics)
+  **→** [`Map`](#when-map-fits-better) instead of JSON
 - **If** you only store and retrieve the JSON blob without field-level queries
   **→** [Opaque String storage](#opaque-storage)
 
@@ -244,6 +246,23 @@ SELECT JSONExtractString(payload, 'type') AS event_type FROM raw_events
 | **Storage efficiency** | Best | Good | Moderate | Good (compresses well) |
 | **Schema flexibility** | None (`ALTER TABLE`) | Partial (rigid core, flexible tail) | Full | Full |
 | **Complexity** | Low | Medium | Medium–High | Low |
+
+## When Map fits better \{#when-map-fits-better\}
+
+If your dynamic fields are homogeneous key-value pairs — all values share the same type — [`Map(String, T)`](/sql-reference/data-types/map) is simpler and more efficient than a JSON column. Common examples: string tags (`Map(String, String)`), numeric metrics (`Map(String, Float64)`), or feature flags (`Map(String, Bool)`).
+
+```sql
+CREATE TABLE tagged_events
+(
+    `timestamp` DateTime,
+    `service`   LowCardinality(String),
+    `tags`      Map(String, String)  -- e.g., {"env": "prod", "region": "us-east-1", "team": "platform"}
+)
+ENGINE = MergeTree
+ORDER BY (service, timestamp)
+```
+
+`Map` supports key-level filtering (`tags['env'] = 'prod'`), is cheaper to store than JSON, and avoids the subcolumn overhead of the JSON type. Note that key lookups scan the map linearly by default — fine for small tag sets, but for maps with 100+ keys consider [`with_buckets` serialization](/sql-reference/data-types/map#bucketed-map-serialization). Use JSON when values have mixed types or the structure has nesting — use `Map` when it's flat key-value pairs with a uniform value type.
 
 ## Related resources \{#related-resources\}
 
