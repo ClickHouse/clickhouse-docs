@@ -39,8 +39,11 @@ hyperdx:
     MONGODB_PASSWORD: "hyperdx"
 
   deployment:     # K8s Deployment spec (image, replicas, probes, etc.)
-  service:        # K8s Service spec (type, annotations)
-  ingress:        # K8s Ingress spec (host, tls, annotations)
+  service:        # K8s Service spec (type, annotations, apiPort)
+  ingress:        # K8s Ingress (passthrough annotations + spec)
+  autoscaling:    # K8s HorizontalPodAutoscaler (passthrough spec)
+  networkPolicy:  # K8s NetworkPolicy (passthrough spec)
+  serviceAccount: # K8s ServiceAccount (annotations)
   podDisruptionBudget:  # K8s PDB spec
   tasks:          # K8s CronJob specs
 ```
@@ -107,6 +110,46 @@ hyperdx:
     MONGODB_PASSWORD: "your-mongodb-password"
 ```
 
+### Disabling the chart-managed secret {#disabling-chart-secret}
+
+For advanced deployments where secrets are managed externally (e.g., via an external secrets operator or pre-created Kubernetes secrets), set `secrets` to `null` to skip creation of the `clickstack-secret` entirely:
+
+```yaml
+hyperdx:
+  secrets: null
+
+  config:
+    # Override defaults that use tpl expressions referencing secrets
+    MONGO_URI: ""
+    CLICKHOUSE_ENDPOINT: ""
+    CLICKHOUSE_SERVER_ENDPOINT: ""
+    CLICKHOUSE_PROMETHEUS_METRICS_ENDPOINT: ""
+    OPAMP_SERVER_URL: ""
+
+  deployment:
+    defaultConnections: ""
+    defaultSources: ""
+    env:
+      - name: HYPERDX_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: my-external-secret
+            key: api-key
+      - name: MONGO_URI
+        valueFrom:
+          secretKeyRef:
+            name: my-db-secret
+            key: connection-string
+```
+
+When `secrets` is `null`:
+- You must provide all required environment variables through `deployment.env` with `valueFrom` entries
+- Override config values that reference secrets via template expressions (`MONGO_URI`, `CLICKHOUSE_ENDPOINT`, etc.) with empty strings or your own values
+- Set `deployment.defaultConnections` and `deployment.defaultSources` to empty strings (the defaults reference secret values)
+- The chart will fail to render if any subchart (MongoDB, ClickHouse, OTEL collector) is enabled
+
+See the [API-only deployment example](https://github.com/ClickHouse/ClickStack-helm-charts/tree/main/examples/api-only) for a complete configuration using this pattern.
+
 ### Using an external secret {#using-external-secret}
 
 For production deployments where you want to keep credentials separate from Helm values, use an external Kubernetes secret:
@@ -129,107 +172,97 @@ hyperdx:
 
 ## Ingress setup {#ingress-setup}
 
-To expose the HyperDX UI and API via a domain name, enable ingress in your `values.yaml`.
+The chart uses a passthrough ingress pattern: `annotations` and `spec` are rendered verbatim so any ingress controller (nginx, ALB, Traefik, etc.) can be configured through values alone.
 
-### General ingress configuration {#general-ingress-configuration}
+### Nginx ingress example {#nginx-ingress-example}
+
 ```yaml
 hyperdx:
-  frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
+  frontendUrl: "https://hyperdx.yourdomain.com"
 
   ingress:
     enabled: true
-    host: "hyperdx.yourdomain.com"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: hyperdx.yourdomain.com
+          http:
+            paths:
+              - path: /(.*)
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: my-clickstack-app
+                    port:
+                      number: 3000
+      tls:
+        - hosts:
+            - hyperdx.yourdomain.com
+          secretName: hyperdx-tls
 ```
 
 :::note Important configuration note
 `hyperdx.frontendUrl` should match the ingress host and include the protocol (e.g., `https://hyperdx.yourdomain.com`). This ensures that all generated links, cookies, and redirects work correctly.
 :::
 
-### Enabling TLS (HTTPS) {#enabling-tls}
+### AWS ALB ingress example {#alb-ingress-example}
 
-To secure your deployment with HTTPS:
-
-**1. Create a TLS secret with your certificate and key:**
-```shell
-kubectl create secret tls hyperdx-tls \
-  --cert=path/to/tls.crt \
-  --key=path/to/tls.key
-```
-
-**2. Enable TLS in your ingress configuration:**
 ```yaml
 hyperdx:
   ingress:
     enabled: true
-    host: "hyperdx.yourdomain.com"
-    tls:
-      enabled: true
-      tlsSecretName: "hyperdx-tls"
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:123456789:certificate/your-cert-id"
+      alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    spec:
+      ingressClassName: alb
+      rules:
+        - host: clickstack.example.com
+          http:
+            paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: my-clickstack-app
+                    port:
+                      name: app
 ```
 
-### Example ingress configuration {#example-ingress-configuration}
-
-For reference, here's what the generated ingress resource looks like:
-```yaml
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hyperdx-app-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/use-regex: "true"
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: hyperdx.yourdomain.com
-      http:
-        paths:
-          - path: /(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: my-clickstack-clickstack-app
-                port:
-                  number: 3000
-  tls:
-    - hosts:
-        - hyperdx.yourdomain.com
-      secretName: hyperdx-tls
-```
+See the [ALB ingress example](https://github.com/ClickHouse/ClickStack-helm-charts/tree/main/examples/alb-ingress) for a complete configuration.
 
 ### Common ingress pitfalls {#common-ingress-pitfalls}
 
 **Path and rewrite configuration:**
-- For Next.js and other SPAs, always use a regex path and rewrite annotation as shown above
-- Don't use just `path: /` without a rewrite, as this will break static asset serving
+- For Next.js and other SPAs with nginx, always use a regex path and rewrite annotation
+- Don't use just `path: /` without a rewrite when using nginx, as this will break static asset serving
 
-**Mismatched `frontendUrl` and `ingress.host`:**
+**Mismatched `frontendUrl` and ingress host:**
 - If these don't match, you may experience issues with cookies, redirects, and asset loading
 
 **TLS misconfiguration:**
-- Ensure your TLS secret is valid and referenced correctly in the ingress
+- Ensure your TLS secret is valid and referenced correctly in the ingress spec
 - Browsers may block insecure content if you access the app over HTTP when TLS is enabled
-
-**Ingress controller version:**
-- Some features (like regex paths and rewrites) require recent versions of nginx ingress controller
-- Check your version with:
-```shell
-kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
-```
 
 ## OTEL collector ingress {#otel-collector-ingress}
 
-If you need to expose your OTEL collector endpoints (for traces, metrics, logs) through ingress, use the `additionalIngresses` configuration. This is useful for sending telemetry data from outside the cluster or using a custom domain for the collector.
+If you need to expose your OTEL collector endpoints (for traces, metrics, logs) through a separate ingress, use the `additionalIngresses` feature. This creates additional ingress resources alongside the primary one:
 
 ```yaml
 hyperdx:
   ingress:
     enabled: true
+    # ... primary ingress config ...
     additionalIngresses:
       - name: otel-collector
         annotations:
           nginx.ingress.kubernetes.io/ssl-redirect: "false"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
           nginx.ingress.kubernetes.io/use-regex: "true"
         ingressClassName: nginx
         hosts:
@@ -245,15 +278,103 @@ hyperdx:
             secretName: collector-tls
 ```
 
-- This creates a separate ingress resource for the OTEL collector endpoints
-- You can use a different domain, configure specific TLS settings, and apply custom annotations
-- The regex path rule allows you to route all OTLP signals (traces, metrics, logs) through a single rule
-
 :::note
-If you don't need to expose the OTEL collector externally, you can skip this configuration. For most users, the general ingress setup is sufficient.
+`additionalIngresses` is gated by `ingress.enabled` and uses its own structured format (not the passthrough pattern). It is a power feature for multi-ingress setups where different endpoints need different controllers or TLS configurations.
 :::
 
-Alternatively, you can use [`additionalManifests`](/docs/use-cases/observability/clickstack/deployment/helm-additional-manifests) to define fully custom ingress resources, such as an AWS ALB Ingress.
+## Autoscaling {#autoscaling}
+
+Enable a HorizontalPodAutoscaler for the HyperDX deployment. The chart auto-wires `scaleTargetRef` to the HyperDX deployment; the remaining HPA spec is passed through:
+
+```yaml
+hyperdx:
+  autoscaling:
+    enabled: true
+    spec:
+      minReplicas: 2
+      maxReplicas: 10
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 75
+        - type: Resource
+          resource:
+            name: memory
+            target:
+              type: Utilization
+              averageUtilization: 80
+```
+
+When `autoscaling.enabled` is `true`, the deployment's `replicas` field is omitted so the HPA controls scaling. Any valid `autoscaling/v2` HPA spec fields (`minReplicas`, `maxReplicas`, `metrics`, `behavior`) can be provided.
+
+:::warning
+Do not include `scaleTargetRef` in `autoscaling.spec`. The chart automatically sets `scaleTargetRef` to the HyperDX deployment. If `scaleTargetRef` is present in the spec, the template will fail with an error asking you to remove it.
+:::
+
+:::note
+If you later disable autoscaling, the deployment will revert to `deployment.replicas` (default `1`), not the replica count the HPA had scaled to. Before disabling autoscaling, set `deployment.replicas` to your desired baseline, or use `minReplicas` in the HPA spec as your effective minimum.
+:::
+
+## Network policy {#network-policy}
+
+Enable a NetworkPolicy for the HyperDX deployment. The full `spec` is passed through so any policy shape can be expressed:
+
+```yaml
+hyperdx:
+  networkPolicy:
+    enabled: true
+    spec:
+      podSelector: {}
+      policyTypes:
+        - Egress
+      egress:
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+                except:
+                  - 169.254.169.254/32
+```
+
+This example blocks access to the cloud provider instance metadata endpoint. Provide any valid NetworkPolicy spec fields (`podSelector`, `policyTypes`, `ingress`, `egress`).
+
+## Service account {#service-account}
+
+Create a ServiceAccount for the HyperDX deployment, or reference an existing one:
+
+```yaml
+# Create a new ServiceAccount (chart-managed)
+hyperdx:
+  serviceAccount:
+    create: true
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::123456789:role/my-api-role"
+```
+
+```yaml
+# Use a pre-existing ServiceAccount (not chart-managed)
+hyperdx:
+  serviceAccount:
+    create: false
+    name: "my-existing-service-account"
+```
+
+When `create` is `true` and `name` is empty, the ServiceAccount name defaults to the chart's fullname. When `create` is `false` but `name` is set, the deployment references the existing ServiceAccount without creating one. Use annotations for provider-specific bindings (e.g., `eks.amazonaws.com/role-arn` for AWS IAM Roles for Service Accounts).
+
+## Service API port {#service-api-port}
+
+By default, the HyperDX service exposes the app port (3000) and OpAMP port (4320). When the service ports are exposed directly (e.g., via NodePort or LoadBalancer) and clients need to reach the API on port 8000, enable the API port on the service:
+
+```yaml
+hyperdx:
+  service:
+    apiPort:
+      enabled: true
+```
+
+This adds port 8000 (or the value of `hyperdx.ports.api`) to the service.
 
 ## OTEL collector configuration {#otel-collector-configuration}
 
