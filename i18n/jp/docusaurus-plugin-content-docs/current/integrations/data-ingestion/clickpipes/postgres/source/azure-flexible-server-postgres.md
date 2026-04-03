@@ -2,7 +2,7 @@
 sidebar_label: 'Azure Flexible Server for Postgres'
 description: 'ClickPipes のソースとして Azure Flexible Server for Postgres をセットアップする'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Azure Flexible Server for Postgres ソースセットアップガイド'
+title: 'Azure Flexible Server を使用した Postgres ソース設定ガイド'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:

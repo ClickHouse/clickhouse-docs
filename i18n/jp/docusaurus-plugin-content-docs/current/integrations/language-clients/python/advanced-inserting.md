@@ -2,7 +2,7 @@
 sidebar_label: '高度なデータ挿入'
 sidebar_position: 5
 keywords: ['clickhouse', 'python', 'insert', 'advanced']
-description: 'ClickHouse Connect を用いた高度なデータ挿入'
+description: 'ClickHouse Connect を使った高度なデータ挿入'
 slug: /integrations/language-clients/python/advanced-inserting
 title: '高度なデータ挿入'
 doc_type: 'reference'

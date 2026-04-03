@@ -24,17 +24,18 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 ### PHP \{#php\}
 
-- [smi2/phpclickhouse](https://packagist.org/packages/smi2/phpClickHouse)
-- [8bitov/clickhouse-php-client](https://packagist.org/packages/8bitov/clickhouse-php-client)
-- [bozerkins/clickhouse-client](https://packagist.org/packages/bozerkins/clickhouse-client)
-- [simpod/clickhouse-client](https://packagist.org/packages/simpod/clickhouse-client)
-- [seva-code/php-click-house-client](https://packagist.org/packages/seva-code/php-click-house-client)
-- [C++-клиент SeasClick](https://github.com/SeasX/SeasClick)
-- [one-ck](https://github.com/lizhichao/one-ck)
-- [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
-- [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
-- [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
-- [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
+* [smi2/phpclickhouse](https://packagist.org/packages/smi2/phpClickHouse)
+* [8bitov/clickhouse-php-client](https://packagist.org/packages/8bitov/clickhouse-php-client)
+* [bozerkins/clickhouse-client](https://packagist.org/packages/bozerkins/clickhouse-client)
+* [simpod/clickhouse-client](https://packagist.org/packages/simpod/clickhouse-client)
+* [seva-code/php-click-house-client](https://packagist.org/packages/seva-code/php-click-house-client)
+* [C++-клиент SeasClick](https://github.com/SeasX/SeasClick)
+* [one-ck](https://github.com/lizhichao/one-ck)
+* [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
+* [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
+* [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
+* [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
 
 ### Go \{#go\}
 

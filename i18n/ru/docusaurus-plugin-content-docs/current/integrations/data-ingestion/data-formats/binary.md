@@ -1,14 +1,13 @@
 ---
 sidebar_label: 'Native и двоичные'
 slug: /integrations/data-formats/binary-native
-title: 'Использование формата Native и двоичных форматов в ClickHouse'
-description: 'Страница, описывающая, как использовать формат Native и двоичные форматы в ClickHouse'
-keywords: ['двоичные форматы', 'формат Native', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
+title: 'использование формата Native и бинарный формат в ClickHouse'
+description: 'Страница, описывающая, как использовать формат Native и бинарный формат в ClickHouse'
+keywords: ['бинарный формат', 'формат Native', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 
 # Использование формата Native и бинарных форматов в ClickHouse \{#using-native-and-binary-formats-in-clickhouse\}
 

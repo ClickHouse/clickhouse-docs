@@ -1,6 +1,6 @@
 ---
 sidebar_label: '튜토리얼'
-description: 'pg_clickhouse를 ClickHouse에 연결하고 뉴욕시 택시 예제 데이터셋을 쿼리하는 방법을 알아봅니다.'
+description: 'pg_clickhouse를 ClickHouse에 연결하고 뉴욕시 택시 예시 데이터셋을 쿼리하는 방법을 알아봅니다.'
 slug: '/integrations/pg_clickhouse/tutorial'
 title: 'pg_clickhouse 튜토리얼'
 doc_type: 'guide'

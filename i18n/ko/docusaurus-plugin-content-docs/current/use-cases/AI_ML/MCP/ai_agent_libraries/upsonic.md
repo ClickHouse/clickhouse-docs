@@ -1,18 +1,18 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/upsonic
 sidebar_label: 'Upsonic 통합'
-title: 'Upsonic과 ClickHouse MCP Server를 사용해 AI 에이전트 구축하기'
+title: 'Upsonic과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'Upsonic과 ClickHouse MCP Server를 사용해 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'Upsonic과 ClickHouse MCP 서버를 사용해 AI 에이전트를 구축하는 방법을 알아봅니다'
 keywords: ['ClickHouse', 'MCP', 'Upsonic']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Upsonic과 ClickHouse MCP Server로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
+# Upsonic과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
 
-이 가이드에서는 [ClickHouse SQL playground](https://sql.clickhouse.com/)과 상호 작용할 수 있는 [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) AI 에이전트를 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 구축하는 방법을 알아봅니다.
+이 가이드에서는 [ClickHouse SQL playground](https://sql.clickhouse.com/)과 상호 작용할 수 있는 [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) AI 에이전트를 [ClickHouse MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 구축하는 방법을 알아봅니다.
 
 :::note 예제 노트북
 이 예제는 [examples 저장소](https://github.com/ClickHouse/examples/blob/main/ai/mcp/upsonic/upsonic.ipynb)의 노트북 형태로도 제공됩니다.
@@ -62,9 +62,9 @@ doc_type: 'guide'
   }
   ```
 
-  ## MCP Server 및 Upsonic 에이전트 초기화하기
+  ## MCP 서버 및 Upsonic 에이전트 초기화하기
 
-  이제 ClickHouse MCP Server가 ClickHouse SQL playground를 가리키도록 구성하고,
+  이제 ClickHouse MCP 서버가 ClickHouse SQL playground를 가리키도록 구성하고,
   에이전트를 초기화한 다음 질문을 입력하세요:
 
   ```python

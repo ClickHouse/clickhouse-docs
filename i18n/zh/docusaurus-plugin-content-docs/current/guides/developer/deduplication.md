@@ -2,15 +2,14 @@
 slug: /guides/developer/deduplication
 sidebar_label: '去重策略'
 sidebar_position: 3
-description: '当你需要频繁执行 upsert、update 和 delete 操作时，可使用去重功能。'
+description: '当你需要频繁执行 upsert、更新 和 删除 操作时，可使用去重功能。'
 title: '去重策略'
-keywords: ['去重策略', '数据去重', 'upsert', 'update 和 delete', '开发者指南']
+keywords: ['去重策略', '数据去重', 'upsert', '更新 和 删除', '开发者指南']
 doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
-
 
 # 去重策略 \{#deduplication-strategies\}
 

@@ -1,8 +1,8 @@
 ---
-title: '특정 테이블 재동기화'
-description: 'Postgres ClickPipe에서 특정 테이블을 재동기화하기'
+title: '특정 테이블 다시 동기화'
+description: 'Postgres ClickPipe에서 특정 테이블을 다시 동기화하기'
 slug: /integrations/clickpipes/postgres/table_resync
-sidebar_label: '테이블 재동기화'
+sidebar_label: '테이블 다시 동기화'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '데이터 수집', '실시간 동기화']
 integration:

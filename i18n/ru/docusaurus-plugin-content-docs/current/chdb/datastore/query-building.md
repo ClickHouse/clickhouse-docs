@@ -2,7 +2,7 @@
 title: 'Построение запросов в DataStore'
 sidebar_label: 'Построение запросов'
 slug: /chdb/datastore/query-building
-description: 'Построение SQL-подобных запросов в DataStore с использованием флюентного интерфейса и цепочек вызовов методов'
+description: 'Построение запросов в стиле SQL в DataStore с использованием флюентного интерфейса и цепочек вызовов методов'
 keywords: ['chdb', 'datastore', 'запрос', 'select', 'filter', 'where', 'join', 'groupby']
 doc_type: 'reference'
 ---

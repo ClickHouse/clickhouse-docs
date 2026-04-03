@@ -16,7 +16,7 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage
-- No need to manually share data
+- No need to manually shard data
 - Significantly lower price point for storing data, especially data that is accessed less frequently
 
 ## Compute {#compute}

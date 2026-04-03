@@ -22,7 +22,7 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-В этом руководстве описано, как включить ClickHouse Cloud Remote MCP Server и настроить его для использования с распространёнными инструментами разработки.
+В этом руководстве описано, как включить удалённый MCP-сервер ClickHouse Cloud и настроить его для использования с распространёнными инструментами разработки.
 
 **Предварительные требования**
 
@@ -32,23 +32,22 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 ## Включение удалённого MCP-сервера для Cloud \{#enable-remote-mcp-server\}
 
-Подключитесь к сервису ClickHouse Cloud, для которого нужно включить удалённый MCP-сервер, и нажмите кнопку `Connect` в левом меню.
-Откроется окно с параметрами подключения.
+Подключитесь к сервису ClickHouse Cloud, для которого нужно включить удалённый MCP-сервер.
+В левом меню нажмите **Connect**. Откроется окно с параметрами подключения.
 
-Выберите &quot;Connect with MCP&quot;:
+Выберите **Connect with MCP**:
 
 <Image img={img1} alt="Выбор MCP в окне Connect" size="md" />
 
 Включите переключатель, чтобы включить MCP для сервиса:
 
-<Image img={img2} alt="Включение сервера MCP" size="md" />
+<Image img={img2} alt="Включение MCP-сервера" size="md" />
 
 Скопируйте отображаемый URL — он совпадает с приведённым ниже:
 
 ```bash
 https://mcp.clickhouse.cloud/mcp
 ```
-
 
 ## Настройка удалённого MCP для разработки \{#setup-clickhouse-cloud-remote-mcp-server\}
 
@@ -105,7 +104,8 @@ claude
 }
 ```
 
-Подробнее см. в [документации Visual Studio Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+Подробнее см. в [документации Visual Studio Code](https://code.visualstudio.com/docs/copilot/customization/mcp-servers).
+
 
 ### Windsurf \{#windsurf\}
 
@@ -122,13 +122,13 @@ claude
 }
 ```
 
-Подробнее см. в [документации Windsurf](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp)
+Подробнее см. в [документации Windsurf](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp).
 
 
 ### Zed \{#zed\}
 
 Добавьте ClickHouse в качестве пользовательского сервера.
-Добавьте в настройки Zed следующее в разделе **context_servers**:
+Добавьте в настройки Zed следующее в разделе **context&#95;servers**:
 
 ```json
 {
@@ -141,7 +141,8 @@ claude
 ```
 
 При первом подключении к серверу Zed должен предложить вам пройти аутентификацию через OAuth.
-Подробнее см. в [документации Zed](https://zed.dev/docs/ai/mcp#as-custom-servers)
+Подробнее см. в [документации Zed](https://zed.dev/docs/ai/mcp#as-custom-servers).
+
 
 ### Codex \{#codex\}
 
@@ -151,6 +152,54 @@ claude
 codex mcp add clickhouse-cloud --url https://mcp.clickhouse.cloud/mcp
 ```
 
+
+## Пример использования \{#example-usage\}
+
+После подключения вы можете взаимодействовать с ClickHouse Cloud с помощью запросов на естественном языке.
+Ниже приведены типовые сценарии работы и инструменты, которые ваш MCP-клиент будет вызывать в фоновом режиме.
+Полный список доступных инструментов см. в разделе [справочник по инструментам](/cloud/features/ai-ml/remote-mcp#available-tools).
+
+### Изучение ваших данных \{#exploring-data\}
+
+Начните с просмотра доступных данных:
+
+| Запрос                                                                  | Вызываемый инструмент             |
+| ----------------------------------------------------------------------- | --------------------------------- |
+| &quot;К каким организациям у меня есть доступ?&quot;                    | `get_organizations`               |
+| &quot;Какие базы данных доступны в моём сервисе?&quot;                  | `list_databases`                  |
+| &quot;Покажи таблицы в базе данных `default`&quot;                      | `list_tables`                     |
+| &quot;Выведи список всех таблиц, чьи имена начинаются с `events_`&quot; | `list_tables` (с фильтром `like`) |
+
+### Выполнение аналитических запросов \{#running-queries\}
+
+Задавайте вопросы обычным языком, и агент преобразует их в SQL:
+
+| Запрос                                                                              | вызываемый инструмент |
+| ----------------------------------------------------------------------------------- | ----------------------- |
+| &quot;Покажи 10 первых строк из таблицы `hits`&quot;                                | `run_select_query`      |
+| &quot;Какова средняя продолжительность сессии по странам за последние 7 дней?&quot; | `run_select_query`      |
+| &quot;Сколько строк в каждой таблице базы данных `analytics`?&quot;                 | `run_select_query`      |
+
+Инструмент `run_select_query` разрешает выполнять только команды `SELECT`. Все запросы выполняются только на чтение.
+
+### Управление сервисами и инфраструктурой \{#managing-services\}
+
+Получите представление о своих ресурсах в ClickHouse Cloud:
+
+| запрос                                                                 | вызываемый инструмент                       |
+| ---------------------------------------------------------------------- | ---------------------------------- |
+| &quot;Покажи все мои сервисы&quot;                                     | `get_services_list`                |
+| &quot;Каков статус моего сервиса в промышленной эксплуатации?&quot;    | `get_service_details`              |
+| &quot;Покажи расписание резервного копирования для этого сервиса&quot; | `get_service_backup_configuration` |
+| &quot;Покажи недавние резервные копии&quot;                            | `list_service_backups`             |
+| &quot;Какие ClickPipes настроены для этого сервиса?&quot;              | `list_clickpipes`                  |
+
+### Затраты на мониторинг \{#monitoring-costs\}
+
+| Запрос                                                              | вызываемый инструмент                             |
+| ------------------------------------------------------------------- | --------------------------------------------------- |
+| &quot;Каковы были расходы моей организации за прошлую неделю?&quot; | `get_organization_cost`                             |
+| &quot;Покажи ежедневные расходы с 1 по 15 марта&quot;               | `get_organization_cost` (с `from_date` и `to_date`) |
 
 ## Связанные материалы \{#related-content\}
 

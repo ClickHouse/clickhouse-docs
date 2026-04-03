@@ -893,9 +893,11 @@ TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 
 ### 简介 \{#introduction\}
 
-`MergeTree` 系列表引擎可以将数据存储在多个块设备上。举例来说，当某个表中的数据被隐式划分为「热数据」和「冷数据」时，这会非常有用。最新的数据会被频繁访问，但只占用很小的空间。相反，具有长尾特征的历史数据则很少被访问。如果有多块磁盘可用，可以将「热数据」放在高速磁盘上（例如 NVMe SSD 或内存中），而将「冷数据」放在相对较慢的磁盘上（例如 HDD）。
+`MergeTree` 系列表引擎可以将数据存储在多个块设备上。举例来说，当某个表中的数据被隐式划分为「热数据」和「冷数据」时，这会非常有用。最新的数据会被频繁访问，但只占用很小的空间。相反，具有长尾特征的历史数据则很少被访问。如果有多块磁盘可用，可以将「热数据」放在高速磁盘上 (例如 NVMe SSD 或内存中) ，而将「冷数据」放在相对较慢的磁盘上 (例如 HDD) 。
 
-数据片段是 `MergeTree` 引擎表中可移动的最小单元。属于同一数据片段的数据存储在同一块磁盘上。数据片段既可以在后台根据用户设置在磁盘之间移动，也可以通过 [ALTER](/sql-reference/statements/alter/partition) 查询进行移动。
+这适用于所有磁盘类型，包括 S3 和其他对象存储磁盘。例如，您可以在单个卷中将数据分布到多个 S3 存储桶，或者创建分层策略，将数据从本地磁盘迁移到 S3。有关详细信息，请参阅[使用具有多个卷的 S3 磁盘](#s3-multiple-volumes)。
+
+分区片段是 `MergeTree` 引擎表中可移动的最小单元。属于同一分区片段的数据存储在同一块磁盘上。分区片段既可以在后台根据用户设置在磁盘之间移动，也可以通过 [ALTER](/sql-reference/statements/alter/partition) 查询进行移动。
 
 ### 术语 \{#terms\}
 
@@ -1142,7 +1144,79 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 另请参阅[配置外部存储选项](/operations/storing-data.md/#configuring-external-storage)。
 
-可以在共享存储上将非复制的 MergeTree 表配置为单写多读场景。这依赖于在读节点上设置的分区片段列表自动刷新机制。注意，这要求在多个副本之间共享文件系统元数据（或者在表级本地磁盘上将 `table_disk = true`）。参见 [refresh&#95;parts&#95;interval and table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)。
+
+### 在多卷中使用 S3 磁盘 \{#s3-multiple-volumes\}
+
+S3 (以及其他对象存储) 磁盘可以像本地磁盘一样用于多磁盘和多卷存储策略。这使你可以在单个卷内将数据分布到多个 S3 存储桶中 (类似 JBOD) ，或者配置包含 S3 卷的分层存储策略。
+
+例如，要以轮询方式将数据分布到两个 S3 存储桶中：
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+你还可以在分层策略中结合使用本地卷和 S3 卷，例如随着数据老化，将其从本地 SSD 移动到 S3：
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+当使用 `use_environment_credentials` 进行 S3 身份验证时，环境凭证 (`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_SESSION_TOKEN`) 会在所有 S3 磁盘之间共享。无法为不同磁盘使用不同的环境凭证。如果每个 S3 磁盘需要不同的凭证，请改为在每个磁盘上显式设置 `access_key_id` 和 `secret_access_key`。
+:::
+
+可以在共享存储上将非复制的 MergeTree 表配置为单写多读场景。这依赖于在读节点上设置的分区片段列表自动刷新机制。注意，这要求在多个副本之间共享文件系统元数据 (或者在表级本地磁盘上将 `table_disk = true`) 。参见 [refresh&#95;parts&#95;interval and table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)。
 
 :::note 缓存配置
 ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在使用这些版本之一，请参阅[使用本地缓存](/operations/storing-data.md/#using-local-cache)。
@@ -1190,6 +1264,40 @@ ALTER TABLE tab DROP STATISTICS a;
 
 这些轻量级列统计汇总了列中值分布的信息。列统计存储在每个分区片段中，并会在每次插入时更新。
 只有在启用 `set use_statistics = 1` 时，它们才能用于 `prewhere` 优化。
+
+#### 基于统计信息的 parts 剪枝 \{#part-pruning-with-statistics\}
+
+启用 `use_statistics_for_part_pruning` 后，统计信息可用于 parts 剪枝。
+目前，只有 `MinMax` 统计信息支持 parts 剪枝。当对某一列定义了 MinMax 统计信息时，ClickHouse 会跟踪每个 parts 中该列的最小值和最大值。
+借助 parts 剪枝，如果查询过滤条件不可能匹配某个 parts 中的任何行，就可以跳过读取整个 parts。
+
+**示例：**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 

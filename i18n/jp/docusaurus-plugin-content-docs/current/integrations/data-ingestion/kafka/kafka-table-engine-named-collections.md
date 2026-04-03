@@ -1,7 +1,7 @@
 ---
-title: 'Named Collection を使用した ClickHouse と Kafka の連携'
-description: 'Named Collection を使用して ClickHouse と Kafka を連携させる方法'
-keywords: ['Named Collection', '手順', 'kafka']
+title: '名前付きコレクションを用いた ClickHouse と Kafka の統合'
+description: '名前付きコレクション を使用して ClickHouse と Kafka を連携させる方法'
+keywords: ['名前付きコレクション', '手順', 'kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
@@ -10,16 +10,18 @@ doc_type: 'guide'
 
 ## はじめに \{#introduction\}
 
-このガイドでは、named collection（名前付きコレクション）を使用して ClickHouse を Kafka に接続する方法を解説します。named collection 用の設定ファイルを使用することで、次のような利点があります。
-- 設定を一元的かつ容易に管理できる。
-- 設定項目を変更する際に、SQL テーブル定義を変更する必要がない。
-- 単一の設定ファイルを確認するだけで、設定内容のレビューやトラブルシューティングを実施しやすい。
+このガイドでは、名前付きコレクション (名前付きコレクション) を使用して ClickHouse を Kafka に接続する方法を解説します。名前付きコレクション 用の設定ファイルを使用することで、次のような利点があります。
+
+* 設定を一元的かつ容易に管理できる。
+* 設定項目を変更する際に、SQL テーブル定義を変更する必要がない。
+* 単一の設定ファイルを確認するだけで、設定内容のレビューやトラブルシューティングを実施しやすい。
 
 このガイドは、Apache Kafka 3.4.1 と ClickHouse 24.5.1 で検証されています。
 
 ## 前提条件 \{#assumptions\}
 
-このドキュメントでは、以下を前提としています。
+このガイドでは、以下を前提としています。
+
 1. 稼働中の Kafka クラスター。
 2. セットアップ済みで稼働中の ClickHouse クラスター。
 3. SQL の基本的な知識と、ClickHouse および Kafka の設定に関する基本的な理解。
@@ -133,7 +135,7 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### レプリケーテッドテーブルを作成する \{#create-replicated-tables\}
+### レプリケーションされたテーブルを作成する \{#create-replicated-tables\}
 
 最初の Kafka 用テーブルを作成します。
 
@@ -161,7 +163,7 @@ ORDER BY id;
 
 ### マテリアライズドビューの作成 \{#create-materialized-views\}
 
-最初の Kafka テーブルから最初のレプリケートされたテーブルにデータを挿入するマテリアライズドビューを作成します：
+最初の Kafka テーブルから最初のレプリケーションされたテーブルにデータを挿入するmaterialized viewを作成します：
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
@@ -172,7 +174,7 @@ SELECT
 FROM first_kafka_table;
 ```
 
-2つ目の Kafka テーブルから 2つ目のレプリケーテッドテーブルへデータを挿入するマテリアライズドビューを作成します。
+2つ目の Kafka テーブルから 2つ目の レプリケーションされたテーブルへデータを挿入するマテリアライズドビューを作成します。
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
@@ -200,7 +202,7 @@ SELECT * FROM first_replicated_table LIMIT 10;
 SELECT * FROM second_replicated_table LIMIT 10;
 ```
 
-### 補足 \{#note\}
+### 注記 \{#note\}
 
 このガイドでは、両方の Kafka トピックに取り込まれるデータは同一です。実際の環境では、それぞれ異なるデータになるはずです。必要なだけ多くの Kafka クラスターを追加できます。
 
@@ -214,4 +216,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-これで、named collection を用いた ClickHouse と Kafka の統合設定は完了です。Kafka の設定を ClickHouse の `config.xml` ファイルに一元化することで、設定の管理や調整が容易になり、スムーズで効率的な統合を実現できます。
+これで、名前付きコレクション を用いた ClickHouse と Kafka の統合設定は完了です。Kafka の設定を ClickHouse の `config.xml` ファイルに一元化することで、設定の管理や調整が容易になり、スムーズで効率的な統合を実現できます.

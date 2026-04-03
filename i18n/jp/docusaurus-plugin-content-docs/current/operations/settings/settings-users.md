@@ -7,7 +7,7 @@ title: 'ユーザーおよびロールの設定'
 doc_type: 'reference'
 ---
 
-# ユーザーとロールの設定 \{#users-and-roles-settings\}
+# ユーザーおよびロールの設定 \{#users-and-roles-settings\}
 
 `users.xml` 設定ファイルの `users` セクションには、ユーザーの設定が含まれます。
 
@@ -21,10 +21,12 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
 <users>
     <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
+        <!-- Exactly one authentication method may be specified at the users.user_name level. For example: -->
         <password></password>
-        <!-- Or -->
+        <!-- Or (exclusive) -->
         <password_sha256_hex></password_sha256_hex>
-
+ 
+        <!-- Or (exclusive) (N.B. multiple SSH keys are allowed for backwards compatibility) -->
         <ssh_keys>
             <ssh_key>
                 <type>ssh-ed25519</type>
@@ -39,6 +41,20 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
                 <base64_key>AAAAB3NzaC1yc2EAAAADAQABAAABgQCpgqL1SHhPVBOTFlOm0pu+cYBbADzC2jL41sPMawYCJHDyHuq7t+htaVVh2fRgpAPmSEnLEC2d4BEIKMtPK3bfR8plJqVXlLt6Q8t4b1oUlnjb3VPA9P6iGcW7CV1FBkZQEVx8ckOfJ3F+kI5VsrRlEDgiecm/C1VPl0/9M2llW/mPUMaD65cM9nlZgM/hUeBrfxOEqM11gDYxEZm1aRSbZoY4dfdm3vzvpSQ6lrCrkjn3X2aSmaCLcOWJhfBWMovNDB8uiPuw54g3ioZ++qEQMlfxVsqXDGYhXCrsArOVuW/5RbReO79BvXqdssiYShfwo+GhQ0+aLWMIW/jgBkkqx/n7uKLzCMX7b2F+aebRYFh+/QXEj7SnihdVfr9ud6NN3MWzZ1ltfIczlEcFLrLJ1Yq57wW6wXtviWh59WvTWFiPejGjeSjjJyqqB49tKdFVFuBnIU5u/bch2DXVgiAEdQwUrIp1ACoYPq22HFFAYUJrL32y7RxX3PGzuAv3LOc=</base64_key>
             </ssh_key>
         </ssh_keys>
+
+        <!-- Or (exclusive) for multiple authentication methods: -->
+        <auth_methods>
+            <method1>
+                <password></password>
+            </method1>
+            <method2>
+                <password_sha256_hex></password_sha256_hex>
+            </method2>
+            <!-- ... -->
+            <methodN>
+                <!-- ... -->
+            </methodN>
+        </auth_methods>
 
         <access_management>0|1</access_management>
 
@@ -64,7 +80,6 @@ ClickHouse は、ユーザー管理のための [SQL 駆動のワークフロー
     <!-- Other users settings -->
 </users>
 ```
-
 
 ### user_name/password \{#user-namepassword\}
 
@@ -186,6 +201,94 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 他のサポートされているアルゴリズムを用いる場合は、`ssh-ed25519` を `ssh-rsa` または `ecdsa-sha2-nistp256` に置き換えてください。
 
+
+### 複数の認証方式
+
+`<auth_methods>` 要素を使用すると、1 人のユーザーに複数の認証方式を設定できます。これにより、ユーザーは列挙された方式のいずれか 1 つで認証できます。たとえば、1 人のユーザーにパスワードと LDAP 認証情報の両方を設定しておけば、そのどちらでログインしても成功します。
+
+`<auth_methods>` の各子要素は、認証タイプをちょうど 1 つだけ含む、任意の名前のラッパー要素です。ラッパー名 (例: `<method1>`、`<primary>`、`<a1>`) は重要ではなく、実際に使用されるのは内側の認証要素だけです。
+
+**例: 複数のパスワード**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <primary>
+                <password>password_one</password>
+            </primary>
+            <secondary>
+                <password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>
+            </secondary>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+**例: 認証方式の混在**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>plaintext_pass</password>
+            </a1>
+            <a2>
+                <password_sha256_hex>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</password_sha256_hex>
+            </a2>
+            <a3>
+                <ldap>
+                    <server>my_ldap_server</server>
+                </ldap>
+            </a3>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+`<auth_methods>` 内では、以下の認証タイプがサポートされています。
+
+* **`password`** — 平文パスワード
+* **`password_sha256_hex`** — SHA256 パスワードハッシュ
+* **`password_scram_sha256_hex`** — SCRAM-SHA-256 パスワードハッシュ
+* **`password_double_sha1_hex`** — 双重 SHA1 パスワードハッシュ
+* **`ldap`** — LDAP サーバー認証
+* **`kerberos`** — Kerberos 認証
+* **`ssl_certificates`** — SSL 証明書認証
+* **`ssh_keys`** — SSH 鍵認証
+* **`http_authentication`** — HTTP 認証
+
+**ルールと制限事項:**
+
+* `<auth_methods>` は、ユーザーレベルで指定する認証方式と**併用できません**。どちらか一方のみを使用し、両方を併用しないでください。
+* `<auth_methods>` には、少なくとも 1 つの認証方式を含める必要があります。
+* `<auth_methods>` 内の各ラッパー要素には、認証タイプを必ず 1 つだけ含める必要があります (後方互換性のため、`<ssh_keys>` は複数含めることができる例外です) 。
+* TOTP (`<time_based_one_time_password>`) はユーザーレベル (`<auth_methods>` の外側) で指定し、リスト内のすべてのパスワードベースの方式に適用されます。TOTP を有効にする場合は、少なくとも 1 つのパスワードベースの方式が必要です。
+
+**例: TOTP を使用する `auth_methods`**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>my_password</password>
+            </a1>
+            <a2>
+                <ldap>
+                    <server>ldap_server_1</server>
+                </ldap>
+            </a2>
+        </auth_methods>
+        <time_based_one_time_password>
+            <secret>JBSWY3DPEHPK3PXP</secret>
+        </time_based_one_time_password>
+    </my_user>
+</users>
+```
+
+この例では、パスワードベースの方式 (`<password>`) には TOTP 検証が適用される一方で、LDAP 方式はそれとは別に外部サーバーに対して認証を行います。
 
 ### access_management {#access_management-user-setting}
 

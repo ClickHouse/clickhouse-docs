@@ -896,6 +896,8 @@ TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 
 Семейство движков таблиц `MergeTree` может хранить данные на нескольких блочных устройствах. Например, это может быть полезно, когда данные определённой таблицы фактически разделены на «горячие» и «холодные». Самые свежие данные запрашиваются регулярно, но занимают небольшой объём. Напротив, большой «хвост» исторических данных запрашивается редко. Если доступно несколько дисков, «горячие» данные могут располагаться на быстрых дисках (например, NVMe SSD или в памяти), а «холодные» — на относительно медленных (например, HDD).
 
+Это применимо ко всем типам дисков, включая S3 и другие диски объектного хранилища. Например, можно распределять данные между несколькими S3 бакетами в пределах одного тома или создать многоуровневые политики, которые перемещают данные с локальных дисков в S3. Подробности см. в [Использование дисков S3 с несколькими томами](#s3-multiple-volumes).
+
 Часть данных (data part) — минимальная единица, которую можно перемещать, для таблиц на движке `MergeTree`. Данные, принадлежащие одной части, хранятся на одном диске. Части данных могут перемещаться между дисками в фоновом режиме (в соответствии с пользовательскими настройками), а также с помощью запросов [ALTER](/sql-reference/statements/alter/partition).
 
 ### Термины \{#terms\}
@@ -1142,14 +1144,84 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 </storage_configuration>
 ```
 
-См. также [настройку вариантов внешних хранилищ](/operations/storing-data.md/#configuring-external-storage).
+См. также [настройка параметров внешнего хранилища](/operations/storing-data.md/#configuring-external-storage).
+
+### Использование дисков S3 с несколькими томами \{#s3-multiple-volumes\}
+
+Диски S3 (и других объектных хранилищ) можно использовать в политиках хранения с несколькими дисками и томами так же, как локальные диски. Это позволяет распределять данные между несколькими S3 бакетами в пределах одного тома (по аналогии с JBOD) или настраивать многоуровневые политики хранения с томами S3.
+
+Например, чтобы распределять данные между двумя S3 бакетами по кругу:
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+Вы также можете комбинировать локальные тома и тома S3 в многоуровневой политике, например перемещать данные с локального SSD в S3 по мере их старения:
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+При использовании `use_environment_credentials` для аутентификации в S3 учетные данные окружения (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`) являются общими для всех S3-дисков. Использовать разные учетные данные окружения для разных дисков невозможно. Если для каждого S3-диска нужны свои учетные данные, вместо этого задайте явные настройки `access_key_id` и `secret_access_key` для каждого диска.
+:::
 
 Можно настроить нереплицируемые таблицы MergeTree для сценария с одним писателем и многими читателями на общем хранилище. Это обеспечивается автоматическим обновлением списка частей, которое можно настроить на стороне читателей. Обратите внимание, что для этого требуются общие метаданные файловой системы между репликами (или `table_disk = true` с локальным диском таблицы). См. раздел [refresh&#95;parts&#95;interval и table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk).
 
 :::note конфигурация кэша
 Версии ClickHouse с 22.3 по 22.7 используют другую конфигурацию кэша, см. [использование локального кэша](/operations/storing-data.md/#using-local-cache), если вы используете одну из этих версий.
 :::
-
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
@@ -1192,6 +1264,41 @@ ALTER TABLE tab DROP STATISTICS a;
 
 Эта лёгкая статистика агрегирует информацию о распределении значений в столбцах. Статистика хранится в каждой части и обновляется при каждой вставке.
 Её можно использовать для оптимизации `prewhere` только если включить `set use_statistics = 1`.
+
+#### Отсечение частей по статистике \{#part-pruning-with-statistics\}
+
+Когда включён параметр `use_statistics_for_part_pruning`, статистику можно использовать для отсечения частей.
+В настоящее время отсечение частей поддерживается только статистикой `MinMax`. Если для столбца определена статистика MinMax, ClickHouse отслеживает минимальные и максимальные значения этого столбца в каждой части.
+Отсечение частей позволяет пропускать чтение целых частей данных, если условие фильтра в запросе не может соответствовать ни одной строке в этой части.
+
+**Пример:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
 
 ### Доступные типы статистики столбцов \{#available-types-of-column-statistics\}
 

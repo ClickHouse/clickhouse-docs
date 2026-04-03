@@ -22,7 +22,7 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-[Google Cloud Marketplace](https://console.cloud.google.com/marketplace)에서 약정 계약을 통해 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(Private Offer)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정할 수 있도록 해 줍니다.
+[GCP Marketplace](https://console.cloud.google.com/marketplace)에서 약정 계약을 통해 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(비공개 오퍼)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정할 수 있도록 해 줍니다.
 
 
 ## 선행 조건 \{#prerequisites\}

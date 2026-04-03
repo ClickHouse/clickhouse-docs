@@ -4753,6 +4753,18 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Таймаут при установлении соединения с репликой для hedged-запросов
 
+## highlight_max_matches_per_row \{#highlight_max_matches_per_row\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000"},{"label": "Новая настройка, ограничивающая число совпадений подсветки в строке для защиты от чрезмерного потребления памяти."}]}]} />
+
+Задаёт максимальное число совпадений подсветки в одной строке в функции [highlight](/sql-reference/functions/string-search-functions#highlight). Используйте её, чтобы избежать чрезмерного потребления памяти при подсветке часто повторяющихся шаблонов в больших текстах.
+
+Возможные значения:
+
+* Положительное целое число.
+
 ## hnsw_candidate_list_size_for_search \{#hnsw_candidate_list_size_for_search\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />
@@ -6844,21 +6856,28 @@ Exception: Total regexp lengths too large.
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-Максимальный размер блоков (в количестве строк), формируемых при вставке в таблицу.
+Максимальный размер блоков (в строках), формируемых для вставки в таблицу.
 
-Этот параметр управляет формированием блоков при разборе форматов. Когда сервер разбирает построчные форматы ввода (CSV, TSV, JSONEachRow и т. д.) или формат Values из любого интерфейса (HTTP, clickhouse-client с inline-данными, gRPC, протокол PostgreSQL wire), он использует это значение, чтобы определить момент, когда нужно сформировать и выдать блок.
-Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла данные разбирает сам клиент, и этот параметр применяется на стороне клиента.
+Этот параметр управляет формированием блоков в двух контекстах:
 
-Блок формируется, когда выполняется одно из условий:
+1. Разбор форматов: когда сервер разбирает построчные входные форматы (CSV, TSV, JSONEachRow и т. д.) из любого интерфейса (HTTP, clickhouse-client с inline-данными, gRPC, протокол PostgreSQL wire), блоки формируются и передаются, когда:
 
-- Минимальные пороги (AND): достигнуты и min_insert_block_size_rows, и min_insert_block_size_bytes
-- Максимальные пороги (OR): достигнут один из max_insert_block_size или max_insert_block_size_bytes
+   * Достигнуты оба — min&#95;insert&#95;block&#95;size&#95;rows И min&#95;insert&#95;block&#95;size&#95;bytes, ИЛИ
+   * Достигнут один из — max&#95;insert&#95;block&#95;size&#95;rows ИЛИ max&#95;insert&#95;block&#95;size&#95;bytes
 
-Значение по умолчанию немного больше, чем max_block_size. Причина в том, что некоторые движки таблиц (`*MergeTree`) формируют часть данных (data part) на диске для каждого вставленного блока, а это довольно крупная сущность. Аналогично, таблицы `*MergeTree` сортируют данные во время вставки, и достаточно большой размер блока позволяет отсортировать больше данных в RAM.
+   Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла сам клиент разбирает данные, и этот параметр применяется на стороне клиента.
+
+2. Операции INSERT: во время запросов INSERT, а также когда данные проходят через materialized views, поведение этого параметра зависит от `use_strict_insert_block_limits`:
+
+   * Когда включён: блоки формируются и передаются, когда:
+     * Минимальные пороги (И): достигнуты оба — min&#95;insert&#95;block&#95;size&#95;rows И min&#95;insert&#95;block&#95;size&#95;bytes
+     * Максимальные пороги (ИЛИ): достигнут один из — max&#95;insert&#95;block&#95;size&#95;rows ИЛИ max&#95;insert&#95;block&#95;size&#95;bytes
+
+   * Когда отключён: блоки формируются и передаются, когда достигается один из порогов: min&#95;insert&#95;block&#95;size&#95;rows или min&#95;insert&#95;block&#95;size&#95;bytes. Параметры max&#95;insert&#95;block&#95;size не применяются.
 
 Возможные значения:
 
-- Положительное целое число.
+* Положительное целое число.
 
 ## max_insert_block_size_bytes \{#max_insert_block_size_bytes\}
 
@@ -8025,21 +8044,25 @@ ClickHouse использует эту настройку при чтении д
 
 Этот параметр управляет формированием блоков в двух контекстах:
 
-1. Разбор форматов: когда сервер разбирает построчные входные форматы (CSV, TSV, JSONEachRow и т. д.) из любого интерфейса (HTTP, clickhouse-client с inline-данными, gRPC, протокол PostgreSQL wire), он использует этот параметр, чтобы определить, когда нужно сформировать и передать блок.  
-Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла сам клиент разбирает данные, и этот параметр применяется на стороне клиента.
-2. Операции INSERT: во время запросов `INSERT...SELECT`, а также когда данные проходят через materialized views, блоки укрупняются на основе этого параметра перед записью в хранилище.
+1. Разбор форматов: когда сервер разбирает построчные входные форматы (CSV, TSV, JSONEachRow и т. д.) из любого интерфейса (HTTP, clickhouse-client с inline-данными, gRPC, протокол PostgreSQL wire), блоки формируются и передаются, когда:
 
-Блок при разборе форматов формируется и передаётся, когда выполняется одно из условий:
+   * Достигнуты оба порога min&#95;insert&#95;block&#95;size&#95;rows И min&#95;insert&#95;block&#95;size&#95;bytes, ИЛИ
+   * Достигнут один из порогов max&#95;insert&#95;block&#95;size&#95;rows ИЛИ max&#95;insert&#95;block&#95;size&#95;bytes
 
-- Минимальные пороги (И): достигнуты оба — min_insert_block_size_rows И min_insert_block_size_bytes
-- Максимальные пороги (ИЛИ): достигнут один из — max_insert_block_size ИЛИ max_insert_block_size_bytes
+   Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла сам клиент разбирает данные, и этот параметр применяется на стороне клиента.
 
-Блоки меньшего размера при операциях вставки объединяются в более крупные и формируются, когда достигается один из порогов: min_insert_block_size_rows или min_insert_block_size_bytes.
+2. Операции INSERT: во время запросов INSERT и когда данные проходят через materialized views, поведение этого параметра зависит от `use_strict_insert_block_limits`:
+
+   * Когда включено: блоки формируются и передаются, когда:
+     * Минимальные пороги (И): достигнуты оба — min&#95;insert&#95;block&#95;size&#95;rows И min&#95;insert&#95;block&#95;size&#95;bytes
+     * Максимальные пороги (ИЛИ): достигнут один из — max&#95;insert&#95;block&#95;size&#95;rows ИЛИ max&#95;insert&#95;block&#95;size&#95;bytes
+
+   * Когда отключено (по умолчанию): блоки формируются и передаются, когда достигается min&#95;insert&#95;block&#95;size&#95;rows ИЛИ min&#95;insert&#95;block&#95;size&#95;bytes. Параметры max&#95;insert&#95;block&#95;size не применяются.
 
 Возможные значения:
 
-- Положительное целое число.
-- 0 — параметр не участвует в формировании блоков.
+* Положительное целое число.
+* 0 — параметр не участвует в формировании блоков.
 
 ## min_insert_block_size_rows_for_materialized_views \{#min_insert_block_size_rows_for_materialized_views\}
 
@@ -8945,6 +8968,14 @@ FROM default.fuse_tbl AS __table1
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Эта оптимизация во многих случаях не имеет смысла."}]}]}/>
 
 Оптимизировать тривиальные запросы вида `INSERT INTO table SELECT ... FROM TABLES`
+
+## optimize_truncate_order_by_after_group_by_keys \{#optimize_truncate_order_by_after_group_by_keys\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY."}]}]} />
+
+Удалять конечные элементы ORDER BY, как только префикс ORDER BY охватывает все ключи GROUP BY.
 
 ## optimize_uniq_to_count \{#optimize_uniq_to_count\}
 
@@ -11999,6 +12030,44 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части
+
+## use_statistics_for_part_pruning \{#use_statistics_for_part_pruning\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка, позволяющая использовать статистику для отсечения частей при выполнении запроса."}]}]} />
+
+Использовать статистику для фильтрации частей при выполнении запроса.
+
+Если настройка включена, при отсечении в запросах SELECT будет использоваться статистика столбцов (например, статистика MinMax), чтобы исключать части, которые не могут содержать подходящие данные, ещё до чтения каких-либо данных.
+
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
+
+## use_strict_insert_block_limits \{#use_strict_insert_block_limits\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для строгого применения минимальных и максимальных границ размера блока при вставках. Когда min < max, приоритет имеют максимальные ограничения."}]}]} />
+
+При включении строго применяет ограничения как на минимальный, так и на максимальный размер блока вставки.
+
+Блок формируется, когда:
+
+* Минимальные пороги (AND): достигнуты и min&#95;insert&#95;block&#95;size&#95;rows, и min&#95;insert&#95;block&#95;size&#95;bytes.
+* Максимальные пороги (OR): достигнут либо max&#95;insert&#95;block&#95;size&#95;rows, либо max&#95;insert&#95;block&#95;size&#95;bytes.
+
+При отключении блок формируется, когда:
+
+* Минимальные пороги (OR): достигнуты min&#95;insert&#95;block&#95;size&#95;rows или min&#95;insert&#95;block&#95;size&#95;bytes.
+
+**Примечание**: Если максимальные значения настроек меньше минимальных, приоритет имеют максимальные ограничения, и блоки будут формироваться до достижения минимальных порогов.
+
+**Примечание**: Эта настройка автоматически отключается для асинхронных вставок, поскольку при асинхронных вставках к каждой записи добавляются токены дедупликации, которые несовместимы с разбиением на блоки, необходимым для строгого соблюдения этих ограничений.
+
+По умолчанию отключена.
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

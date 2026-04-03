@@ -163,13 +163,14 @@ ClickHouse は、[`DataLakeCatalog`](/engines/database-engines/datalakecatalog) 
 
 現在、次のカタログがサポートされています。セットアップ手順の詳細については、各カタログのリファレンスガイドを参照してください。
 
-| Catalog | Formats | Read | Create table | INSERT | Reference guide |
-|---------|---------|:-:|:-:|:-:|---------|
-| [AWS Glue](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Glue カタログガイド](/use-cases/data-lake/glue-catalog) |
-| [Databricks Unity](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental | ❌ | ❌ | [Unity カタログガイド](/use-cases/data-lake/unity-catalog) |
-| [Iceberg REST](/use-cases/data-lake/rest-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [REST カタログガイド](/use-cases/data-lake/rest-catalog) |
-| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Lakekeeper カタログガイド](/use-cases/data-lake/lakekeeper-catalog) |
-| [Project Nessie](/use-cases/data-lake/nessie-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Nessie カタログガイド](/use-cases/data-lake/nessie-catalog) |
-| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [OneLake カタログガイド](/use-cases/data-lake/onelake-catalog) |
+| Catalog                                                        | Formats        |      Read      | Create table | INSERT | Reference guide                                               |
+| -------------------------------------------------------------- | -------------- | :------------: | :----------: | :----: | ------------------------------------------------------------- |
+| [AWS Glue Catalog](/use-cases/data-lake/glue-catalog)          | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [Glue カタログガイド](/use-cases/data-lake/glue-catalog)             |
+| [BigLake Metastore](/use-cases/data-lake/biglake-catalog)      | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [BigLake Metastore ガイド](/use-cases/data-lake/biglake-catalog) |
+| [Databricks Unity Catalog](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental |       ❌      |    ❌   | [Unity Catalog ガイド](/use-cases/data-lake/unity-catalog)       |
+| [Iceberg REST](/use-cases/data-lake/rest-catalog)              | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [REST カタログガイド](/use-cases/data-lake/rest-catalog)             |
+| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog)          | Iceberg        | ✅ Experimental |       ❌      |    ❌   | [Lakekeeper カタログガイド](/use-cases/data-lake/lakekeeper-catalog) |
+| [Project Nessie](/use-cases/data-lake/nessie-catalog)          | Iceberg        | ✅ Experimental |       ❌      |    ❌   | [Nessie カタログガイド](/use-cases/data-lake/nessie-catalog)         |
+| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog)      | Iceberg        |     ✅ Beta     |       ❌      |    ❌   | [OneLake カタログガイド](/use-cases/data-lake/onelake-catalog)       |
 
-現在、すべてのカタログ連携では実験的またはベータ版の設定を有効にする必要があり、**読み取り専用**アクセスのみが提供されます。つまり、カタログ接続経由でテーブルに対してクエリを実行することはできますが、テーブルを作成したり書き込んだりすることはできません。カタログから ClickHouse にデータをロードして分析を高速化するには、[分析の高速化ガイド](/use-cases/data-lake/getting-started/accelerating-analytics)で説明しているように `INSERT INTO SELECT` を使用します。オープンテーブルフォーマットへデータを書き戻すには、[データ書き込みガイド](/use-cases/data-lake/getting-started/writing-data)で説明しているように、スタンドアロンの Iceberg テーブルを作成します。
+現在、すべてのカタログ連携では実験的またはベータ版の設定を有効にする必要があり、**読み取り専用**アクセスのみが提供されます。つまり、カタログ接続経由でテーブルに対してクエリを実行することはできますが、テーブルを作成したり書き込んだりすることはできません。カタログから ClickHouse にデータをロードして分析を高速化するには、[分析の高速化ガイド](/use-cases/data-lake/getting-started/accelerating-analytics)で説明しているように `INSERT INTO SELECT` を使用します。オープンなテーブル形式へデータを書き戻すには、[データ書き込みガイド](/use-cases/data-lake/getting-started/writing-data)で説明しているように、スタンドアロンの Iceberg テーブルを作成します。

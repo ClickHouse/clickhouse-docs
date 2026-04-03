@@ -1,75 +1,79 @@
+import Recommendations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
+
 # NixOS에 ClickHouse 설치 \{#install-from-nix\}
 
 > ClickHouse는 Nixpkgs 저장소에서 제공되며 **Linux**와 **macOS**에서 Nix를 사용해 설치할 수 있습니다.
 
 <VerticalStepper>
+  ## 권장 사항 검토
 
-## Nix를 사용해 ClickHouse 설치 \{#install-clickhouse-using-nix\}
+  <Recommendations />
 
-Nix를 사용하면 ClickHouse를 시스템에 영구적으로 추가하지 않고도 설치할 수 있습니다:
+  ## Nix를 사용해 ClickHouse 설치
 
-```bash
-# 최신 안정(stable) 버전 설치
-nix shell nixpkgs#clickhouse
+  Nix를 사용하면 ClickHouse를 시스템에 영구적으로 추가하지 않고도 설치할 수 있습니다:
 
-# 또는 LTS 버전 설치
-nix shell nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 최신 안정(stable) 버전 설치
+  nix shell nixpkgs#clickhouse
 
-이렇게 하면 현재 셸 세션에서 `clickhouse` 바이너리를 사용할 수 있습니다.
+  # 또는 LTS 버전 설치
+  nix shell nixpkgs#clickhouse-lts
+  ```
 
-- `nixpkgs#clickhouse` 패키지는 최신 안정(stable) 버전을 제공합니다.
-- `nixpkgs#clickhouse-lts` 패키지는 장기 지원(Long Term Support) 버전을 제공합니다.
-- 두 패키지는 모두 Linux와 macOS에서 사용할 수 있습니다.
+  이렇게 하면 현재 셸 세션에서 `clickhouse` 바이너리를 사용할 수 있습니다.
 
-## 영구 설치 \{#permanent-installation\}
+  * `nixpkgs#clickhouse` 패키지는 최신 안정(stable) 버전을 제공합니다.
+  * `nixpkgs#clickhouse-lts` 패키지는 장기 지원(Long Term Support) 버전을 제공합니다.
+  * 두 패키지는 모두 Linux와 macOS에서 사용할 수 있습니다.
 
-시스템에 ClickHouse를 영구적으로 설치하려면:
+  ## 영구 설치
 
-**NixOS 사용자**는 `configuration.nix`에 다음을 추가합니다:
+  시스템에 ClickHouse를 영구적으로 설치하려면:
 
-```nix
-environment.systemPackages = with pkgs; [
-  clickhouse
-];
-```
+  **NixOS 사용자**는 `configuration.nix`에 다음을 추가합니다:
 
-그런 다음 시스템을 재빌드합니다:
+  ```nix
+  environment.systemPackages = with pkgs; [
+    clickhouse
+  ];
+  ```
 
-```bash
-sudo nixos-rebuild switch
-```
+  그런 다음 시스템을 재빌드합니다:
 
-**NixOS가 아닌 사용자**는 Nix profile을 사용해 설치합니다:
+  ```bash
+  sudo nixos-rebuild switch
+  ```
 
-```bash
-# 최신 안정(stable) 버전 설치
-nix profile install nixpkgs#clickhouse
+  **NixOS가 아닌 사용자**는 Nix profile을 사용해 설치합니다:
 
-# 또는 LTS 버전 설치
-nix profile install nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 최신 안정(stable) 버전 설치
+  nix profile install nixpkgs#clickhouse
 
-## ClickHouse 서버 시작 \{#start-clickhouse-server\}
+  # 또는 LTS 버전 설치
+  nix profile install nixpkgs#clickhouse-lts
+  ```
 
-설치 후에는 다음과 같이 ClickHouse 서버를 시작합니다:
+  ## ClickHouse 서버 시작
 
-```bash
-clickhouse-server
-```
+  설치 후에는 다음과 같이 ClickHouse 서버를 시작합니다:
 
-기본적으로 서버는 기본 구성으로 시작되며 `localhost:9000`에서 수신 대기합니다.
+  ```bash
+  clickhouse-server
+  ```
 
-NixOS에서 운영 환경으로 사용할 경우 ClickHouse를 시스템 서비스로 구성하는 것이 좋습니다. 사용 가능한 구성 옵션은 [NixOS 매뉴얼](https://search.nixos.org/options?query=clickhouse)을 참고하십시오.
+  기본적으로 서버는 기본 구성으로 시작되며 `localhost:9000`에서 수신 대기합니다.
 
-## ClickHouse 클라이언트 시작 \{#start-clickhouse-client\}
+  NixOS에서 운영 환경으로 사용할 경우 ClickHouse를 시스템 서비스로 구성하는 것이 좋습니다. 사용 가능한 구성 옵션은 [NixOS 매뉴얼](https://search.nixos.org/options?query=clickhouse)을 참고하십시오.
 
-ClickHouse 서버에 연결하려면 새 터미널을 열고 다음을 실행합니다:
+  ## ClickHouse 클라이언트 시작
 
-```bash
-clickhouse-client
-```
+  ClickHouse 서버에 연결하려면 새 터미널을 열고 다음을 실행합니다:
 
+  ```bash
+  clickhouse-client
+  ```
 </VerticalStepper>
 
 ## Nix 패키지 소개 \{#about-nix-package\}

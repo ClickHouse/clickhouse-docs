@@ -894,7 +894,9 @@ ClickHouse はデータが有効期限切れであることを検出すると、
 
 ### はじめに \{#introduction\}
 
-`MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイス上にデータを保存できます。たとえば、特定のテーブルのデータが事実上「ホット」と「コールド」に分割されている場合に有用です。最新のデータは頻繁に参照されますが、必要な容量は小さくて済みます。対照的に、裾の重い履歴データはまれにしか参照されません。複数のディスクが利用可能な場合、「ホット」データは高速なディスク（たとえば NVMe SSD やメモリ上）に配置し、「コールド」データは比較的低速なディスク（たとえば HDD）上に配置できます。
+`MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイス上にデータを保存できます。たとえば、特定のテーブルのデータが事実上「ホット」と「コールド」に分割されている場合に有用です。最新のデータは頻繁に参照されますが、必要な容量は小さくて済みます。対照的に、裾の重い履歴データはまれにしか参照されません。複数のディスクが利用可能な場合、「ホット」データは高速なディスク (たとえば NVMe SSD やメモリ上) に配置し、「コールド」データは比較的低速なディスク (たとえば HDD) 上に配置できます。
+
+これは、S3 やその他のオブジェクトストレージディスクを含む、すべてのディスクの種類に当てはまります。たとえば、単一のボリューム内で複数の S3 バケットにデータを分散したり、ローカルディスクから S3 にデータを移動する階層型ポリシーを作成したりできます。詳細については、[複数ボリュームで S3 ディスクを使用する](#s3-multiple-volumes) を参照してください。
 
 データパーツは、`MergeTree` エンジンのテーブルにおける最小の移動可能な単位です。1 つのパーツに属するデータは 1 台のディスク上に保存されます。データパーツは、バックグラウンドでユーザー設定に従ってディスク間を移動できるほか、[ALTER](/sql-reference/statements/alter/partition) クエリを使用して移動することもできます。
 
@@ -1143,7 +1145,79 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
-共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること（またはテーブルローカルディスクを使用する場合の `table_disk = true`）が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
+
+### 複数ボリュームで S3 ディスクを使用する \{#s3-multiple-volumes\}
+
+S3 (およびその他のオブジェクトストレージ) ディスクは、ローカルディスクと同様に、マルチディスクおよびマルチボリュームのストレージポリシーで使用できます。これにより、1 つのボリューム内の複数の S3 バケットにデータを分散したり (JBOD 方式) 、S3 ボリュームを使用した階層型ストレージポリシーを設定したりできます。
+
+たとえば、2 つの S3 バケットにラウンドロビン方式でデータを分散するには:
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+ローカルボリュームと S3 ボリュームを階層化ポリシーで組み合わせることもできます。たとえば、データが古くなるにつれてローカル SSD から S3 に移動する、といった運用が可能です。
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+S3 認証に `use_environment_credentials` を使用する場合、環境認証情報 (`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_SESSION_TOKEN`) はすべての S3 ディスクで共有されます。ディスクごとに異なる環境認証情報を使用することはできません。S3 ディスクごとに異なる認証情報が必要な場合は、代わりにディスクごとに `access_key_id` および `secret_access_key` を明示的に設定してください。
+:::
+
+共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること (またはテーブルローカルディスクを使用する場合の `table_disk = true`) が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
 
 :::note キャッシュ設定
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
@@ -1191,6 +1265,41 @@ ALTER TABLE tab DROP STATISTICS a;
 
 これらの軽量な STATISTICS は、カラム内の値の分布に関する情報を集約します。STATISTICS は各パートに保存され、挿入のたびに更新されます。
 `set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に使用できます。
+
+#### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
+
+`use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
+現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
+
+**例:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
+
 
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
 

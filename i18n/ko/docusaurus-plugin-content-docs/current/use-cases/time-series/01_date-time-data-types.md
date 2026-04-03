@@ -1,11 +1,11 @@
 ---
 title: '날짜 및 시간 데이터 타입 - 시계열'
 sidebar_label: '날짜 및 시간 데이터 타입'
-description: 'ClickHouse에서 사용하는 시계열 데이터 타입.'
+description: 'ClickHouse의 시계열용 데이터 타입입니다.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'data types', 'temporal data', 'timestamp']
+keywords: ['시계열', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', '데이터 타입', '시간 관련 데이터', '타임스탬프']
 show_related_blogs: true
-doc_type: 'reference'
+doc_type: '참조'
 ---
 
 # 날짜 및 시간 데이터 타입 \{#date-and-time-data-types\}

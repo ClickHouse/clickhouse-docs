@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/dashboards
-title: 'Визуализации и дашборды с ClickStack'
-sidebar_label: 'Дашборды'
+title: 'Визуализации и панели мониторинга с ClickStack'
+sidebar_label: 'Панели мониторинга'
 pagination_prev: null
 pagination_next: null
-description: 'Визуализации и дашборды с ClickStack'
+description: 'Визуализации и панели мониторинга с ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'дашборды', 'визуализация', 'мониторинг', 'обсервабилити']
+keywords: ['clickstack', 'панели мониторинга', 'визуализация', 'мониторинг', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,9 +34,9 @@ import save_filter_values from '@site/static/images/clickstack/dashboards/save-f
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import Tagging from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack поддерживает визуализацию событий и имеет встроенные средства построения графиков в ClickStack UI (HyperDX). Эти графики можно добавлять на дашборды для совместного использования с другими пользователями.
+ClickStack поддерживает визуализацию событий и имеет встроенные средства построения графиков в ClickStack UI (HyperDX). Эти графики можно добавлять на панели мониторинга для совместного использования с другими пользователями.
 
-Визуализации могут создаваться на основе трассировок, метрик, логов или любых пользовательски определённых широких схем событий.
+Визуализации могут создаваться на основе трейсов, метрик, логов или любых пользовательски определённых широких схем событий.
 
 
 ## Создание визуализаций \{#creating-visualizations\}

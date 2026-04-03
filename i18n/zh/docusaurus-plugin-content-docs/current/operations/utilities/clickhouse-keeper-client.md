@@ -79,17 +79,18 @@ keeper foo bar
 
 ## 命令 \{#clickhouse-keeper-client-commands\}
 
-* `ls '[path]'` -- 列出指定路径下的节点 (默认：当前工作目录)
+* `ls '[path]' [watch_id]` -- 列出指定路径下的节点 (默认：当前工作目录)。可选择设置一个由 `watch_id` 标识的子节点 watch
 * `cd '[path]'` -- 切换工作路径 (默认 `.`)
 * `cp '<src>' '<dest>'`  -- 将 `src` 节点复制到 `dest` 路径
 * `cpr '<src>' '<dest>'`  -- 将 `src` 节点的子树复制到 `dest` 路径
 * `mv '<src>' '<dest>'`  -- 将 `src` 节点移动到 `dest` 路径
 * `mvr '<src>' '<dest>'`  -- 将 `src` 节点的子树移动到 `dest` 路径
-* `exists '<path>'` -- 如果节点存在返回 `1`，否则返回 `0`
+* `exists '<path>' [watch_id]` -- 如果节点存在则返回 `1`，否则返回 `0`。可选择设置一个由 `watch_id` 标识的 watch
 * `set '<path>' <value> [version]` -- 更新节点的值。仅当版本匹配时才更新 (默认：-1)
 * `create '<path>' <value> [mode]` -- 使用给定值创建新节点
 * `touch '<path>'` -- 创建一个值为空字符串的新节点。如果节点已存在则不会抛出异常
-* `get '<path>'` -- 返回节点的值
+* `get '<path>' [watch_id]` -- 返回节点的值。可选择设置一个由 `watch_id` 标识的数据 watch
+* `watch <watch_id> [timeout_seconds]` -- 等待由 `watch_id` 标识的 watch 事件，并打印事件类型和路径。如果指定了 `timeout_seconds`，则在超时后返回错误
 * `rm '<path>' [version]` -- 仅在版本匹配时删除该节点 (默认：-1)
 * `rmr '<path>' [limit]` -- 当子树大小小于给定限制时递归删除路径。需要确认 (默认限制 = 100)
 * `flwc <command>` -- 执行 four-letter-word 命令

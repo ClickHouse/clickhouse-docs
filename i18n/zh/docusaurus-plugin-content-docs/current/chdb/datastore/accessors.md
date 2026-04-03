@@ -2,7 +2,7 @@
 title: 'DataStore 访问器'
 sidebar_label: '访问器'
 slug: /chdb/datastore/accessors
-description: '字符串、DateTime、数组、JSON、URL、IP 和地理（Geo）访问器，提供 185+ 种方法'
+描述: '字符串、DateTime、数组、JSON、URL、IP 和地理（Geo）访问器，提供 185+ 种方法'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
 doc_type: 'reference'
 ---

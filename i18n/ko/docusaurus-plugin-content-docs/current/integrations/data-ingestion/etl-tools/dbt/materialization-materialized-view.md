@@ -78,12 +78,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 --mv2:end
 ```
 
-> 중요!
->
-> 여러 개의 materialized view(MV)를 사용하는 모델을 업데이트할 때, 특히 MV 이름 중 하나를 변경하는 경우,
-> dbt-clickhouse는 기존 MV를 자동으로 삭제하지 않습니다. 대신
-> 다음과 같은 경고 메시지가 표시됩니다:
-> `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::warning
+여러 개의 materialized view(MV)를 사용하는 모델을 업데이트할 때, 특히 MV 이름 중 하나를 변경하는 경우,
+dbt-clickhouse는 기존 MV를 자동으로 삭제하지 않습니다. 대신
+다음과 같은 경고 메시지가 표시됩니다:
+
+`Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::
 
 
 ### 대상 테이블 스키마 반복 처리 방법 \{#how-to-iterate-the-target-table-schema\}
@@ -128,7 +129,7 @@ select a,b,c from {{ source('raw', 'table_2') }}
 :::
 
 
-## 명시적 대상(explicit target)을 사용한 materialization (베타) \{#explicit-target\}
+## 명시적 대상을 사용한 머티리얼라이제이션 (베타) \{#explicit-target\}
 
 :::warning Beta
 이 기능은 베타 단계이며 **dbt-clickhouse 버전 1.10**부터 사용할 수 있습니다. API는 커뮤니티 피드백에 따라 변경될 수 있습니다.
@@ -137,26 +138,26 @@ select a,b,c from {{ source('raw', 'table_2') }}
 기본적으로 dbt-clickhouse는 하나의 모델 내에서 대상 테이블과 materialized views를 모두 생성하고 관리합니다(위에서 설명한 [암시적 대상](#implicit-target) 접근 방식). 이 접근 방식에는 다음과 같은 제한 사항이 있습니다.
 
 * 모든 리소스(대상 테이블 + MVs)가 동일한 설정을 공유합니다. 여러 MV가 동일한 대상 테이블을 가리키는 경우, `UNION ALL` 문법을 사용하여 함께 정의해야 합니다.
-* 이러한 모든 리소스를 개별적으로 실행(iterate)할 수 없고, 하나의 동일한 모델 파일을 사용하여 관리해야 합니다.
+* 이러한 리소스는 어느 것도 개별적으로 iterate할 수 없으며, 모두 동일한 모델 파일을 사용하여 관리해야 합니다.
 * 각 MV의 이름을 쉽게 제어할 수 없습니다.
 * 모든 설정이 대상 테이블과 MVs 사이에서 공유되므로, 각 리소스를 개별적으로 구성하기 어렵고 어떤 설정이 어떤 리소스에 속하는지 구분하기 어렵습니다.
 
-**explicit target** 기능을 사용하면 대상 테이블을 일반 `table` materialization으로 별도로 정의한 다음, materialized view 모델에서 이를 참조할 수 있습니다.
+**명시적 대상** 기능을 사용하면 대상 테이블을 일반 `table` 머티리얼라이제이션으로 별도로 정의한 다음, materialized view 모델에서 이를 참조할 수 있습니다.
 
 ### Benefits \{#explicit-target-benefits\}
 
-- **리소스 완전 분리**: 이제 각 리소스를 개별적으로 정의할 수 있어 가독성이 향상됩니다.
-- **dbt와 CH 간 1:1 리소스 매핑**: 이제 dbt 도구를 사용해 리소스를 각각 관리하고 반복(iterate)할 수 있습니다.
-- **다양한 구성 사용 가능**: 이제 각 리소스에 서로 다른 구성을 적용할 수 있습니다.
-- **네이밍 규칙 유지 불필요**: 이제 모든 리소스는 `_mv`와 같은 MV용 커스텀 이름이 아니라, 사용자가 지정한 이름으로 생성됩니다.
+* **리소스 완전 분리**: 이제 각 리소스를 개별적으로 정의할 수 있어 가독성이 향상됩니다.
+* **dbt와 CH 간 1:1 리소스 매핑**: 이제 dbt 도구를 사용해 리소스를 각각 관리하고 반복(iterate)할 수 있습니다.
+* **다양한 구성 사용 가능**: 이제 각 리소스에 서로 다른 구성을 적용할 수 있습니다.
+* **네이밍 규칙 유지 불필요**: 이제 모든 리소스는 `_mv`와 같은 MV용 커스텀 이름이 아니라, 사용자가 지정한 이름으로 생성됩니다.
 
 ### Limitations \{#explicit-target-limitations\}
 
-- 대상 테이블 정의는 dbt 관점에서 자연스럽지 않습니다. 소스 테이블에서 읽어 오는 SQL이 아니므로 이 부분에서는 dbt의 검증을 사용할 수 없습니다. MV의 SQL은 계속해서 dbt 유틸리티를 사용해 검증되며, 대상 테이블 컬럼과의 호환성은 ClickHouse 수준에서 검증됩니다.
-- **`ref()` 함수의 제약과 관련해 몇 가지 문제를 발견했습니다**: 모델 간 참조를 위해 `ref()`를 사용해야 하지만, 상류(upstream) 모델만 참조할 수 있고 하류(downstream) 모델은 참조할 수 없습니다. 이로 인해 이번 구현에서 몇 가지 문제가 발생합니다. dbt-core 리포지토리에 이슈를 생성했으며, 현재 이에 대해 [가능한 해결책을 논의 중입니다 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319):
-  - `ref()`가 config 블록 내부에서 호출되면, 공유된 모델이 아니라 현재 모델을 반환합니다. 이 때문에 config() 섹션에서 이를 정의할 수 없으며, 이 의존성을 추가하기 위해 주석을 사용해야 합니다. dbt 문서에 정의된 [\"--depends_on:\" 접근 방식](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)과 동일한 패턴을 따르고 있습니다.
-  - `ref()`는 대상 테이블이 먼저 생성되도록 강제해 준다는 점에서는 원하는 대로 동작하지만, 생성된 문서의 의존성 차트에서는 대상 테이블이 하류가 아닌 또 다른 상류 의존성으로 표시되어, 이해하기가 다소 어렵습니다.
-  - `unit-test`는 대상 테이블에서 데이터를 읽지 않는 것이 목표일 때에도 대상 테이블에 대해 일부 데이터를 정의하도록 강제합니다. 해결 방법은 이 테이블에 대한 데이터를 비워 두는 것입니다.
+* 대상 테이블 정의는 dbt 관점에서 자연스럽지 않습니다. 소스 테이블에서 읽어 오는 SQL이 아니므로 이 부분에서는 dbt의 검증을 사용할 수 없습니다. MV의 SQL은 계속해서 dbt 유틸리티를 사용해 검증되며, 대상 테이블 컬럼과의 호환성은 ClickHouse 수준에서 검증됩니다.
+* **`ref()` 함수의 제약과 관련해 몇 가지 문제를 발견했습니다**: 모델 간 참조를 위해 `ref()`를 사용해야 하지만, 상류(upstream) 모델만 참조할 수 있고 하류(downstream) 모델은 참조할 수 없습니다. 이로 인해 이번 구현에서 몇 가지 문제가 발생합니다. dbt-core 리포지토리에 이슈를 생성했으며, 현재 이에 대해 [가능한 해결책을 논의 중입니다 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319):
+  * `ref()`가 config 블록 내부에서 호출되면, 공유된 모델이 아니라 현재 모델을 반환합니다. 이 때문에 config() 섹션에서 이를 정의할 수 없으며, 이 의존성을 추가하기 위해 주석을 사용해야 합니다. dbt 문서에 정의된 [&quot;--depends&#95;on:&quot; 접근 방식](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)과 동일한 패턴을 따르고 있습니다.
+  * `ref()`는 대상 테이블이 먼저 생성되도록 강제해 준다는 점에서는 원하는 대로 동작하지만, 생성된 문서의 의존성 차트에서는 대상 테이블이 하류가 아닌 또 다른 상류 의존성으로 표시되어, 이해하기가 다소 어렵습니다.
+  * `unit-test`는 대상 테이블에서 데이터를 읽지 않는 것이 목표일 때에도 대상 테이블에 대해 일부 데이터를 정의하도록 강제합니다. 해결 방법은 이 테이블에 대한 데이터를 비워 두는 것입니다.
 
 ### 사용 방법 \{#explicit-target-usage\}
 
@@ -239,11 +240,11 @@ GROUP BY event_date, event_type
 
 ### 일반적인 작업 \{#explicit-target-common-operations\}
 
-#### 명시적 타겟을 사용하는 전체 새로 고침 \{#explicit-target-full-refresh\}
+#### 명시적 대상을 사용하는 전체 새로 고침 \{#explicit-target-full-refresh\}
 
-`--full-refresh`를 사용할 때 명시적 타겟 테이블은 다시 생성됩니다(이 과정에서 수집이 진행 중이면 데이터가 손실될 수 있습니다). 이는 설정에 따라 서로 다르게 동작합니다:
+`--full-refresh`를 사용할 때 명시적 대상 테이블은 다시 생성됩니다(이 과정에서 수집이 진행 중이면 데이터가 손실될 수 있습니다). 이는 설정에 따라 서로 다르게 동작합니다:
 
-**옵션 1: 기본 `--full-refresh` 동작. 모든 것이 다시 생성되지만, MV를 재생성하는 동안에는 타겟 테이블이 비어 있거나 일부만 로드된 상태가 됩니다.**
+**옵션 1: 기본 `--full-refresh` 동작. 모든 것이 다시 생성되지만, MV를 재생성하는 동안에는 대상 테이블이 비어 있거나 일부만 로드된 상태가 됩니다.**
 
 모든 것이 DROP된 후 다시 생성됩니다. MV의 SQL을 사용하여 데이터를 다시 삽입하려면 `catchup=True` 설정을 유지하십시오:
 
@@ -251,23 +252,23 @@ GROUP BY event_date, event_type
 -- models/page_events_aggregator.sql
 {{ config(
     materialized='materialized_view',
-    catchup=True  -- this is the default value so you don't need to actully set it.
+    catchup=True  -- this is the default value so you don't need to actually set it.
 ) }}
 {{ materialization_target_table(ref('events_daily')) }}
 ...
 ```
 
-**옵션 2: 타깃 테이블을 다시 생성하되, MV가 재생성되는 동안 빈 데이터가 조회되지 않도록 합니다.**
+**옵션 2: 대상 테이블을 다시 생성하되, MV가 재생성되는 동안 빈 데이터가 조회되지 않도록 합니다.**
 
-먼저 MV의 SQL을 수정해야 하는 경우, 해당 MV들에 `catchup=False`를 설정한 다음 MV들에 대해 `dbt run` 또는 `dbt run --full-refresh`를 실행합니다. 타깃 테이블에서 `--full-refresh`를 실행하기 전에 MV가 생성되어 있어야 합니다. 타깃 테이블은 ClickHouse에 있는 MV 정의를 사용하기 때문입니다.
+먼저 MV의 SQL을 수정해야 하는 경우, 해당 MV들에 `catchup=False`를 설정한 다음 MV들에 대해 `dbt run` 또는 `dbt run --full-refresh`를 실행합니다. 대상 테이블에서 `--full-refresh`를 실행하기 전에 MV가 생성되어 있어야 합니다. 대상 테이블은 ClickHouse에 있는 MV 정의를 사용하기 때문입니다.
 
-타깃 테이블 모델에 `repopulate_from_mvs_on_full_refresh=True`를 설정합니다. `dbt run --full-refresh` 실행 시, 다음 작업이 수행됩니다:
+대상 테이블 모델에 `repopulate_from_mvs_on_full_refresh=True`를 설정합니다. `dbt run --full-refresh` 실행 시, 다음 작업이 수행됩니다:
 
 1. 새로운 임시 테이블을 생성합니다.
 2. 각 MV의 SQL을 사용하여 INSERT-SELECT를 실행합니다.
 3. 테이블을 원자적으로 교체합니다.
 
-이렇게 하면 MV가 재생성되는 동안에도 테이블을 조회하는 사용자는 빈 데이터를 보지 않게 됩니다.
+이렇게 하면 MV가 재생성되는 동안에도 테이블에서 빈 데이터가 보이지 않게 됩니다.
 
 ```sql
 -- models/events_daily.sql
@@ -281,7 +282,6 @@ GROUP BY event_date, event_type
 }}
 ...
 ```
-
 
 #### 대상 테이블 변경하기 \{#explicit-target-changing\}
 
@@ -298,8 +298,8 @@ GROUP BY event_date, event_type
 
 다음과 같은 몇 가지 이유로 이런 현상이 발생할 수 있습니다:
 
-- materialized view가 `catchup=False`로 설정되어 있거나 대상 테이블이 `repopulate_from_mvs_on_full_refresh=False`로 설정되어 있어서, materialized view가 생성되거나 대상 테이블이 재생성될 때 백필(backfill)이 수행되지 않습니다. 이는 의도된 동작이므로, materialized view의 SQL을 사용해 데이터를 다시 삽입하려면 materialized view에서 `catchup=True`(기본값입니다)를 설정하거나 대상 테이블에서 `repopulate_from_mvs_on_full_refresh=True`를 설정해야 합니다. 중복을 방지하기 위해 두 옵션을 동시에 활성화하지 않았는지 확인하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 참조하십시오.
-- `dbt run --full-refresh`가 실행되는 동안 materialized view가 기본값인 `catchup=True`를 사용하는 경우, 대상 테이블이 다시 생성되고 materialized view가 데이터를 순차적으로 다시 삽입합니다. 이 상황을 피하려면 [명시적 대상과 함께 하는 전체 새로 고침](#explicit-target-full-refresh)을 참조하십시오.
+* materialized view가 `catchup=False`로 설정되어 있거나 대상 테이블이 `repopulate_from_mvs_on_full_refresh=False`로 설정되어 있어서, materialized view가 생성되거나 대상 테이블이 재생성될 때 백필(backfill)이 수행되지 않습니다. 이는 의도된 동작이므로, materialized view의 SQL을 사용해 데이터를 다시 삽입하려면 materialized view에서 `catchup=True`(기본값입니다)를 설정하거나 대상 테이블에서 `repopulate_from_mvs_on_full_refresh=True`를 설정해야 합니다. 중복을 방지하기 위해 두 옵션을 동시에 활성화하지 않았는지 확인하십시오. 자세한 내용은 [구성 섹션](#explicit-target-configuration)을 참조하십시오.
+* `dbt run --full-refresh`가 실행되는 동안 materialized view가 기본값인 `catchup=True`를 사용하는 경우, 대상 테이블이 다시 생성되고 materialized view가 데이터를 순차적으로 다시 삽입합니다. 이 상황을 피하려면 [명시적 대상과 함께 하는 전체 새로 고침](#explicit-target-full-refresh)을 참조하십시오.
 
 #### `repopulate_from_mvs_on_full_refresh=True`가 설정된 대상 테이블에서 `dbt run --full-refresh`를 실행하면, 현재 프로젝트에 있는 SQL이 아니라 이전 materialized view 정의의 로직을 사용합니다 \{#full-refresh-with-repopulate-from-mvs-on-full-refresh\}
 
@@ -416,7 +416,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 **3. 필요에 따라 [명시적 대상](#explicit-target) 섹션의 지침을 따라 반복적으로 수정합니다.**
 
 
-## 암시적 대상 방식과 명시적 대상 방식의 동작 비교\{#behavior-comparison\}
+## 암시적 대상 방식과 명시적 대상 방식의 동작 비교 \{#behavior-comparison\}
 
 ### 일반적인 동작 방식 \{#general-behavior\}
 
@@ -447,27 +447,27 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 **materialized view 모델:**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| First `dbt run` | 1. MV 생성 (`TO` 절 사용)<br/>2. catch-up 실행 (`catchup=True`인 경우) | ✅ MV가 먼저 생성되므로, 새로운 삽입이 즉시 캡처됩니다.<br/>⚠️ **catch-up 과정에서 데이터가 중복될 수 있습니다** — 백필 쿼리가 이미 MV에서 처리 중인 행과 겹칠 수 있습니다. 중복 제거 엔진(예: `ReplacingMergeTree`)을 사용하는 경우에는 안전합니다. |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 안전합니다. MV는 원자적으로 업데이트됩니다. |
-| `dbt run --full-refresh` on MVs | 1. MV 드롭 후 재생성<br/>2. catch-up 실행 (`catchup=True`인 경우) | ⚠️ **재생성 중에는 MV가 삽입을 인지하지 못합니다** (drop과 create 사이 구간).<br/>⚠️ 삽입이 동시에 일어나는 경우 **catch-up 과정에서 데이터가 중복될 수 있습니다**. |
+| Operation                       | Internal process                                              | Safety while inserts are happening                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| First `dbt run`                 | 1. MV 생성 (`TO` 절 사용)<br />2. catch-up 실행 (`catchup=True`인 경우) | ✅ MV가 먼저 생성되므로, 새로운 삽입이 즉시 캡처됩니다.<br />⚠️ **catch-up 과정에서 데이터가 중복될 수 있습니다** — 백필 쿼리가 이미 MV에서 처리 중인 행과 겹칠 수 있습니다. 중복 제거 엔진(예: `ReplacingMergeTree`)을 사용하는 경우에는 안전합니다. |
+| Subsequent `dbt run`            | `ALTER TABLE ... MODIFY QUERY`                                | ✅ 안전합니다. MV는 원자적으로 업데이트됩니다.                                                                                                                                          |
+| `dbt run --full-refresh` on MVs | 1. MV 드롭 후 재생성<br />2. catch-up 실행 (`catchup=True`인 경우)       | ⚠️ **재생성 중에는 MV가 삽입을 인지하지 못합니다** (drop과 create 사이 구간).<br />⚠️ 삽입이 동시에 일어나는 경우 **catch-up 과정에서 데이터가 중복될 수 있습니다**.                                                    |
 
 **대상 테이블 모델:**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| `dbt run` | `mv_on_schema_change` 설정에 따라 스키마 변경 적용 | ✅ 안전합니다. 데이터 이동이 없습니다. |
-| `dbt run --full-refresh` (default) | 테이블을 재생성함 (비워 둠) | ⚠️ **대상 테이블은 MV가 백필을 완료할 때까지 비어 있습니다.** 새 테이블이 생성된 후에는 MV가 계속 해당 테이블에 삽입합니다. |
-| `dbt run --full-refresh` with `repopulate_from_mvs_on_full_refresh=True` | 1. 백업 테이블 생성<br/>2. 각 MV의 SQL을 사용하여 데이터 삽입<br/>3. 테이블을 원자적으로 교환 | ⚠️ **재생성 중에는 MV가 삽입을 인지하지 못합니다.** 1단계와 3단계 사이에 삽입된 데이터는 새 테이블에 나타나지 않습니다. **이는 다음 버전에서 변경될 수 있습니다**|
+| Operation                                                                | Internal process                                                  | Safety while inserts are happening                                                                   |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `dbt run`                                                                | `mv_on_schema_change` 설정에 따라 스키마 변경 적용                            | ✅ 안전합니다. 데이터 이동이 없습니다.                                                                               |
+| `dbt run --full-refresh` (default)                                       | 테이블을 재생성함 (비워 둠)                                                  | ⚠️ **대상 테이블은 MV가 백필을 완료할 때까지 비어 있습니다.** 새 테이블이 생성된 후에는 MV가 계속 해당 테이블에 삽입합니다.                         |
+| `dbt run --full-refresh` with `repopulate_from_mvs_on_full_refresh=True` | 1. 백업 테이블 생성<br />2. 각 MV의 SQL을 사용하여 데이터 삽입<br />3. 테이블을 원자적으로 교환 | ⚠️ **재생성 중에는 MV가 삽입을 인지하지 못합니다.** 1단계와 3단계 사이에 삽입된 데이터는 새 테이블에 나타나지 않습니다. **이는 다음 버전에서 변경될 수 있습니다**. |
 
 :::tip 수집이 활성화된 프로덕션 환경에서의 권장 사항
 
-- **가능하다면 dbt 작업 중에 수집을 중단하십시오**: 이렇게 하면 모든 작업이 안전해지고 데이터가 손실되지 않습니다.
-- **가능하다면 중복 제거 엔진을 사용하십시오** (예: 대상 테이블에 `ReplacingMergeTree` 사용)하여 catch-up 겹침으로 인한 잠재적 중복을 처리합니다.
-- **가능하다면 `ALTER TABLE ... MODIFY QUERY`를 선호하십시오** (`--full-refresh` 없이 일반 `dbt run`): 이 방법은 항상 안전합니다.
-- dbt 작업 중 발생할 수 있는 **문제 구간을 인지**하십시오.
-:::
+* **가능하다면 dbt 작업 중에 수집을 중단하십시오**: 이렇게 하면 모든 작업이 안전해지고 데이터가 손실되지 않습니다.
+* **가능하다면 중복 제거 엔진을 사용하십시오** (예: 대상 테이블에 `ReplacingMergeTree` 사용)하여 catch-up 겹침으로 인한 잠재적 중복을 처리합니다.
+* **가능하다면 `ALTER TABLE ... MODIFY QUERY`를 선호하십시오** (`--full-refresh` 없이 일반 `dbt run`): 이 방법은 항상 안전합니다.
+* dbt 작업 중 발생할 수 있는 **문제 구간을 인지**하십시오.
+  :::
 
 ## Refreshable Materialized Views \{#refreshable-materialized-views\}
 
@@ -541,6 +541,6 @@ GROUP BY event_date, event_type
 * 종속성이 있는 refreshable materialized view(MV)를 ClickHouse에서 생성할 때, 지정한 종속성이 생성 시점에 존재하지 않더라도 ClickHouse는
   오류를 발생시키지 않습니다. 대신 refreshable MV는 비활성 상태로 남아 있으며, 종속성이 충족될 때까지 업데이트 처리나 리프레시를 시작하지 않습니다.
   이는 설계된 동작이지만, 필요한 종속성이 제때 준비되지 않으면 데이터 사용 가능 시점이 지연될 수 있습니다.
-  따라서 refreshable materialized view를 생성하기 전에 모든 종속성이 올바르게 정의되어 있고 실제로 존재하는지 반드시 확인해야 합니다.
+  refreshable materialized view를 생성하기 전에 모든 종속성이 올바르게 정의되어 있고 실제로 존재하는지 확인해야 합니다.
 * 현재로서는 MV와 그 종속성 간에 실제 「dbt linkage」가 없으므로, 생성 순서는 보장되지 않습니다.
 * refreshable 기능은 동일한 target model을 가리키는 여러 MV가 있는 경우에는 테스트되지 않았습니다.

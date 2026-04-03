@@ -1,9 +1,9 @@
 ---
-title: '함수 수준 설정'
-sidebar_label: '함수 설정'
+title: '함수 수준 구성'
+sidebar_label: '함수 구성'
 slug: /chdb/configuration/function-config
-description: '함수 수준에서 실행 엔진과 Dtype 보정을 설정합니다'
-keywords: ['chdb', '데이터 저장소', '함수', '설정', 'Dtype', '보정']
+description: '함수 수준에서 실행 엔진과 Dtype 교정을 구성합니다'
+keywords: ['chdb', 'DataStore', '함수', '구성', 'Dtype', '교정']
 doc_type: 'reference'
 ---
 

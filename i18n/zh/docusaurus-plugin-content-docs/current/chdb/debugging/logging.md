@@ -1,9 +1,9 @@
 ---
-title: 'DataStore 日志'
-sidebar_label: '日志'
+title: 'DataStore 日志配置'
+sidebar_label: '日志配置'
 slug: /chdb/debugging/logging
-description: '配置 DataStore 日志以用于调试和监控'
-keywords: ['chdb', 'datastore', '日志', '调试', '日志级别']
+description: '配置 DataStore 日志配置以用于调试和监控'
+keywords: ['chdb', 'datastore', '日志配置', '调试', '日志级别']
 doc_type: 'reference'
 ---
 

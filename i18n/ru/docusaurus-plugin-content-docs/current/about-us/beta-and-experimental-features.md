@@ -73,6 +73,7 @@ doc_type: 'reference'
 
 | Имя                                                                                                                                                                                                                                 | Значение по умолчанию   |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| [allow&#95;commit&#95;order&#95;projection](/operations/settings/merge-tree-settings#allow_commit_order_projection)                                                                                                                 | `0`                     |
 | [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
 | [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
 | [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |

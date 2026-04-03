@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/systemd-logs
-title: 'Мониторинг журналов systemd с помощью ClickStack'
-sidebar_label: 'Журналы systemd/journald'
+title: 'Мониторинг логов systemd с помощью ClickStack'
+sidebar_label: 'Логи systemd/journald'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов systemd и journald с помощью ClickStack'
+description: 'Мониторинг логов systemd и journald с помощью ClickStack'
 doc_type: 'guide'
 keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs', 'systemctl']
 ---
@@ -18,7 +18,6 @@ import example_dashboard from '@site/static/images/clickstack/systemd/systemd-lo
 import search_view from '@site/static/images/clickstack/systemd/systemd-search-view.png';
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
 
 # Мониторинг логов systemd с помощью ClickStack \{#systemd-logs-clickstack\}
 

@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
 
 # Install ClickHouse on Debian/Ubuntu {#install-from-deb-packages}
 
@@ -7,7 +8,11 @@ import TabItem from '@theme/TabItem';
 
 <VerticalStepper>
 
-## Setup the Debian repository {#setup-the-debian-repository}
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
+
+## Set up the Debian repository {#setup-the-debian-repository}
 
 To install ClickHouse run the following commands:
 
@@ -118,7 +123,7 @@ The various deb packages available are detailed below:
 |--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `clickhouse-common-static`     | Installs ClickHouse compiled binary files.                                                                                                                                                                                                                                             |
 | `clickhouse-server`            | Creates a symbolic link for `clickhouse-server` and installs the default server configuration.                                                                                                                                                                                         |
-| `clickhouse-client`            | Creates a symbolic link for `clickhouse-client` and other client-related tools. and installs client configuration files.                                                                                                                                                               |
+| `clickhouse-client`            | Creates a symbolic link for `clickhouse-client` and other client-related tools, and installs client configuration files.                                                                                                                                                                |
 | `clickhouse-common-static-dbg` | Installs ClickHouse compiled binary files with debug info.                                                                                                                                                                                                                             |
 | `clickhouse-keeper`            | Used to install ClickHouse Keeper on dedicated ClickHouse Keeper nodes.  If you're running ClickHouse Keeper on the same server as ClickHouse server, then you don't need to install this package. Installs ClickHouse Keeper and the default ClickHouse Keeper configuration files. |
 

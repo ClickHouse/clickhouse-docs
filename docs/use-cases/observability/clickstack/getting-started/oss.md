@@ -26,6 +26,10 @@ import TabItem from '@theme/TabItem';
 
 To deploy **ClickStack Open Source**, where you run and manage ClickHouse and the ClickStack UI yourself, we provide prebuilt Docker images that bundle the UI, an OpenTelemetry collector, and ClickHouse into a single container -  making local development, testing, and self-managed deployments straightforward to get started.
 
+:::tip
+A managed version of ClickStack is also available — see [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+:::
+
 These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 
 The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:

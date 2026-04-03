@@ -97,6 +97,17 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 启用后，允许在 CoalescingMergeTree 表中将可合并列用作分区键或排序键。
 
+## allow_commit_order_projection \{#allow_commit_order_projection\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}]} />
+
+启用按提交顺序存储 `_block_number` 和 `_block_offset` 虚拟列的投影，并在合并过程中保留原始插入顺序。
+需要同时启用 `enable_block_number_column` 和 `enable_block_offset_column`。
+
 ## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>
@@ -551,7 +562,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 parts 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]} />
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置
@@ -559,8 +570,8 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 可能的取值：
 
-- `true`
-- `false`
+* `true`
+* `false`
 
 ## enable_mixed_granularity_parts \{#enable_mixed_granularity_parts\}
 
@@ -831,6 +842,68 @@ slower than inserts" 异常。
 
 后台合并、变更等操作在放弃获取表锁之前的等待时间（秒）。
 
+## map_buckets_coefficient \{#map_buckets_coefficient\}
+
+<SettingsInfoBlock type="Float" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "新增一个设置，用于控制在计算 `with_buckets` Map 序列化的 bucket 数量时，`sqrt` 和 `linear` 策略所使用的系数"}]}]} />
+
+用于在 `sqrt` 和 `linear` [map&#95;buckets&#95;strategy](#map_buckets_strategy) 中，根据 map 的平均大小计算 bucket 数量的系数。
+对于 `sqrt` 策略：`round(map_buckets_coefficient * sqrt(avg_map_size))`。
+对于 `linear` 策略：`round(map_buckets_coefficient * avg_map_size)`。
+当 `map_buckets_strategy` 为 `constant` 时，此设置会被忽略。
+
+## map_buckets_min_avg_size \{#map_buckets_min_avg_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "新增一个设置，用于控制应用 `with_buckets` 序列化所需的最小平均 Map 大小（每行的键数）"}]}]} />
+
+应用 `with_buckets` 序列化所需的最小平均 Map 大小 (每行的键数) 。
+如果平均 Map 大小小于此值，则无论其他 bucket 设置为何，都会使用单个 bucket。
+值为 `0` 时，将禁用该阈值并始终应用分桶策略。
+此设置可用于避免在小型 Map 上使用分桶序列化所带来的额外开销，因为这类场景的收益通常可以忽略不计。
+
+## map_buckets_strategy \{#map_buckets_strategy\}
+
+<SettingsInfoBlock type="MergeTreeMapBucketsStrategy" default_value="sqrt" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "sqrt"},{"label": "新增一个设置，用于控制在 `with_buckets` `Map` 序列化中选择桶数量的策略"}]}]} />
+
+根据 map 的平均大小，控制 `with_buckets` `Map` 序列化中桶数量的选择策略。
+
+可能的取值：
+
+* constant — 始终使用 [max&#95;buckets&#95;in&#95;map](#max_buckets_in_map) 作为桶数量，不受 map 平均大小影响。
+* sqrt — 使用 `round(map_buckets_coefficient * sqrt(avg_map_size))` 作为桶数量，并将结果限制在 `[1, max_buckets_in_map]` 范围内。
+* linear — 使用 `round(map_buckets_coefficient * avg_map_size)` 作为桶数量，并将结果限制在 `[1, max_buckets_in_map]` 范围内。
+
+## map_serialization_version \{#map_serialization_version\}
+
+<SettingsInfoBlock type="MergeTreeMapSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "basic"},{"label": "新增了一个用于控制 Map 序列化版本的设置"}]}]} />
+
+控制 `Map` 列所使用的序列化方法。
+
+可能的取值：
+
+* basic — 对 `Map` 使用标准序列化。
+* with&#95;buckets — 在序列化过程中将键拆分到各个 bucket 中。使用 bucket 可提升从 Map 中读取单个键的性能。
+
+`with_buckets` 序列化中的 bucket 数量由 [max&#95;buckets&#95;in&#95;map](#max_buckets_in_map) 和 [map&#95;buckets&#95;strategy](#map_buckets_strategy) 决定。
+
+## map_serialization_version_for_zero_level_parts \{#map_serialization_version_for_zero_level_parts\}
+
+<SettingsInfoBlock type="MergeTreeMapSerializationVersion" default_value="basic" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "basic"},{"label": "新增一个设置，用于控制零级分区片段的 Map 序列化版本"}]}]} />
+
+此设置允许为插入期间创建的零级分区片段中的
+`Map` 列指定不同的序列化版本。
+如果已合并分区片段使用 `with_buckets`，则零级分区片段继续使用 `basic`
+序列化会很有用，这样可以避免插入期间的性能下降。
+
 ## marks_compress_block_size \{#marks_compress_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65536" />
@@ -876,6 +949,16 @@ slower than inserts" 异常。
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 根据 `parts_to_delay_insert` 和 `parts_to_throw_insert` 进行的“分区片段过多”检查，仅在相关分区中的平均分区片段大小不大于指定阈值时才会生效。如果平均大小大于该阈值，则 INSERT 不会被延迟或拒绝。只要分区片段能够成功合并为更大的分区片段，就可以在单个服务器上的一张表中存储数百 TB 级的数据。该设置不会影响对非活跃分区片段或分区片段总数的阈值。
+
+## Map 序列化的最大桶数量 \{#max_buckets_in_map\}
+
+<SettingsInfoBlock type="NonZeroUInt64" default_value="32" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "32"},{"label": "添加一个设置，用于控制 `with_buckets` Map 序列化的最大桶数量"}]}]} />
+
+`Map` 序列化的最大桶数量。与 `with_buckets` `Map` 序列化方式配合使用。
+实际桶数量由 [map&#95;buckets&#95;strategy](#map_buckets_strategy) 决定。
+允许的最大值为 256。
 
 ## max_bytes_to_merge_at_max_space_in_pool \{#max_bytes_to_merge_at_max_space_in_pool\}
 
@@ -1833,35 +1916,37 @@ JSON 数据类型的序列化版本。为兼容性所必需。
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "8"},{"label": "新增用于控制 Compact 分区片段中 JSON 共享数据序列化所用桶数量的设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "8"},{"label": "新增用于控制 Compact parts 中 JSON 共享数据序列化所用存储桶数量的设置"}]}]} />
 
-指定 Compact 分区片段中 JSON 共享数据序列化所使用的桶数量。适用于 `map_with_buckets` 和 `advanced` 两种共享数据序列化方式。
+指定 Compact parts 中 JSON 共享数据序列化所使用的存储桶数量。适用于 `map_with_buckets` 和 `advanced` 两种共享数据序列化方式。
+允许的最大值为 256。
 
-## 宽分区片段中共享数据的桶数量 \{#object_shared_data_buckets_for_wide_part\}
+## Wide parts 中共享数据的存储桶数量 \{#object_shared_data_buckets_for_wide_part\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="32" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "32"},{"label": "添加一个设置，用于控制宽分区片段中 JSON 序列化时共享数据的桶数量"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "32"},{"label": "添加一个设置，用于控制 Wide parts 中 JSON 序列化时共享数据的存储桶数量"}]}]} />
 
-宽分区片段中用于 JSON 格式共享数据序列化的桶数量。与 `map_with_buckets` 和 `advanced` 共享数据序列化方式配合使用。
+Wide parts 中用于 JSON 格式共享数据序列化的存储桶数量。与 `map_with_buckets` 和 `advanced` 共享数据序列化方式配合使用。
+允许的最大值为 256。
 
 ## object_shared_data_serialization_version \{#object_shared_data_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Enable advanced shared data serialization version by default"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Enable advanced shared data serialization version by default"}]}]} />
 
 用于 JSON 数据类型中共享数据的序列化版本。
 
 可能的取值：
 
-- `map` - 将共享数据存储为 `Map(String, String)`
-- `map_with_buckets` - 将共享数据存储为多个独立的 `Map(String, String)` 列。使用 buckets 可以提升从共享数据中读取单个路径时的性能。
-- `advanced` - 针对共享数据的特殊序列化方式，旨在显著提升从共享数据中读取单个路径时的性能。
-请注意，这种序列化会增加磁盘上共享数据的存储大小，因为我们会存储大量的附加信息。
+* `map` - 将共享数据存储为 `Map(String, String)`
+* `map_with_buckets` - 将共享数据存储为多个独立的 `Map(String, String)` 列。使用存储桶可以提升从共享数据中读取单个路径时的性能。
+* `advanced` - 针对共享数据的特殊序列化方式，旨在显著提升从共享数据中读取单个路径时的性能。
+  请注意，这种序列化会增加磁盘上共享数据的存储大小，因为我们会存储大量的附加信息。
 
-`map_with_buckets` 和 `advanced` 序列化所使用的 bucket 数量由以下设置决定：
-[object_shared_data_buckets_for_compact_part](#object_shared_data_buckets_for_compact_part)/[object_shared_data_buckets_for_wide_part](#object_shared_data_buckets_for_wide_part)。
+`map_with_buckets` 和 `advanced` 序列化所使用的存储桶数量由以下设置决定：
+[object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](#object_shared_data_buckets_for_compact_part)/[object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](#object_shared_data_buckets_for_wide_part)。
 
 ## object_shared_data_serialization_version_for_zero_level_parts \{#object_shared_data_serialization_version_for_zero_level_parts\}
 
@@ -2054,7 +2139,7 @@ parts (N). Merges are processing significantly slower than inserts`
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "1"},{"label": "默认将数据类型的序列化版本传播到嵌套类型"}]}]} />
 
-如果为 true，则像 string&#95;serialization&#95;version 这样的序列化版本会传播到 Array/Map/Nullable/JSON 等嵌套类型内部。如果禁用，则该序列化版本仅对该类型的顶层列和 Tuple 元素生效。
+如果为 true，则像 string&#95;serialization&#95;version 这样的序列化版本会传播到 Array/Map/Nullable/JSON 等嵌套类型内部。如果禁用，则该序列化版本仅对该类型的顶层列和 Tuple 元
 
 ## ratio_of_defaults_for_sparse_serialization \{#ratio_of_defaults_for_sparse_serialization\}
 

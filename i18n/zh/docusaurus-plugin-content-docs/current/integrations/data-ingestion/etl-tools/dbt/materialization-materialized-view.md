@@ -78,12 +78,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 --mv2:end
 ```
 
-> 重要！
->
-> 当更新包含多个 materialized view（MV）的模型时，尤其是在重命名某个 MV 时，
-> dbt-clickhouse 不会自动删除旧的 MV。相反，
-> 您会看到如下警告：
-> `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::warning
+当更新包含多个 materialized view (MV) 的模型时，尤其是在重命名某个 MV 时，
+dbt-clickhouse 不会自动删除旧的 MV。相反，
+您会看到如下警告：
+
+`Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
+:::
 
 
 ### 如何迭代目标表的 schema \{#how-to-iterate-the-target-table-schema\}
@@ -145,18 +146,18 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 ### 优点 \{#explicit-target-benefits\}
 
-- **资源完全隔离**：现在可以单独定义每个资源，从而提升可读性。
-- **dbt 与 CH 之间 1:1 的资源对应关系**：现在可以使用 dbt 工具分别管理和迭代这些资源。
-- **可为不同资源使用不同配置**：现在可以为每个资源应用不同的配置。
-- **不再需要遵守命名约定**：现在所有资源都使用用户指定的名称创建，而不是使用为物化视图添加 `_mv` 后缀的自定义名称。
+* **资源完全隔离**：现在可以单独定义每个资源，从而提升可读性。
+* **dbt 与 CH 之间 1:1 的资源对应关系**：现在可以使用 dbt 工具分别管理和迭代这些资源。
+* **可为不同资源使用不同配置**：现在可以为每个资源应用不同的配置。
+* **不再需要遵守命名约定**：现在所有资源都使用您指定的名称创建，而不是使用为物化视图添加 `_mv` 后缀的自定义名称。
 
 ### 限制 \{#explicit-target-limitations\}
 
-- 目标表定义对 dbt 来说并不自然：它并不是一个从源表读取数据的 SQL，因此在这里我们无法利用 dbt 对该目标表的校验功能。MV 的 SQL 仍会通过 dbt 工具进行校验，而其与目标表列之间的兼容性则会在 CH 层面进行校验。
-- **我们发现了一些与 `ref()` 函数自身限制相关的问题**：我们需要用它在模型之间建立引用，但它只能用于引用上游模型，而不能引用下游模型。这给本方案的实现带来了一些问题。我们已经在 dbt-core 仓库中创建了一个 issue，目前正与他们沟通[以寻找可能的解决方案 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319)：
-  - 当在 config 块中调用 `ref()` 时，它返回的是当前模型，而不是那个被共享（被引用）的模型。这使我们无法在 config() 段中定义它，被迫通过注释来声明此依赖。我们遵循 dbt 文档中定义的相同模式，采用 [“--depends_on:” 方法](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)。
-  - `ref()` 对我们来说可以满足需求，因为它会强制先创建目标表，但在生成文档的依赖关系图中，目标表会被绘制成另一个上游依赖，而不是下游依赖，从而使依赖关系略显难以理解。
-  - `unit-test` 也会强制我们为目标表定义一些数据，即使设计上并不打算从中读取数据。变通方案只是将该表的数据留空。
+* 目标表定义对 dbt 来说并不自然：它并不是一个从源表读取数据的 SQL，因此在这里我们无法利用 dbt 对该目标表的校验功能。MV 的 SQL 仍会通过 dbt 工具进行校验，而其与目标表列之间的兼容性则会在 CH 层面进行校验。
+* **我们发现了一些与 `ref()` 函数自身限制相关的问题**：我们需要用它在模型之间建立引用，但它只能用于引用上游模型，而不能引用下游模型。这给本方案的实现带来了一些问题。我们已经在 dbt-core 仓库中创建了一个 issue，目前正与他们沟通[以寻找可能的解决方案 (dbt-labs/dbt-core#12319)](https://github.com/dbt-labs/dbt-core/issues/12319)：
+  * 当在 config 块中调用 `ref()` 时，它返回的是当前模型，而不是那个被共享 (被引用) 的模型。这使我们无法在 config() 段中定义它，被迫通过注释来声明此依赖。我们遵循 dbt 文档中定义的相同模式，采用 [“--depends&#95;on:” 方法](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies)。
+  * `ref()` 对我们来说可以满足需求，因为它会强制先创建目标表，但在生成文档的依赖关系图中，目标表会被绘制成另一个上游依赖，而不是下游依赖，从而使依赖关系略显难以理解。
+  * `unit-test` 也会强制我们为目标表定义一些数据，即使设计上并不打算从中读取数据。变通方案只是将该表的数据留空。
 
 ### 用法 \{#explicit-target-usage\}
 
@@ -239,11 +240,11 @@ GROUP BY event_date, event_type
 
 ### 常用操作 \{#explicit-target-common-operations\}
 
-#### 使用显式目标进行完全刷新 \{#explicit-target-full-refresh\}
+#### 使用显式目标进行全量刷新 \{#explicit-target-full-refresh\}
 
-当使用 `--full-refresh` 时，显式目标表将被重新创建（因此如果在此过程中正在进行数据摄取，你可能会丢失数据）。具体行为会根据你的配置有所不同：
+当使用 `--full-refresh` 时，显式目标表将被重新创建 (因此如果在此过程中正在进行数据摄取，你可能会丢失数据) 。具体行为会根据你的配置有所不同：
 
-**选项 1：`--full-refresh` 的默认行为。所有对象都会被重新创建，但在重新创建物化视图（MV）的期间，目标表将为空或仅部分加载。**
+**选项 1：`--full-refresh` 的默认行为。所有对象都会被重新创建，但在重新创建物化视图 (MV) 的期间，目标表将为空或仅部分加载。**
 
 所有对象都会被删除并重新创建。如果你希望使用物化视图的 SQL 重新插入数据，请保持设置 `catchup=True`：
 
@@ -251,7 +252,7 @@ GROUP BY event_date, event_type
 -- models/page_events_aggregator.sql
 {{ config(
     materialized='materialized_view',
-    catchup=True  -- this is the default value so you don't need to actully set it.
+    catchup=True  -- this is the default value so you don't need to actually set it.
 ) }}
 {{ materialization_target_table(ref('events_daily')) }}
 ...
@@ -267,7 +268,7 @@ GROUP BY event_date, event_type
 2. 使用每个 MV 的 SQL 执行 INSERT-SELECT
 3. 以原子方式交换这些表
 
-因此，在 MV 被重建的过程中，这张表的使用者不会看到空数据。
+因此，在 MV 被重建的过程中，您不会在您的表中看到空数据。
 
 ```sql
 -- models/events_daily.sql
@@ -281,7 +282,6 @@ GROUP BY event_date, event_type
 }}
 ...
 ```
-
 
 #### 更改目标表 \{#explicit-target-changing\}
 
@@ -298,8 +298,8 @@ GROUP BY event_date, event_type
 
 出现这种情况可能有以下几种原因：
 
-- materialized view 可能被配置为 `catchup=False`，或者目标表被配置为 `repopulate_from_mvs_on_full_refresh=False`，因此在创建 materialized view 或重建目标表时不会执行回填。这是预期行为，因此如果希望使用 materialized view 的 SQL 重新插入数据，请确保在 materialized view 中设置 `catchup=True`（默认值），或者在目标表中设置 `repopulate_from_mvs_on_full_refresh=True`。注意不要同时启用这两个设置，以避免产生重复数据。更多详情请查看[配置部分](#explicit-target-configuration)。
-- 当执行 `dbt run --full-refresh` 时，如果 materialized view 使用默认的 `catchup=True`，目标表会被重建，这些 materialized view 会依次重新插入数据。为避免这种情况，请查看[对显式目标执行 Full refresh](#explicit-target-full-refresh)。
+* materialized view 可能被配置为 `catchup=False`，或者目标表被配置为 `repopulate_from_mvs_on_full_refresh=False`，因此在创建 materialized view 或重建目标表时不会执行回填。这是预期行为，因此如果希望使用 materialized view 的 SQL 重新插入数据，请确保在 materialized view 中设置 `catchup=True` (默认值) ，或者在目标表中设置 `repopulate_from_mvs_on_full_refresh=True`。注意不要同时启用这两个设置，以避免产生重复数据。更多详情请查看[配置部分](#explicit-target-configuration)。
+* 当执行 `dbt run --full-refresh` 时，如果 materialized view 使用默认的 `catchup=True`，目标表会被重建，这些 materialized view 会依次重新插入数据。为避免这种情况，请查看[对显式目标执行全量刷新](#explicit-target-full-refresh)。
 
 #### 在目标表中执行 `dbt run --full-refresh` 且设置 `repopulate_from_mvs_on_full_refresh=True` 时，会使用旧版本 materialized view 的逻辑，而不是项目中当前的 SQL 定义 \{#full-refresh-with-repopulate-from-mvs-on-full-refresh\}
 
@@ -416,7 +416,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 **3. 按需根据[显式目标](#explicit-target)部分中的说明进行迭代。**
 
 
-## 隐式目标与显式目标方法的行为对比\{#behavior-comparison\}
+## 隐式目标与显式目标方法的行为对比 \{#behavior-comparison\}
 
 ### 它们的一般行为方式 \{#general-behavior\}
 
@@ -447,27 +447,27 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 **materialized view 模型：**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| 第一次执行 `dbt run` | 1. 创建 MV（带有 `TO` 子句）<br/>2. 运行追赶补齐（如果 `catchup=True`） | ✅ 会先创建 MV，因此新的插入会被立即捕获。<br/>⚠️ **追赶补齐可能导致数据重复** —— 回填查询可能与 MV 已在处理的行产生重叠。如果使用去重引擎（例如 `ReplacingMergeTree`）则是安全的。 |
-| 后续执行的 `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ 安全。MV 会以原子方式更新。 |
-| 针对 MVs 运行 `dbt run --full-refresh` | 1. 删除并重新创建 MV<br/>2. 运行追赶补齐（如果 `catchup=True`） | ⚠️ **MV 在重建期间处于“盲区”**（在 drop 和 create 之间）。<br/>⚠️ 如果插入操作同时在进行，**追赶补齐可能导致数据重复**。 |
+| Operation                          | Internal process                                           | Safety while inserts are happening                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 第一次执行 `dbt run`                    | 1. 创建 MV (带有 `TO` 子句) <br />2. 运行数据补齐 (如果 `catchup=True`)  | ✅ 会先创建 MV，因此新的插入会被立即捕获。<br />⚠️ **数据补齐可能导致数据重复** —— 回填查询可能与 MV 已在处理的行产生重叠。如果使用去重引擎 (例如 `ReplacingMergeTree`) 则是安全的。 |
+| 后续执行的 `dbt run`                    | `ALTER TABLE ... MODIFY QUERY`                             | ✅ 安全。MV 会以原子方式更新。                                                                                                   |
+| 针对 MVs 运行 `dbt run --full-refresh` | 1. 删除并重新创建 MV<br />2. 运行数据补齐 (如果 `catchup=True`)           | ⚠️ **MV 在重建期间处于“盲区”** (在 drop 和 create 之间) 。<br />⚠️ 如果插入操作同时在进行，**数据补齐可能导致数据重复**。                                  |
 
 **目标表模型：**
 
-| Operation | Internal process | Safety while inserts are happening |
-|-----------|------------------|------------------------------------|
-| `dbt run` | 按照 `mv_on_schema_change` 设置应用 schema 变更 | ✅ 安全。没有数据移动。 |
-| `dbt run --full-refresh`（默认） | 重新创建表（使其为空） | ⚠️ **目标表会一直为空**，直到 MVs 将其回填。一旦新表存在，MVs 会继续向其插入数据。 |
-| 使用 `repopulate_from_mvs_on_full_refresh=True` 运行 `dbt run --full-refresh` | 1. 创建备份表<br/>2. 使用每个 MV 的 SQL 插入数据<br/>3. 原子性交换表 | ⚠️ **MV 在重建期间处于“盲区”。** 在步骤 1 和 3 之间插入的数据不会出现在新表中。**这一行为在后续版本中可能会改变** |
+| Operation                                                                 | Internal process                                   | Safety while inserts are happening                                    |
+| ------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| `dbt run`                                                                 | 按照 `mv_on_schema_change` 设置应用 schema 变更            | ✅ 安全。没有数据移动。                                                          |
+| `dbt run --full-refresh` (默认)                                             | 重新创建表 (使其为空)                                       | ⚠️ **目标表会一直为空**，直到 MVs 将其回填。一旦新表存在，MVs 会继续向其插入数据。                     |
+| 使用 `repopulate_from_mvs_on_full_refresh=True` 运行 `dbt run --full-refresh` | 1. 创建备份表<br />2. 使用每个 MV 的 SQL 插入数据<br />3. 原子性交换表 | ⚠️ **MV 在重建期间处于“盲区”。** 在步骤 1 和 3 之间插入的数据不会出现在新表中。**这一行为在后续版本中可能会改变**。 |
 
 :::tip 适用于存在活跃摄取的生产环境的建议
 
-- **如有可能，在 dbt 操作期间暂停摄取**：这将使所有操作都是安全的，并且不会丢失数据。
-- **如有可能，在目标表上使用去重引擎**（例如 `ReplacingMergeTree`），以处理追赶补齐重叠可能带来的重复数据。
-- **在可能的情况下优先选择 `ALTER TABLE ... MODIFY QUERY`**（不带 `--full-refresh` 的常规 `dbt run`）—— 这始终是安全的。
-- **在 dbt 操作期间留意存在风险的时间窗口**。
-:::
+* **如有可能，在 dbt 操作期间暂停摄取**：这将使所有操作都是安全的，并且不会丢失数据。
+* **如有可能，在目标表上使用去重引擎** (例如 `ReplacingMergeTree`) ，以处理数据补齐重叠可能带来的重复数据。
+* **在可能的情况下优先选择 `ALTER TABLE ... MODIFY QUERY`** (不带 `--full-refresh` 的常规 `dbt run`) —— 这始终是安全的。
+* **在 dbt 操作期间留意存在风险的时间窗口**。
+  :::
 
 ## 可刷新materialized view \{#refreshable-materialized-views\}
 
@@ -538,6 +538,6 @@ GROUP BY event_date, event_type
 
 ### 限制 \{#refreshable-limitations\}
 
-* 在 ClickHouse 中创建带有依赖项的可刷新 materialized view（MV）时，如果在创建时指定的依赖项不存在，ClickHouse 不会抛出错误。相反，该可刷新 MV 会保持在非活动状态，等待依赖项被满足后才开始处理更新或执行刷新。此行为是按设计实现的，但如果未及时创建或配置所需依赖项，可能会导致数据可用性延迟。建议用户在创建可刷新 materialized view 之前，确保所有依赖项都已正确定义并已存在。
+* 在 ClickHouse 中创建带有依赖项的可刷新 materialized view (MV) 时，如果在创建时指定的依赖项不存在，ClickHouse 不会抛出错误。相反，该可刷新 MV 会保持在非活动状态，等待依赖项被满足后才开始处理更新或执行刷新。此行为是按设计实现的，但如果未及时创建或配置所需依赖项，可能会导致数据可用性延迟。你应确保在创建可刷新 materialized view 之前，所有依赖项都已正确定义并已存在。
 * 截至目前，MV 与其依赖项之间不存在实际的 “dbt linkage”，因此无法保证创建顺序。
 * 可刷新功能尚未在多个 MV 指向同一目标模型的场景下进行测试。

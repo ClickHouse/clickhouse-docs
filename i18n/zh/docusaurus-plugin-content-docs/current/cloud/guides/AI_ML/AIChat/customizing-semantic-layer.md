@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: '使用语义层自定义 ClickHouse Assistant 聊天'
-title: '使用语义层优化 ClickHouse Assistant Agent 对话'
+title: '使用语义层优化 ClickHouse Assistant agent 对话'
 pagination_prev: null
 pagination_next: null
 description: '使用 AGENTS.md 为 ClickHouse Assistant 聊天 Agent 提供自定义业务逻辑和数据相关指令的指南'
