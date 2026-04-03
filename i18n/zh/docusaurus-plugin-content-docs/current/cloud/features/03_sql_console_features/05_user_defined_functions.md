@@ -14,7 +14,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 在 ClickHouse Cloud 中，有两种创建用户自定义函数的方法：
 
 1. 使用 SQL
-2. 使用 UI 和您自己的代码（私有预览）
+2. 使用 UI 和您自己的代码 (私有预览) 
 
 ## SQL 用户定义函数 \{#sql-udfs\}
 
@@ -60,83 +60,88 @@ ClickHouse Cloud 中的 UDF **不会继承用户级设置**。它们会以系统
 * UDF 不会继承用户 profile 设置
 * 查询级设置在 UDF 执行过程中不生效
 
-
 ## 通过 UI 创建的用户自定义函数 \{#ui-udfs\}
 
 <PrivatePreviewBadge />
 
-ClickHouse Cloud 提供了通过 UI 创建用户自定义函数的配置方式。
+ClickHouse Cloud 提供了通过 UI 配置来创建用户自定义函数的功能。
 
 :::note
-如果您有兴趣试用此功能，请联系 [support](https://clickhouse.com/support/program) 以加入私有预览。
+如果你有兴趣试用此功能，请联系 [support](https://clickhouse.com/support/program) 以加入私有预览。
 :::
 
-在本示例中，我们将创建与之前相同的简单可执行用户自定义函数 `isBusinessHours`，该函数用于检查某个时间戳是否处于正常工作时间内。
-此前我们是使用 SQL 创建它的，这次我们将改用 Python 创建，并通过 UI 进行配置。
+在本示例中，我们将创建一个与前面相同的简单可执行用户自定义函数 `isBusinessHours`，用于检查某个时间戳是否处于正常工作时间内。
+此前我们使用 SQL 创建了它，这次我们将使用 Python 并通过 UI 进行配置。
 
-### 创建 Python File \{#create-python-file\}
+<VerticalStepper headerLevel="h3">
+  ### 创建 Python 文件 \{#create-python-file\}
 
-在本地新建 `main.py` File：
+  在本地创建一个新文件 `main.py`：
 
-```python
-cat > main.py << 'EOF'
-import sys
-from datetime import datetime
+  ```python
+  cat > main.py << 'EOF'
+  import sys
+  from datetime import datetime
 
-for line in sys.stdin:
-    ts = datetime.fromisoformat(line.strip())
-    result = 1 if (0 <= ts.weekday() <= 4 and 9 <= ts.hour <= 17) else 0
-    print(result)
-    sys.stdout.flush()
-EOF
-```
+  for line in sys.stdin:
+      ts = datetime.fromisoformat(line.strip())
+      result = 1 if (0 <= ts.weekday() <= 4 and 9 <= ts.hour <= 17) else 0
+      print(result)
+      sys.stdout.flush()
+  EOF
+  ```
 
-现在将该 File 压缩为 ZIP 归档文件：
+  现在将该文件压缩为 ZIP 归档文件：
 
-```bash
-zip is_business_hours.zip main.py
-```
+  ```bash
+  zip is_business_hours.zip main.py
+  ```
 
-### 通过 UI 创建 UDF \{#create-udf-via-ui\}
+  :::note
+  ClickHouse Cloud 期望在下一步通过 UI 上传的 zip 文件中找到 `main.py`。
+  如果你将文件命名为其他名称，就会遇到错误。
+  :::
 
-1. 在 Cloud 控制台主页，点击左下角菜单中的组织名称。
-2. 在菜单中选择 **用户定义函数**。
-3. 在用户定义函数页面，点击 **Set up a UDF**。屏幕右侧会打开一个配置面板。
-4. 输入函数名称。本示例使用 `isBusinessHours`。
-5. 选择函数类型，可选 **Executable pool** 或 **Executable**：
-   * **Executable pool**：维护一个持久化进程池，并从池中取出进程来处理读取。
-   * **Executable**：脚本会在每次查询时运行。
-6. 本示例使用默认设置。有关配置参数的完整列表，请参见 [Executable 用户定义函数](/sql-reference/functions/udf#executable-user-defined-functions)。
-7. 点击 **Browse File**，上传在本教程开头创建的 `.zip` File。
-8. 添加一个新参数。本示例中，添加一个类型为 `DateTime` 的参数 `timestamp`。
-9. 选择返回类型。本示例中，选择 `Bool`。
-10. 点击 **Create UDF**。系统会显示一个对话框，显示当前构建状态。
-    * 如果出现任何问题，状态会变为 **error**。
-    * 否则，状态会从 **building** 进入 **provisioning**。你的服务必须处于唤醒状态才能完成预配。如果服务处于空闲状态，请在服务名称旁的 **UDF details** 面板中点击 **Wake Up Service**。
-    * 完成后，状态会变为 **deployed**。
+  ### 通过 UI 创建 UDF \{#create-udf-via-ui\}
 
-### 测试您的 UDF \{#test-your-udf\}
+  1. 在 Cloud 控制台主页，点击左下角菜单中的组织名称。
+  2. 在菜单中选择 **用户自定义函数**。
+  3. 在用户自定义函数页面，点击 **Set up a UDF**。屏幕右侧会打开一个配置面板。
+  4. 输入函数名称。本示例使用 `isBusinessHours`。
+  5. 选择函数类型，可选 **Executable pool** 或 **Executable**：
+     * **Executable pool**：维护一个持久化进程池，并从池中取出进程来处理读取。
+     * **Executable**：脚本会在每次查询时运行。
+  6. 本示例使用默认设置。有关配置参数的完整列表，请参见 [Executable 用户自定义函数](/sql-reference/functions/udf#executable-user-defined-functions)。
+  7. 点击 **Browse File**，上传在本教程开头创建的 `.zip` File。
+  8. 添加一个新参数。本示例中，添加一个类型为 `DateTime` 的参数 `timestamp`。
+  9. 选择返回类型。本示例中，选择 `Bool`。
+  10. 点击 **Create UDF**。系统会显示一个对话框，显示当前构建状态。
+      * 如果出现任何问题，状态会变为 **error**。
+      * 否则，状态会从 **building** 进入 **provisioning**。你的服务必须处于唤醒状态才能完成预配。如果服务处于空闲状态，请在服务名称旁的 **UDF details** 面板中点击 **Wake Up Service**。
+      * 完成后，状态会变为 **deployed**。
 
-1. 点击页面左上角的 **Settings - return to your service view**，返回 SQL Console 主页
-2. 点击左侧菜单中的 **SQL Console**
-3. 编写以下查询：
+  ### 测试你的 UDF \{#test-your-udf\}
 
-```sql
-SELECT isBusinessHours('2026-03-20 10:00:00'::DateTime), isBusinessHours('2026-03-20 23:00:00'::DateTime);
-```
+  1. 点击页面左上角的 **Settings - return to your service view**，返回 SQL 控制台 主页
+  2. 点击左侧菜单中的 **SQL 控制台**
+  3. 编写以下查询：
 
-你应该会看到如下结果：
+  ```sql
+  SELECT isBusinessHours('2026-03-20 10:00:00'::DateTime), isBusinessHours('2026-03-20 23:00:00'::DateTime);
+  ```
 
-```response
-true    false
-```
+  你应该会看到结果：
 
+  ```response
+  true    false
+  ```
 
-### 创建新版本 \{#create-new-version\}
+  ### 创建新版本 \{#create-new-version\}
 
-1. 在 Cloud 控制台首页，点击左下角菜单中的组织名称。
-2. 在菜单中选择 **用户自定义函数**。
-3. 在 `isBusinessHours` UDF 的 **Actions** 下点击三个点，然后点击 **Create new version**
-4. 上传包含已修改代码的 zip 文件，或更改设置，然后点击 **Create new version**
+  1. 在 Cloud 控制台主页，点击左下角菜单中的组织名称。
+  2. 在菜单中选择 **用户自定义函数**。
+  3. 在 `isBusinessHours` UDF 的 **Actions** 下点击三个点，然后点击 **Create new version**
+  4. 上传包含修改后代码的 zip 文件，或修改设置后点击 **Create new version**
 
-您已成功通过 UI 添加了第一个用户自定义函数，确认其可正常运行，并了解了如何在需要时为其创建新版本。
+  你已成功通过 UI 添加了第一个用户自定义函数，确认了它可以运行，并了解了如何在需要时创建它的新版本。
+</VerticalStepper>

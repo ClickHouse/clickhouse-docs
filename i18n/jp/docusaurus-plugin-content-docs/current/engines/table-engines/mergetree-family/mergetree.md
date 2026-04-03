@@ -341,7 +341,7 @@ SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
 
 ClickHouse は、このロジックを月の日付の数列に対してだけでなく、部分的に単調な数列を表す任意のプライマリキーに対しても適用します。
 
-### データスキップインデックス \{#table_engine-mergetree-data_skipping-indexes\}
+### データスキッピングインデックス \{#table_engine-mergetree-data_skipping-indexes\}
 
 インデックスの宣言は、`CREATE` クエリのカラム定義セクション内に記述します。
 
@@ -349,9 +349,9 @@ ClickHouse は、このロジックを月の日付の数列に対してだけで
 INDEX index_name expr TYPE type(...) [GRANULARITY granularity_value]
 ```
 
-`*MergeTree` ファミリーのテーブルでは、データスキップインデックスを指定できます。
+`*MergeTree` ファミリーのテーブルでは、データスキッピングインデックスを指定できます。
 
-これらのインデックスは、ブロック上で指定された式に関する情報の一部を集約します。ブロックは `granularity_value` 個のグラニュールから構成されます（グラニュールのサイズはテーブルエンジンの `index_granularity` 設定で指定します）。その後、これらの集約値は `SELECT` クエリの実行時に使用され、`WHERE` 句の条件を満たし得ない大きなデータブロックをスキップすることで、ディスクから読み取るデータ量を削減します。
+これらのインデックスは、ブロック上で指定された式に関する情報の一部を集約します。ブロックは `granularity_value` 個のグラニュールから構成されます (グラニュールのサイズはテーブルエンジンの `index_granularity` 設定で指定します) 。その後、これらの集約値は `SELECT` クエリの実行時に使用され、`WHERE` 句の条件を満たし得ない大きなデータブロックをスキップすることで、ディスクから読み取るデータ量を削減します。
 
 `GRANULARITY` 句は省略可能であり、`granularity_value` のデフォルト値は 1 です。
 
@@ -386,6 +386,9 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
+-- on columns of type JSON:
+INDEX json_paths_index JSONAllPaths(json_column) TYPE bloom_filter
+
 -- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
@@ -394,6 +397,7 @@ INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### スキップインデックスの種類 \{#skip-index-types\}
 
@@ -436,7 +440,7 @@ set(max_rows)
 bloom_filter([false_positive_rate])
 ```
 
-`false_positive_rate` パラメータには 0 から 1 の値を指定でき（デフォルト値: `0.025`）、偽陽性（誤検知）が発生する確率（これにより読み取るデータ量が増加する）を指定します。
+`false_positive_rate` パラメータには 0 から 1 の値を指定でき (デフォルト値: `0.025`) 、偽陽性 (誤検知) が発生する確率 (これにより読み取るデータ量が増加する) を指定します。
 
 サポートされているデータ型は次のとおりです。
 
@@ -455,6 +459,10 @@ bloom_filter([false_positive_rate])
 
 :::note Map データ型: キーまたは値に対する索引作成の指定
 `Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を使用して、索引をキーに対して作成するか、値に対して作成するかを指定できます。
+:::
+
+:::note JSON データ型: JSON パスのインデックス作成
+[`JSON`](/sql-reference/data-types/newjson) データ型では、[`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 関数を使用して、パスの集合に対する bloom filter 索引を作成できます。これにより、クエリ対象の JSON パスが存在しないグラニュールをスキップできます。詳細は、[JSON のデータスキッピングインデックス](/sql-reference/data-types/newjson#data-skipping-indexes-for-json)を参照してください。
 :::
 
 
@@ -697,17 +705,23 @@ Projection はパートディレクトリ内に保存されます。これは索
 
 テーブルからの読み取りは自動的に並列化されます。
 
-## 列およびテーブルの TTL \{#table_engine-mergetree-ttl\}
+## カラムおよびテーブルの 有効期限 (TTL) \{#table_engine-mergetree-ttl\}
 
-値の有効期間（time-to-live）を決定します。
+値の有効期間 (time-to-live) を決定します。
 
-`TTL` 句はテーブル全体にも、各列ごとにも設定できます。テーブルレベルの `TTL` では、ディスクやボリューム間でデータを自動的に移動するロジックや、すべてのデータが期限切れになったパーツを再圧縮するロジックも指定できます。
+`TTL` 句はテーブル全体にも、各カラムごとにも設定できます。テーブルレベルの 有効期限 (TTL) では、ディスクやボリューム間でデータを自動的に移動するロジックや、すべてのデータが期限切れになったパーツを再圧縮するロジックも指定できます。
 
 式は [Date](/sql-reference/data-types/date.md)、[Date32](/sql-reference/data-types/date32.md)、[DateTime](/sql-reference/data-types/datetime.md)、または [DateTime64](/sql-reference/data-types/datetime64.md) 型として評価されなければなりません。
 
+:::tip[有効期限 (TTL) 式では非決定論的関数を避けてください]
+有効期限 (TTL) は挿入時ではなく、バックグラウンドのマージ中に評価されます。
+`rand()`、`now()`、`now64()` のような関数はマージのたびに再評価されるため、予測不能な削除動作につながります。
+ClickHouse はカラムへの依存がまったくない式をブロックしますが、現在のところ、カラム参照と組み合わせた非決定論的関数 (例: `ts + rand()`) は拒否しません。予測可能な結果を得るには、有効期限 (TTL) 式は決定論的で、カラムから導出される値のみに基づかせる必要があります。
+:::
+
 **構文**
 
-列の TTL を設定する場合:
+カラムの 有効期限 (TTL) を設定する場合:
 
 ```sql
 TTL time_column
@@ -720,6 +734,7 @@ TTL time_column + interval
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
+
 
 ### カラムの有効期限 (TTL) \{#mergetree-column-ttl\}
 

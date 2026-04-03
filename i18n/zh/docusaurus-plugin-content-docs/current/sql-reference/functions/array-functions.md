@@ -171,6 +171,72 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 ```
 
 
+## arrayAutocorrelation \{#arrayAutocorrelation\}
+
+引入版本：v26.4.0
+
+计算数组的自相关。
+如果提供了 `max_lag`，则仅计算 `[0, max_lag)` 范围内的滞后值对应的相关性。
+如果未提供 `max_lag`，则计算所有可能滞后值的相关性。
+
+**语法**
+
+```sql
+arrayAutocorrelation(arr, [max_lag])
+```
+
+**参数**
+
+* `arr` — 数值数组。[`Array(T)`](/sql-reference/data-types/array)
+* `max_lag` — 可选。要计算的最大滞后数。必须是非负整数。[`Integer`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回 `Float64` 数组。如果方差为 0，则返回 NaN。[`Array(Float64)`](/sql-reference/data-types/array)
+
+**示例**
+
+**线性**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5]);
+```
+
+```response title=Response
+[1, 0.4, -0.1, -0.4, -0.4]
+```
+
+**对称**
+
+```sql title=Query
+SELECT arrayAutocorrelation([10, 20, 10]);
+```
+
+```response title=Response
+[1, -0.6666666666666669, 0.16666666666666674]
+```
+
+**常量**
+
+```sql title=Query
+SELECT arrayAutocorrelation([5, 5, 5]);
+```
+
+```response title=Response
+[nan, nan, nan]
+```
+
+**受限**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5], 2);
+```
+
+```response title=Response
+[1, 0.4]
+```
+
+
 ## arrayAvg \{#arrayAvg\}
 
 自 v21.1.0 版本引入

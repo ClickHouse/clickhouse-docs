@@ -3548,6 +3548,18 @@ HTTP 요청에 대한 응답으로 반환되는 데이터의 압축을 활성화
 
 실행 시간에 JOIN의 오른쪽 테이블에서 수집한 JOIN 키 Set으로 왼쪽 테이블을 필터링합니다.
 
+## enable_join_transitive_predicates \{#enable_join_transitive_predicates\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "조인 순서 최적화를 위해 추이적 등가 조인 프레디케이트를 추론하는 새 설정입니다."}]}]} />
+
+기존 조인 조건에서 추이적 등가 조인 프레디케이트를 추론합니다.
+예를 들어 `A.x = B.x` 및 `B.x = C.x`가 주어지면 `A.x = C.x` 프레디케이트가 추가로 생성되어,
+조인 순서 최적화기가 직접적인 (A JOIN C) 계획도 고려할 수 있습니다.
+
 ## enable_lazy_columns_replication \{#enable_lazy_columns_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9991,6 +10003,18 @@ EXPLAIN PLAN에서 단계 설명의 최대 길이를 지정합니다.
 
 동일한 서브쿼리 내에서 JOIN 순서를 최적화합니다. 현재는 극히 제한적인 경우에만 지원됩니다.
 값은 최적화 대상이 되는 테이블의 최대 개수입니다.
+
+## query_plan_optimize_join_order_randomize \{#query_plan_optimize_join_order_randomize\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "테스트를 위해 조인 순서 통계를 무작위화하는 새 설정입니다."}]}]} />
+
+0이 아니면 조인 순서 최적화기는 실제 통계 대신 무작위로 생성된 카디널리티와 NDV를 사용합니다.
+1로 설정하면 무작위 시드가 생성되고, 1보다 큰 값으로 설정하면 해당 값을 시드로 직접 사용합니다.
+이 설정은 서로 다른 조인 순서로 인해 발생하는 오류를 찾기 위한 테스트용입니다.
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 

@@ -14,15 +14,21 @@ import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organizat
 
 ## 主要な概念 \{#key-concepts\}
 
-以下の図は、ClickHouse Cloud の Organization、クラウドアカウント、BYOC infrastructure の相互関係を示しています。
+以下の図は、ClickHouse Cloud の Organization、クラウドアカウント、BYOC インフラストラクチャ の相互関係を示しています。
 
-<BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="Organization、クラウドアカウント、region、BYOC infrastructure の関係を示す BYOC organization の階層" />
+<BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="Organization、クラウドアカウント、region、BYOC インフラストラクチャ の関係を示す BYOC organization の階層" />
 
-* **ClickHouse Cloud Organization:** ユーザー、請求、および BYOC 以外の ClickHouse サービスを管理する ClickHouse Cloud の最上位エンティティです。1 つの Organization に属するユーザーは、標準の Cloud サービスと BYOC サービスの両方にアクセスできます。
-* **ClickHouse BYOC Organization:** BYOC デプロイメントの管理専用の別個の Organization です。Cloud Organization とユーザーを共有しますが、BYOC infrastructure のデプロイ先となる 1 つ以上の クラウドアカウント に関連付けられています。
-* **Cloud Account / Project:** BYOC infrastructure がプロビジョニングされる、顧客所有の AWS account または GCP project です。各 account または project では、1 つ以上の region で BYOC デプロイメントをホストできます。分離のため、BYOC デプロイメントごとに専用の account または project を使用することを推奨します。
-* **BYOC Infrastructure:** クラウドアカウント 内の特定の region にデプロイされるクラウドリソース一式で、VPC、Kubernetes クラスター (EKS/GKE)、storage bucket、IAM roles、および関連サービスが含まれます。1 つの クラウドアカウント に、異なる region にまたがる複数の BYOC infrastructure を含めることができます。
-* **ClickHouse Service:** BYOC infrastructure 内で稼働する個別の ClickHouse クラスターです。同じ BYOC infrastructure 内で複数の service を実行できます。
+<br />
+
+* **ClickHouse Cloud organization:** ユーザー、請求、および BYOC 以外の ClickHouse サービスを管理する ClickHouse Cloud の最上位エンティティです。1 つの Organization に属するユーザーは、標準の Cloud サービスと BYOC サービスの両方にアクセスできます。
+* **ClickHouse BYOC organization:** BYOC デプロイメントの管理専用の別個の Organization です。Cloud Organization とユーザーを共有しますが、BYOC インフラストラクチャ のデプロイ先となる 1 つ以上の クラウドアカウント に関連付けられています。
+* **Cloud account / project:** BYOC インフラストラクチャ がプロビジョニングされる、顧客所有の AWS account または GCP project です。各 account または project では、1 つ以上の region で BYOC デプロイメントをホストできます。分離のため、BYOC デプロイメントごとに専用の account または project を使用することを推奨します。
+* **BYOC infrastructure:** クラウドアカウント 内の特定の region にデプロイされるクラウドリソース一式で、VPC、Kubernetes クラスター (EKS/GKE)、storage bucket、IAM ロール、および関連サービスが含まれます。1 つの クラウドアカウント に、異なる region にまたがる複数の BYOC インフラストラクチャ を含めることができます。
+* **ClickHouse Service:** BYOC インフラストラクチャ 内で稼働する個別の ClickHouse クラスターです。同じ BYOC インフラストラクチャ 内で複数の service を実行できます。
+
+:::note
+同じ organization 配下で AWS accounts と GCP projects を混在させられるのは、[cloud service provider marketplace](/cloud/marketplace/marketplace-billing) 経由でセットアップされていない顧客に限られます。
+:::"
 
 ## 用語集 \{#glossary\}
 

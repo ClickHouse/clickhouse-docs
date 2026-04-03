@@ -386,6 +386,9 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
+-- on columns of type JSON:
+INDEX json_paths_index JSONAllPaths(json_column) TYPE bloom_filter
+
 -- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
@@ -394,6 +397,7 @@ INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### Типы индексов пропуска данных \{#skip-index-types\}
 
@@ -455,6 +459,10 @@ bloom_filter([false_positive_rate])
 
 :::note Тип данных Map: указание создания индекса по ключам или значениям
 Для типа данных `Map` клиент может указать, должен ли индекс создаваться по ключам или по значениям, используя функции [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) или [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues).
+:::
+
+:::note Тип данных JSON: индексация путей JSON
+Для типа данных [`JSON`](/sql-reference/data-types/newjson) можно создать индекс bloom filter по набору путей с помощью функции [`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths). Это позволяет пропускать гранулы, в которых отсутствует запрашиваемый путь JSON. Подробности см. в разделе [Индексы пропуска данных для JSON](/sql-reference/data-types/newjson#data-skipping-indexes-for-json).
 :::
 
 
@@ -701,9 +709,15 @@ ORDER BY id;
 
 Определяет время жизни значений.
 
-Выражение `TTL` может быть задано как для всей таблицы, так и для каждого отдельного столбца. `TTL` на уровне таблицы также может задавать логику автоматического перемещения данных между дисками и томами, а также перекомпрессии частей, в которых срок жизни всех данных истёк.
+Предложение `TTL` может быть задано как для всей таблицы, так и для каждого отдельного столбца. `TTL` на уровне таблицы также может задавать логику автоматического перемещения данных между дисками и томами, а также перекомпрессии частей, в которых срок жизни всех данных истёк.
 
 Выражения должны вычисляться в значение типа данных [Date](/sql-reference/data-types/date.md), [Date32](/sql-reference/data-types/date32.md), [DateTime](/sql-reference/data-types/datetime.md) или [DateTime64](/sql-reference/data-types/datetime64.md).
+
+:::tip[Избегайте недетерминированных функций в выражениях TTL]
+TTL вычисляется во время фоновых слияний, а не в момент вставки.
+Такие функции, как `rand()`, `now()` или `now64()`, будут вычисляться заново при каждом слиянии, что приведёт к непредсказуемому удалению данных.
+ClickHouse блокирует выражения, которые вообще не зависят от столбцов, но в настоящее время не отклоняет недетерминированные функции, используемые вместе со ссылкой на столбец (например, `ts + rand()`). Чтобы результаты были предсказуемыми, выражения TTL должны основываться только на детерминированных значениях, производных от столбцов.
+:::
 
 **Синтаксис**
 

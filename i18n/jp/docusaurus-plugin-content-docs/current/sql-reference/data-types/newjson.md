@@ -1185,6 +1185,166 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 **注:** 2 つのパスに含まれる値のデータ型が異なる場合、それらは `Variant` データ型の[比較ルール](/sql-reference/data-types/variant#comparing-values-of-variant-data)に従って比較されます。
 
 
+## JSON 向けのデータスキッピングインデックス \{#data-skipping-indexes-for-json\}
+
+[`データスキッピングインデックス`](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) は、`JSON` カラムに対して次の 2 つの方法で使用できます。
+
+1. **特定のサブカラムに対するインデックス** — 通常のカラムと同様に、既知の JSON パスに標準のスキップインデックスを作成します。これにより、そのパスにある *値* がインデックス化されます。
+2. **`JSONAllPaths` を使ったパスベースのインデックス** — 各グラニュールに存在する *パスの集合* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。
+
+### 特定のサブカラムに対するインデックス \{#json-indexes-on-subcolumns\}
+
+通常のカラムと同じ構文で、任意の JSON サブカラムにスキップ索引を作成できます。
+[サポートされている任意のインデックスタイプ](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)を使用できます (`minmax`、`set`、`bloom_filter`、`tokenbf_v1`、`ngrambf_v1` など) 。
+
+インデックス式で JSON サブカラムを参照する方法は 2 つあります。
+
+* JSON 型ヒントで宣言した**型付きパス** — 名前で直接アクセスします: `json.a`
+* 明示的にキャストする**動的パス** — `::` キャスト構文を使用します: `json.b::String`
+
+複数のサブカラムを組み合わせた式も使用できます。たとえば、`json.a || json.b::String` です。
+
+#### 例 \{#json-indexes-on-subcolumns-example\}
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id UInt32),
+    INDEX idx_sensor data.sensor_id TYPE minmax GRANULARITY 1,
+    INDEX idx_location data.location::String TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+型付きのサブカラム `data.sensor_id` に対する `minmax` 索引は、スキャン対象を一致するグラニュールに絞り込みます：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id < 2;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: minmax GRANULARITY 1
+        Parts: 1/2
+        Granules: 2/8
+```
+
+`data.location::String` という cast サブカラムに対する `bloom_filter` 索引も機能します:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+### JSONAllPaths を使用したパスベースのインデックス \{#json-indexes-jsonallpaths\}
+
+[データスキッピングインデックス](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)は、[`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 関数を使用して `JSON` カラムに対して作成することもできます。
+これは、`mapKeys` を使って [`Map`](/sql-reference/data-types/map) カラムにスキップ索引を作成する場合と同様です。インデックスには各グラニュールに存在する JSON パスの集合が格納され、これを使って、検索対象のパスを含みえないグラニュールをスキップします。
+
+#### サポートされる索引タイプ \{#json-indexes-jsonallpaths-supported-types\}
+
+`JSONAllPaths` は、次のスキップ索引タイプで使用できます。
+
+* [`bloom_filter`](/engines/table-engines/mergetree-family/mergetree#bloom-filter) — `equals`、`in`、`IS NOT NULL` をサポートします。
+* [`tokenbf_v1`](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) — `equals` と `IS NOT NULL` をサポートします。
+* [`ngrambf_v1`](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) — `equals` と `IS NOT NULL` をサポートします。
+* [`text`](/engines/table-engines/mergetree-family/textindexes) (転置索引) — `equals`、`in`、`IS NOT NULL` をサポートします。
+
+#### 例 \{#json-indexes-jsonallpaths-example\}
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1` を使うと、スキップ索引が使用されていることを確認できます。パスが1つのパーツにしか存在しない場合、索引によってもう一方のパーツはスキップされます：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+パスがどのパーツにも存在しない場合、すべてのパーツとグラニュールがスキップされます：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL` でも索引が使用され、パスが存在しないグラニュールはスキップされます (その場合、値は `NULL` になるためです) :
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+
+#### 仕組み \{#json-indexes-jsonallpaths-how-it-works\}
+
+`JSONAllPaths(json_column)` 式は、JSON 値内に存在するすべてのパスを含む `Array(String)` を生成します。
+スキップ索引は、これらのパス文字列を自身のデータ構造 (ブルームフィルタまたは転置索引) に格納します。
+クエリで `json.some.path` を絞り込むと、索引は各グラニュールについて文字列 `"some.path"` が存在するかどうかを確認し、存在しないグラニュールをスキップします。
+
+#### パスが存在しない場合の安全性 \{#json-indexes-jsonallpaths-safety-with-missing-paths\}
+
+JSONパスが 그래뉼 に存在しない場合、サブカラムは次のように評価されます。
+
+* `Dynamic` 型 (例: `json.path`) および `Nullable` 型のサブカラム (例: `json.path.:Int64`) では `NULL` になります。`NULL` との比較は常に false を返すため、スキップしても安全です。
+* `Nullable` ではない CAST 式では、その型のデフォルト値になります (例: `json.path::Int64` はパスが存在しない場合に `0` になります) 。この場合、比較する値がデフォルト値と異なるときにのみ、スキップしても安全です。索引はこの違いを自動的に処理します。
+
 ## JSON 型をより効果的に利用するためのヒント \{#tips-for-better-usage-of-the-json-type\}
 
 `JSON` カラムを作成してデータを読み込む前に、次の点を検討してください。

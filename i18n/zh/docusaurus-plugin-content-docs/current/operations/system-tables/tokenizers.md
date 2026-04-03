@@ -39,6 +39,6 @@ SELECT * FROM system.tokenizers;
 │ array           │
 │ splitByString   │
 │ sparse_grams    │
-│ unicodeWord     │
+│ asciiCJK        │
 └─────────────────┘
 ```

@@ -108,6 +108,46 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 如果表定义了[约束](../../sql-reference/statements/create/table.md#constraints)，则会针对插入数据的每一行检查相应的约束表达式。如果任一约束未被满足，服务器将抛出一个包含约束名称和表达式的异常，并停止执行该查询。
 
+## 数据类型验证 \{#data-type-validation\}
+
+ClickHouse 仅在创建表 (`CREATE TABLE`) 和修改 schema (`ALTER TABLE`) 时验证允许的数据类型 (由 `enable_time_time64_type`、`allow_suspicious_low_cardinality_types`、`allow_suspicious_fixed_string_types` 等设置控制) ，而不会在执行 `INSERT` 时进行验证。
+
+这意味着，如果一张包含不允许的数据类型的表已经存在，即使服务器上禁用了相应设置，仍然可以向其中插入数据。这是刻意如此的设计——表一旦创建完成，插入操作就不应被控制类型创建的设置阻止。
+
+例如：
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+因此，较新版本的客户端 (其中某项设置默认启用) 可以向较旧版本的服务器 (其中该设置已禁用) 插入带有不允许的数据类型的数据，前提是目标表中已存在相应类型的列。校验是在 DDL 层面实施的，而不是在 DML 层面。
+:::
+
+
 ## 插入 SELECT 查询结果 \{#inserting-the-results-of-select\}
 
 **语法**

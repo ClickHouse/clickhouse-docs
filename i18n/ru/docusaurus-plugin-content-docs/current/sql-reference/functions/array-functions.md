@@ -172,6 +172,71 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 ```
 
 
+## arrayAutocorrelation \{#arrayAutocorrelation\}
+
+Добавлено в: v26.4.0
+
+Вычисляет автокорреляцию массива.
+Если указан `max_lag`, корреляция вычисляется только для сдвигов в диапазоне `[0, max_lag)`.
+Если `max_lag` не указан, она вычисляется для всех возможных сдвигов.
+
+**Синтаксис**
+
+```sql
+arrayAutocorrelation(arr, [max_lag])
+```
+
+**Аргументы**
+
+* `arr` — Массив чисел. [`Array(T)`](/sql-reference/data-types/array)
+* `max_lag` — Необязательный аргумент. Максимальное число лагов для вычисления. Значение должно быть неотрицательным целым числом. [`Integer`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает массив `Float64`. Возвращает `NaN`, если дисперсия равна 0. [`Array(Float64)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Линейный**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5]);
+```
+
+```response title=Response
+[1, 0.4, -0.1, -0.4, -0.4]
+```
+
+**Симметричное**
+
+```sql title=Query
+SELECT arrayAutocorrelation([10, 20, 10]);
+```
+
+```response title=Response
+[1, -0.6666666666666669, 0.16666666666666674]
+```
+
+**Константа**
+
+```sql title=Query
+SELECT arrayAutocorrelation([5, 5, 5]);
+```
+
+```response title=Response
+[nan, nan, nan]
+```
+
+**Ограничено**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5], 2);
+```
+
+```response title=Response
+[1, 0.4]
+```
+
 ## arrayAvg \{#arrayAvg\}
 
 Введена в: v21.1.0

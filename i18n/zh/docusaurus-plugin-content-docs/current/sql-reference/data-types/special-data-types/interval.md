@@ -82,6 +82,50 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ```
 
 
+## 混合类型时间间隔 \{#mixed-type-intervals\}
+
+可以使用 `INTERVAL 'value' <from_kind> TO <to_kind>` 语法创建混合类型的时间间隔，例如同时包含多个小时和多个分钟的时间间隔。
+结果是一个由两个或更多时间间隔组成的元组。
+
+支持的组合：
+
+| 语法                 | 字符串格式     | 示例                                    |
+| ------------------ | --------- | ------------------------------------- |
+| `YEAR TO MONTH`    | `Y-M`     | `INTERVAL '2-6' YEAR TO MONTH`        |
+| `DAY TO HOUR`      | `D H`     | `INTERVAL '5 12' DAY TO HOUR`         |
+| `DAY TO MINUTE`    | `D H:M`   | `INTERVAL '5 12:30' DAY TO MINUTE`    |
+| `DAY TO SECOND`    | `D H:M:S` | `INTERVAL '5 12:30:45' DAY TO SECOND` |
+| `HOUR TO MINUTE`   | `H:M`     | `INTERVAL '1:30' HOUR TO MINUTE`      |
+| `HOUR TO SECOND`   | `H:M:S`   | `INTERVAL '1:30:45' HOUR TO SECOND`   |
+| `MINUTE TO SECOND` | `M:S`     | `INTERVAL '5:30' MINUTE TO SECOND`    |
+
+根据 SQL 标准，非首字段会按以下范围进行校验：`MONTH` 为 0-11，`HOUR` 为 0-23，`MINUTE` 为 0-59，`SECOND` 为 0-59。
+
+```sql
+SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+可选的前导 `+` 或 `-` 符号会应用于所有部分：
+
+```sql
+SELECT INTERVAL '+1:30' HOUR TO MINUTE;
+-- this is equivalent to:
+-- SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+
 ## 另请参阅 \{#see-also\}
 
 - [INTERVAL](/sql-reference/operators#interval) 运算符

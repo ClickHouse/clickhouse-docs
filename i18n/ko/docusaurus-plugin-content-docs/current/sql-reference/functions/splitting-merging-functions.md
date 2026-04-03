@@ -501,20 +501,20 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 ## tokens \{#tokens\}
 
-도입된 버전: v21.11.0
+도입 버전: v21.11.0
 
-지정된 tokenizer를 사용하여 문자열을 토큰으로 분할합니다.
+지정된 토크나이저를 사용하여 문자열을 토큰으로 분할합니다.
 
-사용 가능한 tokenizer:
+사용 가능한 토크나이저:
 
 * `splitByNonAlpha`는 영숫자가 아닌 ASCII 문자를 기준으로 문자열을 분할합니다(함수 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)도 참조).
 * `splitByString(S)`는 사용자 정의 구분 문자열 `S`를 기준으로 문자열을 분할합니다(함수 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)도 참조). 구분자는 선택적 매개변수로 지정할 수 있으며, 예를 들어 `tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`와 같이 설정합니다. 각 문자열은 여러 문자로 구성될 수 있습니다(예시의 `', '`). 구분자를 명시적으로 지정하지 않으면 기본 구분자 목록은 공백 하나 `[' ']`입니다.
 * `ngrams(N)`는 문자열을 동일한 크기의 `N`-gram으로 분할합니다(함수 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)도 참조). n-gram 길이는 1에서 8 사이의 정수인 선택적 매개변수로 지정할 수 있으며, 예를 들어 `tokens(value, 'ngrams', 3)`와 같이 설정합니다. n-gram 크기를 명시적으로 지정하지 않으면 기본값은 3입니다.
-* `sparseGrams(min_length, max_length, min_cutoff_length)`는 최소 `min_length`, 최대 `max_length`(포함) 길이의 가변 길이 n-gram으로 문자열을 분할합니다(함수 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)도 참조). 별도 지정하지 않으면 `min_length`와 `max_length`의 기본값은 각각 3과 100입니다. 매개변수 `min_cutoff_length`를 지정하면 길이가 `min_cutoff_length` 이상인 n-gram만 반환합니다. `ngrams(N)`과 비교하면, `sparseGrams` tokenizer는 가변 길이 N-gram을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다. 예를 들어 `tokens(value, 'sparseGrams', 3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-gram을 생성하지만, 4-gram과 5-gram만 반환합니다.
+* `sparseGrams(min_length, max_length, min_cutoff_length)`는 최소 `min_length`, 최대 `max_length`(포함) 길이의 가변 길이 n-gram으로 문자열을 분할합니다(함수 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)도 참조). 별도 지정하지 않으면 `min_length`와 `max_length`의 기본값은 각각 3과 100입니다. 매개변수 `min_cutoff_length`를 지정하면 길이가 `min_cutoff_length` 이상인 n-gram만 반환합니다. `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-gram을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다. 예를 들어 `tokens(value, 'sparseGrams', 3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-gram을 생성하지만, 4-gram과 5-gram만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 토큰이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array)도 참조).
-* `unicodeWord`는 Unicode 단어 경계 규칙(UAX #29와 유사)을 사용하여 문자열을 토큰으로 분할합니다. ASCII 영숫자와 밑줄은 연결자와 함께 토큰을 형성합니다(`:`는 문자에, `.` 및 `'`는 동일한 타입의 문자에 사용됨). ASCII가 아닌 Unicode 문자는 단일 문자 토큰이 됩니다.
+* `asciiCJK`는 Unicode 단어 경계 규칙(UAX #29와 유사)을 사용하여 문자열을 토큰으로 분할합니다. ASCII 영숫자와 밑줄은 연결자와 함께 토큰을 형성합니다(`:`는 문자에, `.` 및 `'`는 동일한 타입의 문자에 사용됨). ASCII가 아닌 Unicode 문자는 단일 문자 토큰이 됩니다.
 
-`splitByString` tokenizer의 경우, 토큰이 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)를 형성하지 않는다면 더 긴 구분자를 우선적으로 매칭하도록 하는 것이 바람직합니다.
+`splitByString` 토크나이저의 경우, 토큰이 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)를 형성하지 않는다면 더 긴 구분자를 우선적으로 매칭하도록 하는 것이 바람직합니다.
 이를 위해 구분자를 길이가 긴 순서대로 전달하면 됩니다.
 예를 들어 separators = `['%21', '%']`인 경우 문자열 `%21abc`는 `['abc']`로 토큰화되지만, separators = `['%', '%21']`인 경우 `['21ac']`로 토큰화됩니다(이는 원했던 결과가 아닐 가능성이 높습니다).
 
@@ -527,13 +527,13 @@ tokens(value, 'splitByString'[, separators])
 tokens(value, 'ngrams'[, n])
 tokens(value, 'sparseGrams'[, min_length, max_length[, min_cutoff_length]])
 tokens(value, 'array')
-tokens(value, 'unicodeWord')
+tokens(value, 'asciiCJK')
 ```
 
 **인수**
 
 * `value` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 사용할 tokenizer입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 토크나이저입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 * `n` — 인수 `tokenizer`가 `ngrams`인 경우에만 해당합니다. n-gram의 길이를 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `3`입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 인수 `tokenizer`가 `split`인 경우에만 해당합니다. 구분자 문자열을 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `[' ']`입니다. [`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최소 gram 길이를 정의하는 선택적 매개변수이며, 기본값은 3입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
@@ -544,9 +544,9 @@ tokens(value, 'unicodeWord')
 
 입력 문자열에서 생성된 토큰 배열을 반환합니다. [`Array`](/sql-reference/data-types/array)
 
-**Examples**
+**예시**
 
-**기본 tokenizer**
+**기본 토크나이저**
 
 ```sql title=Query
 SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
@@ -593,7 +593,7 @@ tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
 **인수**
 
 * `value` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 사용할 tokenizer입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `unicodeWord`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 토크나이저입니다. 유효한 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택적 인수이며, 명시적으로 지정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 * `n` — 인수 `tokenizer`가 `ngrams`인 경우에만 해당합니다. n-gram의 길이를 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `3`입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 인수 `tokenizer`가 `split`인 경우에만 해당합니다. 구분자 문자열을 정의하는 선택적 매개변수입니다. 명시적으로 지정하지 않으면 기본값은 `[' ']`입니다. [`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 인수 `tokenizer`가 `sparseGrams`인 경우에만 해당합니다. 최소 gram 길이를 정의하는 선택적 매개변수이며, 기본값은 3입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
@@ -604,9 +604,9 @@ tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
 
 입력 문자열에서 생성된 토큰 배열을 반환합니다. [`Array`](/sql-reference/data-types/array)
 
-**Examples**
+**예시**
 
-**기본 tokenizer**
+**기본 토크나이저**
 
 ```sql title=Query
 SELECT tokensForLikePattern('%test1,test2,test3%') AS tokens;
