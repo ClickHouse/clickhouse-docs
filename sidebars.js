@@ -1953,6 +1953,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
+            'use-cases/observability/clickstack/dashboards/dashboard-templates',
           ],
         },
         "use-cases/observability/clickstack/notebooks",

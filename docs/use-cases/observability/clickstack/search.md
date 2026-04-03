@@ -12,6 +12,7 @@ keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
+import saved_search_listing from '@site/static/images/use-cases/observability/clickstack-saved-search-listing.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack allows you to do a full-text search on your events (logs and traces). You can get started searching by just typing keywords that match your events. For example, if your log contains "Error", you can find it by just typing in "Error" in the search bar.
@@ -70,7 +71,9 @@ Aliases aren't supported at this time (ex. you can not use `column as "alias"`).
 
 ## Saved searches {#saved-searches}
 
-You can save your searches for quick access later. Once saved, your searches will appear in the left sidebar, making it easy to revisit frequently used search queries without having to reconstruct them.
+You can save your searches for quick access later. Once saved, your searches will appear on the `Saved Searches` page, making it easy to revisit frequently used search queries without having to reconstruct them.
+
+<Image img={saved_search_listing} alt="Saved Search Listing Page" size="lg" />
 
 To save a search, simply configure your search query and click the save button. You can give your saved search a descriptive name to help identify it later.
 
