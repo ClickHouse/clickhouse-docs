@@ -28,13 +28,13 @@ This opens the template gallery, where templates are organized by category. Clic
 
 ## Importing a template {#importing-a-template}
 
-To import a template, a data source must be set for each dashboard visualization:
+To import a template, a data source must be set for each dashboard visualization. Select a data source from the dropdown for each visualization, then click `Finish Import`.
 
 <Image img={import_dashboard_template} alt="Dashboard Template Import" size="lg"/>
 
 ## Pre-built templates {#pre-built-templates}
 
-### OTel Runtime Metrics {#otel-runtime-metrics}
+### OTel runtime metrics {#otel-runtime-metrics}
 
 The built-in OTel Runtime Metrics templates are designed for applications instrumented with [OpenTelemetry runtime metrics](https://opentelemetry.io/docs/specs/semconv/runtime/).
 
