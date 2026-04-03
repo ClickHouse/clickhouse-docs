@@ -373,7 +373,7 @@ We are introducing a new vertical scaling mechanism for compute replicas, which 
 
 ### Horizontal scaling (GA) {#horizontal-scaling-ga}
 
-Horizontal scaling is now Generally Available. You can add additional replicas to scale out their service through the APIs and the cloud console. Please refer to the [documentation](/manage/scaling#manual-horizontal-scaling) for information.
+Horizontal scaling is now Generally Available. You can add additional replicas to scale out their service through the APIs and the cloud console. Please refer to the [documentation](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling) for information.
 
 ### Configurable backups {#configurable-backups}
 
@@ -1163,7 +1163,7 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 - S3 access using IAM roles. You can now leverage IAM roles to securely access your private Amazon Simple Storage Service (S3) buckets (please contact support to set it up)
 
 ### Scaling changes {#scaling-changes}
-- [Horizontal scaling](/manage/scaling#manual-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
+- [Horizontal scaling](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling). Workloads that require more parallelization can now be configured with up to 10 replicas (please contact support to set it up)
 - [CPU based autoscaling](/manage/scaling). CPU-bound workloads can now benefit from additional triggers for autoscaling policies
 
 ### Console changes {#console-changes-17}
