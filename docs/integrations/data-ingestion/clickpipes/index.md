@@ -68,9 +68,17 @@ For all services, ClickPipes traffic will originate from a default region based 
 - **us-east-1**: For all services in AWS `us-east-1`.
 - **ap-south-1**: For services in AWS `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **ap-northeast-2**: For services in AWS `ap-northeast-2` created on or after 14 Nov 2025 (services created before this date use `us-east-2` IPs).
+- **af-south-1**: For services in AWS `af-south-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
+- **ap-east-1**: For services in AWS `ap-east-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
+- **ap-northeast-1**: For services in AWS `ap-northeast-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-1**: For services in AWS `ap-southeast-1` created on or after 18 Mar 2026 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-2**: For services in AWS `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **ap-southeast-3**: For services in AWS `ap-southeast-3` created on or after 6 Mar 2026 (services created before this date use `us-east-2` IPs).
+- **ca-central-1**: For services in AWS `ca-central-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
+- **eu-north-1**: For services in AWS `eu-north-1` created on or after 13 Apr 2026 (services created before this date use `eu-central-1` IPs).
+- **eu-west-2**: For services in AWS `eu-west-2` created on or after 13 Apr 2026 (services created before this date use `eu-central-1` IPs).
+- **il-central-1**: For services in AWS `il-central-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
+- **sa-east-1**: For services in AWS `sa-east-1` created on or after 13 Apr 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **us-east-2**: For all other regions not explicitly listed (including GCP and Azure regions).
 
@@ -83,7 +91,16 @@ For all services, ClickPipes traffic will originate from a default region based 
 | **ap-south-1** - Mumbai (from 25 Jun 2025)              | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                   |
 | **ap-northeast-2** - Seoul (from 14 Nov 2025)           | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104`                                                            |
 | **ap-southeast-2** - Sydney (from 25 Jun 2025)          | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
+| **af-south-1** - Cape Town (from 13 Apr 2026)           | `13.245.187.24`, `15.240.60.178`, `15.240.81.191`, `13.245.25.101`, `13.245.91.225`, `15.240.54.195`                                                 |
+| **ap-east-1** - Hong Kong (from 13 Apr 2026)            | `18.166.168.168`, `43.199.224.85`, `95.40.0.242`, `16.162.107.229`, `43.199.125.240`, `54.46.86.27`                                                  |
+| **ap-northeast-1** - Tokyo (from 13 Apr 2026)           | `54.168.88.92`, `35.76.97.79`, `54.64.100.89`, `54.178.40.17`, `52.195.101.208`, `13.193.109.245`                                                    |
+| **ap-southeast-1** - Singapore (from 18 Mar 2026)       | `47.130.197.47`, `54.251.134.219`, `18.139.118.108`, `54.255.153.106`, `54.254.98.29`, `13.215.65.134`                                               |
 | **ap-southeast-3** - Jakarta (from 6 Mar 2026)          | `16.78.195.195`, `43.218.184.235`, `16.79.88.54`, `16.78.153.162`, `16.79.6.125`, `108.137.52.155`                                                   |
+| **ca-central-1** - Canada (from 13 Apr 2026)            | `52.60.123.235`, `3.97.222.98`, `3.99.62.248`, `15.223.61.186`, `3.96.255.101`, `3.97.29.96`                                                         |
+| **eu-north-1** - Stockholm (from 13 Apr 2026)           | `13.63.1.65`, `16.171.127.30`, `56.228.76.44`, `13.63.101.248`, `16.170.124.188`, `13.60.109.201`                                                    |
+| **eu-west-2** - London (from 13 Apr 2026)               | `13.134.82.158`, `16.60.209.167`, `18.134.221.203`, `16.60.139.176`, `13.43.66.75`, `3.11.78.183`                                                    |
+| **il-central-1** - Tel Aviv (from 13 Apr 2026)          | `16.164.25.13`, `51.84.162.29`, `51.85.90.183`, `51.84.36.146`, `51.84.72.29`, `51.85.28.184`                                                        |
+| **sa-east-1** - São Paulo (from 13 Apr 2026)            | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                               |
 | **us-west-2** - Oregon (from 24 Jun 2025)               | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
