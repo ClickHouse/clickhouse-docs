@@ -1,7 +1,7 @@
 ---
 slug: /whats-new/cloud
 sidebar_label: 'Cloud changelog'
-title: 'Cloud Changelog'
+title: 'Cloud changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 doc_type: 'changelog'
 keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
@@ -39,6 +39,14 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
     Subscribe to Cloud Changelog via RSS
   </a>
 :::
+
+## April 3, 2026 {#april-3-2026}
+- **Smarter auto-scaling with two-window recommender:** ClickHouse Cloud now uses a dual-lookback-window approach to vertical auto-scaling, replacing the previous single 30-hour window with a combined 3-hour "small window" and 30-hour "large window." This reduces scale-down latency from up to 30 hours to as little as 3 hours, lowering infrastructure costs for variable workloads without sacrificing scale-up responsiveness. Read the [blog post](https://clickhouse.com/blog/smarter-auto-scaling) for more details.
+- **Monitoring in the Cloud console:** New Overview dashboard and Infrastructure dashboard provide better visibility into the ClickHouse server's behavior. Also, Admin users will receive email notifications for common issues when using ClickHouse Cloud. Read the [blog post](https://clickhouse.com/blog/clickhouse-cloud-new-monitoring-capabilities) for more details.
+- **Compute-compute separation (warehouses):** Support for auto-idling on primary services (also referred to as parent services) is now rolling to Public Preview. If the feature has not been enabled on your organization, contact Support for access. Once GA, the default behavior will be that existing primary services will have the option to turn on auto-idling and new primary services will have it enabled by default.
+- **Data Catalog integration:** ClickHouse Cloud now supports Iceberg REST Catalog and Microsoft OneLake as data lake catalog integrations on the Data Sources UI. Once connected, the catalog appears as a database, allowing you to read Iceberg tables directly—without duplicating data.
+- **Bring Your Own Cloud (BYOC) on GCP is now Generally Available:** ClickHouse BYOC is now GA on Google Cloud, allowing you to deploy ClickHouse services in your own GCP project, and comply with strict data residency requirements. Read the [documentation](/cloud/reference/byoc/overview) and the [blog post](https://clickhouse.com/blog/byoc-gcp-ga) for more details. You can [contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
+- **Billing notifications for prepaid credits and payment method changes:** ClickHouse Cloud now sends notifications when prepaid credits are added to your organization following a committed contract, or when a payment method is updated (credit card or marketplace subscription). Notifications are enabled by default for UI and email, and can be configured to also send to Slack.
 
 ## March 20, 2026 {#march-20-2026}
 - **Custom date range for Usage Breakdown:** You can now view your usage costs across all billing dimensions on the usage breakdown screen using a custom date range.
