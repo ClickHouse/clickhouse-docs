@@ -47,7 +47,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのレプリカが作成されます。Scaleティアでは、[垂直オートスケーリング](/manage/scaling#vertical-auto-scaling)がデフォルトで有効になります。組織ティアは、後で「Plans」ページで変更できます。
+  デフォルトでは、新規組織はScaleティアに配置され、各レプリカに4 vCPUと16 GiB RAMを持つ3つのレプリカが作成されます。Scaleティアでは、[垂直オートスケーリング](/cloud/features/autoscaling/vertical)がデフォルトで有効になります。組織ティアは、後で「Plans」ページで変更できます。
 
   必要に応じて、レプリカのスケール範囲となる最小サイズと最大サイズを指定して、サービスリソースをカスタマイズします。準備ができたら、`Create service`を選択します。
 
@@ -70,7 +70,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   迅速に開始するには、ClickHouseがWebベースのSQLコンソールを提供しており、オンボーディング完了後に自動的にリダイレクトされます。
 
-  <Image img={createservice8} size="md" alt="SQL コンソール" border />
+  <Image img={createservice8} size="md" alt="SQLコンソール" border />
 
   クエリタブを作成し、簡単なクエリを入力して接続が機能していることを確認します:
 
@@ -80,7 +80,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
   リストには4つのデータベースと、追加したデータベースがあればそれらも表示されます。
 
-  <Image img={show_databases} size="md" alt="SQL コンソール" border />
+  <Image img={show_databases} size="md" alt="SQLコンソール" border />
 
   <br />
 
@@ -107,7 +107,7 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   以下の方法でデータをアップロードできます：
 
   * S3、Postgres、Kafka、GCS などのデータソースからデータを取り込み始めるために、ClickPipe を設定する
-  * SQL コンソールを使用する
+  * SQLコンソールを使用する
   * ClickHouse クライアントを使用する
   * ファイルをアップロード  - JSON、CSV、TSV 形式に対応しています
   * ファイルの URL からデータをアップロードする
@@ -161,13 +161,13 @@ import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
   選択可能なテーブルエンジンは多数ありますが、単一ノードのClickHouseサーバー上のシンプルなテーブルには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)が最適な選択となるでしょう。
   :::
 
-  #### プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
+  #### 主キーの概要 \{#a-brief-intro-to-primary-keys\}
 
   先に進む前に、ClickHouse におけるプライマリキーの仕組みを理解しておくことが重要です (プライマリキーの実装は、少し意外に感じられるかもしれません) ：
 
-  * ClickHouse の主キーは、テーブル内の各行&#x3067;***一意ではありません***
+  * ClickHouse の主キーは、テーブル内の各行に対し&#x3066;***一意ではありません***
 
-  ClickHouseテーブルの主キーは、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、主キーインデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**スパースインデックス**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
+  ClickHouseテーブルの主キーは、ディスクへの書き込み時にデータがどのようにソートされるかを決定します。8,192行または10MBごとのデータ(**インデックス粒度**と呼ばれます)が、主キーインデックスファイルにエントリを作成します。この粒度の概念により、メモリに容易に収まる**スパース索引**が作成されます。各粒度は、`SELECT`クエリの実行時に処理される最小単位のカラムデータのストライプを表します。
 
   主キーは `PRIMARY KEY` パラメータを使用して定義できます。`PRIMARY KEY` を指定せずにテーブルを定義した場合、キーは `ORDER BY` 句で指定されたタプルになります。`PRIMARY KEY` と `ORDER BY` の両方を指定した場合、主キーはソート順を構成する列のサブセットである必要があります。
 

@@ -163,7 +163,7 @@ ClickPipes 提供了合理的默认配置，能够满足大多数使用场景的
 
 ### 扩展 \{#scaling\}
 
-Object Storage ClickPipes 的规模取决于由[已配置的垂直自动扩缩设置](/manage/scaling#configuring-vertical-auto-scaling)确定的 ClickHouse 服务最小规格。ClickPipe 的规格会在创建时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+Object Storage ClickPipes 的规模取决于由[已配置的垂直自动扩缩设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)确定的 ClickHouse 服务最小规格。ClickPipe 的规格会在创建时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 要提升大规模摄取任务的吞吐量，我们建议在创建 ClickPipe 之前先扩容 ClickHouse 服务。
 

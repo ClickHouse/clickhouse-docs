@@ -9,7 +9,7 @@ import service_provisioned from '@site/static/images/clickstack/getting-started/
 
 <Image img={provider_selection} size="md" alt="Селектор ресурсов" border />
 
-Эта оценка будет использована для подбора вычислительных ресурсов, поддерживающих ваш Managed ClickStack сервис. По умолчанию новые организации назначаются на [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) будет включено по умолчанию на уровне Scale. Вы можете изменить уровень своей организации позже на странице &#39;Plans&#39;.
+Эта оценка будет использована для подбора вычислительных ресурсов, поддерживающих ваш Managed ClickStack сервис. По умолчанию новые организации назначаются на [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/cloud/features/autoscaling/vertical#vertical-auto-scaling) будет включено по умолчанию на уровне Scale. Вы можете изменить уровень своей организации позже на странице &#39;Plans&#39;.
 
 Продвинутые пользователи, хорошо понимающие свои требования, могут вместо этого указать точные выделяемые ресурсы, а также любые корпоративные функции, выбрав &#39;Custom Configuration&#39; в раскрывающемся списке &#39;Memory and Scaling&#39;.
 

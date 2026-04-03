@@ -46,11 +46,11 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  기본적으로 새 조직은 Scale 티어에 배치되며, 각각 4개의 vCPU와 16 GiB RAM을 가진 3개의 레플리카가 생성됩니다. Scale 티어에서는 [수직 자동 확장](/manage/scaling#vertical-auto-scaling)이 기본적으로 활성화됩니다. 조직 티어는 나중에 &#39;Plans&#39; 페이지에서 변경하실 수 있습니다.
+  기본적으로 새 조직은 Scale 티어에 배치되며, 각각 4개의 vCPU와 16 GiB RAM을 가진 3개의 레플리카가 생성됩니다. Scale 티어에서는 [수직 자동 확장](/cloud/features/autoscaling/vertical)이 기본적으로 활성화됩니다. 조직 티어는 나중에 &#39;Plans&#39; 페이지에서 변경하실 수 있습니다.
 
   필요한 경우 레플리카가 확장될 최소 및 최대 크기를 지정하여 서비스 리소스를 사용자 지정하세요. 준비가 완료되면 `Create service`를 선택하십시오.
 
-  <Image img={scaling_limits} size="md" alt="확장 제한" border />
+  <Image img={scaling_limits} size="md" alt="확장 한도" border />
 
   <br />
 
@@ -109,7 +109,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   * SQL 콘솔 사용하기
   * ClickHouse 클라이언트 사용하기
   * 파일 업로드  - 지원되는 형식: JSON, CSV, TSV
-  * 파일 URL로 데이터 업로드하기
+  * 파일 URL에서 데이터 업로드하기
 
   ### ClickPipes \{#clickpipes\}
 
@@ -119,15 +119,15 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  ### SQL Console을 사용하여 데이터 추가 \{#add-data-using-the-sql-console\}
+  ### SQL 콘솔을 사용하여 데이터 추가 \{#add-data-using-the-sql-console\}
 
-  대부분의 데이터베이스 관리 시스템과 마찬가지로 ClickHouse는 테이블을 논리적으로 **데이터베이스**로 그룹화합니다. ClickHouse에서 새 데이터베이스를 생성하려면 [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) 명령을 사용하세요:
+  대부분의 데이터베이스 관리 시스템과 마찬가지로 ClickHouse는 테이블을 논리적으로 **데이터베이스**로 그룹화합니다. ClickHouse에서 새 데이터베이스를 생성하려면 [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) 명령어를 사용하세요:
 
   ```sql
   CREATE DATABASE IF NOT EXISTS helloworld
   ```
 
-  다음 명령을 실행하여 `helloworld` 데이터베이스에 `my_first_table`이라는 이름의 테이블을 생성하세요:
+  다음 명령어를 실행하여 `helloworld` 데이터베이스에 `my_first_table`이라는 이름의 테이블을 생성하세요:
 
   ```sql
   CREATE TABLE helloworld.my_first_table
@@ -152,7 +152,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   테이블 엔진은 다음 사항을 결정합니다:
 
   * 데이터 저장 방식과 위치
-  * 지원되는 쿼리 유형
+  * 지원되는 쿼리 종류
   * 데이터가 복제되는지 여부
 
   <br />
@@ -164,7 +164,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   더 진행하기 전에 ClickHouse에서 기본 키(Primary Key)가 작동하는 방식을 이해하는 것이 중요합니다(기본 키의 구현 방식이 예상과 다를 수 있습니다):
 
-  * ClickHouse의 primary key는 테이블의 각 행마다 ***고유할 필요는 없습니다***
+  * ClickHouse의 기본 키는 테이블의 각 행에서 ***고유하지 않습니다***
 
   ClickHouse 테이블의 기본 키(primary key)는 데이터가 디스크에 기록될 때 정렬되는 방식을 결정합니다. 8,192개의 행 또는 10MB의
   데이터(**인덱스 그래뉼리티(index granularity)**라고 함)마다 기본 키 인덱스 파일에 엔트리가 생성됩니다. 이러한 그래뉼리티 개념은
