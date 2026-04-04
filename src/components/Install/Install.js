@@ -5,6 +5,7 @@ const InstallSelector = (props) => {
 
     const [platform, setPlatformType] = useState(null)
 
+    const handleSelectCLI = () => setPlatformType('CLI');
     const handleSelectMacOS = () => setPlatformType('MacOS');
     const handleSelectWindows = () => setPlatformType('Windows');
     const handleSelectDocker = () => setPlatformType('Docker');
@@ -19,6 +20,16 @@ const InstallSelector = (props) => {
     const renderDistribution = () => {
         if (1) {
             return <div className="installContainer">
+                    <CardPrimary
+                        className="install-card"
+                        alignContent="center"
+                        icon="terminal"
+                        infoUrl="https://clickhouse.com"
+                        onClick={handleSelectCLI}
+                        size="sm"
+                        title="ClickHouse CLI"
+                        isSelected={platform === 'CLI'}
+                    />
                     <CardPrimary
                         className="install-card"
                         alignContent="center"
@@ -95,7 +106,9 @@ const InstallSelector = (props) => {
         }
     }
     const renderInstallInstructions = (props) => {
-        if (platform === 'Debian') {
+        if (platform === 'CLI') {
+            return props.cli
+        } else if (platform === 'Debian') {
             return props.debian_prod
         } else if (platform === 'Ubuntu') {
             return props.debian_prod

@@ -8,7 +8,7 @@ import Recommendations from '@site/docs/getting-started/install/_snippets/recomm
 
 :::warning
 Installation using the Homebrew Formulae has now been deprecated and will be disabled on 2026-09-01.
-We recommend using the [quick install](/install/quick-install-curl) method which works on any platform instead.
+We recommend using the [quick install](/install/quick-install) method which works on any platform instead.
 :::
 
 <VerticalStepper>

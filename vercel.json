@@ -23,6 +23,16 @@
       ]
     },
     {
+      "source": "/docs/install/quick-install-curl",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/install/quick-install-curl",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
       "source": "/docs/integrations/clickpipes/secure-kinesis",
       "destination": "/docs/integrations/clickpipes/kinesis/auth",
       "permanent": true
