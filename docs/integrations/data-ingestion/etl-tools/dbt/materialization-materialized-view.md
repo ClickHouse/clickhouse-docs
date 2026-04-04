@@ -60,6 +60,10 @@ GROUP BY event_date, event_type
 
 See the [test file](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py) for additional examples.
 
+:::tip
+You can also define column-level `codec` and `ttl` on the target table by enforcing a model contract. See [Column Configuration](/integrations/dbt/materializations#column-configuration) for details.
+:::
+
 ### Multiple materialized views {#multiple-materialized-views}
 
 ClickHouse allows more than one materialized view to write records to the same target table. To support this in dbt-clickhouse with the implicit target approach, you can construct a `UNION` in your model file, wrapping the SQL for each materialized view with comments of the form `--my_mv_name:begin` and `--my_mv_name:end`.
@@ -208,7 +212,7 @@ GROUP BY event_date, event_type
 
 ### Configuration options {#explicit-target-configuration}
 
-When using explicit target tables, the following configurations apply:
+When using explicit target tables, apart from the [general materialization configurations](/integrations/dbt/materializations#general-materialization-configurations) and the [table-specific configurations](/integrations/dbt/materializations#materialization-table), the following configurations apply:
 
 **On the target table (`materialized='table'`):**
 
