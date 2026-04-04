@@ -1707,6 +1707,7 @@ const sidebars = {
         'chdb/guides/querying-parquet',
         'chdb/guides/query-remote-clickhouse',
         'chdb/guides/clickhouse-local',
+        'chdb/guides/python-udf',
       ],
     },
     {
