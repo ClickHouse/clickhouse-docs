@@ -430,6 +430,70 @@ var options = new InsertOptions
 * Use `RowBinaryFormat.RowBinaryWithDefaults` in `InsertOptions.Format` if you want the server to apply DEFAULT values for columns not provided.
 :::
 
+#### POCO inserts {#poco-insert}
+
+Instead of constructing `object[]` arrays, you can insert strongly-typed POCO objects directly. Register the type once, then pass `IEnumerable<T>`:
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+By default, all public readable properties are mapped to columns using strict case-sensitive name matching. You can customize the mapping with attributes:
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Attribute | Purpose |
+|-----------|---------|
+| `[ClickHouseColumn(Name = "...")]` | Override the target column name |
+| `[ClickHouseColumn(Type = "...")]` | Declare the ClickHouse type explicitly |
+| `[ClickHouseNotMapped]` | Exclude the property from the insert |
+
+When **all** mapped properties specify an explicit `Type`, the schema probe query is skipped entirely. When only some properties have explicit types, the driver falls back to the schema probe for the full column set.
+
+`InsertBinaryAsync<T>` supports the same `InsertOptions` (batching, parallelism, schema caching) as the `object[]` overload.
+
+:::note
+Unlike the `object[]` overload, `InsertBinaryAsync<T>` does not accept an explicit column list. Columns are determined by the registered type's mapped properties. To control which columns are inserted, use `[ClickHouseNotMapped]` to exclude properties or `[ClickHouseColumn(Name = "...")]` to rename them.
+
+If `ColumnTypes` is set in `InsertOptions`, they will override the POCO attributes.
+:::
+
 ---
 
 ### Reading data {#reading-data}
