@@ -34,7 +34,7 @@ Schema management tools generally fall into two categories.
 
 #### Imperative
 These tools use versioned SQL files that describe *how* to get from state A to state B. You write explicit DDL statements like `CREATE TABLE`, `ALTER TABLE`, or `DROP COLUMN` into files. Then the tool runs the files in order and tracks which have been applied. In this category, you dictate the exact SQL to run.
-**Examples**: *golang-migrate, Goose, Flyway*
+**Examples**: *golang-migrate, Goose, Flyway, clicko*
 
 #### Declarative
 These tools start with the user defining a "desired state" schema definition. The tool detects the difference between the current database and the desired state, then generates and applies the necessary migration. This approach reduces manual migration writing and schema drift. In this category, the tool dictates the exact SQL to run.
@@ -113,6 +113,21 @@ These are the tools we generally recommend for ClickHouse users based on maturit
 - **Language:** Go (single binary)
 - **License:** Open Source (MIT, free)
 - **Cluster support:** No
+
+### clicko
+
+[clicko](https://github.com/arsura/clicko) is a Go-based migration runner inspired by Goose, designed specifically for ClickHouse. It supports versioned SQL files and Go function migrations, and is available both as a CLI and an embeddable Go library.
+
+**Why it works well for ClickHouse:** clicko focuses on the operational details that matter for sharded clusters — custom table engines for the migration tracking table, insert quorum to ensure writes are replicated before being considered applied, and cluster-aware DDL propagation.
+
+**What to watch out for:** Smaller community than golang-migrate or Goose. No schema diffing or autogeneration.
+
+**Best for:** Go teams running self-hosted sharded ClickHouse clusters that need reliable, cluster-aware migration tracking.
+
+- **Type:** Imperative
+- **Language:** Go (single binary)
+- **License:** Open Source (MIT, free)
+- **Cluster support:** Yes
 
 ## Other Tools in the Ecosystem
 
