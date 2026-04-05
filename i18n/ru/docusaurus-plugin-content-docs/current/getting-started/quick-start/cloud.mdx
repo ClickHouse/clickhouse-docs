@@ -48,7 +48,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  По умолчанию новые организации размещаются на тарифе Scale и создают 3 реплики, каждая с 4 виртуальными процессорами и 16 ГиБ оперативной памяти. [Вертикальное автомасштабирование](/manage/scaling#vertical-auto-scaling) включено по умолчанию на тарифе Scale. Вы можете изменить тариф организации позже на странице &#39;Тарифы&#39;.
+  По умолчанию новые организации размещаются на тарифе Scale и создают 3 реплики, каждая с 4 виртуальными процессорами и 16 ГиБ оперативной памяти. [Вертикальное автомасштабирование](/cloud/features/autoscaling/vertical) включено по умолчанию на тарифе Scale. Вы можете изменить тариф организации позже на странице &#39;Тарифы&#39;.
 
   При необходимости можно настроить ресурсы сервиса, указав минимальное и максимальное количество реплик для масштабирования. Когда всё готово, нажмите `Create service`.
 
@@ -63,7 +63,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   Существует два способа подключения к ClickHouse:
 
   * Подключитесь через нашу веб-консоль SQL
-  * Подключение из приложения
+  * Подключение приложения
 
   <br />
 
@@ -81,7 +81,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   В списке должно отображаться 4 базы данных, а также все добавленные вами.
 
-  <Image img={show_databases} size="md" alt="SQL-консоль" border />
+  <Image img={show_databases} size="md" alt="SQL Console" border />
 
   <br />
 
@@ -146,7 +146,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   В приведённом выше примере `my_first_table` — это таблица [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) с четырьмя столбцами:
 
   * `user_id`:  32-битное целое число без знака ([UInt32](../../sql-reference/data-types/int-uint.md))
-  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие типы в сторонних системах управления базами данных
+  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие типы данных в других системах управления базами данных
   * `timestamp`: значение типа [DateTime](../../sql-reference/data-types/datetime.md), представляющее момент времени
   * `metric`: 32-битное число с плавающей запятой ([Float32](../../sql-reference/data-types/float.md))
 
@@ -166,7 +166,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   Прежде чем двигаться дальше, важно понять, как работают первичные ключи в ClickHouse (их реализация может оказаться неожиданной!):
 
-  * первичные ключи в ClickHouse ***не уникальны*** для каждой строки таблицы
+  * первичные ключи в ClickHouse ***не являются уникальными*** для каждой строки таблицы
 
   Первичный ключ таблицы ClickHouse определяет порядок сортировки данных при записи на диск. Каждые 8192 строки или 10 МБ
   данных (называемые **гранулярностью индекса**) создают запись в файле индекса первичного ключа. Эта концепция гранулярности
@@ -176,7 +176,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   Первичный ключ определяется с помощью параметра `PRIMARY KEY`. Если таблица создаётся без указания `PRIMARY KEY`,
   ключом становится кортеж, заданный в предложении `ORDER BY`. При одновременном указании `PRIMARY KEY` и `ORDER BY` первичный ключ должен быть подмножеством порядка сортировки.
 
-  Первичный ключ также является ключом сортировки и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
+  Первичный ключ также является сортировочным ключом и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
   файле столбца будут отсортированы сначала по `user_id`, затем по `timestamp`.
 
   Для более глубокого изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).

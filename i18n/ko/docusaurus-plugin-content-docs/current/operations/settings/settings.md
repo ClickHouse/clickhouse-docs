@@ -1071,6 +1071,16 @@ Nested에 복합 식별자를 추가하도록 허용합니다. 이 설정은 쿼
 
 projection에서 JOIN USING에 사용되는 식별자를 강제로 해석합니다(예를 들어 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)`의 경우 조인은 `t1.b = t2.b`가 아니라 `t1.a + 1 = t2.b` 조건으로 수행됩니다).
 
+## analyzer_inline_views \{#analyzer_inline_views\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "새 설정"}]}]} />
+
+활성화하면 analyzer는 일반 뷰(구체화되지 않고 매개변수화되지 않은 뷰)를 해당 뷰를 정의하는 서브쿼리로 대체하여, 프레디케이트 푸시다운 및 컬럼 pruning과 같은 뷰 경계를 넘는 최적화를 가능하게 합니다.
+
 ## any_join_distinct_right_table_keys \{#any_join_distinct_right_table_keys\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

@@ -654,10 +654,12 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
 
-### Projection indexes \{#projection-index\}
+### PROJECTION 索引 \{#projection-index\}
 
-Projection indexes は、軽量で明示的な方法で projection レベルの索引を定義できるようにすることで、projection サブシステムを拡張します。
-概念的には、projection index も依然として projection の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータとして利用するのではなく、フィルタリング専用の式を定義します。
+PROJECTION 索引 は、軽量で明示的な方法で PROJECTION レベルの索引を定義できるようにすることで、PROJECTION サブシステムを拡張します。
+外部的には、PROJECTION 索引 も依然として PROJECTION の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータを提供するのではなく、フィルタリング専用の式を定義します。
+内部的には、PROJECTION 索引 は通常の PROJECTION のように、元のテーブルを並べ替えた行順でマテリアライズしません。
+代わりに、その並び順は数値の permutation カラム `_part_offset` として保存されます。つまり、`SELECT _part_offset ORDER BY <index_expr>` です。
 
 #### 構文 \{#projection-index-syntax\}
 

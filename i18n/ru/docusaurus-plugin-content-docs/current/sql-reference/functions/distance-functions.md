@@ -577,7 +577,7 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-Введена в версии: v1.1.0
+Добавлена в версии: v21.11.0
 
 Вычисляет [косинусное расстояние](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) между двумя векторами (элементы кортежей — это координаты). Чем меньше возвращаемое значение, тем более похожи векторы.
 
@@ -592,7 +592,7 @@ cosineDistance(vector1, vector2)
 **Аргументы**
 
 * `vector1` — Первый кортеж. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — Второй кортеж. [`Tuple(T)`](/sql-reference/data-types/array) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — Второй кортеж. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 

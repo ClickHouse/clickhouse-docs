@@ -1071,6 +1071,16 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Принудительно разрешает идентификатор в JOIN USING по проекции (например, в `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` соединение будет выполняться по условию `t1.a + 1 = t2.b`, а не `t1.b = t2.b`).
 
+## analyzer_inline_views \{#analyzer_inline_views\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+При включении анализатор заменяет обычные (нематериализованные, непараметризованные) представления определяющими их подзапросами, что позволяет применять сквозные оптимизации, такие как проталкивание предикатов и отсечение столбцов.
+
 ## any_join_distinct_right_table_keys \{#any_join_distinct_right_table_keys\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

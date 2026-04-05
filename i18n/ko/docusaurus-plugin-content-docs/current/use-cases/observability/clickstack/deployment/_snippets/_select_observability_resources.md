@@ -9,7 +9,7 @@ import service_provisioned from '@site/static/images/clickstack/getting-started/
 
 <Image img={provider_selection} size="md" alt="리소스 선택기" border />
 
-이 추정치는 Managed ClickStack 서비스에 할당할 컴퓨트 리소스 규모를 산정하는 데 사용됩니다. 기본적으로 새 조직은 [Scale 티어](/cloud/manage/cloud-tiers)에 배치됩니다. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling)은 Scale 티어에서 기본적으로 활성화됩니다. 조직 티어는 이후 &#39;Plans&#39; 페이지에서 변경할 수 있습니다.
+이 추정치는 Managed ClickStack 서비스에 할당할 컴퓨트 리소스 규모를 산정하는 데 사용됩니다. 기본적으로 새 조직은 [Scale 티어](/cloud/manage/cloud-tiers)에 배치됩니다. [Vertical autoscaling](/cloud/features/autoscaling/vertical#vertical-auto-scaling)은 Scale 티어에서 기본적으로 활성화됩니다. 조직 티어는 이후 &#39;Plans&#39; 페이지에서 변경할 수 있습니다.
 
 요구 사항을 잘 이해하고 있는 고급 사용자는 &#39;Memory and Scaling&#39; 드롭다운에서 &#39;Custom Configuration&#39;을 선택하여, 프로비저닝할 정확한 리소스와 엔터프라이즈 기능을 직접 지정할 수 있습니다.
 
