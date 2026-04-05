@@ -78,6 +78,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [ast_fuzzer_any_query](/operations/settings/settings#ast_fuzzer_any_query) | `0` |
 | [allow_fuzz_query_functions](/operations/settings/settings#allow_fuzz_query_functions) | `0` |
 | [enable_materialized_cte](/operations/settings/settings#enable_materialized_cte) | `0` |
+| [analyzer_inline_views](/operations/settings/settings#analyzer_inline_views) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
 | [automatic_parallel_replicas_mode](/operations/settings/settings#automatic_parallel_replicas_mode) | `0` |
