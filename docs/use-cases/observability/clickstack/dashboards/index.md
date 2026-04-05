@@ -100,13 +100,9 @@ We create a dashboard with two visualizations below using the log and trace data
 
 ### Navigate to Dashboards {#navigate-dashboards}
 
-Select `Dashboards` from the left menu.
+Select `Dashboards` from the left menu. Then click `New Dashboard` to create a temporary or saved dashboard.
 
 <Image img={dashboard_1} alt="Create Dashboard" size="lg"/>
-
-By default, dashboards are temporary to support ad-hoc investigations. 
-
-If using your own HyperDX instance you can ensure this dashboard can later be saved, by clicking `Create New Saved Dashboard`. This option won't be available if using the read-only environment [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
 
 ### Create a visualization – average request time by service {#create-a-tile}
 
@@ -171,8 +167,11 @@ To remove, edit, or duplicate a visualization, hover over it and use the corresp
 
 ## Dashboard - Listing and search {#dashboard-listing-search}
 
-Dashboards are accessible from the left-hand menu, with built-in search to quickly locate specific dashboards.
-<Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+Dashboards are accessible on the dashboards page. They are organized by tag, with built-in search and filtering to quickly locate specific dashboards.
+
+Dashboards can be favorited for easy access on the sidebar and at the top of the listing page. Favorites are individual to each user.
+
+<Image img={dashboard_search} alt="Dashboard search" size="lg"/>
 
 ## Dashboards - Tagging {#tagging}
 <Tagging />
@@ -197,7 +196,7 @@ Open a saved dashboard and select **Edit Filters** from the toolbar.
 
 Click **Add new filter**. Configure the filter by providing a **Name**, selecting a **Data source**, and entering a **Filter expression** — a SQL column or expression whose distinct values will populate the dropdown. Click **Save filter**.
 
-For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source.
+For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source. The "Dropdown values filter" is optional, and provides a way to restrict which values appear in the dropdown.
 
 <Image img={add_filter} alt="Add filter dialog with Name, Data source, and Filter expression fields" size="md"/>
 
