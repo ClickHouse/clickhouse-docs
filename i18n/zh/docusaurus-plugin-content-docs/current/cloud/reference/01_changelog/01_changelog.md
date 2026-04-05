@@ -43,6 +43,15 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026 年 4 月 3 日 \{#april-3-2026\}
+
+* **采用双窗口推荐器的更智能自动扩缩容：** ClickHouse Cloud 现在在纵向自动扩缩容中采用双回看窗口机制，以 3 小时的“小窗口”和 30 小时的“大窗口”组合，取代此前单一的 30 小时窗口。这可将缩容延迟从最长 30 小时缩短到最短 3 小时，在不牺牲扩容响应速度的前提下，降低可变工作负载的基础设施成本。阅读[博客文章](https://clickhouse.com/blog/smarter-auto-scaling)了解更多详情。
+* **Cloud Console 中的监控：** 新增的概览和基础设施仪表板可帮助您更清楚地了解 ClickHouse 服务端的运行情况。现在，管理员用户在使用 ClickHouse Cloud 时遇到常见问题会收到电子邮件通知。阅读[博客文章](https://clickhouse.com/blog/clickhouse-cloud-new-monitoring-capabilities)了解更多详情。
+* **计算与计算分离 (warehouses) ：** 主服务 (也称为父服务) 上的自动空闲支持现正逐步开放为公开预览。如果您的组织尚未启用此功能，请[联系支持团队](https://clickhouse.com/support/program)以获取访问权限。该功能进入正式可用后，默认行为将变为：现有主服务可选择开启自动空闲，新建主服务则默认启用该功能。
+* **数据目录集成：** ClickHouse Cloud 现在在数据源 UI 中支持 Iceberg REST Catalog 和 Microsoft OneLake 作为数据湖目录集成。连接后，该目录会显示为一个数据库，使您无需复制数据即可直接读取 Iceberg 表。
+* **GCP 上的自带云环境 (BYOC) 现已正式可用：** ClickHouse BYOC 现已在 Google Cloud 上进入 GA，使您可以在自己的 GCP 项目中部署 ClickHouse 服务，并满足严格的数据驻留要求。阅读[文档](/cloud/reference/byoc/overview)和[博客文章](https://clickhouse.com/blog/byoc-gcp-ga)了解更多详情。您可以[联系我们](https://clickhouse.com/cloud/bring-your-own-cloud)申请访问权限。
+* **预付费额度和付款方式变更的计费通知：** ClickHouse Cloud 现在会在您的组织因承诺消费合同而新增预付费额度时，或在付款方式更新时 (信用卡或 marketplace 订阅) 发送通知。默认情况下，UI 和电子邮件通知均处于启用状态，也可配置为同时发送到 Slack。
+
 ## 2026 年 3 月 20 日 \{#march-20-2026\}
 
 - **Usage Breakdown 的自定义日期范围：**您现在可以在 usage breakdown 页面使用自定义日期范围，查看所有计费维度下的用量成本。
@@ -331,9 +340,9 @@ ClickHouse Cloud 新增了区域支持，现在可在
 
 我们为计算副本引入了一种新的垂直伸缩机制，我们称之为“Make Before Break”（MBB）。这种方式会先添加一个或多个新规格的副本，再移除旧副本，从而在伸缩操作期间避免任何容量损失。通过消除先移除旧副本再添加新副本之间的空档期，MBB 能够带来更平滑、干扰更小的伸缩过程。在扩容场景中尤为有利，此时高资源利用率会触发额外容量需求，而过早移除副本只会加剧资源压力。
 
-### 水平伸缩（GA） \{#horizontal-scaling-ga\}
+### 水平伸缩 (GA)  \{#horizontal-scaling-ga\}
 
-水平伸缩现已正式可用（GA）。用户可以通过 API 和云控制台添加额外副本，对服务进行横向扩展。相关信息请参阅[文档](/manage/scaling#manual-horizontal-scaling)。
+水平伸缩现已正式可用 (GA) 。用户可以通过 API 和云控制台添加额外副本，对服务进行横向扩展。相关信息请参阅[文档](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)。
 
 ### 可配置备份 \{#configurable-backups\}
 
@@ -1178,8 +1187,8 @@ ClickHouse 可以快速查询你所有的大型数据集，但当然，前提是
 
 ### 扩缩容相关变更 \{#scaling-changes\}
 
-- [水平扩展](/manage/scaling#manual-horizontal-scaling)。需要更多并行化的工作负载现在可以配置最多 10 个副本（请联系技术支持进行设置）
-- [基于 CPU 的自动扩缩容](/manage/scaling)。CPU 受限的工作负载现在可以从额外的自动扩缩容策略触发器中获益
+* [水平扩展](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)。需要更多并行化的工作负载现在可以配置最多 10 个副本 (请联系技术支持进行设置) 
+* [基于 CPU 的自动扩缩容](/manage/scaling)。CPU 受限的工作负载现在可以从额外的自动扩缩容策略触发器中获益
 
 ### 控制台变更 \{#console-changes-17\}
 

@@ -656,7 +656,9 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ### 投影索引 \{#projection-index\}
 
 投影索引通过提供一种轻量级且显式的方式来定义投影级别的索引，从而扩展了投影子系统。
-从概念上来说，投影索引本质上仍然是一个投影，但语法更为简化、用途也更明确：它定义的是一个专用于过滤的表达式，而不是用于提供物化数据。
+对外而言，投影索引本质上仍然是一个投影，但语法更为简化、用途也更明确：它定义的是一个专用于过滤的表达式，而不是用于提供物化数据。
+在内部实现上，投影索引不会像常规投影那样按置换后的行顺序将原始表物化。
+相反，该置换会以数值置换列 `_part_offset` 的形式存储，即 `SELECT _part_offset ORDER BY <index_expr>`。
 
 #### 语法 \{#projection-index-syntax\}
 

@@ -1013,40 +1013,40 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 ## Implementation Details \{#implementation\}
 
-每个文本索引由两个（抽象的）数据结构组成：
+每个文本索引由两个 (抽象的) 数据结构组成：
 
-- 一个字典，将每个 token 映射到一个倒排列表（postings list），以及
-- 一组倒排列表，每个倒排列表表示一组行号。
+* 一个字典，将每个 标记 映射到一个倒排列表 (postings list) ，以及
+* 一组倒排列表，每个倒排列表表示一组行号。
 
-文本索引是针对整个分区片段构建的。
-与其他跳过索引不同，在合并数据分区片段时，文本索引可以通过合并来处理，而无需重新构建（见下文）。
+文本索引是针对整个 parts 构建的。
+与其他跳过索引不同，在合并数据 parts 时，文本索引可以通过合并来处理，而无需重新构建 (见下文) 。
 
-在创建索引期间，会创建三个文件（每个分区片段一个）：
+在创建索引期间，会创建三个文件 (每个 parts 一个) ：
 
 **Dictionary blocks file (.dct)**
 
-文本索引中的 token 会被排序，并以每 512 个 token 为一组存储到字典块中（块大小可通过参数 `dictionary_block_size` 配置）。
-字典块文件（.dct）由某个分区片段内所有索引粒度（granule）的全部字典块组成。
+文本索引中的 标记 会被排序，并以每 512 个 标记 为一组存储到字典块中 (块大小可通过参数 `dictionary_block_size` 配置) 。
+字典块文件 (.dct) 由某个 parts 内所有索引粒度 (granule) 的全部字典块组成。
 
-**Index header file (.idx)**
+**Index 头部信息 file (.idx)**
 
-索引头文件为每个字典块存储该块的第一个 token 以及它在字典块文件中的相对偏移量。
+索引头部信息文件为每个字典块存储该块的第一个 标记 以及它在字典块文件中的相对偏移量。
 
 这种稀疏索引结构类似于 ClickHouse 的 [稀疏主键索引](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes)。
 
 **Postings lists file (.pst)**
 
-所有 token 的倒排列表按顺序存储在倒排列表文件（.pst）中。
+所有 标记 的倒排列表按顺序存储在倒排列表文件 (.pst) 中。
 为了节省空间，同时仍然支持快速的交集和并集操作，倒排列表以 [roaring bitmaps](https://roaringbitmap.org/) 的形式存储。
 如果某个倒排列表大于 `posting_list_block_size`，则会被拆分为多个块，并按顺序写入倒排列表文件。
 
 **Merging of text indexes**
 
-当数据分区片段被合并时，无需从头重建文本索引；相反，可以在合并流程的单独步骤中高效地对其进行合并。
-在该步骤中，会读取并合并每个输入分区片段中文本索引的有序字典，生成一个新的统一字典。
-倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这个过程使用在初始合并阶段创建的旧行号到新行号的映射。
-这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
-如果源分区片段中索引尚未物化（materialized），则会先构建该索引，将其写入一个临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起合并。
+当数据 parts 被合并时，无需从头重建文本索引；相反，可以在合并流程的单独步骤中高效地对其进行合并。
+在该步骤中，会读取并合并每个输入 parts 中文本索引的有序字典，生成一个新的统一字典。
+倒排列表中的行号也会被重新计算，以反映它们在合并后数据 parts 中的新位置，这个过程使用在初始合并阶段创建的旧行号到新行号的映射。
+这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#projection-indexes) 的合并方式。
+如果源 parts 中索引尚未物化 (materialized) ，则会先构建该索引，将其写入一个临时文件，然后与来自其他 parts 和其他临时索引文件的索引一起合并。
 
 **Debugging**
 

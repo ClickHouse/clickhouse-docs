@@ -577,7 +577,7 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-도입된 버전: v1.1.0
+도입 버전: v21.11.0
 
 두 벡터(튜플의 원소가 좌표)를 대상으로 [코사인 거리](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)를 계산합니다. 반환 값이 작을수록 두 벡터가 더 유사합니다.
 
@@ -589,7 +589,7 @@ cosineDistance(vector1, vector2)
 
 **별칭(Aliases)**: `distanceCosine`
 
-**인수(Arguments)**
+**인수**
 
 * `vector1` — 첫 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
 * `vector2` — 두 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/array) 또는 [`Array(T)`](/sql-reference/data-types/array)
@@ -598,9 +598,9 @@ cosineDistance(vector1, vector2)
 
 두 벡터 사이 각도의 코사인 값을 1에서 뺀 결과를 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
-**예시(Examples)**
+**예시**
 
-**기본 사용 예(Basic usage)**
+**사용법**
 
 ```sql title=Query
 SELECT cosineDistance((1, 2), (2, 3));

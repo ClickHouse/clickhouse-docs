@@ -43,6 +43,15 @@ import crash_reports_collection from '@site/static/images/cloud/reference/crash-
 :::
 
 
+## 2026年4月3日 \{#april-3-2026\}
+
+* **2つのウィンドウを使った、より賢い自動スケーリング:** ClickHouse Cloud では、垂直自動スケーリングにデュアル・ルックバック・ウィンドウ方式を採用し、従来の単一の 30 時間ウィンドウを、3 時間の「小ウィンドウ」と 30 時間の「大ウィンドウ」を組み合わせた方式に置き換えました。これにより、スケールダウンのレイテンシは最大 30 時間から最短 3 時間まで短縮され、スケールアップの応答性を損なうことなく、変動するワークロードに対するインフラストラクチャ コストを削減できます。詳細は[ブログ記事](https://clickhouse.com/blog/smarter-auto-scaling)を参照してください。
+* **ClickHouse Cloud コンソール での監視:** 新しい概要ダッシュボードとインフラストラクチャ ダッシュボードにより、ClickHouse サーバーの動作をより詳細に可視化できるようになりました。また、ClickHouse Cloud の利用時に発生する一般的な問題について、管理者ユーザーにメール通知が送信されるようになりました。詳細は[ブログ記事](https://clickhouse.com/blog/clickhouse-cloud-new-monitoring-capabilities)を参照してください。
+* **コンピュート・コンピュート分離 (warehouses) :** プライマリサービス (親サービスとも呼ばれます) での自動アイドル化のサポートは、現在パブリックプレビューとして順次提供されています。お使いの組織でこの機能がまだ有効になっていない場合は、アクセスについて[サポートにお問い合わせください](https://clickhouse.com/support/program)。この機能が一般提供に移行すると、既存のプライマリサービスでは自動アイドル化を有効にするオプションを選択できるようになり、新しいプライマリサービスではデフォルトで有効になります。
+* **Data Catalog 連携:** ClickHouse Cloud では現在、データソース UI でのデータレイク カタログ連携として、Iceberg REST Catalog と Microsoft OneLake をサポートしています。接続すると、カタログはデータベースとして表示され、データを複製することなく Iceberg テーブルを直接読み取ることができます。
+* **GCP 上の Bring Your Own Cloud (BYOC) が一般提供になりました:** ClickHouse BYOC は Google Cloud で GA となり、お客様自身の GCP プロジェクト内に ClickHouse サービスをデプロイして、厳格なデータ所在地要件に準拠できるようになりました。詳細は[ドキュメント](/cloud/reference/byoc/overview)と[ブログ記事](https://clickhouse.com/blog/byoc-gcp-ga)を参照してください。アクセスをリクエストするには、[お問い合わせください](https://clickhouse.com/cloud/bring-your-own-cloud)。
+* **前払いクレジットと支払い方法の変更に関する課金通知:** ClickHouse Cloud では現在、コミット済み契約に基づいて前払いクレジットが組織に追加された場合や、支払い方法 (クレジットカードまたはマーケットプレイス サブスクリプション) が更新された場合に通知を送信します。通知は UI とメールでデフォルトで有効になっており、Slack にも送信するよう設定できます。
+
 ## 2026年3月20日 \{#march-20-2026\}
 
 - **Usage Breakdown のカスタム日付範囲:** Usage Breakdown 画面で、カスタム日付範囲を使って、すべての課金ディメンションにまたがる利用コストを表示できるようになりました。
@@ -357,7 +366,7 @@ compute-compute 分離（"Warehouses" とも呼ばれます）が Generally Avai
 
 ### 水平スケーリング (GA) \{#horizontal-scaling-ga\}
 
-水平スケーリングが Generally Available になりました。ユーザーは API およびクラウドコンソールを通じてレプリカを追加し、サービスをスケールアウトできます。詳細については [ドキュメント](/manage/scaling#manual-horizontal-scaling) を参照してください。
+水平スケーリングが Generally Available になりました。ユーザーは API および Cloud コンソールを通じてレプリカを追加し、サービスをスケールアウトできます。詳細については [ドキュメント](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling) を参照してください。
 
 ### 設定可能なバックアップ \{#configurable-backups\}
 
@@ -1203,8 +1212,8 @@ ClickHouse では、開発者エクスペリエンスをどのように改善で
 
 ### スケーリングに関する変更点 \{#scaling-changes\}
 
-- [水平スケーリング](/manage/scaling#manual-horizontal-scaling)。より高い並列性を必要とするワークロードに対して、最大 10 個のレプリカを設定できるようになりました（セットアップについてはサポートまでお問い合わせください）
-- [CPU ベースのオートスケーリング](/manage/scaling)。CPU ボトルネックとなるワークロードに対して、オートスケーリングポリシーの追加トリガーを利用できるようになりました
+* [水平スケーリング](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)。より高い並列性を必要とするワークロードに対して、最大 10 個のレプリカを設定できるようになりました (セットアップについてはサポートまでお問い合わせください) 
+* [CPU ベースのオートスケーリング](/manage/scaling)。CPU ボトルネックとなるワークロードに対して、オートスケーリングポリシーの追加トリガーを利用できるようになりました
 
 ### コンソールの変更点 \{#console-changes-17\}
 

@@ -152,7 +152,7 @@ ClickPipes는 대부분의 사용 사례 요구 사항을 충족하는 합리적
 
 ### 확장 \{#scaling\}
 
-객체 스토리지 ClickPipes는 [수직 자동 확장 설정 구성](/manage/scaling#configuring-vertical-auto-scaling)에 의해 결정되는 최소 ClickHouse 서비스 크기를 기준으로 확장됩니다. ClickPipe의 크기는 파이프를 생성할 때 결정되며, 이후 ClickHouse 서비스 설정을 변경하더라도 ClickPipe 크기에는 영향을 주지 않습니다.
+객체 스토리지 ClickPipes는 [수직 자동 확장 설정 구성](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)에 의해 결정되는 최소 ClickHouse 서비스 크기를 기준으로 확장됩니다. ClickPipe의 크기는 파이프를 생성할 때 결정되며, 이후 ClickHouse 서비스 설정을 변경하더라도 ClickPipe 크기에는 영향을 주지 않습니다.
 
 대규모 수집 작업의 처리량을 높이려면 ClickPipe를 생성하기 전에 ClickHouse 서비스를 먼저 확장할 것을 권장합니다.
 

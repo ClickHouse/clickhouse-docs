@@ -153,7 +153,7 @@ ClickPipes 提供了合理的默认值，能够满足大多数使用场景的需
 
 ### 扩缩容 \{#scaling\}
 
-对象存储型 ClickPipes 会根据[配置的垂直自动扩缩容设置](/manage/scaling#configuring-vertical-auto-scaling)所确定的 ClickHouse 服务最小规格进行扩缩容。ClickPipe 的规格在创建该 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+对象存储 ClickPipes 会根据[配置的垂直自动扩缩容设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)所确定的 ClickHouse 服务最小规格进行扩缩容。ClickPipe 的规格在创建该 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 要提高大型摄取任务的吞吐量，建议在创建 ClickPipe 之前先对 ClickHouse 服务进行扩容。
 

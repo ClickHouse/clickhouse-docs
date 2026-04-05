@@ -1070,6 +1070,16 @@ Cloud 默认值：`0`。
 
 强制在 JOIN USING 中从 PROJECTION 解析标识符（例如，在 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` 中，连接将按 `t1.a + 1 = t2.b` 来执行，而不是按 `t1.b = t2.b`）。
 
+## analyzer_inline_views \{#analyzer_inline_views\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}]} />
+
+启用后，analyzer会用定义该视图的子查询替换普通视图 (非物化、非参数化) ，从而支持跨边界优化，例如谓词下推和列剪枝。
+
 ## any_join_distinct_right_table_keys \{#any_join_distinct_right_table_keys\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
