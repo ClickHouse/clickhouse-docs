@@ -119,7 +119,6 @@ e. Select `Create role`.
 
 </VerticalStepper>
 
-
 ## Configure Iceberg access in ClickHouse Cloud {#configure-iceberg-access}
 
 ### Option A: Iceberg table function with role ARN {#iceberg-table-function-with-role-arn}
@@ -169,7 +168,7 @@ SETTINGS
 
 > Note: When using Glue catalog, ensure your IAM role has both S3 and Glue read/list permissions.
 
-### Option D: DataLake Catalog for Glue
+### Option D: DataLake Catalog for Glue {#datalake-catalog-for-glue}
 
 :::note
 DataLake Catalog for Glue is coming in version 26.2.
@@ -204,4 +203,3 @@ LIMIT 5;
 - Ensure your bucket/objects are in the same region as the Iceberg queries to reduce latency and cost.
 - Confirm Iceberg table path points to a valid Iceberg metadata location (`metadata/v1/...` files under the table root).
 - For catalog mode, check Glue metadata and partition visibility with AWS Glue console.
-
