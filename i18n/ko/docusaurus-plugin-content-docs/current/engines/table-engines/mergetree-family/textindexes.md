@@ -117,8 +117,9 @@ ORDER BY key
 텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
 
 * [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
-* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
-* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md),
+* [Map](/sql-reference/data-types/map.md) 타입([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원), 그리고
+* [JSON](/sql-reference/data-types/newjson.md) 타입([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 함수를 통해 지원).
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
 
@@ -156,7 +157,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Tokenizer 인수(필수)**. `tokenizer` 인수는 사용할 tokenizer를 지정합니다:
+**토크나이저 인수(필수)**. `tokenizer` 인수는 사용할 토크나이저를 지정합니다:
 
 
 * `splitByNonAlpha`는 영문자와 숫자가 아닌 ASCII 문자를 기준으로 문자열을 분리합니다(함수 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) 참조).
@@ -172,7 +173,8 @@ ALTER TABLE table DROP INDEX text_idx;
   매개변수 `min_cutoff_length`가 제공되면, 길이가 `min_cutoff_length` 이상인 n그램만 반환됩니다.
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
-* `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 토큰이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
+* `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 token이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
+* `asciiCJK`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 
@@ -200,15 +202,13 @@ SELECT tokens('abc def', 'ngrams', 3);
 ```
 
 *비-ASCII 입력 처리.*
-
-텍스트 인덱스는 원칙적으로 어떤 언어와 문자 집합의 텍스트 데이터에도 구축할 수 있지만, 현재로서는 확장 ASCII 문자 집합(예: 서구권 언어) 입력에만 사용하는 것을 권장합니다.
-특히 중국어, 일본어, 한국어는 현재 포괄적인 인덱싱 지원이 부족하여, 인덱스 크기가 매우 커지고 쿼리 시간이 길어질 수 있습니다.
-향후 이러한 경우를 더 잘 처리할 수 있도록, 언어별 특화 tokenizer를 추가할 계획입니다.
+텍스트 인덱스는 어떤 언어와 문자 집합의 텍스트 데이터에도 구축할 수 있습니다.
+비-ASCII 텍스트의 경우 CJK 문자를 포함한 Unicode 단어 경계를 올바르게 처리하므로 `asciiCJK` 토크나이저를 권장합니다.
 :::
 
-**Preprocessor 인자(선택 사항)**. preprocessor는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
+**전처리기 인수(선택 사항)**. 전처리기는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
 
-Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
+전처리기 인수의 대표적인 사용 사례는 다음과 같습니다.
 
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
@@ -382,9 +382,9 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` 및 `!=` \{#functions-example-equals-notequals\}
+#### `=` \{#functions-example-equals\}
 
-`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) 및 `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals))는 주어진 검색어 전체와 일치합니다.
+`=` ([equals](/sql-reference/functions/comparison-functions.md/#equals))는 주어진 검색어 전체에 매칭합니다.
 
 예시:
 
@@ -392,12 +392,9 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from table WHERE str = 'Hello';
 ```
 
-텍스트 인덱스는 `=` 및 `!=` 연산자를 지원하지만, 같음/같지 않음 조건 검색은 `array` tokenizer를 사용할 때에만 의미가 있습니다 (`array` tokenizer는 인덱스에 전체 행 값을 그대로 저장합니다).
+#### `IN` \{#functions-example-in\}
 
-
-#### `IN` 및 `NOT IN` \{#functions-example-in-notin\}
-
-`IN` ([in](/sql-reference/functions/in-functions)) 및 `NOT IN` ([notIn](/sql-reference/functions/in-functions))은(는) `equals` 및 `notEquals` 함수와 비슷하지만, 모든 검색어와 일치시키거나(`IN`), 어떤 검색어와도 일치시키지 않도록(`NOT IN`) 합니다.
+`IN` ([in](/sql-reference/functions/in-functions))은 `equals`와 비슷하지만, 모든 검색어에 매칭합니다.
 
 예시:
 
@@ -405,17 +402,22 @@ SELECT * from table WHERE str = 'Hello';
 SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
-`=` 및 `!=`와 동일한 제약이 적용됩니다. 즉, `IN` 및 `NOT IN`은 `array` 토크나이저와 함께 사용하는 경우에만 의미가 있습니다.
+:::note
+텍스트 인덱스에서는 `NOT IN` (`notIn`)이 지원되지 않습니다.
+:::
 
-
-#### `LIKE`, `NOT LIKE` 및 `match` \{#functions-example-like-notlike-match\}
+#### `LIKE` 및 `match` \{#functions-example-like-match\}
 
 :::note
 현재 이 함수들은 인덱스 토크나이저가 `splitByNonAlpha`, `ngrams` 또는 `sparseGrams`인 경우에만 필터링에 텍스트 인덱스를 사용합니다.
 :::
 
-텍스트 인덱스와 함께 `LIKE`([like](/sql-reference/functions/string-search-functions.md/#like)), `NOT LIKE`([notLike](/sql-reference/functions/string-search-functions.md/#notLike)), 그리고 [match](/sql-reference/functions/string-search-functions.md/#match) 함수를 사용하려면 ClickHouse가 검색어에서 완전한 토큰을 추출할 수 있어야 합니다.
-`ngrams` 토크나이저를 사용하는 인덱스의 경우, 와일드카드 사이에 있는 검색 문자열의 길이가 ngram 길이와 같거나 더 길면 이 조건을 충족합니다.
+:::note
+`NOT LIKE` (`notLike`)는 텍스트 인덱스에서 지원되지 않습니다.
+:::
+
+텍스트 인덱스와 함께 `LIKE`([like](/sql-reference/functions/string-search-functions.md/#like)) 및 [match](/sql-reference/functions/string-search-functions.md/#match) 함수를 사용하려면 ClickHouse가 검색어에서 완전한 토큰을 추출할 수 있어야 합니다.
+`ngrams` 토크나이저를 사용하는 인덱스의 경우, 와일드카드 사이의 검색 문자열 길이가 ngram 길이와 같거나 더 길면 이 조건을 충족합니다.
 
 `splitByNonAlpha` 토크나이저를 사용하는 텍스트 인덱스 예:
 
@@ -661,6 +663,142 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
+#### JSON 컬럼 인덱싱 \{#text-index-example-json\}
+
+데이터 스키핑 인덱스는 `JSON` 컬럼에 두 가지 방식으로 적용할 수 있습니다:
+
+1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 표준 스킵 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
+2. **`JSONAllPaths`를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *경로 집합*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
+
+##### 특정 하위 컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
+
+일반 컬럼과 동일한 구문을 사용하여 모든 JSON 하위 컬럼에 스킵 인덱스를 생성할 수 있습니다.
+
+인덱스 표현식에서 JSON 하위 컬럼을 참조하는 방법은 두 가지입니다.
+
+* JSON 타입 힌트에 선언된 **타입이 지정된 경로** — 이름으로 직접 접근합니다: `json.a`.
+* 명시적 캐스트를 사용하는 **동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
+
+예시 쿼리:
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id String),
+    INDEX idx_sensor data.sensor_id TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_location data.location::String TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: text
+        Condition: (mode: All; tokens: ["5", "id"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: text
+        Condition: (mode: All; tokens: ["5", "room"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+##### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
+
+`Map` 컬럼과 마찬가지로, [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하면 [JSON](/sql-reference/data-types/newjson.md) 컬럼에도 텍스트 인덱스를 생성할 수 있습니다.
+이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿼리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
+
+예시 쿼리:
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1`을 사용하면 스킵 인덱스가 실제로 사용되는지 확인할 수 있습니다. 경로가 하나의 파트에만 존재하면 인덱스가 다른 파트는 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+경로가 어떤 파트에도 존재하지 않으면, 모든 파트와 그래뉼을 건너뜁니다:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["nonexistent"])
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL`도 인덱스를 사용합니다 — 경로가 없는 그래뉼은 건너뜁니다(이 경우 값이 `NULL`이기 때문입니다):
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+
 ## 성능 튜닝 \{#performance-tuning\}
 
 ### 직접 읽기 \{#direct-read\}
@@ -879,8 +1017,8 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 각 텍스트 인덱스는 두 가지 (추상적인) 데이터 구조로 구성됩니다.
 
-- 각 토큰을 포스팅 리스트에 매핑하는 딕셔너리
-- 각각이 행 번호 집합을 나타내는 포스팅 리스트들의 집합
+* 각 토큰을 포스팅 리스트에 매핑하는 딕셔너리
+* 각각이 행 번호 집합을 나타내는 포스팅 리스트들의 집합
 
 텍스트 인덱스는 전체 파트에 대해 생성됩니다.
 다른 스킵 인덱스와 달리, 텍스트 인덱스는 데이터 파트 병합 시 인덱스를 다시 만드는 대신 병합 단계에서 병합할 수 있습니다(아래 참고).
@@ -909,7 +1047,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 데이터 파트가 병합될 때, 텍스트 인덱스는 처음부터 다시 만들 필요가 없으며, 대신 병합 프로세스의 별도 단계에서 효율적으로 병합할 수 있습니다.
 이 단계 동안 각 입력 파트의 텍스트 인덱스에 대한 정렬된 딕셔너리를 읽어 새로운 통합 딕셔너리로 결합합니다.
 포스팅 리스트의 행 번호 또한 병합된 데이터 파트에서의 새로운 위치를 반영하도록 재계산되며, 이를 위해 초기 병합 단계에서 생성된 기존 행 번호에서 새로운 행 번호로의 매핑을 사용합니다.
-텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field)이 병합되는 방식과 유사합니다.
+텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#projection-indexes)이 병합되는 방식과 유사합니다.
 소스 파트에 인덱스가 구체화되어 있지 않은 경우, 인덱스를 먼저 생성해 임시 파일에 기록한 다음, 다른 파트와 다른 임시 인덱스 파일의 인덱스와 함께 병합합니다.
 
 **디버깅**

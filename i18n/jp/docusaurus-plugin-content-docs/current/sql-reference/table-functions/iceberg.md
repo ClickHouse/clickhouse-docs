@@ -14,7 +14,7 @@ Amazon S3、Azure、HDFS 上またはローカルに保存された Apache [Iceb
 ## 構文 \{#syntax\}
 
 ```sql
-icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3(named_collection[, option=value [,..]])
 
 icebergAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -27,10 +27,13 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
+
 ## 引数 \{#arguments\}
 
-引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` の引数の説明とそれぞれ同様です。  
-`format` は、Iceberg テーブル内のデータファイルの形式を表します。
+引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` の引数の説明とそれぞれ一致します。
+`format` は、Iceberg テーブル内のデータファイルのフォーマットを表します。
+
+`icebergS3` では、オプションの `extra_credentials` パラメータを使用して、ClickHouse Cloud におけるロールベースアクセス用の `role_arn` を渡すことができます。設定手順については、[Secure S3](/cloud/data-sources/secure-s3) を参照してください。
 
 ### 返される値 \{#returned-value\}
 

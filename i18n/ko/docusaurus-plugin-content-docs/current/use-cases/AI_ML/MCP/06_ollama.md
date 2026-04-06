@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 # Ollama와 함께 ClickHouse MCP 서버를 사용하는 방법 \{#using-clickhouse-mcp-server-with-ollama\}
 
-> 이 문서에서는 Ollama와 함께 ClickHouse MCP 서버를 사용하는 방법을 설명합니다.
+> 이 가이드는 Ollama와 함께 ClickHouse MCP 서버를 사용하는 방법을 설명합니다.
 
 <VerticalStepper headerLevel="h2">
   ## Ollama 설치 \{#install-ollama\}
@@ -35,15 +35,15 @@ import Image from '@theme/IdealImage';
   ollama pull qwen3:8b
   ```
 
-  모델이 로컬 머신에 없는 경우 이 명령을 실행하면 모델을 다운로드합니다.
-  다운로드가 완료되면 다음과 같이 모델을 실행하세요:
+  모델이 로컬 머신에 없는 경우 이 명령은 모델을 다운로드합니다.
+  다운로드가 완료되면 다음과 같이 모델을 실행할 수 있습니다:
 
   ```bash
   ollama run qwen3:8b
   ```
 
   :::note
-  [도구 지원 기능이 있는 모델](https://ollama.com/search?c=tools)만 MCP Server와 함께 사용할 수 있습니다.
+  [도구 지원 기능이 있는 모델](https://ollama.com/search?c=tools)만 MCP 서버와 함께 사용할 수 있습니다.
   :::
 
   다운로드한 모델 목록은 다음과 같이 확인하실 수 있습니다:
@@ -92,8 +92,8 @@ import Image from '@theme/IdealImage';
 
   ## MCPHost 설치 \{#install-mcphost\}
 
-  이 문서 작성 시점(2025년 7월) 기준으로 Ollama를 MCP Server와 함께 사용하는 네이티브 기능은 제공되지 않습니다.
-  그러나 [MCPHost](https://github.com/mark3labs/mcphost)를 사용하면 MCP Server에서 Ollama 모델을 실행할 수 있습니다.
+  이 문서 작성 시점(2025년 7월) 기준으로 Ollama를 MCP 서버와 함께 사용하는 네이티브 기능은 제공되지 않습니다.
+  그러나 [MCPHost](https://github.com/mark3labs/mcphost)를 사용하면 MCP 서버에서 Ollama 모델을 실행할 수 있습니다.
 
   MCPHost는 Go 애플리케이션이므로, 머신에 [Go가 설치](https://go.dev/doc/install)되어 있어야 합니다.
   이후 다음 명령을 실행하여 MCPHost를 설치하십시오:
@@ -106,7 +106,7 @@ import Image from '@theme/IdealImage';
 
   ## ClickHouse MCP 서버 구성 \{#configure-clickhouse-mcp-server\}
 
-  MCPHost를 사용하여 YAML 또는 JSON 파일로 MCP Server를 구성할 수 있습니다.
+  MCPHost를 사용하여 YAML 또는 JSON 파일로 MCP 서버를 구성할 수 있습니다.
   MCPHost는 홈 디렉토리에서 다음 순서로 구성 파일을 검색합니다:
 
   1. `.mcphost.yml` 또는 `.mcphost.json`  (권장)
@@ -134,7 +134,7 @@ import Image from '@theme/IdealImage';
   ```
 
   표준 MCP 구성 파일과의 주요 차이점은 `type`을 지정해야 한다는 점입니다.
-  `type`은 MCP Server가 사용하는 전송 유형을 나타냅니다.
+  `type`은 MCP 서버가 사용하는 전송 유형을 나타냅니다.
 
   * `local` → stdio 전송 방식
   * `remote` → 스트리밍 가능한 전송 방식
@@ -167,7 +167,7 @@ import Image from '@theme/IdealImage';
   ```
 
   :::warning
-  `--model`을 제공하지 않을 경우, MCPHost는 환경 변수에서 `ANTHROPIC_API_KEY`를 찾아 `anthropic:claude-sonnet-4-20250514` 모델을 사용합니다.
+  `--model`을 제공하지 않을 경우 MCPHost는 환경 변수에서 `ANTHROPIC_API_KEY`를 찾아 `anthropic:claude-sonnet-4-20250514` 모델을 사용합니다.
   :::
 
   다음과 같은 출력이 표시됩니다:
@@ -195,7 +195,7 @@ import Image from '@theme/IdealImage';
 
   ```text
     ┃                                                                                      ┃
-    ┃  ## Configured MCP Servers                                                           ┃
+    ┃  ## Configured MCP servers                                                           ┃
     ┃                                                                                      ┃
     ┃  1. mcp-ch                                                                           ┃
     ┃   MCPHost System (10:00)                                                             ┃

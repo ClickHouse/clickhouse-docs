@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Analysis Tips'
+sidebar_label: 'Analysis tips'
 sidebar_position: 4
 slug: /integrations/tableau/analysis-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']

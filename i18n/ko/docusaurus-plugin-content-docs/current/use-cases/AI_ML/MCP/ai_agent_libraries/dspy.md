@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
 sidebar_label: 'DSPy 통합'
-title: 'DSPy와 ClickHouse MCP Server를 사용하여 AI 에이전트를 구축하는 방법'
+title: 'DSPy와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'DSPy와 ClickHouse MCP Server를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'DSPy와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다'
 keywords: ['ClickHouse', 'MCP', 'DSPy']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# DSPy와 ClickHouse MCP Server로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server\}
+# DSPy와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 [DSPy](https://github.com/langchain-ai/langgraph)를 사용하여
-[ClickHouse의 SQL playground](https://sql.clickhouse.com/)에서 [ClickHouse의 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)를 통해 상호작용할 수 있는 AI 에이전트를 구축하는 방법을 알아봅니다.
+[ClickHouse의 SQL playground](https://sql.clickhouse.com/)에서 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 통해 상호작용할 수 있는 AI 에이전트를 구축하는 방법을 알아봅니다.
 
 ## 사전 준비 사항 \{#prerequisites\}
 
@@ -66,7 +66,7 @@ doc_type: 'guide'
 
   ## MCP 서버 초기화하기
 
-  이제 ClickHouse MCP Server를 구성하여 ClickHouse SQL playground에 연결하십시오.
+  이제 ClickHouse MCP 서버를 구성하여 ClickHouse SQL playground에 연결하십시오.
 
   ```python
   from mcp import ClientSession, StdioServerParameters

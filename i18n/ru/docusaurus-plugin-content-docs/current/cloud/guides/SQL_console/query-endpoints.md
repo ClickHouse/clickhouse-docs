@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Конечные точки API запросов'
+sidebar_title: 'Конечная точка Query API'
 slug: /cloud/get-started/query-endpoints
 description: 'Легко разворачивайте REST-конечные точки API из сохранённых запросов'
-keywords: ['api', 'конечные точки api запросов', 'конечные точки запросов', 'rest api запросов']
-title: 'Конечные точки API запросов'
+keywords: ['api', 'конечная точка query api', 'конечные точки запросов', 'rest api запросов']
+title: 'Конечная точка Query API'
 doc_type: 'guide'
 ---
 
@@ -16,6 +16,7 @@ import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-c
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 
 # Настройка конечных точек API для запросов \{#setting-up-query-api-endpoints\}
 
@@ -69,7 +70,7 @@ import TabItem from '@theme/TabItem';
   ```
 
   Обратите внимание, что этот запрос содержит параметр (`year`), который выделен в приведённом выше фрагменте.
-  Вы можете указывать параметры запроса, используя фигурные скобки `{ }` вместе с типом параметра.
+  Вы можете указывать параметры запроса, используя `{ }` вместе с типом параметра.
   Редактор запросов SQL Console автоматически обнаруживает выражения параметров запроса ClickHouse и предоставляет поле ввода для каждого параметра.
 
   Быстро запустим этот запрос, чтобы убедиться, что он работает: укажите год `2010` в поле ввода переменных запроса справа от редактора SQL:

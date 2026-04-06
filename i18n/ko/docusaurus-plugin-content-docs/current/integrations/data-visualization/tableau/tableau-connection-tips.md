@@ -1,10 +1,10 @@
 ---
-sidebar_label: '연결 팁'
+sidebar_label: '연결 관련 안내'
 sidebar_position: 3
 slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
-description: 'ClickHouse 공식 커넥터를 사용할 때 유용한 Tableau 연결 팁.'
-title: '연결 팁'
+description: 'ClickHouse 공식 커넥터를 사용할 때 유용한 Tableau 연결 관련 안내.'
+title: '연결 관련 안내'
 doc_type: 'guide'
 integration:
   - support_level: 'core'

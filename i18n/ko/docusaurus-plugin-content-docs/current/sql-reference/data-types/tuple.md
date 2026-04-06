@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 Tuple은 임시 컬럼 그룹화에 사용됩니다. 쿼리에서 IN 표현식을 사용할 때 컬럼을 그룹화할 수 있고, 람다 함수의 특정 형식 매개변수를 지정할 때 사용할 수 있습니다. 자세한 내용은 [IN 연산자](../../sql-reference/operators/in.md)와 [고차 함수](/sql-reference/functions/overview#higher-order-functions) 섹션을 참조하십시오.
 
-Tuple은 쿼리 결과가 될 수 있습니다. 이 경우 JSON 이외의 텍스트 포맷에서는 값이 괄호 안에서 쉼표로 구분되어 표시됩니다. JSON 포맷에서는 Tuple이 배열(대괄호 안)로 출력됩니다.
+Tuple은 쿼리 결과가 될 수 있습니다. 이 경우 JSON 이외의 텍스트 형식에서는 값이 `()` 안에서 쉼표로 구분되어 표시됩니다. JSON 형식에서는 Tuple이 배열(`[]` 안)로 출력됩니다.
 
 ## Tuple 생성 \{#creating-tuples\}
 

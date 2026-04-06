@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes
-sidebar_label: 'データスキップインデックス'
+sidebar_label: 'データスキッピングインデックス'
 sidebar_position: 2
 description: 'スキップインデックスを使用すると、ClickHouse は一致する値が存在しないことが保証されている大きなデータチャンクの読み取りをスキップできます。'
-title: 'ClickHouse のデータスキップインデックスを理解する'
+title: 'ClickHouse のデータスキッピングインデックスを理解する'
 doc_type: 'guide'
 keywords: ['スキップインデックス', 'データスキップ', 'パフォーマンス', 'インデックス', 'ベストプラクティス']
 ---

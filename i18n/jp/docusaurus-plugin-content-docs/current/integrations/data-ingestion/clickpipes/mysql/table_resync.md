@@ -1,5 +1,5 @@
 ---
-title: '特定テーブルの再同期'
+title: '特定のテーブルを再同期する'
 description: 'MySQL ClickPipe で特定テーブルを再同期する'
 slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'テーブルの再同期'

@@ -2,7 +2,7 @@
 sidebar_label: 'LDAP の設定'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '認証とロールマッピングに LDAP を使用するように ClickHouse を構成する'
+title: 'LDAP を使用した認証とロールマッピングのための ClickHouse の構成'
 description: 'ClickHouse で認証とロールマッピングに LDAP を使用するように構成する方法について説明します'
 keywords: ['LDAP 設定', 'LDAP 認証', 'ロールマッピング', 'ユーザー管理', 'SRE ガイド']
 doc_type: 'guide'

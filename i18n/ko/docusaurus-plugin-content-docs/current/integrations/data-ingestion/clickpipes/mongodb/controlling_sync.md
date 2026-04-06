@@ -1,8 +1,8 @@
 ---
-title: 'MongoDB ClickPipe 동기화 제어'
+title: 'MongoDB ClickPipe 동기화를 제어'
 description: 'MongoDB ClickPipe 동기화를 제어하는 방법을 설명하는 문서'
 slug: /integrations/clickpipes/mongodb/sync_control
-sidebar_label: '동기화 제어'
+sidebar_label: '동기화를 제어'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '데이터 수집', '실시간 동기화']
 integration:
@@ -16,7 +16,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-이 문서는 ClickPipe가 **CDC (Running) mode** 상태일 때 MongoDB ClickPipe의 동기화 동작을 제어하는 방법을 설명합니다.
+이 문서는 ClickPipe가 **CDC (Running) mode** 상태일 때 MongoDB ClickPipe의 동기화를 제어하는 방법을 설명합니다.
 
 
 ## 개요 \{#overview\}

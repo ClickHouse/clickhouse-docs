@@ -37,7 +37,7 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
   * **ClickHouse service**：选择现有的 ClickHouse Cloud 服务或创建一个新服务
   * **Postgres database**：要进行复制的源数据库
   * **Replication method**：从以下选项中选择：
-    * **Initial load + CDC**：导入现有数据，并通过新变更持续更新表 (推荐) 
+    * **Initial load + CDC**：导入现有数据，并通过新变更持续更新表 (推荐)
     * **Initial load only**：仅对现有数据进行一次性快照，不进行持续更新
     * **CDC only**：跳过初始快照，仅从现在开始捕获新的变更
 

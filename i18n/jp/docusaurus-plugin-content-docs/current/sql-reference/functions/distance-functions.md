@@ -577,7 +577,7 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-導入バージョン: v1.1.0
+導入バージョン: v21.11.0
 
 2 つのベクトル間の[コサイン距離](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)を計算します (タプルの各要素は座標を表します) 。返される値が小さいほど、ベクトル同士の類似度が高くなります。
 
@@ -594,7 +594,7 @@ cosineDistance(vector1, vector2)
 * `vector1` — 1 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
 * `vector2` — 2 番目のタプル。[`Tuple(T)`](/sql-reference/data-types/array) または [`Array(T)`](/sql-reference/data-types/array)
 
-**返される値**
+**戻り値**
 
 2 つのベクトルのなす角の余弦から 1 を引いた値を返します。[`Float64`](/sql-reference/data-types/float)
 

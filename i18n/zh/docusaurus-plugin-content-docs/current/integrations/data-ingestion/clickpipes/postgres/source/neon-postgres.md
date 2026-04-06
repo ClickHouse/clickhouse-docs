@@ -2,7 +2,7 @@
 sidebar_label: 'Neon Postgres'
 description: '将 Neon Postgres 实例设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/neon-postgres
-title: 'Neon Postgres 源设置指南'
+title: 'Neon Postgres 源端配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'CDC（变更数据捕获）', '数据摄取', '实时同步']
 integration:
@@ -15,7 +15,6 @@ import neon_enabled_replication from '@site/static/images/integrations/data-inge
 import neon_ip_allow from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-ip-allow.png'
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
-
 
 # Neon Postgres 源端配置指南 \{#neon-postgres-source-setup-guide\}
 

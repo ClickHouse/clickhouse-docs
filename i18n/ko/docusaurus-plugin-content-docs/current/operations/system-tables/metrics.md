@@ -870,6 +870,14 @@ Iceberg 메타데이터 캐시의 크기(바이트)
 
 Iceberg 메타데이터 캐시에 저장된 파일 수
 
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Iceberg 테이블의 백그라운드 스케줄 풀에서 실행할 수 있는 작업 수 제한입니다.
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Iceberg 테이블의 백그라운드 스케줄 풀에 있는 작업 수입니다.
+
 ### IndexMarkCacheBytes \{#indexmarkcachebytes\}
 
 보조 인덱스의 마크 캐시 총 크기(바이트)
@@ -1517,6 +1525,18 @@ S3 요청 수
 ### SendScalars \{#sendscalars\}
 
 원격 서버로 스칼라 값을 보내는 연결 수입니다.
+
+### SerializationCacheBytesInMemory \{#serializationcachebytesinmemory\}
+
+값만 포함한 직렬화 캐시의 총 크기(바이트)
+
+### SerializationCacheBytesInMemoryAllocated \{#serializationcachebytesinmemoryallocated\}
+
+키와 빈 슬롯에서 발생하는 오버헤드를 포함한 직렬화 캐시의 총 크기(바이트)
+
+### SerializationCacheCount \{#serializationcachecount\}
+
+직렬화 캐시의 총 엔트리 수
 
 ### SharedCatalogDropDetachLocalTablesErrors \{#sharedcatalogdropdetachlocaltableserrors\}
 

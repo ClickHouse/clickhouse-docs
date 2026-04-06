@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Profiling'
+title: 'DataStore profiling'
 sidebar_label: 'Profiling'
 slug: /chdb/debugging/profiling
 description: 'Measure DataStore performance with the built-in profiler'

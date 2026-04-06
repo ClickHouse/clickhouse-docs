@@ -656,7 +656,7 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 username, password 또는 database가 연결 문자열에 지정된 경우 `--user`, `--password` 또는 `--database`로 다시 지정할 수 없습니다(그 반대의 경우도 마찬가지입니다).
 
 host 구성 요소는 호스트 이름 또는 IPv4 혹은 IPv6 주소가 될 수 있습니다.
-IPv6 주소는 대괄호로 감싸야 합니다:
+IPv6 주소는 `[]`로 감싸야 합니다:
 
 ```text
 clickhouse://[2001:db8::1234]
@@ -667,13 +667,13 @@ ClickHouse Client는 이러한 호스트에 대해 왼쪽에서 오른쪽 순서
 한 번 연결이 성립되면 나머지 호스트에는 더 이상 연결을 시도하지 않습니다.
 
 연결 문자열은 `clickHouse-client`의 첫 번째 인수로 지정해야 합니다.
-연결 문자열은 `--host` 및 `--port`를 제외한 임의 개수의 다른 [command-line options](#command-line-options)과 함께 사용할 수 있습니다.
+연결 문자열은 `--host` 및 `--port`를 제외한 임의 개수의 다른 [명령줄 옵션](#command-line-options)과 함께 사용할 수 있습니다.
 
 `query_parameters`에 사용할 수 있는 키는 다음과 같습니다:
 
 | Key               | Description                                                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `secure` (또는 `s`) | 지정된 경우, 클라이언트는 보안 연결(TLS)을 통해 서버에 연결합니다. 자세한 내용은 [command-line options](#command-line-options)의 `--secure`를 참조하십시오. |
+| `secure` (또는 `s`) | 지정된 경우, 클라이언트는 보안 연결(TLS)을 통해 서버에 연결합니다. 자세한 내용은 [명령줄 옵션](#command-line-options)의 `--secure`를 참조하십시오. |
 
 **Percent encoding**
 
@@ -683,7 +683,7 @@ ClickHouse Client는 이러한 호스트에 대해 왼쪽에서 오른쪽 순서
 * `password`
 * `hosts`
 * `database`
-* `query parameters`
+* `쿼리 매개변수`
 
 
 ### 예시 \{#connection_string_examples\}

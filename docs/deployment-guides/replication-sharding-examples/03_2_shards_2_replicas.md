@@ -1,8 +1,8 @@
 ---
 slug: /architecture/cluster-deployment
-sidebar_label: 'Replication + Scaling'
+sidebar_label: 'Replication + scaling'
 sidebar_position: 100
-title: 'Replication + Scaling'
+title: 'Replication + scaling'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 doc_type: 'guide'
 keywords: ['cluster deployment', 'replication', 'sharding', 'high availability', 'scalability']

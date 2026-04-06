@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/extensions
 sidebar_label: 'Extensions'
-title: 'PostgreSQL Extensions'
+title: 'PostgreSQL extensions'
 description: 'Available PostgreSQL extensions in ClickHouse Managed Postgres'
 keywords: ['postgres extensions', 'postgis', 'pgvector', 'pg_cron', 'postgresql extensions']
 doc_type: 'guide'

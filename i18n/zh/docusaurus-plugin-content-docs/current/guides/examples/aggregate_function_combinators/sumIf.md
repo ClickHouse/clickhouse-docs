@@ -24,7 +24,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -83,7 +84,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 按股票代码统计成交量 \{#calculate-trading-volume\}
+### 按股票代码计算交易量 \{#calculate-trading-volume\}
 
 在这个示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 中提供的 `stock` 表，
 来统计 2006 年三家当时规模最大的科技公司按股票代码划分的交易量。
@@ -120,5 +121,6 @@ ORDER BY month;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)

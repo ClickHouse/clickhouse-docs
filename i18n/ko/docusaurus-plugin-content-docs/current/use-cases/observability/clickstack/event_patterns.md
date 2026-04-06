@@ -24,11 +24,11 @@ ClickStack의 이벤트 패턴 기능은 유사한 메시지를 자동으로 클
 
 ## 이벤트 패턴에 접근하기 \{#accessing-event-patterns\}
 
-이벤트 패턴은 ClickStack의 **Search** 패널에서 바로 사용할 수 있습니다.  
+이벤트 패턴은 ClickStack의 **Search** 패널에서 바로 사용할 수 있습니다.
 
-왼쪽 상단의 **Analysis Mode** 선택 메뉴에서 **Event Patterns**를 선택하여, 기본 결과 테이블 대신 유사한 이벤트를 군집화해 보여주는 뷰로 전환합니다.  
+왼쪽 상단의 **Analysis Mode** 선택 메뉴에서 **Event patterns**를 선택하여, 기본 결과 테이블 대신 유사한 이벤트를 군집화해 보여주는 뷰로 전환합니다.
 
-<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg" />
 
 이 기능은 기본 **Results Table**에서 개별 로그나 트레이스를 모두 스크롤하며 확인하는 방식에 대한 대안을 제공합니다.
 

@@ -1,10 +1,10 @@
 ---
 description: 'Documentation for the MySQL protocol interface in ClickHouse, allowing
   MySQL clients to connect to ClickHouse'
-sidebar_label: 'MySQL Interface'
+sidebar_label: 'MySQL interface'
 sidebar_position: 25
 slug: /interfaces/mysql
-title: 'MySQL Interface'
+title: 'MySQL interface'
 doc_type: 'guide'
 ---
 

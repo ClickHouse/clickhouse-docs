@@ -1,9 +1,9 @@
 ---
 description: 'Documentation for the Apache Arrow Flight interface in ClickHouse, allowing Flight SQL clients to connect to ClickHouse'
-sidebar_label: 'Arrow Flight Interface'
+sidebar_label: 'Arrow Flight interface'
 sidebar_position: 26
 slug: /interfaces/arrowflight
-title: 'Arrow Flight Interface'
+title: 'Arrow Flight interface'
 doc_type: 'reference'
 ---
 

@@ -32,6 +32,25 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                    |
 | `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                   |
 
+:::tip
+`structure` 引数を省略すると、ClickHouse はフォーマット自体からスキーマを推論します。
+フォーマットによって、デフォルトのカラム名と型は異なります。
+特定のフォーマットのスキーマを確認するには、[`format`](/sql-reference/table-functions/format) テーブル関数で [`DESC`](/sql-reference/statements/describe-table) を使います。
+
+例えば：
+
+```sql
+DESC format(LineAsString, 'Hello\nWorld')
+```
+
+```response
+┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ line │ String │              │                    │         │                  │                │
+└──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+:::
+
 ## 戻り値 \{#returned_value\}
 
 ファイル内のデータを読み書きするためのテーブル。

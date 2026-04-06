@@ -4,7 +4,7 @@ description: 'Documentation for the ClickHouse C++ client library and integratio
 sidebar_label: 'C++'
 sidebar_position: 24
 slug: /interfaces/cpp
-title: 'C++ Client Library'
+title: 'C++ client library'
 doc_type: 'reference'
 ---
 

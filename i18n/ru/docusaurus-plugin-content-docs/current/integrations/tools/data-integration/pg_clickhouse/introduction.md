@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Введение'
-description: 'Выполняйте аналитические запросы к ClickHouse напрямую из PostgreSQL, не переписывая SQL‑запросы'
+description: 'Выполняйте аналитические запросы в ClickHouse непосредственно из PostgreSQL, без переписывания SQL'
 slug: '/integrations/pg_clickhouse'
-title: 'Справочная документация по pg_clickhouse'
+title: 'справочная документация по pg_clickhouse'
 doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение']
 ---

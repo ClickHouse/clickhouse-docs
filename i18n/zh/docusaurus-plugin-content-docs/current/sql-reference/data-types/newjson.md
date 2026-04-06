@@ -323,7 +323,62 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-将子对象作为子列读取可能效率较低，因为这可能需要对 JSON 数据进行接近全量的扫描。
+当路径存储在基础 (`map`) [共享数据](#shared-data-structure)中时，读取子对象子列的效率可能较低，因为这需要扫描整个共享数据结构。使用 `map_with_buckets` 或 `advanced` 共享数据序列化时，从共享数据中读取子列的效率会大幅提升。
+:::
+
+
+## 读取 JSON 组合子列 \{#reading-json-combined-sub-columns\}
+
+`JSON` 类型支持使用特殊语法 `json.@some.path`，将某一路径作为**组合子列**读取。
+给定路径的组合子列会返回：
+
+* 如果该路径具有字面值，则返回存储在该路径上的字面值，类型为 `Dynamic`。
+* 如果该路径没有字面值，但存在嵌套子路径，则返回该路径上的 JSON 子对象，类型为 `Dynamic`。
+* 如果该路径既不存在字面值，也不存在任何子路径，则返回 `NULL`。
+
+当某一路径在不同的行中既可能保存标量值，也可能保存嵌套对象时，这种方式非常有用；相比于分别查询字面子列 (`json.a`) 和子对象子列 (`json.^a`) ，也更方便。
+
+以下示例比较了路径 `a` 的这三种子列类型：
+
+```sql title="Query"
+CREATE TABLE test (json JSON) ENGINE = Memory;
+INSERT INTO test VALUES ('{"a" : 42, "b" : {"c" : 1, "d" : "Hello"}}'), ('{"a" : {"x": 1, "y": 2}, "b" : {"c" : 1}}'), ('{"c" : "World"}');
+SELECT json FROM test;
+```
+
+```text title="Response"
+┌─json────────────────────────────┐
+│ {"a":42,"b":{"c":1,"d":"Hello"}}│
+│ {"a":{"x":1,"y":2},"b":{"c":1}}│
+│ {"c":"World"}                   │
+└─────────────────────────────────┘
+```
+
+```sql title="Query"
+SELECT
+    json.a,
+    dynamicType(json.a),
+    json.^a,
+    toTypeName(json.^a),
+    json.@a,
+    dynamicType(json.@a)
+FROM test;
+```
+
+```text title="Response"
+┌─json.a─┬─dynamicType(json.a)─┬─json.^a───────┬─toTypeName(json.^a)─┬─json.@a───────┬─dynamicType(json.@a)─┐
+│ 42     │ Int64               │ {}            │ JSON                │ 42            │ Int64                │
+│ NULL   │ None                │ {"x":1,"y":2} │ JSON                │ {"x":1,"y":2} │ JSON                 │
+│ NULL   │ None                │ {}            │ JSON                │ NULL          │ None                 │
+└────────┴─────────────────────┴───────────────┴─────────────────────┴───────────────┴──────────────────────┘
+```
+
+* 第 1 行：`a` 保存的是字面量 `42`。`json.a` 返回 `Dynamic(Int64)`，`json.^a` 返回空子对象 `{}` (`a` 下没有嵌套键) ，而 `json.@a` 返回字面量 `42`。
+* 第 2 行：`a` 保存的是一个嵌套对象。`json.a` 返回 `NULL` (该路径上没有字面量) ，`json.^a` 以 `JSON` 形式返回该子对象，`json.@a` 也会以 `Dynamic(JSON)` 形式返回该子对象。
+* 第 3 行：`a` 完全不存在。`json.a` 和 `json.@a` 都返回 `NULL`，而 `json.^a` 返回空的 `{}`。
+
+:::note
+当路径存储在基础 (`map`) [共享数据](#shared-data-structure)中时，读取组合子列的效率可能较低，因为这需要扫描整个共享数据结构。使用 `map_with_buckets` 或 `advanced` 共享数据序列化时，从共享数据中读取子列会得到高度优化。
 :::
 
 
@@ -820,17 +875,16 @@ ORDER BY _part ASC
 
 #### 带桶的 Map \{#shared-data-map-with-buckets\}
 
-在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列（“桶”），每列的类型为 `Map(String, String)`。
+在 `map_with_buckets` 序列化版本中，共享数据会序列化为 `N` 列 (“桶”) ，每列的类型为 `Map(String, String)`。
 每个桶仅包含路径的一个子集。要从这种序列化方式中读取路径子列，ClickHouse
 会从单个桶中读取整个 `Map` 列，并在内存中提取请求的路径。
 
 这种序列化方式在写入数据和读取整个 `JSON` 列时效率较低，但在读取路径子列时效率更高，
 因为它只会从所需的桶中读取数据。
 
-桶的数量 `N` 由 MergeTree 设置 [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part)（默认值为 8）
-和 [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part)（默认值为 32）控制。
+桶的数量 `N` 由 MergeTree 设置 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (默认值为 8) 
+和 [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (默认值为 32) 控制。
+这两个设置的最大允许值均为 256。
 
 #### Advanced \{#shared-data-advanced\}
 
@@ -1128,6 +1182,164 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 **注意：** 当两个路径中包含不同数据类型的值时，将根据 `Variant` 数据类型的[比较规则](/sql-reference/data-types/variant#comparing-values-of-variant-data)进行比较。
 
+
+## JSON 的数据跳过索引 \{#data-skipping-indexes-for-json\}
+
+[数据跳过索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) 可通过两种方式用于 `JSON` 列：
+
+1. **特定子列上的索引** — 在已知的 JSON 路径上创建标准跳过索引，与普通列的做法相同。这会为该路径上的*值*建立索引。
+2. **基于路径的 `JSONAllPaths` 索引** — 为每个 粒度 中存在的*路径集合*建立索引，从而跳过不可能包含所查询路径的 粒度。
+
+### 特定子列上的索引 \{#json-indexes-on-subcolumns\}
+
+您可以像对普通列那样，在任何 JSON 子列上创建跳过索引。
+任何[受支持的索引类型](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)都可以使用 (`minmax`、`set`、`bloom_filter`、`tokenbf_v1`、`ngrambf_v1` 等) 。
+
+在索引表达式中引用 JSON 子列有两种方式：
+
+* 在 JSON 类型提示中声明的**类型路径**——直接按名称访问：`json.a`。
+* 带显式类型转换的**动态路径**——使用 `::` 转换语法：`json.b::String`。
+
+您也可以使用组合多个子列的表达式，例如 `json.a || json.b::String`。
+
+#### 示例 \{#json-indexes-on-subcolumns-example\}
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id UInt32),
+    INDEX idx_sensor data.sensor_id TYPE minmax GRANULARITY 1,
+    INDEX idx_location data.location::String TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+类型化子列 `data.sensor_id` 上的 `minmax` 索引会将扫描范围缩小到匹配的粒度：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id < 2;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: minmax GRANULARITY 1
+        Parts: 1/2
+        Granules: 2/8
+```
+
+对经类型转换的子列 `data.location::String` 使用 `bloom_filter` 索引也同样有效：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/8
+```
+
+### 使用 JSONAllPaths 的路径索引 \{#json-indexes-jsonallpaths\}
+
+也可以使用 [`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 函数，在 `JSON` 列上创建[数据跳过索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)。
+其工作方式类似于通过 `mapKeys` 在 [`Map`](/sql-reference/data-types/map) 列上创建跳过索引：索引会存储每个粒度中存在的 JSON 路径集合，并据此跳过不可能包含所查询路径的粒度。
+
+#### 支持的索引类型 \{#json-indexes-jsonallpaths-supported-types\}
+
+`JSONAllPaths` 可与以下跳过索引类型配合使用：
+
+* [`bloom_filter`](/engines/table-engines/mergetree-family/mergetree#bloom-filter) — 支持 `equals`、`in` 和 `IS NOT NULL`。
+* [`tokenbf_v1`](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) — 支持 `equals` 和 `IS NOT NULL`。
+* [`ngrambf_v1`](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) — 支持 `equals` 和 `IS NOT NULL`。
+* [`text`](/engines/table-engines/mergetree-family/textindexes) (转置索引) — 支持 `equals`、`in` 和 `IS NOT NULL`。
+
+#### 示例 \{#json-indexes-jsonallpaths-example\}
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+您可以使用 `EXPLAIN indexes = 1` 来确认是否使用了跳过索引。当某个路径仅存在于一个分片中时，索引会跳过另一个分片：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+如果某个路径在所有 part 中都不存在，则会跳过所有 parts 和 粒度：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL` 也会使用索引——它会跳过路径不存在的粒度 (因为此时该值会是 `NULL`) ：
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+#### 工作原理 \{#json-indexes-jsonallpaths-how-it-works\}
+
+`JSONAllPaths(json_column)` 表达式会生成一个包含 JSON 值中所有现有路径的 `Array(String)`。
+数据跳过索引会将这些路径字符串存储在其数据结构中 (布隆过滤器或转置索引) 。
+当查询按 `json.some.path` 进行筛选时，索引会检查每个粒度的索引中是否存在字符串 `"some.path"`，并跳过不包含该字符串的粒度。
+
+#### 缺失路径时的安全性 \{#json-indexes-jsonallpaths-safety-with-missing-paths\}
+
+当某个 JSON 路径在一个 粒度 中不存在时，子列的求值结果为：
+
+* 对于 `Dynamic` 类型 (例如 `json.path`) 和 `Nullable` 类型的子列 (例如 `json.path.:Int64`) ，结果为 `NULL` —— 与 `NULL` 的比较始终返回 false，因此可以安全跳过。
+* 对于非 `Nullable` 的 CAST 表达式，结果为该类型的默认值 (例如路径缺失时，`json.path::Int64` 会得到 `0`) —— 仅当比较值与默认值不同时，跳过才是安全的。索引会自动处理这种差异。
 
 ## 更高效使用 JSON 类型的技巧 \{#tips-for-better-usage-of-the-json-type\}
 

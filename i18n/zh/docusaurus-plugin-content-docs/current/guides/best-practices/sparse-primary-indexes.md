@@ -1,12 +1,12 @@
 ---
-sidebar_label: '主索引'
+sidebar_label: '主键索引'
 sidebar_position: 1
-description: '在本指南中，我们将深入介绍 ClickHouse 的主索引。'
-title: 'ClickHouse 主索引实用入门'
+description: '在本指南中，我们将深入探讨 ClickHouse 的索引机制。'
+title: 'ClickHouse 主键索引实用入门'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['主索引', '索引', '性能', '查询优化', '最佳实践']
+keywords: ['主键索引', '索引', '性能', '查询优化', '最佳实践']
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
@@ -33,7 +33,6 @@ import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
-
 
 # ClickHouse 主键索引实用入门指南 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
 

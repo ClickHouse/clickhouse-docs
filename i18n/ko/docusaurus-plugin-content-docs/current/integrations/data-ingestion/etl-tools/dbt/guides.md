@@ -1009,57 +1009,58 @@ dbt 스냅샷에 대한 자세한 내용은 [여기](https://docs.getdbt.com/doc
 
 ## 시드 사용하기 \{#using-seeds\}
 
-dbt는 CSV 파일에서 데이터를 로드하는 기능을 제공합니다. 이 기능은 데이터베이스의 대규모 내보내기를 로드하는 데에는 적합하지 않고, 일반적으로 코드 테이블이나 [딕셔너리](../../../../sql-reference/dictionaries/index.md)처럼 국가 코드를 국가 이름에 매핑하는 등의 용도로 사용하는 작은 파일에 더 적합합니다. 간단한 예로, 시드 기능을 사용해 장르 코드 목록을 생성한 후 업로드합니다.
+dbt는 CSV 파일에서 데이터를 로드하는 기능을 제공합니다. 이 기능은 데이터베이스의 대규모 내보내기를 로드하는 데에는 적합하지 않고, 일반적으로 코드 테이블이나 [딕셔너리](/dictionary)처럼 국가 코드를 국가 이름에 매핑하는 등의 용도로 사용하는 작은 파일에 더 적합합니다. 간단한 예로, 시드 기능을 사용해 장르 코드 목록을 생성한 후 업로드합니다.
 
 1. 기존 데이터셋에서 장르 코드 목록을 생성합니다. dbt 디렉터리에서 `clickhouse-client`를 사용해 `seeds/genre_codes.csv` 파일을 생성합니다:
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
-    "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
-    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
+   "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre
+   LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
+   ```
 
 2. `dbt seed` 명령을 실행합니다. 그러면 스키마 설정에서 정의한 대로 데이터베이스 `imdb_dbt`에 새로운 테이블 `genre_codes`가 생성되고, CSV 파일의 행이 여기에 로드됩니다.
 
-    ```bash
-    clickhouse-user@clickhouse:~/imdb$ dbt seed
-    17:03:23  Running with dbt=1.1.0
-    17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
-    17:03:23
-    17:03:24  Concurrency: 1 threads (target='dev')
-    17:03:24
-    17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
-    17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
-    17:03:24
-    17:03:24  Finished running 1 seed in 1.62s.
-    17:03:24
-    17:03:24  Completed successfully
-    17:03:24
-    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-    ```
+   ```bash
+   clickhouse-user@clickhouse:~/imdb$ dbt seed
+   17:03:23  Running with dbt=1.1.0
+   17:03:23  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 1 seed file, 6 sources, 0 exposures, 0 metrics
+   17:03:23
+   17:03:24  Concurrency: 1 threads (target='dev')
+   17:03:24
+   17:03:24  1 of 1 START seed file imdb_dbt.genre_codes..................................... [RUN]
+   17:03:24  1 of 1 OK loaded seed file imdb_dbt.genre_codes................................. [INSERT 21 in 0.65s]
+   17:03:24
+   17:03:24  Finished running 1 seed in 1.62s.
+   17:03:24
+   17:03:24  Completed successfully
+   17:03:24
+   17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+   ```
+
 3. 데이터가 로드되었는지 확인합니다:
 
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```
+   ```sql
+   SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+   ```
 
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
+   ```response
+   +-------+----+
+   |genre  |code|
+   +-------+----+
+   |Drama  |DRA |
+   |Romance|ROM |
+   |Short  |SHO |
+   |Mystery|MYS |
+   |Adult  |ADU |
+   |Family |FAM |
 
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
-    ```
+   |Action |ACT |
+   |Sci-Fi |SCI |
+   |Horror |HOR |
+   |War    |WAR |
+   +-------+----+=
+   ```
 
 ## 추가 정보 \{#further-information\}
 

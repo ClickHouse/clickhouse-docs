@@ -2,7 +2,7 @@
 sidebar_label: 'Google Cloud SQL'
 description: 'Настройка экземпляра Postgres в Google Cloud SQL в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
-title: 'Руководство по настройке источника Postgres в Google Cloud SQL'
+title: 'Руководство по настройке источника Google Cloud SQL Postgres'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'логическое декодирование', 'брандмауэр']
 integration:
@@ -19,7 +19,6 @@ import connections_networking from '@site/static/images/integrations/data-ingest
 import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
-
 
 # Руководство по настройке источника Google Cloud SQL Postgres \{#google-cloud-sql-postgres-source-setup-guide\}
 

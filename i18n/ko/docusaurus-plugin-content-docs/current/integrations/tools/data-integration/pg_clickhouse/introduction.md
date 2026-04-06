@@ -1,6 +1,6 @@
 ---
 sidebar_label: '소개'
-description: 'SQL을 다시 작성할 필요 없이 PostgreSQL에서 바로 ClickHouse에 대한 분석 쿼리를 실행할 수 있습니다'
+description: 'SQL을 다시 작성할 필요 없이 PostgreSQL에서 바로 ClickHouse로 분석 쿼리를 실행할 수 있습니다'
 slug: '/integrations/pg_clickhouse'
 title: 'pg_clickhouse 레퍼런스 문서'
 doc_type: 'landing-page'

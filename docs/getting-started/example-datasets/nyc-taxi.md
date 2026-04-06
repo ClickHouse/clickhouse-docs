@@ -3,7 +3,7 @@ description: 'Data for billions of taxi and for-hire vehicle (Uber, Lyft, etc.) 
   originating in New York City since 2009'
 sidebar_label: 'New York taxi data'
 slug: /getting-started/example-datasets/nyc-taxi
-title: 'New York Taxi Data'
+title: 'New York taxi data'
 doc_type: 'guide'
 keywords: ['example dataset', 'nyc taxi', 'tutorial', 'sample data', 'getting started']
 ---

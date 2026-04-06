@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
 title: 'ClickStack による Node.js アプリケーション・トレースの監視'
-sidebar_label: 'Node.js トレース'
+sidebar_label: 'Node.js アプリケーション・トレース'
 pagination_prev: null
 pagination_next: null
 description: 'ClickStack を使用した Node.js アプリケーション・トレースの監視'
 doc_type: 'guide'
-keywords: ['Node.js', 'traces', 'OTel', 'ClickStack', 'distributed tracing']
+keywords: ['Node.js', 'traces', 'OTel', 'ClickStack', '分散トレーシング']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,6 +18,7 @@ import trace_view from '@site/static/images/clickstack/nodejs/trace-view.png';
 import finish_import from '@site/static/images/clickstack/nodejs/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+
 
 # ClickStack による Node.js アプリケーション・トレースの監視 \{#nodejs-traces-clickstack\}
 

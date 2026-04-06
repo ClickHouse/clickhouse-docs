@@ -1,6 +1,6 @@
 ---
 slug: /dictionary
-title: 'Dictionary'
+title: 'Overview'
 keywords: ['dictionary', 'dictionaries']
 description: 'A dictionary provides a key-value representation of data for fast lookups.'
 doc_type: 'guide'
@@ -314,9 +314,7 @@ Peak memory usage: 666.82 MiB.
 
 ## Advanced dictionary topics {#advanced-dictionary-topics}
 
-### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
-
-The `LAYOUT` clause controls the internal data structure for the dictionary. A number of options exist and are documented [here](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Some tips on choosing the correct layout can be found [here](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+For guidance on choosing dictionary layouts, when to use dictionaries vs JOINs, and monitoring dictionary usage, see [Dictionary best practices](/dictionary/best-practices).
 
 ### Refreshing dictionaries {#refreshing-dictionaries}
 
@@ -331,5 +329,6 @@ ClickHouse also supports [Hierarchical](/sql-reference/statements/create/diction
 
 ### More reading {#more-reading}
 
+- [Dictionary best practices](/dictionary/best-practices) — layout selection, dictionaries vs JOINs, monitoring
 - [Using Dictionaries to Accelerate Queries](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [Advanced Configuration for Dictionaries](/sql-reference/statements/create/dictionary)

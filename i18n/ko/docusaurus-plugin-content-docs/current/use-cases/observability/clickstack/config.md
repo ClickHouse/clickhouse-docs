@@ -4,7 +4,7 @@ title: '구성 옵션'
 pagination_prev: null
 pagination_next: null
 description: 'ClickStack - ClickHouse 관측성 스택의 구성 옵션'
-keywords: ['ClickStack 구성', '관측성 구성', 'HyperDX 설정', '수집기 구성', '환경 변수']
+keywords: ['ClickStack 구성', '관측성 구성', 'HyperDX 설정', 'collector 구성', '환경 변수']
 doc_type: 'reference'
 ---
 

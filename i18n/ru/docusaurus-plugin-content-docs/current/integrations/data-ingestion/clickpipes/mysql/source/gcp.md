@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Руководство по настройке Cloud SQL for MySQL'
+sidebar_label: 'Cloud SQL for MySQL'
 description: 'Пошаговое руководство по настройке Cloud SQL for MySQL в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Руководство по настройке источника Cloud SQL for MySQL'
-keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'корневой сертификат ЦС']
+keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'корневой сертификат центра сертификации']
 doc_type: 'guide'
 integration:
    - support_level: 'core'

@@ -4,7 +4,7 @@ description: 'pg_clickhouse の完全なリファレンスドキュメント'
 slug: '/integrations/pg_clickhouse/reference'
 title: 'pg_clickhouse リファレンスドキュメント'
 doc_type: 'reference'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部データラッパー', 'pg_clickhouse', '拡張機能']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '拡張機能']
 ---
 
 # pg_clickhouse リファレンス ドキュメント \{#pg_clickhouse-reference-documentation\}

@@ -1,6 +1,6 @@
 ---
-title: 'SQL for pandas Users'
-sidebar_label: 'SQL Mapping'
+title: 'SQL for pandas users'
+sidebar_label: 'SQL mapping'
 slug: /chdb/guides/pandas-to-sql
 description: 'Understanding how pandas operations map to SQL in DataStore'
 keywords: ['chdb', 'datastore', 'pandas', 'sql', 'mapping', 'query']

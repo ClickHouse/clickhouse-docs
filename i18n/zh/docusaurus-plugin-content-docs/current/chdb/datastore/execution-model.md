@@ -2,7 +2,7 @@
 title: 'DataStore 执行模型'
 sidebar_label: '执行模型'
 slug: /chdb/datastore/execution-model
-description: '理解 DataStore 中的惰性求值、执行触发条件和缓存'
+description: '理解 DataStore 中的惰性求值、执行触发器和缓存'
 keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---

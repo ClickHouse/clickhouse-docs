@@ -1,6 +1,6 @@
 ---
 title: 'TOASTカラムの処理'
-description: 'PostgreSQL から ClickHouse へデータをレプリケートする際の TOAST カラムの扱い方を説明します。'
+description: 'PostgreSQL から ClickHouse へのレプリケーションにおける TOAST カラムの処理方法を説明します。'
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
@@ -9,7 +9,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-PostgreSQL から ClickHouse にデータをレプリケートする際には、TOAST（The Oversized-Attribute Storage Technique）カラムに関する制約や特有の注意点を理解しておくことが重要です。このガイドでは、レプリケーション処理において TOAST カラムを特定し、適切に扱う方法を説明します。
+PostgreSQL から ClickHouse へのレプリケーションでは、TOAST (The Oversized-Attribute Storage Technique) カラムに関する制限事項や特有の注意点を理解しておくことが重要です。このガイドでは、レプリケーション処理において TOAST カラムを特定し、適切に処理する方法を説明します。
 
 ## PostgreSQL における TOAST カラムとは？ \{#what-are-toast-columns-in-postgresql\}
 

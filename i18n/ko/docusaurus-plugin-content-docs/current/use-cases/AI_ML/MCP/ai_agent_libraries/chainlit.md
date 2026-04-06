@@ -1,32 +1,27 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/chainlit
 sidebar_label: 'Chainlit 통합'
-title: 'Chainlit과 ClickHouse MCP Server로 AI 에이전트를 구축하는 방법'
+title: 'Chainlit과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP Server와 함께 Chainlit을 사용하여 LLM 기반 채팅 앱을 구축하는 방법을 배웁니다'
+description: 'ClickHouse MCP 서버와 함께 Chainlit을 사용하여 LLM 기반 채팅 앱을 구축하는 방법을 배웁니다'
 keywords: ['ClickHouse', 'MCP', 'Chainlit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
-# Chainlit과 ClickHouse MCP Server로 AI 에이전트 구축하기 \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
+# Chainlit과 ClickHouse MCP 서버로 AI 에이전트 구축하기 \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 Chainlit의 강력한 채팅 인터페이스용 프레임워크와
 ClickHouse Model Context Protocol(MCP) Server를 결합하여 대화형 데이터
 애플리케이션을 구축하는 방법을 다룹니다. Chainlit은 최소한의 코드로 AI
-애플리케이션을 위한 대화형 인터페이스를 구축할 수 있도록 해주며, ClickHouse MCP Server는 ClickHouse의 고성능 컬럼형 데이터베이스와의 원활한
+애플리케이션을 위한 대화형 인터페이스를 구축할 수 있도록 해주며, ClickHouse MCP 서버는 ClickHouse의 고성능 컬럼형 데이터베이스와의 원활한
 통합을 제공합니다.
 
-
-
 ## 사전 준비 사항 \{#prerequisites\}
-- Anthropic API 키가 필요합니다
-- [`uv`](https://docs.astral.sh/uv/getting-started/installation/)가 설치되어 있어야 합니다
 
-
+* Anthropic API 키가 필요합니다
+* [`uv`](https://docs.astral.sh/uv/getting-started/installation/)가 설치되어 있어야 합니다
 
 ## 기본 Chainlit 앱 \{#basic-chainlit-app\}
 
@@ -38,10 +33,9 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 
 그런 다음 웹 브라우저에서 `http://localhost:8000`으로 이동합니다
 
+## ClickHouse MCP 서버 추가하기 \{#adding-clickhouse-mcp-server\}
 
-## ClickHouse MCP Server 추가하기 \{#adding-clickhouse-mcp-server\}
-
-ClickHouse MCP Server를 추가하면 구성이 더 흥미로워집니다.
+ClickHouse MCP 서버를 추가하면 구성이 더 흥미로워집니다.
 `uv` 명령을 사용할 수 있도록 `.chainlit/config.toml` 파일을 업데이트해야 합니다.
 
 ```toml
@@ -57,7 +51,7 @@ ClickHouse MCP Server를 추가하면 구성이 더 흥미로워집니다.
 전체 `config.toml` 파일은 [examples 리포지토리](https://github.com/ClickHouse/examples/blob/main/ai/mcp/chainlit/.chainlit/config.toml)에서 확인할 수 있습니다.
 :::
 
-MCP Server를 Chainlit과 함께 동작시키기 위한 약간의 연결 코드가 있으므로,
+MCP 서버를 Chainlit과 함께 동작시키기 위한 약간의 연결 코드가 있으므로,
 대신 Chainlit을 다음 명령으로 실행해야 합니다.
 
 ```sh

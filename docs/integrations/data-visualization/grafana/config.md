@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Plugin Configuration'
+sidebar_label: 'Plugin configuration'
 sidebar_position: 3
 slug: /integrations/grafana/config
 description: 'Configuration options for the ClickHouse data source plugin in Grafana'

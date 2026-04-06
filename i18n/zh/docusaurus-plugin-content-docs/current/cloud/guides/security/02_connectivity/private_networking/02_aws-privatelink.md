@@ -21,51 +21,52 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 
 # AWS PrivateLink \{#aws-privatelink\}
 
-<ScalePlanFeatureBadge feature="AWS PrivateLink"/>
+<ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
-您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在不将流量暴露到公共 Internet 的情况下，在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接。本文档概述了使用 AWS PrivateLink 连接到 ClickHouse Cloud 的步骤。
+您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在不将流量暴露到公共 Internet 的情况下，在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接。本文档概述了通过 AWS PrivateLink 连接 ClickHouse Cloud 的步骤。
 
 要将对 ClickHouse Cloud 服务的访问限制为仅能通过 AWS PrivateLink 地址进行，请按照 ClickHouse Cloud 提供的 [IP Access Lists](/cloud/security/setting-ip-filters) 指南进行配置。
 
 :::note
 ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/)：
-- sa-east-1
-- il-central-1
-- me-central-1
-- me-south-1
-- eu-central-2
-- eu-north-1
-- eu-south-2
-- eu-west-3
-- eu-south-1
-- eu-west-2
-- eu-west-1
-- eu-central-1
-- ca-west-1
-- ca-central-1
-- ap-northeast-1
-- ap-southeast-2
-- ap-southeast-1
-- ap-northeast-2
-- ap-northeast-3
-- ap-south-1
-- ap-southeast-4
-- ap-southeast-3
-- ap-south-2
-- ap-east-1
-- af-south-1
-- us-west-2
-- us-west-1
-- us-east-2
-- us-east-1
-费用说明：AWS 会就跨区域数据传输向用户收费，定价请参见[此处](https://aws.amazon.com/privatelink/pricing/)。
-:::
+
+* sa-east-1
+* il-central-1
+* me-south-1
+* eu-central-2
+* eu-north-1
+* eu-south-2
+* eu-west-3
+* eu-south-1
+* eu-west-2
+* eu-west-1
+* eu-central-1
+* ca-west-1
+* ca-central-1
+* ap-northeast-1
+* ap-southeast-2
+* ap-southeast-1
+* ap-northeast-2
+* ap-northeast-3
+* ap-south-1
+* ap-southeast-4
+* ap-southeast-3
+* ap-south-2
+* ap-east-1
+* af-south-1
+* us-west-2
+* us-west-1
+* us-east-2
+* us-east-1
+  费用说明：AWS 会就跨区域数据传输向用户收费，定价请参见[此处](https://aws.amazon.com/privatelink/pricing/)。
+  :::
 
 **请完成以下步骤以启用 AWS PrivateLink**：
-1. 获取 Endpoint 的 "Service name"。
-1. 创建 AWS Endpoint。
-1. 将 "Endpoint ID" 添加到 ClickHouse Cloud 组织。
-1. 将 "Endpoint ID" 添加到 ClickHouse 服务允许列表。
+
+1. 获取端点的 &quot;Service name&quot;。
+2. 创建 AWS 端点。
+3. 将 &quot;端点 ID&quot; 添加到 ClickHouse Cloud 组织。
+4. 将 &quot;端点 ID&quot; 添加到 ClickHouse 服务允许列表。
 
 您可以在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 

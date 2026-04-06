@@ -1,24 +1,23 @@
 ---
-sidebar_label: 'Функции и настройки'
+sidebar_label: 'Возможности и настройки'
 slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
 description: 'Описание доступных функций и общих настроек'
 keywords: ['clickhouse', 'dbt', 'features']
-title: 'Функции и настройки'
+title: 'Возможности и настройки'
 doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# Возможности и настройки \{#features-and-configurations\}
 
-# Возможности и параметры конфигурации \{#features-and-configurations\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 В этом разделе приведена документация по некоторым функциям dbt при работе с ClickHouse.
 
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## Настройка profiles.yml \{#profile-yml-configurations\}
 

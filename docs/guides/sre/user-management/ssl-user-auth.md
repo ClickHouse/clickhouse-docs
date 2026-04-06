@@ -2,7 +2,7 @@
 sidebar_label: 'SSL user certificate authentication'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: 'Configuring SSL User Certificate for Authentication'
+title: 'Configuring SSL user certificate for authentication'
 description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
 doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']

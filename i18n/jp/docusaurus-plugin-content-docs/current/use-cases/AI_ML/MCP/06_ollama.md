@@ -14,15 +14,14 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-
 # ClickHouse MCP サーバーを Ollama と連携して利用する \{#using-clickhouse-mcp-server-with-ollama\}
 
-> 本ガイドでは、ClickHouse MCP サーバーを Ollama と組み合わせて使用する方法を説明します。
+> 本ガイドでは、ClickHouse MCP サーバーを Ollama と連携して使用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
-  ## Ollama のインストール
+  ## Ollama のインストール \{#install-ollama\}
 
-  Ollama は、自身のマシン上で大規模言語モデル（LLM）を実行するためのライブラリです。
+  Ollama は、自身のマシン上で大規模言語モデル (LLM) を実行するためのライブラリです。
   [幅広いモデルが利用可能](https://ollama.com/library)で、使いやすいのが特徴です。
 
   Mac、Windows、または Linux 用の Ollama は、[ダウンロードページ](https://ollama.com/download)からダウンロードできます。
@@ -91,7 +90,7 @@ import Image from '@theme/IdealImage';
 
   この出力から、デフォルトの qwen3 モデルが 80 億強のパラメータを持つことがわかります。
 
-  ## MCPHost のインストール
+  ## MCPHost のインストール \{#install-mcphost\}
 
   本稿執筆時点(2025年7月)では、Ollama を MCP サーバーと併用するためのネイティブ機能は存在しません。
   ただし、[MCPHost](https://github.com/mark3labs/mcphost) を使用することで、Ollama モデルを MCP サーバーと連携して実行できます。
@@ -105,13 +104,13 @@ import Image from '@theme/IdealImage';
 
   バイナリは `~/go/bin` にインストールされるため、このディレクトリがパスに含まれていることを確認する必要があります。
 
-  ## ClickHouse MCP サーバーの設定
+  ## ClickHouse MCP サーバーの設定 \{#configure-clickhouse-mcp-server\}
 
-  We can configure MCP Servers with MCPHost in YAML or JSON files.
+  MCPHost では、YAML または JSON ファイルで MCPサーバーを設定できます。
   MCPHost は、ホームディレクトリ内の設定ファイルを次の順序で検索します:
 
   1. `.mcphost.yml` または `.mcphost.json`  (推奨)
-  2. `.mcp.yml` または `.mcp.json`（後方互換性）
+  2. `.mcp.yml` または `.mcp.json` (後方互換性)
 
   標準の MCP 設定ファイルで使用される構文と類似した構文を使用します。
   以下は ClickHouse MCP サーバー設定の例で、`~/.mcphost.json` ファイルに保存します:
@@ -137,7 +136,7 @@ import Image from '@theme/IdealImage';
   標準的な MCP 設定ファイルとの主な違いは、`type` を指定する必要がある点です。
   type は、MCP サーバーが使用するトランスポートタイプを示すために使用されます。
 
-  * `local` → stdio トランスポート方式
+  * `local` → stdio トランスポート
   * `remote` → ストリーミング対応トランスポート
   * `builtin` → プロセス内トランスポート
 
@@ -153,7 +152,7 @@ import Image from '@theme/IdealImage';
   理論上は、MCP 設定ファイルの `environment` キー配下にこれらの変数を指定できるはずですが、弊社の検証ではこの方法は機能しませんでした。
   :::
 
-  ## MCPHost の実行
+  ## MCPHost の実行 \{#running-mcphost\}
 
   ClickHouse MCP サーバーの設定が完了したら、次のコマンドで MCPHost を起動できます:
 
@@ -196,7 +195,7 @@ import Image from '@theme/IdealImage';
 
   ```text
     ┃                                                                                      ┃
-    ┃  ## Configured MCP Servers                                                           ┃
+    ┃  ## Configured MCP servers                                                           ┃
     ┃                                                                                      ┃
     ┃  1. mcp-ch                                                                           ┃
     ┃   MCPHost System (10:00)                                                             ┃
@@ -215,7 +214,7 @@ import Image from '@theme/IdealImage';
 
   その後、ClickHouse SQL playground で利用可能なデータベースやテーブルについて、モデルに質問できます。
 
-  弊社の経験では、小さいモデルを使用する場合（デフォルトの qwen3 モデルは 80 億パラメータ）、モデルに実行させたい内容をより具体的に指示する必要があります。
+  弊社の経験では、小さいモデルを使用する場合 (デフォルトの qwen3 モデルは 80 億パラメータ) 、モデルに実行させたい内容をより具体的に指示する必要があります。
   例えば、最初から特定のテーブルに対するクエリを依頼するのではなく、まずデータベースとテーブルの一覧を出すように明示的に依頼する必要があります。
-  より大きなモデル（例: qwen3:14b）を使用することで、この問題をある程度軽減できますが、コンシューマ向けハードウェア上では動作が遅くなります。
+  より大きなモデル (例: qwen3:14b) を使用することで、この問題をある程度軽減できますが、コンシューマ向けハードウェア上では動作が遅くなります。
 </VerticalStepper>

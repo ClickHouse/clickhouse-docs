@@ -9,17 +9,16 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 
-您可以通过 AWS、GCP 和 Azure 的 Marketplace 订阅 ClickHouse Cloud。这样，您可以在现有云服务提供商的账单中统一支付 ClickHouse Cloud 的费用。
+您可以通过 AWS、GCP 和 Azure 的 Marketplace 订阅 ClickHouse Cloud。这样，您可以在现有云服务商的计费中统一支付 ClickHouse Cloud 的费用。
 
-您可以通过云 Marketplace 选择按需计费（PAYG），或签订 ClickHouse Cloud 的承诺用量合约。计费将由云服务提供商处理，您将收到一张涵盖所有云服务的统一发票。
+您可以通过云 Marketplace 选择按需计费 (PAYG) ，或签订 ClickHouse Cloud 的承诺用量合同。计费将由云服务商处理，您将收到一张涵盖所有云服务的统一发票。
 
-* [AWS Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/aws-marketplace-payg)
-* [AWS Marketplace 承诺用量合约](/cloud/billing/marketplace/aws-marketplace-committed-contract)
-* [GCP Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/gcp-marketplace-payg)
-* [GCP Marketplace 承诺用量合约](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
-* [Azure Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/azure-marketplace-payg)
-* [Azure Marketplace 承诺用量合约](/cloud/billing/marketplace/azure-marketplace-committed-contract)
-
+* [AWS Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/aws-marketplace-payg)
+* [AWS Marketplace 承诺用量合同](/cloud/billing/marketplace/aws-marketplace-committed-contract)
+* [GCP Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/gcp-marketplace-payg)
+* [GCP Marketplace 承诺用量合同](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
+* [Azure Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/azure-marketplace-payg)
+* [Azure Marketplace 承诺用量合同](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
 ## 常见问题解答 \{#faqs\}
 

@@ -2,8 +2,8 @@
 slug: /integrations/s3/performance
 sidebar_position: 2
 sidebar_label: '성능 최적화'
-title: 'S3 Insert 및 Read 성능 최적화'
-description: 'S3 Read 및 Insert 성능 최적화'
+title: 'S3 삽입 및 읽기 성능 최적화'
+description: 'S3 읽기 및 삽입 성능 최적화'
 doc_type: 'guide'
 keywords: ['s3', '성능', '최적화', '객체 스토리지', '데이터 로딩']
 ---
@@ -17,13 +17,13 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-이 섹션에서는 [s3 table functions](/sql-reference/table-functions/s3)를 사용하여 S3에서 데이터를 읽고 삽입할 때의 성능을 최적화하는 방법에 중점을 둡니다.
+이 섹션에서는 [s3 테이블 함수](/sql-reference/table-functions/s3)를 사용하여 S3에서 데이터를 읽고 삽입할 때의 성능을 최적화하는 방법에 중점을 둡니다.
 
 :::info
-**이 가이드에서 설명하는 내용은 [GCS](/sql-reference/table-functions/gcs) 및 [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage)처럼 자체 전용 table function을 갖는 다른 객체 스토리지 구현에도 적용할 수 있습니다.**
+**이 가이드에서 설명하는 내용은 [GCS](/sql-reference/table-functions/gcs) 및 [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage)처럼 자체 전용 테이블 함수를 갖는 다른 객체 스토리지 구현에도 적용할 수 있습니다.**
 :::
 
-삽입 성능을 향상하기 위해 스레드 수와 블록 크기를 조정하기 전에 S3 삽입 동작 방식을 이해하는 것이 좋습니다. 이미 삽입 메커니즘에 익숙하거나 간단한 팁만 확인하려는 경우 아래 [예제](/integrations/s3/performance#example-dataset)로 바로 이동하십시오.
+삽입 성능을 향상하기 위해 스레드 수와 블록 크기를 조정하기 전에 S3 삽입 동작 방식을 이해하는 것이 좋습니다. 이미 삽입 메커니즘에 익숙하거나 간단한 팁만 확인하려는 경우 아래 [예시](/integrations/s3/performance#example-dataset)로 바로 이동하십시오.
 
 
 ## Insert 메커니즘(단일 노드) \{#insert-mechanics-single-node\}

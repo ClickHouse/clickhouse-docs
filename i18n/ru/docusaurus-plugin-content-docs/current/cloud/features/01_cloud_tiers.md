@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Тарифные планы ClickHouse Cloud'
+sidebar_label: 'Уровень ClickHouse Cloud'
 slug: /cloud/manage/cloud-tiers
-title: 'Тарифные планы ClickHouse Cloud'
-description: 'Тарифные уровни, доступные в ClickHouse Cloud'
-keywords: ['тарифные планы облака', 'тарифные планы', 'тарифные уровни облака', 'уровни обслуживания облачного сервиса']
+title: 'Уровень ClickHouse Cloud'
+description: 'Уровни ClickHouse Cloud, доступные в ClickHouse Cloud'
+keywords: ['уровни ClickHouse Cloud', 'тарифные планы', 'уровни ClickHouse Cloud', 'уровни обслуживания облачного сервиса']
 doc_type: 'reference'
 ---
 

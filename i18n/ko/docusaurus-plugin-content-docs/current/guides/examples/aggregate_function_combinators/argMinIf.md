@@ -1,17 +1,13 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
 title: 'argMinIf'
-description: 'argMinIf 결합자(combinator) 사용 예제'
+description: 'argMinIf 결합자 사용 예제'
 keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
 sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMinIf \{#argminif\}
-
-
 
 ## 설명 \{#description\}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 
 `argMinIf` 함수는 데이터셋에서 최소값과 연관된 값을 찾아야 하지만,
 특정 조건을 만족하는 행에만 이 작업을 수행해야 할 때 유용합니다.
-
-
 
 ## 예시 사용법 \{#example-usage\}
 
@@ -35,7 +29,8 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO product_prices VALUES
     (1, 10.99, '2024-01-01 10:00:00', 1),
@@ -66,8 +61,9 @@ GROUP BY product_id;
 ```
 
 
-## 참고 \{#see-also\}
+## 참고 사항 \{#see-also\}
+
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 결합자`](/sql-reference/aggregate-functions/combinators#-if)

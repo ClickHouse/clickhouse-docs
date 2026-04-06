@@ -171,6 +171,72 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 ```
 
 
+## arrayAutocorrelation \{#arrayAutocorrelation\}
+
+도입 버전: v26.4.0
+
+배열의 자기상관을 계산합니다.
+`max_lag`가 지정되면 `[0, max_lag)` 범위의 지연에 대해서만 상관관계를 계산합니다.
+`max_lag`가 지정되지 않으면 가능한 모든 지연에 대해 계산합니다.
+
+**구문**
+
+```sql
+arrayAutocorrelation(arr, [max_lag])
+```
+
+**인수**
+
+* `arr` — 숫자 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `max_lag` — 선택 사항입니다. 계산할 최대 지연 수입니다. 0 이상의 정수여야 합니다. [`Integer`](/sql-reference/data-types/int-uint)
+
+**반환값**
+
+Float64 배열을 반환합니다. 분산이 0이면 NaN을 반환합니다. [`Array(Float64)`](/sql-reference/data-types/array)
+
+**예시**
+
+**선형**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5]);
+```
+
+```response title=Response
+[1, 0.4, -0.1, -0.4, -0.4]
+```
+
+**대칭**
+
+```sql title=Query
+SELECT arrayAutocorrelation([10, 20, 10]);
+```
+
+```response title=Response
+[1, -0.6666666666666669, 0.16666666666666674]
+```
+
+**상수**
+
+```sql title=Query
+SELECT arrayAutocorrelation([5, 5, 5]);
+```
+
+```response title=Response
+[nan, nan, nan]
+```
+
+**제한됨**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5], 2);
+```
+
+```response title=Response
+[1, 0.4]
+```
+
+
 ## arrayAvg \{#arrayAvg\}
 
 도입 버전: v21.1.0

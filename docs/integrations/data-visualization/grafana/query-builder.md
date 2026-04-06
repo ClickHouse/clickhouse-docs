@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Query Builder'
+sidebar_label: 'Query builder'
 sidebar_position: 2
 slug: /integrations/grafana/query-builder
-description: 'Using the Query Builder in the ClickHouse Grafana plugin'
-title: 'Query Builder'
+description: 'Using the Query builder in the ClickHouse Grafana plugin'
+title: 'Query builder'
 doc_type: 'guide'
 keywords: ['grafana', 'query builder', 'visualization', 'dashboards', 'plugin']
 integration:
@@ -23,7 +23,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Query Builder
+# Query builder
 
 <ClickHouseSupportedBadge/>
 

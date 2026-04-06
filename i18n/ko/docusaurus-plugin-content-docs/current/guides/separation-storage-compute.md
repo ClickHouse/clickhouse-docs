@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
-sidebar_label: '스토리지와 컴퓨트의 분리'
+sidebar_label: '스토리지와 컴퓨트 분리'
 slug: /guides/separation-storage-compute
-title: '스토리지와 컴퓨트의 분리'
-description: '이 가이드는 ClickHouse와 S3를 활용하여 스토리지와 컴퓨트를 분리한 아키텍처를 구현하는 방법을 살펴봅니다.'
+title: '스토리지와 컴퓨트 분리'
+description: '이 가이드는 ClickHouse와 S3를 사용하여 스토리지와 컴퓨트를 분리한 아키텍처를 구현하는 방법을 설명합니다.'
 doc_type: 'guide'
 keywords: ['storage', 'compute', 'architecture', 'scalability', 'cloud']
 ---
@@ -11,7 +11,6 @@ keywords: ['storage', 'compute', 'architecture', 'scalability', 'cloud']
 import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
-
 
 # 스토리지와 컴퓨트 분리 \{#separation-of-storage-and-compute\}
 

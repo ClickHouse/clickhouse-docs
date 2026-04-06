@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
 title: 'Monitoring Temporal Cloud with ClickStack'
-sidebar_label: 'Temporal Cloud Metrics'
+sidebar_label: 'Temporal Cloud metrics'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Temporal Cloud Metrics with ClickStack'

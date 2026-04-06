@@ -71,7 +71,7 @@ import TabItem from '@theme/TabItem';
 이 가이드는 이미 ClickHouse Cloud 서비스를 생성했다고 가정합니다. 아직 서비스를 생성하지 않았다면 Managed ClickStack용 [시작하기](/use-cases/observability/clickstack/getting-started/managed) 가이드를 따르십시오. 이 과정을 마치면 이 가이드와 동일한 상태, 즉 ClickStack이 활성화되어 관측성 데이터를 수집할 준비가 된 서비스가 생성됩니다.
 
 <Tabs groupId="service-create-select">
-  <TabItem value="CREATE" label="새 서비스를 생성하십시오." default>
+  <TabItem value="create" label="새 서비스를 생성하십시오." default>
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -99,7 +99,7 @@ import TabItem from '@theme/TabItem';
     </VerticalStepper>
   </TabItem>
 
-  <TabItem value="select" label="기존 서비스 사용">
+  <TabItem value="선택" label="기존 서비스 사용">
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -108,7 +108,7 @@ import TabItem from '@theme/TabItem';
       ClickHouse Cloud 랜딩 페이지에서 관리형 ClickStack을 활성화할 서비스를 선택하십시오.
 
       :::important 리소스 예측
-      이 가이드는 ClickStack으로 수집하고 쿼리할 관측성 데이터의 양을 처리하기에 충분한 리소스를 프로비저닝했다고 가정합니다. 필요한 리소스를 예측하려면 [프로덕션 가이드](/use-cases/observability/clickstack/production#estimating-resources)를 참조하세요.
+      이 가이드는 ClickStack으로 수집하고 쿼리할 관측성 데이터의 양을 처리하기에 충분한 리소스를 프로비저닝했다고 가정합니다. 필요한 리소스를 예측하려면 [리소스 예측](/use-cases/observability/clickstack/estimating-resources) 가이드를 참조하세요.
 
       ClickHouse 서비스가 실시간 애플리케이션 분석과 같은 기존 워크로드를 이미 호스팅하고 있는 경우, [ClickHouse Cloud의 웨어하우스 기능](/cloud/reference/warehouses)을 사용하여 하위 서비스를 생성하고 관측성 워크로드를 격리하는 것을 권장합니다. 이를 통해 기존 애플리케이션의 중단 없이 두 서비스 모두에서 데이터셋에 액세스할 수 있습니다.
       :::

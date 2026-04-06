@@ -1,5 +1,5 @@
 ---
-title: 'Query performance - Time-series'
+title: 'Query performance - time-series'
 sidebar_label: 'Query performance'
 description: 'Improving time-series query performance'
 slug: /use-cases/time-series/query-performance

@@ -1,7 +1,7 @@
 ---
 slug: /faq/general/
 sidebar_position: 1
-sidebar_label: 'ClickHouse 常见问题'
+sidebar_label: '关于 ClickHouse 的常见问题'
 keywords: ['faq', 'questions', 'what is']
 title: 'ClickHouse 常见问题概览'
 description: '列出关于 ClickHouse 常见问题的索引页面'

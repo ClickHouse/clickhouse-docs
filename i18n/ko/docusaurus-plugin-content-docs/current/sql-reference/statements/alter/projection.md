@@ -1,29 +1,29 @@
 ---
-description: '프로젝션 조작 방법에 대한 문서'
+description: 'PROJECTION 조작 방법에 대한 문서'
 sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
-title: '프로젝션'
+title: 'PROJECTION'
 doc_type: 'reference'
 ---
 
-이 문서에서는 프로젝션이 무엇인지, 어떻게 사용할 수 있는지, 그리고 프로젝션을 조작하는 다양한 옵션을 설명합니다.
+이 페이지에서는 PROJECTION이 무엇인지, 어떻게 사용할 수 있는지, 그리고 PROJECTION을 조작하는 다양한 옵션을 설명합니다.
 
-## 프로젝션 개요 \{#overview\}
+## PROJECTION 개요 \{#overview\}
 
-프로젝션은 데이터를 쿼리 실행에 최적화된 형식으로 저장하며, 다음과 같은 경우에 유용합니다:
+PROJECTION은 데이터를 쿼리 실행에 최적화된 형식으로 저장하며, 다음과 같은 경우에 유용합니다:
 
-- 기본 키에 포함되지 않은 컬럼에 대해 쿼리를 실행하는 경우
-- 컬럼을 사전 집계해 연산과 I/O를 모두 줄이는 경우
+* 기본 키에 포함되지 않은 컬럼에 대해 쿼리를 실행하는 경우
+* 컬럼을 사전 집계해 연산과 I/O를 모두 줄이는 경우
 
-하나의 테이블에 하나 이상의 프로젝션을 정의할 수 있으며, 쿼리 분석 시 스캔해야 할 데이터가 가장 적은 프로젝션을 ClickHouse가 선택합니다. 이때 사용자가 작성한 쿼리는 변경되지 않습니다.
+하나의 테이블에 하나 이상의 PROJECTION을 정의할 수 있으며, 쿼리 분석 시 스캔해야 할 데이터가 가장 적은 PROJECTION을 ClickHouse가 선택합니다. 이때 사용자가 작성한 쿼리는 변경되지 않습니다.
 
 :::note[Disk usage]
-프로젝션은 내부적으로 새로운 숨겨진 테이블을 생성하므로, 더 많은 I/O와 디스크 공간이 필요합니다.
-예를 들어, 프로젝션에 서로 다른 기본 키가 정의된 경우 원본 테이블의 모든 데이터가 복제됩니다.
+PROJECTION은 내부적으로 새로운 숨겨진 테이블을 생성하므로, 더 많은 I/O와 디스크 공간이 필요합니다.
+예를 들어, PROJECTION에 서로 다른 기본 키가 정의된 경우 원본 테이블의 모든 데이터가 복제됩니다.
 :::
 
-프로젝션이 내부적으로 어떻게 동작하는지에 대한 보다 기술적인 세부 사항은 이 [페이지](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)에서 확인할 수 있습니다.
+PROJECTION이 내부적으로 어떻게 동작하는지에 대한 보다 기술적인 세부 사항은 이 [페이지](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)에서 확인할 수 있습니다.
 
 ## 프로젝션 사용하기 \{#examples\}
 
@@ -47,9 +47,8 @@ PRIMARY KEY user_agent
 
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
-SELECT
-*
-ORDER BY user_name
+    SELECT *
+    ORDER BY user_name
 )
 
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
@@ -66,8 +65,8 @@ INSERT INTO visits_order SELECT
 FROM numbers(1, 100);
 ```
 
-Projection을 사용하면 원본 테이블에서 `user_name`이 `PRIMARY_KEY`로 정의되지 않았더라도 `user_name` 기준으로 빠르게 필터링할 수 있습니다.
-쿼리 실행 시점에 ClickHouse는 데이터가 `user_name`으로 정렬되어 있으므로 Projection을 사용하는 것이 처리해야 할 데이터 양을 줄인다고 판단했습니다.
+PROJECTION을 사용하면 원본 테이블에서 `user_name`이 `PRIMARY_KEY`로 정의되지 않았더라도 `user_name` 기준으로 빠르게 필터링할 수 있습니다.
+쿼리 실행 시점에 ClickHouse는 데이터가 `user_name`으로 정렬되어 있으므로 PROJECTION을 사용하는 것이 처리해야 할 데이터 양을 줄인다고 판단합니다.
 
 ```sql
 SELECT
@@ -82,7 +81,6 @@ LIMIT 2
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
-
 
 ### 사전 집계 예제 쿼리 \{#example-pre-aggregation-query\}
 
@@ -165,9 +163,9 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-### `_part_offset` 필드를 사용하는 일반 프로젝션 \{#normal-projection-with-part-offset-field\}
+### PROJECTION 인덱스 생성 및 사용 \{#projection-indexes\}
 
-`_part_offset` 필드를 활용하는 일반 프로젝션을 포함한 테이블을 생성합니다:
+[PROJECTION 인덱스](../../../engines/table-engines/mergetree-family/mergetree.md#projection-index) 생성:
 
 ```sql
 CREATE TABLE events
@@ -176,25 +174,41 @@ CREATE TABLE events
     `event_id` UInt64,
     `user_id` UInt64,
     `huge_string` String,
-    PROJECTION order_by_user_id
-    (
-        SELECT
-            _part_offset
-        ORDER BY user_id
-    )
+    PROJECTION order_by_user_id INDEX user_id TYPE basic
 )
 ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
 
-샘플 데이터를 삽입합니다:
+<details markdown="1">
+  <summary>명시적으로 `_part_offset` 필드를 지정하여 PROJECTION 생성하기</summary>
+
+  PROJECTION 인덱스는 다음 구문으로도 생성할 수 있습니다(권장하지 않음).
+
+  ```sql
+  CREATE TABLE events
+  (
+      `event_time` DateTime,
+      `event_id` UInt64,
+      `user_id` UInt64,
+      `huge_string` String,
+      PROJECTION order_by_user_id
+      (
+          SELECT
+              _part_offset
+          ORDER BY user_id
+      )
+  )
+  ENGINE = MergeTree()
+  ORDER BY (event_id);
+  ```
+</details>
+
+예시 데이터 몇 개를 삽입합니다:
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
-
-
-#### `_part_offset`를 보조 인덱스로 사용하기 \{#normal-projection-secondary-index\}
 
 `_part_offset` 필드는 머지와 뮤테이션이 수행되는 동안에도 값이 유지되므로 보조 인덱스로 활용하는 데 유용합니다. 쿼리에서 다음과 같이 활용할 수 있습니다.
 
@@ -209,7 +223,6 @@ WHERE _part_starting_offset + _part_offset IN (
 )
 SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
-
 
 ## 프로젝션 관리 \{#manipulating-projections\}
 
@@ -308,6 +321,48 @@ v24.8부터는 새로운 테이블 수준 설정 [`deduplicate_merge_projection_
 - `throw` (기본값): 예외를 발생시켜 프로젝션 파트가 동기화 상태에서 벗어나는 것을 방지합니다.
 - `drop`: 영향을 받는 프로젝션 테이블 파트를 드롭합니다. 쿼리는 해당 프로젝션 파트에 대해서는 원본 테이블 파트를 사용합니다.
 - `rebuild`: 영향을 받는 프로젝션 파트를 다시 빌드하여 원본 테이블 파트의 데이터와 일관성을 유지합니다.
+
+## 제한 사항 \{#limitations\}
+
+프로젝션의 `ORDER BY` 절에서는 `ALIAS` 컬럼을 사용할 수 없습니다. 예를 들어:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` 컬럼은 물리적으로 저장되지 않고 쿼리 시점에 즉석에서 계산되므로, 정렬 표현식을 평가하는 프로젝션 파트 쓰기 경로에서는 사용할 수 없습니다.
+
+대신 `MATERIALIZED` 컬럼을 사용하거나 표현식을 직접 인라인으로 작성하십시오:
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
 
 ## 함께 보기 \{#see-also\}
 

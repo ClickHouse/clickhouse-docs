@@ -1,5 +1,5 @@
 ---
-title: 'DataStore のプロファイリング'
+title: 'DataStore プロファイリング'
 sidebar_label: 'プロファイリング'
 slug: /chdb/debugging/profiling
 description: '内蔵プロファイラで DataStore のパフォーマンスを測定する'

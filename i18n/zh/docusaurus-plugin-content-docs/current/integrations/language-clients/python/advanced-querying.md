@@ -1,10 +1,10 @@
 ---
-sidebar_label: '高级查询'
+sidebar_label: '进阶查询'
 sidebar_position: 4
 keywords: ['clickhouse', 'python', 'query', 'advanced']
-description: '使用 ClickHouse Connect 进行高级查询'
+description: '使用 ClickHouse Connect 进行进阶查询'
 slug: /integrations/language-clients/python/advanced-querying
-title: '高级查询'
+title: '进阶查询'
 doc_type: 'reference'
 ---
 

@@ -2,22 +2,22 @@
 description: '5つのステップでTab Separated Valueデータを取り込み、クエリを実行する'
 sidebar_label: 'NYPD苦情データ'
 slug: /getting-started/example-datasets/nypd_complaint_data
-title: 'NYPD Complaint Data'
+title: 'NYPD苦情データ'
 doc_type: 'guide'
 keywords: ['サンプルデータセット', 'nypd', '犯罪データ', 'サンプルデータ', '公開データ']
 ---
 
-Tab separated value（TSV）ファイルは一般的な形式であり、ファイルの先頭行にフィールド見出しが含まれている場合があります。ClickHouseはTSVを取り込むことができるだけでなく、ファイルを取り込まずにTSVに対してクエリを実行することもできます。本ガイドでは、この2つのケースの両方を扱います。CSVファイルに対してクエリを実行したり取り込んだりする必要がある場合も、同じ手法が利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけで対応できます。
+Tab separated value (TSV) ファイルは一般的な形式であり、ファイルの先頭行にフィールド見出しが含まれている場合があります。ClickHouseはTSVを取り込むことができるだけでなく、ファイルを取り込まずにTSVに対してクエリを実行することもできます。このガイドでは、この2つのケースの両方を扱います。CSVファイルに対してクエリを実行したり取り込んだりする必要がある場合も、同じ手法が利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけで対応できます。
 
-本ガイドを進めるにあたって、次のことを行います:
+このガイドを進めるにあたって、次のことを行います:
 
-- **調査**: TSVファイルの構造と内容に対してクエリを実行し、確認する。
-- **対象となるClickHouseスキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングする。
-- **ClickHouseテーブルをCREATE文で作成する**。
-- データを前処理し、ClickHouseに**ストリーミング**する。
-- ClickHouseに対して**いくつかのクエリを実行**する。
+* **調査**: TSVファイルの構造と内容に対してクエリを実行し、確認する。
+* **対象となるClickHouseスキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングする。
+* **ClickHouse テーブルを作成する**。
+* データを前処理し、ClickHouseに**ストリーミング**する。
+* ClickHouseに対して**いくつかのクエリを実行**する。
 
-本ガイドで使用するデータセットはNYC Open Dataチームによるもので、「New York City Police Department (NYPD) に報告された、すべての有効な重罪、軽犯罪、違反行為」に関するデータを含みます。執筆時点ではデータファイルのサイズは166MBですが、定期的に更新されています。
+このガイドで使用するデータセットはNYC Open Dataチームによるもので、「New York City Police Department (NYPD) に報告された、すべての有効な重罪、軽犯罪、違反行為」に関するデータを含みます。執筆時点ではデータファイルのサイズは166MBですが、定期的に更新されています。
 
 **出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
 **利用規約**: https://www1.nyc.gov/home/terms-of-use.page

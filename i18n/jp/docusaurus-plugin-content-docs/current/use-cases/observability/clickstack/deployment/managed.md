@@ -99,7 +99,7 @@ import TabItem from '@theme/TabItem';
     </VerticalStepper>
   </TabItem>
 
-  <TabItem value="選択する" label="既存のサービスを使用する">
+  <TabItem value="選択" label="既存のサービスを使用する">
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -108,7 +108,7 @@ import TabItem from '@theme/TabItem';
       ClickHouse Cloud のランディングページから、マネージド ClickStack を有効化したいサービスを選択します。
 
       :::important リソースの見積もり
-      本ガイドは、ClickStackで取り込みとクエリを実行する予定のオブザーバビリティデータ量を処理するために、十分なリソースがプロビジョニング済みであることを前提としています。必要なリソースを見積もるには、[本番環境ガイド](/use-cases/observability/clickstack/production#estimating-resources)を参照してください。
+      本ガイドは、ClickStackで取り込みとクエリを実行する予定のオブザーバビリティデータ量を処理するために、十分なリソースがプロビジョニング済みであることを前提としています。必要なリソースを見積もるには、[リソースの見積もり](/use-cases/observability/clickstack/estimating-resources)ガイドを参照してください。
 
       ClickHouseサービスが既にリアルタイムアプリケーション分析などの既存のワークロードをホストしている場合は、[ClickHouse Cloudのウェアハウス機能](/cloud/reference/warehouses)を使用して子サービスを作成し、オブザーバビリティワークロードを分離することを推奨します。これにより、既存のアプリケーションを中断することなく、両方のサービスからデータセットへのアクセスを維持できます。
       :::
@@ -148,7 +148,7 @@ import TabItem from '@theme/TabItem';
 
       <Tabs groupId="ingestion-sources-existing">
         <TabItem value="open-telemetry" label="OpenTelemetry" default>
-          Managed ClickStack に OpenTelemetry データを送信するには、OpenTelemetry Collector を使用することが推奨されます。Collector はゲートウェイとして動作し、アプリケーション（および他の Collector）から OpenTelemetry データを受信し、それを ClickHouse Cloud に転送します。
+          Managed ClickStack に OpenTelemetry データを送信するには、OpenTelemetry Collector を使用することが推奨されます。Collector はゲートウェイとして動作し、アプリケーション (および他の Collector) から OpenTelemetry データを受信し、それを ClickHouse Cloud に転送します。
 
           まだ Collector を稼働させていない場合は、以下の手順に従って Collector を起動してください。既存の Collector がある場合は、設定例も用意されています。
 
@@ -166,7 +166,7 @@ import TabItem from '@theme/TabItem';
           このコマンドでは `default` ユーザーを使って Managed ClickStack に接続していますが、[本番環境に移行する際](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)には専用のユーザーを作成し、それに合わせて設定を変更する必要があります。
           :::
 
-          この 1 つのコマンドを実行すると、ClickStack Collector が起動し、ポート 4317（gRPC）および 4318（HTTP）で OTLP エンドポイントが公開されます。すでに OpenTelemetry のインストルメンテーションやエージェントがある場合は、すぐにこれらのエンドポイントにテレメトリーデータを送信し始めることができます。
+          この 1 つのコマンドを実行すると、ClickStack Collector が起動し、ポート 4317 (gRPC) および 4318 (HTTP) で OTLP エンドポイントが公開されます。すでに OpenTelemetry のインストルメンテーションやエージェントがある場合は、すぐにこれらのエンドポイントにテレメトリーデータを送信し始めることができます。
 
           ### 既存の Collector を設定する
 
@@ -184,7 +184,7 @@ import TabItem from '@theme/TabItem';
 
           OpenTelemetry Collector の詳細な設定方法については、「[OpenTelemetry を使ったインジェスト](/use-cases/observability/clickstack/ingesting-data/opentelemetry)」を参照してください。
 
-          ### インジェストを開始する（任意）
+          ### インジェストを開始する (任意)
 
           すでに OpenTelemetry でインストルメントする対象となるアプリケーションやインフラストラクチャがある場合は、「Connect an application」からリンクされている関連ガイドを参照してください。
 
@@ -195,13 +195,13 @@ import TabItem from '@theme/TabItem';
           <br />
         </TabItem>
 
-        <TabItem value="vector" label="Vector" default>
+        <TabItem value="Vector" label="Vector" default>
           [Vector](https://vector.dev) は高性能でベンダーニュートラルなオブザーバビリティデータパイプラインであり、柔軟性と小さいリソースフットプリントにより、特にログのインジェストで高い人気があります。
 
           Vector を ClickStack と併用する場合、スキーマの定義はユーザーの責任となります。これらのスキーマは OpenTelemetry の規約に従っていてもよいですし、完全にカスタムで、ユーザー定義のイベント構造を表現していてもかまいません。
 
           :::note タイムスタンプが必須
-          Managed ClickStack における唯一の厳格な要件は、データに **timestamp column**（または同等の時刻フィールド）が含まれていることです。これは ClickStack UI でデータソースを設定する際に宣言できます。
+          Managed ClickStack における唯一の厳格な要件は、データに **timestamp column** (または同等の時刻フィールド) が含まれていることです。これは ClickStack UI でデータソースを設定する際に宣言できます。
           :::
 
           以下では、Vector のインスタンスがすでに稼働しており、事前に設定されたインジェストパイプラインを通じてデータを送信しているものとします。

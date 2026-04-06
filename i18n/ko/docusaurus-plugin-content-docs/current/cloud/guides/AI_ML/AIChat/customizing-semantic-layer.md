@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: '시맨틱 레이어로 ClickHouse Assistant 채팅 맞춤화하기'
+sidebar_label: '시맨틱 레이어로 ClickHouse Assistant 채팅 커스터마이징하기'
 title: '시맨틱 레이어로 ClickHouse Assistant 에이전트 대화 최적화하기'
 pagination_prev: null
 pagination_next: null
-description: 'AGENTS.md를 사용하여 ClickHouse Assistant 채팅 에이전트에 맞춤 비즈니스 로직과 데이터별 지침을 제공하는 방법에 대한 가이드'
+description: 'AGENTS.md를 사용하여 ClickHouse Assistant 채팅 에이전트에 사용자 지정 비즈니스 로직과 데이터별 지침을 제공하는 방법에 대한 가이드'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'

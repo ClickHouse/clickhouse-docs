@@ -2,7 +2,7 @@
 sidebar_label: 'Supabase Postgres'
 description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
-title: 'Supabase Source Setup Guide'
+title: 'Supabase source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 integration:

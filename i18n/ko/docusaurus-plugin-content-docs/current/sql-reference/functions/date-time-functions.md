@@ -3731,7 +3731,7 @@ toLastDayOfWeek(datetime[, mode[, timezone]])
 
 **반환 값**
 
-지정된 `mode`에 따라 주어진 날짜와 같거나 이후인 날짜 중 가장 가까운 토요일 또는 일요일의 날짜를 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+지정된 `mode`에 따라 주어진 날짜와 같거나 이후인 날짜 중 가장 가까운 토요일 또는 일요일의 날짜를 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`Date32`](/sql-reference/data-types/date32)
 
 **예시**
 
@@ -4369,7 +4369,7 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 
 ## toStartOfDay \{#toStartOfDay\}
 
-도입: v1.1.0
+도입 버전: v1.1.0
 
 시간이 포함된 날짜를 해당 날짜의 시작 시각으로 내림합니다.
 
@@ -4389,7 +4389,7 @@ toStartOfDay(datetime)
 
 **반환 값**
 
-해당 일의 시작 시각으로 내림 반올림된 날짜‑시간을 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+해당 일의 시작 시각으로 내림 반올림된 날짜‑시간을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -4409,7 +4409,7 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 
 도입 버전: v1.1.0
 
-날짜와 시간을 15분 단위 구간의 시작 시각으로 내림합니다.
+날짜와 시간을 15분 단위 구간의 시작 시각으로 내립니다.
 
 :::note
 반환 유형은 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 설정을 통해 구성할 수 있습니다.
@@ -4451,9 +4451,9 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 
 ## toStartOfFiveMinutes \{#toStartOfFiveMinutes\}
 
-도입된 버전: v22.6.0
+도입 버전: v22.6.0
 
-날짜와 시간을 바로 이전 5분 구간의 시작 시점으로 내림합니다.
+날짜와 시간을 바로 이전 5분 구간의 시작 시점으로 내립니다.
 
 :::note
 반환 타입은 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 설정을 통해 구성할 수 있습니다.
@@ -4983,11 +4983,11 @@ toStartOfTenMinutes(datetime)
 
 **인수**
 
-* `datetime` — 시간 정보를 포함한 날짜. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 날짜와 시간. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **반환 값**
 
-가장 가까운 10분 구간의 시작 시각으로 반올림한 시간 정보를 포함한 날짜 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)를 반환합니다.
+가장 가까운 10분 구간의 시작 시각으로 반올림한 날짜와 시간을 반환합니다. [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **예시**
 
@@ -5013,7 +5013,7 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 
 도입 버전: v20.1.0
 
-날짜 또는 날짜‑시간 값을 가장 가까운 일요일 또는 월요일의 시작 시각으로 내림합니다.
+날짜 또는 날짜와 시간 값을 가장 가까운 일요일 또는 월요일의 시작 시각으로 내림합니다.
 
 :::note
 반환 타입은 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 설정으로 구성할 수 있습니다.
@@ -5027,13 +5027,13 @@ toStartOfWeek(datetime[, mode[, timezone]])
 
 **인수**
 
-* `datetime` — 변환할 일 또는 일시입니다. [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 변환할 일 또는 날짜와 시간입니다. [`Date`](/sql-reference/data-types/date) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
 * `mode` — `toWeek()` FUNCTION에서 설명된 것처럼 한 주의 첫 번째 요일을 결정합니다. 기본값은 `0`입니다. [`UInt8`](/sql-reference/data-types/int-uint)
 * `timezone` — 변환에 사용할 시간대입니다. 지정하지 않으면 서버의 시간대를 사용합니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
-지정된 `mode`에 따라 주어진 날짜와 같거나 그 이전의 가장 가까운 일요일 또는 월요일의 날짜를 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`Date32`](/sql-reference/data-types/date32) 또는 [`DateTime`](/sql-reference/data-types/datetime) 또는 [`DateTime64`](/sql-reference/data-types/datetime64)
+지정된 `mode`에 따라 주어진 날짜와 같거나 그 이전의 가장 가까운 일요일 또는 월요일의 날짜를 반환합니다. [`Date`](/sql-reference/data-types/date) 또는 [`Date32`](/sql-reference/data-types/date32)
 
 **예시**
 

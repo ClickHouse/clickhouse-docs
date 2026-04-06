@@ -1,87 +1,91 @@
+import Recommendations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
+
 # Установка ClickHouse на дистрибутивах, основанных на RPM \{#from-rpm-packages\}
 
 > Рекомендуется использовать официальные предварительно скомпилированные пакеты `rpm` для **CentOS**, **RedHat** и всех других Linux-дистрибутивов на основе RPM.
 
 <VerticalStepper>
+  ## Ознакомьтесь с рекомендациями \{#review-recommendations\}
 
-## Настройка RPM-репозитория \{#setup-the-rpm-repository\}
+  <Recommendations />
 
-Добавьте официальный репозиторий, выполнив следующие команды:
+  ## Настройка RPM-репозитория \{#setup-the-rpm-repository\}
 
-```bash
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
-```
+  Добавьте официальный репозиторий, выполнив следующие команды:
 
-Для систем с пакетным менеджером `zypper` (openSUSE, SLES) выполните:
+  ```bash
+  sudo yum install -y yum-utils
+  sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
+  ```
 
-```bash
-sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
-sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
-```
+  Для систем с пакетным менеджером `zypper` (openSUSE, SLES) выполните:
 
-В последующих шагах команду `yum install` можно заменить на `zypper install` в зависимости
-от используемого пакетного менеджера.
+  ```bash
+  sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
+  sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
+  ```
 
-## Установка сервера и клиента ClickHouse \{#install-clickhouse-server-and-client-1\}
+  В последующих шагах команду `yum install` можно заменить на `zypper install` в зависимости
+  от используемого пакетного менеджера.
 
-Установите ClickHouse, выполнив следующие команды:
+  ## Установка сервера и клиента ClickHouse \{#install-clickhouse-server-and-client-1\}
 
-```bash
-sudo yum install -y clickhouse-server clickhouse-client
-```
+  Установите ClickHouse, выполнив следующие команды:
 
-* Вы можете заменить `stable` на `lts`, чтобы использовать другой [тип релиза](/knowledgebase/production) в зависимости от ваших потребностей.
-* Вы можете загрузить и установить пакеты вручную по адресу [packages.clickhouse.com/rpm](https://packages.clickhouse.com/rpm/stable).
-* Чтобы указать конкретную версию, добавьте `-$version` в конец имени пакета,
-  например:
+  ```bash
+  sudo yum install -y clickhouse-server clickhouse-client
+  ```
 
-```bash
-sudo yum install clickhouse-server-22.8.7.34
-```
+  * Вы можете заменить `stable` на `lts`, чтобы использовать другой [тип релиза](/knowledgebase/production) в зависимости от ваших потребностей.
+  * Вы можете загрузить и установить пакеты вручную по адресу [packages.clickhouse.com/rpm](https://packages.clickhouse.com/rpm/stable).
+  * Чтобы указать конкретную версию, добавьте `-$version` в конец имени пакета,
+    например:
 
-## Запуск сервера ClickHouse \{#start-clickhouse-server-1\}
+  ```bash
+  sudo yum install clickhouse-server-22.8.7.34
+  ```
 
-Чтобы запустить сервер ClickHouse, выполните:
+  ## Запуск сервера ClickHouse \{#start-clickhouse-server-1\}
 
-```bash
-sudo systemctl enable clickhouse-server
-sudo systemctl start clickhouse-server
-sudo systemctl status clickhouse-server
-```
+  Чтобы запустить сервер ClickHouse, выполните:
 
-Чтобы запустить клиент ClickHouse, выполните:
+  ```bash
+  sudo systemctl enable clickhouse-server
+  sudo systemctl start clickhouse-server
+  sudo systemctl status clickhouse-server
+  ```
 
-```sql
-clickhouse-client
-```
+  Чтобы запустить клиент ClickHouse, выполните:
 
-Если вы задали пароль для вашего сервера, вам потребуется выполнить:
+  ```bash
+  clickhouse-client
+  ```
 
-```bash
-clickhouse-client --password
-```
+  Если вы задали пароль для вашего сервера, вам потребуется выполнить:
 
-## Установка автономного ClickHouse Keeper \{#install-standalone-clickhouse-keeper-1\}
+  ```bash
+  clickhouse-client --password
+  ```
 
-:::tip
-В продуктивных средах мы настоятельно рекомендуем запускать ClickHouse Keeper на отдельных узлах.
-В тестовых средах, если вы решите запускать ClickHouse Server и ClickHouse Keeper на одном и том же сервере,
-то вам не нужно устанавливать ClickHouse Keeper отдельно, так как он включен в состав ClickHouse Server.
-:::
+  ## Установка автономного ClickHouse Keeper \{#install-standalone-clickhouse-keeper-1\}
 
-Чтобы установить `clickhouse-keeper` на отдельных серверах ClickHouse Keeper, выполните:
+  :::tip
+  В продуктивных средах мы настоятельно рекомендуем запускать ClickHouse Keeper на отдельных узлах.
+  В тестовых средах, если вы решите запускать сервер ClickHouse и ClickHouse Keeper на одном и том же сервере,
+  то вам не нужно устанавливать ClickHouse Keeper отдельно, так как он включен в состав сервера ClickHouse.
+  :::
 
-```bash
-sudo yum install -y clickhouse-keeper
-```
+  Чтобы установить `clickhouse-keeper` на отдельных серверах ClickHouse Keeper, выполните:
 
-## Включение и запуск ClickHouse Keeper \{#enable-and-start-clickhouse-keeper-1\}
+  ```bash
+  sudo yum install -y clickhouse-keeper
+  ```
 
-```bash
-sudo systemctl enable clickhouse-keeper
-sudo systemctl start clickhouse-keeper
-sudo systemctl status clickhouse-keeper
-```
+  ## Включение и запуск ClickHouse Keeper \{#enable-and-start-clickhouse-keeper-1\}
 
+  ```bash
+  sudo systemctl enable clickhouse-keeper
+  sudo systemctl start clickhouse-keeper
+  sudo systemctl status clickhouse-keeper
+  ```
 </VerticalStepper>

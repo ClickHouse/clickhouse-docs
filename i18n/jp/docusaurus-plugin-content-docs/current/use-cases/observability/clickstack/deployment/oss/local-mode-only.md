@@ -4,9 +4,9 @@ title: 'ローカルモードのみ'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'ローカルモードのみで ClickStack をデプロイ - ClickHouse Observability スタック'
+description: 'ローカルモードのみで ClickStack をデプロイ - ClickHouse オブザーバビリティ スタック'
 doc_type: 'ガイド'
-keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成', '可観測性']
+keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成', 'オブザーバビリティ']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,10 +18,11 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) collector**（ポート `4317` および `4318` で OTLP を公開）
-* **MongoDB**（アプリケーション状態の永続化用）
+* **OpenTelemetry (OTel) collector** (ポート `4317` および `4318` で OTLP を公開) 
+* **MongoDB** (アプリケーション状態の永続化用) 
 
 **ただし、この HyperDX のディストリビューションではユーザー認証は無効になっています**
+
 
 ### 適した用途 \{#suitable-for\}
 

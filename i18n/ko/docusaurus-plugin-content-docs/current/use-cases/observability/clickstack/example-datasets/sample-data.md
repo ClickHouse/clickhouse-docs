@@ -1,13 +1,13 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: '샘플 로그, 트레이스 및 메트릭'
+title: '로그, 트레이스, 메트릭 샘플'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack과 로그, 세션, 트레이스, 메트릭이 포함된 샘플 데이터셋으로 시작합니다'
+description: 'ClickStack과 로그, 세션, 트레이스, 메트릭이 포함된 샘플 데이터 세트로 시작합니다'
 doc_type: 'guide'
 toc_max_heading_level: 2
-keywords: ['clickstack', '예시 데이터', '샘플 데이터셋', '로그', '관측성']
+keywords: ['clickstack', '예시 데이터', '샘플 데이터 세트', '로그', '관측성']
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,7 +34,6 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 import select_service from '@site/static/images/clickstack/select_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # ClickStack - 로그, 트레이스, 메트릭 샘플 \{#clickstack-sample-dataset\}
 

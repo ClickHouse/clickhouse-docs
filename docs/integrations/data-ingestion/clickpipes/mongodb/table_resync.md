@@ -1,5 +1,5 @@
 ---
-title: 'Resyncing Specific Tables'
+title: 'Resyncing specific tables'
 description: 'Resyncing specific tables in a MongoDB ClickPipe'
 slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: 'Resync table'

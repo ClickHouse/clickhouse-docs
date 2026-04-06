@@ -1,7 +1,7 @@
 ---
-title: 'Infrastructure Configuration'
+title: 'Infrastructure configuration'
 slug: /cloud/reference/byoc/configurations
-sidebar_label: 'Infrastructure Configuration'
+sidebar_label: 'Infrastructure configuration'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'infrastructure', 'configuration']
 description: 'Configure load balancers, node groups, and other BYOC infrastructure components'
 doc_type: 'reference'

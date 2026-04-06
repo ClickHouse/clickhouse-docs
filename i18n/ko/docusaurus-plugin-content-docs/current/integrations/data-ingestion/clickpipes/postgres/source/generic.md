@@ -2,7 +2,7 @@
 sidebar_label: '일반 Postgres'
 description: '임의의 Postgres 인스턴스를 ClickPipes 소스로 설정합니다'
 slug: /integrations/clickpipes/postgres/source/generic
-title: '일반 Postgres 소스 설정 가이드'
+title: '일반적인 Postgres 소스 설정 가이드'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 integration:

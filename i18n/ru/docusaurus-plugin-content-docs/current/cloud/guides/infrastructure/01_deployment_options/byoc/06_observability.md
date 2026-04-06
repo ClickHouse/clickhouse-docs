@@ -3,7 +3,7 @@ title: 'Обсервабилити BYOC'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'Обсервабилити'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'observability', 'monitoring', 'Prometheus', 'Grafana']
-description: 'Мониторьте и обеспечивайте обсервабилити вашего развертывания BYOC ClickHouse с помощью встроенных дашбордов и метрик Prometheus'
+description: 'Мониторьте и обеспечивайте обсервабилити вашего развертывания BYOC ClickHouse с помощью встроенных панелей мониторинга и метрик Prometheus'
 doc_type: 'reference'
 ---
 
@@ -14,7 +14,7 @@ import byoc_mixin_3 from '@site/static/images/cloud/reference/byoc-mixin-3.png';
 import byoc_mixin_4 from '@site/static/images/cloud/reference/byoc-mixin-4.png';
 import byoc_mixin_5 from '@site/static/images/cloud/reference/byoc-mixin-5.png';
 
-Развертывания BYOC включают в себя полноценные возможности обсервабилити, позволяя отслеживать сервисы ClickHouse с помощью выделенного стека мониторинга Prometheus, а также напрямую через метрические endpoints ClickHouse Servers. Все данные обсервабилити остаются в вашей облачной учетной записи, что дает вам полный контроль над инфраструктурой мониторинга.
+Развертывания BYOC включают в себя полноценные возможности обсервабилити, позволяя отслеживать сервисы ClickHouse с помощью выделенного стека мониторинга Prometheus, а также напрямую через метрические конечные точки серверов ClickHouse. Все данные обсервабилити остаются в вашей облачной учетной записи, что дает вам полный контроль над инфраструктурой мониторинга.
 
 
 ## Подходы к мониторингу с использованием Prometheus \{#prometheus-monitoring\}

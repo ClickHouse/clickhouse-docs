@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/observability/clickstack/performance_tuning
-title: 'ClickStack - Оптимизация производительности'
-sidebar_label: 'Оптимизация производительности'
-description: 'Оптимизация производительности для ClickStack — ClickHouse стек обсервабилити'
+title: 'ClickStack - Настройка производительности'
+sidebar_label: 'Настройка производительности'
+description: 'Настройка производительности для ClickStack — ClickHouse стек обсервабилити'
 doc_type: 'guide'
 keywords: ['clickstack', 'обсервабилити', 'логи', 'производительность', 'оптимизация']
 ---
@@ -14,7 +14,6 @@ import trace_filtering_v2 from '@site/static/images/clickstack/performance_guide
 import select_merge_table from '@site/static/images/clickstack/performance_guide/select_merge_table.png';
 
 import Image from '@theme/IdealImage';
-
 
 ## Введение \{#introduction\}
 

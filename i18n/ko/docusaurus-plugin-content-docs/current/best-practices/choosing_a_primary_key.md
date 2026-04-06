@@ -13,21 +13,21 @@ import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> 이 페이지에서는 &quot;ordering key&quot;라는 용어를 &quot;primary key&quot;와 혼용해 사용합니다. 엄밀히 말하면 [ClickHouse에서는 이 둘이 다릅니다](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key). 그러나 이 문서의 목적상 두 용어를 같은 의미로 사용해도 되며, ordering key는 테이블의 `ORDER BY`에 지정된 컬럼을 가리키는 것으로 이해하면 됩니다.
+> 이 페이지에서는 &quot;정렬 키&quot;라는 용어를 &quot;기본 키&quot;와 혼용해 사용합니다. 엄밀히 말하면 [ClickHouse에서는 이 둘이 다릅니다](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key). 그러나 이 문서의 목적상 두 용어를 같은 의미로 사용해도 되며, 정렬 키는 테이블의 `ORDER BY`에 지정된 컬럼을 가리키는 것으로 이해하면 됩니다.
 
-ClickHouse의 primary key는 Postgres와 같은 OLTP 데이터베이스에서 사용되는 유사한 용어와는 [동작 방식이 매우 다릅니다](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse).
+ClickHouse의 기본 키는 Postgres와 같은 OLTP 데이터베이스에서 사용되는 유사한 용어와는 [동작 방식이 매우 다릅니다](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse).
 
-ClickHouse에서 효과적인 primary key를 선택하는 것은 쿼리 성능과 저장 효율성에 매우 중요합니다. ClickHouse는 데이터를 파트로 구성하며, 각 파트에는 자체적인 희소 primary 인덱스가 포함됩니다. 이 인덱스는 스캔되는 데이터의 양을 줄여 쿼리 성능을 크게 향상시킵니다. 또한 primary key는 디스크에서 데이터의 물리적 순서를 결정하므로, 압축 효율에도 직접적인 영향을 미칩니다. 최적으로 정렬된 데이터는 더 잘 압축되며, 이는 I/O를 줄여 성능을 더욱 향상시킵니다.
+ClickHouse에서 효과적인 기본 키를 선택하는 것은 쿼리 성능과 저장 효율성에 매우 중요합니다. ClickHouse는 데이터를 파트로 구성하며, 각 파트에는 자체적인 희소 primary 인덱스가 포함됩니다. 이 인덱스는 스캔되는 데이터의 양을 줄여 쿼리 성능을 크게 향상시킵니다. 또한 기본 키는 디스크에서 데이터의 물리적 순서를 결정하므로, 압축 효율에도 직접적인 영향을 미칩니다. 최적으로 정렬된 데이터는 더 잘 압축되며, 이는 I/O를 줄여 성능을 더욱 향상시킵니다.
 
-1. ordering key를 선택할 때에는 쿼리 필터(즉, `WHERE` 절)에서 자주 사용되는 컬럼, 특히 많은 행을 제외하는 컬럼에 우선순위를 두십시오.
+1. 정렬 키를 선택할 때에는 쿼리 필터(즉, `WHERE` 절)에서 자주 사용되는 컬럼, 특히 많은 행을 제외하는 컬럼에 우선순위를 두십시오.
 2. 테이블의 다른 데이터와 높은 상관성을 가지는 컬럼 또한 유리합니다. 인접하게 저장되면 압축률이 개선되고, `GROUP BY` 및 `ORDER BY` 연산 중 메모리 효율이 향상되기 때문입니다.
 
 <br />
 
-ordering key를 선택하는 데 도움이 되는 몇 가지 간단한 규칙을 적용할 수 있습니다. 다음 원칙들은 서로 충돌할 수 있으므로, 순서대로 고려하십시오. **이 과정을 통해 여러 개의 키를 도출할 수 있으며, 일반적으로 4–5개면 충분합니다.**
+정렬 키를 선택하는 데 도움이 되는 몇 가지 간단한 규칙을 적용할 수 있습니다. 다음 원칙들은 서로 충돌할 수 있으므로, 순서대로 고려하십시오. **이 과정을 통해 여러 개의 키를 도출할 수 있으며, 일반적으로 4–5개면 충분합니다.**
 
 :::note 중요
-Ordering key는 테이블 생성 시 정의해야 하며 나중에 추가할 수 없습니다. 추가 정렬은 프로젝션(projections)이라는 기능을 통해 데이터 삽입 이후(또는 이전)에 테이블에 추가할 수 있습니다. 이 기능은 데이터가 중복 저장된다는 점에 유의해야 합니다. 자세한 내용은 [여기](/sql-reference/statements/alter/projection)를 참조하십시오.
+정렬 키는 테이블 생성 시 정의해야 하며 나중에 추가할 수 없습니다. 추가 정렬은 프로젝션(projections)이라는 기능을 통해 데이터 삽입 이후(또는 이전)에 테이블에 추가할 수 있습니다. 이 기능은 데이터가 중복 저장된다는 점에 유의해야 합니다. 자세한 내용은 [여기](/sql-reference/statements/alter/projection)를 참조하십시오.
 :::
 
 ## 예시 \{#example\}

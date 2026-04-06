@@ -1,10 +1,10 @@
 ---
 title: '데이터베이스 ClickPipe 재동기화'
-description: '데이터베이스 ClickPipe를 재동기화하는 방법에 대한 문서'
+description: '데이터베이스 ClickPipe를 재동기화하는 문서'
 slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'ClickPipe 재동기화'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['clickpipes', 'mysql', 'cdc', '수집', '실시간 동기화']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'

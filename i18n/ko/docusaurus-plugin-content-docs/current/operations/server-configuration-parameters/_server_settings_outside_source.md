@@ -334,12 +334,13 @@ ClickHouse를 처음 사용하기 시작했다면 이 설정을 변경하지 않
 
 ## custom_settings_prefixes \{#custom_settings_prefixes\}
 
-[사용자 정의 설정](/operations/settings/query-level#custom_settings)을 위한 접두사 목록입니다. 접두사는 쉼표로 구분합니다.
+[사용자 지정 설정](/operations/settings/query-level#custom_settings)에 사용되는 접두사 목록입니다.
+여러 접두사는 쉼표로 구분합니다.
 
 **예시**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **함께 보기**

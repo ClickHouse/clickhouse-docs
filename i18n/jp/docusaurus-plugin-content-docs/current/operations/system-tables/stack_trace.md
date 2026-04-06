@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.stack&#95;trace \{#systemstack&#95;trace\}
+# system.stack_trace \{#systemstack_trace\}
 
 <SystemTableCloud />
 
@@ -38,7 +38,7 @@ SET allow_introspection_functions = 1;
 ClickHouse のオブジェクトファイルからシンボルを取得する:
 
 ```sql
-WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
+WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1;
 ```
 
 ```text
@@ -68,7 +68,7 @@ void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<
 ClickHouse ソースコード内のファイル名と行番号の取得:
 
 ```sql
-WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
+WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1;
 ```
 
 ```text

@@ -8,7 +8,7 @@ doc_type: 'guide'
 ---
 
 :::note ClickHouse Cloud 中的配额
-ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/statements/create/quota) 来创建。下面文档中所述的 XML 配置方式**不受支持**。
+ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/statements/create/quota) 来创建。下面文档中所述的 XML 配置方式**尚不支持**。
 :::
 
 配额允许你在一段时间内限制资源使用，或跟踪资源的使用情况。
@@ -82,7 +82,7 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 </statbox>
 ```
 
-对于 &#39;statbox&#39; 配额，会分别设置每小时和每 24 小时（86,400 秒）的限制。时间区间从一个由实现定义的固定时刻开始计算。换句话说，这个 24 小时间隔不一定从午夜开始。
+对于 &#39;statbox&#39; 配额，会分别设置每小时和每 24 小时 (86,400 秒) 的限制。时间区间从一个由实现定义的固定时刻开始计算。换句话说，这个 24 小时间隔不一定从午夜开始。
 
 当时间区间结束时，所有已收集的数值都会被清空。在接下来的一个小时内，配额计算会重新开始。
 
@@ -106,11 +106,13 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 `written_bytes` - 写入操作的数据总大小。
 
-`execution_time` – 查询执行总时间（以秒为单位的墙钟时间）。
+`execution_time` – 查询执行总时间 (以秒为单位的挂钟时间) 。
 
 `failed_sequential_authentications` - 连续身份验证错误的总次数。
 
-如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始（即何时可以再次发送查询）。
+`queries_per_normalized_hash` – 任意单个规范化查询的最大执行次数。规范化查询是指将字面量替换为占位符后的查询，因此 `SELECT 1` 和 `SELECT 2` 会被视为同一个规范化查询。此限制会针对每种不同的规范化查询模式分别独立跟踪。
+
+如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始 (即何时可以再次发送查询) 。
 
 配额可以使用“quota key”功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
 
@@ -129,7 +131,15 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
     <keyed />
 ```
 
-在配置的 &#39;users&#39; 部分为用户分配配额。参见“Access rights（访问权限）”章节。
+使用 DDL 语法时，您还可以按规范化查询哈希对配额进行分组，这样每种不同的查询模式都会拥有各自独立的配额桶：
+
+```sql
+CREATE QUOTA my_quota KEYED BY normalized_query_hash FOR INTERVAL 1 hour MAX queries = 100 TO my_user;
+```
+
+在此示例中，用户每小时对每种不同的规范化查询最多可执行 100 次。`SELECT number FROM numbers(1)` 和 `SELECT number FROM numbers(2)` 共享同一个桶 (因为它们具有相同的规范化形式) ，但 `SELECT number, number FROM numbers(1)` 使用单独的桶。
+
+在配置的 &#39;users&#39; 部分为用户分配配额。参见“Access rights (访问权限) ”章节。
 
 在分布式查询处理中，累积用量存储在发起请求的服务器上。因此，如果用户切换到另一台服务器，该服务器上的配额将会从头开始重新计算。
 
@@ -137,4 +147,4 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 ## 相关内容 \{#related-content\}
 
-- 博文：[使用 ClickHouse 构建单页应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)
+* 博文：[使用 ClickHouse 构建单页应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

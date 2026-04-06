@@ -16,7 +16,7 @@ import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
 [AWS Marketplace](https://aws.amazon.com/marketplace)에서 약정 계약을 통해 ClickHouse Cloud 사용을 시작할 수 있습니다.
-약정 계약(Private Offer라고도 함)은 사용자가 일정 기간 동안 ClickHouse Cloud에 일정 금액 이상을 지출하기로 미리 약정하는 방식입니다.
+약정 계약(프라이빗 오퍼라고도 함)은 사용자가 일정 기간 동안 ClickHouse Cloud에 일정 금액 이상을 지출하기로 미리 약정하는 방식입니다.
 
 
 ## 선행 조건 \{#prerequisites\}

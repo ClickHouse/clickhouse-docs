@@ -44,28 +44,34 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 可以为列和表添加注释。
 
 
-### 使用与另一张表类似的架构 \{#with-a-schema-similar-to-other-table\}
+### 使用现有表的 schema \{#with-a-schema-similar-to-other-table\}
+
+ClickHouse 支持复制现有表的 schema 和数据。
+
+若要复制现有表的 schema：
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine]
 ```
 
-创建一个与另一个表具有相同结构的表。您可以为表指定不同的引擎。如果未指定引擎,将使用与 `db2.name2` 表相同的引擎。
+这会创建一个与另一个表结构相同的表。
 
+### 使用现有表的 schema 和数据 \{#with-a-schema-and-data-cloned-from-another-table\}
 
-### 使用从另一个表克隆的架构和数据 \{#with-a-schema-and-data-cloned-from-another-table\}
+如需复制现有表的 schema 和数据：
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone CLONE AS [db.]table [ENGINE = engine]
 ```
 
-创建一个与另一个表具有相同结构的表。您可以为表指定不同的引擎。如果未指定引擎,将使用与 `db2.name2` 表相同的引擎。创建新表后,`db2.name2` 的所有分区都会附加到该表。换句话说,在创建时会将 `db2.name2` 的数据克隆到 `db.table_name` 中。此查询等效于以下内容:
+这会创建一个与现有表具有相同 schema 和数据的表。创建新表后，`db.table` 中的所有分区都会附加到该表。换句话说，`db.table` 的数据会在创建时克隆到 `db2.table_clone` 中。此查询等同于以下内容：
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
-ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine];
+ALTER TABLE [db2.]table_clone ATTACH PARTITION ALL FROM [db.]table;
 ```
 
+对于这两项功能，你可以为该表指定不同的引擎。如果未指定引擎，则将使用与原始表 (`db.table`) 相同的引擎。
 
 ### 从表函数 \{#from-a-table-function\}
 
@@ -274,7 +280,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 * 在列列表内
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...,
     PRIMARY KEY(expr1[, expr2,...])
@@ -285,7 +291,7 @@ ENGINE = engine;
 * 在列列表外
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )
@@ -725,7 +731,7 @@ SELECT * FROM base.t1;
 **语法**
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )
@@ -736,14 +742,14 @@ COMMENT 'Comment'
 :::note
 `COMMENT` 子句必须在任何存储相关子句之后指定，例如 `PARTITION BY`、`ORDER BY` 和存储相关的 `SETTINGS`。
 
-在 `COMMENT` 子句之后，只会解析查询相关的 `SETTINGS`（例如 `max_threads` 等），而不会解析与存储相关的 `SETTINGS`。
+在 `COMMENT` 子句之后，只会解析查询相关的 `SETTINGS` (例如 `max_threads` 等) ，而不会解析与存储相关的 `SETTINGS`。
 
 这意味着正确的子句顺序是：
 
 * `ENGINE`
 * 存储子句
 * `COMMENT`
-* 查询设置（如果有）
+* 查询设置 (如果有) 
   :::
 
 **示例**

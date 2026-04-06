@@ -341,11 +341,11 @@ microbatch 사용 방법에 대한 자세한 내용은 [공식 문서](https://d
 이 전략을 사용하려면 모델 설정에서 `partition_by`가 설정되어 있어야 합니다.  
 모델 설정에 정의된 다른 전략 관련 매개변수는 모두 무시됩니다.
 
-## Materialization: materialized_view \{#materialized-view\}
+## 머티리얼라이제이션: materialized_view \{#materialized-view\}
 
-`materialized_view` materialization은 INSERT 트리거처럼 동작하는 ClickHouse [materialized view](/sql-reference/statements/create/view#materialized-view)를 생성하여, 소스 테이블의 새로운 행을 자동으로 변환한 뒤 대상 테이블에 삽입합니다. 이는 dbt-clickhouse에서 제공되는 materialization 가운데 가장 강력한 유형 중 하나입니다.
+`materialized_view` 머티리얼라이제이션은 삽입 트리거처럼 작동하는 ClickHouse [materialized view](/sql-reference/statements/create/view#materialized-view)를 생성하여, 소스 테이블의 새 행을 자동으로 변환하고 대상 테이블에 삽입합니다. 이는 dbt-clickhouse에서 사용할 수 있는 가장 강력한 머티리얼라이제이션 중 하나입니다.
 
-이 materialization은 내용이 방대하여 별도의 전용 페이지로 제공됩니다. 전체 문서는 **[Materialized Views 가이드](/integrations/dbt/materialized-views)** 에서 확인하십시오.
+이 머티리얼라이제이션은 내용이 방대하여 전용 페이지가 따로 마련되어 있습니다. 전체 문서는 **[Materialized Views 가이드](/integrations/dbt/materialization-materialized-view)**에서 확인하세요.
 
 ## Materialization: dictionary (experimental) \{#materialization-dictionary\}
 

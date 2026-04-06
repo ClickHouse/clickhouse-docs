@@ -14,13 +14,13 @@ import superset_commits_authors from '@site/static/images/getting-started/exampl
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-이 데이터세트에는 ClickHouse 저장소의 모든 커밋과 변경 사항이 포함됩니다. ClickHouse와 함께 배포되는 네이티브 `git-import` 도구를 사용하여 생성할 수 있습니다.
+이 데이터셋에는 ClickHouse 저장소의 모든 커밋과 변경 사항이 포함됩니다. ClickHouse와 함께 배포되는 네이티브 `git-import` 도구를 사용하여 생성할 수 있습니다.
 
 생성된 데이터는 다음 각 테이블마다 하나의 `tsv` 파일을 제공합니다:
 
 * `commits` - 통계 정보를 포함한 커밋.
 * `file_changes` - 각 커밋에서 변경된 파일과 해당 변경 정보 및 통계 정보.
-* `line_changes` - 각 커밋에서 변경된 모든 파일의 변경된 모든 행에 대해, 해당 행에 대한 전체 정보와 이 행의 이전 변경에 대한 정보를 포함한 데이터.
+* `line_changes` - 각 커밋에서 변경된 모든 파일의 변경된 모든 줄에 대해, 해당 줄에 대한 전체 정보와 이 줄의 이전 변경에 대한 정보를 포함한 데이터.
 
 2022년 11월 8일 기준으로, 각 TSV의 대략적인 크기와 행 수는 다음과 같습니다:
 

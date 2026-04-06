@@ -16,9 +16,11 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
 # ClickHouse OSS クイックスタート \{#clickhouse-oss-quick-start\}
 
-> このクイックスタートチュートリアルでは、8 つの簡単なステップで OSS 版 ClickHouse をセットアップします。お使いの OS に適したバイナリをダウンロードし、
+> このクイックスタートチュートリアルでは、8 つの簡単なステップでオープンソース版 ClickHouse をセットアップします。お使いの OS に適したバイナリをダウンロードし、
 > ClickHouse サーバーの起動方法を学び、ClickHouse クライアントを使ってテーブルを作成し、
 > そのテーブルにデータを挿入して、そのデータを取得するクエリを実行します。
+>
+> Cloud クイックスタートをお探しですか？ [こちら](/get-started/quick-start)。
 
 <VerticalStepper>
   ## ClickHouseのダウンロード \{#download-the-binary\}
@@ -96,7 +98,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## データの挿入 \{#insert-data\}
 
-  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらのパートは後でClickHouseによってバックグラウンドでマージされます。
+  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらのパーツは後でClickHouseによってバックグラウンドでマージされます。
 
   ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行 (数万行から数百万行) をバルク挿入します。
 
@@ -146,7 +148,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       1. `SELECT` クエリのソースとして使用する (アドホッククエリを実行しつつ、
          データは S3 に残しておく) 、または…
       2. 得られたテーブルを `MergeTree` テーブルに挿入する (データを ClickHouse に
-         取り込む準備ができたとき) 
+         取り込む準備ができたとき)
 
       アドホッククエリは次のようになります:
 
@@ -162,7 +164,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       ORDER BY passenger_count;
       ```
 
-      `nyc_taxi` が `MergeTree` テーブルである場合、データを ClickHouse テーブルに移動する処理は次のようになります。
+      データをClickHouseテーブルに移動するには、次のようにします。ここで、`nyc_taxi` は `MergeTree` テーブルです。
 
       ```sql
       INSERT INTO nyc_taxi
@@ -224,7 +226,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
     <TabItem value="local_file" label="ローカル">
       ローカルファイルを読み取るには、[`file` テーブルエンジン](/sql-reference/table-functions/file) を使用します。簡単のため、ファイルを `user_files` ディレクトリにコピーしてください
-       (`user_files` ディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります) 。
+      (`user_files` ディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります) 。
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')

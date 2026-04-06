@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/mysql-logs
-title: 'Мониторинг логов MySQL с помощью ClickStack'
+title: 'мониторинг логов MySQL с ClickStack'
 sidebar_label: 'Логи MySQL'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг логов MySQL с помощью ClickStack'
+description: 'мониторинг логов MySQL с ClickStack'
 doc_type: 'guide'
 keywords: ['MySQL', 'логи', 'OTel', 'ClickStack', 'мониторинг баз данных', 'медленные запросы']
 ---
@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/mysql/log-view.png';
 import finish_import from '@site/static/images/clickstack/mysql/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
 
 # Мониторинг логов MySQL с ClickStack \{#mysql-logs-clickstack\}
 

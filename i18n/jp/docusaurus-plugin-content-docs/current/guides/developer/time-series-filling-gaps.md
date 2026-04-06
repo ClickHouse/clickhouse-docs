@@ -1,9 +1,9 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: 'タイムシリーズ - 欠損補完'
+sidebar_label: '時系列 - 欠損補完'
 sidebar_position: 10
 description: '時系列データの欠損を補完します。'
-keywords: ['タイムシリーズ', '欠損補完', 'ギャップフィル']
+keywords: ['時系列', '欠損補完', 'ギャップフィル']
 title: '時系列データの欠損を補完する'
 doc_type: 'guide'
 ---

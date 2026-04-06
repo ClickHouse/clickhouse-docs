@@ -9,7 +9,7 @@ import service_provisioned from '@site/static/images/clickstack/getting-started/
 
 <Image img={provider_selection} size="md" alt="リソースセレクタ" border />
 
-この見積もりは、Managed ClickStack サービスを支えるコンピュートリソースの規模を決定するために使用されます。新しい組織はデフォルトで [Scale tier](/cloud/manage/cloud-tiers) に配置されます。Scale tier では [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) がデフォルトで有効になっています。組織のティアは後から &#39;Plans&#39; ページで変更できます。
+この見積もりは、Managed ClickStack サービスを支えるコンピュートリソースの規模を決定するために使用されます。新しい組織はデフォルトで [Scale tier](/cloud/manage/cloud-tiers) に配置されます。Scale tier では [Vertical autoscaling](/cloud/features/autoscaling/vertical#vertical-auto-scaling) がデフォルトで有効になっています。組織のティアは後から &#39;Plans&#39; ページで変更できます。
 
 要件を十分に把握している上級ユーザは、&#39;Memory and Scaling&#39; ドロップダウンから &#39;Custom Configuration&#39; を選択することで、プロビジョニングされるリソース量やエンタープライズ機能を個別に指定することもできます。
 

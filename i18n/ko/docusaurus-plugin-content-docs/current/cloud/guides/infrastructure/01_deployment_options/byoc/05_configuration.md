@@ -3,11 +3,11 @@ title: '인프라 구성'
 slug: /cloud/reference/byoc/configurations
 sidebar_label: '인프라 구성'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'infrastructure', 'configuration']
-description: '로드 밸런서, 노드 그룹 및 기타 BYOC 인프라 구성 요소를 설정합니다'
+description: '로드 밸런서, 노드 그룹 및 기타 BYOC 인프라 컴포넌트를 설정합니다'
 doc_type: 'reference'
 ---
 
-이 페이지에서는 BYOC 배포에서 사용할 수 있는 다양한 인프라 구성 옵션을 설명합니다. 이러한 구성을 통해 네트워킹, 보안 및 컴퓨팅 리소스를 특정 요구 사항에 맞게 맞춤 구성할 수 있습니다.
+이 페이지에서는 BYOC 배포에서 사용할 수 있는 다양한 인프라 구성 옵션을 설명합니다. 이러한 구성을 통해 네트워킹, 보안 및 컴퓨트 리소스를 특정 요구 사항에 맞게 맞춤 구성할 수 있습니다.
 
 ## Load Balancers \{#load-balancers\}
 

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/admin
-title: 'ClickStack - Adminstration'
+title: 'ClickStack - administration'
 sidebar_label: 'Adminstration'
 description: 'How to perform basic administration tasks with ClickStack.'
 doc_type: 'guide'

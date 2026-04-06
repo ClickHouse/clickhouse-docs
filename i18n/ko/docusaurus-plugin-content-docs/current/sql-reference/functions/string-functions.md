@@ -279,16 +279,21 @@ SELECT base32Encode('Encoded')
 
 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3)로 인코딩된 문자열을 디코딩합니다.
 문자열이 유효한 Base58 인코딩 형식이 아니면 예외가 발생합니다.
+최적화된 고정 크기 디코더를 선택하기 위해 선택 사항인 두 번째 인수 `expected_size`를 지정할 수 있습니다.
+현재 지원되는 값은 32와 64입니다. 다른 값에는 일반 디코더가 사용됩니다.
+최적화된 디코더를 선택했지만 입력을 정확히 해당 바이트 수로 디코딩할 수 없는 경우,
+이 함수는 예외를 발생시키거나(`tryBase58Decode`의 경우 빈 문자열을 반환합니다) 합니다.
 
 **구문**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **인수**
 
 * `encoded` — 디코딩할 String 컬럼 또는 상수입니다. [`String`](/sql-reference/data-types/string)
+* `expected_size` — 선택 사항. 예상 디코딩 크기(바이트 단위)입니다. 32 또는 64인 경우 최적화된 디코더를 사용하고, 그 외의 값에는 일반 디코더를 사용합니다. [`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -3566,12 +3571,13 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 **구문**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
-**인자**
+**인수**
 
 * `encoded` — String 컬럼 또는 상수입니다. 문자열이 올바른 Base58로 인코딩된 것이 아니면, 오류 발생 시 빈 문자열을 반환합니다. [`String`](/sql-reference/data-types/string)
+* `expected_size` — 선택 사항입니다. 디코딩된 예상 크기(바이트 단위)입니다. 32 또는 64인 경우 최적화된 디코더가 사용되며, 그 외의 값에는 일반 디코더가 사용됩니다. [`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **반환값**
 
@@ -3590,7 +3596,6 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 │ Encoded │             │
 └─────────┴─────────────┘
 ```
-
 
 ## tryBase64Decode \{#tryBase64Decode\}
 

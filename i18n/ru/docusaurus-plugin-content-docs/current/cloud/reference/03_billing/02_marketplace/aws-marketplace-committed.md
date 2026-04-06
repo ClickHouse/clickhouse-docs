@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'Контракт с обязательствами в AWS Marketplace'
-description: 'Оформление подписки на ClickHouse Cloud через AWS Marketplace (контракт с обязательствами)'
-keywords: ['aws', 'amazon', 'marketplace', 'биллинг', 'обязательства', 'контракт с обязательствами']
+title: 'Контракт с обязательством по расходам в AWS Marketplace'
+description: 'Оформление подписки на ClickHouse Cloud через AWS Marketplace (контракт с обязательством по расходам)'
+keywords: ['aws', 'amazon', 'marketplace', 'биллинг', 'обязательства', 'контракт с обязательством по расходам']
 doc_type: 'guide'
 ---
 
@@ -15,8 +15,8 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-Начните работу с ClickHouse Cloud в [AWS Marketplace](https://aws.amazon.com/marketplace) по контракту с фиксированным объёмом потребления.
-Такой контракт, также известный как Private Offer, позволяет клиентам обязаться израсходовать определённую сумму на ClickHouse Cloud за установленный период времени.
+Начните работу с ClickHouse Cloud в [AWS Marketplace](https://aws.amazon.com/marketplace) по контракту с обязательством по расходам.
+Такой контракт, также известный как частное предложение, позволяет клиентам обязаться израсходовать определённую сумму на ClickHouse Cloud за установленный период времени.
 
 
 ## Предварительные требования \{#prerequisites\}

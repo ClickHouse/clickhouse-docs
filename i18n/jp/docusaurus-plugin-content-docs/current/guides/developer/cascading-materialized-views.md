@@ -1,8 +1,8 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: 'カスケーディングマテリアライズドビュー'
+title: 'カスケードするマテリアライズドビュー'
 description: '単一のソーステーブルから複数のマテリアライズドビューを利用する方法。'
-keywords: ['マテリアライズドビュー', '集約']
+keywords: ['マテリアライズドビュー', '集計']
 doc_type: 'guide'
 ---
 

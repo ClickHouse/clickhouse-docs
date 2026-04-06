@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## 描述 \{#description\}
 
-在此格式中，单个 JSON 对象会被解释为一个 [JSON](/sql-reference/data-types/newjson.md) 值。如果输入包含多个 JSON 对象（以逗号分隔），则它们会被解释为多行数据。如果输入数据被方括号包裹，则会被解释为一个 JSON 数组。
+在此格式中，单个 JSON 对象会被解释为一个 [JSON](/sql-reference/data-types/newjson.md) 值。如果输入包含多个 JSON 对象 (以逗号分隔) ，则它们会被解释为多行数据。如果输入数据被包含在 `[]` 中，则会被解释为一个 JSON 数组。
 
 此格式只能用于解析到仅包含一个 [JSON](/sql-reference/data-types/newjson.md) 类型字段的表中。其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)。
 

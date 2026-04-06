@@ -125,8 +125,8 @@ ClickHouse は、優れた圧縮率 (ログでは最大 [170x](https://clickhous
   次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用してログイベントをどのようにパースするかを見ていきます。
 
   **materialized view** は、SQL における INSERT トリガーと同様に機能します。ソーステーブルにデータ行が挿入されると、materialized view はそれらの行を変換し、その結果をターゲットテーブルに挿入します。
-  The materialized view can be configured to configure a parsed representation of the log events in **access&#95;logs**.
-  An example of one such log event is shown below:
+  materialized view は、**access&#95;logs** 内のログイベントのパース済み表現を設定するよう設定できます。
+  そのようなログイベントの一例を以下に示します。
 
   ```bash
   192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -159,16 +159,16 @@ ClickHouse は、優れた圧縮率 (ログでは最大 [170x](https://clickhous
   ["192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] \"GET / HTTP/1.1\" 30"," \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36\""]
   ```
 
-  Before looking at the final `CREATE MATERIALIZED VIEW` command, let&#39;s view a couple more functions used to clean up the data.
-  For example, the value of `RequestMethod` is `"GET` containing an unwanted double-quote.
+  最終的な `CREATE MATERIALIZED VIEW` コマンドを確認する前に、データのクリーンアップに使用するいくつかの関数を見ていきましょう。
+  例えば、`RequestMethod` の値は `"GET` であり、不要な二重引用符が含まれています。
   この二重引用符を削除するには、[`trimBoth` (エイリアス `trim`) ](/sql-reference/functions/string-functions#trimBoth) 関数を使用できます。
 
   ```sql
   SELECT trim(LEADING '"' FROM '"GET')
   ```
 
-  時刻文字列は先頭に角括弧が付いており、ClickHouse が日付として解析できる形式にもなっていません。
-  しかし、区切り文字をコロン (**:**) からカンマ (**,**) に変更すると、問題なく解析できるようになります:
+  時刻文字列は先頭に `[` が付いており、ClickHouse が日付として解析できる形式にもなっていません。
+  しかし、区切り文字をコロン (**:**) からカンマ (**,**) に変更すると、問題なくパースできるようになります:
 
   ```sql
   SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15:32:43'), ':', ' '))

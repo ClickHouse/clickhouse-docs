@@ -1,6 +1,6 @@
 ---
-title: 'DataStore Execution Model'
-sidebar_label: 'Execution Model'
+title: 'DataStore execution model'
+sidebar_label: 'Execution model'
 slug: /chdb/datastore/execution-model
 description: 'Understanding lazy evaluation, execution triggers, and caching in DataStore'
 keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']

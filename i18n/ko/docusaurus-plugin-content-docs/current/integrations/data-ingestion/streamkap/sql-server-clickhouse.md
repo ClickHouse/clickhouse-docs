@@ -15,9 +15,9 @@ import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
 
 
-# 빠른 분석을 위한 SQL Server에서 ClickHouse로의 스트리밍: 단계별 가이드 \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
+# 빠른 분석을 위한 SQL Server에서 ClickHouse로 데이터 스트리밍: 단계별 가이드 \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
 
-이 문서에서는 SQL Server에서 ClickHouse로 데이터를 스트리밍하는 방법을 다루는 튜토리얼을 단계별로 설명합니다. ClickHouse는 내부 보고용 또는 고객 대시보드용 분석을 매우 빠르게 수행해야 할 때 이상적인 선택입니다. 두 데이터베이스를 설정하는 방법, 서로 연결하는 방법, 마지막으로 [Streamkap](https://streamkap.com)을 사용해 데이터를 스트리밍하는 방법까지 순서대로 살펴봅니다. 운영 업무는 SQL Server가 처리하지만, 분석을 위해 ClickHouse의 속도와 강력한 분석 기능이 필요한 경우라면, 이 가이드가 적합한 출발점입니다.
+이 문서에서는 SQL Server에서 ClickHouse로 데이터를 스트리밍하는 방법을 다루는 튜토리얼을 단계별로 설명합니다. ClickHouse는 내부 리포팅 또는 고객 대시보드용 분석을 매우 빠르게 수행해야 할 때 이상적인 선택입니다. 두 데이터베이스를 설정하는 방법, 서로 연결하는 방법, 마지막으로 [Streamkap](https://streamkap.com)을 사용해 데이터를 스트리밍하는 방법까지 순서대로 살펴봅니다. 운영 업무는 SQL Server가 처리하지만, 분석을 위해 ClickHouse의 속도와 강력한 분석 기능이 필요한 경우라면, 이 가이드가 적합한 출발점입니다.
 
 ## 왜 SQL Server에서 ClickHouse로 데이터를 스트리밍해야 할까요? \{#why-stream-data-from-sql-server-to-clickhouse\}
 

@@ -123,6 +123,25 @@ SELECT * FROM (
 
 6번 행은 5번 행과 같은 값(`2`)을 가지고 있기 때문에 포함됩니다.
 
+오프셋을 `OFFSET` 키워드로 지정한 경우에도 마찬가지입니다:
+
+```sql
+SELECT * FROM (
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 3 OFFSET 2 WITH TIES
+```
+
+```response
+┌─n─┐
+│ 1 │
+│ 1 │
+│ 2 │
+│ 2 │
+└───┘
+```
+
+처음 2개 행을 건너뛰고 3개를 가져오면 일반적으로 `1, 1, 2`가 반환되지만, 두 번째 `2`도 마지막 행과 같은 값이므로 포함됩니다.
+
 :::note
 `WITH TIES`는 음수 LIMIT 값과 함께 사용할 수 없습니다.
 :::

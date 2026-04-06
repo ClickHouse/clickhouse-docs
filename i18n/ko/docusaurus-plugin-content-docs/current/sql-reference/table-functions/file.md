@@ -28,9 +28,28 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `path`            | [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) 기준 파일의 상대 경로입니다. 읽기 전용 모드에서는 다음 [글롭(glob)](#globs-in-path)을 지원합니다: `*`, `?`, `{abc,def}`(`'abc'`와 `'def'`는 문자열), `{N..M}`(`N`과 `M`은 숫자). |
 | `path_to_archive` | zip/tar/7z 아카이브의 상대 경로입니다. `path`와 동일한 글롭을 지원합니다.                                                                                                                                                                                          |
-| `format`          | 파일의 [format](/interfaces/formats)입니다.                                                                                                                                                                                                      |
+| `format`          | 파일의 [형식](/interfaces/formats)입니다.                                                                                                                                                                                                      |
 | `structure`       | 테이블 구조입니다. 형식: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                              |
 | `compression`     | `SELECT` 쿼리에서 사용할 경우 기존 압축 유형을, `INSERT` 쿼리에서 사용할 경우 원하는 압축 유형을 나타냅니다. 지원되는 압축 유형은 `gz`, `br`, `xz`, `zst`, `lz4`, `bz2`입니다.                                                                                                               |
+
+:::tip
+`structure` 인수를 생략하면 ClickHouse가 형식 자체에서 스키마를 추론합니다.
+형식에 따라 기본 컬럼 이름과 타입이 달라집니다.
+특정 형식의 스키마를 확인하려면 [`형식`](/sql-reference/table-functions/format) 테이블 함수와 함께 [`DESC`](/sql-reference/statements/describe-table)를 사용하십시오.
+
+예를 들어:
+
+```sql
+DESC format(LineAsString, 'Hello\nWorld')
+```
+
+```response
+┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ line │ String │              │                    │         │                  │                │
+└──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+:::
 
 ## 반환 값 \{#returned_value\}
 

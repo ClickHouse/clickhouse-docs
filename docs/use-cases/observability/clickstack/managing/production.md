@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/production
-title: 'Going to Production'
+title: 'Going to production'
 sidebar_label: 'Production'
 pagination_prev: null
 pagination_next: null

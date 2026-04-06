@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве мы пошагово разберем, как выполнять запросы к вашим таблицам Iceberg в [BigLake Metastore](https://cloud.google.com/biglake/docs) через ClickHouse.
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве мы пошагово разберем, как выполнять запросы к вашим таблицам Iceberg в [BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) через ClickHouse.
 
 :::note
 Поскольку эта функция находится на стадии бета-тестирования, вам потребуется включить ее с помощью:

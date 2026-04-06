@@ -3,7 +3,7 @@ description: 'Over 20 billion records of data from Sensor.Community, a contribut
   global sensor network that creates Open Environmental Data.'
 sidebar_label: 'Environmental sensors data'
 slug: /getting-started/example-datasets/environmental-sensors
-title: 'Environmental Sensors Data'
+title: 'Environmental sensors data'
 doc_type: 'guide'
 keywords: ['environmental sensors', 'Sensor.Community', 'air quality data', 'environmental data', 'getting started']
 ---

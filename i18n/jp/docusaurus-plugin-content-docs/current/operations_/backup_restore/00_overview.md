@@ -1,8 +1,8 @@
 ---
-description: 'ClickHouse のバックアップとリストアの概要'
+description: 'ClickHouse のバックアップおよびリストアの概要'
 sidebar_label: '概要'
 slug: /operations/backup/overview
-title: 'ClickHouse のバックアップとリストア'
+title: 'ClickHouse のバックアップおよびリストア'
 doc_type: 'reference'
 ---
 
@@ -11,7 +11,7 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 import AzureSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
 import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
-> このセクションでは、ClickHouse におけるバックアップとリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください。
+> このセクションでは、ClickHouse におけるバックアップおよびリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください.
 
 
 ## はじめに \{#introduction\}

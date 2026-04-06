@@ -3,7 +3,7 @@ sidebar_label: 'C#'
 sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
-description: 'ClickHouse への接続のための公式 C# クライアント。'
+description: 'ClickHouse に接続するための公式の C# クライアント。'
 title: 'ClickHouse C# ドライバ'
 doc_type: 'guide'
 integration:
@@ -15,7 +15,6 @@ integration:
 import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
-
 
 # ClickHouse C# クライアント \{#clickhouse-c-client\}
 
@@ -221,11 +220,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions` は、`InsertBinaryAsync` による一括挿入処理に特化した設定を追加した `QueryOptions` の拡張です。
 
-| Property               | Type              | Default     | Description                                         |
-| ---------------------- | ----------------- | ----------- | --------------------------------------------------- |
-| BatchSize              | `int`             | 100,000     | バッチあたりの行数                                           |
-| MaxDegreeOfParallelism | `int`             | 1           | 並列で実行されるバッチアップロード数                                  |
-| Format                 | `RowBinaryFormat` | `RowBinary` | バイナリフォーマット: `RowBinary` または `RowBinaryWithDefaults` |
+| プロパティ                 | 型                                     | デフォルト      | 説明                                                       |
+| ---------------------- | ------------------------------------- | ----------- | -------------------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000     | バッチあたりの行数                                                |
+| MaxDegreeOfParallelism | `int`                                 | 1           | 並列で実行されるバッチアップロード数                                       |
+| Format                 | `RowBinaryFormat`                     | `RowBinary` | バイナリフォーマット: `RowBinary` または `RowBinaryWithDefaults`      |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`      | カラム名 → ClickHouse 型の文字列。設定するとスキーマのプローブクエリを省略します。         |
+| UseSchemaCache         | `bool`                                | `false`     | クライアントの存続期間中、(database, table) ごとにテーブルの完全なスキーマをキャッシュします。 |
 
 すべての `QueryOptions` プロパティは `InsertOptions` でも利用可能です。
 
@@ -246,6 +247,50 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+
+#### スキーマ確認クエリを省略する \{#skip-schema-query\}
+
+デフォルトでは、`InsertBinaryAsync` は各 insert の前に `SELECT ... WHERE 1=0` クエリを送信し、カラム型を確認します。高スループットが求められる環境では、次の 2 つの方法でこのオーバーヘッドをなくせます。
+
+**オプション 1: カラム型を明示的に指定する**
+
+コンパイル時点でテーブルスキーマが分かっている場合は、`ColumnTypes` を使って直接指定します。これにより、スキーマ確認クエリはまったく送信されません。
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**オプション 2: スキーマをキャッシュする**
+
+同じテーブルに繰り返し挿入する場合は、`UseSchemaCache = true` を設定してスキーマのクエリを一度だけ実行し、同じ `ClickHouseClient` インスタンスで以降の挿入時に再利用します。
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes` は `UseSchemaCache` より優先されます。両方が設定されている場合は、明示的に指定した型が使われます。
+* スキーマキャッシュは `ALTER TABLE` による変更を検出しません。テーブルスキーマを変更した場合は、新しい `ClickHouseClient` を作成するか、そのテーブルでは `UseSchemaCache` を使用しないでください。
+* キャッシュのスコープは `ClickHouseClient` インスタンス内に限定され、(database, table) をキーとして使用します。同じテーブルで異なるカラムの部分集合を使う場合でも、キャッシュされるスキーマは 1 つだけで共有されます。
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -392,9 +437,9 @@ var options = new InsertOptions
 
 :::note
 
-* クライアントは挿入前に `SELECT * FROM <table> WHERE 1=0` を実行してテーブル構造を自動的に取得します。指定する値は対象カラムの型と一致している必要があります。
+* クライアントは挿入前に `SELECT * FROM <table> WHERE 1=0` を実行してテーブル構造を自動的に取得します。指定する値は対象カラムの型と一致している必要があります。このクエリをスキップするには、[`InsertOptions.ColumnTypes` または `InsertOptions.UseSchemaCache`](#skip-schema-query) を使用します。
 * `MaxDegreeOfParallelism > 1` の場合、バッチは並列にアップロードされます。セッションは並列挿入と互換性がないため、セッションを無効化するか、`MaxDegreeOfParallelism = 1` を設定してください。
-* 指定していないカラムに対してサーバー側で DEFAULT 値を適用させたい場合は、`InsertOptions.Format` で `RowBinaryFormat.RowBinaryWithDefaults` を使用してください。
+* 指定していないカラムに対してサーバー側でデフォルト値を適用させたい場合は、`InsertOptions.Format` で `RowBinaryFormat.RowBinaryWithDefaults` を使用してください。
   :::
 
 ***
@@ -1681,7 +1726,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` と `Get<T>(id)` は動作します。`Insert<T>()` は動作しません。SQL Server の構文 (`SCOPE_IDENTITY`、角括弧) を生成するためです。代わりに、`ClickHouseClient` ネイティブの `InsertBinaryAsync` メソッドを使用することを推奨します。
+`GetAll<T>()` と `Get<T>(id)` は動作します。`Insert<T>()` は動作しません。SQL Server の構文 (`SCOPE_IDENTITY`、`[]`) を生成するためです。代わりに、`ClickHouseClient` ネイティブの `InsertBinaryAsync` メソッドを使用することを推奨します。
 
 ```csharp
 [Table("test.users")]
@@ -1768,7 +1813,355 @@ await table.BulkCopyAsync(options, products);
 
 ### Entity Framework Core \{#orm-support-ef-core\}
 
-Entity Framework Core は現在サポートされていません。
+ClickHouse 向けの公式 Entity Framework Core プロバイダーです。C# クラスを ClickHouse のテーブルにマップし、LINQ でクエリを実行し、使い慣れた EF Core のパターンで `SaveChanges` を使ってデータを挿入できます。
+
+* **NuGet**: [`ClickHouse.EntityFrameworkCore`](https://www.nuget.org/packages/ClickHouse.EntityFrameworkCore)
+* **ソース**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
+
+:::note
+このプロバイダーはまだ開発の初期段階にあります。現時点でサポートされているのは、**読み取り専用クエリ**と**挿入**のみです。UPDATE、DELETE、マイグレーション、JOIN、サブクエリはまだ実装されていません。
+:::
+
+#### インストール \{#ef-core-installation\}
+
+```bash
+dotnet add package ClickHouse.EntityFrameworkCore
+```
+
+.NET 10.0 および EF Core 10 が必要です。
+
+
+#### クイックスタート \{#ef-core-quick-start\}
+
+エンティティと`DbContext`を定義し、LINQでクエリを実行します。
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+public class PageView
+{
+    public long Id { get; set; }
+    public string Path { get; set; }
+    public DateOnly Date { get; set; }
+    public string UserAgent { get; set; }
+}
+
+public class AnalyticsContext : DbContext
+{
+    public DbSet<PageView> PageViews { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseClickHouse("Host=localhost;Database=analytics");
+}
+
+// Query
+await using var ctx = new AnalyticsContext();
+
+var topPages = await ctx.PageViews
+    .Where(v => v.Date >= new DateOnly(2024, 1, 1))
+    .GroupBy(v => v.Path)
+    .Select(g => new { Path = g.Key, Views = g.Count() })
+    .OrderByDescending(x => x.Views)
+    .Take(10)
+    .ToListAsync();
+```
+
+
+#### サポート対象の型 \{#ef-core-types\}
+
+| カテゴリ        | ClickHouse 型                                                                            | CLR 型                                                              |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **整数**      | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
+| **多倍長整数**   | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                       |
+| **浮動小数点数**  | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                  |
+| **10 進小数**  | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` または `ClickHouseDecimal`                                  |
+| **ブール値**    | `Bool`                                                                                  | `bool`                                                             |
+| **文字列**     | `String`, `FixedString(N)`                                                              | `string`                                                           |
+| **列挙型**     | `Enum8(...)`, `Enum16(...)`                                                             | `string` または C# `enum`                                             |
+| **日付/時刻**   | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                             |
+| **時刻**      | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                         |
+| **UUID**    | `UUID`                                                                                  | `Guid`                                                             |
+| **ネットワーク**  | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                        |
+| **配列**      | `Array(T)`                                                                              | `T[]` または `List<T>`                                                |
+| **マップ**     | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                  |
+| **タプル**     | `Tuple(T1, ...)`                                                                        | `Tuple<...>` または `ValueTuple<...>`                                 |
+| **Variant** | `Variant(T1, T2, ...)`                                                                  | `object`                                                           |
+| **Dynamic** | `Dynamic`                                                                               | `object`                                                           |
+| **JSON**    | `Json`                                                                                  | `JsonNode` または `string`                                            |
+| **地理空間**    | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` およびその配列。`Geometry` には `object`              |
+| **ラッパー**    | `Nullable(T)`, `LowCardinality(T)`                                                      | 自動的にアンラップされます                                                      |
+
+`Decimal128`/`Decimal256` カラムで完全な精度が必要な場合は、`decimal` ではなく `ClickHouseDecimal` (`ClickHouse.Driver.Numerics`) を使ってください。.NET の `decimal` は有効桁数が 28～29 桁に制限されています。
+
+#### サポートされている LINQ 操作 \{#ef-core-linq\}
+
+**クエリ:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+
+**GROUP BY と集計:** `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` を使用する `GroupBy`。これには、`HAVING` (`.GroupBy()` の後に `.Where()` を使用) 、1 つの射影での複数集計、集計結果に対する `OrderBy` が含まれます。
+
+**文字列メソッド:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (および `+` Operator) 
+
+**数学関数:** 標準の `Math` および `MathF` メソッドは、算術、対数、三角関数、ユーティリティ関数などを含め、対応する ClickHouse の関数に変換されます。
+
+#### データの挿入 \{#ef-core-insert\}
+
+`SaveChanges` はドライバーのネイティブな `InsertBinaryAsync` API を使用します。これは、パラメータ化された SQL よりもはるかに効率的な、GZip 圧縮付きの RowBinary エンコーディングです。
+
+```csharp
+await using var ctx = new AnalyticsContext();
+
+ctx.PageViews.Add(new PageView
+{
+    Id = 1,
+    Path = "/home",
+    Date = new DateOnly(2024, 6, 15),
+    UserAgent = "Mozilla/5.0"
+});
+
+await ctx.SaveChangesAsync();
+```
+
+エンティティは、他の EF Core プロバイダーと同様に、保存後は `Added` から `Unchanged` に遷移します。
+
+**バッチサイズ** は設定できます (デフォルトは 1000) ：
+
+```csharp
+optionsBuilder.UseClickHouse("Host=localhost", o => o.MaxBatchSize(5000));
+```
+
+
+#### 一括挿入 \{#ef-core-bulk-insert\}
+
+高スループットでロードする場合は、`SaveChanges` ではなく `BulkInsertAsync` を使います。これは `DbContext` の拡張メソッドで、EF Core の変更追跡、ID の解決、状態管理を完全にバイパスし、RowBinary エンコーディングと GZip 圧縮を使ってドライバーの `InsertBinaryAsync` を直接呼び出します。
+
+そのため、挿入後にエンティティの追跡が不要な大規模データセットのロードに適しています。
+
+```csharp
+var events = Enumerable.Range(0, 100_000)
+    .Select(i => new PageView
+    {
+        Id = i,
+        Path = $"/page/{i}",
+        Date = DateOnly.FromDateTime(DateTime.Today)
+    });
+
+long rowsInserted = await ctx.BulkInsertAsync(events);
+```
+
+入力には任意の `IEnumerable<T>` を使用できます。エンティティはすべてをメモリに読み込むことなく、ストリーム処理されます。戻り値は insert された行数です。insert 後、エンティティは `DbContext` にアタッチ**されない**ため、`Added` → `Unchanged` の状態遷移は発生しません。
+
+
+#### 列挙型 \{#ef-core-enums\}
+
+ClickHouse の `Enum8`/`Enum16` カラムは、`string` プロパティまたは C# の `enum` 型にマップできます。C# の列挙型を使う場合、プロバイダーが列挙型とその文字列表現を自動的に相互変換します。
+
+```csharp
+public enum Status { Active, Inactive, Pending }
+
+public class User
+{
+    public long Id { get; set; }
+    public Status Status { get; set; }
+}
+
+// Query with enum values
+var active = await ctx.Users
+    .Where(u => u.Status == Status.Active)
+    .ToListAsync();
+```
+
+
+#### カスタム型の変換 \{#ef-core-value-converters\}
+
+EF Core の `ValueConverter` システムを使うと、カスタム型をプロバイダーがすでにサポートしている型にマップできます。プロバイダーがカスタム型を直接扱うことはなく、EF Core が境界で変換を行います。
+
+**プロパティ単位の変換:**
+
+```csharp
+public class Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+}
+
+public class Order
+{
+    public long Id { get; set; }
+    public Money Price { get; set; }
+}
+
+// In OnModelCreating:
+modelBuilder.Entity<Order>()
+    .Property(o => o.Price)
+    .HasConversion(
+        m => $"{m.Amount}|{m.Currency}",
+        s => new Money
+        {
+            Amount = decimal.Parse(s.Split('|')[0]),
+            Currency = s.Split('|')[1]
+        })
+    .HasColumnType("String");
+```
+
+**再利用可能なコンバータークラス:**
+
+```csharp
+public class MoneyConverter : ValueConverter<Money, string>
+{
+    public MoneyConverter() : base(
+        m => $"{m.Amount}|{m.Currency}",
+        s => Parse(s)) { }
+
+    private static Money Parse(string s)
+    {
+        var parts = s.Split('|');
+        return new Money { Amount = decimal.Parse(parts[0]), Currency = parts[1] };
+    }
+}
+
+// Apply to a single property:
+.HasConversion<MoneyConverter>()
+
+// Or apply to all properties of a type via conventions:
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Properties<Money>()
+        .HaveConversion<MoneyConverter>();
+}
+```
+
+
+#### カラム型の注釈 \{#ef-core-column-types\}
+
+`string`、`int`、`DateTime` などのスカラー型では、プロバイダーが ClickHouse 型を自動的に推論します。パラメータ化された型やラッパー型では、ClickHouse 型を明示的に指定する必要があります。
+
+**データ アノテーション (属性) を使用する場合:**
+
+```csharp
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+[Table("sensor_readings")]
+public class SensorReading
+{
+    public long Id { get; set; }
+
+    [Column(TypeName = "Array(String)")]
+    public string[] Tags { get; set; }
+
+    [Column(TypeName = "Map(String, String)")]
+    public Dictionary<string, string> Metadata { get; set; }
+
+    [Column(TypeName = "Nullable(Float64)")]
+    public double? Value { get; set; }
+
+    [Column(TypeName = "Decimal128(18)")]
+    public decimal HighPrecision { get; set; }
+}
+```
+
+**`OnModelCreating` で Fluent API を使用する:**
+
+```csharp
+modelBuilder.Entity<SensorReading>(e =>
+{
+    e.ToTable("sensor_readings");
+    e.Property(x => x.Tags).HasColumnType("Array(String)");
+    e.Property(x => x.Metadata).HasColumnType("Map(String, String)");
+    e.Property(x => x.Value).HasColumnType("Nullable(Float64)");
+    e.Property(x => x.Category).HasColumnType("LowCardinality(String)");
+    e.Property(x => x.HighPrecision).HasColumnType("Decimal128(18)");
+});
+```
+
+`Array(Nullable(Int32))` や `LowCardinality(Nullable(String))` のようなネストされたラッパーもサポートされており、プロバイダーはすべてのネストレベルで `Nullable` と `LowCardinality` を自動的にアンラップします。
+
+
+#### Variant カラムと Dynamic カラム \{#ef-core-variant-dynamic\}
+
+ClickHouse の `Variant(T1, T2, ...)` および `Dynamic` カラムは、.NET では `object` にマップされます。`object` は自動的に型推論するには汎用的すぎるため、`.HasColumnType()` を使ってストア型を明示的に指定する必要があります。
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public object? Payload { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Payload).HasColumnType("Variant(String, UInt64, Array(UInt64))");
+// or:
+entity.Property(e => e.Payload).HasColumnType("Dynamic");
+```
+
+読み取り時、値は格納されている判別子に対応する .NET 型 (例: `string`、`ulong`、`ulong[]`) に自動的にデシリアライズされます。
+
+
+#### JSON カラム \{#ef-core-json\}
+
+このプロバイダーは ClickHouse の `Json` カラム型をサポートしており、`System.Text.Json.Nodes.JsonNode` (主に使用) または `string` (自動 `ValueConverter` 経由) にマッピングされます:
+
+```csharp
+using System.Text.Json.Nodes;
+
+public class Event
+{
+    public long Id { get; set; }
+    public JsonNode? Data { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+JSON の読み書きは、`SaveChanges` と `BulkInsertAsync` の両方で行えます:
+
+```csharp
+ctx.Events.Add(new Event
+{
+    Id = 1,
+    Data = JsonNode.Parse("""{"action": "click", "x": 100, "y": 200}""")
+});
+await ctx.SaveChangesAsync();
+
+var ev = await ctx.Events.Where(e => e.Id == 1).SingleAsync();
+string action = ev.Data!["action"]!.GetValue<string>(); // "click"
+```
+
+生のJSON文字列を使う場合は、プロパティを `string` として `Json` カラム型にマップします。プロバイダーが `ValueConverter` を自動的に適用します。
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public string? Data { get; set; }  // raw JSON string
+}
+
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+:::note
+
+* **JSONパスは変換されません** — LINQ の `entity.Data["name"]` は、ClickHouse の `data.name` という SQL 構文には変換されません。JSON 以外のカラムでフィルタリングし、JSON はメモリ上で確認してください。
+* **NULL のセマンティクス** — ClickHouse の JSON 型は、NULL 値に対して SQL の NULL ではなく `{}` (空の object) を返します。
+* **整数の精度** — ClickHouse の JSON はすべての整数を `Int64` として保存します。`JsonNode` 経由で読み取る場合は、`GetValue<int>()` ではなく `GetValue<long>()` を使ってください。
+  :::
+
+
+#### 制限事項 \{#ef-core-limitations\}
+
+| 機能                                           | 状態                                                    |
+| -------------------------------------------- | ----------------------------------------------------- |
+| SELECT / WHERE / ORDER BY / GROUP BY         | サポート                                                  |
+| `SaveChanges` / `BulkInsertAsync` による INSERT | サポート                                                  |
+| UPDATE / DELETE                              | サポートされていません (ClickHouse の mutations は非同期であり、OLTP には対応しません)  |
+| マイグレーション                                     | サポートされていません                                                 |
+| JOIN、サブクエリ、集合演算                              | サポートされていません                                                 |
+| 取引                                           | no-op (ClickHouse は ACID 取引をサポートしません)                 |
+| サーバー生成の値 (自動インクリメント)                         | サポートされていません                                                 |
+| ネスト型                                         | サポートされていません                                                 |
+| JSON パスクエリへの変換 (LINQ の `.Data["key"]`)       | サポートされていません                                                 |
+| 所有エンティティの JSON 化 (`.ToJson()`)               | サポートされていません                                                 |
 
 ## 制限事項 \{#limitations\}
 

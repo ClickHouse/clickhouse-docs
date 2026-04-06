@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
 
-Managed Postgres에는 데이터베이스 기능을 확장하기 위해 엄선된 확장 프로그램 세트가 포함되어 있습니다. 사용 가능한 확장 프로그램 목록은 아래와 같습니다.
+Managed Postgres에는 데이터베이스 기능을 확장하기 위해 엄선된 확장 기능 세트가 포함되어 있습니다. 사용 가능한 확장 기능 목록은 아래와 같습니다.
 
 
 ## 확장 기능 설치 \{#installing-extensions\}

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity カタログ'
-title: 'Unity カタログ'
+sidebar_label: 'Unity Catalog'
+title: 'Unity Catalog'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、ClickHouse と Unity Catalog を使用して
@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ (Unity、Glue、Polaris など) との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
 
 Databricks はレイクハウス向けに複数のデータ形式をサポートしています。ClickHouse を使用すると、Unity Catalog のテーブルを Delta および Iceberg としてクエリできます。
 

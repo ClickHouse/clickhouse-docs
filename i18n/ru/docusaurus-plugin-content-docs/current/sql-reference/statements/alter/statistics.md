@@ -1,18 +1,15 @@
 ---
 description: 'Документация по работе со статистикой столбцов'
-sidebar_label: 'СТАТИСТИКА'
+sidebar_label: 'STATISTICS'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
 title: 'Работа со статистикой столбцов'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # Управление статистикой столбцов \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 

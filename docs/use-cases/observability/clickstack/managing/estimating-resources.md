@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/estimating-resources
-title: 'Estimating Resources'
-sidebar_label: 'Estimating Resources'
+title: 'Estimating resources'
+sidebar_label: 'Estimating resources'
 pagination_prev: null
 pagination_next: null
 description: 'Resource estimation guidance for Managed ClickStack deployments'

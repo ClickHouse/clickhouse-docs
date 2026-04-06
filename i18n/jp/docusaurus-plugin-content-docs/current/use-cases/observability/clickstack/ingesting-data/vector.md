@@ -401,7 +401,7 @@ ClickStack における唯一の厳格な要件は、オープンソース版か
   </TabItem>
 
   <TabItem value="oss-clickstack" label="オープンソース版 ClickStack">
-    本ガイドは、[Getting Startedガイド](use-cases/observability/clickstack/getting-started/managed)を使用してClickStack Open Sourceをセットアップ済みであることを前提としています。
+    本ガイドは、[Getting Startedガイド](/use-cases/observability/clickstack/getting-started/oss)を使用してClickStack Open Sourceをセットアップ済みであることを前提としています。
 
     <VerticalStepper headerLevel="h3">
       ### Vectorのインストール

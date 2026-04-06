@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'AWS Marketplace 承诺消费合约'
-description: '通过 AWS Marketplace（承诺消费合约）订阅 ClickHouse Cloud'
+title: 'AWS Marketplace 承诺消费合同'
+description: '通过 AWS Marketplace（承诺消费合同）订阅 ClickHouse Cloud'
 keywords: ['aws', 'amazon', 'marketplace', '计费', '承诺消费', '承诺消费合约']
 doc_type: 'guide'
 ---
@@ -15,8 +15,8 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺消费合约来开始使用 ClickHouse Cloud。
-承诺消费合约（也称为 Private Offer）允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
+通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺消费合同来开始使用 ClickHouse Cloud。
+承诺消费合同 (也称为 私有优惠) 允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
 
 
 ## 先决条件 \{#prerequisites\}

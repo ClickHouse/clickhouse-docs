@@ -1,87 +1,81 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/data_lake_and_warehouse
-title: '数据湖仓'
-description: '使用 ClickHouse Cloud 构建现代数据湖仓架构，将数据湖的灵活性与数据仓库级数据库性能相结合'
-keywords: ['使用场景', '数据湖与数据仓库']
-sidebar_label: '数据仓库'
+title: '数据仓储'
+description: '结合数据湖的灵活性与 ClickHouse Cloud 的性能，构建现代数据仓库架构'
+keywords: ['data warehouse', 'data lake', 'lakehouse', 'Iceberg', 'Delta Lake', 'Hudi', 'Parquet', 'open table formats', 'hybrid architecture', 'use cases']
+sidebar_label: '数据仓储'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cases/datalakehouse_01.png';
+import data_warehousing from '@site/static/images/cloud/onboard/discover/use_cases/data-warehousing.png';
 
-<iframe width="758" height="426" src="https://www.youtube.com/embed/mueG6z1mo8Y" title="Data lakehouses (in under 3 minutes)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+现代数据仓库不再将存储与计算紧密耦合。相反，存储、治理和查询处理这些彼此独立但相互连接的层，让你能够灵活地为工作流选择合适的工具。
 
-数据湖仓是一种融合架构，将数据库原理应用于数据湖基础设施，同时兼具云存储系统的灵活性和可扩展性。
+通过将开放表格式和 ClickHouse 这样的高性能查询引擎添加到云对象存储中，你可以在不牺牲数据湖开放性的前提下，获得数据库级能力——ACID 事务、schema 约束以及快速分析查询。这种组合将高性能与可互操作、成本效益高的存储结合起来，可支持传统分析和现代 AI/ML 工作负载。
 
-湖仓并不是对数据库的简单拆分，而是在截然不同的基础（云对象存储）之上构建类似数据库的能力，旨在在统一的平台上同时支持传统分析和现代 AI/ML 工作负载。
+## 这种架构带来的优势 \{#benefits\}
 
+通过将开放对象存储和表格式与 ClickHouse 查询引擎结合使用，您将获得：
 
-## 数据湖仓由哪些组件构成？ \{#components-of-the-data-lakehouse\}
+| 优势            | 描述                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| **一致的表更新**    | 对表状态的原子提交意味着并发写入不会产生损坏或不完整的数据。这解决了原始数据湖中最棘手的问题之一。                                          |
+| **schema 管理** | 强制验证和可跟踪的 schema 演进可防止出现“数据沼泽”问题，即数据因 schema 不一致而变得无法使用。                                   |
+| **查询性能**      | 索引、统计信息以及数据跳过、聚类等数据布局优化，使 SQL 查询能够达到接近专用数据仓库的速度。结合 ClickHouse 的列式引擎，即使数据存储在对象存储中，这一点也同样成立。 |
+| **治理**        | 目录和表格式可在行级和列级提供细粒度的访问控制与审计，从而弥补基础数据湖安全控制有限的问题。                                             |
+| **存储与计算分离**   | 存储和计算可在通用对象存储上独立扩展，其成本显著低于专有数据仓库存储。虽然这种分离在现代云数据仓库中已是标准做法，但开放格式让您可以选择究竟由哪种计算引擎随数据一同扩展。      |
 
-现代数据湖仓架构是一种将数据仓库与数据湖技术融合在一起的架构，结合了这两种方法的优点。
-该架构由多个相互独立但彼此联通的层组成，为数据存储、管理和分析提供一个灵活且健壮的平台。
+## ClickHouse 如何驱动您的数据仓库 \{#architecture\}
 
-对于希望实施或优化数据湖仓战略的组织来说，理解这些组件至关重要。分层架构允许替换单独组件，并使各层能够独立演进，从而提升架构灵活性并增强方案的前瞻性。
+数据从流式平台和现有数据仓库经由对象存储进入 ClickHouse，在其中完成转换和优化，然后提供给您的 BI/AI 工具。
 
-下面将介绍典型数据湖仓架构的核心构建模块，以及它们如何协同工作以构建统一的数据管理平台。
+<Image img={data_warehousing} alt="ClickHouse 数据仓库架构" size="md" />
 
-<Image img={datalakehouse_01} alt="数据湖仓的组件" size="md"/>
+ClickHouse 覆盖了数据仓库工作流中的四个关键环节：数据导入、查询、转换，以及连接到团队已经在使用的工具。
 
-| 组件                    | 描述                                                                                                                                                                                                                                                                                                                                           |
-|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **数据源（Data sources）**        | 湖仓的数据源包括业务数据库、流式平台、物联网（IoT）设备、应用日志以及外部数据提供方。                                                                                                                                                                                                                                                      |
-| **查询引擎（Query engine）**        | 针对存储在对象存储中的数据执行分析查询，并利用表格式层提供的元数据和优化能力。支持 SQL 以及其他潜在的查询语言，以高效分析海量数据。                                                                                                                                                                                                       |
-| **元数据目录（Metadata catalog）**    | [数据目录](https://clickhouse.com/engineering-resources/data-catalog) 作为元数据的集中式存储库，用于存储和管理表定义与模式、分区信息以及访问控制策略。支持在整个湖仓中进行数据发现、血缘跟踪和治理。                                                                                                                                        |
-| **表格式层（Table format layer）**  | [表格式层](https://clickhouse.com/engineering-resources/open-table-formats) 负责将数据文件按逻辑组织为表，提供类似数据库的特性，如 ACID 事务、模式约束与演进、时间穿梭能力，以及诸如数据跳过和聚簇等性能优化。                                                                                                                              |
-| **对象存储（Object storage）**      | 该层为所有数据文件和元数据提供可扩展、持久且具成本效益的存储。负责以开放格式实现数据的物理持久化，使多个工具和系统能够直接访问这些数据。                                                                                                                                                                                                   |
-| **客户端应用（Client applications）** | 各类连接到湖仓以查询数据、可视化洞察或构建数据产品的工具和应用。这些可以包括 BI 工具、数据科学笔记本、自定义应用以及 ETL/ELT 工具。                                                                                                                                                                                                     |
+<details open>
+  <summary>**数据摄取**</summary>
 
-## 数据湖仓有哪些优势？ \{#benefits-of-the-data-lakehouse\}
+  对于批量数据导入，通常会使用 S3 或 GCS 之类的对象存储作为中间层。ClickHouse 出色的 [Parquet](/integrations/data-formats/parquet) 读取性能，使您能够借助 [S3 table engine](/engines/table-engines/integrations/s3) 以每秒数亿行的速度导入数据。对于实时流数据，[ClickPipes](/integrations/clickpipes) 可直接连接到 Kafka 和 Confluent 等平台。
 
-与传统数据仓库和数据湖直接对比时，数据湖仓架构具备多项显著优势：
+  您还可以从 Snowflake、BigQuery 和 Databricks 等现有数据仓库迁移，方法是先导出到对象存储，再通过 [table engines](/engines/table-engines) 导入 ClickHouse。
+</details>
 
-### 与传统数据仓库对比 \{#compared-to-traditional-data-warehouses\}
+<details>
+  <summary>**查询**</summary>
 
-| # | Benefit                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|---|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | **成本效益**                                     | 湖仓利用低成本的对象存储，而不是专有存储格式，与采用高价集成存储的数据仓库相比，可显著降低存储成本。                                                                                                                                                                                                                                                                                                                                 |
-| 2 | **组件灵活性与可替换性**                         | 湖仓架构允许组织替换不同组件。传统系统在需求变化或技术演进时通常需要整体替换，而湖仓可以通过替换查询引擎或表格式等单个组件实现渐进式演化。这种灵活性减少了厂商锁定，并使组织能够在不引发大规模中断式迁移的情况下适应不断变化的需求。                                                                                                                                                                                             |
-| 3 | **开放格式支持**                                 | 湖仓以 Parquet 等开放文件格式存储数据，允许各类工具直接访问，而不会像专有数据仓库格式那样将访问限制在其封闭生态中，从而避免厂商锁定。                                                                                                                                                                                                                                                                           |
-| 4 | **AI/ML 集成**                                   | 湖仓为机器学习框架和 Python/R 库提供对数据的直接访问，而传统数据仓库通常需要先导出数据后才能用于高级分析。                                                                                                                                                                                                                                                                                                                     |
-| 5 | **独立伸缩**                                     | 湖仓将存储与计算解耦，允许根据实际需求分别伸缩；而在许多数据仓库中，存储与计算往往需要同步扩缩。                                                                                                                                                                                                                                                                                                                                   |
+  您可以直接查询 S3 和 GCS 等对象存储中的数据，也可以查询采用 [Iceberg](/engines/table-engines/integrations/iceberg)、[Delta Lake](/engines/table-engines/integrations/deltalake) 和 [Hudi](/engines/table-engines/integrations/hudi) 等开放表格式的数据湖中的数据。您既可以直接连接这些格式，也可以通过 [AWS Glue Catalog](/use-cases/data-lake/glue-catalog)、[Unity Catalog](/use-cases/data-lake/unity-catalog) 和 [Iceberg REST](/use-cases/data-lake/rest-catalog) 等数据目录进行连接。
 
-### 与数据湖对比 \{#compared-to-data-lakes\}
+  对 [materialized views](/materialized-views) 的查询速度很快，因为其汇总结果会自动存储在专用表中，因此无论分析的数据量有多大，下游查询都能保持良好的响应性。其他数据库提供商通常会将这类加速功能放在更高等级的定价方案中，或额外收费；而 ClickHouse Cloud 开箱即用地提供 [查询缓存](/operations/query-cache)、[稀疏索引](/optimize/skipping-indexes) 和 [投影](/data-modeling/projections)，适用于重复执行且对延迟敏感的查询。
 
-| # | Benefit                     | Description                                                                                                                                                                                         |
-|---|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | **查询性能**                | 湖仓实现了索引、统计信息以及数据布局优化，使 SQL 查询能够达到与数据仓库相当的速度，从而克服原始数据湖查询性能较差的问题。                                                                                                          |
-| 2 | **数据一致性**              | 通过对 ACID 事务的支持，湖仓在并发操作期间能够保证一致性，解决了传统数据湖在文件冲突时可能导致数据损坏的重大缺陷。                                                                                                                    |
-| 3 | **模式管理**                | 湖仓强制进行模式（Schema）校验并跟踪模式演进，避免了数据湖中常见的“数据沼泽”问题，即由于模式不一致导致数据难以使用。                                                                                                                  |
-| 4 | **治理能力**                | 湖仓在行/列级别提供细粒度访问控制和审计功能，从而弥补基础数据湖在安全控制方面的不足。                                                                                                                                                  |
-| 5 | **BI 工具支持**             | 湖仓提供 SQL 接口和相关优化，使其能够兼容标准 BI 工具；而原始数据湖通常需要额外的处理层才能进行可视化。                                                                                                                               |
+  ClickHouse 支持 70 多种文件格式和 SQL 函数，可大规模处理日期、数组、JSON、地理空间数据和近似聚合。
+</details>
 
-## ClickHouse 在数据湖仓架构中扮演什么角色？ \{#where-does-clickhouse-fit-in-the-data-lakehouse-architecture\}
+<details>
+  <summary>**数据转换**</summary>
 
-ClickHouse 是现代数据湖仓生态系统中的一款强大的分析查询引擎，为组织在大规模数据分析方面提供了高性能选项。凭借卓越的查询速度和高效率，ClickHouse 成为极具吸引力的选择。
+  数据转换是商业智能和分析工作流中的常见支柱。ClickHouse 中的 materialized views 可将其自动化——当新数据插入源表时，这些基于 SQL 的视图就会被触发，因此您可以在数据到达时提取、聚合和修改数据，而无需构建和管理定制的转换管道。
 
-在湖仓架构中，ClickHouse 作为一个专门的处理层，能够灵活地与底层数据交互。它可以直接查询存储在云对象存储系统（如 S3、Azure Blob Storage 或 Google Cloud Storage）中的 Parquet 文件，利用其优化的列式处理能力，即使在超大规模数据集上也能快速返回结果。这种直接查询能力使组织能够在无需复杂数据搬迁或转换流程的情况下分析其湖中数据。
+  对于更复杂的建模工作流，ClickHouse 的 [dbt integration](/integrations/dbt) 允许您将转换定义为版本控制的 SQL 模型，并将现有 dbt jobs 迁移为直接在 ClickHouse 上运行。
+</details>
 
-对于更复杂的数据管理需求，ClickHouse 可以与 Apache Iceberg、Delta Lake 或 Apache Hudi 等开放表格式集成。这种集成使 ClickHouse 能够利用这些格式的高级特性，同时依然提供其广为人知的卓越查询性能。组织既可以直接集成这些表格式，也可以通过 AWS Glue、Unity 或其他元数据目录服务进行连接。
+<details>
+  <summary>**集成**</summary>
 
-通过在湖仓架构中引入 ClickHouse 作为查询引擎，组织可以在保持湖仓方法所强调的灵活性与开放性的同时，对其数据湖运行极其快速的分析查询。这种组合在不牺牲湖仓模型核心优势（包括组件可互换性、开放格式以及统一数据管理）的前提下，提供了专用分析型数据库级别的性能特性。
+  ClickHouse 为 [Tableau](/integrations/tableau) 和 [Looker](/integrations/looker) 等 BI 工具提供原生连接器。没有原生连接器的工具可以通过 [MySQL wire 协议](/interfaces/mysql) 连接，无需额外配置。对于语义层工作流，ClickHouse 可与 Cube 集成，让您的团队只需定义一次指标，即可从任何下游工具中查询这些指标。金融服务、游戏、电商等多个行业的公司都依赖这些集成，在数据到达后立即释放其价值，为实时仪表板和商业智能工作流提供支持。
+
+  ClickHouse 还支持 REST 接口，因此您可以在不依赖复杂二进制协议的情况下构建轻量级应用。[MCP server](/use-cases/AI/MCP) 可将 ClickHouse 连接到 LLM，并通过 LibreChat 或 Claude 等工具实现对话式分析。灵活的 [RBAC](/operations/access-rights) 和配额控制让您可以公开只读表，以供客户端获取数据。
+</details>
 
 ## 混合架构：两全其美 \{#hybrid-architecture-the-best-of-both-worlds\}
 
-虽然 ClickHouse 在查询 lakehouse 组件方面表现出色，但其高度优化的
-存储引擎还带来了额外优势。对于需要超低延迟查询的用例——例如实时仪表盘、
-运营分析或交互式用户体验——组织可以有选择地将对性能要求极高的数据
-直接以 ClickHouse 原生格式进行存储。这种混合方法实现了两全其美：
-在处理对时效性要求极高的分析时，可以利用 ClickHouse 专用存储实现无与伦比的
-查询速度，同时在需要时仍可灵活查询更广泛的数据 lakehouse。
+除了查询您的数据湖之外，您还可以将对性能要求严苛的数据摄取到 ClickHouse 原生的 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 存储中，以支持需要超低延迟的用例——例如实时仪表板、运营分析或交互式应用。
 
-这种双重能力使组织能够实施分层数据策略：将热点、高频访问的数据
-保存在 ClickHouse 的优化存储中，以实现亚秒级查询响应，同时在 lakehouse 中
-依然保持对完整数据历史的无缝访问。团队可以基于性能需求而非技术限制做出架构决策，
-既将 ClickHouse 用作关键负载的闪电般快速分析型数据库，又将其作为面向更广泛数据生态的
-灵活查询引擎。
+这为您提供了一种分等级数据策略。热点且经常访问的数据存放在 ClickHouse 优化的存储中，以实现亚秒级查询响应；而完整的数据历史则保留在数据湖中，并且仍可查询。您还可以使用 ClickHouse materialized view，持续将数据湖中的数据转换并聚合到优化表中，从而自动衔接这两个等级。
+
+您可以根据性能要求而非技术限制来决定数据的存放位置。
+
+:::tip ClickHouse Academy
+参加免费的 [Data Warehousing with ClickHouse](https://clickhouse.com/learn/data-warehousing) 课程，了解更多信息。
+:::

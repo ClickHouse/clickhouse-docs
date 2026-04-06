@@ -4,21 +4,21 @@ slug: /community-wisdom/creative-use-cases
 sidebar_label: '성공 사례'
 doc_type: 'guide'
 keywords: [
-  'clickhouse 창의적인 활용 사례',
+  'clickhouse 창의적인 사용 사례',
   'clickhouse 성공 사례',
-  '비전통적인 데이터베이스 활용 사례',
+  '비전통적인 데이터베이스 사용 사례',
   'clickhouse rate limiting',
-  '애널리틱스 데이터베이스 활용 사례',
-  'clickhouse 모바일 애널리틱스',
-  '고객 대상 애널리틱스',
+  '분석 데이터베이스 사용 사례',
+  'clickhouse 모바일 분석',
+  '고객 대상 분석',
   '데이터베이스 혁신',
   'clickhouse 실시간 애플리케이션',
   '대체 데이터베이스 솔루션',
-  '데이터베이스 관례를 깨는 활용 사례',
+  '데이터베이스 관례를 깨는 사용 사례',
   '프로덕션 환경 성공 사례'
 ]
-title: '교훈 - 창의적인 활용 사례'
-description: '느린 쿼리, 메모리 오류, 연결 문제, 설정 문제 등 가장 일반적인 ClickHouse 관련 문제에 대한 해결책을 찾아보십시오.'
+title: '교훈 - 창의적인 사용 사례'
+description: '느린 쿼리, 메모리 오류, 연결 문제, 설정 문제 등 가장 일반적인 ClickHouse 관련 문제에 대한 솔루션을 찾아보십시오.'
 ---
 
 # 성공 사례 \{#breaking-the-rules\}

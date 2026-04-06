@@ -1,10 +1,10 @@
 ---
-sidebar_label: '分析のヒント'
+sidebar_label: '分析のポイント'
 sidebar_position: 4
 slug: /integrations/tableau/analysis-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'ClickHouse 公式コネクタ使用時の Tableau での分析のヒント。'
-title: '分析のヒント'
+title: '分析のポイント'
 doc_type: 'guide'
 integration:
   - support_level: 'core'

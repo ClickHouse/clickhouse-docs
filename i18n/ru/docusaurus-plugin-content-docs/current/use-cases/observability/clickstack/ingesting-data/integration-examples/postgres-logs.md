@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
-sidebar_label: 'Журналы PostgreSQL'
+title: 'Мониторинг лог PostgreSQL с помощью ClickStack'
+sidebar_label: 'Лог PostgreSQL'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
+description: 'Мониторинг лог PostgreSQL с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'журналы', 'OTel', 'ClickStack', 'мониторинг баз данных']
+keywords: ['PostgreSQL', 'Postgres', 'лог', 'OTel', 'ClickStack', 'мониторинг баз данных']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +17,6 @@ import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.
 import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-logs-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
 
 # Мониторинг логов PostgreSQL с помощью ClickStack \{#postgres-logs-clickstack\}
 

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment
-title: 'Deployment Options'
+title: 'Deployment options'
 pagination_prev: null
 pagination_next: null
 description: 'Deploying ClickStack - The ClickHouse Observability Stack'

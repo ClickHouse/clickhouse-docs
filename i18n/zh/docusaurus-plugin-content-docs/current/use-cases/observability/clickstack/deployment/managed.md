@@ -108,9 +108,9 @@ import TabItem from '@theme/TabItem';
       在 ClickHouse Cloud 主页中,选择您要启用托管 ClickStack 的服务。
 
       :::important 资源估算
-      本指南假设您已配置足够的资源来处理计划通过 ClickStack 摄取和查询的可观测性数据量。要估算所需资源,请参阅[生产指南](/use-cases/observability/clickstack/production#estimating-resources).
+      本指南假设您已预配置足够的资源来处理计划通过 ClickStack 摄取和查询的可观测性数据量。要估算所需资源，请参阅[资源估算](/use-cases/observability/clickstack/estimating-resources)指南。
 
-      如果您的 ClickHouse 服务已经承载现有工作负载（例如实时应用分析），我们建议使用 [ClickHouse Cloud 的 warehouses 功能](/cloud/reference/warehouses)创建子服务，以隔离可观测性工作负载。这样可以确保现有应用程序不受影响，同时保持两个服务都能访问数据集。
+      如果您的 ClickHouse 服务已经承载现有工作负载 (例如实时应用分析) ，我们建议使用 [ClickHouse Cloud 的 warehouses 功能](/cloud/reference/warehouses)创建子服务，以隔离可观测性工作负载。这样可以确保现有应用程序不受影响，同时保持两个服务都能访问数据集。
       :::
 
       <Image img={select_service} alt="选择服务" size="lg" />
@@ -137,7 +137,7 @@ import TabItem from '@theme/TabItem';
 
       <Image img={clickstack_ui_setup_ingestion} alt="ClickStack UI 摄取设置" size="lg" />
 
-      选择&quot;开始摄取&quot;,系统将提示您选择摄取源。托管版 ClickStack 支持 OpenTelemetry 和 [Vector](https://vector.dev/) 作为其主要摄取源。此外,用户也可以使用任何 [ClickHouse Cloud 支持的集成](/integrations),以自定义模式直接向 ClickHouse 发送数据。
+      选择&quot;开始摄取&quot;,系统将提示您选择摄取源。托管版 ClickStack 支持 OpenTelemetry 和 [Vector](https://vector.dev/) 作为其主要摄取源。此外,用户也可以使用任何 [ClickHouse Cloud 支持的集成](/integrations),以自定义 schema 直接向 ClickHouse 发送数据。
 
       <Image img={select_source_clickstack_ui} size="lg" alt="选择摄取源 - ClickStack UI" border />
 
@@ -148,7 +148,7 @@ import TabItem from '@theme/TabItem';
 
       <Tabs groupId="ingestion-sources-existing">
         <TabItem value="open-telemetry" label="OpenTelemetry" default>
-          要将 OpenTelemetry 数据发送到托管的 ClickStack，推荐使用 OpenTelemetry Collector。Collector 充当网关，从您的应用（以及其他 Collector）接收 OpenTelemetry 数据，并将其转发到 ClickHouse Cloud。
+          要将 OpenTelemetry 数据发送到托管的 ClickStack，推荐使用 OpenTelemetry Collector。Collector 充当网关，从您的应用 (以及其他 Collector) 接收 OpenTelemetry 数据，并将其转发到 ClickHouse Cloud。
 
           如果当前还没有运行中的 Collector，请按照下面的步骤启动一个。如果已经有现有的 Collector，也提供了一个配置示例。
 
@@ -166,7 +166,7 @@ import TabItem from '@theme/TabItem';
           虽然此命令使用 `default` 用户连接到托管 ClickStack，但在[进入生产环境](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)时，您应该创建一个专用用户，并相应修改配置。
           :::
 
-          运行这一条命令即可启动 ClickStack Collector，并在 4317（gRPC）和 4318（HTTP）端口上暴露 OTLP 端点。如果您已经有 OpenTelemetry 的埋点和 Agent，可以立即开始向这些端点发送遥测数据。
+          运行这一条命令即可启动 ClickStack Collector，并在 4317 (gRPC) 和 4318 (HTTP) 端口上暴露 OTLP 端点。如果您已经有 OpenTelemetry 的埋点和 Agent，可以立即开始向这些端点发送遥测数据。
 
           ### 配置现有 Collector
 
@@ -184,11 +184,11 @@ import TabItem from '@theme/TabItem';
 
           如需了解更多配置 OpenTelemetry Collector 的细节，请参见 [&quot;使用 OpenTelemetry 进行摄取。&quot;](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
 
-          ### 启动摄取（可选）
+          ### 启动摄取 (可选)
 
           如果您有要使用 OpenTelemetry 进行埋点的现有应用或基础设施，请转到“连接应用”中链接的相关指南。
 
-          要对应用进行埋点以收集跟踪（traces）和日志（logs），请使用[受支持的语言 SDKs](/use-cases/observability/clickstack/sdks)，它们会将数据发送到作为网关的 OpenTelemetry Collector，以将数据摄取到托管 ClickStack 中。
+          要对应用进行埋点以收集跟踪 (traces) 和日志 (logs) ，请使用[受支持的语言 SDKs](/use-cases/observability/clickstack/sdks)，它们会将数据发送到作为网关的 OpenTelemetry Collector，以将数据摄取到托管 ClickStack 中。
 
           可以使用以 agent 模式运行的 [OpenTelemetry Collectors 收集日志](/use-cases/observability/clickstack/integrations/host-logs)，并将数据转发到同一个 Collector。对于 Kubernetes 监控，请遵循[专用指南](/use-cases/observability/clickstack/integrations/kubernetes)。有关其他集成，请参见我们的[快速入门指南](/use-cases/observability/clickstack/integration-guides)。
 
@@ -201,7 +201,7 @@ import TabItem from '@theme/TabItem';
           在将 Vector 与 ClickStack 结合使用时，用户需要自行定义 schema。这些 schema 可以遵循 OpenTelemetry 约定，也可以完全自定义，用于表示用户自定义的事件结构。
 
           :::note 需要时间戳
-          对托管版 ClickStack 的唯一严格要求是，数据中必须包含一个**时间戳列**（或等效的时间字段），并可在 ClickStack UI 中配置数据源时进行声明。
+          对托管版 ClickStack 的唯一严格要求是，数据中必须包含一个**时间戳列** (或等效的时间字段) ，并可在 ClickStack UI 中配置数据源时进行声明。
           :::
 
           下面的内容假定您已经有一个正在运行的 Vector 实例，且已预先配置好数据摄取管道，并在持续投递数据。
@@ -242,7 +242,7 @@ import TabItem from '@theme/TabItem';
 
           你的表必须与 Vector 生成的输出 schema 保持一致。根据你的数据需要调整该 schema，并遵循推荐的 [schema 最佳实践](/docs/best-practices/select-data-types)。
 
-          强烈建议先了解 ClickHouse 中 [主键](/docs/primary-indexes) 的工作方式，并根据访问模式选择排序键（ordering key）。关于如何选择主键，请参阅 [ClickStack 专用](/use-cases/observability/clickstack/performance_tuning#choosing-a-primary-key) 指南。
+          强烈建议先了解 ClickHouse 中 [主键](/docs/primary-indexes) 的工作方式，并根据访问模式选择排序键 (ordering key) 。关于如何选择主键，请参阅 [ClickStack 专用](/use-cases/observability/clickstack/performance_tuning#choosing-a-primary-key) 指南。
 
           创建好表后，复制显示的配置代码片段。根据需要调整输入以对接你现有的数据管道，以及目标表和数据库。凭据应已自动填入。
 
@@ -276,7 +276,7 @@ import TabItem from '@theme/TabItem';
 
           上述配置假定使用 Nginx 风格的 schema，并使用 `time_local` 列作为时间戳。该列在可能的情况下应为主键中声明的时间戳列。**此列为必需列**。
 
-          我们还建议更新 `Default SELECT`，以显式定义在日志视图中返回的列。如果存在其他字段，例如服务名、日志级别或正文列（body 列），也可以在这里进行配置。如果用于展示时间戳的列与表主键中使用的列不同，也可以在此进行覆盖。
+          我们还建议更新 `Default SELECT`，以显式定义在日志视图中返回的列。如果存在其他字段，例如服务名、日志级别或正文列 (body 列) ，也可以在这里进行配置。如果用于展示时间戳的列与表主键中使用的列不同，也可以在此进行覆盖。
 
           在上面的示例中，数据中不存在 `Body` 列。相反，它是通过一个 SQL 表达式定义的，该表达式使用可用字段重建一条 Nginx 日志行。
 

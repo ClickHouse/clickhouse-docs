@@ -10,9 +10,9 @@ doc_type: 'guide'
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-ABS ClickPipe 提供了一种完全托管且具备高可靠性的方式，将 Azure Blob Storage 中的数据摄取到 ClickHouse Cloud 中。它支持具有精确一次（exactly-once）语义的 **一次性摄取** 和 **持续摄取**。
+ABS ClickPipe 提供了一种完全托管且具备高可靠性的方式，将 Azure Blob Storage 中的数据摄取到 ClickHouse Cloud 中。它支持具有精确一次 (exactly-once) 语义的 **一次性摄取** 和 **持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 ABS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 进行管理。
+可以通过 ClickPipes UI 手动部署和管理 ABS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 进行管理。
 
 
 ## 支持的格式 \{#supported-formats\}
@@ -153,7 +153,7 @@ ClickPipes 提供了合理的默认值，能够满足大多数使用场景的需
 
 ### 扩缩容 \{#scaling\}
 
-对象存储型 ClickPipes 会根据[配置的垂直自动扩缩容设置](/manage/scaling#configuring-vertical-auto-scaling)所确定的 ClickHouse 服务最小规格进行扩缩容。ClickPipe 的规格在创建该 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+对象存储 ClickPipes 会根据[配置的垂直自动扩缩容设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)所确定的 ClickHouse 服务最小规格进行扩缩容。ClickPipe 的规格在创建该 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 要提高大型摄取任务的吞吐量，建议在创建 ClickPipe 之前先对 ClickHouse 服务进行扩容。
 

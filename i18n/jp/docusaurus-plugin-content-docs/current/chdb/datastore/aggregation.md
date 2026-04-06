@@ -1,5 +1,5 @@
 ---
-title: 'DataStore 集約関数'
+title: 'DataStore の集約関数'
 sidebar_label: '集約'
 slug: /chdb/datastore/aggregation
 description: 'DataStore における集約関数、ウィンドウ関数、F ネームスペース'

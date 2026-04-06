@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/dashboards/sql-visualizations
-title: 'SQL-based Visualizations'
-sidebar_label: 'SQL-based Visualizations'
+title: 'SQL-based visualizations'
+sidebar_label: 'SQL-based visualizations'
 pagination_prev: null
 pagination_next: null
 description: 'Creating visualizations using SQL queries in ClickStack'

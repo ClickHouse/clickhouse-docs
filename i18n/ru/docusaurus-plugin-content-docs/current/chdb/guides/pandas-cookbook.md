@@ -1,8 +1,8 @@
 ---
-title: 'Сборник рецептов Pandas'
-sidebar_label: 'Сборник рецептов Pandas'
+title: 'справочник по Pandas'
+sidebar_label: 'справочник по Pandas'
 slug: /chdb/guides/pandas-cookbook
-description: 'Распространённые шаблоны pandas и их эквиваленты в DataStore'
+description: 'Типовые приёмы Pandas и их эквиваленты в DataStore'
 keywords: ['chdb', 'datastore', 'pandas', 'сборник рецептов', 'шаблоны', 'примеры']
 doc_type: 'guide'
 ---

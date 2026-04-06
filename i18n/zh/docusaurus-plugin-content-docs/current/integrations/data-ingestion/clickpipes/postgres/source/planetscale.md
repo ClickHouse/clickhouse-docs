@@ -2,7 +2,7 @@
 sidebar_label: 'PlanetScale for Postgres 源'
 description: '将 PlanetScale for Postgres 配置为 ClickPipes 的源'
 slug: /integrations/clickpipes/postgres/source/planetscale
-title: 'PlanetScale for Postgres 源配置指南'
+title: 'PlanetScale for Postgres 源端设置指南'
 doc_type: '指南'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 integration:
@@ -13,7 +13,6 @@ integration:
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
-
 
 # PlanetScale for Postgres 源端设置指南 \{#planetscale-for-postgres-source-setup-guide\}
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: 'Customizing ClickHouse Assistant chat with a semantic layer'
-title: 'Optimizing ClickHouse Assistant Agent Conversations with a Semantic Layer'
+title: 'Optimizing ClickHouse Assistant agent conversations with a semantic layer'
 pagination_prev: null
 pagination_next: null
 description: 'Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent'

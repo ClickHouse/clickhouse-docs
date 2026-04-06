@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
+title: '使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志'
 sidebar_label: 'AWS Lambda 日志'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
+description: '使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', '日志', 'CloudWatch']
 ---

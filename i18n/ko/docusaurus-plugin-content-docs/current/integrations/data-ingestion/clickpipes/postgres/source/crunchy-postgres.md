@@ -3,7 +3,7 @@ sidebar_label: 'Crunchy Bridge Postgres'
 description: 'ClickPipes 소스로 Crunchy Bridge Postgres를 설정합니다'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
 title: 'Crunchy Bridge Postgres 소스 설정 가이드'
-keywords: ['crunchy bridge', 'postgres', 'clickpipes', '논리적 복제', '데이터 수집']
+keywords: ['crunchy bridge', 'postgres', 'clickpipes', '논리 복제', '데이터 수집']
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -13,7 +13,6 @@ integration:
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
-
 
 # Crunchy Bridge Postgres 소스 설정 가이드 \{#crunchy-bridge-postgres-source-setup-guide\}
 

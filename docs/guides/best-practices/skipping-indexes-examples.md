@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes/examples
-sidebar_label: 'Data Skipping Indexes - Examples'
+sidebar_label: 'Data skipping indexes - examples'
 sidebar_position: 2
 description: 'Consolidated Skip Index Examples'
-title: 'Data Skipping Index Examples'
+title: 'Data skipping index examples'
 doc_type: 'guide'
 keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---

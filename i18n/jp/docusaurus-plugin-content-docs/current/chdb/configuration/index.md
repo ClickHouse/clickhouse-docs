@@ -65,7 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-詳細は [Logging](logging.md) を参照してください。
+詳細は [Logging](../debugging/logging.md) を参照してください。
 
 
 ### キャッシュの設定 \{#cache\}

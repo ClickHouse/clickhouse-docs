@@ -3,7 +3,7 @@ description: 'JOIN 子句说明文档'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 子句'
-keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN']
+keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
 doc_type: 'reference'
 ---
 
@@ -25,32 +25,34 @@ FROM <left_table>
 
 ## 支持的 JOIN 类型 \{#supported-types-of-join\}
 
-支持所有标准的 [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)) 类型：
+支持所有标准的 [SQL JOIN](https://en.wikipedia.org/wiki/Join_\(SQL\)) 类型：
 
-| Type              | Description                                                                   |
-|-------------------|-------------------------------------------------------------------------------|
-| `INNER JOIN`      | 仅返回匹配的行。                                                              |
-| `LEFT OUTER JOIN` | 在返回匹配行的基础上，额外返回左表中未匹配的行。                              |
-| `RIGHT OUTER JOIN`| 在返回匹配行的基础上，额外返回右表中未匹配的行。                              |
-| `FULL OUTER JOIN` | 在返回匹配行的基础上，额外返回两个表中未匹配的行。                            |
-| `CROSS JOIN`      | 生成整个表的笛卡尔积，不指定 “join keys”。                                    |
+| Type               | Description                                                                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `INNER JOIN`       | 仅返回匹配的行。                                                                                                                             |
+| `LEFT OUTER JOIN`  | 在返回匹配行的基础上，额外返回左表中未匹配的行。                                                                                                             |
+| `RIGHT OUTER JOIN` | 在返回匹配行的基础上，额外返回右表中未匹配的行。                                                                                                             |
+| `FULL OUTER JOIN`  | 在返回匹配行的基础上，额外返回两个表中未匹配的行。                                                                                                            |
+| `CROSS JOIN`       | 生成整个表的笛卡尔积，不指定 “join keys”。                                                                                                          |
+| `NATURAL JOIN`     | 自动基于两个表中所有同名列进行 join；每个公共列在结果中只出现一次。支持 `INNER` (默认) 、`LEFT`、`RIGHT` 和 `FULL` 变体。等价于 `JOIN ... USING (col1, col2, ...)`，其中列列表会自动推导出来。 |
 
-- 未显式指定类型的 `JOIN` 等价于 `INNER`。
-- 关键字 `OUTER` 可以安全省略。
-- `CROSS JOIN` 的另一种语法是在 [`FROM` 子句](../../../sql-reference/statements/select/from.md) 中使用逗号分隔指定多个表。
+* 未显式指定类型的 `JOIN` 等价于 `INNER`。
+* 关键字 `OUTER` 可以安全省略。
+* `CROSS JOIN` 的另一种语法是在 [`FROM` 子句](../../../sql-reference/statements/select/from.md) 中使用逗号分隔指定多个表。
+* 如果 `NATURAL JOIN` 没有可匹配的列，则其行为与 `CROSS JOIN` 相同。
 
 ClickHouse 还提供了额外的 join 类型：
 
-| Type                                        | Description                                                                                                                               |
-|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`         | 基于 “join keys” 的允许列表（allowlist），不会生成笛卡尔积。                                                                               |
-| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`         | 基于 “join keys” 的拒绝列表（denylist），不会生成笛卡尔积。                                                                               |
-| `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 部分地（对于 `LEFT` 和 `RIGHT` 的另一侧）或完全地（对于 `INNER` 和 `FULL`）禁用标准 `JOIN` 类型中的笛卡尔积。                               |
-| `ASOF JOIN`, `LEFT ASOF JOIN`               | 以非精确匹配的方式连接序列。`ASOF JOIN` 的用法将在下文介绍。                                                                                |
-| `PASTE JOIN`                                | 对两个表执行水平方向的拼接。                                                                                                             |
+| Type                                                | Description                                                                     |
+| --------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`                 | 基于 “join keys” 的允许列表 (allowlist) ，不会生成笛卡尔积。                                     |
+| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`                 | 基于 “join keys” 的拒绝列表 (denylist) ，不会生成笛卡尔积。                                      |
+| `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 部分地 (对于 `LEFT` 和 `RIGHT` 的另一侧) 或完全地 (对于 `INNER` 和 `FULL`) 禁用标准 `JOIN` 类型中的笛卡尔积。 |
+| `ASOF JOIN`, `LEFT ASOF JOIN`                       | 以非精确匹配的方式连接序列。`ASOF JOIN` 的用法将在下文介绍。                                            |
+| `PASTE JOIN`                                        | 对两个表执行水平方向的拼接。                                                                  |
 
 :::note
-当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN`（不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`）。
+当 [join&#95;algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN` (不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`) 。
 :::
 
 ## 设置 \{#settings\}

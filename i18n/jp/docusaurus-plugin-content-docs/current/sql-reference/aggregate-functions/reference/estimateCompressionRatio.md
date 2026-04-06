@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 導入バージョン: v25.4.0
 
-指定したカラムを圧縮することなく、その圧縮率を推定します。
+指定したカラムを圧縮せずに、その圧縮率を推定します。
 
 :::note
 以下の例における結果は、サーバーのデフォルトの圧縮コーデックに応じて異なります。
@@ -27,7 +27,7 @@ estimateCompressionRatio([codec, block_size_bytes])(column)
 **パラメータ**
 
 * `codec` — 単一、またはカンマ区切りで複数の圧縮コーデックを指定した文字列。[`String`](/sql-reference/data-types/string)
-* `block_size_bytes` — 圧縮データのブロックサイズ。これは [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) と [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size) の両方を設定するのと同等です。デフォルト値は 1 MiB (1048576 バイト) です。[`UInt64`](/sql-reference/data-types/int-uint)
+* `block_size_bytes` — 圧縮データのブロックサイズ。これは [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) と [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size) の両方を設定するのと同等です。デフォルト値は 1 MiB (1048576 バイト) です。許容される最大値は 256 MiB (268435456 バイト) です。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **引数**
 

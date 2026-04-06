@@ -1,5 +1,5 @@
 ---
-title: 'chDB Python API Reference'
+title: 'chDB Python API reference'
 sidebar_label: 'Python API'
 slug: /chdb/api/python
 description: 'Complete Python API reference for chDB'

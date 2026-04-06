@@ -17,6 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # クエリ API エンドポイントのセットアップ \{#setting-up-query-api-endpoints\}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
@@ -69,7 +70,7 @@ API エンドポイントに対してクエリを実行するには、API キー
   ```
 
   このクエリには、上記のスニペットでハイライトされているパラメータ (`year`) が含まれている点に注意してください。
-  パラメータは、中括弧 `{ }` とパラメータの型を組み合わせて指定できます。
+  クエリパラメータは、`{ }` とパラメータの型を組み合わせて指定できます。
   SQL コンソールのクエリエディタは ClickHouse のクエリパラメータ式を自動的に検出し、各パラメータに対応する入力欄を提供します。
 
   クエリが動作することを確認するために、SQL エディタ右側のクエリ変数入力ボックスに `2010` 年を指定して、このクエリを実行してみましょう:
@@ -116,7 +117,7 @@ API エンドポイントに対してクエリを実行するには、API キー
 
   <Image img={endpoints_curltest} size="md" alt="エンドポイントの curl テスト" />
 
-  最初のリクエストを送信すると、**Share** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、そのクエリに関するモニタリングデータを含むフライアウトが開きます:
+  最初のリクエストを送信すると、**Share** ボタンのすぐ右側に新しいボタンが表示されます。これをクリックすると、そのクエリに関するモニタリングデータを含むフライアウトパネルが開きます:
 
   <Image img={endpoints_monitoring} size="sm" alt="エンドポイントのモニタリング" />
 </VerticalStepper>

@@ -2,7 +2,7 @@
 title: '関数レベルの設定'
 sidebar_label: '関数設定'
 slug: /chdb/configuration/function-config
-description: '関数レベルで実行エンジンとDtype補正を設定する'
+description: '関数レベルで実行エンジンとDtype の補正を設定する'
 keywords: ['chdb', 'datastore', '関数', '設定', 'Dtype', '補正']
 doc_type: 'reference'
 ---

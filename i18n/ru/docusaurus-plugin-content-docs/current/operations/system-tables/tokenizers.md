@@ -12,8 +12,8 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud />
 
-Отображает все доступные токенизаторы.
-Их можно использовать в функциях [tokens](../../sql-reference/functions/splitting-merging-functions.md#tokens), [hasAllTokens](../../sql-reference/functions/string-search-functions.md#hasAllTokens), [hasAnyTokens](../../sql-reference/functions/string-search-functions.md#hasAnyTokens) и [текстовом индексе](../../engines/table-engines/mergetree-family/textindexes.md).
+Показывает все доступные токенизаторы.
+Их можно использовать в функциях [tokens](../../sql-reference/functions/splitting-merging-functions.md#tokens), [hasAllTokens](../../sql-reference/functions/string-search-functions.md#hasAllTokens), [hasAnyTokens](../../sql-reference/functions/string-search-functions.md#hasAnyTokens) и в [текстовом индексе](../../engines/table-engines/mergetree-family/textindexes.md).
 
 Столбцы:
 
@@ -39,5 +39,6 @@ SELECT * FROM system.tokenizers;
 │ array           │
 │ splitByString   │
 │ sparse_grams    │
+│ asciiCJK        │
 └─────────────────┘
 ```

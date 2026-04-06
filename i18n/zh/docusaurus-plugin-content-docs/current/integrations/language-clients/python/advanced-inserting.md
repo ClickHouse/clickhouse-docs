@@ -1,10 +1,10 @@
 ---
-sidebar_label: '高级插入'
+sidebar_label: '进阶插入'
 sidebar_position: 5
 keywords: ['clickhouse', 'python', 'insert', 'advanced']
-description: '使用 ClickHouse Connect 的高级插入'
+description: '使用 ClickHouse Connect 的进阶插入'
 slug: /integrations/language-clients/python/advanced-inserting
-title: '高级插入'
+title: '进阶插入'
 doc_type: 'reference'
 ---
 

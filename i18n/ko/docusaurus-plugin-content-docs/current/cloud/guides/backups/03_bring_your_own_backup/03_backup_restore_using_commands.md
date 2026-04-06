@@ -157,38 +157,36 @@ FROM AzureBlobStorage(
 위에서 설명한 구문을 사용하여 GCS 및 Azure Blob Storage에서도 동일하게 백업을 수행할 수 있습니다.
 
 <Tabs>
-<TabItem value="Backup" label="백업" default>
+  <TabItem value="Backup" label="백업" default>
+    ```sql
+    BACKUP 
+        TABLE system.users,
+        TABLE system.roles,
+        TABLE system.settings_profiles,
+        TABLE system.row_policies,
+        TABLE system.quotas,
+        TABLE system.functions,
+        ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
+    TO S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
 
-```sql
-BACKUP 
-    TABLE system.users,
-    TABLE system.roles,
-    TABLE system.settings_profiles,
-    TABLE system.row_policies,
-    TABLE system.quotas,
-    TABLE system.functions,
-    ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
-TO S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
+    여기서 `uuid`는 백업을 식별하는 데 사용되는 고유 식별자입니다.
+  </TabItem>
 
-여기서 `uuid`는 백업을 식별하는 데 사용되는 고유 식별자입니다.
-
-</TabItem>
-<TabItem value="Restore" label="복원" default>
-
-```sql
-RESTORE ALL
-FROM S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
-</TabItem>
+  <TabItem value="Restore" label="복원" default>
+    ```sql
+    RESTORE ALL EXCEPT TABLES system.users, system.roles
+    FROM S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## FAQ \{#backups-faq\}

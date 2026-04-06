@@ -49,7 +49,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
     {
      changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
      version: '26.2',
-     fast_start_date: '2026-03-30',
+     fast_start_date: '2026-04-03',
      fast_end_date: 'TBD',
      regular_start_date: 'TBD',
      regular_end_date: 'TBD',
@@ -66,7 +66,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_end_date: '2026-02-11',
      regular_start_date: '2026-03-09',
      regular_end_date: '2026-03-18',
-     slow_start_date: '2026-04-06',
+     slow_start_date: '2026-04-07',
      slow_end_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',

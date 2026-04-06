@@ -4,7 +4,7 @@ sidebar_position: 4
 keywords: ['clickhouse', 'java', 'jdbc', 'driver', 'integrate']
 description: 'ClickHouse JDBC driver'
 slug: /integrations/language-clients/java/jdbc
-title: 'JDBC Driver'
+title: 'JDBC driver'
 doc_type: 'reference'
 integration:
   - support_level: 'core'
@@ -184,7 +184,7 @@ my-app-01/1.0 jdbc-v2/0.9.7 clickhouse-java-v2/0.9.6 (Linux; jvm:17.0.17) Apache
 
 ### Operation Identification {#operation-identification}
 
-JDBC Driver generates `query_id` for each operation (Currently it is included in server exceptions). 
+JDBC driver generates `query_id` for each operation (Currently it is included in server exceptions). 
 
 To set `log_comment` for an operation use `com.clickhouse.jdbc.StatementImpl#getLocalSettings` method. This requires 
 `Statement` or `PreparedStatement` to be cast to `com.clickhouse.jdbc.StatementImpl` first. 
@@ -198,7 +198,7 @@ stmt.getLocalSettings().logComment("some-comment");
 
 ## Supported data types {#supported-data-types}
 
-JDBC Driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).
+JDBC driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).
 
 ### JDBC Type Mapping {#jdbc-type-mapping}
 
@@ -933,7 +933,7 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 
 ## Supported data types {#v07-supported-data-types}
 
-JDBC Driver supports same data formats as client library does.
+JDBC driver supports same data formats as client library does.
 
 :::note
 - AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`

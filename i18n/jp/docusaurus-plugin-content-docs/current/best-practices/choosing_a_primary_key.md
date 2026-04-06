@@ -13,21 +13,21 @@ import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> このページでは、用語「ordering key」を「primary key」と同義で使用します。厳密には[ClickHouse ではこれらは異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)が、本ドキュメントの範囲では同じものとして扱って構いません。このとき ordering key は、テーブルの `ORDER BY` で指定された列を指します。
+> このページでは、用語「オーダリングキー」を「主キー」と同義で使用します。厳密には[ClickHouse ではこれらは異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)が、本ドキュメントの範囲では同じものとして扱って構いません。このとき オーダリングキー は、テーブルの `ORDER BY` で指定された列を指します。
 
-ClickHouse の primary key は、Postgres のような OLTP データベースで類似の用語に慣れている方にとっては[挙動が大きく異なる](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)点に注意してください。
+ClickHouse の 主キー は、Postgres のような OLTP データベースで類似の用語に慣れている方にとっては[挙動が大きく異なる](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)点に注意してください。
 
-ClickHouse で効果的な primary key を選択することは、クエリ性能とストレージ効率の両方にとって極めて重要です。ClickHouse はデータをパーツと呼ばれる単位に分割して保持し、各パーツは独自の疎な primary index を持ちます。このインデックスにより、スキャンするデータ量を削減してクエリを大幅に高速化できます。さらに、primary key はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適に並んだデータはより高い圧縮率を実現でき、その結果として I/O が削減され、性能が一層向上します。
+ClickHouse で効果的な 主キー を選択することは、クエリパフォーマンスとストレージ効率の両方にとって極めて重要です。ClickHouse はデータをパーツと呼ばれる単位に分割して保持し、各パーツは独自のスパースな primary index を持ちます。このインデックスにより、スキャンするデータ量を削減してクエリを大幅に高速化できます。さらに、主キー はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適に並んだデータはより高い圧縮率を実現でき、その結果として I/O が削減され、性能が一層向上します。
 
-1. ordering key を選ぶ際は、クエリフィルタ (`WHERE` 句) で頻繁に使用される列、特に大量の行を除外する列を優先してください。
+1. オーダリングキー を選ぶ際は、クエリフィルタ (`WHERE` 句) で頻繁に使用される列、特に大量の行を除外する列を優先してください。
 2. テーブル内の他のデータと高い相関がある列も有用です。連続した配置により、`GROUP BY` や `ORDER BY` 処理中の圧縮率およびメモリ効率が向上するためです。
 
 <br />
 
-ordering key を選ぶ際に役立つ、いくつかの単純なルールを適用できます。以下のルールは互いに矛盾する場合があるため、ここに示す順序で検討してください。**このプロセスから複数の候補キーを洗い出すことができ、通常は 4〜5 個あれば十分です。**
+オーダリングキー を選ぶ際に役立つ、いくつかの単純なルールを適用できます。以下のルールは互いに矛盾する場合があるため、ここに示す順序で検討してください。**このプロセスから複数の候補キーを洗い出すことができ、通常は 4〜5 個あれば十分です。**
 
 :::note Important
-ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び順は、projections と呼ばれる機能を用いて、データ挿入の前後を問わずテーブルに付与できます。ただし、その結果データが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
+オーダリングキー はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び順は、projections と呼ばれる機能を用いて、データ挿入の前後を問わずテーブルに付与できます。ただし、その結果データが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
 :::
 
 ## 例 \{#example\}

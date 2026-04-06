@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-cloudwatch-logs
-title: 'ClickStack로 AWS CloudWatch Logs 모니터링'
-sidebar_label: 'AWS CloudWatch Logs'
+title: 'ClickStack로 AWS CloudWatch 로그 모니터링'
+sidebar_label: 'AWS CloudWatch 로그'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack로 AWS CloudWatch Logs 모니터링'
+description: 'ClickStack로 AWS CloudWatch 로그 모니터링'
 doc_type: 'guide'
 keywords: ['AWS', 'CloudWatch', 'OTEL', 'ClickStack', 'logs']
 ---
@@ -20,6 +20,7 @@ import demo_search_view from '@site/static/images/clickstack/cloudwatch/demo-sea
 import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-log-overview.png';
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+
 
 # ClickStack로 AWS CloudWatch 로그 모니터링하기 \{#cloudwatch-clickstack\}
 

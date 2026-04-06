@@ -1,14 +1,14 @@
 ---
 slug: /guides/developer/deduplicating-inserts-on-retries
-title: '重试插入时的数据去重'
-description: '在重试插入操作时防止产生重复数据'
+title: '重试INSERT时的数据去重'
+description: '在重试INSERT操作时防止产生重复数据'
 keywords: ['deduplication', 'deduplicate', 'insert retries', 'inserts']
 doc_type: 'guide'
 ---
 
-插入操作有时会因为超时等错误而失败。当插入失败时，数据可能已经成功写入，也可能没有。本指南介绍如何在重试插入时启用去重，以确保相同数据不会被多次插入。
+INSERT操作有时会因为超时等错误而失败。当INSERT失败时，数据可能已经成功INSERT，也可能没有。本指南介绍如何在重试INSERT时启用去重，以确保相同数据不会被多次INSERT。
 
-当插入被重试时，ClickHouse 会尝试判断这些数据是否已经成功插入。如果插入的数据被标记为重复，ClickHouse 不会将其再次写入目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常插入一样。
+当INSERT被重试时，ClickHouse 会尝试判断这些数据是否已经成功INSERT。如果INSERT的数据被标记为重复，ClickHouse 不会将其再次INSERT到目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常INSERT一样。
 
 ## 限制 \{#limitations\}
 

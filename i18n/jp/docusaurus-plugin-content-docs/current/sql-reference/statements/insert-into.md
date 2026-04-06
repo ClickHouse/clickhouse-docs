@@ -108,6 +108,46 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 テーブルに[制約](../../sql-reference/statements/create/table.md#constraints)がある場合、それらの式は挿入されたデータの各行に対して評価されます。これらの制約のいずれかが満たされない場合、サーバーは制約名と式を含む例外をスローし、クエリの実行は中断されます。
 
+## データ型の検証 \{#data-type-validation\}
+
+ClickHouse では、許可されたデータ型 (`enable_time_time64_type`、`allow_suspicious_low_cardinality_types`、`allow_suspicious_fixed_string_types` などの設定で制御) は、`INSERT` 時ではなく、テーブル作成時 (`CREATE TABLE`) と schema の変更時 (`ALTER TABLE`) にのみ検証されます。
+
+つまり、許可されていないデータ型を持つテーブルがすでに存在する場合、対応する設定がサーバーで無効になっていても、そのテーブルにはデータを挿入できます。これは意図された動作です。テーブルが一度作成されると、型の作成を制御する設定によって挿入が妨げられるべきではありません。
+
+たとえば:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+そのため、対象テーブルに対応するカラム型がすでに存在していれば、設定がデフォルトで有効な新しいバージョンのクライアントから、設定が無効な古いバージョンのサーバーに対して、許可されていないデータ型のデータでも挿入できます。検証は DML レベルではなく、DDL レベルで行われます。
+:::
+
+
 ## SELECT の結果の挿入 \{#inserting-the-results-of-select\}
 
 **構文**

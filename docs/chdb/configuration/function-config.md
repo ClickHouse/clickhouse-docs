@@ -1,6 +1,6 @@
 ---
-title: 'Function-Level Configuration'
-sidebar_label: 'Function Config'
+title: 'Function-level configuration'
+sidebar_label: 'Function config'
 slug: /chdb/configuration/function-config
 description: 'Configure execution engine and Dtype correction at the function level'
 keywords: ['chdb', 'datastore', 'function', 'config', 'Dtype', 'correction']

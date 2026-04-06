@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## 语法 \{#syntax\}
 
 ```sql
-icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
+icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method] [,extra_credentials])
 icebergS3(named_collection[, option=value [,..]])
 
 icebergAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
@@ -27,10 +27,13 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
+
 ## 参数 \{#arguments\}
 
 参数说明分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 的参数说明相同。
 `format` 表示 Iceberg 表中数据文件的格式。
+
+对于 `icebergS3`，可使用可选的 `extra_credentials` 参数传递 `role_arn`，以便在 ClickHouse Cloud 中进行基于角色的访问。有关配置步骤，请参见 [Secure S3](/cloud/data-sources/secure-s3)。
 
 ### 返回值 \{#returned-value\}
 

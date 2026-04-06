@@ -376,8 +376,8 @@ csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
 ## Расширенные и рекомендуемые варианты использования \{#advanced-and-recommended-usage\}
 
 * Для оптимальной производительности убедитесь, что тип элементов вашего DataStream **не** является Generic — см. [описание различий между типами во Flink](https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/datastream/fault-tolerance/serialization/types_serialization/#flinks-typeinformation-class). Элементы не типа Generic позволяют избежать накладных расходов на сериализацию через Kryo и повысить пропускную способность при записи в ClickHouse.
-* Мы рекомендуем установить `maxBatchSize` как минимум в 1000, а в идеале — в диапазоне от 10 000 до 100 000. Подробнее см. [в этом руководстве по пакетным вставкам](https://clickhouse.com/docs/optimize/bulk-inserts).
-* Чтобы выполнять дедупликацию в стиле OLTP или upsert в ClickHouse, обратитесь к [этой странице документации](https://clickhouse.com/docs/guides/developer/deduplication#options-for-deduplication). *Примечание: не путайте это с дедупликацией пакетов при повторных попытках, которая подробно описана [ниже](#duplicate_batches).*
+* Мы рекомендуем установить `maxBatchSize` как минимум в 1000, а в идеале — в диапазоне от 10 000 до 100 000. Подробнее см. [в этом руководстве по пакетным вставкам](/optimize/bulk-inserts).
+* Чтобы выполнять дедупликацию в стиле OLTP или upsert в ClickHouse, обратитесь к [этой странице документации](/guides/developer/deduplication#options-for-deduplication). *Примечание: не путайте это с пакетной дедупликацией, которая происходит при повторных попытках.*
 
 ## Устранение неполадок \{#troubleshooting\}
 

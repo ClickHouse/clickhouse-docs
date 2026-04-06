@@ -1,6 +1,6 @@
 ---
-title: 'Performance Mode (compat_mode)'
-sidebar_label: 'Performance Mode'
+title: 'Performance mode (compat_mode)'
+sidebar_label: 'Performance mode'
 slug: /chdb/configuration/performance-mode
 description: 'SQL-first performance mode that disables pandas compatibility overhead for maximum throughput'
 keywords: ['chdb', 'datastore', 'performance', 'mode', 'compat', 'sql-first', 'optimization']

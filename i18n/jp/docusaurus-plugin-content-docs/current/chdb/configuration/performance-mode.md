@@ -2,7 +2,7 @@
 title: 'パフォーマンスモード (compat_mode)'
 sidebar_label: 'パフォーマンスモード'
 slug: /chdb/configuration/performance-mode
-description: '最大スループットのために pandas 互換レイヤーによるオーバーヘッドを無効化する SQL ファーストのパフォーマンスモード'
+description: 'スループット最大のために pandas 互換性のためのオーバーヘッドを無効化する SQL 優先のパフォーマンスモード'
 keywords: ['chdb', 'datastore', 'パフォーマンス', 'モード', 'compat', 'sql-first', '最適化']
 doc_type: 'guide'
 ---

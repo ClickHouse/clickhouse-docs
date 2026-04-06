@@ -16,9 +16,9 @@ Amazon S3, Azure Blob Storage 또는 로컬로 마운트된 파일 시스템에 
 `deltaLake`은(는) 호환성을 위해 제공되는 `deltaLakeS3`의 별칭입니다.
 
 ```sql
-deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
-deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
 deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 
@@ -28,8 +28,10 @@ deltaLakeLocal(path, [,format])
 
 ## Arguments \{#arguments\}
 
-이 테이블 함수의 인수는 각각 `s3`, `azureBlobStorage`, `HDFS`, `file` 테이블 함수의 인수와 동일합니다.  
+이 테이블 함수의 인수는 각각 `s3`, `azureBlobStorage`, `HDFS`, `file` 테이블 함수의 인수와 동일합니다.
 `format` 인수는 Delta lake 테이블에서 데이터 파일의 형식을 나타냅니다.
+
+선택 사항인 `extra_credentials` 매개변수는 ClickHouse Cloud에서 역할 기반 액세스를 위해 `role_arn`을 전달하는 데 사용할 수 있습니다. 구성 단계는 [Secure S3](/cloud/data-sources/secure-s3)를 참조하십시오.
 
 ## 반환 값 \{#returned_value\}
 

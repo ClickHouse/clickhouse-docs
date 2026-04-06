@@ -17,6 +17,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ResourceEstimation from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managing/_snippets/_resource_estimation.md';
 
 在生产环境部署 ClickStack 时，为确保安全性、稳定性以及正确配置，还需要额外考虑若干事项。这些事项会因所使用的分发方式——开源或托管——而有所不同。
 
@@ -49,30 +50,7 @@ import TabItem from '@theme/TabItem';
 
     ### 资源估算 \{#estimating-resources\}
 
-    在部署 **Managed ClickStack** 时，必须预留足够的计算资源来同时处理摄取和查询工作负载。下述估算基于你计划摄取的可观测性数据量，提供一个**基准起点**。
-
-    这些建议基于以下假设：
-
-    * 数据量是指每月的**未压缩摄取量**，适用于日志和追踪。
-    * 查询模式是典型的可观测性用例，大多数查询针对**最近的数据**，通常是过去 24 小时。
-    * 摄取在**整个月内相对均匀**。如果预计会有突发流量或峰值，应预留额外余量。
-    * 存储通过 ClickHouse Cloud 对象存储单独处理，不会对保留时长构成限制。我们假设长时间保留的数据被访问的频率较低。
-
-    对于经常查询长时间范围、执行重型聚合或需要支持大量并发用户的访问模式，可能需要更多计算资源。
-
-    #### 推荐基线规格 \{#recommended-sizing\}
-
-    | 每月摄取量              | 推荐计算资源          |
-    | ------------------ | --------------- |
-    | &lt; 10 TB / month | 2 vCPU × 3 个副本  |
-    | 10–50 TB / month   | 4 vCPU × 3 个副本  |
-    | 50–100 TB / month  | 8 vCPU × 3 个副本  |
-    | 100–500 TB / month | 30 vCPU × 3 个副本 |
-    | 1 PB+ / month      | 59 vCPU × 3 个副本 |
-
-    :::note
-    这些数值仅为**估算值**，应作为初始基线使用。实际需求取决于查询复杂度、并发度、保留策略以及摄取吞吐量的波动情况。请始终监控资源使用情况，并按需扩缩容。
-    :::
+    <ResourceEstimation />
 
     #### 隔离可观测性工作负载 \{#isolating-workloads\}
 
@@ -93,7 +71,7 @@ import TabItem from '@theme/TabItem';
   <TabItem value="oss-clickstack" label="ClickStack 开源版">
     ### 网络和端口安全 \{#network-security\}
 
-    默认情况下,Docker Compose 会在主机上暴露端口,使其可从容器外部访问——即使启用了 `ufw`(Uncomplicated Firewall)等工具。这是因为 Docker 网络栈可以绕过主机级防火墙规则,除非进行显式配置。
+    默认情况下,Docker Compose 会在主机上暴露端口,使其可从容器外部访问——即使启用了 `ufw` (Uncomplicated Firewall) 等工具。这是因为 Docker 网络栈可以绕过主机级防火墙规则,除非进行显式配置。
 
     **建议：**
 
@@ -161,7 +139,7 @@ import TabItem from '@theme/TabItem';
 
     #### 创建摄取用户 \{#create-a-database-ingestion-user-oss\}
 
-    建议为 OTel collector 创建专用用户以便将数据摄取到 ClickHouse，并确保将摄取的数据发送到特定的数据库，例如 `otel`。有关更多详细信息，请参阅[&quot;创建摄取用户&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
+    建议为 OTel collector 创建专用用户以便将数据摄取到 ClickHouse，并确保将摄取的数据发送到特定的数据库，例如 `otel`。有关更多详细信息，请参阅[&quot;Creating an ingestion user&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
 
     ### ClickHouse \{#clickhouse\}
 
@@ -174,7 +152,7 @@ import TabItem from '@theme/TabItem';
     ClickHouse OSS 开箱即用提供了强大的安全功能。但是,这些功能需要配置:
 
     * **使用 TLS**，在 `config.xml` 中通过配置 `tcp_port_secure` 和 `<openSSL>` 实现。参见 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)。
-    * 为 `default` 用户 **设置强密码**，或者将其禁用。
+    * **为 `default` 用户设置强密码**，或将其禁用。
     * **避免将 ClickHouse 对外暴露**，除非明确需要这样做。默认情况下，除非修改 `listen_host`，ClickHouse 只绑定到 `localhost`。
     * **使用身份验证方式**，例如密码、证书、SSH 密钥或[外部身份验证器](/operations/external-authenticators)。
     * **限制访问**，使用 IP 过滤和 `HOST` 子句。参见 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
@@ -190,7 +168,7 @@ import TabItem from '@theme/TabItem';
 
     ClickStack UI 使用的 ClickHouse 用户只需设置为 `readonly` 用户,并授予修改以下设置的权限:
 
-    * `max_rows_to_read` (至少允许到 100 万行) 
+    * `max_rows_to_read` (至少允许到 100 万行)
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`

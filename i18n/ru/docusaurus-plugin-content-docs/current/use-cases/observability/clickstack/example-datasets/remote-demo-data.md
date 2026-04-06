@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/remote-demo-data
-title: 'Удаленный демонстрационный набор данных'
+title: 'Удаленный демо-набор данных'
 sidebar_position: 2
 pagination_prev: null
 pagination_next: null
-description: 'Начало работы с ClickStack и удаленным демонстрационным набором данных'
+description: 'Начало работы с ClickStack и удаленным демо-набором данных'
 doc_type: 'guide'
-keywords: ['clickstack', 'примерные данные', 'демонстрационный набор данных', 'логи', 'обсервабилити']
+keywords: ['clickstack', 'примерные данные', 'демо-набор данных', 'логи', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';

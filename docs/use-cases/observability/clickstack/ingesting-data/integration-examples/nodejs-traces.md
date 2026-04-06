@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
-title: 'Monitoring Node.js Traces with ClickStack'
-sidebar_label: 'Node.js Traces'
+title: 'Monitoring Node.js traces with ClickStack'
+sidebar_label: 'Node.js traces'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Node.js application traces with ClickStack'

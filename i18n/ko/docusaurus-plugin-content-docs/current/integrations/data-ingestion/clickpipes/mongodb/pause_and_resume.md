@@ -1,10 +1,10 @@
 ---
-title: 'MongoDB ClickPipe 일시 중지 및 다시 시작'
-description: 'MongoDB ClickPipe 일시 중지 및 다시 시작'
+title: 'MongoDB ClickPipe 일시 중지 및 재개'
+description: 'MongoDB ClickPipe 일시 중지 및 재개'
 sidebar_label: '테이블 일시 중지'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['ClickPipes', 'MongoDB', 'CDC', '데이터 수집', '실시간 동기화']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -17,7 +17,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-MongoDB ClickPipe를 일시 중지하는 것이 유용한 여러 상황이 있습니다. 예를 들어, 정적인 상태의 기존 데이터에 대해 분석을 실행하려는 경우가 있습니다. 또는 MongoDB에 대한 업그레이드 작업을 진행 중일 수 있습니다. 다음은 MongoDB ClickPipe를 일시 중지했다가 다시 시작하는 방법입니다.
+MongoDB ClickPipe를 일시 중지하는 것이 유용한 경우가 있습니다. 예를 들어, 기존 데이터를 정적인 상태로 유지한 채 일부 분석을 실행해야 할 수 있습니다. 또는 MongoDB 업그레이드를 수행 중일 수도 있습니다. 다음은 MongoDB ClickPipe를 일시 중지하고 재개하는 방법입니다.
 
 
 ## MongoDB ClickPipe를 일시 중지하는 단계 \{#pause-clickpipe-steps\}

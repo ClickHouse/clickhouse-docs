@@ -4,7 +4,7 @@ sidebar_label: 'Настройка чата ClickHouse Assistant с помощь
 title: 'Оптимизация диалогов агента ClickHouse Assistant с помощью семантического слоя'
 pagination_prev: null
 pagination_next: null
-description: 'Руководство по использованию AGENTS.md для задания пользовательской бизнес-логики и зависящих от данных инструкций для агента чата ClickHouse Assistant'
+description: 'Руководство по использованию AGENTS.md для задания пользовательской бизнес-логики и зависящих от данных инструкций для чат-агента ClickHouse Assistant'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'

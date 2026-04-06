@@ -1,8 +1,8 @@
 ---
-title: 'Акцессоры DataStore'
-sidebar_label: 'Акцессоры'
+title: 'Аксессоры DataStore'
+sidebar_label: 'Аксессоры'
 slug: /chdb/datastore/accessors
-description: 'Акцессоры для строк, DateTime, массивов, JSON, URL, IP и геоданных — более 185 методов'
+description: 'Аксессоры для строк, DateTime, массивов, JSON, URL, IP и геоданных — более 185 методов'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
 doc_type: 'reference'
 ---

@@ -324,7 +324,62 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 ```
 
 :::note
-Чтение вложенных объектов как подстолбцов может быть неэффективным, поскольку для этого может потребоваться почти полное сканирование JSON-данных.
+Когда пути хранятся в базовой [общей структуре данных](#shared-data-structure) (`map`), чтение подстолбцов вложенных объектов может быть неэффективным, поскольку для этого требуется сканировать всю общую структуру данных. При использовании `map_with_buckets` или `advanced` для сериализации общих данных чтение подстолбцов из общих данных значительно оптимизировано.
+:::
+
+
+## Чтение комбинированных подстолбцов JSON \{#reading-json-combined-sub-columns\}
+
+Тип `JSON` поддерживает чтение пути как **комбинированного подстолбца** с использованием специального синтаксиса `json.@some.path`.
+Комбинированный подстолбец для заданного пути возвращает:
+
+* Литеральное значение, хранящееся по этому пути, в виде `Dynamic`, если путь содержит литеральное значение.
+* Подобъект JSON по этому пути в виде `Dynamic`, если путь не содержит литерального значения, но имеет вложенные подпути.
+* `NULL`, если для этого пути не существует ни литерального значения, ни каких-либо подпутей.
+
+Это полезно, когда в разных строках один и тот же путь может содержать либо скалярное значение, либо вложенный объект, и удобнее, чем отдельно выполнять запрос к подстолбцу с литеральным значением (`json.a`) и подстолбцу с подобъектом (`json.^a`).
+
+В следующем примере сравниваются все три типа подстолбцов для пути `a`:
+
+```sql title="Query"
+CREATE TABLE test (json JSON) ENGINE = Memory;
+INSERT INTO test VALUES ('{"a" : 42, "b" : {"c" : 1, "d" : "Hello"}}'), ('{"a" : {"x": 1, "y": 2}, "b" : {"c" : 1}}'), ('{"c" : "World"}');
+SELECT json FROM test;
+```
+
+```text title="Response"
+┌─json────────────────────────────┐
+│ {"a":42,"b":{"c":1,"d":"Hello"}}│
+│ {"a":{"x":1,"y":2},"b":{"c":1}}│
+│ {"c":"World"}                   │
+└─────────────────────────────────┘
+```
+
+```sql title="Query"
+SELECT
+    json.a,
+    dynamicType(json.a),
+    json.^a,
+    toTypeName(json.^a),
+    json.@a,
+    dynamicType(json.@a)
+FROM test;
+```
+
+```text title="Response"
+┌─json.a─┬─dynamicType(json.a)─┬─json.^a───────┬─toTypeName(json.^a)─┬─json.@a───────┬─dynamicType(json.@a)─┐
+│ 42     │ Int64               │ {}            │ JSON                │ 42            │ Int64                │
+│ NULL   │ None                │ {"x":1,"y":2} │ JSON                │ {"x":1,"y":2} │ JSON                 │
+│ NULL   │ None                │ {}            │ JSON                │ NULL          │ None                 │
+└────────┴─────────────────────┴───────────────┴─────────────────────┴───────────────┴──────────────────────┘
+```
+
+* Строка 1: `a` содержит литеральное значение `42`. `json.a` возвращает его как `Dynamic(Int64)`, `json.^a` возвращает пустой подобъект `{}` (у `a` нет вложенных ключей), а `json.@a` возвращает литеральное значение `42`.
+* Строка 2: `a` содержит вложенный объект. `json.a` возвращает `NULL` (по этому пути нет литерального значения), `json.^a` возвращает подобъект как `JSON`, а `json.@a` также возвращает этот подобъект как `Dynamic(JSON)`.
+* Строка 3: `a` полностью отсутствует. И `json.a`, и `json.@a` возвращают `NULL`, а `json.^a` возвращает пустой `{}`.
+
+:::note
+Когда пути хранятся в базовой (`map`) [общей структуре данных](#shared-data-structure), чтение объединённых подстолбцов может быть неэффективным, поскольку требует сканирования всей общей структуры данных. При сериализации общих данных `map_with_buckets` или `advanced` чтение подстолбцов из общей структуры данных значительно оптимизировано.
 :::
 
 
@@ -824,17 +879,16 @@ ORDER BY _part ASC
 
 #### Map with buckets \{#shared-data-map-with-buckets\}
 
-В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («buckets») с типом `Map(String, String)`.
+В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («бакеты») с типом `Map(String, String)`.
 Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse
 читает целиком столбец `Map` из одного бакета и извлекает требуемый путь в памяти.
 
 Эта сериализация менее эффективна для записи данных и чтения всего столбца `JSON`, но более эффективна для чтения подстолбцов путей,
 поскольку считываются данные только из нужных бакетов.
 
-Количество бакетов `N` управляется настройками MergeTree [object_shared_data_buckets_for_compact_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
-и [object_shared_data_buckets_for_wide_part](
-../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
+Количество бакетов `N` управляется настройками MergeTree [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
+и [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
+Максимально допустимое значение для обеих настроек — 256.
 
 #### Advanced \{#shared-data-advanced\}
 
@@ -1134,6 +1188,164 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 **Примечание:** если два пути содержат значения разных типов данных, они сравниваются в соответствии с [правилом сравнения](/sql-reference/data-types/variant#comparing-values-of-variant-data) типа данных `Variant`.
 
+
+## Индексы пропуска данных для JSON \{#data-skipping-indexes-for-json\}
+
+[Индексы пропуска данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) можно использовать со столбцами `JSON` двумя способами:
+
+1. **Индексы по конкретным подстолбцам** — создайте стандартный индекс пропуска данных для известного пути в JSON, как и для обычного столбца. В этом случае индексируются *значения* по этому пути.
+2. **Индексы на основе путей с `JSONAllPaths`** — индексируйте *набор путей*, присутствующих в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь.
+
+### Индексы для конкретных подстолбцов \{#json-indexes-on-subcolumns\}
+
+Вы можете создать индекс пропуска данных для любого подстолбца JSON, используя тот же синтаксис, что и для обычных столбцов.
+Работает любой [поддерживаемый тип индекса](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) (`minmax`, `set`, `bloom_filter`, `tokenbf_v1`, `ngrambf_v1` и т. д.).
+
+Есть два способа указать подстолбец JSON в выражении индекса:
+
+* **Типизированный путь**, объявленный в подсказке типа JSON, — доступ по имени напрямую: `json.a`.
+* **Динамический путь** с явным приведением типа — используйте синтаксис приведения `::`: `json.b::String`.
+
+Также можно использовать выражения, объединяющие несколько подстолбцов, например `json.a || json.b::String`.
+
+#### Пример \{#json-indexes-on-subcolumns-example\}
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id UInt32),
+    INDEX idx_sensor data.sensor_id TYPE minmax GRANULARITY 1,
+    INDEX idx_location data.location::String TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+Индекс `minmax` для типизированного подстолбца `data.sensor_id` ограничивает сканирование соответствующими гранулами:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id < 2;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: minmax GRANULARITY 1
+        Parts: 1/2
+        Granules: 2/8
+```
+
+Индекс `bloom_filter` для подстолбца `data.location::String` с приведением типа также работает:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/8
+```
+
+### Индексы на основе путей с JSONAllPaths \{#json-indexes-jsonallpaths\}
+
+[Индексы пропуска данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) также можно создавать для столбцов `JSON` с помощью функции [`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths).
+Это аналогично созданию индексов пропуска данных для столбцов [`Map`](/sql-reference/data-types/map) через `mapKeys`: индекс хранит набор JSON-путей, присутствующих в каждой грануле, и использует его, чтобы пропускать гранулы, которые не могут содержать запрашиваемый путь.
+
+#### Поддерживаемые типы индексов \{#json-indexes-jsonallpaths-supported-types\}
+
+`JSONAllPaths` можно использовать со следующими типами индексов пропуска данных:
+
+* [`bloom_filter`](/engines/table-engines/mergetree-family/mergetree#bloom-filter) — поддерживает `equals`, `in` и `IS NOT NULL`.
+* [`tokenbf_v1`](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) — поддерживает `equals` и `IS NOT NULL`.
+* [`ngrambf_v1`](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) — поддерживает `equals` и `IS NOT NULL`.
+* [`text`](/engines/table-engines/mergetree-family/textindexes) (инвертированный индекс) — поддерживает `equals`, `in` и `IS NOT NULL`.
+
+#### Пример \{#json-indexes-jsonallpaths-example\}
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что индекс пропуска данных используется. Если путь существует только в одной части, индекс пропускает другую часть:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+Если путь отсутствует ни в одной части, пропускаются все части и гранулы:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL` также использует индекс — он пропускает гранулы, где путь отсутствует (поскольку в этом случае значение было бы `NULL`):
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: bloom_filter GRANULARITY 1
+        Parts: 1/2
+        Granules: 1/2
+```
+
+#### Как это работает \{#json-indexes-jsonallpaths-how-it-works\}
+
+Выражение `JSONAllPaths(json_column)` возвращает `Array(String)`, содержащий все пути, присутствующие в значении JSON.
+Индекс пропуска данных сохраняет эти строки путей в своей структуре данных (фильтр Блума или инвертированный индекс).
+Когда запрос фильтрует по `json.some.path`, индекс проверяет, присутствует ли строка `"some.path"` в индексе для каждой гранулы, и пропускает гранулы, в которых она отсутствует.
+
+#### Безопасность при отсутствии путей \{#json-indexes-jsonallpaths-safety-with-missing-paths\}
+
+Когда путь JSON отсутствует в грануле, подстолбец вычисляется как:
+
+* `NULL` для типа `Dynamic` (например, `json.path`) и подстолбцов типа `Nullable` (например, `json.path.:Int64`) — сравнения с `NULL` всегда возвращают false, поэтому пропуск безопасен.
+* Значение типа по умолчанию для выражений `CAST` без `Nullable` (например, `json.path::Int64` дает `0`, если путь отсутствует) — пропуск безопасен только тогда, когда сравниваемое значение отличается от значения по умолчанию. Индекс автоматически учитывает это различие.
 
 ## Рекомендации по более эффективному использованию типа JSON \{#tips-for-better-usage-of-the-json-type\}
 

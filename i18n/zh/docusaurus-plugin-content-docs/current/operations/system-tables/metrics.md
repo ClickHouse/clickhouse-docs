@@ -870,6 +870,14 @@ Iceberg 元数据缓存的大小（以字节为单位）
 
 Iceberg 元数据缓存中已缓存的 File 数量
 
+### IcebergSchedulePoolSize \{#icebergschedulepoolsize\}
+
+Iceberg 表后台调度池中的任务数量上限。
+
+### IcebergSchedulePoolTask \{#icebergschedulepooltask\}
+
+Iceberg 表后台调度池中的任务数量。
+
 ### IndexMarkCacheBytes \{#indexmarkcachebytes\}
 
 二级索引的 mark cache 总大小（以字节为单位）
@@ -1517,6 +1525,18 @@ S3 请求数
 ### SendScalars \{#sendscalars\}
 
 正在向远程服务器发送标量数据的连接数。
+
+### SerializationCacheBytesInMemory \{#serializationcachebytesinmemory\}
+
+序列化缓存的总大小 (以字节为单位) ，仅计算值部分
+
+### SerializationCacheBytesInMemoryAllocated \{#serializationcachebytesinmemoryallocated\}
+
+序列化缓存的总大小 (以字节为单位) ，包括键以及空槽位产生的额外开销
+
+### SerializationCacheCount \{#serializationcachecount\}
+
+序列化缓存中的条目总数
 
 ### SharedCatalogDropDetachLocalTablesErrors \{#sharedcatalogdropdetachlocaltableserrors\}
 

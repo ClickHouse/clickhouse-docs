@@ -21,7 +21,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-ClickHouse Cloud を、コミット契約を通じて [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から利用開始できます。コミット契約は Private Offer とも呼ばれ、一定期間にわたって ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束する契約形態です。
+ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から利用開始できます。コミットメント契約は Private Offer とも呼ばれ、一定期間にわたって ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束する契約形態です。
 
 
 ## 前提条件 \{#prerequisites\}

@@ -1,5 +1,5 @@
 ---
-description: 'Документация по работе с проекциями'
+description: 'Документация по управлению проекциями'
 sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
@@ -7,14 +7,14 @@ title: 'Проекции'
 doc_type: 'reference'
 ---
 
-В этой статье рассматривается, что такое проекции, как их можно использовать и какие существуют варианты управления ими.
+На этой странице рассматривается, что такое проекции, как их можно использовать и какие существуют варианты управления ими.
 
 ## Обзор проекций \{#overview\}
 
 Проекции хранят данные в формате, который оптимизирует выполнение запросов. Этот механизм полезен для:
 
-- Выполнения запросов по столбцу, который не является частью первичного ключа
-- Предварительной агрегации столбцов, что снижает как вычислительные затраты, так и нагрузку на операции ввода-вывода (I/O)
+* Выполнения запросов по столбцу, который не является частью первичного ключа
+* Предварительной агрегации столбцов, что снижает как вычислительные затраты, так и нагрузку на операции ввода-вывода (I/O)
 
 Вы можете определить одну или несколько проекций для таблицы, и во время анализа запроса ClickHouse выберет проекцию с наименьшим объемом данных для сканирования, не изменяя запрос, заданный пользователем.
 
@@ -47,9 +47,8 @@ PRIMARY KEY user_agent
 
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
-SELECT
-*
-ORDER BY user_name
+    SELECT *
+    ORDER BY user_name
 )
 
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
@@ -67,7 +66,7 @@ FROM numbers(1, 100);
 ```
 
 Проекция позволит нам быстро фильтровать по `user_name`, даже если в исходной таблице `user_name` не был определён как `PRIMARY_KEY`.
-Во время выполнения запроса ClickHouse определил, что при использовании проекции будет обработано меньше данных, так как данные упорядочены по `user_name`.
+Во время выполнения запроса ClickHouse определяет, что при использовании проекции будет обработано меньше данных, так как данные упорядочены по `user_name`.
 
 ```sql
 SELECT
@@ -165,9 +164,9 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-### Обычная проекция с полем `_part_offset` \{#normal-projection-with-part-offset-field\}
+### Создание и использование проекционных индексов \{#projection-indexes\}
 
-Создание таблицы с обычной проекцией, использующей поле `_part_offset`:
+Создание [проекционного индекса](../../../engines/table-engines/mergetree-family/mergetree.md#projection-index):
 
 ```sql
 CREATE TABLE events
@@ -176,25 +175,41 @@ CREATE TABLE events
     `event_id` UInt64,
     `user_id` UInt64,
     `huge_string` String,
-    PROJECTION order_by_user_id
-    (
-        SELECT
-            _part_offset
-        ORDER BY user_id
-    )
+    PROJECTION order_by_user_id INDEX user_id TYPE basic
 )
 ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
 
-Добавление тестовых данных:
+<details markdown="1">
+  <summary>Создание проекции с явным полем `_part_offset`</summary>
+
+  Индексы проекций также можно создавать с помощью следующего синтаксиса (не рекомендуется):
+
+  ```sql
+  CREATE TABLE events
+  (
+      `event_time` DateTime,
+      `event_id` UInt64,
+      `user_id` UInt64,
+      `huge_string` String,
+      PROJECTION order_by_user_id
+      (
+          SELECT
+              _part_offset
+          ORDER BY user_id
+      )
+  )
+  ENGINE = MergeTree()
+  ORDER BY (event_id);
+  ```
+</details>
+
+Вставка некоторых данных из выборки:
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
-
-
-#### Использование `_part_offset` в качестве вторичного индекса \{#normal-projection-secondary-index\}
 
 Поле `_part_offset` сохраняет свое значение при слияниях и мутациях, что делает его полезным для вторичного индексирования. Это можно использовать в запросах:
 
@@ -308,6 +323,49 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [I
 - `throw` (по умолчанию): Выбрасывается исключение, предотвращающее рассинхронизацию частей проекций.
 - `drop`: Затронутые части таблицы проекций удаляются. Для этих частей запросы будут выполняться по исходной части таблицы.
 - `rebuild`: Затронутая часть проекции перестраивается, чтобы оставаться согласованной с данными в исходной части таблицы.
+
+## Ограничения \{#limitations\}
+
+Невозможно использовать столбец `ALIAS` в предложении `ORDER BY` для проекции. Например:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+Столбцы `ALIAS` физически не хранятся и вычисляются на лету во время выполнения запроса, поэтому они недоступны при записи части проекции, когда вычисляется выражение сортировки.
+
+Вместо этого используйте столбцы `MATERIALIZED` или укажите выражение напрямую:
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
+
 
 ## См. также \{#see-also\}
 

@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon RDS Postgres'
 description: '将 Amazon RDS Postgres 设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'RDS Postgres 源设置指南'
+title: 'RDS Postgres 源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 integration:
@@ -18,7 +18,6 @@ import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpip
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
-
 
 # RDS Postgres 源配置指南 \{#rds-postgres-source-setup-guide\}
 

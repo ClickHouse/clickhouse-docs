@@ -3,7 +3,7 @@ sidebar_position: 1
 sidebar_label: 'Разделение хранилища и вычислений'
 slug: /guides/separation-storage-compute
 title: 'Разделение хранилища и вычислений'
-description: 'В этом руководстве рассматривается, как использовать ClickHouse и S3 для реализации архитектуры с разделением хранилища и вычислений.'
+description: 'В этом руководстве рассматривается, как использовать ClickHouse и S3 для реализации архитектуры с раздельным хранением и вычислительными ресурсами.'
 doc_type: 'guide'
 keywords: ['хранилище', 'вычисления', 'архитектура', 'масштабируемость', 'облако']
 ---
@@ -11,7 +11,6 @@ keywords: ['хранилище', 'вычисления', 'архитектура
 import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
-
 
 # Разделение хранилища и вычислений \{#separation-of-storage-and-compute\}
 

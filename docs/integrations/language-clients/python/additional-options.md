@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Additional Options'
+sidebar_label: 'Additional options'
 sidebar_position: 3
 keywords: ['clickhouse', 'python', 'options', 'settings']
-description: 'Additional Options for ClickHouse Connect'
+description: 'Additional options for ClickHouse Connect'
 slug: /integrations/language-clients/python/additional-options
-title: 'Additional Options'
+title: 'Additional options'
 doc_type: 'reference'
 ---
 

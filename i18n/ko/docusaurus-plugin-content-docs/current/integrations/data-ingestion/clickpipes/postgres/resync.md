@@ -1,9 +1,9 @@
 ---
 title: '데이터베이스 ClickPipe 재동기화'
-description: '데이터베이스 ClickPipe를 재동기화하는 방법을 설명하는 문서'
+description: '데이터베이스 ClickPipe 재동기화 가이드'
 slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'ClickPipe 재동기화'
-doc_type: 'guide'
+doc_type: '가이드'
 keywords: ['clickpipes', 'postgresql', 'cdc', '데이터 수집', '실시간 동기화']
 integration:
   - support_level: 'core'

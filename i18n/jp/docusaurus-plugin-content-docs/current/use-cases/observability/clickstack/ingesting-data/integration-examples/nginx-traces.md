@@ -17,6 +17,7 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # ClickStack による Nginx トレースの監視 \{#nginx-traces-clickstack\}
 
 :::note[TL;DR]

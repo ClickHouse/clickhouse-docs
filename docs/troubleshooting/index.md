@@ -16,7 +16,7 @@ keywords: [
   'database connection problems',
   'troubleshooting guide'
 ]
-title: 'Troubleshooting Common Issues'
+title: 'Troubleshooting common issues'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 

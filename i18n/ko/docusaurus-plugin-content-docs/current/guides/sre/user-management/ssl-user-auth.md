@@ -2,8 +2,8 @@
 sidebar_label: 'SSL 사용자 인증서 기반 인증'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: 'SSL 사용자 인증서를 사용한 인증 구성'
-description: '이 가이드는 SSL 사용자 인증서를 사용한 인증 구성을 위해 필요한 최소한의 간단한 설정 방법을 제공합니다.'
+title: '인증용 SSL 사용자 인증서 구성'
+description: '이 가이드는 SSL 사용자 인증을 구성하기 위한 간단하고 최소한의 설정을 제공합니다.'
 doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---

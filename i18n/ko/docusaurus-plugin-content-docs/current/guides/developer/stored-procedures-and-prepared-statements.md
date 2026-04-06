@@ -1,16 +1,15 @@
 ---
-sidebar_label: '저장 프로시저 및 쿼리 매개변수'
+sidebar_label: '저장 프로시저와 쿼리 매개변수'
 sidebar_position: 19
 keywords: ['clickhouse', '저장 프로시저', '준비된 SQL 문', '쿼리 매개변수', 'UDF', '매개변수화된 뷰']
 description: 'ClickHouse에서 저장 프로시저, 준비된 SQL 문, 쿼리 매개변수에 대한 가이드'
 slug: /guides/developer/stored-procedures-and-prepared-statements
-title: '저장 프로시저 및 쿼리 매개변수'
+title: '저장 프로시저와 쿼리 매개변수'
 doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 # ClickHouse에서 저장 프로시저와 쿼리 매개변수 \{#stored-procedures-and-query-parameters-in-clickhouse\}
 

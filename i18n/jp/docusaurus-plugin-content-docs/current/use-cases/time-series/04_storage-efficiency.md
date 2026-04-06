@@ -1,9 +1,9 @@
 ---
-title: 'ストレージ効率 - タイムシリーズ'
+title: 'ストレージ効率 - 時系列データ'
 sidebar_label: 'ストレージ効率'
-description: 'タイムシリーズデータのストレージ効率を向上させる'
+description: '時系列データのストレージ効率を向上させる'
 slug: /use-cases/time-series/storage-efficiency
-keywords: ['タイムシリーズ', 'ストレージ効率', '圧縮', 'データ保持期間', 'TTL', 'ストレージ最適化', 'ディスク使用量']
+keywords: ['時系列データ', 'ストレージ効率', '圧縮', 'データ保持期間', 'TTL', 'ストレージ最適化', 'ディスク使用量']
 show_related_blogs: true
 doc_type: 'guide'
 ---

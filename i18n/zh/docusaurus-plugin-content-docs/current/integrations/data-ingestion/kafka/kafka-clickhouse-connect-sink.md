@@ -98,13 +98,13 @@ schemas.enable=false
 | `hostname` (Required)                           | 服务器的主机名或 IP 地址                                                                                                                                                             | N/A                                                      |
 | `port`                                          | ClickHouse 端口——云环境中 HTTPS 的默认端口为 8443,自托管环境中默认使用 HTTP 时应使用 8123                                                                                                            | `8443`                                                   |
 | `ssl`                                           | 启用到 ClickHouse 的 SSL 连接                                                                                                                                                    | `true`                                                   |
-| `jdbcConnectionProperties`                      | 连接 ClickHouse 时使用的连接属性。必须以 `?` 开头,`param=value` 之间使用 `&` 连接                                                                                                                | `""`                                                     |
+| `jdbcConnectionProperties`                      | 连接 ClickHouse 时使用的连接属性。必须以 `?` 开头，`param=value` 之间使用 `&` 连接                                                                                                                | `""`                                                     |
 | `username`                                      | ClickHouse 数据库用户名                                                                                                                                                          | `default`                                                |
 | `password` (Required)                           | ClickHouse 数据库密码                                                                                                                                                           | N/A                                                      |
 | `database`                                      | ClickHouse 数据库名称                                                                                                                                                           | `default`                                                |
 | `connector.class` (Required)                    | Connector 类(显式设置并保持为默认值)                                                                                                                                                   | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
 | `tasks.max`                                     | Connector 任务数量                                                                                                                                                             | `"1"`                                                    |
-| `errors.retry.timeout`                          | Kafka Connect 最大重试超时时间，以毫秒为单位。`0` 表示不重试。`-1` 表示无限重试。建议值大于 &quot;10000&quot; ms (10 秒)                                                                                      | `"0"`                                                    |
+| `errors.retry.timeout`                          | Kafka Connect 最大重试超时时间，以毫秒为单位。`0` 表示不重试。`-1` 表示无限重试。建议值大于 &quot;10000&quot; ms (10 秒)  Timeout                                                                             | `"0"`                                                    |
 | `exactlyOnce`                                   | 是否启用 Exactly Once                                                                                                                                                          | `"false"`                                                |
 | `topics` (Required)                             | 要轮询的 Kafka 主题——主题名称必须与表名一致                                                                                                                                                 | `""`                                                     |
 | `key.converter` (Required* - See Description)   | 根据 key 的类型进行设置。如果需要传递 key(且未在 worker 配置中定义),则此项为必填。                                                                                                                        | `"org.apache.kafka.connect.storage.StringConverter"`     |
@@ -121,6 +121,9 @@ schemas.enable=false
 | `dateTimeFormats`                               | 用于解析 DateTime64 schema 字段的日期时间格式列表,以 `;` 分隔(例如 `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`)。                                      | `""`                                                     |
 | `tolerateStateMismatch`                         | 允许 Connector 丢弃&quot;早于&quot;当前 AFTER&#95;PROCESSING 存储偏移量的记录(例如,如果发送了偏移量 5,而最近记录的偏移量是 250)。应在发生故障后用于修复摄取,完成后应将其改回 `"false"`。                                              | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | 在收集要插入的消息时忽略分区(仅当 `exactlyOnce` 为 `false` 时)。性能注意:Connector 任务越多,每个任务分配到的 Kafka 分区就越少——这可能会产生收益递减。                                                                         | `"false"`                                                |
+| `bufferCount` (自 v1.3.6 起)                      | 刷新到 ClickHouse 之前在内存中缓冲的记录数。`0` 表示禁用内部缓冲。`exactlyOnce=true` 时不支持缓冲。                                                                                                        | `"0"`                                                    |
+| `bufferFlushTime` (自 v1.3.6 起)                  | 当 `exactlyOnce=false` 时，刷新前缓冲记录的最长时间，以 Milliseconds 为单位。`0` 表示禁用基于时间的刷新。默认值为 `0`。仅在使用基于时间的阈值时需要。仅当 `bufferCount > 0` 时生效。                                                  | `"0"`                                                    |
+| `reportInsertedOffsets` (自 v1.3.6 起)            | 启用后,当 `exactlyOnce=false` 时,`preCommit` 将仅返回成功插入的偏移量(而非 `currentOffsets`)。当 `ignorePartitionsWhenBatching=true` 时,此设置不适用,仍会返回 `currentOffsets`。                            | `"false"`                                                |
 
 ### 目标表 \{#target-tables\}
 
@@ -296,6 +299,38 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
     "value.converter": "org.apache.kafka.connect.storage.StringConverter",
     "customInsertFormat": "true",
     "insertFormat": "CSV"
+  }
+}
+```
+
+
+### 内部缓冲 \{#internal-buffering\}
+
+内部缓冲允许 sink 任务累积来自多次 `poll()` 调用的记录，并将其作为更大的批次刷新到 ClickHouse。在每次 poll 都会产生许多按分区划分的小批次的工作负载中，这可以提高吞吐量。
+
+关键行为：
+
+* `bufferCount` 控制刷新前缓冲的记录数量。
+* `bufferFlushTime` 设置刷新缓冲记录之前的最长等待时间 (以毫秒为单位) 。
+* 仅当 `bufferCount > 0` 时，`bufferFlushTime` 才会生效。
+* `bufferCount=0` 且 `bufferFlushTime=0` 会使缓冲保持禁用状态 (默认行为) 。
+* 当 `exactlyOnce=true` 时，不支持缓冲。
+
+为什么缓冲与 exactly-once 模式不兼容：
+缓冲会改变批次边界，从而破坏 ClickHouse 数据块去重以及连接器 offset 状态机。
+要解决此问题，可以在连接器配置中使用 `exactlyOnce=false` 禁用 exactly-once 模式，或者使用 `bufferCount=0` 禁用缓冲。
+
+示例：
+
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "exactlyOnce": "false",
+    "bufferCount": "5000",
+    "bufferFlushTime": "2000"
   }
 }
 ```

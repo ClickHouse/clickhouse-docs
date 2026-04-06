@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Accessors'
+title: 'DataStore accessors'
 sidebar_label: 'Accessors'
 slug: /chdb/datastore/accessors
 description: 'String, DateTime, Array, JSON, URL, IP, and Geo accessors with 185+ methods'

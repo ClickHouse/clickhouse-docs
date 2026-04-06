@@ -1,6 +1,6 @@
 ---
 title: 'Supported cloud regions'
-sidebar_label: 'Supported Cloud regions'
+sidebar_label: 'Supported cloud regions'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'Supported regions for ClickHouse Cloud'
 slug: /cloud/reference/supported-regions
@@ -21,7 +21,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-central-1 (Frankfurt)
 - eu-west-1 (Ireland)
 - eu-west-2 (London)
-- me-central-1 (UAE)
 - us-east-1 (N. Virginia)
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)

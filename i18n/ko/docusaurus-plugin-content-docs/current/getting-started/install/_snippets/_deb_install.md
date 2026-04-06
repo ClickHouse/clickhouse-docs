@@ -1,128 +1,132 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Recommendations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
 
 # Debian/Ubuntu에 ClickHouse 설치 \{#install-from-deb-packages\}
 
 > **Debian** 또는 **Ubuntu**에서는 공식 사전 컴파일된 `deb` 패키지 사용을 권장합니다.
 
 <VerticalStepper>
+  ## 권장 사항 검토 \{#review-recommendations\}
 
-## Debian 저장소 설정 \{#setup-the-debian-repository\}
+  <Recommendations />
 
-ClickHouse를 설치하려면 다음 명령을 실행하십시오:
+  ## Debian 저장소 설정 \{#setup-the-debian-repository\}
 
-```bash
-# 필수 패키지 설치
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+  ClickHouse를 설치하려면 다음 명령을 실행하십시오:
 
-# ClickHouse GPG 키를 내려받아 키링에 저장
-curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
+  ```bash
+  # 필수 패키지 설치
+  sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# 시스템 아키텍처 확인
-ARCH=$(dpkg --print-architecture)
+  # ClickHouse GPG 키를 내려받아 키링에 저장
+  curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# apt 소스에 ClickHouse 저장소 추가
-echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
+  # 시스템 아키텍처 확인
+  ARCH=$(dpkg --print-architecture)
 
-# apt 패키지 목록 업데이트
-sudo apt-get update
-```
+  # apt 소스에 ClickHouse 저장소 추가
+  echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-- 필요에 따라 다른 [릴리스 유형](/knowledgebase/production)을 사용하려면 `stable`을 `lts`로 바꿀 수 있습니다.
-- [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/)에서 패키지를 수동으로 내려받아 설치할 수도 있습니다.
-<br/>
-<details>
-<summary>deb 패키지를 설치하기 위한 이전 배포 방식</summary>
+  # apt 패키지 목록 업데이트
+  sudo apt-get update
+  ```
 
-```bash
-# 필수 패키지 설치
-sudo apt-get install apt-transport-https ca-certificates dirmngr
+  * 필요에 따라 다른 [릴리스 유형](/knowledgebase/production)을 사용하려면 `stable`을 `lts`로 바꿀 수 있습니다.
+  * [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/)에서 패키지를 수동으로 내려받아 설치할 수도 있습니다.
 
-# 패키지 인증을 위해 ClickHouse GPG 키 추가
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
+  <br />
 
-# apt 소스에 ClickHouse 저장소 추가
-echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
-    /etc/apt/sources.list.d/clickhouse.list
-    
-# apt 패키지 목록 업데이트
-sudo apt-get update
+  <details>
+    <summary>deb 패키지를 설치하기 위한 이전 배포 방식</summary>
 
-# ClickHouse server 및 client 패키지 설치
-sudo apt-get install -y clickhouse-server clickhouse-client
+    ```bash
+    # 필수 패키지 설치
+    sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# ClickHouse server 서비스 시작
-sudo service clickhouse-server start
+    # 패키지 인증을 위해 ClickHouse GPG 키 추가
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# ClickHouse 명령줄 client 실행
-clickhouse-client # 혹은 비밀번호를 설정한 경우 "clickhouse-client --password"를 사용하십시오.
-```
+    # apt 소스에 ClickHouse 저장소 추가
+    echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
+        /etc/apt/sources.list.d/clickhouse.list
+        
+    # apt 패키지 목록 업데이트
+    sudo apt-get update
 
-</details>
+    # ClickHouse 서버 및 client 패키지 설치
+    sudo apt-get install -y clickhouse-server clickhouse-client
 
-## ClickHouse server 및 client 설치 \{#install-clickhouse-server-and-client\}
+    # ClickHouse 서버 서비스 시작
+    sudo service clickhouse-server start
 
-```bash
-sudo apt-get install -y clickhouse-server clickhouse-client
-```
+    # ClickHouse 명령줄 client 실행
+    clickhouse-client # 혹은 비밀번호를 설정한 경우 "clickhouse-client --password"를 사용하십시오.
+    ```
+  </details>
 
-## ClickHouse 시작 \{#start-clickhouse-server\}
+  ## ClickHouse 서버 및 client 설치 \{#install-clickhouse-server-and-client\}
 
-ClickHouse 서버를 시작하려면 다음 명령을 실행하십시오:
+  ```bash
+  sudo apt-get install -y clickhouse-server clickhouse-client
+  ```
 
-```bash
-sudo service clickhouse-server start
-```
+  ## ClickHouse 시작 \{#start-clickhouse-server\}
 
-ClickHouse 클라이언트를 시작하려면 다음을 실행하십시오:
+  ClickHouse 서버를 시작하려면 다음 명령을 실행하십시오:
 
-```bash
-clickhouse-client
-```
+  ```bash
+  sudo service clickhouse-server start
+  ```
 
-서버에 비밀번호를 설정한 경우에는 다음과 같이 실행해야 합니다:
+  ClickHouse 클라이언트를 시작하려면 다음을 실행하십시오:
 
-```bash
-clickhouse-client --password
-```
+  ```bash
+  clickhouse-client
+  ```
 
-## 독립형 ClickHouse Keeper 설치 \{#install-standalone-clickhouse-keeper\}
+  서버에 비밀번호를 설정한 경우에는 다음과 같이 실행해야 합니다:
 
-:::tip
-운영 환경에서는 ClickHouse Keeper를 전용 노드에서 실행할 것을 강력히 권장합니다.
-테스트 환경에서 ClickHouse Server와 ClickHouse Keeper를 동일한 서버에서 실행하기로 한 경우에는
-ClickHouse Server에 ClickHouse Keeper가 포함되어 있으므로 별도로 ClickHouse Keeper를 설치할 필요가 없습니다.
-:::
+  ```bash
+  clickhouse-client --password
+  ```
 
-독립형 ClickHouse Keeper 서버에서 `clickhouse-keeper`를 설치하려면 다음을 실행하십시오:
+  ## 독립 실행형 ClickHouse Keeper 설치 \{#install-standalone-clickhouse-keeper\}
 
-```bash
-sudo apt-get install -y clickhouse-keeper
-```
+  :::tip
+  프로덕션 환경에서는 ClickHouse Keeper를 전용 노드에서 실행할 것을 강력히 권장합니다.
+  테스트 환경에서 ClickHouse Server와 ClickHouse Keeper를 동일한 서버에서 실행하기로 한 경우에는
+  ClickHouse 서버에 ClickHouse Keeper가 포함되어 있으므로 별도로 ClickHouse Keeper를 설치할 필요가 없습니다.
+  :::
 
-## ClickHouse Keeper 활성화 및 시작 \{#enable-and-start-clickhouse-keeper\}
+  독립 실행형 ClickHouse Keeper 서버에서 `clickhouse-keeper`를 설치하려면 다음을 실행하십시오:
 
-```bash
-sudo systemctl enable clickhouse-keeper
-sudo systemctl start clickhouse-keeper
-sudo systemctl status clickhouse-keeper
-```
+  ```bash
+  sudo apt-get install -y clickhouse-keeper
+  ```
 
+  ## ClickHouse Keeper 활성화 및 시작 \{#enable-and-start-clickhouse-keeper\}
+
+  ```bash
+  sudo systemctl enable clickhouse-keeper
+  sudo systemctl start clickhouse-keeper
+  sudo systemctl status clickhouse-keeper
+  ```
 </VerticalStepper>
 
 ## 패키지 \{#packages\}
 
 사용 가능한 다양한 deb 패키지는 다음과 같습니다:
 
-| Package                        | Description                                                                                                                                                                                                                                                                            |
-|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `clickhouse-common-static`     | 컴파일된 ClickHouse 바이너리 파일을 설치합니다.                                                                                                                                                                                                                                       |
-| `clickhouse-server`            | `clickhouse-server`에 대한 심볼릭 링크를 생성하고 기본 서버 설정 파일을 설치합니다.                                                                                                                                                                                                   |
-| `clickhouse-client`            | `clickhouse-client` 및 기타 클라이언트 관련 도구에 대한 심볼릭 링크를 생성하고 클라이언트 설정 파일을 설치합니다.                                                                                                                                                                    |
-| `clickhouse-common-static-dbg` | 디버그 정보가 포함된 컴파일된 ClickHouse 바이너리 파일을 설치합니다.                                                                                                                                                                                                                  |
-| `clickhouse-keeper`            | 전용 ClickHouse Keeper 노드에 ClickHouse Keeper를 설치하는 데 사용됩니다. ClickHouse 서버와 동일한 서버에서 ClickHouse Keeper를 실행하는 경우 이 패키지를 설치할 필요가 없습니다. ClickHouse Keeper와 기본 ClickHouse Keeper 설정 파일을 설치합니다.                                   |
+| Package                        | Description                                                                                                                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clickhouse-common-static`     | 컴파일된 ClickHouse 바이너리 파일을 설치합니다.                                                                                                                                                         |
+| `clickhouse-server`            | `clickhouse-server`에 대한 심볼릭 링크를 생성하고 기본 서버 설정 파일을 설치합니다.                                                                                                                                |
+| `clickhouse-client`            | `clickhouse-client` 및 기타 클라이언트 관련 도구에 대한 심볼릭 링크를 생성하고 클라이언트 설정 파일을 설치합니다.                                                                                                               |
+| `clickhouse-common-static-dbg` | 디버그 정보가 포함된 컴파일된 ClickHouse 바이너리 파일을 설치합니다.                                                                                                                                             |
+| `clickhouse-keeper`            | 전용 ClickHouse Keeper 노드에 ClickHouse Keeper를 설치하는 데 사용됩니다. ClickHouse 서버와 동일한 서버에서 ClickHouse Keeper를 실행하는 경우 이 패키지를 설치할 필요가 없습니다. ClickHouse Keeper와 기본 ClickHouse Keeper 설정 파일을 설치합니다. |
 
-<br/>
+<br />
 
 :::info
 특정 버전의 ClickHouse를 설치해야 하는 경우 모든 패키지를 동일한 버전으로 설치해야 합니다:

@@ -8,7 +8,7 @@ title: 'SQLAlchemy 지원'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect에는 코어 드라이버를 기반으로 구현된 SQLAlchemy dialect(`clickhousedb`)가 포함되어 있습니다. 이 dialect는 SQLAlchemy Core API를 위해 설계되었으며 SQLAlchemy 1.4.40+ 및 2.0.x를 지원합니다.
+ClickHouse Connect에는 코어 드라이버를 기반으로 구현된 SQLAlchemy 다이얼렉트(`clickhousedb`)가 포함되어 있습니다. 이 다이얼렉트는 SQLAlchemy Core API를 위해 설계되었으며 SQLAlchemy 1.4.40+ 및 2.0.x를 지원합니다.
 
 ## SQLAlchemy로 연결 \{#sqlalchemy-connect\}
 

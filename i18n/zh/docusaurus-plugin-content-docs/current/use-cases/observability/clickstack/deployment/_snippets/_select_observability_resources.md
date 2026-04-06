@@ -9,7 +9,7 @@ import service_provisioned from '@site/static/images/clickstack/getting-started/
 
 <Image img={provider_selection} size="md" alt="资源选择器" border />
 
-该估算将用于确定为你的 Managed ClickStack 服务分配的计算资源规格。默认情况下，新组织会被放置在 [Scale 层级](/cloud/manage/cloud-tiers)。在 Scale 层级中，[纵向自动扩缩容](/manage/scaling#vertical-auto-scaling) 将默认启用。你可以稍后在“Plans”页面更改你的组织层级。
+该估算将用于确定为你的 Managed ClickStack 服务分配的计算资源规格。默认情况下，新组织会被放置在 [Scale 层级](/cloud/manage/cloud-tiers)。在 Scale 层级中，[纵向自动扩缩容](/cloud/features/autoscaling/vertical#vertical-auto-scaling) 将默认启用。你可以稍后在“Plans”页面更改你的组织层级。
 
 对于理解自身资源需求的高级用户，可以通过在“Memory and Scaling”下拉菜单中选择“Custom Configuration”，来精确指定预配的资源以及任意企业特性。
 

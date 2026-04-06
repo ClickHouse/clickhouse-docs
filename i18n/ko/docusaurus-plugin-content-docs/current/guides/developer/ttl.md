@@ -1,16 +1,15 @@
 ---
 slug: /guides/developer/ttl
-sidebar_label: 'TTL (Time To Live)'
+sidebar_label: 'TTL (Time to Live)'
 sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', '오래된', '데이터']
-description: 'TTL (time-to-live)은 일정 시간이 경과한 후 행 또는 컬럼을 이동, 삭제하거나 롤업할 수 있는 기능을 의미합니다.'
-title: 'TTL (time-to-live)로 데이터 관리하기'
+description: 'TTL (time-to-live)은 일정 시간이 경과한 후 행 또는 컬럼을 이동, 삭제 또는 롤업할 수 있는 기능을 의미합니다.'
+title: 'TTL을 사용한 데이터 관리 (Time-to-live)'
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 
 # TTL(time-to-live)을 사용한 데이터 관리 \{#manage-data-with-ttl-time-to-live\}
 

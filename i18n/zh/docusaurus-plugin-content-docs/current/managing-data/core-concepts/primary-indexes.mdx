@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 primary key 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
+ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表主键列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
 
 ### 稀疏主索引的创建 \{#sparse-primary-index-creation\}
 
@@ -48,23 +48,23 @@ ClickHouse 中的稀疏主键索引用于高效定位[粒度 (granules) ](/guide
 
 得益于这种稀疏性，主索引足够小，可以完整地放入内存中，从而为在 primary key 列上带有谓词条件的查询提供快速过滤。在下一节中，我们将展示它如何帮助加速此类查询。
 
-### 主索引的使用 \{#primary-index-usage\}
+### 主键索引的使用 \{#primary-index-usage\}
 
-下面通过另一段动画概述稀疏主索引是如何用于加速查询的：
+下面通过另一段动画概述稀疏主键索引是如何用于加速查询的：
 
-<Image img={visual03} size="lg" />
+<Image img={visual03} size="lg"/>
 
-<br />
+<br/>
 
-<br />
+<br/>
 
-① 示例查询在两个 primary key 列上都包含过滤条件：`town = 'LONDON' AND street = 'OXFORD STREET'`。
+① 示例查询在两个主键列上都包含谓词：`town = 'LONDON' AND street = 'OXFORD STREET'`。
 
-② 为了加速查询，ClickHouse 会将表的主索引加载到内存中。
+② 为了加速查询，ClickHouse 会将表的主键索引加载到内存中。
 
-③ 随后扫描索引项，以确定哪些 granule 可能包含满足过滤条件的行——换句话说，哪些 granule 不能被跳过。
+③ 随后，它会扫描索引项，以确定哪些粒度块可能包含与该谓词匹配的行——换句话说，哪些粒度块不能被跳过。
 
-④ 然后将这些潜在相关的 granule 以及查询所需其他列中对应的 granule 一并加载到内存中并进行[处理](/optimize/query-parallelism)。
+④ 然后将这些可能相关的粒度块，以及查询所需任何其他列中对应的粒度块，一并加载到内存中并进行[处理](/optimize/query-parallelism)。
 
 ## 监控主索引 \{#monitoring-primary-indexes\}
 
@@ -88,7 +88,7 @@ GROUP BY part_name;
    └───────────┴─────────┘
 ```
 
-此查询显示了当前某个数据 parts 的主索引中的前 10 条记录。请注意，这些 parts 会在后台持续被[合并](/merges)为更大的 parts：
+此查询显示了当前某个数据部分的主索引中的前 10 条记录。请注意，这些部分会在后台持续被[合并](/merges)为更大的部分：
 
 ```sql
 SELECT 
@@ -116,7 +116,7 @@ LIMIT 10;
     └───────┴────────────────┴──────────────────┘
 ```
 
-最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句来查看如何利用所有数据 parts 的主索引来跳过那些不可能包含满足示例查询谓词的行的 granule。这些 granule 将不会被加载和处理：
+最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句来查看所有数据部分的主索引如何用于跳过那些不可能包含符合示例查询谓词的行的粒度块。这些粒度块将不会被加载和处理：
 
 ```sql
 EXPLAIN indexes = 1
@@ -146,7 +146,7 @@ WHERE
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-请注意，上面 EXPLAIN 输出的第 13 行显示，在所有数据 parts 中的 3,609 个 granule 里，只有 3 个被主键索引的分析选中参与处理。其余 granule 则被完全跳过。
+请注意，上面 EXPLAIN 输出的第 13 行显示，在所有数据 ^^parts^^ 中的 3,609 个 granule 里，只有 3 个被主键索引的分析选中参与处理。其余 granule 则被完全跳过。
 
 我们还可以通过直接运行该查询来观察到，大部分数据都会被跳过：
 
@@ -155,6 +155,7 @@ SELECT max(price)
 FROM uk.uk_price_paid_simple
 WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
 ```
+
 
 ```txt
    ┌─max(price)─┐
@@ -177,17 +178,17 @@ SELECT count() FROM uk.uk_price_paid_simple;
    └──────────┘
 ```
 
-## 关键要点 \{#key-takeaways\}
+##  Key takeaways \{#key-takeaways\}
 
-* **稀疏主索引 (sparse primary index)&#x20;**&#x20;帮助 ClickHouse 通过识别哪些 granule 可能包含满足查询条件的 primary key 列的行，从而跳过不必要的数据。
+* **稀疏主键索引**帮助 ClickHouse 通过识别哪些粒度块可能包含在主键列上与查询条件匹配的行，从而跳过不必要的数据。
 
-* 每个索引只存储 **每个 granule 的首行的 primary key 值** (一个 granule 默认包含 8,192 行) ，因此足够紧凑，可以完全放入内存。
+* 每个索引只存储**每个粒度块首行的主键值**（一个粒度块默认包含 8,192 行），因此足够紧凑，可以装入内存。
 
-* MergeTree 表中的 **每个数据 part** 都有其 **自己的主索引**，并在查询执行期间独立使用。
+* MergeTree 表中的**每个数据 part**都有其**自己的主键索引**，并在查询执行期间独立使用。
 
-* 在查询过程中，索引使 ClickHouse 能够 **跳过 granule**，从而降低 I/O 和内存使用，同时提升性能。
+* 在查询过程中，索引使 ClickHouse 能够**跳过粒度块**，从而降低 I/O 和内存使用，同时提升性能。 
 
-* 你可以使用 `mergeTreeIndex` 表函数来 **检查索引内容**，并通过 `EXPLAIN` 子句监控索引使用情况。
+* 你可以使用 `mergeTreeIndex` 表函数来**检查索引内容**，并通过 `EXPLAIN` 子句监控索引使用情况。
 
 ## 在哪里可以了解更多信息 \{#where-to-find-more-information\}
 

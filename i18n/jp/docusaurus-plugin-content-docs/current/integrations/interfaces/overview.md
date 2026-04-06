@@ -4,7 +4,7 @@ keywords: ['clickhouse', 'ネットワーク', 'インターフェース', 'http
   'クライアント', 'jdbc', 'odbc', 'ドライバ']
 sidebar_label: '概要'
 slug: /interfaces/overview
-title: 'ドライバとインターフェース'
+title: 'ドライバーとインターフェイス'
 doc_type: 'reference'
 ---
 

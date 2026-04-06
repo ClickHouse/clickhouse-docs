@@ -4,7 +4,7 @@ sidebar_label: '集成 LibreChat'
 title: '使用 LibreChat 和 ClickHouse Cloud 设置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 Docker 将 LibreChat 与 ClickHouse MCP 服务器进行集成。'
+description: '本指南介绍如何使用 Docker 设置 LibreChat 与 ClickHouse MCP 服务器。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,7 +14,6 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
-
 
 # 在 LibreChat 中使用 ClickHouse MCP 服务器 \{#using-clickhouse-mcp-server-with-librechat\}
 

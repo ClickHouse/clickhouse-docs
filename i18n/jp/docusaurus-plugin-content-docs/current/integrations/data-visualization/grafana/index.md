@@ -3,7 +3,7 @@ sidebar_label: 'クイックスタート'
 sidebar_position: 1
 slug: /integrations/grafana
 description: 'Grafana で ClickHouse を利用するための入門'
-title: 'Grafana 向け ClickHouse データソースプラグイン'
+title: 'Grafana 用 ClickHouse データソースプラグイン'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
@@ -21,7 +21,6 @@ import quick_config from '@site/static/images/integrations/data-visualization/gr
 import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # Grafana 用 ClickHouse データソースプラグイン \{#clickhouse-data-source-plugin-for-grafana\}
 

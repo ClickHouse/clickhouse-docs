@@ -1,9 +1,9 @@
 ---
 slug: /faq/general/
 sidebar_position: 1
-sidebar_label: 'ClickHouse 일반 질문'
+sidebar_label: 'ClickHouse에 대한 일반 질문'
 keywords: ['faq', 'questions', 'what is']
-title: 'ClickHouse 일반 질문'
+title: 'ClickHouse에 대한 일반 질문'
 description: 'ClickHouse에 대한 일반적인 질문을 모아 둔 색인 페이지'
 doc_type: 'landing-page'
 ---

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/session-replay
-title: 'Session Replay'
-sidebar_label: 'Session Replay'
+title: 'Session replay'
+sidebar_label: 'Session replay'
 sidebar_position: 5
 pagination_prev: null
 pagination_next: null
@@ -122,7 +122,7 @@ This works because the `tracePropagationTargets` configuration links browser spa
 
 ### From trace to session {#trace-to-session}
 
-The correlation works in the other direction too. When viewing a trace in the **Search** view, click on it to open the trace detail, then select the **Session Replay** tab to see exactly what the user was experiencing at the time of that trace. This is especially useful when investigating errors or slow requests — you can start from the backend issue and immediately see the user's perspective.
+The correlation works in the other direction too. When viewing a trace in the **Search** view, click on it to open the trace detail, then select the **Session replay** tab to see exactly what the user was experiencing at the time of that trace. This is especially useful when investigating errors or slow requests — you can start from the backend issue and immediately see the user's perspective.
 
 <Image img={trace_to_replay} alt="Session replay trace view" size="lg"/>
 
@@ -137,11 +137,11 @@ For the full table schema information, see [Tables and schemas used by ClickStac
 There are two ways to see session replay in action:
 
 - **Live example** — visit [clickpy.clickhouse.com](https://clickpy.clickhouse.com), interact with the app, then view your session replay at [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) under the **ClickPy Sessions** source. For details on how ClickPy was instrumented, see the blog post [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack).
-- **Local demo** — the [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) walks through instrumenting a demo application step by step, including running ClickStack locally and viewing your replays.
+- **Local demo** — the [Session replay demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) walks through instrumenting a demo application step by step, including running ClickStack locally and viewing your replays.
 
 ## Learn more {#learn-more}
 
-- [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — interactive local demo application with step-by-step instructions
+- [Session replay demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — interactive local demo application with step-by-step instructions
 - [Browser SDK Reference](/use-cases/observability/clickstack/sdks/browser) — full SDK options, source maps, custom actions, and advanced configuration
 - [Search](/use-cases/observability/clickstack/search) — search syntax for filtering sessions and events
 - [Dashboards](/use-cases/observability/clickstack/dashboards) — build visualizations and dashboards from session and trace data

@@ -1,10 +1,10 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: '时间序列 - 缺失填充'
+sidebar_label: '时间序列 - 填补'
 sidebar_position: 10
-description: '填充时间序列数据中的缺失值。'
-keywords: ['时间序列', '缺失填充']
-title: '填充时间序列数据中的缺失值'
+description: '填补时间序列数据中的缺口。'
+keywords: ['时间序列', '填补']
+title: '填补时间序列数据中的缺口'
 doc_type: 'guide'
 ---
 

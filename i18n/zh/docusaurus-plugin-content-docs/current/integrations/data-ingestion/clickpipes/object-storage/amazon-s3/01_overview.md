@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Amazon S3 和兼容 S3 的对象存储中摄取到 ClickHouse Cloud 中。它支持具有精确一次语义的**一次性摄取**和**持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 S3 ClickPipes，也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 以编程方式进行部署和管理。
+可以通过 ClickPipes UI 手动部署和管理 S3 ClickPipes，也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 以编程方式进行部署和管理。
 
 
 ## 支持的数据源 \{#supported-data-sources\}
@@ -60,11 +60,15 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 
 #### 任意顺序 \{#continuous-ingestion-any-order\}
 
-:::note
-无序模式**仅**支持 Amazon S3，且**不**支持公共存储桶。需要为该存储桶配置一个 [Amazon SQS](https://aws.amazon.com/sqs/) 队列。
+:::tip
+有关分步说明，请参阅[为连续摄取配置无序模式](/integrations/clickpipes/object-storage/s3/unordered-mode)。
 :::
 
-可以通过为存储桶配置一个 [Amazon SQS](https://aws.amazon.com/sqs/) 队列，将 S3 ClickPipe 配置为摄取没有隐式顺序的文件。这样 ClickPipes 就可以监听对象创建事件，并摄取任何新文件，而不受文件命名约定的限制。
+可以通过为存储桶配置一个 [Amazon SQS](https://aws.amazon.com/sqs/) 队列，并可选地使用 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) 作为事件路由器，将 S3 ClickPipe 配置为摄取没有隐式顺序的文件。这样 ClickPipes 就可以监听对象创建事件，并摄取任何新文件，而不受文件命名约定的限制。
+
+:::note
+无序模式**仅**支持 Amazon S3，且**不**支持公共存储桶或兼容 S3 的服务。需要为该存储桶配置一个 [Amazon SQS](https://aws.amazon.com/sqs/) 队列，并可选地使用 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) 作为事件路由器。
+:::
 
 在此模式下，S3 ClickPipe 会对选定路径中的**所有文件**进行初始加载，然后在队列中监听与指定路径匹配的 `ObjectCreated:*` 事件。针对已处理过的文件、路径不匹配的文件或其他类型事件的任何消息都将被**忽略**。
 
@@ -72,11 +76,15 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 为事件设置前缀/后缀是可选的。如果设置，确保它与 ClickPipe 配置的路径匹配。S3 不允许针对相同事件类型配置多个重叠的通知规则。
 :::
 
-文件会在达到 `max insert bytes` 或 `max file count` 中配置的阈值后被摄取，或者在经过一个可配置的时间间隔后被摄取（默认 30 秒）。**无法**从某个特定文件或时间点开始摄取——ClickPipes 始终会加载选定路径中的所有文件。如果配置了 DLQ，失败的消息将被重新入队并重新处理，最多重试 DLQ 中 `maxReceiveCount` 参数配置的次数。
+文件会在达到 `max insert bytes` 或 `max file count` 中配置的阈值后被摄取，或者在经过一个可配置的时间间隔后被摄取 (默认 30 秒) 。**无法**从某个特定文件或时间点开始摄取——ClickPipes 始终会加载选定路径中的所有文件。如果配置了 DLQ，失败的消息将被重新入队并重新处理，最多重试 DLQ 中 `maxReceiveCount` 参数配置的次数。
 
 :::tip
-我们强烈建议为 SQS 队列配置**死信队列（Dead-Letter-Queue，DLQ）**，以便更容易调试和重试失败的消息。
+我们强烈建议为 SQS 队列配置**死信队列 (Dead-Letter-Queue，DLQ)&#x20;**，以便更容易调试和重试失败的消息。
 :::
+
+##### EventBridge 到 SQS \{#eb-to-sqs\}
+
+也可以通过 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) 将 S3 事件通知发送到 SQS。对于大多数用例，推荐采用这种方法，因为 EventBridge 支持更丰富的事件过滤、将事件扇出到多个目标，而且不受 S3“每个前缀下每种事件类型只能配置一条通知规则”这一限制的影响。有关分步说明，请参阅 [为持续摄取配置无序模式](/integrations/clickpipes/object-storage/s3/unordered-mode)。
 
 ##### SNS to SQS \{#sns-to-sqs\}
 
@@ -199,7 +207,7 @@ ClickPipes 提供了合理的默认值，能够满足大多数用例的需求。
 
 ### 扩缩容 \{#scaling\}
 
-Object Storage ClickPipes 的扩缩容基于 [已配置的纵向自动扩缩容设置](/manage/scaling#configuring-vertical-auto-scaling) 所确定的 ClickHouse 服务最小规格。ClickPipe 的规格在创建 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+对象存储 ClickPipes 的扩缩容基于 [已配置的纵向自动扩缩容设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling) 所确定的 ClickHouse 服务最小规格。ClickPipe 的规格在创建 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 若要提高大型摄取作业的吞吐量，建议在创建 ClickPipe 之前先对 ClickHouse 服务进行扩容。
 

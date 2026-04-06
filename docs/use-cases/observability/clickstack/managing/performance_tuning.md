@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/performance_tuning
-title: 'ClickStack - Performance Tuning'
-sidebar_label: 'Performance Tuning'
+title: 'ClickStack - performance tuning'
+sidebar_label: 'Performance tuning'
 description: 'Performance Tuning for ClickStack - The ClickHouse Observability Stack'
 doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'logs', 'performance', 'optimization']

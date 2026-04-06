@@ -4,7 +4,7 @@ description: 'MySQL ClickPipe 일시 중지 및 재개'
 sidebar_label: '테이블 일시 중지'
 slug: /integrations/clickpipes/mysql/pause_and_resume
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', '데이터 수집', '실시간 동기화']
+keywords: ['clickpipes', 'mysql', 'CDC', '데이터 수집', '실시간 동기화']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -17,7 +17,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-MySQL ClickPipe를 일시 중지하는 것이 유용한 경우가 있습니다. 예를 들어, 변경되지 않는 상태의 기존 데이터에 대해 분석 작업을 수행하려는 경우가 있습니다. 또는 MySQL 업그레이드를 수행하는 중일 수도 있습니다. 다음은 MySQL ClickPipe를 일시 중지하고 다시 시작하는 방법입니다.
+MySQL ClickPipe를 일시 중지하면 유용한 상황이 있습니다. 예를 들어, 기존 데이터를 정적인 상태로 두고 일부 분석을 실행하려는 경우가 있을 수 있습니다. 또는 MySQL 업그레이드를 수행 중일 수도 있습니다. 다음은 MySQL ClickPipe를 일시 중지했다가 재개하는 방법입니다.
 
 
 ## MySQL ClickPipe 일시 중지 절차 \{#pause-clickpipe-steps\}

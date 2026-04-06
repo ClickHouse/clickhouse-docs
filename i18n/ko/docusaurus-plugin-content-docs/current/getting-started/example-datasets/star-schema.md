@@ -16,6 +16,8 @@ Star Schema Benchmark는 [TPC-H](tpch.md)의 테이블과 쿼리를 대략적으
 * [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil et. al), 2009
 * [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl. et. al.), 2013
 
+## 데이터 생성 \{#data-generation\}
+
 먼저, Star Schema Benchmark 저장소를 체크아웃하고 데이터 생성기를 컴파일하십시오:
 
 ```bash
@@ -34,8 +36,10 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-이제 ClickHouse에 테이블을 생성하십시오:
 
+## 테이블 생성 \{#create-tables\}
+
+이제 ClickHouse에서 테이블을 생성합니다:
 
 ```sql
 CREATE TABLE customer
@@ -122,6 +126,9 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
+
+## 데이터 가져오기 \{#import-data\}
+
 데이터는 다음과 같은 방식으로 가져올 수 있습니다:
 
 ```bash
@@ -132,9 +139,11 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-많은 ClickHouse 사용 사례에서는 여러 테이블을 하나의 비정규화된 플랫 테이블로 변환합니다.
-이 단계는 선택 사항이며, 아래 쿼리는 원래 형태와 비정규화된 테이블에 맞게 다시 작성된 형태로 나열됩니다.
 
+## 비정규화 테이블 \{#denormalized-table\}
+
+ClickHouse의 많은 사용 사례에서는 여러 테이블을 하나의 비정규화된 플랫 테이블로 변환합니다.
+이 단계는 선택 사항입니다 — 아래에는 쿼리를 원래 형식과 비정규화 테이블에 맞게 다시 작성한 형식으로 나열합니다.
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -179,16 +188,24 @@ AS SELECT
     p.P_COLOR AS P_COLOR,
     p.P_TYPE AS P_TYPE,
     p.P_SIZE AS P_SIZE,
-    p.P_CONTAINER AS P_CONTAINER
+    p.P_CONTAINER AS P_CONTAINER,
+    d.D_YEAR AS D_YEAR,
+    d.D_YEARMONTHNUM AS D_YEARMONTHNUM,
+    d.D_YEARMONTH AS D_YEARMONTH,
+    d.D_WEEKNUMINYEAR AS D_WEEKNUMINYEAR
 FROM lineorder AS l
 INNER JOIN customer AS c ON c.C_CUSTKEY = l.LO_CUSTKEY
 INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
-INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
+INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY
+INNER JOIN date AS d ON d.D_DATEKEY = l.LO_ORDERDATE;
 ```
+
+
+## 쿼리 \{#queries\}
 
 쿼리는 `./qgen -s <scaling_factor>` 명령으로 생성됩니다. `s = 100`일 때의 예시 쿼리는 다음과 같습니다:
 
-Q1.1
+### Q1.1 \{#q1-1\}
 
 ```sql
 SELECT
@@ -216,7 +233,8 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-Q1.2
+
+### Q1.2 \{#q1-2\}
 
 ```sql
 SELECT
@@ -244,7 +262,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q1.3
+### Q1.3 \{#q1-3\}
 
 ```sql
 SELECT
@@ -260,7 +278,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-역정규화된 테이블:
+비정규화 테이블:
 
 ```sql
 SELECT
@@ -268,14 +286,14 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    toISOWeek(LO_ORDERDATE) = 6
-    AND toYear(LO_ORDERDATE) = 1994
+    D_WEEKNUMINYEAR = 6
+    AND D_YEAR = 1994
     AND LO_DISCOUNT BETWEEN 5 AND 7
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q2.1
 
+### Q2.1 \{#q2-1\}
 
 ```sql
 SELECT
@@ -320,7 +338,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.2
+
+### Q2.2 \{#q2-2\}
 
 ```sql
 SELECT
@@ -347,7 +366,7 @@ ORDER BY
     P_BRAND;
 ```
 
-비정규화된 테이블:
+비정규화 테이블:
 
 ```sql
 SELECT
@@ -364,7 +383,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q2.3
+
+### Q2.3 \{#q2-3\}
 
 ```sql
 SELECT
@@ -398,7 +418,7 @@ SELECT
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
 FROM lineorder_flat
-WHERE P_BRAND = 'MFGR#2239' AND S_REGION = 'EUROPE'
+WHERE P_BRAND = 'MFGR#2221' AND S_REGION = 'EUROPE'
 GROUP BY
     year,
     P_BRAND
@@ -407,7 +427,8 @@ ORDER BY
     P_BRAND;
 ```
 
-Q3.1
+
+### Q3.1 \{#q3-1\}
 
 ```sql
 SELECT
@@ -458,8 +479,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.2
 
+### Q3.2 \{#q3-2\}
 
 ```sql
 SELECT
@@ -511,7 +532,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.3
+
+### Q3.3 \{#q3-3\}
 
 ```sql
 SELECT
@@ -564,7 +586,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q3.4
+
+### Q3.4 \{#q3-4\}
 
 ```sql
 SELECT
@@ -615,8 +638,8 @@ ORDER BY
     revenue DESC;
 ```
 
-Q4.1
 
+### Q4.1 \{#q4-1\}
 
 ```sql
 SELECT
@@ -662,7 +685,8 @@ ORDER BY
     C_NATION ASC;
 ```
 
-Q4.2
+
+### Q4.2 \{#q4-2\}
 
 ```sql
 SELECT
@@ -695,7 +719,7 @@ ORDER BY
     P_CATEGORY
 ```
 
-비정규화 테이블:
+반정규화된 테이블:
 
 ```sql
 SELECT
@@ -719,7 +743,8 @@ ORDER BY
     P_CATEGORY ASC;
 ```
 
-Q4.3
+
+### Q4.3 \{#q4-3\}
 
 ```sql
 SELECT
@@ -763,7 +788,8 @@ SELECT
 FROM
     lineorder_flat
 WHERE
-    S_NATION = 'UNITED STATES'
+    C_REGION = 'AMERICA'
+    AND S_NATION = 'UNITED STATES'
     AND (year = 1997 OR year = 1998)
     AND P_CATEGORY = 'MFGR#14'
 GROUP BY

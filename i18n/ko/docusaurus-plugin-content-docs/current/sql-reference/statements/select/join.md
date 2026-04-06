@@ -3,7 +3,7 @@ description: 'JOIN 절에 대한 참고 문서'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 절'
-keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN']
+keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
 doc_type: 'reference'
 ---
 
@@ -25,32 +25,34 @@ FROM <left_table>
 
 ## 지원되는 JOIN 유형 \{#supported-types-of-join\}
 
-모든 표준 [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)) 유형을 지원합니다:
+모든 표준 [SQL JOIN](https://en.wikipedia.org/wiki/Join_\(SQL\)) 유형을 지원합니다:
 
-| Type              | Description                                                                   |
-|-------------------|-------------------------------------------------------------------------------|
-| `INNER JOIN`      | 일치하는 행만 반환합니다.                                                     |
-| `LEFT OUTER JOIN` | 일치하는 행과 함께, 왼쪽 테이블에서 일치하지 않는 행도 반환합니다.           |
-| `RIGHT OUTER JOIN`| 일치하는 행과 함께, 오른쪽 테이블에서 일치하지 않는 행도 반환합니다.         |
-| `FULL OUTER JOIN` | 일치하는 행과 함께, 양쪽 테이블에서 일치하지 않는 행도 반환합니다.           |
-| `CROSS JOIN`      | 전체 테이블의 데카르트 곱을 생성하며, "join keys"는 지정하지 **않습니다**.    |
+| Type               | Description                                                                                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INNER JOIN`       | 일치하는 행만 반환합니다.                                                                                                                                                               |
+| `LEFT OUTER JOIN`  | 일치하는 행과 함께, 왼쪽 테이블에서 일치하지 않는 행도 반환합니다.                                                                                                                                       |
+| `RIGHT OUTER JOIN` | 일치하는 행과 함께, 오른쪽 테이블에서 일치하지 않는 행도 반환합니다.                                                                                                                                      |
+| `FULL OUTER JOIN`  | 일치하는 행과 함께, 양쪽 테이블에서 일치하지 않는 행도 반환합니다.                                                                                                                                       |
+| `CROSS JOIN`       | 전체 테이블의 데카르트 곱을 생성하며, &quot;join keys&quot;는 지정하지 **않습니다**.                                                                                                                  |
+| `NATURAL JOIN`     | 양쪽 테이블에서 이름이 같은 모든 컬럼을 기준으로 자동으로 조인하며, 각 공통 컬럼은 결과에 한 번만 나타납니다. `INNER`(기본값), `LEFT`, `RIGHT`, `FULL` 변형을 지원합니다. 컬럼 목록이 자동으로 도출되는 `JOIN ... USING (col1, col2, ...)`와 동일합니다. |
 
-- 유형을 지정하지 않은 `JOIN`은 `INNER`를 의미합니다.
-- 키워드 `OUTER`는 생략해도 됩니다.
-- `CROSS JOIN`에 대한 대체 문법은 [`FROM` 절](../../../sql-reference/statements/select/from.md)에 여러 테이블을 쉼표로 구분하여 지정하는 것입니다.
+* 유형을 지정하지 않은 `JOIN`은 `INNER`를 의미합니다.
+* 키워드 `OUTER`는 생략해도 됩니다.
+* `CROSS JOIN`에 대한 대체 문법은 [`FROM` 절](../../../sql-reference/statements/select/from.md)에 여러 테이블을 쉼표로 구분하여 지정하는 것입니다.
+* `NATURAL JOIN`에 대해 일치하는 컬럼이 없으면 `CROSS JOIN`처럼 동작합니다.
 
 ClickHouse에서 사용할 수 있는 추가 JOIN 유형은 다음과 같습니다:
 
-| Type                                        | Description                                                                                                                               |
-|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`         | 데카르트 곱을 생성하지 않고 "join keys"에 대한 허용 목록(allowlist)을 적용합니다.                                                         |
-| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`         | 데카르트 곱을 생성하지 않고 "join keys"에 대한 차단 목록(denylist)을 적용합니다.                                                         |
+| Type                                                | Description                                                                             |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`                 | 데카르트 곱을 생성하지 않고 &quot;join keys&quot;에 대한 허용 목록(allowlist)을 적용합니다.                      |
+| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`                 | 데카르트 곱을 생성하지 않고 &quot;join keys&quot;에 대한 차단 목록(denylist)을 적용합니다.                       |
 | `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 표준 `JOIN` 유형에서 데카르트 곱을 부분적으로(`LEFT`와 `RIGHT`의 반대편) 또는 완전히(`INNER`와 `FULL`의 경우) 비활성화합니다. |
-| `ASOF JOIN`, `LEFT ASOF JOIN`               | 정확히 일치하지 않는 시퀀스를 조인할 때 사용합니다. `ASOF JOIN` 사용법은 아래에 설명합니다.                                               |
-| `PASTE JOIN`                                | 두 테이블을 수평으로 이어붙여(concatenation) 결합합니다.                                                                                  |
+| `ASOF JOIN`, `LEFT ASOF JOIN`                       | 정확히 일치하지 않는 시퀀스를 조인할 때 사용합니다. `ASOF JOIN` 사용법은 아래에 설명합니다.                               |
+| `PASTE JOIN`                                        | 두 테이블을 수평으로 이어붙여(concatenation) 결합합니다.                                                  |
 
 :::note
-[join_algorithm](../../../operations/settings/settings.md#join_algorithm)이 `partial_merge`로 설정된 경우, `RIGHT JOIN`과 `FULL JOIN`은 `ALL` 엄격성에서만 지원되며(`SEMI`, `ANTI`, `ANY`, `ASOF`는 지원되지 않습니다).
+[join&#95;algorithm](../../../operations/settings/settings.md#join_algorithm)이 `partial_merge`로 설정된 경우, `RIGHT JOIN`과 `FULL JOIN`은 `ALL` 엄격성에서만 지원되며(`SEMI`, `ANTI`, `ANY`, `ASOF`는 지원되지 않습니다).
 :::
 
 ## 설정 \{#settings\}

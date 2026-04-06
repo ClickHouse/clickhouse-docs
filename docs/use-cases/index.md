@@ -1,6 +1,6 @@
 ---
 slug: /use-cases
-title: 'Use Case Guides'
+title: 'Use case guides'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for use case guides'

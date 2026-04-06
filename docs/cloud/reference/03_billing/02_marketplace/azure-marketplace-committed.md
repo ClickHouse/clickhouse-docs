@@ -1,6 +1,6 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-committed-contract
-title: 'Azure Marketplace Committed Contract'
+title: 'Azure Marketplace committed contract'
 description: 'Subscribe to ClickHouse Cloud through the Azure Marketplace (Committed Contract)'
 keywords: ['Microsoft', 'Azure', 'marketplace', 'billing', 'committed', 'committed contract']
 doc_type: 'guide'

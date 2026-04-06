@@ -20,7 +20,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 * `thread_name` ([String](../../sql-reference/data-types/string.md)) — 스레드 이름.
 * `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 스레드 식별자.
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — [query&#95;log](../system-tables/query_log.md) 시스템 테이블에서 실행 중이던 쿼리에 대한 세부 정보를 가져오는 데 사용할 수 있는 쿼리 식별자.
+* `query_id` ([String](../../sql-reference/data-types/int-uint.md)) — [query&#95;log](../system-tables/query_log.md) 시스템 테이블에서 실행 중이던 쿼리에 대한 세부 정보를 가져오는 데 사용할 수 있는 쿼리 식별자.
 * `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 호출된 메서드가 저장된 물리적 주소 목록을 나타내는 [스택 트레이스](https://en.wikipedia.org/wiki/Stack_trace).
 
 :::tip
@@ -38,7 +38,7 @@ SET allow_introspection_functions = 1;
 ClickHouse 객체 파일에서 심볼 가져오기:
 
 ```sql
-WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
+WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1;
 ```
 
 ```text
@@ -68,7 +68,7 @@ void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<
 ClickHouse 소스 코드에서 파일 이름과 줄 번호 확인하기:
 
 ```sql
-WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
+WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1;
 ```
 
 ```text

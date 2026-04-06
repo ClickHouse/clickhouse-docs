@@ -12,7 +12,7 @@ doc_type: 'reference'
 `users.xml` 配置文件中的 `users` 部分包含用户配置。
 
 :::note
-ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/access-rights#access-control-usage)，我们建议优先采用这种方式。
+ClickHouse 也支持用于管理用户的 [SQL 驱动的工作流](/operations/access-rights#access-control-usage)，我们建议优先采用这种方式。
 :::
 
 `users` 部分的结构：
@@ -21,10 +21,12 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
 <users>
     <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
+        <!-- Exactly one authentication method may be specified at the users.user_name level. For example: -->
         <password></password>
-        <!-- Or -->
+        <!-- Or (exclusive) -->
         <password_sha256_hex></password_sha256_hex>
-
+ 
+        <!-- Or (exclusive) (N.B. multiple SSH keys are allowed for backwards compatibility) -->
         <ssh_keys>
             <ssh_key>
                 <type>ssh-ed25519</type>
@@ -39,6 +41,20 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
                 <base64_key>AAAAB3NzaC1yc2EAAAADAQABAAABgQCpgqL1SHhPVBOTFlOm0pu+cYBbADzC2jL41sPMawYCJHDyHuq7t+htaVVh2fRgpAPmSEnLEC2d4BEIKMtPK3bfR8plJqVXlLt6Q8t4b1oUlnjb3VPA9P6iGcW7CV1FBkZQEVx8ckOfJ3F+kI5VsrRlEDgiecm/C1VPl0/9M2llW/mPUMaD65cM9nlZgM/hUeBrfxOEqM11gDYxEZm1aRSbZoY4dfdm3vzvpSQ6lrCrkjn3X2aSmaCLcOWJhfBWMovNDB8uiPuw54g3ioZ++qEQMlfxVsqXDGYhXCrsArOVuW/5RbReO79BvXqdssiYShfwo+GhQ0+aLWMIW/jgBkkqx/n7uKLzCMX7b2F+aebRYFh+/QXEj7SnihdVfr9ud6NN3MWzZ1ltfIczlEcFLrLJ1Yq57wW6wXtviWh59WvTWFiPejGjeSjjJyqqB49tKdFVFuBnIU5u/bch2DXVgiAEdQwUrIp1ACoYPq22HFFAYUJrL32y7RxX3PGzuAv3LOc=</base64_key>
             </ssh_key>
         </ssh_keys>
+
+        <!-- Or (exclusive) for multiple authentication methods: -->
+        <auth_methods>
+            <method1>
+                <password></password>
+            </method1>
+            <method2>
+                <password_sha256_hex></password_sha256_hex>
+            </method2>
+            <!-- ... -->
+            <methodN>
+                <!-- ... -->
+            </methodN>
+        </auth_methods>
 
         <access_management>0|1</access_management>
 
@@ -64,7 +80,6 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
     <!-- Other users settings -->
 </users>
 ```
-
 
 ### user_name/password \{#user-namepassword\}
 
@@ -185,6 +200,95 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 ```
 
 将 `ssh-ed25519` 替换为 `ssh-rsa` 或 `ecdsa-sha2-nistp256`，以使用其他受支持的算法。
+
+
+### 多种身份验证方式
+
+可使用 `<auth_methods>` 元素为单个用户配置多种身份验证方式。这样，用户可以通过列出的任意一种方式完成身份验证——例如，某个用户既可设置密码，也可配置 LDAP 凭据，使用其中任意一种登录都可以成功。
+
+`<auth_methods>` 的每个子元素都是一个可任意命名的包装元素，且其中必须且只能包含一种身份验证类型。包装元素的名称 (例如 `<method1>`、`<primary>`、`<a1>`) 并不重要；实际使用的只有其内部的身份验证元素。
+
+**示例：多个密码**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <primary>
+                <password>password_one</password>
+            </primary>
+            <secondary>
+                <password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>
+            </secondary>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+**示例：混合身份验证类型**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>plaintext_pass</password>
+            </a1>
+            <a2>
+                <password_sha256_hex>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</password_sha256_hex>
+            </a2>
+            <a3>
+                <ldap>
+                    <server>my_ldap_server</server>
+                </ldap>
+            </a3>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+在 `<auth_methods>` 中支持以下身份验证类型：
+
+* **`password`** — 明文密码
+* **`password_sha256_hex`** — SHA256 密码哈希
+* **`password_scram_sha256_hex`** — SCRAM-SHA-256 密码哈希
+* **`password_double_sha1_hex`** — 双重 SHA1 密码哈希
+* **`ldap`** — LDAP 服务器身份验证
+* **`kerberos`** — Kerberos 身份验证
+* **`ssl_certificates`** — SSL 证书身份验证
+* **`ssh_keys`** — SSH 密钥身份验证
+* **`http_authentication`** — HTTP 身份验证
+
+**规则和限制：**
+
+* `<auth_methods>` **不能** 与用户级别指定的身份验证方法同时使用。请二选一，不要混用。
+* `<auth_methods>` 必须至少包含一种身份验证方法。
+* `<auth_methods>` 中的每个包装元素必须且只能包含一种身份验证类型 (`<ssh_keys>` 除外；出于向后兼容考虑，它可以包含多个) 。
+* TOTP (`<time_based_one_time_password>`) 在用户级别指定 (即位于 `<auth_methods>` 之外) ，并适用于列表中所有基于密码的身份验证方法。启用 TOTP 时，必须至少配置一种基于密码的身份验证方法。
+
+**示例：带 TOTP 的 `auth_methods`**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>my_password</password>
+            </a1>
+            <a2>
+                <ldap>
+                    <server>ldap_server_1</server>
+                </ldap>
+            </a2>
+        </auth_methods>
+        <time_based_one_time_password>
+            <secret>JBSWY3DPEHPK3PXP</secret>
+        </time_based_one_time_password>
+    </my_user>
+</users>
+```
+
+在此示例中，TOTP 验证应用于基于密码的方法 (`<password>`) ，而 LDAP 方法则独立地针对外部服务器进行身份验证。
 
 
 ### access_management {#access_management-user-setting}

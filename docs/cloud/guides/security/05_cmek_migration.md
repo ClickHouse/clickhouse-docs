@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Legacy CMEK Migration'
+sidebar_label: 'Legacy CMEK migration'
 slug: /cloud/security/cmek-migration
 title: 'Migrating from CMEK v1 to v2'
 description: 'Migration instructions to move from legacy CMEK to version 2'

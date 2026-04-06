@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Export backups'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
-title: 'Export Backups to your Own Cloud Account'
+title: 'Export backups to your own cloud account'
 description: 'Describes how to export backups to your own Cloud account'
 doc_type: 'guide'
 ---

@@ -2,9 +2,9 @@
 slug: /operations/access-rights
 sidebar_position: 1
 sidebar_label: 'Пользователи и роли'
-title: 'Контроль доступа и управление учетными записями'
-keywords: ['ClickHouse Cloud', 'Контроль доступа', 'Управление пользователями', 'RBAC', 'Безопасность']
-description: 'Описывает контроль доступа и управление учетными записями в ClickHouse Cloud'
+title: 'Управление доступом и учетными записями'
+keywords: ['ClickHouse Cloud', 'Управление доступом', 'Управление пользователями', 'RBAC', 'Безопасность']
+description: 'Описывает управление доступом и управление учетными записями в ClickHouse Cloud'
 doc_type: 'guide'
 ---
 

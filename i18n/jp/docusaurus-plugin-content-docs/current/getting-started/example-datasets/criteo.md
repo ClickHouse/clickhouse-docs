@@ -7,7 +7,7 @@ title: 'Criteo のテラバイト規模クリックログ'
 doc_type: 'guide'
 ---
 
-[http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/) からデータをダウンロードします。
+http://labs.criteo.com/downloads/download-terabyte-click-logs/ からデータをダウンロードします。
 
 ログを取り込むためのテーブルを作成します:
 
@@ -54,7 +54,8 @@ CREATE TABLE criteo_log (
     cat24 String,
     cat25 String,
     cat26 String
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 データを挿入します。

@@ -14,7 +14,6 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-
 # Использование движка таблиц Kafka \{#using-the-kafka-table-engine\}
 
 Движок таблиц Kafka можно использовать для [**чтения** данных из](#kafka-to-clickhouse) и [**записи** данных в](#clickhouse-to-kafka) Apache Kafka и другие брокеры, совместимые с Kafka API (например, Redpanda, Amazon MSK).

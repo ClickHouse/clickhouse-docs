@@ -1,10 +1,10 @@
 ---
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
-sidebar_label: 'Analyzer로 쿼리 실행 이해하기'
-title: 'Analyzer로 쿼리 실행 이해하기'
-description: 'Analyzer를 사용하여 ClickHouse가 쿼리를 어떻게 실행하는지 이해하는 방법을 설명합니다'
+sidebar_label: '분석기로 쿼리 실행 이해하기'
+title: '분석기로 쿼리 실행 이해하기'
+description: '분석기를 사용하여 ClickHouse가 쿼리를 어떻게 실행하는지 이해하는 방법을 설명합니다'
 doc_type: 'guide'
-keywords: ['쿼리 실행', 'Analyzer', '쿼리 최적화', 'EXPLAIN', '성능']
+keywords: ['쿼리 실행', '분석기', '쿼리 최적화', 'EXPLAIN', '성능']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,7 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
 
 # 분석기를 통한 쿼리 실행 이해하기 \{#understanding-query-execution-with-the-analyzer\}
 

@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Logging'
+title: 'DataStore logging'
 sidebar_label: 'Logging'
 slug: /chdb/debugging/logging
 description: 'Configure DataStore logging for debugging and monitoring'

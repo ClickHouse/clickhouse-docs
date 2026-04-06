@@ -20,15 +20,16 @@ import ExampleFiles from '@site/i18n/ru/docusaurus-plugin-content-docs/current/d
 import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
 > В этом примере вы узнаете, как развернуть простой кластер ClickHouse, который
-> одновременно обеспечивает репликацию и масштабирование. Он состоит из двух шардов и двух реплик,
+> одновременно обеспечивает репликацию и масштабирование. Он состоит из двух сегментов и двух реплик,
 > а также кластера ClickHouse Keeper из 3 узлов для координации работы и
 > поддержания кворума в кластере.
 
 Архитектура кластера, который вы будете настраивать, показана ниже:
 
-<Image img={SharedReplicatedArchitecture} size="md" alt="Схема архитектуры для 2 шардов и 1 реплики" />
+<Image img={SharedReplicatedArchitecture} size="md" alt="Схема архитектуры для 2 сегментов и 1 реплики" />
 
 <DedicatedKeeperServers />
+
 
 ## Предварительные требования \{#prerequisites\}
 

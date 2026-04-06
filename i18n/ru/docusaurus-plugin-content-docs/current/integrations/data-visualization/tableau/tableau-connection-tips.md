@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Советы по подключению'
+sidebar_label: 'Рекомендации по подключению'
 sidebar_position: 3
 slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Рекомендации по подключению Tableau при использовании официального коннектора ClickHouse.'
-title: 'Советы по подключению'
+title: 'Рекомендации по подключению'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -13,7 +13,6 @@ integration:
 
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # Рекомендации по подключению \{#connection-tips\}
 

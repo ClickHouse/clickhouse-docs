@@ -653,10 +653,10 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 
 ### 注意事項 \{#connection-string-notes\}
 
-接続文字列で username、password、database のいずれかを指定した場合、それらを `--user`、`--password`、`--database` で指定することはできません（その逆も同様です）。
+接続文字列で username、password、database のいずれかを指定した場合、それらを `--user`、`--password`、`--database` で指定することはできません (その逆も同様です) 。
 
 host コンポーネントには、ホスト名または IPv4 / IPv6 アドレスのいずれかを指定できます。
-IPv6 アドレスは角括弧で囲む必要があります：
+IPv6 アドレスは `[]` で囲む必要があります：
 
 ```text
 clickhouse://[2001:db8::1234]

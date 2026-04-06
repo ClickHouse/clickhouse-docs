@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/local-mode-only
-title: 'Local Mode Only'
+title: 'Local mode only'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
+description: 'Deploying ClickStack with Local mode only - The ClickHouse Observability Stack'
 doc_type: 'guide'
 keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---

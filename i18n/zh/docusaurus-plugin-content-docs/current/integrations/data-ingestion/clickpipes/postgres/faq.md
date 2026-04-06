@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 ### 我如何在数据从 Postgres 流向 ClickHouse 的过程中对其进行丰富？ \{#data-enrichment\}
 
-在 CDC 目标表之上使用 [materialized views](/materialized-view)。ClickHouse 中的 materialized view 充当插入触发器，因此从 Postgres 复制过来的每一行数据，都可以在写入最终目标表之前进行转换、与查找表进行关联，或者通过添加额外列来实现数据丰富。
+在 CDC 目标表之上使用 [materialized view](/materialized-views)。ClickHouse 中的 materialized view 充当插入触发器，因此从 Postgres 复制过来的每一行数据，都可以在写入最终目标表之前进行转换、与查找表进行关联，或者通过添加额外列来实现数据丰富。
 
 ### 我可以将多个 Postgres 实例的数据复制到一个或多个 ClickHouse 服务中吗？ \{#multi-region-multi-source\}
 

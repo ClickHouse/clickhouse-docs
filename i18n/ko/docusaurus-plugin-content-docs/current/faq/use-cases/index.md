@@ -2,7 +2,7 @@
 slug: /faq/use-cases/
 sidebar_position: 2
 sidebar_label: 'ClickHouse 사용 사례 관련 질문'
-title: 'ClickHouse 사용 사례에 대한 질문'
+title: 'ClickHouse 사용 사례 관련 질문'
 description: 'ClickHouse 사용 사례와 관련된 일반적인 질문을 모아둔 랜딩 페이지'
 keywords: ['ClickHouse 사용 사례', '시계열 데이터베이스', '키-값 스토리지', '데이터베이스 애플리케이션', 'OLAP 사용 사례']
 doc_type: 'landing-page'

@@ -14,7 +14,7 @@ import snapshot_params from '@site/static/images/integrations/data-ingestion/cli
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';
 
-В этом документе объясняется, как работает параллельное создание снимка / начальная загрузка в ClickPipe для MySQL, а также рассматриваются параметры снимка, с помощью которых можно управлять этим процессом.
+В этом документе объясняется, как работает параллельный снимок / первоначальная загрузка в MySQL ClickPipe, а также рассматриваются параметры снимка, с помощью которых можно управлять этим процессом.
 
 
 ## Обзор \{#overview-mysql-snapshot\}

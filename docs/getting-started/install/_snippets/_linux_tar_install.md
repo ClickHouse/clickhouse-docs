@@ -1,10 +1,16 @@
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
+
 # Install ClickHouse using tgz archives
 
 > It is recommended to use official pre-compiled `tgz` archives for all Linux distributions, where installation of `deb` or `rpm` packages isn't possible.
 
 <VerticalStepper>
 
-## Download and install latest stable version {#install-latest-stable}
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
+
+## Download and install the latest stable version {#install-latest-stable}
 
 The required version can be downloaded with `curl` or `wget` from repository https://packages.clickhouse.com/tgz/.
 After that downloaded archives should be unpacked and installed with installation scripts.

@@ -2495,6 +2495,14 @@ INSERT クエリにカラム名を含める
 
 INSERT の代わりに REPLACE 文を使用する
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "テキスト出力形式で FixedString 値の末尾のゼロバイトをトリミングする New setting"}]}]} />
+
+テキスト出力形式で FixedString 値の末尾のヌルバイトをトリミングします。たとえば、`toFixedString('John', 8)` は `John\0\0\0\0` ではなく `John` として出力されます。
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

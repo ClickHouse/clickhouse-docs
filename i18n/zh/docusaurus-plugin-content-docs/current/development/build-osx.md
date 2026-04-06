@@ -10,8 +10,8 @@ doc_type: 'guide'
 
 # 如何在 macOS 上为 macOS 构建 ClickHouse \{#how-to-build-clickhouse-on-macos-for-macos\}
 
-:::info 你不需要自己构建 ClickHouse！
-你可以按照 [Quick Start](https://clickhouse.com/docs/get-started/quick-start) 中的说明安装预编译的 ClickHouse。
+:::info 本构建指南适用于修改 ClickHouse 本身的贡献者。
+如果你不更改 ClickHouse 源代码，则可以按照 [Quick Start](https://clickhouse.com/docs/get-started/quick-start) 中的说明安装预编译的 ClickHouse。
 :::
 
 ClickHouse 可以在 macOS 10.15 (Catalina) 或更高版本上编译，支持 x86&#95;64 (Intel) 和 arm64 (Apple Silicon) 架构。

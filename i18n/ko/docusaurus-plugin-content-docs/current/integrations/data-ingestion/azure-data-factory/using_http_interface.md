@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'HTTP 인터페이스 사용'
 slug: /integrations/azure-data-factory/http-interface
-description: 'Azure Data Factory에서 ClickHouse로 데이터를 가져오기 위해 ClickHouse의 HTTP 인터페이스를 사용하는 방법'
+description: 'Azure Data Factory에서 ClickHouse로 데이터를 전송하기 위해 ClickHouse의 HTTP 인터페이스를 사용하는 방법'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
-title: 'ClickHouse HTTP 인터페이스를 사용하여 Azure Data Factory 데이터를 ClickHouse로 가져오기'
+title: 'ClickHouse HTTP 인터페이스를 사용하여 Azure Data Factory 데이터를 ClickHouse로 전송하기'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -37,7 +37,6 @@ import adfNewCopyDataItem                       from '@site/static/images/integr
 import adfCopyDataSource                        from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-source.png';
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
-
 
 # Azure Data Factory에서 ClickHouse HTTP 인터페이스 사용하기 \{#using-clickhouse-http-interface-in-azure-data-factory\}
 

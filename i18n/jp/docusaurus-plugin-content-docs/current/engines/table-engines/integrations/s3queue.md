@@ -19,7 +19,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 ```sql
 CREATE TABLE s3_queue_engine_table (name String, value UInt32)
-    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers])
+    ENGINE = S3Queue(path, [NOSIGN, | aws_access_key_id, aws_secret_access_key,] format, [compression], [headers], [extra_credentials])
     [SETTINGS]
     [mode = '',]
     [after_processing = 'keep',]
@@ -82,6 +82,7 @@ ENGINE=S3Queue(s3queue_conf, format = 'CSV', compression_method = 'gzip')
 SETTINGS
     mode = 'ordered';
 ```
+
 
 ## 設定 \{#settings\}
 

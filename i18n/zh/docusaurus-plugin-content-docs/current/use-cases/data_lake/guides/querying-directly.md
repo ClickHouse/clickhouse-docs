@@ -17,7 +17,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象存储中的数据。无需连接外部目录，而是直接在数据所在位置进行查询，类似于 AWS Athena 从 S3 读取数据的方式。
 
-您只需在函数调用中直接传入存储路径和凭证，其余工作由 ClickHouse 处理。所有 ClickHouse SQL 语法和函数均可用，并且查询还可受益于 ClickHouse 的并行执行能力以及[高效的原生 Parquet 读取器](/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)。
+您只需在函数调用中直接传入存储路径和凭证，其余工作由 ClickHouse 处理。所有 ClickHouse SQL 语法和函数均可用，并且查询还可受益于 ClickHouse 的并行执行能力以及[高效的原生 Parquet 读取器](https://clickhouse.com/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)。
 
 :::note Server, local or chDB
 本指南中的步骤可以在现有的 ClickHouse 服务器安装上执行。对于临时查询，您也可以改用 [clickhouse-local](/operations/utilities/clickhouse-local)，无需运行服务器即可完成相同的工作流。只需做少量调整，也可以使用 ClickHouse 的进程内发行版 [chDB](/chdb) 完成这一过程。

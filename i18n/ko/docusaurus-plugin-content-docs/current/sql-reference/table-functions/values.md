@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-
-
 # Values 테이블 함수 \{#values-table-function\}
 
 `Values` 테이블 함수는 컬럼을 값으로 채우는 임시 저장 공간을 생성합니다.
@@ -19,11 +17,9 @@ doc_type: 'reference'
 Values는 대소문자를 구분하지 않는 함수입니다. 즉, `VALUES` 또는 `values` 모두 유효합니다.
 :::
 
-
-
 ## 구문 \{#syntax\}
 
-`VALUES` 테이블 FUNCTION의 기본 구문은 다음과 같습니다.
+`VALUES` 테이블 함수의 기본 구문은 다음과 같습니다.
 
 ```sql
 VALUES([structure,] values...)
@@ -40,24 +36,19 @@ VALUES(
 )
 ```
 
-
 ## Arguments \{#arguments\}
 
-- `column1_name Type1, ...` (선택 사항). 컬럼 이름과 타입을 지정하는 [String](/sql-reference/data-types/string)입니다.  
+* `column1_name Type1, ...` (선택 사항). 컬럼 이름과 타입을 지정하는 [String](/sql-reference/data-types/string)입니다.
   이 인수가 생략되면 컬럼 이름은 `c1`, `c2` 등으로 지정됩니다.
-- `(value1_row1, value2_row1)`. 어떤 타입이든 가질 수 있는 값을 포함하는 [Tuples](/sql-reference/data-types/tuple)입니다. 
+* `(value1_row1, value2_row1)`. 어떤 타입이든 가질 수 있는 값을 포함하는 [Tuples](/sql-reference/data-types/tuple)입니다.
 
 :::note
 쉼표로 구분된 튜플은 단일 값으로도 대체할 수 있습니다. 이 경우 각 값은 각각 새로운 행으로 처리됩니다. 자세한 내용은 아래 [예시](#examples) 섹션을 참조하십시오.
 :::
 
-
-
 ## 반환 값 \{#returned-value\}
 
-- 제공된 값을 포함하는 임시 테이블을 반환합니다.
-
-
+* 제공된 값을 포함하는 임시 테이블을 반환합니다.
 
 ## 예제 \{#examples\}
 
@@ -195,7 +186,43 @@ FROM VALUES(
     └──────────┘
 ```
 
+## SQL 표준 VALUES 절 \{#sql-standard-values-clause\}
+
+버전 26.3부터 ClickHouse는 PostgreSQL, MySQL, DuckDB, SQL Server에서와 같이
+`FROM` 절의 테이블 식으로 SQL 표준 `VALUES` 절도 지원합니다. 이 구문은 내부적으로
+위에서 설명한 `values` 테이블 함수(테이블 함수)를 사용하도록 재작성됩니다.
+
+```sql title="Query"
+SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
+```
+
+```response title="Response"
+┌─id─┬─val─┐
+│  1 │ a   │
+│  2 │ b   │
+│  3 │ c   │
+└────┴─────┘
+```
+
+CTE에서도 사용할 수 있습니다:
+
+```sql title="Query"
+WITH cte AS (SELECT * FROM (VALUES (1, 'one'), (2, 'two')) AS t(id, name))
+SELECT * FROM cte;
+```
+
+조인에서는:
+
+```sql title="Query"
+SELECT t1.id, t1.val, t2.val2
+FROM (VALUES (1, 'a'), (2, 'b')) AS t1(id, val)
+JOIN (VALUES (1, 'x'), (2, 'y')) AS t2(id, val2) ON t1.id = t2.id;
+```
+
+:::note
+`AS t(col1, col2, ...)` 뒤의 컬럼 별칭은 파생 테이블의 컬럼 이름을 지정하는 표준 SQL 구문을 따릅니다. 생략하면 컬럼 이름은 `c1`, `c2` 등으로 지정됩니다.
+:::
 
 ## 같이 보기 \{#see-also\}
 
-- [Values 형식](/interfaces/formats/Values)
+* [Values 형식](/interfaces/formats/Values)

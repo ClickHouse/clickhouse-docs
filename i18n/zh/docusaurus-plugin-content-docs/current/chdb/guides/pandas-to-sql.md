@@ -1,9 +1,9 @@
 ---
-title: '面向 pandas 用户的 SQL 指南'
-sidebar_label: 'SQL 映射'
+title: '面向 pandas 用户的 SQL'
+sidebar_label: 'SQL 对照'
 slug: /chdb/guides/pandas-to-sql
 description: '了解 pandas 操作在 DataStore 中如何映射到 SQL'
-keywords: ['chdb', 'datastore', 'pandas', 'sql', 'mapping', '查询']
+keywords: ['chdb', 'datastore', 'pandas', 'sql', '对照', '查询']
 doc_type: 'guide'
 ---
 

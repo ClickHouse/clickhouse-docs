@@ -336,9 +336,9 @@ microbatch の詳細な使用方法については、[公式ドキュメント](
 
 ## Materialization: materialized_view \{#materialized-view\}
 
-`materialized_view` materialization は、insert トリガーとして動作する ClickHouse の [materialized view](/sql-reference/statements/create/view#materialized-view) を作成し、ソーステーブルからターゲットテーブルへ、新しい行を自動的に変換して挿入します。これは、dbt-clickhouse で利用可能な materialization の中でも最も強力なものの 1 つです。
+`materialized_view` マテリアライゼーションは、insert トリガーとして機能する ClickHouse の [materialized view](/sql-reference/statements/create/view#materialized-view) を作成し、ソーステーブルからターゲットテーブルへ新しい行を自動的に変換して挿入します。これは、dbt-clickhouse で利用可能なマテリアライゼーションの中でも最も強力なものの 1 つです。
 
-この materialization は内容が複雑であるため、専用のページが用意されています。完全なドキュメントについては、**[Materialized Views ガイド](/integrations/dbt/materialized-views)** を参照してください。
+このマテリアライゼーションは内容が深いため、専用のページがあります。完全なドキュメントについては、**[Materialized Views ガイド](/integrations/dbt/materialization-materialized-view)** をご覧ください。
 
 ## マテリアライゼーション: dictionary (experimental) \{#materialization-dictionary\}
 

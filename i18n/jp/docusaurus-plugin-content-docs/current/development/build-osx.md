@@ -8,10 +8,10 @@ keywords: ['macOS', 'Mac', 'ビルド']
 doc_type: 'guide'
 ---
 
-# macOS 向けに macOS 上で ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-macos-for-macos\}
+# macOS 上での macOS 向け ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-macos-for-macos\}
 
-:::info ClickHouse を自分でビルドする必要はありません！
-[Quick Start](https://clickhouse.com/docs/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
+:::info このビルドガイドは、ClickHouse 自体を変更するコントリビューター向けです。
+ClickHouse のソースコードを変更しない場合は、[Quick Start](https://clickhouse.com/docs/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
 :::
 
 ClickHouse は、macOS 10.15 (Catalina) 以降の macOS 上で、x86&#95;64 (Intel) および arm64 (Apple Silicon) 向けにコンパイルできます。

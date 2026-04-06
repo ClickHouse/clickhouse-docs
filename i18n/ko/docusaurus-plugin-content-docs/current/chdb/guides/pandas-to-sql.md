@@ -1,9 +1,9 @@
 ---
 title: 'pandas 사용자용 SQL'
-sidebar_label: 'SQL 매핑'
+sidebar_label: 'SQL 대응'
 slug: /chdb/guides/pandas-to-sql
-description: 'DataStore에서 pandas 연산이 SQL에 어떻게 매핑되는지 이해하기'
-keywords: ['chdb', 'datastore', 'pandas', 'sql', 'mapping', '쿼리']
+description: 'DataStore에서 pandas 연산이 SQL에 어떻게 대응되는지 이해하기'
+keywords: ['chdb', 'datastore', 'pandas', 'sql', '대응', '쿼리']
 doc_type: 'guide'
 ---
 

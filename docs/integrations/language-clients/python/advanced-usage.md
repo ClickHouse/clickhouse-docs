@@ -1,14 +1,14 @@
 ---
-sidebar_label: 'Advanced Usage'
+sidebar_label: 'Advanced usage'
 sidebar_position: 6
 keywords: ['clickhouse', 'python', 'advanced', 'raw', 'async', 'threading']
-description: 'Advanced Usage with ClickHouse Connect'
+description: 'Advanced usage with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-usage
-title: 'Advanced Usage'
+title: 'Advanced usage'
 doc_type: 'reference'
 ---
 
-# Advanced Usage {#advanced-usage}
+# Advanced usage {#advanced-usage}
 
 ## Raw API {#raw-api}
 

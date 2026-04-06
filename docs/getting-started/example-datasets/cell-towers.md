@@ -3,7 +3,7 @@ description: 'Learn how to load OpenCelliD data into ClickHouse, connect Apache 
   to ClickHouse and build a dashboard based on data'
 sidebar_label: 'Cell towers'
 slug: /getting-started/example-datasets/cell-towers
-title: 'Geo Data using the Cell Tower Dataset'
+title: 'Geo data using the cell tower dataset'
 keywords: ['cell tower data', 'geo data', 'OpenCelliD', 'geospatial dataset', 'getting started']
 doc_type: 'guide'
 ---

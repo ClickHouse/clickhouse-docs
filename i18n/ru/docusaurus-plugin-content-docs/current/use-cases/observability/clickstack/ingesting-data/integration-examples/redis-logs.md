@@ -17,6 +17,7 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # Мониторинг логов Redis с помощью ClickStack \{#redis-clickstack\}
 
 :::note[Кратко]

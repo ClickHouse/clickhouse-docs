@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Advanced Inserting'
+sidebar_label: 'Advanced inserting'
 sidebar_position: 5
 keywords: ['clickhouse', 'python', 'insert', 'advanced']
-description: 'Advanced Inserting with ClickHouse Connect'
+description: 'Advanced inserting with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-inserting
-title: 'Advanced Inserting'
+title: 'Advanced inserting'
 doc_type: 'reference'
 ---
 

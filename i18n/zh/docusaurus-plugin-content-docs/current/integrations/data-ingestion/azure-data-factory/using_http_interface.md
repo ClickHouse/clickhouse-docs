@@ -38,7 +38,6 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-
 # 在 Azure Data Factory 中使用 ClickHouse HTTP 接口 \{#using-clickhouse-http-interface-in-azure-data-factory\}
 
 [`azureBlobStorage` 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)

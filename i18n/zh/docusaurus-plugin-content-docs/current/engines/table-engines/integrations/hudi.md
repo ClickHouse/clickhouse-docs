@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Hudi 表引擎 \{#hudi-table-engine\}
 
-该引擎提供与 Amazon S3 中现有 Apache [Hudi](https://hudi.apache.org/) 表的只读方式集成。
+该引擎为 Amazon S3 中现有的 Apache [Hudi](https://hudi.apache.org/) 表提供只读集成。
 
 ## 创建表 \{#create-table\}
 
@@ -17,13 +17,14 @@ doc_type: 'reference'
 
 ```sql
 CREATE TABLE hudi_table
-    ENGINE = Hudi(url, [aws_access_key_id, aws_secret_access_key,])
+    ENGINE = Hudi(url, [aws_access_key_id, aws_secret_access_key,] [extra_credentials])
 ```
 
 **引擎参数**
 
-* `url` — 指向现有 Hudi 表（包含路径）的存储桶 URL。
+* `url` — 指向现有 Hudi 表 (包含路径) 的存储桶 URL。
 * `aws_access_key_id`, `aws_secret_access_key` - [AWS](https://aws.amazon.com/) 账户用户的长期凭证。可以使用这些凭证对请求进行身份验证。该参数为可选项。如果未指定凭证，则会使用配置文件中的凭证。
+* `extra_credentials` - 可选。用于传递 `role_arn`，以便在 ClickHouse Cloud 中进行基于角色的访问。有关配置步骤，请参见 [Secure S3](/cloud/data-sources/secure-s3)。
 
 可以使用 [Named Collections](/operations/named-collections.md) 来指定引擎参数。
 
@@ -53,4 +54,4 @@ CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 
 ## 另请参阅 \{#see-also\}
 
-- [Hudi 表函数](/sql-reference/table-functions/hudi.md)
+* [Hudi 表函数](/sql-reference/table-functions/hudi.md)

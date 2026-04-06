@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'ClickStack で Cloudflare Logs を監視する'
-sidebar_label: 'Cloudflare Logs'
+title: 'ClickStackでCloudflareログを監視する'
+sidebar_label: 'Cloudflareログ'
 pagination_prev: null
 pagination_next: null
 description: 'S3 から継続的にログをインジェストするため、ClickPipes を使用して Cloudflare Logpush データを ClickStack に取り込む'

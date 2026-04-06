@@ -1,9 +1,10 @@
 ---
 slug: /guides/replacing-merge-tree
-title: 'ReplacingMergeTree'
-description: 'ClickHouse에서 ReplacingMergeTree 엔진 사용하기'
+title: 'ReplacingMergeTree 엔진 사용하기'
+description: 'ClickHouse에서 ReplacingMergeTree 엔진을 사용하는 방법'
 keywords: ['replacingmergetree', 'inserts', 'deduplication']
 doc_type: 'guide'
+sidebar_label: 'ReplacingMergeTree 엔진 사용하기'
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';

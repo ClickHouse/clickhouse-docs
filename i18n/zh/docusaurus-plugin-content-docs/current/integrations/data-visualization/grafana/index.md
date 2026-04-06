@@ -3,14 +3,14 @@ sidebar_label: '快速入门'
 sidebar_position: 1
 slug: /integrations/grafana
 description: '在 Grafana 中使用 ClickHouse 的介绍'
-title: 'ClickHouse 数据源插件（适用于 Grafana）'
+title: '用于 Grafana 的 ClickHouse 数据源插件'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
-keywords: ['Grafana', '数据可视化', '仪表盘', '插件', '数据源']
+keywords: ['Grafana', '数据可视化', '仪表板', '插件', '数据源']
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
@@ -21,7 +21,6 @@ import quick_config from '@site/static/images/integrations/data-visualization/gr
 import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # 用于 Grafana 的 ClickHouse 数据源插件 \{#clickhouse-data-source-plugin-for-grafana\}
 

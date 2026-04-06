@@ -1,9 +1,9 @@
 ---
-title: '기본 시계열 작업'
-sidebar_label: '기본 작업'
-description: 'ClickHouse에서 수행하는 기본 시계열 작업.'
+title: '기본 시계열 연산'
+sidebar_label: '기본 연산'
+description: 'ClickHouse에서 수행하는 기본 시계열 연산.'
 slug: /use-cases/time-series/basic-operations
-keywords: ['시계열', '기본 작업', '데이터 수집', '쿼리', '필터링', '그룹화', '집계']
+keywords: ['시계열', '기본 연산', '데이터 수집', '쿼리', '필터링', '그룹화', '집계']
 show_related_blogs: true
 doc_type: 'guide'
 ---

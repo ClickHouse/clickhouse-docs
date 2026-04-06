@@ -1,6 +1,6 @@
 ---
 slug: /data-modeling/schema-design
-title: 'Schema Design'
+title: 'Schema design'
 description: 'Optimizing ClickHouse schema for query performance'
 keywords: ['schema', 'schema design', 'query optimization']
 doc_type: 'guide'

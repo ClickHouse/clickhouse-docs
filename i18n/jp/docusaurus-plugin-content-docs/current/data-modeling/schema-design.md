@@ -1,7 +1,7 @@
 ---
 slug: /data-modeling/schema-design
-title: 'Schema Design'
-description: 'Optimizing ClickHouse schema for query performance'
+title: 'スキーマ設計'
+description: 'Optimizing ClickHouse schema for クエリパフォーマンス'
 keywords: ['schema', 'schema design', 'query optimization']
 doc_type: 'guide'
 ---
@@ -10,7 +10,7 @@ import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow
 import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
 import Image from '@theme/IdealImage';
 
-効果的なスキーマ設計を理解することは、ClickHouse のパフォーマンス最適化の要となります。スキーマ設計にはしばしばトレードオフを伴う選択が含まれ、最適なアプローチは、実行されるクエリに加えて、データの更新頻度、レイテンシ要件、データ量といった要因によって異なります。本ガイドでは、ClickHouse のパフォーマンスを最適化するためのスキーマ設計におけるベストプラクティスとデータモデリング手法の概要を説明します。
+効果的なスキーマ設計を理解することは、ClickHouse のパフォーマンス最適化の要となります。スキーマ設計にはしばしばトレードオフを伴う選択が含まれ、最適なアプローチは、実行されるクエリに加えて、データの更新頻度、レイテンシ要件、データ量といった要因によって異なります。このガイドでは、ClickHouse のパフォーマンスを最適化するためのスキーマ設計におけるベストプラクティスとデータモデリング手法の概要を説明します。
 
 
 ## Stack Overflow dataset \{#stack-overflow-dataset\}

@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'comman
   'client', 'jdbc', 'odbc', 'driver']
 sidebar_label: 'Overview'
 slug: /interfaces/overview
-title: 'Drivers and Interfaces'
+title: 'Drivers and interfaces'
 doc_type: 'reference'
 ---
 

@@ -3732,7 +3732,7 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 
 引入自：v23.5.0
 
-将日期或带时间的日期向上取整到最近的周六或周日 (即下一个周六或周日) 。
+将日期或日期时间向上取整到最近的周六或周日 (即下一个周六或周日) 。
 
 :::note
 可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
@@ -3746,13 +3746,13 @@ toLastDayOfWeek(datetime[, mode[, timezone]])
 
 **参数**
 
-* `datetime` — 要转换的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要转换的日期或日期时间。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 * `mode` — 按照 `toWeek()` FUNCTION 中的说明确定一周的第一天。默认值为 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `timezone` — 可选。用于转换的时区。如果未指定，则使用服务器的时区。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-根据 `mode`，返回给定日期当日或之后、距离其最近的星期六或星期日，对应的日期类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+根据 `mode`，返回给定日期当日或之后、距离其最近的星期六或星期日，对应的日期类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32)
 
 **示例**
 
@@ -4406,15 +4406,15 @@ toStartOfDay(datetime)
 
 **参数**
 
-* `datetime` — 要向下舍入的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
+* `datetime` — 要向下取整的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
 
 **返回值**
 
-返回向下舍入到当天起始时刻的日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+返回向下取整到当天起始时刻的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **示例**
 
-**向下舍入到当天起始时刻**
+**向下取整到当天起始时刻**
 
 ```sql title=Query
 SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
@@ -4494,7 +4494,7 @@ toStartOfFiveMinutes(datetime)
 
 **返回值**
 
-返回将时间取整到最近的 5 分钟区间起始时刻后的日期时间值 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+返回将时间取整到最近的 5 分钟区间起始时刻后的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **示例**
 
@@ -4992,7 +4992,7 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 
 引入于：v20.1.0
 
-将带时间的日期向下取整到最近的 10 分钟区间的起始时刻。
+将日期时间向下取整到最近的 10 分钟区间的起始时刻。
 
 :::note
 可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
@@ -5006,11 +5006,11 @@ toStartOfTenMinutes(datetime)
 
 **参数**
 
-* `datetime` — 带时间的日期 (日期时间值) 。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 日期时间 (日期时间值) 。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **返回值**
 
-返回将日期时间值四舍五入到最近 10 分钟区间起始时刻的结果，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+返回将日期时间值四舍五入到最近 10 分钟区间起始时刻的结果。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **示例**
 
@@ -5050,17 +5050,17 @@ toStartOfWeek(datetime[, mode[, timezone]])
 
 **参数**
 
-* `datetime` — 要转换的日期或带时间的日期。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、[`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要转换的日期或日期时间。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime)、[`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 * `mode` — 如 `toWeek()` FUNCTION 中所述，用于确定一周的第一天。默认值为 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 * `timezone` — 执行转换时使用的时区。如果未指定，则使用服务器时区。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-根据 `mode` 的取值，返回给定日期当日或之前、最接近的星期日或星期一对应的日期。[`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+根据 `mode` 的取值，返回给定日期当日或之前、最接近的星期日或星期一对应的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32)
 
 **示例**
 
-**向下舍入到最近的星期日或星期一**
+**向下取整到最近的星期日或星期一**
 
 ```sql title=Query
 SELECT

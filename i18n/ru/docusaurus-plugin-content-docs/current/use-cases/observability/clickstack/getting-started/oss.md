@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/oss
-title: 'Начало работы с Open Source ClickStack'
-sidebar_label: 'Open Source'
+title: 'Начало работы с open source ClickStack'
+sidebar_label: 'Open source'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Начало работы с Open Source ClickStack'
@@ -24,14 +24,18 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Для развертывания **ClickStack Open Source**, при котором вы самостоятельно запускаете и управляете ClickHouse и интерфейсом ClickStack, мы предоставляем предварительно собранные образы Docker, которые объединяют UI, коллектор OpenTelemetry и ClickHouse в один контейнер, что упрощает старт локальной разработки, тестирования и самоуправляемых развертываний.
+Для развертывания **ClickStack Open Source**, при котором вы самостоятельно запускаете и управляете ClickHouse и интерфейсом ClickStack, мы предоставляем предварительно собранные образы Docker, которые объединяют UI, OpenTelemetry Collector и ClickHouse в один контейнер, что упрощает старт локальной разработки, тестирования и самоуправляемых развертываний.
+
+:::tip
+Также доступна управляемая версия ClickStack — см. [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+:::
 
 Эти образы основаны на официальном Debian-пакете ClickHouse и доступны в нескольких вариантах дистрибутивов для разных сценариев использования.
 
 Самый простой вариант — это дистрибутив с единым образом, который включает все основные компоненты стека, объединённые вместе:
 
-* **HyperDX UI**
-* **коллектор OpenTelemetry (OTel)**
+* **интерфейс HyperDX**
+* **OpenTelemetry Collector (OTel)**
 * **ClickHouse**
 
 Этот образ «всё-в-одном» позволяет запустить полный стек одной командой, что делает его идеальным для тестирования, экспериментов или быстрых локальных развертываний.

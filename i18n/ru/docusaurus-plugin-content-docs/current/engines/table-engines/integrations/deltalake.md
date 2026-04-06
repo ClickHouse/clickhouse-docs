@@ -20,105 +20,101 @@ import TabItem from '@theme/TabItem';
 Чтобы создать таблицу DeltaLake, она уже должна существовать в хранилище S3, GCP или Azure. Команды ниже не принимают параметры DDL для создания новой таблицы.
 
 <Tabs>
-<TabItem value="S3" label="S3" default>
+  <TabItem value="S3" label="S3" default>
+    **Синтаксис**
 
-**Синтаксис**
+    ```sql
+    CREATE TABLE table_name
+    ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,] [extra_credentials])
+    ```
 
-```sql
-CREATE TABLE table_name
-ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
-```
+    **Параметры движка**
 
-**Параметры движка**
+    * `url` — URL-адрес бакета с путём к существующей таблице Delta Lake.
+    * `aws_access_key_id`, `aws_secret_access_key` - долгосрочные учетные данные пользователя аккаунта [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации своих запросов. Параметр является необязательным. Если учетные данные не указаны, используются данные из конфигурационного файла.
+    * `extra_credentials` - Необязательно. Используется для передачи `role_arn` для доступа на основе ролей в ClickHouse Cloud. См. [Secure S3](/cloud/data-sources/secure-s3) для шагов настройки.
 
-- `url` — URL-адрес бакета с путём к существующей таблице Delta Lake.
-- `aws_access_key_id`, `aws_secret_access_key` - долгосрочные учетные данные пользователя аккаунта [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации своих запросов. Параметр является необязательным. Если учетные данные не указаны, используются данные из конфигурационного файла.
+    Параметры движка могут быть заданы с использованием [именованных коллекций](/operations/named-collections.md).
 
-Параметры движка могут быть заданы с использованием [именованных коллекций](/operations/named-collections.md).
+    **Пример**
 
-**Пример**
+    ```sql
+    CREATE TABLE deltalake
+    ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
+    ```
 
-```sql
-CREATE TABLE deltalake
-ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
-```
+    Использование именованных коллекций:
 
-Использование именованных коллекций:
+    ```xml
+    <clickhouse>
+        <named_collections>
+            <deltalake_conf>
+                <url>http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/</url>
+                <access_key_id>ABC123<access_key_id>
+                <secret_access_key>Abc+123</secret_access_key>
+            </deltalake_conf>
+        </named_collections>
+    </clickhouse>
+    ```
 
-```xml
-<clickhouse>
-    <named_collections>
-        <deltalake_conf>
-            <url>http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/</url>
-            <access_key_id>ABC123<access_key_id>
-            <secret_access_key>Abc+123</secret_access_key>
-        </deltalake_conf>
-    </named_collections>
-</clickhouse>
-```
+    ```sql
+    CREATE TABLE deltalake
+    ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
+    ```
+  </TabItem>
 
-```sql
-CREATE TABLE deltalake
-ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
-```
-</TabItem>
+  <TabItem value="GCP" label="GCP" default>
+    **Синтаксис**
 
-<TabItem value="GCP" label="GCP" default>
+    ```sql
+    -- Использование HTTPS URL (рекомендуется)
+    CREATE TABLE table_name
+    ENGINE = DeltaLake('https://storage.googleapis.com/<bucket>/<path>/', '<access_key_id>', '<secret_access_key>')
+    ```
 
-**Синтаксис**
+    :::note[Неподдерживаемый gsutil URI]
+    URI gsutil вида `gs://clickhouse-docs-example-bucket` не поддерживаются, пожалуйста, используйте URL, начинающийся с `https://storage.googleapis.com`.
+    :::
 
-```sql
--- Использование HTTPS URL (рекомендуется)
-CREATE TABLE table_name
-ENGINE = DeltaLake('https://storage.googleapis.com/<bucket>/<path>/', '<access_key_id>', '<secret_access_key>')
-```
+    **Аргументы**
 
-:::note[Неподдерживаемый gsutil URI]
-URI gsutil вида `gs://clickhouse-docs-example-bucket` не поддерживаются, пожалуйста, используйте URL, начинающийся с `https://storage.googleapis.com`.
-:::
+    * `url` — URL бакета GCS с путём к таблице Delta Lake. Должен использовать формат `https://storage.googleapis.com/<bucket>/<path>/`
+      (конечная точка GCS XML API) или `gs://<bucket>/<path>/`, который автоматически конвертируется.
+    * `access_key_id` — ключ доступа GCS. Создаётся через Google Cloud Console → Cloud Storage → Settings → Interoperability.
+    * `secret_access_key` — секретный ключ GCS.
 
-**Аргументы**
+    **Именованные коллекции**
 
-- `url` — URL бакета GCS с путём к таблице Delta Lake. Должен использовать формат `https://storage.googleapis.com/<bucket>/<path>/`
-   (конечная точка GCS XML API) или `gs://<bucket>/<path>/`, который автоматически конвертируется.
-- `access_key_id` — ключ доступа GCS. Создаётся через Google Cloud Console → Cloud Storage → Settings → Interoperability.
-- `secret_access_key` — секретный ключ GCS.
+    Также можно использовать именованные коллекции.
+    Например:
 
-**Именованные коллекции**
+    ```sql
+    CREATE NAMED COLLECTION gcs_creds AS
+    access_key_id = '<access_key>',
+    secret_access_key = '<secret>';
 
-Также можно использовать именованные коллекции.
-Например:
+    CREATE TABLE gcpDeltaLake
+    ENGINE = DeltaLake(gcs_creds, url = 'https://storage.googleapis.com/<bucket>/<path>')
+    ```
+  </TabItem>
 
-```sql
-CREATE NAMED COLLECTION gcs_creds AS
-access_key_id = '<access_key>',
-secret_access_key = '<secret>';
+  <TabItem value="Azure" label="Azure" default>
+    **Синтаксис**
 
-CREATE TABLE gcpDeltaLake
-ENGINE = DeltaLake(gcs_creds, url = 'https://storage.googleapis.com/<bucket>/<path>')
-```
-   
-</TabItem>
+    ```sql
+    CREATE TABLE table_name
+    ENGINE = DeltaLake(connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression])
+    ```
 
-<TabItem value="Azure" label="Azure" default>
+    **Аргументы**
 
-**Синтаксис**
-
-```sql
-CREATE TABLE table_name
-ENGINE = DeltaLake(connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression])
-```
-
-**Аргументы**
-
-- `connection_string` — строка подключения Azure.
-- `storage_account_url` — URL учётной записи хранилища Azure (например, https://account.blob.core.windows.net).
-- `container_name` — имя контейнера Azure.
-- `blobpath` — путь к таблице Delta Lake внутри контейнера.
-- `account_name` — имя учётной записи хранилища Azure.
-- `account_key` — ключ учётной записи хранилища Azure.
-
-</TabItem>
+    * `connection_string` — строка подключения Azure.
+    * `storage_account_url` — URL учётной записи хранилища Azure (например, https://account.blob.core.windows.net).
+    * `container_name` — имя контейнера Azure.
+    * `blobpath` — путь к таблице Delta Lake внутри контейнера.
+    * `account_name` — имя учётной записи хранилища Azure.
+    * `account_key` — ключ учётной записи хранилища Azure.
+  </TabItem>
 </Tabs>
 
 ## Запись данных с использованием таблицы DeltaLake \{#insert-data\}

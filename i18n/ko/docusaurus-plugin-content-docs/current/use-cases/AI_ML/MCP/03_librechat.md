@@ -4,7 +4,7 @@ sidebar_label: 'LibreChat 통합'
 title: 'LibreChat 및 ClickHouse Cloud와 함께 ClickHouse MCP 서버를 설정하기'
 pagination_prev: null
 pagination_next: null
-description: '이 가이드는 Docker를 사용하여 LibreChat을 ClickHouse MCP 서버와 함께 설정하는 방법을 설명합니다.'
+description: '이 가이드는 Docker를 사용하여 LibreChat과 ClickHouse MCP 서버를 설정하는 방법을 설명합니다.'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'

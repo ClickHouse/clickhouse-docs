@@ -1,15 +1,16 @@
 ---
 slug: /guides/replacing-merge-tree
-title: 'ReplacingMergeTree'
-description: '在 ClickHouse 中使用 ReplacingMergeTree 引擎'
+title: '使用 ReplacingMergeTree 引擎'
+description: '在 ClickHouse 中使用 ReplacingMergeTree 引擎的指南'
 keywords: ['replacingmergetree', 'inserts', 'deduplication']
 doc_type: 'guide'
+sidebar_label: '使用 ReplacingMergeTree 引擎'
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 
-虽然事务型数据库针对事务性更新和删除型工作负载进行了优化，但 OLAP 数据库对这类操作提供的保障较少。相应地，它们针对以批量方式插入的不可变数据进行了优化，从而显著加速分析型查询。虽然 ClickHouse 通过 mutation 提供更新操作，并提供了一种轻量级的行删除方式，但由于其列式结构，这些操作应按上述说明谨慎调度。这些操作以异步方式处理，由单线程执行，并且（在更新的情况下）需要在磁盘上重写数据。因此，不适合用于执行大量、细粒度的小变更。
+虽然事务型数据库针对事务性更新和删除型工作负载进行了优化，但 OLAP 数据库对这类操作提供的保障较少。相应地，它们针对以批次方式插入的不可变数据进行了优化，从而显著加速分析型查询。虽然 ClickHouse 通过变更提供更新操作，并提供了一种轻量级的行删除方式，但由于其列式结构，这些操作应按上述说明谨慎调度。这些操作以异步方式处理，由单线程执行，并且 (在更新的情况下) 需要在磁盘上重写数据。因此，不适合用于执行大量、细粒度的小变更。
 为了在处理包含更新和删除行的流式数据时避免上述使用模式，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
 
 

@@ -87,7 +87,7 @@ MergeTree 엔진 계열 테이블의 경우 ClickHouse는 기본적으로 자동
 ### 공식 ClickHouse 클라이언트 사용 \{#use-official-clickhouse-clients\}
 
 ClickHouse는 가장 널리 사용되는 프로그래밍 언어용 클라이언트를 제공합니다.
-이 클라이언트들은 INSERT가 올바르게 수행되도록 최적화되어 있으며, 예를 들어 [Go 클라이언트](/integrations/go#async-insert)처럼 직접적으로 또는 쿼리, USER, 연결 수준 SETTINGS에서 비동기 INSERT를 활성화했을 때 간접적으로 비동기 INSERT를 네이티브로 지원합니다.
+이 클라이언트들은 삽입이 올바르게 수행되도록 최적화되어 있으며, 예를 들어 [Go 클라이언트](/integrations/language-clients/go/clickhouse-api#async-insert)처럼 직접적으로 또는 쿼리, USER, 연결 수준 SETTINGS에서 비동기 삽입을 활성화했을 때 간접적으로 비동기 삽입을 네이티브로 지원합니다.
 
 사용 가능한 ClickHouse 클라이언트와 드라이버 전체 목록은 [Clients and Drivers](/interfaces/cli)를 참조하십시오.
 

@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Rotel を使用して ClickStack で AWS Lambda ログを監視する'
+title: 'Rotel を使って ClickStack で AWS Lambda のログを監視する'
 sidebar_label: 'AWS Lambda ログ'
 pagination_prev: null
 pagination_next: null
-description: 'Rotel を使用して ClickStack で AWS Lambda ログを監視する'
+description: 'Rotel を使って ClickStack で AWS Lambda のログを監視する'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'ログ', 'CloudWatch']
 ---
@@ -14,7 +14,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
 
 # Rotel を使って ClickStack で AWS Lambda のログを監視する \{#lambda-clickstack\}
 

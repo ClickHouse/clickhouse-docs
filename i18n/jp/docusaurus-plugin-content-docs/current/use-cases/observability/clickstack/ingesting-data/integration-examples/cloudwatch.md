@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-cloudwatch-logs
-title: 'ClickStack を用いた AWS CloudWatch Logs の監視'
-sidebar_label: 'AWS CloudWatch Logs'
+title: 'ClickStack を使用した AWS CloudWatch Logs の監視'
+sidebar_label: 'AWS CloudWatch logs'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いた AWS CloudWatch Logs の監視'
+description: 'ClickStack を使用した AWS CloudWatch Logs の監視'
 doc_type: 'guide'
 keywords: ['AWS', 'CloudWatch', 'OTEL', 'ClickStack', 'logs']
 ---
@@ -20,6 +20,7 @@ import demo_search_view from '@site/static/images/clickstack/cloudwatch/demo-sea
 import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-log-overview.png';
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+
 
 # ClickStack を使用した AWS CloudWatch Logs の監視 \{#cloudwatch-clickstack\}
 

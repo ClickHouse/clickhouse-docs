@@ -1,6 +1,6 @@
 ---
 slug: /starter-guides
-title: 'Starter Guides'
+title: 'Starter guides'
 description: 'Landing page for starter guides'
 pagination_prev: null
 pagination_next: null

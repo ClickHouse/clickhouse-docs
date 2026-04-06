@@ -167,13 +167,13 @@ Postgres by ClickHouse는 다음과 같은 애플리케이션에 적합합니다
 
 성능상의 이점은 근본적인 아키텍처 차이에서 비롯됩니다.
 
-| Aspect                  | NVMe Storage (Managed Postgres)     | Network-Attached Storage (Provisioned IOPS)        |
+| Aspect                  | NVMe Storage (Managed Postgres)     | 네트워크 연결 스토리지 (Provisioned IOPS)            |
 |-------------------------|-------------------------------------|----------------------------------------------------|
-| **IOPS**                | 10만에서 사실상 무제한까지           | 16,000 IOPS가 사전 프로비저닝됨                    |
-| **Network hops**        | 0 (로컬 디바이스)                    | 모든 디스크 작업마다 네트워크 왕복이 필요함       |
-| **Performance scaling** | 동시성이 증가할수록 선형적으로 확장됨 | 프로비저닝된 IOPS에 의해 제한됨                   |
+| **IOPS**                | 10만에서 사실상 무제한까지                 | 16,000 프로비저닝됨                                 |
+| **Network hops**        | 0(로컬 디바이스)                        | 모든 디스크 작업마다 네트워크 왕복이 필요함                    |
+| **Performance scaling** | 동시성이 증가할수록 선형적으로 확장됨            | 프로비저닝된 IOPS에 의해 제한됨                         |
 
-NVMe 스토리지의 성능 이점에 대한 자세한 내용은 「[NVMe 기반 성능](/cloud/managed-postgres/overview#nvme-performance)」을 참고하십시오.
+NVMe 스토리지의 성능 이점에 대한 자세한 내용은 [NVMe 기반 성능](/cloud/managed-postgres#nvme-performance)을 참고하십시오.
 
 ## 비용 효율성 \{#cost-effectiveness\}
 
@@ -194,5 +194,5 @@ NVMe 스토리지의 성능 이점에 대한 자세한 내용은 「[NVMe 기반
 
 - [PeerDB: 관리형 Postgres 서비스 비교](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase)
 - [pgbench 문서](https://www.postgresql.org/docs/current/pgbench.html)
-- [관리형 Postgres 개요](/cloud/managed-postgres/overview)
+- [Managed Postgres 개요](/cloud/managed-postgres)
 - [Postgres 인스턴스 확장](/cloud/managed-postgres/scaling)

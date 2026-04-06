@@ -3,7 +3,7 @@ sidebar_label: 'Rust'
 sidebar_position: 5
 keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
 slug: /integrations/rust
-description: 'ClickHouse 用公式 Rust クライアント。'
+description: 'Rust 用の ClickHouse 公式クライアント。'
 title: 'ClickHouse Rust クライアント'
 doc_type: 'reference'
 integration:

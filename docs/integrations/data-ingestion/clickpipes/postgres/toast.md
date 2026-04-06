@@ -1,5 +1,5 @@
 ---
-title: 'Handling TOAST Columns'
+title: 'Handling TOAST columns'
 description: 'Learn how to handle TOAST columns when replicating data from PostgreSQL to ClickHouse.'
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'

@@ -10,21 +10,21 @@ doc_type: 'reference'
 
 ClickHouse에서는 공통 테이블 표현식([CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)), 공통 스칼라 표현식, 그리고 재귀 쿼리를 지원합니다.
 
-## 공통 테이블 표현식(Common Table Expressions) \{#common-table-expressions\}
+## 공통 테이블 표현식 \{#common-table-expressions\}
 
-공통 테이블 표현식(Common Table Expressions)은 이름이 있는 서브쿼리를 나타냅니다.
+공통 테이블 표현식은 이름이 있는 서브쿼리를 나타냅니다.
 `SELECT` 쿼리에서 테이블 표현식을 사용할 수 있는 모든 위치에서 이를 이름으로 참조할 수 있습니다.
-이름이 있는 서브쿼리는 현재 쿼리의 범위뿐 아니라 하위 서브쿼리의 범위에서도 이름으로 참조할 수 있습니다.
+이름이 있는 서브쿼리는 현재 쿼리의 스코프뿐 아니라 하위 서브쿼리의 스코프에서도 이름으로 참조할 수 있습니다.
 
-`SELECT` 쿼리에서 공통 테이블 표현식에 대한 각 참조는 언제나 해당 정의에 있는 서브쿼리로 대체됩니다.
-현재 공통 테이블 표현식(CTE)을 식별자 해석 과정에서 숨김으로써 재귀가 방지됩니다.
+`SELECT` 쿼리에서 공통 테이블 표현식에 대한 각 참조는 CTE가 명시적으로 구체화된 것으로 정의되지 않은 경우([구체화된 공통 테이블 표현식](#materialized-common-table-expressions) 참조) 언제나 해당 정의의 서브쿼리로 대체됩니다.
+현재 CTE를 식별자 해석 과정에서 숨김으로써 재귀가 방지됩니다.
 
-쿼리가 각 사용 위치마다 다시 실행되므로, CTE는 호출되는 모든 위치에서 동일한 결과를 보장하지 않는다는 점에 유의하십시오.
+쿼리가 각 사용 사례마다 다시 실행되므로, CTE는 호출되는 모든 위치에서 동일한 결과를 보장하지 않는다는 점에 유의하십시오.
 
 ### 구문 \{#common-table-expressions-syntax\}
 
 ```sql
-WITH <identifier> AS <subquery expression>
+WITH <identifier> AS [MATERIALIZED] <subquery expression>
 ```
 
 
@@ -50,6 +50,129 @@ CTE가 단순한 코드 조각이 아니라 결과 자체를 그대로 전달한
 
 그러나 `cte_numbers`를 두 번 참조하고 있으므로 매번 난수가 새로 생성되고, 그에 따라 `280501, 392454, 261636, 196227`처럼 서로 다른 임의의 결과가 표시됩니다.
 
+
+## 구체화된 공통 테이블 표현식(Materialized Common Table Expressions) \{#materialized-common-table-expressions\}
+
+기본적으로 ClickHouse는 CTE의 서브쿼리를 각 참조 지점에 인라인하므로, 참조될 때마다 다시 실행합니다.
+`MATERIALIZED` 키워드를 추가하면 ClickHouse는 CTE 서브쿼리를 **정확히 한 번만** 실행하고, 그 결과를 임시 테이블(temporary table)에 저장한 다음, 모든 참조에서 해당 테이블의 결과를 사용합니다.
+따라서 동일한 CTE가 하나의 쿼리에서 여러 번 참조되는 경우(예: self-join 또는 여러 `IN` 서브쿼리) 특히 유용합니다. 기본 계산이 한 번만 수행되기 때문입니다.
+
+:::note
+구체화된 CTE는 **실험적** 기능입니다.
+사용하려면 [analyzer](/operations/analyzer)와 설정 `enable_materialized_cte`가 활성화되어 있어야 합니다.
+:::
+
+### 구문 \{#materialized-common-table-expressions-syntax\}
+
+```sql
+WITH <identifier> AS MATERIALIZED (<subquery>)
+SELECT ...
+```
+
+
+### 사용 시기 \{#materialized-cte-when-to-use\}
+
+구체화된 CTE는 다음과 같은 경우에 가장 효과적입니다.
+
+- 하나의 쿼리에서 동일한 CTE를 **두 번 이상** 참조하는 경우.
+`MATERIALIZED`를 사용하지 않으면 각 참조마다 서브쿼리가 독립적으로 다시 실행됩니다.
+- CTE에 `generateRandom`과 같은 **비결정적** 함수가 포함된 경우.
+구체화하면 모든 참조가 동일한 데이터를 보게 됩니다.
+- CTE에 **비용이 큰 계산**(집계, 조인, 대규모 스캔)이 포함되어 있어 반복 실행을 피해야 하는 경우.
+
+:::tip
+구체화된 CTE가 한 번만 참조되면 ClickHouse는 불필요한 오버헤드를 피하기 위해 이를 일반 서브쿼리로 자동으로 인라인합니다.
+:::
+
+### 예시 \{#materialized-common-table-expressions-examples\}
+
+**예시 1:** 구체화된 CTE의 셀프 조인
+
+`MATERIALIZED`가 없으면 조인의 양쪽에서 하위 쿼리를 각각 별도로 실행합니다.
+`MATERIALIZED`를 사용하면 테이블을 한 번만 스캔하며, 조인의 양쪽이 동일한 임시 테이블에서 읽습니다.
+
+```sql
+SET enable_materialized_cte = 1;
+
+CREATE TABLE users (uid Int16, name String, age Int16) ENGINE = Memory;
+INSERT INTO users VALUES (1231, 'John', 33), (6666, 'Ksenia', 48), (8888, 'Alice', 50);
+
+WITH
+    a AS MATERIALIZED (SELECT * FROM users WHERE name = 'Alice')
+SELECT count() FROM a AS l JOIN a AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**예시 2:** 비결정적 함수에서도 결정적인 결과
+
+`generateRandom`을 사용하는 일반 CTE는 참조할 때마다 서로 다른 결과를 생성합니다.
+CTE를 구체화하면 일관성이 보장됩니다:
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH cte_numbers AS MATERIALIZED
+(
+    SELECT num
+    FROM generateRandom('num UInt64', NULL)
+    LIMIT 1000000
+)
+SELECT count()
+FROM cte_numbers
+WHERE num IN (SELECT num FROM cte_numbers);
+```
+
+두 참조가 모두 동일한 구체화된 데이터를 읽으므로, 결과는 항상 `1000000`입니다.
+
+**예시 3:** 구체화된 CTE 연결하기
+
+구체화된 CTE는 다른 구체화된 CTE를 참조할 수 있습니다.
+ClickHouse는 의존성을 조회하고 올바른 순서로 구체화합니다:
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH
+    a AS MATERIALIZED (SELECT uid, name FROM users),
+    b AS MATERIALIZED (SELECT uid FROM a)
+SELECT count() FROM b AS l LEFT SEMI JOIN b AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+CTE 정의의 순서는 중요하지 않습니다 — 전방 참조가 허용됩니다:
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH
+    b AS MATERIALIZED (SELECT uid FROM a),
+    a AS MATERIALIZED (SELECT uid FROM users)
+SELECT count() FROM b AS l LEFT SEMI JOIN b AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+
+### 제한 사항 \{#materialized-cte-restrictions\}
+
+- **실험적 설정 필요**: `enable_materialized_cte` 설정을 활성화해야 합니다.
+- **analyzer 필요**: 구체화된 CTE는 [analyzer](/operations/analyzer)가 활성화된 경우에만 작동합니다(`enable_analyzer = 1`).
+- **`RECURSIVE`와 함께는 지원되지 않음**: `MATERIALIZED`와 `RECURSIVE` 키워드를 함께 사용하는 것은 허용되지 않으며, `UNSUPPORTED_METHOD` 예외가 발생합니다.
+- **상관된 CTE는 허용되지 않음**: 구체화된 CTE는 외부 쿼리 스코프의 컬럼을 참조할 수 없습니다.
 
 ## 공통 스칼라 표현식 \{#common-scalar-expressions\}
 

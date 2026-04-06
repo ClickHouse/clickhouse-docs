@@ -1,29 +1,29 @@
 ---
-description: '投影操作文档'
+description: 'PROJECTION操作文档'
 sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
-title: '投影'
+title: 'PROJECTION'
 doc_type: 'reference'
 ---
 
-本文将介绍什么是投影、如何使用投影，并说明多种用于操作投影的选项。
+本页面将介绍什么是PROJECTION、如何使用PROJECTION，并说明多种用于操作PROJECTION的选项。
 
-## 投影概述 \{#overview\}
+## PROJECTION概述 \{#overview\}
 
-投影会以一种优化查询执行的格式存储数据，在以下场景中非常有用：
+PROJECTION会以一种优化查询执行的格式存储数据，在以下场景中非常有用：
 
-- 在不属于主键的列上运行查询
-- 对列进行预聚合，从而同时减少计算和 IO
+* 在不属于主键的列上运行查询
+* 对列进行预聚合，从而同时减少计算和 IO
 
-你可以为一张表定义一个或多个投影。在查询分析阶段，ClickHouse 会在不修改用户所提供查询的前提下，自动选择需要扫描数据量最少的投影。
+你可以为一张表定义一个或多个PROJECTION。在查询解析阶段，ClickHouse 会在不修改用户所提供查询的前提下，自动选择需要扫描数据量最少的PROJECTION。
 
 :::note[磁盘使用情况]
-投影会在内部创建一个新的隐藏表，这意味着需要更多的 IO 和磁盘空间。
-例如，如果投影定义了不同的主键，则来自原始表的所有数据都会被复制一份。
+PROJECTION会在内部创建一个新的隐藏表，这意味着需要更多的 IO 和磁盘空间。
+例如，如果PROJECTION定义了不同的主键，则来自原始表的所有数据都会被复制一份。
 :::
 
-你可以在[此页面](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)中查看更多关于投影内部工作机制的技术细节。
+你可以在[此页面](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)中查看更多关于PROJECTION内部工作机制的技术细节。
 
 ## 使用投影 \{#examples\}
 
@@ -43,13 +43,12 @@ ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
 
-使用 `ALTER TABLE`，我们可以向现有表添加该 Projection：
+使用 `ALTER TABLE`，我们可以向现有表添加该 PROJECTION：
 
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
-SELECT
-*
-ORDER BY user_name
+    SELECT *
+    ORDER BY user_name
 )
 
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
@@ -66,8 +65,8 @@ INSERT INTO visits_order SELECT
 FROM numbers(1, 100);
 ```
 
-该 Projection 使我们即使在原始表中未将 `user_name` 定义为 `PRIMARY_KEY`，也能快速按 `user_name` 进行过滤。
-在查询时，ClickHouse 会判断如果使用该 Projection，可以处理更少的数据，因为数据是按 `user_name` 排序的。
+该 PROJECTION 使我们即使在原始表中未将 `user_name` 定义为 `PRIMARY_KEY`，也能快速按 `user_name` 进行过滤。
+在查询时，ClickHouse 会判断如果使用该 PROJECTION，可以处理更少的数据，因为数据是按 `user_name` 排序的。
 
 ```sql
 SELECT
@@ -77,12 +76,11 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-要验证某个查询是否使用了投影，我们可以查看 `system.query_log` 表。在 `projections` 字段中，会显示所使用的投影名称；如果未使用任何投影，该字段则为空：
+要验证某个查询是否使用了PROJECTION，我们可以查看 `system.query_log` 表。在 `projections` 字段中，会显示所使用的PROJECTION名称；如果未使用任何PROJECTION，该字段则为空：
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
-
 
 ### 预聚合查询示例 \{#example-pre-aggregation-query\}
 
@@ -165,9 +163,9 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-### 带有 `_part_offset` 字段的常规投影 \{#normal-projection-with-part-offset-field\}
+### 创建和使用PROJECTION索引 \{#projection-indexes\}
 
-创建一个带有常规投影并使用 `_part_offset` 字段的表：
+创建[PROJECTION索引](../../../engines/table-engines/mergetree-family/mergetree.md#projection-index)：
 
 ```sql
 CREATE TABLE events
@@ -176,25 +174,41 @@ CREATE TABLE events
     `event_id` UInt64,
     `user_id` UInt64,
     `huge_string` String,
-    PROJECTION order_by_user_id
-    (
-        SELECT
-            _part_offset
-        ORDER BY user_id
-    )
+    PROJECTION order_by_user_id INDEX user_id TYPE basic
 )
 ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
+
+<details markdown="1">
+  <summary>使用显式 `_part_offset` 字段创建PROJECTION</summary>
+
+  也可以使用以下语法来创建PROJECTION索引 (不推荐) ：
+
+  ```sql
+  CREATE TABLE events
+  (
+      `event_time` DateTime,
+      `event_id` UInt64,
+      `user_id` UInt64,
+      `huge_string` String,
+      PROJECTION order_by_user_id
+      (
+          SELECT
+              _part_offset
+          ORDER BY user_id
+      )
+  )
+  ENGINE = MergeTree()
+  ORDER BY (event_id);
+  ```
+</details>
 
 插入一些示例数据：
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
-
-
-#### 将 `_part_offset` 用作二级索引 \{#normal-projection-secondary-index\}
 
 `_part_offset` 字段在合并和变更操作过程中会保留其值，因此非常适合作为二级索引使用。我们可以在查询中加以利用：
 
@@ -308,6 +322,48 @@ ClickHouse 通常会尽可能少地读取数据，并使用一些技巧来识别
 - `throw`（默认）：抛出异常，防止 PROJECTION 分区片段与主表数据发生不同步。
 - `drop`：丢弃受影响的 PROJECTION 表分区片段。对于受影响的 PROJECTION 分区片段，查询将回退到原始表分区片段。
 - `rebuild`：重建受影响的 PROJECTION 分区片段，以保持与原始表分区片段中的数据一致。
+
+## 限制 \{#limitations\}
+
+无法在 PROJECTION 的 `ORDER BY` 子句中使用 `ALIAS` 列。例如：
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` 列不会被实际存储，而是在查询时动态计算，因此在对排序表达式求值时，它们在 PROJECTION 部分的写入路径中不可用。
+
+请改用 `MATERIALIZED` 列，或直接内联该表达式：
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
 
 ## 另请参阅 \{#see-also\}
 

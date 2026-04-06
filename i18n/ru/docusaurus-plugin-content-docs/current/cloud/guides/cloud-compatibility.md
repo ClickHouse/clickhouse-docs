@@ -2,7 +2,7 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Совместимость ClickHouse Cloud'
 title: 'Совместимость ClickHouse Cloud'
-description: 'В этом руководстве представлен обзор функциональных и эксплуатационных аспектов ClickHouse Cloud.'
+description: 'В этом руководстве представлен обзор функциональных возможностей и особенностей эксплуатации ClickHouse Cloud.'
 keywords: ['ClickHouse Cloud', 'совместимость']
 doc_type: 'guide'
 ---

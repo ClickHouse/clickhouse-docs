@@ -17,7 +17,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 ClickHouse には、オブジェクトストレージ内のオープンテーブル形式で保存されたデータを直接クエリするためのテーブル関数が用意されています。外部カタログに接続する必要はなく、AWS Athena が S3 からデータを読み取るのと同様に、その場でデータをクエリします。
 
-関数呼び出しでストレージパスと認証情報を直接指定すれば、残りの処理は ClickHouse が担います。ClickHouse のすべての SQL 構文と関数を利用でき、クエリでは ClickHouse の並列実行と[効率的なネイティブ Parquet リーダー](/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)の利点を活用できます。
+関数呼び出しでストレージパスと認証情報を直接指定すれば、残りの処理は ClickHouse が担います。ClickHouse のすべての SQL 構文と関数を利用でき、クエリでは ClickHouse の並列実行と[効率的なネイティブ Parquet リーダー](https://clickhouse.com/blog/clickhouse-and-parquet-a-foundation-for-fast-lakehouse-analytics)の利点を活用できます。
 
 :::note サーバー、local、または chDB
 このガイドの手順は、既存の ClickHouse サーバー環境を使用して実行できます。アドホックなクエリには、代わりに [clickhouse-local](/operations/utilities/clickhouse-local) を使用し、サーバーを起動せずに同じワークフローを実行することもできます。少し調整すれば、ClickHouse のインプロセス実装である [chDB](/chdb) を使用して同じ処理を行うことも可能です。

@@ -1,5 +1,5 @@
 ---
-title: 'Метод explain()'
+title: 'метод explain()'
 sidebar_label: 'explain()'
 slug: /chdb/debugging/explain
 description: 'Просмотр планов выполнения запросов DataStore с помощью метода explain()'

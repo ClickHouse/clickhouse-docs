@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## 설명 \{#description\}
 
-이 형식에서는 단일 JSON 객체가 단일 [JSON](/sql-reference/data-types/newjson.md) 값으로 해석됩니다. 입력에 쉼표로 구분된 여러 개의 JSON 객체가 포함되어 있으면, 각 객체는 별도의 행으로 해석됩니다. 입력 데이터가 대괄호로 둘러싸여 있으면 JSON 객체 배열로 해석됩니다.
+이 형식에서는 단일 JSON 객체가 단일 [JSON](/sql-reference/data-types/newjson.md) 값으로 해석됩니다. 입력에 쉼표로 구분된 여러 개의 JSON 객체가 포함되어 있으면, 각 객체는 별도의 행으로 해석됩니다. 입력 데이터가 `[]`로 둘러싸여 있으면 JSON 객체 배열로 해석됩니다.
 
 이 형식은 하나의 [JSON](/sql-reference/data-types/newjson.md) 유형 필드만 있는 테이블에 대해서만 파싱할 수 있습니다. 나머지 컬럼은 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 또는 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)로 설정되어야 합니다.
 

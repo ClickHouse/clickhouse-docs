@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/clickhouse-integration
-sidebar_label: 'ClickHouse Integration'
-title: 'ClickHouse Integration'
+sidebar_label: 'ClickHouse integration'
+title: 'ClickHouse integration'
 description: 'Replicate your Postgres data to ClickHouse using built-in CDC capabilities'
 keywords: ['postgres', 'clickhouse integration', 'cdc', 'replication', 'clickpipes', 'data sync']
 doc_type: 'guide'

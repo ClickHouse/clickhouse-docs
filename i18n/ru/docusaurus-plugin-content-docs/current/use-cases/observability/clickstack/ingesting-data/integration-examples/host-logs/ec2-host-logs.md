@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs/ec2
-title: 'Мониторинг журналов хоста EC2 с помощью ClickStack'
-sidebar_label: 'Журналы хоста EC2'
+title: 'Мониторинг логов хоста EC2 с помощью ClickStack'
+sidebar_label: 'Логи хоста EC2'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов хоста EC2 с помощью ClickStack'
+description: 'Мониторинг логов хоста EC2 с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['EC2', 'AWS', 'журналы хоста', 'systemd', 'syslog', 'OTel', 'ClickStack', 'мониторинг системы', 'облачные метаданные']
+keywords: ['EC2', 'AWS', 'логи хоста', 'systemd', 'syslog', 'OTel', 'ClickStack', 'мониторинг системы', 'облачные метаданные']
 ---
 
 import Image from '@theme/IdealImage';
@@ -151,7 +151,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -205,7 +205,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -245,7 +245,7 @@ import TabItem from '@theme/TabItem';
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
   * `cloud.region`: регион AWS (например, &quot;us-east-1&quot;)
-  * `cloud.availability_zone`: зона доступности (AZ), например «us-east-1a»
+  * `cloud.availability_zone`: зона доступности (AZ, например, &quot;us-east-1a&quot;)
   * `cloud.account.id`: идентификатор учетной записи AWS
   * `host.id`: идентификатор экземпляра EC2 (например, &quot;i-1234567890abcdef0&quot;)
   * `host.type`: Тип инстанса (например, &quot;t3.medium&quot;)

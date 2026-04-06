@@ -108,6 +108,46 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 테이블에 [제약 조건](../../sql-reference/statements/create/table.md#constraints)이 있는 경우, 삽입되는 데이터의 각 행에 대해 해당 제약 조건의 표현식이 검사됩니다. 이러한 제약 조건 중 하나라도 만족되지 않으면, 서버는 제약 조건 이름과 표현식을 포함한 예외를 발생시키고 쿼리 실행을 중단합니다.
 
+## 데이터 타입 검증 \{#data-type-validation\}
+
+ClickHouse는 허용된 데이터 타입(`enable_time_time64_type`, `allow_suspicious_low_cardinality_types`, `allow_suspicious_fixed_string_types` 등의 설정으로 제어됨)을 `INSERT` 중에는 검증하지 않고, 테이블 생성(`CREATE TABLE`) 및 schema 수정(`ALTER TABLE`) 시에만 검증합니다.
+
+즉, 허용되지 않는 데이터 타입을 가진 테이블이 이미 존재하는 경우 서버에서 해당 설정이 비활성화되어 있어도 그 테이블에는 데이터를 삽입할 수 있습니다. 이는 의도된 동작입니다. 테이블이 한 번 생성되면 타입 생성을 제어하는 설정 때문에 `INSERT`가 차단되지 않아야 합니다.
+
+예시는 다음과 같습니다.
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+따라서 더 최신 버전의 클라이언트(설정이 기본적으로 활성화된 상태)는 대상 테이블에 해당 컬럼 타입이 이미 있는 한, 더 오래된 버전의 서버(설정이 비활성화된 상태)에 허용되지 않는 데이터 타입의 데이터를 삽입할 수 있습니다. 유효성 검사는 DML 수준이 아니라 DDL 수준에서 적용됩니다.
+:::
+
+
 ## SELECT 결과 데이터 삽입 \{#inserting-the-results-of-select\}
 
 **구문**

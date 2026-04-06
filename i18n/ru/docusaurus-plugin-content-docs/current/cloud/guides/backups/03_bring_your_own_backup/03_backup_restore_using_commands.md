@@ -156,38 +156,36 @@ FROM AzureBlobStorage(
 Вы можете использовать эти команды с синтаксисом, описанным выше, чтобы выполнять резервное копирование в GCS и Azure Blob Storage.
 
 <Tabs>
-<TabItem value="Backup" label="РЕЗЕРВНОЕ КОПИРОВАНИЕ" default>
+  <TabItem value="Backup" label="РЕЗЕРВНОЕ КОПИРОВАНИЕ" default>
+    ```sql
+    BACKUP 
+        TABLE system.users,
+        TABLE system.roles,
+        TABLE system.settings_profiles,
+        TABLE system.row_policies,
+        TABLE system.quotas,
+        TABLE system.functions,
+        ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
+    TO S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
 
-```sql
-BACKUP 
-    TABLE system.users,
-    TABLE system.roles,
-    TABLE system.settings_profiles,
-    TABLE system.row_policies,
-    TABLE system.quotas,
-    TABLE system.functions,
-    ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
-TO S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
+    где `uuid` — уникальный идентификатор резервной копии.
+  </TabItem>
 
-где `uuid` — уникальный идентификатор резервной копии.
-
-</TabItem>
-<TabItem value="Restore" label="ВОССТАНОВЛЕНИЕ" default>
-
-```sql
-RESTORE ALL
-FROM S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
-</TabItem>
+  <TabItem value="Restore" label="ВОССТАНОВЛЕНИЕ" default>
+    ```sql
+    RESTORE ALL EXCEPT TABLES system.users, system.roles
+    FROM S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## FAQ \{#backups-faq\}

@@ -1,5 +1,5 @@
 ---
-title: 'Resyncing Specific Tables'
+title: 'Resyncing specific tables'
 description: 'Resyncing specific tables in a MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'Resync table'

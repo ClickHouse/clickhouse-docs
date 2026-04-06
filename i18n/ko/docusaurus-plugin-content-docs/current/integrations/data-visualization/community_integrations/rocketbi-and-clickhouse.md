@@ -2,9 +2,9 @@
 sidebar_label: 'Rocket BI'
 sidebar_position: 131
 slug: /integrations/rocketbi
-keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
-description: 'RocketBI는 웹 브라우저에서 바로 데이터를 빠르게 분석하고, 드래그 앤 드롭 방식으로 시각화를 생성하며, 동료와 손쉽게 협업할 수 있도록 지원하는 셀프 서비스형 비즈니스 인텔리전스 플랫폼입니다.'
-title: '목표: 첫 번째 대시보드 구축'
+keywords: ['ClickHouse', 'RocketBI', '연결', '통합', 'UI']
+description: 'RocketBI는 웹 브라우저에서 바로 데이터를 빠르게 분석하고, 드래그 앤 드롭으로 시각화를 만들고, 동료와 협업할 수 있게 해주는 셀프 서비스 비즈니스 인텔리전스 플랫폼입니다.'
+title: '목표: 첫 대시보드 만들기'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -32,7 +32,6 @@ import rocketbi_16 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_17 from '@site/static/images/integrations/data-visualization/rocketbi_17.png';
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
 
 # 목표: Rocket.BI로 첫 대시보드 만들기 \{#goal-build-your-first-dashboard-with-rocketbi\}
 

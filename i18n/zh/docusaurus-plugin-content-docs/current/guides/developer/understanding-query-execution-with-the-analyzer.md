@@ -1,10 +1,10 @@
 ---
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
-sidebar_label: '使用分析器理解查询执行'
-title: '使用分析器理解查询执行'
-description: '介绍如何使用分析器来理解 ClickHouse 如何执行你的查询'
+sidebar_label: '使用analyzer理解查询执行'
+title: '使用analyzer理解查询执行'
+description: '介绍如何使用analyzer来理解 ClickHouse 如何执行你的查询'
 doc_type: 'guide'
-keywords: ['查询执行', '分析器', '查询优化', 'EXPLAIN', '性能']
+keywords: ['查询执行', 'analyzer', '查询优化', 'EXPLAIN', '性能']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,7 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
 
 # 使用分析器理解查询执行 \{#understanding-query-execution-with-the-analyzer\}
 

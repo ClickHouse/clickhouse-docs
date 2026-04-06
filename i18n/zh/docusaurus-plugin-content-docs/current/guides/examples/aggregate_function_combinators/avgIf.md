@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
 title: 'avgIf'
-description: '使用 avgIf 组合子的示例'
+description: '使用 avgIf 组合器的示例'
 keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
 doc_type: 'reference'
@@ -24,7 +24,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -49,5 +50,6 @@ FROM sales;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

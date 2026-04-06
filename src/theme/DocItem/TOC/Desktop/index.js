@@ -7,78 +7,47 @@ import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
 import { galaxyOnClick } from '@site/src/lib/galaxy/galaxy';
+import { useStrapiClient } from '@site/src/lib/useStrapiClient';
 
-const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
+const AD_CLOSED_KEY = 'doc-cloud-card-banner';
+
+// Module-level cache — survives client-side navigation, resets on hard reload
+let cachedAd = null;
 
 export default function DocItemTOCDesktop() {
   const { toc, frontMatter } = useDoc();
-  const [isClosed, setClosed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.localStorage.getItem('doc-cloud-card-banner') === 'closed';
-    }
-    return false;
-  });
-  const [title, setTitle] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [href, setHref] = useState(null);
-  const [label, setLabel] = useState(null);
-  const [tag, setTag] = useState(null);
+  const { client: strapiClient } = useStrapiClient();
+  const [isClosed, setClosed] = useState(
+    () => globalThis.window?.localStorage.getItem(AD_CLOSED_KEY) === 'closed'
+  );
+  const [ad, setAd] = useState(cachedAd);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const fetchAdData = async () => {
-        const cacheKey = 'doc-cloud-card-banner-attributes';
-        let attributes = {};
+    if (cachedAd) return;
 
-        // Get cached ad data from local storage
-        if (window.localStorage.getItem(cacheKey)) {
-          try {
-            attributes = JSON.parse(window.localStorage.getItem(cacheKey));
-          } catch (e) {
-            console.log('Failed to parse cached ad attributes', e);
-          }
+    let cancelled = false;
+
+    const fetchAd = async () => {
+      try {
+        const { data } = await strapiClient.single('docs-ad').find();
+        if (!cancelled && data && typeof data === 'object') {
+          cachedAd = {
+            title: data.title,
+            description: data.description,
+            href: data.href,
+            label: data.label,
+            tag: data.tag,
+          };
+          setAd(cachedAd);
         }
-
-        // Fetch new ad data if not in session
-        if (
-          !attributes
-          || !attributes.hasOwnProperty('title')
-          || !attributes.hasOwnProperty('description')
-          || !attributes.hasOwnProperty('href')
-          || !attributes.hasOwnProperty('label')
-          || !attributes.hasOwnProperty('tag')
-        ) {
-          try {
-            const response = await window.fetch(AD_DATA_ENDPOINT, {
-              headers: {
-                "Strapi-Response-Format": "v4",
-              },
-            });
-            const { data } = await response.json();
-
-            if (data && typeof data === 'object' && data.hasOwnProperty('attributes')) {
-              attributes = data.attributes;
-              window.localStorage.setItem(cacheKey, JSON.stringify(attributes));
-            }
-          } catch (e) {
-            console.log('Failed to fetch ad content', e);
-          }
-        }
-
-        return attributes;
+      } catch (e) {
+        console.log('Failed to fetch ad content', e);
       }
+    };
 
-      // Set ad states
-      fetchAdData().then(attributes => {
-        setTitle(attributes?.title || null);
-        setDescription(attributes?.description || null);
-        setHref(attributes?.href || null);
-        setLabel(attributes?.label || null);
-        setTag(attributes?.tag || null)
-      })
-
-    }
-  }, [setTitle, setDescription, setHref, setLabel, setTag]);
+    fetchAd();
+    return () => { cancelled = true; };
+  }, [strapiClient]);
 
   return (
     <div className={clsx(styles.docTOCContainer, 'theme-doc-toc-desktop-container')}>
@@ -92,32 +61,30 @@ export default function DocItemTOCDesktop() {
         <Feedback side={toc.length >= 7 ? 'left' : 'bottom'} />
       </div>
 
-      {
-        !isClosed && title && description && href && label && (
-          <div className={styles.docCloudCardAd}>
-            <div className={styles.docCloudCardHeader}>
-              <h6>{title}</h6>
-              <button
-                className={styles.docCloudClose}
-                onClick={() => {
-                  setClosed(true);
-                  galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed');
-                  window.localStorage.setItem('doc-cloud-card-banner', 'closed');
-                }}>
-                <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10} />
-              </button>
-            </div>
-            <p className={styles.docCloudCardContent}>{description}</p>
-            <a
-              href={href}
-              className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}
-              onClick={() => { galaxyOnClick('docs.sidebarCloudAdvert.clickedThrough'); }}
-            >
-              {label}
-            </a>
+      {!isClosed && ad && (
+        <div className={styles.docCloudCardAd}>
+          <div className={styles.docCloudCardHeader}>
+            <h6>{ad.title}</h6>
+            <button
+              className={styles.docCloudClose}
+              onClick={() => {
+                setClosed(true);
+                galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed');
+                window.localStorage.setItem(AD_CLOSED_KEY, 'closed');
+              }}>
+              <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10} />
+            </button>
           </div>
-        )
-      }
+          <p className={styles.docCloudCardContent}>{ad.description}</p>
+          <a
+            href={ad.href}
+            className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}
+            onClick={() => { galaxyOnClick('docs.sidebarCloudAdvert.clickedThrough'); }}
+          >
+            {ad.label}
+          </a>
+        </div>
+      )}
     </div>
   );
 }

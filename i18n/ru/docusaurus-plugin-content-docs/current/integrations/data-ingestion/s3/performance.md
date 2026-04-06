@@ -17,7 +17,7 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-В этом разделе основное внимание уделяется оптимизации производительности при чтении и вставке данных из S3 с использованием [табличной функции s3](/sql-reference/table-functions/s3).
+В этом разделе основное внимание уделяется оптимизации производительности при чтении и вставке данных из S3 с использованием [табличной функции S3](/sql-reference/table-functions/s3).
 
 :::info
 **Описанный в этом руководстве подход можно применить и к другим реализациям объектного хранилища с собственными табличными функциями, таким, как [GCS](/sql-reference/table-functions/gcs) и [Azure Blob Storage](/sql-reference/table-functions/azureBlobStorage).**

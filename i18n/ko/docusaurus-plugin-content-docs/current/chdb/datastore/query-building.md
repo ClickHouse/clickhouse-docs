@@ -1,6 +1,6 @@
 ---
-title: 'DataStore 쿼리 구성'
-sidebar_label: '쿼리 구성'
+title: 'DataStore 쿼리 작성'
+sidebar_label: '쿼리 작성'
 slug: /chdb/datastore/query-building
 description: 'DataStore에서 fluent 방식의 메서드 체이닝을 사용해 SQL 스타일의 쿼리를 구성합니다'
 keywords: ['chdb', 'datastore', '쿼리', 'select', 'filter', 'where', 'join', 'groupby']

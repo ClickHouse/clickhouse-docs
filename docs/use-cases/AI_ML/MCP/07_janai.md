@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/janai
 sidebar_label: 'Integrate Jan.ai'
-title: 'Set Up ClickHouse MCP Server with Jan.ai'
+title: 'Set up ClickHouse MCP server with Jan.ai'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Jan.ai with a ClickHouse MCP server.'
@@ -28,7 +28,7 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
 
 # Using ClickHouse MCP server with Jan.ai
 
-> This guide explains how to use the ClickHouse MCP Server with [Jan.ai](https://jan.ai/docs).
+> This guide explains how to use the ClickHouse MCP server with [Jan.ai](https://jan.ai/docs).
 
 <VerticalStepper headerLevel="h2">
 
@@ -47,24 +47,24 @@ To enable OpenAI, we need to provide an API key, as shown below:
 
 <Image img={OpenAIModels} alt="Enable OpenAI models" size="md"/>
 
-## Enable MCP Servers {#enable-mcp-servers}
+## Enable MCP servers {#enable-mcp-servers}
 
-At the time of writing, MCP Servers are an experimental feature in Jan.ai.
+At the time of writing, MCP servers are an experimental feature in Jan.ai.
 We can enable them by toggling experimental features:
 
 <Image img={MCPServers} alt="Enable MCP servers" size="md"/>
 
-Once that toggle is pressed, we'll see `MCP Servers` on the left menu.
+Once that toggle is pressed, we'll see `MCP servers` on the left menu.
 
-## Configure ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configure ClickHouse MCP server {#configure-clickhouse-mcp-server}
 
-If we click on the `MCP Servers` menu, we'll see a list of MCP servers that we can connect to:
+If we click on the `MCP servers` menu, we'll see a list of MCP servers that we can connect to:
 
 <Image img={MCPServersList} alt="MCP servers list" size="md"/>
 
 There servers are all disabled by default, but we can able them by clicking the toggle.
 
-To install the ClickHouse MCP Server, we need to click on the `+` icon and then populate the form with the following:
+To install the ClickHouse MCP server, we need to click on the `+` icon and then populate the form with the following:
 
 <Image img={MCPForm} alt="Add MCP server" size="md"/>
 
@@ -72,11 +72,11 @@ Once we've done that, we'll need to toggle the ClickHouse Server if it's not alr
 
 <Image img={MCPEnabled} alt="Enable MCP server" size="md"/>
 
-The ClickHouse MCP Server's tools will now be visible on the chat dialog:
+The ClickHouse MCP server's tools will now be visible on the chat dialog:
 
-<Image img={MCPTool} alt="ClickHouse MCP Server tools" size="md"/>
+<Image img={MCPTool} alt="ClickHouse MCP server tools" size="md"/>
 
-## Chat to ClickHouse MCP Server with Jan.ai {#chat-to-clickhouse-mcp-server}
+## Chat to ClickHouse MCP server with Jan.ai {#chat-to-clickhouse-mcp-server}
 
 It's time to have a conversation about some data stored in ClickHouse!
 Let's ask a question:

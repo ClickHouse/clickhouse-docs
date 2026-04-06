@@ -2,7 +2,7 @@
 sidebar_label: 'Neon Postgres'
 description: 'ClickPipes 用のソースとして Neon Postgres インスタンスをセットアップする'
 slug: /integrations/clickpipes/postgres/source/neon-postgres
-title: 'Neon Postgres ソース設定ガイド'
+title: 'Neon Postgres ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
 integration:
@@ -15,7 +15,6 @@ import neon_enabled_replication from '@site/static/images/integrations/data-inge
 import neon_ip_allow from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-ip-allow.png'
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
-
 
 # Neon Postgres ソースセットアップガイド \{#neon-postgres-source-setup-guide\}
 

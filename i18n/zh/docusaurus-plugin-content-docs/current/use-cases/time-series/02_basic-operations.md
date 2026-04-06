@@ -1,7 +1,7 @@
 ---
 title: '基本操作 - 时间序列'
 sidebar_label: '基本操作'
-description: 'ClickHouse 中时间序列的基本操作。'
+description: 'ClickHouse 中基本时间序列操作。'
 slug: /use-cases/time-series/basic-operations
 keywords: ['时间序列', '基本操作', '数据摄取', '查询', '过滤', '分组', '聚合']
 show_related_blogs: true

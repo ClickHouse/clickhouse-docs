@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/remote-demo-data
-title: 'Remote Demo Dataset'
+title: 'Remote demo dataset'
 sidebar_position: 2
 pagination_prev: null
 pagination_next: null

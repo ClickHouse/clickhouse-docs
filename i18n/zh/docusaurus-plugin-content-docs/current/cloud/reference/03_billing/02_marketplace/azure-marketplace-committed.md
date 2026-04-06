@@ -21,7 +21,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-通过在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 签订承诺合同开始使用 ClickHouse Cloud。承诺合同（也称为 Private Offer）允许客户在约定期限内承诺在 ClickHouse Cloud 上支出一定金额。
+通过在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 签订承诺消费合同开始使用 ClickHouse Cloud。承诺消费合同 (也称为私有优惠) 允许客户在约定期限内承诺在 ClickHouse Cloud 上支出一定金额。
 
 
 ## 先决条件 \{#prerequisites\}

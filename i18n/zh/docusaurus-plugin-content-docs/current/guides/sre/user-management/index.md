@@ -2,7 +2,7 @@
 slug: /operations/access-rights
 sidebar_position: 1
 sidebar_label: '用户和角色'
-title: '访问控制与账户管理'
+title: '访问控制和账户管理'
 keywords: ['ClickHouse Cloud', '访问控制', '用户管理', 'RBAC', '安全']
 description: '介绍 ClickHouse Cloud 中的访问控制和账户管理'
 doc_type: 'guide'

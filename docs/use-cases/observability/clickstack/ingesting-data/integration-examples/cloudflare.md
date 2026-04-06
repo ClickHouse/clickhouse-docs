@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'Monitoring Cloudflare Logs with ClickStack'
-sidebar_label: 'Cloudflare Logs'
+title: 'Monitoring Cloudflare logs with ClickStack'
+sidebar_label: 'Cloudflare logs'
 pagination_prev: null
 pagination_next: null
 description: 'Ingest Cloudflare Logpush data into ClickStack using ClickPipes for continuous log ingestion from S3'

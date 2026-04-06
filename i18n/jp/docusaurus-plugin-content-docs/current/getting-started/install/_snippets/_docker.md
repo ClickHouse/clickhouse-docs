@@ -193,7 +193,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 このイメージを基にした派生イメージで追加の初期化処理を行うには、`/docker-entrypoint-initdb.d` 配下に 1 つ以上の `*.sql`、`*.sql.gz`、または `*.sh` スクリプトを追加します。entrypoint が `initdb` を呼び出した後、そのディレクトリ内で見つかった `*.sql` ファイルをすべて実行し、実行可能な `*.sh` スクリプトをすべて実行し、実行不可の `*.sh` スクリプトはすべて source コマンドで読み込んで、サービスを起動する前にさらに初期化を行います。
 
 :::note
-`/docker-entrypoint-initdb.d` 配下のスクリプトは、ファイル名の **アルファベット順** に実行されます。スクリプト同士に依存関係がある場合（たとえば、`VIEW` を作成するスクリプトは、参照されるテーブルを作成するスクリプトの後に実行する必要があるなど）、ファイル名が正しい順序でソートされるようにしてください。
+`/docker-entrypoint-initdb.d` 配下のスクリプトは、ファイル名の **アルファベット順** に実行されます。スクリプト同士に依存関係がある場合 (たとえば、`VIEW` を作成するスクリプトは、参照されるテーブルを作成するスクリプトの後に実行する必要があるなど) 、ファイル名が正しい順序でソートされるようにしてください。
 :::
 
 また、初期化中に clickhouse-client で使用される環境変数 `CLICKHOUSE_USER` と `CLICKHOUSE_PASSWORD` を指定することもできます。
@@ -206,6 +206,7 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32) ENGINE = Log;
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
+    ORDER BY ();
 EOSQL
 ```

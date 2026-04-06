@@ -1,75 +1,79 @@
+import Recommendations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
+
 # Установка ClickHouse на NixOS \{#install-from-nix\}
 
 > ClickHouse доступен в репозитории Nixpkgs и может быть установлен с помощью Nix в **Linux** и **macOS**.
 
 <VerticalStepper>
+  ## Ознакомьтесь с рекомендациями
 
-## Установка ClickHouse с помощью Nix \{#install-clickhouse-using-nix\}
+  <Recommendations />
 
-Вы можете использовать Nix, чтобы установить ClickHouse, не добавляя его в систему на постоянной основе:
+  ## Установка ClickHouse с помощью Nix
 
-```bash
-# Установить последнюю стабильную версию
-nix shell nixpkgs#clickhouse
+  Вы можете использовать Nix, чтобы установить ClickHouse, не добавляя его в систему на постоянной основе:
 
-# Или установить LTS-версию
-nix shell nixpkgs#clickhouse-lts
-```
+  ```bash
+  # Установить последнюю стабильную версию
+  nix shell nixpkgs#clickhouse
 
-После этого исполняемый файл `clickhouse` будет доступен в текущей сессии оболочки.
+  # Или установить LTS-версию
+  nix shell nixpkgs#clickhouse-lts
+  ```
 
-- Пакет `nixpkgs#clickhouse` предоставляет последнюю стабильную версию.
-- Пакет `nixpkgs#clickhouse-lts` предоставляет версию с долгосрочной поддержкой (Long Term Support).
-- Оба пакета работают в Linux и macOS.
+  После этого исполняемый файл `clickhouse` будет доступен в текущей сессии оболочки.
 
-## Постоянная установка \{#permanent-installation\}
+  * Пакет `nixpkgs#clickhouse` предоставляет последнюю стабильную версию.
+  * Пакет `nixpkgs#clickhouse-lts` предоставляет версию с долгосрочной поддержкой (Long Term Support).
+  * Оба пакета работают в Linux и macOS.
 
-Чтобы установить ClickHouse в систему на постоянной основе:
+  ## Постоянная установка
 
-**Для пользователей NixOS** добавьте в `configuration.nix`:
+  Чтобы установить ClickHouse в систему на постоянной основе:
 
-```nix
-environment.systemPackages = with pkgs; [
-  clickhouse
-];
-```
+  **Для пользователей NixOS** добавьте в `configuration.nix`:
 
-Затем пересоберите систему:
+  ```nix
+  environment.systemPackages = with pkgs; [
+    clickhouse
+  ];
+  ```
 
-```bash
-sudo nixos-rebuild switch
-```
+  Затем пересоберите систему:
 
-**Для пользователей, не использующих NixOS**, установите с помощью профиля Nix:
+  ```bash
+  sudo nixos-rebuild switch
+  ```
 
-```bash
-# Установить последнюю стабильную версию
-nix profile install nixpkgs#clickhouse
+  **Для пользователей, не использующих NixOS**, установите с помощью профиля Nix:
 
-# Или установить LTS-версию
-nix profile install nixpkgs#clickhouse-lts
-```
+  ```bash
+  # Установить последнюю стабильную версию
+  nix profile install nixpkgs#clickhouse
 
-## Запуск сервера ClickHouse \{#start-clickhouse-server\}
+  # Или установить LTS-версию
+  nix profile install nixpkgs#clickhouse-lts
+  ```
 
-После установки вы можете запустить сервер ClickHouse:
+  ## Запуск сервера ClickHouse
 
-```bash
-clickhouse-server
-```
+  После установки вы можете запустить сервер ClickHouse:
 
-По умолчанию сервер запустится с базовой конфигурацией и будет принимать подключения на `localhost:9000`.
+  ```bash
+  clickhouse-server
+  ```
 
-Для использования в production-средах на NixOS вы можете настроить ClickHouse как системную службу. Обратитесь к [руководству NixOS](https://search.nixos.org/options?query=clickhouse) для доступных параметров конфигурации.
+  По умолчанию сервер запустится с базовой конфигурацией и будет принимать подключения на `localhost:9000`.
 
-## Запуск клиента ClickHouse \{#start-clickhouse-client\}
+  Для использования в production-средах на NixOS вы можете настроить ClickHouse как системную службу. Обратитесь к [руководству NixOS](https://search.nixos.org/options?query=clickhouse) для доступных параметров конфигурации.
 
-Чтобы подключиться к серверу ClickHouse, откройте новый терминал и выполните:
+  ## Запуск клиента ClickHouse
 
-```bash
-clickhouse-client
-```
+  Чтобы подключиться к серверу ClickHouse, откройте новый терминал и выполните:
 
+  ```bash
+  clickhouse-client
+  ```
 </VerticalStepper>
 
 ## О пакете Nix \{#about-nix-package\}

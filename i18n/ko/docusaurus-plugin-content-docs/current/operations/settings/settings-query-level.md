@@ -74,26 +74,39 @@ SELECT value FROM system.settings where name='async_insert';
 ```
 
 
-## 사용자 정의 설정 \{#custom_settings\}
+## 사용자 지정 settings \{#custom_settings\}
 
-공통 [설정](/operations/settings/settings.md) 외에도, 사용자 정의 설정을 정의할 수 있습니다.
+공통 [settings](/operations/settings/settings.md) 외에도 사용자 지정 설정을 정의할 수 있습니다.
+사용자 지정 설정을 사용하면 쿼리, 정책 또는 함수 내에서 참조할 수 있는 **세션별 매개변수**를 전달할 수 있습니다. 이는 다음과 같은 경우에 유용합니다:
 
-사용자 정의 설정 이름은 미리 정의된 접두사 중 하나로 시작해야 합니다. 이러한 접두사의 목록은 서버 구성 파일의 [custom&#95;settings&#95;prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) 매개변수로 선언해야 합니다.
+* 사용자 ID 또는 조직을 기준으로 데이터를 필터링해야 하는 경우
+* 컨텍스트에 따라 서로 다른 비즈니스 로직을 적용해야 하는 경우
+* 세션 내 여러 쿼리에 걸쳐 상태 정보를 유지해야 하는 경우
+
+사용자 지정 설정 이름은 정의한 접두사 목록에 있는 미리 정의된 접두사 중 하나로 시작해야 합니다.
+접두사 목록은 서버 구성 파일에 정의된 [`custom_settings_prefixes`](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) 서버 설정을 사용해 지정할 수 있습니다.
+
+아래 예시에서는 `SQL_`를 사용자 지정 접두사로 선택했습니다:
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
-커스텀 설정을 정의하려면 `SET` 명령을 사용하십시오:
+:::note
+ClickHouse Cloud에서는 사용자 지정 접두사를 지정할 수 없습니다.
+모든 사용자 지정 사용자 설정의 이름은 `SQL_` 접두사로 시작합니다.
+:::
+
+사용자 지정 설정을 정의하려면 `SET` 명령을 사용합니다:
 
 ```sql
-SET custom_a = 123;
+SET SQL_a = 123;
 ```
 
-커스텀 설정의 현재 값을 확인하려면 `getSetting()` 함수를 사용합니다:
+사용자 지정 설정의 현재 값을 가져오려면 `getSetting()` 함수를 사용합니다:
 
 ```sql
-SELECT getSetting('custom_a');
+SELECT getSetting('SQL_a');
 ```
 
 

@@ -221,11 +221,13 @@ var reader = await client.ExecuteReaderAsync(
 
 `InsertOptions` 扩展了 `QueryOptions`，用于配置通过 `InsertBinaryAsync` 执行批量插入操作的特定设置。
 
-| Property               | Type              | Default     | Description                                 |
-| ---------------------- | ----------------- | ----------- | ------------------------------------------- |
-| BatchSize              | `int`             | 100,000     | 每个批次包含的行数                                   |
-| MaxDegreeOfParallelism | `int`             | 1           | 并行上传的批次数量                                   |
-| Format                 | `RowBinaryFormat` | `RowBinary` | 二进制格式：`RowBinary` 或 `RowBinaryWithDefaults` |
+| Property               | Type                                  | 默认值        | 描述                                          |
+| ---------------------- | ------------------------------------- | ----------- | ------------------------------------------- |
+| BatchSize              | `int`                                 | 100,000     | 每个批次包含的行数                                   |
+| MaxDegreeOfParallelism | `int`                                 | 1           | 并行上传的批次数量                                   |
+| Format                 | `RowBinaryFormat`                     | `RowBinary` | 二进制格式：`RowBinary` 或 `RowBinaryWithDefaults` |
+| ColumnTypes            | `IReadOnlyDictionary<string, string>` | `null`      | 列名 → ClickHouse 类型字符串。设置后可跳过 schema 探测查询。   |
+| UseSchemaCache         | `bool`                                | `false`     | 在客户端的整个生命周期内，按 (数据库、表) 缓存完整的表 schema。       |
 
 所有 `QueryOptions` 的属性在 `InsertOptions` 中同样可用。
 
@@ -246,6 +248,50 @@ long rowsInserted = await client.InsertBinaryAsync(
     insertOptions
 );
 ```
+
+
+#### 跳过 schema 探测查询 \{#skip-schema-query\}
+
+默认情况下，`InsertBinaryAsync` 会在每次 insert 之前先发送一条 `SELECT ... WHERE 1=0` 查询，以探测列类型。对于高吞吐场景，可以通过以下两种方式消除这部分额外开销：
+
+**选项 1：显式提供列类型**
+
+如果你在编译时就已知表 schema，可通过 `ColumnTypes` 直接传入。这样就完全不会发送 schema 查询：
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**选项 2：缓存 schema**
+
+当你反复向同一个表执行 insert 时，将 `UseSchemaCache = true`，这样只需查询一次 schema，并可在同一个 `ClickHouseClient` 实例的后续 insert 中重复使用它：
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+
+* `ColumnTypes` 的优先级高于 `UseSchemaCache`。如果两者都已设置，则使用显式指定的类型。
+* schema 缓存不会检测 `ALTER TABLE` 带来的更改。如果你修改了表的 schema，请创建一个新的 `ClickHouseClient`，或不要对该表使用 `UseSchemaCache`。
+* 缓存的作用域仅限于 `ClickHouseClient` 实例，并以 (数据库、表) 作为键。同一张表的不同列子集会共享同一个已缓存的 schema。
+  :::
 
 
 ## ClickHouseClient \{#clickhouse-client\}
@@ -392,7 +438,7 @@ var options = new InsertOptions
 
 :::note
 
-* 客户端在插入前会通过 `SELECT * FROM <table> WHERE 1=0` 自动获取表结构。提供的值必须与目标列类型匹配。
+* 客户端在插入前会通过 `SELECT * FROM <table> WHERE 1=0` 自动获取表结构。提供的值必须与目标列类型匹配。要跳过此查询，请使用 [`InsertOptions.ColumnTypes` 或 `InsertOptions.UseSchemaCache`](#skip-schema-query)。
 * 当 `MaxDegreeOfParallelism > 1` 时，批量数据会被并行上传。Session 与并行插入不兼容；要么禁用 Session，要么将 `MaxDegreeOfParallelism = 1`。
 * 如果希望服务端为未提供的列应用 DEFAULT 默认值，请在 `InsertOptions.Format` 中使用 `RowBinaryFormat.RowBinaryWithDefaults`。
   :::
@@ -1683,7 +1729,7 @@ SqlMapper.AddTypeHandler(new IpAddressHandler());
 
 #### Dapper.Contrib \{#dapper-contrib\}
 
-`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法（`SCOPE_IDENTITY`、方括号）。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
+`GetAll<T>()` 和 `Get<T>(id)` 可正常工作。`Insert<T>()` 尚不支持——它会生成 SQL Server 语法 (`SCOPE_IDENTITY`、`[]`) 。建议改用 `ClickHouseClient` 原生的 `InsertBinaryAsync` 方法。
 
 ```csharp
 [Table("test.users")]
@@ -1693,7 +1739,8 @@ var all = await connection.GetAllAsync<UserRecord>();
 var one = await connection.GetAsync<UserRecord>(1);
 ```
 
-属性名称必须与 ClickHouse 列名完全一致（区分大小写）。
+属性名称必须与 ClickHouse 列名完全一致 (区分大小写) 。
+
 
 #### 限制 \{#dapper-limitations\}
 
@@ -1767,9 +1814,355 @@ await table.BulkCopyAsync(options, products);
 ```
 
 
-### Entity framework core \{#orm-support-ef-core\}
+### Entity Framework Core \{#orm-support-ef-core\}
 
-当前尚不支持 Entity Framework Core。
+ClickHouse 的官方 Entity Framework Core 提供程序。可将 C# 类映射到 ClickHouse 表，使用 LINQ 进行查询，并通过 `SaveChanges` 插入数据——全部遵循熟悉的 EF Core 模式。
+
+* **NuGet**: [`ClickHouse.EntityFrameworkCore`](https://www.nuget.org/packages/ClickHouse.EntityFrameworkCore)
+* **源码**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
+
+:::note
+该提供程序仍处于早期开发阶段。目前支持**只读查询**和**插入**。UPDATE、DELETE、迁移、JOINs 和子查询尚未实现。
+:::
+
+#### 安装 \{#ef-core-installation\}
+
+```bash
+dotnet add package ClickHouse.EntityFrameworkCore
+```
+
+需要 .NET 10.0 和 EF Core 10。
+
+
+#### 快速开始 \{#ef-core-quick-start\}
+
+定义实体和 `DbContext`，然后使用 LINQ 查询：
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+public class PageView
+{
+    public long Id { get; set; }
+    public string Path { get; set; }
+    public DateOnly Date { get; set; }
+    public string UserAgent { get; set; }
+}
+
+public class AnalyticsContext : DbContext
+{
+    public DbSet<PageView> PageViews { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseClickHouse("Host=localhost;Database=analytics");
+}
+
+// Query
+await using var ctx = new AnalyticsContext();
+
+var topPages = await ctx.PageViews
+    .Where(v => v.Date >= new DateOnly(2024, 1, 1))
+    .GroupBy(v => v.Path)
+    .Select(g => new { Path = g.Key, Views = g.Count() })
+    .OrderByDescending(x => x.Views)
+    .Take(10)
+    .ToListAsync();
+```
+
+
+#### 支持的类型 \{#ef-core-types\}
+
+| 类别          | ClickHouse 类型                                                                           | CLR 类型                                                             |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **整数**      | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
+| **大整数**     | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                       |
+| **浮点数**     | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                  |
+| **十进制数**    | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` 或 `ClickHouseDecimal`                                    |
+| **布尔值**     | `Bool`                                                                                  | `bool`                                                             |
+| **字符串**     | `String`, `FixedString(N)`                                                              | `string`                                                           |
+| **枚举**      | `Enum8(...)`, `Enum16(...)`                                                             | `string` 或 C# `enum`                                               |
+| **日期/时间**   | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                             |
+| **时间**      | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                         |
+| **UUID**    | `UUID`                                                                                  | `Guid`                                                             |
+| **网络**      | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                        |
+| **数组**      | `Array(T)`                                                                              | `T[]` 或 `List<T>`                                                  |
+| **映射**      | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                  |
+| **元组**      | `Tuple(T1, ...)`                                                                        | `Tuple<...>` 或 `ValueTuple<...>`                                   |
+| **Variant** | `Variant(T1, T2, ...)`                                                                  | `object`                                                           |
+| **Dynamic** | `Dynamic`                                                                               | `object`                                                           |
+| **JSON**    | `Json`                                                                                  | `JsonNode` 或 `string`                                              |
+| **地理空间类型**  | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` 及其数组；`Geometry` 使用 `object`                 |
+| **包装器类型**   | `Nullable(T)`, `LowCardinality(T)`                                                      | 自动解包                                                               |
+
+需要 `Decimal128`/`Decimal256` 列的完整精度时，请使用 `ClickHouseDecimal` (来自 `ClickHouse.Driver.Numerics`) 而不是 `decimal`——.NET `decimal` 最多仅支持 28–29 位有效数字。
+
+#### 支持的 LINQ 操作 \{#ef-core-linq\}
+
+**查询：** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+
+**GROUP BY 和聚合：** `GroupBy` 配合 `Count`、`LongCount`、`Sum`、`Average`、`Min`、`Max`——包括 `HAVING` (在 `.GroupBy()` 之后调用 `.Where()`) 、在单个投影中使用多个聚合，以及按聚合结果进行 `OrderBy` 排序。
+
+**字符串方法：** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (以及 `+` 运算符) 
+
+**数学函数：** 标准 `Math` 和 `MathF` 方法会被转换为对应的 ClickHouse 函数，包括算术、对数、三角和实用函数。
+
+#### 插入数据 \{#ef-core-insert\}
+
+`SaveChanges` 使用驱动的原生 `InsertBinaryAsync` API——即采用 RowBinary 编码和 GZip 压缩，相比参数化 SQL，效率高得多：
+
+```csharp
+await using var ctx = new AnalyticsContext();
+
+ctx.PageViews.Add(new PageView
+{
+    Id = 1,
+    Path = "/home",
+    Date = new DateOnly(2024, 6, 15),
+    UserAgent = "Mozilla/5.0"
+});
+
+await ctx.SaveChangesAsync();
+```
+
+保存后，实体会像其他任何 EF Core 提供程序一样，从 `Added` 变为 `Unchanged`。
+
+**批次大小** 可配置 (默认值为 1000) ：
+
+```csharp
+optionsBuilder.UseClickHouse("Host=localhost", o => o.MaxBatchSize(5000));
+```
+
+
+#### 批量插入 \{#ef-core-bulk-insert\}
+
+对于高吞吐量导入，请使用 `BulkInsertAsync`，而不要使用 `SaveChanges`。这是 `DbContext` 上的一个扩展方法，会完全绕过 EF Core 的更改跟踪器、标识解析和状态管理——直接调用驱动的 `InsertBinaryAsync`，并使用 RowBinary 编码和 GZip 压缩。
+
+因此，它适用于导入大型数据集，尤其是在插入后不需要实体跟踪的场景：
+
+```csharp
+var events = Enumerable.Range(0, 100_000)
+    .Select(i => new PageView
+    {
+        Id = i,
+        Path = $"/page/{i}",
+        Date = DateOnly.FromDateTime(DateTime.Today)
+    });
+
+long rowsInserted = await ctx.BulkInsertAsync(events);
+```
+
+输入可以是任意 `IEnumerable<T>`——它会以流式方式处理这些实体，而不会将它们全部导入到内存中。返回值为插入的行数。插入后，这些实体**不会**附加到 `DbContext`，因此不会发生 `Added` → `Unchanged` 状态转换。
+
+
+#### 枚举 \{#ef-core-enums\}
+
+ClickHouse `Enum8`/`Enum16` 列可映射为 `string` 属性或 C# `enum` 类型。使用 C# 枚举时，提供程序会自动在枚举值及其字符串表示之间进行转换：
+
+```csharp
+public enum Status { Active, Inactive, Pending }
+
+public class User
+{
+    public long Id { get; set; }
+    public Status Status { get; set; }
+}
+
+// Query with enum values
+var active = await ctx.Users
+    .Where(u => u.Status == Status.Active)
+    .ToListAsync();
+```
+
+
+#### 自定义类型转换 \{#ef-core-value-converters\}
+
+EF Core 的 `ValueConverter` 系统可让你将自定义类型映射到提供程序已支持的类型。提供程序不会直接看到你的自定义类型——EF Core 会在边界处完成转换。
+
+**按属性转换：**
+
+```csharp
+public class Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+}
+
+public class Order
+{
+    public long Id { get; set; }
+    public Money Price { get; set; }
+}
+
+// In OnModelCreating:
+modelBuilder.Entity<Order>()
+    .Property(o => o.Price)
+    .HasConversion(
+        m => $"{m.Amount}|{m.Currency}",
+        s => new Money
+        {
+            Amount = decimal.Parse(s.Split('|')[0]),
+            Currency = s.Split('|')[1]
+        })
+    .HasColumnType("String");
+```
+
+**可重用的转换器类：**
+
+```csharp
+public class MoneyConverter : ValueConverter<Money, string>
+{
+    public MoneyConverter() : base(
+        m => $"{m.Amount}|{m.Currency}",
+        s => Parse(s)) { }
+
+    private static Money Parse(string s)
+    {
+        var parts = s.Split('|');
+        return new Money { Amount = decimal.Parse(parts[0]), Currency = parts[1] };
+    }
+}
+
+// Apply to a single property:
+.HasConversion<MoneyConverter>()
+
+// Or apply to all properties of a type via conventions:
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Properties<Money>()
+        .HaveConversion<MoneyConverter>();
+}
+```
+
+#### 列类型注解 \{#ef-core-column-types\}
+
+对于 `string`、`int`、`DateTime` 等标量类型，提供程序会自动推断 ClickHouse 类型。对于参数化类型和包装器类型，则需要显式指定 ClickHouse 类型。
+
+**使用数据注解 (特性) ：**
+
+```csharp
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+[Table("sensor_readings")]
+public class SensorReading
+{
+    public long Id { get; set; }
+
+    [Column(TypeName = "Array(String)")]
+    public string[] Tags { get; set; }
+
+    [Column(TypeName = "Map(String, String)")]
+    public Dictionary<string, string> Metadata { get; set; }
+
+    [Column(TypeName = "Nullable(Float64)")]
+    public double? Value { get; set; }
+
+    [Column(TypeName = "Decimal128(18)")]
+    public decimal HighPrecision { get; set; }
+}
+```
+
+**在 `OnModelCreating` 中使用 Fluent API：**
+
+```csharp
+modelBuilder.Entity<SensorReading>(e =>
+{
+    e.ToTable("sensor_readings");
+    e.Property(x => x.Tags).HasColumnType("Array(String)");
+    e.Property(x => x.Metadata).HasColumnType("Map(String, String)");
+    e.Property(x => x.Value).HasColumnType("Nullable(Float64)");
+    e.Property(x => x.Category).HasColumnType("LowCardinality(String)");
+    e.Property(x => x.HighPrecision).HasColumnType("Decimal128(18)");
+});
+```
+
+支持 `Array(Nullable(Int32))` 和 `LowCardinality(Nullable(String))` 这类嵌套包装类型——提供程序会在每一层嵌套中自动解包 `Nullable` 和 `LowCardinality`。
+
+
+#### Variant 和 Dynamic 列 \{#ef-core-variant-dynamic\}
+
+ClickHouse `Variant(T1, T2, ...)` 和 `Dynamic` 列在 .NET 中映射为 `object`。由于 `object` 类型过于宽泛，无法自动推断类型，因此必须通过 `.HasColumnType()` 显式指定存储类型：
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public object? Payload { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Payload).HasColumnType("Variant(String, UInt64, Array(UInt64))");
+// or:
+entity.Property(e => e.Payload).HasColumnType("Dynamic");
+```
+
+读取时，该值会根据存储的判别器自动反序列化为相应的 .NET 类型 (例如 `string`、`ulong`、`ulong[]`) 。
+
+#### JSON 列 \{#ef-core-json\}
+
+该提供程序支持 ClickHouse 的 `Json` 列类型，可映射到 `System.Text.Json.Nodes.JsonNode` (主类型) 或 `string` (通过自动 `ValueConverter`) ：
+
+```csharp
+using System.Text.Json.Nodes;
+
+public class Event
+{
+    public long Id { get; set; }
+    public JsonNode? Data { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+JSON 的读取和写入均可通过 `SaveChanges` 和 `BulkInsertAsync` 完成：
+
+```csharp
+ctx.Events.Add(new Event
+{
+    Id = 1,
+    Data = JsonNode.Parse("""{"action": "click", "x": 100, "y": 200}""")
+});
+await ctx.SaveChangesAsync();
+
+var ev = await ctx.Events.Where(e => e.Id == 1).SingleAsync();
+string action = ev.Data!["action"]!.GetValue<string>(); // "click"
+```
+
+如果你更倾向于使用原始 JSON 字符串，可将该属性映射为 `string`，并将列类型设为 `Json`——提供程序会自动应用 `ValueConverter`：
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public string? Data { get; set; }  // raw JSON string
+}
+
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+:::note
+
+* **不支持 JSON 路径转换** — LINQ 中的 `entity.Data["name"]` 不会被转换为 ClickHouse 的 `data.name` SQL 语法。请基于非 JSON 列进行过滤，并在内存中检查 JSON。
+* **NULL 语义** — 对于 NULL 值，ClickHouse 的 JSON 类型返回的是 `{}` (空对象) ，而不是 SQL NULL。
+* **整数精度** — ClickHouse JSON 会将所有整数存储为 `Int64`。通过 `JsonNode` 读取时，请使用 `GetValue<long>()`，不要使用 `GetValue<int>()`。
+  :::
+
+
+#### 限制 \{#ef-core-limitations\}
+
+| 功能                                             | 状态                                |
+| ---------------------------------------------- | --------------------------------- |
+| SELECT / WHERE / ORDER BY / GROUP BY           | 支持                                |
+| 通过 `SaveChanges` / `BulkInsertAsync` 执行 INSERT | 支持                                |
+| UPDATE / DELETE                                | 尚不支持 (ClickHouse 变更是异步的，不兼容 OLTP)  |
+| 迁移                                             | 尚不支持                               |
+| JOINs、子查询、集合运算                                 | 尚不支持                               |
+| 事务                                             | 空操作 (ClickHouse 不支持 ACID 事务)      |
+| 服务器生成的值 (自增)                                   | 尚不支持                               |
+| 嵌套类型                                           | 尚不支持                               |
+| JSON 路径查询转换 (LINQ 中的 `.Data["key"]`)           | 尚不支持                               |
+| 作为 JSON 的拥有实体 (`.ToJson()`)                    | 尚不支持                               |
 
 ## 限制 \{#limitations\}
 

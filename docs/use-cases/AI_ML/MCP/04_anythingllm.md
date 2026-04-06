@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'Integrate AnythingLLM'
-title: 'Set Up ClickHouse MCP Server with AnythingLLM and ClickHouse Cloud'
+title: 'Set up ClickHouse MCP server with AnythingLLM and ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up AnythingLLM with a ClickHouse MCP server using Docker.'
@@ -53,7 +53,7 @@ mkdir -p $STORAGE_LOCATION && \
 touch "$STORAGE_LOCATION/.env" 
 ```
 
-## Configure MCP Server config file {#configure-mcp-server-config-file}
+## Configure MCP server config file {#configure-mcp-server-config-file}
 
 Create the `plugins` directory:
 
@@ -106,21 +106,21 @@ mintplexlabs/anythingllm
 Once that's started, navigate to `http://localhost:3001` in your browser.
 Select the model that you want to use and provide your API key.
 
-## Wait for MCP Servers to start up {#wait-for-mcp-servers-to-start-up}
+## Wait for MCP servers to start up {#wait-for-mcp-servers-to-start-up}
 
 Click on the tool icon in the bottom left-hand side of the UI:
 
 <Image img={ToolIcon} alt="Tool icon" size="md"/>
 
-Click on `Agent Skills` and look under the `MCP Servers` section. 
+Click on `Agent Skills` and look under the `MCP servers` section. 
 Wait until you see `Mcp ClickHouse` set to `On`
 
 <Image img={MCPServers} alt="MCP servers ready" size="md"/>
 
-## Chat with ClickHouse MCP Server with AnythingLLM {#chat-with-clickhouse-mcp-server-with-anythingllm}
+## Chat with ClickHouse MCP server with AnythingLLM {#chat-with-clickhouse-mcp-server-with-anythingllm}
 
 We're now ready to start a chat. 
-To make MCP Servers available to a chat, you'll need to prefix the first message in the conversation with `@agent`.
+To make MCP servers available to a chat, you'll need to prefix the first message in the conversation with `@agent`.
 
 <Image img={Conversation} alt="Conversation" size="md"/>
 

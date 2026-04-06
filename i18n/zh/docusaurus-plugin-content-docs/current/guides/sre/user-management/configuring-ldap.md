@@ -2,7 +2,7 @@
 sidebar_label: '配置 LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
+title: '配置 ClickHouse 使用 LDAP 进行身份验证和角色映射'
 description: '描述如何将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
 keywords: ['LDAP 配置', 'LDAP 身份验证', '角色映射', '用户管理', 'SRE 指南']
 doc_type: 'guide'

@@ -16,9 +16,9 @@ doc_type: 'reference'
 `deltaLake` 是 `deltaLakeS3` 的别名，为了兼容性而保留。
 
 ```sql
-deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
-deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
 deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 
@@ -30,6 +30,8 @@ deltaLakeLocal(path, [,format])
 
 此表函数的参数分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 的参数相同。
 `format` 表示 Delta Lake 表中数据文件的格式。
+
+可使用可选的 `extra_credentials` 参数传递 `role_arn`，以便在 ClickHouse Cloud 中进行基于角色的访问。有关配置步骤，请参见 [Secure S3](/cloud/data-sources/secure-s3)。
 
 ## 返回值 \{#returned_value\}
 

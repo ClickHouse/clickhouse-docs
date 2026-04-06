@@ -53,7 +53,7 @@ SELECT * FROM test_table;
 
 ## URL のグロブ \{#globs-in-url\}
 
-波かっこ `{ }` 内のパターンは、シャードの集合を生成するか、フェイルオーバーアドレスを指定するために使用されます。サポートされるパターンの種類と例については、[remote](remote.md#globs-in-addresses) 関数の説明を参照してください。
+`{ }` 内のパターンは、分片の集合を生成したり、フェイルオーバーアドレスを指定したりするために使用されます。サポートされるパターンの種類と例については、[remote](remote.md#globs-in-addresses) 関数の説明を参照してください。
 パターン内の文字 `|` はフェイルオーバーアドレスを指定するために使用されます。これらはパターン内で列挙された順序どおりに試行されます。生成されるアドレス数は、[glob&#95;expansion&#95;max&#95;elements](../../operations/settings/settings.md#glob_expansion_max_elements) 設定によって制限されます。
 
 ## 仮想カラム \{#virtual-columns\}

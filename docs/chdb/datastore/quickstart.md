@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Quickstart'
+title: 'DataStore quickstart'
 sidebar_label: 'Quickstart'
 slug: /chdb/datastore/quickstart
 description: 'Get started with DataStore - installation, one-line migration from pandas, and basic usage'

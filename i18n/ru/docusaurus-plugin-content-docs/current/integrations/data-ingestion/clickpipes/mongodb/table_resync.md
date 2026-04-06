@@ -1,5 +1,5 @@
 ---
-title: 'Повторная синхронизация конкретных таблиц'
+title: 'Повторная синхронизация отдельных таблиц'
 description: 'Повторная синхронизация конкретных таблиц в MongoDB ClickPipe'
 slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: 'Повторная синхронизация таблицы'

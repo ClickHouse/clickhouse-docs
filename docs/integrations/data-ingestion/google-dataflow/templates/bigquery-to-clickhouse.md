@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'BigQuery To ClickHouse'
+sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'You can ingest data from BigQuery into ClickHouse using Google Dataflow Template'

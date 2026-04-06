@@ -1,8 +1,8 @@
 ---
-title: '与 pandas 的关键差异'
+title: '与 pandas 的主要区别'
 sidebar_label: '关键差异'
 slug: /chdb/guides/pandas-differences
-description: 'DataStore 与 pandas 之间的重要差异'
+description: 'DataStore 与 pandas 之间的重要区别'
 keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---

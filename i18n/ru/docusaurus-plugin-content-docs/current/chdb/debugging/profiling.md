@@ -2,7 +2,7 @@
 title: 'Профилирование DataStore'
 sidebar_label: 'Профилирование'
 slug: /chdb/debugging/profiling
-description: 'Измерение производительности DataStore с помощью встроенного средства профилирования'
+description: 'Измерение производительности DataStore с помощью встроенного профилировщика'
 keywords: ['chdb', 'datastore', 'профилирование', 'производительность', 'тайминг', 'бенчмарк']
 doc_type: 'guide'
 ---

@@ -1,9 +1,9 @@
 ---
-title: 'pandas ユーザー向け SQL'
-sidebar_label: 'SQL マッピング'
+title: 'pandas ユーザー向けの SQL'
+sidebar_label: 'SQL 対応'
 slug: /chdb/guides/pandas-to-sql
-description: 'pandas の操作が DataStore でどのように SQL にマッピングされるかを理解する'
-keywords: ['chdb', 'datastore', 'pandas', 'sql', 'マッピング', 'クエリ']
+description: 'pandas の操作が DataStore でどのように SQL に対応されるかを理解する'
+keywords: ['chdb', 'datastore', 'pandas', 'sql', '対応', 'クエリ']
 doc_type: 'guide'
 ---
 

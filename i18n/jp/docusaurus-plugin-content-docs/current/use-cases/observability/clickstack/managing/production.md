@@ -17,6 +17,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ResourceEstimation from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managing/_snippets/_resource_estimation.md';
 
 本番環境に ClickStack をデプロイする際には、セキュリティ、安定性、および適切な構成を確保するために、追加で考慮すべき事項がいくつかあります。これらは、使用しているディストリビューションがオープンソース版かマネージド版かによって異なります。
 
@@ -49,30 +50,7 @@ import TabItem from '@theme/TabItem';
 
     ### リソース見積もり \{#estimating-resources\}
 
-    **Managed ClickStack** をデプロイする際は、インジェストとクエリ両方のワークロードを処理できるだけの十分なコンピュートリソースをプロビジョニングすることが重要です。以下の見積もりは、インジェストを計画しているオブザーバビリティデータ量に基づいた**ベースライン**を示します。
-
-    これらの推奨値は、次の前提に基づいています。
-
-    * データ量は、ログおよびトレースの両方に適用される、月あたりの**非圧縮インジェスト量**を指します。
-    * クエリパターンはオブザーバビリティユースケースとして典型的であり、大半のクエリは通常直近 24 時間などの**最近のデータ**を対象とします。
-    * インジェストは**月を通して比較的一様**であると仮定します。バーストトラフィックやスパイクが予想される場合は、追加の余裕を確保してください。
-    * ストレージは ClickHouse Cloud のオブジェクトストレージによって別途処理され、保持期間の制約要因にはなりません。長期間保持されるデータは、頻繁にはアクセスされないと想定します。
-
-    より長い期間を定期的にクエリするパターンや、重い集約処理、大量の同時ユーザーをサポートする場合には、より多くのコンピュートリソースが必要になる可能性があります。
-
-    #### 推奨されるベースラインサイズ \{#recommended-sizing\}
-
-    | 月間インジェスト量          | 推奨コンピュート             |
-    | ------------------ | -------------------- |
-    | &lt; 10 TB / month | 2 vCPU × 3 replicas  |
-    | 10–50 TB / month   | 4 vCPU × 3 replicas  |
-    | 50–100 TB / month  | 8 vCPU × 3 replicas  |
-    | 100–500 TB / month | 30 vCPU × 3 replicas |
-    | 1 PB+ / month      | 59 vCPU × 3 replicas |
-
-    :::note
-    これらの値は**あくまで見積もり**であり、初期のベースラインとして使用してください。実際の要件は、クエリの複雑さ、同時実行数、保持ポリシー、およびインジェストスループットの変動によって異なります。常にリソース使用状況を監視し、必要に応じてスケールしてください。
-    :::
+    <ResourceEstimation />
 
     #### オブザーバビリティワークロードの分離 \{#isolating-workloads\}
 
@@ -113,7 +91,7 @@ import TabItem from '@theme/TabItem';
 
     ### セッションシークレットの構成 \{#session-secret\}
 
-    本番環境では、セッションデータの保護と改ざん防止のため、ClickStack UI(HyperDX)の `EXPRESS_SESSION_SECRET` 環境変数に強力でランダムな値を設定する必要があります。
+    本番環境では、セッションデータの保護と改ざん防止のため、ClickStack UI (HyperDX) の `EXPRESS_SESSION_SECRET` 環境変数に強力でランダムな値を設定する必要があります。
 
     アプリサービスの `docker-compose.yml` ファイルに追加する手順は以下の通りです:
 
@@ -173,11 +151,11 @@ import TabItem from '@theme/TabItem';
 
     ClickHouse OSSは標準で堅牢なセキュリティ機能を提供しています。ただし、これらを利用するには設定が必要です。
 
-    * `config.xml` で `tcp_port_secure` と `<openSSL>` を設定して **TLS を使用**します。詳細は [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
+    * **TLS を使用**するには、`config.xml` で `tcp_port_secure` と `<openSSL>` を設定します。詳細は [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
     * `default` USER のパスワードを **強力なものに設定** するか、そのユーザーを無効化してください。
     * **明示的にその意図がある場合を除き、ClickHouse を外部に公開しないでください。** デフォルトでは、`listen_host` を変更しない限り、ClickHouse は `localhost` のみにバインドされます。
     * **認証手段を使用**します。パスワード、証明書、SSHキー、[外部認証機構](/operations/external-authenticators) などがあります。
-    * IP フィルタリングと `HOST` 句を使用して、**アクセスを制限**します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。
+    * **アクセスを制限**するには、IP フィルタリングと `HOST` 句を使用します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。
     * **ロールベースアクセス制御 (RBAC) を有効に**して、きめ細かな権限付与を行います。詳細は [operations/access-rights](/operations/access-rights) を参照してください。
     * **クォータおよびその他の制限を厳格に適用**するには、[クォータ](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles)、および読み取り専用モードを使用します。
     * **保存されているデータを暗号化**し、安全な外部ストレージを使用してください。[operations/storing-data](/operations/storing-data) および [cloud/security/CMEK](/cloud/security/cmek) を参照してください。
@@ -190,7 +168,7 @@ import TabItem from '@theme/TabItem';
 
     ClickStack UIのClickHouseユーザーは、以下の設定を変更するアクセス権を持つ`readonly`ユーザーのみで十分です:
 
-    * `max_rows_to_read` (少なくとも 100 万行まで) 
+    * `max_rows_to_read` (少なくとも 100 万行まで)
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`

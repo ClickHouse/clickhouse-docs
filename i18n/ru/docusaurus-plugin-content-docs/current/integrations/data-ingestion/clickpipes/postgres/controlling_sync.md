@@ -1,6 +1,6 @@
 ---
-title: 'Управление синхронизацией ClickPipe для Postgres'
-description: 'Руководство по управлению синхронизацией ClickPipe для Postgres'
+title: 'Управление синхронизацией Postgres ClickPipe'
+description: 'Руководство по управлению синхронизацией Postgres ClickPipe'
 slug: /integrations/clickpipes/postgres/sync_control
 sidebar_label: 'Управление синхронизацией'
 keywords: ['управление синхронизацией', 'postgres', 'clickpipes', 'размер пакета', 'интервал синхронизации']

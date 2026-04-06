@@ -1,5 +1,5 @@
 ---
-title: 'explain() Method'
+title: 'explain() method'
 sidebar_label: 'explain()'
 slug: /chdb/debugging/explain
 description: 'View DataStore execution plans with the explain() method'

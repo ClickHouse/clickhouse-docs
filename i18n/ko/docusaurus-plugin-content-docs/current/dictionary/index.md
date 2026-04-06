@@ -1,6 +1,6 @@
 ---
 slug: /dictionary
-title: '딕셔너리'
+title: '개요'
 keywords: ['dictionary', 'dictionaries']
 description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 제공합니다.'
 doc_type: 'guide'
@@ -321,16 +321,14 @@ Peak memory usage: 666.82 MiB.
 
 ## 딕셔너리 고급 주제 \{#advanced-dictionary-topics\}
 
-### 딕셔리 `LAYOUT` 선택 \{#choosing-the-dictionary-layout\}
-
-`LAYOUT` 절은 딕셔리의 내부 데이터 구조를 제어합니다. 여러 가지 옵션이 있으며 [여기](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)에 정리되어 있습니다. 적절한 레이아웃을 선택하는 데 도움이 되는 몇 가지 팁은 [여기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)에서 확인할 수 있습니다.
+딕셔너리 레이아웃 선택 지침, 딕셔너리와 JOIN 중 어느 것을 사용해야 하는지, 그리고 딕셔너리 사용량을 모니터링하는 방법은 [딕셔너리 모범 사례](/dictionary/best-practices)를 참조하십시오.
 
 ### 딕셔너리 갱신 \{#refreshing-dictionaries\}
 
 딕셔너리에 `MIN 600 MAX 900`의 `LIFETIME`을 지정했습니다. LIFETIME은 딕셔너리의 업데이트 주기이며, 여기서 지정한 값에 따라 600초에서 900초 사이의 임의의 간격으로 주기적으로 다시 로드됩니다. 이러한 임의의 간격은 많은 수의 서버에서 업데이트를 수행할 때 딕셔너리 소스에 가해지는 부하를 분산하기 위해 필요합니다. 업데이트 중에도 기존 버전의 딕셔너리는 계속 쿼리할 수 있으며, 최초 로드 시에만 쿼리가 차단됩니다. `(LIFETIME(0))`으로 설정하면 딕셔너리가 업데이트되지 않음을 유의하십시오.
 `SYSTEM RELOAD DICTIONARY` 명령을 사용하여 딕셔너리를 강제로 다시 로드할 수 있습니다.
 
-ClickHouse와 Postgres 같은 데이터베이스 소스의 경우, 주기적인 간격이 아니라 실제로 변경되었을 때만 딕셔너리를 업데이트하도록 쿼리를 설정할 수 있습니다(해당 쿼리의 응답이 이를 결정합니다). 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)를 참조하십시오.
+ClickHouse와 Postgres 같은 데이터베이스 소스의 경우, 주기적인 간격이 아니라 실제로 변경되었을 때만 딕셔너리를 업데이트하도록 쿼리를 설정할 수 있습니다(해당 쿼리의 응답이 이를 결정합니다). 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/lifetime)를 참조하십시오.
 
 ### 기타 딕셔너리 유형 \{#other-dictionary-types\}
 
@@ -338,5 +336,6 @@ ClickHouse는 [계층형(Hierarchical)](/sql-reference/statements/create/diction
 
 ### 추가 참고 자료 \{#more-reading\}
 
-- [딕셔너리를 사용하여 쿼리 가속화하기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [딕셔너리를 위한 고급 구성](/sql-reference/statements/create/dictionary)
+* [딕셔너리 모범 사례](/dictionary/best-practices) — 레이아웃 선택, 딕셔너리와 JOIN 비교, 모니터링
+* [딕셔너리를 사용하여 쿼리 가속화하기](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [딕셔너리를 위한 고급 구성](/sql-reference/statements/create/dictionary)

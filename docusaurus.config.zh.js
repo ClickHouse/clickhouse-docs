@@ -298,6 +298,10 @@ const config = {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
+    strapiUrl:
+      process.env.CLIENT_STRAPI_URL || "https://staging-cms.clickhouse.com",
+    strapiToken:
+      process.env.CLIENT_STRAPI_TOKEN || "",
     secondaryNavItems: [
       {
         type: "dropdown",

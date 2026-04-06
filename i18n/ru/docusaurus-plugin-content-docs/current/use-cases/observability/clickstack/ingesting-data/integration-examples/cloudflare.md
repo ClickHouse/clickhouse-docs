@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'Мониторинг логов Cloudflare в ClickStack'
+title: 'Мониторинг логов Cloudflare с помощью ClickStack'
 sidebar_label: 'Логи Cloudflare'
 pagination_prev: null
 pagination_next: null
@@ -23,7 +23,6 @@ import import_dashboard from '@site/static/images/clickstack/cloudflare/import-d
 import finish_import from '@site/static/images/clickstack/cloudflare/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
 
 # Мониторинг логов Cloudflare с ClickStack \{#cloudflare-clickstack\}
 

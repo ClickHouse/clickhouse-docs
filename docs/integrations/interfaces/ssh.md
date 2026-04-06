@@ -1,10 +1,10 @@
 ---
 description: 'Documentation for the SSH interface in ClickHouse'
 keywords: ['client', 'ssh', 'putty']
-sidebar_label: 'SSH Interface'
+sidebar_label: 'SSH interface'
 sidebar_position: 60
 slug: /interfaces/ssh
-title: 'SSH Interface'
+title: 'SSH interface'
 doc_type: 'reference'
 ---
 

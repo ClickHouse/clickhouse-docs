@@ -4,7 +4,7 @@ sidebar_label: 'ClickHouse history'
 sidebar_position: 40
 description: 'History of ClickHouse development'
 keywords: ['history','development','Metrica']
-title: 'ClickHouse History'
+title: 'ClickHouse history'
 doc_type: 'reference'
 ---
 

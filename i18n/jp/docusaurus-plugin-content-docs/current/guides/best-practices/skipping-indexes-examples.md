@@ -135,7 +135,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[このガイド](/use-cases/observability/schema-design#bloom-filters-for-text-search)では、実践的な例と、token と ngram のどちらをいつ使用するかについて解説しています。
+[このガイド](/use-cases/observability/schema-design#text-index-for-full-text-search)では、実践的な例と、token と ngram のどちらをいつ使用するかについて解説しています。
 
 **パラメータ最適化ヘルパー:**
 
@@ -177,7 +177,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#bloom-filters-for-text-search)を参照してください。
+トークンと ngram に関するオブザーバビリティの例とガイダンスについては、[こちら](/use-cases/observability/schema-design#text-index-for-full-text-search)を参照してください。
 
 
 ## CREATE TABLE 時にインデックスを追加する（複数の例） \{#add-indexes-during-create-table-multiple-examples\}

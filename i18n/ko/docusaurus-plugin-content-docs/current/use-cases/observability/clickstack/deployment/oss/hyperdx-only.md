@@ -6,7 +6,7 @@ pagination_next: null
 sidebar_position: 4
 description: 'HyperDX만 배포하기'
 doc_type: 'guide'
-keywords: ['HyperDX 단독 배포', 'HyperDX ClickHouse 통합', 'HyperDX만 배포', 'HyperDX Docker 설치', 'ClickHouse 시각화 도구']
+keywords: ['HyperDX 독립 실행형 배포', 'HyperDX ClickHouse 통합', 'HyperDX만 배포', 'HyperDX Docker 설치', 'ClickHouse 시각화 도구']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +17,7 @@ import JSONSupport from '@site/i18n/ko/docusaurus-plugin-content-docs/current/us
 
 이 옵션은 이미 관측성 또는 이벤트 데이터가 적재된 상태로 실행 중인 ClickHouse 인스턴스를 보유한 경우를 위해 설계되었습니다.
 
-HyperDX는 스택의 나머지 구성 요소와 독립적으로 사용할 수 있으며 OpenTelemetry(OTel)뿐만 아니라 모든 데이터 스키마와 호환됩니다. 따라서 이미 ClickHouse 위에 구축된 커스텀 관측성 파이프라인에도 적합합니다.
+HyperDX는 스택의 나머지 구성 요소와 독립적으로 사용할 수 있으며 OpenTelemetry(OTel)뿐만 아니라 모든 데이터 스키마와 호환됩니다. 따라서 이미 ClickHouse 위에 구축된 사용자 지정 관측성 파이프라인에도 적합합니다.
 
 전체 기능을 활성화하려면 대시보드, 저장된 검색, 사용자 설정, 알림 등 애플리케이션 상태를 저장할 MongoDB 인스턴스를 별도로 제공해야 합니다.
 

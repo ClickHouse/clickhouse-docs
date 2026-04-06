@@ -20,9 +20,9 @@ DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 テーブル、ディクショナリ、データベースが永続的にデタッチされているかどうかに関わらず、どちらの場合でも [ATTACH](../../sql-reference/statements/attach.md) クエリを使用して再アタッチできます。
 `query_log`、`text_log` などのシステムログテーブルも再アタッチできます。他のシステムテーブルは再アタッチできません。次回のサーバー起動時にサーバーがそれらのテーブルを再び認識します。
 
-`ATTACH MATERIALIZED VIEW` は短い構文（`SELECT` なし）では動作しませんが、`ATTACH TABLE` クエリを使用してアタッチできます。
+`ATTACH MATERIALIZED VIEW` は短い構文 (`SELECT` なし) では動作しませんが、`ATTACH TABLE` クエリを使用してアタッチできます。
 
-すでに（一時的に）デタッチされているテーブルを永続的にデタッチすることはできません。ただし、いったんアタッチし直してから再度永続的にデタッチすることはできます。
+すでに (一時的に) デタッチされているテーブルを永続的にデタッチすることはできません。ただし、いったんアタッチし直してから再度永続的にデタッチすることはできます。
 
 また、デタッチされたテーブルを [DROP](../../sql-reference/statements/drop.md#drop-table) したり、永続的にデタッチされたものと同じ名前で [CREATE TABLE](../../sql-reference/statements/create/table.md) したり、[RENAME TABLE](../../sql-reference/statements/rename.md) クエリで別のテーブルに置き換えたりすることはできません。
 
@@ -35,7 +35,7 @@ DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 クエリ:
 
 ```sql
-CREATE TABLE test ENGINE = Log AS SELECT * FROM numbers(10);
+CREATE TABLE test ENGINE = MergeTree ORDER BY () AS SELECT * FROM numbers(10);
 SELECT * FROM test;
 ```
 
@@ -73,7 +73,7 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 ```
 
 :::note
-ClickHouse Cloud では、`PERMANENTLY` 句（例: `DETACH TABLE <table> PERMANENTLY`）を使用する必要があります。この句を指定しないと、テーブルはクラスターの再起動時（アップグレード時など）に自動的に再アタッチされます。
+ClickHouse Cloud では、`PERMANENTLY` 句 (例: `DETACH TABLE <table> PERMANENTLY`) を使用する必要があります。この句を指定しないと、テーブルはクラスターの再起動時 (アップグレード時など) に自動的に再アタッチされます。
 :::
 
 **関連項目**

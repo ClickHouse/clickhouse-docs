@@ -1,5 +1,5 @@
 ---
-title: 'ClickHouse Government'
+title: 'ClickHouse government'
 slug: /cloud/infrastructure/clickhouse-government
 keywords: ['госсектор', 'fips', 'fedramp', 'гособлако']
 description: 'Обзор решения ClickHouse Government'

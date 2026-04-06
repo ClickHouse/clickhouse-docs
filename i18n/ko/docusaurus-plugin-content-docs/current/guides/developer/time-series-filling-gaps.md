@@ -1,10 +1,10 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: '시계열 - 누락 구간 채우기'
+sidebar_label: '시계열 - 공백 채우기'
 sidebar_position: 10
-description: '시계열 데이터의 누락 구간 채우기.'
-keywords: ['시계열', '누락 구간 채우기']
-title: '시계열 데이터의 누락 구간 채우기'
+description: '시계열 데이터의 공백 채우기.'
+keywords: ['시계열', '공백 채우기']
+title: '시계열 데이터의 공백 채우기'
 doc_type: 'guide'
 ---
 

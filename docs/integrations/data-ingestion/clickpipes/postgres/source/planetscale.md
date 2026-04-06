@@ -2,7 +2,7 @@
 sidebar_label: 'Planetscale for Postgres'
 description: 'Set up Planetscale for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/planetscale
-title: 'PlanetScale for Postgres Source Setup Guide'
+title: 'PlanetScale for Postgres source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 integration:

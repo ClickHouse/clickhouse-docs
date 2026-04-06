@@ -21,51 +21,52 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 
 # AWS PrivateLink \{#aws-privatelink\}
 
-<ScalePlanFeatureBadge feature="AWS PrivateLink"/>
+<ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
-[AWS PrivateLink](https://aws.amazon.com/privatelink/) を使用すると、VPC、AWS サービス、オンプレミスシステム、および ClickHouse Cloud 間で、安全な接続を確立しつつ、トラフィックをパブリックインターネット上に公開せずに済みます。本ドキュメントでは、AWS PrivateLink を使用して ClickHouse Cloud に接続する手順を説明します。
+[AWS PrivateLink](https://aws.amazon.com/privatelink/) を使用すると、VPC、AWS サービス、オンプレミスシステム、および ClickHouse Cloud 間で、安全な接続を確立しつつ、トラフィックをパブリックインターネット上に公開せずに済みます。このガイドでは、AWS PrivateLink を使用して ClickHouse Cloud に接続する手順を説明します。
 
 ClickHouse Cloud サービスへのアクセスを AWS PrivateLink アドレス経由のみに制限するには、ClickHouse Cloud の [IP Access Lists](/cloud/security/setting-ip-filters) に関する手順に従ってください。
 
 :::note
 ClickHouse Cloud は、以下のリージョンからの [クロスリージョン PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) をサポートしています:
-- sa-east-1
-- il-central-1
-- me-central-1
-- me-south-1
-- eu-central-2
-- eu-north-1
-- eu-south-2
-- eu-west-3
-- eu-south-1
-- eu-west-2
-- eu-west-1
-- eu-central-1
-- ca-west-1
-- ca-central-1
-- ap-northeast-1
-- ap-southeast-2
-- ap-southeast-1
-- ap-northeast-2
-- ap-northeast-3
-- ap-south-1
-- ap-southeast-4
-- ap-southeast-3
-- ap-south-2
-- ap-east-1
-- af-south-1
-- us-west-2
-- us-west-1
-- us-east-2
-- us-east-1
-料金に関する注意: クロスリージョン間のデータ転送については AWS から課金されます。料金の詳細は[こちら](https://aws.amazon.com/privatelink/pricing/)を参照してください。
-:::
+
+* sa-east-1
+* il-central-1
+* me-south-1
+* eu-central-2
+* eu-north-1
+* eu-south-2
+* eu-west-3
+* eu-south-1
+* eu-west-2
+* eu-west-1
+* eu-central-1
+* ca-west-1
+* ca-central-1
+* ap-northeast-1
+* ap-southeast-2
+* ap-southeast-1
+* ap-northeast-2
+* ap-northeast-3
+* ap-south-1
+* ap-southeast-4
+* ap-southeast-3
+* ap-south-2
+* ap-east-1
+* af-south-1
+* us-west-2
+* us-west-1
+* us-east-2
+* us-east-1
+  料金に関する注意: クロスリージョン間のデータ転送については AWS から課金されます。料金の詳細は[こちら](https://aws.amazon.com/privatelink/pricing/)を参照してください。
+  :::
 
 **AWS PrivateLink を有効にするには、次を実施してください**:
+
 1. エンドポイントの「Service name」を取得する。
-1. AWS Endpoint を作成する。
-1. ClickHouse Cloud の組織に「Endpoint ID」を追加する。
-1. ClickHouse サービスの許可リストに「Endpoint ID」を追加する。
+2. AWS エンドポイントを作成する。
+3. ClickHouse Cloud の組織に「Endpoint ID」を追加する。
+4. ClickHouse サービスの許可リストに「Endpoint ID」を追加する。
 
 Terraform のサンプルは[こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)を参照してください。
 

@@ -3,7 +3,7 @@ title: 'BYOC 可观测性'
 slug: /cloud/reference/byoc/observability
 sidebar_label: '可观测性'
 keywords: ['BYOC', 'cloud', '自带 Cloud', '可观测性', '监控', 'Prometheus', 'Grafana']
-description: '使用内置仪表盘和 Prometheus 指标监控 BYOC ClickHouse 部署'
+description: '使用内置仪表板和 Prometheus 指标监控 BYOC ClickHouse 部署'
 doc_type: 'reference'
 ---
 
@@ -14,7 +14,7 @@ import byoc_mixin_3 from '@site/static/images/cloud/reference/byoc-mixin-3.png';
 import byoc_mixin_4 from '@site/static/images/cloud/reference/byoc-mixin-4.png';
 import byoc_mixin_5 from '@site/static/images/cloud/reference/byoc-mixin-5.png';
 
-BYOC 部署提供完善的可观测性功能，使你能够通过专用的 Prometheus 监控栈，以及来自 ClickHouse 服务器的直接指标端点来监控你的 ClickHouse 服务。所有可观测性数据都会保留在你的云账号中，使你能够对监控基础设施实现完全掌控。
+BYOC 部署提供完善的可观测性功能，使你能够通过专用的 Prometheus 监控栈，以及来自 ClickHouse 服务器的直接指标端点来监控你的 ClickHouse 服务。所有可观测性数据都会保留在你的云账号中，使你能够对监控基础设施实现完全掌控.
 
 
 ## Prometheus 监控方式 \{#prometheus-monitoring\}

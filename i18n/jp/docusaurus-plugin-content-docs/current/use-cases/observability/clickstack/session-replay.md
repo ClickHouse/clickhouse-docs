@@ -5,7 +5,7 @@ sidebar_label: 'セッションリプレイ'
 sidebar_position: 5
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack でユーザーセッションを取得して再生することで、フロントエンドの問題をデバッグし、ユーザー行動を理解し、ブラウザーのアクティビティをバックエンドのログやトレースと相関付けることができます。'
+description: 'ClickStack でユーザーセッションをキャプチャして再生することで、フロントエンドの問題をデバッグし、ユーザー行動を理解し、ブラウザーのアクティビティをバックエンドのログやトレースと相関付けることができます。'
 doc_type: 'guide'
 keywords: ['clickstack', 'session replay', 'browser sdk', 'frontend observability', 'user sessions', 'debugging']
 ---
@@ -18,9 +18,9 @@ import replay_search from '@site/static/images/clickstack/session-replay/replay-
 import trace_to_replay from '@site/static/images/clickstack/session-replay/trace-to-replay.png';
 import clickpy_trace from '@site/static/images/clickstack/session-replay/clickpy-trace.gif';
 
-ClickStack のセッションリプレイは、Web アプリケーション内でのユーザー操作をキャプチャして再構成し、セッション中にユーザーが見て、行ったことをそのまま視覚的に再生できるようにします。ビデオ録画ではなく、SDK が DOM の変更、マウスの動き、クリック、スクロール、キーボード入力、コンソールログ、ネットワークリクエスト（XHR、Fetch、WebSocket）、および JavaScript 例外を記録し、その情報からブラウザ内で体験を再構成します。
+ClickStack のセッションリプレイは、Web アプリケーション内でのユーザー操作をキャプチャして再構成し、セッション中にユーザーが見て、行ったことをそのまま視覚的に再生できるようにします。ビデオ録画ではなく、SDK が DOM の変更、マウスの動き、クリック、スクロール、キーボード入力、コンソールログ、ネットワークリクエスト (XHR、Fetch、WebSocket) 、および JavaScript 例外を記録し、その情報からブラウザー内で体験を再構成します。
 
-セッションリプレイは、ログ、トレース、メトリクスと並んで ClickHouse に保存されるため、ユーザー体験の再生から、それを支えているバックエンドのトレースやデータベースクエリの調査までを、数回のクリックで行うことができます。これにより、セッションリプレイは本番環境の問題のデバッグ、ユーザー行動の理解、UX の摩擦ポイントの特定、サポートに報告された問題の視覚的な確認に有用です。
+セッションリプレイは、ログ、トレース、メトリクスと並んで ClickHouse に保存されるため、ユーザー体験の再生から、それを支えているバックエンドのトレースやデータベースクエリの調査までを、数回のクリックで行うことができます。これにより、セッションリプレイは本番環境の問題のデバッグ、ユーザー行動の理解、UX の摩擦ポイントの特定、サポートに報告された問題の視覚的な確認に有用です.
 
 
 ## アプリケーションのインスツルメンテーション \{#instrumentation\}
@@ -123,9 +123,9 @@ ClickStack UI（HyperDX）の左サイドバーから **Client Sessions** に移
 
 ### トレースからセッションへ \{#trace-to-session\}
 
-相関付けは逆方向にも行えます。**Search** ビューでトレースを表示しているときに、そのトレースをクリックしてトレース詳細を開き、**Session Replay** タブを選択すると、そのトレースが記録された時点でユーザーが実際にどのような体験をしていたかを正確に確認できます。これは、エラーや遅いリクエストを調査する際に特に有用で、バックエンド側の問題から調査を開始し、その場ですぐにユーザー視点を確認できます。
+相関付けは逆方向にも行えます。**Search** ビューでトレースを表示しているときに、そのトレースをクリックしてトレース詳細を開き、**Session replay** タブを選択すると、そのトレースが記録された時点でユーザーが実際にどのような体験をしていたかを正確に確認できます。これは、エラーや遅いリクエストを調査する際に特に有用で、バックエンド側の問題から調査を開始し、その場ですぐにユーザー視点を確認できます。
 
-<Image img={trace_to_replay} alt="セッションリプレイのトレースビュー" size="lg"/>
+<Image img={trace_to_replay} alt="セッションリプレイのトレースビュー" size="lg" />
 
 ## セッションデータの保存方法 \{#data-storage\}
 
@@ -137,14 +137,14 @@ ClickStack UI（HyperDX）の左サイドバーから **Client Sessions** に移
 
 セッションリプレイを実際に確認する方法は 2 つあります。
 
-- **ライブデモ** — [clickpy.clickhouse.com](https://clickpy.clickhouse.com) にアクセスしてアプリを操作し、その後 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) の **ClickPy Sessions** ソースから自分のセッションリプレイを確認します。ClickPy がどのようにインストルメントされているかの詳細については、ブログ記事 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack) を参照してください。
-- **ローカルデモ** — [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) では、デモアプリケーションに対するインストルメンテーション手順をステップバイステップで解説しており、ローカル環境での ClickStack の実行と、リプレイの確認方法も含まれています。
+* **ライブデモ** — [clickpy.clickhouse.com](https://clickpy.clickhouse.com) にアクセスしてアプリを操作し、その後 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) の **ClickPy Sessions** ソースから自分のセッションリプレイを確認します。ClickPy がどのように計装されているかの詳細については、ブログ記事 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack) を参照してください。
+* **ローカルデモ** — [セッションリプレイ デモ](/use-cases/observability/clickstack/example-datasets/session-replay-demo) では、デモアプリケーションに対する計装手順をステップバイステップで解説しており、ローカル環境での ClickStack の実行と、リプレイの確認方法も含まれています。
 
 ## 詳細情報 \{#learn-more\}
 
-- [Session Replay デモ](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — 手順付きのインタラクティブなローカルデモアプリケーション
-- [Browser SDK リファレンス](/use-cases/observability/clickstack/sdks/browser) — すべての SDK オプション、ソースマップ、カスタムアクション、および高度な設定方法
-- [Search](/use-cases/observability/clickstack/search) — セッションやイベントをフィルタリングするための検索構文
-- [Dashboards](/use-cases/observability/clickstack/dashboards) — セッションおよびトレースデータから可視化やダッシュボードを構築する方法
-- [Alerts](/use-cases/observability/clickstack/alerts) — エラー、レイテンシー、その他のシグナルに対するアラートを設定する方法
-- [ClickStack のアーキテクチャ](/use-cases/observability/clickstack/architecture) — ClickHouse、HyperDX、OTel collector がどのように連携するか
+* [セッションリプレイ デモ](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — 手順付きのインタラクティブなローカルデモアプリケーション
+* [Browser SDK リファレンス](/use-cases/observability/clickstack/sdks/browser) — すべての SDK オプション、ソースマップ、カスタムアクション、および高度な設定方法
+* [Search](/use-cases/observability/clickstack/search) — セッションやイベントをフィルタリングするための検索構文
+* [Dashboards](/use-cases/observability/clickstack/dashboards) — セッションおよびトレースデータから可視化やダッシュボードを構築する方法
+* [Alerts](/use-cases/observability/clickstack/alerts) — エラー、レイテンシー、その他のシグナルに対するアラートを設定する方法
+* [ClickStack のアーキテクチャ](/use-cases/observability/clickstack/architecture) — ClickHouse、HyperDX、OTel collector がどのように連携するか

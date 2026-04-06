@@ -1,6 +1,6 @@
 ---
-title: 'Pandas Cookbook'
-sidebar_label: 'Pandas Cookbook'
+title: 'Pandas cookbook'
+sidebar_label: 'Pandas cookbook'
 slug: /chdb/guides/pandas-cookbook
 description: 'Common pandas patterns and their DataStore equivalents'
 keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']

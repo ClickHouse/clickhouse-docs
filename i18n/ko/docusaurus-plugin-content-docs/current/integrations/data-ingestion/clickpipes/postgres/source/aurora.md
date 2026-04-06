@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Amazon Aurora Postgres'
-description: 'ClickPipes 소스로 Amazon Aurora Postgres를 설정합니다'
+description: 'Amazon Aurora Postgres를 ClickPipes의 소스로 설정합니다'
 slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres 소스 설정 가이드'
 doc_type: 'guide'

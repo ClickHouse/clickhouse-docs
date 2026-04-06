@@ -1,6 +1,6 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: 'Time Series - Gap Fill'
+sidebar_label: 'Time series - gap fill'
 sidebar_position: 10
 description: 'Filling gaps in time-series data.'
 keywords: ['time series', 'gap fill']

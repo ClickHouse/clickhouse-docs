@@ -25,7 +25,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # ClickHouse Cloud 감사 로그를 Splunk에 저장하기 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 [Splunk](https://www.splunk.com/)은 데이터 분석 및 모니터링 플랫폼입니다.
 

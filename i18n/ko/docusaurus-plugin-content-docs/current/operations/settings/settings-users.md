@@ -21,10 +21,12 @@ ClickHouse는 사용자 관리를 위한 [SQL 기반 워크플로](/operations/a
 <users>
     <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
+        <!-- Exactly one authentication method may be specified at the users.user_name level. For example: -->
         <password></password>
-        <!-- Or -->
+        <!-- Or (exclusive) -->
         <password_sha256_hex></password_sha256_hex>
-
+ 
+        <!-- Or (exclusive) (N.B. multiple SSH keys are allowed for backwards compatibility) -->
         <ssh_keys>
             <ssh_key>
                 <type>ssh-ed25519</type>
@@ -39,6 +41,20 @@ ClickHouse는 사용자 관리를 위한 [SQL 기반 워크플로](/operations/a
                 <base64_key>AAAAB3NzaC1yc2EAAAADAQABAAABgQCpgqL1SHhPVBOTFlOm0pu+cYBbADzC2jL41sPMawYCJHDyHuq7t+htaVVh2fRgpAPmSEnLEC2d4BEIKMtPK3bfR8plJqVXlLt6Q8t4b1oUlnjb3VPA9P6iGcW7CV1FBkZQEVx8ckOfJ3F+kI5VsrRlEDgiecm/C1VPl0/9M2llW/mPUMaD65cM9nlZgM/hUeBrfxOEqM11gDYxEZm1aRSbZoY4dfdm3vzvpSQ6lrCrkjn3X2aSmaCLcOWJhfBWMovNDB8uiPuw54g3ioZ++qEQMlfxVsqXDGYhXCrsArOVuW/5RbReO79BvXqdssiYShfwo+GhQ0+aLWMIW/jgBkkqx/n7uKLzCMX7b2F+aebRYFh+/QXEj7SnihdVfr9ud6NN3MWzZ1ltfIczlEcFLrLJ1Yq57wW6wXtviWh59WvTWFiPejGjeSjjJyqqB49tKdFVFuBnIU5u/bch2DXVgiAEdQwUrIp1ACoYPq22HFFAYUJrL32y7RxX3PGzuAv3LOc=</base64_key>
             </ssh_key>
         </ssh_keys>
+
+        <!-- Or (exclusive) for multiple authentication methods: -->
+        <auth_methods>
+            <method1>
+                <password></password>
+            </method1>
+            <method2>
+                <password_sha256_hex></password_sha256_hex>
+            </method2>
+            <!-- ... -->
+            <methodN>
+                <!-- ... -->
+            </methodN>
+        </auth_methods>
 
         <access_management>0|1</access_management>
 
@@ -64,7 +80,6 @@ ClickHouse는 사용자 관리를 위한 [SQL 기반 워크플로](/operations/a
     <!-- Other users settings -->
 </users>
 ```
-
 
 ### user_name/password \{#user-namepassword\}
 
@@ -185,6 +200,95 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 ```
 
 다른 지원되는 알고리즘을 사용하려면 `ssh-ed25519`를 `ssh-rsa` 또는 `ecdsa-sha2-nistp256`로 대체하십시오.
+
+
+### 여러 인증 방식
+
+`<auth_methods>` 요소를 사용하면 하나의 사용자에 대해 여러 인증 방식을 구성할 수 있습니다. 이렇게 하면 나열된 방식 중 어느 하나로 사용자 인증을 수행할 수 있습니다. 예를 들어, 한 사용자가 비밀번호와 LDAP 자격 증명을 모두 가질 수 있으며, 둘 중 어느 방식으로 로그인해도 성공합니다.
+
+`<auth_methods>`의 각 하위 요소는 정확히 하나의 인증 유형을 포함하는, 이름을 임의로 지정한 래퍼입니다. 래퍼 이름(예: `<method1>`, `<primary>`, `<a1>`)은 중요하지 않으며, 내부의 인증 요소만 사용됩니다.
+
+**예: 여러 비밀번호**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <primary>
+                <password>password_one</password>
+            </primary>
+            <secondary>
+                <password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>
+            </secondary>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+**예시: 혼합된 인증 방식**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>plaintext_pass</password>
+            </a1>
+            <a2>
+                <password_sha256_hex>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</password_sha256_hex>
+            </a2>
+            <a3>
+                <ldap>
+                    <server>my_ldap_server</server>
+                </ldap>
+            </a3>
+        </auth_methods>
+    </my_user>
+</users>
+```
+
+다음 인증 유형을 `<auth_methods>` 내에서 지원합니다.
+
+* **`password`** — 평문 비밀번호
+* **`password_sha256_hex`** — SHA256 비밀번호 해시
+* **`password_scram_sha256_hex`** — SCRAM-SHA-256 비밀번호 해시
+* **`password_double_sha1_hex`** — double SHA1 비밀번호 해시
+* **`ldap`** — LDAP 서버 인증
+* **`kerberos`** — Kerberos 인증
+* **`ssl_certificates`** — SSL 인증서 인증
+* **`ssh_keys`** — SSH 키 인증
+* **`http_authentication`** — HTTP 인증
+
+**규칙 및 제한 사항:**
+
+* `<auth_methods>`는 사용자 수준에서 지정한 인증 방법과 **함께 사용할 수 없습니다**. 둘 중 한 가지 방식만 사용하십시오.
+* `<auth_methods>`에는 최소 1개의 인증 방법이 포함되어야 합니다.
+* `<auth_methods>` 내부의 각 래퍼 요소에는 정확히 1개의 인증 유형만 포함되어야 합니다(`\<ssh_keys>`는 하위 호환성을 위해 여러 개를 포함할 수 있으므로 예외입니다).
+* TOTP (`<time_based_one_time_password>`)는 사용자 수준(`<auth_methods>` 외부)에서 지정되며, 목록의 모든 비밀번호 기반 방법에 적용됩니다. TOTP가 활성화된 경우에는 최소 1개의 비밀번호 기반 방법이 필요합니다.
+
+**예시: TOTP가 포함된 `auth_methods`**
+
+```xml
+<users>
+    <my_user>
+        <auth_methods>
+            <a1>
+                <password>my_password</password>
+            </a1>
+            <a2>
+                <ldap>
+                    <server>ldap_server_1</server>
+                </ldap>
+            </a2>
+        </auth_methods>
+        <time_based_one_time_password>
+            <secret>JBSWY3DPEHPK3PXP</secret>
+        </time_based_one_time_password>
+    </my_user>
+</users>
+```
+
+이 예에서는 비밀번호 기반 방식(`<password>`)에 TOTP 검증이 적용되며, LDAP 방식은 외부 서버에 대해 별도로 인증합니다.
 
 
 ### access_management {#access_management-user-setting}

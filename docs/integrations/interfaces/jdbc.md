@@ -1,10 +1,10 @@
 ---
 description: 'Guide to using the JDBC driver for connecting to ClickHouse from Java
   applications'
-sidebar_label: 'JDBC Driver'
+sidebar_label: 'JDBC driver'
 sidebar_position: 20
 slug: /interfaces/jdbc
-title: 'JDBC Driver'
+title: 'JDBC driver'
 doc_type: 'guide'
 ---
 

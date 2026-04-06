@@ -2,7 +2,7 @@
 title: 'DataStore 클래스 참조'
 sidebar_label: '클래스 참조'
 slug: /chdb/datastore/class-reference
-description: 'DataStore, ColumnExpr, LazyGroupBy, LazySeries 클래스에 대한 전체 API 참조'
+설명: 'DataStore, ColumnExpr, LazyGroupBy, LazySeries 클래스에 대한 전체 API 참조'
 keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazygroupby']
 doc_type: 'reference'
 ---

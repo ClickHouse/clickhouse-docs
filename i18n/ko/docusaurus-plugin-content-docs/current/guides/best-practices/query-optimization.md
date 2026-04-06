@@ -2,13 +2,14 @@
 slug: /optimize/query-optimization
 sidebar_label: '쿼리 최적화'
 title: '쿼리 최적화를 위한 가이드'
-description: '쿼리 성능을 향상시키는 데 commonly 사용되는 경로를 설명하는 간단한 쿼리 최적화 가이드'
+description: '쿼리 성능을 향상시키는 데 commonly 사용되는 경로를 설명하는 간단한 쿼리 최적화를 위한 가이드'
 doc_type: 'guide'
 keywords: ['쿼리 최적화', '성능', '모범 사례', '쿼리 튜닝', '효율성']
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
+
 
 # 쿼리 최적화를 위한 간단한 가이드 \{#a-simple-guide-for-query-optimization\}
 

@@ -4,7 +4,7 @@ description: 'The ClickHouse Playground allows people to experiment with ClickHo
 keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
 sidebar_label: 'ClickHouse playground'
 slug: /getting-started/playground
-title: 'ClickHouse Playground'
+title: 'ClickHouse playground'
 doc_type: 'guide'
 ---
 

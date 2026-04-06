@@ -45,7 +45,7 @@ config.enable_profiling()       # Enable performance profiling
 
 ## 구성 방법 \{#methods\}
 
-### 로그 구성 \{#logging\}
+### 로깅 구성 \{#logging\}
 
 ```python
 from chdb.datastore.config import config
@@ -65,8 +65,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-자세한 내용은 [Logging](logging.md) 문서를 참조하십시오.
-
+자세한 내용은 [로깅](../debugging/logging.md)을 참조하십시오.
 
 ### 캐시 설정 \{#cache\}
 

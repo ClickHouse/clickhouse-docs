@@ -152,7 +152,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -206,7 +206,7 @@ import TabItem from '@theme/TabItem';
         
         batch:
           timeout: 10s
-          send_batch_size: 1024
+          send_batch_size: 10000
 
       exporters:
         otlphttp:
@@ -230,14 +230,14 @@ import TabItem from '@theme/TabItem';
   **設定内の以下の項目を置き換えてください:**
 
   * `YOUR_CLICKSTACK_HOST`: ClickStack が稼働しているホスト名または IP アドレス
-  * ローカルでテストする場合は SSH トンネルを利用できます（[トラブルシューティングのセクション](#troubleshooting)を参照してください）
+  * ローカルでテストする場合は SSH トンネルを利用できます ([トラブルシューティングのセクション](#troubleshooting)を参照してください)
 
   この設定:
 
-  * 標準的な場所にあるシステムログファイルを読み取ります（Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`）
+  * 標準的な場所にあるシステムログファイルを読み取ります (Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`)
   * syslog 形式を解析し、タイムスタンプ、ホスト名、ユニット/サービス、PID、メッセージといった構造化フィールドを抽出します
   * `resourcedetection` プロセッサーを使用して **EC2 メタデータを自動検出して追加します**
-  * オプションで、存在する EC2 タグ（Name、Environment、Team）も含めます
+  * オプションで、EC2 タグ (Name、Environment、Team) が存在する場合はそれらも含めます
   * OTLP HTTP 経由で ClickStack にログを送信します
 
   :::note[EC2メタデータエンリッチメント]
@@ -245,11 +245,11 @@ import TabItem from '@theme/TabItem';
 
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;ec2&quot;
-  * `cloud.region`: AWS のリージョン（例：&quot;us-east-1&quot;）
-  * `cloud.availability_zone`: AZ（例：&quot;us-east-1a&quot;）
+  * `cloud.region`: AWS のリージョン (例：&quot;us-east-1&quot;)
+  * `cloud.availability_zone`: AZ (例：&quot;us-east-1a&quot;)
   * `cloud.account.id`: AWS アカウント ID
-  * `host.id`: EC2 インスタンスの ID（例: &quot;i-1234567890abcdef0&quot;）
-  * `host.type`: インスタンスタイプ（例：「t3.medium」）
+  * `host.id`: EC2 インスタンスの ID (例: &quot;i-1234567890abcdef0&quot;)
+  * `host.type`: インスタンスタイプ (例：「t3.medium」)
   * `host.name`: インスタンスのホスト名
     :::
 
@@ -291,13 +291,13 @@ import TabItem from '@theme/TabItem';
   5. リソース属性に EC2 メタデータが含まれていることを確認します:
      * `cloud.provider`
      * `cloud.region`
-     * `host.id`（インスタンス ID）
-     * `host.type`（インスタンスタイプ）
+     * `host.id` (インスタンス ID)
+     * `host.type` (インスタンスタイプ)
      * `cloud.availability_zone`
 
   <Image img={search_view} alt="EC2 ログ検索ビュー" />
 
-  <Image img={log_view} alt="メタデータを表示している EC2 のログ詳細" />
+  <Image img={log_view} alt="メタデータが表示されたEC2ログの詳細" />
 </VerticalStepper>
 
 ## デモデータセット {#demo-dataset}

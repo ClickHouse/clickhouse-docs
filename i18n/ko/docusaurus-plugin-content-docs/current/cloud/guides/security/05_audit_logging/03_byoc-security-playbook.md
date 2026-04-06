@@ -25,11 +25,11 @@ FROM clusterAllReplicas('default',system.crash_log)
 ```
 
 
-## 침해된 ClickHouse가 생성한 AWS 역할 \{#compromised-clickhouse-created-aws-roles\}
+## 유출된 ClickHouse가 생성한 AWS 역할 \{#compromised-clickhouse-created-aws-roles\}
 
-ClickHouse는 시스템 기능을 제공하기 위해 미리 생성된 역할을 사용합니다. 이 섹션은 사용자가 CloudTrail이 활성화된 AWS를 사용하고 있으며 CloudTrail 로그에 접근할 수 있다고 가정합니다.
+ClickHouse는 시스템 기능을 활성화하기 위해 미리 생성된 역할을 사용합니다. 이 섹션은 고객이 CloudTrail이 포함된 AWS를 사용하고 있으며 CloudTrail 로그에 액세스할 수 있다고 가정합니다.
 
-사고가 침해된 역할로 인해 발생했을 수 있다고 판단되면, ClickHouse IAM 역할 및 작업과 관련된 CloudTrail 및 CloudWatch의 활동을 검토하십시오. IAM 역할 목록은 설정의 일부로 제공된 [CloudFormation](/cloud/reference/byoc/reference/priviledge#cloudformation-iam-roles) 스택 또는 Terraform 모듈을 참고하십시오.
+사고가 유출된 역할의 결과일 수 있는 경우, ClickHouse IAM 역할 및 작업과 관련된 CloudTrail 및 CloudWatch의 활동을 검토하십시오. IAM 역할 목록은 설정의 일부로 제공된 [CloudFormation](/cloud/reference/byoc/reference/privilege#cloudformation-iam-roles) 스택 또는 Terraform 모듈을 참조하십시오.
 
 ## EKS 클러스터에 대한 무단 액세스 \{#unauthorized-access-eks-cluster\}
 

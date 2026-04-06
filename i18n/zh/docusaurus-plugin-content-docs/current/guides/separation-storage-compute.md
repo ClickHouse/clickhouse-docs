@@ -3,7 +3,7 @@ sidebar_position: 1
 sidebar_label: '存储与计算分离'
 slug: /guides/separation-storage-compute
 title: '存储与计算分离'
-description: '本指南将介绍如何使用 ClickHouse 和 S3 构建存储与计算分离的架构。'
+description: '本指南将介绍如何使用 ClickHouse 和 S3 实现存储与计算分离的架构。'
 doc_type: 'guide'
 keywords: ['存储', '计算', '架构', '可扩展性', '云']
 ---
@@ -11,7 +11,6 @@ keywords: ['存储', '计算', '架构', '可扩展性', '云']
 import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
-
 
 # 存储与计算分离 \{#separation-of-storage-and-compute\}
 

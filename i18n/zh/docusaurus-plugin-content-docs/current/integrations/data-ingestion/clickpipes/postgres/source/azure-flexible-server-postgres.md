@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Azure Flexible Server for Postgres 源'
-description: '将 Azure Flexible Server for Postgres 配置为 ClickPipes 的数据源'
+sidebar_label: 'Azure PostgreSQL 灵活服务器 源'
+description: '将 Azure PostgreSQL 灵活服务器 配置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Azure Flexible Server for Postgres 源设置指南'
+title: 'Azure PostgreSQL 灵活服务器 源设置指南'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:

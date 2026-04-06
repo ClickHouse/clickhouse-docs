@@ -9,7 +9,7 @@ keywords: ['clickstack', 'admin']
 
 ClickStack의 대부분의 관리 작업은 그 기반이 되는 ClickHouse 데이터베이스에서 직접 수행됩니다. ClickStack을 배포하는 사용자는 ClickHouse 개념과 기본적인 관리 작업에 익숙해야 합니다.
 
-관리 작업은 일반적으로 DDL SQL 문 실행을 포함합니다. 사용 가능한 옵션은 Managed ClickStack을 사용하는지, ClickStack Open Source를 사용하는지에 따라 달라집니다.
+관리 작업은 일반적으로 DDL SQL 문 실행을 포함합니다. 사용 가능한 옵션은 Managed ClickStack을 사용하는지, ClickStack 오픈 소스를 사용하는지에 따라 달라집니다.
 
 ## ClickStack 오픈 소스 \{#clickstack-oss\}
 

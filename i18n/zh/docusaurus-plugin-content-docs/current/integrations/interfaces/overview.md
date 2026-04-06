@@ -4,7 +4,7 @@ keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'comman
   'client', 'jdbc', 'odbc', 'driver']
 sidebar_label: '概览'
 slug: /interfaces/overview
-title: '驱动和接口'
+title: '驱动程序和接口'
 doc_type: 'reference'
 ---
 

@@ -1,7 +1,7 @@
 ---
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud compatibility'
-title: 'Cloud Compatibility'
+title: 'Cloud compatibility'
 description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
 keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'

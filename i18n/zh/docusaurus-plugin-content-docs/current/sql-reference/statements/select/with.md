@@ -16,7 +16,7 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 在 `SELECT` 查询中，只要允许使用表表达式的地方，都可以通过名称引用它们。
 具名子查询可以在当前查询的作用域或其子查询的作用域中通过名称进行引用。
 
-`SELECT` 查询中对公用表表达式的每一次引用，都会被其定义中的子查询替换。
+如果 CTE 未被显式定义为物化 (参见 [物化公用表表达式](#materialized-common-table-expressions)) ，则 `SELECT` 查询中对公用表表达式的每一次引用，都会被其定义中的子查询替换。
 通过在标识符解析过程中隐藏当前 CTE，可以防止递归。
 
 请注意，CTE 并不保证在所有引用它们的位置都产生相同的结果，因为查询会在每次使用时被重新执行。
@@ -24,7 +24,7 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 ### 语法 \{#common-table-expressions-syntax\}
 
 ```sql
-WITH <identifier> AS <subquery expression>
+WITH <identifier> AS [MATERIALIZED] <subquery expression>
 ```
 
 
@@ -50,6 +50,129 @@ WHERE num IN (SELECT num FROM cte_numbers)
 
 然而，由于我们两次引用了 `cte_numbers`，每次都会生成随机数，因此会看到不同的随机结果，比如 `280501, 392454, 261636, 196227` 等等……
 
+
+## 物化公用表表达式 \{#materialized-common-table-expressions\}
+
+默认情况下，ClickHouse 会在每个引用处内联 CTE 的子查询，并在每次引用时重新执行该子查询。
+添加 `MATERIALIZED` 关键字会指示 ClickHouse 将 CTE 子查询**只执行一次**，把结果存储在临时表中，并让所有引用都从该表读取结果。
+当同一个 CTE 在一次查询中被多次引用时 (例如在自连接或多个 `IN` 子查询中) ，这尤其有用，因为底层计算只会执行一次。
+
+:::note
+物化 CTE 是一项**实验性**功能。
+它要求启用 [analyzer](/operations/analyzer) 和设置 `enable_materialized_cte`。
+:::
+
+### 语法 \{#materialized-common-table-expressions-syntax\}
+
+```sql
+WITH <identifier> AS MATERIALIZED (<subquery>)
+SELECT ...
+```
+
+
+### 何时使用 \{#materialized-cte-when-to-use\}
+
+在以下情况下，物化 CTE 的收益最明显：
+
+* 在一个查询中，同一个 CTE 被**多次**引用。
+  如果不使用 `MATERIALIZED`，每次引用都会各自重新执行该子查询。
+* CTE 包含 `generateRandom` 这类**非确定性**函数。
+  物化可确保所有引用看到的是同一份数据。
+* CTE 涉及**高开销计算** (聚合、连接、大范围扫描) ，不应重复执行。
+
+:::tip
+如果物化 CTE 只被引用一次，ClickHouse 会自动将其内联为普通子查询，以避免不必要的开销。
+:::
+
+### 示例 \{#materialized-common-table-expressions-examples\}
+
+**示例 1：** 对物化 CTE 执行自连接
+
+如果不使用 `MATERIALIZED`，join 的两侧都会分别执行该子查询。
+使用 `MATERIALIZED` 后，表只会扫描一次，join 的两侧都会从同一个临时表中读取。
+
+```sql
+SET enable_materialized_cte = 1;
+
+CREATE TABLE users (uid Int16, name String, age Int16) ENGINE = Memory;
+INSERT INTO users VALUES (1231, 'John', 33), (6666, 'Ksenia', 48), (8888, 'Alice', 50);
+
+WITH
+    a AS MATERIALIZED (SELECT * FROM users WHERE name = 'Alice')
+SELECT count() FROM a AS l JOIN a AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**示例 2：** 使用非确定性函数获得确定性结果
+
+使用 `generateRandom` 的普通 CTE 在每次引用时都会产生不同的结果。
+将 CTE 物化可确保结果一致：
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH cte_numbers AS MATERIALIZED
+(
+    SELECT num
+    FROM generateRandom('num UInt64', NULL)
+    LIMIT 1000000
+)
+SELECT count()
+FROM cte_numbers
+WHERE num IN (SELECT num FROM cte_numbers);
+```
+
+由于两个引用都从同一份物化数据中读取，因此结果始终为 `1000000`。
+
+**示例 3：** 串联物化 CTE
+
+物化 CTE 可以引用其他物化 CTE。
+ClickHouse 会解析依赖关系，并按正确的顺序将其物化：
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH
+    a AS MATERIALIZED (SELECT uid, name FROM users),
+    b AS MATERIALIZED (SELECT uid FROM a)
+SELECT count() FROM b AS l LEFT SEMI JOIN b AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+CTE 定义的顺序并不重要——允许前向引用：
+
+```sql
+SET enable_materialized_cte = 1;
+
+WITH
+    b AS MATERIALIZED (SELECT uid FROM a),
+    a AS MATERIALIZED (SELECT uid FROM users)
+SELECT count() FROM b AS l LEFT SEMI JOIN b AS r ON l.uid = r.uid;
+```
+
+```response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+
+### 限制 \{#materialized-cte-restrictions\}
+
+- **需要启用实验性设置**：必须启用设置 `enable_materialized_cte`。
+- **需要启用 analyzer**：物化 CTE 仅在启用 [analyzer](/operations/analyzer) 时才有效（`enable_analyzer = 1`）。
+- **不支持与 `RECURSIVE` 一起使用**：不允许同时使用 `MATERIALIZED` 和 `RECURSIVE` 关键字，否则会导致 `UNSUPPORTED_METHOD` 异常。
+- **禁止使用相关 CTE**：物化 CTE 不能引用外层查询作用域中的列。
 
 ## 通用标量表达式 \{#common-scalar-expressions\}
 

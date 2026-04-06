@@ -3,7 +3,7 @@ sidebar_label: 'SSL 用户证书身份验证'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
 title: '配置用于身份验证的 SSL 用户证书'
-description: '本指南提供配置基于 SSL 用户证书的身份验证所需的简洁、最小化设置。'
+description: '本指南提供了通过 SSL 用户证书配置身份验证所需的简单且最小化的配置。'
 doc_type: 'guide'
 keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 ---

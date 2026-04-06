@@ -3,7 +3,7 @@ slug: /architecture/cluster-deployment
 sidebar_label: '复制与扩展'
 sidebar_position: 100
 title: '复制与扩展'
-description: '通过本教程，你将学习如何部署一个简单的 ClickHouse 集群。'
+description: '通过本教程，你将学习如何搭建一个简单的 ClickHouse 集群。'
 doc_type: 'guide'
 keywords: ['集群部署', '复制', '分片', '高可用性', '可扩展性']
 ---
@@ -28,6 +28,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 <Image img={SharedReplicatedArchitecture} size="md" alt="Architecture diagram for 2 shards and 1 replica" />
 
 <DedicatedKeeperServers />
+
 
 ## 前提条件 \{#prerequisites\}
 

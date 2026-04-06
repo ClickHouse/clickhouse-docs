@@ -2,8 +2,8 @@
 sidebar_label: 'SSL ユーザー証明書認証'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: 'SSL ユーザー証明書による認証の設定'
-description: 'このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定について説明します。'
+title: 'SSL ユーザー証明書を使用した認証の設定'
+description: 'このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示す'
 doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---

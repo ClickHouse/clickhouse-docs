@@ -15,9 +15,9 @@ doc_type: 'guide'
 
 与直接读取开放表格式相比，MergeTree 具有以下优势：
 
-* **[稀疏主索引](/optimize/sparse-primary-indexes)** - 按所选键对磁盘上的数据进行排序，使 ClickHouse 能够在查询期间跳过大范围的不相关行。
-* **增强的数据类型** - 原生支持 [JSON](/sql-reference/data-types/json)、[LowCardinality](/sql-reference/data-types/lowcardinality) 和 [Enum](/sql-reference/data-types/enum) 等类型，从而实现更紧凑的存储和更快的处理。
-* **[数据跳过索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** 和 **[全文索引](/engines/table-engines/mergetree-family/invertedindexes)** - 二级索引结构，使 ClickHouse 能够跳过与查询过滤谓词不匹配的数据粒度，尤其适合文本搜索工作负载。
+* **[稀疏主索引](/guides/best-practices/sparse-primary-indexes)** - 按所选键对磁盘上的数据进行排序，使 ClickHouse 能够在查询期间跳过大范围的不相关行。
+* **增强的数据类型** - 原生支持 [JSON](/best-practices/use-json-where-appropriate)、[LowCardinality](/sql-reference/data-types/lowcardinality) 和 [Enum](/sql-reference/data-types/enum) 等类型，从而实现更紧凑的存储和更快的处理。
+* **[数据跳过索引](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes)** 和 **[全文索引](/engines/table-engines/mergetree-family/textindexes)** - 二级索引结构，使 ClickHouse 能够跳过与查询过滤谓词不匹配的数据粒度，尤其适合文本搜索工作负载。
 * **支持自动压实的快速插入** - ClickHouse 专为高吞吐量插入而设计，并会在后台自动合并数据分区片段，这类似于开放表格式中的压实。
 * **针对并发读取进行了优化** - MergeTree 的列式存储布局结合[多层缓存](/operations/caches)，可支持高并发的实时分析工作负载——而这并不是开放表格式的设计目标。
 
@@ -132,7 +132,7 @@ Peak memory usage: 4.35 GiB.
 
 * **不使用 `Nullable` 封装** - 去掉 `Nullable` 可提高存储效率和查询性能。
 * **在 `level`、`instance_type`、`thread_name` 和 `check_name` 列上使用 `LowCardinality(String)`** - 对不同值较少的列进行字典编码，以获得更好的压缩率和更快的过滤速度。
-* **在 `message` 列上创建 [全文索引](/engines/table-engines/mergetree-family/invertedindexes)** - 可加速基于 token 的文本搜索，例如 `hasToken(message, 'error')`。
+* **在 `message` 列上创建 [全文索引](/engines/table-engines/mergetree-family/textindexes)** - 可加速基于 token 的文本搜索，例如 `hasToken(message, 'error')`。
 * **`ORDER BY` 键** 为 `(instance_type, thread_name, toStartOfMinute(event_time))` - 使磁盘上的数据布局与常见过滤模式对齐，从而让[稀疏主索引](/guides/best-practices/sparse-primary-indexes)能够跳过无关的数据粒度。
 
 ```sql

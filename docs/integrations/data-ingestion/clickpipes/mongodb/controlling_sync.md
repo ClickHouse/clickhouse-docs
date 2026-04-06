@@ -1,5 +1,5 @@
 ---
-title: 'Controlling the Syncing of a MongoDB ClickPipe'
+title: 'Controlling the syncing of a MongoDB ClickPipe'
 description: 'Doc for controllling the sync a MongoDB ClickPipe'
 slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: 'Controlling syncs'

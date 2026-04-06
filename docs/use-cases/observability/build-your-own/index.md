@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/build-your-own
-title: 'Build Your Own Observability Stack'
+title: 'Build your own observability stack'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page building your own observability stack'

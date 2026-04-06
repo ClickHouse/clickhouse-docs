@@ -19,6 +19,7 @@ import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipe
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step5.png';
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import cp_table_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_table_settings.png';
+import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
 # Creating your first Kafka ClickPipe {#creating-your-first-kafka-clickpipe}
@@ -46,11 +47,30 @@ A valid schema is required for Avro streams. See [Schema registries](./02_schema
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.
 See our [AWS PrivateLink documentation](../aws-privatelink.md) for more information.
 
-## Select your topic {#6-select-your-topic}
+## Configure SSH tunneling (optional) {#6-configure-ssh-tunneling}
+
+You can use SSH tunneling if your Kafka broker isn't publicly accessible. Instead of connecting directly, ClickPipes establishes an SSH connection to a bastion host (a server in your network that is publicly accessible) and then forwards traffic through it to your Kafka broker on your private network.
+
+1. Enable the "SSH Tunnel" toggle.
+2. Fill in the SSH connection details:
+   - **SSH Host**: The hostname or IP address of your bastion host — this is the publicly accessible server that acts as a gateway into your private network.
+   - **SSH Port**: The port for SSH on the bastion host (default `22`).
+   - **SSH User**: The username to authenticate with on the bastion host.
+
+<Image img={cp_ssh_tunnel} alt="SSH tunnel configuration" size="md"/>
+
+3. To use Key-based authentication, click on "Revoke and regenerate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
+4. Click on "Verify Connection" to verify the connection.
+
+:::note
+Make sure to whitelist [ClickPipes IP addresses](../index.md#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+:::
+
+## Select your topic {#7-select-your-topic}
 Select your topic and the UI will display a sample document from the topic.
 <Image img={cp_step3} alt="Set your topic" size="md"/>
 
-## Configure your destination table {#7-configure-your-destination-table}
+## Configure your destination table {#8-configure-your-destination-table}
 
 In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
@@ -60,14 +80,14 @@ You can also customize the advanced settings using the controls provided
 
 <Image img={cp_table_settings} alt="Set advanced controls" size="md"/>
 
-## Configure permissions {#8-configure-permissions}
+## Configure permissions {#9-configure-permissions}
 ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
 - `Full access`: with the full access to the cluster. It might be useful if you use Materialized View or Dictionary with the destination table.
 - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
 <Image img={cp_step5} alt="Permissions" size="md"/>
 
-## Complete setup {#9-complete-setup}
+## Complete setup {#10-complete-setup}
 Clicking on "Create ClickPipe" will create and run your ClickPipe. It will now be listed in the Data Sources section.
 
 <Image img={cp_overview} alt="View overview" size="md"/>

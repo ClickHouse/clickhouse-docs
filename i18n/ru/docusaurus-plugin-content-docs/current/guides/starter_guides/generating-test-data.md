@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Создание случайных тестовых данных'
-title: 'Создание случайных тестовых данных в ClickHouse'
+sidebar_label: 'Генерация случайных тестовых данных'
+title: 'Генерация случайных тестовых данных в ClickHouse'
 slug: /guides/generating-test-data
-description: 'Узнайте, как создавать случайные тестовые данные в ClickHouse'
+description: 'Узнайте о генерации случайных тестовых данных в ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['случайные данные', 'тестовые данные']
@@ -32,20 +32,21 @@ INSERT INTO user_events
 SELECT
   generateUUIDv4() AS event_id,
   rand() % 10000 AS user_id,
-  arrayJoin(['click','view','purchase']) AS event_type,
+  arrayElement(['click','view','purchase'], toUInt32(rand()) % 3 + 1) AS event_type,
   now() - INTERVAL rand() % 3600*24 SECOND AS event_time
 FROM numbers(1000000);
 ```
 
 * `rand() % 10000`: равномерное распределение по 10 000 пользователям
-* `arrayJoin(...)`: случайный выбор одного из трёх типов событий
+* `arrayElement(...)`: случайный выбор одного из трёх типов событий
 * Метки времени распределены в пределах последних 24 часов
 
 ***
 
+
 ## Экспоненциальное распределение \{#exponential-distribution\}
 
-**Вариант использования**: имитация сумм покупок, при которой большинство значений невелики, но некоторые — очень большие.
+**Сценарий использования**: моделирование сумм покупок, при котором большинство значений невелики, но некоторые — очень большие.
 
 ```sql
 CREATE TABLE purchases (
@@ -66,7 +67,7 @@ FROM numbers(500000);
 * Равномерные временные метки за недавний период
 * `randExponential(1/10)` — большинство суммарных значений около 0, со смещением не менее чем на 15 ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4])
 
-***
+---
 
 ## События, распределённые во времени (Пуассон) \{#poisson-distribution\}
 
@@ -91,25 +92,27 @@ FROM numbers(200000);
 
 ***
 
+
 ## Нормальное распределение, зависящее от времени \{#time-varying-normal-distribution\}
 
 **Сценарий использования**: Имитировать системные метрики (например, загрузку процессора), которые изменяются со временем.
 
 ```sql
-CREATE TABLE cpu_metrics (
-  host String,
-  ts DateTime,
-  usage Float32
+CREATE TABLE IF NOT EXISTS cpu_metrics (
+    host String,
+    ts   DateTime,
+    usage Float32
 ) ENGINE = MergeTree
 ORDER BY (host, ts);
 
 INSERT INTO cpu_metrics
 SELECT
-  arrayJoin(['host1','host2','host3']) AS host,
-  now() - INTERVAL number SECOND AS ts,
-  greatest(0.0, least(100.0,
-    randNormal(50 + 30*sin(toUInt32(ts)%86400/86400*2*pi()), 10)
-  )) AS usage
+    arrayJoin(['host1','host2','host3']) AS host,
+    now() - INTERVAL number SECOND AS ts,
+    greatest(0.0, least(100.0,
+        (50 + 30 * sin(toUInt32(number) % 86400 / 86400.0 * 2 * pi()))
+        + randNormal(0, 10)
+    )) AS usage
 FROM numbers(10000);
 ```
 
@@ -118,9 +121,10 @@ FROM numbers(10000);
 
 ***
 
+
 ## Категориальные и вложенные данные \{#categorical-and-nested-data\}
 
-**Пример использования**: создание пользовательских профилей с несколькими интересами.
+**Сценарий использования**: создание пользовательских профилей с несколькими интересами.
 
 ```sql
 CREATE TABLE user_profiles (
@@ -224,6 +228,7 @@ LIMIT 1000;
 
 DESCRIBE TABLE fully_random_table;
 ```
+
 
 ```response
    ┌─name─┬─type─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

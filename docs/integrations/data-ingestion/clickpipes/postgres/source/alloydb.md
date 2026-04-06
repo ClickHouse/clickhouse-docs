@@ -2,7 +2,7 @@
 sidebar_label: 'AlloyDB Postgres'
 description: 'Set up an AlloyDB Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/alloydb
-title: 'AlloyDB Postgres Source Setup Guide'
+title: 'AlloyDB Postgres source setup guide'
 doc_type: 'guide'
 ---
 

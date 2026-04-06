@@ -1,14 +1,13 @@
 ---
 sidebar_label: '二进制和原生'
 slug: /integrations/data-formats/binary-native
-title: '在 ClickHouse 中使用原生和二进制格式'
-description: '介绍如何在 ClickHouse 中使用原生和二进制格式的页面'
-keywords: ['二进制格式', '原生格式', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', '数据格式', '性能', '压缩']
+title: '在 ClickHouse 中使用 Native 和二进制格式'
+description: '介绍如何在 ClickHouse 中使用 Native 和二进制格式的页面'
+keywords: ['二进制格式', 'Native 格式', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', '数据格式', '性能', '压缩']
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
 
 # 在 ClickHouse 中使用 Native 和二进制格式 \{#using-native-and-binary-formats-in-clickhouse\}
 

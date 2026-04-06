@@ -1,18 +1,18 @@
 ---
-description: '호텔, 레스토랑 및 카페의 메뉴와 그 안에 포함된 요리와 가격에 대한 역사적 데이터 130만 개 레코드가 포함된 데이터세트입니다.'
-sidebar_label: 'New York Public Library "what''s on the menu?" 데이터세트'
+description: '호텔, 레스토랑 및 카페의 메뉴와 그 안에 포함된 요리와 가격에 대한 역사적 데이터 130만 개 레코드가 포함된 데이터셋입니다.'
+sidebar_label: 'New York Public Library "what''s on the menu?" 데이터셋'
 slug: /getting-started/example-datasets/menus
-title: 'New York Public Library "What''s on the Menu?" 데이터세트'
+title: 'New York Public Library "What''s on the Menu?" 데이터셋'
 doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-이 데이터세트는 New York Public Library에서 제작했습니다. 호텔, 레스토랑 및 카페의 메뉴와 각 요리 및 그 가격에 대한 역사적 데이터를 포함합니다.
+이 데이터셋는 New York Public Library에서 제작했습니다. 호텔, 레스토랑 및 카페의 메뉴와 각 요리 및 그 가격에 대한 역사적 데이터를 포함합니다.
 
-출처: http://menus.nypl.org/data  
+출처: http://menus.nypl.org/data
 데이터는 퍼블릭 도메인입니다.
 
-이 데이터는 도서관 아카이브에서 가져온 것이므로 불완전할 수 있고 통계 분석에는 다소 어려울 수 있습니다. 그럼에도 불구하고 매우 흥미로운 데이터입니다.  
+이 데이터는 도서관 아카이브에서 가져온 것이므로 불완전할 수 있고 통계 분석에는 다소 어려울 수 있습니다. 그럼에도 불구하고 매우 흥미로운 데이터입니다.
 데이터 크기는 메뉴에 포함된 요리에 대한 약 130만 개의 레코드에 불과합니다. ClickHouse 기준으로는 매우 작은 데이터 양이지만, 여전히 좋은 예시입니다.
 
 ## 데이터셋 다운로드 \{#download-dataset\}
