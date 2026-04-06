@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4047 
+personal_ws-1.1 en 4074
 AArch
 ACLs
 AICPA
@@ -53,6 +53,7 @@ ArrowStream
 ArrowTable
 Arrowtable
 Astrato
+AsyncClient
 AsyncInsertCacheSize
 AsynchronousHeavyMetricsCalculationTimeSpent
 AsynchronousHeavyMetricsUpdateInterval
@@ -120,6 +121,7 @@ BestEffortUSOrNull
 BestEffortUSOrZero
 BetaBadge
 Beyonce's
+BinaryIO
 Bigtable
 Bindplane
 Bindplane's
@@ -270,6 +272,7 @@ ConcurrencyControlSoftLimit
 Config
 ConnectTimeout
 ConnectionDetails
+Connect's
 Const
 ContentSquare
 ContentSquare's
@@ -452,6 +455,7 @@ ExactEdgeLengthRads
 ExecutablePool
 ExperimentalBadge
 ExtType
+ExternalData
 ExternalDistributed
 FCNTL
 FFFD
@@ -492,6 +496,7 @@ Flink
 Fong
 ForEach
 FreeBSD
+FromClause
 Fuzzer
 Fuzzers
 GDPR
@@ -628,6 +633,8 @@ InfluxDB
 InnoDB
 Instacart
 Instana
+InsertContext
+InsertContexts
 IntN
 Integrations
 IntegrityError
@@ -840,7 +847,6 @@ MV's
 MVCC
 MacBook
 MacOS
-manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -978,6 +984,7 @@ NotSupportedError
 NuRaft
 NumHexagons
 NumPy
+Numpy
 NumToString
 NumToStringClassC
 NumberOfDatabases
@@ -1211,7 +1218,9 @@ QueryCacheHits
 QueryCacheMisses
 QueryCacheNondeterministicFunctionHandling
 QueryCacheSystemTableHandling
+QueryContexts
 QueryPreempted
+QueryResult
 QueryThread
 QuickAssist
 QuickSight
@@ -1246,6 +1255,7 @@ RecipeNLG
 Recompressing
 Recompression
 RecordBatch
+RecordBatches
 RectAdd
 RectContains
 RectIntersection
@@ -1369,6 +1379,7 @@ ServiceNow
 ServiceNow's
 SessionId
 SetOperationMode
+SettingDef
 SeverityText
 ShareAlike
 ShareSet
@@ -1426,6 +1437,7 @@ StorageS
 StreamingResult
 Streamkap
 Streamkap's
+StreamContext
 Streamlit
 StringToNum
 StringToNumOrDefault
@@ -1712,6 +1724,8 @@ aggregatio
 aggretate
 aggthrow
 aiochclient
+aiohttp
+aiohttp's
 alloc
 allocator
 allowlist
@@ -1826,6 +1840,7 @@ asinh
 assumeNotNull
 async
 asynch
+asyncio
 atan
 atanh
 atomicity
@@ -2022,6 +2037,7 @@ checksums
 childern
 chproxy
 chunksize
+cibuildwheel
 cickhouse
 cipherList
 ciphertext
@@ -2289,6 +2305,7 @@ dragonbox
 dropdown
 dropoff
 dtype
+dtypes
 dumpColumnStructure
 durations
 ePHI
@@ -2631,6 +2648,7 @@ intHash
 integrational
 integrations
 internode
+interop
 interserver
 intervalLengthSum
 intracycle
@@ -2638,6 +2656,7 @@ invalidCertificateHandler
 invariants
 invertedindexes
 iostat
+ipaddress
 ipython
 isConstant
 isDecimalOverflow
@@ -3560,6 +3579,7 @@ stochasticlogisticregression
 storages
 storig
 streamable
+stringified
 stringJaccardIndex
 stringJaccardIndexUTF
 stringToH
@@ -3871,6 +3891,7 @@ tupleToNameValuePairs
 turbostat
 txt
 typename
+tzinfo
 ubuntu
 uint
 ulid
@@ -3946,6 +3967,7 @@ upvote
 upvotes
 uring
 url
+urllib
 urlCluster
 urlencoded
 urls
