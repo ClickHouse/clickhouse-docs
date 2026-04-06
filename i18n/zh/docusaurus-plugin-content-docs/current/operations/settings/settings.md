@@ -9794,7 +9794,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "文本索引现已进入 GA 阶段"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "1"},{"label": "新设置。"}]}]} />
 
 允许在查询计划中仅使用倒排文本索引来执行全文搜索过滤。
 
@@ -11992,16 +11992,16 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "文本索引现已正式发布"}]}, {"id": "row-2","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-3","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]} />
 
 启用在读取数据时使用数据跳过索引。
 
-启用后，会在读取每个数据粒度（granule）时动态评估数据跳过索引，而不是在查询执行开始前预先分析。这可以减少查询启动延迟。
+启用后，会在读取每个数据粒度 (granule) 时动态评估数据跳过索引，而不是在查询执行开始前预先分析。这可以减少查询启动延迟。
 
 可能的取值：
 
-- 0 — 禁用。
-- 1 — 启用。
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_statistics \{#use_statistics\}
 

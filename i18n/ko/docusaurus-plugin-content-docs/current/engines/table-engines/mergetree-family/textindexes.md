@@ -68,23 +68,7 @@ two    : [3]
 프로덕션 사용 사례에서는 ClickHouse 26.2 이상 버전 사용을 강력히 권장합니다.
 
 :::note
-ClickHouse 26.2보다 이전 버전에서 업그레이드했거나(또는 ClickHouse Cloud와 같이 업그레이드된 경우), [compatibility](../../../operations/settings/settings#compatibility) 설정이 존재하면 인덱스가 비활성화되거나 텍스트 인덱스 관련 성능 최적화가 비활성화될 수 있습니다.
-
-If query
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-`26.2`보다 작은 값(예: `25.4`)을 반환하는 경우, 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
+텍스트 인덱스는 [compatibility](../../../operations/settings/settings#compatibility) 설정과 관계없이 ClickHouse 26.2 이상 모든 버전에서 사용할 수 있습니다.
 :::
 
 텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
@@ -145,7 +129,7 @@ ALTER TABLE table
 
 ```
 
-이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 전수 검색(brute-force scan)으로 수행됩니다.
+이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 브루트 포스(전체 스캔)으로 수행됩니다.
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
