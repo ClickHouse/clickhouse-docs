@@ -9804,7 +9804,7 @@ JOIN 이후의 필터가 매칭되지 않은 행 또는 매칭된 행에 대해 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "텍스트 인덱스가 이제 일반 제공 상태입니다"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]} />
 
 쿼리 플랜에서 역텍스트 인덱스만 사용하여 전문 검색 필터링을 수행하도록 허용합니다.
 
@@ -12003,7 +12003,7 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "기본값: 사용"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "새 설정"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "텍스트 인덱스가 이제 일반 제공됩니다"}]}, {"id": "row-2","items": [{"label": "26.1"},{"label": "1"},{"label": "기본값: 사용"}]}, {"id": "row-3","items": [{"label": "25.9"},{"label": "0"},{"label": "새 설정"}]}]} />
 
 데이터를 읽는 동안 데이터 스키핑 인덱스를 사용하도록 설정합니다.
 
@@ -12011,8 +12011,8 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 가능한 값:
 
-- 0 — 비활성화됨.
-- 1 — 활성화됨.
+* 0 — 비활성화됨.
+* 1 — 활성화됨.
 
 ## use_statistics \{#use_statistics\}
 

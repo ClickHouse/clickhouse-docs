@@ -68,23 +68,7 @@ two    : [3]
 我们强烈建议在生产环境场景中使用 ClickHouse 版本 &gt;= 26.2。
 
 :::note
-如果您是从低于 26.2 的 ClickHouse 版本升级 (或被升级，例如 ClickHouse Cloud) ，现有的 [兼容性](../../../operations/settings/settings#compatibility) 设置可能仍会导致索引被禁用，和/或使与文本索引相关的性能优化被关闭。
-
-If query
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-如果返回值小于 `26.2` (例如 `25.4`) ，则需要额外配置以下三个设置项，才能使用文本索引：
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-或者，你也可以将 [compatibility](../../../operations/settings/settings#compatibility) 设置提高到 `26.2` 或更高版本，但这会影响许多设置，并且通常需要事先进行测试。
+无论 [compatibility](../../../operations/settings/settings#compatibility) 设置如何，任何 ClickHouse 版本 &gt;= 26.2 都可以使用文本索引。
 :::
 
 要创建文本索引，请使用以下语法：
@@ -145,7 +129,7 @@ ALTER TABLE table
 
 ```
 
-如果你向已有表添加一个索引，我们建议为表中现有的分区片段物化此索引 (否则，在这些尚未建立索引的分区片段上进行搜索时，将会回退到较慢的穷举扫描方式) 。
+如果你向已有表添加一个索引，我们建议为表中现有的parts物化此索引 (否则，在这些尚未建立索引的parts上进行搜索时，将会回退到较慢的穷举扫描方式) 。
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;

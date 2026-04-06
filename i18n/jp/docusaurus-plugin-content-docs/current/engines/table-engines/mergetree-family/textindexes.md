@@ -68,23 +68,7 @@ two    : [3]
 本番環境では ClickHouse バージョン 26.2 以上の使用を強く推奨します。
 
 :::note
-ClickHouse バージョン 26.2 より古いバージョンからアップグレードした場合 (または、たとえば ClickHouse Cloud で自動的にアップグレードされた場合)、[compatibility](../../../operations/settings/settings#compatibility) 設定が存在すると、インデックスが無効化されたままになったり、テキスト索引関連のパフォーマンス最適化が無効化されたりする可能性があります。
-
-If query
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-`26.2` 未満の値 (例: `25.4`) が返された場合は、テキスト索引を使用するために、追加で 3 つの設定を行う必要があります。
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-または、[compatibility](../../../operations/settings/settings#compatibility) 設定を `26.2` 以降に引き上げることもできます。ただし、これは多くの設定に影響し、通常は事前のテストが必要です。
+テキスト索引は、[compatibility](../../../operations/settings/settings#compatibility) 設定に関係なく、ClickHouse バージョン `>= 26.2` であれば使用できます。
 :::
 
 テキスト索引を作成するには、次の構文を使用します。

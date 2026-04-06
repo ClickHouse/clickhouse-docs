@@ -43,7 +43,7 @@ ClickStack はイベントのビジュアライゼーションをサポートし
 
 HyperDX の **Chart Explorer** インターフェイスを使用すると、メトリクス、トレース、ログを時間経過とともに可視化でき、データ分析用の簡易な可視化をすばやく作成できます。このインターフェイスは、ダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorer を使用して可視化を作成する手順を説明します。
 
-各可視化は、まず **データソース** を選択し、その後に **メトリクス** を指定し、必要に応じて **フィルター式** と **GROUP BY** フィールドを設定するところから始まります。概念的には、HyperDX における可視化は、内部的には SQL の `GROUP BY` クエリとして表現されます。ユーザーは、選択したディメンションに対して集計するメトリクスを定義します。
+各可視化は、まず **データソース** を選択し、その後に **メトリクス** を指定し、必要に応じて **フィルター式** と **GROUP BY** フィールドを設定するところから始まります。概念的には、HyperDX における可視化は、内部的には SQL の `GROUP BY` クエリとして表現されます。選択したディメンションに対して集計するメトリクスを定義します。
 
 :::tip AI を活用したチャート生成
 ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-chart) 機能を使用して、自然言語のプロンプトからチャートを作成することもサポートしています。表示したい内容を記述すると、ClickStack が自動的に可視化を生成します。
@@ -81,7 +81,7 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
   <Image img={visualization_3} alt="Simple visualization 2" size="lg" />
 
   :::note
-  可視化は、メトリクス、トレース、ログなど、任意のデータソースから作成できます。ClickStack はこれらすべてをワイドイベント (wide event) として扱います。任意の **数値列** を時間経過でグラフ化でき、**文字列**、**日付**、**数値** 列をグルーピングに使用できます。
+  可視化は、メトリクス、トレース、ログなど、任意のデータソースから作成できます。ClickStack はこれらすべてをワイドイベント (wide event) として扱います。任意の **数値列** を時間経過でグラフ化でき、**文字列**、**日付**、**数値** 列をグループ化に使用できます。
 
   この統一されたアプローチにより、一貫性があり柔軟なモデルを用いて、さまざまなテレメトリ種別にまたがるダッシュボードを構築できます。
   :::
@@ -156,11 +156,11 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
   <Image img={dashboard_save} alt="ダッシュボードの保存" size="lg" />
 </VerticalStepper>
 
-## ダッシュボード - ビジュアライゼーションの編集 {#dashboards-editing-visualizations}
+## ダッシュボード - 可視化の編集
 
-ビジュアライゼーションを削除、編集、または複製するには、その上にマウスオーバーして表示されるアクションボタンを使用します。
+可視化を削除、編集、または複製するには、その上にマウスオーバーして表示されるアクションボタンを使用します。
 
-<Image img={dashboard_edit} alt="ダッシュボードの編集" size="lg"/>
+<Image img={dashboard_edit} alt="ダッシュボードの編集" size="lg" />
 
 ## ダッシュボード - 一覧と検索 \{#creating-dashboards\}
 
@@ -170,7 +170,7 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
 
 <Image img={dashboard_search} alt="ダッシュボード検索" size="lg" />
 
-## ダッシュボードのタグ付け {#tagging}
+## ダッシュボードのタグ付け
 
 <Tagging />
 
@@ -253,7 +253,7 @@ HyperDX は、標準のダッシュボード付きでデプロイされます。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### サービスダッシュボード {#services-dashboard}
+### サービスダッシュボード
 
 サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これには、トレースが収集されており、有効な Traces データソースが構成されている必要があります。
 
@@ -261,7 +261,7 @@ HyperDX は、標準のダッシュボード付きでデプロイされます。
 
 可視化は Lucene または SQL の構文を使用してフィルタリングでき、時間範囲を調整して分析対象を絞り込むことができます。
 
-<Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
+<Image img={dashboard_services} alt="ClickHouse services" size="lg" />
 
 ### Kubernetes ダッシュボード {#kubernetes-dashboard}
 

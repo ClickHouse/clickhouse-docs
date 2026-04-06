@@ -43,7 +43,7 @@ ClickStack는 이벤트 시각화를 지원하며, ClickStack UI(HyperDX)에 차
 
 HyperDX의 **Chart Explorer** 인터페이스를 사용하면 메트릭, 트레이스, 로그를 시간 흐름에 따라 시각화하여 데이터 분석을 위한 빠른 시각화를 쉽게 만들 수 있습니다. 이 인터페이스는 대시보드를 만들 때에도 재사용됩니다. 다음 섹션에서는 Chart Explorer를 사용해 시각화를 만드는 과정을 단계별로 설명합니다.
 
-각 시각화는 **데이터 소스**를 선택하는 것에서 시작하여, 그 다음 **메트릭**을 선택하고, 선택적으로 **필터 표현식**과 **GROUP BY** 필드를 설정합니다. 개념적으로 HyperDX의 시각화는 내부적으로 SQL `GROUP BY` 쿼리에 매핑됩니다. 사용자는 선택한 차원 전반에 걸쳐 집계할 메트릭을 정의합니다.
+각 시각화는 **데이터 소스**를 선택하는 것에서 시작하여, 그 다음 **메트릭**을 선택하고, 선택적으로 **필터 표현식**과 **GROUP BY** 필드를 설정합니다. 개념적으로 HyperDX의 시각화는 내부적으로 SQL `GROUP BY` 쿼리에 매핑됩니다. 선택한 차원 전반에 걸쳐 집계할 메트릭을 정의합니다.
 
 :::tip AI 기반 차트 생성
 ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart) 기능을 사용해 자연어 프롬프트로 차트를 생성하는 것도 지원합니다. 보고 싶은 내용을 설명하면 ClickStack이 시각화를 자동으로 생성합니다.
@@ -76,7 +76,7 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
 
   SQL `WHERE` 절 또는 Lucene 문법을 사용해 이벤트를 필터링할 수 있으며, 이벤트를 시각화할 시간 범위를 설정할 수 있습니다. 여러 시리즈도 지원됩니다.
 
-  예를 들어, 필터 `ServiceName:"frontend"`를 추가하여 서비스 `frontend`로 필터링합니다. `Add Series`를 클릭하여 `Count`라는 별칭을 가진, 시간에 따른 이벤트 개수 시리즈를 두 번째 시리즈로 추가합니다.
+  예를 들어, 필터 `ServiceName:"frontend"`를 추가하여 서비스 `frontend`로 필터링합니다. `Add Series`를 클릭하여 `Count`라는 별칭을 가진 시간에 따른 이벤트 개수 시리즈를 두 번째 시리즈로 추가합니다.
 
   <Image img={visualization_3} alt="단순 시각화 2" size="lg" />
 
@@ -156,11 +156,11 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
   <Image img={dashboard_save} alt="대시보드 저장" size="lg" />
 </VerticalStepper>
 
-## 대시보드 - 시각화 편집 {#dashboards-editing-visualizations}
+## 대시보드 - 시각화 편집
 
 시각화를 삭제, 편집 또는 복제하려면 시각화 위에 커서를 올린 후 표시되는 작업 버튼을 사용하십시오.
 
-<Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
+<Image img={dashboard_edit} alt="Dashboard edit" size="lg" />
 
 ## 대시보드 - 목록 및 검색 \{#creating-dashboards\}
 
@@ -170,7 +170,7 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
 
 <Image img={dashboard_search} alt="Dashboard search" size="lg" />
 
-## 대시보드 - 태그 지정 {#tagging}
+## 대시보드 - 태그 지정
 
 <Tagging />
 
@@ -253,7 +253,7 @@ HyperDX는 기본 대시보드를 포함해 배포됩니다.
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 대시보드 {#services-dashboard}
+### Services 대시보드
 
 Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화된 서비스를 표시합니다. 이를 위해서는 트레이스를 수집하고 유효한 Traces 데이터 소스를 구성해야 합니다.
 
@@ -261,7 +261,7 @@ Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화
 
 시각화는 Lucene 또는 SQL 문법을 사용해 필터링할 수 있으며, 집중 분석을 위해 시간 범위를 조정할 수 있습니다.
 
-<Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
+<Image img={dashboard_services} alt="ClickHouse services" size="lg" />
 
 ### Kubernetes 대시보드 {#kubernetes-dashboard}
 

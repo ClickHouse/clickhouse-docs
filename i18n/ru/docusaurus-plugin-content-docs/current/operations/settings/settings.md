@@ -9832,7 +9832,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Текстовый индекс теперь доступен в статусе GA"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "1"},{"label": "Новая настройка."}]}]} />
 
 Позволяет выполнять фильтрацию результатов полнотекстового поиска, используя в плане запроса только инвертированный текстовый индекс.
 
@@ -12037,7 +12037,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Текстовый индекс теперь имеет статус GA"}]}, {"id": "row-2","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-3","items": [{"label": "25.9"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает использование индексов пропуска данных при чтении.
 
@@ -12045,8 +12045,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — Отключено.
-- 1 — Включено.
+* 0 — Отключено.
+* 1 — Включено.
 
 ## use_statistics \{#use_statistics\}
 

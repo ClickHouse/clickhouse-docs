@@ -9809,7 +9809,7 @@ JOIN の後のフィルタが、未マッチ行またはマッチ行に対して
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "テキスト索引は現在 GA です"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "1"},{"label": "新しい設定."}]}]} />
 
 クエリプランで、転置テキスト索引だけを使用して全文検索のフィルタ処理を行えるようにします。
 
@@ -12007,7 +12007,7 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "テキスト索引は現在 GA です"}]}, {"id": "row-2","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-3","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]} />
 
 データ読み取り時にデータスキッピングインデックスの使用を有効にします。
 
@@ -12015,8 +12015,8 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 設定可能な値:
 
-- 0 — 無効。
-- 1 — 有効。
+* 0 — 無効。
+* 1 — 有効。
 
 ## use_statistics \{#use_statistics\}
 

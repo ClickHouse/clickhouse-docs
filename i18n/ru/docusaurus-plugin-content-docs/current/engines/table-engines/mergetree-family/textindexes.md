@@ -68,23 +68,7 @@ two    : [3]
 Мы настоятельно рекомендуем использовать ClickHouse версии &gt;= 26.2 для производственных сценариев.
 
 :::note
-Если вы выполнили обновление (или вас обновили, например, в ClickHouse Cloud) с более ранней версии ClickHouse, чем 26.2, наличие настройки [compatibility](../../../operations/settings/settings#compatibility) по-прежнему может приводить к отключению индекса и/или отключению оптимизаций производительности, связанных с текстовыми индексами.
-
-Если запрос
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-возвращает значение меньше `26.2` (например, `25.4`), вам потребуется настроить три дополнительных параметра для использования текстового индекса:
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-В качестве альтернативы вы можете увеличить параметр [compatibility](../../../operations/settings/settings#compatibility) до `26.2` или новее, однако это затрагивает множество настроек и обычно требует предварительного тестирования.
+Текстовые индексы можно использовать с любой версией ClickHouse &gt;= 26.2 независимо от настройки [compatibility](../../../operations/settings/settings#compatibility).
 :::
 
 Чтобы создать текстовый индекс, используйте следующий синтаксис:
