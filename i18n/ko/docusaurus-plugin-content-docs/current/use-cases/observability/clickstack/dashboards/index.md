@@ -87,79 +87,73 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
   :::
 </VerticalStepper>
 
-## 대시보드 생성 {#creating-dashboards}
+## 대시보드 생성
 
 대시보드는 관련 시각화를 그룹화하여 메트릭을 비교하고 패턴을 나란히 탐색하면서 시스템의 잠재적인 근본 원인을 식별할 수 있는 수단을 제공합니다. 이러한 대시보드는 애드혹(ad-hoc) 조사를 위해 사용하거나, 지속적인 모니터링을 위해 저장해 둘 수 있습니다.
 
 전역 필터는 대시보드 수준에서 적용할 수 있으며, 해당 대시보드 내 모든 시각화에 자동으로 전파됩니다. 이를 통해 차트 전반에서 일관된 드릴다운이 가능해지고, 서비스 및 텔레메트리 타입 간 이벤트 상관관계 분석이 단순해집니다.
 
-아래에서는 로그와 트레이스 데이터 소스를 사용해 두 개의 시각화가 포함된 대시보드를 생성합니다. 이 단계는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)에서 그대로 따라 하거나, 가이드 ["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data)에 설명된 대로 [sql.clickhouse.com](https://sql.clickhouse.com)에 호스팅된 데이터셋에 로컬에서 연결해 재현할 수 있습니다.
+아래에서는 로그와 트레이스 데이터 소스를 사용해 두 개의 시각화가 포함된 대시보드를 생성합니다. 이 단계는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)에서 그대로 따라 하거나, 가이드 [&quot;Remote Demo Dataset&quot;](/use-cases/observability/clickstack/getting-started/remote-demo-data)에 설명된 대로 [sql.clickhouse.com](https://sql.clickhouse.com)에 호스팅된 데이터셋에 로컬에서 연결해 재현할 수 있습니다.
 
 <VerticalStepper headerLevel="h3">
+  ### 대시보드로 이동
 
-### Dashboards로 이동 \{#navigate-dashboards\}
+  왼쪽 메뉴에서 `Dashboards`를 선택합니다. 그런 다음 `New Dashboard`를 클릭해 임시 또는 저장된 대시보드를 생성합니다.
 
-왼쪽 메뉴에서 `Dashboards`를 선택합니다.
+  <Image img={dashboard_1} alt="대시보드 생성" size="lg" />
 
-<Image img={dashboard_1} alt="대시보드 생성" size="lg"/>
+  ### 시각화 생성 – 서비스별 평균 요청 시간
 
-기본적으로 대시보드는 애드혹(ad-hoc) 조사를 지원하기 위해 임시로 생성됩니다. 
+  시각화 생성 패널을 열기 위해 `Add New Tile`을 선택합니다.
 
-자체 HyperDX 인스턴스를 사용하는 경우 `Create New Saved Dashboard`를 클릭해 이 대시보드를 나중에 저장할 수 있도록 설정할 수 있습니다. 읽기 전용 환경인 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)을 사용하는 경우에는 이 옵션을 사용할 수 없습니다.
+  상단 메뉴에서 `Line/Bar` 시각화 유형을 선택한 뒤, `Traces` (또는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)을 사용하는 경우 `Demo Traces`) 데이터셋을 선택합니다. 이후 아래 값을 설정해 서비스 이름별 평균 요청 지속 시간을 시간 경과에 따라 표시하는 차트를 생성합니다:
 
-### 시각화 생성 – 서비스별 평균 요청 시간 {#create-a-tile}
+  * Chart Name: `Average duration by service`
+  * Metric: `Average`
+  * Column: `Duration/1000`
+  * Where: `<empty>`
+  * Group By: `ServiceName`
+  * Alias: `Average Time`
 
-시각화 생성 패널을 열기 위해 `Add New Tile`을 선택합니다.
+  `Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
 
-상단 메뉴에서 `Line/Bar` 시각화 타입을 선택한 뒤, `Traces` (또는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)을 사용하는 경우 `Demo Traces`) 데이터셋을 선택합니다. 이후 아래 값을 설정해 서비스 이름별 평균 요청 지속 시간을 시간 경과에 따라 표시하는 차트를 생성합니다:
+  <Image img={dashboard_2} alt="대시보드 시각화 생성" size="lg" />
 
-- Chart Name: `Average duration by service`  
-- Metric: `Average`  
-- Column: `Duration/1000`  
-- Where: `<empty>`  
-- Group By: `ServiceName`  
-- Alias: `Average Time`
+  시각화의 크기를 조정하여 대시보드의 전체 너비를 차지하도록 합니다.
 
-`Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
+  <Image img={dashboard_3} alt="시각화가 포함된 대시보드" size="lg" />
 
-<Image img={dashboard_2} alt="대시보드 시각화 생성" size="lg"/>
+  ### 시각화 생성 – 서비스별 시간 경과에 따른 이벤트
 
-시각화의 크기를 조정하여 대시보드의 전체 너비를 차지하도록 합니다.
+  시각화 생성 패널을 열기 위해 `Add New Tile`을 선택합니다.
 
-<Image img={dashboard_3} alt="시각화가 포함된 대시보드" size="lg"/>
+  상단 메뉴에서 `Line/Bar` 시각화 유형을 선택한 뒤, `Logs` (또는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)을 사용하는 경우 `Demo Logs`) 데이터셋을 선택합니다. 이후 아래 값을 설정해 서비스 이름별 시간 경과에 따른 이벤트 개수를 표시하는 차트를 생성합니다:
 
-### 시각화 생성 – 서비스별 시간 경과에 따른 이벤트 \{#create-a-tile-2\}
+  * Chart Name: `Event count by service`
+  * Metric: `Count of Events`
+  * Where: `<empty>`
+  * Group By: `ServiceName`
+  * Alias: `Count of events`
 
-시각화 생성 패널을 열기 위해 `Add New Tile`을 선택합니다.
+  `Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
 
-상단 메뉴에서 `Line/Bar` 시각화 타입을 선택한 뒤, `Logs` (또는 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)을 사용하는 경우 `Demo Logs`) 데이터셋을 선택합니다. 이후 아래 값을 설정해 서비스 이름별 시간 경과에 따른 이벤트 개수를 표시하는 차트를 생성합니다:
+  <Image img={dashboard_4} alt="대시보드 시각화 2" size="lg" />
 
-- Chart Name: `Event count by service`  
-- Metric: `Count of Events`  
-- Where: `<empty>`  
-- Group By: `ServiceName`  
-- Alias: `Count of events`
+  시각화의 크기를 조정하여 대시보드의 전체 너비를 차지하도록 합니다.
 
-`Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
+  <Image img={dashboard_5} alt="시각화가 포함된 대시보드 2" size="lg" />
 
-<Image img={dashboard_4} alt="대시보드 시각화 2" size="lg"/>
+  ### 대시보드 필터링
 
-시각화의 크기를 조정하여 대시보드의 전체 너비를 차지하도록 합니다.
+  Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할 수 있으며, 모든 시각화에 자동으로 전파됩니다.
 
-<Image img={dashboard_5} alt="시각화가 포함된 대시보드 2" size="lg"/>
+  <Image img={dashboard_filter} alt="필터가 적용된 대시보드" size="lg" />
 
-### 대시보드 필터링 \{#filter-dashboards\}
+  예시로, 대시보드에 Lucene 필터 `ServiceName:\"frontend\"`를 적용하고 시간 범위를 최근 3시간(Last 3 hours)으로 변경합니다. 그러면 시각화에는 이제 `frontend` 서비스의 데이터만 표시됩니다.
 
-Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할 수 있으며, 모든 시각화에 자동으로 전파됩니다.
+  대시보드는 자동으로 저장됩니다. 대시보드 이름을 설정하려면 제목을 선택한 후 수정한 다음 `Save Name`을 클릭합니다.
 
-<Image img={dashboard_filter} alt="필터가 적용된 대시보드" size="lg"/>
-
-예시로, 대시보드에 Lucene 필터 `ServiceName:"frontend"`를 적용하고 시간 범위를 최근 3시간(Last 3 hours)으로 변경합니다. 그러면 시각화에는 이제 `frontend` 서비스의 데이터만 표시됩니다.
-
-대시보드는 자동으로 저장됩니다. 대시보드 이름을 설정하려면 제목을 선택한 후 수정한 다음 `Save Name`을 클릭합니다. 
-
-<Image img={dashboard_save} alt="대시보드 저장" size="lg"/>
-
+  <Image img={dashboard_save} alt="대시보드 저장" size="lg" />
 </VerticalStepper>
 
 ## 대시보드 - 시각화 편집 {#dashboards-editing-visualizations}
@@ -168,17 +162,19 @@ Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할
 
 <Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
 
-## 대시보드 - 목록 및 검색 {#dashboard-listing-search}
+## 대시보드 - 목록 및 검색 \{#creating-dashboards\}
 
-대시보드는 왼쪽 메뉴에서 열 수 있고, 내장 검색 기능을 통해 특정 대시보드를 빠르게 찾을 수 있습니다.
+대시보드는 대시보드 페이지에서 열 수 있습니다. 태그별로 구성되어 있으며, 내장 검색 및 필터링 기능을 통해 특정 대시보드를 빠르게 찾을 수 있습니다.
 
-<Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+대시보드는 사이드바와 목록 페이지 상단에서 쉽게 접근할 수 있도록 즐겨찾기에 추가할 수 있습니다. 즐겨찾기는 사용자별로 개별 적용됩니다.
 
-## 대시보드 - 태그 지정 \{#tagging\}
+<Image img={dashboard_search} alt="Dashboard search" size="lg" />
+
+## 대시보드 - 태그 지정 {#tagging}
 
 <Tagging />
 
-## 사용자 지정 필터 \{#dashboard-listing-search\}
+## 사용자 지정 필터
 
 모든 대시보드에서 사용할 수 있는 [자유 텍스트 필터](#filter-dashboards) 외에도, 저장된 대시보드는 ClickHouse에서 쿼리한 데이터로 채워지는 사용자 지정 드롭다운 필터를 지원합니다. 이를 통해 재사용 가능한 클릭 기반 필터 컨트롤을 제공하므로, 대시보드 사용자는 표현식을 수동으로 작성하지 않고도 필터링할 수 있습니다.
 
@@ -197,7 +193,7 @@ Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할
 
   **Add new filter**를 클릭하십시오. **Name**을 입력하고, **Data source**를 선택하고, **Filter expression**을 입력하여 필터를 구성합니다. 여기에는 드롭다운을 채울 서로 다른 값을 반환하는 SQL 컬럼 또는 표현식을 지정합니다. **Save filter**를 클릭하십시오.
 
-  예를 들어, 트레이스 데이터용 서비스 필터를 추가하려면 `Traces` 데이터 소스에서 `ServiceName`을 필터 표현식으로 사용하십시오.
+  예를 들어, 트레이스 데이터용 서비스 필터를 추가하려면 `Traces` 데이터 소스에서 `ServiceName`을 필터 표현식으로 사용하십시오. &quot;Dropdown values filter&quot;는 선택 사항이며, 드롭다운에 표시할 값을 제한할 때 사용합니다.
 
   <Image img={add_filter} alt="Name, Data source, Filter expression 필드가 있는 Add filter 대화상자" size="md" />
 
@@ -222,7 +218,7 @@ Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할
 사용자 지정 드롭다운 필터는 저장된 대시보드에서 사용할 수 있습니다. 이 패턴이 실제로 적용된 예시는 [Kubernetes 대시보드](#kubernetes-dashboard)를 참조하십시오. 여기에는 파드, 배포, 노드 이름, 네임스페이스, 클러스터에 대한 기본 제공 드롭다운 필터가 포함되어 있습니다.
 :::
 
-## 검색으로 드릴다운 \{#drilldown-to-search\}
+## 검색으로 드릴다운 {#drilldown-to-search}
 
 대시보드 타일은 검색 페이지로의 드릴다운을 지원합니다. 시각화에서 데이터 포인트를 클릭하면 다음 옵션이 포함된 컨텍스트 메뉴가 열립니다.
 
@@ -233,11 +229,11 @@ Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할
 
 이 기능은 대시보드에서 발견된 특정 급증 현상이나 이상 징후를 조사할 때 유용합니다. 집계된 보기에서 기본이 되는 개별 이벤트로 빠르게 전환할 수 있습니다.
 
-## 사전 설정 \{#presets\}
+## 사전 설정 {#presets}
 
 HyperDX는 기본 대시보드를 포함해 배포됩니다.
 
-### ClickHouse 대시보드 \{#clickhouse-dashboard\}
+### ClickHouse 대시보드 {#clickhouse-dashboard}
 
 이 대시보드는 ClickHouse 모니터링을 위한 시각화를 제공합니다. 이 대시보드로 이동하려면 왼쪽 메뉴에서 선택하면 됩니다.
 
@@ -257,7 +253,7 @@ HyperDX는 기본 대시보드를 포함해 배포됩니다.
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 대시보드 \{#services-dashboard\}
+### Services 대시보드 {#services-dashboard}
 
 Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화된 서비스를 표시합니다. 이를 위해서는 트레이스를 수집하고 유효한 Traces 데이터 소스를 구성해야 합니다.
 
@@ -267,7 +263,7 @@ Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화
 
 <Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
 
-### Kubernetes 대시보드 \{#kubernetes-dashboard\}
+### Kubernetes 대시보드 {#kubernetes-dashboard}
 
 이 대시보드는 OpenTelemetry를 통해 수집된 Kubernetes 이벤트를 탐색할 수 있습니다. Kubernetes 파드, 배포, 노드 이름, 네임스페이스, 클러스터별로 필터링할 수 있는 고급 필터 옵션과 자유 형식 텍스트 검색 기능을 제공합니다.
 

@@ -42,9 +42,9 @@ ClickHouse はテーブルを論理的にデータベースにグループ化し
 
 ### BigQuery Slot reservations と Quotas \{#bigquery-slot-reservations-and-quotas\}
 
-BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/manage/scaling#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/manage/scaling#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
+BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
 
-さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース（CPU コア、DRAM、ディスクおよびネットワーク I/O）の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
+さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース (CPU コア、DRAM、ディスクおよびネットワーク I/O) の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
 
 ClickHouse はメモリアロケーションのバイトサイズをサーバー、ユーザー、およびクエリレベルで追跡し、柔軟なメモリ使用量制限を可能にします。メモリオーバーコミットにより、クエリは保証メモリを超えて未使用メモリを追加で利用できますが、ほかのクエリに対するメモリ制限は維持されます。加えて、集約、ソート、結合句で使用されるメモリを制限でき、メモリ上限を超えた場合には外部アルゴリズムへのフォールバックが可能です。
 

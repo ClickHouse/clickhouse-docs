@@ -577,7 +577,7 @@ SELECT LpNormalize((3, 4), 5)
 
 ## cosineDistance \{#cosineDistance\}
 
-引入于：v1.1.0
+引入于：v21.11.0
 
 计算两个向量之间的[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) (元组的元素为坐标) 。返回值越小，向量越相似。
 

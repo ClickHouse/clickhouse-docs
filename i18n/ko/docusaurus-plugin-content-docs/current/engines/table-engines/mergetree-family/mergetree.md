@@ -659,10 +659,12 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 프로젝션은 [ALTER](/sql-reference/statements/alter/projection.md) SQL 문을 사용하여 수정하거나 삭제할 수 있습니다.
 
 
-### Projection indexes \{#projection-index\}
+### PROJECTION indexes \{#projection-index\}
 
-Projection indexes 기능은 프로젝션 서브시스템을 확장하여 프로젝션 수준의 인덱스를 정의하는 가볍고 명시적인 방법을 제공합니다. 
-개념적으로 프로젝션 인덱스는 여전히 프로젝션이지만, 단순화된 구문과 더 명확한 의도를 가지며, 구체화된 데이터로 사용되기보다는 필터링에 특화된 식을 정의합니다.
+PROJECTION indexes 기능은 프로젝션 서브시스템을 확장하여 프로젝션 수준의 인덱스를 정의하는 가볍고 명시적인 방법을 제공합니다.
+외부적으로 프로젝션 인덱스는 여전히 프로젝션이지만, 단순화된 구문과 더 명확한 의도를 가지며, 구체화된 데이터를 제공하기보다는 필터링에 특화된 식을 정의합니다.
+내부적으로 프로젝션 인덱스는 일반 프로젝션처럼 원본 테이블을 순열된 행 순서로 구체화하지 않습니다.
+대신 순열은 숫자 순열 컬럼 `_part_offset` 형태로 저장됩니다. 즉, `SELECT _part_offset ORDER BY <index_expr>`입니다.
 
 #### 구문 \{#projection-index-syntax\}
 
