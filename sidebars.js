@@ -611,6 +611,7 @@ const sidebars = {
             'integrations/language-clients/python/inserting',
             'integrations/language-clients/python/async-concurrency',
             'integrations/language-clients/python/sqlalchemy',
+            'integrations/language-clients/python/alembic',
             'integrations/language-clients/python/dbapi',
             'integrations/language-clients/python/driver-api',
             'integrations/language-clients/python/advanced-querying',

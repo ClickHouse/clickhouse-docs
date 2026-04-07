@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Advanced inserting'
-sidebar_position: 9
+sidebar_position: 10
 keywords: ['clickhouse', 'python', 'insert', 'advanced', 'formats']
 description: 'Advanced insert features: InsertContexts, write formats, timezone handling, and type details'
 slug: /integrations/language-clients/python/advanced-inserting

@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'DB-API'
-sidebar_position: 6
+sidebar_position: 7
 keywords: ['clickhouse', 'python', 'dbapi', 'pep249', 'cursor']
 description: 'DB-API 2.0 (PEP 249) interface for clickhouse-connect'
 slug: /integrations/language-clients/python/dbapi

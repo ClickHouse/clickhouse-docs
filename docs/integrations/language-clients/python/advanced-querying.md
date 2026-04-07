@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Advanced querying'
-sidebar_position: 8
+sidebar_position: 9
 keywords: ['clickhouse', 'python', 'query', 'advanced', 'streaming', 'formats']
 description: 'Advanced query features: QueryContexts, streaming, read formats, external data, and timezones'
 slug: /integrations/language-clients/python/advanced-querying

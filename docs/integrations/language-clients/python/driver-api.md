@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Driver API'
-sidebar_position: 7
+sidebar_position: 8
 keywords: ['clickhouse', 'python', 'driver', 'api', 'client', 'reference']
 description: 'ClickHouse Connect driver API reference'
 slug: /integrations/language-clients/python/driver-api

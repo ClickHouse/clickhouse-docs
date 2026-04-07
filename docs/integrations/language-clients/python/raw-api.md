@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Raw API'
-sidebar_position: 10
+sidebar_position: 11
 
 keywords: ['clickhouse', 'python', 'raw', 'http', 'bytes', 'stream']
 description: 'Raw HTTP-style query and insert methods in clickhouse-connect'
