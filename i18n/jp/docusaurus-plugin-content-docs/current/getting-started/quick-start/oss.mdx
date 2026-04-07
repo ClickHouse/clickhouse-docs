@@ -16,73 +16,68 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
 # ClickHouse OSS クイックスタート \{#clickhouse-oss-quick-start\}
 
-> このクイックスタートチュートリアルでは、8 つの簡単なステップでオープンソース版 ClickHouse をセットアップします。お使いの OS に適したバイナリをダウンロードし、
-> ClickHouse サーバーの起動方法を学び、ClickHouse クライアントを使ってテーブルを作成し、
-> そのテーブルにデータを挿入して、そのデータを取得するクエリを実行します。
->
-> Cloud クイックスタートをお探しですか？ [こちら](/get-started/quick-start)。
+> このクイックスタートチュートリアルでは、いくつかの簡単なステップで OSS ClickHouse をセットアップします。ClickHouse CLI `clickhousectl` を使用して ClickHouse をインストールし、
+> ClickHouse サーバーを起動してサーバーに接続し、テーブルを作成して、
+> そのテーブルにデータを挿入し、SELECT クエリを実行します。
 
 <VerticalStepper>
-  ## ClickHouseのダウンロード \{#download-the-binary\}
+  ## ClickHouse CLIのインストール \ \{#install-the-cli\}
 
-  ClickHouseはLinux、FreeBSD、macOS上でネイティブに動作し、Windowsでは[WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。ClickHouseをローカルにダウンロードする最も簡単な方法は、以下の`curl`コマンドを実行することです。このコマンドは使用中のオペレーティングシステムがサポートされているかを判定し、masterブランチからビルドされた適切なClickHouseバイナリをダウンロードします。
+  ClickHouse CLI (`clickhousectl`) は、ローカルの ClickHouse バージョンのインストールと管理、サーバーの起動、クエリの実行に使用するツールです。次のコマンドでインストールします。
+
+  ```bash
+  curl https://clickhouse.com/cli | sh
+  ```
+
+  便宜上、`chctl` エイリアスも自動的に作成されます。
+
+  ## ClickHouseのインストール \{#install-clickhouse\}
+
+  ClickHouseはLinuxおよびmacOS上でネイティブに動作し、Windowsでは
+  [WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。
+
+  CLIを使用して、ClickHouseの最新安定版をインストールします：
+
+  ```bash
+  clickhousectl local install stable
+  ```
 
   :::note
-  以下のコマンドは新規の空のサブディレクトリから実行することを推奨します。ClickHouseサーバーの初回起動時に、バイナリが配置されているディレクトリ内に設定ファイルが作成されるためです。
-
-  以下のスクリプトは、本番環境へのClickHouseインストールには推奨されません。
-  本番環境用のClickHouseインスタンスをインストールする場合は、[インストールページ](/install)を参照してください。
+  これは本番環境向けの ClickHouse インストール方法として推奨されていません。
+  本番環境に ClickHouse をインストールする場合は、[インストールページ](/install)をご参照ください。
   :::
 
-  ```bash
-  curl https://clickhouse.com/ | sh
-  ```
+  ## サーバーの起動 \{#start-the-server\}
 
-  次のように表示されます：
-
-  ```
-  Successfully downloaded the ClickHouse binary, you can run it as:
-      ./clickhouse
-
-  You can also install it:
-  sudo ./clickhouse install
-  ```
-
-  この段階では、`install` コマンドを実行するよう促すプロンプトは無視してください。
-
-  :::note
-  Macユーザーの方へ：バイナリの開発者を検証できないというエラーが表示される場合は、[&quot;MacOSにおける開発者検証エラーの修正方法&quot;](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
-  :::
-
-  ## サーバーを起動する \{#start-the-server\}
-
-  以下のコマンドを実行してClickHouseサーバーを起動します：
+  ClickHouse サーバーインスタンスを起動します：
 
   ```bash
-  ./clickhouse server
+  clickhousectl local server start --name my-first-server
   ```
 
-  ターミナルに大量のログが表示されます。これは想定された動作です。ClickHouseでは
-  [デフォルトのログレベル](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose)
-  が`warning`ではなく`trace`に設定されています。
-
-  ## クライアントを起動する \{#start-the-client\}
-
-  `clickhouse-client`を使用してClickHouseサービスに接続します。新しいターミナルを開き、`clickhouse`バイナリが保存されているディレクトリに移動して、以下のコマンドを実行します:
+  サーバーはデフォルトでバックグラウンドで実行されます。起動していることを確認するには:
 
   ```bash
-  ./clickhouse client
+  clickhousectl local server list
   ```
 
-  localhost上で実行されているサービスに接続すると、スマイリーフェイスが表示されます:
+  ## クライアントの起動 \{#start-the-client\}
+
+  実行中の ClickHouse サーバーに接続します：
+
+  ```bash
+  clickhousectl local client --name my-first-server
+  ```
+
+  localhost で実行中のサービスに接続すると、スマイルフェイスが表示されます。
 
   ```response
   my-host :)
   ```
 
-  ## テーブルを作成する \{#create-a-table\}
+  ## テーブルを作成する \{#create-table\}
 
-  `CREATE TABLE`を使用して新しいテーブルを定義します。一般的なSQL DDLコマンドはClickHouseで動作しますが、1つ追加があります - ClickHouseのテーブルには`ENGINE`句が必要です。ClickHouseのパフォーマンス上の利点を活用するには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)を使用してください:
+  `CREATE TABLE` を使用して新しいテーブルを定義します。一般的な SQL DDL コマンドは ClickHouse でも動作しますが、1 点追加事項があります。ClickHouse のテーブルには `ENGINE` 句が必要です。ClickHouse のパフォーマンス上の利点を最大限に活用するには、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree) を使用してください。
 
   ```sql
   CREATE TABLE my_first_table
@@ -98,11 +93,11 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ## データの挿入 \{#insert-data\}
 
-  ClickHouseでは一般的な`INSERT INTO TABLE`コマンドを使用できますが、`MergeTree`テーブルへの各挿入によって、ストレージ内にClickHouseで**パート**と呼ばれるものが作成されることを理解しておく必要があります。これらのパーツは後でClickHouseによってバックグラウンドでマージされます。
+  ClickHouseでは使い慣れた `INSERT INTO TABLE` コマンドを使用できますが、`MergeTree` テーブルへの挿入ごとに、ClickHouseがストレージ上に**パーツ**と呼ばれるものを作成する点を理解しておくことが重要です。これらのパーツは後でClickHouseによってバックグラウンドでマージされます。
 
-  ClickHouseでは、バックグラウンドプロセスでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行 (数万行から数百万行) をバルク挿入します。
+  ClickHouse では、バックグラウンドでマージが必要となる[**パーツ**](/parts)の数を最小限に抑えるため、一度に大量の行 (数万〜数百万件) をバルク挿入することを推奨しています。
 
-  このガイドでは、その点についてはひとまず考慮しません。以下のコマンドを実行して、テーブルに数行のデータを挿入してください：
+  このガイドでは、その点についてはまだ気にしなくて構いません。以下のコマンドを実行して、テーブルにいくつかの行のデータを挿入してください。
 
   ```sql
   INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
@@ -112,9 +107,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
   ```
 
-  ## 新しいテーブルをクエリする \{#query-your-new-table\}
+  ## 新しいテーブルをクエリする \{#query\}
 
-  他のSQLデータベースと同様に`SELECT`クエリを記述できます:
+  他のSQLデータベースと同様に、`SELECT` クエリを記述できます：
 
   ```sql
   SELECT *
@@ -122,7 +117,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ORDER BY timestamp
   ```
 
-  レスポンスが整形されたテーブル形式で返されることを確認してください:
+  レスポンスが見やすい表形式で返ってくることに注目してください：
 
   ```text
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
@@ -135,22 +130,22 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   4 rows in set. Elapsed: 0.008 sec.
   ```
 
-  ## 独自データの挿入 \{#insert-your-own-data\}
+  ## 独自のデータを挿入する [#insert-own-data} \{#insert-your-own-data-insert-own-data\}
 
-  次のステップは、お客様のデータをClickHouseに取り込むことです。データ取り込み用の[テーブル関数](/sql-reference/table-functions/index.md)と[インテグレーション](/integrations)を多数ご用意しています。以下のタブにいくつかの例を掲載していますが、ClickHouseと統合可能な技術の詳細なリストについては[インテグレーション](/integrations)ページをご確認ください。
+  次のステップは、独自のデータを ClickHouse に取り込むことです。データの取り込みには、多数の[テーブル関数](/sql-reference/table-functions/index.md)および[インテグレーション](/integrations)を利用できます。以下のタブにいくつかの例を示しています。ClickHouse と連携するテクノロジーの一覧については、[インテグレーション](/integrations)ページをご覧ください。
 
   <Tabs groupId="read_data">
     <TabItem value="S3" label="S3" default>
-      [`s3` table function](/sql-reference/table-functions/s3.md) を使用して
-      S3 からファイルを読み込みます。これはテーブル関数であり、結果として得られるテーブルは
-      次のように利用できます:
+      [`s3` テーブル関数](/sql-reference/table-functions/s3.md)を使用して、
+      S3 からファイルを読み取ります。これはテーブル関数です。つまり、結果はテーブルとして返され、
+      次のように利用できます。
 
       1. `SELECT` クエリのソースとして使用する (アドホッククエリを実行しつつ、
-         データは S3 に残しておく) 、または…
-      2. 得られたテーブルを `MergeTree` テーブルに挿入する (データを ClickHouse に
-         取り込む準備ができたとき)
+         データは S3 に置いたままにできます) 。または...
+      2. 結果のテーブルを `MergeTree` テーブルに挿入する (データを
+         ClickHouse に移す準備ができたら)
 
-      アドホッククエリは次のようになります:
+      アドホッククエリは次のようになります。
 
       ```sql
       SELECT
@@ -164,7 +159,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       ORDER BY passenger_count;
       ```
 
-      データをClickHouseテーブルに移動するには、次のようにします。ここで、`nyc_taxi` は `MergeTree` テーブルです。
+      データを ClickHouse テーブルに移すには、次のようにします。ここで、
+      `nyc_taxi` は `MergeTree` テーブルです。
 
       ```sql
       INSERT INTO nyc_taxi
@@ -175,16 +171,16 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       SETTINGS input_format_allow_errors_num=25000;
       ```
 
-      ClickHouse と S3 の連携方法に関する詳細や多数の利用例については、[AWS S3 に関するドキュメント集](/integrations/data-ingestion/s3/index.md) を参照してください。
+      ClickHouse で S3 を使用する方法の詳細や、さらに多くの例については、[AWS S3 に関するドキュメントページ集](/integrations/data-ingestion/s3/index.md)を参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="GCS" label="GCS">
-      AWS S3 のデータを読み取るために使用される [`s3` table function](/sql-reference/table-functions/s3.md) は、
-      Google Cloud Storage 上のファイルにも同様に利用できます。
+      AWS S3 内のデータの
+      読み込みに使用する[`s3` テーブル関数](/sql-reference/table-functions/s3.md)は、Google Cloud Storage 内のファイルにも対応しています。
 
-      例えば、次のように使用します。
+      例えば:
 
       ```sql
       SELECT
@@ -204,8 +200,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="URL" label="Web">
-      [`url` テーブル関数](/sql-reference/table-functions/url) は、
-      Web 上でアクセス可能なファイルを読み込みます。
+      [`url` テーブル関数](/sql-reference/table-functions/url)は、
+      Web 経由でアクセス可能なファイルを読み込みます:
 
       ```sql
       --By default, ClickHouse prevents redirects to protect from SSRF attacks.
@@ -219,14 +215,15 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       );
       ```
 
-      詳細については、[`url` テーブル関数のページ](/sql-reference/table-functions/url)を参照してください。
+      詳細は、[`url` テーブル関数のページ](/sql-reference/table-functions/url)を参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="local_file" label="ローカル">
-      ローカルファイルを読み取るには、[`file` テーブルエンジン](/sql-reference/table-functions/file) を使用します。簡単のため、ファイルを `user_files` ディレクトリにコピーしてください
-      (`user_files` ディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります) 。
+      [`file` テーブルエンジン](/sql-reference/table-functions/file)を使用して、
+      ローカルファイルを読み込みます。簡単にするため、ファイルを `user_files` ディレクトリにコピーしてください
+      (このディレクトリは、ClickHouse バイナリをダウンロードしたディレクトリ内にあります) 。
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
@@ -243,7 +240,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       └───────────┴─────────────────────────┘
       ```
 
-      ClickHouse は、大量の行を含むバッチデータを解析することで、カラム名とデータ型を推論します。ClickHouse がファイル名からファイル形式を判別できない場合は、第 2 引数で明示的に指定できます。
+      なお、ClickHouse は大量の行を分析して、カラム名とデータ型を推定します。ClickHouse が
+      ファイル名からファイルのフォーマットを判別できない場合は、
+      2 番目の引数として指定できます。
 
       ```sql
       SELECT count()
@@ -253,15 +252,15 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      詳細については、[`file` テーブル関数](/sql-reference/table-functions/file)
-      のドキュメントページを参照してください。
+      [`file` テーブル関数](/sql-reference/table-functions/file)の
+      ドキュメントページを参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="PostgreSQL" label="PostgreSQL">
       [`postgresql` テーブル関数](/sql-reference/table-functions/postgresql)
-      を使用して、PostgreSQL のテーブルからデータを読み出します。
+      を使用して PostgreSQL のテーブルからデータを読み取ります。
 
       ```sql
       SELECT *
@@ -275,15 +274,15 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       ;
       ```
 
-      詳細については、[`postgresql` テーブル関数](/sql-reference/table-functions/postgresql)
-      のドキュメントページを参照してください。
+      詳しくは、[`postgresql` テーブル関数](/sql-reference/table-functions/postgresql)の
+      ドキュメントページを参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="MySQL" label="MySQL">
-      MySQL のテーブルからデータを読み取るには、[`mysql` テーブル関数](/sql-reference/table-functions/mysql)
-      を使用します。
+      [`mysql` テーブル関数](/sql-reference/table-functions/mysql)
+      を使用して、MySQL のテーブルからデータを読み込みます:
 
       ```sql
       SELECT *
@@ -297,13 +296,14 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       ;
       ```
 
-      詳細については、[`mysql` テーブル関数](/sql-reference/table-functions/mysql) のドキュメントページを参照してください。
+      詳しくは、[`mysql` テーブル関数](/sql-reference/table-functions/mysql)
+      のドキュメントページを参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="その他のDBMS" label="ODBC/JDBC">
-      ClickHouse は、あらゆる ODBC または JDBC データソースからデータを読み込むことができます。
+      ClickHouse は、あらゆる ODBC または JDBC データソースからデータを読み取ることができます：
 
       ```sql
       SELECT *
@@ -315,48 +315,49 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       );
       ```
 
-      詳細については、[`odbc` テーブル関数](/sql-reference/table-functions/odbc)
-      および [`jdbc` テーブル関数](/sql-reference/table-functions/jdbc) のドキュメント
+      [`odbc` テーブル関数](/sql-reference/table-functions/odbc)
+      および[`jdbc` テーブル関数](/sql-reference/table-functions/jdbc)のドキュメント
       ページを参照してください。
 
       <br />
     </TabItem>
 
     <TabItem value="messagequeue" label="メッセージキュー">
-      メッセージキューは、対応するテーブルエンジンを使用して ClickHouse にデータをストリーミングできます。例:
+      メッセージキューでは、対応するテーブル
+      エンジンを使用してデータを ClickHouse にストリーミングできます。これには次のものがあります。
 
-      * **Kafka**: [`Kafka` table engine](/engines/table-engines/integrations/kafka) を使用して Kafka と連携します
-      * **Amazon MSK**: [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/) と連携します
-      * **RabbitMQ**: [`RabbitMQ` table engine](/engines/table-engines/integrations/rabbitmq) を使用して RabbitMQ と連携します
+      * **Kafka**: [`Kafka` テーブルエンジン](/engines/table-engines/integrations/kafka)を使用して Kafka と統合します
+      * **Amazon MSK**: [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)と統合します
+      * **RabbitMQ**: [`RabbitMQ` テーブルエンジン](/engines/table-engines/integrations/rabbitmq)を使用して RabbitMQ と統合します
 
       <br />
     </TabItem>
 
     <TabItem value="データレイク" label="データレイク">
-      ClickHouse には、次のデータソースからデータを読み取るためのテーブル関数があります。
+      ClickHouseには、次のソースからデータを読み込むためのテーブル関数があります。
 
-      * **Hadoop**: [`hdfs` table function](/sql-reference/table-functions/hdfs) を使用して Apache Hadoop と連携します
-      * **Hudi**: [`hudi` table function](/sql-reference/table-functions/hudi) を使用して、S3 上の既存の Apache Hudi テーブルからデータを読み取ります
-      * **Iceberg**: [`iceberg` table function](/sql-reference/table-functions/iceberg) を使用して、S3 上の既存の Apache Iceberg テーブルからデータを読み取ります
-      * **DeltaLake**: [`deltaLake` table function](/sql-reference/table-functions/deltalake) を使用して、S3 上の既存の Delta Lake テーブルからデータを読み取ります
+      * **Hadoop**: [`hdfs` テーブル関数](/sql-reference/table-functions/hdfs)を使用して Apache Hadoop と連携します
+      * **Hudi**: [`hudi` テーブル関数](/sql-reference/table-functions/hudi)を使用して、S3 上の既存の Apache Hudi テーブルを読み込みます
+      * **Iceberg**: [`iceberg` テーブル関数](/sql-reference/table-functions/iceberg)を使用して、S3 上の既存の Apache Iceberg テーブルを読み込みます
+      * **DeltaLake**: [`deltaLake` テーブル関数](/sql-reference/table-functions/deltalake)を使用して、S3 上の既存の Delta Lake テーブルを読み込みます
 
       <br />
     </TabItem>
 
     <TabItem value="その他" label="その他">
-      既存のフレームワークやデータソースを ClickHouse に接続する方法については、[豊富な ClickHouse 連携一覧](/integrations) をご覧ください。
+      既存のフレームワークやデータソースを ClickHouse に接続する方法については、[ClickHouse インテグレーションの一覧](/integrations)をご覧ください。
 
       <br />
     </TabItem>
   </Tabs>
 
-  ## 探索 \{#explore\}
+  ## データの探索 \{#explore\}
 
-  * ClickHouse の仕組みの基本を学ぶには、[Core Concepts](/managing-data/core-concepts) セクションを参照してください。
-  * ClickHouse の主要なコンセプトや機能を、より踏み込んで解説している [Advanced Tutorial](tutorial.md) もご覧ください。
-  * 学習をさらに進めるには、[ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog) が提供する無料のオンデマンドトレーニングコースをご受講ください。
-  * We have a list of [サンプルデータセット](/getting-started/example-datasets/) と、それらの挿入手順の一覧を用意しています。
-  * データが外部ソースから取り込まれる場合は、メッセージキュー、データベース、パイプラインなどへの接続方法について、[インテグレーションガイド一覧](/integrations/) を参照してください。
-  * UI / BI の可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization/) を参照してください。
-  * [primary keys](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、プライマリキーの基礎知識と定義方法がすべて網羅されています。
+  * ClickHouse の内部的な仕組みの基本を学ぶには、[コアコンセプト](/managing-data/core-concepts) セクションを参照してください。
+  * ClickHouseの主要な概念と機能をより深く理解するには、[進階チュートリアル](tutorial.md)をご覧ください。
+  * [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog) の無料オンデマンドトレーニングコースを受講して、学習を続けてください。
+  * 挿入手順を記載した[サンプルデータセット](/getting-started/example-datasets/)の一覧を用意しています。
+  * データを外部ソースから取り込む場合は、メッセージキュー、データベース、パイプラインなどへの接続方法をまとめた[連携ガイド集](/integrations/)を参照してください。
+  * UI/BI可視化ツールを使用している場合は、[UI を ClickHouse に接続するためのユーザーガイド](/integrations/data-visualization/)を参照してください。
+  * [主キー](/guides/best-practices/sparse-primary-indexes.md) に関するユーザーガイドには、主キーについて知っておくべきことと、その定義方法が一通りまとめられています。
 </VerticalStepper>

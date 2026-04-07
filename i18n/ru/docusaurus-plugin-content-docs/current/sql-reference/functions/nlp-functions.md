@@ -235,36 +235,69 @@ wolf
 
 ## stem \{#stem\}
 
-Появилась в версии: v21.9.0
+Добавлено в: v21.9.0
 
-Выполняет стемминг (приведение к основе) для заданного слова.
+Выполняет стемминг слова или массива слов с использованием алгоритмов Snowball.
+Каждая входная строка должна содержать только одно слово в нижнем регистре — строки с пробельными символами вызывают исключение.
+Передача символов в верхнем регистре приводит к неопределённым результатам.
+Возвращает String для скалярных входных данных (включая FixedString) и Array(String) для входных массивов.
+Поддерживаются варианты Nullable и LowCardinality для типов String и FixedString.
 
 **Синтаксис**
 
 ```sql
-stem(lang, word)
+stem(word, language)
 ```
 
 **Аргументы**
 
-* `lang` — Язык, к которому будут применяться правила. Используйте двухбуквенный код языка ISO 639-1. [`String`](/sql-reference/data-types/string)
-* `word` — Слово в нижнем регистре, которое необходимо привести к основе (стеммировать). [`String`](/sql-reference/data-types/string)
+* `word` — Одно слово в нижнем регистре (или массив слов) для стемминга. Должно быть в нижнем регистре — символы в верхнем регистре приводят к неопределённому результату. Принимает String, FixedString, Array(String), Array(FixedString), Array(Nullable(String)) или Array(Nullable(FixedString)). [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
+* `language` — Язык, для которого будут применяться правила стемминга. Используйте двухбуквенный код ISO 639-1 (например, &#39;en&#39;, &#39;de&#39;, &#39;fr&#39;), см. https://en.wikipedia.org/wiki/List&#95;of&#95;ISO&#95;639&#95;language&#95;codes. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-Возвращает форму слова после стемминга [`String`](/sql-reference/data-types/string)
+Стеммированная форма слова (String) или массив стеммированных слов (Array(String)). [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
 
 **Примеры**
 
-**Стемминг для английского языка**
+**Стемминг одного слова**
 
 ```sql title=Query
-SELECT arrayMap(x -> stem('en', x),
-['I', 'think', 'it', 'is', 'a', 'blessing', 'in', 'disguise']) AS res
+SELECT stem('blessing', 'en') AS res
 ```
 
 ```response title=Response
-['I','think','it','is','a','bless','in','disguis']
+bless
+```
+
+**Стемминг для массива слов**
+
+```sql title=Query
+SELECT stem(['blessing', 'disguise'], 'en') AS res
+```
+
+```response title=Response
+['bless','disguis']
+```
+
+**Стемминг типа FixedString**
+
+```sql title=Query
+SELECT stem(toFixedString('blessing', 10), 'en') AS res
+```
+
+```response title=Response
+bless
+```
+
+**Стемминг для слова типа Nullable**
+
+```sql title=Query
+SELECT stem(toNullable('blessing'), 'en') AS res
+```
+
+```response title=Response
+bless
 ```
 
 ## synonyms \{#synonyms\}

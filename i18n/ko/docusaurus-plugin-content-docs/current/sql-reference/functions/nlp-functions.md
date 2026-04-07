@@ -236,36 +236,69 @@ wolf
 
 ## stem \{#stem\}
 
-도입된 버전: v21.9.0
+도입 버전: v21.9.0
 
-지정된 단어에 어간 추출을 수행합니다.
+Snowball 알고리즘을 사용하여 단어 또는 단어 배열에 어간 추출을 수행합니다.
+각 입력 문자열은 공백이 없는 단일 소문자 단어여야 하며, 공백 문자가 포함된 문자열은 예외가 발생합니다.
+대문자가 포함되면 결과가 정의되지 않습니다.
+스칼라 입력(`FixedString` 포함)에는 `String`을 반환하고, 배열 입력에는 `Array(String)`을 반환합니다.
+`String` 및 `FixedString`의 널 허용 및 `LowCardinality` 변형을 지원합니다.
 
 **구문**
 
 ```sql
-stem(lang, word)
+stem(word, language)
 ```
 
-**인수(Arguments)**
+**인수**
 
-* `lang` — 규칙이 적용될 언어입니다. 두 글자의 ISO 639-1 코드를 사용합니다. [`String`](/sql-reference/data-types/string)
-* `word` — 어간 추출이 필요한 소문자로 된 단어입니다. [`String`](/sql-reference/data-types/string)
+* `word` — 어간 추출할 단일 소문자 단어(또는 단어 배열)입니다. 반드시 소문자여야 합니다. 대문자가 포함되면 결과가 정의되지 않습니다. String, FixedString, Array(String), Array(FixedString), Array(Nullable(String)), Array(Nullable(FixedString))를 허용합니다. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(FixedString)`](/sql-reference/data-types/array)
+* `language` — 어간 추출 규칙을 적용할 언어입니다. 두 글자의 ISO 639-1 코드를 사용하십시오(예: &#39;en&#39;, &#39;de&#39;, &#39;fr&#39;). https://en.wikipedia.org/wiki/List&#95;of&#95;ISO&#95;639&#95;language&#95;codes를 참조하십시오. [`String`](/sql-reference/data-types/string)
 
-**반환 값(Returned value)**
+**반환값**
 
-어간이 추출된 단어 형태를 반환합니다. [`String`](/sql-reference/data-types/string)
+단어의 어간 추출 형태(String) 또는 어간 추출된 단어 배열(Array(String))입니다. [`String`](/sql-reference/data-types/string) or [`Array(String)`](/sql-reference/data-types/array)
 
-**예시(Examples)**
+**예시**
 
-**영어 어간 추출(English stemming)**
+**단일 단어 어간 추출**
 
 ```sql title=Query
-SELECT arrayMap(x -> stem('en', x),
-['I', 'think', 'it', 'is', 'a', 'blessing', 'in', 'disguise']) AS res
+SELECT stem('blessing', 'en') AS res
 ```
 
 ```response title=Response
-['I','think','it','is','a','bless','in','disguis']
+bless
+```
+
+**단어 배열에서 어간 추출**
+
+```sql title=Query
+SELECT stem(['blessing', 'disguise'], 'en') AS res
+```
+
+```response title=Response
+['bless','disguis']
+```
+
+**FixedString 어간 추출**
+
+```sql title=Query
+SELECT stem(toFixedString('blessing', 10), 'en') AS res
+```
+
+```response title=Response
+bless
+```
+
+**널 허용 단어에 대한 어간 추출**
+
+```sql title=Query
+SELECT stem(toNullable('blessing'), 'en') AS res
+```
+
+```response title=Response
+bless
 ```
 
 ## synonyms \{#synonyms\}

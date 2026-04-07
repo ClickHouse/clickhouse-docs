@@ -1150,6 +1150,14 @@ SELECT * FROM system.events LIMIT 5
 
 Событие буфера чтения распределённого кэша. Время, затраченное на выполнение ReadBufferFromDistributedCache::nextImpl
 
+### DistrCacheObjectStorageWriteBytes \{#distrcacheobjectstoragewritebytes\}
+
+Событие буфера записи в распределённый кэш. Количество байтов, записанных в объектное хранилище
+
+### DistrCacheObjectStorageWriteMicroseconds \{#distrcacheobjectstoragewritemicroseconds\}
+
+Событие буфера записи для распределённого кэша. Время, затраченное на запись в объектное хранилище
+
 ### DistrCacheOpenedConnections \{#distrcacheopenedconnections\}
 
 Событие подключения к распределённому кэшу. Количество открытых подключений к распределённому кэшу
@@ -1316,7 +1324,7 @@ SELECT * FROM system.events LIMIT 5
 
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
-Событие буфера чтения распределённого кэша. Количество обновлений сервера, вызванных тем, что сервер больше не зарегистрирован в Keeper
+Событие распределённого кэша. Количество переключений между серверами во время чтения или записи из-за смены сервера, выбранного хеш-функцией (например, из-за снятия сервера с регистрации)
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -1358,9 +1366,21 @@ SELECT * FROM system.events LIMIT 5
 
 Событие клиента распределённого кэша. Количество дополнительных выделений буфера в случаях, когда не удалось повторно использовать существующий буфер
 
+### Байты, записанные в DistrCache \{#distrcachewritebytes\}
+
+Событие буфера записи распределённого кэша. Количество байтов, записанных в распределённый кэш.
+
 ### DistrCacheWriteErrors \{#distrcachewriteerrors\}
 
 Событие буфера записи распределённого кэша. Количество ошибок распределённого кэша во время записи
+
+### DistrCacheWriteMicroseconds \{#distrcachewritemicroseconds\}
+
+Событие буфера записи распределённого кэша. Время, затраченное в методе WriteBufferFromDistributedCache::writeToFileSegment
+
+### DistrCacheWriteReconnectsAfterTimeout \{#distrcachewritereconnectsaftertimeout\}
+
+Событие буфера записи распределённого кэша. Количество переподключений после тайм-аута
 
 ### DistrCacheWriteThrottlerBytes \{#distrcachewritethrottlerbytes\}
 

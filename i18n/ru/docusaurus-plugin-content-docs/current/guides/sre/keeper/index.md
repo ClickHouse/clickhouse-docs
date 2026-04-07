@@ -493,9 +493,9 @@ SYSTEM STOP MERGES;
 
 3. Остановите все узлы ZooKeeper.
 
-4. Необязательно, но рекомендуется: найдите ведущий узел ZooKeeper, запустите его и затем снова остановите. Это принудит ZooKeeper записать на диск согласованный снимок перед преобразованием.
+4. Необязательно, но рекомендуется: найдите узел-лидер ZooKeeper, запустите его и затем снова остановите. Это принудит ZooKeeper записать на диск согласованный снимок перед преобразованием.
 
-5. Запустите `clickhouse-keeper-converter` на ведущем узле. Если у вас установлена полная бинарная сборка ClickHouse, используйте вместо этого подкоманду `keeper-converter` (`clickhouse keeper-converter`). Если недоступно ни то ни другое, [скачайте бинарный файл](/getting-started/quick-start/oss#download-the-binary).
+5. Запустите `clickhouse-keeper-converter` на узле-лидере. Если у вас установлена полная бинарная сборка ClickHouse, используйте вместо этого подкоманду `keeper-converter` (`clickhouse keeper-converter`). Если недоступно ни то ни другое, [скачайте бинарный файл](/getting-started/quick-start/oss#install-clickhouse).
 
 ```bash
 clickhouse-keeper-converter \

@@ -35,7 +35,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 由于是按行存储，该格式比 [Native](../Native.md) 格式效率更低。
 :::
 
-### 数据类型的线格式 \{#data-types-wire-format\}
+## 数据类型的线路格式 \{#data-types-wire-format\}
 
 :::tip
 示例中提供的大多数查询都可以使用 curl 执行，并将结果输出到文件。

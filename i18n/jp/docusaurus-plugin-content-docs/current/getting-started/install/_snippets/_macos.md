@@ -8,7 +8,7 @@ import Recommendations from '@site/i18n/jp/docusaurus-plugin-content-docs/curren
 
 :::warning
 Homebrew の Formulae を使用したインストールは非推奨となり、2026-09-01 に無効化される予定です。
-代わりに、任意のプラットフォームで動作する [クイックインストール](/install/quick-install-curl) 方法の使用を推奨します。
+代わりに、任意のプラットフォームで動作する [クイックインストール](/install/quick-install) 方法の使用を推奨します。
 :::
 
 <VerticalStepper>

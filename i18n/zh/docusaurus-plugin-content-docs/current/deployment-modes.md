@@ -1,7 +1,7 @@
 ---
 slug: /deployment-modes
 sidebar_label: '部署模式'
-description: 'ClickHouse 提供四种部署选项，全部使用同一款强大的数据库引擎，只是采用不同的打包方式，以满足您的特定需求。'
+description: 'ClickHouse 提供五种部署选项，全部使用同一款强大的数据库引擎，只是采用不同的打包方式，以满足您的特定需求。'
 title: '部署模式'
 keywords: ['部署模式', 'chDB']
 show_related_blogs: true
@@ -17,10 +17,11 @@ import Image from '@theme/IdealImage';
 ClickHouse 是一个功能多样的数据库系统，可以根据需求以多种不同方式进行部署。从本质上讲，所有部署选项**都使用同一个强大的 ClickHouse 数据库引擎**——不同之处在于如何与它交互，以及它运行在什么环境中。
 
 无论是在生产环境中运行大规模分析、进行本地数据分析，还是构建应用程序，都有适合相应使用场景的部署选项。底层引擎的一致性意味着在所有部署模式下都能获得同样的高性能和 SQL 兼容性。
-本指南将介绍 ClickHouse 的四种主要部署和使用方式：
+本指南将介绍 ClickHouse 的五种主要部署和使用方式：
 
 * 用于传统客户端/服务器部署的 ClickHouse Server
 * 用于全托管数据库服务的 ClickHouse Cloud
+* 用于本地开发和 Cloud 管理的 ClickHouse CLI
 * 用于命令行数据处理的 clickhouse-local
 * 用于在应用中直接嵌入 ClickHouse 的 chDB
 
@@ -54,6 +55,25 @@ ClickHouse Cloud 中的 SQL Console 内置强大的[仪表板](/cloud/manage/das
 在监控和优化方面，ClickHouse Cloud 集成了内置图表和[查询洞察](/cloud/get-started/query-insights)。这些工具为集群性能提供深入可见性，帮助团队理解查询模式、资源使用情况以及潜在的优化机会。对于希望在无需额外投入基础设施管理资源的前提下，持续维持高性能分析能力的团队而言，这种可观测性尤为关键。
 
 由于服务为托管模式，无需操心更新、备份、弹性伸缩或安全补丁——这些都由平台自动处理。因此，对于希望将精力集中在数据与应用，而非数据库运维管理的组织而言，这是一个理想选择。
+
+## ClickHouse CLI \{#clickhouse-cli\}
+
+ClickHouse CLI (`clickhousectl`) 是一款用于本地开发 ClickHouse 和管理 ClickHouse Cloud 的命令行工具。它简化了安装 ClickHouse 版本、启动和管理本地服务器实例以及运行查询的流程。
+
+在本地开发场景中，`clickhousectl` 可帮助您安装 ClickHouse 版本并运行服务器。您可以安装任意 ClickHouse 版本，启动具名服务器，并通过内置客户端进行连接。每个服务器都有各自的数据目录，因此您可以并行运行多个彼此隔离的环境。
+
+`clickhousectl` 还提供对 ClickHouse Cloud 资源的完整管理能力，包括创建和扩缩容服务、管理 API 密钥以及管理组织，使其成为同时适用于本地和云端工作流的统一工具。
+
+```bash
+# Install the CLI
+curl https://clickhouse.com/cli | sh
+
+# Install and start ClickHouse locally
+clickhousectl local install stable
+clickhousectl local server start
+clickhousectl local client
+```
+
 
 ## clickhouse-local \{#clickhouse-local\}
 

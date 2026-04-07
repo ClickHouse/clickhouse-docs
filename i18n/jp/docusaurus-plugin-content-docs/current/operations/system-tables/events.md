@@ -1149,6 +1149,14 @@ DiskS3ストレージへの POST、DELETE、PUT、PATCH リクエストで発生
 
 分散キャッシュの読み取りバッファに関するイベント。ReadBufferFromDistributedCache::nextImpl で費やされた時間。
 
+### DistrCacheObjectStorageWriteBytes \{#distrcacheobjectstoragewritebytes\}
+
+分散キャッシュの書き込みバッファに関するイベント。オブジェクトストレージに書き込まれたバイト数
+
+### DistrCacheObjectStorageWriteMicroseconds \{#distrcacheobjectstoragewritemicroseconds\}
+
+分散キャッシュの書き込みバッファに関するイベント。オブジェクトストレージへの書き込みに要した時間
+
 ### DistrCacheOpenedConnections \{#distrcacheopenedconnections\}
 
 分散キャッシュの接続イベント。分散キャッシュへの開いている接続数
@@ -1315,7 +1323,7 @@ DiskS3ストレージへの POST、DELETE、PUT、PATCH リクエストで発生
 
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
-分散キャッシュの読み取りバッファに関するイベント。サーバーが Keeper に登録されなくなったことにより発生したサーバー更新の回数
+分散キャッシュに関するイベント。ハッシュで選択されたサーバーの変更 (たとえばサーバーの登録解除など) により、読み取りまたは書き込み時に発生したサーバー切り替えの回数
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -1357,9 +1365,21 @@ DiskS3ストレージへの POST、DELETE、PUT、PATCH リクエストで発生
 
 分散キャッシュ client イベント。既存のバッファを再利用できなかった場合に発生した追加のバッファ割り当て数
 
+### DistrCacheWriteBytes \{#distrcachewritebytes\}
+
+分散キャッシュの書き込みバッファに関するイベント。分散キャッシュに書き込まれたバイト数。
+
 ### DistrCacheWriteErrors \{#distrcachewriteerrors\}
 
 分散キャッシュの書き込みバッファに関するイベント。書き込み中に発生した分散キャッシュエラー数
+
+### DistrCacheWriteMicroseconds \{#distrcachewritemicroseconds\}
+
+分散キャッシュの書き込みバッファに関するイベントです。WriteBufferFromDistributedCache::writeToFileSegment に費やされた時間
+
+### DistrCacheWriteReconnectsAfterTimeout \{#distrcachewritereconnectsaftertimeout\}
+
+分散キャッシュの書き込みバッファに関するイベント。タイムアウト後の再接続回数
 
 ### DistrCacheWriteThrottlerBytes \{#distrcachewritethrottlerbytes\}
 

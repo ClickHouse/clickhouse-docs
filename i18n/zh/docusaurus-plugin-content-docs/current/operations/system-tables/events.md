@@ -1149,6 +1149,14 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 分布式缓存读取缓冲区事件。在 ReadBufferFromDistributedCache::nextImpl 中的耗时
 
+### DistrCacheObjectStorageWriteBytes \{#distrcacheobjectstoragewritebytes\}
+
+分布式缓存写缓冲区事件。写入对象存储的字节数
+
+### DistrCacheObjectStorageWriteMicroseconds \{#distrcacheobjectstoragewritemicroseconds\}
+
+分布式缓存写缓冲区事件。写入对象存储耗费的时间
+
 ### DistrCacheOpenedConnections \{#distrcacheopenedconnections\}
 
 分布式缓存创建事件。分布式缓存的打开连接数
@@ -1315,7 +1323,7 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
-分布式缓存读取缓冲区事件。由于服务器不再在 Keeper 中注册而发生的服务器更新次数
+分布式缓存事件。因哈希选定的服务器发生变化 (例如服务器被取消注册) 而在读取或写入期间发生的服务器切换次数
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -1357,9 +1365,21 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 分布式缓存客户端事件。无法重用现有缓冲区时，额外分配缓冲区的次数
 
+### DistrCacheWriteBytes \{#distrcachewritebytes\}
+
+分布式缓存写入缓冲区事件。写入分布式缓存的字节数
+
 ### DistrCacheWriteErrors \{#distrcachewriteerrors\}
 
 分布式缓存写入缓冲区事件。写入期间发生的分布式缓存错误数量
+
+### DistrCacheWriteMicroseconds \{#distrcachewritemicroseconds\}
+
+分布式缓存写入缓冲区事件。在 `WriteBufferFromDistributedCache::writeToFileSegment` 中耗费的时间
+
+### DistrCacheWriteReconnectsAfterTimeout \{#distrcachewritereconnectsaftertimeout\}
+
+分布式缓存写入缓冲区事件。超时后重新连接的次数
 
 ### DistrCacheWriteThrottlerBytes \{#distrcachewritethrottlerbytes\}
 

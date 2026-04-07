@@ -1,7 +1,7 @@
 ---
 slug: /deployment-modes
 sidebar_label: '배포 방식'
-description: 'ClickHouse는 동일한 강력한 데이터베이스 엔진을 사용하면서, 다양한 요구 사항에 맞게 패키징 방식만 다른 네 가지 배포 옵션을 제공합니다.'
+description: 'ClickHouse는 동일한 강력한 데이터베이스 엔진을 사용하면서, 다양한 요구 사항에 맞게 패키징 방식만 다른 다섯 가지 배포 옵션을 제공합니다.'
 title: '배포 방식'
 keywords: ['배포 방식', 'chDB']
 show_related_blogs: true
@@ -17,10 +17,11 @@ import Image from '@theme/IdealImage';
 ClickHouse는 요구 사항에 따라 여러 가지 방식으로 배포할 수 있는 다재다능한 데이터베이스 시스템입니다. 근본적으로 모든 배포 옵션은 **동일한 강력한 ClickHouse 데이터베이스 엔진을 사용**하며, 달라지는 것은 상호 작용 방식과 실행 위치입니다.
 
 대규모 프로덕션 분석을 수행하거나 로컬에서 데이터 분석을 하거나 애플리케이션을 개발하는 경우 등, 각 사용 사례에 맞게 설계된 배포 옵션이 제공됩니다. 동일한 엔진을 기반으로 하므로 어떤 배포 모드를 사용하더라도 동일한 고성능과 SQL 호환성을 확보할 수 있습니다.
-이 가이드는 ClickHouse를 배포하고 사용하는 네 가지 주요 방법을 다룹니다:
+이 가이드는 ClickHouse를 배포하고 사용하는 다섯 가지 주요 방법을 다룹니다:
 
 * 전통적인 클라이언트/서버 배포를 위한 ClickHouse Server
 * 완전 관리형 데이터베이스 운영을 위한 ClickHouse Cloud
+* 로컬 개발 및 Cloud 관리를 위한 ClickHouse CLI
 * 명령줄 데이터 처리를 위한 clickhouse-local
 * 애플리케이션에 ClickHouse를 직접 내장하기 위한 chDB
 
@@ -54,6 +55,25 @@ ClickHouse Cloud의 SQL Console에는 쿼리를 대화형 시각화로 변환할
 모니터링과 최적화를 위해 ClickHouse Cloud에는 기본 제공 차트와 [query insights](/cloud/get-started/query-insights)가 포함되어 있습니다. 이러한 도구는 클러스터 성능에 대한 심층적인 가시성을 제공하여, 쿼리 패턴, 리소스 사용량 및 잠재적인 최적화 기회를 파악하는 데 도움이 됩니다. 이러한 수준의 관측성은 인프라 관리를 위한 전담 리소스를 투입하지 않고도 고성능 분석 운영을 유지해야 하는 팀에게 특히 유용합니다.
 
 이 서비스는 관리형 특성 덕분에 업데이트, 백업, 스케일링 또는 보안 패치에 대해 신경 쓸 필요가 없습니다. 이러한 작업은 모두 자동으로 처리되므로, 데이터베이스 관리보다 데이터와 애플리케이션에 집중하고자 하는 조직에 이상적인 선택입니다.
+
+## ClickHouse CLI \{#clickhouse-cli\}
+
+ClickHouse CLI(`clickhousectl`)는 로컬 ClickHouse 개발 및 ClickHouse Cloud 관리를 위한 명령줄 도구입니다. ClickHouse 버전 설치, 로컬 서버 인스턴스 시작 및 관리, 쿼리 실행과 같은 작업 흐름을 간소화합니다.
+
+로컬 개발 시 `clickhousectl`을 사용하면 ClickHouse 버전을 설치하고 서버를 실행할 수 있습니다. 원하는 ClickHouse 버전을 설치하고, 이름이 지정된 서버를 시작한 뒤, 내장 클라이언트를 통해 연결할 수 있습니다. 각 서버는 자체 데이터 디렉터리를 사용하므로, 서로 격리된 여러 환경을 나란히 실행할 수 있습니다.
+
+또한 `clickhousectl`은 서비스 생성 및 확장, API 키 관리, 조직 관리 등을 포함해 ClickHouse Cloud 리소스를 완전히 관리할 수 있도록 지원하므로, 로컬 및 Cloud 작업 흐름을 모두 아우르는 통합 도구입니다.
+
+```bash
+# Install the CLI
+curl https://clickhouse.com/cli | sh
+
+# Install and start ClickHouse locally
+clickhousectl local install stable
+clickhousectl local server start
+clickhousectl local client
+```
+
 
 ## clickhouse-local \{#clickhouse-local\}
 

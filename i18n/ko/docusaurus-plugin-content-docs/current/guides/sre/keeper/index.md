@@ -495,7 +495,7 @@ SYSTEM STOP MERGES;
 
 4. 선택 사항이지만 권장됩니다: ZooKeeper 리더 노드를 찾은 다음 해당 노드를 한 번 시작했다가 다시 중지하십시오. 이렇게 하면 변환 전에 ZooKeeper가 일관된 스냅샷을 디스크에 기록하게 됩니다.
 
-5. 리더 노드에서 `clickhouse-keeper-converter`를 실행하십시오. 전체 ClickHouse 바이너리가 설치되어 있으면 대신 `keeper-converter` 하위 명령어(`clickhouse keeper-converter`)를 사용하십시오. 둘 다 사용할 수 없으면 [바이너리를 다운로드](/getting-started/quick-start/oss#download-the-binary)하십시오.
+5. 리더 노드에서 `clickhouse-keeper-converter`를 실행하십시오. 전체 ClickHouse 바이너리가 설치되어 있으면 대신 `keeper-converter` 하위 명령어(`clickhouse keeper-converter`)를 사용하십시오. 둘 다 사용할 수 없으면 [바이너리를 다운로드](/getting-started/quick-start/oss#install-clickhouse)하십시오.
 
 ```bash
 clickhouse-keeper-converter \
