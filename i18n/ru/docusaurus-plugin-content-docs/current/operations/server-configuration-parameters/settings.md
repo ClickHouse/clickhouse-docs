@@ -1849,6 +1849,10 @@ ClickHouse поддерживает динамическую ротацию ме
 
 <SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="Нет" />Сброс профиля jemalloc будет выполняться при ошибках из-за превышения общего объёма памяти
 
+## jemalloc_flush_profile_on_memory_exceeded_interval \{#jemalloc_flush_profile_on_memory_exceeded_interval\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />Если значение не равно нулю, задаёт минимальный интервал в секундах между сбросами профилей jemalloc при ошибках из-за превышения общего объёма памяти. Например, значение 5 означает не более одного сброса профиля каждые 5 секунд. Имеет приоритет над `jemalloc_flush_profile_on_memory_exceeded`.
+
 ## jemalloc_max_background_threads_num \{#jemalloc_max_background_threads_num\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />Максимальное количество фоновых потоков jemalloc, которые создаются; установите 0, чтобы использовать значение по умолчанию jemalloc

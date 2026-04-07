@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
+import CLIInstall from './_snippets/_cli_install.md'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
 import QuickInstall from './_snippets/_quick_install.md'
@@ -40,6 +41,7 @@ Alternatively, select a platform, distribution and install method below to view 
 instructions for Opensource ClickHouse:
 
 <InstallSelector
+    cli={<CLIInstall/>}
     windows={<Windows/>}
     quickinstall={<QuickInstall/>}
     debian_prod={<DebianProd/>}

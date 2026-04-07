@@ -465,7 +465,7 @@ hasAllTokens(input, needles)
 
 * `input` — входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — токены для поиска. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — токенизатор, который следует использовать. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicodeWord`. Необязательный параметр, если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — токенизатор, который следует использовать. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `asciiCJK`. Необязательный параметр, если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -623,7 +623,7 @@ hasAnyTokens(input, needles)
 
 * `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Nullable(String)`](/sql-reference/data-types/nullable) или [`Nullable(FixedString)`](/sql-reference/data-types/nullable) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array) или [`Array(Nullable(String))`](/sql-reference/data-types/array) или [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — Токены, которые нужно найти. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `unicodeWord`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams` и `asciiCJK`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 

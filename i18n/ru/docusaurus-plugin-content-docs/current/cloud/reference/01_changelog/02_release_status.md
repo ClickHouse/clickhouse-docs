@@ -68,7 +68,7 @@ ClickHouse Cloud предлагает различные каналы релиз
    fast_end_date: '2026-02-11',
    regular_start_date: '2026-03-09',
    regular_end_date: '2026-03-18',
-   slow_start_date: '2026-04-06',
+   slow_start_date: '2026-04-07',
    slow_end_date: 'TBD',
    fast_progress: 'green',
    regular_progress: 'green',

@@ -1071,6 +1071,16 @@ Nested에 복합 식별자를 추가하도록 허용합니다. 이 설정은 쿼
 
 projection에서 JOIN USING에 사용되는 식별자를 강제로 해석합니다(예를 들어 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)`의 경우 조인은 `t1.b = t2.b`가 아니라 `t1.a + 1 = t2.b` 조건으로 수행됩니다).
 
+## analyzer_inline_views \{#analyzer_inline_views\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "새 설정"}]}]} />
+
+활성화하면 analyzer는 일반 뷰(구체화되지 않고 매개변수화되지 않은 뷰)를 해당 뷰를 정의하는 서브쿼리로 대체하여, 프레디케이트 푸시다운 및 컬럼 pruning과 같은 뷰 경계를 넘는 최적화를 가능하게 합니다.
+
 ## any_join_distinct_right_table_keys \{#any_join_distinct_right_table_keys\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3547,6 +3557,18 @@ HTTP 요청에 대한 응답으로 반환되는 데이터의 압축을 활성화
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "이 최적화를 활성화함"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "새 설정"}]}]}/>
 
 실행 시간에 JOIN의 오른쪽 테이블에서 수집한 JOIN 키 Set으로 왼쪽 테이블을 필터링합니다.
+
+## enable_join_transitive_predicates \{#enable_join_transitive_predicates\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "조인 순서 최적화를 위해 추이적 등가 조인 프레디케이트를 추론하는 새 설정입니다."}]}]} />
+
+기존 조인 조건에서 추이적 등가 조인 프레디케이트를 추론합니다.
+예를 들어 `A.x = B.x` 및 `B.x = C.x`가 주어지면 `A.x = C.x` 프레디케이트가 추가로 생성되어,
+조인 순서 최적화기가 직접적인 (A JOIN C) 계획도 고려할 수 있습니다.
 
 ## enable_lazy_columns_replication \{#enable_lazy_columns_replication\}
 
@@ -6830,25 +6852,32 @@ Exception: Total regexp lengths too large.
 
 ## max_insert_block_size \{#max_insert_block_size\}
 
-**별칭**: `max_insert_block_size_rows`
+**別名**: `max_insert_block_size_rows`
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-테이블에 데이터를 삽입할 때 형성되는 블록의 최대 크기(행 개수 기준)입니다.
+테이블로 데이터를 삽입할 때 생성되는 블록의 최대 크기(행 기준)입니다.
 
-이 설정은 포맷 파싱 시 블록 형성을 제어합니다. 서버가 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)이나 어떤 인터페이스(HTTP, 인라인 데이터를 사용하는 clickhouse-client, gRPC, PostgreSQL wire protocol)로부터 Values 포맷을 파싱할 때, 이 설정을 사용하여 언제 블록을 생성할지 결정합니다.  
-참고: 파일을 읽기 위해 clickhouse-client 또는 clickhouse-local을 사용할 때는 클라이언트가 직접 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
+이 설정은 다음 두 가지 상황에서 블록 형성을 제어합니다:
 
-다음 조건 중 하나를 만족하면 블록이 생성됩니다.
+1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)을 파싱할 때, 블록은 다음 경우에 내보내집니다:
 
-- 최소 임계값(AND): `min_insert_block_size_rows`와 `min_insert_block_size_bytes`가 모두 도달했을 때
-- 최대 임계값(OR): `max_insert_block_size` 또는 `max_insert_block_size_bytes` 중 하나에 도달했을 때
+   * min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때, 또는
+   * max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
 
-기본값은 `max_block_size`보다 약간 큽니다. 그 이유는 특정 테이블 엔진(`*MergeTree`)이 각 삽입 블록마다 디스크에 데이터 파트를 형성하는데, 이 데이터 파트가 상당히 큰 단위이기 때문입니다. 마찬가지로 `*MergeTree` 테이블은 삽입 시 데이터를 정렬하며, 블록 크기가 충분히 크면 RAM에서 더 많은 데이터를 정렬할 수 있습니다.
+   참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
+
+2. INSERT 연산: INSERT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 이 설정의 동작은 `use_strict_insert_block_limits`에 따라 달라집니다:
+
+   * 활성화된 경우: 블록은 다음 경우에 내보내집니다:
+     * 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때
+     * 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
+
+   * 비활성화된 경우: min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달하면 블록이 내보내집니다. max&#95;insert&#95;block&#95;size 설정은 적용되지 않습니다.
 
 가능한 값:
 
-- 양의 정수.
+* 양의 정수.
 
 ## max_insert_block_size_bytes \{#max_insert_block_size_bytes\}
 
@@ -8011,21 +8040,25 @@ INSERT를 수행하기 위한 최소 여유 디스크 공간 비율입니다.
 
 이 설정은 다음 두 가지 상황에서 블록 형성을 제어합니다:
 
-1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 포맷(CSV, TSV, JSONEachRow 등)을 파싱할 때, 이 설정을 사용하여 언제 블록을 내보낼지 결정합니다.  
-참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
-2. INSERT 연산: INSERT...SELECT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 스토리지에 기록하기 전에 이 설정을 기준으로 블록이 병합됩니다.
+1. 포맷 파싱: 서버가 어떤 인터페이스(HTTP, 인라인 데이터가 있는 clickhouse-client, gRPC, PostgreSQL wire protocol 등)를 통해 행 기반 입력 형식(CSV, TSV, JSONEachRow 등)을 파싱할 때, 블록은 다음 경우에 내보내집니다:
 
-포맷 파싱에서 블록은 다음 조건 중 하나를 만족하면 내보내집니다:
+   * min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했거나, 또는
+   * max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
 
-- 최소 임계값(AND): min_insert_block_size_rows와 min_insert_block_size_bytes가 모두 도달했을 때
-- 최대 임계값(OR): max_insert_block_size 또는 max_insert_block_size_bytes 중 하나에 도달했을 때
+   참고: clickhouse-client 또는 clickhouse-local로 파일에서 읽을 때는 클라이언트 자체가 데이터를 파싱하며, 이 설정은 클라이언트 측에 적용됩니다.
 
-INSERT 연산에서 더 작은 크기의 블록은 더 큰 블록으로 병합되며, min_insert_block_size_rows 또는 min_insert_block_size_bytes 중 하나에 도달하면 내보내집니다.
+2. INSERT 연산: INSERT 쿼리 동안과 데이터가 materialized view를 통해 흐를 때, 이 설정의 동작은 `use_strict_insert_block_limits`에 따라 달라집니다:
+
+   * 활성화된 경우: 블록은 다음 경우에 내보내집니다:
+     * 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes가 모두 도달했을 때
+     * 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달했을 때
+
+   * 비활성화된 경우(기본값): min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달하면 블록이 내보내집니다. max&#95;insert&#95;block&#95;size 설정은 적용되지 않습니다.
 
 가능한 값:
 
-- 양의 정수.
-- 0 — 이 설정은 블록 형성에 사용되지 않습니다.
+* 양의 정수.
+* 0 — 이 설정은 블록 형성에 사용되지 않습니다.
 
 ## min_insert_block_size_rows_for_materialized_views \{#min_insert_block_size_rows_for_materialized_views\}
 
@@ -9771,7 +9804,7 @@ JOIN 이후의 필터가 매칭되지 않은 행 또는 매칭된 행에 대해 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "텍스트 인덱스가 이제 일반 제공 상태입니다"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "1"},{"label": "New setting."}]}]} />
 
 쿼리 플랜에서 역텍스트 인덱스만 사용하여 전문 검색 필터링을 수행하도록 허용합니다.
 
@@ -9980,6 +10013,18 @@ EXPLAIN PLAN에서 단계 설명의 최대 길이를 지정합니다.
 
 동일한 서브쿼리 내에서 JOIN 순서를 최적화합니다. 현재는 극히 제한적인 경우에만 지원됩니다.
 값은 최적화 대상이 되는 테이블의 최대 개수입니다.
+
+## query_plan_optimize_join_order_randomize \{#query_plan_optimize_join_order_randomize\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "테스트를 위해 조인 순서 통계를 무작위화하는 새 설정입니다."}]}]} />
+
+0이 아니면 조인 순서 최적화기는 실제 통계 대신 무작위로 생성된 카디널리티와 NDV를 사용합니다.
+1로 설정하면 무작위 시드가 생성되고, 1보다 큰 값으로 설정하면 해당 값을 시드로 직접 사용합니다.
+이 설정은 서로 다른 조인 순서로 인해 발생하는 오류를 찾기 위한 테스트용입니다.
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 
@@ -11958,7 +12003,7 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "기본값: 사용"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "새 설정"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "텍스트 인덱스가 이제 일반 제공됩니다"}]}, {"id": "row-2","items": [{"label": "26.1"},{"label": "1"},{"label": "기본값: 사용"}]}, {"id": "row-3","items": [{"label": "25.9"},{"label": "0"},{"label": "새 설정"}]}]} />
 
 데이터를 읽는 동안 데이터 스키핑 인덱스를 사용하도록 설정합니다.
 
@@ -11966,8 +12011,8 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 가능한 값:
 
-- 0 — 비활성화됨.
-- 1 — 활성화됨.
+* 0 — 비활성화됨.
+* 1 — 활성화됨.
 
 ## use_statistics \{#use_statistics\}
 
@@ -12000,6 +12045,29 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 
 * 0 — 비활성화.
 * 1 — 활성화.
+
+## use_strict_insert_block_limits \{#use_strict_insert_block_limits\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "insert 시 엄격한 최소 및 최대 삽입 한도를 적용하기 위한 새 설정입니다. min < max인 경우 max 한도가 우선 적용됩니다."}]}]} />
+
+활성화하면 삽입 블록 크기의 최소 및 최대 제한을 모두 엄격하게 적용합니다.
+
+다음 경우 블록이 생성됩니다:
+
+* 최소 임계값(AND): min&#95;insert&#95;block&#95;size&#95;rows와 min&#95;insert&#95;block&#95;size&#95;bytes에 모두 도달한 경우
+* 최대 임계값(OR): max&#95;insert&#95;block&#95;size&#95;rows 또는 max&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달한 경우
+
+비활성화하면 다음 경우 블록이 생성됩니다:
+
+* 최소 임계값(OR): min&#95;insert&#95;block&#95;size&#95;rows 또는 min&#95;insert&#95;block&#95;size&#95;bytes 중 하나에 도달한 경우
+
+**참고**: max 설정이 min 설정보다 작으면 max 한도가 우선 적용되며, min 임계값에 도달하기 전에 블록이 생성됩니다.
+
+**참고**: 이 설정은 async insert에 대해서는 자동으로 비활성화됩니다. async insert는 항목별 중복 제거 토큰을 연결하는데, 이는 엄격한 한도 적용에 필요한 블록 분할과 호환되지 않기 때문입니다.
+
+기본값은 비활성화입니다.
 
 ## use_structure_from_insertion_table_in_table_functions \{#use_structure_from_insertion_table_in_table_functions\}
 

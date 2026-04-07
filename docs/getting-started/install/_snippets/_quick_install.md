@@ -1,8 +1,6 @@
 # Install ClickHouse via script using curl
 
-If you don't need to install ClickHouse for production, the quickest way to get 
-set up is to run an install script using curl. The script will determine a suitable
-binary for your OS.
+If you don't need to install ClickHouse for production, you can run an install script using curl. The script will determine a suitable binary for your OS.
 
 <VerticalStepper>
 

@@ -13,21 +13,21 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 ## 概览 \{#overview\}
 
-Bring Your Own Cloud（BYOC，自有云环境）使您能够在自己的云账号中直接部署 ClickHouse 服务并存储数据，而无需依赖默认的 ClickHouse Cloud 基础设施。对于那些具有严格安全策略或合规要求、必须对自身数据保持完全控制权和数据主权的组织而言，这种方式尤其适合。
+Bring Your Own Cloud (BYOC，自有云环境) 使您能够在自己的云账号中直接部署 ClickHouse 服务并存储数据，而无需依赖默认的 ClickHouse Cloud 基础设施。对于那些具有严格安全策略或合规要求、必须对自身数据保持完全控制权和数据主权的组织而言，这种方式尤其适合。
 
 从整体架构上看，BYOC 将运行在 ClickHouse VPC 中、由 ClickHouse Cloud 管理的 ClickHouse 控制平面，与完全运行在您云账号中的数据平面进行分离。数据平面中包含您的 ClickHouse 集群、数据及备份。有关各组件的详细说明以及流量在它们之间的流动方式，请参阅 [Architecture](/cloud/reference/byoc/architecture) 页面。
 
 > **如果您希望获得使用权限，请[联系我们](https://clickhouse.com/cloud/bring-your-own-cloud)。** 更多信息请参阅我们的[《服务条款》](https://clickhouse.com/legal/agreements/terms-of-service)。
 
-:::note 
+:::note
 BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合同。
 :::
 
 **支持的云服务提供商：**
 
-* AWS（GA）
-* GCP（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
-* Azure（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
+* AWS (GA) 
+* GCP (GA) 
+* Azure (Private Preview) 。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
 
 **支持的云区域：**
 在我们的[支持的区域](https://clickhouse.com/docs/cloud/reference/supported-regions)文档中列出的所有**公共区域**均可用于 BYOC 部署。目前不支持私有区域。

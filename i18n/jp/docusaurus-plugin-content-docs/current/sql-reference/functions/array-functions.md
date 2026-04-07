@@ -172,6 +172,72 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 ```
 
 
+## arrayAutocorrelation \{#arrayAutocorrelation\}
+
+導入バージョン: v26.4.0
+
+配列の自己相関を計算します。
+`max_lag` を指定した場合は、範囲 `[0, max_lag)` のラグについてのみ相関を計算します。
+`max_lag` を指定しない場合は、可能なすべてのラグについて計算します。
+
+**構文**
+
+```sql
+arrayAutocorrelation(arr, [max_lag])
+```
+
+**引数**
+
+* `arr` — 数値の配列。[`Array(T)`](/sql-reference/data-types/array)
+* `max_lag` — 省略可。計算するラグの最大数。0 以上の整数である必要があります。[`Integer`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+Float64 の配列を返します。分散が 0 の場合は NaN を返します。[`Array(Float64)`](/sql-reference/data-types/array)
+
+**例**
+
+**線形**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5]);
+```
+
+```response title=Response
+[1, 0.4, -0.1, -0.4, -0.4]
+```
+
+**対称的**
+
+```sql title=Query
+SELECT arrayAutocorrelation([10, 20, 10]);
+```
+
+```response title=Response
+[1, -0.6666666666666669, 0.16666666666666674]
+```
+
+**定数**
+
+```sql title=Query
+SELECT arrayAutocorrelation([5, 5, 5]);
+```
+
+```response title=Response
+[nan, nan, nan]
+```
+
+**限定的**
+
+```sql title=Query
+SELECT arrayAutocorrelation([1, 2, 3, 4, 5], 2);
+```
+
+```response title=Response
+[1, 0.4]
+```
+
+
 ## arrayAvg \{#arrayAvg\}
 
 導入バージョン: v21.1.0

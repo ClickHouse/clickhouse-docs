@@ -152,7 +152,7 @@ ClickPipes は、ほとんどのユースケースの要件を満たす適切な
 
 ### スケーリング \{#scaling\}
 
-Object Storage ClickPipes は、[設定済みの垂直オートスケーリング設定](/manage/scaling#configuring-vertical-auto-scaling)によって決定される ClickHouse サービスの最小サイズを基準にスケールされます。ClickPipe のサイズは、パイプを作成した時点で決まります。その後に ClickHouse サービスの設定を変更しても、ClickPipe のサイズは変わりません。
+Object Storage ClickPipes は、[設定済みの垂直オートスケーリング設定](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)によって決定される ClickHouse サービスの最小サイズを基準にスケールされます。ClickPipe のサイズは、パイプを作成した時点で決まります。その後に ClickHouse サービスの設定を変更しても、ClickPipe のサイズは変わりません。
 
 大規模な取り込みジョブのスループットを高めるには、ClickPipe を作成する前に ClickHouse サービスをスケールアップしておくことを推奨します。
 

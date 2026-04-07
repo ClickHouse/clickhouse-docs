@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: 'Dictionary'
+title: '概要'
 keywords: ['dictionary', 'dictionaries']
-description: 'Dictionary は、高速なルックアップのためのキー値型データ表現を提供します。'
+description: 'Dictionary は、高速なルックアップのためのキー・バリュー型データ表現を提供します。'
 doc_type: 'guide'
 ---
 
@@ -318,9 +318,7 @@ Peak memory usage: 666.82 MiB.
 
 ## Dictionary の高度なトピック \{#advanced-dictionary-topics\}
 
-### Dictionary の `LAYOUT` を選択する \{#choosing-the-dictionary-layout\}
-
-`LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
+辞書レイアウトの選び方、辞書と JOIN のどちらを利用するタイミング、および辞書使用状況の監視に関する指針については、[Dictionary のベストプラクティス](/dictionary/best-practices)を参照してください。
 
 ### 辞書の更新 \{#refreshing-dictionaries\}
 
@@ -335,5 +333,6 @@ ClickHouse では、[Hierarchical](/sql-reference/statements/create/dictionary/l
 
 ### 参考情報 \{#more-reading\}
 
-- [辞書を利用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [辞書の高度な設定](/sql-reference/statements/create/dictionary)
+* [Dictionaryのベストプラクティス](/dictionary/best-practices) — レイアウトの選択、辞書と JOIN の比較、監視
+* [辞書を利用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [辞書の高度な設定](/sql-reference/statements/create/dictionary)

@@ -16,6 +16,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Take a backup or restore a backup from the UI](/cloud/manage/backups/backup-restore-via-ui) | Page describing how to take a backup or restore a backup from the UI with your own bucket |
 | [Take a backup or restore a backup using commands](/cloud/manage/backups/backup-restore-via-commands) | Page describing how to take a backup or restore a backup with your own bucket using commands |
 | [Accessing GCS data securely](/cloud/data-sources/secure-gcs) | This article demonstrates how ClickHouse Cloud customers can access their GCS data securely |
+| [Accessing Iceberg data securely](/cloud/data-sources/secure-iceberg) | This article demonstrates how ClickHouse Cloud customers can securely access Apache Iceberg data in object storage using role-based access. |
 | [Accessing S3 data securely](/cloud/data-sources/secure-s3) | This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely. |
 | [Architecture](/cloud/reference/byoc/architecture) | Deploy ClickHouse on your own cloud infrastructure |
 | [AWS customized setup](/cloud/reference/byoc/onboarding/customization-aws) | Deploy ClickHouse BYOC into your existing AWS VPC |

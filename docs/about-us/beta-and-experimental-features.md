@@ -90,10 +90,13 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
 | [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
+| [query_plan_optimize_join_order_randomize](/operations/settings/settings#query_plan_optimize_join_order_randomize) | `0` |
+| [enable_join_transitive_predicates](/operations/settings/settings#enable_join_transitive_predicates) | `0` |
 | [ast_fuzzer_runs](/operations/settings/settings#ast_fuzzer_runs) | `0` |
 | [ast_fuzzer_any_query](/operations/settings/settings#ast_fuzzer_any_query) | `0` |
 | [allow_fuzz_query_functions](/operations/settings/settings#allow_fuzz_query_functions) | `0` |
 | [enable_materialized_cte](/operations/settings/settings#enable_materialized_cte) | `0` |
+| [analyzer_inline_views](/operations/settings/settings#analyzer_inline_views) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
 | [automatic_parallel_replicas_mode](/operations/settings/settings#automatic_parallel_replicas_mode) | `0` |

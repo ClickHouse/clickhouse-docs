@@ -794,17 +794,9 @@ SELECT * FROM system.events LIMIT 5
 
 Количество ключей, запрошенных из источника данных для словарей типа «кэш», но не найденных в этом источнике данных.
 
-### DictCacheLockReadHoldNs \{#dictcachelockreadholdns\}
-
-Количество наносекунд, в течение которых удерживалась блокировка чтения для словарей типа «кэш».
-
 ### DictCacheLockReadNs \{#dictcachelockreadns\}
 
 Количество наносекунд, затраченных на ожидание блокировки чтения при поиске данных в словарях типа «кэш».
-
-### DictCacheLockWriteHoldNs \{#dictcachelockwriteholdns\}
-
-Количество наносекунд, в течение которых удерживалась блокировка на запись для словарей типа «cache».
 
 ### DictCacheLockWriteNs \{#dictcachelockwritens\}
 
@@ -2190,10 +2182,6 @@ SELECT * FROM system.events LIMIT 5
 
 Время, затраченное на выполнение fsync для журнала изменений Keeper (только для несжатых логов)
 
-### KeeperChangelogLockHoldMicroseconds \{#keeperchangeloglockholdmicroseconds\}
-
-Время удержания блокировки журнала изменений Keeper
-
 ### KeeperChangelogLockWaitMicroseconds \{#keeperchangeloglockwaitmicroseconds\}
 
 Время, затраченное на ожидание получения блокировки журнала изменений Keeper
@@ -2242,10 +2230,6 @@ SELECT * FROM system.events LIMIT 5
 
 Количество запросов на получение списка
 
-### KeeperLiveSessionsLockHoldMicroseconds \{#keeperlivesessionslockholdmicroseconds\}
-
-Время, затраченное на удержание блокировки активных сессий Keeper
-
 ### KeeperLiveSessionsLockWaitMicroseconds \{#keeperlivesessionslockwaitmicroseconds\}
 
 Время, затраченное на ожидание получения блокировки активных сессий Keeper
@@ -2286,10 +2270,6 @@ SELECT * FROM system.events LIMIT 5
 
 Задержка предобработки Keeper для одного запроса
 
-### KeeperProcessAndResponsesLockHoldMicroseconds \{#keeperprocessandresponseslockholdmicroseconds\}
-
-Время удержания блокировки обработки и ответов Keeper
-
 ### KeeperProcessAndResponsesLockWaitMicroseconds \{#keeperprocessandresponseslockwaitmicroseconds\}
 
 Время, затраченное на ожидание получения блокировки обработки и ответов Keeper
@@ -2297,10 +2277,6 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperProcessElapsedMicroseconds \{#keeperprocesselapsedmicroseconds\}
 
 Задержка при фиксации в Keeper для одного запроса
-
-### KeeperReadRequestQueueLockHoldMicroseconds \{#keeperreadrequestqueuelockholdmicroseconds\}
-
-Время удержания блокировки очереди запросов на чтение в Keeper
 
 ### KeeperReadRequestQueueLockWaitMicroseconds \{#keeperreadrequestqueuelockwaitmicroseconds\}
 
@@ -2354,17 +2330,9 @@ SELECT * FROM system.events LIMIT 5
 
 Количество объектов снимка, полученных от лидера
 
-### KeeperServerWriteLockHoldMicroseconds \{#keeperserverwritelockholdmicroseconds\}
-
-Время удержания блокировки записи на сервере Keeper
-
 ### KeeperServerWriteLockWaitMicroseconds \{#keeperserverwritelockwaitmicroseconds\}
 
 Время, затраченное на ожидание получения блокировки записи на сервере Keeper
-
-### KeeperSessionCallbackLockHoldMicroseconds \{#keepersessioncallbacklockholdmicroseconds\}
-
-Время удержания блокировки обратного вызова сессии Keeper
 
 ### KeeperSessionCallbackLockWaitMicroseconds \{#keepersessioncallbacklockwaitmicroseconds\}
 
@@ -2410,17 +2378,9 @@ SELECT * FROM system.events LIMIT 5
 
 Количество запросов Keeper, пропущенных из-за того, что сессия больше не активна
 
-### KeeperStorageLockHoldMicroseconds \{#keeperstoragelockholdmicroseconds\}
-
-Время удержания блокировки хранилища Keeper
-
 ### KeeperStorageLockWaitMicroseconds \{#keeperstoragelockwaitmicroseconds\}
 
 Время ожидания получения блокировки хранилища Keeper
-
-### KeeperStorageSharedLockHoldMicroseconds \{#keeperstoragesharedlockholdmicroseconds\}
-
-Время удержания разделяемой блокировки хранилища Keeper
 
 ### KeeperStorageSharedLockWaitMicroseconds \{#keeperstoragesharedlockwaitmicroseconds\}
 

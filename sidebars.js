@@ -41,7 +41,7 @@ const sidebars = {
             'getting-started/install/macos',
             'getting-started/install/windows',
             'getting-started/install/docker',
-            'getting-started/install/quick-install-curl',
+            'getting-started/install/quick-install',
             'getting-started/install/advanced',
           ],
         },
@@ -1121,7 +1121,18 @@ const sidebars = {
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
         'integrations/data-ingestion/etl-tools/estuary',
-        'integrations/data-ingestion/etl-tools/fivetran/index',
+        {
+          type: 'category',
+          label: 'Fivetran',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: { type: 'doc', id: 'integrations/data-ingestion/etl-tools/fivetran/index' },
+          items: [
+            'integrations/data-ingestion/etl-tools/fivetran/reference',
+            'integrations/data-ingestion/etl-tools/fivetran/troubleshooting',
+          ],
+        },
         'integrations/data-ingestion/etl-tools/nifi-and-clickhouse',
         'integrations/data-ingestion/etl-tools/vector-to-clickhouse',
         {
@@ -1958,6 +1969,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
+            'use-cases/observability/clickstack/dashboards/dashboard-templates',
           ],
         },
         "use-cases/observability/clickstack/notebooks",

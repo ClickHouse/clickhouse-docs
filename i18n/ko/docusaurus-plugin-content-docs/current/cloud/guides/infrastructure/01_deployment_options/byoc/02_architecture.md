@@ -18,11 +18,17 @@ import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organizat
 
 <BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="조직, 클라우드 계정, 지역 및 BYOC 인프라 간의 관계를 보여주는 BYOC 조직 계층 구조" />
 
-* **ClickHouse Cloud Organization:** 사용자, 과금, 그리고 비-BYOC ClickHouse 서비스를 관리하는 ClickHouse Cloud의 최상위 개체입니다. 하나의 조직에 속한 사용자는 일반 Cloud 서비스와 BYOC 서비스에 모두 액세스할 수 있습니다.
-* **ClickHouse BYOC Organization:** BYOC 배포를 관리하기 위한 별도의 조직입니다. Cloud 조직과 사용자를 공유하지만, BYOC 인프라가 배포되는 하나 이상의 클라우드 계정에 연결됩니다.
-* **Cloud Account / Project:** BYOC 인프라가 프로비저닝되는 고객 소유의 AWS 계정 또는 GCP 프로젝트입니다. 각 계정 또는 프로젝트는 하나 이상의 지역에서 BYOC 배포를 호스팅할 수 있습니다. 격리를 위해 각 BYOC 배포마다 전용 계정 또는 프로젝트를 사용하는 것이 권장됩니다.
-* **BYOC Infrastructure:** VPC, Kubernetes 클러스터(EKS/GKE), 스토리지 버킷, IAM 역할, 그리고 지원 서비스를 포함하여 클라우드 계정의 특정 지역에 배포되는 클라우드 리소스 집합입니다. 하나의 클라우드 계정에는 여러 지역에 걸쳐 여러 BYOC 인프라가 포함될 수 있습니다.
+<br />
+
+* **ClickHouse Cloud organization:** 사용자, 과금, 그리고 비-BYOC ClickHouse 서비스를 관리하는 ClickHouse Cloud의 최상위 개체입니다. 하나의 조직에 속한 사용자는 일반 Cloud 서비스와 BYOC 서비스에 모두 액세스할 수 있습니다.
+* **ClickHouse BYOC organization:** BYOC 배포를 관리하기 위한 별도의 조직입니다. Cloud 조직과 사용자를 공유하지만, BYOC 인프라가 배포되는 하나 이상의 클라우드 계정에 연결됩니다.
+* **Cloud account / project:** BYOC 인프라가 프로비저닝되는 고객 소유의 AWS 계정 또는 GCP 프로젝트입니다. 각 계정 또는 프로젝트는 하나 이상의 지역에서 BYOC 배포를 호스팅할 수 있습니다. 격리를 위해 각 BYOC 배포마다 전용 계정 또는 프로젝트를 사용하는 것이 권장됩니다.
+* **BYOC infrastructure:** VPC, Kubernetes 클러스터(EKS/GKE), 스토리지 버킷, IAM 역할, 그리고 지원 서비스를 포함하여 클라우드 계정의 특정 지역에 배포되는 클라우드 리소스 집합입니다. 하나의 클라우드 계정에는 여러 지역에 걸쳐 여러 BYOC 인프라가 포함될 수 있습니다.
 * **ClickHouse Service:** BYOC 인프라 내에서 실행되는 개별 ClickHouse 클러스터입니다. 동일한 BYOC 인프라 내에서 여러 서비스를 실행할 수 있습니다.
+
+:::note
+동일한 조직에서 AWS 계정과 GCP 프로젝트를 함께 사용하는 것은 [클라우드 서비스 제공업체 마켓플레이스](/cloud/marketplace/marketplace-billing)를 통해 설정되지 않은 고객에게만 가능합니다.
+:::
 
 ## 용어집 \{#glossary\}
 

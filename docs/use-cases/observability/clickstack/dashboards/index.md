@@ -42,7 +42,7 @@ Visualizations can be created from traces, metrics, logs, or any user-defined wi
 
 The **Chart Explorer** interface in HyperDX allows you to visualize metrics, traces, and logs over time, making it easy to create quick visualizations for data analysis. This interface is also reused when creating dashboards. The following section walks through the process of creating a visualization using Chart Explorer.
 
-Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — users define metrics to aggregate across selected dimensions.
+Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — you define metrics to aggregate across selected dimensions.
 
 :::tip AI-powered chart generation
 ClickStack also supports creating charts from natural language prompts using the [text-to-chart](/use-cases/observability/clickstack/text-to-chart) feature. Describe what you want to see, and ClickStack generates the visualization automatically.
@@ -100,13 +100,9 @@ We create a dashboard with two visualizations below using the log and trace data
 
 ### Navigate to Dashboards {#navigate-dashboards}
 
-Select `Dashboards` from the left menu.
+Select `Dashboards` from the left menu. Then click `New Dashboard` to create a temporary or saved dashboard.
 
 <Image img={dashboard_1} alt="Create Dashboard" size="lg"/>
-
-By default, dashboards are temporary to support ad-hoc investigations. 
-
-If using your own HyperDX instance you can ensure this dashboard can later be saved, by clicking `Create New Saved Dashboard`. This option won't be available if using the read-only environment [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
 
 ### Create a visualization – average request time by service {#create-a-tile}
 
@@ -163,7 +159,7 @@ The dashboard will be auto-saved. To set the dashboard name, select the title an
 
 </VerticalStepper>
 
-## Dashboards - Editing visualizations {#dashboards-editing-visualizations}
+## Dashboards - editing visualizations {#dashboards-editing-visualizations}
 
 To remove, edit, or duplicate a visualization, hover over it and use the corresponding action buttons.
 
@@ -171,10 +167,13 @@ To remove, edit, or duplicate a visualization, hover over it and use the corresp
 
 ## Dashboard - Listing and search {#dashboard-listing-search}
 
-Dashboards are accessible from the left-hand menu, with built-in search to quickly locate specific dashboards.
-<Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+Dashboards are accessible on the dashboards page. They are organized by tag, with built-in search and filtering to quickly locate specific dashboards.
 
-## Dashboards - Tagging {#tagging}
+Dashboards can be favorited for easy access on the sidebar and at the top of the listing page. Favorites are individual to each user.
+
+<Image img={dashboard_search} alt="Dashboard search" size="lg"/>
+
+## Dashboards - tagging {#tagging}
 <Tagging />
 
 ## Custom filters {#custom-filters}
@@ -197,7 +196,7 @@ Open a saved dashboard and select **Edit Filters** from the toolbar.
 
 Click **Add new filter**. Configure the filter by providing a **Name**, selecting a **Data source**, and entering a **Filter expression** — a SQL column or expression whose distinct values will populate the dropdown. Click **Save filter**.
 
-For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source.
+For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source. The "Dropdown values filter" is optional, and provides a way to restrict which values appear in the dropdown.
 
 <Image img={add_filter} alt="Add filter dialog with Name, Data source, and Filter expression fields" size="md"/>
 
@@ -260,7 +259,7 @@ This dashboard queries the ClickHouse [system tables](/operations/system-tables)
 
 ### Services dashboard {#services-dashboard}
 
-The Services dashboard displays currently active services based on trace data. This requires users to have collected traces and configured a valid Traces data source.
+The Services dashboard displays currently active services based on trace data. This requires you to have collected traces and configured a valid Traces data source.
 
 Service names are auto-detected from the trace data, with a series of prebuilt visualizations organized across three tabs: HTTP Services, Database, and Errors.
 

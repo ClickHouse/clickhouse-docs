@@ -12,11 +12,13 @@ keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
+import saved_search_listing from '@site/static/images/use-cases/observability/clickstack-saved-search-listing.png';
 import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack 允许您对事件（日志和跟踪）执行全文搜索。您只需输入与事件匹配的关键词即可开始搜索。例如，如果您的日志中包含 “Error”，您只需在搜索栏中输入 “Error” 即可将其查找出来。
+ClickStack 允许您对事件 (日志和跟踪) 执行全文搜索。您只需输入与事件匹配的关键词即可开始搜索。例如，如果您的日志中包含 “Error”，您只需在搜索栏中输入 “Error” 即可将其查找出来。
 
 同样的搜索语法也适用于在仪表板和图表中对事件进行过滤。
+
 
 ## 搜索功能 \{#search-features\}
 
@@ -56,7 +58,9 @@ SQL WHERE 子句作为搜索条件。这对于那些无法用 Lucene 语法
 
 ## 已保存的搜索 \{#saved-searches\}
 
-你可以将搜索保存起来，以便稍后快速访问。保存后，你的搜索会显示在左侧边栏中，这样就能轻松再次使用常用的搜索条件，而无需重新构建它们。
+你可以将搜索保存起来，以便稍后快速访问。保存后，你的搜索会显示在 `已保存的搜索` 页面中，这样就能轻松再次使用常用的搜索条件，而无需重新构建它们。
+
+<Image img={saved_search_listing} alt="已保存的搜索列表页面" size="lg" />
 
 要保存搜索，只需先配置好搜索条件，然后点击保存按钮。你可以为已保存的搜索指定一个便于描述和识别的名称，方便之后查找。
 

@@ -1,6 +1,6 @@
 ---
 slug: /dictionary
-title: '字典'
+title: '概述'
 keywords: ['dictionary', 'dictionaries']
 description: '字典以键值对形式表示数据，以支持快速查找。'
 doc_type: 'guide'
@@ -318,9 +318,7 @@ Peak memory usage: 666.82 MiB.
 
 ## 字典高级主题 \{#advanced-dictionary-topics\}
 
-### 选择字典 `LAYOUT` \{#choosing-the-dictionary-layout\}
-
-`LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
+关于如何选择字典布局、何时使用字典而非 JOIN，以及如何监控字典使用情况，请参阅[字典最佳实践](/dictionary/best-practices)。
 
 ### 刷新字典 \{#refreshing-dictionaries\}
 
@@ -335,5 +333,6 @@ ClickHouse 还支持[层次结构字典](/sql-reference/statements/create/dictio
 
 ### 延伸阅读 \{#more-reading\}
 
-- [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [字典的高级配置](/sql-reference/statements/create/dictionary)
+* [字典最佳实践](/dictionary/best-practices) — 布局选择、字典与 JOIN 的比较、监控
+* [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [字典的高级配置](/sql-reference/statements/create/dictionary)

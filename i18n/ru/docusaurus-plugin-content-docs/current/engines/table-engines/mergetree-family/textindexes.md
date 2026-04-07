@@ -68,23 +68,7 @@ two    : [3]
 Мы настоятельно рекомендуем использовать ClickHouse версии &gt;= 26.2 для производственных сценариев.
 
 :::note
-Если вы выполнили обновление (или вас обновили, например, в ClickHouse Cloud) с более ранней версии ClickHouse, чем 26.2, наличие настройки [compatibility](../../../operations/settings/settings#compatibility) по-прежнему может приводить к отключению индекса и/или отключению оптимизаций производительности, связанных с текстовыми индексами.
-
-Если запрос
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-возвращает значение меньше `26.2` (например, `25.4`), вам потребуется настроить три дополнительных параметра для использования текстового индекса:
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-В качестве альтернативы вы можете увеличить параметр [compatibility](../../../operations/settings/settings#compatibility) до `26.2` или новее, однако это затрагивает множество настроек и обычно требует предварительного тестирования.
+Текстовые индексы можно использовать с любой версией ClickHouse &gt;= 26.2 независимо от настройки [compatibility](../../../operations/settings/settings#compatibility).
 :::
 
 Чтобы создать текстовый индекс, используйте следующий синтаксис:
@@ -117,8 +101,9 @@ ORDER BY key
 Текстовые индексы можно определять для столбцов следующих типов:
 
 * [String](/sql-reference/data-types/string.md) и [FixedString](/sql-reference/data-types/fixedstring.md),
-* [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md), и
-* [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)).
+* [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md),
+* [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)), и
+* [JSON](/sql-reference/data-types/newjson.md) (через функцию [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths)).
 
 Также поддерживаются столбцы типа [Nullable(T)](/sql-reference/data-types/nullable.md) и [LowCardinality()](/sql-reference/data-types/lowcardinality.md), включая `Array(Nullable(String or FixedString))`.
 
@@ -173,7 +158,7 @@ ALTER TABLE table DROP INDEX text_idx;
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` генерирует n-граммы переменной длины, обеспечивая более гибкое представление исходного текста.
   Например, `tokenizer = sparseGrams(3, 5, 4)` внутренне генерирует 3-, 4-, 5-граммы из входной строки, но возвращает только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т.е. каждое значение строки является токеном (см. функцию [array](/sql-reference/functions/array-functions.md/#array)).
-* `unicodeWord` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
+* `asciiCJK` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 
 Все доступные токенизаторы перечислены в [system.tokenizers](../../../operations/system-tables/tokenizers.md).
 
@@ -202,7 +187,7 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 *Работа с не-ASCII входными данными.*
 Текстовые индексы можно строить на основе текстовых данных на любом языке и в любой кодировке.
-Для текста, содержащего символы вне ASCII, рекомендуется токенизатор `unicodeWord`, так как он корректно обрабатывает границы слов Unicode, включая символы CJK.
+Для текста, содержащего символы вне ASCII, рекомендуется токенизатор `asciiCJK`, так как он корректно обрабатывает границы слов Unicode, включая символы CJK.
 :::
 
 **Аргумент препроцессора (необязательный)**. Под препроцессором здесь понимается выражение, которое применяется к входной строке перед токенизацией.
@@ -663,6 +648,142 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
+#### Индексация JSON-столбцов \{#text-index-example-json\}
+
+Индексы пропуска данных можно использовать со столбцами `JSON` двумя способами:
+
+1. **Индексы для конкретных подстолбцов** — создайте стандартный индекс пропуска данных для известного пути JSON, как и для обычного столбца. При этом индексируются *значения* по этому пути.
+2. **Индексы на основе путей с `JSONAllPaths`** — индексируйте *набор путей*, присутствующих в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь. Аналогично столбцам `Map`.
+
+##### Индексы по определённым подстолбцам \{#json-indexes-on-subcolumns\}
+
+Вы можете создать skip-индекс для любого подстолбца JSON, используя тот же синтаксис, что и для обычных столбцов.
+
+Есть два способа обратиться к подстолбцу JSON в выражении индекса:
+
+* **Типизированный путь**, объявленный в подсказке типа JSON, — прямое обращение по имени: `json.a`.
+* **Динамический путь** с явным приведением типа — используйте синтаксис приведения `::`: `json.b::String`.
+
+Примеры запросов:
+
+```sql
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id String),
+    INDEX idx_sensor data.sensor_id TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_location data.location::String TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: text
+        Condition: (mode: All; tokens: ["5", "id"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: text
+        Condition: (mode: All; tokens: ["5", "room"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+
+##### Индексы на основе путей с JSONAllPaths \{#json-indexes-jsonallpaths\}
+
+Как и для столбцов `Map`, для столбцов [JSON](/sql-reference/data-types/newjson.md) можно создавать текстовые индексы с помощью [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths).
+Индекс хранит набор JSON-путей, присутствующих в каждой грануле, и использует их, чтобы пропускать гранулы, в которых отсутствует запрашиваемый путь.
+
+Примеры запросов:
+
+```sql
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что skip-индекс используется. Когда путь существует только в одной части, индекс пропускает другую часть:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+Когда путь отсутствует во всех частях, все части и гранулы пропускаются:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["nonexistent"])
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL` также использует индекс — он пропускает 그래뉼ы, в которых этот путь отсутствует (так как значение в этом случае было бы `NULL`):
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+
 ## Настройка производительности \{#performance-tuning\}
 
 ### Прямое чтение \{#direct-read\}
@@ -881,11 +1002,11 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 Каждый текстовый индекс состоит из двух (абстрактных) структур данных:
 
-- словаря, который отображает каждый токен в список вхождений, и
-- набора списков вхождений, каждый из которых представляет собой множество номеров строк.
+* словаря, который отображает каждый токен в список вхождений, и
+* набора списков вхождений, каждый из которых представляет собой множество номеров строк.
 
 Текстовый индекс строится для всей части.
-В отличие от других пропускающих индексов, текстовый индекс при слиянии частей данных может быть объединён, а не перестроен (см. ниже).
+В отличие от других индексов пропуска данных, текстовый индекс при слиянии частей данных может быть объединён, а не перестроен (см. ниже).
 
 Во время создания индекса для каждой части создаются три файла:
 
@@ -911,7 +1032,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 При слиянии частей данных текстовый индекс не нужно полностью перестраивать; вместо этого его можно эффективно объединить на отдельном этапе процесса слияния.
 На этом этапе отсортированные словари текстовых индексов каждой входной части считываются и объединяются в новый единый словарь.
 Номера строк в списках вхождений также пересчитываются, чтобы отразить их новые позиции в объединённой части данных, с использованием отображения старых номеров строк в новые, которое создаётся на начальной фазе слияния.
-Этот метод слияния текстовых индексов подобен тому, как объединяются [проекции](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) со столбцом `_part_offset`.
+Этот метод слияния текстовых индексов подобен тому, как объединяются [проекции](/docs/sql-reference/statements/alter/projection#projection-indexes) со столбцом `_part_offset`.
 Если индекс не материализован в исходной части, он строится, записывается во временный файл и затем объединяется с индексами из других частей и из других временных файлов индексов.
 
 **Отладка**

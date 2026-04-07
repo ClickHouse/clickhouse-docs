@@ -267,17 +267,16 @@ async function customParseFrontMatter(params) {
                         currentFieldName === 'pagination_prev';
 
                     if (!isExcludedField && !inMultiLineValue && (
-                        line.includes(': "') || (
-                            line.includes(': ') &&
-                            !line.includes(': \'') &&
-                            !line.includes(': [') &&
-                            !line.includes(': {') &&
-                            !line.includes(': true') &&
-                            !line.includes(': false') &&
-                            !/: \d+/.test(line)
-                        )
+                        line.includes(': ') &&
+                        !line.includes(': \'') &&
+                        !line.includes(': "') &&
+                        !line.includes(': [') &&
+                        !line.includes(': {') &&
+                        !line.includes(': true') &&
+                        !line.includes(': false') &&
+                        !/: \d+/.test(line)
                     )) {
-                        issues.push(`value should use single quotes in line: "${line.trim()}"`);
+                        issues.push(`value should be quoted in line: "${line.trim()}"`);
                     }
                 } else if (inMultiLineValue) {
                     // This is a continuation of a multi-line value

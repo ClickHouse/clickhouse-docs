@@ -9,7 +9,7 @@ This should be a rough estimate of the amount of data you have, either logs or t
 
 <Image img={provider_selection} size="md" alt='Resource selector' border/>
 
-This estimate will be used to size the compute supporting your Managed ClickStack service. By default, new organizations are put on the [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier. You can change your organization tier later on the 'Plans' page.
+This estimate will be used to size the compute supporting your Managed ClickStack service. By default, new organizations are put on the [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/cloud/features/autoscaling/vertical#vertical-auto-scaling) will be enabled by default in the Scale tier. You can change your organization tier later on the 'Plans' page.
 
 Advanced users with an understanding of their requirements can alternatively specify the exact resources provisioned, as well as any enterprise features, by selecting 'Custom Configuration' from the 'Memory and Scaling' dropdown.
 

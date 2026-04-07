@@ -15,4 +15,4 @@
 
 /i18n\/.*/
 /whats-new\/changelog/.*/
-docs/cloud/features/09_AI_ML/model-developer-terms.md
+docs/cloud/features/10_AI_ML/model-developer-terms.md
