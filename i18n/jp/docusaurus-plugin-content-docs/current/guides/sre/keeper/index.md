@@ -497,7 +497,7 @@ SYSTEM STOP MERGES;
 
 4. 任意ですが、実施を推奨します。ZooKeeper のリーダーノードを特定し、再度起動してから停止します。これにより、変換前に ZooKeeper が整合性のあるスナップショットをディスクに書き込むようになります。
 
-5. リーダーノードで `clickhouse-keeper-converter` を実行します。ClickHouse の完全なバイナリがインストールされている場合は、代わりに `keeper-converter` サブコマンド (`clickhouse keeper-converter`) を使用します。どちらも利用できない場合は、[バイナリをダウンロード](/getting-started/quick-start/oss#download-the-binary)してください。
+5. リーダーノードで `clickhouse-keeper-converter` を実行します。ClickHouse の完全なバイナリがインストールされている場合は、代わりに `keeper-converter` サブコマンド (`clickhouse keeper-converter`) を使用します。どちらも利用できない場合は、[バイナリをダウンロード](/getting-started/quick-start/oss#install-clickhouse)してください。
 
 ```bash
 clickhouse-keeper-converter \

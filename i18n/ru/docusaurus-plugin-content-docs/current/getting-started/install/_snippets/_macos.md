@@ -8,7 +8,7 @@ import Recommendations from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 
 :::warning
 Установка с использованием формулы Homebrew устарела и будет отключена 2026-09-01.
-Мы рекомендуем вместо этого использовать метод [быстрой установки](/install/quick-install-curl), который работает на любой платформе.
+Мы рекомендуем вместо этого использовать метод [быстрой установки](/install/quick-install), который работает на любой платформе.
 :::
 
 <VerticalStepper>

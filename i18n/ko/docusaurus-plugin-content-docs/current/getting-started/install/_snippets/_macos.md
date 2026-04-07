@@ -8,7 +8,7 @@ import Recommendations from '@site/i18n/ko/docusaurus-plugin-content-docs/curren
 
 :::warning
 Homebrew Formulae를 사용하는 설치 방식은 더 이상 권장되지 않으며 2026-09-01에 비활성화될 예정입니다.
-대신 모든 플랫폼에서 동작하는 [빠른 설치](/install/quick-install-curl) 방법을 사용할 것을 권장합니다.
+대신 모든 플랫폼에서 동작하는 [빠른 설치](/install/quick-install) 방법을 사용할 것을 권장합니다.
 :::
 
 <VerticalStepper>
