@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/demo-days
-title: 'ClickStack Demo days'
+title: 'ClickStack demo days'
 pagination_prev: null
 pagination_next: null
 description: 'ClickStack demo days'
